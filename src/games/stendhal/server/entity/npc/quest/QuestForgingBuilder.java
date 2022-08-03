@@ -31,6 +31,16 @@ public class QuestForgingBuilder {
 	private String respondToReject = null;
 	private String respondToAccept = null;
 
+	public QuestForgingBuilder greet(String greet) {
+		this.greet = greet;
+		return this;
+	}
+
+	public QuestForgingBuilder greetBeforeConfirmation(String greetBeforeConfirmation) {
+		this.greetBeforeConfirmation = greetBeforeConfirmation;
+		return this;
+	}
+
 	public QuestForgingBuilder respondToReject(String respondToReject) {
 		this.respondToReject = respondToReject;
 		return this;
@@ -64,27 +74,21 @@ public class QuestForgingBuilder {
 	}
 
 	void buildWithConfirmation(SpeakerNPC npc, ChatCondition mayStartForgingCondition, List<ChatAction> actions) {
-		// player returns while quest is still active
-		npc.add(
-			ConversationStates.IDLE,
+		npc.add(ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
 			mayStartForgingCondition,
 			ConversationStates.QUEST_ITEM_BROUGHT,
 			greetBeforeConfirmation,
 			null);
 
-		npc.add(
-			ConversationStates.QUEST_ITEM_BROUGHT,
+		npc.add(ConversationStates.QUEST_ITEM_BROUGHT,
 			ConversationPhrases.YES_MESSAGES,
-			// make sure the player isn't cheating by putting the armor
-			// away and then saying "yes"
 			mayStartForgingCondition,
 			ConversationStates.ATTENDING,
 			respondToAccept,
 			new MultipleActions(actions));
 
-		npc.add(
-			ConversationStates.QUEST_ITEM_BROUGHT,
+		npc.add(ConversationStates.QUEST_ITEM_BROUGHT,
 			ConversationPhrases.NO_MESSAGES,
 			null,
 			ConversationStates.ATTENDING,
@@ -93,7 +97,8 @@ public class QuestForgingBuilder {
 	}
 
 	void buildWithoutConfirmation(SpeakerNPC npc, ChatCondition mayStartForgingCondition, List<ChatAction> actions) {
-		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
+		npc.add(ConversationStates.IDLE,
+			ConversationPhrases.GREETING_MESSAGES,
 			mayStartForgingCondition,
 			ConversationStates.ATTENDING,
 			greet,
