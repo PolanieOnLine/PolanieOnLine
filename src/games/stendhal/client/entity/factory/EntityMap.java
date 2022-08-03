@@ -80,7 +80,9 @@ public final class EntityMap {
 
 		register("player", null, null, Player.class);
 
-		register("creature", "ent", null, BossCreature.class);
+		register("creature", "ent", "ent", BossCreature.class);
+		register("creature", "ent", "entwife", BossCreature.class);
+		register("creature", "ent", "old_ent", BossCreature.class);
 		register("creature", null, null, Creature.class);
 
 		register("sheep", null, null, Sheep.class);

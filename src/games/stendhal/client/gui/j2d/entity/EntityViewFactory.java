@@ -127,7 +127,9 @@ public class EntityViewFactory {
 		register("block", null, null, LookableEntity2DView.class);
 		register("blood", null, null, Blood2DView.class);
 
-		register("creature", "ent", null, BossCreature2DView.class);
+		register("creature", "ent", "ent", BossCreature2DView.class);
+		register("creature", "ent", "entwife", BossCreature2DView.class);
+		register("creature", "ent", "old_ent", BossCreature2DView.class);
 
 		register("growing_entity_spawner", "items/grower/wood_grower", null, CarrotGrower2DView.class);
 		register("growing_entity_spawner", "items/grower/carrot_grower", null, CarrotGrower2DView.class);
