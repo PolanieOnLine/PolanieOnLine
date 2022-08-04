@@ -16,44 +16,15 @@ import games.stendhal.server.entity.npc.action.EquipItemAction;
 import games.stendhal.server.entity.npc.action.IncreaseBaseHPOnlyOnceAction;
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
 import games.stendhal.server.entity.npc.action.IncreaseXPAction;
-import games.stendhal.server.entity.npc.quest.KillCreaturesTask;
+import games.stendhal.server.entity.npc.quest.MultiTask;
 import games.stendhal.server.entity.npc.quest.QuestBuilder;
 import games.stendhal.server.entity.npc.quest.QuestManuscript;
 import games.stendhal.server.maps.Region;
 
-/**
- * QUEST: Kill Herszt
- * <p>
- * PARTICIPANTS:
- * <ul>
- * <li> Gazda Jędrzej
- * </ul>
- *
- * STEPS:
- * <ul>
- * <li> Gazda Jędrzej asks you to kill remainging zbójniks and banits from area
- * <li> You go kill Herszt and you get the reward from Gazda Jędrzej
- * </ul>
- * <p>
- * REWARD:
- * <ul>
- * <li> mithril nugget
- * <li> 5000 XP
- * <li> Karma: 20
- * <li> Once base HP bonus of 20
- * </ul>
- *
- * REPETITIONS:
- * <ul>
- * <li> not for players with white skull.
- * <li> from 30 level.
- * <li> after 14 days.
- * </ul>
- */
 public class KillHerszt implements QuestManuscript {
 	final static String QUEST_SLOT = "kill_herszt";
 	public QuestBuilder<?> story() {
-		QuestBuilder<KillCreaturesTask> quest = new QuestBuilder<>(new KillCreaturesTask());
+		QuestBuilder<MultiTask> quest = new QuestBuilder<>(new MultiTask());
 
 		quest.info()
 			.name("Pozbycie się Rozbójników")
@@ -67,7 +38,7 @@ public class KillHerszt implements QuestManuscript {
 		quest.history()
 			.whenNpcWasMet("Gazda Jędrzej spotkany na górze niedaleko miasta i wejścia do jaskini.")
 			.whenQuestWasRejected("Zgraja zbójów wydaje się być bardzo groźna dla mojego cennego życia.")
-			.whenQuestWasAccepted("Banda zbójników wydaje się groźna dla reszty mieszkańców tego miasta, muszę się ich jak najszybciej pozbyć.")
+			.whenQuestWasAccepted("Banda zbójników wydaje się groźna dla reszty mieszkańców tego miasta, muszę się ich jak najszybciej pozbyć oraz przynieść jakiś dowód iż herszt nie będzie sprawiał problemów.")
 			.whenTaskWasCompleted("Moja wyprawa na rozbójników w jaskini nieco uspokoiła nerwy gazdy Jędrzeja.")
 			.whenQuestWasCompleted("Jędrzej podziękował za moją ciężką pracę i podarował niewielki prezent.")
 			.whenQuestCanBeRepeated("Minęło trochę czasu od ostatniego spotkania z gazdą Jędrzejem, być może znów potrzebuje pomocy ze zbójnikami.");
@@ -76,14 +47,15 @@ public class KillHerszt implements QuestManuscript {
 			.respondToRequest("Nie możemy uwolnić się od zbójników grasujących na tym terenie, a w szczególności od Herszta górskich zbójników. Czy mógłbyś udać się do pobliskiej #jaskini i pozbyć się ich?")
 			.respondToUnrepeatableRequest("Bardzo dziękuję za pomoc w imieniu reszty. Dobrze, że pytasz ponieważ zbójnicy mogą powrócić w każdej chwili...")
 			.respondToRepeatedRequest("Znowu potrzebujemy Twojej pomocy w sprawie rozbójników. Czy możesz znowu się nimi zająć, prosimy?")
-			.respondToAccept("Wspaniale! Proszę znajdź ich. Kręcą się gdzieś tutaj. Na pewną są w tej jaskini. Niech zapłacą za swoje winy!")
+			.respondToAccept("Wspaniale! Proszę znajdź ich. Kręcą się gdzieś tutaj. Na pewną są w tej jaskini. Niech zapłacą za swoje winy! Pamiętaj, przynieś mi coś, czym możesz udowodnić iż pozbyłeś się herszta bandy!")
 			.acceptationKarmaReward(5.0)
 			.respondToReject("Rozumiem. Każdy się ich boi. Poczekam na kogoś odpowiedniego do tego zadania.")
 			.rejectionKarmaPenalty(5.0)
 			.respondTo("cave", "mine", "jaskini", "jaskinia", "kopalnia").saying("Najbliższe wejście do jaskini znajduje się tuż za tym wzniesieniem. Wypatruj ich!")
-			.remind("Już się Ciebie pytałem o pozbyciu się zbójników z naszych terenów!");
+			.remind("Już się Ciebie pytałem o pozbyciu się zbójników z naszych terenów! Pamiętaj również o udowodnieniu swego czynu...");
 
 		quest.task()
+			.requestItem(1, "pióro herszta hordy zbójeckiej")
 			.requestKill(1, "zbójnik górski herszt")
 			.requestKill(2, "zbójnik górski")
 			.requestKill(2, "zbójnik górski goniec")
