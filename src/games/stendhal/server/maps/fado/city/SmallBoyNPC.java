@@ -57,7 +57,7 @@ public class SmallBoyNPC implements ZoneConfigurator {
 		};
 
 		boynpc.setDescription("Oto Bobby. Patrzy w niebo i wygląda na marzyciela.");
-		boynpc.setOutfit(3, 3, 3, null, 4, null, 7, 1, 0);
+		boynpc.setEntityClass("smallboynpc");
 		boynpc.setGender("M");
 		boynpc.setPosition(42, 30);
 		boynpc.setDirection(Direction.RIGHT);
