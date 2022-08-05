@@ -40,7 +40,6 @@ public class QuestCompleteBuilder {
 	private String greet = "Dziękuję";
 	private String respondToReject = null;
 	private String respondToAccept = null;
-	private boolean repeatable = true;
 	private List<ChatAction> rewardWith = new LinkedList<>();
 
 	public QuestCompleteBuilder greet(String greet) {
@@ -55,11 +54,6 @@ public class QuestCompleteBuilder {
 
 	public QuestCompleteBuilder respondToAccept(String respondToAccept) {
 		this.respondToAccept = respondToAccept;
-		return this;
-	}
-
-	public QuestCompleteBuilder repeatable(boolean repeatable) {
-		this.repeatable = repeatable;
 		return this;
 	}
 
@@ -89,7 +83,7 @@ public class QuestCompleteBuilder {
 		simulator.info("");
 	}
 
-	void build(SpeakerNPC npc, String questSlot, ChatCondition questCompletedCondition, ChatAction questCompleteAction, int forgingDelay) {
+	void build(SpeakerNPC npc, String questSlot, ChatCondition questCompletedCondition, ChatAction questCompleteAction, int forgingDelay, boolean repeatable) {
 		List<ChatCondition> mayCompleteCondition = new LinkedList<ChatCondition>();
 		mayCompleteCondition.add(new GreetingMatchesNameCondition(npc.getName()));
 		if (forgingDelay > 0) {

@@ -212,7 +212,7 @@ public class QuestOfferBuilder {
 
 	void build(SpeakerNPC npc, String questSlot,
 				ChatAction startQuestAction, ChatCondition questCompletedCondition,
-				int repeatableAfterMinutes, int forgingDelay) {
+				int repeatableAfterMinutes, int forgingDelay, boolean repeatable) {
 
 		if (someNeedsToStartCondition() != null) {
 			npc.add(ConversationStates.ATTENDING,
@@ -273,7 +273,7 @@ public class QuestOfferBuilder {
 				null);
 		}
 
-		if (repeatableAfterMinutes > 0) {
+		if (repeatableAfterMinutes > 0 || repeatable) {
 			npc.add(ConversationStates.ATTENDING,
 					ConversationPhrases.QUEST_MESSAGES,
 					new AndCondition(

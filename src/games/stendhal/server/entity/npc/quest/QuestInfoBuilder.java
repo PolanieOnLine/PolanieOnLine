@@ -20,6 +20,7 @@ public class QuestInfoBuilder {
 	private String name = "<unnamed>";
 	private String description = "";
 	private String internalName = null;
+	private boolean repeatable = true;
 	private int repeatableAfterMinutes = 0;
 	private int forgingDelay = 0;
 	private int minLevel = 0;
@@ -38,6 +39,11 @@ public class QuestInfoBuilder {
 
 	public QuestInfoBuilder internalName(String internalName) {
 		this.internalName = internalName;
+		return this;
+	}
+
+	public QuestInfoBuilder repeatable(boolean repeatable) {
+		this.repeatable = repeatable;
 		return this;
 	}
 
@@ -93,6 +99,10 @@ public class QuestInfoBuilder {
 
 	String getInternalName() {
 		return internalName;
+	}
+
+	boolean isRepeatable() {
+		return repeatable;
 	}
 
 	int getRepeatableAfterMinutes() {

@@ -44,7 +44,7 @@ public class CleanStorageSpace implements QuestManuscript {
 			.name("Porządki w Piwnicy")
 			.description("W piwnicy Eonny zagnieździły się szczury i węże. Potrzebuje mnie, prawdziwego bohatera, abym pomógł jej.")
 			.internalName("clean_storage")
-			.minLevel(0)
+			.repeatable(false)
 			.region(Region.SEMOS_CITY)
 			.questGiverNpc("Eonna");
 
@@ -70,7 +70,6 @@ public class CleanStorageSpace implements QuestManuscript {
 
 		quest.complete()
 			.greet("Nareszcie! Mój bohater się odnalazł, dziękuję!")
-			.repeatable(false)
 			.rewardWith(new IncreaseXPAction(500))
 			.rewardWith(new IncreaseKarmaAction(10.0))
 			.rewardWith(new EquipItemAction("buteleczka wody", 10));

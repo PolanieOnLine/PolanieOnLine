@@ -86,9 +86,9 @@ public class BuiltQuest extends AbstractQuest {
 		ChatAction questCompleteAction = questBuilder.task().buildQuestCompleteAction(questSlot);
 
 		final SpeakerNPC npc = npcs.get(questBuilder.info().getQuestGiverNpc());
-		questBuilder.offer().build(npc, questSlot, startQuestAction, questCompletedCondition, questBuilder.info().getRepeatableAfterMinutes(), questBuilder.info().getForgingDelay());
+		questBuilder.offer().build(npc, questSlot, startQuestAction, questCompletedCondition, questBuilder.info().getRepeatableAfterMinutes(), questBuilder.info().getForgingDelay(), questBuilder.info().isRepeatable());
 		questBuilder.forging().build(npc, questSlot, questCompletedCondition, questCompleteAction, questBuilder.info().getForgingDelay());
-		questBuilder.complete().build(npc, questSlot, questCompletedCondition, questCompleteAction, questBuilder.info().getForgingDelay());
+		questBuilder.complete().build(npc, questSlot, questCompletedCondition, questCompleteAction, questBuilder.info().getForgingDelay(), questBuilder.info().isRepeatable());
 	}
 
 	@Override
@@ -116,11 +116,10 @@ public class BuiltQuest extends AbstractQuest {
 		return questSlot;
 	}
 
-
 	@Override
 	public boolean isRepeatable(final Player player) {
 		return isCompleted(player)
-				&& questBuilder.info().getRepeatableAfterMinutes() > 0
+				&& (questBuilder.info().getRepeatableAfterMinutes() > 0 || questBuilder.info().isRepeatable())
 				&& new TimePassedCondition(questSlot, 1, questBuilder.info().getRepeatableAfterMinutes()).fire(player,null, null);
 	}
 }

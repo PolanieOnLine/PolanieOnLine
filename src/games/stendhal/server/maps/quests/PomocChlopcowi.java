@@ -27,6 +27,7 @@ public class PomocChlopcowi implements QuestManuscript {
 			.name("Pomoc Adasiowi")
 			.description("W domku bohaterów w piwnicy zakorzeniły się potwory. Młody chłopiec Adaś, potrzebuje mojej pomocy w pozbyciu się ich.")
 			.internalName("pomoc_adasiowi")
+			.repeatable(false)
 			.region(Region.ZAKOPANE_CITY)
 			.questGiverNpc("Adaś");
 
@@ -52,7 +53,6 @@ public class PomocChlopcowi implements QuestManuscript {
 
 		quest.complete()
 			.greet("Nasz wybawca! Nareszcie! Dziękuję!")
-			.repeatable(false)
 			.rewardWith(new IncreaseXPAction(550))
 			.rewardWith(new IncreaseKarmaAction(5.0))
 			.rewardWith(new EquipItemAction("buty skórzane"));
