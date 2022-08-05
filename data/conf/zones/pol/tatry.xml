@@ -232,6 +232,7 @@
 
 	<!-- dolina_mietusia -->
 	<zone name="0_tatry_dolina_mietusia" level="0" x="513184" y="19072" file="Level 0/tatry/dolina_mietusia.tmx">
+		<configurator class-name="games.stendhal.server.maps.tatry.mountain.ColdNPC"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying(temperature=-2)</parameter>
