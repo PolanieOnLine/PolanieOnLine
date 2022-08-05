@@ -29,13 +29,13 @@ public class HelpOgi implements QuestManuscript {
 			.whenQuestCanBeRepeated("Muszę spróbować jeszcze raz z rozpaleniem ogniska!");
 
 		quest.offer()
-			.respondToRequest("Po... po... trz... ebuję pp... omocy zzz ogg...iskiem. Ppp... omożesz?")
-			.respondToUnrepeatableRequest("Dz... dz... ęku... ję, pp... przy... najmniej pr... pr... óbowaliśmy.")
-			.respondToRepeatedRequest("Po... po... trz... ebuję pp... omocy zzz ogg...iskiem. Ppp... omożesz?")
-			.respondToAccept("S... ss... u... u... per! C... c... oś z... z... z ognia si... się nada.")
-			.respondToReject("Mm... mu... szę ch... chy... ba pp... po... szukać w... wio... s... ss... ki.")
+			.respondToRequest("Ppo...po...trz...ebuję pp...omocy zzz ogg...iskiem. Ppp...omożesz?")
+			.respondToUnrepeatableRequest("Dz...dz...ęku...ję, pp...przy...najmniej pr...pr...óbowaliśmy.")
+			.respondToRepeatedRequest("M...asz może cz...cz... ym roz...zz...zpa...palić oog...gg...isko? Ppp...omożesz?")
+			.respondToAccept("S...ss...u...u...per! C...c...oś z...z...z ognia si...się nada.")
+			.respondToReject("Mm...mu...szę ch...chy...ba pp...po...szukać w...wio...s...ss...ki.")
 			.rejectionKarmaPenalty(5.0)
-			.remind("C... c... oś z... z... z ognia si... się nada.");
+			.remind("C...c...oś z...z...z ognia si...się nada.");
 
 		quest.task()
 			.requestItem(1, "miecz ognisty")

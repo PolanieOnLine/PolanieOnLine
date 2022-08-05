@@ -18,10 +18,10 @@ public class ColdNPC implements ZoneConfigurator {
 		final SpeakerNPC npc = new SpeakerNPC("Ogi") {
 			@Override
 			protected void createDialog() {
-				addGreeting("Cz... cz... eść. M... asz może cz... cz... ym rozpalić og... gg... isko?");
-				addJob("M... mm... uszę się r... r... ozg... rzać.");
-				addHelp("M... mm... uszę się r... r... ozg... rzać.");
-				addGoodbye("By... by... waj.");
+				addGreeting("Cz...cz...eść.");
+				addJob("M...mm...uszę się r...r...ozg...rzać.");
+				addHelp("M...mm...uszę się r...r...ozg...rzać.");
+				addGoodbye("By...by...waj.");
 			}
 
 			@Override
