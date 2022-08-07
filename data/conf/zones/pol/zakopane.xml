@@ -513,6 +513,7 @@
 
 		<configurator class-name="games.stendhal.server.maps.zakopane.city.HalloweenSellerNPC" condition="stendhal.minetown"/>
 
+		<configurator class-name="games.stendhal.server.maps.zakopane.city.MariuszekNPC"/>
 		<configurator class-name="games.stendhal.server.maps.zakopane.city.BacaZbyszekNPC"/>
 		<configurator class-name="games.stendhal.server.maps.zakopane.city.FryderykNPC"/>
 		<configurator class-name="games.stendhal.server.maps.zakopane.city.GawedziarzNPC"/>
