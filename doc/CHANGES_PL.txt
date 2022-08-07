@@ -1,5 +1,22 @@
 Changelog
 ---------
+1.32.1
+*klient*
+- Dodano nowe grafiki strojów oraz NPC Bobbiego
+
+*świat*
+- Dodano nowych NPC: (2)
+	- Ogi
+	- Mariuszek
+- Dodano nowe powtarzalne zadanie na karmę u Ogiego
+
+*naprawiono błędy*
+- Naprawiono zadanie u gazdy Jędrzeja, który nie zabierał prióra herszta
+- Naprawiono grafikę pasterza drzew
+- Poprawiono opisy złotych ciupag
+- Poprawiono grafikę NPC Bobby
+
+
 1.32
 *klient*
 - Poprawiono grafiki NPC & potworów
