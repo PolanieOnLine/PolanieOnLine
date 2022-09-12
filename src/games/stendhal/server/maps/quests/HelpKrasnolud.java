@@ -90,7 +90,7 @@ public class HelpKrasnolud extends AbstractQuest {
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("krasnolud", "armor", "zbroja","zbroję"),
 			new QuestInStateCondition(QUEST_SLOT, "start"),
 			ConversationStates.ATTENDING, "Ten krasnal wysłał cię po lazurową zbroję powiadasz... Ostatnio chyba ktoś przyniósł do mnie coś takiego. "
-			+ " Ale jak wiesz nic nie ma za darmo, potrzebuję koniecznie #'/lazurowy hełm/' dostarcz mi go a może dostaniesz tę zbroję o ile ją gdzieś tu mam... "
+			+ " Ale jak wiesz nic nie ma za darmo, potrzebuję koniecznie #'lazurowy hełm' dostarcz mi go a może dostaniesz tę zbroję o ile ją gdzieś tu mam... "
 			+ " Tymczasem udaj się do Gulimo w górach Ados on podobnież jest w posiadaniu takowego hełmu, o który cię proszę."
 			+ " Wystarczy jak powiesz mu moje imię #/Wielkolud/, on już będzie wiedział, o co chodzi.",
 			new SetQuestAction(QUEST_SLOT, "gulimo"));
@@ -98,13 +98,13 @@ public class HelpKrasnolud extends AbstractQuest {
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("wielkolud","helmet", "hełm"),
 			new NotCondition(new QuestInStateCondition(QUEST_SLOT, "helmet")),
 			ConversationStates.ATTENDING,
-			"Zanim ci pomogę udaj się po hełm, o który cię prosiłem do Gulimo i powiedz mu moje imię by wiedział, od kogo przybywasz..",
+			"Zanim ci pomogę udaj się po hełm, o który cię prosiłem do Gulimo i powiedz mu moje imię by wiedział, od kogo przybywasz...",
 			null);
 
 		npc.add(ConversationStates.ATTENDING,  Arrays.asList("wielkolud", "helmet", "zbroja", "zbroję", "armor"),
 			new AndCondition(new QuestInStateCondition(QUEST_SLOT, "helmet"),
 			new PlayerHasItemWithHimCondition("lazurowy hełm")),
-			ConversationStates.ATTENDING, "Bardzo dobrze! Teraz chcę byś jeszcze przyniósł mi przedmioty z listy zanim dam ci #/zbroję/."
+			ConversationStates.ATTENDING, "Bardzo dobrze! Teraz chcę byś jeszcze przyniósł mi przedmioty z listy zanim dam ci #zbroję."
 			+ " Potrzebuję:\n"
 			+ "#'30 skór czerwonego smoka'\n"+ "#'30 skór zielonego smoka'\n"+ "#'30 skór niebieskiego smoka'\n"+ "#'30 skór czarnego smoka'\n"+ "i #'10 złotego smoka'",
 			new MultipleActions(new SetQuestAction(QUEST_SLOT, "armor"), new DropItemAction("lazurowy hełm")));
@@ -241,7 +241,7 @@ public class HelpKrasnolud extends AbstractQuest {
 						String petType = pet.get("type");
 						if("baby_dragon".equals(petType)) {
 							player.removePet(pet);
-							npc.say("Przyprowadziłeś małego smoka! Będzie z niego pyszny gulasz! Gulasz z małego smoka to moja specjalność. Wróć tu za dwa dni, a otrzymasz za te #zadanie nagrodę.");
+							npc.say("Przyprowadziłeś małego smoka! Będzie z niego pyszny gulasz! Gulasz z małego smoka to moja specjalność. Wróć tu za dwa dni, a otrzymasz swą nagrodę.");
 							player.addKarma(5.0);
 							player.addXP(50000);
 							pet.delayedDamage(pet.getHP(), "Krasnolud");
@@ -329,20 +329,20 @@ public class HelpKrasnolud extends AbstractQuest {
 		if ("gotarmor".equals(questState)) {
 			return res;
 		}
-		res.add("Krasnalud był wdzięczny za przyniesienie zbroi i poprosił mnie abym przyprowadził mu małego smoka.");
+		res.add("Krasnalud był wdzięczny za przyniesienie zbroi i poprosił mnie o przyprowadzenie mu małego smoka.");
 		if ("dragon".equals(questState)) {
 			return res;
 		}
-		res.add("No nie ten krasnal postanowił zrobić z biednego smoka gulasz!");
+		res.add("Ten okropny krasnal postanowił urządzić z biednego smoka gulasz!");
 		if (questState.startsWith("reward")) {
 			if (new TimePassedCondition(QUEST_SLOT,1,DELAY_IN_MINUTES).fire(player, null, null)) {
-				res.add("Krasnolud po nagrodę kazał zgłosić się za tydzień.");
+				res.add("Według mojego kalendarza dziś wypada dzień nagrody dla mnie za ciężką pracę...");
 			} else {
-				res.add("Krasnolud kazał mi wrócić za dzień, aby odebrać nagrodę, więc muszę czekać.");
+				res.add("Krasnolud po nagrodę kazał zgłosić się za dwa dni.");
 			}
 			return res;
 		}
-		res.add("Krasnolud nagrodził mnie podniesieniem bazy hp o 50 i dostalem sporo karmy oraz xp.");
+		res.add("Krasnolud nagrodził mnie podniesieniem mojej esencji życiowej o 50 i " + Grammar.genderVerb(player.getGender(), "otrzymałem") + " sporo wskazówek dotyczących podróży.");
 		if (isCompleted(player)) {
 			return res;
 		}
