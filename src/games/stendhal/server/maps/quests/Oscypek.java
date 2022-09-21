@@ -95,7 +95,7 @@ public class Oscypek extends AbstractQuest {
 								npc.say("Ej, lichy z ciebie honielnik! Owca jeszcze nie jest dobrze wypasiona");
 								player.addKarma(-10);
 							} else {
-								npc.say("No! Takiego juhasa trza mi było. Teraz pora na jej dojenie. Gieletę, czyli wiaderko mam, ale biegnij za ten czas do Kościeliska. Jest tam #kowal #Jacek. U niego jest moja #puciera.");
+								npc.say("No! Takiego juhasa trza mi było. Teraz pora na jej dojenie. Gieletę, czyli wiaderko mam, ale będę potrzebować czegoś co ma #kowal na Kościelisku.");
 								//sheep.getZone().remove(sheep);
 								player.removeSheep(sheep);
 								sheep.getZone().remove(sheep);
@@ -113,7 +113,7 @@ public class Oscypek extends AbstractQuest {
 
 
 	private void interpretacion1() {
-		npc.add(ConversationStates.ATTENDING, Arrays.asList("kowal jacek", "kowal Jacek"),
+		npc.add(ConversationStates.ATTENDING, Arrays.asList("kowal", "Jacek"),
 				new QuestInStateCondition(QUEST_SLOT, "inter1"),
 				ConversationStates.ATTENDING, null,
 				new ChatAction() {
