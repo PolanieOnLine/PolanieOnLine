@@ -1,5 +1,19 @@
 Changelog
 ---------
+1.32.2
+*klient*
+- Poprawiono grafiki niektórych NPC
+
+*świat*
+- Dodano nowe dropy dla złotej kosy oraz kosy z mithrilu
+- Zmieniono statystyki dla złotej kosy oraz kosy z mithrilu
+
+*naprawiono błędy*
+- Naprawiono błąd z otrzymaniem sztyletów L & P, teraz zamiast otrzymać je po zalogowaniu, gracz musi podejść i samemu odebrać u Yereny
+- Naprawiono błąd z ustawianiem domyślnie poziom obrony na 10 podczas walki z potworami
+- Poprawiono opisy w dzienniku zadań podczas pomagania Kransoludowi w jego misji
+
+
 1.32.1
 *klient*
 - Dodano nowe grafiki strojów oraz NPC Bobbiego
