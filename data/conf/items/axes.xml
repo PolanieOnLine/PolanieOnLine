@@ -296,9 +296,9 @@
 		<description>Oto złota kosa. Może na niej trochę zarobisz.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<atk value="47"/>
+			<atk value="34"/>
 			<rate value="5"/>
-			<min_level value="215"/>
+			<min_level value="180"/>
 			<max_improves value="3"/>
 		</attributes>
 		<weight value="10.0"/>
@@ -319,9 +319,10 @@
 		<description>Oto rzadka kosa wykonana z mithrilu. Mieni się jasnym blaskiem.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<atk value="54"/>
-			<rate value="4"/>
-			<min_level value="330"/>
+			<atk value="55"/>
+			<rate value="6"/>
+			<lifesteal value="0.05"/>
+			<min_level value="350"/>
 			<max_improves value="3"/>
 		</attributes>
 		<weight value="10.0"/>
