@@ -22,6 +22,7 @@ import games.stendhal.common.ItemTools;
 import games.stendhal.common.KeyedSlotUtil;
 import games.stendhal.common.constants.Testing;
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.core.events.LoginListener;
 import games.stendhal.server.core.rule.EntityManager;
 import games.stendhal.server.entity.Outfit;
 import games.stendhal.server.entity.item.HouseKey;
@@ -907,14 +908,13 @@ public abstract class UpdateConverter {
 	
 				if ((state3 || state4 || state5)) {
 					if (extraRewardSlot == "reborn_extra_reward3" && getRewardQuest == null) {
-						final Item ldagger = SingletonRepository.getEntityManager().getItem("sztylet leworęczny");
-						final Item rdagger = SingletonRepository.getEntityManager().getItem("sztylet praworęczny");
-						ldagger.setBoundTo(player.getName());
-						rdagger.setBoundTo(player.getName());
-						player.equipOrPutOnGround(ldagger);
-						player.equipOrPutOnGround(rdagger);
-	
-						player.setQuest(extraRewardSlot, 0, "done");
+						SingletonRepository.getLoginNotifier().addListener(new LoginListener() {
+							@Override
+							public void onLoggedIn(final Player player) {
+								player.sendPrivateText("Potężny smok władający czasem i przestrzenią imieniem Yerena ma dla Ciebie specjalny #prezent... Odbierz swoje przedmioty pozostawione z innym wymiarze...");
+							}
+						});
+						player.setQuest(extraRewardSlot, 0, "start");
 					}
 				}
 				if ((state4 || state5)) {

@@ -19,7 +19,15 @@ import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
+import games.stendhal.server.entity.npc.ConversationPhrases;
+import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
+import games.stendhal.server.entity.npc.action.EquipItemAction;
+import games.stendhal.server.entity.npc.action.MultipleActions;
+import games.stendhal.server.entity.npc.action.SetQuestAction;
+import games.stendhal.server.entity.npc.condition.AndCondition;
+import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
+import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 
 /**
  * @author KarajuSs 00:34:21 11-07-2018
@@ -50,7 +58,18 @@ public class ResetLVLNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-				addGreeting("Witam Cię dzielny wojowniku.");
+				add(ConversationStates.IDLE,
+					ConversationPhrases.GREETING_MESSAGES,
+					new AndCondition(new GreetingMatchesNameCondition(getName()),
+						new QuestInStateCondition("reborn_extra_reward3", "start")),
+					ConversationStates.INFORMATION_1,
+					"Dobrze, że jesteś... Zauważyłam w szczelinie pewne sztylety, mogą Ci się przydać w walce ze złem!",
+					new MultipleActions(
+						new EquipItemAction("sztylet leworęczny", 1, true),
+						new EquipItemAction("sztylet praworęczny", 1, true),
+						new SetQuestAction("reborn_extra_reward3", "done")));
+
+				addGreeting("Witam Cię dzielny wojaku.");
 				addJob("Zajmuję się resetowaniem mocy u wojowników. Powiedz mi tylko #'zadanie'.");
 				addOffer("Mogę ci zaoferować zadanie, które po wykonaniu udowodnisz, czy rzeczywiście chcesz zresetować swój poziom.");
 				addGoodbye();
