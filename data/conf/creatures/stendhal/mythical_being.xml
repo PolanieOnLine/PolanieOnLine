@@ -331,7 +331,7 @@
 
 	<creature name="pegaz">
 		<type class="mythical_being" subclass="pegasus" tileid="mythical_being.png:2"/>
-		<description>Oto Pegaz - uskrzydlony koń. Imię jego - Błyskawica i miota strzałami Peruna.</description>
+		<description>Oto Pegaz, uskrzydlony koń. Jego imię oznacza Błyskawicę i miota pociskami Grzmotu.</description>
 		<attributes>
 			<atk value="1590"/>
 			<def value="214"/>
@@ -349,6 +349,7 @@
 			<item value="miecz lodowy" quantity="[1,1]" probability="20.0"/>
 			<item value="jabłko" quantity="[10,30]" probability="80.0"/>
 			<item value="zbroja z mithrilu" quantity="[1,1]" probability="0.9"/>
+			<item value="kosa z mithrilu" quantity="[1,1]" probability="0.5"/>
 		</drops>
 		<equips/>
 		<ai>
