@@ -348,6 +348,7 @@
 			<item value="żelazna zbroja łuskowa" quantity="[1,1]" probability="5.0"/>
 			<item value="złota kolczuga" quantity="[1,1]" probability="1.0"/>
 			<item value="topór obosieczny" quantity="[1,1]" probability="2.5"/>
+			<item value="złota kosa" quantity="[1,1]" probability="0.5"/>
 			<item value="pyrlik" quantity="[1,1]" probability="0.5"/>
 			<item value="buty żelazne" quantity="[1,1]" probability="1.0"/>
 			<item value="płaszcz krasnoludzki" quantity="[1,1]" probability="0.5"/>
@@ -386,6 +387,7 @@
 			<item value="berdysz" quantity="[1,1]" probability="0.05"/>
 			<item value="złote buty" quantity="[1,1]" probability="0.1"/>
 			<item value="złoty pyrlik" quantity="[1,1]" probability="3.0"/>
+			<item value="złota kosa" quantity="[1,1]" probability="0.7"/>
 			<item value="pas krasnoludzki" quantity="[1,1]" probability="0.5"/>
 		</drops>
 		<equips>

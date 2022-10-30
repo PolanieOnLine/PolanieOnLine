@@ -359,6 +359,7 @@
 		<corpse name="humanoid"/>
 		<drops>
 			<item value="złota klinga orków" quantity="[1,1]" probability="25.0"/>
+			<item value="złota kosa" quantity="[1,1]" probability="1.0"/>
 		</drops>
 		<equips>
 		</equips>
