@@ -34,7 +34,6 @@ import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.NPCList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.journal.MerchantsRegister;
 import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.player.Player;
 
@@ -369,7 +368,7 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 						// add some info to "help" response
 						final String sHelp = seller.getReply("help");
 						if (sHelp != null && !sHelp.equals("")) {
-							seller.addHelp(sHelp + " Możesz też mnie się zapytać o #patronat.");
+							seller.addHelp("Możesz też mnie się zapytać o #patronat.");
 						} else {
 							seller.addHelp("Możesz zapytać się mnie o #patronat.");
 						}
