@@ -106,7 +106,7 @@ public class FishSoupForHughieTest {
 		en.step(player, "task");
 		assertEquals("Mój biedny chłopak jest chory, a lekarstwa, które mu podaję, nie działają! Proszę, przyniesiesz dla niego zupę rybną?", getReply(npc));
 		en.step(player, "yes");
-		assertEquals("Dziękuję! Możesz poprosić Florence Bouillabaisse, aby ci ugotowała zupę rybną. Myślę, że znajdziesz ją na targu w Ados.", getReply(npc));
+		assertEquals("Dziękuję! Możesz poprosić Florence Boullabaisse, aby ci ugotowała zupę rybną. Myślę, że znajdziesz ją na targu w Ados.", getReply(npc));
 		en.step(player, "bye");
 		assertEquals("Do widzenia.", getReply(npc));
 
@@ -187,7 +187,7 @@ public class FishSoupForHughieTest {
 		en.step(player, "task");
 		assertEquals("Mój biedny chłopak jest chory, a lekarstwa, które mu podaję, nie działają! Proszę, przyniesiesz dla niego zupę rybną?", getReply(npc));
 		en.step(player, "yes");
-		assertEquals("Dziękuję! Możesz poprosić Florence Bouillabaisse, aby ci ugotowała zupę rybną. Myślę, że znajdziesz ją na targu w Ados.", getReply(npc));
+		assertEquals("Dziękuję! Możesz poprosić Florence Boullabaisse, aby ci ugotowała zupę rybną. Myślę, że znajdziesz ją na targu w Ados.", getReply(npc));
 		en.step(player, "bye");
 		assertEquals("Do widzenia.", getReply(npc));
 	}

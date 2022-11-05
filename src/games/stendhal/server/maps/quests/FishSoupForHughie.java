@@ -154,7 +154,7 @@ public class FishSoupForHughie extends AbstractQuest {
 			ConversationPhrases.YES_MESSAGES,
 			null,
 			ConversationStates.ATTENDING,
-			"Dziękuję! Możesz poprosić Florence Bouillabaisse, aby ci ugotowała zupę rybną. Myślę, że znajdziesz ją na targu w Ados.",
+			"Dziękuję! Możesz poprosić Florence Boullabaisse, aby ci ugotowała zupę rybną. Myślę, że znajdziesz ją na targu w Ados.",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "start", 5.0));
 
 		// player is not willing to help
