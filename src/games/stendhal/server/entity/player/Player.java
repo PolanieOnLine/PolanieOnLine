@@ -1806,6 +1806,7 @@ public class Player extends DressedEntity implements UseListener {
 		final Sheep sheep = getSheep();
 		if (sheep != null) {
 			if (squaredDistance(sheep) > 7 * 7) {
+				this.sendPrivateText("Twoja owieczka oddaliła się nieco za daleko!");
 				return false;
 			}
 		}
