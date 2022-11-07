@@ -31,7 +31,7 @@ public class KnightNPC implements ZoneConfigurator {
 	}
 
 	private void buildNPC(StendhalRPZone zone) {
-		final SpeakerNPC npc = new SpeakerNPC("Rycerz") {
+		final SpeakerNPC npc = new SpeakerNPC("rycerz Mark") {
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -50,7 +50,7 @@ public class KnightNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setDescription("Oto Rycerz. Wygląda na strasznie zaniepokojonego.");
+		npc.setDescription("Oto rycerz Mark. Wygląda na strasznie zaniepokojonego.");
 		npc.setEntityClass("youngsoldiernpc");
 		npc.setGender("M");
 		npc.setPosition(82, 80);
