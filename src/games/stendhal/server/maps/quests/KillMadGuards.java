@@ -47,7 +47,7 @@ import marauroa.common.Pair;
  */
 public class KillMadGuards extends AbstractQuest {
 	private static final String QUEST_SLOT = "kill_madguards";
-	private final SpeakerNPC npc = npcs.get("Rycerz");
+	private final SpeakerNPC npc = npcs.get("rycerz Mark");
 
 	private void step_1() {
 		npc.add(ConversationStates.ATTENDING,
