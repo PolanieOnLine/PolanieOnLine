@@ -4,10 +4,12 @@ Changelog
 *świat*
 - Dodano powiadomienie dla posiadaczy owcy, że jest za daleko od nas podczas próby zmiany mapy
 - Wprowadzono zmianę dot. godzin świtu/zachodu itp. zależną od pory roku i miesiąca
+- Zmieniono nazwę NPC 'rycerz' na 'rycerz Mark'
 
 *naprawiono błędy*
 - Naprawiono błąd z wystąpieniem dwóch NPC o takiej samej nazwie
 - Naprawiono błąd ze spamującą wiadomością podczas logowania postaci o odbiorze prezentu od Yereny
+- Naprawiono błąd z zadaniem u rycerza Marka
 
 
 1.32.2
