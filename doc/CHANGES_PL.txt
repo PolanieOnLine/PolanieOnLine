@@ -7,7 +7,7 @@ Changelog
 
 *naprawiono błędy*
 - Naprawiono błąd z wystąpieniem dwóch NPC o takiej samej nazwie
-- Naprawiono błąd z spamująca wiadomością podczas logowania postaci o odbiorze prezentu od Yereny
+- Naprawiono błąd ze spamującą wiadomością podczas logowania postaci o odbiorze prezentu od Yereny
 
 
 1.32.2
