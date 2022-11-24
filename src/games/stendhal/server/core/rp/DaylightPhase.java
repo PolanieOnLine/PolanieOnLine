@@ -61,17 +61,41 @@ public enum DaylightPhase {
 		Calendar cal = Calendar.getInstance();
 
 		int hour = cal.get(Calendar.HOUR_OF_DAY);
+		int month = cal.get(Calendar.MONTH);
+
+		int timeDayNight;
+		int timeDawnDusk;
+		// winter
+		if (month == 11 || month == 0 || month == 1) {
+			timeDayNight = 7;
+			timeDawnDusk = 6;
+		// summer
+		} else if (month == 5 || month == 6 || month == 7) {
+			timeDayNight = 4;
+			timeDawnDusk = 3;
+		// spring/autumn
+		} else {
+			// late autumn month and march
+			if (month == 10 || month == 2) {
+				timeDayNight = 6;
+				timeDawnDusk = 5;
+			} else {
+				timeDayNight = 5;
+				timeDawnDusk = 4;
+			}
+		}
+
 		// anything but precise, but who cares
 		int diffToMidnight = Math.min(hour, 24 - hour);
-		if (diffToMidnight > 3) {
+		if (diffToMidnight > timeDayNight) {
 			return DAY;
-		} else if (diffToMidnight == 3) {
+		} else if (diffToMidnight == timeDayNight) {
 			if (hour < 12) {
 				return SUNRISE;
 			} else {
 				return SUNSET;
 			}
-		} else if (diffToMidnight == 2) {
+		} else if (diffToMidnight == timeDawnDusk) {
 			if (hour < 12) {
 				return DAWN;
 			} else {
