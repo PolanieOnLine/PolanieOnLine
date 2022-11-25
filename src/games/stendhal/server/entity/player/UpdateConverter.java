@@ -904,32 +904,23 @@ public abstract class UpdateConverter {
 			boolean state4 = getQuestState.equals("done;reborn_4");
 			boolean state5 = getQuestState.equals("done;reborn_5");
 
-			if ((state3 || state4 || state5)) {
-				String getRewardState = player.getQuest(extraRewardSlots[0]);
-				if (getRewardState == null || !getRewardState.equals("done")) {
-					SingletonRepository.getLoginNotifier().addListener(new LoginListener() {
-						@Override
-						public void onLoggedIn(final Player player) {
-							player.sendPrivateText("Potężny smok władający czasem i przestrzenią imieniem Yerena ma dla Ciebie specjalny #'prezent'... Odbierz swoje przedmioty pozostawione z innym wymiarze...");
-						}
-					});
-					player.setQuest(extraRewardSlots[0], 0, "start");
-				}
-				return;
+			String getRewardState = player.getQuest(extraRewardSlots[0]);
+			if ((state3 || state4 || state5) && !getRewardState.equals("done")) {
+				SingletonRepository.getLoginNotifier().addListener(new LoginListener() {
+					@Override
+					public void onLoggedIn(final Player player) {
+						player.sendPrivateText("Potężny smok władający czasem i przestrzenią imieniem Yerena ma dla Ciebie specjalny #'prezent'... Odbierz swoje przedmioty pozostawione z innym wymiarze...");
+					}
+				});
+				player.setQuest(extraRewardSlots[0], 0, "start");
 			}
-			if ((state4 || state5)) {
-				String getRewardState = player.getQuest(extraRewardSlots[1]);
-				if (getRewardState == null || !getRewardState.equals("done")) {
-					player.setQuest(extraRewardSlots[1], 0, "done");
-				}
-				return;
+			getRewardState = player.getQuest(extraRewardSlots[1]);
+			if ((state4 || state5) && !getRewardState.equals("done")) {
+				player.setQuest(extraRewardSlots[1], 0, "done");
 			}
-			if (state5) {
-				String getRewardState = player.getQuest(extraRewardSlots[2]);
-				if (getRewardState == null || !getRewardState.equals("done")) {
-					player.setQuest(extraRewardSlots[2], 0, "done");
-				}
-				return;
+			getRewardState = player.getQuest(extraRewardSlots[2]);
+			if (state5 && !getRewardState.equals("done")) {
+				player.setQuest(extraRewardSlots[2], 0, "done");
 			}
 		}
 	}
