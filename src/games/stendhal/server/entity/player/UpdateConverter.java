@@ -905,7 +905,7 @@ public abstract class UpdateConverter {
 			boolean state5 = getQuestState.equals("done;reborn_5");
 
 			String getRewardState = player.getQuest(extraRewardSlots[0]);
-			if ((state3 || state4 || state5) && !getRewardState.equals("done")) {
+			if ((state3 || state4 || state5) && !player.isQuestCompleted(getRewardState)) {
 				SingletonRepository.getLoginNotifier().addListener(new LoginListener() {
 					@Override
 					public void onLoggedIn(final Player player) {
@@ -915,11 +915,11 @@ public abstract class UpdateConverter {
 				player.setQuest(extraRewardSlots[0], 0, "start");
 			}
 			getRewardState = player.getQuest(extraRewardSlots[1]);
-			if ((state4 || state5) && !getRewardState.equals("done")) {
+			if ((state4 || state5) && !player.isQuestCompleted(getRewardState)) {
 				player.setQuest(extraRewardSlots[1], 0, "done");
 			}
 			getRewardState = player.getQuest(extraRewardSlots[2]);
-			if (state5 && !getRewardState.equals("done")) {
+			if (state5 && !player.isQuestCompleted(getRewardState)) {
 				player.setQuest(extraRewardSlots[2], 0, "done");
 			}
 		}
