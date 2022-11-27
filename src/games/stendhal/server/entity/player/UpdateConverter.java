@@ -905,21 +905,26 @@ public abstract class UpdateConverter {
 			boolean state5 = getQuestState.equals("done;reborn_5");
 
 			String getRewardState = player.getQuest(extraRewardSlots[0]);
-			if ((state3 || state4 || state5) && !getRewardState.equals("done")) {
-				SingletonRepository.getLoginNotifier().addListener(new LoginListener() {
-					@Override
-					public void onLoggedIn(final Player player) {
-						player.sendPrivateText("Potężny smok władający czasem i przestrzenią imieniem Yerena ma dla Ciebie specjalny #'prezent'... Odbierz swoje przedmioty pozostawione z innym wymiarze...");
-					}
-				});
+			if (getRewardState == null && (state3 || state4 || state5)) {
 				player.setQuest(extraRewardSlots[0], 0, "start");
 			}
+			if (getRewardState != null) {
+				if (player.isQuestInState(getRewardState, 0, "start")) {
+					SingletonRepository.getLoginNotifier().addListener(new LoginListener() {
+						@Override
+						public void onLoggedIn(final Player player) {
+							player.sendPrivateText("Potężny smok władający czasem i przestrzenią imieniem Yerena ma dla Ciebie specjalny #'prezent'... Odbierz swoje przedmioty pozostawione z innym wymiarze...");
+						}
+					});
+				}
+			}
+
 			getRewardState = player.getQuest(extraRewardSlots[1]);
-			if ((state4 || state5) && !getRewardState.equals("done")) {
+			if (getRewardState == null && (state4 || state5)) {
 				player.setQuest(extraRewardSlots[1], 0, "done");
 			}
 			getRewardState = player.getQuest(extraRewardSlots[2]);
-			if (state5 && !getRewardState.equals("done")) {
+			if (getRewardState == null && state5) {
 				player.setQuest(extraRewardSlots[2], 0, "done");
 			}
 		}
