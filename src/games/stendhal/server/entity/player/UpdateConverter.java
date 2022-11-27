@@ -906,14 +906,17 @@ public abstract class UpdateConverter {
 
 			String getRewardState = player.getQuest(extraRewardSlots[0]);
 			if ((state3 || state4 || state5) && !player.isQuestCompleted(getRewardState)) {
+				player.setQuest(extraRewardSlots[0], 0, "start");
+			}
+			if (player.isQuestInState(getRewardState, 0, "start")) {
 				SingletonRepository.getLoginNotifier().addListener(new LoginListener() {
 					@Override
 					public void onLoggedIn(final Player player) {
 						player.sendPrivateText("Potężny smok władający czasem i przestrzenią imieniem Yerena ma dla Ciebie specjalny #'prezent'... Odbierz swoje przedmioty pozostawione z innym wymiarze...");
 					}
 				});
-				player.setQuest(extraRewardSlots[0], 0, "start");
 			}
+
 			getRewardState = player.getQuest(extraRewardSlots[1]);
 			if ((state4 || state5) && !player.isQuestCompleted(getRewardState)) {
 				player.setQuest(extraRewardSlots[1], 0, "done");
