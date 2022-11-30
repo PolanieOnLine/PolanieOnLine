@@ -21,6 +21,7 @@ Changelog
 - Ogłoszenia treningowe Omury Sumitady można usłyszeć w dowolnym miejscu w dojo
 - Zmieniono nazwę przedmiotu z "koński włos" na "końskie włosie"
 - Lina będzie się teraz stackować w ekwipunku gracza
+- Usunięto możliwość zakupu liny, natomiast będzie można ją wykonać u Gilesa oraz otrzymać po zaliczeniu egzaminu
 
 *naprawiono błędy*
 - Poprawiono tłumaczenia w Deniran
