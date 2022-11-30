@@ -302,8 +302,10 @@ public class DailyItemQuest extends AbstractQuest {
 		items.put("miecz",1);
 
 		// tool
+		items.put("igła do skór",1);
 		items.put("kilof",1);
 		items.put("misa do płukania złota",1);
+		items.put("lina",3);
 	}
 
 	/**

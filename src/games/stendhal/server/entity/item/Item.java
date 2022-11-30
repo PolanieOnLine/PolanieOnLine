@@ -793,9 +793,7 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		}
 
 		if (has("atk")) {
-			if (getAttack() == 0) {
-				stats.append("");
-			} else {
+			if (getAttack() != 0) {
 				stats.append("ATK: ");
 				stats.append(getAttack());
 			}
@@ -829,10 +827,22 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 			stats.append(" PZ: ");
 			stats.append(get("amount"));
 		}
+		if (has("frequency")) {
+			if (getInt("frequency") != 1) {
+				stats.append(" CYKL: ");
+				stats.append(get("frequency") + "s");
+			}
+		}
+		if (has("regen")) {
+			if (getInt("regen") != 0) {
+				if (getInt("amount") != getInt("regen")) {
+					stats.append(" REGEN: ");
+					stats.append(get("regen"));
+				}
+			}
+		}
 		if (has("range")) {
-			if (getRange() == 0) {
-				stats.append("");
-			} else {
+			if (getRange() != 0) {
 				stats.append(" ZASIĘG: ");
 				stats.append(getRange());
 			}
@@ -856,8 +866,10 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 			stats.append(get("min_use"));
 		}
 		if (has("min_level")) {
-			stats.append(" MIN-POZIOM: ");
-			stats.append(get("min_level"));
+			if (getInt("min_level") != 0) {
+				stats.append(" MIN-POZIOM: ");
+				stats.append(get("min_level"));
+			}
 		}
 		if (has("life_support")) {
 			stats.append(" PODTRZYMUJĄCE-ŻYCIE: ");

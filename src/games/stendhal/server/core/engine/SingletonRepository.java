@@ -39,7 +39,6 @@ import marauroa.server.db.TransactionPool;
  * Takes an instance of every 'singleton' created and provides setters and getters.
  * <p>
  *
- *
  * It is not meant to be a high sophisticated class.
  *
  * Just one step into getting rid of the singleton hell;
@@ -48,6 +47,7 @@ import marauroa.server.db.TransactionPool;
  *
  */
 public class SingletonRepository {
+	/** The singleton instance. */
 	private static SingletonRepository instance;
 
 	private static EntityManager entityManager;
@@ -55,6 +55,12 @@ public class SingletonRepository {
 	private static GroupManager groupManager;
 	private static PlayerVsPlayerChallengeManager challengeManager;
 
+	/**
+	 * Singleton access method.
+	 *
+	 * @return
+	 *     The static instance.
+	 */
 	public static SingletonRepository get() {
 		if (instance == null) {
 			instance = new SingletonRepository();
@@ -206,7 +212,6 @@ public class SingletonRepository {
 		return PirateFerry.get();
 	}
 
-
 	/**
 	 * @return the AchievementNotifier instance
 	 */
@@ -272,7 +277,7 @@ public class SingletonRepository {
 	 * @return
 	 *     CloneManager instance.
 	 */
-	public CloneManager getCloneManager() {
+	public static CloneManager getCloneManager() {
 		return CloneManager.get();
 	}
 }

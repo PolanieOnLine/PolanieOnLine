@@ -48,7 +48,7 @@ public class ItemLogEvent extends RPEvent {
 			"eliksir mroku", "ekstrakt litworowy", "jad kobry", "smoczy eliksir", "duży smoczy eliksir", "woda", "wełna",
 			"mocna nalewka litworowa", "nalewka litworowa", "sok jabłkowy", "zupa grzybowa", "zupa rybna", "sukno z mithrilu",
 			"zdobyczny hełm", "kryształ ametystu", "kryształ diamentu", "kryształ obsydianu", "kryształ rubinu",
-			"dummy_ranged", "dummy_melee_8", "grudziarka", "koński włos", "olejek", "przędza", "przędza jedwabna",
+			"dummy_ranged", "dummy_melee_8", "grudziarka", "końskie włosie", "olejek", "przędza", "przędza jedwabna",
 			"puciera", "ruda cieni", "ruda miedzi", "ruda platyny", "ruda srebra", "ruda żelaza", "siarka", "płaszcz z mithrilu",
 			"sztabka cieni", "sztabka miedzi", "sztabka platyny", "sztabka srebra", "sól", "trzcina cukrowa", "obsydianowy saks",
 			"wypchany baran", "węgiel", "węgiel drzewny", "złote jajo", "świeca", "tarcza jaśniejąca", "miecz leworęczny",

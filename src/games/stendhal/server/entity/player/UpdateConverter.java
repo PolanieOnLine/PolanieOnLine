@@ -913,7 +913,7 @@ public abstract class UpdateConverter {
 					SingletonRepository.getLoginNotifier().addListener(new LoginListener() {
 						@Override
 						public void onLoggedIn(final Player player) {
-							player.sendPrivateText("Potężny smok władający czasem i przestrzenią imieniem Yerena ma dla Ciebie specjalny #'prezent'... Odbierz swoje przedmioty pozostawione z innym wymiarze...");
+							player.sendPrivateText("Potężny smok władający czasem i przestrzenią imieniem Yerena ma dla Ciebie specjalny #'prezent'... Odbierz swoje przedmioty pozostawione w innym wymiarze...");
 						}
 					});
 				}

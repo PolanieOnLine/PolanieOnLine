@@ -40,6 +40,7 @@ import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.entity.player.UpdateConverter;
 import games.stendhal.server.entity.slot.BankSlot;
 import games.stendhal.server.entity.slot.Banks;
+import games.stendhal.server.entity.slot.PlayerBagSlot;
 import games.stendhal.server.entity.slot.PlayerKeyringSlot;
 import games.stendhal.server.entity.slot.PlayerMagicBagSlot;
 import games.stendhal.server.entity.slot.PlayerMoneyPouchSlot;
@@ -168,7 +169,9 @@ public class PlayerTransformer implements Transformer {
 				final RPSlot slot = player.getSlot(slotName);
 				final PlayerSlot newSlot;
 
-				if (slotName.equals("keyring")) {
+				if (slotName.equals("bag")) {
+					newSlot = new PlayerBagSlot(slotName);
+				} else if (slotName.equals("keyring")) {
 					newSlot = new PlayerKeyringSlot(slotName);
 				} else if (slotName.equals("magicbag")) {
 					newSlot = new PlayerMagicBagSlot(slotName);

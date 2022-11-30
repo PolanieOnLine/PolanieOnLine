@@ -65,6 +65,9 @@ public class TrainingArea extends Area implements LoginListener,LogoutListener {
 	private Integer maxCapacity;
 
 	private final TrainerNPC trainer;
+	
+	// big enough to reach entire dojo area
+	private static final int shoutRangeSquared = 29 * 29;
 
 	/** quest states */
 	private static final String STATE_ACTIVE = "training";
@@ -287,7 +290,9 @@ public class TrainingArea extends Area implements LoginListener,LogoutListener {
 		final StendhalRPZone zone = getZone();
 
 		if (player.getZone().equals(zone)) {
-			trainer.say("Twój czas treningu się skończył " + player.getName() + ".");
+			trainer.say(
+					"Twój czas treningu się skończył " + player.getName() + ".",
+					shoutRangeSquared);
 		}
 		if (contains(player)) {
 			player.teleport(zone, END_POS.x, END_POS.y, null, null);
@@ -415,7 +420,7 @@ public class TrainingArea extends Area implements LoginListener,LogoutListener {
 			final int minsRemain = Math.round((float) secsRemain / 60);
 
 			int notifyIn;
-			if (minsRemain == 1 ) {
+			if (minsRemain == 1) {
 				notifyIn = 1;
 			} else if (minsRemain > 10) {
 				notifyIn = minsRemain % 10;
@@ -438,7 +443,11 @@ public class TrainingArea extends Area implements LoginListener,LogoutListener {
 			if (skipNotify) {
 				skipNotify = false;
 			} else {
-				trainer.say(player.getName() + ", pozostało Tobie " + TimeUtil.timeUntil(minsRemain * 60) + ".");
+				if (minsRemain > 0) {
+					trainer.say(
+							player.getName() + ", pozostało Tobie " + TimeUtil.timeUntil(minsRemain * 60) + ".",
+							shoutRangeSquared);
+				}
 			}
 
 			SingletonRepository.getTurnNotifier().notifyInSeconds(notifyIn * 60, this);

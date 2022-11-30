@@ -3585,4 +3585,13 @@ public abstract class RPEntity extends CombatEntity {
 		put("shadow_style", st);
 		remove("no_shadow");
 	}
+
+	/**
+	 * Action when entity cannot be attacked.
+	 *
+	 * @param attacker
+	 */
+	public void onRejectedAttackStart(final RPEntity attacker) {
+		// override in sub-classes
+	}
 }

@@ -163,11 +163,11 @@ public class BowsForOuchit extends AbstractQuest {
 		npc.add(ConversationStates.ATTENDING,
 				"Ouchit",
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT,"hair"),
-								new NotCondition (new PlayerHasItemWithHimCondition("koński włos",1))),
+								new NotCondition (new PlayerHasItemWithHimCondition("końskie włosie",1))),
 				ConversationStates.ATTENDING,
 				"Witam, witam! Ouchit potrzebuje więcej włosia z moich koni? " +
 				"Nie ma problemu. Weź to i przekaż Ouchitowi serdeczne pozdrowienia ode mnie.",
-				new EquipItemAction("koński włos"));
+				new EquipItemAction("końskie włosie"));
 
 	}
 
@@ -182,9 +182,9 @@ public class BowsForOuchit extends AbstractQuest {
 
 		// Player asks about horse hair, but hasn't collected any - remind them.
 		npc.add(ConversationStates.ATTENDING,
-				Arrays.asList("hair", "horse", "końskie włosie", "włosie", "końskie", "koński włos"),
+				Arrays.asList("hair", "horse", "końskie włosie", "włosie", "końskie", "końskie włosie"),
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT,"hair"),
-								new NotCondition (new PlayerHasItemWithHimCondition("koński włos"))),
+								new NotCondition (new PlayerHasItemWithHimCondition("końskie włosie"))),
 				ConversationStates.ATTENDING,
 				"Włos koński stosowany może być do cięciwy, a dostaniesz go od #Karl.",
 				null);
@@ -194,14 +194,14 @@ public class BowsForOuchit extends AbstractQuest {
 		reward.add(new EquipItemAction("zbroja łuskowa", 1, true));
 		reward.add(new EquipItemAction("spodnie nabijane ćwiekami", 1, true));
 		reward.add(new IncreaseXPAction(1500));
-		reward.add(new DropItemAction("koński włos"));
+		reward.add(new DropItemAction("końskie włosie"));
 		reward.add(new SetQuestAndModifyKarmaAction(QUEST_SLOT, "done", 25.0));
 
 		// Player asks about horse hair, and has collected some - take it and ask for horse hair.
 		npc.add(ConversationStates.ATTENDING,
 				Arrays.asList("hair", "horse", "horse hairs", "włosie końskie", "włosie", "końskie"),
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT,"hair"),
-								new PlayerHasItemWithHimCondition("koński włos")),
+								new PlayerHasItemWithHimCondition("końskie włosie")),
 				ConversationStates.ATTENDING,
 				"Wspaniale, masz włos koński. Dziękuję bardzo. Karl jest bardzo miły. Proszę, " +
 				"zostawił tutaj ten... Mi nie jest to potrzebne, a tobie może się przydać.",
@@ -245,7 +245,7 @@ public class BowsForOuchit extends AbstractQuest {
 		if(player.isQuestInState(QUEST_SLOT, "hair", "done")) {
 			res.add("Muszę zdobyć trochę włosów konia, które Ouchit potrzebuje do cięciwy. Powiedziano mi, że rolnik Karl mi pomoże.");
 		}
-		if(player.isEquipped("koński włos") && "hair".equals(questState) || isCompleted(player)) {
+		if(player.isEquipped("końskie włosie") && "hair".equals(questState) || isCompleted(player)) {
 			res.add("Karl był miły i dał mi włos koński.");
 		}
 		if (isCompleted(player)) {

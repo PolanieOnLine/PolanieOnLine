@@ -29,7 +29,6 @@ public class CloneManager {
 	private static final Logger logger = Logger.getLogger(CloneManager.class);
 	/** The singleton instance. */
 	private static CloneManager instance;
-
 	private static final Map<String, List<String>> clonedList = new HashMap<>();
 
 	/**
@@ -80,20 +79,17 @@ public class CloneManager {
 	 *     <code>true</code> if name registration succeeded.
 	 */
 	private boolean register(final String origName, String cloneName) {
+		if (cloneName == null) {
+			logger.error("cannot register clone with null name");
+			return false;
+		}
+
 		// the list of clones of this original entity
 		List<String> registeredClones = clonedList.get(origName);
 
-		int idx;
 		if (registeredClones == null) {
-			idx = 2;
 			registeredClones = new ArrayList<String>();
 			clonedList.put(origName, registeredClones);
-		} else {
-			idx = registeredClones.size() + 2;
-		}
-
-		if (cloneName == null) {
-			cloneName = origName + Integer.toString(idx);
 		}
 
 		if (!registeredClones.contains(cloneName)) {
@@ -160,18 +156,45 @@ public class CloneManager {
 
 		if (orig != null) {
 			final String origName = orig.getName();
-			// FIXME: clones using the same name can be added to world
-			clone = new SpeakerNPC(cloneName) {
+
+			if (cloneName == null) {
+				logger.debug("determining clone name from original SpeakerNPC");
+
+				int cloneSuffix = 2;
+				while (isClone(origName + cloneSuffix)) {
+					cloneSuffix++;
+				}
+				cloneName = origName + cloneSuffix;
+			}
+
+			// copy to "final" variable to be passed to inner class
+			final String newCloneName = cloneName;
+
+			/**
+			 * Registers the clone when it is added to the world.
+			 *
+			 * FIXME: clones using the same name can be added to world
+			 */
+			clone = new SpeakerNPC(newCloneName) {
 				@Override
 				public void onAdded(final StendhalRPZone zone) {
 					super.onAdded(zone);
-					register(origName, cloneName);
+					if (!register(origName, newCloneName)) {
+						logger.error("failed to register " + newCloneName
+							+ " as clone of " + origName);
+					}
 				}
 
+				/**
+				 * Unregisters the clone when it is removed from the world.
+				 */
 				@Override
 				public void onRemoved(final StendhalRPZone zone) {
 					super.onRemoved(zone);
-					unregister(origName, cloneName);
+					if (!unregister(origName, newCloneName)) {
+						logger.error("failed to unregister " + newCloneName
+							+ " as clone of " + origName);
+					}
 				}
 			};
 
@@ -360,5 +383,21 @@ public class CloneManager {
 	 */
 	public SpeakerNPC getOriginal(final SpeakerNPC npc) {
 		return getOriginal(npc.getName());
+	}
+
+	/**
+	 * Retrieves the number of currently registered clones for an NPC.
+	 *
+	 * @param origName
+	 *     Name of the original SpeakerNPC.
+	 * @return
+	 *     Number of registered clone names.
+	 */
+	public int getCloneCount(final String origName) {
+		if (!clonedList.containsKey(origName)) {
+			return 0;
+		}
+
+		return clonedList.get(origName).size();
 	}
 }

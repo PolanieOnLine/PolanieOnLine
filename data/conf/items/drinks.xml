@@ -725,9 +725,9 @@
 	      <slot name="bag" />
 	      <slot name="trade" />
 	    </equipable>
-	  </item>
-
-	<!-- <item name="woda święcona" condition="stendhal.testserver">
+	</item>
+<!--
+	<item name="woda święcona">
 		<type class="drink" subclass="holy_water" tileid="-1"/>
 		<description>Oto woda święcona. Pobłogosław nią zombi.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
@@ -748,11 +748,33 @@
 			<slot name="bag"/>
 			<slot name="trade"/>
 		</equipable>
-	</item> -->
+	</item>
+-->
+	<item name="woda święcona z popiołem">
+		<type class="drink" subclass="holy_water" tileid="-1"/>
+		<description>Oto butelka wody święconej wraz z popiołem.</description>
+		<implementation class-name="games.stendhal.server.maps.quests.grandfatherswish.AshenHolyWater"/>
+		<attributes>
+			<amount value="400"/>
+			<frequency value="1"/>
+			<quantity value="1"/>
+			<regen value="0"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+		</equipable>
+	</item>
 
 	<item name="gigantyczny eliksir">
 		<type class="drink" subclass="giant_potion" tileid="-1"/>
-		<description>Oto gigantyczny eliksir. Chyba postawi na nogi nawet umarłego!</description>
+		<description>Oto gigantyczny eliksir. Postawi nawet umarlaka na nogi!</description>
 		<implementation class-name="games.stendhal.server.entity.item.Potion"/>
 		<attributes>
 			<amount value="1600"/>
@@ -776,7 +798,7 @@
 
 	<item name="buteleczka wody">
 		<type class="drink" subclass="woda_buteleczka" tileid="-1"/>
-		<description>Oto buteleczka wody. Prosto ze źródła. Pyszna.</description>
+		<description>Oto buteleczka wody. Wystarczająca, aby się nawodnić! Pyszna woda prosto ze źródełka.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
 		<attributes>
 			<amount value="40"/>
@@ -799,7 +821,7 @@
 
 	<item name="butelka wody">
 		<type class="drink" subclass="woda_butelka" tileid="-1"/>
-		<description>Oto butelka wody. Pyszna. Prosto ze źródła.</description>
+		<description>Oto butelka wody. Wystarczy tej butelki na cały dzień. Nalana z czystego źródła z gór.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
 		<attributes>
 			<amount value="80"/>
@@ -822,7 +844,7 @@
 
 	<item name="bukłak z wodą">
 		<type class="drink" subclass="woda_buklak" tileid="-1"/>
-		<description>Oto bukłak z wodą. Przyda się na dalszą drogę.</description>
+		<description>Oto bukłak z wodą. Nada się na dłuższą drogę.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
 		<attributes>
 			<amount value="160"/>

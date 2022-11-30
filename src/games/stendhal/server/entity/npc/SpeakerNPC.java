@@ -1053,6 +1053,7 @@ public class SpeakerNPC extends PassiveNPC {
 	 * 
 	 * @param attacker
 	 */
+	@Override
 	public void onRejectedAttackStart(RPEntity attacker) {
 		say(attacker.getName() + ", jeśli chcesz zwrócić moją uwagę to powiedz #'cześć'.");
 	}

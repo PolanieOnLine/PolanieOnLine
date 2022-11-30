@@ -21,7 +21,6 @@ import marauroa.common.game.RPClass;
  * Handles the RPClass registration.
  */
 public class RPEntityRPClass {
-
 	/**
 	 * Generates the RPClass and specifies slots and attributes.
 	 *
@@ -80,10 +79,10 @@ public class RPEntityRPClass {
 		entity.addRPSlot("belt", 1, Definition.PRIVATE);
 		entity.addRPSlot("money", 1, (byte) (Definition.PRIVATE | Definition.VOLATILE));
 
-		entity.addRPSlot("bag", 36, Definition.PRIVATE);
+		entity.addRPSlot("bag", 42, Definition.PRIVATE);
 		entity.addRPSlot("keyring", 18, Definition.PRIVATE);
 		entity.addRPSlot("magicbag", 6, Definition.PRIVATE);
 
-        entity.addRPSlot("portfolio", 9, Definition.VOLATILE);
-    }
+		entity.addRPSlot("portfolio", 9, Definition.VOLATILE);
+	}
 }

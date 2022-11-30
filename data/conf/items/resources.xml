@@ -584,9 +584,9 @@
 		</equipable>
 	</item>
 
-	<item name="koński włos">
+	<item name="końskie włosie">
 		<type class="resource" subclass="horsehair" tileid="-1"/>
-		<description>Oto koński włos.</description>
+		<description>Oto końskie włosie.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<quantity value="1"/>

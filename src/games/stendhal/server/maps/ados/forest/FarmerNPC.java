@@ -17,13 +17,19 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
+import games.stendhal.server.entity.npc.ChatCondition;
+import games.stendhal.server.entity.npc.ConversationPhrases;
+import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
+import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
+import games.stendhal.server.entity.npc.condition.QuestNotCompletedCondition;
 
 /**
  * Builds Karl, the farmer NPC.
@@ -67,7 +73,6 @@ public class FarmerNPC implements ZoneConfigurator {
 			protected void createDialog() {
 				addGreeting("Heja! Miło Cię widzieć w naszym gospodarstwie.");
 				addJob("Och praca tutaj jest ciężka. Nawet nie myślę o tym, że mógłbyś mi pomóc.");
-				addOffer("Nasze mleko jest najlepsze. Zapytaj moją żonę #Philomena o mleko. Ja sprzedaję #'puste worki'.");
 				addReply("Philomena","Ona jest w domku na południowy-zachód stąd.");
 				addHelp("Potrzebujesz pomocy? Mogę coś ci opowiedzieć o #sąsiedztwie.");
 				addReply(Arrays.asList("neighborhood.", "sąsiedztwie."),"Na północy znajduje się jaskinia z niedźwiedziami i innymi potworami. Jeżeli pójdziesz na północny-wschód " +
@@ -76,10 +81,41 @@ public class FarmerNPC implements ZoneConfigurator {
 						"droga jest trochę trudniejsza.");
 				addQuest("Nie mam teraz czasu na takie rzeczy. Praca.. praca.. praca..");
 				addReply(Arrays.asList("empty sack", "puste worki"),"Och, mam tego mnóstwo na sprzedaż. Czy chcesz kupić #'pusty worek'?");
-                final Map<String, Integer> offerings = new HashMap<String, Integer>();
-                offerings.put("pusty worek", 10);
-                new SellerAdder().addSeller(this, new SellerBehaviour(offerings), false);
 				addGoodbye("Do widzenia, do widzenia. Bądź ostrożny.");
+
+				// shop
+				final Map<String, Integer> offerings = new HashMap<String, Integer>();
+                offerings.put("pusty worek", 10);
+                final Map<String, Integer> allOfferings = new HashMap<String, Integer>();
+				allOfferings.putAll(offerings);
+				allOfferings.put("końskie włosie", 20);
+				final SellerBehaviour behaviour = new SellerBehaviour(allOfferings);
+				final Map<String, ChatCondition> conditions = new HashMap<String, ChatCondition>();
+				conditions.put("końskie włosie", new QuestCompletedCondition("bows_ouchit"));
+				behaviour.addConditions(this, conditions);
+				new SellerAdder().addSeller(this, behaviour, false);
+
+				final String offerReply = "Nasze mleko jest najlepsze. Zapytaj moją żonę #Philomena o mleko.";
+				add(
+					ConversationStates.ATTENDING,
+					ConversationPhrases.OFFER_MESSAGES,
+					new QuestNotCompletedCondition("bows_ouchit"),
+					false,
+					ConversationStates.ATTENDING,
+					offerReply + " Sprzedaję "
+						+ Grammar.enumerateCollection(offerings.keySet()) + ".",
+					null);
+
+				add(
+					ConversationStates.ATTENDING,
+					ConversationPhrases.OFFER_MESSAGES,
+					new QuestCompletedCondition("bows_ouchit"),
+					false,
+					ConversationStates.ATTENDING,
+					offerReply + " Ostatnio mam tego nadmiar i teraz sprzedaję "
+						+ Grammar.enumerateCollection(allOfferings.keySet())
+						+ ".",
+					null);
 			}
 		};
 

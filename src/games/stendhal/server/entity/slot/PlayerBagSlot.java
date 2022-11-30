@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                    Copyright © 2003-2022 - Arianne                      *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -10,25 +9,31 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-package games.stendhal.client.events;
+package games.stendhal.server.entity.slot;
 
-import games.stendhal.client.entity.RPEntity;
+import games.stendhal.server.entity.player.Player;
+import marauroa.common.game.SlotOwner;
 
-/**
- * public chat and creature (text) noise.
- *
- * @author hendrik
- */
-class PublicTextEvent extends Event<RPEntity> {
-	/**
-	 * executes the event
-	 */
+public class PlayerBagSlot extends PlayerSlot {
+	public PlayerBagSlot(final String player) {
+		super(player);
+	}
+
 	@Override
-	public void execute() {
-		if (event.has("range")) {
-			entity.onTalk(event.get("text"), event.getInt("range"));
-		} else {
-			entity.onTalk(event.get("text"));
+	public boolean isFull() {
+		final SlotOwner owner = getOwner();
+		if (!(owner instanceof Player)) {
+			return super.isFull();
 		}
+
+		final Player player = (Player) owner;
+		int maxSize;
+		if (!player.hasFeature("bag")) {
+			// default bag size
+			maxSize = 36;
+		} else {
+			maxSize = player.getMaxSlotSize("bag");
+		}
+		return size() >= maxSize;
 	}
 }

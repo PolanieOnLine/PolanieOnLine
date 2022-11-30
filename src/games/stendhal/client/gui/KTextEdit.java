@@ -20,6 +20,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.MouseEvent;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -59,6 +60,7 @@ import javax.swing.text.ViewFactory;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.client.UserContext;
 import games.stendhal.client.stendhal;
 import games.stendhal.client.gui.chatlog.ChatTextSink;
 import games.stendhal.client.gui.chatlog.EventLine;
@@ -82,17 +84,17 @@ class KTextEdit extends JComponent {
 	/** Name of the log. */
 	private String name = "";
 	/** Background color when not highlighting unread messages. */
-	private Color defaultBackground = new Color(60, 30 , 0);
+	private static Color defaultBackground = new Color(60, 30 , 0);
 	// kolor pogrubienia poprzez #
-	private Color BOLD_COLOR = new Color(90, 170, 255);
+	private static final Color BOLD_COLOR = new Color(90, 170, 255);
 	// kolor czasu
-	private Color TIMESTP_COLOR = new Color(220, 220, 220);
+	private static final Color TIMESTP_COLOR = new Color(220, 220, 220);
 	// kolor nicku
-	private Color HEAD_COLOR = new Color(255, 255, 220);
+	private static final Color HEAD_COLOR = new Color(255, 255, 220);
 	// kolor kursywy
-	private Color ITALIC_COLOR = new Color(65, 105, 225);
+	private static final Color ITALIC_COLOR = new Color(65, 105, 225);
 	// kolor podkreslenia na !
-	private Color UNDERLINE_COLOR = new Color(254, 76, 76);
+	private static final Color UNDERLINE_COLOR = new Color(254, 76, 76);
 	
 	/** Formatting class for text containing stendhal markup. */
 	private final StringFormatter<Style, StyleSet> formatter = new StringFormatter<Style, StyleSet>();
@@ -467,11 +469,21 @@ class KTextEdit extends JComponent {
 	 * @return file name
 	 */
 	private String getSaveFileName() {
-		if ("".equals(name)) {
-			return stendhal.getGameFolder() + "gamechat.log";
-		} else {
-			return stendhal.getGameFolder() + "gamechat-" + name + ".log";
+		String savename = new SimpleDateFormat(
+				"yyyyMMdd_HH.mm.ss.SSS").format(new Date());
+
+		// channel name
+		if (!"".equals(name)) {
+			savename = name + "_" + savename;
 		}
+
+		// character name
+		final String charname = UserContext.get().getName();
+		if (charname != null) {
+			savename = charname + "_" + savename;
+		}
+
+		return stendhal.getGameFolder() + "chat/" + savename + ".log";
 	}
 
 	/**
@@ -481,6 +493,8 @@ class KTextEdit extends JComponent {
 		String fname = getSaveFileName();
 		Writer fo;
 		try {
+			// create parent directory if not exists
+			new File(fname).getParentFile().mkdirs();
 			fo = new OutputStreamWriter(new FileOutputStream(fname), "UTF-8");
 			try {
 				textPane.write(fo);

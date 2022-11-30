@@ -400,6 +400,24 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 			<parameter name="weather">varying(temperature=-1)</parameter>
 		</attributes>
 
+		<portal x="14" y="19" ref="well_entrance_left">
+			<destination zone="-1_myling_well" ref="exit"/>
+			<implementation class-name="games.stendhal.server.maps.quests.grandfatherswish.MylingWellPortal"/>
+		</portal>
+
+		<portal x="15" y="19" ref="well_entrance_right">
+			<destination zone="-1_myling_well" ref="exit"/>
+			<implementation class-name="games.stendhal.server.maps.quests.grandfatherswish.MylingWellPortal"/>
+		</portal>
+
+		<entity x="8" y="13">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.MessagingArea">
+				<parameter name="width">12</parameter>
+				<parameter name="height">12</parameter>
+				<parameter name="enterMessage">Ta studnia ma w sobie coś niesamowitego.</parameter>
+				<!--<parameter name="warnPlayer">true</parameter>-->
+			</implementation>
+		</entity>
 	</zone>
 
 	<zone name="int_mithrilbourgh_stores" file="interiors/mithrilbourgh/stores.tmx">
@@ -4183,8 +4201,17 @@ Zachód: Miasto Deniran
 		</entity>
 
 		<!-- NPCs -->
-		<configurator class-name="games.stendhal.server.maps.semos.yeticave.MrYetiNPC" />
-		<configurator class-name="games.stendhal.server.maps.semos.yeticave.MrsYetiNPC" />
+		<configurator class-name="games.stendhal.server.maps.semos.yeticave.MrYetiNPC"/>
+		<configurator class-name="games.stendhal.server.maps.semos.yeticave.MrsYetiNPC"/>
+	</zone>
+
+	<zone name="-1_myling_well" file="interiors/abstract/myling_well.tmx" accessible="false">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+
+		<portal x="9" y="10" ref="exit">
+			<destination zone="0_semos_mountain_n2_e" ref="well_entrance_left"/>
+			<attribute name="resistance">0</attribute>
+		</portal>
 	</zone>
 
 	<!-- Level -2 -->
