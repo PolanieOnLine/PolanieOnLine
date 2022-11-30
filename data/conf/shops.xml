@@ -792,7 +792,6 @@
 	<shop name="sellkopalnia" type="sells">
 		<item name="kilof" price="60" />
 		<item name="łopata" price="60" />
-		<item name="lina" price="85" />
 	</shop>
 
 	<!-- Jagna / Jagienka / Rosa sprzedaje: -->
