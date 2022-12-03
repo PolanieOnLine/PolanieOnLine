@@ -9,9 +9,9 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-package games.stendhal.server.maps.quests.grandfatherswish;
+package games.stendhal.server.maps.quests.a_grandfathers_wish;
 
-import static games.stendhal.server.maps.quests.GrandfathersWish.QUEST_SLOT;
+import static games.stendhal.server.maps.quests.AGrandfathersWish.QUEST_SLOT;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -40,11 +40,10 @@ public class MylingSpawner extends Entity implements TurnListener {
 	private final List<Myling> activeMylings = new LinkedList<Myling>();
 	private final List<SpeakerNPC> activeNialls = new LinkedList<SpeakerNPC>();
 
-	//private static int respawnTurns = 2000;
-	private final int respawnTurns = 20;
+	private static int respawnTurns = 2000;
 
 	private final String[] dialogue = new String[] {
-		"Udało ci się mnie wyleczyć!",
+		"[name], Udało ci się mnie wyleczyć!",
 		"Tak długo tkwiłem w tej mylingowej formie."
 			+ " Dziadek musi się o mnie bardzo martwić.",
 		"Muszę jak najszybciej wrócić do domu i dać mu znać, że wszystko w"
@@ -57,6 +56,9 @@ public class MylingSpawner extends Entity implements TurnListener {
 		super();
 	}
 
+	/**
+	 * Adds a new myling to world.
+	 */
 	private void respawn() {
 		if (!mylingIsActive()) {
 			final Myling myling = new Myling(this);
@@ -75,24 +77,25 @@ public class MylingSpawner extends Entity implements TurnListener {
 		}
 	}
 
+	/**
+	 * Starts turn notifier to spawn a new myling.
+	 */
 	public void startSpawnTimer() {
 		SingletonRepository.getTurnNotifier().notifyInTurns(respawnTurns, this);
 	}
 
+	/**
+	 * Handles removing myling from world & restarting spawn timer.
+	 */
 	public void onMylingRemoved() {
-		for (int idx = 0; idx < activeMylings.size(); idx++) {
-			final Myling myling = activeMylings.get(idx);
-			final StendhalRPZone zone = myling.getZone();
-			if (zone != null && zone.has(myling.getID())) {
-				zone.remove(myling);
-			}
-			activeMylings.remove(myling);
-		}
-
+		removeActiveMylings();
 		// reset for next myling spawn
 		startSpawnTimer();
 	}
 
+	/**
+	 * Handles creating Niall instance when myling is cured.
+	 */
 	public void onMylingCured(final Player player) {
 		onMylingRemoved();
 		player.setQuest(QUEST_SLOT, 3, "cure_myling:done");
@@ -128,7 +131,7 @@ public class MylingSpawner extends Entity implements TurnListener {
 							nodes.add(new Node(8, 10));
 							curedNiall.setPath(new FixedPath(nodes, false));
 						} else {
-							curedNiall.say(phrase);
+							curedNiall.say(phrase.replace("[name]", player.getName()));
 						}
 					}
 				});
@@ -136,11 +139,32 @@ public class MylingSpawner extends Entity implements TurnListener {
 		}
 	}
 
+	/**
+	 * Checks if there are currently any mylings spawned in world.
+	 */
 	public boolean mylingIsActive() {
 		return activeMylings.size() > 0;
 	}
 
+	/**
+	 * Checks if a Niall instance created by curing myling is currently
+	 * active.
+	 */
 	public boolean niallIsActive() {
 		return activeNialls.size() > 0;
+	}
+
+	/**
+	 * Removes any active spawned mylings from world.
+	 */
+	public void removeActiveMylings() {
+		for (int idx = 0; idx < activeMylings.size(); idx++) {
+			final Myling myling = activeMylings.get(idx);
+			final StendhalRPZone zone = myling.getZone();
+			if (zone != null && zone.has(myling.getID())) {
+				zone.remove(myling);
+			}
+			activeMylings.remove(myling);
+		}
 	}
 }

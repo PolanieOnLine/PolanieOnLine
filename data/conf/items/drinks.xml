@@ -752,13 +752,10 @@
 -->
 	<item name="woda święcona z popiołem">
 		<type class="drink" subclass="holy_water" tileid="-1"/>
-		<description>Oto butelka wody święconej wraz z popiołem.</description>
-		<implementation class-name="games.stendhal.server.maps.quests.grandfatherswish.AshenHolyWater"/>
+		<description>Oto butelka wody święconej z dodatkiem nieco popiołu.</description>
+		<implementation class-name="games.stendhal.server.maps.quests.a_grandfathers_wish.AshenHolyWater"/>
 		<attributes>
-			<amount value="400"/>
-			<frequency value="1"/>
 			<quantity value="1"/>
-			<regen value="0"/>
 		</attributes>
 		<weight value="1.0"/>
 		<value value="1"/>

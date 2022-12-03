@@ -30,13 +30,13 @@ import games.stendhal.server.entity.npc.condition.QuestNotInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestStartedCondition;
 import games.stendhal.server.entity.npc.condition.QuestStateStartsWithCondition;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.maps.quests.AGrandfathersWish;
 /**
  * Factory for quest achievements
  *
  * @author kymara
  */
 public class FriendAchievementFactory extends AbstractAchievementFactory {
-
 	public static final String ID_CHILD_FRIEND = "friend.quests.children";
 	public static final String ID_PRIVATE_DETECTIVE = "friend.quests.find";
 	public static final String ID_DRAGONS = "friend.quests.dragons";
@@ -120,7 +120,9 @@ public class FriendAchievementFactory extends AbstractAchievementFactory {
 							}
 						},
 						// Jef, Kirdneh
-						new QuestCompletedCondition("find_jefs_mom")
+						new QuestCompletedCondition("find_jefs_mom"),
+						// Elias Breland, Deniran
+						new QuestCompletedCondition(AGrandfathersWish.QUEST_SLOT)
 					)));
 
 		// quests about finding dragons

@@ -402,20 +402,20 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 
 		<portal x="14" y="19" ref="well_entrance_left">
 			<destination zone="-1_myling_well" ref="exit"/>
-			<implementation class-name="games.stendhal.server.maps.quests.grandfatherswish.MylingWellPortal"/>
+			<implementation class-name="games.stendhal.server.maps.quests.a_grandfathers_wish.MylingWellPortal"/>
 		</portal>
 
 		<portal x="15" y="19" ref="well_entrance_right">
 			<destination zone="-1_myling_well" ref="exit"/>
-			<implementation class-name="games.stendhal.server.maps.quests.grandfatherswish.MylingWellPortal"/>
+			<implementation class-name="games.stendhal.server.maps.quests.a_grandfathers_wish.MylingWellPortal"/>
 		</portal>
 
 		<entity x="8" y="13">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.area.MessagingArea">
 				<parameter name="width">12</parameter>
 				<parameter name="height">12</parameter>
-				<parameter name="enterMessage">Ta studnia ma w sobie coś niesamowitego.</parameter>
-				<!--<parameter name="warnPlayer">true</parameter>-->
+				<parameter name="enterMessage">Słyszysz dziwny dźwięk wydobywający się ze studni.</parameter>
+				<parameter name="warnPlayer">true</parameter>
 			</implementation>
 		</entity>
 	</zone>

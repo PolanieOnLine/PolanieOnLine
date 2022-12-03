@@ -18,6 +18,7 @@ import java.util.List;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ChatCondition;
@@ -32,7 +33,9 @@ import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
 import games.stendhal.server.entity.npc.action.IncreaseXPAction;
 import games.stendhal.server.entity.npc.action.MultipleActions;
 import games.stendhal.server.entity.npc.action.NPCEmoteAction;
+import games.stendhal.server.entity.npc.action.SayTimeRemainingAction;
 import games.stendhal.server.entity.npc.action.SetQuestAction;
+import games.stendhal.server.entity.npc.action.SetQuestToTimeStampAction;
 import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.LevelLessThanCondition;
 import games.stendhal.server.entity.npc.condition.NotCondition;
@@ -43,9 +46,10 @@ import games.stendhal.server.entity.npc.condition.QuestActiveCondition;
 import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
+import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
-import games.stendhal.server.maps.quests.grandfatherswish.MylingSpawner;
+import games.stendhal.server.maps.quests.a_grandfathers_wish.MylingSpawner;
 
 /**
  * Quest to increase number of bag slots.
@@ -54,7 +58,7 @@ import games.stendhal.server.maps.quests.grandfatherswish.MylingSpawner;
  * - Elias Breland
  * - Niall Breland
  * - Marianne
- * - Priest Calenus
+ * - Ojciec Calenus
  *
  * Required items:
  * - rope ladder
@@ -65,8 +69,8 @@ import games.stendhal.server.maps.quests.grandfatherswish.MylingSpawner;
  * - 500 karma
  * - 3 more bag slots
  */
-public class GrandfathersWish extends AbstractQuest {
-	public static final String QUEST_SLOT = "grandfatherswish";
+public class AGrandfathersWish extends AbstractQuest {
+	public static final String QUEST_SLOT = "a_grandfathers_wish";
 	private static final int min_level = 100;
 
 	private final SpeakerNPC elias = npcs.get("Elias Breland");
@@ -99,6 +103,18 @@ public class GrandfathersWish extends AbstractQuest {
 	}
 
 	@Override
+	public boolean removeFromWorld() {
+		if (spawner != null) {
+			spawner.removeActiveMylings();
+			SingletonRepository.getRPWorld().remove(spawner.getID());
+		}
+
+		// FIXME: NPCs should be reset
+
+		return true;
+	}
+
+	@Override
 	public List<String> getHistory(final Player player) {
 		final String[] states = player.getQuest(QUEST_SLOT).split(";");
 		final String quest_state = states[0];
@@ -127,7 +143,7 @@ public class GrandfathersWish extends AbstractQuest {
 			res.add("Zgodziłem się na dochodzenie.");
 			if (find_myling != null) {
 				res.add("Marianne wspomniała, że ​​Niall chciał zbadać"
-					+ " cmentarz w pobliżu Semos City.");
+					+ " cmentarz w okolicy Semos.");
 				if (find_myling.equals("done")) {
 					res.add("Niall został zmieniony w mylinga. Elias będzie"
 						+ " zdruzgotany. Ale muszę mu powiedzieć.");
@@ -137,17 +153,21 @@ public class GrandfathersWish extends AbstractQuest {
 				res.add("Być może jest jeszcze nadzieja. Muszę znaleźć kapłana i poprosić"
 					+ " o wodę święconą, aby pomóc przywrócić Nialla do normalnego stanu.");
 				if (!holy_water.equals("start")) {
-					res.add("Odnalazłem kapłana Calenusa. Poprosił mnie o zebranie kilku rzeczy. Potrzebuje"
-						+ " flaszy z wodą oraz nieco węgla drzewnego.");
-					if (holy_water.equals("done")) {
-						res.add("Kapłan dał mi butelkę wody święconej. "
-							+ " Teraz muszę użyć tego na Niallu.");
+					res.add("Znalazłem ojca Calenusa.");
+					if (holy_water.equals("bring_items")) {
+						res.add("Poprosił mnie o zebraniu kilku rzeczy. Potrzebuje butelki"
+							+ " z wodą i trochę węgla drzewnego.");
+					} else if (holy_water.equals("blessing")) {
+						res.add("Błogosławi wodę święconą i da mi ją, gdy będzie gotowa.");
+					} else if (holy_water.equals("done")) {
+						res.add("Dał mi butelkę pobłogosławionej wody święconej. Teraz"
+							+ " muszę użyć tego na Niallu.");
 					}
 				}
 			}
 			if (cure_myling != null && cure_myling.equals("done")) {
-				res.add("Użyłem wody święconej. Niall wyzdrowiał! Teraz"
-					+ " powinienem zabrać go z powrotem do dziadka.");
+				res.add("Wykorzystałem wodę święconą od kapłana i Niall wyzdrowiał!"
+					+ " Powinienem odwiedzić go w jego domu, aby sprawdzić jak ze zdrowiem.");
 			}
 			if (quest_state.equals("done")) {
 				res.add("Elias i jego wnuk ponownie się"
@@ -265,12 +285,30 @@ public class GrandfathersWish extends AbstractQuest {
 
 	private void prepareMarianneStep() {
 		final SpeakerNPC marianne = npcs.get("Marianne");
-		final ChatCondition investigating = new QuestActiveCondition(QUEST_SLOT);
+
+		final ChatCondition investigating1 = new AndCondition(
+				new QuestActiveCondition(QUEST_SLOT),
+				new ChatCondition() {
+					@Override
+					public boolean fire(final Player player, final Sentence sentence,
+							final Entity entity) {
+						return player.getQuest(QUEST_SLOT, 1).equals("");
+					}
+				});
+		final ChatCondition investigating2 = new AndCondition(
+				new QuestActiveCondition(QUEST_SLOT),
+				new ChatCondition() {
+					@Override
+					public boolean fire(final Player player, final Sentence sentence,
+							final Entity entity) {
+						return !player.getQuest(QUEST_SLOT, 1).equals("");
+					}
+				});
 
 		marianne.add(
 			ConversationStates.ATTENDING,
 			"Niall",
-			investigating,
+			investigating1,
 			ConversationStates.ATTENDING,
 			"Och! Mój przyjaciel Niall! Nie widziałam go od dawna. Za"
 				+ " każdym razem, gdy idę do domu jego dziadka, żeby się #bawić,"
@@ -280,7 +318,7 @@ public class GrandfathersWish extends AbstractQuest {
 		marianne.add(
 			ConversationStates.ATTENDING,
 			Arrays.asList("play", "bawić"),
-			investigating,
+			investigating1,
 			ConversationStates.ATTENDING,
 			"Nie tylko świetnie się z nim bawiło, ale był też bardzo pomocny."
 				+ " Pomagał mi zbierać kurze jaja, kiedy za bardzo się"
@@ -290,7 +328,7 @@ public class GrandfathersWish extends AbstractQuest {
 		marianne.add(
 			ConversationStates.ATTENDING,
 			Arrays.asList("afraid", "bałam"),
-			investigating,
+			investigating1,
 			ConversationStates.ATTENDING,
 			"Wiesz, co mi kiedyś powiedział? Powiedział, że chce jechać aż"
 				+ " do Semos, żeby zobaczyć tam #cmentarz. Nieee! Nie ma mowy! To"
@@ -301,8 +339,18 @@ public class GrandfathersWish extends AbstractQuest {
 
 		marianne.add(
 			ConversationStates.ATTENDING,
+			"Niall",
+			investigating2,
+			ConversationStates.ATTENDING,
+			"Niall powiedział, że chce iść aż do Semos, aby zobaczyć"
+				+ " tam #cmentarz. Nieee! Nie ma mowy! To brzmi bardziej"
+				+ " przerażająco niż kurczaki.",
+			null);
+
+		marianne.add(
+			ConversationStates.ATTENDING,
 			Arrays.asList("graveyard", "cemetary", "cmentarz"),
-			investigating,
+			investigating2,
 			ConversationStates.ATTENDING,
 			"Mam nadzieję, że nie poszedł na ten straszny cmentarz. Kto wie,"
 				+ " jakie tam są potwory.",
@@ -319,48 +367,85 @@ public class GrandfathersWish extends AbstractQuest {
 	}
 
 	private void prepareFindPriestStep() {
-			final ChatCondition found_myling = new QuestInStateCondition(QUEST_SLOT, 1, "find_myling:done");
+		final ChatCondition foundMyling = new AndCondition(
+				new QuestActiveCondition(QUEST_SLOT),
+				new QuestInStateCondition(QUEST_SLOT, 1, "find_myling:done"),
+				new NotCondition(
+					new QuestInStateCondition(QUEST_SLOT, 3, "cure_myling:done")));
+		final ChatCondition findPriest =
+				new QuestInStateCondition(QUEST_SLOT, 2, "holy_water:start");
 
-			// tells Elias that Niall has been turned into a myling
-			elias.add(
-				ConversationStates.ANY,
-				Arrays.asList("Niall", "myling"),
-				found_myling,
-				ConversationStates.ATTENDING,
-				"O nie! Mój drogi wnuku! Gdyby tylko istniał sposób, aby #zmienić"
+		// tells Elias that Niall has been turned into a myling
+		elias.add(
+			ConversationStates.IDLE,
+			ConversationPhrases.GREETING_MESSAGES,
+			foundMyling,
+			ConversationStates.ATTENDING,
+			"O nie! Mój drogi wnuku! Gdyby tylko istniał sposób, aby #zmienić"
+				+ " go z powrotem.",
+			null);
+
+		elias.add(
+			ConversationStates.ANY,
+			Arrays.asList("Niall", "myling"),
+			foundMyling,
+			ConversationStates.ATTENDING,
+			"O nie! Mój drogi wnuku! Gdyby tylko istniał sposób, aby #zmienić"
 					+ " go z powrotem.",
-				null);
+			null);
 
-			elias.add(
-				ConversationStates.ANY,
-				Arrays.asList("change", "zmienić"),
-				found_myling,
-				ConversationStates.ATTENDING,
-				"Czekać! Słyszałem, że #'woda święcona' ma specjalne właściwości,"
-					+ " gdy jest używana na nieumarłych. Może jakiś #kapłan by miał."
-					+ " Proszę, idź i znajdź kapłana.",
-				new SetQuestAction(QUEST_SLOT, 2, "holy_water:start"));
+		elias.add(
+			ConversationStates.ANY,
+			Arrays.asList("change", "zmienić"),
+			foundMyling,
+			ConversationStates.ATTENDING,
+			"Czekać! Słyszałem, że #'woda święcona' ma specjalne właściwości,"
+				+ " gdy jest używana na nieumarłych. Może jakiś #kapłan by miał."
+				+ " Proszę, idź i znajdź kapłana.",
+			new SetQuestAction(QUEST_SLOT, 2, "holy_water:start"));
 
-			elias.add(
-				ConversationStates.ANY,
-				Arrays.asList("Niall", "myling", "priest", "holy water", "kapłan", "ksiądz", "woda święcona"),
-				new QuestInStateCondition(QUEST_SLOT, 2, "holy_water:start"),
-				ConversationStates.ATTENDING,
-				"Proszę! Znajdź kapłana. Może ktoś może zapewnić wodę święconą,"
-					+ " aby pomóc mojemu wnukowi.",
-				null);
+		elias.add(
+			ConversationStates.IDLE,
+			ConversationPhrases.GREETING_MESSAGES,
+			findPriest,
+			ConversationStates.ATTENDING,
+			"Proszę! Znajdź kapłana. Może ktoś może zapewnić wodę święconą,"
+				+ " aby pomóc mojemu wnukowi.",
+			null);
+
+		elias.add(
+			ConversationStates.ANY,
+			Arrays.asList("Niall", "myling", "priest", "holy water", "kapłan", "ksiądz", "woda święcona"),
+			findPriest,
+			ConversationStates.ATTENDING,
+			"Proszę! Znajdź kapłana. Może ktoś może zapewnić wodę święconą,"
+				+ " aby pomóc mojemu wnukowi.",
+			null);
 	}
 
-	private void prepareHolyWaterStep() {
-		final SpeakerNPC priest = npcs.get("Priest Calenus");
-
-		final ChatCondition canRequestHolyWater = new AndCondition(
+	public static ChatCondition canRequestHolyWater() {
+		return new AndCondition(
 			new QuestActiveCondition(QUEST_SLOT),
 			new NotCondition(new PlayerHasInfostringItemWithHimCondition("woda święcona z popiołem", "Niall Breland")),
 			new OrCondition(
 				new QuestInStateCondition(QUEST_SLOT, 2, "holy_water:start"),
 				new QuestInStateCondition(QUEST_SLOT, 2, "holy_water:done"))
 		);
+	}
+
+	private void prepareHolyWaterStep() {
+		final SpeakerNPC priest = npcs.get("Ojciec Calenus");
+
+		final int blessTime = 60; // 1 hour to make holy water
+
+		final ChatCondition stateBringing =
+			new QuestInStateCondition(QUEST_SLOT, 2, "holy_water:bring_items");
+		final ChatCondition stateBlessing =
+			new QuestInStateCondition(QUEST_SLOT, 2, "holy_water:blessing");
+
+		final ChatCondition hasIngredients = new AndCondition(
+				new PlayerHasItemWithHimCondition("butelka wody"),
+				new PlayerHasItemWithHimCondition("węgiel drzewny"));
 
 		final ChatAction equipWithHolyWater = new ChatAction() {
 			@Override
@@ -377,7 +462,7 @@ public class GrandfathersWish extends AbstractQuest {
 		priest.add(
 			ConversationStates.ATTENDING,
 			Arrays.asList("holy water", "myling", "Niall", "Elias", "woda święcona"),
-			canRequestHolyWater,
+			canRequestHolyWater(),
 			ConversationStates.ATTENDING,
 			"O mój! Młody chłopak zmienił się w mylinga? Mogę pomóc,"
 				+ " ale to będzie wymagało specjalnej wody święconej."
@@ -387,30 +472,75 @@ public class GrandfathersWish extends AbstractQuest {
 		priest.add(
 			ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
-			new AndCondition(
-				new QuestInStateCondition(QUEST_SLOT, 2, "holy_water:bring_items"),
-				new OrCondition(
-						new NotCondition(new PlayerHasItemWithHimCondition("butelka wody")),
-						new NotCondition(new PlayerHasItemWithHimCondition("węgiel drzewny")))),
-			ConversationStates.ATTENDING,
-			"Pospiesz się, potrzebuję flaszę wody oraz trochę węgla drzewnego, abym mógł pobłogosławić.",
+			stateBringing,
+			ConversationStates.QUESTION_1,
+			"Have you brought the items I requested?",
 			null);
+
+		priest.add(
+			ConversationStates.QUESTION_1,
+			ConversationPhrases.NO_MESSAGES,
+			stateBringing,
+			ConversationStates.ATTENDING,
+			"Okay, I still need a flask of water and some charcoal.",
+			null);
+
+		priest.add(
+			ConversationStates.QUESTION_1,
+			ConversationPhrases.YES_MESSAGES,
+			new AndCondition(
+				stateBringing,
+				new NotCondition(hasIngredients)),
+			ConversationStates.ATTENDING,
+			"Hmmm... It doesn't look like you have what I need. I requested"
+					+ " a flask of water and some charcoal.",
+			null);
+
+		priest.add(
+				ConversationStates.QUESTION_1,
+				ConversationPhrases.YES_MESSAGES,
+				new AndCondition(
+					stateBringing,
+					hasIngredients),
+				ConversationStates.IDLE,
+				"Okay. It will take about 10 minutes to bless this water and"
+					+ " make it holy.",
+				new MultipleActions(
+					new DropItemAction("butelka wody"),
+					new DropItemAction("węgiel drzewny"),
+					new SetQuestAction(QUEST_SLOT, 2, "holy_water:blessing"),
+					new SetQuestToTimeStampAction(QUEST_SLOT, 4)));
+				/*
+					new SayTimeRemainingAction(QUEST_SLOT, 4, blessTime,
+						"Okay. It will take about", "to bless this water and"
+							+ " make it holy.")));
+				*/
+
+			priest.add(
+				ConversationStates.IDLE,
+				ConversationPhrases.GREETING_MESSAGES,
+				new AndCondition(
+					stateBlessing,
+					new NotCondition(new TimePassedCondition(QUEST_SLOT, 4,
+						blessTime))),
+				ConversationStates.ATTENDING,
+				null,
+				new SayTimeRemainingAction(QUEST_SLOT, 4, blessTime, "The holy"
+					+ " water will be ready in"));
 
 		priest.add(
 			ConversationStates.IDLE,
 			ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(
-				new QuestInStateCondition(QUEST_SLOT, 2, "holy_water:bring_items"),
-				new PlayerHasItemWithHimCondition("butelka wody"),
-				new PlayerHasItemWithHimCondition("węgiel drzewny")),
+				stateBlessing,
+				new TimePassedCondition(QUEST_SLOT, 4, blessTime)),
 			ConversationStates.ATTENDING,
-			"Doskonale! Pobłogosławiłem wodę. Idź i użyj go, by przywrócić młodzieńca.",
+			"Here is the holy water. Use it to cure the boy.",
 			new MultipleActions(
-				new DropItemAction("butelka wody"),
-				new DropItemAction("węgiel drzewny"),
 				equipWithHolyWater,
 				new SetQuestAction(QUEST_SLOT, 2, "holy_water:done"),
-				new SetQuestAction(QUEST_SLOT, 3, "cure_myling:start")));
+				new SetQuestAction(QUEST_SLOT, 3, "cure_myling:start"),
+				new SetQuestAction(QUEST_SLOT, 4, null)));
 	}
 
 	private void prepareCompleteStep() {
@@ -449,6 +579,7 @@ public class GrandfathersWish extends AbstractQuest {
 				+ " zmieścisz więcej rzeczy podczas podróży.",
 			new MultipleActions(
 				new SetQuestAction(QUEST_SLOT, 0, "done"),
+				new SetQuestToTimeStampAction(QUEST_SLOT, 4), // store timestamp of completion
 				new IncreaseKarmaAction(500),
 				new IncreaseXPAction(5000),
 				new EnableFeatureAction("bag", "6 7")));

@@ -11,7 +11,7 @@ Changelog
 - Dodano nowych NPC: (4)
 	- Elias Breland
 	- Niall Breland
-	- Priest Calenus
+	- Ojciec Calenus
 	- Giles
 - Dodano nowe przedmioty: (1)
 	- woda święcona z popiołem

@@ -9,7 +9,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-package games.stendhal.server.maps.quests.grandfatherswish;
+package games.stendhal.server.maps.quests.a_grandfathers_wish;
 
 import java.util.Map;
 
@@ -17,7 +17,7 @@ import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.player.Player;
-import games.stendhal.server.maps.quests.GrandfathersWish;
+import games.stendhal.server.maps.quests.AGrandfathersWish;
 
 /**
  * A special item for An Old Man's Wish quest.
@@ -38,7 +38,7 @@ public class AshenHolyWater extends Item {
 			final Player player = (Player) user;
 
 			if (checkZone(user)) {
-				final MylingSpawner spawner = GrandfathersWish.getMylingSpawner();
+				final MylingSpawner spawner = AGrandfathersWish.getMylingSpawner();
 
 				if (checkMylingInWorld(spawner)) {
 					player.sendPrivateText("Kropisz wodą święconą głowę mylinga.");
@@ -46,11 +46,12 @@ public class AshenHolyWater extends Item {
 					removeOne();
 					spawner.onMylingCured(player);
 				} else {
-					// TODO:
-					player.sendPrivateText("Nie ma tu mylinga.");
+					player.sendPrivateText("Nie ma tu mylinga. Może jak poczekam,"
+						+ " to się pojawi.");
 				}
 			} else {
-				player.sendPrivateText("Nie możesz tego tutaj użyć.");
+				player.sendPrivateText("Nie ma tu niczego, do czego można"
+					+ " by to wykorzystać.");
 			}
 		}
 

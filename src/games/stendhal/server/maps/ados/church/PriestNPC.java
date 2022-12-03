@@ -11,6 +11,9 @@
  ***************************************************************************/
 package games.stendhal.server.maps.ados.church;
 
+import static games.stendhal.server.maps.quests.AGrandfathersWish.canRequestHolyWater;
+
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +23,9 @@ import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.CollisionAction;
+import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
+import games.stendhal.server.entity.npc.condition.NotCondition;
 
 /**
  * Priest to make holy water for An Old Man's Wish quest.
@@ -28,18 +33,28 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
 public class PriestNPC implements ZoneConfigurator {
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
-		buildNPC(zone);
+		zone.add(buildNPC());
 	}
 
-	private void buildNPC(final StendhalRPZone zone) {
-		final SpeakerNPC priest = new SpeakerNPC("Priest Calenus");
+	private SpeakerNPC buildNPC() {
+		final SpeakerNPC priest = new SpeakerNPC("Ojciec Calenus");
 		priest.setEntityClass("priest2npc");
 
-		priest.addGreeting("Witaj moje dziecko.");
+		priest.addGreeting("Witaj moje dziecko. W czym mogę Ci #pomóc?");
 		priest.addGoodbye("Idź w pokoju.");
 		priest.addJob("Jestem zarządcą tego świętego domu.");
-		priest.addHelp("Jedynym prawdziwym szczęściem jest wewnętrzny spokój.");
+		priest.addHelp("Jeśli potrzebujesz błogosławieństwa, mogę zaoferować"
+				+ " ci trochę #'wody święconej'.");
 		priest.addOffer("Znajdź wewnętrzny spokój. Tylko wtedy zrozumiesz wartość życia.");
+
+		priest.add(
+			ConversationStates.ATTENDING,
+			Arrays.asList("holy water", "woda święcona", "wody święconej"),
+			new NotCondition(canRequestHolyWater()),
+			ConversationStates.ATTENDING,
+			"Holy water is consecrated to help those that are afflicted and"
+				+ " in need of blessings.",
+			null);
 
 		final List<Node> nodes = new LinkedList<Node>();
 		nodes.add(new Node(16, 4));
@@ -47,6 +62,6 @@ public class PriestNPC implements ZoneConfigurator {
 		priest.setPathAndPosition(new FixedPath(nodes, true));
 		priest.setCollisionAction(CollisionAction.STOP);
 
-		zone.add(priest);
+		return priest;
 	}
 }

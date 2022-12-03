@@ -9,9 +9,9 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-package games.stendhal.server.maps.quests.grandfatherswish;
+package games.stendhal.server.maps.quests.a_grandfathers_wish;
 
-import static games.stendhal.server.maps.quests.GrandfathersWish.QUEST_SLOT;
+import static games.stendhal.server.maps.quests.AGrandfathersWish.QUEST_SLOT;
 
 import games.stendhal.server.entity.mapstuff.portal.AccessCheckingPortal;
 import games.stendhal.server.entity.RPEntity;
@@ -47,19 +47,30 @@ public class MylingWellPortal extends AccessCheckingPortal {
 
 	@Override
 	public boolean onUsed(final RPEntity user) {
-		if (isAllowed(user)) {
-			if (user instanceof Player) {
-				final Player player = (Player) user;
-				if (!player.getQuest(QUEST_SLOT, 1).equals("find_myling:done")) {
-					// rope is hung so player can use anytime now
-					player.drop("lina");
-					player.setQuest(QUEST_SLOT, 1, "find_myling:done");
-				}
-				return usePortal(player);
-			}
+		if (isAllowed(user) && user instanceof Player) {
+			return usePortal((Player) user);
 		}
 
 		rejected(user);
 		return false;
+	}
+
+	@Override
+	protected boolean usePortal(final Player player) {
+		final boolean ret = super.usePortal(player);
+
+		if (player.getQuest(QUEST_SLOT, 1).equals("find_myling:start")) {
+			// rope is hung so player can use anytime now
+			player.drop("lina");
+			player.setQuest(QUEST_SLOT, 1, "find_myling:done");
+			player.sendPrivateText("Czy to jest Niall!? Biedny chłopiec. Muszę"
+				+ " natychmiast powiedzieć Eliasowi.");
+		} else if (player.getQuest(QUEST_SLOT, 3).equals("cure_myling:start")
+				&& player.isEquipped("woda święcona z popiołem")) {
+			player.sendPrivateText("Powinienem móc użyć tutaj wody"
+				+ " święconej.");
+		}
+
+		return ret;
 	}
 }
