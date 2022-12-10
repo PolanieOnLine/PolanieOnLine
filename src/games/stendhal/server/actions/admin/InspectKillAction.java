@@ -31,7 +31,7 @@ public class InspectKillAction extends AdministrationAction {
 	@Override
 	protected void perform(final Player admin, final RPAction action) {
 		if (!action.has("target")) {
-			admin.sendPrivateText("Parametr \"target\" jest wymagany: " + action);
+			admin.sendPrivateText("Parametr \"gracz\" jest wymagany: " + action);
 			return;
 		}
 
@@ -47,7 +47,7 @@ public class InspectKillAction extends AdministrationAction {
 		}
 
 		if (!action.has("creature")) {
-			admin.sendPrivateText("Parametr \"creature\" jest wymagany: " + action);
+			admin.sendPrivateText("Parametr \"stworzenie\" jest wymagany: " + action);
 			return;
 		}
 
@@ -61,6 +61,6 @@ public class InspectKillAction extends AdministrationAction {
 		final int solokill = player.getSoloKill(creature);
 		final int sharedkill = player.getSharedKill(creature);
 
-		admin.sendPrivateText(Grammar.plural(creature) + " zabity przez " + player.getName() + ": solo: " + solokill + "; grupowo: " + sharedkill + "; razem: " + (solokill + sharedkill));
+		admin.sendPrivateText("#'" + creature + "' zabity przez #'" + player.getName() + "'\nsolo: " + solokill + "\ngrupowo: " + sharedkill + "\nrazem: " + (solokill + sharedkill));
 	}
 }

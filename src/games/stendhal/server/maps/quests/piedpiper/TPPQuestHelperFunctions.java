@@ -1,6 +1,5 @@
 package games.stendhal.server.maps.quests.piedpiper;
 
-
 import java.util.LinkedList;
 
 import games.stendhal.common.Rand;
@@ -13,7 +12,6 @@ import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
 import games.stendhal.server.entity.player.Player;
 
 public class TPPQuestHelperFunctions implements ITPPQuestConstants {
-
 	private static LinkedList<Creature> rats = new LinkedList<Creature>();
 
 	public static final String MAIN_NPC_NAME = "Mayor Chalmers";
@@ -77,9 +75,9 @@ public class TPPQuestHelperFunctions implements ITPPQuestConstants {
 				ConversationPhrases.GREETING_MESSAGES,
 				new GreetingMatchesNameCondition(piedpiper.getName()), true,
 				ConversationStates.IDLE,
-				"cześć",
+				"Cześć.",
 				null);
-		piedpiper.addEmotionReply("hugs", "smile to");
+		piedpiper.addEmotionReply("przytula", "uśmiecha się do");
 	}
 
 	/**
