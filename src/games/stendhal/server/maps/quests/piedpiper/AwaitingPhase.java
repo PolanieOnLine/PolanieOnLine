@@ -32,7 +32,6 @@ import games.stendhal.server.util.Observer;
  * @author yoriy
  */
 public class AwaitingPhase extends TPPQuest {
-
 	private SpeakerNPC piedpiper;
 	private final SpeakerNPC mainNPC = TPPQuestHelperFunctions.getMainNPC();
 	private final int minPhaseChangeTime;
@@ -45,7 +44,6 @@ public class AwaitingPhase extends TPPQuest {
 	private final String explainations =
 			"Widzę, że jest tutaj nasz miejski wybawca. Muszę z nim szybko porozmawiać. "+
 			"Proszę porozmawiaj ze mną ponownie później, gdy skończymy rozmowę.";
-
 
 	/**
 	 * adds quest's related conversations to mayor
@@ -76,7 +74,7 @@ public class AwaitingPhase extends TPPQuest {
 		// Player asked about reward
 		mainNPC.add(
 				ConversationStates.ATTENDING,
-				Arrays.asList("reward", "nagroda","nagrodę"),
+				Arrays.asList("reward", "nagroda", "nagrodę", "wynagrodzić"),
 				new TPPQuestInPhaseCondition(myphase),
 				ConversationStates.ATTENDING,
 				null,
@@ -87,36 +85,35 @@ public class AwaitingPhase extends TPPQuest {
 	/**
 	 * fills conversations list between mayor and piper
 	 */
-		private void fillConversations() {
-			//piper
-			conversations.add("Dzień dobry, Burmistrzu. Dlaczego wzywasz mnie tym razem?");
-			//mayor
-			conversations.add("Hej, bardzo mi miło widzieć tutaj naszego szacownego bohatera. Któż nie słyszał o Tobie, jest prawie...");
-			//piper
-			conversations.add("Proszę, mów o sprawie, jaką dla mnie masz. Mój czas jest bardzo cenny.");
-			//mayor
-			conversations.add("... dobrze, o czym to ja mówiłem? Ah, dobrze - nasze miasto ma problem ze #szczurami.");
-			//piper
-			conversations.add("Znów?");
-			//mayor
-			conversations.add("Tak, te zwierzęta są zbyt głupie, by zapamiętać lekcję jaką dostały ostatnim razem.");
-			//piper
-			conversations.add("Mogę Ci pomóc, jeśli jesteś gotów mi zapłacić.");
-			//mayor
-			conversations.add("Miasto Ados nie ma innego wyjścia, by pozbyć się tych zwierząt. Zapłacimy Ci.");
-			//piper
-			conversations.add("Czy wiesz, jak wysoko cenione są moje umiejętności?");
-			//mayor
-			conversations.add("Tak, mam to w moich dokumentach.");
-			//piper
-			conversations.add("Dobrze. Wrócę po moją nagrodę, proszę, przygotuj się na to.");
-			//mayor
-			conversations.add("Nie przejmuj się, jak mogę zawieść Twoje zaufanie do mnie i mojego miasta?");
-		}
+	private void fillConversations() {
+		//piper
+		conversations.add("Dzień dobry, Burmistrzu. Dlaczego wzywasz mnie tym razem?");
+		//mayor
+		conversations.add("Hej, bardzo mi miło widzieć tutaj naszego szacownego bohatera. Któż nie słyszał o Tobie, jest prawie...");
+		//piper
+		conversations.add("Proszę, mów o sprawie, jaką dla mnie masz. Mój czas jest bardzo cenny.");
+		//mayor
+		conversations.add("... dobrze, o czym to ja mówiłem? Ah, dobrze - nasze miasto ma problem ze #szczurami.");
+		//piper
+		conversations.add("Znów?");
+		//mayor
+		conversations.add("Tak, te zwierzęta są zbyt głupie, by zapamiętać lekcję jaką dostały ostatnim razem.");
+		//piper
+		conversations.add("Mogę Ci pomóc, jeśli jesteś gotów mi zapłacić.");
+		//mayor
+		conversations.add("Miasto Ados nie ma innego wyjścia, by pozbyć się tych zwierząt. Zapłacimy Ci.");
+		//piper
+		conversations.add("Czy wiesz, jak wysoko cenione są moje umiejętności?");
+		//mayor
+		conversations.add("Tak, mam to w moich dokumentach.");
+		//piper
+		conversations.add("Dobrze. Wrócę po moją nagrodę, proszę, przygotuj się na to.");
+		//mayor
+		conversations.add("Nie przejmuj się, jak mogę zawieść Twoje zaufanie do mnie i mojego miasta?");
+	}
 
-
-		/**
-		 * constructor
+	/**
+	 * Constructor
 	 * @param timings - a pair of time parameters for phase timeouts
 	 */
 	public AwaitingPhase(final Map<String, Integer> timings) {
@@ -127,7 +124,6 @@ public class AwaitingPhase extends TPPQuest {
 		fillConversations();
 	}
 
-
 	/**
 	 * prepare actions
 	 */
@@ -135,7 +131,6 @@ public class AwaitingPhase extends TPPQuest {
 	public void prepare() {
 		createPiedPiper();
 	}
-
 
 	/**
 	 * function for creating pied piper npc
@@ -147,7 +142,6 @@ public class AwaitingPhase extends TPPQuest {
 		fullpathout = PathsBuildHelper.getAdosTownHallBackwardPath();
 		leadNPC();
 	}
-
 
 	/**
 	 * function will remove piped piper npc object
@@ -167,14 +161,13 @@ public class AwaitingPhase extends TPPQuest {
 		piedpiper.setPosition(x, y);
 		zone.add(piedpiper);
 		Observer o = new MultiZonesFixedPath(piedpiper, fullpathin,
-						new NPCFollowing(mainNPC, piedpiper,
-							new NPCChatting(piedpiper, mainNPC, conversations, explainations,
-								new GoToPosition(piedpiper, PathsBuildHelper.getAdosTownHallMiddlePoint(),
-									new MultiZonesFixedPath(piedpiper, fullpathout,
-										new PhaseSwitcher(this))))));
+			new NPCFollowing(mainNPC, piedpiper,
+			new NPCChatting(piedpiper, mainNPC, conversations, explainations,
+			new GoToPosition(piedpiper, PathsBuildHelper.getAdosTownHallMiddlePoint(),
+			new MultiZonesFixedPath(piedpiper, fullpathout,
+			new PhaseSwitcher(this))))));
 		o.update(null, null);
 	}
-
 
 	/**
 	 * @return - min quest phase timeout
@@ -184,7 +177,6 @@ public class AwaitingPhase extends TPPQuest {
 		return minPhaseChangeTime;
 	}
 
-
 	/**
 	 * @return - max quest phase timeout
 	 */
@@ -192,7 +184,6 @@ public class AwaitingPhase extends TPPQuest {
 	public int getMaxTimeOut() {
 		return maxPhaseChangeTime;
 	}
-
 
 	/**
 	 * @param comments - comments for switching event
@@ -203,7 +194,6 @@ public class AwaitingPhase extends TPPQuest {
 		super.phaseToDefaultPhase(comments);
 	}
 
-
 	/**
 	 * @param nextPhase - next phase
 	 * @param comments - comments for switching event
@@ -213,7 +203,6 @@ public class AwaitingPhase extends TPPQuest {
 		destroyPiedPiper();
 		super.phaseToNextPhase(nextPhase, comments);
 	}
-
 
 	/**
 	 *  Pied Piper will now start to collect rats :-)
@@ -230,12 +219,11 @@ public class AwaitingPhase extends TPPQuest {
 			 */
 			"Burmistrz Chalmers oświadcza: Na szczęście, wszystkie #szczury zostały wygnane, " +
 			"Pied Piper zahipnotyzował je i zaprowadził‚ do podziemi. "+
-			"Ci, którzy pomogli Ados City z problem szczurów "+
-			"mogą dostać teraz swoją #nagrodę.";
+			"Ci, którzy pomogli mieście Ados z problem szczurów "+
+			"mogą odebrać teraz swoją #nagrodę.";
 
 		return text;
 	}
-
 
 	/**
 	 * @return - current phase
