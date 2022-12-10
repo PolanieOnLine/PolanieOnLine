@@ -2,7 +2,7 @@ Changelog
 ---------
 1.33
 *klient*
-- Dodano grafiki nowych NPC
+- Dodano grafiki nowych NPC/potworów
 - Poprawiono kolory przedmiotu: "lina"
 - Logi czatu będą zapisywane w folderze "/chat"
 - Plik zapisanego czatu będzie zawierał nazwę postaci, datę i godzinę
@@ -13,6 +13,16 @@ Changelog
 	- Niall Breland
 	- Ojciec Calenus
 	- Giles
+- Dodano nowe potwory: (9)
+	- szarak
+	- szarak uzbrojony
+	- szarak uzbrojony wyższy
+	- szarak wojownik
+	- szarak kapitan wojowników
+	- szarak defensywy
+	- szarak lider defensywy
+	- szarak strażnik
+	- szarak kapitan strażników
 - Dodano nowe przedmioty: (1)
 	- woda święcona z popiołem
 - Dodano informacje ile zdrowia regeneruje na cykl jedzenia oraz napoje
@@ -22,6 +32,7 @@ Changelog
 - Zmieniono nazwę przedmiotu z "koński włos" na "końskie włosie"
 - Lina będzie się teraz stackować w ekwipunku gracza
 - Usunięto możliwość zakupu liny, natomiast będzie można ją wykonać u Gilesa oraz otrzymać po zaliczeniu egzaminu
+- Burmistrz miasta Ados po zakończonym zadaniu plagi szczurów będzie reagował również na słowo: "wynagrodzić"
 
 *naprawiono błędy*
 - Poprawiono tłumaczenia w Deniran
