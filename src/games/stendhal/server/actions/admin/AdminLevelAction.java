@@ -24,16 +24,13 @@ import games.stendhal.server.entity.player.Player;
 import marauroa.common.game.RPAction;
 
 class AdminLevelAction extends AdministrationAction {
-
 	public static void register() {
 		CommandCenter.register(ADMINLEVEL, new AdminLevelAction(), 0);
 	}
 
 	@Override
 	public void perform(final Player player, final RPAction action) {
-
 		if (action.has(TARGET)) {
-
 			final String name = action.get(TARGET);
 			final Player target = SingletonRepository.getRuleProcessor().getPlayer(name);
 
@@ -67,7 +64,6 @@ class AdminLevelAction extends AdministrationAction {
 							+ REQUIRED_ADMIN_LEVEL_FOR_SUPER
 							+ " poziomu administratora, aby móc go zmieniać.";
 				} else {
-
 					new GameEvent(player.getName(), ADMINLEVEL, target.getName(), ADMINLEVEL, action.get(NEWLEVEL)).raise();
 					target.setAdminLevel(newlevel);
 					dropPrivileges(target);
@@ -107,5 +103,4 @@ class AdminLevelAction extends AdministrationAction {
 	private boolean isAllowedtoSeeGhosts(final Player player) {
 		return AdministrationAction.isPlayerAllowedToExecuteAdminCommand(player, Actions.GHOSTMODE, false);
 	}
-
 }

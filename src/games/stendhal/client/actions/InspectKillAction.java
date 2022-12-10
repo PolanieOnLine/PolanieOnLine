@@ -23,7 +23,6 @@ import marauroa.common.game.RPAction;
  * Checks kill counts of a player for a specified creature.
  */
 public class InspectKillAction implements SlashAction {
-
 	@Override
 	public boolean execute(String[] params, final String remainder) {
 		final RPAction action = new RPAction();

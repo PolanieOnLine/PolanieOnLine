@@ -38,7 +38,6 @@ import games.stendhal.server.util.Observable;
 import games.stendhal.server.util.Observer;
 
 public class InvasionPhase extends TPPQuest {
-
 	private final int minPhaseChangeTime;
 	private final int maxPhaseChangeTime;
 	protected LinkedList<Creature> rats = new LinkedList<Creature>();
@@ -99,19 +98,15 @@ public class InvasionPhase extends TPPQuest {
 		addConversations(TPPQuestHelperFunctions.getMainNPC());
 	}
 
-
 	@Override
 	public int getMinTimeOut() {
 		return minPhaseChangeTime;
 	}
 
-
 	@Override
 	public int getMaxTimeOut() {
 		return maxPhaseChangeTime;
 	}
-
-
 
 	/**
 	 * rats invasion starts :-)
@@ -119,7 +114,6 @@ public class InvasionPhase extends TPPQuest {
 	 * Places rat if possible, if not skip this rat (so if 6 rats chosen perhaps only 3 are placed)
 	 */
 	private void summonRats() {
-
 		final RatsObserver ratsObserver = new RatsObserver();
 
 		// generating rats in zones
@@ -194,7 +188,6 @@ public class InvasionPhase extends TPPQuest {
 	/**
 	 *  Rats are dead :-)
 	 */
-
 	@Override
 	public String getSwitchingToDefPhaseMessage() {
 		final String text = "Mayor Chalmers krzyczy: żaden #szczur w Ados nie przetrwał, "+
@@ -264,7 +257,6 @@ public class InvasionPhase extends TPPQuest {
 		comments.add("last rat killed");
 		super.phaseToDefaultPhase(comments);
 	}
-
 
 	@Override
 	public void phaseToNextPhase(ITPPQuest nextPhase, List<String> comments) {
@@ -338,12 +330,8 @@ public class InvasionPhase extends TPPQuest {
 		player.setQuest(QUEST_SLOT, i+1, Integer.toString(kills));
 	}
 
-
 	@Override
 	public TPP_Phase getPhase() {
 		return TPP_Phase.TPP_INVASION;
 	}
-
-
-
 }

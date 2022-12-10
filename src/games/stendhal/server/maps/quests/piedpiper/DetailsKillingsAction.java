@@ -40,6 +40,4 @@ public class DetailsKillingsAction implements ChatAction, ITPPQuestConstants {
 		sb.append(" money jako #nagrodę za twą pracę.");
 		mayor.say(sb.toString());
 	}
-
-
 }

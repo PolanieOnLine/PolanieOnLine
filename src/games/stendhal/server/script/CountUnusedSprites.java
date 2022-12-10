@@ -29,8 +29,6 @@ import games.stendhal.server.entity.player.Player;
  * @author yoriy
  */
 public class CountUnusedSprites extends ScriptImpl {
-
-
 	@Override
 	public void execute(final Player admin, final List<String> args) {
 		Collection<DefaultCreature> allCreatures = SingletonRepository.getEntityManager().getDefaultCreatures();
@@ -40,15 +38,13 @@ public class CountUnusedSprites extends ScriptImpl {
 		final StringBuilder sb=new StringBuilder();
 
         /* items */
-
 		final File dirItemSprites = new File("data/sprites/items");
 		String[] itemclasses = dirItemSprites.list(new FilenameFilter() {
 			@Override
 			public boolean accept(File dir, String name) {
 				return dir.isDirectory();
 			}
-		}
-		);
+		});
 
 		for(final String f : itemclasses) {
 			final File dirF = new File("data/sprites/items/"+f);
@@ -57,8 +53,7 @@ public class CountUnusedSprites extends ScriptImpl {
 				public boolean accept(File dir, String name) {
 					return name.endsWith(".png");
 				};
-			}
-			);
+			});
 
 			if(subclasses == null) continue;
 			for(final String g: subclasses) {
@@ -76,45 +71,40 @@ public class CountUnusedSprites extends ScriptImpl {
 			}
 		};
 
-
-	/* mosters */
-
-	final File dirMonsterSprites = new File("data/sprites/monsters");
-	String[] monsterclasses = dirMonsterSprites.list(new FilenameFilter() {
-		@Override
-		public boolean accept(File dir, String name) {
-			return dir.isDirectory();
-		}
-	}
-	);
-
-	for(final String f : monsterclasses) {
-		final File dirF = new File("data/sprites/monsters/"+f);
-		String[] subclasses = dirF.list(new FilenameFilter() {
+		/* mosters */
+		final File dirMonsterSprites = new File("data/sprites/monsters");
+		String[] monsterclasses = dirMonsterSprites.list(new FilenameFilter() {
 			@Override
 			public boolean accept(File dir, String name) {
-				return name.endsWith(".png");
-			};
-		}
-		);
-
-		if(subclasses == null) continue;
-		for(final String g: subclasses) {
-			// have both class and subclass, check if we have such item in Stendhal world
-			String realsubclass = g.substring(0, g.length()-4);
-			boolean found = false;
-			for(final DefaultCreature h : allCreatures) {
-               if(h.getCreatureSubclass().equals(realsubclass)) {
-            	   found = true;
-               }
+				return dir.isDirectory();
 			}
-			if(found == false) {
-				sb.append("found unused creature: ("+ f + "/" + realsubclass +")\n");
-			};
-		}
-	};
+		});
 
-admin.sendPrivateText("list of pictures: " + sb.toString());
+		for(final String f : monsterclasses) {
+			final File dirF = new File("data/sprites/monsters/"+f);
+			String[] subclasses = dirF.list(new FilenameFilter() {
+				@Override
+				public boolean accept(File dir, String name) {
+					return name.endsWith(".png");
+				};
+			});
+	
+			if(subclasses == null) continue;
+			for(final String g: subclasses) {
+				// have both class and subclass, check if we have such item in Stendhal world
+				String realsubclass = g.substring(0, g.length()-4);
+				boolean found = false;
+				for(final DefaultCreature h : allCreatures) {
+	               if(h.getCreatureSubclass().equals(realsubclass)) {
+	            	   found = true;
+	               }
+				}
+				if(found == false) {
+					sb.append("found unused creature: ("+ f + "/" + realsubclass +")\n");
+				};
+			}
+		};
 
+		admin.sendPrivateText("list of pictures: " + sb.toString());
 	}
 }

@@ -12,6 +12,11 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests.piedpiper;
 
+import java.util.List;
+import java.util.Map;
+
+import org.apache.log4j.Logger;
+
 import games.stendhal.common.NotificationType;
 import games.stendhal.server.core.engine.GameEvent;
 import games.stendhal.server.core.engine.SingletonRepository;
@@ -19,13 +24,7 @@ import games.stendhal.server.core.events.TurnListener;
 import games.stendhal.server.core.events.TurnNotifier;
 import games.stendhal.server.maps.quests.ThePiedPiper;
 
-import java.util.List;
-import java.util.Map;
-
-import org.apache.log4j.Logger;
-
 public class TPPQuest implements ITPPQuest {
-
 	protected static final Logger logger = Logger.getLogger(ThePiedPiper.class);
 	protected Map<String, Integer> timings;
 
@@ -57,7 +56,6 @@ public class TPPQuest implements ITPPQuest {
 			SingletonRepository.getRuleProcessor().tellAllPlayers(NotificationType.PRIVMSG, msg);
 		}
 	}
-
 
 	/**
 	 * timer for npc's shouts to player.
@@ -149,7 +147,6 @@ public class TPPQuest implements ITPPQuest {
 
 	@Override
 	public void prepare() {
-
 	}
 
 	@Override
@@ -161,5 +158,4 @@ public class TPPQuest implements ITPPQuest {
 	public int getMinTimeOut() {
 		return 0;
 	}
-
 }

@@ -12,16 +12,14 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests.piedpiper;
 
-import games.stendhal.server.entity.npc.ConversationStates;
-import games.stendhal.server.entity.npc.SpeakerNPC;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import games.stendhal.server.entity.npc.ConversationStates;
+import games.stendhal.server.entity.npc.SpeakerNPC;
 
 public class InactivePhase extends TPPQuest {
-
 	private final int minPhaseChangeTime;
 	private final int maxPhaseChangeTime;
 
@@ -59,7 +57,7 @@ public class InactivePhase extends TPPQuest {
 	}
 
 	/**
-	 * constructor
+	 * Constructor
 	 * @param timings
 	 */
 	public InactivePhase(Map<String, Integer> timings) {
@@ -68,7 +66,6 @@ public class InactivePhase extends TPPQuest {
 		maxPhaseChangeTime=timings.get(INACTIVE_TIME_MAX);
 		addConversations(TPPQuestHelperFunctions.getMainNPC());
 	}
-
 
 	@Override
 	public int getMinTimeOut() {
@@ -87,13 +84,10 @@ public class InactivePhase extends TPPQuest {
 
 	@Override
 	public void prepare() {
-
 	}
-
 
 	@Override
 	public TPP_Phase getPhase() {
 		return TPP_Phase.TPP_INACTIVE;
 	}
-
 }
