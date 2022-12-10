@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<creatures xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../../creatures.xsd ">
+
+	<creature name="szarak">
+		<type class="alien" subclass="szarak" tileid="pol_szaraki.png:0"/>
+		<description>Oto szarak.</description>
+		<attributes>
+			<atk value="2044"/>
+			<def value="116"/>
+			<hp value="8940"/>
+			<speed value="0.9"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="500"/>
+		<experience value="178200"/>
+		<respawn value="9000"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[1,2]" probability="100.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="szarak uzbrojony">
+		<type class="alien" subclass="szarak_uzbrojony" tileid="pol_szaraki.png:1"/>
+		<description>Oto szarak uzbrojony.</description>
+		<attributes>
+			<atk value="2146"/>
+			<def value="119"/>
+			<hp value="9380"/>
+			<speed value="0.9"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="505"/>
+		<experience value="188940"/>
+		<respawn value="9450"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[1,2]" probability="100.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="szarak wojownik">
+		<type class="alien" subclass="szarak_wojownik" tileid="pol_szaraki.png:2"/>
+		<description>Oto szarak wojownik.</description>
+		<attributes>
+			<atk value="2255"/>
+			<def value="122"/>
+			<hp value="9850"/>
+			<speed value="0.9"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="510"/>
+		<experience value="200300"/>
+		<respawn value="9920"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[1,2]" probability="100.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="szarak defensywy">
+		<type class="alien" subclass="szarak_defensywy" tileid="pol_szaraki.png:3"/>
+		<description>Oto szarak defensywy.</description>
+		<attributes>
+			<atk value="2366"/>
+			<def value="125"/>
+			<hp value="10344"/>
+			<speed value="0.9"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="515"/>
+		<experience value="212310"/>
+		<respawn value="10420"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[1,2]" probability="100.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="szarak strażnik">
+		<type class="alien" subclass="szarak_straznik" tileid="pol_szaraki.png:4"/>
+		<description>Oto szarak strażnik.</description>
+		<attributes>
+			<atk value="2485"/>
+			<def value="128"/>
+			<hp value="10860"/>
+			<speed value="0.9"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="520"/>
+		<experience value="225040"/>
+		<respawn value="10940"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[1,2]" probability="100.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="szarak kapitan strażników">
+		<type class="alien" subclass="szarak_staznik_kapitan" tileid="pol_szaraki.png:5"/>
+		<description>Oto szarak kapitan strażników.</description>
+		<attributes>
+			<atk value="2609"/>
+			<def value="131"/>
+			<hp value="11400"/>
+			<speed value="0.9"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="525"/>
+		<experience value="238510"/>
+		<respawn value="11480"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[1,2]" probability="100.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="szarak kapitan wojowników">
+		<type class="alien" subclass="szarak_wojownik_kapitan" tileid="pol_szaraki.png:6"/>
+		<description>Oto szarak kapitan wojowników.</description>
+		<attributes>
+			<atk value="2739"/>
+			<def value="135"/>
+			<hp value="11975"/>
+			<speed value="0.9"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="530"/>
+		<experience value="252760"/>
+		<respawn value="12060"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[1,2]" probability="100.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="szarak lider defensywy">
+		<type class="alien" subclass="szarak_lider" tileid="pol_szaraki.png:7"/>
+		<description>Oto szarak lider defensywy.</description>
+		<attributes>
+			<atk value="2876"/>
+			<def value="138"/>
+			<hp value="12570"/>
+			<speed value="0.9"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="535"/>
+		<experience value="267840"/>
+		<respawn value="12660"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[1,2]" probability="100.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+
+	<creature name="szarak uzbrojony wyższy">
+		<type class="alien" subclass="szarak_uzbrojony_wyzszy" tileid="pol_szaraki.png:8"/>
+		<description>Oto szarak uzbrojony wyższy.</description>
+		<attributes>
+			<atk value="3020"/>
+			<def value="141"/>
+			<hp value="13200"/>
+			<speed value="0.9"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="540"/>
+		<experience value="283800"/>
+		<respawn value="13300"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[1,2]" probability="100.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
+</creatures>

@@ -52,6 +52,7 @@
 	<group uri="creatures/stendhal/undead_zombie.xml"/>
 
 	<!-- Potworki z POL -->
+	<group uri="creatures/pol/alien.xml"/>
 	<group uri="creatures/pol/angel.xml"/>
 	<group uri="creatures/pol/animal.xml"/>
 	<group uri="creatures/pol/beast.xml"/>
