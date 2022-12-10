@@ -27,11 +27,14 @@ Changelog
 	- szarak najwyższy
 - Dodano nowe przedmioty: (1)
 	- woda święcona z popiołem
+- Dodano nowe zadanie: (1)
+	- "Życzenie Dziadka"
 - Dodano informacje ile zdrowia regeneruje na cykl jedzenia oraz napoje
 - Dodano nową ofertę u Karla po zakończeniu zadania dla Ouchita
 - Dodano do dziennego zadania w Semos nowe przedmioty: liny oraz igły do skór
 - Dodano nowy sklep u Pauli, która skupuje różdżki
 - Dodano nowe pomieszczenie w Tarnowie
+- Po zakończonym zadaniu "Życzenie Dziadka" plecak zostanie rozszerzony o 6 dodatkowych slotów
 - Ogłoszenia treningowe Omury Sumitady można usłyszeć w dowolnym miejscu w dojo
 - Zmieniono nazwę przedmiotu z "koński włos" na "końskie włosie"
 - Lina będzie się teraz stackować w ekwipunku gracza
