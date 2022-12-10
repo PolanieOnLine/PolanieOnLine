@@ -238,6 +238,11 @@
 			<attribute name="height">1</attribute>
 		</entity>
 
+		<portal x="76" y="61" ref="witchhouse_entrance">
+			<destination zone="int_tarnow_witchhouse" ref="witchhouse_exit"/>
+			<attribute name="move.continuous" />
+		</portal>
+
 		<portal x="66" y="56" ref="tavern_entrance">
 			<destination zone="int_tarnow_tavern" ref="tavern_exit"/>
 			<attribute name="move.continuous" />
@@ -378,6 +383,15 @@
 
 		<portal x="15" y="17" ref="tavern_exit">
 			<destination zone="0_tarnow_city" ref="tavern_entrance"/>
+			<attribute name="move.continuous" />
+		</portal>
+	</zone>
+
+	<zone name="int_tarnow_witchhouse" file="interiors/tarnow/witchhouse.tmx">
+		<configurator class-name="games.stendhal.server.maps.tarnow.witchhouse.WitchNPC"/>
+
+		<portal x="7" y="14" ref="witchhouse_exit">
+			<destination zone="0_tarnow_city" ref="witchhouse_entrance"/>
 			<attribute name="move.continuous" />
 		</portal>
 	</zone>

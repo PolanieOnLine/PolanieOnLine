@@ -1214,29 +1214,39 @@
 
 	<!-- Joachim kupuje: -->
 	<shop name="skupryb" type="buys">
-		<item name="tuńczyk" price="3" />
-		<item name="leszcz" price="14" />
-		<item name="szczupak" price="27" />
-		<item name="karp" price="32" />
-		<item name="karp lustrzeń" price="44" />
+		<item name="tuńczyk" price="3"/>
+		<item name="leszcz" price="14"/>
+		<item name="szczupak" price="27"/>
+		<item name="karp" price="32"/>
+		<item name="karp lustrzeń" price="44"/>
 	</shop>
 
 	<!-- Klechdarz sprzedaje: -->
 	<shop name="tarnowscrollseller" type="sells">
-		<item name="zwój tarnów" price="350" />
+		<item name="zwój tarnów" price="350"/>
 	</shop>
 
-	<!-- Benio skupuje: -->
+	<!-- Pauli kupuje: -->
+	<shop name="wandbuyer" type="buys">
+		<item name="różdżka" price="230"/>
+		<item name="trójząb Trzygłowa" price="570"/>
+		<item name="różdżka Strzyboga" price="810"/>
+		<item name="różdżka Wołosa" price="1140"/>
+		<item name="różdżka Swaroga" price="25750"/>
+		<item name="różdżka Peruna" price="1000000"/>
+	</shop>
+
+	<!-- Benio kupuje: -->
 	<shop name="barbarianshopkeeper" type="buys">
-		<item name="młot bojowy" price="270" />
-		<item name="buty barbarzyńcy" price="420" />
-		<item name="hełm barbarzyńcy" price="610" />
-		<item name="spodnie barbarzyńcy" price="870" />
-		<item name="rękawice barbarzyńcy" price="1250" />
-		<item name="pas barbarzyńcy" price="1750" />
-		<item name="płaszcz barbarzyńcy" price="2400" />
-		<item name="zbroja barbarzyńcy" price="5000" />
-		<item name="tarcza barbarzyńcy" price="8000" />
-		<item name="zbroja szamana barbarzyńców" price="12000" />
+		<item name="młot bojowy" price="270"/>
+		<item name="buty barbarzyńcy" price="420"/>
+		<item name="hełm barbarzyńcy" price="610"/>
+		<item name="spodnie barbarzyńcy" price="870"/>
+		<item name="rękawice barbarzyńcy" price="1250"/>
+		<item name="pas barbarzyńcy" price="1750"/>
+		<item name="płaszcz barbarzyńcy" price="2400"/>
+		<item name="zbroja barbarzyńcy" price="5000"/>
+		<item name="tarcza barbarzyńcy" price="8000"/>
+		<item name="zbroja szamana barbarzyńców" price="12000"/>
 	</shop>
 </shops>
