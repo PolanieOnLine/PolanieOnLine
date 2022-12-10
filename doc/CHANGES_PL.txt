@@ -14,7 +14,7 @@ Changelog
 	- Ojciec Calenus
 	- Giles
 	- Pauli
-- Dodano nowe potwory: (9)
+- Dodano nowe potwory: (10)
 	- szarak
 	- szarak uzbrojony
 	- szarak uzbrojony wyższy
@@ -24,6 +24,7 @@ Changelog
 	- szarak lider defensywy
 	- szarak strażnik
 	- szarak kapitan strażników
+	- szarak najwyższy
 - Dodano nowe przedmioty: (1)
 	- woda święcona z popiołem
 - Dodano informacje ile zdrowia regeneruje na cykl jedzenia oraz napoje
