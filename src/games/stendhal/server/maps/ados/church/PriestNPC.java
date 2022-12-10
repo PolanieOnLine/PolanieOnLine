@@ -11,6 +11,7 @@
  ***************************************************************************/
 package games.stendhal.server.maps.ados.church;
 
+import static games.stendhal.server.maps.quests.AGrandfathersWish.QUEST_SLOT;
 import static games.stendhal.server.maps.quests.AGrandfathersWish.canRequestHolyWater;
 
 import java.util.Arrays;
@@ -25,7 +26,9 @@ import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.CollisionAction;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
+import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.NotCondition;
+import games.stendhal.server.entity.npc.condition.QuestNotInStateCondition;
 
 /**
  * Priest to make holy water for An Old Man's Wish quest.
@@ -50,10 +53,12 @@ public class PriestNPC implements ZoneConfigurator {
 		priest.add(
 			ConversationStates.ATTENDING,
 			Arrays.asList("holy water", "woda święcona", "wody święconej"),
-			new NotCondition(canRequestHolyWater()),
+			new AndCondition(
+				new NotCondition(canRequestHolyWater()),
+				new QuestNotInStateCondition(QUEST_SLOT, 2, "holy_water:bring_items")),
 			ConversationStates.ATTENDING,
-			"Holy water is consecrated to help those that are afflicted and"
-				+ " in need of blessings.",
+			"Woda święcona jest konsekrowana, aby pomóc cierpiącym"
+				+ " i potrzebującym błogosławieństwa.",
 			null);
 
 		final List<Node> nodes = new LinkedList<Node>();

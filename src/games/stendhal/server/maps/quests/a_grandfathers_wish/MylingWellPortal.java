@@ -13,8 +13,8 @@ package games.stendhal.server.maps.quests.a_grandfathers_wish;
 
 import static games.stendhal.server.maps.quests.AGrandfathersWish.QUEST_SLOT;
 
-import games.stendhal.server.entity.mapstuff.portal.AccessCheckingPortal;
 import games.stendhal.server.entity.RPEntity;
+import games.stendhal.server.entity.mapstuff.portal.AccessCheckingPortal;
 import games.stendhal.server.entity.player.Player;
 
 public class MylingWellPortal extends AccessCheckingPortal {
@@ -30,15 +30,18 @@ public class MylingWellPortal extends AccessCheckingPortal {
 
 		final Player player = (Player) user;
 		final String find_myling = player.getQuest(QUEST_SLOT, 1);
-		if (find_myling != null && find_myling.equals("find_myling:done")) {
-			return true;
-		}
-		if (find_myling == null || !find_myling.equals("find_myling:start")) {
-			rejectedMessage = "W tej studni znajduje się coś dziwnego.";
+		if (find_myling == null || find_myling.equals("")) {
+			rejectedMessage = "Nie ma powodu, aby teraz wchodzić do tej studni.";
 			return false;
+		}
+		if (find_myling.equals("find_myling:done")) {
+			return true;
 		}
 		if (!player.isEquipped("lina")) {
 			rejectedMessage = "Aby zejść do tej studni, potrzebujesz liny.";
+			if (!find_myling.equals("find_myling:well_rope")) {
+				player.setQuest(QUEST_SLOT, 1, "find_myling:well_rope");
+			}
 			return false;
 		}
 
@@ -59,7 +62,7 @@ public class MylingWellPortal extends AccessCheckingPortal {
 	protected boolean usePortal(final Player player) {
 		final boolean ret = super.usePortal(player);
 
-		if (player.getQuest(QUEST_SLOT, 1).equals("find_myling:start")) {
+		if (!player.getQuest(QUEST_SLOT, 1).equals("find_myling:done")) {
 			// rope is hung so player can use anytime now
 			player.drop("lina");
 			player.setQuest(QUEST_SLOT, 1, "find_myling:done");

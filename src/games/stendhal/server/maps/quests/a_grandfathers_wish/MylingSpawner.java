@@ -68,6 +68,7 @@ public class MylingSpawner extends Entity implements TurnListener {
 		}
 	}
 
+	@Override
 	public void onTurnReached(final int currentTurn) {
 		if (niallIsActive()) {
 			// wait for Niall clones to be removed before respawning myling
@@ -112,6 +113,7 @@ public class MylingSpawner extends Entity implements TurnListener {
 			activeNialls.add(curedNiall);
 
 			SingletonRepository.getTurnNotifier().notifyInTurns(75, new TurnListener() {
+				@Override
 				public void onTurnReached(final int currentTurn) {
 					// remove Niall from world so new Myling can spawn
 					activeNialls.remove(curedNiall);
@@ -123,6 +125,7 @@ public class MylingSpawner extends Entity implements TurnListener {
 			for (final String phrase : dialogue) {
 				talkDelay += 10;
 				SingletonRepository.getTurnNotifier().notifyInTurns(talkDelay, new TurnListener() {
+					@Override
 					public void onTurnReached(final int currentTurn) {
 						if (phrase == null) {
 							// walk to rope/ladder
@@ -166,5 +169,20 @@ public class MylingSpawner extends Entity implements TurnListener {
 			}
 			activeMylings.remove(myling);
 		}
+	}
+
+	/**
+	 * Retrieved the currently active Niall instance.
+	 *
+	 * @return
+	 *     <code>SpeakerNPC</code> Niall instance.
+	 */
+	public SpeakerNPC getActiveNiall() {
+		final int activeCount = activeNialls.size();
+		if (activeCount > 0) {
+			return activeNialls.get(activeCount - 1);
+		}
+
+		return null;
 	}
 }
