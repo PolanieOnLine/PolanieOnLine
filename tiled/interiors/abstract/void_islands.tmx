@@ -87,8 +87,8 @@
  <tileset firstgid="360" name="holy_light1" tilewidth="32" tileheight="32" tilecount="1" columns="1">
   <image source="../../tileset/light/holy_light1.png" width="32" height="32"/>
  </tileset>
- <tileset firstgid="361" name="pol_szaraki" tilewidth="32" tileheight="32" tilecount="9" columns="9">
-  <image source="../../tileset/logic/creature/pol_szaraki.png" width="288" height="32"/>
+ <tileset firstgid="361" name="pol_szaraki" tilewidth="32" tileheight="32" tilecount="10" columns="10">
+  <image source="../../tileset/logic/creature/pol_szaraki.png" width="320" height="32"/>
  </tileset>
  <layer id="1" name="0_floor" width="128" height="128">
   <data encoding="base64" compression="gzip">
@@ -117,7 +117,7 @@
  </layer>
  <layer id="6" name="objects" width="128" height="128">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACu3dSU7DMBQG4HIoJBAL1hylzJyEqYCYVBZwTwSLSq0YmsbOi+3v2zf90wy2n1x7MgEAAAAAAAAAuniMDgCM3nQrOgHr2Hadsjor8Pf17DK0h+gAZOG6wu+uogMAnZ3rI9PDbXSAIC2MLXcbOEcAyrJO+zvLH6NJrfb5WnORuf+X+/hR37XqUD8aADq7iQ4AQHFOjfsG4f8UlOo9OgBFuI4OAAOJrJdHqfWc76ID8O2o0vsLgPq9RAcAyOQ14bHuEx4LuipxzY5oKZ9/6mVOUt28B6jVU3QAgA0dGNcALJibNl7H2iuokrnj9VML7OcyOgAAC3vBYxJtQl7mfgAAY/EWHeAP+kxQN7VcNjXv+fkT7UtzVtefcw/kk2KdE/uhwTLvLABKpr63rMvcxch1tOGL5xfGoU978JEuBomkqHupEwC5WLcEAGD81h1XPueNAUCj7IHGT/YrrFlPKzwngKGVvM/DjnYA/qW/BJSsS/18li0FAAAAAAAAAAAAtOcThiOTOAAAAQA=
+   H4sIAAAAAAAACu3dS07DMBQFUFgUEogBY5ZS/rARfgXETzCAfSIYVGoFtGnsvNg+Z970polj+8l1NjYAAAAAAAAAgC4eowMAozfZjE7AKrZcp6xOC/x9tV2G9hAdgCxcV/jbVXQAoLMzY2R6uI0OEKSFueVOA+cIQFlW6X+n+WM0qdUxX2vOM4//ch8/6rsWHRhHA0BnN9EBACjOiXnfIPyfglJ9RAegCNfRAWAgkfXyKLWe8110AH4cVnp/AVC/l+gAAJm8JjzWfcJjQVcl7tkRLWX7p17WJNXNc4BaPUUHAFjTvnkNwIy1aeN1pL+CpS4KbCfWjtdPLbCfy+gAAMzsBo+19Al5WfsBAIzFe3SAfxgzQd3UclnXW8/PH+tfmrO4/5x7IJ8U+5x4HxrM88wCoGTqe/O6rF2M3Ecbvmm/MA59+oPPdDFIJEXdS50AyMW+JQAA47fqvPI5bwwAGuUdaPxmr8Ka9aTCcwIYWsnvedjWD8BSxktAybrUz6fZUgAAAAAAAAAAAEB7vgC9hkBBAAABAA==
   </data>
  </layer>
  <layer id="7" name="collision" width="128" height="128" opacity="0.5">

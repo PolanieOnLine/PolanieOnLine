@@ -242,4 +242,31 @@
 			<profile name="patrolling"/>
 		</ai>
 	</creature>
+
+	<creature name="szarak najwyższy">
+		<type class="alien" subclass="szarak_najwyzszy" tileid="pol_szaraki.png:9"/>
+		<description>Oto szarak najwyższy.</description>
+		<attributes>
+			<atk value="3171"/>
+			<def value="145"/>
+			<hp value="13860"/>
+			<speed value="0.9"/>
+			<size value="1,1"/>
+		</attributes>
+		<level value="545"/>
+		<experience value="300680"/>
+		<respawn value="13960"/>
+		<corpse name="humanoid"/>
+		<drops>
+			<item value="money" quantity="[1,2]" probability="100.0"/>
+		</drops>
+		<equips>
+		</equips>
+		<ai>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="patrolling"/>
+		</ai>
+	</creature>
 </creatures>
