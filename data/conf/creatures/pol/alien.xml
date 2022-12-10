@@ -9,7 +9,7 @@
 			<atk value="2044"/>
 			<def value="116"/>
 			<hp value="8940"/>
-			<speed value="0.9"/>
+			<speed value="0.8"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="500"/>
@@ -90,7 +90,7 @@
 			<atk value="2366"/>
 			<def value="125"/>
 			<hp value="10344"/>
-			<speed value="0.9"/>
+			<speed value="0.8"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="515"/>
@@ -117,7 +117,7 @@
 			<atk value="2485"/>
 			<def value="128"/>
 			<hp value="10860"/>
-			<speed value="0.9"/>
+			<speed value="0.7"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="520"/>
@@ -133,7 +133,6 @@
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
-			<profile name="patrolling"/>
 		</ai>
 	</creature>
 
@@ -144,7 +143,7 @@
 			<atk value="2609"/>
 			<def value="131"/>
 			<hp value="11400"/>
-			<speed value="0.9"/>
+			<speed value="0.7"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="525"/>
@@ -160,7 +159,6 @@
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
-			<profile name="patrolling"/>
 		</ai>
 	</creature>
 
@@ -198,7 +196,7 @@
 			<atk value="2876"/>
 			<def value="138"/>
 			<hp value="12570"/>
-			<speed value="0.9"/>
+			<speed value="0.8"/>
 			<size value="1,1"/>
 		</attributes>
 		<level value="535"/>
