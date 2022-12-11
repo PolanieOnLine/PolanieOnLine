@@ -137,7 +137,7 @@
 	</creature>
 
 	<creature name="szarak kapitan strażników">
-		<type class="alien" subclass="szarak_staznik_kapitan" tileid="pol_szaraki.png:5"/>
+		<type class="alien" subclass="szarak_straznik_kapitan" tileid="pol_szaraki.png:5"/>
 		<description>Oto szarak kapitan strażników.</description>
 		<attributes>
 			<atk value="2609"/>
