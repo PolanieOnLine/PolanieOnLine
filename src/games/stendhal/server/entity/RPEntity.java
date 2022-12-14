@@ -495,8 +495,18 @@ public abstract class RPEntity extends CombatEntity {
 		}
 
 		// Defending side
-		final double armor = defender.getItemDef();
-		final int targetDef = defender.getCappedDef();
+		double armor = defender.getItemDef();
+		int targetDef = defender.getCappedDef();
+
+		if (this instanceof Creature) {
+			Creature creature = (Creature) this;
+
+			if (creature.isImmortal()) {
+				armor = (armor * 0.02);
+				targetDef = (int) (targetDef * 0.2);
+			}
+		}
+
 		// Even strong players are vulnerable without any armor.
 		// Armor def gets much higher with high level players unlike
 		// weapon atk, so it can not be treated similarly. Using geometric
