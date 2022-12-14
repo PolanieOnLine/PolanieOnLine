@@ -359,6 +359,7 @@
 			<quantity value="1"/>
 			<regen value="0"/>
 			<menu value="Wypij|Użyj"/>
+			<unattainable>true</unattainable>
 		</attributes>
 		<weight value="1.0"/>
 		<value value="1"/>

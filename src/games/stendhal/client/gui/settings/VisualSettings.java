@@ -233,7 +233,7 @@ class VisualSettings {
 		});
 		page.add(showHPBarToggle);
 
-		final JCheckBox chatBubblesToggle = SettingsComponentFactory.createSettingsToggle(BUBBLES_PROPERTY, false,
+		final JCheckBox chatBubblesToggle = SettingsComponentFactory.createSettingsToggle(BUBBLES_PROPERTY, true,
 				"Ruchome dymki chatu", "Dymki chatu podążają za graczem i innymi obiektami.");
 		chatBubblesToggle.addItemListener(new ItemListener() {
 			@Override

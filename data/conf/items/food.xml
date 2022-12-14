@@ -116,8 +116,7 @@
 			<slot name="trade" />
 		</equipable>
 	</item>
-	
-	<!-- START: SPECIAL APPLES
+
 	<item name="jabłko szczęścia">
 		<type class="food/apple_special" subclass="apple_purple" tileid="-1"/>
 		<description>Oto jabłko szczęścia. Jest pełen wspomnień.</description>
@@ -128,6 +127,7 @@
 			<quantity value="1" />
 			<regen value="1" />
 			<menu value="Zjedz|Użyj"/>
+			<unattainable>true</unattainable>
 		</attributes>
 		<weight value="1.0" />
 		<value value="1" />
@@ -151,6 +151,7 @@
 			<quantity value="1" />
 			<regen value="1" />
 			<menu value="Zjedz|Użyj"/>
+			<unattainable>true</unattainable>
 		</attributes>
 		<weight value="1.0" />
 		<value value="1" />
@@ -163,7 +164,6 @@
 			<slot name="trade" />
 		</equipable>
 	</item>
-	 END: SPECIAL APPLES -->
 
 	<item name="jabłko niezgody">
 		<type class="food" subclass="apple_black" tileid="-1"/>
@@ -1664,7 +1664,7 @@
 		</equipable>
 	</item>
 	
-	<!-- DISABLED: northpole goodies 
+	<!-- northpole goodies -->
 	<item name="cukierkowa laska">
 		<type class="food" subclass="candycane" tileid="-1"/>
 		<description>Oto przepszyna cukierkowa laska.</description>
@@ -1675,6 +1675,7 @@
 			<quantity value="1"/>
 			<regen value="10"/>
 			<menu value="Zjedz|Użyj"/>
+			<unattainable>true</unattainable>
 		</attributes>
 		<weight value="1.0"/>
 		<value value="150"/>
@@ -1698,6 +1699,7 @@
 			<quantity value="1"/>
 			<regen value="10"/>
 			<menu value="Zjedz|Użyj"/>
+			<unattainable>true</unattainable>
 		</attributes>
 		<weight value="1.0"/>
 		<value value="150"/>
@@ -1721,6 +1723,7 @@
 			<quantity value="1"/>
 			<regen value="10"/>
 			<menu value="Zjedz|Użyj"/>
+			<unattainable>true</unattainable>
 		</attributes>
 		<weight value="1.0"/>
 		<value value="150"/>
@@ -1744,6 +1747,7 @@
 			<quantity value="1"/>
 			<regen value="10"/>
 			<menu value="Zjedz|Użyj"/>
+			<unattainable>true</unattainable>
 		</attributes>
 		<weight value="1.0"/>
 		<value value="150"/>
@@ -1767,6 +1771,7 @@
 			<quantity value="1"/>
 			<regen value="10"/>
 			<menu value="Zjedz|Użyj"/>
+			<unattainable>true</unattainable>
 		</attributes>
 		<weight value="1.0"/>
 		<value value="150"/>
@@ -1790,6 +1795,7 @@
 			<quantity value="1"/>
 			<regen value="10"/>
 			<menu value="Zjedz|Użyj"/>
+			<unattainable>true</unattainable>
 		</attributes>
 		<weight value="1.0"/>
 		<value value="150"/>
@@ -1813,6 +1819,7 @@
 			<quantity value="1"/>
 			<regen value="10"/>
 			<menu value="Zjedz|Użyj"/>
+			<unattainable>true</unattainable>
 		</attributes>
 		<weight value="1.0"/>
 		<value value="150"/>
@@ -1825,7 +1832,6 @@
 			<slot name="trade"/>
 		</equipable>
 	</item>
-    end of northpole goodies -->
 
 	<item name="mufinka">
 		<type class="food" subclass="fairy_cake" tileid="-1"/>

@@ -371,11 +371,11 @@ public class ClearQuestPierscien extends AbstractQuest {
 			return res;
 		}
 		res.add("eFuR zażądał za anulowanie zadania na płaszcz z mithrilu 2 000 000 money. Hasło: płaszcz.");
-		if ("magnat".equals(questState)) {
+		if ("plaszcz".equals(questState)) {
 			return res;
 		}
 		res.add("eFuR zażądał za anulowanie zadania na tarczę z mithrilu 1 500 000 money. Hasło: tarcza.");
-		if ("magnat".equals(questState)) {
+		if ("tarcza".equals(questState)) {
 			return res;
 		}
 		// if things have gone wrong and the quest state didn't match any of the above, debug a bit:

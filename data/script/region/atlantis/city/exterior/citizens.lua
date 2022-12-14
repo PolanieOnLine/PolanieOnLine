@@ -18,7 +18,7 @@
 local zoneName = "-7_deniran_atlantis"
 
 if game:setZone(zoneName) then
-	local genericDesc = "You see a citizen of Atlantis."
+	local genericDesc = "Oto skromni obywatele z Atlantydy."
 
 	-- define silent NPCs
 	local details = {
@@ -46,7 +46,7 @@ if game:setZone(zoneName) then
 			class = "animal/butterfly",
 			resistance = 0,
 			speed = 0.1,
-			desc = "You see a butterfly peacefully gliding through the air.",
+			desc = "Widzisz pięknego motyla fruwającego w powietrzu.",
 			flags = {"ignore_collision"},
 		},
 		{
@@ -56,7 +56,7 @@ if game:setZone(zoneName) then
 			class = "animal/bee",
 			dir = Direction.LEFT,
 			resistance = 0,
-			desc = "You see a bee gathering nectar from the flowers.",
+			desc = "Widzisz uroczą pszczółkę zbierającą nektar z pobliskich kwiatków.",
 			flags = {"active_idle"},
 			sounds = {"bee-1"},
 		},

@@ -128,6 +128,7 @@
 		<description>Oto klucz do sanktuarium dla zwierząt w Ados.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
+			<unattainable>true</unattainable>
 		</attributes>
 		<weight value="1.0"/>
 		<value value="1"/>
@@ -177,7 +178,9 @@
 		<type class="key" subclass="rat" tileid="-1"/>
 		<description/>
 		<implementation class-name="games.stendhal.server.entity.item.MasterKey"/>
-		<attributes/>
+		<attributes>
+			<unattainable>true</unattainable>
+		</attributes>
 		<weight value="1.0"/>
 		<value value="1"/>
 		<equipable>

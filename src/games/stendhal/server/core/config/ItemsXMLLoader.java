@@ -125,6 +125,11 @@ public final class ItemsXMLLoader extends DefaultHandler {
 	@Override
 	public void startElement(final String namespaceURI, final String lName, final String qName,
 			final Attributes attrs) {
+		if (attributesTag && qName.equals("unattainable")) {
+			// "unattainable" is for website use to prevent listing item
+			return;
+		}
+
 		// allow items or item attributes to be disabled with system properties
 		boolean conditionMet = true;
 		String condition = attrs.getValue("condition");

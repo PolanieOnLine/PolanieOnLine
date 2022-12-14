@@ -278,7 +278,7 @@
 	<item name="lina">
 		<type class="tool" subclass="rope" tileid="-1"/>
 		<description>Oto solidna lina. Służy do asekuracji. W niektóre miejsca lepiej się bez niej nie zapuszczać.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
