@@ -1,5 +1,22 @@
 Changelog
 ---------
+1.34
+*klient*
+- Dodano grafikę nowego przedmiotu
+
+*świat*
+- Dodano nowy przedmiot: (1)
+	- magia wiatru
+- Mgły i inne byty nieśmiertelne ignorują 80% pancerza i poziomu defensywy gracza
+- Obniżono minimalny poziom magii oraz zwiększono atak mrozu i zmniejszono atak światła o 1 punkt
+
+*naprawiono błędy*
+- Naprawiono dziennik zadań podczas resetowania u smoka eFuR
+- Naprawiono brak grafiki npc w Gdańsku
+- Naprawiono usuwanie ruchomych dymków chatu poprzez ich kliknięcie
+- Poprawiono tłumaczenia w atlantydzie
+
+
 1.33
 *klient*
 - Dodano grafiki nowych NPC/potworów
