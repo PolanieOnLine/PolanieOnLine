@@ -36,6 +36,7 @@ import games.stendhal.server.core.pathfinder.Path;
 import games.stendhal.server.core.rp.group.Group;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.RPEntity;
+import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.creature.DomesticAnimal;
 import games.stendhal.server.entity.creature.Goat;
 import games.stendhal.server.entity.creature.Pet;
@@ -343,8 +344,9 @@ public class StendhalRPAction {
 
 		// equipment that are broken are added to this list
 		final List<BreakableItem> broken = new ArrayList<>();
+		final Creature c = (Creature) defender;
 
-		if (beaten) {
+		if (beaten && !c.isImmortal()) {
 			final List<Item> weapons = player.getWeapons();
 			final float itemAtk;
 
@@ -425,6 +427,16 @@ public class StendhalRPAction {
 			player.notifyWorldAboutChanges();
 		} else {
 			// Missed
+			if (c.isImmortal() && c.attack()) {
+				if (player.getsAtkXpFrom(defender)) {
+					if (Testing.COMBAT && isRanged) {
+						player.incRatkXP();
+					} else {
+						player.incAtkXP();
+					}
+				}
+			}
+
 			logger.debug("attack from " + player.getID() + " to "
 					+ defender.getID() + ": Missed");
 			player.addEvent(new AttackEvent(false, 0, player.getDamageType(), weaponClass, isRanged));
