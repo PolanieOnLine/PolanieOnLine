@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.2" orientation="orthogonal" renderorder="right-down" width="22" height="17" tilewidth="32" tileheight="32" infinite="0" nextlayerid="25" nextobjectid="1">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" width="22" height="17" tilewidth="32" tileheight="32" infinite="0" nextlayerid="25" nextobjectid="1">
  <tileset firstgid="1" name="../../tileset/furniture/carpet/carpets.png" tilewidth="32" tileheight="32" tilecount="8" columns="4">
   <image source="../../tileset/furniture/carpet/carpets.png" width="128" height="64"/>
  </tileset>
@@ -75,12 +75,12 @@
  </layer>
  <layer id="19" name="2_object" width="22" height="17">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACr3OywpBYRQF4D3FAE/iUp7DPUIhFOUyETLFQAYykIEMDJjwkNZgl5WOnMvOqq+zTudv/UdEZCXvVKEODVVTTWjpmTXc4K6ds6G+pd6GLvRUR/VhoGeu8ICnds6O+l7scvjTbgZCECYRSBvsRiFG4ga7SUg4SAXctYrX3SzkIQcFKEIJylAJsOs2XneHMKL35Zfnr90xTMnExd1udmcwJ4uP737/129492i4e6J+Nty9GG455QUwU40x2AUAAA==
+   H4sIAAAAAAAACr3OTQsBURgF4CsrLPBLfJTf4TtCIRTlYyNki4UsZCELWViw4Uc6i7ecNHJn5s2ppznT3M5cY4xZmXeqUIeGqIkmtOTMGm5wl87ZUN9Sb0MXeqIj+jCQM1d4wFM6Z0d9b/Ry+NNuBkIQJhFIK+xGIUbiCrtJSDhI+dzVitvdLOQhBwUoQgnKUPGxaxu3u0MY0fvyy/PX7himZGLxb5vdGczJ4uO71/t6De8eFXdP1M8QDOi4KN7RKS/te5HY2AUAAA==
   </data>
  </layer>
  <layer id="20" name="3_roof" width="22" height="17">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAACmNgGAWjYPAANyD2AGJ3IPYEYi8g9gZiHyD2G0B34QJZQJyNxK/EQQ9WMNTcSyxooRIeqgAA1QKvcdgFAAA=
+   H4sIAAAAAAAACmNgYGD4xkA98AOJPWruqLmkmusGxB5A7A7EnkDsBcTeQOwDxH4UmEssINXcLCDORuJX4qAHi3vRwVBzL7HmtlAJI5vLxEg997JQ0SxsAABKV7Dx2AUAAA==
   </data>
  </layer>
  <layer id="21" name="4_roof_add" width="22" height="17">
