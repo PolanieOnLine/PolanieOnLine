@@ -108,18 +108,44 @@
 		</equipable>
 	</item>
 
+	<item name="magia wiatru">
+		<type class="magia" subclass="mana_wind" tileid="-1"/>
+		<description>Oto magia wiatru. Czar rzucony za jej pomocą przywołasz potężne burze i wiatry!</description>
+		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<attributes>
+			<atk value="14" condition="!testing.combat"/>
+      		<ratk value="14" condition="testing.combat"/>
+			<def value="4"/>
+			<range value="0"/>
+			<quantity value="1"/>
+			<max_quantity value="2147483647"/>
+			<min_level value="160"/>
+		</attributes>
+		<weight value="0.1"/>
+		<value value="2160"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="magicbag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
 	<item name="magia mrozu">
 		<type class="magia" subclass="mana_ice" tileid="-1"/>
 		<description>Oto magia mrozu. Czar rzucony za jej pomocą sprowadzi wieczną zamieć!</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
-			<atk value="15" condition="!testing.combat"/>
-      		<ratk value="15" condition="testing.combat"/>
+			<atk value="16" condition="!testing.combat"/>
+      		<ratk value="16" condition="testing.combat"/>
 			<def value="5"/>
 			<range value="0"/>
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
-			<min_level value="200"/>
+			<min_level value="180"/>
 		</attributes>
 		<weight value="0.1"/>
 		<value value="2160"/>
@@ -146,7 +172,7 @@
 			<range value="0"/>
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
-			<min_level value="260"/>
+			<min_level value="220"/>
 		</attributes>
 		<weight value="0.1"/>
 		<value value="2160"/>
@@ -167,13 +193,13 @@
 		<description>Oto magia światła. Czar rzucony za jej pomocą jest niezwyciężony!</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
-			<atk value="21" condition="!testing.combat"/>
-      		<ratk value="21" condition="testing.combat"/>
+			<atk value="20" condition="!testing.combat"/>
+      		<ratk value="20" condition="testing.combat"/>
 			<def value="7"/>
 			<range value="0"/>
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
-			<min_level value="320"/>
+			<min_level value="280"/>
 		</attributes>
 		<weight value="0.1"/>
 		<value value="2160"/>

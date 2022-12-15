@@ -21,6 +21,7 @@
 		<drops>
 			<item value="mocne antidotum" quantity="[1,2]" probability="10.0"/>
 			<item value="hełm libertyński" quantity="[1,1]" probability="0.02"/>
+			<item value="magia wiatru" quantity="[10,70]" probability="60.0"/>
 		</drops>
 		<equips>
 		</equips>
