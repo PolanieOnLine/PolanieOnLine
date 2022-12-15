@@ -323,7 +323,7 @@ public class StendhalRPAction {
 			weaponClass = attackWeapon.getWeaponType();
 		}
 
-		final boolean beaten;
+		boolean beaten;
 		final boolean usesTrainingDummy = defender instanceof TrainingDummy;
 		if (usesTrainingDummy) {
 			/* training dummies can always be hit except in cases of using a
@@ -340,13 +340,20 @@ public class StendhalRPAction {
 		} else {
 			// Throw dices to determine if the attacker has missed the defender
 			beaten = player.canHit(defender);
+
+			// Checks if defender is a immortal creature
+			if (defender instanceof Creature) {
+				final Creature c = (Creature) defender;
+				if (c.isImmortal()) {
+					beaten = false;
+				}
+			}
 		}
 
 		// equipment that are broken are added to this list
 		final List<BreakableItem> broken = new ArrayList<>();
-		final Creature c = (Creature) defender;
 
-		if (beaten && !c.isImmortal()) {
+		if (beaten) {
 			final List<Item> weapons = player.getWeapons();
 			final float itemAtk;
 
@@ -427,12 +434,15 @@ public class StendhalRPAction {
 			player.notifyWorldAboutChanges();
 		} else {
 			// Missed
-			if (c.isImmortal() && c.attack()) {
-				if (player.getsAtkXpFrom(defender)) {
-					if (Testing.COMBAT && isRanged) {
-						player.incRatkXP();
-					} else {
-						player.incAtkXP();
+			if (defender instanceof Creature) {
+				final Creature c = (Creature) defender;
+				if (c.isImmortal()&& c.attack()) {
+					if (player.getsAtkXpFrom(defender)) {
+						if (Testing.COMBAT && isRanged) {
+							player.incRatkXP();
+						} else {
+							player.incAtkXP();
+						}
 					}
 				}
 			}
