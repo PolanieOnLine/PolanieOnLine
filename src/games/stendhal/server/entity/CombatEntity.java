@@ -17,19 +17,19 @@ import java.util.WeakHashMap;
 import org.apache.log4j.Logger;
 
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.npc.PassiveNPC;
 import games.stendhal.server.entity.player.Player;
 import marauroa.common.game.Definition;
+import marauroa.common.game.Definition.Type;
 import marauroa.common.game.RPClass;
 import marauroa.common.game.RPObject;
-import marauroa.common.game.Definition.Type;
 
 /**
  * An entity that can engage in combat.
  */
 public abstract class CombatEntity extends GuidedEntity {
 	private static final Logger logger = Logger.getLogger(CombatEntity.class);
-
 	public static final String RPCLASS_NAME = "combat_entity";
 
 	/**
@@ -110,7 +110,7 @@ public abstract class CombatEntity extends GuidedEntity {
 			rpclass.addAttribute("status_zombie", Type.SHORT, Definition.VOLATILE);
 			rpclass.addAttribute("status_heavy", Type.SHORT, Definition.VOLATILE);
 
-			// Status effects resistances
+			// status effects resistances
 			rpclass.addAttribute("resist_confused", Type.FLOAT, Definition.VOLATILE);
 			rpclass.addAttribute("resist_drunk", Type.FLOAT, Definition.VOLATILE);
 			rpclass.addAttribute("resist_heavy", Type.FLOAT, Definition.VOLATILE);
@@ -118,41 +118,68 @@ public abstract class CombatEntity extends GuidedEntity {
 			rpclass.addAttribute("resist_shocked", Type.FLOAT, Definition.VOLATILE);
 			rpclass.addAttribute("resist_zombie", Type.FLOAT, Definition.VOLATILE);
 
-			// Events
+			// events
 			rpclass.addRPEvent("attack", Definition.VOLATILE);
 
 			// DO NOT USE, the following are obsolete
 			rpclass.addAttribute("risk", Type.BYTE, Definition.VOLATILE);
 			rpclass.addAttribute("damage", Type.INT, Definition.VOLATILE);
 		} catch (final Exception e) {
-			logger.error("cannot generate RPClass", e);
+				logger.error("cannot generate RPClass", e);
 		}
 	}
 
-	private boolean getsFightXpFrom(final CombatEntity opponent) {
-		return this instanceof Player && !(opponent instanceof PassiveNPC);
-	}
-
+	/**
+	 * Checks if this entity should get ATK XP.
+	 */
 	public boolean getsAtkXpFrom(final CombatEntity defender) {
-		return getsFightXpFrom(defender);
-	}
+		if (!(this instanceof Player)) {
+			return false;
+		}
 
-	public boolean getsDefXpFrom(final CombatEntity attacker) {
-		return getsFightXpFrom(attacker);
+		// PvP is handled with the traditional rules
+		if (defender instanceof Player) {
+			return recentlyDamagedBy(defender);
+		}
+		// PvE with fogs with the traditional rules
+		if (defender instanceof Creature) {
+			if (((Creature) defender).isImmortal()) {
+				return recentlyDamagedBy(defender);
+			}
+		}
+
+		return !(defender instanceof PassiveNPC);
 	}
 
 	/**
-	 * UNUSED
+	 * Checks if this entity should get DEF XP.
 	 */
-	public boolean isGuaranteedAtkXpFrom(final CombatEntity defender) {
-		final Integer turnWhenLastDamaged = enemiesThatGiveFightXP.get(defender);
+	public boolean getsDefXpFrom(final CombatEntity attacker) {
+		if (!(this instanceof Player)) {
+			return false;
+		}
+
+		return recentlyDamagedBy(attacker);
+	}
+
+	/**
+	 * Checks if entity qualifies to receive combat XP.
+	 *
+	 * @param opponent
+	 *     Opposing entity.
+	 * @return
+	 *     <code>true</code> if damage occurred within a specified
+	 *     number of turns.
+	 */
+	private boolean recentlyDamagedBy(final CombatEntity opponent) {
+		final Integer turnWhenLastDamaged = enemiesThatGiveFightXP.get(opponent);
 		if (turnWhenLastDamaged == null) {
 			return false;
 		}
 
 		final int currentTurn = SingletonRepository.getRuleProcessor().getTurn();
 		if (currentTurn - turnWhenLastDamaged > GUARANTEED_ATK_XP_TURNS) {
-			enemiesThatGiveFightXP.remove(defender);
+			enemiesThatGiveFightXP.remove(opponent);
 			return false;
 		}
 

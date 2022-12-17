@@ -343,10 +343,7 @@ public class StendhalRPAction {
 
 			// Checks if defender is a immortal creature
 			if (defender instanceof Creature) {
-				final Creature c = (Creature) defender;
-				if (c.isImmortal()) {
-					beaten = false;
-				}
+				beaten = !((Creature) defender).isImmortal();
 			}
 		}
 
@@ -372,7 +369,7 @@ public class StendhalRPAction {
 			 *        is supposed to be done in CombatEntity but is not
 			 *        working for some reason.
 			 */
-			if ((defender instanceof Player) && defender.getsDefXpFrom(player)) {
+			if (defender.getsDefXpFrom(player)) {
 				defender.incDefXP();
 			}
 			if (player.getsAtkXpFrom(defender)) {
@@ -434,16 +431,12 @@ public class StendhalRPAction {
 			player.notifyWorldAboutChanges();
 		} else {
 			// Missed
-			if (defender instanceof Creature) {
-				final Creature c = (Creature) defender;
-				if (c.isImmortal()&& c.attack()) {
-					if (player.getsAtkXpFrom(defender)) {
-						if (Testing.COMBAT && isRanged) {
-							player.incRatkXP();
-						} else {
-							player.incAtkXP();
-						}
-					}
+			if ((defender instanceof Creature && ((Creature) defender).isImmortal())
+					&& player.getsAtkXpFrom(defender)) {
+				if (Testing.COMBAT && isRanged) {
+					player.incRatkXP();
+				} else {
+					player.incAtkXP();
 				}
 			}
 
