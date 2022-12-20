@@ -6,3 +6,5 @@
 /polanieonline-compiled.js
 /polanieonline-compiled.map
 /stendhal-compiled.js.map
+
+/stendhal/node_modules/*
