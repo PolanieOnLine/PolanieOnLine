@@ -45,7 +45,7 @@ public class ItemLogEvent extends RPEvent {
 	private final String[] itemExNames = { "ciupaga startowa", "złota ciupaga", "złota ciupaga z wąsem", "eliksir miłości",
 			"złota ciupaga z dwoma wąsami", "złota ciupaga z trzema wąsami", "amulecik z mithrilu", "wymioty", "przędza z mithrilu",
 			"ekskalibur", "strzała lodowa", "strzała mroku", "strzała ognia", "strzała światła", "antyjad", "wosk pszczeli",
-			"eliksir mroku", "ekstrakt litworowy", "jad kobry", "smoczy eliksir", "duży smoczy eliksir", "woda", "wełna",
+			"eliksir mroku", "ekstrakt litworowy", "jad kobry", "smoczy eliksir", "duży smoczy eliksir", "wełna",
 			"mocna nalewka litworowa", "nalewka litworowa", "sok jabłkowy", "zupa grzybowa", "zupa rybna", "sukno z mithrilu",
 			"zdobyczny hełm", "kryształ ametystu", "kryształ diamentu", "kryształ obsydianu", "kryształ rubinu",
 			"dummy_ranged", "dummy_melee_8", "grudziarka", "końskie włosie", "olejek", "przędza", "przędza jedwabna",

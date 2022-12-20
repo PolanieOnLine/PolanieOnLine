@@ -34,7 +34,7 @@ public class WaterSpringSource extends PlayerActivityEntity {
 	/**
 	 * The reward
 	 */
-	private static final String[] items = { "woda" };
+	private static final String[] items = { "butelka woda" };
 
 	/**
 	 * The chance that filling flask is successful.
@@ -107,10 +107,10 @@ public class WaterSpringSource extends PlayerActivityEntity {
         * The player can fill an empty flask at the spring.
         * Check they have it before they can start filling it up.
 		*/
-		if (player.isEquipped("flasza")) {
+		if (player.isEquipped("butelka")) {
 			return true;
 		} else {
-			player.sendPrivateText("Potrzebujesz flaszy, aby napełnić ją wodą.");
+			player.sendPrivateText("Potrzebujesz butelki, aby napełnić ją wodą.");
 			return false;
 		}
 	}
@@ -154,7 +154,7 @@ public class WaterSpringSource extends PlayerActivityEntity {
 			final String itemName = items[Rand.rand(items.length)];
 			final Item item = SingletonRepository.getEntityManager().getItem(itemName);
 			int amount = 1;
-			if (itemName.equals("woda"))
+			if (itemName.equals("butelka wody"))
 					 {
 				/*
 				 * Bound powerful items.
@@ -175,7 +175,7 @@ public class WaterSpringSource extends PlayerActivityEntity {
             this.addEvent(new SoundEvent(failSound, SOUND_RADIUS, 100, SoundLayer.AMBIENT_SOUND));
     		this.notifyWorldAboutChanges();
 
-			player.sendPrivateText("Oh nie! Rozbiłeś flaszę i rozlałeś wodę. Teraz jest rozbita.");
+			player.sendPrivateText("Och nie! Rozbiłeś swoją butelkę i rozlałeś wodę. Teraz jest butelka w malutkich częściach.");
 		}
 		notifyWorldAboutChanges();
 	}
@@ -193,7 +193,7 @@ public class WaterSpringSource extends PlayerActivityEntity {
         notifyWorldAboutChanges();
 
 		// remove flask from player as they try to fill it.
-		player.drop("flasza");
-		player.sendPrivateText("Rozpocząłeś napełnianie pustej flaszy świeżą wodą. Miejmy nadzieje, że nie wyślizgnie ci się z rąk!");
+		player.drop("butelka");
+		player.sendPrivateText("Rozpocząłeś napełnianie pustej butelki świeżą wodą. Miejmy nadzieje, że nie wyślizgnie ci się z rąk!");
 	}
 }

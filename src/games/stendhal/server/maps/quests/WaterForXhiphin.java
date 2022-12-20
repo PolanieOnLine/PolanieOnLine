@@ -150,11 +150,11 @@ public class WaterForXhiphin extends AbstractQuest {
 		final List<ChatAction> actions = new LinkedList<ChatAction>();
 		// for now Stefan is just able to check one water at a time (even from a stack) and he always says it's fine and clean
 		// if you go to him with one checked and one unchecked he might just check the checked one again - depends what sits first in bag
-		actions.add(new DropItemAction("woda",1));
+		actions.add(new DropItemAction("butelka wody",1));
 		actions.add(new ChatAction() {
 			@Override
 			public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
-				final Item water = SingletonRepository.getEntityManager().getItem("woda");
+				final Item water = SingletonRepository.getEntityManager().getItem("butelka wody");
 				water.setInfoString(CLEAN_WATER_INFOSTRING);
 				water.setDescription("Oto świeża woda. Jest smaczna i ożeźwiająca. Stefan sprawdzał ją.");
 				// remember the description
@@ -165,7 +165,7 @@ public class WaterForXhiphin extends AbstractQuest {
 
 		waterNPC.add(ConversationStates.ATTENDING, 
 					Arrays.asList("water", "clean", "check", "woda", "czysta", "czystość", "sprawdzał"),
-					new PlayerHasItemWithHimCondition("woda"),
+					new PlayerHasItemWithHimCondition("butelka wody"),
 					ConversationStates.ATTENDING, 
 					"Ta woda jak dla mnie, to wygląda na czystą! Musi być z dobrego źródła.",
 					// take the item and give them a new one with an infostring or mark all?
@@ -174,7 +174,7 @@ public class WaterForXhiphin extends AbstractQuest {
 		// player asks about water but doesn't have it with them
 		waterNPC.add(ConversationStates.ATTENDING, 
 					Arrays.asList("water", "clean", "check", "woda", "czysta", "czystość", "sprawdzał"),
-					new NotCondition(new PlayerHasItemWithHimCondition("woda")),
+					new NotCondition(new PlayerHasItemWithHimCondition("butelka wody")),
 					ConversationStates.ATTENDING, 
 					"Możesz zdobyć wodę ze źródła w górach lub z dużych źródeł w podliżu wodospadów. Jeżeli przyniesiesz mi to sprawdzę jej czystość.",
 					null);
@@ -184,20 +184,20 @@ public class WaterForXhiphin extends AbstractQuest {
 		// Player has got water and it has been checked
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
 		// make sure we drop the checked water not any other water
-		reward.add(new DropInfostringItemAction("woda", CLEAN_WATER_INFOSTRING));
+		reward.add(new DropInfostringItemAction("butelka wody", CLEAN_WATER_INFOSTRING));
 		reward.add(new EquipItemAction("eliksir", 3));
 		reward.add(new IncreaseXPAction(250));
 		reward.add(new IncrementQuestAction(QUEST_SLOT, 2, 1) );
 		reward.add(new SetQuestToTimeStampAction(QUEST_SLOT,1));
 		reward.add(new SetQuestAction(QUEST_SLOT, 0, "done"));
 		reward.add(new IncreaseKarmaAction(5.0));
-		reward.add(new InflictStatusOnNPCAction("woda"));
+		reward.add(new InflictStatusOnNPCAction("butelka wody"));
 
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.combine(ConversationPhrases.QUEST_MESSAGES, EXTRA_TRIGGER), 
 				new AndCondition(
 						new QuestActiveCondition(QUEST_SLOT),
-						new PlayerHasInfostringItemWithHimCondition("woda", CLEAN_WATER_INFOSTRING)),
+						new PlayerHasInfostringItemWithHimCondition("butelka wody", CLEAN_WATER_INFOSTRING)),
 				ConversationStates.ATTENDING, 
 				"Bardzo dziękuję! To jest to czego aktualnie potrzebowałem! Przyjmij te mikstury, które dała mi Sarzina.",
 				new MultipleActions(reward));
@@ -207,7 +207,7 @@ public class WaterForXhiphin extends AbstractQuest {
 				ConversationPhrases.combine(ConversationPhrases.QUEST_MESSAGES, EXTRA_TRIGGER), 
 				new AndCondition(
 						new QuestActiveCondition(QUEST_SLOT),
-						new NotCondition(new PlayerHasItemWithHimCondition("woda"))),
+						new NotCondition(new PlayerHasItemWithHimCondition("butelka wody"))),
 				ConversationStates.ATTENDING, 
 				"Poczekam, aż przyniesiesz mi trochę wody. To słońce strasznie grzeje.",
 				null);
@@ -217,8 +217,8 @@ public class WaterForXhiphin extends AbstractQuest {
 				ConversationPhrases.combine(ConversationPhrases.QUEST_MESSAGES, EXTRA_TRIGGER), 
 				new AndCondition(
 						new QuestActiveCondition(QUEST_SLOT),
-						new PlayerHasItemWithHimCondition("woda"),
-						new NotCondition(new PlayerHasInfostringItemWithHimCondition("woda", CLEAN_WATER_INFOSTRING))),
+						new PlayerHasItemWithHimCondition("butelka wody"),
+						new NotCondition(new PlayerHasInfostringItemWithHimCondition("butelka wody", CLEAN_WATER_INFOSTRING))),
 				ConversationStates.ATTENDING, 
 				"Hmm... to nie to. Nie ufam Tobie, ale nie jestem pewien czy ta woda nadaje się do picia. Czy mógłbyś się udać do #Stefana i poprosić go o #sprawdzenie?",
 				null);
@@ -252,10 +252,10 @@ public class WaterForXhiphin extends AbstractQuest {
 		if (player.isQuestInState(QUEST_SLOT, "start") || isCompleted(player)) {
 			res.add(Grammar.genderVerb(player.getGender(), "Zgodziłem") + " się przynieść mu trochę wody, aby Xhiphin Zohos ugasił pragnienie.");
 		}
-		if (player.isQuestInState(QUEST_SLOT, "start") && player.isEquipped("woda") && new NotCondition(new PlayerHasInfostringItemWithHimCondition("woda", CLEAN_WATER_INFOSTRING)).fire(player, null, null) || isCompleted(player)) {
+		if (player.isQuestInState(QUEST_SLOT, "start") && player.isEquipped("butelka wody") && new NotCondition(new PlayerHasInfostringItemWithHimCondition("butelka wody", CLEAN_WATER_INFOSTRING)).fire(player, null, null) || isCompleted(player)) {
 			res.add(Grammar.genderVerb(player.getGender(), "Znalazłem") + " źródło świeżej wody, ale nie jestem " + Grammar.genderVerb(player.getGender(), "pewny") + " czy jest bezpieczna do picia dla Xhiphina.");
 		}
-		if (new PlayerHasInfostringItemWithHimCondition("woda", CLEAN_WATER_INFOSTRING).fire(player, null, null) || isCompleted(player)) {
+		if (new PlayerHasInfostringItemWithHimCondition("butelka wody", CLEAN_WATER_INFOSTRING).fire(player, null, null) || isCompleted(player)) {
 			res.add("Stefan, szef w hotelu w Fado sprawdził wodę, którą zebrałem i jest czysta i zdatna do picia.");
 		}
 		// checked water was clean?

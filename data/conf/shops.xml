@@ -6,16 +6,13 @@
 	<shop name="food&amp;drinks" type="sells">
 		<item name="sok z chmielu" price="10" />
 		<item name="napój z winogron" price="15" />
-		<item name="flasza" price="5" />
 		<item name="ser" price="20" />
 		<item name="jabłko" price="10" />
 		<item name="marchew" price="10" />
 		<item name="mięso" price="40" />
 		<item name="szynka" price="80" />
-		<!-- DISABLED ITEMS
-		<item name="buteleczka" price="8" />
-		<item name="butelka" price="10" />
-		DISABLED ITEMS -->
+		<item name="buteleczka" price="5" />
+		<item name="butelka" price="8" />
 	</shop>
 
 	<!-- Siandra kupuje: -->

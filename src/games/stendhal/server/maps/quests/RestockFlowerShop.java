@@ -212,7 +212,7 @@ public class RestockFlowerShop extends AbstractQuest {
 
 	private void prepareBringingStep() {
 		List<String> requestedItems = new ArrayList<>(flowerTypes);
-		requestedItems.add("woda");
+		requestedItems.add("butelka wody");
 
 		ChatAction rewardAction = new MultipleActions(
 				new IncreaseXPAction(1000),

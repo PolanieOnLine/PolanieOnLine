@@ -164,7 +164,7 @@ public class DailyItemQuest extends AbstractQuest {
 
 		// container
 		items.put("butla czwórniaczka",3);
-		items.put("flasza",5);
+		items.put("butelka",5);
 		items.put("wąska butelka",5);
 
 		// drinks
@@ -177,7 +177,7 @@ public class DailyItemQuest extends AbstractQuest {
 		items.put("trucizna",5);
 		items.put("eliksir",5);
 		items.put("filiżanka herbaty",3);
-		items.put("woda",5);
+		items.put("butelka wody",5);
 		items.put("napój z winogron",10);
 
 		// flower

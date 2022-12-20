@@ -133,7 +133,7 @@ public class MedicineForTad extends AbstractQuest {
 
 		// In case Quest has already been completed
 		npc.add(ConversationStates.ATTENDING,
-				Arrays.asList("flasza", "flaszka", "flaszę", "flaszą"),
+				Arrays.asList("butelka", "flaszka", "flaszę", "flaszą"),
 				new QuestCompletedCondition(QUEST_SLOT),
 				ConversationStates.ATTENDING,
 				TAD_TALK_ALREADY_HELPED_2,
@@ -141,7 +141,7 @@ public class MedicineForTad extends AbstractQuest {
 
 		// If quest is not started yet, start it.
 		npc.add(ConversationStates.QUEST_OFFERED,
-				Arrays.asList("flasza", "flaszka", "flaszę", "flaszą"),
+				Arrays.asList("butelka", "flaszka", "flaszę", "flaszą"),
 				new QuestNotStartedCondition(QUEST_SLOT),
 				ConversationStates.QUEST_OFFERED,
 				TAD_TALK_FLASK_MARGARET,
@@ -170,10 +170,10 @@ public class MedicineForTad extends AbstractQuest {
 
 		// Remind player about the quest
 		npc.add(ConversationStates.ATTENDING,
-				Arrays.asList("flasza", "flaszka", "flaszę"),
+				Arrays.asList("butelka", "flaszka", "flaszę"),
 				new AndCondition(
 						new QuestInStateCondition(QUEST_SLOT, 0, STATE_START),
-						new NotCondition(new PlayerHasItemWithHimCondition("flasza"))),
+						new NotCondition(new PlayerHasItemWithHimCondition("butelka"))),
 				ConversationStates.ATTENDING,
 				TAD_TALK_WAIT_FOR_FLASK,
 				null);
@@ -204,14 +204,14 @@ public class MedicineForTad extends AbstractQuest {
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestInStateCondition(QUEST_SLOT, 0, STATE_START),
-						new PlayerHasItemWithHimCondition("flasza")),
+						new PlayerHasItemWithHimCondition("butelka")),
 				ConversationStates.ATTENDING, 
 				TAD_TALK_GOT_FLASK + " " + TAD_TALK_REWARD_MONEY + " " + TAD_TALK_FLASK_ILISA,
 				new MultipleActions(processStep));
 
 		// player said hi with flask on ground then picked it up and said flask
-		npc.add(ConversationStates.ATTENDING, Arrays.asList("flasza", "flaszka", "flaszę"),
-                new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0, STATE_START), new PlayerHasItemWithHimCondition("flasza")),
+		npc.add(ConversationStates.ATTENDING, Arrays.asList("butelka", "flaszka", "flaszę"),
+                new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0, STATE_START), new PlayerHasItemWithHimCondition("butelka")),
                 ConversationStates.ATTENDING,
                 TAD_TALK_GOT_FLASK + " " + TAD_TALK_REWARD_MONEY + " " + TAD_TALK_FLASK_ILISA,
                 new MultipleActions(processStep));
@@ -220,7 +220,7 @@ public class MedicineForTad extends AbstractQuest {
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestInStateCondition(QUEST_SLOT, 0, STATE_ILISA),
-						new PlayerHasItemWithHimCondition("flasza")),
+						new PlayerHasItemWithHimCondition("butelka")),
 				ConversationStates.ATTENDING, 
 				TAD_TALK_GOT_FLASK + " " + TAD_TALK_FLASK_ILISA,
 				null);
@@ -248,13 +248,13 @@ public class MedicineForTad extends AbstractQuest {
 				new AndCondition(
 						new GreetingMatchesNameCondition(npc.getName()),
 						new QuestInStateCondition(QUEST_SLOT, 0, STATE_ILISA),
-						new NotCondition(new PlayerHasItemWithHimCondition("flasza"))),
+						new NotCondition(new PlayerHasItemWithHimCondition("butelka"))),
 				ConversationStates.ATTENDING, 
 				ILISA_TALK_ASK_FOR_FLASK,
 				null);
 
 		final List<ChatAction> processStep = new LinkedList<ChatAction>();
-		processStep.add(new DropItemAction("flasza"));
+		processStep.add(new DropItemAction("butelka"));
 		processStep.add(new IncreaseXPAction(150));
 		processStep.add(new SetQuestAction(QUEST_SLOT, 0, STATE_HERB));
 
@@ -262,7 +262,7 @@ public class MedicineForTad extends AbstractQuest {
 				new AndCondition(
 						new GreetingMatchesNameCondition(npc.getName()),
 						new QuestInStateCondition(QUEST_SLOT, 0, STATE_ILISA),
-						new PlayerHasItemWithHimCondition("flasza")),
+						new PlayerHasItemWithHimCondition("butelka")),
 				ConversationStates.ATTENDING, 
 				ILISA_TALK_ASK_FOR_HERB,
 				new MultipleActions(processStep));
@@ -399,7 +399,7 @@ public class MedicineForTad extends AbstractQuest {
 		if (player.isQuestInState(QUEST_SLOT, 0, STATE_START, STATE_ILISA, STATE_HERB, STATE_POTION, STATE_DONE)) {
 			res.add(HISTORY_QUEST_OFFERED);
 		}
-		if (questState.equals(STATE_START) && player.isEquipped("flasza")
+		if (questState.equals(STATE_START) && player.isEquipped("butelka")
 				|| player.isQuestInState(QUEST_SLOT, 0, STATE_ILISA, STATE_HERB, STATE_POTION, STATE_DONE)) {
 			res.add(HISTORY_GOT_FLASK);
 		}

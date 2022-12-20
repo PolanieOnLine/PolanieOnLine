@@ -140,7 +140,7 @@ public class MixtureForOrtiv extends AbstractQuest {
 		npc.addReply("jabłko", "Jabłka są ulubionym przysmakiem zabójców. Widziałem parę jabłoni na wschód " +
 				"Semos blisko Orril i Nalwor river.");
 
-			npc.addReply("flasza", "Słyszałem o młodej kobiecie w Semos, która je sprzedaje.");
+			npc.addReply("butelka", "Słyszałem o młodej kobiecie w Semos, która je sprzedaje.");
 
 			npc.addReply("muchomor", "Toadstools są trujące. Słyszałem, że jacyś myśliwi raz je zjedli" +
 					" i przez kilka dni byli chorzy.");

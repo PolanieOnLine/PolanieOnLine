@@ -58,24 +58,6 @@
 		</equipable>
 	</item>
 
-	<item name="flasza">
-		<type class="container" subclass="flask" tileid="-1"/>
-		<description>Oto pusta flasza. Jest dobra aby trzymać w niej lekarstwo.</description>
-		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
-		<attributes>
-			<quantity value="1"/>
-			<max_quantity value="2147483647"/>
-		</attributes>
-		<weight value="1.0"/>
-		<value value="1"/>
-		<equipable>
-			<slot name="ground"/>
-			<slot name="content"/>
-			<slot name="bag"/>
-			<slot name="trade"/>
-		</equipable>
-	</item>
-
 	<item name="buteleczka">
 		<type class="container" subclass="bottle" tileid="-1"/>
 		<description>Oto buteleczka. Jest pusta, ale możesz nalać do niej wodę.</description>
