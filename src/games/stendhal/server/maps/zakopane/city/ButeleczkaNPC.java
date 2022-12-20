@@ -65,12 +65,12 @@ public class ButeleczkaNPC implements ZoneConfigurator {
 				requiredResources.put("money", 70);
 
 				final ProducerBehaviour behaviour = new ProducerBehaviour("nosiwoda_fill_buteleczke",
-						Arrays.asList("fill", "nalej"), "buteleczka wody", requiredResources, 1 * 5);
+					Arrays.asList("fill", "nalej"), "buteleczka wody", requiredResources, 1 * 5);
 
 				new ProducerAdder().addProducer(this, behaviour,
 					"Pozdrawiam! Jeżeli przyniesiesz mi buteleczkę to naleję Tobie do niej wody ze źródełka. Powiedz tylko #nalej.");
 				addReply("buteleczka",
-							"kupisz ją u Bogusia lub w tawernie Semos.");
+					"Takie buteleczki zakupisz u Bogusia lub możesz odwiedzić tawernę w Semos.");
 			}
 		};
 

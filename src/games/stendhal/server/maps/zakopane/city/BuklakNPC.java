@@ -65,12 +65,12 @@ public class BuklakNPC implements ZoneConfigurator {
 				requiredResources.put("money", 140);
 
 				final ProducerBehaviour behaviour = new ProducerBehaviour("nosiwoda_fill_buklak",
-						Arrays.asList("fill", "nalej"), "bukłak z wodą", requiredResources, 3 * 5);
+					Arrays.asList("fill", "nalej"), "bukłak z wodą", requiredResources, 3 * 5);
 
 				new ProducerAdder().addProducer(this, behaviour,
 					"Pozdrawiam! Jeżeli przyniesiesz mi #'pusty bukłak' to naleję do niego wody ze źródełka. Powiedz tylko #nalej.");
 				addReply("pusty bukłak",
-						"Koło Wisły w krainie Kraka mieszka rymarz, on ci może wykonać pusty bukłak.");
+					"Blisko Wisły w krainie Kraka przesiaduje pewien rymarz, on ci powinien pomóc z wykonaniem pustego bukłaku.");
 			}
 		};
 
