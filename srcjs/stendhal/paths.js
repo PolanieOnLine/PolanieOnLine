@@ -1,5 +1,5 @@
 /***************************************************************************
- *                    Copyright © 2003-2022 - Arianne                      *
+ *                    Copyright © 2003-2022 - Stendhal                     *
  ***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -9,15 +9,14 @@
  *                                                                         *
  ***************************************************************************/
 
+"use strict";
 
-/** Configured sounds associated with IDs. */
-export const SoundId = {
-	"level_up": "player/tadaa",
-	"level_down": undefined,
-	"stat_up": "player/stat_up-01",
-	"stat_down": undefined,
-	"achievement": "player/yay",
-	"commerce": "coins-01",
-	"commerce2": "cha-ching",
-	"heal": "heal-01"
-} as {[index: string]: string|undefined;};
+var stendhal = window.stendhal = window.stendhal || {};
+
+
+stendhal.paths = { data: "/data" }
+stendhal.paths.font = stendhal.paths.data + "/font";
+stendhal.paths.gui = stendhal.paths.data + "/gui";
+stendhal.paths.music = stendhal.paths.data + "/music";
+stendhal.paths.sounds = stendhal.paths.data + "/sounds";
+stendhal.paths.sprites = stendhal.paths.data + "/sprites";

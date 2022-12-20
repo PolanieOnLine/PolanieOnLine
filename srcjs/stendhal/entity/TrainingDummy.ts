@@ -9,36 +9,26 @@
  *                                                                         *
  ***************************************************************************/
 
-import { RPEntity } from "./RPEntity";
+import { NPC } from "./NPC";
 
-import { Color } from "../util/Color";
-
+declare var marauroa: any;
 declare var stendhal: any;
 
-export class NPC extends RPEntity {
-	override minimapStyle = Color.NPC;
-	override spritePath = "npc";
-	override titleStyle = "#c8c8ff";
 
-	constructor() {
-		super();
-		this["hp"] = 100;
-		this["base_hp"] = 100;
-	}
+export class TrainingDummy extends NPC {
 
-	override drawTop(ctx: CanvasRenderingContext2D) {
-		var localX = this["_x"] * 32;
-		var localY = this["_y"] * 32;
-		if (typeof(this["no_hpbar"]) == "undefined") {
-			this.drawHealthBar(ctx, localX, localY + this.statusBarYOffset);
-		}
-		if (typeof(this["unnamed"]) == "undefined") {
-			this.drawTitle(ctx, localX, localY + this.statusBarYOffset);
-		}
+	/**
+	 * Default action when clicked.
+	 */
+	override onclick(_x: number, _y: number) {
+		var action = {
+				"type": "attack",
+				"target": "#" + this["id"]
+			};
+		marauroa.clientFramework.sendAction(action);
 	}
 
 	override getCursor(_x: number, _y: number) {
-		return "url(" + stendhal.paths.sprites + "/cursor/look.png) 1 3, auto";
+		return "url(" + stendhal.paths.sprites + "/cursor/attack.png) 1 3, auto";
 	}
-
 }

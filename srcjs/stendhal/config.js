@@ -20,6 +20,7 @@ stendhal.config = {
 
 	defaults: {
 		"ui.sound": "false",
+		"ui.sound.master.volume": "100",
 		"ui.font.body": "Carlito",
 		"ui.font.chat": "Carlito",
 		"ui.font.tlog": "Black Chancery",
@@ -30,6 +31,7 @@ stendhal.config = {
 		"gamescreen.shadows": "true",
 		"gamescreen.speech.creature": "true",
 		"input.movecont": "false",
+		//"input.doubleclick": "false",
 		"action.item.doubleclick": "false",
 		"action.chest.quickpickup": "false"
 	},
@@ -126,7 +128,7 @@ stendhal.config = {
 	applyTheme: function(element, children=false, recurse=false, updateBG=false) {
 		const current = this.getTheme();
 		element.style.setProperty("background",
-				"url(/data/gui/" + this.themes.map[current] + ")");
+				"url(" + stendhal.paths.gui + "/" + this.themes.map[current] + ")");
 
 		// make texts readable with dark & light themes
 		let color = "#000000";

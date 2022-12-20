@@ -12,10 +12,11 @@
 import { ActiveEntity } from "./ActiveEntity";
 import { Entity } from "./Entity";
 import { MenuItem } from "../action/MenuItem";
-import { NotificationType } from "../util/NotificationType";
 import { Chat } from "../util/Chat";
 import { Nature } from "../util/Nature";
 import { Floater } from "../sprite/Floater";
+import { NotificationBubbleSprite } from "../sprite/NotificationBubbleSprite";
+import { SpeechBubbleSprite } from "../sprite/SpeechBubbleSprite";
 import { TextSprite } from "../sprite/TextSprite";
 
 declare var marauroa: any;
@@ -37,6 +38,8 @@ export class RPEntity extends ActiveEntity {
 	titleTextSprite?: TextSprite;
 	floaters: any[] = [];
 	protected statusBarYOffset: number = 0;
+	// canvas for merging outfit layers to be drawn
+	private octx?: CanvasRenderingContext2D;
 
 	/** space to be left at the beginning and end of line in pixels. */
 	//private margin_width = 3;
@@ -139,12 +142,19 @@ export class RPEntity extends ActiveEntity {
 
 	/**
 	 * says a text
+	 *
+	 * @param text
+	 *     Message contents.
+	 * @param rangeSquared
+	 *     Distance at which message can be heard (-1 represents
+	 *     entire map).
 	 */
-	override say(text: string) {
+	override say(text: string, rangeSquared?: number) {
 		if (!marauroa.me) {
 			return;
 		}
-		if (marauroa.me.isInHearingRange(this)) {
+
+		if (marauroa.me.isInHearingRange(this, rangeSquared)) {
 			let emoji = stendhal.data.emoji.get(text);
 			if (emoji) {
 				this.addEmoji(emoji);
@@ -165,34 +175,11 @@ export class RPEntity extends ActiveEntity {
 	 *     Text to display.
 	 */
 	addSpeechBubble(text: string) {
-		stendhal.ui.gamewindow.addTextSprite({
-			realText: (text.length > 30) ? (text.substring(0, 30) + "...") : text,
-			timeStamp: Date.now(),
-			entity: this,
-			draw: function(ctx: CanvasRenderingContext2D) {
-				var x = this.entity["_x"] * 32 + (32 * this.entity["width"]);
-				var y = this.entity["_y"] * 32 - 16 - (32 * (this.entity["height"] - 1));
-
-				ctx.lineWidth = 2;
-				ctx.font = "14px Arial";
-				ctx.fillStyle = '#ffffff';
-				// get width of text
-				var width = ctx.measureText(this.realText).width + 8;
-				ctx.strokeStyle = "#000000";
-
-				this.entity.drawSpeechBubbleRounded(ctx, x, y - 15, width, 20);
-
-				ctx.fillStyle = "#000000";
-				ctx.fillText(this.realText, x + 4, y);
-				return Date.now() > this.timeStamp + 2000 + 20 * this.realText.length;
-			}
-		});
+		stendhal.ui.gamewindow.addTextSprite(new SpeechBubbleSprite(text, this));
 	}
 
 	/**
 	 * Displays a notification at the bottom of the game screen.
-	 *
-	 * FIXME: clicking should remove sprite
 	 *
 	 * @param mtype
 	 *     Message type.
@@ -202,105 +189,7 @@ export class RPEntity extends ActiveEntity {
 	 *     Filename of NPC profile image to display with message.
 	 */
 	addNotificationBubble(mtype: string, text: string, profile?: string) {
-		const linewrap = 30;
-		const wordbreak = 60;
-		const lines: string[] = [];
-
-		let words = text.split("\t").join(" ").split(" ");
-		let nextline = "";
-		for (const w of words) {
-			if (nextline) {
-				nextline += " ";
-			}
-			nextline += w;
-
-			if (nextline.length > wordbreak) {
-				lines.push(nextline.substr(0, wordbreak) + "-");
-				nextline = "-" + nextline.substr(wordbreak);
-			} else if (nextline.length >= linewrap) {
-				lines.push(nextline);
-				nextline = "";
-			}
-		}
-		if (nextline) {
-			lines.push(nextline);
-		}
-
-		const lcount = lines.length;
-		let spriteCtx: CanvasRenderingContext2D|null = null;
-
-		let pimg
-		if (profile) {
-			pimg = stendhal.data.sprites.getAreaOf(
-				stendhal.data.sprites.get("data/sprites/npc/" + profile + ".png"),
-				48, 48, 48, 128);
-		}
-
-		stendhal.ui.gamewindow.addNotifSprite({
-			timeStamp: Date.now(),
-			entity: this,
-			lmargin: 4,
-			profile: pimg,
-			draw: function(ctx: CanvasRenderingContext2D) {
-				const screenArea = document.getElementById("gamewindow")!.getBoundingClientRect();
-				const screenTop = stendhal.ui.gamewindow.offsetY;
-				const screenBottom = screenTop + screenArea.height;
-				const screenLeft = stendhal.ui.gamewindow.offsetX;
-				const screenCenterX = screenLeft + (screenArea.width / 2);
-
-				let longest = "";
-				for (let li = 0; li < lines.length; li++) {
-					if (lines[li].length > longest.length) {
-						longest = lines[li];
-					}
-				}
-
-				// get width & height of text
-				const fontsize = 14;
-				const lheight = fontsize + 6;
-				const meas = ctx.measureText(longest);
-				const width = meas.width + (this.lmargin * 2);
-				const height = lcount * lheight;
-
-				const x = screenCenterX - (width / 2);
-				// FIXME: doesn't reach bottom of game window
-				const y = screenBottom - height;
-
-				ctx.lineWidth = 2;
-				ctx.font = fontsize + "px sans-serif";
-				ctx.fillStyle = "#ffffff";
-				ctx.strokeStyle = "#000000";
-
-				if (this.profile) {
-					ctx.drawImage(this.profile, x - 48, y - 16);
-					this.entity.drawSpeechBubbleRounded(ctx, x, y - 15, width, height);
-				} else {
-					this.entity.drawSpeechBubble(ctx, x, y, width, height);
-				}
-
-				ctx.fillStyle = NotificationType[mtype] || "#000000";
-
-				let sy = y;
-				for (let li = 0; li < lines.length; li++) {
-					ctx.fillText(lines[li], x + this.lmargin, sy);
-					sy += lheight;
-				}
-
-				if (spriteCtx == null) {
-					spriteCtx = ctx;
-
-					// add click listener to remove notification bubble
-					ctx.canvas.addEventListener("click", (e) => {
-						// FIXME: need to override character movement
-						if (stendhal.ui.gamewindow.isTopNotification(this)) {
-							stendhal.ui.gamewindow.removeNotifSprite(this);
-						}
-					});
-				}
-
-				return Date.now() > this.timeStamp + 2000 + 20 * text.length;
-			}
-		});
+		stendhal.ui.gamewindow.addNotifSprite(new NotificationBubbleSprite(mtype, text, this, profile));
 	}
 
 	addEmoji(emoji: HTMLImageElement) {
@@ -337,7 +226,7 @@ export class RPEntity extends ActiveEntity {
 	 * @param width
 	 * @param height
 	 */
-	private drawSpeechBubble(ctx: CanvasRenderingContext2D, x: number, y: number,
+	public drawSpeechBubble(ctx: CanvasRenderingContext2D, x: number, y: number,
 			width: number, height: number, tail: boolean = false) {
 		ctx.strokeRect(x, y - 15, width, height);
 		ctx.fillRect(x, y - 15, width, height);
@@ -367,7 +256,7 @@ export class RPEntity extends ActiveEntity {
 	 * @param width
 	 * @param height
 	 */
-	private drawSpeechBubbleRounded(ctx: CanvasRenderingContext2D, x: number, y: number,
+	public drawSpeechBubbleRounded(ctx: CanvasRenderingContext2D, x: number, y: number,
 			width: number, height: number) {
 		//const arc = this.arc_diameter;
 		const arc = 3;
@@ -424,6 +313,9 @@ export class RPEntity extends ActiveEntity {
 			outfit["detail"] = Math.floor(this["outfit"]/100000000) % 100;
 		}
 
+		// for "busty" dress variants
+		const busty = parseInt(outfit["body"], 10) == 1;
+
 		if (stendhal.config.getBoolean("gamescreen.shadows") && this.castsShadow()) {
 			// dressed entities should use 48x64 sprites
 			// FIXME: this will not display correctly for horse outfit
@@ -435,29 +327,30 @@ export class RPEntity extends ActiveEntity {
 			}
 		}
 
-		const ocanvas = document.createElement("canvas");
-		let octx
+		if (this.octx) {
+			this.octx.clearRect(0, 0, this.octx.canvas.width, this.octx.canvas.height);
+		}
 		for (const layer of layers) {
 			// hair is not drawn under certain hats/helmets
 			if (layer == "hair" && !stendhal.data.outfit.drawHair(parseInt(outfit["hat"], 10))) {
 				continue;
 			}
 
-			const lsprite = this.getOutfitPart(layer, outfit[layer]);
-			if (lsprite) {
-				if (!octx) {
+			const lsprite = this.getOutfitPart(layer, outfit[layer], busty);
+			if (lsprite && lsprite.complete && lsprite.height) {
+				if (!this.octx) {
+					let ocanvas = document.createElement("canvas");
+					this.octx = ocanvas.getContext("2d")!;
 					ocanvas.width = lsprite.width;
 					ocanvas.height = lsprite.height;
-					octx = ocanvas.getContext("2d")!;
 				}
-
-				octx.drawImage(lsprite, 0, 0);
+				this.octx!.drawImage(lsprite, 0, 0);
 			}
 		}
 
-		const osprite = new Image();
-		osprite.src = ocanvas.toDataURL("image/png");
-		this.drawSpriteImage(ctx, osprite);
+		if (this.octx) {
+			this.drawSpriteImage(ctx, this.octx.canvas);
+		}
 	}
 
 	/**
@@ -465,8 +358,9 @@ export class RPEntity extends ActiveEntity {
 	 *
 	 * @param {string}  part
 	 * @param {Number} index
+	 * @param {boolean} busty
 	 */
-	getOutfitPart(part: string, index: number) {
+	getOutfitPart(part: string, index: number, busty: boolean=false) {
 		if (index < 0) {
 			return null;
 		}
@@ -480,9 +374,11 @@ export class RPEntity extends ActiveEntity {
 
 		if (part === "body" && index < 3 && stendhal.config.getBoolean("gamescreen.nonude")) {
 			n += "-nonude";
+		} else if (part === "dress" && busty && stendhal.data.outfit.busty_dress[n]) {
+			n += "b";
 		}
 
-		const filename = "/data/sprites/outfit/" + part + "/" + n + ".png";
+		const filename = stendhal.paths.sprites + "/outfit/" + part + "/" + n + ".png";
 		const colors = this["outfit_colors"];
 		let colorname;
 		if (part === "body" || part === "head") {
@@ -533,7 +429,7 @@ export class RPEntity extends ActiveEntity {
 		if (typeof(this["outfit"]) != "undefined" || typeof(this["outfit_ext"]) != "undefined") {
 			this.drawMultipartOutfit(ctx);
 		} else {
-			filename = "/data/sprites/" + this.spritePath + "/" + this["class"];
+			filename = stendhal.paths.sprites + "/" + this.spritePath + "/" + this["class"];
 			if (typeof(this["subclass"]) != "undefined") {
 				filename = filename + "/" + this["subclass"];
 			}
@@ -589,13 +485,13 @@ export class RPEntity extends ActiveEntity {
 		var x = this["_x"] * 32 - 10;
 		var y = (this["_y"] + 1) * 32;
 		if (this.hasOwnProperty("choking")) {
-			ctx.drawImage(stendhal.data.sprites.get("/data/sprites/ideas/choking.png"), x, y - 10);
+			ctx.drawImage(stendhal.data.sprites.get(stendhal.paths.sprites + "/ideas/choking.png"), x, y - 10);
 		} else if (this.hasOwnProperty("eating")) {
-			ctx.drawImage(stendhal.data.sprites.get("/data/sprites/ideas/eat.png"), x, y - 10);
+			ctx.drawImage(stendhal.data.sprites.get(stendhal.paths.sprites + "/ideas/eat.png"), x, y - 10);
 		}
 		// NPC and pet idea icons
 		if (this.hasOwnProperty("idea")) {
-			const idea = "/data/sprites/ideas/" + this["idea"] + ".png";
+			const idea = stendhal.paths.sprites + "/ideas/" + this["idea"] + ".png";
 			const ani = stendhal.data.sprites.animations.idea[this["idea"]];
 			if (ani) {
 				drawAnimatedIcon(idea, ani.delay, x + ani.offsetX * this["width"],
@@ -606,23 +502,23 @@ export class RPEntity extends ActiveEntity {
 			}
 		}
 		if (this.hasOwnProperty("away")) {
-			drawAnimatedIcon("/data/sprites/ideas/away.png", 1500, x + 32 * this["width"], y - this["drawHeight"]);
+			drawAnimatedIcon(stendhal.paths.sprites + "/ideas/away.png", 1500, x + 32 * this["width"], y - this["drawHeight"]);
 		}
 		if (this.hasOwnProperty("grumpy")) {
-			drawAnimatedIcon("/data/sprites/ideas/grumpy.png", 1000, x + 5, y - this["drawHeight"]);
+			drawAnimatedIcon(stendhal.paths.sprites + "/ideas/grumpy.png", 1000, x + 5, y - this["drawHeight"]);
 		}
 		if (this.hasOwnProperty("last_player_kill_time")) {
-			drawAnimatedIconWithFrames("/data/sprites/ideas/pk.png", 12, 300, x, y - this["drawHeight"]);
+			drawAnimatedIconWithFrames(stendhal.paths.sprites + "/ideas/pk.png", 12, 300, x, y - this["drawHeight"]);
 		}
 		if (this.hasOwnProperty("poisoned")) {
-			drawAnimatedIcon("/data/sprites/status/poison.png", 100, x + 32 * this["width"] - 10, y - this["drawHeight"]);
+			drawAnimatedIcon(stendhal.paths.sprites + "/status/poison.png", 100, x + 32 * this["width"] - 10, y - this["drawHeight"]);
 		}
 		// NPC job icons
 		if (this.hasOwnProperty("job_healer")) {
-			ctx.drawImage(stendhal.data.sprites.get("/data/sprites/status/healer.png"), x, y - 10);
+			ctx.drawImage(stendhal.data.sprites.get(stendhal.paths.sprites + "/status/healer.png"), x, y - 10);
 		}
 		if (this.hasOwnProperty("job_merchant")) {
-			ctx.drawImage(stendhal.data.sprites.get("/data/sprites/status/merchant.png"), x + 12, y - 10);
+			ctx.drawImage(stendhal.data.sprites.get(stendhal.paths.sprites + "/status/merchant.png"), x + 12, y - 10);
 		}
 	}
 
@@ -631,7 +527,7 @@ export class RPEntity extends ActiveEntity {
 	 * ellipses) when the entity is being attacked, or is attacking the user.
 	 */
 	drawCombat(ctx: CanvasRenderingContext2D) {
-		if (this.attackers && this.attackers.size > 0) {
+		if (this.attackers > 0) {
 			ctx.lineWidth = 1;
 			/*
 			 * As of 2015-9-15 CanvasRenderingContext2D.ellipse() is not
@@ -777,7 +673,7 @@ export class RPEntity extends ActiveEntity {
 		ctx.rect(drawX, drawY, this["drawWidth"], HEALTH_BAR_HEIGHT - 2);
 		ctx.stroke();
 
-		ctx.fillStyle = "#E0E0E0";
+		ctx.fillStyle = "#808080"; // same as java.awt.Color.GRAY (rgb(128,128,128))
 		ctx.fillRect(drawX, drawY, this["drawWidth"], HEALTH_BAR_HEIGHT - 2);
 
 		// Bar color
@@ -823,7 +719,9 @@ export class RPEntity extends ActiveEntity {
 		}
 		var localX = this["_x"] * 32;
 		var localY = this["_y"] * 32;
-		this.attackSprite.draw(ctx, localX, localY, this["drawWidth"], this["drawHeight"]);
+		var localW = this["width"] * stendhal.ui.gamewindow.targetTileWidth;
+		var localH = this["height"] * stendhal.ui.gamewindow.targetTileHeight;
+		this.attackSprite.draw(ctx, localX, localY, localW, localH);
 	}
 
 	// attack handling
@@ -841,21 +739,21 @@ export class RPEntity extends ActiveEntity {
 	}
 
 	onDamaged(_source: Entity, damage: number) {
-		this.attackResult = this.createResultIcon("/data/sprites/combat/hitted.png");
+		this.attackResult = this.createResultIcon(stendhal.paths.sprites + "/combat/hitted.png");
 		var sounds = ["attack-melee-01", "attack-melee-02", "attack-melee-03", "attack-melee-04", "attack-melee-05", "attack-melee-06", "attack-melee-07"];
 		var index = Math.floor(Math.random() * Math.floor(sounds.length));
 		stendhal.ui.sound.playLocalizedEffect(this["_x"], this["_y"], 20, 3, sounds[index], 1);
 	}
 
 	onBlocked(_source: Entity) {
-		this.attackResult = this.createResultIcon("/data/sprites/combat/blocked.png");
+		this.attackResult = this.createResultIcon(stendhal.paths.sprites + "/combat/blocked.png");
 		var sounds = ["clang-metallic-1", "clang-dull-1"];
 		var index = Math.floor(Math.random() * Math.floor(sounds.length));
 		stendhal.ui.sound.playLocalizedEffect(this["_x"], this["_y"], 20, 3, sounds[index], 1);
 	}
 
 	onMissed(_source: Entity) {
-		this.attackResult = this.createResultIcon("/data/sprites/combat/missed.png");
+		this.attackResult = this.createResultIcon(stendhal.paths.sprites + "/combat/missed.png");
 	}
 
 	onHPChanged(change: number) {
@@ -899,17 +797,23 @@ export class RPEntity extends ActiveEntity {
 		};
 	}
 
-	onAttackPerformed(nature: number, ranged: boolean) {
+	onAttackPerformed(nature: number, ranged: boolean, weapon?: string) {
+		const tileW = stendhal.ui.gamewindow.targetTileWidth;
+		const tileH = stendhal.ui.gamewindow.targetTileHeight;
+
 		if (ranged) {
 			let color = Nature.VALUES[nature].color;
 			var tgt = this.getAttackTarget()!;
-			this.attackSprite = (function(color, targetX, targetY) {
+			this.attackSprite = (function(color, targetX, targetY, dir) {
 				return {
 					initTime: Date.now(),
+					image: stendhal.data.sprites.get(stendhal.paths.sprites + "/combat/ranged.png"),
 					expired: function() {
 						return Date.now() - this.initTime > 180;
 					},
 					draw: function(ctx: CanvasRenderingContext2D, x: number, y: number, entityWidth: number, entityHeight: number) {
+						// FIXME: alignment with entity is not correct
+
 						var dtime = Date.now() - this.initTime;
 						// We can use fractional "frame" for the lines. Just
 						// draw the arrow where it should be at the moment.
@@ -931,16 +835,62 @@ export class RPEntity extends ActiveEntity {
 						ctx.moveTo(startX, startY);
 						ctx.lineTo(endX, endY);
 						ctx.stroke();
+
+						// draw bow
+						if (ranged && weapon === "ranged" && this.image.height) {
+							frame = Math.floor(Math.min(dtime / 60, 3));
+							const yRow = dir - 1;
+							const drawWidth = this.image.width / 3;
+							const drawHeight = this.image.height / 4;
+
+							const centerX = x + (entityWidth - drawWidth) / 2;
+							const centerY = y + (entityHeight - drawHeight) / 2;
+
+							// offset sprite for facing direction
+							let sx, sy;
+							switch (dir+"") {
+								case "1": // UP
+									sx = centerX + (tileW / 2);
+									sy = y - (tileH * 1.5);
+									break;
+								case "3": // DOWN
+									sx = centerX;
+									sy = y + entityHeight - drawHeight + (tileH / 2);
+									break;
+								case "4": // LEFT
+									sx = x - (tileW / 2);
+									sy = centerY - (tileH / 2);
+									break;
+								case "2": // RIGHT
+									sx = x + entityWidth - drawWidth + (tileW / 2);
+									sy = centerY; // - ICON_OFFSET; // ICON_OFFSET = 8 in Java client
+									break;
+								default:
+									sx = centerX;
+									sy = centerY;
+							}
+
+							ctx.drawImage(this.image, frame * drawWidth, yRow * drawHeight,
+									drawWidth, drawHeight, sx, sy, drawWidth, drawHeight);
+						}
 					}
 				};
-			})(color, (tgt.x + tgt.width / 2) * 32, (tgt.y + tgt.height / 2) * 32);
+			})(color, (tgt.x + tgt.width / 2) * 32, (tgt.y + tgt.height / 2) * 32, this["dir"]);
 		} else {
-			let imagePath = Nature.VALUES[nature].imagePath;
+			if (typeof(weapon) === "undefined") {
+				weapon = "blade_strike";
+			}
+			if (weapon === "blade_strike" && nature == 0) {
+				weapon += "_cut";
+			}
+			const imagePath = Nature.VALUES[nature].getWeaponPath(weapon);
+
 			this.attackSprite = (function(imagePath, _ranged, dir) {
 				return {
 					initTime: Date.now(),
 					image: stendhal.data.sprites.get(imagePath),
 					frame: 0,
+					barehand: weapon.startsWith("blade_strike"),
 					expired: function() {
 						return Date.now() - this.initTime > 180;
 					},
@@ -948,15 +898,71 @@ export class RPEntity extends ActiveEntity {
 						if (!this.image.height) {
 							return;
 						}
-						var yRow = dir - 1;
-						var drawHeight = this.image.height / 4;
-						var drawWidth = this.image.width / 3;
-						var dtime = Date.now() - this.initTime;
-						var frame = Math.floor(Math.min(dtime / 60, 3));
+
+						const dtime = Date.now() - this.initTime;
+						const frameIndex = Math.floor(Math.min(dtime / 60, 3));
+						let rotation = 0;
+
+						let yRow, frame, drawWidth, drawHeight;
+						if (this.barehand) {
+							yRow = dir - 1;
+							frame = frameIndex;
+							drawWidth = this.image.width / 3;
+							drawHeight = this.image.height / 4;
+						} else {
+							yRow = 0;
+							frame = 0;
+							drawWidth = this.image.width;
+							drawHeight = this.image.height;
+						}
+
 						var centerX = x + (entityWidth - drawWidth) / 2;
 						var centerY = y + (entityHeight - drawHeight) / 2;
+
+						// offset sprite for facing direction
+						let sx, sy;
+						switch (dir+"") {
+							case "1": // UP
+								sx = centerX + (tileW / 2);
+								sy = y - (tileH * 1.5);
+								break;
+							case "3": // DOWN
+								sx = centerX;
+								sy = y + entityHeight - drawHeight + (tileH / 2);
+								rotation = 180;
+								break;
+							case "4": // LEFT
+								sx = x - (tileW / 2);
+								sy = centerY - (tileH / 2);
+								rotation = -90;
+								break;
+							case "2": // RIGHT
+								sx = x + entityWidth - drawWidth + (tileW / 2);
+								sy = centerY; // - ICON_OFFSET; // ICON_OFFSET = 8 in Java client
+								rotation = 90;
+								break;
+							default:
+								sx = centerX;
+								sy = centerY;
+						}
+
+						const rotated = !this.barehand && rotation != 0;
+						if (rotated) {
+							ctx.save();
+							// FIXME: rotate correctly for direction & frame
+							/*
+							ctx.translate(sx + (drawWidth / 2) - stendhal.ui.gamewindow.offsetX,
+									sy + (drawHeight / 2) - stendhal.ui.gamewindow.offsetY);
+							ctx.rotate(rotation * Math.PI / 180);
+							*/
+						}
+
 						ctx.drawImage(this.image, frame * drawWidth, yRow * drawHeight,
-								drawWidth, drawHeight, centerX, centerY, drawWidth, drawHeight);
+								drawWidth, drawHeight, sx, sy, drawWidth, drawHeight);
+
+						if (rotated) {
+							ctx.restore();
+						}
 					}
 				};
 			})(imagePath, ranged, this["dir"]);
@@ -969,12 +975,20 @@ export class RPEntity extends ActiveEntity {
 	 * @param attacked The entity that selected this as the target
 	 */
 	onTargeted(attacker: Entity) {
+		/* FIXME: can't use attacker["id"] as it is not always set
 		if (!this.attackers) {
 			this.attackers = { size: 0 };
 		}
 		if (!(attacker["id"] in this.attackers)) {
 			this.attackers[attacker["id"]] = true;
 			this.attackers.size += 1;
+		}
+		*/
+		if (typeof(this.attackers) === "undefined") {
+			this.attackers = 0;
+		}
+		if (typeof(attacker) !== "undefined") {
+			this.attackers++;
 		}
 	}
 
@@ -985,9 +999,14 @@ export class RPEntity extends ActiveEntity {
 	 * 	stopped attacking
 	 */
 	onAttackStopped(attacker: Entity) {
+		/* FIXME: can't use attacker["id"] as it is not always set
 		if (attacker["id"] in this.attackers) {
 			delete this.attackers[attacker["id"]];
 			this.attackers.size -= 1;
+		}
+		*/
+		if (typeof(attacker) !== "undefined" && this.attackers > 0) {
+			this.attackers--;
 		}
 	}
 

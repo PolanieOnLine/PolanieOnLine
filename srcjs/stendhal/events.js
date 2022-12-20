@@ -38,7 +38,7 @@ marauroa.rpeventFactory["attack"] = marauroa.util.fromProto(marauroa.rpeventFact
 		} else {
 			target.onMissed(entity);
 		}
-		entity.onAttackPerformed(parseInt(this["type"], 10), this.hasOwnProperty("ranged"));
+		entity.onAttackPerformed(parseInt(this["type"], 10), this.hasOwnProperty("ranged"), this["weapon"]);
 	}
 });
 
@@ -182,7 +182,7 @@ marauroa.rpeventFactory["show_item_list"] = marauroa.util.fromProto(marauroa.rpe
 			row.className = "horizontalgroup shoprow";
 			const img = document.createElement("div");
 			img.className = "shopcol";
-			img.appendChild(stendhal.data.sprites.get("/data/sprites/items/" + i.img));
+			img.appendChild(stendhal.data.sprites.get(stendhal.paths.sprites + "/items/" + i.img));
 			row.appendChild(img);
 			const price = document.createElement("div");
 			price.className = "shopcol";
@@ -271,7 +271,11 @@ marauroa.rpeventFactory["sound_event"] = marauroa.util.fromProto(marauroa.rpeven
 
 marauroa.rpeventFactory["text"] = marauroa.util.fromProto(marauroa.rpeventFactory["_default"], {
 	execute: function(rpobject) {
-		rpobject.say(this["text"]);
+		if (this.hasOwnProperty("range")) {
+			rpobject.say(this["text"], this["range"]);
+		} else {
+			rpobject.say(this["text"]);
+		}
 	}
 });
 

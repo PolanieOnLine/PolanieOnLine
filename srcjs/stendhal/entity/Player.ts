@@ -46,6 +46,7 @@ export class Player extends RPEntity {
 
 		queueMicrotask( () => {
 			(ui.get(UIComponentEnum.PlayerStats) as PlayerStatsComponent).update(key);
+			(ui.get(UIComponentEnum.Bag) as ItemInventoryComponent).update();
 			(ui.get(UIComponentEnum.Keyring) as ItemInventoryComponent).update();
 		});
 	}
@@ -189,31 +190,63 @@ export class Player extends RPEntity {
 
 	/**
 	 * says a text
+	 *
+	 * @param text
+	 *     Message contents.
+	 * @param rangeSquared
+	 *     Distance squared within which the entity can be heard (-1
+	 *     represents entire map).
 	 */
-	override say(text: string) {
+	override say(text: string, rangeSquared?: number) {
 		if (this.isIgnored()) {
 			return;
 		}
-		super.say(text);
+		super.say(text, rangeSquared);
 	}
 
 	/**
 	 * Can the player hear this chat message?
+	 *
+	 * @param entity
+	 *     The speaking entity.
+	 * @param rangeSquared
+	 *     Distance squared within which the entity can be heard (-1
+	 *     represents entire map).
 	 */
-	isInHearingRange(entity: Entity) {
+	isInHearingRange(entity: Entity, rangeSquared?: number) {
+		let hearingRange = 15; // default
+		if (typeof rangeSquared !== "undefined") {
+			if (rangeSquared < 0) {
+				hearingRange = -1;
+			} else {
+				hearingRange = Math.sqrt(rangeSquared);
+			}
+		}
+
 		return (this.isAdmin()
-			|| ((Math.abs(this["x"] - entity["x"]) < 15)
-				&& (Math.abs(this["y"] - entity["y"]) < 15)));
+			|| (hearingRange < 0)
+			|| ((Math.abs(this["x"] - entity["x"]) < hearingRange)
+				&& (Math.abs(this["y"] - entity["y"]) < hearingRange)));
 	}
 
 	override getCursor(_x: number, _y: number) {
 		if (this.isVisibleToAction(false)) {
-			return "url(/data/sprites/cursor/look.png) 1 3, auto";
+			return "url(" + stendhal.paths.sprites + "/cursor/look.png) 1 3, auto";
 		}
-		return "url(/data/sprites/cursor/walk.png) 1 3, auto";
+		return "url(" + stendhal.paths.sprites + "/cursor/walk.png) 1 3, auto";
 	}
 
 	public autoWalkEnabled(): boolean {
 		return typeof(this["autowalk"]) !== "undefined";
+	}
+
+	override drawHealthBar(ctx: CanvasRenderingContext2D, x: number, y: number) {
+		// offset so not hidden by other entity bars
+		super.drawHealthBar(ctx, x, y + 6);
+	}
+
+	override drawTitle(ctx: CanvasRenderingContext2D, x: number, y: number) {
+		// offset to match health bar
+		super.drawTitle(ctx, x, y + 6);
 	}
 }

@@ -102,7 +102,9 @@ export class OutfitPartSelector {
 			suffix = "-nonude.png";
 		}
 
-		const fname = "/data/sprites/outfit/" + part + "/" + this.indexString(index) + suffix;
+		// FIXME: need to draw "busty" dress variants for body index 1
+
+		const fname = stendhal.paths.sprites + "/outfit/" + part + "/" + this.indexString(index) + suffix;
 		if (color != null) {
 			return stendhal.data.sprites.getFilteredWithPromise(fname, "trueColor", color);
 		}

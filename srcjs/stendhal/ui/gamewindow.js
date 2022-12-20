@@ -112,6 +112,7 @@ stendhal.ui.gamewindow = {
 			var remove = sprite.draw(this.ctx);
 			if (remove) {
 				sgroup.splice(i, 1);
+				sprite.onRemoved();
 				i--;
 			}
 		}
@@ -167,25 +168,6 @@ stendhal.ui.gamewindow = {
 		this.notifSprites.push(sprite);
 	},
 
-	removeNotifSprite: function(sprite) {
-		const idx = this.notifSprites.indexOf(sprite);
-		if (idx > -1) {
-			this.notifSprites.splice(idx, 1);
-		}
-	},
-
-	/**
-	 * Checks if a notification sprite is drawn on top of all others.
-	 *
-	 * @param sprite
-	 *     Sprite to be checked.
-	 * @return
-	 *     <code>true</code> if sprite is most recently added to client.
-	 */
-	isTopNotification: function(sprite) {
-		return this.notifSprites.indexOf(sprite) + 1 == this.notifSprites.length;
-	},
-
 	/**
 	 * Adds a notification bubble to window.
 	 *
@@ -204,6 +186,63 @@ stendhal.ui.gamewindow = {
 			marauroa.me.addNotificationBubble("server", msg);
 		}
 		ui.get(UIComponentEnum.ChatLog).addLine("server", msg);
+	},
+
+	/**
+	 * Removes a text bubble. Looks for topmost sprite at
+	 * <code>x</code>,<code>y</code>. Otherwise removes
+	 * <code>sprite</code>.
+	 *
+	 * @param sprite
+	 *     The sprite that is to be removed.
+	 * @param x
+	 *     X coordinate to check for overlapping sprite.
+	 * @param y
+	 *     Y coordinate to check for overlapping sprite.
+	 */
+	removeTextBubble(sprite, x, y) {
+		for (let idx = this.notifSprites.length-1; idx >= 0; idx--) {
+			const topSprite = this.notifSprites[idx];
+			if (topSprite == sprite || topSprite.clipsPoint(x, y)) {
+				this.notifSprites.splice(idx, 1);
+				topSprite.onRemoved();
+				return;
+			}
+		}
+
+		for (let idx = this.textSprites.length-1; idx >= 0; idx--) {
+			const topSprite = this.textSprites[idx];
+			if (topSprite == sprite || topSprite.clipsPoint(x, y)) {
+				this.textSprites.splice(idx, 1);
+				topSprite.onRemoved();
+				return;
+			}
+		}
+	},
+
+	/**
+	 * Checks for an active text bubble.
+	 *
+	 * @param x
+	 *     X coordinate to check.
+	 * @param y
+	 *     Y coordinate to check.
+	 * @return
+	 *     <code>true</code> if there is a text bubble at position.
+	 */
+	textBubbleAt(x, y) {
+		for (const sprite of this.notifSprites) {
+			if (sprite.clipsPoint(x, y)) {
+				return true;
+			}
+		}
+		for (const sprite of this.textSprites) {
+			if (sprite.clipsPoint(x, y)) {
+				return true;
+			}
+		}
+
+		return false;
 	},
 
 	// Mouse click handling
@@ -229,6 +268,12 @@ stendhal.ui.gamewindow = {
 
 			var x = pos.offsetX + stendhal.ui.gamewindow.offsetX;
 			var y = pos.offsetY + stendhal.ui.gamewindow.offsetY;
+
+			// override ground/entity action if there is a text bubble
+			if (stendhal.ui.gamewindow.textBubbleAt(x, y+15)) {
+				return;
+			}
+
 			entity = stendhal.zone.entityAt(x, y);
 			stendhal.ui.timestampMouseDown = +new Date();
 
