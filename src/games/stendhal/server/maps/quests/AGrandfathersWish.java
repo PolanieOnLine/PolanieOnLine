@@ -425,7 +425,8 @@ public class AGrandfathersWish extends AbstractQuest {
 			ConversationPhrases.GREETING_MESSAGES,
 			findPriest,
 			ConversationStates.ATTENDING,
-			"Proszę! Znajdź kapłana. Może ktoś może zapewnić wodę święconą,"
+			"Proszę! Znajdź kapłana. Słyszałem, że w Ados jest jeden, który specjalizuje"
+				+ " się w wodzie święconej. Może on może zapewnić trochę,"
 				+ " aby pomóc mojemu wnukowi.",
 			null);
 
@@ -434,7 +435,8 @@ public class AGrandfathersWish extends AbstractQuest {
 			Arrays.asList("Niall", "myling", "priest", "holy water", "kapłan", "ksiądz", "woda święcona"),
 			findPriest,
 			ConversationStates.ATTENDING,
-			"Proszę! Znajdź kapłana. Może ktoś może zapewnić wodę święconą,"
+			"Proszę! Znajdź kapłana. Słyszałem, że w Ados jest jeden, który specjalizuje"
+				+ " się w wodzie święconej. Może on może zapewnić trochę,"
 				+ " aby pomóc mojemu wnukowi.",
 			null);
 	}

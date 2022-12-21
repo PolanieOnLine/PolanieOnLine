@@ -104,7 +104,8 @@ public class FarmerNPC implements ZoneConfigurator {
 					ConversationStates.ATTENDING,
 					offerReply + " Sprzedaję "
 						+ Grammar.enumerateCollection(offerings.keySet())
-						+ ". Sprzedam również końskie włosie, gdy dostanę nową dostawę.",
+						+ ". Sprzedam również końskie włosie po tym jak pomożesz"
+						+ " mojemu przyjacielowi.",
 					null);
 
 				add(

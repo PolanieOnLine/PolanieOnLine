@@ -3275,12 +3275,14 @@ public abstract class RPEntity extends CombatEntity {
 		}
 
 		if (this.canHit(defender)) {
-			defender.applyDefXP(this);
-
 			int damage = damageDone(defender, itemAtk, nature, isRanged, maxRange);
+			final boolean didDamage = damage > 0;
 
-			if (damage > 0) {
+			if (defender.getsDefXpFrom(this, didDamage)) {
+				defender.incDefXP();
+			}
 
+			if (didDamage) {
 				// limit damage to target HP
 				damage = Math.min(damage, defender.getHP());
 				this.handleLifesteal(this, this.getWeapons(), damage);
@@ -3320,10 +3322,6 @@ public abstract class RPEntity extends CombatEntity {
 
 		this.notifyWorldAboutChanges();
 		return result;
-	}
-
-	protected void applyDefXP(final RPEntity entity) {
-		// implemented in sub classes
 	}
 
 	/**

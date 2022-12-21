@@ -35,6 +35,7 @@ import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 import games.stendhal.server.maps.quests.maze.MazeGenerator;
 import games.stendhal.server.maps.quests.maze.MazeSign;
+import games.stendhal.server.util.TimeUtil;
 
 public class Maze extends AbstractQuest {
 	/** Minimum time between repeats. */
@@ -135,32 +136,39 @@ public class Maze extends AbstractQuest {
 
 	@Override
 	public List<String> getHistory(final Player player) {
-			final List<String> res = new ArrayList<String>();
-			if (!player.hasQuest(getSlotName())) {
-				return res;
-			}
-			res.add("Haizen stworzył magiczny labirynt dla mnie do przejścia.");
-
-			if (player.getZone().getName().endsWith("_maze")) {
-				res.add("Obecnie jestem uwięziony w labiryncie.");
-			} else {
-				if (!isCompleted(player)) {
-					res.add("Nie mogę przejść ostatniego labiryntu.");
-				} else {
-					res.add("Przeszedłem labirynt!");
-				}
-				if (isRepeatable(player)) {
-					res.add("Mógłbym jeszcze raz spróbować przejść labirynt.");
-				} else {
-					res.add("Haizen nie ma czasu na stworznie nowego labiryntu dla mnie.");
-				}
-			}
-			final int repetitions = player.getNumberOfRepetitions(getSlotName(), 2);
-			if (repetitions > 1) {
-				res.add("Do tej pory przeszedłem " + repetitions + " razy labirynt.");
-			}
-
+		final List<String> res = new ArrayList<String>();
+		if (!player.hasQuest(getSlotName())) {
 			return res;
+		}
+		res.add("Haizen stworzył magiczny labirynt dla mnie do przejścia.");
+
+		if (player.getZone().getName().endsWith("_maze")) {
+			res.add("Obecnie jestem uwięziony w labiryncie.");
+		} else {
+			if (!isCompleted(player)) {
+				res.add("Nie mogę przejść ostatniego labiryntu.");
+			} else {
+				res.add("Przeszedłem labirynt!");
+			}
+			if (isRepeatable(player)) {
+				res.add("Mógłbym jeszcze raz spróbować przejść labirynt.");
+			} else {
+				res.add("Haizen nie ma czasu na stworznie nowego labiryntu dla mnie.");
+			}
+		}
+		final int repetitions = player.getNumberOfRepetitions(getSlotName(), 2);
+		if (repetitions > 1) {
+			res.add("Do tej pory przeszedłem " + repetitions + " razy labirynt.");
+		}
+
+		final Long bestTime = MazeGenerator.getBestTime(player);
+		if (bestTime != null) {
+			res.add("Mój najlepszy czas przejścia to: "
+				+ TimeUtil.timeUntil((int) (bestTime / 1000),
+					true) + ".");
+		}
+
+		return res;
 	}
 
 	@Override

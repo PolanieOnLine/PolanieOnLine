@@ -340,15 +340,19 @@ public class StendhalRPAction {
 		} else {
 			// Throw dices to determine if the attacker has missed the defender
 			beaten = player.canHit(defender);
-
-			// Checks if defender is a immortal creature
-			if (defender instanceof Creature) {
-				beaten = !((Creature) defender).isImmortal();
-			}
 		}
 
 		// equipment that are broken are added to this list
 		final List<BreakableItem> broken = new ArrayList<>();
+
+		boolean getsDefXp = false;
+		boolean getsAtkXp = player.recentlyDamagedBy(defender);
+		if (defender instanceof Creature) {
+			// Checks if defender is an immortal creature so player can't hurt him
+			// but give atk xp even if attack was missed
+			beaten = !((Creature) defender).isImmortal();
+			getsAtkXp = player.getsAtkXpFrom(defender);
+		}
 
 		if (beaten) {
 			final List<Item> weapons = player.getWeapons();
@@ -364,20 +368,9 @@ public class StendhalRPAction {
 			final boolean didDamage = damage > 0;
 
 			// give xp even if attack was blocked
-			/* FIXME: if we don't check if instance is Player then creature's
-			 *        DEF gets set to 10 due to change in def xp. This check
-			 *        is supposed to be done in CombatEntity but is not
-			 *        working for some reason.
-			 */
-			if (defender.getsDefXpFrom(player)) {
-				defender.incDefXP();
-			}
-			if (player.getsAtkXpFrom(defender)) {
-				if (Testing.COMBAT && isRanged) {
-					player.incRatkXP();
-				} else {
-					player.incAtkXP();
-				}
+			getsDefXp = defender.getsDefXpFrom(player, didDamage);
+			if (!getsAtkXp) {
+				getsAtkXp = player.getsAtkXpFrom(defender);
 			}
 
 			if (didDamage && !usesTrainingDummy) {
@@ -431,19 +424,21 @@ public class StendhalRPAction {
 			player.notifyWorldAboutChanges();
 		} else {
 			// Missed
-			if ((defender instanceof Creature && ((Creature) defender).isImmortal())
-					&& player.getsAtkXpFrom(defender)) {
-				if (Testing.COMBAT && isRanged) {
-					player.incRatkXP();
-				} else {
-					player.incAtkXP();
-				}
-			}
-
 			logger.debug("attack from " + player.getID() + " to "
 					+ defender.getID() + ": Missed");
 			player.addEvent(new AttackEvent(false, 0, player.getDamageType(), weaponClass, isRanged));
 			player.notifyWorldAboutChanges();
+		}
+
+		if (getsDefXp) {
+			defender.incDefXP();
+		}
+		if (getsAtkXp) {
+			if (Testing.COMBAT && isRanged) {
+				player.incRatkXP();
+			} else {
+				player.incAtkXP();
+			}
 		}
 
 		if (isRanged) {

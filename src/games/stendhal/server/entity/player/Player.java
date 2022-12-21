@@ -2199,13 +2199,6 @@ public class Player extends DressedEntity implements UseListener {
 	}
 
 	@Override
-	protected void applyDefXP(final RPEntity entity) {
-		if (getsDefXpFrom(entity)) {
-			incDefXP();
-		}
-	}
-
-	@Override
 	protected void handleObjectCollision() {
 		if (hasPath()) {
 			reroute();

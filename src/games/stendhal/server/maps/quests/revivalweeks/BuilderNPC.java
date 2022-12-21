@@ -85,6 +85,10 @@ public class BuilderNPC implements LoadableContent, TurnListener {
 		chunkSize.put("sok z chmielu", 5);
 		hints.put("sok z chmielu", "Prawdopobodnie sok z chmielu znajdziesz w każdej tawernie.");
 
+		required.put("lina", 5);
+		chunkSize.put("lina", 1);
+		hints.put("lina", "Jestem pewien, że Giles w Kirdneh może splatać dla ciebie linę.");
+
 		behaviour = new CollectingGroupQuestBehaviour(QUEST_SLOT, required, chunkSize, hints, progress);
 		behaviour.setProjectName("#Mine #Town #Revival #Weeks");
 	}

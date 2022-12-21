@@ -557,8 +557,23 @@ public class MazeGenerator {
 		DBCommandQueue.get().enqueue(new WriteHallOfFamePointsCommand(player.getName(), "M", points, true), DBCommandPriority.LOW);
 		new SetQuestAction("maze", 0, "done").fire(player, null, null);
 		new IncrementQuestAction("maze", 2, 1).fire(player, null, null);
-		player.sendPrivateText("Wyjście z labiryntu zajęło Tobie " + TimeUtil.timeUntil((int) (timediff / 1000), true)
-				+ ". Warte jest to " + Grammar.quantityplnoun(points, "point") + ".");
+
+		final Long oldTime = getBestTime(player);
+		final boolean best = oldTime == null || timediff < oldTime;
+
+		String msg = "Wyjście z labiryntu zajęło Tobie "
+				+ TimeUtil.timeUntil((int) (timediff / 1000), true)
+				+ ". Warte jest to "
+				+ Grammar.quantityplnoun(points, "punkt") + ".";
+		if (best) {
+			player.setQuest("maze", 3, String.valueOf(timediff));
+			if (oldTime != null) {
+				msg += "Pobiłeś swój poprzedni czas o "
+					+ TimeUtil.timeUntil((int) (oldTime / 1000), true) + ".";
+			}
+		}
+		player.sendPrivateText(msg);
+
 		SingletonRepository.getAchievementNotifier().onFinishQuest(player);
 		player.addXP(REWARD_XP);
 	}
@@ -590,5 +605,27 @@ public class MazeGenerator {
 	 */
 	public Portal getPortal() {
 		return portal;
+	}
+
+	/**
+	 * Retrieves best time from quest slot.
+	 *
+	 * @param player
+	 *     Player for whom time is being retrieved.
+	 * @return
+	 *     Best maze completion time or <code>null</code> if no best
+	 *     time was previously stored.
+	 */
+	public static Long getBestTime(final Player player) {
+		final String bestTime = player.getQuest("maze", 3);
+		if (bestTime != null && !bestTime.equals("")) {
+			try {
+				return Long.parseLong(bestTime);
+			} catch (final NumberFormatException e) {
+				logger.error("Could not parse best maze time from quest slot");
+			}
+		}
+
+		return null;
 	}
 }
