@@ -11,6 +11,12 @@
  ***************************************************************************/
 package games.stendhal.server.maps.zakopane.city;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
@@ -18,12 +24,6 @@ import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
-
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * Zakopane Nosiwoda Witek (Outside / Level 0).
@@ -55,10 +55,10 @@ public class ButeleczkaNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-				addGreeting("Witaj!");
-				addJob("Dam ci buteleczkę wody powiedz tylko #nalej.");
+				addGreeting("Cześć!");
+				addJob("Dam ci buteleczkę wody gdy przyniesiesz mi pustą buteleczkę i powiesz mi tylko #nalej!");
 				addHelp("Pomagamy Gerwazemu w napełnianiu buteleczek wodą.");
-				addGoodbye("Do widzenia.");
+				addGoodbye();
 
 				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
 				requiredResources.put("buteleczka", 1);

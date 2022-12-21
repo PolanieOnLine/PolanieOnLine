@@ -11,19 +11,20 @@
  ***************************************************************************/
 package games.stendhal.server.maps.zakopane.city;
 
-import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.core.pathfinder.FixedPath;
-import games.stendhal.server.core.pathfinder.Node;
-import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
-
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+
+import games.stendhal.server.core.config.ZoneConfigurator;
+import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.core.pathfinder.FixedPath;
+import games.stendhal.server.core.pathfinder.Node;
+import games.stendhal.server.entity.npc.SpeakerNPC;
+import games.stendhal.server.entity.npc.action.SayTextAction;
+import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
+import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 
 /**
  * Zakopane Nosiwoda Gerwazy (Outside / Level 0).
@@ -55,7 +56,7 @@ public class BuklakNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-				addGreeting("Witaj!");
+				addGreeting(null, new SayTextAction("Witaj [name] przy źródełkach!"));
 				addJob("Napełniam, pusty bukłak wodą, powiedz mi tylko #nalej.");
 				addHelp("Nie, dziękuję. Do pomocy mam swoich pomocników.");
 				addGoodbye("Trzymaj się.");
