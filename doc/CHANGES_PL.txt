@@ -2,13 +2,16 @@ Changelog
 ---------
 1.34
 *klient*
-- Dodano grafikę nowego przedmiotu
+- Dodano grafikę nowego przedmiotu & potwora
 - Poprawiono grafiki kotka & uskrzydlonego czarta
 - Klient zapamiętuje ostatni logowany profil gracza
 
 *świat*
 - Dodano nowy przedmiot: (1)
 	- magia wiatru
+- Dodano nowego potwora: (1)
+	- szarak gigant
+- Dodano nową listę dropu dla szaraków
 - Obniżono minimalny poziom magii oraz zwiększono atak mrozu i zmniejszono atak światła o 1 punkt
 - Poprawiono dialogi u pomagierów oraz samego Gerwazego i rozwinięto niejasności z nowym zadaniem dot. poszukiwań kapłana
 - Usunięto następujące przedmioty: 'woda', 'flasza' (zdublowane przedmioty 'butelki wody' oraz 'butelki')
