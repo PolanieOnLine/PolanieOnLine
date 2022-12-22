@@ -12,6 +12,7 @@
 package games.stendhal.server.maps.deathmatch;
 
 import static games.stendhal.server.core.rp.achievement.factory.DeathmatchAchievementFactory.HELPER_SLOT;
+import static games.stendhal.server.core.rp.achievement.factory.DeathmatchAchievementFactory.WINS_SLOT;
 
 import org.apache.log4j.Logger;
 
@@ -23,7 +24,6 @@ import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.action.IncrementQuestAction;
 import games.stendhal.server.entity.npc.action.SetQuestAction;
 import games.stendhal.server.entity.player.Player;
 import marauroa.server.db.command.DBCommandPriority;
@@ -101,6 +101,27 @@ public class DoneAction implements ChatAction {
 			}
 		}
 	}
+	
+	/**
+	 * Tracks winning player & updates achievements related to win in deathmatch.
+	 *
+	 * @param player
+	 * 		The player who winning a deathmatch.
+	 */
+	private void updateWins(final Player player) {
+		int winCount = 0;
+		if (player.hasQuest(WINS_SLOT)) {
+			try {
+				winCount = Integer.parseInt(player.getQuest(WINS_SLOT, 0));
+			} catch (final NumberFormatException e) {
+				logger.error("Deathmatch wins quest slot value not an integer.");
+				e.printStackTrace();
+			}
+		}
+		winCount++;
+		player.setQuest(WINS_SLOT, 0, Integer.toString(winCount));
+		SingletonRepository.getAchievementNotifier().onFinishDeathmatch(player);
+	}
 
 	@Override
 	public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
@@ -145,8 +166,7 @@ public class DoneAction implements ChatAction {
 
 		new SetQuestAction("deathmatch", 0, "done").fire(player, sentence, raiser);
 		// Track the number of wins.
-		new IncrementQuestAction("deathmatch", 6, 1).fire(player, sentence, raiser);
-		SingletonRepository.getAchievementNotifier().onFinishDeathmatch(player);
+		updateWins(player);
 
 		// track helpers
 		updateHelpers(player, System.currentTimeMillis());

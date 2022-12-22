@@ -31,10 +31,10 @@ import games.stendhal.server.entity.player.Player;
  * Deathmatch related achievements.
  */
 public class DeathmatchAchievementFactory extends AbstractAchievementFactory {
-
 	private static final Logger logger = Logger.getLogger(DeathmatchAchievementFactory.class);
 
 	public static final String HELPER_SLOT = "deathmatch_helper";
+	public static final String WINS_SLOT = "deathmatch_wins";
 
 	public static final String ID_HELPER_25 = "deathmatch.helper.0025";
 	public static final String ID_HELPER_50 = "deathmatch.helper.0050";
@@ -56,17 +56,17 @@ public class DeathmatchAchievementFactory extends AbstractAchievementFactory {
 		achievements.add(createAchievement(
 				"deathmatch.001", "Pachołek", "Zawalczył swoją pierwszą rundę na deathmatchu",
 				Achievement.EASY_BASE_SCORE, true,
-				new QuestStateGreaterThanCondition("deathmatch", 6, 0)));
+				new HasWonNumberOfTimes(1)));
 
 		achievements.add(createAchievement(
 				"deathmatch.025", "Gladiator", "Zawalczył 25 rund na deathmatchu",
 				Achievement.MEDIUM_BASE_SCORE, true,
-				new QuestStateGreaterThanCondition("deathmatch", 6, 24)));
+				new HasWonNumberOfTimes(25)));
 
 		achievements.add(createAchievement(
 				"deathmatch.050", "Postrach Areny", "Zawalczył 50 rund na deathmatchu",
 				Achievement.HARD_BASE_SCORE, true,
-				new QuestStateGreaterThanCondition("deathmatch", 6, 49)));
+				new HasWonNumberOfTimes(50)));
 
 		achievements.add(createAchievement(
 				"quest.deathmatch.frequenter", "Bywalec Deathmatchu", "Zdobył 20,000 punktów na arenie deathmatch",
@@ -121,14 +121,11 @@ public class DeathmatchAchievementFactory extends AbstractAchievementFactory {
 		return achievements;
 	}
 
-
 	/**
 	 * Class to check if a player has helped in deathmatch a specified number of times.
 	 */
 	private class HasHelpedNumberOfTimes implements ChatCondition {
-
 		private int requiredCount;
-
 
 		private HasHelpedNumberOfTimes(final int count) {
 			this.requiredCount = count;
@@ -149,5 +146,32 @@ public class DeathmatchAchievementFactory extends AbstractAchievementFactory {
 
 			return count >= requiredCount;
 		}
-	};
+	}
+
+	/**
+	 * Class to check player wins in deathmatch
+	 */
+	private class HasWonNumberOfTimes implements ChatCondition {
+		private int requiredCount;
+
+		private HasWonNumberOfTimes(final int count) {
+			this.requiredCount = count;
+		}
+
+		@Override
+		public boolean fire(final Player player, final Sentence sentence, final Entity npc) {
+			int count = 0;
+			if (player.hasQuest(WINS_SLOT)) {
+				try {
+					count = Integer.parseInt(player.getQuest(WINS_SLOT, 0));
+				} catch (final NumberFormatException e) {
+					logger.error("Deathmatch helper quest slot value not an integer.");
+					e.printStackTrace();
+					return false;
+				}
+			}
+
+			return count >= requiredCount;
+		}
+	}
 }
