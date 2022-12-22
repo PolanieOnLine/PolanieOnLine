@@ -11,8 +11,6 @@
  ***************************************************************************/
 package games.stendhal.server.entity.player;
 
-import static games.stendhal.server.core.rp.achievement.AchievementNotifier.REACHED_SLOT;
-
 import java.util.Set;
 
 import games.stendhal.server.core.engine.SingletonRepository;
@@ -45,9 +43,6 @@ public class ReadAchievementsOnLogin implements LoginListener, TurnListener {
 		Player p = command.getPlayer();
 		Set<String> identifiers = command.getIdentifiers();
 		p.initReachedAchievements();
-		if (p.getQuest(REACHED_SLOT) == null) {
-			p.setQuest(REACHED_SLOT, 0, Integer.toString(identifiers.size()));
-		}
 		for (String identifier : identifiers) {
 			p.addReachedAchievement(identifier);
 		}
