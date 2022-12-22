@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -11,6 +10,8 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.entity.player;
+
+import static games.stendhal.server.core.rp.achievement.AchievementNotifier.REACHED_SLOT;
 
 import java.util.Set;
 
@@ -25,7 +26,6 @@ import marauroa.server.db.command.DBCommandQueue;
 import marauroa.server.db.command.ResultHandle;
 
 public class ReadAchievementsOnLogin implements LoginListener, TurnListener {
-
 	private ResultHandle handle = new ResultHandle();
 
 	@Override
@@ -45,10 +45,12 @@ public class ReadAchievementsOnLogin implements LoginListener, TurnListener {
 		Player p = command.getPlayer();
 		Set<String> identifiers = command.getIdentifiers();
 		p.initReachedAchievements();
+		if (p.getQuest(REACHED_SLOT) == null) {
+			p.setQuest(REACHED_SLOT, 0, Integer.toString(identifiers.size()));
+		}
 		for (String identifier : identifiers) {
 			p.addReachedAchievement(identifier);
 		}
 		SingletonRepository.getAchievementNotifier().onLogin(command.getPlayer());
 	}
-
 }

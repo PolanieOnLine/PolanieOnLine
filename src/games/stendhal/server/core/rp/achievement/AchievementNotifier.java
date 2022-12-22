@@ -31,6 +31,7 @@ import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.GameEvent;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.db.AchievementDAO;
+import games.stendhal.server.core.engine.dbcommand.WriteHallOfFamePointsCommand;
 import games.stendhal.server.core.engine.dbcommand.WriteReachedAchievementCommand;
 import games.stendhal.server.core.rp.achievement.factory.AbstractAchievementFactory;
 import games.stendhal.server.entity.player.Player;
@@ -38,6 +39,7 @@ import games.stendhal.server.entity.player.ReadAchievementsOnLogin;
 import games.stendhal.server.entity.player.UpdatePendingAchievementsOnLogin;
 import games.stendhal.server.events.ReachedAchievementEvent;
 import games.stendhal.server.events.SoundEvent;
+import marauroa.server.db.command.DBCommandPriority;
 import marauroa.server.db.command.DBCommandQueue;
 import marauroa.server.game.db.DAORegister;
 
@@ -52,8 +54,8 @@ public final class AchievementNotifier {
 	private static AchievementNotifier instance;
 
 	final private Map<Category, List<Achievement>> achievements;
-
 	final private Map<String, Integer> identifiersToIds;
+	public static final String REACHED_SLOT = "reached_achievements";
 
 	/**
 	 * singleton accessor method
@@ -421,11 +423,21 @@ public final class AchievementNotifier {
 	 * @param achievement
 	 */
 	private void notifyPlayerAboutReachedAchievement(final Player player, final Achievement achievement) {
+		int achievementsCount = Integer.valueOf(player.getQuest(REACHED_SLOT, 0));
 		if (achievement.isActive()) {
+			achievementsCount++;
+			setReachedAchievements(player, achievementsCount);
+
 			player.addEvent(new ReachedAchievementEvent(achievement));
 			player.addEvent(new SoundEvent(SoundID.ACHIEVEMENT, SoundLayer.USER_INTERFACE));
 			player.notifyWorldAboutChanges();
 		}
+	}
+
+	private void setReachedAchievements(final Player player, int achievementsCount) {
+		player.setQuest(REACHED_SLOT, 0, Integer.toString(achievementsCount));
+		DBCommandQueue.get().enqueue(new WriteHallOfFamePointsCommand(
+			player.getName(), "C", achievementsCount, false), DBCommandPriority.LOW);
 	}
 
 	/**
