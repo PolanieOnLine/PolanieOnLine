@@ -337,6 +337,16 @@ public final class AchievementNotifier {
 		final List<Achievement> reached = checkAchievements(player, toCheck);
 		// only send notice if actually a new added achievement was reached by doing nothing
 		if(!reached.isEmpty()) {
+			if (player.getQuest(REACHED_SLOT) != null) {
+				int count = Integer.valueOf(player.getQuest(REACHED_SLOT, 0));
+				if (reached.size() > 0) {
+					count += reached.size();
+				}
+				player.setQuest(REACHED_SLOT, 0, Integer.toString(count));
+			} else {
+				player.setQuest(REACHED_SLOT, 0, Integer.toString(reached.size()));
+			}
+
 			StringBuilder sb = new StringBuilder();
 			sb.append("Zdobyłeś ");
 			sb.append(Integer.valueOf(reached.size()));
