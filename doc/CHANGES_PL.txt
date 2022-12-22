@@ -15,6 +15,7 @@ Changelog
 - Obniżono minimalny poziom magii oraz zwiększono atak mrozu i zmniejszono atak światła o 1 punkt
 - Poprawiono dialogi u pomagierów oraz samego Gerwazego i rozwinięto niejasności z nowym zadaniem dot. poszukiwań kapłana
 - Usunięto następujące przedmioty: 'woda', 'flasza' (zdublowane przedmioty 'butelki wody' oraz 'butelki')
+- Zaktualizowano ceny magii u Kuglarza
 
 *serwer*
 - Serwer zapisuje najlepszy czas przejścia labiryntu oraz ilość zdobytych łącznie osiągnięć
