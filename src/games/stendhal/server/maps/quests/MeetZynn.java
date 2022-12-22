@@ -100,7 +100,7 @@ public class MeetZynn extends AbstractQuest {
 
 		npc.addReply(
 					Arrays.asList("get", "zdobyć", "zdobędziesz"),
-					"Mapę PolanieOnLine możesz zobaczyć na stronie #https://polanieonline.eu/world/atlaspol.html jeżeli chcesz. Nie spodziewaj się, że będą na niej oznaczone potwory!");
+					"Mapę PolanieOnLine możesz zobaczyć na stronie #https://s1.polanieonline.eu/world/atlaspol.html jeżeli chcesz. Nie spodziewaj się, że będą na niej oznaczone potwory!");
 
 		npc.addReply(
 					"SPPOL",

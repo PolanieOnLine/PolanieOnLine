@@ -40,8 +40,8 @@
     </tab>
     <tab type="examples" visible="yes" title="" intro=""/>
     <tab type="user" visible="yes" title="Links">
-      <tab type="user" visible="yes" title="PolanieOnLine Homepage" url="https://polanieonline.eu/"/>
-      <tab type="user" visible="yes" title="Wiki" url="https://polanieonline.eu/wiki/PolanieOnLine"/>
+      <tab type="user" visible="yes" title="PolanieOnLine Homepage" url="https://s1.polanieonline.eu/"/>
+      <tab type="user" visible="yes" title="Wiki" url="https://s1.polanieonline.eu/wiki/PolanieOnLine"/>
       <tab type="user" visible="yes" title="Sourceforge" url="https://sourceforge.net/projects/game-polanieonline"/>
       <tab type="user" visible="yes" title="GitHub" url="https://github.com/PolanieOnLine/PolanieOnLine"/>
     </tab>

@@ -892,7 +892,7 @@
 			</fileset>
 			<manifest>
 				<attribute name="Application-Name" value="PolanieOnLine"/>
-				<attribute name="Application-Library-Allowable-Codebase"  value="http://game-polanieonline.sourceforge.net https://polanieonline.eu *" />
+				<attribute name="Application-Library-Allowable-Codebase"  value="http://game-polanieonline.sourceforge.net https://s1.polanieonline.eu *" />
 				<attribute name="Main-Class" value="games.stendhal.client.update.Starter"/>
 				<attribute name="Class-path" value=". lib/${jsonsimple_jarname}"/>
 				<attribute name="Permissions" value="all-permissions"/>
@@ -1448,7 +1448,7 @@
 			<arg value="filename=testresults.xml"/>
 			<arg value="-F"/>
 			<arg value="file=@build/build_test_report/testresults-short.xml"/>
-			<arg value="https://polanieonline.eu?id=sites/scripts/cireport&amp;cikey=${env.cikey}&amp;buildnumber=${env.GITHUB_RUN_NUMBER}&amp;buildid=${env.GITHUB_RUN_ID}&amp;commit=${env.GITHUB_SHA}&amp;commits=${env.TRAVIS_COMMIT_RANGE}&amp;slug=${env.TRAVIS_REPO_SLUG}&amp;pullrequest=${env.GITHUB_HEAD_REF}&amp;branch=${env.GITHUB_REF_NAME}"/>
+			<arg value="https://s1.polanieonline.eu?id=sites/scripts/cireport&amp;cikey=${env.cikey}&amp;buildnumber=${env.GITHUB_RUN_NUMBER}&amp;buildid=${env.GITHUB_RUN_ID}&amp;commit=${env.GITHUB_SHA}&amp;commits=${env.TRAVIS_COMMIT_RANGE}&amp;slug=${env.TRAVIS_REPO_SLUG}&amp;pullrequest=${env.GITHUB_HEAD_REF}&amp;branch=${env.GITHUB_REF_NAME}"/>
 		</exec>
 		<fail message="Test errors detected, check test results." if="test.error"/>
 		<fail message="Test failure detected, check test results." if="test.failure"/>
@@ -1509,7 +1509,7 @@ turn_length=300
 server_typeGame=polanieonline
 server_name=PolanieOnLine Marauroa server
 server_version=1.00
-server_contact=https://polanieonline.eu/
+server_contact=https://s1.polanieonline.eu/
 n = 966117159215070350422008719727400433209081371975507132437556194069529307432746058120899703845731090424709994853484674454738958575201865208533043689325553646377
 e = 15
 d = 901709348600732327060541471745573737661809280510473323608385781131560686937229596225645929798090122419343070307904183075525081589946196209839163758401803422679

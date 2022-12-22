@@ -126,7 +126,7 @@
 			<name>Bank Gdański</name>
 			<type>bank</type>
 			<description>Miejsce gdzie możesz zostawić swój dobytek.</description>
-			<url>https://polanieonline.eu/faq</url>
+			<url>https://s1.polanieonline.eu/faq</url>
 		</point-of-interest>
 
 		<portal x="41" y="124" ref="bank_entrance">
@@ -413,7 +413,7 @@
 			<name>Wejście do jaskini pod Gdańskiem</name>
 			<type>dungeon</type>
 			<description>Wejście do straszliwej jaskini, w której czyhają przeróżnorakie stwory.</description>
-			<url>https://polanieonline.eu/gdansk</url>
+			<url>https://s1.polanieonline.eu/gdansk</url>
 		</point-of-interest>
 		<portal x="16" y="75" ref="cave_entrance">
 			<destination zone="-1_gdansk_cave_sw" ref="cave_exit"/>

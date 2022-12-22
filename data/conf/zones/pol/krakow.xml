@@ -226,7 +226,7 @@ Południowy-Wschód: Kraków
 			<name>Bank Krakowski</name>
 			<type>bank</type>
 			<description>Miejsce gdzie możesz zostawić swój dobytek.</description>
-			<url>https://polanieonline.eu/faq</url>
+			<url>https://s1.polanieonline.eu/faq</url>
 		</point-of-interest>
 		<!-- Bank -->
 		<portal x="33" y="46" ref="bank1_entrance">
@@ -270,7 +270,7 @@ Południowy-Wschód: Kraków
 			<name>Wejście do kanałów</name>
 			<type>dungeon</type>
 			<description>Wejście do kanałów pod królewskim miastem, słychać w niej straszliwe piski.</description>
-			<url>https://polanieonline.eu/krakow</url>
+			<url>https://s1.polanieonline.eu/krakow</url>
 		</point-of-interest>
 		<!-- Poziom -1 - canals -->
 		<portal x="90" y="87" ref="canals_entrance">
@@ -446,7 +446,7 @@ Południowy-Wschód: Kraków
 			<name>Wejście do jaskini pod Wawelem</name>
 			<type>dungeon</type>
 			<description>Lepiej nie zapuszczać się albo nawet nie wchodzić do tej jaskini. Podobno zamieszkują tam wilkołaki wraz ze smokami!</description>
-			<url>https://polanieonline.eu/krakow</url>
+			<url>https://s1.polanieonline.eu/krakow</url>
 		</point-of-interest>
 		<portal x="89" y="70" ref="wawelski_entrance">
 			<destination zone="-1_krakow_cave_sw" ref="wawelski_exit"/>

@@ -8,4 +8,4 @@ W skrócie, jest to gra przygodowa multiplayer (MMORPG) z kamerą 2D z bardzo pr
 minimalnym oraz przyjaznym również interfejsem gracza. Wszelkie wykorzystywane materiały w "naszej" grze podlegają publicznej licencji GNU GPL.
 
 ## Instalacja
-Aby móc zainstalować naszą grę wystarczy pobrać odpowiedni plik instalacyjny z naszej witryny https://polanieonline.eu/ lub z naszego sourceforge'a https://sourceforge.net/projects/game-polanieonline/
+Aby móc zainstalować naszą grę wystarczy pobrać odpowiedni plik instalacyjny z naszej witryny https://s1.polanieonline.eu/ lub z naszego sourceforge'a https://sourceforge.net/projects/game-polanieonline/

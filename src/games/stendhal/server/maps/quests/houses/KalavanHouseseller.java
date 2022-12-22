@@ -92,7 +92,7 @@ final class KalavanHouseseller extends HouseSellerNPCBase {
 			null,
 			new BuyHouseChatAction(getCost(), QUEST_SLOT));
 
-		addJob("Jestem agentem nieruchomości z prostymi zasadami. Sprzedaję domy tym, którzy otrzymali #obywatelstwo. Domy sporo kosztują. Tymczasowo nasza broszura jest na #https://polanieonline.eu/");
+		addJob("Jestem agentem nieruchomości z prostymi zasadami. Sprzedaję domy tym, którzy otrzymali #obywatelstwo. Domy sporo kosztują. Tymczasowo nasza broszura jest na #https://s1.polanieonline.eu/");
 		addReply(Arrays.asList("citizenship", "obywatelstwo"),
 				"O tym decyduje rodzina królewska w zamku Kalavan.");
 

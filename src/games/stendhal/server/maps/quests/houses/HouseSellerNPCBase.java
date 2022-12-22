@@ -182,12 +182,12 @@ abstract class HouseSellerNPCBase extends SpeakerNPC {
 
 		addReply(
 				 Arrays.asList("buy", "kupię", "kupić"),
-				 "Powinieneś się dowiedzieć o #cenę przed kupnem i sprawdzić naszą broszurę #'https://polanieonline.eu/wiki/PolanieOnLine_Domki'.");
+				 "Powinieneś się dowiedzieć o #cenę przed kupnem i sprawdzić naszą broszurę #'https://s1.polanieonline.eu/wiki/PolanieOnLine_Domki'.");
 		addReply(Arrays.asList("really", "naprawdę"),
 				 "Tak jest naprawdę, naprawdę, naprawdę. Naprawdę.");
-		addOffer("Sprzedaję domy, aby zobaczyć jak wyglądają wejdź na stronę #'https://polanieonline.eu/wiki/PolanieOnLine_Domki' i przekonaj się. Później zapytaj mnie o #cenę, gdy będziesz gotowy.");
-		addHelp("Możesz kupić dom o ile będzie dostępny. Jeżeli będziesz mógł zapłacić #cenę to dam Tobie klucz. Jako właściciel domu będziesz mógł kupować dodatkowe klucze do niego i dawać przyjaciołom. Wejdź na #'https://polanieonline.eu/wiki/PolanieOnLine_Domki' i zobacz wnętrza domów oraz więcej szczegółów.");
-		addQuest("Możesz kupić u mnie domy. Zapytaj mnie o #cenę jeżeli jesteś zainteresowany. Może chcesz najpierw zobaczyć naszą broszurę #'https://polanieonline.eu/wiki/PolanieOnLine_Domki'.");
+		addOffer("Sprzedaję domy, aby zobaczyć jak wyglądają wejdź na stronę #'https://s1.polanieonline.eu/wiki/PolanieOnLine_Domki' i przekonaj się. Później zapytaj mnie o #cenę, gdy będziesz gotowy.");
+		addHelp("Możesz kupić dom o ile będzie dostępny. Jeżeli będziesz mógł zapłacić #cenę to dam Tobie klucz. Jako właściciel domu będziesz mógł kupować dodatkowe klucze do niego i dawać przyjaciołom. Wejdź na #'https://s1.polanieonline.eu/wiki/PolanieOnLine_Domki' i zobacz wnętrza domów oraz więcej szczegółów.");
+		addQuest("Możesz kupić u mnie domy. Zapytaj mnie o #cenę jeżeli jesteś zainteresowany. Może chcesz najpierw zobaczyć naszą broszurę #'https://s1.polanieonline.eu/wiki/PolanieOnLine_Domki'.");
 		addGoodbye("Do widzenia.");
 	}
 

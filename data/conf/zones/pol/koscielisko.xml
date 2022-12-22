@@ -37,7 +37,7 @@
 			<name>Wejście do tunelu ZRC</name>
 			<type>dungeon</type>
 			<description>Wejście do starego tunelu Zakonu Rycerzy Cienia. Prowadzi on do zamku, w którym czyhają przerażające potwory oraz do kopalni złóż.</description>
-			<url>https://polanieonline.eu/koscielisko</url>
+			<url>https://s1.polanieonline.eu/koscielisko</url>
 		</point-of-interest>
 		<portal x="69" y="116" ref="enter_tunel_zrc">
 			<destination zone="int_koscielisko_tunel_zrc" ref="exit_koscielisko"/>
@@ -70,7 +70,7 @@
 			<name>Wejście do jaskini</name>
 			<type>dungeon</type>
 			<description>Wejście do jaskini znajdującego się pod Kościeliskiem. Należy w niej bardzo uważać!</description>
-			<url>https://polanieonline.eu/koscielisko</url>
+			<url>https://s1.polanieonline.eu/koscielisko</url>
 		</point-of-interest>
 		<portal x="111" y="11" ref="cave-1_entrance">
 			<destination zone="-1_koscielisko_cave" ref="entrance_cave-1_exit"/>

@@ -100,7 +100,7 @@
 			<name>Ados Abandoned Keep</name>
 			<type>dungeon</type>
 			<description>Dom górskich orków, górskich krasnali i duergarów. Dobrze się przygotuj wchodząc tutaj.</description>
-			<url>https://polanieonline.eu/ados</url>
+			<url>https://s1.polanieonline.eu/ados</url>
 	</point-of-interest>
 
 	</zone>
@@ -116,7 +116,7 @@
 			<title>Tunel Amazoński</title>
 			<type>dungeon</type>
 			<description>Ogromny system tuneli pomiędzy górami Ados, a Amazonią przyprawia o ból głowy, gdy próbujesz znaleźć wyjście. Być może jest gdzieś lina... (Poziom Wojownika 50 - 200)</description>
-			<url>https://polanieonline.eu/ados</url>
+			<url>https://s1.polanieonline.eu/ados</url>
 	</point-of-interest>
 	</zone>
 
@@ -559,7 +559,7 @@
 			<title>Jaskinie Ados</title>
 			<type>dungeon</type>
 			<description>Jaskinie Ados składają się z wielu mniejszych jaskiń i tuneli. Znajduje się tam wiele różnych potworów, które pilnują ścieżek. Po północnym regionie ostrożnie mogą się poruszać wojownicy z niskim poziomem! (Poziom Wojownika 80 - 597)</description>
-			<url>https://polanieonline.eu/ados</url>
+			<url>https://s1.polanieonline.eu/ados</url>
 	</point-of-interest>
 
 	<point-of-interest x="117" y="37">
@@ -567,7 +567,7 @@
 			<title>Jaskinie Ados</title>
 			<type>dungeon</type>
 			<description>Jaskinie Ados składają się z wielu mniejszych jaskiń i tuneli. Znajduje się tam wiele różnych potworów, które pilnują ścieżek. Po północnym regionie ostrożnie mogą się poruszać wojownicy z niskim poziomem! (Poziom Wojownika 80 - 597)</description>
-			<url>https://polanieonline.eu/ados</url>
+			<url>https://s1.polanieonline.eu/ados</url>
 	</point-of-interest>
 
 	<point-of-interest x="97" y="114">
@@ -575,7 +575,7 @@
 			<title>Jaskinie Ados</title>
 			<type>dungeon</type>
 			<description>Jaskinie Ados składają się z wielu mniejszych jaskiń i tuneli. Znajduje się tam wiele różnych potworów, które pilnują ścieżek. (Poziom Wojownika Level 80 - 597)</description>
-			<url>https://polanieonline.eu/ados</url>
+			<url>https://s1.polanieonline.eu/ados</url>
 	</point-of-interest>
 	</zone>
 
@@ -638,7 +638,7 @@ Zachód: Semos
 		<name>Jaskinie Ados Nora Nagi</name>
 		<type>dungeon</type>
 		<description>Z nory w ziemi słychać jakiś bardzo głośny syk. W wewnątrz muszą się znajdować jakieś gigantyczne węże.</description>
-		<url>https://polanieonline.eu/ados</url>
+		<url>https://s1.polanieonline.eu/ados</url>
 	</point-of-interest>
 
 	</zone>
@@ -780,7 +780,7 @@ używanie zwojów.
 			<name>Zewnętrzne Ados</name>
 			<type>dungeon</type>
 			<description>Podziemia na zewnątrz Ados można znaleźć blisko góry Ados w zachodniej części Ados. Wejście znajduje się blisko Schroniska dla zwierząt.</description>
-			<url>https://polanieonline.eu/ados</url>
+			<url>https://s1.polanieonline.eu/ados</url>
 		</point-of-interest>
 
 		<entity x="53" y="48">
@@ -1134,7 +1134,7 @@ Zachód: Semos
 			<name>Bank Ados</name>
 			<type>bank</type>
 			<description>Miejsce do przechowywania dobytku. Ten dom także należy do banku Semos.</description>
-			<url>https://polanieonline.eu/faq</url>
+			<url>https://s1.polanieonline.eu/faq</url>
 	</point-of-interest>
 
 		<portal x="27" y="39" ref="10">
@@ -4493,7 +4493,7 @@ Południowy-wschód: Doki
 			<name>Ados Caves Giant Pit</name>
 			<type>dungeon</type>
 			<description>Oto masywne ślady wokół wejścia.</description>
-			<url>https://polanieonline.eu/ados</url>
+			<url>https://s1.polanieonline.eu/ados</url>
 	</point-of-interest>
 
 	</zone>
@@ -4664,7 +4664,7 @@ Południowy-wschód: Doki
 			<title>Kanały Ados</title>
 			<type>dungeon</type>
 			<description>Przyprawiający o ból głowy labirynt pod miastem Ados.</description>
-			<url>https://polanieonline.eu/ados</url>
+			<url>https://s1.polanieonline.eu/ados</url>
 	</point-of-interest>
 
 		<portal x="102" y="52" ref="barracks_entrance_right">
@@ -4677,7 +4677,7 @@ Południowy-wschód: Doki
 			<title>Kanały Ados</title>
 			<type>dungeon</type>
 			<description>Przyprawiający o ból głowy labirynt pod miastem Ados.</description>
-			<url>https://polanieonline.eu/ados</url>
+			<url>https://s1.polanieonline.eu/ados</url>
 		</point-of-interest>
 
 	</zone>
@@ -4840,7 +4840,7 @@ Południowy-wschód: Doki
 			<name>Tunel Morderców</name>
 			<type>dungeon</type>
 			<description>Tunel morderców jest popularny wśród młodych, silnych morderców. Kilku z nich trenuje przed wielkim zadaniem, który tylko oni mogą sobie poradzić. Inni są w grupie dezerterów Blordroughtów ze swoimi ulubionymi smokami. (Poziom Wojownika 60 - 200)</description>
-			<url>https://polanieonline.eu/ados</url>
+			<url>https://s1.polanieonline.eu/ados</url>
 		</point-of-interest>
 
 		<entity x="89" y="63">

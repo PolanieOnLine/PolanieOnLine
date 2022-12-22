@@ -26,7 +26,7 @@ jobs:
         with:
           nodetail: true
           title: "Unittest failed"
-          description: "https://polanieonline.eu/development/cireport.html"
+          description: "https://s1.polanieonline.eu/development/cireport.html"
       - uses: sarisia/actions-status-discord@v1
         if: failure()
         env:
@@ -34,4 +34,4 @@ jobs:
         with:
           nodetail: true
           title: "Unittest failed"
-          description: "https://polanieonline.eu/development/cireport.html"
+          description: "https://s1.polanieonline.eu/development/cireport.html"

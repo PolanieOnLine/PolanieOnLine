@@ -52,7 +52,7 @@ public class StendhalWebView {
 		selectServer();
 
 		// initial page
-		clientView.loadUrl("https://polanieonline.eu/account/mycharacters.html");
+		clientView.loadUrl("https://s1.polanieonline.eu/account/mycharacters.html");
 	}
 
 	private void initLoadURLHandler() {

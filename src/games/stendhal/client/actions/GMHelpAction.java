@@ -43,7 +43,7 @@ class GMHelpAction implements SlashAction {
 	    List<String> lines;
 		if (params[0] == null) {
 			lines = Arrays.asList(
-				"Aby dowiedzieć się więcej odwiedź #https://polanieonline.eu/wiki/PolanieOnLine:Administrowanie",
+				"Aby dowiedzieć się więcej odwiedź #https://s1.polanieonline.eu/wiki/PolanieOnLine:Administrowanie",
 				"Oto najczęściej używane komendy przez GA-ów i GM-ów:",
 				"* OGÓLNE:",
 				"- /gmhelp [alter|script|support]",

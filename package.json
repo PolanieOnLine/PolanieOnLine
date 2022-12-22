@@ -26,7 +26,7 @@
   "bugs": {
     "url": "https://github.com/PolanieOnLine/PolanieOnLine/issues"
   },
-  "homepage": "https://polanieonline.eu",
+  "homepage": "https://s1.polanieonline.eu",
   "private": true,
   "dependencies": {
     "typescript": "^4.5.3"

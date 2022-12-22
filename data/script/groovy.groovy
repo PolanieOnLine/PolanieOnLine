@@ -25,7 +25,7 @@ if(game.setZone(myZone))   // if zone exists
   // We create now a sign and place it on position 31,50 with some text
   sign=new Sign()
   sign.setPosition(8, 47)
-  sign.setText("Witamy w PolanieOnLine!\nProsimy o wysyłanie reportów o każdym możliwym błędzie, który występuje aktualnie w grze oraz odwiedź naszą stronę internetową.\nhttps://polanieonline.eu")
+  sign.setText("Witamy w PolanieOnLine!\nProsimy o wysyłanie reportów o każdym możliwym błędzie, który występuje aktualnie w grze oraz odwiedź naszą stronę internetową.\nhttps://s1.polanieonline.eu")
 
   // Add our new Object to the game world
   game.add(sign)

@@ -78,7 +78,7 @@ final class AthorHouseSeller extends HouseSellerNPCBase {
 				new BuyHouseChatAction(getCost(), QUEST_SLOT));
 
 
-		addJob("Faktycznie jestem tutaj dla słońca. Ale zajmuje się też sprzedażą apartamentów na wyspie. Możesz je oglądnąć w katalogu na #https://polanieonline.eu.");
+		addJob("Faktycznie jestem tutaj dla słońca. Ale zajmuje się też sprzedażą apartamentów na wyspie. Możesz je oglądnąć w katalogu na #https://s1.polanieonline.eu.");
 		addReply(Arrays.asList("fisherman", "rybakiem", "rybak"), "Staniesz się nim, gdy zdobędziesz licencje u Santiago w Ados. Po zdaniu 2 egzaminów zostaniesz prawdziwym rybakiem.");
 		setDirection(Direction.DOWN);
 		setDescription("Oto opalający się mężczyzna.");

@@ -78,7 +78,7 @@ public class CStatusAction implements ActionListener {
 								+ serverVersion
 								+ ", a twój klient jest w wersji "
 								+ clientVersion
-								+ ".\nMożesz pobrać najnowszą wersję z https://polanieonline.eu ");
+								+ ".\nMożesz pobrać najnowszą wersję z https://s1.polanieonline.eu ");
 				}
 			}
 		}

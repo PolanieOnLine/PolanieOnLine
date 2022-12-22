@@ -154,7 +154,7 @@ public class StendhalFirstScreen extends JFrame {
 		Action helpAction = new AbstractAction("Pomoc") {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				BareBonesBrowserLaunch.openURL("https://polanieonline.eu/wprowadzenie.html");
+				BareBonesBrowserLaunch.openURL("https://s1.polanieonline.eu/wprowadzenie.html");
 			}
 		};
 		helpAction.putValue(Action.MNEMONIC_KEY, KeyEvent.VK_H);

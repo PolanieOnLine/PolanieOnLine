@@ -120,7 +120,7 @@
 			<name>Wejście do tunelu</name>
 			<type>dungeon</type>
 			<description>Wejście do przerażającego smoczego tunelu, w której znajdują się smoki!</description>
-			<url>https://polanieonline.eu/smocza_kraina</url>
+			<url>https://s1.polanieonline.eu/smocza_kraina</url>
 		</point-of-interest>
 		<portal x="107" y="35" ref="dragon_tunnel_1_entrance">
 			<destination zone="-1_dragon_cave" ref="tunnel_dragon_1_exit"/>
@@ -129,7 +129,7 @@
 			<name>Wejście do smoczego tunelu</name>
 			<type>dungeon</type>
 			<description>Wejście do przerażającego smoczego tunelu, w której znajdują się smoki!</description>
-			<url>https://polanieonline.eu/smocza_kraina</url>
+			<url>https://s1.polanieonline.eu/smocza_kraina</url>
 		</point-of-interest>
 		<portal x="67" y="60" ref="dragon_tunnel_2_entrance">
 			<destination zone="-1_dragon_cave" ref="tunnel_dragon_2_exit"/>
