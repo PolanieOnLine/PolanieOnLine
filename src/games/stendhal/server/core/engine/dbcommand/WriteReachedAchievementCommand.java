@@ -20,12 +20,11 @@ import marauroa.server.db.command.AbstractDBCommand;
 import marauroa.server.game.db.DAORegister;
 
 /**
- * command to log a reached achievement to the database
+ * Command to log a reached achievement to the database.
  *
  * @author madmetzger
  */
 public class WriteReachedAchievementCommand extends AbstractDBCommand {
-
 	private final Integer id;
 	private final String playerName;
 	private final boolean incReachedCount;
