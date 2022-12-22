@@ -9,6 +9,17 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
+/***************************************************************************
+ *                    Copyright © 2003-2022 - Arianne                      *
+ ***************************************************************************
+ ***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
 import java.util.ArrayList;
@@ -144,8 +155,8 @@ public class AGrandfathersWish extends AbstractQuest {
 				+ " porozmawiać z dziewczyną Marianne i zapytać"
 				+ " ją o Nialla. Kiedyś razem się bawili.");
 			if (find_myling != null) {
-				res.add("Marianne wspomniała, że ​​Niall chciał zbadać"
-					+ " cmentarz w okolicy Semos.");
+				res.add("Marianne wspomniała, że Niall chciał zbadać"
+					+ " cmentarz w okolicy pasa górskiego Semos.");
 				if (find_myling.equals("well_rope")) {
 					res.add("Usłyszałem dziwny dźwięk dochodzący ze studni na północ"
 						+ " od cmentarza. Potrzebuję liny, żeby do niej zejść.");
@@ -347,8 +358,8 @@ public class AGrandfathersWish extends AbstractQuest {
 			investigating1,
 			ConversationStates.ATTENDING,
 			"Wiesz, co mi kiedyś powiedział? Powiedział, że chce jechać aż"
-				+ " do Semos, żeby zobaczyć tam #cmentarz. Nieee! Nie ma mowy! To"
-				+ " brzmi bardziej przerażająco niż kurczaki.",
+				+ " w góry Semos, żeby zobaczyć tam #cmentarz. Nieee! Nie ma mowy!"
+				+ " To brzmi bardziej przerażająco niż kurczaki.",
 			new MultipleActions(
 				new NPCEmoteAction("drży.", false),
 				new SetQuestAction(QUEST_SLOT, 1, "find_myling:start")));
@@ -358,7 +369,7 @@ public class AGrandfathersWish extends AbstractQuest {
 			"Niall",
 			investigating2,
 			ConversationStates.ATTENDING,
-			"Niall powiedział, że chce iść aż do Semos, aby zobaczyć"
+			"Niall powiedział, że chce jechać aż w góry Semos, żeby zobaczyć"
 				+ " tam #cmentarz. Nieee! Nie ma mowy! To brzmi bardziej"
 				+ " przerażająco niż kurczaki.",
 			null);
