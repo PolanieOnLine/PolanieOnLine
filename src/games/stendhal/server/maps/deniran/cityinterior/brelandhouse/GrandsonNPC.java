@@ -33,6 +33,7 @@ public class GrandsonNPC implements ZoneConfigurator {
 		final SpeakerNPC niall = new SpeakerNPC("Niall Breland");
 		niall.addGoodbye();
 		niall.setEntityClass("kid10npc");
+		niall.setGender("M");
 		niall.setPosition(9, 7);
 		zone.add(niall);
 	}

@@ -107,6 +107,7 @@ public class MylingSpawner extends Entity implements TurnListener {
 		if (curedNiall == null) {
 			logger.error("Couldn't create temporary clone of Niall Breland");
 		} else {
+			curedNiall.setGender("M");
 			curedNiall.setPosition(getX(), getY());
 			curedNiall.setCollisionAction(CollisionAction.STOP);
 			getZone().add(curedNiall);

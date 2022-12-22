@@ -63,6 +63,7 @@ public class GrandfatherNPC implements ZoneConfigurator  {
 
 		elias.setEntityClass("oldman2npc");
 		elias.setDescription("Oto " + elias.getName() + ", który przechadza się po swoim domu.");
+		elias.setGender("M");
 
 		zone.add(elias);
 	}
