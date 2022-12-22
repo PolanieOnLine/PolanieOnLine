@@ -20,6 +20,7 @@ Changelog
 - Serwer zapisuje najlepszy czas przejścia labiryntu oraz ilość zdobytych łącznie osiągnięć
 
 *naprawiono błędy*
+- Naprawiono odnośniki na stronę zewnętrzną w kliencie
 - Naprawiono atakowanie innych graczy
 - Naprawiono animacje małego koteczka
 - Naprawiono naliczanie zwycięskich rund na arenie deathmatch
