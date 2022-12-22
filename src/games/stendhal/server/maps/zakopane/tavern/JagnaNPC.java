@@ -24,9 +24,8 @@ import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 
 /**
- * Food and drink seller,  Inside Semos Tavern - Level 0 (ground floor)
- * Sells the flask required for Tad's quest IntroducePlayers
- * 
+ * Food and drink seller, Inside Zakopane Tavern - Level 0 (ground floor)
+ *
  * @author Legolas
  */
 public class JagnaNPC implements ZoneConfigurator {
@@ -45,12 +44,6 @@ public class JagnaNPC implements ZoneConfigurator {
 
 	private void buildJagna(final StendhalRPZone zone) {
 		final SpeakerNPC jagna = new SpeakerNPC("Jagna") {
-
-			@Override
-			protected void createPath() {
-				// NPC does not move
-				setPath(null);
-			}
 			@Override
 			protected void createDialog() {
 				addGreeting("Witam miłego gościa. Czy coś podać?");
