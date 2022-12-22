@@ -21,28 +21,20 @@ import games.stendhal.server.entity.player.Player;
  * @author madmetzger
  */
 public class Achievement {
-
 	/** base score for easy achievements */
 	public static final int EASY_BASE_SCORE = 1;
-
 	/** base score for achievements of medium difficulty */
 	public static final int MEDIUM_BASE_SCORE = 2;
-
 	/** base score for difficult achievements */
 	public static final int HARD_BASE_SCORE = 5;
-
+	/** base score for very difficult achievements */
 	public static final int LEGENDARY_BASE_SCORE = 10;
 
 	private final String identifier;
-
 	private final String title;
-
 	private final Category category;
-
 	private final String description;
-
 	private final int baseScore;
-
 	/** is this achievement visible? */
 	private final boolean active;
 
