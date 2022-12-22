@@ -1,5 +1,6 @@
 -- D  deathmatch
 -- M  maze
+-- MT best maze time
 -- P  paper chase (mine town revival weeks) 2012
 -- A  online age
 -- T  ATK
@@ -8,6 +9,7 @@
 -- X  XP
 -- L  level
 -- B  Best (xp and online age)
+-- C  count reached achievements
 -- @  Achievement score
 -- R  Role play score (xp, achievement, maze score, & deathmatch score)
 -- O
@@ -40,6 +42,13 @@ SELECT charname, fametype, @rownum:=@rownum+1 as rankX, points, CURRENT_DATE()
 FROM halloffame, character_stats, (SELECT @rownum:=0) r
 WHERE fametype='M' AND halloffame.charname = character_stats.name AND admin<=6 AND points > 0 AND character_stats.lastseen>date_sub(CURRENT_TIMESTAMP, interval 1 month)
 ORDER BY points DESC;
+
+
+INSERT INTO halloffame_archive_recent (charname, fametype, halloffame_archive_recent.rank, points, day)
+SELECT charname, fametype, @rownum:=@rownum+1 as rankX, points, CURRENT_DATE()
+FROM halloffame, character_stats, (SELECT @rownum:=0) r
+WHERE fametype='MT' AND halloffame.charname = character_stats.name AND admin<=6 AND points > 0 AND character_stats.lastseen>date_sub(CURRENT_TIMESTAMP, interval 1 month)
+ORDER BY points ASC;
 
 
 INSERT INTO halloffame_archive_recent (charname, fametype, halloffame_archive_recent.rank, points, day)
@@ -95,6 +104,13 @@ INSERT INTO halloffame_archive_recent (charname, fametype, halloffame_archive_re
 SELECT name, 'B', @rownum:=@rownum+1 as rankX, xp/(age+1) As points, CURRENT_DATE()
 FROM character_stats, (SELECT @rownum:=0) r
 WHERE admin<=6 AND xp >= 100 AND character_stats.lastseen>date_sub(CURRENT_TIMESTAMP, interval 1 month)
+ORDER BY points DESC;
+
+
+INSERT INTO halloffame_archive_recent (charname, fametype, halloffame_archive_recent.rank, points, day)
+SELECT charname, fametype, @rownum:=@rownum+1 as rankX, points, CURRENT_DATE()
+FROM halloffame, character_stats, (SELECT @rownum:=0) r
+WHERE fametype='C' AND halloffame.charname = character_stats.name AND admin<=6 AND points > 0 AND character_stats.lastseen>date_sub(CURRENT_TIMESTAMP, interval 1 month)
 ORDER BY points DESC;
 
 
@@ -159,6 +175,13 @@ ORDER BY points DESC;
 INSERT INTO halloffame_archive_alltimes (charname, fametype, halloffame_archive_alltimes.rank, points, day)
 SELECT charname, fametype, @rownum:=@rownum+1 as rankX, points, CURRENT_DATE()
 FROM halloffame, character_stats, (SELECT @rownum:=0) r
+WHERE fametype='MT' AND halloffame.charname = character_stats.name AND admin<=6 AND points > 0
+ORDER BY points ASC;
+
+
+INSERT INTO halloffame_archive_alltimes (charname, fametype, halloffame_archive_alltimes.rank, points, day)
+SELECT charname, fametype, @rownum:=@rownum+1 as rankX, points, CURRENT_DATE()
+FROM halloffame, character_stats, (SELECT @rownum:=0) r
 WHERE fametype='P' AND halloffame.charname = character_stats.name AND admin<=6 AND points > 0 
 ORDER BY points;
 
@@ -209,6 +232,13 @@ INSERT INTO halloffame_archive_alltimes (charname, fametype, halloffame_archive_
 SELECT name, 'B', @rownum:=@rownum+1 as rankX, xp/(age+1) As points, CURRENT_DATE()
 FROM character_stats, (SELECT @rownum:=0) r
 WHERE admin<=6 AND xp >= 100
+ORDER BY points DESC;
+
+
+INSERT INTO halloffame_archive_alltimes (charname, fametype, halloffame_archive_alltimes.rank, points, day)
+SELECT charname, fametype, @rownum:=@rownum+1 as rankX, points, CURRENT_DATE()
+FROM halloffame, character_stats, (SELECT @rownum:=0) r
+WHERE fametype='C' AND halloffame.charname = character_stats.name AND admin<=6 AND points > 0 
 ORDER BY points DESC;
 
 
