@@ -482,65 +482,75 @@ Wyjście do #Zakopca!
 
 		<portal x="119" y="80" ref="void_1_entrence">
 			<destination zone="1_void_islands" ref="void_1_exit"/>
-			<attribute name="hidden" />
+			<attribute name="hidden"/>
 		</portal>
 		<portal x="43" y="21" ref="void_1_exit">
 			<destination zone="1_void_islands" ref="void_1_entrence"/>
-			<attribute name="hidden" />
+			<attribute name="hidden"/>
 		</portal>
 
 		<portal x="30" y="33" ref="void_2_entrence">
 			<destination zone="1_void_islands" ref="void_2_exit"/>
-			<attribute name="hidden" />
+			<attribute name="hidden"/>
 		</portal>
 		<portal x="103" y="96" ref="void_2_exit">
 			<destination zone="1_void_islands" ref="void_2_entrence"/>
-			<attribute name="hidden" />
+			<attribute name="hidden"/>
 		</portal>
 
 		<portal x="88" y="107" ref="void_3_entrence">
 			<destination zone="1_void_islands" ref="void_3_exit"/>
-			<attribute name="hidden" />
+			<attribute name="hidden"/>
 		</portal>
 		<portal x="77" y="35" ref="void_3_exit">
 			<destination zone="1_void_islands" ref="void_3_entrence"/>
-			<attribute name="hidden" />
+			<attribute name="hidden"/>
 		</portal>
 
 		<portal x="40" y="88" ref="void_4_entrence">
 			<destination zone="1_void_islands" ref="void_4_exit"/>
-			<attribute name="hidden" />
+			<attribute name="hidden"/>
 		</portal>
 		<portal x="97" y="35" ref="void_4_exit">
 			<destination zone="1_void_islands" ref="void_4_entrence"/>
-			<attribute name="hidden" />
+			<attribute name="hidden"/>
 		</portal>
 
 		<portal x="41" y="94" ref="void_5_entrence">
 			<destination zone="1_void_islands" ref="void_5_exit"/>
-			<attribute name="hidden" />
+			<attribute name="hidden"/>
 		</portal>
 		<portal x="29" y="99" ref="void_5_exit">
 			<destination zone="1_void_islands" ref="void_5_entrence"/>
-			<attribute name="hidden" />
+			<attribute name="hidden"/>
 		</portal>
 
 		<portal x="24" y="96" ref="void_6_entrence">
 			<destination zone="1_void_islands" ref="void_6_exit"/>
-			<attribute name="hidden" />
+			<attribute name="hidden"/>
 		</portal>
 		<portal x="23" y="111" ref="void_6_exit">
 			<destination zone="1_void_islands" ref="void_6_entrence"/>
-			<attribute name="hidden" />
+			<attribute name="hidden"/>
 		</portal>
 
 		<portal x="13" y="103" ref="void_7_entrence">
 			<destination zone="1_void_islands" ref="void_7_exit"/>
-			<attribute name="hidden" />
+			<attribute name="hidden"/>
 		</portal>
 		<portal x="53" y="73" ref="void_7_exit">
 			<destination zone="1_void_islands" ref="void_7_entrence"/>
-			<attribute name="hidden" />
+			<attribute name="hidden"/>
+		</portal>
+
+		<!-- Portal to giant -->
+		<portal x="93" y="97" ref="void_8_entrence">
+			<destination zone="1_void_islands" ref="void_8_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+		<portal x="57" y="106" ref="void_8_exit">
+			<destination zone="1_void_islands" ref="void_8_entrence"/>
+			<attribute name="hidden"/>
 		</portal>
 
 		<portal x="58" y="63" ref="wizardtower">
