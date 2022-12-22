@@ -79,7 +79,7 @@ public class MixtureForOrtiv extends AbstractQuest {
 	/**
 	 * required items for the quest.
 	 */
-	protected static final String NEEDED_ITEMS = "flasza=1;arandula=2;skrzydlica=10;kokuda=1;muchomor=12;lukrecja=2;jabłko=10;napój z winogron=30;czosnek=2;moździerz z tłuczkiem=1";
+	protected static final String NEEDED_ITEMS = "butelka=1;arandula=2;skrzydlica=10;kokuda=1;muchomor=12;lukrecja=2;jabłko=10;napój z winogron=30;czosnek=2;moździerz z tłuczkiem=1";
 
 	private void prepareRequestingStep() {
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,

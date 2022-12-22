@@ -71,7 +71,7 @@ public class MedicineForTad extends AbstractQuest {
 	private static final String QUEST_SLOT = "introduce_players";
 	private final SpeakerNPC npc = npcs.get("Tad");
 
-	static final String ILISA_TALK_ASK_FOR_FLASK = "Lekarstwo dla #Tad? Nie powiedział Tobie, aby przynieść flaszę?";
+	static final String ILISA_TALK_ASK_FOR_FLASK = "Lekarstwo dla #Tad? Nie powiedział Tobie, aby przynieść butelkę?";
 	static final String ILISA_TALK_ASK_FOR_HERB = "Ach widzę, że masz flaszę. #Tad potrzebuje lekarstwa? Hmm... Potrzebuję kilku #ziół. Pomożesz?";
 	static final String ILISA_TALK_DESCRIBE_HERB = "Na północ od Semos koło trzech wzgórz rośnie zioło zwane arandula. Oto rysunek, który narysowałam. Teraz już wiesz czego szukać.";
 	static final String ILISA_TALK_INTRODUCE_TAD = "Potrzebuje silnego lekarstwa, aby się wyleczyć. Oferuje dobrą nagrodę temu kto mu pomoże.";
@@ -82,28 +82,28 @@ public class MedicineForTad extends AbstractQuest {
 	static final String KETTEH_TALK_BYE_INTRODUCES_TAD = "Żegnaj. Spotkałeś Tada w hostelu? Jeżeli będziesz miał okazję to proszę zaglądnij do niego. Słyszałam, że nie czuje się najlepiej. Hostel możesz znaleźć w wiosce Semos obok Nishiya.";
 	static final String KETTEH_TALK_BYE_REMINDS_OF_TAD = "Do widzenia. Nie zapomnij sprawdzić Tada. Mam nadzieje, że czuję się lepiej.";
 
-	static final String TAD_TALK_GOT_FLASK = "Dobrze, że masz flaszę!";
+	static final String TAD_TALK_GOT_FLASK = "Dobrze, że masz butelkę!";
 	static final String TAD_TALK_REWARD_MONEY = "Tutaj masz pieniądze na pokrycie twoich wydatków.";
-	static final String TAD_TALK_FLASK_ILISA = "Teraz potrzebuję, abyś wziął ją do #Ilisa... ona będzie widziała co robić dalej.";
-	static final String TAD_TALK_REMIND_FLASK_ILISA = "Potrzebuję Ciebie, abyś wziął flaszę do #ilisa... ona będzie widziała co robić dalej.";
+	static final String TAD_TALK_FLASK_ILISA = "Teraz potrzebuję, abyś wziął ją do #Ilisy... ona będzie widziała co robić dalej.";
+	static final String TAD_TALK_REMIND_FLASK_ILISA = "Potrzebuję Ciebie, abyś wziął butelkę do #Ilisy... ona będzie widziała co robić dalej.";
 	static final String TAD_TALK_INTRODUCE_ILISA = "Ilisa jest uzdrowicielką w świątyni w Semos.";
 	static final String TAD_TALK_REMIND_MEDICINE = "*kaszlnięcie* Mam nadzieję, że #Ilisa pospieszy się z moim lekarstwem...";
 	static final String TAD_TALK_COMPLETE_QUEST = "Dziękuję! Idę porozmawiać z #Ilisa tak szybko jak tylko mogę.";
 
-	static final String TAD_TALK_ASK_FOR_EMPTY_FLASK = "Nie czuję się dobrze... Potrzebuję butelkę z lekarstwem. Czy możesz zdobyć dla mnie pustą #flaszę?";
+	static final String TAD_TALK_ASK_FOR_EMPTY_FLASK = "Nie czuję się dobrze... Potrzebuję butelkę z lekarstwem. Czy możesz zdobyć dla mnie pustą #butelkę?";
 	static final String TAD_TALK_ALREADY_HELPED_1 = "Wszystko w porządku, dziękuję.";
 	static final String TAD_TALK_ALREADY_HELPED_2 = "Już mi pomogłeś! Czuję się teraz lepiej.";
-	static final String TAD_TALK_WAIT_FOR_FLASK = "*kaszlnięcie* Och... Potrzebuję lekarstwa! Wracaj szybko z #flaszą od #Margaret.";
-	static final String TAD_TALK_FLASK_MARGARET = "Mógłbyś zdobyć flaszę od #Margaret.";
+	static final String TAD_TALK_WAIT_FOR_FLASK = "*kaszlnięcie* Och... Potrzebuję lekarstwa! Wracaj szybko z #butelką od #Margaret.";
+	static final String TAD_TALK_FLASK_MARGARET = "Mógłbyś zdobyć butelkę od #Margaret.";
 	static final String TAD_TALK_INTRODUCE_MARGARET = "Margaret jest kelnerką w hotelu, do którego idzie się w dół ulicy.";
 	static final String TAD_TALK_CONFIRM_QUEST = "Pomożesz mi?";
 	static final String TAD_TALK_QUEST_REFUSED = "Och, proszę nie zmienisz zdania? *Apsiiiik*";
 	static final String TAD_TALK_QUEST_ACCEPTED = "Wspaniale! Proszę idź szybko jak możesz. *Apsiiik*";
 
 	static final String HISTORY_MET_TAD = "Spotkałem Tada w hostelu w Semos.";
-	static final String HISTORY_QUEST_OFFERED = "Poprosił mnie o kupienie flaszy od Margaret w tawernie w Semos.";
-	static final String HISTORY_GOT_FLASK = "Mam flaszę i wkrótce zaniosę ją Tadowi.";
-	static final String HISTORY_TAKE_FLASK_TO_ILISA = "Tad poprosił mnie o zaniesienie flaszy do Ilisy w świątyni w Semos.";
+	static final String HISTORY_QUEST_OFFERED = "Poprosił mnie o kupienie butelki od Margaret w tawernie w Semos.";
+	static final String HISTORY_GOT_FLASK = "Mam butelkę i wkrótce zaniosę ją Tadowi.";
+	static final String HISTORY_TAKE_FLASK_TO_ILISA = "Tad poprosił mnie o zaniesienie butelki do Ilisy w świątyni w Semos.";
 	static final String HISTORY_ILISA_ASKED_FOR_HERB = "Ilisa poprosiła mnie o dostarczenie zioła zwanego Arandula, które rośnie na północ od Semos obok zagajnika.";
 	static final String HISTORY_GOT_HERB = "Znalazłem trochę ziół Arandula i zaniosę je do Ilisy.";
 	static final String HISTORY_POTION_READY = "Ilisa zrobiła silne lekarstwo, który pomoże Tadowi. Poproiła mnie o przekazanie wiadomości Tadowi, że jest gotowe.";
@@ -210,7 +210,7 @@ public class MedicineForTad extends AbstractQuest {
 				new MultipleActions(processStep));
 
 		// player said hi with flask on ground then picked it up and said flask
-		npc.add(ConversationStates.ATTENDING, Arrays.asList("butelka", "flaszka", "flaszę"),
+		npc.add(ConversationStates.ATTENDING, Arrays.asList("butelka", "butelkę", "flask"),
                 new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0, STATE_START), new PlayerHasItemWithHimCondition("butelka")),
                 ConversationStates.ATTENDING,
                 TAD_TALK_GOT_FLASK + " " + TAD_TALK_REWARD_MONEY + " " + TAD_TALK_FLASK_ILISA,
@@ -267,7 +267,7 @@ public class MedicineForTad extends AbstractQuest {
 				ILISA_TALK_ASK_FOR_HERB,
 				new MultipleActions(processStep));
 
-		ChatAction showArandulaDrawing = new ExamineChatAction("arandula.png", "Ilisa rysuje", "Arandula");
+		ChatAction showArandulaDrawing = new ExamineChatAction("arandula.png", "Rysunek Ilisy", "Arandula");
 		ChatAction flagDrawingWasShown = new SetQuestAction(QUEST_SLOT, 1, STATE_SHOWN_DRAWING);
 		npc.add(
 				ConversationStates.ATTENDING,

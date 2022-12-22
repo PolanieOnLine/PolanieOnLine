@@ -197,7 +197,7 @@ public class RestockFlowerShop extends AbstractQuest {
 				new MultipleActions(
 						new IncreaseKarmaAction(5.0),
 						new StartItemsCollectionWithLimitAction(QUEST_SLOT, 0, flowerTypes, MAX_FLOWERS),
-						new AddItemToCollectionAction(QUEST_SLOT, "woda", REQ_WATER),
+						new AddItemToCollectionAction(QUEST_SLOT, "butelka wody", REQ_WATER),
 						new SayRequiredItemsFromCollectionAction(QUEST_SLOT, "Wspaniale! To jest to czego potrzebuję: [items].")));
 
 		// Player rejects quest

@@ -32,7 +32,7 @@ public enum TutorialEventType {
 	VISIT_SEMOS_DUNGEON_2(
 			"Ostrożnie. Jeżeli będziesz dalej się zagłębiał to spotkasz coraz silniejsze potwory. Możesz uciec z powrotem do Semos, aby Carmen wyleczyła twoje rany."),
 	VISIT_SEMOS_TAVERN(
-			"Możesz handlować z NPC-ami mówiąc \"cześć\", a później pytając o jego ofertę \"oferta\". Jeżeli chciałbyś coś kupić np flaszę to powiedz \"kupię flasza\"."),
+			"Możesz handlować z NPC-ami mówiąc \"cześć\", a później pytając o jego ofertę \"oferta\". Jeżeli chciałbyś coś kupić np butelkę to powiedz \"kupię butelka\"."),
 	VISIT_SEMOS_PLAINS(
 			"Regularne jedzenie jest kluczem do odzyskania swojego zdrowia. Jeżeli posiadasz małe zapasy jedzenia to odwiedź farmę, która znajduje się na północny-wschód stąd."),
 	FIRST_ATTACKED(

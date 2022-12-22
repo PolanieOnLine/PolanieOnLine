@@ -65,9 +65,9 @@ public class BarMaidNPC implements ZoneConfigurator {
 			@Override
 			protected void createDialog() {
 				addGreeting();
-				addReply("flaszki", "Jeżeli chciałbyś kupić flaszę to powiedz mi: #buy #flasza lub zapytaj co mogłabym jeszcze #zaoferować.");
-				addQuest("Oh miło, że pytasz. Niestety nic dla ciebie nie mam.");
-				addJob("Jestem kelnerką w tej oberży. Sprzedajemy #flaszki , importowane i lokalne soki z chmielu oraz dobre jedzenie.");
+				addReply("butelki", "Jeżeli chciałbyś kupić flaszę to powiedz mi: #kupię #butelka lub zapytaj co mogłabym jeszcze #zaoferować.");
+				addQuest("Och jak miło, że pytasz. Niestety nic dla ciebie nie mam.");
+				addJob("Jestem kelnerką w tej oberży. Sprzedajemy #'butelki', importowane i lokalne soki z chmielu oraz dobre jedzenie.");
 				addHelp("Oberża ta jest na tyle duża, żeby tu odpocząć i spotkać nowych ludzi! Jeżeli chcesz poznać moją #ofertę, to powiedz mi o tym.");
 				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("food&drinks")));
 				addGoodbye();
