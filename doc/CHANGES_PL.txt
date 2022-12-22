@@ -16,6 +16,9 @@ Changelog
 - Poprawiono dialogi u pomagierów oraz samego Gerwazego i rozwinięto niejasności z nowym zadaniem dot. poszukiwań kapłana
 - Usunięto następujące przedmioty: 'woda', 'flasza' (zdublowane przedmioty 'butelki wody' oraz 'butelki')
 
+*serwer*
+- Serwer zapisuje najlepszy czas przejścia labiryntu oraz ilość zdobytych łącznie osiągnięć
+
 *naprawiono błędy*
 - Naprawiono atakowanie innych graczy
 - Naprawiono animacje małego koteczka
