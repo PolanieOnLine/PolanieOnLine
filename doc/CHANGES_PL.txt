@@ -19,6 +19,8 @@ Changelog
 *naprawiono błędy*
 - Naprawiono atakowanie innych graczy
 - Naprawiono animacje małego koteczka
+- Naprawiono naliczanie zwycięskich rund na arenie deathmatch
+- Naprawiono osiągniącia związane z ilością wywalczonych rund na arenie deathmatch
 
 
 1.33.1
