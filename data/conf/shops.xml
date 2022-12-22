@@ -947,12 +947,13 @@
 
 	<!-- Jan Kuglarz kupuje: -->
 	<shop name="buymanas" type="buys">
-		<item name="magia ziemi" price="3" />
-		<item name="magia płomieni" price="5" />
-		<item name="magia deszczu" price="7" />
-		<item name="magia mrozu" price="9" />
-		<item name="magia mroku" price="12" />
-		<item name="magia światła" price="15" />
+		<item name="magia ziemi" price="2"/>
+		<item name="magia płomieni" price="4"/>
+		<item name="magia deszczu" price="6"/>
+		<item name="magia wiatru" price="8"/>
+		<item name="magia mrozu" price="10"/>
+		<item name="magia mroku" price="12"/>
+		<item name="magia światła" price="14"/>
 	</shop>
 
 	<!-- Winicjusz sprzedaje: -->
