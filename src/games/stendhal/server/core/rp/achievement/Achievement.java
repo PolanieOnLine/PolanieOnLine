@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -105,6 +104,7 @@ public class Achievement {
 
 	/**
 	 * Check if a player has fulfilled this achievement
+	 *
 	 * @param p the player to check
 	 * @return true iff this achievement's condition evaluates to true
 	 */
@@ -116,5 +116,4 @@ public class Achievement {
 	public String toString() {
 		return "Achievement<id: "+identifier+", title: "+title+">";
 	}
-
 }

@@ -2656,8 +2656,16 @@ public class Player extends DressedEntity implements UseListener {
 		return itemCounter.getQuantityOfSoldItems(item);
 	}
 
-	public int getQuantityOfImprovedItems(final String entity) {
-		return itemCounter.getQuantityOfImprovedItems(entity);
+	/**
+	 * Gets the amount of an item improved by player.
+	 *
+	 * @param item
+	 * 		Item name.
+	 * @return
+	 * 		Number improves of the item.
+	 */
+	public int getQuantityOfImprovedItems(final String item) {
+		return itemCounter.getQuantityOfImprovedItems(item);
 	}
 
 	/**
@@ -2697,19 +2705,6 @@ public class Player extends DressedEntity implements UseListener {
 		itemCounter.incObtainedForItem(name, quantity);
 		// check achievements in obtain category
 		AchievementNotifier.get().onObtain(this);
-	}
-
-	/**
-	 * Increases the count of sales for the given item
-	 *
-	 * @param name
-	 *            the item name
-	 * @param quantity
-	 */
-	public void incSoldForItem(String name, int quantity) {
-		itemCounter.incSoldForItem(name, quantity);
-		// check achievements in commerce category
-		AchievementNotifier.get().onTrade(this);
 	}
 
 	/**
@@ -2782,10 +2777,30 @@ public class Player extends DressedEntity implements UseListener {
 		AchievementNotifier.get().onTrade(this);
 	}
 
+	/**
+	 * Increases the count of sales for the given item
+	 *
+	 * @param name
+	 *            the item name
+	 * @param quantity
+	 */
+	public void incSoldForItem(String name, int quantity) {
+		itemCounter.incSoldForItem(name, quantity);
+		// check achievements in commerce category
+		AchievementNotifier.get().onTrade(this);
+	}
+
+	/**
+	 * Increases the count of improves item
+	 *
+	 * @param name
+	 *            the item name
+	 * @param quantity
+	 */
 	public void incImprovedForItem(String name, int quantity) {
 		itemCounter.incImprovedForItem(name, quantity);
-		// check achievements in commerce category
-		AchievementNotifier.get().onProduction(this);
+		// check achievements in upgrade category
+		AchievementNotifier.get().onUpgrade(this);
 	}
 
 	public int getCommerceTransactionAmount(final String npcName, final boolean soldToNPC) {

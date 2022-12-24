@@ -69,6 +69,6 @@ public class ItemIsImprovedCondition implements ChatCondition {
 
 	@Override
 	public String toString() {
-		return "improved items are <"+value+" up_level of "+items.toString()+">";
+		return "ItemIsImprovedCondition <"+value+" up_level of "+items.toString()+">";
 	}
 }

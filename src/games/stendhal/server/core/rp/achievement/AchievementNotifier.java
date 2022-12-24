@@ -259,6 +259,14 @@ public final class AchievementNotifier {
 	 */
 	public void onProduction(final Player player) {
 		getAndCheckAchievementsInCategory(player, Category.PRODUCTION);
+	}
+
+	/**
+	 * check all achievements for a player that belong to the upgrade category
+	 *
+	 * @param player
+	 */
+	public void onUpgrade(final Player player) {
 		getAndCheckAchievementsInCategory(player, Category.ITEMUPGRADES);
 	}
 
@@ -377,8 +385,7 @@ public final class AchievementNotifier {
 	 * @param toCheck list of checked achievements
 	 * @return list of reached achievements
 	 */
-	private List<Achievement> checkAchievements(final Player player,
-			final List<Achievement> toCheck) {
+	private List<Achievement> checkAchievements(final Player player, final List<Achievement> toCheck) {
 		List<Achievement> reached = new ArrayList<Achievement>();
 
 		// continue checking only if player's achievements are already loaded from the database

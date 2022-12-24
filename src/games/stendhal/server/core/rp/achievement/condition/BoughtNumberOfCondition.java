@@ -20,7 +20,6 @@ import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.player.Player;
 
-
 /**
  * Checks if a player has bought a number of items.
  */

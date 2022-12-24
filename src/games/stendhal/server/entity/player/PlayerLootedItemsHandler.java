@@ -9,26 +9,18 @@ import java.util.Map;
  * @author madmetzger
  */
 public class PlayerLootedItemsHandler {
-
 	/** name of the map where the items and the corresponding numbers are stored */
 	public static final String LOOTED_ITEMS = "looted_items";
 
 	private final Player player;
 
 	private final Map<String, Integer> looted;
-
 	private final Map<String, Integer> produced;
-
 	private final Map<String, Integer> obtained;
-
 	private final Map<String, Integer> mined;
-
 	private final Map<String, Integer> harvested;
-
 	private final Map<String, Integer> bought;
-
 	private final Map<String, Integer> sold;
-
 	private final Map<String, Integer> improved;
 
 	/**
@@ -135,7 +127,6 @@ public class PlayerLootedItemsHandler {
 		if (bought.containsKey(item)) {
 			return bought.get(item);
 		}
-
 		return 0;
 	}
 
@@ -149,7 +140,6 @@ public class PlayerLootedItemsHandler {
 		if (sold.containsKey(item)) {
 			return sold.get(item);
 		}
-
 		return 0;
 	}
 
@@ -166,16 +156,22 @@ public class PlayerLootedItemsHandler {
 		return 0;
 	}
 
+	/**
+	 * Retrieve the amount of much an item was improved by a player
+	 *
+	 * @param item
+	 * @return the improves quantity
+	 */
 	public int getQuantityOfImprovedItems(final String entity) {
 		if (improved.containsKey(entity)) {
 			return improved.get(entity);
 		}
-
 		return 0;
 	}
 
 	/**
 	 * Increases the count of loots for the given item for this PlayerLootedItemsHandler's player
+	 *
 	 * @param item the item name
 	 * @param count the amount to increase
 	 */
@@ -243,8 +239,14 @@ public class PlayerLootedItemsHandler {
 		handlePrefixedCounting(item, count, "sold.", sold);
 	}
 
-	public void incImprovedForItem(String entity, int count) {
-		handlePrefixedCounting(entity, count, "improved.", improved);
+	/**
+	 * Increases the quantity and item was improved by player
+	 *
+	 * @param item
+	 * @param count
+	 */
+	public void incImprovedForItem(String item, int count) {
+		handlePrefixedCounting(item, count, "improved.", improved);
 	}
 
 	/**

@@ -68,7 +68,7 @@ public class UpdatePendingAchievementsOnLogin implements LoginListener, TurnList
 		updateItemLoots(player, command.getDetails("item.set.wampirze"));
 		updateItemHarvest(player, command.getDetails("obtain.apple"));
 
-		// Could also check for reached achievements here. This is also checked on login but the order may vary due to the async access?
+		updateItemImproves(player, command.getDetails("item.upgrade.sketch"));
 
 		// delete the entries. We don't need feedback
 		DBCommand deletecommand = new DeletePendingAchievementDetailsCommand(player);
@@ -76,14 +76,12 @@ public class UpdatePendingAchievementsOnLogin implements LoginListener, TurnList
 	}
 
 	private static void updateElfPrincessAchievement(final Player player, final Map<String, Integer> details) {
-
 		// nothing to update
 		if (details == null) {
 			return;
 		}
 
 		final String QUEST_SLOT = "elf_princess";
-
 		// if player didn't start this quest yet, do nothing (shouldn't be details in this case but check anyway)
 		if(!player.hasQuest(QUEST_SLOT)) {
 			return;
@@ -91,7 +89,6 @@ public class UpdatePendingAchievementsOnLogin implements LoginListener, TurnList
 
 		// param (key) should be "" for this one, all we need to know is the count
 		int missingcount = details.get("");
-
 		if (missingcount > 0) {
 			final String[] parts = player.getQuest(QUEST_SLOT).split(";");
 
@@ -113,14 +110,12 @@ public class UpdatePendingAchievementsOnLogin implements LoginListener, TurnList
 	}
 
 	private static void updateKillBlordroughsAchievement(final Player player, final Map<String, Integer> details) {
-
 		// nothing to update
 		if (details == null) {
 			return;
 		}
 
 		String QUEST_SLOT = "kill_blordroughs";
-
 		// if player didn't start this quest yet, do nothing (shouldn't be details in this case but check anyway)
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return;
@@ -128,7 +123,6 @@ public class UpdatePendingAchievementsOnLogin implements LoginListener, TurnList
 
 		// param (key) should be "" for this one, all we need to know is the count
 		int missingCount = details.get("");
-
 		if (missingCount > 0) {
 			String slot = player.getQuest(QUEST_SLOT);
 			if (slot.indexOf(";completed=") < 0) {
@@ -163,6 +157,18 @@ public class UpdatePendingAchievementsOnLogin implements LoginListener, TurnList
 		// update player loots which have been stored as param (key) = itemname, count (value) = number of loots
 		for (Map.Entry<String, Integer> detail : details.entrySet()) {
 			player.incHarvestedForItem(detail.getKey(), detail.getValue());
+		}
+	}
+
+	private static void updateItemImproves(final Player player, final Map<String, Integer> details) {
+		// nothing to update
+		if (details == null) {
+			return;
+		}
+
+		// update player loots which have been stored as param (key) = itemname, count (value) = number of loots
+		for (Map.Entry<String, Integer> detail : details.entrySet()) {
+			player.incImprovedForItem(detail.getKey(), detail.getValue());
 		}
 	}
 }

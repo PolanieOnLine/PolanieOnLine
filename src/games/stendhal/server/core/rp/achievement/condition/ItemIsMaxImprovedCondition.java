@@ -56,6 +56,6 @@ public class ItemIsMaxImprovedCondition implements ChatCondition {
 
 	@Override
 	public String toString() {
-		return "max improved items are <"+items.toString()+">";
+		return "ItemIsMaxImprovedCondition <"+items.toString()+">";
 	}
 }
