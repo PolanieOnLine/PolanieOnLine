@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<creatures xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../../creatures.xsd ">
+
+	<!-- START: serafiny -->
+	<creature name="świąteczny serafin">
+		<type class="angel" subclass="serafin" tileid="pol_solemncreatures.png:0"/>
+		<description>Oto świąteczny serafin. Być może coś dostaniemy?!</description>
+		<attributes>
+			<atk value="2000"/>
+			<ratk value="2000"/>
+			<def value="400"/>
+			<hp value="4000000"/>
+			<speed value="1.0"/>
+			<size value="3,3"/>
+		</attributes>
+		<level value="999"/>
+		<experience value="1000000"/>
+		<respawn value="1000"/>
+		<corpse name="giant_humanoid"/>
+		<drops>
+			<item value="money" quantity="[100,20000]" probability="100.0"/>
+			<item value="gigantyczny eliksir" quantity="[1,9]" probability="40.0"/>
+			<item value="serce olbrzyma" quantity="[1,1]" probability="20.0"/>
+			<item value="miecz nieśmiertelnych" quantity="[1,1]" probability="3.0"/>
+			<item value="rękawice z mithrilu" quantity="[1,1]" probability="1.0"/>
+			<item value="pas z mithrilu" quantity="[1,1]" probability="0.5"/>
+			<item value="pióro serafina" quantity="[1,1]" probability="30.0"/>
+			<item value="magia światła" quantity="[11,99]" probability="40.0"/>
+			<item value="różdżka Wołosa" quantity="[1,1]" probability="20.0"/>
+			<item value="pierścień z mithrilu" quantity="[1,1]" probability="0.1"/>
+			<item value="kosa z mithrilu" quantity="[1,1]" probability="0.7"/>
+			<item value="miecz z mithrilu" quantity="[1,1]" probability="0.5"/>
+			<item value="sztylecik z mithrilu" quantity="[1,1]" probability="0.3"/>
+			<item value="brązowa skrzynia" quantity="[1,1]" probability="10.0"/>
+			<item value="prezent" quantity="[1,1]" probability="70.0"/>
+		</drops>
+		<equips>
+			<slot name="lhand" item="magia światła" quantity="10000"/>
+			<slot name="rhand" item="różdżka Peruna" quantity="1"/>
+		</equips>
+		<abilities>
+			<damage type="light"/>
+			<susceptibility type="dark" value="1.2"/>
+			<susceptibility type="light" value="0.7"/>
+		</abilities>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Niech twa dusza powróci na ziemię!"/>
+			</says>
+			<profile name="injured" params="5"/>
+			<profile name="brave"/>
+			<profile name="archer"/>
+			<profile name="offensive"/>
+			<profile name="heal" params="10,50"/>
+			<profile name="lifesteal" params="0.1"/>
+			<profile name="attack weakest"/>
+			<profile name="boss"/>
+		</ai>
+	</creature>
+
+	<creature name="świąteczny azazel">
+		<type class="angel" subclass="azazel" tileid="pol_solemncreatures.png:1"/>
+		<description>Oto świąteczny azazel. Być może coś dostaniemy?!</description>
+		<attributes>
+			<atk value="2000"/>
+			<ratk value="2000"/>
+			<def value="400"/>
+			<hp value="6000000"/>
+			<speed value="1.0"/>
+			<size value="3,3"/>
+		</attributes>
+		<level value="999"/>
+		<experience value="1000000"/>
+		<respawn value="1000"/>
+		<corpse name="giant_humanoid"/>
+		<drops>
+			<item value="money" quantity="[100,30000]" probability="100.0"/>
+			<item value="gigantyczny eliksir" quantity="[1,9]" probability="40.0"/>
+			<item value="serce olbrzyma" quantity="[1,1]" probability="20.0"/>
+			<item value="czarny miecz" quantity="[1,1]" probability="5.0"/>
+			<item value="czarne rękawice" quantity="[1,1]" probability="5.0"/>
+			<item value="czarny pas" quantity="[1,1]" probability="1.0"/>
+			<item value="pióro azazela" quantity="[1,1]" probability="30.0"/>
+			<item value="magia mroku" quantity="[11,99]" probability="40.0"/>
+			<item value="różdżka Peruna" quantity="[1,1]" probability="0.3"/>
+			<item value="czarny pierścień" quantity="[1,1]" probability="0.2"/>
+			<item value="pierścień niewidzialności" quantity="[1,1]" probability="0.1"/>
+			<item value="srebrna skrzynia" quantity="[1,1]" probability="10.0"/>
+			<item value="prezent" quantity="[1,1]" probability="70.0"/>
+		</drops>
+		<equips>
+			<slot name="lhand" item="magia mroku" quantity="10000"/>
+			<slot name="rhand" item="różdżka Peruna" quantity="1"/>
+		</equips>
+		<abilities>
+			<damage type="dark"/>
+			<susceptibility type="dark" value="0.7"/>
+			<susceptibility type="light" value="1.2"/>
+		</abilities>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Syn ognia nie będzie się kłaniał synowi ziemi!"/>
+			</says>
+			<profile name="injured" params="5"/>
+			<profile name="brave"/>
+			<profile name="archer"/>
+			<profile name="offensive"/>
+			<profile name="heal" params="15,50"/>
+			<profile name="lifesteal" params="0.2"/>
+			<profile name="attack weakest"/>
+			<profile name="boss"/>
+		</ai>
+	</creature>
+
+	<creature name="świąteczny cherubin">
+		<type class="angel" subclass="cherubin" tileid="pol_solemncreatures.png:2"/>
+		<description>Oto świąteczny cherubin. Być może coś dostaniemy?!</description>
+		<attributes>
+			<atk value="2000"/>
+			<ratk value="2000"/>
+			<def value="400"/>
+			<hp value="8000000"/>
+			<speed value="1.0"/>
+			<size value="3,3"/>
+		</attributes>
+		<level value="999"/>
+		<experience value="1000000"/>
+		<respawn value="1000"/>
+		<corpse name="giant_humanoid"/>
+		<drops>
+			<item value="money" quantity="[100,40000]" probability="100.0"/>
+			<item value="gigantyczny eliksir" quantity="[2,14]" probability="40.0"/>
+			<item value="serce olbrzyma" quantity="[1,1]" probability="20.0"/>
+			<item value="pióro cherubina" quantity="[1,1]" probability="30.0"/>
+			<item value="magia mrozu" quantity="[11,222]" probability="40.0"/>
+			<item value="różdżka Wołosa" quantity="[1,1]" probability="5.0"/>
+			<item value="magiczny topór obosieczny" quantity="[1,1]" probability="3.0"/>
+			<item value="srebrny sztylecik" quantity="[1,1]" probability="1.0"/>
+			<item value="zbroja z mithrilu" quantity="[1,1]" probability="0.7"/>
+			<item value="hełm z mithrilu" quantity="[1,1]" probability="1.0"/>
+			<item value="pierścień z mithrilu" quantity="[1,1]" probability="0.4"/>
+			<item value="kosa z mithrilu" quantity="[1,1]" probability="1.0"/>
+			<item value="rękawice z mithrilu" quantity="[1,1]" probability="1.0"/>
+			<item value="pas z mithrilu" quantity="[1,1]" probability="0.5"/>
+			<item value="złota skrzynia" quantity="[1,1]" probability="10.0"/>
+			<item value="prezent" quantity="[1,1]" probability="70.0"/>
+		</drops>
+		<equips>
+			<slot name="lhand" item="magia światła" quantity="10000"/>
+			<slot name="rhand" item="różdżka Peruna" quantity="1"/>
+		</equips>
+		<abilities>
+			<damage type="ice"/>
+			<susceptibility type="ice" value="0.6"/>
+			<susceptibility type="water" value="1.2"/>
+			<susceptibility type="fire" value="1.2"/>
+		</abilities>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Grzechy twej duszy ranią naszego Stwórcę!"/>
+			</says>
+			<profile name="injured" params="5"/>
+			<profile name="brave"/>
+			<profile name="archer"/>
+			<profile name="offensive"/>
+			<profile name="heal" params="20,100"/>
+			<profile name="lifesteal" params="0.3"/>
+			<profile name="attack weakest"/>
+			<profile name="boss"/>
+		</ai>
+	</creature>
+
+	<creature name="świąteczna lilith">
+		<type class="angel" subclass="lilith" tileid="pol_solemncreatures.png:3"/>
+		<description>Oto świąteczny lilith. Być może coś dostaniemy?!</description>
+		<attributes>
+			<atk value="2000"/>
+			<ratk value="2000"/>
+			<def value="400"/>
+			<hp value="10000000"/>
+			<speed value="1.0"/>
+			<size value="3,3"/>
+		</attributes>
+		<level value="9999"/>
+		<experience value="1000000"/>
+		<respawn value="1000"/>
+		<corpse name="giant_humanoid"/>
+		<drops>
+			<item value="money" quantity="[666,66666]" probability="100.0"/>
+			<item value="gigantyczny eliksir" quantity="[3,21]" probability="40.0"/>
+			<item value="serce olbrzyma" quantity="[1,1]" probability="20.0"/>
+			<item value="pióro lilith" quantity="[1,1]" probability="30.0"/>
+			<item value="magia mroku" quantity="[11,99]" probability="40.0"/>
+			<item value="tarcza cieni" quantity="[1,1]" probability="1.5"/>
+			<item value="czarna halabarda" quantity="[1,1]" probability="1.0"/>
+			<item value="różdżka Peruna" quantity="[1,1]" probability="0.8"/>
+			<item value="czarny hełm" quantity="[1,1]" probability="2.5"/>
+			<item value="piekielny sztylet" quantity="[1,1]" probability="4.0"/>
+			<item value="młot wulkanów" quantity="[1,1]" probability="0.5"/>
+			<item value="czarna kosa" quantity="[1,1]" probability="1.0"/>
+			<item value="czarny pierścień" quantity="[1,1]" probability="1.0"/>
+			<item value="pierścień niewidzialności" quantity="[1,1]" probability="0.3"/>
+			<item value="złota skrzynia" quantity="[1,1]" probability="10.0"/>
+			<item value="prezent" quantity="[1,1]" probability="70.0"/>
+		</drops>
+		<equips>
+			<slot name="lhand" item="magia mroku" quantity="10000"/>
+			<slot name="rhand" item="różdżka Peruna" quantity="1"/>
+		</equips>
+		<abilities>
+			<damage type="fire"/>
+			<susceptibility type="water" value="1.2"/>
+			<susceptibility type="ice" value="1.2"/>
+			<susceptibility type="fire" value="0.6"/>
+		</abilities>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="Jestem wszystkim, czego nie możesz kontrolować."/>
+				<noise state="idle follow fight" value="Precz stąd nim spojrzę!"/>
+			</says>
+			<profile name="injured" params="5"/>
+			<profile name="brave"/>
+			<profile name="archer"/>
+			<profile name="offensive"/>
+			<profile name="heal" params="10,70"/>
+			<profile name="lifesteal" params="0.4"/>
+			<profile name="attack weakest"/>
+			<profile name="boss"/>
+		</ai>
+	</creature>
+	<!-- END: serafiny -->
+
+	<creature name="świąteczny Smok Wawelski">
+		<type class="dragon" subclass="smok_wawelski" tileid="pol_solemncreatures.png:4"/>
+		<description/>
+		<attributes>
+			<atk value="1000"/>
+			<def value="600"/>
+			<hp value="10000000"/>
+			<speed value="0.7"/>
+			<size value="8,6"/>
+			<resistance value="1"/>
+		</attributes>
+		<level value="999"/>
+		<experience value="1000000"/>
+		<respawn value="1000"/>
+		<corpse name="dragon_6x6"/>
+		<drops>
+			<item value="money" quantity="[11,49999]" probability="100.0"/>
+			<item value="wielki eliksir" quantity="[11,29]" probability="70.0"/>
+			<item value="gigantyczny eliksir" quantity="[4,29]" probability="60.0"/>
+			<item value="szczerbiec" quantity="[1,1]" probability="0.1"/>
+			<item value="kieł smoka" quantity="[1,1]" probability="15.0"/>
+			<item value="pazur zielonego smoka" quantity="[1,1]" probability="2.0"/>
+			<item value="skóra zielonego smoka" quantity="[1,1]" probability="40.0"/>
+			<item value="złota skrzynia" quantity="[1,1]" probability="10.0"/>
+			<item value="prezent" quantity="[1,1]" probability="70.0"/>
+		</drops>
+		<equips>
+			<slot name="rhand" item="ognisty miecz demonów" quantity="1"/>
+		</equips>
+		<abilities>
+			<damage type="fire"/>
+			<susceptibility type="fire" value="1.2"/>
+		</abilities>
+		<ai>
+			<says>
+				<noise state="idle follow fight" value="RRRRRRRRRrrrrrrrrrrrrrrr"/>
+				<sound value="pol-dragon-roar-scream"/>
+				<sound value="pol-dragon-roaring"/>
+			</says>
+			<profile name="injured" params="5"/>
+			<profile name="brave"/>
+			<profile name="offensive"/>
+			<profile name="human"/>
+			<profile name="heal" params="30,50"/>
+			<profile name="patrolling"/>
+			<profile name="boss"/>
+		</ai>
+	</creature>
+</creatures>

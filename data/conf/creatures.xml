@@ -68,5 +68,6 @@
 	<group uri="creatures/pol/humanoid.xml"/>
 	<group uri="creatures/pol/immortal.xml"/>
 	<group uri="creatures/pol/shrub.xml"/>
+	<group uri="creatures/pol/solemn.xml"/>
 	<group uri="creatures/pol/wraith.xml"/>
 </groups>
