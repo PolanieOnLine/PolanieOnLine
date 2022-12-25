@@ -7,10 +7,10 @@
 		<type class="angel" subclass="serafin" tileid="pol_solemncreatures.png:0"/>
 		<description>Oto świąteczny serafin. Być może coś dostaniemy?!</description>
 		<attributes>
-			<atk value="2000"/>
-			<ratk value="2000"/>
-			<def value="400"/>
-			<hp value="4000000"/>
+			<atk value="1000"/>
+			<ratk value="1000"/>
+			<def value="250"/>
+			<hp value="30000"/>
 			<speed value="1.0"/>
 			<size value="3,3"/>
 		</attributes>
@@ -32,7 +32,9 @@
 			<item value="kosa z mithrilu" quantity="[1,1]" probability="0.7"/>
 			<item value="miecz z mithrilu" quantity="[1,1]" probability="0.5"/>
 			<item value="sztylecik z mithrilu" quantity="[1,1]" probability="0.3"/>
-			<item value="brązowa skrzynia" quantity="[1,1]" probability="10.0"/>
+			<item value="brązowa skrzynia" quantity="[1,1]" probability="50.0"/>
+			<item value="srebrna skrzynia" quantity="[1,1]" probability="30.0"/>
+			<item value="złota skrzynia" quantity="[1,1]" probability="10.0"/>
 			<item value="prezent" quantity="[1,1]" probability="70.0"/>
 		</drops>
 		<equips>
@@ -63,10 +65,10 @@
 		<type class="angel" subclass="azazel" tileid="pol_solemncreatures.png:1"/>
 		<description>Oto świąteczny azazel. Być może coś dostaniemy?!</description>
 		<attributes>
-			<atk value="2000"/>
-			<ratk value="2000"/>
-			<def value="400"/>
-			<hp value="6000000"/>
+			<atk value="1000"/>
+			<ratk value="1000"/>
+			<def value="250"/>
+			<hp value="30000"/>
 			<speed value="1.0"/>
 			<size value="3,3"/>
 		</attributes>
@@ -86,7 +88,9 @@
 			<item value="różdżka Peruna" quantity="[1,1]" probability="0.3"/>
 			<item value="czarny pierścień" quantity="[1,1]" probability="0.2"/>
 			<item value="pierścień niewidzialności" quantity="[1,1]" probability="0.1"/>
-			<item value="srebrna skrzynia" quantity="[1,1]" probability="10.0"/>
+			<item value="brązowa skrzynia" quantity="[1,1]" probability="50.0"/>
+			<item value="srebrna skrzynia" quantity="[1,1]" probability="30.0"/>
+			<item value="złota skrzynia" quantity="[1,1]" probability="10.0"/>
 			<item value="prezent" quantity="[1,1]" probability="70.0"/>
 		</drops>
 		<equips>
@@ -117,10 +121,10 @@
 		<type class="angel" subclass="cherubin" tileid="pol_solemncreatures.png:2"/>
 		<description>Oto świąteczny cherubin. Być może coś dostaniemy?!</description>
 		<attributes>
-			<atk value="2000"/>
-			<ratk value="2000"/>
-			<def value="400"/>
-			<hp value="8000000"/>
+			<atk value="1000"/>
+			<ratk value="1000"/>
+			<def value="250"/>
+			<hp value="30000"/>
 			<speed value="1.0"/>
 			<size value="3,3"/>
 		</attributes>
@@ -143,6 +147,8 @@
 			<item value="kosa z mithrilu" quantity="[1,1]" probability="1.0"/>
 			<item value="rękawice z mithrilu" quantity="[1,1]" probability="1.0"/>
 			<item value="pas z mithrilu" quantity="[1,1]" probability="0.5"/>
+			<item value="brązowa skrzynia" quantity="[1,1]" probability="50.0"/>
+			<item value="srebrna skrzynia" quantity="[1,1]" probability="30.0"/>
 			<item value="złota skrzynia" quantity="[1,1]" probability="10.0"/>
 			<item value="prezent" quantity="[1,1]" probability="70.0"/>
 		</drops>
@@ -175,10 +181,10 @@
 		<type class="angel" subclass="lilith" tileid="pol_solemncreatures.png:3"/>
 		<description>Oto świąteczny lilith. Być może coś dostaniemy?!</description>
 		<attributes>
-			<atk value="2000"/>
-			<ratk value="2000"/>
-			<def value="400"/>
-			<hp value="10000000"/>
+			<atk value="1000"/>
+			<ratk value="1000"/>
+			<def value="250"/>
+			<hp value="30000"/>
 			<speed value="1.0"/>
 			<size value="3,3"/>
 		</attributes>
@@ -201,6 +207,8 @@
 			<item value="czarna kosa" quantity="[1,1]" probability="1.0"/>
 			<item value="czarny pierścień" quantity="[1,1]" probability="1.0"/>
 			<item value="pierścień niewidzialności" quantity="[1,1]" probability="0.3"/>
+			<item value="brązowa skrzynia" quantity="[1,1]" probability="50.0"/>
+			<item value="srebrna skrzynia" quantity="[1,1]" probability="30.0"/>
 			<item value="złota skrzynia" quantity="[1,1]" probability="10.0"/>
 			<item value="prezent" quantity="[1,1]" probability="70.0"/>
 		</drops>
@@ -236,8 +244,8 @@
 		<description/>
 		<attributes>
 			<atk value="1000"/>
-			<def value="600"/>
-			<hp value="10000000"/>
+			<def value="250"/>
+			<hp value="30000"/>
 			<speed value="0.7"/>
 			<size value="8,6"/>
 			<resistance value="1"/>
@@ -254,6 +262,8 @@
 			<item value="kieł smoka" quantity="[1,1]" probability="15.0"/>
 			<item value="pazur zielonego smoka" quantity="[1,1]" probability="2.0"/>
 			<item value="skóra zielonego smoka" quantity="[1,1]" probability="40.0"/>
+			<item value="brązowa skrzynia" quantity="[1,1]" probability="50.0"/>
+			<item value="srebrna skrzynia" quantity="[1,1]" probability="30.0"/>
 			<item value="złota skrzynia" quantity="[1,1]" probability="10.0"/>
 			<item value="prezent" quantity="[1,1]" probability="70.0"/>
 		</drops>
