@@ -17,9 +17,7 @@ import java.util.List;
 
 import games.stendhal.server.core.rp.achievement.Achievement;
 import games.stendhal.server.core.rp.achievement.Category;
-import games.stendhal.server.core.rp.achievement.condition.ItemImprovedNumberOfCondition;
-import games.stendhal.server.core.rp.achievement.condition.ItemIsImprovedCondition;
-import games.stendhal.server.core.rp.achievement.condition.ItemIsMaxImprovedCondition;
+import games.stendhal.server.entity.npc.condition.PlayerImprovesNumberOfItemCondition;
 
 public class ItemUpgradesAchievementFactory extends AbstractAchievementFactory {
 	public static final String ID_SKETCH = "item.upgrade.sketch";
@@ -62,62 +60,62 @@ public class ItemUpgradesAchievementFactory extends AbstractAchievementFactory {
 		itemAchievements.add(createAchievement(
 				ID_SKETCH, "Zarys", "Ulepszył przedmioty co najmniej 10 razy",
 				Achievement.EASY_BASE_SCORE, true,
-				new ItemImprovedNumberOfCondition(10)));
+				new PlayerImprovesNumberOfItemCondition(10)));
 
 		itemAchievements.add(createAchievement(
 				ID_INVEST, "Inwestycja", "Ulepszył przedmioty co najmniej 50 razy",
 				Achievement.MEDIUM_BASE_SCORE, true,
-				new ItemImprovedNumberOfCondition(50)));
+				new PlayerImprovesNumberOfItemCondition(50)));
 
 		itemAchievements.add(createAchievement(
 				ID_PERUN, "Wspaniała Różdżka", "Ulepszył różdżkę Peruna do jej maksymalnego poziomu",
 				Achievement.MEDIUM_BASE_SCORE, true,
-				new ItemIsMaxImprovedCondition("różdżka Peruna")));
+				new PlayerImprovesNumberOfItemCondition("różdżka Peruna")));
 
 		itemAchievements.add(createAchievement(
 				ID_DAGGERS, "Potężne i Szybkie", "Ulepszył sztylecik z mithrilu oraz złotą klinge do ich maksymalnego poziomu",
 				Achievement.EASY_BASE_SCORE, true,
-				new ItemIsMaxImprovedCondition("sztylecik z mithrilu", "złota klinga")));
+				new PlayerImprovesNumberOfItemCondition("sztylecik z mithrilu", "złota klinga")));
 
 		itemAchievements.add(createAchievement(
 				ID_MITHRILRING, "Światłość", "Ulepszył pierścień z mithrilu do jej maksymalnego poziomu",
 				Achievement.MEDIUM_BASE_SCORE, true,
-				new ItemIsMaxImprovedCondition("pierścień z mithrilu")));
+				new PlayerImprovesNumberOfItemCondition("pierścień z mithrilu")));
 
 		itemAchievements.add(createAchievement(
 				ID_MITHRIL, "Doskonałe Uzbrojenie", "Ulepszył tarczę, spodnie, pas, hełm, buty oraz płaszcz z mithrilu do maksymalnego poziomu",
 				Achievement.HARD_BASE_SCORE, true,
-				new ItemIsMaxImprovedCondition(ITEMS_MIHTIRL)));
+				new PlayerImprovesNumberOfItemCondition(ITEMS_MIHTIRL)));
 
 		itemAchievements.add(createAchievement(
 				ID_BLACK, "Opanowany przez Mrok", "Ulepszył czarną tarczę, spodnie, zbroję oraz buty do maksymalnego poziomu",
 				Achievement.MEDIUM_BASE_SCORE, true,
-				new ItemIsMaxImprovedCondition(ITEMS_BLACKSET)));
+				new PlayerImprovesNumberOfItemCondition(ITEMS_BLACKSET)));
 
 		itemAchievements.add(createAchievement(
 				ID_WANDS, "Zabawa w Czarodzieja", "Ulepszył wszystkie różdżki co najmniej raz",
 				Achievement.EASY_BASE_SCORE, true,
-				new ItemIsImprovedCondition(ITEMS_WANDS)));
+				new PlayerImprovesNumberOfItemCondition(1, ITEMS_WANDS)));
 
 		itemAchievements.add(createAchievement(
 				ID_MAGICSET, "Jeszcze Bardziej Magicznie", "Ulepszył cały magiczny zestaw wyposażenia co najmniej raz",
 				Achievement.MEDIUM_BASE_SCORE, true,
-				new ItemIsImprovedCondition(ITEMS_MAGICSET)));
+				new PlayerImprovesNumberOfItemCondition(1, ITEMS_MAGICSET)));
 
 		itemAchievements.add(createAchievement(
 				ID_STONE, "Kamienna Broń", "Ulepszył kamienną tarczę na co najmniej drugi poziom",
 				Achievement.EASY_BASE_SCORE, true,
-				new ItemIsImprovedCondition(2, "kamienna tarcza")));
+				new PlayerImprovesNumberOfItemCondition(2, "kamienna tarcza")));
 
 		itemAchievements.add(createAchievement(
 				ID_AXES, "Uzbrojenie Kosiarza", "Ulepszył czarną, złotą oraz z mithrilu kosę do maksymalnego poziomu",
 				Achievement.MEDIUM_BASE_SCORE, true,
-				new ItemIsMaxImprovedCondition(ITEMS_AXES)));
+				new PlayerImprovesNumberOfItemCondition(ITEMS_AXES)));
 
 		itemAchievements.add(createAchievement(
 				ID_GORAL, "Dusza Góralska", "Ulepszył złotą ciupagę z trzema wąsami do maksymalnego poziomu",
 				Achievement.MEDIUM_BASE_SCORE, true,
-				new ItemIsMaxImprovedCondition("złota ciupaga z trzema wąsami")));
+				new PlayerImprovesNumberOfItemCondition("złota ciupaga z trzema wąsami")));
 
 		return itemAchievements;
 	}

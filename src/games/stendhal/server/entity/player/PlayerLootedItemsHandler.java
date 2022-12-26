@@ -72,6 +72,7 @@ public class PlayerLootedItemsHandler {
 
 	/**
 	 * Gets the how often this PlayerLootedItemsHandler's player has looted the given item
+	 *
 	 * @param item the item name
 	 * @return the number of loots from corpses
 	 */

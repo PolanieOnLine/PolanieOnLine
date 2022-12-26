@@ -59,6 +59,8 @@ public @interface Dev {
 		ITEMS_OWNED,
 		/** item producer */
 		ITEMS_PRODUCER,
+		/** item upgrades */
+		ITEMS_UPGRADES,
 		/** stats of the player, e. g. level, karma */
 		STATS,
 		/** kills of creatures */
