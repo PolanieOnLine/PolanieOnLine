@@ -1,14 +1,16 @@
 package games.stendhal.server.entity.npc.condition;
 
-import java.util.LinkedList;
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.config.annotations.Dev;
 import games.stendhal.server.core.config.annotations.Dev.Category;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.Entity;
-import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.player.Player;
 
@@ -19,7 +21,7 @@ import games.stendhal.server.entity.player.Player;
  */
 @Dev(category=Category.ITEMS_UPGRADES, label="Item?")
 public class PlayerImprovesNumberOfItemCondition implements ChatCondition {
-	private List<String> items = null;
+	private Map<String, Integer> entities = null;
 	private int number = -1;
 
 	/**
@@ -31,12 +33,10 @@ public class PlayerImprovesNumberOfItemCondition implements ChatCondition {
 	 * 			list of required items
 	 */
 	public PlayerImprovesNumberOfItemCondition(int number, String... item){
-		this.number = number;
-		items = new LinkedList<String>();
-		if (item != null) {
-			for (String string : item) {
-				items.add(string);
-			}
+		entities = new HashMap<String, Integer>();
+		List<String> names = Arrays.asList(item);
+		for (String name : names) {
+			entities.put(name, number);
 		}
 	}
 
@@ -47,11 +47,11 @@ public class PlayerImprovesNumberOfItemCondition implements ChatCondition {
 	 * 			list of required items
 	 */
 	public PlayerImprovesNumberOfItemCondition(String... item){
-		items = new LinkedList<String>();
-		if (item != null) {
-			for (String string : item) {
-				items.add(string);
-			}
+		entities = new HashMap<String, Integer>();
+		List<String> names = Arrays.asList(item);
+		for (String name : names) {
+			final int getMaxNumberOfImproves = SingletonRepository.getEntityManager().getItem(name).getMaxImproves();
+			entities.put(name, getMaxNumberOfImproves);
 		}
 	}
 
@@ -67,26 +67,19 @@ public class PlayerImprovesNumberOfItemCondition implements ChatCondition {
 
 	@Override
 	public boolean fire(Player player, Sentence sentence, Entity npc) {
-		if (items == null) {
-			final int actual = player.getQuantityOfImprovedItems(player.getName());
-			if (actual < number) {
+		if (entities == null) {
+			final int getNumberOfImproves = player.getNumberOfImprovedForItem(player.getName());
+			if (getNumberOfImproves < number) {
 				return false;
 			}
 			return true;
 		}
 
-		if (number == -1) {
-			for (String item : items) {
-				final Item actual = SingletonRepository.getEntityManager().getItem(item);
-				if (player.getNumberOfImprovedForItem(item) != actual.getMaxImproves()) {
-					return false;
-				}
-			}
-			return true;
-		}
+		for (Entry<String, Integer> entry : entities.entrySet()) {
+			final String item = entry.getKey();
+			final int getNumberOfImproves = player.getNumberOfImprovedForItem(item);
 
-		for (String item : items) {
-			if (player.getNumberOfImprovedForItem(item) < number) {
+			if (entry.getValue().intValue() > getNumberOfImproves) {
 				return false;
 			}
 		}
@@ -95,10 +88,10 @@ public class PlayerImprovesNumberOfItemCondition implements ChatCondition {
 
 	@Override
 	public int hashCode() {
-		if (items == null) {
+		if (entities == null) {
 			return 43991 * number;
 		}
-		return 43991 * items.hashCode() + number;
+		return 43991 * entities.hashCode() + number;
 	}
 
 	@Override
@@ -107,18 +100,18 @@ public class PlayerImprovesNumberOfItemCondition implements ChatCondition {
 			return false;
 		}
 		PlayerImprovesNumberOfItemCondition other = (PlayerImprovesNumberOfItemCondition) obj;
-		if (items == null) {
+		if (entities == null) {
 			return number == other.number;
 		}
 		return (number == other.number)
-			&& items.equals(other.items);
+			&& entities.equals(other.entities);
 	}
 
 	@Override
 	public String toString() {
-		if (items == null) {
+		if (entities == null) {
 			return "PlayerImprovesNumberOfItemCondition <"+number+">";
 		}
-		return "PlayerImprovesNumberOfItemCondition <"+number+" of "+items.toString()+">";
+		return "PlayerImprovesNumberOfItemCondition <"+number+" of "+entities.toString()+">";
 	}
 }
