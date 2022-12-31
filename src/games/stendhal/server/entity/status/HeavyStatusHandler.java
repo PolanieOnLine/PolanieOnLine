@@ -95,7 +95,7 @@ public class HeavyStatusHandler implements StatusHandler<HeavyStatus> {
 			TurnNotifier.get().notifyInSeconds(duration, new StatusRemover(statusList, nextStatus));
 		} else {
 			entity.remove("status_" + status.getName());
-			entity.sendPrivateText(NotificationType.SCENE_SETTING, "Już nie czujesz ociężenia.");
+			entity.sendPrivateText(NotificationType.SCENE_SETTING, "Już nie jesteś przeciążony.");
 		}
 	}
 }
