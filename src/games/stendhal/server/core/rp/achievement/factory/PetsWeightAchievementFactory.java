@@ -76,7 +76,7 @@ public class PetsWeightAchievementFactory extends AbstractAchievementFactory {
 							return weight <= 0;
 						}
 					}));
+
 		return weightAchievements;
 	}
-
 }

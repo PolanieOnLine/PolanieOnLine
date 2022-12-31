@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -20,13 +19,13 @@ import games.stendhal.common.constants.Testing;
 import games.stendhal.server.core.rp.achievement.Achievement;
 import games.stendhal.server.core.rp.achievement.Category;
 import games.stendhal.server.entity.npc.ChatCondition;
+
 /**
  * Factory class for achievements creation with a fixed category
  *
  * @author madmetzger
  */
 public abstract class AbstractAchievementFactory {
-
 	/**
 	 * @return the category the factory should use
 	 */
@@ -50,7 +49,7 @@ public abstract class AbstractAchievementFactory {
 	 * @return the new Achievement
 	 */
 	protected Achievement createAchievement(String identifier, String title, String description, int score, boolean active, ChatCondition condition) {
-		return new Achievement(identifier, title, getCategory(),  description, score, active, condition);
+		return new Achievement(identifier, title, getCategory(), description, score, active, condition);
 	}
 
 	/**
