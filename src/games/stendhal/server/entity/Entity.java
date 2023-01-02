@@ -71,23 +71,18 @@ public abstract class Entity extends RPObject implements Killer {
 		if (!has("x")) {
 			put("x", 0);
 		}
-
 		if (!has("y")) {
 			put("y", 0);
 		}
-
 		if (!has("width")) {
 			put("width", 1);
 		}
-
 		if (!has("height")) {
 			put("height", 1);
 		}
-
 		if (!has("resistance")) {
 			put("resistance", 100);
 		}
-
 		if (!has("visibility")) {
 			put("visibility", 100);
 		}
@@ -192,15 +187,12 @@ public abstract class Entity extends RPObject implements Killer {
 		if (has("height")) {
 			area.height = getInt("height");
 		}
-
 		if (has("width")) {
 			area.width = getInt("width");
 		}
-
 		if (has("resistance")) {
 			resistance = getInt("resistance");
 		}
-		
 		if (has("visibility")) {
 			visibility = getInt("visibility");
 		}

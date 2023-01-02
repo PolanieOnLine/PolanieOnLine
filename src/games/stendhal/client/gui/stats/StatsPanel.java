@@ -31,7 +31,6 @@ import games.stendhal.client.gui.wt.core.WtWindowManager;
  * called outside the event dispatch thread.
  */
 class StatsPanel extends JPanel {
-
 	/**
 	 * serial version uid
 	 */

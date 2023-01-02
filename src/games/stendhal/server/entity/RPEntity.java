@@ -2095,8 +2095,6 @@ public abstract class RPEntity extends CombatEntity {
 		}
 	}
 
-
-
 	/**
 	 * Tries to equip one unit of an item in the given slot. Note: This doesn't
 	 * check if it is allowed to put the given item into the given slot, e.g. it
@@ -2457,7 +2455,6 @@ public abstract class RPEntity extends CombatEntity {
 		// no slot, free slot or wrong item type
 		return null;
 	}
-
 
 	/**
 	 * Gets the weapon that this entity is holding in its hands.

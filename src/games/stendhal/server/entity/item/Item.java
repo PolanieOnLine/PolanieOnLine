@@ -261,7 +261,6 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		entity.addAttribute("dest", Type.STRING, Definition.VOLATILE);
 	}
 
-
 	/**
 	 * on which slots may this item be equipped.
 	 *
@@ -408,7 +407,7 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	 * @return the current degree of deterioration
 	 */
 	public int getDeterioration() {
-		if(has("deterioration")) {
+		if (has("deterioration")) {
 			return getInt("deterioration");
 		}
 		return DEFAULT_DETERIORATION;
@@ -441,7 +440,7 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	 * repair this item
 	 */
 	public void repair() {
-		if(has("deterioration")) {
+		if (has("deterioration")) {
 			put("deterioration", DEFAULT_DETERIORATION);
 		}
 	}

@@ -78,11 +78,10 @@ import marauroa.common.game.RPSlot;
 import marauroa.common.game.SyntaxException;
 
 public class Player extends DressedEntity implements UseListener {
-
-	private static final String LAST_PLAYER_KILL_TIME = "last_player_kill_time";
-
 	/** the logger instance. */
 	private static final Logger logger = Logger.getLogger(Player.class);
+
+	private static final String LAST_PLAYER_KILL_TIME = "last_player_kill_time";
 
 	/**
 	 * A random generator (for karma payout).
@@ -98,8 +97,9 @@ public class Player extends DressedEntity implements UseListener {
 	 * Karma (luck).
 	 */
 	private double karma;
+
 	/**
-	 * number of successful trades
+	 * Number of successful trades.
 	 */
 	private int tradescore;
 
@@ -600,7 +600,7 @@ public class Player extends DressedEntity implements UseListener {
 	}
 
 	/**
-	 * increments the number of successful trades by 1
+	 * Increments the number of successful trades by 1
 	 */
 	public void incrementTradescore() {
 		this.tradescore += 1;
@@ -612,7 +612,6 @@ public class Player extends DressedEntity implements UseListener {
 	}
 
 	/**
-	 *
 	 * @return List of portals that have been unlocked for this player.
 	 */
 	public List<Integer> getUnlockedPortals() {

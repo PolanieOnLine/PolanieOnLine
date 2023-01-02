@@ -278,7 +278,7 @@ public final class StatsPanelController {
 
 	/**
 	 * Called when mining xp has changed.
-	*/
+	 */
 	private void updateMining() {
 		if (System.getProperty("pol.miningstat") != null) {
 			return;
