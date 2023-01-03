@@ -32,22 +32,22 @@ public class GoatFood extends PassiveEntityRespawnPoint {
 	private static final int GROWING_RATE = 1200;
 
 	public static void generateRPClass() {
-		final RPClass food = new RPClass("food");
+		final RPClass food = new RPClass("goatfood");
 		food.isA("plant_grower");
 		food.addAttribute("amount", Type.BYTE);
 	}
 
 	public GoatFood(final RPObject object) {
 		super(object, "aeryberry", GROWING_RATE);
-		setRPClass("food");
-		put("type", "food");
+		setRPClass("goatfood");
+		put("type", "goatfood");
 		update();
 	}
 
 	public GoatFood() {
 		super("aeryberry", GROWING_RATE);
-		setRPClass("food");
-		put("type", "food");
+		setRPClass("goatfood");
+		put("type", "goatfood");
 	}
 
 	@Override
