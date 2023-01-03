@@ -12,6 +12,7 @@
 package games.stendhal.server.actions.equip;
 
 import games.stendhal.common.EquipActionConsts;
+import games.stendhal.common.constants.Testing;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.actions.CommandCenter;
 import games.stendhal.server.core.engine.GameEvent;
@@ -49,6 +50,9 @@ public class EquipAction extends EquipmentAction {
 				return;
 			}
 
+			if (Testing.WEIGHT) {
+				player.addCapacity(item.getWeight() * item.getQuantity());
+			}
 		}
 
 		new AutoEquipItems(player, action, source);

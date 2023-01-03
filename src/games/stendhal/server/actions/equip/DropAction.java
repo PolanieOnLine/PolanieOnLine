@@ -11,6 +11,7 @@
  ***************************************************************************/
 package games.stendhal.server.actions.equip;
 
+import games.stendhal.common.constants.Testing;
 import games.stendhal.server.actions.CommandCenter;
 import games.stendhal.server.core.engine.GameEvent;
 import games.stendhal.server.entity.Entity;
@@ -49,6 +50,15 @@ public class DropAction extends EquipmentAction {
 					player.sendPrivateText("Odłożyłeś wartościowy przedmiot na podłogę. Pamiętaj, że zniknie za "
 							+ (Item.DEGRADATION_TIMEOUT / 60)
 							+ " minutę tak jak wszystkie przedmioty, ale w tym przypadku nie ma szans na ich odzyskanie.");
+				}
+
+				if (Testing.WEIGHT) {
+					double potentialValue = player.getCapacity() - (item.getWeight() * item.getQuantity());
+					if (potentialValue > 0) {
+						player.addCapacity(-(item.getWeight() * item.getQuantity()));
+					} else {
+						player.setCapacity(0.0);
+					}
 				}
 			}
 
