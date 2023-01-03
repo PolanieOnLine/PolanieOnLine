@@ -191,7 +191,7 @@ public class j2DClient implements UserInterface {
 	public void startGameLoop() {
 		try {
 			SoundGroup group = initSoundSystem();
-			group.play("harp-1", 0, null, null, false, true);
+			group.play("ui/login", 0, null, null, false, true);
 		} catch (RuntimeException e) {
 			logger.error(e, e);
 		}
@@ -294,8 +294,8 @@ public class j2DClient implements UserInterface {
 	 */
 	private SoundGroup initSoundSystem() {
 		SoundGroup group = getSoundSystemFacade().getGroup(SoundLayer.USER_INTERFACE.groupName);
-		group.loadSound("harp-1", "harp-1.ogg", SoundFileType.OGG, false);
-		group.loadSound("gui-window-fold", "gui-window-fold.ogg", SoundFileType.OGG, false);
+		group.loadSound("ui/login", "ui/login.ogg", SoundFileType.OGG, false);
+		group.loadSound("ui/window-fold", "ui/window-fold.ogg", SoundFileType.OGG, false);
 		return group;
 	}
 
@@ -422,7 +422,7 @@ public class j2DClient implements UserInterface {
 	public final SoundSystemFacade getSoundSystemFacade() {
 		if (soundSystemFacade == null) {
 			try {
-				if ((DataLoader.getResource("data/sound/harp-1.ogg") != null)
+				if ((DataLoader.getResource("data/sounds/ui/login.ogg") != null)
 						|| (DataLoader.getResource("data/music/the_old_tavern.ogg") != null)) {
 					soundSystemFacade = new games.stendhal.client.sound.sound.SoundSystemFacadeImpl();
 				} else {
