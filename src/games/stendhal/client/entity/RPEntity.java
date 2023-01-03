@@ -261,6 +261,9 @@ public abstract class RPEntity extends AudibleEntity {
 	private int defItem = -1;
 
 	private int ratkItem = -1;
+	
+	private double capacity;
+	private double baseCapacity;
 
 	/** A flag that gets set once the entity has been released. */
 	private boolean released;
@@ -344,6 +347,13 @@ public abstract class RPEntity extends AudibleEntity {
 	 */
 	public int getBaseMana() {
 		return baseMana;
+	}
+
+	/**
+	 * @return Returns the base capacity value
+	 */
+	public double getBaseCapacity() {
+		return baseCapacity;
 	}
 
 	/**
@@ -438,6 +448,13 @@ public abstract class RPEntity extends AudibleEntity {
 	 */
 	public int getMana() {
 		return mana;
+	}
+
+	/**
+	 * @return Returns player capacity.
+	 */
+	public double getCapacity() {
+		return capacity;
 	}
 
 	/**
@@ -1499,6 +1516,20 @@ public abstract class RPEntity extends AudibleEntity {
 		}
 		if (changes.has("modified_base_mana")) {
 			baseMana = changes.getInt("modified_base_mana");
+		}
+
+		if (changes.has("capacity")) {
+			capacity = changes.getDouble("capacity");
+		}
+		if (changes.has("modified_capacity")) {
+			capacity = changes.getDouble("modified_capacity");
+		}
+
+		if (changes.has("base_capacity")) {
+			baseCapacity = changes.getDouble("base_capacity");
+		}
+		if (changes.has("modified_base_capacity")) {
+			baseCapacity = changes.getDouble("modified_base_capacity");
 		}
 
 		if (changes.has("ghostmode")) {

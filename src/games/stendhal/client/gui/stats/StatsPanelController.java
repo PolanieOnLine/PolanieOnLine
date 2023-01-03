@@ -75,6 +75,9 @@ public final class StatsPanelController {
 	private int mana;
 	private int baseMana;
 
+	private double capacity;
+	private double baseCapacity;
+
 	/**
 	 * Create a new <code>StatsPanelController</code>. There
 	 * should be only one, so the constructor is hidden.
@@ -178,6 +181,12 @@ public final class StatsPanelController {
 		listener = new ManaChangeListener();
 		addPropertyChangeListenerWithModifiedSupport(pcs, "base_mana", listener);
 		addPropertyChangeListenerWithModifiedSupport(pcs, "mana", listener);
+
+		if (Testing.WEIGHT) {
+			listener = new CapacityChangeListener();
+			addPropertyChangeListenerWithModifiedSupport(pcs, "base_capacity", listener);
+			addPropertyChangeListenerWithModifiedSupport(pcs, "capacity", listener);
+		}
 	}
 
 	private void addPropertyChangeListenerWithModifiedSupport(PropertyChangeSupport pcs, String attribute, PropertyChangeListener listener) {
@@ -404,6 +413,19 @@ public final class StatsPanelController {
 	}
 
 	/**
+	 * Called when capacity or baseCapacity changes.
+	 */
+	private void updateCapacity() {
+		final String text = "Udźwig:" + SPC + capacity + SPC + "/" + SPC + baseCapacity + "kg";
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				panel.setCapacity(text);
+			}
+		});
+	}
+
+	/**
 	 * Listener for atk and atk_xp changes.
 	 */
 	private class ATKChangeListener implements PropertyChangeListener {
@@ -476,6 +498,25 @@ public final class StatsPanelController {
 				mining =  Integer.parseInt((String) event.getNewValue());
 			}
 			updateMining();
+		}
+	}
+
+	/**
+	 * Listener for capacity and baseCapacity changes.
+	 */
+	private class CapacityChangeListener implements PropertyChangeListener {
+		@Override
+		public void propertyChange(final PropertyChangeEvent event) {
+			if (event == null) {
+				return;
+			}
+
+			if (event.getPropertyName().equals("base_capacity")) {
+				baseCapacity = Double.parseDouble((String) event.getNewValue());
+			} else if (event.getPropertyName().equals("capacity")) {
+				capacity =  Double.parseDouble((String) event.getNewValue());
+			}
+			updateCapacity();
 		}
 	}
 

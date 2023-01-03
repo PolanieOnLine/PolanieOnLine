@@ -25,6 +25,7 @@ import games.stendhal.client.gui.layout.SLayout;
 import games.stendhal.client.gui.styled.Style;
 import games.stendhal.client.gui.styled.StyleUtil;
 import games.stendhal.client.gui.wt.core.WtWindowManager;
+import games.stendhal.common.constants.Testing;
 
 /**
  * Display panel for status icons and player stats. The methods may be safely
@@ -36,7 +37,7 @@ class StatsPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = -353271026575752035L;
 
-	private final StatLabel hpLabel, atkLabel, defLabel, ratkLabel, miningLabel, xpLabel, levelLabel, moneyLabel;
+	private final StatLabel hpLabel, atkLabel, defLabel, ratkLabel, miningLabel, xpLabel, levelLabel, moneyLabel, capacityLabel;
 	private final HPIndicator hpBar;
 	private final StatusIconPanel statusIcons;
 	private final KarmaIndicator karmaIndicator;
@@ -95,6 +96,10 @@ class StatsPanel extends JPanel {
 
 		moneyLabel = new StatLabel();
 		add(moneyLabel, SLayout.EXPAND_X);
+
+		capacityLabel = new StatLabel();
+		add(capacityLabel, SLayout.EXPAND_X);
+		capacityLabel.setVisible(false);
 	}
 
 	/**
@@ -226,6 +231,18 @@ class StatsPanel extends JPanel {
 	 */
 	void setMoney(String money) {
 		moneyLabel.setText(money);
+	}
+
+	/**
+	 * Set the capacity description string.
+	 *
+	 * @param money
+	 */
+	void setCapacity(String capacity) {
+		if (Testing.WEIGHT) {
+			capacityLabel.setVisible(true);
+		}
+		capacityLabel.setText(capacity);
 	}
 
 	/**
