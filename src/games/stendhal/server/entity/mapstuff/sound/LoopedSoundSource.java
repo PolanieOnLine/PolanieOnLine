@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -24,8 +23,7 @@ import marauroa.common.game.RPClass;
  * @author hendrik
  */
 public class LoopedSoundSource extends PassiveEntity {
-	private static final String RPCLASS_NAME = "looped_sound_source";
-
+	public static final String RPCLASS_NAME = "looped_sound_source";
 
 	/**
 	 * Create an ambient sound area.
@@ -34,7 +32,6 @@ public class LoopedSoundSource extends PassiveEntity {
 		setRPClass(RPCLASS_NAME);
 		put("type", RPCLASS_NAME);
 	}
-
 
 	/**
 	 * Create an ambient sound area.
@@ -53,7 +50,6 @@ public class LoopedSoundSource extends PassiveEntity {
 		put("layer", layer.ordinal());
 	}
 
-
 	/**
 	 * generates the RPClass
 	 */
@@ -65,5 +61,4 @@ public class LoopedSoundSource extends PassiveEntity {
 		rpclass.addAttribute("volume", Type.BYTE);
 		rpclass.add(DefinitionClass.ATTRIBUTE, "layer", Type.BYTE);
 	}
-
 }

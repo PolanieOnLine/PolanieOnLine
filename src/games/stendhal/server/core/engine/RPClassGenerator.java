@@ -258,17 +258,16 @@ public class RPClassGenerator {
 			OwczarekPodhalanski.generateRPClass();
 		}
 
-		// PassiveEntityRespawnPoint sub-class
-		if (!RPClass.hasRPClass("ambient_sound_source")) {
+		if (!RPClass.hasRPClass(LoopedSoundSource.RPCLASS_NAME)) {
 			LoopedSoundSource.generateRPClass();
 		}
+
+		// PassiveEntityRespawnPoint sub-class
 		if (!RPClass.hasRPClass("growing_entity_spawner")) {
 			GrowingPassiveEntityRespawnPoint.generateRPClass();
 		}
 		if (!RPClass.hasRPClass("food")) {
 			SheepFood.generateRPClass();
-		}
-		if (!RPClass.hasRPClass("food")) {
 			GoatFood.generateRPClass();
 		}
 
