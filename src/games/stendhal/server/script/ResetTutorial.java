@@ -14,6 +14,7 @@ package games.stendhal.server.script;
 import java.util.List;
 
 import games.stendhal.common.NotificationType;
+import games.stendhal.server.constants.StandardMessages;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.scripting.ScriptImpl;
 import games.stendhal.server.entity.player.Player;
@@ -26,7 +27,6 @@ import marauroa.common.game.RPSlot;
  * @author hendrik
  */
 public class ResetTutorial extends ScriptImpl {
-
 	@Override
 	public void execute(final Player admin, final List<String> args) {
 		super.execute(admin, args);
@@ -38,7 +38,12 @@ public class ResetTutorial extends ScriptImpl {
 		}
 
 		// find the player and slot
-		final Player player = SingletonRepository.getRuleProcessor().getPlayer(args.get(0));
+		final String pName = args.get(0);
+		final Player player = SingletonRepository.getRuleProcessor().getPlayer(pName);
+		if (player == null) {
+			StandardMessages.playerNotOnline(admin, pName);
+			return;
+		}
 		final RPSlot slot = player.getSlot("!tutorial");
 
 		// remove old store object
