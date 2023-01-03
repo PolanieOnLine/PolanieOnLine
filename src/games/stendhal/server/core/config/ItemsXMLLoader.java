@@ -167,7 +167,7 @@ public final class ItemsXMLLoader extends DefaultHandler {
 				LOGGER.error("Unable to load class: " + className);
 			}
 		} else if (qName.equals("weight")) {
-			weight = Double.parseDouble(attrs.getValue("value"));
+			weight = Double.valueOf(attrs.getValue("value"));
 		} else if (qName.equals("value")) {
 			value = Integer.parseInt(attrs.getValue("value"));
 		} else if (qName.equals("slot")) {
