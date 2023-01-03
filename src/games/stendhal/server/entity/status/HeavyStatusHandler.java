@@ -19,12 +19,9 @@ import games.stendhal.server.entity.RPEntity;
 
 /**
  * Handles HeavyStatus
- *
  */
 public class HeavyStatusHandler implements StatusHandler<HeavyStatus> {
-
 	private int duration;
-
 	/** The original speed of the entity */
 	private double originalSpeed;
 
@@ -38,7 +35,6 @@ public class HeavyStatusHandler implements StatusHandler<HeavyStatus> {
 	 */
 	@Override
 	public void inflict(HeavyStatus status, StatusList statusList, Entity attacker) {
-
 		if (!statusList.hasStatus(status.getStatusType())) {
 			RPEntity entity = statusList.getEntity();
 			if (entity != null) {

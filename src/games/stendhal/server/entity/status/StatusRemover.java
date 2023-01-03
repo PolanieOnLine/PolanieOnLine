@@ -19,7 +19,6 @@ import games.stendhal.server.core.events.TurnListener;
  * @author hendrik
  */
 public class StatusRemover implements TurnListener {
-
 	private StatusList statusList;
 	private Status status;
 

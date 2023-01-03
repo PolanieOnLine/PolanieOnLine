@@ -15,7 +15,6 @@ package games.stendhal.server.entity.status;
  * A status ailment that causes the entity to move more slowly
  */
 public class HeavyStatus extends Status {
-
 	/**
 	 * Create the status
 	 */
@@ -24,8 +23,7 @@ public class HeavyStatus extends Status {
 	}
 
 	/**
-	 * @return
-	 * 		StatusType
+	 * @return StatusType
 	 */
 	@Override
 	public StatusType getStatusType() {

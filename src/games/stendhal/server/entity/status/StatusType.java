@@ -23,25 +23,18 @@ import org.apache.log4j.Logger;
 public enum StatusType {
 	/** cannot walk straight */
 	CONFUSED(new ConfuseStatusHandler()),
-
 	/** is consuming food */
 	EATING(new EatStatusHandler()),
-
 	/** is consuming poison */
 	POISONED(new PoisonStatusHandler()),
-
 	/** is bleeding */
 	BLEEDING(new BleedingStatusHandler()),
-
 	/** cannot move */
 	SHOCKED(new ShockStatusHandler()),
-
 	/** drunk and not able to speak clearly */
 	DRUNK(new DrunkStatusHandler()),
-
 	/** reduced movement speed */
 	ZOMBIE(new ZombieStatusHandler()),
-
 	/** reduced movement speed */
 	HEAVY(new HeavyStatusHandler());
 

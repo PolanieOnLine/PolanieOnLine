@@ -18,24 +18,20 @@ import games.stendhal.server.entity.RPEntity;
 
 /**
  * Handles ZombieStatus
- *
  */
 public class ZombieStatusHandler implements StatusHandler<ZombieStatus> {
-
 	/** The original base speed of the entity before being zombified */
 	private double originalSpeed;
 
 	/**
-	 * @param status
-	 * 		Status to inflict
+	 * @param status 
+	 * 			Status to inflict
 	 * @param statusList
-	 * 		StatusList
 	 * @param attacker
-	 * 		the attacker
+	 * 			The attacker
 	 */
 	@Override
 	public void inflict(ZombieStatus status, StatusList statusList, Entity attacker) {
-
 		if (!statusList.hasStatus(status.getStatusType())) {
 			RPEntity entity = statusList.getEntity();
 			if (entity != null) {
@@ -50,20 +46,17 @@ public class ZombieStatusHandler implements StatusHandler<ZombieStatus> {
 			}
 
 			statusList.addInternal(status);
-
 			statusList.activateStatusAttribute("status_" + status.getName());
 			TurnNotifier.get().notifyInSeconds(60, new StatusRemover(statusList, status));
 		}
-
 	}
 
 	/**
-	 * removes a status
+	 * Removes a status.
 	 *
 	 * @param status
-	 * 		inflicted status
+	 * 		Inflicted status
 	 * @param statusList
-	 * 		StatusList
 	 */
 	@Override
 	public void remove(ZombieStatus status, StatusList statusList) {

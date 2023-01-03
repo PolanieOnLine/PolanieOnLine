@@ -44,7 +44,6 @@ import marauroa.common.game.RPAction;
  * y-coordinate on the ground
  */
 public abstract class EquipmentAction implements ActionListener {
-
 	protected static final Logger logger = Logger.getLogger(EquipmentAction.class);
 
 	/** the list of valid container classes. */
@@ -54,30 +53,17 @@ public abstract class EquipmentAction implements ActionListener {
 	/** List of the valid container classes for easy access. */
 	protected final List<Class< ? >> validContainerClassesList = Arrays.asList(validContainerClasses);
 
-
-
 	@Override
 	public void onAction(final Player player, final RPAction action) {
-
 		if (!isValidAction(action, player)) {
 			return;
 		}
-
 
 		String noItemMessage = player.getZone().getNoItemMoveMessage();
 		if (noItemMessage != null) {
 			player.sendPrivateText(noItemMessage);
 			return;
 		}
-
-
-		//		isValidSource();
-		//		isValidItem();
-		//		isValidDestination();
-		//
-
-
-
 
 		logger.debug("Checking source object conditions: " + action);
 		final SourceObject source = SourceObject.createSourceObject(action, player);
@@ -100,5 +86,4 @@ public abstract class EquipmentAction implements ActionListener {
 		}
 		return false;
 	}
-
 }
