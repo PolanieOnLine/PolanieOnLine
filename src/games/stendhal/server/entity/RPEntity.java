@@ -404,7 +404,7 @@ public abstract class RPEntity extends CombatEntity {
 
 		if (has("gender")) {
 			gender = get("gender");
-		} if (!has("gender") || getGender() == null) {
+		} else {
 			setGender("0");
 		}
 
