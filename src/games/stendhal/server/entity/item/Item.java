@@ -23,6 +23,7 @@ import org.apache.log4j.Logger;
 import games.stendhal.common.MathHelper;
 import games.stendhal.common.Rand;
 import games.stendhal.common.constants.Nature;
+import games.stendhal.common.constants.Testing;
 import games.stendhal.server.core.engine.ItemLogger;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.events.EquipListener;
@@ -77,9 +78,10 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	 */
 	private PassiveEntityRespawnPoint plantGrower;
 
+	private double weight;
+
 	/** The damage type of weapons */
 	private Nature damageType = Nature.CUT;
-
 	private Map<Nature, Double> susceptibilities;
 
 	private boolean fromCorpse = false;
@@ -140,6 +142,7 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		super(item);
 		setRPClass("item");
 		possibleSlots = new ArrayList<String>(item.possibleSlots);
+		weight = item.weight;
 		damageType = item.damageType;
 		susceptibilities = item.susceptibilities;
 	}
@@ -474,7 +477,24 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	}
 
 	/**
-	 * Checks if the item is of type <i>type</i> .
+	 * Sets the item weight value.
+	 *
+	 * @param weight
+	 *			Item weight.
+	 */
+	public void setWeight(double weight) {
+		this.weight = weight;
+	}
+
+	/**
+	 * @return weight value of item.
+	 */
+	public double getWeight() {
+		return weight;
+	}
+
+	/**
+	 * Checks if the item is of type <i>type</i>.
 	 *
 	 * @param clazz
 	 *            the class to check
@@ -873,6 +893,10 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		if (has("life_support")) {
 			stats.append(" PODTRZYMUJĄCE-ŻYCIE: ");
 			stats.append(get("life_support"));
+		}
+		if (Testing.WEIGHT && getWeight() > 0.0) {
+			stats.append(" CIĘŻAR: ");
+			stats.append(getWeight() + "kg");
 		}
 		String statString = "";
 		if (stats.length() > 0) {

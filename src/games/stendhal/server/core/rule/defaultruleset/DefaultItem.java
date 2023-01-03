@@ -269,6 +269,7 @@ public class DefaultItem {
 			if (damageType != null) {
 				item.setDamageType(damageType);
 			}
+			item.setWeight(weight);
 			item.setSusceptibilities(susceptibilities);
 
 			/* Set a list of status resistances for StatusResistantItem. */
