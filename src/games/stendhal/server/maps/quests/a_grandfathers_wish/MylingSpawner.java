@@ -59,12 +59,14 @@ public class MylingSpawner extends Entity implements TurnListener {
 	/**
 	 * Adds a new myling to world.
 	 */
-	private void respawn() {
+	public void respawn() {
 		if (!mylingIsActive()) {
 			final Myling myling = new Myling(this);
 			myling.setPosition(getX(), getY());
 			SingletonRepository.getRPWorld().getZone(getID().getZoneID()).add(myling);
 			activeMylings.add(myling);
+			// in case spawn was triggered by means other than turn notifier
+			SingletonRepository.getTurnNotifier().dontNotify(this);
 		}
 	}
 
@@ -110,6 +112,8 @@ public class MylingSpawner extends Entity implements TurnListener {
 			curedNiall.setGender("M");
 			curedNiall.setPosition(getX(), getY());
 			curedNiall.setCollisionAction(CollisionAction.STOP);
+			// entity descriptions default to using "name" attribute
+			curedNiall.setDescription("Oto " + curedNiall.getTitle() + ".");
 			getZone().add(curedNiall);
 			activeNialls.add(curedNiall);
 
