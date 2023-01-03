@@ -111,6 +111,9 @@ public abstract class RPEntity extends CombatEntity {
 	private int mana;
 	private int base_mana;
 
+	private double capacity;
+	private double baseCapacity;
+
 	private String deathSound;
 	private String bloodClass;
 
@@ -422,6 +425,12 @@ public abstract class RPEntity extends CombatEntity {
 		}
 		if (has("base_mana")) {
 			base_mana = getInt("base_mana");
+		}
+		if (has("capacity")) {
+			capacity = getDouble("capacity");
+		}
+		if (has("base_capacity")) {
+			baseCapacity = getDouble("base_capacity");
 		}
 		if (has("base_speed")) {
 			setBaseSpeed(getDouble("base_speed"));
@@ -1082,6 +1091,54 @@ public abstract class RPEntity extends CombatEntity {
 	 */
 	public int getBaseMana() {
 		return this.base_mana;
+	}
+
+	/**
+	 * Get the current player capacity.
+	 *
+	 * @return value of capacity.
+	 */
+	public double getCapacity() {
+		return this.capacity;
+	}
+
+	/**
+	 * Get the player max load capacity.
+	 *
+	 * @return value of max load capacity.
+	 */
+	public double getBaseCapacity() {
+		return this.baseCapacity;
+	}
+
+	/**
+	 * Increments player weight.
+	 *
+	 * @param addCapacity
+	 * 			Value of capacity to add or subtract.
+	 */
+	public void addCapacity(final double addCapacity) {
+		capacity += addCapacity;
+		put("capacity", capacity);
+		notifyWorldAboutChanges();
+	}
+	
+	public void setCapacity(final double value) {
+		capacity = value;
+		put("capacity", capacity);
+		this.updateModifiedAttributes();
+	}
+
+	/**
+	 * Increments player load capacity.
+	 *
+	 * @param addCapacity
+	 * 			Value of load capacity to add or subtract.
+	 */
+	public void addBaseCapacity(final double addCapacity) {
+		baseCapacity += addCapacity;
+		put("base_capacity", baseCapacity);
+		notifyWorldAboutChanges();
 	}
 
 	/**

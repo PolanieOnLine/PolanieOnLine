@@ -93,6 +93,10 @@ public class InspectAction extends AdministrationAction {
 			st.append("\nKarma:  " + inspected.getKarma());
 			st.append("\nMana:  " + inspected.getMana() + " / "
 					+ inspected.getBaseMana());
+			if (Testing.WEIGHT) {
+				st.append("\nUdźwig:  " + inspected.getCapacity() + " / "
+						+ inspected.getBaseCapacity() + "kg");
+			}
 			st.append("\nResistance:  " + inspected.getResistance());
 			st.append("\nVisibility:  " + inspected.getVisibility());
 

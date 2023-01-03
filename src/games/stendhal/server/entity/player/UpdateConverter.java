@@ -353,6 +353,13 @@ public abstract class UpdateConverter {
 			object.put("base_mana", 0);
 		}
 
+		if (Testing.WEIGHT && !object.has("capacity")) {
+			object.put("capacity", 0.0);
+		}
+		if (Testing.WEIGHT && !object.has("base_capacity")) {
+			object.put("base_capacity", 60.0);
+		}
+
 		// Renamed to skills
 		if (object.has("!skills")) {
 			object.remove("!skills");

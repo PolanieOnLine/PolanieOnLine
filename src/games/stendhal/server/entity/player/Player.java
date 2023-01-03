@@ -191,6 +191,10 @@ public class Player extends DressedEntity implements UseListener {
 		player.put("mining_xp", 0);
 		player.put("level", 0);
 		player.setXP(0);
+		if (Testing.WEIGHT) {
+			player.put("capacity", 0.0);
+			player.put("base_capacity", 60.0);
+		}
 
 		// define outfit
 		Outfit outfit = null;

@@ -49,6 +49,10 @@ public class Testing {
 	public static final boolean QUEST =
 			(System.getProperty("testing.quest") != null);
 
+	/** Testing switch for player weight system **/
+	public static final boolean WEIGHT =
+			(System.getProperty("testing.weight") != null);
+
 	/** Switch for when test server is enabled. */
 	public static final boolean TESTSERVER = System.getProperty("stendhal.testserver") != null;
 }

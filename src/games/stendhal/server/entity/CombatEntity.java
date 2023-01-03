@@ -76,6 +76,9 @@ public abstract class CombatEntity extends GuidedEntity {
 			rpclass.addAttribute("base_mana", Type.INT);
 			rpclass.addAttribute("mana", Type.INT);
 
+			rpclass.addAttribute("base_capacity", Type.FLOAT, (byte) (Definition.PRIVATE | Definition.VOLATILE));
+			rpclass.addAttribute("capacity", Type.FLOAT, (byte) (Definition.PRIVATE | Definition.VOLATILE));
+
 			// stats
 			rpclass.addAttribute("level", Type.SHORT);
 			rpclass.addAttribute("xp", Type.INT);
