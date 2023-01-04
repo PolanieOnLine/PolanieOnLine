@@ -275,8 +275,12 @@ public abstract class RPEntity extends CombatEntity {
 		return 0.0;
 	}
 
-	public void attackCrit(boolean critted) {
-		put("crit", Boolean.toString(critted));
+	public void hitCritical(boolean critted) {
+		if (critted) {
+			put("crit", "");
+		} else {
+			remove("crit");
+		}
 	}
 
 	/**
