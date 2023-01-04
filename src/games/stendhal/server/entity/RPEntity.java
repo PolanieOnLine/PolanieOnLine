@@ -275,6 +275,10 @@ public abstract class RPEntity extends CombatEntity {
 		return 0.0;
 	}
 
+	public void attackCrit(boolean critted) {
+		put("crit", Boolean.toString(critted));
+	}
+
 	/**
 	 * Heal this entity completely.
 	 *
