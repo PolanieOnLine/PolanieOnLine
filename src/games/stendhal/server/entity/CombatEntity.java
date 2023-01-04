@@ -103,7 +103,7 @@ public abstract class CombatEntity extends GuidedEntity {
 			//       is compatible when this is changed into a list.
 			rpclass.addAttribute("target", Type.INT, Definition.VOLATILE);
 
-			rpclass.addAttribute("crit", Type.STRING, Definition.VOLATILE);
+			rpclass.addAttribute("crit", Type.FLAG);
 
 			// Status effects
 			rpclass.addAttribute("bleeding", Type.SHORT, Definition.VOLATILE);
