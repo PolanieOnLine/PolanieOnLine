@@ -92,7 +92,7 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 	};
 	public static final String[] ITEMS_MUSHROOMS = { "borowik", "pieczarka", "muchomor" };
 	public static final String[] ITEMS_MAGICS = {
-			"magia ziemi", "magia płomieni", "magia deszczu",
+			"magia ziemi", "magia płomieni", "magia deszczu", "magia wiatru",
 			"magia mrozu", "magia mroku", "magia światła"
 	};
 	public static final String[] ITEMS_BARS = { "sztabka złota", "sztabka mithrilu" };
