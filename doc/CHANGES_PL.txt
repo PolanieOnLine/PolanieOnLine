@@ -1,5 +1,19 @@
 Changelog
 ---------
+1.35
+*klient*
+- Ataki krytyczne różnią się od zwykłych zadawanych ataków
+
+*serwer*
+- Wprowadzono system ataków krytycznych
+
+*naprawiono błędy*
+- Naprawiono błąd z automatycznym przenoszeniem się magii wiatru do magicznego plecaka
+- Naprawiono błąd z brakiem magii wiatru w osiągnięciu "Zbędne Czary"
+- Naprawiono wyświetlanie listy skryptów dla administratorów
+- Poprawiono podpowiedzi w zadaniu na rozszerzony plecak
+
+
 1.34
 *klient*
 - Dodano grafikę nowego przedmiotu & potwora
