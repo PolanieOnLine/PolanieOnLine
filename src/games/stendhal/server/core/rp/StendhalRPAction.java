@@ -324,7 +324,6 @@ public class StendhalRPAction {
 		}
 
 		boolean beaten;
-		boolean hitCrit = false;
 		final boolean usesTrainingDummy = defender instanceof TrainingDummy;
 		if (usesTrainingDummy) {
 			/* training dummies can always be hit except in cases of using a
@@ -341,9 +340,6 @@ public class StendhalRPAction {
 		} else {
 			// Throw dices to determine if the attacker has missed the defender
 			beaten = player.canHit(defender);
-			// Roll a crit chance (default: 15%).
-			hitCrit = (beaten && Rand.roll1D100() <= 15);
-			defender.attackCrit(hitCrit);
 		}
 
 		// equipment that are broken are added to this list
@@ -371,8 +367,12 @@ public class StendhalRPAction {
 			int damage = player.damageDone(defender, itemAtk, player.getDamageType());
 			final boolean didDamage = damage > 0;
 
+			// Roll a crit chance (default: 15%).
+			final boolean critical = Rand.roll1D100() <= 15;
+			defender.hitCritical(critical);
+
 			// critical damage is doubled to one normal hit
-			if (hitCrit) {
+			if (critical) {
 				damage *= 2;
 			}
 
