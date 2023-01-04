@@ -265,8 +265,6 @@ public abstract class RPEntity extends AudibleEntity {
 	private double capacity;
 	private double baseCapacity;
 
-	private boolean critted;
-
 	/** A flag that gets set once the entity has been released. */
 	private boolean released;
 
@@ -335,13 +333,6 @@ public abstract class RPEntity extends AudibleEntity {
 	 */
 	public int getAtkXP() {
 		return atkXP;
-	}
-
-	/**
-	 * @return the attack crit
-	 */
-	public boolean getAttackCrit() {
-		return critted;
 	}
 
 	/**
@@ -887,15 +878,16 @@ public abstract class RPEntity extends AudibleEntity {
 	 *
 	 * @param amount change amount
 	 */
-	// TODO: critical hit color shows too late
 	private void onHPChange(final int amount, boolean crit) {
 		if (User.squaredDistanceTo(x, y) < HEARING_DISTANCE_SQ) {
 			if (amount > 0) {
 				addTextIndicator("+" + amount, NotificationType.POSITIVE);
-			} else if (crit) {
-				addTextIndicator("*" + String.valueOf(amount) + "*", NotificationType.INFORMATION);
 			} else {
-				addTextIndicator(String.valueOf(amount), NotificationType.NEGATIVE);
+				if (crit) {
+					addTextIndicator("*" + String.valueOf(amount) + "*", NotificationType.INFORMATION);
+				} else {
+					addTextIndicator(String.valueOf(amount), NotificationType.NEGATIVE);
+				}
 			}
 		}
 	}
@@ -1206,8 +1198,6 @@ public abstract class RPEntity extends AudibleEntity {
 			isImmortal = true;
 		}
 
-		critted = Boolean.parseBoolean(object.get("crit"));
-
 		/*
 		 * Determine if entity should not cast a shadow
 		 */
@@ -1366,10 +1356,12 @@ public abstract class RPEntity extends AudibleEntity {
 				final int newHP = changes.getInt("hp");
 				final int change = newHP - hp;
 
+				final boolean isCritical = changes.has("crit");
+
 				hp = newHP;
 
 				if (object.has("hp") && (change != 0)) {
-					onHPChange(change, getAttackCrit());
+					onHPChange(change, isCritical);
 				}
 
 				hpRatioChange = true;
@@ -1378,10 +1370,12 @@ public abstract class RPEntity extends AudibleEntity {
 				final int newHP = changes.getInt("modified_hp");
 				final int change = newHP - hp;
 
+				final boolean isCritical = changes.has("crit");
+
 				hp = newHP;
 
 				if (object.has("hp") && (change != 0)) {
-					onHPChange(change, getAttackCrit());
+					onHPChange(change, isCritical);
 				}
 
 				hpRatioChange = true;
@@ -1543,10 +1537,6 @@ public abstract class RPEntity extends AudibleEntity {
 		}
 		if (changes.has("modified_base_capacity")) {
 			baseCapacity = changes.getDouble("modified_base_capacity");
-		}
-
-		if (changes.has("crit")) {
-			critted = Boolean.parseBoolean(changes.get("crit"));
 		}
 
 		if (changes.has("ghostmode")) {
