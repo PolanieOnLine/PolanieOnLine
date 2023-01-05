@@ -32,6 +32,9 @@ public class RemovableSprite implements Comparable<RemovableSprite> {
 	private int x;
 	private int y;
 
+	// offset position when multiple bubbles are on screen
+	private int offsetY = 0;
+
 	// entity that sprite will follow
 	private Entity owner;
 
@@ -83,6 +86,10 @@ public class RemovableSprite implements Comparable<RemovableSprite> {
 		this.sprite = sprite;
 		this.owner = entity;
 
+		final int sy = getAttachedY();
+		this.offsetY = gsHelper.findFreeTextBoxPosition(sprite,
+				getAttachedX(), sy) - sy;
+
 		setPersistTime(persistTime);
 	}
 
@@ -123,7 +130,7 @@ public class RemovableSprite implements Comparable<RemovableSprite> {
 	 */
 	private void drawAttached(final Graphics g) {
 		int sx = getAttachedX();
-		int sy = getAttachedY(sx);
+		int sy = getAttachedY();
 
 		sprite.draw(g, sx, sy);
 	}
@@ -134,16 +141,11 @@ public class RemovableSprite implements Comparable<RemovableSprite> {
 		return sx;
 	}
 
-	private int getAttachedY(int attachedX) {
+	private int getAttachedY() {
 		int sy = gsHelper.convertWorldYToScaledScreen(owner.getY());
-
-		// Point alignment: left, bottom
 		sy -= sprite.getHeight();
-
 		sy = gsHelper.keepSpriteOnMapY(sprite, sy);
-		// FIXME: not working to place a new bubble below previous one
-		sy = gsHelper.findFreeTextBoxPosition(sprite, attachedX, sy);
-		return sy;
+		return sy + offsetY;
 	}
 
 	/**
@@ -154,7 +156,7 @@ public class RemovableSprite implements Comparable<RemovableSprite> {
 	public Rectangle getArea() {
 		if (owner != null) {
 			int sx = getAttachedX();
-			int sy = getAttachedY(sx);
+			int sy = getAttachedY();
 			return new Rectangle(sx, sy, sprite.getWidth(),
 				sprite.getHeight());
 		}
@@ -169,7 +171,7 @@ public class RemovableSprite implements Comparable<RemovableSprite> {
 	 */
 	public int getX() {
 		if (owner != null) {
-			owner.getX();
+			return getAttachedX();
 		}
 
 		return x;
@@ -182,7 +184,7 @@ public class RemovableSprite implements Comparable<RemovableSprite> {
 	 */
 	public int getY() {
 		if (owner != null) {
-			owner.getY();
+			return getAttachedY();
 		}
 
 		return y;

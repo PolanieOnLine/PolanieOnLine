@@ -63,7 +63,6 @@ public class j2DClient implements UserInterface {
 	 */
 	private static j2DClient sharedUI;
 
-
 	/** Chat channels. */
 	private final NotificationChannelManager channelManager = new NotificationChannelManager();
 
