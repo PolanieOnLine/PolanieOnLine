@@ -11,6 +11,7 @@ import games.stendhal.common.Rand;
 import games.stendhal.common.constants.SoundID;
 import games.stendhal.common.constants.SoundLayer;
 import games.stendhal.common.parser.Sentence;
+import games.stendhal.server.core.engine.GameEvent;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.RPEntity;
@@ -353,6 +354,8 @@ public class ImproverAdder {
 
 					repairer.say("Zrobione! Twój przedmiot #'" + currentUpgradingItem + "' został udoskonalony i jest lepszy od jego poprzedniego stanu!");
 					repairer.addEvent(new SoundEvent(SoundID.COMMERCE, SoundLayer.CREATURE_NOISE));
+
+					new GameEvent(player.getName(), "upgraded-item", toImprove.getName(), "+" + Integer.toString(toImprove.getImprove())).raise();
 				} else {
 					repairer.say("Przepraszam, lecz nie udało mi się udoskonalić twojego przedmiotu. Spróbuję następnym razem ulepszyć twój przedmiot. Otrzymasz #'40%' rekompensaty za znaczną stratę.");
 					final StackableItem money = (StackableItem) SingletonRepository.getEntityManager().getItem("money");
