@@ -367,10 +367,9 @@ public class StendhalRPAction {
 			int damage = player.damageDone(defender, itemAtk, player.getDamageType());
 			final boolean didDamage = damage > 0;
 
-			// Roll a crit chance (default: 15%).
-			final boolean critical = Rand.roll1D100() <= 15;
+			// Roll a crit chance (default: 10%).
+			final boolean critical = Rand.roll1D100() <= 10;
 			defender.hitCritical(critical);
-
 			// critical damage is doubled to one normal hit
 			if (critical) {
 				damage *= 2;
