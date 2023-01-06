@@ -156,7 +156,6 @@ public abstract class Entity extends RPObject implements Killer {
 		entity.addRPEvent(Events.PUBLIC_TEXT, Definition.VOLATILE);
 	}
 
-
 	public void update() {
 		final int oldX = x;
 		final int oldY = y;
@@ -196,7 +195,6 @@ public abstract class Entity extends RPObject implements Killer {
 		if (has("visibility")) {
 			visibility = getInt("visibility");
 		}
-
 	}
 
 	public boolean hasDescription() {
