@@ -3344,8 +3344,8 @@ public abstract class RPEntity extends CombatEntity {
 				defender.incDefXP();
 			}
 
-			// Roll a critical hit chance for a creature to player (default: 5%).
-			final boolean critical = Rand.roll1D100() <= 5;
+			// Roll a critical hit chance for a creature to player (default: 2%).
+			final boolean critical = Rand.roll1D100() <= 2;
 			defender.hitCritical(critical);
 			// critical damage is doubled to one normal hit
 			if (critical) {
