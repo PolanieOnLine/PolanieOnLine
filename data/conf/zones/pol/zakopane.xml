@@ -1242,6 +1242,9 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 	<zone name="int_zakopane_bank_1" file="interiors/zakopane/bank_1.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 
+		<!-- NPCs -->
+		<configurator class-name="games.stendhal.server.maps.zakopane.bank.GreedierNPC"/>
+
 		<!-- Clock -->
 		<entity x="41" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Clock" />

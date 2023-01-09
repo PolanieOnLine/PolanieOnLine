@@ -197,6 +197,7 @@ public class StendhalQuestSystem {
 		\**	                    **/
 		loadQuest(new BringMagic());
 		loadQuest(new ClearTower());
+		loadQuest(new ChallengeGreedy());
 		loadQuest(new DailyItemZakopaneQuest());
 		loadQuest(new Gornictwo());
 		loadQuest(new HelpKrasnolud());
