@@ -28,9 +28,12 @@
 	</zone>
 
 	<zone name="0_dragon_land_n" level="0" x="513824" y="18048" file="Level 0/dragon/land_n.tmx">
-		<configurator class-name="games.stendhal.server.maps.dragon.YoungBoyNPC"/>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+
+		<!-- NPCs -->
+		<configurator class-name="games.stendhal.server.maps.dragon.YoungBoyNPC"/>
+
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -104,6 +107,10 @@
 	<zone name="0_dragon_land_s" level="0" x="513824" y="18176" file="Level 0/dragon/land_s.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+
+		<!-- NPCs -->
+		<configurator class-name="games.stendhal.server.maps.dragon.GuardianNPC"/>
+
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -116,24 +123,28 @@
 			</implementation>
 		</entity>
 
+		<portal x="107" y="35" ref="dragon_tunnel_1_entrance">
+			<destination zone="-1_dragon_cave" ref="tunnel_dragon_1_exit"/>
+		</portal>
+
+		<portal x="67" y="60" ref="dragon_tunnel_2_entrance">
+			<destination zone="-1_dragon_cave" ref="tunnel_dragon_2_exit"/>
+		</portal>
+
+		<!-- Atlas points -->
 		<point-of-interest x="107" y="35">
 			<name>Wejście do tunelu</name>
 			<type>dungeon</type>
 			<description>Wejście do przerażającego smoczego tunelu, w której znajdują się smoki!</description>
 			<url>https://s1.polanieonline.eu/smocza_kraina</url>
 		</point-of-interest>
-		<portal x="107" y="35" ref="dragon_tunnel_1_entrance">
-			<destination zone="-1_dragon_cave" ref="tunnel_dragon_1_exit"/>
-		</portal>
+
 		<point-of-interest x="67" y="60">
 			<name>Wejście do smoczego tunelu</name>
 			<type>dungeon</type>
 			<description>Wejście do przerażającego smoczego tunelu, w której znajdują się smoki!</description>
 			<url>https://s1.polanieonline.eu/smocza_kraina</url>
 		</point-of-interest>
-		<portal x="67" y="60" ref="dragon_tunnel_2_entrance">
-			<destination zone="-1_dragon_cave" ref="tunnel_dragon_2_exit"/>
-		</portal>
 	</zone>
 
 	<zone name="0_dragon_land_se" level="0" x="513952" y="18176" file="Level 0/dragon/land_se.tmx">
@@ -443,8 +454,10 @@
 	</zone>
 
 	<zone name="int_dragon_wizard_tower_4" file="interiors/dragon/wizard_tower_4.tmx">
-		<configurator class-name="games.stendhal.server.maps.dragon.wizardtower.WizardNPC"/>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+
+		<!-- NPCs -->
+		<configurator class-name="games.stendhal.server.maps.dragon.wizardtower.WizardNPC"/>
 
 		<portal x="24" y="23" ref="wizardtower_destination">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination" />
@@ -689,9 +702,12 @@
 	<zone name="-1_dragon_cave" level="-1" x="513824" y="18150" file="Level -1/dragon/cave.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+
+		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.dragon.cave.eFuRNPC"/>
 		<configurator class-name="games.stendhal.server.maps.dragon.cave.JolandaNPC"/>
 		<configurator class-name="games.stendhal.server.maps.dragon.cave.Dragon"/>
+
 		<attributes>
 			<parameter name="color_method">dark</parameter>
 		</attributes>

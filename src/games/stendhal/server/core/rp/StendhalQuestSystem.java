@@ -25,6 +25,7 @@ import games.stendhal.server.entity.npc.quest.QuestManuscript;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.quests.*;
 import games.stendhal.server.maps.quests.antivenom_ring.AntivenomRing;
+import games.stendhal.server.maps.quests.challenges.*;
 
 /**
  * Loads and manages all quests.
@@ -281,6 +282,7 @@ public class StendhalQuestSystem {
 		/** 					**\
 		 *         DRAGON		 *
 		\**	                    **/
+		loadQuest(new ChallengeDragons());
 		loadQuest(new MagicznaTorba());
 		loadQuest(new SmoczyAmulet());
 		if (Occasion.SECOND_WORLD) {
