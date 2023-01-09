@@ -82,7 +82,7 @@ public class BoyGuardianNPC implements ZoneConfigurator {
 						ConversationPhrases.GREETING_MESSAGES,
 						new LevelGreaterThanCondition(15),
 						ConversationStates.ATTENDING,
-						greetingBasis + "Oh teraz widzę jesteś silny i odważny! Miłej zabawy :)",
+						greetingBasis + "Och teraz widzę jesteś silny i odważny! Miłej zabawy :)",
 						null);
 
 				addJob("Moją pracą jest obserwowanie złych potworów! Moi rodzice przydzielili mi tą specjalną #służbę!");
