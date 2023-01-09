@@ -72,6 +72,9 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 	public static final String ID_BALROG = "fight.general.balrog";
 	public static final String ID_MEFISTO = "fight.general.mefisto";
 	public static final String ID_LAWINY = "fight.general.lawiny";
+	public static final String ID_ZBOJNICYLESNI = "fight.general.zbojnicylesni";
+	public static final String ID_ZBOJNICYGORSCY = "fight.general.zbojnicygorscy";
+	public static final String ID_ALIENS = "fight.general.szaraki";
 
 	public static final String[] ENEMIES_EXTERMINATOR = {
 			"szczur", "szczur jaskiniowy", "wściekły szczur", "szczur zombie", "krwiożerczy szczur",
@@ -166,6 +169,20 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 	};
 	public static final String[] ENEMIES_LAWINY = {
 			"lawina", "lawina kamienna"
+	};
+	public static final String[] ENEMIES_ZBOJNICYLESNI = {
+			"zbójnik leśny", "zbójnik leśny tchórzliwy", "zbójnik leśny starszy",
+			"zbójnik leśny oszust", "zbójnik leśny zwiadowca"
+	};
+	public static final String[] ENEMIES_ZBOJNICYGORSCY = {
+			"zbójnik górski", "zbójnik górski goniec", "zbójnik górski złośliwy",
+			"zbójnik górski zwiadowca", "zbójnik górski starszy", "zbójnik górski herszt"
+	};
+	public static final String[] ENEMIES_SZARAKI = {
+			"szarak", "szarak uzbrojony", "szarak wojownik", "szarak defensywy",
+			"szarak strażnik", "szarak kapitan strażników", "szarak kapitan wojowników",
+			"szarak lider defensywy", "szarak uzbrojony wyższy", "szarak najwyższy",
+			"szarak gigant"
 	};
 
 	@Override
@@ -455,6 +472,41 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 					}
 				}
 		));
+
+		fightingAchievements.add(createAchievement(
+				ID_ZBOJNICYLESNI, "Leśni Kamraci", "Zabił łącznie 400 zbójników leśnych",
+				Achievement.EASY_BASE_SCORE, true,
+				new ChatCondition() {
+					@Override
+					public boolean fire(Player player, Sentence sentence, Entity npc) {
+						int kills = 0;
+						for (final String zbojnik: ENEMIES_ZBOJNICYLESNI) {
+							kills += player.getSoloKill(zbojnik) + player.getSharedKill(zbojnik);
+						}
+						return kills >= 400;
+					}
+				}
+		));
+
+		fightingAchievements.add(createAchievement(
+				ID_ZBOJNICYGORSCY, "Ciupagi, Grabieże i Pieniądze", "Zabił łącznie 400 zbójników górskich",
+				Achievement.EASY_BASE_SCORE, true,
+				new ChatCondition() {
+					@Override
+					public boolean fire(Player player, Sentence sentence, Entity npc) {
+						int kills = 0;
+						for (final String zbojnik: ENEMIES_ZBOJNICYGORSCY) {
+							kills += player.getSoloKill(zbojnik) + player.getSharedKill(zbojnik);
+						}
+						return kills >= 400;
+					}
+				}
+		));
+
+		fightingAchievements.add(createAchievement(
+				ID_ALIENS, "Życie Nad Nami", "Zabił po 50 różnych szaraków",
+				Achievement.HARD_BASE_SCORE, true,
+				new PlayerHasKilledNumberOfCreaturesCondition(50, ENEMIES_SZARAKI)));
 
 		return fightingAchievements;
 	}
