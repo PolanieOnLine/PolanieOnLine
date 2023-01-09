@@ -6,13 +6,14 @@ Changelog
 - Poprawiono kolory grafiki ametystu
 
 *świat*
-- Dodano nowego NPC: (1)
+- Dodano nowego NPC: (2)
 	- Racirad
+	- Chciwurak
 - Dodano nowe osiągnięcia: (3)
 	- "Leśni Kamraci"
 	- "Ciupagi, Grabieże i Pieniądze"
 	- "Życie Nad Nami"
-- Dodano nowe zadanie u Racirada
+- Dodano nowe zadanie u Racirada i Chciwuraka
 
 
 1.35
