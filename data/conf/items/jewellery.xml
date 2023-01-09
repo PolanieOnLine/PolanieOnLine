@@ -2,7 +2,7 @@
 <items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="stendhal ../items.xsd ">
 
 	<item name="ametyst">
-		<type class="jewellery" subclass="ametyst" tileid="-1"/>
+		<type class="jewellery" subclass="amethyst" tileid="-1"/>
 		<description>Oto ametyst, cenny klejnot.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
@@ -162,7 +162,7 @@
 	</item>
 
 	<item name="kryształ ametystu">
-		<type class="jewellery" subclass="ametyst_crystal" tileid="-1"/>
+		<type class="jewellery" subclass="amethyst_crystal" tileid="-1"/>
 		<description>Oto kryształ ametystu, cenny nieoszlifowany klejnot.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
