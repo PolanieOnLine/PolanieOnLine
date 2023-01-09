@@ -9,11 +9,16 @@ Changelog
 - Dodano nowego NPC: (2)
 	- Racirad
 	- Chciwurak
-- Dodano nowe osiągnięcia: (3)
+- Dodano nowe osiągnięcia: (5)
 	- "Leśni Kamraci"
 	- "Ciupagi, Grabieże i Pieniądze"
 	- "Życie Nad Nami"
+	- "Uczestnik"
+	- "Cierpliwie Czekający na Gderacza"
 - Dodano nowe zadanie u Racirada i Chciwuraka
+
+*kod*
+- Dodano nowy skrypt CommerceExchange.class dla administratorów
 
 
 1.35
