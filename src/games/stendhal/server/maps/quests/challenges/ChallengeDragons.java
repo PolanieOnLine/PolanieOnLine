@@ -1,3 +1,14 @@
+/***************************************************************************
+ *                 (C) Copyright 2019-2023 - PolanieOnLine                 *
+ ***************************************************************************
+ ***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
 package games.stendhal.server.maps.quests.challenges;
 
 import java.util.ArrayList;
@@ -86,8 +97,9 @@ public class ChallengeDragons extends AbstractQuest {
 				+ Grammar.genderVerb(player.getGender(), "odrzuciłem")
 				+ " propozycje tego durnego wyzwania.");
 		} else {
-			res.add("Z przyjemnością zaakceptowałem to specyficzne "
-				+ "wyzwanie. Będę notował każdego poskromionego smoka!");
+			res.add("Z przyjemnością " + Grammar.genderVerb(player.getGender(), "zaakceptowałem")
+				+ " to specyficzne wyzwanie. Będę " + Grammar.genderVerb(player.getGender(), "notował")
+				+ " każdego poskromionego smoka!");
 			if (quest_state.equals("done")) {
 				res.add("Udało mi się ukończyć to niezwykły wyzwanie od Racirada.");
 			}
@@ -171,7 +183,7 @@ public class ChallengeDragons extends AbstractQuest {
 					int diffKills = (getKills - Integer.parseInt(oldKills));
 					int killed = Integer.parseInt(toKill) - (Integer.parseInt(toKill) - diffKills);
 
-					return killed == Integer.parseInt(toKill);
+					return killed >= Integer.parseInt(toKill);
 				}
 			});
 
@@ -239,6 +251,6 @@ public class ChallengeDragons extends AbstractQuest {
 			return "Wciąż muszę poskromić " + Integer.toString(killed) + " " + verb + " do zakończenia wyzwania."; 
 		}
 
-		return "Udało mi się zakończyć wyzwanie! " + Grammar.genderVerb(player.getGender(), "Powinienem") + " się teraz udać do niego z powrotem...";
+		return "Udało mi się zakończyć wyzwanie! Może " + Grammar.genderVerb(player.getGender(), "powinienem") + " się teraz udać do niego z powrotem...";
 	}
 }
