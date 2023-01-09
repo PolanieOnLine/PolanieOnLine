@@ -32,8 +32,13 @@ public class MylingWellPortal extends AccessCheckingPortal {
 
 		final Player player = (Player) user;
 		final String find_myling = player.getQuest(QUEST_SLOT, 1);
+		final String cure_myling = player.getQuest(QUEST_SLOT, 3);
 		if (find_myling == null || find_myling.equals("")) {
 			rejectedMessage = "Nie ma powodu, aby teraz wchodzić do tej studni.";
+			return false;
+		}
+		if (cure_myling != null && cure_myling.equals("cure_myling:done")) {
+			rejectedMessage = "Niall wyzdrowiał. Nie ma powodu, by wracać na dół.";
 			return false;
 		}
 		if (find_myling.equals("find_myling:done")) {

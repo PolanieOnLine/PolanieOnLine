@@ -382,8 +382,14 @@ public class MealForGroongo extends AbstractQuest {
             }
         }
 
-        return res;
+        final String completions = player.getQuest(QUEST_SLOT, 7);
+        if (completions != null && !completions.equals("")) {
+        	String tmp = "Udało mi się zanieść " + completions + " " + Grammar.plnoun(Integer.parseInt(completions), "posiłek");
+        	tmp += " dla Groongo.";
+        	res.add(tmp);
+        }
 
+        return res;
     }
 
     @Override

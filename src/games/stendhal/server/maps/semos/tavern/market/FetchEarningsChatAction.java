@@ -53,6 +53,8 @@ public class FetchEarningsChatAction implements ChatAction {
 			collectedSum += earning.getValue().intValue();
 		}
         if (collectedSum > 0) {
+        	// DISABLED: players can buy their own things from Harold
+        	//player.incCommerceTransaction(npc.getName(), collectedSum, true);
         	npc.addEvent(new SoundEvent(SoundID.COMMERCE, SoundLayer.CREATURE_NOISE));
         	player.sendPrivateText("Zebrałeś "+Integer.valueOf(collectedSum).toString()+" money.");
         	if (npc.getName().equals("Radzimir")) {

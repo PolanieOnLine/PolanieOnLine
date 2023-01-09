@@ -48,7 +48,7 @@ class SoundSettings {
 	/** Name of the sound device property. */
 	private static final String DEVICE_PROPERTY = "sound.device";
 	/** Default value of the sound device property. */
-	private static final String DEFAULT_DEVICE = "auto - recommended";
+	private static final String DEFAULT_DEVICE = "auto - rekomendowane";
 
 	/** Container for the setting components. */
 	private final JComponent page;

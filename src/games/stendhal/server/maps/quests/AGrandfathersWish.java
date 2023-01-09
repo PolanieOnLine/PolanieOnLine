@@ -247,18 +247,22 @@ public class AGrandfathersWish extends AbstractQuest {
 		elias.add(
 			ConversationStates.ANY,
 			ConversationPhrases.QUEST_MESSAGES,
-			new QuestActiveCondition(QUEST_SLOT),
+			new AndCondition(
+				new QuestActiveCondition(QUEST_SLOT),
+				new QuestNotInStateCondition(QUEST_SLOT, 3, "cure_myling:done")),
 			ConversationStates.ATTENDING,
 			"Dziękuję za przyjęcie mojej prośby o pomoc. Proszę, powiedz mi,"
 				+ " jeśli usłyszysz jakieś wieści o tym, co stało się z moim wnukiem."
 				+ " Bawił się z małą dziewczynką o imieniu #Marianne.",
 			null);
 
-		// already completed quest
+		// already cured Niall
 		elias.add(
 			ConversationStates.ANY,
 			ConversationPhrases.QUEST_MESSAGES,
-			new QuestCompletedCondition(QUEST_SLOT),
+			new OrCondition(
+				new QuestCompletedCondition(QUEST_SLOT),
+				new QuestInStateCondition(QUEST_SLOT, 3, "cure_myling:done")),
 			ConversationStates.ATTENDING,
 			"Dziękuję za zwrócenie mi wnuka. Jestem przepełniony radością!",
 			null);

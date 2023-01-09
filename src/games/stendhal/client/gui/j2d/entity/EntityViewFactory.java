@@ -121,7 +121,6 @@ public class EntityViewFactory {
 	 * Configure the view map.
 	 */
 	private static void configure() {
-
 		register("area", null, null, InvisibleEntity2DView.class);
 
 		register("block", null, null, LookableEntity2DView.class);
@@ -215,6 +214,10 @@ public class EntityViewFactory {
 
 		register("item", "book", "bestiary", UseableGenericItem2DView.class);
 		register("item", "book", "registry", UseableGenericItem2DView.class);
+		register("item", "misc", "snowglobe", UseableGenericItem2DView.class);
+		register("item", "misc", "teddy", UseableGenericItem2DView.class);
+		register("item", "tool", "metal_detector", UseableGenericItem2DView.class);
+		register("item", "tool", "rotary_cutter", UseableGenericItem2DView.class);
 
 		register("useable_entity", null, null, UseableEntity2DView.class);
 

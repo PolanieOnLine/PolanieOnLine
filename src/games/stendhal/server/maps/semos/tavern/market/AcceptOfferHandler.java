@@ -98,15 +98,20 @@ public class AcceptOfferHandler extends OfferHandler {
 				earningToFetchMessage.append(itemname);
 				earningToFetchMessage.append(" " + Grammar.genderNouns(itemname, "został") + " " + Grammar.genderNouns(itemname, "sprzedany") + ". Możesz przyjść do mnie po należne ci pieniądze.");
 
-				logger.debug("wysłanie zawiadomienia do '" + offer.getOfferer() + "': " + earningToFetchMessage.toString());
-				DBCommandQueue.get().enqueue(new StoreMessageCommand("Harold", offer.getOfferer(), earningToFetchMessage.toString(), "N"));
+				final MarketManagerNPC manager = (MarketManagerNPC) npc.getEntity();
+				final String managerName = manager.getName();
 
+				logger.debug("wysłanie zawiadomienia do '" + offer.getOfferer() + "': " + earningToFetchMessage.toString());
+				DBCommandQueue.get().enqueue(new StoreMessageCommand(managerName, offer.getOfferer(), earningToFetchMessage.toString(), "N"));
+
+				// DISABLED: players can buy their own things from Harold
+				//player.incCommerceTransaction(managerName, offer.getPrice().intValue(), false);
 				npc.addEvent(new SoundEvent(SoundID.COMMERCE, SoundLayer.CREATURE_NOISE));
 				npc.say("Dziękuję.");
 
 				// Obsolete the offers, since the list has changed
-				((MarketManagerNPC) npc.getEntity()).getOfferMap().clear();
-				} else {
+				manager.getOfferMap().clear();
+			} else {
 				// Trade failed for some reason. Check why, and inform the player
 				if (!m.contains(offer)) {
 					int quantity = getQuantity(offer.getItem());
