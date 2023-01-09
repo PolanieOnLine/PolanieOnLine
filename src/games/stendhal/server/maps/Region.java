@@ -38,7 +38,7 @@ public final class Region {
 	public static final String ORRIL_DUNGEONS = "Podziemia Or'ril";
 	public static final String ORRIL_MINES = "Kopalnie Or'ril";
 	public static final String HELL = "Piekło";
-	public static final String DRAGONS_LANDS = "Kraina Smoków";
+	public static final String DRAGON_LANDS = "Kraina Smoków";
 	public static final String KRAKOW_CITY = "Miasto Kraków";
 	public static final String ZAKOPANE_CITY = "Miasto Zakopane";
 	public static final String GDANSK_CITY = "Miasto Gdańsk";

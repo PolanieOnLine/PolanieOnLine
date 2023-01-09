@@ -445,6 +445,6 @@ public class DragonsGuard extends AbstractQuest implements LoginListener {
 
 	@Override
 	public String getRegion() {
-		return Region.DRAGONS_LANDS;
+		return Region.DRAGON_LANDS;
 	}
 }
