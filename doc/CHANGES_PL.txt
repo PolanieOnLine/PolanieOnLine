@@ -1,5 +1,20 @@
 Changelog
 ---------
+1.36
+*klient*
+- Dodano nową grafikę NPC
+- Poprawiono kolory grafiki ametystu
+
+*świat*
+- Dodano nowego NPC: (1)
+	- Racirad
+- Dodano nowe osiągnięcia: (3)
+	- "Leśni Kamraci"
+	- "Ciupagi, Grabieże i Pieniądze"
+	- "Życie Nad Nami"
+- Dodano nowe zadanie u Racirada
+
+
 1.35
 *klient*
 - Ataki krytyczne różnią się od zwykłych zadawanych ataków
