@@ -187,8 +187,8 @@
 	<shop name="buyprecious" type="buys">
 		<item name="sztabka złota" price="250" />
 		<item name="szmaragd" price="200" />
-		<item name="ametyst" price="300" />
 		<item name="szafir" price="400" />
+		<item name="ametyst" price="500" />
 		<item name="rubin" price="600" />
 		<item name="diament" price="800" />
 		<item name="obsydian" price="1000" />
