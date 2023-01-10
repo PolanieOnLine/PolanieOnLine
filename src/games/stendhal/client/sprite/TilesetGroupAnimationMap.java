@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2022 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -12,12 +11,12 @@
  ***************************************************************************/
 package games.stendhal.client.sprite;
 
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
@@ -45,10 +44,6 @@ public class TilesetGroupAnimationMap {
 	public TilesetGroupAnimationMap() {
 		tilesets = new HashMap<String, TilesetAnimationMap>();
 	}
-
-	//
-	// TilesetGroupAnimationMap
-	//
 
 	/**
 	 * Acquire a named tileset map. If it does not exists, it will be created.
@@ -263,6 +258,7 @@ public class TilesetGroupAnimationMap {
 	 * @throws IOException
 	 *             If an I/O error occurred.
 	 */
+	@Deprecated
 	public void load(final InputStream in) throws IOException {
 		final BufferedReader r = new BufferedReader(new InputStreamReader(in, "UTF-8"));
 		String line;
@@ -280,6 +276,18 @@ public class TilesetGroupAnimationMap {
 			}
 
 			addConfig(line);
+		}
+	}
+
+	/**
+	 * Load tileset mappings from list.
+	 *
+	 * @param lines
+	 *     List of lines to be loaded.
+	 */
+	public void load(final List<String> lines) {
+		for (final String li: lines) {
+			addConfig(li);
 		}
 	}
 }
