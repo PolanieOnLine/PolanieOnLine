@@ -49,6 +49,17 @@ class NPC2DView<T extends NPC> extends RPEntity2DView<T> {
 
 	private List<String> animatedSprites = Arrays.asList("love");
 
+	@Override
+	public void initialize(final T entity) {
+		super.initialize(entity);
+		if (entity.showTitle()) {
+			if (entity.getName().startsWith("Zekiel")) {
+				// Zekiel uses transparentnpc sprite but he is taller
+				titleDrawYOffset = -32;
+			}
+		}
+	}
+
 	/**
 	 * Get the full directional animation tile set for this entity.
 	 *
