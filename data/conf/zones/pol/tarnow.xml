@@ -85,13 +85,14 @@
 	</zone>
 
 	<zone name="0_tarnow_city" level="0" x="514080" y="18048" file="Level 0/tarnow/city.tmx">
-		<configurator class-name="games.stendhal.server.maps.tarnow.city.MageNPC"/>
-		<configurator class-name="games.stendhal.server.maps.tarnow.city.MythNPC"/>
-
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
 		</attributes>
+
+		<!-- NPCs -->
+		<configurator class-name="games.stendhal.server.maps.tarnow.city.MageNPC"/>
+		<configurator class-name="games.stendhal.server.maps.tarnow.city.MythNPC"/>
 
 		<entity x="53" y="90">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign" />
@@ -237,6 +238,11 @@
 			<attribute name="width">2</attribute>
 			<attribute name="height">1</attribute>
 		</entity>
+
+		<!-- Afterlife -->
+		<portal x="50" y="72" ref="tarnow_restart_life">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
 
 		<portal x="76" y="61" ref="witchhouse_entrance">
 			<destination zone="int_tarnow_witchhouse" ref="witchhouse_exit"/>

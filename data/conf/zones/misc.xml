@@ -92,6 +92,13 @@
 				<parameter name="rejected">Nie możesz tam pójść ponieważ nie odwiedziłeś tej krainy.</parameter>
 			</implementation>
 		</portal>
+		<portal x="21" y="7" ref="afterlife_tarnow_exit">
+			<destination zone="0_tarnow_city" ref="tarnow_restart_life"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.QuestCheckingPortal">
+				<parameter name="quest">0_tarnow_city</parameter>
+				<parameter name="rejected">Nie możesz tam pójść ponieważ nie odwiedziłeś tej krainy.</parameter>
+			</implementation>
+		</portal>
 
 		<entity x="31" y="3">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign"/>
@@ -151,6 +158,11 @@
 		<entity x="40" y="6">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign"/>
 			<attribute name="text">#Gdańsk
+			</attribute>
+		</entity>
+		<entity x="23" y="6">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign"/>
+			<attribute name="text">#Tarnów
 			</attribute>
 		</entity>
 
