@@ -9,12 +9,14 @@ Changelog
 - Dodano nowego NPC: (2)
 	- Racirad
 	- Chciwurak
-- Dodano nowe osiągnięcia: (5)
+- Dodano nowe osiągnięcia: (7)
 	- "Leśni Kamraci"
 	- "Ciupagi, Grabieże i Pieniądze"
 	- "Życie Nad Nami"
 	- "Uczestnik"
 	- "Cierpliwie Czekający na Gderacza"
+	- "Zamiłowanie Kwiatkami"
+	- "Wyzwanie Przyjęte"
 - Dodano nowe zadanie u Racirada i Chciwuraka
 
 *kod*
