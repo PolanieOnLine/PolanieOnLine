@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2018 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -21,12 +21,15 @@ import games.stendhal.server.core.rp.achievement.condition.QuestCountCompletedCo
 import games.stendhal.server.core.rp.achievement.condition.QuestsInRegionCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestStateGreaterThanCondition;
 import games.stendhal.server.maps.Region;
+
 /**
  * Factory for quest achievements
  *
  * @author madmetzger
  */
 public class QuestAchievementFactory extends AbstractAchievementFactory {
+	public static final String ID_FLOWERSHOP = "quest.flowershop.0050";
+
 	@Override
 	protected Category getCategory() {
 		return Category.QUEST;
@@ -77,6 +80,13 @@ public class QuestAchievementFactory extends AbstractAchievementFactory {
 			"Zaserwował 50 posiłków dla Groongo Rahnnt",
 			Achievement.MEDIUM_BASE_SCORE, true,
 			new QuestStateGreaterThanCondition("meal_for_groongo", 7, 49)));
+
+		// Restock the Flower Shop
+		achievements.add(createAchievement(
+			ID_FLOWERSHOP, "Zamiłowanie Kwiatkami",
+			"Pomógł uzupełnić zapasy w kwiaciarni Nalwor 50 razy",
+			Achievement.MEDIUM_BASE_SCORE, true,
+			new QuestStateGreaterThanCondition("restock_flowershop", 2, 49)));
 
 		// have completed all quests in Semos City?
 		achievements.add(createAchievement(

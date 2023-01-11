@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2017 - Marauroa                    *
+ *                   (C) Copyright 2003-2023 - Marauroa                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -33,6 +33,7 @@ import games.stendhal.client.gui.chatlog.StandardEventLine;
 import games.stendhal.client.gui.chatlog.StandardHeaderedEventLine;
 import games.stendhal.client.gui.settings.SettingsProperties;
 import games.stendhal.client.gui.wt.core.WtWindowManager;
+import games.stendhal.client.sprite.Sprite;
 import games.stendhal.common.ItemTools;
 import games.stendhal.common.NotificationType;
 import games.stendhal.common.constants.Nature;
@@ -1019,7 +1020,11 @@ public abstract class RPEntity extends AudibleEntity {
 
 			text = trimText(text);
 
-			if (!WtWindowManager.getInstance().getPropertyBoolean(SettingsProperties.BUBBLES_PROPERTY, false)) {
+			final Sprite emoji = ClientSingletonRepository.getEmojiStore().create(text);
+			if (emoji != null) {
+				ClientSingletonRepository.getScreenController().addEmoji(
+					this, emoji);
+			} else if (!WtWindowManager.getInstance().getPropertyBoolean(SettingsProperties.BUBBLES_PROPERTY, false)) {
 				// add stationary speech bubble
 				ClientSingletonRepository.getScreenController().addText(
 						getX() + getWidth(), getY(), text,

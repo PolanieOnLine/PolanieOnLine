@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2020 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -138,6 +138,8 @@ public class SlashActionRepository {
 
 		// allows players to remove the detail layer manually
 		actions.put(REMOVEDETAIL, new RemoveDetailAction());
+
+		actions.put("emojilist", new EmojiListAction());
 	}
 
 	/**

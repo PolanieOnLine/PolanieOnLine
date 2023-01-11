@@ -17,6 +17,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.common.MathHelper;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.rp.achievement.Achievement;
 import games.stendhal.server.core.rp.achievement.Category;
@@ -34,11 +35,13 @@ public class DeathmatchAchievementFactory extends AbstractAchievementFactory {
 	private static final Logger logger = Logger.getLogger(DeathmatchAchievementFactory.class);
 
 	public static final String HELPER_SLOT = "deathmatch_helper";
+	public static final String SOLOER_SLOT = "deathmatch_soloer";
 	public static final String WINS_SLOT = "deathmatch_wins";
 
 	public static final String ID_HELPER_25 = "deathmatch.helper.0025";
 	public static final String ID_HELPER_50 = "deathmatch.helper.0050";
 	public static final String ID_HELPER_100 = "deathmatch.helper.0100";
+	public static final String ID_SOLO_5 = "deathmatch.solo.0005";
 	public static final String ID_HELM_MAX = "deathmatch.helmet.0124";
 
 	@Override
@@ -54,57 +57,74 @@ public class DeathmatchAchievementFactory extends AbstractAchievementFactory {
 		// disabled. Currently the wrong index is being checked (it would be index 6)
 		// and as per bug report https://sourceforge.net/tracker/?func=detail&aid=3148365&group_id=1111&atid=101111 the count is not saved anyway
 		achievements.add(createAchievement(
-				"deathmatch.001", "Pachołek", "Zawalczył swoją pierwszą rundę na deathmatchu",
+				"deathmatch.001", "Pachołek",
+				"Zawalczył swoją pierwszą rundę na deathmatchu",
 				Achievement.EASY_BASE_SCORE, true,
 				new HasWonNumberOfTimes(1)));
 
 		achievements.add(createAchievement(
-				"deathmatch.025", "Gladiator", "Zawalczył 25 rund na deathmatchu",
+				"deathmatch.025", "Gladiator",
+				"Zawalczył 25 rund na deathmatchu",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new HasWonNumberOfTimes(25)));
 
 		achievements.add(createAchievement(
-				"deathmatch.050", "Postrach Areny", "Zawalczył 50 rund na deathmatchu",
+				"deathmatch.050", "Postrach Areny",
+				"Zawalczył 50 rund na deathmatchu",
 				Achievement.HARD_BASE_SCORE, true,
 				new HasWonNumberOfTimes(50)));
 
 		achievements.add(createAchievement(
-				"quest.deathmatch.frequenter", "Bywalec Deathmatchu", "Zdobył 20,000 punktów na arenie deathmatch",
+				"quest.deathmatch.frequenter", "Bywalec Deathmatchu",
+				"Zdobył 20,000 punktów na arenie deathmatch",
 				Achievement.EASY_BASE_SCORE, true,
 				new QuestStateGreaterThanCondition("deathmatch_score", 0, 20000)));
 
 		achievements.add(createAchievement(
-				"quest.deathmatch", "Bohater Deathmatchu", "Zdobył 100,000 punktów na arenie deathmatch",
+				"quest.deathmatch", "Bohater Deathmatchu",
+				"Zdobył 100,000 punktów na arenie deathmatch",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new QuestStateGreaterThanCondition("deathmatch_score", 0, 100000)));
 
 		achievements.add(createAchievement(
-				"quest.deathmatch.king", "Król Deathmatchu", "Zdobył 500,000 punktów na arenie deathmatch",
+				"quest.deathmatch.king", "Król Deathmatchu",
+				"Zdobył 500,000 punktów na arenie deathmatch",
 				Achievement.HARD_BASE_SCORE, true,
 				new QuestStateGreaterThanCondition("deathmatch_score", 0, 500000)));
 
 		achievements.add(createAchievement(
-				"quest.deathmatch.legend", "Legenda Deathmatchu", "Zdobył 1,000,000 punktów na arenie deathmatch",
+				"quest.deathmatch.legend", "Legenda Deathmatchu",
+				"Zdobył 1,000,000 punktów na arenie deathmatch",
 				Achievement.LEGENDARY_BASE_SCORE, true,
 				new QuestStateGreaterThanCondition("deathmatch_score", 0, 1000000)));
 
 		achievements.add(createAchievement(
-				ID_HELPER_25, "Pomocnik w Deathmatchu", "Wsparł innych graczy w 25 rundach deathmatchu",
+				ID_HELPER_25, "Pomocnik w Deathmatchu",
+				"Wsparł innych graczy w 25 rundach deathmatchu",
 				Achievement.EASY_BASE_SCORE, true,
 				new HasHelpedNumberOfTimes(25)));
 
 		achievements.add(createAchievement(
-				ID_HELPER_50, "Kompan w Deathmatchu", "Wsparł innych graczy w 50 rundach deathmatchu",
+				ID_HELPER_50, "Kompan w Deathmatchu",
+				"Wsparł innych graczy w 50 rundach deathmatchu",
 				Achievement.EASY_BASE_SCORE, true,
 				new HasHelpedNumberOfTimes(50)));
 
 		achievements.add(createAchievement(
-				ID_HELPER_100, "Eskortnik w Deathmatchu", "Wsparł innych graczy w 100 rundach deathmatchu",
+				ID_HELPER_100, "Eskortnik w Deathmatchu",
+				"Wsparł innych graczy w 100 rundach deathmatchu",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new HasHelpedNumberOfTimes(100)));
 
 		achievements.add(createAchievement(
-				ID_HELM_MAX, "Determinacja", "Zwiększył zdobyczny hełm do maksymalnej obrony",
+				ID_SOLO_5, "Wyzwanie Przyjęte",
+				"Ukończył 5 rund deathmatchu bez pomocy",
+				Achievement.EASY_BASE_SCORE, true,
+				new HasSoloedNumberOfTimes(5)));
+
+		achievements.add(createAchievement(
+				ID_HELM_MAX, "Determinacja",
+				"Zwiększył zdobyczny hełm do maksymalnej obrony",
 				Achievement.HARD_BASE_SCORE, true,
 				new ChatCondition() {
 					@Override
@@ -122,7 +142,7 @@ public class DeathmatchAchievementFactory extends AbstractAchievementFactory {
 	}
 
 	/**
-	 * Class to check if a player has helped in deathmatch a specified number of times.
+	 * Checks if a player has helped in deathmatch a specified number of times.
 	 */
 	private class HasHelpedNumberOfTimes implements ChatCondition {
 		private int requiredCount;
@@ -133,18 +153,23 @@ public class DeathmatchAchievementFactory extends AbstractAchievementFactory {
 
 		@Override
 		public boolean fire(final Player player, final Sentence sentence, final Entity npc) {
-			int count = 0;
-			if (player.hasQuest(HELPER_SLOT)) {
-				try {
-					count = Integer.parseInt(player.getQuest(HELPER_SLOT, 0));
-				} catch (final NumberFormatException e) {
-					logger.error("Deathmatch helper quest slot value not an integer.");
-					e.printStackTrace();
-					return false;
-				}
-			}
+			return MathHelper.parseInt(player.getQuest(HELPER_SLOT, 0)) >= requiredCount;
+		}
+	};
 
-			return count >= requiredCount;
+	/**
+	 * Checks if a player has competed without help in deathmatch a specified number of times.
+	 */
+	private class HasSoloedNumberOfTimes implements ChatCondition {
+		private int requiredCount;
+
+		private HasSoloedNumberOfTimes(final int count) {
+			this.requiredCount = count;
+		}
+
+		@Override
+		public boolean fire(final Player player, final Sentence sentence, final Entity npc) {
+			return MathHelper.parseInt(player.getQuest(SOLOER_SLOT, 0)) >= requiredCount;
 		}
 	}
 

@@ -1,6 +1,6 @@
 /* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -78,7 +78,8 @@ class HelpAction implements SlashAction {
 				"- /info \t\tPokazuje aktualny czas z serwera",
 				"- /clear \tWyczyść chat.",
 				"- /help \tWyświetla podstawowe komendy.",
-				"- /" + REMOVEDETAIL + " \tUsuń warstwę szczegółów (np. balon, parasol itp.) z postaci."
+				"- /" + REMOVEDETAIL + " \tUsuń warstwę szczegółów (np. balon, parasol itp.) z postaci.",
+				"- /emojilist \tWyświetla pełną listę dostępnych emotek."
 		};
 
 		for (final String line : lines) {

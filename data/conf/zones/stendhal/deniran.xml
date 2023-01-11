@@ -242,6 +242,9 @@
 			<parameter name="weather">varying</parameter>
 		</attributes>
 
+		<!-- NPCs -->
+		<!--<configurator class-name="games.stendhal.server.maps.deniran.cityoutside.FletcherNPC"/>-->
+
 		<portal x="78" y="23" ref="deniran_potions_shop_entrance">
 			<destination zone="int_deniran_potions_shop" ref="entrance" />
 			<attribute name="move.continuous" />
@@ -936,42 +939,43 @@ Opłata za wstęp to 10 money</attribute>
 	<zone name="-7_deniran_atlantis" level="-7" x="499232" y="500000"
 		file="Level -7/deniran/atlantis.tmx">
 		<!-- NPCs -->
-		<configurator class-name="games.stendhal.server.maps.atlantis.cityoutside.GreeterNPC" />
+		<configurator class-name="games.stendhal.server.maps.atlantis.cityoutside.GreeterNPC"/>
+		<configurator class-name="games.stendhal.server.maps.atlantis.cityoutside.ZelanNPC"/>
 
 		<portal x="104" y="41" ref="potions_shop">
-			<destination zone="int_atlantis_potions_shop" ref="entrance" />
-			<attribute name="move.continuous" />
+			<destination zone="int_atlantis_potions_shop" ref="entrance"/>
+			<attribute name="move.continuous"/>
 		</portal>
 
 		<entity x="104" y="39">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign" />
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign"/>
 			<attribute name="text">Sklep z eliksirami</attribute>
 			<attribute name="class">transparent</attribute>
 		</entity>
 
 		<portal x="18" y="73" ref="home_1">
-			<destination zone="int_atlantis_home_1" ref="entrance" />
-			<attribute name="move.continuous" />
+			<destination zone="int_atlantis_home_1" ref="entrance"/>
+			<attribute name="move.continuous"/>
 		</portal>
 
 		<portal x="93" y="28" ref="home_2">
-			<destination zone="int_atlantis_home_2" ref="entrance" />
-			<attribute name="move.continuous" />
+			<destination zone="int_atlantis_home_2" ref="entrance"/>
+			<attribute name="move.continuous"/>
 		</portal>
 
 		<portal x="103" y="85" ref="home_3">
-			<destination zone="int_atlantis_home_3" ref="entrance" />
-			<attribute name="move.continuous" />
+			<destination zone="int_atlantis_home_3" ref="entrance"/>
+			<attribute name="move.continuous"/>
 		</portal>
 
 		<portal x="31" y="35" ref="home_4">
-			<destination zone="int_atlantis_home_4" ref="entrance" />
-			<attribute name="move.continuous" />
+			<destination zone="int_atlantis_home_4" ref="entrance"/>
+			<attribute name="move.continuous"/>
 		</portal>
 
 		<portal x="62" y="17" ref="home_5">
-			<destination zone="int_atlantis_home_5" ref="entrance" />
-			<attribute name="move.continuous" />
+			<destination zone="int_atlantis_home_5" ref="entrance"/>
+			<attribute name="move.continuous"/>
 		</portal>
 
 		<portal x="47" y="106" ref="home_6">
@@ -980,48 +984,48 @@ Opłata za wstęp to 10 money</attribute>
 		</portal>
 
 		<portal x="119" y="16" ref="home_7">
-			<destination zone="int_atlantis_home_7" ref="entrance" />
-			<attribute name="move.continuous" />
+			<destination zone="int_atlantis_home_7" ref="entrance"/>
+			<attribute name="move.continuous"/>
 		</portal>
 
 		<portal x="123" y="94" ref="home_8">
-			<destination zone="int_atlantis_home_8" ref="entrance" />
-			<attribute name="move.continuous" />
+			<destination zone="int_atlantis_home_8" ref="entrance"/>
+			<attribute name="move.continuous"/>
 		</portal>
 
 		<portal x="114" y="124" ref="home_9">
-			<destination zone="int_atlantis_home_9" ref="entrance" />
-			<attribute name="move.continuous" />
+			<destination zone="int_atlantis_home_9" ref="entrance"/>
+			<attribute name="move.continuous"/>
 		</portal>
 
 		<portal x="6" y="121" ref="home_10">
-			<destination zone="int_atlantis_home_10" ref="entrance" />
-			<attribute name="move.continuous" />
+			<destination zone="int_atlantis_home_10" ref="entrance"/>
+			<attribute name="move.continuous"/>
 		</portal>
 
 		<portal x="4" y="99" ref="home_11">
-			<destination zone="int_atlantis_home_11" ref="entrance" />
-			<attribute name="move.continuous" />
+			<destination zone="int_atlantis_home_11" ref="entrance"/>
+			<attribute name="move.continuous"/>
 		</portal>
 
 		<portal x="18" y="56" ref="home_12">
-			<destination zone="int_atlantis_home_12" ref="entrance" />
-			<attribute name="move.continuous" />
+			<destination zone="int_atlantis_home_12" ref="entrance"/>
+			<attribute name="move.continuous"/>
 		</portal>
 
 		<portal x="4" y="29" ref="home_13">
-			<destination zone="int_atlantis_home_13" ref="entrance" />
-			<attribute name="move.continuous" />
+			<destination zone="int_atlantis_home_13" ref="entrance"/>
+			<attribute name="move.continuous"/>
 		</portal>
 
 		<portal x="6" y="6" ref="home_14">
-			<destination zone="int_atlantis_home_14" ref="entrance" />
+			<destination zone="int_atlantis_home_14" ref="entrance"/>
 			<attribute name="move.continuous" />
 		</portal>
 
 		<portal x="15" y="8" ref="home_15">
-			<destination zone="int_atlantis_home_15" ref="entrance" />
-			<attribute name="move.continuous" />
+			<destination zone="int_atlantis_home_15" ref="entrance"/>
+			<attribute name="move.continuous"/>
 		</portal>
 	</zone>
 

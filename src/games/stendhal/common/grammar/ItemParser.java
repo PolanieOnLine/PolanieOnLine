@@ -143,5 +143,4 @@ public class ItemParser {
 					+ Grammar.plural(chosenItemName) + ".";
 		}
 	}
-
 }

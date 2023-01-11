@@ -52,9 +52,9 @@ public class ProsbaWielkoluda implements QuestManuscript {
 			.respondToUnrepeatableRequest("Chwilowo nie zauważyłem jeszcze problemów. \"Turyści\"... trafiają do mnie bez przeszkód. Odwiedź mnie nieco później, mam takie przeczucie iż niedługo mogą powrócić...")
 			.respondToRepeatedRequest("Ścieżka znów została zablokowana... Pomożesz?")
 			.respondToAccept("Wspaniale! Proszę, pozbądź się tych #pokutników. Kręcą się w okolicy Kościeliska i przeszkadzają innym w dotarciu do mnie. Zwłaszcza #'lawina kamienna' jest dokuczliwa ponieważ zablokowała główną ścieżkę!")
-			.acceptationKarmaReward(5)
 			.respondToReject("Rozumiem. Brzmi straszliwie, w końcu to upiory. Poczekam na kogoś odpowiedniego do tego zadania.")
-			.rejectionKarmaPenalty(5)
+			.acceptedKarmaReward(5.0)
+			.rejectionKarmaPenalty(5.0)
 			.remind("Już poprosiłem Ciebie o pozbycie się #pokutników i lawiny kamiennej!");
 
 		NPCList.get().get("Wielkolud").addReply(Arrays.asList("pokutnik", "pokutników", "pokutnicy", "upiory"),
@@ -71,7 +71,7 @@ public class ProsbaWielkoluda implements QuestManuscript {
 		quest.complete()
 			.greet("Spisałeś się wyśmienicie! Twe męstwo i odwagę będą potomni wspominać!")
 			.rewardWith(new IncreaseXPAction(50000))
-			.rewardWith(new IncreaseKarmaAction(25))
+			.rewardWith(new IncreaseKarmaAction(25.0))
 			.rewardWith(new IncreaseBaseHPOnlyOnceAction(QUEST_SLOT, 10))
 			.rewardWith(new EquipItemAction("bryłka mithrilu", 1));
 

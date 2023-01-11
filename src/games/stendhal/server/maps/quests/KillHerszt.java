@@ -48,8 +48,8 @@ public class KillHerszt implements QuestManuscript {
 			.respondToUnrepeatableRequest("Bardzo dziękuję za pomoc w imieniu reszty. Dobrze, że pytasz ponieważ zbójnicy mogą powrócić w każdej chwili...")
 			.respondToRepeatedRequest("Znowu potrzebujemy Twojej pomocy w sprawie rozbójników. Czy możesz znowu się nimi zająć, prosimy?")
 			.respondToAccept("Wspaniale! Proszę znajdź ich. Kręcą się gdzieś tutaj. Na pewną są w tej jaskini. Niech zapłacą za swoje winy! Pamiętaj, przynieś mi coś, czym możesz udowodnić iż pozbyłeś się herszta bandy!")
-			.acceptationKarmaReward(5.0)
 			.respondToReject("Rozumiem. Każdy się ich boi. Poczekam na kogoś odpowiedniego do tego zadania.")
+			.acceptedKarmaReward(5.0)
 			.rejectionKarmaPenalty(5.0)
 			.respondTo("cave", "mine", "jaskini", "jaskinia", "kopalnia").saying("Najbliższe wejście do jaskini znajduje się tuż za tym wzniesieniem. Wypatruj ich!")
 			.remind("Już się Ciebie pytałem o pozbyciu się zbójników z naszych terenów! Pamiętaj również o udowodnieniu swego czynu...");

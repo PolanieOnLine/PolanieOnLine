@@ -1,6 +1,6 @@
 /* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -82,6 +82,7 @@ public final class ItemsXMLLoader extends DefaultHandler {
 	/* Statuses that StatusResistantItem resists. */
 	private Map<String, Double> resistances = new HashMap<String, Double>();
 
+	private String statusAttacks;
 
 	public List<DefaultItem> load(final URI uri) throws SAXException {
 		list = new LinkedList<DefaultItem>();
@@ -154,6 +155,7 @@ public final class ItemsXMLLoader extends DefaultHandler {
 			description = "";
 			implementation = null;
 			useBehavior = null;
+			statusAttacks = null;
 		} else if (qName.equals("type")) {
 			clazz = attrs.getValue("class");
 			subclass = attrs.getValue("subclass");
@@ -187,6 +189,8 @@ public final class ItemsXMLLoader extends DefaultHandler {
 			} else {
 				attributes.put(qName, attrs.getValue("value"));
 			}
+		} else if (qName.equals("statusattack")) {
+			statusAttacks = attrs.getValue("value");
 		} else if (qName.equals("damage")) {
 			damageType = attrs.getValue("type");
 		} else if (qName.equals("susceptibility")) {
@@ -220,6 +224,9 @@ public final class ItemsXMLLoader extends DefaultHandler {
 			}
 			item.setSusceptibilities(susceptibilities);
 			susceptibilities.clear();
+			if (statusAttacks != null) {
+				item.setStatusAttacks(statusAttacks);
+			}
 
 			/* SlotActivatedItem */
 			if (this.activeSlots != null) {

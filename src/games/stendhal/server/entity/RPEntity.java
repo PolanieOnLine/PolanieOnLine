@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2022 - Marauroa                    *
+ *                   (C) Copyright 2003-2023 - Marauroa                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -3055,6 +3055,31 @@ public abstract class RPEntity extends CombatEntity {
 	}
 
 	/**
+	 * Get all statuses this entity can try to inflict including from
+	 * weapons.
+	 *
+	 * @return
+	 *    List of inflictable statuses.
+	 */
+	public List<StatusAttacker> getAllStatusAttackers() {
+		final List<StatusAttacker> stattackers = new ArrayList<>();
+		stattackers.addAll(statusAttackers);
+		final List<Item> weapons = getWeapons();
+		final Item ammo = getAmmunition("ammunition");
+		if (ammo != null) {
+			weapons.add(ammo);
+		}
+		for (final Item weapon: weapons) {
+			for (final StatusAttacker statk: weapon.getStatusAttackers()) {
+				if (!stattackers.contains(statk)) {
+					stattackers.add(statk);
+				}
+			}
+		}
+		return stattackers;
+	}
+
+	/**
 	 * Can this entity do a distance attack on the given target?
 	 *
 	 * @param target
@@ -3325,7 +3350,8 @@ public abstract class RPEntity extends CombatEntity {
 		}
 
 		// Try to inflict a status effect
-		for (StatusAttacker statusAttacker : statusAttackers) {
+		final List<StatusAttacker> allStatusAttackers = getAllStatusAttackers();
+		for (StatusAttacker statusAttacker : allStatusAttackers) {
 			statusAttacker.onAttackAttempt(defender, this);
 		}
 
@@ -3376,7 +3402,7 @@ public abstract class RPEntity extends CombatEntity {
 			this.addEvent(new AttackEvent(true, damage, nature, weaponName, isRanged));
 
 			// Try to inflict a status effect
-			for (StatusAttacker statusAttacker : statusAttackers) {
+			for (StatusAttacker statusAttacker : allStatusAttackers) {
 				statusAttacker.onHit(defender, this, damage);
 			}
 

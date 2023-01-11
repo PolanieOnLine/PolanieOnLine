@@ -1,5 +1,6 @@
+/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2022 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -14,9 +15,9 @@ package games.stendhal.client.gui.j2d;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
+import games.stendhal.client.GameScreenSpriteHelper;
 import games.stendhal.client.entity.Entity;
 import games.stendhal.client.sprite.Sprite;
-import games.stendhal.client.GameScreenSpriteHelper;
 
 /**
  * Container sprite for texboxes etc. Keeps track of the time when the sprite
@@ -133,6 +134,14 @@ public class RemovableSprite implements Comparable<RemovableSprite> {
 		int sy = getAttachedY();
 
 		sprite.draw(g, sx, sy);
+	}
+
+	public void drawEmoji(final Graphics g) {
+		final int svx = gsHelper.getScreenViewX();
+		final int svy = gsHelper.getScreenViewY();
+		final int sx = gsHelper.convertWorldToPixelUnits(owner.getX());
+		final int sy = gsHelper.convertWorldToPixelUnits(owner.getY());
+		sprite.draw(g, sx - svx - 16, sy - svy - 32);
 	}
 
 	private int getAttachedX() {

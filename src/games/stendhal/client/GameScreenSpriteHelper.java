@@ -36,6 +36,8 @@ public class GameScreenSpriteHelper {
 	 */
 	private static List<RemovableSprite> texts;
 
+	private static List<RemovableSprite> emojis;
+
 	/**
 	 * Retrieves the singleton instance.
 	 */
@@ -119,7 +121,7 @@ public class GameScreenSpriteHelper {
 	 * @return
 	 *     The X coordinate of the left side.
 	 */
-	int getScreenViewX() {
+	public int getScreenViewX() {
 		return svx;
 	}
 
@@ -139,7 +141,7 @@ public class GameScreenSpriteHelper {
 	 * @return
 	 *     The Y coordinate of the left side.
 	 */
-	int getScreenViewY() {
+	public int getScreenViewY() {
 		return svy;
 	}
 
@@ -185,6 +187,26 @@ public class GameScreenSpriteHelper {
 	 */
 	void clearTexts() {
 		texts.clear();
+	}
+
+	void setEmojis(final List<RemovableSprite> e) {
+		emojis = e;
+	}
+
+	List<RemovableSprite> getEmojis() {
+		return emojis;
+	}
+
+	void addEmoji(final RemovableSprite emoji) {
+		emojis.add(emoji);
+	}
+
+	void removeEmoji(final RemovableSprite emoji) {
+		emojis.remove(emoji);
+	}
+
+	void clearEmojis() {
+		emojis.clear();
 	}
 
 	/**

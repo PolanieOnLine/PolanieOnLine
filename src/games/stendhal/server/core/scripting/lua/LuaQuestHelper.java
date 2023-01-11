@@ -1,5 +1,5 @@
 /***************************************************************************
- *                     Copyright © 2020 - Arianne                          *
+ *                    Copyright © 2003-2023 - Arianne                      *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -24,8 +24,6 @@ import games.stendhal.server.core.scripting.ScriptInLua.LuaLogger;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.quests.AbstractQuest;
 import games.stendhal.server.maps.quests.IQuest;
-import games.stendhal.server.maps.quests.SimpleQuestCreator;
-
 
 /**
  * Exposes quest creation & handling to Lua.
@@ -36,9 +34,6 @@ public class LuaQuestHelper {
 	private static LuaQuestHelper instance;
 
 	private static StendhalQuestSystem questSystem = SingletonRepository.getStendhalQuestSystem();
-
-	// expose SimpleQuestCreator to Lua
-	public static final SimpleQuestCreator simple = SimpleQuestCreator.getInstance();
 
 	/**
 	 * Retrieves the static instance.

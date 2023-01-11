@@ -49,9 +49,9 @@ public class ZlotaCiupagaJedenWas implements QuestManuscript {
 			.respondToUnrepeatableRequest("Jestem aktualnie troszkę zmęczony. Wróć do mnie za jakiś czas.")
 			.respondToRepeatedRequest("Potrzebujesz kolejnej ulepszonej złotej ciupagi?")
 			.respondToAccept("Słusznie! Przynieś mi te przedmioty potrzebne do nowej ciupagi:\n#1 złota ciupaga\n#1 złoty róg\n#4 drewna\n#70 sztabek złota\noraz #'120 000' money. Pamiętaj! Pieniądze najważniejsze!")
-			.acceptationKarmaReward(10)
 			.respondToReject("Cóż, to Twoja strata.")
-			.rejectionKarmaPenalty(10)
+			.acceptedKarmaReward(10.0)
+			.rejectionKarmaPenalty(10.0)
 			.remind("Pamiętasz potrzebną listę? Przynieś mi te przedmioty potrzebne do nowej ciupagi:\n#1 złota ciupaga\n#1 złoty róg\n#4 drewna\n#70 sztabek złota\noraz #'120 000' money.");
 
 		quest.task()
@@ -68,7 +68,7 @@ public class ZlotaCiupagaJedenWas implements QuestManuscript {
 		quest.complete()
 			.greet("Skończyłem swą pracę nad ciupagą! Warto było chyba nieco poczekać. Proszę, a oto i ona!")
 			.rewardWith(new IncreaseXPAction(250000))
-			.rewardWith(new IncreaseKarmaAction(100))
+			.rewardWith(new IncreaseKarmaAction(100.0))
 			.rewardWith(new EquipItemAction("złota ciupaga z wąsem", 1, true));
 
 		return quest;

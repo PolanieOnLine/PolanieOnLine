@@ -59,7 +59,7 @@ public class QuestOfferBuilder {
 	private String respondToAccept = "Dziękuję!";
 	private String respondToReject = "Och. To niezbyt dobrze.";
 	private String remind = "Proszę, dotrzymaj swojej obietnicy.";
-	private double acceptationKarmaReward = 2.0;
+	private Double acceptedKarmaReward = null;
 	private double rejectionKarmaPenalty = 2.0;
 	private List<String> lastRespondTo = null;
 	private Map<List<String>, String> additionalReplies = new HashMap<>();
@@ -132,8 +132,8 @@ public class QuestOfferBuilder {
 		return this;
 	}
 
-	public QuestOfferBuilder acceptationKarmaReward(double acceptationKarmaReward) {
-		this.acceptationKarmaReward = acceptationKarmaReward;
+	public QuestOfferBuilder acceptedKarmaReward(double acceptedKarmaReward) {
+		this.acceptedKarmaReward = acceptedKarmaReward;
 		return this;
 	}
 
@@ -302,9 +302,11 @@ public class QuestOfferBuilder {
 
 		final List<ChatAction> start = new LinkedList<ChatAction>();
 		start.add(new SetQuestAction(questSlot, 0, "start"));
-		start.add(new IncreaseKarmaAction(acceptationKarmaReward));
 		if (startQuestAction != null) {
 			start.add(startQuestAction);
+		}
+		if (acceptedKarmaReward != null) {
+			start.add(new IncreaseKarmaAction(acceptedKarmaReward));
 		}
 
 		npc.add(ConversationStates.QUEST_OFFERED,
@@ -318,7 +320,7 @@ public class QuestOfferBuilder {
 				ConversationPhrases.NO_MESSAGES, null,
 				ConversationStates.ATTENDING,
 				respondToReject,
-				new SetQuestAndModifyKarmaAction(questSlot, "rejected", -1 * rejectionKarmaPenalty));
+				new SetQuestAndModifyKarmaAction(questSlot, 0, "rejected", -1 * rejectionKarmaPenalty));
 
 		for (Map.Entry<List<String>, String> entry : additionalReplies.entrySet()) {
 			npc.add(ConversationStates.QUEST_OFFERED,

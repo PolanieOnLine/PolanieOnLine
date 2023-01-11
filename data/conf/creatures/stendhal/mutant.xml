@@ -96,7 +96,7 @@
 
 	<creature name="świetlisty potwór">
 		<type class="mutant" subclass="glow_monster" tileid="mutant.png:1"/>
-		<description></description>
+		<description>Oto świetlisty potwór. Jego blask w ciemnych kanałach cię przeraża.</description>
 		<attributes>
 			<atk value="242"/>
 			<def value="53"/>
