@@ -48,6 +48,7 @@ public class ChallengeDragons extends AbstractQuest {
 	// Trigger ConversationPhrases
 	private final List<String> triggers = Arrays.asList("wyzwanie", "zadanie", "misja", "przysługa", "task", "quest", "favor", "favour");
 
+	// Monsters to record
 	private static final String[] dragonsToRecord = {
 			"szkielet smoka", "zgniły szkielet smoka", "złoty smok", "zielony smok", "błękitny smok",
 			"czerwony smok", "pustynny smok", "czarny smok", "czarne smoczysko", "smok arktyczny",
