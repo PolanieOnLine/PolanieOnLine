@@ -26,6 +26,14 @@ public class IncreaseBaseHPOnlyOnceAction implements ChatAction {
 	private final String questSlot;
 	private final int baseHpDiff;
 
+	/**
+	 * Increments player base hp.
+	 *
+	 * @param questSlot
+	 * 		Name of quest_slot.
+	 * @param baseHpDiff
+	 * 		How many health to increase for player.
+	 */
 	public IncreaseBaseHPOnlyOnceAction(final String questSlot, final int baseHpDiff) {
 		this.questSlot = questSlot;
 		this.baseHpDiff = baseHpDiff;
