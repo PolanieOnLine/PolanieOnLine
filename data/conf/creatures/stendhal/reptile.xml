@@ -218,7 +218,7 @@
 
 	<creature name="żółwik">
 		<type class="reptile" subclass="turtle" tileid="reptile.png:6"/>
-		<description></description>
+		<description>Oto żółwik pływający ze spokojem w wodzie. Unika inne zwierzęta.</description>
 		<attributes>
 			<atk value="99"/>
 			<def value="35"/>

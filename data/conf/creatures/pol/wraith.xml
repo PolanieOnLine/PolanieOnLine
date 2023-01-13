@@ -5,7 +5,7 @@
 	<!-- START: pokutniki -->
 	<creature name="pokutnik z bagien">
 		<type class="wraith" subclass="pit_pokutnik_bronz" tileid="pol_pokutniki.png:0"/>
-		<description/>
+		<description>Oto pokutnik z bagien. Stary upiór, na którego wolisz nie wpaść po drodzę.</description>
 		<attributes>
 			<atk value="400"/>
 			<def value="33"/>
@@ -38,7 +38,7 @@
 
 	<creature name="pokutnik z wrzosowisk">
 		<type class="wraith" subclass="pit_pokutnik_fiolet" tileid="pol_pokutniki.png:1"/>
-		<description/>
+		<description>Oto pokutnik z wrzosowisk. Uważaj na bezleśnych krzewinek, by nie napotkać upióra.</description>
 		<attributes>
 			<atk value="410"/>
 			<def value="34"/>
@@ -70,7 +70,7 @@
 
 	<creature name="pokutnik nocny">
 		<type class="wraith" subclass="pit_pokutnik_granat" tileid="pol_pokutniki.png:2"/>
-		<description/>
+		<description>Oto pokutnik nocny. Upiór ukazyjący najczęściej w nocy osobom, które popełniły okropny czyn.</description>
 		<attributes>
 			<atk value="420"/>
 			<def value="35"/>
@@ -105,7 +105,7 @@
 
 	<creature name="pokutnik wieczorny">
 		<type class="wraith" subclass="pit_pokutnik_szary" tileid="pol_pokutniki.png:3"/>
-		<description/>
+		<description>Oto pokutnik wieczorny. Odprawiający pokutę zazwyczaj po zachodzie słońca.</description>
 		<attributes>
 			<atk value="430"/>
 			<def value="36"/>
@@ -140,7 +140,7 @@
 
 	<creature name="pokutnik poranny">
 		<type class="wraith" subclass="pit_pokutnik_zolty" tileid="pol_pokutniki.png:5"/>
-		<description/>
+		<description>Oto pokutnik poranny. Ujawnia się złoczyńcom zaraz po wschodzie słońca, by ich ukarać.</description>
 		<attributes>
 			<atk value="440"/>
 			<def value="37"/>
@@ -173,7 +173,7 @@
 
 	<creature name="pokutnik z gór">
 		<type class="wraith" subclass="pit_pokutnik_jasnonieb" tileid="pol_pokutniki.png:6"/>
-		<description/>
+		<description>Oto pokutnik z gór. Unikaj górskich szlaków na których spowija dziwna mgła.</description>
 		<attributes>
 			<atk value="450"/>
 			<def value="38"/>
@@ -209,7 +209,7 @@
 
 	<creature name="pokutnik z łąk">
 		<type class="wraith" subclass="pit_pokutnik_zielen" tileid="pol_pokutniki.png:4"/>
-		<description/>
+		<description>Oto pokutnik z łąk. Uwolni się w momencie gdy spełni swą pokutę.</description>
 		<attributes>
 			<atk value="460"/>
 			<def value="39"/>
@@ -287,7 +287,7 @@
 
 	<creature name="książę szkieletów">
 		<type class="wraith" subclass="ae_ksiaze_szkieletow" tileid="pol_zjawy_wielkie.png:1"/>
-		<description/>
+		<description>Oto książę szkieletów. Niegdyś jeszcze wielki człowiek z królewskiego rodu, spaczony i zaklęty potężną klątwą na wieczną mękę.</description>
 		<attributes>
 			<atk value="2844"/>
 			<def value="74"/>
@@ -547,7 +547,7 @@
 
 	<creature name="strzyga polna">
 		<type class="wraith" subclass="strzyga_polna" tileid="pol_zjawy.png:2"/>
-		<description/>
+		<description>Oto strzyga polna. Dawny człowiek, który powrócił do świata żywych pod postacią demona.</description>
 		<attributes>
 			<atk value="244"/>
 			<def value="30"/>
@@ -581,7 +581,7 @@
 
 	<creature name="strzyga leśna">
 		<type class="wraith" subclass="strzyga_lesna" tileid="pol_zjawy.png:3"/>
-		<description/>
+		<description>Oto strzyga leśna, niegdyś człek, który prowadził niegodziwy żywot wrócił zamieniony w demona. Lepiej unikaj lasów.</description>
 		<attributes>
 			<atk value="266"/>
 			<def value="33"/>
@@ -616,7 +616,7 @@
 
 	<creature name="leśna zjawa">
 		<type class="wraith" subclass="lesna_zjawa" tileid="pol_zjawy.png:4"/>
-		<description/>
+		<description>Oto lesna zjawa. Czy za tym drzewem nie wystawała czasem jakaś dziwna twarz?</description>
 		<attributes>
 			<atk value="166"/>
 			<def value="66"/>
@@ -683,7 +683,7 @@
 
 	<creature name="zjawa Brunhildy">
 		<type class="wraith" subclass="zjawa_brunhilda" tileid="pol_zjawy.png:6"/>
-		<description/>
+		<description>Oto zjawa Brunhildy. Upiór, który wyglądem przypomina białą damę krąży w okolicy i straszy pobliskich mieszkańców co zapuszczają się głębiej w las.</description>
 		<attributes>
 			<atk value="923"/>
 			<def value="61"/>

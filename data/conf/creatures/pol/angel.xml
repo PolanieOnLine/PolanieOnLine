@@ -5,7 +5,7 @@
 	<!-- START: serafiny -->
 	<creature name="serafin">
 		<type class="angel" subclass="serafin" tileid="pol_serafiny.png:0"/>
-		<description/>
+		<description>Oto serafin. Anioł najwyższego rzędu, strzęgącego tronu Niebios.</description>
 		<attributes>
 			<atk value="8888"/>
 			<ratk value="8888"/>
@@ -59,7 +59,7 @@
 
 	<creature name="azazel">
 		<type class="angel" subclass="azazel" tileid="pol_serafiny.png:1"/>
-		<description/>
+		<description>Oto azazel. Pomimo upadku wciąż jest uznawany za jednego z potężnych aniołów!</description>
 		<attributes>
 			<atk value="12222"/>
 			<ratk value="12222"/>
@@ -111,7 +111,7 @@
 
 	<creature name="cherubin">
 		<type class="angel" subclass="cherubin" tileid="pol_serafiny.png:2"/>
-		<description/>
+		<description>Oto cherubin. Stojąca wysoko w hierarchii i potężna istota nadprzyrodzona, strzegąca ludzi przed demonami.</description>
 		<attributes>
 			<atk value="24444"/>
 			<ratk value="24444"/>
@@ -167,7 +167,7 @@
 
 	<creature name="lilith">
 		<type class="angel" subclass="lilith" tileid="pol_serafiny.png:3"/>
-		<description/>
+		<description>Oto lilith. Jedna z najpotężniejszych upiorzyc, demonów oraz niezwykle groźna.</description>
 		<attributes>
 			<atk value="28888"/>
 			<ratk value="28888"/>

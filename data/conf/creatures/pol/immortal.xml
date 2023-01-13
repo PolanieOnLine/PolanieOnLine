@@ -5,6 +5,7 @@
 	<!-- START: niesmiertelne -->
 	<creature name="mgła">
 		<type class="immortal" subclass="mgla" tileid="pol_niesmiertelne.png:0"/>
+		<description>Mgła spowiła pobliskie otoczenie, musisz uważać na zjawy i inne upióry!</description>
 		<attributes>
 			<atk value="99"/>
 			<def value="1"/>
@@ -66,6 +67,7 @@
 
 	<creature name="trąba powietrzna">
 		<type class="immortal" subclass="tornado" tileid="pol_niesmiertelne.png:2"/>
+		<description>Oto trąba powietrzna. Pędź ile w sił w nogach, tornado gnie w tą samą stronę co ty!</description>
 		<attributes>
 			<atk value="20000"/>
 			<def value="1"/>

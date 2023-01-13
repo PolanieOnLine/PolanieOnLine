@@ -96,7 +96,7 @@
 	<!-- START: chochol -->
 	<creature name="chochoł">
 		<type class="flora" subclass="chochol" tileid="pol_chocholy.png:0"/>
-		<description/>
+		<description>Chochoł, który porusza się wraz z pędzącym wiatrem.</description>
 		<attributes>
 			<atk value="66"/>
 			<def value="10"/>
@@ -126,7 +126,7 @@
 
 	<creature name="chochoł suchy">
 		<type class="flora" subclass="chochol_suchy" tileid="pol_chocholy.png:1"/>
-		<description/>
+		<description>Oto chochoł suchy. Musisz na niego zwracać częściej uwagę, dziwnie wędruje.</description>
 		<attributes>
 			<atk value="77"/>
 			<def value="11"/>
@@ -157,7 +157,7 @@
 
 	<creature name="chochoł wielki">
 		<type class="flora" subclass="chochol_wielki" tileid="pol_chocholy.png:2"/>
-		<description/>
+		<description>Oto chochoł wielki, lepiej na niego nie wpadnij!</description>
 		<attributes>
 			<atk value="99"/>
 			<def value="12"/>
