@@ -91,204 +91,205 @@ public class RestockFlowerShop extends AbstractQuest {
 
 	private void setupBasicResponses() {
 		List<List<String>> keywords = Arrays.asList(
-				Arrays.asList("flower", "kwiat"),
-				ConversationPhrases.HELP_MESSAGES);
+			Arrays.asList("flower", "kwiat"),
+			ConversationPhrases.HELP_MESSAGES);
 		List<String> responses = Arrays.asList(
-				"Czyż kwiatki nie są piękne?",
-				"Hmmmm, Nie sądzę, aby było coś w czym mógłbym pomóc.");
+			"Czyż kwiatki nie są piękne?",
+			"Hmmmm, Nie sądzę, aby było coś w czym mógłbym pomóc.");
 
 		for (int i = 0; i < responses.size(); i++) {
 			npc.add(ConversationStates.ANY,
-					keywords.get(i),
-					new NotCondition(new QuestActiveCondition(QUEST_SLOT)),
-					ConversationStates.ATTENDING,
-					responses.get(i),
-					null);
+				keywords.get(i),
+				new NotCondition(new QuestActiveCondition(QUEST_SLOT)),
+				ConversationStates.ATTENDING,
+				responses.get(i),
+				null);
 		}
 	}
 
 	private void setupActiveQuestResponses() {
 		// Player asks to be reminded of remaining flowers required
 		npc.add(ConversationStates.ATTENDING,
-				Arrays.asList("flower", "remind", "what", "item", "list", "something", "kwiat", "przypomnij", "co", "przedmiot", "lista", "coś"),
-				new QuestActiveCondition(QUEST_SLOT),
-				ConversationStates.QUESTION_1,
-				null,
-				new SayRequiredItemsFromCollectionAction(QUEST_SLOT, 3, "Wciąż potrzebuję [items]. Czy przyniosłeś mi?"));
+			Arrays.asList("flower", "remind", "what", "item", "list", "something", "kwiat", "przypomnij", "co", "przedmiot", "lista", "coś"),
+			new QuestActiveCondition(QUEST_SLOT),
+			ConversationStates.QUESTION_1,
+			null,
+			new SayRequiredItemsFromCollectionAction(QUEST_SLOT, 3, "Wciąż potrzebuję [items]. Czy przyniosłeś mi?"));
 
         npc.add(ConversationStates.QUESTION_1,
-				Arrays.asList("flower", "remind", "what", "item", "list", "something", "kwiat", "przypomnij", "co", "przedmiot", "lista", "coś"),
-                new QuestActiveCondition(QUEST_SLOT),
-                ConversationStates.QUESTION_1,
-                null,
-                new SayRequiredItemsFromCollectionAction(QUEST_SLOT, 3, "Wciąż potrzebuję [items]. Czy przyniosłeś mi?"));
+			Arrays.asList("flower", "remind", "what", "item", "list", "something", "kwiat", "przypomnij", "co", "przedmiot", "lista", "coś"),
+			new QuestActiveCondition(QUEST_SLOT),
+			ConversationStates.QUESTION_1,
+			null,
+			new SayRequiredItemsFromCollectionAction(QUEST_SLOT, 3, "Wciąż potrzebuję [items]. Czy przyniosłeś mi?"));
 
         // Player asks to be reminded of remaining flowers required
         npc.add(ConversationStates.QUESTION_1,
-				Arrays.asList("flower", "remind", "what", "item", "list", "kwiat", "przypomnij", "co", "przedmiot", "lista"),
-                new QuestActiveCondition(QUEST_SLOT),
-                ConversationStates.QUESTION_1,
-                null,
-                new SayRequiredItemsFromCollectionAction(QUEST_SLOT, 3, "Wciąż potrzebuję [items]. Czy przyniosłeś mi?"));
+			Arrays.asList("flower", "remind", "what", "item", "list", "kwiat", "przypomnij", "co", "przedmiot", "lista"),
+			new QuestActiveCondition(QUEST_SLOT),
+			ConversationStates.QUESTION_1,
+			null,
+			new SayRequiredItemsFromCollectionAction(QUEST_SLOT, 3, "Wciąż potrzebuję [items]. Czy przyniosłeś mi?"));
 
 		List<List<String>> keywords = Arrays.asList(
-				Arrays.asList("daisy", "bunch of daisies", "bunches of daisies", "lilia", "pansy", "stokrotki", "bukiet stokrotek", "bukiety stokreotek", "Lilia", "bratek"),
-				Arrays.asList("rose", "róża"),
-				Arrays.asList("zantedeschia", "bielikrasa"),
-				Arrays.asList("water", "bottle of water", "woda", "butelka wody"),
-				Arrays.asList("who", "where", "kto", "gdzie"),
-				Arrays.asList("jenny"),
-				Arrays.asList("fleur"),
-				Arrays.asList("flask", "butelka"),
-				ConversationPhrases.HELP_MESSAGES);
+			Arrays.asList("daisy", "bunch of daisies", "bunches of daisies", "lilia", "pansy", "stokrotki", "bukiet stokrotek", "bukiety stokreotek", "Lilia", "bratek"),
+			Arrays.asList("rose", "róża"),
+			Arrays.asList("zantedeschia", "bielikrasa"),
+			Arrays.asList("water", "bottle of water", "woda", "butelka wody"),
+			Arrays.asList("who", "where", "kto", "gdzie"),
+			Arrays.asList("jenny"),
+			Arrays.asList("fleur"),
+			Arrays.asList("flask", "butelka"),
+			ConversationPhrases.HELP_MESSAGES);
 		List<String> responses = Arrays.asList(
-						"#Jenny ma nasiona tego typu kwiatków.",
-						"#Fleur zawsze posiada najpiękniejsze róże.",
-						"Bielikrasa to mój ulubiony kwiat. Niektórzy nazywają je arum lub lilie choć nimi nie są. Zapytaj #Jenny czy nie ma jakiś bulw.",
-						"Potrzebuję wody, aby moje #kwiaty były świeże. Musisz znaleźć źródło wody i wziąć jej trochę do #butelek. Może jest toś kto sprzedaje wodę.",
-						"#Jenny dużo wie o kwiatach. Może też porozmawiasz z #Fleur.",
-						"Możesz spotkać Jenny w pobliżu młyna obok Semos. Tam gdzie mieli się zboże na mąkę.",
-						"Fleur pracuje na targu w Kirdneh.",
-						"Zapytaj barmanki w Semos.",
-						"Mogę ci #przypomnieć, które #kwiaty potrzebuję. także pomogę ci wskazać miejsce #gdzie trochę ich występuje.");
+			"#Jenny ma nasiona tego typu kwiatków.",
+			"#Fleur zawsze posiada najpiękniejsze róże.",
+			"Bielikrasa to mój ulubiony kwiat. Niektórzy nazywają je arum lub lilie choć nimi nie są. Zapytaj #Jenny czy nie ma jakiś bulw.",
+			"Potrzebuję wody, aby moje #kwiaty były świeże. Musisz znaleźć źródło wody i wziąć jej trochę do #butelek. Może jest toś kto sprzedaje wodę.",
+			"#Jenny dużo wie o kwiatach. Może też porozmawiasz z #Fleur.",
+			"Możesz spotkać Jenny w pobliżu młyna obok Semos. Tam gdzie mieli się zboże na mąkę.",
+			"Fleur pracuje na targu w Kirdneh.",
+			"Zapytaj barmanki w Semos.",
+			"Mogę ci #przypomnieć, które #kwiaty potrzebuję. także pomogę ci wskazać miejsce #gdzie trochę ich występuje.");
 
 		for (int f = 0; f < responses.size(); f++) {
 			npc.add(ConversationStates.ANY,
-					keywords.get(f),
-					new QuestActiveCondition(QUEST_SLOT),
-					ConversationStates.ATTENDING,
-					responses.get(f),
-					null);
+				keywords.get(f),
+				new QuestActiveCondition(QUEST_SLOT),
+				ConversationStates.ATTENDING,
+				responses.get(f),
+				null);
 		}
 	}
 
 	private void prepareRequestingStep() {
 		// Player requests quest
 		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES,
-				new AndCondition(
-						new NotCondition(new QuestActiveCondition(QUEST_SLOT)),
-						new TimePassedCondition(QUEST_SLOT, 1, WAIT_TIME)),
-				ConversationStates.QUEST_OFFERED,
-				"Kwiaciarnia ma problem z kwiatami. Pomożesz mi uzupełnić zapasy?",
-				null);
+			ConversationPhrases.QUEST_MESSAGES,
+			new AndCondition(
+				new NotCondition(new QuestActiveCondition(QUEST_SLOT)),
+				new TimePassedCondition(QUEST_SLOT, 1, WAIT_TIME)),
+			ConversationStates.QUEST_OFFERED,
+			"Kwiaciarnia ma problem z kwiatami. Pomożesz mi uzupełnić zapasy?",
+			null);
 
 		// Player requests quest after started
 		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES,
-				new QuestActiveCondition(QUEST_SLOT),
-				ConversationStates.ATTENDING,
-				"Wciąż nie kupiłeś mi #kwiatów, o które prosiłam.",
-				null);
+			ConversationPhrases.QUEST_MESSAGES,
+			new QuestActiveCondition(QUEST_SLOT),
+			ConversationStates.ATTENDING,
+			"Wciąż nie kupiłeś mi #kwiatów, o które prosiłam.",
+			null);
 
 		// Player requests quest before wait period ended
 		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES,
-				new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, WAIT_TIME)),
-				ConversationStates.ATTENDING,
-				null,
-				new SayTimeRemainingAction(QUEST_SLOT, 1, WAIT_TIME, "Kwiaty, które kupiłeś szybko się sprzedają. Może znów będę potrzebowała twojej pomocy"));
+			ConversationPhrases.QUEST_MESSAGES,
+			new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, WAIT_TIME)),
+			ConversationStates.ATTENDING,
+			null,
+			new SayTimeRemainingAction(QUEST_SLOT, 1, WAIT_TIME,
+				"Kwiaty, które kupiłeś szybko się sprzedają. Może znów będę potrzebowała twojej pomocy"));
 
 		// Player accepts quest
 		npc.add(ConversationStates.QUEST_OFFERED,
-				ConversationPhrases.YES_MESSAGES,
-				null,
-				ConversationStates.ATTENDING,
-				null,
-				new MultipleActions(
-						new IncreaseKarmaAction(5.0),
-						new SetQuestAction(QUEST_SLOT, 0, "start"),
-						new StartItemsCollectionWithLimitAction(QUEST_SLOT, 3, flowerTypes, MAX_FLOWERS),
-						new AddItemToCollectionAction(QUEST_SLOT, "butelka wody", REQ_WATER),
-						new SayRequiredItemsFromCollectionAction(QUEST_SLOT, 3, "Wspaniale! To jest to czego potrzebuję: [items].")));
+			ConversationPhrases.YES_MESSAGES,
+			null,
+			ConversationStates.ATTENDING,
+			null,
+			new MultipleActions(
+				new IncreaseKarmaAction(5.0),
+				new SetQuestAction(QUEST_SLOT, 0, "start"),
+				new StartItemsCollectionWithLimitAction(QUEST_SLOT, 3, flowerTypes, MAX_FLOWERS),
+				new AddItemToCollectionAction(QUEST_SLOT, "butelka wody", REQ_WATER),
+				new SayRequiredItemsFromCollectionAction(QUEST_SLOT, 3,
+					"Wspaniale! To jest to czego potrzebuję: [items].")));
 
 		// Player rejects quest
 		npc.add(ConversationStates.QUEST_OFFERED,
-				ConversationPhrases.NO_MESSAGES,
-				null,
-				ConversationStates.ATTENDING,
-				"Przykro mi to słyszeć.",
-				new SetQuestAndModifyKarmaAction(QUEST_SLOT, 0, "rejected", -5.0));
+			ConversationPhrases.NO_MESSAGES,
+			null,
+			ConversationStates.ATTENDING,
+			"Przykro mi to słyszeć.",
+			new SetQuestAndModifyKarmaAction(QUEST_SLOT, 0, "rejected", -5.0));
 	}
-
 
 	private void prepareBringingStep() {
 		List<String> requestedItems = new ArrayList<>(flowerTypes);
 		requestedItems.add("butelka wody");
 
 		ChatAction rewardAction = new MultipleActions(
-				new IncreaseXPAction(1000),
-				new IncreaseKarmaAction(25.0),
-				new EquipItemAction("zwój nalwor", 5),
-				new SetQuestAction(QUEST_SLOT, 0, "done"),
-				new SetQuestToTimeStampAction(QUEST_SLOT, 1),
-				new IncrementQuestAction(QUEST_SLOT, 2, 1),
-				new SayTextAction("Bardzo dziękuję! Teraz mogę zrealizować wszystkie zamówienia."));
+			new IncreaseXPAction(1000),
+			new IncreaseKarmaAction(25.0),
+			new EquipItemAction("zwój nalwor", 5),
+			new SetQuestAction(QUEST_SLOT, 0, "done"),
+			new SetQuestToTimeStampAction(QUEST_SLOT, 1),
+			new IncrementQuestAction(QUEST_SLOT, 2, 1),
+			new SayTextAction("Bardzo dziękuję! Teraz mogę zrealizować wszystkie zamówienia."));
 
 		/* add triggers for the item names */
 		for (String item : requestedItems) {
 			npc.add(ConversationStates.QUESTION_1,
-					item,
-					new QuestActiveCondition(QUEST_SLOT),
-					ConversationStates.QUESTION_1,
-					null,
-					new CollectRequestedItemsAction(item, QUEST_SLOT, 3,
-							"Dziękuję! Co jeszcze przyniosłeś?",
-							"Nie potrzebuję już tego więcej.",
-							rewardAction,
-							ConversationStates.IDLE));
+				item,
+				new QuestActiveCondition(QUEST_SLOT),
+				ConversationStates.QUESTION_1,
+				null,
+				new CollectRequestedItemsAction(item, QUEST_SLOT, 3,
+					"Dziękuję! Co jeszcze przyniosłeś?",
+					"Nie potrzebuję już tego więcej.",
+					rewardAction,
+					ConversationStates.IDLE));
 		}
 
 		// NPC asks if player brought items
 		npc.add(ConversationStates.IDLE,
-				ConversationPhrases.GREETING_MESSAGES,
-				new QuestActiveCondition(QUEST_SLOT),
-				ConversationStates.QUESTION_1,
-				"Czy przyniosłeś #coś dla sklepu?",
-				null);
+			ConversationPhrases.GREETING_MESSAGES,
+			new QuestActiveCondition(QUEST_SLOT),
+			ConversationStates.QUESTION_1,
+			"Czy przyniosłeś #coś dla sklepu?",
+			null);
 
 		// Player confirms brought flowers
 		npc.add(ConversationStates.QUESTION_1,
-				ConversationPhrases.YES_MESSAGES,
-				new QuestActiveCondition(QUEST_SLOT),
-				ConversationStates.QUESTION_1,
-				"Co przyniosłeś?",
-				null);
+			ConversationPhrases.YES_MESSAGES,
+			new QuestActiveCondition(QUEST_SLOT),
+			ConversationStates.QUESTION_1,
+			"Co przyniosłeś?",
+			null);
 
 		// Player didn't bring flowers
 		npc.add(ConversationStates.QUESTION_1,
-				ConversationPhrases.NO_MESSAGES,
-				new QuestActiveCondition(QUEST_SLOT),
-				ConversationStates.ATTENDING,
-				"Nie przestawaj wąchać róż# Zamówienia wracają. Mogę ci #przypomnieć co masz przynieść.",
-				null);
+			ConversationPhrases.NO_MESSAGES,
+			new QuestActiveCondition(QUEST_SLOT),
+			ConversationStates.ATTENDING,
+			"Nie przestawaj wąchać róż# Zamówienia wracają. Mogę ci #przypomnieć co masz przynieść.",
+			null);
 
 		// Player offers item that wasn't requested
 		npc.add(ConversationStates.QUESTION_1,
-				"",
-				new QuestActiveCondition(QUEST_SLOT),
-				ConversationStates.QUESTION_1,
-				"Nie sądzę, aby to dobrze wyglądało w sklepie.",
-				null);
+			"",
+			new QuestActiveCondition(QUEST_SLOT),
+			ConversationStates.QUESTION_1,
+			"Nie sądzę, aby to dobrze wyglądało w sklepie.",
+			null);
 
 		// Player says "bye" or "no" while listing flowers
 		List<String> endDiscussionPhrases = new ArrayList<>(ConversationPhrases.NO_MESSAGES);
 		endDiscussionPhrases.addAll(ConversationPhrases.GOODBYE_MESSAGES);
 
 		npc.add(ConversationStates.QUESTION_1,
-				endDiscussionPhrases,
-				null,
-				ConversationStates.IDLE,
-				"Proszę wróć, gdy znajdziesz jakieś kwiaty.",
-				null);
+			endDiscussionPhrases,
+			null,
+			ConversationStates.IDLE,
+			"Proszę wróć, gdy znajdziesz jakieś kwiaty.",
+			null);
 	}
 
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Odnowienie Zapasów Kwiaciarni",
-				getNPCName() + " potrzebuje odnowić zapasy kwiaciarni w mieście Nalwor.",
-				true);
+			"Odnowienie Zapasów Kwiaciarni",
+			getNPCName() + " potrzebuje odnowić zapasy kwiaciarni w mieście Nalwor.",
+			true);
 		setupBasicResponses();
 		setupActiveQuestResponses();
 		prepareRequestingStep();
