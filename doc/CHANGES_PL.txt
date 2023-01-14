@@ -2,6 +2,7 @@ Changelog
 ---------
 1.36
 *klient*
+- Dodano wsparcie dla emotikonów
 - Dodano nową grafikę NPC
 - Poprawiono kolory grafiki ametystu
 
@@ -18,6 +19,10 @@ Changelog
 	- "Zamiłowanie Kwiatkami"
 	- "Wyzwanie Przyjęte"
 - Dodano nowe zadanie u Racirada i Chciwuraka
+- Skrócono czas ponownego przyjęcia zadania u gazdy Jędrzeja z 14 dni do 3 dni
+- Zmieniono wynagrodzenie za ukończenie zadania u gazdy Jędrzeja z 5.000pd do 30.000pd oraz z 15 karmy do 20 karmy
+- Zadanie 'Rogi Jednorożca dla Zelana' jest teraz powtarzalne
+- Zadanie 'Odnowienie Zapasów Kwiaciarni' śledzi teraz ukończenia tego zadania
 
 *kod*
 - Dodano nowy skrypt CommerceExchange.class dla administratorów
