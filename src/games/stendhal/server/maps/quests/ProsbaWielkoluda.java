@@ -1,5 +1,5 @@
 /***************************************************************************
- *                 (C) Copyright 2019-2022 - PolanieOnLine                 *
+ *                 (C) Copyright 2019-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -24,28 +24,57 @@ import games.stendhal.server.entity.npc.quest.QuestBuilder;
 import games.stendhal.server.entity.npc.quest.QuestManuscript;
 import games.stendhal.server.maps.Region;
 
+/**
+ * QUEST: Wsparcie dla Wielkoluda
+ *
+ * PARTICIPANTS:
+ * <ul>
+ * <li>Wielkolud</li>
+ * </ul>
+ *
+ * STEPS:
+ * <ul>
+ * <li>Wielkolud szuka pomocy w pozbyciu się upiorów ze wzgórza i okolic.</li>
+ * <li>Wróć i odbierz wynagrodzenie od Wielkoluda.</li>
+ * </ul>
+ *
+ * REWARD:
+ * <ul>
+ * <li>80000 xp</li>
+ * <li>karma</li>
+ * <li>10 base hp</li>
+ * <li>bryłka mithrilu</li>
+ * </ul>
+ *
+ * REPETITIONS:
+ * <ul>
+ * <li>1 week</li>
+ * </ul>
+ */
 public class ProsbaWielkoluda implements QuestManuscript {
 	final static String QUEST_SLOT = "help_wielkolud";
 	@Override
 	public QuestBuilder<?> story() {
 		QuestBuilder<KillCreaturesTask> quest = new QuestBuilder<>(new KillCreaturesTask());
+		String npcName = "Wielkolud";
 
 		quest.info()
 			.name("Wsparcie dla Wielkoluda")
-			.description("Wielkolud poszukuje wojaka, który pozbędzie się grasujących pokutników i lawiny kamiennej z przejścia, co utrudniają życie innym.")
+			.description(npcName + " poszukuje wojaka, który pozbędzie się grasujących pokutników i lawiny kamiennej z przejścia, co utrudniają życie innym.")
 			.internalName(QUEST_SLOT)
-			.repeatableAfterMinutes(2 * MathHelper.MINUTES_IN_ONE_WEEK) // Powtarzalne co 2 tygodnie
+			.repeatableAfterMinutes(MathHelper.MINUTES_IN_ONE_WEEK) // Powtarzalne co 1 tydzien
 			.minLevel(100)
 			.region(Region.KOSCIELISKO)
-			.questGiverNpc("Wielkolud");
+			.questGiverNpc(npcName);
 
 		quest.history()
-			.whenNpcWasMet("Napotkany został Wielkolud na niewielkim wzgórzu Kościeliska.")
+			.whenNpcWasMet("Napotkany został " + npcName + " na niewielkim wzgórzu Kościeliska.")
 			.whenQuestWasRejected("Nie czuję zagrożenia ze strony pokutników.")
 			.whenQuestWasAccepted("Pokonam wredne upiory oraz utoruję scieżkę dla innych!")
-			.whenTaskWasCompleted("Pokutniky od teraz unikają tego regionu! Hura!")
-			.whenQuestWasCompleted("Wielkolud nagrodził mnie swymi radami życiowymi oraz podzielił się swoim doświadczeniem.")
-			.whenQuestCanBeRepeated("Ścieżka dla turystów znów się zawaliła oraz ponownie pojawiły się upiory. Muszę porozmawiać z Wielkoludem na ten temat.");
+			.whenTaskWasCompleted("Pokutniki od teraz unikają tego regionu! Hura!")
+			.whenQuestWasCompleted(npcName + " nagrodził mnie swymi radami życiowymi oraz podzielił się swoim doświadczeniem.")
+			.whenQuestCanBeRepeated("Ścieżka dla turystów znów się zawaliła oraz ponownie pojawiły się upiory. Muszę porozmawiać z Wielkoludem na ten temat.")
+			.whenCompletionsShown("Ścieżka na wzgórze Kościeliska została udrożniona [count] [raz].");
 
 		quest.offer()
 			.respondToRequest("Ostatnio nawiedzają te rejony straszliwe upiory, które ciągle przeszkadzają w moich interesach. Czy możesz mi pomóc w pozbyciu się ich?")
@@ -57,7 +86,7 @@ public class ProsbaWielkoluda implements QuestManuscript {
 			.rejectionKarmaPenalty(5.0)
 			.remind("Już poprosiłem Ciebie o pozbycie się #pokutników i lawiny kamiennej!");
 
-		NPCList.get().get("Wielkolud").addReply(Arrays.asList("pokutnik", "pokutników", "pokutnicy", "upiory"),
+		NPCList.get().get(npcName).addReply(Arrays.asList("pokutnik", "pokutników", "pokutnicy", "upiory"),
 				"Głównie w moich interesach przeszkadzają te upiory: #'pokutnik z bagien', #'pokutnik z wrzosowisk', #'pokutnik z łąk', #'pokutnik wieczorny' oraz #'pokutnik nocny'.");
 
 		quest.task()
@@ -70,7 +99,7 @@ public class ProsbaWielkoluda implements QuestManuscript {
 
 		quest.complete()
 			.greet("Spisałeś się wyśmienicie! Twe męstwo i odwagę będą potomni wspominać!")
-			.rewardWith(new IncreaseXPAction(50000))
+			.rewardWith(new IncreaseXPAction(80000))
 			.rewardWith(new IncreaseKarmaAction(25.0))
 			.rewardWith(new IncreaseBaseHPOnlyOnceAction(QUEST_SLOT, 10))
 			.rewardWith(new EquipItemAction("bryłka mithrilu", 1));

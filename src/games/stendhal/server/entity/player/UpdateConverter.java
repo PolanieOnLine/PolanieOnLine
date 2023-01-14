@@ -641,6 +641,24 @@ public abstract class UpdateConverter {
 				player.setQuest(questSlot, "start;;;" + player.getQuest(questSlot));
 			}
 		}
+
+		// 1.36: Tracks completions
+		trackCompletions(player);
+	}
+
+	private static void trackCompletions(Player player) {
+		String[] questSlots = { "kill_herszt", "help_wielkolud" };
+
+		for (String questSlot : questSlots) {
+			if (player.hasQuest(questSlot)) {
+				final String[] slots = player.getQuest(questSlot).split(";");
+				final String fsState = player.getQuest(questSlot, 0);
+				final String timestamp = player.getQuest(questSlot, 1);
+				if (fsState.equals("done") && slots.length == 2) {
+					player.setQuest(questSlot, "done;" + timestamp + ";1");
+				}
+			}
+		}
 	}
 
 	/**
