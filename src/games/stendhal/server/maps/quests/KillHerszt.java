@@ -22,7 +22,7 @@ import games.stendhal.server.entity.npc.quest.QuestManuscript;
 import games.stendhal.server.maps.Region;
 
 /**
- * QUEST: Kill Herszt
+ * QUEST: Pozbycie się Rozbójników
  *
  * PARTICIPANTS:
  * <ul>
@@ -70,7 +70,7 @@ public class KillHerszt implements QuestManuscript {
 			.whenTaskWasCompleted("Moja wyprawa na rozbójników w jaskini nieco uspokoiła nerwy gazdy Jędrzeja.")
 			.whenQuestWasCompleted("Jędrzej podziękował za moją ciężką pracę i podarował niewielki prezent.")
 			.whenQuestCanBeRepeated("Minęło trochę czasu od ostatniego spotkania z gazdą, być może znów potrzebuje pomocy ze zbójnikami.")
-			.whenCompletionsShown("Góra została wyczyszczona ze zbójników [count] [raz].");
+			.whenCompletionsShown("Wnętrze góry zostało wyczyszczone ze zbójników [count] [raz].");
 
 		quest.offer()
 			.respondToRequest("Nie możemy uwolnić się od zbójników grasujących na tym terenie, a w szczególności od Herszta górskich zbójników. Czy mógłbyś udać się do pobliskiej #jaskini i pozbyć się ich?")
