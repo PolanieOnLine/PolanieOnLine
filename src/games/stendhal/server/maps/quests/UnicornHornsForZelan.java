@@ -77,7 +77,7 @@ public class UnicornHornsForZelan implements QuestManuscript {
 			.whenQuestCanBeRepeated("Muszę zapytać czy " + npcName + " będzie potrzebował"
 					+ " więcej pomocy.")
 			.whenCompletionsShown("Otrzymał ode mnie pomoc " + npcName + " [count]"
-					+ " [time].");
+					+ " [raz].");
 
 		quest.offer()
 			.respondToRequest("Cześć! Potrzebuję " + plItemName + ", żeby zrobić kilka sztyletów."
