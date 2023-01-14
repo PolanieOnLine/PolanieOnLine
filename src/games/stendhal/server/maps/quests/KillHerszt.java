@@ -1,5 +1,5 @@
 /***************************************************************************
- *                 (C) Copyright 2003-2022 - PolanieOnLine                 *
+ *                 (C) Copyright 2003-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -21,27 +21,56 @@ import games.stendhal.server.entity.npc.quest.QuestBuilder;
 import games.stendhal.server.entity.npc.quest.QuestManuscript;
 import games.stendhal.server.maps.Region;
 
+/**
+ * QUEST: Kill Herszt
+ *
+ * PARTICIPANTS:
+ * <ul>
+ * <li>Gazda Jędrzej</li>
+ * </ul>
+ *
+ * STEPS:
+ * <ul>
+ * <li>Gazda Jędrzej ma problemy ze zbójnikami, pozbądź się ich.</li>
+ * <li>Przynieś pióro herszta jako dowód pokonania ich herszta.</li>
+ * </ul>
+ *
+ * REWARD:
+ * <ul>
+ * <li>30000 xp</li>
+ * <li>karma</li>
+ * <li>20 base hp</li>
+ * <li>bryłka mithrilu</li>
+ * </ul>
+ *
+ * REPETITIONS:
+ * <ul>
+ * <li>3 days</li>
+ * </ul>
+ */
 public class KillHerszt implements QuestManuscript {
 	final static String QUEST_SLOT = "kill_herszt";
 	public QuestBuilder<?> story() {
 		QuestBuilder<MultiTask> quest = new QuestBuilder<>(new MultiTask());
+		final String npcName = "Gazda Jędrzej";
 
 		quest.info()
 			.name("Pozbycie się Rozbójników")
 			.description("Pogłoski krażą po zimowej krainie iż Jędrzej ma kłopoty z rozbójnikami, którzy zasiedlili się w jaskini nie daleko miasta.")
 			.internalName(QUEST_SLOT)
-			.repeatableAfterMinutes(MathHelper.MINUTES_IN_ONE_WEEK * 2)
+			.repeatableAfterMinutes(MathHelper.MINUTES_IN_ONE_DAY * 3)
 			.minLevel(30)
 			.region(Region.ZAKOPANE_CITY)
-			.questGiverNpc("Gazda Jędrzej");
+			.questGiverNpc(npcName);
 
 		quest.history()
-			.whenNpcWasMet("Gazda Jędrzej spotkany na górze niedaleko miasta i wejścia do jaskini.")
+			.whenNpcWasMet(npcName + " spotkany na górze niedaleko miasta i wejścia do jaskini.")
 			.whenQuestWasRejected("Zgraja zbójów wydaje się być bardzo groźna dla mojego cennego życia.")
 			.whenQuestWasAccepted("Banda zbójników wydaje się groźna dla reszty mieszkańców tego miasta, muszę się ich jak najszybciej pozbyć oraz przynieść jakiś dowód iż herszt nie będzie sprawiał problemów.")
 			.whenTaskWasCompleted("Moja wyprawa na rozbójników w jaskini nieco uspokoiła nerwy gazdy Jędrzeja.")
 			.whenQuestWasCompleted("Jędrzej podziękował za moją ciężką pracę i podarował niewielki prezent.")
-			.whenQuestCanBeRepeated("Minęło trochę czasu od ostatniego spotkania z gazdą Jędrzejem, być może znów potrzebuje pomocy ze zbójnikami.");
+			.whenQuestCanBeRepeated("Minęło trochę czasu od ostatniego spotkania z gazdą, być może znów potrzebuje pomocy ze zbójnikami.")
+			.whenCompletionsShown("Góra została wyczyszczona ze zbójników [count] [raz].");
 
 		quest.offer()
 			.respondToRequest("Nie możemy uwolnić się od zbójników grasujących na tym terenie, a w szczególności od Herszta górskich zbójników. Czy mógłbyś udać się do pobliskiej #jaskini i pozbyć się ich?")
@@ -65,8 +94,8 @@ public class KillHerszt implements QuestManuscript {
 
 		quest.complete()
 			.greet("Wieść o twych czynach dotarła tu przed tobą! Godzien jesteś czci rycerskiej, lecz pamiętaj, że droga nie będzie łatwa, bo na każdym kroku musisz udowodnić swoje męstwo i odwagę!")
-			.rewardWith(new IncreaseXPAction(5000))
-			.rewardWith(new IncreaseKarmaAction(15.0))
+			.rewardWith(new IncreaseXPAction(30000))
+			.rewardWith(new IncreaseKarmaAction(20.0))
 			.rewardWith(new IncreaseBaseHPOnlyOnceAction(QUEST_SLOT, 20))
 			.rewardWith(new EquipItemAction("bryłka mithrilu"));
 
