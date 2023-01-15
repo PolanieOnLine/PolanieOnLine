@@ -422,7 +422,7 @@ public class AGrandfathersWish extends AbstractQuest {
 			foundMyling,
 			ConversationStates.ATTENDING,
 			"O nie! Mój drogi wnuku! Gdyby tylko istniał sposób, aby #zmienić"
-					+ " go z powrotem.",
+				+ " go z powrotem.",
 			null);
 
 		elias.add(
@@ -440,9 +440,9 @@ public class AGrandfathersWish extends AbstractQuest {
 			ConversationPhrases.GREETING_MESSAGES,
 			findPriest,
 			ConversationStates.ATTENDING,
-			"Proszę! Znajdź kapłana. Słyszałem, że w Ados jest jeden, który specjalizuje"
-				+ " się w wodzie święconej. Może on może zapewnić trochę,"
-				+ " aby pomóc mojemu wnukowi.",
+			"Proszę! Znajdź #kapłana. Słyszałem, że w Ados jest jeden, który specjalizuje"
+				+ " się w wodzie święconej. Może on będzie mógł zapewnić"
+				+ " pomoc mojemu wnukowi.",
 			null);
 
 		elias.add(
@@ -451,8 +451,8 @@ public class AGrandfathersWish extends AbstractQuest {
 			findPriest,
 			ConversationStates.ATTENDING,
 			"Proszę! Znajdź kapłana. Słyszałem, że w Ados jest jeden, który specjalizuje"
-				+ " się w wodzie święconej. Może on może zapewnić trochę,"
-				+ " aby pomóc mojemu wnukowi.",
+				+ " się w wodzie święconej. Może on będzie mógł zapewnić"
+				+ " pomoc mojemu wnukowi.",
 			null);
 	}
 
