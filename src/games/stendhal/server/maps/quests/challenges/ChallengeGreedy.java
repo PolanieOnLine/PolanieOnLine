@@ -12,7 +12,6 @@
 package games.stendhal.server.maps.quests.challenges;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -35,15 +34,11 @@ import games.stendhal.server.entity.npc.condition.QuestActiveCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
-import games.stendhal.server.maps.quests.AbstractQuest;
 
-public class ChallengeGreedy extends AbstractQuest {
+public class ChallengeGreedy extends ChallengeQuests {
 	public static final String QUEST_SLOT = "challenge_greedy";
 	// Core NPC
 	private final SpeakerNPC npc = npcs.get("Chciwurak");
-	// Trigger ConversationPhrases
-	private final List<String> triggers = Arrays.asList("wyzwanie", "zadanie", "misja", "przysługa", "task", "quest", "favor", "favour");
-
 	// Items to record
 	private static final String[] moneyToRecord = { "money" };
 
@@ -125,11 +120,7 @@ public class ChallengeGreedy extends AbstractQuest {
 			new ChatAction() {
 				@Override
 				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-					int getLooted = 0;
-					for (final String money: moneyToRecord) {
-						getLooted += player.getNumberOfLootsForItem(money);
-					}
-					player.setQuest(QUEST_SLOT, "collecting;1000000;"+getLooted);
+					player.setQuest(QUEST_SLOT, "collecting;1000000;"+getActualLooted(player, getEntitiesToRecord()));
 				}
 			});
 
@@ -147,18 +138,7 @@ public class ChallengeGreedy extends AbstractQuest {
 			new ChatCondition() {
 				@Override
 				public boolean fire(final Player player, final Sentence sentence, final Entity entity) {
-					String toLoot = player.getQuest(QUEST_SLOT, 1);
-					String oldLooted = player.getQuest(QUEST_SLOT, 2);
-
-					int getLooted = 0;
-					for (final String money: moneyToRecord) {
-						getLooted += player.getNumberOfLootsForItem(money);
-					}
-
-					int diffLoot = (getLooted - Integer.parseInt(oldLooted));
-					int looted = Integer.parseInt(toLoot) - (Integer.parseInt(toLoot) - diffLoot);
-
-					return looted >= Integer.parseInt(toLoot);
+					return getGreaterLoots(player);
 				}
 			});
 
@@ -167,18 +147,7 @@ public class ChallengeGreedy extends AbstractQuest {
 			new ChatCondition() {
 				@Override
 				public boolean fire(final Player player, final Sentence sentence, final Entity entity) {
-					String toLoot = player.getQuest(QUEST_SLOT, 1);
-					String oldLooted = player.getQuest(QUEST_SLOT, 2);
-
-					int getLooted = 0;
-					for (final String money: moneyToRecord) {
-						getLooted += player.getNumberOfLootsForItem(money);
-					}
-
-					int diffLoot = (getLooted - Integer.parseInt(oldLooted));
-					int looted = Integer.parseInt(toLoot) - (Integer.parseInt(toLoot) - diffLoot);
-
-					return looted < Integer.parseInt(toLoot);
+					return getLessLoots(player);
 				}
 			});
 
@@ -204,21 +173,21 @@ public class ChallengeGreedy extends AbstractQuest {
 	}
 
 	private String howManyWereLooted(final Player player) {
-		String toLoot = player.getQuest(QUEST_SLOT, 1);
-		String oldLooted = player.getQuest(QUEST_SLOT, 2);
-
-		int getLooted = 0;
-		for (final String money: moneyToRecord) {
-			getLooted += player.getNumberOfLootsForItem(money);
-		}
-
-		int diffKills = (getLooted - Integer.parseInt(oldLooted));
-		int looted = Integer.parseInt(toLoot) - diffKills;
+		int looted = getPurposeValue(player) - getDiffLoot(player);
 
 		if (looted > 0) {
 			return "Wciąż muszę nazbierać " + Integer.toString(looted) + " money z potworów do zakończenia wyzwania."; 
 		}
-
 		return "Udało mi się zakończyć wyzwanie! Może " + Grammar.genderVerb(player.getGender(), "powinienem") + " się teraz udać do niego z powrotem...";
+	}
+
+	@Override
+	public String getQuestSlot(final Player player, int index) {
+		return player.getQuest(QUEST_SLOT, index);
+	}
+
+	@Override
+	public String[] getEntitiesToRecord() {
+		return moneyToRecord;
 	}
 }

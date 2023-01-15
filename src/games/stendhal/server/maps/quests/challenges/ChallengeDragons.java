@@ -12,7 +12,6 @@
 package games.stendhal.server.maps.quests.challenges;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -37,19 +36,16 @@ import games.stendhal.server.entity.npc.condition.QuestActiveCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
-import games.stendhal.server.maps.quests.AbstractQuest;
 
-public class ChallengeDragons extends AbstractQuest {
+public class ChallengeDragons extends ChallengeQuests {
 	public static final String QUEST_SLOT = "challenge_dragons";
 	// Required level to start quest
 	private static final int min_level = 250;
 	// Core NPC
 	private final SpeakerNPC npc = npcs.get("Racirad");
-	// Trigger ConversationPhrases
-	private final List<String> triggers = Arrays.asList("wyzwanie", "zadanie", "misja", "przysługa", "task", "quest", "favor", "favour");
 
 	// Monsters to record
-	private static final String[] dragonsToRecord = {
+	private static final String[] creaturesToRecord = {
 			"szkielet smoka", "zgniły szkielet smoka", "złoty smok", "zielony smok", "błękitny smok",
 			"czerwony smok", "pustynny smok", "czarny smok", "czarne smoczysko", "smok arktyczny",
 			"dwugłowy zielony smok", "dwugłowy czerwony smok", "dwugłowy niebieski smok", "dwugłowy czarny smok",
@@ -151,11 +147,7 @@ public class ChallengeDragons extends AbstractQuest {
 			new ChatAction() {
 				@Override
 				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-					int getKills = 0;
-					for (final String dragon: dragonsToRecord) {
-						getKills += player.getSoloKill(dragon) + player.getSharedKill(dragon);
-					}
-					player.setQuest(QUEST_SLOT, "hunting;500;"+getKills);
+					player.setQuest(QUEST_SLOT, "hunting;500;"+getActualKills(player, getEntitiesToRecord()));
 				}
 			});
 
@@ -173,18 +165,7 @@ public class ChallengeDragons extends AbstractQuest {
 			new ChatCondition() {
 				@Override
 				public boolean fire(final Player player, final Sentence sentence, final Entity entity) {
-					String toKill = player.getQuest(QUEST_SLOT, 1);
-					String oldKills = player.getQuest(QUEST_SLOT, 2);
-
-					int getKills = 0;
-					for (final String dragon: dragonsToRecord) {
-						getKills += player.getSoloKill(dragon) + player.getSharedKill(dragon);
-					}
-
-					int diffKills = (getKills - Integer.parseInt(oldKills));
-					int killed = Integer.parseInt(toKill) - (Integer.parseInt(toKill) - diffKills);
-
-					return killed >= Integer.parseInt(toKill);
+					return getGreaterKills(player);
 				}
 			});
 
@@ -193,18 +174,7 @@ public class ChallengeDragons extends AbstractQuest {
 			new ChatCondition() {
 				@Override
 				public boolean fire(final Player player, final Sentence sentence, final Entity entity) {
-					String toKill = player.getQuest(QUEST_SLOT, 1);
-					String oldKills = player.getQuest(QUEST_SLOT, 2);
-
-					int getKills = 0;
-					for (final String dragon: dragonsToRecord) {
-						getKills += player.getSoloKill(dragon) + player.getSharedKill(dragon);
-					}
-
-					int diffKills = (getKills - Integer.parseInt(oldKills));
-					int killed = Integer.parseInt(toKill) - (Integer.parseInt(toKill) - diffKills);
-
-					return killed < Integer.parseInt(toKill);
+					return getLessKills(player);
 				}
 			});
 
@@ -230,16 +200,7 @@ public class ChallengeDragons extends AbstractQuest {
 	}
 
 	private String howManyWereKilled(final Player player) {
-		String toKill = player.getQuest(QUEST_SLOT, 1);
-		String oldKills = player.getQuest(QUEST_SLOT, 2);
-
-		int getKills = 0;
-		for (final String dragon: dragonsToRecord) {
-			getKills += player.getSoloKill(dragon) + player.getSharedKill(dragon);
-		}
-
-		int diffKills = (getKills - Integer.parseInt(oldKills));
-		int killed = Integer.parseInt(toKill) - diffKills;
+		int killed = getPurposeValue(player) - getDiffKills(player);
 
 		String verb = "smoków";
 		if (killed == 1) {
@@ -251,7 +212,16 @@ public class ChallengeDragons extends AbstractQuest {
 		if (killed > 0) {
 			return "Wciąż muszę poskromić " + Integer.toString(killed) + " " + verb + " do zakończenia wyzwania."; 
 		}
-
 		return "Udało mi się zakończyć wyzwanie! Może " + Grammar.genderVerb(player.getGender(), "powinienem") + " się teraz udać do niego z powrotem...";
+	}
+
+	@Override
+	public String getQuestSlot(final Player player, int index) {
+		return player.getQuest(QUEST_SLOT, index);
+	}
+
+	@Override
+	public String[] getEntitiesToRecord() {
+		return creaturesToRecord;
 	}
 }
