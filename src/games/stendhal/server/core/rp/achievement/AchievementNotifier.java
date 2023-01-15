@@ -440,7 +440,12 @@ public final class AchievementNotifier {
 	 * @param achievement
 	 */
 	private void notifyPlayerAboutReachedAchievement(final Player player, final Achievement achievement) {
-		int achievementsCount = player.getQuest(REACHED_SLOT, 0).length();
+		final String getReached = player.getQuest(REACHED_SLOT, 0);
+		int achievementsCount = Integer.parseInt(getReached);
+		if (getReached == null) {
+			achievementsCount = 0;
+		}
+
 		if (achievement.isActive()) {
 			achievementsCount++;
 			setReachedAchievements(player, achievementsCount);
