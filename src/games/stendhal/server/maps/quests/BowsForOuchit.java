@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2021 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -184,9 +184,9 @@ public class BowsForOuchit extends AbstractQuest {
 		npc.add(ConversationStates.ATTENDING,
 				Arrays.asList("hair", "horse", "końskie włosie", "włosie", "końskie", "końskie włosie"),
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT,"hair"),
-								new NotCondition (new PlayerHasItemWithHimCondition("końskie włosie"))),
+							new NotCondition (new PlayerHasItemWithHimCondition("końskie włosie"))),
 				ConversationStates.ATTENDING,
-				"Włos koński stosowany może być do cięciwy, a dostaniesz go od #Karl.",
+				"Końskie włosie stosowane może być do cięciwy, a dostaniesz go od #Karl.",
 				null);
 
 		// These actions are part of the reward
@@ -199,11 +199,11 @@ public class BowsForOuchit extends AbstractQuest {
 
 		// Player asks about horse hair, and has collected some - take it and ask for horse hair.
 		npc.add(ConversationStates.ATTENDING,
-				Arrays.asList("hair", "horse", "horse hairs", "włosie końskie", "włosie", "końskie"),
+				Arrays.asList("hair", "horse", "horse hairs", "końskie włosie", "włosie", "końskie"),
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT,"hair"),
 								new PlayerHasItemWithHimCondition("końskie włosie")),
 				ConversationStates.ATTENDING,
-				"Wspaniale, masz włos koński. Dziękuję bardzo. Karl jest bardzo miły. Proszę, " +
+				"Wspaniale, masz końskie włosie. Dziękuję bardzo. Karl jest bardzo miły. Proszę, " +
 				"zostawił tutaj ten... Mi nie jest to potrzebne, a tobie może się przydać.",
 				new MultipleActions(reward));
 
