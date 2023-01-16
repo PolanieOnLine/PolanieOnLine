@@ -3,13 +3,14 @@ Changelog
 1.36
 *klient*
 - Dodano wsparcie dla emotikonów
-- Dodano nową grafikę NPC
+- Dodano nowe grafiki NPC
 - Poprawiono kolory grafiki ametystu
 
 *świat*
-- Dodano nowego NPC: (2)
+- Dodano nowego NPC: (3)
 	- Racirad
 	- Chciwurak
+	- Wszebor
 - Dodano nowe osiągnięcia: (7)
 	- "Leśni Bandyci"
 	- "Gromadka Bandy"
@@ -18,7 +19,7 @@ Changelog
 	- "Cierpliwie Czekający na Gderacza"
 	- "Zamiłowanie Kwiatkami"
 	- "Wyzwanie Przyjęte"
-- Dodano nowe zadanie u Racirada i Chciwuraka
+- Dodano nowe zadanie u Racirada, Chciwuraka i Wszebora
 - Skrócono czas ponownego przyjęcia zadania u Wielkoluda z 14 dni do 7 dni
 - Skrócono czas ponownego przyjęcia zadania u gazdy Jędrzeja z 14 dni do 3 dni
 - Zmieniono wynagrodzenie za ukończenie zadania u Wielkoluda z 50.000pd do 80.000pd
