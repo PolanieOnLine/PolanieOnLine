@@ -112,7 +112,7 @@ public class BowsForOuchitTest {
 		assertEquals(player.getQuest(QUEST_SLOT),"hair");
 
 		en.step(player, "horse hairs");
-		assertEquals("Włos koński stosowany może być do cięciwy, a dostaniesz go od #Karl.", getReply(npc));
+		assertEquals("Końskie włosie stosowane może być do cięciwy, a dostaniesz go od #Karl.", getReply(npc));
 		en.step(player, "Karl");
 		assertEquals("Karl jest rolnikiem mieszkającym na wschód od Semos. Posiada sporo zwierząt na swojej farmie.", getReply(npc));
 		en.step(player, "bye");
@@ -126,7 +126,7 @@ public class BowsForOuchitTest {
 
 		// notice a typo here done by the actual player
 		en.step(player, "hore hairs");
-		assertEquals("Włos koński stosowany może być do cięciwy, a dostaniesz go od #Karl.", getReply(npc));
+		assertEquals("Końskie włosie stosowane może być do cięciwy, a dostaniesz go od #Karl.", getReply(npc));
 		en.step(player, "bye");
 		assertEquals("Do widzenia.", getReply(npc));
 
@@ -184,7 +184,7 @@ public class BowsForOuchitTest {
 		en.step(player, "task");
 		assertEquals("Czekam tu na ciebie, abyś przyniósł mi #'końskie włosie'.", getReply(npc));
 		en.step(player, "horse hairs");
-		assertEquals("Wspaniale, masz włos koński. Dziękuję bardzo. Karl jest bardzo miły. Proszę, zostawił tutaj ten... Mi nie jest to potrzebne, a tobie może się przydać.", getReply(npc));
+		assertEquals("Wspaniale, masz końskie włosie. Dziękuję bardzo. Karl jest bardzo miły. Proszę, zostawił tutaj ten... Mi nie jest to potrzebne, a tobie może się przydać.", getReply(npc));
 
 		// [19:57] kymara earns 100 experience points.
 		// check quest slot and rewards
