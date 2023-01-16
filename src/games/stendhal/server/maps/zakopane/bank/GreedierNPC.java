@@ -11,6 +11,8 @@
  ***************************************************************************/
 package games.stendhal.server.maps.zakopane.bank;
 
+import static games.stendhal.server.maps.quests.challenges.ChallengeGreedy.QUEST_SLOT;
+
 import java.util.Map;
 
 import games.stendhal.common.Direction;
@@ -74,7 +76,7 @@ public class GreedierNPC implements ZoneConfigurator {
 					ConversationPhrases.GREETING_MESSAGES,
 					new AndCondition(
 						meetNPC,
-						new QuestCompletedCondition("challenge_greedy")),
+						new QuestCompletedCondition(QUEST_SLOT)),
 					ConversationStates.ATTENDING,
 					null,
 					new SayTextAction(greeting + " Korzystaj ze skrzynek bez obaw, nie będę *kaszlnięcie* próbował nic podbierać."));
@@ -83,7 +85,7 @@ public class GreedierNPC implements ZoneConfigurator {
 					ConversationPhrases.GREETING_MESSAGES,
 					new AndCondition(
 						meetNPC,
-						new NotCondition(new QuestStartedCondition("challenge_greedy"))),
+						new NotCondition(new QuestStartedCondition(QUEST_SLOT))),
 					ConversationStates.ATTENDING,
 					null,
 					new SayTextAction(greeting + " Wyglądasz mi na osobę, która lubi #wyzwania."));
@@ -92,7 +94,7 @@ public class GreedierNPC implements ZoneConfigurator {
 					ConversationPhrases.GREETING_MESSAGES,
 					new AndCondition(
 						meetNPC,
-						new QuestActiveCondition("challenge_greedy")),
+						new QuestActiveCondition(QUEST_SLOT)),
 					ConversationStates.ATTENDING,
 					null,
 					new SayTextAction(greeting + " Jeśli chcesz, abym sprawdził proces twojego #wyzwania to wystarczy się zapytać..."));

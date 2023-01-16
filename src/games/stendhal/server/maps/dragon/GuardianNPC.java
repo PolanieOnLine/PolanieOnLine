@@ -11,6 +11,8 @@
  ***************************************************************************/
 package games.stendhal.server.maps.dragon;
 
+import static games.stendhal.server.maps.quests.challenges.ChallengeDragons.QUEST_SLOT;
+
 import java.util.Map;
 
 import games.stendhal.common.Direction;
@@ -79,7 +81,7 @@ public class GuardianNPC implements ZoneConfigurator {
 						new AndCondition(
 							greaterThan,
 							new NotCondition(new QuestCompletedCondition("meet_racirad")),
-							new NotCondition(new QuestStartedCondition("challenge_dragons"))),
+							new NotCondition(new QuestStartedCondition(QUEST_SLOT))),
 						ConversationStates.ATTENDING,
 						"Nieznajomy rycerzu! Zatrzymaj się na sekundkę... " + greeting,
 						new SetQuestAction("meet_racirad", "done"));
@@ -89,7 +91,7 @@ public class GuardianNPC implements ZoneConfigurator {
 						new AndCondition(
 							greaterThan,
 							new QuestCompletedCondition("meet_racirad"),
-							new NotCondition(new QuestStartedCondition("challenge_dragons"))),
+							new NotCondition(new QuestStartedCondition(QUEST_SLOT))),
 						ConversationStates.ATTENDING,
 						null,
 						new SayTextAction("Dobrze, że jesteś z powrotem [name]! " + greeting));
@@ -99,7 +101,7 @@ public class GuardianNPC implements ZoneConfigurator {
 						new AndCondition(
 							greaterThan,
 							new QuestCompletedCondition("meet_racirad"),
-							new QuestActiveCondition("challenge_dragons")),
+							new QuestActiveCondition(QUEST_SLOT)),
 						ConversationStates.ATTENDING,
 						"Witaj! Jeżeli chcesz abym sprawdził twoje #wyzwanie, to zapytaj.",
 						null);
@@ -109,7 +111,7 @@ public class GuardianNPC implements ZoneConfigurator {
 						new AndCondition(
 							greaterThan,
 							new QuestCompletedCondition("meet_racirad"),
-							new QuestCompletedCondition("challenge_dragons")),
+							new QuestCompletedCondition(QUEST_SLOT)),
 						ConversationStates.ATTENDING,
 						null,
 						new SayTextAction("Witaj z powrotem [name]! Moje wyzwanie zostało już ukończone, lecz wciąż możesz odwiedzić smocze siedliszcze."));
