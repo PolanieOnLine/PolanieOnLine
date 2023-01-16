@@ -474,7 +474,7 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 		));
 
 		fightingAchievements.add(createAchievement(
-				ID_ZBOJNICYLESNI, "Leśni Kamraci", "Zabił łącznie 400 zbójników leśnych",
+				ID_ZBOJNICYLESNI, "Leśni Bandyci", "Zabił łącznie 400 zbójników leśnych",
 				Achievement.EASY_BASE_SCORE, true,
 				new ChatCondition() {
 					@Override
@@ -489,7 +489,7 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 		));
 
 		fightingAchievements.add(createAchievement(
-				ID_ZBOJNICYGORSCY, "Ciupagi, Grabieże i Pieniądze", "Zabił łącznie 400 zbójników górskich",
+				ID_ZBOJNICYGORSCY, "Gromadka Bandy", "Zabił łącznie 400 zbójników górskich",
 				Achievement.EASY_BASE_SCORE, true,
 				new ChatCondition() {
 					@Override
@@ -504,7 +504,7 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 		));
 
 		fightingAchievements.add(createAchievement(
-				ID_ALIENS, "Życie Nad Nami", "Zabił po 50 różnych szaraków",
+				ID_ALIENS, "Życie Poza Nami", "Zabił po 50 różnych szaraków",
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition(50, ENEMIES_SZARAKI)));
 

@@ -11,9 +11,9 @@ Changelog
 	- Racirad
 	- Chciwurak
 - Dodano nowe osiągnięcia: (7)
-	- "Leśni Kamraci"
-	- "Ciupagi, Grabieże i Pieniądze"
-	- "Życie Nad Nami"
+	- "Leśni Bandyci"
+	- "Gromadka Bandy"
+	- "Życie Poza Nami"
 	- "Uczestnik"
 	- "Cierpliwie Czekający na Gderacza"
 	- "Zamiłowanie Kwiatkami"
