@@ -30,7 +30,6 @@ import games.stendhal.server.entity.npc.condition.QuestStartedCondition;
 import games.stendhal.server.entity.npc.condition.QuestStateStartsWithCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.quests.AGrandfathersWish;
-import games.stendhal.server.maps.quests.marriage.MarriageQuestInfo;
 
 /**
  * Factory for quest achievements
@@ -38,8 +37,6 @@ import games.stendhal.server.maps.quests.marriage.MarriageQuestInfo;
  * @author kymara
  */
 public class FriendAchievementFactory extends AbstractAchievementFactory {
-	private MarriageQuestInfo marriage;
-
 	public static final String ID_CHILD_FRIEND = "friend.quests.children";
 	public static final String ID_PRIVATE_DETECTIVE = "friend.quests.find";
 	public static final String ID_DRAGONS = "friend.quests.dragons";
@@ -204,7 +201,7 @@ public class FriendAchievementFactory extends AbstractAchievementFactory {
 				new ChatCondition() {
 					@Override
 					public boolean fire(final Player player, final Sentence sentence, final Entity entity) {
-						return marriage.isMarried(player);
+						return player.hasQuest("spouse");
 					}
 				}));
 
