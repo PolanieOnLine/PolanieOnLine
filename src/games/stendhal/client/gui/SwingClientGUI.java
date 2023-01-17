@@ -1,5 +1,5 @@
 /***************************************************************************
- *                (C) Copyright 2003-2018 - Faiumoni e.V.                  *
+ *                (C) Copyright 2003-2022 - Faiumoni e.V.                  *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -78,7 +78,6 @@ import games.stendhal.client.listener.FeatureChangeListener;
 import games.stendhal.client.listener.PositionChangeListener;
 import games.stendhal.common.MathHelper;
 import games.stendhal.common.NotificationType;
-import games.stendhal.common.constants.Testing;
 import marauroa.common.game.RPAction;
 import marauroa.common.game.RPObject;
 
@@ -491,9 +490,7 @@ class SwingClientGUI implements J2DClientGUI {
 		JComponent chatEntryBox = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL);
 		chatEntryBox.add(chatText.getPlayerChatText(), SLayout.EXPAND_X);
 
-		if (Testing.CHAT) {
-			chatEntryBox.add(new CharacterMap(chatText.getPlayerChatText()));
-		}
+		chatEntryBox.add(new CharacterMap());
 		final JComponent chatBox = new JPanel();
 		chatBox.setBorder(null);
 		chatBox.setLayout(new SBoxLayout(SBoxLayout.VERTICAL));

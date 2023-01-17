@@ -65,8 +65,8 @@ public class EmojiStore {
 					logger.error("Failed to read emoji data file: " + path);
 				} else {
 					final Object el = document.get("emojilist");
-					if (el != null && el instanceof Map<?, ?>) {
-						for (final Object k: ((Map<?, ?>) el).keySet()) {
+					if (el != null && el instanceof List<?>) {
+						for (final Object k: (List<?>) el) {
 							emojilist.add((String) k);
 						}
 					}
@@ -96,7 +96,7 @@ public class EmojiStore {
 		if (filename == null) {
 			return null;
 		}
-		return (Sprite) ClientSingletonRepository.getSpriteStore().getSprite(filename);
+		return ClientSingletonRepository.getSpriteStore().getSprite(filename);
 	}
 
 	/**
@@ -108,6 +108,7 @@ public class EmojiStore {
 	 *     String representing emoji sprite filename or <code>undefined</code>.
 	 */
 	public String check(String text) {
+		text = text.replace("\\\\", "\\");
 		String name = emojimap.containsKey(text) ? emojimap.get(text) : null;
 		if (name == null && (text.startsWith(":") && text.endsWith(":"))) {
 			text = text.substring(0, text.length() - 1).substring(1);
@@ -144,7 +145,7 @@ public class EmojiStore {
 	 */
 	public boolean isAvailable(String name) {
 		if (name.startsWith(":") && name.endsWith(":")) {
-			name = name.substring(0, name.length() - 1).substring(1);
+			name = name.substring(1, name.length()-1);
 		}
 		return emojilist.contains(name);
 	}
