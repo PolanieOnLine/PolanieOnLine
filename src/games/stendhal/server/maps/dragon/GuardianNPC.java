@@ -148,8 +148,8 @@ public class GuardianNPC implements ZoneConfigurator {
 		npc.addInitChatMessage(null, new ChatAction() {
 			@Override
 			public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-				if (!player.hasQuest("RaciradFirstChat")) {
-					player.setQuest("RaciradFirstChat", "done");
+				if (!player.hasQuest(npc.getName()+"FirstChat")) {
+					player.setQuest(npc.getName()+"FirstChat", "done");
 					((SpeakerNPC) raiser.getEntity()).listenTo(player, "hi");
 				} else if (player.getLevel() < 250) {
 					((SpeakerNPC) raiser.getEntity()).listenTo(player, "hi");

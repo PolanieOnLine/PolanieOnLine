@@ -113,8 +113,8 @@ public class GreedierNPC implements ZoneConfigurator {
 		npc.addInitChatMessage(null, new ChatAction() {
 			@Override
 			public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-				if (!player.hasQuest("ChciwurakFirstChat")) {
-					player.setQuest("ChciwurakFirstChat", "done");
+				if (!player.hasQuest(npc.getName()+"FirstChat")) {
+					player.setQuest(npc.getName()+"FirstChat", "done");
 					((SpeakerNPC) raiser.getEntity()).listenTo(player, "hi");
 				}
 			}
