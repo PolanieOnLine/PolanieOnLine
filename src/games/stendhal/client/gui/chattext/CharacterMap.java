@@ -31,13 +31,16 @@ import games.stendhal.client.sprite.ImageSprite;
  * use in chat.
  */
 public class CharacterMap extends JButton {
+	final static EmojiStore emojis = EmojiStore.get();
+	final static ImageSprite titleEmoji = (ImageSprite) emojis.create(":grin:");
+
 	/**
 	 * Create a new CharacterMap.
 	 */
 	public CharacterMap() {
-		super("☺");
+		super(new ImageIcon(titleEmoji.getImage()));
 		setFocusable(false);
-		setToolTipText("Emojis");
+		setToolTipText("Emotikony");
 
 		final JPopupMenu menu = new JPopupMenu();
 
@@ -80,7 +83,6 @@ public class CharacterMap extends JButton {
 
 		Insets insets = new Insets(1, 1, 1, 1);
 		setMargin(insets);
-		final EmojiStore emojis = EmojiStore.get();
 		for (String st: emojis.getEmojiList()) {
 			st = ":" + st + ":";
 			final ImageSprite emoji = (ImageSprite) emojis.create(st);
