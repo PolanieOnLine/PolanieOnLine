@@ -11,7 +11,7 @@ Changelog
 	- Racirad
 	- Chciwurak
 	- Wszebor
-- Dodano nowe osiągnięcia: (7)
+- Dodano nowe osiągnięcia: (8)
 	- "Leśni Bandyci"
 	- "Gromadka Bandy"
 	- "Życie Poza Nami"
@@ -19,6 +19,7 @@ Changelog
 	- "Cierpliwie Czekający na Gderacza"
 	- "Zamiłowanie Kwiatkami"
 	- "Wyzwanie Przyjęte"
+	- "Współmałżonkowie"
 - Dodano nowe zadanie u Racirada, Chciwuraka i Wszebora
 - Skrócono czas ponownego przyjęcia zadania u Wielkoluda z 14 dni do 7 dni
 - Skrócono czas ponownego przyjęcia zadania u gazdy Jędrzeja z 14 dni do 3 dni
