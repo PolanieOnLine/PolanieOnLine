@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -23,7 +23,6 @@ import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.OrCondition;
-import games.stendhal.server.entity.npc.condition.PlayerHasPetOrSheepCondition;
 import games.stendhal.server.entity.npc.condition.QuestActiveCondition;
 import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotInStateCondition;
@@ -31,12 +30,16 @@ import games.stendhal.server.entity.npc.condition.QuestStartedCondition;
 import games.stendhal.server.entity.npc.condition.QuestStateStartsWithCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.quests.AGrandfathersWish;
+import games.stendhal.server.maps.quests.marriage.MarriageQuestInfo;
+
 /**
  * Factory for quest achievements
  *
  * @author kymara
  */
 public class FriendAchievementFactory extends AbstractAchievementFactory {
+	private MarriageQuestInfo marriage;
+
 	public static final String ID_CHILD_FRIEND = "friend.quests.children";
 	public static final String ID_PRIVATE_DETECTIVE = "friend.quests.find";
 	public static final String ID_DRAGONS = "friend.quests.dragons";
@@ -47,6 +50,7 @@ public class FriendAchievementFactory extends AbstractAchievementFactory {
 	public static final String ID_KILLER = "friend.playerkiller";
 	public static final String ID_STILL_BELIEVING = "friend.meet.seasonal";
 	public static final String ID_PET_FRIEND = "friend.pet.condition";
+	public static final String ID_MARRIAGE = "friend.marriage";
 
 	@Override
 	protected Category getCategory() {
@@ -188,16 +192,21 @@ public class FriendAchievementFactory extends AbstractAchievementFactory {
 							new QuestWithPrefixCompletedCondition("meet_guslarz_"))));
 
 		achievements.add(createAchievement(
-				ID_PET_FRIEND, "Mój Domowy Przyjaciel", "Przygarnął jakiekolwiek zwierzątko",
-				Achievement.EASY_BASE_SCORE, true,
-				new PlayerHasPetOrSheepCondition()));
-
-		achievements.add(createAchievement(
 				ID_PIZZA_DELIVERY, "Dostawca Pizzy", "Rozwiózł pizze w krainie Faiumoni lub Prasłowiańskiej",
 				Achievement.EASY_BASE_SCORE, true,
 				new OrCondition(
 						new QuestCompletedCondition("pizza_delivery"),
 						new QuestCompletedCondition("dostawca_pizzy2"))));
+
+		achievements.add(createAchievement(
+				ID_MARRIAGE, "Współmałżonkowie", "Zawarto więzy małżeńskie",
+				Achievement.EASY_BASE_SCORE, true,
+				new ChatCondition() {
+					@Override
+					public boolean fire(final Player player, final Sentence sentence, final Entity entity) {
+						return marriage.isMarried(player);
+					}
+				}));
 
 		return achievements;
 	}
