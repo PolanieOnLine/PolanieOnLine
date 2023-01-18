@@ -35,57 +35,41 @@ import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
 
 public class DefaultCreature {
-
 	/** the logger instance. */
 	private static final Logger logger = Logger.getLogger(DefaultCreature.class);
 
 	/** Creature class. */
 	private String clazz;
-
 	/** Creature subclass. */
 	private String subclass;
-
 	/** shadow to use for entity */
 	private String shadow_style = null;
-
 	/** Creature name. */
 	private String name;
-
 	/** optional creature description. * */
 	private String description;
-
 	/** Map Tile Id in the way tileset.png:pos. */
 	private String tileid;
-
 	/** hit points. */
 	private int hp;
-
 	/** attack points. */
 	private int atk;
-
 	/** ranged attack points */
 	private int ratk;
-
 	/** defense points. */
 	private int def;
-
 	/** experience points for killing this creature. */
 	private int xp;
-
 	private int level;
-
 	private int respawn;
-
 	/** size of the creature. */
 	private int width;
-
 	private int height;
 
 	private String bloodClass;
-	
+
 	/** resistance. */
 	private int resistance;
-
 	/** visibility. */
 	private int visibility;
 
@@ -96,12 +80,9 @@ public class DefaultCreature {
 
 	/** The list of items this creature may drop. */
 	private List<DropItem> dropsItems;
-
 	private List<EquipItem> equipsItems;
-
 	/** List of possible sound events. */
 	private List<String> sounds;
-
 	/** Sound played on creature death */
 	private String deathSound;
 
@@ -109,9 +90,7 @@ public class DefaultCreature {
 	private String movementSound;
 
 	private LinkedHashMap<String, LinkedList<String>> creatureSays;
-
 	private Map<String, String> aiProfiles;
-
 	/** Susceptibilities of the creature */
 	private Map<Nature, Double> susceptibilities;
 
@@ -169,7 +148,6 @@ public class DefaultCreature {
 	public int getRatk() {
 		return ratk;
 	}
-
 
 	public int getDef() {
 		return def;

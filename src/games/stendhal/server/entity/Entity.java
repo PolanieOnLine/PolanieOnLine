@@ -40,26 +40,17 @@ import marauroa.common.game.RPObject;
 import marauroa.common.game.RPSlot;
 
 public abstract class Entity extends RPObject implements Killer {
-	/**
-	 * The logger.
-	 */
+	// The logger.
 	private static final Logger logger = Logger.getLogger(Entity.class);
 
-
 	protected Rectangle2D.Double area = new Rectangle2D.Double();
-
 	private int x;
-
 	private int y;
-
     // Initial coordinates
     private Point origin;
 
-	/**
-	 * Amount of resistance this has with other entities (0-100).
-	 */
+	// Amount of resistance this has with other entities (0-100).
 	private int resistance;
-	
 	private int visibility;
 
 	private StendhalRPZone zone;
@@ -113,11 +104,6 @@ public abstract class Entity extends RPObject implements Killer {
 		// TODO: Try to remove this attribute later (at DB reset?)
 		entity.addAttribute("type", Type.STRING);
 
-		/**
-		 * Resistance to other entities (0-100). 0=Phantom, 100=Obstacle.
-		 */
-		entity.addAttribute("resistance", Type.BYTE, Definition.VOLATILE);
-
 		entity.addAttribute("x", Type.SHORT);
 		entity.addAttribute("y", Type.SHORT);
 
@@ -137,11 +123,15 @@ public abstract class Entity extends RPObject implements Killer {
 		 */
 		entity.addAttribute("effect", Type.STRING, Definition.VOLATILE);
 
+		/**
+		 * Resistance to other entities (0-100). 0=Phantom, 100=Obstacle.
+		 */
+		entity.addAttribute("resistance", Type.BYTE, Definition.VOLATILE);
 		/*
 		 * The visibility of the entity drawn on client (0-100). 0=Invisible,
 		 * 100=Solid. Useful when mixed with effect.
 		 */
-		entity.addAttribute("visibility", Type.INT, Definition.VOLATILE);
+		entity.addAttribute("visibility", Type.BYTE, Definition.VOLATILE);
 
 		// cursor
 		entity.addAttribute("cursor", Type.STRING);
