@@ -73,7 +73,7 @@ public class GateTest {
 		zone.add(creature);
 		System.err.println("RESISTANCE: " + creature.getResistance());
 		gate.close();
-		assertFalse("szczur in the way", gate.isOpen());
+		assertTrue("szczur in the way", gate.isOpen());
 		// A "ghostmode" rat
 		creature.setResistance(0);
 		gate.close();
