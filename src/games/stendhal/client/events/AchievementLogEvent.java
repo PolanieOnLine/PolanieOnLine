@@ -19,6 +19,8 @@ import games.stendhal.client.entity.RPEntity;
 import games.stendhal.client.gui.achievementlog.AchievementLogController;
 
 /**
+ * Create an achievement log.
+ *
  * @author KarajuSs
  */
 public class AchievementLogEvent extends Event<RPEntity> {
