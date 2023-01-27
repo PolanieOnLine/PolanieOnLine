@@ -44,7 +44,7 @@ public class ObtainAchievementsFactoryTest extends AchievementTestHelper {
 
 	@Test
 	public void testBobbingForApples() {
-		final String item = "apple";
+		final String item = "jabłko";
 		final int reqCount = 1000;
 
 		resetPlayer();

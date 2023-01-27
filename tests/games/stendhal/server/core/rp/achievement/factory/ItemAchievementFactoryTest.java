@@ -61,32 +61,32 @@ public class ItemAchievementFactoryTest extends AchievementTestHelper {
 
 	@Test
 	public void testFirstPocketMoney() {
-		checkSingleItemLoot("item.money.100", "money", 100, 10);
+		checkSingleItemLoot("item.money.00000100", ItemAchievementFactory.MONEY, 100, 10);
 	}
 
 	@Test
 	public void testGoldshower() {
-		checkSingleItemLoot("item.money.10000", "money", 10000, 100);
+		checkSingleItemLoot("item.money.00010000", ItemAchievementFactory.MONEY, 10000, 100);
 	}
 
 	@Test
 	public void testMovingUpInTheWorld() {
-		checkSingleItemLoot("item.money.100000", "money", 100000, 1000);
+		checkSingleItemLoot("item.money.00100000", ItemAchievementFactory.MONEY, 100000, 1000);
 	}
 
 	@Test
 	public void testYouDontNeedItAnymore() {
-		checkSingleItemLoot("item.money.1000000", "money", 1000000, 10000);
+		checkSingleItemLoot("item.money.01000000", ItemAchievementFactory.MONEY, 1000000, 10000);
 	}
 
 	@Test
 	public void testCheeseWiz() {
-		checkSingleItemLoot("item.cheese.2000", "cheese", 2000, 100);
+		checkSingleItemLoot("item.cheese.2000", "ser", 2000, 100);
 	}
 
 	@Test
 	public void testHamHocks() {
-		checkSingleItemLoot("item.ham.2500", "ham", 2500, 100);
+		checkSingleItemLoot("item.ham.2500", "szynka", 2500, 100);
 	}
 
 	@Test
