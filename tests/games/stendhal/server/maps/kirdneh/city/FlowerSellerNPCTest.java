@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -20,6 +19,7 @@ import static utilities.SpeakerNPCTestHelper.getReply;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.fsm.Engine;
 import utilities.QuestHelper;
@@ -67,6 +67,8 @@ public class FlowerSellerNPCTest extends ZonePlayerAndNPCTestImpl {
 	public void testBuyFlower() {
 		final SpeakerNPC npc = getNPC("Fleur");
 		final Engine en = npc.getEngine();
+
+		SingletonRepository.getShopList().configureNPC("Fleur", "kirdnehflowerseller", true, true);
 
 		assertTrue(en.step(player, "hi"));
 		assertEquals("Cześć! Przyszedłeś tutaj #pohandlować?", getReply(npc));

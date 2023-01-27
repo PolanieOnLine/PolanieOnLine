@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -31,16 +30,14 @@ import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.NPC;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.fsm.Engine;
-import games.stendhal.server.maps.MockStendlRPWorld;
-import marauroa.common.Log4J;
 import utilities.PlayerTestHelper;
+import utilities.QuestHelper;
 
 public class BarMaidNPCTest {
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		Log4J.init();
-		MockStendlRPWorld.get();
+		QuestHelper.setUpBeforeClass();
 	}
 
 	/**
@@ -96,6 +93,10 @@ public class BarMaidNPCTest {
 		barmaidConfigurator.configureZone(zone, null);
 		final SpeakerNPC barMaid = (SpeakerNPC) zone.getNPCList().get(0);
 		assertThat(barMaid.getName(), is("Siandra"));
+
+		// configure Siandra's shop
+		SingletonRepository.getShopList().configureNPC("Siandra", "buyfood", false, true);
+
 		final Engine engine = barMaid.getEngine();
 		engine.setCurrentState(ConversationStates.ATTENDING);
 

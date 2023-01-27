@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -21,6 +20,7 @@ import static utilities.SpeakerNPCTestHelper.getReply;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.fsm.Engine;
 import utilities.QuestHelper;
@@ -71,6 +71,8 @@ public class IceCreamSellerNPCTest extends ZonePlayerAndNPCTestImpl {
 	public void testBuyIceCream() {
 		final SpeakerNPC npc = getNPC("Sam");
 		final Engine en = npc.getEngine();
+
+		SingletonRepository.getShopList().configureNPC("Sam", "icecreamseller", true, true);
 
 		assertTrue(en.step(player, "hi"));
 		assertEquals("Cześć. Czy mogę #zaoferować Tobie porcję lodów?", getReply(npc));

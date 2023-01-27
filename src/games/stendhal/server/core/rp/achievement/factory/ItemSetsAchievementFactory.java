@@ -48,34 +48,34 @@ public class ItemSetsAchievementFactory extends AbstractAchievementFactory {
 	public static final String ID_BOWS = "item.set.bowsset";
 	public static final String ID_CROSSBOW = "item.set.crossbowset";
 
-	private static final String[] RED = {
+	public static final String[] RED = {
 			"zbroja karmazynowa", "hełm karmazynowy", "płaszcz karmazynowy",
 			"spodnie karmazynowe", "buty karmazynowe", "tarcza karmazynowa",
 			"rękawice karmazynowe", "pas karmazynowy"
 	};
-	private static final String[] BLUE = {
+	public static final String[] BLUE = {
 			"zbroja lazurowa", "lazurowy hełm", "prążkowany płaszcz lazurowy",
 			"spodnie lazurowe", "buty lazurowe", "tarcza lazurowa",
 			"rękawice lazurowe"
 	};
-	private static final String[] ELVISH = {
+	public static final String[] ELVISH = {
 			"zbroja elficka", "kapelusz elficki", "płaszcz elficki",
 			"spodnie elfickie", "buty elfickie", "tarcza elficka",
 			"elficki naszyjnik", "pas elficki", "rękawice elfickie"
 	};
-	private static final String[] SHADOW = {
+	public static final String[] SHADOW = {
 			"zbroja cieni", "hełm cieni", "płaszcz cieni", "spodnie cieni",
 			"buty cieni", "tarcza cieni", "rękawice cieni", "pas cieni"
 	};
-	private static final String[] CHAOS = {
+	public static final String[] CHAOS = {
 			"zbroja chaosu", "hełm chaosu", "płaszcz chaosu",
 			"spodnie chaosu", "buty chaosu", "tarcza chaosu"
 	};
-	private static final String[] GOLDEN = {
+	public static final String[] GOLDEN = {
 			"złota zbroja", "złoty hełm", "złoty płaszcz", "złote spodnie",
 			"złote buty", "złota tarcza", "złote rękawice", "złoty pas"
 	};
-	private static final String[] BLACK = {
+	public static final String[] BLACK = {
 			"czarna zbroja", "czarny hełm", "czarny płaszcz", "czarne spodnie",
 			"czarne buty", "czarna tarcza", "czarne rękawice", "czarny pas"
 	};
@@ -83,12 +83,12 @@ public class ItemSetsAchievementFactory extends AbstractAchievementFactory {
 			"zbroja z mithrilu", "hełm z mithrilu", "spodnie z mithrilu",
 			"rękawice z mithrilu", "pas z mithrilu", "buty z mithrilu"
 	};
-	private static final String[] MAINIO = {
+	public static final String[] MAINIO = {
 			"zbroja mainiocyjska", "hełm mainiocyjski", "płaszcz mainiocyjski",
 			"spodnie mainiocyjskie", "buty mainiocyjskie", "tarcza mainiocyjska",
 			"rękawice mainiocyjskie"
 	};
-	private static final String[] XENO = {
+	public static final String[] XENO = {
 			"zbroja xenocyjska", "hełm xenocyjski", "płaszcz xenocyjski",
 			"spodnie xenocyjskie", "buty xenocyjskie", "tarcza xenocyjska",
 			"rękawice xenocyjskie"
@@ -103,11 +103,11 @@ public class ItemSetsAchievementFactory extends AbstractAchievementFactory {
 			"rękawice wampirze", "buty wampirze", "pas wampirzy",
 			"hełm wampirzy"
 	};
-	private static final String[] ROYAL = {
+	public static final String[] ROYAL = {
 			"zbroja monarchistyczna", "hełm monarchistyczny", "płaszcz monarchistyczny",
 			"spodnie monarchistyczne", "buty monarchistyczne", "tarcza monarchistyczna"
 	};
-	private static final String[] MAGIC = {
+	public static final String[] MAGIC = {
 			"magiczna zbroja płytowa", "magiczny hełm kolczy", "magiczny płaszcz",
 			"magiczne spodnie płytowe", "magiczne buty płytowe", "magiczna tarcza płytowa"
 	};
@@ -132,7 +132,7 @@ public class ItemSetsAchievementFactory extends AbstractAchievementFactory {
 			"pas barbarzyńcy", "płaszcz barbarzyńcy", "rękawice barbarzyńcy"
 	};
 
-	private static final String[] DRAGON_CLOAKS = {
+	public static final String[] DRAGON_CLOAKS = {
 			"czarny płaszcz smoczy", "lazurowy płaszcz smoczy", "kościany płaszcz smoczy",
 			"szmaragdowy płaszcz smoczy", "karmazynowy płaszcz smoczy"
 	};
