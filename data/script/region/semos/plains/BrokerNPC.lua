@@ -1,6 +1,6 @@
 --[[
  ***************************************************************************
- *                       Copyright © 2022 - Arianne                        *
+ *                    Copyright © 2022-2023 - Arianne                      *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -31,8 +31,6 @@ if game:setZone(zone_name) then
 	broker:addQuest("W niczym nie potrzebuję pomocy poza zbieraniem materiałów, " ..
 		"aby zarabiać na sklepach w Faimouni.")
 	broker:addHelp("Kupię od ciebie pewne rzeczy po bardzo rozsądnej cenie... dla mnie.")
-
-	merchants:addBuyer(broker, merchants.shops:get("brokermisc"), true)
 
 	game:add(broker)
 else
