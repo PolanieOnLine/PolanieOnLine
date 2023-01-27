@@ -35,6 +35,8 @@ import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.NPCList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.condition.AndCondition;
+import games.stendhal.server.entity.npc.condition.HasEarnedTotalMoneyCondition;
+import games.stendhal.server.entity.npc.condition.HasSpentMoneyCondition;
 import games.stendhal.server.entity.player.Player;
 
 /**
@@ -67,6 +69,9 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 	public static final String ID_MARKSMAN = "sell.item.marksman";
 	public static final String ID_FURTRADER = "sell.item.furtrader";
 
+	public static final String ID_SELL_20K = "commerce.sell.20k";
+	public static final String ID_BUY_ALL = "commerce.buy.all";
+
 	public static final String[] ITEMS_HAPPY_HOUR = { "sok z chmielu", "napój z winogron" };
 	public static final String[] ITEMS_HEALTH_IMPORTANT = { "mały eliksir", "eliksir", "duży eliksir", "wielki eliksir" };
 	public static final String[] ITEMS_VANILLA_OR_CHOCOLATE = { "shake waniliowy", "shake czekoladowy" };
@@ -98,7 +103,7 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 	public static final String[] ITEMS_BARS = { "sztabka złota", "sztabka mithrilu" };
 
 	// NPCs involved in "Community Supporter"
-	private static final Map<String, Integer> TRADE_ALL_AMOUNTS = new HashMap<String, Integer>() {{
+	public static final Map<String, Integer> TRADE_ALL_AMOUNTS = new HashMap<String, Integer>() {{
 		put("Adena", 500);
 		put("Akutagawa", 1000);
 		put("Aldrin", 2000);
@@ -344,9 +349,16 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 				new SoldNumberOfCondition("futro", 300)));
 
 		achievements.add(createAchievement(
-				"commerce.buy.all", "Wspierający Społeczność", "Wydał swoje pieniądze u różnych handlarzy na świecie",
+				ID_SELL_20K, "Podróżujący Handlarz",
+				"Zarobił 20,000 pieniędzy na sprzedaży u NPC",
+				Achievement.EASY_BASE_SCORE, true,
+				new HasEarnedTotalMoneyCondition(20000)));
+
+		achievements.add(createAchievement(
+				ID_BUY_ALL, "Wspierający Społeczność",
+				"Wydał swoje pieniądze u różnych handlarzy na świecie",
 				Achievement.MEDIUM_BASE_SCORE, true,
-				new HasSpentAmountAtSellers()));
+				new HasSpentMoneyCondition(TRADE_ALL_AMOUNTS)));
 
 		SingletonRepository.getCachedActionManager().register(new Runnable() {
 			public void run() {
@@ -389,20 +401,6 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 		});
 
 		return achievements;
-	}
-
-	private static class HasSpentAmountAtSellers implements ChatCondition {
-		@Override
-		public boolean fire(final Player player, final Sentence sentence, final Entity npc) {
-			for (final String name: TRADE_ALL_AMOUNTS.keySet()) {
-				if (!player.has("npc_purchases", name) || !(player.getInt("npc_purchases", name)
-						>= TRADE_ALL_AMOUNTS.get(name))) {
-					return false;
-				}
-			}
-
-			return true;
-		}
 	}
 
 	private static class RespondToPurchaseAmountInquiry implements ChatAction {
