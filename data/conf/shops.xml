@@ -1057,7 +1057,7 @@
 		<item name="bilet na mecz" price="300" />
 		<item name="piłka" price="550" />
 
-		<merchant name="Kibic" configure="true" offer="false"/>
+		<merchant name="Kibic" configure="true" offer="true"/>
 	</shop>
 
 	<!-- Krasnolud sprzedaje: -->
@@ -1065,7 +1065,7 @@
 		<item name="kilof" price="60" />
 		<item name="łopata" price="60" />
 
-		<merchant name="Krasnolud" configure="true" offer="false"/>
+		<merchant name="Krasnolud" configure="true" offer="true"/>
 	</shop>
 
 	<!-- Elwirka skupuje: -->
