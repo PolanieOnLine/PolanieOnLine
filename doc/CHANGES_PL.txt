@@ -11,7 +11,7 @@ Changelog
 	- Racirad
 	- Chciwurak
 	- Wszebor
-- Dodano nowe osiągnięcia: (8)
+- Dodano nowe osiągnięcia: (9)
 	- "Leśni Bandyci"
 	- "Gromadka Bandy"
 	- "Życie Poza Nami"
@@ -20,6 +20,9 @@ Changelog
 	- "Zamiłowanie Kwiatkami"
 	- "Wyzwanie Przyjęte"
 	- "Współmałżonkowie"
+	- "Podróżujący Handlarz"
+- Dodano nowy przedmiot: (1)
+	- zatruty bicz
 - Dodano nowe zadanie u Racirada, Chciwuraka i Wszebora
 - Skrócono czas ponownego przyjęcia zadania u Wielkoluda z 14 dni do 7 dni
 - Skrócono czas ponownego przyjęcia zadania u gazdy Jędrzeja z 14 dni do 3 dni
@@ -30,6 +33,7 @@ Changelog
 
 *kod*
 - Dodano nowy skrypt CommerceExchange.class dla administratorów
+- Bronie bliskiego starcia mogą mięć większy zasięg ataku
 
 
 1.35
