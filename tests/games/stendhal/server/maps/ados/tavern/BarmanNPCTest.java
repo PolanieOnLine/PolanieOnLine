@@ -56,6 +56,7 @@ public class BarmanNPCTest {
 		StendhalRPZone testzone = new StendhalRPZone("dalesTestZone");
 		zoneconfig.configureZone(testzone , null);
 		SpeakerNPC dale = SingletonRepository.getNPCList().get("dale");
+
 		// configure Dale's shop
 		SingletonRepository.getShopList().configureNPC("Dale", "adostavernbarman", true);
 

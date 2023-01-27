@@ -137,7 +137,6 @@
 		<item name="skórzane spodnie" price="35" />
 
 		<merchant name="Xin Blanca" configure="true" offer="false"/>
-		<merchant name="Michał" configure="true" offer="false"/>
 	</shop>
 	<!-- Xin Blanca kupuje: -->
 	<shop name="buystuff" type="buy">
@@ -870,7 +869,7 @@
 	</shop>
 
 	<!-- Dale sprzedaje: -->
-	<shop name="adostavernbarmaid" type="sell">
+	<shop name="adostavernbarman" type="sell">
 		<item name="napój z winogron" price="20" />
 		<item name="napój z oliwką" price="100" />
 		<item name="tabliczka czekolady" price="100" />
@@ -1265,7 +1264,7 @@
 		<item name="magia mroku" price="12"/>
 		<item name="magia światła" price="14"/>
 
-		<merchant name="Walery" configure="true" offer="false"/>
+		<merchant name="Jan Kuglarz" configure="true" offer="false"/>
 	</shop>
 
 	<!-- Winicjusz sprzedaje: -->

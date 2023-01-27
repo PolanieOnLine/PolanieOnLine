@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                 (C) Copyright 2003-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -16,22 +16,16 @@ import java.util.Map;
 
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
-import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 
 /**
  * @author Legolas
  */
 public class JuhasNPC implements ZoneConfigurator {
-	private final ShopList shops = SingletonRepository.getShopList();
-
 	/**
 	 * Configure a zone.
 	 *
@@ -50,8 +44,6 @@ public class JuhasNPC implements ZoneConfigurator {
 				addGreeting("Pozdrawiam.");
 				addJob("Sprzedaję #'magiczne zwoje'. Zapytaj mnie o #ofertę.");
 				addHelp("Sprzedaję #zwoje, które mogą uratować Tobie życie.");
-
-				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("juhas")));
 
 				add(ConversationStates.ATTENDING, ConversationPhrases.QUEST_MESSAGES,
 						null,
