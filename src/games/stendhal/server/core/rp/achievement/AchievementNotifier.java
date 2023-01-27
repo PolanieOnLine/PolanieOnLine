@@ -56,6 +56,8 @@ public final class AchievementNotifier {
 	final private Map<Category, List<Achievement>> achievements;
 	final private Map<String, Integer> identifiersToIds;
 	public static final String REACHED_SLOT = "reached_achievements";
+	
+	private static int achievementsCount = 0;
 
 	/**
 	 * singleton accessor method
@@ -440,10 +442,9 @@ public final class AchievementNotifier {
 	 * @param achievement
 	 */
 	private void notifyPlayerAboutReachedAchievement(final Player player, final Achievement achievement) {
-		final String getReached = player.getQuest(REACHED_SLOT, 0);
-		int achievementsCount = Integer.parseInt(getReached);
-		if (getReached == null) {
-			achievementsCount = 0;
+		if (player.getQuest(REACHED_SLOT) != null) {
+			final String getReached = player.getQuest(REACHED_SLOT, 0);
+			achievementsCount = Integer.parseInt(getReached);
 		}
 
 		if (achievement.isActive()) {
