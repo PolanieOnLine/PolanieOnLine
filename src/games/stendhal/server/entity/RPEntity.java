@@ -2529,7 +2529,7 @@ public abstract class RPEntity extends CombatEntity {
 	 *         left hand.
 	 */
 	public Item getWeapon() {
-		final String[] weaponsClasses = { "club", "sword", "dagger", "axe", "ranged", "missile", "wand" };
+		final String[] weaponsClasses = { "club", "sword", "dagger", "axe", "ranged", "missile", "wand", "whip" };
 
 		for (final String weaponClass : weaponsClasses) {
 			final String[] slots = { "lhand", "rhand" };
@@ -2585,14 +2585,16 @@ public abstract class RPEntity extends CombatEntity {
 	 *         one in its left hand.
 	 */
 	public Item getRangeWeapon() {
-		return getRangeWeapon("ranged");
+		for (final Item weapon : getWeapons()) {
+			if (weapon.has("range")) {
+				return weapon;
+			}
+		}
+
+		return null;
 	}
 
-	public Item getWandWeapon() {
-		return getRangeWeapon("wand");
-	}
-
-	private Item getRangeWeapon(String weaponType) {
+	private Item getRangedWeaponType(String weaponType) {
 		for (final Item weapon : getWeapons()) {
 			if (weapon.isOfClass(weaponType)) {
 				return weapon;
@@ -2600,6 +2602,14 @@ public abstract class RPEntity extends CombatEntity {
 		}
 
 		return null;
+	}
+
+	public Item getProjectileLauncher() {
+		return getRangedWeaponType("ranged");
+	}
+
+	public Item getWandWeapon() {
+		return getRangedWeaponType("wand");
 	}
 
 	/**
@@ -3135,7 +3145,10 @@ public abstract class RPEntity extends CombatEntity {
 			return maxRange;
 		}
 
-		if (item != null && amm != null && amm.getQuantity() > 0) {
+		if (item != null && !item.isNonMeleeWeapon()) {
+			// long reaching melee weapons
+			maxRange = item.getInt("range");
+		} else if (item != null && amm != null && amm.getQuantity() > 0) {
 			int itemRange = item.getInt("range");
 			if (item.isMaxImproved()) {
 				itemRange += 1;
@@ -3329,6 +3342,13 @@ public abstract class RPEntity extends CombatEntity {
 
 		defender.rememberAttacker(this);
 
+		// Weapon for the use in the attack event
+		Item attackWeapon = getWeapon();
+		String weaponName = null;
+		if (attackWeapon != null) {
+			weaponName = attackWeapon.getWeaponType();
+		}
+
 		final int maxRange = getMaxRangeForArcher();
 		/*
 		 * The second part (damage type check) ensures that normal archers need
@@ -3337,7 +3357,8 @@ public abstract class RPEntity extends CombatEntity {
 		 * powers (yes, it's a bit of a hack).
 		 */
 		boolean isRanged = ((maxRange > 0) && canDoRangeAttack(defender, maxRange))
-			&& (((getDamageType() == getRangedDamageType()) || squaredDistance(defender) > 0));
+				&& (((getDamageType() == getRangedDamageType()) || squaredDistance(defender) > 0))
+				&& attackWeapon.isNonMeleeWeapon();
 
 		Nature nature;
 		final float itemAtk;
@@ -3353,13 +3374,6 @@ public abstract class RPEntity extends CombatEntity {
 		final List<StatusAttacker> allStatusAttackers = getAllStatusAttackers();
 		for (StatusAttacker statusAttacker : allStatusAttackers) {
 			statusAttacker.onAttackAttempt(defender, this);
-		}
-
-		// Weapon for the use in the attack event
-		Item attackWeapon = getWeapon();
-		String weaponName = null;
-		if (attackWeapon != null) {
-			weaponName = attackWeapon.getWeaponType();
 		}
 
 		if (this.canHit(defender)) {

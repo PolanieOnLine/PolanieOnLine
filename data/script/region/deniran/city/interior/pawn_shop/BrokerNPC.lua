@@ -1,6 +1,6 @@
 --[[
  ***************************************************************************
- *                       Copyright © 2020 - Arianne                        *
+ *                    Copyright © 2020-2023 - Arianne                      *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -15,7 +15,6 @@
 
 local brokerName = "Sawyer"
 local broker = nil
-local shopName = "deniranpawnbuy"
 
 local function initNPC()
 	broker = entities:createSpeakerNPC(brokerName)
@@ -24,7 +23,7 @@ local function initNPC()
 	broker:setOutfitColor("eyes", 0x0000ff)
 	broker:setPosition(18, 5)
 	broker:setIdleDirection(Direction.LEFT)
-	broker:setDescription("Oto " .. brokerName ..". Jest właścicielem oraz prowadzi lombard.")
+	broker:setDescription("Oto " .. brokerName ..". Wygląda na właściciela lombardu, który aktualnie prowadzi.")
 
 	-- dialogue
 	broker:addGreeting("Witamy w sklepie lombardowym w Deniran.")
@@ -49,10 +48,8 @@ local function initNPC()
 end
 
 local function initShop()
-	merchants:addBuyer(broker, merchants.shops:get(shopName), false)
-
 	-- shop sign
-	local sign = entities:createShopSign(shopName, "Lombard w Deniran", brokerName .. " skupuje następujące przedmioty", false)
+	local sign = entities:createShopSign("deniranpawnbuy", "Lombard w Deniran", brokerName .. " skupuje następujące przedmioty", false)
 	sign:setEntityClass("blackboard")
 	sign:setPosition(18, 8)
 

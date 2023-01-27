@@ -543,6 +543,7 @@
 		<attributes>
 			<def value="18"/>
 			<min_level value="20"/>
+			<statusresist slots="lhand;rhand;" type="poisoned" value="0.5"/>
 		</attributes>
 		<weight value="12.0"/>
 		<value value="1512"/>

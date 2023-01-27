@@ -179,7 +179,14 @@ public enum NotificationType {
 		public Color getColor() {
 			return COLOR_WARNING;
 		}
+	},
+	EMOJI("emoji") {
+		@Override
+		public String getStyleDescription() {
+			return getMnemonic();
+		}
 	};
+
 	public static final Color COLOR_CLIENT = Color.gray;
 
 	public static final Color COLOR_ERROR = new Color(255, 80, 80);

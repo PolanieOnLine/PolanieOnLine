@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2018 - Stendhal                    *
+ *                 (C) Copyright 2018-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -18,23 +18,17 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
-import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
-import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
-import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 
 /**
  * @author KarajuSs
  */
 public class BlacksmithNPC implements ZoneConfigurator {
-	private final ShopList shops = SingletonRepository.getShopList();
-
 	/**
 	 * Configure a zone.
 	 *
@@ -63,7 +57,6 @@ public class BlacksmithNPC implements ZoneConfigurator {
 			protected void createDialog() {
 				addJob("Specjalizuje się w przetapianiu miedzi, ale również możesz o ode mnie otrzymać dobry sprzęt!");
 				addOffer("Sprzedaję: toporek 25, topór jednoręczny 35, topór 50, pyrlik 90, pordzewiała kosa 210, misa do płukania złota 270.");
-				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("sellsamson")), false);
 				addGoodbye();
 
 				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();

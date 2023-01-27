@@ -660,11 +660,10 @@ Południe: tereny Tatrzańskie
 			</implementation>
 		</entity>
 		<entity x="64" y="64">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
 				<parameter name="sound">loop/wind-01</parameter>
-				<parameter name="min">15</parameter>
-				<parameter name="max">45</parameter>
 				<parameter name="radius">64</parameter>
+				<parameter name="volume">15</parameter>
 			</implementation>
 		</entity>
 
@@ -726,11 +725,10 @@ Południe: Zakopane
 			</implementation>
 		</entity>
 		<entity x="64" y="64">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
 				<parameter name="sound">loop/wind-01</parameter>
-				<parameter name="min">15</parameter>
-				<parameter name="max">45</parameter>
 				<parameter name="radius">64</parameter>
+				<parameter name="volume">15</parameter>
 			</implementation>
 		</entity>
 	</zone>
@@ -758,11 +756,10 @@ Południe: Zakopane
 			</implementation>
 		</entity>
 		<entity x="64" y="64">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
 				<parameter name="sound">loop/wind-01</parameter>
-				<parameter name="min">15</parameter>
-				<parameter name="max">45</parameter>
 				<parameter name="radius">64</parameter>
+				<parameter name="volume">15</parameter>
 			</implementation>
 		</entity>
 
@@ -1485,7 +1482,7 @@ Południe: Zakopane
 		<configurator class-name="games.stendhal.server.maps.krakow.tavern.BarmankaNPC"/>
 		<configurator class-name="games.stendhal.server.maps.krakow.tavern.KarczmarkaNPC"/>
 		<configurator class-name="games.stendhal.server.maps.krakow.tavern.KuglarzNPC"/>
-		<configurator class-name="games.stendhal.server.maps.krakow.tavern.MerchandNPC"/>
+		<configurator class-name="games.stendhal.server.maps.krakow.tavern.MerchantNPC"/>
 
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">

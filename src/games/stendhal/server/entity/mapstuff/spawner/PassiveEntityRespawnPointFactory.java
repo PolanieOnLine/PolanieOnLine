@@ -206,6 +206,10 @@ public class PassiveEntityRespawnPointFactory {
 			passiveEntityrespawnPoint = new PassiveEntityRespawnPoint("szmaragd", 6000);
 			passiveEntityrespawnPoint.setDescription("Oto ślad, że występuje tutaj cenny szmaragdy.");
 			break;
+		case 3:
+			passiveEntityrespawnPoint = new PassiveEntityRespawnPoint("ametyst", 6000);
+			passiveEntityrespawnPoint.setDescription("Widzisz pierwiastki śladowe genialnego ametystu.");
+			break;
 		default:
 			passiveEntityrespawnPoint = null;
 			break;

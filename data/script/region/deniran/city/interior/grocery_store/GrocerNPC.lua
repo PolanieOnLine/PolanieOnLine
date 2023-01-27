@@ -1,6 +1,6 @@
 --[[
  ***************************************************************************
- *                       Copyright © 2020 - Arianne                        *
+ *                    Copyright © 2020-2023 - Arianne                      *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -27,27 +27,10 @@ local function addNPC()
 
 	grocer:addGreeting()
 	grocer:addGoodbye()
-  grocer:addJob("Niedawno otwarłem sklep z różnymi produktami w mieście Deniran.")
+	grocer:addJob("Niedawno otwarłem sklep z różnymi produktami w mieście Deniran.")
 	grocer:addOffer("Proszę spójrz na tablicę, by sprawdzić przedmioty jakie mam na sprzedaż oraz ich cenę.")
 	grocer:addHelp(grocer:getReply("offer"))
 	grocer:addQuest("Wybacz, ale nie potrzebuję niczego w czym mógłbyś mi pomóc na tę chwilę.")
-
-	local sellPrices = {
-    {"oliwa z oliwek", 135},
-    {"ocet", 135},
-    {"latarenka", 100},
-	}
-	-- FIXME: not working for Lua table as argument
-	--merchants:addSeller(grocer, sellPrices, false)
-
-	local shopName = "denirangrocerysell"
-
-	-- add to shop list
-	for _, item in pairs(sellPrices) do
-		merchants.shops:add(shopName, item[1], item[2])
-	end
-
-	merchants:addSeller(grocer, merchants.shops:get(shopName), false)
 
 	game:add(grocer)
 end

@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2019 - Stendhal                    *
+ *                 (C) Copyright 2019-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -17,18 +17,14 @@ import java.util.List;
 import java.util.Map;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
-import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.SayTextAction;
 import games.stendhal.server.entity.npc.action.SetQuestAction;
-import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotCompletedCondition;
@@ -37,8 +33,6 @@ import games.stendhal.server.entity.npc.condition.QuestNotCompletedCondition;
  * @author zekkeq
  */
 public class ArthurNPC implements ZoneConfigurator {
-	private final ShopList shops = SingletonRepository.getShopList();
-
     @Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
@@ -49,7 +43,6 @@ public class ArthurNPC implements ZoneConfigurator {
 
 			@Override
 			public void createDialog() {
-				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("arthur")));
 				addGreeting(null,new SayTextAction("Witaj ponownie [name]. W czym mogę #pomóc tym razem?"));
 
 				add(ConversationStates.IDLE, 

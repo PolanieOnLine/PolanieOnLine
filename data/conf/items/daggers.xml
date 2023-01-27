@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="stendhal ../equipment.xsd ">
+<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../weapons.xsd ">
 
 	<item name="drewniany sztylecik">
 		<type class="dagger" subclass="wooden_dagger" tileid="-1"/>
@@ -7,9 +8,9 @@
 		<implementation class-name="games.stendhal.server.entity.item.BreakableItem"/>
 		<attributes>
 			<atk value="1"/>
-			<rate value="1"/>
 			<durability value="550"/>
 			<min_level value="0"/>
+			<rate value="1"/>
 		</attributes>
 		<weight value="0.1"/>
 		<value value="1"/>
@@ -29,12 +30,12 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="6"/>
-			<rate value="2"/>
 			<min_level value="50"/>
+			<damagetype value="ice"/>
+			<rate value="2"/>
 		</attributes>
 		<weight value="0.2"/>
 		<value value="5400"/>
-		<damage type="ice"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -51,9 +52,9 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="7"/>
-			<rate value="2"/>
 			<lifesteal value="0.1"/>
 			<min_level value="150"/>
+			<rate value="2"/>
 		</attributes>
 		<weight value="1"/>
 		<value value="10400"/>
@@ -73,8 +74,8 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="8"/>
-			<rate value="3"/>
 			<min_level value="3"/>
+			<rate value="3"/>
 		</attributes>
 		<weight value="0.2"/>
 		<value value="8533"/>
@@ -94,14 +95,14 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="5"/>
-			<rate value="1"/>
 			<lifesteal value="0.1"/>
 			<min_level value="250"/>
 			<max_improves value="1"/>
+			<damagetype value="light"/>
+			<rate value="1"/>
 		</attributes>
 		<weight value="0.2"/>
 		<value value="1000000"/>
-		<damage type="light"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -118,12 +119,12 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="9"/>
-			<rate value="2"/>
 			<min_level value="70"/>
+			<damagetype value="fire"/>
+			<rate value="2"/>
 		</attributes>
 		<weight value="0.2"/>
 		<value value="12800"/>
-		<damage type="fire"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -140,8 +141,8 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="7"/>
-			<rate value="3"/>
 			<min_level value="1"/>
+			<rate value="3"/>
 		</attributes>
 		<weight value="0.2"/>
 		<value value="5716"/>
@@ -161,12 +162,12 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="2"/>
-			<rate value="1"/>
 			<min_level value="50"/>
+			<damagetype value="dark"/>
+			<rate value="1"/>
 		</attributes>
 		<weight value="0.1"/>
 		<value value="6250"/>
-		<damage type="dark"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -183,12 +184,12 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="4"/>
-			<rate value="1"/>
 			<min_level value="60"/>
+			<damagetype value="dark"/>
+			<rate value="1"/>
 		</attributes>
 		<weight value="0.1"/>
 		<value value="6250"/>
-		<damage type="dark"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -205,13 +206,13 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="5"/>
-			<rate value="1"/>
 			<lifesteal value="0.1"/>
 			<min_level value="250"/>
+			<damagetype value="dark"/>
+			<rate value="1"/>
 		</attributes>
 		<weight value="0.2"/>
 		<value value="1000000"/>
-		<damage type="dark"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -228,13 +229,13 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="5"/>
-			<rate value="1"/>
 			<min_level value="100"/>
 			<max_improves value="2"/>
+			<damagetype value="dark"/>
+			<rate value="1"/>
 		</attributes>
 		<weight value="0.2"/>
 		<value value="6250"/>
-		<damage type="dark"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -251,9 +252,9 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="15"/>
-			<rate value="4"/>
 			<lifesteal value="-0.04"/>
 			<min_level value="20"/>
+			<rate value="4"/>
 		</attributes>
 		<weight value="0.2"/>
 		<value value="5400"/>
@@ -274,9 +275,9 @@
 		<attributes>
 			<atk value="8"/>
 			<def value="1"/>
-			<rate value="2"/>
 			<lifesteal value="-0.08"/>
 			<min_level value="68"/>
+			<rate value="2"/>
 		</attributes>
 		<weight value="0.2"/>
 		<value value="5400"/>
@@ -296,9 +297,9 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="3"/>
-			<rate value="3"/>
 			<min_level value="1"/>
 			<max_improves value="1"/>
+			<rate value="3"/>
 		</attributes>
 		<weight value="0.2"/>
 		<value value="5400"/>
@@ -318,14 +319,14 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="6"/>
-			<rate value="1"/>
 			<lifesteal value="0.02"/>
 			<min_level value="350"/>
 			<max_improves value="2"/>
+			<damagetype value="light"/>
+			<rate value="1"/>
 		</attributes>
 		<weight value="9.0"/>
 		<value value="457142"/>
-		<damage type="light"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -342,13 +343,13 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="8"/>
-			<rate value="2"/>
 			<min_level value="30"/>
 			<max_improves value="3"/>
+			<damagetype value="dark"/>
+			<rate value="2"/>
 		</attributes>
 		<weight value="0.2"/>
 		<value value="12800"/>
-		<damage type="dark"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -366,9 +367,9 @@
 		<attributes>
 			<atk value="4"/>
 			<def value="2"/>
-			<rate value="2"/>
 			<min_level value="55"/>
 			<max_improves value="3"/>
+			<rate value="2"/>
 		</attributes>
 		<weight value="0.1"/>
 		<value value="12345"/>
@@ -388,10 +389,10 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="6"/>
-			<rate value="3"/>
 			<lifesteal value="0.05"/>
 			<min_level value="65"/>
 			<max_improves value="2"/>
+			<rate value="3"/>
 		</attributes>
 		<weight value="0.1"/>
 		<value value="12345"/>
@@ -412,9 +413,9 @@
 		<attributes>
 			<atk value="5"/>
 			<def value="2"/>
-			<rate value="2"/>
 			<min_level value="50"/>
 			<max_improves value="1"/>
+			<rate value="2"/>
 		</attributes>
 		<weight value="0.2"/>
 		<value value="11750"/>
@@ -434,9 +435,9 @@
 		<attributes>
 			<atk value="5"/>
 			<def value="2"/>
-			<rate value="2"/>
 			<min_level value="50"/>
 			<max_improves value="1"/>
+			<rate value="2"/>
 		</attributes>
 		<weight value="0.2"/>
 		<value value="11750"/>

@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -16,23 +16,15 @@ import java.util.List;
 import java.util.Map;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
-import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
-import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
-import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 
 /**
  * Inside Semos Tavern - Level 0 (ground floor)
  */
 public class TraderNPC implements ZoneConfigurator {
-	private final ShopList shops = SingletonRepository.getShopList();
-
 	/**
 	 * Configure a zone.
 	 *
@@ -63,8 +55,6 @@ public class TraderNPC implements ZoneConfigurator {
 				addGreeting();
 				addJob("Ciii! Sprzedaję rzeczy łowcom przygód.");
 				addHelp("Kupuję i sprzedaję różne przedmioty. Zapytaj mnie jaka jest moja #oferta.");
-				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("sellstuff")), false);
-				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buystuff")), false);
 				addOffer("Spójrz na tablicę na ścianie, aby zobaczyć moje ofertę.");
 				addQuest("Porozmawiaj z Hackim Easso w kuźni. Może on będzie Cię potrzebował.");
 				addGoodbye();

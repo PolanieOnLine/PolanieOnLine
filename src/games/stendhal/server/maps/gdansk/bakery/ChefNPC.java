@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2019 - Stendhal                    *
+ *                 (C) Copyright 2018-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,64 +11,48 @@
  ***************************************************************************/
 package games.stendhal.server.maps.gdansk.bakery;
 
-import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.core.pathfinder.FixedPath;
-import games.stendhal.server.core.pathfinder.Node;
-import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
-import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
-import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
-
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import games.stendhal.server.core.config.ZoneConfigurator;
+import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.core.pathfinder.FixedPath;
+import games.stendhal.server.core.pathfinder.Node;
+import games.stendhal.server.entity.npc.SpeakerNPC;
+import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
+import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
+
 /**
  * @author daniel @edit by KarajuSs
  * @see games.stendhal.server.maps.quests.PizzaDelivery
  */
 public class ChefNPC implements ZoneConfigurator  {
-
 	@Override
-	public void configureZone(StendhalRPZone zone,
-			Map<String, String> attributes) {
+	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
 		buildNPC(zone);
 	}
 
 	private void buildNPC(StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Ernest") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
-				// to the well
 				nodes.add(new Node(15,3));
-				// to a barrel
 				nodes.add(new Node(15,8));
-				// to the baguette on the table
 				nodes.add(new Node(13,8));
-				// around the table
 				nodes.add(new Node(13,10));
 				nodes.add(new Node(10,10));
-				// to the sink
 				nodes.add(new Node(10,12));
-				// to the pizza/cake/whatever
 				nodes.add(new Node(7,12));
 				nodes.add(new Node(7,10));
-				// to the pot
 				nodes.add(new Node(3,10));
-				// towards the oven
 				nodes.add(new Node(3,4));
 				nodes.add(new Node(5,4));
-				// to the oven
 				nodes.add(new Node(5,3));
-				// one step back
 				nodes.add(new Node(5,4));
-				// towards the well
 				nodes.add(new Node(15,4));
 				setPath(new FixedPath(nodes, true));
 			}
@@ -86,10 +70,6 @@ public class ChefNPC implements ZoneConfigurator  {
 				addReply(Arrays.asList("donut", "donuts", "pączek", "pączki"),
 				"Moje pączki jak to wielu klientów mówi są genialne. Jeśli chcesz, abym zrobił jednego dla Ciebie powiedz #'upiecz <ilość> pączek'.");
 				addOffer("Moja #pizza potrzebuje sera, a my nie mamy żadnych zapasów. Kupię od Ciebie ser jeżeli chcesz #sprzedać.");
-				final Map<String, Integer> offers = new TreeMap<String, Integer>();
-				offers.put("ser", 5);
-				new BuyerAdder().addBuyer(this, new BuyerBehaviour(offers), false);
-
 				addGoodbye();
 
 				// Leander makes sandwiches if you bring him bread, cheese, and ham.

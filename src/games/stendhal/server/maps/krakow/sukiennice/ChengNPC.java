@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                 (C) Copyright 2003-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -9,28 +9,16 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-// Base on ../games/stendhal/server/maps/ados/barracks/BuyerNPC.java
 package games.stendhal.server.maps.krakow.sukiennice;
 
 import java.util.Map;
 
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
 
-/**
- * Builds an NPC to buy previously un bought armor.
- *
- * @author kymara
- */
 public class ChengNPC implements ZoneConfigurator {
-	private final ShopList shops = SingletonRepository.getShopList();
-
 	/**
 	 * Configure a zone.
 	 *
@@ -49,9 +37,8 @@ public class ChengNPC implements ZoneConfigurator {
 				addGreeting("Witaj tubylcze.");
 				addJob("Poszukuję rzadkich kamieni, ładnych wyrobów jubilerskich. Możesz coś #zaoferować.");
 				addHelp("Skupuję rzadkie kamienie i wyroby jubilerskie, jeżeli coś masz to #zaoferuj mi to.");
-				addOffer("Zaglądnij do księgi tam znajdziesz moją ofertę.");
+				addOffer("Zaglądnij do księgi, tam znajdziesz moją ofertę.");
 				addQuest("Hm... opowiedz mi o waszych zwyczajach (regulaminie PolanieOnLine).");
-				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buycheng")), false);
 				addGoodbye("Do widzenia.");
 			}
 		};

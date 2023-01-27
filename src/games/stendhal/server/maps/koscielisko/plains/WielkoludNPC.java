@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                 (C) Copyright 2003-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -16,21 +16,12 @@ import java.util.List;
 import java.util.Map;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
-import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
 
-/**
- * @author ?
- */
 public class WielkoludNPC implements ZoneConfigurator {
-	private final ShopList shops = SingletonRepository.getShopList();
-
 	/**
 	 * Configure a zone.
 	 *
@@ -44,7 +35,6 @@ public class WielkoludNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Wielkolud") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -73,7 +63,6 @@ public class WielkoludNPC implements ZoneConfigurator {
 				addJob("Poszukuję kogoś kto rozprawi się z tutejszymi #potworami.");
 				addReply("potworami", "Biega tu masa pokutników, a i lawiny kamienne nieraz przygniotły palce u mych stóp. Jeżeli chcesz mi pomóc to przyjmij moje #zadanie.");
 				addHelp("Skupuję różne przedmioty. Jeżeli masz coś to #zaoferuj mi to, poza tym mam dla ciebie małe #zadanie.");
-				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buyrareitems")), true);
 				addGoodbye("Do widzenia kolego.");
 			}
 		};

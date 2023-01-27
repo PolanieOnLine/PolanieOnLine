@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="stendhal ../equipment.xsd ">
+<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../weapons.xsd ">
 
 	<item name="młot chaosu">
 		<type class="club" subclass="chaos_hammer" tileid="-1"/>
@@ -7,9 +8,9 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="42"/>
-			<rate value="8"/>
 			<lifesteal value="0.3"/>
 			<min_level value="80"/>
+			<rate value="8"/>
 		</attributes>
 		<weight value="8.0"/>
 		<value value="463050"/>
@@ -29,10 +30,10 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="6"/>
-			<rate value="4"/>
 			<undroppableondeath value="1"/>
 			<min_level value="0"/>
 			<max_improves value="2"/>
+			<rate value="4"/>
 		</attributes>
 		<weight value="2.0"/>
 		<value value="2700"/>
@@ -52,10 +53,10 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="48"/>
-			<rate value="7"/>
 			<lifesteal value="-0.1"/>
 			<min_level value="50"/>
 			<max_improves value="2"/>
+			<rate value="7"/>
 		</attributes>
 		<weight value="8.0"/>
 		<value value="691200"/>
@@ -75,9 +76,9 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="20"/>
-			<rate value="7"/>
 			<min_level value="3"/>
 			<max_improves value="3"/>
+			<rate value="7"/>
 		</attributes>
 		<weight value="8.0"/>
 		<value value="48992"/>
@@ -97,8 +98,8 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="19"/>
-			<rate value="6"/>
 			<min_level value="3"/>
+			<rate value="6"/>
 		</attributes>
 		<weight value="8.0"/>
 		<value value="48992"/>
@@ -118,8 +119,8 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="39"/>
-			<rate value="8"/>
 			<min_level value="15"/>
+			<rate value="8"/>
 		</attributes>
 		<weight value="8.0"/>
 		<value value="259200"/>
@@ -139,12 +140,12 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="26"/>
-			<rate value="5"/>
 			<min_level value="5"/>
+			<damagetype value="light"/>
+			<rate value="5"/>
 		</attributes>
 		<weight value="8.0"/>
 		<value value="66550"/>
-		<damage type="light"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -161,8 +162,8 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="31"/>
-			<rate value="9"/>
 			<min_level value="10"/>
+			<rate value="9"/>
 		</attributes>
 		<weight value="8.0"/>
 		<value value="165505"/>
@@ -182,13 +183,13 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="45"/>
-			<rate value="7"/>
 			<min_level value="60"/>
 			<max_improves value="5"/>
+			<damagetype value="ice"/>
+			<rate value="7"/>
 		</attributes>
 		<weight value="8.0"/>
 		<value value="455625"/>
-		<damage type="ice"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -205,8 +206,8 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="16"/>
-			<rate value="6"/>
 			<min_level value="5"/>
+			<rate value="6"/>
 		</attributes>
 		<weight value="8.0"/>
 		<value value="34133"/>
@@ -226,12 +227,12 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="25"/>
-			<rate value="7"/>
 			<min_level value="13"/>
+			<damagetype value="light"/>
+			<rate value="7"/>
 		</attributes>
 		<weight value="8.0"/>
 		<value value="111607"/>
-		<damage type="light"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -268,12 +269,12 @@
 		<type class="club" subclass="rod_of_the_gm" tileid="-1"/>
 		<description>Oto rózga GM. Jest ona zarezerwowana dla tych którzy posiadają specjalne moce. Bądź ostrożny, aby nie dostała się ona w niepowołane ręce.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<unattainable>true</unattainable>
 		<attributes>
 			<atk value="100"/>
 			<def value="100"/>
-			<rate value="2"/>
-			<unattainable>true</unattainable>
 			<min_level value="0"/>
+			<rate value="2"/>
 		</attributes>
 		<weight value="0.01"/>
 		<value value="10000000"/>
@@ -294,14 +295,14 @@
 		<attributes>
 			<atk value="22"/>
 			<def value="2"/>
-			<rate value="5"/>
 			<lifesteal value="0.05"/>
 			<min_level value="8"/>
 			<max_improves value="1"/>
+			<damagetype value="dark"/>
+			<rate value="5"/>
 		</attributes>
 		<weight value="8.0"/>
 		<value value="76057"/>
-		<damage type="dark"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -319,8 +320,8 @@
 		<attributes>
 			<atk value="2"/>
 			<def value="1"/>
-			<rate value="2"/>
 			<min_level value="0"/>
+			<rate value="2"/>
 		</attributes>
 		<weight value="4.0"/>
 		<value value="7290"/>
@@ -340,8 +341,8 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="40"/>
-			<rate value="6"/>
 			<min_level value="120"/>
+			<rate value="6"/>
 		</attributes>
 		<weight value="2.0"/>
 		<value value="533333"/>
@@ -361,13 +362,13 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="54"/>
-			<rate value="8"/>
 			<min_level value="90"/>
 			<max_improves value="6"/>
+			<damagetype value="fire"/>
+			<rate value="8"/>
 		</attributes>
 		<weight value="8.0"/>
 		<value value="614400"/>
-		<damage type="fire"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -384,9 +385,9 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="38"/>
-			<rate value="8"/>
 			<min_level value="35"/>
 			<max_improves value="2"/>
+			<rate value="8"/>
 		</attributes>
 		<weight value="8.0"/>
 		<value value="304844"/>

@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                 (C) Copyright 2003-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -29,7 +29,6 @@ import games.stendhal.server.entity.npc.behaviour.adder.FreeHealerAdder;
  * @author Legols
  */
 public class GazdzinaJadzkaNPC implements ZoneConfigurator {
-
 	/**
 	 * Configure a zone.
 	 *
@@ -43,11 +42,9 @@ public class GazdzinaJadzkaNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Gaździna Jadźka") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
-				// walks along the aqueduct path, roughly
 				nodes.add(new Node(20, 10));
 				nodes.add(new Node(34, 10));
 				setPath(new FixedPath(nodes, true));

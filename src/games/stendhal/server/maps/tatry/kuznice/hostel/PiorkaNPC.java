@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2018 - Stendhal                    *
+ *                 (C) Copyright 2018-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -16,21 +16,15 @@ import java.util.List;
 import java.util.Map;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
-import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
 
 /**
  * @author KarajuSs
  */
 public class PiorkaNPC implements ZoneConfigurator {
-	private final ShopList shops = SingletonRepository.getShopList();
-
 	/**
 	 * Configure a zone.
 	 *
@@ -44,7 +38,6 @@ public class PiorkaNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Kelas") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -60,7 +53,6 @@ public class PiorkaNPC implements ZoneConfigurator {
 				addGreeting();
 				addJob("Kolekcjonuje różne piórka.");
 				addOffer("Ja dla Ciebie nie mam nic do zaoferowania, ale jeżeli masz jakieś piórka przy sobie to chętnie je odkupię!");
-				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buypiora")), false);
 				addGoodbye();
 			}
 		};

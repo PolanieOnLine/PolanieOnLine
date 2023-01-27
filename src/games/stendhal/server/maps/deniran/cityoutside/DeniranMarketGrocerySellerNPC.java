@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,7 +11,6 @@
  ***************************************************************************/
 package games.stendhal.server.maps.deniran.cityoutside;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -22,15 +21,12 @@ import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.CollisionAction;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.MonologueBehaviour;
-import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 
 /**
  * Provides a grocery seller in Deniran Marketplace 
  *
  * @author omero
- *
  */
 public class DeniranMarketGrocerySellerNPC implements ZoneConfigurator {
 	@Override
@@ -61,20 +57,6 @@ public class DeniranMarketGrocerySellerNPC implements ZoneConfigurator {
 								"Oraz miód też jeżeli naprawdę tego potrzebujesz..." +
 						"Jeśli chcesz coś #kupić, to powiedz mi czego potrzebujesz... " +
 						"Och, naprawdę powinienem założyć jedną z tych tablic, na których są wymienione oferty!");
-				//Offered items:
-				final Map<String, Integer> offerings = new HashMap<String, Integer>();
-                offerings.put("jajo", 5);
-                offerings.put("ziemniaki", 5);
-                offerings.put("fasola pinto", 5);
-                offerings.put("papryka habanero", 25);
-                offerings.put("oliwa z oliwek", 130);
-                offerings.put("ocet", 135);
-                offerings.put("kekik", 135);
-                offerings.put("sclaria", 135);
-                offerings.put("cukier", 250);
-                offerings.put("miód", 350);
-                new SellerAdder().addSeller(this, new SellerBehaviour(offerings), false);
-
 				addJob("Jestem tutaj, aby #oferować przedmioty spożywcze podróżnym takim jak ty... " +
 					   "Jeśli chcesz #kupić coś, powiedz mi... " +
 					   "Och, naprawdę powinienem założyć jedną z tych tablic, na których są wymienione oferty!");

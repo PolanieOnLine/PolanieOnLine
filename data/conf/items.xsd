@@ -16,12 +16,12 @@
 			<element name="type" type="Q1:typeType" />
 			<element name="description" type="string"></element>
 			<element name="implementation" type="Q1:implementation"></element>
+			<element name="unattainable" type="boolean" minOccurs="0" maxOccurs="1"></element>
 			<element name="behavior" type="Q1:behavior" minOccurs="0" maxOccurs="1"></element>
 			<element name="attributes" type="Q1:attributes"></element>
 			<element name="weight" type="Q1:attribute" minOccurs="0" maxOccurs="1" />
 			<element name="value" type="Q1:attribute" minOccurs="0" maxOccurs="1" />
 			<element name="preview" type="string" minOccurs="0" maxOccurs="1" />
-			<element name="damage" type="Q1:damage" minOccurs="0"></element>
 			<element name="susceptibility" type="Q1:susceptibility" minOccurs="0" maxOccurs="unbounded"></element>
 			<element name="equipable" type="Q1:equipable"></element>
 		</sequence>
@@ -64,7 +64,6 @@
 			<element name="quantity" type="Q1:attribute" minOccurs="0"/>
 			<element name="max_quantity" type="Q1:attribute" minOccurs="0"/>
 			<element name="regen" type="Q1:attribute" minOccurs="0" maxOccurs="unbounded"/>
-			<element name="rate" type="Q1:attribute" minOccurs="0"/>
 			<element name="lifesteal" type="Q1:attribute" minOccurs="0"/>
 			<element name="persistent" type="Q1:attribute" minOccurs="0"/>
 			<element name="life_support" type="Q1:attribute" minOccurs="0"/>
@@ -74,10 +73,8 @@
 			<element name="slot_size" type="Q1:attribute" minOccurs="0"/>
 			<element name="menu" type="Q1:attribute" minOccurs="0"/>
 			<element name="durability" type="Q1:attribute" minOccurs="0" maxOccurs="1"/>
-			<element name="status_resist" type="Q1:stresist" minOccurs="0" maxOccurs="unbounded" />
 			<element name="itemset" type="Q1:attribute" minOccurs="0"/>
 			<element name="use_sound" type="Q1:attribute" minOccurs="0" maxOccurs="1"/>
-			<element name="unattainable" type="boolean" minOccurs="0" maxOccurs="1"/>
 		</sequence>
 	</complexType>
 
@@ -104,11 +101,10 @@
 		<attribute name="type" type="string" />
 		<attribute name="value" type="decimal" />
 	</complexType>
-	
-	<complexType name="stresist">
+
+	<complexType name="statusresist">
 		<attribute name="type" type="string" />
 		<attribute name="value" type="decimal" />
 		<attribute name="slots" type="string" />
 	</complexType>
-	
 </schema>

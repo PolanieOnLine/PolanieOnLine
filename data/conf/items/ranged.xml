@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="stendhal ../equipment.xsd ">
+<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../weapons.xsd ">
 
 	<item name="proca">
 		<type class="ranged" subclass="slingshot" tileid="-1"/>
@@ -10,6 +11,7 @@
 			<ratk value="4" condition="testing.combat"/>
 			<range value="4"/>
 			<min_level value="5"/>
+			<rate value="5"/>
 		</attributes>
 		<weight value="1.0"/>
 		<value value="130"/>
@@ -32,6 +34,7 @@
 			<ratk value="12" condition="testing.combat"/>
 			<range value="3"/>
 			<min_level value="20"/>
+			<rate value="5"/>
 		</attributes>
 		<weight value="1.0"/>
 		<value value="17280"/>
@@ -53,6 +56,7 @@
 			<ratk value="14" condition="testing.combat"/>
 			<range value="4"/>
 			<min_level value="40"/>
+			<rate value="5"/>
 		</attributes>
 		<weight value="1.0"/>
 		<value value="27440"/>
@@ -74,6 +78,7 @@
 			<ratk value="15" condition="testing.combat"/>
 			<range value="5"/>
 			<min_level value="60"/>
+			<rate value="5"/>
 		</attributes>
 		<weight value="1.0"/>
 		<value value="33750"/>
@@ -95,6 +100,7 @@
 			<ratk value="17" condition="testing.combat"/>
 			<range value="3"/>
 			<min_level value="80"/>
+			<rate value="5"/>
 		</attributes>
 		<weight value="1.0"/>
 		<value value="17280"/>
@@ -116,6 +122,7 @@
 			<ratk value="21" condition="testing.combat"/>
 			<range value="4"/>
 			<min_level value="150"/>
+			<rate value="5"/>
 		</attributes>
 		<weight value="3.0"/>
 		<value value="49130"/>
@@ -137,6 +144,7 @@
 			<ratk value="23" condition="testing.combat"/>
 			<range value="5"/>
 			<min_level value="180"/>
+			<rate value="5"/>
 		</attributes>
 		<weight value="3.0"/>
 		<value value="92610"/>
@@ -158,10 +166,11 @@
 			<ratk value="30" condition="testing.combat"/>
 			<range value="5"/>
 			<min_level value="250"/>
+			<damagetype value="ice"/>
+			<rate value="5"/>
 		</attributes>
 		<weight value="1.0"/>
 		<value value="17280"/>
-		<damage type="ice"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -181,10 +190,11 @@
 			<range value="4"/>
 			<min_level value="300"/>
 			<max_improves value="5"/>
+			<damagetype value="light"/>
+			<rate value="5"/>
 		</attributes>
 		<weight value="3.0"/>
 		<value value="142610"/>
-		<damage type="light"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -204,10 +214,11 @@
 			<range value="5"/>
 			<min_level value="350"/>
 			<max_improves value="2"/>
+			<damagetype value="light"/>
+			<rate value="5"/>
 		</attributes>
 		<weight value="3.5"/>
 		<value value="174240"/>
-		<damage type="light"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -227,10 +238,11 @@
 			<range value="4"/>
 			<min_level value="155"/>
 			<max_improves value="3"/>
+			<damagetype value="ice"/>
+			<rate value="5"/>
 		</attributes>
 		<weight value="2.0"/>
 		<value value="14720"/>
-		<damage type="ice"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -248,10 +260,10 @@
 			<atk value="0" condition="!testing.combat"/>
 			<ratk value="0" condition="testing.combat"/>
 			<range value="3"/>
-			<rate value="1"/>
 			<autobind value=""/>
 			<durability value="1500"/>
 			<min_level value="20"/>
+			<rate value="1"/>
 		</attributes>
 		<weight value="0.5"/>
 		<value value="17280"/>
@@ -273,10 +285,10 @@
 			<atk value="0" condition="!testing.combat"/>
 			<ratk value="0" condition="testing.combat"/>
 			<range value="3"/>
-			<rate value="1"/>
 			<autobind value=""/>
 			<durability value="800"/>
 			<min_level value="20"/>
+			<rate value="1"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
@@ -296,10 +308,10 @@
 			<atk value="0" condition="!testing.combat"/>
 			<ratk value="0" condition="testing.combat"/>
 			<range value="3"/>
-			<rate value="1"/>
 			<autobind value=""/>
 			<durability value="1400"/>
 			<min_level value="20"/>
+			<rate value="1"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
@@ -319,10 +331,10 @@
 			<atk value="0" condition="!testing.combat"/>
 			<ratk value="0" condition="testing.combat"/>
 			<range value="3"/>
-			<rate value="1"/>
 			<autobind value=""/>
 			<durability value="3600"/>
 			<min_level value="20"/>
+			<rate value="1"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>

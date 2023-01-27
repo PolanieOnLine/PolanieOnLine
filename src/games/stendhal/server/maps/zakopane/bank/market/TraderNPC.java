@@ -40,6 +40,8 @@ public class TraderNPC extends TradeCenterZoneConfigurator {
 		speaker.setDescription("Oto Radzimir. Wyglądający na przyjaznego faceta, który czeka na utworzenie oferty od ciebie...");
 		speaker.setEntityClass("npcstraganiarz");
 		speaker.setGender("M");
+		// add icon denoting merchant
+		speaker.put("job_merchant", "");
 		zone.add(speaker);
 	}
 }

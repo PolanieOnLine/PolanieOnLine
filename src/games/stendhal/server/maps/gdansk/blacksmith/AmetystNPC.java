@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2019 - Stendhal                    *
+ *                 (C) Copyright 2018-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -31,7 +31,6 @@ import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
  */
 
 public class AmetystNPC implements ZoneConfigurator {
-
 	/**
 	 * Configure a zone.
 	 *
@@ -40,12 +39,11 @@ public class AmetystNPC implements ZoneConfigurator {
 	 */
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
-		buildWojtek(zone);
+		buildNPC(zone);
 	}
 
-	private void buildWojtek(final StendhalRPZone zone) {
-		final SpeakerNPC wojtek = new SpeakerNPC("czeladnik Wojtek") {
-
+	private void buildNPC(final StendhalRPZone zone) {
+		final SpeakerNPC npc = new SpeakerNPC("czeladnik Wojtek") {
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -65,6 +63,7 @@ public class AmetystNPC implements ZoneConfigurator {
 				addReply("ametyst",
 						"Zrobię to bez problemu. Proszę powiedzieć tylko #'oszlifuj ametyst'.");
 				addGoodbye("Do widzenia.");
+
 				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
 				requiredResources.put("money", 200);
 				requiredResources.put("kryształ ametystu", 1);
@@ -73,18 +72,17 @@ public class AmetystNPC implements ZoneConfigurator {
 					"wojtek_cast_ametyst", Arrays.asList("grind", "oszlifuj"), "ametyst",
 					requiredResources, 4 * 60);
 
-				new ProducerAdder().addProducer(this, behaviour,
-						"Dzień dobry.");
+				new ProducerAdder().addProducer(this, behaviour, "Dzień dobry.");
 				addReply("kryształ ametystu",
 						"Cenny kryształ ametystu możesz znaleźć w podziemiach zakopane jak i również w kopalni kościeliska.");
 			}
 		};
 
-		wojtek.setDescription("Oto Wojtek. Wygląda na porządnego czeladnika.");
-		wojtek.setEntityClass("weaponsellernpc");
-		wojtek.setGender("M");
-		wojtek.setPosition(4, 11);
-		wojtek.setDirection(Direction.RIGHT);
-		zone.add(wojtek);
+		npc.setDescription("Oto Wojtek. Wygląda na porządnego czeladnika.");
+		npc.setEntityClass("weaponsellernpc");
+		npc.setGender("M");
+		npc.setPosition(4, 11);
+		npc.setDirection(Direction.RIGHT);
+		zone.add(npc);
 	}
 }

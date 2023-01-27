@@ -1,3 +1,14 @@
+/***************************************************************************
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
+ ***************************************************************************
+ ***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
 package games.stendhal.server.maps.ados.tavern;
 
 import static org.hamcrest.CoreMatchers.anyOf;
@@ -22,7 +33,6 @@ import marauroa.server.game.db.DatabaseFactory;
 import utilities.PlayerTestHelper;
 import utilities.RPClass.ItemTestHelper;
 
-
 public class BarmanNPCTest {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -40,13 +50,15 @@ public class BarmanNPCTest {
 		SingletonRepository.getNPCList().clear();
 	}
 
-
 	@Test
 	public void testChoclateBar() throws Exception {
 		BarmanNPC zoneconfig = new BarmanNPC();
 		StendhalRPZone testzone = new StendhalRPZone("dalesTestZone");
 		zoneconfig.configureZone(testzone , null);
 		SpeakerNPC dale = SingletonRepository.getNPCList().get("dale");
+		// configure Dale's shop
+		SingletonRepository.getShopList().configureNPC("Dale", "adostavernbarman", true);
+
 		Engine engine = dale.getEngine();
 		Player player = PlayerTestHelper.createPlayer("monsterdhal");
 

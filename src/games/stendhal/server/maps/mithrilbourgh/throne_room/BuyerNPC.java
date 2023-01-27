@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -15,14 +15,10 @@ import java.util.Map;
 
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.npc.ConversationPhrases;
-import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
 
 /**
  * Builds an NPC to buy previously un bought mainio weapons.
@@ -31,8 +27,6 @@ import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
  * @author kymara
  */
 public class BuyerNPC implements ZoneConfigurator {
-	private final ShopList shops = SingletonRepository.getShopList();
-
 	/**
 	 * Configure a zone.
 	 *
@@ -55,7 +49,6 @@ public class BuyerNPC implements ZoneConfigurator {
 				addReply("mainio","Moi doradcy powiedzieli mi znaczenie słowa 'excellent' w obcych językach. Jeżeli tak jest to moi ludzie muszą to nosić! Nie sądzę, aby Diehelm Brui wystarczająco dobrze ich uzbrajał!");
 				addHelp("Moja armia musi mieć najlepsze przedmioty. #Zaoferuj mi jakiś rzadki #mainiocyjski ekwipunek. Słyszałem historie i dobrze zapłacę.");
 				//addQuest("Teraz wojsko Mithrilbourghtów i Ja nie potrzebujemy twoich usług.");
-				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buymainio")), true);
 				addGoodbye("Do widzenia.");
 			}
 

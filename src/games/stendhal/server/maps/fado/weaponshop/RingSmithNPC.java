@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -17,16 +17,10 @@ import java.util.List;
 import java.util.Map;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
-import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
-import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
-import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 
 /**
  * Builds an NPC to buy gems and gold and sell engagement ring.
@@ -39,8 +33,6 @@ import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
  * @author kymara
  */
 public class RingSmithNPC implements ZoneConfigurator {
-	private final ShopList shops = SingletonRepository.getShopList();
-
 	/**
 	 * Configure a zone.
 	 *
@@ -78,8 +70,6 @@ public class RingSmithNPC implements ZoneConfigurator {
 						"Jest odlewany ze złotych samorodków. które można wydobyć w pobliżu rzeki Or'ril. Nie odlewam złota własnoręcznie, ale kowal w Ados tak.");
 				addHelp("Jestem ekspertem od #'obrączki ślubnej' i #'pierścień szmaragdowy' czasami zwanymi ring of #life.");
 				addQuest("Cóż mógłbyś rozważyć możliwość wzięcia ślubu jako zadania! Zapytaj mnie o kupno pierścionka zaręczynowego #'buy pierścień zaręczynowy' jeżeli potrzebujesz.");
-				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("sellrings")), false);
-				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buyprecious")), false);
 				addGoodbye("Do widzenia przyjacielu.");
 			}
 		};

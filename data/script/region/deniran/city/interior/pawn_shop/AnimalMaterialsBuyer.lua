@@ -1,6 +1,6 @@
 --[[
  ***************************************************************************
- *                       Copyright © 2020 - Arianne                        *
+ *                    Copyright © 2020-2023 - Arianne                      *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -15,32 +15,28 @@
 
 local buyer = nil
 local buyerName = "Harley"
-local shopName = "buyanimalmaterials"
-
 
 local function initNPC()
 	buyer = entities:createSpeakerNPC(buyerName)
 	buyer:setOutfit("body=0,head=0,eyes=0,hair=11,dress=53")
 	buyer:setPosition(17, 21)
 	buyer:setDirection(Direction.UP)
-	buyer:setDescription("Oto " .. buyerName .. ". Jest zatrudniony w lombardzie.")
+	buyer:setDescription("Oto " .. buyerName .. ". Zatrudniony w lombardzie.")
 
 	-- dialogue
-  buyer:addGreeting()
-  buyer:addGoodbye()
-  buyer:addOffer("Sprawdź na tablicy listę przedmiotów, które skupuję.")
-  buyer:addHelp("Skupuję materiały pochodzenia zwierzęcego, a mój szef tam kupuje wszelkiego rodzaju pierścionki.")
-  buyer:addQuest("Nie, dziękuję. Nie potrzebuję pomocy.")
-  buyer:addJob("Pracuję tutaj w lombardzie, by spróbować zaoszczędzić na własny dom. Jeśli będę miał dom, to na pewno znajdę dziewczynę.")
+	buyer:addGreeting()
+	buyer:addGoodbye()
+	buyer:addOffer("Sprawdź na tablicy listę przedmiotów, które skupuję.")
+	buyer:addHelp("Skupuję materiały pochodzenia zwierzęcego, a mój szef tam kupuje wszelkiego rodzaju pierścionki.")
+	buyer:addQuest("Nie, dziękuję. Nie potrzebuję pomocy.")
+	buyer:addJob("Pracuję tutaj w lombardzie, by spróbować zaoszczędzić na własny dom. Jeśli będę miał dom, to na pewno znajdę dziewczynę.")
 
 	game:add(buyer)
 end
 
 local function initShop()
-	merchants:addBuyer(buyer, merchants.shops:get(shopName), false)
-
 	-- shop sign
-	local sign = entities:createShopSign(shopName, "Handel Materiałami Zwierzęcymi", buyerName .. " skupuje następujące przedmioty", false)
+	local sign = entities:createShopSign("buyanimalmaterials", "Handel Materiałami Zwierzęcymi", buyerName .. " skupuje następujące przedmioty", false)
 	sign:setEntityClass("blackboard")
 	sign:setPosition(19, 20)
 

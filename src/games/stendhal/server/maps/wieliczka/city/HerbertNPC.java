@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2019 - Stendhal                    *
+ *                 (C) Copyright 2019-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -38,11 +38,6 @@ public class HerbertNPC implements ZoneConfigurator {
 				addJob("Aktualnie niczym się nie zajmuję.");
                 addOffer("Nie mam nic do zaoferowania. Spytaj się mojego przyjaciela #Arthura o ofertę.");
 				addGoodbye();
-			}
-
-			@Override
-			protected void createPath() {
-				setPath(null);
 			}
 			
 			@Override

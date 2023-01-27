@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -12,7 +12,6 @@
 package games.stendhal.server.maps.semos.mines;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -24,14 +23,11 @@ import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.ExamineChatAction;
-import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 
 /**
  * Builds a NPC in Semos Mine (name:Barbarus) who is a miner and informs players about his job
  *
  * @author storyteller and Vanessa Julius
- *
  */
 public class MinerNPC implements ZoneConfigurator {
 	@Override
@@ -68,9 +64,6 @@ public class MinerNPC implements ZoneConfigurator {
 				addReply(Arrays.asList("sounds", "dźwięki"),"Dźwięki są bardzo dziwne... Czasami brzmią jak krzyk z daleka..., a czasami jak rozkazy żołnierzy... Słyszałem też parę razy kroki w mroku... to naprawdę przerażające...");
 				addOffer("Mogę sprzedać tobie użyteczne narzędzie do wydobywania węgla. Większość przyjaciół, którzy korzystali z nich w pracy zostawiło mi je jakiś czas temu. Możesz kupić #kilofy, które mi zostawili. Dałbym ci także jedzenie i picie, ale nie zostało mi dużo... Wciąż pracuję więc potrzebuję dla siebie do pracy. Przykro mi... Ale mogę ci pokazać ręcznie narysowaną #mapę kopalni jeżeli chcesz.");
 				addReply(Arrays.asList("picks", "kilofy"), "Potrzebujesz kilofa, aby wydobyć węgiel ze ścian w Semos Mine.");
-				final Map<String, Integer> offerings = new HashMap<String, Integer>();
-                offerings.put("kilof", 400);
-                new SellerAdder().addSeller(this, new SellerBehaviour(offerings), false);
 				addQuest("Przykro mi, ale jak widzisz jestem pokryty pyłem i wciąż nie skończyłem swojej pracy. Nie mogę teraz myśleć o zadaniach dla ciebie, ale możesz mi pomóc przynosząc trochę węgla.");
 				addJob("Jestem górnikiem. Pracuję ciężko w kopalni. Jeżeli pójdziesz w głąb ziemi to będzie coraz cieplej i będzie więcej pyłu. Jak widzisz ciężko jest tutaj coś zobaczyć w tym słabym świetle...");
 				addReply(Arrays.asList("map", "mapę", "mapa"), "To jest mapa Semos Mine, którą sam narysowałem jakiś czas temu. Może ci pomóc znaleźć drogę, ale uważaj nie wszystko jest dokładne tak jak powinno!",

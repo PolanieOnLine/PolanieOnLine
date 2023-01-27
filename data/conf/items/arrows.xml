@@ -128,10 +128,10 @@
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
 			<min_level value="20"/>
+			<damagetype value="fire"/>
 		</attributes>
 		<weight value="0.1"/>
 		<value value="2160"/>
-		<damage type="fire"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -152,10 +152,10 @@
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
 			<min_level value="20"/>
+			<damagetype value="ice"/>
 		</attributes>
 		<weight value="0.1"/>
 		<value value="2160"/>
-		<damage type="ice"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -176,10 +176,10 @@
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
 			<min_level value="20"/>
+			<damagetype value="light"/>
 		</attributes>
 		<weight value="0.1"/>
 		<value value="2160"/>
-		<damage type="light"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -200,10 +200,10 @@
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
 			<min_level value="20"/>
+			<damagetype value="dark"/>
 		</attributes>
 		<weight value="0.1"/>
 		<value value="2160"/>
-		<damage type="dark"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -224,10 +224,10 @@
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
 			<min_level value="20"/>
+			<damagetype value="fire"/>
 		</attributes>
 		<weight value="0.1"/>
 		<value value="2160"/>
-		<damage type="fire"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -248,10 +248,10 @@
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
 			<min_level value="35"/>
+			<damagetype value="light"/>
 		</attributes>
 		<weight value="0.1"/>
 		<value value="2160"/>
-		<damage type="light"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -341,10 +341,10 @@
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
 			<min_level value="35"/>
+			<damagetype value="fire"/>
 		</attributes>
 		<weight value="0.1"/>
 		<value value="2160"/>
-		<damage type="fire"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
@@ -358,15 +358,15 @@
 		<type class="ammunition" subclass="poison_arrow" tileid="-1"/>
 		<description>Oto zatruta strzała. Końcówka została nasączona trucizną.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<unattainable>true</unattainable>
 		<attributes>
 			<atk condition="!testing.combat" value="2"/>
 			<ratk condition="testing.combat" value="2"/>
 			<range value="2"/>
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
-			<unattainable>true</unattainable>
 			<min_level value="0"/>
-			<statusattack value="85,poison"/>
+			<statusattack value="5,trucizna"/>
 		</attributes>
 		<weight value="0.1"/>
 		<value value="50"/>

@@ -1,5 +1,5 @@
 /***************************************************************************
- *                    (C) Copyright 2013 Faiumoni e.V.                     *
+ *                  (C) Copyright 2003-2023 Faiumoni e.V.                  *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,6 +11,7 @@
  ***************************************************************************/
 package games.stendhal.client.gui.chattext;
 
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -31,16 +32,24 @@ import games.stendhal.client.sprite.ImageSprite;
  * use in chat.
  */
 public class CharacterMap extends JButton {
-	final static EmojiStore emojis = EmojiStore.get();
-	final static ImageSprite titleEmoji = (ImageSprite) emojis.create(":grin:");
+	private final static EmojiStore emojis = EmojiStore.get();
+	private final static ImageSprite icon = (ImageSprite) emojis.create(":grin:");
 
 	/**
 	 * Create a new CharacterMap.
 	 */
 	public CharacterMap() {
-		super(new ImageIcon(titleEmoji.getImage()));
+		super();
+		final Font origFont = getFont();
+		setFont(new Font("Noto Emoji", origFont.getStyle(), origFont.getSize()+2));
 		setFocusable(false);
 		setToolTipText("Emotikony");
+
+		if (icon != null) {
+			setIcon(new ImageIcon(icon.getImage()));
+		} else {
+			setText("☺");
+		}
 
 		final JPopupMenu menu = new JPopupMenu();
 

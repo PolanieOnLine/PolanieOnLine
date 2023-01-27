@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -17,18 +17,14 @@ import java.util.List;
 import java.util.Map;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.ConversationStates;
-import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.DropItemAction;
 import games.stendhal.server.entity.npc.action.EquipItemAction;
 import games.stendhal.server.entity.npc.action.MultipleActions;
-import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.npc.condition.PlayerHasItemWithHimCondition;
 
@@ -37,8 +33,6 @@ import games.stendhal.server.entity.npc.condition.PlayerHasItemWithHimCondition;
  * Sells the flask required for Tad's quest IntroducePlayers
  */
 public class BarMaidNPC implements ZoneConfigurator {
-	private final ShopList shops = SingletonRepository.getShopList();
-
 	/**
 	 * Configure a zone.
 	 *
@@ -69,7 +63,6 @@ public class BarMaidNPC implements ZoneConfigurator {
 				addQuest("Och jak miło, że pytasz. Niestety nic dla ciebie nie mam.");
 				addJob("Jestem kelnerką w tej oberży. Sprzedajemy #'butelki', importowane i lokalne soki z chmielu oraz dobre jedzenie.");
 				addHelp("Oberża ta jest na tyle duża, żeby tu odpocząć i spotkać nowych ludzi! Jeżeli chcesz poznać moją #ofertę, to powiedz mi o tym.");
-				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("food&drinks")));
 				addGoodbye();
 			}
 		};
@@ -79,7 +72,7 @@ public class BarMaidNPC implements ZoneConfigurator {
                 (Arrays.asList("coupon", "coupons", "beer coupon", "free beer", "kupon", "kupony", "darmowy sok z chmielu")),
                 new PlayerHasItemWithHimCondition("kupon"),
                 ConversationStates.ATTENDING,
-                "Oh widzę, że znalazłeś jeden z kuponów, które rozdałam jakiś czas temu. Przyjemnego kosztowania soku z chmielu!",
+                "Och widzę, że znalazłeś jeden z kuponów, które rozdałam jakiś czas temu. Przyjemnego kosztowania soku z chmielu!",
                 new MultipleActions(new DropItemAction("kupon"),
                 					new EquipItemAction("sok z chmielu")));
 

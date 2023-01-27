@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2019 - Stendhal                    *
+ *                 (C) Copyright 2018-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,29 +11,23 @@
  ***************************************************************************/
 package games.stendhal.server.maps.gdansk.cavehut;
 
-import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
-import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.core.pathfinder.FixedPath;
-import games.stendhal.server.core.pathfinder.Node;
-import games.stendhal.server.entity.npc.ConversationStates;
-import games.stendhal.server.entity.npc.ShopList;
-import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.HealerAdder;
-import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
-
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import games.stendhal.server.core.config.ZoneConfigurator;
+import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.core.pathfinder.FixedPath;
+import games.stendhal.server.core.pathfinder.Node;
+import games.stendhal.server.entity.npc.ConversationStates;
+import games.stendhal.server.entity.npc.SpeakerNPC;
+import games.stendhal.server.entity.npc.behaviour.adder.HealerAdder;
+
 /**
  * @author KarajuSs
  */
-
 public class WitchNPC implements ZoneConfigurator {
-	private final ShopList shops = SingletonRepository.getShopList();
 	/**
 	 * Configure a zone.
 	 *
@@ -43,14 +37,12 @@ public class WitchNPC implements ZoneConfigurator {
 	 *            Configuration attributes.
 	 */
 	@Override
-	public void configureZone(final StendhalRPZone zone,
-			final Map<String, String> attributes) {
+	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
 	}
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Benigna") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -76,10 +68,10 @@ public class WitchNPC implements ZoneConfigurator {
 			protected void createDialog() {
 				addGreeting();
 				addJob("Jestem czarownicą skoro pytasz. Hoduję #collard jako hobby.");
-				addReply("collard",	"To ta kapusta w doniczce. Bądź ostrożny z tym!");
+				addReply("collard",
+						"To ta kapusta w doniczce. Bądź ostrożny z tym!");
 
 				addHelp("Mogę Cię uleczyć. Powiedz tylko #ulecz. Jeżeli szukać pracy to powiedz tylko #'zadanie'.");
-				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("benigna")));
 				new HealerAdder().addHealer(this, 500);
 				add(ConversationStates.ATTENDING,
 				        Arrays.asList("magic", "scroll", "scrolls", "magia", "magiczne", "zwój", "zwoje"),
@@ -96,15 +88,13 @@ public class WitchNPC implements ZoneConfigurator {
 				add(ConversationStates.ATTENDING, Arrays.asList("wieliczka", "zwój wieliczka"), null,
 				        ConversationStates.ATTENDING,
 				        "Zwoje wieliczki zabierają natychmiast do Wieliczki. Idealne miejsce na zwiedzanie kopalni soli!", null);
-				add(
-				        ConversationStates.ATTENDING,
+				add(ConversationStates.ATTENDING,
 				        Arrays.asList("empty", "marked", "niezapisany zwój", "markable", "marked scroll"),
 				        null,
 				        ConversationStates.ATTENDING,
 				        "Puste zwoje są używane do oznaczania pozycji. Zaznaczone zwoje mogą Cię zabrać z powrotem do tej lokacji. Są trochę drogie.",
 				        null);
-				add(
-				        ConversationStates.ATTENDING,
+				add(ConversationStates.ATTENDING,
 				        "zwój przywołania",
 				        null,
 				        ConversationStates.ATTENDING,

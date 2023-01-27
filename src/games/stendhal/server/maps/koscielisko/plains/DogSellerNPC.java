@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                 (C) Copyright 2003-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -31,11 +31,7 @@ import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 import games.stendhal.server.entity.player.Player;
 
-/**
- * @author ?
- */
 public class DogSellerNPC implements ZoneConfigurator {
-
 	public static final int BUYING_PRICE_OWCZAREK = 300;
 	public static final int BUYING_PRICE_OWCZAREK_PODHALANSKI = 1000;
 
@@ -51,7 +47,6 @@ public class DogSellerNPC implements ZoneConfigurator {
 	}
 
 	private void buildZakopaneSouthArea(final StendhalRPZone zone) {
-
 		final SpeakerNPC npc = new SpeakerNPC("Stary Baca") {
 			@Override
 			protected void createPath() {

@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2018 - Stendhal                    *
+ *                 (C) Copyright 2018-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -26,7 +26,6 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
  * @author KarajuSs
  */
 public class KarczmarkaNPC implements ZoneConfigurator {
-
 	/**
 	 * Configure a zone.
 	 *
@@ -40,7 +39,6 @@ public class KarczmarkaNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("babcia Alina") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -53,8 +51,8 @@ public class KarczmarkaNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-				addGreeting("Witaj w starej karczmie #'U Babci Aliny'! Co potrzebujesz?");
-				addJob("Jestem karczmarką w swej tawernie. Mogę wykonać dla ciebie specjalną zupę, która pomoże zregenerować siły na dalszą podróż.");
+				addGreeting("Witamy w domowej karczmie #'U Babci Aliny'! Tutaj godnie zjesz oraz się napoisz!");
+				addJob("Głównie zajmuję się gotowaniem. Mogę wykonać dla ciebie specjalną zupę, która pomoże zregenerować siły na dalszą podróż.");
 				addHelp("Rozgoście się w mojej tawernie i zamawiajcie jedzenie lub specjalne napoje z różnych krain u barmanki.");
 				addGoodbye();
 			}

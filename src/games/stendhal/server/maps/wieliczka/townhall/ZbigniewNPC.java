@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2019 - Stendhal                    *
+ *                 (C) Copyright 2019-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -16,21 +16,15 @@ import java.util.List;
 import java.util.Map;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
-import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 
 /**
  * @author KarajuSs
  */
 public class ZbigniewNPC implements ZoneConfigurator {
-	private final ShopList shops = SingletonRepository.getShopList();
-
 	/**
 	 * Configure a zone.
 	 *
@@ -58,12 +52,11 @@ public class ZbigniewNPC implements ZoneConfigurator {
 				addJob("Jestem tutejszym burmistrzem.");
 				addHelp("W Wieliczce spotkasz wielu ludzi, którzy zaoferują Tobie pomoc w różnych dziedzinach.");
 				addOffer("Spójrz na karteczkę, która leży przed Twoim nosem!");
-				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("zwojewieliczka")));
 				addGoodbye("Życzę miłego dnia i miłego pobytu!");
 			}
 		};
 
-		npc.setDescription("Oto burmistrz Wieliczki, Zbigniew, zdaje się, że idzie w twoją stronę.");
+		npc.setDescription("Oto burmistrz Wieliczki, Zbigniew. Zdaje się, że idzie w twoją stronę.");
 		npc.setEntityClass("badmayornpc");
 		npc.setGender("M");
 		npc.setPosition(13, 4);

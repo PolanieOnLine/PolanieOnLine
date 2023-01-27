@@ -20,7 +20,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.log4j.Logger;
+//import org.apache.log4j.Logger;
 
 import games.stendhal.common.Direction;
 import games.stendhal.common.MathHelper;
@@ -81,9 +81,8 @@ import games.stendhal.server.util.TimeUtil;
  * FIXME: (client) no sound for training targets when hit
  */
 public class TolimirNPC implements ZoneConfigurator,LoginListener,LogoutListener {
-
 	/** logger instance */
-	private static Logger logger = Logger.getLogger(TolimirNPC.class);
+	//private static Logger logger = Logger.getLogger(TolimirNPC.class);
 
 	/** quest/activity identifier */
 	private static final String QUEST_SLOT = "strzelnica_polan";

@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -16,21 +16,15 @@ import java.util.List;
 import java.util.Map;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
-import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
 
 /**
  * In Amazon Island ne.
  */
 public class AmazonMermaidArmorNPC implements ZoneConfigurator {
-	private final ShopList shops = SingletonRepository.getShopList();
-
 	/**
 	 * Configure a zone.
 	 *
@@ -79,7 +73,6 @@ public class AmazonMermaidArmorNPC implements ZoneConfigurator {
 				addGreeting("Cześć! Przebyłeś długą drogę, aby być tutaj. Witam.");
 				addJob("Skupuję dobrej jakości płaszcze. Nie mogę przekonać tych kobiet do ich noszenia, ale próbuję.");
 				addHelp("Nie mogę Ci za bardzo pomóc o ile nie będziesz miał jakichś płaszczy, których szukam.");
-				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buyamazoncloaks")), false);
 				addOffer("Nie lubię tego mówić, ale spójrz na tamtą tablicę, aby poznać moje ceny i to co ja skupuję.");
 				addQuest("Niczego nie potrzebuję. Dziękuję.");
 				addGoodbye("Do widzenia. NIENAWIDZISZ tego miejsca? ;) Powiedź hej gigantycznej amazonce jak już jesteś tutaj.");

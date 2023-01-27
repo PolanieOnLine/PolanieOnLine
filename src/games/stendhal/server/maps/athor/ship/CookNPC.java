@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,7 +11,6 @@
  ***************************************************************************/
 package games.stendhal.server.maps.athor.ship;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -21,8 +20,6 @@ import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 import games.stendhal.server.maps.athor.ship.AthorFerry.Status;
 
 /** Factory for cargo worker on Athor Ferry. */
@@ -49,15 +46,6 @@ public class CookNPC implements ZoneConfigurator  {
 				addGreeting("Ahoj! Witam w kambuzie!");
 				addJob("Prowadzę kambuz na statku. #Oferuję dobre jedzenie dla pasażerów i alkohol dla załogi.");
 				addHelp("Załoga cały dzień pije piwo i grog. Jeżeli chcesz lepsze drinki to idź do koktajl baru na plaży w Athor.");
-
-				final Map<String, Integer> offerings = new HashMap<String, Integer>();
-				offerings.put("sok z chmielu", 10);
-				offerings.put("napój z winogron", 15);
-				// more expensive than in normal taverns
-				offerings.put("szynka", 100);
-				offerings.put("tarta", 150);
-				new SellerAdder().addSeller(this, new SellerBehaviour(offerings));
-
 				addGoodbye();
 			}
 		};

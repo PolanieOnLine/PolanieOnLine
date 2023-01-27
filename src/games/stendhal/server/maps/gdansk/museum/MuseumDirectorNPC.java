@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2018-2021 - Stendhal                    *
+ *                 (C) Copyright 2018-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -14,19 +14,13 @@ package games.stendhal.server.maps.gdansk.museum;
 import java.util.Map;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 
 /**
  * @author KarajuSs
  */
 public class MuseumDirectorNPC implements ZoneConfigurator {
-	private final ShopList shops = SingletonRepository.getShopList();
-
 	/**
 	 * Configure a zone.
 	 *
@@ -40,14 +34,12 @@ public class MuseumDirectorNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Mieczysław") {
-
 			@Override
 			protected void createDialog() {
 				addGreeting();
 				addJob("Jestem dyrektorem tutejszej instytucji jakim jest muzeum w Gdańsku!");
 				addHelp("Muzeum potrzebuje nowych eksponatów, jeśli jesteś gotów na #zadanie ode mnie to się odezwij.");
 				addOffer("Mogę sprzedać #'zwój gdański', #'zwój tatrzański' oraz #'niezapisany zwój'. Chyba, że szukasz u mnie #zadania.");
-				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("mieczyslaw")));
 				addGoodbye("Życzę powodzenia!");
 			}
 		};

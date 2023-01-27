@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -34,7 +33,6 @@ import utilities.PlayerTestHelper;
 import utilities.QuestHelper;
 
 public class BowsForOuchitTest {
-
 	// better: use the one from quest and make it visible
 	private static final String QUEST_SLOT = "bows_ouchit";
 
@@ -49,13 +47,14 @@ public class BowsForOuchitTest {
 
 	@Before
 	public void setUp() {
-
 		final StendhalRPZone zone = new StendhalRPZone("admin_test");
 
 		// this is Ouchit
 		new BowAndArrowSellerNPC().configureZone(zone, null);
 		// this is Karl
 		new FarmerNPC().configureZone(zone, null);
+		// configure shops
+		SingletonRepository.getShopList().configureNPC("Ouchit", "sellrangedstuff", true);
 
 		AbstractQuest quest = new BowsForOuchit();
 		quest.addToWorld();

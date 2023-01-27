@@ -11,8 +11,8 @@
  ***************************************************************************/
 package games.stendhal.client.sprite;
 
-import java.io.InputStreamReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
@@ -35,6 +35,57 @@ public class EmojiStore {
 	private Map<String, String> emojimap;
 
 	private static final String pathPrefix = "data/sprites/emoji/";
+
+	/* The Java client currently implements javax.swing.text.Document
+	 * which does not support displaying images, so this map is used to
+	 * display a character instead. Once the chat log does support
+	 * images this can be removed. It may be possible to switch to
+	 * javax.swing.text.html.HTMLDocument.
+	 */
+	@Deprecated
+	public static final Map<String, String> chatLogChars = new HashMap<String, String>() {{
+		/*
+		put("angel", "😇");
+		put("angermark", "💢");
+		put("astonished", "😲");
+		put("confounded", "😣");
+		put("confused", "😕");
+		put("cry", "😢");
+		put("expressionless", "😑");
+		put("frown", "☹");
+		put("frownslight", "🙁");
+		put("glasses", "🤓");
+		put("grin", "😀");
+		put("happycry", "🥲");
+		put("heart", "❤");
+		put("heartarrow", "💘");
+		put("heartblue", "💙");
+		put("heartbroken", "💔");
+		put("heartgreen", "💚");
+		put("heartviolet", "💜");
+		put("heartyellow", "💛");
+		put("joy", "😂");
+		put("lips", "🗢");
+		put("musicnoteeighth", "𝅘𝅥𝅮");
+		put("musicnotequarter", "𝅘𝅥");
+		put("musicnotesasc", "🎜");
+		put("musicnotesdesc", "🎝");
+		put("neutral", "😐");
+		put("nomouth", "😶");
+		put("rolledeyes", "🙄");
+		put("savor", "😋");
+		put("smile", "☺");
+		put("smileinvert", "🙃");
+		put("smileslight", "🙂");
+		put("smilingeyes", "😊");
+		put("sunglasses", "😎");
+		put("sweat", "💧");
+		put("tongue", "😛");
+		put("wink", "😉");
+		put("winktongue", "😜");
+		*/
+	}};
+
 
 	public static EmojiStore get() {
 		if (instance == null) {
@@ -152,8 +203,11 @@ public class EmojiStore {
 
 	/**
 	 * Get a list of available emojis.
+	 *
+	 * @return
+	 *     A copy of the emoji list.
 	 */
 	public List<String> getEmojiList() {
-		return emojilist;
+		return new LinkedList<String>() {{ addAll(emojilist); }};
 	}
 }

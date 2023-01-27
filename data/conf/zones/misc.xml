@@ -571,12 +571,14 @@ Wyjście do #Zakopca!
 	</zone>
 
 	<zone name="-1_ice_vault" file="interiors/abstract/ice_vault.tmx">
-		<configurator class-name="games.stendhal.server.maps.dragon.wizardtower.vault.IceVaultCreature" />
 		<attributes>
 			<parameter name="color_method">softlight</parameter>
 			<parameter name="color">#0099da</parameter>
 			<parameter name="weather">snow_heavy</parameter>
 		</attributes>
+
+		<!-- Creature - ice giant -->
+		<configurator class-name="games.stendhal.server.maps.dragon.wizardtower.vault.IceVaultCreature"/>
 
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
@@ -586,7 +588,7 @@ Wyjście do #Zakopca!
 		</entity>
 
 		<portal x="6" y="9" ref="wizardtower">
-			<destination zone="int_dragon_wizard_tower_4" ref="wizardtower_destination" />
+			<destination zone="int_dragon_wizard_tower_4" ref="wizardtower_destination"/>
 		</portal>
 	</zone>
 </zones>

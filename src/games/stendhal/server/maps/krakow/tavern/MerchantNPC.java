@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2018 - Stendhal                    *
+ *                 (C) Copyright 2018-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -15,22 +15,14 @@ import java.util.Map;
 
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.RPEntity;
-import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
-import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
-import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 
 /**
  * @author KarajuSs
  */
-public class MerchandNPC implements ZoneConfigurator {
-	private final ShopList shops = SingletonRepository.getShopList();
-
+public class MerchantNPC implements ZoneConfigurator {
 	/**
 	 * Configure a zone.
 	 *
@@ -43,27 +35,23 @@ public class MerchandNPC implements ZoneConfigurator {
 	}
 
 	private void buildNPC(final StendhalRPZone zone) {
-		final SpeakerNPC npc = new SpeakerNPC("Merchand") {
-
+		final SpeakerNPC npc = new SpeakerNPC("kupczyk Piotr") {
 			@Override
 			protected void createDialog() {
-				addGreeting("Witaj, chciałbyś zobaczyć moje towary?");
-				addJob("Zajmuję się handlem.");
-				addOffer("Spójrz na moje książki, które położyłem na stoliku.");
-				// kupno: płaszcz - 10; studded legs - 20; sztylecik - 25; katana - 50
-				// sprzedaz: chain legs - 100; studded boots - 120; leather scale armor - 150; chain boots - 180; unicorn shield - 200; skull shield - 225; scimitar - 250; viking helmet - 300
-				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("buymerchand")), false);
-				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("sellmerchand")), false);
+				addGreeting("Witaj! Zechcesz spojrzeć na moje towary?");
+				addJob("Zajmuję się handlem zagranicznym towarem.");
+				addOffer("Spójrz na moje książki, które leżą na stoliku.");
 				addGoodbye("Do widzenia. Mam nadzieję, że się jeszcze spotkamy!");
 			}
+
 			@Override
 			protected void onGoodbye(RPEntity player) {
 				setDirection(Direction.DOWN);
 			}
 		};
 
-		npc.setDescription("Oto Merchand. Jest wędrownym handlarzem, który najczęściej lubi się zatrzymywać na dłużej w pokoiku gospody na Krakowskim Rynku.");
-		npc.setEntityClass("npcmerchand");
+		npc.setDescription("Oto kupczyk Piotr. Jest wędrownym handlarzem, który najczęściej lubi się zatrzymywać na dłużej w pokoiku gospody na Krakowskim Rynku.");
+		npc.setEntityClass("npcmerchant");
 		npc.setGender("M");
 		npc.setPosition(5, 20);
 		zone.add(npc);

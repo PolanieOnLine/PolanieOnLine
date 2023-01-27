@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2019 - Stendhal                    *
+ *                 (C) Copyright 2019-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -74,7 +74,7 @@ public class KowalWincentyNPC implements ZoneConfigurator {
 				addReply(Arrays.asList("bełt", "bełty"),
 						"Jest to pocisk przypominający strzałę, używany do strzelania z kuszy.");
 				addReply(Arrays.asList("ruda", "żelazo", "ruda żelaza"),
-								"Rudę żelaza znajdziesz w górach Zakopanego i Kościeliska. Uważaj tam na siebie!");
+						"Rudę żelaza znajdziesz w górach Zakopanego i Kościeliska. Uważaj tam na siebie!");
 			}
 		};
 

@@ -532,6 +532,13 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	}
 
 	/**
+	 * Checks if item can be used for non-melee ranged attacks.
+	 */
+	public boolean isNonMeleeWeapon() {
+		return isOfClass("ranged") || isOfClass("missile");
+	}
+
+	/**
 	 * Gets the name of the item.
 	 *
 	 * @return The programmatic item name.
@@ -840,11 +847,20 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 				stats.append(getAttack());
 			}
 
+			String dts = "";
+			final Nature dt = getDamageType();
 			// Show only special types
-			if (getDamageType() != Nature.CUT) {
-				stats.append(" [");
-				stats.append(getDamageType());
-				stats.append("]");
+			if (dt != Nature.CUT) {
+				dts = dt.toString();
+			}
+			for (final StatusAttacker sa: statusAttackers) {
+				if (dts.length() > 0) {
+					dts += ",";
+				}
+				dts += sa.getStatusName().toUpperCase();
+			}
+			if (dts.length() > 0) {
+				stats.append(" [" + dts + "]");
 			}
 		}
 		if (has("def")) {

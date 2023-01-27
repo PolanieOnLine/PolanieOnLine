@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2019 - Stendhal                    *
+ *                 (C) Copyright 2019-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,25 +11,21 @@
  ***************************************************************************/
 package games.stendhal.server.maps.gdansk.city.market;
 
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
-
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author zekkeq
  */
 public class FlowerNPC implements ZoneConfigurator {
-
 	/**
 	 * Configure a zone.
 	 *
@@ -45,7 +41,6 @@ public class FlowerNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Petronela") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -61,9 +56,6 @@ public class FlowerNPC implements ZoneConfigurator {
 				addReply(ConversationPhrases.NO_MESSAGES, "Bardzo dobrze. Jeżeli będę mogła pomóc to daj znać.");
 				addJob("Sprzedaję tutaj róże.");
 				addHelp("Słyszałam, że Mieczysław poszukuje osoby do zadania. Znajduje się on w naszym muzeum.");
-				final Map<String, Integer> offerings = new HashMap<String, Integer>();
-				offerings.put("róża", 55);
-				new SellerAdder().addSeller(this, new SellerBehaviour(offerings));
 				addGoodbye("Do widzenia i zapraszam ponownie!");
 			}
 		};

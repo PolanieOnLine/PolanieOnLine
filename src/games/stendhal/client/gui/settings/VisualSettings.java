@@ -13,6 +13,7 @@ package games.stendhal.client.gui.settings;
 
 import static games.stendhal.client.gui.settings.SettingsProperties.BUBBLES_PROPERTY;
 import static games.stendhal.client.gui.settings.SettingsProperties.HP_BAR_PROPERTY;
+import static games.stendhal.client.gui.settings.SettingsProperties.OVERRIDE_AA;
 
 import java.awt.Component;
 import java.awt.Container;
@@ -232,6 +233,20 @@ class VisualSettings {
 			}
 		});
 		page.add(showHPBarToggle);
+
+		// system font antialiasing
+		final JCheckBox overrideSystemFontAA = SettingsComponentFactory.createSettingsToggle(
+				OVERRIDE_AA, false, "Wymuś wygładzanie czcionki",
+				"Włącz tę opcję, jeśli klient nie rozpoznaje konfiguracji antyaliasingu czcionek na pulpicie.");
+		overrideSystemFontAA.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(final ItemEvent e) {
+				ClientSingletonRepository.getUserInterface().addEventLine(new EventLine("",
+					"Zmiany zaczną działać po ponownym uruchomieniu klienta.",
+					NotificationType.CLIENT));
+			}
+		});
+		page.add(overrideSystemFontAA);
 
 		final JCheckBox chatBubblesToggle = SettingsComponentFactory.createSettingsToggle(BUBBLES_PROPERTY, true,
 				"Ruchome dymki chatu", "Dymki chatu podążają za graczem i innymi obiektami.");

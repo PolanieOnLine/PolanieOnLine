@@ -2274,7 +2274,7 @@ public class Player extends DressedEntity implements UseListener {
 	@Override
 	public Nature getDamageType() {
 		// Use the damage type of arrows, if the player is shooting with them.
-		if (getRangeWeapon() != null) {
+		if (getProjectileLauncher() != null) {
 			Item missile = getAmmunition("ammunition");
 			if (missile != null) {
 				return missile.getDamageType();

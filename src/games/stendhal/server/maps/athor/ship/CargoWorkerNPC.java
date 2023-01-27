@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -16,15 +16,14 @@ import java.util.Map;
 
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
 import games.stendhal.server.maps.athor.ship.AthorFerry.Status;
 
-/** Factory for cargo worker on Athor Ferry. */
+/**
+ * Factory for cargo worker on Athor Ferry.
+ */
 public class CargoWorkerNPC implements ZoneConfigurator  {
 	@Override
 	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
@@ -57,11 +56,7 @@ public class CargoWorkerNPC implements ZoneConfigurator  {
 				addJob("Opiekuje się ładunkiem. Moja praca byłaby łatwiejsza gdyby nie było #szczurów.");
 				addHelp("Mógłbyś zarobić jeżeli #zaoferowałbyś mi coś do wytrucia tych #szczurów.");
 				addReply(Arrays.asList("szczur", "szczury", "szczurów"),
-		        "Te szczury są wszędzie. Ciekaw jestem skąd one się biorą nawet nie zdążę ich powybijać tak szybko się pojawiają.");
-
-				new BuyerAdder().addBuyer(this,
-						new BuyerBehaviour(SingletonRepository.getShopList().get("buypoisons")), true);
-
+						"Te szczury są wszędzie. Ciekaw jestem skąd one się biorą nawet nie zdążę ich powybijać tak szybko się pojawiają.");
 				addGoodbye("Proszę zabij kilka szczurów po drodze!");
 			}
 

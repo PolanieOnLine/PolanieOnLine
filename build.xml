@@ -217,6 +217,7 @@
 				<exclude name="shields.xml"/>
 				<exclude name="swords.xml"/>
 				<exclude name="wand.xml"/>
+				<exclude name="whips.xml"/>
 			</fileset>
 		</schemavalidate>
 		<schemavalidate>
@@ -224,23 +225,29 @@
 			<fileset dir="data/conf/items">
 				<include name="armors.xml"/>
 				<include name="arrows.xml"/>
-				<include name="axes.xml"/>
 				<include name="belts.xml"/>
 				<include name="boots.xml"/>
 				<include name="cloaks.xml"/>
-				<include name="clubs.xml"/>
-				<include name="daggers.xml"/>
 				<include name="dummy_weapons.xml"/>
 				<include name="gloves.xml"/>
 				<include name="helmets.xml"/>
 				<include name="legs.xml"/>
 				<include name="necklaces.xml"/>
 				<include name="missiles.xml"/>
-				<include name="ranged.xml"/>
 				<include name="rings.xml"/>
 				<include name="shields.xml"/>
+			</fileset>
+		</schemavalidate>
+		<schemavalidate>
+			<schema namespace="stendhal" file="${config_dir}/weapons.xsd"/>
+			<fileset dir="${config_dir}/items">
+				<include name="axes.xml"/>
+				<include name="clubs.xml"/>
+				<include name="daggers.xml"/>
+				<include name="ranged.xml"/>
 				<include name="swords.xml"/>
 				<include name="wand.xml"/>
+				<include name="whips.xml"/>
 			</fileset>
 		</schemavalidate>
 		<schemavalidate>

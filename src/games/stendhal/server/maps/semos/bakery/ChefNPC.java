@@ -22,9 +22,7 @@ import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
 import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
 import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 
 /**
@@ -80,9 +78,6 @@ public class ChefNPC implements ZoneConfigurator  {
 				addReply(Arrays.asList("sandwich", "sandwiches","kanapka","kanapki"),
 				"Moje kanapki są smaczne i pożywne. Jeśli chcesz abym zrobił jedną dla Ciebie powiedz #'zrób <ilość> kanapka' .");
 				addOffer("Moja #pizza potrzebuje sera, a my nie mamy żadnych zapasów. Kupię od Ciebie ser jeżeli chcesz #sprzedać.");
-				final Map<String, Integer> offers = new TreeMap<String, Integer>();
-				offers.put("ser", 5);
-				new BuyerAdder().addBuyer(this, new BuyerBehaviour(offers), false);
 
 				addGoodbye();
 

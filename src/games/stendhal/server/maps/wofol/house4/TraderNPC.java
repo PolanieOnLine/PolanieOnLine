@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -16,23 +16,15 @@ import java.util.List;
 import java.util.Map;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
-import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
-import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
-import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 
 /**
  * Inside the Kobold City, interior called house4
  */
 public class TraderNPC implements ZoneConfigurator {
-	private final ShopList shops = SingletonRepository.getShopList();
-
 	/**
 	 * Configure a zone.
 	 *
@@ -62,8 +54,6 @@ public class TraderNPC implements ZoneConfigurator {
 				addJob("Zajmuję się #handlem. Sprzedaję i skupuję od koboldów i od każdego, kto tutaj zawita. Jam jeden z nielicznych Koboldów, który mówi w waszym języku.");
 				addHelp("Zajmuję się #handlem każdego rodzaju sprzętu.");
 				addQuest("W tej sprawie udaj się raczej do Alraka - górskiego krasnala, który mieszka z Koboldami. Być może znajdzie Ci niejedno zadanie.");
-				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("sellstuff2")), false);
-				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buystuff2")), false);
 				addOffer("Spójrz na tę tablicę na ścianie, to przeczytasz co aktualnie skupuję i sprzedaję.");
 				addGoodbye("Żegnaj! Ale nie waż się atakować moich przyjaciół Koboldów.");
 			}

@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2018 - Stendhal                    *
+ *                 (C) Copyright 2018-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -25,7 +25,6 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
  * @author KarajuSs
  */
 public class SoltysNPC implements ZoneConfigurator {
-
 	/**
 	 * Configure a zone.
 	 *
@@ -39,7 +38,6 @@ public class SoltysNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Sołtys") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -58,7 +56,7 @@ public class SoltysNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setDescription("Oto sołtys kuźnic.");
+		npc.setDescription("Oto sołtys kuźnic. Zarządza tutejszymi ziemiami.");
 		npc.setEntityClass("npcgoral");
 		npc.setGender("M");
 		npc.setPosition(10, 29);

@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2019 - Stendhal                    *
+ *                 (C) Copyright 2018-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -10,6 +10,12 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.gdansk.bakery;
+
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
@@ -43,12 +49,6 @@ import games.stendhal.server.entity.npc.condition.QuestNotActiveCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotCompletedCondition;
 import games.stendhal.server.entity.player.Player;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
 /**
  * A woman who bakes bread for players.
  *
@@ -57,22 +57,19 @@ import java.util.TreeMap;
  * @author daniel / kymara @edit by KarajuSs
  */
 public class ShopAssistantNPC implements ZoneConfigurator  {
-
-	private static final int COST = 1500;
 	private static final String QUEST_SLOT = "borrow_kitchen_equipment2";
+	private static final int COST = 1500;
 
+	// Items to borrow
 	private static final List<String> ITEMS = Arrays.asList("młynek do cukru", "moździerz z tłuczkiem");
 
-
 	@Override
-	public void configureZone(StendhalRPZone zone,
-			Map<String, String> attributes) {
+	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
 		buildNPC(zone);
 	}
 
 	private void buildNPC(StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Lena") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -276,12 +273,13 @@ public class ShopAssistantNPC implements ZoneConfigurator  {
 				    "Ni masz tego ze sobą! Czy chcesz teraz za to zapłacić " + COST + " money?",
 				    null);
 
-			}};
+			}
+		};
 
-			npc.setDescription("Oto Lena. Pracuje już długo dla Ernesta i jest jego lojalnym pomocnikiem.");
-			npc.setEntityClass("housewifenpc");
-			npc.setGender("F");
-			npc.setPosition(26, 9);
-			zone.add(npc);
+		npc.setDescription("Oto Lena. Pracuje już długo dla Ernesta i jest jego lojalnym pomocnikiem.");
+		npc.setEntityClass("housewifenpc");
+		npc.setGender("F");
+		npc.setPosition(26, 9);
+		zone.add(npc);
 	}
 }

@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                 (C) Copyright 2003-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -15,19 +15,10 @@ import java.util.Map;
 
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 
-/*
- * Inside Semos Tavern - Level 0 (ground floor)
- */
 public class IrekNPC implements ZoneConfigurator {
-	private final ShopList shops = SingletonRepository.getShopList();
-
 	/**
 	 * Configure a zone.
 	 *
@@ -46,7 +37,6 @@ public class IrekNPC implements ZoneConfigurator {
 				addGreeting();
 				addJob("Jak każda inna, aby tylko byli klienci.");
 				addHelp("Sprzedaję różne warzywa. Na stole leży książka, w niej jest moja oferta");
-				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("sellwarzywairek")), false);
 				addOffer("Sprzedaję warzywa, oferta moja jest w książce.");
 				addQuest("Nie mam głowy do zadań.");
 				addGoodbye();

@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -16,18 +16,12 @@ import java.util.List;
 import java.util.Map;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
-import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
 
 public class DwarfGuardNPC implements ZoneConfigurator {
-	private final ShopList shops = SingletonRepository.getShopList();
-
 	/**
 	 * Configure a zone.
 	 *
@@ -53,9 +47,8 @@ public class DwarfGuardNPC implements ZoneConfigurator {
 			protected void createDialog() {
 			    addQuest("Boję się stąd wychodzić... Czy możesz mi #zaoferować naprawdę dobry sprzęt?");
 				addJob("Byłem strażnikiem w więzieniu. Dopóki... cóż pewnie znasz resztę.");
-				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buychaos")), true);
-				addGoodbye("Do widzenia ... bądź ostrożny ...");
-			}// remaining behaviour is defined in maps.quests.JailedDwarf.
+				addGoodbye("Do widzenia... bądź ostrożny...");
+			}
 		};
 
 		npc.setDescription("Oto Hunel, jest przyjaznym krasnoludem. Jak on tu wszedł i dlaczego on jest przestraszony?");

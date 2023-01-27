@@ -1,5 +1,5 @@
 /***************************************************************************
- *                      (C) Copyright 2019 - Stendhal                      *
+ *                   (C) Copyright 2019-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -17,12 +17,7 @@ import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.RPEntity;
-import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
-import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
-import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 
 public class KingNPC implements ZoneConfigurator {
 	@Override
@@ -52,15 +47,5 @@ public class KingNPC implements ZoneConfigurator {
 		npc.setPosition(14,7);
 		npc.setDirection(Direction.DOWN);
 		zone.add(npc);
-		
-		buildShops(npc);
-	}
-
-	private void buildShops(final SpeakerNPC npc) {
-		final ShopList shops = ShopList.get();
-		// sells deniran city scroll
-		new SellerAdder().addSeller(npc, new SellerBehaviour(shops.get("denirankingsell")));
-		// buys royal equipment
-		new BuyerAdder().addBuyer(npc, new BuyerBehaviour(shops.get("denirankingbuy")));
 	}
 }

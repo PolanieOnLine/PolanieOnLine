@@ -50,8 +50,8 @@
 		<description>Oto pierścień leczniczy. Może cię ochronić przed zatruciem gdy nosisz go na palcu.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StatusResistantItem"/>
 		<attributes>
-			<status_resist type="poisoned" value="0.25" slots="finger;fingerb;"/>
 			<min_level value="0"/>
+			<statusresist slots="finger;fingerb;" type="poisoned" value="0.25"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
@@ -69,8 +69,8 @@
 		<description>Oto pierścień antyjadowy. Posiada dobre właściwości chroniące przed zatruciem gdy nosisz go na palcu.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StatusResistantItem"/>
 		<attributes>
-			<status_resist type="poisoned" value="0.5" slots="finger;fingerb;"/>
 			<min_level value="0"/>
+			<statusresist slots="finger;fingerb;" type="poisoned" value="0.5"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
@@ -88,8 +88,8 @@
 		<description>Oto pierścień antytoksynowy. Będziesz odporny na truciznę gdy nosisz go na palcu.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StatusResistantItem"/>
 		<attributes>
-			<status_resist type="poisoned" value="0.75" slots="finger;fingerb;"/>
 			<min_level value="0"/>
+			<statusresist slots="finger;fingerb;" type="poisoned" value="0.75"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
@@ -107,8 +107,8 @@
 		<description>Oto pierścień spokoju. Może zmniejszać skutki szoku podczas noszenia go na palcu.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StatusResistantItem"/>
 		<attributes>
-			<status_resist type="shocked" value="0.33" slots="finger;fingerb;"/>
 			<min_level value="0"/>
+			<statusresist slots="finger;fingerb;" type="shocked" value="0.33"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
@@ -126,8 +126,8 @@
 		<description>Oto zaizolowany pierścień, który ochroni ciebie przed zszokowaniem - wstrząsami. Musi być założony na palcu.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StatusResistantItem"/>
 		<attributes>
-			<status_resist type="shocked" value="0.66" slots="finger;fingerb;"/>
 			<min_level value="0"/>
+			<statusresist slots="finger;fingerb;" type="shocked" value="0.66"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
@@ -207,9 +207,9 @@
 			<atk value="4"/>
 			<def value="4"/>
 			<undroppableondeath value="1"/>
-			<status_resist type="poisoned" value="0.33" slots="finger;fingerb;"/>
-			<status_resist type="shocked" value="0.33" slots="finger;fingerb;"/>
 			<min_level value="0"/>
+			<statusresist slots="finger;fingerb;" type="poisoned" value="0.33"/>
+			<statusresist slots="finger;fingerb;" type="shocked" value="0.33"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
@@ -229,9 +229,9 @@
 			<atk value="3"/>
 			<def value="3"/>
 			<undroppableondeath value="1"/>
-			<status_resist type="poisoned" value="0.2" slots="finger;fingerb;"/>
-			<status_resist type="shocked" value="0.1" slots="finger;fingerb;"/>
 			<min_level value="0"/>
+			<statusresist slots="finger;fingerb;" type="poisoned" value="0.2"/>
+			<statusresist slots="finger;fingerb;" type="shocked" value="0.1"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
@@ -251,8 +251,8 @@
 			<atk value="2"/>
 			<def value="2"/>
 			<undroppableondeath value="1"/>
-			<status_resist type="poisoned" value="0.1" slots="finger;fingerb;"/>
 			<min_level value="0"/>
+			<statusresist slots="finger;fingerb;" type="poisoned" value="0.1"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>
@@ -272,8 +272,8 @@
 			<atk value="1"/>
 			<def value="1"/>
 			<undroppableondeath value="1"/>
-			<status_resist type="poisoned" value="0.05" slots="finger;fingerb;"/>
 			<min_level value="0"/>
+			<statusresist slots="finger;fingerb;" type="poisoned" value="0.05"/>
 		</attributes>
 		<equipable>
 			<slot name="ground"/>

@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                 (C) Copyright 2003-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -9,26 +9,16 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-// Based on ../games/stendhal/server/maps/kirdneh/museum/CuratorNPC.java
 package games.stendhal.server.maps.krakow.sukiennice;
 
 import java.util.Map;
 
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
 
-/*
- * Inside Semos Tavern - Level 0 (ground floor)
- */
 public class PrzekupkaNPC implements ZoneConfigurator {
-	private final ShopList shops = SingletonRepository.getShopList();
-
 	/**
 	 * Configure a zone.
 	 *
@@ -47,7 +37,6 @@ public class PrzekupkaNPC implements ZoneConfigurator {
 				addGreeting();
 				addJob("Dzień dobry, co potrzeba?");
 				addHelp("Kupuję różne warzywa.");
-				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buywarzywa")), false);
 				addOffer("W książce na stole jest napisane co skupuję.");
 				addGoodbye();
 			}

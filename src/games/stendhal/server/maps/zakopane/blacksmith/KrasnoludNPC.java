@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                 (C) Copyright 2003-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,28 +11,24 @@
  ***************************************************************************/
 package games.stendhal.server.maps.zakopane.blacksmith;
 
-import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.core.pathfinder.FixedPath;
-import games.stendhal.server.core.pathfinder.Node;
-import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
-import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
-import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
-import games.stendhal.server.core.engine.SingletonRepository;
-
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import games.stendhal.server.core.config.ZoneConfigurator;
+import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.core.pathfinder.FixedPath;
+import games.stendhal.server.core.pathfinder.Node;
+import games.stendhal.server.entity.npc.SpeakerNPC;
+import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
+import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
+
 /**
  * @author Legolas
  */
 public class KrasnoludNPC implements ZoneConfigurator {
-
 	/**
 	 * Configure a zone.
 	 *
@@ -46,11 +42,9 @@ public class KrasnoludNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Krasnolud") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
-				// walks along the aqueduct path, roughly
 				nodes.add(new Node(8, 3));
 				nodes.add(new Node(7, 3));
 				nodes.add(new Node(7, 7));
@@ -60,23 +54,20 @@ public class KrasnoludNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-			new SellerAdder().addSeller(this, new SellerBehaviour(SingletonRepository.getShopList().get("sellkopalnia")));
+				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
+				requiredResources.put("polano", 1);
+				requiredResources.put("ruda żelaza", 1);
+				requiredResources.put("piórko", 1);
+				requiredResources.put("money", 1);
+	
+				final ProducerBehaviour behaviour = new ProducerBehaviour("krasnolud_cast_arrow",
+					Arrays.asList("make", "zrób"), "strzała", requiredResources, 1 * 60);
+	
+				new ProducerAdder().addProducer(this, behaviour,
+					"Witaj! Mogę zrobić dla ciebie strzały, a może interesuje cię moja #oferta specjalna? Powiedz tylko #zrób .");
 
-			// Xoderos casts iron if you bring him wood and iron ore.
-			final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
-			requiredResources.put("polano", 1);
-			requiredResources.put("ruda żelaza", 1);
-			requiredResources.put("piórko", 1);
-			requiredResources.put("money", 1);
-
-			final ProducerBehaviour behaviour = new ProducerBehaviour("krasnolud_cast_arrow",
-				Arrays.asList("make", "zrób"), "strzała", requiredResources, 1 * 60);
-
-			new ProducerAdder().addProducer(this, behaviour,
-				"Witaj! Mogę zrobić dla ciebie strzały, a może interesuje cię moja #oferta specjalna? Powiedz tylko #zrób .");
 				addGreeting();
 				addJob("Produkuję strzały do kuszy.");
-
 				addReply("polano",
 						"Potrzebuję drewna na promień do strzały. Porozmawiaj z drwalem on ci powie gdzie można ścinać drzewa.");
 				addReply(Arrays.asList("ore", "iron", "iron ore","ruda żelaza"),
@@ -85,7 +76,6 @@ public class KrasnoludNPC implements ZoneConfigurator {
 						"Potrzebuję je na lotki. Zabij kilka gołębi.");
 				addReply("kilof",
 						"Przydatny przy wydobyciu siarki i węgla.");
-
 				addReply("łopata", " no cóż czymś trzeba kopać.");
 				addReply("lina", "przydatna gdy zechcesz zejść na niższe poziomy.");
 				addHelp("Jeśli przyniesiesz mi #polano,  #'ruda żelaza' i #piórko , mogę zrobić dla ciebie strzały. Powiedz tylko #zrób .");

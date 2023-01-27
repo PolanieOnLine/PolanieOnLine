@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2019 - Stendhal                    *
+ *                 (C) Copyright 2019-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -39,13 +39,6 @@ public class NaukowiecNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Agrypin") {
-
-			@Override
-			protected void createPath() {
-				// NPC doesn't move
-				setPath(null);
-			}
-
 			@Override
 			public void createDialog() {
 				addJob("Jestem naukowcem i udało mi się rozpracować #'smoczy eliksir'!");
@@ -63,6 +56,7 @@ public class NaukowiecNPC implements ZoneConfigurator {
 				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
 				requiredResources.put("money", 800);
 				requiredResources.put("smocza krew", 1);
+
 				final ProducerBehaviour behaviour = new ProducerBehaviour("agrypin_concoct_potion",
 						Arrays.asList("concoct", "sporządź"), "smoczy eliksir", requiredResources, 1 * 60);
 

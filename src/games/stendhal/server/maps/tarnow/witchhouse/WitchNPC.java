@@ -1,5 +1,5 @@
 /***************************************************************************
- *                 (C) Copyright 2019-2022 - PolanieOnLine                 *
+ *                 (C) Copyright 2022-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -15,20 +15,14 @@ import java.util.Map;
 
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.RPEntity;
-import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
 
 /**
  * @author KarajuSs
  */
 public class WitchNPC implements ZoneConfigurator {
-	private final ShopList shops = SingletonRepository.getShopList();
-
 	/**
 	 * Configure a zone.
 	 *
@@ -47,7 +41,6 @@ public class WitchNPC implements ZoneConfigurator {
 				addGreeting("Cześć, trochę mnie zaskoczyłeś wchodząc do mojego domu, a nie sklepu...");
 				addJob("Zajmuję się utylizacją różdżek. Jeżeli jakieś masz to chętnie odkupię od Ciebie.");
 				addOffer("Jeżeli jakieś różdżki posiadasz to chętnie odkupię od Ciebie.");
-				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("wandbuyer")), true);
 				addGoodbye();
 			}
 

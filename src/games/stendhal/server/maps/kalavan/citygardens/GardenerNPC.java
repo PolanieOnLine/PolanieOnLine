@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -13,7 +13,6 @@ package games.stendhal.server.maps.kalavan.citygardens;
 
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -32,9 +31,7 @@ import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
-import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
-import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.util.TimeUtil;
 
@@ -189,12 +186,6 @@ public class GardenerNPC implements ZoneConfigurator {
 				addOffer("Moje pomidory i czosnek mają się dobrze. Mam wystarczająco dużo, aby trochę sprzedać." +
 									"Mógłbym również *kaszel* sprzedać trochę papryki habanero i fasoli pinto... " +
 									"Jeśli chciałbyś #kupić specjalne składniki na skromny posiłek!");
-				final Map<String, Integer> offerings = new HashMap<String, Integer>();
-                offerings.put("pomidor", 30);
-                offerings.put("czosnek", 50);
-				offerings.put("fasola pinto", 55);
-                offerings.put("papryka habanero", 60);
-                new SellerAdder().addSeller(this, new SellerBehaviour(offerings), false);
 				addReply(Arrays.asList("drugie", "śniadanie", "lunch"), "Poproszę filiżankę herbaty!");
 				addReply(Arrays.asList("sandwich", "kanapka"), "Mmm.. Chciałbym z szynką i serem.");
 				addReply(Arrays.asList("zwój kalavan", "scroll"), "To magiczny zwój, który może cię zabrać do Kalavan. Nie pytaj mnie jak działa!");

@@ -5,6 +5,7 @@
 		<type class="tool" subclass="foodmill" tileid="-1"/>
 		<description>Oto młynek. Tradycyjne narzędzie do mielenia jedzenia.</description>
 		<implementation class-name="games.stendhal.server.entity.item.FoodMill"/>
+		<unattainable>true</unattainable>
 		<attributes>
 		</attributes>
 		<weight value="10.0"/>
@@ -168,6 +169,7 @@
 		<type class="tool" subclass="pick_old" tileid="-1"/>
 		<description>Oto zardzewiały kilof. Na niewiele już się przyda.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<unattainable>true</unattainable>
 		<attributes>
 		</attributes>
 		<weight value="10.0"/>
@@ -204,6 +206,7 @@
 		<type class="tool" subclass="pick_steel" tileid="-1"/>
 		<description>Oto kilof stalowy. Dzięki specjalnym wzmocnieniom jesteś w stanie wykopać nieco twardsze kamienie szlachetne.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<unattainable>true</unattainable>
 		<attributes>
 		</attributes>
 		<weight value="10.0"/>
@@ -222,6 +225,7 @@
 		<type class="tool" subclass="pick_gold" tileid="-1"/>
 		<description>Oto kilof złoty. Wytrzymałość stali, a wygląd pięknego lśniącego złota.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<unattainable>true</unattainable>
 		<attributes>
 		</attributes>
 		<weight value="10.0"/>
@@ -240,6 +244,7 @@
 		<type class="tool" subclass="pick_obsidian" tileid="-1"/>
 		<description>Oto kilof obsydianowy. Najwytrzymalszy kilof jaki został wykonany.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<unattainable>true</unattainable>
 		<attributes>
 		</attributes>
 		<weight value="10.0"/>
@@ -259,6 +264,7 @@
 		<type class="tool" subclass="shovel" tileid="-1"/>
 		<description>Oto łopata. Być może dzięki niej wykopiesz kiedyś skarb.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Shovel"/>
+	    <unattainable>true</unattainable>
 	    <attributes>
 			<menu value="Wykop|Użyj"/>
 			<use_sound value="shovel_dig"/>
@@ -368,7 +374,7 @@
 
 	<item name="wykrywacz metali">
 		<type class="tool" subclass="metal_detector" tileid="-1"/>
-		<description></description>
+		<description>Oto wykrywacz metali. Dzięki temu urządzeniu możesz znaleźć zakopane skarby.</description>
 		<implementation class-name="games.stendhal.server.entity.item.MetalDetector"/>
 		<attributes>
 			<menu value="Skanuj|Użyj"/>

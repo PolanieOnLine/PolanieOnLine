@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                 (C) Copyright 2018-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -38,10 +38,6 @@ public class ZonaGoralaNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Gaździna Bożena") {
-
-			/**
-			 * Creates a path around the table with the beers and to the furnance.
-			 */
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();

@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                 (C) Copyright 2003-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -9,7 +9,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-// Based on ../games/stendhal/server/maps/ados/barracks/BuyerNPC.java
 package games.stendhal.server.maps.krakow.planty;
 
 import java.util.LinkedList;
@@ -17,23 +16,12 @@ import java.util.List;
 import java.util.Map;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
-import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
 
-/**
- * Builds an NPC to buy previously un bought armor.
- *
- * @author kymara
- */
 public class KacperNPC implements ZoneConfigurator {
-	private final ShopList shops = SingletonRepository.getShopList();
-
 	/**
 	 * Configure a zone.
 	 *
@@ -47,7 +35,6 @@ public class KacperNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Kacper") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -65,12 +52,11 @@ public class KacperNPC implements ZoneConfigurator {
 				addHelp("Skupuję wszystko co potrzebne do budowy zamku lodowego, jeżeli coś masz to #zaoferuj mi to.");
 				addOffer("Skupuję śnieżka 5, kamienie 6, bryła lodu 8.");
 				addQuest("Poszukaj kamieni, brył lodu, śnieżek a dobrze cię wynagrodzę.");
-				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buykacper")), false);
 				addGoodbye("Do widzenia.");
 			}
 		};
 
-		npc.setDescription("Oto chłopak budujący zamek lodowy.");
+		npc.setDescription("Oto Kacper, chłopczyk budujący zamek lodowy.");
 		npc.setEntityClass("kid7npc");
 		npc.setGender("M");
 		npc.setPosition(10, 2);

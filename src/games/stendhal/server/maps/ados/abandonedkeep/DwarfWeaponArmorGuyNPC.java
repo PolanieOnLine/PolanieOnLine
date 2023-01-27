@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -16,21 +16,15 @@ import java.util.List;
 import java.util.Map;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
-import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 
 /**
  * Inside Ados Abandoned Keep - level -4 .
  */
 public class DwarfWeaponArmorGuyNPC implements ZoneConfigurator {
-    private final ShopList shops = SingletonRepository.getShopList();
-
 	/**
 	 * Configure a zone.
 	 *
@@ -63,7 +57,6 @@ public class DwarfWeaponArmorGuyNPC implements ZoneConfigurator {
 				addGreeting();
 				addJob("Sprzedaję dobrej jakości zbroję i broń.");
 				addHelp("Spójrz na tablicę i zobacz co mogę zaoferować.");
-				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("sellbetterstuff2")), false);
 				addOffer("Spójrz na tablicę, aby zapoznać się z moją ofertą.");
 				addQuest("Dziękuję za zaoferowanie pomocy, ale wszystko w porządku.");
 				addGoodbye();

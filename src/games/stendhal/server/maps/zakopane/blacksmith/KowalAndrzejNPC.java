@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2020 - Stendhal                    *
+ *                 (C) Copyright 2003-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -43,7 +43,6 @@ public class KowalAndrzejNPC implements ZoneConfigurator {
 
 	private void buildKuznia(final StendhalRPZone zone) {
 		final SpeakerNPC kuznia = new SpeakerNPC("Kowal Andrzej") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -81,7 +80,7 @@ public class KowalAndrzejNPC implements ZoneConfigurator {
 				new ProducerAdder().addProducer(this, behaviour,
 				        "Cześć! Jestem tutejszym kowalem. Jeżeli będziesz chciał, abym odlał dla Ciebie #żelazo to daj znać!");
 				addReply(Arrays.asList("ruda", "żelazo", "ruda żelaza"),
-								"Rudę żelaza znajdziesz w górach Zakopanego i Kościeliska. Uważaj tam na siebie!");
+						"Rudę żelaza znajdziesz w górach Zakopanego i Kościeliska. Uważaj tam na siebie!");
 			}
 		};
 

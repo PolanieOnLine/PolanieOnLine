@@ -1,5 +1,5 @@
 /***************************************************************************
- *                 (C) Copyright 2019-2022 - PolanieOnLine                 *
+ *                 (C) Copyright 2022-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -17,20 +17,16 @@ import java.util.Map;
 import games.stendhal.common.Direction;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
-import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.DropItemAction;
 import games.stendhal.server.entity.npc.action.MultipleActions;
 import games.stendhal.server.entity.npc.action.SayTextAction;
-import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.player.Player;
 
@@ -38,7 +34,6 @@ import games.stendhal.server.entity.player.Player;
  * @author KarajuSs
  */
 public class MythNPC implements ZoneConfigurator {
-	private final ShopList shops = SingletonRepository.getShopList();
 	private static final int currentFee = 1000;
 	/**
 	 * Configure a zone.
@@ -63,8 +58,6 @@ public class MythNPC implements ZoneConfigurator {
 				addReply(Arrays.asList("facts","fact","ciekawostka","ciekawostki","ciekawostce","historyjka","historyjki","opłatę","cost"),
 						"Za ciekawostkę będzie cię kosztowało 1,000 money! Chcesz ją usłyszeć?");
 				addGoodbye("Jak będziesz chciał znów coś posłuchać to wróć.");
-
-				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("tarnowscrollseller")), false);
 
 				add(ConversationStates.ATTENDING,
 					ConversationPhrases.YES_MESSAGES,

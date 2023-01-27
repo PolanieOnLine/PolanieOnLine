@@ -28,5 +28,7 @@ public class SettingsProperties {
 
 	public static final String MSG_SOUND = "ui.msg_sound";
 
+	public static final String OVERRIDE_AA = "ui.font.overrideaa";
+
 	public static final String BUBBLES_PROPERTY =  "ui.chat_bubbles";
 }

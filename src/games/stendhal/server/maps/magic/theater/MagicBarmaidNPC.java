@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -16,21 +16,15 @@ import java.util.List;
 import java.util.Map;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
-import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 
 /**
- * Inside Magic Theater)
+ * Inside Magic Theater.
  */
 public class MagicBarmaidNPC implements ZoneConfigurator {
-	private final ShopList shops = SingletonRepository.getShopList();
-
 	/**
 	 * Configure a zone.
 	 *
@@ -57,7 +51,6 @@ public class MagicBarmaidNPC implements ZoneConfigurator {
 				addGreeting("Cześć. Mam nadzieję, że podoba się Tobie nasz wspaniały teatr.");
 				addJob("Sprzedaję większość pysznego jedzenia w Magic City.");
 				addHelp("Jeżeli jesteś głodny to sprawdź tablicę, aby dowiedzieć się jakie sprzedajemy jedzenie i po jakiej cenie.");
-				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("sellmagic")), false);
 				addOffer("Spójrz na tablicę, aby zobaczyć ceny.");
 				addQuest("Nie potrzebuję twojej pomocy. Dziękuję.");
 				addReply("lukrecja", "Biedny Baldemar ma alergię na lukrecję.");

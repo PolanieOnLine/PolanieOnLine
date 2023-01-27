@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2019 - Stendhal                    *
+ *                 (C) Copyright 2019-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -15,19 +15,13 @@ import java.util.Map;
 
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
 
 /**
  * @author ZEKKEQ
  */
 public class GlovesBuyerNPC implements ZoneConfigurator {
-	private final ShopList shops = SingletonRepository.getShopList();
-
 	/**
 	 * Configure a zone.
 	 *
@@ -45,11 +39,9 @@ public class GlovesBuyerNPC implements ZoneConfigurator {
 			@Override
 			protected void createDialog() {
 				addGreeting("Witaj w szwalni rękawic! W czym mogę #pomóc.");
-				addHelp("Możesz sprzedać mi kilka starych rękawic, jeśli masz jakieś... Spójrz na książkę.");
 				addHelp("Jedna z moich znajomych znajdujących się piętro wyżej, jest kolekcjonerką. Zapytaj, a może będzie potrzebować pomocy. "
 						+ "Możesz również sprzedać mi kilka starych rękawic, jeśli masz jakieś... Spójrz na książkę.");
 				addJob("Zajmuję się skupem starych rękawic oraz skór zwierząt.");
-				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buygloves")), false);
 				addOffer("Spójrz na książkę, by zaznajomić się z cenami skupu.");
 				addGoodbye();
 			}

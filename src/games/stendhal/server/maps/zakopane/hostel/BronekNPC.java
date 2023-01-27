@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2020 - Stendhal                    *
+ *                 (C) Copyright 2003-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -14,12 +14,8 @@ package games.stendhal.server.maps.zakopane.hostel;
 import java.util.Map;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
 
 /**
  * v 1.8 2020/05/09 06:41:20
@@ -28,8 +24,6 @@ import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
  * 		@edit by ZEKKEQ
  */
 public class BronekNPC implements ZoneConfigurator {
-	private final ShopList shops = SingletonRepository.getShopList();
-
 	/**
 	 * Configure a zone.
 	 *
@@ -43,7 +37,6 @@ public class BronekNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Bronek") {
-
 			@Override
 			protected void createDialog() {
 				addGreeting("Witaj wędrowcze.");
@@ -51,7 +44,6 @@ public class BronekNPC implements ZoneConfigurator {
 				addHelp("Chętnie od ciebie kupię pazury smoków, bo słyszałem, że gdzieś za siedmioma lasami można będzie z niego wykonać talizman! Jeżeli coś masz to #zaoferuj mi to.");
 				addOffer("Na tablicy masz napisane jakie przedmioty skupuję.");
 				addQuest("O, dziękuję, ale niczego już nie potrzebuję.");
-				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buydragonitems")), false);
 				addGoodbye("Do widzenia kolego.");
 			}
 		};

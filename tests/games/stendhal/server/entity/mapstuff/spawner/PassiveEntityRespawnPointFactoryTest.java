@@ -113,7 +113,6 @@ public class PassiveEntityRespawnPointFactoryTest {
 		PassiveEntityRespawnPoint value_3 = PassiveEntityRespawnPointFactory
 				.create(clazz, 3, null, 0, 0);
 		assertNull(value_3);
-
 	}
 
 	/**
@@ -300,8 +299,13 @@ public class PassiveEntityRespawnPointFactoryTest {
 
 		PassiveEntityRespawnPoint value_3 = PassiveEntityRespawnPointFactory
 				.create(clazz, 3, null, 0, 0);
-		assertNull(value_3);
+		assertNotNull(value_3);
+		assertEquals("Widzisz pierwiastki śladowe genialnego ametystu.",
+				value_3.getDescription());
 
+		PassiveEntityRespawnPoint value_4 = PassiveEntityRespawnPointFactory
+				.create(clazz, 4, null, 0, 0);
+		assertNull(value_4);
 	}
 
 	/**

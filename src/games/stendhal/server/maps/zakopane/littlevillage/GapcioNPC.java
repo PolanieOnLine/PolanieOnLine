@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2021 - Stendhal                    *
+ *                 (C) Copyright 2021-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -16,18 +16,12 @@ import java.util.List;
 import java.util.Map;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
-import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
 
 public class GapcioNPC implements ZoneConfigurator {
-    private final ShopList shops = SingletonRepository.getShopList();
-
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		buildNPC(zone);
@@ -51,7 +45,6 @@ public class GapcioNPC implements ZoneConfigurator {
 				addOffer("Poczytaj znak, aby dowiedzieć się czego potrzebujemy.");
 				addQuest("Dziękuję za pytanie, ale czuję się dobrze.");
 				addGoodbye("Do widzenia. Cieszę się, że odwiedziłeś nas.");
- 				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buyskrzaty")), false);
 			}
 		};
 

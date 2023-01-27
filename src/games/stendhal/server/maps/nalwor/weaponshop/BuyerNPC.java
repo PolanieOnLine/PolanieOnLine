@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -16,14 +16,10 @@ import java.util.List;
 import java.util.Map;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
-import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
 
 /**
  * Builds an NPC to buy previously un bought weapons.
@@ -31,8 +27,6 @@ import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
  * @author kymara
  */
 public class BuyerNPC implements ZoneConfigurator {
-	private final ShopList shops = SingletonRepository.getShopList();
-
 	/**
 	 * Configure a zone.
 	 *
@@ -65,7 +59,6 @@ public class BuyerNPC implements ZoneConfigurator {
 				addHelp("#Handluję rzadką bronią.");
 				addOffer("Spójrz na tablicę na ścianie, aby zobaczyć co kupuję.");
 				addQuest("Myślisz, że mógłbym zaufać człowiekowi w ważnej sprawie? Mylisz się!");
-				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("elfbuyrare")), false);
 				addGoodbye("Do widzenia. Bądź ostrożny i za bardzo nie denerwuj innych elfów.");
 			}
 		};

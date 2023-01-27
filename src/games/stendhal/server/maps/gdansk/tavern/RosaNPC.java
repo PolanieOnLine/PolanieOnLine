@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2019 - Stendhal                    *
+ *                 (C) Copyright 2018-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,27 +11,21 @@
  ***************************************************************************/
 package games.stendhal.server.maps.gdansk.tavern;
 
-import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
-import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.core.pathfinder.FixedPath;
-import games.stendhal.server.core.pathfinder.Node;
-import games.stendhal.server.entity.npc.ShopList;
-import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
-
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import games.stendhal.server.core.config.ZoneConfigurator;
+import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.core.pathfinder.FixedPath;
+import games.stendhal.server.core.pathfinder.Node;
+import games.stendhal.server.entity.npc.SpeakerNPC;
+
 /**
  * @author KarajuSs
  */
 public class RosaNPC implements ZoneConfigurator {
-	private final ShopList shops = SingletonRepository.getShopList();
-
 	/**
 	 * Configure a zone.
 	 *
@@ -45,7 +39,6 @@ public class RosaNPC implements ZoneConfigurator {
 
 	private void buildnpc(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Rosa") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -61,7 +54,6 @@ public class RosaNPC implements ZoneConfigurator {
 				addGreeting();
 				addJob("Pracuję jako barmanka tutejszej tawerny.");
 				addHelp("W naszej tawernie jest dużo miejsca, można tutaj sobie odpocząć. Sprzedaję różne napoje oraz dobre jedzenie. Sprawdź moją #'ofertę' lub spójrz na tablicę obok.");
-				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("urodziny")));
 				addGoodbye();
 			}
 		};

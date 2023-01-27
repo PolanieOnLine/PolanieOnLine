@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2020 - Stendhal                    *
+ *                 (C) Copyright 2020-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -19,25 +19,20 @@ import java.util.Map;
 import games.stendhal.common.grammar.ItemParserResult;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.EventRaiser;
-import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.BehaviourAction;
 import games.stendhal.server.entity.npc.behaviour.adder.FreeHealerAdder;
-import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.Behaviour;
-import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 import games.stendhal.server.entity.player.Player;
 
 /**
  * @author KarajuSs
  */
 public class RadomilNPC implements ZoneConfigurator {
-	private final ShopList shops = SingletonRepository.getShopList();
 	// ile karmy potrzeba do zdjecia czaszki
 	private static final int KARMA_AMOUNT = 200;
 
@@ -54,7 +49,6 @@ public class RadomilNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Radomil") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -76,7 +70,6 @@ public class RadomilNPC implements ZoneConfigurator {
 				addHelp("Mogę Cię #'uleczyć' lub #zdjąć z ciebie #'czaszkę'.");
 				new FreeHealerAdder().addHealer(this, 0);
 				addOffer("Potrafię również zdjąć z Ciebie piętno zabójcy. Powiedz mi tylko #'zdejmij czaszkę'.");
-				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("eliksiry")));
 
 				addReply("zdejmij", null,
 						new BehaviourAction(new Behaviour("czaszkę"), Arrays.asList("remove", "zdejmij"), "offer") {

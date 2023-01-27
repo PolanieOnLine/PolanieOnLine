@@ -69,6 +69,8 @@ public class TradeCenterZoneConfigurator implements ZoneConfigurator {
 		speaker.setEntityClass("tradecenteradvisornpc");
 		speaker.setOutfit(3, 34, 1, null, 0, null, 5, null, 0);
 		speaker.setGender("M");
+		// add icon denoting merchant
+		speaker.put("job_merchant", "");
 		zone.add(speaker);
 	}
 

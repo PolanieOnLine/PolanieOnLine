@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -16,22 +16,16 @@ import java.util.List;
 import java.util.Map;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.CloneManager;
-import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
 
 /**
  * Ados City, house with a woman who makes sails for the ships
  */
 public class SeamstressNPC implements ZoneConfigurator {
-	private final ShopList shops = SingletonRepository.getShopList();
-
 	// clone to be used in twilight zone
 	private static SpeakerNPC clone;
 
@@ -63,7 +57,6 @@ public class SeamstressNPC implements ZoneConfigurator {
 				addGreeting("Witaj.");
 				addJob("Jestem szwaczką. Produkuję żagle dla statków takich jak prom do Athor.");
 				addHelp("Jeżeli chcesz się dostać promem na wyspę Athor to wyjdź z miasta i kieruj się na południe, a tam znajdziesz przystań.");
-				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buycloaks")), false);
 				addOffer("Skupuję płaszcze, ponieważ nie mamy materiałów na żagle. Za lepszy materiał płacę więcej. W moim notatniku na stole znajduje się cennik.");
 				addGoodbye("Do widzenia i dziękuję za wstąpienie.");
 			}

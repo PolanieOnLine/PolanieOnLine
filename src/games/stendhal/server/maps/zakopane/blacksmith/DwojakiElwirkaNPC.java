@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                 (C) Copyright 2003-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,21 +11,19 @@
  ***************************************************************************/
 package games.stendhal.server.maps.zakopane.blacksmith;
 
-import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.core.pathfinder.FixedPath;
-import games.stendhal.server.core.pathfinder.Node;
-import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
-import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
-import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
-
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+
+import games.stendhal.server.core.config.ZoneConfigurator;
+import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.core.pathfinder.FixedPath;
+import games.stendhal.server.core.pathfinder.Node;
+import games.stendhal.server.entity.npc.SpeakerNPC;
+import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
+import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 
 /**
  * The cooking girl.
@@ -35,7 +33,6 @@ import java.util.TreeMap;
  * @author Legolas
  */
 public class DwojakiElwirkaNPC implements ZoneConfigurator  {
-
 	@Override
 	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
 		buildNPC(zone);
@@ -63,10 +60,6 @@ public class DwojakiElwirkaNPC implements ZoneConfigurator  {
 				addReply(Arrays.asList("dwojak", "dwojaki"),
 						"Dwojaki to gliniane naczynie, które po brzegi wypełnię kucianymi grulami. Jeśli chcesz powiedz mi po prostu #'ugotuj 1 dwojaki'.");
 				addOffer("Cóż. Jeśli możesz mi zaoferować kiść winogron chętnie odkupię je od ciebie. Powiedz mi wtedy #'sprzedam kiść winogron'.");
-				final Map<String, Integer> offers = new TreeMap<String, Integer>();
-				offers.put("kiść winogron", 3);
-				new BuyerAdder().addBuyer(this, new BuyerBehaviour(offers), false);
-
 				addGoodbye();
 
 				// Elwirka makes dwojaki if you bring her ziemniaki, kiełbasa wiejska, onion, butter and milk.

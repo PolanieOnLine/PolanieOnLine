@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2018 - Stendhal                    *
+ *                 (C) Copyright 2018-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -16,21 +16,15 @@ import java.util.List;
 import java.util.Map;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
-import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 
 /**
  * @author KarajuSs
  */
 public class BarmankaNPC implements ZoneConfigurator {
-	private final ShopList shops = SingletonRepository.getShopList();
-
 	/**
 	 * Configure a zone.
 	 *
@@ -44,7 +38,6 @@ public class BarmankaNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Idris") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -56,14 +49,13 @@ public class BarmankaNPC implements ZoneConfigurator {
 			@Override
 			protected void createDialog() {
 				addGreeting();
-				addJob("Jestem barmanką w tej karczmie.");
-				addOffer("Spójrz na tablice za mną, sprzedaję to co widnieje właśnie na niej.");
-				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("food&drinks")), false);
+				addJob("Jestem barmanką i obsługuję podróżnych lub miejscowych.");
+				addOffer("Spójrz na tablice za mną, sprzedaję to co na niej widnieje.");
 				addGoodbye();
 			}
 		};
 
-		npc.setDescription("Oto śliczna Idris. Jest barmanką w tej karczmie.");
+		npc.setDescription("Oto śliczna Idris. Zajmuje się obsługą w tej karczmie.");
 		npc.setEntityClass("tavernbarmaidnpc");
 		npc.setGender("F");
 		npc.setPosition(26, 7);

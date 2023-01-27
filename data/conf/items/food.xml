@@ -121,13 +121,13 @@
 		<type class="food/apple_special" subclass="apple_purple" tileid="-1"/>
 		<description>Oto jabłko szczęścia. Jest pełen wspomnień.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<unattainable>true</unattainable>
 		<attributes>
 			<amount value="4" />
 			<frequency value="10" />
 			<quantity value="1" />
 			<regen value="1" />
 			<menu value="Zjedz|Użyj"/>
-			<unattainable>true</unattainable>
 		</attributes>
 		<weight value="1.0" />
 		<value value="1" />
@@ -145,13 +145,13 @@
 		<type class="food/apple_special" subclass="apple_mauve" tileid="-1"/>
 		<description>Oto jabłko miłości. Jest pełen wspomnień.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<unattainable>true</unattainable>
 		<attributes>
 			<amount value="4" />
 			<frequency value="10" />
 			<quantity value="1" />
 			<regen value="1" />
 			<menu value="Zjedz|Użyj"/>
-			<unattainable>true</unattainable>
 		</attributes>
 		<weight value="1.0" />
 		<value value="1" />
@@ -1669,13 +1669,13 @@
 		<type class="food" subclass="candycane" tileid="-1"/>
 		<description>Oto przepszyna cukierkowa laska.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<unattainable>true</unattainable>
 		<attributes>
 			<amount value="90"/>
 			<frequency value="5"/>
 			<quantity value="1"/>
 			<regen value="10"/>
 			<menu value="Zjedz|Użyj"/>
-			<unattainable>true</unattainable>
 		</attributes>
 		<weight value="1.0"/>
 		<value value="150"/>
@@ -1693,13 +1693,13 @@
 		<type class="food" subclass="greenmint" tileid="-1"/>
 		<description>Oto miętowy cukierek.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<unattainable>true</unattainable>
 		<attributes>
 			<amount value="90"/>
 			<frequency value="5"/>
 			<quantity value="1"/>
 			<regen value="10"/>
 			<menu value="Zjedz|Użyj"/>
-			<unattainable>true</unattainable>
 		</attributes>
 		<weight value="1.0"/>
 		<value value="150"/>
@@ -1717,13 +1717,13 @@
 		<type class="food" subclass="gumdrops" tileid="-1"/>
 		<description>Oto mieszanka żelek.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<unattainable>true</unattainable>
 		<attributes>
 			<amount value="90"/>
 			<frequency value="5"/>
 			<quantity value="1"/>
 			<regen value="10"/>
 			<menu value="Zjedz|Użyj"/>
-			<unattainable>true</unattainable>
 		</attributes>
 		<weight value="1.0"/>
 		<value value="150"/>
@@ -1741,13 +1741,13 @@
 		<type class="food" subclass="lemondrop" tileid="-1"/>
 		<description>Oto słodki i jednocześnie kwaśny cukierek.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<unattainable>true</unattainable>
 		<attributes>
 			<amount value="90"/>
 			<frequency value="5"/>
 			<quantity value="1"/>
 			<regen value="10"/>
 			<menu value="Zjedz|Użyj"/>
-			<unattainable>true</unattainable>
 		</attributes>
 		<weight value="1.0"/>
 		<value value="150"/>
@@ -1765,13 +1765,13 @@
 		<type class="food" subclass="lolipop" tileid="-1"/>
 		<description>Oto lizak.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<unattainable>true</unattainable>
 		<attributes>
 			<amount value="90"/>
 			<frequency value="5"/>
 			<quantity value="1"/>
 			<regen value="10"/>
 			<menu value="Zjedz|Użyj"/>
-			<unattainable>true</unattainable>
 		</attributes>
 		<weight value="1.0"/>
 		<value value="150"/>
@@ -1789,13 +1789,13 @@
 		<type class="food" subclass="peppermint" tileid="-1"/>
 		<description>Oto mały, słodki cukierek peppermint.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<unattainable>true</unattainable>
 		<attributes>
 			<amount value="90"/>
 			<frequency value="5"/>
 			<quantity value="1"/>
 			<regen value="10"/>
 			<menu value="Zjedz|Użyj"/>
-			<unattainable>true</unattainable>
 		</attributes>
 		<weight value="1.0"/>
 		<value value="150"/>
@@ -1813,13 +1813,13 @@
 		<type class="food" subclass="taffy" tileid="-1"/>
 		<description>Oto trochę lepkich cukierków taffy.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
+		<unattainable>true</unattainable>
 		<attributes>
 			<amount value="90"/>
 			<frequency value="5"/>
 			<quantity value="1"/>
 			<regen value="10"/>
 			<menu value="Zjedz|Użyj"/>
-			<unattainable>true</unattainable>
 		</attributes>
 		<weight value="1.0"/>
 		<value value="150"/>

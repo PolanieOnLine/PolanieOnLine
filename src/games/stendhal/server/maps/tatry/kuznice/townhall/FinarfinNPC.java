@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2018 - Stendhal                    *
+ *                 (C) Copyright 2018-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -32,7 +32,6 @@ import games.stendhal.server.maps.Region;
  * @author KarajuSs
  */
 public class FinarfinNPC implements ZoneConfigurator {
-
 	private final List<String> regions = Arrays.asList(Region.TATRY_MOUNTAIN, Region.ZAKOPANE_CITY);
 
 	/**
@@ -48,11 +47,9 @@ public class FinarfinNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Finarfin") {
-
 			@Override
 			public void createDialog() {
 				addGreeting("Witaj, nasz sołtys kazał mi powiedzieć kto aktualnie w naszych regionach potrzebuje Twojej #'pomocy'.");
-
 				// use a standard action to list the names of NPCs for quests which haven't been started in this region
 				addReply(ConversationPhrases.HELP_MESSAGES, null, new SayNPCNamesForUnstartedQuestsAction(regions));
 

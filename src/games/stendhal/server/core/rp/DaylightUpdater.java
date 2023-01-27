@@ -65,7 +65,7 @@ public class DaylightUpdater implements TurnListener {
 	/**
 	 * Update the zone color according to the hour.
 	 */
-	private void updateDaytimeColor() {
+	public void updateDaytimeColor() {
 		setZoneColors(DaylightPhase.current().getColor());
 	}
 

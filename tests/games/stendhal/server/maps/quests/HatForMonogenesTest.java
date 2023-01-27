@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -38,7 +37,6 @@ import utilities.QuestHelper;
 import utilities.RPClass.ItemTestHelper;
 
 public class HatForMonogenesTest {
-
 	private SpeakerNPC npc;
 	private Engine en;
 	private SpeakerNPC npcXin;
@@ -49,7 +47,6 @@ public class HatForMonogenesTest {
 	public static void setUpBeforeClass() throws Exception {
 		QuestHelper.setUpBeforeClass();
 		assertTrue(SingletonRepository.getNPCList().getNPCs().isEmpty());
-
 	}
 
 	@After
@@ -59,7 +56,6 @@ public class HatForMonogenesTest {
 
 	@Before
 	public void setUp() {
-
 		final StendhalRPZone zone = new StendhalRPZone("admin_test");
 
 		new GreeterNPC().configureZone(zone, null);
@@ -70,6 +66,9 @@ public class HatForMonogenesTest {
 		zoneConf.configureZone(new StendhalRPZone("int_semos_tavern"), null);
 		npcXin = SingletonRepository.getNPCList().get("Xin Blanca");
 		enXin = npcXin.getEngine();
+
+		// configure Xin Blanca's shop
+		SingletonRepository.getShopList().configureNPC("Xin Blanca", "sellstuff", true);
 
 		quest = new MeetMonogenes();
 		quest.addToWorld();

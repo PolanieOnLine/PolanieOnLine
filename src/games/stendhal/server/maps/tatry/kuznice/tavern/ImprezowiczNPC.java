@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2018 - Stendhal                    *
+ *                 (C) Copyright 2018-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -36,7 +36,6 @@ public class ImprezowiczNPC implements ZoneConfigurator {
 
 	private void buildnpc(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Cadhes") {
-
 			@Override
 			protected void createDialog() {
 				addGreeting("Wi *hicks* tam!");

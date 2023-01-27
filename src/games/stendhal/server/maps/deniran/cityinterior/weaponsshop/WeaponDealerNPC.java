@@ -1,5 +1,5 @@
 /***************************************************************************
- *                      (C) Copyright 2019 - Stendhal                      *
+ *                   (C) Copyright 2019-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -20,16 +20,9 @@ import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.mapstuff.sign.ShopSign;
-import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
-import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
-import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 
 public class WeaponDealerNPC implements ZoneConfigurator  {
-	private final ShopList shops = ShopList.get();
-
 	@Override
 	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
 		buildNPC(zone);
@@ -43,8 +36,6 @@ public class WeaponDealerNPC implements ZoneConfigurator  {
 				addGreeting("Witaj w miejscowej zbrojowni.");
 				addJob("Zajmuje się sprzedażą broni.");
 				addOffer("Sprawdź moje ceny na tablicach.");
-				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("deniranequipbuy")), false);
-				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("deniranequipsell")), false);
 				addGoodbye();
 			}
 	

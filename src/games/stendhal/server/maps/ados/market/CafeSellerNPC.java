@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2012 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -15,20 +15,14 @@ import java.util.Map;
 
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.RPEntity;
-import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 
 /**
  * Mia works in the Botanical Gardens cafe.
  */
 public class CafeSellerNPC implements ZoneConfigurator {
-	private final ShopList shops = SingletonRepository.getShopList();
-
 	/**
 	 * region that this NPC can give information about
 	 */
@@ -46,7 +40,6 @@ public class CafeSellerNPC implements ZoneConfigurator {
 				addQuest("Jesteś taki miły! Powinieneś zapytać Callę. Ona zawsze wie kto potrzebuje pomocy.");
 				addJob("Sprzedaję napoje i przekąski w kawiarni. Zawze chciałabym powiedzieć, że zrobiłam to jedzenie, ale niestety wszystko jest dostarczane.");
 				addOffer("Możesz kupić napoje i przekąski zajrzyj do naszego menu. Wszystko jest dostarczane więc jest drogie, ale za to najlepsze w okolicy!");
-				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("cafe")), false);
 
 				// just to be nice :)
 				addEmotionReply("thanks", "ciepłe podziękowanie");
@@ -68,5 +61,4 @@ public class CafeSellerNPC implements ZoneConfigurator {
 		npc.setDirection(Direction.DOWN);
 		zone.add(npc);
 	}
-
 }

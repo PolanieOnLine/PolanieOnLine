@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2019 - Stendhal                    *
+ *                 (C) Copyright 2019-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,15 +11,12 @@
  ***************************************************************************/
 package games.stendhal.server.maps.wieliczka.city;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 
 /**
  * @author zekkeq
@@ -32,7 +29,6 @@ public class FlowerMarket implements ZoneConfigurator {
 
 	private void buildNPC(StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Lisa") {
-
 			@Override
 			public void createDialog() {
 				addGreeting("Cześć! Przyszedłeś tutaj #pohandlować?");
@@ -40,15 +36,7 @@ public class FlowerMarket implements ZoneConfigurator {
 				addReply(ConversationPhrases.NO_MESSAGES, "Bardzo dobrze. Jeżeli będę mogła pomóc to daj znać.");
 				addJob("Sprzedaję tutaj róże.");
 				addHelp("Porozmawiaj z naszym burmistrzem! Na pewno znajdziesz u niego jakieś zlecenie.");
-				final Map<String, Integer> offerings = new HashMap<String, Integer>();
-				offerings.put("róża", 65);
-				new SellerAdder().addSeller(this, new SellerBehaviour(offerings));
 				addGoodbye("Do widzenia i zapraszam ponownie!");
-			}
-
-			@Override
-			protected void createPath() {
-				setPath(null);
 			}
 		};
 

@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2018 - Stendhal                    *
+ *                 (C) Copyright 2018-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -16,21 +16,15 @@ import java.util.List;
 import java.util.Map;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
-import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 
 /**
  * @author KarajuSs
  */
 public class JagienkaNPC implements ZoneConfigurator {
-	private final ShopList shops = SingletonRepository.getShopList();
-
 	/**
 	 * Configure a zone.
 	 *
@@ -44,7 +38,6 @@ public class JagienkaNPC implements ZoneConfigurator {
 
 	private void buildnpc(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Jagienka") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -57,10 +50,9 @@ public class JagienkaNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-				addGreeting("Witam miłego gościa. Czy coś podać?");
+				addGreeting("Witamy miłego gościa w karczmie! Czy może coś podać?");
 				addJob("Jestem kelnerką w tej karczmie. Sprzedajemy importowane i lokalne trunki oraz dobre jedzenie. Na deser też coś się znajdzie.");
-				addHelp("Karczma ta jest znana w całym Zakopanem. Można tu odpocząć i dobrze zjeść. Jeżeli chcesz poznać naszą #ofertę, to powiedz mi o tym.");
-				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("urodziny")));
+				addHelp("Lepszego miejsca okolic Tatr nie znajdziesz! Można tu dobrze odpocząć i zjeść. Jeżeli chcesz poznać naszą #ofertę, to zapytaj.");
 				addGoodbye("Smacznego i miłej zabawy do samego rana.");
 			}
 		};

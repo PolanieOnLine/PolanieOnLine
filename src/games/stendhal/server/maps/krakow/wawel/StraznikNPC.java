@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                 (C) Copyright 2003-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -16,21 +16,15 @@ import java.util.List;
 import java.util.Map;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.SayNPCNamesForUnstartedQuestsAction;
 import games.stendhal.server.entity.npc.action.SayUnstartedQuestDescriptionFromNPCNameAction;
-import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 import games.stendhal.server.entity.npc.condition.TriggerIsNPCNameForUnstartedQuestCondition;
 import games.stendhal.server.maps.Region;
 
-/**
- * A young lady (original name: Straznik) who heals players without charge.
- */
 public class StraznikNPC implements ZoneConfigurator {
 	private final List<String> regions = Arrays.asList(Region.KRAKOW_CITY);
 
@@ -46,7 +40,6 @@ public class StraznikNPC implements ZoneConfigurator {
 			protected void createDialog() {
 				addGreeting("Witaj wędrowcze.");
 				addJob("Prowadzę spokojne życie. Pilnuje #wejścia na wawel. Mogę również Tobie przekazać od samego Króla Kraka kto potrzebuje #pomocy.");
-				new SellerAdder().addSeller(this, new SellerBehaviour(SingletonRepository.getShopList().get("wawel")));
 				addGoodbye();
 
 				// use a standard action to list the names of NPCs for quests which haven't been started in this region

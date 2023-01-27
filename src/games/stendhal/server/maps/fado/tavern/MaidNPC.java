@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2018 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,7 +11,6 @@
  ***************************************************************************/
 package games.stendhal.server.maps.fado.tavern;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -22,8 +21,6 @@ import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.CollisionAction;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 
 /**
  * Builds the tavern maid NPC.
@@ -67,16 +64,6 @@ public class MaidNPC implements ZoneConfigurator {
 				addJob("Jestem kelnerką w tej oberży. Sprzedajemy importowane napoje i dobre jedzenie.");
 				addHelp("Dlaczego nie wziąć przyjaciół i zrobić sobie przerwy. Możesz skorzystać z długiego stołu, na którym można postawić jedzenie.");
 				addQuest("Och nie mam czasu na coś takiego.");
-
-				final Map<String, Integer> offers = new HashMap<String, Integer>();
-				offers.put("sok z chmielu", 10);
-				offers.put("napój z winogron", 15);
-				offers.put("wisienka", 20);
-				offers.put("udko", 50);
-				offers.put("chleb", 50);
-				offers.put("kanapka", 150);
-
-				new SellerAdder().addSeller(this, new SellerBehaviour(offers));
 				addGoodbye("Do widzenia. Wszyscy, ty i klienci sprawiacie, że praca jest ciężka ...");
 			}
 		};

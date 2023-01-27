@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2019 - Stendhal                    *
+ *                 (C) Copyright 2019-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -14,19 +14,13 @@ package games.stendhal.server.maps.gdansk.city.market;
 import java.util.Map;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 
 /**
  * @author zekkeq
  */
 public class GroceryNPC implements ZoneConfigurator {
-	private final ShopList shops = SingletonRepository.getShopList();
-
 	/**
 	 * Configure a zone.
 	 *
@@ -40,12 +34,6 @@ public class GroceryNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Hermina") {
-
-			@Override
-			protected void createPath() {
-				setPath(null);
-			}
-
 			@Override
 			protected void createDialog() {
 				addGreeting("Hej! W czym mogę pomóc?");
@@ -53,7 +41,6 @@ public class GroceryNPC implements ZoneConfigurator {
 				addHelp("Możesz mi pomóc kupując ode mnie rzeczy!");
 				addOffer("Spójrz na tablicę, by zobaczyć co sprzedaję. Dla ciebie mam specjalną ofertę!");
 				addQuest("Nie mam zadania dla Ciebie.");
-				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("sellgrocery")));
 				addGoodbye();
 			}
 		};

@@ -1,5 +1,5 @@
 /***************************************************************************
- *                     Copyright © 2020 - Arianne                          *
+ *                    Copyright © 2003-2023 - Arianne                      *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -29,19 +29,24 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.npc.ShopList;
 
 
 public class ShopsXMLLoader extends DefaultHandler {
+
 	private final static Logger logger = Logger.getLogger(ShopsXMLLoader.class);
 
 	/** The singleton instance. */
 	private static ShopsXMLLoader instance;
+
 	private final static ShopList shops = ShopList.get();
 
 	private String shopName;
 	private Map<String, Integer> items;
-	//private boolean seller = true;
+	private Map<String, Boolean> merchants;
+	private Boolean seller;
+
 
 	/**
 	 * Singleton access method.
@@ -108,19 +113,53 @@ public class ShopsXMLLoader extends DefaultHandler {
 			final Attributes attrs) {
 		if (qName.equals("shop")) {
 			items = new LinkedHashMap<>();
+			merchants = new LinkedHashMap<>();
 
 			shopName = attrs.getValue("name");
-			//seller = attrs.getValue("type").equals("sells");
+			final String shopType = attrs.getValue("type");
+			seller = shopType.equals("sell") ? true : shopType.equals("buy") ? false : null;
 		} else if (qName.equals("item")) {
-			items.put(attrs.getValue("name"), Integer.parseInt(attrs.getValue("price")));
+			final String price = attrs.getValue("price");
+			if (price != null) {
+				items.put(attrs.getValue("name"), Integer.parseInt(price));
+			}
+		} else if (qName.equals("merchant")) {
+			final String confnpc = attrs.getValue("configure");
+			if (confnpc != null && confnpc.equals("true")) {
+				final String offer = attrs.getValue("offer");
+				merchants.put(attrs.getValue("name"), offer == null || offer.equals("true"));
+			}
 		}
 	}
 
 	@Override
 	public void endElement(final String namespaceURI, final String sName, final String qName) {
-		if (qName.equals("shop")) {
-			for (final Entry<String, Integer> e: items.entrySet()) {
-				shops.add(shopName, e.getKey(), e.getValue());
+		if (qName.equals("shop") && shopName != null) {
+			if (seller != null && !merchants.isEmpty()) {
+				if (shops.get(seller, shopName) != null) {
+					logger.warn("Tried to add duplicate shop \"" + shopName + "\" with contents " + items.toString());
+					return;
+				}
+
+				for (final Entry<String, Integer> e: items.entrySet()) {
+					shops.add(seller, shopName, e.getKey(), e.getValue());
+				}
+
+				SingletonRepository.getCachedActionManager().register(new Runnable() {
+					private final String _shop = shopName;
+					private final Map<String, Boolean> _merchants = merchants;
+					private final boolean _seller = seller;
+
+					public void run() {
+						for (final Map.Entry<String, Boolean> ent: _merchants.entrySet()) {
+							shops.configureNPC(ent.getKey(), _shop, _seller, ent.getValue());
+						}
+					}
+				});
+			} else {
+				for (final Entry<String, Integer> e: items.entrySet()) {
+					shops.add(shopName, e.getKey(), e.getValue());
+				}
 			}
 		}
 	}

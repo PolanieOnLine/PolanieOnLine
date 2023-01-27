@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2018 - Stendhal                    *
+ *                 (C) Copyright 2018-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -26,7 +26,8 @@ import games.stendhal.server.entity.npc.behaviour.impl.QuestCompletedSellerBehav
  * @author KarajuSs
  */
 public class StasekNPC implements ZoneConfigurator {
-   private final ShopList shops = SingletonRepository.getShopList();
+	private final ShopList shops = SingletonRepository.getShopList();
+
 	/**
 	 * Configure a zone.
 	 *

@@ -1,5 +1,5 @@
 /***************************************************************************
- *                 (C) Copyright 2018-2022 - PolanieOnLine                 *
+ *                 (C) Copyright 2018-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -16,21 +16,15 @@ import java.util.List;
 import java.util.Map;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
-import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 
 /**
  * @author KarajuSs
  */
 public class StJacekNPC implements ZoneConfigurator {
-	private final ShopList shops = SingletonRepository.getShopList();
-
 	/**
 	 * Configure a zone.
 	 *
@@ -60,7 +54,6 @@ public class StJacekNPC implements ZoneConfigurator {
 				addJob("Jestem mnichem.");
 				addHelp("Nie potrzebuję pomocy, ale możesz zobaczyć moją #'ofertę'.");
 				addOffer("Mam do sprzedania różne eliksiry lecznicze.");
-				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("sellstjacek")), false);
 				addGoodbye("Niech Bóg Cię prowadzi!");
 			}
 		};

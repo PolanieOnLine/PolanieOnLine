@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -17,19 +17,13 @@ import java.util.List;
 import java.util.Map;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.ConversationStates;
-import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 
 public class WizardNPC implements ZoneConfigurator {
-	private final ShopList shops = SingletonRepository.getShopList();
-
 	/**
 	 * Configure a zone.
 	 *
@@ -64,8 +58,6 @@ public class WizardNPC implements ZoneConfigurator {
 				addGreeting();
 				addJob("Jestem czarodziejem, który sprzedaje #magiczne #zwoje. Zapytaj mnie o #ofertę!");
 				addHelp("Możesz zabrać potężną magię na swoje przygody za pomocą moich #magicznych #zwojów!");
-
-				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("scrolls")));
 
 				add(ConversationStates.ATTENDING,
 				        Arrays.asList("magic", "scroll", "scrolls", "magiczne", "magicznych", "zwoje","zwojów"),

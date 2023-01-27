@@ -18,15 +18,12 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
-import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
-import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 
 /**
  * The blacksmith (original name: Xoderos). Brother of the goldsmith in Ados.
@@ -85,7 +82,6 @@ public class BlacksmithNPC implements ZoneConfigurator  {
 				addHelp("Jeśli przyniesiesz mi #polano i #'rudę żelaza', mogę odlać dla Ciebie sztabę żelaza. Możesz zanieść ją do krasnoludów. Dobrze płacą za taką zdobycz. Powiedz tylko #odlej.");
 				addJob("Witaj. Niestety z powodu trwającej wojny nie wolno mi sprzedawać broni nikomu spoza grona oficjalnych wojskowych. Mogę odlać dla Ciebie żelazo, a może interesuję Cię moja #oferta specjalna? Powiedz tylko #odlej.");
 				addGoodbye();
-				new SellerAdder().addSeller(this, new SellerBehaviour(SingletonRepository.getShopList().get("selltools")));
 
 				// Xoderos casts iron if you bring him wood and iron ore.
 				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();

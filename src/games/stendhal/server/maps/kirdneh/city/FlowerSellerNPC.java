@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,15 +11,12 @@
  ***************************************************************************/
 package games.stendhal.server.maps.kirdneh.city;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 
 /**
  * Builds the flower seller in kirdneh.
@@ -49,9 +46,6 @@ public class FlowerSellerNPC implements ZoneConfigurator {
 				addReply(ConversationPhrases.NO_MESSAGES, "Bardzo dobrze. Jeżeli będę mogła pomóc to daj znać.");
 				addJob("Sprzedaję tutaj róże.");
 				addHelp("Jeżeli będziesz potrzebował pieniędzy to tutaj w Kirdneh jest oddział banku Fado. Mieści się w małym budynku na północ od muzeum we wschodniej części miasta.");
-				final Map<String, Integer> offerings = new HashMap<String, Integer>();
-				offerings.put("róża", 50);
-				new SellerAdder().addSeller(this, new SellerBehaviour(offerings));
 				addGoodbye("Do widzenia i zapraszam ponownie!");
 			}
 		};

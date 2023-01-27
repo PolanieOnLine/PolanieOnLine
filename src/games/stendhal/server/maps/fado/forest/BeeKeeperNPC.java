@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,7 +11,6 @@
  ***************************************************************************/
 package games.stendhal.server.maps.fado.forest;
 
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -21,8 +20,6 @@ import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 
 /**
  * Fado forest NPC - beekeeper.
@@ -75,10 +72,6 @@ public class BeeKeeperNPC implements ZoneConfigurator {
 				addJob("Jestem właścicielem pszczół. Domyślam się, że widziałeś moje ule.");
 				addQuest("Nie sądzę, abym miał dla Ciebie jakieś zadanie do zrobienia. Trzeba samemu pracować z pszczołami. Naprawdę.");
 				addHelp("Pszczoły produkują miód i wosk. Mogę trochę Ci sprzedać o ile chcesz. Miód czy wosk to nie pszczoły!");
-				final Map<String, Integer> offerings = new HashMap<String, Integer>();
-				offerings.put("miód", 50);
-				offerings.put("wosk pszczeli", 80);
-				new SellerAdder().addSeller(this, new SellerBehaviour(offerings), false);
 				addOffer("Sprzedaję słodki miód i wosk pszczeli, który zbieram osobiście.");
 				addGoodbye("Do widzenia, bądź ostrożny i uważaj na ule!");
 			}

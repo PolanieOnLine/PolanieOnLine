@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -16,14 +16,10 @@ import java.util.List;
 import java.util.Map;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
-import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
 
 /**
  * Builds an NPC to buy previously un bought axes
@@ -32,8 +28,6 @@ import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
  * @author kymara
  */
 public class WoodCutterNPC implements ZoneConfigurator {
-	private final ShopList shops = SingletonRepository.getShopList();
-
 	/**
 	 * Configure a zone.
 	 *
@@ -70,7 +64,6 @@ public class WoodCutterNPC implements ZoneConfigurator {
 				addHelp("Czasami możesz zbierać drewno rozrzucone po lesie. Aha i możesz mi #zaoferować jakieś dobre topory na sprzedaż.");
 				addOffer("Moje topory powinny być przytępione i szybkie. Sprawdź moją tabliczkę, którą postawiłem na zewnątrz domu, aby zobaczyć jakie topory skupuję.");
 				addQuest("Co powiedziałeś? Niczego nie potrzebuję. Może Sally po drugiej stronie rzeki potrzebuje twojej pomocy.");
-				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buyaxe")), false);
 				addGoodbye("Do widzenia.");
 			}
 		};

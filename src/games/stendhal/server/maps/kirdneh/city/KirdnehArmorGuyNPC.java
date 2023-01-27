@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -16,21 +16,15 @@ import java.util.List;
 import java.util.Map;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
-import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
 
 /**
  * In Kirdneh open market .
  */
 public class KirdnehArmorGuyNPC implements ZoneConfigurator {
-    private final ShopList shops = SingletonRepository.getShopList();
-
 	/**
 	 * Configure a zone.
 	 *
@@ -63,7 +57,6 @@ public class KirdnehArmorGuyNPC implements ZoneConfigurator {
 				addGreeting();
 				addJob("Skupuję zbroje po dobrej cenie.");
 				addHelp("Spójrz na tablicę i zobacz co skupuję i za jaką cenę.");
-				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buykirdneharmor")), false);
 				addOffer("Spójrz na tablicę, aby zobaczyć moje ceny i co skupuję.");
 				addQuest("Nie mam zadania dla Ciebie.");
 				addGoodbye("Jeżeli znajdziesz ząb z mitycznego czarnego smoka to daj mi znać.");
