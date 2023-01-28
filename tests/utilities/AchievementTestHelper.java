@@ -28,7 +28,7 @@ import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.MockStendlRPWorld;
 import marauroa.server.game.db.DatabaseFactory;
 
-public abstract class AchievementTestHelper {
+public abstract class AchievementTestHelper extends PlayerTestHelper {
 	protected static AchievementNotifier an = AchievementNotifier.get();
 	protected static final EntityManager em = SingletonRepository.getEntityManager();
 

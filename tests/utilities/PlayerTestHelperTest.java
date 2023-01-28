@@ -51,7 +51,7 @@ public class PlayerTestHelperTest {
 		assertTrue(bob.hasSlot("cloak"));
 		assertTrue(bob.hasSlot("pas"));
 		assertTrue(bob.hasSlot("keyring"));
-		assertTrue(bob.hasSlot("money"));
+		assertTrue(bob.hasSlot("pouch"));
 		assertTrue(bob.hasSlot("!quests"));
 		assertTrue(bob.hasSlot("!kills"));
 		assertTrue(bob.hasSlot("!tutorial"));

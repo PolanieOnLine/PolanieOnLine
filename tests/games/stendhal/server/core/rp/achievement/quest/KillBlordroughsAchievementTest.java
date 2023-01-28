@@ -47,9 +47,7 @@ import utilities.AchievementTestHelper;
 import utilities.PlayerTestHelper;
 import utilities.ZonePlayerAndNPCTestImpl;
 
-
 public class KillBlordroughsAchievementTest extends ZonePlayerAndNPCTestImpl {
-
 	private Player player;
 	private SpeakerNPC npc;
 	private static final KillBlordroughs questInstance = KillBlordroughs.getInstance();
@@ -57,7 +55,6 @@ public class KillBlordroughsAchievementTest extends ZonePlayerAndNPCTestImpl {
 	private static final StendhalQuestSystem questSystem = StendhalQuestSystem.get();
 
 	private final String enemy = "uzbrojony lider";
-
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {

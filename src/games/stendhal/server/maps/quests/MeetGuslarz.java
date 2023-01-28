@@ -53,15 +53,14 @@ public class MeetGuslarz extends AbstractQuest {
 	protected SpeakerNPC guslarz;
 
 	private StendhalRPZone zone;
-	
 	private TeleporterBehaviour teleporterBehaviour;
-	
+
 	/** the name of the quest */
 	public static final String QUEST_NAME = "Spotkanie Guślarza";
 
 	// The default is 100 (30 seconds) so make ours half this
 	private static final int TIME_OUT = 50;
-	
+
 	private SpeakerNPC createguslarz() {
 		guslarz = new SpeakerNPC("Guślarz") {
 			@Override
@@ -94,12 +93,12 @@ public class MeetGuslarz extends AbstractQuest {
 					new MultipleActions(reward));
 			}
 		};
-		
+
 		guslarz.setEntityClass("npcguslarz");
 		guslarz.initHP(100);
 		// times out twice as fast as normal NPCs
 		guslarz.setPlayerChatTimeout(TIME_OUT); 
-		guslarz.setDescription("Oto Guślarz odprawiający gusła, aby przywołać z zaświatów wielkie moce!.");
+		guslarz.setDescription("Oto Guślarz odprawiający gusła, aby przywołać z zaświatów wielkie moce!");
 		// start in int_admin_playground
 		zone = SingletonRepository.getRPWorld().getZone("int_admin_playground");
 		guslarz.setPosition(17, 13);
@@ -120,7 +119,7 @@ public class MeetGuslarz extends AbstractQuest {
 			teleporterBehaviour = new TeleporterBehaviour(guslarz, null, "0", "Strzeż się! Mocniejsze potwory zewsząd atakują!", false); 
 		}
 	}
-		
+
 	/**
 	 * removes a quest from the world.
 	 *
@@ -133,7 +132,7 @@ public class MeetGuslarz extends AbstractQuest {
 		SingletonRepository.getTurnNotifier().dontNotify(teleporterBehaviour);
 		return true;
 	}
-	
+
 	/**
 	 * removes an NPC from the world and NPC list
 	 *
@@ -171,5 +170,4 @@ public class MeetGuslarz extends AbstractQuest {
 	public String getNPCName() {
 		return "Guślarz";
 	}
-
 }
