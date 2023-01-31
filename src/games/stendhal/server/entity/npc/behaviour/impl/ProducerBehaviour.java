@@ -321,7 +321,7 @@ public class ProducerBehaviour extends TransactionBehaviour {
 			res.setAmount(amount);
 			npc.say("Potrzebuję, abyś " + Grammar.genderVerb(player.getGender(), "przyniósł") + " mi "
 					+ getRequiredResourceNamesWithHashes(amount)
-					+ " do tej pracy, która zajmie mi " + TimeUtil.approxTimeUntil(getProductionTime(amount)) + ". Czy masz to co potrzebuję?");
+					+ " do tej pracy, która zajmie " + TimeUtil.approxTimeUntil(getProductionTime(amount)) + ". Czy masz to co potrzebuję?");
 			return true;
 		}
 	}
@@ -388,7 +388,7 @@ public class ProducerBehaviour extends TransactionBehaviour {
 			}
 
 			if (player.equipToInventoryOnly(products)) {
-				npc.say("Witaj z powrotem! Skończyłem twoje zlecenie. Trzymaj, oto "
+				npc.say("Witaj z powrotem! " + Grammar.genderVerb(npc.getGender(), "Skończyłem") + " twoje zlecenie. Trzymaj, oto "
 					+ Grammar.quantityplnoun(numberOfProductItems, getProductName()) + ".");
 				player.setQuest(questSlot, "done");
 				// give some XP as a little bonus for industrious workers
@@ -396,7 +396,7 @@ public class ProducerBehaviour extends TransactionBehaviour {
 				player.notifyWorldAboutChanges();
 				player.incProducedForItem(getProductName(), products.getQuantity());
 			} else {
-				npc.say("Witaj z powrotem! Skończyłem twoje zlecenie, ale w tym momencie nie możesz wziąć "
+				npc.say("Witaj z powrotem! " + Grammar.genderVerb(npc.getGender(), "Skończyłem") + " twoje zlecenie, ale w tym momencie nie możesz wziąć "
 						+ Grammar.plnoun(numberOfProductItems, getProductName())
 						+ ". Wróć, gdy będziesz miał wolne miejsce.");
 			}

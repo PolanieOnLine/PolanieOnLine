@@ -153,10 +153,11 @@ public class BuyerAdder {
 							final int price = buyerBehaviour.getCharge(res, player);
 
 							if (price != 0) {
-    							raiser.say(Grammar.quantityplnoun(res.getAmount(), chosenItemName)
-	    								+ " " + Grammar.isare(res.getAmount()) + " warty jest "
-	    								+ price + ". Czy chcesz sprzedać "
-    									+ Grammar.itthem(res.getAmount()) + "?");
+    							raiser.say(Grammar.capitalize(Grammar.quantityplnoun(res.getAmount(), chosenItemName))
+	    								+ " " + Grammar.isare(res.getAmount()) + " "
+    									+ Grammar.singular(res.getAmount(), "warty") + " "
+	    								+ price + " monet. Czy chcesz "
+    									+ Grammar.itthem(res.getAmount()) + " sprzedać?");
 
     							currentBehavRes = res;
     							npc.setCurrentState(ConversationStates.SELL_PRICE_OFFERED); // success

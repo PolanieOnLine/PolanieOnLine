@@ -150,14 +150,14 @@ public class SellerAdder {
     							builder.append("Od przyjaciół biorę mniej, ale, że grasz nieczysto to ");
 								builder.append(Grammar.quantityplnoun(res.getAmount(), chosenItemName));
 							} else {
-								builder.append(Grammar.quantityplnoun(res.getAmount(), chosenItemName));
+								builder.append(Grammar.capitalize(Grammar.quantityplnoun(res.getAmount(), chosenItemName)));
 	    					}
 
 	    					builder.append(" kosztuje ");
 							builder.append(price);
-	    					builder.append(". Chcesz kupić ");
+	    					builder.append(" monet. Chcesz ");
 							builder.append(Grammar.itthem(res.getAmount()));
-							builder.append("?");
+							builder.append(" kupić?");
 
 							raiser.say(builder.toString());
 

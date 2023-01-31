@@ -48,6 +48,18 @@ public class ProducerAdder {
 	 */
 	private ItemParserResult currentBehavRes;
 
+	/**
+	 * Configures an NPC to produce items.
+	 *
+	 * @param npc
+	 *     The NPC that producing item.
+	 * @param behaviour
+	 *     The <code>ProducerBehaviour</code>.
+	 */
+	public void addProducer(final SpeakerNPC npc, final ProducerBehaviour behaviour) {
+		addProducer(npc, behaviour, "Witaj! W czym mogę #pomóc?");
+	}
+
     /**
      * Adds all the dialogue associated with a Producing NPC
      *
@@ -55,26 +67,22 @@ public class ProducerAdder {
      * @param behaviour
      * @param welcomeMessage
      */
-	public void addProducer(final SpeakerNPC npc, final ProducerBehaviour behaviour,
-			final String welcomeMessage) {
-
+	public void addProducer(final SpeakerNPC npc, final ProducerBehaviour behaviour, final String welcomeMessage) {
         /** Which NPC is this? */
 		final Engine engine = npc.getEngine();
-
         /** What quest slot is the production stored in? */
         final String QUEST_SLOT = behaviour.getQuestSlot();
-
         /** How should we greet the player? */
 		final String thisWelcomeMessage = welcomeMessage;
-
 		/** What is the NPC name? */
 		final String npcName = npc.getName();
-
 		/* add to producer register */
 		producerRegister.add(npcName, behaviour);
 
-        /* The Player greets the NPC.
-        * The NPC is not currently producing for player (not started, is rejected, or is complete) */
+        /**
+         * The Player greets the NPC.
+         * The NPC is not currently producing for player (not started, is rejected, or is complete).
+         */
 		engine.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(
@@ -89,9 +97,11 @@ public class ProducerAdder {
 				false, ConversationStates.ATTENDING,
 				null, new ComplainAboutSentenceErrorAction());
 
-        /* In the behaviour a production activity is defined, e.g. 'cast' or 'mill'
-        * and this is used as the trigger to start the production,
-        * provided that the NPC is not currently producing for player (not started, is rejected, or is complete) */
+        /**
+         * In the behaviour a production activity is defined, e.g. 'cast' or 'mill'
+         * and this is used as the trigger to start the production, provided that the NPC is not
+         * currently producing for player (not started, is rejected, or is complete).
+         */
         engine.add(
 				ConversationStates.ATTENDING,
 				behaviour.getProductionActivity(),
@@ -155,16 +165,18 @@ public class ProducerAdder {
 							// when coming to talk to the NPC.
 							npc.say("Jeszcze nie " + Grammar.genderVerb(player.getGender(), "wykonałeś") + " ostatniego zlecenia.");
 						} else {
-							npc.say("Wciąż nie skończyłem twojego ostatniego zlecenia. Wróć za "
+							npc.say("Wciąż nie " + Grammar.genderVerb(npc.getGender(), "skończyłem") + " twojego ostatniego zlecenia. Wróć za "
 									+ behaviour.getApproximateRemainingTime(player)
 									+ "!");
 						}
 					}
 				});
 
-        /* Player greets NPC and the NPC is already producing items for that player
-         * There are two options: the NPC is still busy or he is finished
-         * The method giveProduct(npc, player) used here takes care of both. */
+        /**
+         * Player greets NPC and the NPC is already producing items for that player
+         * there are two options: the NPC is still busy or he is finished.
+         * The method giveProduct(npc, player) used here takes care of both.
+         **/
 		engine.add(
 				ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
