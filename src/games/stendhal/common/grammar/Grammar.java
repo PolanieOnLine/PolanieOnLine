@@ -560,7 +560,7 @@ public class Grammar {
 			if (quantity > 1 || quantity == 0) {
 				return enoun + "ów" + postfix;
 			} else {
-				return plural(enoun);
+				return enoun;
 			}
 
 		} else if (enoun.endsWith("tę")) {
@@ -569,7 +569,7 @@ public class Grammar {
 			} else if (quantity <= 4) {
 				return enoun.substring(0, enoun.length() - 1) + "y" + postfix;
 			} else {
-				return plural(enoun);
+				return enoun;
 			}
 
 		} else if (enoun.endsWith("ło")) {
@@ -578,14 +578,21 @@ public class Grammar {
 			} else if (quantity <= 4) {
 				return enoun.substring(0, enoun.length() - 1) + "y" + postfix;
 			} else {
-				return plural(enoun);
+				return enoun;
 			}
 
 		} else if (enoun.endsWith("czy")) {
 			if (quantity <= 4) {
 				return enoun.substring(0, enoun.length() - 1) + "e" + postfix;
 			} else {
-				return plural(enoun);
+				return enoun;
+			}
+
+		} else if (enoun.endsWith("ty")) {
+			if (quantity > 1) {
+				return enoun.substring(0, enoun.length() - 1) + "e" + postfix;
+			} else {
+				return enoun;
 			}
 
 		} else {
@@ -1152,5 +1159,23 @@ public class Grammar {
 		}
 
 		return word;
+	}
+
+	/**
+	 * Transforms the first letter of string to uppercase
+	 * and leaves the rest of the string the same.
+	 *
+	 * @param str
+	 * 		A string to capitalize.
+	 * @return
+	 * 		If <code>true</code> return capitalized word.
+	 * 		If <code>false</code> if string is null or empty, the above code throws an exception.
+	 */
+	public static String capitalize(String str) {
+	    if(str == null || str.isEmpty()) {
+	        return str;
+	    }
+
+	    return str.substring(0, 1).toUpperCase() + str.substring(1);
 	}
 }
