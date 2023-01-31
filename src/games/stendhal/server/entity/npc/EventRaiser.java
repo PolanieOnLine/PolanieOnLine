@@ -80,6 +80,19 @@ public class EventRaiser {
 	}
 
 	/**
+	 * Gets gender of the entity.
+	 *
+	 * @return gender
+	 */
+	public String getGender() {
+		if (entity instanceof RPEntity) {
+			return ((RPEntity) entity).getGender();
+		} else {
+			return entity.get("gender");
+		}
+	}
+
+	/**
 	 * sets the state of the FSM used by SpeakerNPCs
 	 *
 	 * @param stateAfterCompletion new state
@@ -139,5 +152,4 @@ public class EventRaiser {
 	public StendhalRPZone getZone() {
 		return entity.getZone();
 	}
-
 }
