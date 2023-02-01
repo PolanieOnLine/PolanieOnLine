@@ -21,6 +21,9 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 
+import games.stendhal.server.entity.npc.ShopList;
+import games.stendhal.server.entity.npc.SpeakerNPC;
+import games.stendhal.server.entity.npc.fsm.Engine;
 import games.stendhal.server.entity.player.Player;
 import utilities.AchievementTestHelper;
 
@@ -47,6 +50,32 @@ public class CommerceAchievementFactoryTest extends AchievementTestHelper {
 			}
 		}
 		assertTrue(achievementReached(player, CommerceAchievementFactory.ID_HAPPY_HOUR));
+	}
+
+	@Test
+	public void testBeginningEntrepreneurship() {
+		final String id = CommerceAchievementFactory.ID_SELL_20K;
+		assertTrue(achievementEnabled(id));
+		final SpeakerNPC npc = new SpeakerNPC("tester");
+		npc.addGreeting();
+		npc.addGoodbye();
+		final ShopList shops = ShopList.get();
+		shops.addBuyer("buygrain", "zboże", 1);
+		shops.configureNPC(npc, "buygrain", false, false);
+		final Engine en = npc.getEngine();
+		en.step(player, "hi");
+		equipWithStackableItem(player, "zboże", 20000);
+		for (int idx = 0; idx < 19; idx++) {
+			en.step(player, "sell 1000 zboże");
+			en.step(player, "yes");
+		}
+		en.step(player, "sell 999 zboże");
+		en.step(player, "yes");
+		assertFalse(achievementReached(player, id));
+		en.step(player, "sell zboże");
+		en.step(player, "yes");
+		en.step(player, "bye");
+		assertTrue(achievementReached(player, id));
 	}
 
 	@Test

@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2021 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -38,7 +38,10 @@ import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotInStateCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
+import games.stendhal.server.maps.semos.city.SheepBuyerNPC;
 import games.stendhal.server.maps.semos.city.SheepBuyerNPC.SheepBuyerSpeakerNPC;
+import games.stendhal.server.maps.semos.village.SheepSellerNPC;
+import games.stendhal.server.util.ResetSpeakerNPC;
 
 /**
  * QUEST: Sheep Growing for Nishiya
@@ -99,7 +102,7 @@ public class SheepGrowing extends AbstractQuest {
 	private void preparePlayerGetsSheepStep() {
 		// If quest is not done or started yet ask player for help (if he does not have a sheep already)
 		ChatCondition playerHasNoSheep = new ChatCondition() {
-            @Override
+			@Override
 			public boolean fire(Player player, Sentence sentence, Entity npc) {
 				return !player.hasSheep();
 			}
@@ -142,7 +145,7 @@ public class SheepGrowing extends AbstractQuest {
 		List<ChatAction> sheepActions = new LinkedList<ChatAction>();
 		sheepActions.add(new SetQuestAction(QUEST_SLOT, "start"));
 		sheepActions.add(new ChatAction() {
-            @Override
+			@Override
 			public void fire(Player player, Sentence sentence, EventRaiser npc) {
 				final Sheep sheep = new Sheep(player);
 				StendhalRPAction.placeat(npc.getZone(), sheep, npc.getX(), npc.getY() + 1);
@@ -165,7 +168,7 @@ public class SheepGrowing extends AbstractQuest {
 		// Remove action
 		final List<ChatAction> removeSheepAction = new LinkedList<ChatAction>();
 		removeSheepAction.add(new ChatAction() {
-            @Override
+			@Override
 			public void fire(Player player, Sentence sentence, EventRaiser npc) {
 				// remove sheep
 				final Sheep sheep = player.getSheep();
@@ -190,7 +193,7 @@ public class SheepGrowing extends AbstractQuest {
 		
 		// Hand-Over condition
 		ChatCondition playerHasFullWeightSheep = new ChatCondition() {
-            @Override
+			@Override
 			public boolean fire(Player player, Sentence sentence, Entity npc) {
 				return player.hasSheep()
 					&& player.getSheep().getWeight() >= Sheep.MAX_WEIGHT;
@@ -238,7 +241,7 @@ public class SheepGrowing extends AbstractQuest {
 				ConversationStates.IDLE,
 				"Chciał wysłać mi jedną jakiś czas temu ...",
 				null);
-        
+		
 
 		npc.add(ConversationStates.ATTENDING, 
 				ConversationPhrases.QUEST_MESSAGES,
@@ -253,10 +256,10 @@ public class SheepGrowing extends AbstractQuest {
 	private void preparePlayerReturnsStep() {
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
 		reward.add(new ChatAction() {
-            @Override
+			@Override
 			public void fire(Player player, Sentence sentence, EventRaiser npc) {
 				// give XP to level 2
-                int reward = Level.getXP( 2 ) - player.getXP();
+				int reward = Level.getXP( 2 ) - player.getXP();
 				if(reward > MIN_XP_GAIN) {
 					player.addXP(reward);
 				} else {
@@ -315,6 +318,12 @@ public class SheepGrowing extends AbstractQuest {
 	}
 
 	@Override
+	public boolean removeFromWorld() {
+		return ResetSpeakerNPC.reload(new SheepSellerNPC(), "Nishiya")
+			&& ResetSpeakerNPC.reload(new SheepBuyerNPC(), "Sato");
+	}
+
+	@Override
 	public List<String> getHistory(final Player player) {
 		final List<String> res = new LinkedList<String>();
 		if (!player.hasQuest(QUEST_SLOT)) {
@@ -351,7 +360,7 @@ public class SheepGrowing extends AbstractQuest {
 	@Override
 	public String getRegion() {
 		return Region.SEMOS_CITY;
-    }
+	}
 
 	@Override
 	public String getNPCName() {

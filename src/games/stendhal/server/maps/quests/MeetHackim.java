@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2021 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -17,6 +17,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import games.stendhal.common.grammar.Grammar;
+import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -29,6 +30,8 @@ import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotCompletedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
+import games.stendhal.server.maps.semos.blacksmith.BlacksmithAssistantNPC;
+import games.stendhal.server.util.ResetSpeakerNPC;
 
 /**
  * QUEST: Speak with Hackim
@@ -99,10 +102,10 @@ public class MeetHackim extends AbstractQuest {
 					ConversationStates.INFORMATION_2,
 					ConversationStates.INFORMATION_3 },
 				ConversationPhrases.NO_MESSAGES,
-    			null,
-    			ConversationStates.ATTENDING,
-    			"Pamiętaj wszystkie bronie są policzone i lepiej je zostawić w spokoju.",
-    			null);
+				null,
+				ConversationStates.ATTENDING,
+				"Pamiętaj wszystkie bronie są policzone i lepiej je zostawić w spokoju.",
+				null);
 
 	}
 
@@ -117,6 +120,14 @@ public class MeetHackim extends AbstractQuest {
 		yesTrigger.add("Blanca");
 		yesTrigger.add("Xin");
 		prepareHackim();
+	}
+
+	@Override
+	public boolean removeFromWorld() {
+		final boolean res = ResetSpeakerNPC.reload(new BlacksmithAssistantNPC(), getNPCName());
+		// reload other quests associated with Hackim
+		SingletonRepository.getStendhalQuestSystem().reloadQuestSlots("news_hackim", "mrsyeti");
+		return res;
 	}
 
 	@Override

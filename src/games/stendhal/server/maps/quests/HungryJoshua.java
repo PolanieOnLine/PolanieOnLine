@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2021 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -41,6 +41,9 @@ import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
+import games.stendhal.server.maps.ados.goldsmith.GoldsmithNPC;
+import games.stendhal.server.maps.semos.blacksmith.BlacksmithNPC;
+import games.stendhal.server.util.ResetSpeakerNPC;
 
 /**
  * QUEST: Hungry Joshua
@@ -233,6 +236,12 @@ public class HungryJoshua extends AbstractQuest {
 		step_1();
 		step_2();
 		step_3();
+	}
+
+	@Override
+	public boolean removeFromWorld() {
+		return ResetSpeakerNPC.reload(new BlacksmithNPC(), getNPCName())
+			&& ResetSpeakerNPC.reload(new GoldsmithNPC(), "Joshua");
 	}
 
 	@Override

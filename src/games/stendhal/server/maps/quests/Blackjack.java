@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2021 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -415,6 +415,23 @@ public class Blackjack extends AbstractQuest {
 				"Blackjack",
 				"Podczas podróży na wyspę Athor, dla zabicia czasu możesz zagrać w Blackjack",
 				true);
+	}
+
+	@Override
+	public boolean removeFromWorld() {
+		boolean res = true;
+		if (ramon != null) {
+			zone.remove(ramon);
+			res = SingletonRepository.getNPCList().get(ramon.getName()) == null;
+		}
+		if (res) {
+			cleanUpTable();
+			playerCards.clear();
+			bankCards.clear();
+			cardValues = null;
+			deck = null;
+		}
+		return res;
 	}
 
 	@Override

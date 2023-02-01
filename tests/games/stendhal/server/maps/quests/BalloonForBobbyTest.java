@@ -1,3 +1,14 @@
+/***************************************************************************
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
+ ***************************************************************************
+ ***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
 import static org.junit.Assert.assertEquals;
@@ -19,7 +30,6 @@ import utilities.PlayerTestHelper;
 import utilities.QuestHelper;
 
 public class BalloonForBobbyTest {
-
 	private Player player = null;
 	private SpeakerNPC npc = null;
 	private Engine en = null;
@@ -36,9 +46,8 @@ public class BalloonForBobbyTest {
 		final StendhalRPZone zone = new StendhalRPZone("admin_test");
 		new SmallBoyNPC().configureZone(zone, null);
 
-
 		AbstractQuest quest = new BalloonForBobby();
-		quest.addToWorld();
+		QuestHelper.loadQuests(quest);
 
 		questSlot = quest.getSlotName();
 

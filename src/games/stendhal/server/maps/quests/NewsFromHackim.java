@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2021 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -32,6 +32,9 @@ import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotCompletedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
+import games.stendhal.server.maps.semos.blacksmith.BlacksmithAssistantNPC;
+import games.stendhal.server.maps.semos.tavern.TraderNPC;
+import games.stendhal.server.util.ResetSpeakerNPC;
 
 /**
  * QUEST: News from Hackim
@@ -145,6 +148,15 @@ public class NewsFromHackim extends AbstractQuest {
 				false);
 		step_1();
 		step_2();
+	}
+
+	@Override
+	public boolean removeFromWorld() {
+		final boolean res = ResetSpeakerNPC.reload(new BlacksmithAssistantNPC(), getNPCName())
+			&& ResetSpeakerNPC.reload(new TraderNPC(), "Xin Blanca");
+		// reload other quests associated with Hackim
+		SingletonRepository.getStendhalQuestSystem().reloadQuestSlots("meet_hackim", "mrsyeti");
+		return res;
 	}
 	
 	@Override

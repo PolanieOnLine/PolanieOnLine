@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2021 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -178,13 +178,13 @@ public class HelpWithTheHarvest extends AbstractQuest {
 				"Erna jest asystentką #Leandera w piekarni. Jeżeli przyniesiesz jej #mąkę to upiecze dla ciebie #chleb.",
 				null);
 
-        // Add a reply on the trigger phrase "quest" after it is finished
-        npc.add(ConversationStates.ATTENDING,
-        		ConversationPhrases.QUEST_MESSAGES,
-        		createFinishedCondition(),
-        		ConversationStates.ATTENDING,
-        		"Przenieśliśmy już pełne żniwa, jeszcze raz dziękuję za pomoc.",
-        		null);
+		// Add a reply on the trigger phrase "quest" after it is finished
+		npc.add(ConversationStates.ATTENDING,
+				ConversationPhrases.QUEST_MESSAGES,
+				createFinishedCondition(),
+				ConversationStates.ATTENDING,
+				"Przenieśliśmy już pełne żniwa, jeszcze raz dziękuję za pomoc.",
+				null);
 	}
 
 	/**
@@ -203,7 +203,7 @@ public class HelpWithTheHarvest extends AbstractQuest {
 		cartTwo.setPosition(79, 106);
 		cartTwo.setDescription(cartDescription);
 
-        ChatAction a = new MultipleActions(new IncrementQuestAction(QUEST_SLOT, 1, -1), new ResetBlockChatAction(cartOne), new ResetBlockChatAction(cartTwo));
+		ChatAction a = new MultipleActions(new IncrementQuestAction(QUEST_SLOT, 1, -1), new ResetBlockChatAction(cartOne), new ResetBlockChatAction(cartTwo));
 
 		zone.add(cartOne);
 		zone.add(cartTwo);
@@ -288,7 +288,7 @@ public class HelpWithTheHarvest extends AbstractQuest {
 			result.add("Chcę pomóc Eheneumniranin w jego żniwach.");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "rejected")) {
-		    result.add("Na dzień dzisiejszy praca na farmie jest zbyt ciężka dla mnie.");
+			result.add("Na dzień dzisiejszy praca na farmie jest zbyt ciężka dla mnie.");
 		}
 
 		if(constructHayCartsNotYetCompletedCondition().fire(player, null, null)) {

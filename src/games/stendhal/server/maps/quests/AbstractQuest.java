@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -25,7 +24,6 @@ import games.stendhal.server.entity.player.Player;
  * @author hendrik
  */
 public abstract class AbstractQuest implements IQuest {
-
 	private static final List<String> EMPTY_LIST = new ArrayList<String>();
 
 	protected QuestInfo questInfo = new QuestInfo();
@@ -46,7 +44,7 @@ public abstract class AbstractQuest implements IQuest {
 	 * @param description - short description of this quest in a neutral tense (not first person)
 	 * @param repeatable - is quest repeatable or not
 	 */
-    public void fillQuestInfo(final String name, final String description, boolean repeatable) {
+	public void fillQuestInfo(final String name, final String description, boolean repeatable) {
 		questInfo.setName(name);
 		questInfo.setDescription(description);
 		questInfo.setRepeatable(repeatable);
@@ -65,7 +63,7 @@ public abstract class AbstractQuest implements IQuest {
 	public abstract String getSlotName();
 
 	@Override
-    public abstract void addToWorld();
+	public abstract void addToWorld();
 
 	/**
 	 * removes a quest from the world.

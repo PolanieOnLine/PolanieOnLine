@@ -9,26 +9,24 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-package games.stendhal.server.core.rp.achievement.factory.stub;
+package utilities.quest_runner;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static utilities.SpeakerNPCTestHelper.getSpeakerNPC;
 
 import games.stendhal.server.entity.npc.ConversationStates;
-import games.stendhal.server.entity.npc.NPCList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.fsm.Engine;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.util.QuestUtils;
 
 public class StillBelievingStub {
-	private static final NPCList npcs = NPCList.get();
-
 	public static void doQuestBunny(final Player player) {
 		final String questSlot = QuestUtils.evaluateQuestSlotName("meet_bunny_[year]");
 		assertNull(player.getQuest(questSlot));
-		final SpeakerNPC bunny = npcs.get("Zajączek Wielkanocny");
+		final SpeakerNPC bunny = getSpeakerNPC("Zajączek Wielkanocny");
 		assertNotNull(bunny);
 		final Engine en = bunny.getEngine();
 		en.step(player, "hi");
@@ -39,7 +37,7 @@ public class StillBelievingStub {
 	public static void doQuestSanta(final Player player) {
 		final String questSlot = QuestUtils.evaluateQuestSlotName("meet_santa_[seasonyear]");
 		assertNull(player.getQuest(questSlot));
-		final SpeakerNPC santa = npcs.get("Święty Mikołaj");
+		final SpeakerNPC santa = getSpeakerNPC("Święty Mikołaj");
 		assertNotNull(santa);
 		final Engine en = santa.getEngine();
 		en.step(player, "hi");
@@ -54,7 +52,7 @@ public class StillBelievingStub {
 	public static void doQuestGuslarz(final Player player) {
 		final String questSlot = QuestUtils.evaluateQuestSlotName("meet_guslarz_[seasonyear]");
 		assertNull(player.getQuest(questSlot));
-		final SpeakerNPC guslarz = npcs.get("Guślarz");
+		final SpeakerNPC guslarz = getSpeakerNPC("Guślarz");
 		assertNotNull(guslarz);
 		final Engine en = guslarz.getEngine();
 		en.step(player, "hi");

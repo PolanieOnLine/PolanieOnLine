@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2021 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -38,6 +38,8 @@ import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
+import games.stendhal.server.maps.semos.townhall.DecencyAndMannersWardenNPC;
+import games.stendhal.server.util.ResetSpeakerNPC;
 
 /**
  * QUEST: Speak with Ketteh
@@ -67,11 +69,11 @@ public class MeetKetteh extends AbstractQuest {
 								new AndCondition(
 										new QuestInStateCondition(QUEST_SLOT, 0,"seen_naked"),
 										new TimePassedCondition(QUEST_SLOT,1,GRACE_PERIOD)),
-						        new QuestInStateCondition(QUEST_SLOT,"seen"),
-						        new QuestInStateCondition(QUEST_SLOT,"learnt_manners"),
-						        // done was an old state that was used when naked but then clothed,
-						        // but they should do learnt_manners too
-						        new QuestInStateCondition(QUEST_SLOT,"done"))),
+										new QuestInStateCondition(QUEST_SLOT,"seen"),
+										new QuestInStateCondition(QUEST_SLOT,"learnt_manners"),
+										// done was an old state that was used when naked but then clothed,
+										// but they should do learnt_manners too
+										new QuestInStateCondition(QUEST_SLOT,"done"))),
 				new ChatAction() {
 			@Override
 			public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
@@ -192,6 +194,11 @@ public class MeetKetteh extends AbstractQuest {
 	}
 
 	@Override
+	public boolean removeFromWorld() {
+		return ResetSpeakerNPC.reload(new DecencyAndMannersWardenNPC(), getNPCName());
+	}
+
+	@Override
 	public List<String> getHistory(final Player player) {
 		final List<String> res = new ArrayList<String>();
 		if (!player.hasQuest(QUEST_SLOT)) {
@@ -208,8 +215,8 @@ public class MeetKetteh extends AbstractQuest {
 		if ("seen".equals(questState) || "done".equals(questState) || "learnt_manners".equals(questState)) {
 			res.add("Ona jest bardzo uprzejma i opowiedziała mi o właściwym zachowaniu w Faiumoni.");
 		}
-        if (isCompleted(player)) {
-            res.add("Mogę spotkać się i porozmawiać z nią ponownie, w każdej chwili. Lepiej jak będę się dobrze zachowywać!");
+				if (isCompleted(player)) {
+				    res.add("Mogę spotkać się i porozmawiać z nią ponownie, w każdej chwili. Lepiej jak będę się dobrze zachowywać!");
 		}
 		return res;
 	}
@@ -227,8 +234,8 @@ public class MeetKetteh extends AbstractQuest {
 	@Override
 	public boolean isCompleted(final Player player) {
 		return new OrCondition(
-            new QuestInStateCondition(QUEST_SLOT,"learnt_manners"),
-            new QuestInStateCondition(QUEST_SLOT,"done")).fire(player, null, null);
+				new QuestInStateCondition(QUEST_SLOT,"learnt_manners"),
+				new QuestInStateCondition(QUEST_SLOT,"done")).fire(player, null, null);
 	}
 
 	@Override

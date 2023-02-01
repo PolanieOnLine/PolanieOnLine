@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2021 - Stendhal                    *
+ *                    Copyright © 2003-2023 - Arianne                      *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -41,7 +41,9 @@ import games.stendhal.server.entity.npc.condition.QuestActiveCondition;
 import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
+import games.stendhal.server.maps.nalwor.flowershop.FlowerGrowerNPC;
 import games.stendhal.server.util.ItemCollection;
+import games.stendhal.server.util.ResetSpeakerNPC;
 
 /**
  * QUEST: Restock the Flower Shop
@@ -87,7 +89,7 @@ public class RestockFlowerShop extends AbstractQuest {
 	private static final int WAIT_TIME = 3 * MathHelper.MINUTES_IN_ONE_DAY;
 
 	// Quest NPC
-	private final SpeakerNPC npc = npcs.get("Seremela");
+	private SpeakerNPC npc;
 
 	private void setupBasicResponses() {
 		List<List<String>> keywords = Arrays.asList(
@@ -116,15 +118,15 @@ public class RestockFlowerShop extends AbstractQuest {
 			null,
 			new SayRequiredItemsFromCollectionAction(QUEST_SLOT, 3, "Wciąż potrzebuję [items]. Czy przyniosłeś mi?"));
 
-        npc.add(ConversationStates.QUESTION_1,
+		npc.add(ConversationStates.QUESTION_1,
 			Arrays.asList("flower", "remind", "what", "item", "list", "something", "kwiat", "przypomnij", "co", "przedmiot", "lista", "coś"),
 			new QuestActiveCondition(QUEST_SLOT),
 			ConversationStates.QUESTION_1,
 			null,
 			new SayRequiredItemsFromCollectionAction(QUEST_SLOT, 3, "Wciąż potrzebuję [items]. Czy przyniosłeś mi?"));
 
-        // Player asks to be reminded of remaining flowers required
-        npc.add(ConversationStates.QUESTION_1,
+		// Player asks to be reminded of remaining flowers required
+		npc.add(ConversationStates.QUESTION_1,
 			Arrays.asList("flower", "remind", "what", "item", "list", "kwiat", "przypomnij", "co", "przedmiot", "lista"),
 			new QuestActiveCondition(QUEST_SLOT),
 			ConversationStates.QUESTION_1,
@@ -286,6 +288,7 @@ public class RestockFlowerShop extends AbstractQuest {
 
 	@Override
 	public void addToWorld() {
+		npc = npcs.get("Seremela");
 		fillQuestInfo(
 			"Odnowienie Zapasów Kwiaciarni",
 			getNPCName() + " potrzebuje odnowić zapasy kwiaciarni w mieście Nalwor.",
@@ -294,6 +297,12 @@ public class RestockFlowerShop extends AbstractQuest {
 		setupActiveQuestResponses();
 		prepareRequestingStep();
 		prepareBringingStep();
+	}
+
+	@Override
+	public boolean removeFromWorld() {
+		// reset Seremela
+		return ResetSpeakerNPC.reload(new FlowerGrowerNPC(), "Seremela");
 	}
 
 	@Override
@@ -318,11 +327,11 @@ public class RestockFlowerShop extends AbstractQuest {
 				res.add(requestedFlowers);
 			}
 		} else {
-            if (isRepeatable(player)) {
-                res.add("Minęło trochę czasu od ostatniej pomocy " + npcName + ". Może znów potrzebuje mojej pomocy.");
-            } else {
-                res.add("Teraz" + npcName + " ma odpowiedni zapas kwiatów.");
-            }
+		    if (isRepeatable(player)) {
+				res.add("Minęło trochę czasu od ostatniej pomocy " + npcName + ". Może znów potrzebuje mojej pomocy.");
+		    } else {
+				res.add("Teraz" + npcName + " ma odpowiedni zapas kwiatów.");
+		    }
 		}
 		final int count = MathHelper.parseIntDefault(player.getQuest(QUEST_SLOT, 2), 0);
 		if (count > 0) {

@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2019 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -378,6 +378,28 @@ public class StendhalQuestSystem {
 	}
 
 	/**
+	 * Reloads quests & resets entities. Quest must support
+	 * `IQuest.removeFromWorld`.
+	 *
+	 * @param slots
+	 *     Slot identifiers of quests to reload.
+	 * @return
+	 *     <code>true</code> if quests reloaded successfully.
+	 */
+	public void reloadQuestSlots(final String... slots) {
+		for (final String slot: slots) {
+			if (!isLoadedSlot(slot)) {
+				continue;
+			}
+			final IQuest q = getQuestFromSlot(slot);
+			// unload then reload
+			if (unloadQuest(q)) {
+				initQuestAndAddToWorld(q);
+			}
+		}
+	}
+
+	/**
 	 * Caches a quest for loading later.
 	 *
 	 * @param quest
@@ -686,25 +708,83 @@ public class StendhalQuestSystem {
 	}
 
 	/**
-	 * unloads a quest and removes the things related to it from the world.
+	 * Unloads a quest and removes the things related to it from world.
 	 * <p>Note: The quest in question has to support this</p>
 	 *
-	 * @param questName quest to unload
+	 * @param quest
+	 *     Quest instance.
+	 * @return
+	 *     <code>true</code> if quest was unloaded.
 	 */
-	public void unloadQuest(String questName) {
-		IQuest quest = getQuest(questName);
+	public boolean unloadQuest(final IQuest quest) {
+		logger.info("Unloading Quest: " + quest.getName());
+		// remove from loaded list before calling removeFromWorld to prevent redundancies
+		quests.remove(quest);
+		if (quest.removeFromWorld()) {
+			return true;
+		} else {
+			logger.error(quest.getClass().getName() + " cannot be removed from the world");
+		}
+		// removal failed, re-add to loaded list
+		quests.add(quest);
+		return false;
+	}
+
+	/**
+	 * Unloads a quest and removes the things related to it from world.
+	 * <p>Note: The quest in question has to support this</p>
+	 *
+	 * @param questName
+	 *     Name of quest to unload.
+	 * @return
+	 *     <code>true</code> if quest was unloaded.
+	 */
+	public boolean unloadQuest(String questName) {
+		final IQuest quest = getQuest(questName);
 		if (quest == null) {
 			logger.error("Quest " + questName + " is not loaded", new Throwable());
-			return;
+			return true;
 		}
+		return unloadQuest(quest);
+	}
 
-		boolean res = quest.removeFromWorld();
-		if (res) {
-			quests.remove(quest);
-			logger.info("Unloading Quest: " + quest.getName());
-		} else {
-			logger.error(this.getClass() + " cannot be removed from the world");
+	/**
+	 * Retrieves all loaded instances with slot.
+	 */
+	private List<IQuest> _getAllBySlot(final String slot) {
+		final List<IQuest> qfound = new ArrayList<>();
+		for (final IQuest q: quests) {
+			if (q.getSlotName().equals(slot)) {
+				qfound.add(q);
+			}
 		}
+		return qfound;
+	}
+
+	/**
+	 * Unloads a quest and removes the things related to it from world.
+	 * <p>Note: The quest in question has to support this</p>
+	 *
+	 * @param slot
+	 *     Quest slot identifier.
+	 * @return
+	 *     <code>true</code> if quest was unloaded.
+	 */
+	public boolean unloadQuestSlot(final String slot) {
+		final List<IQuest> qfound = _getAllBySlot(slot);
+		final int qcount = qfound.size();
+		if (qcount == 0) {
+			logger.error("Quest " + slot + " is not loaded", new Throwable());
+			return true;
+		}
+		if (qcount > 1) {
+			logger.warn("Multiple instances of " + slot + " were loaded");
+		}
+		boolean unloaded = true;
+		for (final IQuest q: qfound) {
+			unloaded = unloaded && unloadQuest(q);
+		}
+		return unloaded;
 	}
 
 	/**
@@ -775,9 +855,9 @@ public class StendhalQuestSystem {
 	 * Checks if a quest instance has been added to the world.
 	 *
 	 * @param quest
-	 * 		<code>IQuest</code> instance to be checked.
+	 *     <code>IQuest</code> instance to be checked.
 	 * @return
-	 * 		<code>true</code> if the instance matches stored quests.
+	 *     <code>true</code> if the instance matches stored quests.
 	 */
 	public boolean isLoaded(final IQuest quest) {
 		for (final IQuest loaded: quests) {
@@ -785,7 +865,34 @@ public class StendhalQuestSystem {
 				return true;
 			}
 		}
-
 		return false;
+	}
+
+	/**
+	 * Checks if a quest has been added to the world.
+	 *
+	 * @param slot
+	 *     Quest slot identifier.
+	 * @return
+	 *     <code>true</code> if quest slot matches stored quests.
+	 */
+	public boolean isLoadedSlot(final String slot) {
+		for (final IQuest loaded: quests) {
+			if (loaded.getSlotName().equals(slot)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Retrieves a list of slot identifiers from loaded quests.
+	 */
+	public List<String> getLoadedSlots() {
+		final List<String> slots = new ArrayList<>();
+		for (final IQuest q: quests) {
+			slots.add(q.getSlotName());
+		}
+		return slots;
 	}
 }

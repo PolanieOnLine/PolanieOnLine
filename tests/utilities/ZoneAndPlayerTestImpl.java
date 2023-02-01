@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -68,13 +67,13 @@ public abstract class ZoneAndPlayerTestImpl extends QuestHelper {
 	 * @param zoneName
 	 * @param zoneConfigurators
 	 */
-	protected static void setupZone(final String zoneName, final ZoneConfigurator... zoneConfigurators) {
+	public static void setupZone(final String zoneName, final ZoneConfigurator... zoneConfigurators) {
 		final StendhalRPZone zone = setupZone(zoneName);
 
 		for (final ZoneConfigurator zoneConfigurator : zoneConfigurators) {
 			zoneConfigurator.configureZone(zone, null);
 		}
-    }
+	}
 
 	/**
 	 * Creates zone and adds it to RPWorld.
@@ -82,14 +81,14 @@ public abstract class ZoneAndPlayerTestImpl extends QuestHelper {
 	 * @param zoneName
 	 * @return the new created zone
 	 */
-	protected static StendhalRPZone setupZone(final String zoneName) {
+	public static StendhalRPZone setupZone(final String zoneName) {
 		StendhalRPZone existingZone = SingletonRepository.getRPWorld().getZone(zoneName);
 		if (existingZone != null) {
 			return existingZone;
 		} else {
 			return setupZone(zoneName, true);
 		}
-    }
+	}
 
 	/**
 	 * Creates zone and adds it to RPWorld.
@@ -98,7 +97,7 @@ public abstract class ZoneAndPlayerTestImpl extends QuestHelper {
 	 * @param collisions
 	 * @return the new created zone
 	 */
-	protected static StendhalRPZone setupZone(final String zoneName, boolean collisions) {
+	public static StendhalRPZone setupZone(final String zoneName, boolean collisions) {
 		final StendhalRPZone zone;
 
 		if (collisions) {
@@ -110,7 +109,7 @@ public abstract class ZoneAndPlayerTestImpl extends QuestHelper {
 		SingletonRepository.getRPWorld().addRPZone(zone);
 
 		return zone;
-    }
+	}
 
 	/**
 	 * Create the player to be used in the test.

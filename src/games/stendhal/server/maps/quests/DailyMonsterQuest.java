@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2021 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -53,6 +53,8 @@ import games.stendhal.server.entity.npc.condition.QuestStartedCondition;
 import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
+import games.stendhal.server.maps.semos.townhall.MayorNPC;
+import games.stendhal.server.util.ResetSpeakerNPC;
 
 /**
  * QUEST: Daily Monster Kill Quest.
@@ -75,7 +77,8 @@ import games.stendhal.server.maps.Region;
 
 public class DailyMonsterQuest extends AbstractQuest {
 	private static final String QUEST_SLOT = "daily";
-	private final SpeakerNPC npc = npcs.get("Mayor Sakhs");
+	private final String npcName = "Mayor Sakhs";
+	private final SpeakerNPC npc = npcs.get(npcName);
 
 	private final static int delay = MathHelper.MINUTES_IN_ONE_DAY;
 	private final static int expireDelay = MathHelper.MINUTES_IN_ONE_WEEK;
@@ -132,7 +135,7 @@ public class DailyMonsterQuest extends AbstractQuest {
 				String questCount = null;
 				String questLast = null;
 
-            	String previousCreature = null;
+				String previousCreature = null;
 
 				if (questInfo != null) {
 					final String[] tokens = (questInfo + ";0;0;0").split(";");
@@ -376,7 +379,7 @@ public class DailyMonsterQuest extends AbstractQuest {
 						new QuestStartedCondition(QUEST_SLOT),
 						new QuestNotCompletedCondition(QUEST_SLOT),
 						new NotCondition(
-						        new KilledForQuestCondition(QUEST_SLOT, 0))),
+								new KilledForQuestCondition(QUEST_SLOT, 0))),
 				ConversationStates.ATTENDING,
 				null,
 				new ChatAction() {
@@ -405,7 +408,7 @@ public class DailyMonsterQuest extends AbstractQuest {
 				new AndCondition(
 						new QuestStartedCondition(QUEST_SLOT),
 						new QuestNotCompletedCondition(QUEST_SLOT),
-				        new KilledForQuestCondition(QUEST_SLOT, 0)),
+						new KilledForQuestCondition(QUEST_SLOT, 0)),
 				ConversationStates.ATTENDING,
 				"Gratuluje! Pozwól mi podziękować w imieniu mieszkanców Semos!",
 				new MultipleActions(actions));
@@ -510,6 +513,14 @@ public class DailyMonsterQuest extends AbstractQuest {
 			return split[0];
 		}
 		return null;
+	}
+
+	@Override
+	public boolean removeFromWorld() {
+		final boolean res = ResetSpeakerNPC.reload(new MayorNPC(), npcName);
+		// reload other quests associated with Mayor Sakhs
+		SingletonRepository.getStendhalQuestSystem().reloadQuestSlots("sad_scientist");
+		return res;
 	}
 
 	@Override

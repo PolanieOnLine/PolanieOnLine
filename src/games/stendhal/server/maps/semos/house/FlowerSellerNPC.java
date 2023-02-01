@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -32,11 +32,11 @@ public class FlowerSellerNPC implements ZoneConfigurator {
 	}
 
 	private SpeakerNPC buildSemosHouseArea() {
-	    final SpeakerNPC rose = new SpeakerNPC("Róża Kwiaciarka") {
-	    	@Override
-	    	protected void createDialog() {
-	    		addJob("Jestem wędrowną kwiaciarką z dalekiego Grodu Kraka.");
-	    		addGoodbye("Wszystko zaczyna się od róż... Do widzenia...");
+		final SpeakerNPC rose = new SpeakerNPC("Róża Kwiaciarka") {
+			@Override
+			protected void createDialog() {
+				addJob("Jestem wędrowną kwiaciarką z dalekiego Grodu Kraka.");
+				addGoodbye("Wszystko zaczyna się od róż... Do widzenia...");
 			}// the rest is in the ElfPrincess quest
 		};
 

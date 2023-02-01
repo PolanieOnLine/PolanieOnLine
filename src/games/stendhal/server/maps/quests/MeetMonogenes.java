@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2021 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import games.stendhal.common.grammar.Grammar;
+import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
@@ -29,6 +30,8 @@ import games.stendhal.server.entity.npc.condition.QuestNotCompletedCondition;
 import games.stendhal.server.entity.npc.condition.TriggerInListCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
+import games.stendhal.server.maps.semos.city.GreeterNPC;
+import games.stendhal.server.util.ResetSpeakerNPC;
 
 /**
  * QUEST: Speak with Monogenes PARTICIPANTS: - Monogenes
@@ -54,9 +57,9 @@ public class MeetMonogenes extends AbstractQuest {
 		npc.addGreeting(null, new SayTextAction("Witaj ponownie [name]. W czym mogę #pomóc tym razem?"));
 		
 		// A little trick to make NPC remember if it has met
-        // player before and react accordingly
-        // NPC_name quest doesn't exist anywhere else neither is
-        // used for any other purpose
+		// player before and react accordingly
+		// NPC_name quest doesn't exist anywhere else neither is
+		// used for any other purpose
 		npc.add(ConversationStates.IDLE, 
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(
@@ -123,13 +126,13 @@ public class MeetMonogenes extends AbstractQuest {
 			"Zaznaczyłem poniższe lokalizacje na mojej mapie:\n"
 			+ "1 Ratusz, mieszka tam Burmistrz,   2 Biblioteka,   3 Bank,   4 Magazyn,\n"
 			+ "5 Piekarnia,   6 Kowal, Carmen,   7 Hotel, Margaret \n"
-        	+ "8 Świątynia, Ilisa,   9 Niebezpieczne Podziemia, \n"
-        	+ "10 Publiczna Skrzynia, \n"
-        	+ "A Wioska Semos,   B Północne Równiny i Kopalnia, \n"
-        	+ "C Długa droga do Ados, \n"
-        	+ "D Południowe Równiny i Las Nalwor, \n"
-        	+ "E Otwarte Tereny Wioski Semos",
-        	new ExamineChatAction("map-semos-city.png", "Miasto Semos", "Mapa miasta Semos"));
+			+ "8 Świątynia, Ilisa,   9 Niebezpieczne Podziemia, \n"
+			+ "10 Publiczna Skrzynia, \n"
+			+ "A Wioska Semos,   B Północne Równiny i Kopalnia, \n"
+			+ "C Długa droga do Ados, \n"
+			+ "D Południowe Równiny i Las Nalwor, \n"
+			+ "E Otwarte Tereny Wioski Semos",
+			new ExamineChatAction("map-semos-city.png", "Miasto Semos", "Mapa miasta Semos"));
 
 		npc.addReply(
 			Arrays.asList("bank", "banku"),
@@ -182,6 +185,14 @@ public class MeetMonogenes extends AbstractQuest {
 		// }
 		// });
 		npc.addGoodbye();
+	}
+
+	@Override
+	public boolean removeFromWorld() {
+		final boolean res = ResetSpeakerNPC.reload(new GreeterNPC(), getNPCName());
+		// reload other quests associated with Monogenes
+		SingletonRepository.getStendhalQuestSystem().reloadQuestSlots("hat_monogenes");
+		return res;
 	}
 
 	@Override

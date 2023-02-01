@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2021 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -45,7 +45,9 @@ import games.stendhal.server.entity.npc.condition.QuestStateStartsWithCondition;
 import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
+import games.stendhal.server.maps.ados.city.ManWithHatNPC;
 import games.stendhal.server.util.KillsForQuestCounter;
+import games.stendhal.server.util.ResetSpeakerNPC;
 import marauroa.common.Pair;
 
 /**
@@ -126,8 +128,8 @@ public class KillMonks extends AbstractQuest {
 				ConversationStates.ATTENDING,
 				"Co za szkoda... Może kiedyś zmienisz zdanie i pomożesz smutnemu człowiekowi.",
 				new MultipleActions(
-				        new SetQuestAction(QUEST_SLOT, 0, "rejected"),
-				        new DecreaseKarmaAction(5)));
+						new SetQuestAction(QUEST_SLOT, 0, "rejected"),
+						new DecreaseKarmaAction(5)));
 	}
 
 	private void step_2() {
@@ -150,7 +152,7 @@ public class KillMonks extends AbstractQuest {
 		};
 
 		final List<ChatAction> actions = new LinkedList<ChatAction>();
-	    actions.add(addRandomNumberOfItemsAction);
+		actions.add(addRandomNumberOfItemsAction);
 		actions.add(new IncreaseXPAction(15000));
 		actions.add(new SetQuestAction(QUEST_SLOT, 0, "killed"));
 		actions.add(new SetQuestToTimeStampAction(QUEST_SLOT, 1));
@@ -205,6 +207,11 @@ public class KillMonks extends AbstractQuest {
 		step_1();
 		step_2();
 		step_3();
+	}
+
+	@Override
+	public boolean removeFromWorld() {
+		return ResetSpeakerNPC.reload(new ManWithHatNPC(), "Andy");
 	}
 
 	@Override
