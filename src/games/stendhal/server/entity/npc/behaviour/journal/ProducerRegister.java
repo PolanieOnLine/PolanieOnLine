@@ -16,15 +16,20 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
+import games.stendhal.server.entity.npc.SpeakerNPC;
+import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.MultiProducerBehaviour;
 import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 import games.stendhal.server.entity.player.Player;
 import marauroa.common.Pair;
 
 public class ProducerRegister {
+	private final static Logger logger = Logger.getLogger(ProducerRegister.class);
 	/** The singleton instance. */
 	private static ProducerRegister instance;
 
@@ -323,4 +328,13 @@ public class ProducerRegister {
 		return res;
 	}
 
+	public void configureNPC(final String npcName, ProducerBehaviour behaviour, final String text) {
+		final SpeakerNPC npc = SingletonRepository.getNPCList().get(npcName);
+		if (npc == null) {
+			logger.error("Cannot configure a production for non-existing NPC " + npcName);
+			return;
+		}
+
+		new ProducerAdder().addProducer(npc, behaviour, text);
+	}
 }
