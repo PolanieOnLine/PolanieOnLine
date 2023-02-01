@@ -121,7 +121,7 @@ public class SuntanCreamForZaraTest {
 		en.step(player, "hi");
 		assertEquals("Hallo!", getReply(npc));
 		en.step(player, "mix");
-		assertEquals("Potrzebuję, abyś przyniósł mi 1 #'mały eliksir', 1 #arandula, oraz 1 #kokuda do tej pracy, która zajmie mi 10 minut. Czy masz to co potrzebuję?", getReply(npc));
+		assertEquals("Potrzebuję, abyś przyniósł mi 1 #'mały eliksir', 1 #arandula, oraz 1 #kokuda do tej pracy, która zajmie 10 minut. Czy masz to co potrzebuję?", getReply(npc));
 		en.step(player, "yes");
 		assertEquals("Dobrze zrobię dla Ciebie olejek do opalania, ale zajmie mi to trochę czasu. Wróć za 10 minut.", getReply(npc));
 		en.step(player, "bye");
@@ -143,7 +143,7 @@ public class SuntanCreamForZaraTest {
 
 		final int xp = player.getXP();
 		en.step(player, "hi");
-		assertEquals("Witaj z powrotem! Skończyłem twoje zlecenie. Trzymaj, oto olejek do opalania.", getReply(npc));
+		assertEquals("Witaj z powrotem! Skończyłam twoje zlecenie. Trzymaj, oto olejek do opalania.", getReply(npc));
 		// [10:02] kymara earns 1 experience point.
 		en.step(player, "bye");
 		assertEquals("Miłej zabawy!", getReply(npc));

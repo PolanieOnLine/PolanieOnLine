@@ -110,7 +110,7 @@ public class IcecreamForAnnieTest {
 		en.step(player, "hi");
 		assertEquals("Cześć. Czy mogę #zaoferować Tobie porcję lodów?", getReply(npc));
 		en.step(player, "yes");
-		assertEquals("lody kosztuje 30. Chcesz kupić to?", getReply(npc));
+		assertEquals("Lody kosztuje 30 monet. Chcesz to kupić?", getReply(npc));
 		en.step(player, "no");
 
 		en.step(player, "offer");
@@ -118,7 +118,7 @@ public class IcecreamForAnnieTest {
 		assertTrue(en.step(player, "buy 0 lody"));
 		assertEquals("Ile lodów chcesz kupić?!", getReply(npc));
 		en.step(player, "buy lody");
-		assertEquals("lody kosztuje 30. Chcesz kupić to?", getReply(npc));
+		assertEquals("Lody kosztuje 30 monet. Chcesz to kupić?", getReply(npc));
 		en.step(player, "yes");
 		assertEquals("Gratulacje! Oto twój lody!", getReply(npc));
 		en.step(player, "bye");

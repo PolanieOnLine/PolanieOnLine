@@ -138,7 +138,7 @@ public class SellerAdder {
 								if (item == null) {
 									logger.error("Trying to sell a nonexistent item: " + chosenItemName);
 								} else if (!(item instanceof StackableItem)) {
-									builder.append("Możesz kupić tylko pojedyńczo " + chosenItemName + ". ");
+									builder.append("Możesz kupić tylko pojedynczo " + chosenItemName + ". ");
 									res.setAmount(1);
 								}
 							}

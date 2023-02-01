@@ -104,13 +104,13 @@ public class HouseKeeperNPCTest extends ZonePlayerAndNPCTestImpl {
 		PlayerTestHelper.equipWithItem(player, "miód");
 
 		assertTrue(en.step(player, "brew"));
-		assertEquals("Potrzebuję, abyś przyniósł mi 1 #miód oraz 1 #mleko do tej pracy, która zajmie mi 3 minuty. Czy masz to co potrzebuję?", getReply(npc));
+		assertEquals("Potrzebuję, abyś przyniósł mi 1 #miód oraz 1 #mleko do tej pracy, która zajmie 3 minuty. Czy masz to co potrzebuję?", getReply(npc));
 
 		assertTrue(en.step(player, "no"));
 		assertEquals("Dobrze, nie ma problemu.", getReply(npc));
 
 		assertTrue(en.step(player, "brew"));
-		assertEquals("Potrzebuję, abyś przyniósł mi 1 #miód oraz 1 #mleko do tej pracy, która zajmie mi 3 minuty. Czy masz to co potrzebuję?", getReply(npc));
+		assertEquals("Potrzebuję, abyś przyniósł mi 1 #miód oraz 1 #mleko do tej pracy, która zajmie 3 minuty. Czy masz to co potrzebuję?", getReply(npc));
 
 		assertTrue(en.step(player, "yes"));
 		assertEquals("Dobrze zrobię dla Ciebie filiżanka herbaty, ale zajmie mi to trochę czasu. Wróć za 3 minuty.", getReply(npc));
@@ -132,7 +132,7 @@ public class HouseKeeperNPCTest extends ZonePlayerAndNPCTestImpl {
 		setPastTime(player, QUEST_SLOT, 2, 3*60);
 
 		assertTrue(en.step(player, "hi"));
-		assertEquals("Witaj z powrotem! Skończyłem twoje zlecenie. Trzymaj, oto filiżanka herbaty.", getReply(npc));
+		assertEquals("Witaj z powrotem! Skończyłam twoje zlecenie. Trzymaj, oto filiżanka herbaty.", getReply(npc));
 
 		assertTrue(player.isEquipped("filiżanka herbaty", 1));
 

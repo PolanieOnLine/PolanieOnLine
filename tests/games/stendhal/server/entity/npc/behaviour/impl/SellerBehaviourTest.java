@@ -89,13 +89,13 @@ public class SellerBehaviourTest {
 		assertEquals("Nie sprzedaję napóje z winogron.", getReply(npc));
 
 	    npc.getEngine().step(player, "buy sztylecik");
-		assertEquals("sztylecik kosztuje 200. Chcesz kupić to?", getReply(npc));
+		assertEquals("Sztylecik kosztuje 200 monet. Chcesz to kupić?", getReply(npc));
 	    npc.getEngine().step(player, "yes");
 		assertEquals("Przepraszam, ale nie masz wystarczająco dużo pieniędzy!", getReply(npc));
 
 		PlayerTestHelper.equipWithMoney(player, 200);
 	    npc.getEngine().step(player, "buy sztylecik");
-		assertEquals("sztylecik kosztuje 200. Chcesz kupić to?", getReply(npc));
+		assertEquals("Sztylecik kosztuje 200 monet. Chcesz to kupić?", getReply(npc));
 	    npc.getEngine().step(player, "yes");
 		assertEquals("Gratulacje! Oto twój sztylecik!", getReply(npc));
 		assertTrue(player.isEquipped("sztylecik", 1));
@@ -103,7 +103,7 @@ public class SellerBehaviourTest {
 
 		PlayerTestHelper.equipWithMoney(player, 600);
 	    npc.getEngine().step(player, "buy trzy sztylecik");
-		assertEquals("Możesz kupić tylko pojedyńczo sztylecik. sztylecik kosztuje 200. Chcesz kupić to?", getReply(npc));
+		assertEquals("Możesz kupić tylko pojedynczo sztylecik. Sztylecik kosztuje 200 monet. Chcesz to kupić?", getReply(npc));
 	    npc.getEngine().step(player, "yes");
 		assertEquals("Gratulacje! Oto twój sztylecik!", getReply(npc));
 		assertNull(PlayerTestHelper.getPrivateReply(player));
@@ -129,11 +129,11 @@ public class SellerBehaviourTest {
 		assertEquals("Hello!", getReply(npc));
 
 	    npc.getEngine().step(player, "buy zwój fado");
-		assertEquals("zwój fado kosztuje 1000. Chcesz kupić to?", getReply(npc));
+		assertEquals("Zwój fado kosztuje 1000 monet. Chcesz to kupić?", getReply(npc));
 	    npc.getEngine().step(player, "no");
 
 	    npc.getEngine().step(player, "buy dwa niezapisany zwój");
-		assertEquals("2 niezapisany zwój kosztuje 6000. Chcesz kupić je?", getReply(npc));
+		assertEquals("2 niezapisany zwój kosztuje 6000 monet. Chcesz je kupić?", getReply(npc));
 	    npc.getEngine().step(player, "no");
 		assertEquals("Dobrze w czym jeszcze mogę pomóc?", getReply(npc));
 

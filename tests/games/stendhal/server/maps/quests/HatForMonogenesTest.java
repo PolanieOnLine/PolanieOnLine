@@ -135,7 +135,7 @@ public class HatForMonogenesTest {
 		enXin.step(player, "hi");
 		assertEquals("Pozdrawiam! W czym mogę pomóc?", getReply(npcXin));
 		enXin.step(player, "buy skórzany hełm");
-		assertEquals("skórzany hełm kosztuje 25. Chcesz kupić to?", getReply(npcXin));
+		assertEquals("Skórzany hełm kosztuje 25 monet. Chcesz to kupić?", getReply(npcXin));
 		enXin.step(player, "yes");
 		assertEquals("Gratulacje! Oto twój skórzany hełm!", getReply(npcXin));
 		enXin.step(player, "bye");
