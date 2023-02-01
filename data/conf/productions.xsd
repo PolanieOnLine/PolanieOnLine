@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema" targetNamespace="stendhal"
+	xmlns:tns="http://www.example.org/productions" elementFormDefault="qualified"
+	xmlns:Q2="stendhal">
+
+	<element name="productions" type="Q2:Production"/>
+	<complexType name="Production">
+		<sequence>
+			<element name="production" type="Q2:Product" minOccurs="0" maxOccurs="unbounded"/>
+		</sequence>
+	</complexType>
+
+	<complexType name="Product">
+		<sequence>
+			<element name="welcome" type="Q2:Text"/>
+			<element name="item" type="Q2:ProductItem" minOccurs="1" maxOccurs="unbounded"/>
+			<element name="activity" type="Q2:Activity"/>
+			<element name="time" type="Q2:Time"/>
+		</sequence>
+		<attribute name="npc" type="string" use="required"/>
+		<attribute name="slot" type="string" use="required"/>
+		<attribute name="type" type="Q2:ProductType" use="required"/>
+		<attribute name="condition" type="string" use="optional"/>
+	</complexType>
+
+	<complexType name="ProductItem">
+		<sequence>
+			<element name="resource" type="Q2:RequiredResources" minOccurs="0" maxOccurs="unbounded"/>
+		</sequence>
+		<attribute name="name" type="string" use="required"/>
+		<attribute name="quantity" type="positiveInteger" use="optional"/>
+	</complexType>
+
+	<simpleType name="ProductType">
+		<restriction base="string">
+			<enumeration value="food"/>
+			<enumeration value="drink"/>
+		</restriction>
+	</simpleType>
+
+	<complexType name="RequiredResources">
+		<attribute name="name" type="string" use="required"/>
+		<attribute name="amount" type="positiveInteger" use="required"/>
+	</complexType>
+
+	<complexType name="Text">
+		<attribute name="text" type="string"/>
+	</complexType>
+
+	<complexType name="Activity">
+		<attribute name="type" type="string"/>
+	</complexType>
+
+	<complexType name="Time">
+		<attribute name="value" type="positiveInteger"/>
+	</complexType>
+
+</schema>
