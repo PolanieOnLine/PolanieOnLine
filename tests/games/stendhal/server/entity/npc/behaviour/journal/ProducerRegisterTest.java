@@ -62,7 +62,7 @@ public class ProducerRegisterTest {
 		requiredResources.put("dorsz", 2);
 		requiredResources.put("makrela", 1);
 		requiredResources.put("por", 1);
-		final ProducerBehaviour behaviour = new ProducerBehaviour("linzo_make_fish_pie", Arrays.asList("make", "zrób"), "fish pie",
+		final ProducerBehaviour behaviour = new ProducerBehaviour("linzo_make_fish_pie", Arrays.asList("make", "zrób"), "tarta z rybnym nadzieniem",
 		        requiredResources, 5 * 60);
 
 		producerRegister.add("Linzo", behaviour);
@@ -86,6 +86,7 @@ public class ProducerRegisterTest {
 
 		// call NPC code which will make ProducerAdder add to register
 		new GoldsmithNPC().configureZone(zone, null);
+		SingletonRepository.getProducerRegister().configureNPC("Joshua", null, null);
 
 		assertFalse(producerRegister.getProducers().isEmpty());
 	}
