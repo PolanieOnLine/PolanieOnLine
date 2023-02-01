@@ -5,11 +5,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
@@ -36,8 +36,8 @@ public class ProducersXMLLoader extends DefaultHandler {
 	private String npcName;
 
 	private String itemName;
-	private Map<String, Integer> items = new TreeMap<String, Integer>();
-	private Map<String, Integer> resources = new TreeMap<String, Integer>();
+	private Map<String, Integer> items = new HashMap<String, Integer>();
+	private Map<String, Integer> resources = new HashMap<String, Integer>();
 
 	private List<String> activity = new LinkedList<String>();
 	private int time;
@@ -108,39 +108,52 @@ public class ProducersXMLLoader extends DefaultHandler {
 		if (qName.equals("producer")) {
 			npcName = attrs.getValue("npc");
 			questSlot = attrs.getValue("slot");
-			items = new LinkedHashMap<>();
-			resources = new LinkedHashMap<>();
-			itemName = "";
+			items = new LinkedHashMap<String, Integer>();
+			resources = new LinkedHashMap<String, Integer>();
+			activity = new LinkedList<String>();
+			itemName = null;
 			welcome = "";
 		} else if (qName.equals("welcome")) {
 			welcome = attrs.getValue("text");
-		} else if (qName.equals("activity")) {
-			final String[] activities = attrs.getValue("type").split(",");
-			for (String activ : activities) {
-				activity.add(activ);
-			}
 		} else if (qName.equals("time")) {
-			time = Integer.parseInt(attrs.getValue("value"));
+			// Time in minutes
+			time = 60 * Integer.parseInt(attrs.getValue("value"));
 		} else if (qName.equals("item")) {
+			productionTag = true;
+
 			itemName = attrs.getValue("name");
 			items.put(attrs.getValue("name"), Integer.parseInt(attrs.getValue("quantity")));
-			productionTag = true;
+			time = 60 * Integer.parseInt(attrs.getValue("minutes"));
 		} else if (productionTag) {
 			if (qName.equals("resource")) {
 				resources.put(attrs.getValue("name"), Integer.parseInt(attrs.getValue("amount")));
+			} else if (qName.equals("activity")) {
+				final String[] activities = attrs.getValue("type").split(",");
+				for (String activ : activities) {
+					activity.add(activ);
+				}
 			}
 		}
 	}
 
 	@Override
 	public void endElement(final String namespaceURI, final String sName, final String qName) {
-		if (qName.equals("producer") && npcName != null && questSlot != null) {
+		if (qName.equals("producer")) {
 			final ProducerBehaviour behaviour = new ProducerBehaviour(questSlot, activity, itemName, resources, time);
-			SingletonRepository.getCachedActionManager().register(new Runnable() {
-				public void run() {
-					producers.configureNPC(npcName, behaviour, welcome);
-				}
-			});
+
+			if (behaviour.getProductionActivity() == activity) {
+				SingletonRepository.getCachedActionManager().register(new Runnable() {
+					private final String _npcName = npcName;
+					private final ProducerBehaviour _behaviour = behaviour;
+					private final String _welcome = welcome;
+	
+					public void run() {
+						producers.configureNPC(_npcName, _behaviour, _welcome);
+					}
+				});
+			}
+		} else if (qName.equals("item")) {
+			productionTag = false;
 		}
 	}
 }

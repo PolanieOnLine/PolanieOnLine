@@ -14,8 +14,6 @@
 		<sequence>
 			<element name="welcome" type="Q2:Text"/>
 			<element name="item" type="Q2:ProductItem" minOccurs="1" maxOccurs="unbounded"/>
-			<element name="activity" type="Q2:Activity"/>
-			<element name="time" type="Q2:Time"/>
 		</sequence>
 		<attribute name="npc" type="string" use="required"/>
 		<attribute name="slot" type="string" use="required"/>
@@ -26,9 +24,11 @@
 	<complexType name="ProductItem">
 		<sequence>
 			<element name="resource" type="Q2:RequiredResources" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="activity" type="Q2:Activity"/>
 		</sequence>
 		<attribute name="name" type="string" use="required"/>
 		<attribute name="quantity" type="positiveInteger" use="optional"/>
+		<attribute name="minutes" type="positiveInteger" use="required"/>
 	</complexType>
 
 	<simpleType name="ProductType">
@@ -50,10 +50,6 @@
 
 	<complexType name="Activity">
 		<attribute name="type" type="string"/>
-	</complexType>
-
-	<complexType name="Time">
-		<attribute name="value" type="positiveInteger"/>
 	</complexType>
 
 </schema>
