@@ -113,6 +113,8 @@ public class HungryJoshuaTest {
 		// -----------------------------------------------
 		npc = SingletonRepository.getNPCList().get("Joshua");
 		en = npc.getEngine();
+		
+		SingletonRepository.getProducerRegister().configureNPC(npc.getName(), null, "Cześć! Jestem tutejszym złotnikiem. Jeżeli będziesz chciał, abym odlał dla Ciebie #sztabkę #złota to daj znać! Wystarczy, że powiesz #odlej.");
 
 		Item item = ItemTestHelper.createItem("kanapka", 5);
 		player.getSlot("bag").add(item);
