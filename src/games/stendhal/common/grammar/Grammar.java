@@ -388,7 +388,7 @@ public class Grammar {
 		if (enoun.indexOf(of) > -1) {
 			return plural(enoun.substring(0, enoun.indexOf(of))) + enoun.substring(enoun.indexOf(of)) + postfix;
 
-		} else if (enoun.equals("money") || enoun.equals("kierpce") || enoun.equals("korale") || enoun.endsWith("ów")) {
+		} else if (enoun.equals("money") || enoun.equals("kierpce") || enoun.equals("korale") || enoun.endsWith("ów") || enoun.endsWith("ami")) {
 			return enoun;
 		} else if (enoun.startsWith("rękawice") || enoun.equals("spodnie")) {
 			return enoun.substring(0, enoun.length() - 1) + postfix;
@@ -436,6 +436,9 @@ public class Grammar {
 
 		} else if (enoun.endsWith("a")) {
 			return enoun.substring(0, enoun.length() - 1) + "y" + postfix;
+
+		} else if (enoun.endsWith("ek")) {
+			return enoun.substring(0, enoun.length() - 2) + "ki" + postfix;
 
 		} else if (enoun.endsWith("k") || enoun.endsWith("g")) {
 			return enoun + "i" + postfix;
@@ -521,8 +524,18 @@ public class Grammar {
 			return enoun.substring(0, enoun.length() - 2) + postfix;
 		} else if (enoun.endsWith("tę") || enoun.endsWith("ło")) {
 			return enoun.substring(0, enoun.length() - 1) + "a" + postfix;
+		} else if (enoun.endsWith("na")) {
+			return enoun.substring(0, enoun.length() - 1) + "e" + postfix;
 		} else {
 			return enoun + postfix;
+		}
+	}
+
+	public static String youryour(int quantity, String noun) {
+		if (noun.equals("pączek")) {
+			return plnoun(quantity, "twój");
+		} else {
+			return plnoun(quantity, "twoją");
 		}
 	}
 
@@ -542,6 +555,14 @@ public class Grammar {
 			return singular(enoun.substring(0, enoun.indexOf(of)))
 					+ enoun.substring(enoun.indexOf(of)) + postfix;
 
+		} else if (enoun.equals("będzie")) { {
+			if (quantity > 1) {
+				return enoun = "będą";
+			} else {
+				return enoun;
+			}
+		}
+
 		} else if (enoun.equals("płaszcz")) {
 			if (quantity <= 4) {
 				return enoun + "e" + postfix;
@@ -559,6 +580,25 @@ public class Grammar {
 		} else if (enoun.equals("mnich")) {
 			if (quantity > 1 || quantity == 0) {
 				return enoun + "ów" + postfix;
+			} else {
+				return enoun;
+			}
+
+		} else if (enoun.endsWith("ty") || enoun.endsWith("ry") || enoun.endsWith("wy")) {
+			if (quantity > 1) {
+				return enoun.substring(0, enoun.length() - 1) + "e" + postfix;
+			} else {
+				return enoun;
+			}
+		} else if (enoun.endsWith("ój")) {
+			if (quantity > 1) {
+				return enoun.substring(0, enoun.length() - 2) + "oje" + postfix;
+			} else {
+				return enoun;
+			}
+		} else if (enoun.endsWith("oją")) {
+			if (quantity > 1) {
+				return enoun.substring(0, enoun.length() - 2) + "je" + postfix;
 			} else {
 				return enoun;
 			}
@@ -588,15 +628,42 @@ public class Grammar {
 				return enoun;
 			}
 
-		} else if (enoun.endsWith("ty")) {
+		} else {
+			return plural(enoun);
+		}
+	}
+
+	public static String alternativeSingular(int quantity, String enoun) {
+		if (enoun == null) {
+			return null;
+		}
+		String postfix = "";
+		final int position = enoun.indexOf('+');
+		if (position != -1) {
+			postfix = enoun.substring(position - 1);
+			enoun = enoun.substring(0, position - 1);
+		}
+
+		// in "of"-phrases build only the singular of the first part
+		if (enoun.indexOf(of) > -1) {
+			return singular(enoun.substring(0, enoun.indexOf(of)))
+					+ enoun.substring(enoun.indexOf(of)) + postfix;
+
+		} else if (enoun.equals("pączek")) {
 			if (quantity > 1) {
-				return enoun.substring(0, enoun.length() - 1) + "e" + postfix;
+				return enoun.substring(0, enoun.length() - 2) + "kami" + postfix;
 			} else {
-				return enoun;
+				return enoun.substring(0, enoun.length() - 2) + "kiem" + postfix;
+			}
+		} else if (enoun.equals("lina")) {
+			if (quantity == 1) {
+				return enoun.substring(0, enoun.length() - 1) + "ą" + postfix;
+			} else {
+				return singular(quantity, enoun);
 			}
 
 		} else {
-			return plural(enoun);
+			return singular(quantity, enoun);
 		}
 	}
 
