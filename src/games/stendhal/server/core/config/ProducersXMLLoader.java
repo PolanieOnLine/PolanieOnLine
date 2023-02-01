@@ -25,10 +25,10 @@ import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 import games.stendhal.server.entity.npc.behaviour.journal.ProducerRegister;
 import marauroa.common.Pair;
 
-public class ProductionsXMLLoader extends DefaultHandler {
-	private final static Logger logger = Logger.getLogger(ProductionsXMLLoader.class);
+public class ProducersXMLLoader extends DefaultHandler {
+	private final static Logger logger = Logger.getLogger(ProducersXMLLoader.class);
 
-	private static ProductionsXMLLoader instance;
+	private static ProducersXMLLoader instance;
 	private final static ProducerRegister producers = ProducerRegister.get();
 
 	private String questSlot;
@@ -51,9 +51,9 @@ public class ProductionsXMLLoader extends DefaultHandler {
 	 * @return
 	 *     The static instance.
 	 */
-	public static ProductionsXMLLoader get() {
+	public static ProducersXMLLoader get() {
 		if (instance == null) {
-			instance = new ProductionsXMLLoader();
+			instance = new ProducersXMLLoader();
 		}
 
 		return instance;
@@ -62,7 +62,7 @@ public class ProductionsXMLLoader extends DefaultHandler {
 	/**
 	 * Private singleton constructor.
 	 */
-	private ProductionsXMLLoader() {}
+	private ProducersXMLLoader() {}
 
 	public void init() {
 		final String xml = "/data/conf/productions.xml";
@@ -85,7 +85,7 @@ public class ProductionsXMLLoader extends DefaultHandler {
 		try {
 			// parse the input
 			final SAXParser saxParser = SAXParserFactory.newInstance().newSAXParser();
-			final InputStream is = ProductionsXMLLoader.class.getResourceAsStream(uri.getPath());
+			final InputStream is = ProducersXMLLoader.class.getResourceAsStream(uri.getPath());
 
 			if (is == null) {
 				throw new FileNotFoundException("cannot find resource '" + uri + "' in classpath");
@@ -106,7 +106,7 @@ public class ProductionsXMLLoader extends DefaultHandler {
 	
 	@Override
 	public void startElement(final String namespaceURI, final String lName, final String qName, final Attributes attrs) {
-		if (qName.equals("production")) {
+		if (qName.equals("producer")) {
 			npcName = attrs.getValue("npc");
 			questSlot = attrs.getValue("slot");
 			items = new LinkedHashMap<>();
@@ -137,7 +137,7 @@ public class ProductionsXMLLoader extends DefaultHandler {
 
 	@Override
 	public void endElement(final String namespaceURI, final String sName, final String qName) {
-		if (qName.equals("production") && questSlot != null) {
+		if (qName.equals("producer") && questSlot != null) {
 			final ProducerBehaviour behaviour = new ProducerBehaviour(questSlot, activity, itemName, resources, time);
 			if (npcName != null && !resources.isEmpty()) {
 				for (final Pair<String, ProducerBehaviour> producer : producers.getProducers()) {

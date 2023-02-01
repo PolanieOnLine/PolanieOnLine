@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<productions xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="stendhal productions.xsd">
+<producers xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal producers.xsd">
 
-	<production npc="Ernest" slot="ernest_make_donuts" type="food">
+	<producer npc="Ernest" slot="ernest_make_donuts" type="food">
 		<welcome text="Witaj w mojej piekarni, gdzie robię ciasto o przepysznej nazwie #pizza oraz #'pączki'!"/>
 		<item name="pączek" quantity="1">
 			<resource name="mąka" amount="1"/>
@@ -13,6 +13,6 @@
 		</item>
 		<activity type="make,upiecz"/>
 		<time value="180"/>
-	</production>
+	</producer>
 
-</productions>
+</producers>

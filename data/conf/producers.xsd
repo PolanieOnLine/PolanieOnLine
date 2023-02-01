@@ -3,10 +3,10 @@
 	xmlns:tns="http://www.example.org/productions" elementFormDefault="qualified"
 	xmlns:Q2="stendhal">
 
-	<element name="productions" type="Q2:Production"/>
-	<complexType name="Production">
+	<element name="producers" type="Q2:Producer"/>
+	<complexType name="Producer">
 		<sequence>
-			<element name="production" type="Q2:Product" minOccurs="0" maxOccurs="unbounded"/>
+			<element name="producer" type="Q2:Product" minOccurs="0" maxOccurs="unbounded"/>
 		</sequence>
 	</complexType>
 
@@ -35,6 +35,7 @@
 		<restriction base="string">
 			<enumeration value="food"/>
 			<enumeration value="drink"/>
+			<enumeration value="item"/>
 		</restriction>
 	</simpleType>
 
