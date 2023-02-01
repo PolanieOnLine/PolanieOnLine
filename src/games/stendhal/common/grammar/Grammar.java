@@ -569,6 +569,18 @@ public class Grammar {
 			} else {
 				return enoun + "y" + postfix;
 			}
+		} else if (enoun.equals("lazurowy")) {
+			if (quantity <= 4) {
+				return enoun.substring(0, enoun.length() - 1) + "e" + postfix;
+			} else {
+				return enoun + "ch" + postfix;
+			}
+		} else if (enoun.equals("borowik")) {
+			if (quantity <= 4) {
+				return enoun + "i" + postfix;
+			} else {
+				return enoun + "ów" + postfix;
+			}
 
 		} else if (enoun.equals("lody") || enoun.equals("składniki")) {
 			if (quantity > 4 || quantity == 0) {
