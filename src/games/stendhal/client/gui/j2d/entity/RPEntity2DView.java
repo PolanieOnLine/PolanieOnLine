@@ -668,7 +668,7 @@ abstract class RPEntity2DView<T extends RPEntity> extends ActiveEntity2DView<T> 
 			 * XXX: would it be better to use an opaque image & set transparency here?
 			 */
 
-			// custom shadows are created from with attribute set in .xml config
+			// custom shadows are created with attribute set in .xml config
 			final String custom_shadow = entity.getShadowStyle();
 			final ImageSprite shadowed;
 			final Graphics g;
@@ -848,8 +848,6 @@ abstract class RPEntity2DView<T extends RPEntity> extends ActiveEntity2DView<T> 
 			g2d.setColor(Color.cyan);
 			g2d.drawRect(x, y, width, height);
 		}
-
-		drawFloaters(g2d, x, y, width);
 	}
 
 	/**
@@ -870,6 +868,7 @@ abstract class RPEntity2DView<T extends RPEntity> extends ActiveEntity2DView<T> 
 	@Override
 	protected void drawTop(final Graphics2D g2d, final int x, final int y,
 			final int width, final int height) {
+		drawFloaters(g2d, x, y, width);
 		drawStatusBar(g2d, x, y + statusBarYOffset, width);
 	}
 
