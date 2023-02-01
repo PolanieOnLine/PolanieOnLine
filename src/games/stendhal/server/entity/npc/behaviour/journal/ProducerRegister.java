@@ -55,6 +55,15 @@ public class ProducerRegister {
 		producers  = new LinkedList<Pair<String, ProducerBehaviour>>();
 		multiproducers  = new LinkedList<Pair<String, MultiProducerBehaviour>>();
 	}
+	
+	public boolean isProducerExist(final String npcName) {
+		for (Pair<String, ProducerBehaviour> producer : producers) {
+			if (producer.first().contains(npcName)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	/**
 	 * Adds an NPC to the NPCList. Does nothing if an NPC with the same name
@@ -153,19 +162,19 @@ public class ProducerRegister {
 	 */
 	public String getProductionDescription(final Player player, final String npcName) {
 		for (final Pair<String, ProducerBehaviour> producer : producers) {
-			if(npcName.equals(producer.first())) {
+			if (npcName.equals(producer.first())) {
 				ProducerBehaviour behaviour = producer.second();
 				behaviour.getProductionActivity();
 				String product =  behaviour.getProductName();
-				return npcName + " wykonał " + Grammar.plural(product) + ".";
+				return npcName + " wykonuje dla nas " + Grammar.plural(product) + ".";
 			}
 		}
 		for (final Pair<String, MultiProducerBehaviour> producer : multiproducers) {
-			if(npcName.equals(producer.first())) {
+			if (npcName.equals(producer.first())) {
 				MultiProducerBehaviour behaviour = producer.second();
 				behaviour.getProductionActivity();
 				HashSet<String> products =  behaviour.getProductsNames();
-				return npcName + " wykonał " + Grammar.enumerateCollection(products) + ".";
+				return npcName + " wykonuje dla nas " + Grammar.enumerateCollection(products) + ".";
 			}
 		}
 		return "";
@@ -290,12 +299,13 @@ public class ProducerRegister {
 					if (behaviour.isOrderReady(player)) {
 						// put all completed orders first - player wants to collect these!
 						res.add(npcName + " ukończył "
-							+ " twój " + Grammar.plnoun(amount,product) + ".");
+							+ Grammar.youryour(amount, product) + " " + Grammar.plnoun(amount, product) + ".");
 					} else {
 						String timeleft = behaviour.getApproximateRemainingTime(player);
 						// put all ongoing orders last
-						res.add("\n" + npcName + " pracuje nad"
-							+ " " + Grammar.quantityplnoun(amount, product) + ", który będzie gotowy za " + timeleft + ".");
+						res.add("\n" + npcName + " pracuje nad "
+							+ Grammar.quantityplnoun(amount, Grammar.alternativeSingular(amount, product)) + ".");
+						res.add("\n Powinno być gotowe za " + timeleft + ".");
 					}
 				}
 			}
@@ -314,13 +324,14 @@ public class ProducerRegister {
                     final String product = order[1];
                     if (behaviour.isOrderReady(player)) {
                         // put all completed orders first - player wants to collect these!
-                        res.add(npcName + " ukończył"
-                            + " twój " + Grammar.plnoun(amount,product) + ".");
+                        res.add(npcName + " ukończył "
+                        	+ Grammar.youryour(amount, product) + " " + Grammar.plnoun(amount, product) + ".");
                     } else {
                         String timeleft = behaviour.getApproximateRemainingTime(player);
                         // put all ongoing orders last
-						res.add("\n" + npcName + " wciąż pracuje nad"
-							+ " " + Grammar.quantityplnoun(amount, product) + ", który będzie gotowy za " + timeleft + ".");
+						res.add("\n" + npcName + " wciąż pracuje nad "
+							+ Grammar.quantityplnoun(amount, Grammar.alternativeSingular(amount, product)) + ".");
+						res.add("\n Powinno być gotowe za " + timeleft + ".");
                     }
                 }
 			}
@@ -335,6 +346,8 @@ public class ProducerRegister {
 			return;
 		}
 
-		new ProducerAdder().addProducer(npc, behaviour, text);
+		if (!isProducerExist(npcName)) {
+			new ProducerAdder().addProducer(npc, behaviour, text);
+		}
 	}
 }
