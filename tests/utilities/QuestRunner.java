@@ -37,7 +37,7 @@ public class QuestRunner {
 		en.step(player, "quest");
 		en.step(player, "yes");
 		en.step(player, "bye");
-		equipWithItem(player, "beer");
+		equipWithItem(player, "sok z chmielu");
 		en.step(player, "hi");
 		en.step(player, "yes");
 		en.step(player, "bye");
