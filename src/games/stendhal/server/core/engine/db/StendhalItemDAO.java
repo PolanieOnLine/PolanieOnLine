@@ -35,6 +35,7 @@ public class StendhalItemDAO {
 	 *
 	 * @param transaction database transaction
 	 * @param item item
+	 * @param timestamp timestamp
 	 * @throws SQLException in case of a database error
 	 */
 	public void itemLogAssignIDIfNotPresent(final DBTransaction transaction, final RPObject item, Timestamp timestamp) throws SQLException {
@@ -105,8 +106,8 @@ public class StendhalItemDAO {
 			playerName = player.getName();
 		}
 		final String query = "INSERT INTO itemlog (itemid, source, event, "
-				+ "param1, param2, param3, param4, timedate) VALUES ("
-				+ "[itemid], '[source]', '[event]', '[param1]', '[param2]', '[param3]', '[param4]', '[timedate]');";
+			+ "param1, param2, param3, param4, timedate) VALUES ("
+			+ "[itemid], '[source]', '[event]', '[param1]', '[param2]', '[param3]', '[param4]', '[timedate]');";
 
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("itemid", itemid);
