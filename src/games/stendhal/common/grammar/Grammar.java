@@ -532,7 +532,7 @@ public class Grammar {
 	}
 
 	public static String youryour(int quantity, String noun) {
-		if (noun.equals("pączek")) {
+		if (noun.equals("pączek") || noun.equals("chleb")) {
 			return plnoun(quantity, "twój");
 		} else {
 			return plnoun(quantity, "twoją");
@@ -672,6 +672,12 @@ public class Grammar {
 				return enoun.substring(0, enoun.length() - 1) + "ą" + postfix;
 			} else {
 				return singular(quantity, enoun);
+			}
+		} else if (enoun.equals("chleb") || enoun.equals("ametyst")) {
+			if (quantity > 1) {
+				return enoun + "ami" + postfix;
+			} else {
+				return enoun + "em" + postfix;
 			}
 
 		} else {
