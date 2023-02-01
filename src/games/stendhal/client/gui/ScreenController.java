@@ -251,7 +251,7 @@ public class ScreenController implements PositionChangeListener {
 			return getTextFactory().createFancyTextBox(text, type.getColor(),
 					BUBBLE_TEXT_WIDTH, 45, 6, 6, 6, painter);
 		}
-		Color color = Color.white;;
+		Color color = Color.white;
 		if (!isTalking) {
 			color = new Color(60, 30, 0);
 		}
