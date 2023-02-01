@@ -166,7 +166,7 @@ public class ProducerBehaviour extends TransactionBehaviour {
 	}
 
 //	protected String getProductUnit() {
-//	return productUnit;
+//		return productUnit;
 //	}
 
 	/**
