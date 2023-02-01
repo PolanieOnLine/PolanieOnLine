@@ -15,15 +15,12 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 
 /**
  * @author daniel @edit by KarajuSs
@@ -63,35 +60,21 @@ public class ChefNPC implements ZoneConfigurator  {
 				addHelp("Jeśli chcesz zarobić trochę dukatów wyświadcz mi #przysługę i dostarcz to ciasto co zwą #'pizza'.");
 				addReply("mąka", "Nasze dostawy pochodzą z królewskiego grodu.");
 				addReply(Arrays.asList("mleko", "osełka masła"),
-				"Philomena sprzedaje krowie mleko oraz osełke masła.");
+						"Philomena sprzedaje krowie mleko oraz osełke masła.");
 				addReply(Arrays.asList("jajo", "cukier"),
-				"Masz ogromne szczęście! Nasza znajoma Hermina zajmuje się sprowadzaniem jajekm, cukru oraz innych składników z różnych krain.");
+						"Masz ogromne szczęście! Nasza znajoma Hermina zajmuje się sprowadzaniem jajekm, cukru oraz innych składników z różnych krain.");
 				addReply(Arrays.asList("pizza", "pizzę"), "Potrzebuję kogoś, kto dostarczy pizzę. Może przyjmiesz to #zadanie.");
 				addReply(Arrays.asList("donut", "donuts", "pączek", "pączki"),
-				"Moje pączki jak to wielu klientów mówi są genialne. Jeśli chcesz, abym zrobił jednego dla Ciebie powiedz #'upiecz <ilość> pączek'.");
+						"Moje pączki jak to wielu klientów mówi są genialne. Jeśli chcesz, abym zrobił jednego dla Ciebie powiedz #'upiecz <ilość> pączek'.");
 				addOffer("Moja #pizza potrzebuje sera, a my nie mamy żadnych zapasów. Kupię od Ciebie ser jeżeli chcesz #sprzedać.");
 				addGoodbye();
+			}
+		};
 
-				// Leander makes sandwiches if you bring him bread, cheese, and ham.
-				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
-				requiredResources.put("mąka", 1);
-				requiredResources.put("mleko", 1);
-				requiredResources.put("jajo", 1);
-				requiredResources.put("osełka masła", 1);
-				requiredResources.put("cukier", 1);
-
-				final ProducerBehaviour behaviour = new ProducerBehaviour(
-						"ernest_make_donuts", Arrays.asList("make", "upiecz"), "pączek",
-						requiredResources, 3 * 60);
-
-				new ProducerAdder().addProducer(this, behaviour,
-				"Witaj w mojej piekarni, gdzie robię ciasto o przepysznej nazwie #pizza oraz #'pączki'!");
-			}};
-
-			npc.setDescription("Oto Ernest. Jego praca daje mu piękny zapach.");
-			npc.setEntityClass("chefnpc");
-			npc.setGender("M");
-			npc.setPosition(15, 3);
-			zone.add(npc);
+		npc.setDescription("Oto Ernest. Jego praca daje mu piękny zapach.");
+		npc.setEntityClass("chefnpc");
+		npc.setGender("M");
+		npc.setPosition(15, 3);
+		zone.add(npc);
 	}
 }
