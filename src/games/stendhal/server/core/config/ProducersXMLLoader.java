@@ -23,7 +23,6 @@ import org.xml.sax.helpers.DefaultHandler;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 import games.stendhal.server.entity.npc.behaviour.journal.ProducerRegister;
-import marauroa.common.Pair;
 
 public class ProducersXMLLoader extends DefaultHandler {
 	private final static Logger logger = Logger.getLogger(ProducersXMLLoader.class);
@@ -40,7 +39,7 @@ public class ProducersXMLLoader extends DefaultHandler {
 	private Map<String, Integer> items = new TreeMap<String, Integer>();
 	private Map<String, Integer> resources = new TreeMap<String, Integer>();
 
-	private List<String> activity;
+	private List<String> activity = new LinkedList<String>();
 	private int time;
 
 	private boolean productionTag = false;
@@ -65,7 +64,7 @@ public class ProducersXMLLoader extends DefaultHandler {
 	private ProducersXMLLoader() {}
 
 	public void init() {
-		final String xml = "/data/conf/productions.xml";
+		final String xml = "/data/conf/producers.xml";
 		final InputStream in = getClass().getResourceAsStream(xml);
 
 		if (in == null) {
@@ -113,8 +112,6 @@ public class ProducersXMLLoader extends DefaultHandler {
 			resources = new LinkedHashMap<>();
 			itemName = "";
 			welcome = "";
-			activity = new LinkedList<String>();
-			time = 0;
 		} else if (qName.equals("welcome")) {
 			welcome = attrs.getValue("text");
 		} else if (qName.equals("activity")) {
@@ -137,23 +134,13 @@ public class ProducersXMLLoader extends DefaultHandler {
 
 	@Override
 	public void endElement(final String namespaceURI, final String sName, final String qName) {
-		if (qName.equals("producer") && questSlot != null) {
+		if (qName.equals("producer") && npcName != null && questSlot != null) {
 			final ProducerBehaviour behaviour = new ProducerBehaviour(questSlot, activity, itemName, resources, time);
-			if (npcName != null && !resources.isEmpty()) {
-				for (final Pair<String, ProducerBehaviour> producer : producers.getProducers()) {
-					if (producer.first().contains(npcName)) {
-						logger.warn("Tried to re-add duplicate production to an existing producer " + npcName);
-						return;
-					}
+			SingletonRepository.getCachedActionManager().register(new Runnable() {
+				public void run() {
+					producers.configureNPC(npcName, behaviour, welcome);
 				}
-
-				producers.add(npcName, behaviour);
-				SingletonRepository.getCachedActionManager().register(new Runnable() {
-					public void run() {
-						producers.configureNPC(npcName, behaviour, welcome);
-					}
-				});
-			}
+			});
 		}
 	}
 }
