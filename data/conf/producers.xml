@@ -2,17 +2,47 @@
 <producers xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="stendhal producers.xsd">
 
+	<!-- Ernest (Gdańsk) -->
 	<producer npc="Ernest" slot="ernest_make_donuts" type="food">
 		<welcome text="Witaj w mojej piekarni, gdzie robię ciasto o przepysznej nazwie #pizza oraz #'pączki'!"/>
-		<item name="pączek" quantity="1">
+		<item name="pączek" quantity="1" minutes="3">
 			<resource name="mąka" amount="1"/>
 			<resource name="mleko" amount="1"/>
 			<resource name="jajo" amount="1"/>
 			<resource name="osełka masła" amount="1"/>
 			<resource name="cukier" amount="1"/>
+
+			<activity type="make,zrób,upiecz"/>
 		</item>
-		<activity type="make,upiecz"/>
-		<time value="180"/>
+	</producer>
+	<!-- Lena (Gdańsk) -->
+	<producer npc="Lena" slot="lena_bake_bread" type="food">
+		<welcome text="Witamy serdecznie w naszej pięknie pachnącej pieczywem piekarni!"/>
+		<item name="chleb" quantity="1" minutes="6">
+			<resource name="mąka" amount="2"/>
+
+			<activity type="bake,upiecz"/>
+		</item>
+	</producer>
+	<!-- czeladnik Wojtek (Gdańsk) -->
+	<producer npc="czeladnik Wojtek" slot="wojtek_cast_ametyst" type="item">
+		<welcome text="Dzień dobry. W czymś mogę ci #pomóc?"/>
+		<item name="ametyst" quantity="1" minutes="4">
+			<resource name="money" amount="200"/>
+			<resource name="kryształ ametystu" amount="1"/>
+
+			<activity type="grind,oszlifuj"/>
+		</item>
+	</producer>
+	<!-- Aron (Gdańsk) -->
+	<producer npc="Aron" slot="aron_concoct_potion" type="drink">
+		<welcome text="Witaj poszukiwaczu, co Ciebie sprowadza do mojej TAJNEJ kryjówki? Chcesz być moim #'królikiem doświadczalnym'?"/>
+		<item name="duży smoczy eliksir" quantity="1" minutes="2">
+			<resource name="money" amount="1200"/>
+			<resource name="smocza krew" amount="3"/>
+
+			<activity type="concoct,zrób,sporządź"/>
+		</item>
 	</producer>
 
 </producers>

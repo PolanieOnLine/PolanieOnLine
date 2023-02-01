@@ -13,15 +13,12 @@ package games.stendhal.server.maps.gdansk.cottage;
 
 import java.util.Arrays;
 import java.util.Map;
-import java.util.TreeMap;
 
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 
 /**
  * @author KarajuSs
@@ -54,16 +51,6 @@ public class SzalonyNaukowiecNPC implements ZoneConfigurator {
 						"Jest to bardzo i to bardzo silny eliksir. *HIHIHIHI* Jeżeli chcesz to poproś mnie, abym go przyrządził mówiąc #'sporządź 1 duży smoczy eliksir'.");
 				addHelp("Jeżeli chcesz być mądry tak jak ja to powinieneś odwiedzić bibliotekę. Tam jest sporo pomocy naukowych.");
 				addGoodbye("Do widzenia.");
-
-				// (uses sorted TreeMap instead of HashMap)
-				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
-				requiredResources.put("money", 1200);
-				requiredResources.put("smocza krew", 3);
-				final ProducerBehaviour behaviour = new ProducerBehaviour("aron_concoct_potion",
-						Arrays.asList("concoct", "sporządź"), "duży smoczy eliksir", requiredResources, 2 * 60);
-
-				new ProducerAdder().addProducer(this, behaviour,
-				"Witaj poszukiwaczu, co Ciebie sprowadza do mojej TAJNEJ kryjówki? Chcesz być moim #'królikiem doświadczalnym'?");
 			}
 
 			@Override
