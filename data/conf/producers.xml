@@ -2,6 +2,95 @@
 <producers xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="stendhal producers.xsd">
 
+	<!-- Arlindo (Ados) -->
+	<producer npc="Arlindo" slot="arlindo_make_pie" type="food">
+		<welcome text="Witam! Założę się, że słyszałeś o moim słynnym placku. Mówiąc #upiecz zrobię go dla ciebie."/>
+		<item name="tarta" quantity="1" minutes="7">
+			<resource name="mąka" amount="2"/>
+			<resource name="mięso" amount="2"/>
+			<resource name="marchew" amount="1"/>
+			<resource name="pieczarka" amount="2"/>
+
+			<activity type="make,zrób,upiecz"/>
+		</item>
+	</producer>
+	<!-- Valo (Ados) -->
+	<producer npc="Valo" slot="valo_concoct_potion" type="drink">
+		<welcome text="Pozdrawiam młodzieńcze. #Uleczę Cię i #pomogę Tobie."/>
+		<item name="wielki eliksir" quantity="1" minutes="2">
+			<resource name="money" amount="20"/>
+			<resource name="serce olbrzyma" amount="1"/>
+
+			<activity type="concoct,zrób,sporządź"/>
+		</item>
+	</producer>
+	<!-- Joshua (Ados) -->
+	<producer npc="Joshua" slot="joshua_cast_gold" type="item">
+		<welcome text="Cześć! Jestem tutejszym złotnikiem. Jeżeli będziesz chciał, abym odlał dla Ciebie #sztabkę #złota to daj znać! Wystarczy, że powiesz #odlej."/>
+		<item name="sztabka złota" quantity="1" minutes="15">
+			<resource name="polano" amount="3"/>
+			<resource name="bryłka złota" amount="1"/>
+
+			<activity type="cast,odlej"/>
+		</item>
+	</producer>
+	<!-- Pedinghaus (Ados) -->
+	<producer npc="Pedinghaus" slot="Pedinghaus_cast_mithril" type="item">
+		<welcome text="Pozdrawiam. Sądzę, że jesteś zainteresowany mithrilem. Jeżeli chcesz, abym odlał #'sztabkę mithrilu' to daj znać. Powiedz tylko #odlej"/>
+		<item name="sztabka mithrilu" quantity="1" minutes="18">
+			<resource name="polano" amount="20"/>
+			<resource name="bryłka mithrilu" amount="1"/>
+
+			<activity type="cast,odlej"/>
+		</item>
+	</producer>
+	<!-- Uncle Dag (Ados) -->
+	<producer npc="Uncle Dag" slot="uncle_dag_brew_fierywater" type="drink">
+		<welcome text="Cześć! Jestem Uncle Dag, gorzelnik! Jeżeli przyniesiesz mi #'trzcinę cukrową' i #polano to #wywarzę dla Ciebie #'ekstrakt litworowy'."/>
+		<item name="ekstrakt litworowy" quantity="1" minutes="20">
+			<resource name="trzcina cukrowa" amount="5"/>
+			<resource name="polano" amount="1"/>
+
+			<activity type="brew,nawarz"/>
+		</item>
+	</producer>
+	<!-- Blacksheep Bob (Ados) -->
+	<producer npc="Blacksheep Bob" slot="blacksheepbob_make_sausage" type="food">
+		<welcome text="Hej! Witamy na naszym mięsnym targu Blacksheep. Czy mogę zrobić dla Ciebie paróweczki?"/>
+		<item name="paróweczka" quantity="1" minutes="2">
+			<resource name="truchło wampira" amount="1"/>
+			<resource name="truchło nietoperza" amount="1"/>
+			<resource name="mięso" amount="1"/>
+			<resource name="napój z winogron" amount="2"/>
+
+			<activity type="make,zrób"/>
+		</item>
+	</producer>
+	<!-- Blacksheep Harry (Ados) -->
+	<producer npc="Blacksheep Harry" slot="blacksheepharry_make_tuna" type="food">
+		<welcome text="Witamy na mięsnym targu Blacksheep. Czy mogę zrobić dla Ciebie prasowanego tuńczyka?"/>
+		<item name="prasowany tuńczyk" quantity="1" minutes="2">
+			<resource name="makrela" amount="1"/>
+			<resource name="okoń" amount="1"/>
+			<resource name="kolorowe kulki" amount="2"/>
+
+			<activity type="make,zrób"/>
+		</item>
+	</producer>
+	<!-- Blacksheep Joe (Ados) -->
+	<producer npc="Blacksheep Joe" slot="blacksheepjoe_make_cheese_sausage" type="food">
+		<welcome text="Witamy na mięsnym targu Blacksheep. Czy mogę zrobić dla Ciebie kiełbasę z serem?"/>
+		<item name="kiełbasa serowa" quantity="1" minutes="2">
+			<resource name="truchło wampira" amount="1"/>
+			<resource name="truchło nietoperza" amount="1"/>
+			<resource name="udko" amount="1"/>
+			<resource name="czarna perła" amount="1"/>
+			<resource name="ser" amount="1"/>
+
+			<activity type="make,zrób"/>
+		</item>
+	</producer>
+
 	<!-- Ernest (Gdańsk) -->
 	<producer npc="Ernest" slot="ernest_make_donuts" type="food">
 		<welcome text="Witaj w mojej piekarni, gdzie robię ciasto o przepysznej nazwie #pizza oraz #'pączki'!"/>

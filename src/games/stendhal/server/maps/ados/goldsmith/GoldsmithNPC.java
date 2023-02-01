@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -15,7 +15,6 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
@@ -23,8 +22,6 @@ import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 
 /**
  * Ados Goldsmith (Inside / Level 0).
@@ -62,21 +59,10 @@ public class GoldsmithNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-				addGreeting("Cześć!");
 				addJob("Jestem złotnikiem w tym mieście.");
 				addHelp("Mój brat Xoderos jest kowalem w Semos. Teraz sprzedaje narzędzia. Może zrobić dla Ciebie #'misę do pukania złota'.");
 				addGoodbye();
 
-				// Joshua makes gold if you bring him gold nugget and wood
-				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
-				requiredResources.put("polano", 3);
-				requiredResources.put("bryłka złota", 1);
-
-				final ProducerBehaviour behaviour = new ProducerBehaviour("joshua_cast_gold",
-						 Arrays.asList("cast", "odlej"), "sztabka złota", requiredResources, 15 * 60);
-
-				new ProducerAdder().addProducer(this, behaviour,
-				        "Cześć! Jestem tutejszym złotnikiem. Jeżeli będziesz chciał, abym odlał dla Ciebie #sztabkę #złota to daj znać! Wystarczy, że powiesz #odlej.");
 				addReply(Arrays.asList("wood", "polano"),
 						"Potrzebuję trochę polan, aby podtrzymywać ogień. Możesz je znaleźć w lesie.");
 				addReply(Arrays.asList("ore", "gold ore", "gold nugget", "bryłka złota"),

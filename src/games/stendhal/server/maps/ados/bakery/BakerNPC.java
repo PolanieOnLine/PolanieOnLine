@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -15,7 +15,6 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
@@ -23,8 +22,6 @@ import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 
 /**
  * Ados Bakery (Inside / Level 0).
@@ -45,7 +42,6 @@ public class BakerNPC implements ZoneConfigurator {
 
 	private void buildBakery(final StendhalRPZone zone) {
 		final SpeakerNPC baker = new SpeakerNPC("Arlindo") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -68,7 +64,6 @@ public class BakerNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-				// addGreeting("Hi, most of the people are out of town at the moment.");
 				addJob("Jestem lokalnym piekarzem. Mimo iż dostajemy większość zapasów z Semos to i tak jest sporo pracy do zrobienia.");
 				addReply(Arrays.asList("mąka", "mięso", "marchew"),
 						"W Ados brakuje zapasów. Dostajemy większość jedzenia z Semos, które jest na zachód stąd.");
@@ -76,20 +71,6 @@ public class BakerNPC implements ZoneConfigurator {
 						"Doszły nas słuchy, że w kuchni brakuje żywności. Postanowiliśmy powiększyć zapasy grzybów. Teraz znajdziesz ich większą ilość w lasach. ");
 				addHelp("Jeżeli posiadasz mnóstwo mięsa lub sera to możesz sprzedać Siandrze w barze Ados.");
 				addGoodbye();
-
-				// Arlindo makes pies if you bring him flour, meat, carrot and a mushroom
-				// (uses sorted TreeMap instead of HashMap)
-				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
-				requiredResources.put("mąka", Integer.valueOf(2));
-				requiredResources.put("mięso", Integer.valueOf(2));
-				requiredResources.put("marchew", Integer.valueOf(1));
-				requiredResources.put("pieczarka", Integer.valueOf(2));
-
-				final ProducerBehaviour behaviour = new ProducerBehaviour("arlindo_make_pie", Arrays.asList("make", "upiecz"), "tarta",
-				        requiredResources, 7 * 60);
-
-				new ProducerAdder().addProducer(this, behaviour,
-				        "Witam! Założę się, że słyszałeś o moim słynnym placku. Mówiąc #upiecz zrobię go dla ciebie.");
 			}
 		};
 
