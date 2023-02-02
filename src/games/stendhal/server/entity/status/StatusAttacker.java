@@ -142,6 +142,10 @@ public class StatusAttacker {
 	 *     Name of the status that this attacker can inflict
 	 */
     public String getStatusName() {
+    	if (status.getName().equals("poison")) {
+    		return "jad";
+    	}
+
         return status.getName();
     }
 
