@@ -30,10 +30,12 @@ Changelog
 - Zmieniono wynagrodzenie za ukończenie zadania u gazdy Jędrzeja z 5.000pd do 30.000pd oraz z 15 karmy do 20 karmy
 - Zadanie 'Rogi Jednorożca dla Zelana' jest teraz powtarzalne
 - Zadania 'Odnowienie Zapasów Kwiaciarni', 'Wsparcie dla Wielkoluda' oraz 'Pozbycie się Rozbójników' śledzi teraz ukończenia tego zadania
+- Gracze mogą nakładać specjalne efekty (np: zatrucie) podczas atakowania
 
 *kod*
 - Dodano nowy skrypt CommerceExchange.class dla administratorów
 - Bronie bliskiego starcia mogą mięć większy zasięg ataku
+- NPC co produkują różne przedmioty od teraz można konfigurować w pliku XML
 
 
 1.35
