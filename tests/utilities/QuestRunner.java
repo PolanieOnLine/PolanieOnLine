@@ -16,8 +16,14 @@ import static utilities.PlayerTestHelper.equipWithItem;
 import static utilities.PlayerTestHelper.equipWithStackableItem;
 import static utilities.SpeakerNPCTestHelper.getSpeakerNPC;
 
+import java.util.Arrays;
+import java.util.Map;
+import java.util.TreeMap;
+
+import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
+import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 import games.stendhal.server.entity.npc.fsm.Engine;
 import games.stendhal.server.entity.player.Player;
 import utilities.quest_runner.ChildrensFriendStub;
@@ -202,6 +208,10 @@ public class QuestRunner {
 		en.step(player, "bye");
 		equipWithStackableItem(player, "kanapka", 5);
 		en = getSpeakerNPC("Joshua").getEngine();
+		final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
+		requiredResources.put("ser", 1);
+		final ProducerBehaviour behaviour = new ProducerBehaviour("joshua_test", Arrays.asList(""), "", requiredResources, 0);
+		SingletonRepository.getProducerRegister().configureNPC("Joshua", behaviour, "");
 		en.step(player, "hi");
 		en.step(player, "kanapka");
 		en.step(player, "yes");

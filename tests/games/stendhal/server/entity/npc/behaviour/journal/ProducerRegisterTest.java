@@ -86,7 +86,11 @@ public class ProducerRegisterTest {
 
 		// call NPC code which will make ProducerAdder add to register
 		new GoldsmithNPC().configureZone(zone, null);
-		SingletonRepository.getProducerRegister().configureNPC("Joshua", null, null);
+
+		final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
+		requiredResources.put("ser", 1);
+		final ProducerBehaviour behaviour = new ProducerBehaviour("joshua_test", Arrays.asList(""), "", requiredResources, 0);
+		SingletonRepository.getProducerRegister().configureNPC("Joshua", behaviour, "");
 
 		assertFalse(producerRegister.getProducers().isEmpty());
 	}
@@ -108,6 +112,15 @@ public class ProducerRegisterTest {
 		new BakerNPC().configureZone(zone, null);
 		new BlacksheepBobNPC().configureZone(zone, null);
 
+		final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
+		requiredResources.put("ser", 1);
+		final ProducerBehaviour bakerBehaviour = new ProducerBehaviour("arlindo_make_pie", Arrays.asList("make,zrób"),
+				"tarta", requiredResources, 7 * 60);
+		SingletonRepository.getProducerRegister().configureNPC("Arlindo", bakerBehaviour, "");
+
+		final ProducerBehaviour bobBehaviour = new ProducerBehaviour("blacksheepbob_make_sausage", Arrays.asList("make,zrób"),
+				"paróweczka", requiredResources, 2 * 60);
+		SingletonRepository.getProducerRegister().configureNPC("Blacksheep Bob", bobBehaviour, "");
 
 		assertFalse(producerRegister.getProducers().isEmpty());
 
@@ -146,6 +159,15 @@ public class ProducerRegisterTest {
 		new BakerNPC().configureZone(zone, null);
 		new BlacksheepBobNPC().configureZone(zone, null);
 
+		final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
+		requiredResources.put("ser", 1);
+		final ProducerBehaviour bakerBehaviour = new ProducerBehaviour("arlindo_make_pie", Arrays.asList("make,zrób"),
+				"tarta", requiredResources, 7 * 60);
+		SingletonRepository.getProducerRegister().configureNPC("Arlindo", bakerBehaviour, "");
+
+		final ProducerBehaviour bobBehaviour = new ProducerBehaviour("blacksheepbob_make_sausage", Arrays.asList("make,zrób"),
+				"paróweczka", requiredResources, 2 * 60);
+		SingletonRepository.getProducerRegister().configureNPC("Blacksheep Bob", bobBehaviour, "");
 
 		assertFalse(producerRegister.getProducers().isEmpty());
 

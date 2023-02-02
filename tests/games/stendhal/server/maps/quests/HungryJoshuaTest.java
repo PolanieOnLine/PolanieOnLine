@@ -20,6 +20,10 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static utilities.SpeakerNPCTestHelper.getReply;
 
+import java.util.Arrays;
+import java.util.Map;
+import java.util.TreeMap;
+
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -28,6 +32,7 @@ import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.npc.SpeakerNPC;
+import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 import games.stendhal.server.entity.npc.fsm.Engine;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.MockStendlRPWorld;
@@ -113,15 +118,21 @@ public class HungryJoshuaTest {
 		// -----------------------------------------------
 		npc = SingletonRepository.getNPCList().get("Joshua");
 		en = npc.getEngine();
-		
-		SingletonRepository.getProducerRegister().configureNPC(npc.getName(), null, "Cześć! Jestem tutejszym złotnikiem. Jeżeli będziesz chciał, abym odlał dla Ciebie #sztabkę #złota to daj znać! Wystarczy, że powiesz #odlej.");
+
+		String greeting = "Cześć! Jestem tutejszym złotnikiem. Jeżeli będziesz chciał, abym odlał dla Ciebie #sztabkę #złota to daj znać! Wystarczy, że powiesz #odlej.";
+
+		final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
+		requiredResources.put("ser", 1);
+		final ProducerBehaviour behaviour = new ProducerBehaviour("joshua_cast_gold", Arrays.asList("cast"),
+				"sztabka złota", requiredResources, 0);
+		SingletonRepository.getProducerRegister().configureNPC(npc.getName(), behaviour, greeting);
 
 		Item item = ItemTestHelper.createItem("kanapka", 5);
 		player.getSlot("bag").add(item);
 		final int xp = player.getXP();
 
 		en.step(player, "hi");
-		assertEquals("Cześć! Jestem tutejszym złotnikiem. Jeżeli będziesz chciał, abym odlał dla Ciebie #sztabkę #złota to daj znać! Wystarczy, że powiesz #odlej.", getReply(npc));
+		assertEquals(greeting, getReply(npc));
 		en.step(player, "food");
 		assertEquals("Och wspaniale! Czy mój brat Xoderos przysłał Ciebie z tymi kanapkami?", getReply(npc));
 		en.step(player, "yes");
