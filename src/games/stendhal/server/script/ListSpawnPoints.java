@@ -25,16 +25,12 @@ import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
 import games.stendhal.server.entity.mapstuff.spawner.PassiveEntityRespawnPoint;
 import games.stendhal.server.entity.player.Player;
 
-
 /**
  * Script to list spawn points located in a zone.
  */
 public class ListSpawnPoints extends AbstractAdminScript {
-
 	private List<String> params = Arrays.asList("-zone", "-type");
-
 	private int count;
-
 
 	@Override
 	protected void run(final Player admin, final List<String> args) {
@@ -48,7 +44,7 @@ public class ListSpawnPoints extends AbstractAdminScript {
 				return;
 			}
 			if (!params.contains(key)) {
-				admin.sendPrivateText(NotificationType.ERROR, "Unknown parameter: " + key);
+				admin.sendPrivateText(NotificationType.ERROR, "Nieznany parametr: " + key);
 				return;
 			}
 			String value = null;
@@ -57,7 +53,7 @@ public class ListSpawnPoints extends AbstractAdminScript {
 				value = args.get(idx);
 			}
 			if (value == null) {
-				admin.sendPrivateText(NotificationType.ERROR, "Missing value for parameter: " + key);
+				admin.sendPrivateText(NotificationType.ERROR, "Brak wartości parametru: " + key);
 				return;
 			}
 
@@ -75,7 +71,7 @@ public class ListSpawnPoints extends AbstractAdminScript {
 			zone = SingletonRepository.getRPWorld().getZone(zonename);
 		}
 		if (zone == null) {
-			admin.sendPrivateText(NotificationType.ERROR, "Unknown zone" + (zonename == null ? "." : ": " + zonename));
+			admin.sendPrivateText(NotificationType.ERROR, "Nieznana strefa" + (zonename == null ? "." : ": " + zonename));
 			return;
 		}
 		zonename = zone.getName();
@@ -93,13 +89,13 @@ public class ListSpawnPoints extends AbstractAdminScript {
 		}
 		if (count == 0) {
 			if (unknowntype) {
-				admin.sendPrivateText(NotificationType.ERROR, "Unknown spawn type: " + spawntype);
+				admin.sendPrivateText(NotificationType.ERROR, "Nieznany typ spawnu: " + spawntype);
 			} else {
-				admin.sendPrivateText("No" + (spawntype == null ? "" : " " + spawntype) + " spawn points found in " + zonename + ".");
+				admin.sendPrivateText("Nie" + (spawntype == null ? "" : " " + spawntype) + " znaleziono punktów odradzania w " + zonename + ".");
 			}
 			return;
 		}
-		spawns.add(0, count + (spawntype == null ? "" : " " + spawntype) + " spawn points found in " + zonename + ":");
+		spawns.add(0, count + (spawntype == null ? "" : " " + spawntype) + " znaleziono punktów odradzania w " + zonename + ":");
 		admin.sendPrivateText(String.join("\n", spawns));
 	}
 
@@ -111,7 +107,7 @@ public class ListSpawnPoints extends AbstractAdminScript {
 		}
 		Collections.sort(spawns);
 		if (spawns.size() > 0) {
-			spawns.add(0, "Creature spawn points:");
+			spawns.add(0, "Punkty odrodzenia stworzeń:");
 		}
 		return spawns;
 	}
@@ -124,7 +120,7 @@ public class ListSpawnPoints extends AbstractAdminScript {
 		}
 		Collections.sort(spawns);
 		if (spawns.size() > 0) {
-			spawns.add(0, "Grower spawn points:");
+			spawns.add(0, "Punkty odradzania roślin:");
 		}
 		return spawns;
 	}
@@ -136,11 +132,11 @@ public class ListSpawnPoints extends AbstractAdminScript {
 
 	@Override
 	protected List<String> getParamStrings() {
-		return Arrays.asList("[-zone <zone>] [-type <type>]", "-help");
+		return Arrays.asList("[-zone <strefa>] [-type <typ>]", "-help");
 	}
 
 	@Override
 	protected List<String> getParamDetails() {
-		return Arrays.asList("zone: Zone name.", "type: One of \"creature\" or \"grower\".");
+		return Arrays.asList("strefa: Nazwa mapy.", "typ: Jeden z \"creature\" lub \"grower\".");
 	}
 }

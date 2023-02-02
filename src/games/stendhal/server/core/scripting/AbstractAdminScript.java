@@ -16,9 +16,7 @@ import java.util.List;
 import games.stendhal.common.NotificationType;
 import games.stendhal.server.entity.player.Player;
 
-
 public abstract class AbstractAdminScript extends ScriptImpl {
-
 	/**
 	 * Instructions to execute after parameter count sanity is checked.
 	 *
@@ -34,18 +32,18 @@ public abstract class AbstractAdminScript extends ScriptImpl {
 		final int minparams = getMinParams();
 		final int maxparams = getMaxParams();
 		if (maxparams > -1 && maxparams < minparams) {
-			admin.sendPrivateText(NotificationType.ERROR, "Maximum parameters ("
-					+ maxparams + ") is less than minimum parameters ("
+			admin.sendPrivateText(NotificationType.ERROR, "Parametry maksymalne ("
+					+ maxparams + ") są mniejsze niż parametry minimalne ("
 					+ minparams + ").");
 			return;
 		}
 		final int argc = args.size();
 		if (argc < minparams) {
-			admin.sendPrivateText(NotificationType.ERROR, "Missing parameter.");
+			admin.sendPrivateText(NotificationType.ERROR, "Brakujący parametr.");
 			showUsage(admin);
 			return;
 		} else if (maxparams > -1 && argc > maxparams) {
-			admin.sendPrivateText(NotificationType.ERROR, "Too many parameters.");
+			admin.sendPrivateText(NotificationType.ERROR, "Zbyt wiele parametrów.");
 			showUsage(admin);
 			return;
 		}
@@ -81,7 +79,7 @@ public abstract class AbstractAdminScript extends ScriptImpl {
 	 */
 	public String getUsage() {
 		final String cmd = "/script " + getClass().getSimpleName() + ".class";
-		String usage = "Usage:";
+		String usage = "Użycie:";
 		final List<String> params = getParamStrings();
 		int pcount = 0;
 		if (params != null) {
@@ -101,7 +99,7 @@ public abstract class AbstractAdminScript extends ScriptImpl {
 		}
 		List<String> details = getParamDetails();
 		if (details != null && details.size() > 0) {
-			usage += "\nParameters:";
+			usage += "\nParametry:";
 			for (final String detail: details) {
 				usage += "\n  " + detail;
 			}
