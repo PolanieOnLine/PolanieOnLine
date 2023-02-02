@@ -161,7 +161,6 @@ public final class ItemsXMLLoader extends DefaultHandler {
 			clazz = attrs.getValue("class");
 			subclass = attrs.getValue("subclass");
 		} else if (qName.equals("implementation")) {
-
 			final String className = attrs.getValue("class-name");
 
 			try {
@@ -180,9 +179,14 @@ public final class ItemsXMLLoader extends DefaultHandler {
 		} else if (attributesTag) {
 			if (qName.equals("damagetype")) {
 				damageType = attrs.getValue("value");
-			} else if (qName.equals("status_resist")) {
+			} else if (qName.equals("statusresist") || qName.equals("status_resist")) {
+				if (qName.equals("status_resist")) {
+					LOGGER.warn("\"item->attributes->status_resist\" is deprecated, use \"item->attributes->statusresist\"");
+				}
 				this.resistances.put(attrs.getValue("type"), Double.valueOf(attrs.getValue("value")));
 				this.activeSlots = attrs.getValue("slots");
+			} else if (qName.equals("statusattack")) {
+				statusAttacks = attrs.getValue("value");
 			} else if (qName.equals("durability")) {
 				attributes.put(qName, attrs.getValue("value"));
 				attributes.put("uses", "0");
@@ -192,8 +196,9 @@ public final class ItemsXMLLoader extends DefaultHandler {
 			} else {
 				attributes.put(qName, attrs.getValue("value"));
 			}
-		} else if (qName.equals("statusattack")) {
-			statusAttacks = attrs.getValue("value");
+		} else if (qName.equals("damage")) {
+			LOGGER.warn("\"item->damage\" is deprecated, use \"item->attributes->damagetype\"");
+			damageType = attrs.getValue("type");
 		} else if (qName.equals("susceptibility")) {
 			susceptibilities.put(attrs.getValue("type"), Double.valueOf(attrs.getValue("value")));
 		} else if (qName.equals("behavior")) {
