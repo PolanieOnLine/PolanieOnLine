@@ -34,8 +34,10 @@ Changelog
 
 *kod*
 - Dodano nowy skrypt CommerceExchange.class dla administratorów
+- Dodano nowy skrypt ListSpawnPoints.class dla administratorów
+- Zmieniono nazwę skryptu z <ExecuteCreatureSpawn> na <CreatureSpawn>
 - Bronie bliskiego starcia mogą mięć większy zasięg ataku
-- NPC co produkują różne przedmioty od teraz można konfigurować w pliku XML
+- NPC produkujące różne przedmioty od teraz można konfigurować w pliku XML
 
 
 1.35
