@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -82,7 +82,7 @@ public final class ShopList {
 	/**
 	 * Gets the items offered by a shop with their prices.
 	 *
-	  * @param seller
+	 * @param seller
 	 *     Seller or buyer shop.
 	 * @param name
 	 *     Shop name.
@@ -258,7 +258,7 @@ public final class ShopList {
 	 * @param offer
 	 *     If <code>true</code>, adds reply to "offer".
 	 */
-	public void configureNPC(SpeakerNPC npc, final String shopname,
+	public void configureNPC(final SpeakerNPC npc, final String shopname,
 			final boolean seller, final boolean offer) {
 		String stype = "sell";
 		if (!seller) {
