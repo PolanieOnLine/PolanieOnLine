@@ -69,20 +69,20 @@ public abstract class TimedStackableItem extends StackableItem {
 
 			RPObject base = getBaseContainer();
 
-		if (user.nextTo((Entity) base)) {
+			if (user.nextTo((Entity) base)) {
 				if (useItem(userplayer)) {
-				/* set the timer for the duration */
-				final TurnNotifier notifier = SingletonRepository.getTurnNotifier();
-				notifier.notifyInTurns(getAmount(), this);
+					/* set the timer for the duration */
+					final TurnNotifier notifier = SingletonRepository.getTurnNotifier();
+					notifier.notifyInTurns(getAmount(), this);
 					player = new WeakReference<Player>(userplayer);
-				this.removeOne();
-				user.notifyWorldAboutChanges();
+					this.removeOne();
+					user.notifyWorldAboutChanges();
+				}
+				result = true;
+			} else {
+				user.sendPrivateText(getTitle() + " jest zbyt daleko");
+				logger.debug(getTitle() + " is too far away");
 			}
-			result = true;
-		} else {
-			user.sendPrivateText(getTitle() + " jest zbyt daleko");
-			logger.debug(getTitle() + " is too far away");
-		}
 		} else {
 			logger.error("user is no instance of Player but: " + user, new Throwable());
 		}
