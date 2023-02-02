@@ -1,6 +1,6 @@
 /* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2022 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -39,7 +39,7 @@ public class SemosMonsterQuestAchievementFactory extends AbstractAchievementFact
 
 	@Override
 	public Collection<Achievement> createAchievements() {
-		List<Achievement> questAchievements = new LinkedList<Achievement>();
+		final LinkedList<Achievement> achievements = new LinkedList<Achievement>();
 
 		questAchievements.add(createAchievement(
 				ID_PROTECTOR, "Ochroniaż Semos", "Ukończył codzienne zadanie na potwory 10 razy",

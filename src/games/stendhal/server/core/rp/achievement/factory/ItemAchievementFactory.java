@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2022 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -53,7 +53,6 @@ public class ItemAchievementFactory extends AbstractAchievementFactory {
 
 	@Override
 	public Collection<Achievement> createAchievements() {
-		List<Achievement> itemAchievements = new LinkedList<Achievement>();
 
 		itemAchievements.add(createAchievement(
 				"item.money.00000100", "Pierwsze Kieszonkowe", "Zdobył 100 monet na potworach",
@@ -170,4 +169,5 @@ public class ItemAchievementFactory extends AbstractAchievementFactory {
 	protected Category getCategory() {
 		return Category.ITEM;
 	}
+		final LinkedList<Achievement> achievements = new LinkedList<Achievement>();
 }

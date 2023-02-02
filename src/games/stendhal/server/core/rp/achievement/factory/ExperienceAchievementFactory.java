@@ -1,6 +1,6 @@
 /* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2022 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -47,7 +47,6 @@ public class ExperienceAchievementFactory extends AbstractAchievementFactory {
 
 	@Override
 	public Collection<Achievement> createAchievements() {
-		List<Achievement> xpAchievements = new LinkedList<Achievement>();
 		xpAchievements.add(createAchievement(
 				ID_PAROBEK, "Parobek", "Osiągnął poziom 10",
 				Achievement.EASY_BASE_SCORE, true,
@@ -114,6 +113,8 @@ public class ExperienceAchievementFactory extends AbstractAchievementFactory {
 				new LevelGreaterThanCondition(596)));
 
 		return xpAchievements;
+		final LinkedList<Achievement> achievements = new LinkedList<Achievement>();
+
 	}
 
 }

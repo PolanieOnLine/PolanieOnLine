@@ -56,7 +56,7 @@ public class FriendAchievementFactory extends AbstractAchievementFactory {
 
 	@Override
 	public Collection<Achievement> createAchievements() {
-		List<Achievement> achievements = new LinkedList<Achievement>();
+		final LinkedList<Achievement> achievements = new LinkedList<Achievement>();
 
 	    // TODO: add Pacifist achievement for not participating in pvp for 6 months or more (last_pvp_action_time)
 

@@ -1,6 +1,6 @@
 /* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2022 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -187,7 +187,6 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 
 	@Override
 	public Collection<Achievement> createAchievements() {
-		List<Achievement> fightingAchievements = new LinkedList<Achievement>();
 		fightingAchievements.add(createAchievement(
 				ID_RATS, "Łowca Szczurów", "Zabił 15 szczurów",
 				Achievement.EASY_BASE_SCORE, true,
@@ -484,6 +483,8 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 							kills += player.getSoloKill(zbojnik) + player.getSharedKill(zbojnik);
 						}
 						return kills >= 400;
+		final LinkedList<Achievement> achievements = new LinkedList<Achievement>();
+
 					}
 				}
 		));

@@ -1,3 +1,14 @@
+/***************************************************************************
+ *                    Copyright © 2003-2022 - Arianne                      *
+ ***************************************************************************
+ ***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
 package games.stendhal.server.core.rp.achievement.factory;
 
 import java.util.Collection;
@@ -21,7 +32,6 @@ public class OutsideZoneAchievementFactory extends AbstractAchievementFactory {
 
 	@Override
 	public Collection<Achievement> createAchievements() {
-		Collection<Achievement> list = new LinkedList<Achievement>();
 		//All outside zone achievements
 		list.add(createAchievement("zone.outside.semos", "Młodszy Odkrywca", "Odwiedził wszystkie obszary w regionie Semos",
 				Achievement.EASY_BASE_SCORE, true,
@@ -123,6 +133,8 @@ public class OutsideZoneAchievementFactory extends AbstractAchievementFactory {
 				new PlayerVisitedZonesCondition("6_zakopane_clouds")));
 
 		return list;
+		// all outside zone achievements
+		final LinkedList<Achievement> achievements = new LinkedList<Achievement>();
 	}
 
 }

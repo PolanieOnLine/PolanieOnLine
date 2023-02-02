@@ -1,3 +1,14 @@
+/***************************************************************************
+ *                   (C) Copyright 2003-2022 - Stendhal                    *
+ ***************************************************************************
+ ***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
 package games.stendhal.server.core.rp.achievement.factory;
 
 import java.util.Collection;
@@ -28,7 +39,7 @@ public class AdosItemQuestAchievementsFactory extends AbstractAchievementFactory
 
 	@Override
 	public Collection<Achievement> createAchievements() {
-		List<Achievement> achievements = new LinkedList<Achievement>();
+		final LinkedList<Achievement> achievements = new LinkedList<Achievement>();
 
 		achievements.add(createAchievement(
 				ID_SUPPORTER, "Pomocnik Ados", "Ukończył codzienne zadanie na przedmiot 10 razy",

@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2018 - Stendhal                    *
+ *                   (C) Copyright 2003-2022 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -30,7 +30,7 @@ public class MithrilbourghEnemyArmyAchievementFactory extends AbstractAchievemen
 
 	@Override
 	public Collection<Achievement> createAchievements() {
-		LinkedList<Achievement> achievements = new LinkedList<Achievement>();
+		final LinkedList<Achievement> achievements = new LinkedList<Achievement>();
 
 		// Index where number of completions is stored
 		final int IDX = 3;

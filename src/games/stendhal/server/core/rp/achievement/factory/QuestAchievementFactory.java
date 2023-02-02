@@ -37,7 +37,7 @@ public class QuestAchievementFactory extends AbstractAchievementFactory {
 
 	@Override
 	public Collection<Achievement> createAchievements() {
-		List<Achievement> achievements = new LinkedList<Achievement>();
+		final LinkedList<Achievement> achievements = new LinkedList<Achievement>();
 
 		// Elf Princess quest achievement
 		achievements.add(createAchievement(
