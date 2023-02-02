@@ -1,3 +1,14 @@
+/***************************************************************************
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
+ ***************************************************************************
+ ***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
 package games.stendhal.server.core.scripting;
 
 import java.io.File;
@@ -34,7 +45,6 @@ import games.stendhal.server.core.engine.GameEvent;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.extension.StendhalServerExtension;
 import marauroa.common.game.RPAction;
-
 
 /**
  * ServerExtension to load Groovy, Lua, and Java scripts.
@@ -249,7 +259,7 @@ public class ScriptRunner extends StendhalServerExtension implements
 	 */
 	private boolean listScripts(final Player player, List<String> filterTerm) {
 
-		StringBuilder stringBuilder = new StringBuilder("lista dostępnych skryptów:\n");
+		StringBuilder stringBuilder = new StringBuilder("Dostępne skrypty");
 		List<String> allScripts = new LinkedList<String>();
 
 		// *.groovy scripts in data/script/
@@ -322,29 +332,38 @@ public class ScriptRunner extends StendhalServerExtension implements
 		allScripts.addAll(scriptsLua);
 		allScripts.addAll(scriptsJava);
 
-		stringBuilder.append("rezultat dla /script ");
 		if (!filterTerm.isEmpty()) {
+			stringBuilder.append(" (rezultat dla ");
 			for (int i = 0; i < filterTerm.size(); i++) {
 				stringBuilder.append(" " + filterTerm.get(i));
 			}
-			stringBuilder.append(":\n");
+			stringBuilder.append(")");
 		}
+		stringBuilder.append(":");
+
+		final List<String> scriptExcludes = Arrays.asList(
+			"package-info.class", "AbstractOfflineAction.class");
 
 		for (int i = 0; i < allScripts.size(); i++) {
+			final String scriptName = allScripts.get(i);
+			if (scriptExcludes.contains(scriptName)) {
+				continue;
+			}
+
 			// if arguments given, will look for matches.
 			if (!filterTerm.isEmpty()) {
 				int j = 0;
 				for (j = 0; j < filterTerm.size(); j++) {
 					if (allScripts.get(i).matches(searchTermToRegex(filterTerm.get(j)))) {
-						stringBuilder.append(allScripts.get(i) + "\n");
+						stringBuilder.append("\n- " + scriptName);
 					}
 				}
 			} else {
-				stringBuilder.append(allScripts.get(i) + "\n");
+				stringBuilder.append("\n- " + scriptName);
 			}
 		}
 
-		stringBuilder.append("(koniec listy).");
+		stringBuilder.append("\n(koniec listy).");
 		player.sendPrivateText(stringBuilder.toString());
 		return true;
 	}
@@ -499,7 +518,7 @@ public class ScriptRunner extends StendhalServerExtension implements
 	 */
 	private void initLua() {
 		ScriptInLua.get().init();
-		initLuaMods();
+		//initLuaMods();
 	}
 
 	/**
