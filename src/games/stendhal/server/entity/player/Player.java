@@ -1515,7 +1515,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * overwrite solo kills of 'name'.
 	 *
 	 * @param name
-	 *     Name of the victim.
+	 *     Name of victim.
 	 */
 	public void setSharedKill(final String name) {
 		killRec.setSharedKill(name);
@@ -1543,7 +1543,7 @@ public class Player extends DressedEntity implements UseListener {
 		setSoloKillCount(name, getSoloKill(name) + 1);
 	}
 
- 	/**
+	/**
 	 * Changes shared kills count to specified value.
 	 *
 	 * @param name
