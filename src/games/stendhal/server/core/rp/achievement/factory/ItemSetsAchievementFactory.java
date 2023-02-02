@@ -13,7 +13,6 @@ package games.stendhal.server.core.rp.achievement.factory;
 
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.List;
 
 import games.stendhal.server.core.rp.achievement.Achievement;
 import games.stendhal.server.core.rp.achievement.Category;
@@ -151,119 +150,119 @@ public class ItemSetsAchievementFactory extends AbstractAchievementFactory {
 
 	@Override
 	public Collection<Achievement> createAchievements() {
-		List<Achievement> itemSetAchievements = new LinkedList<Achievement>();
+		final LinkedList<Achievement> achievements = new LinkedList<Achievement>();
 
-		itemSetAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_RED, "Niebezpieczna Amazonia", "Zdobył cały karmazynowy zestaw",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, RED)));
 
-		itemSetAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_BLUE, "Czuję Błękit", "Zdobył cały lazurowy zestaw",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, BLUE)));
 
-		itemSetAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_ELVISH, "Zmora Nalwor", "Zdobył cały elficki zestaw",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, ELVISH)));
 
-		itemSetAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_SHADOW, "Mieszkaniec Cienia", "Zdobył cały zestaw cieni",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, SHADOW)));
 
-		itemSetAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_CHAOS, "Zdobywca Chaosu", "Zdobył cały zestaw chaosów",
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, CHAOS)));
 
-		itemSetAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_GOLDEN, "Złote Dziecko", "Zdobył cały złoty zestaw",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, GOLDEN)));
 
-		itemSetAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_BLACK, "Przejdź na Ciemną Stronę", "Zdobył cały czarny zestaw",
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, BLACK)));
 
-		itemSetAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_MITHRIL, "Przejdź na Jasną Stronę", "Zdobył cały zestaw z mithrilu",
 				Achievement.LEGENDARY_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, MITHRIL)));
 
-		itemSetAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_MAINIO, "Wspaniałe Rzeczy", "Zdobył cały mainiocyjski zestaw",
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, MAINIO)));
 
-		itemSetAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_XENO, "Trochę Xenofobiczny?", "Zdobył cały xenocyjski zestaw",
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, XENO)));
 
-		itemSetAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_GORALSKIE, "Góralskie Dziecko", "Zdobył cały góralski zestaw",
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, GORALSKIE)));
 
-		itemSetAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_VAMPIRE, "Wampir", "Zdobył cały wampirzy zestaw",
 				Achievement.LEGENDARY_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, VAMPIRE)));
 
-		itemSetAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_ROYAL, "Królewsko Obdarowany", "Zdobył cały monarchistyczny zestaw",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, ROYAL)));
 
-		itemSetAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_MAGIC, "Magiczne Zaopatrzenie", "Zdobył cały magiczny zestaw",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, MAGIC)));
 
-		itemSetAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_STONE, "Człowiek Skała", "Zdobył cały kamienny zestaw",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, STONE)));
 
-		itemSetAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_FIRE, "Zapałka", "Zdobył cały ognisty zestaw",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, FIRE)));
 
-		itemSetAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_ICE, "Skrawek Lodu", "Zdobył cały lodowy zestaw",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, ICE)));
 
-		itemSetAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_BARB, "Mały Barbarzyńca", "Zdobył cały barbarzyński zestaw",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, BARB)));
 
-		itemSetAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_DRAGON_CLOAKS, "Pogromca Smoka", "Zdobył wszyskie smocze płaszcze",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, DRAGON_CLOAKS)));
 
-		itemSetAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_WANDS, "Magiczny Zaklinacz", "Zdobył wszystkie różdżki",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, WANDS)));
 
-		itemSetAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_BOWS, "Napięta Cięciwa", "Zdobył wszystkie łuki",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, BOWS)));
 
-		itemSetAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_CROSSBOW, "Kuszownik", "Zdobył wszystkie kusze",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, CROSSBOW)));
 
-		return itemSetAchievements;
+		return achievements;
 	}
 
 	@Override

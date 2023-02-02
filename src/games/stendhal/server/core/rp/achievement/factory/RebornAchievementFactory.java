@@ -2,7 +2,6 @@ package games.stendhal.server.core.rp.achievement.factory;
 
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.List;
 
 import games.stendhal.server.core.rp.achievement.Achievement;
 import games.stendhal.server.core.rp.achievement.Category;
@@ -30,7 +29,7 @@ public class RebornAchievementFactory extends AbstractAchievementFactory {
 
 	@Override
 	public Collection<Achievement> createAchievements() {
-		List<Achievement> achievements = new LinkedList<Achievement>();
+		final LinkedList<Achievement> achievements = new LinkedList<Achievement>();
 		achievements.add(createAchievement(
 				ID_NEWBORN, "Nowa Przygoda", "Rozpoczął przygodę od nowa",
 				EASY_SCORE, true,

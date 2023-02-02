@@ -1,12 +1,11 @@
 package games.stendhal.server.core.rp.achievement.factory;
 
+import java.util.Collection;
+import java.util.LinkedList;
+
 import games.stendhal.server.core.rp.achievement.Achievement;
 import games.stendhal.server.core.rp.achievement.Category;
 import games.stendhal.server.entity.npc.condition.QuestStateGreaterThanCondition;
-
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * factory for item ZAKOPANE related achievements.
@@ -29,7 +28,8 @@ public class ZakopaneItemQuestAchievementsFactory extends AbstractAchievementFac
 
 	@Override
 	public Collection<Achievement> createAchievements() {
-		List<Achievement> achievements = new LinkedList<Achievement>();
+		final LinkedList<Achievement> achievements = new LinkedList<Achievement>();
+
 		achievements.add(createAchievement(
 				ID_YOUNG_HIGHLANDER, "Młody Góral", "Ukończył codzienne zadanie na przedmiot 10 razy",
 				Achievement.EASY_BASE_SCORE, true,

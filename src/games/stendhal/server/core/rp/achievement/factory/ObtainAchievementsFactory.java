@@ -13,7 +13,6 @@ package games.stendhal.server.core.rp.achievement.factory;
 
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.List;
 
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.rp.achievement.Achievement;

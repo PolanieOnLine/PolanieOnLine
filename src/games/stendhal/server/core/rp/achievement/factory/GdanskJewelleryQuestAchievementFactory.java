@@ -28,7 +28,8 @@ public class GdanskJewelleryQuestAchievementFactory extends AbstractAchievementF
 
 	@Override
 	public Collection<Achievement> createAchievements() {
-		LinkedList<Achievement> achievements = new LinkedList<Achievement>();
+		final LinkedList<Achievement> achievements = new LinkedList<Achievement>();
+
 		achievements.add(createAchievement(
 				ID_YOUNG_TRAVELER, "Młody Podróżnik", "Ukończył co dwudniowe zadanie na przedmiot 5 razy",
 				Achievement.EASY_BASE_SCORE, true,

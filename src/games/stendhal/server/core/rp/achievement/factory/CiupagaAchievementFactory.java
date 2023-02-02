@@ -13,7 +13,6 @@ package games.stendhal.server.core.rp.achievement.factory;
 
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.List;
 
 import games.stendhal.server.core.rp.achievement.Achievement;
 import games.stendhal.server.core.rp.achievement.Category;
@@ -33,7 +32,7 @@ public class CiupagaAchievementFactory extends AbstractAchievementFactory {
 
 	@Override
 	public Collection<Achievement> createAchievements() {
-		final List<Achievement> achievements = new LinkedList<Achievement>();
+		final LinkedList<Achievement> achievements = new LinkedList<Achievement>();
 
 		achievements.add(createAchievement(ID_ZLOTA_CIUPAGA,
 				"Złota Ciupaga", "Wykonał złotą ciupagę u Kowala Andrzeja",

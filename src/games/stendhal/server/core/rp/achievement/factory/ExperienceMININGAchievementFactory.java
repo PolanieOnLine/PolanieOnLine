@@ -13,7 +13,6 @@ package games.stendhal.server.core.rp.achievement.factory;
 
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.List;
 
 import games.stendhal.server.core.rp.achievement.Achievement;
 import games.stendhal.server.core.rp.achievement.Category;
@@ -22,7 +21,7 @@ import games.stendhal.server.entity.npc.condition.StatLevelComparisonCondition;
 public class ExperienceMININGAchievementFactory extends AbstractAchievementFactory {
 	@Override
 	public Collection<Achievement> createAchievements() {
-		final List<Achievement> achievements = new LinkedList<>();
+		final LinkedList<Achievement> achievements = new LinkedList<>();
 
 		String level = "20";
 		achievements.add(createAchievement(

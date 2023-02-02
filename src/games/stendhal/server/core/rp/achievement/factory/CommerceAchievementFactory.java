@@ -15,7 +15,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -160,6 +159,7 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 
 	@Override
 	public Collection<Achievement> createAchievements() {
+		final LinkedList<Achievement> achievements = new LinkedList<Achievement>();
 
 		achievements.add(createAchievement(
 				ID_HAPPY_HOUR, "Gdzieś jest Szczęśliwa Godzina", "Zakupił po 100 butelek soku z chmielu oraz kieliszków napoju z winogron",
@@ -179,7 +179,6 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 						return items >= 1;
 					}
 				}));
-		final LinkedList<Achievement> achievements = new LinkedList<Achievement>();
 
 		achievements.add(createAchievement(
 				ID_HEALTH_IMPORTANT, "Zdrowie Najważniejsze", "Zakupił łącznie 500 różnych eliksirów",

@@ -14,7 +14,6 @@ package games.stendhal.server.core.rp.achievement.factory;
 
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.List;
 
 import games.stendhal.server.core.rp.achievement.Achievement;
 import games.stendhal.server.core.rp.achievement.Category;
@@ -47,74 +46,73 @@ public class ExperienceAchievementFactory extends AbstractAchievementFactory {
 
 	@Override
 	public Collection<Achievement> createAchievements() {
-		xpAchievements.add(createAchievement(
+		final LinkedList<Achievement> achievements = new LinkedList<Achievement>();
+
+		achievements.add(createAchievement(
 				ID_PAROBEK, "Parobek", "Osiągnął poziom 10",
 				Achievement.EASY_BASE_SCORE, true,
 				new LevelGreaterThanCondition(9)));
 
-		xpAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_CHLOP, "Chłop", "Osiągnął poziom 50",
 				Achievement.EASY_BASE_SCORE, true,
 				new LevelGreaterThanCondition(49)));
 
-		xpAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_KMIEC, "Kmieć", "Osiągnął poziom 100",
 				Achievement.EASY_BASE_SCORE, true,
 				new LevelGreaterThanCondition(99)));
 
-		xpAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_MIESZCZANIN, "Mieszczanin", "Osiągnął poziom 150",
 				Achievement.EASY_BASE_SCORE, true,
 				new LevelGreaterThanCondition(149)));
 
-		xpAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_SZLACHCIC, "Szlachcic", "Osiągnął poziom 200",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new LevelGreaterThanCondition(199)));
 
-		xpAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_RYCERZ, "Rycerz", "Osiągnął poziom 250",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new LevelGreaterThanCondition(249)));
 
-		xpAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_BARONET, "Baronet", "Osiągnął poziom 300",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new LevelGreaterThanCondition(299)));
 
-		xpAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_BARON, "Baron", "Osiągnął poziom 350",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new LevelGreaterThanCondition(349)));
 
-		xpAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_WICEHRABIA, "Wicehrabia", "Osiągnął poziom 400",
 				Achievement.HARD_BASE_SCORE, true,
 				new LevelGreaterThanCondition(399)));
 
-		xpAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_HRABIA, "Hrabia", "Osiągnął poziom 450",
 				Achievement.HARD_BASE_SCORE, true,
 				new LevelGreaterThanCondition(449)));
 
-		xpAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_MAGNAT, "Magnat", "Osiągnął poziom 500",
 				Achievement.HARD_BASE_SCORE, true,
 				new LevelGreaterThanCondition(499)));
 
-		xpAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_KSIAZE, "Książe", "Osiągnął poziom 550",
 				Achievement.HARD_BASE_SCORE, true,
 				new LevelGreaterThanCondition(549)));
 
-		xpAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_KROL, "Król", "Osiągnął poziom 597",
 				Achievement.LEGENDARY_BASE_SCORE, true,
 				new LevelGreaterThanCondition(596)));
 
-		return xpAchievements;
-		final LinkedList<Achievement> achievements = new LinkedList<Achievement>();
-
+		return achievements;
 	}
-
 }

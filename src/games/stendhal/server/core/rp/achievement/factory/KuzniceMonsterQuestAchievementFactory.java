@@ -13,7 +13,6 @@ package games.stendhal.server.core.rp.achievement.factory;
 
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.List;
 
 import games.stendhal.server.core.rp.achievement.Achievement;
 import games.stendhal.server.core.rp.achievement.Category;
@@ -33,27 +32,28 @@ public class KuzniceMonsterQuestAchievementFactory extends AbstractAchievementFa
 
 	@Override
 	public Collection<Achievement> createAchievements() {
-		List<Achievement> questAchievements = new LinkedList<Achievement>();
-		questAchievements.add(createAchievement(
+		final LinkedList<Achievement> achievements = new LinkedList<Achievement>();
+
+		achievements.add(createAchievement(
 				ID_HELPING_HAND, "Pomocna Dłoń", "Ukończył co dwudniowe zadanie na potwory 10 razy",
 				Achievement.EASY_BASE_SCORE, true,
 				new QuestStateGreaterThanCondition("daily_kuznice_kill_monster", 2, 9)));
 
-		questAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_DISTRICT_GUARD, "Ochroniarz Dzielnicy", "Ukończył co dwudniowe zadanie na potwory 25 razy",
 				Achievement.EASY_BASE_SCORE, true,
 				new QuestStateGreaterThanCondition("daily_kuznice_kill_monster", 2, 24)));
 
-		questAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_KUZNICE_GUARD, "Strażnik Kuźnic", "Ukończył co dwudniowe zadanie na potwory 50 razy",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new QuestStateGreaterThanCondition("daily_kuznice_kill_monster", 2, 49)));
 
-		questAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_RIGHT_HAND, "Prawa Ręka Sołtysa", "Ukończył co dwudniowe zadanie na potwory 100 razy",
 				Achievement.HARD_BASE_SCORE, true,
 				new QuestStateGreaterThanCondition("daily_kuznice_kill_monster", 2, 99)));
 
-		return questAchievements;
+		return achievements;
 	}
 }

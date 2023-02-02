@@ -13,7 +13,6 @@ package games.stendhal.server.core.rp.achievement.factory;
 
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.List;
 
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.rp.achievement.Achievement;
@@ -37,8 +36,9 @@ public class PetsWeightAchievementFactory extends AbstractAchievementFactory {
 
 	@Override
 	public Collection<Achievement> createAchievements() {
-		List<Achievement> weightAchievements = new LinkedList<Achievement>();
-		weightAchievements.add(createAchievement("weight.sheep.100", "Wypasiona Owca", "Wypasił owcę do 100 wagi",
+		final LinkedList<Achievement> achievements = new LinkedList<Achievement>();
+
+		achievements.add(createAchievement("weight.sheep.100", "Wypasiona Owca", "Wypasił owcę do 100 wagi",
 				Achievement.EASY_BASE_SCORE, true, 
 					new ChatCondition() {
 						@Override
@@ -51,7 +51,7 @@ public class PetsWeightAchievementFactory extends AbstractAchievementFactory {
 							return weight <= 0;
 						}
 					}));
-		weightAchievements.add(createAchievement("weight.goat.100", "Wypasiona Koza", "Wypasił kozę do 100 wagi",
+		achievements.add(createAchievement("weight.goat.100", "Wypasiona Koza", "Wypasił kozę do 100 wagi",
 				Achievement.EASY_BASE_SCORE, true,
 					new ChatCondition() {
 						@Override
@@ -64,7 +64,7 @@ public class PetsWeightAchievementFactory extends AbstractAchievementFactory {
 							return weight <= 0;
 						}
 					}));
-		weightAchievements.add(createAchievement("weight.pet.100", "Duże Zwierzątko", "Zwierzątko urosło do 100 wagi",
+		achievements.add(createAchievement("weight.pet.100", "Duże Zwierzątko", "Zwierzątko urosło do 100 wagi",
 				Achievement.EASY_BASE_SCORE, true,
 					new ChatCondition() {
 						@Override
@@ -77,6 +77,6 @@ public class PetsWeightAchievementFactory extends AbstractAchievementFactory {
 						}
 					}));
 
-		return weightAchievements;
+		return achievements;
 	}
 }

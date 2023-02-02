@@ -118,13 +118,13 @@ public class AreaEntity extends Entity {
 	 * @return The description name.
 	 */
 	@Override
-	public String getDescriptionName(final boolean definite) {
+	public String getDescriptionName() {
 		final String name = getName();
 
 		if (name != null) {
 			return name;
 		} else {
-			return super.getDescriptionName(definite);
+			return super.getDescriptionName();
 		}
 	}
 

@@ -14,7 +14,6 @@ package games.stendhal.server.core.rp.achievement.factory;
 
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.List;
 
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.constants.KillType;
@@ -187,57 +186,59 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 
 	@Override
 	public Collection<Achievement> createAchievements() {
-		fightingAchievements.add(createAchievement(
+		final LinkedList<Achievement> achievements = new LinkedList<Achievement>();
+
+		achievements.add(createAchievement(
 				ID_RATS, "Łowca Szczurów", "Zabił 15 szczurów",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition("szczur", 15)));
 
-		fightingAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_EXTERMINATOR, "Eksterminator", "Zabił po 10 szczurów z każdego rodzaju",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition(10, ENEMIES_EXTERMINATOR)));
 
-		fightingAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_BUTTERFLY, "Łowca Motyli", "Zabił 10 motyli",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition("motylek", 10)));
 
-		fightingAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_FLY, "Odstraszacz Much", "Zabił 25 chmar much",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition("chmara much", 25)));
 
-		fightingAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_SNAKE, "Poskramiacz Węży", "Zabił 15 węży",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition("wąż", 15)));
 
-		fightingAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_DEER, "Łowca Jeleni", "Zabił 25 jeleni",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition("jeleń", 25)));
 
-		fightingAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_BOARS, "Łowca Dzików", "Zabił 20 dzików",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition("dzik", 20)));
 
-		fightingAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_TURTLE, "Łowca Żółwich Skorupek", "Zabił 20 żółwi",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition("żółwik", 20)));
 
-		fightingAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_BEARS, "Łowca Niedźwiedzi", "Zabił po 10 niedźwiedzi grizli, niedźwiedzi i misi",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition(10, ENEMIES_BEARS)));
 
-		fightingAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_FOXES, "Łowca Lisic", "Zabił 20 lisic",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition("lisica", 20)));
 
-		fightingAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_SAFARI, "Safari", "Zabił po 30 tygrysów, lwów i 50 słoni",
 				Achievement.EASY_BASE_SCORE, true,
 				new AndCondition(
@@ -245,27 +246,27 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 						new PlayerHasKilledNumberOfCreaturesCondition("lew", 30),
 						new PlayerHasKilledNumberOfCreaturesCondition("słoń", 50))));
 
-		fightingAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_ENTS, "Drwal", "Zabił po 10 drzewców, drzewcowych i uschłych drzewców",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition(10, "drzewiec", "drzewcowa", "uschły drzewiec")));
 
-		fightingAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_POACHER, "Kłusownik", "Zabił każdego rzadkiego potwora",
 				Achievement.HARD_BASE_SCORE, true,
 				new KilledRareCreatureCondition()));
 
-		fightingAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_LEGEND, "Legenda", "Zabił sam wszystkie potwory",
 				Achievement.LEGENDARY_BASE_SCORE, true,
 				new KilledSoloAllCreaturesCondition()));
 
-		fightingAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_TEAM_PLAYER, "Wojownik Drużyny", "Zabił z drużyną wszystkie potwory",
 				Achievement.LEGENDARY_BASE_SCORE, true,
 				new KilledSharedAllCreaturesCondition()));
 
-		fightingAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_DRAGONSLAYER, "Pogromca Smoków", "Zabił łącznie 1,000 różnych smoków",
 				Achievement.HARD_BASE_SCORE, true,
 				new ChatCondition() {
@@ -280,32 +281,32 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 				}
 		));
 
-		fightingAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_SERAFINS, "Serafiny mu Niestraszne", "Zabił po 10 serafinów i azazeli",
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition(10, ENEMIES_SERAFINS)));
 
-		fightingAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_DEATHS, "Władca Śmierci", "Zabił po 10 śmierci oraz kostuch każdego rodzaju w pojedynkę",
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition(10, KillType.SOLO, ENEMIES_DEATHS)));
 
-		fightingAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_GIANTS, "Dawid kontra Goliat", "Zabił po 20 olbrzymów każdego rodzaju w pojedynkę",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition(20, KillType.SOLO, ENEMIES_GIANTS)));
 
-		fightingAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_ANGELS, "Niebiański Gniew", "Zabił po 100 aniołów każdego rodzaju",
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition(100, ENEMIES_ANGELS)));
 
-		fightingAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_WEREWOLF, "Srebrny Pocisk", "Zabił 500 wilkołaków",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition("wilkołak", 500)));
 
-		fightingAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_MERMAIDS, "Serenada Syren", "Zabił 5,000 klejnotowych rodzai syren",
 				Achievement.HARD_BASE_SCORE, true,
 				new ChatCondition() {
@@ -322,12 +323,12 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 				}
 		));
 
-		fightingAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_DEEPSEA, "Głębinowy Rybak", "Zabił po 500 rekinów, krakenów oraz neo krakenów",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition(500, ENEMIES_DEEPSEA)));
 
-		fightingAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_ZOMBIES, "Apokalipsa Zombi", "Zabił łącznie 500 różnych zombi",
 				Achievement.EASY_BASE_SCORE, true,
 				new ChatCondition() {
@@ -342,22 +343,22 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 				}
 		));
 
-		fightingAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_FOWL, "Nuggetsy z Kurczaka", "Zabił po 100 każdego rodzaju ptactwa",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition(100, ENEMIES_FOWL)));
 
-		fightingAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_PACHYDERM, "Gruboskórny Zamęt", "Zabił po 100 słoni, słoni z kłami, dzikich słoni oraz mamutów włochatych",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition(100, ENEMIES_PACHYDERM)));
 
-		fightingAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_NECROMANCER, "Nekromanta", "Zabił po 50 gashadokuro, książę szkieletów oraz szkielet anioła",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition(50, ENEMIES_NECROMANCER)));
 
-		fightingAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_KNIGHTS, "Król Artur", "Zabił łącznie 2,500 różnych rycerzy",
 				Achievement.HARD_BASE_SCORE, true,
 				new ChatCondition() {
@@ -372,7 +373,7 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 				}
 		));
 
-		fightingAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_GNOMES, "Gnominadia", "Zabił łącznie 1,000 różnych gnomów",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new ChatCondition() {
@@ -387,7 +388,7 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 				}
 		));
 
-		fightingAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_GNOMES2, "Skośne Czapeczki", "Zabił łącznie 1,000 różnych skrzatów",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new ChatCondition() {
@@ -402,17 +403,17 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 				}
 		));
 
-		fightingAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_SPIDERS, "Pajęczaki", "Zabił po 25 różnych pająków, w tym arachne",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition(25, ENEMIES_SPIDERS)));
 
-		fightingAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_LIGHTORDARK, "Światłość czy Mrok", "Zabił cherubina i lilith",
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition(1, ENEMIES_LIGHTORDARK)));
 
-		fightingAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_PIRATES, "Nowa Załoga", "Zabił łącznie 1,000 piratów z wysp",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new ChatCondition() {
@@ -427,7 +428,7 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 				}
 		));
 
-		fightingAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_MOUNTAINELVES, "Spiczasty Gatunek", "Zabił łącznie 1,500 elfów górskich",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new ChatCondition() {
@@ -442,22 +443,22 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 				}
 		));
 
-		fightingAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_ELEMENTAL, "Opanowane Żywioły", "Zabił po 150 różnych żywiołów",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition(150, ENEMIES_ELEMENTAL)));
 
-		fightingAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_BALROG, "Czeluści Piekieł", "Zabił 100 balrogów",
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition(100, "balrog")));
 
-		fightingAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_MEFISTO, "Piekielne Pomioty", "Zabił po 100 belzebubów, mefisto oraz zapomnianych diabłów",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition(100, ENEMIES_MEFISTO)));
 
-		fightingAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_LAWINY, "Bezpieczna Trasa", "Zabił łącznie 1,000 różnych lawin",
 				Achievement.HARD_BASE_SCORE, true,
 				new ChatCondition() {
@@ -472,7 +473,7 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 				}
 		));
 
-		fightingAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_ZBOJNICYLESNI, "Leśni Bandyci", "Zabił łącznie 400 zbójników leśnych",
 				Achievement.EASY_BASE_SCORE, true,
 				new ChatCondition() {
@@ -483,13 +484,11 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 							kills += player.getSoloKill(zbojnik) + player.getSharedKill(zbojnik);
 						}
 						return kills >= 400;
-		final LinkedList<Achievement> achievements = new LinkedList<Achievement>();
-
 					}
 				}
 		));
 
-		fightingAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_ZBOJNICYGORSCY, "Gromadka Bandy", "Zabił łącznie 400 zbójników górskich",
 				Achievement.EASY_BASE_SCORE, true,
 				new ChatCondition() {
@@ -504,12 +503,12 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 				}
 		));
 
-		fightingAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_ALIENS, "Życie Poza Nami", "Zabił po 50 różnych szaraków",
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerHasKilledNumberOfCreaturesCondition(50, ENEMIES_SZARAKI)));
 
-		return fightingAchievements;
+		return achievements;
 	}
 
 	@Override

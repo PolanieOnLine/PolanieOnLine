@@ -14,7 +14,6 @@ package games.stendhal.server.core.rp.achievement.factory;
 
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.List;
 
 import games.stendhal.server.core.rp.achievement.Achievement;
 import games.stendhal.server.core.rp.achievement.Category;
@@ -41,31 +40,31 @@ public class SemosMonsterQuestAchievementFactory extends AbstractAchievementFact
 	public Collection<Achievement> createAchievements() {
 		final LinkedList<Achievement> achievements = new LinkedList<Achievement>();
 
-		questAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_PROTECTOR, "Ochroniaż Semos", "Ukończył codzienne zadanie na potwory 10 razy",
 				Achievement.EASY_BASE_SCORE, true,
 				new QuestStateGreaterThanCondition("daily", 2, 9)));
 
-		questAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_GUARDIAN, "Strażnik Semos", "Ukończył codzienne zadanie na potwory 50 razy",
 				Achievement.EASY_BASE_SCORE, true,
 				new QuestStateGreaterThanCondition("daily", 2, 49)));
 
-		questAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_HERO, "Bohater Semos", "Ukończył codzienne zadanie na potwory 100 razy",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new QuestStateGreaterThanCondition("daily", 2, 99)));
 
-		questAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_CHAMPION, "Mistrz Semos", "Ukończył codzienne zadanie na potwory 250 razy",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new QuestStateGreaterThanCondition("daily", 2, 249)));
 
-		questAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_VANQUISHER, "Zwycięzca Semos", "Ukończył codzienne zadanie na potwory 500 razy",
 				Achievement.HARD_BASE_SCORE, true,
 				new QuestStateGreaterThanCondition("daily", 2, 499)));
 
-		return questAchievements;
+		return achievements;
 	}
 }

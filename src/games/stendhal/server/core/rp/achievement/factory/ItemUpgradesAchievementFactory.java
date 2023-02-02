@@ -13,7 +13,6 @@ package games.stendhal.server.core.rp.achievement.factory;
 
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.List;
 
 import games.stendhal.server.core.rp.achievement.Achievement;
 import games.stendhal.server.core.rp.achievement.Category;
@@ -55,69 +54,69 @@ public class ItemUpgradesAchievementFactory extends AbstractAchievementFactory {
 
 	@Override
 	public Collection<Achievement> createAchievements() {
-		List<Achievement> itemAchievements = new LinkedList<Achievement>();
+		final LinkedList<Achievement> achievements = new LinkedList<Achievement>();
 
-		itemAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_SKETCH, "Zarys", "Ulepszył przedmioty co najmniej 10 razy",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerImprovesNumberOfItemCondition(10)));
 
-		itemAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_INVEST, "Inwestycja", "Ulepszył przedmioty co najmniej 50 razy",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerImprovesNumberOfItemCondition(50)));
 
-		itemAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_PERUN, "Wspaniała Różdżka", "Ulepszył różdżkę Peruna do jej maksymalnego poziomu",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerImprovesNumberOfItemCondition("różdżka Peruna")));
 
-		itemAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_DAGGERS, "Potężne i Szybkie", "Ulepszył sztylecik z mithrilu oraz złotą klinge do ich maksymalnego poziomu",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerImprovesNumberOfItemCondition("sztylecik z mithrilu", "złota klinga")));
 
-		itemAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_MITHRILRING, "Światłość", "Ulepszył pierścień z mithrilu do jej maksymalnego poziomu",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerImprovesNumberOfItemCondition("pierścień z mithrilu")));
 
-		itemAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_MITHRIL, "Doskonałe Uzbrojenie", "Ulepszył tarczę, spodnie, pas, hełm, buty oraz płaszcz z mithrilu do maksymalnego poziomu",
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerImprovesNumberOfItemCondition(ITEMS_MIHTIRL)));
 
-		itemAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_BLACK, "Opanowany przez Mrok", "Ulepszył czarną tarczę, spodnie, zbroję oraz buty do maksymalnego poziomu",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerImprovesNumberOfItemCondition(ITEMS_BLACKSET)));
 
-		itemAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_WANDS, "Zabawa w Czarodzieja", "Ulepszył wszystkie różdżki co najmniej raz",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerImprovesNumberOfItemCondition(1, ITEMS_WANDS)));
 
-		itemAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_MAGICSET, "Jeszcze Bardziej Magicznie", "Ulepszył cały magiczny zestaw wyposażenia co najmniej raz",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerImprovesNumberOfItemCondition(1, ITEMS_MAGICSET)));
 
-		itemAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_STONE, "Kamienna Broń", "Ulepszył kamienną tarczę na co najmniej drugi poziom",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerImprovesNumberOfItemCondition(2, "kamienna tarcza")));
 
-		itemAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_AXES, "Uzbrojenie Kosiarza", "Ulepszył czarną, złotą oraz z mithrilu kosę do maksymalnego poziomu",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerImprovesNumberOfItemCondition(ITEMS_AXES)));
 
-		itemAchievements.add(createAchievement(
+		achievements.add(createAchievement(
 				ID_GORAL, "Dusza Góralska", "Ulepszył złotą ciupagę z trzema wąsami do maksymalnego poziomu",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerImprovesNumberOfItemCondition("złota ciupaga z trzema wąsami")));
 
-		return itemAchievements;
+		return achievements;
 	}
 
 	@Override
