@@ -60,7 +60,7 @@ public class LuaQuestHelper {
 	 * Creates a new quest instance.
 	 *
 	 * @return
-	 * 		New LuaQuest instance.
+	 *     New LuaQuest instance.
 	 */
 	public LuaQuest create() {
 		return new LuaQuest();
@@ -82,13 +82,13 @@ public class LuaQuestHelper {
 	 * Creates a new quest instance.
 	 *
 	 * @param name
-	 * 		The quest name.
+	 *     The quest name.
 	 * @param slotName
-	 * 		The slot identifier.
+	 *     The slot identifier.
 	 * @param minLevel
-	 * 		Recommended minimum level.
+	 *     Recommended minimum level.
 	 * @return
-	 * 		New LuaQuest instance.
+	 *     New LuaQuest instance.
 	 */
 	public LuaQuest create(final String slotName, final String name) {
 		return new LuaQuest(slotName, name);
@@ -321,8 +321,8 @@ public class LuaQuestHelper {
 	/**
 	 * Class to aid with quest manipulation in Lua.
 	 */
-	@SuppressWarnings("unused")
-	private static class LuaQuest extends AbstractQuest {
+	public static class LuaQuest extends AbstractQuest {
+
 		private static LuaLogger logger = LuaLogger.get();
 
 		private String slotName = null;
@@ -331,6 +331,11 @@ public class LuaQuestHelper {
 		private String npcName = null;
 		private boolean visible = true;
 
+		/**
+		 * Function executed when
+		 * {@link StendhalQuestSystem.loadQuest}
+		 * is called.
+		 */
 		public LuaFunction init = null;
 		public LuaFunction remove = null;
 		public LuaFunction history = null;
@@ -348,6 +353,8 @@ public class LuaQuestHelper {
 
 		/**
 		 * Creates a new quest.
+		 *
+		 * @param slotName
 		 *     The slot identifier.
 		 */
 		private LuaQuest(final String slotName) {
@@ -398,7 +405,9 @@ public class LuaQuestHelper {
 		}
 
 		/**
-		 * This must be called in order for the quest to be added to game.
+		 * Registers quest to be added to world.
+		 *
+		 * {@link LuaQuest.init} must be set before this is called.
 		 *
 		 * (alternatively call questSystem:cacheQuest(LuaQuest))
 		 */
@@ -540,7 +549,7 @@ public class LuaQuestHelper {
 		@Override
 		public void addToWorld() {
 			if (init != null) {
-				init.invoke(); // or should this be add.call()?
+				init.invoke(); // or should this be init.call()?
 			} else {
 				logger.warn("LuaQuest.init not set. Quest will not work.");
 			}
