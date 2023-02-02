@@ -32,7 +32,7 @@ public class CaptureTheFlagFlag extends Item {
 
 	// this is the detail that you set for the outfit overlay
 	// (and then you have to set a color)
-	int     detailValue = 0;
+	int     detailValue = 5;
 
 	String colorValue   = "0x00ff00";
 
@@ -102,7 +102,7 @@ public class CaptureTheFlagFlag extends Item {
 			DressedEntity dressed = (DressedEntity) equipper;
 
 			Outfit flagOutfit;
-			flagOutfit  = new Outfit(null, null, null, null, null, null, this.detailValue);
+			flagOutfit  = new Outfit(null, null, null, null, null, null, null, null, this.detailValue);
 
 			dressed.put("outfit_colors", "detail", this.colorValue);
 			dressed.setOutfit(flagOutfit.putOver(dressed.getOutfit()));
@@ -142,7 +142,7 @@ public class CaptureTheFlagFlag extends Item {
 			// note that we just replace the outfit detail, versus
 			// trying to replace what was there originally.
 			//
-			Outfit   noFlagOutfit = new Outfit(null, null, null, null, null, null, 0);
+			Outfit   noFlagOutfit = new Outfit(null, null, null, null, null, null, null, null, 0);
 			DressedEntity entity       = (DressedEntity) owner;
 
 			entity.setOutfit(noFlagOutfit.putOver(entity.getOutfit()));
