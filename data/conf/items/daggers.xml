@@ -277,6 +277,7 @@
 			<def value="1"/>
 			<lifesteal value="-0.08"/>
 			<min_level value="68"/>
+			<statusattack value="10,trucizna"/>
 			<rate value="2"/>
 		</attributes>
 		<weight value="0.2"/>
