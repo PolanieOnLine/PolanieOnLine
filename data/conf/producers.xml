@@ -127,8 +127,8 @@
 	<!-- Fletcher (Deniran) -->
 	<producer npc="Fletcher" slot="fletcher_soak_arrows" type="item">
 		<welcome text="Ładny dziś [daylightphase] mamy. Co mogę Wam dziś #zaoferować?"/>
-		<item name="zatruta strzała" quantity="5" minutes="1">
-			<resource name="strzała" amount="5"/>
+		<item name="zatruta strzała" quantity="10" minutes="1">
+			<resource name="strzała" amount="10"/>
 			<resource name="trucizna" amount="1"/>
 			<resource name="money" amount="500"/>
 
