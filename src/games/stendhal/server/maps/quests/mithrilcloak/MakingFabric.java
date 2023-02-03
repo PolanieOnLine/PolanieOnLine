@@ -112,7 +112,7 @@ class MakingFabric {
 					npc.say("Hej! Jestem tutaj! Lepiej, żebyś nie próbował mnie oszukać...");
 					return false;
 				} else {
-					for (final Map.Entry<String, Integer> entry : getRequiredResourcesPerItem().entrySet()) {
+					for (final Map.Entry<String, Integer> entry : getRequiredResourcesPerUnit().entrySet()) {
 						final int amountToDrop = amount * entry.getValue();
 						player.drop(entry.getKey(), amountToDrop);
 					}

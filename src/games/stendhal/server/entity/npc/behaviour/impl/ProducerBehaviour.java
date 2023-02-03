@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -36,7 +35,6 @@ import games.stendhal.server.util.TimeUtil;
  * @author daniel
  */
 public class ProducerBehaviour extends TransactionBehaviour {
-
 	/**
 	 * To store the current status of a production order, each ProducerBehaviour
 	 * needs to have an exclusive quest slot.
@@ -62,14 +60,11 @@ public class ProducerBehaviour extends TransactionBehaviour {
 	 */
 	private final List<String> productionActivity;
 
-	/**
-	 * The unit in which the product is counted, e.g. "bags", "pieces", "pounds"
-	 */
-	// private String productUnit;
-
+	/** The item that is produced. */
 	private final String productName;
 
-	private final int produceQuantity;
+	/** Item count per produced unit. */
+	private final int productsPerUnit;
 
 	/**
 	 * Whether the produced item should be player bound.
@@ -81,12 +76,12 @@ public class ProducerBehaviour extends TransactionBehaviour {
 	 * to the amount of this resource that is required for one unit of the
 	 * product.
 	 */
-	private final Map<String, Integer> requiredResourcesPerItem;
+	private final Map<String, Integer> requiredResourcesPerUnit;
 
 	/**
 	 * The number of seconds required to produce one unit of the product.
 	 */
-	private final int productionTimePerItem;
+	private final int productionTimePerUnit;
 
 	/**
 	 * Creates a new ProducerBehaviour.
@@ -98,33 +93,22 @@ public class ProducerBehaviour extends TransactionBehaviour {
 	 * @param productName
 	 *            the name of the product, e.g. "plate armor". It must be a
 	 *            valid item name.
-	 * @param requiredResourcesPerItem
+	 * @param productsPerUnit
+	 *            Item count per production.
+	 * @param requiredResourcesPerUnit
 	 *            a mapping which maps the name of each required resource (e.g.
 	 *            "iron ore") to the amount of this resource that is required
 	 *            for one unit of the product.
-	 * @param productionTimePerItem
+	 * @param productionTimePerUnit
 	 *            the number of seconds required to produce one unit of the
 	 *            product.
 	 */
 	public ProducerBehaviour(final String questSlot, final List<String> productionActivity,
-			final String productName, final Map<String, Integer> requiredResourcesPerItem,
-			final int productionTimePerItem) {
-		this(questSlot, productionActivity, productName, 1,
-				requiredResourcesPerItem, productionTimePerItem, false);
-	}
-
-	public ProducerBehaviour(final String questSlot, final List<String> productionActivity,
-			final String productName, final int produceQuantity, final Map<String, Integer> requiredResourcesPerItem,
-			final int productionTimePerItem) {
-		this(questSlot, productionActivity, productName, produceQuantity,
-				requiredResourcesPerItem, productionTimePerItem, false);
-	}
-
-	public ProducerBehaviour(final String questSlot, final List<String> productionActivity,
-			final String productName, final Map<String, Integer> requiredResourcesPerItem,
-			final int productionTimePerItem, final boolean productBound) {
-		this(questSlot, productionActivity, productName, 1,
-				requiredResourcesPerItem, productionTimePerItem, productBound);
+			final String productName, final int productsPerUnit,
+			final Map<String, Integer> requiredResourcesPerUnit,
+			final int productionTimePerUnit) {
+		this(questSlot, productionActivity, productName, productsPerUnit,
+				requiredResourcesPerUnit, productionTimePerUnit, false);
 	}
 
 	/**
@@ -137,11 +121,38 @@ public class ProducerBehaviour extends TransactionBehaviour {
 	 * @param productName
 	 *            the name of the product, e.g. "plate armor". It must be a
 	 *            valid item name.
-	 * @param requiredResourcesPerItem
+	 * @param requiredResourcesPerUnit
 	 *            a mapping which maps the name of each required resource (e.g.
 	 *            "iron ore") to the amount of this resource that is required
 	 *            for one unit of the product.
-	 * @param productionTimePerItem
+	 * @param productionTimePerUnit
+	 *            the number of seconds required to produce one unit of the
+	 *            product.
+	 */
+	public ProducerBehaviour(final String questSlot, final List<String> productionActivity,
+			final String productName, final Map<String, Integer> requiredResourcesPerUnit,
+			final int productionTimePerUnit) {
+		this(questSlot, productionActivity, productName,
+				requiredResourcesPerUnit, productionTimePerUnit, false);
+	}
+
+	/**
+	 * Creates a new ProducerBehaviour.
+	 *
+	 * @param questSlot
+	 *            the slot that is used to store the status
+	 * @param productionActivity
+	 *            the name of the activity, e.g. "build", "forge", "bake"
+	 * @param productName
+	 *            the name of the product, e.g. "plate armor". It must be a
+	 *            valid item name.
+	 * @param productsPerUnit
+	 *            Item count per production.
+	 * @param requiredResourcesPerUnit
+	 *            a mapping which maps the name of each required resource (e.g.
+	 *            "iron ore") to the amount of this resource that is required
+	 *            for one unit of the product.
+	 * @param productionTimePerUnit
 	 *            the number of seconds required to produce one unit of the
 	 *            product.
 	 * @param productBound
@@ -149,42 +160,65 @@ public class ProducerBehaviour extends TransactionBehaviour {
 	 *            special one-time items.
 	 */
 	public ProducerBehaviour(final String questSlot, final List<String> productionActivity,
-			final String productName, final int produceQuantity, final Map<String, Integer> requiredResourcesPerItem,
-			final int productionTimePerItem, final boolean productBound) {
+			final String productName, final int productsPerUnit, final Map<String, Integer> requiredResourcesPerUnit,
+			final int productionTimePerUnit, final boolean productBound) {
 		super(productName);
 
 		this.questSlot = questSlot;
 		this.productionActivity = productionActivity;
-		// this.productUnit = productUnit;
 		this.productName = productName;
-		this.produceQuantity = produceQuantity;
-		this.requiredResourcesPerItem = requiredResourcesPerItem;
-		this.productionTimePerItem = productionTimePerItem;
+		this.productsPerUnit = productsPerUnit;
+		this.requiredResourcesPerUnit = requiredResourcesPerUnit;
+		this.productionTimePerUnit = productionTimePerUnit;
 		this.productBound = productBound;
 
 		// add the activity word as verb to the word list in case it is still missing there
 		WordList.getInstance().registerVerb(productionActivity);
 
-		for (final String itemName : requiredResourcesPerItem.keySet()) {
+		for (final String itemName : requiredResourcesPerUnit.keySet()) {
 			WordList.getInstance().registerName(itemName, ExpressionType.OBJECT);
 		}
+	}
+
+	/**
+	 * Creates a new ProducerBehaviour.
+	 *
+	 * @param questSlot
+	 *            the slot that is used to store the status
+	 * @param productionActivity
+	 *            the name of the activity, e.g. "build", "forge", "bake"
+	 * @param productName
+	 *            the name of the product, e.g. "plate armor". It must be a
+	 *            valid item name.
+	 * @param requiredResourcesPerUnit
+	 *            a mapping which maps the name of each required resource (e.g.
+	 *            "iron ore") to the amount of this resource that is required
+	 *            for one unit of the product.
+	 * @param productionTimePerUnit
+	 *            the number of seconds required to produce one unit of the
+	 *            product.
+	 * @param productBound
+	 *            Whether the produced item should be player bound. Use only for
+	 *            special one-time items.
+	 */
+	public ProducerBehaviour(final String questSlot, final List<String> productionActivity,
+			final String productName, final Map<String, Integer> requiredResourcesPerUnit,
+			final int productionTimePerUnit, final boolean productBound) {
+		this(questSlot, productionActivity, productName, 1, requiredResourcesPerUnit,
+				productionTimePerUnit, productBound);
 	}
 
 	public String getQuestSlot() {
 		return questSlot;
 	}
 
-	protected Map<String, Integer> getRequiredResourcesPerItem() {
-		return requiredResourcesPerItem;
+	protected Map<String, Integer> getRequiredResourcesPerUnit() {
+		return requiredResourcesPerUnit;
 	}
 
 	public List<String> getProductionActivity() {
 		return productionActivity;
 	}
-
-//	protected String getProductUnit() {
-//		return productUnit;
-//	}
 
 	/**
 	 * Return item name of the product to produce.
@@ -195,8 +229,12 @@ public class ProducerBehaviour extends TransactionBehaviour {
 		return productName;
 	}
 
+	private int getProductsPerUnit() {
+		return productsPerUnit;
+	}
+
 	public int getProductionTime(final int amount) {
-		return productionTimePerItem * amount;
+		return productionTimePerUnit * amount / getProductsPerUnit();
 	}
 
 	/**
@@ -221,8 +259,8 @@ public class ProducerBehaviour extends TransactionBehaviour {
 	protected String getRequiredResourceNamesWithHashes(final int amount) {
 		// use sorted TreeSet instead of HashSet
 		final Set<String> requiredResourcesWithHashes = new TreeSet<String>();
-		for (final Map.Entry<String, Integer> entry : getRequiredResourcesPerItem().entrySet()) {
-			requiredResourcesWithHashes.add(Grammar.quantityplnounWithHash(amount
+		for (final Map.Entry<String, Integer> entry : getRequiredResourcesPerUnit().entrySet()) {
+			requiredResourcesWithHashes.add(Grammar.quantityplnounWithHash(amount / getProductsPerUnit()
 					* entry.getValue(), entry.getKey()));
 		}
 		return Grammar.enumerateCollection(requiredResourcesWithHashes);
@@ -240,7 +278,7 @@ public class ProducerBehaviour extends TransactionBehaviour {
 	public String getRequiredResourceNames(final int amount) {
 		// use sorted TreeSet instead of HashSet
 		final Set<String> requiredResources = new TreeSet<String>();
-		for (final Map.Entry<String, Integer> entry : getRequiredResourcesPerItem().entrySet()) {
+		for (final Map.Entry<String, Integer> entry : getRequiredResourcesPerUnit().entrySet()) {
 			requiredResources.add(Grammar.quantityplnoun(amount
 					* entry.getValue(), entry.getKey()));
 		}
@@ -306,9 +344,9 @@ public class ProducerBehaviour extends TransactionBehaviour {
 	protected int getMaximalAmount(final Player player) {
 		int maxAmount = Integer.MAX_VALUE;
 
-		for (final Map.Entry<String, Integer> entry : getRequiredResourcesPerItem().entrySet()) {
+		for (final Map.Entry<String, Integer> entry : getRequiredResourcesPerUnit().entrySet()) {
 			final int limitationByThisResource = player.getNumberOfEquipped(entry.getKey())
-					/ entry.getValue();
+					/ entry.getValue() * getProductsPerUnit();
 			maxAmount = Math.min(maxAmount, limitationByThisResource);
 		}
 
@@ -327,11 +365,16 @@ public class ProducerBehaviour extends TransactionBehaviour {
 	 */
 	public boolean askForResources(final ItemParserResult res, final EventRaiser npc, final Player player) {
 		int amount = res.getAmount();
-		int amountToProduce = amount * produceQuantity;
+		final int perUnit = getProductsPerUnit();
 
-		if (getMaximalAmount(player) < amount) {
+		if (amount % perUnit != 0) {
+			npc.say("Mogę wykonać "
+					+ Grammar.plural(getProductName())
+					+ " jedynie w ilościach podzielnych przez " + perUnit + ".");
+			return false;
+		} else if (getMaximalAmount(player) < amount) {
 			npc.say("Mogę zrobić "
-					+ Grammar.quantityplnoun(amountToProduce, getProductName())
+					+ Grammar.quantityplnoun(amount, getProductName())
 					+ " jeżeli przyniesiesz mi "
 					+ getRequiredResourceNamesWithHashes(amount) + ".");
 			return false;
@@ -339,7 +382,7 @@ public class ProducerBehaviour extends TransactionBehaviour {
 			res.setAmount(amount);
 			npc.say("Potrzebuję, abyś " + Grammar.genderVerb(player.getGender(), "przyniósł") + " mi "
 					+ getRequiredResourceNamesWithHashes(amount)
-					+ " do tej pracy, która zajmie " + TimeUtil.approxTimeUntil(getProductionTime(amountToProduce)) + ". Czy masz to co potrzebuję?");
+					+ " do tej pracy, która zajmie " + TimeUtil.approxTimeUntil(getProductionTime(amount)) + ". Czy masz to co potrzebuję?");
 			return true;
 		}
 	}
@@ -358,17 +401,17 @@ public class ProducerBehaviour extends TransactionBehaviour {
 		if (getMaximalAmount(player) < res.getAmount()) {
 			// The player tried to cheat us by placing the resource
 			// onto the ground after saying "yes"
-			npc.say("Hej! Jestem tutaj! Mam nadzieję, że nie próbujesz mnie oszukać...");
+			npc.say("Hej! Mam nadzieję, że nie próbujesz mnie oszukać...");
 			return false;
 		} else {
-			for (final Map.Entry<String, Integer> entry : getRequiredResourcesPerItem().entrySet()) {
-				final int amountToDrop = res.getAmount() * entry.getValue();
+			for (final Map.Entry<String, Integer> entry : getRequiredResourcesPerUnit().entrySet()) {
+				final int amountToDrop = res.getAmount() / getProductsPerUnit() * entry.getValue();
 				player.drop(entry.getKey(), amountToDrop);
 			}
 			final long timeNow = new Date().getTime();
-			final int amountToProduce = res.getAmount() * produceQuantity;
+			final int amountToProduce = res.getAmount() * productsPerUnit;
 			player.setQuest(questSlot, amountToProduce + ";" + getProductName() + ";" + timeNow);
-			npc.say("Dobrze zrobię dla Ciebie "
+			npc.say("Dobrze, zrobię dla Ciebie "
 					+ Grammar.quantityplnoun(amountToProduce, getProductName())
 					+ ", ale zajmie mi to trochę czasu. Wróć za "
 					+ getApproximateRemainingTime(player) + ".");

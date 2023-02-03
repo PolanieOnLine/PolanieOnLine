@@ -80,7 +80,7 @@ public class GardenerNPC implements ZoneConfigurator {
 					SpecialProducerBehaviour(final List<String> productionActivity,
                         final String productName, final Map<String, Integer> requiredResourcesPerItem,
 											 final int productionTimePerItem) {
-						super(QUEST_SLOT, productionActivity, productName, 1,
+						super(QUEST_SLOT, productionActivity, productName,
 							  requiredResourcesPerItem, productionTimePerItem, false);
 					}
 
@@ -130,7 +130,7 @@ public class GardenerNPC implements ZoneConfigurator {
 							npc.say("Hej! Tutaj jestem! Lepiej nie próbuj mnie oszukać...");
 							return false;
 						} else {
-							for (final Map.Entry<String, Integer> entry : getRequiredResourcesPerItem().entrySet()) {
+							for (final Map.Entry<String, Integer> entry : getRequiredResourcesPerUnit().entrySet()) {
                                 final int amountToDrop = amount * entry.getValue();
                                 player.drop(entry.getKey(), amountToDrop);
 							}

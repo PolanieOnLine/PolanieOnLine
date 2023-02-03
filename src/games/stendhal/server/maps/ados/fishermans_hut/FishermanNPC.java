@@ -103,7 +103,7 @@ public class FishermanNPC implements ZoneConfigurator {
 					SpecialProducerBehaviour(final List<String> productionActivity,
                         final String productName, final Map<String, Integer> requiredResourcesPerItem,
 											 final int productionTimePerItem) {
-						super(QUEST_SLOT, productionActivity, productName, 1,
+						super(QUEST_SLOT, productionActivity, productName,
 							  requiredResourcesPerItem, productionTimePerItem, false);
 					}
 
@@ -128,7 +128,7 @@ public class FishermanNPC implements ZoneConfigurator {
 							npc.say("Hej! Już skończyłem! Lepiej żebyś nie próbował mnie oszukać...");
 							return false;
 						} else {
-							for (final Map.Entry<String, Integer> entry : getRequiredResourcesPerItem().entrySet()) {
+							for (final Map.Entry<String, Integer> entry : getRequiredResourcesPerUnit().entrySet()) {
 								final int amountToDrop = amount * entry.getValue();
 								player.drop(entry.getKey(), amountToDrop);
 							}

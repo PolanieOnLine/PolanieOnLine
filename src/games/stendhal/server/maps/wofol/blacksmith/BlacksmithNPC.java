@@ -131,7 +131,7 @@ public class BlacksmithNPC implements ZoneConfigurator {
 							npc.say("Hej! Już skończyłem! Nie próbuj mnie oszukać...");
 							return false;
 						} else {
-							for (final Map.Entry<String, Integer> entry : getRequiredResourcesPerItem().entrySet()) {
+							for (final Map.Entry<String, Integer> entry : getRequiredResourcesPerUnit().entrySet()) {
 								final int amountToDrop = amount * entry.getValue();
 								player.drop(entry.getKey(), amountToDrop);
 							}
