@@ -243,7 +243,7 @@
 		</attributes>
 
 		<!-- NPCs -->
-		<!--<configurator class-name="games.stendhal.server.maps.deniran.cityoutside.FletcherNPC"/>-->
+		<configurator class-name="games.stendhal.server.maps.deniran.cityoutside.FletcherNPC"/>
 
 		<portal x="78" y="23" ref="deniran_potions_shop_entrance">
 			<destination zone="int_deniran_potions_shop" ref="entrance" />

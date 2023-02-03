@@ -124,6 +124,18 @@
 		</item>
 	</producer>
 
+	<!-- Fletcher (Deniran) -->
+	<producer npc="Fletcher" slot="fletcher_soak_arrows" type="item">
+		<welcome text="Ładny dziś [daylightphase] mamy. Co mogę Wam dziś #zaoferować?"/>
+		<item name="zatruta strzała" quantity="5" minutes="1">
+			<resource name="strzała" amount="5"/>
+			<resource name="trucizna" amount="1"/>
+			<resource name="money" amount="500"/>
+
+			<activity type="soak,nasącz"/>
+		</item>
+	</producer>
+
 	<!-- Ernest (Gdańsk) -->
 	<producer npc="Ernest" slot="ernest_make_donuts" type="food">
 		<welcome text="Witaj w mojej piekarni, gdzie robię ciasto o przepysznej nazwie #pizza oraz #'pączki'!"/>

@@ -65,23 +65,7 @@ public class ChefNPC implements ZoneConfigurator  {
 				addJob("Otworzyłem piekarnie w Deniran.");
 				addHelp("Uważaj. Nie daj się wciągnąć w wojnę.");
 				addOffer("Christina zajmuje się sprzedażą, po prostu z nią porozmawiaj.");
-
 				addGoodbye();
-
-				/*
-				// Leander makes sandwiches if you bring him bread, cheese, and ham.
-				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
-				requiredResources.put("chleb", 1);
-				requiredResources.put("ser", 2);
-				requiredResources.put("szynka", 1);
-
-				final ProducerBehaviour behaviour = new ProducerBehaviour(
-						"leander_make_sandwiches", "make", "kanapka",
-						requiredResources, 3 * 60);
-
-				new ProducerAdder().addProducer(this, behaviour,
-				"Cześć! Miło cię widzieć w mojej kuchni, gdzie robię #pizzę i #kanapki.");
-				*/
 			}
 		};
 
