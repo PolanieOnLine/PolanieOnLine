@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -14,16 +14,13 @@ package games.stendhal.server.maps.athor.dressingroom_male;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.OutfitChangerAdder;
-import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.OutfitChangerBehaviour;
-import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 
 /**
  * Dressing rooms at the Athor island beach (Inside / Level 0).
@@ -55,26 +52,18 @@ public class LifeguardNPC implements ZoneConfigurator {
 				final OutfitChangerBehaviour behaviour = new OutfitChangerBehaviour(priceList);
 				new OutfitChangerAdder().addOutfitChanger(this, behaviour, Arrays.asList("borrow", "pożycz"));
 
-				// stuff needed for the SuntanCreamForZara quest
-				// (uses sorted TreeMap instead of HashMap)
-				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
-				requiredResources.put("arandula", 1);
-				requiredResources.put("kokuda", 1);
-				requiredResources.put("mały eliksir", 1);
-
-				final ProducerBehaviour mixerBehaviour = new ProducerBehaviour("david_mix_cream",
-						 Arrays.asList("mix", "zrób"), "olejek do opalania", requiredResources, 10 * 60);
-
-				new ProducerAdder().addProducer(this, mixerBehaviour, "Hallo!");
-
 				addReply(Arrays.asList("suntan", "cream", "suntan cream","olejek do opalania"),
-						"Olejek do opalania Pam i mój słynny jest na całą wyspę, ale że wejście do labiryntu jest zablokowane to nie możemy zdobyć wszystkich składników. Jeżeli przyniesiesz mi składniki to mogę zrobić dla Ciebie nasz specjalny krem do opalania. Powiedz tylko #zrób.");
-
-				addReply("arandula", "Arandula jest ziołem rosnącym w okolicach Semos.");
-
-				addReply("kokuda", "Nie możemy zdobyć Kokudy, która rośnie na wyspie, ponieważ wejście do labiryntu gdzie można znaleźć to zioło jest zablokowane.");
-
-				addReply("mały eliksir", "Jest to mała buteleczka wypełniona miksturą. Możesz ją kupić w kilku miejscach.");
+						"Olejek do opalania Pam i mój słynny jest na całą wyspę, ale że wejście do labiryntu"
+						+ " jest zablokowane to nie możemy zdobyć wszystkich składników. Jeżeli przyniesiesz"
+						+ " mi składniki to mogę zrobić dla Ciebie nasz specjalny krem do opalania."
+						+ " Powiedz tylko #zrób.");
+				addReply("arandula",
+						"Arandula jest ziołem rosnącym w okolicach Semos.");
+				addReply("kokuda",
+						"Nie możemy zdobyć Kokudy, która rośnie na wyspie, ponieważ wejście do labiryntu"
+						+ " gdzie można znaleźć to zioło jest zablokowane.");
+				addReply("mały eliksir",
+						"Jest to mała buteleczka wypełniona miksturą. Możesz ją kupić w kilku miejscach.");
 			}
 		};
 

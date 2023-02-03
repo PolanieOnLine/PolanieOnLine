@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,16 +11,12 @@
  ***************************************************************************/
 package games.stendhal.server.maps.athor.cocktail_bar;
 
-import java.util.Arrays;
 import java.util.Map;
-import java.util.TreeMap;
 
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 
 /**
  * Cocktail Bar at the Athor island beach (Inside / Level 0).
@@ -46,19 +42,12 @@ public class BarmanNPC implements ZoneConfigurator {
 				addJob("Mogę przyrządzić różne koktajle! Powiedz tylko #zrób.");
 				addQuest("Co powiedziałeś?");
 				addOffer("Może mogę #zrobić koktail z #kokosa i #ananasa dla ochłody... Powiedz tylko #zrób.");
-				addReply("ananasa","Ananasy nie rosną na Athor musisz sam je zdobyć.");
-				addReply("kokosa","Używam mleka z nich, aby #zrobić twój koktail. Poszukaj ich pod palmami.");
+				addReply("ananasa",
+						"Ananasy nie rosną na Athor musisz sam je zdobyć.");
+				addReply("kokosa",
+						"Używam mleka z nich, aby #zrobić twój koktail. Poszukaj ich pod palmami.");
 				addHelp("Chcesz napój z oliwką? Jestem do usług!");
 				addGoodbye("Zdrówko!");
-
-				// make cocktail!
-				// (uses sorted TreeMap instead of HashMap)
-				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
-				requiredResources.put("kokos", 1);
-				requiredResources.put("ananas", 1);
-				final ProducerBehaviour mixerBehaviour = new ProducerBehaviour("barman_mix_pina",
-						 Arrays.asList("mix", "zrób"), "napój z oliwką", requiredResources, 2 * 60);
-				new ProducerAdder().addProducer(this, mixerBehaviour, "Aloha!");
 			}
 		};
 
