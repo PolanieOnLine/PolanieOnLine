@@ -103,7 +103,7 @@ public class FishermanNPC implements ZoneConfigurator {
 					SpecialProducerBehaviour(final List<String> productionActivity,
                         final String productName, final Map<String, Integer> requiredResourcesPerItem,
 											 final int productionTimePerItem) {
-						super(QUEST_SLOT, productionActivity, productName,
+						super(QUEST_SLOT, productionActivity, productName, 1,
 							  requiredResourcesPerItem, productionTimePerItem, false);
 					}
 

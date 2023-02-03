@@ -69,6 +69,8 @@ public class ProducerBehaviour extends TransactionBehaviour {
 
 	private final String productName;
 
+	private final int produceQuantity;
+
 	/**
 	 * Whether the produced item should be player bound.
 	 */
@@ -107,8 +109,22 @@ public class ProducerBehaviour extends TransactionBehaviour {
 	public ProducerBehaviour(final String questSlot, final List<String> productionActivity,
 			final String productName, final Map<String, Integer> requiredResourcesPerItem,
 			final int productionTimePerItem) {
-		this(questSlot, productionActivity, productName,
+		this(questSlot, productionActivity, productName, 1,
 				requiredResourcesPerItem, productionTimePerItem, false);
+	}
+
+	public ProducerBehaviour(final String questSlot, final List<String> productionActivity,
+			final String productName, final int produceQuantity, final Map<String, Integer> requiredResourcesPerItem,
+			final int productionTimePerItem) {
+		this(questSlot, productionActivity, productName, produceQuantity,
+				requiredResourcesPerItem, productionTimePerItem, false);
+	}
+
+	public ProducerBehaviour(final String questSlot, final List<String> productionActivity,
+			final String productName, final Map<String, Integer> requiredResourcesPerItem,
+			final int productionTimePerItem, final boolean productBound) {
+		this(questSlot, productionActivity, productName, 1,
+				requiredResourcesPerItem, productionTimePerItem, productBound);
 	}
 
 	/**
@@ -133,7 +149,7 @@ public class ProducerBehaviour extends TransactionBehaviour {
 	 *            special one-time items.
 	 */
 	public ProducerBehaviour(final String questSlot, final List<String> productionActivity,
-			final String productName, final Map<String, Integer> requiredResourcesPerItem,
+			final String productName, final int produceQuantity, final Map<String, Integer> requiredResourcesPerItem,
 			final int productionTimePerItem, final boolean productBound) {
 		super(productName);
 
@@ -141,6 +157,7 @@ public class ProducerBehaviour extends TransactionBehaviour {
 		this.productionActivity = productionActivity;
 		// this.productUnit = productUnit;
 		this.productName = productName;
+		this.produceQuantity = produceQuantity;
 		this.requiredResourcesPerItem = requiredResourcesPerItem;
 		this.productionTimePerItem = productionTimePerItem;
 		this.productBound = productBound;
@@ -310,10 +327,11 @@ public class ProducerBehaviour extends TransactionBehaviour {
 	 */
 	public boolean askForResources(final ItemParserResult res, final EventRaiser npc, final Player player) {
 		int amount = res.getAmount();
+		int amountToProduce = amount * produceQuantity;
 
 		if (getMaximalAmount(player) < amount) {
 			npc.say("Mogę zrobić "
-					+ Grammar.quantityplnoun(amount, getProductName())
+					+ Grammar.quantityplnoun(amountToProduce, getProductName())
 					+ " jeżeli przyniesiesz mi "
 					+ getRequiredResourceNamesWithHashes(amount) + ".");
 			return false;
@@ -321,7 +339,7 @@ public class ProducerBehaviour extends TransactionBehaviour {
 			res.setAmount(amount);
 			npc.say("Potrzebuję, abyś " + Grammar.genderVerb(player.getGender(), "przyniósł") + " mi "
 					+ getRequiredResourceNamesWithHashes(amount)
-					+ " do tej pracy, która zajmie " + TimeUtil.approxTimeUntil(getProductionTime(amount)) + ". Czy masz to co potrzebuję?");
+					+ " do tej pracy, która zajmie " + TimeUtil.approxTimeUntil(getProductionTime(amountToProduce)) + ". Czy masz to co potrzebuję?");
 			return true;
 		}
 	}
@@ -348,9 +366,10 @@ public class ProducerBehaviour extends TransactionBehaviour {
 				player.drop(entry.getKey(), amountToDrop);
 			}
 			final long timeNow = new Date().getTime();
-			player.setQuest(questSlot, res.getAmount() + ";" + getProductName() + ";" + timeNow);
+			final int amountToProduce = res.getAmount() * produceQuantity;
+			player.setQuest(questSlot, amountToProduce + ";" + getProductName() + ";" + timeNow);
 			npc.say("Dobrze zrobię dla Ciebie "
-					+ Grammar.quantityplnoun(res.getAmount(), getProductName())
+					+ Grammar.quantityplnoun(amountToProduce, getProductName())
 					+ ", ale zajmie mi to trochę czasu. Wróć za "
 					+ getApproximateRemainingTime(player) + ".");
 			return true;

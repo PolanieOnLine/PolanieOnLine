@@ -36,9 +36,9 @@ public class ProducersXMLLoader extends DefaultHandler {
 	private String npcName;
 
 	private String itemName;
-	private Map<String, Integer> items = new HashMap<String, Integer>();
-	private Map<String, Integer> resources = new HashMap<String, Integer>();
+	private int produceQuantity;
 
+	private Map<String, Integer> resources = new HashMap<String, Integer>();
 	private List<String> activity = new LinkedList<String>();
 	private int time;
 
@@ -108,7 +108,6 @@ public class ProducersXMLLoader extends DefaultHandler {
 		if (qName.equals("producer")) {
 			npcName = attrs.getValue("npc");
 			questSlot = attrs.getValue("slot");
-			items = new LinkedHashMap<String, Integer>();
 			resources = new LinkedHashMap<String, Integer>();
 			activity = new LinkedList<String>();
 			itemName = null;
@@ -122,7 +121,10 @@ public class ProducersXMLLoader extends DefaultHandler {
 			productionTag = true;
 
 			itemName = attrs.getValue("name");
-			items.put(attrs.getValue("name"), Integer.parseInt(attrs.getValue("quantity")));
+			produceQuantity = 1;
+			if (attrs.getValue("quantity") != null) {
+				produceQuantity = Integer.parseInt(attrs.getValue("quantity"));
+			}
 			time = 60 * Integer.parseInt(attrs.getValue("minutes"));
 		} else if (productionTag) {
 			if (qName.equals("resource")) {
@@ -139,7 +141,7 @@ public class ProducersXMLLoader extends DefaultHandler {
 	@Override
 	public void endElement(final String namespaceURI, final String sName, final String qName) {
 		if (qName.equals("producer")) {
-			final ProducerBehaviour behaviour = new ProducerBehaviour(questSlot, activity, itemName, resources, time);
+			final ProducerBehaviour behaviour = new ProducerBehaviour(questSlot, activity, itemName, produceQuantity, resources, time);
 
 			if (behaviour.getProductionActivity() == activity) {
 				SingletonRepository.getCachedActionManager().register(new Runnable() {

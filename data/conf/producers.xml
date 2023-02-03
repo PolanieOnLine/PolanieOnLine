@@ -5,7 +5,7 @@
 	<!-- Arlindo (Ados) -->
 	<producer npc="Arlindo" slot="arlindo_make_pie" type="food">
 		<welcome text="Witam! Założę się, że słyszałeś o moim słynnym placku. Mówiąc #upiecz zrobię go dla ciebie."/>
-		<item name="tarta" quantity="1" minutes="7">
+		<item name="tarta" minutes="7">
 			<resource name="mąka" amount="2"/>
 			<resource name="mięso" amount="2"/>
 			<resource name="marchew" amount="1"/>
@@ -17,7 +17,7 @@
 	<!-- Valo (Ados) -->
 	<producer npc="Valo" slot="valo_concoct_potion" type="drink">
 		<welcome text="Pozdrawiam młodzieńcze. #Uleczę Cię i #pomogę Tobie."/>
-		<item name="wielki eliksir" quantity="1" minutes="2">
+		<item name="wielki eliksir" minutes="2">
 			<resource name="money" amount="20"/>
 			<resource name="serce olbrzyma" amount="1"/>
 
@@ -27,7 +27,7 @@
 	<!-- Joshua (Ados) -->
 	<producer npc="Joshua" slot="joshua_cast_gold" type="item">
 		<welcome text="Cześć! Jestem tutejszym złotnikiem. Jeżeli będziesz chciał, abym odlał dla Ciebie #sztabkę #złota to daj znać! Wystarczy, że powiesz #odlej."/>
-		<item name="sztabka złota" quantity="1" minutes="15">
+		<item name="sztabka złota" minutes="15">
 			<resource name="polano" amount="3"/>
 			<resource name="bryłka złota" amount="1"/>
 
@@ -37,7 +37,7 @@
 	<!-- Pedinghaus (Ados) -->
 	<producer npc="Pedinghaus" slot="Pedinghaus_cast_mithril" type="item">
 		<welcome text="Pozdrawiam. Sądzę, że jesteś zainteresowany mithrilem. Jeżeli chcesz, abym odlał #'sztabkę mithrilu' to daj znać. Powiedz tylko #odlej"/>
-		<item name="sztabka mithrilu" quantity="1" minutes="18">
+		<item name="sztabka mithrilu" minutes="18">
 			<resource name="polano" amount="20"/>
 			<resource name="bryłka mithrilu" amount="1"/>
 
@@ -47,7 +47,7 @@
 	<!-- Uncle Dag (Ados) -->
 	<producer npc="Uncle Dag" slot="uncle_dag_brew_fierywater" type="drink">
 		<welcome text="Cześć! Jestem Uncle Dag, gorzelnik! Jeżeli przyniesiesz mi #'trzcinę cukrową' i #polano to #wywarzę dla Ciebie #'ekstrakt litworowy'."/>
-		<item name="ekstrakt litworowy" quantity="1" minutes="20">
+		<item name="ekstrakt litworowy" minutes="20">
 			<resource name="trzcina cukrowa" amount="5"/>
 			<resource name="polano" amount="1"/>
 
@@ -57,7 +57,7 @@
 	<!-- Blacksheep Bob (Ados) -->
 	<producer npc="Blacksheep Bob" slot="blacksheepbob_make_sausage" type="food">
 		<welcome text="Hej! Witamy na naszym mięsnym targu Blacksheep. Czy mogę zrobić dla Ciebie paróweczki?"/>
-		<item name="paróweczka" quantity="1" minutes="2">
+		<item name="paróweczka" minutes="2">
 			<resource name="truchło wampira" amount="1"/>
 			<resource name="truchło nietoperza" amount="1"/>
 			<resource name="mięso" amount="1"/>
@@ -69,7 +69,7 @@
 	<!-- Blacksheep Harry (Ados) -->
 	<producer npc="Blacksheep Harry" slot="blacksheepharry_make_tuna" type="food">
 		<welcome text="Witamy na mięsnym targu Blacksheep. Czy mogę zrobić dla Ciebie prasowanego tuńczyka?"/>
-		<item name="prasowany tuńczyk" quantity="1" minutes="2">
+		<item name="prasowany tuńczyk" minutes="2">
 			<resource name="makrela" amount="1"/>
 			<resource name="okoń" amount="1"/>
 			<resource name="kolorowe kulki" amount="2"/>
@@ -80,7 +80,7 @@
 	<!-- Blacksheep Joe (Ados) -->
 	<producer npc="Blacksheep Joe" slot="blacksheepjoe_make_cheese_sausage" type="food">
 		<welcome text="Witamy na mięsnym targu Blacksheep. Czy mogę zrobić dla Ciebie kiełbasę z serem?"/>
-		<item name="kiełbasa serowa" quantity="1" minutes="2">
+		<item name="kiełbasa serowa" minutes="2">
 			<resource name="truchło wampira" amount="1"/>
 			<resource name="truchło nietoperza" amount="1"/>
 			<resource name="udko" amount="1"/>
@@ -127,7 +127,7 @@
 	<!-- Ernest (Gdańsk) -->
 	<producer npc="Ernest" slot="ernest_make_donuts" type="food">
 		<welcome text="Witaj w mojej piekarni, gdzie robię ciasto o przepysznej nazwie #pizza oraz #'pączki'!"/>
-		<item name="pączek" quantity="1" minutes="3">
+		<item name="pączek" minutes="3">
 			<resource name="mąka" amount="1"/>
 			<resource name="mleko" amount="1"/>
 			<resource name="jajo" amount="1"/>
@@ -140,7 +140,7 @@
 	<!-- Lena (Gdańsk) -->
 	<producer npc="Lena" slot="lena_bake_bread" type="food">
 		<welcome text="Witamy serdecznie w naszej pięknie pachnącej pieczywem piekarni!"/>
-		<item name="chleb" quantity="1" minutes="6">
+		<item name="chleb" minutes="6">
 			<resource name="mąka" amount="2"/>
 
 			<activity type="bake,upiecz"/>
@@ -149,7 +149,7 @@
 	<!-- czeladnik Wojtek (Gdańsk) -->
 	<producer npc="czeladnik Wojtek" slot="wojtek_cast_ametyst" type="item">
 		<welcome text="Dzień dobry. W czymś mogę ci #pomóc?"/>
-		<item name="ametyst" quantity="1" minutes="4">
+		<item name="ametyst" minutes="4">
 			<resource name="money" amount="200"/>
 			<resource name="kryształ ametystu" amount="1"/>
 
@@ -159,7 +159,7 @@
 	<!-- Aron (Gdańsk) -->
 	<producer npc="Aron" slot="aron_concoct_potion" type="drink">
 		<welcome text="Witaj poszukiwaczu, co Ciebie sprowadza do mojej TAJNEJ kryjówki? Chcesz być moim #'królikiem doświadczalnym'?"/>
-		<item name="duży smoczy eliksir" quantity="1" minutes="2">
+		<item name="duży smoczy eliksir" minutes="2">
 			<resource name="money" amount="1200"/>
 			<resource name="smocza krew" amount="3"/>
 
