@@ -373,6 +373,10 @@ public class Grammar {
 		String enoun = fullForm(noun);
 		String postfix = "";
 
+		if (enoun.split(" ").length > 1) {
+			return plural(enoun.split(" "));
+		}
+
 		final int position = enoun.indexOf('+');
 		if (position != -1) {
 			if (enoun.charAt(position - 1) == ' ') {
@@ -431,7 +435,7 @@ public class Grammar {
 			return enoun.substring(0, enoun.length() - 1) + "i" + postfix;
 
 		} else if (enoun.endsWith("ca") || enoun.endsWith("ea") || enoun.endsWith("ia") || enoun.endsWith("ja")
-				|| enoun.endsWith("la") || enoun.endsWith("ża") || enoun.endsWith("rza")) {
+				|| enoun.endsWith("la") || enoun.endsWith("ża") || enoun.endsWith("rza") || enoun.endsWith("ta")) {
 			return enoun.substring(0, enoun.length() - 1) + "e" + postfix;
 
 		} else if (enoun.endsWith("a")) {
@@ -458,6 +462,24 @@ public class Grammar {
 		} else {
 			// no special case matched, so use the boring default plural rule
 			return enoun + "y" + postfix;
+		}
+	}
+
+	public static String plural(String[] noun) {
+		if (noun == null) {
+			return null;
+		}
+
+		if (noun.length == 2) {
+			if (noun[0].startsWith("zatruta")) {
+				noun[0] = noun[0].substring(0, noun[0].length() - 1) + "e";
+			}
+			if (noun[1].startsWith("strzała")) {
+				noun[1] = noun[1].substring(0, noun[1].length() - 1) + "y";
+			}
+			return noun[0] + " " + noun[1];
+		} else {
+			return plural(noun[0]);
 		}
 	}
 
@@ -544,10 +566,24 @@ public class Grammar {
 			return null;
 		}
 		String postfix = "";
+
 		final int position = enoun.indexOf('+');
 		if (position != -1) {
 			postfix = enoun.substring(position - 1);
 			enoun = enoun.substring(0, position - 1);
+		}
+
+		String[] noun = enoun.split(" ");
+		if (noun.length == 2) {
+			if (quantity > 4) {
+				if (noun[0].startsWith("zatruta")) {
+					noun[0] = noun[0].substring(0, noun[0].length() - 1) + "ych";
+				}
+				if (noun[1].startsWith("strzała")) {
+					noun[1] = noun[1].substring(0, noun[1].length() - 1);
+				}
+			}
+			return noun[0] + " " + noun[1];
 		}
 
 		// in "of"-phrases build only the singular of the first part
@@ -555,14 +591,12 @@ public class Grammar {
 			return singular(enoun.substring(0, enoun.indexOf(of)))
 					+ enoun.substring(enoun.indexOf(of)) + postfix;
 
-		} else if (enoun.equals("będzie")) { {
+		} else if (enoun.equals("będzie")) {
 			if (quantity > 1) {
 				return enoun = "będą";
 			} else {
 				return enoun;
 			}
-		}
-
 		} else if (enoun.equals("płaszcz")) {
 			if (quantity <= 4) {
 				return enoun + "e" + postfix;
@@ -581,19 +615,23 @@ public class Grammar {
 			} else {
 				return enoun + "ów" + postfix;
 			}
-
 		} else if (enoun.equals("lody") || enoun.equals("składniki")) {
 			if (quantity > 4 || quantity == 0) {
 				return enoun.substring(0, enoun.length() - 1) + "ów" + postfix;
 			} else {
 				return enoun + postfix;
 			}
-
 		} else if (enoun.equals("mnich")) {
 			if (quantity > 1 || quantity == 0) {
 				return enoun + "ów" + postfix;
 			} else {
 				return enoun;
+			}
+		} else if (enoun.equals("strzała") || enoun.equals("trucizna")) {
+			if (quantity > 4) {
+				return enoun.substring(0, enoun.length() - 1) + postfix;
+			} else {
+				return plural(enoun);
 			}
 
 		} else if (enoun.endsWith("ty") || enoun.endsWith("ry") || enoun.endsWith("wy")) {

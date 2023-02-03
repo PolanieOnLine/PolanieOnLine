@@ -243,6 +243,7 @@
 		</attributes>
 
 		<!-- NPCs -->
+		<!-- TODO: move inside building -->
 		<configurator class-name="games.stendhal.server.maps.deniran.cityoutside.FletcherNPC"/>
 
 		<portal x="78" y="23" ref="deniran_potions_shop_entrance">
