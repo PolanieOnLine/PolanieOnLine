@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                 (C) Copyright 2003-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,22 +11,14 @@
  ***************************************************************************/
 package games.stendhal.server.maps.koscielisko.jeweller;
 
-import java.util.Arrays;
 import java.util.Map;
-import java.util.TreeMap;
 
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 
-/**
- * @author ?
- */
 public class EmeraldNPC implements ZoneConfigurator {
-
 	/**
 	 * Configure a zone.
 	 *
@@ -40,32 +32,16 @@ public class EmeraldNPC implements ZoneConfigurator {
 
 	private void buildMieszek(final StendhalRPZone zone) {
 		final SpeakerNPC mieszek = new SpeakerNPC("czeladnik Mieszek") {
-
-			@Override
-			protected void createPath() {
-				setPath(null);
-			}
-
 			@Override
 			protected void createDialog() {
-				addGreeting();
+				addHelp("Nie potrzebuję pomocy, ale możesz ty pomóc nam... Mistrz planuje rozbudowe naszego placu więc mogę #'oszlifować' szmaragd za drobną opłatą.");
 				addReply("mistrz",
 						"Mistrz?? Tak, tak znam mistrza. Co potrzeba?");
 				addReply("szmaragd",
-						"Aaaa... mam obrobić emerald crystal. A może by tak ładnie poprosić #☺ coś w rodzaju #'oszlifuj szmaragd'.");    
-				addGoodbye();
-				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
-				requiredResources.put("money", 180);
-				requiredResources.put("kryształ szmaragdu", 1);
-
-				final ProducerBehaviour behaviour = new ProducerBehaviour(
-					"mieszek_cast_emerald", Arrays.asList("grind", "oszlifuj"), "szmaragd",
-					requiredResources, 4 * 60);
-
-				new ProducerAdder().addProducer(this, behaviour,
-						"Dzień dobry.");
+						"Aaaa... mam obrobić kryształ szmaragdu. A może by tak ładnie poprosić #☺ coś w rodzaju #'oszlifuj szmaragd'.");    
 				addReply("money",
 						"☺ Drogo? Nie drogo, mistrz Drogosz ma zamiar podnieść i tak cenę. Więc nie ma co się zastanawiać.");
+				addGoodbye();
 			}
 		};
 

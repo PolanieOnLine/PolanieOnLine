@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2018 - Stendhal                    *
+ *                 (C) Copyright 2018-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -15,21 +15,17 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 
 /**
  * @author KarajuSs
  */
 public class LanoszNPC implements ZoneConfigurator {
-
 	/**
 	 * Configure a zone.
 	 *
@@ -43,7 +39,6 @@ public class LanoszNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Lanosz") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -56,7 +51,6 @@ public class LanoszNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-				addGreeting("Witaj w naszej piekarni wojowniku!");
 				addJob("Jestem właścicielem jedynej piekarni w całym Krakowie.");
 				addOffer("Mogę dla Ciebie przygotować #'kanapkę z tuńczykiem' z miejscowych świeżych składników. Powiedz mi tylko #'zrób'.");
 				addGoodbye("Żegnaj, mam nadzieję, że jeszcze wrócisz do naszej piekarni!");
@@ -64,16 +58,6 @@ public class LanoszNPC implements ZoneConfigurator {
 				addReply(Arrays.asList("kanapki", "kanapka", "sandwiches", "sandwich"), "Mogę wykonać dla ciebie specjalne kanapki z tuńczykiem. Powiedz mi tylko #'zrób kanapka z tuńczykiem'.");
 			}
 		};
-		final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
-		requiredResources.put("chleb", 1);
-		requiredResources.put("tuńczyk", 2);
-		requiredResources.put("pomidor", 1);
-		requiredResources.put("sałata", 1);
-
-		final ProducerBehaviour behaviour = new ProducerBehaviour("lanosz_make_sandwich",
-				Arrays.asList("make", "zrób"), "kanapka z tuńczykiem", requiredResources, 2 * 60);
-		new ProducerAdder().addProducer(npc, behaviour,
-				"Witaj w naszej piekarni, gdzie robię #kanapki!");
 
 		npc.setDescription("Oto Lanosz. Mąż Edny, jest doskonałym piekarzem, a jego specjalnością są kanapki rybne, przygotowywane z miejscowych świeżych składników.");
 		npc.setEntityClass("chefnpc");

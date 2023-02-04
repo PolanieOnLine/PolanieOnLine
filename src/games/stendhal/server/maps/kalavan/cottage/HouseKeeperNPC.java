@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,11 +11,9 @@
  ***************************************************************************/
 package games.stendhal.server.maps.kalavan.cottage;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
@@ -23,8 +21,6 @@ import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 
 /**
  * NPC who makes tea.
@@ -63,15 +59,6 @@ public class HouseKeeperNPC implements ZoneConfigurator {
 				addQuest("Mam ból głowy i małą Annie, która za każdym razem jak schodzi to hałasuje. Może mógłbyś dać jej jakieś zajęcie? ... tak, aby się uciszyła ...");
 				addGoodbye("Do widzenia.");
 
-				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
-				requiredResources.put("mleko", 1);
-				requiredResources.put("miód", 1);
-
-				final ProducerBehaviour behaviour = new ProducerBehaviour("granny_brew_tea",
-						 Arrays.asList("brew", "zaparz"), "filiżanka herbaty", requiredResources, 3 * 60);
-
-				new ProducerAdder().addProducer(this, behaviour,
-				        "Cześć.");
 				addReply("mleko",
 		        		"Cóż spodziewam się, że zdobędziesz mleko z farmy.");
 				addReply("miód",

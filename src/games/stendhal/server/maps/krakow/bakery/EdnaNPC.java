@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2018 - Stendhal                    *
+ *                 (C) Copyright 2018-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,25 +11,20 @@
  ***************************************************************************/
 package games.stendhal.server.maps.krakow.bakery;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 
 /**
  * @author KarajuSs
  */
 public class EdnaNPC implements ZoneConfigurator {
-
 	/**
 	 * Configure a zone.
 	 *
@@ -43,7 +38,6 @@ public class EdnaNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Edna") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -59,14 +53,6 @@ public class EdnaNPC implements ZoneConfigurator {
 				addJob("Specjalizuje się w pieczeniu znakomitego chleba");
 				addOffer("Mogę dla Ciebie przygotować #'chleb' z miejscowych świeżych składników. Powiedz tylko #'upiecz'.");
 				addGoodbye("Żegnaj, mam nadzieję, że jeszcze wrócisz do naszej piekarni!");
-
-				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
-				requiredResources.put("mąka", 2);
-
-				final ProducerBehaviour behaviour = new ProducerBehaviour("edna_bake_bread",
-						Arrays.asList("bake", "upiecz"), "chleb", requiredResources, 7 * 60);
-				new ProducerAdder().addProducer(this, behaviour,
-						"Witaj w naszej piekarni! Mogę dla ciebie upiec #'chleb'.");
 			}
 		};
 

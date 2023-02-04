@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,11 +11,9 @@
  ***************************************************************************/
 package games.stendhal.server.maps.kalavan.cottage_2;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
@@ -23,8 +21,6 @@ import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 
 /**
  * Provides Gertha, the cherry pies confectioner NPC.
@@ -79,20 +75,6 @@ public class ConfectionerCherryPieNPC implements ZoneConfigurator {
 				addOffer("Kocham piec pyszne ciasta z wiśniami. Poproś mnie mówiąc #upiecz!");
 				addQuest("Bardzo bym chciała spróbować i upiec ciasto z truskawkami... Ale niestey! truskawek nigdzie nie można dostać...");
 				addGoodbye("Trzymaj się!");
-
-				// (uses sorted TreeMap instead of HashMap)
-				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
-				requiredResources.put("mąka", Integer.valueOf(2));
-				requiredResources.put("miód", Integer.valueOf(1));
-				requiredResources.put("mleko", Integer.valueOf(1));
-				requiredResources.put("jajo", Integer.valueOf(1));
-				requiredResources.put("wisienka", Integer.valueOf(2));
-
-				final ProducerBehaviour behaviour = new ProducerBehaviour("gertha_bake_cherrypie", Arrays.asList("bake", "upiecz"),  "ciasto z wiśniami",
-				        requiredResources, 15 * 60);
-
-				new ProducerAdder().addProducer(this, behaviour,
-				        "Cześć! Czy przyszedłeś, aby skosztować mojego wspaniałego ciasta z wiśniami? Mogę z przyjemnością je dla Ciebie upiec!");
 			}
 		};
 

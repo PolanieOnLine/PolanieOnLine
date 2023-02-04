@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2018 - Stendhal                    *
+ *                 (C) Copyright 2018-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,25 +11,20 @@
  ***************************************************************************/
 package games.stendhal.server.maps.krakow.vineyard;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 
 /**
  * @author KarajuSs
  */
 public class ZbyszkoNPC implements ZoneConfigurator {
-
 	/**
 	 * Configure a zone.
 	 *
@@ -43,7 +38,6 @@ public class ZbyszkoNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Zbyszko") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -77,13 +71,6 @@ public class ZbyszkoNPC implements ZoneConfigurator {
 				addOffer("Mogę Tobie przygotować doskonałe wino jakie jeszcze nikt nie widział, jeżeli zdobędziesz dla mnie winogrona od #'brata'. Powiedz mi tylko #'zrób', a wykonam dla Ciebie to wino.");
 				addReply("brat", "Mój brat ma na imię Winicjusz, który powinien się znajdować zaraz obok naszego domu.");
 				addGoodbye();
-
-				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
-				requiredResources.put("kiść winogron", 2);
-				final ProducerBehaviour behaviour = new ProducerBehaviour("zbyszko_make_vine",
-						Arrays.asList("make", "zrób"), "napój z winogron", requiredResources, 1 * 60);
-				new ProducerAdder().addProducer(this, behaviour,
-						"Witajże w moim domu! Co potrzebujesz?");
 			}
 		};
 

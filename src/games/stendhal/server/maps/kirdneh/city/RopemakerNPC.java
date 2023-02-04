@@ -1,5 +1,5 @@
 /***************************************************************************
- *                    Copyright © 2003-2022 - Arianne                      *
+ *                    Copyright © 2003-2023 - Arianne                      *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -13,14 +13,11 @@ package games.stendhal.server.maps.kirdneh.city;
 
 import java.util.Arrays;
 import java.util.Map;
-import java.util.TreeMap;
 
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 
 public class RopemakerNPC implements ZoneConfigurator {
 	@Override
@@ -49,20 +46,6 @@ public class RopemakerNPC implements ZoneConfigurator {
 		giles.addReply(
 			"Karl",
 			"Karl i jego żona Philomena opiekują się farmami na zachód od Ados.");
-
-		// production
-		final Map<String, Integer> required = new TreeMap<String, Integer>();
-		required.put("money", 200);
-		required.put("końskie włosie", 6);
-		new ProducerAdder().addProducer(
-			giles,
-			new ProducerBehaviour(
-				"ropemaker_braid_rope",
-				Arrays.asList("braid", "zaplatanie", "pleść", "zaplecić"),
-				"lina",
-				required,
-				15 * 60),
-			"Hmmm... Myślę, że to dobre miejsce na zbudowania mojego sklepu. Och, cześć. Jak mogę ci pomóc?");
 
 		return giles;
 	}

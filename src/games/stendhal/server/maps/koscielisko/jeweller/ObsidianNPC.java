@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                 (C) Copyright 2003-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,22 +11,14 @@
  ***************************************************************************/
 package games.stendhal.server.maps.koscielisko.jeweller;
 
-import java.util.Arrays;
 import java.util.Map;
-import java.util.TreeMap;
 
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 
-/**
- * @author ?
- */
 public class ObsidianNPC implements ZoneConfigurator {
-
 	/**
 	 * Configure a zone.
 	 *
@@ -40,30 +32,14 @@ public class ObsidianNPC implements ZoneConfigurator {
 
 	private void buildSobek(final StendhalRPZone zone) {
 		final SpeakerNPC sobek = new SpeakerNPC("czeladnik Sobek") {
-
-			@Override
-			protected void createPath() {
-				setPath(null);
-			}
-
 			@Override
 			protected void createDialog(){
-				addGreeting();
+				addHelp("Jeżeli chcesz nam pomóc to lepiej zapytaj czy chcesz abym #'oszlifował obsydian'. Za opłatą oczywiście.");
 				addReply("mistrz",
 						"A wysłał Wielmożność do mnie w sprawie obsydianu. Obrobię go wystarczy, że powiecie #'oszlifuj obsydian'.");
-				addGoodbye();
-				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
-				requiredResources.put("money", 980);
-				requiredResources.put("kryształ obsydianu", 1);
-
-				final ProducerBehaviour behaviour = new ProducerBehaviour(
-					"sobek_cast_obsidian", Arrays.asList("grind", "oszlifuj"), "obsydian",
-					requiredResources, 4 * 60);
-
-				new ProducerAdder().addProducer(this, behaviour,
-						"Dzień dobry.");
 				addReply("money",
 						"Mistrz ustala ceny.");
+				addGoodbye();
 			}
 		};
 

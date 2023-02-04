@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,11 +11,9 @@
  ***************************************************************************/
 package games.stendhal.server.maps.kalavan.cottage_2;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
@@ -23,8 +21,6 @@ import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 
 /**
  * Provides Martha, the apple pies confectioner NPC.
@@ -83,20 +79,6 @@ public class ConfectionerApplePieNPC implements ZoneConfigurator {
                 /** this is a teaser for a quest not yet available */
 				addQuest("Teraz dopracowuję przepis na mój jabłecznik, ale w przyszłości możliwe, że będę chciała spróbować czegoś nowego. Dam ci znać.");
 				addGoodbye("Uważaj na siebie!");
-
-				// (uses sorted TreeMap instead of HashMap)
-				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
-				requiredResources.put("mąka", Integer.valueOf(2));
-				requiredResources.put("miód", Integer.valueOf(1));
-				requiredResources.put("mleko", Integer.valueOf(1));
-				requiredResources.put("jajo", Integer.valueOf(1));
-				requiredResources.put("jabłko", Integer.valueOf(1));
-
-				final ProducerBehaviour behaviour = new ProducerBehaviour("martha_bake_applepie", Arrays.asList("bake", "upiecz"), "jabłecznik",
-				        requiredResources, 15 * 60);
-
-				new ProducerAdder().addProducer(this, behaviour,
-				        "Cześć! Czy przyszedłeś, aby skosztować mojego pysznego jabłecznika? Mogę upiec go dla Ciebie!");
 			}
 		};
 
