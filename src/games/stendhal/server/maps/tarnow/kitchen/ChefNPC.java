@@ -1,5 +1,5 @@
 /***************************************************************************
- *                 (C) Copyright 2019-2021 - PolanieOnLine                 *
+ *                 (C) Copyright 2021-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,11 +11,9 @@
  ***************************************************************************/
 package games.stendhal.server.maps.tarnow.kitchen;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
@@ -23,8 +21,6 @@ import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 
 public class ChefNPC implements ZoneConfigurator {
 	/**
@@ -50,20 +46,9 @@ public class ChefNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-				addGreeting("Witaj! W obecnej chwili wszyscy ludzie wraz z rycerzami są poza miastem. Podejrzewam, że niedługo oni wrócą!");
 				addJob("Jestem lokalnym kucharzem. Mimo iż dostajemy większość zapasów z Krakowa to i tak jest sporo pracy do zrobienia.");
 				addHelp("Mogę Tobie ugotować ziemniaki, powiedz mi tylko #'zrób gotowane ziemniaki'.");
 				addGoodbye();
-
-				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
-				requiredResources.put("ziemniaki", Integer.valueOf(1));
-				requiredResources.put("butelka wody", Integer.valueOf(2));
-
-				final ProducerBehaviour behaviour = new ProducerBehaviour("piotrus_make_potatoes", Arrays.asList("make", "zrób"), "gotowane ziemniaki",
-				        requiredResources, 5 * 60);
-
-				new ProducerAdder().addProducer(this, behaviour,
-						"Witaj! W obecnej chwili wszyscy ludzie wraz z rycerzami są poza miastem. Podejrzewam, że niedługo oni wrócą! Jeśli chciałbyś skosztować moje pyszne ziemniaczki powiedz mi tylko #'zrób gotowane ziemniaki'.");
 			}
 		};
 

@@ -456,4 +456,15 @@
 		</item>
 	</producer>
 
+	<!-- Szef Piotruś (Tarnów) -->
+	<producer npc="Szef Piotruś" slot="piotrus_make_potatoes" type="food">
+		<welcome text="Witaj! W obecnej chwili wszyscy ludzie wraz z rycerzami są poza miastem. Podejrzewam, że niedługo oni wrócą! Jeśli chciałbyś skosztować moje pyszne ziemniaczki powiedz mi tylko #ugotuj."/>
+		<item name="gotowane ziemniaki" quantity="5" minutes="1">
+			<resource name="ziemniaki" amount="5"/>
+			<resource name="butelka wody" amount="2"/>
+
+			<activity type="make,zrób,ugotuj"/>
+		</item>
+	</producer>
+
 </producers>
