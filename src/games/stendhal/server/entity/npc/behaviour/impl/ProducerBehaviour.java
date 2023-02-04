@@ -496,7 +496,7 @@ public class ProducerBehaviour extends TransactionBehaviour {
 			if (getRemind()) {
 				npc.say(stillWorking + " Nie zapomnij mi #'przypomnieć'...");
 			} else {
-				npc.say("Witaj z powrotem! " + stillWorking + ", aby odebrać.");
+				npc.say("Witaj z powrotem! " + stillWorking);
 			}
 		} else {
 			final StackableItem products = (StackableItem) SingletonRepository.getEntityManager().getItem(
