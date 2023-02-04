@@ -13,14 +13,11 @@ package games.stendhal.server.maps.wieliczka.blacksmith;
 
 import java.util.Arrays;
 import java.util.Map;
-import java.util.TreeMap;
 
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 
 /**
  * @author zekkeq
@@ -47,22 +44,10 @@ public class MithrilNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-				addGreeting();
 				addJob("Tworzę jedne z najlepszych strzał w całej krainie. Wykorzystuję magię do wytworzenia strzał z mithrilu.");
 				addHelp("Jeżeli jesteś zainteresowany strzałami z mithrilu to wystarczy mi powiedzieć #'zrób strzała z mithrilu'.");
 				addGoodbye();
 
-				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
-				requiredResources.put("polano", 4);
-				requiredResources.put("bryłka mithrilu", 2);
-				requiredResources.put("piórko", 2);
-				requiredResources.put("money", 8);
-
-				final ProducerBehaviour behaviour = new ProducerBehaviour("larrangin_make_mithril_arrow",
-						Arrays.asList("make", "zrób"), "strzała z mithrilu", requiredResources, 4 * 60);
-
-				new ProducerAdder().addProducer(this, behaviour,
-				        "Pozdrawiam. Sądzę, że jesteś zainteresowany strzałami z mithrilu. Jeżeli chcesz, abym wytworzył #'strzałę z mithrilu' to daj znać. Powiedz tylko #'zrób'.");
 				addReply("polano",
 						"Potrzebuję drewna na promień do strzały. Porozmawiaj z drwalem on ci powie gdzie można ścinać drzewa.");
 				addReply("piórko",

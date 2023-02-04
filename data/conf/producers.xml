@@ -490,4 +490,36 @@
 		</item>
 	</producer>
 
+	<!-- Kowal Wincenty (Wieliczka) -->
+	<producer npc="Kowal Wincenty" slot="wincenty_make_belt" type="item">
+		<welcome text="Cześć! Jestem tutejszym kowalem. Jeżeli będziesz chciał, abym zrobił dla Ciebie #bełt to daj znać!"/>
+		<item name="bełt" quantity="20" minutes="1">
+			<resource name="polano" amount="2"/>
+			<resource name="żelazo"/>
+
+			<activity type="make,zrób"/>
+		</item>
+	</producer>
+	<!-- Larrangin (Wieliczka) -->
+	<producer npc="Larrangin" slot="larrangin_make_mithril_arrow" type="item">
+		<welcome text="Pozdrawiam przybysza. Sądzę, że jesteś zainteresowany strzałami z mithrilu. Jeżeli chcesz, abym wytworzył #'strzałę z mithrilu' to daj znać. Powiedz tylko #'zrób'."/>
+		<item name="strzała z mithrilu" quantity="10" minutes="1">
+			<resource name="polano" amount="4"/>
+			<resource name="bryłka mithrilu" amount="2"/>
+			<resource name="pióro" amount="2"/>
+
+			<activity type="make,zrób"/>
+		</item>
+	</producer>
+	<!-- Agrypin (Wieliczka) -->
+	<producer npc="Agrypin" slot="agrypin_concoct_potion" type="drink">
+		<welcome text="Witaj rycerzu, nie chciałbyś czasem wypróbować mojego nowego #'eliksiru'?"/>
+		<item name="smoczy eliksir" minutes="1">
+			<resource name="money" amount="800"/>
+			<resource name="smocza krew" amount="1"/>
+
+			<activity type="concoct,zrób,sporządź"/>
+		</item>
+	</producer>
+
 </producers>

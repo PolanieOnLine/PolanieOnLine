@@ -13,14 +13,11 @@ package games.stendhal.server.maps.wieliczka.scientisthouse;
 
 import java.util.Arrays;
 import java.util.Map;
-import java.util.TreeMap;
 
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 
 /**
  * @author zekkeq
@@ -43,25 +40,14 @@ public class NaukowiecNPC implements ZoneConfigurator {
 			public void createDialog() {
 				addJob("Jestem naukowcem i udało mi się rozpracować #'smoczy eliksir'!");
 				addReply(Arrays.asList("smoczy eliksir", "smoczy", "potion", "dragon potion"),
-				"Powiedz mi tylko #'sporządź 1 smoczy eliksir'.");
+						"Powiedz mi tylko #'sporządź 1 smoczy eliksir'.");
 				addReply(Arrays.asList("krew", "krew smoka", "dragon blood", "blood"),
-				"Krew smoka możesz uzyskać tylko z najsilniejszych smoków... Powiedz mi tylko #'sporządź 1 smoczy eliksir'.");
+						"Krew smoka możesz uzyskać tylko z najsilniejszych smoków... Powiedz mi tylko #'sporządź 1 smoczy eliksir'.");
 				addReply("eliksiru",
-		        "Dobrze słyszałeś... Wynalazłem cudowną recepture, która nawet zmarłego podniesie! #'Krew smoka' daje ludzkości niesamowite efekty zdrowotne.");
+						"Dobrze słyszałeś... Wynalazłem cudowną recepture, która nawet zmarłego podniesie! #'Krew smoka' daje ludzkości niesamowite efekty zdrowotne.");
 				addOffer("Mogę sporządzić dla Ciebie #'smoczy eliksir'. Do tego będę potrzebował #'krew smoka' oraz trochę pieniędzy! Powiedz mi tylko #sporządź.");
 				addHelp("Jeżeli chcesz być mądry tak jak ja to powinieneś odwiedzić bibliotekę. Tam jest sporo pomocy naukowych.");
 				addGoodbye();
-
-				// (uses sorted TreeMap instead of HashMap)
-				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
-				requiredResources.put("money", 800);
-				requiredResources.put("smocza krew", 1);
-
-				final ProducerBehaviour behaviour = new ProducerBehaviour("agrypin_concoct_potion",
-						Arrays.asList("concoct", "sporządź"), "smoczy eliksir", requiredResources, 1 * 60);
-
-				new ProducerAdder().addProducer(this, behaviour,
-				"Witaj rycerzu, nie chciałbyś czasem spróbować mojego nowego #'eliksiru'?");
 			}
 		};
 
