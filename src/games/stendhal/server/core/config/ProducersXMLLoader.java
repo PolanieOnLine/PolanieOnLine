@@ -36,10 +36,13 @@ public class ProducersXMLLoader extends DefaultHandler {
 	private String npcName;
 
 	private String itemName;
-	private int produceQuantity;
+	private int productsPerUnit;
 
 	private Map<String, Integer> resources = new HashMap<String, Integer>();
 	private List<String> activity = new LinkedList<String>();
+
+	private int unitsPerTime;
+	private int waiting;
 	private int time;
 
 	private boolean productionTag = false;
@@ -111,20 +114,26 @@ public class ProducersXMLLoader extends DefaultHandler {
 			resources = new LinkedHashMap<String, Integer>();
 			activity = new LinkedList<String>();
 			itemName = null;
+			unitsPerTime = 0;
+			waiting = 0;
 			welcome = "";
 		} else if (qName.equals("welcome")) {
 			welcome = attrs.getValue("text");
-		} else if (qName.equals("time")) {
-			// Time in minutes
-			time = 60 * Integer.parseInt(attrs.getValue("value"));
 		} else if (qName.equals("item")) {
 			productionTag = true;
 
 			itemName = attrs.getValue("name");
-			produceQuantity = 1;
+			productsPerUnit = 1;
 			if (attrs.getValue("quantity") != null) {
-				produceQuantity = Integer.parseInt(attrs.getValue("quantity"));
+				productsPerUnit = Integer.parseInt(attrs.getValue("quantity"));
 			}
+			if (attrs.getValue("pertime") != null) {
+				unitsPerTime = Integer.parseInt(attrs.getValue("pertime"));
+			}
+			if (attrs.getValue("wait") != null) {
+				waiting = Integer.parseInt(attrs.getValue("wait"));
+			}
+			// Time in minutes
 			time = 60 * Integer.parseInt(attrs.getValue("minutes"));
 		} else if (productionTag) {
 			if (qName.equals("resource")) {
@@ -141,7 +150,8 @@ public class ProducersXMLLoader extends DefaultHandler {
 	@Override
 	public void endElement(final String namespaceURI, final String sName, final String qName) {
 		if (qName.equals("producer")) {
-			final ProducerBehaviour behaviour = new ProducerBehaviour(questSlot, activity, itemName, produceQuantity, resources, time);
+			final ProducerBehaviour behaviour =
+					new ProducerBehaviour(questSlot, activity, itemName, productsPerUnit, resources, unitsPerTime, waiting, time);
 
 			if (behaviour.getProductionActivity() == activity) {
 				SingletonRepository.getCachedActionManager().register(new Runnable() {

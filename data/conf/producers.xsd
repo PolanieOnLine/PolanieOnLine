@@ -18,6 +18,7 @@
 		<attribute name="npc" type="string" use="required"/>
 		<attribute name="slot" type="string" use="required"/>
 		<attribute name="type" type="Q2:ProductType" use="required"/>
+		<attribute name="remind" type="boolean" use="optional"/>
 		<attribute name="condition" type="string" use="optional"/>
 	</complexType>
 
@@ -28,6 +29,8 @@
 		</sequence>
 		<attribute name="name" type="string" use="required"/>
 		<attribute name="quantity" type="positiveInteger" use="optional"/>
+		<attribute name="pertime" type="positiveInteger" use="optional"/>
+		<attribute name="wait" type="positiveInteger" use="optional"/>
 		<attribute name="minutes" type="positiveInteger" use="required"/>
 	</complexType>
 

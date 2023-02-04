@@ -12,28 +12,16 @@
 package games.stendhal.server.maps.kalavan.citygardens;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
-import games.stendhal.common.MathHelper;
-import games.stendhal.common.grammar.Grammar;
-import games.stendhal.common.grammar.ItemParserResult;
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
-import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.npc.ConversationPhrases;
-import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
-import games.stendhal.server.entity.player.Player;
-import games.stendhal.server.util.TimeUtil;
 
 /**
  * Builds the gardener in Kalavan city gardens.
@@ -41,9 +29,6 @@ import games.stendhal.server.util.TimeUtil;
  * @author kymara
  */
 public class GardenerNPC implements ZoneConfigurator {
-	private static final String QUEST_SLOT = "sue_swap_kalavan_city_scroll";
-    private static final Integer MAX_LUNCHES = 7;
-
 	/**
 	 * Configure a zone.
 	 *
@@ -76,130 +61,24 @@ public class GardenerNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-				class SpecialProducerBehaviour extends ProducerBehaviour {
-					SpecialProducerBehaviour(final List<String> productionActivity,
-                        final String productName, final Map<String, Integer> requiredResourcesPerItem,
-											 final int productionTimePerItem) {
-						super(QUEST_SLOT, productionActivity, productName,
-							  requiredResourcesPerItem, productionTimePerItem, false);
-					}
-
-					@Override
-						public boolean askForResources(ItemParserResult res, final EventRaiser npc, final Player player) {
-						int amount = res.getAmount();
-
-						if (player.hasQuest(QUEST_SLOT) && player.getQuest(QUEST_SLOT).startsWith("done;")) {
-							// she is eating. number of lunches is in tokens[1]
-							final String[] tokens = player.getQuest(QUEST_SLOT).split(";");
-							// delay is number of lunches * one day - eats one lunch per day
-							final long delay = (Long.parseLong(tokens[1])) * MathHelper.MILLISECONDS_IN_ONE_DAY;
-							final long timeRemaining = (Long.parseLong(tokens[2]) + delay)
-								- System.currentTimeMillis();
-							if (timeRemaining > 0) {
-								npc.say("Wciąż jem drugie śniadanie, które ostatnio mi przyniosłeś. Wystarczy mi go na następne "
-                                        + TimeUtil.approxTimeUntil((int) (timeRemaining / 1000))
-                                        + "!");
-                                return false;
-							}
-					    }
-						if (amount > MAX_LUNCHES) {
-							npc.say("Nie mogę wziąć więcej kanapek niż raz na tydzień! Staną się czerstwe!");
-							return false;
-						} else if (getMaximalAmount(player) < amount) {
-							npc.say("Chciałbym tylko " + getProductionActivity() + " "
-									+ Grammar.quantityplnoun(amount, getProductName())
-									+ " jeżeli mi przyniesiesz "
-									+ getRequiredResourceNamesWithHashes(amount) + ".");
-							return false;
-						} else {
-							res.setAmount(amount);
-							npc.say("W takim razie chcę "
-									+ getRequiredResourceNamesWithHashes(amount)
-									+ ". Przyniesiesz to?");
-							return true;
-						}
-					}
-
-					@Override
-					public boolean transactAgreedDeal(ItemParserResult res, final EventRaiser npc, final Player player) {
-						int amount = res.getAmount();
-
-						if (getMaximalAmount(player) < amount) {
-							// The player tried to cheat us by placing the resource
-							// onto the ground after saying "yes"
-							npc.say("Hej! Tutaj jestem! Lepiej nie próbuj mnie oszukać...");
-							return false;
-						} else {
-							for (final Map.Entry<String, Integer> entry : getRequiredResourcesPerUnit().entrySet()) {
-                                final int amountToDrop = amount * entry.getValue();
-                                player.drop(entry.getKey(), amountToDrop);
-							}
-							final long timeNow = new Date().getTime();
-							player.setQuest(QUEST_SLOT, amount + ";" + getProductName() + ";"
-											+ timeNow);
-							npc.say("Dziękuję! Wróć za "
-									+ getApproximateRemainingTime(player) + ", a będę miał dla Ciebie "
-									+ Grammar.quantityplnoun(amount, getProductName()) + ".");
-							return true;
-						}
-					}
-
-					@Override
-					public void giveProduct(final EventRaiser npc, final Player player) {
-						final String orderString = player.getQuest(QUEST_SLOT);
-						final String[] order = orderString.split(";");
-						final int numberOfProductItems = Integer.parseInt(order[0]);
-						// String productName = order[1];
-						final long orderTime = Long.parseLong(order[2]);
-						final long timeNow = new Date().getTime();
-						if (timeNow - orderTime < getProductionTime(numberOfProductItems) * 1000) {
-							npc.say("Witaj ponownie! Oo wciąż nie mam twoich zwojów! Wróć za "
-									+ getApproximateRemainingTime(player) + ", aby je odebrać.");
-						} else {
-                        final StackableItem products = (StackableItem) SingletonRepository.getEntityManager().getItem(
-                                        getProductName());
-
-                        products.setQuantity(numberOfProductItems);
-
-                        if (isProductBound()) {
-							products.setBoundTo(player.getName());
-                        }
-
-                        player.equipOrPutOnGround(products);
-                        npc.say("Witaj z powrotem! Schowałem drugie śniadanie na później. W zamian weź "
-								+ Grammar.quantityplnoun(numberOfProductItems,
-                                                        getProductName()) + ".");
-                        // store the number of lunches given and the time so we know how long she eats for
-						player.setQuest(QUEST_SLOT, "done" + ";" + numberOfProductItems + ";"
-										+ System.currentTimeMillis());
-                        // give some XP as a little bonus for industrious workers
-                        player.addXP(15 * numberOfProductItems);
-                        player.notifyWorldAboutChanges();
-						}
-					}
-				}
-
 				addReply(ConversationPhrases.YES_MESSAGES, "Bardzo ciepło...");
 				addReply(ConversationPhrases.NO_MESSAGES, "Lepszy niż deszczowy!");
 				addJob("Jestem ogrodnikiem. Mam nadzieję, że podobają Ci się rabatki.");
 				addHelp("Jeżeli przyniesiesz mi #drugie #śniadanie to wymienię go na magiczny zwój. Powiedz tylko #wymień.");
-				addOffer("Moje pomidory i czosnek mają się dobrze. Mam wystarczająco dużo, aby trochę sprzedać." +
-									"Mógłbym również *kaszel* sprzedać trochę papryki habanero i fasoli pinto... " +
-									"Jeśli chciałbyś #kupić specjalne składniki na skromny posiłek!");
-				addReply(Arrays.asList("drugie", "śniadanie", "lunch"), "Poproszę filiżankę herbaty!");
-				addReply(Arrays.asList("sandwich", "kanapka"), "Mmm.. Chciałbym z szynką i serem.");
-				addReply(Arrays.asList("zwój kalavan", "scroll"), "To magiczny zwój, który może cię zabrać do Kalavan. Nie pytaj mnie jak działa!");
-
-				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
-				requiredResources.put("filiżanka herbaty", 1);
-				requiredResources.put("kanapka", 1);
-
-				final ProducerBehaviour behaviour = new SpecialProducerBehaviour(Arrays.asList("swap", "wymień"), "zwój kalavan", requiredResources, 1 * 60);
-
-				new ProducerAdder().addProducer(this, behaviour,
-				        "Piękny [daylightphase]. Nieprawdaż?");
-				addQuest("Kocham filiżankę #herbaty. Przy uprawianiu ogrodu zawsze chce się pić. Jeżeli przyniesiesz mi też #sandwich to wymienię ją za magiczny zwój. Powiedz tylko #wymień.");
-				addReply(Arrays.asList("tea", "cup of tea", "herbata", "herbaty", "filiżanka herbaty"), "Starsza Granny Graham może zaparzyć filiżankę herbaty. Ona jest tam w tej dużej chacie.");
+				addOffer("Moje pomidory i czosnek mają się dobrze. Mam wystarczająco dużo, aby trochę sprzedać."
+						+ " Mógłbym również *kaszel* sprzedać trochę papryki habanero i fasoli pinto..."
+						+ " Jeśli chciałbyś #kupić specjalne składniki na skromny posiłek!");
+				addReply(Arrays.asList("drugie", "śniadanie", "lunch"),
+						"Poproszę filiżankę herbaty!");
+				addReply(Arrays.asList("sandwich", "kanapka"),
+						"Mmm.. Chciałbym z szynką i serem.");
+				addReply(Arrays.asList("zwój kalavan", "scroll"),
+						"To magiczny zwój, który może cię zabrać do Kalavan. Nie pytaj mnie jak działa!");
+				addQuest("Kocham filiżankę #herbaty. Przy uprawianiu ogrodu zawsze chce się pić."
+						+ " Jeżeli przyniesiesz mi też #sandwich to wymienię ją za magiczny zwój."
+						+ " Powiedz tylko #wymień.");
+				addReply(Arrays.asList("tea", "cup of tea", "herbata", "herbaty", "filiżanka herbaty"),
+						"Starsza Granny Graham może zaparzyć filiżankę herbaty. Ona jest tam w tej dużej chacie.");
 				addGoodbye("Do widzenia. Podziwiaj resztę ogrodów.");
 			}
 		};
@@ -210,5 +89,4 @@ public class GardenerNPC implements ZoneConfigurator {
 		npc.setPosition(100, 123);
 		zone.add(npc);
 	}
-
 }

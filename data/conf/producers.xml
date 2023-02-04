@@ -149,6 +149,17 @@
 		</item>
 	</producer>
 
+	<!-- Sue (Kalavan) -->
+	<producer npc="Sue" slot="sue_swap_kalavan_city_scroll" type="item">
+		<welcome text="Piękny [daylightphase]. Nieprawdaż?"/>
+		<item name="zwój kalavan" pertime="7" wait="24" minutes="1">
+			<resource name="filiżanka herbaty" amount="1"/>
+			<resource name="kanapka" amount="1"/>
+
+			<activity type="swap,zamień"/>
+		</item>
+	</producer>
+
 	<!-- Ernest (Gdańsk) -->
 	<producer npc="Ernest" slot="ernest_make_donuts" type="food">
 		<welcome text="Witaj w mojej piekarni, gdzie robię ciasto o przepysznej nazwie #pizza oraz #'pączki'!"/>

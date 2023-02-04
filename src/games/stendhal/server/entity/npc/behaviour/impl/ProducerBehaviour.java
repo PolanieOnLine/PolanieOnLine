@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import games.stendhal.common.MathHelper;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.grammar.ItemParserResult;
 import games.stendhal.common.parser.ExpressionType;
@@ -66,6 +67,12 @@ public class ProducerBehaviour extends TransactionBehaviour {
 	/** Item count per produced unit. */
 	private final int productsPerUnit;
 
+	/** Max produced items per time. */
+	private final int unitsPerTime;
+
+	/** Waiting time to produce another items. */
+	private final int waitingTime;
+
 	/**
 	 * Whether the produced item should be player bound.
 	 */
@@ -108,7 +115,69 @@ public class ProducerBehaviour extends TransactionBehaviour {
 			final Map<String, Integer> requiredResourcesPerUnit,
 			final int productionTimePerUnit) {
 		this(questSlot, productionActivity, productName, productsPerUnit,
-				requiredResourcesPerUnit, productionTimePerUnit, false);
+				requiredResourcesPerUnit, 0, 0, productionTimePerUnit, false);
+	}
+
+	/**
+	 * Creates a new ProducerBehaviour.
+	 *
+	 * @param questSlot
+	 *            the slot that is used to store the status
+	 * @param productionActivity
+	 *            the name of the activity, e.g. "build", "forge", "bake"
+	 * @param productName
+	 *            the name of the product, e.g. "plate armor". It must be a
+	 *            valid item name.
+	 * @param productsPerUnit
+	 *            Item count per production.
+	 * @param requiredResourcesPerUnit
+	 *            a mapping which maps the name of each required resource (e.g.
+	 *            "iron ore") to the amount of this resource that is required
+	 *            for one unit of the product.
+	 * @param unitsPerTime
+	 *            Max units to produce item at same time.
+	 * @param productionTimePerUnit
+	 *            the number of seconds required to produce one unit of the
+	 *            product.
+	 */
+	public ProducerBehaviour(final String questSlot, final List<String> productionActivity,
+			final String productName, final int productsPerUnit,
+			final Map<String, Integer> requiredResourcesPerUnit, final int unitsPerTime,
+			final int productionTimePerUnit) {
+		this(questSlot, productionActivity, productName, productsPerUnit,
+				requiredResourcesPerUnit, unitsPerTime, 0, productionTimePerUnit, false);
+	}
+
+	/**
+	 * Creates a new ProducerBehaviour.
+	 *
+	 * @param questSlot
+	 *            the slot that is used to store the status
+	 * @param productionActivity
+	 *            the name of the activity, e.g. "build", "forge", "bake"
+	 * @param productName
+	 *            the name of the product, e.g. "plate armor". It must be a
+	 *            valid item name.
+	 * @param productsPerUnit
+	 *            Item count per production.
+	 * @param requiredResourcesPerUnit
+	 *            a mapping which maps the name of each required resource (e.g.
+	 *            "iron ore") to the amount of this resource that is required
+	 *            for one unit of the product.
+	 * @param unitsPerTime
+	 *            Max units to produce item at same time.
+	 * @param waitingTime
+	 *            Waiting time to produce another items.
+	 * @param productionTimePerUnit
+	 *            the number of seconds required to produce one unit of the
+	 *            product.
+	 */
+	public ProducerBehaviour(final String questSlot, final List<String> productionActivity,
+			final String productName, final int productsPerUnit,
+			final Map<String, Integer> requiredResourcesPerUnit, final int unitsPerTime,
+			final int waitingTime, final int productionTimePerUnit) {
+		this(questSlot, productionActivity, productName, productsPerUnit,
+				requiredResourcesPerUnit, unitsPerTime, waitingTime, productionTimePerUnit, false);
 	}
 
 	/**
@@ -161,7 +230,7 @@ public class ProducerBehaviour extends TransactionBehaviour {
 	 */
 	public ProducerBehaviour(final String questSlot, final List<String> productionActivity,
 			final String productName, final int productsPerUnit, final Map<String, Integer> requiredResourcesPerUnit,
-			final int productionTimePerUnit, final boolean productBound) {
+			final int unitsPerTime, final int waitingTime, final int productionTimePerUnit, final boolean productBound) {
 		super(productName);
 
 		this.questSlot = questSlot;
@@ -169,6 +238,8 @@ public class ProducerBehaviour extends TransactionBehaviour {
 		this.productName = productName;
 		this.productsPerUnit = productsPerUnit;
 		this.requiredResourcesPerUnit = requiredResourcesPerUnit;
+		this.unitsPerTime = unitsPerTime;
+		this.waitingTime = waitingTime;
 		this.productionTimePerUnit = productionTimePerUnit;
 		this.productBound = productBound;
 
@@ -204,7 +275,7 @@ public class ProducerBehaviour extends TransactionBehaviour {
 	public ProducerBehaviour(final String questSlot, final List<String> productionActivity,
 			final String productName, final Map<String, Integer> requiredResourcesPerUnit,
 			final int productionTimePerUnit, final boolean productBound) {
-		this(questSlot, productionActivity, productName, 1, requiredResourcesPerUnit,
+		this(questSlot, productionActivity, productName, 1, requiredResourcesPerUnit, 0, 0,
 				productionTimePerUnit, productBound);
 	}
 
@@ -231,6 +302,14 @@ public class ProducerBehaviour extends TransactionBehaviour {
 
 	private int getProductsPerUnit() {
 		return productsPerUnit;
+	}
+
+	private int getUnitsPerTime() {
+		return unitsPerTime;
+	}
+
+	private int getWaitingTime() {
+		return waitingTime;
 	}
 
 	public int getProductionTime(final int amount) {
@@ -366,8 +445,26 @@ public class ProducerBehaviour extends TransactionBehaviour {
 	public boolean askForResources(final ItemParserResult res, final EventRaiser npc, final Player player) {
 		int amount = res.getAmount();
 		final int perUnit = getProductsPerUnit();
+		final int perTime = getUnitsPerTime();
 
-		if (amount % perUnit != 0) {
+		if (getWaitingTime() > 0) {
+			if (player.hasQuest(getQuestSlot()) && player.getQuest(getQuestSlot()).startsWith("done;")) {
+				final String[] tokens = player.getQuest(getQuestSlot()).split(";");
+				final long delay = (Long.parseLong(tokens[1])) * (MathHelper.MILLISECONDS_IN_ONE_HOUR * getWaitingTime());
+				final long timeRemaining = (Long.parseLong(tokens[2]) + delay) - System.currentTimeMillis();
+				if (timeRemaining > 0) {
+					npc.say("Wciąż jestem " + Grammar.genderVerb(npc.getGender(), "zajęty")
+						+ " poprzednimi. Wróć proszę za "
+						+ TimeUtil.approxTimeUntil((int) (timeRemaining / 1000)) + ".");
+					return false;
+				}
+			}
+		}
+
+		if ((perTime > 0) && (amount > perTime)) {
+			npc.say("Wybacz, ale nie mogę przyjąć więcej niżeli " + perTime + " naraz!");
+			return false;
+		} else if (amount % perUnit != 0) {
 			npc.say("Mogę wykonać "
 					+ Grammar.plural(getProductName())
 					+ " jedynie w ilościach podzielnych przez " + perUnit + ".");
@@ -382,7 +479,7 @@ public class ProducerBehaviour extends TransactionBehaviour {
 			res.setAmount(amount);
 			npc.say("Potrzebuję, abyś " + Grammar.genderVerb(player.getGender(), "przyniósł") + " mi "
 					+ getRequiredResourceNamesWithHashes(amount)
-					+ " do tej pracy, która zajmie " + TimeUtil.approxTimeUntil(getProductionTime(amount)) + ". Czy masz to co potrzebuję?");
+					+ " do tej pracy, która zajmie " + TimeUtil.approxTimeUntil(getProductionTime(amount)) + ". Posiadasz to przy sobie?");
 			return true;
 		}
 	}
@@ -409,10 +506,9 @@ public class ProducerBehaviour extends TransactionBehaviour {
 				player.drop(entry.getKey(), amountToDrop);
 			}
 			final long timeNow = new Date().getTime();
-			final int amountToProduce = res.getAmount() * productsPerUnit;
-			player.setQuest(questSlot, amountToProduce + ";" + getProductName() + ";" + timeNow);
+			player.setQuest(questSlot, res.getAmount() + ";" + getProductName() + ";" + timeNow);
 			npc.say("Dobrze, zrobię dla Ciebie "
-					+ Grammar.quantityplnoun(amountToProduce, getProductName())
+					+ Grammar.quantityplnoun(res.getAmount(), getProductName())
 					+ ", ale zajmie mi to trochę czasu. Wróć za "
 					+ getApproximateRemainingTime(player) + ".");
 			return true;
@@ -452,9 +548,14 @@ public class ProducerBehaviour extends TransactionBehaviour {
 			if (player.equipToInventoryOnly(products)) {
 				npc.say("Witaj z powrotem! " + Grammar.genderVerb(npc.getGender(), "Skończyłem") + " twoje zlecenie. Trzymaj, oto "
 					+ Grammar.quantityplnoun(numberOfProductItems, getProductName()) + ".");
-				player.setQuest(questSlot, "done");
-				// give some XP as a little bonus for industrious workers
-				player.addXP(numberOfProductItems);
+				if (getWaitingTime() > 0) {
+					player.setQuest(questSlot, "done" + ";" + numberOfProductItems + ";" + System.currentTimeMillis());
+					player.addXP(15 * numberOfProductItems);
+				} else {
+					player.setQuest(questSlot, "done");
+					// give some XP as a little bonus for industrious workers
+					player.addXP(numberOfProductItems);
+				}
 				player.notifyWorldAboutChanges();
 				player.incProducedForItem(getProductName(), products.getQuantity());
 			} else {
