@@ -16,6 +16,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static utilities.SpeakerNPCTestHelper.getReply;
 
+import java.util.Arrays;
+import java.util.Map;
+import java.util.TreeMap;
+
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -23,6 +27,7 @@ import org.junit.Test;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.SpeakerNPC;
+import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 import games.stendhal.server.entity.npc.fsm.Engine;
 import games.stendhal.server.entity.npc.quest.BuiltQuest;
 import games.stendhal.server.entity.player.Player;
@@ -43,6 +48,8 @@ public class KillGnomesTest {
 	private Engine en = null;
 	private static String questSlot;
 
+	private static String greetings = "Pozdrawiam! Zwiem się Jenny jestem szefową tutejszego młyna. Jeżeli przyniesiesz mi #kłosy zboża to zmielę je dla Ciebie na mąkę. Powiedz tylko #zmiel ilość #mąka.";
+
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		QuestHelper.setUpBeforeClass();
@@ -59,6 +66,12 @@ public class KillGnomesTest {
 		player = PlayerTestHelper.createPlayer("bob");
 		npc = SingletonRepository.getNPCList().get("Jenny");
 		en = npc.getEngine();
+
+		final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
+		requiredResources.put("ser", 1);
+
+		SingletonRepository.getProducerRegister().configureNPC(
+				"Jenny", new ProducerBehaviour("jenny_test", Arrays.asList("mill"), "mąka", requiredResources, 0), greetings);
 	}
 
 
@@ -70,7 +83,7 @@ public class KillGnomesTest {
 
 		// Ask for the quest
 		en.step(player, "hi");
-		assertEquals("Pozdrawiam! Nazywam się Jenny jestem szefową tutejszego młyna. Jeżeli przyniesiesz mi #kłosy zboża to zmielę je dla Ciebie na mąkę. Powiedz tylko #zmiel ilość #mąka.", getReply(npc));
+		assertEquals(greetings, getReply(npc));
 		en.step(player, "task");
 		assertEquals("Gnomy kradną marchewki z naszej farmy na północ od Semos. Potrzebują chyba dobrej lekcji. Pomożesz?", getReply(npc));
 
@@ -90,7 +103,7 @@ public class KillGnomesTest {
 	public void returnWithoutCompleting() {
 		player.setQuest(questSlot, QUEST_VALUE_STARTED);
 		en.step(player, "hi");
-		assertEquals("Pozdrawiam! Nazywam się Jenny jestem szefową tutejszego młyna. Jeżeli przyniesiesz mi #kłosy zboża to zmielę je dla Ciebie na mąkę. Powiedz tylko #zmiel ilość #mąka.", getReply(npc));
+		assertEquals(greetings, getReply(npc));
 		en.step(player, "done");
 		assertEquals("Musisz nauczyć te zuchwałe gnomy lekcji zabijając kilku dla przykładu! Upewnij się, że dostałeś kilku liderów, co najmniej jednego zwiadowcę i jednego kawalerzystę.", getReply(npc));
 		en.step(player, "bye");
@@ -129,7 +142,7 @@ public class KillGnomesTest {
 
 		// ask for quest again
 		en.step(player, "hi");
-		assertEquals("Pozdrawiam! Nazywam się Jenny jestem szefową tutejszego młyna. Jeżeli przyniesiesz mi #kłosy zboża to zmielę je dla Ciebie na mąkę. Powiedz tylko #zmiel ilość #mąka.", getReply(npc));
+		assertEquals(greetings, getReply(npc));
 		en.step(player, "task");
 		assertEquals("Gnomy nie sprawiają problemu od momentu, gdy pokazałeś im czym jest pokora.", getReply(npc));
 

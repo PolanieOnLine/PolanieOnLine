@@ -86,7 +86,7 @@ public class SellerBehaviourTest {
 		assertEquals("Nie sprzedaję eliksiry.", getReply(npc));
 
 	    npc.getEngine().step(player, "buy napój z winogron");
-		assertEquals("Nie sprzedaję napóje z winogron.", getReply(npc));
+		assertEquals("Nie sprzedaję napojów z winogron.", getReply(npc));
 
 	    npc.getEngine().step(player, "buy sztylecik");
 		assertEquals("Sztylecik kosztuje 200 monet. Chcesz to kupić?", getReply(npc));

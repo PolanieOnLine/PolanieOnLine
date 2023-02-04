@@ -43,13 +43,14 @@ import utilities.QuestHelper;
 import utilities.RPClass.ItemTestHelper;
 
 public class HungryJoshuaTest {
-
-
 	private static String questSlot = "hungry_joshua";
 
 	private Player player = null;
 	private SpeakerNPC npc = null;
 	private Engine en = null;
+
+	private static String xoderos_greet = "Witaj! Przykro mi to mówić, ale z powodu trwającej wojny nie wolno mi sprzedawać broni nikomu spoza grona oficjalnych wojskowych. Mogę odlać dla Ciebie żelazo, a może interesuję Cię moja #oferta specjalna? Powiedz tylko #odlej.";
+	private static String joshua_greet = "Cześć! Jestem tutejszym złotnikiem. Jeżeli będziesz chciał, abym odlał dla Ciebie #sztabkę #złota to daj znać! Wystarczy, że powiesz #odlej.";
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -69,6 +70,14 @@ public class HungryJoshuaTest {
 	@Before
 	public void setUp() {
 		player = PlayerTestHelper.createPlayer("player");
+
+		final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
+		requiredResources.put("ser", 1);
+
+		SingletonRepository.getProducerRegister().configureNPC(
+			"Xoderos", new ProducerBehaviour("xoderos_test", Arrays.asList("cast"), "ser", requiredResources, 0), xoderos_greet);
+		SingletonRepository.getProducerRegister().configureNPC(
+			"Joshua", new ProducerBehaviour("joshua_cast_gold", Arrays.asList("cast"), "sztabka złota", requiredResources, 0), joshua_greet);
 	}
 
 	/**
@@ -119,20 +128,12 @@ public class HungryJoshuaTest {
 		npc = SingletonRepository.getNPCList().get("Joshua");
 		en = npc.getEngine();
 
-		String greeting = "Cześć! Jestem tutejszym złotnikiem. Jeżeli będziesz chciał, abym odlał dla Ciebie #sztabkę #złota to daj znać! Wystarczy, że powiesz #odlej.";
-
-		final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
-		requiredResources.put("ser", 1);
-		final ProducerBehaviour behaviour = new ProducerBehaviour("joshua_cast_gold", Arrays.asList("cast"),
-				"sztabka złota", requiredResources, 0);
-		SingletonRepository.getProducerRegister().configureNPC(npc.getName(), behaviour, greeting);
-
 		Item item = ItemTestHelper.createItem("kanapka", 5);
 		player.getSlot("bag").add(item);
 		final int xp = player.getXP();
 
 		en.step(player, "hi");
-		assertEquals(greeting, getReply(npc));
+		assertEquals(joshua_greet, getReply(npc));
 		en.step(player, "food");
 		assertEquals("Och wspaniale! Czy mój brat Xoderos przysłał Ciebie z tymi kanapkami?", getReply(npc));
 		en.step(player, "yes");

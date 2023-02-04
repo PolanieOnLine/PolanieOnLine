@@ -198,6 +198,14 @@ public class QuestRunner {
 	}
 
 	public static void doQuestHungryJoshua(final Player player) {
+		final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
+		requiredResources.put("ser", 1);
+
+		SingletonRepository.getProducerRegister().configureNPC(
+				"Xoderos", new ProducerBehaviour("xoderos_test", Arrays.asList("cast"), "ser", requiredResources, 0), "");
+		SingletonRepository.getProducerRegister().configureNPC(
+				"Joshua", new ProducerBehaviour("joshua_test", Arrays.asList("cast"), "ser", requiredResources, 0), "");
+
 		final String questSlot = "hungry_joshua";
 		final SpeakerNPC xoderos = getSpeakerNPC("Xoderos");
 		Engine en = xoderos.getEngine();
@@ -208,10 +216,6 @@ public class QuestRunner {
 		en.step(player, "bye");
 		equipWithStackableItem(player, "kanapka", 5);
 		en = getSpeakerNPC("Joshua").getEngine();
-		final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
-		requiredResources.put("ser", 1);
-		final ProducerBehaviour behaviour = new ProducerBehaviour("joshua_test", Arrays.asList(""), "", requiredResources, 0);
-		SingletonRepository.getProducerRegister().configureNPC("Joshua", behaviour, "");
 		en.step(player, "hi");
 		en.step(player, "kanapka");
 		en.step(player, "yes");
@@ -404,6 +408,12 @@ public class QuestRunner {
 	public static void doQuestPizzaDelivery(final Player player) {
 		final String questSlot = "pizza_delivery";
 		Engine en = getSpeakerNPC("Leander").getEngine();
+		
+		final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
+		requiredResources.put("ser", 1);
+		SingletonRepository.getProducerRegister().configureNPC(
+				"Leander", new ProducerBehaviour("leander_test", Arrays.asList("cast"), "ser", requiredResources, 0), "");
+		
 		en.step(player, "hi");
 		en.step(player, "quest");
 		en.step(player, "yes");

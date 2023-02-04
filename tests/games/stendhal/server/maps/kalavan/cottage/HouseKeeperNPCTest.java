@@ -18,10 +18,16 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static utilities.SpeakerNPCTestHelper.getReply;
 
+import java.util.Arrays;
+import java.util.Map;
+import java.util.TreeMap;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.npc.SpeakerNPC;
+import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 import games.stendhal.server.entity.npc.fsm.Engine;
 import utilities.PlayerTestHelper;
 import utilities.QuestHelper;
@@ -33,10 +39,10 @@ import utilities.ZonePlayerAndNPCTestImpl;
  * @author Martin Fuchs
  */
 public class HouseKeeperNPCTest extends ZonePlayerAndNPCTestImpl {
-
 	private static final String ZONE_NAME = "0_kalavan_city_gardens";
-
 	private static final String QUEST_SLOT = "granny_brew_tea";
+	
+	private static String greetings = "Cześć. W czymś mogłabym #pomóc?";
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -56,11 +62,18 @@ public class HouseKeeperNPCTest extends ZonePlayerAndNPCTestImpl {
 	@Test
 	public void testHiAndBye() {
 		final SpeakerNPC npc = getNPC("babcia Graham");
+		final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
+		requiredResources.put("mleko", 1);
+		requiredResources.put("miód", 1);
+
+		SingletonRepository.getProducerRegister().configureNPC(
+			npc.getName(), new ProducerBehaviour(QUEST_SLOT, Arrays.asList("brew"), "filiżanka herbaty", requiredResources, 3*60), greetings);
+
 		assertNotNull(npc);
 		final Engine en = npc.getEngine();
 
 		assertTrue(en.step(player, "hello"));
-		assertEquals("Cześć.", getReply(npc));
+		assertEquals(greetings, getReply(npc));
 
 		assertTrue(en.step(player, "bye"));
 		assertEquals("Do widzenia.", getReply(npc));
@@ -74,8 +87,15 @@ public class HouseKeeperNPCTest extends ZonePlayerAndNPCTestImpl {
 		final SpeakerNPC npc = getNPC("babcia Graham");
 		final Engine en = npc.getEngine();
 
+		final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
+		requiredResources.put("mleko", 1);
+		requiredResources.put("miód", 1);
+
+		SingletonRepository.getProducerRegister().configureNPC(
+			npc.getName(), new ProducerBehaviour(QUEST_SLOT, Arrays.asList("brew"), "filiżanka herbaty", requiredResources, 0), greetings);
+
 		assertTrue(en.step(player, "hi"));
-		assertEquals("Cześć.", getReply(npc));
+		assertEquals(greetings, getReply(npc));
 
 		assertTrue(en.step(player, "job"));
 		assertEquals("Jestem gospodynią domową. Mogę zaparzyć filiżankę świeżej #herbaty o ile chcesz. Powiedz tylko #zaparz.", getReply(npc));
@@ -104,13 +124,13 @@ public class HouseKeeperNPCTest extends ZonePlayerAndNPCTestImpl {
 		PlayerTestHelper.equipWithItem(player, "miód");
 
 		assertTrue(en.step(player, "brew"));
-		assertEquals("Potrzebuję, abyś przyniósł mi 1 #miód oraz 1 #mleko do tej pracy, która zajmie 3 minuty. Czy masz to co potrzebuję?", getReply(npc));
+		assertEquals("Potrzebuję, abyś przyniósł mi 1 #miód oraz 1 #mleko do tej pracy, która zajmie 3 minuty. Posiadasz to przy sobie?", getReply(npc));
 
 		assertTrue(en.step(player, "no"));
 		assertEquals("Dobrze, nie ma problemu.", getReply(npc));
 
 		assertTrue(en.step(player, "brew"));
-		assertEquals("Potrzebuję, abyś przyniósł mi 1 #miód oraz 1 #mleko do tej pracy, która zajmie 3 minuty. Czy masz to co potrzebuję?", getReply(npc));
+		assertEquals("Potrzebuję, abyś przyniósł mi 1 #miód oraz 1 #mleko do tej pracy, która zajmie 3 minuty. Posiadasz to przy sobie?", getReply(npc));
 
 		assertTrue(en.step(player, "yes"));
 		assertEquals("Dobrze zrobię dla Ciebie filiżanka herbaty, ale zajmie mi to trochę czasu. Wróć za 3 minuty.", getReply(npc));
@@ -148,8 +168,15 @@ public class HouseKeeperNPCTest extends ZonePlayerAndNPCTestImpl {
 		final SpeakerNPC npc = getNPC("babcia Graham");
 		final Engine en = npc.getEngine();
 
+		final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
+		requiredResources.put("mleko", 1);
+		requiredResources.put("miód", 1);
+
+		SingletonRepository.getProducerRegister().configureNPC(
+			npc.getName(), new ProducerBehaviour(QUEST_SLOT, Arrays.asList("brew"), "filiżanka herbaty", requiredResources, 0), greetings);
+
 		assertTrue(en.step(player, "hi babcia Graham"));
-		assertEquals("Cześć.", getReply(npc));
+		assertEquals(greetings, getReply(npc));
 
 		// Currently there are no response to buy sentences for Granny Graham.
 		assertFalse(en.step(player, "buy"));
@@ -166,8 +193,15 @@ public class HouseKeeperNPCTest extends ZonePlayerAndNPCTestImpl {
 		final SpeakerNPC npc = getNPC("babcia Graham");
 		final Engine en = npc.getEngine();
 
+		final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
+		requiredResources.put("mleko", 1);
+		requiredResources.put("miód", 1);
+
+		SingletonRepository.getProducerRegister().configureNPC(
+			npc.getName(), new ProducerBehaviour(QUEST_SLOT, Arrays.asList("brew"), "filiżanka herbaty", requiredResources, 0), greetings);
+
 		assertTrue(en.step(player, "hi babcia Graham"));
-		assertEquals("Cześć.", getReply(npc));
+		assertEquals(greetings, getReply(npc));
 
 		// Currently there are no response to sell sentences for Granny Graham.
 		assertFalse(en.step(player, "sell"));

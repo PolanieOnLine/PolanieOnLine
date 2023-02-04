@@ -5,6 +5,10 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static utilities.SpeakerNPCTestHelper.getReply;
 
+import java.util.Arrays;
+import java.util.Map;
+import java.util.TreeMap;
+
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -12,6 +16,7 @@ import org.junit.Test;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.SpeakerNPC;
+import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 import games.stendhal.server.entity.npc.fsm.Engine;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.semos.bakery.ChefNPC;
@@ -33,7 +38,6 @@ public class HolidayingWomanNPCTest extends ZonePlayerAndNPCTestImpl {
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		QuestHelper.setUpBeforeClass();
-
 		setupZone(ZONE_NAME, new HolidayingWomanNPC(), new ChefNPC(), new ShopAssistantNPC());
 	}
 
@@ -45,6 +49,18 @@ public class HolidayingWomanNPCTest extends ZonePlayerAndNPCTestImpl {
 		player = createPlayer("player");
 		aliceNpc = SingletonRepository.getNPCList().get("Alice Farmer");
 		aliceEngine = aliceNpc.getEngine();
+
+		final Map<String, Integer> chleb = new TreeMap<String, Integer>();
+		chleb.put("mąka", 2);
+		final Map<String, Integer> kanapka = new TreeMap<String, Integer>();
+		kanapka.put("ser", 2);
+		kanapka.put("chleb", 1);
+		kanapka.put("szynka", 1);
+
+		SingletonRepository.getProducerRegister().configureNPC(
+				"Leander", new ProducerBehaviour("leander_test", Arrays.asList("make"), "kanapka", kanapka, 0), "");
+		SingletonRepository.getProducerRegister().configureNPC(
+				"Erna", new ProducerBehaviour("erna_test", Arrays.asList("make"), "chleb", chleb, 0), "");
 	}
 
 	public HolidayingWomanNPCTest() {
