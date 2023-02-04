@@ -136,7 +136,7 @@ public class SuntanCreamForZaraTest {
 		en.step(player, "mix");
 		assertEquals("Potrzebuję, abyś przyniósł mi 1 #'mały eliksir', 1 #arandula, oraz 1 #kokuda do tej pracy, która zajmie 10 minut. Posiadasz to przy sobie?", getReply(npc));
 		en.step(player, "yes");
-		assertEquals("Dobrze zrobię dla Ciebie olejek do opalania, ale zajmie mi to trochę czasu. Wróć za 10 minut.", getReply(npc));
+		assertEquals("Dobrze, zrobię dla Ciebie olejek do opalania, ale zajmie mi to trochę czasu. Wróć za 10 minut.", getReply(npc));
 		en.step(player, "bye");
 		assertEquals("Miłej zabawy!", getReply(npc));
 

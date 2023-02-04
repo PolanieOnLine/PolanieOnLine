@@ -92,7 +92,7 @@ public class HouseKeeperNPCTest extends ZonePlayerAndNPCTestImpl {
 		requiredResources.put("miód", 1);
 
 		SingletonRepository.getProducerRegister().configureNPC(
-			npc.getName(), new ProducerBehaviour(QUEST_SLOT, Arrays.asList("brew"), "filiżanka herbaty", requiredResources, 0), greetings);
+			npc.getName(), new ProducerBehaviour(QUEST_SLOT, Arrays.asList("brew"), "filiżanka herbaty", requiredResources, 3*60), greetings);
 
 		assertTrue(en.step(player, "hi"));
 		assertEquals(greetings, getReply(npc));
@@ -133,7 +133,7 @@ public class HouseKeeperNPCTest extends ZonePlayerAndNPCTestImpl {
 		assertEquals("Potrzebuję, abyś przyniósł mi 1 #miód oraz 1 #mleko do tej pracy, która zajmie 3 minuty. Posiadasz to przy sobie?", getReply(npc));
 
 		assertTrue(en.step(player, "yes"));
-		assertEquals("Dobrze zrobię dla Ciebie filiżanka herbaty, ale zajmie mi to trochę czasu. Wróć za 3 minuty.", getReply(npc));
+		assertEquals("Dobrze, zrobię dla Ciebie filiżanka herbaty, ale zajmie mi to trochę czasu. Wróć za 3 minuty.", getReply(npc));
 		assertFalse(player.isEquipped("filiżanka herbaty"));
 
 		assertTrue(en.step(player, "bye"));
@@ -173,7 +173,7 @@ public class HouseKeeperNPCTest extends ZonePlayerAndNPCTestImpl {
 		requiredResources.put("miód", 1);
 
 		SingletonRepository.getProducerRegister().configureNPC(
-			npc.getName(), new ProducerBehaviour(QUEST_SLOT, Arrays.asList("brew"), "filiżanka herbaty", requiredResources, 0), greetings);
+			npc.getName(), new ProducerBehaviour(QUEST_SLOT, Arrays.asList("brew"), "filiżanka herbaty", requiredResources, 3*60), greetings);
 
 		assertTrue(en.step(player, "hi babcia Graham"));
 		assertEquals(greetings, getReply(npc));
@@ -198,7 +198,7 @@ public class HouseKeeperNPCTest extends ZonePlayerAndNPCTestImpl {
 		requiredResources.put("miód", 1);
 
 		SingletonRepository.getProducerRegister().configureNPC(
-			npc.getName(), new ProducerBehaviour(QUEST_SLOT, Arrays.asList("brew"), "filiżanka herbaty", requiredResources, 0), greetings);
+			npc.getName(), new ProducerBehaviour(QUEST_SLOT, Arrays.asList("brew"), "filiżanka herbaty", requiredResources, 3*60), greetings);
 
 		assertTrue(en.step(player, "hi babcia Graham"));
 		assertEquals(greetings, getReply(npc));
