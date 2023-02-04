@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -13,17 +13,12 @@ package games.stendhal.server.maps.semos.plains;
 
 import java.util.Arrays;
 import java.util.Map;
-import java.util.TreeMap;
 
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
-import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
-import games.stendhal.server.entity.npc.behaviour.impl.SeedSellerBehaviour;
 
 /**
  * The miller (original name: Jenny). She mills flour for players who bring
@@ -47,7 +42,8 @@ public class MillerNPC implements ZoneConfigurator {
 				addHelp("Czy znasz piekarnię w Semos? Z dumą mogę powiedzieć, że używają mojej mąki. Ale ostatnio wilki znowu zjadły mojego dostawcę... albo może uciekł... hmm.");
 				addGoodbye();
 				addOffer("Możesz #zasadzić moje nasiona, aby wyrosły z nich piękne kwiatki.");
-				addReply(Arrays.asList("plant", "zasadzić"),"Twoje nasiona powinny zostać zasiane na żyznym gruncie. Szukaj brązowej ziemi nie daleko ścieżki koło której rośnie arandula na równinach semos. Nasiona będą tam kwitnąć. Możesz codziennie doglądać jak rośnie twój kwiatek. Gdy urośnie to będziesz mógł go zerwać. Obszar jest dostępny dla każdego i istniej prawdopodobieństwo, że ktoś inny zerwie twój kwiatek, ale na szczęście nasiona są tanie!");
+				addReply(Arrays.asList("plant", "zasadzić"),
+						"Twoje nasiona powinny zostać zasiane na żyznym gruncie. Szukaj brązowej ziemi nie daleko ścieżki koło której rośnie arandula na równinach semos. Nasiona będą tam kwitnąć. Możesz codziennie doglądać jak rośnie twój kwiatek. Gdy urośnie to będziesz mógł go zerwać. Obszar jest dostępny dla każdego i istniej prawdopodobieństwo, że ktoś inny zerwie twój kwiatek, ale na szczęście nasiona są tanie!");
 			}
 
 			@Override
@@ -55,14 +51,6 @@ public class MillerNPC implements ZoneConfigurator {
 				setDirection(Direction.DOWN);
 			}
 		};
-		// Jenny mills flour if you bring her grain.
-		final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
-		requiredResources.put("zboże", 5);
-
-		final ProducerBehaviour behaviour = new ProducerBehaviour("jenny_mill_flour",
-				 Arrays.asList("mill", "zmiel"), "mąka", requiredResources, 2 * 60);
-		new SellerAdder().addSeller(npc, new SeedSellerBehaviour());
-		new ProducerAdder().addProducer(npc, behaviour,"Pozdrawiam! Nazywam się Jenny jestem szefową tutejszego młyna. Jeżeli przyniesiesz mi #kłosy zboża to zmielę je dla Ciebie na mąkę. Powiedz tylko #zmiel ilość #mąka.");
 
 		npc.setDescription("Oto Jenny. Pracuje w młynie.");
 		npc.setEntityClass("woman_003_npc");
@@ -71,5 +59,4 @@ public class MillerNPC implements ZoneConfigurator {
 		npc.setDirection(Direction.DOWN);
 		zone.add(npc);
 	}
-
 }

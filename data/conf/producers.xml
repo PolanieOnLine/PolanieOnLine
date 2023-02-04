@@ -234,6 +234,46 @@
 		</item>
 	</producer>
 
+	<!-- Leander (Semos) -->
+	<producer npc="Leander" slot="leander_make_sandwiches" type="food">
+		<welcome text="Witaj w mojej piekarni, gdzie robię ciasto o zamorskiej nazwie #pizza oraz #kanapki!"/>
+		<item name="kanapka" minutes="3">
+			<resource name="chleb"/>
+			<resource name="szynka"/>
+			<resource name="ser" amount="2"/>
+
+			<activity type="make,zrób"/>
+		</item>
+	</producer>
+	<!-- Erna (Semos) -->
+	<producer npc="Erna" slot="erna_bake_bread" type="food">
+		<welcome text="Witaj w piekarni w Semos! Możemy upiec pyszny chleb dla każdego kto pomoże nam, przynosząc #mąkę z młyna. Powiedz tylko #'upiecz'."/>
+		<item name="chleb" minutes="10">
+			<resource name="mąka" amount="2"/>
+
+			<activity type="bake,upiecz"/>
+		</item>
+	</producer>
+	<!-- Xoderos (Semos) -->
+	<producer npc="Xoderos" slot="xoderos_cast_iron" type="item">
+		<welcome text="Witaj! Przykro mi to mówić, ale z powodu trwającej wojny nie wolno mi sprzedawać broni nikomu spoza grona oficjalnych wojskowych. Mogę odlać dla Ciebie żelazo, a może interesuję Cię moja #oferta specjalna? Powiedz tylko #odlej."/>
+		<item name="żelazo" minutes="5">
+			<resource name="polano"/>
+			<resource name="ruda żelaza"/>
+
+			<activity type="cast,odlej"/>
+		</item>
+	</producer>
+	<!-- Jenny (Semos) -->
+	<producer npc="Jenny" slot="jenny_mill_flour" type="item">
+		<welcome text="Pozdrawiam! Zwiem się Jenny oraz jestem szefową tutejszego młyna. Jeżeli przyniesiesz mi #kłosy zboża to zmielę je dla Ciebie na mąkę. Powiedz tylko #zmiel."/>
+		<item name="mąka" minutes="2">
+			<resource name="zboże" amount="5"/>
+
+			<activity type="mill,zmiel"/>
+		</item>
+	</producer>
+
 	<!-- Ernest (Gdańsk) -->
 	<producer npc="Ernest" slot="ernest_make_donuts" type="food">
 		<welcome text="Witaj w mojej piekarni, gdzie robię ciasto o przepysznej nazwie #pizza oraz #'pączki'!"/>

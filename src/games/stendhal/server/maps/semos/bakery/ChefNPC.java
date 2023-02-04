@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -15,15 +15,12 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 
 /**
  * The bakery chef. Father of the camping girl.
@@ -35,7 +32,6 @@ import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
  * @see games.stendhal.server.maps.quests.PizzaDelivery
  */
 public class ChefNPC implements ZoneConfigurator  {
-
 	@Override
 	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
 		buildNPC(zone);
@@ -69,30 +65,16 @@ public class ChefNPC implements ZoneConfigurator  {
 				addHelp("Jeśli chcesz zarobić trochę dukatów wyświadcz mi #przysługę i dostarcz to ciasto co zwą #pizza . Moja siostra #Sally robiła to do tej pory, ale teraz jest gdzieś na biwaku.");
 				addReply("chleb", "Tym w naszej firmie zajmuje się Erna. Podejdź do niej i porozmawiaj.");
 				addReply("ser",
-				"Z serem mamy spore trudności, bo mieliśmy niedawno plagę szczurów. Zastanawia mnie jak te wstrętne szkodniki zabrały wszystko ze sobą? Dlatego do kanapek dodajemy oscypek z mleka naszych owiec.");
+						"Z serem mamy spore trudności, bo mieliśmy niedawno plagę szczurów. Zastanawia mnie jak te wstrętne szkodniki zabrały wszystko ze sobą? Dlatego do kanapek dodajemy oscypek z mleka naszych owiec.");
 				addReply("ham",
-				"Cóż, wyglądasz mi na dzielnego łowcę. Może po prostu idź do lasu i zapoluj. Tylko nie przynoś mi tych małych kawałków mięsiwa i suchych steków. Do kanapek nadaje się tylko najwyższej klasy szynka!");
+						"Cóż, wyglądasz mi na dzielnego łowcę. Może po prostu idź do lasu i zapoluj. Tylko nie przynoś mi tych małych kawałków mięsiwa i suchych steków. Do kanapek nadaje się tylko najwyższej klasy szynka!");
 				addReply("Sally",
-				"Moja siostra Sally może pomóc Ci w zdobyciu szynki. Natura to jej dom. Ostatnio doszły mnie słuchy, że rozbiła obóz na południe od Zamku Orril.");
+						"Moja siostra Sally może pomóc Ci w zdobyciu szynki. Natura to jej dom. Ostatnio doszły mnie słuchy, że rozbiła obóz na południe od Zamku Orril.");
 				addReply(Arrays.asList("pizza", "pizzę"), "Potrzebuję kogoś, kto dostarczy pizzę. Może przyjmiesz to #zadanie.");
 				addReply(Arrays.asList("sandwich", "sandwiches","kanapka","kanapki"),
-				"Moje kanapki są smaczne i pożywne. Jeśli chcesz abym zrobił jedną dla Ciebie powiedz #'zrób <ilość> kanapka' .");
+						"Moje kanapki są smaczne i pożywne. Jeśli chcesz abym zrobił jedną dla Ciebie powiedz #'zrób <ilość> kanapka' .");
 				addOffer("Moja #pizza potrzebuje sera, a my nie mamy żadnych zapasów. Kupię od Ciebie ser jeżeli chcesz #sprzedać.");
-
 				addGoodbye();
-
-				// Leander makes sandwiches if you bring him bread, cheese, and ham.
-				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
-				requiredResources.put("chleb", 1);
-				requiredResources.put("ser", 2);
-				requiredResources.put("szynka", 1);
-
-				final ProducerBehaviour behaviour = new ProducerBehaviour(
-						"leander_make_sandwiches", Arrays.asList("make", "zrób"), "kanapka",
-						requiredResources, 3 * 60);
-
-				new ProducerAdder().addProducer(this, behaviour,
-				"Witaj w mojej piekarni, gdzie robię ciasto o zamorskiej nazwie #pizza oraz #kanapki!");
 			}
 		};
 

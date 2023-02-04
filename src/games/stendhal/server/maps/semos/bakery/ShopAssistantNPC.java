@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,6 +10,11 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.maps.semos.bakery;
+
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
@@ -30,8 +34,6 @@ import games.stendhal.server.entity.npc.action.DropItemAction;
 import games.stendhal.server.entity.npc.action.DropRecordedItemAction;
 import games.stendhal.server.entity.npc.action.MultipleActions;
 import games.stendhal.server.entity.npc.action.SetQuestAction;
-import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.LevelGreaterThanCondition;
 import games.stendhal.server.entity.npc.condition.LevelLessThanCondition;
@@ -43,12 +45,6 @@ import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotActiveCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotCompletedCondition;
 import games.stendhal.server.entity.player.Player;
-
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 /**
  * A woman who bakes bread for players.
@@ -89,21 +85,10 @@ public class ShopAssistantNPC implements ZoneConfigurator  {
 			public void createDialog() {
 				addJob("Jam jest czeladnikiem w tej piekarni.");
 				addReply("mąkę",
-				"Do naszej pracy potrzebujemy #mąki, którą mielą we młynie na północ stąd, ale wilki pożarły chłopca, który nam ją przynosił! Jeśli przyniesiesz nam mąkę w nagrodę upieczemy przepyszny chleb dla Ciebie. Powiedz tylko #upiecz.");
+						"Do naszej pracy potrzebujemy #mąki, którą mielą we młynie na północ stąd, ale wilki pożarły chłopca, który nam ją przynosił! Jeśli przyniesiesz nam mąkę w nagrodę upieczemy przepyszny chleb dla Ciebie. Powiedz tylko #upiecz.");
 				addHelp("Chleb jest bardzo dobry, zwłaszcza dla takiego śmiałka jak ty, któremu już niedobrze, gdy widzi surowe mięsiwo. Mój szef Leander, robi najlepsze kanapki w okolicy!");
-				addGoodbye();
-
-				// Erna bakes bread if you bring her flour.
-				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
-				requiredResources.put("mąka", 2);
-
-				final ProducerBehaviour behaviour = new ProducerBehaviour("erna_bake_bread",
-						Arrays.asList("bake", "upiecz"), "chleb", requiredResources, 10 * 60);
-
-				new ProducerAdder().addProducer(this, behaviour,
-						"Witaj w piekarni w Semos! Możemy upiec pyszny chleb dla każdego kto pomoże nam, przynosząc #mąkę z młyna. Powiedz tylko #'upiecz'.");
-
 				addOffer("Nasi dostawcy pizzy mogą #pożyczyć narzędzia kuchenne ode mnie.");
+				addGoodbye();
 
 				add(ConversationStates.ATTENDING, Arrays.asList("borrow", "pożycz", "pożyczyć"),
 				    new LevelLessThanCondition(6),
