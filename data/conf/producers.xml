@@ -274,6 +274,21 @@
 		</item>
 	</producer>
 
+	<!-- Kroip (Wo'fol) -->
+	<producer npc="Kroip" slot="kroip_make_pizza" type="food">
+		<welcome text="Witam! W czymś mogę #pomóc?"/>
+		<item name="pizza" minutes="5">
+			<resource name="mąka" amount="2"/>
+			<resource name="ser"/>
+			<resource name="pomidor"/>
+			<resource name="borowik"/>
+			<resource name="szynka"/>
+			<resource name="pieczarka" amount="2"/>
+
+			<activity type="make,zrób,upiecz"/>
+		</item>
+	</producer>
+
 	<!-- Ernest (Gdańsk) -->
 	<producer npc="Ernest" slot="ernest_make_donuts" type="food">
 		<welcome text="Witaj w mojej piekarni, gdzie robię ciasto o przepysznej nazwie #pizza oraz #'pączki'!"/>
