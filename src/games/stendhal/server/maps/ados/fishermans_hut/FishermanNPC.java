@@ -86,7 +86,7 @@ public class FishermanNPC implements ZoneConfigurator {
 				addHelp("W dzisiejszych czasach możesz przeczytać drogowskazy, książki i inne rzeczy w Faiumoni.");
 				addOffer("Mogę zrobić dla Ciebie trochę olejku jeżeli potrzebujesz.");
 				addGoodbye("Do widzenia.");
-				addReply(Arrays.asList("oil", "olejek"),"Poproś mnie o wykonanie #olejku o ile masz dorsza ze sobą. Jestem trochę zapominalski i gdy przyjdziesz to przypomnij mi mówiąc 'przypomnij'.");
+				addReply(Arrays.asList("oil", "olejek"),"Poproś mnie o wykonanie #olejku o ile masz dorsza ze sobą. Jestem trochę zapominalski i gdy przyjdziesz to przypomnij mi mówiąc #'przypomnij'.");
 				addReply(Arrays.asList("can of oil", "olejku"),"Do jednej puszki potrzebne są dwa dorsze. Zrobię dla Ciebie o ile potrzebujesz. Powiedz tylko #zrób. Jestem trochę zapominalski i gdy przyjdziesz to przypomnij mi mówiąc 'przypomnij'.");
 
 				/* @author kymara */
