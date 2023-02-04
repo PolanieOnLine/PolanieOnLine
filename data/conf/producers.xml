@@ -36,12 +36,20 @@
 	</producer>
 	<!-- Pedinghaus (Ados) -->
 	<producer npc="Pedinghaus" slot="Pedinghaus_cast_mithril" type="item">
-		<welcome text="Pozdrawiam. Sądzę, że jesteś zainteresowany mithrilem. Jeżeli chcesz, abym odlał #'sztabkę mithrilu' to daj znać. Powiedz tylko #odlej"/>
+		<welcome text="Pozdrawiam. Sądzę, że jesteś zainteresowany mithrilem. Jeżeli chcesz, abym odlał #'sztabkę mithrilu' to daj znać. Powiedz tylko #odlej."/>
 		<item name="sztabka mithrilu" minutes="18">
 			<resource name="polano" amount="20"/>
 			<resource name="bryłka mithrilu" amount="1"/>
 
 			<activity type="cast,odlej"/>
+		</item>
+	</producer>
+	<!-- Pequod (Ados) -->
+	<producer npc="Pequod" slot="pequod_make_oil" type="item" remind="true">
+		<item name="olejek" minutes="10">
+			<resource name="dorsz" amount="2"/>
+
+			<activity type="make,zrób"/>
 		</item>
 	</producer>
 	<!-- Uncle Dag (Ados) -->

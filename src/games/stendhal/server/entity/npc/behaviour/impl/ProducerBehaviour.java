@@ -68,10 +68,12 @@ public class ProducerBehaviour extends TransactionBehaviour {
 	private final int productsPerUnit;
 
 	/** Max produced items per time. */
-	private final int unitsPerTime;
+	private int unitsPerTime;
 
 	/** Waiting time to produce another items. */
-	private final int waitingTime;
+	private int waitingTime;
+
+	private boolean remind;
 
 	/**
 	 * Whether the produced item should be player bound.
@@ -115,69 +117,7 @@ public class ProducerBehaviour extends TransactionBehaviour {
 			final Map<String, Integer> requiredResourcesPerUnit,
 			final int productionTimePerUnit) {
 		this(questSlot, productionActivity, productName, productsPerUnit,
-				requiredResourcesPerUnit, 0, 0, productionTimePerUnit, false);
-	}
-
-	/**
-	 * Creates a new ProducerBehaviour.
-	 *
-	 * @param questSlot
-	 *            the slot that is used to store the status
-	 * @param productionActivity
-	 *            the name of the activity, e.g. "build", "forge", "bake"
-	 * @param productName
-	 *            the name of the product, e.g. "plate armor". It must be a
-	 *            valid item name.
-	 * @param productsPerUnit
-	 *            Item count per production.
-	 * @param requiredResourcesPerUnit
-	 *            a mapping which maps the name of each required resource (e.g.
-	 *            "iron ore") to the amount of this resource that is required
-	 *            for one unit of the product.
-	 * @param unitsPerTime
-	 *            Max units to produce item at same time.
-	 * @param productionTimePerUnit
-	 *            the number of seconds required to produce one unit of the
-	 *            product.
-	 */
-	public ProducerBehaviour(final String questSlot, final List<String> productionActivity,
-			final String productName, final int productsPerUnit,
-			final Map<String, Integer> requiredResourcesPerUnit, final int unitsPerTime,
-			final int productionTimePerUnit) {
-		this(questSlot, productionActivity, productName, productsPerUnit,
-				requiredResourcesPerUnit, unitsPerTime, 0, productionTimePerUnit, false);
-	}
-
-	/**
-	 * Creates a new ProducerBehaviour.
-	 *
-	 * @param questSlot
-	 *            the slot that is used to store the status
-	 * @param productionActivity
-	 *            the name of the activity, e.g. "build", "forge", "bake"
-	 * @param productName
-	 *            the name of the product, e.g. "plate armor". It must be a
-	 *            valid item name.
-	 * @param productsPerUnit
-	 *            Item count per production.
-	 * @param requiredResourcesPerUnit
-	 *            a mapping which maps the name of each required resource (e.g.
-	 *            "iron ore") to the amount of this resource that is required
-	 *            for one unit of the product.
-	 * @param unitsPerTime
-	 *            Max units to produce item at same time.
-	 * @param waitingTime
-	 *            Waiting time to produce another items.
-	 * @param productionTimePerUnit
-	 *            the number of seconds required to produce one unit of the
-	 *            product.
-	 */
-	public ProducerBehaviour(final String questSlot, final List<String> productionActivity,
-			final String productName, final int productsPerUnit,
-			final Map<String, Integer> requiredResourcesPerUnit, final int unitsPerTime,
-			final int waitingTime, final int productionTimePerUnit) {
-		this(questSlot, productionActivity, productName, productsPerUnit,
-				requiredResourcesPerUnit, unitsPerTime, waitingTime, productionTimePerUnit, false);
+				requiredResourcesPerUnit, productionTimePerUnit, false);
 	}
 
 	/**
@@ -230,7 +170,7 @@ public class ProducerBehaviour extends TransactionBehaviour {
 	 */
 	public ProducerBehaviour(final String questSlot, final List<String> productionActivity,
 			final String productName, final int productsPerUnit, final Map<String, Integer> requiredResourcesPerUnit,
-			final int unitsPerTime, final int waitingTime, final int productionTimePerUnit, final boolean productBound) {
+			final int productionTimePerUnit, final boolean productBound) {
 		super(productName);
 
 		this.questSlot = questSlot;
@@ -238,8 +178,6 @@ public class ProducerBehaviour extends TransactionBehaviour {
 		this.productName = productName;
 		this.productsPerUnit = productsPerUnit;
 		this.requiredResourcesPerUnit = requiredResourcesPerUnit;
-		this.unitsPerTime = unitsPerTime;
-		this.waitingTime = waitingTime;
 		this.productionTimePerUnit = productionTimePerUnit;
 		this.productBound = productBound;
 
@@ -275,7 +213,7 @@ public class ProducerBehaviour extends TransactionBehaviour {
 	public ProducerBehaviour(final String questSlot, final List<String> productionActivity,
 			final String productName, final Map<String, Integer> requiredResourcesPerUnit,
 			final int productionTimePerUnit, final boolean productBound) {
-		this(questSlot, productionActivity, productName, 1, requiredResourcesPerUnit, 0, 0,
+		this(questSlot, productionActivity, productName, 1, requiredResourcesPerUnit,
 				productionTimePerUnit, productBound);
 	}
 
@@ -304,12 +242,25 @@ public class ProducerBehaviour extends TransactionBehaviour {
 		return productsPerUnit;
 	}
 
+	public int setUnitsPerTime(final int units) {
+		return this.unitsPerTime = units;
+	}
 	private int getUnitsPerTime() {
 		return unitsPerTime;
 	}
 
+	public int setWaitingTime(final int time) {
+		return this.waitingTime = time;
+	}
 	private int getWaitingTime() {
 		return waitingTime;
+	}
+
+	public boolean setRemind(boolean remind) {
+		return this.remind = remind;
+	}
+	public boolean getRemind() {
+		return remind;
 	}
 
 	public int getProductionTime(final int amount) {
@@ -507,10 +458,18 @@ public class ProducerBehaviour extends TransactionBehaviour {
 			}
 			final long timeNow = new Date().getTime();
 			player.setQuest(questSlot, res.getAmount() + ";" + getProductName() + ";" + timeNow);
-			npc.say("Dobrze, zrobię dla Ciebie "
+
+			String agreed = "Dobrze, zrobię dla Ciebie "
 					+ Grammar.quantityplnoun(res.getAmount(), getProductName())
 					+ ", ale zajmie mi to trochę czasu. Wróć za "
-					+ getApproximateRemainingTime(player) + ".");
+					+ getApproximateRemainingTime(player) + ".";
+			if (getRemind()) {
+				npc.say(agreed + " Aha i NAJWAŻNIEJSZE - Jestem bardzo zajęty"
+					+ " i MUSISZ mi przypomnieć mówiąc #przypomnij,"
+					+ " abym dał Tobie " + getProductName() + ".");
+			} else {
+				npc.say(agreed);
+			}
 			return true;
 		}
 	}
@@ -531,10 +490,14 @@ public class ProducerBehaviour extends TransactionBehaviour {
 		// String productName = order[1];
 
 		if (!isOrderReady(player)) {
-			npc.say("Witaj z powrotem! Wciąż zajmuje się twoim zleceniem "
+			String stillWorking = "Wciąż zajmuje się twoim zleceniem "
 					+ Grammar.quantityplnoun(numberOfProductItems, getProductName())
-					+ ". Wróć za "
-					+ getApproximateRemainingTime(player) + ", aby odebrać.");
+					+ ". Wróć za " + getApproximateRemainingTime(player) + ", aby odebrać.";
+			if (getRemind()) {
+				npc.say(stillWorking + " Nie zapomnij mi #'przypomnieć'...");
+			} else {
+				npc.say("Witaj z powrotem! " + stillWorking + ", aby odebrać.");
+			}
 		} else {
 			final StackableItem products = (StackableItem) SingletonRepository.getEntityManager().getItem(
 					getProductName());
@@ -546,8 +509,13 @@ public class ProducerBehaviour extends TransactionBehaviour {
 			}
 
 			if (player.equipToInventoryOnly(products)) {
-				npc.say("Witaj z powrotem! " + Grammar.genderVerb(npc.getGender(), "Skończyłem") + " twoje zlecenie. Trzymaj, oto "
-					+ Grammar.quantityplnoun(numberOfProductItems, getProductName()) + ".");
+				String reward = Grammar.genderVerb(npc.getGender(), "Skończyłem") + " twoje zlecenie. Trzymaj, oto "
+						+ Grammar.quantityplnoun(numberOfProductItems, getProductName()) + ".";
+				if (getRemind()) {
+					npc.say("Ach tak, zapomniałem. " + reward);
+				} else {
+					npc.say("Witaj z powrotem! " + reward);
+				}
 				if (getWaitingTime() > 0) {
 					player.setQuest(questSlot, "done" + ";" + numberOfProductItems + ";" + System.currentTimeMillis());
 					player.addXP(15 * numberOfProductItems);
@@ -559,9 +527,15 @@ public class ProducerBehaviour extends TransactionBehaviour {
 				player.notifyWorldAboutChanges();
 				player.incProducedForItem(getProductName(), products.getQuantity());
 			} else {
-				npc.say("Witaj z powrotem! " + Grammar.genderVerb(npc.getGender(), "Skończyłem") + " twoje zlecenie, ale w tym momencie nie możesz wziąć "
+				String notEnough = Grammar.genderVerb(npc.getGender(), "Skończyłem")
+						+ " twoje zlecenie, ale w tym momencie nie możesz wziąć "
 						+ Grammar.plnoun(numberOfProductItems, getProductName())
-						+ ". Wróć, gdy będziesz miał wolne miejsce.");
+						+ ". Wróć, gdy będziesz miał wolne miejsce.";
+				if (getRemind()) {
+					npc.say("Ach tak, zapomniałem. " + notEnough);
+				} else {
+					npc.say("Witaj z powrotem! " + notEnough);
+				}
 			}
 		}
 	}
@@ -576,5 +550,4 @@ public class ProducerBehaviour extends TransactionBehaviour {
 	public String getErrormessage(final ItemParserResult res, final String npcAction) {
 		return getErrormessage(res, getProductionActivity(), npcAction);
 	}
-
 }

@@ -44,6 +44,8 @@ public class ProducersXMLLoader extends DefaultHandler {
 	private int unitsPerTime;
 	private int waiting;
 	private int time;
+	
+	private boolean remind;
 
 	private boolean productionTag = false;
 
@@ -116,7 +118,11 @@ public class ProducersXMLLoader extends DefaultHandler {
 			itemName = null;
 			unitsPerTime = 0;
 			waiting = 0;
-			welcome = "";
+			welcome = null;
+			remind = false;
+			if (attrs.getValue("remind") != null) {
+				remind = Boolean.parseBoolean(attrs.getValue("remind"));
+			}
 		} else if (qName.equals("welcome")) {
 			welcome = attrs.getValue("text");
 		} else if (qName.equals("item")) {
@@ -151,16 +157,19 @@ public class ProducersXMLLoader extends DefaultHandler {
 	public void endElement(final String namespaceURI, final String sName, final String qName) {
 		if (qName.equals("producer")) {
 			final ProducerBehaviour behaviour =
-					new ProducerBehaviour(questSlot, activity, itemName, productsPerUnit, resources, unitsPerTime, waiting, time);
+					new ProducerBehaviour(questSlot, activity, itemName, productsPerUnit, resources, time);
 
 			if (behaviour.getProductionActivity() == activity) {
 				SingletonRepository.getCachedActionManager().register(new Runnable() {
 					private final String _npcName = npcName;
 					private final ProducerBehaviour _behaviour = behaviour;
 					private final String _welcome = welcome;
-	
+					private final int _units = unitsPerTime;
+					private final int _waiting = waiting;
+					private final boolean _remind = remind;
+
 					public void run() {
-						producers.configureNPC(_npcName, _behaviour, _welcome);
+						producers.configureNPC(_npcName, _behaviour, _welcome, _units, _waiting, _remind);
 					}
 				});
 			}

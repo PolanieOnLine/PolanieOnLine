@@ -12,7 +12,7 @@
 
 	<complexType name="Product">
 		<sequence>
-			<element name="welcome" type="Q2:Text"/>
+			<element name="welcome" type="Q2:Text" minOccurs="0" maxOccurs="unbounded"/>
 			<element name="item" type="Q2:ProductItem" minOccurs="1" maxOccurs="unbounded"/>
 		</sequence>
 		<attribute name="npc" type="string" use="required"/>

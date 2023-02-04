@@ -11,6 +11,8 @@
  ***************************************************************************/
 package games.stendhal.server.entity.npc.behaviour.adder;
 
+import java.util.Arrays;
+
 import org.apache.log4j.Logger;
 
 import games.stendhal.common.grammar.Grammar;
@@ -83,114 +85,122 @@ public class ProducerAdder {
          * The Player greets the NPC.
          * The NPC is not currently producing for player (not started, is rejected, or is complete).
          */
-		engine.add(ConversationStates.IDLE,
+		if (thisWelcomeMessage != null) {
+			engine.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
-				new AndCondition(
-						new GreetingMatchesNameCondition(npcName),
-						new QuestNotActiveCondition(QUEST_SLOT),
-						new TransitionMayBeExecutedCondition(this)),
+				new AndCondition(new GreetingMatchesNameCondition(npcName),
+					new QuestNotActiveCondition(QUEST_SLOT),
+					new TransitionMayBeExecutedCondition(this)),
 				false, ConversationStates.ATTENDING, null, new SayTextAction(thisWelcomeMessage));
+		}
 
 		engine.add(ConversationStates.ATTENDING,
-				behaviour.getProductionActivity(),
-				new SentenceHasErrorCondition(),
-				false, ConversationStates.ATTENDING,
-				null, new ComplainAboutSentenceErrorAction());
+			behaviour.getProductionActivity(),
+			new SentenceHasErrorCondition(),
+			false, ConversationStates.ATTENDING,
+			null, new ComplainAboutSentenceErrorAction());
 
         /**
          * In the behaviour a production activity is defined, e.g. 'cast' or 'mill'
          * and this is used as the trigger to start the production, provided that the NPC is not
          * currently producing for player (not started, is rejected, or is complete).
          */
-        engine.add(
-				ConversationStates.ATTENDING,
-				behaviour.getProductionActivity(),
-				new AndCondition(
-					new NotCondition(new SentenceHasErrorCondition()),
-					new QuestNotActiveCondition(QUEST_SLOT)
-				),
-                false,
-                ConversationStates.ATTENDING, null,
-				new ProducerBehaviourAction(behaviour) {
-					@Override
-					public void fireRequestOK(final ItemParserResult res, final Player player, final Sentence sentence, final EventRaiser npc) {
-						// Find out how much items we shall produce.
-						if (res.getAmount() > 1000) {
-							logger.warn("Decreasing very large amount of "
-									+ res.getAmount()
-									+ " " + res.getChosenItemName()
-									+ " to 1 for player "
-									+ player.getName() + " talking to "
-									+ npcName + " saying " + sentence);
-							res.setAmount(1);
-						}
-
-						if (behaviour.askForResources(res, npc, player)) {
-							currentBehavRes = res;
-							npc.setCurrentState(ConversationStates.PRODUCTION_OFFERED);
-						}
+        engine.add(ConversationStates.ATTENDING,
+			behaviour.getProductionActivity(),
+			new AndCondition(
+				new NotCondition(new SentenceHasErrorCondition()),
+				new QuestNotActiveCondition(QUEST_SLOT)),
+			false, ConversationStates.ATTENDING,
+			null, new ProducerBehaviourAction(behaviour) {
+				@Override
+				public void fireRequestOK(final ItemParserResult res, final Player player, final Sentence sentence, final EventRaiser npc) {
+					// Find out how much items we shall produce.
+					if (res.getAmount() > 1000) {
+						logger.warn("Decreasing very large amount of "
+							+ res.getAmount()
+							+ " " + res.getChosenItemName()
+							+ " to 1 for player "
+							+ player.getName() + " talking to "
+							+ npcName + " saying " + sentence);
+						res.setAmount(1);
 					}
-				});
+
+					if (behaviour.askForResources(res, npc, player)) {
+						currentBehavRes = res;
+						npc.setCurrentState(ConversationStates.PRODUCTION_OFFERED);
+					}
+				}
+			});
 
         /* Player agrees to the proposed production deal */
 		engine.add(ConversationStates.PRODUCTION_OFFERED,
-				ConversationPhrases.YES_MESSAGES, null,
+			ConversationPhrases.YES_MESSAGES, null,
+			false, ConversationStates.ATTENDING,
+			null, new ChatAction() {
+				@Override
+				public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
+					behaviour.transactAgreedDeal(currentBehavRes, npc, player);
+
+					currentBehavRes = null;
+				}
+			});
+
+        /* Player does not agree to the proposed production deal */
+		engine.add(ConversationStates.PRODUCTION_OFFERED,
+			ConversationPhrases.NO_MESSAGES, null,
+			false, ConversationStates.ATTENDING, "Dobrze, nie ma problemu.", null);
+
+        /* Player says the production trigger word but the NPC is already producing items for that player */
+		engine.add(ConversationStates.ATTENDING,
+			behaviour.getProductionActivity(),
+			new QuestActiveCondition(QUEST_SLOT),
+			false, ConversationStates.ATTENDING,
+			null, new ChatAction() {
+				@Override
+				public void fire(final Player player, final Sentence sentence,
+						final EventRaiser npc) {
+					if (behaviour.isOrderReady(player)) {
+						// This can happen if the player had the bag full
+						// when coming to talk to the NPC.
+						npc.say("Jeszcze nie " + Grammar.genderVerb(player.getGender(), "wykonałeś") + " ostatniego zlecenia.");
+					} else {
+						npc.say("Wciąż nie " + Grammar.genderVerb(npc.getGender(), "skończyłem") + " twojego ostatniego zlecenia. Wróć za "
+							+ behaviour.getApproximateRemainingTime(player)
+							+ "!");
+					}
+				}
+			});
+
+		if (behaviour.getRemind()) {
+			// remind the NPC to collect the reward
+			engine.add(ConversationStates.ATTENDING,
+				Arrays.asList("remind", "przypomnij"),
+				new QuestActiveCondition(behaviour.getQuestSlot()),
 				false, ConversationStates.ATTENDING,
 				null, new ChatAction() {
 					@Override
 					public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
-						behaviour.transactAgreedDeal(currentBehavRes, npc, player);
-
-						currentBehavRes = null;
-					}
-				});
-
-        /* Player does not agree to the proposed production deal */
-		engine.add(ConversationStates.PRODUCTION_OFFERED,
-				ConversationPhrases.NO_MESSAGES, null,
-				false, ConversationStates.ATTENDING, "Dobrze, nie ma problemu.", null);
-
-        /* Player says the production trigger word but the NPC is already producing items for that player */
-		engine.add(
-				ConversationStates.ATTENDING,
-				behaviour.getProductionActivity(),
-				new QuestActiveCondition(QUEST_SLOT),
-                false, ConversationStates.ATTENDING,
-				null, new ChatAction() {
-					@Override
-					public void fire(final Player player, final Sentence sentence,
-							final EventRaiser npc) {
-						if (behaviour.isOrderReady(player)) {
-							// This can happen if the player had the bag full
-							// when coming to talk to the NPC.
-							npc.say("Jeszcze nie " + Grammar.genderVerb(player.getGender(), "wykonałeś") + " ostatniego zlecenia.");
-						} else {
-							npc.say("Wciąż nie " + Grammar.genderVerb(npc.getGender(), "skończyłem") + " twojego ostatniego zlecenia. Wróć za "
-									+ behaviour.getApproximateRemainingTime(player)
-									+ "!");
-						}
-					}
-				});
-
-        /**
-         * Player greets NPC and the NPC is already producing items for that player
-         * there are two options: the NPC is still busy or he is finished.
-         * The method giveProduct(npc, player) used here takes care of both.
-         **/
-		engine.add(
-				ConversationStates.IDLE,
-				ConversationPhrases.GREETING_MESSAGES,
-				new AndCondition(
-						new GreetingMatchesNameCondition(npcName),
-						new QuestActiveCondition(QUEST_SLOT),
-						new TransitionMayBeExecutedCondition(this)),
-				false, ConversationStates.ATTENDING,
-				null, new ChatAction() {
-					@Override
-					public void fire(final Player player, final Sentence sentence,
-							final EventRaiser npc) {
 						behaviour.giveProduct(npc, player);
 					}
 				});
+		} else {
+			/**
+	         * Player greets NPC and the NPC is already producing items for that player
+	         * there are two options: the NPC is still busy or he is finished.
+	         * The method giveProduct(npc, player) used here takes care of both.
+	         */
+			engine.add(ConversationStates.IDLE,
+				ConversationPhrases.GREETING_MESSAGES,
+				new AndCondition(new GreetingMatchesNameCondition(npcName),
+					new QuestActiveCondition(QUEST_SLOT),
+					new TransitionMayBeExecutedCondition(this)),
+				false, ConversationStates.ATTENDING,
+				null, new ChatAction() {
+					@Override
+					public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
+						behaviour.giveProduct(npc, player);
+					}
+				});
+		}
 	}
 }

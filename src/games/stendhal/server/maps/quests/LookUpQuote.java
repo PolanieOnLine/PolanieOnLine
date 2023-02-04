@@ -161,7 +161,7 @@ public class LookUpQuote extends AbstractQuest {
 					final Sentence expected = ConversationParser.parse(quote, new SimilarExprMatcher());
 
 					if (answer.matchesFull(expected)) {
-						npc.say("Oh racja to jest to! Jak mogłem to zapomnieć? Weź tą poręczną wędkę jako wyraz mojej wdzięczności!");
+						npc.say("Och racja, to jest to! Jak mogłem to zapomnieć? Weź tą poręczną wędkę jako wyraz mojej wdzięczności!");
 						final Item fishingRod = SingletonRepository.getEntityManager().getItem("wędka");
 						fishingRod.setBoundTo(player.getName());
 						player.equipOrPutOnGround(fishingRod);
