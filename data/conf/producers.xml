@@ -136,6 +136,19 @@
 		</item>
 	</producer>
 
+	<!-- Linzo (Fado) -->
+	<producer npc="Linzo" slot="linzo_make_fish_pie" type="food">
+		<welcome text="Cześć, przyszedłeś spróbować moich rybnych placków? Mogę #upiec jeden dla Ciebie."/>
+		<item name="tarta z rybnym nadzieniem" minutes="5">
+			<resource name="mąka" amount="1"/>
+			<resource name="dorsz" amount="2"/>
+			<resource name="makrela" amount="1"/>
+			<resource name="por" amount="1"/>
+
+			<activity type="make,zrób,upiecz"/>
+		</item>
+	</producer>
+
 	<!-- Ernest (Gdańsk) -->
 	<producer npc="Ernest" slot="ernest_make_donuts" type="food">
 		<welcome text="Witaj w mojej piekarni, gdzie robię ciasto o przepysznej nazwie #pizza oraz #'pączki'!"/>
