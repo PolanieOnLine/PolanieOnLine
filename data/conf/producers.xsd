@@ -44,7 +44,7 @@
 
 	<complexType name="RequiredResources">
 		<attribute name="name" type="string" use="required"/>
-		<attribute name="amount" type="positiveInteger" use="required"/>
+		<attribute name="amount" type="positiveInteger" use="optional"/>
 	</complexType>
 
 	<complexType name="Text">

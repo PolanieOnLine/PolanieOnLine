@@ -143,7 +143,11 @@ public class ProducersXMLLoader extends DefaultHandler {
 			time = 60 * Integer.parseInt(attrs.getValue("minutes"));
 		} else if (productionTag) {
 			if (qName.equals("resource")) {
-				resources.put(attrs.getValue("name"), Integer.parseInt(attrs.getValue("amount")));
+				int amount = 1;
+				if (attrs.getValue("amount") != null) {
+					amount = Integer.parseInt(attrs.getValue("amount"));
+				}
+				resources.put(attrs.getValue("name"), amount);
 			} else if (qName.equals("activity")) {
 				final String[] activities = attrs.getValue("type").split(",");
 				for (String activ : activities) {
