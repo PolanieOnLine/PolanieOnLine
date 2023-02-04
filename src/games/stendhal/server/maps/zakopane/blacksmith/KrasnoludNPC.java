@@ -15,15 +15,12 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 
 /**
  * @author Legolas
@@ -54,35 +51,25 @@ public class KrasnoludNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
-				requiredResources.put("polano", 1);
-				requiredResources.put("ruda żelaza", 1);
-				requiredResources.put("piórko", 1);
-				requiredResources.put("money", 1);
-	
-				final ProducerBehaviour behaviour = new ProducerBehaviour("krasnolud_cast_arrow",
-					Arrays.asList("make", "zrób"), "strzała", requiredResources, 1 * 60);
-	
-				new ProducerAdder().addProducer(this, behaviour,
-					"Witaj! Mogę zrobić dla ciebie strzały, a może interesuje cię moja #oferta specjalna? Powiedz tylko #zrób .");
-
-				addGreeting();
 				addJob("Produkuję strzały do kuszy.");
 				addReply("polano",
 						"Potrzebuję drewna na promień do strzały. Porozmawiaj z drwalem on ci powie gdzie można ścinać drzewa.");
-				addReply(Arrays.asList("ore", "iron", "iron ore","ruda żelaza"),
+				addReply(Arrays.asList("ore", "iron", "iron ore", "ruda żelaza"),
 						"Rudę żelaza znajdziesz koło źródeł na wschód od domku poniżej jaskini zbójników. Potrzebuję ją na groty.");
 				addReply("piórko",
 						"Potrzebuję je na lotki. Zabij kilka gołębi.");
 				addReply("kilof",
 						"Przydatny przy wydobyciu siarki i węgla.");
-				addReply("łopata", " no cóż czymś trzeba kopać.");
-				addReply("lina", "przydatna gdy zechcesz zejść na niższe poziomy.");
-				addHelp("Jeśli przyniesiesz mi #polano,  #'ruda żelaza' i #piórko , mogę zrobić dla ciebie strzały. Powiedz tylko #zrób .");
+				addReply("łopata",
+						"No cóż, czymś trzeba kopać.");
+				addReply("lina",
+						"Przydatna gdy zechcesz zejść na niższe poziomy.");
+				addHelp("Jeśli przyniesiesz mi #polano, #'ruda żelaza' i #piórko, mogę zrobić dla ciebie strzały. Powiedz tylko #zrób.");
 				addGoodbye();
 			}
 		};
 
+		npc.setDescription("Oto Krasnolud. Wygląda na bardzo zapracowanego oraz zmęczonego.");
 		npc.setEntityClass("dwarfnpc");
 		npc.setGender("M");
 		npc.setPosition(8, 3);

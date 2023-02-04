@@ -15,15 +15,12 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 
 /**
  * The cooking girl.
@@ -52,31 +49,20 @@ public class DwojakiElwirkaNPC implements ZoneConfigurator  {
 			public void createDialog() {
 				addJob("Zajmuję się kuchnią kowala Andrzeja. Poproś mnie #ugotuj dwojaki a przygotuję dla ciebie gorące danie z gruli!");
 				addHelp("Możesz mi pomóc i przegonić szczury, które biegają dookoła domu. Nasz kot gdzieś się zapodział.");
-				addReply("ziemniaki", "Wieśniacy trudnią się zbieraniem ziemniaków, ale nie sądzę, że ci je dadzą z własnej woli.");
-				addReply("kiełbasa wiejska", "Z tego co wiem kiełbasa wiejska z tutejszych świń jest najlepsza na skwarki.");
-				addReply(Arrays.asList("onion", "cebula"), "Cebulę poznasz po zielonych cieńkich listkach wystających z grządki.");
-				addReply(Arrays.asList("butter", "masło"), "Bez omasty nie zrobię dobrych dwojaków.");
-				addReply(Arrays.asList("milk", "mleko"), "Trochę mleka dodam i będzie przepyszna potrawa. Idź wydoić jakąś krowę.");
+				addReply("ziemniaki",
+						"Wieśniacy trudnią się zbieraniem ziemniaków, ale nie sądzę, że ci je dadzą z własnej woli.");
+				addReply("kiełbasa wiejska",
+						"Z tego co wiem kiełbasa wiejska z tutejszych świń jest najlepsza na skwarki.");
+				addReply(Arrays.asList("onion", "cebula"),
+						"Cebulę poznasz po zielonych cieńkich listkach wystających z grządki.");
+				addReply(Arrays.asList("butter", "masło"),
+						"Bez omasty nie zrobię dobrych dwojaków.");
+				addReply(Arrays.asList("milk", "mleko"),
+						"Trochę mleka dodam i będzie przepyszna potrawa. Idź wydoić jakąś krowę.");
 				addReply(Arrays.asList("dwojak", "dwojaki"),
 						"Dwojaki to gliniane naczynie, które po brzegi wypełnię kucianymi grulami. Jeśli chcesz powiedz mi po prostu #'ugotuj 1 dwojaki'.");
 				addOffer("Cóż. Jeśli możesz mi zaoferować kiść winogron chętnie odkupię je od ciebie. Powiedz mi wtedy #'sprzedam kiść winogron'.");
 				addGoodbye();
-
-				// Elwirka makes dwojaki if you bring her ziemniaki, kiełbasa wiejska, onion, butter and milk.
-				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
-				requiredResources.put("ziemniaki", 3);
-				requiredResources.put("kiełbasa wiejska", 3);
-				requiredResources.put("cebula", 1);
-				requiredResources.put("osełka masła", 1);
-				requiredResources.put("mleko", 1);
-
-				final ProducerBehaviour behaviour = new ProducerBehaviour(
-						"elwirka_make_dwojaki", Arrays.asList("make", "ugotuj"), "dwojaki",
-						requiredResources, 5 * 60);
-
-				new ProducerAdder().addProducer(this, behaviour,
-						"Witojcie! Co was tu sprowadza? Pewnie moje legendarne #dwojaki.");
-
 			}
 		};
 

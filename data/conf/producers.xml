@@ -516,9 +516,94 @@
 		<welcome text="Witaj rycerzu, nie chciałbyś czasem wypróbować mojego nowego #'eliksiru'?"/>
 		<item name="smoczy eliksir" minutes="1">
 			<resource name="money" amount="800"/>
-			<resource name="smocza krew" amount="1"/>
+			<resource name="smocza krew"/>
 
 			<activity type="concoct,zrób,sporządź"/>
+		</item>
+	</producer>
+
+	<!-- Małgosia (Zakopane) -->
+	<producer npc="Małgosia" slot="malgosia_bake_bread" type="food">
+		<welcome text="Witaj w piekarni w Zakopanem! Możemy upiec pyszny chleb dla każdego kto pomoże nam przynosząc mąkę z młyna. Powiedz tylko #upiecz."/>
+		<item name="chleb" minutes="7">
+			<resource name="mąka" amount="2"/>
+
+			<activity type="bake,zrób,upiecz"/>
+		</item>
+	</producer>
+	<!-- Jaś (Zakopane) -->
+	<producer npc="Jaś" slot="jas_make_carrot_pie" type="food">
+		<welcome text="Witaj w mojej piekarni! Chcesz spróbować moich placków z marchewką? Mogę #upiec jeden dla Ciebie!"/>
+		<item name="tarta z marchewką" minutes="4">
+			<resource name="mąka"/>
+			<resource name="marchew" amount="2"/>
+			<resource name="por"/>
+
+			<activity type="bake,zrób,upiecz"/>
+		</item>
+	</producer>
+	<!-- Elwirka (Zakopane) -->
+	<producer npc="Elwirka" slot="elwirka_make_dwojaki" type="food">
+		<welcome text="Witojcie! Co was tu sprowadza? Pewnie moje legendarne #dwojaki."/>
+		<item name="dwojaki" minutes="5">
+			<resource name="ziemniaki" amount="3"/>
+			<resource name="kiełbasa wiejska" amount="3"/>
+			<resource name="cebula"/>
+			<resource name="osełka masła"/>
+			<resource name="mleko"/>
+
+			<activity type="make,zrób,ugotuj"/>
+		</item>
+	</producer>
+	<!-- Kowal Andrzej (Zakopane) -->
+	<producer npc="Kowal Andrzej" slot="andrzej_cast_iron" type="item">
+		<welcome text="Cześć! Jestem tutejszym kowalem. Jeżeli będziesz chciał, abym odlał dla Ciebie #żelazo to daj znać!"/>
+		<item name="żelazo" minutes="3">
+			<resource name="polano"/>
+			<resource name="ruda żelaza"/>
+
+			<activity type="cast,odlej"/>
+		</item>
+	</producer>
+	<!-- Krasnolud (Zakopane) -->
+	<producer npc="Krasnolud" slot="krasnolud_cast_arrow" type="item">
+		<welcome text="Witaj! Mogę zrobić dla ciebie strzały, a może interesuje cię moja #oferta specjalna? Powiedz tylko #zrób."/>
+		<item name="strzała" quantity="5" minutes="1">
+			<resource name="polano"/>
+			<resource name="ruda żelaza"/>
+			<resource name="piórko"/>
+
+			<activity type="make,zrób"/>
+		</item>
+	</producer>
+	<!-- Nosiwoda Gerwazy (Zakopane) -->
+	<producer npc="Nosiwoda Gerwazy" slot="nosiwoda_fill_buklak" type="drink">
+		<welcome text="Witaj [name]! Jeżeli przyniesiesz mi #'pusty bukłak' to naleję do niego wody ze źródełka. Powiedz tylko #nalej."/>
+		<item name="bukłak z wodą" minutes="1">
+			<resource name="pusty bukłak"/>
+			<resource name="money" amount="140"/>
+
+			<activity type="fill,nalej"/>
+		</item>
+	</producer>
+	<!-- Nosiwoda Witek (Zakopane) -->
+	<producer npc="Nosiwoda Witek" slot="nosiwoda_fill_buteleczke" type="drink">
+		<welcome text="Witaj [name]! Jeżeli przyniesiesz mi #buteleczkę to naleję Tobie do niej wody ze źródełka. Powiedz tylko #nalej."/>
+		<item name="buteleczka wody" minutes="1">
+			<resource name="buteleczka"/>
+			<resource name="money" amount="70"/>
+
+			<activity type="fill,nalej"/>
+		</item>
+	</producer>
+	<!-- Nosiwoda Jakub (Zakopane) -->
+	<producer npc="Nosiwoda Jakub" slot="nosiwoda_fill_buklak" type="drink">
+		<welcome text="Witaj [name]! Jeżeli przyniesiesz mi #butelkę to naleję Tobie do niej wody ze źródełka. Powiedz tylko #nalej."/>
+		<item name="butelka wodą" minutes="1">
+			<resource name="butelka"/>
+			<resource name="money" amount="100"/>
+
+			<activity type="fill,nalej"/>
 		</item>
 	</producer>
 

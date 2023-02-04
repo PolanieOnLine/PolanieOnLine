@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                 (C) Copyright 2003-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,20 +11,15 @@
  ***************************************************************************/
 package games.stendhal.server.maps.zakopane.city;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.action.SayTextAction;
-import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 
 /**
  * Zakopane Nosiwoda Gerwazy (Outside / Level 0).
@@ -45,7 +40,6 @@ public class BuklakNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Nosiwoda Gerwazy") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -56,20 +50,10 @@ public class BuklakNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-				addGreeting(null, new SayTextAction("Witaj [name] przy źródełkach!"));
 				addJob("Napełniam, pusty bukłak wodą, powiedz mi tylko #nalej.");
 				addHelp("Nie, dziękuję. Do pomocy mam swoich pomocników.");
 				addGoodbye("Trzymaj się.");
 
-				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
-				requiredResources.put("pusty bukłak", 1);
-				requiredResources.put("money", 140);
-
-				final ProducerBehaviour behaviour = new ProducerBehaviour("nosiwoda_fill_buklak",
-					Arrays.asList("fill", "nalej"), "bukłak z wodą", requiredResources, 3 * 5);
-
-				new ProducerAdder().addProducer(this, behaviour,
-					"Pozdrawiam! Jeżeli przyniesiesz mi #'pusty bukłak' to naleję do niego wody ze źródełka. Powiedz tylko #nalej.");
 				addReply("pusty bukłak",
 					"Blisko Wisły w krainie Kraka przesiaduje pewien rymarz, on ci powinien pomóc z wykonaniem pustego bukłaku.");
 			}

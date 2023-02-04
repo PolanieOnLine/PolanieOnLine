@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                 (C) Copyright 2003-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,19 +11,15 @@
  ***************************************************************************/
 package games.stendhal.server.maps.zakopane.city;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 
 /**
  * Zakopane Nosiwoda Witek (Outside / Level 0).
@@ -44,7 +40,6 @@ public class ButeleczkaNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Nosiwoda Witek") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -55,20 +50,10 @@ public class ButeleczkaNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-				addGreeting("Cześć!");
 				addJob("Dam ci buteleczkę wody gdy przyniesiesz mi pustą buteleczkę i powiesz mi tylko #nalej!");
 				addHelp("Pomagamy Gerwazemu w napełnianiu buteleczek wodą.");
 				addGoodbye();
 
-				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
-				requiredResources.put("buteleczka", 1);
-				requiredResources.put("money", 70);
-
-				final ProducerBehaviour behaviour = new ProducerBehaviour("nosiwoda_fill_buteleczke",
-					Arrays.asList("fill", "nalej"), "buteleczka wody", requiredResources, 1 * 5);
-
-				new ProducerAdder().addProducer(this, behaviour,
-					"Pozdrawiam! Jeżeli przyniesiesz mi buteleczkę to naleję Tobie do niej wody ze źródełka. Powiedz tylko #nalej.");
 				addReply("buteleczka",
 					"Takie buteleczki zakupisz u Bogusia lub możesz odwiedzić tawernę w Semos.");
 			}

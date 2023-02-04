@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2020 - Stendhal                    *
+ *                 (C) Copyright 2003-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,19 +11,15 @@
  ***************************************************************************/
 package games.stendhal.server.maps.zakopane.bakery;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 
 /**
  * @author Legolas (based on: ShopAssistantNPC in Semos bakery)
@@ -36,7 +32,6 @@ public class ShopAssistantNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Małgosia") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -54,7 +49,6 @@ public class ShopAssistantNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-
 				addJob("Ja piekę chleb w tej piekarni.");
 				addReply("mąka",
 						"Do naszej pracy potrzebujemy mąkę, którą mielono we młynie na północ stąd, ale wilki pożarły chłopca, który nam ją przynosił! Jeśli przyniesiesz nam mąkę w nagrodę upieczemy przepyszny chleb dla Ciebie. Powiedz tylko #upiecz.");
@@ -62,15 +56,6 @@ public class ShopAssistantNPC implements ZoneConfigurator {
 				addGoodbye();
 			}
 		};
-
-		final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
-		requiredResources.put("mąka", 2);
-
-		final ProducerBehaviour behaviour = new ProducerBehaviour("malgosia_bake_bread",
-				Arrays.asList("bake", "upiecz"), "chleb", requiredResources, 7 * 60);
-
-		new ProducerAdder().addProducer(npc, behaviour,
-						"Witaj w piekarni w Zakopanem! Możemy upiec pyszny chleb dla każdego kto pomoże nam przynosząc mąkę z młyna. Powiedz tylko #upiecz.");
 
 		npc.setEntityClass("housewifenpc");
 		npc.setGender("F");
