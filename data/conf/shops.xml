@@ -1059,11 +1059,12 @@
 		<merchant name="Kibic" configure="true" offer="true"/>
 	</shop>
 
-	<!-- Krasnolud sprzedaje: -->
+	<!-- Hadrin / Krasnolud sprzedaje: -->
 	<shop name="sellkopalnia" type="sell">
 		<item name="kilof" price="60" />
 		<item name="łopata" price="60" />
 
+		<merchant name="Hadrin" configure="true" offer="true"/>
 		<merchant name="Krasnolud" configure="true" offer="true"/>
 	</shop>
 

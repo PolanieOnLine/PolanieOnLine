@@ -17,9 +17,7 @@ import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
-import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
-import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 import games.stendhal.server.core.engine.SingletonRepository;
 
 import java.util.Arrays;
@@ -58,8 +56,6 @@ public class HadrinNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-			new SellerAdder().addSeller(this, new SellerBehaviour(SingletonRepository.getShopList().get("sellkopalnia")));
-
 			// Xoderos casts iron if you bring him wood and iron ore.
 			final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
 			requiredResources.put("polano", 2);
