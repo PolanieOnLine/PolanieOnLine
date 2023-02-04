@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2021 - Stendhal                    *
+ *                 (C) Copyright 2021-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -15,15 +15,12 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 
 /**
  * @author KarajuSs
@@ -42,7 +39,6 @@ public class BlacksmithNPC implements ZoneConfigurator {
 
 	private void buildKuznia(final StendhalRPZone zone) {
 		final SpeakerNPC kuznia = new SpeakerNPC("Kowal Markusław") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -53,7 +49,6 @@ public class BlacksmithNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-				addGreeting("Witaj!");
 				addJob("Jestem tutejszym kowalem. Mogę dla Ciebie #odlać sztabkę platyny.");
 				addHelp("Odlewam sztabki platyny. Jeżeli chcesz, abym wykonał dla Ciebie powiedz mi tylko #odlej.");
 				addOffer("Mogę odlać sztabkę platyny, jeśli przyniesiesz mi #polano, #'rudę platyny' oraz trochę pieniędzy. Powiedz tylko #odlej.");
@@ -62,19 +57,7 @@ public class BlacksmithNPC implements ZoneConfigurator {
 				addReply(Arrays.asList("polano", "drewno"),
 						"Polano znajdziesz na obrzeżach lasów. Potrzebne mi są do podtrzymywania ognia czy wykonania rękojeści.");
 				addReply(Arrays.asList("sztabka", "platyna", "sztabkę platyny", "ruda platyny", "rudę platyny", "ruda"),
-						"Rudę platyny znajdziesz w górach Zakopanego. Uważaj tam na siebie!");
-
-				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
-				requiredResources.put("polano", 3);
-				requiredResources.put("ruda platyny", 1);
-				requiredResources.put("money", 125);
-
-				final ProducerBehaviour behaviour = new ProducerBehaviour("markuslaw_cast_platinum",
-						Arrays.asList("cast", "odlej"), "sztabka platyny", requiredResources, 12 * 60);
-
-				new ProducerAdder().addProducer(this, behaviour,
-				        "Cześć! Jestem tutejszym kowalem. Jeżeli będziesz chciał, abym odlał dla Ciebie #'sztabkę platyny' to daj znać!");
-			}
+						"Rudę platyny znajdziesz w górach Zakopanego. Uważaj tam na siebie!");			}
 		};
 
 		kuznia.setDescription("Oto kowal Markusław. Jest strasznie zapracowany!");

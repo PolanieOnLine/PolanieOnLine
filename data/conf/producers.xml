@@ -467,4 +467,27 @@
 		</item>
 	</producer>
 
+	<!-- Kowal Markusław (Tatry) -->
+	<producer npc="Kowal Markusław" slot="markuslaw_cast_platinum" type="item">
+		<welcome text="Cześć! Jestem tutejszym kowalem. Jeżeli będziesz chciał, abym #odlał dla Ciebie #'sztabkę platyny' to daj znać!"/>
+		<item name="sztabka platyny" minutes="12">
+			<resource name="polano" amount="3"/>
+			<resource name="ruda platyny"/>
+			<resource name="money" amount="125"/>
+
+			<activity type="cast,odlej"/>
+		</item>
+	</producer>
+	<!-- Zygfryd (Tatry) -->
+	<producer npc="Zygfryd" slot="zygfryd_cast_shadow" type="item">
+		<welcome text="Cześć! Jestem pomocnikiem tutejszego kowala. Jeżeli będziesz chciał, abym #odlał dla Ciebie #'sztabkę cieni' to daj znać!"/>
+		<item name="sztabka cieni" minutes="7">
+			<resource name="polano" amount="2"/>
+			<resource name="ruda platyny"/>
+			<resource name="money" amount="70"/>
+
+			<activity type="cast,odlej"/>
+		</item>
+	</producer>
+
 </producers>

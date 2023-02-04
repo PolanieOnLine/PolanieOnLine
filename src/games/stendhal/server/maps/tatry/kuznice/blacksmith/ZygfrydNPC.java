@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2021 - Stendhal                    *
+ *                 (C) Copyright 2021-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -15,15 +15,12 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 
 /**
  * @author KarajuSs
@@ -42,7 +39,6 @@ public class ZygfrydNPC implements ZoneConfigurator {
 
 	private void buildKuznia(final StendhalRPZone zone) {
 		final SpeakerNPC kuznia = new SpeakerNPC("Zygfryd") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -56,7 +52,6 @@ public class ZygfrydNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-				addGreeting();
 				addJob("Pomagam tutejszemu kowalowi. Nauczył mnie odlewać pewien minerał, sztabkę cieni.");
 				addHelp("Odlewam sztabki cieni. Jeżeli chcesz, abym wykonał dla Ciebie powiedz mi tylko #odlej.");
 				addOffer("Mogę odlać sztabkę cieni, jeśli przyniesiesz mi #polano, #'rudę cieni' oraz trochę pieniędzy. Powiedz tylko #odlej.");
@@ -66,17 +61,6 @@ public class ZygfrydNPC implements ZoneConfigurator {
 						"Polano znajdziesz na obrzeżach lasów. Potrzebne mi są do podtrzymywania ognia czy wykonania rękojeści.");
 				addReply(Arrays.asList("sztabka", "cieni", "sztabkę", "ruda", "rudę"),
 						"Rudę cieni znajdziesz w górach Zakopanego. Uważaj tam na siebie!");
-
-				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
-				requiredResources.put("polano", 2);
-				requiredResources.put("ruda cieni", 1);
-				requiredResources.put("money", 70);
-
-				final ProducerBehaviour behaviour = new ProducerBehaviour("zygfryd_cast_shadow",
-						Arrays.asList("cast", "odlej"), "sztabka cieni", requiredResources, 7 * 60);
-
-				new ProducerAdder().addProducer(this, behaviour,
-				        "Cześć! Jestem pomocnikiem tutejszego kowala. Jeżeli będziesz chciał, abym odlał dla Ciebie #'sztabkę cieni' to daj znać!");
 			}
 		};
 
