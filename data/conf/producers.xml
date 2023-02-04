@@ -273,6 +273,18 @@
 			<activity type="mill,zmiel"/>
 		</item>
 	</producer>
+	<!-- Markovich (Semos) -->
+	<producer npc="Markovich" slot="sicky_fill_goblet" type="item">
+		<welcome text="Proszę nie próbuj mnie zabijać... Jestem tylko starym chorym #wampirem. Czy masz #krew, którą mógłbym wypić? Jeżeli masz #'pustą czarę' to napełnię ją krwią z mojego kotła."/>
+		<item name="czara" minutes="5" bound="true">
+			<resource name="truchło wampira" amount="7"/>
+			<resource name="truchło nietoperza" amount="7"/>
+			<resource name="pierścień z czaszką"/>
+			<resource name="pusta czara"/>
+
+			<activity type="fill,napełnij"/>
+		</item>
+	</producer>
 
 	<!-- Kroip (Wo'fol) -->
 	<producer npc="Kroip" slot="kroip_make_pizza" type="food">

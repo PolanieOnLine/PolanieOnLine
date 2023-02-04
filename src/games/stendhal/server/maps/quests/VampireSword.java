@@ -15,8 +15,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ChatAction;
@@ -32,8 +30,6 @@ import games.stendhal.server.entity.npc.action.SayTimeRemainingAction;
 import games.stendhal.server.entity.npc.action.SetQuestAction;
 import games.stendhal.server.entity.npc.action.SetQuestAndModifyKarmaAction;
 import games.stendhal.server.entity.npc.action.SetQuestToTimeStampAction;
-import games.stendhal.server.entity.npc.behaviour.adder.ProducerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
 import games.stendhal.server.entity.npc.condition.KilledCondition;
@@ -144,31 +140,12 @@ public class VampireSword extends AbstractQuest {
 		final SpeakerNPC npc = npcs.get("Markovich");
 
 		npc.addGoodbye("*kaszlnięcie* Do widzenia... *kaszlnięcie*");
-		npc.addReply(
-			Arrays.asList("blood", "truchło wampira", "truchło nietoperza", "krew"),
+		npc.addReply(Arrays.asList("blood", "truchło wampira", "truchło nietoperza", "krew"),
 			"Potrzebuję krwi. Mogę ją wziąć tylko z wnętrzności żywych lub martwych. Wymieszam krew dla Ciebie i napełnię twoją #czarę jeżeli pozwolisz mi się trochę napić. Powiedz #napełnij jak się zdecydujesz. Boję się potężnego #lorda.");
-
 		npc.addReply(Arrays.asList("lord", "vampire", "skull ring", "pierścień z czaszką", "lorda", "wampirem", "wampir"),
 			"Lord Wampir rządzi w tych Katakumbach! Boję się go. Mógłbym Ci tylko pomóc jeżeli zabiłbyś go, przyniósł mi pierścień z czaszką oraz #czarę.");
-
-		npc.addReply(
-			Arrays.asList("empty goblet", "goblet", "pusta czara", "czara"),
+		npc.addReply(Arrays.asList("empty goblet", "goblet", "pusta czara", "czara"),
 			"Tylko potężny talizman jak ten kocioł lub specjalny kielich mogą zawierać krew.");
-
-		// The sick vampire is only a producer. He doesn't care if your quest slot is active, or anything.
-		// So to ensure that the vampire lord must have been killed, we made the skull ring a required item
-		// Which the vampire lord drops if the quest is active as in games.stendhal.server.maps.semos.catacombs.VampireLordCreature
-		// But, it could have been done other ways using quests slot checks and killed conditions
-		final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
-		requiredResources.put("truchło wampira", 7);
-		requiredResources.put("truchło nietoperza", 7);
-		requiredResources.put("pierścień z czaszką", 1);
-		requiredResources.put("pusta czara", 1);
-		final ProducerBehaviour behaviour = new ProducerBehaviour(
-				"sicky_fill_goblet", Arrays.asList("fill", "napełnij"), "czara", requiredResources,
-				5 * 60, true);
-		new ProducerAdder().addProducer(npc, behaviour,
-			"Proszę nie próbuj mnie zabijać... Jestem tylko starym chorym #wampirem. Czy masz #krew, którą mógłbym wypić? Jeżeli masz #'pustą czarę' to napełnię ją krwią z mojego kotła.");
 	}
 
 	private void prepareForgingStep() {

@@ -46,6 +46,7 @@ public class ProducersXMLLoader extends DefaultHandler {
 	private int time;
 	
 	private boolean remind;
+	private boolean bound;
 
 	private boolean productionTag = false;
 
@@ -141,6 +142,11 @@ public class ProducersXMLLoader extends DefaultHandler {
 			}
 			// Time in minutes
 			time = 60 * Integer.parseInt(attrs.getValue("minutes"));
+
+			bound = false;
+			if (attrs.getValue("bound") != null) {
+				bound = Boolean.parseBoolean(attrs.getValue("bound"));
+			}
 		} else if (productionTag) {
 			if (qName.equals("resource")) {
 				int amount = 1;
@@ -161,7 +167,7 @@ public class ProducersXMLLoader extends DefaultHandler {
 	public void endElement(final String namespaceURI, final String sName, final String qName) {
 		if (qName.equals("producer")) {
 			final ProducerBehaviour behaviour =
-					new ProducerBehaviour(questSlot, activity, itemName, productsPerUnit, resources, time);
+					new ProducerBehaviour(questSlot, activity, itemName, productsPerUnit, resources, time, bound);
 
 			if (behaviour.getProductionActivity() == activity) {
 				SingletonRepository.getCachedActionManager().register(new Runnable() {

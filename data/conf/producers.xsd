@@ -32,6 +32,7 @@
 		<attribute name="pertime" type="positiveInteger" use="optional"/>
 		<attribute name="wait" type="positiveInteger" use="optional"/>
 		<attribute name="minutes" type="positiveInteger" use="required"/>
+		<attribute name="bound" type="boolean" use="optional"/>
 	</complexType>
 
 	<simpleType name="ProductType">
