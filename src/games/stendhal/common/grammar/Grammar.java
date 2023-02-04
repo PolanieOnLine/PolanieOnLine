@@ -478,6 +478,13 @@ public class Grammar {
 				noun[1] = noun[1].substring(0, noun[1].length() - 1) + "y";
 			}
 			return noun[0] + " " + noun[1];
+		} else if (noun.length == 3) {
+			if (noun[0].startsWith("napój")) {
+				noun[0] = noun[0].substring(0, noun[0].length() - 2) + "ojów";
+			}
+			return noun[0] + " " + noun[1] + " " + noun[2];
+		} else if (noun.length == 4) {
+			return noun[0] + " " + noun[1] + " " + noun[2] + " " + noun[3];
 		} else {
 			return plural(noun[0]);
 		}
