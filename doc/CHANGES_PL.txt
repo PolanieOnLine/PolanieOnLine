@@ -7,10 +7,11 @@ Changelog
 - Poprawiono kolory grafiki ametystu
 
 *świat*
-- Dodano nowego NPC: (3)
+- Dodano nowego NPC: (4)
 	- Racirad
 	- Chciwurak
 	- Wszebor
+	- Fletcher
 - Dodano nowe osiągnięcia: (9)
 	- "Leśni Bandyci"
 	- "Gromadka Bandy"
@@ -23,11 +24,13 @@ Changelog
 	- "Podróżujący Handlarz"
 - Dodano nowy przedmiot: (1)
 	- zatruty bicz
+	- zatruta strzała
 - Dodano nowe zadanie u Racirada, Chciwuraka i Wszebora
 - Skrócono czas ponownego przyjęcia zadania u Wielkoluda z 14 dni do 7 dni
 - Skrócono czas ponownego przyjęcia zadania u gazdy Jędrzeja z 14 dni do 3 dni
 - Zmieniono wynagrodzenie za ukończenie zadania u Wielkoluda z 50.000pd do 80.000pd
 - Zmieniono wynagrodzenie za ukończenie zadania u gazdy Jędrzeja z 5.000pd do 30.000pd oraz z 15 karmy do 20 karmy
+- Zmieniono wymagania na wyprodukowanie dużego eliksiru, dużego smoczego eliksiru, smoczego eliksiru
 - Zadanie 'Rogi Jednorożca dla Zelana' jest teraz powtarzalne
 - Zadania 'Odnowienie Zapasów Kwiaciarni', 'Wsparcie dla Wielkoluda' oraz 'Pozbycie się Rozbójników' śledzi teraz ukończenia tego zadania
 - Gracze mogą nakładać specjalne efekty (np: zatrucie) podczas atakowania
