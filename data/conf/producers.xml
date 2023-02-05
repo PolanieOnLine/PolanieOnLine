@@ -337,7 +337,8 @@
 	<producer npc="Aron" slot="aron_concoct_potion" type="drink">
 		<welcome text="Witaj poszukiwaczu, co Ciebie sprowadza do mojej TAJNEJ kryjówki? Chcesz być moim #'królikiem doświadczalnym'?"/>
 		<item name="duży smoczy eliksir" minutes="2">
-			<resource name="money" amount="1200"/>
+			<resource name="money" amount="80"/>
+			<resource name="gigantyczny eliksir"/>
 			<resource name="smocza krew" amount="3"/>
 
 			<activity type="concoct,zrób,sporządź"/>
@@ -527,7 +528,8 @@
 	<producer npc="Agrypin" slot="agrypin_concoct_potion" type="drink">
 		<welcome text="Witaj rycerzu, nie chciałbyś czasem wypróbować mojego nowego #'eliksiru'?"/>
 		<item name="smoczy eliksir" minutes="1">
-			<resource name="money" amount="800"/>
+			<resource name="money" amount="60"/>
+			<resource name="wielki eliksir"/>
 			<resource name="smocza krew"/>
 
 			<activity type="concoct,zrób,sporządź"/>
