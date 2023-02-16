@@ -13,7 +13,6 @@ import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.EventRaiser;
-import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.JailAction;
 import games.stendhal.server.entity.npc.action.MultipleActions;
@@ -26,6 +25,7 @@ import games.stendhal.server.entity.npc.condition.OrCondition;
 import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotInStateCondition;
 import games.stendhal.server.entity.npc.condition.TimePassedCondition;
+import games.stendhal.server.entity.npc.shop.ShopsList;
 import games.stendhal.server.entity.player.Player;
 
 /**
@@ -36,7 +36,6 @@ import games.stendhal.server.entity.player.Player;
  * her back in int_admin_playground after use.
  */
 public class Maria extends ScriptImpl {
-
 	private static Logger logger = Logger.getLogger(Maria.class);
 	private static final String QUEST_SLOT = "Ketteh";
 	private static final int GRACE_PERIOD = 1;
@@ -65,7 +64,6 @@ public class Maria extends ScriptImpl {
 
 	@Override
 	public void load(final Player admin, final List<String> args, final ScriptingSandbox sandbox) {
-
 		// Create NPC
 		final ScriptingNPC npc = new ScriptingNPC("Maria");
 		npc.setEntityClass("tavernbarmaidnpc");
@@ -76,7 +74,7 @@ public class Maria extends ScriptImpl {
 		int x = 11;
 		int y = 4;
 		String shop = "food&drinks";
-		final ShopList shops = SingletonRepository.getShopList();
+		final ShopsList shops = SingletonRepository.getShopsList();
 		if (args.size() > 0 ) {
 			if (shops.get(args.get(0))!= null) {
 				shop = args.get(0);
@@ -108,7 +106,7 @@ public class Maria extends ScriptImpl {
 				"Możesz otrzymać #ofertę napojów lub zrobić przerwę na poznanie nowych ludzi!");
 		npc.behave("bye", "Do widzenia, do widzenia!");
 		try {
-			npc.behave("sell", SingletonRepository.getShopList().get(shop));
+			npc.behave("sell", SingletonRepository.getShopsList().get(shop));
 		} catch (final NoSuchMethodException e) {
 			logger.error(e, e);
 		}

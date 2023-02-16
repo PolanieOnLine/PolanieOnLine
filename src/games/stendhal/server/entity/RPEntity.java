@@ -2824,7 +2824,7 @@ public abstract class RPEntity extends CombatEntity {
 	 * Retrieves total ATK value of held weapons.
 	 */
 	public float getItemAtk() {
-		int weapon = 0;
+		float weapon = 0;
 		int glove = 0;
 		int ring = 0;
 		int ringb = 0;
@@ -2989,7 +2989,7 @@ public abstract class RPEntity extends CombatEntity {
 
 		final List<Item> targetWeapons = getWeapons();
 		for (final Item weaponItem : targetWeapons) {
-			weapon += weaponItem.getDefense() / getItemLevelModifier(weaponItem);
+			weapon += (int) (weaponItem.getDefense() / getItemLevelModifier(weaponItem));
 		}
 
 		if (getWandWeapon() != null) {
@@ -3469,19 +3469,19 @@ public abstract class RPEntity extends CombatEntity {
 			for (final Item weaponItem : attackerWeapons) {
 				sumAll += weaponItem.getAttack();
 				if (weaponItem.has("lifesteal")) {
-					sumLifesteal += weaponItem.getAttack()
-							* weaponItem.getDouble("lifesteal");
+					sumLifesteal += (int) (weaponItem.getAttack()
+							* weaponItem.getDouble("lifesteal"));
 				}
 				if (hasGloves() && getGloves().has("lifesteal")) {
-					sumLifesteal += weaponItem.getAttack()
-							* getGloves().getDouble("lifesteal");
+					sumLifesteal += (int) (weaponItem.getAttack()
+							* getGloves().getDouble("lifesteal"));
 				}
 				if (hasRing() && getRing().has("lifesteal")) {
-					sumLifesteal += weaponItem.getAttack()
-							* getRing().getDouble("lifesteal");
+					sumLifesteal += (int) (weaponItem.getAttack()
+							* getRing().getDouble("lifesteal"));
 				} else if (hasRingB() && getRingB().has("lifesteal")) {
-					sumLifesteal += weaponItem.getAttack()
-							* getRingB().getDouble("lifesteal");
+					sumLifesteal += (int) (weaponItem.getAttack()
+							* getRingB().getDouble("lifesteal"));
 				}
 			}
 		}

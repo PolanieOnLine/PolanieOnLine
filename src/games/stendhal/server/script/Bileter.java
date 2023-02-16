@@ -17,12 +17,10 @@ import games.stendhal.server.entity.player.Player;
  * him back in int_admin_playground after use.
  */
 public class Bileter extends ScriptImpl {
-
 	private static Logger logger = Logger.getLogger(Bileter.class);
 
 	@Override
 	public void load(Player admin, List<String> args, ScriptingSandbox sandbox) {
-
 		// Create NPC
 		ScriptingNPC npc = new ScriptingNPC("Bileter");
 		npc.setEntityClass("npckibic");
@@ -53,11 +51,11 @@ public class Bileter extends ScriptImpl {
 //			"I have a #coupon for a free beer in Semos' tavern. "+
 			"Mecz odbędzie się na stadionie PolanieOnLine.");
 		npc.behave("help",
-				"Mogę  zaoferować ( #offer ) bilet na mecz.");
+				"Mogę zaoferować ( #offer ) bilet na mecz.");
 		npc.behave("bye",
 				"Do widzenia. Podziwiaj mecz.");
 		try {
-			npc.behave("sell", SingletonRepository.getShopList().get("mecz"));
+			npc.behave("sell", SingletonRepository.getShopsList().get("mecz"));
 		} catch (NoSuchMethodException e) {
 			logger.error(e, e);
 		}

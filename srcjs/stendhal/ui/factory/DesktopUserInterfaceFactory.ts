@@ -1,5 +1,5 @@
 /***************************************************************************
- *                (C) Copyright 2022-2022 - Faiumoni e. V.                 *
+ *                (C) Copyright 2022-2023 - Faiumoni e. V.                 *
  ***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -14,13 +14,16 @@ import { ui } from "../UI";
 
 import { Component } from "../toolkit/Component";
 import { Panel } from "../toolkit/Panel";
+import { TabPanelComponent } from "../toolkit/TabPanelComponent";
 
 import { BagComponent } from "../component/BagComponent";
 import { BuddyListComponent } from "../component/BuddyListComponent";
 import { ChatInputComponent } from "../component/ChatInputComponent";
 import { ChatLogComponent } from "../component/ChatLogComponent";
+import { GroupPanelComponent } from "../component/GroupPanelComponent";
 import { KeyringComponent } from "../component/KeyringComponent";
 import { MiniMapComponent } from "../component/MiniMapComponent";
+import { ZoneInfoComponent } from "../component/ZoneInfoComponent";
 import { PlayerEquipmentComponent } from "../component/PlayerEquipmentComponent";
 import { PlayerStatsComponent } from "../component/PlayerStatsComponent";
 
@@ -33,10 +36,17 @@ export class DesktopUserInterfaceFactory {
 		let leftPanel = new Panel("leftColumn");
 		ui.registerComponent(UIComponentEnum.LeftPanel, leftPanel);
 
-		this.add(leftPanel, UIComponentEnum.MiniMap, new MiniMapComponent());
-		this.add(leftPanel, UIComponentEnum.PlayerStats, new PlayerStatsComponent());
-		this.add(leftPanel, UIComponentEnum.BuddyList, new BuddyListComponent());
+		let socialPanel = new TabPanelComponent();
 
+		this.add(leftPanel, UIComponentEnum.MiniMap, new MiniMapComponent());
+		this.add(leftPanel, UIComponentEnum.ZoneInfo, new ZoneInfoComponent());
+		this.add(leftPanel, UIComponentEnum.PlayerStats, new PlayerStatsComponent());
+		leftPanel.add(socialPanel);
+
+		this.add(socialPanel, UIComponentEnum.BuddyList, new BuddyListComponent());
+		this.add(socialPanel, UIComponentEnum.GroupPanel, new GroupPanelComponent());
+		socialPanel.addTab("Friends");
+		// socialPanel.addTab("Group");
 
 		let rightPanel = new Panel("rightColumn");
 		ui.registerComponent(UIComponentEnum.RightPanel, rightPanel);

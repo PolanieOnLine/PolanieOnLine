@@ -1,5 +1,5 @@
 /***************************************************************************
- *                (C) Copyright 2003-2022 - Faiumoni e. V.                 *
+ *                (C) Copyright 2003-2023 - Faiumoni e. V.                 *
  ***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -22,12 +22,16 @@ declare var stendhal: any;
  * a container for items like a bag or corpse
  */
 export class ItemContainerImplementation {
+
 	private rightClickDuration = 300;
 	private timestampMouseDown = 0;
 	private timestampMouseDownPrev = 0;
 
 	// slot index where cursor is hovering
 	private selectedIdx: string|undefined = undefined;
+
+	// marked for updating certain attributes
+	private dirty = false;
 
 
 	// TODO: replace usage of global document.getElementById()
@@ -36,14 +40,14 @@ export class ItemContainerImplementation {
 	 * slot name, slot size, object (a corpse or chest) or null for marauroa.me,
 	 * which changes on zone change.
 	 */
-	constructor(private slot: string, private size: number, private object: any, private suffix: string, private quickPickup: boolean, private defaultImage?: string) {
+	constructor(private parentElement: Document|HTMLElement, private slot: string, private size: number, public object: any, private suffix: string, private quickPickup: boolean, private defaultImage?: string) {
 		this.init(size);
 	}
 
 	public init(size: number) {
 		this.size = size;
 		for (let i = 0; i < size; i++) {
-			let e = document.getElementById(this.slot + this.suffix + i)!;
+			let e = this.parentElement.querySelector("#" + this.slot + this.suffix + i) as HTMLElement;
 			e.setAttribute("draggable", "true");
 			e.addEventListener("dragstart", (event: DragEvent) => {
 				this.onDragStart(event)
@@ -79,6 +83,13 @@ export class ItemContainerImplementation {
 		this.update();
 	}
 
+	/**
+	 * Marks items to update cursors & tooltips.
+	 */
+	public markDirty() {
+		this.dirty = true;
+	}
+
 	public update() {
 		this.render();
 	}
@@ -89,11 +100,12 @@ export class ItemContainerImplementation {
 		if (myobject && myobject[this.slot]) {
 			for (let i = 0; i < myobject[this.slot].count(); i++) {
 				let o = myobject[this.slot].getByIndex(i);
-				let e = document.getElementById(this.slot + this.suffix + cnt);
+				let e = this.parentElement.querySelector("#" + this.slot + this.suffix + cnt) as HTMLElement;
 				if (!e) {
 					continue;
 				}
 
+				this.dirty = this.dirty || o !== (e as any).dataItem;
 				const item = <Item> o;
 				let xOffset = 0;
 				let yOffset = 0;
@@ -104,24 +116,37 @@ export class ItemContainerImplementation {
 					xOffset = -(item.getXFrameIndex() * 32);
 				}
 
-				e.style.backgroundImage = "url(" + stendhal.paths.sprites + "/items/" + o["class"] + "/" + o["subclass"] + ".png)";
-				e.style.backgroundPosition = xOffset + "px " + yOffset + "px";
+				e.style.backgroundImage = "url("
+						+ stendhal.data.sprites.checkPath(stendhal.paths.sprites
+								+ "/items/" + o["class"] + "/" + o["subclass"] + ".png")
+						+ ")";
+				e.style.backgroundPosition = (xOffset+1) + "px " + (yOffset+1) + "px";
 				e.textContent = o.formatQuantity();
+				if (this.dirty) {
+					this.updateCursor(e, item);
+					this.updateToolTip(e, item);
+				}
 				(e as any).dataItem = o;
 				cnt++;
 			}
 		}
 
 		for (let i = cnt; i < this.size; i++) {
-			let e = document.getElementById(this.slot +this. suffix + i)!;
+			let e = this.parentElement.querySelector("#" + this.slot +this. suffix + i) as HTMLElement;
 			if (this.defaultImage) {
 				e.style.backgroundImage = "url(" + stendhal.paths.gui + "/" + this.defaultImage + ")";
 			} else {
 				e.style.backgroundImage = "none";
 			}
 			e.textContent = "";
+			if (this.dirty) {
+				this.updateCursor(e);
+				this.updateToolTip(e);
+			}
 			(e as any).dataItem = undefined;
 		}
+
+		this.dirty = false;
 	}
 
 	private onDragStart(event: DragEvent|TouchEvent) {
@@ -195,7 +220,6 @@ export class ItemContainerImplementation {
 				action["zone"] = stendhal.ui.heldItem.zone;
 			}
 
-			// item was dropped
 			stendhal.ui.heldItem = undefined;
 
 			// if ctrl is pressed, we ask for the quantity
@@ -250,9 +274,9 @@ export class ItemContainerImplementation {
 			}
 
 			if (this.isRightClick(event) || stendhal.ui.touch.isLongTouch()) {
-				ui.createSingletonFloatingWindow("Action",
+				stendhal.ui.actionContextMenu.set(ui.createSingletonFloatingWindow("Action",
 					new ActionContextMenu((event.target as any).dataItem),
-					event.pageX - 50, event.pageY - 5);
+					event.pageX - 50, event.pageY - 5));
 			} else if (!stendhal.ui.heldItem) {
 				if (!stendhal.config.getBoolean("action.item.doubleclick") || this.isDoubleClick(event)) {
 					marauroa.clientFramework.sendAction({
@@ -267,22 +291,11 @@ export class ItemContainerImplementation {
 	}
 
 	private onMouseEnter(evt: MouseEvent) {
-		const dataItem = (evt.target as any).dataItem;
-		if (dataItem) {
-			if (dataItem["class"] === "scroll" && dataItem["dest"]) {
-				const dest = dataItem["dest"].split(",");
-				if (dest.length > 2) {
-					document.getElementById((evt.target as HTMLElement).id)!
-							.title = dest[0] + " " + dest[1] + "," + dest[2];
-				}
-			}
-		}
+		// nothing
 	}
 
 	private onMouseLeave(evt: MouseEvent) {
-		if (evt.target) {
-			document.getElementById((evt.target as HTMLElement).id)!.title = "";
-		}
+		// nothing
 	}
 
 	private onTouchStart(evt: TouchEvent) {
@@ -303,5 +316,34 @@ export class ItemContainerImplementation {
 			this.onDrop(evt);
 			stendhal.ui.touch.unsetHeldItem();
 		}
+	}
+
+	/**
+	 * Updates cursor to display for targeted item.
+	 *
+	 * @param target
+	 *     HTMLElement representing item.
+	 * @param item
+	 *     Object containing item information.
+	 */
+	private updateCursor(target: HTMLElement, item?: Item) {
+		if (item) {
+			target.style.cursor = item.getCursor(0, 0);
+			return;
+		}
+		target.style.cursor = "url(" + stendhal.paths.sprites
+				+ "/cursor/normal.png) 1 3, auto";
+	}
+
+	/**
+	 * Sets tooltip to be shown for item.
+	 *
+	 * @param target
+	 *     HTMLElement representing item.
+	 * @param item
+	 *     Object containing item information.
+	 */
+	private updateToolTip(target: HTMLElement, item?: Item) {
+		target.title = typeof(item) !== "undefined" ? item.getToolTip() : "";
 	}
 }

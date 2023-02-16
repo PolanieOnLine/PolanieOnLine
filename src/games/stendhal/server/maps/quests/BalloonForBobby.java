@@ -17,10 +17,12 @@ import java.util.LinkedList;
 import java.util.List;
 
 import games.stendhal.common.grammar.Grammar;
+import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.entity.Outfit;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
+import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.ChangePlayerOutfitAndPreserveTempAction;
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
@@ -73,15 +75,11 @@ public class BalloonForBobby extends AbstractQuest {
 	public static final String QUEST_SLOT = "balloon_bobby";
 	private final SpeakerNPC npc = npcs.get("Bobby");
 
-	// List of outfits which are balloons
-	private static final Outfit[] balloonList = new Outfit[4];
+	private static final Outfit balloonOutfit = new Outfit("detail=1");
 
-	// Load the different outfits into the list
-	public void prepareBalloonList() {
-		for (int i = 0; i < 4; i++) {
-			balloonList[i] = new Outfit(null, null, null, null, null, null, i+1);
-		}
-	}
+	final OrCondition wearsColorlessBalloon = new OrCondition(
+			new PlayerIsWearingOutfitCondition(new Outfit("detail=2")),
+			new PlayerIsWearingOutfitCondition(new Outfit("detail=3")));
 
 	private void prepareRequestQuestStep() {
 		// Player asks Bobby for "quest".
@@ -130,7 +128,7 @@ public class BalloonForBobby extends AbstractQuest {
 	// If the player has a balloon (and it is mine town weeks),
 	// ask if Bobby can have it
 	private void prepareGreetWithBalloonStep() {
-		// Add conditions for all 4 different kinds of balloons
+		// Add conditions for balloon
 		npc.add(
 				ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
@@ -138,11 +136,7 @@ public class BalloonForBobby extends AbstractQuest {
 						new GreetingMatchesNameCondition(npc.getName()),
 						new NotCondition(
 								new SystemPropertyCondition("stendhal.minetown")),
-						new OrCondition(
-								new PlayerIsWearingOutfitCondition(balloonList[0]),
-								new PlayerIsWearingOutfitCondition(balloonList[1]),
-								new PlayerIsWearingOutfitCondition(balloonList[2]),
-								new PlayerIsWearingOutfitCondition(balloonList[3]))),
+						new PlayerIsWearingOutfitCondition(balloonOutfit)),
 				ConversationStates.QUEST_ITEM_QUESTION,
 				"Cześć! Czy ten balonik jest dla mnie?",
 				null);
@@ -159,11 +153,7 @@ public class BalloonForBobby extends AbstractQuest {
 						new QuestStartedCondition(QUEST_SLOT),
 						new NotCondition(
 								new SystemPropertyCondition("stendhal.minetown")),
-						new OrCondition(
-								new PlayerIsWearingOutfitCondition(balloonList[0]),
-								new PlayerIsWearingOutfitCondition(balloonList[1]),
-								new PlayerIsWearingOutfitCondition(balloonList[2]),
-								new PlayerIsWearingOutfitCondition(balloonList[3]))),
+						new PlayerIsWearingOutfitCondition(balloonOutfit)),
 				ConversationStates.QUEST_ITEM_QUESTION,
 				"Czy ten balonik jest dla mnie?",
 				null);
@@ -176,19 +166,29 @@ public class BalloonForBobby extends AbstractQuest {
 						new NotCondition(
 								new SystemPropertyCondition("stendhal.minetown")),
 						new NotCondition(
-								new OrCondition(
-										new PlayerIsWearingOutfitCondition(balloonList[0]),
-										new PlayerIsWearingOutfitCondition(balloonList[1]),
-										new PlayerIsWearingOutfitCondition(balloonList[2]),
-										new PlayerIsWearingOutfitCondition(balloonList[3])))),
+								new PlayerIsWearingOutfitCondition(balloonOutfit)),
+						new NotCondition(wearsColorlessBalloon)),
 				ConversationStates.ATTENDING,
 				"Nie masz dla mnie balonika :(",
+				null);
+
+		// make sure player knows they need to get a colorful balloon
+		npc.add(
+				ConversationStates.ATTENDING,
+				Arrays.asList("balloon", "balonik"),
+				new AndCondition(
+						new QuestStartedCondition(QUEST_SLOT),
+						wearsColorlessBalloon),
+				ConversationStates.ATTENDING,
+				"Um, chciałbym balonik nieco bardziej kolorowy. :(",
 				null);
 
 		npc.add(
 				ConversationStates.ATTENDING,
 				Arrays.asList("balloon", "balonik"),
-				new SystemPropertyCondition("stendhal.minetown"),
+				new AndCondition(
+						new SystemPropertyCondition("stendhal.minetown"),
+						new NotCondition(wearsColorlessBalloon)),
 				ConversationStates.ATTENDING,
 				"Chmury podpowiedziały mi, że dni mine town wciąż trwają - Mogę sam zdobyć balonik. Wróć, gdy skończy się święto :)",
 				null);
@@ -211,10 +211,14 @@ public class BalloonForBobby extends AbstractQuest {
 		// Rewards to give to the player if he gives Bobby the balloon
 		// NOTE: Also changes the players outfit to get rid of the balloon
 		List<ChatAction> reward = new LinkedList<ChatAction>();
-		reward.add(new ChangePlayerOutfitAndPreserveTempAction(balloonList[0], false));
-		reward.add(new ChangePlayerOutfitAndPreserveTempAction(balloonList[1], false));
-		reward.add(new ChangePlayerOutfitAndPreserveTempAction(balloonList[2], false));
-		reward.add(new ChangePlayerOutfitAndPreserveTempAction(balloonList[3], false));
+		reward.add(new ChangePlayerOutfitAndPreserveTempAction(balloonOutfit, false) {
+			@Override
+			public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
+				super.fire(player, sentence, npc);
+				// remove detail layer coloring
+				player.unsetOutfitColor("detail");
+			}
+		});
 		reward.add(new IncreaseXPAction(200));
 		reward.add(new IncreaseKarmaAction(50));
 		reward.add(new SetQuestAction(QUEST_SLOT, 0, "done"));
@@ -228,7 +232,6 @@ public class BalloonForBobby extends AbstractQuest {
 				ConversationStates.ATTENDING,
 				"Hurra! Leć baloniku! Leć!",
 				new MultipleActions(reward));
-
 	}
 
 	@Override
@@ -237,7 +240,6 @@ public class BalloonForBobby extends AbstractQuest {
 				"Balonik Bobbiego",
 				"Młody chłopiec Bobby w Fado wpatruje się w niebo, szukając balonów. On je kocha i chce mieć jednego dla siebie.",
 				true);
-		prepareBalloonList();
 		prepareRequestQuestStep();
 		prepareGreetWithBalloonStep();
 		prepareAttendingWithBalloonStep();

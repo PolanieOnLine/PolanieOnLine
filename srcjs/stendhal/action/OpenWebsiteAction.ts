@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2021 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -9,12 +9,12 @@
  *                                                                         *
  ***************************************************************************/
 
-import { Action } from "./Action";
+import { SlashAction } from "./SlashAction";
 
 /**
  * opens the specified website in the browser
  */
-export class OpenWebsiteAction extends Action {
+export class OpenWebsiteAction extends SlashAction {
     readonly minParams = 0;
     readonly maxParams = 0;
 
@@ -27,8 +27,9 @@ export class OpenWebsiteAction extends Action {
         super();
     }
 
-    execute(_type: string, _params: string[], _remainder: string) {
+    execute(_type: string, _params: string[], _remainder: string): boolean {
         window.location.href = this.url;
+        return true;
     }
 
 };

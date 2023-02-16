@@ -1,5 +1,5 @@
 /***************************************************************************
- *                (C) Copyright 2015-2022 - Faiumoni e. V.                 *
+ *                (C) Copyright 2015-2023 - Faiumoni e. V.                 *
  ***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -16,7 +16,8 @@ import { Component } from "./Component";
  */
 export class Panel extends Component {
 
-	private children: Component[] = [];
+	protected containerElement: HTMLElement;
+	protected children: Component[] = [];
 
 	/**
 	 * creates a new panel
@@ -25,6 +26,7 @@ export class Panel extends Component {
 	 */
 	constructor(id: string) {
 		super(id);
+		this.containerElement = this.componentElement;
 	}
 
 	/**
@@ -37,8 +39,8 @@ export class Panel extends Component {
 			return;
 		}
 		this.children.push(child);
-		if (!this.componentElement.contains(child.componentElement)) {
-			this.componentElement.append(child.componentElement);
+		if (!this.containerElement.contains(child.componentElement)) {
+			this.containerElement.append(child.componentElement);
 		}
 	}
 
@@ -53,7 +55,7 @@ export class Panel extends Component {
 			return;
 		}
 		this.children.splice(index, 1);
-		if (this.componentElement.contains(child.componentElement)) {
+		if (this.containerElement.contains(child.componentElement)) {
 			child.componentElement.remove();
 		}
 	}

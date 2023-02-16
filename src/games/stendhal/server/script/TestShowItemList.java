@@ -20,7 +20,7 @@ import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.scripting.ScriptImpl;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.ItemInformation;
-import games.stendhal.server.entity.npc.ShopList;
+import games.stendhal.server.entity.npc.shop.ShopsList;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.events.ShowItemListEvent;
 
@@ -48,7 +48,7 @@ public class TestShowItemList extends ScriptImpl {
 			itemList.add(prepareItem("miecz lodowy", -10000));
 		} else {
 			final String shopName = args.get(0);
-			ShopList shops = SingletonRepository.getShopList();
+			ShopsList shops = SingletonRepository.getShopsList();
 			Map<String, Integer> items = shops.get(shopName);
 
 			if (items == null) {

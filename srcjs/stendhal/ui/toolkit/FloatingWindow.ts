@@ -1,5 +1,5 @@
 /***************************************************************************
- *                (C) Copyright 2015-2022 - Faiumoni e. V.                 *
+ *                (C) Copyright 2015-2023 - Faiumoni e. V.                 *
  ***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -12,9 +12,13 @@
 import { Component } from "./Component";
 import { DialogContentComponent } from "./DialogContentComponent";
 
+import { SoundManager } from "../SoundManager";
+
 declare var stendhal: any;
 
 export class FloatingWindow extends Component {
+
+	private static readonly soundManager = SoundManager.get();
 
 	private readonly closeSound = "click-1";
 	private opened = true;
@@ -57,7 +61,7 @@ export class FloatingWindow extends Component {
 		});
 		this.componentElement.querySelector(".windowtitleclose")!.addEventListener("click", (event) => {
 			this.onClose(event);
-			stendhal.ui.sound.playGlobalizedEffect(this.closeSound);
+			FloatingWindow.soundManager.playGlobalizedEffect(this.closeSound);
 		});
 		this.onMouseMovedDuringDragListener = (event: Event) => {
 			if (event.type === "mousemove") {

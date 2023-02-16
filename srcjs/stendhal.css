@@ -2,6 +2,10 @@
 :root {
   --text-color-online: #0a0;
   --text-color-offline: #aaa;
+  --text-color: #FFF;
+  --text-color-inactive: #AAA;
+  --background-url: url(/data/gui/panelwood003.jpg)
+  overflow: hidden;
 }
 
 body {
@@ -26,22 +30,50 @@ ul.uniform {
   margin-left: -23px;
 }
 
+#leftColumn .tabpanel {
+  flex: 1;
+}
+
+.tabpanel {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.tabpanel-content {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border: 1px solid #000;
+  flex: 1;
+}
+
+.tabpanel-tabs button {
+  background: var(--background-url);
+  color: var(--text-color-inactive);
+  border-top: 0;
+}
+
+.tabpanel-tabs button.active {
+  color: var(--text-color);
+}
+
+
 #buddyList {
-  border: 1px solid black;
   width: 128px;
-  height: 175px;
-  float: left;
-  overflow: auto;
 }
 
 #buddyList ul {
   list-style-type: none;
   margin: 0;
   padding: 0.1em;
+  white-space: nowrap;
 }
 
 #menubutton {
-  width: 75%;
+  width: 90px;
 }
 
 #soundbutton {
@@ -69,7 +101,12 @@ div.quickPickup div.itemSlot {
   cursor: url(/data/sprites/cursor/itempickupfromslot.png) 1 3, auto;
 }
 
-.equipment { position: relative; height: 200px; border: 1px solid black }
+.equipment {
+  position: relative;
+  height: 200px;
+  border: 1px solid black;
+  width: 124px;
+}
 #head0 { position: absolute; top: 0px; left: 40px }
 #lhand0 { position: absolute; top: 50px; left: 80px }
 #rhand0 { position: absolute; top: 50px; left: 0px }
@@ -89,6 +126,7 @@ div.quickPickup div.itemSlot {
   display: block;
   color: #000;
   background-color: #FFF;
+  flex: 1;
 }
 
 #zoneinfo {
@@ -97,6 +135,8 @@ div.quickPickup div.itemSlot {
 }
 
 #stats {
+  display: flex;
+  flex-direction: column;
   border: 1px solid black;
   width: 128px;
   float: left;
@@ -105,10 +145,25 @@ div.quickPickup div.itemSlot {
   padding: 0.1em;
 }
 
+.stattext {
+}
+
+.statbar {
+  outline: 1px solid #000000;
+  height: 8px;
+  margin-left: 2px;
+  margin-right: 5px;
+  margin-bottom: 3px;
+}
+
+#karmabar {
+  margin-top: 0.2em;
+}
+
 div.logerror { color: #F00 }
+div.logwarning { color: #a00000 }
 div.logprivmsg { color: #444 }
 div.logclient { color: #888}
-div.logerror { color: #F00 }
 div.loginformation { color: #ffc800}
 div.lognegative { color: #f00}
 div.lognormal { color: #000}
@@ -155,9 +210,29 @@ div.logcolR {
   width: 100%
 }
 
+.mainColumn {
+  display: flex;
+  flex-direction: column;
+  height: 99vh;
+  height: 99dvh;
+}
+
 #leftColumn {
   float: left;
-  width: 130px
+  width: 130px;
+}
+
+#middleColumn {
+  float: left;
+  width: 640px;
+  max-width: calc(100vw - 130px - 150px - 10px);
+  background-color: #000;
+}
+
+#rightColumn {
+  float: left;
+  width: 150px;
+  overflow: auto;
 }
 
 #minimap {
@@ -165,13 +240,30 @@ div.logcolR {
   float: left
 }
 
-#gamewindow {
-  float: left
+#skullsbackground {
+  background: #000;
 }
 
-#rightColumn {
-  float: left;
-  width: 130px
+#skulls {
+  height: 1em;
+  width: 0px;
+  margin: auto;
+  background: url(/data/gui/danger.png) repeat;
+}
+
+#gamewindow {
+  display: block;
+  max-height: calc(100vh - 5em);
+  max-width: calc((100vh - 5em) * 640 / 480);
+  max-height: calc(100dvh - 5em);
+  max-width: calc((100dvh - 5em) * 640 / 480);
+}
+
+
+#bottomPanel {
+  flex: 1;
+  height: auto;
+  overflow: hidden;
 }
 
 #equipmentborder {
@@ -242,8 +334,8 @@ div.logcolR {
 }
 
 .background {
-  background: url(/data/gui/panelwood003.jpg);
-  color: #FFF;
+  background: var(--background-url);
+  color: var(--text-color);
 }
 
 .inlineblock {
@@ -270,6 +362,42 @@ div.logcolR {
 
 .stretchgroup {
   align-items: stretch;
+}
+
+.tradepopup {
+  width: 200px;
+}
+
+#trade-partner-column {
+  float: left;
+  margin-right: 20px;
+}
+
+.trade-column {
+  text-align:center;
+}
+
+#trade-partner-status, #trade-my-status {
+  font-weight: bold;
+}
+
+.trade-NO_ACTIVE_TRADE {
+  color: #AAA;
+}
+
+.trade-MAKING_OFFERS {
+  color: #AAA;
+}
+.trade-LOCKED {
+  color: #FFF;
+}
+.trade-DEAL_WAITING_FOR_OTHER_DEAL {
+  color: #0A0;
+}
+
+#trade-cancel {
+  display: block;
+  margin-left: auto;
 }
 
 .tavellogtabpanel {
@@ -318,8 +446,11 @@ div.logcolR {
 	left: 15vw;
 	width: 70vw;
 	top: 30vh;
+	top: 30dvh;
 	height: 20vh;
+	height: 20dvh;
 	line-height: 10vh;
+	line-height: 10dvh;
 	position: absolute;
 	z-index: 1000000;
 	color: #000;
@@ -367,7 +498,8 @@ div.logcolR {
 
 .progressbar {
 	border: 1px solid #005;
-	line-height: 5Vh;
+	line-height: 5vh;
+	line-height: 5dvh;
 }
 
 .progressbarvalue {

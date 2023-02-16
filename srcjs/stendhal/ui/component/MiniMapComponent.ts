@@ -1,5 +1,5 @@
 /***************************************************************************
- *                (C) Copyright 2003-2022 - Faiumoni e. V.                 *
+ *                (C) Copyright 2003-2023 - Faiumoni e. V.                 *
  ***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -206,8 +206,9 @@ export class MiniMapComponent extends Component {
 	}
 
 	onClick(event: MouseEvent) {
-		let x = Math.floor((event.offsetX + this.xOffset) / this.scale);
-		let y = Math.floor((event.offsetY + this.yOffset) / this.scale);
+		let pos = stendhal.ui.html.extractPosition(event);
+		let x = Math.floor((pos.canvasRelativeX + this.xOffset) / this.scale);
+		let y = Math.floor((pos.canvasRelativeY + this.yOffset) / this.scale);
 		if (!stendhal.data.map.collision(x, y)) {
 			let action: any = {
 					type: "moveto",

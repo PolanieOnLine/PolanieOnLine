@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2015 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -79,7 +79,8 @@ public class OutfitLender2NPC implements ZoneConfigurator {
 		// so true means we put on over
 		final Pair<Outfit, Boolean> GOBLIN_FACE = new Pair<Outfit, Boolean>(new Outfit(null, null, 988, -1, -1, -1, -1, -1, null), true);
 		final Pair<Outfit, Boolean> THING_FACE = new Pair<Outfit, Boolean>(new Outfit(null, null, 987, -1, -1, -1, -1, -1, null), true);
-		final Pair<Outfit, Boolean> Umbrella = new Pair<Outfit, Boolean>(new Outfit(null, null, null, null, null, null, null, null, 7), true);
+		// umbrella moved to Gwen's shop in Deniran City
+		//final Pair<Outfit, Boolean> Umbrella = new Pair<Outfit, Boolean>(new Outfit(null, null, null, null, null, null, null, null, 7), true);
 
 		// these outfits must replace the current outfit (what's null simply isn't there)
 		final Pair<Outfit, Boolean> PURPLE_SLIME = new Pair<Outfit, Boolean>(new Outfit(993, -1, -1, -1, -1, -1, -1, -1, null), false);
@@ -92,7 +93,7 @@ public class OutfitLender2NPC implements ZoneConfigurator {
 
 		outfitTypes.put("twarz goblina", GOBLIN_FACE);
 		outfitTypes.put("twarz cosia", THING_FACE);
-		outfitTypes.put("parasol", Umbrella);
+		//outfitTypes.put("parasol", Umbrella);
 		outfitTypes.put("fioletowy szlam", PURPLE_SLIME);
 		outfitTypes.put("zielony szlam", GREEN_SLIME);
 		outfitTypes.put("czerwony szlam", RED_SLIME);
@@ -126,7 +127,6 @@ public class OutfitLender2NPC implements ZoneConfigurator {
 
 					@Override
 					public void putOnOutfit(final Player player, final String outfitType) {
-
 						final Pair<Outfit, Boolean> outfitPair = outfitTypes.get(outfitType);
 						final Outfit outfit = outfitPair.first();
 						final boolean type = outfitPair.second();
@@ -195,7 +195,7 @@ public class OutfitLender2NPC implements ZoneConfigurator {
 				priceList.put("niebieski szlam", (int) (N * 3000));
 				priceList.put("zielony szlam", (int) (N * 3000));
 				priceList.put("piernikowy ludzik", (int) (N * 1200));
-				priceList.put("parasol", (int) (N * 300));
+				//priceList.put("parasol", (int) (N * 300));
 				priceList.put("czarny kot", (int) (N * 4500));
 				priceList.put("biały kot", (int) (N * 4500));
 
@@ -208,7 +208,8 @@ public class OutfitLender2NPC implements ZoneConfigurator {
 					ConversationStates.ATTENDING,
 					"Powiedz mi, które chciałbyś ubranie."
 					+ " Powiedz #'wypożycz twarz goblina',"
-					+ " #'wypożycz twarz cosia', #'wypożycz parasol',"
+					//+ " #'wypożycz twarz cosia', #'wypożycz parasol',"
+					+ " #'wypożycz twarz cosia',"
 					+ " #'wypożycz fioletowy szlam', #'wypożycz zielony szlam',"
 					+ " #'wypożycz czerwony szlam', #'wypożycz niebieski szlam',"
 					+ " #'wypożycz piernikowy ludzik',"

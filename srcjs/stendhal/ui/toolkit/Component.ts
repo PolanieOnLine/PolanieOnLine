@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2022 - Faiumoni e. V.                   *
+ *                (C) Copyright 2022-2023 - Faiumoni e. V.                 *
  ***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -17,6 +17,7 @@ export abstract class Component {
 	readonly componentElement!: HTMLElement;
 	public parentComponent?: Component;
 	public cid?: string;
+	private defaultDisplay: string;
 
 
 	constructor(id: string) {
@@ -31,6 +32,10 @@ export abstract class Component {
 		}
 
 		this.componentElement = element;
+		this.defaultDisplay = element.style.display;
+		if (this.defaultDisplay === "none") {
+			this.defaultDisplay = "";
+		}
 	}
 
 	public onParentClose() {
@@ -64,5 +69,21 @@ export abstract class Component {
 	 */
 	public getConfigId(): string {
 		return this.cid || "";
+	}
+
+	public isVisible(): boolean {
+		return this.componentElement.style.display !== "none";
+	}
+
+	public setVisible(visible=true) {
+		if (visible) {
+			this.componentElement.style.display = this.defaultDisplay;
+		} else {
+			this.componentElement.style.display = "none";
+		}
+	}
+
+	public toggleVisibility() {
+		this.setVisible(!this.isVisible());
 	}
 }

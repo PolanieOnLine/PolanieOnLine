@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2022 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -9,6 +9,7 @@
  *                                                                         *
  ***************************************************************************/
 
+import { ItemMap } from "./ItemMap";
 import { MenuItem } from "../action/MenuItem";
 import { Entity } from "./Entity";
 import { TextSprite } from "../sprite/TextSprite";
@@ -46,20 +47,12 @@ export class Item extends Entity {
 	override buildActions(list: MenuItem[]) {
 		super.buildActions(list);
 
-		const count = parseInt(this["quantity"], 10);
-		if (this["name"] === "empty scroll" && count > 1 && this._parent) {
-			list.splice(1, 0, {
-				title: "Mark all",
-				action: function(entity: Entity) {
-					// FIXME: doesn't work if scrolls are on ground
-					//        tries to pull scrolls from inventory
-					const action = {
-						"type": "markscroll",
-						"quantity": ""+count
-					} as {[index: string]: string};
-					marauroa.clientFramework.sendAction(action);
-				}
-			});
+		for (const mi of ItemMap.getActions(this)) {
+			if (typeof(mi.index) === "number") {
+				list.splice(mi.index, 0, mi);
+			} else {
+				list.push(mi);
+			}
 		}
 	}
 
@@ -137,7 +130,23 @@ export class Item extends Entity {
 	}
 
 	override getCursor(_x: number, _y: number) {
-		return "url(" + stendhal.paths.sprites + "/cursor/itempickupfromslot.png) 1 3, auto";
+		let cursor;
+		if (!this._parent) {
+			cursor = "itempickupfromslot";
+		} else {
+			cursor = ItemMap.getCursor(this["class"], this["name"]);
+		}
+		return "url(" + stendhal.paths.sprites + "/cursor/" + cursor + ".png) 1 3, auto";
+	}
+
+	public getToolTip(): string {
+		if (this["class"] === "scroll" && this["dest"]) {
+			const dest = this["dest"].split(",");
+			if (dest.length > 2) {
+				return dest[0] + " " + dest[1] + "," + dest[2];
+			}
+		}
+		return "";
 	}
 
 	public isAnimated(): boolean {

@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2022 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -24,6 +24,15 @@ export class NPC extends RPEntity {
 		super();
 		this["hp"] = 100;
 		this["base_hp"] = 100;
+	}
+
+	override set(key: string, value: string) {
+		super.set(key, value);
+
+		if (key === "name" && value.startsWith("Zekiel")) {
+			// Zekiel uses transparentnpc sprite but he is taller
+			this.titleDrawYOffset = -32;
+		}
 	}
 
 	override drawTop(ctx: CanvasRenderingContext2D) {

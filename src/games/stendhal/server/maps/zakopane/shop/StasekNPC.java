@@ -17,16 +17,16 @@ import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.QuestCompletedSellerBehaviour;
+import games.stendhal.server.entity.npc.shop.ShopsList;
 
 /**
  * @author KarajuSs
  */
 public class StasekNPC implements ZoneConfigurator {
-	private final ShopList shops = SingletonRepository.getShopList();
+	private final ShopsList shops = SingletonRepository.getShopsList();
 
 	/**
 	 * Configure a zone.
@@ -41,7 +41,6 @@ public class StasekNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Stasek") {
-
 			@Override
 			protected void createDialog() {
 				addGreeting("Przyjacielu, w czym mogę #pomóc.");

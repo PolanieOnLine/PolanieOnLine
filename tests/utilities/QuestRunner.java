@@ -413,12 +413,15 @@ public class QuestRunner {
 		requiredResources.put("ser", 1);
 		SingletonRepository.getProducerRegister().configureNPC(
 				"Leander", new ProducerBehaviour("leander_test", Arrays.asList("cast"), "ser", requiredResources, 0), "");
-		
+
 		en.step(player, "hi");
 		en.step(player, "quest");
 		en.step(player, "yes");
 		en.step(player, "bye");
 		en = getSpeakerNPC(player.getQuest(questSlot, 0)).getEngine();
+		SingletonRepository.getProducerRegister().configureNPC(
+				player.getQuest(questSlot, 0), new ProducerBehaviour(player.getQuest(questSlot, 0) + "_test", Arrays.asList("cast"), "ser", requiredResources, 0), "");
+
 		en.step(player, "hi");
 		en.step(player, "pizza");
 		en.step(player, "bye");

@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2018 - Stendhal                    *
+ *                 (C) Copyright 2018-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -16,21 +16,15 @@ import java.util.List;
 import java.util.Map;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
-import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
 
 /**
  * @author KarajuSs
  */
 public class BlacksmithAssistNPC implements ZoneConfigurator {
-	private final ShopList shops = SingletonRepository.getShopList();
-
 	/**
 	 * Configure a zone.
 	 *
@@ -44,7 +38,6 @@ public class BlacksmithAssistNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Inez") {
-
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -60,7 +53,6 @@ public class BlacksmithAssistNPC implements ZoneConfigurator {
 				addGreeting("Witaj, w czym mogę Tobie #'pomóc'?");
 				addJob("Zajmuje się zamówieniami na wyposażenie, nie wiem czy wiesz, ale nasza kuźnia produkuje zbroje i nie tylko na skale światową.");
 				addHelp("Możemy mieć dla ciebie #'zadanie', a jeśli masz przy sobie trochę żelaza i chcesz nam sprzedać to chętnie kupimy! Potrzebujemy na nowe wyposażenie.");
-				new BuyerAdder().addBuyer(this, new BuyerBehaviour(shops.get("buyiron")), true);
 				addGoodbye();
 			}
 		};

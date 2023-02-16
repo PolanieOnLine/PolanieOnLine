@@ -269,8 +269,13 @@ public final class stendhal {
 			if (wm.getPropertyBoolean(OVERRIDE_AA, false)) {
 				System.setProperty("awt.useSystemAAFontSettings", "on");
 			}
+
+			// initialize tileset animation data
+			TileStore.init();
 			// initialize emoji data
 			ClientSingletonRepository.getEmojiStore().init();
+			// initialize outfit data
+			OutfitStore.get().init();
 
 			final UserContext userContext = UserContext.get();
 			final PerceptionDispatcher perceptionDispatch = new PerceptionDispatcher();

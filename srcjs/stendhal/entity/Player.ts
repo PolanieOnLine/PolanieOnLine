@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2022 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -9,54 +9,36 @@
  *                                                                         *
  ***************************************************************************/
 
-import { Entity } from "./Entity";
-import { RPEntity } from "./RPEntity";
-
-import { MenuItem} from "../action/MenuItem";
-
-import { ui } from "../ui/UI";
-import { UIComponentEnum } from "../ui/UIComponentEnum";
-import { FloatingWindow } from "../ui/toolkit/FloatingWindow";
-
-import { ItemInventoryComponent } from "../ui/component/ItemInventoryComponent";
-import { PlayerStatsComponent } from "../ui/component/PlayerStatsComponent";
-import { OutfitDialog } from "../ui/dialog/outfit/OutfitDialog";
-
-import { Color } from "../util/Color";
-
 declare var marauroa: any;
 declare var stendhal: any;
 
+import { RPEntity } from "./RPEntity";
+
+import { MenuItem } from "../action/MenuItem";
+
+import { Color } from "../util/Color";
+
 
 export class Player extends RPEntity {
+
 	override minimapShow = true;
 	override minimapStyle = Color.PLAYER;
 	override dir = 3;
+	// shift hp bar & title to avoid overlap with other entities
+	override titleDrawYOffset = 6;
+
 
 	override set(key: string, value: any) {
 		super.set(key, value);
 		if (key === "ghostmode") {
 			this.minimapShow = false;
 		}
-
-		// stats
-		if (marauroa.me !== this) {
-			return;
-		}
-
-		queueMicrotask( () => {
-			(ui.get(UIComponentEnum.PlayerStats) as PlayerStatsComponent).update(key);
-			(ui.get(UIComponentEnum.Bag) as ItemInventoryComponent).update();
-			(ui.get(UIComponentEnum.Keyring) as ItemInventoryComponent).update();
-		});
 	}
 
 	override createTitleTextSprite() {
-		// HACK: titleStyle should be overridden when player is created
 		if (this.isAdmin()) {
 			this.titleStyle = "#FFFF00";
 		}
-
 		super.createTitleTextSprite();
 	}
 
@@ -110,39 +92,19 @@ export class Player extends RPEntity {
 				}
 			});
 		}
-		if (marauroa.me === this) {
-			let walk_label = "Walk";
-			if (!this.stopped()) {
-				walk_label = "Stop";
-			}
 
+		if (marauroa.me !== this) {
 			list.push({
-				title: walk_label,
-				action: function(_entity: any) {
-					marauroa.clientFramework.sendAction({"type": "walk"});
-				}
-			});
-
-			list.push({
-				title: "Set outfit",
-				action: function(_entity: any) {
-					let outfitDialog = ui.get(UIComponentEnum.OutfitDialog);
-					if (!outfitDialog) {
-						const dstate = stendhal.config.dialogstates["outfit"];
-						outfitDialog = new OutfitDialog();
-						new FloatingWindow("Choose outfit", outfitDialog, dstate.x, dstate.y);
+				title: "Trade",
+					action: function(_entity: any) {
+						var action = {
+							"type": "trade",
+							"action": "offer_trade",
+							"zone": marauroa.currentZoneName,
+							"target": playerName
+						};
+						marauroa.clientFramework.sendAction(action);
 					}
-				}
-			});
-			list.push({
-				title: "Where",
-				action: function(_entity: any) {
-					var action = {
-						"type": "where",
-						"target": playerName,
-					};
-					marauroa.clientFramework.sendAction(action);
-				}
 			});
 		}
 		/*
@@ -163,10 +125,11 @@ export class Player extends RPEntity {
 	}
 
 	public override onMiniMapDraw() {
-		if (marauroa.me === this) {
-			// FIXME: is it possible to do this in constructor or after construction
-			this.minimapStyle = Color.USER;
-		} else if (stendhal.data.group.members[this["name"]]) {
+		if (this === marauroa.me) {
+			// handled in User class
+			return;
+		}
+		if (stendhal.data.group.members[this["name"]]) {
 			this.minimapStyle = Color.GROUP;
 		} else {
 			this.minimapStyle = Color.PLAYER;
@@ -204,49 +167,10 @@ export class Player extends RPEntity {
 		super.say(text, rangeSquared);
 	}
 
-	/**
-	 * Can the player hear this chat message?
-	 *
-	 * @param entity
-	 *     The speaking entity.
-	 * @param rangeSquared
-	 *     Distance squared within which the entity can be heard (-1
-	 *     represents entire map).
-	 */
-	isInHearingRange(entity: Entity, rangeSquared?: number) {
-		let hearingRange = 15; // default
-		if (typeof rangeSquared !== "undefined") {
-			if (rangeSquared < 0) {
-				hearingRange = -1;
-			} else {
-				hearingRange = Math.sqrt(rangeSquared);
-			}
-		}
-
-		return (this.isAdmin()
-			|| (hearingRange < 0)
-			|| ((Math.abs(this["x"] - entity["x"]) < hearingRange)
-				&& (Math.abs(this["y"] - entity["y"]) < hearingRange)));
-	}
-
 	override getCursor(_x: number, _y: number) {
 		if (this.isVisibleToAction(false)) {
 			return "url(" + stendhal.paths.sprites + "/cursor/look.png) 1 3, auto";
 		}
 		return "url(" + stendhal.paths.sprites + "/cursor/walk.png) 1 3, auto";
-	}
-
-	public autoWalkEnabled(): boolean {
-		return typeof(this["autowalk"]) !== "undefined";
-	}
-
-	override drawHealthBar(ctx: CanvasRenderingContext2D, x: number, y: number) {
-		// offset so not hidden by other entity bars
-		super.drawHealthBar(ctx, x, y + 6);
-	}
-
-	override drawTitle(ctx: CanvasRenderingContext2D, x: number, y: number) {
-		// offset to match health bar
-		super.drawTitle(ctx, x, y + 6);
 	}
 }

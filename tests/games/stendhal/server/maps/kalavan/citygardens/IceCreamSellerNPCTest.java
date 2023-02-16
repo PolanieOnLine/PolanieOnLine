@@ -72,7 +72,7 @@ public class IceCreamSellerNPCTest extends ZonePlayerAndNPCTestImpl {
 		final SpeakerNPC npc = getNPC("Sam");
 		final Engine en = npc.getEngine();
 
-		SingletonRepository.getShopList().configureNPC("Sam", "icecreamseller", true, true);
+		SingletonRepository.getShopsList().configureNPC("Sam", "icecreamseller", true, true);
 
 		assertTrue(en.step(player, "hi"));
 		assertEquals("Cześć. Czy mogę #zaoferować Tobie porcję lodów?", getReply(npc));

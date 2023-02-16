@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2022 - Faiumoni e. V.                   *
+ *                (C) Copyright 2022-2023 - Faiumoni e. V.                 *
  ***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -9,11 +9,12 @@
  *                                                                         *
  ***************************************************************************/
 
-import { Chat } from "../util/Chat";
-import { LandscapeRenderingStrategy } from "./LandscapeRenderingStrategy";
-
 declare var stendhal: any;
-declare var ImagePreloader: any;
+
+import { LandscapeRenderingStrategy } from "./LandscapeRenderingStrategy";
+import { ImagePreloader } from "../data/ImagePreloader";
+import { Chat } from "../util/Chat";
+
 
 export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrategy {
 

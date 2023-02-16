@@ -3231,7 +3231,7 @@ public class Player extends DressedEntity implements UseListener {
 
 	@Override
 	public int damageDone(final RPEntity defender, double attackingWeaponsValue, final Nature damageType) {
-		// compensate for player increased chance of hit
-		return (int) Math.round(super.damageDone(defender, attackingWeaponsValue, damageType) / 1.5);
+		// compensate for player hit chance handicap
+		return (int) Math.round(super.damageDone(defender, attackingWeaponsValue, damageType) / 1.35);
 	}
 }

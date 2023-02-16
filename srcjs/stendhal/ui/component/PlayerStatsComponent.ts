@@ -1,5 +1,5 @@
 /***************************************************************************
- *                (C) Copyright 2003-2022 - Faiumoni e. V.                 *
+ *                (C) Copyright 2003-2023 - Faiumoni e. V.                 *
  ***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -9,7 +9,14 @@
  *                                                                         *
  ***************************************************************************/
 
+import { StatBar } from "./StatBar";
+import { KarmaBar } from "./KarmaBar";
+
 import { Component } from "../toolkit/Component";
+
+import { singletons } from "../../SingletonRepo";
+
+import { Item } from "../../entity/Item";
 
 declare var marauroa: any;
 
@@ -20,7 +27,14 @@ export class PlayerStatsComponent extends Component {
 
 	private readonly keys = ["hp", "base_hp", "atk", "atk_item", "atk_xp", "def", "def_item", "def_xp", "xp", "level"];
 	private readonly LEVELS = 598;
+	private MONEY_SLOTS = ["pouch", "bag", "lhand", "rhand"];
 	private xp;
+
+	private hpText: HTMLElement;
+	private otherText: HTMLElement;
+
+	private bars: any = {};
+
 
 	constructor() {
 		super("stats");
@@ -37,14 +51,74 @@ export class PlayerStatsComponent extends Component {
 			const exp = Math.floor((i * 16 + i * i * 5 + i * i * i * 10 + 300) / 100) * 100;
 			this.xp[i + 1] = exp;
 		}
+
+		this.hpText = <HTMLElement> this.componentElement
+				.querySelector("#hptext")!;
+		this.otherText = <HTMLElement> this.componentElement
+				.querySelector("#otherstats")!;
+
+		this.bars["karma"] = new KarmaBar();
+		// hide karma bar by default
+		this.enableBar("karma", false);
+
+		this.bars["hp"] = new StatBar("hpbar");
+		// use config to determine if HP bar should be visible
+		this.enableBar("hp", singletons.getConfigManager()
+				.getBoolean("ui.stats.hpbar"));
 	}
 
 	update(key: string) {
 		if (this.keys.indexOf(key) < -1) {
 			return;
 		}
-		const object = marauroa.me;
 
+		const object = marauroa.me;
+		this.updateKarma(object["karma"]);
+		this.updateHp(object["hp"], object["base_hp"]);
+		this.updateOther(object);
+
+		if (!this.isBarEnabled("karma") && object) {
+			const features = object["features"];
+			if (features && features["karma_indicator"] != null) {
+				this.enableBar("karma");
+			}
+		}
+	}
+
+	/**
+	 * Updates karma bar.
+	 *
+	 * @param karma
+	 *     New karma value.
+	 */
+	private updateKarma(karma: number) {
+		if (this.isBarEnabled("karma")) {
+			this.bars["karma"].draw(karma);
+		}
+	}
+
+	/**
+	 * Updates HP value & draws bar.
+	 *
+	 * @param hp
+	 *     Player's actual HP.
+	 * @param base_hp
+	 *     Player's potential max HP.
+	 */
+	private updateHp(hp: number, base_hp: number) {
+		this.hpText.innerText = "HP: " + hp + " / " + base_hp;
+		if (this.isBarEnabled("hp")) {
+			this.bars["hp"].draw(hp / base_hp);
+		}
+	}
+
+	/**
+	 * Updates all other stat values.
+	 *
+	 * @param object
+	 *     Owner of stats.
+	 */
+	private updateOther(object: any) {
 		const atk = object["atk"];
 		const atkXP = object["atk_xp"];
 		const def = object["def"];
@@ -56,12 +130,12 @@ export class PlayerStatsComponent extends Component {
 		// show dash for max level
 		let xpTNL: number|string = (lvl < this.getMaxLevel()) ? this.getTNL(lvl, xp) : "-";
 
-		this.componentElement.innerText =
-			"HP: " + object["hp"] + " / " + object["base_hp"] + "\r\n"
-			+ "ATK: " + atk + " x " + object["atk_item"] + "\r\n  (" + atkTNL + ")\r\n"
+		this.otherText.innerText =
+			"ATK: " + atk + " x " + object["atk_item"] + "\r\n  (" + atkTNL + ")\r\n"
 			+ "DEF: " + def + " x " + object["def_item"] + "\r\n  (" + defTNL + ")\r\n"
 			+ "XP: " + xp + "\r\n"
-			+ "Level: " + lvl + "\r\n  (" + xpTNL + ")";
+			+ "Level: " + lvl + "\r\n  (" + xpTNL + ")\r\n"
+			+ "Money: " + this.calculateMoney();
 	}
 
 	/**
@@ -112,5 +186,55 @@ export class PlayerStatsComponent extends Component {
 	 */
 	private getMaxLevel(): number {
 		return this.LEVELS - 1;
+	}
+
+	/**
+	 * Retrieves amount of money being carried by player.
+	 *
+	 * @return
+	 *     Total money from relevant slots.
+	 */
+	private calculateMoney(): number {
+		let mo = 0;
+		if (marauroa.me) {
+			for (const sname of this.MONEY_SLOTS) {
+				const slot = marauroa.me[sname];
+				if (slot) {
+					for (let idx = 0; idx < slot.count(); idx++) {
+						const o = slot.getByIndex(idx);
+						if (o instanceof Item) {
+							const i = <Item> o;
+							if (i["name"] === "money") {
+								mo += parseInt(i["quantity"]);
+							}
+						}
+					}
+				}
+			}
+		}
+		return mo;
+	}
+
+	/**
+	 * Enables or disables drawing of stat bars.
+	 *
+	 * @param
+	 *     Bar identifier string.
+	 * @param visible
+	 *     If true, bar will be drawn.
+	 */
+	enableBar(id: string, visible=true) {
+		const bar = this.bars[id];
+		if (bar) {
+			bar.setVisible(visible);
+		}
+	}
+
+	isBarEnabled(id: string): boolean {
+		const bar = this.bars[id];
+		if (bar) {
+			return bar.isVisible();
+		}
+		return false;
 	}
 }

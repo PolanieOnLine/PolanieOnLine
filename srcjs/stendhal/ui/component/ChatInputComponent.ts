@@ -1,5 +1,5 @@
 /***************************************************************************
- *                (C) Copyright 2003-2022 - Faiumoni e. V.                 *
+ *                (C) Copyright 2003-2023 - Faiumoni e. V.                 *
  ***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -9,18 +9,24 @@
  *                                                                         *
  ***************************************************************************/
 
-import { Component } from "../toolkit/Component";
-
 declare let marauroa: any;
 declare let stendhal: any;
+
+import { KeyHandler } from "../KeyHandler";
+import { Component } from "../toolkit/Component";
+import { singletons } from "../../SingletonRepo";
+
+
+const config = singletons.getConfigManager();
+const slashActions = singletons.getSlashActionRepo();
 
 /**
  * chat input text field
  */
 export class ChatInputComponent extends Component {
 
-	private history: string[] = [];
-	private historyIndex = 0;
+	private history: string[];
+	private historyIndex: number;
 	private inputElement: HTMLInputElement;
 
 	constructor() {
@@ -32,6 +38,9 @@ export class ChatInputComponent extends Component {
 		this.componentElement.addEventListener("keypress", (event: KeyboardEvent) => {
 			this.onKeyPress(event);
 		});
+		// restore from previous session
+		this.history = config.getObject("chat.history") || [];
+		this.historyIndex = config.getInt("chat.history.index", 0);
 	}
 
 	public clear() {
@@ -61,10 +70,10 @@ export class ChatInputComponent extends Component {
 
 		if (event.shiftKey) {
 			// chat history
-			if (code === stendhal.ui.keycode.up) {
+			if (code === KeyHandler.keycode.up) {
 				event.preventDefault();
 				this.fromHistory(-1);
-			} else if (code === stendhal.ui.keycode.down){
+			} else if (code === KeyHandler.keycode.down){
 				event.preventDefault();
 				this.fromHistory(1);
 			}
@@ -84,6 +93,10 @@ export class ChatInputComponent extends Component {
 		}
 		this.history[this.history.length] = text;
 		this.historyIndex = this.history.length;
+		// preserve across sessions
+		// XXX: should this be done at logout/destruction for performance?
+		config.set("chat.history", this.history);
+		config.set("chat.history.index", this.historyIndex);
 	}
 
 	private send() {
@@ -94,7 +107,7 @@ export class ChatInputComponent extends Component {
 		} else if (val === '/close') {
 			marauroa.clientFramework.close();
 		} else {
-			if (stendhal.slashActionRepository.execute(val)) {
+			if (slashActions.execute(val)) {
 				this.remember(val);
 			}
 		}

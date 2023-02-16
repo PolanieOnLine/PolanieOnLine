@@ -1,5 +1,5 @@
 /***************************************************************************
- *                (C) Copyright 2003-2022 - Faiumoni e. V.                 *
+ *                (C) Copyright 2003-2023 - Faiumoni e. V.                 *
  ***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -9,9 +9,13 @@
  *                                                                         *
  ***************************************************************************/
 
-import { DialogContentComponent } from "../toolkit/DialogContentComponent";
-
 declare var stendhal: any;
+
+import { DialogContentComponent } from "../toolkit/DialogContentComponent";
+import { singletons } from "../../SingletonRepo";
+
+
+const slashActions = singletons.getSlashActionRepo();
 
 export class ApplicationMenuDialog extends DialogContentComponent {
 
@@ -123,7 +127,7 @@ export class ApplicationMenuDialog extends DialogContentComponent {
 
 		var cmd = (event.target as HTMLInputElement).id?.substring(11);
 		if (cmd) {
-			stendhal.slashActionRepository.execute("/" + cmd);
+			slashActions.execute("/" + cmd);
 		}
 		this.componentElement.dispatchEvent(new Event("close"));
 		event.preventDefault();

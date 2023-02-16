@@ -1,5 +1,5 @@
 /***************************************************************************
- *                     Copyright © 2003-2022 - Arianne                     *
+ *                     Copyright © 2003-2023 - Arianne                     *
  ***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -11,6 +11,9 @@
 
 import { ui } from "../UI";
 import { ChatLogComponent } from "../component/ChatLogComponent";
+import { PlayerEquipmentComponent } from "../component/PlayerEquipmentComponent";
+import { PlayerStatsComponent } from "../component/PlayerStatsComponent";
+import { ItemInventoryComponent } from "../component/ItemInventoryComponent";
 import { DialogContentComponent } from "../toolkit/DialogContentComponent";
 import { TravelLogDialog } from "./TravelLogDialog";
 import { UIComponentEnum } from "../UIComponentEnum";
@@ -28,6 +31,8 @@ export class SettingsDialog extends DialogContentComponent {
 	constructor() {
 		super("settingsdialog-template");
 
+		const clog = (ui.get(UIComponentEnum.ChatLog) as ChatLogComponent);
+
 		this.initialStates = {
 			"gamescreen.blood": stendhal.config.get("gamescreen.blood"),
 		};
@@ -42,9 +47,11 @@ export class SettingsDialog extends DialogContentComponent {
 		chk_light.parentElement!.title = "Lighting effects not currently supported";
 
 		const chk_weather = this.createCheckBox("chk_weather", "gamescreen.weather",
-				"Weather is enabled", "Weather is disabled")!;
-		// FIXME: weather effects not yet supported
-		chk_weather.disabled = true;
+				"Weather is enabled", "Weather is disabled", function() {
+					if (clog) {
+						clog.addLine("client", "Weather changes will take effect after you change maps.");
+					}
+				})!;
 		chk_weather.parentElement!.title = "Weather effects not currently supported";
 
 		const sd = this;
@@ -60,12 +67,26 @@ export class SettingsDialog extends DialogContentComponent {
 		this.createCheckBox("chk_speechcr", "gamescreen.speech.creature",
 				"Creature speech bubbles are enabled", "Creature speech bubbles are disabled");
 
+		const chk_hpbar = this.createCheckBox("chk_hpbar", "ui.stats.hpbar",
+				undefined, undefined,
+				function() {
+					(ui.get(UIComponentEnum.PlayerStats) as PlayerStatsComponent)
+							.enableBar("hp", chk_hpbar.checked);
+				})!;
+
 
 		/* *** center panel *** */
 
 		this.createCheckBox("chk_dblclick", "action.item.doubleclick",
 				"Items are used/consumed with double click/touch",
-				"Items are used/consumed with single click/touch");
+				"Items are used/consumed with single click/touch",
+				function() {
+					// update cursors
+					(ui.get(UIComponentEnum.PlayerEquipment) as PlayerEquipmentComponent).markDirty();
+					for (const cid of [UIComponentEnum.Bag, UIComponentEnum.Keyring]) {
+						(ui.get(cid) as ItemInventoryComponent).markDirty();
+					}
+				});
 
 		// FIXME: open chest windows are not refreshed
 		this.createCheckBox("chk_chestqp", "action.chest.quickpickup",
@@ -82,6 +103,13 @@ export class SettingsDialog extends DialogContentComponent {
 					}
 					marauroa.clientFramework.sendAction(action);
 				})!;
+
+		// TODO: make this multiple choice
+		const chk_pvtsnd = this.createCheckBox("chk_pvtsnd", "event.pvtmsg.sound",
+				"Private message audio notifications enabled",
+				"Private message audio notifications disabled",
+				undefined, "ui/notify_up", "null");
+		chk_pvtsnd.checked = stendhal.config.get("event.pvtmsg.sound") === "ui/notify_up";
 
 
 		/* *** right panel *** */
@@ -121,7 +149,6 @@ export class SettingsDialog extends DialogContentComponent {
 				fonts.indexOf(stendhal.config.get("ui.font.chat")));
 		sel_fontchat.addEventListener("change", (e) => {
 			stendhal.config.set("ui.font.chat", fonts[sel_fontchat.selectedIndex]);
-			const clog = (ui.get(UIComponentEnum.ChatLog) as ChatLogComponent);
 			// make sure component is open before trying to refresh
 			if (clog) {
 				clog.refresh();
@@ -210,24 +237,38 @@ export class SettingsDialog extends DialogContentComponent {
 	 *     Tooltip to display when setting is enabled.
 	 * @param ttneg
 	 *     Tooltip to display when setting is disabled.
+	 * @param action
+	 *     Action to execute when state changed.
+	 * @param von
+	 *     Optional value to set when enabled (<code>null</code> can be
+	 *     used).
+	 * @param voff
+	 *     Optional value to set when disabled (<code>null</code> can be
+	 *     used).
 	 * @return
 	 *     HTMLInputElement.
 	 */
 	private createCheckBox(id: string, setid: string, ttpos: string="",
-			ttneg: string="", actions?: Function): HTMLInputElement {
+			ttneg: string="", action?: Function,
+			von?: string, voff?: string): HTMLInputElement {
 
 		const chk = this.createCheckBoxSkel(id)!;
 		chk.checked = stendhal.config.getBoolean(setid);
 		const tt = new CheckTooltip(ttpos, ttneg);
 		chk.parentElement!.title = tt.getValue(chk.checked);
 		chk.addEventListener("change", (e) => {
-			stendhal.config.set(setid, chk.checked);
-			chk.parentElement!.title = tt.getValue(chk.checked);
-			this.refresh();
-
-			if (actions) {
-				actions();
+			if (chk.checked && typeof(von) !== "undefined") {
+				stendhal.config.set(setid, von);
+			} else if (!chk.checked && typeof(voff) !== "undefined") {
+				stendhal.config.set(setid, voff);
+			} else {
+				stendhal.config.set(setid, chk.checked);
 			}
+			chk.parentElement!.title = tt.getValue(chk.checked);
+			if (action) {
+				action();
+			}
+			this.refresh();
 		});
 
 		return chk;

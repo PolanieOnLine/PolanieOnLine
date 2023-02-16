@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2022 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -29,7 +29,7 @@ export class GameBoard extends Entity {
 	override set(key: string, value: any) {
 		super.set(key, value);
 		if (key === "class") {
-			this.sprite.filename = "data/sprites/gameboard/"
+			this.sprite.filename = stendhal.paths.sprites + "/gameboard/"
 				+ this["class"] + ".png";
 		}
 	}

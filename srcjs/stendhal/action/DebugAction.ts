@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2022-2022 - Stendhal                    *
+ *                   (C) Copyright 2022-2023 - Stendhal                    *
  ***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -9,24 +9,50 @@
  *                                                                         *
  ***************************************************************************/
 
+import { singletons } from "../SingletonRepo";
+
 import { ui } from "../ui/UI";
 import { UIComponentEnum } from "../ui/UIComponentEnum";
 import { FloatingWindow } from "../ui/toolkit/FloatingWindow";
 
-import { Action } from "./Action";
+import { SlashAction } from "./SlashAction";
 import { Chat } from "../util/Chat";
 import { ShowFloatingWindowComponent } from "../ui/component/ShowFloatingWindowComponent";
 import { Panel } from "ui/toolkit/Panel";
 
 declare var marauroa: any;
+declare var stendhal: any;
 
 /**
  * performances debugging actions
  */
-export class DebugAction extends Action {
+export class DebugAction extends SlashAction {
 	readonly minParams = 0;
 	readonly maxParams = 0;
 	private uiPopped = false;
+
+	execute(_type: string, params: string[], _remainder: string): boolean {
+		if (params.length < 1) {
+			Chat.logH("error", "Expected parameters")
+			this.showUsage();
+		} else if (["help", "?"].indexOf(params[0]) > -1) {
+			this.showUsage();
+		} else if (params[0] === "ui") {
+			this.uiAction(params);
+		} else if (params[0] === "weather") {
+			this.debugWeather(params[1]);
+		}
+		return true;
+	}
+
+	showUsage() {
+		const usage = [
+			"Usage:",
+			"  /debug ui [pop]",
+			"  /debug weather [<name>]"
+		];
+		Chat.log("client", usage);
+	}
 
 	uiAction(params: string[]) {
 		console.log(UIComponentEnum);
@@ -73,14 +99,33 @@ export class DebugAction extends Action {
 		}
 	}
 
-	execute(_type: string, params: string[], _remainder: string) {
-		if (params.length < 1) {
-			Chat.log("error", "Expected parameters")
+	/**
+	 * Sets weather animation for debugging.
+	 *
+	 * @param weather
+	 *     Name of weather to be loaded. <code>undefined</code> turns
+	 *     weather animation off.
+	 */
+	private debugWeather(weather?: string) {
+		const usage = ["Usage:", "  /debug weather [<name>]"];
+		if (weather && ["help", "?"].indexOf(weather) > -1) {
+			Chat.log("client", usage);
+			return;
 		}
-		if (params[0] === "ui") {
-			this.uiAction(params);
+		if (!stendhal.config.getBoolean("gamescreen.weather")) {
+			Chat.logH("warning", "Weather is disabled.");
 		}
-		return true;
+
+		if (weather) {
+			weather = weather.replace(/ /g, "_");
+			const wfilename = stendhal.paths.weather + "/" + weather + ".png";
+			if (!stendhal.data.sprites.getCached(wfilename)) {
+				Chat.logH("error", "unknown weather: " + wfilename);
+				return;
+			}
+		}
+
+		singletons.getWeatherRenderer().update(weather);
 	}
 
 };

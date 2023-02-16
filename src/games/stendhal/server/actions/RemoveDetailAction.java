@@ -1,5 +1,5 @@
 /***************************************************************************
- *                     Copyright © 2020 - Arianne                          *
+ *                    Copyright © 2020-2023 - Arianne                      *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -17,7 +17,6 @@ import games.stendhal.server.entity.Outfit;
 import games.stendhal.server.entity.player.Player;
 import marauroa.common.game.RPAction;
 
-
 /**
  * Action that players can execute to manually remove the detail outfit layer.
  */
@@ -32,5 +31,7 @@ public class RemoveDetailAction implements ActionListener {
 		final Outfit outfit = player.getOutfit();
 		outfit.setLayer("detail", 0);
 		player.setOutfit(outfit);
+		// remove layer coloring
+		player.unsetOutfitColor("detail");
 	}
 }

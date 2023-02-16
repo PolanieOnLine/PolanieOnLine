@@ -20,16 +20,16 @@ import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
-import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.QuestCompletedSellerBehaviour;
+import games.stendhal.server.entity.npc.shop.ShopsList;
 
 /**
  * @author KarajuSs
  */
 public class ThomasNPC implements ZoneConfigurator {
-	private final ShopList shops = SingletonRepository.getShopList();
+	private final ShopsList shops = SingletonRepository.getShopsList();
 
 	/**
 	 * Configure a zone.

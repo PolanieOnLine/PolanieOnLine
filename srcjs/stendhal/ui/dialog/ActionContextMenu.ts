@@ -1,5 +1,5 @@
 /***************************************************************************
- *                (C) Copyright 2015-2022 - Faiumoni e. V.                 *
+ *                (C) Copyright 2015-2023 - Faiumoni e. V.                 *
  ***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -81,8 +81,13 @@ export class ActionContextMenu extends Component {
 		if (marauroa.me["adminlevel"] && marauroa.me["adminlevel"] >= 600) {
 			actions.push({
 				title: "(*) Inspect",
-				action: function(entity: object) {
-					console.log(entity);
+				action: function(entity: any) {
+					const action = {"type": "inspect"} as {[key: string]: string};
+					if (entity.hasOwnProperty("id")) {
+						action["target"] = "#" + entity["id"];
+					}
+
+					marauroa.clientFramework.sendAction(action);
 				}
 			});
 			actions.push({

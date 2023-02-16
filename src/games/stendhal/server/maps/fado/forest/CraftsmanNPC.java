@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -20,10 +20,10 @@ import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
-import games.stendhal.server.entity.npc.ShopList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.QuestCompletedBuyerBehaviour;
+import games.stendhal.server.entity.npc.shop.ShopsList;
 
 /**
  * Builds an albino elf NPC .
@@ -32,7 +32,7 @@ import games.stendhal.server.entity.npc.behaviour.impl.QuestCompletedBuyerBehavi
  * @author kymara
  */
 public class CraftsmanNPC implements ZoneConfigurator {
-	private final ShopList shops = SingletonRepository.getShopList();
+	private final ShopsList shops = SingletonRepository.getShopsList();
 
 	/**
 	 * Configure a zone.
