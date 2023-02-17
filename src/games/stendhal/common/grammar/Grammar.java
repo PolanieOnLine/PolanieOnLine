@@ -1214,6 +1214,39 @@ public class Grammar {
 			if (word.equals("narzeczonego")) {
 				return "narzeczonej";
 			}
+			if (word.equals("chłop")) {
+				return "chłopka";
+			}
+			if (word.equals("kmieć")) {
+				return "kmiotka";
+			}
+			if (word.equals("mieszczanin")) {
+				return "miszczanka";
+			}
+			if (word.equals("szlachcic")) {
+				return "szlachcianka";
+			}
+			if (word.equals("rycerz") || word.equals("baronet")) {
+				return word;
+			}
+			if (word.equals("baron")) {
+				return "baronessa";
+			}
+			if (word.equals("wicehrabia")) {
+				return "wicehrabina";
+			}
+			if (word.equals("hrabia")) {
+				return "hrabina";
+			}
+			if (word.equals("magnat")) {
+				return "magnatka";
+			}
+			if (word.equals("książe")) {
+				return "księżniczka";
+			}
+			if (word.equals("król")) {
+				return "królowa";
+			}
 
 			if (word.endsWith("ąłeś")) {
 				return word.substring(0, word.length() - 4) + "ęłaś";

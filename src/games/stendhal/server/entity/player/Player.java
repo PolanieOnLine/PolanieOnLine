@@ -1,5 +1,5 @@
 /***************************************************************************
- *                    (C) Copyright 2003-2023 - Arianne                    *
+ *                    Copyright © 2003-2023 - Arianne                      *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -22,10 +22,12 @@ import static games.stendhal.common.constants.Actions.TELECLICKMODE;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Set;
@@ -307,7 +309,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * Add an active client direction.
 	 *
 	 * @param direction
-	 *            direction
+	 *			direction
 	 */
 	public void addClientDirection(final Direction direction) {
 		if (hasPath()) {
@@ -323,7 +325,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * Remove an active client direction.
 	 *
 	 * @param direction
-	 *            direction
+	 *			direction
 	 */
 	public void removeClientDirection(final Direction direction) {
 		directions.remove(direction);
@@ -333,8 +335,8 @@ public class Player extends DressedEntity implements UseListener {
 	 * Apply the most recent active client direction.
 	 *
 	 * @param stopOnNone
-	 *            Stop movement if no (valid) directions are active if
-	 *            <code>true</code>.
+	 *			Stop movement if no (valid) directions are active if
+	 *			<code>true</code>.
 	 */
 	public void applyClientDirection(final boolean stopOnNone) {
 		int size;
@@ -432,7 +434,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * Set the away message.
 	 *
 	 * @param message
-	 *            An away message, or <code>null</code>.
+	 *			An away message, or <code>null</code>.
 	 */
 	public void setAwayMessage(final String message) {
 		if (message != null) {
@@ -457,7 +459,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * Set the grumpy message.
 	 *
 	 * @param message
-	 *            A grumpy message, or <code>null</code>.
+	 *			A grumpy message, or <code>null</code>.
 	 */
 	public void setGrumpyMessage(final String message) {
 		if (message != null) {
@@ -472,7 +474,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * Give the player some karma (good or bad).
 	 *
 	 * @param karmaToAdd
-	 *            An amount of karma to add/subtract.
+	 *			An amount of karma to add/subtract.
 	 */
 	@Override
 	public void addKarma(final double karmaToAdd) {
@@ -502,7 +504,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * should cause no change on an action or outcome.
 	 *
 	 * @param scale
-	 *            A positive number.
+	 *			A positive number.
 	 *
 	 * @return A number between -scale and scale.
 	 */
@@ -518,9 +520,9 @@ public class Player extends DressedEntity implements UseListener {
 	 * <code>0.01</code> (%1 unit).
 	 *
 	 * @param negLimit
-	 *            The lowest negative value returned.
+	 *			The lowest negative value returned.
 	 * @param posLimit
-	 *            The highest positive value returned.
+	 *			The highest positive value returned.
 	 *
 	 * @return A number within negLimit &lt;= 0 &lt;= posLimit.
 	 */
@@ -535,11 +537,11 @@ public class Player extends DressedEntity implements UseListener {
 	 * should cause no change on an action or outcome.
 	 *
 	 * @param negLimit
-	 *            The lowest negative value returned.
+	 *			The lowest negative value returned.
 	 * @param posLimit
-	 *            The highest positive value returned.
+	 *			The highest positive value returned.
 	 * @param granularity
-	 *            The amount that any extracted karma is a multiple of.
+	 *			The amount that any extracted karma is a multiple of.
 	 *
 	 * @return A number within negLimit &lt;= 0 &lt;= posLimit.
 	 */
@@ -626,7 +628,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * Removes the portal from the list of unlocked portals.
 	 *
 	 * @param ID
-	 *            Portal's ID
+	 *			Portal's ID
 	 */
 	public void lockPortal(final int ID) {
 		int index = unlockedPortals.size() - 1;
@@ -647,7 +649,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * Adds a portal ID to a list of "unlocked" portals for player.
 	 *
 	 * @param ID
-	 *            Portal's ID
+	 *			Portal's ID
 	 */
 	public void unlockPortal(final int ID) {
 		if (!unlockedPortals.contains(ID)) {
@@ -687,15 +689,15 @@ public class Player extends DressedEntity implements UseListener {
 	 * Add a player ignore entry.
 	 *
 	 * @param name
-	 *            The player name.
+	 *			The player name.
 	 * @param duration
-	 *            The ignore duration (in minutes), or <code>0</code> for
-	 *            infinite.
+	 *			The ignore duration (in minutes), or <code>0</code> for
+	 *			infinite.
 	 * @param reply
-	 *            The reply.
+	 *			The reply.
 	 *
 	 * @return <code>true</code> if value changed, <code>false</code> if there
-	 *         was a problem.
+	 *		 was a problem.
 	 */
 	public boolean addIgnore(final String name, final int duration,
 			final String reply) {
@@ -719,10 +721,10 @@ public class Player extends DressedEntity implements UseListener {
 	 * message.
 	 *
 	 * @param name
-	 *            The player name.
+	 *			The player name.
 	 *
 	 * @return The custom reply message (including an empty string), or
-	 *         <code>null</code> if not ignoring.
+	 *		 <code>null</code> if not ignoring.
 	 */
 	public String getIgnore(final String name) {
 		String info = getKeyedSlot("!ignore", "_" + name);
@@ -765,10 +767,10 @@ public class Player extends DressedEntity implements UseListener {
 	 * Remove a player ignore entry.
 	 *
 	 * @param name
-	 *            The player name.
+	 *			The player name.
 	 *
 	 * @return <code>true</code> if value changed, <code>false</code> if there
-	 *         was a problem.
+	 *		 was a problem.
 	 */
 	public boolean removeIgnore(final String name) {
 		return setKeyedSlot("!ignore", "_" + name, null);
@@ -814,7 +816,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * Get a named skills value.
 	 *
 	 * @param key
-	 *            The skill key.
+	 *			The skill key.
 	 *
 	 * @return The skill value, or <code>null</code> if not set.
 	 */
@@ -826,7 +828,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * Get the current value for the skill of a magic nature
 	 *
 	 * @param nature
-	 *            the nature to get the skill for
+	 *			the nature to get the skill for
 	 * @return current skill value
 	 */
 	public int getMagicSkillXp(final Nature nature) {
@@ -889,12 +891,12 @@ public class Player extends DressedEntity implements UseListener {
 	 * Set a named skills value.
 	 *
 	 * @param key
-	 *            The skill key.
+	 *			The skill key.
 	 * @param value
-	 *            The skill value.
+	 *			The skill value.
 	 *
 	 * @return <code>true</code> if value changed, <code>false</code> if there
-	 *         was a problem.
+	 *		 was a problem.
 	 */
 	public boolean setSkill(final String key, final String value) {
 		return setKeyedSlot("skills", key, value);
@@ -904,9 +906,9 @@ public class Player extends DressedEntity implements UseListener {
 	 * Get a keyed string value on a named slot.
 	 *
 	 * @param name
-	 *            The slot name.
+	 *			The slot name.
 	 * @param key
-	 *            The value key.
+	 *			The value key.
 	 *
 	 * @return The keyed value of the slot, or <code>null</code> if not set.
 	 */
@@ -918,14 +920,14 @@ public class Player extends DressedEntity implements UseListener {
 	 * Set a keyed string value on a named slot.
 	 *
 	 * @param name
-	 *            The slot name.
+	 *			The slot name.
 	 * @param key
-	 *            The value key.
+	 *			The value key.
 	 * @param value
-	 *            The value to assign (or remove if <code>null</code>).
+	 *			The value to assign (or remove if <code>null</code>).
 	 *
 	 * @return <code>true</code> if value changed, <code>false</code> if there
-	 *         was a problem.
+	 *		 was a problem.
 	 */
 	public boolean setKeyedSlot(final String name, final String key,
 			final String value) {
@@ -936,7 +938,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * Checks if player has a feature.
 	 *
 	 * @param name
-	 *     The feature mnemonic.
+	 *	 The feature mnemonic.
 	 * @return <code>true</code> if the feature value is not <code>null</code>.
 	 */
 	public boolean hasFeature(final String name) {
@@ -947,7 +949,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * Get a client feature value.
 	 *
 	 * @param name
-	 *            The feature mnemonic.
+	 *			The feature mnemonic.
 	 *
 	 * @return The feature value, or <code>null</code> is not-enabled.
 	 */
@@ -959,9 +961,9 @@ public class Player extends DressedEntity implements UseListener {
 	 * Enable/disable a client feature.
 	 *
 	 * @param name
-	 *            The feature mnemonic.
+	 *			The feature mnemonic.
 	 * @param enabled
-	 *            Flag indicating if enabled.
+	 *			Flag indicating if enabled.
 	 */
 	public void setFeature(final String name, final boolean enabled) {
 		if (enabled) {
@@ -978,9 +980,9 @@ public class Player extends DressedEntity implements UseListener {
 	 * (equals), or <code>:</code> (colon). </strong>
 	 *
 	 * @param name
-	 *            The feature mnemonic.
+	 *			The feature mnemonic.
 	 * @param value
-	 *            The feature value, or <code>null</code> to disable.
+	 *			The feature value, or <code>null</code> to disable.
 	 */
 	public void setFeature(final String name, final String value) {
 		put("features", name, value);
@@ -990,7 +992,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * Unset a client feature
 	 *
 	 * @param name
-	 *            The feature mnemonic
+	 *			The feature mnemonic
 	 */
 	public void unsetFeature(final String name) {
 		remove("features", name);
@@ -1010,7 +1012,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * Set whether this player is invisible to creatures.
 	 *
 	 * @param invisible
-	 *            <code>true</code> if invisible.
+	 *			<code>true</code> if invisible.
 	 */
 	public void setInvisible(final boolean invisible) {
 		if (invisible) {
@@ -1026,7 +1028,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * players (or relevant NPC messages), use sendPrivateText(PRIVMSG, text)
 	 *
 	 * @param text
-	 *            the message.
+	 *			the message.
 	 */
 	@Override
 	public void sendPrivateText(final String text) {
@@ -1095,7 +1097,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * Set the player's admin level.
 	 *
 	 * @param adminlevel
-	 *            The new admin level.
+	 *			The new admin level.
 	 */
 	public void setAdminLevel(final int adminlevel) {
 		put(ADMINLEVEL, adminlevel);
@@ -1155,7 +1157,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * Set the player's pet. This will also set the pet's owner.
 	 *
 	 * @param pet
-	 *            The pet.
+	 *			The pet.
 	 */
 	public void setPet(final Pet pet) {
 		getPetOwner().setPet(pet);
@@ -1165,7 +1167,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * Set the player's sheep. This will also set the sheep's owner.
 	 *
 	 * @param sheep
-	 *            The sheep.
+	 *			The sheep.
 	 */
 	public void setSheep(final Sheep sheep) {
 		getPetOwner().setSheep(sheep);
@@ -1217,7 +1219,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * server.
 	 *
 	 * @param age
-	 *            minutes
+	 *			minutes
 	 */
 	public void setAge(final int age) {
 		this.age = age;
@@ -1249,7 +1251,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * Notifies this player that the given player has logged in.
 	 *
 	 * @param who
-	 *            The name of the player who has logged in.
+	 *			The name of the player who has logged in.
 	 */
 	public void notifyOnline(final String who) {
 		boolean found = false;
@@ -1270,7 +1272,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * Notifies this player that the given player has logged out.
 	 *
 	 * @param who
-	 *            The name of the player who has logged out.
+	 *			The name of the player who has logged out.
 	 */
 	public void notifyOffline(final String who) {
 		boolean found = false;
@@ -1292,7 +1294,7 @@ public class Player extends DressedEntity implements UseListener {
 	 *
 	 * @param buddyName
 	 * @param isOnline
-	 *            buddy is online?
+	 *			buddy is online?
 	 */
 	public void setBuddyOnlineStatus(String buddyName, boolean isOnline) {
 		// maps handling:
@@ -1337,7 +1339,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * Checks whether the player has completed the given quest or not.
 	 *
 	 * @param name
-	 *            The quest's name
+	 *			The quest's name
 	 * @return true iff the quest has been completed by the player
 	 */
 	public boolean isQuestCompleted(final String name) {
@@ -1350,7 +1352,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * started.
 	 *
 	 * @param name
-	 *            The quest's name
+	 *			The quest's name
 	 * @return true if the player has made any progress in the quest
 	 */
 	public boolean hasQuest(final String name) {
@@ -1361,7 +1363,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * Gets the player's current status in the given quest.
 	 *
 	 * @param name
-	 *            The quest's name
+	 *			The quest's name
 	 * @return the player's status in the quest
 	 */
 	public String getQuest(final String name) {
@@ -1372,9 +1374,9 @@ public class Player extends DressedEntity implements UseListener {
 	 * Gets the player's current status in the given quest.
 	 *
 	 * @param name
-	 *            The quest's name
+	 *			The quest's name
 	 * @param index
-	 *            the index of the sub state to change (separated by ";")
+	 *			the index of the sub state to change (separated by ";")
 	 * @return the player's status in the quest
 	 */
 	public String getQuest(final String name, final int index) {
@@ -1389,10 +1391,10 @@ public class Player extends DressedEntity implements UseListener {
 	 * "done" has a special meaning: see isQuestCompleted().
 	 *
 	 * @param name
-	 *            The quest's name
+	 *			The quest's name
 	 * @param status
-	 *            the player's status in the quest. Set it to null to completely
-	 *            reset the player's status for the quest.
+	 *			the player's status in the quest. Set it to null to completely
+	 *			reset the player's status for the quest.
 	 */
 	public void setQuest(final String name, final String status) {
 		quests.setQuest(name, status);
@@ -1406,12 +1408,12 @@ public class Player extends DressedEntity implements UseListener {
 	 * "done" has a special meaning: see isQuestComplete().
 	 *
 	 * @param name
-	 *            The quest's name
+	 *			The quest's name
 	 * @param index
-	 *            the index of the sub state to change (separated by ";")
+	 *			the index of the sub state to change (separated by ";")
 	 * @param status
-	 *            the player's status in the quest. Set it to null to completely
-	 *            reset the player's status for the quest.
+	 *			the player's status in the quest. Set it to null to completely
+	 *			reset the player's status for the quest.
 	 */
 	public void setQuest(final String name, final int index, final String status) {
 		quests.setQuest(name, index, status);
@@ -1429,12 +1431,12 @@ public class Player extends DressedEntity implements UseListener {
 	 * Is the named quest in one of the listed states?
 	 *
 	 * @param name
-	 *     Quest name.
+	 *	 Quest name.
 	 * @param states
-	 *     Valid states.
+	 *	 Valid states.
 	 * @return
-	 *     <code>true</code> if the quest is in one of theses states,
-	 *     <code>false</code> otherwise.
+	 *	 <code>true</code> if the quest is in one of theses states,
+	 *	 <code>false</code> otherwise.
 	 */
 	public boolean isQuestInState(final String name, final String... states) {
 		return quests.isQuestInState(name, states);
@@ -1444,14 +1446,14 @@ public class Player extends DressedEntity implements UseListener {
 	 * Is the named quest in one of the listed states?
 	 *
 	 * @param name
-	 *     Quest name.
+	 *	 Quest name.
 	 * @param index
-	 *     Quest index.
+	 *	 Quest index.
 	 * @param states
-	 *     Valid states.
+	 *	 Valid states.
 	 * @return
-	 *     <code>true</code> if the quest is in one of theses states,
-	 *     <code>false</code> otherwise.
+	 *	 <code>true</code> if the quest is in one of theses states,
+	 *	 <code>false</code> otherwise.
 	 */
 	public boolean isQuestInState(final String name, final int index,
 			final String... states) {
@@ -1463,9 +1465,9 @@ public class Player extends DressedEntity implements UseListener {
 	 * of any other player.
 	 *
 	 * @param name
-	 *     Name of creature to check.
+	 *	 Name of creature to check.
 	 * @return
-	 *     <code>true</code> if this player has ever killed this creature.
+	 *	 <code>true</code> if this player has ever killed this creature.
 	 */
 	public boolean hasKilled(final String name) {
 		return killRec.hasKilled(name);
@@ -1476,10 +1478,10 @@ public class Player extends DressedEntity implements UseListener {
 	 * without the help of any other player.
 	 *
 	 * @param name
-	 *     Name of creature to check.
+	 *	 Name of creature to check.
 	 * @return
-	 *     <code>true</code> if this player has ever killed this creature
-	 *     without help.
+	 *	 <code>true</code> if this player has ever killed this creature
+	 *	 without help.
 	 */
 	public boolean hasKilledSolo(final String name) {
 		return killRec.hasKilledSolo(name);
@@ -1490,10 +1492,10 @@ public class Player extends DressedEntity implements UseListener {
 	 * with the help of any other player.
 	 *
 	 * @param name
-	 *     Name of creature to check.
+	 *	 Name of creature to check.
 	 * @return
-	 *     <code>true</code> if this player has ever killed this creature
-	 *     with help.
+	 *	 <code>true</code> if this player has ever killed this creature
+	 *	 with help.
 	 */
 	public boolean hasKilledShared(final String name) {
 		return killRec.hasKilledShared(name);
@@ -1504,7 +1506,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * 'name'.
 	 *
 	 * @param name
-	 *     Name of the victim.
+	 *	 Name of the victim.
 	 */
 	public void setSoloKill(final String name) {
 		killRec.setSoloKill(name);
@@ -1515,7 +1517,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * overwrite solo kills of 'name'.
 	 *
 	 * @param name
-	 *     Name of victim.
+	 *	 Name of victim.
 	 */
 	public void setSharedKill(final String name) {
 		killRec.setSharedKill(name);
@@ -1525,9 +1527,9 @@ public class Player extends DressedEntity implements UseListener {
 	 * Changes solo kills count to specified value.
 	 *
 	 * @param name
-	 *     Name of victim.
+	 *	 Name of victim.
 	 * @param count
-	 *     Value to set.
+	 *	 Value to set.
 	 */
 	public void setSoloKillCount(final String name, final int count) {
 		killRec.setSoloKillCount(name, count);
@@ -1537,7 +1539,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * Increments number of counted solo kills by 1.
 	 *
 	 * @param name
-	 *     Name of victim.
+	 *	 Name of victim.
 	 */
 	public void incSoloKillCount(final String name) {
 		setSoloKillCount(name, getSoloKill(name) + 1);
@@ -1547,9 +1549,9 @@ public class Player extends DressedEntity implements UseListener {
 	 * Changes shared kills count to specified value.
 	 *
 	 * @param name
-	 *     Name of victim.
+	 *	 Name of victim.
 	 * @param count
-	 *     Value to set.
+	 *	 Value to set.
 	 */
 	public void setSharedKillCount(final String name, final int count) {
 		killRec.setSharedKillCount(name, count);
@@ -1559,7 +1561,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * Increments number of counted shared kills by 1.
 	 *
 	 * @param name
-	 *     Name of victim.
+	 *	 Name of victim.
 	 */
 	public void incSharedKillCount(final String name) {
 		setSharedKillCount(name, getSharedKill(name) + 1);
@@ -1569,9 +1571,9 @@ public class Player extends DressedEntity implements UseListener {
 	 * Retrieves number of creatures killed alone by this player.
 	 *
 	 * @param name
-	 *     Name of victim.
+	 *	 Name of victim.
 	 * @return
-	 *     Number of solo kills.
+	 *	 Number of solo kills.
 	 */
 	public int getSoloKill(final String name) {
 		return killRec.getSoloKill(name);
@@ -1581,9 +1583,9 @@ public class Player extends DressedEntity implements UseListener {
 	 * Retrieves number of creatures killed alone by this player.
 	 *
 	 * @param name
-	 *     Name of victim.
+	 *	 Name of victim.
 	 * @return
-	 *     Number of solo kills.
+	 *	 Number of solo kills.
 	 */
 	public int getSoloKillCount(final String name) {
 		return getSoloKill(name);
@@ -1594,9 +1596,9 @@ public class Player extends DressedEntity implements UseListener {
 	 * from others.
 	 *
 	 * @param name
-	 *     Name of victim.
+	 *	 Name of victim.
 	 * @return
-	 *     Number of shared kills.
+	 *	 Number of shared kills.
 	 */
 	public int getSharedKill(final String name) {
 		return killRec.getSharedKill(name);
@@ -1607,9 +1609,9 @@ public class Player extends DressedEntity implements UseListener {
 	 * from others.
 	 *
 	 * @param name
-	 *     Name of victim.
+	 *	 Name of victim.
 	 * @return
-	 *     Number of shared kills.
+	 *	 Number of shared kills.
 	 */
 	public int getSharedKillCount(final String name) {
 		return getSharedKill(name);
@@ -1620,9 +1622,9 @@ public class Player extends DressedEntity implements UseListener {
 	 * with help from others.
 	 *
 	 * @param name
-	 *     Name of victim.
+	 *	 Name of victim.
 	 * @return
-	 *     Total number of kills.
+	 *	 Total number of kills.
 	 */
 	public int getAllKillCount(final String name) {
 		return getSoloKill(name) + getSharedKill(name);
@@ -1642,107 +1644,63 @@ public class Player extends DressedEntity implements UseListener {
 		final int hours = age / 60;
 		final int minutes = age % 60;
 		final String time = hours + " godzinę" + " i " + minutes + " " + "minutę";
-		final String textparobek = "Oto parobek " + name + ".\n" + name
-				+ " posiada poziom " + getLevel() + ". Wiek " + time
-				+ ".";
-		final String textchlop = "Oto chłop " + name + ".\n" + name
-				+ " posiada poziom " + getLevel() + ". Wiek " + time
-				+ ".";
-		final String textkmiec = "Oto kmieć " + name + ".\n" + name
-				+ " posiada poziom " + getLevel() + ". Wiek " + time
-				+ ".";
-		final String textmieszczanin = "Oto mieszczanin " + name + ".\n" + name
-				+ " posiada poziom " + getLevel() + ". Wiek " + time
-				+ ".";
-		final String textszlachcic = "Oto szlachcic " + name + ".\n" + name
-				+ " posiada poziom " + getLevel() + ". Wiek " + time
-				+ ".";
-		final String textrycerz = "Oto rycerz " + name + ".\n" + name
-				+ " posiada poziom " + getLevel() + ". Wiek " + time
-				+ ".";
-		final String textbaronet = "Oto baronet " + name + ".\n" + name
-				+ " posiada poziom " + getLevel() + ". Wiek " + time
-				+ ".";
-		final String textbaron = "Oto baron " + name + ".\n" + name
-				+ " posiada poziom " + getLevel() + ". Wiek " + time
-				+ ".";
-		final String textwicehrabia = "Oto wicehrabia " + name + ".\n" + name
-				+ " posiada poziom " + getLevel() + ". Wiek " + time
-				+ ".";
-		final String texthrabia = "Oto hrabia " + name + ".\n" + name
-				+ " posiada poziom " + getLevel() + ". Wiek " + time
-				+ ".";
-		final String textmagnat = "Oto magnat " + name + ".\n" + name
-				+ " posiada poziom " + getLevel() + ". Wiek " + time
-				+ ".";
-		final String textksiaze = "Oto książe " + name + ".\n" + name
-				+ " posiada poziom " + getLevel() + ". Wiek " + time
-				+ ".";
-		// Rangi administratorów
-		final String texttutor = "Oto #Tutor " + name + ".\n" + name
-				+ " posiada poziom " + getLevel() + ". Wiek " + time
-				+ ".";
-		final String textgamemaster = "Oto #GameMaster " + name + ".\n" + name
-				+ " posiada poziom " + getLevel() + ". Wiek " + time
-				+ ".";
-		final String textgameadministrator = "Oto #GameAdministrator " + name + ".\n" + name
-				+ " posiada poziom " + getLevel() + ". Wiek " + time
-				+ ".";
-		final String textgamesupervisor = "Oto #GameSupervisor " + name + ".\n" + name
+
+		@SuppressWarnings("serial")
+		Map<String, Integer> titles = new HashMap<String, Integer>() {{
+			put("parobek", 0);
+			put("chłop", 50);
+			put("kmieć", 100);
+			put("mieszczanin", 150);
+			put("szlachcic", 200);
+			put("rycerz", 250);
+			put("baronet", 300);
+			put("baron", 350);
+			put("wicehrabia", 400);
+			put("hrabia", 450);
+			put("magnat", 500);
+			put("książe", 550);
+		}};
+
+		String title = "";
+		if (getAdminLevel() > 0) {
+			if (getAdminLevel() < 7) {
+				title = "#tutor";
+			} else if (getAdminLevel() < 1000) {
+				title = "#GameMaster";
+			} else if (getAdminLevel() < 5000) {
+				title = "#GameAdministrator";
+			} else if (getAdminLevel() == 5000) {
+				title = "#GameSupervisor";
+			}
+		} else {
+			for (final Map.Entry<String, Integer> entry: titles.entrySet()) {
+				if (getLevel() == 597) {
+					title = Grammar.genderVerb(getGender(), "król");
+				} else if (getLevel() >= entry.getValue() && getLevel() < (entry.getValue() + 50)) {
+					title = Grammar.genderVerb(getGender(), entry.getKey());
+				}
+			}
+		}
+
+		final String text = "Oto " + title + " " + name + ".\n" + name
 				+ " posiada poziom " + getLevel() + ". Wiek " + time
 				+ ".";
 
 		final StringBuilder sb = new StringBuilder();
 		if (name.equals("postman")) {
 			sb.append("Oto " + name + ". Listonosz, który stara się, aby wszelkie listy dotarły do ich odbiorców. Wiek " + time + ".");
-		} else if (getAdminLevel() == 0) {
-			if (getLevel() < 50) {
-				sb.append(textparobek);
-			} else if ((getLevel() >= 50) && (getLevel() < 100)) {
-				sb.append(textchlop);
-			} else if ((getLevel() >= 100) && (getLevel() < 150)) {
-				sb.append(textkmiec);
-			} else if ((getLevel() >= 150) && (getLevel() < 200)) {
-				sb.append(textmieszczanin);
-			} else if ((getLevel() >= 200) && (getLevel() < 250)) {
-				sb.append(textszlachcic);
-			} else if ((getLevel() >= 250) && (getLevel() < 300)) {
-				sb.append(textrycerz);
-			} else if ((getLevel() >= 300) && (getLevel() < 350)) {
-				sb.append(textbaronet);
-			} else if ((getLevel() >= 350) && (getLevel() < 400)) {
-				sb.append(textbaron);
-			} else if ((getLevel() >= 400) && (getLevel() < 450)) {
-				sb.append(textwicehrabia);
-			} else if ((getLevel() >= 450) && (getLevel() < 500)) {
-				sb.append(texthrabia);
-			} else if ((getLevel() >= 500) && (getLevel() < 550)) {
-				sb.append(textmagnat);
-			} else if ((getLevel() >= 550) && (getLevel() < 598)) {
-				sb.append(textksiaze);
-			}
 		} else {
-			if ((getAdminLevel() >= 1) && (getAdminLevel() < 7)) {
-				sb.append(texttutor);
-			} else if ((getAdminLevel() >= 7) && (getAdminLevel() < 1000)) {
-				sb.append(textgamemaster);
-			} else if ((getAdminLevel() >= 1000) && (getAdminLevel() < 5000)) {
-				sb.append(textgameadministrator);
-			} else if ((getAdminLevel() == 5000)) {
-				sb.append(textgamesupervisor);
-			}
+			sb.append(text);
 		}
 
 		final String awayMessage = getAwayMessage();
-		final String gender = getGender();
-
 		if (awayMessage != null) {
-			sb.append("\n" + name + " nie ma " + Grammar.genderVerb(gender, "go") + " teraz, ale " + Grammar.genderVerb(gender, "zostawił") + " wiadomość: ");
+			sb.append("\n" + name + " nie ma " + Grammar.genderVerb(getGender(), "go") + " teraz, ale " + Grammar.genderVerb(getGender(), "zostawił") + " wiadomość: ");
 			sb.append(awayMessage);
 		}
 		final String grumpyMessage = getGrumpyMessage();
 		if (grumpyMessage != null) {
-			sb.append("\n" + name + " ukrywa się i " + Grammar.genderVerb(gender, "zostawił") + " wiadomość: ");
+			sb.append("\n" + name + " ukrywa się i " + Grammar.genderVerb(getGender(), "zostawił") + " wiadomość: ");
 			sb.append(grumpyMessage);
 		}
 
@@ -1763,18 +1721,18 @@ public class Player extends DressedEntity implements UseListener {
 	 * Teleports this player to the given destination.
 	 *
 	 * @param zone
-	 *            The zone where this player should be teleported to.
+	 *			The zone where this player should be teleported to.
 	 * @param x
-	 *            The destination's x coordinate
+	 *			The destination's x coordinate
 	 * @param y
-	 *            The destination's y coordinate
+	 *			The destination's y coordinate
 	 * @param dir
-	 *            The direction in which the player should look after
-	 *            teleporting, or null if the direction shouldn't change
+	 *			The direction in which the player should look after
+	 *			teleporting, or null if the direction shouldn't change
 	 * @param teleporter
-	 *            The player who initiated the teleporting, or null if no player
-	 *            is responsible. This is only to give feedback if something
-	 *            goes wrong. If no feedback is wanted, use null.
+	 *			The player who initiated the teleporting, or null if no player
+	 *			is responsible. This is only to give feedback if something
+	 *			goes wrong. If no feedback is wanted, use null.
 	 * @return <code>true</code> if teleporting was successful.
 	 */
 	public boolean teleport(final StendhalRPZone zone, final int x,
@@ -1996,7 +1954,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * Set whether this player is a ghost (invisible/non-interactive).
 	 *
 	 * @param ghost
-	 *            <code>true</code> if a ghost.
+	 *			<code>true</code> if a ghost.
 	 */
 	public void setGhost(final boolean ghost) {
 		if (ghost) {
@@ -2019,7 +1977,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * Set whether this player has teleclick enabled.
 	 *
 	 * @param teleclick
-	 *            <code>true</code> if teleclick enabled.
+	 *			<code>true</code> if teleclick enabled.
 	 */
 	public void setTeleclickEnabled(final boolean teleclick) {
 		if (teleclick) {
@@ -2033,7 +1991,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * Called when this object is added to a zone.
 	 *
 	 * @param zone
-	 *            The zone this was added to.
+	 *			The zone this was added to.
 	 */
 	@Override
 	public void onAdded(final StendhalRPZone zone) {
@@ -2071,7 +2029,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * Called when this object is being removed from a zone.
 	 *
 	 * @param zone
-	 *            The zone this will be removed from.
+	 *			The zone this will be removed from.
 	 */
 	@Override
 	public void onRemoved(final StendhalRPZone zone) {
@@ -2119,7 +2077,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * sets the player sentence
 	 *
 	 * @param sentence
-	 *            sentence to store
+	 *			sentence to store
 	 */
 	public void setSentence(final String sentence) {
 		put("sentence", sentence);
@@ -2164,7 +2122,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * checks if the client is newer than the requested version
 	 *
 	 * @param version
-	 *            requested version
+	 *			requested version
 	 * @return check the client is newer
 	 */
 	public boolean isClientNewerThan(String version) {
@@ -2241,10 +2199,10 @@ public class Player extends DressedEntity implements UseListener {
 	 * Search for an animal with the given name or type.
 	 *
 	 * @param name
-	 *            the name or type of the pet to search
+	 *			the name or type of the pet to search
 	 * @param exactly
-	 *            <code>true</code> if looking only for matching name instead of
-	 *            both name and type.
+	 *			<code>true</code> if looking only for matching name instead of
+	 *			both name and type.
 	 * @return the found pet
 	 */
 	public DomesticAnimal searchAnimal(final String name, final boolean exactly) {
@@ -2298,7 +2256,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * Returns the time the player last did a player kill.
 	 *
 	 * @return
-	 *     <code>time</code> in milliseconds.
+	 *	 <code>time</code> in milliseconds.
 	 */
 	public long getLastPlayerKillTime() {
 		if (has(LAST_PLAYER_KILL_TIME)) {
@@ -2399,11 +2357,11 @@ public class Player extends DressedEntity implements UseListener {
 	 * Adds a buddy to the player's buddy list.
 	 *
 	 * @param name
-	 *     The name of the buddy.
+	 *	 The name of the buddy.
 	 * @param online
-	 *     If the player is online.
+	 *	 If the player is online.
 	 * @return
-	 *     <code>true</code> if the buddy has been added.
+	 *	 <code>true</code> if the buddy has been added.
 	 */
 	public boolean addBuddy(String name, boolean online) {
 		boolean isNew = !hasMap("buddies")
@@ -2418,9 +2376,9 @@ public class Player extends DressedEntity implements UseListener {
 	 * Removes a buddy to the player's buddy list.
 	 *
 	 * @param name
-	 *     The name of the buddy.
+	 *	 The name of the buddy.
 	 * @return
-	 *     <code>true</code> if a buddy was removed.
+	 *	 <code>true</code> if a buddy was removed.
 	 */
 	public boolean removeBuddy(String name) {
 		return remove("buddies", name) != null;
@@ -2508,7 +2466,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * Checks if the achievements of this player object are already loaded.
 	 *
 	 * @return
-	 *     <code>true</code>, if the achievement set is loaded, false otherwise.
+	 *	 <code>true</code>, if the achievement set is loaded, false otherwise.
 	 */
 	public boolean arePlayerAchievementsLoaded() {
 		return reachedAchievements != null;
@@ -2519,7 +2477,7 @@ public class Player extends DressedEntity implements UseListener {
 	 *
 	 * @param identifier
 	 * @return
-	 *      <code>true</code> if player had reached the achievement with the given
+	 *	  <code>true</code> if player had reached the achievement with the given
 	 *		identifier.
 	 */
 	public boolean hasReachedAchievement(String identifier) {
@@ -2536,9 +2494,9 @@ public class Player extends DressedEntity implements UseListener {
 	 * Checks if the player has visited the given zone.
 	 *
 	 * @param zoneName
-	 *     String name of the zone to check for.
+	 *	 String name of the zone to check for.
 	 * @return
-	 *     <code>true</code> if player visited the zone.
+	 *	 <code>true</code> if player visited the zone.
 	 */
 	public boolean hasVisitedZone(final String zoneName) {
 		return getKeyedSlot("!visited", zoneName) != null;
@@ -2548,9 +2506,9 @@ public class Player extends DressedEntity implements UseListener {
 	 * Checks if the player has visited the given zone.
 	 *
 	 * @param zone
-	 *     The zone to check for.
+	 *	 The zone to check for.
 	 * @return
-	 *     <code>true</code> if player visited the zone.
+	 *	 <code>true</code> if player visited the zone.
 	 */
 	public boolean hasVisitedZone(final StendhalRPZone zone) {
 		return hasVisitedZone(zone.getName());
@@ -2560,7 +2518,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * offers the other player to start a trading session
 	 *
 	 * @param partner
-	 *            to offer the trade to
+	 *			to offer the trade to
 	 */
 	public void offerTrade(Player partner) {
 		trade.offerTrade(partner);
@@ -2588,7 +2546,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * starts a trade with this partner
 	 *
 	 * @param partner
-	 *            partner to trade with
+	 *			partner to trade with
 	 */
 	protected void startTrade(Player partner) {
 		trade.startTrade(partner);
@@ -2598,8 +2556,8 @@ public class Player extends DressedEntity implements UseListener {
 	 * cancels a trade and moves the items back.
 	 *
 	 * @param partnerName
-	 *            name of partner (to make sure the correct trade offer is
-	 *            canceled)
+	 *			name of partner (to make sure the correct trade offer is
+	 *			canceled)
 	 */
 	public void cancelTradeInternally(String partnerName) {
 		trade.cancelTradeInternally(partnerName);
@@ -2624,8 +2582,8 @@ public class Player extends DressedEntity implements UseListener {
 	 * internally unlocks
 	 *
 	 * @param partnerName
-	 *            name of partner (to make sure the correct trade offer is
-	 *            canceled)
+	 *			name of partner (to make sure the correct trade offer is
+	 *			canceled)
 	 * @return true, if a trade was unlocked, false if it was already unlocked
 	 */
 	boolean unlockTradeItemOfferInternally(String partnerName) {
@@ -2657,7 +2615,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * Gets the how often this player has looted the given item
 	 *
 	 * @param item
-	 *            the item name
+	 *			the item name
 	 * @return the number of loots from corpses
 	 */
 	public int getNumberOfLootsForItem(String item) {
@@ -2672,7 +2630,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * Gets the amount a player as produced of an item
 	 *
 	 * @param item
-	 *            the item name
+	 *			the item name
 	 * @return the produced amount
 	 */
 	public int getQuantityOfProducedItems(String item) {
@@ -2683,7 +2641,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * Gets the amount a player as mined of an item
 	 *
 	 * @param item
-	 *            the item name
+	 *			the item name
 	 * @return the mined amount
 	 */
 	public int getQuantityOfMinedItems(String item) {
@@ -2694,7 +2652,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * Gets the amount a player has harvested of an item
 	 *
 	 * @param item
-	 *            the item name
+	 *			the item name
 	 * @return the harvested amount
 	 */
 	public int getQuantityOfHarvestedItems(String item) {
@@ -2748,7 +2706,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * Increases the count of loots for the given item
 	 *
 	 * @param item
-	 *            the item name
+	 *			the item name
 	 * @param count
 	 */
 	public void incLootForItem(String item, int count) {
@@ -2761,7 +2719,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * Increases the count of producings for the given item
 	 *
 	 * @param item
-	 *            the item name
+	 *			the item name
 	 * @param count
 	 */
 	public void incProducedForItem(String item, int count) {
@@ -2774,7 +2732,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * Increases the count of obtains from the well for the given item
 	 *
 	 * @param name
-	 *            the item name
+	 *			the item name
 	 * @param quantity
 	 */
 	public void incObtainedForItem(String name, int quantity) {
@@ -2787,11 +2745,11 @@ public class Player extends DressedEntity implements UseListener {
 	 * Stores information about amount of money used & gained in NPC transactions.
 	 *
 	 * @param npcName
-	 *     Name of NPC with whom transactions is being done.
+	 *	 Name of NPC with whom transactions is being done.
 	 * @param price
-	 *     Amount of money exchanged.
+	 *	 Amount of money exchanged.
 	 * @param soldToNPC
-	 *     <code>true</code> means player is selling to NPC, <code>false</code> player is buying from.
+	 *	 <code>true</code> means player is selling to NPC, <code>false</code> player is buying from.
 	 */
 	public void incCommerceTransaction(final String npcName, final int price, final boolean soldToNPC) {
 		int curAmount = 0;
@@ -2818,7 +2776,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * Increases the amount of successful minings for the given item
 	 *
 	 * @param name
-	 *            the item name
+	 *			the item name
 	 * @param quantity
 	 */
 	public void incMinedForItem(String name, int quantity) {
@@ -2831,7 +2789,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * Increases the amount of successful harvestings for the given item
 	 *
 	 * @param name
-	 *            the item name
+	 *			the item name
 	 * @param quantity
 	 */
 	public void incHarvestedForItem(String name, int quantity) {
@@ -2844,7 +2802,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * Increases the amount of successful buyings for the given item
 	 *
 	 * @param name
-	 *            the item name
+	 *			the item name
 	 * @param quantity
 	 */
 	public void incBoughtForItem(String name, int quantity) {
@@ -2857,7 +2815,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * Increases the count of sales for the given item
 	 *
 	 * @param name
-	 *            the item name
+	 *			the item name
 	 * @param quantity
 	 */
 	public void incSoldForItem(String name, int quantity) {
@@ -2870,7 +2828,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * Increases the count of improves item
 	 *
 	 * @param name
-	 *            the item name
+	 *			the item name
 	 * @param quantity
 	 */
 	public void incImprovedForItem(String name, int quantity) {
@@ -2903,9 +2861,9 @@ public class Player extends DressedEntity implements UseListener {
 	 * Gets the recorded item stored in a substate of quest slot
 	 *
 	 * @param questname
-	 *            The quest's name
+	 *			The quest's name
 	 * @param index
-	 *            the index of the sub state to get (separated by ";")
+	 *			the index of the sub state to get (separated by ";")
 	 * @return the name of the required item (no formatting)
 	 */
 	public String getRequiredItemName(String questname, int index) {
@@ -2916,9 +2874,9 @@ public class Player extends DressedEntity implements UseListener {
 	 * Gets the recorded item quantity stored in a substate of quest slot
 	 *
 	 * @param questname
-	 *            The quest's name
+	 *			The quest's name
 	 * @param index
-	 *            the index of the sub state to get (separated by ";")
+	 *			the index of the sub state to get (separated by ";")
 	 * @return required item quantity
 	 */
 	public int getRequiredItemQuantity(String questname, int index) {
@@ -2940,11 +2898,11 @@ public class Player extends DressedEntity implements UseListener {
 	 * Gets the number of repetitions in a substate of quest slot
 	 *
 	 * @param questname
-	 *            The quest's name
+	 *			The quest's name
 	 * @param index
-	 *            the index of the sub state to get (separated by ";")
+	 *			the index of the sub state to get (separated by ";")
 	 * @return the integer value in the index of the quest slot, used to
-	 *         represent a number of repetitions
+	 *		 represent a number of repetitions
 	 */
 	public int getNumberOfRepetitions(final String questname, final int index) {
 		return quests.getNumberOfRepetitions(questname, index);
@@ -2963,7 +2921,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * sets the timestamp at which this client sent the last action.
 	 *
 	 * @param lastClientActionTimestamp
-	 *            action timestmap
+	 *			action timestmap
 	 */
 	public void setLastClientActionTimestamp(long lastClientActionTimestamp) {
 		this.lastClientActionTimestamp = lastClientActionTimestamp;
@@ -2983,7 +2941,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * sets the language
 	 *
 	 * @param language
-	 *            language
+	 *			language
 	 */
 	public void setLanguage(String language) {
 		this.language = language;
@@ -2994,9 +2952,9 @@ public class Player extends DressedEntity implements UseListener {
 	 * specified name
 	 *
 	 * @param actionDisplayName
-	 *            name of useaction visible in the client
+	 *			name of useaction visible in the client
 	 * @param listener
-	 *            use event listener
+	 *			use event listener
 	 */
 	public void setUseListener(String actionDisplayName, UseListener listener) {
 		put("menu", actionDisplayName);
@@ -3033,7 +2991,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * Invoked when the object is used.
 	 *
 	 * @param user
-	 *            the RPEntity who uses the object
+	 *			the RPEntity who uses the object
 	 * @return true if successful
 	 */
 	@Override
@@ -3048,7 +3006,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * sets the time a outfit wears off
 	 *
 	 * @param expire
-	 *            expire age
+	 *			expire age
 	 */
 	public void registerOutfitExpireTime(int expire) {
 		// ignore outfits that do not expire
@@ -3089,7 +3047,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * Get the maximum allowed ATK for a level.
 	 *
 	 * @param level
-	 *            checked level
+	 *			checked level
 	 * @return maximum ATK
 	 */
 	private int getMaxAtkForLevel(int level) {
@@ -3100,7 +3058,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * Get the maximum allowed DEF for a level.
 	 *
 	 * @param level
-	 *            checked level
+	 *			checked level
 	 * @return maximum DEF
 	 */
 	private int getMaxDefForLevel(int level) {
@@ -3115,7 +3073,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * Get the maximum allowed mining for a level.
 	 *
 	 * @param level
-	 *            checked level
+	 *			checked level
 	 * @return maximum mining
 	 */
 	private int getMaxMiningForLevel(int level) {
@@ -3177,9 +3135,9 @@ public class Player extends DressedEntity implements UseListener {
 	 * Collision handling instructions for players.
 	 *
 	 * @param nx
-	 *        New horizontal position
+	 *		New horizontal position
 	 * @param ny
-	 *        New vertical position
+	 *		New vertical position
 	 */
 	@Override
 	protected void handleSimpleCollision(final int nx, final int ny) {
@@ -3221,7 +3179,7 @@ public class Player extends DressedEntity implements UseListener {
 	 * raw atk stat, which is much higher for creatues. In order
 	 * to avoid drastic changes to the game's balance, we also
 	 * need to reduce the amount of damage done by players. See:
-	 *     Player.damageDone.
+	 *	 Player.damageDone.
 	 */
 	@Override
 	protected int calculateRiskForCanHit(final int roll, final int defenderDEF, final int attackerATK) {
