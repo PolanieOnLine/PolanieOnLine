@@ -25,7 +25,7 @@ import games.stendhal.common.parser.WordList;
 import games.stendhal.server.core.config.CreatureGroupsXMLLoader;
 import games.stendhal.server.core.config.ItemGroupsXMLLoader;
 import games.stendhal.server.core.config.ProducersXMLLoader;
-import games.stendhal.server.core.config.ShopsXMLLoader;
+import games.stendhal.server.core.config.ShopGroupsXMLLoader;
 import games.stendhal.server.core.config.SpellGroupsXMLLoader;
 import games.stendhal.server.core.rule.EntityManager;
 import games.stendhal.server.entity.Entity;
@@ -77,7 +77,8 @@ public class DefaultEntityManager implements EntityManager {
 		buildCreatureTables();
 		buildSpellTables();
 
-		ShopsXMLLoader.get().init();
+		// initialize shops via XML
+		new ShopGroupsXMLLoader("/data/conf/shops.xml").load();
 		ProducersXMLLoader.get().init();
 	}
 

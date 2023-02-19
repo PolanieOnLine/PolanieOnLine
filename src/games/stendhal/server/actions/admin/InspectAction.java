@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2016 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -27,7 +27,6 @@ import marauroa.common.game.RPObject;
 import marauroa.common.game.RPSlot;
 
 public class InspectAction extends AdministrationAction {
-
 	public static void register() {
 		CommandCenter.register(INSPECT, new InspectAction(), 6);
 	}
@@ -93,6 +92,9 @@ public class InspectAction extends AdministrationAction {
 			st.append("\nKarma:  " + inspected.getKarma());
 			st.append("\nMana:  " + inspected.getMana() + " / "
 					+ inspected.getBaseMana());
+			if (inspected.has("age")) {
+				st.append("\nWiek: " + inspected.get("age"));
+			}
 			if (Testing.WEIGHT) {
 				st.append("\nUdźwig:  " + inspected.getCapacity() + " / "
 						+ inspected.getBaseCapacity() + "kg");
@@ -100,20 +102,47 @@ public class InspectAction extends AdministrationAction {
 			st.append("\nResistance:  " + inspected.getResistance());
 			st.append("\nVisibility:  " + inspected.getVisibility());
 
+			boolean outfit_temp_orig = false;
+			String outfit_str = null;
+			String outfit_str_temp = null;
 			if (inspected.has("outfit_ext")) {
-				st.append("\nUbiór: ");
+				st.append("\n\nUbiór: ");
+				outfit_str = inspected.get("outfit_ext");
 				if (inspected.has("outfit_ext_orig")) {
-					st.append(inspected.get("outfit_ext_orig") + "\nUbiór (tymcz.): ");
+					outfit_temp_orig = true;
+					outfit_str_temp = outfit_str;
+					outfit_str = inspected.get("outfit_ext_orig");
 				}
-				st.append(inspected.get("outfit_ext"));
-			}
-			if (inspected.has("outfit")) {
-				st.append("\nKod ubioru: ");
+				st.append(outfit_str);
+				if (outfit_str_temp != null) {
+					st.append("\nUbiór tymczasowy: " + outfit_str_temp);
+				}
+			} else if (inspected.has("outfit")) {
+				st.append("\n\nKod ubioru: ");
+				outfit_str = inspected.get("outfit");
 				if (inspected.has("outfit_org")) {
-					st.append(inspected.get("outfit_org") + "\nKod ubioru (tymcz.): ");
+					outfit_temp_orig = true;
+					outfit_str_temp = outfit_str;
+					outfit_str = inspected.get("outfit_org");
 				}
-				st.append(inspected.get("outfit"));
+				st.append(outfit_str);
+				if (outfit_str_temp != null) {
+					st.append("\nKod ubioru tymczasowego: " + outfit_str_temp);
+				}
 			}
+			if (inspected instanceof Player) {
+				final Player iplayer = (Player) inspected;
+				final boolean outfit_temp_expire = iplayer.has("outfit_expire_age");
+				if (outfit_temp_expire) {
+					st.append("\nOkres ważności ubioru: " + iplayer.get("outfit_expire_age"));
+				}
+				if (outfit_temp_orig != outfit_temp_expire) {
+					st.append("\nUWAGA: oryginalny strój i atrybuty wieku utraty ważności stroju nie pasują do siebie:"
+						+ " ma oryginalny ubiór=" + outfit_temp_orig + ", ma czas wygaśnięcia ubioru="
+						+ outfit_temp_expire);
+				}
+			}
+
 			if (inspected.has("class")) {
 				st.append("\nUbiór (klasa):  " + inspected.get("class"));
 			}

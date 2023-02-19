@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<shops xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../shops.xsd">
+
+	<!-- OUTFIT SELLERS/LENDERS -->
+	<!-- TODO: outfit shops should add to player commerce transactions -->
+
+	<shop name="deniran_accessories" type="outfit">
+		<outfit name="biały balonik" layers="detail=2" price="50000"/>
+		<outfit name="czarny balonik" layers="detail=3" price="50000"/>
+		<outfit name="kość" layers="detail=4" price="100000"/>
+		<outfit name="parasol" layers="detail=7" price="50000"/>
+		<outfit name="miecz" layers="detail=8" price="250000"/>
+		<outfit name="nożyk" layers="detail=9" price="125000"/>
+		<outfit name="włócznia" layers="detail=10" price="150000"/>
+		<outfit name="łuk" layers="detail=11" price="175000"/>
+		<outfit name="topór1" layers="detail=12" price="250000"/>
+		<outfit name="topór2" layers="detail=13" price="250000"/>
+		<outfit name="tarcza normandzka" layers="detail=14" price="225000"/>
+		<outfit name="tarcza" layers="detail=15" price="225000"/>
+
+		<merchant name="Gwen" action="rent,wypożycz,wypożyczyć,buy,kupię,kup" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Pierre in Deniran Dress Shop -->
+	<shop type="outfit">
+		<outfit name="niebieski niedźwiadek" layers="hat=993" price="2500"/>
+		<outfit name="brązowy niedźwiadek" layers="hat=994" price="2500"/>
+		<outfit name="super" layers="dress=973,hat=992" price="5000"/>
+
+		<merchant name="Pierre"/>
+	</shop>
+
+	<!-- Liliana in Magic Clothing Boutique -->
+	<shop type="outfit">
+		<outfit name="kombinezon" layers="dress=68" price="500"/>
+		<outfit name="ogrodniczki" layers="dress=69" price="500"/>
+		<outfit name="zielone ubranie" layers="dress=63" price="500"/>
+		<outfit name="suknia" layers="dress=73" price="750"/>
+		<outfit name="pomarańczowy" layers="dress=65" price="500"/>
+		<outfit name="strój królika" layers="dress=999" price="800"/>
+		<outfit name="figlarz" layers="dress=975,hat=991" price="400"/>
+		<outfit name="koń" layers="body=997" price="1200"/>
+		<outfit name="klacz" layers="body=996" price="1200"/>
+		<outfit name="obcy" layers="body=995" price="1200"/>
+		<outfit name="statek" layers="body=950" price="3500"/>
+		<outfit name="duży statek" layers="body=951" price="5000"/>
+
+		<merchant name="Liliana"/>
+	</shop>
+
+	<!-- Saski in Magic Clothing Boutique -->
+	<shop type="outfit">
+		<outfit name="twarz goblina" layers="head=988" price="500"/>
+		<outfit name="twarz cosia" layers="head=987" price="500"/>
+		<outfit name="fioletowy szlam" layers="body=993" price="3000"/>
+		<outfit name="zielony szlam" layers="body=989" price="3000"/>
+		<outfit name="czerwony szlam" layers="body=988" price="3000"/>
+		<outfit name="niebieski szlam" layers="body=991" price="3000"/>
+		<outfit name="piernikowy ludzik" layers="body=992" price="1200"/>
+		<outfit name="biały kot" layers="body=978" price="4500"/>
+		<outfit name="czarny kot" layers="body=979" price="4500"/>
+
+		<merchant name="Saskia"/>
+	</shop>
+
+</shops>

@@ -256,12 +256,13 @@
 				<filename name="zones.xml"/>
 				<filename name="items.xml"/>
 				<filename name="creatures.xml"/>
+				<filename name="shops.xml"/>
 			</fileset>
 		</schemavalidate>
 		<schemavalidate>
 			<schema namespace="polanieonline" file="${config_dir}/shops.xsd"/>
-			<fileset dir="${config_dir}">
-				<filename name="shops.xml"/>
+			<fileset dir="${config_dir}/shops">
+				<include name="*.xml"/>
 			</fileset>
 		</schemavalidate>
 	</target> <!-- checkxml -->
@@ -624,7 +625,8 @@
 				<include name="spells.xml" />
 				<include name="spells/*.xml" />
 				<include name="woodcutter_test.xml"/>
-				<include name="shops.xml" />
+				<include name="shops.xml"/>
+				<include name="shops/*.xml"/>
 			</fileset>
 		</copy>
 		<copy todir="${build_server_xmlconf}/data/languages">

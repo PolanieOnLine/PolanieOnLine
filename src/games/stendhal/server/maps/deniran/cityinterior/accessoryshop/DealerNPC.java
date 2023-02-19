@@ -42,6 +42,7 @@ public class DealerNPC implements ZoneConfigurator {
 
 		gwen.setDescription("Oto Gwen. Zajmuje się modnymi dodatkami.");
 		gwen.addGreeting();
+		gwen.addOffer("Proszę sprawdzić księgę na krześle, aby zapoznać się z listą akcesoriów, które oferuję.");
 		gwen.addGoodbye();
 
 		gwen.setPathAndPosition(new FixedPath(Arrays.asList(

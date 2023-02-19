@@ -1,0 +1,895 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<shops xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../shops.xsd">
+
+	<!-- Siandra kupuje: -->
+	<shop name="buyfood" type="buy">
+		<item name="ser" price="5" />
+		<item name="mięso" price="10" />
+		<item name="szpinak" price="15" />
+		<item name="szynka" price="20" />
+		<item name="mąka" price="25" />
+		<item name="borowik" price="30" />
+
+		<merchant name="Siandra" flags="configure"/>
+	</shop>
+
+	<!-- Xin Blanca kupuje: -->
+	<shop name="buystuff" type="buy">
+		<item name="krótki miecz" price="15" />
+		<item name="miecz" price="60" />
+		<item name="tarcza ćwiekowa" price="20" />
+		<item name="zbroja ćwiekowa" price="22" />
+		<item name="hełm nabijany ćwiekami" price="17" />
+		<item name="spodnie nabijane ćwiekami" price="20" />
+		<item name="kolczuga" price="29" />
+		<item name="hełm kolczy" price="25" />
+		<item name="spodnie kolcze" price="27" />
+		<item name="pas kolczy" price="14" />
+
+		<merchant name="Xin Blanca" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Loretta / Inez kupuje: -->
+	<shop name="buyiron" type="buy">
+		<item name="żelazo" price="75" />
+
+		<merchant name="Inez" flags="configure"/>
+		<merchant name="Loretta" flags="configure"/>
+	</shop>
+
+	<!-- ? kupuje: (unused) -->
+	<shop name="buygrain" type="buy">
+		<item name="kłos" price="1" />
+	</shop>
+
+	<!-- Ognir kupuje: -->
+	<shop name="buyprecious" type="buy">
+		<item name="sztabka złota" price="250" />
+		<item name="szmaragd" price="200" />
+		<item name="szafir" price="400" />
+		<item name="ametyst" price="500" />
+		<item name="rubin" price="600" />
+		<item name="diament" price="800" />
+		<item name="obsydian" price="1000" />
+		<item name="sztabka mithrilu" price="2500" />
+
+		<merchant name="Ognir" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- McPegleg kupuje: -->
+	<shop name="buyrare" type="buy">
+		<!-- rare weapons -->
+		<item name="bułat" price="65" />
+		<item name="katana" price="70" />
+		<item name="berdysz" price="75" />
+		<item name="złoty pyrlik" price="80" />
+		<!-- rare armor -->
+		<item name="kolczuga wzmocniona" price="32" />
+		<item name="złota kolczuga" price="52" />
+		<item name="zbroja płytowa" price="62" />
+		<item name="złoty pas kolczy" price="27" />
+		<item name="tarcza płytowa" price="40" />
+		<item name="lwia tarcza" price="50" />
+		<item name="spodnie lazurowe" price="500" />
+
+		<merchant name="McPegleg" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Elodrin kupuje: -->
+	<shop name="elfbuyrare" type="buy">
+		<item name="kij" price="75" />
+		<item name="topór bojowy" price="100" />
+		<item name="topór obosieczny" price="140" />
+		<item name="miecz dwuręczny" price="110" />
+		<item name="pałasz" price="135" />
+		<item name="wzmocniona lwia tarcza" price="200" />
+		<item name="tarcza królewska" price="220" />
+
+		<merchant name="Elodrin" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Yorphin Baos kupuje: -->
+	<shop name="buyrare2" type="buy">
+		<item name="młot bojowy" price="120" />
+		<item name="miecz zaczepny" price="150" />
+		<item name="kusza" price="175" />
+		<item name="półtorak" price="250" />
+		<item name="miecz ognisty" price="2000" />
+		<item name="miecz lodowy" price="5000" />
+		<item name="piekielny sztylet" price="8000" />
+
+		<merchant name="Yorphin Baos" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Mrotho kupuje: -->
+	<shop name="buyrare3" type="buy">
+		<item name="złote spodnie" price="3000" />
+		<item name="spodnie cieni" price="5000" />
+		<item name="złota zbroja" price="7000" />
+		<item name="zbroja cieni" price="9000" />
+		<item name="złota tarcza" price="10000" />
+		<item name="tarcza cieni" price="15000" />
+
+		<merchant name="Mrotho" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Wrvil kupuje: -->
+	<shop name="buystuff2" type="buy">
+		<item name="skórzana zbroja łuskowa" price="65" />
+		<item name="spodnie nabijane ćwiekami" price="70" />
+		<item name="buty nabijane ćwiekami" price="75" />
+		<item name="buty kolcze" price="100" />
+		<item name="tarcza z czaszką" price="100" />
+		<item name="tarcza jednorożca" price="125" />
+		<item name="hełm wikingów" price="250" />
+
+		<merchant name="Wrvil" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Ida kupuje: -->
+	<shop name="buycloaks" type="buy">
+		<item name="lazurowy płaszcz elficki" price="300" />
+		<item name="szmaragdowy płaszcz smoczy" price="400" />
+		<item name="lazurowy płaszcz smoczy" price="2000" />
+		<item name="karmazynowy płaszcz smoczy" price="2500" />
+		<item name="płaszcz cieni" price="3000" />
+		<item name="czarny płaszcz smoczy" price="4000" />
+		<item name="złoty płaszcz" price="5000" />
+		<item name="płaszcz chaosu" price="10000" />
+		<item name="czarny płaszcz" price="20000" />
+
+		<merchant name="Ida" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Diehelm Brui kupuje: -->
+	<shop name="boots&amp;helm" type="buy">
+		<!--
+			boots (mithrilbourgh)
+			Note the shop sign is done by hand in
+			games.stendhal.server.maps.mithrilbourgh.stores
+			Because I wanted to split boots and helmets
+			Please if you change anything, change also the sign (by hand)
+		-->
+		<item name="buty żelazne" price="70" />
+		<item name="złote buty" price="1500" />
+		<item name="buty cieni" price="2000" />
+		<item name="buty kamienne" price="2500" />
+		<item name="buty chaosu" price="4000" />
+		<item name="buty z zielonego potwora" price="6000" />
+		<item name="buty xenocyjskie" price="8000" />
+		<item name="czarne buty" price="9000" />
+		<!--
+			helmet (mithrilbourgh)
+			Note the shop sign is done by hand in
+			games.stendhal.server.maps.mithrilbourgh.stores
+		-->
+		<item name="złoty hełm" price="3000" />
+		<item name="hełm cieni" price="4000" />
+		<item name="złoty hełm wikingów" price="5000" />
+		<item name="hełm chaosu" price="6000" />
+		<item name="magiczny hełm kolczy" price="8000" />
+		<item name="hełm xenocyjski" price="8000" />
+		<item name="czarny hełm" price="10000" />
+
+		<merchant name="Diehelm Brui" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Woody kupuje: -->
+	<shop name="buyaxe" type="buy">
+		<item name="halabarda" price="2000" />
+		<item name="złoty topór obosieczny" price="4000" />
+		<item name="magiczny topór obosieczny" price="6000" />
+		<item name="topór Durina" price="8000" />
+		<item name="czarna kosa" price="9000" />
+		<item name="topór chaosu" price="10000" />
+		<item name="czarna halabarda" price="12000" />
+		<item name="złota kosa" price="14000" />
+		<item name="kosa z mithrilu" price="20000" />
+
+		<merchant name="Woody" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Hunel kupuje: -->
+	<shop name="buychaos" type="buy">
+		<item name="rękawice chaosu" price="6000" />
+		<item name="spodnie chaosu" price="8000" />
+		<item name="miecz chaosu" price="12000" />
+		<item name="tarcza chaosu" price="18000" />
+		<item name="zbroja chaosu" price="20000" />
+
+		<merchant name="Hunel" flags="configure"/>
+	</shop>
+
+	<!-- Lupos kupuje: -->
+	<shop name="buyelvish" type="buy">
+		<item name="rękawice elfickie" price="200" />
+		<item name="buty elfickie" price="300" />
+		<item name="pas elficki" price="350" />
+		<item name="spodnie elfickie" price="300" />
+		<item name="miecz elficki" price="800" />
+		<item name="tarcza elficka" price="1000" />
+		<item name="miecz elfów ciemności" price="1200" />
+		<item name="płaszcz elficki" price="400" />
+		<item name="zbroja elficka" price="400" />
+		<item name="kapelusz elficki" price="150" />
+		<item name="hełm elficki" price="300" />
+
+		<merchant name="Lupos"/>
+	</shop>
+
+	<!-- Vonda kupuje: -->
+	<shop name="buymagic" type="buy">
+		<item name="miecz demonów" price="4000" />
+		<item name="sztylet mroku" price="8000" />
+		<item name="hełm libertyński" price="8000" />
+		<item name="miecz nieśmiertelnych" price="10000" />
+		<item name="spodnie nabijane klejnotami" price="12000" />
+		<item name="magiczna tarcza płytowa" price="16000" />
+		<item name="magiczna zbroja płytowa" price="20000" />
+
+		<merchant name="Vonda" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Pjotr Yearl kupuje: -->
+	<shop name="buyred" type="buy">
+		<item name="zbroja karmazynowa" price="300" />
+		<item name="buty karmazynowe" price="200" />
+		<item name="płaszcz karmazynowy" price="250" />
+		<item name="hełm karmazynowy" price="200" />
+		<item name="spodnie karmazynowe" price="200" />
+		<item name="pas karmazynowy" price="200" />
+		<item name="rękawice karmazynowe" price="250" />
+		<item name="tarcza karmazynowa" price="750" />
+
+		<merchant name="Pjotr Yearl" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Despot Halb Errvl kupuje: -->
+	<shop name="buymainio" type="buy">
+		<item name="zbroja mainiocyjska" price="22000" />
+		<item name="buty mainiocyjskie" price="4000" />
+		<item name="płaszcz mainiocyjski" price="12000" />
+		<item name="hełm mainiocyjski" price="8000" />
+		<item name="spodnie mainiocyjskie" price="7000" />
+		<item name="rękawice mainiocyjskie" price="7000" />
+		<item name="tarcza mainiocyjska" price="16000" />
+
+		<merchant name="Despot Halb Errvl" flags="configure"/>
+	</shop>
+
+	<!-- Femme Fatale kupuje: -->
+	<shop name="buy4assassins" type="buy">
+		<item name="puklerz" price="20" />
+		<item name="misiurka" price="25" />
+		<item name="kapelusz leśniczego" price="30" />
+		<item name="buty skórzane" price="30" />
+		<item name="płaszcz krasnoludzki" price="60" />
+		<item name="zbroja krasnoludzka" price="17000" />
+		<item name="spodnie krasnoludzkie" price="15000" />
+		<item name="sztylet mordercy" price="7000" />
+
+		<merchant name="Femme Fatale" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Ritati Dragontracker kupuje: -->
+	<shop name="buyoddsandends" type="buy">
+		<item name="shuriken" price="20" />
+		<item name="amulet" price="800" />
+		<item name="czarna perła" price="100" />
+		<item name="czterolistna koniczyna" price="60" />
+		<item name="nożyk" price="5" />
+		<item name="mieczyk" price="7" />
+		<item name="sztylecik" price="20" />
+		<item name="pierścień z czaszką" price="250" />
+		<item name="mocne antidotum" price="80" />
+		<item name="kolorowe kulki" price="80" />
+		<item name="zaczarowana igła" price="1500" />
+		<item name="zima zaklęta w kuli" price="150" />
+		<item name="gruczoł przędzy" price="500" />
+
+		<merchant name="Ritati Dragontracker" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Merenwen kupuje: -->
+	<shop name="buyarcherstuff" type="buy">
+		<item name="strzała" price="1" />
+		<item name="wzmocniona drewniana strzała" price="3" />
+		<item name="strzała żelazna" price="5" />
+		<item name="strzała złota" price="10" />
+		<item name="strzała płonąca" price="35" />
+		<item name="strzała z mithrilu" price="45" />
+		<item name="drewniany łuk" price="250" />
+		<item name="kusza" price="400" />
+		<item name="długi łuk" price="300" />
+		<item name="klejony łuk" price="350" />
+		<item name="kusza łowcy" price="800" />
+		<item name="łuk z mithrilu" price="80000" />
+
+		<merchant name="Merenwen" flags="configure,noOffer"/>
+	</shop>
+
+	<!--
+		assassinhq chief falatheen the dishwasher and veggie buyer
+		sign is hard coded so if you change this change the sign
+	-->
+	<!-- Chief Falatheen Humble Dishwasher kupuje: -->
+	<shop name="buyveggiesandherbs" type="buy">
+		<item name="marchew" price="5" />
+		<item name="sałata" price="10" />
+		<item name="por" price="25" />
+		<item name="brokuł" price="30" />
+		<item name="cukinia" price="10" />
+		<item name="kalafior" price="30" />
+		<item name="pomidor" price="20" />
+		<item name="cebula" price="20" />
+		<item name="arandula" price="10" />
+		<item name="kokuda" price="200" />
+		<item name="kekik" price="25" />
+		<item name="sclaria" price="25" />
+
+		<merchant name="Chief Falatheen Humble Dishwasher" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Garbiddle kupuje: -->
+	<shop name="buy4gnomes" type="buy">
+		<item name="skórzana zbroja" price="25" />
+		<item name="maczuga" price="3" />
+		<item name="skórzany hełm" price="15" />
+		<item name="peleryna" price="25" />
+		<item name="jabłko" price="5" />
+		<item name="kolorowe kulki" price="50" />
+		<item name="drewniana tarcza" price="20" />
+
+		<merchant name="Garbiddle" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Sara Beth kupuje: -->
+	<shop name="buy4hotdogs" type="buy">
+		<item name="paróweczka" price="30" />
+		<item name="kiełbasa serowa" price="25" />
+		<item name="chleb" price="15" />
+		<item name="cebula" price="20" />
+		<item name="prasowany tuńczyk" price="15" />
+		<item name="szynka" price="15" />
+		<item name="ser" price="5" />
+
+		<merchant name="Sara Beth" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Lawrence kupuje: -->
+	<shop name="buykirdneharmor" type="buy">
+		<item name="zbroja lazurowa" price="13000" />
+		<item name="kamienna zbroja" price="18000" />
+		<item name="lodowa zbroja" price="19000" />
+		<item name="zbroja xenocyjska" price="21000" />
+		<item name="zbroja barbarzyńcy" price="5000" />
+		<item name="szmaragdowa tarcza smocza" price="13000" />
+		<item name="tarcza xenocyjska" price="20000" />
+
+		<merchant name="Lawrence" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Nicklesworth kupuje: -->
+	<shop name="buyamazoncloaks" type="buy">
+		<item name="płaszcz wampirzy" price="14000" />
+		<item name="płaszcz xenocyjski" price="18000" />
+		<item name="peleryna elficka" price="50" />
+		<item name="płaszcz licha" price="10000" />
+		<item name="płaszcz kamienny" price="350" />
+		<item name="prążkowany płaszcz lazurowy" price="280" />
+		<item name="karmazynowy płaszcz smoczy" price="4000" />
+		<item name="kościany płaszcz smoczy" price="1500" />
+
+		<merchant name="Nicklesworth" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Fishmonger / Walery kupuje: -->
+	<shop name="buyfishes" type="buy">
+		<item name="okoń" price="22" />
+		<item name="makrela" price="20" />
+		<item name="płotka" price="10" />
+		<item name="palia alpejska" price="30" />
+		<item name="błazenek" price="30" />
+		<item name="pokolec" price="15" />
+		<item name="pstrąg" price="45" />
+		<item name="dorsz" price="10" />
+		<item name="skrzydlica" price="80" />
+
+		<merchant name="Fishmonger" flags="configure,noOffer"/>
+		<merchant name="Walery" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Balduin kupuje: -->
+	<shop name="buyblack" type="buy">
+		<item name="czarna zbroja" price="60000" />
+		<item name="czarne buty" price="10000" />
+		<item name="czarny płaszcz" price="20000" />
+		<item name="czarny hełm" price="15000" />
+		<item name="czarny pas" price="25000" />
+		<item name="czarne spodnie" price="40000" />
+		<item name="czarne rękawice" price="30000" />
+		<item name="czarna tarcza" price="75000" />
+		<item name="czarny miecz" price="20000" />
+		<item name="czarna kosa" price="40000" />
+		<item name="czarna halabarda" price="30000" />
+
+		<merchant name="Balduin" note="po zadaniu Ostateczny Kolekcjoner"/>
+	</shop>
+
+	<!-- Alexander kupuje: -->
+	<shop name="buyadosarmors" type="buy">
+		<item name="lazurowy hełm" price="900" />
+		<item name="buty lazurowe" price="200" />
+		<item name="prążkowany płaszcz lazurowy" price="500" />
+		<item name="zbroja lazurowa" price="13000" />
+		<item name="spodnie lazurowe" price="400" />
+		<item name="rękawice lazurowe" price="750" />
+		<item name="tarcza lazurowa" price="900" />
+
+		<merchant name="Alexander" flags="configure"/>
+	</shop>
+
+	<!-- Klaas kupuje: -->
+	<shop name="buypoisons" type="buy">
+		<item name="trucizna" price="40" />
+		<item name="muchomor" price="60" />
+		<item name="mocna trucizna" price="60" />
+		<item name="skrzydlica" price="50" />
+		<item name="śmiertelna trucizna" price="100" />
+		<item name="bardzo mocna trucizna" price="500" />
+		<item name="zabójcza trucizna" price="2000" />
+		<item name="pułapka na gryzonie" price="50" />
+
+		<merchant name="Klaas" flags="configure"/>
+	</shop>
+
+	<!-- Sawyer kupuje: -->
+	<shop name="deniranpawnbuy" type="buy">
+		<item name="pierścień z czaszką" price="250" />
+		<item name="pierścień zaręczynowy" price="1000" />
+		<item name="pierścień leczniczy" price="2500" />
+		<item name="pierścień spokoju" price="2800" />
+		<!--<item name="pierścień szmaragdowy" price="9000" /> should avoid selling bound rings -->
+		<item name="zaizolowany pierścień" price="25000" />
+		<item name="pierścień skorupy żółwia" price="25000" />
+		<item name="pierścień imperialny" price="50000" />
+
+		<merchant name="Sawyer" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Harley kupuje: -->
+	<shop name="buyanimalmaterials" type="buy">
+		<!--<item name="włókno" price="50" /> is this item obtainable? -->
+		<item name="skórzana nić" price="7" />
+		<item name="truchło nietoperza" price="10" />
+		<item name="futro" price="25" />
+		<item name="truchło wampira" price="70" />
+		<item name="gruczoł jadowy" price="800" />
+		<item name="gruczoł przędzy" price="400" />
+		<item name="róg jednorożca" price="1500" />
+		<item name="mityczne jajo" price="2500" />
+
+		<merchant name="Harley" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Król Edward kupuje: -->
+	<shop name="denirankingbuy" type="buy">
+		<item name="buty monarchistyczne" price="8000" />
+		<item name="hełm monarchistyczny" price="13000" />
+		<item name="sztylet królewski" price="100000" />
+		<item name="płaszcz monarchistyczny" price="18000" />
+		<item name="spodnie monarchistyczne" price="38000" />
+		<item name="zbroja monarchistyczna" price="58000" />
+		<item name="tarcza monarchistyczna" price="73000" />
+
+		<merchant name="Król Edward" flags="configure"/>
+	</shop>
+
+	<!-- Wanda kupuje: -->
+	<shop name="deniranpotionsbuy" type="buy">
+		<item name="mandragora" price="300" />
+		<!--<item name="kokuda" price="5000" />-->
+		<item name="muchomor" price="60" />
+		<item name="trucizna" price="40" />
+		<item name="mocna trucizna" price="60" />
+		<item name="bardzo mocna trucizna" price="500" />
+		<item name="śmiertelna trucizna" price="1000" />
+		<item name="zabójcza trucizna" price="1200" />
+		<item name="środek uspokajający" price="200" />
+		<item name="gruczoł jadowy" price="800" />
+
+		<merchant name="Wanda" flags="configure"/>
+	</shop>
+
+	<!-- Emeric: broker in Semos Plains that purchases misc. items at a low values -->
+	<shop name="brokermisc" type="buy">
+		<item name="truchło nietoperza" price="5" />
+		<item name="futro" price="10" />
+		<item name="truchło wampira" price="25" />
+
+		<merchant name="Emeric" flags="configure"/>
+	</shop>
+
+	<!-- D J Smith: Deniran weapons shop -->
+	<shop name="deniranequipbuy" type="buy">
+		<item name="kropacz" price="1200" />
+		<item name="magiczny płaszcz" price="12000" />
+
+		<merchant name="D J Smith" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Leander skupuje: -->
+	<shop name="cheesebuyers" type="buy">
+		<item name="ser" price="5"/>
+
+		<merchant name="Ernest" flags="configure,noOffer"/>
+		<merchant name="Leander" flags="configure,noOffer"/>
+	</shop>
+
+	<!--
+		Kraina Prasłowiańska
+	-->
+
+	<!-- Bronek kupuje: -->
+	<shop name="buydragonitems" type="buy">
+		<item name="pazury wilcze" price="12" />
+		<item name="niedźwiedzie pazury" price="18" />
+		<item name="pazury tygrysie" price="52" />
+		<item name="pazur zielonego smoka" price="10000" />
+		<item name="pazur niebieskiego smoka" price="15000" />
+		<item name="pazur arktycznego smoka" price="20000" />
+		<item name="pazur czerwonego smoka" price="25000" />
+		<item name="pazur czarnego smoka" price="30000" />
+		<item name="pazur złotego smoka" price="35000" />
+
+		<merchant name="Bronek" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Boguś kupuje: -->
+	<shop name="buyskin" type="buy">
+		<item name="futro" price="14" />
+		<item name="skóra zwierzęca" price="12" />
+		<item name="skóra tygrysa" price="40" />
+		<item name="skóra białego tygrysa" price="52" />
+		<item name="skóra lwa" price="74" />
+		<item name="skóra xenocium" price="120" />
+		<item name="skóra zielonego smoka" price="700" />
+		<item name="skóra czerwonego smoka" price="900" />
+		<item name="skóra niebieskiego smoka" price="1200" />
+		<item name="skóra arktycznego smoka" price="1400" />
+		<item name="skóra czarnego smoka" price="1900" />
+		<item name="skóra złotego smoka" price="2400" />
+
+		<merchant name="Boguś" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Kelas kupuje: -->
+	<shop name="buypiora" type="buy">
+		<item name="piórko" price="4" />
+		<item name="pióro anioła" price="2000" />
+		<item name="pióro upadłego anioła" price="2400" />
+		<item name="pióro mrocznego anioła" price="2600" />
+		<item name="pióro archanioła" price="4000" />
+		<item name="pióro archanioła ciemności" price="4400" />
+		<item name="pióro serafina" price="8000" />
+		<item name="pióro azazela" price="9000" />
+		<item name="pióro cherubina" price="11000" />
+		<item name="pióro lilith" price="14000" />
+
+		<merchant name="Kelas" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Elwirka skupuje: -->
+	<shop name="grapesbuyer" type="buy">
+		<item name="kiść winogron" price="3" />
+
+		<merchant name="Elwirka" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Gapcio kupuje: -->
+	<shop name="buyskrzaty" type="buy">
+		<item name="buty skórzane" price="15" />
+		<item name="proca" price="10" />
+		<item name="nożyk" price="15" />
+		<item name="puklerz" price="20" />
+		<item name="marchew" price="5" />
+		<item name="miód pitny" price="10" />
+		<item name="hełm nabijany ćwiekami" price="25" />
+		<item name="kapelusz leśniczego" price="15" />
+
+		<merchant name="Gapcio" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Wielkolud kupuje: -->
+	<shop name="buyrareitems" type="buy">
+		<item name="kierpce" price="45" />
+		<item name="chusta góralska" price="190" />
+		<item name="cuha góralska" price="1100" />
+		<item name="góralska spódnica" price="210" />
+		<item name="góralski gorset" price="180" />
+		<item name="góralski kapelusz" price="235" />
+		<item name="portki bukowe" price="140" />
+		<item name="polska tarcza lekka" price="700" />
+		<item name="polska tarcza drewniana" price="800" />
+		<item name="polska tarcza kolcza" price="950" />
+		<item name="polska płytowa tarcza" price="1500" />
+		<item name="polska tarcza ciężka" price="2100" />
+		<item name="korale" price="700" />
+		<item name="pas zbójnicki" price="900" />
+		<item name="spinka" price="25000" />
+		<item name="ciupaga" price="800" />
+		<item name="złota ciupaga" price="30000" />
+		<item name="szczerbiec" price="1000000" />
+
+		<merchant name="Wielkolud" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Ludwina kupuje: -->
+	<shop name="buygloves" type="buy">
+		<item name="skórzane rękawice" price="32" />
+		<item name="skórzane wzmocnione rękawice" price="54" />
+		<item name="skórzane twarde rękawice" price="90" />
+		<item name="rękawice karmazynowe" price="230" />
+		<item name="rękawice lazurowe" price="540" />
+		<item name="rękawice xenocyjskie" price="600" />
+		<item name="ogniste rękawice" price="800" />
+		<item name="lodowe rękawice" price="1100" />
+		<item name="rękawice cieni" price="2750" />
+		<item name="rękawice chaosu" price="3500" />
+		<item name="rękawice mainiocyjskie" price="6000" />
+		<item name="złote rękawice" price="11000" />
+		<item name="rękawice z mithrilu" price="140000" />
+
+		<merchant name="Ludwina" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Merchand kupuje: -->
+	<shop name="buymerchant" type="buy">
+		<item name="hełm wikingów" price="300" />
+		<item name="skórzana zbroja łuskowa" price="100" />
+		<item name="spodnie kolcze" price="55" />
+		<item name="buty kolcze" price="120" />
+		<item name="buty nabijane ćwiekami" price="90" />
+		<item name="tarcza z czaszką" price="175" />
+		<item name="tarcza jednorożca" price="140" />
+		<item name="bułat" price="80" />
+
+		<merchant name="kupczyk Piotr" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Jan Kuglarz kupuje: -->
+	<shop name="buymanas" type="buy">
+		<item name="magia ziemi" price="2"/>
+		<item name="magia płomieni" price="4"/>
+		<item name="magia deszczu" price="6"/>
+		<item name="magia wiatru" price="8"/>
+		<item name="magia mrozu" price="10"/>
+		<item name="magia mroku" price="12"/>
+		<item name="magia światła" price="14"/>
+
+		<merchant name="Jan Kuglarz" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Zielarka kupuje: -->
+	<shop name="buyziola" type="buy">
+		<item name="arandula" price="12" />
+		<item name="kokuda" price="250" />
+		<item name="kekik" price="28" />
+		<item name="sclaria" price="28" />
+
+		<merchant name="Zielarka" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Przekupka kupuje: -->
+	<shop name="buywarzywa" type="buy">
+		<item name="marchew" price="2" />
+		<item name="sałata" price="2" />
+		<item name="pieczarka" price="4" />
+		<item name="opieńka miodowa" price="6" />
+		<item name="pomidor" price="5" />
+		<item name="kapusta" price="6" />
+		<item name="borowik" price="6" />
+		<item name="szpinak" price="6" />
+		<item name="brokuł" price="7" />
+		<item name="por" price="7" />
+		<item name="kalafior" price="8" />
+		<item name="cebula" price="8" />
+		<item name="cukinia" price="10" />
+
+		<merchant name="Przekupka" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Cheng kupuje: -->
+	<shop name="buycheng" type="buy">
+		<item name="bryłka mithrilu" price="10" />
+		<item name="bursztyn" price="20" />
+		<item name="wielka perła" price="1500" />
+		<item name="korale" price="8000" />
+
+		<merchant name="Cheng" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Myśliwy kupuje: -->
+	<shop name="buyzeby" type="buy">
+		<item name="kieł wilczy" price="8" />
+		<item name="kieł niedźwiedzi" price="16" />
+		<item name="kieł tygrysi" price="32" />
+		<item name="dziób ptaka" price="180" />
+		<item name="ząb potwora" price="340" />
+		<item name="kieł smoka" price="500" />
+		<item name="kieł złotej kostuchy" price="5000" />
+
+		<merchant name="Myśliwy" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Rybak / Rybak Miłorad kupuje: -->
+	<shop name="buyrybak" type="buy">
+		<item name="dorsz" price="5" />
+		<item name="palia alpejska" price="7" />
+		<item name="płotka" price="7" />
+		<item name="makrela" price="8" />
+		<item name="okoń" price="8" />
+		<item name="pokolec" price="9" />
+		<item name="pstrąg" price="9" />
+		<item name="błazenek" price="10" />
+
+		<merchant name="Rybak" flags="configure,noOffer"/>
+		<merchant name="Rybak Miłorad" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Kacper kupuje: -->
+	<shop name="buykacper" type="buy">
+		<item name="śnieżka" price="4" />
+		<item name="kamienie" price="6" />
+		<item name="bryła lodu" price="8" />
+
+		<merchant name="Kacper" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Rzeźnik kupuje: -->
+	<shop name="buymieso" type="buy">
+		<item name="udko" price="12" />
+		<item name="mięso" price="15" />
+		<item name="szynka" price="25" />
+		<item name="stek" price="35" />
+
+		<merchant name="Rzeźnik" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Waldek kupuje: -->
+	<shop name="buyowoce" type="buy">
+		<item name="wisienka" price="8" />
+		<item name="jabłko" price="5" />
+		<item name="jabłko niezgody" price="15" />
+		<!-- <item name="poziomka" price="5" /> NIE MA TAKIEGO PRZEDMIOTU -->
+		<item name="truskawka" price="8" />
+		<item name="gruszka" price="6" />
+		<item name="kokos" price="7" />
+		<item name="ananas" price="8" />
+
+		<merchant name="Waldek" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Kilian kupuje: -->
+	<shop name="buyarmorywieliczka" type="buy">
+		<item name="lazurowy hełm" price="1000" />
+		<item name="tarcza lazurowa" price="1200" />
+		<item name="pas kolczy" price="21" />
+		<item name="złoty pas kolczy" price="32" />
+		<item name="pas cieni" price="3300" />
+		<item name="lodowy płaszcz" price="25000" />
+		<item name="lodowe spodnie" price="21000" />
+		<item name="tarcza cieni" price="16500" />
+
+		<merchant name="Kilian" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Jerzy kupuje: -->
+	<shop name="buygold" type="buy">
+		<item name="bryłka złota" price="5" />
+		<item name="sztabka złota" price="200" />
+		<item name="sztabka mithrilu" price="2000" />
+
+		<merchant name="Jerzy" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Harrison kupuje: -->
+	<shop name="kupujetohar" type="buy">
+		<item name="złota kolczuga" price="62" />
+		<item name="spodnie lazurowe" price="425" />
+		<item name="tarcza piaskowa" price="148" />
+		<item name="kusza" price="374" />
+		<item name="kusza łowcy" price="760" />
+		<item name="rękawice karmazynowe" price="182" />
+		<item name="rękawice lazurowe" price="535" />
+		<item name="ogniste rękawice" price="788" />
+		<item name="ciupaga" price="2000" />
+		<item name="magiczny topór obosieczny" price="7300" />
+		<item name="topór Durina" price="9100" />
+		<item name="topór chaosu" price="11300" />
+
+		<merchant name="Harrison" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Dariusz kupuje: -->
+	<shop name="buyarmor" type="buy">
+		<item name="pas krasnoludzki" price="2100" />
+		<item name="pas olbrzymi" price="4000" />
+		<item name="złoty pas" price="8000" />
+		<item name="kamienne rękawice" price="4000" />
+		<item name="zbroja karmazynowa" price="800" />
+		<item name="zbroja szamana barbarzyńców" price="12000" />
+		<item name="zbroja krasnoludzka" price="14000" />
+		<item name="zbroja chaosu" price="19000" />
+		<item name="lodowa zbroja" price="23000" />
+
+		<merchant name="Dariusz" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Joachim kupuje: -->
+	<shop name="skupryb" type="buy">
+		<item name="tuńczyk" price="3"/>
+		<item name="leszcz" price="14"/>
+		<item name="szczupak" price="27"/>
+		<item name="karp" price="32"/>
+		<item name="karp lustrzeń" price="44"/>
+
+		<merchant name="Joachim" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Pauli kupuje: -->
+	<shop name="wandbuyer" type="buy">
+		<item name="różdżka" price="230"/>
+		<item name="trójząb Trzygłowa" price="570"/>
+		<item name="różdżka Strzyboga" price="810"/>
+		<item name="różdżka Wołosa" price="1140"/>
+		<item name="różdżka Swaroga" price="25750"/>
+		<item name="różdżka Peruna" price="1000000"/>
+
+		<merchant name="Pauli" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Benio kupuje: -->
+	<shop name="barbarianshopkeeper" type="buy">
+		<item name="młot bojowy" price="270"/>
+		<item name="buty barbarzyńcy" price="420"/>
+		<item name="hełm barbarzyńcy" price="610"/>
+		<item name="spodnie barbarzyńcy" price="870"/>
+		<item name="rękawice barbarzyńcy" price="1250"/>
+		<item name="pas barbarzyńcy" price="1750"/>
+		<item name="płaszcz barbarzyńcy" price="2400"/>
+		<item name="zbroja barbarzyńcy" price="5000"/>
+		<item name="tarcza barbarzyńcy" price="8000"/>
+		<item name="zbroja szamana barbarzyńców" price="12000"/>
+
+		<merchant name="Benio" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- the following are configured in the NPC source & are included here only to be read by the website -->
+	<shop type="buy">
+		<item name="sheep" price="150"/>
+
+		<merchant name="Sato"/>
+	</shop>
+
+	<shop type="buy">
+		<item name="sheep" price="300"/>
+
+		<merchant name="Dobromir"/>
+	</shop>
+
+	<shop type="buy">
+		<item name="sheep" price="15" pricemax="1500"/>
+
+		<merchant name="Tor'Koom"/>
+	</shop>
+
+	<shop type="buy">
+		<item name="goat" price="350"/>
+
+		<merchant name="Targon"/>
+	</shop>
+
+</shops>

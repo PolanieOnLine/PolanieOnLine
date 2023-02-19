@@ -1,0 +1,879 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<shops xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../shops.xsd">
+
+	<!-- Margaret / Maria / Idris sprzedaje: -->
+	<shop name="food&amp;drinks" type="sell">
+		<item name="sok z chmielu" price="10" />
+		<item name="napój z winogron" price="15" />
+		<item name="ser" price="20" />
+		<item name="jabłko" price="10" />
+		<item name="marchew" price="10" />
+		<item name="mięso" price="40" />
+		<item name="szynka" price="80" />
+		<item name="buteleczka" price="5" />
+		<item name="butelka" price="8" />
+
+		<merchant name="Margaret" flags="configure"/>
+		<merchant name="Idris" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Adena sprzedaje: -->
+	<shop name="adosfoodseller" type="sell">
+		<item name="jabłko" price="50" />
+		<item name="marchew" price="50" />
+		<item name="oliwa z oliwek" price="135" />
+		<item name="ocet" price="135" />
+
+		<merchant name="Adena" flags="configure"/>
+	</shop>
+
+	<!-- Carmen / Ilisa sprzedaje: -->
+	<shop name="healing" type="sell">
+		<item name="antidotum" price="50" />
+		<item name="mały eliksir" price="200" />
+		<item name="eliksir" price="500" />
+		<item name="duży eliksir" price="1000" />
+
+		<merchant name="Carmen" flags="configure"/>
+		<merchant name="Ilisa" flags="configure"/>
+	</shop>
+
+	<!-- Sarzina / Kendra Mattori sprzedaje: -->
+	<shop name="superhealing" type="sell">
+		<item name="antidotum" price="50" />
+		<item name="mocne antidotum" price="100" />
+		<item name="eliksir" price="250" />
+		<item name="duży eliksir" price="500" />
+		<item name="wielki eliksir" price="1500" />
+
+		<merchant name="Kendra Mattori" flags="configure"/>
+		<merchant name="Sarzina" flags="configure"/>
+	</shop>
+
+	<!-- Haizen / Jynath sprzedaje: -->
+	<shop name="scrolls" type="sell">
+		<item name="zwój semos" price="250" />
+		<item name="zwój tatrzański" price="800" />
+		<item name="zwój przywołania" price="200" />
+		<item name="niezapisany zwój" price="2000" />
+
+		<merchant name="Haizen" flags="configure"/>
+		<merchant name="Jynath" flags="configure"/>
+	</shop>
+
+	<!-- Xhiphin Zohos / Orchiwald sprzedaje: -->
+	<shop name="fadoscrolls" type="sell">
+		<item name="zwój fado" price="600" />
+		<item name="niezapisany zwój" price="2200" />
+
+		<merchant name="Xhiphin Zohos" flags="configure"/>
+	</shop>
+
+	<!-- Lorithien sprzedaje: -->
+	<shop name="nalworscrolls" type="sell">
+		<item name="zwój nalwor" price="400" />
+		<item name="niezapisany zwój" price="2000" />
+
+		<merchant name="Lorithien" flags="configure"/>
+	</shop>
+
+	<!-- Mayor Chalmers sprzedaje: -->
+	<shop name="adosscrolls" type="sell">
+		<item name="zwój ados" price="400" />
+		<item name="niezapisany zwój" price="2100" />
+
+		<merchant name="Mayor Chalmers" flags="configure"/>
+	</shop>
+
+	<!-- Hazel sprzedaje: -->
+	<shop name="kirdnehscrolls" type="sell">
+		<item name="zwój kirdneh" price="400" />
+		<item name="zwój semos" price="400" />
+		<item name="niezapisany zwój" price="2100" />
+
+		<merchant name="Hazel" flags="configure"/>
+	</shop>
+
+	<!-- Erodel Bmud sprzedaje: -->
+	<shop name="allscrolls" type="sell">
+		<item name="zwój semos" price="250" />
+		<item name="zwój przywołania" price="200" />
+		<item name="niezapisany zwój" price="1900" />
+		<item name="zwój ados" price="400" />
+		<item name="zwój nalwor" price="400" />
+		<item name="zwój fado" price="600" />
+		<item name="zwój kirdneh" price="600" />
+		<item name="zwój deniran" price="800" />
+		<item name="zwój tatrzański" price="1000" />
+
+		<merchant name="Erodel Bmud"/>
+	</shop>
+
+	<!-- Xin Blanca sprzedaje: -->
+	<shop name="sellstuff" type="sell">
+		<item name="sierp" price="15" />
+		<item name="nożyk" price="35" />
+		<item name="maczuga" price="40" />
+		<item name="sztylecik" price="75" />
+		<item name="mieczyk" price="120" />
+		<item name="drewniana tarcza" price="25" />
+		<item name="koszula" price="25" />
+		<item name="skórzany hełm" price="25" />
+		<item name="misiurka" price="65" />
+		<item name="peleryna" price="30" />
+		<item name="skórzane spodnie" price="35" />
+
+		<merchant name="Xin Blanca" flags="configure,noOffer"/>
+	</shop>
+	
+
+	<!-- Hagnurk sprzedaje: -->
+	<shop name="sellbetterstuff1" type="sell">
+		<item name="zbroja lazurowa" price="16000" />
+		<item name="buty lazurowe" price="5000" />
+		<item name="prążkowany płaszcz lazurowy" price="7000" />
+		<item name="lazurowy hełm" price="8000" />
+		<item name="spodnie lazurowe" price="8000" />
+		<item name="rękawice lazurowe" price="7000" />
+		<item name="tarcza lazurowa" price="22000" />
+		<item name="sztylet mordercy" price="14000" />
+
+		<merchant name="Hagnurk" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Gulimo sprzedaje: -->
+	<shop name="sellbetterstuff2" type="sell">
+		<item name="zbroja cieni" price="20000" />
+		<item name="buty cieni" price="6000" />
+		<item name="płaszcz cieni" price="9000" />
+		<item name="hełm cieni" price="10000" />
+		<item name="pas cieni" price="7000" />
+		<item name="spodnie cieni" price="12000" />
+		<item name="rękawice cieni" price="25000" />
+		<item name="tarcza cieni" price="32000" />
+		<item name="piekielny sztylet" price="22000" />
+
+		<merchant name="Gulimo" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Ouchit sprzedaje: -->
+	<shop name="sellrangedstuff" type="sell">
+		<item name="drewniany łuk" price="300" />
+		<item name="strzała" price="3" />
+
+		<merchant name="Ouchit" flags="configure"/>
+	</shop>
+
+	<!-- Xoderos sprzedaje: -->
+	<shop name="selltools" type="sell">
+		<item name="toporek" price="20" />
+		<item name="topór jednoręczny" price="55" />
+		<item name="topór" price="80" />
+		<!-- enable these if you need them for a quest or something -->
+		<!-- <item name="kilof" price="50" /> -->
+		<!-- <item name="łopata" price="50" /> -->
+		<item name="pyrlik" price="75" />
+		<item name="pordzewiała kosa" price="320" /> <!-- used for harvest grain. -->
+		<item name="sierp" price="40" /> <!-- for harvesting cane fields -->
+		<item name="misa do płukania złota" price="230" />
+
+		<merchant name="Xoderos" flags="configure"/>
+	</shop>
+
+	<!-- Ognir sprzedaje: -->
+	<shop name="sellrings" type="sell">
+		<item name="pierścień zaręczynowy" price="5000" />
+
+		<merchant name="Ognir" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Wrvil sprzedaje: -->
+	<shop name="sellstuff2" type="sell">
+		<item name="buty skórzane" price="50" />
+		<item name="hełm nabijany ćwiekami" price="60" />
+		<item name="tarcza ćwiekowa" price="80" />
+		<item name="miecz" price="90" />
+		<item name="płaszcz krasnoludzki" price="230" />
+
+		<merchant name="Wrvil" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Mrotho / Diehelm Brui sprzedaje: -->
+	<shop name="sellarrows" type="sell">
+		<item name="strzała" price="2" />
+		<item name="strzała żelazna" price="7" />
+		<item name="strzała złota" price="21" />
+		<item name="strzała płonąca" price="42" />
+
+		<merchant name="Diehelm Brui" flags="configure,noOffer"/>
+		<merchant name="Mrotho" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Sara Beth sprzedaje: -->
+	<shop name="sellhotdogs" type="sell">
+		<item name="hotdog" price="160" />
+		<item name="hotdog z serem" price="180" />
+		<item name="kanapka z tuńczykiem" price="130" />
+		<item name="kanapka" price="120" />
+		<item name="shake waniliowy" price="110" />
+		<item name="shake czekoladowy" price="110" />
+		<item name="tabliczka czekolady" price="100" />
+		<item name="zima zaklęta w kuli" price="200" />
+
+		<merchant name="Sara Beth" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Trillium sprzedaje: -->
+	<shop name="sellmagic" type="sell">
+		<item name="hotdog" price="160" />
+		<item name="hotdog z serem" price="180" />
+		<item name="kanapka z tuńczykiem" price="130" />
+		<item name="kanapka" price="120" />
+		<item name="shake waniliowy" price="110" />
+		<item name="shake czekoladowy" price="110" />
+		<item name="tabliczka czekolady" price="100" />
+		<item name="lukrecja" price="100" />
+
+		<merchant name="Trillium" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- ? sprzedaje: (unused) -->
+	<shop name="tradeswords" type="sell">
+		<item name="sztylecik" price="10" />
+	</shop>
+
+	<!-- ? sprzedaje: (unused) -->
+	<shop name="sellparty" type="sell">
+		<item name="napój z oliwką" price="100" />
+		<item name="tabliczka czekolady" price="100" />
+		<item name="sok z chmielu" price="10" />
+		<item name="napój z winogron" price="15" />
+		<item name="shake waniliowy" price="150" />
+		<item name="lody" price="50" />
+		<item name="hotdog" price="180" />
+		<item name="kanapka" price="140" />
+	</shop>
+
+	<!-- Edward sprzedaje: -->
+	<shop name="sellscubastuff" type="sell">
+		<item name="zbroja akwalungowa" price="22000" />
+
+		<merchant name="Edward"/>
+	</shop>
+
+	<!-- Caroline / Katia sprzedaje: -->
+	<shop name="sellrevivalweeks" type="sell">
+		<item name="ciasto z wiśniami" price="195" />
+		<item name="jabłecznik" price="195" />
+		<item name="shake waniliowy" price="120" />
+		<item name="shake czekoladowy" price="120" />
+		<item name="lody" price="60" />
+		<item name="tabliczka czekolady" price="100" />
+		<item name="grillowany stek" price="250" />
+		<item name="hotdog" price="170" />
+		<item name="hotdog z serem" price="175" />
+		<item name="kanapka z tuńczykiem" price="140" />
+		<item name="kanapka" price="130" />
+		<item name="napój z winogron" price="25" />
+		<item name="sok z chmielu" price="20" />
+		<item name="butelka wody" price="15" />
+
+		<merchant name="Caroline" note="podczas trwania tygodnia Minetown"/>
+		<merchant name="Katia" note="podczas trwania tygodnia Minetown"/>
+	</shop>
+
+	<!--
+		for ados botanical gardens or if you like, other cafes.
+		expensive prices to make sure that the npc production of these items isn't compromised
+	-->
+	<!-- Mia sprzedaje: -->
+	<shop name="cafe" type="sell">
+		<item name="filiżanka herbaty" price="80" />
+		<item name="butelka wody" price="50" />
+		<item name="shake czekoladowy" price="150" />
+		<item name="kanapka" price="170" />
+		<item name="kanapka z tuńczykiem" price="180" />
+		<item name="jabłecznik" price="250" />
+
+		<merchant name="Mia" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- atlantis potions shop prices are twice as much as magic city -->
+	<!-- Mirielle sprzedaje: -->
+	<shop name="atlantispotions" type="sell">
+		<item name="antidotum" price="100" />
+		<item name="mocne antidotum" price="200" />
+		<item name="eliksir" price="500" />
+		<item name="duży eliksir" price="1000" />
+		<item name="wielki eliksir" price="3000" />
+		<item name="środek uspokajający" price="800" />
+		<item name="niezapisany zwój" price="4000" />
+
+		<merchant name="Mirielle" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Król Edward sprzedaje: -->
+	<shop name="denirankingsell" type="sell">
+		<item name="zwój deniran" price="800" />
+
+		<merchant name="Król Edward" flags="configure"/>
+	</shop>
+
+	<!-- Wanda sprzedaje: -->
+	<shop name="deniranpotionssell" type="sell">
+		<item name="mały eliksir" price="150" />
+		<item name="eliksir" price="300" />
+		<item name="duży eliksir" price="600" />
+		<item name="wielki eliksir" price="1650" />
+		<item name="antidotum" price="100" />
+		<item name="mocne antidotum" price="150" />
+		<item name="środek uspokajający" price="400" />
+
+		<merchant name="Wanda" flags="configure"/>
+	</shop>
+
+	<shop name="deniranequipsell" type="sell">
+		<item name="shuriken" price="77" />
+		<item name="płonący shuriken" price="99" />
+		<item name="włócznia" price="110" />
+
+		<merchant name="D J Smith" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Balduin resell hand swords -->
+	<shop name="twohandswords" type="sell">
+		<item name="miecz leworęczny" price="250000" />
+		<item name="miecz praworęczny" price="250000" />
+
+		<merchant name="Balduin" note="po zadaniu Ostateczny Kolekcjoner"/>
+	</shop>
+
+	<!-- Coralia sprzedaje: -->
+	<shop name="adostavernbarmaid" type="sell">
+		<item name="sok z chmielu" price="15" />
+		<item name="tarta" price="160" />
+		<item name="chleb" price="50" />
+		<item name="ser" price="20" />
+		<item name="pomidor" price="30" />
+
+		<merchant name="Coralia" flags="configure"/>
+	</shop>
+
+	<!-- Dale sprzedaje: -->
+	<shop name="adostavernbarman" type="sell">
+		<item name="napój z winogron" price="20" />
+		<item name="napój z oliwką" price="100" />
+		<item name="tabliczka czekolady" price="100" />
+
+		<merchant name="Dale" flags="configure"/>
+	</shop>
+
+	<!-- Barbarus sprzedaje: -->
+	<shop name="minertools" type="sell">
+		<item name="kilof" price="400"/>
+
+		<merchant name="Barbarus" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Laura sprzedaje: -->
+	<shop name="athorshipgalley" type="sell">
+		<item name="sok z chmielu" price="10"/>
+		<item name="napój z winogron" price="15"/>
+		<item name="szynka" price="100"/>
+		<item name="tarta" price="150"/>
+
+		<merchant name="Laura" flags="configure"/>
+	</shop>
+
+	<!-- Old Mother Helena sprzedaje: -->
+	<shop name="fadosoupmaker" type="sell">
+		<item name="sok z chmielu" price="10"/>
+		<item name="napój z winogron" price="15"/>
+		<item name="wisienka" price="20"/>
+		<item name="udko" price="50"/>
+		<item name="chleb" price="50"/>
+		<item name="kanapka" price="150"/>
+
+		<merchant name="Old Mother Helena" flags="configure"/>
+	</shop>
+
+	<!-- Aldrin sprzedaje: -->
+	<shop name="beekeeper" type="sell">
+		<item name="miód" price="50"/>
+		<item name="wosk pszczeli" price="80"/>
+
+		<merchant name="Aldrin" flags="configure,noOffer"/>
+	</shop>
+
+	<shop name="milkandbutter" type="sell">
+		<item name="osełka masła" price="40"/>
+		<item name="mleko" price="30"/>
+
+		<merchant name="Philomena" flags="configure"/>
+	</shop>
+
+	<shop name="denirangroceryseller" type="sell">
+		<item name="jajo" price="5"/>
+		<item name="cebula" price="5"/>
+		<item name="czosnek" price="5"/>
+		<item name="ziemniaki" price="5"/>
+		<item name="fasola pinto" price="5"/>
+		<item name="papryka habanero" price="135"/>
+		<item name="oliwa z oliwek" price="135"/>
+		<item name="ocet" price="135"/>
+		<item name="kekik" price="135"/>
+		<item name="sclaria" price="135"/>
+		<item name="cukier" price="250"/>
+		<item name="miód" price="350"/>
+
+		<merchant name="Ambrogio" flags="configure,noOffer"/>
+	</shop>
+
+	<shop name="kirdnehflowerseller" type="sell">
+		<item name="róża" price="50"/>
+
+		<merchant name="Lisa" flags="configure"/>
+		<merchant name="Fleur" flags="configure"/>
+		<merchant name="Petronela" flags="configure"/>
+	</shop>
+
+	<shop name="kirdnehinn" type="sell">
+		<item name="sok z chmielu" price="10"/>
+		<item name="napój z winogron" price="15"/>
+		<!-- more expensive than in normal taverns -->
+		<item name="chleb" price="50"/>
+		<item name="ser" price="20"/>
+		<item name="tarta" price="160"/>
+
+		<merchant name="Ruarhi" flags="configure"/>
+	</shop>
+
+	<shop name="kalavangardener" type="sell">
+		<item name="pomidor" price="30"/>
+		<item name="czosnek" price="50"/>
+		<item name="fasola pinto" price="55"/>
+		<item name="papryka habanero" price="60"/>
+
+		<merchant name="Sue" flags="configure,noOffer"/>
+	</shop>
+
+	<shop name="icecreamseller" type="sell">
+		<item name="lody" price="30"/>
+
+		<merchant name="Sam" flags="configure"/>
+	</shop>
+
+	<shop name="denirangrocer" type="sell">
+		<item name="oliwa z oliwek" price="135"/>
+		<item name="ocet" price="135"/>
+		<item name="latarenka" price="100"/>
+
+		<merchant name="Jimbo" flags="configure,noOffer"/>
+	</shop>
+
+	<!--
+		Kraina Prasłowiańska
+	-->
+	
+	<!-- Boguś sprzedaje: -->
+	<shop name="sellskin" type="sell">
+		<item name="buteleczka" price="3" />
+		<item name="butelka" price="5" />
+		<item name="krótki miecz" price="95" />
+		<item name="topór" price="75" />
+		<item name="kosa" price="850" />
+
+		<merchant name="Boguś" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Kibic sprzedaje: -->
+	<shop name="mecz" type="sell">
+		<item name="bilet na mecz" price="300" />
+		<item name="piłka" price="550" />
+
+		<merchant name="Kibic" flags="configure"/>
+	</shop>
+
+	<!-- Hadrin / Krasnolud sprzedaje: -->
+	<shop name="sellkopalnia" type="sell">
+		<item name="kilof" price="60" />
+		<item name="łopata" price="60" />
+
+		<merchant name="Hadrin" flags="configure"/>
+		<merchant name="Krasnolud" flags="configure"/>
+	</shop>
+
+	<!-- Jagna / Jagienka / Rosa sprzedaje: -->
+	<shop name="urodziny" type="sell">
+		<item name="sok z chmielu" price="8" />
+		<item name="napój z winogron" price="10" />
+		<item name="napój z oliwką" price="50" />
+		<item name="shake waniliowy" price="90" />
+		<item name="shake czekoladowy" price="90" />
+		<item name="mięso" price="25" />
+		<item name="szynka" price="35" />
+		<item name="hotdog" price="110" />
+		<item name="hotdog z serem" price="135" />
+		<item name="kanapka z tuńczykiem" price="100" />
+		<item name="kanapka" price="95" />
+		<item name="tabliczka czekolady" price="75" />
+		<item name="lukrecja" price="75" />
+
+		<merchant name="Jagna" flags="configure"/>
+		<merchant name="Jagienka" flags="configure"/>
+		<merchant name="Rosa" flags="configure"/>
+	</shop>
+
+	<!-- Juhas sprzedaje: -->
+	<shop name="juhas" type="sell">
+		<item name="zwój tatrzański" price="250" />
+		<item name="zwój semos" price="350" />
+		<item name="zwój krakowski" price="400" />
+		<item name="zwój wieliczka" price="600" />
+		<item name="zwój deniran" price="700" />
+		<item name="zwój ados" price="800" />
+		<item name="zwój fado" price="900" />
+		<item name="zwój kirdneh" price="950" />
+		<item name="zwój kalavan" price="1000" />
+
+		<merchant name="Juhas" flags="configure"/>
+	</shop>
+
+	<!-- Stasek sprzedaje: -->
+	<shop name="stasek" type="sell">
+		<item name="wzmocniona drewniana strzała" price="4" />
+		<item name="długi łuk" price="1400" />
+		<item name="peleryna" price="55" />
+		<item name="hełm kolczy" price="80" />
+		<item name="zbroja płytowa" price="360" />
+		<item name="skórzane rękawice" price="120" />
+		<item name="spodnie nabijane ćwiekami" price="110" />
+		<item name="buty żelazne" price="240" />
+		<item name="złoty pyrlik" price="200" />
+		<item name="bułat" price="255" />
+		<item name="topór bojowy" price="370" />
+		<item name="berdysz" price="400" />
+		<item name="pordzewiała kosa" price="475" />
+		<item name="pałasz" price="500" />
+		<item name="ciupaga" price="40000" />
+
+		<merchant name="Stasek" note="po zakończonym zadaniu Węgiel na Opał"/>
+	</shop>
+
+	<!-- Radomil sprzedaje: -->
+	<shop name="eliksiry" type="sell">
+		<item name="antidotum" price="50" />
+		<item name="mocne antidotum" price="200" />
+		<item name="eliksir" price="350" />
+		<item name="duży eliksir" price="700" />
+		<item name="wielki eliksir" price="1250" />
+
+		<merchant name="Radomil" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Samson sprzedaje: -->
+	<shop name="sellsamson" type="sell">
+		<item name="toporek" price="30" />
+		<item name="topór jednoręczny" price="40" />
+		<item name="topór" price="55" />
+		<item name="pyrlik" price="95" />
+		<item name="pordzewiała kosa" price="910" />
+		<item name="misa do płukania złota" price="270" />
+
+		<merchant name="Samson" flags="configure"/>
+	</shop>
+
+	<!-- St Jacek sprzedaje: -->
+	<shop name="sellstjacek" type="sell">
+		<item name="antidotum" price="40" />
+		<item name="mocne antidotum" price="175" />
+		<item name="mały eliksir" price="100" />
+		<item name="eliksir" price="250" />
+		<item name="duży eliksir" price="510" />
+		<item name="wielki eliksir" price="1175" />
+
+		<merchant name="St Jacek" flags="configure"/>
+	</shop>
+
+	<!-- Lajkonik sprzedaje: -->
+	<shop name="selllajkonik" type="sell">
+		<item name="wzmocniona drewniana strzała" price="6" />
+		<item name="długi łuk" price="1250" />
+
+		<merchant name="Lajkonik" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Merchand sprzedaje: -->
+	<shop name="sellmerchant" type="sell">
+		<item name="peleryna" price="30" />
+		<item name="spodnie nabijane ćwiekami" price="80" />
+		<item name="sztylecik" price="45" />
+		<item name="katana" price="80" />
+
+		<merchant name="kupczyk Piotr" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Winicjusz sprzedaje: -->
+	<shop name="sellwinicjusz" type="sell">
+		<item name="kiść winogron" price="9" />
+
+		<merchant name="Winicjusz" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Strażnik sprzedaje: -->
+	<shop name="wawel" type="sell">
+		<item name="zwój krakowski" price="250" />
+		<item name="zwój tatrzański" price="400" />
+		<item name="niezapisany zwój" price="2100" />
+
+		<merchant name="Strażnik" flags="configure"/>
+	</shop>
+
+	<!-- Irek sprzedaje: -->
+	<shop name="sellwarzywairek" type="sell">
+		<item name="marchew" price="5" />
+		<item name="sałata" price="10" />
+		<item name="kapusta" price="25" />
+		<item name="pomidor" price="20" />
+		<item name="cukinia" price="30" />
+		<item name="borowik" price="35" />
+
+		<merchant name="Irek" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Farmer Bruno sprzedaje: -->
+	<shop name="sellbruno" type="sell">
+		<item name="zboże" price="4" />
+
+		<merchant name="Farmer Bruno" flags="configure"/>
+	</shop>
+
+	<!-- Tomasz sprzedaje: -->
+	<shop name="sellthomas" type="sell">
+		<item name="tuńczyk" price="5" />
+
+		<merchant name="Tomasz" note="po zakończonym zadaniu Naprawa Łodzi"/>
+	</shop>
+
+	<!-- Arthur sprzedaje: -->
+	<shop name="arthur" type="sell">
+		<item name="zwój wieliczka" price="300" />
+		<item name="zwój tatrzański" price="600" />
+		<item name="niezapisany zwój" price="1800" />
+
+		<merchant name="Arthur" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Zbigniew sprzedaje: -->
+	<shop name="zwojewieliczka" type="sell">
+		<item name="zwój wieliczka" price="250" />
+		<item name="zwój krakowski" price="450" />
+		<item name="zwój tatrzański" price="650" />
+		<item name="niezapisany zwój" price="2100" />
+
+		<merchant name="Zbigniew" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Benigna sprzedaje: -->
+	<shop name="benigna" type="sell">
+		<item name="zwój przywołania" price="200" />
+		<item name="zwój gdański" price="350" />
+		<item name="zwój krakowski" price="450" />
+		<item name="zwój wieliczka" price="600" />
+		<item name="zwój tatrzański" price="800" />
+		<item name="niezapisany zwój" price="1900" />
+
+		<merchant name="Benigna" flags="configure"/>
+	</shop>
+	
+	<!-- Mieczysław sprzedaje: -->
+	<shop name="mieczyslaw" type="sell">
+		<item name="zwój gdański" price="250" />
+		<item name="zwój tatrzański" price="700" />
+		<item name="niezapisany zwój" price="1800" />
+
+		<merchant name="Mieczysław" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Harrison sprzedaje: -->
+	<shop name="sprzedazbroni" type="sell">
+		<item name="bułat" price="300" />
+		<item name="topór bojowy" price="400" />
+		<item name="berdysz" price="530" />
+		<item name="pałasz" price="710" />
+		<item name="młot bojowy" price="900" />
+		<item name="kosa" price="1150" />
+		<item name="lekka kusza" price="15000" />
+
+		<merchant name="Harrison" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Czesław sprzedaje: -->
+	<shop name="sellmeat" type="sell">
+		<item name="udko" price="14" />
+		<item name="mięso" price="17" />
+		<item name="szynka" price="52" />
+		<item name="stek" price="106" />
+
+		<merchant name="Czesław" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Colin sprzedaje: -->
+	<shop name="sellveg" type="sell">
+		<item name="marchew" price="10" />
+		<item name="sałata" price="12" />
+		<item name="cebula" price="21" />
+		<item name="por" price="27" />
+		<item name="kapusta" price="27" />
+		<item name="kapusta pekińska" price="30" />
+		<item name="ziemniaki" price="30" />
+		<item name="czosnek" price="33" />
+		<item name="szpinak" price="33" />
+		<item name="fasola pinto" price="35" />
+		<item name="papryka habanero" price="40" />
+
+		<merchant name="Colin" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Hermina sprzedaje: -->
+	<shop name="sellgrocery" type="sell">
+		<item name="fasola pinto" price="5" />
+		<item name="jajo" price="7" />
+		<item name="ziemniaki" price="7" />
+		<item name="rzodkiewka" price="8" />
+		<item name="papryka habanero" price="30" />
+		<item name="kekik" price="135" />
+		<item name="sclaria" price="135" />
+		<item name="cukier" price="200" />
+		<item name="oliwa z oliwek" price="250" />
+		<item name="ocet" price="275" />
+		<item name="miód" price="350" />
+		<item name="osełka masła" price="400" />
+
+		<merchant name="Hermina" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Manulea sprzedaje: -->
+	<shop name="sellpotion" type="sell">
+		<item name="antidotum" price="45" />
+		<item name="mocne antidotum" price="120" />
+		<item name="mały eliksir" price="185" />
+		<item name="eliksir" price="375" />
+		<item name="duży eliksir" price="800" />
+		<item name="wielki eliksir" price="1300" />
+
+		<merchant name="Manulea" flags="configure,noOffer"/>
+	</shop>
+
+	<!-- Klechdarz sprzedaje: -->
+	<shop name="tarnowscrollseller" type="sell">
+		<item name="zwój tarnów" price="350"/>
+
+		<merchant name="Klechdarz" flags="configure"/>
+	</shop>
+
+	<!-- the following are configured in the NPC source & are included here only to be read by the website -->
+	<shop type="sell">
+		<item name="stokrotki nasionka" price="20"/>
+		<item name="lilia nasionka" price="10"/>
+		<item name="bratek nasionka" price="10"/>
+		<item name="bielikrasa bulwa" price="15"/>
+
+		<merchant name="Jenny"/>
+	</shop>
+
+	<shop type="sell">
+		<item name="sheep" price="30"/>
+
+		<merchant name="Baca Zbyszek"/>
+		<merchant name="Nishiya"/>
+	</shop>
+
+	<shop type="sell">
+		<item name="sheep" price="40"/>
+
+		<merchant name="Nathan"/>
+	</shop>
+
+	<shop type="sell">
+		<item name="płotka" price="10"/>
+
+		<merchant name="Mrs. Yeti"/>
+	</shop>
+
+	<shop type="sell">
+		<item name="goat" price="60"/>
+
+		<merchant name="Kajetan"/>
+	</shop>
+
+	<shop type="sell">
+		<item name="owczarek" price="300"/>
+		<item name="owczarek podhalański" price="1000"/>
+
+		<merchant name="Stary Baca"/>
+	</shop>
+
+	<shop type="sell">
+		<item name="zwój fado" price="480"/>
+		<item name="niezapisany zwój" price="1760"/>
+
+		<merchant name="Orchiwald"/>
+	</shop>
+
+	<shop type="sell">
+		<item name="sok z chmielu" price="18"/>
+		<item name="napój z winogron" price="25"/>
+		<item name="nalewka litworowa" price="95">
+			<for name="wąska butelka" count="1"/>
+		</item>
+		<item name="mocna nalewka litworowa" price="195">
+			<for name="butla czwórniaczka" count="1"/>
+		</item>
+
+		<merchant name="Wrviliza"/>
+	</shop>
+
+	<shop type="sell">
+		<item name="antidotum" price="40" />
+		<item name="mały eliksir" price="80" />
+		<item name="eliksir" price="200" />
+		<item name="duży eliksir" price="400" />
+
+		<merchant name="Dr. Feelgood" note="po zadaniu Zapasy Zoo"/>
+	</shop>
+
+	<shop type="sell">
+		<item name="cat" price="100"/>
+
+		<merchant name="Felina"/>
+	</shop>
+
+	<shop type="sell">
+		<item name="pusty worek" price="10"/>
+
+		<merchant name="Karl"/>
+	</shop>
+
+	<shop type="sell">
+		<item name="końskie włosie" price="20" note="po zadaniu Łucznictwo Ouchita"/>
+
+		<merchant name="Karl"/>
+	</shop>
+
+	<shop type="sell">
+		<item name="miecz treningowy" price="2100"/>
+		<item name="shuriken" price="80"/>
+		<item name="płonący shuriken" price="105"/>
+
+		<merchant name="Akutagawa"/>
+	</shop>
+
+	<shop type="sell">
+		<item name="bestiariusz" price="500000"/>
+
+		<merchant name="Rengard" note="po zadaniu Zbierz Informacje o Wrogu"/>
+	</shop>
+</shops>

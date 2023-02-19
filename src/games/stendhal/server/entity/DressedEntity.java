@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2018 - Arianne                          *
+ *                    (C) Copyright 2018-2023 - Arianne                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -90,6 +90,12 @@ public abstract class DressedEntity extends RPEntity {
 		return null;
 	}
 
+	/**
+	 * Retrieves the entity's original outfit.
+	 *
+	 * @return
+	 *     Original outfit if entity is currently wearing a temporary one.
+	 */
 	public Outfit getOriginalOutfit() {
 		if (has("outfit_ext_orig")) {
 			return new Outfit(get("outfit_ext_orig"));
@@ -97,7 +103,7 @@ public abstract class DressedEntity extends RPEntity {
 			return new Outfit(Integer.toString(getInt("outfit_org")));
 		}
 
-		return null;
+		return new Outfit(get("outfit_ext"));
 	}
 
 	/**
@@ -107,6 +113,29 @@ public abstract class DressedEntity extends RPEntity {
 	 */
 	public Map<String, String> getOutfitColors() {
 		return getMap("outfit_colors");
+	}
+
+	/**
+	 * Retrieves color info for a single layer.
+	 *
+	 * @param layer
+	 *     Layer name.
+	 */
+	public String getOutfitColor(final String layer) {
+		final Map<String, String> ocolors = getOutfitColors();
+		if (ocolors.containsKey(layer)) {
+			return ocolors.get(layer);
+		}
+		return null;
+	}
+
+	/**
+	 * Removes layer color information.
+	 */
+	protected void clearColors() {
+		for (final String part : getColorableLayers()) {
+			remove("outfit_colors", part);
+		}
 	}
 
 	/**
@@ -328,7 +357,7 @@ public abstract class DressedEntity extends RPEntity {
 		remove("outfit_colors", part);
 	}
 
-	private List<String> getColorableLayers() {
+	protected List<String> getColorableLayers() {
 		final List<String> new_list = new ArrayList<>();
 		for (final String part : RECOLORABLE_OUTFIT_PARTS) {
 			if (!SKIN_LAYERS.contains(part)) {
@@ -340,7 +369,7 @@ public abstract class DressedEntity extends RPEntity {
 		return new_list;
 	}
 
-	private void storeOriginalOutfit() {
+	protected void storeOriginalOutfit() {
 		if (has("outfit_ext") && !has("outfit_ext_orig")) {
 			put("outfit_ext_orig", get("outfit_ext"));
 		}
