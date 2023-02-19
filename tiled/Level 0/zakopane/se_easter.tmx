@@ -105,8 +105,8 @@
  <tileset firstgid="1178" name="latarnia_blaszczysko" tilewidth="32" tileheight="32" tilecount="25" columns="5">
   <image source="../../tileset/pol/oswietlenie/latarnia_blaszczysko.png" width="160" height="160"/>
  </tileset>
- <tileset firstgid="1203" name="fence__snow_wooden" tilewidth="32" tileheight="32" tilecount="9" columns="3">
-  <image source="../../tileset/building/fence/fence__snow_wooden.png" width="96" height="96"/>
+ <tileset firstgid="1203" name="fence_snow_wooden" tilewidth="32" tileheight="32" tilecount="9" columns="3">
+  <image source="../../tileset/building/fence/fence_snow_wooden.png" width="96" height="96"/>
  </tileset>
  <tileset firstgid="1212" name="snow_tree_swierk_las_" tilewidth="32" tileheight="32" tilecount="49" columns="7">
   <image source="../../tileset/pol/natura/drzewa/snow_tree_swierk_las_.png" width="224" height="224"/>

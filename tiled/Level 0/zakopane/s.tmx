@@ -150,8 +150,8 @@
  <tileset firstgid="1398" name="door_drewno_owal" tilewidth="32" tileheight="32" tilecount="4" columns="2">
   <image source="../../tileset/pol/domki/drzwi/door_drewno_owal.png" width="64" height="64"/>
  </tileset>
- <tileset firstgid="1402" name="fence__snow_wooden" tilewidth="32" tileheight="32" tilecount="9" columns="3">
-  <image source="../../tileset/building/fence/fence__snow_wooden.png" width="96" height="96"/>
+ <tileset firstgid="1402" name="fence_snow_wooden" tilewidth="32" tileheight="32" tilecount="9" columns="3">
+  <image source="../../tileset/building/fence/fence_snow_wooden.png" width="96" height="96"/>
  </tileset>
  <tileset firstgid="1411" name="fence_wooden_dark" tilewidth="32" tileheight="32" tilecount="9" columns="3">
   <image source="../../tileset/building/fence/fence_wooden_dark.png" width="96" height="96"/>
