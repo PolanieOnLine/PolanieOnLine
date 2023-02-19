@@ -2,16 +2,20 @@ Changelog
 ---------
 1.36
 *klient*
+- Dodano wsparcie dla "tylnych" ("rear") warstw grafik
 - Dodano wsparcie dla emotikonów
 - Dodano nowe grafiki NPC
+- Dodano nowe drewniane tło do wyboru dla klienta
 - Poprawiono kolory grafiki ametystu
+- Odświeżono grafiki m.in. tła w kliencie, płoty (ogrodzenie) i wiele różnych roślin
 
 *świat*
-- Dodano nowego NPC: (4)
+- Dodano nowego NPC: (5)
 	- Racirad
 	- Chciwurak
 	- Wszebor
 	- Fletcher
+	- Gwen
 - Dodano nowe osiągnięcia: (9)
 	- "Leśni Bandyci"
 	- "Gromadka Bandy"
@@ -22,10 +26,11 @@ Changelog
 	- "Wyzwanie Przyjęte"
 	- "Współmałżonkowie"
 	- "Podróżujący Handlarz"
-- Dodano nowy przedmiot: (1)
+- Dodano nowy przedmiot: (2)
 	- zatruty bicz
 	- zatruta strzała
 - Dodano nowe zadanie u Racirada, Chciwuraka i Wszebora
+- Dodano wypożyczalnie dodatkowych akcesoriów dla ubioru postaci u Gwen
 - Skrócono czas ponownego przyjęcia zadania u Wielkoluda z 14 dni do 7 dni
 - Skrócono czas ponownego przyjęcia zadania u gazdy Jędrzeja z 14 dni do 3 dni
 - Zmieniono wynagrodzenie za ukończenie zadania u Wielkoluda z 50.000pd do 80.000pd
@@ -41,6 +46,9 @@ Changelog
 - Zmieniono nazwę skryptu z <ExecuteCreatureSpawn> na <CreatureSpawn>
 - Bronie bliskiego starcia mogą mięć większy zasięg ataku
 - NPC produkujące różne przedmioty od teraz można konfigurować w pliku XML
+
+*naprawiono błędy*
+- Naprawiony błąd, który sprawiał, że Maltos tworzył stroje tymczasowe na stałe podczas dodawania balonu
 
 
 1.35
