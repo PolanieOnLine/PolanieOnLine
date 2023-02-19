@@ -1023,8 +1023,8 @@ kupić 100 niezapisany zwój
 		<!-- music -->
 		<entity x="0" y="0">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">ghost_woods</parameter>
-				<parameter name="volume">80</parameter>
+				<parameter name="sound">sylvan_waltz</parameter>
+				<parameter name="volume">100</parameter>
 			</implementation>
 		</entity>
 
@@ -1064,8 +1064,8 @@ kupić 100 niezapisany zwój
 		<!-- music -->
 		<entity x="0" y="0">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">ghost_woods</parameter>
-				<parameter name="volume">80</parameter>
+				<parameter name="sound">sylvan_waltz</parameter>
+				<parameter name="volume">100</parameter>
 			</implementation>
 		</entity>
 
@@ -1100,8 +1100,8 @@ kupić 100 niezapisany zwój
 		<!-- music -->
 		<entity x="0" y="0">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">ghost_woods</parameter>
-				<parameter name="volume">80</parameter>
+				<parameter name="sound">sylvan_waltz</parameter>
+				<parameter name="volume">100</parameter>
 			</implementation>
 		</entity>
 	</zone>
@@ -1118,8 +1118,8 @@ kupić 100 niezapisany zwój
 		<!-- music -->
 		<entity x="0" y="0">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">ghost_woods</parameter>
-				<parameter name="volume">80</parameter>
+				<parameter name="sound">sylvan_waltz</parameter>
+				<parameter name="volume">100</parameter>
 			</implementation>
 		</entity>
 
