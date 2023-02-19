@@ -265,7 +265,7 @@
 		</portal>
 	</zone>
 
-	<zone name="0_tarnow_plains_n" level="0" x="514080" y="17920" file="Level 0/tarnow/plains.tmx">
+	<zone name="0_tarnow_plains_n" level="0" x="514080" y="17920" file="Level 0/tarnow/plains_n.tmx">
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
