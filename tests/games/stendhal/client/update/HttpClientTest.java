@@ -38,13 +38,13 @@ public class HttpClientTest {
 		HttpClient client = new HttpClient("http://arianne.sourceforge.net/");
 //TODO: reactive me		assertThat(client.fetchFirstLine(), equalTo("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.01 Transitional//EN\" \"http://www.w3.org/TR/html4/loose.dtd\"> "));
 
-		client = new HttpClient("http://sf.net/projects/arianne/file-does-not-exist");
+		client = new HttpClient("http://sf.net/projects/game-polanieonline/file-does-not-exist");
 		assertThat(client.fetchFirstLine(), nullValue());
 
 		client = new HttpClient("http://domain-does-not-exist");
 		assertThat(client.fetchFirstLine(), nullValue());
 
-		client = new HttpClient("http://sf.net:81/projects/arianne");
+		client = new HttpClient("http://sf.net:81/projects/game-polanieonline");
 		assertThat(client.fetchFirstLine(), nullValue());
 	}
 
@@ -53,19 +53,19 @@ public class HttpClientTest {
 	 */
 	@Test
 	public void testGetInputStream() {
-		HttpClient client = new HttpClient("http://sf.net/projects/arianne");
+		HttpClient client = new HttpClient("http://sf.net/projects/game-polanieonline");
 		InputStream is = client.getInputStream();
 		assertThat(is, notNullValue());
 		client.close();
 
-		client = new HttpClient("http://sf.net/projects/arianne/file-does-not-exist");
+		client = new HttpClient("http://sf.net/projects/game-polanieonline/file-does-not-exist");
 		assertThat(client.getInputStream(), nullValue());
 		client.close();
 
 		client = new HttpClient("http://domain-does-not-exist");
 		assertThat(client.getInputStream(), nullValue());
 
-		client = new HttpClient("http://sf.net:81/projects/arianne");
+		client = new HttpClient("http://sf.net:81/projects/game-polanieonline");
 		assertThat(client.getInputStream(), nullValue());
 	}
 
@@ -79,7 +79,7 @@ public class HttpClientTest {
 		File file = File.createTempFile("test", ".txt");
 		file.deleteOnExit();
 
-		HttpClient client = new HttpClient("http://sf.net/projects/arianne");
+		HttpClient client = new HttpClient("http://sf.net/projects/game-polanieonline");
 		client.fetchFile(file.getAbsolutePath());
 		assertTrue(file.length() > 100);
 		if (!file.delete()) {
@@ -88,7 +88,7 @@ public class HttpClientTest {
 
 		file = File.createTempFile("test", ".txt");
 		file.deleteOnExit();
-		client = new HttpClient("http://sf.net/projects/arianne/file-does-not-exist");
+		client = new HttpClient("http://sf.net/projects/game-polanieonline/file-does-not-exist");
 		client.fetchFile(file.getAbsolutePath());
 		assertEquals(0, file.length());
 
@@ -96,11 +96,11 @@ public class HttpClientTest {
 		client.fetchFile(file.getAbsolutePath());
 		assertEquals(0, file.length());
 
-		client = new HttpClient("http://sf.net:81/projects/arianne");
+		client = new HttpClient("http://sf.net:81/projects/game-polanieonline");
 		client.fetchFile(file.getAbsolutePath());
 		assertEquals(0, file.length());
 
-		client = new HttpClient("http://sourceforge.net/projects/arianne/files/z_old/stendhal-updates/stendhal-diff-0.75-0.75.1.jar/download");
+		client = new HttpClient("http://sourceforge.net/projects/game-polanieonline/files/z_old/updates/polanieonline-diff-1.15-1.16.jar/download");
 		client.fetchFile(file.getAbsolutePath());
 		assertTrue(file.length() > 10000);
 
