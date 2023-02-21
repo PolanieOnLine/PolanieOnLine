@@ -1,5 +1,5 @@
 /***************************************************************************
- *                      (C) Copyright 2003-2022 - Marauroa                 *
+ *                      (C) Copyright 2003-2023 - Marauroa                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -51,6 +51,7 @@ public class RPEntityRPClass {
 		// Jobs
 		entity.addAttribute("job_merchant", Type.FLAG, Definition.VOLATILE);
 		entity.addAttribute("job_healer", Type.FLAG, Definition.VOLATILE);
+		entity.addAttribute("job_producer", Type.FLAG, Definition.VOLATILE);
 
 		/* Movement */
 		entity.addAttribute(PATHSET, Type.STRING, Definition.VOLATILE);

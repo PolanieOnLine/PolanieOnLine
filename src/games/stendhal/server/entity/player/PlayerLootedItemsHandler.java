@@ -56,10 +56,10 @@ public class PlayerLootedItemsHandler {
 					bought.put(item.replace("bought.", ""), player.getInt(LOOTED_ITEMS, item));
 				}
 				if(item.contains("sold.")) {
-					bought.put(item.replace("sold.", ""), player.getInt(LOOTED_ITEMS, item));
+					sold.put(item.replace("sold.", ""), player.getInt(LOOTED_ITEMS, item));
 				}
 				if(item.contains("improved.")) {
-					bought.put(item.replace("improved.", ""), player.getInt(LOOTED_ITEMS, item));
+					improved.put(item.replace("improved.", ""), player.getInt(LOOTED_ITEMS, item));
 				}
 				if(!item.contains("produced.") && !item.contains("obtained.") && !item.contains("mined.")
 						&& !item.contains("harvested.") && !item.contains("bought.") && !item.contains("sold.")

@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -12,6 +11,8 @@
  ***************************************************************************/
 package games.stendhal.server.entity.npc.behaviour.adder;
 
+import games.stendhal.common.constants.SoundID;
+import games.stendhal.common.constants.SoundLayer;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.grammar.ItemParserResult;
 import games.stendhal.common.parser.Sentence;
@@ -26,6 +27,7 @@ import games.stendhal.server.entity.npc.behaviour.impl.OutfitChangerBehaviour;
 import games.stendhal.server.entity.npc.behaviour.journal.ServicersRegister;
 import games.stendhal.server.entity.npc.fsm.Engine;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.events.SoundEvent;
 import games.stendhal.server.util.TimeUtil;
 
 import java.util.Arrays;
@@ -81,6 +83,7 @@ public class OutfitChangerAdder {
 			final boolean offer, final boolean canReturn) {
 
 		servicersRegister.add(npc.getName(), outfitBehaviour);
+		npc.put("job_merchant", "");
 
 		final Engine engine = npc.getEngine();
 		if (offer) {
@@ -136,6 +139,7 @@ public class OutfitChangerAdder {
 							} else {
 								npc.say("Dziękuję!");
 							}
+							npc.addEvent(new SoundEvent(SoundID.COMMERCE, SoundLayer.CREATURE_NOISE));
 						}
 
 						currentBehavRes = null;

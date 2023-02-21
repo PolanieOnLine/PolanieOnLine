@@ -115,8 +115,7 @@ public class Player extends DressedEntity implements UseListener {
 	private final PlayerTrade trade = new PlayerTrade(this);
 	private final KillRecording killRec = new KillRecording(this);
 	private final PetOwner petOwner = new PetOwner(this);
-	private final PlayerLootedItemsHandler itemCounter = new PlayerLootedItemsHandler(
-			this);
+	private final PlayerLootedItemsHandler itemCounter = new PlayerLootedItemsHandler(this);
 
 	/**
 	 * The number of minutes that this player has been logged in on the server.

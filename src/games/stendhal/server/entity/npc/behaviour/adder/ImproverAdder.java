@@ -80,6 +80,7 @@ public class ImproverAdder {
 		}
 	}
 
+	@SuppressWarnings({ "serial", "unused" })
 	private final Map<String,Integer> items = new HashMap<String, Integer>() {{
 		// load the default value's
 		defaultNeededValue();
@@ -95,6 +96,8 @@ public class ImproverAdder {
 	//END: UNUSED YET
 
 	public void add(final ImproverNPC improver) {
+		improver.put("job_producer", "");
+
 		improver.add(ConversationStates.ATTENDING,
 				improvePhrases,
 				null,

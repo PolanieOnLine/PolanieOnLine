@@ -1,5 +1,5 @@
 /***************************************************************************
- *                     Copyright © 2020 - Arianne                          *
+ *                     Copyright © 2020-2023 - Arianne                     *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -171,6 +171,8 @@ public class OutfitLenderNPC implements ZoneConfigurator {
 
 				player.drop("money", price);
 				seller.addEvent(new SoundEvent(SoundID.COMMERCE, SoundLayer.CREATURE_NOISE));
+				// remember purchases
+				updatePlayerTransactions(player, seller.getName(), res);
 
 				// preserve detail layer coloring
 				final String detailColor = player.getOutfitColor("detail");

@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Marauroa                    *
+ *                   (C) Copyright 2003-2023 - Marauroa                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -9,7 +9,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
 package games.stendhal.server.entity.npc.behaviour.impl;
 
 import java.util.Arrays;
@@ -172,6 +171,8 @@ public class OutfitChangerBehaviour extends MerchantBehaviour {
 		if (player.isEquipped("money", charge)) {
 			player.drop("money", charge);
 			putOnOutfit(player, outfitType);
+			// remember purchases
+			updatePlayerTransactions(player, seller.getName(), res);
 			return true;
 		} else {
 			seller.say("Przepraszam, ale nie masz wystarczająco dużo pieniędzy!");
@@ -297,5 +298,21 @@ public class OutfitChangerBehaviour extends MerchantBehaviour {
 	 */
 	public int getEndurance() {
 		return endurance;
+	}
+
+	/**
+	 * Updates stored information about Player-NPC commerce transactions.
+	 *
+	 * @param player
+	 *     Player to be updated.
+	 * @param merchant
+	 *     Name of merchant involved in transaction.
+	 * @param res
+	 *     Information about the transaction.
+	 */
+	protected void updatePlayerTransactions(final Player player, final String merchant,
+			final ItemParserResult res) {
+		player.incBoughtForItem("outfit." + res.getChosenItemName(), res.getAmount());
+		player.incCommerceTransaction(merchant, getCharge(res, player), false);
 	}
 }

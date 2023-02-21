@@ -25,7 +25,6 @@ import games.stendhal.server.entity.player.Player;
  */
 @Dev(category=Category.IGNORE)
 public abstract class ProducerBehaviourAction extends AbstractBehaviourAction<ProducerBehaviour> {
-
 	public ProducerBehaviourAction(final ProducerBehaviour behaviour) {
 		this(behaviour, "produce");
 	}
@@ -43,6 +42,4 @@ public abstract class ProducerBehaviourAction extends AbstractBehaviourAction<Pr
 	public String toString() {
 		return "ProducerBehaviourAction";
 	}
-
-
 }

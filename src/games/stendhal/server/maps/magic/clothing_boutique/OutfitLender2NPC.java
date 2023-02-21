@@ -172,6 +172,8 @@ public class OutfitLender2NPC implements ZoneConfigurator {
 						if (player.isEquipped("money", charge)) {
 							player.drop("money", charge);
 							putOnOutfit(player, outfitType);
+							// remember purchases
+							updatePlayerTransactions(player, seller.getName(), res);
 							return true;
 						} else {
 							seller.say("Nie masz wystarczająco dużo money!");
