@@ -265,6 +265,12 @@
 				<include name="*.xml"/>
 			</fileset>
 		</schemavalidate>
+		<schemavalidate>
+			<schema namespace="polanieonline" file="${config_dir}/producers.xsd"/>
+			<fileset dir="${config_dir}">
+				<filename name="producers.xml"/>
+			</fileset>
+		</schemavalidate>
 	</target> <!-- checkxml -->
 
 	<target name="internalUpdatePrereleaseVersion" if="PRE_RELEASE">
@@ -627,6 +633,7 @@
 				<include name="woodcutter_test.xml"/>
 				<include name="shops.xml"/>
 				<include name="shops/*.xml"/>
+				<include name="producers.xml"/>
 			</fileset>
 		</copy>
 		<copy todir="${build_server_xmlconf}/data/languages">
