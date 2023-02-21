@@ -39,6 +39,7 @@ Changelog
 - Zadanie 'Rogi Jednorożca dla Zelana' jest teraz powtarzalne
 - Zadania 'Odnowienie Zapasów Kwiaciarni', 'Wsparcie dla Wielkoluda' oraz 'Pozbycie się Rozbójników' śledzi teraz ukończenia tego zadania
 - Gracze mogą nakładać specjalne efekty (np: zatrucie) podczas atakowania
+- NPC produkujący przedmiotu lub je ulepszają będą mieć ikonę pod postacią
 
 *kod*
 - Dodano nowy skrypt CommerceExchange.class dla administratorów
@@ -49,6 +50,7 @@ Changelog
 
 *naprawiono błędy*
 - Naprawiony błąd, który sprawiał, że Maltos tworzył stroje tymczasowe na stałe podczas dodawania balonu
+- Naprawiono błąd z nagradzaniem gracza osiągnięciami za ulepszenie przedmiotu lub za ilość sprzedanych
 
 
 1.35
