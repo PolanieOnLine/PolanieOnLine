@@ -3469,19 +3469,19 @@ public abstract class RPEntity extends CombatEntity {
 			for (final Item weaponItem : attackerWeapons) {
 				sumAll += weaponItem.getAttack();
 				if (weaponItem.has("lifesteal")) {
-					sumLifesteal += (int) (weaponItem.getAttack()
-							* weaponItem.getDouble("lifesteal"));
+					sumLifesteal += weaponItem.getAttack()
+							* weaponItem.getDouble("lifesteal");
 				}
 				if (hasGloves() && getGloves().has("lifesteal")) {
-					sumLifesteal += (int) (weaponItem.getAttack()
-							* getGloves().getDouble("lifesteal"));
+					sumLifesteal += weaponItem.getAttack()
+							* getGloves().getDouble("lifesteal");
 				}
 				if (hasRing() && getRing().has("lifesteal")) {
-					sumLifesteal += (int) (weaponItem.getAttack()
-							* getRing().getDouble("lifesteal"));
+					sumLifesteal += weaponItem.getAttack()
+							* getRing().getDouble("lifesteal");
 				} else if (hasRingB() && getRingB().has("lifesteal")) {
-					sumLifesteal += (int) (weaponItem.getAttack()
-							* getRingB().getDouble("lifesteal"));
+					sumLifesteal += weaponItem.getAttack()
+							* getRingB().getDouble("lifesteal");
 				}
 			}
 		}
