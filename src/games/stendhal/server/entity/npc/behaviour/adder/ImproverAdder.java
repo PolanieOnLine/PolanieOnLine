@@ -174,85 +174,78 @@ public class ImproverAdder {
 	}
 
 	private void setImprove(final Player player, final ImproverNPC improver) {
-		List<Item> equipped = player.getAllEquipped(currentUpgradingItem);
-		if (!equipped.isEmpty()) {
-			Item toImprove = equipped.iterator().next();
-			for (Item i : equipped) {
-				if (i.getImprove() > toImprove.getImprove()) {
-						toImprove = i;
-				}
-			}
+		Item toImprove = foundItem(player);
+	    if (toImprove == null) {
+	        improver.say("Wybacz. Nie posiadasz przedmiotu #'" + currentUpgradingItem + "' możliwego do ulepszenia.");
+	        improver.setCurrentState(ConversationStates.ATTENDING);
+	        return;
+	    }
 
-			countImproveItems(player);
+	    if (toImprove.isMaxImproved()) {
+	        improver.say("Przedmiot #'" + currentUpgradingItem + "' został już maksymalnie udoskonalony. Poproś o ulepszenie innego przedmiotu.");
+	        improver.setCurrentState(ConversationStates.ATTENDING);
+	        return;
+	    }
 
-			if (toImprove.getMaxImproves() > 0) {
-				if (hasItemToImprove()) {
-					for (Item i : equipped) {
-						if ((toImprove.isMaxImproved() && !i.isMaxImproved())
-								&& (i.getImprove() < toImprove.getImprove())) {
-							toImprove = i;
-						} else if (!i.isMaxImproved()
-								&& i.getImprove() > toImprove.getImprove()) {
-							toImprove = i;
-						}
-					}
+	    countImproveItems(player);
 
-					calculateFee(player, toImprove);
+	    if (!hasItemToImprove()) {
+	        improver.say("Wybacz. Przedmiot #'" + currentUpgradingItem + "' jest niemożliwy do udoskonalenia. Poproś o ulepszenie innego przedmiotu.");
+	        improver.setCurrentState(ConversationStates.ATTENDING);
+	        return;
+	    }
 
-					String youWant = " Chcesz, abym udoskonalił to?";
-					String offerupgrade = "Wzmocnię #'"+currentUpgradingItem+"', lecz koszt będzie wynosił #'"+Integer.toString(currentUpgradeFee)+"' money.";
-					if (toImprove.getImprove() > 0) {
-						offerupgrade += " Szansa na powodzenie wynosi około #'"+Integer.toString((int) (getSuccessProbability(player, toImprove) * 100))+"%'.";
-					}
+	    calculateFee(player, toImprove);
 
-					// Special answer for mithril items
-					if (toImprove.getName().endsWith(" z mithrilu") && toImprove.getMaxImproves() == 1) {
-						offerupgrade = "Czy jesteś pewien, aby udoskonalać #'"+currentUpgradingItem+"'? Jest to bardzo wyjątkowy przedmiot, także cena też będzie wyjątkowa, koszt wynosi #'"+Integer.toString(currentUpgradeFee)+"' money.";
-					}
+	    String youWant = " Chcesz, abym udoskonalił to?";
+	    String offerupgrade = "Wzmocnię #'" + currentUpgradingItem + "', lecz koszt będzie wynosił #" + Integer.toString(currentUpgradeFee) + " money.";
+	    if (toImprove.getImprove() > 0) {
+	        offerupgrade += " Szansa na powodzenie wynosi około #" + Integer.toString((int) (getSuccessProbability(player, toImprove) * 100)) + "%.";
+	    }
 
-					improver.say(offerupgrade + youWant);
-				} else {
-					improver.say("Przedmiot #'"+currentUpgradingItem+"' został już maksymalnie udoskonalony. Poproś o ulepszenie jakiegoś innego wyposażenia.");
-					improver.setCurrentState(ConversationStates.ATTENDING);
-					return;
-				}
-			} else {
-				improver.say("Wybacz. Przedmiot ten jest niemożliwy do udoskonalenia. Poproś o ulepszenie jakiegoś innego przedmiotu.");
-				improver.setCurrentState(ConversationStates.ATTENDING);
-				return;
-			}
-		}
+	    // Special answer for mithril items
+	    if (toImprove.getName().endsWith(" z mithrilu") && toImprove.getMaxImproves() == 1) {
+	        offerupgrade = "Czy jesteś pewien, aby udoskonalać #" + currentUpgradingItem + "? Jest to bardzo wyjątkowy przedmiot, także cena też będzie wyjątkowa, koszt wynosi #" + Integer.toString(currentUpgradeFee) + " money.";
+	    }
+
+	    improver.say(offerupgrade + youWant);
+	}
+
+	private Item foundItem(Player player) {
+	    List<Item> equipped = player.getAllEquipped(currentUpgradingItem);
+	    Item toImprove = null;
+	    for (Item i : equipped) {
+	        if (i.getMaxImproves() <= i.getImprove()) {
+	            continue; // omijamy przedmioty, które są już maksymalnie ulepszone
+	        }
+	        if (toImprove == null || i.getImprove() < toImprove.getImprove()) {
+	            toImprove = i;
+	        }
+	    }
+	    return toImprove;
 	}
 
 	private void calculateFee(final Player player, final Item item) {
-		int improves = item.getImprove();
+	    int improves = item.getImprove();
+	    int atk = item.getAttack();
+	    int def = item.getDefense();
 
-		int atk = item.getAttack();
-		int def = item.getDefense();
-		currentUpgradeFee = (improves + 1) * ((atk + def) * 3000);
+	    int feePerLevel = item.getMaxImproves() <= 3 ? 3000 : 5000;
+	    currentUpgradeFee = (improves + 1) * ((atk + def) * feePerLevel);
 
-		// Fee only for items have 2 upgrades
-		if (item.getMaxImproves() == 1
-				|| (item.getMaxImproves() <= 2 && item.getName().equals("sztylecik z mithrilu"))) {
-			currentUpgradeFee = (improves + 1) * ((atk + def) * 17400);
-		}
-		// Special fee for special item
-		if (item.getName().endsWith(" z mithrilu") && item.getMaxImproves() == 1) {
-			currentUpgradeFee = 5000000;
-		}
+	    if ((item.getName().equals("sztylecik z mithrilu") && item.getMaxImproves() <= 2) || item.getMaxImproves() == 1) {
+	        currentUpgradeFee = (improves + 1) * ((atk + def) * 17400);
+	    }
 
-		if (player.isQuestCompleted("ciupaga_trzy_wasy")) {
-			currentUpgradeFee = (int) (currentUpgradeFee * 0.7);
-		}
+	    if (item.getName().endsWith(" z mithrilu") && item.getMaxImproves() == 1) {
+	        currentUpgradeFee = 5000000;
+	    }
 
-		/*
-		 * This condition is only used if someone didn't add the item to list in PlayerTransformer
-		 * if "max_improves" has been changed for item.
-		 */
-		if (item.getImprove() > item.getMaxImproves()) {
-			// Set fee to '0'.
-			currentUpgradeFee *= 0;
-		}
+	    currentUpgradeFee *= player.isQuestCompleted("ciupaga_trzy_wasy") ? (int) 0.7 : 1;
+
+	    if (improves > item.getMaxImproves()) {
+	        currentUpgradeFee = 0;
+	    }
 	}
 
 	private ChatAction requestImproveAction(final ImproverNPC improver) {
@@ -275,12 +268,6 @@ public class ImproverAdder {
 
 				setImproveItem(request);
 				setImprove(player, improver);
-
-				if (currentToUpgradeCount == null) {
-					improver.say("Nie jestem w stanie ulepszyć #'" + currentUpgradingItem + "'.");
-					improver.setCurrentState(ConversationStates.ATTENDING);
-					return;
-				}
 			}
 		};
 	}
@@ -331,39 +318,25 @@ public class ImproverAdder {
 	private ChatAction improveAction() {
 		return new ChatAction() {
 			@Override
-			public void fire(final Player player, final Sentence sentence, final EventRaiser repairer) {
-				List<Item> equipped = player.getAllEquipped(currentUpgradingItem);
-				Item toImprove = player.getFirstEquipped(currentUpgradingItem);
+			public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
+				Item toImprove = foundItem(player);
 				player.drop("money", currentUpgradeFee);
 
-				for (Item i : equipped) {
-					if ((toImprove.isMaxImproved() && !i.isMaxImproved())
-							&& (i.getImprove() < toImprove.getImprove())) {
-						toImprove = i;
-					} else if (!i.isMaxImproved()
-							&& i.getImprove() > toImprove.getImprove()) {
-						toImprove = i;
-					}
-				}
-
 				if (isSuccessful(player, toImprove)) {
-					if (hasItemToImprove()) {
-						toImprove.upgradeItem();
-						// Sum amount of upgraded items
-						player.incImprovedForItem(player.getName(), 1);
-						// Improve value for specified item
-						player.incImprovedForItem(toImprove.getName(), 1);
-					}
+					toImprove.upgradeItem();
+	                player.incImprovedForItem(player.getName(), 1);
+	                player.incImprovedForItem(toImprove.getName(), 1);
 
-					repairer.say("Zrobione! Twój przedmiot #'" + currentUpgradingItem + "' został udoskonalony i jest lepszy od jego poprzedniego stanu!");
-					repairer.addEvent(new SoundEvent(SoundID.COMMERCE, SoundLayer.CREATURE_NOISE));
+	                npc.say("Zrobione! Twój przedmiot #'" + currentUpgradingItem + "' został udoskonalony i jest lepszy od jego poprzedniego stanu!");
+	                npc.addEvent(new SoundEvent(SoundID.COMMERCE, SoundLayer.CREATURE_NOISE));
 
 					new GameEvent(player.getName(), "upgraded-item", toImprove.getName(), "+" + Integer.toString(toImprove.getImprove())).raise();
 				} else {
-					repairer.say("Przepraszam, lecz nie udało mi się udoskonalić twojego przedmiotu. Spróbuję następnym razem ulepszyć twój przedmiot. Otrzymasz #'40%' rekompensaty za znaczną stratę.");
 					final StackableItem money = (StackableItem) SingletonRepository.getEntityManager().getItem("money");
 					money.setQuantity((int) (currentUpgradeFee * 0.4));
 					player.equipOrPutOnGround(money);
+
+					npc.say("Przepraszam, nie udało mi się udoskonalić twojego przedmiotu. Otrzymujesz " + money.getQuantity() + " monet jako rekompensatę.");
 				}
 			}
 		};
@@ -407,22 +380,14 @@ public class ImproverAdder {
 	}
 
 	private double getSuccessProbability(final Player player, final Item item) {
-		double probability;
-		if (item.getImprove() == 0) {
-			probability = 1.0;
-		} else if (item.getImprove() == 1) {
-			probability = 0.9;
-		} else if (item.getImprove() == 2) {
-			probability = 0.8;
-		} else if (item.getImprove() == 3) {
-			probability = 0.7;
-		} else if (item.getImprove() == 4) {
-			probability = 0.5;
-		} else {
-			probability = 0.2;
-		}
-
-		return probability + player.useKarma(0.1);
+	    int improveLevel = item.getImprove();
+	    double probability = 1.0 - (0.1 * improveLevel);
+	    
+	    if (improveLevel > 4) {
+	    	probability = Math.max(probability, 0.2);
+	    }
+	    
+	    return probability + player.useKarma(0.1);
 	}
 
 	public class ImproverNPC extends SpeakerNPC {
