@@ -1,5 +1,14 @@
 Changelog
 ---------
+1.37
+*świat*
+- Kowal Tworzymir będzie wymagał dodatkowych surowców do ulepszenia na określony poziom przedmiot
+- Zmniejszono współczynniki mnożnika dla każdego noszonego przedmiotu, powinno to zmniejszyść ilość punktów obrony noszonych przez gracza
+
+*naprawiono błędy*
+- Naprawiono atakowanie i zadawanie obrażeń przez potwory strzelających z większej odległości
+
+
 1.36
 *klient*
 - Dodano wsparcie dla "tylnych" ("rear") warstw grafik
