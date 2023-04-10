@@ -88,7 +88,7 @@ public abstract class RPEntity extends CombatEntity {
 	private static final float RING_DEF_MULTIPLIER = 1.0f;
 	private static final float NECKLACE_DEF_MULTIPLIER = 1.0f;
 	private static final float GLOVE_DEF_MULTIPLIER = 1.0f;
-	private static final float BELT_DEF_MULTIPLIER = 0.5f;
+	private static final float BELT_DEF_MULTIPLIER = 1.0f;
 	private static Statistics stats;
 
 	protected static final int HIT_CHANCE_MULTIPLIER = 20;
