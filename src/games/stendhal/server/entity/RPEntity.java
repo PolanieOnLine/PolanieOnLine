@@ -78,17 +78,17 @@ public abstract class RPEntity extends CombatEntity {
 	 */
 	protected static final String ATTR_TITLE = "title";
 
-	private static final float WEAPON_DEF_MULTIPLIER = 4.0f;
+	private static final float WEAPON_DEF_MULTIPLIER = 2.0f;
 	private static final float BOOTS_DEF_MULTIPLIER = 1.0f;
-	private static final float LEG_DEF_MULTIPLIER = 1.0f;
+	private static final float LEG_DEF_MULTIPLIER = 1.5f;
 	private static final float HELMET_DEF_MULTIPLIER = 1.0f;
-	private static final float CLOAK_DEF_MULTIPLIER = 1.5f;
+	private static final float CLOAK_DEF_MULTIPLIER = 1.0f;
 	private static final float ARMOR_DEF_MULTIPLIER = 2.0f;
-	private static final float SHIELD_DEF_MULTIPLIER = 4.0f;
+	private static final float SHIELD_DEF_MULTIPLIER = 3.0f;
 	private static final float RING_DEF_MULTIPLIER = 1.0f;
 	private static final float NECKLACE_DEF_MULTIPLIER = 1.0f;
-	private static final float GLOVE_DEF_MULTIPLIER = 1.5f;
-	private static final float BELT_DEF_MULTIPLIER = 1.0f;
+	private static final float GLOVE_DEF_MULTIPLIER = 1.0f;
+	private static final float BELT_DEF_MULTIPLIER = 0.5f;
 	private static Statistics stats;
 
 	protected static final int HIT_CHANCE_MULTIPLIER = 20;
