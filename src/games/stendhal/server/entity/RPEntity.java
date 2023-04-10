@@ -178,14 +178,14 @@ public abstract class RPEntity extends CombatEntity {
 		return super.handlePortal(portal);
 	}
 
-    public static void generateRPClass() {
-        try {
-            stats = Statistics.getStatistics();
-            RPEntityRPClass.generateRPClass(ATTR_TITLE);
-        } catch (final SyntaxException e) {
-            logger.error("cannot generateRPClass", e);
-        }
-    }
+	public static void generateRPClass() {
+		try {
+			stats = Statistics.getStatistics();
+			RPEntityRPClass.generateRPClass(ATTR_TITLE);
+		} catch (final SyntaxException e) {
+			logger.error("cannot generateRPClass", e);
+		}
+	}
 
 	public RPEntity(final RPObject object) {
 		super(object);
@@ -205,7 +205,7 @@ public abstract class RPEntity extends CombatEntity {
 	 * Give the player some karma (good or bad).
 	 *
 	 * @param karma
-	 *            An amount of karma to add/subtract.
+	 *			An amount of karma to add/subtract.
 	 */
 	public void addKarma(final double karma) {
 		// No nothing
@@ -229,7 +229,7 @@ public abstract class RPEntity extends CombatEntity {
 	 * should cause no change on an action or outcome.
 	 *
 	 * @param scale
-	 *            A positive number.
+	 *			A positive number.
 	 *
 	 * @return A number between -scale and scale.
 	 */
@@ -244,9 +244,9 @@ public abstract class RPEntity extends CombatEntity {
 	 * should cause no change on an action or outcome.
 	 *
 	 * @param negLimit
-	 *            The lowest negative value returned.
+	 *			The lowest negative value returned.
 	 * @param posLimit
-	 *            The highest positive value returned.
+	 *			The highest positive value returned.
 	 *
 	 * @return A number within negLimit &lt;= 0 &lt;= posLimit.
 	 */
@@ -261,11 +261,11 @@ public abstract class RPEntity extends CombatEntity {
 	 * should cause no change on an action or outcome.
 	 *
 	 * @param negLimit
-	 *            The lowest negative value returned.
+	 *			The lowest negative value returned.
 	 * @param posLimit
-	 *            The highest positive value returned.
+	 *			The highest positive value returned.
 	 * @param granularity
-	 *            The amount that any extracted karma is a multiple of.
+	 *			The amount that any extracted karma is a multiple of.
 	 *
 	 * @return A number within negLimit &lt;= 0 &lt;= posLimit.
 	 */
@@ -304,7 +304,7 @@ public abstract class RPEntity extends CombatEntity {
 	 * Heal this entity.
 	 *
 	 * @param amount
-	 *            The [maximum] amount to heal by.
+	 *			The [maximum] amount to heal by.
 	 *
 	 * @return The amount actually healed.
 	 */
@@ -316,9 +316,9 @@ public abstract class RPEntity extends CombatEntity {
 	 * Heal this entity.
 	 *
 	 * @param amount
-	 *            The [maximum] amount to heal by.
+	 *			The [maximum] amount to heal by.
 	 * @param tell
-	 *            Whether to tell the entity they've been healed.
+	 *			Whether to tell the entity they've been healed.
 	 *
 	 * @return The amount actually healed.
 	 */
@@ -468,7 +468,7 @@ public abstract class RPEntity extends CombatEntity {
 	 * random generator.
 	 *
 	 * @param defender
-	 *            The defender.
+	 *			The defender.
 	 * @param attackingWeaponsValue
 	 * 			  ATK-value of all attacking weapons/spells
 	 * @param damageType nature of damage
@@ -477,7 +477,7 @@ public abstract class RPEntity extends CombatEntity {
 	 * @param maxRange maximum range of a ranged attack
 	 *
 	 * @return The number of hitpoints that the target should lose. 0 if the
-	 *         attack was completely blocked by the defender.
+	 *		 attack was completely blocked by the defender.
 	 */
 	protected int damageDone(RPEntity defender, double attackingWeaponsValue, Nature damageType,
 			boolean isRanged, int maxRange) {
@@ -595,7 +595,7 @@ public abstract class RPEntity extends CombatEntity {
 				* (WEIGHT_ATK * attack - defence) / maxDefence);
 
 		/* FIXME: Can argument be removed and just use
-		 *        RPEntity.usingRangedAttack() here?
+		 *		RPEntity.usingRangedAttack() here?
 		 */
 		if (isRanged) {
 			// The attacker is attacking either using a range weapon with
@@ -615,12 +615,12 @@ public abstract class RPEntity extends CombatEntity {
 	 * random generator.
 	 *
 	 * @param defender
-	 *            The defender.
+	 *			The defender.
 	 * @param attackingWeaponsValue
 	 * 			  ATK-value of all attacking weapons/spells
 	 * @param damageType nature of damage
 	 * @return The number of hitpoints that the target should lose. 0 if the
-	 *         attack was completely blocked by the defender.
+	 *		 attack was completely blocked by the defender.
 	 */
 	public int damageDone(final RPEntity defender, double attackingWeaponsValue, Nature damageType) {
 		final int maxRange = getMaxRangeForArcher();
@@ -634,10 +634,10 @@ public abstract class RPEntity extends CombatEntity {
 	 * arrows, spear, etc.).
 	 *
 	 * @param damage
-	 *            The damage that would have been done if there would be no
-	 *            modifiers for distance attacks.
+	 *			The damage that would have been done if there would be no
+	 *			modifiers for distance attacks.
 	 * @param squareDistance
-	 *            the distance
+	 *			the distance
 	 * @param maxrange maximum attack range
 	 * @return The damage that will be done with the distance attack.
 	 */
@@ -664,7 +664,7 @@ public abstract class RPEntity extends CombatEntity {
 	 * Set the entity's name.
 	 *
 	 * @param name
-	 *            The new name.
+	 *			The new name.
 	 */
 	public void setName(final String name) {
 		registerNewName(name, this.name);
@@ -1009,7 +1009,7 @@ public abstract class RPEntity extends CombatEntity {
 	 * Set the base and current HP.
 	 *
 	 * @param hp
-	 *            The HP to set.
+	 *			The HP to set.
 	 */
 	public void initHP(final int hp) {
 		setBaseHP(hp);
@@ -1020,7 +1020,7 @@ public abstract class RPEntity extends CombatEntity {
 	 * Set the base HP.
 	 *
 	 * @param newhp
-	 *            The base HP to set.
+	 *			The base HP to set.
 	 */
 	public void setBaseHP(final int newhp) {
 		this.base_hp = newhp;
@@ -1047,7 +1047,7 @@ public abstract class RPEntity extends CombatEntity {
 	 * Use the appropriate damage(), and heal() methods instead.
 	 *
 	 * @param hp
-	 *            The HP to set.
+	 *			The HP to set.
 	 */
 	public void setHP(final int hp) {
 		setHpInternal(hp, true);
@@ -1153,7 +1153,7 @@ public abstract class RPEntity extends CombatEntity {
 	 * Sets the available mana.
 	 *
 	 * @param newMana
-	 *            new amount of mana
+	 *			new amount of mana
 	 */
 	public void setMana(final int newMana) {
 		setManaInternal(newMana, true);
@@ -1171,7 +1171,7 @@ public abstract class RPEntity extends CombatEntity {
 	 * Sets the base mana (like base_hp).
 	 *
 	 * @param newBaseMana
-	 *            new amount of base mana
+	 *			new amount of base mana
 	 */
 	public void setBaseMana(final int newBaseMana) {
 		base_mana = newBaseMana;
@@ -1183,7 +1183,7 @@ public abstract class RPEntity extends CombatEntity {
 	 * adds to base mana (like addXP).
 	 *
 	 * @param newBaseMana
-	 *            amount of base mana to be added
+	 *			amount of base mana to be added
 	 */
 	public void addBaseMana(final int newBaseMana) {
 		base_mana += newBaseMana;
@@ -1379,7 +1379,7 @@ public abstract class RPEntity extends CombatEntity {
 	 * currently only considers items in hands.  no other part of body
 	 *
 	 * currently, there is only one type of droppable item - CaptureTheFlagFlag.
-	 *     need some more general solution
+	 *	 need some more general solution
 	 *
 	 * @return list of droppable items.  returns null if no droppable items found
 	 */
@@ -1394,24 +1394,24 @@ public abstract class RPEntity extends CombatEntity {
 	 * Drop specified item from entity's equipment
 	 *
 	 * note: seems like this.drop(droppable) should work, but
-	 *       the item just disappears - does not end up on ground.
+	 *	   the item just disappears - does not end up on ground.
 	 *
 	 * TODO: probably need to refactor this in to the general drop system
-	 *       (maybe fixing some of the other code paths)
+	 *	   (maybe fixing some of the other code paths)
 	 *
 	 * @param droppable item to be dropped
 	 */
 	public void dropDroppableItem(Item droppable) {
 
 		// note: this.drop() does not do all necessary operations -
-		//       item disappears from hand, but disappears competely
+		//	   item disappears from hand, but disappears competely
 
-		Player    player = (Player) this;
+		Player	player = (Player) this;
 		RPObject  parent = droppable.getContainer();
 		RPAction  action = new RPAction();
 
-		action.put("type",                        "drop");
-		action.put("baseitem",                    droppable.getID().getObjectID());
+		action.put("type",						"drop");
+		action.put("baseitem",					droppable.getID().getObjectID());
 		action.put(EquipActionConsts.BASE_OBJECT, parent.getID().getObjectID());
 		action.put(EquipActionConsts.BASE_SLOT,   droppable.getContainerSlot().getName());
 
@@ -1513,7 +1513,7 @@ public abstract class RPEntity extends CombatEntity {
 	 * other damage() methods to account for death.
 	 *
 	 * @param amount
-	 *            The HP to take.
+	 *			The HP to take.
 	 *
 	 * @return The damage actually taken (in case HP was < amount).
 	 */
@@ -1531,9 +1531,9 @@ public abstract class RPEntity extends CombatEntity {
 	 * Apply damage to this entity, and call onDead() if HP reaches 0.
 	 *
 	 * @param amount
-	 *            The HP to take.
+	 *			The HP to take.
 	 * @param attacker
-	 *            The attacking entity.
+	 *			The attacking entity.
 	 *
 	 * @return The damage actually taken (in case HP was < amount).
 	 */
@@ -1554,9 +1554,9 @@ public abstract class RPEntity extends CombatEntity {
 	 * reaches 0.
 	 *
 	 * @param amount
-	 *            The HP to take.
+	 *			The HP to take.
 	 * @param attackerName
-	 *            The name of the attacker.
+	 *			The name of the attacker.
 	 */
 	public void delayedDamage(final int amount, final String attackerName) {
 		final RPEntity me = this;
@@ -1619,7 +1619,7 @@ public abstract class RPEntity extends CombatEntity {
 	 * Kills this RPEntity.
 	 *
 	 * @param killer
-	 *            The killer
+	 *			The killer
 	 */
 	private void kill(final Entity killer) {
 		setHP(0);
@@ -1665,7 +1665,7 @@ public abstract class RPEntity extends CombatEntity {
 	 * Gives XP to every player who has helped killing this RPEntity.
 	 *
 	 * @param oldXP
-	 *            The XP that this RPEntity had before being killed.
+	 *			The XP that this RPEntity had before being killed.
 	 */
 	protected void rewardKillers(final int oldXP) {
 		final int xpReward = (int) (oldXP * 0.05);
@@ -1816,21 +1816,21 @@ public abstract class RPEntity extends CombatEntity {
 	 * This method is called when the entity has been killed ( hp==0 ).
 	 *
 	 * @param killer
-	 *            The entity who caused the death
+	 *			The entity who caused the death
 	 */
 	public final void onDead(final Killer killer) {
-	    onDead(killer, true);
+		onDead(killer, true);
 	}
 
 	/**
 	 * This method is called when this entity has been killed (hp == 0).
 	 *
 	 * @param killer
-	 *            The entity who caused the death, i.e. who did the last hit.
+	 *			The entity who caused the death, i.e. who did the last hit.
 	 * @param remove
-	 *            true iff this entity should be removed from the world. For
-	 *            almost everything remove is true, but not for the players, who
-	 *            are instead moved to afterlife ("reborn").
+	 *			true iff this entity should be removed from the world. For
+	 *			almost everything remove is true, but not for the players, who
+	 *			are instead moved to afterlife ("reborn").
 	 */
 	public void onDead(final Killer killer, final boolean remove) {
 		StendhalKillLogDAO killLog = DAORegister.get().get(StendhalKillLogDAO.class);
@@ -1850,7 +1850,7 @@ public abstract class RPEntity extends CombatEntity {
 	 *
 	 * @param killer the "official" killer
 	 * @param remove
-	 *            <code>true</code> to remove entity from world.
+	 *			<code>true</code> to remove entity from world.
 	 */
 	private void die(Killer killer, final boolean remove) {
 		StendhalRPZone zone = this.getZone();
@@ -2012,7 +2012,7 @@ public abstract class RPEntity extends CombatEntity {
 	 * Tries to equip an item in the appropriate slot.
 	 *
 	 * @param item
-	 *            the item
+	 *			the item
 	 * @return true if the item can be equipped, else false
 	 */
 	public final boolean equipToInventoryOnly(final Item item) {
@@ -2119,7 +2119,7 @@ public abstract class RPEntity extends CombatEntity {
 	 *
 	 * @param item
 	 * @return the slot for the item or null if there is no matching slot
-	 *         in the entity
+	 *		 in the entity
 	 */
 	public final RPSlot getSlotToEquip(final Item item) {
 		if (item instanceof StackableItem) {
@@ -2166,9 +2166,9 @@ public abstract class RPEntity extends CombatEntity {
 	 * is possible to wear your helmet at your feet using this method.
 	 *
 	 * @param slotName
-	 *            the name of the slot
+	 *			the name of the slot
 	 * @param item
-	 *            the item
+	 *			the item
 	 * @return true if the item can be equipped, else false
 	 */
 	public final boolean equip(final String slotName, final Item item) {
@@ -2187,9 +2187,9 @@ public abstract class RPEntity extends CombatEntity {
 	 * doesn't remove anything.
 	 *
 	 * @param name
-	 *            The name of the item
+	 *			The name of the item
 	 * @param amount
-	 *            The number of units that should be dropped
+	 *			The number of units that should be dropped
 	 * @return true iff dropping the desired amount was successful.
 	 */
 	public boolean drop(final String name, final int amount) {
@@ -2264,7 +2264,7 @@ public abstract class RPEntity extends CombatEntity {
 	 * doesn't remove anything.
 	 *
 	 * @param name
-	 *            The name of the item
+	 *			The name of the item
 	 * @return true iff dropping the item was successful.
 	 */
 	public boolean drop(final String name) {
@@ -2277,7 +2277,7 @@ public abstract class RPEntity extends CombatEntity {
 	 * doesn't remove anything.
 	 *
 	 * @param item
-	 *            the item that should be removed
+	 *			the item that should be removed
 	 * @return true iff dropping the item was successful.
 	 */
 	public boolean drop(final Item item) {
@@ -2324,12 +2324,12 @@ public abstract class RPEntity extends CombatEntity {
 	 * Determine if this entity is equipped with a minimum quantity of an item.
 	 *
 	 * @param name
-	 *            The item name.
+	 *			The item name.
 	 * @param amount
-	 *            The minimum amount.
+	 *			The minimum amount.
 	 *
 	 * @return <code>true</code> if the item is equipped with the minimum
-	 *         number.
+	 *		 number.
 	 */
 	public boolean isEquipped(final String name, final int amount) {
 		return isEquipped(nameMatches(name), amount);
@@ -2339,7 +2339,7 @@ public abstract class RPEntity extends CombatEntity {
 	 * Determine if this entity is equipped with an item.
 	 *
 	 * @param name
-	 *            The item name.
+	 *			The item name.
 	 *
 	 * @return <code>true</code> if the item is equipped.
 	 */
@@ -2382,7 +2382,7 @@ public abstract class RPEntity extends CombatEntity {
 	 * RPEntity. The item can either be stackable or non-stackable.
 	 *
 	 * @param name
-	 *            The item's name
+	 *			The item's name
 	 * @return The number of carried items
 	 */
 	public int getNumberOfEquipped(final String name) {
@@ -2394,7 +2394,7 @@ public abstract class RPEntity extends CombatEntity {
 	 * The item can either be stackable or non-stackable.
 	 *
 	 * @param name
-	 *            The item's name
+	 *			The item's name
 	 * @return The number of carried items
 	 */
 	public int getTotalNumberOf(final String name) {
@@ -2407,9 +2407,9 @@ public abstract class RPEntity extends CombatEntity {
 	 * gets all that are on the first stack that is found.
 	 *
 	 * @param name
-	 *            The item's name
+	 *			The item's name
 	 * @return The item, or a stack of stackable items, or null if nothing was
-	 *         found
+	 *		 found
 	 */
 	public Item getFirstEquipped(final String name) {
 		return equippedStream().filter(nameMatches(name)).findFirst().orElse(null);
@@ -2420,9 +2420,9 @@ public abstract class RPEntity extends CombatEntity {
 	 * gets all that are on the first stack that is found.
 	 *
 	 * @param name
-	 *            The item's name
+	 *			The item's name
 	 * @return The item, or a stack of stackable items, or an empty list if nothing was
-	 *         found
+	 *		 found
 	 */
 	public List<Item> getAllEquipped(final String name) {
 		return getAllEquipped(nameMatches(name));
@@ -2499,7 +2499,7 @@ public abstract class RPEntity extends CombatEntity {
 	 * @param slot
 	 * @param clazz
 	 * @return the item or <code>null</code> if there is no item with the
-	 *         requested clazz.
+	 *		 requested clazz.
 	 */
 	public Item getEquippedItemClass(final String slot, final String clazz) {
 		if (hasSlot(slot)) {
@@ -2525,8 +2525,8 @@ public abstract class RPEntity extends CombatEntity {
 	 * Gets the weapon that this entity is holding in its hands.
 	 *
 	 * @return The weapon, or null if this entity is not holding a weapon. If
-	 *         the entity has a weapon in each hand, returns the weapon in its
-	 *         left hand.
+	 *		 the entity has a weapon in each hand, returns the weapon in its
+	 *		 left hand.
 	 */
 	public Item getWeapon() {
 		final String[] weaponsClasses = { "club", "sword", "dagger", "axe", "ranged", "missile", "wand", "whip" };
@@ -2581,8 +2581,8 @@ public abstract class RPEntity extends CombatEntity {
 	 * hands.
 	 *
 	 * @return The range weapon, or null if this entity is not holding a range
-	 *         weapon. If the entity has a range weapon in each hand, returns
-	 *         one in its left hand.
+	 *		 weapon. If the entity has a range weapon in each hand, returns
+	 *		 one in its left hand.
 	 */
 	public Item getRangeWeapon() {
 		for (final Item weapon : getWeapons()) {
@@ -2617,8 +2617,8 @@ public abstract class RPEntity extends CombatEntity {
 	 * holding in its hands.
 	 *
 	 * @return The ammunition, or null if this entity is not holding ammunition.
-	 *         If the entity has ammunition in each hand, returns the ammunition
-	 *         in its left hand.
+	 *		 If the entity has ammunition in each hand, returns the ammunition
+	 *		 in its left hand.
 	 */
 	public StackableItem getAmmunition(String ammoType) {
 		final String[] slots = { "lhand", "rhand" };
@@ -2645,8 +2645,8 @@ public abstract class RPEntity extends CombatEntity {
 	 * holding an ice sword in the other hand.
 	 *
 	 * @return The missiles, or null if this entity is not holding missiles. If
-	 *         the entity has missiles in each hand, returns the missiles in its
-	 *         left hand.
+	 *		 the entity has missiles in each hand, returns the missiles in its
+	 *		 left hand.
 	 */
 	public StackableItem getMissileIfNotHoldingOtherWeapon() {
 		StackableItem missileWeaponItem = null;
@@ -2802,7 +2802,7 @@ public abstract class RPEntity extends CombatEntity {
 	 * subclasses.
 	 *
 	 * @param text
-	 *            The message.
+	 *			The message.
 	 */
 	public void sendPrivateText(final String text) {
 		// does nothing in this implementation.
@@ -2812,9 +2812,9 @@ public abstract class RPEntity extends CombatEntity {
 	 * Sends a message that only this player can read.
 	 *
 	 * @param type
-	 *            NotificationType
+	 *			NotificationType
 	 * @param text
-	 *            the message.
+	 *			the message.
 	 */
 	public void sendPrivateText(final NotificationType type, final String text) {
 		// does nothing in this implementation.
@@ -3069,7 +3069,7 @@ public abstract class RPEntity extends CombatEntity {
 	 * weapons.
 	 *
 	 * @return
-	 *    List of inflictable statuses.
+	 *	List of inflictable statuses.
 	 */
 	public List<StatusAttacker> getAllStatusAttackers() {
 		final List<StatusAttacker> stattackers = new ArrayList<>();
@@ -3096,7 +3096,7 @@ public abstract class RPEntity extends CombatEntity {
 	 * @param maxrange maximum attack distance
 	 *
 	 * @return true if this entity is armed with a distance weapon and if the
-	 *         target is in range.
+	 *		 target is in range.
 	 */
 	public boolean canDoRangeAttack(final RPEntity target, final int maxrange) {
 		// the target's in range
@@ -3166,7 +3166,7 @@ public abstract class RPEntity extends CombatEntity {
 	 * Set the entity's formatted title.
 	 *
 	 * @param title
-	 *            The title, or <code>null</code>.
+	 *			The title, or <code>null</code>.
 	 */
 	public void setTitle(final String title) {
 		if (title != null) {
@@ -3185,8 +3185,8 @@ public abstract class RPEntity extends CombatEntity {
 	 * the player.
 	 *
 	 * @param definite
-	 *            <code>true</code> for "the", and <code>false</code> for "a/an"
-	 *            in case the entity has no name.
+	 *			<code>true</code> for "the", and <code>false</code> for "a/an"
+	 *			in case the entity has no name.
 	 *
 	 * @return The description name.
 	 */
@@ -3226,9 +3226,9 @@ public abstract class RPEntity extends CombatEntity {
 	 * (if the defender blocks the attack).
 	 *
 	 * @param defender
-	 *            The attacked RPEntity.
+	 *			The attacked RPEntity.
 	 * @return true if the attacker has hit the defender (the defender may still
-	 *         block this); false if the attacker has missed the defender.
+	 *		 block this); false if the attacker has missed the defender.
 	 */
 	public boolean canHit(final RPEntity defender) {
 		int roll = Rand.roll1D20();
@@ -3332,7 +3332,6 @@ public abstract class RPEntity extends CombatEntity {
 	 * Lets the attacker attack its target.
 	 *
 	 * @return true iff the attacker has done damage to the defender.
-	 *
 	 */
 	public boolean attack() {
 		boolean result = false;
@@ -3349,6 +3348,16 @@ public abstract class RPEntity extends CombatEntity {
 			weaponName = attackWeapon.getWeaponType();
 		}
 
+		/*
+		 * Checks whether the attacker's weapon is a non-melee weapon.
+		 * If the object is a creature, it always returns true because
+		 * creatures can attack at range without using weapons.
+		 */
+		boolean checkWeapon = true;
+		if (this instanceof Player) {
+			checkWeapon = attackWeapon.isNonMeleeWeapon();
+		}
+
 		final int maxRange = getMaxRangeForArcher();
 		/*
 		 * The second part (damage type check) ensures that normal archers need
@@ -3358,7 +3367,7 @@ public abstract class RPEntity extends CombatEntity {
 		 */
 		boolean isRanged = ((maxRange > 0) && canDoRangeAttack(defender, maxRange))
 				&& (((getDamageType() == getRangedDamageType()) || squaredDistance(defender) > 0))
-				&& attackWeapon.isNonMeleeWeapon();
+				&& checkWeapon;
 
 		Nature nature;
 		final float itemAtk;
@@ -3407,7 +3416,6 @@ public abstract class RPEntity extends CombatEntity {
 				result = true;
 			} else {
 				// The attack was too weak, it was blocked
-
 				if (logger.isDebugEnabled() || Testing.DEBUG) {
 					logger.debug("attack from " + this.getID() + " to "
 							+ defender.getID() + ": Damage: " + 0);
@@ -3438,11 +3446,11 @@ public abstract class RPEntity extends CombatEntity {
 	 * Calculate lifesteal and update hp of source.
 	 *
 	 * @param attacker
-	 *            the RPEntity doing the hit
+	 *			the RPEntity doing the hit
 	 * @param attackerWeapons
-	 *            the weapons of the RPEntity doing the hit
+	 *			the weapons of the RPEntity doing the hit
 	 * @param damage
-	 *            the damage done by this hit.
+	 *			the damage done by this hit.
 	 */
 	public void handleLifesteal(final RPEntity attacker,
 			final List<Item> attackerWeapons, final int damage) {
@@ -3466,23 +3474,20 @@ public abstract class RPEntity extends CombatEntity {
 			sumLifesteal = Float.parseFloat(value);
 		} else {
 			// weapons with lifesteal attribute for players
-			for (final Item weaponItem : attackerWeapons) {
+			for (Item weaponItem : attackerWeapons) {
 				sumAll += weaponItem.getAttack();
+				double weaponAttack = weaponItem.getAttack();
 				if (weaponItem.has("lifesteal")) {
-					sumLifesteal += weaponItem.getAttack()
-							* weaponItem.getDouble("lifesteal");
+					sumLifesteal += weaponAttack * weaponItem.getDouble("lifesteal");
 				}
-				if (hasGloves() && getGloves().has("lifesteal")) {
-					sumLifesteal += weaponItem.getAttack()
-							* getGloves().getDouble("lifesteal");
-				}
-				if (hasRing() && getRing().has("lifesteal")) {
-					sumLifesteal += weaponItem.getAttack()
-							* getRing().getDouble("lifesteal");
-				} else if (hasRingB() && getRingB().has("lifesteal")) {
-					sumLifesteal += weaponItem.getAttack()
-							* getRingB().getDouble("lifesteal");
-				}
+			}
+			if (hasGloves() && getGloves().has("lifesteal")) {
+				sumLifesteal += sumAll * getGloves().getDouble("lifesteal");
+			}
+			if (hasRing() && getRing().has("lifesteal")) {
+				sumLifesteal += sumAll * getRing().getDouble("lifesteal");
+			} else if (hasRingB() && getRingB().has("lifesteal")) {
+				sumLifesteal += sumAll * getRingB().getDouble("lifesteal");
 			}
 		}
 
