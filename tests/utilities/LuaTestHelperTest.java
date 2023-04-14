@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2022 - Arianne                     *
+ *                    Copyright © 2019-2023 - Stendhal                     *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,14 +11,14 @@
  ***************************************************************************/
 package utilities;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import org.junit.After;
 import org.junit.Test;
 
-
 public class LuaTestHelperTest extends LuaTestHelper {
-
 	@After
 	@Override
 	public void tearDown() {
@@ -38,7 +38,7 @@ public class LuaTestHelperTest extends LuaTestHelper {
 		assertNotNull(world);
 		assertNotNull(mrp);
 		assertNotNull(qs);
-		assertNotNull(luaEngine);
+		assertNotNull(luaLoader);
 	}
 
 	private void testSetUp() {

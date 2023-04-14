@@ -1957,6 +1957,33 @@ public class Player extends DressedEntity implements UseListener {
 	}
 
 	/**
+	 * Sets a layer color for both the player's original & temporary outfits.
+	 *
+	 * @param layer
+	 *     Layer name.
+	 * @param color
+	 *     New color.
+	 */
+	public void setPerpetualOutfitColor(final String layer, final String color) {
+		put("outfit_colors", layer, color);
+		if (outfitIsTemporary()) {
+			put("outfit_colors", layer + "_orig", color);
+		}
+	}
+
+	/**
+	 * Sets a layer color for both the player's original & temporary outfits.
+	 *
+	 * @param layer
+	 *     Layer name.
+	 * @param color
+	 *     New color.
+	 */
+	public void setPerpetualOutfitColor(final String layer, final int color) {
+		setPerpetualOutfitColor(layer, String.valueOf(color));
+	}
+
+	/**
 	 * Checks if entity is wearnig a temporary outfit.
 	 *
 	 * @return
@@ -3342,11 +3369,11 @@ public class Player extends DressedEntity implements UseListener {
 	}
 
 	/**
-	 * This hack increases chance that a player can hit an enemy
-	 * to make the game feel more fair. Hit chance is based on
-	 * raw atk stat, which is much higher for creatues. In order
-	 * to avoid drastic changes to the game's balance, we also
-	 * need to reduce the amount of damage done by players. See:
+	 * This handicap increases chance that a player can hit an enemy to
+	 * make the game feel more fair. Hit chance is based on raw atk stat,
+	 * which is much higher for creatues. In order to avoid drastic
+	 * changes to the game's balance, we also need to reduce the amount
+	 * of damage done by players. See:
 	 *	 Player.damageDone.
 	 */
 	@Override
@@ -3355,6 +3382,10 @@ public class Player extends DressedEntity implements UseListener {
 		return ((int) Math.round(HIT_CHANCE_MULTIPLIER * 1.5)) * attackerATK - roll * defenderDEF;
 	}
 
+	/**
+	 * This is overridden to reduce damage done by players to creatures
+	 * to make up for the increased hit chance.
+	 */
 	@Override
 	public int damageDone(final RPEntity defender, double attackingWeaponsValue, final Nature damageType) {
 		// compensate for player hit chance handicap

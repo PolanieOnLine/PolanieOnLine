@@ -11,6 +11,7 @@
  ***************************************************************************/
 package games.stendhal.server.entity.npc.behaviour.impl;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -34,9 +35,6 @@ public class OutfitChangerBehaviour extends MerchantBehaviour {
 	private int endurance;
 
 	private final String wearOffMessage;
-
-	/** if <code>true</code>, return player to original outfit before setting new temp outfit */
-	protected boolean resetBeforeChange = false;
 
 	// all available outfit types are predefined here.
 	private static Map<String, List<Outfit>> outfitTypes = new HashMap<String, List<Outfit>>();
@@ -77,6 +75,8 @@ public class OutfitChangerBehaviour extends MerchantBehaviour {
 		outfitTypes.put("suit", Arrays.asList(new Outfit("dress=72")));
 	}
 
+	private final List<String> flags = new ArrayList<>();
+
 	/**
 	 * Creates a new OutfitChangerBehaviour for outfits that never wear off
 	 * automatically.
@@ -98,6 +98,7 @@ public class OutfitChangerBehaviour extends MerchantBehaviour {
 	 * 		If <code>true</code>, player's original outfit will be restored before setting
 	 * 		setting the new one.
 	 */
+	@Deprecated
 	public OutfitChangerBehaviour(final Map<String, Integer> priceList, final boolean reset) {
 		this(priceList, NEVER_WEARS_OFF, null, reset);
 	}
@@ -118,10 +119,11 @@ public class OutfitChangerBehaviour extends MerchantBehaviour {
 	 * 		If <code>true</code>, player's original outfit will be restored before setting
 	 * 		setting the new one.
 	 */
+	@Deprecated
 	public OutfitChangerBehaviour(final Map<String, Integer> priceList, final int endurance,
 			final String wearOffMessage, final boolean reset) {
 		this(priceList, endurance, wearOffMessage);
-		resetBeforeChange = reset;
+		setFlag("resetBeforeChange");
 	}
 
 	/**
@@ -145,6 +147,40 @@ public class OutfitChangerBehaviour extends MerchantBehaviour {
 	}
 
 	/**
+	 * Sets a flag to be used by this behaviour.
+	 *
+	 * @param flag
+	 *     New flag to be enabled.
+	 */
+	public void setFlag(final String flag) {
+		if (!flags.contains(flag)) {
+			flags.add(flag);
+		}
+	}
+
+	/**
+	 * Unsets a flag used by this behaviour.
+	 *
+	 * @param flag
+	 *     Flag to be disabled.
+	 */
+	public void unsetFlag(final String flag) {
+		if (flags.contains(flag)) {
+			flags.remove(flag);
+		}
+	}
+
+	/**
+	 * Checks if a flag is set.
+	 *
+	 * @return
+	 *     <code>true</code> if 'flag' found in flags list.
+	 */
+	public boolean flagIsSet(final String flag) {
+		return flags.contains(flag);
+	}
+
+	/**
 	 * Transacts the sale that has been agreed on earlier via setChosenItem()
 	 * and setAmount().
 	 *
@@ -159,7 +195,7 @@ public class OutfitChangerBehaviour extends MerchantBehaviour {
 	public boolean transactAgreedDeal(ItemParserResult res, final EventRaiser seller, final Player player) {
 		final String outfitType = res.getChosenItemName();
 
-		if (!player.getOutfit().isCompatibleWithClothes()) {
+		if (!flagIsSet("resetBeforeChange") && !player.getOutfit().isCompatibleWithClothes()) {
 			// if the player is wearing a non standard player base
 			// then swimsuits, masks and many other outfits wouldn't look good mixed with it
 			seller.say("Już posiadasz magiczny strój, który na tobie nie wygląda zbyt dobrze z innym - czy mógłbyś wymienić na coś co pasuje do ciebie i zapytać ponownie? Dziękuję!");
@@ -170,7 +206,16 @@ public class OutfitChangerBehaviour extends MerchantBehaviour {
 
 		if (player.isEquipped("money", charge)) {
 			player.drop("money", charge);
+			String detailColor = null;
+			if (!flagIsSet("removeDetailColor")) {
+				detailColor = player.getOutfitColor("detail");
+			}
 			putOnOutfit(player, outfitType);
+			if (detailColor == null) {
+				player.unsetOutfitColor("detail");
+			} else {
+				player.setOutfitColor("detail", detailColor);
+			}
 			// remember purchases
 			updatePlayerTransactions(player, seller.getName(), res);
 			return true;
@@ -232,7 +277,7 @@ public class OutfitChangerBehaviour extends MerchantBehaviour {
 	 * @param outfitType the outfit to wear
 	 */
 	public void putOnOutfit(final Player player, final String outfitType) {
-		if (resetBeforeChange) {
+		if (flagIsSet("resetBeforeChange")) {
 			// cannot use OutfitChangerBehaviour.returnToOriginalOutfit(player) as it checks if the outfit was rented from here
 			player.returnToOriginalOutfit();
 		}

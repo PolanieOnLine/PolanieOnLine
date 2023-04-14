@@ -1,5 +1,5 @@
 /***************************************************************************
- *                     Copyright © 2020 - Arianne                          *
+ *                    Copyright © 2020-2023 - Stendhal                     *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -17,15 +17,13 @@ import java.util.List;
 
 import games.stendhal.common.NotificationType;
 import games.stendhal.server.core.scripting.ScriptImpl;
-import games.stendhal.server.core.scripting.ScriptInLua;
+import games.stendhal.server.core.scripting.lua.LuaLoader;
 import games.stendhal.server.entity.player.Player;
-
 
 /**
  * Admin script to load external Lua scripts manually.
  */
 public class ExecuteLua extends ScriptImpl {
-
 	@Override
 	public void execute(final Player admin, final List<String> args) {
 		if (args.isEmpty()) {
@@ -39,7 +37,7 @@ public class ExecuteLua extends ScriptImpl {
 			return;
 		}
 
-		if (!ScriptInLua.get().load(script.toString(), admin, null)) {
+		if (!LuaLoader.get().createScript(script.toString()).load(admin, null)) {
 			admin.sendPrivateText(NotificationType.ERROR, "Wystąpił błąd podczas próby załadowania skryptu Lua: " + script.toString().replace("\\", "\\\\"));
 		}
 	}

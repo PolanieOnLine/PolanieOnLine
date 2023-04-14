@@ -1,5 +1,5 @@
 /***************************************************************************
- *                     Copyright © 2020 - Arianne                          *
+ *                    Copyright © 2020-2023 - Stendhal                     *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -23,7 +23,6 @@ import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 
 import games.stendhal.common.parser.Sentence;
-import games.stendhal.server.core.scripting.ScriptInLua.LuaLogger;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.condition.AndCondition;
@@ -31,13 +30,17 @@ import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.npc.condition.OrCondition;
 import games.stendhal.server.entity.player.Player;
 
+
 /**
  * Exposes ChatCondition classes to Lua.
  */
 public class LuaConditionHelper {
+
 	private static LuaLogger logger = LuaLogger.get();
+
 	/** The singleton instance. */
 	private static LuaConditionHelper instance;
+
 
 	/**
 	 * Retrieves the static instance.
@@ -145,11 +148,12 @@ public class LuaConditionHelper {
 			exc = e1;
 		}
 
+
 		if (noArgs) {
 			logger.error("No default constructor for " + className, exc);
 		} else if (objects != null) {
 			logger.error("No constructor for " + className + " found for args: "
-					+ Arrays.toString(objects), exc);
+				+ Arrays.toString(objects), exc);
 		} else {
 			logger.error("Unknown instantiation error for " + className, exc); // should not happen
 		}

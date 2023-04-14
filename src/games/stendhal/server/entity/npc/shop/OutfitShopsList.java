@@ -1,12 +1,12 @@
 /***************************************************************************
- *                      (C) Copyright 2023 - Stendhal                      *
+ *					  (C) Copyright 2023 - Stendhal					  *
  ***************************************************************************
- *                                                                         *
+ *																		 *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
+ *   the Free Software Foundation; either version 2 of the License, or	 *
+ *   (at your option) any later version.								   *
+ *																		 *
  ***************************************************************************/
 package games.stendhal.server.entity.npc.shop;
 
@@ -128,11 +128,11 @@ public class OutfitShopsList {
 			pricelist.put(entry.getKey(), entry.getValue().second());
 		}
 		final OutfitChangerBehaviour behaviour = new OutfitChangerBehaviour(pricelist, expiration,
-				wearOffMessage, fl.containsKey("resetOrig")) {
+				wearOffMessage) {
 			@Override
 			public void putOnOutfit(final Player player, final String oname) {
 				// TODO: update OutfitChangerBehaviour to not set outfit list internally
-				if (this.resetBeforeChange) {
+				if (this.flagIsSet("resetBeforeChange")) {
 					player.returnToOriginalOutfit();
 				}
 				final int expiration = this.getEndurance();
@@ -143,6 +143,14 @@ public class OutfitShopsList {
 				}
 			}
 		};
+		if (fl.containsKey("removeDetailColor") || fl.containsKey("removeDetailColour")) {
+			behaviour.setFlag("removeDetailColor");
+		}
+		for (final String flag: Arrays.asList("resetBeforeChange", "confirmTemp", "confirmBalloon")) {
+			if (fl.containsKey(flag)) {
+				behaviour.setFlag(flag);
+			}
+		}
 		new OutfitChangerAdder().addOutfitChanger(npc, behaviour, action, !fl.containsKey("noOffer"),
 				fl.containsKey("returnable"));
 	}
@@ -211,7 +219,7 @@ public class OutfitShopsList {
 			@Override
 			public void putOnOutfit(final Player player, final String oname) {
 				// TODO: update OutfitChangerBehaviour to not set outfit list internally
-				if (this.resetBeforeChange) {
+				 if (this.flagIsSet("resetBeforeChange")) {
 					player.returnToOriginalOutfit();
 				}
 				final boolean temporary = this.getEndurance() != OutfitChangerBehaviour.NEVER_WEARS_OFF;

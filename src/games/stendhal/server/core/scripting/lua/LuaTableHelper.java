@@ -28,10 +28,12 @@ import games.stendhal.server.core.pathfinder.Node;
  * Adds some useful function members to Lua "table" object.
  */
 public class LuaTableHelper {
+
 	/** The singleton instance. */
 	private static LuaTableHelper instance;
 
 	private static final LuaArrayHelper arrayHelper = LuaArrayHelper.get();
+
 
 	/**
 	 * Retrieves the static instance.

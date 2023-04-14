@@ -1,5 +1,5 @@
 /***************************************************************************
- *                     Copyright © 2022 - Arianne                          *
+ *                    Copyright © 2022-2023 - Stendhal                     *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -32,7 +32,6 @@ import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.core.rp.StendhalRPAction;
 import games.stendhal.server.core.rule.EntityManager;
-import games.stendhal.server.core.scripting.ScriptInLua.LuaLogger;
 import games.stendhal.server.entity.CollisionAction;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.RPEntity;
@@ -43,6 +42,7 @@ import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.mapstuff.sign.Reader;
 import games.stendhal.server.entity.mapstuff.sign.ShopSign;
 import games.stendhal.server.entity.mapstuff.sign.Sign;
+import games.stendhal.server.entity.mapstuff.spawner.PassiveEntityRespawnPoint;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -51,10 +51,12 @@ import games.stendhal.server.entity.npc.SilentNPC;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.player.Player;
 
+
 /**
  * Exposes some entity classes & functions to Lua.
  */
 public class LuaEntityHelper {
+
 	private static LuaLogger logger = LuaLogger.get();
 
 	/** The singleton instance. */
@@ -64,6 +66,7 @@ public class LuaEntityHelper {
 
 	private static final LuaConditionHelper conditionHelper = LuaConditionHelper.get();
 	private static final LuaActionHelper actionHelper = LuaActionHelper.get();
+
 
 	/**
 	 * Retrieves the static instance.
@@ -245,11 +248,13 @@ public class LuaEntityHelper {
 		final LuaValue l_randMovement = lt.get("randomMovement");
 		if (!l_randMovement.isnil()) {
 			l_randMovement.checktable();
+
 			Boolean ret;
 			final LuaValue l_ret = l_randMovement.get("ret");
 			if (!l_ret.isnil()) {
 				ret = l_ret.checkboolean();
 			}
+
 			if (ret != null) {
 				npc.setMovementRadius(l_randMovement.get("radius").checkint(), ret);
 			} else {
@@ -652,6 +657,37 @@ public class LuaEntityHelper {
 	@Deprecated
 	public LuaSilentNPC createSilentNPC() {
 		return new LuaSilentNPC();
+	}
+
+	/**
+	 * Creates an item spawner.
+	 *
+	 * @param name
+	 *     Name of item to be spawned.
+	 * @param meanTurns
+	 *     Average number of turns for item to respawn.
+	 * @param initOnAdded
+	 *     If <code>true</code>, sets to full grown and initializes respawn timer when added to zone.
+	 * @return
+	 *     PassiveEntityRespawnPoint instance.
+	 */
+	public PassiveEntityRespawnPoint createItemSpawner(final String name, final int meanTurns,
+			final boolean initOnAdded) {
+		return new PassiveEntityRespawnPoint(name, meanTurns, initOnAdded);
+	}
+
+	/**
+	 * Creates an item spawner.
+	 *
+	 * @param name
+	 *     Name of item to be spawned.
+	 * @param meanTurns
+	 *     Average number of turns for item to respawn.
+	 * @return
+	 *     PassiveEntityRespawnPoint instance.
+	 */
+	public PassiveEntityRespawnPoint createItemSpawner(final String name, final int meanTurns) {
+		return createItemSpawner(name, meanTurns, false);
 	}
 
 	/**

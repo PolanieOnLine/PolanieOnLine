@@ -1,5 +1,5 @@
 /***************************************************************************
- *                     Copyright © 2020 - Arianne                          *
+ *                    Copyright © 2020-2023 - Stendhal                     *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -19,16 +19,17 @@ import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 
-import games.stendhal.server.core.scripting.ScriptInLua.LuaLogger;
-
 
 /**
  * Handles some conversion of Java arrays to Lua tables.
  */
 public class LuaArrayHelper {
+
 	private static LuaLogger logger = LuaLogger.get();
+
 	/** The singleton instance. */
 	private static LuaArrayHelper instance;
+
 
 	/**
 	 * Retrieves the static instance.

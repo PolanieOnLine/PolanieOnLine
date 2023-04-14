@@ -1,5 +1,5 @@
 /***************************************************************************
- *                     Copyright © 2020 - Arianne                          *
+ *                    Copyright © 2020-2023 - Stendhal                     *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -23,7 +23,6 @@ import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 
 import games.stendhal.common.parser.Sentence;
-import games.stendhal.server.core.scripting.ScriptInLua.LuaLogger;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.action.MultipleActions;
@@ -35,9 +34,12 @@ import games.stendhal.server.entity.player.Player;
  * Exposes ChatAction classes to Lua.
  */
 public class LuaActionHelper {
+
 	private static LuaLogger logger = LuaLogger.get();
+
 	/** The singleton instance. */
 	private static LuaActionHelper instance;
+
 
 	/**
 	 * Retrieves the static instance.
@@ -74,7 +76,7 @@ public class LuaActionHelper {
 			@Override
 			public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
 				lf.invoke(new LuaValue[] {CoerceJavaToLua.coerce(player),
-						CoerceJavaToLua.coerce(sentence), CoerceJavaToLua.coerce(npc)});
+					CoerceJavaToLua.coerce(sentence), CoerceJavaToLua.coerce(npc)});
 			}
 		};
 	}
@@ -135,11 +137,12 @@ public class LuaActionHelper {
 			exc = e1;
 		}
 
+
 		if (noArgs) {
 			logger.error("No default constructor for " + className, exc);
 		} else if (objects != null) {
 			logger.error("No constructor for " + className + " found for args: "
-					+ Arrays.toString(objects), exc);
+				+ Arrays.toString(objects), exc);
 		} else {
 			logger.error("Unknown instantiation error for " + className, exc); // should not happen
 		}

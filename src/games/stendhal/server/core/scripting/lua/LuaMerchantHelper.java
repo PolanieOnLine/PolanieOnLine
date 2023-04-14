@@ -1,5 +1,5 @@
 /***************************************************************************
- *                    Copyright © 2020-2023 - Arianne                      *
+ *                    Copyright © 2020-2023 - Stendhal                     *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -19,7 +19,6 @@ import org.luaj.vm2.LuaValue;
 
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.rule.EntityManager;
-import games.stendhal.server.core.scripting.ScriptInLua.LuaLogger;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
 import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
@@ -32,13 +31,16 @@ import games.stendhal.server.entity.npc.shop.ShopsList;
  * Exposes merchant handling classes & functions to Lua.
  */
 public class LuaMerchantHelper {
+
 	private static LuaLogger logger = LuaLogger.get();
+
 	/** The singleton instance. */
 	private static LuaMerchantHelper instance;
 
 	private final static EntityManager eManager = SingletonRepository.getEntityManager();
 
 	public static ShopsList shops = ShopsList.get();
+
 
 	/**
 	 * Retrieves the static instance.

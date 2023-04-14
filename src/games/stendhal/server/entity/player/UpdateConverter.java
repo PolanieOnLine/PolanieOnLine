@@ -285,7 +285,7 @@ public abstract class UpdateConverter {
 		}
 
 		// Port from 0.13 to 0.20
-		final Outfit tempOutfit = new Outfit();
+		Outfit tempOutfit = new Outfit();
 		if (!object.has("outfit")) {
 			object.put("outfit", tempOutfit.getCode());
 		}
@@ -463,6 +463,16 @@ public abstract class UpdateConverter {
 		if (keyring_ext != null) {
 			object.put("features", "keyring", "6 3");
 			object.remove("keyring_ext");
+		}
+
+		// port to 1.43: balloon outfit index
+		if (object.has("release") && object.get("release").compareTo("1.43") < 0 && object.has("outfit_ext")) {
+			tempOutfit = new Outfit(object.get("outfit_ext"));
+			final int detailIndex = tempOutfit.getLayer("detail");
+			if (detailIndex > 1 && detailIndex < 5) {
+				tempOutfit = new Outfit("detail=1").putOver(tempOutfit);
+				object.put("outfit_ext", tempOutfit.toString());
+			}
 		}
 	}
 

@@ -34,6 +34,8 @@
 	<property name="build_client_sound_data" value="${buildroot}/build_client_sound_data"/>
 	<property name="build_client_music_data" value="${buildroot}/build_client_music_data"/>
 
+	<property name="build_webclient" value="${buildroot}/build_webclient"/>
+
 	<property name="build_postman" value="${buildroot}/buildbot/"/>
 
 	<property name="build_server" value="${buildroot}/build_server"/>
@@ -682,7 +684,7 @@
 
 	</target> <!-- server_build -->
 
-	<target name="dist_server_binary" depends="server_build,compilejs">
+	<target name="dist_server_binary" depends="server_build">
 		<mkdir dir="${buildroot}/polanieonline-server-${version}"/>
 
 		<copy todir="${buildroot}/polanieonline-server-${version}/data/script">
@@ -726,12 +728,8 @@
 		</copy>
 
 		<copy todir="${buildroot}/polanieonline-server-${version}/data/conf" file="data/conf/admins.txt"/>
-<!--
-		<mkdir dir="${buildroot}/polanieonline-server-${version}/js"/>
-		<copy todir="${buildroot}/polanieonline-server-${version}/js">
-			<fileset dir="srcjs"/>
-		</copy>
--->
+
+		<antcall target="webclient_build" unless:set="exclude.webclient"/>
 
 		<copy todir="${buildroot}/polanieonline-server-${version}" file="README.md"/>
 		<mkdir dir="${buildroot}/polanieonline-server-${version}/log"/>
@@ -739,8 +737,14 @@
 		<zip destfile="${buildroot}/polanieonline-server-${version}.zip">
 			<zipfileset dir="${buildroot}/polanieonline-server-${version}" excludes="${server_jarname}"/>
 			<zipfileset dir="${buildroot}/polanieonline-server-${version}" includes="${server_jarname}" filemode="755"/>
+			<!-- webclient files -->
+			<zipfileset dir="${build_client_data}" unless:set="exclude.webclient"/>
+			<zipfileset dir="${build_client_music_data}" unless:set="exclude.webclient"/>
+			<zipfileset dir="${build_client_sound_data}" unless:set="exclude.webclient"/>
+			<zipfileset dir="${build_webclient}" prefix="js" unless:set="exclude.webclient"/>
 		</zip>
 		<delete dir="${buildroot}/polanieonline-server-${version}"/>
+		<delete dir="${build_webclient}"/>
 
 	</target> <!-- dist_server_binary -->
 
@@ -1096,6 +1100,7 @@
 		<property name="js-files-main2"    value="srcjs/stendhal/main.js"/>
 		<property name="js-files-main3"    value=""/>
 		<property name="js-files-ts"       value="build/ts/*.js build/ts/**/*.js"/>
+		<property name="js-files-ts2"      value=""/>
 
 
 		<java jar="buildtools/closure-compiler/compiler.jar"
@@ -1130,12 +1135,19 @@
 			<arg line="${js-files-main2}"/>
 			<arg line="${js-files-main3}"/>
 			<arg line="${js-files-ts}"/>
+			<arg line="${js-files-ts2}"/>
 		</java>
 
 		<echo file="srcjs/polanieonline-compiled.js" append="true">
 //# sourceMappingURL=stendhal-compiled.js.map
 		</echo>
+
+		<antcall target="compilejs-hook" />
 	</target> <!-- js-invoke-compiler -->
+
+	<target name="compilejs-hook" if="compilejs-hook">
+		<exec executable="${compilejs-hook}" />
+	</target>
 
 	<target name="compilejs" depends="cleanjs">
 		<antcall target="js-prepare" unless:set="exclude.webclient"/>
@@ -1145,13 +1157,48 @@
 			message="WARNING: Node.js is not installed, skipping web client build."/>
 	</target> <!-- compilejs -->
 
-	<target name="zip_webclient">
+	<target name="webclient_build" depends="compilejs,clean_client_data,build_client_data">
+		<mkdir dir="${build_webclient}"/>
+
+		<copy todir="${build_webclient}">
+			<fileset dir="${srcjs}">
+				<include name="stendhal.html"/>
+		    	<include name="stendhal.css"/>
+				<include name="stendhal-compiled.js*"/>
+				<include name="favicon.ico"/>
+			</fileset>
+		</copy>
+		<copy todir="${build_webclient}/marauroa">
+			<fileset dir="${buildroot}/js"/>
+		</copy>
+		<copy todir="${build_webclient}/stendhal">
+			<fileset dir="${buildroot}/ts"/>
+		</copy>
+
+		<replaceregexp file="${build_webclient}/stendhal.html"
+			match="data-tileset-path=&quot;/tileset&quot;"
+			replace="data-tileset-path=&quot;/data/tileset&quot;"
+			byline="false"/>
+		<replaceregexp file="${build_webclient}/stendhal-compiled.js.map"
+			match="build/js/"
+			replace="js/marauroa/"
+			byline="true"
+			flags="g"/>
+		<replaceregexp file="${build_webclient}/stendhal-compiled.js.map"
+			match="build/ts/"
+			replace="js/stendhal/"
+			byline="true"
+			flags="g"/>
+	</target> <!-- webclient_build -->
+
+	<target name="build_webclient" depends="webclient_build"/>
+
+	<target name="dist_webclient_binary" depends="webclient_build">
 		<zip destfile="${buildroot}/polanieonline-webclient-${version}.zip" unless:set="exclude.webclient">
-			<zipfileset dir="${buildroot}/js" prefix="js"/>
-			<zipfileset dir="${buildroot}/ts" prefix="ts"/>
 			<zipfileset dir="${build_client_data}"/>
 			<zipfileset dir="${build_client_music_data}"/>
 			<zipfileset dir="${build_client_sound_data}"/>
+			<zipfileset dir="${build_webclient}" prefix="js"/>
 			<zipfileset dir="doc" prefix="doc">
 				<include name="contributors.md"/>
 				<include name="Licenses/**"/>
@@ -1159,12 +1206,8 @@
 			</zipfileset>
 			<zipfileset file="LICENSE.txt" prefix="doc"/>
 		</zip>
-
-		<echo if:set="exclude.webclient" level="warning"
-					message="WARNING: Node.js is not installed, skipping web client zip package."/>
-	</target> <!-- zip_webclient -->
-
-	<target name="dist_webclient_binary" depends="compilejs,clean_client_data,build_client_data,zip_webclient"/>
+		<delete dir="${build_webclient}"/>
+	</target> <!-- dist_webclient_binary -->
 
 	<!-- END: web client -->
 

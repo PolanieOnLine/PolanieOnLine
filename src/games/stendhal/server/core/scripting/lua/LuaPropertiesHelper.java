@@ -16,8 +16,10 @@ package games.stendhal.server.core.scripting.lua;
  * Exposes Java system properties to Lua.
  */
 public class LuaPropertiesHelper {
+
 	/** The singleton instance. */
 	private static LuaPropertiesHelper instance;
+
 
 	/**
 	 * Retrieves the static instance.

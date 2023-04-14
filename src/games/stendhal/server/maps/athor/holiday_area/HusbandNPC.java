@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -46,6 +46,7 @@ public class HusbandNPC implements ZoneConfigurator  {
 		npc.setGender("M");
 		npc.setPosition(27, 44);
 		npc.setDirection(Direction.DOWN);
+		npc.put("no_shadow", ""); // sunbather laying down
 		zone.add(npc);
 	}
 }

@@ -84,7 +84,7 @@ public class NineSwitchesGameBoard implements TurnListener {
 
 				final Player dressed = (Player) user;
 				dressed.setPerpetualOutfitLayer("detail", 1);
-				user.put("outfit_colors", "detail", Rand.rand(balloonColors));
+				dressed.setPerpetualOutfitColor("detail", Rand.rand(balloonColors));
 			} else {
 				npc.say("Umm... Przepraszam, ale nie sądzę, że możesz nosić ten balon.");
 			}

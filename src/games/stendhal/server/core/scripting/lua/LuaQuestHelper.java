@@ -1,5 +1,5 @@
 /***************************************************************************
- *                    Copyright © 2003-2023 - Arianne                      *
+ *                    Copyright © 2020-2023 - Stendhal                     *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -20,20 +20,27 @@ import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.rp.StendhalQuestSystem;
-import games.stendhal.server.core.scripting.ScriptInLua.LuaLogger;
+import games.stendhal.server.entity.npc.quest.BringItemTask;
+import games.stendhal.server.entity.npc.quest.BuiltQuest;
+import games.stendhal.server.entity.npc.quest.KillCreaturesTask;
+import games.stendhal.server.entity.npc.quest.QuestBuilder;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.quests.AbstractQuest;
 import games.stendhal.server.maps.quests.IQuest;
+
 
 /**
  * Exposes quest creation & handling to Lua.
  */
 public class LuaQuestHelper {
+
 	private static LuaLogger logger = LuaLogger.get();
+
 	/** The singleton instance. */
 	private static LuaQuestHelper instance;
 
 	private static StendhalQuestSystem questSystem = SingletonRepository.getStendhalQuestSystem();
+
 
 	/**
 	 * Retrieves the static instance.
@@ -108,6 +115,36 @@ public class LuaQuestHelper {
 	 */
 	public LuaQuest create(final String slotName, final String name, final String desc) {
 		return new LuaQuest(slotName, name, desc);
+	}
+
+	/**
+	 * Creates a new quest manuscript.
+	 *
+	 * @param builder
+	 *     Quest builder.
+	 * @return
+	 *     New quest.
+	 */
+	public IQuest createManuscript(final QuestBuilder<?> builder) {
+		return new BuiltQuest(builder);
+	}
+
+	/**
+	 * Creates a new quest builder to be used for quest manuscript.
+	 *
+	 * @param task
+	 *     Quest task type.
+	 * @return
+	 *     New QuestBuilder.
+	 */
+	public QuestBuilder<?> createBuilder(final String task) {
+		if ("BringItemTask".equals(task)) {
+			return new QuestBuilder<>(new BringItemTask());
+		} else if ("KillCreaturesTask".equals(task)) {
+			return new QuestBuilder<>(new KillCreaturesTask());
+		}
+		logger.error("Unknown quest builder task: " + task, new IllegalArgumentException());
+		return null;
 	}
 
 	/**
@@ -343,6 +380,7 @@ public class LuaQuestHelper {
 		public LuaFunction startedCheck = null;
 		public LuaFunction repeatableCheck = null;
 		public LuaFunction completedCheck = null;
+
 
 		/**
 		 * Creates a new quest.

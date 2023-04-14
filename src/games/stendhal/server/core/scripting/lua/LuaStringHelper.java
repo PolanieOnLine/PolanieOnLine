@@ -1,5 +1,5 @@
 /***************************************************************************
- *                     Copyright © 2020 - Arianne                          *
+ *                    Copyright © 2020-2023 - Stendhal                     *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -19,16 +19,17 @@ import org.luaj.vm2.LuaUserdata;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 
-import games.stendhal.server.core.scripting.ScriptInLua.LuaLogger;
-
 
 /**
  * Adds some useful string function members to Lua "string" object.
  */
 public class LuaStringHelper {
+
 	private static final LuaLogger logger = LuaLogger.get();
+
 	/** The singleton instance. */
 	private static LuaStringHelper instance;
+
 
 	/**
 	 * Retrieves the static instance.
@@ -171,6 +172,22 @@ public class LuaStringHelper {
 			@Override
 			public LuaBoolean call(final LuaValue orig, final LuaValue suffix) {
 				return (LuaBoolean) CoerceJavaToLua.coerce(orig.tojstring().endsWith(suffix.tojstring()));
+			}
+		});
+
+		/** add string.valueOf method */
+		stringTable.set("valueOf", new LuaFunction() {
+			/**
+			 * Retrieves string value of an object.
+			 *
+			 * @param obj
+			 *     Object instance to be converted.
+			 * @return
+			 *     String value of object.
+			 */
+			@Override
+			public LuaString call(final LuaValue obj) {
+				return (LuaString) CoerceJavaToLua.coerce(String.valueOf(obj));
 			}
 		});
 	}

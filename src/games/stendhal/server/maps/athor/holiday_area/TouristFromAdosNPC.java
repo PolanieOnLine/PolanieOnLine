@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -47,6 +47,7 @@ public class TouristFromAdosNPC implements ZoneConfigurator  {
 		npc.setGender("F");
 		npc.setPosition(60, 33);
 		npc.setDirection(Direction.DOWN);
+		npc.put("no_shadow", ""); // sunbather laying down
 		zone.add(npc);
 	}
 }
