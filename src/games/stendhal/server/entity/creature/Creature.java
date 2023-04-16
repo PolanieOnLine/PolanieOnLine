@@ -47,6 +47,7 @@ import games.stendhal.server.entity.creature.impl.idle.IdleBehaviour;
 import games.stendhal.server.entity.creature.impl.idle.IdleBehaviourFactory;
 import games.stendhal.server.entity.item.Corpse;
 import games.stendhal.server.entity.item.Item;
+import games.stendhal.server.entity.item.OrcDisguise;
 import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
 import games.stendhal.server.entity.npc.NPC;
@@ -760,6 +761,11 @@ public class Creature extends NPC {
 		final Map<RPEntity, Double> distances = new HashMap<RPEntity, Double>();
 		for (final RPEntity enemy : enemyList) {
 			if (enemy == this) {
+				continue;
+			}
+
+			if ((OrcDisguise.isEquipped(enemy) && OrcDisguise.canIgnoreEnemy(this.getName()))
+					&& !enemy.isAttacking()) {
 				continue;
 			}
 
