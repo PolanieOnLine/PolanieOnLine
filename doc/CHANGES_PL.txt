@@ -2,6 +2,9 @@ Changelog
 ---------
 1.37
 *świat*
+- Dodano nowy przedmiot:
+	- zbroja orków
+- Gracz gdy ma założoną zbroję orków i dopóki nie atakuje przeciwnika jest ignorowany przez wszystkie orki
 - Kowal Tworzymir będzie wymagał dodatkowych surowców do ulepszenia na określony poziom przedmiot
 - Zmniejszono współczynniki mnożnika dla każdego noszonego przedmiotu, powinno to zmniejszyść ilość punktów obrony noszonych przez gracza
 
