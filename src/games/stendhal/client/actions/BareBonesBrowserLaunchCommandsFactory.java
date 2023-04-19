@@ -16,25 +16,28 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import games.stendhal.client.update.ClientGameConfiguration;
+
 /**
  * Factory to create all known {@link SlashAction}s that open a specified URL in the browser
  *
  * @author madmetzger
  */
 class BareBonesBrowserLaunchCommandsFactory {
-
 	private static Map<String, String> commandsAndUrls;
 
 	private static void initialize() {
+		String server_page = ClientGameConfiguration.get("DEFAULT_SERVER_WEB");
+
 		commandsAndUrls = new HashMap<String, String>();
-		commandsAndUrls.put("beginnersguide", "https://s1.polanieonline.eu/wprowadzenie.html");
-		commandsAndUrls.put("faq", "https://s1.polanieonline.eu/faq.html");
-		commandsAndUrls.put("manual", "https://s1.polanieonline.eu/wprowadzenie.html");
-		commandsAndUrls.put("rules", "https://s1.polanieonline.eu/regulamin/regulamin-gry-polanieonline");
-		commandsAndUrls.put("changepassword", "https://s1.polanieonline.eu/account/ustawienia.html");
-		commandsAndUrls.put("loginhistory", "https://s1.polanieonline.eu/account/history.html");
-		commandsAndUrls.put("merge", "https://s1.polanieonline.eu/account/ustawienia.html");
-		commandsAndUrls.put("halloffame", "https://s1.polanieonline.eu/aleja-slaw/all_overview.html");
+		commandsAndUrls.put("beginnersguide", server_page + "/wprowadzenie.html");
+		commandsAndUrls.put("faq", server_page + "/faq.html");
+		commandsAndUrls.put("manual", server_page + "/wprowadzenie.html");
+		commandsAndUrls.put("rules", server_page + "/regulamin/regulamin-gry-polanieonline");
+		commandsAndUrls.put("changepassword", server_page + "/account/ustawienia.html");
+		commandsAndUrls.put("loginhistory", server_page + "/account/history.html");
+		commandsAndUrls.put("merge", server_page + "/account/ustawienia.html");
+		commandsAndUrls.put("halloffame", server_page + "/aleja-slaw/all_overview.html");
 	}
 
 	/**
