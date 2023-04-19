@@ -14,8 +14,12 @@ package games.stendhal.client.events;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -45,13 +49,14 @@ import games.stendhal.client.gui.imageviewer.ItemListImageViewerEvent.HeaderRend
 import games.stendhal.client.gui.imageviewer.ViewPanel;
 import games.stendhal.client.sprite.Sprite;
 import games.stendhal.client.sprite.SpriteStore;
+import games.stendhal.client.update.ClientGameConfiguration;
 import games.stendhal.common.grammar.Grammar;
 
 public class ItemLogEvent extends Event<RPEntity> {
 	// logger instance
 	private static Logger logger = Logger.getLogger(ItemLogEvent.class);
 
-	ArrayList<String> itemClassList = new ArrayList<String>();
+	private static ArrayList<String> itemClassList = new ArrayList<String>();
 
 	@Override
 	public void execute() {
@@ -114,7 +119,10 @@ public class ItemLogEvent extends Event<RPEntity> {
 				JTable table = new JTable(data, columnNames);
 
 				// Ustawianie właściwości tabeli
-				table.setEnabled(false);
+				table.setEnabled(true);
+				table.setSelectionBackground(new Color(0, 0, 0, 50));
+				table.setSelectionForeground(Color.WHITE);
+				
 				table.setFillsViewportHeight(true);
 				table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 
@@ -142,11 +150,34 @@ public class ItemLogEvent extends Event<RPEntity> {
 				adjustColumnWidths(table);
 				adjustRowHeights(table);
 
+				table.addMouseListener(new MouseAdapter() {
+				    public void mouseClicked(MouseEvent e) {
+				    	try {
+				    	    int row = table.getSelectedRow();
+				    	    String itemName = table.getValueAt(row, 1).toString();
+				    	    String itemClass = getItemClass(itemName);
+				    	    String url = ClientGameConfiguration.get("DEFAULT_SERVER_WEB")
+				    	    		+ "/przedmioty/" + itemClass + "/"
+				    	    		+ itemName.replace(" ", "_") + ".html";
+				    	    Desktop.getDesktop().browse(new URI(url));
+				    	} catch (Exception exc) {
+				    	    exc.printStackTrace();
+				    	}
+				    }
+				});
+
 				return table;
 			}
 
 			private List<String> getItemsList() {
 				return Arrays.asList(event.get("dropped_items").split(";"));
+			}
+
+			private String[] getItemsClassList() {
+				if (itemClassList.isEmpty()) {
+					return new String[0];
+				}
+				return itemClassList.toArray(new String[0]);
 			}
 
 			private final Map<String, String> ITEM_CLASS_MAP = new HashMap<String, String>() {{
@@ -178,7 +209,7 @@ public class ItemLogEvent extends Event<RPEntity> {
 				put("axe", "topory");
 				put("ammunition", "amunicja");
 			}};
-			
+
 			private String getTranslatedClass(String clazz) {
 				if (ITEM_CLASS_MAP.containsKey(clazz)) {
 					clazz = ITEM_CLASS_MAP.get(clazz);
@@ -197,11 +228,15 @@ public class ItemLogEvent extends Event<RPEntity> {
 				itemClassList = sortedItemClassList;
 			}
 
-			private String[] getItemsClassList() {
-				if (itemClassList.isEmpty()) {
-					return new String[0];
+			private String getItemClass(final String itemName) {
+				for (int i = 0; i < getItemsList().size(); i++) {
+					String[] itemAttrs = getItemsList().get(i).split(",");
+					if (Arrays.stream(itemAttrs).anyMatch(itemName::equals)) {
+						return itemAttrs[3];
+					}
 				}
-				return itemClassList.toArray(new String[0]);
+
+				return "";
 			}
 
 			private Object[] createDataRow(final String[] item) {
@@ -212,10 +247,7 @@ public class ItemLogEvent extends Event<RPEntity> {
 				final String clazz = item[3];
 				final String subclazz = item[4];
 
-				boolean dropped = false;
-				if (item[1].equals("true")) {
-					dropped = true;
-				}
+				boolean dropped = item[1].equals("true") ? true : false;
 
 				rval[0] = getItemImage(clazz, subclazz, dropped);
 				rval[1] = name;
