@@ -151,19 +151,19 @@ public class ItemLogEvent extends Event<RPEntity> {
 				adjustRowHeights(table);
 
 				table.addMouseListener(new MouseAdapter() {
-				    public void mouseClicked(MouseEvent e) {
-				    	try {
-				    	    int row = table.getSelectedRow();
-				    	    String itemName = table.getValueAt(row, 1).toString();
-				    	    String itemClass = getItemClass(itemName);
-				    	    String url = ClientGameConfiguration.get("DEFAULT_SERVER_WEB")
-				    	    		+ "/przedmioty/" + itemClass + "/"
-				    	    		+ itemName.replace(" ", "_") + ".html";
-				    	    Desktop.getDesktop().browse(new URI(url));
-				    	} catch (Exception exc) {
-				    	    exc.printStackTrace();
-				    	}
-				    }
+					public void mouseClicked(MouseEvent e) {
+						try {
+							int row = table.getSelectedRow();
+							String itemName = table.getValueAt(row, 1).toString();
+							String itemClass = getItemClass(itemName);
+							String url = ClientGameConfiguration.get("DEFAULT_SERVER_WEB")
+									+ "/przedmioty/" + itemClass + "/"
+									+ itemName.replace(" ", "_") + ".html";
+							Desktop.getDesktop().browse(new URI(url));
+						} catch (Exception exc) {
+							exc.printStackTrace();
+						}
+					}
 				});
 
 				return table;
