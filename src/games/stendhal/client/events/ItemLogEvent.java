@@ -64,7 +64,6 @@ public class ItemLogEvent extends Event<RPEntity> {
 			logger.warn("Could not create item log: Event does not have \"dropped_items\" attribute");
 			return;
 		}
-
 		// much of this is taken from games.stendhal.client.gui.imageviewer.ItemListImageViewerEvent
 		final ViewPanel panel = new ViewPanel() {
 			private static final int PAD = 5;
@@ -93,7 +92,14 @@ public class ItemLogEvent extends Event<RPEntity> {
 				add(tabbedPane, BorderLayout.CENTER);
 				setVisible(true);
 			}
-			
+
+			/**
+			 * Returns a list of items belonging to a given category.
+			 *
+			 * @param category
+			 * 		Item category.
+			 * @return list.
+			 */
 			private List<String> getItemsListForCategory(String category) {
 				List<String> itemsList = new ArrayList<>();
 				for (String item : getItemsList()) {
@@ -105,6 +111,13 @@ public class ItemLogEvent extends Event<RPEntity> {
 				return itemsList;
 			}
 
+			/**
+			 * Creates a JTable based on a list of items.
+			 *
+			 * @param itemsList
+			 * 		Item list.
+			 * @return data.
+			 */
 			private JTable createTableForCategory(List<String> itemsList) {
 				final String[] columnNames = {"#", "Nazwa przedmiotu", "Ile sztuk", "Zdobyto"};
 				final Object[][] data = new Object[itemsList.size()][];
@@ -122,7 +135,7 @@ public class ItemLogEvent extends Event<RPEntity> {
 				table.setEnabled(true);
 				table.setSelectionBackground(new Color(0, 0, 0, 50));
 				table.setSelectionForeground(Color.WHITE);
-				
+
 				table.setFillsViewportHeight(true);
 				table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 
@@ -169,10 +182,22 @@ public class ItemLogEvent extends Event<RPEntity> {
 				return table;
 			}
 
+			/**
+			 * It does so by using the event object and accessing its "dropped_items"
+			 * field, which contains a string of item data separated by semicolons.
+			 *
+			 * @return a list of dropped items for a particular event.
+			 */
 			private List<String> getItemsList() {
 				return Arrays.asList(event.get("dropped_items").split(";"));
 			}
 
+			/**
+			 * Returns an array of strings representing the list of item classes.
+			 *
+			 * @return an empty array, otherwise it returns 
+			 * 		the contents of the itemClassList.
+			 */
 			private String[] getItemsClassList() {
 				if (itemClassList.isEmpty()) {
 					return new String[0];
@@ -210,6 +235,13 @@ public class ItemLogEvent extends Event<RPEntity> {
 				put("ammunition", "amunicja");
 			}};
 
+			/**
+			 * Translates class name for an item class.
+			 *
+			 * @param clazz
+			 * 		Item class.
+			 * @return capitalized and translated item class.
+			 */
 			private String getTranslatedClass(String clazz) {
 				if (ITEM_CLASS_MAP.containsKey(clazz)) {
 					clazz = ITEM_CLASS_MAP.get(clazz);
@@ -217,6 +249,9 @@ public class ItemLogEvent extends Event<RPEntity> {
 				return Grammar.capitalize(clazz);
 			}
 
+			/**
+			 * Adds item classes to a list.
+			 */
 			private void addItemClassToList() {
 				Set<String> itemClassSet = new HashSet<>();
 				for (int i = 0; i < getItemsList().size(); i++) {
@@ -228,6 +263,13 @@ public class ItemLogEvent extends Event<RPEntity> {
 				itemClassList = sortedItemClassList;
 			}
 
+			/**
+			 * Method finds an item with the same name, it returns its
+			 * class. If it doesn't find any, it returns an empty string.
+			 *
+			 * @param itemName
+			 * @return item class.
+			 */
 			private String getItemClass(final String itemName) {
 				for (int i = 0; i < getItemsList().size(); i++) {
 					String[] itemAttrs = getItemsList().get(i).split(",");
@@ -239,6 +281,17 @@ public class ItemLogEvent extends Event<RPEntity> {
 				return "";
 			}
 
+			/**
+			 * Create a data row object for a single item, based on
+			 * the provided item array.
+			 *
+			 * @param item
+			 * 		The item array.
+			 * @return
+			 * 		Information from the array and constructs
+			 * 		an object array with the item image, name,
+			 * 		drop count, and drop status.
+			 */
 			private Object[] createDataRow(final String[] item) {
 				final Object[] rval = new Object[4];
 
@@ -262,6 +315,18 @@ public class ItemLogEvent extends Event<RPEntity> {
 				return rval;
 			}
 
+			/**
+			 * This method is responsible for creating a sprite image for an item.
+			 * It takes as input the class, sub-class, and drop status of an item.
+			 *
+			 * @param clazz
+			 * 		Item class.
+			 * @param subclazz
+			 * 		Item subclass.
+			 * @param dropped
+			 * 		Drop status.
+			 * @return the sprite.
+			 */
 			private Sprite getItemImage(String clazz, String subclazz, boolean dropped) {
 				String imagePath = "/data/sprites/items/" + clazz + "/" + subclazz + ".png";
 
