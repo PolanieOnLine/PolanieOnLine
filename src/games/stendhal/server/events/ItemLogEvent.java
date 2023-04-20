@@ -115,14 +115,7 @@ public class ItemLogEvent extends RPEvent {
 				return (i1.getItemName().toLowerCase().compareTo(i2.getItemName().toLowerCase()));
 			}
 		};
-		//final Comparator<DefaultItem> sortClasses = new Comparator<DefaultItem>() {
-		//	@Override
-		//	public int compare(final DefaultItem i1, final DefaultItem i2) {
-		//		return (i1.getItemClass().toLowerCase().compareTo(i2.getItemClass().toLowerCase()));
-		//	}
-		//};
 		Collections.sort(items, sortNames);
-		//Collections.sort(items, sortClasses);
 
 		formatted.append(getFormattedString(items, player));
 		put("dropped_items", formatted.toString());
@@ -140,10 +133,6 @@ public class ItemLogEvent extends RPEvent {
 			if (dropped.contains(name)) {
 				looted = true;
 			}
-
-			//if (!looted) {
-			//	name = "???";
-			//}
 
 			int itemDropCount = 0;
 			itemDropCount = player.getNumberOfLootsForItem(name);
