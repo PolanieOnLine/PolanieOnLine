@@ -535,7 +535,7 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	 * Checks if item can be used for non-melee ranged attacks.
 	 */
 	public boolean isNonMeleeWeapon() {
-		return isOfClass("ranged") || isOfClass("missile");
+		return isOfClass("ranged") || isOfClass("wand") || isOfClass("missile");
 	}
 
 	/**
