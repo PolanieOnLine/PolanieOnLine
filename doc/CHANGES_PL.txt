@@ -18,6 +18,7 @@ Changelog
 
 *naprawiono błędy*
 - Naprawiono atakowanie i zadawanie obrażeń przez potwory strzelające z większej odległości
+- Naprawiono atakowanie różnymi różdżkami na odleglość bez magii
 
 
 1.36
