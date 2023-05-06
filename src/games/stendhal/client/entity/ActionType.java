@@ -31,7 +31,7 @@ public enum ActionType {
 		}
 	},
 	READ("look", "Przeczytaj"),
-	LOOK_CLOSELY("use", "Przyjżyj się dokładnie"),
+	LOOK_CLOSELY("use", "Przyjrzyj się dokładnie"),
 	INSPECT("inspect", "Przeszukaj") {
 		@Override
 		public RPAction fillTargetInfo(final IEntity entity) {
