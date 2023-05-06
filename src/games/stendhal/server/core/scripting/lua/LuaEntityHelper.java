@@ -740,6 +740,7 @@ public class LuaEntityHelper {
 	 * @param table
 	 * 		Lua table with list of coordinates representing nodes.
 	 */
+	@Deprecated
 	private static void setEntityPath(final LuaGuidedEntity entity, final LuaTable table, Boolean loop) {
 		if (loop == null) {
 			loop = false;
@@ -756,6 +757,7 @@ public class LuaEntityHelper {
 	 * @param table
 	 * 		Lua table with list of coordinates representing nodes.
 	 */
+	@Deprecated
 	private static void setEntityPathAndPosition(final LuaGuidedEntity entity, final LuaTable table, Boolean loop) {
 		if (loop == null) {
 			loop = false;

@@ -5,7 +5,7 @@
 	<item name="proca">
 		<type class="ranged" subclass="slingshot" tileid="-1"/>
 		<description>Oto proca. Podnieś kamyczek i strzelaj z daleka.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="4" condition="!testing.combat"/>
 			<ratk value="4" condition="testing.combat"/>
@@ -28,7 +28,7 @@
 	<item name="drewniany łuk">
 		<type class="ranged" subclass="wooden_bow" tileid="-1"/>
 		<description>Oto drewniany łuk. Z tą bronią w jednej ręce i strzałami w drugiej, bedziesz mógł atakować z dystansu.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="12" condition="!testing.combat"/>
 			<ratk value="12" condition="testing.combat"/>
@@ -50,7 +50,7 @@
 	<item name="długi łuk">
 		<type class="ranged" subclass="longbow" tileid="-1"/>
 		<description>Oto długi łuk. Z tą bronią w jednej ręce i strzałami w drugiej, będziesz mógł atakować z dystansu.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="14" condition="!testing.combat"/>
 			<ratk value="14" condition="testing.combat"/>
@@ -72,7 +72,7 @@
 	<item name="klejony łuk">
 		<type class="ranged" subclass="composite_bow" tileid="-1"/>
 		<description>Oto klejony łuk. Lepiej naciągnięty, dlatego możesz strzelać z większego dystansu.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="15" condition="!testing.combat"/>
 			<ratk value="15" condition="testing.combat"/>
@@ -94,7 +94,7 @@
 	<item name="lekka kusza">
 		<type class="ranged" subclass="light_crossbow" tileid="-1"/>
 		<description>Oto lekka kusza. Połączenie lekkości z solidnym wykonaniem tejże broni daje świetne rezultaty w ataku.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="17" condition="!testing.combat"/>
 			<ratk value="17" condition="testing.combat"/>
@@ -116,7 +116,7 @@
 	<item name="kusza">
 		<type class="ranged" subclass="crossbow" tileid="-1"/>
 		<description>Oto kusza. Atak jest duży, ale słabsza celność. Co wolisz?</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="21" condition="!testing.combat"/>
 			<ratk value="21" condition="testing.combat"/>
@@ -138,7 +138,7 @@
 	<item name="kusza łowcy">
 		<type class="ranged" subclass="hunter_crossbow" tileid="-1"/>
 		<description>Oto kusza łowcy. Musisz zdecydować się czy duży atak jest warty krótszego zasięgu.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="23" condition="!testing.combat"/>
 			<ratk value="23" condition="testing.combat"/>
@@ -160,7 +160,7 @@
 	<item name="lodowa kusza">
 		<type class="ranged" subclass="ice_crossbow" tileid="-1"/>
 		<description>Oto lodowa kusza. Bełty wystrzelone z tej broni otrzymują siłę lodu.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="30" condition="!testing.combat"/>
 			<ratk value="30" condition="testing.combat"/>
@@ -183,7 +183,7 @@
 	<item name="łuk z mithrilu">
 		<type class="ranged" subclass="mithril_bow" tileid="-1"/>
 		<description>Oto lekki lecz wytrzymały łuk z mithrilu. Kunszt z jakim go wykonano pozwala strzelać celnie.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="28" condition="!testing.combat"/>
 			<ratk value="28" condition="testing.combat"/>
@@ -207,7 +207,7 @@
 	<item name="kusza z mithrilu">
 		<type class="ranged" subclass="mithril_crossbow" tileid="-1"/>
 		<description>Oto starannie wykonana kusza z mithrilu.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="34" condition="!testing.combat"/>
 			<ratk value="34" condition="testing.combat"/>
@@ -231,7 +231,7 @@
 	<item name="lodowy łuk">
 		<type class="ranged" subclass="ice_bow" tileid="-1"/>
 		<description>Oto lodowy łuk, który został całkowicie wykonany z kawałka lodu. Dłonie aż przymarzają do jego rękojeści.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="22" condition="!testing.combat"/>
 			<ratk value="22" condition="testing.combat"/>
@@ -255,7 +255,7 @@
 	<!-- <item name="łuk treningowy" condition="stendhal.testserver">
 		<type class="ranged" subclass="training_bow" tileid="-1" />
 		<description>Oto łuk treningowy. Lekki i łatwy w użyciu, lecz jego bardzo słabe wykonanie sprawia, że czujesz jak łamie się w twoich rękach.</description>
-		<implementation class-name="games.stendhal.server.entity.item.BreakableItem" />
+		<implementation class-name="games.stendhal.server.entity.item.BreakableWeapon" />
 		<attributes>
 			<atk value="0" condition="!testing.combat"/>
 			<ratk value="0" condition="testing.combat"/>
@@ -280,7 +280,7 @@
 	<item name="automatyczna kusza" condition="stendhal.testserver">
 		<type class="ranged" subclass="auto_crossbow" tileid="-1" />
 		<description>Oto ta automatyczna kusza pozwala na szybki ogień. Lecz jej słaba jakość wykonania sprawia jakby mogła złamać się w twych rękach.</description>
-		<implementation class-name="games.stendhal.server.entity.item.BreakableItem" />
+		<implementation class-name="games.stendhal.server.entity.item.BreakableWeapon" />
 		<attributes>
 			<atk value="0" condition="!testing.combat"/>
 			<ratk value="0" condition="testing.combat"/>
@@ -303,7 +303,7 @@
 	<item name="automatyczna kusza A" condition="stendhal.testserver">
 		<type class="ranged" subclass="auto_crossbow_a" tileid="-1" />
 		<description>Oto ta automatyczna kusza klasy A, pozwala na szybki ogień. Jest dość wytrzymała, ale nie jest przeznaczona do regularnej walki.</description>
-		<implementation class-name="games.stendhal.server.entity.item.BreakableItem" />
+		<implementation class-name="games.stendhal.server.entity.item.BreakableWeapon" />
 		<attributes>
 			<atk value="0" condition="!testing.combat"/>
 			<ratk value="0" condition="testing.combat"/>
@@ -326,7 +326,7 @@
 	<item name="automatyczna kusza A+" condition="stendhal.testserver">
 		<type class="ranged" subclass="auto_crossbow_aa" tileid="-1" />
 		<description>Oto ta automatyczna kusza klasy A+, pozwala na szybki ogień. Wykonana jest z wysokiej jakości materiałów.</description>
-		<implementation class-name="games.stendhal.server.entity.item.BreakableItem" />
+		<implementation class-name="games.stendhal.server.entity.item.BreakableWeapon" />
 		<attributes>
 			<atk value="0" condition="!testing.combat"/>
 			<ratk value="0" condition="testing.combat"/>

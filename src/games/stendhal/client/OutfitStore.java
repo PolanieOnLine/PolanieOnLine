@@ -88,6 +88,7 @@ public class OutfitStore {
 
 		final JSONLoader loader = new JSONLoader();
 		loader.onDataReady = new Runnable() {
+			@Override
 			public void run() {
 				final JSONObject document = (JSONObject) loader.data;
 				final JSONArray detailRear = (JSONArray) ((JSONObject) document.get("detail")).get("rear");

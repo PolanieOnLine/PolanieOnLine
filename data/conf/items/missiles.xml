@@ -4,7 +4,7 @@
 	<item name="śnieżka">
 		<type class="missile" subclass="snowballs" tileid="-1"/>
 		<description>Oto śnieżka. Raczej lepsza do zabawy niż do walki.</description>
-		<implementation class-name="games.stendhal.server.entity.item.NoStatsStackableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.NoStatsProjectile"/>
 		<attributes>
 			<atk value="-1" condition="!testing.combat"/>
       		<ratk value="-1" condition="testing.combat"/>
@@ -29,7 +29,7 @@
 	<item name="wymioty">
 		<type class="missile" subclass="vomit" tileid="-1"/>
 		<description>Oto wymioty. Fuj!</description>
-		<implementation class-name="games.stendhal.server.entity.item.NoStatsStackableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.NoStatsProjectile"/>
 		<attributes>
 			<atk value="-1" condition="!testing.combat"/>
       		<ratk value="-1" condition="testing.combat"/>
@@ -53,7 +53,7 @@
 	<!-- <item name="strzałka" condition="stendhal.testserver">
 		<type class="missile" subclass="dart" tileid="-1"/>
 		<description>Oto strzałka. Musisz być blisko, żeby użyc jej jako broń.</description>
-		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Projectile"/>
 		<attributes>
 			<atk value="2" condition="!testing.combat"/>
       		<ratk value="2" condition="testing.combat"/>
@@ -77,7 +77,7 @@
 	<item name="płonąca strzałka" condition="stendhal.testserver">
 		<type class="missile" subclass="dart" tileid="-1"/>
 		<description>Oto płonąca strzałka. Musisz być blisko kogoś aby w niego trafić.</description>
-		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Projectile"/>
 		<attributes>
 			<atk value="4" condition="!testing.combat"/>
       		<ratk value="4" condition="testing.combat"/>
@@ -102,7 +102,7 @@
 	<item name="shuriken">
 		<type class="missile" subclass="shuriken" tileid="-1"/>
 		<description>Oto shuriken z dalekiego wschodu. Musisz być blisko kogoś aby w niego trafić.</description>
-		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Projectile"/>
 		<attributes>
 			<atk value="6" condition="!testing.combat"/>
       		<ratk value="6" condition="testing.combat"/>
@@ -126,7 +126,7 @@
 	<item name="płonący shuriken">
 		<type class="missile" subclass="fire_shuriken" tileid="-1"/>
 		<description>Oto płonący shuriken. Rzucając nim uwalniasz diabelską moc.</description>
-		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Projectile"/>
 		<attributes>
 			<atk value="12" condition="!testing.combat"/>
       		<ratk value="12" condition="testing.combat"/>
@@ -151,7 +151,7 @@
 	<item name="włócznia">
 		<type class="missile" subclass="wooden_spear" tileid="-1"/>
 		<description>Oto włócznia. Tą prymitywną, drewnianą bronią możesz atakować z dystansu.</description>
-		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Projectile"/>
 		<attributes>
 			<atk value="10" condition="!testing.combat"/>
       		<ratk value="10" condition="testing.combat"/>
@@ -175,7 +175,7 @@
 	<item name="kamienie">
 		<type class="missile" subclass="stones" tileid="-1"/>
 		<description>Oto kamienie. Jeśli tylko nauczysz się nimi miotać, będziesz mógł atakować z daleka.</description>
-		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Projectile"/>
 		<attributes>
 			<atk value="9" condition="!testing.combat"/>
       		<ratk value="9" condition="testing.combat"/>

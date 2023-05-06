@@ -37,7 +37,7 @@
 	<item name="łuk zf">
 		<type class="ranged" subclass="wooden_bow" tileid="-1"/>
 		<description>Oto łuk zf stworzony specjalnie do użytku w grze Capture the Flag. Z tym w dłoni i CTF arrow w drugiej będziesz mógł pogrzebać lub spowolnić wojownika.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="-1"/>
 			<range value="3"/>
@@ -58,7 +58,7 @@
 	<item name="strzała pogrzebania">
 		<type class="ammunition" subclass="fumble_arrow" tileid="-1"/>
 		<description>Oto strzała pogrzebania. Zaopatrzony w strzały w jednej dłoni i łuk w drugiej możesz atakować z dystansu.</description>
-		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Projectile"/>
 		<attributes>
 			<atk value="-1"/>
 			<range value="2"/>
@@ -80,7 +80,7 @@
 	<item name="strzała spowolnienia">
 		<type class="ammunition" subclass="slowdown_arrow" tileid="-1"/>
 		<description>Oto strzała spowolnienia. Zaopatrzony w strzały w jednej dłoni i łuk w drugiej możesz atakować z dystansu.</description>
-		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Projectile"/>
 		<attributes>
 			<atk value="-1"/>
 			<range value="2"/>
@@ -102,7 +102,7 @@
 	<item name="strzała przyspieszenia">
 		<type class="ammunition" subclass="speedup_arrow" tileid="-1"/>
 		<description>Oto strzała przyspieszenia. Zaopatrzony w strzały w jednej dłoni i łuk w drugiej możesz atakować z dystansu.</description>
-		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Projectile"/>
 		<attributes>
 			<atk value="-1"/>
 			<range value="2"/>
@@ -124,7 +124,7 @@
 	<item name="śnieżka pogrzebania">
 		<type class="missile" subclass="snowballs" tileid="-1"/>
 		<description>Oto śnieżka pogrzebania. Zaopatrzony w to możesz wytrącić flagę innej osobie.</description>
-		<implementation class-name="games.stendhal.server.entity.item.NoStatsStackableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.NoStatsProjectile"/>
 		<attributes>
 			<atk value="-1"/>
 			<range value="3"/>
@@ -146,7 +146,7 @@
 	<item name="śnieżka spowolnienia">
 		<type class="missile" subclass="snowballs" tileid="-1"/>
 		<description>Oto śnieżka spowolnienia. Zaopatrzony w to możesz spróbować spowolnić wojownika ZF.</description>
-		<implementation class-name="games.stendhal.server.entity.item.NoStatsStackableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.NoStatsProjectile"/>
 		<attributes>
 			<atk value="-1"/>
 			<range value="3"/>

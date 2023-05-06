@@ -5,7 +5,7 @@
 	<item name="młot chaosu">
 		<type class="club" subclass="chaos_hammer" tileid="-1"/>
 		<description>Oto młot chaosu. Przerażająca broń, pozwalająca ranić wrogów i jednocześnie leczyć.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="42"/>
 			<lifesteal value="0.3"/>
@@ -27,7 +27,7 @@
 	<item name="maczuga">
 		<type class="club" subclass="club" tileid="-1"/>
 		<description>Oto maczuga. Pomachaj nią, może coś przypadkiem zatłuczesz.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="6"/>
 			<undroppableondeath value="1"/>
@@ -50,7 +50,7 @@
 	<item name="maczuga cierniowa">
 		<type class="club" subclass="club_of_thorns" tileid="-1"/>
 		<description>Oto maczuga cierniowa. Kolce jej są pełne krwi. Jest bardzo potężna, ale jeśli chcesz jej używac to musisz tchnąć w nią trochę życia.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="48"/>
 			<lifesteal value="-0.1"/>
@@ -73,7 +73,7 @@
 	<item name="piernacz">
 		<type class="club" subclass="enhanced_mace" tileid="-1"/>
 		<description>Oto piernacz. Ciężki koniec sprawia że broń jest trudna do opanowania. To twój "list żelazny" na niegościnnych terenach.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="20"/>
 			<min_level value="3"/>
@@ -95,7 +95,7 @@
 	<item name="kiścień">
 		<type class="club" subclass="flail" tileid="-1"/>
 		<description>Oto kiścień. Jest to efektywna broń.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="19"/>
 			<min_level value="3"/>
@@ -116,7 +116,7 @@
 	<item name="złoty pyrlik">
 		<type class="club" subclass="golden_hammer" tileid="-1"/>
 		<description>Oto wartościowy złoty pyrlik. Ta złota broń może dla kogoś dużo znaczyć.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="39"/>
 			<min_level value="15"/>
@@ -137,7 +137,7 @@
 	<item name="złoty buzdygan">
 		<type class="club" subclass="golden_mace" tileid="-1"/>
 		<description>Oto błyszczący złoty buzdygan. Jest wystarczająco ostry, aby zadać obrażenia.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="26"/>
 			<min_level value="5"/>
@@ -159,7 +159,7 @@
 	<item name="pyrlik">
 		<type class="club" subclass="hammer" tileid="-1"/>
 		<description>Oto górniczy pyrlik. Jest wystaczający, aby zadać dobre obrażenia, ale jest powolny.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="31"/>
 			<min_level value="10"/>
@@ -180,7 +180,7 @@
 	<item name="lodowy młot bojowy">
 		<type class="club" subclass="ice_grand_warhammer" tileid="-1"/>
 		<description>Oto lodowy młot bojowy. Ostatni właściciel musiał być ogromny żeby go unieść. Bez obaw, nie skruszy się.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="45"/>
 			<min_level value="60"/>
@@ -203,7 +203,7 @@
 	<item name="buzdygan">
 		<type class="club" subclass="mace" tileid="-1"/>
 		<description>Oto buzdygan. Jest trochę stary, bo używany od lat.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="16"/>
 			<min_level value="5"/>
@@ -224,7 +224,7 @@
 	<item name="złoty kiścień">
 		<type class="club" subclass="golden_flail" tileid="-1"/>
 		<description>Oto złoty kiścień zwany Gwiazdą Zaranną. Jest to bardzo rzadka broń ale z racji użytych kolców niezwykle zajadła.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="25"/>
 			<min_level value="13"/>
@@ -268,7 +268,7 @@
 	<item name="rózga GM">
 		<type class="club" subclass="rod_of_the_gm" tileid="-1"/>
 		<description>Oto rózga GM. Jest ona zarezerwowana dla tych którzy posiadają specjalne moce. Bądź ostrożny, aby nie dostała się ona w niepowołane ręce.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<unattainable>true</unattainable>
 		<attributes>
 			<atk value="100"/>
@@ -291,7 +291,7 @@
 	<item name="kij z czaszką">
 		<type class="club" subclass="skull_staff" tileid="-1"/>
 		<description>Oto rzadko spotykany kij z czaszką. Jest mistyczny, ale włada się nim jak każdym innym kijem.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="22"/>
 			<def value="2"/>
@@ -316,7 +316,7 @@
 	<item name="kij">
 		<type class="club" subclass="staff" tileid="-1"/>
 		<description>Oto kij. Jest to rzadko używana broń.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="2"/>
 			<def value="1"/>
@@ -338,7 +338,7 @@
 	<item name="kropacz">
 		<type class="club" subclass="ugmash" tileid="-1"/>
 		<description>Oto kropacz. Może atakować szybciej niż inne maczugi, a kolce jakimi jest nabity zadają okropne rany.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="40"/>
 			<min_level value="120"/>
@@ -359,7 +359,7 @@
 	<item name="młot wulkanów">
 		<type class="club" subclass="vulcano_hammer" tileid="-1"/>
 		<description>Oto młot wulkanów. Ludzie mówią, że to broń bogów, ale jest wolna jak ślimak.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="54"/>
 			<min_level value="90"/>
@@ -382,7 +382,7 @@
 	<item name="młot bojowy">
 		<type class="club" subclass="grand_warhammer" tileid="-1"/>
 		<description>Oto ogromny młot bojowy. Wygląda na to że jest mocny, ale ciężki i dla tego powolny.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="38"/>
 			<min_level value="35"/>

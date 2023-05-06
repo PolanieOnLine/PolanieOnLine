@@ -5,7 +5,7 @@
 	<item name="drewniany sztylecik">
 		<type class="dagger" subclass="wooden_dagger" tileid="-1"/>
 		<description>Oto drewniany sztylecik. Posiada dziwną budowę przez otwory w głowni, by móc szybciej zadawać ciosy, przez co bardzo szybko się niszczy.</description>
-		<implementation class-name="games.stendhal.server.entity.item.BreakableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.BreakableWeapon"/>
 		<attributes>
 			<atk value="1"/>
 			<durability value="550"/>
@@ -27,7 +27,7 @@
 	<item name="sztylet mordercy">
 		<type class="dagger" subclass="assassin_dagger" tileid="-1"/>
 		<description>Oto sztylet mordercy, łatwo nim wyrwać serce wrogowi.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="6"/>
 			<min_level value="50"/>
@@ -49,7 +49,7 @@
 	<item name="sztylet chaosu">
 		<type class="dagger" subclass="chaos_dagger" tileid="-1"/>
 		<description>Oto sztylet chaosu. Jest on bardzo lekki i ostry. Użycie go w walce w magiczny sposób dodaje ci sił.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="7"/>
 			<lifesteal value="0.1"/>
@@ -71,7 +71,7 @@
 	<item name="sztylecik">
 		<type class="dagger" subclass="dagger" tileid="-1"/>
 		<description>Oto sztylecik, jest bardziej dekoracją niż szybką bronią.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="8"/>
 			<min_level value="3"/>
@@ -92,7 +92,7 @@
 	<item name="złota klinga">
 		<type class="dagger" subclass="golden_blade" tileid="-1"/>
 		<description>Oto złota klinga. Śmierć zadana przez nią jest szybka i bezbolesna.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="5"/>
 			<lifesteal value="0.1"/>
@@ -116,7 +116,7 @@
 	<item name="piekielny sztylet">
 		<type class="dagger" subclass="hell_dagger" tileid="-1"/>
 		<description>Oto piekielny sztylet. Czy błyszczą to ognie piekielne?</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="9"/>
 			<min_level value="70"/>
@@ -138,7 +138,7 @@
 	<item name="nożyk">
 		<type class="dagger" subclass="knife" tileid="-1"/>
 		<description>Oto tępy nożyk, który zadaje małe obrażenia.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="7"/>
 			<min_level value="1"/>
@@ -159,7 +159,7 @@
 	<item name="czarny sztylet">
 		<type class="dagger" subclass="black_dagger" tileid="-1"/>
 		<description>Oto czarny sztylet. Być może był używany przez złodziei.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="2"/>
 			<min_level value="50"/>
@@ -181,7 +181,7 @@
 	<item name="obsydianowy saks">
 		<type class="dagger" subclass="obsidian_knife" tileid="-1"/>
 		<description>Oto obsydianowy saks, którego ostrze zrobione jest z drogocennego kamienia.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="4"/>
 			<min_level value="60"/>
@@ -203,7 +203,7 @@
 	<item name="sztylet królewski">
 		<type class="dagger" subclass="royal_dagger" tileid="-1"/>
 		<description>Oto rzadki i cenny sztylet królewski. Może kraść życie tym, którym go dźgasz.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="5"/>
 			<lifesteal value="0.1"/>
@@ -226,7 +226,7 @@
 	<item name="sztylet dusz">
 		<type class="dagger" subclass="soul_dagger" tileid="-1"/>
 		<description>Oto sztylet dusz. Jest tak lekki i ostry, że możesz nim szybko atakować.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="5"/>
 			<min_level value="100"/>
@@ -249,7 +249,7 @@
 	<item name="sztylet orków">
 		<type class="dagger" subclass="orc_dagger" tileid="-1"/>
 		<description>Oto sztylet orków. Podręczna i wygodna broń.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="15"/>
 			<lifesteal value="-0.04"/>
@@ -271,7 +271,7 @@
 	<item name="zatruty sztylet egipski">
 		<type class="dagger" subclass="ancient_egyptian_poisoned" tileid="-1"/>
 		<description>Oto zatruty sztylet egipski. To trujące ostrze pochodzi z kraju dziwnych piramid.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="8"/>
 			<def value="1"/>
@@ -295,7 +295,7 @@
 	<item name="nóż z kości">
 		<type class="dagger" subclass="boneknife" tileid="-1"/>
 		<description/>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="3"/>
 			<min_level value="1"/>
@@ -317,7 +317,7 @@
 	<item name="sztylecik z mithrilu">
 		<type class="dagger" subclass="mithril_dagger" tileid="-1"/>
 		<description>Oto sztylecik z mithrilu, posiadający moc uzdrawiającą posiadacza.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="6"/>
 			<lifesteal value="0.02"/>
@@ -341,7 +341,7 @@
 	<item name="sztylet mroku">
 		<type class="dagger" subclass="dark_dagger" tileid="-1"/>
 		<description>Oto sztylet mroku. Jest zaprojektowany tak, aby zadawać nim szybkie ciosy.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="8"/>
 			<min_level value="30"/>
@@ -364,7 +364,7 @@
 	<item name="antyczny sztylet smoka">
 		<type class="dagger" subclass="ancient_dragon_dagger" tileid="-1"/>
 		<description>Oto antyczny sztylet smoka. Stworzony ze smoczego pazura, lekki przez co można nim zadawać bardzo szybkie ciosy.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="4"/>
 			<def value="2"/>
@@ -387,7 +387,7 @@
 	<item name="sztylet wampirów">
 		<type class="dagger" subclass="ancient_dracula_dagger" tileid="-1"/>
 		<description>Oto sztylet wampirów. Wykorzystywany przez wampirów do szybkiego rozlewu krwi.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="6"/>
 			<lifesteal value="0.05"/>
@@ -410,7 +410,7 @@
 	<item name="sztylet leworęczny">
 		<type class="dagger" subclass="l_hand_dagger" tileid="-1"/>
 		<description>Oto sztylet leworęczny. Musi zostać użyty wraz z praworęcznym sztyletem.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="5"/>
 			<def value="2"/>
@@ -432,7 +432,7 @@
 	<item name="sztylet praworęczny">
 		<type class="dagger" subclass="r_hand_dagger" tileid="-1"/>
 		<description>Oto sztylet praworęczny. Musi zostać użyty wraz z leworęcznym sztyletem.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="5"/>
 			<def value="2"/>

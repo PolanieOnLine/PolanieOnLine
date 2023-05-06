@@ -13,15 +13,14 @@ package games.stendhal.server.entity.item;
 
 import java.util.Map;
 
-
 /**
  * Represents a stackable item for which we do not want 'Stats' to show in description.
  *
  * @author kymara
  */
-public class NoStatsStackableItem extends StackableItem {
+public class NoStatsProjectile extends Projectile {
 
-	public NoStatsStackableItem(final String name, final String clazz, final String subclass,
+	public NoStatsProjectile(final String name, final String clazz, final String subclass,
 			final Map<String, String> attributes) {
 		super(name, clazz, subclass, attributes);
 		update();
@@ -33,7 +32,7 @@ public class NoStatsStackableItem extends StackableItem {
 	 * @param item
 	 *            item to copy
 	 */
-	public NoStatsStackableItem(final NoStatsStackableItem item) {
+	public NoStatsProjectile(final NoStatsProjectile item) {
 		super(item);
 		this.setQuantity(item.getQuantity());
 		update();

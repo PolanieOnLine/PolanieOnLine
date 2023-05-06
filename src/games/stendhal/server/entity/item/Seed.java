@@ -14,9 +14,13 @@ package games.stendhal.server.entity.item;
 
 import java.util.Map;
 
+import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.TurnNotifier;
+import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.RPEntity;
+import games.stendhal.server.entity.mapstuff.area.FertileGround;
 import games.stendhal.server.entity.mapstuff.spawner.FlowerGrower;
+import games.stendhal.server.entity.player.Player;
 
 /**
  * A seed can be planted.
@@ -24,7 +28,6 @@ import games.stendhal.server.entity.mapstuff.spawner.FlowerGrower;
  * The infostring stores what it will grow.
  */
 public class Seed extends StackableItem {
-
 	public Seed(final Seed item) {
 		super(item);
 	}
@@ -50,6 +53,28 @@ public class Seed extends StackableItem {
 				return false;
 			}
 
+			final StendhalRPZone userZone = user.getZone();
+			final int pos_x = this.getX();
+			final int pos_y = this.getY();
+
+			boolean fertile = false;
+			for (final Entity ent: userZone.getEntitiesAt(pos_x, pos_y)) {
+				if (ent instanceof FertileGround) {
+					// check for fertile ground
+					fertile = true;
+				} else if (ent instanceof FlowerGrower) {
+					// check if we are overwriting another flower grower so seeds are not wasted & don't
+					// allow infinite sowing in one spot
+					user.sendPrivateText("W tym miejscu już coś rośnie.");
+					return false;
+				}
+			}
+			if (!fertile) {
+				// don't waste seeds on infertile ground
+				user.sendPrivateText("Ziemia jest nieurodzajna.");
+				return false;
+			}
+
 			// the infostring of the seed stores what it should grow
 			final String infostring = this.getInfoString();
 			FlowerGrower flowerGrower;
@@ -59,13 +84,17 @@ public class Seed extends StackableItem {
 			} else {
 				flowerGrower = new FlowerGrower(this.getInfoString());
 			}
-			user.getZone().add(flowerGrower);
+			userZone.add(flowerGrower);
 			// add the FlowerGrower where the seed was on the ground
-			flowerGrower.setPosition(this.getX(), this.getY());
+			flowerGrower.setPosition(pos_x, pos_y);
 			// The first stage of growth happens almost immediately
 			TurnNotifier.get().notifyInTurns(3, flowerGrower);
 			// remove the seed now that it is planted
 			this.removeOne();
+			if (user instanceof Player) {
+				// XXX: should this increment only after flower grower has fully ripened?
+				((Player) user).incSownForItem(infostring, 1);
+			}
 			return true;
 		}
 		// the seed was 'contained' in a slot and so it cannot be planted

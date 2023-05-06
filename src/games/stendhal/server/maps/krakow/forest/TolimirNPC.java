@@ -38,7 +38,7 @@ import games.stendhal.server.core.events.TurnListener;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.RPEntity;
-import games.stendhal.server.entity.item.BreakableItem;
+import games.stendhal.server.entity.item.BreakableWeapon;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.mapstuff.portal.ConditionAndActionPortal;
 import games.stendhal.server.entity.mapstuff.portal.Gate;
@@ -349,7 +349,7 @@ public class TolimirNPC implements ZoneConfigurator,LoginListener,LogoutListener
 				player.drop("money", getRepairPrice(usedBows));
 
 				for (final Item bow: player.getAllEquipped("łuk treningowy")) {
-					final BreakableItem breakable = (BreakableItem) bow;
+					final BreakableWeapon breakable = (BreakableWeapon) bow;
 					if (breakable.isUsed()) {
 						breakable.repair();
 					}
@@ -415,7 +415,7 @@ public class TolimirNPC implements ZoneConfigurator,LoginListener,LogoutListener
 	private int getUsedBowsCount(final Player player) {
 		int count = 0;
 		for (final Item bow: player.getAllEquipped("łuk treningowy")) {
-			if (((BreakableItem) bow).isUsed()) {
+			if (((BreakableWeapon) bow).isUsed()) {
 				count++;
 			}
 		}

@@ -4,7 +4,7 @@
 	<item name="kamyczek">
 		<type class="ammunition" subclass="kamyk" tileid="-1"/>
 		<description>Oto kamyczek. Weź procę i zobacz z jak daleka można nim ugodzić przeciwnika.</description>
-		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Projectile"/>
 		<attributes>
 			<atk value="2" condition="!testing.combat"/>
 			<ratk value="2" condition="testing.combat"/>
@@ -28,7 +28,7 @@
 	<item name="strzała">
 		<type class="ammunition" subclass="wooden_arrow" tileid="-1"/>
 		<description>Oto strzała. Z zapasem strzał w jednej ręce i łukiem w drugiej, możesz atakować z dystansu.</description>
-		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Projectile"/>
 		<attributes>
 			<atk value="1" condition="!testing.combat"/>
 			<ratk value="1" condition="testing.combat"/>
@@ -51,7 +51,7 @@
 	<item name="wzmocniona drewniana strzała">
 		<type class="ammunition" subclass="r_wooden_arrow" tileid="-1"/>
 		<description>Oto wzmocniona drewniana strzała. Z zapasem strzał w jednej ręce i łukiem w drugiej, możesz atakować z dystansu.</description>
-		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Projectile"/>
 		<attributes>
 			<atk value="2" condition="!testing.combat"/>
 			<ratk value="2" condition="testing.combat"/>
@@ -74,7 +74,7 @@
 	<item name="strzała żelazna">
 		<type class="ammunition" subclass="steel_arrow" tileid="-1"/>
 		<description>Oto strzała żelazna. Z mnóstwem ich i dobrym łukiem, będziesz onieśmielającym łucznikiem.</description>
-		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Projectile"/>
 		<attributes>
 			<atk value="3" condition="!testing.combat"/>
 			<ratk value="3" condition="testing.combat"/>
@@ -97,7 +97,7 @@
 	<item name="strzała złota">
 		<type class="ammunition" subclass="golden_arrow" tileid="-1"/>
 		<description>Oto strzała złota. Z pełną garścią strzał i dobrym łukiem, na pewno będziesz szybciej gromił przeciwników.</description>
-		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Projectile"/>
 		<attributes>
 			<atk value="4" condition="!testing.combat"/>
 			<ratk value="4" condition="testing.combat"/>
@@ -120,7 +120,7 @@
 	<item name="strzała ognia">
 		<type class="ammunition" subclass="fire_arrow" tileid="-1"/>
 		<description>Oto strzała ognia. Grot jasno świeci.</description>
-		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Projectile"/>
 		<attributes>
 			<atk value="6" condition="!testing.combat"/>
 			<ratk value="6" condition="testing.combat"/>
@@ -144,7 +144,7 @@
 	<item name="strzała lodowa">
 		<type class="ammunition" subclass="ice_arrow" tileid="-1"/>
 		<description>Oto strzała lodowa. Może gorzko urządlić.</description>
-		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Projectile"/>
 		<attributes>
 			<atk value="6" condition="!testing.combat"/>
 			<ratk value="6" condition="testing.combat"/>
@@ -168,7 +168,7 @@
 	<item name="strzała światła">
 		<type class="ammunition" subclass="light_arrow" tileid="-1"/>
 		<description>Oto strzała światła. Świeci świętą poświatą.</description>
-		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Projectile"/>
 		<attributes>
 			<atk value="6" condition="!testing.combat"/>
 			<ratk value="6" condition="testing.combat"/>
@@ -192,7 +192,7 @@
 	<item name="strzała mroku">
 		<type class="ammunition" subclass="dark_arrow" tileid="-1"/>
 		<description>Oto strzała mroku. Trudno opisać.</description>
-		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Projectile"/>
 		<attributes>
 			<atk value="6" condition="!testing.combat"/>
 			<ratk value="6" condition="testing.combat"/>
@@ -216,7 +216,7 @@
 	<item name="strzała płonąca">
 		<type class="ammunition" subclass="power_arrow" tileid="-1"/>
 		<description>Oto strzała płonąca. Grot tej strzały na pewno pokona twoich przeciwników, kiedy masz ją z łukiem.</description>
-		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Projectile"/>
 		<attributes>
 			<atk value="6" condition="!testing.combat"/>
 			<ratk value="6" condition="testing.combat"/>
@@ -240,7 +240,7 @@
 	<item name="strzała z mithrilu">
 		<type class="ammunition" subclass="mithril_arrow" tileid="-1"/>
 		<description>Oto strzała z mithrilu. Grot tej strzały na pewno pokona twoich przeciwników, kiedy masz ją z łukiem.</description>
-		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Projectile"/>
 		<attributes>
 			<atk value="7" condition="!testing.combat"/>
 			<ratk value="7" condition="testing.combat"/>
@@ -264,7 +264,7 @@
 	<item name="bełt">
 		<type class="ammunition" subclass="wooden_bolt" tileid="-1"/>
 		<description>Oto bełt. Unieś kuszę i załaduj. Trafiaj celnie, a zranisz wroga.</description>
-		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Projectile"/>
 		<attributes>
 			<atk value="4" condition="!testing.combat"/>
 			<ratk value="4" condition="testing.combat"/>
@@ -287,7 +287,7 @@
 	<item name="bełt stalowy">
 		<type class="ammunition" subclass="steel_bolt" tileid="-1"/>
 		<description>Oto bełt stalowy. Może przebić łuskową zbroję o ile trafisz z odległości w jej słaby punkt.</description>
-		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Projectile"/>
 		<attributes>
 			<atk value="5" condition="!testing.combat"/>
 			<ratk value="5" condition="testing.combat"/>
@@ -310,7 +310,7 @@
 	<item name="bełt złoty">
 		<type class="ammunition" subclass="golden_bolt" tileid="-1"/>
 		<description>Oto bełt złoty. Zbierz ich więcej, a wielu wrogów zginie nawet cię nie dostrzegając.</description>
-		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Projectile"/>
 		<attributes>
 			<atk value="6" condition="!testing.combat"/>
 			<ratk value="6" condition="testing.combat"/>
@@ -333,7 +333,7 @@
 	<item name="bełt płonący">
 		<type class="ammunition" subclass="power_bolt" tileid="-1"/>
 		<description>Oto bełt płonący. Użyty z kuszą bywa zabójczy.</description>
-		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Projectile"/>
 		<attributes>
 			<atk value="7" condition="!testing.combat"/>
 			<ratk value="7" condition="testing.combat"/>
@@ -357,7 +357,7 @@
 	<item name="zatruta strzała">
 		<type class="ammunition" subclass="poison_arrow" tileid="-1"/>
 		<description>Oto zatruta strzała. Końcówka została nasączona trucizną.</description>
-		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.Projectile"/>
 		<attributes>
 			<atk condition="!testing.combat" value="2"/>
 			<ratk condition="testing.combat" value="2"/>

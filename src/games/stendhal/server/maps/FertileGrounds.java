@@ -9,7 +9,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-package games.stendhal.server.maps.semos.city;
+package games.stendhal.server.maps;
 
 import java.util.Map;
 

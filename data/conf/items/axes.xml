@@ -5,7 +5,7 @@
 	<item name="topór">
 		<type class="axe" subclass="axe" tileid="-1"/>
 		<description>Oto pordzewiały topór. Swoje tępe ostrze rekompensuje lekkością.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="12"/>
 			<min_level value="3"/>
@@ -26,7 +26,7 @@
 	<item name="berdysz">
 		<type class="axe" subclass="bardiche" tileid="-1"/>
 		<description>Oto rzadki lecz potężnej mocy berdysz.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="33"/>
 			<def value="3"/>
@@ -48,7 +48,7 @@
 	<item name="topór bojowy">
 		<type class="axe" subclass="battle_axe" tileid="-1"/>
 		<description>Oto topór bojowy. Świetnie wykonany i mimo swoich lat wciąż ostry.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="15"/>
 			<def value="2"/>
@@ -70,7 +70,7 @@
 	<item name="czarna halabarda">
 		<type class="axe" subclass="black_halberd" tileid="-1"/>
 		<description>Oto czarna halabarda. Jest ogromnie ciężka, ale mimo powolnych ruchów potrafisz zadawać nią mocne ciosy.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="57"/>
 			<def value="5"/>
@@ -94,7 +94,7 @@
 	<item name="czarna kosa">
 		<type class="axe" subclass="black_scythe" tileid="-1"/>
 		<description>Oto czarna kosa. Jej atak jest niesamowity, ale nada się jako narzędzie rolnicze.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="42"/>
 			<min_level value="200"/>
@@ -117,7 +117,7 @@
 	<item name="topór chaosu">
 		<type class="axe" subclass="chaos_axe" tileid="-1"/>
 		<description>Oto topór chaosu. Jego rękojeść wydaje się zlepiona z wielu metali. Dzierżąc go czujesz się nieswojo.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="52"/>
 			<def value="3"/>
@@ -140,7 +140,7 @@
 	<item name="topór Durina">
 		<type class="axe" subclass="durin_axe" tileid="-1"/>
 		<description>Oto topór Durina, jest to wielka nagroda od krasnali.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="47"/>
 			<def value="3"/>
@@ -164,7 +164,7 @@
 	<item name="złoty topór obosieczny">
 		<type class="axe" subclass="golden_twosided_poleaxe" tileid="-1"/>
 		<description>Oto złoty topór obosieczny. Trudno na niego trafić.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="35"/>
 			<def value="3"/>
@@ -187,7 +187,7 @@
 	<item name="halabarda">
 		<type class="axe" subclass="halberd" tileid="-1"/>
 		<description>Oto halabarda. Ma ostrze zatknięte na końcu dzidy. Krawędzie ma ostre, a rany zadaje ciężkie.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="40"/>
 			<def value="4"/>
@@ -209,7 +209,7 @@
 	<item name="topór jednoręczny">
 		<type class="axe" subclass="hand_axe" tileid="-1"/>
 		<description>Oto topór jednoręczny. Był często w użyciu, lecz wciąż może być przydatny.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="9"/>
 			<min_level value="1"/>
@@ -230,7 +230,7 @@
 	<item name="magiczny topór obosieczny">
 		<type class="axe" subclass="magic_twosided_poleaxe" tileid="-1"/>
 		<description>Oto magiczny topór obosieczny. Natura magii nie jest Ci do końca jasna.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="40"/>
 			<def value="4"/>
@@ -253,7 +253,7 @@
 	<item name="pordzewiała kosa">
 		<type class="axe" subclass="oldscythe" tileid="-1"/>
 		<description>Oto pordzewiała kosa. Porzuciła ją Kostucha, a tobie przydać się może przy sianokosach.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="13"/>
 			<min_level value="20"/>
@@ -274,7 +274,7 @@
 	<item name="kosa">
 		<type class="axe" subclass="scythe" tileid="-1"/>
 		<description>Oto kosa. Wygląda na niebezpieczną broń, ale może przydać się przy sianokosach.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="19"/>
 			<min_level value="40"/>
@@ -295,7 +295,7 @@
 	<item name="złota kosa">
 		<type class="axe" subclass="golden_scythe" tileid="-1"/>
 		<description>Oto złota kosa. Może na niej trochę zarobisz.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="34"/>
 			<min_level value="180"/>
@@ -318,7 +318,7 @@
 	<item name="kosa z mithrilu">
 		<type class="axe" subclass="mithril_scythe" tileid="-1"/>
 		<description>Oto rzadka kosa wykonana z mithrilu. Mieni się jasnym blaskiem.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="55"/>
 			<lifesteal value="0.05"/>
@@ -342,7 +342,7 @@
 	<item name="sierp">
 		<type class="axe" subclass="sickle" tileid="-1"/>
 		<description>Oto sierp, użyteczne narzędzie dla każdego farmera.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="2"/>
 			<min_level value="0"/>
@@ -363,7 +363,7 @@
 	<item name="toporek">
 		<type class="axe" subclass="small_axe" tileid="-1"/>
 		<description>Oto toporek. Wygląda na solidny, ale jest zbyt lekki by zadawać poważne rany.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="7"/>
 			<min_level value="1"/>
@@ -384,7 +384,7 @@
 	<item name="topór obosieczny">
 		<type class="axe" subclass="twosided_poleaxe" tileid="-1"/>
 		<description>Oto świetnie wykuty topór obosieczny.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="29"/>
 			<def value="3"/>
@@ -406,7 +406,7 @@
 	<item name="siekierka">
 		<type class="axe" subclass="siekierka" tileid="-1"/>
 		<description>Oto siekierka. Zagubiona w lesie przez drwala stała się dla ciebie orężem.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="5"/>
 			<min_level value="1"/>
@@ -427,7 +427,7 @@
 	<item name="ciupaga">
 		<type class="axe" subclass="ciupaga" tileid="-1"/>
 		<description>Oto prawdziwa góralska ciupaga!</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="18"/>
 			<min_level value="50"/>
@@ -448,7 +448,7 @@
 	<item name="ciupaga startowa">
 		<type class="axe" subclass="ciupaga" tileid="-1"/>
 		<description>Oto prawdziwa góralska ciupaga! (Tylko dla nowych postaci!)</description>
-		<implementation class-name="games.stendhal.server.entity.item.BreakableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.BreakableWeapon"/>
 		<attributes>
 			<atk value="18"/>
 			<durability value="1000"/>
@@ -470,7 +470,7 @@
 	<item name="złota ciupaga">
 		<type class="axe" subclass="zlota_ciupaga" tileid="-1"/>
 		<description>Oto prawdziwa góralska złota ciupaga!</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="20"/>
 			<def value="1"/>
@@ -492,7 +492,7 @@
 	<item name="złota ciupaga z wąsem">
 		<type class="axe" subclass="zlota_ciupaga1" tileid="-1"/>
 		<description>Oto prawdziwa góralska złota ciupaga z wąsem!</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="22"/>
 			<def value="2"/>
@@ -515,7 +515,7 @@
 	<item name="złota ciupaga z dwoma wąsami">
 		<type class="axe" subclass="zlota_ciupaga2" tileid="-1"/>
 		<description>Oto prawdziwa góralska złota ciupaga z dwoma wąsami! Wąsy posiadają jakieś magiczne właściwości, im więcej wąsów na ciupadze tym szybsza ona jest!</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="24"/>
 			<def value="3"/>
@@ -538,7 +538,7 @@
 	<item name="złota ciupaga z trzema wąsami">
 		<type class="axe" subclass="zlota_ciupaga3" tileid="-1"/>
 		<description>Oto prawdziwa góralska złota ciupaga z trzema wąsami! Trzy wąsy na jednej złotej ciupadze to rzadkość! Tą broń otacza jakaś magiczna aura.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="24"/>
 			<def value="4"/>

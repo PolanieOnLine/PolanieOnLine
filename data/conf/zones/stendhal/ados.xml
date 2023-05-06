@@ -3390,7 +3390,7 @@ Moje wynagrodzenie:
 			<parameter name="x">13</parameter>
 			<parameter name="y">13</parameter>
 		</configurator>
-		<configurator class-name="games.stendhal.server.maps.semos.city.FertileGrounds">
+		<configurator class-name="games.stendhal.server.maps.FertileGrounds">
 			<parameter name="x">8</parameter>
 			<parameter name="y">12</parameter>
 			<parameter name="width">1</parameter>
@@ -3444,7 +3444,7 @@ Moje wynagrodzenie:
 			<parameter name="x">13</parameter>
 			<parameter name="y">13</parameter>
 		</configurator>
-		<configurator class-name="games.stendhal.server.maps.semos.city.FertileGrounds">
+		<configurator class-name="games.stendhal.server.maps.FertileGrounds">
 			<parameter name="x">12</parameter>
 			<parameter name="y">12</parameter>
 			<parameter name="width">1</parameter>
@@ -3499,7 +3499,7 @@ Moje wynagrodzenie:
 			<parameter name="x">12</parameter>
 			<parameter name="y">13</parameter>
 		</configurator>
-		<configurator class-name="games.stendhal.server.maps.semos.city.FertileGrounds">
+		<configurator class-name="games.stendhal.server.maps.FertileGrounds">
 			<parameter name="x">2</parameter>
 			<parameter name="y">12</parameter>
 			<parameter name="width">2</parameter>
@@ -3541,7 +3541,7 @@ Moje wynagrodzenie:
 			<parameter name="x">13</parameter>
 			<parameter name="y">8</parameter>
 		</configurator>
-		<configurator class-name="games.stendhal.server.maps.semos.city.FertileGrounds">
+		<configurator class-name="games.stendhal.server.maps.FertileGrounds">
 			<parameter name="x">8</parameter>
 			<parameter name="y">12</parameter>
 			<parameter name="width">4</parameter>
@@ -3576,7 +3576,7 @@ Moje wynagrodzenie:
 			<parameter name="x">12</parameter>
 			<parameter name="y">13</parameter>
 		</configurator>
-		<configurator class-name="games.stendhal.server.maps.semos.city.FertileGrounds">
+		<configurator class-name="games.stendhal.server.maps.FertileGrounds">
 			<parameter name="x">12</parameter>
 			<parameter name="y">10</parameter>
 			<parameter name="width">2</parameter>
@@ -3627,7 +3627,7 @@ Moje wynagrodzenie:
 			<parameter name="x">12</parameter>
 			<parameter name="y">13</parameter>
 		</configurator>
-		<configurator class-name="games.stendhal.server.maps.semos.city.FertileGrounds">
+		<configurator class-name="games.stendhal.server.maps.FertileGrounds">
 			<parameter name="x">12</parameter>
 			<parameter name="y">10</parameter>
 			<parameter name="width">2</parameter>
@@ -3682,7 +3682,7 @@ Moje wynagrodzenie:
 			<parameter name="x">13</parameter>
 			<parameter name="y">13</parameter>
 		</configurator>
-		<configurator class-name="games.stendhal.server.maps.semos.city.FertileGrounds">
+		<configurator class-name="games.stendhal.server.maps.FertileGrounds">
 			<parameter name="x">3</parameter>
 			<parameter name="y">11</parameter>
 			<parameter name="width">2</parameter>
@@ -3726,7 +3726,7 @@ Moje wynagrodzenie:
 			<parameter name="x">12</parameter>
 			<parameter name="y">13</parameter>
 		</configurator>
-		<configurator class-name="games.stendhal.server.maps.semos.city.FertileGrounds">
+		<configurator class-name="games.stendhal.server.maps.FertileGrounds">
 			<parameter name="x">10</parameter>
 			<parameter name="y">3</parameter>
 			<parameter name="width">3</parameter>
@@ -3808,7 +3808,7 @@ Moje wynagrodzenie:
 
 	<zone name="int_ados_house_58_1" file="interiors/ados/house_58_1.tmx" accessible="false">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
-		<configurator class-name="games.stendhal.server.maps.semos.city.FertileGrounds">
+		<configurator class-name="games.stendhal.server.maps.FertileGrounds">
 			<parameter name="x">3</parameter>
 			<parameter name="y">11</parameter>
 			<parameter name="width">2</parameter>
@@ -3828,7 +3828,7 @@ Moje wynagrodzenie:
 			<parameter name="x">13</parameter>
 			<parameter name="y">8</parameter>
 		</configurator>
-		<configurator class-name="games.stendhal.server.maps.semos.city.FertileGrounds">
+		<configurator class-name="games.stendhal.server.maps.FertileGrounds">
 			<parameter name="x">2</parameter>
 			<parameter name="y">4</parameter>
 			<parameter name="width">1</parameter>
@@ -3888,7 +3888,7 @@ Moje wynagrodzenie:
 			<parameter name="x">7</parameter>
 			<parameter name="y">2</parameter>
 		</configurator>
-		<configurator class-name="games.stendhal.server.maps.semos.city.FertileGrounds">
+		<configurator class-name="games.stendhal.server.maps.FertileGrounds">
 			<parameter name="x">4</parameter>
 			<parameter name="y">12</parameter>
 			<parameter name="width">1</parameter>
@@ -3987,7 +3987,7 @@ Moje wynagrodzenie:
 
 	<zone name="int_ados_house_61_1" file="interiors/ados/house_61_1.tmx" accessible="false">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
-		<configurator class-name="games.stendhal.server.maps.semos.city.FertileGrounds">
+		<configurator class-name="games.stendhal.server.maps.FertileGrounds">
 			<parameter name="x">2</parameter>
 			<parameter name="y">9</parameter>
 			<parameter name="width">2</parameter>
@@ -4006,7 +4006,7 @@ Moje wynagrodzenie:
 			<parameter name="x">13</parameter>
 			<parameter name="y">9</parameter>
 		</configurator>
-		<configurator class-name="games.stendhal.server.maps.semos.city.FertileGrounds">
+		<configurator class-name="games.stendhal.server.maps.FertileGrounds">
 			<parameter name="x">10</parameter>
 			<parameter name="y">7</parameter>
 			<parameter name="width">1</parameter>
@@ -4051,7 +4051,7 @@ Moje wynagrodzenie:
 			<parameter name="x">20</parameter>
 			<parameter name="y">2</parameter>
 		</configurator>
-		<configurator class-name="games.stendhal.server.maps.semos.city.FertileGrounds">
+		<configurator class-name="games.stendhal.server.maps.FertileGrounds">
 			<parameter name="x">20</parameter>
 			<parameter name="y">20</parameter>
 			<parameter name="width">1</parameter>
@@ -4070,7 +4070,7 @@ Moje wynagrodzenie:
 			<parameter name="x">20</parameter>
 			<parameter name="y">2</parameter>
 		</configurator>
-		<configurator class-name="games.stendhal.server.maps.semos.city.FertileGrounds">
+		<configurator class-name="games.stendhal.server.maps.FertileGrounds">
 			<parameter name="x">18</parameter>
 			<parameter name="y">21</parameter>
 			<parameter name="width">1</parameter>
@@ -4089,7 +4089,7 @@ Moje wynagrodzenie:
 			<parameter name="x">10</parameter>
 			<parameter name="y">14</parameter>
 		</configurator>
-		<configurator class-name="games.stendhal.server.maps.semos.city.FertileGrounds">
+		<configurator class-name="games.stendhal.server.maps.FertileGrounds">
 			<parameter name="x">20</parameter>
 			<parameter name="y">20</parameter>
 			<parameter name="width">1</parameter>
@@ -4108,7 +4108,7 @@ Moje wynagrodzenie:
 			<parameter name="x">19</parameter>
 			<parameter name="y">2</parameter>
 		</configurator>
-		<configurator class-name="games.stendhal.server.maps.semos.city.FertileGrounds">
+		<configurator class-name="games.stendhal.server.maps.FertileGrounds">
 			<parameter name="x">3</parameter>
 			<parameter name="y">23</parameter>
 			<parameter name="width">2</parameter>
@@ -4164,7 +4164,7 @@ Moje wynagrodzenie:
 			<parameter name="x">20</parameter>
 			<parameter name="y">2</parameter>
 		</configurator>
-		<configurator class-name="games.stendhal.server.maps.semos.city.FertileGrounds">
+		<configurator class-name="games.stendhal.server.maps.FertileGrounds">
 			<parameter name="x">3</parameter>
 			<parameter name="y">15</parameter>
 			<parameter name="width">2</parameter>
@@ -4226,7 +4226,7 @@ Moje wynagrodzenie:
 			<parameter name="x">11</parameter>
 			<parameter name="y">2</parameter>
 		</configurator>
-		<configurator class-name="games.stendhal.server.maps.semos.city.FertileGrounds">
+		<configurator class-name="games.stendhal.server.maps.FertileGrounds">
 			<parameter name="x">4</parameter>
 			<parameter name="y">14</parameter>
 			<parameter name="width">1</parameter>

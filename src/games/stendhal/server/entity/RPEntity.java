@@ -2471,7 +2471,6 @@ public abstract class RPEntity extends CombatEntity {
 		return false;
 	}
 
-
 	/**
 	 * checks if an item is equipped in a slot
 	 *
@@ -2535,6 +2534,7 @@ public abstract class RPEntity extends CombatEntity {
 			final String[] slots = { "lhand", "rhand" };
 			for (final String slot : slots) {
 				final Item item = getEquippedItemClass(slot, weaponClass);
+				// FIXME: should weapon always be instance of WeaponImpl?
 				if (item != null) {
 					return item;
 				}
@@ -2586,7 +2586,7 @@ public abstract class RPEntity extends CombatEntity {
 	 */
 	public Item getRangeWeapon() {
 		for (final Item weapon : getWeapons()) {
-			if (weapon.has("range")) {
+			if (weapon.has("range") && !weapon.equals(getWandWeapon())) {
 				return weapon;
 			}
 		}
@@ -2624,14 +2624,21 @@ public abstract class RPEntity extends CombatEntity {
 		final String[] slots = { "lhand", "rhand" };
 
 		for (final String slot : slots) {
-			final StackableItem item = (StackableItem) getEquippedItemClass(
-					slot, ammoType);
+			final StackableItem item = (StackableItem) getEquippedItemClass(slot, ammoType);
 			if (item != null) {
 				return item;
 			}
 		}
 
 		return null;
+	}
+
+	public StackableItem getAmmunition() {
+		return getAmmunition("ammunition");
+	}
+
+	public StackableItem getMagicSpells() {
+		return getAmmunition("magia");
 	}
 
 	/**
@@ -2993,7 +3000,7 @@ public abstract class RPEntity extends CombatEntity {
 		}
 
 		if (getWandWeapon() != null) {
-			Item amm = getAmmunition("magia");
+			Item amm = getMagicSpells();
 			if (amm != null) {
 				weapon += amm.getDefense();
 			}
@@ -3075,7 +3082,7 @@ public abstract class RPEntity extends CombatEntity {
 		final List<StatusAttacker> stattackers = new ArrayList<>();
 		stattackers.addAll(statusAttackers);
 		final List<Item> weapons = getWeapons();
-		final Item ammo = getAmmunition("ammunition");
+		final Item ammo = getAmmunition();
 		if (ammo != null) {
 			weapons.add(ammo);
 		}
@@ -3126,11 +3133,11 @@ public abstract class RPEntity extends CombatEntity {
 	public int getMaxRangeForArcher() {
 		final Item rangeWeapon = getRangeWeapon();
 		final Item wandWeapon = getWandWeapon();
-		final StackableItem ammunition = getAmmunition("ammunition");
-		final StackableItem magicSpells = getAmmunition("magia");
+		final StackableItem ammo = getAmmunition();
+		final StackableItem magicammo = getMagicSpells();
 		final StackableItem missiles = getMissileIfNotHoldingOtherWeapon();
 
-		return getWeaponRange(rangeWeapon, ammunition) | getWeaponRange(wandWeapon, magicSpells) | getWeaponRange(null, missiles);
+		return getWeaponRange(rangeWeapon, ammo) | getWeaponRange(wandWeapon, magicammo) | getWeaponRange(null, missiles);
 	}
 
 	private int getWeaponRange(Item item, StackableItem amm) {

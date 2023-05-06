@@ -41,12 +41,13 @@ import games.stendhal.server.entity.creature.DomesticAnimal;
 import games.stendhal.server.entity.creature.Goat;
 import games.stendhal.server.entity.creature.Pet;
 import games.stendhal.server.entity.creature.Sheep;
-import games.stendhal.server.entity.item.BreakableItem;
+import games.stendhal.server.entity.item.BreakableWeapon;
 import games.stendhal.server.entity.item.Item;
+import games.stendhal.server.entity.item.Projectile;
 import games.stendhal.server.entity.item.StackableItem;
+import games.stendhal.server.entity.item.WeaponImpl;
 import games.stendhal.server.entity.npc.TrainingDummy;
 import games.stendhal.server.entity.player.Player;
-import games.stendhal.server.entity.status.StatusAttacker;
 import games.stendhal.server.events.AttackEvent;
 import marauroa.common.game.RPObject;
 import marauroa.common.net.message.TransferContent;
@@ -323,6 +324,7 @@ public class StendhalRPAction {
 		if (attackWeapon != null) {
 			weaponClass = attackWeapon.getWeaponType();
 		}
+		final WeaponImpl weaponImpl = (WeaponImpl) attackWeapon;
 		// player may be using a melee weapon with longer reach
 		isRanged = isRanged && attackWeapon.isNonMeleeWeapon();
 
@@ -345,14 +347,8 @@ public class StendhalRPAction {
 			beaten = player.canHit(defender);
 		}
 
-		// try to inflict status effect
-		final List<StatusAttacker> allStatusAttackers = player.getAllStatusAttackers();
-		for (final StatusAttacker statusAttacker: allStatusAttackers) {
-			statusAttacker.onAttackAttempt(defender, player);
-		}
-
 		// equipment that are broken are added to this list
-		final List<BreakableItem> broken = new ArrayList<>();
+		final List<BreakableWeapon> broken = new ArrayList<>();
 
 		boolean getsDefXp = false;
 		boolean getsAtkXp = player.recentlyDamagedBy(defender);
@@ -363,6 +359,7 @@ public class StendhalRPAction {
 			getsAtkXp = player.getsAtkXpFrom(defender);
 		}
 
+		int damage = -1;
 		if (beaten) {
 			final List<Item> weapons = player.getWeapons();
 			final float itemAtk;
@@ -373,7 +370,7 @@ public class StendhalRPAction {
 				itemAtk = player.getItemAtk();
 			}
 
-			int damage = player.damageDone(defender, itemAtk, player.getDamageType());
+			damage = player.damageDone(defender, itemAtk, player.getDamageType());
 			final boolean didDamage = damage > 0;
 
 			// Roll a crit chance (default: 10%).
@@ -411,21 +408,22 @@ public class StendhalRPAction {
 						+ defender.getID() + ": Damage: " + 0);
 			}
 
-			// try to inflict status effect
-			for (final StatusAttacker statusAttacker: allStatusAttackers) {
-				statusAttacker.onHit(defender, player, damage);
-			}
-
 			// deteriorate weapons of attacker
+			// TODO: handle in WeaponImpl.onAttackSuccess
 			for (final Item weapon: weapons) {
 				weapon.deteriorate(player);
 
-				if (weapon instanceof BreakableItem) {
-					final BreakableItem breakable = (BreakableItem) weapon;
+				if (weapon instanceof BreakableWeapon) {
+					final BreakableWeapon breakable = (BreakableWeapon) weapon;
 					if (breakable.isBroken()) {
 						broken.add(breakable);
 					}
 				}
+			}
+
+			// handle actions for successful attacks (note: projectiles should handle actions for ranged weapons)
+			if (!isRanged && weaponImpl != null) {
+				weaponImpl.onAttackSuccess(defender, player, damage);
 			}
 
 			// randomly choose one defensive item to deteriorate
@@ -434,8 +432,8 @@ public class StendhalRPAction {
 				final Item equip = Rand.rand(defenseItems);
 				equip.deteriorate(defender);
 
-				if (equip instanceof BreakableItem) {
-					final BreakableItem breakable = (BreakableItem) equip;
+				if (equip instanceof BreakableWeapon) {
+					final BreakableWeapon breakable = (BreakableWeapon) equip;
 					if (breakable.isBroken()) {
 						broken.add(breakable);
 					}
@@ -466,12 +464,12 @@ public class StendhalRPAction {
 		if (isRanged) {
 			// Removing the missile is deferred here so that the weapon
 			// information is available when calculating the damage.
-			useMissile(player);
+			useMissile(player, defender, damage);
 		}
 
 		player.notifyWorldAboutChanges();
 
-		for (final BreakableItem breakable: broken) {
+		for (final BreakableWeapon breakable: broken) {
 			if (breakable.isContained()) {
 				final RPObject slot = breakable.getContainer();
 				if (breakable.getContainerSlot().remove(breakable.getID()) != null) {
@@ -485,7 +483,7 @@ public class StendhalRPAction {
 							+ " times (durability: " + breakable.getDurability() + ")").raise();
 					player.sendPrivateText("Twój przedmiot " + event + "!");
 				} else {
-					logger.error("Could not remove BreakableItem \"" + breakable.getName()
+					logger.error("Could not remove BreakableWeapon \"" + breakable.getName()
 							+ "\" with ID " + breakable.getID().toString());
 				}
 			}
@@ -499,15 +497,19 @@ public class StendhalRPAction {
 	 *
 	 * @param player
 	 *     The player to remove the projectile from.
+	 * @param target
+	 *     Entity player is attacking.
+	 * @param damage
+	 *     Amount of damage done during attack (-1 means attack missed).
 	 */
-	private static void useMissile(Player player) {
+	private static void useMissile(Player player, final RPEntity target, final int damage) {
 		// Get the projectile that will be thrown/shot.
 		StackableItem projectilesItem = null;
 		if (player.getProjectileLauncher() != null) {
-			projectilesItem = player.getAmmunition("ammunition");
+			projectilesItem = player.getAmmunition();
 		}
 		if (player.getWandWeapon() != null) {
-			projectilesItem = player.getAmmunition("magia");
+			projectilesItem = player.getMagicSpells();
 		}
 		if (projectilesItem == null) {
 			// no arrows... but maybe a spear?
@@ -516,7 +518,11 @@ public class StendhalRPAction {
 		// Creatures can attack without having projectiles, but players
 		// will lose a projectile for each shot.
 		if (projectilesItem != null) {
+			// TODO: handle in Projectile class
 			projectilesItem.removeOne();
+			if (damage >= 0 && projectilesItem instanceof Projectile) {
+				((Projectile) projectilesItem).onAttackSuccess(target, player, damage);
+			}
 		}
 	}
 

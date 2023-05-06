@@ -5,7 +5,7 @@
 	<item name="zatruty bicz">
 		<type class="whip" subclass="venom_whip" tileid="-1"/>
 		<description>Oto zatruty bicz. Jego rzemień został nasycony jadem kobry.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="30"/>
 			<range value="1"/>

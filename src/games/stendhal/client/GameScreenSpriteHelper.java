@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2022 - Marauroa                    *
+ *                   (C) Copyright 2003-2023 - Marauroa                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -60,14 +60,14 @@ public class GameScreenSpriteHelper {
 	 * @param newScale
 	 *     Scaling to be applied.
 	 */
-	void setScale(final double newScale) {
+	static void setScale(final double newScale) {
 		scale = newScale;
 	}
 
 	/**
 	 * Retrieves screen scale.
 	 */
-	double getScale() {
+	static double getScale() {
 		return scale;
 	}
 
@@ -77,14 +77,14 @@ public class GameScreenSpriteHelper {
 	 * @param width
 	 *     New width.
 	 */
-	void setWorldWidth(final int width) {
+	static void setWorldWidth(final int width) {
 		ww = width;
 	}
 
 	/**
 	 * Get the width of the world in world units.
 	 */
-	int getWorldWidth() {
+	static int getWorldWidth() {
 		return ww;
 	}
 
@@ -94,14 +94,14 @@ public class GameScreenSpriteHelper {
 	 * @param height
 	 *     New height.
 	 */
-	void setWorldHeight(final int height) {
+	static void setWorldHeight(final int height) {
 		wh = height;
 	}
 
 	/**
 	 * Gets the height of the world in world units.
 	 */
-	int getWorldHeight() {
+	static int getWorldHeight() {
 		return wh;
 	}
 
@@ -111,7 +111,7 @@ public class GameScreenSpriteHelper {
 	 * @param x
 	 *     New X coordinate.
 	 */
-	void setScreenViewX(final int x) {
+	static void setScreenViewX(final int x) {
 		svx = x;
 	}
 
@@ -121,7 +121,7 @@ public class GameScreenSpriteHelper {
 	 * @return
 	 *     The X coordinate of the left side.
 	 */
-	public int getScreenViewX() {
+	public static int getScreenViewX() {
 		return svx;
 	}
 
@@ -131,7 +131,7 @@ public class GameScreenSpriteHelper {
 	 * @param y
 	 *     New Y coordinate.
 	 */
-	void setScreenViewY(final int y) {
+	static void setScreenViewY(final int y) {
 		svy = y;
 	}
 
@@ -141,7 +141,7 @@ public class GameScreenSpriteHelper {
 	 * @return
 	 *     The Y coordinate of the left side.
 	 */
-	public int getScreenViewY() {
+	public static int getScreenViewY() {
 		return svy;
 	}
 
@@ -151,14 +151,14 @@ public class GameScreenSpriteHelper {
 	 * @param t
 	 *     All bubbles.
 	 */
-	void setTexts(final List<RemovableSprite> t) {
+	static void setTexts(final List<RemovableSprite> t) {
 		texts = t;
 	}
 
 	/**
 	 * Retrieves list of text bubbles displayed on screen.
 	 */
-	List<RemovableSprite> getTexts() {
+	static List<RemovableSprite> getTexts() {
 		return texts;
 	}
 
@@ -168,7 +168,7 @@ public class GameScreenSpriteHelper {
 	 * @param sprite
 	 *     Text sprite to add.
 	 */
-	void addText(final RemovableSprite sprite) {
+	static void addText(final RemovableSprite sprite) {
 		texts.add(sprite);
 	}
 
@@ -178,34 +178,34 @@ public class GameScreenSpriteHelper {
 	 * @param sprite
 	 *     Text sprite to remove.
 	 */
-	void removeText(final RemovableSprite sprite) {
+	static void removeText(final RemovableSprite sprite) {
 		texts.remove(sprite);
 	}
 
 	/**
 	 * Removes all text bubbles from the display.
 	 */
-	void clearTexts() {
+	static void clearTexts() {
 		texts.clear();
 	}
 
-	void setEmojis(final List<RemovableSprite> e) {
+	static void setEmojis(final List<RemovableSprite> e) {
 		emojis = e;
 	}
 
-	List<RemovableSprite> getEmojis() {
+	static List<RemovableSprite> getEmojis() {
 		return emojis;
 	}
 
-	void addEmoji(final RemovableSprite emoji) {
+	static void addEmoji(final RemovableSprite emoji) {
 		emojis.add(emoji);
 	}
 
-	void removeEmoji(final RemovableSprite emoji) {
+	static void removeEmoji(final RemovableSprite emoji) {
 		emojis.remove(emoji);
 	}
 
-	void clearEmojis() {
+	static void clearEmojis() {
 		emojis.clear();
 	}
 
@@ -217,7 +217,7 @@ public class GameScreenSpriteHelper {
 	 * @return
 	 *     A screen value (in pixels).
 	 */
-	public int convertWorldToPixelUnits(final double w) {
+	public static int convertWorldToPixelUnits(final double w) {
 		return (int) (w * IGameScreen.SIZE_UNIT_PIXELS);
 	}
 
@@ -230,7 +230,7 @@ public class GameScreenSpriteHelper {
 	 * @return
 	 *     Pixel X coordinate on the screen.
 	 */
-	public int convertWorldXToScaledScreen(final double x) {
+	public static int convertWorldXToScaledScreen(final double x) {
 		return (int) (convertWorldToPixelUnits(x - svx / (double) IGameScreen.SIZE_UNIT_PIXELS) * scale) + svx;
 	}
 
@@ -243,7 +243,7 @@ public class GameScreenSpriteHelper {
 	 * @return
 	 *     Pixel Y coordinate on the screen.
 	 */
-	public int convertWorldYToScaledScreen(final double y) {
+	public static int convertWorldYToScaledScreen(final double y) {
 		return (int) (convertWorldToPixelUnits(y - svy / (double) IGameScreen.SIZE_UNIT_PIXELS) * scale) + svy;
 	}
 
@@ -257,7 +257,7 @@ public class GameScreenSpriteHelper {
 	 * @return
 	 *     New X coordinate.
 	 */
-	public int keepSpriteOnMapX(final Sprite sprite, int sx) {
+	public static int keepSpriteOnMapX(final Sprite sprite, int sx) {
 		sx = Math.max(sx, 0);
 
 		/*
@@ -283,7 +283,7 @@ public class GameScreenSpriteHelper {
 	 * @return
 	 *     New Y coordinate.
 	 */
-	public int keepSpriteOnMapY(final Sprite sprite, int sy) {
+	public static int keepSpriteOnMapY(final Sprite sprite, int sy) {
 		sy = Math.max(sy, 0);
 
 		/*
@@ -307,7 +307,7 @@ public class GameScreenSpriteHelper {
 	 * @param x
 	 * @param sy
 	 */
-	public int findFreeTextBoxPosition(final Sprite sprite, final int x, int sy) {
+	public static int findFreeTextBoxPosition(final Sprite sprite, final int x, int sy) {
 		boolean found = true;
 		int tries = 0;
 

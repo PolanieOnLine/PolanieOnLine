@@ -21,7 +21,7 @@ import games.stendhal.server.entity.player.Player;
 /**
  * An item that wears & breaks.
  */
-public class BreakableItem extends Item {
+public class BreakableWeapon extends Weapon {
 	private static final Map<String, Double> conditions = new LinkedHashMap<String, Double>() {{
 		put("Jest nieużywany", 1.0);
 		put("Jest lekko używany", 0.75);
@@ -32,11 +32,11 @@ public class BreakableItem extends Item {
 
 	private boolean notified = false;
 
-	public BreakableItem(String name, String clazz, String subclass, Map<String, String> attributes) {
+	public BreakableWeapon(String name, String clazz, String subclass, Map<String, String> attributes) {
 		super(name, clazz, subclass, attributes);
 	}
 
-	public BreakableItem(final BreakableItem item) {
+	public BreakableWeapon(final BreakableWeapon item) {
 		super(item);
 	}
 
