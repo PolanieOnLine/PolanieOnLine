@@ -7,10 +7,20 @@ Changelog
 - Kliknięcie przedmiotu w spisie przekierowuje na stronę z jego opisem
 
 *świat*
-- Dodano nowy przedmiot:
+- Dodano nowy przedmiot: (1)
 	- zbroja orków
-- Dodano nowe osiągnięcie:
+- Dodano nowe osiągnięcie: (2)
 	- "Sałatka Owocowa"
+	- "Siew Nasion Radości"
+- Dodano żyzny grunt, by móc posiać nasiona do większej liczby map:
+	- Deniran City W
+	- Kalavan City
+	- Kalavan City Gardens
+	- Semos Plains N (więcej pól)
+	- Semos Plains NE
+- Dodano drop jajek u kogucika i kokoszki
+- Nasiona nie będą już marnowane, jeśli próbujesz sadzić tam, gdzie inny kwiat już rośnie
+- Nasiona nie marnują się na nieurodzajnej glebie
 - Gracz gdy ma założoną zbroję orków i dopóki nie atakuje przeciwnika jest ignorowany przez wszystkie orki
 - Kowal Tworzymir będzie wymagał dodatkowych surowców do ulepszenia na określony poziom przedmiot
 - Zmniejszono współczynniki mnożnika defensywy dla każdego noszonego przedmiotu, powinno to zmniejszyść ilość punktów obrony noszonych przez gracza
