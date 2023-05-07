@@ -36,6 +36,9 @@
 
 	<property name="build_webclient" value="${buildroot}/build_webclient"/>
 
+	<property name="build_docker" value="${buildroot}/build_docker"/>
+	<property name="buildtools_docker" value="buildtools/docker"/>
+
 	<property name="build_postman" value="${buildroot}/buildbot/"/>
 
 	<property name="build_server" value="${buildroot}/build_server"/>
@@ -52,6 +55,8 @@
 	<property name="client_sound_data" value="polanieonline-sound-data-${version}.jar"/>
 	<property name="client_music_data" value="polanieonline-music-data-${version}.jar"/>
 	<property name="client_starter_jarname" value="polanieonline-starter-${version}.jar"/>
+
+	<property name="dist_server_binary" value="${buildroot}/polanieonline-server-${version}.zip" />
 
 	<property name="maps_jarname" value="polanieonline-maps-${version}.jar"/>
 
@@ -77,13 +82,13 @@
 		</not>
 	</condition>
 	<!-- On Microsoft Windows binary files do not have to be on $env.PATH,
-	       so this check does not work. 
-	 <condition property="exclude.webclient" value="true">
+			 so this check does not work.
+	<condition property="exclude.webclient" value="true">
 		<not>
 			<available file="${executable.npm}" filepath="${env.PATH}"/>
-	    </not>
-	 </condition>
-	 -->
+		</not>
+	</condition>
+	-->
 
 	<!-- Windows fails to execute "ng" unless it is invoked as "ng.cmd" -->
 	<condition property="executable.suffix" value=".cmd">
@@ -184,16 +189,14 @@
 		<schemavalidate failonerror="yes" lenient="yes" warn="yes">
 			<schema namespace="polanieonline" file="${config_dir}/zones.xsd"/>
 			<fileset dir="${config_dir}/zones">
-					<include name="*.xml"/>
-					<include name="/pol/*.xml"/>
-					<include name="/stendhal/*.xml"/>
+				<include name="*.xml"/>
+				<include name="/*/*.xml"/>
 			</fileset>
 		</schemavalidate>
 		<schemavalidate>
-		<schema namespace="polanieonline" file="${config_dir}/creatures.xsd"/>
+			<schema namespace="polanieonline" file="${config_dir}/creatures.xsd"/>
 			<fileset dir="${config_dir}/creatures">
-				<include name="/pol/*.xml"/>
-				<include name="/stendhal/*.xml"/>
+				<include name="/*/*.xml"/>
 			</fileset>
 		</schemavalidate>
 		<schemavalidate>
@@ -241,7 +244,7 @@
 			</fileset>
 		</schemavalidate>
 		<schemavalidate>
-			<schema namespace="stendhal" file="${config_dir}/weapons.xsd"/>
+			<schema namespace="polanieonline" file="${config_dir}/weapons.xsd"/>
 			<fileset dir="${config_dir}/items">
 				<include name="axes.xml"/>
 				<include name="clubs.xml"/>
@@ -582,10 +585,22 @@
 			</fileset>
 		</copy>
 
+		<path id="serverclasspathlist">
+			<fileset dir="libs">
+				<include name="**/*.jar" />
+				<exclude name="**/marauroa-client-only.jar" />
+			</fileset>
+		</path>
+
+		<pathconvert property="serverclasspath" pathsep=" ">
+				<path refid="serverclasspathlist" />
+				<regexpmapper from="^.*/([^/]*)$$" to="libs/\1"/>
+		</pathconvert>
+
 		<jar jarfile="${lib}/${server_jarname}" basedir="${build_server}">
 			<manifest>
 				<attribute name="Main-Class" value="games.stendhal.server.StendhalServer"/>
-				<attribute name="Class-path" value=". marauroa.jar ${maps_jarname} ${xmlconf_jarname} ${maps_jarname} guava.jar log4j.jar ${groovy_jarname} ${mysqldriver_jarname} mysql.jar h2.jar ${luaj_jarname}"/>
+				<attribute name="Class-path" value=". ${maps_jarname} ${xmlconf_jarname} ${serverclasspath}"/>
 			</manifest>
 		</jar>
 		<chmod file="${lib}/${server_jarname}" perm="+x"/>
@@ -702,22 +717,14 @@
 		</copy>
 		-->
 
-		<copy todir="${buildroot}/polanieonline-server-${version}" file="${groovy_jar}"/>
-		<copy todir="${buildroot}/polanieonline-server-${version}" file="${simple_jar}"/>
-		<copy todir="${buildroot}/polanieonline-server-${version}" file="${guava_jar}"/>
-		<copy todir="${buildroot}/polanieonline-server-${version}" file="${log4j_jar}"/>
-		<copy todir="${buildroot}/polanieonline-server-${version}" file="${h2_jar}"/>
-		<copy todir="${buildroot}/polanieonline-server-${version}" file="${luaj_jar}"/>
 		<copy todir="${buildroot}/polanieonline-server-${version}" file="${lib}/${server_jarname}"/>
 		<copy todir="${buildroot}/polanieonline-server-${version}" file="${lib}/${maps_jarname}"/>
 		<copy todir="${buildroot}/polanieonline-server-${version}" file="${lib}/${xmlconf_jarname}"/>
-		<copy todir="${buildroot}/polanieonline-server-${version}" file="${marauroa_jar}"/>
 		<copy todir="${buildroot}/polanieonline-server-${version}" file="runserver.sh"/>
 		<copy todir="${buildroot}/polanieonline-server-${version}" file="runserver.bat"/>
-		<copy todir="${buildroot}/polanieonline-server-${version}/lib">
+		<copy todir="${buildroot}/polanieonline-server-${version}/libs">
 			<fileset dir="libs">
-				<include name="*.txt"/>
-				<include name="*.html"/>
+				<exclude name="marauroa-client-only.jar"/>
 			</fileset>
 		</copy>
 		<copy todir="${buildroot}/polanieonline-server-${version}/doc">
@@ -734,7 +741,7 @@
 		<copy todir="${buildroot}/polanieonline-server-${version}" file="README.md"/>
 		<mkdir dir="${buildroot}/polanieonline-server-${version}/log"/>
 		<touch file="${buildroot}/polanieonline-server-${version}/log/empty"/>
-		<zip destfile="${buildroot}/polanieonline-server-${version}.zip">
+		<zip destfile="${dist_server_binary}">
 			<zipfileset dir="${buildroot}/polanieonline-server-${version}" excludes="${server_jarname}"/>
 			<zipfileset dir="${buildroot}/polanieonline-server-${version}" includes="${server_jarname}" filemode="755"/>
 			<!-- webclient files -->
@@ -747,6 +754,28 @@
 		<delete dir="${build_webclient}"/>
 
 	</target> <!-- dist_server_binary -->
+
+	<target name="dist_docker" depends="docker_build,docker_push" description="Builds and pushes the container images" />
+
+	<target name="docker_build_prepare" depends="dist_server_binary" description="Prepares container image build">
+		<mkdir dir="${build_docker}" />
+		<copy file="${buildtools_docker}/Dockerfile" todir="${build_docker}" />
+		<copy file="${buildtools_docker}/.dockerignore" todir="${build_docker}" />
+		<copy file="${buildtools_docker}/start.sh" todir="${build_docker}" />
+		<unzip dest="${build_docker}" src="${dist_server_binary}" />
+	</target>
+
+	<target name="docker_build" depends="docker_build_prepare" description="Builds the container image">
+		<exec dir="${build_docker}" executable="docker">
+			<arg value="build" />
+			<arg value="-t" />
+			<arg value="marauroa/stendhalserver:${version}" />
+			<arg value="." />
+		</exec>
+	</target>
+
+	<target name="docker_push" description="Pushes the container image">
+	</target>
 
 	<target name="server_run" depends="server_build, compilejs" description="Runs the server">
 		<mkdir dir="run_srvr"/>
@@ -913,9 +942,9 @@
 			</fileset>
 			<manifest>
 				<attribute name="Application-Name" value="PolanieOnLine"/>
-				<attribute name="Application-Library-Allowable-Codebase"  value="http://game-polanieonline.sourceforge.net https://s1.polanieonline.eu *" />
+				<attribute name="Application-Library-Allowable-Codebase" value="http://game-polanieonline.sourceforge.net https://s1.polanieonline.eu *"/>
 				<attribute name="Main-Class" value="games.stendhal.client.update.Starter"/>
-				<attribute name="Class-path" value=". lib/${jsonsimple_jarname}"/>
+				<attribute name="Class-path" value="."/>
 				<attribute name="Permissions" value="all-permissions"/>
 				<attribute name="Codebase" value="*"/>
 				<attribute name="Trusted-Library" value="true"/>
@@ -938,6 +967,28 @@
 		<jar jarfile="${lib}/${client_music_data}" basedir="${build_client_music_data}"/>
 
 	</target> <!-- client_build -->
+
+	<target name="compile_polanieonlinetextclient" description="compiles the Stendhal text client ">
+		<mkdir dir="${build_polanieonlinetextclient}"/>
+
+		<javac srcdir="${src}" destdir="${build_polanieonlinetextclient}" source="1.8" target="1.8" debug="${javac.debug}" debuglevel="${javac.debuglevel}" deprecation="${javac.deprecation}" includeantruntime="false">
+			<include name="games/stendhal/bot/textclient/*.java"/>
+			<compilerarg value="-encoding"/>
+			<compilerarg value="utf-8"/>
+			<compilerarg value="-Xlint:unchecked"/>
+
+			<classpath>
+				<pathelement path="${guava_jar}"/>
+				<pathelement path="${marauroa_jar}"/>
+				<pathelement path="${log4j_jar}"/>
+				<pathelement path="${groovy_jar}"/>
+				<pathelement path="${tiled_jar}"/>
+				<pathelement path="${jorbis_jar}"/>
+				<pathelement path="${swinglayout_jar}"/>
+			</classpath>
+		</javac>
+
+	</target> <!-- compile_polanieonlinetextclient -->
 
 	<target name="dist_client_binary" depends="clean_client_data,client_build">
 		<mkdir dir="${buildroot}/polanieonline-${version}"/>
@@ -1081,26 +1132,26 @@
 			<arg value="tsc"/>
 		</exec>
 
-		<property name="js-debug" value="--debug --formatting=PRETTY_PRINT --create_source_map srcjs/polanieonline-compiled.js.map --source_map_include_content"/>
+		<property name="js-debug"					value="--debug --formatting=PRETTY_PRINT --create_source_map srcjs/polanieonline-compiled.js.map --source_map_include_content"/>
 
-		<property name="js-files-license"  value="srcjs/stendhal/license.js"/>
+		<property name="js-files-license"	value="srcjs/stendhal/license.js"/>
 		<property name="js-files-marauroa" value="build/js/marauroa.js build/js/client-framework.js build/js/message-factory.js build/js/perception.js build/js/rpfactory.js build/js/inflate.js build/js/deserializer.js"/>
-		<property name="js-files-config"   value="build/js/build.js"/>
-		<property name="js-files-lib1"     value="srcjs/jsxgraph-util.js"/>
-		<property name="js-files-lib2"     value=""/>
-		<property name="js-files-data1"    value="srcjs/stendhal/data/sha3.js"/>
-		<property name="js-files-data2"    value=""/>
-		<property name="js-files-entity5"  value=""/>
-		<property name="js-files-entity6"  value=""/>
-		<property name="js-files-ui1"      value=""/>
-		<property name="js-files-ui2"      value=""/>
-		<property name="js-files-ui3"      value=""/>
-		<property name="js-files-main1"    value=""/>
-		<property name="js-files-ui4"      value=""/>
-		<property name="js-files-main2"    value="srcjs/stendhal/main.js"/>
-		<property name="js-files-main3"    value=""/>
-		<property name="js-files-ts"       value="build/ts/*.js build/ts/**/*.js"/>
-		<property name="js-files-ts2"      value=""/>
+		<property name="js-files-config"	 value="build/js/build.js"/>
+		<property name="js-files-lib1"		 value="srcjs/jsxgraph-util.js"/>
+		<property name="js-files-lib2"		 value=""/>
+		<property name="js-files-data1"		value="srcjs/stendhal/data/sha3.js"/>
+		<property name="js-files-data2"		value=""/>
+		<property name="js-files-entity5"	value=""/>
+		<property name="js-files-entity6"	value=""/>
+		<property name="js-files-ui1"			value=""/>
+		<property name="js-files-ui2"			value=""/>
+		<property name="js-files-ui3"			value=""/>
+		<property name="js-files-main1"		value=""/>
+		<property name="js-files-ui4"			value=""/>
+		<property name="js-files-main2"		value="srcjs/stendhal/main.js"/>
+		<property name="js-files-main3"		value=""/>
+		<property name="js-files-ts"			 value="build/ts/*.js build/ts/**/*.js"/>
+		<property name="js-files-ts2"			value=""/>
 
 
 		<java jar="buildtools/closure-compiler/compiler.jar"
@@ -1112,9 +1163,11 @@
 			<arg value="--compilation_level"/>
 			<arg value="ADVANCED"/>
 			<arg line="${js-debug}"/>
-			<arg value="--jscomp_off=checkVars"/>
 			<arg value="--process_common_js_modules"/>
 			<arg value="--module_resolution=node"/>
+			<arg value="--jscomp_off=checkVars"/>
+			<!-- DEBUG: -->
+			<!--<arg value="-\-jscomp_off=globalThis"/>-->
 
 			<arg value="--js_output_file=srcjs/polanieonline-compiled.js"/>
 
@@ -1163,8 +1216,8 @@
 		<copy todir="${build_webclient}">
 			<fileset dir="${srcjs}">
 				<include name="stendhal.html"/>
-		    	<include name="stendhal.css"/>
-				<include name="stendhal-compiled.js*"/>
+				<include name="stendhal.css"/>
+				<include name="polanieonline-compiled.js*"/>
 				<include name="favicon.ico"/>
 			</fileset>
 		</copy>
@@ -1175,26 +1228,26 @@
 			<fileset dir="${buildroot}/ts"/>
 		</copy>
 
-		<replaceregexp file="${build_webclient}/stendhal.html"
-			match="data-tileset-path=&quot;/tileset&quot;"
-			replace="data-tileset-path=&quot;/data/tileset&quot;"
-			byline="false"/>
-		<replaceregexp file="${build_webclient}/stendhal-compiled.js.map"
-			match="build/js/"
-			replace="js/marauroa/"
-			byline="true"
-			flags="g"/>
-		<replaceregexp file="${build_webclient}/stendhal-compiled.js.map"
-			match="build/ts/"
-			replace="js/stendhal/"
-			byline="true"
-			flags="g"/>
+		<replaceregexp file="${build_webclient}/polanieonline.html"
+				match="data-tileset-path=&quot;/tileset&quot;"
+				replace="data-tileset-path=&quot;/data/tileset&quot;"
+				byline="false"/>
+		<replaceregexp file="${build_webclient}/polanieonline-compiled.js.map"
+				match="build/js/"
+				replace="js/marauroa/"
+				byline="true"
+				flags="g"/>
+		<replaceregexp file="${build_webclient}/polanieonline-compiled.js.map"
+				match="build/ts/"
+				replace="js/stendhal/"
+				byline="true"
+				flags="g"/>
 	</target> <!-- webclient_build -->
 
 	<target name="build_webclient" depends="webclient_build"/>
 
 	<target name="dist_webclient_binary" depends="webclient_build">
-		<zip destfile="${buildroot}/polanieonline-webclient-${version}.zip" unless:set="exclude.webclient">
+		<zip destfile="${buildroot}/polanieonline-webclient-${version}.zip">
 			<zipfileset dir="${build_client_data}"/>
 			<zipfileset dir="${build_client_music_data}"/>
 			<zipfileset dir="${build_client_sound_data}"/>
@@ -1426,23 +1479,33 @@
 
 	<!-- START: documentation -->
 
-	<target name="docs" description="Generate HTML API reference with javadoc." depends="clean_docs">
+	<target name="docs"
+			description="Generate HTML API reference with javadoc."
+			depends="clean_docs">
 		<condition property="include.marauroa" value="true">
-			<available file="../marauroa/src/" type="dir"/>
+			<available file="${marauroa_src}" type="dir"/>
 		</condition>
 
-		<javadoc packagenames="games.stendhal.*,marauroa.*"
-			 defaultexcludes="yes"
-			 destdir="${docs}"
-			 author="true"
-			 encoding="UTF-8"
-			 version="true"
-			 use="true"
-			 windowtitle="Stendhal API Documentation Version: ${version}">
+		<javadoc
+				defaultexcludes="yes"
+				destdir="${docs}"
+				author="true"
+				encoding="UTF-8"
+				version="true"
+				use="true"
+				windowtitle="PolanieOnLine API Documentation Version: ${version}"
+				failonerror="yes"
+				additionalparam="-Xdoclint:-html">
 			<!-- include marauroa source if available -->
-			<sourcepath path="../marauroa/src/" if:true="${include.marauroa}"/>
-			<sourcepath path="${src}"/>
+			<fileset dir="${marauroa_src}" includes="**/*.java"
+					if:true="${include.marauroa}"/>
+			<fileset dir="${src}" includes="**/*.java"/>
+			<fileset dir="${testsrc}" includes="utilities/**/*.java"/>
 			<classpath>
+				<pathelement path="${marauroa_src}"
+						if:true="${include.marauroa}"/>
+				<pathelement path="${src}"/>
+				<pathelement path="${testsrc}"/>
 				<pathelement path="${guava_jar}"/>
 				<pathelement path="${groovy_jar}"/>
 				<pathelement path="${marauroa_jar}"/>
@@ -1452,12 +1515,18 @@
 				<pathelement path="${simple_jar}"/>
 				<pathelement path="${swinglayout_jar}"/>
 				<pathelement path="${tiled_jar}"/>
-				<pathelement path="libs/ant.jar"/>
-				<pathelement path="libs/jcurses.jar"/>
-				<pathelement path="libs/pircbot.jar"/>
+				<pathelement path="${libdir}/ant.jar"/>
+				<pathelement path="${libdir}/jcurses.jar"/>
+				<pathelement path="${libdir}/pircbot.jar"/>
 				<pathelement path="${luaj_jar}"/>
-				<pathelement path="libs/json-simple-1.1.1.jar"/>
-				<pathelement path="../marauroa/libs/*" if:true="${include.marauroa}"/>
+				<pathelement path="${jsonsimple_jar}"/>
+				<pathelement path="${hamcrest_jar}"/>
+				<pathelement path="${easymock_jar}"/>
+				<pathelement path="${easymockclassextension_jar}"/>
+				<!-- put marauroa/libs last because it may contain duplicate
+						 libraries of a different version -->
+				<pathelement path="${marauroa_libs}/*"
+						if:true="${include.marauroa}"/>
 			</classpath>
 		</javadoc>
 	</target> <!-- docs -->
