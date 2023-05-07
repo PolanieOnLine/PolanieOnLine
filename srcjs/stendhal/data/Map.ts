@@ -122,8 +122,6 @@ export class Map {
 		this.layerGroupIndexes = this.mapLayerGroup();
 
 		this.strategy.onMapLoaded(this);
-
-		marauroa.me.onEnterZone();
 	}
 
 	decodeTileset(content: any, name: string) {
@@ -146,7 +144,7 @@ export class Map {
 			if (!stendhal.config.getBoolean("gamescreen.blood") && this.hasSafeTileset(baseFilename)) {
 				this.tilesetFilenames.push(baseFilename + "-safe.png");
 			} else {
-				this.tilesetFilenames.push(filename);
+				this.tilesetFilenames.push(baseFilename + ".png");
 			}
 
 			this.firstgids.push(firstgid);

@@ -43,6 +43,13 @@ export class User extends Player {
 	override minimapStyle = Color.USER;
 
 
+	constructor() {
+		super();
+		queueMicrotask(() => {
+			this.onEnterZone();
+		});
+	}
+
 	override destroy(parent: any) {
 		this.onExitZone();
 		super.destroy(parent);
@@ -171,5 +178,16 @@ export class User extends Player {
 	 */
 	public autoWalkEnabled(): boolean {
 		return typeof(this["autowalk"]) !== "undefined";
+	}
+
+	/**
+	 * Checks if player meets requirements to invite others into a group.
+	 *
+	 * @return
+	 *     <code>true</code> if player is not in a group or is leader of a group.
+	 */
+	public canInviteToGroup(): boolean {
+		const gman = singletons.getGroupManager();
+		return gman.getMemberCount() == 0 || gman.getLeader() === this["name"];
 	}
 }

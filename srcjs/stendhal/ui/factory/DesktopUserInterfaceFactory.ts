@@ -37,6 +37,7 @@ export class DesktopUserInterfaceFactory {
 		ui.registerComponent(UIComponentEnum.LeftPanel, leftPanel);
 
 		let socialPanel = new TabPanelComponent();
+		ui.registerComponent(UIComponentEnum.SocialPanel, socialPanel);
 
 		this.add(leftPanel, UIComponentEnum.MiniMap, new MiniMapComponent());
 		this.add(leftPanel, UIComponentEnum.ZoneInfo, new ZoneInfoComponent());
@@ -46,7 +47,7 @@ export class DesktopUserInterfaceFactory {
 		this.add(socialPanel, UIComponentEnum.BuddyList, new BuddyListComponent());
 		this.add(socialPanel, UIComponentEnum.GroupPanel, new GroupPanelComponent());
 		socialPanel.addTab("Friends");
-		// socialPanel.addTab("Group");
+		socialPanel.addTab("Group");
 
 		let rightPanel = new Panel("rightColumn");
 		ui.registerComponent(UIComponentEnum.RightPanel, rightPanel);

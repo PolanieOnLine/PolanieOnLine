@@ -12,12 +12,13 @@
 import { ui } from "../UI";
 import { UIComponentEnum } from "../UIComponentEnum";
 
-import { Component } from "../toolkit/Component";
+import { Panel } from "../toolkit/Panel";
+import { TabPanelComponent } from "../toolkit/TabPanelComponent";
 
-import { ActionContextMenu } from "../dialog/ActionContextMenu";
 import { ChatInputComponent } from "./ChatInputComponent";
 
 import { Chat } from "../../util/Chat";
+import { GroupMemberComponent } from "./GroupMemberComponent";
 
 
 declare let marauroa: any;
@@ -26,27 +27,136 @@ declare let stendhal: any;
 /**
  * group management
  */
-export class GroupPanelComponent extends Component {
+export class GroupPanelComponent extends Panel {
+	private invites: Record<string, HTMLButtonElement> = {}
 
 
 	constructor() {
 		super("group-panel");
+		this.containerElement = this.child(".group-members")!;
+		this.child(".group-lootmode")!.addEventListener("click", () => {
+			this.onLootmodeClick();
+		});
+		this.child(".group-chat")!.addEventListener("click", () => {
+			this.onGroupChatButtonClick();
+		});
+		this.child(".group-invite")!.addEventListener("click", () => {
+			this.onGroupInviteButtonClick();
+		});
+		this.child(".group-part")!.addEventListener("click", () => {
+			this.onGroupPartButtonClick();
+		});
 	}
 
 	receivedInvite(leader: string) {
-		// TODO:
-		Chat.log("normal", "You have been invited by " + leader + " to join a group.");
-		Chat.log("normal", "To join, type: /group join " + leader);
-		Chat.log("normal", "To leave the group at any time, type: /group part");
+		if (this.invites[leader]) {
+			return;
+		}
+
+		let button = document.createElement("button");
+		button.innerText = "Join " + leader;
+		button.title = "Join the group led by " + leader;
+		button.addEventListener("click", () => {
+			this.onJoinClicked(leader);
+		});
+		this.invites[leader] = button;
+		this.child(".group-invites")!.append(button);
+		Chat.log("client", "You received an invite to join a group. Please use the group panel to accept the invite.");
+		// show group panel
+		// FIXME: should get tab index dynamically
+		(ui.get(UIComponentEnum.SocialPanel) as TabPanelComponent).setCurrentTab(1);
+	}
+
+	onJoinClicked(leader: string) {
+		let action = {
+			"type": "group_management",
+			"action": "join",
+			"params": leader,
+			"zone": marauroa.currentZoneName
+		};
+		marauroa.clientFramework.sendAction(action);
 	}
 
 	expiredInvite(leader: string) {
-		// TODO:
-		Chat.log("normal", "Your group invite by " + leader + " has expired.");
+		let button = this.invites[leader];
+		if (button) {
+			button.remove();
+			delete this.invites[leader];
+		}
+	}
+
+	isInGroup() {
+		return stendhal.data.group.members && Object.keys(stendhal.data.group.members).length > 0;
 	}
 
 	updateGroupStatus() {
+		if (!this.isInGroup()) {
+			this.child(".group-nogroup")!.classList.remove("hidden");
+			this.child(".group-group")!.classList.add("hidden");
+			return;
+		}
 
+		this.invites = {};
+		this.child(".group-invites")!.innerHTML = "";
+		this.child(".group-nogroup")!.classList.add("hidden");
+		this.child(".group-group")!.classList.remove("hidden");
+
+		this.child(".group-lootmode")!.innerText = stendhal.data.group.lootmode;
+		this.child(".group-leader")!.innerText = stendhal.data.group.leader;
+		this.renderGroupMembers();
+	}
+
+	renderGroupMembers() {
+		this.clear();
+		for (let member of Object.keys(stendhal.data.group.members)) {
+			this.add(new GroupMemberComponent(member, stendhal.data.group.leader === marauroa.me["_name"]));
+		}
+	}
+
+	onLootmodeClick() {
+		let newMode = "shared";
+		if (stendhal.data.group.lootmode === "shared") {
+			newMode = "single";
+		}
+		let action = {
+			"type": "group_management",
+			"action": "lootmode",
+			"params": newMode,
+			"zone": marauroa.currentZoneName
+		};
+		marauroa.clientFramework.sendAction(action);
+	}
+
+	onGroupChatButtonClick() {
+		if (!this.isInGroup()) {
+			Chat.log("error", "Please invite someone into a group before trying to send group messages.");
+			return;
+		}
+		(ui.get(UIComponentEnum.ChatInput) as ChatInputComponent).setText("/p ");
+	}
+
+	onGroupInviteButtonClick() {
+		if (this.isInGroup() && (stendhal.data.group.leader !== marauroa.me["_name"])) {
+			Chat.log("error", "Only the leader may invite people into the group.");
+			return;
+		}
+		Chat.log("client", "Please Fill in the name of the player you want to invite");
+
+		(ui.get(UIComponentEnum.ChatInput) as ChatInputComponent).setText("/group invite ");
+	}
+
+	onGroupPartButtonClick() {
+		if (!this.isInGroup()) {
+			Chat.log("error", "You cannot leave a group because your are not a member of a group");
+			return;
+		}
+		const action = {
+			"type": "group_management",
+			"action": "part",
+			"params": "",
+			"zone": marauroa.currentZoneName
+		};
+		marauroa.clientFramework.sendAction(action);
 	}
 
 }

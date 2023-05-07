@@ -15,6 +15,8 @@ declare var stendhal: any;
 import { PerceptionListener } from "./PerceptionListener";
 import { singletons } from "./SingletonRepo";
 
+import { Paths } from "./data/Paths";
+
 import { Ground } from "./entity/Ground";
 import { RPObject } from "./entity/RPObject";
 import { Zone } from "./entity/Zone";
@@ -138,7 +140,7 @@ export class Client {
 
 		this.registerMarauroaEventHandlers();
 		this.registerBrowserEventHandlers();
-		marauroa.clientFramework.connect(null, null);
+		marauroa.clientFramework.connect(null, null, Paths.ws.substring(1));
 
 		stendhal.ui.actionContextMenu = new DialogHandler();
 		stendhal.ui.globalInternalWindow = new DialogHandler();
@@ -187,8 +189,6 @@ export class Client {
 		console.log("If you are a developer and curious about Stendhal, have a look at https://stendhalgame.org/development/introduction.html to get the source code. And perhaps, contribute a feature or a bugfix. ");
 		console.log(" ");
 		console.log(" ");
-		// error TS2322: Type 'undefined' is not assignable to type '(x: string) => any'
-		//~ window["eval"] = undefined;
 		window["eval"] = function() {};
 	}
 
@@ -229,7 +229,6 @@ export class Client {
 		};
 
 		marauroa.clientFramework.onLoginRequired = function() {
-			//~ window.location = "/index.php?id=content/account/login&url="
 			window.location.href = "/index.php?id=content/account/login&url="
 				+ escape(window.location.pathname + window.location.hash);
 		};

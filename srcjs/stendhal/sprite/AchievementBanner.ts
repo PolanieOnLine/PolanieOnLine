@@ -24,12 +24,16 @@ export class AchievementBanner extends TextBubble {
 	private font = "normal 14px " + stendhal.config.get("ui.font.tlog");
 	private fontT = "normal 20px " + stendhal.config.get("ui.font.tlog");
 
+	private innerWidth = 0;
+	private innerHeight = 0;
+	private readonly padding = 32;
+
 
 	constructor(cat: string, title: string, desc: string) {
 		super(desc);
 		this.title = title;
-		this.banner = new BackgroundPainter(stendhal.paths.gui
-				+ "/banner_background.png");
+		const bg = stendhal.data.sprites.get(stendhal.paths.gui + "/banner_background.png");
+		this.banner = new BackgroundPainter(bg);
 		this.icon = stendhal.data.sprites.get(stendhal.paths.achievements
 				+ "/" + cat.toLowerCase() + ".png");
 
@@ -41,9 +45,11 @@ export class AchievementBanner extends TextBubble {
 		const gamewindow =
 				<HTMLCanvasElement> document.getElementById("gamewindow")!;
 
-		// FIXME: set banner dimensions based on text length
-		this.width = 480;
-		this.height = 96;
+		const td = this.getTextDimensions(gamewindow.getContext("2d")!);
+		this.innerWidth = td.width + this.padding; // add padding between icon & text
+		this.innerHeight = td.height;
+		this.width = this.innerWidth + (this.padding * 2); // add left & right padding
+		this.height = bg.height || this.innerHeight;
 
 		this.x = (gamewindow.width / 2) - (this.width / 2);
 		this.y = gamewindow.height - this.height;
@@ -53,11 +59,11 @@ export class AchievementBanner extends TextBubble {
 		const targetX = stendhal.ui.gamewindow.offsetX + this.x;
 		const targetY = stendhal.ui.gamewindow.offsetY + this.y;
 
-		// FIXME:
-		const textX = targetX + (this.width / 2) + 16;
-		const textY = targetY + (this.height / 2) + 10;
-		const iconX = targetX + (this.width / 2) - this.icon.width - 16;
+		const iconX = targetX + (this.width / 2) - (this.innerWidth / 2);
 		const iconY = targetY + (this.height / 2) - (this.icon.height * 0.75);
+		const textX = iconX + this.icon.width + this.padding;
+		// TODO: user inner height (text height) for centering vertically
+		const textY = targetY + (this.height / 2) + 10;
 
 		this.banner.paint(ctx, targetX, targetY, this.width,
 				this.height);
@@ -73,6 +79,19 @@ export class AchievementBanner extends TextBubble {
 		ctx.fillText(this.text, textX, textY);
 
 		return this.expired();
+	}
+
+	private getTextDimensions(ctx: CanvasRenderingContext2D): any {
+		const ret = {} as any;
+		ctx.font = this.font;
+		let m = ctx.measureText(this.text);
+		ret.width = m.width;
+		ctx.font = this.fontT;
+		m = ctx.measureText(this.title);
+		ret.width = Math.max(ret.width, m.width);
+		// FIXME: how to find text height
+		ret.height = 96;
+		return ret;
 	}
 
 	override getX(): number {

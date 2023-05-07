@@ -9,20 +9,19 @@
  *                                                                         *
  ***************************************************************************/
 
-declare const stendhal: any;
-
 
 export class BackgroundPainter {
 
 	private bg: HTMLImageElement;
+	// each slice represents a portion of the image with the upper-left corner at offset x,y
 	private slices: {x: number; y: number;}[][] = [];
 	private tileW: number;
 	private tileH: number;
 	private warned = false;
 
 
-	constructor(img: string) {
-		this.bg = stendhal.data.sprites.get(img);
+	constructor(img: HTMLImageElement) {
+		this.bg = img;
 		this.tileW = this.bg.width / 3;
 		this.tileH = this.bg.height / 3;
 
@@ -68,6 +67,8 @@ export class BackgroundPainter {
 			this.tileH = this.bg.height / 3;
 			return;
 		}
+
+		// TODO: add support for constructor(String image, int leftWidth, int centerWidth, int topHeight, int centerHeight)
 
 		let drawY = 0, ir = 0;
 		while (drawY < height) {
