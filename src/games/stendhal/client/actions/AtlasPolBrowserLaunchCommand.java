@@ -16,6 +16,7 @@ import games.stendhal.client.ClientSingletonRepository;
 import games.stendhal.client.entity.User;
 import games.stendhal.client.gui.BareBonesBrowserLaunch;
 import games.stendhal.client.gui.chatlog.HeaderLessEventLine;
+import games.stendhal.client.update.ClientGameConfiguration;
 import games.stendhal.common.NotificationType;
 
 /**
@@ -36,7 +37,7 @@ class AtlasPolBrowserLaunchCommand implements SlashAction{
 	public boolean execute(final String[] params, final String remainder) {
 		StringBuilder url = new StringBuilder();
 		User user = User.get();
-		url.append("https://s1.polanieonline.eu/atlaspol.html");
+		url.append(ClientGameConfiguration.get("DEFAULT_SERVER_WEB") + "/atlaspol.html");
 		if (user != null) {
 			url.append("?me=");
 			url.append(user.getZoneName());

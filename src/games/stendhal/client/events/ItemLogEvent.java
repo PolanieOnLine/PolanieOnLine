@@ -49,6 +49,7 @@ import games.stendhal.client.gui.imageviewer.ItemListImageViewerEvent.HeaderRend
 import games.stendhal.client.gui.imageviewer.ViewPanel;
 import games.stendhal.client.sprite.Sprite;
 import games.stendhal.client.sprite.SpriteStore;
+import games.stendhal.client.update.ClientGameConfiguration;
 import games.stendhal.common.grammar.Grammar;
 
 public class ItemLogEvent extends Event<RPEntity> {
@@ -168,7 +169,7 @@ public class ItemLogEvent extends Event<RPEntity> {
 							int row = table.getSelectedRow();
 							String itemName = table.getValueAt(row, 1).toString();
 							String itemClass = getItemClass(itemName);
-							String url = "https://s1.polanieonline.eu"
+							String url = ClientGameConfiguration.get("DEFAULT_SERVER_WEB")
 									+ "/przedmioty/" + itemClass + "/"
 									+ itemName.replace(" ", "_") + ".html";
 							Desktop.getDesktop().browse(new URI(url));

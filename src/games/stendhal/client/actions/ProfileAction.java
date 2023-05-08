@@ -15,6 +15,7 @@ import games.stendhal.client.ClientSingletonRepository;
 import games.stendhal.client.entity.User;
 import games.stendhal.client.gui.BareBonesBrowserLaunch;
 import games.stendhal.client.gui.chatlog.HeaderLessEventLine;
+import games.stendhal.client.update.ClientGameConfiguration;
 import games.stendhal.common.NotificationType;
 
 /**
@@ -33,7 +34,7 @@ class ProfileAction implements SlashAction{
 	 */
 	@Override
 	public boolean execute(final String[] params, final String remainder) {
-		String url = "https://s1.polanieonline.eu/character/";
+		String url = ClientGameConfiguration.get("DEFAULT_SERVER_WEB") + "/character/";
 		String name = null;
 		if ((params.length > 0) && (params[0] != null)) {
 			name = params[0];

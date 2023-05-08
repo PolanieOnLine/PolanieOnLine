@@ -794,7 +794,7 @@ public class StendhalClient extends ClientFramework {
 		// include gamename, so that arianne.sf.net can ignore non stendhal games
 		// include server name and port because we want to support different versions for
 		// the main server and the test server
-		String url = "https://s1.polanieonline.eu/versioncheck/"
+		String url = ClientGameConfiguration.get("DEFAULT_SERVER_WEB") + "/versioncheck/"
 				+ URLEncoder.encode(gameName, "UTF-8") + "/"
 				+ URLEncoder.encode(host, "UTF-8") + "/"
 				+ URLEncoder.encode(Integer.toString(port), "UTF-8") + "/"
