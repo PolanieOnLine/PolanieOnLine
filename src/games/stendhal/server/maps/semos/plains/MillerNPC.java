@@ -19,6 +19,8 @@ import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.npc.SpeakerNPC;
+import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
+import games.stendhal.server.entity.npc.behaviour.impl.SeedSellerBehaviour;
 
 /**
  * The miller (original name: Jenny). She mills flour for players who bring
@@ -51,6 +53,8 @@ public class MillerNPC implements ZoneConfigurator {
 				setDirection(Direction.DOWN);
 			}
 		};
+
+		new SellerAdder().addSeller(npc, new SeedSellerBehaviour());
 
 		npc.setDescription("Oto Jenny. Pracuje w młynie.");
 		npc.setEntityClass("woman_003_npc");

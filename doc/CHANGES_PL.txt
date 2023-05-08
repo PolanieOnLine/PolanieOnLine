@@ -29,6 +29,7 @@ Changelog
 *naprawiono błędy*
 - Naprawiono atakowanie i zadawanie obrażeń przez potwory strzelające z większej odległości
 - Naprawiono atakowanie różnymi różdżkami na odległość bez magii
+- Naprawiono możliwość zakupu nasionek u Jenny
 
 
 1.36
@@ -1300,7 +1301,7 @@ Lista przedmiotów podlegających udoskonaleniu: https://docs.google.com/spreads
 - Zmieniono wygląd: lekkiej oraz zwykłej kuszy, pasa kolczego, złotego pasa kolczego,
 pasa skórzanego, wzmocnionego pasa skórzanego, pasa olbrzymiego, lodowego amuletu, ognistego amuletu,
 pomidora, opieńka miodowego, polana
- 
+
 *świat*
 - Dodano nowe NPC: (2)
 	- Anastazja (szwalnia w Zakopane)
@@ -1359,7 +1360,7 @@ pomidora, opieńka miodowego, polana
 - Naprawiono sklep u NPC Klaasa
 - Naprawiono pozycję NPC Caroline
 - Naprawiono dymki z tekstem (od czasu do czasu dymek był zbyt mały)
-- Naprawiono sklepy w Sukiennicy (u Waldka oraz rybaka Miłorada) 
+- Naprawiono sklepy w Sukiennicy (u Waldka oraz rybaka Miłorada)
 - Przywrócono brakujący przedmiot: "jabłko niezgody"
 - Wprowadzono poprawki gramatyczne
 
