@@ -2586,7 +2586,7 @@ public abstract class RPEntity extends CombatEntity {
 	 */
 	public Item getRangeWeapon() {
 		for (final Item weapon : getWeapons()) {
-			if (weapon.has("range") && !weapon.equals(getWandWeapon())) {
+			if (!weapon.isOfClass("wand") && weapon.has("range")) {
 				return weapon;
 			}
 		}
@@ -3137,35 +3137,22 @@ public abstract class RPEntity extends CombatEntity {
 		final StackableItem magicammo = getMagicSpells();
 		final StackableItem missiles = getMissileIfNotHoldingOtherWeapon();
 
-		return getWeaponRange(rangeWeapon, ammo) | getWeaponRange(wandWeapon, magicammo) | getWeaponRange(null, missiles);
-	}
-
-	private int getWeaponRange(Item item, StackableItem amm) {
 		int maxRange;
-		if (item == null) {
-			if (amm != null && amm.getQuantity() > 0) {
-				maxRange = amm.getInt("range");
-			} else {
-				maxRange = 0;
-			}
-
-			return maxRange;
-		}
-
-		if (item != null && !item.isNonMeleeWeapon()) {
+		if ((rangeWeapon != null && !rangeWeapon.isNonMeleeWeapon())) {
 			// long reaching melee weapons
-			maxRange = item.getInt("range");
-		} else if (item != null && amm != null && amm.getQuantity() > 0) {
-			int itemRange = item.getInt("range");
-			if (item.isMaxImproved()) {
-				itemRange += 1;
-			}
-
-			maxRange = itemRange + amm.getInt("range");
+			maxRange = rangeWeapon.getInt("range");
+		} else if ((rangeWeapon != null) && (ammo != null)
+				&& (ammo.getQuantity() > 0)) {
+			maxRange = rangeWeapon.getInt("range") + ammo.getInt("range");
+		} else if ((missiles != null) && (missiles.getQuantity() > 0)) {
+			maxRange = missiles.getInt("range");
+		} else if ((wandWeapon != null && magicammo != null)
+				&& (magicammo.getQuantity() > 0)) {
+			maxRange = wandWeapon.getInt("range") + magicammo.getInt("range");
 		} else {
+			// The entity doesn't hold the necessary distance weapons.
 			maxRange = 0;
 		}
-
 		return maxRange;
 	}
 
