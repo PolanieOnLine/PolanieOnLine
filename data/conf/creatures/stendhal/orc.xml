@@ -94,6 +94,7 @@
 			<item value="money" quantity="[4,20]" probability="100.0"/>
 			<item value="kolczuga wzmocniona" quantity="[1,1]" probability="4.0"/>
 			<item value="zbroja łuskowa" quantity="[1,1]" probability="1.0"/>
+			<item value="zbroja orków" quantity="[1,1]" probability="0.75"/>
 			<item value="złoty buzdygan" quantity="[1,1]" probability="8.0"/>
 			<item value="buty kolcze" quantity="[1,1]" probability="2.5"/>
 			<item value="miecz dwuręczny" quantity="[1,1]" probability="0.5"/>
@@ -130,6 +131,7 @@
 		<drops>
 			<item value="money" quantity="[6,22]" probability="100.0"/>
 			<item value="kolczuga wzmocniona" quantity="[1,1]" probability="3.0"/>
+			<item value="zbroja orków" quantity="[1,1]" probability="0.5"/>
 			<item value="zbroja łuskowa" quantity="[1,1]" probability="0.3"/>
 			<item value="buty kolcze" quantity="[1,1]" probability="2.0"/>
 			<item value="berdysz" quantity="[1,1]" probability="1.3"/>
@@ -166,6 +168,7 @@
 		<corpse name="humanoid"/>
 		<drops>
 			<item value="money" quantity="[10,25]" probability="100.0"/>
+			<item value="zbroja orków" quantity="[1,1]" probability="2.0"/>
 			<item value="zbroja łuskowa" quantity="[1,1]" probability="9.0"/>
 			<item value="żelazna zbroja łuskowa" quantity="[1,1]" probability="2.0"/>
 			<item value="żelazny kirys z naramiennikami" quantity="[1,1]" probability="0.2"/>
@@ -281,6 +284,7 @@
 		<drops>
 			<item value="money" quantity="[4,20]" probability="100.0"/>
 			<item value="zbroja barbarzyńcy" quantity="[1,1]" probability="5.0"/>
+			<item value="zbroja orków" quantity="[1,1]" probability="1.0"/>
 			<item value="złota zbroja" quantity="[1,1]" probability="0.5"/>
 			<item value="buty cieni" quantity="[1,1]" probability="1.5"/>
 			<item value="młot wulkanów" quantity="[1,1]" probability="0.0050"/>
@@ -315,6 +319,7 @@
 		<corpse name="humanoid"/>
 		<drops>
 			<item value="money" quantity="[10,65]" probability="100.0"/>
+			<item value="zbroja orków" quantity="[1,1]" probability="3.0"/>
 			<item value="złota zbroja" quantity="[1,1]" probability="1.5"/>
 			<item value="zbroja cieni" quantity="[1,1]" probability="0.15"/>
 			<item value="buty cieni" quantity="[1,1]" probability="1.5"/>
