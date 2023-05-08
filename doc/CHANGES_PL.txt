@@ -3,7 +3,7 @@ Changelog
 1.37
 *klient*
 - Dodano nowe oraz przerobiono grafiki przedmiotów i GUI klienta
-- Przedmioty w spisie zostały rodzielone na osobne kategorie
+- Przedmioty w spisie zostały rozdzielone na osobne kategorie
 - Kliknięcie przedmiotu w spisie przekierowuje na stronę z jego opisem
 
 *świat*
@@ -23,12 +23,12 @@ Changelog
 - Nasiona nie marnują się na nieurodzajnej glebie
 - Gracz gdy ma założoną zbroję orków i dopóki nie atakuje przeciwnika jest ignorowany przez wszystkie orki
 - Kowal Tworzymir będzie wymagał dodatkowych surowców do ulepszenia na określony poziom przedmiot
-- Zmniejszono współczynniki mnożnika defensywy dla każdego noszonego przedmiotu, powinno to zmniejszyść ilość punktów obrony noszonych przez gracza
+- Zmniejszono współczynniki mnożnika defensywy dla każdego noszonego przedmiotu, powinno to zmniejszyć ilość punktów obrony noszonych przez gracza
 - Stan 'Wyspy Przygód' (Adventure Island) będzie pokazany w dzienniku zadań
 
 *naprawiono błędy*
 - Naprawiono atakowanie i zadawanie obrażeń przez potwory strzelające z większej odległości
-- Naprawiono atakowanie różnymi różdżkami na odleglość bez magii
+- Naprawiono atakowanie różnymi różdżkami na odległość bez magii
 
 
 1.36
