@@ -2586,7 +2586,7 @@ public abstract class RPEntity extends CombatEntity {
 	 */
 	public Item getRangeWeapon() {
 		for (final Item weapon : getWeapons()) {
-			if (weapon.has("range") && !weapon.equals(getWandWeapon())) {
+			if (!weapon.isOfClass("wand") && weapon.has("range")) {
 				return weapon;
 			}
 		}
@@ -3137,36 +3137,32 @@ public abstract class RPEntity extends CombatEntity {
 		final StackableItem magicammo = getMagicSpells();
 		final StackableItem missiles = getMissileIfNotHoldingOtherWeapon();
 
-		return getWeaponRange(rangeWeapon, ammo) | getWeaponRange(wandWeapon, magicammo) | getWeaponRange(null, missiles);
-	}
-
-	private int getWeaponRange(Item item, StackableItem amm) {
-		int maxRange;
-		if (item == null) {
-			if (amm != null && amm.getQuantity() > 0) {
-				maxRange = amm.getInt("range");
-			} else {
-				maxRange = 0;
-			}
-
-			return maxRange;
-		}
-
-		if (item != null && !item.isNonMeleeWeapon()) {
-			// long reaching melee weapons
-			maxRange = item.getInt("range");
-		} else if (item != null && amm != null && amm.getQuantity() > 0) {
-			int itemRange = item.getInt("range");
-			if (item.isMaxImproved()) {
+		if (rangeWeapon != null) {
+			int itemRange = rangeWeapon.getInt("range");
+			if (rangeWeapon.isMaxImproved()) {
 				itemRange += 1;
 			}
-
-			maxRange = itemRange + amm.getInt("range");
-		} else {
-			maxRange = 0;
+			// long reaching melee weapons
+			if (!rangeWeapon.isNonMeleeWeapon()) {
+				return itemRange;
+			}
+			// range value for projectile launchers
+			if (ammo != null && ammo.getQuantity() > 0) {
+				return itemRange + ammo.getInt("range");
+			}
 		}
-
-		return maxRange;
+		if (wandWeapon != null && magicammo != null && magicammo.getQuantity() > 0) {
+			int itemRange = wandWeapon.getInt("range");
+			if (wandWeapon.isMaxImproved()) {
+				itemRange += 1;
+			}
+			return itemRange + magicammo.getInt("range");
+		}
+		if (missiles != null && missiles.getQuantity() > 0) {
+			return missiles.getInt("range");
+		}
+		// The entity doesn't hold the necessary distance weapons.
+		return 0;
 	}
 
 	/**
