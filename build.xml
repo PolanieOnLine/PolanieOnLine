@@ -535,7 +535,6 @@
 
 	<!-- END: source -->
 
-
 	<!-- START: server -->
 
 	<target name="server_build" depends="init,checkxml" description="Build JAR file for PolanieOnLine server">
@@ -588,19 +587,20 @@
 		<path id="serverclasspathlist">
 			<fileset dir="libs">
 				<include name="**/*.jar" />
+				<exclude name="postman/**"/>
 				<exclude name="**/marauroa-client-only.jar" />
 			</fileset>
 		</path>
 
 		<pathconvert property="serverclasspath" pathsep=" ">
-				<path refid="serverclasspathlist" />
-				<regexpmapper from="^.*/([^/]*)$$" to="libs/\1"/>
+			<path refid="serverclasspathlist" />
+			<regexpmapper from="^.*/([^/]*)$$" to="libs/\1"/>
 		</pathconvert>
 
 		<jar jarfile="${lib}/${server_jarname}" basedir="${build_server}">
 			<manifest>
 				<attribute name="Main-Class" value="games.stendhal.server.StendhalServer"/>
-				<attribute name="Class-path" value=". ${maps_jarname} ${xmlconf_jarname} ${serverclasspath}"/>
+				<attribute name="Class-path" value=". ${maps_jarname} ${xmlconf_jarname} libs/marauroa.jar libs/guava.jar libs/log4j.jar libs/${groovy_jarname} libs/${mysqldriver_jarname} libs/mysql.jar libs/h2.jar libs/${luaj_jarname}"/>
 			</manifest>
 		</jar>
 		<chmod file="${lib}/${server_jarname}" perm="+x"/>
@@ -724,6 +724,7 @@
 		<copy todir="${buildroot}/polanieonline-server-${version}" file="runserver.bat"/>
 		<copy todir="${buildroot}/polanieonline-server-${version}/libs">
 			<fileset dir="libs">
+				<exclude name="postman/**"/>
 				<exclude name="marauroa-client-only.jar"/>
 			</fileset>
 		</copy>
