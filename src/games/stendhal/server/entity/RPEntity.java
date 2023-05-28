@@ -2827,21 +2827,8 @@ public abstract class RPEntity extends CombatEntity {
 		// does nothing in this implementation.
 	}
 
-	/**
-	 * Retrieves total ATK value of held weapons.
-	 */
-	public float getItemAtk() {
+	private float getWeaponsAtk() {
 		float weapon = 0;
-		int glove = 0;
-		int ring = 0;
-		int ringb = 0;
-		int shield = 0;
-		int belt = 0;
-		int neck = 0;
-		int legs = 0;
-		int helmet = 0;
-		int cloak = 0;
-		int boots = 0;
 
 		final List<Item> weapons = getWeapons();
 		for (final Item weaponItem : weapons) {
@@ -2854,9 +2841,34 @@ public abstract class RPEntity extends CombatEntity {
 				weapon += getAmmoAtk("ammunition");
 			}
 			if (getWeapons().get(0).isOfClass("wand")) {
-				weapon += getAmmoAtk("magia");
+				float magic = getAmmoAtk("magia");
+				if (magic != 0) {
+					weapon += magic;
+				} else {
+					// Set 10% attack value from equipped wand if player doesn't use magic
+					weapon *= 0.1;
+				}
 			}
 		}
+
+		return weapon;
+	}
+
+	/**
+	 * Retrieves total ATK value of held weapons.
+	 */
+	public float getItemAtk() {
+		float weapon = getWeaponsAtk();
+		int glove = 0;
+		int ring = 0;
+		int ringb = 0;
+		int shield = 0;
+		int belt = 0;
+		int neck = 0;
+		int legs = 0;
+		int helmet = 0;
+		int cloak = 0;
+		int boots = 0;
 
 		if (hasGloves()) {
 			glove += getGloves().getAttack();
