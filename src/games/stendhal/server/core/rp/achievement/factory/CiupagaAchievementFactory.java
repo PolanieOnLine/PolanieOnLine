@@ -20,10 +20,10 @@ import games.stendhal.server.entity.npc.condition.OrCondition;
 import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 
 public class CiupagaAchievementFactory extends AbstractAchievementFactory {
-	public static final String ID_ZLOTA_CIUPAGA = "item.zlota.ciupaga";
-	public static final String ID_ZLOTA_CIUPAGA_1 = "item.zlota.ciupaga.1";
-	public static final String ID_ZLOTA_CIUPAGA_2 = "item.zlota.ciupaga.2";
-	public static final String ID_ZLOTA_CIUPAGA_3 = "item.zlota.ciupaga.3";
+	public static final String ID_CIUPAGA = "item.zlota.ciupaga";
+	public static final String ID_CIUPAGA_1 = "item.zlota.ciupaga.1";
+	public static final String ID_CIUPAGA_2 = "item.zlota.ciupaga.2";
+	public static final String ID_CIUPAGA_3 = "item.zlota.ciupaga.3";
 
 	@Override
 	protected Category getCategory() {
@@ -34,8 +34,9 @@ public class CiupagaAchievementFactory extends AbstractAchievementFactory {
 	public Collection<Achievement> createAchievements() {
 		final LinkedList<Achievement> achievements = new LinkedList<Achievement>();
 
-		achievements.add(createAchievement(ID_ZLOTA_CIUPAGA,
-				"Złota Ciupaga", "Wykonał złotą ciupagę u Kowala Andrzeja",
+		achievements.add(createAchievement(
+				ID_CIUPAGA, "Złota Ciupaga",
+				"Wykonano złotą ciupagę u Kowala Andrzeja",
 				Achievement.EASY_BASE_SCORE, true,
 				new OrCondition(
 					new QuestCompletedCondition("zlota_ciupaga"),
@@ -43,23 +44,26 @@ public class CiupagaAchievementFactory extends AbstractAchievementFactory {
 					new QuestCompletedCondition("ciupaga_dwa_wasy"),
 					new QuestCompletedCondition("ciupaga_trzy_wasy"))));
 
-		achievements.add(createAchievement(ID_ZLOTA_CIUPAGA_1,
-				"Złota Ciupaga z Wąsem", "Wykonał złotą ciupagę z wąsem u Józka",
+		achievements.add(createAchievement(
+				ID_CIUPAGA_1, "Złota Ciupaga z Wąsem",
+				"Wykonano złotą ciupagę z wąsem u Józka",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new OrCondition(
 					new QuestCompletedCondition("zlota_ciupaga_was"),
 					new QuestCompletedCondition("ciupaga_dwa_wasy"),
 					new QuestCompletedCondition("ciupaga_trzy_wasy"))));
 
-		achievements.add(createAchievement(ID_ZLOTA_CIUPAGA_2,
-				"Złota Ciupaga z Dwoma Wąsami", "Wykonał złotą ciupagę z dwoma wąsami u Krasnoluda",
+		achievements.add(createAchievement(
+				ID_CIUPAGA_2, "Złota Ciupaga z Dwoma Wąsami",
+				"Wykonano złotą ciupagę z dwoma wąsami u Krasnoluda",
 				Achievement.HARD_BASE_SCORE, true,
 				new OrCondition(
 					new QuestCompletedCondition("ciupaga_dwa_wasy"),
 					new QuestCompletedCondition("ciupaga_trzy_wasy"))));
 
-		achievements.add(createAchievement(ID_ZLOTA_CIUPAGA_3,
-				"Złota Ciupaga z Trzema Wąsami", "Wykonał złotą ciupagę z trzema wąsami u Hadrina",
+		achievements.add(createAchievement(
+				ID_CIUPAGA_3, "Złota Ciupaga z Trzema Wąsami",
+				"Wykonano złotą ciupagę z trzema wąsami u Hadrina",
 				Achievement.LEGENDARY_BASE_SCORE, true,
 				new QuestCompletedCondition("ciupaga_trzy_wasy")));
 

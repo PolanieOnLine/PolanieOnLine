@@ -12,9 +12,7 @@ import games.stendhal.server.entity.npc.condition.QuestStateGreaterThanCondition
  *
  * @author KarajuSs
  */
-
 public class GdanskJewelleryQuestAchievementFactory extends AbstractAchievementFactory {
-
 	public static final String ID_YOUNG_TRAVELER = "quest.special.daily_museum_gdansk_quest.0005";
 	public static final String ID_TRAVELER = "quest.special.daily_museum_gdansk_quest.0025";
 	public static final String ID_OLD_TRAVELER = "quest.special.daily_museum_gdansk_quest.0050";
@@ -31,27 +29,32 @@ public class GdanskJewelleryQuestAchievementFactory extends AbstractAchievementF
 		final LinkedList<Achievement> achievements = new LinkedList<Achievement>();
 
 		achievements.add(createAchievement(
-				ID_YOUNG_TRAVELER, "Młody Podróżnik", "Ukończył co dwudniowe zadanie na przedmiot 5 razy",
+				ID_YOUNG_TRAVELER, "Młody Podróżnik",
+				"Ukończono dzienne zadanie na błyskotki 5 razy",
 				Achievement.EASY_BASE_SCORE, true,
 				new QuestStateGreaterThanCondition("daily_museum_gdansk_quest", 2, 4)));
 
 		achievements.add(createAchievement(
-				ID_TRAVELER, "Podróżnik", "Ukończył co dwudniowe zadanie na przedmiot 25 razy",
+				ID_TRAVELER, "Podróżnik",
+				"Ukończono dzienne zadanie na błyskotki 25 razy",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new QuestStateGreaterThanCondition("daily_museum_gdansk_quest", 2, 24)));
 
 		achievements.add(createAchievement(
-				ID_OLD_TRAVELER, "Starszy Podróżnik", "Ukończył co dwudniowe zadanie na przedmiot 50 razy",
+				ID_OLD_TRAVELER, "Starszy Podróżnik",
+				"Ukończono dzienne zadanie na błyskotki 50 razy",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new QuestStateGreaterThanCondition("daily_museum_gdansk_quest", 2, 49)));
 
 		achievements.add(createAchievement(
-				ID_DEPOSITOR, "Depozytor Gdańska", "Ukończył co dwudniowe zadanie na przedmiot 100 razy",
+				ID_DEPOSITOR, "Depozytor Gdańska",
+				"Ukończono dzienne zadanie na błyskotki 100 razy",
 				Achievement.HARD_BASE_SCORE, true,
 				new QuestStateGreaterThanCondition("daily_museum_gdansk_quest", 2, 99)));
 
 		achievements.add(createAchievement(
-				ID_TREASURER, "Skarbnik Gdańska", "Ukończył co dwudniowe zadanie na przedmiot 200 razy",
+				ID_TREASURER, "Skarbnik Gdańska",
+				"Ukończono dzienne zadanie na błyskotki 200 razy",
 				Achievement.HARD_BASE_SCORE, true,
 				new QuestStateGreaterThanCondition("daily_museum_gdansk_quest", 2, 199)));
 

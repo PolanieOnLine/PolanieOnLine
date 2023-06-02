@@ -27,7 +27,6 @@ import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.condition.QuestStateGreaterThanCondition;
 import games.stendhal.server.entity.player.Player;
 
-
 /**
  * Deathmatch related achievements.
  */
@@ -58,73 +57,73 @@ public class DeathmatchAchievementFactory extends AbstractAchievementFactory {
 		// and as per bug report https://sourceforge.net/tracker/?func=detail&aid=3148365&group_id=1111&atid=101111 the count is not saved anyway
 		achievements.add(createAchievement(
 				"deathmatch.001", "Pachołek",
-				"Zawalczył swoją pierwszą rundę na deathmatchu",
+				"Zawalczono swoją pierwszą rundę na deathmatchu",
 				Achievement.EASY_BASE_SCORE, true,
 				new HasWonNumberOfTimes(1)));
 
 		achievements.add(createAchievement(
 				"deathmatch.025", "Gladiator",
-				"Zawalczył 25 rund na deathmatchu",
+				"Zawalczono 25 rund na deathmatchu",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new HasWonNumberOfTimes(25)));
 
 		achievements.add(createAchievement(
 				"deathmatch.050", "Postrach Areny",
-				"Zawalczył 50 rund na deathmatchu",
+				"Zawalczono 50 rund na deathmatchu",
 				Achievement.HARD_BASE_SCORE, true,
 				new HasWonNumberOfTimes(50)));
 
 		achievements.add(createAchievement(
 				"quest.deathmatch.frequenter", "Bywalec Deathmatchu",
-				"Zdobył 20,000 punktów na arenie deathmatch",
+				"Zdobyto 20,000 punktów na arenie deathmatch",
 				Achievement.EASY_BASE_SCORE, true,
 				new QuestStateGreaterThanCondition("deathmatch_score", 0, 20000)));
 
 		achievements.add(createAchievement(
 				"quest.deathmatch", "Bohater Deathmatchu",
-				"Zdobył 100,000 punktów na arenie deathmatch",
+				"Zdobyto 100,000 punktów na arenie deathmatch",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new QuestStateGreaterThanCondition("deathmatch_score", 0, 100000)));
 
 		achievements.add(createAchievement(
 				"quest.deathmatch.king", "Król Deathmatchu",
-				"Zdobył 500,000 punktów na arenie deathmatch",
+				"Zdobyto 500,000 punktów na arenie deathmatch",
 				Achievement.HARD_BASE_SCORE, true,
 				new QuestStateGreaterThanCondition("deathmatch_score", 0, 500000)));
 
 		achievements.add(createAchievement(
 				"quest.deathmatch.legend", "Legenda Deathmatchu",
-				"Zdobył 1,000,000 punktów na arenie deathmatch",
+				"Zdobyto 1,000,000 punktów na arenie deathmatch",
 				Achievement.LEGENDARY_BASE_SCORE, true,
 				new QuestStateGreaterThanCondition("deathmatch_score", 0, 1000000)));
 
 		achievements.add(createAchievement(
 				ID_HELPER_25, "Pomocnik w Deathmatchu",
-				"Wsparł innych graczy w 25 rundach deathmatchu",
+				"Wspierano innych graczy w 25 rundach deathmatchu",
 				Achievement.EASY_BASE_SCORE, true,
 				new HasHelpedNumberOfTimes(25)));
 
 		achievements.add(createAchievement(
 				ID_HELPER_50, "Kompan w Deathmatchu",
-				"Wsparł innych graczy w 50 rundach deathmatchu",
+				"Wspierano innych graczy w 50 rundach deathmatchu",
 				Achievement.EASY_BASE_SCORE, true,
 				new HasHelpedNumberOfTimes(50)));
 
 		achievements.add(createAchievement(
 				ID_HELPER_100, "Eskortnik w Deathmatchu",
-				"Wsparł innych graczy w 100 rundach deathmatchu",
+				"Wspierano innych graczy w 100 rundach deathmatchu",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new HasHelpedNumberOfTimes(100)));
 
 		achievements.add(createAchievement(
 				ID_SOLO_5, "Wyzwanie Przyjęte",
-				"Ukończył 5 rund deathmatchu bez pomocy",
+				"Ukończono 5 rund deathmatchu bez pomocy",
 				Achievement.EASY_BASE_SCORE, true,
 				new HasSoloedNumberOfTimes(5)));
 
 		achievements.add(createAchievement(
 				ID_HELM_MAX, "Determinacja",
-				"Zwiększył zdobyczny hełm do maksymalnej obrony",
+				"Zwiększono zdobyczny hełm do maksymalnej obrony",
 				Achievement.HARD_BASE_SCORE, true,
 				new ChatCondition() {
 					@Override

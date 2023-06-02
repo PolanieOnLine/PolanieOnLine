@@ -25,19 +25,22 @@ public class ExperienceMININGAchievementFactory extends AbstractAchievementFacto
 
 		String level = "20";
 		achievements.add(createAchievement(
-				"mining.level.0" + level, "Obeznanie z Kilofem", "Osiągnął " + level + " poziom górnictwa",
+				"mining.level.0" + level, "Obeznanie z Kilofem",
+				"Osiągnięto " + level + " poziom górnictwa",
 				Achievement.EASY_BASE_SCORE, true,
 				createComparison(level)));
 
 		level = "40";
 		achievements.add(createAchievement(
-				"mining.level.0" + level, "Kilofioza", "Osiągnął " + level + " poziom górnictwa",
+				"mining.level.0" + level, "Kilofioza",
+				"Osiągnięto " + level + " poziom górnictwa",
 				Achievement.EASY_BASE_SCORE, true,
 				createComparison(level)));
 
 		level = "60";
 		achievements.add(createAchievement(
-				"mining.level.0" + level, "Zaawansowany Kopacz", "Osiągnął " + level + " poziom górnictwa",
+				"mining.level.0" + level, "Zaawansowany Kopacz",
+				"Osiągnięto " + level + " poziom górnictwa",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				createComparison(level)));
 

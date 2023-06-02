@@ -55,72 +55,88 @@ public class ItemAchievementFactory extends AbstractAchievementFactory {
 		final LinkedList<Achievement> achievements = new LinkedList<Achievement>();
 
 		achievements.add(createAchievement(
-				"item.money.00000100", "Pierwsze Kieszonkowe", "Zdobył 100 monet na potworach",
+				"item.money.00000100", "Pierwsze Kieszonkowe",
+				"Zdobyto 100 monet na potworach",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(100, MONEY)));
 
 		achievements.add(createAchievement(
-				"item.money.00010000", "Złoty Prysznic", "Zdobył 10,000 monet na potworach",
+				"item.money.00010000", "Złoty Prysznic",
+				"Zdobyto 10,000 monet na potworach",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(10000, MONEY)));
 
 		achievements.add(createAchievement(
-				"item.money.00100000", "Mała Fortuna", "Zdobył 100,000 monet na potworach",
+				"item.money.00100000", "Mała Fortuna",
+				"Zdobyto 100,000 monet na potworach",
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(100000, MONEY)));
 
 		achievements.add(createAchievement(
-				"item.money.01000000", "Już Nie Potrzebujesz Więcej", "Zdobył 1,000,000 monet na potworach",
+				"item.money.01000000", "Już Nie Potrzebujesz Więcej",
+				"Zdobyto 1,000,000 monet na potworach",
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1000000, MONEY)));
 
 		achievements.add(createAchievement(
-				"item.money.10000000", "Wielka Kąpiel w Złocie", "Zdobył 10,000,000 monet na potworach",
+				"item.money.10000000", "Wielka Kąpiel w Złocie",
+				"Zdobyto 10,000,000 monet na potworach",
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(10000000, MONEY)));
 
 		achievements.add(createAchievement(
-				"item.cheese.2000", "Serowy Czarodziej", "Zdobył 2,000 sera",
+				"item.cheese.2000", "Serowy Czarodziej",
+				"Zdobyto 2,000 sera",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(2000, "ser")));
 
 		achievements.add(createAchievement(
-				"item.ham.2500", "Stado Szynek", "Zdobył 2,500 szynki",
+				"item.ham.2500", "Stado Szynek",
+				"Zdobyto 2,500 szynki",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(2500, "szynka")));
 
 		achievements.add(createAchievement(
-				"item.cod.1500", "Pływanie w Dorszach", "Zdobył 1,500 dorszy",
+				"item.cod.1500", "Pływanie w Dorszach",
+				"Zdobyto 1,500 dorszy",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1500, "dorsz")));
 
 		achievements.add(createAchievement(
-				"item.sausage.2000", "Parówkowy Król", "Zdobył 2,000 kiełbasy wiejskiej",
+				"item.sausage.2000", "Parówkowy Król",
+				"Zdobyto 2,000 kiełbasy wiejskiej",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(2000, "kiełbasa wiejska")));
 
 		achievements.add(createAchievement(
-				"item.set.littlerings", "Mały Komplet Pierścionków", "Zdobył srebrny i złoty pierścień",
+				"item.set.littlerings", "Mały Komplet Pierścionków",
+				"Zdobyto srebrny i złoty pierścień",
 				Achievement.MEDIUM_BASE_SCORE, true,
-				new AndCondition(new QuestCompletedCondition("zamowienie_strazy"), new QuestCompletedCondition("zloty_pierscien"))));
+				new AndCondition(
+						new QuestCompletedCondition("zamowienie_strazy"),
+						new QuestCompletedCondition("zloty_pierscien"))));
 
 		achievements.add(createAchievement(
-				"item.goldenblade", "Upragniona Nagroda", "Zdobył złotą klingę",
+				"item.goldenblade", "Upragniona Nagroda",
+				"Zdobyto złotą klingę",
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, "złota klinga")));
 
 		achievements.add(createAchievement(
-				"item.jewellery", "Cenne Kamienie", "Zdobył 5 z każdego rodzaju drogocennych klejnotów",
+				"item.jewellery", "Cenne Kamienie",
+				"Zdobyto 5 z każdego rodzaju drogocennych klejnotów",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(5, ITEMS_JEWELLERY)));
 
 		achievements.add(createAchievement(
-				"item.magicspells", "Zaklinacz", "Zdobył po 1,000 z każdego rodzaju zaklęć",
+				"item.magicspells", "Zaklinacz",
+				"Zdobyto po 1,000 z każdego rodzaju zaklęć",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1000, ITEMS_MAGICSPELLS)));
 
 		achievements.add(createAchievement(
-				"item.dragonclaws", "Smocza Wystawa", "Zdobył łącznie 10 różnych smoczych pazurów",
+				"item.dragonclaws", "Smocza Wystawa",
+				"Zdobyto łącznie 10 różnych smoczych pazurów",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new ChatCondition() {
 					@Override
@@ -134,7 +150,8 @@ public class ItemAchievementFactory extends AbstractAchievementFactory {
 				}));
 
 		achievements.add(createAchievement(
-				"item.angelfeathers", "Anielskie Skrzydła", "Zdobył łącznie 1,000 różnych anielskich piór",
+				"item.angelfeathers", "Anielskie Skrzydła",
+				"Zdobyto łącznie 1,000 różnych anielskich piór",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new ChatCondition() {
 					@Override
@@ -148,17 +165,20 @@ public class ItemAchievementFactory extends AbstractAchievementFactory {
 				}));
 
 		achievements.add(createAchievement(
-				"item.horns", "Rogaty Władca", "Zdobył po 200 rogów demona i jednorożca",
+				"item.horns", "Rogaty Władca",
+				"Zdobyto po 200 rogów demona i jednorożca",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(200, ITEMS_HORNS)));
 
 		achievements.add(createAchievement(
-				"item.potatoes", "Młoda Pyrka", "Zdobył 2,000 ziemniaków",
+				"item.potatoes", "Młoda Pyrka",
+				"Zdobyto 2,000 ziemniaków",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(2000, "ziemniaki")));
 
 		achievements.add(createAchievement(
-				"item.chicken.2000", "Deszcz Udek", "Zdobył 2,000 udek",
+				"item.chicken.2000", "Deszcz Udek",
+				"Zdobyto 2,000 udek",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(2000, "udko")));
 

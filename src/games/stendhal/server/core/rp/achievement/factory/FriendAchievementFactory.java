@@ -61,7 +61,8 @@ public class FriendAchievementFactory extends AbstractAchievementFactory {
 
 		// Befriend Susi and complete quests for all children
 		achievements.add(createAchievement(
-				ID_CHILD_FRIEND, "Przyjaciel Dzieci", "Ukończył zadania wszystkich dzieci",
+				ID_CHILD_FRIEND, "Przyjaciel Dzieci",
+				"Ukończono zadania wszystkich dzieci",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new AndCondition(
 						// Susi Quest is never set to done, therefore we check just if the quest has been started (condition "anyFriends" from FoundGirl.java)
@@ -93,13 +94,15 @@ public class FriendAchievementFactory extends AbstractAchievementFactory {
 				)));
 
 		achievements.add(createAchievement(
-				ID_BAD_DREAMS, "Spokojny Sen", "Pomógł pozbyć się złych koszmarów małej dziewczynki Alicji",
+				ID_BAD_DREAMS, "Spokojny Sen",
+				"Pozbyto się złych koszmarów małej dziewczynki Alicji",
 				Achievement.LEGENDARY_BASE_SCORE, true,
 				new QuestCompletedCondition("kill_dragons")));
 
 		// quests about finding people
 		achievements.add(createAchievement(
-				ID_PRIVATE_DETECTIVE, "Prywatny Detektyw", "Odnalazł wszystkie zagubione i ukrywające się aniołki oraz osoby",
+				ID_PRIVATE_DETECTIVE, "Prywatny Detektyw",
+				"Odnaleziono wszystkie zagubione i ukrywające się aniołki oraz osoby",
 				Achievement.HARD_BASE_SCORE, true,
 				new AndCondition(
 						// Rat Children (Agnus)
@@ -127,7 +130,8 @@ public class FriendAchievementFactory extends AbstractAchievementFactory {
 
 		// quests about finding dragons
 		achievements.add(createAchievement(
-				ID_DRAGONS, "Przyjaciel Smoków", "Odnalazł wszystkie ukrywające się smoki",
+				ID_DRAGONS, "Przyjaciel Smoków",
+				"Odnaleziono wszystkie ukrywające się smoki",
 				Achievement.HARD_BASE_SCORE, true,
 				new AndCondition(
 						// Meet Dragons
@@ -146,7 +150,8 @@ public class FriendAchievementFactory extends AbstractAchievementFactory {
 
 		// earn over 250 karma
 		achievements.add(createAchievement(
-				ID_GOOD_SAMARITAN, "Dobry Samarytanin", "Zdobył 250 karmy",
+				ID_GOOD_SAMARITAN, "Dobry Samarytanin",
+				"Zdobyto 250 karmy",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new ChatCondition() {
 					@Override
@@ -157,7 +162,8 @@ public class FriendAchievementFactory extends AbstractAchievementFactory {
 		));
 
 		achievements.add(createAchievement(
-				ID_MERCIFUL, "Człowiek Miłosierny", "Zdobył 2,000 karmy",
+				ID_MERCIFUL, "Człowiek Miłosierny",
+				"Zdobyto 2,000 karmy",
 				Achievement.HARD_BASE_SCORE, true,
 				new ChatCondition() {
 					@Override
@@ -168,7 +174,8 @@ public class FriendAchievementFactory extends AbstractAchievementFactory {
 		));
 
 		achievements.add(createAchievement(
-				ID_KILLER, "Aberratio Ictus", "Zabił innego gracza",
+				ID_KILLER, "Aberratio Ictus",
+				"Zabito innego gracza",
 				Achievement.EASY_BASE_SCORE, true,
 				new ChatCondition() {
 					@Override
@@ -180,7 +187,8 @@ public class FriendAchievementFactory extends AbstractAchievementFactory {
 
 		// meet Santa Claus, Easter Bunny and Guslarz
 		achievements.add(createAchievement(
-				ID_STILL_BELIEVING, "Wciąż Wierzy", "Spotkał Świętego Mikołaja, zajączka Wielkanocnego i Guślarza",
+				ID_STILL_BELIEVING, "Wciąż Wierzy",
+				"Napotkano Świętego Mikołaja, zajączka Wielkanocnego i Guślarza",
 				Achievement.EASY_BASE_SCORE, true,
 				new AndCondition(
 							new QuestWithPrefixCompletedCondition("meet_santa_"),
@@ -188,14 +196,16 @@ public class FriendAchievementFactory extends AbstractAchievementFactory {
 							new QuestWithPrefixCompletedCondition("meet_guslarz_"))));
 
 		achievements.add(createAchievement(
-				ID_PIZZA_DELIVERY, "Dostawca Pizzy", "Rozwiózł pizze w krainie Faiumoni lub Prasłowiańskiej",
+				ID_PIZZA_DELIVERY, "Dostawca Pizzy",
+				"Rozwieziono pizze w krainie Faiumoni lub Prasłowiańskiej",
 				Achievement.EASY_BASE_SCORE, true,
 				new OrCondition(
 						new QuestCompletedCondition("pizza_delivery"),
 						new QuestCompletedCondition("dostawca_pizzy2"))));
 
 		achievements.add(createAchievement(
-				ID_MARRIAGE, "Współmałżonkowie", "Zawarto więzy małżeńskie",
+				ID_MARRIAGE, "Współmałżonkowie",
+				"Zawarto więzy małżeńskie",
 				Achievement.EASY_BASE_SCORE, true,
 				new ChatCondition() {
 					@Override

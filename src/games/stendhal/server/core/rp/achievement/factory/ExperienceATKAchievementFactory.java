@@ -25,31 +25,36 @@ public class ExperienceATKAchievementFactory extends AbstractAchievementFactory 
 
 		String level = "25";
 		achievements.add(createAchievement(
-				"atk.level.0" + level, "Początkujący Napastnik", "Osiągnął " + level + " poziom ATK",
+				"atk.level.0" + level, "Początkujący Napastnik",
+				"Osiągnięto " + level + " poziom ATK",
 				Achievement.EASY_BASE_SCORE, true,
 				createComparison(level)));
 
 		level = "50";
 		achievements.add(createAchievement(
-				"atk.level.0" + level, "Napastnik", "Osiągnął " + level + " poziom ATK",
+				"atk.level.0" + level, "Napastnik",
+				"Osiągnięto " + level + " poziom ATK",
 				Achievement.EASY_BASE_SCORE, true,
 				createComparison(level)));
 
 		level = "75";
 		achievements.add(createAchievement(
-				"atk.level.0" + level, "Zaawansowany Napastnik", "Osiągnął " + level + " poziom ATK",
+				"atk.level.0" + level, "Zaawansowany Napastnik",
+				"Osiągnięto " + level + " poziom ATK",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				createComparison(level)));
 
 		level = "100";
 		achievements.add(createAchievement(
-				"atk.level." + level, "Ekspert Ataku", "Osiągnął " + level + " poziom ATK",
+				"atk.level." + level, "Ekspert Ataku",
+				"Osiągnięto " + level + " poziom ATK",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				createComparison(level)));
 
 		level = "150";
 		achievements.add(createAchievement(
-				"atk.level." + level, "Mistrz Ataku", "Osiągnął " + level + " poziom ATK",
+				"atk.level." + level, "Mistrz Ataku",
+				"Osiągnięto " + level + " poziom ATK",
 				Achievement.HARD_BASE_SCORE, true,
 				createComparison(level)));
 

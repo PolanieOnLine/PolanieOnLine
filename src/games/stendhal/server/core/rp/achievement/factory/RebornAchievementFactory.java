@@ -31,7 +31,8 @@ public class RebornAchievementFactory extends AbstractAchievementFactory {
 	public Collection<Achievement> createAchievements() {
 		final LinkedList<Achievement> achievements = new LinkedList<Achievement>();
 		achievements.add(createAchievement(
-				ID_NEWBORN, "Nowa Przygoda", "Rozpoczął przygodę od nowa",
+				ID_NEWBORN, "Nowa Przygoda",
+				"Rozpoczęto przygodę od nowa",
 				EASY_SCORE, true,
 				new OrCondition(new QuestInStateCondition(QUEST_SLOT, 1, "reborn_1"),
 						new QuestInStateCondition(QUEST_SLOT, 1, "reborn_2"),
@@ -40,7 +41,8 @@ public class RebornAchievementFactory extends AbstractAchievementFactory {
 						new QuestInStateCondition(QUEST_SLOT, 1, "reborn_5"))));
 
 		achievements.add(createAchievement(
-				ID_NEW_ADVENTURE, "Druga Szansa", "Rozpoczął przygodę drugi raz od nowa",
+				ID_NEW_ADVENTURE, "Druga Szansa",
+				"Rozpoczęto przygodę drugi raz od nowa",
 				MEDIUM_SCORE, true,
 				new OrCondition(new QuestInStateCondition(QUEST_SLOT, 1, "reborn_2"),
 						new QuestInStateCondition(QUEST_SLOT, 1, "reborn_3"),
@@ -48,20 +50,23 @@ public class RebornAchievementFactory extends AbstractAchievementFactory {
 						new QuestInStateCondition(QUEST_SLOT, 1, "reborn_5"))));
 
 		achievements.add(createAchievement(
-				ID_COMING, "Nadchodzę", "Rozpoczął przygodę trzeci raz od nowa",
+				ID_COMING, "Nadchodzę",
+				"Rozpoczęto przygodę trzeci raz od nowa",
 				MEDIUM_SCORE, true,
 				new OrCondition(new QuestInStateCondition(QUEST_SLOT, 1, "reborn_3"),
 						new QuestInStateCondition(QUEST_SLOT, 1, "reborn_4"),
 						new QuestInStateCondition(QUEST_SLOT, 1, "reborn_5"))));
 
 		achievements.add(createAchievement(
-				ID_REPLAY, "Zdobywca Doświadczenia", "Rozpoczął przygodę czwarty raz od nowa",
+				ID_REPLAY, "Zdobywca Doświadczenia",
+				"Rozpoczęto przygodę czwarty raz od nowa",
 				HARD_SCORE, true,
 				new OrCondition(new QuestInStateCondition(QUEST_SLOT, 1, "reborn_4"),
 						new QuestInStateCondition(QUEST_SLOT, 1, "reborn_5"))));
 
 		achievements.add(createAchievement(
-				ID_NEW_HISTORY, "Legendarny Wojownik", "Rozpoczął przygodę piąty raz od nowa",
+				ID_NEW_HISTORY, "Legendarny Wojownik",
+				"Rozpoczęto przygodę piąty raz od nowa",
 				LEGENDARY_SCORE, true,
 				new QuestInStateCondition(QUEST_SLOT, 1, "reborn_5")));
 

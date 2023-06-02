@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2022 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -31,7 +31,6 @@ import games.stendhal.server.entity.player.Player;
  * @author madmetzger
  */
 public class ObtainAchievementsFactory extends AbstractAchievementFactory {
-
 	public static final String ID_APPLES = "obtain.apple";
 
 	@Override
@@ -46,14 +45,14 @@ public class ObtainAchievementsFactory extends AbstractAchievementFactory {
 		// Wishing well achievement
 		achievements.add(createAchievement(
 				"obtain.wish", "Niech Spełni się Życzenie",
-				"Zdobył przedmiot ze studni życzeń",
+				"Zdobyto przedmiot ze studni życzeń",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerGotNumberOfItemsFromWellCondition(0)));
 
 		// Vegetable harvest achievement
 		achievements.add(createAchievement(
 				"obtain.harvest.vegetable", "Farmer",
-				"Zebrał po 8 sztuk z pośród wszystkich warzyw rosnących w Faiumoni",
+				"Zebrano po 8 sztuk z pośród wszystkich warzyw rosnących w Faiumoni",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerHasHarvestedNumberOfItemsCondition(8,
 						"marchew", "sałata", "brokuł", "kalafior", "por",
@@ -62,7 +61,7 @@ public class ObtainAchievementsFactory extends AbstractAchievementFactory {
 		// fruit harvest achievement
 		achievements.add(createAchievement(
 				"obtain.harvest.fruit", "Sałatka Owocowa",
-				"Zebrał po 3 sztuki wszystkich owoców rosnących w Faiumoni",
+				"Zebrano po 3 sztuki wszystkich owoców rosnących w Faiumoni",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerHasHarvestedNumberOfItemsCondition(3,
 						"jabłko", "banan", "wisienka", "kokos", "kiść winogron", "oliwka", "gruszka",
@@ -71,7 +70,7 @@ public class ObtainAchievementsFactory extends AbstractAchievementFactory {
 		// Fishing achievement
 		achievements.add(createAchievement(
 				"obtain.fish", "Rybak",
-				"Złapał po 15 ryb każdego rodzaju",
+				"Wyłowiono po 15 ryb każdego rodzaju",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerHasHarvestedNumberOfItemsCondition(15,
 						"palia alpejska", "błazenek", "dorsz", "makrela", "okoń",
@@ -79,20 +78,20 @@ public class ObtainAchievementsFactory extends AbstractAchievementFactory {
 
 		achievements.add(createAchievement(
 				"obtain.prawdziwydrwal", "Prawdziwy Drwal",
-				"Wyciął 100 polan",
+				"Wycięto 100 polan",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerHasHarvestedNumberOfItemsCondition(100, "polano")));
 
 		achievements.add(createAchievement(
 				"obtain.funguy", "Grzybobranie",
-				"Zebrał po 20 każdego rodzaju grzyba",
+				"Zebrano po 20 każdego rodzaju grzyba",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerHasHarvestedNumberOfItemsCondition(20,
 						"pieczarka", "borowik", "muchomor")));
 
 		achievements.add(createAchievement(
 				"obtain.gornik", "Górnik z Krwi i Kości",
-				"Wydobył 50 każdego rodzaju kamienia szlachetnego",
+				"Wydobyto 50 każdego rodzaju kamienia szlachetnego",
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerMinedNumberOfItemsCondition(50,
 						"bryłka złota", "bryłka mithrilu", "kryształ ametystu",
@@ -102,57 +101,57 @@ public class ObtainAchievementsFactory extends AbstractAchievementFactory {
 		// ultimate collector quest achievement
 		achievements.add(createAchievement(
 				"quest.special.collector", "Największy Kolekcjoner",
-				"Ukończył zadanie największego kolekcjonera",
+				"Ukończono zadanie największego kolekcjonera",
 				Achievement.LEGENDARY_BASE_SCORE, true,
 				new QuestCompletedCondition("ultimate_collector")));
 
 		// goralski kolekcjoner quest achievement
 		achievements.add(createAchievement(
 				"quest.special.goralcollector", "Góralski Kolekcjoner",
-				"Ukończył ostatnie zadanie u góralskiego kolekcjonera",
+				"Ukończono ostatnie zadanie u góralskiego kolekcjonera",
 				Achievement.LEGENDARY_BASE_SCORE, true,
 				new QuestCompletedCondition("goralski_kolekcjoner3")));
 
 		achievements.add(createAchievement(
 				"quest.special.cloakscollector", "Kolekcjoner Płaszczy",
-				"Ukończył ostatnie zadanie u kolekcjonerki płaszczy",
+				"Ukończono ostatnie zadanie u kolekcjonerki płaszczy",
 				Achievement.HARD_BASE_SCORE, true,
 				new QuestCompletedCondition("cloaks_collector_2")));
 
 		achievements.add(createAchievement(
 				"quest.special.beltscollector", "Kolekcjoner Pasów",
-				"Ukończył zadanie u kolekcjonerki pasów",
+				"Ukończono zadanie u kolekcjonerki pasów",
 				Achievement.HARD_BASE_SCORE, true,
 				new QuestCompletedCondition("belts_collector")));
 
 		achievements.add(createAchievement(
 				"quest.special.glovescollector", "Kolekcjoner Rękawic",
-				"Ukończył zadanie u kolekcjonerki rękawic",
+				"Ukończono zadanie u kolekcjonerki rękawic",
 				Achievement.HARD_BASE_SCORE, true,
 				new QuestCompletedCondition("gloves_collector")));
 
 		achievements.add(createAchievement(
 				"quest.special.mithrilcloak", "Oszałamiający Płaszcz",
-				"Ukończył zadanie na płaszcz z mithrilu",
+				"Ukończono zadanie na płaszcz z mithrilu",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new QuestCompletedCondition("mithril_cloak")));
 
 		achievements.add(createAchievement(
 				"quest.special.mithrilshield", "Najtwardsza Tarcza",
-				"Ukończył zadanie na tarczę z mithrilu",
+				"Ukończono zadanie na tarczę z mithrilu",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new QuestCompletedCondition("mithrilshield_quest")));
 
 		achievements.add(createAchievement(
 				"quest.special.gornictwo", "Kopalnia Niestraszna",
-				"Ukończył zadanie na górnictwo",
+				"Ukończono zadanie na górnictwo",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new QuestCompletedCondition("gornictwo")));
 
 		// flower harvest
 		achievements.add(createAchievement(
 				"obtain.harvest.flower", "Zielony Kciuk",
-				"Zebrał 20 każdego rodzaju uprawianego kwiatu",
+				"Zebrano 20 każdego rodzaju uprawianego kwiatu",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerHasHarvestedNumberOfItemsCondition(20,
 						"stokrotki", "lilia", "bratek", "bielikrasa")));
@@ -160,7 +159,7 @@ public class ObtainAchievementsFactory extends AbstractAchievementFactory {
 		// herb harvest
 		achievements.add(createAchievement(
 				"obtain.harvest.herb", "Ziołolecznik",
-				"Zebrał 20 każdego rodzaju rosnącego zioła w Faiumoni",
+				"Zebrano 20 każdego rodzaju rosnącego zioła w Faiumoni",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerHasHarvestedNumberOfItemsCondition(20,
 						"arandula", "kekik", "mandragora", "sclaria")));
@@ -168,7 +167,7 @@ public class ObtainAchievementsFactory extends AbstractAchievementFactory {
 		// loot or harvest apples
 		achievements.add(createAchievement(
 				ID_APPLES, "Kołysząc się na Jabłkach",
-				"Zebrał lub zdobył 1,000 jabłek",
+				"Zebrano lub zdobył 1,000 jabłek",
 				Achievement.EASY_BASE_SCORE, true,
 				new ChatCondition() {
 					@Override

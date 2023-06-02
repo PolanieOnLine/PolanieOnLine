@@ -41,27 +41,32 @@ public class AdosItemQuestAchievementsFactory extends AbstractAchievementFactory
 		final LinkedList<Achievement> achievements = new LinkedList<Achievement>();
 
 		achievements.add(createAchievement(
-				ID_SUPPORTER, "Pomocnik Ados", "Ukończył codzienne zadanie na przedmiot 10 razy",
+				ID_SUPPORTER, "Pomocnik Ados",
+				"Ukończono dzienne zadanie na przedmiot 10 razy",
 				Achievement.EASY_BASE_SCORE, true,
 				new QuestStateGreaterThanCondition("daily_item", 2, 9)));
 
 		achievements.add(createAchievement(
-				ID_PROVIDER, "Dostawca Ados", "Ukończył codzienne zadanie na przedmiot 50 razy",
+				ID_PROVIDER, "Dostawca Ados",
+				"Ukończono dzienne zadanie na przedmiot 50 razy",
 				Achievement.EASY_BASE_SCORE, true,
 				new QuestStateGreaterThanCondition("daily_item", 2, 49)));
 
 		achievements.add(createAchievement(
-				ID_SUPPLIER, "Główny Dostawca Ados", "Ukończył codzienne zadanie na przedmiot 100 razy",
+				ID_SUPPLIER, "Główny Dostawca Ados",
+				"Ukończono dzienne zadanie na przedmiot 100 razy",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new QuestStateGreaterThanCondition("daily_item", 2, 99)));
 
 		achievements.add(createAchievement(
-				ID_STOCKPILER, "Magazynier Ados", "Ukończył codzienne zadanie na przedmiot 250 razy",
+				ID_STOCKPILER, "Magazynier Ados",
+				"Ukończono dzienne zadanie na przedmiot 250 razy",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new QuestStateGreaterThanCondition("daily_item", 2, 249)));
 
 		achievements.add(createAchievement(
-				ID_HOARDER, "Skarbnik Ados", "Ukończył codzienne zadanie na przedmiot 500 razy",
+				ID_HOARDER, "Skarbnik Ados",
+				"Ukończono dzienne zadanie na przedmiot 500 razy",
 				Achievement.HARD_BASE_SCORE, true,
 				new QuestStateGreaterThanCondition("daily_item", 2, 499)));
 

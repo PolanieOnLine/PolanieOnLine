@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2022 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -19,7 +19,6 @@ import games.stendhal.server.core.rp.achievement.Category;
 import games.stendhal.server.entity.npc.condition.QuestStateGreaterThanCondition;
 
 public class KirdnehItemAchievementFactory extends AbstractAchievementFactory {
-
 	public static final String ID_ARCHAEOLOGIST = "quest.special.weekly_item.0005";
 	public static final String ID_DEDICATED = "quest.special.weekly_item.0025";
 	public static final String ID_SENIOR = "quest.special.weekly_item.0050";
@@ -35,22 +34,26 @@ public class KirdnehItemAchievementFactory extends AbstractAchievementFactory {
 		final LinkedList<Achievement> achievements = new LinkedList<Achievement>();
 
 		achievements.add(createAchievement(
-				ID_ARCHAEOLOGIST, "Archeolog", "Ukończył tygodniowe zadanie na przedmiot 5 razy",
+				ID_ARCHAEOLOGIST, "Archeolog",
+				"Ukończono tygodniowe zadanie na przedmiot 5 razy",
 				Achievement.HARD_BASE_SCORE, true,
 				new QuestStateGreaterThanCondition("weekly_item", 2, 4)));
 
 		achievements.add(createAchievement(
-				ID_DEDICATED, "Dedykowany Archeolog", "Ukończył tygodniowe zadanie na przedmiot 25 razy", 
+				ID_DEDICATED, "Dedykowany Archeolog",
+				"Ukończono tygodniowe zadanie na przedmiot 25 razy", 
 				Achievement.HARD_BASE_SCORE, true,
 				new QuestStateGreaterThanCondition("weekly_item", 2, 24)));
 
 		achievements.add(createAchievement(
-				ID_SENIOR, "Starszy Archeolog", "Ukończył tygodniowe zadanie na przedmiot 50 razy", 
+				ID_SENIOR, "Starszy Archeolog",
+				"Ukończono tygodniowe zadanie na przedmiot 50 razy", 
 				Achievement.HARD_BASE_SCORE, true,
 				new QuestStateGreaterThanCondition("weekly_item", 2, 49)));
 
 		achievements.add(createAchievement(
-				ID_MASTER, "Mistrz Archeolog", "Ukończył tygodniowe zadanie na przedmiot 100 razy", 
+				ID_MASTER, "Mistrz Archeolog",
+				"Ukończono tygodniowe zadanie na przedmiot 100 razy", 
 				Achievement.HARD_BASE_SCORE, true,
 				new QuestStateGreaterThanCondition("weekly_item", 2, 99)));
 

@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2018 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -26,7 +26,6 @@ import games.stendhal.server.maps.quests.KillBlordroughs;
  * Factory for KillBlordroughsAchievement
  */
 public class KillBlordroughsAchievementFactory extends AbstractAchievementFactory {
-
 	public static final int COUNT_LACKEY = 5;
 	public static final String ID_LACKEY = "quest.special.kill_blordroughs.0005";
 
@@ -49,22 +48,26 @@ public class KillBlordroughsAchievementFactory extends AbstractAchievementFactor
 		final LinkedList<Achievement> achievements = new LinkedList<Achievement>();
 
 		achievements.add(createAchievement(
-				ID_LACKEY, "Imperialistyczny Sługus", "Ukończył zadanie 'Zabij Blordroughtów' 5 razy",
+				ID_LACKEY, "Imperialistyczny Sługus",
+				"Ukończono zadanie 'Zabij Blordroughtów' 5 razy",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new CompletedCountCondition(COUNT_LACKEY)));
 
 		achievements.add(createAchievement(
-				ID_SOLDIER, "Imperialistyczny Żołnierz", "Ukończył zadanie 'Zabij Blordroughtów' 25 razy",
+				ID_SOLDIER, "Imperialistyczny Żołnierz",
+				"Ukończono zadanie 'Zabij Blordroughtów' 25 razy",
 				Achievement.HARD_BASE_SCORE, true,
 				new CompletedCountCondition(COUNT_SOLDIER)));
 
 		achievements.add(createAchievement(
-				ID_DOMINATOR, "Imperialistyczny Dominator", "Ukończył zadanie 'Zabij Blordroughtów' 50 razy",
+				ID_DOMINATOR, "Imperialistyczny Dominator",
+				"Ukończono zadanie 'Zabij Blordroughtów' 50 razy",
 				Achievement.HARD_BASE_SCORE, true,
 				new CompletedCountCondition(COUNT_DOMINATOR)));
 
 		achievements.add(createAchievement(
-				ID_DICTATOR, "Imperialistyczny Dyktator", "Ukończył zadanie 'Zabij Blordroughtów' 100 razy",
+				ID_DICTATOR, "Imperialistyczny Dyktator",
+				"Ukończono zadanie 'Zabij Blordroughtów' 100 razy",
 				Achievement.HARD_BASE_SCORE, true,
 				new CompletedCountCondition(COUNT_DICTATOR)));
 

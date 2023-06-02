@@ -153,112 +153,134 @@ public class ItemSetsAchievementFactory extends AbstractAchievementFactory {
 		final LinkedList<Achievement> achievements = new LinkedList<Achievement>();
 
 		achievements.add(createAchievement(
-				ID_RED, "Niebezpieczna Amazonia", "Zdobył cały karmazynowy zestaw",
+				ID_RED, "Niebezpieczna Amazonia",
+				"Zdobyto cały karmazynowy zestaw",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, RED)));
 
 		achievements.add(createAchievement(
-				ID_BLUE, "Czuję Błękit", "Zdobył cały lazurowy zestaw",
+				ID_BLUE, "Czuję Błękit",
+				"Zdobyto cały lazurowy zestaw",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, BLUE)));
 
 		achievements.add(createAchievement(
-				ID_ELVISH, "Zmora Nalwor", "Zdobył cały elficki zestaw",
+				ID_ELVISH, "Zmora Nalwor",
+				"Zdobyto cały elficki zestaw",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, ELVISH)));
 
 		achievements.add(createAchievement(
-				ID_SHADOW, "Mieszkaniec Cienia", "Zdobył cały zestaw cieni",
+				ID_SHADOW, "Mieszkaniec Cienia",
+				"Zdobyto cały zestaw cieni",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, SHADOW)));
 
 		achievements.add(createAchievement(
-				ID_CHAOS, "Zdobywca Chaosu", "Zdobył cały zestaw chaosów",
+				ID_CHAOS, "Zdobywca Chaosu",
+				"Zdobyto cały zestaw chaosów",
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, CHAOS)));
 
 		achievements.add(createAchievement(
-				ID_GOLDEN, "Złote Dziecko", "Zdobył cały złoty zestaw",
+				ID_GOLDEN, "Złote Dziecko",
+				"Zdobyto cały złoty zestaw",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, GOLDEN)));
 
 		achievements.add(createAchievement(
-				ID_BLACK, "Przejdź na Ciemną Stronę", "Zdobył cały czarny zestaw",
+				ID_BLACK, "Przejdź na Ciemną Stronę",
+				"Zdobyto cały czarny zestaw",
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, BLACK)));
 
 		achievements.add(createAchievement(
-				ID_MITHRIL, "Przejdź na Jasną Stronę", "Zdobył cały zestaw z mithrilu",
+				ID_MITHRIL, "Przejdź na Jasną Stronę",
+				"Zdobyto cały zestaw z mithrilu",
 				Achievement.LEGENDARY_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, MITHRIL)));
 
 		achievements.add(createAchievement(
-				ID_MAINIO, "Wspaniałe Rzeczy", "Zdobył cały mainiocyjski zestaw",
+				ID_MAINIO, "Wspaniałe Rzeczy",
+				"Zdobyto cały mainiocyjski zestaw",
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, MAINIO)));
 
 		achievements.add(createAchievement(
-				ID_XENO, "Trochę Xenofobiczny?", "Zdobył cały xenocyjski zestaw",
+				ID_XENO, "Trochę Xenofobiczny?",
+				"Zdobyto cały xenocyjski zestaw",
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, XENO)));
 
 		achievements.add(createAchievement(
-				ID_GORALSKIE, "Góralskie Dziecko", "Zdobył cały góralski zestaw",
+				ID_GORALSKIE, "Góralskie Dziecko",
+				"Zdobyto cały góralski zestaw",
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, GORALSKIE)));
 
 		achievements.add(createAchievement(
-				ID_VAMPIRE, "Wampir", "Zdobył cały wampirzy zestaw",
+				ID_VAMPIRE, "Wampir",
+				"Zdobyto cały wampirzy zestaw",
 				Achievement.LEGENDARY_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, VAMPIRE)));
 
 		achievements.add(createAchievement(
-				ID_ROYAL, "Królewsko Obdarowany", "Zdobył cały monarchistyczny zestaw",
+				ID_ROYAL, "Królewsko Obdarowany",
+				"Zdobyto cały monarchistyczny zestaw",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, ROYAL)));
 
 		achievements.add(createAchievement(
-				ID_MAGIC, "Magiczne Zaopatrzenie", "Zdobył cały magiczny zestaw",
+				ID_MAGIC, "Magiczne Zaopatrzenie",
+				"Zdobyto cały magiczny zestaw",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, MAGIC)));
 
 		achievements.add(createAchievement(
-				ID_STONE, "Człowiek Skała", "Zdobył cały kamienny zestaw",
+				ID_STONE, "Człowiek Skała",
+				"Zdobyto cały kamienny zestaw",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, STONE)));
 
 		achievements.add(createAchievement(
-				ID_FIRE, "Zapałka", "Zdobył cały ognisty zestaw",
+				ID_FIRE, "Zapałka",
+				"Zdobyto cały ognisty zestaw",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, FIRE)));
 
 		achievements.add(createAchievement(
-				ID_ICE, "Skrawek Lodu", "Zdobył cały lodowy zestaw",
+				ID_ICE, "Skrawek Lodu",
+				"Zdobyto cały lodowy zestaw",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, ICE)));
 
 		achievements.add(createAchievement(
-				ID_BARB, "Mały Barbarzyńca", "Zdobył cały barbarzyński zestaw",
+				ID_BARB, "Mały Barbarzyńca",
+				"Zdobyto cały barbarzyński zestaw",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, BARB)));
 
 		achievements.add(createAchievement(
-				ID_DRAGON_CLOAKS, "Pogromca Smoka", "Zdobył wszyskie smocze płaszcze",
+				ID_DRAGON_CLOAKS, "Pogromca Smoka",
+				"Zdobyto wszyskie smocze płaszcze",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, DRAGON_CLOAKS)));
 
 		achievements.add(createAchievement(
-				ID_WANDS, "Magiczny Zaklinacz", "Zdobył wszystkie różdżki",
+				ID_WANDS, "Magiczny Zaklinacz",
+				"Zdobyto wszystkie różdżki",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, WANDS)));
 
 		achievements.add(createAchievement(
-				ID_BOWS, "Napięta Cięciwa", "Zdobył wszystkie łuki",
+				ID_BOWS, "Napięta Cięciwa",
+				"Zdobyto wszystkie łuki",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, BOWS)));
 
 		achievements.add(createAchievement(
-				ID_CROSSBOW, "Kuszownik", "Zdobył wszystkie kusze",
+				ID_CROSSBOW, "Kuszownik",
+				"Zdobyto wszystkie kusze",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, CROSSBOW)));
 

@@ -34,42 +34,76 @@ public class UndergroundZoneAchievementFactory extends AbstractAchievementFactor
 		final LinkedList<Achievement> achievements = new LinkedList<Achievement>();
 
 		// All below ground achievements
-		achievements.add(createAchievement("zone.underground.semos", "Kanarek", "Odwiedził wszystkie podziemne obszary w regionie Semos", 
+		achievements.add(createAchievement(
+				"zone.underground.semos", "Kanarek",
+				"Odwiedzono wszystkie podziemne obszary w regionie Semos", 
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerVisitedZonesInRegionCondition("semos", Boolean.TRUE, Boolean.FALSE)));
-		achievements.add(createAchievement("zone.underground.nalwor", "Nie Boi się Piekła", "Odwiedził wszystkie podziemne obszary w regionie Nalwor", 
+
+		achievements.add(createAchievement(
+				"zone.underground.nalwor", "Nie Boi się Piekła",
+				"Odwiedzono wszystkie podziemne obszary w regionie Nalwor", 
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerVisitedZonesInRegionCondition("nalwor", Boolean.TRUE, Boolean.FALSE)));
-		achievements.add(createAchievement("zone.underground.athor", "Wielbiciel Labiryntów", "Odwiedził wszystkie podziemne obszary w regionie Athor", 
+
+		achievements.add(createAchievement(
+				"zone.underground.athor", "Wielbiciel Labiryntów",
+				"Odwiedzono wszystkie podziemne obszary w regionie Athor", 
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerVisitedZonesInRegionCondition("athor", Boolean.TRUE, Boolean.FALSE)));
-		achievements.add(createAchievement("zone.underground.amazon", "Człowiek Kret", "Odwiedził wszystkie podziemne obszary w regionie Amazon", 
+
+		achievements.add(createAchievement(
+				"zone.underground.amazon", "Człowiek Kret",
+				"Odwiedzono wszystkie podziemne obszary w regionie Amazon", 
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerVisitedZonesInRegionCondition("amazon", Boolean.TRUE, Boolean.FALSE)));		
-		achievements.add(createAchievement("zone.underground.ados", "Kopacz", "Odwiedził wszystkie podziemne obszary w regionie Ados",
+
+		achievements.add(createAchievement(
+				"zone.underground.ados", "Kopacz",
+				"Odwiedzono wszystkie podziemne obszary w regionie Ados",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerVisitedZonesInRegionCondition("ados", Boolean.TRUE, Boolean.FALSE)));
-		achievements.add(createAchievement("zone.underground.deniran", "Speleolog", "Odwiedził wszystkie podziemne obszary w regionie Deniran",
+
+		achievements.add(createAchievement(
+				"zone.underground.deniran", "Speleolog",
+				"Odwiedzono wszystkie podziemne obszary w regionie Deniran",
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerVisitedZonesInRegionCondition("deniran", Boolean.TRUE, Boolean.FALSE)));
-		achievements.add(createAchievement("zone.underground.fado", "Ogromne Jaskiniowce", "Odwiedził wszystkie podziemne obszary w regionie Fado",
+
+		achievements.add(createAchievement(
+				"zone.underground.fado", "Ogromne Jaskiniowce",
+				"Odwiedzono wszystkie podziemne obszary w regionie Fado",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerVisitedZonesInRegionCondition("fado", Boolean.TRUE, Boolean.FALSE)));
 
 		// Prasłowiańskie
-		achievements.add(createAchievement("zone.underground.krakow", "Szperacz", "Odwiedził wszystkie podziemne obszary w regionie Kraków", 
+		achievements.add(createAchievement(
+				"zone.underground.krakow", "Szperacz",
+				"Odwiedzono wszystkie podziemne obszary w regionie Kraków", 
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerVisitedZonesInRegionCondition("krakow", Boolean.TRUE, Boolean.FALSE)));
-		achievements.add(createAchievement("zone.underground.zakopane", "Grotołaz", "Odwiedził wszystkie podziemne obszary w regionie Zakopane", 
+
+		achievements.add(createAchievement(
+				"zone.underground.zakopane", "Grotołaz",
+				"Odwiedzono wszystkie podziemne obszary w regionie Zakopane", 
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerVisitedZonesInRegionCondition("zakopane", Boolean.TRUE, Boolean.FALSE)));
-		achievements.add(createAchievement("zone.underground.wieliczka", "Solny Zbieracz", "Odwiedził wszystkie podziemne obszary w regionie Wieliczka", 
+
+		achievements.add(createAchievement(
+				"zone.underground.wieliczka", "Solny Zbieracz",
+				"Odwiedzono wszystkie podziemne obszary w regionie Wieliczka", 
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerVisitedZonesInRegionCondition("wieliczka", Boolean.TRUE, Boolean.FALSE)));
-		achievements.add(createAchievement("zone.underground.gdansk", "Podmorski Szperacz", "Odwiedził wszystkie podziemne obszary w regionie Gdańsk", 
+
+		achievements.add(createAchievement(
+				"zone.underground.gdansk", "Podmorski Szperacz",
+				"Odwiedzono wszystkie podziemne obszary w regionie Gdańsk", 
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerVisitedZonesInRegionCondition("gdansk", Boolean.TRUE, Boolean.FALSE)));
-		achievements.add(createAchievement("zone.underground.warszawa", "Badacz", "Odwiedził wszystkie podziemne obszary w regionie Warszawa", 
+
+		achievements.add(createAchievement(
+				"zone.underground.warszawa", "Badacz",
+				"Odwiedzono wszystkie podziemne obszary w regionie Warszawa", 
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerVisitedZonesInRegionCondition("warszawa", Boolean.TRUE, Boolean.FALSE)));
 

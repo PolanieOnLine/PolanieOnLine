@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2022 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -22,7 +22,6 @@ import games.stendhal.server.entity.npc.condition.QuestStateGreaterThanCondition
  * Factory for MithrilbourghEnemyArmyAchievement
  */
 public class MithrilbourghEnemyArmyAchievementFactory extends AbstractAchievementFactory {
-
 	@Override
 	protected Category getCategory() {
 		return Category.QUEST_MITHRILBOURGH_ENEMY_ARMY;
@@ -35,14 +34,29 @@ public class MithrilbourghEnemyArmyAchievementFactory extends AbstractAchievemen
 		// Index where number of completions is stored
 		final int IDX = 3;
 
-		achievements.add(createAchievement("quest.special.kill_enemy_army.0005", "Sierżant", "Ukończ zadanie 'Zabij Wrogą Armię' 5 razy",
-				Achievement.MEDIUM_BASE_SCORE, true, new QuestStateGreaterThanCondition("kill_enemy_army", IDX, 4)));
-		achievements.add(createAchievement("quest.special.kill_enemy_army.0025", "Major", "Ukończ zadanie 'Zabij Wrogą Armię' 25 razy",
-				Achievement.HARD_BASE_SCORE, true, new QuestStateGreaterThanCondition("kill_enemy_army", IDX, 24)));
-		achievements.add(createAchievement("quest.special.kill_enemy_army.0050", "Główny Generał", "Ukończ zadanie 'Zabij Wrogą Armię' 50 razy",
-				Achievement.HARD_BASE_SCORE, true, new QuestStateGreaterThanCondition("kill_enemy_army", IDX, 49)));
-		achievements.add(createAchievement("quest.special.kill_enemy_army.0100", "Marszałek Polowy", "Ukończ zadanie 'Zabij Wrogą Armię' 100 razy",
-				Achievement.HARD_BASE_SCORE, true, new QuestStateGreaterThanCondition("kill_enemy_army", IDX, 99)));
+		achievements.add(createAchievement(
+				"quest.special.kill_enemy_army.0005", "Sierżant",
+				"Ukończono zadanie 'Zabij Wrogą Armię' 5 razy",
+				Achievement.MEDIUM_BASE_SCORE, true,
+				new QuestStateGreaterThanCondition("kill_enemy_army", IDX, 4)));
+
+		achievements.add(createAchievement(
+				"quest.special.kill_enemy_army.0025", "Major",
+				"Ukończono zadanie 'Zabij Wrogą Armię' 25 razy",
+				Achievement.HARD_BASE_SCORE, true,
+				new QuestStateGreaterThanCondition("kill_enemy_army", IDX, 24)));
+
+		achievements.add(createAchievement(
+				"quest.special.kill_enemy_army.0050", "Główny Generał",
+				"Ukończono zadanie 'Zabij Wrogą Armię' 50 razy",
+				Achievement.HARD_BASE_SCORE, true,
+				new QuestStateGreaterThanCondition("kill_enemy_army", IDX, 49)));
+
+		achievements.add(createAchievement(
+				"quest.special.kill_enemy_army.0100", "Marszałek Polowy",
+				"Ukończono zadanie 'Zabij Wrogą Armię' 100 razy",
+				Achievement.HARD_BASE_SCORE, true,
+				new QuestStateGreaterThanCondition("kill_enemy_army", IDX, 99)));
 
 		return achievements;
 	}

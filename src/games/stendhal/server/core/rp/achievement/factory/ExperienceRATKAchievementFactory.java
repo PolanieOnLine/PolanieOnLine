@@ -25,31 +25,36 @@ public class ExperienceRATKAchievementFactory extends AbstractAchievementFactory
 
 		String level = "25";
 		achievements.add(createAchievement(
-				"ratk.level.0" + level, "Początkujący Dystansowiec", "Osiągnął " + level + " poziom STR",
+				"ratk.level.0" + level, "Początkujący Dystansowiec",
+				"Osiągnięto " + level + " poziom STR",
 				Achievement.EASY_BASE_SCORE, true,
 				createComparison(level)));
 
 		level = "50";
 		achievements.add(createAchievement(
-				"ratk.level.0" + level, "Strzelec", "Osiągnął " + level + " poziom STR",
+				"ratk.level.0" + level, "Strzelec",
+				"Osiągnięto " + level + " poziom STR",
 				Achievement.EASY_BASE_SCORE, true,
 				createComparison(level)));
 
 		level = "75";
 		achievements.add(createAchievement(
-				"ratk.level.0" + level, "Zaawansowany Strzelec", "Osiągnął " + level + " poziom STR",
+				"ratk.level.0" + level, "Zaawansowany Strzelec",
+				"Osiągnięto " + level + " poziom STR",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				createComparison(level)));
 
 		level = "100";
 		achievements.add(createAchievement(
-				"ratk.level." + level, "Ekspert Strzelnictwa", "Osiągnął " + level + " poziom STR",
+				"ratk.level." + level, "Ekspert Strzelnictwa",
+				"Osiągnięto " + level + " poziom STR",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				createComparison(level)));
 
 		level = "150";
 		achievements.add(createAchievement(
-				"ratk.level." + level, "Mistrz Strzelnictwa", "Osiągnął " + level + " poziom STR",
+				"ratk.level." + level, "Mistrz Strzelnictwa",
+				"Osiągnięto " + level + " poziom STR",
 				Achievement.HARD_BASE_SCORE, true,
 				createComparison(level)));
 

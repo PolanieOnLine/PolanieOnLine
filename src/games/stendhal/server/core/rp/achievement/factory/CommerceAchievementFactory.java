@@ -162,12 +162,14 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 		final LinkedList<Achievement> achievements = new LinkedList<Achievement>();
 
 		achievements.add(createAchievement(
-				ID_HAPPY_HOUR, "Gdzieś jest Szczęśliwa Godzina", "Zakupił po 100 butelek soku z chmielu oraz kieliszków napoju z winogron",
+				ID_HAPPY_HOUR, "Gdzieś jest Szczęśliwa Godzina",
+				"Zakupiono po 100 butelek soku z chmielu oraz kieliszków napoju z winogron",
 				Achievement.EASY_BASE_SCORE, true,
 				new BoughtNumberOfCondition(100, ITEMS_HAPPY_HOUR)));
 
 		achievements.add(createAchievement(
-				ID_AID_KNOWLEDGE, "Pierwsza Pomoc", "Zakupił eliksir",
+				ID_AID_KNOWLEDGE, "Pierwsza Pomoc",
+				"Zakupiono eliksir",
 				Achievement.EASY_BASE_SCORE, true,
 				new ChatCondition() {
 					@Override
@@ -181,7 +183,8 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 				}));
 
 		achievements.add(createAchievement(
-				ID_HEALTH_IMPORTANT, "Zdrowie Najważniejsze", "Zakupił łącznie 500 różnych eliksirów",
+				ID_HEALTH_IMPORTANT, "Zdrowie Najważniejsze",
+				"Zakupiono łącznie 500 różnych eliksirów",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new ChatCondition() {
 					@Override
@@ -195,19 +198,22 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 				}));
 
 		achievements.add(createAchievement(
-				ID_VANILLA_OR_CHOCOLATE, "Wanilia czy Czekolada", "Zakupił po 200 shake'ów waniliowych i czekoladowych",
+				ID_VANILLA_OR_CHOCOLATE, "Wanilia czy Czekolada",
+				"Zakupiono po 200 shake'ów waniliowych i czekoladowych",
 				Achievement.EASY_BASE_SCORE, true,
 				new BoughtNumberOfCondition(200, ITEMS_VANILLA_OR_CHOCOLATE)));
 
 		achievements.add(createAchievement(
-				ID_CHOCOLATE, "Czekoladowy Raj", "Zakupił 200 tabliczek czekolady i 50 lukrecji",
+				ID_CHOCOLATE, "Czekoladowy Raj",
+				"Zakupiono 200 tabliczek czekolady i 50 lukrecji",
 				Achievement.EASY_BASE_SCORE, true,
 				new AndCondition(
 						new BoughtNumberOfCondition("tabliczka czekolady", 200),
 						new BoughtNumberOfCondition("lukrecja", 50))));
 
 		achievements.add(createAchievement(
-				ID_LOVE_HOTDOGS, "Miłośnik Hotdogów", "Zakupił łącznie 500 różnych hotdogów",
+				ID_LOVE_HOTDOGS, "Miłośnik Hotdogów",
+				"Zakupiono łącznie 500 różnych hotdogów",
 				Achievement.EASY_BASE_SCORE, true,
 				new ChatCondition() {
 					@Override
@@ -221,7 +227,8 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 				}));
 
 		achievements.add(createAchievement(
-				ID_SANDWICHES, "Kanapkowicz", "Zakupił łącznie 1,000 różnych kanapek",
+				ID_SANDWICHES, "Kanapkowicz",
+				"Zakupiono łącznie 1,000 różnych kanapek",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new ChatCondition() {
 					@Override
@@ -235,14 +242,16 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 				}));
 
 		achievements.add(createAchievement(
-				ID_SCROLLS, "Wygodny Podróżnik", "Zakupił po 100 każdego rodzaju zwojów oraz co najmniej 20 biletów turystycznych",
+				ID_SCROLLS, "Wygodny Podróżnik",
+				"Zakupiono po 100 każdego rodzaju zwojów oraz co najmniej 20 biletów turystycznych",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new AndCondition(
 						new BoughtNumberOfCondition(100, ITEMS_SCROLLS),
 						new BoughtNumberOfCondition("bilet turystyczny", 20))));
 
 		achievements.add(createAchievement(
-				ID_HOUSE, "Nie ma to jak w Domu", "Zakupił pierwszy domek",
+				ID_HOUSE, "Nie ma to jak w Domu",
+				"Zakupiono pierwszy domek",
 				Achievement.EASY_BASE_SCORE, true,
 				new ChatCondition() {
 					@Override
@@ -253,12 +262,14 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 		));
 
 		achievements.add(createAchievement(
-				ID_ICECREAM, "Schłodzenie", "Zakupił 100 lodów",
+				ID_ICECREAM, "Schłodzenie",
+				"Zakupiono 100 lodów",
 				Achievement.EASY_BASE_SCORE, true,
 				new BoughtNumberOfCondition("lody", 100)));
 
 		achievements.add(createAchievement(
-				ID_STAYING_SANE, "Przy Zdrowych Zmysłach", "Zakupił 1,000 eliksirów, 750 dużych eliksirów oraz 500 wielkich eliksirów",
+				ID_STAYING_SANE, "Przy Zdrowych Zmysłach",
+				"Zakupiono 1,000 eliksirów, 750 dużych eliksirów oraz 500 wielkich eliksirów",
 				Achievement.EASY_BASE_SCORE, true,
 				new AndCondition(
 						new BoughtNumberOfCondition("eliksir", 1000),
@@ -266,22 +277,26 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 						new BoughtNumberOfCondition("wielki eliksir", 500))));
 
 		achievements.add(createAchievement(
-				ID_CHEESE_MERCHANT, "Serowy Handlarz", "Sprzedał 1,000 kawałków sera",
+				ID_CHEESE_MERCHANT, "Serowy Handlarz",
+				"Sprzedano 1,000 kawałków sera",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new SoldNumberOfCondition(1000, ITEMS_CHEESE_MERCHANT)));
 
 		achievements.add(createAchievement(
-				ID_NAILS, "Zwierzęce Paznokietki", "Sprzedał po 100 różnych zwierzęcych pazurów",
+				ID_NAILS, "Zwierzęce Paznokietki",
+				"Sprzedano po 100 różnych zwierzęcych pazurów",
 				Achievement.HARD_BASE_SCORE, true,
 				new SoldNumberOfCondition(100, ITEMS_NAILS)));
 
 		achievements.add(createAchievement(
-				ID_SKINS, "Skórnik", "Sprzedał po 50 różnych smoczych i zwierzęcych skór",
+				ID_SKINS, "Skórnik",
+				"Sprzedano po 50 różnych smoczych i zwierzęcych skór",
 				Achievement.HARD_BASE_SCORE, true,
 				new SoldNumberOfCondition(50, ITEMS_SKINS)));
 
 		achievements.add(createAchievement(
-				ID_FISHSHOP, "Działalność Rybacka", "Sprzedał łącznie 1,000 różnych ryb",
+				ID_FISHSHOP, "Działalność Rybacka",
+				"Sprzedano łącznie 1,000 różnych ryb",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new ChatCondition() {
 					@Override
@@ -295,7 +310,8 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 				}));
 
 		achievements.add(createAchievement(
-				ID_MUSHROOMS, "Hodowca Kapeluszników", "Sprzedał łącznie 2,000 różnych grzybów",
+				ID_MUSHROOMS, "Hodowca Kapeluszników",
+				"Sprzedano łącznie 2,000 różnych grzybów",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new ChatCondition() {
 					@Override
@@ -309,12 +325,14 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 				}));
 
 		achievements.add(createAchievement(
-				ID_MAGICS, "Zbędne Czary", "Sprzedał po 500 każdego rodzaju magii",
+				ID_MAGICS, "Zbędne Czary",
+				"Sprzedano po 500 każdego rodzaju magii",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new SoldNumberOfCondition(500, ITEMS_MAGICS)));
 
 		achievements.add(createAchievement(
-				ID_BARS, "Wartość Złota", "Sprzedał łącznie 777 sztabek złota lub mithrilu",
+				ID_BARS, "Wartość Złota",
+				"Sprzedano łącznie 777 sztabek złota lub mithrilu",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new ChatCondition() {
 					@Override
@@ -328,34 +346,38 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 				}));
 
 		achievements.add(createAchievement(
-				ID_SNOWBALLS, "Zrzut Śnieżek", "Sprzedał 1,000 śnieżek",
+				ID_SNOWBALLS, "Zrzut Śnieżek",
+				"Sprzedano 1,000 śnieżek",
 				Achievement.EASY_BASE_SCORE, true,
 				new SoldNumberOfCondition("śnieżka", 1000)));
 
 		achievements.add(createAchievement(
-				ID_SZCZERBIEC, "Życiowy Interes", "Sprzedał szczerbiec",
+				ID_SZCZERBIEC, "Życiowy Interes",
+				"Sprzedano szczerbiec",
 				Achievement.EASY_BASE_SCORE, true,
 				new SoldNumberOfCondition("szczerbiec", 1)));
 
 		achievements.add(createAchievement(
-				ID_MARKSMAN, "Koniec Strzelca", "Sprzedał łuk z mithrilu",
+				ID_MARKSMAN, "Koniec Strzelca",
+				"Sprzedano łuk z mithrilu",
 				Achievement.EASY_BASE_SCORE, true,
 				new SoldNumberOfCondition("łuk z mithrilu", 1)));
 
 		achievements.add(createAchievement(
-				ID_FURTRADER, "Handlarz Futer", "Sprzedał 300 futer",
+				ID_FURTRADER, "Handlarz Futer",
+				"Sprzedano 300 futer",
 				Achievement.EASY_BASE_SCORE, true,
 				new SoldNumberOfCondition("futro", 300)));
 
 		achievements.add(createAchievement(
 				ID_SELL_20K, "Podróżujący Handlarz",
-				"Zarobił 20,000 pieniędzy na sprzedaży u NPC",
+				"Zarobiono 20,000 pieniędzy na sprzedaży u NPC",
 				Achievement.EASY_BASE_SCORE, true,
 				new HasEarnedTotalMoneyCondition(20000)));
 
 		achievements.add(createAchievement(
 				ID_BUY_ALL, "Wspierający Społeczność",
-				"Wydał swoje pieniądze u różnych handlarzy na świecie",
+				"Wydano swoje pieniądze u różnych handlarzy na świecie",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new HasSpentMoneyCondition(TRADE_ALL_AMOUNTS)));
 

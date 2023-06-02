@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2022 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -18,13 +17,13 @@ import java.util.LinkedList;
 import games.stendhal.server.core.rp.achievement.Achievement;
 import games.stendhal.server.core.rp.achievement.Category;
 import games.stendhal.server.entity.npc.condition.LevelGreaterThanCondition;
+
 /**
  * Factory for experience achievements
  *
  * @author madmetzger
  */
 public class ExperienceAchievementFactory extends AbstractAchievementFactory {
-
 	public static final String ID_PAROBEK = "xp.level.010";
 	public static final String ID_CHLOP = "xp.level.050";
 	public static final String ID_KMIEC = "xp.level.100";
@@ -49,67 +48,80 @@ public class ExperienceAchievementFactory extends AbstractAchievementFactory {
 		final LinkedList<Achievement> achievements = new LinkedList<Achievement>();
 
 		achievements.add(createAchievement(
-				ID_PAROBEK, "Parobek", "Osiągnął poziom 10",
+				ID_PAROBEK, "Parobek",
+				"Osiągnięto poziom 10",
 				Achievement.EASY_BASE_SCORE, true,
 				new LevelGreaterThanCondition(9)));
 
 		achievements.add(createAchievement(
-				ID_CHLOP, "Chłop", "Osiągnął poziom 50",
+				ID_CHLOP, "Chłop",
+				"Osiągnięto poziom 50",
 				Achievement.EASY_BASE_SCORE, true,
 				new LevelGreaterThanCondition(49)));
 
 		achievements.add(createAchievement(
-				ID_KMIEC, "Kmieć", "Osiągnął poziom 100",
+				ID_KMIEC, "Kmieć",
+				"Osiągnięto poziom 100",
 				Achievement.EASY_BASE_SCORE, true,
 				new LevelGreaterThanCondition(99)));
 
 		achievements.add(createAchievement(
-				ID_MIESZCZANIN, "Mieszczanin", "Osiągnął poziom 150",
+				ID_MIESZCZANIN, "Mieszczanin",
+				"Osiągnięto poziom 150",
 				Achievement.EASY_BASE_SCORE, true,
 				new LevelGreaterThanCondition(149)));
 
 		achievements.add(createAchievement(
-				ID_SZLACHCIC, "Szlachcic", "Osiągnął poziom 200",
+				ID_SZLACHCIC, "Szlachcic",
+				"Osiągnięto poziom 200",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new LevelGreaterThanCondition(199)));
 
 		achievements.add(createAchievement(
-				ID_RYCERZ, "Rycerz", "Osiągnął poziom 250",
+				ID_RYCERZ, "Rycerz",
+				"Osiągnięto poziom 250",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new LevelGreaterThanCondition(249)));
 
 		achievements.add(createAchievement(
-				ID_BARONET, "Baronet", "Osiągnął poziom 300",
+				ID_BARONET, "Baronet",
+				"Osiągnięto poziom 300",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new LevelGreaterThanCondition(299)));
 
 		achievements.add(createAchievement(
-				ID_BARON, "Baron", "Osiągnął poziom 350",
+				ID_BARON, "Baron",
+				"Osiągnięto poziom 350",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new LevelGreaterThanCondition(349)));
 
 		achievements.add(createAchievement(
-				ID_WICEHRABIA, "Wicehrabia", "Osiągnął poziom 400",
+				ID_WICEHRABIA, "Wicehrabia",
+				"Osiągnięto poziom 400",
 				Achievement.HARD_BASE_SCORE, true,
 				new LevelGreaterThanCondition(399)));
 
 		achievements.add(createAchievement(
-				ID_HRABIA, "Hrabia", "Osiągnął poziom 450",
+				ID_HRABIA, "Hrabia",
+				"Osiągnięto poziom 450",
 				Achievement.HARD_BASE_SCORE, true,
 				new LevelGreaterThanCondition(449)));
 
 		achievements.add(createAchievement(
-				ID_MAGNAT, "Magnat", "Osiągnął poziom 500",
+				ID_MAGNAT, "Magnat",
+				"Osiągnięto poziom 500",
 				Achievement.HARD_BASE_SCORE, true,
 				new LevelGreaterThanCondition(499)));
 
 		achievements.add(createAchievement(
-				ID_KSIAZE, "Książe", "Osiągnął poziom 550",
+				ID_KSIAZE, "Książe",
+				"Osiągnięto poziom 550",
 				Achievement.HARD_BASE_SCORE, true,
 				new LevelGreaterThanCondition(549)));
 
 		achievements.add(createAchievement(
-				ID_KROL, "Król", "Osiągnął poziom 597",
+				ID_KROL, "Król",
+				"Osiągnięto poziom 597",
 				Achievement.LEGENDARY_BASE_SCORE, true,
 				new LevelGreaterThanCondition(596)));
 

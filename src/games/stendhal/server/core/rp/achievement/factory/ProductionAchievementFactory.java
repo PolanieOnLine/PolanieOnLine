@@ -55,7 +55,7 @@ public class ProductionAchievementFactory extends AbstractAchievementFactory {
 		// grilled steak is made using quest code and not production code so we add an extra condition, and it doesn't adhere to standard completion guidelines
 		achievements.add(createAchievement(
 				"production.class.food", "Smakosz",
-				"Zlecił wszystkie rodzaje potraw dostępne u kucharzy",
+				"Zlecono wszystkie rodzaje potraw dostępne u kucharzy",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new AndCondition(
 						new PlayerProducedNumberOfItemsCondition(1, foods),
@@ -69,7 +69,7 @@ public class ProductionAchievementFactory extends AbstractAchievementFactory {
 		// at time of writing, the other drinks are fierywater, tea, pina colada, and mega potion (which we may remove)
 		achievements.add(createAchievement(
 				"production.class.drink", "Spragniony Pracownik",
-				"Zlecił wszystkie rodzaje napoi dostępne u kucharzy",
+				"Zlecono wszystkie rodzaje napoi dostępne u kucharzy",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new AndCondition(
 						new PlayerProducedNumberOfItemsCondition(1, drinks),
@@ -83,19 +83,19 @@ public class ProductionAchievementFactory extends AbstractAchievementFactory {
 		// at time of writing: gold bar, mithril bar, flour, iron
 		achievements.add(createAchievement(
 				"production.class.resource", "Alchemik",
-				"Wyprodukował po 50 rodzai każdego cennego metalu i zasobów",
+				"Wyprodukowano po 50 rodzai każdego cennego metalu i zasobów",
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerProducedNumberOfItemsCondition(50, resources)));
 
 		achievements.add(createAchievement(
 				"production.flour.1000", "Asystent Jenny",
-				"Wyprodukował 1,000 mąk",
+				"Wyprodukowano 1,000 mąk",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerProducedNumberOfItemsCondition(1000, "mąka")));
 
 		achievements.add(createAchievement(
 				"production.sow.flowers.all", "Siew Nasion Radości",
-				"Zasiał po 1000 nasion każdego rodzaju",
+				"Zasiano po 1000 nasion każdego rodzaju",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new ChatCondition() {
 					@Override
@@ -111,37 +111,37 @@ public class ProductionAchievementFactory extends AbstractAchievementFactory {
 
 		achievements.add(createAchievement(
 				"production.potions.500", "Producent Eliksirów",
-				"Wyprodukował 500 wielkich eliksirów",
+				"Wyprodukowano 500 wielkich eliksirów",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerProducedNumberOfItemsCondition(500, "wielki eliksir")));
 
 		achievements.add(createAchievement(
 				"production.sandwiches.100", "Głodomor",
-				"Wyprodukował 100 zwykłych kanapek",
+				"Wyprodukowano 100 zwykłych kanapek",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerProducedNumberOfItemsCondition(100, "kanapka")));
 
 		achievements.add(createAchievement(
 				"production.bread.500", "Mały Chlebownik",
-				"Upiekł 500 bochenków chleba",
+				"Upieczono 500 bochenków chleba",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerProducedNumberOfItemsCondition(500, "chleb")));
 
 		achievements.add(createAchievement(
 				"production.sweetsnacks.200", "Słodkie Przekąski",
-				"Upiekł po 200 różnych słodkich przekąsek",
+				"Upieczono po 200 różnych słodkich przekąsek",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerProducedNumberOfItemsCondition(200, ITEMS_SNACKS)));
 
 		achievements.add(createAchievement(
 				"production.smokingfood.50", "Wędzarka",
-				"Uwędził po 50 różnego jedzenia",
+				"Uwędzono po 50 różnego jedzenia",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerProducedNumberOfItemsCondition(50, ITEMS_SMOKINGFOOD)));
 
 		achievements.add(createAchievement(
 				"production.boiledpot.1000", "Ziemniaczany Kociołek",
-				"Ugotował 1,000 ziemniaków",
+				"Ugotowano 1,000 ziemniaków",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerProducedNumberOfItemsCondition(1000, "gotowane ziemniaki")));
 

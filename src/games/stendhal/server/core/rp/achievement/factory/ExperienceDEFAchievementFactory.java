@@ -25,31 +25,36 @@ public class ExperienceDEFAchievementFactory extends AbstractAchievementFactory 
 
 		String level = "25";
 		achievements.add(createAchievement(
-				"def.level.0" + level, "Początkujący Obrońca", "Osiągnął " + level + " poziom OBR",
+				"def.level.0" + level, "Początkujący Obrońca",
+				"Osiągnięto " + level + " poziom OBR",
 				Achievement.EASY_BASE_SCORE, true,
 				createComparison(level)));
 
 		level = "50";
 		achievements.add(createAchievement(
-				"def.level.0" + level, "Obrońca", "Osiągnął " + level + " poziom OBR",
+				"def.level.0" + level, "Obrońca",
+				"Osiągnięto " + level + " poziom OBR",
 				Achievement.EASY_BASE_SCORE, true,
 				createComparison(level)));
 
 		level = "75";
 		achievements.add(createAchievement(
-				"def.level.0" + level, "Zaawansowany Obrońca", "Osiągnął " + level + " poziom OBR",
+				"def.level.0" + level, "Zaawansowany Obrońca",
+				"Osiągnięto " + level + " poziom OBR",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				createComparison(level)));
 
 		level = "100";
 		achievements.add(createAchievement(
-				"def.level." + level, "Ekspert Obrony", "Osiągnął " + level + " poziom OBR",
+				"def.level." + level, "Ekspert Obrony",
+				"Osiągnięto " + level + " poziom OBR",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				createComparison(level)));
 
 		level = "150";
 		achievements.add(createAchievement(
-				"def.level." + level, "Mistrz Obrony", "Osiągnął " + level + " poziom OBR",
+				"def.level." + level, "Mistrz Obrony",
+				"Osiągnięto " + level + " poziom OBR",
 				Achievement.HARD_BASE_SCORE, true,
 				createComparison(level)));
 
