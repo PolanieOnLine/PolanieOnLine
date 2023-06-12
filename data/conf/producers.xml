@@ -496,7 +496,7 @@
 		<welcome text="Cześć! Jestem pomocnikiem tutejszego kowala. Jeżeli będziesz chciał, abym #odlał dla Ciebie #'sztabkę cieni' to daj znać!"/>
 		<item name="sztabka cieni" minutes="7">
 			<resource name="polano" amount="2"/>
-			<resource name="ruda platyny"/>
+			<resource name="ruda cieni"/>
 			<resource name="money" amount="70"/>
 
 			<activity type="cast,odlej"/>
