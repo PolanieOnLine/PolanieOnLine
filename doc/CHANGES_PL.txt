@@ -1,5 +1,18 @@
 Changelog
 ---------
+1.37.1
+*klient*
+- Poprawiono wygląd słonia
+
+*świat*
+- Gdy gracz ma założoną różdżkę bez magii to ATK różdżki zostaje zmniejszony do 10% jej wartości
+- Poprawiono zostały tytuły oraz opisy osiągnięć
+- Poprawiono opis bankiera w Krakowie
+
+*naprawiono błędy*
+- Naprawiono produkowanie sztabki u Zygfryda
+
+
 1.37
 *klient*
 - Dodano nowe oraz przerobiono grafiki przedmiotów i GUI klienta
