@@ -314,10 +314,10 @@ public class KrakowBank extends AbstractQuest implements LoginListener {
 			}
 		};
 
-		npc.setDescription("Oto strażnik skarbca, z którym nie powinieneś zadzierać.");
+		npc.setDescription("Oto młody bankier Tibor. Strażnik zawartości skrzyń, z którym nie powinieneś zadzierać.");
 		npc.setEntityClass("youngnpc");
+		npc.setGender("M");
 		npc.setPosition(21, 6);
-		npc.initHP(100);
 		zone.add(npc);
 	}
 
