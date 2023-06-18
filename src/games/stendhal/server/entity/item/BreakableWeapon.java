@@ -16,7 +16,6 @@ import java.util.Map;
 
 import games.stendhal.common.Rand;
 import games.stendhal.server.entity.RPEntity;
-import games.stendhal.server.entity.player.Player;
 
 /**
  * An item that wears & breaks.
@@ -84,10 +83,8 @@ public class BreakableWeapon extends Weapon {
 
 	private void onWeakened(final RPEntity user) {
 		if (!notified) {
-			if (user instanceof Player) {
-				((Player) user).sendPrivateText("Twój przedmiot " + getName() + " jest bliski zepsucia się.");
-				notified = true;
-			}
+			user.sendPrivateText("Twój przedmiot " + getName() + " jest bliski zepsucia się.");
+			notified = true;
 		}
 	}
 
