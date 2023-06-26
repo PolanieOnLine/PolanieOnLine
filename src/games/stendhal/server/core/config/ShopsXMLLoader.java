@@ -147,7 +147,7 @@ public class ShopsXMLLoader extends DefaultHandler {
 			currentName = attrs.getValue("name");
 		} else if (qName.equals("item") && isItemShop()) {
 			if (currentInventory == null) {
-				currentInventory = new ItemShopInventory();
+				currentInventory = new ItemShopInventory(currentType, currentName);
 			}
 			final String iname = attrs.getValue("name");
 			final String iprice = attrs.getValue("price");
@@ -158,7 +158,7 @@ public class ShopsXMLLoader extends DefaultHandler {
 			}
 		} else if (qName.equals("outfit") && isOutfitShop()) {
 			if (currentInventory == null) {
-				currentInventory = new OutfitShopInventory();
+				currentInventory = new OutfitShopInventory(currentType, currentName);
 			}
 			((OutfitShopInventory) currentInventory).put(attrs.getValue("name"), attrs.getValue("layers"),
 					Integer.parseInt(attrs.getValue("price")));
@@ -181,6 +181,9 @@ public class ShopsXMLLoader extends DefaultHandler {
 			}
 			mc.wearOffMessage = attrs.getValue("wearOffMessage");
 			configurators.add(mc);
+			if (currentInventory != null) {
+				currentInventory.addMerchantConfigurator(mc);
+			}
 		}
 	}
 

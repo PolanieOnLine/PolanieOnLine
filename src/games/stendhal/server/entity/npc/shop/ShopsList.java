@@ -12,10 +12,7 @@
 package games.stendhal.server.entity.npc.shop;
 
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -31,9 +28,6 @@ import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
  */
 public final class ShopsList {
 	private static final Logger logger = Logger.getLogger(ShopsList.class);
-
-	@Deprecated
-	private final Map<String, ItemShopInventory> contents;
 
 	private final Map<String, ItemShopInventory> sellerContents;
 	private final Map<String, ItemShopInventory> buyerContents;
@@ -57,7 +51,6 @@ public final class ShopsList {
 	 * Hidden singleton constructor.
 	 */
 	private ShopsList() {
-		contents = new HashMap<String, ItemShopInventory>();
 		sellerContents = new HashMap<String, ItemShopInventory>();
 		buyerContents = new HashMap<String, ItemShopInventory>();
 	}
@@ -71,27 +64,13 @@ public final class ShopsList {
 	 *     Seller or buyer shop list (or deprecated generic shop list if
 	 *     <code>seller</code> is null.
 	 */
-	private Map<String, ItemShopInventory> getContents(final ShopType stype) {
+	public Map<String, ItemShopInventory> getContents(final ShopType stype) {
 		if (ShopType.ITEM_SELL.equals(stype)) {
 			return sellerContents;
 		} else if (ShopType.ITEM_BUY.equals(stype)) {
 			return buyerContents;
 		}
-		return contents;
-	}
-
-	/**
-	 * Get list of shop contents.
-	 *
-	 * @param seller
-	 *     Seller or buyer shop.
-	 * @return
-	 *     Seller or buyer shop list (or deprecated generic shop list if
-	 *     <code>seller</code> is null.
-	 */
-	@Deprecated
-	private Map<String, ItemShopInventory> getContents(final Boolean seller) {
-		return getContents(seller == true ? ShopType.ITEM_SELL : seller == false ? ShopType.ITEM_BUY : null);
+		return null;
 	}
 
 	/**
@@ -111,21 +90,6 @@ public final class ShopsList {
 	/**
 	 * Gets the items offered by a shop with their prices.
 	 *
-	 * @param seller
-	 *     Seller or buyer shop.
-	 * @param name
-	 *     Shop name.
-	 * @return
-	 *     Item names and prices.
-	 */
-	@Deprecated
-	public Map<String, Integer> get(final Boolean seller, final String name) {
-		return getContents(seller).get(name);
-	}
-
-	/**
-	 * Gets the items offered by a shop with their prices.
-	 *
 	 * @param name
 	 *     Shop name.
 	 * @return
@@ -133,94 +97,10 @@ public final class ShopsList {
 	 */
 	@Deprecated
 	public Map<String, Integer> get(final String name) {
-		if (contents.containsKey(name)) {
-			return contents.get(name);
-		} else if (sellerContents.containsKey(name)) {
+		if (sellerContents.containsKey(name)) {
 			return sellerContents.get(name);
 		}
 		return buyerContents.get(name);
-	}
-
-	/**
-	 * Gets the items offered by a seller shop with their prices.
-	 *
-	 * @param name
-	 *     Shop name.
-	 * @return
-	 *     Item names and prices.
-	 */
-	public ItemShopInventory getSeller(final String name) {
-		return get(name, ShopType.ITEM_SELL);
-	}
-
-	/**
-	 * Gets the items offered by a buyer shop with their prices.
-	 *
-	 * @param name
-	 *     Shop name.
-	 * @return
-	 *     Item names and prices.
-	 */
-	public ItemShopInventory getBuyer(final String name) {
-		return get(name, ShopType.ITEM_BUY);
-	}
-
-	/**
-	 * Gets a set of shop names.
-	 *
-	 * @param stype
-	 *     Seller or buyer shops.
-	 * @return
-	 *     Set of shop names.
-	 */
-	public Set<String> getShops(final ShopType stype) {
-		return getContents(stype).keySet();
-	}
-
-	/**
-	 * Gets a set of shop names.
-	 *
-	 * @param seller
-	 *     Seller or buyer shops.
-	 * @return
-	 *     Set of shop names.
-	 */
-	@Deprecated
-	public Set<String> getShops(final Boolean seller) {
-		return getContents(seller).keySet();
-	}
-
-	/**
-	 * Gets a set of all shop names.
-	 *
-	 * @return
-	 *     Set of shop names.
-	 */
-	public Set<String> getShops() {
-		final Set<String> shopNames = contents.keySet();
-		shopNames.addAll(sellerContents.keySet());
-		shopNames.addAll(buyerContents.keySet());
-		return shopNames;
-	}
-
-	/**
-	 * Gets a set of all seller shops.
-	 *
-	 * @return
-	 *     Set of seller shops.
-	 */
-	public Set<String> getSellerShops() {
-		return getShops(ShopType.ITEM_SELL);
-	}
-
-	/**
-	 * Gets a set of all buyer shops.
-	 *
-	 * @return
-	 *     Set of buyer shops.
-	 */
-	public Set<String> getBuyerShops() {
-		return getShops(ShopType.ITEM_BUY);
 	}
 
 	/**
@@ -253,59 +133,13 @@ public final class ShopsList {
 	 *     Name of item to add.
 	 * @param price
 	 *     Value of the item.
+	 * @deprecated Shops should be defined on data/conf/shops/*.xml
 	 */
+	@Deprecated
 	public void add(final String name, final ShopType stype, final String item, final int price) {
-		final ItemShopInventory inventory = new ItemShopInventory();
+		final ItemShopInventory inventory = new ItemShopInventory(stype, name);
 		inventory.put(item, price);
 		add(name, stype, inventory);
-	}
-
-	/**
-	 * Add an item to a shop.
-	 *
-	 * @param seller
-	 *     Seller or buyer shop.
-	 * @param name
-	 *     Shop name.
-	 * @param item
-	 *     Name of item to add.
-	 * @param price
-	 *     Value of the item.
-	 */
-	@Deprecated
-	public void add(final Boolean seller, final String name, final String item,
-			final int price) {
-		add(name, seller == true ? ShopType.ITEM_SELL : seller == false ? ShopType.ITEM_BUY : null,
-				item, price);
-	}
-
-	/**
-	 * Add an item to a shop.
-	 *
-	 * @param name
-	 *     Shop name.
-	 * @param item
-	 *     Name of item to add.
-	 * @param price
-	 *     Value of the item.
-	 */
-	@Deprecated
-	public void add(final String name, final String item, final int price) {
-		add(name, null, item, price);
-	}
-
-	/**
-	 * Add an item to a seller shop.
-	 *
-	 * @param name
-	 *     Shop name.
-	 * @param item
-	 *     Name of item to add.
-	 * @param price
-	 *     Value of the item.
-	 */
-	public void addSeller(final String name, final String item, final int price) {
-		add(name, ShopType.ITEM_SELL, item, price);
 	}
 
 	/**
@@ -416,20 +250,6 @@ public final class ShopsList {
 	/**
 	 * Configures an NPC for a shop.
 	 *
-	 * @param npcname
-	 *     Name of NPC being configured.
-	 * @param shopname
-	 *     Shop string identifier.
-	 * @param stype
-	 *     Seller or buyer shop.
-	 */
-	public void configureNPC(final String npcname, final String shopname, final ShopType stype) {
-		configureNPC(npcname, shopname, stype, true);
-	}
-
-	/**
-	 * Configures an NPC for a shop.
-	 *
 	 * @param seller
 	 *     Seller or buyer shop.
 	 * @param shopname
@@ -440,68 +260,6 @@ public final class ShopsList {
 	@Deprecated
 	public void configureNPC(final String npcname, final String shopname,
 			final boolean seller) {
-		configureNPC(npcname, shopname, seller ? ShopType.ITEM_SELL : ShopType.ITEM_BUY);
-	}
-
-	/**
-	 * Converts a shop into a human readable form.
-	 *
-	 * @param name
-	 *     Shop name.
-	 * @param stype
-	 *     Seller or buyer shop.
-	 * @param header
-	 *     Prefix.
-	 * @return
-	 *     Human readable description.
-	 */
-	public String toString(final String name, final ShopType stype, final String header) {
-		final ItemShopInventory inventory = getContents(stype).get(name);
-
-		final StringBuilder sb = new StringBuilder();
-		if (ShopType.ITEM_SELL.equals(stype)) {
-			sb.append("Sprzedawca: ");
-		} else if (ShopType.ITEM_BUY.equals(stype)) {
-			sb.append("Nabywca: ");
-		}
-		sb.append(header + "\n");
-		for (final Entry<String, Integer> entry: inventory.entrySet()) {
-			sb.append(entry.getKey() + " \t" + entry.getValue() + "\n");
-		}
-		return sb.toString();
-	}
-
-	/**
-	 * Converts a shop into a human readable form.
-	 *
-	 * @param seller
-	 *     Seller or buyer shop.
-	 * @param name
-	 *     Shop name.
-	 * @param header
-	 *     Prefix.
-	 * @return
-	 *     Human readable description.
-	 */
-	@Deprecated
-	public String toString(final Boolean seller, final String name,
-			final String header) {
-		return toString(name,
-				seller == true ? ShopType.ITEM_SELL : seller == false ? ShopType.ITEM_BUY : null, header);
-	}
-
-	/**
-	 * Converts a shop into a human readable form.
-	 *
-	 * @param name
-	 *     Shop name.
-	 * @param header
-	 *     Prefix.
-	 * @return
-	 *     Human readable description.
-	 */
-	@Deprecated
-	public String toString(final String name, final String header) {
-		return toString(null, name, header);
+		configureNPC(npcname, shopname, seller ? ShopType.ITEM_SELL : ShopType.ITEM_BUY, true);
 	}
 }

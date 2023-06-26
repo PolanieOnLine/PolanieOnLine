@@ -6,7 +6,7 @@
 	-->
 
 	<!-- Ground level -->
-	
+
 	<!-- gdansk_outside -->
 	<zone name="0_gdansk_outside" level="0" x="512928" y="17024" file="Level 0/gdansk/outside.tmx">
 		<attributes>

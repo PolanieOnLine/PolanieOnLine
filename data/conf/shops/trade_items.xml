@@ -5,7 +5,7 @@
 
 	<!-- TRADE FOR ITEMS INSTEAD OF MONEY -->
 
-	<shop type="trade">
+	<shop name="arrowsforpearls" type="trade">
 		<item name="strzała lodowa">
 			<for name="czarna perła" count="1"/>
 		</item>
@@ -19,7 +19,7 @@
 		<merchant name="Mizuno"/>
 	</shop>
 
-	<shop type="trade">
+	<shop name="iceforearth" type="trade">
 		<item name="magia mrozu">
 			<for name="magia ziemi" count="1000"/>
 		</item>

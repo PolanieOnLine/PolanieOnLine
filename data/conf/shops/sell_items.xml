@@ -775,7 +775,7 @@
 	</shop>
 
 	<!-- the following are configured in the NPC source & are included here only to be read by the website -->
-	<shop type="sell">
+	<shop name="flowerseeds" type="sell">
 		<item name="stokrotki nasionka" price="20"/>
 		<item name="lilia nasionka" price="10"/>
 		<item name="bratek nasionka" price="10"/>
@@ -784,46 +784,46 @@
 		<merchant name="Jenny"/>
 	</shop>
 
-	<shop type="sell">
+	<shop name="sellsheep" type="sell">
 		<item name="sheep" price="30"/>
 
 		<merchant name="Baca Zbyszek"/>
 		<merchant name="Nishiya"/>
 	</shop>
 
-	<shop type="sell">
+	<shop name="natsellsheep" type="sell">
 		<item name="sheep" price="40"/>
 
 		<merchant name="Nathan"/>
 	</shop>
 
-	<shop type="sell">
+	<shop name="sellroach" type="sell">
 		<item name="płotka" price="10"/>
 
 		<merchant name="Mrs. Yeti"/>
 	</shop>
 
-	<shop type="sell">
+	<shop name="sellgoat" type="sell">
 		<item name="goat" price="60"/>
 
 		<merchant name="Kajetan"/>
 	</shop>
 
-	<shop type="sell">
+	<shop name="sellpoppy" type="sell">
 		<item name="owczarek" price="300"/>
 		<item name="owczarek podhalański" price="1000"/>
 
 		<merchant name="Stary Baca"/>
 	</shop>
 
-	<shop type="sell">
+	<shop name="fadoscrolls" type="sell">
 		<item name="zwój fado" price="480"/>
 		<item name="niezapisany zwój" price="1760"/>
 
 		<merchant name="Orchiwald"/>
 	</shop>
 
-	<shop type="sell">
+	<shop name="wofolbar" type="sell">
 		<item name="sok z chmielu" price="18"/>
 		<item name="napój z winogron" price="25"/>
 		<item name="nalewka litworowa" price="95">
@@ -836,7 +836,7 @@
 		<merchant name="Wrviliza"/>
 	</shop>
 
-	<shop type="sell">
+	<shop name="animalsanctuary" type="sell">
 		<item name="antidotum" price="40" />
 		<item name="mały eliksir" price="80" />
 		<item name="eliksir" price="200" />
@@ -845,25 +845,25 @@
 		<merchant name="Dr. Feelgood" note="po zadaniu Zapasy Zoo"/>
 	</shop>
 
-	<shop type="sell">
+	<shop name="cats" type="sell">
 		<item name="cat" price="100"/>
 
 		<merchant name="Felina"/>
 	</shop>
 
-	<shop type="sell">
+	<shop name="karl" type="sell">
 		<item name="pusty worek" price="10"/>
 
 		<merchant name="Karl"/>
 	</shop>
 
-	<shop type="sell">
+	<shop name="karlhorsehair" type="sell">
 		<item name="końskie włosie" price="20" note="po zadaniu Łucznictwo Ouchita"/>
 
 		<merchant name="Karl"/>
 	</shop>
 
-	<shop type="sell">
+	<shop name="dojo" type="sell">
 		<item name="miecz treningowy" price="2100"/>
 		<item name="shuriken" price="80"/>
 		<item name="płonący shuriken" price="105"/>
@@ -871,7 +871,7 @@
 		<merchant name="Akutagawa"/>
 	</shop>
 
-	<shop type="sell">
+	<shop name="bestiary" type="sell">
 		<item name="bestiariusz" price="500000"/>
 
 		<merchant name="Rengard" note="po zadaniu Zbierz Informacje o Wrogu"/>

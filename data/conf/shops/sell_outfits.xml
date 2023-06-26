@@ -6,14 +6,14 @@
 	<!-- OUTFIT SELLERS/LENDERS -->
 
 	<!--
-    Merchant flags descriptions:
-      configure: merchant will be configured at startup with shop
-      noOffer: disable default replies to "offer"
-      removeDetailColor: do not preserve detail color when changing outfit
-      resetBeforeChange: remove temp outfit & restore original before change
-      confirmTemp: ask for confirmation if player is wearing temp outfit
-      confirmBalloon: confirmation if player is wearing balloon
-  	-->
+		Merchant flags descriptions:
+			configure: merchant will be configured at startup with shop
+			noOffer: disable default replies to "offer"
+			removeDetailColor: do not preserve detail color when changing outfit
+			resetBeforeChange: remove temp outfit & restore original before change
+			confirmTemp: ask for confirmation if player is wearing temp outfit
+			confirmBalloon: confirmation if player is wearing balloon
+		-->
 
 	<shop name="deniran_accessories" type="outfit">
 		<outfit name="biały balonik" layers="detail=2" price="50000"/>
@@ -33,7 +33,7 @@
 	</shop>
 
 	<!-- Pierre in Deniran Dress Shop -->
-	<shop type="outfit">
+	<shop name="deniranoutfits" type="outfit">
 		<outfit name="niebieski niedźwiadek" layers="hat=993" price="2500"/>
 		<outfit name="brązowy niedźwiadek" layers="hat=994" price="2500"/>
 		<outfit name="super" layers="dress=973,hat=992" price="5000"/>
@@ -42,7 +42,7 @@
 	</shop>
 
 	<!-- Liliana in Magic Clothing Boutique -->
-	<shop type="outfit">
+	<shop name="magicoutfitsliliana" type="outfit">
 		<outfit name="kombinezon" layers="dress=68" price="500"/>
 		<outfit name="ogrodniczki" layers="dress=69" price="500"/>
 		<outfit name="zielone ubranie" layers="dress=63" price="500"/>
@@ -60,7 +60,7 @@
 	</shop>
 
 	<!-- Saski in Magic Clothing Boutique -->
-	<shop type="outfit">
+	<shop name="magicoutfitssaski" type="outfit">
 		<outfit name="twarz goblina" layers="head=988" price="500"/>
 		<outfit name="twarz cosia" layers="head=987" price="500"/>
 		<outfit name="fioletowy szlam" layers="body=993" price="3000"/>
@@ -74,4 +74,49 @@
 		<merchant name="Saskia"/>
 	</shop>
 
+	<!-- Fidorea in Ados City -->
+	<shop name="adosmasks" type="outfit">
+		<outfit name="maska misia" layers="mask=994,hair=-1,hat=-1" price="20"/>
+		<outfit name="maska żaby" layers="mask=995,hair=-1,hat=-1" price="20"/>
+		<outfit name="maska pingwina" layers="mask=996,hair=-1,hat=-1" price="20"/>
+		<outfit name="maska małpy" layers="mask=997,hair=-1,hat=-1" price="20"/>
+		<outfit name="maska psa" layers="mask=998,hair=-1,hat=-1" price="20"/>
+		<outfit name="maska kobolda" layers="mask=999,hair=-1,hat=-1" price="20"/>
+
+		<merchant name="Fidorea" note="wybrana maska jest losowa"/>
+	</shop>
+
+	<!-- men's swim trunks on Athor Island -->
+	<shop name="athorswimtrunks" type="outfit">
+		<outfit name="czarne kąpielówki" layers="dress=995" price="5"/>
+		<outfit name="niebieskie kąpielówki" layers="dress=996" price="5"/>
+		<outfit name="zielone kąpielówki" layers="dress=997" price="5"/>
+		<outfit name="żółte kąpielówki" layers="dress=998" price="5"/>
+
+		<merchant name="David" note="wybrane kąpielówki są losowe"/>
+	</shop>
+
+	<!-- women's swimsuits on Athor Island -->
+	<shop name="athorswimsuits" type="outfit">
+		<outfit name="purpurowy dwuczęściowy strój kąpielowy" layers="dress=991" price="5"/>
+		<outfit name="niebieski dwuczęściowy strój kąpielowy" layers="dress=992" price="5"/>
+		<outfit name="brązowy jednoczęściowy strój kąpielowy" layers="dress=993" price="5"/>
+		<outfit name="czerwony jednoczęściowy strój kąpielowy" layers="dress=994" price="5"/>
+
+		<merchant name="Pam" note="wybrany strój kąpielowy jest losowy"/>
+	</shop>
+
+	<!-- Tamara in Fado Hotel -->
+	<shop name="weddinggown" type="outfit">
+		<outfit name="suknia" layers="dress=988,hat=991" price="100"/>
+
+		<merchant name="Tamara"/>
+	</shop>
+
+	<!-- Timothy in Fado Hotel -->
+	<shop name="weddingsuit" type="outfit">
+		<outfit name="garnitur" layers="dress=987" price="50"/>
+
+		<merchant name="Timothy"/>
+	</shop>
 </shops>

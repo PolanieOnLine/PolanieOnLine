@@ -25,6 +25,7 @@ import games.stendhal.server.core.engine.db.PendingAchievementDAO;
 import games.stendhal.server.core.engine.db.PostmanDAO;
 import games.stendhal.server.core.engine.db.StendhalBuddyDAO;
 import games.stendhal.server.core.engine.db.StendhalCharacterDAO;
+import games.stendhal.server.core.engine.db.StendhalCreatureDAO;
 import games.stendhal.server.core.engine.db.StendhalGroupQuestDAO;
 import games.stendhal.server.core.engine.db.StendhalHallOfFameDAO;
 import games.stendhal.server.core.engine.db.StendhalItemDAO;
@@ -32,6 +33,7 @@ import games.stendhal.server.core.engine.db.StendhalKillLogDAO;
 import games.stendhal.server.core.engine.db.StendhalNPCDAO;
 import games.stendhal.server.core.engine.db.StendhalRPZoneDAO;
 import games.stendhal.server.core.engine.db.StendhalSearchIndexDAO;
+import games.stendhal.server.core.engine.db.StendhalShopDAO;
 import games.stendhal.server.core.engine.db.StendhalWebsiteDAO;
 import games.stendhal.server.entity.Outfit;
 import marauroa.server.db.DBTransaction;
@@ -223,6 +225,16 @@ public class StendhalPlayerDatabase {
 			transaction.execute("ALTER TABLE npcs ADD COLUMN (cloned VARCHAR(64));", null);
 		}
 
+		// 1.44: active column for npcs
+		if (!transaction.doesColumnExist("npcs", "active")) {
+			transaction.execute("ALTER TABLE npcs ADD COLUMN (active INT);", null);
+		}
+
+		// 1.44: active column for zones
+		if (!transaction.doesColumnExist("zoneinfo", "active")) {
+			transaction.execute("ALTER TABLE zoneinfo ADD COLUMN (active INT);", null);
+		}
+
 		// pol0.30: gender
 		if (!transaction.doesColumnExist("character_stats", "gender")) {
 			transaction.execute("ALTER TABLE character_stats ADD COLUMN (gender VARCHAR(2));", null);
@@ -301,6 +313,7 @@ public class StendhalPlayerDatabase {
 		// define additional DAOs
 		DAORegister.get().register(PostmanDAO.class, new PostmanDAO());
 		DAORegister.get().register(StendhalBuddyDAO.class, new StendhalBuddyDAO());
+		DAORegister.get().register(StendhalCreatureDAO.class, new StendhalCreatureDAO());
 		DAORegister.get().register(StendhalGroupQuestDAO.class, new StendhalGroupQuestDAO());
 		DAORegister.get().register(StendhalHallOfFameDAO.class, new StendhalHallOfFameDAO());
 		DAORegister.get().register(StendhalKillLogDAO.class, new StendhalKillLogDAO ());
@@ -310,6 +323,7 @@ public class StendhalPlayerDatabase {
 		DAORegister.get().register(PendingAchievementDAO.class, new PendingAchievementDAO());
 		DAORegister.get().register(StendhalItemDAO.class, new StendhalItemDAO());
 		DAORegister.get().register(StendhalRPZoneDAO.class, new StendhalRPZoneDAO());
+		DAORegister.get().register(StendhalShopDAO.class, new StendhalShopDAO());
 		DAORegister.get().register(StendhalSearchIndexDAO.class, new StendhalSearchIndexDAO());
 	}
 }

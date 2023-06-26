@@ -134,8 +134,86 @@ CREATE INDEX IF NOT EXISTS i_kills_day_killed ON kills (day, killed);
 CREATE INDEX IF NOT EXISTS i_kills_killer_day ON kills (killer, day);
 
 
+CREATE TABLE IF NOT EXISTS creatureinfo (
+  id               INTEGER AUTO_INCREMENT NOT NULL,
+  active           INT,
+  name             VARCHAR(64),
+  tile_id          VARCHAR(64),
+  class            VARCHAR(64),
+  subclass         VARCHAR(64),
+  shadow_style     VARCHAR(64),
+  width            INT,
+  height           INT,
+  description      VARCHAR(1000),
+  blood_class      VARCHAR(64),
+  corpse_name      VARCHAR(64),
+  harmless_corpse_name      VARCHAR(64),
+  corpse_width     INT,
+  corpse_height    INT,
+  hp               INT,
+  atk              INT,
+  ratk             INT,
+  def              INT,
+  xp               INT,
+  level            INT,
+  respawn_time     INT,
+  speed            FLOAT,
+  status_attack    VARCHAR(64),
+  status_attack_probability FLOAT,
+  damage_type      VARCHAR(64),
+  ranged_damage_type        VARCHAR(64),
+  PRIMARY KEY (id)
+);
+
+CREATE INDEX IF NOT EXISTS i_creatureinfo_name ON creatureinfo (name);
+
+
+CREATE TABLE IF NOT EXISTS iteminfo (
+  id                 INTEGER AUTO_INCREMENT NOT NULL,
+  active             INT,
+  name               VARCHAR(64),
+  class              VARCHAR(64),
+  subclass           VARCHAR(64),
+  description        VARCHAR(1000),
+  weight             INT,
+  value              INT,
+  min_use            INT,
+  min_level          INT,
+  atk                INT,
+  ratk               INT,
+  rate               INT,
+  def                INT,
+  projectile_range   INT,
+  damage_type        VARCHAR(64),
+  lifesteal          FLOAT,
+  amount             INT,
+  regen              INT,
+  frequency          INT,
+  immunization       VARCHAR(64),
+  antipoison         FLOAT,
+  life_support       VARCHAR(64),
+  implementation     VARCHAR(255),
+  use_behavior       VARCHAR(255),
+  infostring         VARCHAR(1000),
+  menu               VARCHAR(64),
+  use_sound          VARCHAR(255),
+  persistent         INT,
+  slot_name          VARCHAR(64),
+  slot_size          INT,
+  undroppableondeath INT,
+  autobind           INT,
+  max_quantity       INT,
+  deterioration      INT,
+  unattainable       INT,
+  PRIMARY KEY (id)
+);
+
+CREATE INDEX IF NOT EXISTS i_iteminfo_name ON iteminfo (name);
+
+
 CREATE TABLE IF NOT EXISTS npcs (
   id            INTEGER AUTO_INCREMENT NOT NULL,
+  active        INT,
   name          VARCHAR(64),
   title         VARCHAR(64),
   class         VARCHAR(64),
@@ -156,8 +234,45 @@ CREATE TABLE IF NOT EXISTS npcs (
 
 CREATE INDEX IF NOT EXISTS i_npcs_name ON npcs (name);
 
+CREATE TABLE IF NOT EXISTS shopinfo (
+  id            INTEGER AUTO_INCREMENT NOT NULL,
+  active        INT,
+  name          VARCHAR(64),
+  shop_type     VARCHAR(64),
+  PRIMARY KEY (id)
+);
+
+CREATE INDEX IF NOT EXISTS i_shopinfo_name ON shopinfo (name);
+
+CREATE TABLE IF NOT EXISTS shopinventoryinfo (
+  id            INTEGER AUTO_INCREMENT NOT NULL,
+  active        INT,
+  shopinfo_id   INT,
+  name          VARCHAR(64),
+  price         INT,
+  iteminfo_id   INT,
+  outfit        VARCHAR(1000),
+  PRIMARY KEY (id)
+);
+
+CREATE INDEX IF NOT EXISTS i_shopinventoryinfo_name ON shopinventoryinfo (name);
+CREATE INDEX IF NOT EXISTS i_shopinventoryinfo_iteminfo_id ON shopinventoryinfo (iteminfo_id);
+CREATE INDEX IF NOT EXISTS i_shopinventoryinfo_shopinfo_id ON shopinventoryinfo (shopinfo_id);
+
+CREATE TABLE IF NOT EXISTS shopownerinfo (
+  id            INTEGER AUTO_INCREMENT NOT NULL,
+  active        INT,
+  npcinfo_id    INT,
+  shopinfo_id   INT,
+  PRIMARY KEY (id)
+);
+
+CREATE INDEX IF NOT EXISTS i_shopownerinfo_shopinfo_id ON shopownerinfo (shopinfo_id);
+CREATE INDEX IF NOT EXISTS i_shopownerinfo_npcinfo_id ON shopownerinfo (npcinfo_id);
+
 CREATE TABLE IF NOT EXISTS zoneinfo (
   id            INTEGER AUTO_INCREMENT NOT NULL,
+  active        INT,
   name          VARCHAR(64),
   level         INTEGER,
   iterior       INTEGER,
