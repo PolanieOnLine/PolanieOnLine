@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2021 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -34,6 +34,7 @@ import games.stendhal.server.entity.npc.action.MultipleActions;
 import games.stendhal.server.entity.npc.action.SayTextAction;
 import games.stendhal.server.entity.npc.action.SetQuestAction;
 import games.stendhal.server.entity.npc.action.TeleportAction;
+import games.stendhal.server.entity.npc.behaviour.adder.BankTellerAdder;
 import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
 import games.stendhal.server.entity.npc.condition.NotCondition;
@@ -331,6 +332,10 @@ public class WizardBank extends AbstractQuest implements LoginListener,LogoutLis
 		npc.setPosition(15, 10);
 		npc.initHP(100);
 		npc.setIdleDirection(Direction.DOWN);
+
+		// manage bank account balance
+		BankTellerAdder.addTeller(npc);
+
 		zone.add(npc);
 	}
 

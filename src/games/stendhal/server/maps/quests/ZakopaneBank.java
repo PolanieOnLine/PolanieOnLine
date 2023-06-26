@@ -34,6 +34,7 @@ import games.stendhal.server.entity.npc.action.MultipleActions;
 import games.stendhal.server.entity.npc.action.SayTextAction;
 import games.stendhal.server.entity.npc.action.SetQuestAction;
 import games.stendhal.server.entity.npc.action.TeleportAction;
+import games.stendhal.server.entity.npc.behaviour.adder.BankTellerAdder;
 import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
 import games.stendhal.server.entity.npc.condition.NotCondition;
@@ -316,6 +317,10 @@ public class ZakopaneBank extends AbstractQuest implements LoginListener {
 		npc.setGender("M");
 		npc.setPosition(35, 14);
 		npc.setDirection(Direction.LEFT);
+
+		// manage bank account balance
+		BankTellerAdder.addTeller(npc);
+
 		zone.add(npc);
 	}
 

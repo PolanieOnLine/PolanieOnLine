@@ -1765,6 +1765,9 @@
 			<destination zone="0_kirdneh_city" ref="bank"/>
 			<attribute name="move.continuous"/>
 		</portal>
+
+		<configurator class-name="games.stendhal.server.maps.kirdneh.bank.TellerNPC"/>
+
 		<entity x="3" y="9">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign"/>
 			<attribute name="text">Bank Kirdneh pododdział banku Fado zapewniający doskonałą usługę dzień w dzień.</attribute>

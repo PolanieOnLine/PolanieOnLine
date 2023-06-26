@@ -18,6 +18,7 @@ import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
+import games.stendhal.server.entity.npc.behaviour.adder.BankTellerAdder;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -59,6 +60,7 @@ public class BankNPC implements ZoneConfigurator {
 		oldnpc.setGender("M");
 		oldnpc.setDirection(Direction.DOWN);
 		oldnpc.setPosition(13, 17);
+
 		zone.add(oldnpc);
 	}
 
@@ -92,6 +94,10 @@ public class BankNPC implements ZoneConfigurator {
 		ladynpc.setGender("F");
 		ladynpc.setDirection(Direction.DOWN);
 		ladynpc.setPosition(17, 31);
+
+		// manage bank account balance
+		BankTellerAdder.addTeller(ladynpc);
+
 		zone.add(ladynpc);
 	}
 }

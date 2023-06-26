@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -26,6 +26,7 @@ import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.MultipleActions;
 import games.stendhal.server.entity.npc.action.PlaySoundAction;
+import games.stendhal.server.entity.npc.behaviour.adder.BankTellerAdder;
 import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotCompletedCondition;
 import games.stendhal.server.entity.player.Player;
@@ -89,6 +90,10 @@ public class CustomerAdvisorNPC implements ZoneConfigurator {
 		npc.setGender("M");
 		npc.setPosition(9, 23);
 		npc.setDirection(Direction.DOWN);
+
+		// manage bank account balance
+		BankTellerAdder.addTeller(npc);
+
 		zone.add(npc);
 	}
 

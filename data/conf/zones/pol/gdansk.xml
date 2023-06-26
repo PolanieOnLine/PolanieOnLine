@@ -628,6 +628,8 @@
 	<!-- Bank 0 -->
 	<zone name="int_gdansk_bank" file="interiors/gdansk/bank.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.maps.gdansk.bank.TellerNPC"/>
+
 		<entity x="11" y="7">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">creaky-door-1, creaky-door-2, coins-01, window-close-1</parameter>

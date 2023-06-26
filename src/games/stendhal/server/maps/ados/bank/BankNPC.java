@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -19,6 +19,7 @@ import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.npc.SpeakerNPC;
+import games.stendhal.server.entity.npc.behaviour.adder.BankTellerAdder;
 
 /**
  * Builds the Ados bank npc.
@@ -61,11 +62,15 @@ public class BankNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setDescription("Oto Rachel, która wygląda na mądrą kobietę. Pracuje w banku Ados.");
+		npc.setDescription("Oto Rachel. Wygląda na mądrą kobietę, która pracuje w banku Ados.");
 		npc.setEntityClass("adosbankassistantnpc");
 		npc.setGender("F");
 		npc.setDirection(Direction.DOWN);
 		npc.setPosition(9, 4);
+
+		// manage bank account balance
+		BankTellerAdder.addTeller(npc);
+
 		zone.add(npc);
 	}
 }

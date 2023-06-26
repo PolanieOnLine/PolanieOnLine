@@ -95,6 +95,7 @@ public class PlayerRPClass {
 		player.addRPSlot("bank_krakow", 36, Definition.HIDDEN);
 		player.addRPSlot("bank_zakopane", 36, Definition.HIDDEN);
 		player.addRPSlot("zaras_chest_ados", 36, Definition.HIDDEN);
+		player.addRPSlot("money_balance", 1, Definition.HIDDEN);
 		// Private vault
 		player.addRPSlot("vault", 36, Definition.HIDDEN);
 
