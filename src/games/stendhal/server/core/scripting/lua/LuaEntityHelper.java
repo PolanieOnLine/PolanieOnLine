@@ -49,7 +49,7 @@ import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.PassiveNPC;
 import games.stendhal.server.entity.npc.SilentNPC;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.BankTellerAdder;
+//import games.stendhal.server.entity.npc.behaviour.adder.BankTellerAdder;
 import games.stendhal.server.entity.player.Player;
 
 /**
@@ -926,9 +926,9 @@ public class LuaEntityHelper {
 	 * @param npc
 	 *   SpeakerNPC to receive behaviour.
 	 */
-	public void addBankTeller(final SpeakerNPC npc) {
-		BankTellerAdder.addTeller(npc);
-	}
+//	public void addBankTeller(final SpeakerNPC npc) {
+//		BankTellerAdder.addTeller(npc);
+//	}
 
 	/**
 	 * A special interface that overloads setPath & setPathAndPosition methods to accept a Lua table
