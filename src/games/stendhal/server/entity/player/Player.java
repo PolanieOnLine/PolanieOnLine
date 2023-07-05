@@ -57,8 +57,8 @@ import games.stendhal.server.core.events.TutorialNotifier;
 import games.stendhal.server.core.events.UseListener;
 import games.stendhal.server.core.rp.StendhalRPAction;
 import games.stendhal.server.core.rp.achievement.AchievementNotifier;
+import games.stendhal.server.entity.DressedEntity;
 import games.stendhal.server.entity.Entity;
-import games.stendhal.server.entity.EquipmentEntity;
 import games.stendhal.server.entity.Killer;
 import games.stendhal.server.entity.Outfit;
 import games.stendhal.server.entity.RPEntity;
@@ -79,7 +79,7 @@ import marauroa.common.game.RPObject;
 import marauroa.common.game.RPSlot;
 import marauroa.common.game.SyntaxException;
 
-public class Player extends EquipmentEntity implements UseListener {
+public class Player extends DressedEntity implements UseListener {
 	/** the logger instance. */
 	private static final Logger logger = Logger.getLogger(Player.class);
 

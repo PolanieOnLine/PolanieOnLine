@@ -509,11 +509,11 @@ public class StendhalRPAction {
 			projectilesItem = player.getAmmunition();
 		}
 		if (player.getWandWeapon() != null) {
-			projectilesItem = player.getSpells();
+			projectilesItem = player.getMagicSpells();
 		}
 		if (projectilesItem == null) {
 			// no arrows... but maybe a spear?
-			projectilesItem = player.getMissile();
+			projectilesItem = player.getMissileIfNotHoldingOtherWeapon();
 		}
 		// Creatures can attack without having projectiles, but players
 		// will lose a projectile for each shot.
