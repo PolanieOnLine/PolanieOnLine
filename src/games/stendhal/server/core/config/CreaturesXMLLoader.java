@@ -1,4 +1,3 @@
-/* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
@@ -250,94 +249,78 @@ public final class CreaturesXMLLoader extends DefaultHandler {
 			}
 		} else if (qName.equals("attributes")) {
 			attributes = true;
-		} else if (attributes) {
-			boolean resistanceTag = qName.equals("resistance");
-			boolean visibilityTag = qName.equals("visibility");
+		} else if (attributes && qName.equals("atk")) {
+			atk = Integer.parseInt(attrs.getValue("value"));
+		} else if (attributes && qName.equals("ratk")) {
+			ratk = Integer.parseInt(attrs.getValue("value"));
+		} else if (attributes && qName.equals("def")) {
+			def = Integer.parseInt(attrs.getValue("value"));
+		} else if (attributes && qName.equals("hp")) {
+			hp = Integer.parseInt(attrs.getValue("value"));
+		} else if (attributes && qName.equals("speed")) {
+			speed = Double.parseDouble(attrs.getValue("value"));
+		} else if (attributes && qName.equals("size")) {
+			final String[] size = attrs.getValue("value").split(",");
 
-			if (qName.equals("atk")) {
-				atk = Integer.parseInt(attrs.getValue("value"));
-			} else if (qName.equals("ratk")) {
-				ratk = Integer.parseInt(attrs.getValue("value"));
-			} else if (qName.equals("def")) {
-				def = Integer.parseInt(attrs.getValue("value"));
-			} else if (qName.equals("hp")) {
-				hp = Integer.parseInt(attrs.getValue("value"));
-			} else if (qName.equals("speed")) {
-				speed = Double.parseDouble(attrs.getValue("value"));
-			} else if (qName.equals("size")) {
-				final String[] size = attrs.getValue("value").split(",");
-
-				sizeWidth = Integer.parseInt(size[0]);
-				sizeHeight = Integer.parseInt(size[1]);
-			}
-
-			if (resistanceTag) {
-				resistance = Integer.parseInt(attrs.getValue("value"));
-			} else {
-				resistance = 100;
-			}
-			if (visibilityTag) {
-				visibility = Integer.parseInt(attrs.getValue("value"));
-			} else {
-				visibility = 100;
-			}
+			sizeWidth = Integer.parseInt(size[0]);
+			sizeHeight = Integer.parseInt(size[1]);
+		} else if (attributes && qName.equals("resistance")) {
+			resistance = Integer.parseInt(attrs.getValue("value"));
+		} else if (attributes && qName.equals("visibility")) {
+			visibility = Integer.parseInt(attrs.getValue("value"));
 		} else if (qName.equals("ai")) {
 			ai = true;
-		} else if (ai) {
-			if (qName.equals("profile")) {
-				aiProfiles.put(attrs.getValue("name"), attrs.getValue("params"));
-			} else if (qName.equals("says")) {
-				says = true;
-			} else if (says) {
-				if (qName.equals("text") || qName.equals("noise")) {
-					final String states = attrs.getValue("state");
-					final String value = attrs.getValue("value");
-					final List<String> keys=Arrays.asList(states.split(" "));
-					// no such state in noises, will add it
-					for (int i=0; i<keys.size(); i++) {
-						final String key=keys.get(i);
-						if(creatureSays.get(key)==null) {
-							final LinkedList<String> ll=new LinkedList<String>();
-							ll.add(value);
-							creatureSays.put(key, ll);
-							// no such value in existing state, will add it
-						} else if (creatureSays.get(key).indexOf(value)==-1) {
-							creatureSays.get(key).add(value);
-							// both state and value already exists
-						} else {
-							logger.warn("CreatureXMLLoader: creature ("+name+
-										"): double definition for noise \""+key+"\" ("+value+")");
-						}
+		} else if (ai && qName.equals("profile")) {
+			aiProfiles.put(attrs.getValue("name"), attrs.getValue("params"));
+		} else if (ai && qName.equals("says")) {
+			says = true;
+		} else if (says) {
+			if (qName.equals("noise")) {
+				final String states = attrs.getValue("state");
+				final String value = attrs.getValue("value");
+				final List<String> keys=Arrays.asList(states.split(" "));
+				// no such state in noises, will add it
+				for (int i=0; i<keys.size(); i++) {
+					final String key=keys.get(i);
+					if(creatureSays.get(key)==null) {
+						final LinkedList<String> ll=new LinkedList<String>();
+						ll.add(value);
+						creatureSays.put(key, ll);
+						// no such value in existing state, will add it
+					} else if (creatureSays.get(key).indexOf(value)==-1) {
+						creatureSays.get(key).add(value);
+						// both state and value already exists
+					} else {
+						logger.warn("CreatureXMLLoader: creature ("+name+
+									"): double definition for noise \""+key+"\" ("+value+")");
 					}
-				} else if (qName.equals("sound")) {
-					sounds.add(attrs.getValue("value"));
-				} else if (qName.equals("movement")) {
-					movementSound = attrs.getValue("value");
-	            } else if (qName.equals("death")) {
-	                deathSound = attrs.getValue("value");
 				}
+			} else if (qName.equals("sound")) {
+				sounds.add(attrs.getValue("value"));
+			} else if (qName.equals("movement")) {
+				movementSound = attrs.getValue("value");
+            } else if (qName.equals("death")) {
+                deathSound = attrs.getValue("value");
 			}
 		} else if (qName.equals("abilities")) {
 			abilities = true;
-		} else if (abilities) {
-			if (qName.equals("damage")) {
-				String value = attrs.getValue("type");
-				if (value == null) {
-					value = "cut";
-				}
-				damageType = Nature.parse(value);
-				value = attrs.getValue("rangedType");
-				if (value != null) {
-					rangedDamageType = Nature.parse(value);
-				}
-			} else if (qName.equals("susceptibility")) {
-				Nature type = Nature.parse(attrs.getValue("type"));
-				Double value = Double.valueOf(attrs.getValue("value"));
-				susceptibilities.put(type, value);
-			} else if (qName.equals("statusattack")) {
-			    statusAttack = attrs.getValue("type");
-			    statusAttackProbability = Double.valueOf(attrs.getValue("value"));
+		} else if (abilities && qName.equals("damage")) {
+			String value = attrs.getValue("type");
+			if (value == null) {
+				value = "cut";
 			}
+			damageType = Nature.parse(value);
+			value = attrs.getValue("rangedType");
+			if (value != null) {
+				rangedDamageType = Nature.parse(value);
+			}
+		} else if (abilities && qName.equals("susceptibility")) {
+			Nature type = Nature.parse(attrs.getValue("type"));
+			Double value = Double.valueOf(attrs.getValue("value"));
+			susceptibilities.put(type, value);
+		} else if (abilities && qName.equals("statusattack")) {
+		    statusAttack = attrs.getValue("type");
+		    statusAttackProbability = Double.valueOf(attrs.getValue("value"));
 		}
 	}
 
