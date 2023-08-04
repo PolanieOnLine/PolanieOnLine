@@ -101,12 +101,12 @@
 					<xsd:attribute name="value" type="xsd:string" />
 				</xsd:complexType>
 			</xsd:element>
-			<xsd:element name="resistance" minOccurs="0" maxOccurs="1">
+			<xsd:element name="resistance" minOccurs="0">
 				<xsd:complexType>
 					<xsd:attribute name="value" type="xsd:positiveInteger" />
 				</xsd:complexType>
 			</xsd:element>
-			<xsd:element name="visibility" minOccurs="0" maxOccurs="1">
+			<xsd:element name="visibility" minOccurs="0">
 				<xsd:complexType>
 					<xsd:attribute name="value" type="xsd:positiveInteger" />
 				</xsd:complexType>
