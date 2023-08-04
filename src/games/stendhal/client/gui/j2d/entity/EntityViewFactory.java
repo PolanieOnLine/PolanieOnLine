@@ -133,6 +133,7 @@ public class EntityViewFactory {
 		register("growing_entity_spawner", "items/grower/wood_grower", null, CarrotGrower2DView.class);
 		register("growing_entity_spawner", "items/grower/carrot_grower", null, CarrotGrower2DView.class);
 		register("chest", null, null, Chest2DView.class);
+		register("chest_public", null, null, Chest2DView.class);
 		register("corpse", null, null, Corpse2DView.class);
 
 		register("creature", null, null, Creature2DView.class);

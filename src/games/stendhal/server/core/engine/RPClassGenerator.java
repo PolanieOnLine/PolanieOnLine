@@ -41,6 +41,7 @@ import games.stendhal.server.entity.mapstuff.area.Wall;
 import games.stendhal.server.entity.mapstuff.block.Block;
 import games.stendhal.server.entity.mapstuff.block.BlockTarget;
 import games.stendhal.server.entity.mapstuff.chest.Chest;
+import games.stendhal.server.entity.mapstuff.chest.PublicStoredChest;
 import games.stendhal.server.entity.mapstuff.game.GameBoard;
 import games.stendhal.server.entity.mapstuff.office.ArrestWarrant;
 import games.stendhal.server.entity.mapstuff.office.RentedSign;
@@ -130,6 +131,9 @@ public class RPClassGenerator {
 		}
 		if (!RPClass.hasRPClass("chest")) {
 			Chest.generateRPClass();
+		}
+		if (!RPClass.hasRPClass("chest_public")) {
+			PublicStoredChest.generateRPClass();
 		}
 		if (!RPClass.hasRPClass("corpse")) {
 			Corpse.generateRPClass();

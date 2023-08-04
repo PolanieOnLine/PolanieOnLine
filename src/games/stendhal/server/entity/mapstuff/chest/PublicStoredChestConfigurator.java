@@ -9,20 +9,17 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-package games.stendhal.server.maps.zakopane.city;
+package games.stendhal.server.entity.mapstuff.chest;
 
+import java.util.List;
 import java.util.Map;
 
+import games.stendhal.common.MathHelper;
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.entity.mapstuff.chest.PublicStoredChest;
+import games.stendhal.server.entity.Entity;
 
-/**
- * @author Legolas
- */
-public class CommonChest implements ZoneConfigurator {
-
+public class PublicStoredChestConfigurator implements ZoneConfigurator {
 	/**
 	 * Configure a zone.
 	 *
@@ -31,16 +28,33 @@ public class CommonChest implements ZoneConfigurator {
 	 */
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
-		buildZakopaneCityAreaChest(zone);
+		if (isValid(attributes)) {
+			final int x = MathHelper.parseInt(attributes.get("x"));
+			final int y = MathHelper.parseInt(attributes.get("y"));
+			buildStoredChest(zone, x, y);
+		}
 	}
 
-	private void buildZakopaneCityAreaChest(final StendhalRPZone zone) {
-		final PublicStoredChest chest = new PublicStoredChest();
-		chest.setPosition(110, 45);
-		chest.add(SingletonRepository.getEntityManager().getItem("mieczyk"));
-		chest.add(SingletonRepository.getEntityManager().getItem("drewniana tarcza"));
-		chest.add(SingletonRepository.getEntityManager().getItem("skórzana zbroja"));
-		chest.add(SingletonRepository.getEntityManager().getItem("money"));
-		zone.add(chest);
+	private void buildStoredChest(final StendhalRPZone zone, final int x, final int y) {
+		if (!chestAt(zone, x, y)) {
+			final StoredChest chest = new StoredChest();
+			chest.setPosition(x, y);
+			zone.add(chest);
+		}
+	}
+
+	private boolean chestAt(final StendhalRPZone zone, final int x, final int y) {
+		final List<Entity> list = zone.getEntitiesAt(x, y);
+		for (Entity entity : list) {
+			if (entity instanceof StoredChest) {
+				// Don't put a stored chest over a previously stored one
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean isValid(final Map<String, String> attributes) {
+		return attributes.containsKey("x") && attributes.containsKey("y");
 	}
 }

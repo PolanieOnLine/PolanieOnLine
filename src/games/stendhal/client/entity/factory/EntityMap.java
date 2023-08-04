@@ -123,6 +123,7 @@ public final class EntityMap {
 		register("food", null, null, SheepFood.class);
 		register("food", null, null, GoatFood.class);
 		register("chest", null, null, Chest.class);
+		register("chest_public", null, null, Chest.class);
 
 		register("corpse", null, null, Corpse.class);
 
