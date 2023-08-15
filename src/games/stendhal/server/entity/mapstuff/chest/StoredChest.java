@@ -124,7 +124,7 @@ public class StoredChest extends Chest {
 
 	@Override
 	public String getDescriptionName() {
-		return "chest in " + this.getZone().getName();
+		return "Ogólnodostępna skrzynia w " + this.getZone().getName();
 	}
 
 	/**
