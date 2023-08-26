@@ -274,7 +274,8 @@ public class ImproverAdder {
 			currentUpgradeFee = 5000000;
 		}
 
-		currentUpgradeFee *= player.isQuestCompleted("ciupaga_trzy_wasy") ? (int) 0.7 : 1;
+		double discount = player.isQuestCompleted("ciupaga_trzy_wasy") ? 0.7 : 1.0;
+		currentUpgradeFee = (int) Math.round(currentUpgradeFee * discount);
 
 		if (improves > item.getMaxImproves()) {
 			currentUpgradeFee = 0;

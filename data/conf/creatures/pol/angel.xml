@@ -23,15 +23,13 @@
 			<item value="gigantyczny eliksir" quantity="[1,9]" probability="40.0"/>
 			<item value="serce olbrzyma" quantity="[1,1]" probability="90.0"/>
 			<item value="miecz nieśmiertelnych" quantity="[1,1]" probability="3.0"/>
-			<item value="rękawice z mithrilu" quantity="[1,1]" probability="1.0"/>
+			<item value="rękawice z mithrilu" quantity="[1,1]" probability="0.3"/>
 			<item value="pas z mithrilu" quantity="[1,1]" probability="0.5"/>
 			<item value="pióro serafina" quantity="[1,1]" probability="100.0"/>
 			<item value="magia światła" quantity="[11,99]" probability="100.0"/>
 			<item value="różdżka Wołosa" quantity="[1,1]" probability="20.0"/>
 			<item value="pierścień z mithrilu" quantity="[1,1]" probability="0.1"/>
-			<item value="kosa z mithrilu" quantity="[1,1]" probability="0.7"/>
-			<item value="miecz z mithrilu" quantity="[1,1]" probability="0.5"/>
-			<item value="sztylecik z mithrilu" quantity="[1,1]" probability="0.3"/>
+			<item value="kosa z mithrilu" quantity="[1,1]" probability="0.3"/>
 		</drops>
 		<equips>
 			<slot name="lhand" item="magia światła" quantity="10000"/>
@@ -132,13 +130,13 @@
 			<item value="magia mrozu" quantity="[11,222]" probability="100.0"/>
 			<item value="różdżka Wołosa" quantity="[1,1]" probability="5.0"/>
 			<item value="magiczny topór obosieczny" quantity="[1,1]" probability="3.0"/>
-			<item value="srebrny sztylecik" quantity="[1,1]" probability="1.0"/>
-			<item value="zbroja z mithrilu" quantity="[1,1]" probability="0.7"/>
-			<item value="hełm z mithrilu" quantity="[1,1]" probability="1.0"/>
-			<item value="pierścień z mithrilu" quantity="[1,1]" probability="0.4"/>
-			<item value="kosa z mithrilu" quantity="[1,1]" probability="1.0"/>
-			<item value="rękawice z mithrilu" quantity="[1,1]" probability="1.0"/>
-			<item value="pas z mithrilu" quantity="[1,1]" probability="0.5"/>
+			<item value="zbroja z mithrilu" quantity="[1,1]" probability="0.5"/>
+			<item value="hełm z mithrilu" quantity="[1,1]" probability="0.7"/>
+			<item value="pierścień z mithrilu" quantity="[1,1]" probability="0.25"/>
+			<item value="rękawice z mithrilu" quantity="[1,1]" probability="0.7"/>
+			<item value="kosa z mithrilu" quantity="[1,1]" probability="0.5"/>
+			<item value="miecz z mithrilu" quantity="[1,1]" probability="0.5"/>
+			<item value="sztylecik z mithrilu" quantity="[1,1]" probability="0.3"/>
 		</drops>
 		<equips>
 			<slot name="lhand" item="magia światła" quantity="10000"/>
