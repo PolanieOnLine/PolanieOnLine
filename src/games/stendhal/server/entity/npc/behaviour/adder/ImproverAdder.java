@@ -200,7 +200,7 @@ public class ImproverAdder {
 	private void countImproveItems(final Player player) {
 		int count = 0;
 		for (Item i : getAllEquippedTargetItems(player)) {
-			if (!i.isMaxImproved()) {
+			if (i.hasMaxImproves() && !i.isMaxImproved()) {
 				count++;
 			}
 		}
@@ -220,7 +220,6 @@ public class ImproverAdder {
 		}
 
 		countImproveItems(player);
-
 		if (!hasItemToImprove()) {
 			improver.say("Wybacz. Przedmiot #'" + getTargetItemName() + "' jest niemożliwy do udoskonalenia. Poproś o ulepszenie innego przedmiotu.");
 			improver.setCurrentState(ConversationStates.ATTENDING);
