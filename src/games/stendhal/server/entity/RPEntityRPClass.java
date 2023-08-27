@@ -63,6 +63,8 @@ public class RPEntityRPClass {
 		/* Immortal creatures */
 		entity.addAttribute("immortal", Type.FLAG, Definition.VOLATILE);
 
+		entity.addRPSlot("neck_alt", 1, Definition.PRIVATE);
+
 		/* Equipment */
 		entity.addRPSlot("head", 1, Definition.PRIVATE);
 		entity.addRPSlot("neck", 1, Definition.PRIVATE);
