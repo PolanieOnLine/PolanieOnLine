@@ -11,6 +11,8 @@
  ***************************************************************************/
 package games.stendhal.client.gui;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -18,8 +20,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
@@ -30,6 +36,8 @@ import games.stendhal.client.entity.IEntity;
 import games.stendhal.client.entity.Inspector;
 import games.stendhal.client.entity.User;
 import games.stendhal.client.entity.factory.EntityMap;
+import games.stendhal.client.gui.imageviewer.ImageViewWindow;
+import games.stendhal.client.gui.imageviewer.ViewPanel;
 import games.stendhal.client.gui.layout.SBoxLayout;
 import games.stendhal.client.listener.FeatureChangeListener;
 import games.stendhal.client.sprite.SpriteStore;
@@ -68,7 +76,7 @@ Inspectable {
 	 */
 	public Character() {
 		super("character", "Character");
-		createLayout();
+		createLayout(true);
 		// Don't allow the user close this. There's no way to get it back.
 		setCloseable(false);
 	}
@@ -100,26 +108,60 @@ Inspectable {
 		refreshContents();
 	}
 
-	/**
-	 * Create the content layout and add the ItemPanels.
-	 */
-	private void createLayout() {
-		// Layout containers
-		JComponent content = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
-		JComponent row = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, PADDING);
-		JComponent left = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
-		JComponent middle = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
-		JComponent right = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
-		left.setAlignmentY(CENTER_ALIGNMENT);
-		right.setAlignmentY(CENTER_ALIGNMENT);
-		row.add(left);
-		row.add(middle);
-		row.add(right);
-		content.add(row);
+	private ImageViewWindow showPopup() {
+		final ViewPanel panel = new ViewPanel() {
+			private static final int PAD = 5;
 
-		Class<? extends IEntity> itemClass = EntityMap.getClass("item", null, null);
-		SpriteStore store = SpriteStore.get();
+			@Override
+			public void prepareView(Dimension maxSize) {
+				JComponent content = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
+				JComponent row = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, PADDING);
+				JComponent left = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
+				JComponent middle = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
+				JComponent right = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
 
+				left.setAlignmentY(CENTER_ALIGNMENT);
+				right.setAlignmentY(CENTER_ALIGNMENT);
+				row.add(left);
+				row.add(middle);
+				row.add(right);
+				content.add(row);
+
+				Class<? extends IEntity> itemClass = EntityMap.getClass("item", null, null);
+				SpriteStore store = SpriteStore.get();
+
+				left.add(Box.createVerticalStrut(HAND_YSHIFT * 2));
+				ItemPanel panel = createItemPanel(itemClass, store, "neck_alt", "data/gui/slot-neck.png");
+				left.add(panel);
+
+				JButton swapButton = new JButton("Zamień");
+				swapButton.addActionListener(e -> {
+				    // Tutaj umieść logikę zamiany przedmiotów między głównymi miejscami a dodatkowymi miejscami
+
+				    // Na przykład, możesz przenosić panele przedmiotów między odpowiednimi kontenerami
+				    // np. left.add(additionalItemPanels.get(0)) itd.
+				});
+				add(swapButton);
+
+				setContent(content);
+				//setVisible(true);
+			}
+		};
+		return new ImageViewWindow("Styl", panel);
+	}
+
+	private JButton createArrow() {
+		JButton arrowButton = new JButton("<");
+		arrowButton.setPreferredSize(new Dimension(12, 100));
+		arrowButton.setMinimumSize(new Dimension(12, 100));
+		arrowButton.setMaximumSize(new Dimension(12, 100));
+		arrowButton.addActionListener(e -> showPopup());
+
+		return arrowButton;
+	}
+	
+	private void createEquipmentPanels(JComponent left, JComponent middle, JComponent right,
+			Class<? extends IEntity> itemClass, SpriteStore store) {
 		/*
 		 * Fill the left column
 		 *
@@ -127,7 +169,6 @@ Inspectable {
 		 * the column uses the other half at the bottom.
 		 */
 		left.add(Box.createVerticalStrut(HAND_YSHIFT * 2));
-
 		ItemPanel panel = createItemPanel(itemClass, store, "neck", "data/gui/slot-neck.png");
 		left.add(panel);
 		panel = createItemPanel(itemClass, store, "rhand", "data/gui/slot-weapon.png");
@@ -162,22 +203,57 @@ Inspectable {
 		right.add(panel);
 		panel = createItemPanel(itemClass, store, "glove", "data/gui/slot-gloves.png");
 		right.add(panel);
+	}
 
-		pouch = new FeatureEnabledItemPanel("pouch", SpriteStore.get().getSprite("data/gui/slot-pouch.png"));
-		slotPanels.put("pouch", pouch);
-		pouch.setAcceptedTypes(itemClass);
-		right.add(pouch);
-		featureChangeListeners.add(pouch);
+	private void createItemPanels(JComponent left, JComponent middle, JComponent right, JComponent content, boolean createSpecials) {
+		Class<? extends IEntity> itemClass = EntityMap.getClass("item", null, null);
+		SpriteStore store = SpriteStore.get();
 
-		// Bag, keyring, etc
-		specialSlots = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, PADDING);
-		specialSlots.setAlignmentX(CENTER_ALIGNMENT);
-		// Compatibility. See the note at setPlayer().
-		specialSlots.setVisible(false);
-		content.add(specialSlots);
+		createEquipmentPanels(left, middle, right, itemClass, store);
 
-		panel = createItemPanel(itemClass, store, "belt", "data/gui/slot-key.png");
-		specialSlots.add(panel);
+		if (createSpecials) {
+			pouch = new FeatureEnabledItemPanel("pouch", SpriteStore.get().getSprite("data/gui/slot-pouch.png"));
+			slotPanels.put("pouch", pouch);
+			pouch.setAcceptedTypes(itemClass);
+			right.add(pouch);
+			featureChangeListeners.add(pouch);
+
+			// Bag, keyring, etc
+			specialSlots = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, PADDING);
+			specialSlots.setAlignmentX(CENTER_ALIGNMENT);
+			// Compatibility. See the note at setPlayer().
+			specialSlots.setVisible(false);
+			content.add(specialSlots);
+
+			ItemPanel panel = createItemPanel(itemClass, store, "belt", "data/gui/slot-key.png");
+			specialSlots.add(panel);
+		}
+	}
+
+	/**
+	 * Create the content layout and add the ItemPanels.
+	 */
+	private void createLayout(boolean specialSlots) {
+		// Layout containers
+		JComponent content = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
+		JComponent row = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, PADDING);
+		JComponent arrow = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
+		JComponent left = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
+		JComponent middle = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
+		JComponent right = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
+
+		arrow.add(createArrow());
+		arrow.setAlignmentY(CENTER_ALIGNMENT);
+
+		left.setAlignmentY(CENTER_ALIGNMENT);
+		right.setAlignmentY(CENTER_ALIGNMENT);
+		row.add(arrow);
+		row.add(left);
+		row.add(middle);
+		row.add(right);
+		content.add(row);
+
+		createItemPanels(left, middle, right, content, specialSlots);
 
 		setContent(content);
 	}
