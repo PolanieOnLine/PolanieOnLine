@@ -1,5 +1,18 @@
 Changelog
 ---------
+1.37.2
+*świat*
+- Poprawiono odległość reagowania Górnika w jaskini pod Zakopane
+- Poprawiono procenty dropów przedmiotów z mithrilu
+- Poprawiono słownictwo Gilesa związaną z zaplataniem liny
+- Usunięto zdublowane przedmioty
+
+*naprawiono błędy*
+- Naprawiono naliczanie rabatu 30% na ulepszanie przedmiotów
+- Naprawiono ulepszanie przedmiotów, które nie powinny zostać ulepszone
+- Naprawiono przenikanie przez mgły i inne stwory posiadające statystykę resistance
+
+
 1.37.1
 *klient*
 - Poprawiono wygląd słonia
