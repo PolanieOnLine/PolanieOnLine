@@ -71,6 +71,7 @@ public class GornikNPC implements ZoneConfigurator {
 		npc.setGender("M");
 		npc.setDirection(Direction.RIGHT);
 		npc.setPosition(18, 70);
+		npc.setPerceptionRange(4);
 		zone.add(npc);
 	}
 }

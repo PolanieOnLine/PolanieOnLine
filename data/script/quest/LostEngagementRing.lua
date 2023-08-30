@@ -318,7 +318,7 @@ end
 local lender_slot = "sawyer_metal_detector"
 local loanActive = conditions:create("QuestActiveCondition", {lender_slot})
 local lend_phrases = {"loan", "lend", "metal detector", "borrow", "pożyczyć", "wypożyczyć", "wykrywacz"}
---local return_phrases = {"return", "zwrócić, "zwrot"}
+local return_phrases = {"return", "zwrócić, "zwrot"}
 
 -- items that Sawyer will take in exchange for his metal detector
 local collateral = {
@@ -602,7 +602,7 @@ local prepareMetalDetectorLender = function()
 
 	lender:add(
 		ConversationStates.ATTENDING,
-		"return",
+		return_phrases,
 		conditions:notC(loanActive),
 		ConversationStates.ATTENDING,
 		"Co zwrócić? Niczego ci nie pożyczałem.",
@@ -610,7 +610,7 @@ local prepareMetalDetectorLender = function()
 
 	lender:add(
 		ConversationStates.ATTENDING,
-		"return",
+		return_phrases,
 		loanActive,
 		ConversationStates.QUESTION_1,
 		"Chcesz zwrócić mój wykrywacz metalu?",

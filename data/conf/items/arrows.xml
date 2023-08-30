@@ -117,30 +117,6 @@
 		</equipable>
 	</item>
 
-	<item name="strzała ognia">
-		<type class="ammunition" subclass="fire_arrow" tileid="-1"/>
-		<description>Oto strzała ognia. Grot jasno świeci.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Projectile"/>
-		<attributes>
-			<atk value="6" condition="!testing.combat"/>
-			<ratk value="6" condition="testing.combat"/>
-			<range value="4"/>
-			<quantity value="1"/>
-			<max_quantity value="2147483647"/>
-			<min_level value="20"/>
-			<damagetype value="fire"/>
-		</attributes>
-		<weight value="0.1"/>
-		<value value="2160"/>
-		<equipable>
-			<slot name="ground"/>
-			<slot name="content"/>
-			<slot name="bag"/>
-			<slot name="trade"/>
-			<slot name="rhand"/>
-		</equipable>
-	</item>
-
 	<item name="strzała lodowa">
 		<type class="ammunition" subclass="ice_arrow" tileid="-1"/>
 		<description>Oto strzała lodowa. Może gorzko urządlić.</description>

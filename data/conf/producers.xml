@@ -214,7 +214,7 @@
 			<resource name="money" amount="200"/>
 			<resource name="końskie włosie" amount="6"/>
 
-			<activity type="braid,zaplatanie,zaplecić,pleść,zapleć"/>
+			<activity type="braid,zaplatanie,zapleść,pleść,zapleć"/>
 		</item>
 	</producer>
 	

@@ -62,7 +62,7 @@ public class SpiritTrapperNPC implements ZoneConfigurator {
 	    		addGoodbye("W takim razie idę... Nie mogę pracować w twoim towarzystwie.");
 
 	    		addReply("arrows","Potrafię wykorzystać specjalną moc do zaczarowania strzał mocą żywiołów. Mam #lód, #ogień i #'światło'.");
-	    		addReply(Arrays.asList("ice", "ice arrow", "fire", "fire arrow", "lód", "strzała lodowa", "ogień", "strzała ognia"),
+	    		addReply(Arrays.asList("ice", "ice arrow", "fire", "fire arrow", "lód", "strzała lodowa", "ogień", "strzała płonąca"),
 	    				"Mogę stworzyć 1 z tych strzał za każdą przyniesioną mi czarną perłe.");
 	    		addReply(Arrays.asList("light", "light arrow", "świato", "strzała światła"),
 	    				"Strzały światła są trudne do wytworzenia, ale mogę stworzyć 1 za każde przyniesione do mnie 2 czarne perły.");
@@ -74,7 +74,7 @@ public class SpiritTrapperNPC implements ZoneConfigurator {
 				// (uses sorted TreeMap instead of HashMap)
 	    		final HashSet<String> productsNames = new HashSet<String>();
 	    			productsNames.add("strzała lodowa");
-	    			productsNames.add("strzała ognia");
+	    			productsNames.add("strzała płonąca");
 	    			productsNames.add("strzała światła");
 
 	    		final Map<String, Integer> reqRes_iceArrow = new TreeMap<String, Integer>();
@@ -86,17 +86,17 @@ public class SpiritTrapperNPC implements ZoneConfigurator {
 
 	    		final HashMap<String, Map<String, Integer>> requiredResourcesPerProduct = new HashMap<String, Map<String, Integer>>();
 	    			requiredResourcesPerProduct.put("strzała lodowa", reqRes_iceArrow);
-	    			requiredResourcesPerProduct.put("strzała ognia", reqRes_fireArrow);
+	    			requiredResourcesPerProduct.put("strzała płonąca", reqRes_fireArrow);
 	    			requiredResourcesPerProduct.put("strzała światła", reqRes_lightArrow);
 
 	    		final HashMap<String, Integer> productionTimesPerProduct = new HashMap<String, Integer>();
 	    			productionTimesPerProduct.put("strzała lodowa", 0 * 60);
-	    			productionTimesPerProduct.put("strzała ognia", 0 * 60);
+	    			productionTimesPerProduct.put("strzała płonąca", 0 * 60);
 	    			productionTimesPerProduct.put("strzała światła", 0 * 60);
 
 	    		final HashMap<String, Boolean> productsBound = new HashMap<String, Boolean>();
 	    			productsBound.put("strzała lodowa", false);
-	    			productsBound.put("strzała ognia", false);
+	    			productsBound.put("strzała płonąca", false);
 	    			productsBound.put("strzała światła", false);
 
                 class SpecialTraderBehaviour extends MultiProducerBehaviour {

@@ -517,7 +517,7 @@
 		<drops>
 			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
 			<item value="płaszcz monarchistyczny" quantity="[1,1]" probability="0.5"/>
-			<item value="strzała ognia" quantity="[3,22]" probability="36.0"/>
+			<item value="strzała płonąca" quantity="[3,22]" probability="36.0"/>
 		</drops>
 		<abilities>
 			<damage type="fire"/>

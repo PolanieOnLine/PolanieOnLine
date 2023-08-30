@@ -34,9 +34,9 @@ public class RopemakerNPC implements ZoneConfigurator {
 
 		//giles.addGreeting();
 		giles.addGoodbye();
-		giles.addJob("Jestem rzemieślnikiem. Mój sklep jeszcze nie jest zbudowany, ale wciąż mogę #zaplecić dla Ciebie linę.");
+		giles.addJob("Jestem rzemieślnikiem. Mój sklep jeszcze nie jest zbudowany, ale wciąż mogę #zapleść dla Ciebie linę.");
 		giles.addOffer("Umiem #pleść linę.");
-		giles.addHelp("Jeśli potrzebujesz liny, mogę #zaplecić ją dla Ciebie.");
+		giles.addHelp("Jeśli potrzebujesz liny, mogę #zapleść ją dla Ciebie.");
 		giles.addReply(
 			Arrays.asList("rope", "lina"),
 			"Moje liny są wykonane z najlepszego #'końskiego włosia'.");
