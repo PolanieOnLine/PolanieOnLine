@@ -54,7 +54,7 @@
 			<item value="złote buty" quantity="[1,1]" probability="2.0"/>
 		</drops>
 		<equips>
-			<slot name="lhand" item="strzała płonąca" quantity="10000"/>
+			<slot name="lhand" item="strzała żaru" quantity="10000"/>
 			<slot name="rhand" item="klejony łuk" quantity="1"/>
 		</equips>
 		<ai>

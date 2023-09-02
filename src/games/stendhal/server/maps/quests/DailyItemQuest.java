@@ -105,7 +105,7 @@ public class DailyItemQuest extends AbstractQuest {
 
 		// ammunition
 		items.put("strzała złota",5);
-		items.put("strzała płonąca",5);
+		items.put("strzała żaru",5);
 		items.put("strzała żelazna",7);
 		items.put("strzała",10);
 

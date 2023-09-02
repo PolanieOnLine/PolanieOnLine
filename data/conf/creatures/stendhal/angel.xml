@@ -77,12 +77,12 @@
 			<item value="pas z mithrilu" quantity="[1,1]" probability="0.1"/>
 			<item value="buty z mithrilu" quantity="[1,1]" probability="0.7"/>
 			<item value="sztylecik z mithrilu" quantity="[1,1]" probability="0.05"/>
-			<item value="strzała płonąca" quantity="[10,30]" probability="5.0"/>
+			<item value="strzała żaru" quantity="[10,30]" probability="5.0"/>
 			<item value="łuk z mithrilu" quantity="[1,1]" probability="0.5"/>
 			<item value="kusza z mithrilu" quantity="[1,1]" probability="0.1"/>
 		</drops>
 		<equips>
-			<slot name="lhand" item="strzała płonąca" quantity="10000"/>
+			<slot name="lhand" item="strzała żaru" quantity="10000"/>
 			<slot name="rhand" item="kusza z mithrilu" quantity="1"/>
 		</equips>
 		<abilities>
@@ -267,12 +267,12 @@
 			<item value="pas z mithrilu" quantity="[1,1]" probability="0.2"/>
 			<item value="sztylecik z mithrilu" quantity="[1,1]" probability="0.075"/>
 			<item value="spodnie z mithrilu" quantity="[1,1]" probability="0.3"/>
-			<item value="strzała płonąca" quantity="[10,30]" probability="7.0"/>
+			<item value="strzała żaru" quantity="[10,30]" probability="7.0"/>
 			<item value="łuk z mithrilu" quantity="[1,1]" probability="0.2"/>
 			<item value="kusza z mithrilu" quantity="[1,1]" probability="0.3"/>
 		</drops>
 		<equips>
-			<slot name="lhand" item="strzała płonąca" quantity="10000"/>
+			<slot name="lhand" item="strzała żaru" quantity="10000"/>
 			<slot name="rhand" item="kusza z mithrilu" quantity="1"/>
 		</equips>
 		<abilities>

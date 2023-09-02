@@ -205,7 +205,7 @@
 		<item name="strzała" price="2" />
 		<item name="strzała żelazna" price="7" />
 		<item name="strzała złota" price="21" />
-		<item name="strzała płonąca" price="42" />
+		<item name="strzała żaru" price="42" />
 
 		<merchant name="Diehelm Brui" flags="configure,noOffer"/>
 		<merchant name="Mrotho" flags="configure,noOffer"/>

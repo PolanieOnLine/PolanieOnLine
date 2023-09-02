@@ -55,6 +55,7 @@ public class DumpItems extends ScriptImpl {
 
 		overwrite.put("strzała żelazna", "5");
 		overwrite.put("strzała złota", "20");
+		overwrite.put("strzała żaru", "50");
 		overwrite.put("strzała lodowa", "60");
 		overwrite.put("strzała płonąca", "60");
 		overwrite.put("strzała światła", "60");

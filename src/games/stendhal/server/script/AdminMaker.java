@@ -53,7 +53,7 @@ public class AdminMaker extends ScriptImpl {
 			"kusza łowcy");
 
 	private final List<String> itemsStack = Arrays.asList("money",
-			"duży eliksir", "mocne antidotum", "strzała płonąca",
+			"duży eliksir", "mocne antidotum", "strzała żaru",
 			"śmiertelna trucizna");
 
 
