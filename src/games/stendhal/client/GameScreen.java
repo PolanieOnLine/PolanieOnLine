@@ -19,6 +19,7 @@ import java.awt.GraphicsConfiguration;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.Toolkit;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
@@ -589,6 +590,10 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 		drawEmojis(g2d);
 
 		paintOffLineIfNeeded(g2d);
+
+		// Ask window manager to not skip frame drawing
+		Toolkit.getDefaultToolkit().sync();
+
 		graphics.dispose();
 	}
 
