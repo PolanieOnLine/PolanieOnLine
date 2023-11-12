@@ -66,11 +66,11 @@ create table if not exists halloffame_archive_recent
   fametype char(10) not null,
   `rank` integer not null,
   points integer not null,
-  day date not null,
+  `day` date not null,
   primary key(id)
   );
 
-CREATE INDEX IF NOT EXISTS i_halloffame_day_charname ON halloffame_archive_recent(day, charname);
+CREATE INDEX IF NOT EXISTS i_halloffame_day_charname ON halloffame_archive_recent(`day`, charname);
 
 
 create table if not exists halloffame_archive_alltimes
@@ -80,11 +80,11 @@ create table if not exists halloffame_archive_alltimes
   fametype char(10) not null,
   `rank` integer not null,
   points integer not null,
-  day date not null,
+  `day` date not null,
   primary key(id)
   );
 
-CREATE INDEX IF NOT EXISTS i_halloffame_archive_alltimes_day_charname ON halloffame_archive_alltimes(day, charname);
+CREATE INDEX IF NOT EXISTS i_halloffame_archive_alltimes_day_charname ON halloffame_archive_alltimes(`day`, charname);
 
 
 CREATE TABLE IF NOT EXISTS item (
@@ -125,13 +125,13 @@ CREATE TABLE IF NOT EXISTS kills (
   killer      VARCHAR(64),
   killed_type CHAR(1),
   killer_type CHAR(1),
-  day         DATE,
+  `day`       DATE,
   cnt         INTEGER,
   PRIMARY KEY (id)
 );
 
-CREATE INDEX IF NOT EXISTS i_kills_day_killed ON kills (day, killed);
-CREATE INDEX IF NOT EXISTS i_kills_killer_day ON kills (killer, day);
+CREATE INDEX IF NOT EXISTS i_kills_day_killed ON kills (`day`, killed);
+CREATE INDEX IF NOT EXISTS i_kills_killer_day ON kills (killer, `day`);
 
 
 CREATE TABLE IF NOT EXISTS creatureinfo (
@@ -176,7 +176,7 @@ CREATE TABLE IF NOT EXISTS iteminfo (
   subclass           VARCHAR(64),
   description        VARCHAR(1000),
   weight             INT,
-  value              INT,
+  `value`            INT,
   min_use            INT,
   min_level          INT,
   atk                INT,
@@ -384,11 +384,11 @@ create table if not exists statistics_archive
   id integer auto_increment not null,
   name varchar(32) not null,
   val integer not null,
-  day date not null,
+  `day` date not null,
   primary key(id)
   );
 
-CREATE INDEX IF NOT EXISTS i_statistics_archive_day ON statistics_archive(day);
+CREATE INDEX IF NOT EXISTS i_statistics_archive_day ON statistics_archive(`day`);
 
 create table if not exists trade
   (
@@ -426,7 +426,7 @@ CREATE TABLE IF NOT EXISTS group_quest
   charname    VARCHAR(32),
   itemname    VARCHAR(32),
   quantity    INTEGER,
-  day         DATE NOT NULL,
+  `day`       DATE NOT NULL,
   PRIMARY KEY(id)
   );
 
