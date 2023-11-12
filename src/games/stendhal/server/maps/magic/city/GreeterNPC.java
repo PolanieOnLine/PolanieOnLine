@@ -17,14 +17,10 @@ import java.util.List;
 import java.util.Map;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
-import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
-import games.stendhal.server.entity.npc.shop.ShopsList;
 
 /**
  * Builds a Wizard NPC who explains about the city.
@@ -32,8 +28,6 @@ import games.stendhal.server.entity.npc.shop.ShopsList;
  * @author kymara
  */
 public class GreeterNPC implements ZoneConfigurator {
-	private final ShopsList shops = SingletonRepository.getShopsList();
-
 	/**
 	 * Configure a zone.
 	 *
@@ -82,15 +76,6 @@ public class GreeterNPC implements ZoneConfigurator {
 				addReply(Arrays.asList("magic", "magię"), "W rzeczywistości czary takie jak Sunlight Spell służą tutaj do utrzymania trawy i kwiatków. Wygląda na to, że zastanawiasz się dlaczego tradycyjni wrogowie tacy jak mroczne i zielone elfy żyją tutaj razem. Pozwól mi #wyjaśnić.");
 				addReply(Arrays.asList("explain", "wyjaśnić"), "Jako miasto tylko dla czarodziei mamy dużo do nauczenia się od innych. Dlatego stare zwady są zapominane i dzięki temu żyjemy tutaj w pokoju.");
 				addHelp("To jest część mojej #pracy, aby #oferować ( #offer ) Ci zaczarowane zwoje do podróżowania do każdego miasta w Faiumoni. Posiadam też zapas zwojów, które możesz zapisać i trochę zwoi do wywoływania potworów. Uważaj. Nie są tanie.");
-
-				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("allscrolls")) {
-					@Override
-					public int getUnitPrice(final String item) {
-						// Player pays 150 % of standard price
-						return (int) (1.50f * priceCalculator.calculatePrice(item, null));
-					}
-				});
-
 				addQuest("Nikt nie może żyć, gdy inny przetrwał! Lord ciemności musi zginąć... nie... czekaj... to innym razem. Wybacz mi za zmylenie Ciebie. Niczego nie potrzebuję.");
 				addGoodbye("Żegnaj.");
 			}

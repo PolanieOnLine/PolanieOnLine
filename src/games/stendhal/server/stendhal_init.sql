@@ -264,6 +264,7 @@ CREATE TABLE IF NOT EXISTS shopownerinfo (
   active        INT,
   npcinfo_id    INT,
   shopinfo_id   INT,
+  price_factor  FLOAT,
   PRIMARY KEY (id)
 );
 

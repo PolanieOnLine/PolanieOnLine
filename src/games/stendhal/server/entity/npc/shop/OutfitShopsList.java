@@ -89,6 +89,8 @@ public class OutfitShopsList {
 	 *		 NPC to configure.
 	 * @param id
 	 *		 Shop identifier.
+	 * @param priceFactor
+	 *       Skews prices of all items for this merchant.
 	 * @param action
 	 *		 NPC action trigger, e.g. "lend", "borrow", "buy", etc.
 	 * @param expiration
@@ -98,8 +100,9 @@ public class OutfitShopsList {
 	 * @param flags
 	 *		 Optional flags. Currently supported are 'resetOrig', 'noOffer', & 'returnable'.
 	 */
-	public void configureNPC(final SpeakerNPC npc, final String id, final List<String> action,
-			final int expiration, final String wearOffMessage, final List<String> flags) {
+	public void configureNPC(final SpeakerNPC npc, final String id, final Float priceFactor,
+			final List<String> action, final int expiration, final String wearOffMessage,
+			final List<String> flags) {
 		if (npc == null) {
 			logger.error("Cannot configure outfit shop \"" + id + "\" for non-existing NPC ");
 			return;
@@ -131,8 +134,8 @@ public class OutfitShopsList {
 		for (final Map.Entry<String, Pair<String, Integer>> entry: inventory.entrySet()) {
 			pricelist.put(entry.getKey(), entry.getValue().second());
 		}
-		final OutfitChangerBehaviour behaviour = new OutfitChangerBehaviour(pricelist, expiration,
-				wearOffMessage) {
+		final OutfitChangerBehaviour behaviour = new OutfitChangerBehaviour(pricelist, priceFactor,
+				expiration, wearOffMessage) {
 			@Override
 			public void putOnOutfit(final Player player, final String oname) {
 				// TODO: update OutfitChangerBehaviour to not set outfit list internally
@@ -163,6 +166,52 @@ public class OutfitShopsList {
 	 * Configures an NPC to use a shop.
 	 *
 	 * @param npc
+	 *     NPC to configure.
+	 * @param id
+	 *     Shop identifier.
+	 * @param action
+	 *     NPC action trigger, e.g. "lend", "borrow", "buy", etc.
+	 * @param expiration
+	 *     Amount of time player can wear outfit.
+	 * @param wearOffMessage
+	 *     Message to player when outfit expires.
+	 * @param flags
+	 *     Optional flags. Currently supported are 'resetOrig', 'noOffer', & 'returnable'.
+	 */
+	public void configureNPC(final SpeakerNPC npc, final String id, final List<String> action,
+			final int expiration, final String wearOffMessage, final List<String> flags) {
+		configureNPC(npc, id, null, action, expiration, wearOffMessage, flags);
+	}
+
+	/**
+	 * Configures an NPC to use a shop.
+	 *
+	 * @param npc
+	 *     Name of NPC to configure.
+	 * @param id
+	 *     Shop identifier.
+	 * @param priceFactor
+	 *     Skews prices of all items for this merchant.
+	 * @param action
+	 *     NPC action trigger, e.g. "lend", "borrow", "buy", etc.
+	 * @param expiration
+	 *     Amount of time player can wear outfit.
+	 * @param wearOffMessage
+	 *     Message to player when outfit expires.
+	 * @param flags
+	 *     Optional flags. Currently supported are 'resetOrig', 'noOffer', & 'returnable'.
+	 */
+	public void configureNPC(final String npc, final String id, final Float priceFactor,
+			final List<String> action, final int expiration, final String wearOffMessage,
+			final List<String> flags) {
+		configureNPC(NPCList.get().get(npc), id, priceFactor, action, expiration, wearOffMessage,
+				flags);
+	}
+
+	/**
+	 * Configures an NPC to use a shop.
+	 *
+	 * @param npc
 	 *		 Name of NPC to configure.
 	 * @param id
 	 *		 Shop identifier.
@@ -177,7 +226,7 @@ public class OutfitShopsList {
 	 */
 	public void configureNPC(final String npc, final String id, final List<String> action,
 			final int expiration, final String wearOffMessage, final List<String> flags) {
-		configureNPC(NPCList.get().get(npc), id, action, expiration, wearOffMessage, flags);
+		configureNPC(npc, id, null, action, expiration, wearOffMessage, flags);
 	}
 
 	/**

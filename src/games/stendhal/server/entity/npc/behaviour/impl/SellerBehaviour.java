@@ -53,6 +53,18 @@ public class SellerBehaviour extends MerchantBehaviour {
 	}
 
 	/**
+	 * Creates a new SellerBehaviour with price list & price factor.
+	 *
+	 * @param priceList
+	 *   List of item names and their prices.
+	 * @param priceFactor
+	 *   Skews prices of all items for this merchant.
+	 */
+	public SellerBehaviour(final Map<String, Integer> priceList, final Float priceFactor) {
+		super(priceList, priceFactor);
+	}
+
+	/**
 	 * Transacts the sale that has been agreed on earlier via setChosenItem()
 	 * and setAmount().
 	 *

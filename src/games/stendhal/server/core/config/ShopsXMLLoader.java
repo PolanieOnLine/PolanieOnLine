@@ -31,6 +31,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import games.stendhal.common.MathHelper;
 import games.stendhal.server.core.config.ShopGroupsXMLLoader.MerchantConfigurator;
 import games.stendhal.server.entity.npc.shop.ItemShopInventory;
 import games.stendhal.server.entity.npc.shop.OutfitShopInventory;
@@ -170,6 +171,10 @@ public class ShopsXMLLoader extends DefaultHandler {
 			final String flags = attrs.getValue("flags");
 			if (flags != null) {
 				mc.flags = Arrays.asList(flags.split(","));
+			}
+			final String factor = attrs.getValue("factor");
+			if (factor != null) {
+				mc.factor = (float) MathHelper.parseDoubleDefault(factor, 1.0);
 			}
 			final String actions = attrs.getValue("action");
 			if (actions != null) {
