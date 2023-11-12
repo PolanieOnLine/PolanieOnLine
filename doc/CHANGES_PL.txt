@@ -1,16 +1,21 @@
 Changelog
 ---------
 1.37.2
+*klient*
+- Dodano nową grafikę wraz z animacją strzały żaru
+
 *świat*
 - Poprawiono odległość reagowania Górnika w jaskini pod Zakopane
 - Poprawiono procenty dropów przedmiotów z mithrilu
 - Poprawiono słownictwo Gilesa związaną z zaplataniem liny
-- Usunięto zdublowane przedmioty
+- Zmieniono nazwę przedmiotu z 'strzała płonąca' -> 'strzała żaru' oraz 'strzała ognia' -> 'strzała płonąca'
+- Zmieniono nazwę potwora z 'neo kraken' -> 'odrodzony kraken'
 
 *naprawiono błędy*
 - Naprawiono naliczanie rabatu 30% na ulepszanie przedmiotów
 - Naprawiono ulepszanie przedmiotów, które nie powinny zostać ulepszone
 - Naprawiono przenikanie przez mgły i inne stwory posiadające statystykę resistance
+- Naprawiono możliwość zwrócenia wypożyczonego przedmiotu u NPC Sawyer podczas zadania na rozszerzony Rzemyk
 
 
 1.37.1
