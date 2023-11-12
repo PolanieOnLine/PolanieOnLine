@@ -183,7 +183,7 @@ public class StendhalItemDAO {
 		stmt.setString(21, item.getAttributes().get("antipoison"));
 		stmt.setString(22, item.getAttributes().get("life_support"));
 
-		stmt.setString(23, toStringOrNull(item.getImplementation()));
+		stmt.setString(23, toStringOrNull(toClassNameOrNull(item.getImplementation())));
 		stmt.setString(24, toClassStringOrNull(item.getUseBehavior()));
 		stmt.setString(25, item.getAttributes().get("infostring"));
 		stmt.setString(26, item.getAttributes().get("menu"));
@@ -222,7 +222,14 @@ public class StendhalItemDAO {
 		}
 		return o.getClass().getName();
 	}
-	
+
+	private String toClassNameOrNull(Class<?> c) {
+		if (c == null) {
+			return null;
+		}
+		return c.getName();
+	}
+
 	/**
 	 * dumps all NPCs
 	 *
