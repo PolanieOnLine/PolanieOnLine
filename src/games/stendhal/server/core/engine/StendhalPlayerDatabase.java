@@ -235,6 +235,11 @@ public class StendhalPlayerDatabase {
 			transaction.execute("ALTER TABLE zoneinfo ADD COLUMN (active INT);", null);
 		}
 
+		// 1.44 development version: price_factor
+		if (!transaction.doesColumnExist("shopownerinfo", "price_factor")) {
+			transaction.execute("ALTER TABLE shopownerinfo ADD COLUMN (price_factor INT);", null);
+		}
+
 		// pol0.30: gender
 		if (!transaction.doesColumnExist("character_stats", "gender")) {
 			transaction.execute("ALTER TABLE character_stats ADD COLUMN (gender VARCHAR(2));", null);
