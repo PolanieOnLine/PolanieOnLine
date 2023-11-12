@@ -6,7 +6,7 @@
 
 	<creature name="kraken">
 		<type class="huge_animal" subclass="kraken" tileid="huge_animal.png:13"/>
-		<description>Oto Kraken z głębi morza!</description>
+		<description>Oto kraken z głębi morza!</description>
 		<attributes>
 			<atk value="887"/>
 			<def value="114"/>
@@ -39,9 +39,9 @@
 		</ai>
 	</creature>
 
-	<creature name="neo kraken">
+	<creature name="odrodzony kraken">
 		<type class="huge_animal" subclass="kraken_neo" tileid="huge_animal.png:0"/>
-		<description></description>
+		<description>Z okropnej ciemności głębin morskich wyłania się gigantyczny odrodzony kraken!</description>
 		<attributes>
 			<atk value="992"/>
 			<def value="122"/>
