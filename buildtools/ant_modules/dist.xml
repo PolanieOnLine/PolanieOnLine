@@ -289,18 +289,20 @@
 
     <copy todir="${build_server_xmlconf}/data/conf">
       <fileset dir="data/conf">
-        <include name="creatures.xml"/>
-        <include name="creatures/*.xml"/>
-        <include name="items.xml"/>
-        <include name="items/*.xml"/>
-        <include name="zones.xml"/>
-        <include name="zones/*.xml"/>
-        <include name="riddles-example.xml"/>
-        <include name="spells.xml"/>
-        <include name="spells/*.xml"/>
-        <include name="shops.xml"/>
-        <include name="shops/*.xml"/>
-        <exclude name="items/meta.xml"/>
+      	<include name="creatures.xml"/>
+      	<include name="creatures/*/*.xml"/>
+      	<include name="items.xml"/>
+      	<include name="items/*.xml"/>
+      	<include name="zones.xml"/>
+      	<include name="zones/*.xml"/>
+      	<include name="zones/*/*.xml"/>
+      	<include name="riddles.xml"/>
+      	<include name="spells.xml" />
+      	<include name="spells/*.xml" />
+      	<include name="woodcutter_test.xml"/>
+      	<include name="shops.xml"/>
+      	<include name="shops/*.xml"/>
+      	<include name="producers.xml"/>
       </fileset>
     </copy>
     <copy todir="${build_server_xmlconf}/data/languages">
