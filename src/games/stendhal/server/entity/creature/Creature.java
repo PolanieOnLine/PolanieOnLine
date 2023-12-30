@@ -541,9 +541,9 @@ public class Creature extends NPC {
 				this.addStatusAttacker(poisoner);
 			}
 
-			StatusAttacker injured = BloodAttackerFactory.get(aiProfiles.get("injured"));
-			if (injured != null) {
-				this.addStatusAttacker(injured);
+			StatusAttacker attacker = BloodAttackerFactory.get(aiProfiles.get("injured"), this.getAtk());
+			if (attacker != null) {
+				this.addStatusAttacker(attacker);
 			}
 
 			String statusAttackerProfiles = aiProfiles.get("status_attackers");

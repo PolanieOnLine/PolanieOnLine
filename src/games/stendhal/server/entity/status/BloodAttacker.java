@@ -25,8 +25,32 @@ public class BloodAttacker extends StatusAttacker {
 	 * Second frequency
 	 * Third -regen
 	 */
-	public BloodAttacker(final int probability) {
-		super(new BleedingStatus(-(Rand.roll1D200()), Rand.roll1D20(), -(Rand.roll1D50())), probability);
+	public BloodAttacker(final int probability, final int atk) {
+		super(new BleedingStatus(howMuchReduceHealth(atk), Rand.roll1D20(), reduceHealth(atk)), probability);
+	}
+
+	static int howMuchReduceHealth(final int atk) {
+		int reduce = Rand.roll1D1000();
+		if (atk < 1600) {
+			reduce = Rand.roll1D200();
+		} else if (atk < 800) {
+			reduce = Rand.roll1D100();
+		} else if (atk < 600) {
+			reduce = Rand.roll1D50();
+		}
+		return -reduce;
+	}
+
+	static int reduceHealth(final int atk) {
+		int reduce = Rand.roll1D200();
+		if (atk < 1600) {
+			reduce = Rand.roll1D100();
+		} else if (atk < 800) {
+			reduce = Rand.roll1D20() * 2;
+		} else if (atk < 400) {
+			reduce = Rand.roll1D10();
+		}
+		return -reduce;
 	}
 
 	@Override
