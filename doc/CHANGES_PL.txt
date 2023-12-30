@@ -3,15 +3,28 @@ Changelog
 1.38
 *klient*
 - Dodano nową grafikę wraz z animacją strzały żaru
+- Dodano nowe oraz poprawiono niektóre emotikony
+- Wprowadzono w ustawieniach metody renderowania grafiki
 
 *świat*
+- Dodano nowe osiągnięcia: (5)
+	- "Krew Ados"
+	- "Niszczyciel Narodów"
+	- "Historyk Hiperbolisty"
+	- "Głównodowodzący"
+	- "Władca Semos"
+- Przedmioty takie jak nasiona i bulwy mają unikalne obrazy dla danego kawiatka
+- Kupon jest teraz układalny w stosy (stackowany)
 - Poprawiono odległość reagowania Górnika w jaskini pod Zakopane
-- Poprawiono procenty dropów przedmiotów z mithrilu
 - Poprawiono słownictwo Gilesa związaną z zaplataniem liny
-- Zmieniono nazwę przedmiotu z 'strzała płonąca' -> 'strzała żaru' oraz 'strzała ognia' -> 'strzała płonąca'
+- Zmieniono nazwę przedmiotu z 'strzała płonąca' -> 'strzała żaru', 'strzała ognia' -> 'strzała płonąca', 'pierścień imperialny' -> 'pierścień cesarski' oraz 'wzmocniony pierścień imperialny' -> 'wzmocniony pierścień cesarski'
 - Zmieniono nazwę potwora z 'neo kraken' -> 'odrodzony kraken'
+- Zmieniono nazwę osiągnięcia z 'Siew Nasion Radości' -> 'Pomocnik Matki Natury' oraz wielu innym związanymi z ilością wykonanych zadań
+- Zmniejszono wymóg wykonania ilości zadań do wypełnienia osiągnięć
+- Zmieniono procenty dropów przedmiotów z mithrilu
 
 *naprawiono błędy*
+- Naprawiono restartowanie rundy na arenie w Ados podczas bieżącej walki
 - Naprawiono naliczanie rabatu 30% na ulepszanie przedmiotów
 - Naprawiono ulepszanie przedmiotów, które nie powinny zostać ulepszone
 - Naprawiono przenikanie przez mgły i inne stwory posiadające statystykę resistance
