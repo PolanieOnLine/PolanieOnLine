@@ -70,7 +70,7 @@ public class ServerIniConfiguration {
         out.println();
         out.println("server_typeGame=" + this.gameName);
         out.println("server_name=" + this.gameName + " Marauroa server");
-        out.println("server_version=1.37.2");
+        out.println("server_version=1.38");
         out.println("server_contact=https://s1.polanieonline.eu/kontakt-gmgags.html");
         out.println();
         out.println("# Extensions configured on the server. Enable at will.");
