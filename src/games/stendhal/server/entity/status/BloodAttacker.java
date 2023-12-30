@@ -32,8 +32,8 @@ public class BloodAttacker extends StatusAttacker {
 	static int howMuchReduceHealth(final int atk) {
 		int reduce = Rand.roll1D1000();
 		if (atk < 1600) {
-			reduce = Rand.roll1D200();
-		} else if (atk < 800) {
+			reduce = Rand.roll1D200() * 2;
+		} else if (atk < 1000) {
 			reduce = Rand.roll1D100();
 		} else if (atk < 600) {
 			reduce = Rand.roll1D50();
@@ -45,7 +45,7 @@ public class BloodAttacker extends StatusAttacker {
 		int reduce = Rand.roll1D200();
 		if (atk < 1600) {
 			reduce = Rand.roll1D100();
-		} else if (atk < 800) {
+		} else if (atk < 1200) {
 			reduce = Rand.roll1D20() * 2;
 		} else if (atk < 400) {
 			reduce = Rand.roll1D10();
