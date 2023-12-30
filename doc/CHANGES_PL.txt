@@ -15,6 +15,7 @@ Changelog
 	- "Władca Semos"
 - Przedmioty takie jak nasiona i bulwy mają unikalne obrazy dla danego kawiatka
 - Kupon jest teraz układalny w stosy (stackowany)
+- Efekt krwawienia jest teraz zależna od siły uderzenia stwora
 - Poprawiono odległość reagowania Górnika w jaskini pod Zakopane
 - Poprawiono słownictwo Gilesa związaną z zaplataniem liny
 - Zmieniono nazwę przedmiotu z 'strzała płonąca' -> 'strzała żaru', 'strzała ognia' -> 'strzała płonąca', 'pierścień imperialny' -> 'pierścień cesarski' oraz 'wzmocniony pierścień imperialny' -> 'wzmocniony pierścień cesarski'
