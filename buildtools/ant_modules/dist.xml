@@ -55,8 +55,8 @@
 
   <target name="dist" depends="clean,dist_binary,dist_source,signupdates" description="Create all packages for PolanieOnLine release."/>
 
-  <target name="dist_binary" depends="clean,dist_server_binary,dist_client_binary,dist_client_starter,dist_webclient_binary,dist_client_android"
-	      description="Create all binary packages for PolanieOnLine release."/>
+  <target name="dist_binary" depends="clean,dist_server_binary,dist_client_binary,dist_client_starter"
+	      description="Create all binary packages for PolanieOnLine release."/> <!-- ,dist_webclient_binary,dist_client_android -->
 
   <!-- START: source -->
 
@@ -533,7 +533,7 @@
         <attribute name="Application-Name" value="PolanieOnLine"/>
       	<attribute name="Application-Library-Allowable-Codebase" value="http://game-polanieonline.sourceforge.net https://s1.polanieonline.eu *"/>
         <attribute name="Main-Class" value="games.stendhal.client.update.Starter"/>
-        <attribute name="Class-path" value="."/>
+        <attribute name="Class-path" value=". lib/${jsonsimple_jarname}"/>
         <attribute name="Permissions" value="all-permissions"/>
         <attribute name="Codebase" value="*"/>
         <attribute name="Trusted-Library" value="true"/>
@@ -585,7 +585,7 @@
     <mkdir dir="${buildroot}/polanieonline-${version}/log"/>
 
     <copy tofile="${buildroot}/polanieonline-${version}/polanieonline-starter.jar" file="${lib}/${client_starter_jarname}"/>
-    <copy tofile="${buildroot}/polanieonline-${version}/lib/stendhal.jar" file="${lib}/${client_jarname}"/>
+    <copy tofile="${buildroot}/polanieonline-${version}/lib/polanieonline.jar" file="${lib}/${client_jarname}"/>
     <copy tofile="${buildroot}/polanieonline-${version}/lib/log4j.jar" file="${log4j_jar}"/>
     <copy tofile="${buildroot}/polanieonline-${version}/lib/marauroa.jar" file="${marauroa_jar}"/>
     <copy tofile="${buildroot}/polanieonline-${version}/lib/jorbis.jar" file="${jorbis_jar}"/>
@@ -605,7 +605,7 @@
       </fileset>
       <fileset file="LICENSE.txt"/>
     </copy>
-    <touch file="${buildroot}/polanieonline-${version}/log/stendhal.txt"/>
+    <touch file="${buildroot}/polanieonline-${version}/log/polanieonline.txt"/>
     <copy todir="${buildroot}/polanieonline-${version}" file="README.md"/>
     <copy tofile="${buildroot}/polanieonline-${version}/icon.png" file="data/gui/POLIcon.png"/>
     <zip destfile="${buildroot}/polanieonline-${version}.zip">
