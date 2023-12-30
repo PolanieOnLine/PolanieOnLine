@@ -18,10 +18,6 @@
     <equals arg1="${os.win}" arg2="true"/>
   </condition>
 
-  <!-- check for some executables -->
-  <available property="python.present" file="python${exe.ext}" filepath="${env.PATH}"/>
-  <available property="python3.present" file="python3${exe.ext}" filepath="${env.PATH}"/>
-
   <property file="build.ant-private.properties"/>
   <property file="build.ant.properties"/>
 
@@ -79,9 +75,19 @@
     </not>
   </condition>
 
+  <!-- time & date -->
   <tstamp>
-    <format property="timestamp" pattern="yyyy-MM-dd HH:mm:ss"/>
+  	<format property="year" pattern="yyyy"/>
+  	<format property="date" pattern="yyyy-MM-dd"/>
+  	<format property="time" pattern="HH:mm:ss"/>
   </tstamp>
+  <property name="datetime" value="${date} ${time}"/>
+
+  <!-- check for some executables -->
+  <available property="python.present" file="python${exe.ext}" filepath="${env.PATH}"/>
+  <available property="python3.present" file="python3${exe.ext}" filepath="${env.PATH}"/>
+
+  <!-- Ant sub-modules -->
 
   <import file="build-private.xml" optional="true"/>
 
@@ -90,7 +96,9 @@
   <import file="${ant_modules}/dist.xml"/>
   <import file="${ant_modules}/maps.xml"/>
   <import file="${ant_modules}/docs.xml"/>
+  <import file="${ant_modules}/locale.xml"/>
   <import file="${ant_modules}/testing.xml"/>
   <import file="${ant_modules}/tools.xml"/>
+  <import file="${ant_modules}/package.xml"/>
 
 </project>

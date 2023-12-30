@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -28,6 +27,10 @@ public enum Banks {
 	DENIRAN("bank_deniran"),
 	/** bank in Fado. */
 	FADO("bank_fado"),
+	/** bank in Kirdneh. */
+	KIRDNEH("bank_kirdneh"),
+	/** bank in Magic City */
+	MAGIC("bank_magic"),
 	/** bank in Nalwor. */
 	NALWOR("bank_nalwor"),
 	/** bank in Zakopane. */

@@ -48,12 +48,12 @@ public class Ball extends Item {
 
 	public void setCroupierNPC(final CroupierNPC croupierNPC) {
 		this.croupierNPC = croupierNPC;
-		setInfoString(croupierNPC.getName());
+		setItemData(croupierNPC.getName());
 	}
 
 	private void updateCroupierNPC() {
 		if (croupierNPC == null) {
-			final String name = getInfoString();
+			final String name = getItemData();
 
 			if (name != null) {
 				croupierNPC = (CroupierNPC) SingletonRepository.getNPCList().get(name);

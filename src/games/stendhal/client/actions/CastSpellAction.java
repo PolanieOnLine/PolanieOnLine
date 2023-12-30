@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2022 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -24,6 +24,7 @@ import marauroa.common.game.RPAction;
  * @author madmetzger
  */
 public class CastSpellAction implements SlashAction {
+
 	@Override
 	public boolean execute(String[] params, String remainder) {
 		final RPAction action = new RPAction();

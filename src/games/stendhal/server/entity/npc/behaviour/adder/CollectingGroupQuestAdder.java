@@ -110,13 +110,15 @@ public class CollectingGroupQuestAdder {
 				}
 				int percent = behaviour.getProgressPercent();
 				if (percent < 10) {
-					npc.say("Jest jeszcze wiele do zrobienia, zanim zacznie się " + behaviour.getProjectName()  + ". Ledwo zaczęliśmy. Może mógłbyś pomóc w niektórych #zadaniach.");
+					npc.say("Jest jeszcze wiele do zrobienia, zanim zacznie się " + behaviour.getProjectName()  + ". Ledwo co rozpoczęliśmy prace. Może mógłbyś pomóc w niektórych #zadaniach.");
 				} else if (percent < 50) {
 					npc.say("Jest jeszcze wiele do zrobienia, zanim zacznie się " + behaviour.getProjectName() + ". Nie dotarliśmy nawet do półmetka. Może mógłbyś pomóc w niektórych #zadaniach.");
 				} else if (percent < 75) {
 					npc.say("Jest jeszcze wiele do zrobienia, zanim zacznie się " + behaviour.getProjectName() + ". Ledwo co dotarliśmy do półmetka. Może mógłbyś pomóc w niektórych #zadaniach.");
 				} else if (percent < 90) {
-					npc.say("Jesteśmy prawie na końcu. Ale nadal pozostaje kilka #zadań przed rozpoczęciem " + behaviour.getProjectName() + ".");
+					npc.say("Jest jeszcze wiele do zrobienia, zanim będzie można rozpocząć budowę " + behaviour.getProjectName() + ". Ale przynajmniej jesteśmy znacznie za półmetkiem. Możesz nawet pomóc w niektórych #zadaniach.");
+				} else {
+					npc.say("Jesteśmy prawie na końcu. Nadal pozostało kilka #zadań przed rozpoczęciem " + behaviour.getProjectName() + ".");
 				}
 			}
 		});

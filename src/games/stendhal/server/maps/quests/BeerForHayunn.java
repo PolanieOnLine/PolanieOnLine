@@ -11,32 +11,12 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.SingletonRepository;
-import games.stendhal.server.entity.npc.ChatAction;
-import games.stendhal.server.entity.npc.ConversationPhrases;
-import games.stendhal.server.entity.npc.ConversationStates;
-import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.action.DropItemAction;
 import games.stendhal.server.entity.npc.action.EquipItemAction;
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
 import games.stendhal.server.entity.npc.action.IncreaseXPAction;
-import games.stendhal.server.entity.npc.action.MultipleActions;
-import games.stendhal.server.entity.npc.action.SetQuestAction;
-import games.stendhal.server.entity.npc.action.SetQuestAndModifyKarmaAction;
-import games.stendhal.server.entity.npc.condition.AndCondition;
-import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
-import games.stendhal.server.entity.npc.condition.NotCondition;
-import games.stendhal.server.entity.npc.condition.PlayerHasItemWithHimCondition;
-import games.stendhal.server.entity.npc.condition.QuestActiveCondition;
-import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
-import games.stendhal.server.entity.npc.condition.QuestNotCompletedCondition;
-import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.entity.npc.quest.BringItemQuestBuilder;
+import games.stendhal.server.entity.npc.quest.QuestManuscript;
 import games.stendhal.server.maps.Region;
 import games.stendhal.server.maps.semos.guardhouse.RetiredAdventurerNPC;
 import games.stendhal.server.util.ResetSpeakerNPC;
@@ -68,173 +48,58 @@ import games.stendhal.server.util.ResetSpeakerNPC;
  * <li>None</li>
  * </ul>
  */
-public class BeerForHayunn extends AbstractQuest {
+public class BeerForHayunn implements QuestManuscript {
 	public static final String QUEST_SLOT = "beer_hayunn";
-	private static final String OTHER_QUEST_SLOT = "meet_hayunn";
-	private final SpeakerNPC npc = npcs.get("Hayunn Naratha");
-
-	private void prepareRequestingStep() {
-		npc.add(ConversationStates.ATTENDING,
-			ConversationPhrases.QUEST_MESSAGES,
-			// Don't give the task until the previous is completed to avoid
-			// confusing Hayunn in a lot of places later.
-			new AndCondition(new QuestNotCompletedCondition(QUEST_SLOT),
-					new QuestCompletedCondition(OTHER_QUEST_SLOT)),
-			ConversationStates.QUEST_OFFERED,
-			"Zaschło mi w gardle, ale nie mogę opuścić mojego posterunku! Czy mógłbyś mi przynieść #sok z chmielu z #oberży?",
-			null);
-
-		npc.add(ConversationStates.ATTENDING,
-			ConversationPhrases.QUEST_MESSAGES,
-			new QuestCompletedCondition(QUEST_SLOT),
-			ConversationStates.ATTENDING,
-			"Dziękuję zawsze to samo, ale nie chcę mi się pić. Wciąż jestem na służbie! Będę potrzebował trzeźwego umysłu, gdy pokażą się potwory...",
-			null);
-
-		npc.add(
-			ConversationStates.QUEST_OFFERED,
-			ConversationPhrases.YES_MESSAGES,
-			null,
-			ConversationStates.ATTENDING,
-			"Dziękuję! Będę tutaj czekał. I oczywiście strzegł.",
-			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "start", 5.0));
-
-		npc.add(
-			ConversationStates.QUEST_OFFERED,
-			ConversationPhrases.NO_MESSAGES,
-			null,
-			ConversationStates.ATTENDING,
-			"Och, zapomnij o tym. Mam nadzieję, że zacznie padać deszcz, a wtedy będę mógł się napić.",
-			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -5.0));
-
-		npc.add(
-			ConversationStates.QUEST_OFFERED,
-			Arrays.asList("tavern", "oberży"),
-			null,
-			ConversationStates.QUEST_OFFERED,
-			"Jeżeli nie wiesz gdzie jest hotel, to możesz się zapytać starego Monogenesa. Jest dobry w udzielaniu wskazówek. Zamierzasz pomóc?",
-			null);
-
-		npc.add(
-			ConversationStates.QUEST_OFFERED,
-			Arrays.asList("sok", "sok z chmielu"),
-			null,
-			ConversationStates.QUEST_OFFERED,
-			"Wystarczy mi butelka chłodnego soku z chmielu od #Margaret. Zrobisz to dla mnie?",
-			null);
-
-		npc.add(
-			ConversationStates.QUEST_OFFERED,
-			"Margaret",
-			null,
-			ConversationStates.QUEST_OFFERED,
-			"Margaret jest piękną kelnerką w oberży! Ładnie wygląda... heh. Pójdziesz dla mnie do niej?",
-			null);
-	}
-
-	private void prepareBringingStep() {
-		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
-			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-					new QuestActiveCondition(QUEST_SLOT),
-					new PlayerHasItemWithHimCondition("sok z chmielu")),
-			ConversationStates.QUEST_ITEM_BROUGHT,
-			"Hej! Czy ten sok z chmielu jest dla mnie?", null);
-
-		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
-			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-					new QuestActiveCondition(QUEST_SLOT),
-					new NotCondition(new PlayerHasItemWithHimCondition("sok z chmielu"))),
-			ConversationStates.ATTENDING,
-			"Hej, wciąż czekam na sok z chmielu, pamiętasz? Poza tym co mogę zrobić dla Ciebie?",
-			null);
-
-		final List<ChatAction> reward = new LinkedList<ChatAction>();
-		reward.add(new DropItemAction("sok z chmielu"));
-		reward.add(new EquipItemAction("money", 100));
-		reward.add(new IncreaseXPAction(500));
-		reward.add(new SetQuestAction(QUEST_SLOT, "done"));
-		reward.add(new IncreaseKarmaAction(15));
-		npc.add(
-			ConversationStates.QUEST_ITEM_BROUGHT,
-			ConversationPhrases.YES_MESSAGES,
-			new PlayerHasItemWithHimCondition("sok z chmielu"),
-			ConversationStates.ATTENDING,
-			"*gul gul* Ach! Trafiłeś. Daj znać jeżeli będziesz czegoś potrzebował, dobrze?",
-			new MultipleActions(reward));
-
-		npc.add(
-			ConversationStates.QUEST_ITEM_BROUGHT,
-			ConversationPhrases.NO_MESSAGES,
-			null,
-			ConversationStates.ATTENDING,
-			"Niech to! Chyba pamiętasz, że prosiłem Cię o coś, prawda? Mógłbym teraz napić się.",
-			null);
-	}
 
 	@Override
-	public void addToWorld() {
-		fillQuestInfo(
-				"Napój dla Hayunna",
-				"Hayunn Naratha największy wojownik w Semos Guard House potrzebuje soku z chmielu.",
-				false);
-		prepareRequestingStep();
-		prepareBringingStep();
+	public BringItemQuestBuilder story() {
+		BringItemQuestBuilder quest = new BringItemQuestBuilder();
+
+		quest.info()
+			.name("Trunek dla Hayunna")
+			.description("Hayunn Naratha, wielki wojownik w strażnicy Semos, chce specjalnego trunku.")
+			.internalName(QUEST_SLOT)
+			.notRepeatable()
+			.minLevel(0)
+			.region(Region.SEMOS_CITY)
+			.questGiverNpc("Hayunn Naratha");
+
+		quest.history()
+			.whenNpcWasMet("Napotkany został Hayunn Naratha.")
+			.whenQuestWasRejected("Nie chcę upić Hayunna.")
+			.whenQuestWasAccepted("Obiecałem mu kupić trunek od Margaret w tawernie Semos.")
+			.whenTaskWasCompleted("Mam butelkę soku z chmielu.")
+			.whenQuestWasCompleted("Przekazałem trunek Hayunnowi. Zapłacił mi 20 złotych monet i zdobyłem trochę doświadczenia.");
+
+		// TODO: new QuestCompletedCondition(OTHER_QUEST_SLOT)),
+		quest.offer()
+			.respondToRequest("Zaschło mi w ustach, ale nie mogą zobaczyć, jak opuszczam tę salę dydaktyczną! Czy mógłbyś mi przynieść #trunek z #tawerny?")
+			.respondToUnrepeatableRequest("Mimo wszystko dziękuję, ale nie chcę za bardzo wciągnąć się w picie; Wciąż jestem na służbie, wiesz! Będę potrzebował rozumu, jeśli pojawi się uczeń...")
+			.respondToAccept("Dzięki! Nigdzie nie zamierzam się ruszać, będę czekać tutaj. I oczywiście pilnuje obowiązków.")
+			.respondToReject("No cóż, w takim razie zapomnij. Chyba po prostu będę miał nadzieję, że zacznie padać, a potem stanę z otwartymi ustami.")
+			.rejectionKarmaPenalty(5.0)
+			.remind("Hej, wciąż czekam na swój sok z chmielu, pamiętasz? Tak czy inaczej, co mogę dla ciebie zrobić?")
+			.respondTo("tavern", "tawerna").saying("Jeśli nie wiesz, gdzie jest zajazd, możesz zapytać starego Monogenesa, jest dobrym w udzielaniu wskazówek. Czy zamierzasz pomóc?")
+			.respondTo("beer", "piwo", "trunek", "sok z chmielu").saying("Butelka chłodnego soku z chmielu od #Margaret w zupełności wystarczy. Więc, zrobisz to?")
+			.respondTo("Margaret").saying("Margaret jest oczywiście ładną barmanką w tawernie! Wygląda nieźle... heh. Pójdziesz po to dla mnie?");
+
+		quest.task()
+			.requestItem(1, "sok z chmielu");
+
+		quest.complete()
+			.greet("Hej! Czy to piwo jest dla mnie?")
+			.respondToReject("Aj! Pamiętasz, że cię o to prosiłem, prawda? Naprawdę przydałoby mi się to teraz.")
+			.respondToAccept("*gul gul* Ach! To trafia idealnie. Daj mi znać, jeśli będziesz czegoś potrzebować, dobrze?")
+			.rewardWith(new EquipItemAction("money", 20))
+			.rewardWith(new IncreaseXPAction(50))
+			.rewardWith(new IncreaseKarmaAction(10));
+		return quest;
 	}
 
-	@Override
 	public boolean removeFromWorld() {
-		final boolean res = ResetSpeakerNPC.reload(new RetiredAdventurerNPC(), getNPCName());
+		final boolean res = ResetSpeakerNPC.reload(new RetiredAdventurerNPC(), "Hayunn Naratha");
 		// reload other associated quests
 		SingletonRepository.getStendhalQuestSystem().reloadQuestSlots("meet_hayunn");
 		return res;
-	}
-
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add(Grammar.genderVerb(player.getGender(), "Rozmawiałem") + " z Hayunn.");
-		final String questState = player.getQuest(QUEST_SLOT);
-		if ("rejected".equals(questState)) {
-			res.add("Nie chcę kupować soku z chmielu dla Hayunn.");
-		}
-		if (player.isQuestInState(QUEST_SLOT, "start", "done")) {
-			res.add(Grammar.genderVerb(player.getGender(), "Obiecałem") + ", że kupię mu sok z chmielu od Margaret w tawernie Semos.");
-		}
-		if ("start".equals(questState) && player.isEquipped("sok z chmielu")
-				|| "done".equals(questState)) {
-			res.add("Mam już sok z chmielu.");
-		}
-		if ("done".equals(questState)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Dałem") + " sok z chmielu Hayunn. Otrzymałem 20 złotych monet i kilka lekcji z jego doświadczenia.");
-		}
-		return res;
-	}
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
-	@Override
-	public String getName() {
-		return "Napój dla Hayunna";
-	}
-
-	@Override
-	public int getMinLevel() {
-		return 0;
-	}
-
-	@Override
-	public String getRegion() {
-		return Region.SEMOS_CITY;
-	}
-
-	@Override
-	public String getNPCName() {
-		return npc.getName();
 	}
 }

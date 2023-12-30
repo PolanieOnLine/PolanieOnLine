@@ -29,6 +29,7 @@ public class SemosMonsterQuestAchievementFactory extends AbstractAchievementFact
 	public static final String ID_HERO = "quest.special.daily.0100";
 	public static final String ID_CHAMPION = "quest.special.daily.0250";
 	public static final String ID_VANQUISHER = "quest.special.daily.0500";
+	public static final String ID_RULER = "quest.special.daily.1000";
 
 	@Override
 	protected Category getCategory() {
@@ -68,6 +69,12 @@ public class SemosMonsterQuestAchievementFactory extends AbstractAchievementFact
 				"Ukończono codzienne zadanie na potwory 500 razy",
 				Achievement.HARD_BASE_SCORE, true,
 				new QuestStateGreaterThanCondition("daily", 2, 499)));
+
+		achievements.add(createAchievement(
+				ID_RULER, "Władca Semos",
+				"Ukończono codzienne zadanie na potwory 1,000 razy",
+				Achievement.EXTREME_BASE_SCORE, true,
+				new QuestStateGreaterThanCondition("daily", 2, 999)));
 
 		return achievements;
 	}

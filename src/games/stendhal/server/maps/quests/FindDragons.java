@@ -77,11 +77,14 @@ public class FindDragons extends AbstractQuest {
 			initHP(100);
 
 			final List<Node> nodes = new LinkedList<Node>();
-				nodes.add(new Node(x, y));
-				nodes.add(new Node(x - 4, y));
-				nodes.add(new Node(x - 4, y - 2));
-				nodes.add(new Node(x, y - 2));
-				setPath(new FixedPath(nodes, true));
+			nodes.add(new Node(x, y));
+			nodes.add(new Node(x - 4, y));
+			nodes.add(new Node(x - 4, y - 2));
+			nodes.add(new Node(x, y - 2));
+			setPath(new FixedPath(nodes, true));
+
+			// hide location from website
+			hideLocation();
 		}
 
 		@Override

@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2022 - Faiumoni e.V.                    *
+ *                 (C) Copyright 2022-2023 - Faiumoni e.V.                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -17,14 +17,12 @@ package games.stendhal.server.entity.npc.quest;
  * @author hendrik
  * @param <T> QuestTaskBuilder
  */
-public class QuestBuilder<T extends QuestTaskBuilder> {
-
+public class QuestBuilder<T extends QuestTaskBuilder, O extends QuestOfferBuilder<O>, C extends QuestCompleteBuilder, H extends QuestHistoryBuilder> {
 	private QuestInfoBuilder info = new QuestInfoBuilder();
-	private QuestHistoryBuilder history = new QuestHistoryBuilder();
-	private QuestOfferBuilder offer = new QuestOfferBuilder();
+	protected O offer;
 	private T task = null;
-	private QuestForgingBuilder forging = new QuestForgingBuilder();
-	private QuestCompleteBuilder complete = new QuestCompleteBuilder();
+	protected C complete;
+	protected H history = null;
 
 	/**
 	 * creates a QuestBuilder
@@ -49,7 +47,7 @@ public class QuestBuilder<T extends QuestTaskBuilder> {
 	 *
 	 * @return QuestHistoryBuilder
 	 */
-	public QuestHistoryBuilder history() {
+	public H history() {
 		return history;
 	}
 
@@ -58,7 +56,7 @@ public class QuestBuilder<T extends QuestTaskBuilder> {
 	 *
 	 * @return QuestOfferBuilder
 	 */
-	public QuestOfferBuilder offer() {
+	public O offer() {
 		return offer;
 	}
 
@@ -71,16 +69,12 @@ public class QuestBuilder<T extends QuestTaskBuilder> {
 		return task;
 	}
 
-	public QuestForgingBuilder forging() {
-		return forging;
-	}
-
 	/**
 	 * defines how the NPC react after the player completes the quest
 	 *
 	 * @return QuestCompleteBuilder
 	 */
-	public QuestCompleteBuilder complete() {
+	public C complete() {
 		return complete;
 	}
 
@@ -89,16 +83,21 @@ public class QuestBuilder<T extends QuestTaskBuilder> {
 	 */
 	public void simulate() {
 		QuestSimulator simulator = new QuestSimulator();
+		setupSimulator(simulator);
 		info.simulate(simulator);
 		String npc = info.getQuestGiverNpc();
 		offer.simulateFirst(npc, simulator);
 		task.simulate(simulator);
 		complete.simulate(npc, simulator);
 		offer.simulateNotRepeatable(npc, simulator);
-		if (info.getRepeatableAfterMinutes() > 0) {
+		if (info.getRepeatableAfterMinutes() > -1) {
 			simulator.info("Time passed");
 			simulator.info("");
 			offer.simulateRepeat(npc, simulator);
 		}
+	}
+
+	protected void setupSimulator(@SuppressWarnings("unused") QuestSimulator simulator) {
+		// do nothing
 	}
 }

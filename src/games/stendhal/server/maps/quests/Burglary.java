@@ -29,7 +29,7 @@ import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.action.DropInfostringItemAction;
+import games.stendhal.server.entity.npc.action.DropItemdataItemAction;
 import games.stendhal.server.entity.npc.action.DropItemAction;
 import games.stendhal.server.entity.npc.action.EquipItemAction;
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
@@ -40,7 +40,7 @@ import games.stendhal.server.entity.npc.action.SetQuestAndModifyKarmaAction;
 import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
 import games.stendhal.server.entity.npc.condition.NotCondition;
-import games.stendhal.server.entity.npc.condition.PlayerHasInfostringItemWithHimCondition;
+import games.stendhal.server.entity.npc.condition.PlayerHasItemdataItemWithHimCondition;
 import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
@@ -102,16 +102,16 @@ public class Burglary extends AbstractQuest {
 					new QuestInStateCondition(QUEST_SLOT, "start"),
 					new NotCondition(
 						new AndCondition(
-								new PlayerHasInfostringItemWithHimCondition("góralski kapelusz", QUEST_SLOT),
-								new PlayerHasInfostringItemWithHimCondition("cuha góralska", QUEST_SLOT),
-								new PlayerHasInfostringItemWithHimCondition("sztabka złota", QUEST_SLOT)))),
+								new PlayerHasItemdataItemWithHimCondition("góralski kapelusz", QUEST_SLOT),
+								new PlayerHasItemdataItemWithHimCondition("cuha góralska", QUEST_SLOT),
+								new PlayerHasItemdataItemWithHimCondition("sztabka złota", QUEST_SLOT)))),
 			ConversationStates.ATTENDING, 
 			"Nie próbuj mnie oszukiwać! *szept* Wróć z tymi przedmiotami do mnie...",
 			null);
 
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
-		reward.add(new DropInfostringItemAction("góralski kapelusz", QUEST_SLOT));
-		reward.add(new DropInfostringItemAction("cuha góralska", QUEST_SLOT));
+		reward.add(new DropItemdataItemAction("góralski kapelusz", QUEST_SLOT));
+		reward.add(new DropItemdataItemAction("cuha góralska", QUEST_SLOT));
 		reward.add(new DropItemAction("wytrychy"));
 		reward.add(new IncreaseXPAction(4000));
 		reward.add(new SetQuestAction(QUEST_SLOT, "done"));
@@ -120,7 +120,7 @@ public class Burglary extends AbstractQuest {
 			new ChatAction() {
 				@Override
 				public void fire(Player player, Sentence sentence, EventRaiser npc) {
-					player.dropWithInfostring("sztabka złota", QUEST_SLOT, 15);
+					player.dropWithItemdata("sztabka złota", QUEST_SLOT, 15);
 					Burglary.prepareChest();
 				}
 			});
@@ -130,9 +130,9 @@ public class Burglary extends AbstractQuest {
 			ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(
 					new GreetingMatchesNameCondition(npc.getName()),
-					new PlayerHasInfostringItemWithHimCondition("góralski kapelusz", QUEST_SLOT),
-					new PlayerHasInfostringItemWithHimCondition("cuha góralska", QUEST_SLOT),
-					new PlayerHasInfostringItemWithHimCondition("sztabka złota", QUEST_SLOT)),
+					new PlayerHasItemdataItemWithHimCondition("góralski kapelusz", QUEST_SLOT),
+					new PlayerHasItemdataItemWithHimCondition("cuha góralska", QUEST_SLOT),
+					new PlayerHasItemdataItemWithHimCondition("sztabka złota", QUEST_SLOT)),
 			ConversationStates.ATTENDING,
 			"Dzięki... Tym razem się przekona co to znaczy być okradzionym...",
 			new MultipleActions(reward));
@@ -147,18 +147,18 @@ public class Burglary extends AbstractQuest {
 
 		try {
 			Item item = SingletonRepository.getEntityManager().getItem("góralski kapelusz");
-			item.setInfoString(QUEST_SLOT);
+			item.setItemData(QUEST_SLOT);
 			item.setDescription("Oto góralski kapelusz należący do garderoby Sołtysa.");
 			chest.add(item);
 
 			item = SingletonRepository.getEntityManager().getItem("cuha góralska");
-			item.setInfoString(QUEST_SLOT);
+			item.setItemData(QUEST_SLOT);
 			item.setDescription("Oto cuha góralska należąca do garderoby Sołtysa.");
 			chest.add(item);
 
 			item = SingletonRepository.getEntityManager().getItem("sztabka złota");
 			((StackableItem) item).setQuantity(15);
-			item.setInfoString(QUEST_SLOT);
+			item.setItemData(QUEST_SLOT);
 			item.setDescription("Oto sztabki złota, które są własnością Sołtysa.");
 			chest.add(item);
 		} catch (SlotIsFullException e) {

@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                      (C) Copyright 2003 - Marauroa                      *
+ *                   (C) Copyright 2003-2023 - Marauroa                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -21,6 +20,18 @@ public class Item extends Entity {
 	 * accessible.
 	 */
 	private RPSlot content;
+
+	/** Quantity property. */
+	public static final Property PROP_QUANTITY = new Property();
+	/** The item quantity. */
+	private int quantity;
+
+	/**
+	 * Create an item.
+	 */
+	public Item() {
+		quantity = 0;
+	}
 
 	/**
 	 * Initialize this entity for an object.
@@ -49,5 +60,42 @@ public class Item extends Entity {
 	 */
 	public RPSlot getContent() {
 		return content;
+	}
+
+	/**
+	 * Get the item quantity.
+	 *
+	 * @return The number of items.
+	 */
+	public int getQuantity() {
+		return quantity;
+	}
+
+	/**
+	 * The object added/changed attribute(s).
+	 *
+	 * @param object
+	 *            The base object.
+	 * @param changes
+	 *            The changes.
+	 */
+	@Override
+	public void onChangedAdded(final RPObject object, final RPObject changes) {
+		super.onChangedAdded(object, changes);
+
+		if (changes.has("state")) {
+			fireChange(PROP_STATE);
+		}
+		if (changes.has("quantity")) {
+			quantity = changes.getInt("quantity");
+			fireChange(PROP_QUANTITY);
+		}
+	}
+
+	public int getState() {
+		if (rpObject.has("state")) {
+			return rpObject.getInt("state");
+		}
+		return 0;
 	}
 }

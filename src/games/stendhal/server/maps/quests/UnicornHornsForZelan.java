@@ -14,8 +14,7 @@ package games.stendhal.server.maps.quests;
 import games.stendhal.server.entity.npc.action.EquipItemAction;
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
 import games.stendhal.server.entity.npc.action.IncreaseXPAction;
-import games.stendhal.server.entity.npc.quest.BringItemTask;
-import games.stendhal.server.entity.npc.quest.QuestBuilder;
+import games.stendhal.server.entity.npc.quest.BringItemQuestBuilder;
 import games.stendhal.server.entity.npc.quest.QuestManuscript;
 import games.stendhal.server.maps.Region;
 
@@ -48,70 +47,53 @@ import games.stendhal.server.maps.Region;
  */
 public class UnicornHornsForZelan implements QuestManuscript {
 	@Override
-	public QuestBuilder<?> story() {
-		QuestBuilder<BringItemTask> quest = new QuestBuilder<>(new BringItemTask());
-
-		final String npcName = "Zelan";
-		final int quantity = 10;
-		final String itemName = "róg jednorożca";
-		final String plItemName = "rogów jednorożca";
-		final int rewardSoup = 3;
-		final int rewardMoney = 20000;
+	public BringItemQuestBuilder story() {
+		BringItemQuestBuilder quest = new BringItemQuestBuilder();
 
 		quest.info()
 			.name("Rogi Jednorożca dla Zelana")
 			.internalName("unicorn_horns_for_zelan")
-			.description("Zelan potrzebuje pomocy przy zbieraniu " + plItemName + ".")
+			.description("Zelan potrzebuje pomocy przy zbieraniu rogów jednorożca.")
 			.region(Region.ATLANTIS)
-			.questGiverNpc(npcName)
+			.questGiverNpc("Zelan")
 			// 3 days
 			.repeatableAfterMinutes(60 * 24 * 3);
 
 		quest.history()
-			.whenNpcWasMet(npcName + " spytał mnie czy zdobędę " + quantity
-					+ " " + plItemName + ".")
-			.whenQuestWasRejected("Nie chcę pomagać " + npcName + ".")
+			.whenNpcWasMet("Zelan spytał mnie czy zdobędę 10 rogów jednorożca.")
+			.whenQuestWasRejected("Nie chcę pomagać Zelanowi.")
 			.whenQuestWasAccepted("Pomogę w zbieraniu rogów.")
-			.whenTaskWasCompleted("Mam już wystarczająco " + plItemName + ".")
-			.whenQuestWasCompleted(npcName + " ma teraz możliwość wykonania swoich sztyletów.")
-			.whenQuestCanBeRepeated("Muszę zapytać czy " + npcName + " będzie potrzebował"
-					+ " więcej pomocy.")
-			.whenCompletionsShown("Otrzymał ode mnie pomoc " + npcName + " [count]"
-					+ " [raz].");
+			.whenTaskWasCompleted("Mam już wystarczająco rogów jednorożca.")
+			.whenQuestWasCompleted("Zelan ma teraz możliwość wykonania swoich sztyletów.")
+			.whenQuestCanBeRepeated("Muszę zapytać czy Zelan będzie potrzebował więcej pomocy.")
+			.whenCompletionsShown("Otrzymał Zelan ode mnie pomoc [count] [time].");
 
 		quest.offer()
-			.respondToRequest("Cześć! Potrzebuję " + plItemName + ", żeby zrobić kilka sztyletów."
+			.respondToRequest("Cześć! Potrzebuję rogów jednorożca, żeby zrobić kilka sztyletów."
 					+ " Jest to naprawdę niebezpieczne w lasach otaczających Atlantydę."
 					+ " Jeśli jesteś odważny, przydałaby mi się pomoc w zbieraniu"
-					+ " " + plItemName + ". Pomożesz mi?")
+					+ " rogów jednorożca. Pomożesz mi?")
 			.respondToAccept("Świetnie! Uważaj, tam jest dużo ogromnych"
 					+ " stworów, a te centaury są naprawdę okropne.")
 			.respondToReject("W porządku, znajdę kogoś, kto mi pomoże.")
-			.acceptedKarmaReward(10.0)
 			.rejectionKarmaPenalty(10.0)
-			//~ .remind("I have already asked you to get " + quantity
-					//~ + " " + plItemName + ". Are you #done?");
-			.remind("Spytałem się już ciebie o zdobyciu dla mnie " + quantity + " " + plItemName
-					+ ".")
-			.respondToUnrepeatableRequest("Dzięki, ale nie potrzebuję więcej"
-					+ " pomocy jeszcze.")
+			.remind("Poprosiłem cię o przyniesienie 10 rogów jednorożca.")
+			.respondToUnrepeatableRequest("Dzięki, ale nie potrzebuję więcej pomocy jeszcze.")
 			.respondToRepeatedRequest("Chcę wykonać więcej sztyletów więc będę"
-					+ " potrzebował znów pomocy. Czy zechcesz zebrać więcej "
-					+ plItemName + " dla mnie?");
+					+ " potrzebował znów pomocy. Czy zechcesz zebrać więcej"
+					+ " rogów jednorożca dla mnie?");
 
 		quest.task()
-			.requestItem(quantity, itemName);
+			.requestItem(10, "róg jednorożca");
 
 		quest.complete()
-			.greet("Czy masz przy sobie " + quantity + " " + plItemName + "?")
-			.respondToReject("Pytałem wcześniej o przyniesienie dla mnie " + quantity + " "
-					+ plItemName + ".")
-			.respondToAccept("Wielkie dzięki! W nagrodę mogę dać "
-					+ rewardSoup + " zup oraz " + rewardMoney + " money.")
+			.greet("Czy znalazłeś dla mnie rogi jednorożca?")
+			.respondToReject("Poprosiłem cię o przyniesienie 10 rogów jednorożca.")
+			.respondToAccept("Wielkie dzięki! W nagrodę mogę dać 3 zupy oraz 20000 sztuk złota.")
 			.rewardWith(new IncreaseXPAction(50000))
 			.rewardWith(new IncreaseKarmaAction(30.0))
-			.rewardWith(new EquipItemAction("zupa", rewardSoup))
-			.rewardWith(new EquipItemAction("money", rewardMoney));
+			.rewardWith(new EquipItemAction("zupa", 3))
+			.rewardWith(new EquipItemAction("money", 20000));
 
 		return quest;
 	}

@@ -1,6 +1,6 @@
 --[[
  ***************************************************************************
- *                       Copyright © 2020 - Arianne                        *
+ *                    Copyright © 2020-2023 - Arianne                      *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -63,10 +63,14 @@ if game:setZone(zoneName) then
 	}
 
 	for _, detail in pairs(details) do
-		local npc = entities:createSilentNPC()
+		local npc = entities:create({
+			type = "SilentNPC",
+			class = detail.class,
+			description = detail.desc
+		})
 
 		if detail.path ~= nil then
-			npc:setPathAndPosition(detail.path, true)
+			npc:setPathAndPosition(entities:fixedPath(detail.path, true))
 			npc:setRetracePath() -- make entities walk the path backwards when reaching end
 		else
 			npc:setPosition(detail.pos.x, detail.pos.y)
@@ -92,9 +96,6 @@ if game:setZone(zoneName) then
 		if detail.sounds ~= nil then
 			npc:setSounds(detail.sounds)
 		end
-
-		npc:setEntityClass(detail.class)
-		npc:setDescription(detail.desc)
 
 		game:add(npc)
 	end

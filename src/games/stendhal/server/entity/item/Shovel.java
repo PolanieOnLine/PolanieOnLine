@@ -60,7 +60,7 @@ public class Shovel extends AreaUseItem {
 
 							if (x == ringX && y == ringY) {
 								final Item ring = em.getItem("pierścień zaręczynowy");
-								ring.setInfoString(ring_quest_info);
+								ring.setItemData(ring_quest_info);
 								ring.setDescription("W wiecznym oddaniu Emmie.");
 								ring.setBoundTo(player.getName());
 

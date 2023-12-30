@@ -205,6 +205,8 @@ public class SpiritTrapperNPC implements ZoneConfigurator {
 		mizuno.initHP(100);
 		mizuno.setHP(80);
 		mizuno.setCollisionAction(CollisionAction.REVERSE);
+		// hide location from website
+		mizuno.hideLocation();
 
 		// start in int_semos_house
 		final StendhalRPZone zone = SingletonRepository.getRPWorld().getZone("int_semos_house");

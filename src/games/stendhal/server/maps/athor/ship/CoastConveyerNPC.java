@@ -120,6 +120,8 @@ public class CoastConveyerNPC implements ZoneConfigurator  {
 						null,
 						ConversationStates.ATTENDING,
 						"Aye, przyjacielu!", null);
+
+				addKnownChatOptions("status", "zejdź");
 			}
 		};
 

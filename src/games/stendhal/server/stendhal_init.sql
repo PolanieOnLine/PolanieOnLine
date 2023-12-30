@@ -194,7 +194,7 @@ CREATE TABLE IF NOT EXISTS iteminfo (
   life_support       VARCHAR(64),
   implementation     VARCHAR(255),
   use_behavior       VARCHAR(255),
-  infostring         VARCHAR(1000),
+  itemdata         VARCHAR(1000),
   menu               VARCHAR(64),
   use_sound          VARCHAR(255),
   persistent         INT,
@@ -229,6 +229,7 @@ CREATE TABLE IF NOT EXISTS npcs (
   description   VARCHAR(1000),
   job           VARCHAR(1000),
   cloned        VARCHAR(64),
+  hide_location TINYINT DEFAULT 0,
   PRIMARY KEY (id)
 );
 
@@ -252,6 +253,7 @@ CREATE TABLE IF NOT EXISTS shopinventoryinfo (
   price         INT,
   iteminfo_id   INT,
   outfit        VARCHAR(1000),
+  trade_for     VARCHAR(1000),
   PRIMARY KEY (id)
 );
 

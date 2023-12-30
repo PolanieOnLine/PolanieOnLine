@@ -20,9 +20,10 @@ import org.luaj.vm2.lib.jse.CoerceJavaToLua;
 
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.rp.StendhalQuestSystem;
-import games.stendhal.server.entity.npc.quest.BringItemTask;
+import games.stendhal.server.core.scripting.lua.LuaQuestHelper.LuaQuest;
+import games.stendhal.server.entity.npc.quest.BringItemQuestBuilder;
 import games.stendhal.server.entity.npc.quest.BuiltQuest;
-import games.stendhal.server.entity.npc.quest.KillCreaturesTask;
+import games.stendhal.server.entity.npc.quest.KillCreaturesQuestBuilder;
 import games.stendhal.server.entity.npc.quest.QuestBuilder;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.quests.AbstractQuest;
@@ -124,7 +125,7 @@ public class LuaQuestHelper {
 	 * @return
 	 *   New quest.
 	 */
-	public IQuest createManuscript(final QuestBuilder<?> builder) {
+	public IQuest createManuscript(final QuestBuilder<?, ?, ?, ?> builder) {
 		return new BuiltQuest(builder);
 	}
 
@@ -136,11 +137,11 @@ public class LuaQuestHelper {
 	 * @return
 	 *   New QuestBuilder.
 	 */
-	public QuestBuilder<?> createBuilder(final String task) {
+	public QuestBuilder<?, ?, ?, ?> createBuilder(final String task) {
 		if ("BringItemTask".equals(task)) {
-			return new QuestBuilder<>(new BringItemTask());
+			return new BringItemQuestBuilder();
 		} else if ("KillCreaturesTask".equals(task)) {
-			return new QuestBuilder<>(new KillCreaturesTask());
+			return new KillCreaturesQuestBuilder();
 		}
 		logger.error("Unknown quest builder task: " + task, new IllegalArgumentException());
 		return null;

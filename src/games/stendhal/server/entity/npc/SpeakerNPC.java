@@ -13,10 +13,13 @@ package games.stendhal.server.entity.npc;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -165,6 +168,11 @@ public class SpeakerNPC extends PassiveNPC {
 	private RPEntity attending;
 
 	/**
+	 * a set of blue words used since the start of the conversation
+	 */
+	private Set<String> learnedWordsInCurrentConversation = new HashSet<>();
+
+	/**
 	 * alternative image for website
 	 */
 	private String alternativeImage;
@@ -182,6 +190,12 @@ public class SpeakerNPC extends PassiveNPC {
 
 	private LinkedHashMap<ChatCondition, Object> prioritizedGreetingTransitions;
 
+	/** Determines if location should be visible on website. */
+	private boolean showLocation = true;
+
+	/** Keywords unique to this entity available in chat options. */
+	private List<String> knownChatOptions;
+
 	/**
 	 * Creates a new SpeakerNPC.
 	 *
@@ -194,6 +208,7 @@ public class SpeakerNPC extends PassiveNPC {
 		lastMessageTurn = 0;
 
 		setName(name);
+		knownChatOptions = new LinkedList<>();
 		createDialog();
 		createDefaultReplies();
 
@@ -325,6 +340,7 @@ public class SpeakerNPC extends PassiveNPC {
 	 *            the entity with whom the NPC should be talking.
 	 */
 	public void setAttending(final RPEntity rpentity) {
+		final RPEntity wasAttending = attending;
 		attending = rpentity;
 		lastMessageTurn = SingletonRepository.getRuleProcessor().getTurn();
 		if (rpentity != null) {
@@ -334,6 +350,11 @@ public class SpeakerNPC extends PassiveNPC {
 				setSpeed(getBaseSpeed());
 			}
 			setIdea(null);
+			learnedWordsInCurrentConversation = new HashSet<>();
+			// send chat option event when NPC becomes "idle"
+			if (wasAttending instanceof Player) {
+				engine.addChatOptionsEvent((Player) wasAttending);
+			}
 		}
 
 		// set facing direction
@@ -485,6 +506,41 @@ public class SpeakerNPC extends PassiveNPC {
 	public void say(final String text) {
 		// turn towards player if necessary, then say it.
 		say(text, true);
+		learnWordsInCurrentConversation(text);
+	}
+
+	public boolean hasLearnedWordInCurrentConversation(String trigger) {
+		return learnedWordsInCurrentConversation.contains(trigger);
+	}
+
+	private void learnWordsInCurrentConversation(String text) {
+		int pos = 0;
+		pos = text.indexOf('#', pos);
+		loop:
+		while (pos > -1 && pos + 1 < text.length()) {
+			char next = text.charAt(pos + 1);
+			if (next == '#') {
+				pos = text.indexOf('#', pos + 2);
+				continue;
+			} else if (next == '\'') {
+				int end = text.indexOf('\'', pos + 2);
+				learnedWordsInCurrentConversation.add(text.substring(pos + 2, end).toLowerCase(Locale.ENGLISH));
+				pos = text.indexOf('#', end);
+				continue;
+			} else {
+				int i;
+				for (i = pos + 1; i < text.length(); i++) {
+					char endChar = text.charAt(i);
+					if (!Character.isJavaIdentifierPart(endChar)) {
+						learnedWordsInCurrentConversation.add(text.substring(pos + 1, i).toLowerCase(Locale.ENGLISH));
+						pos = text.indexOf('#', i);
+						continue loop;
+					}
+				}
+				learnedWordsInCurrentConversation.add(text.substring(pos + 1).toLowerCase(Locale.ENGLISH));
+				break;
+			}
+		}
 	}
 
 	protected void say(final String text, final boolean turnToPlayer) {
@@ -1092,5 +1148,46 @@ public class SpeakerNPC extends PassiveNPC {
 			}
 		}
 		return true;
+	}
+
+	/**
+	 * Sets flag determining NPC location should not be visible.
+	 */
+	public void hideLocation() {
+		showLocation = false;
+	}
+
+	/**
+	 * Retrieves visibility of NPC's location.
+	 *
+	 * @return
+	 *   Whether or not location should be visible.
+	 */
+	public boolean isLocationHidden() {
+		return !showLocation;
+	}
+
+	/**
+	 * Adds to list of keywords available in chat options specific to this NPC.
+	 *
+	 * @param keywords
+	 *   Keyword(s) to be added.
+	 */
+	public void addKnownChatOptions(final String... keywords) {
+		for (final String keyword: keywords) {
+			if (!knownChatOptions.contains(keyword)) {
+				knownChatOptions.add(keyword);
+			}
+		}
+	}
+
+	/**
+	 * Retrievies list of keywords available in chat options specific to this NPC.
+	 *
+	 * @return
+	 *   List of keywords.
+	 */
+	public List<String> getKnownChatOptions() {
+		return knownChatOptions;
 	}
 }

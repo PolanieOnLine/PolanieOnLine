@@ -41,7 +41,25 @@ public class ChatTextController {
 	private final JTextField playerChatText = new JTextField("");
 
 	private ChatCache cache;
-	public ChatTextController() {
+	private static ChatTextController instance;
+
+	/**
+	 * Retrieves singleton instance.
+	 *
+	 * @return
+	 *   `ChatTextController` instance.
+	 */
+	public static ChatTextController get() {
+		if (ChatTextController.instance == null) {
+			ChatTextController.instance = new ChatTextController();
+		}
+		return ChatTextController.instance;
+	}
+
+	/**
+	 * Private singleton constructor.
+	 */
+	private ChatTextController() {
 		playerChatText.setFocusTraversalKeysEnabled(false);
 		Document doc = playerChatText.getDocument();
 		if (doc instanceof AbstractDocument) {
@@ -58,6 +76,16 @@ public class ChatTextController {
 		cache = new ChatCache(logFile);
 		cache.loadChatCache();
 		setCache(cache);
+	}
+
+	/**
+	 * Sets focus to chat input.
+	 *
+	 * @return
+	 *   `true` if focus change is likely to succeed.
+	 */
+	public boolean setFocus() {
+		return playerChatText.requestFocusInWindow();
 	}
 
 	public JTextComponent getPlayerChatText() {

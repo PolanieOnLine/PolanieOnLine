@@ -23,7 +23,7 @@ import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.action.DropInfostringItemAction;
+import games.stendhal.server.entity.npc.action.DropItemdataItemAction;
 import games.stendhal.server.entity.npc.action.DropItemAction;
 import games.stendhal.server.entity.npc.action.IncreaseXPAction;
 import games.stendhal.server.entity.npc.action.MultipleActions;
@@ -31,7 +31,7 @@ import games.stendhal.server.entity.npc.action.SetQuestAction;
 import games.stendhal.server.entity.npc.action.SetQuestAndModifyKarmaAction;
 import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.NotCondition;
-import games.stendhal.server.entity.npc.condition.PlayerHasInfostringItemWithHimCondition;
+import games.stendhal.server.entity.npc.condition.PlayerHasItemdataItemWithHimCondition;
 import games.stendhal.server.entity.npc.condition.PlayerHasItemWithHimCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.npc.condition.QuestStateStartsWithCondition;
@@ -53,7 +53,7 @@ public class ZamowienieStrazy extends AbstractQuest {
 			@Override
 			public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
 				final Item item = SingletonRepository.getEntityManager().getItem("karteczka");
-				item.setInfoString(QUEST_SLOT);
+				item.setItemData(QUEST_SLOT);
 				item.setDescription(DESCRIPTION);
 				item.setBoundTo(player.getName());
 				player.equipOrPutOnGround(item);
@@ -71,7 +71,7 @@ public class ZamowienieStrazy extends AbstractQuest {
 		npc.add(
 			ConversationStates.QUEST_OFFERED,
 			ConversationPhrases.YES_MESSAGES,
-			new NotCondition(new PlayerHasInfostringItemWithHimCondition("karteczka", QUEST_SLOT)),
+			new NotCondition(new PlayerHasItemdataItemWithHimCondition("karteczka", QUEST_SLOT)),
 			ConversationStates.ATTENDING,
 			"Super. Najpierw przekaż tę karteczkę z zamówieniem do kowala #'Samsona'. On ci dokładnie określi ile będziemy potrzebować zapasów.",
 			action);
@@ -79,7 +79,7 @@ public class ZamowienieStrazy extends AbstractQuest {
 		npc.add(
 			ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
-			new PlayerHasInfostringItemWithHimCondition("karteczka", QUEST_SLOT),
+			new PlayerHasItemdataItemWithHimCondition("karteczka", QUEST_SLOT),
 			ConversationStates.ATTENDING,
 			"Hej! Zanieś tą karteczke do kowala!",
 			null);
@@ -105,15 +105,15 @@ public class ZamowienieStrazy extends AbstractQuest {
 	    npc.add(ConversationStates.ATTENDING,
 			Arrays.asList("zamówienie", "zamówienia", "karteczka", "list", "straż królewska"),
 			new AndCondition(new QuestStateStartsWithCondition(QUEST_SLOT, "start"),
-				new PlayerHasInfostringItemWithHimCondition("karteczka", QUEST_SLOT)),
+				new PlayerHasItemdataItemWithHimCondition("karteczka", QUEST_SLOT)),
 			ConversationStates.QUEST_OFFERED,
 			"Kolejne już zamówienie w tym miesiącu. Co teraz chcą? Ouuu... Już dawno takiego ogromnego zamówienia nie mieliśmy. Będziemy potrzebować niemałej pomocy. Pomożesz?",
-			new DropInfostringItemAction("karteczka", QUEST_SLOT));
+			new DropItemdataItemAction("karteczka", QUEST_SLOT));
 
 	    npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
 			new AndCondition(new QuestStateStartsWithCondition(QUEST_SLOT, "start"),
-				new NotCondition(new PlayerHasInfostringItemWithHimCondition("karteczka", QUEST_SLOT))),
+				new NotCondition(new PlayerHasItemdataItemWithHimCondition("karteczka", QUEST_SLOT))),
 			ConversationStates.ATTENDING,
 			"Hmmm? O czym mówiesz?",
 			null);
@@ -214,7 +214,7 @@ public class ZamowienieStrazy extends AbstractQuest {
 			Arrays.asList("czas", "czasu", "time"),
 			new QuestStateStartsWithCondition(QUEST_SLOT, "czas"),
 			ConversationStates.ATTENDING,
-			"Chodzi Ci ile mi zajmie wykuwanie zbroi dla straży? Inez się o to pytał? To przekaż mu, że potrwa to conajmniej #'miesiąc'.",
+			"Chodzi Ci ile mi zajmie wykuwanie zbroi dla straży? Inez się o to pytał? To przekaż mu, że potrwa to co najmniej #'miesiąc'.",
 			new SetQuestAction(QUEST_SLOT, "powrot"));
 	}
 

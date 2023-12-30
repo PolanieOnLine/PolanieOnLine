@@ -94,7 +94,7 @@ public class DeathmatchAchievementFactory extends AbstractAchievementFactory {
 		achievements.add(createAchievement(
 				"quest.deathmatch.legend", "Legenda Deathmatchu",
 				"Zdobyto 1,000,000 punktów na arenie deathmatch",
-				Achievement.LEGENDARY_BASE_SCORE, true,
+				Achievement.EXTREME_BASE_SCORE, true,
 				new QuestStateGreaterThanCondition("deathmatch_score", 0, 1000000)));
 
 		achievements.add(createAchievement(

@@ -109,7 +109,7 @@ public class FoodMill extends Item {
     	 * and have the correct container in his inventory
     	 */
     	if (!input.equals(first.get("name"))) {
-    		user.sendPrivateText("Musisz mieć conajmniej " + input + " w drugiej dłoni.");
+    		user.sendPrivateText("Musisz mieć co najmniej " + input + " w drugiej dłoni.");
     		return false;
     	}
 

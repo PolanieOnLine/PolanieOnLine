@@ -32,7 +32,7 @@ import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.DecreaseKarmaAction;
-import games.stendhal.server.entity.npc.action.DropInfostringItemAction;
+import games.stendhal.server.entity.npc.action.DropItemdataItemAction;
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
 import games.stendhal.server.entity.npc.action.IncreaseXPAction;
 import games.stendhal.server.entity.npc.action.IncrementQuestAction;
@@ -45,7 +45,7 @@ import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
 import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.npc.condition.OrCondition;
-import games.stendhal.server.entity.npc.condition.PlayerHasInfostringItemWithHimCondition;
+import games.stendhal.server.entity.npc.condition.PlayerHasItemdataItemWithHimCondition;
 import games.stendhal.server.entity.npc.condition.PlayerHasItemWithHimCondition;
 import games.stendhal.server.entity.npc.condition.PlayerOwnsItemIncludingBankCondition;
 import games.stendhal.server.entity.npc.condition.QuestActiveCondition;
@@ -709,7 +709,7 @@ public class MealForGroongo extends AbstractQuest {
 						" jako danie główne i " +
 							getRequiredDessertFancyName(player.getQuest(QUEST_SLOT, 4)) +
 						" na deser.";
-				decentMeal.setInfoString("Skromny posiłek dla Groongo");
+				decentMeal.setItemData("Skromny posiłek dla Groongo");
 				decentMeal.setBoundTo(player.getName());
 				decentMeal.setDescription(
 					"Oto pokryty kopułą skromny posiłek, który składa się z " +
@@ -1638,7 +1638,7 @@ public class MealForGroongo extends AbstractQuest {
 		 * to bring his #thanks to Chef Stefan.
 		 */
 		final List<ChatAction> normalEndQuestActions = new LinkedList<ChatAction>();
-		normalEndQuestActions.add(new DropInfostringItemAction("skromny posiłek", "Skromny posiłek dla Groongo"));
+		normalEndQuestActions.add(new DropItemdataItemAction("skromny posiłek", "Skromny posiłek dla Groongo"));
 		normalEndQuestActions.add(new SetQuestAction(QUEST_SLOT, 0, "done"));
 		normalEndQuestActions.add(new SetQuestAction(QUEST_SLOT, 1, "incomplete"));
 		normalEndQuestActions.add(new SetQuestToTimeStampAction(QUEST_SLOT, 6));
@@ -1679,7 +1679,7 @@ public class MealForGroongo extends AbstractQuest {
 				new GreetingMatchesNameCondition(npc_customer.getName()),
 				new QuestActiveCondition(QUEST_SLOT),
 				new QuestInStateCondition(QUEST_SLOT, 0, "deliver_decentmeal"),
-				new PlayerHasInfostringItemWithHimCondition("skromny posiłek", "Skromny posiłek dla Groongo")),
+				new PlayerHasItemdataItemWithHimCondition("skromny posiłek", "Skromny posiłek dla Groongo")),
 			ConversationStates.IDLE,
 			null,
 			new MultipleActions(normalEndQuestActions)

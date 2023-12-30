@@ -118,6 +118,8 @@ public class FerryConveyerNPC implements ZoneConfigurator  {
 						ConversationStates.ATTENDING,
 						"Nie wiesz co tracisz, szczurze lądowy!",
 						null);
+
+				addKnownChatOptions("status", "wejdź");
 			}
 		};
 

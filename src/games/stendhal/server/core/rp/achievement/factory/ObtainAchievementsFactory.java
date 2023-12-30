@@ -102,14 +102,14 @@ public class ObtainAchievementsFactory extends AbstractAchievementFactory {
 		achievements.add(createAchievement(
 				"quest.special.collector", "Największy Kolekcjoner",
 				"Ukończono zadanie największego kolekcjonera",
-				Achievement.LEGENDARY_BASE_SCORE, true,
+				Achievement.EXTREME_BASE_SCORE, true,
 				new QuestCompletedCondition("ultimate_collector")));
 
 		// goralski kolekcjoner quest achievement
 		achievements.add(createAchievement(
 				"quest.special.goralcollector", "Góralski Kolekcjoner",
 				"Ukończono ostatnie zadanie u góralskiego kolekcjonera",
-				Achievement.LEGENDARY_BASE_SCORE, true,
+				Achievement.EXTREME_BASE_SCORE, true,
 				new QuestCompletedCondition("goralski_kolekcjoner3")));
 
 		achievements.add(createAchievement(

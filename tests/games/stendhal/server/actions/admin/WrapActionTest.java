@@ -81,7 +81,7 @@ public class WrapActionTest {
 		assertTrue(player.isEquipped("prezent"));
 		final Present present = (Present) player.getFirstEquipped("prezent");
 		assertNotNull(present);
-		assertThat(present.getInfoString(), is("eliksir"));
+		assertThat(present.getItemData(), is("eliksir"));
 		present.onUsed(player);
 		assertTrue(player.isEquipped("eliksir"));
 	}
@@ -105,7 +105,7 @@ public class WrapActionTest {
 		assertTrue(player.isEquipped("prezent"));
 		final Present present = (Present) player.getFirstEquipped("prezent");
 		assertNotNull(present);
-		assertThat(present.getInfoString(), is("duży eliksir"));
+		assertThat(present.getItemData(), is("duży eliksir"));
 		present.onUsed(player);
 		assertTrue(player.isEquipped("duży eliksir"));
 	}
@@ -128,7 +128,7 @@ public class WrapActionTest {
 		assertTrue(player.isEquipped("prezent"));
 		final Present present = (Present) player.getFirstEquipped("prezent");
 		assertNotNull(present);
-		assertThat(present.getInfoString(), is("tarcza monarchistyczna"));
+		assertThat(present.getItemData(), is("tarcza monarchistyczna"));
 		present.onUsed(player);
 		assertTrue(player.isEquipped("tarcza monarchistyczna"));
 	}

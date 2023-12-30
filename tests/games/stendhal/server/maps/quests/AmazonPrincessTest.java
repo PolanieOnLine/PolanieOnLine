@@ -28,6 +28,7 @@ import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.fsm.Engine;
+import games.stendhal.server.entity.npc.quest.BuiltQuest;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.MockStendlRPWorld;
 import games.stendhal.server.maps.amazon.hut.PrincessNPC;
@@ -36,10 +37,10 @@ import utilities.QuestHelper;
 import utilities.RPClass.ItemTestHelper;
 
 public class AmazonPrincessTest {
-
 	private Player player = null;
 	private SpeakerNPC npc = null;
 	private Engine en = null;
+	private AbstractQuest quest = null;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -54,7 +55,7 @@ public class AmazonPrincessTest {
 		npc = SingletonRepository.getNPCList().get("Księżniczka Esclara");
 		en = npc.getEngine();
 
-		final AbstractQuest quest = new AmazonPrincess();
+		quest = new BuiltQuest(new AmazonPrincess().story());
 		quest.addToWorld();
 
 		player = PlayerTestHelper.createPlayer("player");
@@ -69,7 +70,7 @@ public class AmazonPrincessTest {
 	 */
 	@Test
 	public void testGetSlotname() {
-		assertEquals("amazon_princess", new AmazonPrincess().getSlotName());
+		assertEquals("amazon_princess", quest.getSlotName());
 	}
 
 	/**
@@ -78,13 +79,12 @@ public class AmazonPrincessTest {
 	@Test
 	public void testhasRecovered() {
 		en.setCurrentState(ConversationStates.ATTENDING);
-		player.setQuest(new AmazonPrincess().getSlotName(), "drinking;0");
+		player.setQuest(quest.getSlotName(), "done;0");
 		en.step(player, "task");
 		assertEquals("Ostatni napój, który mi kupiłeś był wspaniały. Przyniesiesz mi następny?", getReply(npc));
 		assertEquals(ConversationStates.QUEST_OFFERED, en.getCurrentState());
 		en.step(player, "yes");
-		assertEquals("start", player.getQuest(new AmazonPrincess().getSlotName()));
-
+		assertEquals("start", player.getQuest(quest.getSlotName(), 0));
 	}
 
 

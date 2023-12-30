@@ -144,6 +144,7 @@
 		<type class="drink" subclass="red_juice" tileid="-1"/>
 		<description>Oto sok jabłkowy. Świetnie smakuje w gorący letni dzień.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
+		<unattainable/>
 		<attributes>
 			<amount value="30"/>
 			<frequency value="12"/>
@@ -330,7 +331,7 @@
 		<type class="drink" subclass="mana" tileid="-1"/>
 		<description>Oto mana do stopniowego zwiększania twojej many.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Drink"/>
-		<unattainable>true</unattainable>
+		<unattainable/>
 		<attributes>
 			<amount value="20"/>
 			<frequency value="1"/>

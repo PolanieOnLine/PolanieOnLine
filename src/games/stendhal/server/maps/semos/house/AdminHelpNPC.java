@@ -164,6 +164,8 @@ public class AdminHelpNPC implements ZoneConfigurator {
 		npc.setGender("F");
 		npc.setPosition(16, 7);
 		npc.setDirection(Direction.DOWN);
+		// hide location from website
+		npc.hideLocation();
 		zone.add(npc);
 	}
 

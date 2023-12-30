@@ -9,12 +9,15 @@
  *                                                                         *
  ***************************************************************************/
 
+declare var stendhal: any;
+
 
 export class SessionManager {
 
 	private storage = window.sessionStorage;
 	private charname?: string;
 	private initialized = false;
+	private server_default = true;
 
 	/** Singleton instance. */
 	private static instance: SessionManager;
@@ -42,12 +45,17 @@ export class SessionManager {
 			console.warn("tried to re-initialize SessionManager");
 			return;
 		}
+		this.initialized = true;
 
 		const charname = args.get("char") || args.get("character") || args.get("name");
 		if (charname) {
 			this.setCharName(charname);
 		}
-		this.initialized = true;
+		// server selection from query string (test client only)
+		const server = args.get("server");
+		if (server && this.isTestClient()) {
+			this.server_default = server !== "main";
+		}
 	}
 
 	/**
@@ -82,6 +90,10 @@ export class SessionManager {
 	 */
 	setCharName(charname: string) {
 		this.charname = charname;
+		// display character name in browser title/tab
+		document.title = "Stendhal - " + this.charname;
+		// display in stats panel
+		document.getElementById("charname")!.innerText = this.charname;
 	}
 
 	/**
@@ -92,5 +104,25 @@ export class SessionManager {
 	 */
 	getCharName(): string {
 		return this.charname || "";
+	}
+
+	/**
+	 * Detects if test client is being used based on data path.
+	 */
+	isTestClient(): boolean {
+		return stendhal.paths.data === "/testdata";
+	}
+
+	/**
+	 * Checks if the client should connect to its default server counterpart.
+	 *
+	 * Used for test client only.
+	 *
+	 * @return
+	 *   `true` is test client should connect to test server. `false` if it should connect to main
+	 *   server.
+	 */
+	isServerDefault(): boolean {
+		return this.server_default;
 	}
 }

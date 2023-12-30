@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2022 - PolanieOnLine                    *
+ *                 (C) Copyright 2022-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -13,21 +13,20 @@ package games.stendhal.server.maps.quests;
 
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
 import games.stendhal.server.entity.npc.action.IncreaseXPAction;
-import games.stendhal.server.entity.npc.quest.BringItemTask;
-import games.stendhal.server.entity.npc.quest.QuestBuilder;
+import games.stendhal.server.entity.npc.quest.BringItemQuestBuilder;
 import games.stendhal.server.entity.npc.quest.QuestManuscript;
 import games.stendhal.server.maps.Region;
 
 public class HelpOgi implements QuestManuscript {
-	public QuestBuilder<?> story() {
-		QuestBuilder<BringItemTask> quest = new QuestBuilder<>(new BringItemTask());
+	public BringItemQuestBuilder story() {
+		BringItemQuestBuilder quest = new BringItemQuestBuilder();
 
 		quest.info()
-			.name("Rozpalenie Ogniska")
-			.description("Nieco zamarznięty Ogi prosi o pomoc z rozpaleniem jego ogniska w lesie.")
+			.name("Przygasający Płomień")
+			.description("Zmarznięty Ogi prosi o pomoc z zamarniętym ogniskiem w lesie.")
 			.internalName("help_ogi")
-			.repeatable(true)
 			.repeatableAfterMinutes(0)
+			.minLevel(15)
 			.region(Region.TATRY_MOUNTAIN)
 			.questGiverNpc("Ogi");
 
@@ -61,8 +60,8 @@ public class HelpOgi implements QuestManuscript {
 			.greet("C... c... oś mm... ma... sz?")
 			.respondToReject("Mm... mu... szę ch... chy... ba pp... po... szukać w... wio... s... ss... ki.")
 			.respondToAccept("S... ss... u... u... per! K... kur... rczę... nie ud... ało się rozp... pp... alić nn... nam...")
-			.rewardWith(new IncreaseXPAction(500))
-			.rewardWith(new IncreaseKarmaAction(5));
+			.rewardWith(new IncreaseXPAction(1000))
+			.rewardWith(new IncreaseKarmaAction(5.0));
 
 		return quest;
 	}

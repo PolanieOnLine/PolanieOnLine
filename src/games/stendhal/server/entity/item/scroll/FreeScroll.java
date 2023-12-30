@@ -69,13 +69,13 @@ public class FreeScroll extends TeleportScroll {
 		int y = 30;
 
 		/*
-		 * Marked scrolls have a destination which is stored in the infostring,
+		 * Marked scrolls have a destination which is stored in the itemdata,
 		 * existing of a zone name and x and y coordinates
 		 */
-		final String infostring = getInfoString();
+		final String itemdata = getItemData();
 
-		if (infostring != null) {
-			final StringTokenizer st = new StringTokenizer(infostring);
+		if (itemdata != null) {
+			final StringTokenizer st = new StringTokenizer(itemdata);
 			if (st.countTokens() == 3) {
 				// check destination
 				final String zoneName = st.nextToken();
@@ -84,7 +84,7 @@ public class FreeScroll extends TeleportScroll {
 					// invalid zone (the scroll may have been marked in an
 					// old version and the zone was removed)
 					player.sendPrivateText("Z dziwnych powodów zwój nie przeniósł mnie tam gdzie chciałem.");
-					logger.warn("free scroll to unknown zone " + infostring
+					logger.warn("free scroll to unknown zone " + itemdata
 							+ " teleported " + player.getName()
 							+ " to Zakopane instead");
 				} else {

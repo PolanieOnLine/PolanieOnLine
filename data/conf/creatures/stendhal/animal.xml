@@ -164,6 +164,7 @@
 
 	<creature name="wielki zły wilk">
 		<type class="animal" subclass="wolf" tileid="animal.png:26"/>
+		<hidden/>
 		<description>Oto wielki zły wilk, który jest dziki i bardzo głodny!</description>
 		<attributes>
 			<atk value="46"/>

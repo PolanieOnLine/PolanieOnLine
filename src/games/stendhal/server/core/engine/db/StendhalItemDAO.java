@@ -75,7 +75,7 @@ public class StendhalItemDAO {
 	 * @throws SQLException
 	 */
 	private void itemLogInsertName(final DBTransaction transaction, final RPObject item, Timestamp timestamp) throws SQLException {
-		itemLogWriteEntry(transaction, timestamp, item, null, "register", getAttribute(item, "name"), getAttribute(item, "quantity"), getAttribute(item, "infostring"), getAttribute(item, "bound"));
+		itemLogWriteEntry(transaction, timestamp, item, null, "register", getAttribute(item, "name"), getAttribute(item, "quantity"), getAttribute(item, "itemdata"), getAttribute(item, "bound"));
 	}
 	/**
 	 * writes a log entry
@@ -185,7 +185,7 @@ public class StendhalItemDAO {
 
 		stmt.setString(23, toStringOrNull(toClassNameOrNull(item.getImplementation())));
 		stmt.setString(24, toClassStringOrNull(item.getUseBehavior()));
-		stmt.setString(25, item.getAttributes().get("infostring"));
+		stmt.setString(25, item.getAttributes().get("itemdata"));
 		stmt.setString(26, item.getAttributes().get("menu"));
 		stmt.setString(27, item.getAttributes().get("use_sound"));
 		stmt.setString(28, item.getAttributes().get("persistent"));
@@ -243,7 +243,7 @@ public class StendhalItemDAO {
 				+ "active=?, name=?, class=?, subclass=?, description=?, weight=?, value=?, min_use=?, min_level=?, "
 				+ "atk=?, ratk=?, rate=?, def=?, projectile_range=?, damage_type=?, lifesteal=?, "
 				+ "amount=?, regen=?, frequency=?, immunization=?, antipoison=?, life_support=?, "
-				+ "implementation=?, use_behavior=?, infostring=?, menu=?, use_sound=?, persistent=?, "
+				+ "implementation=?, use_behavior=?, itemdata=?, menu=?, use_sound=?, persistent=?, "
 				+ "slot_name=?, slot_size=?, undroppableondeath=?, autobind=?, max_quantity=?, "
 				+ "deterioration=?, unattainable=? "
 				+ "WHERE name=?", null);
@@ -268,7 +268,7 @@ public class StendhalItemDAO {
 				+ "(active, name, class, subclass, description, weight, value, min_use, min_level, "
 				+ "atk, ratk, rate, def, projectile_range, damage_type, lifesteal, "
 				+ "amount, regen, frequency, immunization, antipoison, life_support, "
-				+ "implementation, use_behavior, infostring, menu, use_sound, persistent, "
+				+ "implementation, use_behavior, itemdata, menu, use_sound, persistent, "
 				+ "slot_name, slot_size, undroppableondeath, autobind, max_quantity, "
 				+ "deterioration, unattainable) " +
 			"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);", null);

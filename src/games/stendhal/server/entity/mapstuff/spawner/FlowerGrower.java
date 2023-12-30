@@ -75,14 +75,14 @@ public class FlowerGrower extends VegetableGrower {
 
 	/**
 	 * Constructor of a FlowerGrower growing an item with the name specified in
-	 * infostring.
+	 * itemdata.
 	 *
-	 * @param infoString
+	 * @param itemdata
 	 *            the name of the item to produce
 	 *
 	 */
-	public FlowerGrower(final String infoString) {
-		super(infoString, infoString);
+	public FlowerGrower(final String itemdata) {
+		super(itemdata, itemdata);
 		setMaxRipeness(MAX_RIPENESS);
 		meanTurnsForRegrow = GROW_TIME_TURNS;
 		store();

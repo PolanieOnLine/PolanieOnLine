@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -13,102 +12,197 @@
 package games.stendhal.client.gui.j2d.entity;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
+import games.stendhal.client.Triple;
 import marauroa.common.Log4J;
 
 public class EntityViewFactoryTest {
+	private static final Logger logger = Logger.getLogger(EntityViewFactoryTest.class);
+
+	/**
+	 * Entity representation.
+	 */
+	private class EntityRep {
+		private final String classname;
+		private final String subclass;
+		private final String name;
+		private final Class implementation;
+
+
+		private EntityRep(final String classname, final String subclass, final String name,
+				final Class implementation) {
+			this.classname = classname;
+			this.subclass = subclass;
+			this.name = name;
+			this.implementation = implementation;
+		}
+
+		@SuppressWarnings("unused")
+		private String getName() {
+			return name != null ? name : subclass != null ? subclass : classname;
+		}
+
+		@Override
+		public int hashCode() {
+			final int prime = 31;
+			int result = 1;
+			result = prime * result + EntityViewFactoryTest.this.hashCode();
+			result = prime * result + Objects.hash(classname, implementation, name, subclass);
+			return result;
+		}
+
+		@Override
+		public boolean equals(final Object obj) {
+			if (!(obj instanceof EntityRep)) {
+				return false;
+			}
+			final EntityRep other = (EntityRep) obj;
+			boolean res = classname.equals(other.classname);
+			res = res && (subclass == null ? other.subclass == null : subclass.equals(other.subclass));
+			res = res && (name == null ? other.name == null : name.equals(other.name));
+			//~ res = res && implementation.equals(other.implementation);
+			return res;
+		}
+
+		@Override
+		public String toString() {
+			return classname + ", " + subclass + ", " + name + " (" + implementation.getSimpleName() + ")";
+		}
+	}
+
+	// registered entity views
+	private static Map<Triple<String, String, String>, Class<? extends EntityView>> entityViews;
+
+	// registered entities representations to be tested
+	private static List<EntityRep> entities;
 
 	@Before
 	public void setUp() throws Exception {
 		Log4J.init();
 
 		//GameScreen.setDefaultScreen(new MockScreen());
+
+		// populate list of entities to test
+		entityViews = EntityViewFactory.getViewMap();
+		entities = new ArrayList<>();
+
+		// entities configured in view factory
+		for (final Map.Entry<Triple<String, String, String>, Class<? extends EntityView>> entry: entityViews.entrySet()) {
+			final Triple<String, String, String> key = entry.getKey();
+			entities.add(new EntityRep(key.getFirst(), key.getSecond(), key.getThird(), entry.getValue()));
+		}
+	}
+
+	private Class getImplementation(final String type_name, final String class_name, final String name, final Class def) {
+		Class implementation = def;
+		final Triple<String, String, String> item_info = new Triple<>(type_name, class_name, name);
+		// attempt to retrieve from factory
+		if (entityViews.containsKey(item_info)) {
+			implementation = entityViews.get(item_info);
+		}
+		return implementation;
 	}
 
 	/**
-	 * Tests for create.
+	 * Tests for all entity views.
 	 */
 	@Test
-	public final void testCreate() {
-		assertEquals(EntityViewFactory.getViewClass("blood", null, null), Blood2DView.class);
-		assertEquals(EntityViewFactory.getViewClass("creature", "ent", "ent"), BossCreature2DView.class);
-		assertEquals(EntityViewFactory.getViewClass("creature", "ent", "entwife"), BossCreature2DView.class);
-		assertEquals(EntityViewFactory.getViewClass("creature", "ent", "old_ent"), BossCreature2DView.class);
+	public void testAll() {
+		// item
+		checkImplementation("item", null, null, Item2DView.class);
+		checkImplementation("item", "box", null, Box2DView.class);
+		checkImplementation("item", "club", "kij przywoływania nieumarłych", UseableItem2DView.class);
+		checkImplementation("item", "crystal", null, Item2DView.class);
+		// FIXME: `games.stendhal.server.entity.item.ItemTest` copy constructor test fails
+		//~ checkImplementation("item", "documents", "coupon", StackableItem2DView.class);
+		checkImplementation("item", "drink", null, UseableItem2DView.class);
+		checkImplementation("item", "food", null, UseableItem2DView.class);
+		checkImplementation("item", "furniture", "obraz w drewnianej ramce", UseableItem2DView.class);
+		checkImplementation("item", "misc", "nasionka", UseableItem2DView.class);
+		checkImplementation("item", "ring", null, Ring2DView.class);
+		checkImplementation("item", "ring", "pierścień powrotu", TeleportationRing2DView.class);
+		checkImplementation("item", "ring", "pierścień szmaragdowy", BreakableRing2DView.class);
+		checkImplementation("item", "ring", "obrączka ślubna", UseableRing2DView.class);
+		checkImplementation("item", "scroll", null, UseableItem2DView.class);
+		checkImplementation("item", "special", "brosza z mithrilu", Item2DView.class);
+		checkImplementation("item", "tool", "młynek", UseableItem2DView.class);
+		checkImplementation("item", "tool", "młynek do cukru", UseableItem2DView.class);
 
-		assertEquals(EntityViewFactory.getViewClass("item", "box", null), Box2DView.class);
+		// grower
+		checkImplementation("growing_entity_spawner", null, null, GrainField2DView.class);
+		checkImplementation("growing_entity_spawner", "items/grower/carrot_grower", null, CarrotGrower2DView.class);
+		checkImplementation("growing_entity_spawner", "items/grower/wood_grower", null, CarrotGrower2DView.class);
+		checkImplementation("plant_grower", null, null, PlantGrower2DView.class);
 
-		assertEquals(EntityViewFactory.getViewClass("growing_entity_spawner", "items/grower/wood_grower", null), CarrotGrower2DView.class);
-		assertEquals(EntityViewFactory.getViewClass("growing_entity_spawner", "items/grower/carrot_grower", null), CarrotGrower2DView.class);
-		assertEquals(EntityViewFactory.getViewClass("chest", null, null), Chest2DView.class);
-		assertEquals(EntityViewFactory.getViewClass("corpse", null, null), Corpse2DView.class);
+		// sign
+		checkImplementation("blackboard", null, null, Sign2DView.class);
+		checkImplementation("sign", null, null, Sign2DView.class);
 
-		assertEquals(EntityViewFactory.getViewClass("creature", null, null), Creature2DView.class);
+		// portal & door
+		checkImplementation("door", null, null, Door2DView.class);
+		checkImplementation("gate", null, null, Gate2DView.class);
+		checkImplementation("house_portal", null, null, HousePortal2DView.class);
+		checkImplementation("portal", null, null, Portal2DView.class);
 
-		assertEquals(EntityViewFactory.getViewClass("door", null, null), Door2DView.class);
+		// NPC
+		checkImplementation("baby_dragon", null, null, Pet2DView.class);
+		checkImplementation("owczarek", null, null, Pet2DView.class);
+		checkImplementation("owczarek_podhalanski", null, null, Pet2DView.class);
+		checkImplementation("cat", null, null, Pet2DView.class);
+		checkImplementation("npc", null, null, NPC2DView.class);
+		checkImplementation("pet", null, null, Pet2DView.class);
+		checkImplementation("sheep", null, null, Sheep2DView.class);
+		checkImplementation("goat", null, null, Goat2DView.class);
 
-		assertEquals(EntityViewFactory.getViewClass("fire", null, null), UseableEntity2DView.class);
+		// creature
+		checkImplementation("creature", null, null, Creature2DView.class);
+		checkImplementation("creature", "ent", "drzewiec", BossCreature2DView.class);
+		checkImplementation("creature", "ent", "drzewcowa", BossCreature2DView.class);
+		checkImplementation("creature", "ent", "uschły drzewiec", BossCreature2DView.class);
 
+		// misc
+		checkImplementation("area", null, null, InvisibleEntity2DView.class);
+		checkImplementation("block", null, null, LookableEntity2DView.class);
+		checkImplementation("blood", null, null, Blood2DView.class);
+		checkImplementation("chest", null, null, Chest2DView.class);
+		checkImplementation("corpse", null, null, Corpse2DView.class);
+		checkImplementation("fire", null, null, UseableEntity2DView.class);
+		checkImplementation("food", null, null, SheepFood2DView.class);
+		checkImplementation("food", null, null, GoatFood2DView.class);
+		checkImplementation("player", null, null, Player2DView.class);
+		checkImplementation("walkblocker", null, null, WalkBlocker2DView.class);
 
-		assertEquals(EntityViewFactory.getViewClass("gate", null, null), Gate2DView.class);
+		final int incomplete = entities.size();
+		if (incomplete > 0) {
+			String msg = "";
+			for (final EntityRep erep: entities) {
+				if (msg.length() > 0) {
+					msg += "; ";
+				}
+				msg += erep.toString();
+			}
+			fail("the following " + incomplete + " entities were not tested: " + msg);
+		}
+	}
 
-		assertEquals(EntityViewFactory.getViewClass("growing_entity_spawner", null, null), GrainField2DView.class);
-
-		assertEquals(EntityViewFactory.getViewClass("house_portal", null, null), HousePortal2DView.class);
-
-		assertEquals(EntityViewFactory.getViewClass("area", null, null),  InvisibleEntity2DView.class);
-
-	    assertEquals(EntityViewFactory.getViewClass("item", "special", "mithril clasp"), Item2DView.class);
-		assertEquals(EntityViewFactory.getViewClass("item", "crystal", null),  Item2DView.class);
-		assertEquals(EntityViewFactory.getViewClass("item", null, null),  Item2DView.class);
-		assertEquals(EntityViewFactory.getViewClass("npc", null, null), NPC2DView.class);
-
-		assertEquals(EntityViewFactory.getViewClass("cat", null, null), Pet2DView.class);
-		assertEquals(EntityViewFactory.getViewClass("pet", null, null), Pet2DView.class);
-		assertEquals(EntityViewFactory.getViewClass("baby_dragon", null, null), Pet2DView.class);
-
-		assertEquals(EntityViewFactory.getViewClass("plant_grower", null, null), PlantGrower2DView.class);
-
-		assertEquals(EntityViewFactory.getViewClass("player", null, null), Player2DView.class);
-
-		assertEquals(EntityViewFactory.getViewClass("portal", null, null), Portal2DView.class);
-
-		assertEquals(EntityViewFactory.getViewClass("item", "ring", "emerald-ring"), BreakableRing2DView.class);
-
-		assertEquals(EntityViewFactory.getViewClass("sheep", null, null),  Sheep2DView.class);
-		assertEquals(EntityViewFactory.getViewClass("food", null, null), GoatFood2DView.class);
-
-		assertEquals(EntityViewFactory.getViewClass("sign", null, null),  Sign2DView.class);
-		assertEquals(EntityViewFactory.getViewClass("blackboard", null, null),  Sign2DView.class);
-
-		assertEquals(EntityViewFactory.getViewClass("item", "jewellery", null),  StackableItem2DView.class);
-		assertEquals(EntityViewFactory.getViewClass("item", "flower", null),  StackableItem2DView.class);
-		assertEquals(EntityViewFactory.getViewClass("item", "resource", null),  StackableItem2DView.class);
-		assertEquals(EntityViewFactory.getViewClass("item", "herb", null), StackableItem2DView.class);
-		assertEquals(EntityViewFactory.getViewClass("item", "misc", null),  StackableItem2DView.class);
-		assertEquals(EntityViewFactory.getViewClass("item", "money", null),  StackableItem2DView.class);
-		assertEquals(EntityViewFactory.getViewClass("item", "missile", null),  StackableItem2DView.class);
-		assertEquals(EntityViewFactory.getViewClass("item", "ammunition", null),  StackableItem2DView.class);
-		assertEquals(EntityViewFactory.getViewClass("item", "container", null),  StackableItem2DView.class);
-        assertEquals(EntityViewFactory.getViewClass("item", "special", null),  StackableItem2DView.class);
-
-
-		assertEquals(EntityViewFactory.getViewClass("item", "club", "wizard_staff"),  UseableItem2DView.class);
-        assertEquals(EntityViewFactory.getViewClass("item", "misc", "seed"), UseableItem2DView.class);
-
-		assertEquals(EntityViewFactory.getViewClass("item", "scroll", null),  UseableItem2DView.class);
-
-		assertEquals(EntityViewFactory.getViewClass("item", "food", null), UseableItem2DView.class);
-		assertEquals(EntityViewFactory.getViewClass("item", "drink", null),  UseableItem2DView.class);
-		assertEquals(EntityViewFactory.getViewClass("item", "tool", "foodmill"),  UseableItem2DView.class);
-		assertEquals(EntityViewFactory.getViewClass("item", "tool", "sugarmill"),  UseableItem2DView.class);
-
-		assertEquals(EntityViewFactory.getViewClass("item", "ring", null), Ring2DView.class);
-		assertEquals(EntityViewFactory.getViewClass("item", "ring", "wedding"), UseableRing2DView.class);
-
-		assertEquals(EntityViewFactory.getViewClass("walkblocker", null, null), WalkBlocker2DView.class);
-
+	private void checkImplementation(final String type_name, final String class_name, final String name,
+			final Class implementation) {
+		final EntityRep erep = new EntityRep(type_name, class_name, name, implementation);
+		if (!entities.contains(erep)) {
+			fail("duplicate or not a registered entity representation: " + erep.toString());
+		}
+		logger.debug("testing entity: " + erep.toString());
+		assertEquals(EntityViewFactory.getViewClass(erep.classname, erep.subclass, erep.name), erep.implementation);
+		entities.remove(erep);
 	}
 }

@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2016 - Faiumoni e. V.                   *
+ *                (C) Copyright 2016-2023 - Faiumoni e. V.                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,37 +11,27 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests.revivalweeks;
 
-import java.io.UnsupportedEncodingException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
-
-import org.apache.log4j.Logger;
 
 import games.stendhal.common.Rand;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.StendhalRPWorld;
 import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.core.events.TurnListener;
+import games.stendhal.server.core.events.TurnNotifier;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.mapstuff.sign.PopupImage;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.events.ExamineEvent;
-import marauroa.common.Configuration;
-import marauroa.common.crypto.Hash;
 
 public class PhotographerChatAction implements ChatAction {
-	private static Logger logger = Logger.getLogger(PhotographerChatAction.class);
-
 	private StendhalRPZone zone;
+	private String questSlot;
 	private Map<String, Entity> playerSigns = new HashMap<String, Entity>();
 
 	/**
@@ -49,40 +39,29 @@ public class PhotographerChatAction implements ChatAction {
 	 *
 	 * @param zone StendhalRPZone
 	 */
-	public PhotographerChatAction(StendhalRPZone zone) {
+	public PhotographerChatAction(StendhalRPZone zone, String questSlot) {
 		this.zone = zone;
+		this.questSlot = questSlot;
 	}
-
-	private static final String[] CAPTIONS = new String[] {
-		" i spotkanie Balduina",
-		" i rozpoczęcie przygody",
-		" eksplorowanie Semos Dungeon",
-		" oraz wizyta w Semos Temple",
-		" i spotkanie Jenny'iego",
-		" oraz odkrycie wioski gnomów",
-		" oraz wizyta w mieście Ados",
-		" i odkrywanie gigantyczną wieżę",
-		" oraz skradanie się w Ados Wildlife Refuge",
-		" oraz oglądanie z wieży czarodziejów",
-		" i dostarczanie lodów",
-		" oraz wizyta w piekle",
-		" rozgląda się",
-		" oraz dostanie się na szczyt wieży",
-		" i odwiedzenie elfów",
-		" i odwiedzenie oni",
-		" i relaks przy ognisku"
-	};
 
 	@Override
 	public void fire(Player player, Sentence sentence, EventRaiser npc) {
-		String outfit = player.getOutfit().getData(player.getOutfitColors());
-		int i = determinePhoto(player);
+		TurnNotifier.get().notifyInSeconds(1, new TurnListener() {
+			@Override
+			public void onTurnReached(int currentTurn) {
+				int i = determinePhoto(player);
 
-		String url = generateUrl(outfit, i);
-		String caption = player.getName() + CAPTIONS[i];
-		addSign(player.getName(), url, "Zdjęcia", caption);
-		player.addEvent(new ExamineEvent(url, "Zdjęcia", caption));
-		player.notifyWorldAboutChanges();
+				String url = PhotographerNPC.generateUrl(player, i);
+				String caption = player.getName() + PhotographerNPC.CAPTIONS[i];
+				addSign(player.getName(), url, "Obraz", caption);
+
+				player.addEvent(new ExamineEvent(url, "Obraz", caption));
+				player.notifyWorldAboutChanges();
+
+				player.setQuest(questSlot, 0, Integer.toString(i));
+				npc.say("Chcesz kupić to zdjęcie za 1000 sztuk złota?");
+			}
+		});
 	}
 
 	/**
@@ -119,7 +98,7 @@ public class PhotographerChatAction implements ChatAction {
 		}
 
 		PopupImage sign = new PopupImage(url, title, caption);
-		sign.setEntityClass("notice");
+		sign.setEntityClass("notice_sign");
 		positionSign(sign);
 		playerSigns.put(name, sign);
 	}
@@ -187,47 +166,6 @@ public class PhotographerChatAction implements ChatAction {
 			photos.add(Integer.valueOf(16));
 		}
 		return Rand.rand(photos).intValue();
-	}
-
-	/**
-	 * generates the images url
-	 *
-	 * @param outfit outfit of player
-	 * @param i background index
-	 * @return
-	 */
-	private String generateUrl(String outfit, int i) {
-		try {
-			String hash = hmac(i + "_" + outfit, Configuration.getConfiguration().get("stendhal.secret"));
-			StringBuilder sb = new StringBuilder();
-			sb.append("https://s1.polanieonline.eu/content/game/photo.php?outfit=");
-			sb.append(outfit);
-			sb.append("&i=");
-			sb.append(i);
-			sb.append("&h=");
-			sb.append(hash.toLowerCase(Locale.ENGLISH));
-			return sb.toString();
-		} catch (Exception e) {
-			logger.error(e, e);
-			return "";
-		}
-	}
-
-	/**
-	 * calculates the hamc
-	 *
-	 * @param data data
-	 * @param key key
-	 * @return hmac
-	 * @throws NoSuchAlgorithmException
-	 * @throws InvalidKeyException
-	 * @throws UnsupportedEncodingException
-	 */
-	public static String hmac(String data, String key) throws NoSuchAlgorithmException, InvalidKeyException, UnsupportedEncodingException	{
-		SecretKeySpec keySpec = new SecretKeySpec(key.getBytes("UTF-8"), "HmacSHA256");
-		Mac mac = Mac.getInstance("HmacSHA256");
-		mac.init(keySpec);
-		return Hash.toHexString(mac.doFinal(data.getBytes("UTF-8")));
 	}
 
 	@Override

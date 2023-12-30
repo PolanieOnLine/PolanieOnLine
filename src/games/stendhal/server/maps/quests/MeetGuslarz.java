@@ -99,6 +99,8 @@ public class MeetGuslarz extends AbstractQuest {
 		// times out twice as fast as normal NPCs
 		guslarz.setPlayerChatTimeout(TIME_OUT); 
 		guslarz.setDescription("Oto Guślarz odprawiający gusła, aby przywołać z zaświatów wielkie moce!");
+		// hide location from website
+		guslarz.hideLocation();
 		// start in int_admin_playground
 		zone = SingletonRepository.getRPWorld().getZone("int_admin_playground");
 		guslarz.setPosition(17, 13);

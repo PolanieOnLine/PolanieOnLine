@@ -1,17 +1,15 @@
 <?xml version='1.0'?>
-
 <project xmlns:if="ant:if" xmlns:unless="ant:unless">
 
-  <condition property="doxygen.fix_urls" value="true">
-    <and>
-      <equals arg1="${python.present}" arg2="true"/>
-      <available file="buildtools/doxygen/fix_urls.py"/>
-    </and>
-  </condition>
+  <target name="clean_javadocs" description="Delete javadoc generated HTML documentation.">
+      <delete dir="${docs}"/>
+  </target>
 
+  <target name="clean_mkdocs" description="Delete MkDocs generated HTML documentation.">
+      <delete dir="${buildroot}/mkdocs/"/>
+  </target>
 
-  <target name="javadocs" description="Generate HTML documentation for Java API with javadoc."
-      depends="clean_javadocs">
+  <target name="javadocs" description="Generate HTML documentation for Java API with javadoc." depends="clean_javadocs">
     <condition property="include.marauroa" value="true">
       <available file="${marauroa_src}" type="dir"/>
     </condition>
@@ -62,14 +60,12 @@
   </target> <!-- javadocs -->
 
 
-  <target name="mkdocs" description="Generate HTML documentation for Lua API with MkDocs."
-      depends="clean_mkdocs">
-    <!-- Note: call "javadocs" first to include Java documentation -->
+  <target name="mkdocs" description="Generate HTML documentation for Lua API with MkDocs." depends="clean_mkdocs">
 
     <echo unless:true="${python.present}"
       message="Python unavailable, cannot run mkdocs"/>
 
-    <!--<antcall if:true="${python.present}" target="docs"/>-->
+  	<!-- Note: script will include Java documentation if "javadocs" build directory is found -->
     <exec if:true="${python.present}" executable="python" failonerror="true"
         dir="./buildtools/mkdocs/">
       <arg value="-u"/>
@@ -77,20 +73,6 @@
     </exec>
   </target> <!-- mkdocs -->
 
-
-  <target name="doxygen" description="Generate HTML documentation with Doxygen."
-      depends="clean_doxygen">
-    <exec executable="doxygen" failonerror="true">
-      <arg value="./buildtools/doxygen/Doxyfile"/>
-    </exec>
-
-    <!-- Doxygen 1.9.3 has some issues with tags files URLs -->
-    <exec if:set="doxygen.fix_urls" executable="python">
-      <arg value="./buildtools/doxygen/fix_urls.py"/>
-    </exec>
-  </target> <!-- doxygen -->
-
-
-  <target name="docs" description="Generate HTML documentation." depends="javadocs,mkdocs"/>
+  <target name="docs" description="Generate HTML documentation for Java and Lua APIs." depends="javadocs,mkdocs"/>
 
 </project>

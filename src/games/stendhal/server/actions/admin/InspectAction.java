@@ -12,6 +12,7 @@
 package games.stendhal.server.actions.admin;
 
 import static games.stendhal.common.constants.Actions.INSPECT;
+import static games.stendhal.common.constants.Actions.TARGET;
 
 import games.stendhal.common.constants.Testing;
 import games.stendhal.server.actions.CommandCenter;
@@ -74,7 +75,7 @@ public class InspectAction extends AdministrationAction {
 
 			// st.append(target.toString());
 			// st.append("\n===========================\n");
-			st.append("\nID: " + action.get("target") + " w &" + inspected.getZone().getName() + " (" + inspected.getX() + ", " + inspected.getY() + ")");
+			st.append("\nID: " + action.get(TARGET) + " w &" + inspected.getZone().getName() + " (" + inspected.getX() + ", " + inspected.getY() + ")");
 			st.append("\nPłeć:  " + inspected.getGender());
 			st.append("\nPZ:     " + inspected.getHP() + " / " + inspected.getBaseHP());
 			st.append("\nATK:    " + inspected.getAtk() + "("
@@ -201,7 +202,7 @@ public class InspectAction extends AdministrationAction {
 				st.append("\nAktualny stan: " + ((SpeakerNPC) inspected).getEngine().getCurrentState());
 			}
 		} else {
-			st.append("Badana jednostka o id " + action.get("target")
+			st.append("Badana jednostka o id " + action.get(TARGET)
 					+ " posiada atrybuty:\r\n");
 			st.append(target.toString());
 		}

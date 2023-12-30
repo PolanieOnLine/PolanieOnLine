@@ -38,6 +38,9 @@ public class KillBlordroughsAchievementFactory extends AbstractAchievementFactor
 	public static final int COUNT_DICTATOR = 100;
 	public static final String ID_DICTATOR = "quest.special.kill_blordroughs.0100";
 
+	public static final int COUNT_CRUSHER = 200;
+	public static final String ID_CRUSHER = "quest.special.kill_blordroughs.0200";
+
 	@Override
 	protected Category getCategory() {
 		return Category.QUEST_KILL_BLORDROUGHS;
@@ -70,6 +73,12 @@ public class KillBlordroughsAchievementFactory extends AbstractAchievementFactor
 				"Ukończono zadanie 'Zabij Blordroughtów' 100 razy",
 				Achievement.HARD_BASE_SCORE, true,
 				new CompletedCountCondition(COUNT_DICTATOR)));
+
+		achievements.add(createAchievement(
+				ID_CRUSHER, "Niszczyciel Narodów",
+				"Ukończono zadanie 'Zabij Blordroughtów' 200 razy",
+				Achievement.EXTREME_BASE_SCORE, true,
+				new CompletedCountCondition(COUNT_CRUSHER)));
 
 		return achievements;
 	}

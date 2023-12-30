@@ -115,28 +115,28 @@ public class QuestAchievementFactory extends AbstractAchievementFactory {
 
 		// complete nearly all the quests in the game?
 		achievements.add(createAchievement(
-			"quest.count.050", "Pierwsze Zlecenia",
-			"Ukończono conajmniej 50 zadań",
+			"quest.count.050", "Zleceniobiorca",
+			"Ukończono co najmniej 50 zadań",
 			Achievement.EASY_BASE_SCORE, true,
 			new QuestCountCompletedCondition(50)));
 
 		achievements.add(createAchievement(
-			"quest.count.100", "Duuuuuużo Ukończonych Zadań",
-			"Ukończono conajmniej 100 zadań",
+			"quest.count.80", "Zadaniowy Narkoman",
+			"Ukończono co najmniej 80 zadań",
 			Achievement.MEDIUM_BASE_SCORE, true,
-			new QuestCountCompletedCondition(100)));
+			new QuestCountCompletedCondition(80)));
 
 		achievements.add(createAchievement(
-			"quest.count.150", "Jeszcze Więcej Zadań",
-			"Ukończono conajmniej 150 zadań",
+			"quest.count.100", "Weteran Wsparcia",
+			"Ukończono co najmniej 100 zadań",
 			Achievement.HARD_BASE_SCORE, true, new
-			QuestCountCompletedCondition(150)));
+			QuestCountCompletedCondition(100)));
 
 		achievements.add(createAchievement(
-			"quest.count.200", "Pogromca Zadań",
-			"Ukończono conajmniej 200 zadań",
-			Achievement.LEGENDARY_BASE_SCORE, true,
-			new QuestCountCompletedCondition(200)));
+			"quest.count.140", "Głodny Zleceń",
+			"Ukończono co najmniej 140 zadań",
+			Achievement.EXTREME_BASE_SCORE, true,
+			new QuestCountCompletedCondition(140)));
 
 		return achievements;
 	}

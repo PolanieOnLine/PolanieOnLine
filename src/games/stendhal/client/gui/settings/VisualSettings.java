@@ -516,12 +516,12 @@ class VisualSettings {
 	 * @return component
 	 */
 	private JComponent createRenderingSelector() {
-		final JComboBox<UiRenderingMethod> selector = new JComboBox<>();
+		final JComboBox<RenderingMethod> selector = new JComboBox<>();
 		selector.setRenderer(new DefaultListCellRenderer() {
 			@Override
 			public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
 					boolean cellHasFocus) {
-				return super.getListCellRendererComponent(list, ((UiRenderingMethod) value).getDisplayName(), index,
+				return super.getListCellRendererComponent(list, ((RenderingMethod) value).name, index,
 						isSelected, cellHasFocus);
 			}
 		});
@@ -531,17 +531,53 @@ class VisualSettings {
 
 		// Fill with available methods
 		for (UiRenderingMethod method : UiRenderingMethod.getAvailableMethods()) {
-			selector.addItem(method);
+			RenderingMethod item = new RenderingMethod();
+			item.method = method;
+			switch (method) {
+			case DEFAULT: {
+				item.name = "Domyślny (system)";
+				break;
+			}
+			case SOFTWARE: {
+				if (System.getProperty("os.name").toLowerCase().startsWith("windows")) {
+					item.name = "Windows API/GDI Renderowanie Systemowe";
+				} else {
+					item.name = "Renderowanie Systemowe";
+				}
+				break;
+			}
+			case DIRECT_DRAW: {
+				item.name = "DirectDraw Only";
+				break;
+			}
+			case DDRAW_HWSCALE: {
+				item.name = "Skalowanie Direct3D HW";
+				break;
+			}
+			case OPEN_GL: {
+				item.name = "Open GL";
+				break;
+			}
+			case XRENDER: {
+				item.name = "XRender";
+				break;
+			}
+			case METAL: {
+				item.name = "Metal Framework";
+				break;
+			}
+			}
+			selector.addItem(item);
 			if (method.getPropertyValue().equals(currentMethod))
-				selector.setSelectedItem(method);
+				selector.setSelectedItem(item);
 		}
 
 		selector.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				UiRenderingMethod selected = (UiRenderingMethod) selector.getSelectedItem();
-				wm.setProperty(SettingsProperties.UI_RENDERING, selected.getPropertyValue());
+				RenderingMethod selected = (RenderingMethod) selector.getSelectedItem();
+				wm.setProperty(SettingsProperties.UI_RENDERING, selected.method.getPropertyValue());
 				ClientSingletonRepository.getUserInterface()
 						.addEventLine(new EventLine("",
 								"Nowe renderowanie zostanie użyte przy następnym uruchomieniu klienta gry.",
@@ -728,5 +764,10 @@ class VisualSettings {
 			}
 			return comp;
 		}
+	}
+
+	private static class RenderingMethod {
+		UiRenderingMethod method;
+		String name;
 	}
 }

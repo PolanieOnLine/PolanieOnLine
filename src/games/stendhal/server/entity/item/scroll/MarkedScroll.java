@@ -77,13 +77,13 @@ public class MarkedScroll extends TeleportScroll {
 		int y = 40;
 
 		/*
-		 * Marked scrolls have a destination which is stored in the infostring,
+		 * Marked scrolls have a destination which is stored in the itemdata,
 		 * consisting of a zone name and x and y coordinates
 		 */
-		final String infostring = getInfoString();
+		final String itemdata = getItemData();
 
-		if (infostring != null) {
-			final StringTokenizer st = new StringTokenizer(infostring);
+		if (itemdata != null) {
+			final StringTokenizer st = new StringTokenizer(itemdata);
 			if (st.countTokens() == 3) {
 				// check destination
 				final String zoneName = st.nextToken();
@@ -92,7 +92,7 @@ public class MarkedScroll extends TeleportScroll {
 					// invalid zone (the scroll may have been marked in an
 					// old version and the zone was removed)
 					player.sendPrivateText("Z dziwnych powodów zwój nie przeniósł mnie tam gdzie " + Grammar.genderVerb(player.getGender(), "chciałem") + ".");
-					logger.warn("marked scroll to unknown zone " + infostring
+					logger.warn("marked scroll to unknown zone " + itemdata
 							+ " teleported " + player.getName()
 							+ " to Semos instead");
 				} else {
@@ -123,23 +123,23 @@ public class MarkedScroll extends TeleportScroll {
 	public String describe() {
 		String text = super.describe();
 
-		final String infostring = getInfoString();
+		final String itemdata = getItemData();
 
-		if (infostring != null) {
-			text += " Pod spodem widnieje napis: " + infostring;
+		if (itemdata != null) {
+			text += " Pod spodem widnieje napis: " + itemdata;
 		}
 		return (text);
 	}
 
 	@Override
-	public void setInfoString(final String infostring) {
-		super.setInfoString(infostring);
+	public void setItemData(final String itemdata) {
+		super.setItemData(itemdata);
 		this.applyDestInfo();
 	}
 
 	public void applyDestInfo() {
-		if (this.has("infostring")) {
-			final String[] infos = this.get("infostring").split(" ");
+		if (this.has("itemdata")) {
+			final String[] infos = this.get("itemdata").split(" ");
 			if (infos.length > 2) {
 				String destInfo = infos[0] + "," + infos[1] + "," + infos[2];
 				final String desc = this.getDescription();

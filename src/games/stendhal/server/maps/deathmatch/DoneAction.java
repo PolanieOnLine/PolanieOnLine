@@ -53,7 +53,7 @@ public class DoneAction implements ChatAction {
 		final Item helmet = SingletonRepository.getEntityManager().getItem("zdobyczny hełm");
 		helmet.setBoundTo(player.getName());
 		helmet.put("def", 1);
-		helmet.setInfoString(player.getName());
+		helmet.setItemData(player.getName());
 		helmet.setPersistent(true);
 		helmet.setDescription("Oto główna nagroda dla wojownika " + player.getName()
 		        + " za wygranie Deathmatchu. Noś ją z dumą.");
@@ -155,7 +155,7 @@ public class DoneAction implements ChatAction {
 		final Item helmet = player.getFirstEquipped("zdobyczny hełm");
 		if (helmet == null) {
 			createTrophyHelmet(player);
-			raiser.say("Oto twój specjalny zdobyczny hełm. Trzymaj tak dalej, a z każdym ukończonym deathmatchem "
+			raiser.say("Oto twój specjalny zdobyczny hełm. Trzymaj tak dalej, a z każdą ukończoną walką na arenie "
 				+ " jego obrona będzie się zwiększać o 1. Teraz powiedz mi czy chcesz wyjść, mówiąc #wyjdź.");
 		} else {
 			int defense = 1;

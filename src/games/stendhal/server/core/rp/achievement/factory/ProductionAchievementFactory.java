@@ -94,8 +94,8 @@ public class ProductionAchievementFactory extends AbstractAchievementFactory {
 				new PlayerProducedNumberOfItemsCondition(1000, "mąka")));
 
 		achievements.add(createAchievement(
-				"production.sow.flowers.all", "Siew Nasion Radości",
-				"Zasiano po 1000 nasion każdego rodzaju",
+				"production.sow.flowers.all", "Pomocnik Matki Natury",
+				"Zasiano po 1,000 nasion i bulw każdego rodzaju",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new ChatCondition() {
 					@Override

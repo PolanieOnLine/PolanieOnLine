@@ -57,7 +57,7 @@ public class EmptyScroll extends Scroll {
 
 		if (zone.isTeleportInAllowed(player.getX(), player.getY())) {
 			final Item markedScroll = SingletonRepository.getEntityManager().getItem("zwój zapisany");
-			markedScroll.setInfoString(player.getID().getZoneID() + " " + player.getX() + " " + player.getY());
+			markedScroll.setItemData(player.getID().getZoneID() + " " + player.getX() + " " + player.getY());
 			player.equipOrPutOnGround(markedScroll);
 			return true;
 		} else {

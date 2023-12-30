@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                      (C) Copyright 2003 - Marauroa                      *
+ *                   (C) Copyright 2003-2023 - Marauroa                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -115,7 +114,7 @@ public class Cat extends Pet {
 	protected List<String> getFoodNames() {
 		return Arrays.asList("udko", "pstrąg", "dorsz", "makrela", "palia alpejska",
 				"okoń", "płotka", "pokolec", "błazenek", "leszcz", "karp", "karp lustrzeń",
-				"tarta z rybnym nadzieniem", "kanapka z tuńczykiem", "mleko", "flaczki");
+				"tarta z rybnym nadzieniem", "kanapka z tuńczykiem", "mleko");
 	}
 
 	/**

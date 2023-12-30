@@ -1,5 +1,5 @@
 /***************************************************************************
- *                      (C) Copyright 2003 - Marauroa                      *
+ *                   (C) Copyright 2003-2023 - Marauroa                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -39,6 +39,7 @@ public class PlayerRPClass {
 		player.addAttribute("text", Type.LONG_STRING, Definition.VOLATILE);
 //		player.addAttribute("private_text", Type.LONG_STRING, (byte) (Definition.HIDDEN | Definition.VOLATILE));
 
+		player.addRPEvent(Events.CHAT_OPTIONS, Definition.PRIVATE);
 		player.addRPEvent(Events.PRIVATE_TEXT, Definition.PRIVATE);
 		player.addRPEvent(Events.PLAYER_LOGGED_ON, Definition.PRIVATE);
 		player.addRPEvent(Events.PLAYER_LOGGED_OUT, Definition.PRIVATE);
@@ -90,6 +91,8 @@ public class PlayerRPClass {
 		player.addRPSlot("bank_ados", 36, Definition.HIDDEN);
 		player.addRPSlot("bank_deniran", 36, Definition.HIDDEN);
 		player.addRPSlot("bank_fado", 36, Definition.HIDDEN);
+		player.addRPSlot("bank_kirdneh", 36, Definition.HIDDEN);
+		player.addRPSlot("bank_magic", 36, Definition.HIDDEN);
 		player.addRPSlot("bank_nalwor", 36, Definition.HIDDEN);
 		player.addRPSlot("bank_gdansk", 36, Definition.HIDDEN);
 		player.addRPSlot("bank_krakow", 36, Definition.HIDDEN);

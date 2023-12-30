@@ -17,13 +17,20 @@ local brokerName = "Sawyer"
 local broker = nil
 
 local function initNPC()
-	broker = entities:createSpeakerNPC(brokerName)
-	broker:setOutfit("body=0,head=0,eyes=5,hair=14,dress=5,hat=6")
-	broker:setOutfitColor("body", SkinColor.DARK)
-	broker:setOutfitColor("eyes", 0x0000ff)
-	broker:setPosition(18, 5)
-	broker:setIdleDirection(Direction.LEFT)
-	broker:setDescription("Oto " .. brokerName ..". Wygląda na właściciela lombardu, który aktualnie prowadzi.")
+	broker = entities:create({
+		type = "SpeakerNPC",
+		name = brokerName,
+		description = "Oto " .. brokerName ..". Wygląda na właściciela lombardu, który aktualnie prowadzi.",
+		outfit = {
+			layers = "body=0,head=0,eyes=5,hair=14,dress=5,hat=6",
+			colors = {
+				body = SkinColor.DARK,
+				eyes = 0x0000ff
+			}
+		},
+		pos = {18, 5},
+		idleDir = Direction.LEFT
+	})
 
 	-- dialogue
 	broker:addGreeting("Witamy w sklepie lombardowym w Deniran.")
@@ -49,7 +56,13 @@ end
 
 local function initShop()
 	-- shop sign
-	local sign = entities:createShopSign("deniranpawnbuy", "Lombard w Deniran", brokerName .. " skupuje następujące przedmioty", false)
+	local sign = entities:create({
+		type = "ShopSign",
+		name = "deniranpawnbuy",
+		title = "Lombard Deniran",
+		caption = brokerName .. " skupuje następujące przedmioty",
+		seller = false
+	})
 	sign:setEntityClass("blackboard")
 	sign:setPosition(18, 8)
 

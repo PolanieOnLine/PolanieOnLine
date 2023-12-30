@@ -193,7 +193,7 @@ class Engagement {
 				"zwój weselny");
 		invite.setQuantity(4);
 		// location of church
-		invite.setInfoString("marriage," + player.getName());
+		invite.setItemData("marriage," + player.getName());
 
 		// perhaps change this to a hotel room where they can get dressed into
 		// wedding outfits?

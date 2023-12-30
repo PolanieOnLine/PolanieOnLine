@@ -36,6 +36,7 @@ import games.stendhal.server.entity.npc.NPC;
 import games.stendhal.server.entity.npc.NPCList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.fsm.Engine;
+import games.stendhal.server.entity.npc.quest.BuiltQuest;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.MockStendlRPWorld;
 import games.stendhal.server.maps.quests.AGrandfathersWish;
@@ -176,7 +177,7 @@ public class FriendAchievementFactoryTest extends AchievementTestHelper {
 		// Plink
 		loadConfigurators(new games.stendhal.server.maps.semos.plains.LittleBoyNPC());
 		addZones("0_semos_plains_n");
-		loadQuests(new PlinksToy());
+		loadQuests(new BuiltQuest(new PlinksToy().story()));
 		ChildrensFriendStub.doQuestPlink(player);
 		assertFalse(achievementReached(player, id));
 
@@ -188,7 +189,7 @@ public class FriendAchievementFactoryTest extends AchievementTestHelper {
 
 		// Sally
 		loadConfigurators(new games.stendhal.server.maps.orril.river.CampingGirlNPC());
-		loadQuests(new Campfire());
+		loadQuests(new BuiltQuest(new Campfire().story()));
 		ChildrensFriendStub.doQuestSally(player);
 		assertFalse(achievementReached(player, id));
 
@@ -234,7 +235,7 @@ public class FriendAchievementFactoryTest extends AchievementTestHelper {
 
 		// Marianne
 		loadConfigurators(new games.stendhal.server.maps.deniran.cityoutside.LittleGirlNPC());
-		loadQuests(new EggsForMarianne());
+		loadQuests(new BuiltQuest(new EggsForMarianne().story()));
 		ChildrensFriendStub.doQuestMarianne(player);
 
 		assertTrue(achievementReached(player, id));

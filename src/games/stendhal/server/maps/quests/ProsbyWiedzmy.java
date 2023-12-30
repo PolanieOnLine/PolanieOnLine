@@ -80,7 +80,7 @@ public class ProsbyWiedzmy extends AbstractQuest {
 				ConversationPhrases.YES_MESSAGES, null,
 				ConversationStates.ATTENDING,
 				"Och, wspaniale! Tak jak powiedziałam wcześniej... denerwuje mnie #'błękitny smok', który znajduje się obok mojej chatki, nie daje mi wyjść z niej."
-				+ " Jakbyś mógł to zabij go i przynieś mi conajmniej #'1 skórę niebieskiego smoka' w dowód tego, że go zabiłeś!",
+				+ " Jakbyś mógł to zabij go i przynieś mi co najmniej #'1 skórę niebieskiego smoka' w dowód tego, że go zabiłeś!",
 				new MultipleActions(actions));
 
 		// Player says no, they've lost karma.
@@ -112,7 +112,7 @@ public class ProsbyWiedzmy extends AbstractQuest {
 				new ChatAction() {
 					@Override
 					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-						raiser.say("Nawet jeśli zabiłeś tego przerośniętego gada to jak mam Tobie zaufać? Masz mi przynieść conajmniej #'1 skórę niebieskiego smoka', abym mogła Tobie zaufać.");
+						raiser.say("Nawet jeśli zabiłeś tego przerośniętego gada to jak mam Tobie zaufać? Masz mi przynieść co najmniej #'1 skórę niebieskiego smoka', abym mogła Tobie zaufać.");
 					}
 				});
 
@@ -244,7 +244,7 @@ public class ProsbyWiedzmy extends AbstractQuest {
 				new QuestInStateCondition(QUEST_SLOT, "kly?"),
 				ConversationStates.ATTENDING,
 				"Och, wspaniale! Same skóry zielonego smoka nic nie pomogą, potrzebuję coś, żeby wszystkie smoki mnie słuchały."
-				+ " Aaaah... już wiem.. musisz przynieść mi conajmniej #'50 kłów smoka'. Powinno to wystarczyć aby wyrobić idealny amulet.",
+				+ " Aaaah... już wiem.. musisz przynieść mi co najmniej #'50 kłów smoka'. Powinno to wystarczyć aby wyrobić idealny amulet.",
 				new MultipleActions(actions));
 	}
 
@@ -397,7 +397,7 @@ public class ProsbyWiedzmy extends AbstractQuest {
 				ConversationStates.ATTENDING,
 				"Och, wspaniale! Potrzebuję jeszcze sporo składników, tym razem nie powinnam się pomylić!"
 				+ " Żebyś się nie męczył długo zbieraniem ich to podziele je na kilka zadań. Niektóre składniki również uda mi się samemu zdobyć."
-				+ " Wpierw musisz mi przynieść conajmniej #'30 krwi smoków', abym mogła skroplić swój amulet pewnym specyfikiem, który wykonam.",
+				+ " Wpierw musisz mi przynieść co najmniej #'30 krwi smoków', abym mogła skroplić swój amulet pewnym specyfikiem, który wykonam.",
 				new MultipleActions(actions));
 	}
 
@@ -458,7 +458,7 @@ public class ProsbyWiedzmy extends AbstractQuest {
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("pomożesz", "pomozesz", "pomogę", "pomoge", "tak"),
 				new QuestInStateCondition(QUEST_SLOT, "glodna?"),
 				ConversationStates.ATTENDING,
-				"Wiesz.. Ciężko mi się pracuje jak jest się głonym. Proszę przynieś mi conajmniej #'100 mięsa', #'40 chleba', #'40 sera' oraz #'20 bukłaków z wodą', abym miała zapas na kolejny rok.",
+				"Wiesz.. Ciężko mi się pracuje jak jest się głonym. Proszę przynieś mi co najmniej #'100 mięsa', #'40 chleba', #'40 sera' oraz #'20 bukłaków z wodą', abym miała zapas na kolejny rok.",
 				new MultipleActions(actions));
 	}
 
@@ -545,7 +545,7 @@ public class ProsbyWiedzmy extends AbstractQuest {
 				+ "#'dwugłowy niebieski smok',\n"
 				+ "#'czerwony smok',\n"
 				+ "#'zielony smok' oraz #'złoty smok'.\n"
-				+ " Oczywiście samo zabicie nic nie da, musisz przynieść mi conajmniej 10 skór każdego rodzaju.",
+				+ " Oczywiście samo zabicie nic nie da, musisz przynieść mi co najmniej 10 skór każdego rodzaju.",
 				new MultipleActions(actions));
 	}
 
@@ -577,7 +577,7 @@ public class ProsbyWiedzmy extends AbstractQuest {
 				new ChatAction() {
 					@Override
 					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-						raiser.say("Nawet jeśli zabiłeś smoki, na pewno nie zaufam Tobie gdy nie przyniesiesz mi ich skór! Pamiętaj conajmniej 10 skór każdego rodzaju, masz mi to przynieść!");
+						raiser.say("Nawet jeśli zabiłeś smoki, na pewno nie zaufam Tobie gdy nie przyniesiesz mi ich skór! Pamiętaj co najmniej 10 skór każdego rodzaju, masz mi to przynieść!");
 					}
 				});
 

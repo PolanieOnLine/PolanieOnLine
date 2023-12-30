@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2022 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -14,8 +14,7 @@ package games.stendhal.server.maps.quests;
 import games.stendhal.common.MathHelper;
 import games.stendhal.server.entity.npc.action.EquipItemAction;
 import games.stendhal.server.entity.npc.action.IncreaseXPAction;
-import games.stendhal.server.entity.npc.quest.KillCreaturesTask;
-import games.stendhal.server.entity.npc.quest.QuestBuilder;
+import games.stendhal.server.entity.npc.quest.KillCreaturesQuestBuilder;
 import games.stendhal.server.entity.npc.quest.QuestManuscript;
 import games.stendhal.server.maps.Region;
 
@@ -47,8 +46,8 @@ import games.stendhal.server.maps.Region;
  */
 public class KillGnomes implements QuestManuscript {
 	@Override
-	public QuestBuilder<?> story() {
-		QuestBuilder<KillCreaturesTask> quest = new QuestBuilder<>(new KillCreaturesTask());
+	public KillCreaturesQuestBuilder story() {
+		KillCreaturesQuestBuilder quest = new KillCreaturesQuestBuilder();
 
 		quest.info()
 			.name("Pozbycie się Gnomów")
@@ -72,7 +71,7 @@ public class KillGnomes implements QuestManuscript {
 					+ "Potrzebują chyba dobrej lekcji. Pomożesz?")
 			.respondToUnrepeatableRequest("Gnomy nie sprawiają problemu od momentu, gdy pokazałeś im czym jest pokora.")
 			.respondToRepeatedRequest("Te zuchwałe gnomy znowu kradną nasze marchewki. Sądzę, że potrzebują kolejnej lekcji. Pomożesz?")
-			.respondToAccept("Doskonale. Obozowisko gnomów znajdziesz na północny-zachód od Semos. Upewnij się, że ubiłeś kilku liderów, conajmniej jednego zwiadowcę i jednego kawalerzystę.")
+			.respondToAccept("Doskonale. Obozowisko gnomów znajdziesz na północny-zachód od Semos. Upewnij się, że ubiłeś kilku liderów, co najmniej jednego zwiadowcę i jednego kawalerzystę.")
 			.respondToReject("Masz rację. Chyba to zbyt okropne, aby wybijać gnomy, które kradną marchewki. "
 					+ "Może farma powinna zwiększyć ochronę.")
 			// no karma penalty for rejecting the quest because killing gnomes is evil

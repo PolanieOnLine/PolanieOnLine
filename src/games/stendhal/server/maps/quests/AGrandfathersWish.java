@@ -51,7 +51,7 @@ import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.LevelLessThanCondition;
 import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.npc.condition.OrCondition;
-import games.stendhal.server.entity.npc.condition.PlayerHasInfostringItemWithHimCondition;
+import games.stendhal.server.entity.npc.condition.PlayerHasItemdataItemWithHimCondition;
 import games.stendhal.server.entity.npc.condition.PlayerHasItemWithHimCondition;
 import games.stendhal.server.entity.npc.condition.QuestActiveCondition;
 import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
@@ -459,7 +459,7 @@ public class AGrandfathersWish extends AbstractQuest {
 	public static ChatCondition canRequestHolyWater() {
 		return new AndCondition(
 			new QuestActiveCondition(QUEST_SLOT),
-			new NotCondition(new PlayerHasInfostringItemWithHimCondition("woda święcona z popiołem", "Niall Breland")),
+			new NotCondition(new PlayerHasItemdataItemWithHimCondition("woda święcona z popiołem", "Niall Breland")),
 			new OrCondition(
 				new QuestInStateCondition(QUEST_SLOT, 2, "holy_water:find_priest"),
 				new QuestInStateCondition(QUEST_SLOT, 2, "holy_water:done"))
@@ -485,7 +485,7 @@ public class AGrandfathersWish extends AbstractQuest {
 			public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 				final Item holy_water = SingletonRepository.getEntityManager().getItem("woda święcona z popiołem");
 				holy_water.setDescription("Oto butelka wody święconej posypanej popiołem do uleczenia Nialla.");
-				holy_water.setInfoString("Niall Breland");
+				holy_water.setItemData("Niall Breland");
 				holy_water.setBoundTo(player.getName());
 
 				player.equipOrPutOnGround(holy_water);

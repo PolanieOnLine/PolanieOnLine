@@ -75,15 +75,11 @@ public class GhostNPC implements ZoneConfigurator {
 		};
 
 		ghost.setDescription("Oto duch o figurze kobiety.");
-		ghost.setResistance(0);
 		ghost.setEntityClass("woman_005_npc");
-		// she is a ghost so she is see through
-		ghost.setVisibility(50);
 		ghost.setPosition(65, 74);
 		// she has low HP
 		ghost.initHP(30);
 		ghost.setBaseHP(100);
-		ghost.put("no_shadow", "");
 		zone.add(ghost);
 	}
 }

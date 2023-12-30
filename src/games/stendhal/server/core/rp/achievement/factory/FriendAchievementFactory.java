@@ -74,8 +74,7 @@ public class FriendAchievementFactory extends AbstractAchievementFactory {
 						// Anna, in Ados
 						new QuestCompletedCondition("toys_collector"),
 						// Sally, Orril River
-						// 'completed' doesn't work for Sally - return player.hasQuest(QUEST_SLOT) && !"start".equals(player.getQuest(QUEST_SLOT)) && !"rejected".equals(player.getQuest(QUEST_SLOT));
-						new AndCondition(new QuestActiveCondition("campfire"), new QuestNotInStateCondition("campfire", "start")),
+						new QuestCompletedCondition("campfire"),
 						// Annie, Kalavan city gardens
 						new QuestStateStartsWithCondition("icecream_for_annie","eating;"),
 						// Elisabeth, Kirdneh
@@ -87,16 +86,14 @@ public class FriendAchievementFactory extends AbstractAchievementFactory {
 						// Finn Farmer, George
 						new QuestCompletedCondition("coded_message"),
 						// Marianne, Deniran City S
-						new AndCondition(
-								new QuestActiveCondition("eggs_for_marianne"),
-								new QuestNotInStateCondition("eggs_for_marianne", "start")
+						new QuestCompletedCondition("eggs_for_marianne")
 						)
-				)));
+				));
 
 		achievements.add(createAchievement(
 				ID_BAD_DREAMS, "Spokojny Sen",
 				"Pozbyto się złych koszmarów małej dziewczynki Alicji",
-				Achievement.LEGENDARY_BASE_SCORE, true,
+				Achievement.EXTREME_BASE_SCORE, true,
 				new QuestCompletedCondition("kill_dragons")));
 
 		// quests about finding people

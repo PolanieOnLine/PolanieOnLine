@@ -11,7 +11,7 @@ public class DetailsKillingsAction implements ChatAction, ITPPQuestConstants {
 	public void fire(final Player player, final Sentence sentence, final EventRaiser mayor) {
 		if (TPPQuestHelperFunctions.calculateReward(player)==0) {
 			mayor.say("Nie zabiłeś żadnych szczurów podczas inwazji #szczurów. "+
-					  "Aby odebrać #nagrodę musisz zabić conajmniej "+
+					  "Aby odebrać #nagrodę musisz zabić co najmniej "+
 					  "jednego szczura.");
 			return;
 		}

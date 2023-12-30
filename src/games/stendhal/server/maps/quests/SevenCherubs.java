@@ -91,6 +91,9 @@ public class SevenCherubs extends AbstractQuest {
 			nodes.add(new Node(x - 2, y - 2));
 			nodes.add(new Node(x, y - 2));
 			setPath(new FixedPath(nodes, true));
+
+			// hide location from website
+			hideLocation();
 		}
 
 		@Override

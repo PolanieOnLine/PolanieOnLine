@@ -111,7 +111,7 @@ public class RingOfTeleportation extends Item {
 		StendhalRPZone zone = player.getZone();
 
 		if (isUsed()) {
-			setInfoString(player.getID().getZoneID() + " " + player.getX() + " " + player.getY());
+			setItemData(player.getID().getZoneID() + " " + player.getX() + " " + player.getY());
 			activeRing();
 
 			return true;
@@ -120,16 +120,16 @@ public class RingOfTeleportation extends Item {
 			int x = 30;
 			int y = 40;
 
-			final String infostring = getInfoString();
-			if (infostring != null) {
-				final StringTokenizer st = new StringTokenizer(infostring);
+			final String itemdata = getItemData();
+			if (itemdata != null) {
+				final StringTokenizer st = new StringTokenizer(itemdata);
 				if (st.countTokens() == 3) {
 					// check destination
 					final String zoneName = st.nextToken();
 					final StendhalRPZone temp = SingletonRepository.getRPWorld().getZone(zoneName);
 					if (temp == null) {
 						player.sendPrivateText("Z dziwnych powodów pierścień nie przeniósł mnie tam gdzie chciałem.");
-						logger.warn("marked scroll to unknown zone " + infostring
+						logger.warn("marked scroll to unknown zone " + itemdata
 								+ " teleported " + player.getName() + " to Semos instead");
 					} else {
 						if (player.getKeyedSlot("!visited", zoneName) == null) {
@@ -147,7 +147,7 @@ public class RingOfTeleportation extends Item {
 
 			if (player.teleport(zone, x, y, null, player)) {
 				TeleportNotifier.get().notify(player, true);
-				setInfoString(null);
+				setItemData(null);
 				storeLastUsed();
 				usedRing();
 
@@ -170,9 +170,9 @@ public class RingOfTeleportation extends Item {
 			text += " Oto specjalna nagroda dla " + getBoundTo() + " za wykonanie zadania, która nie może być używana przez innych.";
 		}
 
-		final String infostring = getInfoString();
-		if (infostring != null) {
-			text += " Zapisana pozycja: " + infostring;
+		final String itemdata = getItemData();
+		if (itemdata != null) {
+			text += " Zapisana pozycja: " + itemdata;
 		}
 
 		return text;

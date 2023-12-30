@@ -245,7 +245,7 @@ public abstract class UpdateConverter {
 						zoneName = "ados";
 					}
 					doorId = zoneName + " house " + Integer.toString(id);
-					// now set the infostring of the house key to doorId;number;
+					// now set the itemdata of the house key to doorId;number;
 					item = SingletonRepository.getEntityManager().getItem("house key");
 					((HouseKey) item).setup(doorId, number, null);
 				} catch (final NumberFormatException e) {
@@ -272,8 +272,8 @@ public abstract class UpdateConverter {
 	public static void updatePlayerRPObject(final RPObject object) {
 		final String[] slotsNormal = { "bag", "rhand", "lhand", "head", "neck", "armor",
 				"legs", "glove", "feet", "finger", "cloak", "fingerb", "pas", "bank", "bank_ados", "bank_deniran",
-				"zaras_chest_ados", "bank_fado", "bank_nalwor", "bank_zakopane", "bank_krakow", "bank_gdansk", "spells",
-				"keyring", "magicbag", /*"portfolio", */ "trade", "pouch", "vault" };
+				"zaras_chest_ados", "bank_fado", "bank_kirdneh", "bank_magic", "bank_nalwor", "bank_zakopane", "bank_krakow",
+				"bank_gdansk", "spells", "keyring", "magicbag", /*"portfolio", */ "trade", "pouch", "vault" };
 
 		final String[] slotsSpecial = { "!quests", "!kills", "!buddy", "!ignore",
 				"!visited", "skills", "!tutorial"};
@@ -297,6 +297,7 @@ public abstract class UpdateConverter {
 		// Port from 0.57 to 0.58: bank_ados, bank_fado
 		// Port from 0.58 to ?: bank_nalwor, keyring, finger
 		// Port from 1.29 to 1.30: bank_deniran
+		// Port from 1.44 to 1.45: bank_magic, bank_kirdneh
 		for (final String slotName : slotsNormal) {
 			if (!object.hasSlot(slotName)) {
 				object.addSlot(new PlayerSlot(slotName));
@@ -536,18 +537,18 @@ public abstract class UpdateConverter {
 			return;
 		}
 
-		String infostring = item.getInfoString();
+		String itemdata = item.getItemData();
 
-		// infostring is null in tests
-		if (infostring == null) {
+		// itemdata is null in tests
+		if (itemdata == null) {
 			return;
 		}
 
-		String[] location = infostring.split(" ");
+		String[] location = itemdata.split(" ");
 		String zone = ZONE_MAPPING.get(location[0]);
 		if (zone != null) {
-			infostring = zone + " " + location[1] + " " + location[2];
-			item.setInfoString(infostring);
+			itemdata = zone + " " + location[1] + " " + location[2];
+			item.setItemData(itemdata);
 		}
 	}
 
@@ -649,6 +650,26 @@ public abstract class UpdateConverter {
 			final String fsState = player.getQuest(questSlot, 0);
 			if (!fsState.equals("done") && !fsState.equals("start")) {
 				player.setQuest(questSlot, "start;;;" + player.getQuest(questSlot));
+			}
+		}
+
+		// 1.44: Amazon Princess
+		questSlot = "amazon_princess";
+		if (player.hasQuest(questSlot)) {
+			final String fsState = player.getQuest(questSlot, 0);
+			if (fsState.equals("drinking")) {
+				player.setQuest(questSlot, 0, "done");
+			}
+		}
+
+		// 1.44: Campfire and Eggs for marianne
+		for (String slot : Arrays.asList("campfire", "eggs_for_marianne")) {
+			if (player.hasQuest(slot)) {
+				final String fsState = player.getQuest(slot, 0);
+				if (!fsState.equals("start") && !fsState.equals("rejected")) {
+					player.setQuest(slot, 1, fsState);
+					player.setQuest(slot, 0, "done");
+				}
 			}
 		}
 

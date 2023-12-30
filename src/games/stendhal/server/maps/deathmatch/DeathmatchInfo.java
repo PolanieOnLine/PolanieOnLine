@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -28,6 +28,7 @@ import games.stendhal.server.util.Area;
  */
 public class DeathmatchInfo {
 	private final DeathmatchArea arena;
+	private DeathmatchEngine dmEngine;
 	private final Spot entranceSpot;
 	private final StendhalRPZone zone;
 	private Map<String, Integer> helpers;
@@ -79,8 +80,15 @@ public class DeathmatchInfo {
 
 		final DeathmatchState deathmatchState = DeathmatchState.createStartState(player.getLevel());
 		player.setQuest("deathmatch", deathmatchState.toQuestString());
-		final DeathmatchEngine dmEngine = new DeathmatchEngine(player, this, raiser);
+		dmEngine = new DeathmatchEngine(player, this, raiser);
 		SingletonRepository.getTurnNotifier().notifyInTurns(0, dmEngine);
+	}
+
+	/**
+	 * Retrieves the `DeathmatchEngine` instance.
+	 */
+	public DeathmatchEngine getEngine() {
+		return dmEngine;
 	}
 
 	/**
@@ -90,6 +98,9 @@ public class DeathmatchInfo {
 	 * 		Name of player that helped with kill.
 	 */
 	public void addAidedKill(final String helper) {
+		if (helpers == null) {
+			helpers = new HashMap<>();
+		}
 		helpers.put(helper, getAidedKills(helper) + 1);
 	}
 
@@ -103,7 +114,7 @@ public class DeathmatchInfo {
 	 */
 	public int getAidedKills(final String helper) {
 		int aidedKills = 0;
-		if (helpers.containsKey(helper)) {
+		if (helpers != null && helpers.containsKey(helper)) {
 			aidedKills = helpers.get(helper);
 		}
 
@@ -114,6 +125,6 @@ public class DeathmatchInfo {
 	 * Checks if player was helped at all by another.
 	 */
 	public boolean wasAided() {
-		return helpers.size() > 0;
+		return helpers != null ? helpers.size() > 0 : false;
 	}
 }

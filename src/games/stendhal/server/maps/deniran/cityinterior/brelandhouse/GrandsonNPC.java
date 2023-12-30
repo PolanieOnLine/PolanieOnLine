@@ -35,6 +35,8 @@ public class GrandsonNPC implements ZoneConfigurator {
 		niall.setEntityClass("kid10npc");
 		niall.setGender("M");
 		niall.setPosition(9, 7);
+		// hide location from website
+		niall.hideLocation();
 		zone.add(niall);
 	}
 }

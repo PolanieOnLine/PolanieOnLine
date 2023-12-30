@@ -127,7 +127,7 @@ public class AdosDeathmatch extends AbstractQuest {
 					new AndCondition(new GreetingMatchesNameCondition(name),
 							new NotCondition(new PlayerInAreaCondition(arena))),
 					ConversationStates.INFORMATION_1,
-					"Witam na Deathmatchu w Ados! Porozmawiaj z #Thonatus jeżeli chcesz dołączyć",
+					"Witamy na arenie w Ados! Porozmawiaj z #Thonatus jeśli masz ochotę dołączyć do walki.",
 					null);
 				add(
 					ConversationStates.INFORMATION_1,
@@ -144,7 +144,6 @@ public class AdosDeathmatch extends AbstractQuest {
 					ConversationStates.INFORMATION_1,
 					"Tak jak powiedziałem, na południowym-zachodzie. Ale uważaj na bagnach kryją się potężne potwory.",
 					null);
-
 
 				add(
 					ConversationStates.INFORMATION_1,
@@ -176,7 +175,7 @@ public class AdosDeathmatch extends AbstractQuest {
 						new AndCondition(new GreetingMatchesNameCondition(name),
 								new PlayerInAreaCondition(arena)),
 						ConversationStates.ATTENDING,
-						"Witam na Deathmatchu w Ados! Potrzebujesz #pomocy?", null);
+						"Witamy na arenie w Ados! Potrzebujesz #pomocy?", null);
 				addJob("Jestem asystentem deathmatcha. Powiedz jeżeli będziesz potrzebował #pomocy.");
 				addHelp("Powiedz '#start' kiedy będziesz gotowy! Zabijaj #wszystko co się #pojawi. Powiedz 'zwycięstwo' kiedy przeżyjesz.");
 				addGoodbye("Mam nadzieję, że dobrze się bawiłeś na Deathmatchu!");
@@ -195,25 +194,46 @@ public class AdosDeathmatch extends AbstractQuest {
 					null);
 
 				// 'start' command will start spawning creatures
-				add(ConversationStates.ATTENDING, Arrays.asList("start", "go",
-					"fight", "walka"), null, ConversationStates.IDLE, null,
+				final List<String> startMessages = new LinkedList<>(ConversationPhrases.BEGIN_MESSAGES);
+				startMessages.add("fight");
+				startMessages.add("walka");
+				add(
+					ConversationStates.ATTENDING,
+					startMessages,
+					null,
+					ConversationStates.ATTENDING,
+					null,
 					new StartAction(deathmatchInfo));
 
 				// 'victory' command will scan, if all creatures are killed and
 				// reward the player
-				add(ConversationStates.ATTENDING, Arrays.asList("victory",
-					"done", "yay", "zwycięstwo", "zrobione"), null, ConversationStates.ATTENDING,
-					null, new DoneAction(deathmatchInfo));
+				add(
+					ConversationStates.ATTENDING,
+					Arrays.asList("victory", "done", "yay", "zwycięstwo", "zrobione"),
+					null,
+					ConversationStates.ATTENDING,
+					null,
+					new DoneAction(deathmatchInfo));
 
 				// 'leave' command will send the victorious player home
-				add(ConversationStates.ATTENDING, Arrays.asList("leave",
-					"home", "wychodzę", "dom", "wyjdź"), null,
-					ConversationStates.ATTENDING, null, new LeaveAction());
+				add(
+					ConversationStates.ATTENDING,
+					Arrays.asList("leave", "home", "wychodzę", "dom", "wyjdź"),
+					null,
+					ConversationStates.ATTENDING,
+					null,
+					new LeaveAction());
 
 				// 'bail' command will teleport the player out of it
-				add(ConversationStates.ANY, Arrays.asList("bail", "flee",
-					"run", "exit", "wycofuję", "poddaję", "rezygnuję", "wycofać"), null, ConversationStates.ATTENDING,
-					null, new BailAction());
+				add(
+					ConversationStates.ANY,
+					Arrays.asList("bail", "flee", "run", "exit", "wycofuję", "poddaję", "rezygnuję", "wycofać"),
+					null,
+					ConversationStates.ATTENDING,
+					null,
+					new BailAction());
+
+				addKnownChatOptions("wyjdź", "start", "rezygnuję");
 			}
 		};
 
@@ -347,5 +367,12 @@ public class AdosDeathmatch extends AbstractQuest {
 	@Override
 	public String getNPCName() {
 		return "Thonatus";
+	}
+
+	/**
+	 * Retrieves the `DeathmatchInfo` instance.
+	 */
+	public DeathmatchInfo getDeathmatchInfo() {
+		return deathmatchInfo;
 	}
 }

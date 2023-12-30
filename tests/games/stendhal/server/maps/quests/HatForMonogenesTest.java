@@ -29,6 +29,7 @@ import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.fsm.Engine;
+import games.stendhal.server.entity.npc.quest.BuiltQuest;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.semos.city.GreeterNPC;
 import games.stendhal.server.maps.semos.tavern.TraderNPC;
@@ -72,7 +73,7 @@ public class HatForMonogenesTest {
 
 		quest = new MeetMonogenes();
 		quest.addToWorld();
-		quest = new HatForMonogenes();
+		quest = new BuiltQuest(new HatForMonogenes().story());
 		quest.addToWorld();
 
 	}
@@ -84,6 +85,10 @@ public class HatForMonogenesTest {
 	public void testQuest() {
 		final Player player = PlayerTestHelper.createPlayer("player");
 		en.step(player, "hi");
+		assertEquals(
+				"Hi again, player. How can I #help you this time?",
+				getReply(npc));
+		en.step(player, "quest");
 		assertEquals(
 				"Witaj nieznajomy! Nie bądź zbyt onieśmielony, gdy ludzie siedzą cicho lub są zajęci... strach przed Blordroughtem i jego wojskami padł na cały kraj. Jesteśmy trochę zaniepokojeni. Mogę dać Tobie trochę rad odnośnie zawierania przyjaźni. Chciałbyś je usłyszeć?",
 				getReply(npc));

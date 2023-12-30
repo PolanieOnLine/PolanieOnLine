@@ -13,6 +13,9 @@ package games.stendhal.server.entity.npc.action;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.log4j.Logger;
 
 import games.stendhal.common.MathHelper;
@@ -22,6 +25,7 @@ import games.stendhal.server.core.config.annotations.Dev.Category;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.util.StringUtils;
 import games.stendhal.server.util.TimeUtil;
 
 /**
@@ -32,7 +36,6 @@ import games.stendhal.server.util.TimeUtil;
  */
 @Dev(category=Category.TIME, label="\"...\"")
 public class SayTimeRemainingAction implements ChatAction {
-
 	private static final Logger logger = Logger.getLogger(SayTimeRemainingAction.class);
 
 	private final String questname;
@@ -40,6 +43,7 @@ public class SayTimeRemainingAction implements ChatAction {
 	private String secondMessage = null;
 	private final int delay;
 	private final int index;
+	private boolean substitute = false;
 
 	/**
 	 * Creates a new SayTimeRemainingAction.
@@ -67,13 +71,34 @@ public class SayTimeRemainingAction implements ChatAction {
 	 *
 	 * @param questname
 	 *            name of quest-slot to check
+	 * @param index
+	 *            index of sub state
 	 * @param delay
 	 *            delay in minutes
 	 * @param message
 	 *            message to come before statement of remaining time
 	 *
 	 */
+	@Dev
+	public SayTimeRemainingAction(final String questname, @Dev(defaultValue="1") final int index, final int delay, final String message, boolean substitute) {
+		this.questname = checkNotNull(questname);
+		this.message = checkNotNull(message);
+		this.delay = delay;
+		this.index = index;
+		this.substitute = substitute;
+	}
 
+	/**
+	 * Creates a new SayTimeRemainingAction.
+	 *
+	 * @param questname
+	 *            name of quest-slot to check
+	 * @param delay
+	 *            delay in minutes
+	 * @param message
+	 *            message to come before statement of remaining time
+	 *
+	 */
 	public SayTimeRemainingAction(final String questname, final int delay, final String message) {
 		this.questname = checkNotNull(questname);
 		this.message = checkNotNull(message);
@@ -135,9 +160,18 @@ public class SayTimeRemainingAction implements ChatAction {
 				- System.currentTimeMillis();
 			// MathHelper.parseLong will catch the number format exception in case tokens[arg] is no number and return 0
 			// we trim the message of whitespace so that if the developer added a space at the end we don't now duplicate it
-			String msg = message.trim() + " " + TimeUtil.approxTimeUntil((int) (timeRemaining / 1000L)) + ".";
-			if (secondMessage != null) {
-				msg += " " + secondMessage.trim();
+			String timeString = TimeUtil.approxTimeUntil((int) (timeRemaining / 1000L));
+
+			String msg = null;
+			if (substitute) {
+				Map<String, String> props = new HashMap<String, String>();
+				props.put("remaining_time", timeString);
+				msg = StringUtils.substitute(message, props);
+			} else {
+				msg = message.trim() + " " + timeString + ".";
+				if (secondMessage != null) {
+					msg += " " + secondMessage.trim();
+				}
 			}
 			raiser.say(msg);
 		}

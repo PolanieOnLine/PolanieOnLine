@@ -30,8 +30,12 @@ import { PlayerEquipmentComponent } from "./ui/component/PlayerEquipmentComponen
 import { ZoneInfoComponent } from "./ui/component/ZoneInfoComponent";
 
 import { ApplicationMenuDialog } from "./ui/dialog/ApplicationMenuDialog";
+import { ChooseCharacterDialog } from "./ui/dialog/ChooseCharacterDialog";
+import { LoginDialog } from "./ui/dialog/LoginDialog";
 
 import { DesktopUserInterfaceFactory } from "./ui/factory/DesktopUserInterfaceFactory";
+
+import { SingletonFloatingWindow } from "./ui/toolkit/SingletonFloatingWindow";
 
 import { Chat } from "./util/Chat";
 import { DialogHandler } from "./util/DialogHandler";
@@ -40,10 +44,11 @@ import { DialogHandler } from "./util/DialogHandler";
 export class Client {
 
 	private initialized = false;
-	private loaded = false;
 	private errorCounter = 0;
+	private unloading = false;
+	public username?: string;
 
-	private zoneFile?: any;
+	private static click_indicator_id: number|undefined = undefined;
 
 	/** Singleton instance. */
 	private static instance: Client;
@@ -140,7 +145,16 @@ export class Client {
 
 		this.registerMarauroaEventHandlers();
 		this.registerBrowserEventHandlers();
-		marauroa.clientFramework.connect(null, null, Paths.ws.substring(1));
+
+		let ws = Paths.ws.substring(1);
+		if (stendhal.session.isTestClient() && !stendhal.session.isServerDefault()) {
+			ws = ws.replace(/t/, "s");
+			// disclaimer for using the test client on the main server
+			Chat.log("warning", "WARNING: You are connecting to the production server with a development"
+					+ " build of the test client which may contain bugs or not function as intented. Proceeed"
+					+ " with caution.");
+		}
+		marauroa.clientFramework.connect(null, null, ws);
 
 		stendhal.ui.actionContextMenu = new DialogHandler();
 		stendhal.ui.globalInternalWindow = new DialogHandler();
@@ -151,6 +165,8 @@ export class Client {
 
 		if (document.getElementById("gamewindow")) {
 			stendhal.ui.gamewindow.draw.apply(stendhal.ui.gamewindow, arguments);
+			// initialize on-screen joystick
+			stendhal.ui.gamewindow.updateJoystick();
 		}
 
 		// attributes to set after connection made
@@ -224,50 +240,69 @@ export class Client {
 	 * register marauroa event handlers.
 	 */
 	registerMarauroaEventHandlers() {
-		marauroa.clientFramework.onDisconnect = function(reason: string, error: string) {
-			Chat.logH("error", "Disconnected: " + error);
+		marauroa.clientFramework.onDisconnect = function(_reason: string, _error: string) {
+			if (!Client.instance.unloading) {
+				Chat.logH("error", "Disconnected from server.");
+			}
 		};
 
-		marauroa.clientFramework.onLoginRequired = function() {
-			window.location.href = "/index.php?id=content/account/login&url="
-				+ escape(window.location.pathname + window.location.hash);
+		marauroa.clientFramework.onLoginRequired = function(config: Record<string, string>) {
+			if (config["client_login_url"]) {
+				Client.instance.unloading = true;
+				let currentUrl = encodeURI(window.location.pathname + window.location.hash);
+				let url = config["client_login_url"].replace("[url]", currentUrl);
+				window.location.href = url;
+				return;
+			}
+
+			let body = document.getElementById("body")!;
+			body.style.cursor = "auto";
+			document.getElementById("loginpopup")!.style.display = "none";
+			ui.createSingletonFloatingWindow(
+				"Login",
+				new LoginDialog(),
+				100, 50);
 		};
 
-		marauroa.clientFramework.onLoginFailed = function(reason: string, text: string) {
-			alert("Login failed. Please login on the Stendhal website first and make sure you open the client on an https://-URL");
-			marauroa.clientFramework.close();
-			(document.getElementById("chatinput")! as HTMLInputElement).disabled = true;
-			document.getElementById("chat")!.style.backgroundColor = "#AAA";
+		marauroa.clientFramework.onCreateAccountAck = function(username: string) {
+			// TODO: We should login automatically
+			alert("Account succesfully created, please login.");
+			window.location.reload();
+		};
+
+		marauroa.clientFramework.onCreateCharacterAck = function(charname: string, _template: any) {
+			// Client.get().chooseCharacter(charname);
+		};
+
+		marauroa.clientFramework.onLoginFailed = function(_reason: string, _text: string) {
+			alert("Login failed. " + _text);
+			// TODO: Server closes the connection, so we need to open a new one
+			window.location.reload();
 		};
 
 		marauroa.clientFramework.onAvailableCharacterDetails = function(characters: {[key: string]: RPObject}) {
-			let name = null;
-			if (window.location.hash) {
-				name = window.location.hash.substring(1);
-				stendhal.session.setCharName(name);
-			} else {
-				name = stendhal.session.getCharName();
-				if (name == null || typeof(name) === "undefined" || name === "") {
-					name = marauroa.util.first(characters)["a"]["name"];
-					var admin = 0;
-					for (var i in characters) {
-						if (characters.hasOwnProperty(i)) {
-							if (characters[i]["a"]["adminlevel"] > admin) {
-								admin = characters[i]["a"]["adminlevel"];
-								name = characters[i]["a"]["name"];
-							}
-						}
-					}
-					stendhal.session.setCharName(name);
-				}
+			SingletonFloatingWindow.closeAll();
+			if (!Object.keys(characters).length && this.username) {
+				marauroa.clientFramework.createCharacter(this.username, {});
+				return;
 			}
-			marauroa.clientFramework.chooseCharacter(name);
-			var body = document.getElementById("body")!;
-			body.style.cursor = "auto";
-			Chat.log("client", "Loading world...");
+			if (window.location.hash) {
+				let name = window.location.hash.substring(1);
+				stendhal.session.setCharName(name);
+			}
 
-			// play login sound for this user
-			singletons.getSoundManager().playGlobalizedEffect("ui/login");
+			let name = stendhal.session.getCharName();
+			if (name) {
+				Client.get().chooseCharacter(name);
+				return;
+			}
+			let body = document.getElementById("body")!;
+			body.style.cursor = "auto";
+			document.getElementById("loginpopup")!.style.display = "none";
+			ui.createSingletonFloatingWindow(
+				"Choose Character",
+				new ChooseCharacterDialog(characters),
+				100, 50);
 		};
 
 		marauroa.clientFramework.onTransferREQ = function(items: any) {
@@ -298,7 +333,7 @@ export class Client {
 		if (document.getElementById("gamewindow")) {
 			// override perception listener
 			marauroa.perceptionListener = new PerceptionListener(marauroa.perceptionListener);
-			marauroa.perceptionListener.onPerceptionEnd = function(type: Int8Array, timestamp: number) {
+			marauroa.perceptionListener.onPerceptionEnd = function(_type: Int8Array, _timestamp: number) {
 				stendhal.zone.sortEntities();
 				(ui.get(UIComponentEnum.MiniMap) as MiniMapComponent).draw();
 				(ui.get(UIComponentEnum.BuddyList) as BuddyListComponent).update();
@@ -308,12 +343,27 @@ export class Client {
 					this.loaded = true;
 					// delay visibile change of client a little to allow for initialisation in the background for a smoother experience
 					setTimeout(function() {
+						let body = document.getElementById("body")!;
+						body.style.cursor = "auto";
 						document.getElementById("client")!.style.display = "block";
 						document.getElementById("loginpopup")!.style.display = "none";
 					}, 300);
 				}
 			}
 		}
+	}
+
+	chooseCharacter(name: string) {
+		stendhal.session.setCharName(name);
+		marauroa.clientFramework.chooseCharacter(name);
+		Chat.log("client", "Loading world...");
+
+		// play login sound for this user
+		singletons.getSoundManager().playGlobalizedEffect("ui/login");
+	}
+
+	onBeforeUnload() {
+		Client.instance.unloading = true;
 	}
 
 	/**
@@ -326,6 +376,7 @@ export class Client {
 		document.addEventListener("contextmenu", stendhal.main.preventContextMenu);
 
 		// handles closing the context menu
+		// FIXME: does not work for "touchstart" as it prevents actions on the context menu
 		document.addEventListener("mousedown", function(e) {
 			if (stendhal.ui.actionContextMenu.isOpen()) {
 				stendhal.ui.actionContextMenu.close(true);
@@ -333,6 +384,10 @@ export class Client {
 				e.stopPropagation();
 			}
 		});
+
+		window.addEventListener("beforeunload", () => {
+			this.onBeforeUnload();
+		})
 
 		document.getElementById("body")!.addEventListener("mouseenter", stendhal.main.onMouseEnter);
 
@@ -342,18 +397,27 @@ export class Client {
 		gamewindow.addEventListener("dblclick", stendhal.ui.gamewindow.onMouseDown);
 		gamewindow.addEventListener("dragstart", stendhal.ui.gamewindow.onDragStart);
 		gamewindow.addEventListener("mousemove", stendhal.ui.gamewindow.onMouseMove);
+		gamewindow.addEventListener("touchstart", stendhal.ui.gamewindow.onMouseDown);
 		gamewindow.addEventListener("touchend", stendhal.ui.gamewindow.onTouchEnd);
 		gamewindow.addEventListener("dragover", stendhal.ui.gamewindow.onDragOver);
 		gamewindow.addEventListener("drop", stendhal.ui.gamewindow.onDrop);
 		gamewindow.addEventListener("contextmenu", stendhal.ui.gamewindow.onContentMenu);
 		gamewindow.addEventListener("wheel", stendhal.ui.gamewindow.onMouseWheel);
 
+		// handle disengaging joystick when mouse button released outside joystick area
+		document.body.addEventListener("mouseup", (e: MouseEvent) => {
+			if (e.button == 0) {
+				stendhal.ui.gamewindow.joystick.reset();
+			}
+		});
+
 		var menubutton = document.getElementById("menubutton")!;
-		menubutton.addEventListener("click", (event) => {
-			const dialogState = stendhal.config.dialogstates["menu"];
+		menubutton.addEventListener("click", () => {
+			const dialogState = stendhal.config.getWindowState("menu");
 			const menuContent = new ApplicationMenuDialog();
 			const menuFrame = ui.createSingletonFloatingWindow(
 					"Menu", menuContent, dialogState.x, dialogState.y);
+			menuFrame.setId("menu");
 			menuContent.setFrame(menuFrame);
 		});
 
@@ -361,6 +425,20 @@ export class Client {
 		soundbutton.addEventListener("click", stendhal.main.toggleSound);
 		// update button state
 		this.onSoundToggled();
+
+		// click/touch indicator
+		// TODO:
+		//   - animate
+		//   - would work better if displayed upon mousedown/touchstart then position updated & timer
+		//     started upon release
+		const click_indicator = document.getElementById("click-indicator")! as HTMLImageElement;
+		click_indicator.onload = () => {
+			click_indicator.onload = null;
+			// FIXME: some event handlers cancel propagation
+			document.addEventListener("click", Client.handleClickIndicator);
+			document.addEventListener("touchend", Client.handleClickIndicator);
+		};
+		click_indicator.src = stendhal.paths.gui + "/click_indicator.png";
 	}
 
 	toggleSound() {
@@ -403,7 +481,6 @@ export class Client {
 		var deserializer = marauroa.Deserializer.fromBase64(data);
 		deserializer.readAttributes(zoneinfo);
 		(ui.get(UIComponentEnum.ZoneInfo) as ZoneInfoComponent).zoneChange(zoneinfo);
-		this.zoneFile = zoneinfo["file"];
 		// Object { file: "Level 0/semos/city_easter.tmx", danger_level: "0.036429932929822995", zoneid: "", readable_name: "Semos city", id: "-1", color_method: "multiply" }
 		singletons.getWeatherRenderer().update(zoneinfo["weather"]);
 	}
@@ -415,5 +492,23 @@ export class Client {
 	onMouseEnter(e: MouseEvent) {
 		// use Stendhal's built-in cursor for entire page
 		(e.target as HTMLElement).style.cursor = "url(" + stendhal.paths.sprites + "/cursor/normal.png) 1 3, auto";
+	}
+
+	static handleClickIndicator(e: Event) {
+		if (!stendhal.config.getBoolean("input.click.indicator")) {
+			return;
+		}
+		if (Client.click_indicator_id !== undefined) {
+			clearTimeout(Client.click_indicator_id);
+			Client.click_indicator_id = undefined;
+		}
+		const pos = stendhal.data.html.extractPosition(e);
+		const click_indicator = document.getElementById("click-indicator")! as HTMLImageElement;
+		click_indicator.style["left"] = (pos.pageX - (click_indicator.width / 2)) + "px";
+		click_indicator.style["top"] = (pos.pageY - (click_indicator.height / 2)) + "px";
+		click_indicator.style["display"] = "inline";
+		Client.click_indicator_id = setTimeout(function() {
+			click_indicator.style["display"] = "none";
+		}, 300);
 	}
 }

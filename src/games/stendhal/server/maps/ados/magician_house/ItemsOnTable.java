@@ -33,7 +33,7 @@ public class ItemsOnTable implements ZoneConfigurator {
 
 	private void buildMagicianHouseArea(final StendhalRPZone zone) {
 		final Item item = addPersistentItem("zwój przywołania", zone, 7, 6);
-		item.setInfoString("giant_red_dragon");
+		item.setItemData("giant_red_dragon");
 
 		// Plant grower for poison
 		final PassiveEntityRespawnPoint plantGrower = new PassiveEntityRespawnPoint("trucizna", 1500);

@@ -21,6 +21,7 @@ import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.events.ChatOptionsEvent;
 
 /**
  * a finite state machine.
@@ -590,15 +591,21 @@ public class Engine {
 		}
 
 		currentState = nextState;
-        if (currentState == ConversationStates.ATTENDING) {
-        	speakerNPC.setIdea("attending");
-        } else if (currentState != ConversationStates.IDLE) {
-        	speakerNPC.setIdea("awaiting");
-        }
+		if (currentState == ConversationStates.ATTENDING) {
+			speakerNPC.setIdea("attending");
+		} else if (currentState != ConversationStates.IDLE) {
+			speakerNPC.setIdea("awaiting");
+		}
 		if (trans.getAction() != null) {
 			trans.getAction().fire(player, sentence, new EventRaiser(speakerNPC));
 		}
 
+		addChatOptionsEvent(player);
+	}
+
+	public void addChatOptionsEvent(final Player player) {
+		player.addEvent(new ChatOptionsEvent(speakerNPC, player, currentState));
+		player.notifyWorldAboutChanges();
 		speakerNPC.notifyWorldAboutChanges();
 	}
 

@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2016 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,6 +11,7 @@
  ***************************************************************************/
 package games.stendhal.server.actions.chat;
 
+import static games.stendhal.common.constants.Actions.CHAT;
 import static games.stendhal.common.constants.Actions.TARGET;
 import static games.stendhal.common.constants.Actions.TEXT;
 
@@ -27,7 +28,6 @@ import marauroa.common.game.RPAction;
  * handles /tell-action (/msg-action).
  */
 public class TellAction implements ActionListener {
-
 	/**
 	 * creates the full message based on the text provided by the player
 	 *
@@ -55,7 +55,6 @@ public class TellAction implements ActionListener {
 		String senderName = player.getName();
 		String receiverName = action.get(TARGET);
 
-
 		final String message = createFullMessageText(senderName, receiverName, text);
 		Player receiver = SingletonRepository.getRuleProcessor().getPlayer(receiverName);
 
@@ -67,7 +66,6 @@ public class TellAction implements ActionListener {
 		}
 
 		receiver.setLastPrivateChatter(senderName);
-		new GameEvent(player.getName(), "chat", receiverName, Integer.toString(text.length()), text.substring(0, Math.min(text.length(), 1000))).raise();
+		new GameEvent(player.getName(), CHAT, receiverName, Integer.toString(text.length()), text.substring(0, Math.min(text.length(), 1000))).raise();
 	}
-
 }

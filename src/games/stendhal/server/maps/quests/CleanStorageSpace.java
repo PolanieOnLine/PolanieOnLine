@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2022 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,11 +11,14 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
+import java.util.Arrays;
+
+import games.stendhal.server.entity.npc.NPCList;
+import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.EquipItemAction;
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
 import games.stendhal.server.entity.npc.action.IncreaseXPAction;
-import games.stendhal.server.entity.npc.quest.KillCreaturesTask;
-import games.stendhal.server.entity.npc.quest.QuestBuilder;
+import games.stendhal.server.entity.npc.quest.KillCreaturesQuestBuilder;
 import games.stendhal.server.entity.npc.quest.QuestManuscript;
 import games.stendhal.server.maps.Region;
 
@@ -37,14 +40,15 @@ import games.stendhal.server.maps.Region;
  * <li> None.
  */
 public class CleanStorageSpace implements QuestManuscript {
-	public QuestBuilder<?> story() {
-		QuestBuilder<KillCreaturesTask> quest = new QuestBuilder<>(new KillCreaturesTask());
+	public KillCreaturesQuestBuilder story() {
+		KillCreaturesQuestBuilder quest = new KillCreaturesQuestBuilder();
 
 		quest.info()
 			.name("Porządki w Piwnicy")
 			.description("W piwnicy Eonny zagnieździły się szczury i węże. Potrzebuje mnie, prawdziwego bohatera, abym pomógł jej.")
 			.internalName("clean_storage")
-			.repeatable(false)
+			.notRepeatable()
+			.minLevel(0)
 			.region(Region.SEMOS_CITY)
 			.questGiverNpc("Eonna");
 
@@ -61,7 +65,10 @@ public class CleanStorageSpace implements QuestManuscript {
 			.respondToAccept("Och, dziękuję! Poczekam tutaj, a jeżeli spróbują uciec to uderzę je moją miotłą!")
 			.respondToReject("*chlip* Cóż, może ktoś inny będzie moim bohaterem...")
 			.respondTo("basement", "storage space", "piwnica", "piwnicy").saying("Tak, idź na dół po schodach. Tam jest cała gromada obrzydliwych szczurów. Chyba widziałam tam też węża. Powinieneś uważać... Wciąż chcesz mi pomóc?")
-			.remind("Nie pamiętasz, że obiecałeś mi pomóc w oczyszczeniu mojej piwnicy ze szczurów?");
+			.remind("Nie pamiętasz, że obiecałeś mi pomóc w oczyszczeniu mojej #piwnicy ze szczurów?");
+
+		final SpeakerNPC npc = NPCList.get().get("Eonna");
+		npc.addReply(Arrays.asList("basement", "piwnicy"), "W dół po schodach, jak mówiłam. Proszę, pozbądź się tych wszystkich szczurów i zobacz, czy nie uda ci się znaleźć również węża!");
 
 		quest.task()
 			.requestKill(1, "szczur")
@@ -70,9 +77,9 @@ public class CleanStorageSpace implements QuestManuscript {
 
 		quest.complete()
 			.greet("Nareszcie! Mój bohater się odnalazł, dziękuję!")
-			.rewardWith(new IncreaseXPAction(500))
-			.rewardWith(new IncreaseKarmaAction(10.0))
-			.rewardWith(new EquipItemAction("buteleczka wody", 10));
+			.rewardWith(new IncreaseXPAction(100))
+			.rewardWith(new IncreaseKarmaAction(5.0))
+			.rewardWith(new EquipItemAction("buteleczka wody", 5));
 
 		return quest;
 	}

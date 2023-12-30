@@ -11,32 +11,26 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.SingletonRepository;
-import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
+import games.stendhal.server.entity.npc.NPCList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.action.DropItemAction;
 import games.stendhal.server.entity.npc.action.EquipItemAction;
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
 import games.stendhal.server.entity.npc.action.IncreaseXPAction;
 import games.stendhal.server.entity.npc.action.MultipleActions;
 import games.stendhal.server.entity.npc.action.SetQuestAction;
-import games.stendhal.server.entity.npc.action.SetQuestAndModifyKarmaAction;
 import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
 import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.npc.condition.PlayerHasItemWithHimCondition;
-import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
-import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.entity.npc.quest.BringItemQuestBuilder;
+import games.stendhal.server.entity.npc.quest.QuestManuscript;
 import games.stendhal.server.maps.Region;
 import games.stendhal.server.maps.orril.magician_house.WitchNPC;
 import games.stendhal.server.maps.semos.library.LibrarianNPC;
@@ -60,139 +54,59 @@ import games.stendhal.server.util.ResetSpeakerNPC;
  *
  * REWARD:
  * <ul>
- * <li> 500 XP </li>
+ * <li> 100 XP </li>
  * <li> some karma (10 + (5 | -5) </li>
- * <li> 150 gold coins </li>
+ * <li> 50 gold coins </li>
  * </ul>
  *
  * REPETITIONS: None
  */
-public class LookBookforCeryl extends AbstractQuest {
-	private static final String QUEST_SLOT = "ceryl_book";
-	private final SpeakerNPC npc = npcs.get("Ceryl");
-	
-	private void step1LearnAboutQuest() {
-		npc.add(ConversationStates.ATTENDING,
-			ConversationPhrases.QUEST_MESSAGES,
-			new QuestNotStartedCondition(QUEST_SLOT),
-			ConversationStates.ATTENDING, 
-			"Szukam specjalnej #książki. ", null);
+public class LookBookforCeryl implements QuestManuscript {
+	private final static String QUEST_SLOT = "ceryl_book";
 
-		npc.add(ConversationStates.ATTENDING,
-			ConversationPhrases.QUEST_MESSAGES,
-			new QuestCompletedCondition(QUEST_SLOT),
-			ConversationStates.ATTENDING, 
-			"Nie mam nic dla Ciebie.", null);
-			
-		/* Other conditions not met e.g. quest completed */
-		npc.addReply(Arrays.asList("book", "książki", "książka"),"Jeśli chcesz dowiedzieć się więcej, porozmawiać z moim przyjacielem Wikipedian w bibliotece Ados.", null);
+	@Override
+	public BringItemQuestBuilder story() {
+		BringItemQuestBuilder quest = new BringItemQuestBuilder();
 
-		/* If quest is not started yet, start it. */
-		npc.add(
-			ConversationStates.ATTENDING,
-			Arrays.asList("book", "książki", "książka"),
-			new QuestNotStartedCondition(QUEST_SLOT),
-			ConversationStates.QUEST_OFFERED,
-			"Czy możesz poprosić #Jynath, aby zwróciła książkę? Przetrzymuje ją od miesiąca, a ludzie szukają jej.",
-			null);
+		quest.info()
+			.name("Znajdź Książkę Ceryla")
+			.description("Ceryl chce starej książki, która została wypożyczona.")
+			.internalName(QUEST_SLOT)
+			.notRepeatable()
+			.minLevel(0)
+			.region(Region.SEMOS_CITY)
+			.questGiverNpc("Ceryl");
 
-		npc.add(
-			ConversationStates.QUEST_OFFERED,
-			ConversationPhrases.YES_MESSAGES,
-			null,
-			ConversationStates.ATTENDING,
-			"Wspaniale! Proszę przynieś ją szybko jak to tylko możliwe... jest długa lista oczekujących!",
-			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "start", 5.0));
+		quest.history()
+			.whenNpcWasMet("Spotkałem Ceryla w bibliotece, on jest tam bibliotekarzem.")
+			.whenQuestWasRejected("Nie chcę szukać tej książki.")
+			.whenQuestWasAccepted("Obiecałem zdobyć czarną książkę od Jynath.")
+			.whenTaskWasCompleted("Porozmawiałem z Jynath i zdobyłem książkę.")
+			.whenQuestWasCompleted("Oddałem książkę Cerylowi i dostałem małą nagrodę.");
 
-		npc.add(
-			ConversationStates.QUEST_OFFERED,
-			ConversationPhrases.NO_MESSAGES,
-			null,
-			ConversationStates.ATTENDING,
-			"Och... Powinienem wybrać kogoś innego do zrobienia tego.",
-			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -5.0));
+		quest.offer()
+			.respondToRequest("Szukam bardzo specjalnej książki. Czy mógłbyś poprosić #Jynath, żeby ją zwróciła? Ma ją od miesięcy, a ludzie pytają o nią.")
+			.respondToUnrepeatableRequest("Teraz nie mam dla ciebie nic.")
+			.respondToAccept("Świetnie! Proszę, zdobądź ją tak szybko, jak to możliwe... jest długa lista oczekujących!")
+			.respondTo("jynath").saying("Jynath to czarownica mieszkająca na południowy zachód od zamku Or'ril, na południowy zachód stąd. Więc, zdobędziesz dla mnie tę książkę?")
+			.respondToReject("Och... przypuszczam, że będę musiał znaleźć kogoś innego, kto to zrobi.")
+			.rejectionKarmaPenalty(5.0)
+			.remind("Teraz naprawdę potrzebuję tej książki! Idź porozmawiaj z #Jynath.");
 
-		npc.add(
-			ConversationStates.QUEST_OFFERED,
-			"jynath",
-			null,
-			ConversationStates.QUEST_OFFERED,
-			"Jynath jest wiedźmą mieszkającą na południe od zamku Or'ril, a na południowy zachód stąd. Zdobędziesz dla mnie tą książkę?",
-			null);
+		SpeakerNPC npc = NPCList.get().get("Ceryl");
+		npc.addReply("jynath", "Jynath to czarownica mieszkająca na południowy zachód od zamku Or'ril, na południowy zachód stąd.");
+		step2getBook();
 
-		/* Remind player about the quest */
-		npc.add(ConversationStates.ATTENDING, Arrays.asList("book", "książki", "książka"),
-			new QuestInStateCondition(QUEST_SLOT, "start"),
-			ConversationStates.ATTENDING,
-			"Potrzebuję tej książki! Idź i porozmawiaj z #Jynath.", null);
+		quest.task()
+			.requestItem(1, "księga czarna");
 
-		npc.add(
-			ConversationStates.ATTENDING,
-			"jynath",
-			null,
-			ConversationStates.ATTENDING,
-			"Jynath jest wiedźmą mieszkającą na południe od zamku Or'ril, a na południowy zachód stąd.",
-			null);
-	}
-
-	private void step2getBook() {
-		final SpeakerNPC npc = npcs.get("Jynath");
-
-		/**
-		 * If player has quest and is in the correct state, just give him the
-		 * book.
-		 */
-		npc.add(
-			ConversationStates.IDLE,
-			ConversationPhrases.GREETING_MESSAGES,
-			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-					new QuestInStateCondition(QUEST_SLOT, "start")),
-			ConversationStates.ATTENDING,
-			"Och, Ceryl chce tą książkę z powrotem? Mój boże! Kompletnie zapomniałam o tym... oto ona!",
-			new MultipleActions(new EquipItemAction("księga czarna", 1, true), new SetQuestAction(QUEST_SLOT, "jynath")));
-
-		/* If player keep asking for book, just tell him to hurry up */
-		npc.add(
-			ConversationStates.IDLE,
-			ConversationPhrases.GREETING_MESSAGES,
-			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-					new QuestInStateCondition(QUEST_SLOT, "jynath")),
-			ConversationStates.ATTENDING,
-			"Lepiej weź tą książkę z powrotem do #Ceryl szybko... on czeka na Ciebie.",
-			null);
-
-		npc.add(ConversationStates.ATTENDING, "ceryl", null,
-			ConversationStates.ATTENDING,
-			"Ceryl jest bibliotekarzem w Semos.", null);
-
-		/* Finally if player didn't start the quest, just ignore him/her */
-		npc.add(
-			ConversationStates.ATTENDING,
-			"książka",
-			new QuestNotStartedCondition(QUEST_SLOT),
-			ConversationStates.ATTENDING,
-			"Ciii! Koncentruję się nad recepturą mikstury... jest zawiła.",
-			null);
-	}
-
-	private void step3returnBook() {
-		/* Complete the quest */
-		final List<ChatAction> reward = new LinkedList<ChatAction>();
-		reward.add(new DropItemAction("księga czarna"));
-		reward.add(new EquipItemAction("money", 150));
-		reward.add(new IncreaseXPAction(500));
-		reward.add(new IncreaseKarmaAction(10.0));
-		reward.add(new SetQuestAction(QUEST_SLOT, "done"));
-
-		npc.add(
-			ConversationStates.IDLE,
-			ConversationPhrases.GREETING_MESSAGES,
-			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-					new QuestInStateCondition(QUEST_SLOT, "jynath"),
-					new PlayerHasItemWithHimCondition("księga czarna")),
-			ConversationStates.ATTENDING,
-			"Och, masz książkę z powrotem! Uff, dziękuję!",
-			new MultipleActions(reward));
+		quest.complete()
+			.greet("Cześć, czy zdobyłeś książkę od Jynath?")
+			.respondToReject("Och... przypuszczam, że będę musiał znaleźć kogoś innego, kto to zrobi.")
+			.respondToAccept("O, odebrałeś książkę! Uff, dzięki!")
+			.rewardWith(new IncreaseXPAction(100))
+			.rewardWith(new IncreaseKarmaAction(10))
+			.rewardWith(new EquipItemAction("money", 50));
 
 		// There is no other way to get the book.
 		// Remove that quest slot so that the player can get
@@ -205,75 +119,58 @@ public class LookBookforCeryl extends AbstractQuest {
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 					new QuestInStateCondition(QUEST_SLOT, "jynath"),
 					new NotCondition(new PlayerHasItemWithHimCondition("księga czarna"))),
-			ConversationStates.ATTENDING, 
-			"Nie przyniosłeś tej #książki od #Jynath? Proszę idź jej poszukać. Szybko!",
-			new SetQuestAction(QUEST_SLOT, null));
+			ConversationStates.ATTENDING,
+			"Czy nie odzyskałeś jeszcze tej książki od Jynath? Proszę, poszukaj jej szybko!",
+			new SetQuestAction(QUEST_SLOT, "start"));
+
+		return quest;
 	}
 
-	@Override
-	public void addToWorld() {
-		fillQuestInfo(
-				"Poszukiwania Książki Ceryla",
-				"Ceryl chce odzyskać książkę.",
-				false);
-		step1LearnAboutQuest();
-		step2getBook();
-		step3returnBook();
+	private void step2getBook() {
+		final SpeakerNPC npc = NPCList.get().get("Jynath");
+
+		/**
+		 * If player has quest and is in the correct state, just give him the
+		 * book.
+		 */
+		npc.add(
+			ConversationStates.IDLE,
+			ConversationPhrases.GREETING_MESSAGES,
+			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
+					new QuestInStateCondition(QUEST_SLOT, "start")),
+			ConversationStates.ATTENDING,
+			"Och, Ceryl szuka tej książki z powrotem? O rany! Całkiem o niej zapomniałam... proszę bardzo!",
+			new MultipleActions(new EquipItemAction("księga czarna", 1, true), new SetQuestAction(QUEST_SLOT, "jynath")));
+
+		/** If player keeps asking for the book, just tell him to hurry up */
+		npc.add(
+			ConversationStates.IDLE,
+			ConversationPhrases.GREETING_MESSAGES,
+			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
+					new QuestInStateCondition(QUEST_SLOT, "jynath")),
+			ConversationStates.ATTENDING,
+			"Lepiej szybko oddaj tę książkę do #Ceryla... na pewno będzie na ciebie czekał.",
+			null);
+
+		npc.add(ConversationStates.ATTENDING, "ceryl", null,
+			ConversationStates.ATTENDING,
+			"Ceryl to oczywiście bibliotekarz w Semos.", null);
+
+		/** Finally if player didn't start the quest, just ignore him/her */
+		npc.add(
+			ConversationStates.ATTENDING,
+			Arrays.asList("book", "książka"),
+			new QuestNotStartedCondition(QUEST_SLOT),
+			ConversationStates.ATTENDING,
+			"Sssz! Koncentruję się na przepisie na tę miksturę... to trudne wyzwanie.",
+			null);
 	}
 
-	@Override
 	public boolean removeFromWorld() {
-		final boolean res = ResetSpeakerNPC.reload(new LibrarianNPC(), getNPCName())
+		final boolean res = ResetSpeakerNPC.reload(new LibrarianNPC(), "Ceryl")
 			&& ResetSpeakerNPC.reload(new WitchNPC(), "Jynath");
 		// reload other quests associated with Ceryl
 		SingletonRepository.getStendhalQuestSystem().reloadQuestSlots("obsidian_knife");
 		return res;
-	}
-
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Ceryl w bibliotece, jest tam bibliotekarzem.");
-		final String questState = player.getQuest(QUEST_SLOT);
-		if (questState.equals("rejected")) {
-			res.add("Nie chcę szukać książki.");
-		}
-		if (player.isQuestInState(QUEST_SLOT, "start", "jynath", "done")) {
-			res.add("Chcę znaleźć czarną księgę.");
-		}
-		if (questState.equals("jynath") && player.isEquipped("księga czarna")
-				|| questState.equals("done")) {
-			res.add(Grammar.genderVerb(player.getGender(), "Rozmawiałem") + " z Jynath i mam książkę.");
-		}
-		if (questState.equals("jynath") && !player.isEquipped("księga czarna")) {
-			res.add("Nie mam książki od Jynath.");
-		}
-		if (questState.equals("done")) {
-			res.add(Grammar.genderVerb(player.getGender(), "Zwróciłem") + " książkę Cerylowi i " + Grammar.genderVerb(player.getGender(), "dostałem") + " nagrodę.");
-		}
-		return res;
-	}
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
-	@Override
-	public String getName() {
-		return "Poszukiwania Książki Ceryla";
-	}
-	
-	@Override
-	public String getRegion() {
-		return Region.SEMOS_CITY;
-	}
-
-	@Override
-	public String getNPCName() {
-		return npc.getName();
 	}
 }

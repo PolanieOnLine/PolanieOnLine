@@ -87,12 +87,12 @@ public class ChildrensFriendStub {
 		en.step(player, "hi");
 		en.step(player, "yes");
 
-		// don't need to say "bye"
-		assertEquals(ConversationStates.IDLE, en.getCurrentState());
+		en.step(player, "bye");
 
 		equipWithItem(player, "pluszowy miś");
 
 		en.step(player, "hi");
+		en.step(player, "yes");
 		en.step(player, "bye");
 
 		assertEquals("done", player.getQuest(questSlot, 0));

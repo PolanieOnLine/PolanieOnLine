@@ -56,16 +56,12 @@ public class GhostNPC implements ZoneConfigurator {
 			}
 		};
 
-		ghost.setDescription("A cóż to? To jakaś świetlista postać zmarłego człowieka! Nie masz pojęcia dlaczego wciąż nie odszedł do świata umarłych.");
-		ghost.setResistance(0);
+		ghost.setDescription("Oto świetlista postać zmarłego człowieka! Nie masz pojęcia w jaki sposób umarł.");
 		ghost.setEntityClass("man_000_npc");
-		// he is a ghost so he is see through
-		ghost.setVisibility(50);
 		ghost.setPosition(3, 4);
 		// he has low HP
 		ghost.initHP(30);
 		ghost.setBaseHP(100);
-		ghost.put("no_shadow", "");
 		zone.add(ghost);
 	}
 }

@@ -11,36 +11,14 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.log4j.Logger;
-
-import games.stendhal.common.Rand;
-import games.stendhal.common.grammar.Grammar;
-import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.rp.StendhalQuestSystem;
 import games.stendhal.server.entity.Outfit;
-import games.stendhal.server.entity.item.Item;
-import games.stendhal.server.entity.item.StackableItem;
-import games.stendhal.server.entity.npc.ChatAction;
-import games.stendhal.server.entity.npc.ConversationPhrases;
-import games.stendhal.server.entity.npc.ConversationStates;
-import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.NPCList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.action.InflictStatusOnNPCAction;
-import games.stendhal.server.entity.npc.condition.AndCondition;
-import games.stendhal.server.entity.npc.condition.NotCondition;
-import games.stendhal.server.entity.npc.condition.OutfitCompatibleWithClothesCondition;
-import games.stendhal.server.entity.npc.condition.QuestActiveCondition;
-import games.stendhal.server.entity.npc.condition.QuestNotActiveCondition;
-import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.entity.npc.quest.DeliverItemQuestBuilder;
+import games.stendhal.server.entity.npc.quest.QuestManuscript;
 import games.stendhal.server.maps.Region;
 import games.stendhal.server.maps.quests.houses.HouseBuyingMain;
 import games.stendhal.server.maps.semos.bakery.ChefNPC;
@@ -80,559 +58,238 @@ import games.stendhal.server.util.ResetSpeakerNPC;
  * chance to do the current delivery on time.
  * </ul>
  */
-public class PizzaDelivery extends AbstractQuest {
-	private static final String QUEST_SLOT = "pizza_delivery";
-
-	private static final Logger logger = Logger.getLogger(PizzaDelivery.class);
-
-	private final static Outfit UNIFORM = new Outfit(null, Integer.valueOf(997), null, null, null, null, null, null, null);
-
-	/**
-	 * A customer data object.
-	 */
-	static class CustomerData {
-		/** A hint where to find the customer. */
-		private final String npcDescription;
-
-		/** The pizza style the customer likes. */
-		private final String flavor;
-
-		/** The time until the pizza should be delivered. */
-		private final int expectedMinutes;
-
-		/** The money the player should get on fast delivery. */
-		private final int tip;
-
-		/**
-		 * The experience the player should gain for delivery. When the pizza
-		 * has already become cold, the player will gain half of this amount.
-		 */
-		private final int xp;
-
-		/**
-		 * The text that the customer should say upon quick delivery. It should
-		 * contain %d as a placeholder for the tip, and can optionally contain
-		 * %s as a placeholder for the pizza flavor.
-		 */
-		private final String messageOnHotPizza;
-
-		/**
-		 * The text that the customer should say upon quick delivery. It can
-		 * optionally contain %s as a placeholder for the pizza flavor.
-		 */
-		private final String messageOnColdPizza;
-
-		/**
-		 * The min level player who can get to this NPC
-		 */
-		private final int level ;
-
-		/**
-		 * Creates a CustomerData object.
-		 *
-		 * @param npcDescription
-		 * @param flavor
-		 * @param expectedTime
-		 * @param tip
-		 * @param xp
-		 * @param messageHot
-		 * @param messageCold
-		 * @param level
-		 */
-		CustomerData(final String npcDescription, final String flavor,
-				final int expectedTime, final int tip, final int xp, final String messageHot,
-				final String messageCold, final int level) {
-			this.npcDescription = npcDescription;
-			this.flavor = flavor;
-			this.expectedMinutes = expectedTime;
-			this.tip = tip;
-			this.xp = xp;
-			this.messageOnHotPizza = messageHot;
-			this.messageOnColdPizza = messageCold;
-			this.level = level;
-		}
-
-		/**
-		 * Get the minimum level needed for the NPC
-		 *
-		 * @return minimum level
-		 */
-		public int getLevel() {
-			return level;
-		}
-	}
-
-	private static Map<String, CustomerData> customerDB;
-
-	// Don't add Sally here, as it would conflict with Leander telling
-	// about his daughter.
-	private static void buildCustomerDatabase() {
-		customerDB = new HashMap<String, CustomerData>();
-
-		customerDB.put("Balduin",
-			new CustomerData(
-				"Balduin jest pustelnikiem, który żyje na górze między Semos, a Ados.",
-				"Pizza Prosciutto",
-				// minutes to deliver. Tested by mort: 6:30
-				// min, with killing some orcs.
-				7,
-				// tip when delivered on time. Quite
-				// high because you can't do much
-				// senseful on top of the hill and must
-				// walk down again.
-				200,
-				// experience gain for delivery
-				300,
-				"Dziękuję! Zastanawiam się jakim sposobem udało Ci się dostarczyć pizzę tak szybko. Weź te %d monet jako napiwek. Tutaj nie mam ich jak wydać!",
-				"Brrr. ta %s nie jest gorąca. Dziękuję, że próbowaleś.",
-				10));
-
-		customerDB.put("Cyk",
-			new CustomerData(
-				"Cyk jest na wakacjach na Athor Island. łatwo go rozpoznasz po niebieskich włosach.",
-				"Pizza Hawaii",
-				// minutes to deliver. You need about 6 min
-				// to Eliza, up to 12 min to wait for the
-				// ferry, 5 min for the crossing, and 0.5
-				// min from the docks to the beach, so you
-				// need a bit of luck for this one.
-				20,
-				// tip when delivered on time
-				300,
-				// experience gain for delivery
-				500,
-				"Nie sądziłem, że uda Ci się to dostarczyć! Jesteś wielki! Weź tę %s pieniędzy!",
-				"Przyszła zimna, ale czego się mogłem spodziewać skoro pizza jest z piekarni daleko stąd... Dzięki.",
-				20));
-
-		customerDB.put("Eliza",
-			new CustomerData(
-				"Eliza pracuje dla przewoźnika na Athor Island. Znajdziesz ją w porcie na południu od bagien w Ados.",
-				"Pizza del Mare",
-				// minutes to deliver. Tested by mort: 6
-				// min, ignoring slow animals and not
-				// walking through the swamps.
-				7,
-				// tip when delivered on time.
-				170,
-				// experience gain for delivery
-				300,
-				"Nieprawdopodobne! Wciąż gorąca! Kup coś sobie za %d złota!",
-				"Co za szkoda. Przyszła zimna. W każdym razie dziękuję!",
-				20));
-
-		customerDB.put("Fidorea",
-			new CustomerData(
-				"Fidorea mieszka w mieście Ados. Ona jest charakteryzatorką.",
-				"Pizza Napoli",
-				// minutes to deliver. Tested by mort: about
-				// 6 min, outrunning all enemies.
-				7,
-				// tip when delivered on time
-				150,
-				// experience gain for delivery
-				200,
-				"Dziękuję bardzo! Urodziłeś się wprost do roznoszenia pizzy. Trzymaj %d złota jako napiwek!",
-				"Brr. Zimna pizza.",
-				15));
-
-		customerDB.put("Haizen",
-			new CustomerData(
-				"Haizen jest magiem, który mieszka w domku niedaleko drogi do Ados.",
-				"Pizza Diavolo",
-				// minutes to deliver. Tested by kymara:
-				// exactly 3 min.
-				4,
-				// tip when delivered on time
-				80,
-				// experience gain for delivery
-				150,
-				"Ach, moja %s! I jest świeżo wyjęta z pieca! Weź te %d monet jako napiwek!",
-				"Mam nadzieję, że następnym razem dostanę gorącą pizzę.",
-				10));
-
-		customerDB.put(
-			"Jenny",
-			new CustomerData(
-				"Jenny jest właścicielką młyna niedaleko Semos.",
-				"Pizza Margherita",
-				// minutes to deliver. Tested by mort: can
-				// be done in 1:15 min, with no real danger.
-				2,
-				// tip when delivered on time
-				20,
-				// experience gain for delivery
-				50,
-				"Ach, przyniosłeś mi %s! Bardzo miło! Weź te %d monet jako napiwek!",
-				"Co za szkoda. Twój serwis pizzy nie umie dostarczyć gorącej pizzy choć piekarnia jest tuż za rogiem.",
-				2));
-
-		customerDB.put("Jynath",
-			new CustomerData(
-				"Jynath jest wiedźmą, która mieszka w małym domku na południe od zamku Or'ril.",
-				"Pizza Funghi",
-				// minutes to deliver. Tested by mort: 5:30
-				// min, leaving the slow monsters on the way
-				// behind.
-				6,
-				// tip when delivered on time
-				140,
-				// experience gain for delivery
-				200,
-				"Och. Nie  spodziewałam się tak wcześnie pizzy. Super! Zazwyczaj nie daje napiwków, ale dla Ciebie zrobię wyjątek. Weź %d złota.",
-				"Niedobrze... Będę musiała użyć extra silnego zaklęcia, aby pizza była gorąca.",
-				5));
-
-		customerDB.put("Katinka",
-			new CustomerData(
-				"Katinka opiekuje się zwierzętami w schronisku dla zwierząt w Ados.",
-				"Pizza Vegetale",
-				// minutes to deliver. Tested by kymara in
-				// 3:25 min, leaving behind the orcs.
-				4,
-				// tip when delivered on time
-				100,
-				// experience gain for delivery
-				200,
-				"A! Moja %s! Weź %d złota jako napiwek!",
-				"Ee. Nie cierpię zimnej pizzy. Chyba nakarmię nią zwierzęta.",
-				10));
-
-		customerDB.put("Marcus",
-			new CustomerData(
-				"Marcus jest strażnikiem z więzienia w Semos.", "Pizza Tonno",
-				// minutes to deliver. Tested by kymara: takes longer than before due to fence in village
-				3,
-				// tip when delivered on time. A bit higher than Jenny
-				// because you can't do anything else in the jail and need
-				// to walk out again.
-				25,
-				// experience gain for delivery
-				100,
-				"Ach, moja %s! Oto twój napiwek: %d złota.",
-				"Nareszcie! Dlaczego zajęło to Tobie tyle czasu?",
-				2));
-
-		customerDB.put("Nishiya",
-			new CustomerData(
-				"Nishiya zajmuje się sprzedażą owiec. Znajdziesz go na zachód stąd.",
-				"Pizza Pasta",
-				// minutes to deliver. Tested by mort: easy
-				// to do in less than 1 min.
-				1,
-				// tip when delivered on time
-				10,
-				// experience gain for delivery
-				25,
-				"Dziękuję! Szybki jesteś. Weź te %d złota jako napiwek!",
-				"Niedobrze. Przyniosłeś zimną. W każdym razie dziękuję.",
-				0));
-
-		customerDB.put("Ouchit",
-			new CustomerData(
-				"Ouchit jest handlarzem broni. Wynajmuje pokój w rogu tawerny.",
-				"Pizza Quattro Stagioni",
-				// minutes to deliver. Tested by mort: can
-				// be done in 45 sec with no danger.
-				1,
-				// tip when delivered on time
-				10,
-				// experience gain for delivery
-				25,
-				"Dziękuję! Dobrze jest mieć usługę pizzy zaraz za rogiem. Weź %d monet!",
-				"Powinienem osobiście kupić pizzę, Byłoby szybciej.",
-				0));
-
-		customerDB.put("Ramon",
-			new CustomerData(
-				"Ramon pracuje jako krupier blackjacka na promie na wyspę Athor.",
-				"Pizza Bolognese",
-				// minutes to deliver. You need about 6 mins
-				// to Eliza, and once you board the ferry,
-				// about 15 sec to deliver. If you have bad
-				// luck, you need to wait up to 12 mins for
-				// the ferry to arrive at the mainland, so
-				// you need a bit of luck for this one.
-				14,
-				// tip when delivered on time
-				250,
-				// experience gain for delivery
-				400,
-				"Dziękuję bardzo! Nareszcie mam lepsze jedzenie niż to, które gotuje Laura. Weź te %d złota jako napiwek!",
-				"Niedobrze. Jest zimna. Miałem nadzieje, że dostanę coś lepszego niż okrętowe jedzenie.",
-				20));
-
-		customerDB.put("Tor'Koom",
-			new CustomerData(
-				"Tor'Koom jest orkiem, który żyje w podziemiach pod miastem. Owce są jego ulubionym jedzeniem.",
-				// "Pizza sheep" in Italian ;)
-				"Pizza Pecora",
-				// minutes to deliver. Tested by kymara:
-				// done in about 8 min, with lots of monsters getting in your way.
-				9,
-				// tip when delivered on time
-				170,
-				// experience gain for delivery
-				300,
-				"Pychota %s! Weź %d pieniędzy!",
-				"Grrr. Pizza zimna. Ruszasz sie jak owca.",
-				15));
-
-	customerDB.put("Martin Farmer",
-				new CustomerData(
-					"Martin Farmer jest na urlopie Ados City. Musisz iść stąd na wschód.",
-					"Pizza Fiorentina",
-					// minutes to deliver. Time for Fidorea was 7, so 8 should be ok for martin
-					8,
-					// tip when delivered on time
-					160,
-					// experience gain for delivery
-					220,
-					"Ooooh, Uwielbiam świeżą, gorącą pizze, dziękuję. Weź %d pieniędzy...!",
-					"Hmpf.. zimna pizza.. ok.. Niech już będzie. Ale następnym razem proszę pospiesz się.",
-					10));
-	}
-
-	private void startDelivery(final Player player, final EventRaiser npc) {
-
-		final String name = Rand.rand(getAllowedCustomers(player));
-		final CustomerData data = customerDB.get(name);
-
-		final Item pizza = SingletonRepository.getEntityManager().getItem("pizza");
-		pizza.setInfoString(data.flavor);
-		pizza.setDescription("Oto " + data.flavor + ".");
-		pizza.setBoundTo(name);
-
-		if (player.equipToInventoryOnly(pizza)) {
-			npc.say("Musisz przynieść "
-				+ data.flavor
-				+ " do "
-				+ Grammar.quoteHash("#" + name)
-				+ " w ciągu "
-				+ Grammar.quantityplnoun(data.expectedMinutes, "minut")
-				+ ". Powiedz \"pizza\", a "
-				+ name
-				+ " będzie wiedział, że ja Ciebie przysłałem. Aha załóż ten uniform i i nie upuść na ziemie " + data.flavor + "! Nasi klienci chcą świeżą.");
-			player.setOutfit(UNIFORM, true);
-			player.setQuest(QUEST_SLOT, name + ";" + System.currentTimeMillis());
-		} else {
-			npc.say("Wróć gdy będziesz miał miejsce na pizzę!");
-		}
-	}
-
-	/**
-	 * Get a list of customers appropriate for a player
-	 *
-	 * @param player the player doing the quest
-	 * @return list of customer data
-	 */
-	private List<String> getAllowedCustomers(Player player) {
-		List<String> allowed = new LinkedList<String>();
-		int level = player.getLevel();
-		for (Map.Entry<String, CustomerData> entry : customerDB.entrySet()) {
-			if (level >= entry.getValue().getLevel()) {
-				allowed.add(entry.getKey());
-			}
-		}
-		return allowed;
-	}
-
-	/**
-	 * Checks whether the player has failed to fulfil his current delivery job
-	 * in time.
-	 *
-	 * @param player
-	 *			The player.
-	 * @return true if the player is too late. false if the player still has
-	 *		 time, or if he doesn't have a delivery to do currently.
-	 */
-	private boolean isDeliveryTooLate(final Player player) {
-		if (player.hasQuest(QUEST_SLOT) && !player.isQuestCompleted(QUEST_SLOT)) {
-			final String[] questData = player.getQuest(QUEST_SLOT).split(";");
-			final String customerName = questData[0];
-			final CustomerData customerData = customerDB.get(customerName);
-			final long bakeTime = Long.parseLong(questData[1]);
-			final long expectedTimeOfDelivery = bakeTime
-				+ (long) 60 * 1000 * customerData.expectedMinutes;
-			if (System.currentTimeMillis() > expectedTimeOfDelivery) {
-				return true;
-			}
-		}
-		return false;
-
-	}
-
-	private void handOverPizza(final Player player, final EventRaiser npc) {
-		if (player.isEquipped("pizza")) {
-			final CustomerData data = customerDB.get(npc.getName());
-			for (final Item pizza : player.getAllEquipped("pizza")) {
-				final String flavor = pizza.getInfoString();
-				if (data.flavor.equals(flavor)) {
-					player.drop(pizza);
-					// Check whether the player was supposed to deliver the
-					// pizza.
-					if (player.hasQuest(QUEST_SLOT) && !player.isQuestCompleted(QUEST_SLOT)) {
-						if (isDeliveryTooLate(player)) {
-							if (data.messageOnColdPizza.contains("%s")) {
-								npc.say(String.format(data.messageOnColdPizza, data.flavor));
-							} else {
-								npc.say(data.messageOnColdPizza);
-							}
-							player.addXP(data.xp / 2);
-						} else {
-							if (data.messageOnHotPizza.contains("%s")) {
-								npc.say(String.format(data.messageOnHotPizza,
-										data.flavor, data.tip));
-							} else {
-								npc.say(String.format(data.messageOnHotPizza,
-										data.tip));
-							}
-							final StackableItem money = (StackableItem) SingletonRepository.getEntityManager().getItem("money");
-							money.setQuantity(data.tip);
-							player.equipOrPutOnGround(money);
-							player.addXP(data.xp);
-							player.addKarma(5);
-						}
-						new InflictStatusOnNPCAction("pizza").fire(player, null, npc);
-						player.setQuest(QUEST_SLOT, "done");
-						putOffUniform(player);
-					} else {
-						// This should not happen: a player cannot pick up a pizza from the ground
-						// that did have a flavor, those are bound. If a pizza has flavor the player
-						// should only have got it from the quest.
-						npc.say("Blee! Ta pizza jest brudna! Znalazłeś ją na ziemi?");
-					}
-					return;
-				}
-			}
-			// The player has brought the pizza to the wrong NPC, or it's a plain pizza.
-			npc.say("Nie, dziękuję. Lubię " + data.flavor + ".");
-		} else {
-			npc.say("Pizza? Gdzie?");
-		}
-	}
-
-	/** Takes away the player's uniform, if the he is wearing it.
-	 * @param player to remove uniform from*/
-	private void putOffUniform(final Player player) {
-		if (UNIFORM.isPartOf(player.getOutfit())) {
-			player.returnToOriginalOutfit();
-		}
-	}
-
-	private void prepareBaker() {
-		final SpeakerNPC leander = npcs.get("Leander");
-
-		// haven't done the pizza quest before or already delivered the last one, ok to wear pizza outfit
-		leander.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES,
-				new AndCondition(new OutfitCompatibleWithClothesCondition(), new QuestNotActiveCondition(QUEST_SLOT)),
-				ConversationStates.QUEST_OFFERED,
-				"Musisz szybko dostarczyć gorącą pizzę. Jeżeli będziesz szybki to dostaniesz niezły napiwek. Dasz radę?",
-				null);
-
-		// haven't done the pizza quest before or already delivered the last one, outfit would be incompatible with pizza outfit
-		leander.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES,
-				new AndCondition(new NotCondition(new OutfitCompatibleWithClothesCondition()), new QuestNotActiveCondition(QUEST_SLOT)),
-				ConversationStates.ATTENDING,
-				"Przykro mi, ale nie możesz nosić naszego stroju dostawcy pizzy tak wyglądając. Jeżeli się przebierzesz to możesz znów mnie zapytać o #zadanie.",
-				null);
-
-		// pizza quest is active: check if the delivery is too late already or not
-		leander.add(ConversationStates.ATTENDING,
-			ConversationPhrases.QUEST_MESSAGES, new QuestActiveCondition(QUEST_SLOT),
-			ConversationStates.QUEST_OFFERED, null,
-			new ChatAction() {
-				@Override
-				public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
-						final String[] questData = player.getQuest(QUEST_SLOT)
-								.split(";");
-						final String customerName = questData[0];
-						if (isDeliveryTooLate(player)) {
-							// If the player still carries any pizza due for an NPC,
-							// take it away because the baker is angry,
-							// and because the player probably won't
-							// deliver it anymore anyway.
-							for (final Item pizza : player.getAllEquipped("pizza")) {
-								if (pizza.getInfoString()!=null) {
-									player.drop(pizza);
-								}
-							}
-							npc.say("Widzę, że nie dostarczyłeś pizzy na czas do "
-								+ customerName
-								+ " Czy tym razem będziesz niezawodny i zdążysz dostarczyć pizzę nim wystygnie?");
-						} else {
-							npc.say("Wciąż masz pizzę do dostarczenia dla "
-									+ customerName + " i pospiesz się!");
-							npc.setCurrentState(ConversationStates.ATTENDING);
-						}
-				}
-			});
-
-		leander.add(ConversationStates.QUEST_OFFERED,
-			ConversationPhrases.YES_MESSAGES, null,
-			ConversationStates.ATTENDING, null,
-			new ChatAction() {
-				@Override
-				public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
-					startDelivery(player, npc);
-				}
-			});
-
-		leander.add(
-			ConversationStates.QUEST_OFFERED,
-			ConversationPhrases.NO_MESSAGES,
-			null,
-			ConversationStates.ATTENDING,
-			"Niedobrze. Mam nadzieję, że moja córka #Sally szybko wróci z obozu, aby pomóc mi w dostawach.",
-			new ChatAction() {
-				@Override
-				public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
-					putOffUniform(player);
-				}
-			});
-
-		for (final String name : customerDB.keySet()) {
-			final CustomerData data = customerDB.get(name);
-			leander.addReply(name, data.npcDescription);
-		}
-	}
-
-	private void prepareCustomers() {
-		for (final String name : customerDB.keySet()) {
-			final SpeakerNPC npc = npcs.get(name);
-			if (npc == null) {
-				logger.error("NPC " + name + " is used in the Pizza Delivery quest but does not exist in game.", new Throwable());
-				continue;
-			}
-
-			npc.add(ConversationStates.ATTENDING, "pizza", null,
-				ConversationStates.ATTENDING, null,
-				new ChatAction() {
-					@Override
-					public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
-						handOverPizza(player, npc);
-					}
-				});
-		}
-	}
-
+public class PizzaDelivery implements QuestManuscript {
 	@Override
-	public void addToWorld() {
-		fillQuestInfo(
-				"Dostawa Pizzy",
-				"*Mniam!* Wspaniale pachnie. Jest gorąca... Pospiesz się z dostawą!",
-				false);
-		buildCustomerDatabase();
-		prepareBaker();
-		prepareCustomers();
+	public DeliverItemQuestBuilder story() {
+		DeliverItemQuestBuilder quest = new DeliverItemQuestBuilder();
+
+		quest.info()
+			.name("Dostawca Pizzy")
+			.description("Pizzeria Leandera radzi sobie tak dobrze, że teraz rekrutuje chętnych na dostawcę.")
+			.internalName("pizza_delivery")
+			.repeatableAfterMinutes(0)
+			.minLevel(0)
+			.region(Region.SEMOS_CITY)
+			.questGiverNpc("Leander");
+
+		quest.history()
+			.whenNpcWasMet("Napotkany został Leander, piekarz Semos.")
+			.whenQuestWasRejected("Poprosił mnie aby pomóc z dostawą pizzy, ale nie chcę nosić pizzy.")
+			.whenQuestWasAccepted("Pomogę z jego pizzą i zostanę dostawcą.")
+			.whenItemWasGiven("Leander dał mi [flavor] dla [customerName].")
+			.whenToldAboutCustomer("Leander powiedział mi: \"[customerDescription]\"")
+			.whenInTime("Jeśli się pospieszę, może jeszcze dotrę na miejsce z gorącą pizzą.")
+			.whenOutOfTime("Pizza już wystygła.")
+			.whenQuestWasCompleted("Ostatnia pizza została dostarczona, którą dał mi Leander.")
+			.whenQuestCanBeRepeated("Ale założę się, że Leander ma więcej zamówień.");
+
+		quest.offer()
+			.respondToRequest("Musisz szybko dostarczyć gorącą pizzę. Jeśli będziesz wystarczająco szybko, możesz otrzymać całkiem niezły napiwek. Więc, zrobisz to?")
+			.respondIfUnableToWearUniform("Przykro mi, ale nie możesz tak nosić naszego uniformu dostawcy pizzy. Jeśli się przebierzesz, możesz ponownie zapytać o #zadanie.")
+			.respondToUnrepeatableRequest("Bardzo ci dziękuje za pomoc. W tej chwili nie mam żadnych innych zamówień.")
+			.respondToAccept("Musisz dostarczyć [flavor] dla [customerName] w czasie [time]. Przekaż \"pizza\" [customerName], będzie wtedy wiedzieć, że jesteś ode mnie. Och, oraz proszę załóż ten strój dostawcy.")
+
+			.respondToReject("Szkoda. Mam nadzieję, że moja córka #Sally wkrótce wróci ze swojego obozu, aby pomóc mi przy zamówieniach.")
+			.remind("Nadal musisz dostarczyć pizzę dla [customerName], oraz pospiesz się!")
+			.respondIfLastQuestFailed("Widzę, że nie udało Ci się dostarczyć pizzy dla [customerName] na czas. Czy tym razem dasz radę dostarczyć na czas?")
+			.respondIfInventoryIsFull("Wróć, gdy znajdziesz nieco miejsca aby nieść pizze!");
+
+		quest.task()
+			.itemName("pizza")
+			.itemDescription("Oto [flavor].")
+			.outfitUniform(new Outfit(null, Integer.valueOf(990), null, null, null, null, null, null, null));
+
+		// Don't add Sally here, as it would conflict with Leander telling
+		// about his daughter.
+		quest.task().order()
+			.customerNpc("Balduin")
+			.customerDescription("Balduin to pustelnik żyjący na górze pomiędzy Semos i Ados. Nazywa się Ados Rock. Idź stąd na wschód.")
+			.itemDescription("Pizza Prosciutto")
+			// Tested by mort: 6:30 min, with killing some orcs.
+			.minutesToDeliver(7)
+			// Quite high because you can't do much senseful on top of the hill and must walk down again.
+			.tipOnFastDelivery(200)
+			.xpReward(300)
+			.respondToFastDelivery("Dzięki! Zastanawiam się, jak udało ci się to tu tak szybko dostarczyć. Weź te [tip] sztuk złota jako napiwek. I tak nie mogę ich tu wydać!")
+			.respondToSlowDelivery("Brrr. Ta [flavor] nie jest już gorąca. Cóż, w każdym razie dziękuję za wysiłek.")
+			.playerMinLevel(10);
+
+		quest.task().order()
+			.customerNpc("Cyk")
+			.customerDescription("Cyk jest obecnie na wakacjach na wyspie Athor. Z łatwością rozpoznacie go po niebieskich włosach. Idź na południowy wschód, aby znaleźć prom Athor.")
+			.itemDescription("Pizza Hawaii")
+			// You need about 6 min to Eliza, up to 12 min to wait for the
+			// ferry, 5 min for the crossing, and 0.5 min from the docks to 
+			// the beach, so you need a bit of luck for this one.
+			.minutesToDeliver(20)
+			.tipOnFastDelivery(300)
+			.xpReward(500)
+			.respondToFastDelivery("Wow, nigdy nie wierzyłem, że naprawdę dostarczysz to przez połowę świata! Masz, weź te [flavor] monet!")
+			.respondToSlowDelivery("Zrobiło się zimne, ale czego się spodziewać, kiedy zamówię pizzę z tak odległej piekarni... W każdym razie dziękuję.")
+			.playerMinLevel(20);
+
+		quest.task().order()
+			.customerNpc("Eliza")
+			.customerDescription("Eliza pracuje na promie na wyspę Athor. Znajdziesz ją w dokach na południe od bagien Ados.")
+			.itemDescription("Pizza del Mare")
+			// minutes to deliver. Tested by mort: 6 min, ignoring slow animals and not
+			// walking through the swamps.
+			.minutesToDeliver(7)
+			.tipOnFastDelivery(170)
+			.xpReward(300)
+			.respondToFastDelivery("Niesamowite! Nadal jest gorące! Tutaj, kup coś ładnego za te [tip] sztuk złota!")
+			.respondToSlowDelivery("Jaka szkoda. Zrobiła się zimna. Niemniej jednak, dziękuję!")
+			.playerMinLevel(20);
+
+		quest.task().order()
+			.customerNpc("Fidorea")
+			.customerDescription("Fidorea mieszka w mieście Ados. Ona jest wizażystką. Będziesz musiał iść stąd na wschód.")
+			.itemDescription("Pizza Napoli")
+			// Tested by mort: about 6 min, outrunning all enemies.
+			.minutesToDeliver(7)
+			.tipOnFastDelivery(150)
+			.xpReward(200)
+			.respondToFastDelivery("Wielkie dzięki! Jesteś urodzonym dostawcą pizzy. Możesz przyjąć te [tip] sztuk złota jako napiwek!")
+			.respondToSlowDelivery("Porażka. Zimna pizza.")
+			.playerMinLevel(15);
+
+		quest.task().order()
+			.customerNpc("Haizen")
+			.customerDescription("Haizen to czarodziej mieszkający w chatce niedaleko drogi do Ados. Musisz iść na północny wschód stąd.")
+			.itemDescription("Pizza Diavola")
+			// minutes to deliver. Tested by kymara: exactly 3 min.
+			.minutesToDeliver(4)
+			.tipOnFastDelivery(80)
+			.xpReward(150)
+			.respondToFastDelivery("Ach, moja [flavor]! I jest świeżo wyjęta z piekarnika! Weź te [tip] monety jako napiwek!")
+			.respondToSlowDelivery("Mam nadzieję, że następnym razem, gdy zamówię pizzę, będzie jeszcze gorąca.")
+			.playerMinLevel(10);
+
+		quest.task().order()
+			.customerNpc("Jenny")
+			.customerDescription("Jenny jest właścicielką młyna na równinach na północ i trochę na wschód od Semos.")
+			.itemDescription("Pizza Margherita")
+			// Tested by mort: can be done in 1:15 min, with no real danger.
+			.minutesToDeliver(2)
+			.tipOnFastDelivery(20)
+			.xpReward(50)
+			.respondToFastDelivery("Ach, moja [flavor]! Bardzo miło z twojej strony! Weź [tip] monet jako napiwek!")
+			.respondToSlowDelivery("Szkoda. Twoja pizzeria nie może dostarczyć gorącej pizzy, chociaż piekarnia znajduje się tuż za rogiem.")
+			.playerMinLevel(2);
+
+		quest.task().order()
+			.customerNpc("Jynath")
+			.customerDescription("Jynath to wiedźma mieszkająca w małej chatce na południe od zamku Or'ril. Znajdziesz ją gdy pójdziesz na południowy zachód od Semos, przez cały las, a następnie będziesz podążać ścieżką na zachód, aż zobaczysz jej chatę.")
+			.itemDescription("Pizza Funghi")
+			// Tested by mort: 5:30 min, leaving the slow monsters on the way behind.
+			.minutesToDeliver(6)
+			.tipOnFastDelivery(140)
+			.xpReward(200)
+			.respondToFastDelivery("Och, nie spodziewałam się ciebie tak wcześnie. Świetnie! Zwykle nie daję napiwków, ale dla Ciebie zrobię wyjątek. Oto [tip] sztuk złota.")
+			.respondToSlowDelivery("Szkoda... Będę musiała użyć wyjątkowo silnego zaklęcia, aby pizza znów była gorąca.")
+			.playerMinLevel(5);
+
+		quest.task().order()
+			.customerNpc("Katinka")
+			.customerDescription("Katinka opiekuje się zwierzętami w schronisku Ados Wildlife Refuge. To na północny wschód stąd, w drodze do miasta Ados.")
+			.itemDescription("Pizza Vegetale")
+			// Tested by kymara in 3:25 min, leaving behind the orcs.
+			.minutesToDeliver(4)
+			.tipOnFastDelivery(100)
+			.xpReward(200)
+			.respondToFastDelivery("Jest! Moja [flavor]! Przyjmij proszę [tip] sztuk złota jako napiwek!")
+			.respondToSlowDelivery("Ej... Nienawidzę zimnej pizzy. Chyba nakarmię tym zwierzęta.")
+			.playerMinLevel(10);
+
+		quest.task().order()
+			.customerNpc("Marcus")
+			.customerDescription("Marcus jest strażnikiem w więzieniu Semos. Jest na zachód stąd, za wioską Semos.")
+			.itemDescription("Pizza Tonno")
+			// Tested by kymara: takes longer than before due to fence in village
+			.minutesToDeliver(3)
+			// A bit higher than Jenny because you can't do anything
+			// else in the jail and need to walk out again.
+			.tipOnFastDelivery(25)
+			.xpReward(100)
+			.respondToFastDelivery("Ach, moja [flavor]! Oto twój napiwek: [tip] sztuk złota.")
+			.respondToSlowDelivery("Nareszcie! Dlaczego to trwało tak długo?")
+			.playerMinLevel(2);
+
+		quest.task().order()
+			.customerNpc("Nishiya")
+			.customerDescription("Nishiya sprzedaje owce. Znajdziesz go na zachód stąd, w wiosce Semos.")
+			.itemDescription("Pizza Pasta")
+			// Tested by mort: easy to do in less than 1 min.
+			.minutesToDeliver(1)
+			.tipOnFastDelivery(10)
+			.xpReward(25)
+			.respondToFastDelivery("Dziękuję! Ale szybko dostarczono. Weź [tip] sztuk złota jako napiwek!")
+			.respondToSlowDelivery("Szkoda. Zrobiła się zimna. Mimo wszystko dziekuję.")
+			.playerMinLevel(0);
+
+		quest.task().order()
+			.customerNpc("Ouchit")
+			.customerDescription("Ouchit jest handlarzem bronią. Obecnie wynajmuje pokój na piętrze w tawernie Semos, tuż za rogiem.")
+			.itemDescription("Pizza Quattro Stagioni")
+			// Tested by mort: can be done in 45 sec with no danger.
+			.minutesToDeliver(1)
+			.tipOnFastDelivery(10)
+			.xpReward(25)
+			.respondToFastDelivery("Dziękuję! Miło jest mieć pizzę tuż za rogiem. Weź proszę [tip] monet!")
+			.respondToSlowDelivery("Powinienem był raczej odebrać to osobiście w piekarni, tak byłoby szybciej.")
+			.playerMinLevel(0);
+
+		quest.task().order()
+			.customerNpc("Ramon")
+			.customerDescription("Ramon pracuje jako krupier blackjacka na promie płynącym na wyspę Athor. Główny prom znajduje się na południowy wschód stąd - to długa droga!")
+			.itemDescription("Pizza Bolognese")
+			// You need about 6 mins to Eliza, and once you board the ferry,
+			// about 15 sec to deliver. If you have bad luck, you need to
+			// wait up to 12 mins for the ferry to arrive at the mainland, so
+			// you need a bit of luck for this one.
+			.minutesToDeliver(14)
+			.tipOnFastDelivery(250)
+			.xpReward(400)
+			.respondToFastDelivery("Bardzo dziękuję! Wreszcie dostaję coś lepszego niż okropne jedzenie, które gotuje Laura. Weź te [tip] sztuk złota jako napiwek!")
+			.respondToSlowDelivery("Szkoda. Jest zimna. A miałem nadzieję, że dostanę coś lepszego niż to jedzenie z kuchni.")
+			.playerMinLevel(20);
+
+		quest.task().order()
+			.customerNpc("Tor'Koom")
+			.customerDescription("Tor'Koom to ork żyjący w lochach pod miastem, Semos. Owce są jego ulubionym pożywieniem. Mieszka na 4 poziomie pod ziemią. Bądź ostrożny!")
+			.itemDescription("Pizza Pecora")
+			// Tested by kymara:
+			// done in about 8 min, with lots of monsters getting in your way.
+			.minutesToDeliver(9)
+			.tipOnFastDelivery(170)
+			.xpReward(300)
+			.respondToFastDelivery("Pyszna [flavor]! Proszę, weź [tip] pieniędzy!")
+			.respondToSlowDelivery("Wrr. Pizza zimna. Idziesz powoli jak owca.")
+			.playerMinLevel(15);
+
+		quest.task().order()
+			.customerNpc("Martin Farmer")
+			.customerDescription("Martin Farmer spędza wakacje w mieście Ados. Znajdziesz go na wschód stąd.")
+			.itemDescription("Pizza Fiorentina")
+			// Time for Fidorea was 7, so 8 should be ok for martin
+			.minutesToDeliver(8)
+			.tipOnFastDelivery(160)
+			.xpReward(220)
+			.respondToFastDelivery("Oooch, uwielbiam świeżą, gorącą pizzę, dzięki. Weź te [tip] pieniądzy...!")
+			.respondToSlowDelivery("Hmpf... zimna pizza.. ok.. wezmę. Ale postaraj się następnym razem być szybciej.")
+			.playerMinLevel(10);
+
+		quest.complete()
+			.respondToItemWithoutQuest("Ej! Ta pizza jest cała brudna! Znalazłeś to na ziemi?")
+			.respondToItemForOtherNPC("Nie, dziękuję. Dla mnie lepsza jest [flavor].")
+			.respondToMissingItem("Pizza? Gdzie?")
+			.npcStatusEffect("pizza");
+
+		return quest;
 	}
 
-	@Override
 	public boolean removeFromWorld() {
-		customerDB = null;
-		boolean res = ResetSpeakerNPC.reload(new ChefNPC(), getNPCName())
+		boolean res = ResetSpeakerNPC.reload(new ChefNPC(), "Leander")
 			&& ResetSpeakerNPC.reload(new games.stendhal.server.maps.ados.rock.WeaponsCollectorNPC(), "Balduin")
 			&& ResetSpeakerNPC.reload(new games.stendhal.server.maps.ados.coast.FerryConveyerNPC(), "Eliza")
 			&& ResetSpeakerNPC.reload(new games.stendhal.server.maps.ados.city.MakeupArtistNPC(), "Fidorea")
@@ -687,55 +344,5 @@ public class PizzaDelivery extends AbstractQuest {
 			}
 		}
 		return res;
-	}
-
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		final String questState = player.getQuest(QUEST_SLOT);
-		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Leander i zgodził się pomóc przy roznoszeniu pizzy.");
-		if (!"done".equals(questState)) {
-			final String[] questData = questState.split(";");
-			final String customerName = questData[0];
-			final CustomerData customerData = customerDB.get(customerName);
-			res.add("Leander dał mi " + customerData.flavor + " dla " + customerName + ".");
-			res.add("Leander powiedział do mnie: \"" + customerData.npcDescription + "\"");
-			if (!isDeliveryTooLate(player)) {
-				res.add("Jeśli pośpiesze sie doniosę pizze jeszcze gorąco.");
-			} else {
-				res.add("Pizza jest już zimna.");
-			}
-		} else {
-			res.add("Mam przy sobie pizzę, którą ostatnio dał mi Leander.");
-		}
-		return res;
-	}
-
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
-
-	@Override
-	public String getName() {
-		return "Dostawa Pizzy";
-	}
-
-	@Override
-	public String getRegion() {
-		return Region.SEMOS_CITY;
-	}
-
-	@Override
-	public String getNPCName() {
-		return "Leander";
-	}
-
-	@Override
-	public boolean isRepeatable(final Player player) {
-		return true;
 	}
 }

@@ -84,9 +84,9 @@
 
 	<item name="złoty żeton GMa">
 		<type class="special" subclass="GM_tokend_gold2" tileid="-1"/>
-		<description>Oto żeton wykonany ze złota dla specjalnego GMa. Czy jesteś z niego dumny?</description>
+		<description>Oto złoty żeton GMa. Czy to napawa cię dumą?</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
-		<unattainable>true</unattainable>
+		<unattainable/>
 		<attributes>
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
@@ -105,9 +105,9 @@
 
 	<item name="srebrny żeton GMa">
 		<type class="special" subclass="GM_tokend_silver" tileid="-1"/>
-		<description>Oto żeton wykonany ze srebra dla specjalnego GMa. Czy jesteś z niego dumny?</description>
+		<description>Oto srebrny żeton GMa. Czy to napawa cię dumą?</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
-		<unattainable>true</unattainable>
+		<unattainable/>
 		<attributes>
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>
@@ -126,9 +126,9 @@
 
 	<item name="brązowy żeton GMa">
 		<type class="special" subclass="GM_tokend_bronze" tileid="-1"/>
-		<description>Oto żeton wykonany z brązu dla specjalnego GMa. Czy jesteś z niego dumny?</description>
+		<description>Oto brązowy żeton GMa. Czy to napawa cię dumą?</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
-		<unattainable>true</unattainable>
+		<unattainable/>
 		<attributes>
 			<quantity value="1"/>
 			<max_quantity value="2147483647"/>

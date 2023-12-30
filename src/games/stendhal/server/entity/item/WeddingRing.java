@@ -34,7 +34,7 @@ import marauroa.common.game.SlotOwner;
 /**
  * A special ring that allows the owner to teleport to his or her spouse. The
  * spouse's name is engraved into the ring. Technically, the name is stored in
- * the item's infostring.
+ * the item's itemdata.
  *
  * Wedding rings should always be bound to the owner.
  *
@@ -137,7 +137,7 @@ public class WeddingRing extends Item {
 			return false;
 		}
 
-		final String spouseName = getInfoString();
+		final String spouseName = getItemData();
 
 		if (spouseName == null) {
 			player.sendPrivateText("Oto obrączka ślubna, która jeszcze nie została wygrawerowana imieniem ukochanej osoby.");
@@ -157,13 +157,13 @@ public class WeddingRing extends Item {
 
 			final Item weddingRing = spouse.getFirstEquipped("obrączka ślubna");
 
-			if (weddingRing.getInfoString() == null) {
+			if (weddingRing.getItemData() == null) {
 				// divorced with ring and engaged again
 				player.sendPrivateText("Przepraszam, ale " + spouseName + " "
 						+ Grammar.genderVerb(spouse.getGender(), "rozwiódł")
 						+ " się z tobą i jest teraz zaręczony z kimś innym.");
 				return false;
-			} else if (!(weddingRing.getInfoString().equals(player.getName()))) {
+			} else if (!(weddingRing.getItemData().equals(player.getName()))) {
 				// divorced and remarried
 				player.sendPrivateText("Przepraszam, ale " + spouseName + " "
 						+ Grammar.genderVerb(spouse.getGender(), "rozwiódł")
@@ -224,7 +224,7 @@ public class WeddingRing extends Item {
 
 	@Override
 	public String describe() {
-		final String spouseName = getInfoString();
+		final String spouseName = getItemData();
 
 		if (spouseName != null) {
 			return "Oto §'obrączka ślubna'. Wygrawerowano na nim: \"W imię wiecznej miłości dla "

@@ -12,6 +12,7 @@
 package games.stendhal.server.entity.npc.behaviour.adder;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
@@ -38,6 +39,7 @@ import games.stendhal.server.entity.npc.condition.SentenceHasErrorCondition;
 import games.stendhal.server.entity.npc.condition.TransitionMayBeExecutedCondition;
 import games.stendhal.server.entity.npc.fsm.Engine;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.events.ChatOptionsEvent;
 
 public class ProducerAdder {
 	private static final Logger logger = Logger.getLogger(ProducerAdder.class);
@@ -82,6 +84,14 @@ public class ProducerAdder {
 		/* add to producer register */
 		producerRegister.add(npcName, behaviour);
 		npc.put("job_producer", "");
+
+		final List<String> activities = behaviour.getProductionActivity();
+		for (String activity : activities) {
+			// add to NPC's known chat options
+			npc.addKnownChatOptions(activity);
+			// add to known merchant/producer activities
+			ChatOptionsEvent.addMerchantActivity(activity);
+		}
 
 		/**
 		 * The Player greets the NPC.

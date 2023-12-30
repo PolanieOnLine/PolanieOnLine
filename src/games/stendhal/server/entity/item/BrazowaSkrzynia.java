@@ -51,7 +51,7 @@ public class BrazowaSkrzynia extends Box {
 	 * @param type of item to be produced.
 	 */
 	public void setContent(final String type) {
-		setInfoString(type);
+		setItemData(type);
 	}
 
 	/**
@@ -68,7 +68,7 @@ public class BrazowaSkrzynia extends Box {
 	protected boolean useMe(final Player player) {
 		this.removeOne();
 
-		final String itemName = getInfoString();
+		final String itemName = getItemData();
 		final Item item = SingletonRepository.getEntityManager().getItem(itemName);
 		int amount = 1;
 		if (itemName.equals("duży eliksir") || itemName.equals("wielki eliksir") 

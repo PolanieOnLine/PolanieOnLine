@@ -62,7 +62,7 @@ public class ZakopaneItemQuestAchievementsFactory extends AbstractAchievementFac
 		achievements.add(createAchievement(
 				ID_SUPPLIER, "Dostawca Zakopane",
 				"Ukończono dzienne zadanie na przedmiot 500 razy",
-				Achievement.LEGENDARY_BASE_SCORE, true,
+				Achievement.EXTREME_BASE_SCORE, true,
 				new QuestStateGreaterThanCondition("gazda_wojtek_daily_item", 2, 499)));
 
 		return achievements;

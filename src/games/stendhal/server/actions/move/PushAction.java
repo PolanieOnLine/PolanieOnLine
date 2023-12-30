@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2013 - Marauroa                    *
+ *                   (C) Copyright 2003-2023 - Marauroa                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -38,7 +38,6 @@ import marauroa.common.game.RPAction;
  * for instance.
  */
 public class PushAction implements ActionListener {
-
 	/**
 	 * registers the action
 	 */
@@ -150,7 +149,6 @@ public class PushAction implements ActionListener {
 	 * @param y new y-position
 	 */
 	private void move(final Player pusher, final RPEntity pushed, final int x, final int y) {
-
 		// move items under players, with the players, when pushed
 		if (pushed instanceof Player) {
 			final Set<Item> items = pusher.getZone().getItemsOnGround();
@@ -171,7 +169,7 @@ public class PushAction implements ActionListener {
 			}
 		}
 
-		new GameEvent(pusher.getName(), "push", pushed.getName(), pushed.getZone().getName(), pushed.getX() + " " + pushed.getY() + " --> " + x + " " + y).raise();
+		new GameEvent(pusher.getName(), PUSH, pushed.getName(), pushed.getZone().getName(), pushed.getX() + " " + pushed.getY() + " --> " + x + " " + y).raise();
 		pushed.setPosition(x, y);
 		pushed.notifyWorldAboutChanges();
 		pusher.onPush(pushed);

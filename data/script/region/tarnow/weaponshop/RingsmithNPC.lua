@@ -62,17 +62,25 @@ local function getItemListString(includeFee)
 end
 
 if game:setZone(zone) then
-	ringsmith = entities:createSpeakerNPC("Gosława")
-	ringsmith:setOutfit("body=1,head=0,eyes=2,dress=52,hair=45,hat=6")
-	ringsmith:setOutfitColor("eyes", 0x1f6521)
-	ringsmith:setOutfitColor("hair", Color.RED)
-
-	-- path
-	local nodes = {
-		{10, 5},
-		{13, 5},
-	}
-	ringsmith:setPathAndPosition(nodes, true)
+	ringsmith = entities:create({
+		type = "SpeakerNPC",
+		name = "Gosława",
+		outfit = {
+			layers = "body=1,head=0,eyes=2,dress=52,hair=45,hat=6",
+			colors = {
+				eyes = 0x1f6521,
+				hair = Color.RED
+			}
+		},
+		pos = {24, 12},
+		path = {
+			nodes = {
+				{10, 5},
+				{13, 5}
+			},
+			loop = true
+		}
+	})
 
 	-- dialogue
 	ringsmith:addGreeting()

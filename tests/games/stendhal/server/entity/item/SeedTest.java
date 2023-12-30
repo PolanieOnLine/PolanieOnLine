@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -12,9 +11,12 @@
  ***************************************************************************/
 package games.stendhal.server.entity.item;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+
+import java.util.Arrays;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -41,7 +43,7 @@ public class SeedTest {
 	 */
 	@Test
 	public void testExecute() {
-		final Seed seed = (Seed) SingletonRepository.getEntityManager().getItem("nasionka");
+		final Seed seed = (Seed) SingletonRepository.getEntityManager().getItem("nasiona");
 		final Player player = PlayerTestHelper.createPlayer("bob");
 		assertNotNull(player);
 		final StendhalRPZone zone = new StendhalRPZone("zone");
@@ -74,7 +76,7 @@ public class SeedTest {
 	 */
 	@Test
 	public void testExecuteSeedInBag() {
-		final Seed seed = (Seed) SingletonRepository.getEntityManager().getItem("nasionka");
+		final Seed seed = (Seed) SingletonRepository.getEntityManager().getItem("nasiona");
 		final Player player = PlayerTestHelper.createPlayer("bob");
 		assertNotNull(player);
 		final StendhalRPZone zone = new StendhalRPZone("zone");
@@ -96,7 +98,7 @@ public class SeedTest {
 	 */
 	@Test
 	public void testExecuteNonameSeed() {
-		final Seed seed = (Seed) SingletonRepository.getEntityManager().getItem("nasionka");
+		final Seed seed = (Seed) SingletonRepository.getEntityManager().getItem("nasiona");
 		final Player player = PlayerTestHelper.createPlayer("bob");
 		assertNotNull(player);
 		final StendhalRPZone zone = new StendhalRPZone("zone");
@@ -143,9 +145,9 @@ public class SeedTest {
 		zone.add(all);
 		zone.add(player);
 
-		final Seed seed = (Seed) SingletonRepository.getEntityManager().getItem("nasionka");
+		final Seed seed = (Seed) SingletonRepository.getEntityManager().getItem("nasiona");
 		assertNotNull(seed);
-		seed.setInfoString("stokrotki");
+		seed.setItemData("stokrotki");
 		zone.add(seed);
 		seed.setPosition(1, 0);
 
@@ -164,5 +166,48 @@ public class SeedTest {
 		flg.onUsed(player);
 		assertFalse(player.getZone().getEntitiesAt(1, 0).contains(flg));
 		assertTrue("player has stokrotki", player.isEquipped("stokrotki"));
+	}
+
+	@Test
+	public void testSeedInfo() {
+		// seeds
+		final Seed base_seed = (Seed) SingletonRepository.getEntityManager().getItem("nasiona");
+		assertNotNull(base_seed);
+		assertEquals("Oto nasiona. Można sadzić w żyznej glebie, gdzie będzie mogło rosnąć.",
+				base_seed.describe());
+		assertEquals("seed", base_seed.get("subclass"));
+
+		for (final String flower_name: Arrays.asList("stokrotek", "lilii", "bratków")) {
+			final Seed seed = new Seed(base_seed);
+			seed.setItemData(flower_name);
+			final String seed_name = "nasiona " + flower_name;
+			assertEquals("Oto " + seed_name
+					+ ". Można sadzić w żyznej glebie, gdzie będzie mogło rosnąć.", seed.describe());
+			if ("stokrotki".equals(flower_name)) {
+				assertEquals("seed", seed.get("subclass"));
+			} else {
+				assertEquals("seed_" + flower_name.replaceFirst("stokrotki", "daisies"), seed.get("subclass"));
+			}
+		}
+
+		// bulbs
+		final Seed base_bulb = (Seed) SingletonRepository.getEntityManager().getItem("bulwa");
+		assertNotNull(base_bulb);
+		assertEquals("Oto bulwa. Można sadzić w żyznej glebie, gdzie będzie mogło rosnąć.",
+				base_bulb.describe());
+		assertEquals("bulwa", base_bulb.get("subclass"));
+
+		for (final String flower_name: Arrays.asList("bielikrasy")) {
+			final Seed bulb = new Seed(base_bulb);
+			bulb.setItemData(flower_name);
+			final String bulb_name = "bulwa " + flower_name;
+			assertEquals("Oto " + bulb_name
+					+ ". Można sadzić w żyznej glebie, gdzie będzie mogło rosnąć.", bulb.describe());
+			if ("bielikrasa".equals(flower_name)) {
+				assertEquals("bulb", bulb.get("subclass"));
+			} else {
+				assertEquals("bulb_" + flower_name.replaceFirst("bielikrasa", "zantedeschia"), bulb.get("subclass"));
+			}
+		}
 	}
 }

@@ -247,9 +247,9 @@ public class GawedziarzNPC implements ZoneConfigurator  {
 						if (stateInfo.getCreatureName() != null) {
 							if (player.drop("money",
 									stateInfo.getInformationCost())) {
-								String infoString = getCreatureInfoZ(player, stateInfo.getCreatureName());
-								infoString += " Jeśli chcesz posłuchać o następnym potworze, to powiedź o którym.";
-								speakerNPC.say(infoString);
+								String itemdata = getCreatureInfoZ(player, stateInfo.getCreatureName());
+								itemdata += " Jeśli chcesz posłuchać o następnym potworze, to powiedź o którym.";
+								speakerNPC.say(itemdata);
 								speakerNPC.setCurrentState(ConversationStates.QUESTION_1);
 							} else {
 								speakerNPC.say("Nie masz tyle dutków.");

@@ -1,5 +1,5 @@
 /***************************************************************************
- *                 (C) Copyright 2019-2022 - PolanieOnLine                 *
+ *                 (C) Copyright 2019-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -14,20 +14,20 @@ package games.stendhal.server.maps.quests;
 import games.stendhal.server.entity.npc.action.EquipItemAction;
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
 import games.stendhal.server.entity.npc.action.IncreaseXPAction;
-import games.stendhal.server.entity.npc.quest.KillCreaturesTask;
-import games.stendhal.server.entity.npc.quest.QuestBuilder;
+import games.stendhal.server.entity.npc.quest.KillCreaturesQuestBuilder;
 import games.stendhal.server.entity.npc.quest.QuestManuscript;
 import games.stendhal.server.maps.Region;
 
 public class PomocChlopcowi implements QuestManuscript {
-	public QuestBuilder<?> story() {
-		QuestBuilder<KillCreaturesTask> quest = new QuestBuilder<>(new KillCreaturesTask());
+	public KillCreaturesQuestBuilder story() {
+		KillCreaturesQuestBuilder quest = new KillCreaturesQuestBuilder();
 
 		quest.info()
 			.name("Pomoc Adasiowi")
 			.description("W domku bohaterów w piwnicy zakorzeniły się potwory. Młody chłopiec Adaś, potrzebuje mojej pomocy w pozbyciu się ich.")
 			.internalName("pomoc_adasiowi")
-			.repeatable(false)
+			.notRepeatable()
+			.minLevel(0)
 			.region(Region.ZAKOPANE_CITY)
 			.questGiverNpc("Adaś");
 
@@ -53,7 +53,7 @@ public class PomocChlopcowi implements QuestManuscript {
 
 		quest.complete()
 			.greet("Nasz wybawca! Nareszcie! Dziękuję!")
-			.rewardWith(new IncreaseXPAction(550))
+			.rewardWith(new IncreaseXPAction(250))
 			.rewardWith(new IncreaseKarmaAction(5.0))
 			.rewardWith(new EquipItemAction("buty skórzane"));
 

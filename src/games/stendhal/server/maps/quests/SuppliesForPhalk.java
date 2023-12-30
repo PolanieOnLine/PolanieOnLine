@@ -27,7 +27,7 @@ import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.action.DropInfostringItemAction;
+import games.stendhal.server.entity.npc.action.DropItemdataItemAction;
 import games.stendhal.server.entity.npc.action.DropItemAction;
 import games.stendhal.server.entity.npc.action.EquipItemAction;
 import games.stendhal.server.entity.npc.action.IncreaseXPAction;
@@ -37,7 +37,7 @@ import games.stendhal.server.entity.npc.action.SetQuestAction;
 import games.stendhal.server.entity.npc.action.SetQuestAndModifyKarmaAction;
 import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.NotCondition;
-import games.stendhal.server.entity.npc.condition.PlayerHasInfostringItemWithHimCondition;
+import games.stendhal.server.entity.npc.condition.PlayerHasItemdataItemWithHimCondition;
 import games.stendhal.server.entity.npc.condition.PlayerHasItemWithHimCondition;
 import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
@@ -209,7 +209,7 @@ public class SuppliesForPhalk extends AbstractQuest {
 			@Override
 			public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
 				final Item cloak = SingletonRepository.getEntityManager().getItem("płaszcz krasnoludzki");
-				cloak.setInfoString("Phalk");
+				cloak.setItemData("Phalk");
 				cloak.setDescription("Oto piękny nowy płaszcz krasnoludzki z imieniem 'Phalk' wyszytym na metce przez Wrvila.");
 				// remember the description
 				cloak.setPersistent(true);
@@ -249,7 +249,7 @@ public class SuppliesForPhalk extends AbstractQuest {
 				@Override
 				public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
 					final Item cloak = SingletonRepository.getEntityManager().getItem("płaszcz krasnoludzki");
-					cloak.setInfoString("Phalk");
+					cloak.setItemData("Phalk");
 					cloak.setDescription("Oto nowy płaszcz krasnoludzki z imieniem 'Phalk' wyszytym w metkę Wrvila.");
 					// remember the description
 					cloak.setPersistent(true);
@@ -317,7 +317,7 @@ public class SuppliesForPhalk extends AbstractQuest {
 			@Override
 			public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
 				final Item armor = SingletonRepository.getEntityManager().getItem("złota zbroja");
-				armor.setInfoString("Phalk");
+				armor.setItemData("Phalk");
 				armor.setDescription("Oto błyszczący golden armor z imieniem 'Phalk' wygrawerowanym w środku.");
 				// remember the description
 				armor.setPersistent(true);
@@ -357,7 +357,7 @@ public class SuppliesForPhalk extends AbstractQuest {
 			@Override
 			public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
 				final Item armor = SingletonRepository.getEntityManager().getItem("złota zbroja");
-				armor.setInfoString("Phalk");
+				armor.setItemData("Phalk");
 				armor.setDescription("Oto lśniąca złota zbroja z nazwą 'Phalk' wyrytą na niej.");
 				// remember the description
 				armor.setPersistent(true);
@@ -393,15 +393,15 @@ public class SuppliesForPhalk extends AbstractQuest {
 	private void receiveClothes() {
 		final List<ChatAction> actions = new LinkedList<ChatAction>();
 		actions.add(new IncreaseXPAction(4000));
-		actions.add(new DropInfostringItemAction("złota zbroja","Phalk"));
-		actions.add(new DropInfostringItemAction("płaszcz krasnoludzki","Phalk"));
+		actions.add(new DropItemdataItemAction("złota zbroja","Phalk"));
+		actions.add(new DropItemdataItemAction("płaszcz krasnoludzki","Phalk"));
 		actions.add(new SetQuestAndModifyKarmaAction(QUEST_SLOT, "done", 5.0));
 		actions.add(new EquipItemAction("zbroja krasnoludzka", 1, true));
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("clothes", "ubrania"),
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0, "clothes"),
-				new PlayerHasInfostringItemWithHimCondition("złota zbroja","Phalk"),
-				new PlayerHasInfostringItemWithHimCondition("płaszcz krasnoludzki","Phalk")),
+				new PlayerHasItemdataItemWithHimCondition("złota zbroja","Phalk"),
+				new PlayerHasItemdataItemWithHimCondition("płaszcz krasnoludzki","Phalk")),
 				ConversationStates.ATTENDING,
 				"Och tak! Dziękuję bardzo! Zapłata?? Erm... *kaszlnięcie* Dam ci moją starą zbroję jako zapłatę.",
 				new MultipleActions(actions));
@@ -410,8 +410,8 @@ public class SuppliesForPhalk extends AbstractQuest {
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0, "clothes"),
 				new NotCondition(
 						new AndCondition(
-								new PlayerHasInfostringItemWithHimCondition("złota zbroja","Phalk"),
-								new PlayerHasInfostringItemWithHimCondition("płaszcz krasnoludzki","Phalk")))),
+								new PlayerHasItemdataItemWithHimCondition("złota zbroja","Phalk"),
+								new PlayerHasItemdataItemWithHimCondition("płaszcz krasnoludzki","Phalk")))),
 				ConversationStates.ATTENDING,
 				"Hm chcę specjalnej złotej #zbroji od Mrotho i krasnoludzkiego #płaszcza od Wrvila. Powiedz im moje imię, a dadzą ci to co zrobili dla mnie.",
 				null);

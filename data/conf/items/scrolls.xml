@@ -3,7 +3,7 @@
 
 	<item name="zwój przywołania">
 		<type class="scroll" subclass="summon" tileid="-1"/>
-		<description/>
+		<description>Oto zwój przywołania. Przywołuje stworzenie, które może wesprzeć w twoich przygodach.</description>
 		<implementation class-name="games.stendhal.server.entity.item.scroll.SummonScroll"/>
 		<attributes>
 			<quantity value="1"/>
@@ -26,7 +26,7 @@
 		<description>Oto zwój nalwor, który przeniesie cię do miasta elfów Nalwor.</description>
 		<implementation class-name="games.stendhal.server.entity.item.scroll.MarkedScroll"/>
 		<attributes>
-			<infostring value="0_nalwor_city 40 60"/>
+			<itemdata value="0_nalwor_city 40 60"/>
 			<quantity value="1"/>
 		</attributes>
 		<weight value="0.01"/>
@@ -47,7 +47,7 @@
 		<description>Oto zwój ados, który przeniesie cię do miasta Ados.</description>
 		<implementation class-name="games.stendhal.server.entity.item.scroll.MarkedScroll"/>
 		<attributes>
-			<infostring value="0_ados_city_n 50 50"/>
+			<itemdata value="0_ados_city_n 50 50"/>
 			<quantity value="1"/>
 		</attributes>
 		<weight value="0.01"/>
@@ -68,7 +68,7 @@
 		<description>Oto zwój fado, który przeniesie cię do miasta Fado.</description>
 		<implementation class-name="games.stendhal.server.entity.item.scroll.MarkedScroll"/>
 		<attributes>
-			<infostring value="0_fado_city 40 30"/>
+			<itemdata value="0_fado_city 40 30"/>
 			<quantity value="1"/>
 		</attributes>
 		<weight value="0.01"/>
@@ -89,7 +89,7 @@
 		<description>Oto zwój kirdneh, który przeniesie cię do miasta Kirdneh.</description>
 		<implementation class-name="games.stendhal.server.entity.item.scroll.MarkedScroll"/>
 		<attributes>
-			<infostring value="0_kirdneh_city 63 85"/>
+			<itemdata value="0_kirdneh_city 63 85"/>
 			<quantity value="1"/>
 		</attributes>
 		<weight value="0.01"/>
@@ -110,7 +110,7 @@
 		<description>Oto zwój kalavan, który przeniesie cię do miasta Kalavan.</description>
 		<implementation class-name="games.stendhal.server.entity.item.scroll.MarkedScroll"/>
 		<attributes>
-			<infostring value="0_kalavan_city 64 17"/>
+			<itemdata value="0_kalavan_city 64 17"/>
 			<quantity value="1"/>
 		</attributes>
 		<weight value="0.01"/>
@@ -171,7 +171,7 @@
 		<description>Oto zwój semos, który przeniesie cię do miasta Semos.</description>
 		<implementation class-name="games.stendhal.server.entity.item.scroll.MarkedScroll"/>
 		<attributes>
-			<infostring value="0_semos_city 30 40"/>
+			<itemdata value="0_semos_city 30 40"/>
 			<quantity value="1"/>
 		</attributes>
 		<weight value="0.01"/>
@@ -213,7 +213,7 @@
 		<description>Oto magiczne fasolki. Po ich użyciu możesz czuć się nieco oszołomiony.</description>
 		<implementation class-name="games.stendhal.server.entity.item.scroll.RainbowBeansScroll"/>
 		<attributes>
-			<infostring value="1_dreamscape 77 35 10000 0_zakopane_c 60 32"/>
+			<itemdata value="1_dreamscape 77 35 10000 0_zakopane_c 60 32"/>
 			<quantity value="1"/>
 		</attributes>
 		<weight value="0.01"/>
@@ -234,7 +234,7 @@
 		<description>Oto czerwony balonik. Jeśli nie ważysz zbyt dużo może unieść cię prosto do chmur.</description>
 		<implementation class-name="games.stendhal.server.entity.item.scroll.BalloonScroll"/>
 		<attributes>
-			<infostring value="7_kikareukin_clouds 31 12 20000 6_kikareukin_islands -1 -1"/>
+			<itemdata value="7_kikareukin_clouds 31 12 20000 6_kikareukin_islands -1 -1"/>
 			<quantity value="1"/>
 		</attributes>
 		<weight value="0.01"/>
@@ -255,7 +255,7 @@
 		<description>Oto biały balonik. Jeśli nie ważysz zbyt dużo może unieść cię wysoko ponad góry.</description>
 		<implementation class-name="games.stendhal.server.entity.item.scroll.WhiteBalloonScroll"/>
 		<attributes>
-			<infostring value="6_zakopane_clouds 8 6 10000 0_zakopane_ne 70 5"/>
+			<itemdata value="6_zakopane_clouds 8 6 10000 0_zakopane_ne 70 5"/>
 			<quantity value="1"/>
 		</attributes>
 		<weight value="0.01"/>
@@ -276,7 +276,7 @@
 		<description>Oto mroczny mech. Jego użycie może wpędzić cię w halucynacje.</description>
 		<implementation class-name="games.stendhal.server.entity.item.scroll.TwilightMossScroll"/>
 		<attributes>
-			<infostring value="int_ados_twilight_zone 12 20 20000 int_ados_sewing_room -1 -1"/>
+			<itemdata value="int_ados_twilight_zone 12 20 20000 int_ados_sewing_room -1 -1"/>
 			<quantity value="1"/>
 		</attributes>
 		<weight value="0.01"/>
@@ -297,7 +297,7 @@
 		<description>Oto zwój tatrzański, który przeniesie cię niedaleko Tatr.</description>
 		<implementation class-name="games.stendhal.server.entity.item.scroll.MarkedScroll"/>
 		<attributes>
-			<infostring value="0_zakopane_s 30 40"/>
+			<itemdata value="0_zakopane_s 30 40"/>
 			<quantity value="1"/>
 		</attributes>
 		<weight value="0.01"/>
@@ -318,7 +318,7 @@
 		<description>Oto zwój krakowski, który przeniesie cię do grodu, pełnego smoków i dzielnych rycerzy.</description>
 		<implementation class-name="games.stendhal.server.entity.item.scroll.MarkedScroll"/>
 		<attributes>
-			<infostring value="0_krakow_wawel_w 96 80"/>
+			<itemdata value="0_krakow_wawel_w 96 80"/>
 			<quantity value="1"/>
 		</attributes>
 		<weight value="0.01"/>
@@ -339,7 +339,7 @@
 		<description>Oto zwój wieliczka, który przeniesie cię do miejsca, gdzie znajdziesz niezliczone pokłady soli.</description>
 		<implementation class-name="games.stendhal.server.entity.item.scroll.MarkedScroll"/>
 		<attributes>
-			<infostring value="0_wieliczka_c 69 57"/>
+			<itemdata value="0_wieliczka_c 69 57"/>
 			<quantity value="1"/>
 		</attributes>
 		<weight value="0.01"/>
@@ -360,7 +360,7 @@
 		<description>Oto bilet na mecz.</description>
 		<implementation class-name="games.stendhal.server.entity.item.scroll.FreeScroll"/>
 		<attributes>
-			<infostring value="1_football_playground 31 45"/>
+			<itemdata value="1_football_playground 31 45"/>
 			<quantity value="1"/>
 		</attributes>
 		<weight value="0.01"/>
@@ -381,7 +381,7 @@
 		<description>Oto bilet turystyczny. Przeniesie cię na chwilę do dziwnej krainy, gdzie możesz zwiedzać dziwne, szpiczaste budowle.</description>
 		<implementation class-name="games.stendhal.server.entity.item.scroll.LastMinuteScroll"/>
 		<attributes>
-			<infostring value="0_desert_pyramid_nw 120 6 32400 0_semos_city 30 40"/>
+			<itemdata value="0_desert_pyramid_nw 120 6 32400 0_semos_city 30 40"/>
 			<quantity value="1"/>
 		</attributes>
 		<weight value="0.01"/>
@@ -402,7 +402,7 @@
 		<description>Oto magiczny bilet. Przeniesie cię w miejsce, gdzie czeka cię chwała lub śmierć.</description>
 		<implementation class-name="games.stendhal.server.entity.item.scroll.MagicznyScroll"/>
 		<attributes>
-			<infostring value="7_labirynt 1 125 40000 0_zakopane_c 60 32"/>
+			<itemdata value="7_labirynt 1 125 40000 0_zakopane_c 60 32"/>
 			<quantity value="1"/>
 		</attributes>
 		<weight value="0.01"/>
@@ -423,7 +423,7 @@
     	<description>Oto zwój gdański, który zabierze cię w nadmorską krainę.</description>
     	<implementation class-name="games.stendhal.server.entity.item.scroll.MarkedScroll"/>
     	<attributes>
-			<infostring value="0_gdansk_city_n 33 98"/>
+			<itemdata value="0_gdansk_city_n 33 98"/>
       		<quantity value="1"/>
     	</attributes>
     	<weight value="0.01"/>
@@ -444,7 +444,7 @@
     	<description>Oto zwój deniran, który zabierze cię z powrotem do miasta Deniran.</description>
     	<implementation class-name="games.stendhal.server.entity.item.scroll.MarkedScroll"/>
     	<attributes>
-			<infostring value="0_deniran_city 32 74"/>
+			<itemdata value="0_deniran_city 32 74"/>
       		<quantity value="1"/>
     	</attributes>
     	<weight value="0.01"/>
@@ -465,7 +465,7 @@
     	<description>Oto zwój tarnów, który zabierze cię z powrotem do miasteczka Tarnów.</description>
     	<implementation class-name="games.stendhal.server.entity.item.scroll.MarkedScroll"/>
     	<attributes>
-			<infostring value="0_tarnow_city 50 72"/>
+			<itemdata value="0_tarnow_city 50 72"/>
       		<quantity value="1"/>
     	</attributes>
     	<weight value="0.01"/>

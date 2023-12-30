@@ -1,5 +1,5 @@
 /***************************************************************************
- *                     Copyright © 2020 - Arianne                          *
+ *                     Copyright © 2020-2023 - Arianne                     *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,7 +11,9 @@
  ***************************************************************************/
 package games.stendhal.server.actions.admin;
 
+import static games.stendhal.common.constants.Actions.CREATURE;
 import static games.stendhal.common.constants.Actions.INSPECTKILL;
+import static games.stendhal.common.constants.Actions.TARGET;
 
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.actions.CommandCenter;
@@ -30,14 +32,14 @@ public class InspectKillAction extends AdministrationAction {
 
 	@Override
 	protected void perform(final Player admin, final RPAction action) {
-		if (!action.has("target")) {
+		if (!action.has(TARGET)) {
 			admin.sendPrivateText("Parametr \"gracz\" jest wymagany: " + action);
 			return;
 		}
 
 		final Entity target = getTargetAnyZone(admin, action);
 		if (target == null) {
-			admin.sendPrivateText("Gracz \"" + action.get("target") + "\" nie został odnaleziony: " + action);
+			admin.sendPrivateText("Gracz \"" + action.get(TARGET) + "\" nie został odnaleziony: " + action);
 			return;
 		}
 
@@ -46,12 +48,12 @@ public class InspectKillAction extends AdministrationAction {
 			return;
 		}
 
-		if (!action.has("creature")) {
+		if (!action.has(CREATURE)) {
 			admin.sendPrivateText("Parametr \"stworzenie\" jest wymagany: " + action);
 			return;
 		}
 
-		final String creature = Grammar.singular(action.get("creature"));
+		final String creature = Grammar.singular(action.get(CREATURE));
 		if (!SingletonRepository.getEntityManager().isCreature(creature)) {
 			admin.sendPrivateText("\"" + creature + "\" nie jest prawidłową nazwą stworzenia: " + action);
 			return;

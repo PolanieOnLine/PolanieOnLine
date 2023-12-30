@@ -56,13 +56,13 @@ public class ItemLogEvent extends RPEvent {
 			"pas zabójcy", "rękawice zabójcy", "buty zabójcy", "maczuga cierniowa", "płaszcz czerwonego kapturka",
 			"wzmocniona drewniana strzała", "zbroja akwalungowa" };
 	private final String[] neededItemNames = { "banan", "borowik", "błazenek", "cebula", "cytryna", "czosnek", "dorsz", "duży ser", "dynia",
-			"straszna dynia", "fasola pinto", "flaczki", "jabłko", "jabłko niezgody", "jajo", "jajo wielkanocne", "kalafior", "kanapka",
+			"straszna dynia", "fasola pinto", "jabłko", "jabłko niezgody", "jajo", "jajo wielkanocne", "kalafior", "kanapka",
 			"kapusta pekińska", "karp", "karp lustrzeń", "kiełbasa", "kiść winogron", "leszcz", "makrela", "marchew", "mięso", "szynka",
 			"mufinka", "nakrapiane jajo", "okoń", "opieńka miodowa", "orzech włoski", "oscypek", "palia alpejska", "pieczarka", "pomarańcza",
 			"pomidor", "por", "pstrąg", "płotka", "rzepa", "rzodkiewka", "ser", "stek", "szczupak", "szpinak", "tabliczka czekolady", "tarta",
 			"tarta z rybnym nadzieniem", "truskawka", "udko", "wisienka", "zielone jabłusko", "ziemniaki", "babka lekarska", "mięta", "pokrzywa",
 			"pluszowy miś", "pióro herszta hordy zbójeckiej", "róg demona", "róg jednorożca", "serce olbrzyma", "truchło nietoperza",
-			"truchło wampira", "zima zaklęta w kuli", "czarny pierścień", "pierścień imperialny", "pierścień leczniczy", "pierścień niewidzialności",
+			"truchło wampira", "zima zaklęta w kuli", "czarny pierścień", "pierścień cesarski", "pierścień leczniczy", "pierścień niewidzialności",
 			"pierścień skorupy żółwia", "pierścień spokoju", "pierścień szmaragdowy", "pierścień z mithrilu", "pierścień zdrowia", "zaizolowany pierścień",
 			"balonik", "biały balonik", "zwój semos", "niezapisany zwój", "zwój ados", "zwój deniran", "zwój fado", "zwój nalwor" };
 

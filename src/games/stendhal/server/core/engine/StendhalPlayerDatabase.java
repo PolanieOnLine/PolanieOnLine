@@ -239,6 +239,21 @@ public class StendhalPlayerDatabase {
 		if (!transaction.doesColumnExist("shopownerinfo", "price_factor")) {
 			transaction.execute("ALTER TABLE shopownerinfo ADD COLUMN (price_factor INT);", null);
 		}
+		// 1.44 development version: infostring
+		if (!transaction.doesColumnExist("iteminfo", "itemdata")) {
+			transaction.execute("DROP TABLE iteminfo;", null);
+			transaction.execute("DROP TABLE shopinventoryinfo;", null);
+		}
+
+		// 1.45: hide NPC zone info from website
+		if (!transaction.doesColumnExist("npcs", "hide_location")) {
+			transaction.execute("ALTER TABLE npcs ADD COLUMN (hide_location TINYINT DEFAULT 0);", null);
+		}
+
+		// 1.45: add trade for column to shopinventoryinfo
+		if (!transaction.doesColumnExist("shopinventoryinfo", "trade_for")) {
+			transaction.execute("ALTER TABLE shopinventoryinfo ADD COLUMN (trade_for VARCHAR(1000));", null);
+		}
 
 		// pol0.30: gender
 		if (!transaction.doesColumnExist("character_stats", "gender")) {

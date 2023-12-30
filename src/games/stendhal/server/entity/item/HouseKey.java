@@ -37,7 +37,7 @@ public class HouseKey extends Item {
 			final Map<String, String> attributes) {
 		super(name, clazz, subclass, attributes);
 
-		setInfoString("nowhere;0;");
+		setItemData("nowhere;0;");
 		setPersistent(true);
 	}
 
@@ -52,7 +52,7 @@ public class HouseKey extends Item {
 
 	@Override
 	public String describe() {
-		final String[] info = getInfoString().split(";", -1);
+		final String[] info = getItemData().split(";", -1);
 		if (info[2].length() > 0) {
 			return "Oto klucz dla " + info[2] + " do zakupionego w " + info[0] + ".";
 		} else {
@@ -62,7 +62,7 @@ public class HouseKey extends Item {
 	/* useful so that the list of thems lost on death is more specific than just 'house key' */
 	@Override
 	public String getName() {
-		final String[] info = getInfoString().split(";", -1);
+		final String[] info = getItemData().split(";", -1);
 		if (info[2].length() > 0) {
 			return info[2] + " klucz do drzwi";
 		} else {
@@ -81,7 +81,7 @@ public class HouseKey extends Item {
 		if (owner == null) {
 			owner = "";
 		}
-		setInfoString(id + ";" + lockNumber + ";" + owner);
+		setItemData(id + ";" + lockNumber + ";" + owner);
 		chooseImage();
 	}
 
@@ -93,7 +93,7 @@ public class HouseKey extends Item {
 	 * @return true if the key fits the lock, false otherwise
 	 */
 	public boolean matches(final String houseId, final int number) {
-		final String[] info = getInfoString().split(";");
+		final String[] info = getItemData().split(";");
 
 		int keyNumber = Integer.parseInt(info[1]);
 		return (info[0].equals(houseId) && keyNumber == number);
@@ -104,7 +104,7 @@ public class HouseKey extends Item {
 	 * Ignores the owner, even if it's set.
 	 */
 	private void chooseImage() {
-		final String[] info = getInfoString().split(";");
+		final String[] info = getItemData().split(";");
 
 		put("subclass", imageNames[Math.abs((info[0].hashCode() + info[1].hashCode()) % imageNames.length)]);
 	}

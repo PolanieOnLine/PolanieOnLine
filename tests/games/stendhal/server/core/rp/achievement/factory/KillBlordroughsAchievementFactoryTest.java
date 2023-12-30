@@ -11,10 +11,12 @@
  ***************************************************************************/
 package games.stendhal.server.core.rp.achievement.factory;
 
+import static games.stendhal.server.core.rp.achievement.factory.KillBlordroughsAchievementFactory.COUNT_CRUSHER;
 import static games.stendhal.server.core.rp.achievement.factory.KillBlordroughsAchievementFactory.COUNT_DICTATOR;
 import static games.stendhal.server.core.rp.achievement.factory.KillBlordroughsAchievementFactory.COUNT_DOMINATOR;
 import static games.stendhal.server.core.rp.achievement.factory.KillBlordroughsAchievementFactory.COUNT_LACKEY;
 import static games.stendhal.server.core.rp.achievement.factory.KillBlordroughsAchievementFactory.COUNT_SOLDIER;
+import static games.stendhal.server.core.rp.achievement.factory.KillBlordroughsAchievementFactory.ID_CRUSHER;
 import static games.stendhal.server.core.rp.achievement.factory.KillBlordroughsAchievementFactory.ID_DICTATOR;
 import static games.stendhal.server.core.rp.achievement.factory.KillBlordroughsAchievementFactory.ID_DOMINATOR;
 import static games.stendhal.server.core.rp.achievement.factory.KillBlordroughsAchievementFactory.ID_LACKEY;
@@ -25,29 +27,30 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
+import org.apache.log4j.Logger;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import games.stendhal.server.core.rp.StendhalQuestSystem;
-import games.stendhal.server.core.rp.achievement.AchievementNotifier;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.condition.QuestActiveCondition;
 import games.stendhal.server.entity.npc.fsm.Engine;
 import games.stendhal.server.entity.player.Player;
-import games.stendhal.server.maps.MockStendlRPWorld;
 import games.stendhal.server.maps.ados.barracks.BuyerNPC;
 import games.stendhal.server.maps.quests.KillBlordroughs;
-import marauroa.server.game.db.DatabaseFactory;
 import utilities.AchievementTestHelper;
 import utilities.PlayerTestHelper;
 import utilities.ZonePlayerAndNPCTestImpl;
 
 public class KillBlordroughsAchievementFactoryTest extends ZonePlayerAndNPCTestImpl {
+	private static final Logger logger = Logger.getLogger(KillBlordroughsAchievementFactoryTest.class);
+
 	private Player player;
 	private SpeakerNPC npc;
 	private static final KillBlordroughs questInstance = KillBlordroughs.getInstance();
@@ -56,12 +59,18 @@ public class KillBlordroughsAchievementFactoryTest extends ZonePlayerAndNPCTestI
 
 	private final String enemy = "uzbrojony lider";
 
+	private static final String idPrefix = "quest.special.kill_blordroughs.";
+	private static final Map<String, Integer> idList = new LinkedHashMap<String, Integer>() {{
+		put(idPrefix + "0005", 5);
+		put(idPrefix + "0025", 25);
+		put(idPrefix + "0050", 50);
+		put(idPrefix + "0100", 100);
+		put(idPrefix + "0200", 200);
+	}};
+
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		new DatabaseFactory().initializeDatabase();
-		// initialize world
-		MockStendlRPWorld.get();
-		AchievementNotifier.get().initialize();
+		AchievementTestHelper.setUpBeforeClass();
 	}
 
 	@AfterClass
@@ -87,7 +96,13 @@ public class KillBlordroughsAchievementFactoryTest extends ZonePlayerAndNPCTestI
 	public void init() {
 		resetPlayer();
 		testNPC();
-		testAchievement();
+		testAchievementsActive();
+		testAchievements();
+
+		// double-check that we ran through all achievements
+		for (final String id: idList.keySet()) {
+			assertTrue(achievementReached(id));
+		}
 	}
 
 	private void testNPC() {
@@ -95,11 +110,20 @@ public class KillBlordroughsAchievementFactoryTest extends ZonePlayerAndNPCTestI
 		assertEquals("Mrotho", npc.getName());
 	}
 
-	private void testAchievement() {
+	private void testAchievementsActive() {
+		for (final String id: idList.keySet()) {
+			final boolean active = AchievementTestHelper.achievementEnabled(id);
+			logger.debug("achievement " + id + " active: " + String.valueOf(active));
+			assertTrue(active);
+		}
+	}
+
+	private void testAchievements() {
 		assertNull(player.getQuest(QUEST_SLOT));
 
-		for (int idx = 0; idx < COUNT_SOLDIER; idx++) {
+		for (int idx = 0; idx < COUNT_CRUSHER; idx++) {
 			completeQuest();
+			assertEquals(idx+1, questInstance.getCompletedCount(player));
 
 			if (idx >= COUNT_LACKEY - 1) {
 				assertTrue(achievementReached(ID_LACKEY));
@@ -124,6 +148,12 @@ public class KillBlordroughsAchievementFactoryTest extends ZonePlayerAndNPCTestI
 			} else {
 				assertFalse(achievementReached(ID_DICTATOR));
 			}
+
+			if (idx >= COUNT_CRUSHER - 1) {
+				assertTrue(achievementReached(ID_CRUSHER));
+			} else {
+				assertFalse(achievementReached(ID_CRUSHER));
+			}
 		}
 	}
 
@@ -139,8 +169,8 @@ public class KillBlordroughsAchievementFactoryTest extends ZonePlayerAndNPCTestI
 		assertNull(player.getQuest(QUEST_SLOT));
 
 		AchievementTestHelper.init(player);
-		for (final String ID: Arrays.asList(ID_LACKEY, ID_SOLDIER, ID_DOMINATOR, ID_DICTATOR)) {
-			assertFalse(achievementReached(ID));
+		for (final String id: idList.keySet()) {
+			assertFalse(achievementReached(id));
 		}
 	}
 

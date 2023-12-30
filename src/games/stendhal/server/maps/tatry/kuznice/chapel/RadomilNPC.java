@@ -88,7 +88,7 @@ public class RadomilNPC implements ZoneConfigurator {
 								player.rehabilitate();
 								raiser.say("Zdjąłem z Ciebie piętno zabójcy. Uważaj na siebie!");
 							} else {
-								raiser.say("Twoja karma jest na poziomie" + player.getKarma() + ", a potrzebujesz conajmniej " + KARMA_AMOUNT + ", abym mógł zdjąć z Ciebie piętno zabójcy.");
+								raiser.say("Twoja karma jest na poziomie" + player.getKarma() + ", a potrzebujesz co najmniej " + KARMA_AMOUNT + ", abym mógł zdjąć z Ciebie piętno zabójcy.");
 							}
 						}
 					}

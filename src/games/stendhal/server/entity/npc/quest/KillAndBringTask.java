@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2022 - PolanieOnLine                    *
+ *                 (C) Copyright 2023-2024 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -25,16 +25,16 @@ import games.stendhal.server.entity.npc.condition.KilledForQuestCondition;
 import games.stendhal.server.entity.npc.condition.PlayerHasItemWithHimCondition;
 import marauroa.common.Pair;
 
-public class MultiTask extends QuestTaskBuilder {
+public class KillAndBringTask extends QuestTaskBuilder {
 	private HashMap<String, Pair<Integer, Integer>> requestKill = new HashMap<>();
 	private List<Pair<String, Integer>> requestItem = new LinkedList<>();
 
-	public MultiTask requestKill(int count, String name) {
+	public KillAndBringTask requestKill(int count, String name) {
 		requestKill.put(name, new Pair<Integer, Integer>(0, count));
 		return this;
 	}
 
-	public MultiTask requestItem(int quantity, String name) {
+	public KillAndBringTask requestItem(int quantity, String name) {
 		requestItem.add(new Pair<String, Integer>(name, quantity));
 		return this;
 	}

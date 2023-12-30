@@ -22,7 +22,7 @@ import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.CollectRequestedItemsAction;
-import games.stendhal.server.entity.npc.action.DropInfostringItemAction;
+import games.stendhal.server.entity.npc.action.DropItemdataItemAction;
 import games.stendhal.server.entity.npc.action.EquipItemAction;
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
 import games.stendhal.server.entity.npc.action.IncreaseXPAction;
@@ -35,7 +35,7 @@ import games.stendhal.server.entity.npc.action.SetQuestAndModifyKarmaAction;
 import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
 import games.stendhal.server.entity.npc.condition.NotCondition;
-import games.stendhal.server.entity.npc.condition.PlayerHasInfostringItemWithHimCondition;
+import games.stendhal.server.entity.npc.condition.PlayerHasItemdataItemWithHimCondition;
 import games.stendhal.server.entity.npc.condition.PlayerHasItemWithHimCondition;
 import games.stendhal.server.entity.npc.condition.QuestActiveCondition;
 import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
@@ -49,7 +49,7 @@ public class ApothecaryStage extends AVRStage {
 	private final SpeakerNPC apothecary;
 
 	/* infostring that identifies note item */
-	private static final String NOTE_INFOSTRING = "liścik do aptekarza";
+	private static final String NOTE_ITEMDATA = "liścik do aptekarza";
 
 	/* items taken to apothecary to create antivenom */
 	private static final String MIX_ITEMS = "jad kobry=1;mandragora=2;kokuda=1;mufinka=20";
@@ -88,7 +88,7 @@ public class ApothecaryStage extends AVRStage {
 		apothecary.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
 				new AndCondition(
-						new NotCondition(new PlayerHasInfostringItemWithHimCondition("karteczka", NOTE_INFOSTRING)),
+						new NotCondition(new PlayerHasItemdataItemWithHimCondition("karteczka", NOTE_ITEMDATA)),
 						new QuestNotStartedCondition(questName)),
 				ConversationStates.ATTENDING,
 				"Przykro mi, ale jestem teraz zbyt zajęty. Może mógłbyś porozmawiać z #Klaasem.",
@@ -99,7 +99,7 @@ public class ApothecaryStage extends AVRStage {
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(
 						new GreetingMatchesNameCondition(apothecary.getName()),
-						new PlayerHasInfostringItemWithHimCondition("karteczka", NOTE_INFOSTRING),
+						new PlayerHasItemdataItemWithHimCondition("karteczka", NOTE_ITEMDATA),
 						new QuestNotStartedCondition(questName)),
 				ConversationStates.QUEST_OFFERED,
 				"Och, wiadomość od Klaasa. Jest dla mnie?",
@@ -110,7 +110,7 @@ public class ApothecaryStage extends AVRStage {
 				ConversationPhrases.QUEST_MESSAGES,
 				new AndCondition(
 						new GreetingMatchesNameCondition(apothecary.getName()),
-						new PlayerHasInfostringItemWithHimCondition("karteczka", NOTE_INFOSTRING),
+						new PlayerHasItemdataItemWithHimCondition("karteczka", NOTE_ITEMDATA),
 						new QuestNotStartedCondition(questName)),
 				ConversationStates.QUEST_OFFERED,
 				"Och, wiadomość od Klaasa. Jest dla mnie?",
@@ -119,13 +119,13 @@ public class ApothecaryStage extends AVRStage {
 		// Player accepts quest
 		apothecary.add(ConversationStates.QUEST_OFFERED,
 				ConversationPhrases.YES_MESSAGES,
-				new PlayerHasInfostringItemWithHimCondition("karteczka", NOTE_INFOSTRING),
+				new PlayerHasItemdataItemWithHimCondition("karteczka", NOTE_ITEMDATA),
 				ConversationStates.ATTENDING,
 				null,
 				new MultipleActions(
 						new SetQuestAction(questName, MIX_ITEMS),
 						new IncreaseKarmaAction(5.0),
-						new DropInfostringItemAction("karteczka", NOTE_INFOSTRING),
+						new DropItemdataItemAction("karteczka", NOTE_ITEMDATA),
 						new SayRequiredItemsFromCollectionAction(questName,
 								"Klaas poprosił mnie o pomoc tobie. Mogę zrobić mieszanine antyjadu, który później połączy się z twoim pierścieniem, by zwiększyć twoją odporność na truciznę."
 								+ " Musisz przynieść mi [items]. Czy masz przy sobie któreś z nich?",
@@ -138,7 +138,7 @@ public class ApothecaryStage extends AVRStage {
 				ConversationPhrases.YES_MESSAGES,
 				new AndCondition(
 						new NotCondition(new QuestInStateCondition(questName, "ringmaker")),
-						new NotCondition(new PlayerHasInfostringItemWithHimCondition("karteczka", NOTE_INFOSTRING))
+						new NotCondition(new PlayerHasItemdataItemWithHimCondition("karteczka", NOTE_ITEMDATA))
 				),
 				ConversationStates.ATTENDING,
 				"Okej, więc będę musiał... poczekać, gdzie zgubiłeś ten liścik?",

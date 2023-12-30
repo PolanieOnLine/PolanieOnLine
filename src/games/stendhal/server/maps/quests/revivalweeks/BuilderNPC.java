@@ -57,15 +57,15 @@ public class BuilderNPC implements LoadableContent, TurnListener {
 		Map<String, Integer> chunkSize = new HashMap<>();
 		Map<String, String> hints = new HashMap<>();
 
-		required.put("pordzewiała kosa", 1);
+		required.put("pordzewiała kosa", 2);
 		chunkSize.put("pordzewiała kosa", 1);
 		hints.put("pordzewiała kosa", "Jestem pewien, że Xoderos w Semos sprzeda ci starą kosę.");
 		
-		required.put("topór", 1);
+		required.put("topór", 2);
 		chunkSize.put("topór", 1);
 		hints.put("topór", "Jestem pewien, że Xoderos w Semos sprzeda ci topór.");
 		
-		required.put("pyrlik", 1);
+		required.put("pyrlik", 2);
 		chunkSize.put("pyrlik", 1);
 		hints.put("pyrlik", "Jestem pewien, że Xoderos w Semos sprzeda ci pyrlik.");
 		
@@ -73,7 +73,7 @@ public class BuilderNPC implements LoadableContent, TurnListener {
 		chunkSize.put("nożyk", 1);
 		hints.put("nożyk", "Jestem pewien, że Xin Blanca w Semos sprzeda ci nożyk.");
 		
-		required.put("latarenka", 5);
+		required.put("latarenka", 10);
 		chunkSize.put("latarenka", 1);
 		hints.put("latarenka", "Prawdopodobnie latarenkę możesz kupić od Jimbo w Deniran.");
 
@@ -85,9 +85,17 @@ public class BuilderNPC implements LoadableContent, TurnListener {
 		chunkSize.put("sok z chmielu", 5);
 		hints.put("sok z chmielu", "Prawdopobodnie sok z chmielu znajdziesz w każdej tawernie.");
 
+		required.put("mleko", 10);
+		chunkSize.put("mleko", 5);
+		hints.put("mleko", "Starałbym się kupić mleko na farmie.");
+
 		required.put("lina", 5);
 		chunkSize.put("lina", 1);
 		hints.put("lina", "Jestem pewien, że Giles w Kirdneh może splatać dla ciebie linę.");
+
+		required.put("pusty worek", 6);
+		chunkSize.put("pusty worek", 2);
+		hints.put("pusty worek", "Jeśli dobrze pamiętam, Karl w okolicach lasu Ados sprzeda ci pusty worek.");
 
 		behaviour = new CollectingGroupQuestBehaviour(QUEST_SLOT, required, chunkSize, hints, progress);
 		behaviour.setProjectName("#Mine #Town #Revival #Weeks");

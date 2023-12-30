@@ -246,7 +246,7 @@ public class GoralskiCollector3 extends AbstractQuest {
 						List<String> missing = missingitems3(player, false);
 
 						if (missing.contains(itemName)) {
-							if (player.isEquippedWithInfostring(itemName, "burglary")) {
+							if (player.isEquippedWithItemdata(itemName, "burglary")) {
 								entity.say("Wybacz... Skradzionych rzeczy nie zamierzam przyjąć!");
 								return;
 							}

@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -66,15 +66,15 @@ public class HolidayingWomanNPC implements ZoneConfigurator {
 				addOffer("Jestem ekspertką od spraw #żywności, po tych wszystkich podróżach wakacyjnych!");
 				addQuest("Możesz spróbować każdego #jedzenia dostępnego u kucharzy i szefów kuchni w całej krainie. Mogę również ci opowiedzieć, czego próbowałam podczas moich podróży.");
 				addReply(Arrays.asList("food", "jedzenie", "żywność", "żywności"), null,
-						new ListProducedItemsOfClassAction("food", "Sądzę, że spróbowałam już wszystkiego, [#items]. Mogę opowiedzieć więcej o każdej żywności, jeśli chcesz."));
+						new ListProducedItemsOfClassAction("food", "Sądzę, że spróbowałam już wszystkiego, [#items]. Mogę opowiedzieć więcej o każdej żywności, jeśli chcesz.", "grillowany stek"));
 				add(
-						ConversationStates.ATTENDING,
-						"",
-						new TriggerIsProducedItemOfClassCondition("food"),
-						ConversationStates.ATTENDING,
-						null,
-						new ListProducedItemDetailAction()
-					);
+					ConversationStates.ATTENDING,
+					"",
+					new TriggerIsProducedItemOfClassCondition("food"),
+					ConversationStates.ATTENDING,
+					null,
+					new ListProducedItemDetailAction());
+				addReply("grillowany stek", "Haunchy Meatoch robi grillowane steki. Słyszałam, że lubi nagradzać tych, którzy pomagają mu zebrać węgiel do grilla.");
 				addJob("Hahaha! Jestem tutaj na urlopie i po prostu wyszłam na spacer.");
 				addGoodbye("Do widzenia.");
 			}

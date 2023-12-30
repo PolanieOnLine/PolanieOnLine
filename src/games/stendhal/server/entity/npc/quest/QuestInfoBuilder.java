@@ -20,12 +20,15 @@ public class QuestInfoBuilder {
 	private String name = "<unnamed>";
 	private String description = "";
 	private String internalName = null;
-	private boolean repeatable = true;
-	private int repeatableAfterMinutes = 0;
-	private int forgingDelay = 0;
+	private int repeatableAfterMinutes = -1;
 	private int minLevel = 0;
 	private String region = "somewhere";
 	private String questGiverNpc = null;
+
+	// hide constructor
+	QuestInfoBuilder() {
+		super();
+	}
 
 	public QuestInfoBuilder name(String name) {
 		this.name = name;
@@ -42,23 +45,13 @@ public class QuestInfoBuilder {
 		return this;
 	}
 
-	public QuestInfoBuilder repeatable(boolean repeatable) {
-		this.repeatable = repeatable;
-		return this;
-	}
-
 	public QuestInfoBuilder repeatableAfterMinutes(int repeatableAfterMinutes) {
 		this.repeatableAfterMinutes = repeatableAfterMinutes;
 		return this;
 	}
 
 	public QuestInfoBuilder notRepeatable() {
-		this.repeatableAfterMinutes = 0;
-		return this;
-	}
-
-	public QuestInfoBuilder forgingDelay(int forgingDelay) {
-		this.forgingDelay = forgingDelay;
+		this.repeatableAfterMinutes = -1;
 		return this;
 	}
 
@@ -101,16 +94,8 @@ public class QuestInfoBuilder {
 		return internalName;
 	}
 
-	boolean isRepeatable() {
-		return repeatable;
-	}
-
 	int getRepeatableAfterMinutes() {
 		return repeatableAfterMinutes;
-	}
-
-	int getForgingDelay() {
-		return forgingDelay;
 	}
 
 	int getMinLevel() {

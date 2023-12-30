@@ -113,7 +113,7 @@ public class WegielNaOpal extends AbstractQuest {
 				new AndCondition(new QuestActiveCondition(QUEST_SLOT),
 								new PlayerHasRecordedItemWithHimCondition(QUEST_SLOT)),
 				ConversationStates.ATTENDING,
-				"Dziękuję za węgiel! Teraz będę miał zapas na conajmniej kilka zim! Czas, być może złożyć #ofertę.",
+				"Dziękuję za węgiel! Teraz będę miał zapas na co najmniej kilka zim! Czas, być może złożyć #ofertę.",
 				new MultipleActions(new DropRecordedItemAction(QUEST_SLOT),
 									new SetQuestAction(QUEST_SLOT, "done"),
 									new IncreaseXPAction(5500),

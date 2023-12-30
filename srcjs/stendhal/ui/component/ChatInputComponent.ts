@@ -13,6 +13,9 @@ declare let marauroa: any;
 declare let stendhal: any;
 
 import { KeyHandler } from "../KeyHandler";
+import { ui } from "../UI";
+import { ChatOptionsDialog } from "../dialog/ChatOptionsDialog";
+import { EmojiMapDialog } from "../dialog/EmojiMapDialog";
 import { Component } from "../toolkit/Component";
 import { singletons } from "../../SingletonRepo";
 
@@ -41,6 +44,29 @@ export class ChatInputComponent extends Component {
 		// restore from previous session
 		this.history = config.getObject("chat.history") || [];
 		this.historyIndex = config.getInt("chat.history.index", 0);
+
+		const btn_send = document.getElementById("send-button")!;
+		btn_send.addEventListener("click", (e) => {
+			this.send();
+		});
+
+		// ** keyword shortcuts ** //
+		const btn_keyword = document.getElementById("keywords-button")!;
+		// event to bring up keywords dialog
+		btn_keyword.addEventListener("click", (e) => {
+			this.buildChatOptions();
+		});
+
+		// ** emoji shortcuts ** //
+		const btn_emoji = document.getElementById("emojis-button")!;
+		// clear default text & add emoji image
+		btn_emoji.innerText = "";
+		// set image for emoji button
+		btn_emoji.appendChild(stendhal.data.sprites.get(stendhal.paths.sprites + "/emoji/smile.png").cloneNode());
+		// event to bring up emoji dialog
+		btn_emoji.addEventListener("click", (e) => {
+			this.buildEmojiMap();
+		});
 	}
 
 	public clear() {
@@ -114,4 +140,21 @@ export class ChatInputComponent extends Component {
 		this.clear();
 	}
 
+	private buildChatOptions() {
+		const wstate = stendhal.config.getWindowState("shortcuts");
+		const content = new ChatOptionsDialog();
+		const dialog = ui.createSingletonFloatingWindow("Chat Options", content, wstate.x, wstate.y);
+		dialog.setId("shortcuts");
+		// needed in order to close dialog from within
+		content.setFrame(dialog);
+	}
+
+	private buildEmojiMap() {
+		const wstate = stendhal.config.getWindowState("shortcuts");
+		const content = new EmojiMapDialog();
+		const dialog = ui.createSingletonFloatingWindow("Emojis", content, wstate.x, wstate.y);
+		dialog.setId("shortcuts");
+		// needed in order to close dialog from within
+		content.setFrame(dialog);
+	}
 }

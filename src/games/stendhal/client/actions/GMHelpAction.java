@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -40,7 +39,7 @@ class GMHelpAction implements SlashAction {
 	 */
 	@Override
 	public boolean execute(final String[] params, final String remainder) {
-	    List<String> lines;
+		List<String> lines;
 		if (params[0] == null) {
 			lines = Arrays.asList(
 				"Aby dowiedzieć się więcej odwiedź #https://s1.polanieonline.eu/wiki/PolanieOnLine:Administrowanie",
@@ -54,7 +53,7 @@ class GMHelpAction implements SlashAction {
 				"\t\tPokazuje kompletne informacje o #wojowniku.",
 				"- /inspectkill <wojownik> <stworzenie>",
 				"\t\tPokazuje ilość zabójstw #potwora u #wojownika.",
-				"- /inspectquest <wojownik> <nazwa_zadania>",
+				"- /inspectquest <wojownik> [<quest_slot>]",
 				"\t\tPokazuje stan zadania #wojownika.",
 				"- /script <nazwaskryptu>",
 				"\t\tŁaduje (lub przeładowuje) skrypt na serwerze.",

@@ -232,7 +232,7 @@ class Marriage {
 		player.drop("obrączka ślubna");
 		final Item ring = SingletonRepository.getEntityManager().getItem(
 				"obrączka ślubna");
-		ring.setInfoString(partner.getName());
+		ring.setItemData(partner.getName());
 		ring.setBoundTo(player.getName());
 		player.equipOrPutOnGround(ring);
 	}

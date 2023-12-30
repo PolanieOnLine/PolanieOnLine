@@ -15,17 +15,31 @@ declare var marauroa: any;
 
 export class DropQuantitySelectorDialog extends Component {
 
-	constructor(private action: any) {
+	constructor(private action: any, is_touch: boolean=false) {
 		super("dropquantityselectordialog-template");
 
 		this.child(".quantityselectorbutton")?.addEventListener("click", (event) => {
 			this.onDrop(event);
 		});
+		if (is_touch) {
+			const allButton = document.createElement("button");
+			allButton.className = "allselectorbutton";
+			allButton.innerText = "All";
+			this.componentElement.appendChild(allButton);
+			allButton.addEventListener("click", (event) => {
+				this.onDropAll(event);
+			});
+		}
 
 		let valueInput = this.child(".quantityselectorvalue") as HTMLInputElement
 		queueMicrotask( () => {
 			valueInput.select();
 			valueInput.focus();
+		});
+		valueInput.addEventListener("keydown", (event) => {
+			if (event.key === "Enter") {
+				this.onDrop(event);
+			}
 		});
 	}
 
@@ -40,4 +54,9 @@ export class DropQuantitySelectorDialog extends Component {
 		event.preventDefault();
 	}
 
+	private onDropAll(event: Event) {
+		marauroa.clientFramework.sendAction(this.action);
+		this.componentElement.dispatchEvent(new Event("close"));
+		event.preventDefault();
+	}
 }

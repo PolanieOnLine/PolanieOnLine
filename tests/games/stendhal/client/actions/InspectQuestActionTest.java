@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -48,7 +47,9 @@ public class InspectQuestActionTest {
 			}
 		};
 		final InspectQuestAction action = new InspectQuestAction();
-		String[] param = {"hadihadi", "hadiha"};
+		String[] param = {"hadihadi"};
+		assertTrue(action.execute(param, "reason"));
+		param = new String[]{"hadihadi", "hadiha"};
 		assertTrue(action.execute(param, "reason"));
 	}
 
@@ -67,7 +68,6 @@ public class InspectQuestActionTest {
 	@Test
 	public void testGetMinimumParameters() {
 		final InspectQuestAction action = new InspectQuestAction();
-		assertThat(action.getMinimumParameters(), is(2));
+		assertThat(action.getMinimumParameters(), is(1));
 	}
-
 }

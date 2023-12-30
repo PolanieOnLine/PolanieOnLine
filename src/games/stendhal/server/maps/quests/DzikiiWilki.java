@@ -121,7 +121,7 @@ public class DzikiiWilki extends AbstractQuest {
 				ConversationPhrases.YES_MESSAGES,
 				null,
 				ConversationStates.ATTENDING,
-				"Świetnie. Poczekam tutaj na Ciebie. Pamiętaj, musisz ubić conajmniej jednego wilka, dzika i lisice!",
+				"Świetnie. Poczekam tutaj na Ciebie. Pamiętaj, musisz ubić co najmniej jednego wilka, dzika i lisice!",
 				new MultipleActions(start));
 
 		npc.add(ConversationStates.QUEST_OFFERED, 

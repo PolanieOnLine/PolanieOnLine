@@ -777,10 +777,10 @@
 
 	<!-- the following are configured in the NPC source & are included here only to be read by the website -->
 	<shop name="flowerseeds" type="sell">
-		<item name="stokrotki nasionka" price="20"/>
-		<item name="lilia nasionka" price="10"/>
-		<item name="bratek nasionka" price="10"/>
-		<item name="bielikrasa bulwa" price="15"/>
+		<item name="nasiona stokrotki" price="20"/>
+		<item name="nasiona lilia" price="10"/>
+		<item name="nasiona bratek" price="10"/>
+		<item name="bulwa bielikrasa" price="15"/>
 
 		<merchant name="Jenny"/>
 	</shop>

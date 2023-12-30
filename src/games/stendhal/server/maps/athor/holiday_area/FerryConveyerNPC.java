@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2020 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -105,6 +105,8 @@ public class FerryConveyerNPC implements ZoneConfigurator  {
 						ConversationPhrases.NO_MESSAGES, null,
 						ConversationStates.ATTENDING,
 						"Nie wiesz co tracisz, szczurze lądowy!", null);
+
+				addKnownChatOptions("status", "wejdź");
 			}
 
 			@Override

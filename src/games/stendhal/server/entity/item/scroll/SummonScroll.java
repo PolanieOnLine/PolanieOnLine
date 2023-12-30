@@ -89,7 +89,7 @@ public class SummonScroll extends Scroll {
 
 		Creature pickedCreature = null;
 
-		final String type = getInfoString();
+		final String type = getItemData();
 
 		if (type != null) {
 			// scroll for special monster
@@ -141,10 +141,10 @@ public class SummonScroll extends Scroll {
 	public String describe() {
 		String text = super.describe();
 
-		final String infostring = getInfoString();
+		final String itemdata = getItemData();
 
-		if (infostring != null) {
-			text += " Przywoła " + infostring  + ".";
+		if (itemdata != null) {
+			text += " Przywoła " + itemdata  + ".";
 		}
 		return (text);
 	}

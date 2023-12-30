@@ -2,7 +2,7 @@
 <zones xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="stendhal ../../zones.xsd ">
 	<!-- ** Load zones. Written from left to right and from top to bottom.
-	  ** Please respect it! -->
+		** Please respect it! -->
 
 
 	<!-- Level 6 -->
@@ -35,10 +35,10 @@
 
 		<!-- Music -->
 		<entity x="1" y="1">
-		  <implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 			<parameter name="sound">town-01</parameter>
 			<parameter name="volume">80</parameter>
-		  </implementation>
+			</implementation>
 		</entity>
 
 		<!-- NPCs -->
@@ -348,6 +348,10 @@ Zdecydowanie potrzebujesz pierścionka ślubnego. Przyjdź tutaj, gdy będziesz 
 			<attribute name="move.continuous" />
 		</portal>
 
+		<portal x="13" y="2" ref="stairs_up">
+			<destination zone="int_fado_bank_1" ref="stairs_down"/>
+		</portal>
+
 		<entity x="2" y="8">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
@@ -393,6 +397,61 @@ Zdecydowanie potrzebujesz pierścionka ślubnego. Przyjdź tutaj, gdy będziesz 
 			</implementation>
 		</entity>
 
+	</zone>
+
+	<zone name="int_fado_bank_1" file="interiors/fado/bank_1.tmx">
+		<!-- portals -->
+
+		<portal x="13" y="2" ref="stairs_down">
+			<destination zone="int_fado_bank" ref="stairs_up"/>
+		</portal>
+
+		<!-- chests -->
+
+		<entity x="2" y="8">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">bank_kirdneh</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="2" y="8">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
+				<parameter name="width">5</parameter>
+				<parameter name="height">2</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="2" y="12">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">bank_kirdneh</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="2" y="12">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
+				<parameter name="width">5</parameter>
+				<parameter name="height">2</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="2" y="16">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">bank_kirdneh</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="2" y="16">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
+				<parameter name="width">5</parameter>
+				<parameter name="height">2</parameter>
+			</implementation>
+		</entity>
 	</zone>
 
 	<zone name="int_fado_bakery" file="interiors/fado/bakery.tmx">
@@ -404,11 +463,9 @@ Zdecydowanie potrzebujesz pierścionka ślubnego. Przyjdź tutaj, gdy będziesz 
 			<destination zone="0_fado_city" ref="bakery_entrance" />
 			<attribute name="move.continuous" />
 		</portal>
-
 	</zone>
 
 	<zone name="int_fado_tavern" file="interiors/fado/tavern.tmx">
-
 		<!-- music -->
 		<entity x="0" y="0">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
@@ -582,7 +639,6 @@ gdzie możliwe jest znalezienie złota. To miejce jest na południe od zamku Or'
 			</attribute>
 			<attribute name="class">book_blue</attribute>
 		</entity>
-
 	</zone>
 
 	<zone name="int_fado_hut" file="interiors/fado/hut.tmx">
@@ -608,7 +664,6 @@ gdzie możliwe jest znalezienie złota. To miejce jest na południe od zamku Or'
 			<destination zone="0_fado_city" ref="hut_entrance" />
 			<attribute name="move.continuous" />
 		</portal>
-
 	</zone>
 
 	<zone name="int_fado_church" file="interiors/fado/church.tmx">
@@ -688,11 +743,9 @@ Jeżeli twoja narzeczona nazywa się Helen to powinieneś powiedzieć 'marry Hel
 			</attribute>
 			<attribute name="class">book_red</attribute>
 		</entity>
-
 	</zone>
 
 	<zone name="int_fado_hotel_0" file="interiors/fado/hotel_0.tmx">
-
 		<!-- music -->
 		<entity x="0" y="0">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
@@ -758,12 +811,12 @@ Jeżeli twoja narzeczona nazywa się Helen to powinieneś powiedzieć 'marry Hel
 15. Femme Fatale - kobiecy i frywolny
 
 Jeżeli szukasz pokoju na miesiąc miodowy to podaj numer pokoju, który chcesz
-na przykład powiedz:  11  jeżeli chcesz pokój Water of Love.
+na przykład powiedz:	11	jeżeli chcesz pokój Water of Love.
 			</attribute>
 			<attribute name="class">book_red</attribute>
 		</entity>
 
-		<!--    these hotel rooms aren't in use yet
+		<!-- these hotel rooms aren't in use yet
 		<portal x="0" y="40" ref="room_001_entrance">
 			<destination zone="int_fado_hotel_room_001" ref="entrance"/>
 			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.KeyedPortal">
@@ -827,57 +880,56 @@ na przykład powiedz:  11  jeżeli chcesz pokój Water of Love.
 				<parameter name="rejected">Keys are at the front desk</parameter>
 			</implementation>
 		</portal>-->
-
 	</zone>
 
 	<!-- these hotel rooms aren't in use yet.
-         <zone name="int_fado_hotel_room_001" file="interiors/fado/room_001.tmx">
-           <portal x="8" y="14" ref="entrance">
-             <destination zone="int_fado_hotel_0" ref="room_001_entrance"/>
-           </portal>
-         </zone>
+	<zone name="int_fado_hotel_room_001" file="interiors/fado/room_001.tmx">
+		<portal x="8" y="14" ref="entrance">
+			<destination zone="int_fado_hotel_0" ref="room_001_entrance"/>
+		</portal>
+	</zone>
 
-         <zone name="int_fado_hotel_room_002" file="interiors/fado/room_002.tmx">
-           <portal x="8" y="14" ref="entrance">
-             <destination zone="int_fado_hotel_0" ref="room_002_entrance"/>
-           </portal>
-         </zone>
+	<zone name="int_fado_hotel_room_002" file="interiors/fado/room_002.tmx">
+		<portal x="8" y="14" ref="entrance">
+			<destination zone="int_fado_hotel_0" ref="room_002_entrance"/>
+		</portal>
+	</zone>
 
-         <zone name="int_fado_hotel_room_003" file="interiors/fado/room_003.tmx">
-           <portal x="8" y="14" ref="entrance">
-             <destination zone="int_fado_hotel_0" ref="room_003_entrance"/>
-           </portal>
-         </zone>
+	<zone name="int_fado_hotel_room_003" file="interiors/fado/room_003.tmx">
+		<portal x="8" y="14" ref="entrance">
+			<destination zone="int_fado_hotel_0" ref="room_003_entrance"/>
+		</portal>
+	</zone>
 
-         <zone name="int_fado_hotel_room_004" file="interiors/fado/room_004.tmx">
-           <portal x="8" y="14" ref="entrance">
-             <destination zone="int_fado_hotel_0" ref="room_004_entrance"/>
-           </portal>
-         </zone>
+	<zone name="int_fado_hotel_room_004" file="interiors/fado/room_004.tmx">
+		<portal x="8" y="14" ref="entrance">
+			<destination zone="int_fado_hotel_0" ref="room_004_entrance"/>
+		</portal>
+	</zone>
 
-         <zone name="int_fado_hotel_room_005" file="interiors/fado/room_005.tmx">
-           <portal x="8" y="14" ref="entrance">
-             <destination zone="int_fado_hotel_0" ref="room_005_entrance"/>
-           </portal>
-         </zone>
+	<zone name="int_fado_hotel_room_005" file="interiors/fado/room_005.tmx">
+		<portal x="8" y="14" ref="entrance">
+			<destination zone="int_fado_hotel_0" ref="room_005_entrance"/>
+		</portal>
+	</zone>
 
-         <zone name="int_fado_hotel_room_006" file="interiors/fado/room_006.tmx">
-           <portal x="8" y="14" ref="entrance">
-             <destination zone="int_fado_hotel_0" ref="room_006_entrance"/>
-           </portal>
-         </zone>
+	<zone name="int_fado_hotel_room_006" file="interiors/fado/room_006.tmx">
+		<portal x="8" y="14" ref="entrance">
+			<destination zone="int_fado_hotel_0" ref="room_006_entrance"/>
+		</portal>
+	</zone>
 
-         <zone name="int_fado_hotel_room_007" file="interiors/fado/room_007.tmx">
-           <portal x="8" y="14" ref="entrance">
-             <destination zone="int_fado_hotel_0" ref="room_007_entrance"/>
-           </portal>
-         </zone>
+	<zone name="int_fado_hotel_room_007" file="interiors/fado/room_007.tmx">
+		<portal x="8" y="14" ref="entrance">
+			<destination zone="int_fado_hotel_0" ref="room_007_entrance"/>
+		</portal>
+	</zone>
 
-         <zone name="int_fado_hotel_room_008" file="interiors/fado/room_008.tmx">
-           <portal x="8" y="14" ref="entrance">
-             <destination zone="int_fado_hotel_0" ref="room_008_entrance"/>
-           </portal>
-         </zone> -->
+	<zone name="int_fado_hotel_room_008" file="interiors/fado/room_008.tmx">
+		<portal x="8" y="14" ref="entrance">
+			<destination zone="int_fado_hotel_0" ref="room_008_entrance"/>
+		</portal>
+	</zone> -->
 
 	<zone name="int_fado_lovers_room_0" file="interiors/fado/lovers_room_0.tmx"
 		accessible="false">
@@ -908,21 +960,18 @@ na przykład powiedz:  11  jeżeli chcesz pokój Water of Love.
 			<attribute name="width">2</attribute>
 			<attribute name="description">Oto piękne pianino. Może mógłbyś na nim zagrać.</attribute>
 		</entity>
-
 	</zone>
 
 	<zone name="int_fado_lovers_room_1" file="interiors/fado/lovers_room_1.tmx"
 		accessible="false">
 		<!-- to disallow making or using marked scrolls -->
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
-
 	</zone>
 
 	<zone name="int_fado_lovers_room_2" file="interiors/fado/lovers_room_2.tmx"
 		accessible="false">
 		<!-- to disallow making or using marked scrolls -->
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
-
 	</zone>
 
 	<zone name="int_fado_lovers_room_3" file="interiors/fado/lovers_room_3.tmx"
@@ -940,14 +989,12 @@ na przykład powiedz:  11  jeżeli chcesz pokój Water of Love.
 			<attribute name="width">2</attribute>
 			<attribute name="description">Oto piękne pianino. Może mógłbyś na nim zagrać.</attribute>
 		</entity>
-
 	</zone>
 
 	<zone name="int_fado_lovers_room_4" file="interiors/fado/lovers_room_4.tmx"
 		accessible="false">
 		<!-- to disallow making or using marked scrolls -->
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
-
 	</zone>
 
 	<zone name="int_fado_lovers_room_5" file="interiors/fado/lovers_room_5.tmx"
@@ -968,21 +1015,18 @@ na przykład powiedz:  11  jeżeli chcesz pokój Water of Love.
 				<parameter name="volume">100</parameter>
 			</implementation>
 		</entity>
-
 	</zone>
 
 	<zone name="int_fado_lovers_room_6" file="interiors/fado/lovers_room_6.tmx"
 		accessible="false">
 		<!-- to disallow making or using marked scrolls -->
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
-
 	</zone>
 
 	<zone name="int_fado_lovers_room_7" file="interiors/fado/lovers_room_7.tmx"
 		accessible="false">
 		<!-- to disallow making or using marked scrolls -->
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
-
 	</zone>
 
 	<zone name="int_fado_lovers_room_8" file="interiors/fado/lovers_room_8.tmx"
@@ -1003,28 +1047,24 @@ na przykład powiedz:  11  jeżeli chcesz pokój Water of Love.
 				<parameter name="volume">100</parameter>
 			</implementation>
 		</entity>
-
 	</zone>
 
 	<zone name="int_fado_lovers_room_9" file="interiors/fado/lovers_room_9.tmx"
 		accessible="false">
 		<!-- to disallow making or using marked scrolls -->
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
-
 	</zone>
 
 	<zone name="int_fado_lovers_room_10" file="interiors/fado/lovers_room_10.tmx"
 		accessible="false">
 		<!-- to disallow making or using marked scrolls -->
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
-
 	</zone>
 
 	<zone name="int_fado_lovers_room_11" file="interiors/fado/lovers_room_11.tmx"
 		accessible="false">
 		<!-- to disallow making or using marked scrolls -->
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
-
 	</zone>
 
 	<zone name="int_fado_lovers_room_12" file="interiors/fado/lovers_room_12.tmx"
@@ -1045,14 +1085,12 @@ na przykład powiedz:  11  jeżeli chcesz pokój Water of Love.
 				<parameter name="volume">100</parameter>
 			</implementation>
 		</entity>
-
 	</zone>
 
 	<zone name="int_fado_lovers_room_13" file="interiors/fado/lovers_room_13.tmx"
 		accessible="false">
 		<!-- to disallow making or using marked scrolls -->
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
-
 	</zone>
 
 	<zone name="int_fado_lovers_room_14" file="interiors/fado/lovers_room_14.tmx"
@@ -1086,14 +1124,12 @@ na przykład powiedz:  11  jeżeli chcesz pokój Water of Love.
 				class-name="games.stendhal.server.entity.mapstuff.area.WalkBlocker" />
 			<attribute name="description">Oto stolik na jedzenie i napoje.</attribute>
 		</entity>
-
 	</zone>
 
 	<zone name="int_fado_lovers_room_15" file="interiors/fado/lovers_room_15.tmx"
 		accessible="false">
 		<!-- to disallow making or using marked scrolls -->
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn" />
-
 	</zone>
 
 	<zone name="int_fado_battle_arena" file="interiors/fado/battle_arena.tmx">
@@ -1110,7 +1146,6 @@ na przykład powiedz:  11  jeżeli chcesz pokój Water of Love.
 		<portal x="54" y="3" ref="basement_entrance">
 			<destination zone="int_fado_battle_pit" ref="basement_exit" />
 		</portal>
-
 	</zone>
 
 	<zone name="int_fado_battle_pit" file="interiors/fado/battle_arena_-1.tmx">
@@ -1152,7 +1187,6 @@ na przykład powiedz:  11  jeżeli chcesz pokój Water of Love.
 			<attribute name="move.continuous" />
 			<attribute name="hidden" />
 		</portal>
-
 	</zone>
 
 	<zone name="0_fado_forest" level="0" x="499744" y="500512" file="Level 0/fado/forest.tmx">
@@ -1212,14 +1246,13 @@ na przykład powiedz:  11  jeżeli chcesz pokój Water of Love.
 			<attribute name="move.continuous" />
 		</portal>
 
-	<point-of-interest x="18" y="120">
-		<name>Wielkie Jasknie Fado 2</name>
-		<title>Wielkie Jasknie Fado</title>
-		<type>dungeon</type>
-		<description>Wejście do Wielkich Jaskiń Fado. Ogromne podziemia, które ciągną sie na południe pod rzeką Orril.</description>
-		<url>https://s1.polanieonline.eu/fado</url>
-	</point-of-interest>
-
+		<point-of-interest x="18" y="120">
+			<name>Wielkie Jasknie Fado 2</name>
+			<title>Wielkie Jasknie Fado</title>
+			<type>dungeon</type>
+			<description>Wejście do Wielkich Jaskiń Fado. Ogromne podziemia, które ciągną sie na południe pod rzeką Orril.</description>
+			<url>https://s1.polanieonline.eu/fado</url>
+		</point-of-interest>
 	</zone>
 
 	<zone name="int_oni_palace_0" file="interiors/fado/palace_0.tmx">
@@ -1274,7 +1307,6 @@ na przykład powiedz:  11  jeżeli chcesz pokój Water of Love.
 		<portal x="4" y="7" ref="magic_portal2">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination" />
 		</portal>
-
 	</zone>
 
 	<zone name="int_oni_palace_1" file="interiors/fado/palace_1.tmx">
@@ -1317,7 +1349,6 @@ na przykład powiedz:  11  jeżeli chcesz pokój Water of Love.
 		<portal x="17" y="0" ref="upstairs_4">
 			<destination zone="int_oni_palace_2" ref="downstairs_4" />
 		</portal>
-
 	</zone>
 
 	<zone name="int_oni_palace_2" file="interiors/fado/palace_2.tmx">
@@ -1344,7 +1375,6 @@ na przykład powiedz:  11  jeżeli chcesz pokój Water of Love.
 		<portal x="4" y="7" ref="magic_portal2">
 			<destination zone="int_oni_palace_0" ref="magic_portal2" />
 		</portal>
-
 	</zone>
 
 	<zone name="0_fado_forest_s" level="0" x="499744" y="500640" file="Level 0/fado/forest_s.tmx">
@@ -1364,7 +1394,6 @@ na przykład powiedz:  11  jeżeli chcesz pokój Water of Love.
 			<destination zone="int_imorgens_house" ref="entrance" />
 			<attribute name="move.continuous" />
 		</portal>
-
 	</zone>
 
 	<zone name="int_imorgens_house" file="interiors/fado/imorgens_house.tmx">
@@ -1408,7 +1437,6 @@ na przykład powiedz:  11  jeżeli chcesz pokój Water of Love.
 			<destination zone="0_fado_forest_s" ref="imorgens_house_entrance" />
 			<attribute name="move.continuous" />
 		</portal>
-
 	</zone>
 
 	<zone name="0_fado_forest_se" level="0" x="499872" y="500640" file="Level 0/fado/forest_se.tmx">
@@ -1424,7 +1452,6 @@ na przykład powiedz:  11  jeżeli chcesz pokój Water of Love.
 			<description>Wejście do Wielkich Jaskiń Fado. Ogromne podziemia, które ciągną sie na południe pod rzeką Orril.</description>
 			<url>https://s1.polanieonline.eu/fado</url>
 		</point-of-interest>
-
 	</zone>
 
 	<zone name="0_fado_forest_s_e2" level="0" x="500000" y="500640" file="Level 0/fado/forest_s_e2.tmx">
@@ -1471,7 +1498,6 @@ na przykład powiedz:  11  jeżeli chcesz pokój Water of Love.
 			<destination zone="int_fado_elf_hut_4" ref="entrance" />
 			<attribute name="move.continuous" />
 		</portal>
-
 	</zone>
 
 	<zone name="0_fado_forest_s_e3" level="0" x="500128" y="500640" file="Level 0/fado/forest_s_e3.tmx" accessible="false">
@@ -1479,7 +1505,6 @@ na przykład powiedz:  11  jeżeli chcesz pokój Water of Love.
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
 		</attributes>
-
 	</zone>
 
 	<zone name="int_fado_elf_hut_1" file="interiors/fado/elf_hut_1.tmx">
@@ -1487,7 +1512,6 @@ na przykład powiedz:  11  jeżeli chcesz pokój Water of Love.
 			<destination zone="0_fado_forest_s_e2" ref="hut1_entrance" />
 			<attribute name="move.continuous" />
 		</portal>
-
 	</zone>
 
 	<zone name="int_fado_elf_hut_2" file="interiors/fado/elf_hut_2.tmx">
@@ -1496,7 +1520,6 @@ na przykład powiedz:  11  jeżeli chcesz pokój Water of Love.
 			<destination zone="0_fado_forest_s_e2" ref="hut2_entrance" />
 			<attribute name="move.continuous" />
 		</portal>
-
 	</zone>
 
 	<zone name="int_fado_elf_hut_3" file="interiors/fado/elf_hut_3.tmx">
@@ -1504,7 +1527,6 @@ na przykład powiedz:  11  jeżeli chcesz pokój Water of Love.
 			<destination zone="0_fado_forest_s_e2" ref="hut3_entrance" />
 			<attribute name="move.continuous" />
 		</portal>
-
 	</zone>
 
 	<zone name="int_fado_elf_hut_4" file="interiors/fado/elf_hut_4.tmx">
@@ -1513,7 +1535,6 @@ na przykład powiedz:  11  jeżeli chcesz pokój Water of Love.
 			<destination zone="0_fado_forest_s_e2" ref="hut4_entrance" />
 			<attribute name="move.continuous" />
 		</portal>
-
 	</zone>
 
 	<!--  Level -1 -->
@@ -1560,7 +1581,6 @@ na przykład powiedz:  11  jeżeli chcesz pokój Water of Love.
 		<portal x="102" y="50" ref="house1_entrance">
 			<destination zone="int_magic_house1" ref="entrance" />
 		</portal>
-
 	</zone>
 
 	<zone name="-1_fado_great_cave_n_e3" level="-1" x="500256" y="500512" file="Level -1/fado/great_cave_n_e3.tmx">
@@ -1689,7 +1709,6 @@ na przykład powiedz:  11  jeżeli chcesz pokój Water of Love.
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.useable.WellSource" />
 		</entity>
-
 	</zone>
 
 	<!-- Imperial Undergroundcity starts here -->
@@ -1780,7 +1799,6 @@ na przykład powiedz:  11  jeżeli chcesz pokój Water of Love.
 			<destination zone="int_sedah_house4_0" ref="entrance" />
 			<attribute name="move.continuous" />
 		</portal>
-
 	</zone>
 
 	<zone name="int_sedah_house0" file="interiors/sedah/house0.tmx">
@@ -1793,7 +1811,6 @@ na przykład powiedz:  11  jeżeli chcesz pokój Water of Love.
 			<destination zone="-1_fado_great_cave_w2" ref="house0_entrance" />
 			<attribute name="move.continuous" />
 		</portal>
-
 	</zone>
 
 	<zone name="int_sedah_house1" file="interiors/sedah/house1.tmx">
@@ -1801,7 +1818,6 @@ na przykład powiedz:  11  jeżeli chcesz pokój Water of Love.
 			<destination zone="-1_fado_great_cave_w2" ref="house1_entrance" />
 			<attribute name="move.continuous" />
 		</portal>
-
 	</zone>
 
 	<zone name="int_sedah_house2" file="interiors/sedah/house2.tmx">
@@ -1809,7 +1825,6 @@ na przykład powiedz:  11  jeżeli chcesz pokój Water of Love.
 			<destination zone="-1_fado_great_cave_w2" ref="house2_entrance" />
 			<attribute name="move.continuous" />
 		</portal>
-
 	</zone>
 
 	<zone name="int_sedah_house4_0" file="interiors/sedah/house4.tmx">
@@ -1821,7 +1836,6 @@ na przykład powiedz:  11  jeżeli chcesz pokój Water of Love.
 		<portal x="13" y="13" ref="up">
 			<destination zone="int_sedah_house4_1" ref="down" />
 		</portal>
-
 	</zone>
 
 	<zone name="int_sedah_house4_1" file="interiors/sedah/house4_1.tmx">
@@ -1829,7 +1843,6 @@ na przykład powiedz:  11  jeżeli chcesz pokój Water of Love.
 		<portal x="3" y="3" ref="down">
 			<destination zone="int_sedah_house4_0" ref="up" />
 		</portal>
-
 	</zone>
 
 	<zone name="int_sedah_mausoleum" file="interiors/sedah/mausoleum.tmx">
@@ -1837,7 +1850,6 @@ na przykład powiedz:  11  jeżeli chcesz pokój Water of Love.
 			<destination zone="-1_fado_great_cave_w2" ref="mausoleum_entrance" />
 			<attribute name="move.continuous" />
 		</portal>
-
 	</zone>
 
 	<zone name="int_sedah_barracks_0" file="interiors/sedah/house3.tmx">
@@ -1849,7 +1861,6 @@ na przykład powiedz:  11  jeżeli chcesz pokój Water of Love.
 		<portal x="4" y="4" ref="up">
 			<destination zone="int_sedah_barracks_1" ref="down" />
 		</portal>
-
 	</zone>
 
 	<zone name="int_sedah_barracks_1" file="interiors/sedah/house3_1.tmx">
@@ -1871,14 +1882,12 @@ to co miałeś ze sobą!
 			</attribute>
 			<attribute name="class">book_red</attribute>
 		</entity>
-
 	</zone>
 
 	<zone name="int_sedah_barracks_2" file="interiors/sedah/house3_2.tmx">
 		<portal x="15" y="26" ref="down">
 			<destination zone="int_sedah_barracks_1" ref="up" />
 		</portal>
-
 	</zone>
 
 	<zone name="-1_fado_great_cave_w" level="-1" x="499744" y="500640" file="Level -1/fado/great_cave_w.tmx">
@@ -1896,7 +1905,6 @@ to co miałeś ze sobą!
 			<destination zone="int_sedah_house6" ref="out" />
 			<attribute name="move.continuous" />
 		</portal>
-
 	</zone>
 
 	<zone name="int_sedah_storage" file="interiors/sedah/shop.tmx">
@@ -1907,7 +1915,6 @@ to co miałeś ze sobą!
 			<destination zone="-1_fado_great_cave_w" ref="shop_in" />
 			<attribute name="move.continuous" />
 		</portal>
-
 	</zone>
 
 	<zone name="int_sedah_house5" file="interiors/sedah/house5.tmx">
@@ -1915,7 +1922,6 @@ to co miałeś ze sobą!
 			<destination zone="-1_fado_great_cave_w" ref="house5_in" />
 			<attribute name="move.continuous" />
 		</portal>
-
 	</zone>
 
 	<zone name="int_sedah_house6" file="interiors/sedah/house6.tmx">
@@ -1923,7 +1929,6 @@ to co miałeś ze sobą!
 			<destination zone="-1_fado_great_cave_w" ref="house6_in" />
 			<attribute name="move.continuous" />
 		</portal>
-
 	</zone>
 
 	<zone name="-1_fado_great_cave" level="-1" x="499872" y="500640" file="Level -1/fado/great_cave.tmx">
@@ -1937,8 +1942,8 @@ to co miałeś ze sobą!
 			<destination zone="int_magic_house5" ref="entrance_right" />
 			<attribute name="move.continuous" />
 		</portal>
-
 	</zone>
+
 	<!-- Magic underground city is here -->
 	<zone name="-1_fado_great_cave_e3" level="-1" x="500256" y="500640" file="Level -1/fado/great_cave_e3.tmx">
 		<configurator class-name="games.stendhal.server.maps.magic.city.GreeterNPC" />
@@ -1993,16 +1998,16 @@ to co miałeś ze sobą!
 		</portal>
 
 		<!-- Need to create a target destination so players aren't trapped inside clothing boutique -->
-	    <portal x="113" y="41" ref="clothing_entrance" condition="stendhal.minetown">
-	      <implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination" />
-				<attribute name="move.continuous" />
-	    </portal>
+		<portal x="113" y="41" ref="clothing_entrance" condition="stendhal.minetown">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination" />
+			<attribute name="move.continuous" />
+		</portal>
 
-	    <entity x="113" y="40" condition="stendhal.minetown">
-	      <implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign" />
-	      <attribute name="text">Udali się do Semos City na Mine Town Weeks.</attribute>
-	      <attribute name="class">notice</attribute>
-	    </entity>
+		<entity x="113" y="40" condition="stendhal.minetown">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign" />
+			<attribute name="text">Udali się do miasta Semos na Mine Town Weeks.</attribute>
+			<attribute name="class">notice</attribute>
+		</entity>
 
 		<portal x="91" y="111" ref="flower_entrance">
 			<destination zone="int_magic_flower_shop" ref="entrance_right" />
@@ -2053,7 +2058,7 @@ Dziś użyłam kuli w domku wiedźmy Jynath i przeniosłam się do miasta wiedź
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
 				<parameter name="shop">sellmagic</parameter>
-				<parameter name="title">Magic Theater Concession</parameter>
+				<parameter name="title">Koncesja na Teatr Magiczny</parameter>
 				<parameter name="seller">true</parameter>
 				<parameter name="caption">Kupisz tutaj ożeźwienie:</parameter>
 			</implementation>
@@ -2373,24 +2378,24 @@ Dziś użyłam kuli w domku wiedźmy Jynath i przeniosłam się do miasta wiedź
 			</implementation>
 			<attribute name="name">enchanted area</attribute>
 		</entity>
-    <entity x="11" y="2">
-     <implementation class-name="games.stendhal.server.entity.mapstuff.area.NoLoginArea">
-      <parameter name="width">9</parameter>
-      <parameter name="height">11</parameter>
-      <parameter name="new-x">15</parameter>
-      <parameter name="new-y">15</parameter>
-     </implementation>
-     <attribute name="name">enchanted area</attribute>
-    </entity>
-    <entity x="20" y="2">
-     <implementation class-name="games.stendhal.server.entity.mapstuff.area.NoLoginArea">
-      <parameter name="width">9</parameter>
-      <parameter name="height">16</parameter>
-      <parameter name="new-x">17</parameter>
-      <parameter name="new-y">15</parameter>
-     </implementation>
-     <attribute name="name">enchanted area</attribute>
-    </entity>-->
+		<entity x="11" y="2">
+		 <implementation class-name="games.stendhal.server.entity.mapstuff.area.NoLoginArea">
+			<parameter name="width">9</parameter>
+			<parameter name="height">11</parameter>
+			<parameter name="new-x">15</parameter>
+			<parameter name="new-y">15</parameter>
+		 </implementation>
+		 <attribute name="name">enchanted area</attribute>
+		</entity>
+		<entity x="20" y="2">
+		 <implementation class-name="games.stendhal.server.entity.mapstuff.area.NoLoginArea">
+			<parameter name="width">9</parameter>
+			<parameter name="height">16</parameter>
+			<parameter name="new-x">17</parameter>
+			<parameter name="new-y">15</parameter>
+		 </implementation>
+		 <attribute name="name">enchanted area</attribute>
+		</entity>-->
 
 
 		<portal x="15" y="18" ref="entrance">
@@ -2443,6 +2448,19 @@ Dziś użyłam kuli w domku wiedźmy Jynath i przeniosłam się do miasta wiedź
 			</implementation>
 		</entity>
 
+		<entity x="24" y="4">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
+				<parameter name="width">4</parameter>
+				<parameter name="height">2</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="27" y="5">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+				<parameter name="slot">bank_kirdneh</parameter>
+			</implementation>
+		</entity>
+
 		<entity x="24" y="8">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">
@@ -2452,11 +2470,11 @@ Dziś użyłam kuli w domku wiedźmy Jynath i przeniosłam się do miasta wiedź
 		</entity>
 
 		<entity x="27" y="9">
-	      <implementation
-	        class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
-	        <parameter name="slot">bank_deniran</parameter>
-	      </implementation>
-	    </entity>
+				<implementation
+					class-name="games.stendhal.server.entity.mapstuff.chest.PersonalChest">
+					<parameter name="slot">bank_deniran</parameter>
+				</implementation>
+			</entity>
 
 		<entity x="24" y="12">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.area.OnePlayerArea">

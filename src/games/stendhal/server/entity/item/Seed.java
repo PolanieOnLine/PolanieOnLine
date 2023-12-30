@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -14,6 +13,7 @@ package games.stendhal.server.entity.item;
 
 import java.util.Map;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.TurnNotifier;
 import games.stendhal.server.entity.Entity;
@@ -25,7 +25,7 @@ import games.stendhal.server.entity.player.Player;
 /**
  * A seed can be planted.
  * The plant action defines the behaviour (e.g. only plantable on fertile ground).
- * The infostring stores what it will grow.
+ * The itemdata stores what it will grow.
  */
 public class Seed extends StackableItem {
 	public Seed(final Seed item) {
@@ -75,14 +75,14 @@ public class Seed extends StackableItem {
 				return false;
 			}
 
-			// the infostring of the seed stores what it should grow
-			final String infostring = this.getInfoString();
+			// the itemdata of the seed stores what it should grow
+			final String itemdata = this.getItemData();
 			FlowerGrower flowerGrower;
 			// choose the default flower grower if there is none set
-			if (infostring == null) {
+			if (itemdata == null) {
 				flowerGrower = new FlowerGrower();
 			} else {
-				flowerGrower = new FlowerGrower(this.getInfoString());
+				flowerGrower = new FlowerGrower(itemdata);
 			}
 			userZone.add(flowerGrower);
 			// add the FlowerGrower where the seed was on the ground
@@ -93,7 +93,7 @@ public class Seed extends StackableItem {
 			this.removeOne();
 			if (user instanceof Player) {
 				// XXX: should this increment only after flower grower has fully ripened?
-				((Player) user).incSownForItem(infostring, 1);
+				((Player) user).incSownForItem(flowerGrower.getItemName(), 1);
 			}
 			return true;
 		}
@@ -104,13 +104,39 @@ public class Seed extends StackableItem {
 
 	@Override
 	public String describe() {
-		final String flowerName = getInfoString();
+		String seed_desc = getDescription();
+		final String flower_name = getItemData();
+		if (flower_name != null) {
+			seed_desc = seed_desc.replaceFirst(flower_name, Grammar.variation(flower_name));
+		}
+		return seed_desc;
+	}
 
-		if (flowerName != null) {
-			return "Oto " + flowerName + " " + this.getName()
-                + ". Może być zasadzone wszędzie, ale kwitnąć może tylko na żyznej glebie.";
+	/**
+	 * This is overridden so that sprite image can be updated whenever "itemdata" attribute is set.
+	 */
+	@Override
+	public void put(final String attribute, final String value) {
+		super.put(attribute, value);
+
+		if (!"itemdata".equals(attribute)) {
+			return;
+		}
+
+		// "seed" or "bulb"
+		final String seedClass = getName();
+		if ("bulwa".equals(seedClass)) {
+			// zantedeschia image is default for bulb
+			if (!"bielikrasa".equals(value)) {
+				final String zantedeschia = value.replaceFirst("bielikrasa", "zantedeschia");
+				super.put("subclass", "bulb_" + zantedeschia.replace(" ", "_"));
+			}
 		} else {
-			return "Oto nasionka. Może być zasadzone wszędzie, ale kwitnąć może tylko na żyznej glebie.";
+			// daisies image is default for seed
+			if (!"stokrotki".equals(value)) {
+				final String daisies = value.replaceFirst("stokrotki", "daisies");
+				super.put("subclass", "seed_" + daisies.replace(" ", "_"));
+			}
 		}
 	}
 }

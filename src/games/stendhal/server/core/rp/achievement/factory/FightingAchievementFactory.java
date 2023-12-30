@@ -272,13 +272,13 @@ public class FightingAchievementFactory extends AbstractAchievementFactory {
 		achievements.add(createAchievement(
 				ID_LEGEND, "Legenda",
 				"Pokonano sam wszystkie potwory",
-				Achievement.LEGENDARY_BASE_SCORE, true,
+				Achievement.EXTREME_BASE_SCORE, true,
 				new KilledSoloAllCreaturesCondition()));
 
 		achievements.add(createAchievement(
 				ID_TEAM_PLAYER, "Wojownik Drużyny",
 				"Pokonano z drużyną wszystkie potwory",
-				Achievement.LEGENDARY_BASE_SCORE, true,
+				Achievement.EXTREME_BASE_SCORE, true,
 				new KilledSharedAllCreaturesCondition()));
 
 		achievements.add(createAchievement(

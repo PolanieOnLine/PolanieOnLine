@@ -24,6 +24,7 @@ declare var stendhal: any;
 
 export class SettingsDialog extends DialogContentComponent {
 
+	private storedStates: {[index: string]: string};
 	private initialStates: {[index: string]: string};
 	private btn_reload: HTMLButtonElement;
 
@@ -31,7 +32,14 @@ export class SettingsDialog extends DialogContentComponent {
 	constructor() {
 		super("settingsdialog-template");
 
+		// TODO: add option to reset defaults
+
 		const clog = (ui.get(UIComponentEnum.ChatLog) as ChatLogComponent);
+
+		this.storedStates = {
+			"txtjoystickx": stendhal.config.get("ui.joystick.center.x"),
+			"txtjoysticky": stendhal.config.get("ui.joystick.center.y")
+		};
 
 		this.initialStates = {
 			"gamescreen.blood": stendhal.config.get("gamescreen.blood"),
@@ -67,11 +75,18 @@ export class SettingsDialog extends DialogContentComponent {
 		this.createCheckBox("chk_speechcr", "gamescreen.speech.creature",
 				"Creature speech bubbles are enabled", "Creature speech bubbles are disabled");
 
+		const player_stats = ui.get(UIComponentEnum.PlayerStats) as PlayerStatsComponent;
+
+		const chk_charname = this.createCheckBox("chk_charname", "ui.stats.charname",
+				undefined, undefined,
+				function() {
+					player_stats.enableCharName(chk_charname.checked);
+				})!;
+
 		const chk_hpbar = this.createCheckBox("chk_hpbar", "ui.stats.hpbar",
 				undefined, undefined,
 				function() {
-					(ui.get(UIComponentEnum.PlayerStats) as PlayerStatsComponent)
-							.enableBar("hp", chk_hpbar.checked);
+					player_stats.enableBar("hp", chk_hpbar.checked);
 				})!;
 
 
@@ -89,9 +104,9 @@ export class SettingsDialog extends DialogContentComponent {
 				});
 
 		// FIXME: open chest windows are not refreshed
-		this.createCheckBox("chk_chestqp", "action.chest.quickpickup",
-				"Click tranfers items from chests to player inventory",
-				"Click executes default action on items in chests");
+		this.createCheckBox("chk_chestqp", "action.inventory.quickpickup",
+				"Click tranfers items from chests and corpses to player inventory",
+				"Click executes default action on items in chests and corpses");
 
 		const chk_movecont = this.createCheckBox("chk_movecont", "input.movecont",
 				"Player will continue to walk after changing areas",
@@ -110,6 +125,12 @@ export class SettingsDialog extends DialogContentComponent {
 				"Private message audio notifications disabled",
 				undefined, "ui/notify_up", "null");
 		chk_pvtsnd.checked = stendhal.config.get("event.pvtmsg.sound") === "ui/notify_up";
+
+		this.createCheckBox("chk_clickindicator", "input.click.indicator",
+				"Displaying clicks", "Not displaying clicks").disabled = true;
+
+		this.createCheckBox("chk_pathfinding", "client.pathfinding",
+				"Pathfinding on ground enabled", "Pathfinding on ground disabled");
 
 
 		/* *** right panel *** */
@@ -165,6 +186,49 @@ export class SettingsDialog extends DialogContentComponent {
 				tlog.refresh();
 			}
 		});
+
+		// common chat keyword options
+		const txt_chatopts = this.createTextInput("txtchatopts", stendhal.config.get("chat.custom_keywords"),
+				"Comma-separated list accessible from the chat options dialog");
+		txt_chatopts.addEventListener("change", (e) => {
+			stendhal.config.set("chat.custom_keywords", txt_chatopts.value);
+		});
+
+		// on-screen joystick
+		const js_orienters: HTMLInputElement[] = [];
+		const js_styles: {[index: string]: string} = {
+			"none": "none",
+			"joystick": "joystick",
+			"dpad": "direction pad",
+		};
+		let js_idx: number = Object.keys(js_styles).indexOf(stendhal.config.get("ui.joystick"));
+		if (js_idx < 0) {
+			js_idx = 0;
+		}
+		const sel_joystick = this.createSelect("seljoystick", js_styles, js_idx);
+		sel_joystick.addEventListener("change", (e) => {
+			stendhal.config.set("ui.joystick", Object.keys(js_styles)[sel_joystick.selectedIndex]);
+			stendhal.ui.gamewindow.updateJoystick();
+			for (const orienter of js_orienters) {
+				orienter.disabled = sel_joystick.selectedIndex < 1;
+			}
+		});
+
+		// joystck positioning
+		for (const orient of ["x", "y"]) {
+			const input_temp = this.createNumberInput("txtjoystick" + orient,
+					parseInt(this.storedStates["txtjoystick" + orient], 10),
+					"Joystick position on " + orient.toUpperCase() + " axis");
+			input_temp.addEventListener("input", (e) => {
+				// update configuration
+				stendhal.config.set("ui.joystick.center." + orient, input_temp.value || 0);
+				// update on-screen joystick position
+				stendhal.ui.gamewindow.updateJoystick();
+			});
+			// disable if no joystick selected
+			input_temp.disabled = sel_joystick.selectedIndex < 1;
+			js_orienters.push(input_temp);
+		}
 
 
 		/* *** buttons *** */
@@ -357,6 +421,64 @@ export class SettingsDialog extends DialogContentComponent {
 		}
 
 		return this.createSelect(id, options, idx, tooltip);
+	}
+
+	/**
+	 * Creates a text input element.
+	 *
+	 * @param id
+	 *     Identifier of element to retrieve.
+	 * @param value
+	 *     Default content.
+	 * @param tooltip
+	 *     Optional popup tooltip text.
+	 * @param type
+	 *     Input type.
+	 * @return
+	 *     HTMLInputElement
+	 */
+	private createTextInput(id: string, value: string="", tooltip?: string, type: string="text"): HTMLInputElement {
+		const input = <HTMLInputElement> this.child("input[type=" + type + "][id=" + id + "]")!;
+		input.style.setProperty("width", "9em");
+		input.parentElement!.style.setProperty("margin-right", "0");
+		input.parentElement!.style.setProperty("margin-left", "auto");
+		input.parentElement!.style.setProperty("padding-bottom", "5px");
+		input.value = value;
+		if (tooltip) {
+			input.title = tooltip;
+		}
+		return input;
+	}
+
+	/**
+	 * Creates a text input element that accepts only number values.
+	 *
+	 * @param id
+	 *     Identifier of element to retrieve.
+	 * @param value
+	 *     Default content.
+	 * @param tooltip
+	 *     Optional popup tooltip text.
+	 * @return
+	 *     HTMLInputElement
+	 */
+	private createNumberInput(id: string, value: number=0, tooltip?: string): HTMLInputElement {
+		const input = this.createTextInput(id, ""+value, tooltip, "number");
+		// allow numbers & empty string only
+		input.addEventListener("input", (e: Event) => {
+			const new_char = (e as InputEvent).data;
+			const new_digit = Number(new_char);
+			if ((new_char != undefined && new_char.replace(/ |\t/g, "") === "") || Number.isNaN(new_digit)) {
+				// disallow whitespace & non-numeric characters
+				input.value = this.storedStates[input.id];
+				return;
+			}
+			// clean up leading 0s & whitespace
+			input.value = ""+parseInt(input.value.replace(/ |\t/g, ""), 10);
+			this.storedStates[input.id] = input.value;
+		});
+
+		return input;
 	}
 }
 

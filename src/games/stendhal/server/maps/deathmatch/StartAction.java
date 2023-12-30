@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -19,6 +19,7 @@ import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPRuleProcessor;
 import games.stendhal.server.entity.npc.ChatAction;
+import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.action.IncrementQuestAction;
 import games.stendhal.server.entity.player.Player;
@@ -46,7 +47,22 @@ public class StartAction implements ChatAction {
 
 	@Override
 	public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
+		final String questState = player.getQuest("deathmatch");
+		if (questState != null) {
+			final DeathmatchLifecycle lifecycle = DeathmatchState.createFromQuestString(questState).getLifecycleState();
+			if (DeathmatchLifecycle.START.equals(lifecycle)) {
+				raiser.say("Uważaj, aby zająć się bieżącym zadaniem, zanim podejmiesz walkę z większą liczbą wrogów.");
+				return;
+			} else if (DeathmatchLifecycle.VICTORY.equals(lifecycle)) {
+				raiser.say("Spełnię twoją prośbę po tym, jak zakończysz swoje obecne zadanie #zwycięstwem.");
+				return;
+			}
+		}
+
 		raiser.say("Miłej zabawy!");
+		// stop attending player when deathmatch is started
+		raiser.setAttending(null);
+		raiser.setCurrentState(ConversationStates.IDLE);
 		// Track starts. The three first numbers are reserved for level,
 		// time stamp and points (first is the state)
 		new IncrementQuestAction("deathmatch", 5, 1).fire(player, sentence, raiser);

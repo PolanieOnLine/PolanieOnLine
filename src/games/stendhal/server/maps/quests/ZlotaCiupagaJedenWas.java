@@ -1,5 +1,5 @@
 /***************************************************************************
- *                 (C) Copyright 2019-2022 - PolanieOnLine                 *
+ *                 (C) Copyright 2019-2023 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,24 +11,21 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
-import games.stendhal.server.entity.npc.action.EquipItemAction;
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
 import games.stendhal.server.entity.npc.action.IncreaseXPAction;
-import games.stendhal.server.entity.npc.quest.BringMultiItemsTask;
-import games.stendhal.server.entity.npc.quest.QuestBuilder;
+import games.stendhal.server.entity.npc.quest.ForgeItemQuestBuilder;
 import games.stendhal.server.entity.npc.quest.QuestManuscript;
 import games.stendhal.server.maps.Region;
 
 public class ZlotaCiupagaJedenWas implements QuestManuscript {
-	public QuestBuilder<?> story() {
-		QuestBuilder<BringMultiItemsTask> quest = new QuestBuilder<>(new BringMultiItemsTask());
+	public ForgeItemQuestBuilder story() {
+		ForgeItemQuestBuilder quest = new ForgeItemQuestBuilder();
 
 		quest.info()
 			.name("Złota Ciupaga z Wąsem")
 			.description("Józek zaproponował ulepszenie mojej złotej ciupagi, którą wcześniej wykonał dla mnie kowal Andrzej.")
 			.internalName("zlota_ciupaga_was")
 			.repeatableAfterMinutes(5 * 24 * 60) // Powtarzalne co 5 dni
-			.forgingDelay(8 * 60) // Czas produkcji złotej ciupagi 8 godzin
 			.region(Region.DESERT)
 			.questGiverNpc("Józek");
 
@@ -43,33 +40,26 @@ public class ZlotaCiupagaJedenWas implements QuestManuscript {
 			.whenQuestCanBeRepeated("Wrócę chyba do Józka, a może wykona dla mnie drugą taką!");
 
 		quest.offer()
-			.needQuestsCompleted("help_wielkolud_basehp").needKilledCondition("złota śmierć").needLevelCondition("greater", 199).needKarmaCondition("greater", 199)
-			.respondToUnstartable("Wybacz mi proszę, ale musisz zasłużyć na uznanie Wielkoluda jak i pokonać samodzielnie złotą śmierć oraz zdobyć nieco większe doświadczenie i mieć wspaniałą karmę!")
+			.respondToUnstartableForge("Wybacz mi proszę, ale musisz zasłużyć na uznanie Wielkoluda jak i pokonać samodzielnie złotą śmierć oraz zdobyć nieco większe doświadczenie i mieć wspaniałą karmę!")
 			.respondToRequest("Od jakiegoś czasu testuję ulepszanie broni. Może chcesz, abym udoskonalił dla Ciebie złotą ciupagę?")
 			.respondToUnrepeatableRequest("Jestem aktualnie troszkę zmęczony. Wróć do mnie za jakiś czas.")
 			.respondToRepeatedRequest("Potrzebujesz kolejnej ulepszonej złotej ciupagi?")
 			.respondToAccept("Słusznie! Przynieś mi te przedmioty potrzebne do nowej ciupagi:\n#1 złota ciupaga\n#1 złoty róg\n#4 drewna\n#70 sztabek złota\noraz #'120 000' money. Pamiętaj! Pieniądze najważniejsze!")
 			.respondToReject("Cóż, to Twoja strata.")
-			.acceptedKarmaReward(10.0)
 			.rejectionKarmaPenalty(10.0)
 			.remind("Pamiętasz potrzebną listę? Przynieś mi te przedmioty potrzebne do nowej ciupagi:\n#1 złota ciupaga\n#1 złoty róg\n#4 drewna\n#70 sztabek złota\noraz #'120 000' money.");
 
-		quest.task()
-			.requestItem(1, "złota ciupaga")
-			.requestItem(1, "złoty róg")
-			.requestItem(4, "polano")
-			.requestItem(70, "sztabka złota")
-			.requestItem(120000, "money");
-
-		quest.forging()
-			.respondToAccept("Genialnie! Biorę się do pracy! Wróć do mnie za około 8 godzin.")
-			.respondToReject("Jak się zastanowisz to wróć.");
+		quest.task().forgeItem("złota ciupaga z wąsem")
+			.minutesToForge(8 * 60) // 8 godzin
+			.playerMinLevel(200).playerMinKarma(200).completedQuest("help_wielkolud_basehp").requestMonster("złota śmierć")
+			.requiredItem(1, "złota ciupaga").requiredItem(1, "złoty róg").requiredItem(4, "polano").requiredItem(70, "sztabka złota").requiredItem(120000, "money")
+			.respondToForging("Super! Przygotuję tylko narzędzia i biorę się do pracy! Twoja #'[itemName]' będzie gotowa za około 8 godzin.")
+			.respondToRejectForge("Jak się zastanowisz to wróć.");
 
 		quest.complete()
 			.greet("Skończyłem swą pracę nad ciupagą! Warto było chyba nieco poczekać. Proszę, a oto i ona!")
 			.rewardWith(new IncreaseXPAction(250000))
-			.rewardWith(new IncreaseKarmaAction(100.0))
-			.rewardWith(new EquipItemAction("złota ciupaga z wąsem", 1, true));
+			.rewardWith(new IncreaseKarmaAction(100.0));
 
 		return quest;
 	}

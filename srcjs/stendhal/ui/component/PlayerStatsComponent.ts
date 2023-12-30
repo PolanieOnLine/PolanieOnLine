@@ -9,8 +9,12 @@
  *                                                                         *
  ***************************************************************************/
 
+import { StatusesListComponent } from "./StatusesListComponent";
 import { StatBarComponent } from "./StatBarComponent";
 import { KarmaBarComponent } from "./KarmaBarComponent";
+
+import { ui } from "../UI";
+import { UIComponentEnum } from "../UIComponentEnum";
 
 import { Component } from "../toolkit/Component";
 
@@ -19,6 +23,8 @@ import { singletons } from "../../SingletonRepo";
 import { Item } from "../../entity/Item";
 
 declare var marauroa: any;
+declare var stendhal: any;
+
 
 /**
  * displays the player stats
@@ -51,6 +57,11 @@ export class PlayerStatsComponent extends Component {
 			const exp = Math.floor((i * 16 + i * i * 5 + i * i * i * 10 + 300) / 100) * 100;
 			this.xp[i + 1] = exp;
 		}
+
+		const statuses = new StatusesListComponent();
+		ui.registerComponent(UIComponentEnum.StatusesList, statuses);
+
+		this.enableCharName(stendhal.config.getBoolean("ui.stats.charname"));
 
 		this.hpText = this.child("#hptext")!;
 		this.otherText = this.child("#otherstats")!;
@@ -211,6 +222,18 @@ export class PlayerStatsComponent extends Component {
 			}
 		}
 		return mo;
+	}
+
+	/**
+	 * Sets visibility of character name in status panel.
+	 */
+	enableCharName(visible=true) {
+		const charname = document.getElementById("charname")! as HTMLDivElement;
+		if (visible) {
+			charname.style["display"] = "block";
+		} else {
+			charname.style["display"] = "none";
+		}
 	}
 
 	/**

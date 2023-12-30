@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2022 - Faiumoni e.V.                    *
+ *                 (C) Copyright 2022-2023 - Faiumoni e.V.                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -22,129 +22,108 @@ import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
 import games.stendhal.server.entity.npc.action.MultipleActions;
 import games.stendhal.server.entity.npc.action.SayTimeRemainingAction;
 import games.stendhal.server.entity.npc.action.SetQuestAction;
 import games.stendhal.server.entity.npc.action.SetQuestAndModifyKarmaAction;
 import games.stendhal.server.entity.npc.condition.AndCondition;
-import games.stendhal.server.entity.npc.condition.KarmaGreaterThanCondition;
-import games.stendhal.server.entity.npc.condition.KarmaLessThanCondition;
-import games.stendhal.server.entity.npc.condition.LevelGreaterThanCondition;
-import games.stendhal.server.entity.npc.condition.LevelLessThanCondition;
 import games.stendhal.server.entity.npc.condition.NotCondition;
-import games.stendhal.server.entity.npc.condition.PlayerHasKilledNumberOfCreaturesCondition;
+import games.stendhal.server.entity.npc.condition.OrCondition;
 import games.stendhal.server.entity.npc.condition.QuestActiveCondition;
 import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
-import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
-import games.stendhal.server.entity.npc.condition.QuestStateStartsWithCondition;
 import games.stendhal.server.entity.npc.condition.TimePassedCondition;
-import marauroa.common.Pair;
 
 /**
  * defines how the NPC offers the player the quest when the player says "quest"
  *
  * @author hendrik
  */
-public class QuestOfferBuilder {
-	private List<String> needQuestsCompleted = null;
-	private Pair<String, Integer> needLevelCondition = null;
-	private Pair<String, Integer> needKarmaCondition = null;
-	private List<String> needKilledCondition = null;
-	private String respondToUnstartable = "Wybacz, ale musisz zasłużyć na zaufanie zanim podejmiesz się mojego wyzwania.";
-	private String respondToRequest = null;
-	private String respondToUnrepeatableRequest = "Pozwól mi podziękować za wcześniejszą twoją pracę. Mam teraz dla ciebie nowe zadanie.";
-	private String respondToRepeatedRequest = null;
-	private String respondToAccept = "Dziękuję!";
-	private String respondToReject = "Och. To niezbyt dobrze.";
-	private String remind = "Proszę, dotrzymaj swojej obietnicy.";
-	private Double acceptedKarmaReward = null;
-	private double rejectionKarmaPenalty = 2.0;
-	private List<String> lastRespondTo = null;
-	private Map<List<String>, String> additionalReplies = new HashMap<>();
+public class QuestOfferBuilder<T extends QuestOfferBuilder<T>> {
+	protected String begOnGreeting = null;
+	protected String respondToRequest = null;
+	protected String respondToUnrepeatableRequest = "Dziękuję za pomoc. Nie mam dla ciebie nowego zadania.";
+	protected String respondToRepeatedRequest = null;
+	protected String respondToAccept = "Dziękuję.";
+	protected String respondToReject = "Och. Szkoda.";
+	protected String remind = "Proszę dotrzymać obietnicy.";
+	protected double rejectionKarmaPenalty = 2.0;
+	protected List<String> lastRespondTo = null;
+	protected Map<List<String>, String> additionalReplies = new HashMap<>();
 
-	public QuestOfferBuilder needQuestsCompleted(String... needQuestsCompleted) {
-		this.needQuestsCompleted = Arrays.asList(needQuestsCompleted);
-		return this;
+	// hide constructor
+	QuestOfferBuilder() {
+		super();
 	}
 
-	public QuestOfferBuilder needLevelCondition(String greaterOrLess, int level) {
-		this.needLevelCondition = new Pair<String, Integer>(greaterOrLess, level);
-		return this;
+	@SuppressWarnings("unchecked")
+	public T begOnGreeting(String begOnGreeting) {
+		this.begOnGreeting = begOnGreeting;
+		return (T) this;
 	}
 
-	public QuestOfferBuilder needKarmaCondition(String greaterOrLess, int karma) {
-		this.needKarmaCondition = new Pair<String, Integer>(greaterOrLess, karma);
-		return this;
-	}
-
-	public QuestOfferBuilder needKilledCondition(String... needKilledCondition) {
-		this.needKilledCondition = Arrays.asList(needKilledCondition);
-		return this;
-	}
-
-	public QuestOfferBuilder respondToUnstartable(String respondToUnstartable) {
-		this.respondToUnstartable = respondToUnstartable;
-		return this;
-	}
-
-	public QuestOfferBuilder respondToRequest(String respondToRequest) {
+	@SuppressWarnings("unchecked")
+	public T respondToRequest(String respondToRequest) {
 		this.respondToRequest = respondToRequest;
 		if (this.respondToRepeatedRequest == null) {
 			this.respondToRepeatedRequest = respondToRequest;
 		}
-		return this;
+		return (T) this;
 	}
 
-	public QuestOfferBuilder respondToUnrepeatableRequest(String respondToUnrepeatableRequest) {
+	@SuppressWarnings("unchecked")
+	public T respondToUnrepeatableRequest(String respondToUnrepeatableRequest) {
 		this.respondToUnrepeatableRequest = respondToUnrepeatableRequest;
-		return this;
+		return (T) this;
 	}
 
-	public QuestOfferBuilder respondToRepeatedRequest(String respondToRepeatedRequest) {
+	@SuppressWarnings("unchecked")
+	public T respondToRepeatedRequest(String respondToRepeatedRequest) {
 		this.respondToRepeatedRequest = respondToRepeatedRequest;
-		return this;
+		return (T) this;
 	}
 
-	public QuestOfferBuilder respondToAccept(String respondToAccept) {
+	@SuppressWarnings("unchecked")
+	public T respondToAccept(String respondToAccept) {
 		this.respondToAccept = respondToAccept;
-		return this;
+		return (T) this;
 	}
 
-	public QuestOfferBuilder respondToReject(String respondToReject) {
+	@SuppressWarnings("unchecked")
+	public T respondToReject(String respondToReject) {
 		this.respondToReject = respondToReject;
-		return this;
+		return (T) this;
 	}
 
-	public QuestOfferBuilder respondTo(String... respondTo) {
+	@SuppressWarnings("unchecked")
+	public T respondTo(String... respondTo) {
 		this.lastRespondTo = Arrays.asList(respondTo);
-		return this;
+		return (T) this;
 	}
 
-	public QuestOfferBuilder saying(String reply) {
+	@SuppressWarnings("unchecked")
+	public T saying(String reply) {
 		additionalReplies.put(lastRespondTo, reply);
-		return this;
+		return (T) this;
 	}
 
-	public QuestOfferBuilder remind(String remind) {
+	@SuppressWarnings("unchecked")
+	public T remind(String remind) {
 		this.remind = remind;
-		return this;
+		return (T) this;
 	}
 
-	public QuestOfferBuilder acceptedKarmaReward(double acceptedKarmaReward) {
-		this.acceptedKarmaReward = acceptedKarmaReward;
-		return this;
-	}
-
-	public QuestOfferBuilder rejectionKarmaPenalty(double rejectionKarmaPenalty) {
+	@SuppressWarnings("unchecked")
+	public T rejectionKarmaPenalty(double rejectionKarmaPenalty) {
 		this.rejectionKarmaPenalty = rejectionKarmaPenalty;
-		return this;
+		return (T) this;
 	}
 
 	void simulateFirst(String npc, QuestSimulator simulator) {
 		simulator.playerSays("hi");
-		simulator.playerSays("quest");
+		if (begOnGreeting == null) {
+			simulator.playerSays("quest");
+		}
 		simulator.npcSays(npc, respondToRequest);
 		simulator.playerSays("no");
 		simulator.npcSays(npc, respondToReject);
@@ -152,17 +131,21 @@ public class QuestOfferBuilder {
 		simulator.info("");
 
 		simulator.playerSays("hi");
-		simulator.playerSays("quest");
+		if (begOnGreeting == null) {
+			simulator.playerSays("quest");
+		}
 		simulator.npcSays(npc, respondToRequest);
 		simulator.playerSays("yes");
 		simulator.npcSays(npc, respondToAccept);
 		simulator.playerSays("bye");
 		simulator.info("");
 
-		simulator.playerSays("hi");
-		simulator.playerSays("quest");
-		simulator.npcSays(npc, remind);
-		simulator.info("");
+		if (begOnGreeting == null) {
+			simulator.playerSays("hi");
+			simulator.playerSays("quest");
+			simulator.npcSays(npc, remind);
+			simulator.info("");
+		}
 	}
 
 	void simulateNotRepeatable(String npc, QuestSimulator simulator) {
@@ -181,89 +164,37 @@ public class QuestOfferBuilder {
 		simulator.info("");
 	}
 
-	ChatCondition someNeedsToStartCondition() {
-		List<ChatCondition> conditions = new LinkedList<>();
-		if (needQuestsCompleted != null) {
-			for (String questName : needQuestsCompleted) {
-				conditions.add(new QuestCompletedCondition(questName));
-			}
-		}
-		if (needLevelCondition != null) {
-			if (needLevelCondition.first() == "greater") {
-				conditions.add(new LevelGreaterThanCondition(needLevelCondition.second()));
-			} else {
-				conditions.add(new LevelLessThanCondition(needLevelCondition.second()));
-			}
-		}
-		if (needKarmaCondition != null) {
-			if (needKarmaCondition.first() == "greater") {
-				conditions.add(new KarmaGreaterThanCondition(needKarmaCondition.second()));
-			} else {
-				conditions.add(new KarmaLessThanCondition(needKarmaCondition.second()));
-			}
-		}
-		if (needKilledCondition != null) {
-			for (String monster : needKilledCondition) {
-				conditions.add(new PlayerHasKilledNumberOfCreaturesCondition(1, monster));
-			}
-		}
-		return new AndCondition(conditions);
-	}
+	public void build(SpeakerNPC npc, String questSlot, QuestTaskBuilder task, ChatCondition questCompletedCondition, int repeatableAfterMinutes) {
+		ChatAction startQuestAction = task.buildStartQuestAction(questSlot);
+		ChatAction rejectQuestAction = task.buildRejectQuestAction(questSlot);
 
-	void build(SpeakerNPC npc, String questSlot,
-				ChatAction startQuestAction, ChatCondition questCompletedCondition,
-				int repeatableAfterMinutes, int forgingDelay, boolean repeatable) {
-
-		if (someNeedsToStartCondition() != null) {
-			npc.add(ConversationStates.ATTENDING,
-					ConversationPhrases.QUEST_MESSAGES,
-					new AndCondition(
-						new QuestNotStartedCondition(questSlot),
-						someNeedsToStartCondition()),
+		if (begOnGreeting != null) {
+			npc.add(ConversationStates.IDLE,
+					ConversationPhrases.GREETING_MESSAGES,
+					new OrCondition(
+							new QuestNotStartedCondition(questSlot),
+							new AndCondition(
+									new QuestActiveCondition(questSlot),
+									new NotCondition(questCompletedCondition)
+							)
+					),
 					ConversationStates.QUEST_OFFERED,
-					respondToRequest,
-					null);
-
-			npc.add(ConversationStates.ATTENDING,
-					ConversationPhrases.QUEST_MESSAGES,
-					new AndCondition(
-						new QuestNotStartedCondition(questSlot),
-						new NotCondition(someNeedsToStartCondition())),
-					ConversationStates.ATTENDING,
-					respondToUnstartable,
-					null);
-		} else {
-			npc.add(ConversationStates.ATTENDING,
-					ConversationPhrases.QUEST_MESSAGES,
-					new QuestNotStartedCondition(questSlot),
-					ConversationStates.QUEST_OFFERED,
-					respondToRequest,
+					begOnGreeting,
 					null);
 		}
+
+		npc.add(ConversationStates.ATTENDING,
+				ConversationPhrases.QUEST_MESSAGES,
+				new QuestNotStartedCondition(questSlot),
+				ConversationStates.QUEST_OFFERED,
+				respondToRequest,
+				null);
 
 		LinkedList<String> triggers = new LinkedList<String>();
 		triggers.addAll(ConversationPhrases.FINISH_MESSAGES);
 		triggers.addAll(ConversationPhrases.QUEST_MESSAGES);
-		if (forgingDelay > 0) {
-			npc.add(ConversationStates.ATTENDING,
-				triggers,
-				new AndCondition(
-					new QuestInStateCondition(questSlot, "start"),
-					new NotCondition(questCompletedCondition)),
-				ConversationStates.ATTENDING,
-				remind,
-				null);
 
-			npc.add(ConversationStates.ATTENDING,
-				triggers,
-				new AndCondition(
-					new QuestStateStartsWithCondition(questSlot, "forging;"),
-					new NotCondition(questCompletedCondition)),
-				ConversationStates.ATTENDING,
-				null,
-				new SayTimeRemainingAction(questSlot, 1, forgingDelay, "Proszę... Nie poganiaj mnie! Wciąż pracuję nad Twoim zleceniem. Wróć za "));
-		} else {
-			npc.add(ConversationStates.ATTENDING,
+		npc.add(ConversationStates.ATTENDING,
 				triggers,
 				new AndCondition(
 					new QuestActiveCondition(questSlot),
@@ -271,9 +202,8 @@ public class QuestOfferBuilder {
 				ConversationStates.ATTENDING,
 				remind,
 				null);
-		}
 
-		if (repeatableAfterMinutes > 0 || repeatable) {
+		if (repeatableAfterMinutes > -1) {
 			npc.add(ConversationStates.ATTENDING,
 					ConversationPhrases.QUEST_MESSAGES,
 					new AndCondition(
@@ -289,8 +219,8 @@ public class QuestOfferBuilder {
 							new QuestCompletedCondition(questSlot),
 							new NotCondition(new TimePassedCondition(questSlot, 1, repeatableAfterMinutes))),
 					ConversationStates.ATTENDING,
-					respondToUnrepeatableRequest,
-					null);
+					null,
+					new SayTimeRemainingAction(questSlot, 1, repeatableAfterMinutes, respondToUnrepeatableRequest, true));
 		} else {
 			npc.add(ConversationStates.ATTENDING,
 					ConversationPhrases.QUEST_MESSAGES,
@@ -305,11 +235,9 @@ public class QuestOfferBuilder {
 		if (startQuestAction != null) {
 			start.add(startQuestAction);
 		}
-		if (acceptedKarmaReward != null) {
-			start.add(new IncreaseKarmaAction(acceptedKarmaReward));
-		}
 
-		npc.add(ConversationStates.QUEST_OFFERED,
+		npc.add(
+				ConversationStates.QUEST_OFFERED,
 				ConversationPhrases.YES_MESSAGES,
 				null,
 				ConversationStates.ATTENDING,
@@ -320,10 +248,13 @@ public class QuestOfferBuilder {
 				ConversationPhrases.NO_MESSAGES, null,
 				ConversationStates.ATTENDING,
 				respondToReject,
-				new SetQuestAndModifyKarmaAction(questSlot, 0, "rejected", -1 * rejectionKarmaPenalty));
+				new MultipleActions(
+						new SetQuestAndModifyKarmaAction(questSlot, 0, "rejected", -1 * rejectionKarmaPenalty),
+						rejectQuestAction));
 
 		for (Map.Entry<List<String>, String> entry : additionalReplies.entrySet()) {
-			npc.add(ConversationStates.QUEST_OFFERED,
+			npc.add(
+					ConversationStates.QUEST_OFFERED,
 					entry.getKey(),
 					null,
 					ConversationStates.QUEST_OFFERED,

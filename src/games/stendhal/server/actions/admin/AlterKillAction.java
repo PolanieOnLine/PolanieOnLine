@@ -1,5 +1,5 @@
 /***************************************************************************
- *                     Copyright © 2020 - Arianne                          *
+ *                     Copyright © 2020-2023 - Arianne                     *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,18 +11,21 @@
  ***************************************************************************/
 package games.stendhal.server.actions.admin;
 
+import static games.stendhal.common.constants.Actions.ALTER;
 import static games.stendhal.common.constants.Actions.ALTERKILL;
+import static games.stendhal.common.constants.Actions.CREATURE;
+import static games.stendhal.common.constants.Actions.TARGET;
 
 import java.util.Arrays;
 
 import games.stendhal.common.NotificationType;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.actions.CommandCenter;
+import games.stendhal.server.core.engine.GameEvent;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.player.Player;
 import marauroa.common.game.RPAction;
-
 
 /**
  * Changes solo or shared kill count of specified creature for player.
@@ -44,7 +47,7 @@ public class AlterKillAction extends AdministrationAction {
 
 		final Entity target = getTargetAnyZone(admin, action);
 		if (target == null) {
-			admin.sendPrivateText("Gracz \"" + action.get("target") + "\" nie został odnaleziony: " + action);
+			admin.sendPrivateText("Gracz \"" + action.get(TARGET) + "\" nie został odnaleziony: " + action);
 			return;
 		}
 		if (!(target instanceof Player)) {
@@ -67,7 +70,7 @@ public class AlterKillAction extends AdministrationAction {
 			return;
 		}
 
-		final String creatureOrig = action.get("creature");
+		final String creatureOrig = action.get(CREATURE);
 		final String creature = Grammar.singular(creatureOrig);
 		if (!SingletonRepository.getEntityManager().isCreature(creature)) {
 			admin.sendPrivateText("\"" + creatureOrig + "\" nie jest prawidłową nazwą stworzenia: " + action);
@@ -85,5 +88,9 @@ public class AlterKillAction extends AdministrationAction {
 		// Notify player of changes
 		player.sendPrivateText(NotificationType.SUPPORT, "Twoja ilość zabójstw (typ: " + killtype + ") dla potwora " + creature + " została zmieniona na "
 				+ count + " przez " + admin.getTitle());
+
+		// log event
+		new GameEvent(player.getName(), ALTER, "kill", action.get(TARGET), killtype, String.valueOf(count),
+				creature).raise();
 	}
 }

@@ -18,12 +18,12 @@ local zone = "int_deniran_weapons_shop"
 local ringsmith = nil
 local questSlot = "raven_forge_ring"
 local waitTime = MathHelper.MINUTES_IN_ONE_HOUR * 6
-local ring = "wzmocniony pierścień imperialny"
+local ring = "wzmocniony pierścień cesarski"
 
 local fee = 260000
 
 local requirements = {
-	{"pierścień imperialny", 1},
+	{"pierścień cesarski", 1},
 	{"pierścień skorupy żółwia", 1},
 	{"róg jednorożca", 25},
 	{"money", fee}, -- fee needs to be the last item in this list
@@ -60,19 +60,27 @@ local function getItemListString(includeFee)
 end
 
 if game:setZone(zone) then
-	ringsmith = entities:createSpeakerNPC("Raven")
-	ringsmith:setOutfit("body=1,head=0,eyes=2,dress=52,hair=15")
-	ringsmith:setOutfitColor("eyes", 0x1f6521)
-	ringsmith:setOutfitColor("hair", Color.RED)
-
-	-- path
-	local nodes = {
-		{24, 12},
-		{31, 12},
-		{31, 6},
-		{24, 6},
-	}
-	ringsmith:setPathAndPosition(nodes, true)
+	ringsmith = entities:create({
+		type = "SpeakerNPC",
+		name = "Raven",
+		outfit = {
+			layers = "body=1,head=0,eyes=2,dress=52,hair=15",
+			colors = {
+				eyes = 0x1f6521,
+				hair = Color.RED
+			}
+		},
+		pos = {24, 12},
+		path = {
+			nodes = {
+				{24, 12},
+				{31, 12},
+				{31, 6},
+				{24, 6}
+			},
+			loop = true
+		}
+	})
 
 	-- dialogue
 	ringsmith:addGreeting()

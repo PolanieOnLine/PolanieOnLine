@@ -9,7 +9,7 @@
  *                                                                         *
  ***************************************************************************/
 
-import { ThemedComponent } from "./ThemedComponent";
+import { Component } from "./Component";
 import { FloatingWindow } from "./FloatingWindow";
 
 declare let stendhal: any;
@@ -18,21 +18,14 @@ declare let stendhal: any;
 /**
  * Component representing the contents of a floating dialog.
  */
-export abstract class DialogContentComponent extends ThemedComponent {
+export abstract class DialogContentComponent extends Component {
 
 	protected frame?: FloatingWindow;
 
 
 	constructor(id: string) {
-		super(id);
+		super(id, true);
 		this.componentElement.classList.add("dialogcontents");
-	}
-
-	public updateConfig(newX: number, newY: number) {
-		const cid = this.getConfigId();
-		if (stendhal.config.dialogstates[cid]) {
-			stendhal.config.dialogstates[cid] = {x: newX, y: newY};
-		}
 	}
 
 	/**

@@ -96,8 +96,9 @@ public class MeetBunny extends AbstractQuest {
 		// times out twice as fast as normal NPCs
 		bunny.setPlayerChatTimeout(TIME_OUT);
 		bunny.setDescription("Oto przyjacielski króliczek niosący kolorowy Wielkanocny koszyczek.");
+		// hide location from website
+		bunny.hideLocation();
 		// start in int_admin_playground
-
 		StendhalRPZone zone = SingletonRepository.getRPWorld().getZone("int_admin_playground");
 		bunny.setPosition(17, 13);
 		zone.add(bunny);

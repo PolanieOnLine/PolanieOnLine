@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2023-2023 - Stendhal                    *
+ *                   (C) Copyright 2003-2010 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -28,36 +28,28 @@ import java.util.List;
  */
 public enum UiRenderingMethod {
 
-	DEFAULT("", "Domyślne (system)"),
+	DEFAULT(""),
 
-	DIRECT_DRAW("", "Domyślne (DirectDraw)"),
+	DIRECT_DRAW("directdraw"),
 
-	DIRECT_DRAW_SCALE("ddraw_scale", "Skalowanie DirectDraw HW"),
+	DDRAW_HWSCALE("hw_scale"),
 
-	SOFTWARE("software", "Renderowanie programowe"),
+	SOFTWARE("software"),
 
-	WINDOWS_API("software", "Windows API"),
+	OPEN_GL("opengl"),
 
-	OPEN_GL("opengl", "Open GL"),
+	XRENDER("xrender"),
 
-	XRENDER("xrender", "XRender"),
-
-	METAL("metal", "Metal Framework");
+	METAL("metal");
 
 	private final String propertyValue;
-	private final String displayName;
 
-	private UiRenderingMethod(String propertyValue, String displayName) {
+	private UiRenderingMethod(String propertyValue) {
 		this.propertyValue = propertyValue;
-		this.displayName = displayName;
 	}
 
 	public String getPropertyValue() {
 		return propertyValue;
-	}
-
-	public String getDisplayName() {
-		return displayName;
 	}
 
 	public static UiRenderingMethod fromPropertyValue(String propertyValue) {
@@ -75,9 +67,10 @@ public enum UiRenderingMethod {
 
 		final String platformOs = System.getProperty("os.name").toLowerCase();
 		if (platformOs.startsWith("windows")) {
+			methods.add(DEFAULT);
 			methods.add(DIRECT_DRAW);
-			methods.add(DIRECT_DRAW_SCALE);
-			methods.add(WINDOWS_API);
+			methods.add(DDRAW_HWSCALE);
+			methods.add(SOFTWARE);
 			methods.add(OPEN_GL);
 		} else if (platformOs.startsWith("mac os")) {
 			methods.add(DEFAULT);

@@ -1,30 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="stendhal ../items.xsd ">
 
-  	<!-- try to sort by affinity first, alphabetical order next -->
-  	<item name="flaczki">
-		<type class="food" subclass="tripe" tileid="-1"/>
-		<description>Oto flaczki. Niektóre zwierzęta też to polubią!</description>
-		<implementation class-name="games.stendhal.server.entity.item.Food"/>
-		<attributes>
-			<amount value="20" />
-			<frequency value="12" />
-			<quantity value="1" />
-			<regen value="3" />
-			<menu value="Zjedz|Użyj"/>
-		</attributes>
-		<weight value="1.0" />
-		<value value="1" />
-		<equipable>
-			<slot name="ground" />
-			<slot name="content" />
-			<slot name="lhand" />
-			<slot name="rhand" />
-			<slot name="bag" />
-			<slot name="trade" />
-		</equipable>
-	</item>
-
 	<item name="papryka habanero">
 		<type class="food" subclass="habanero_pepper" tileid="-1" />
 		<description>Oto papryka habanero. Może być bardzo OSTRYM składnikiem...</description>
@@ -121,7 +97,7 @@
 		<type class="food/apple_special" subclass="apple_purple" tileid="-1"/>
 		<description>Oto jabłko szczęścia. Jest pełen wspomnień.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
-		<unattainable>true</unattainable>
+		<unattainable/>
 		<attributes>
 			<amount value="4" />
 			<frequency value="10" />
@@ -145,7 +121,7 @@
 		<type class="food/apple_special" subclass="apple_mauve" tileid="-1"/>
 		<description>Oto jabłko miłości. Jest pełen wspomnień.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
-		<unattainable>true</unattainable>
+		<unattainable/>
 		<attributes>
 			<amount value="4" />
 			<frequency value="10" />
@@ -1669,7 +1645,7 @@
 		<type class="food" subclass="candycane" tileid="-1"/>
 		<description>Oto przepszyna cukierkowa laska.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
-		<unattainable>true</unattainable>
+		<unattainable/>
 		<attributes>
 			<amount value="90"/>
 			<frequency value="5"/>
@@ -1693,7 +1669,7 @@
 		<type class="food" subclass="greenmint" tileid="-1"/>
 		<description>Oto miętowy cukierek.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
-		<unattainable>true</unattainable>
+		<unattainable/>
 		<attributes>
 			<amount value="90"/>
 			<frequency value="5"/>
@@ -1717,7 +1693,7 @@
 		<type class="food" subclass="gumdrops" tileid="-1"/>
 		<description>Oto mieszanka żelek.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
-		<unattainable>true</unattainable>
+		<unattainable/>
 		<attributes>
 			<amount value="90"/>
 			<frequency value="5"/>
@@ -1741,7 +1717,7 @@
 		<type class="food" subclass="lemondrop" tileid="-1"/>
 		<description>Oto słodki i jednocześnie kwaśny cukierek.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
-		<unattainable>true</unattainable>
+		<unattainable/>
 		<attributes>
 			<amount value="90"/>
 			<frequency value="5"/>
@@ -1765,7 +1741,7 @@
 		<type class="food" subclass="lolipop" tileid="-1"/>
 		<description>Oto lizak.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
-		<unattainable>true</unattainable>
+		<unattainable/>
 		<attributes>
 			<amount value="90"/>
 			<frequency value="5"/>
@@ -1789,7 +1765,7 @@
 		<type class="food" subclass="peppermint" tileid="-1"/>
 		<description>Oto mały, słodki cukierek peppermint.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
-		<unattainable>true</unattainable>
+		<unattainable/>
 		<attributes>
 			<amount value="90"/>
 			<frequency value="5"/>
@@ -1813,7 +1789,7 @@
 		<type class="food" subclass="taffy" tileid="-1"/>
 		<description>Oto trochę lepkich cukierków taffy.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Food"/>
-		<unattainable>true</unattainable>
+		<unattainable/>
 		<attributes>
 			<amount value="90"/>
 			<frequency value="5"/>

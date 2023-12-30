@@ -30,7 +30,7 @@ local minLevel = 50
 local karmaAcceptReward = 15
 local karmaCompleteReward = 50
 
-local ring_infostring = "pierścionek Ariego"
+local ring_itemdata = "pierścionek Ariego"
 
 -- location where ring may be on Athor island
 local ring_locations = {
@@ -43,9 +43,9 @@ local ring_locations = {
 local questNotStartedCondition = conditions:create("QuestNotStartedCondition", {quest_slot})
 local questCompletedCondition = conditions:create("QuestCompletedCondition", {quest_slot})
 local questActiveCondition = conditions:create("QuestActiveCondition", {quest_slot})
-local hasRingCondition = conditions:create("PlayerHasInfostringItemWithHimCondition", {
+local hasRingCondition = conditions:create("PlayerHasItemdataItemWithHimCondition", {
 	"pierścień zaręczynowy",
-	ring_infostring,
+	ring_itemdata,
 })
 
 local hasKeyringCondition = conditions:create(function(player, sentence, npc)
@@ -285,7 +285,7 @@ local prepareBringStep = function()
 		ConversationStates.IDLE,
 		"Dziękuję bardzo! W nagrodę daję ci ten rzemyk. Jest nieco większy od tego, którego już posiadasz.",
 		{
-			actions:create("DropInfostringItemAction", {"pierścień zaręczynowy", ring_infostring}),
+			actions:create("DropItemdataItemAction", {"pierścień zaręczynowy", ring_itemdata}),
 			actions:create(rewardAction),
 		})
 
@@ -389,8 +389,8 @@ local collateral = {
 
 	-- ring
 	"pierścień szmaragdowy",
-	"wzmocniony pierścień imperialny",
-	"pierścień imperialny",
+	"wzmocniony pierścień cesarski",
+	"pierścień cesarski",
 	"pierścień skorupy żółwia",
 
 	-- shield
@@ -427,13 +427,13 @@ local loanMetalDetector = function(player, lender, detector, offer, bound_to, in
 		return
 	end
 
-	-- handle items with infostring & bound items
+	-- handle items with itemdata & bound items
 	local bound_to = traded:getBoundTo() or ""
-	local info_s = traded:getInfoString() or ""
+	local info_s = traded:getItemData() or ""
 
 	local slot_state = offer .. ";" .. bound_to .. ";" .. info_s
 
-	detector:setInfoString("Sawyer;" .. slot_state)
+	detector:setItemData("Sawyer;" .. slot_state)
 	detector:setBoundTo(player:getName())
 	detector:setUndroppableOnDeath(true)
 
@@ -526,7 +526,7 @@ local handleReturnRequest = function(player, sentence, lender)
 	end
 
 	local detector = player:getFirstEquipped("wykrywacz metali")
-	local detector_info = (detector:getInfoString() or ""):split(";")
+	local detector_info = (detector:getItemData() or ""):split(";")
 
 	-- Sawyer doesn't recognize the metal detector
 	if #detector_info == 0 or detector_info[1] ~= "Sawyer" then
@@ -553,7 +553,7 @@ local handleReturnRequest = function(player, sentence, lender)
 	end
 
 	if info_s ~= "" then
-		item:setInfoString(info_s)
+		item:setItemData(info_s)
 	end
 
 	player:drop(detector)
@@ -647,7 +647,7 @@ quest:setHistoryFunction(function(player)
 	if state == "done" then
 		table.insert(history, "Znalazłem pierścionek Ariego. Teraz jest gotowy do małżeństwa z Emmą.")
 	elseif state == "found_ring" then
-		if player:isEquippedWithInfostring("pierścień zaręczynowy", ring_infostring) then
+		if player:isEquippedWithItemdata("pierścień zaręczynowy", ring_itemdata) then
 			table.insert(history, "Znalazłem pierścień Ariego i powinienem mu go przynieść.")
 		else
 			table.insert(history, "Znalazłem pierścionek Ariego, ale chyba go zgubiłem."

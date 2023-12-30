@@ -20,6 +20,7 @@ declare var stendhal: any;
 export class ConfigManager {
 
 	private readonly defaults = {
+		"client.pathfinding": "true",
 		"ui.sound": "false",
 		"ui.sound.master.volume": "100",
 		"ui.sound.ambient.volume": "100",
@@ -30,7 +31,19 @@ export class ConfigManager {
 		"ui.font.body": "Carlito",
 		"ui.font.chat": "Carlito",
 		"ui.font.tlog": "Black Chancery",
+		"ui.stats.charname": "true",
 		"ui.stats.hpbar": "true",
+		"ui.joystick": "none",
+		"ui.joystick.center.x": "224",
+		"ui.joystick.center.y": "384",
+		"ui.window.chest": "160,370",
+		"ui.window.corpse": "160,370",
+		"ui.window.menu": "150,20",
+		"ui.window.outfit": "300,50",
+		"ui.window.settings": "20,20",
+		"ui.window.shortcuts": "20,20",
+		"ui.window.trade": "200,100",
+		"ui.window.travellog": "160,50",
 		// FIXME: these should have been "gamewindow" to prevent confusion
 		"gamescreen.blood": "true",
 		"gamescreen.lighting": "true",
@@ -38,11 +51,13 @@ export class ConfigManager {
 		"gamescreen.nonude": "false",
 		"gamescreen.shadows": "true",
 		"gamescreen.speech.creature": "true",
+		"input.click.indicator": "false",
 		"input.movecont": "false",
 		//"input.doubleclick": "false",
 		"action.item.doubleclick": "false",
-		"action.chest.quickpickup": "false",
-		"event.pvtmsg.sound": "ui/notify_up"
+		"action.inventory.quickpickup": "true",
+		"event.pvtmsg.sound": "ui/notify_up",
+		"chat.custom_keywords": "",
 	} as {[id: string]: string};
 
 	private themes = {
@@ -87,7 +102,7 @@ export class ConfigManager {
 	} as {[name: string]: string};
 
 	private storage = window.localStorage;
-	private dialogstates: any = {};
+	private windowstates: any = {};
 	private initialized = false;
 
 	/** Singleton instance. */
@@ -111,21 +126,14 @@ export class ConfigManager {
 		// do nothing
 	}
 
+	/**
+	 * @deprecated
+	 */
 	init(args: any) {
 		if (this.initialized) {
 			console.warn("tried to re-initialize ConfigManager");
 			return;
 		}
-
-		// store window information for this session
-		// TODO: move this into "session" file
-		this.dialogstates["chest"] = {x: 160, y: 370};
-		this.dialogstates["corpse"] = {x: 160, y: 370};
-		this.dialogstates["menu"] = {x: 150, y: 20};
-		this.dialogstates["outfit"] = {x: 300, y: 50};
-		this.dialogstates["settings"] = {x: 20, y: 20};
-		this.dialogstates["trade"] = {x: 200, y: 100};
-		this.dialogstates["travellog"] = {x: 160, y: 50};
 		this.initialized = true;
 	}
 
@@ -253,6 +261,45 @@ export class ConfigManager {
 	 */
 	clear() {
 		this.storage.clear();
+	}
+
+	/**
+	 * Sets attributes for a dialog window.
+	 *
+	 * TODO: move into session manager
+	 *
+	 * @param id
+	 *   Dialog identifier.
+	 * @param x
+	 *   Horizontal position.
+	 * @param y
+	 *   Vertical position.
+	 */
+	setWindowState(id: string, x: number, y: number) {
+		this.windowstates[id] = {x: x, y: y};
+		this.set("ui.window." + id, x + "," + y);
+	}
+
+	/**
+	 * Retrieves attributes for a dialog window.
+	 *
+	 * TODO: move into session manager
+	 *
+	 * @param id
+	 *   Dialog identifier.
+	 * @return
+	 *   Object containing X/Y positioning of dialog.
+	 */
+	getWindowState(id: string): {[index: string]: number} {
+		let state: {[index: string]: number} = {};
+		if (this.windowstates.hasOwnProperty(id)) {
+			state = this.windowstates[id];
+		} else {
+			const tmp: string[] = (this.get("ui.window." + id) || "0,0").split(",");
+			state.x = parseInt(tmp[0], 10);
+			state.y = parseInt(tmp[1], 10);
+		}
+		return state;
 	}
 
 	/**

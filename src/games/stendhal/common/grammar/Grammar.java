@@ -1341,4 +1341,24 @@ public class Grammar {
 
 	    return str.substring(0, 1).toUpperCase() + str.substring(1);
 	}
+
+	public static String variation(String word) {
+		if (word.equals("stokrotki")) {
+			return word.substring(0, word.length() - 2) + "ek";
+		}
+
+		if (word.equals("bratek")) {
+			return word.substring(0, word.length() - 2) + "ów";
+		}
+
+		if (word.equals("lilia")) {
+			return word.substring(0, word.length() - 1) + "i";
+		}
+
+		if (word.equals("bielikrasa")) {
+			return word.substring(0, word.length() - 1) + "y";
+		}
+
+		return word;
+	}
 }

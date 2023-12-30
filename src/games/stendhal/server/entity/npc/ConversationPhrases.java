@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -15,8 +14,11 @@ package games.stendhal.server.entity.npc;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+
+import com.google.common.collect.ImmutableSet;
 
 /**
  * Common phrases used by players to interact with a SpeakerNPC.
@@ -24,7 +26,6 @@ import java.util.List;
  * @author hendrik
  */
 public class ConversationPhrases {
-
 	// define "no" trigger to be exactly matched while ignoring case
 	// (for available matching option strings see ExpressionMatcher)
 	public static final String NO_EXPRESSION = "|EXACT|ICASE|no";
@@ -32,40 +33,62 @@ public class ConversationPhrases {
 	// do not use a mutable list here
 	public static final List<String> EMPTY = Arrays.asList(new String[0]);
 
-	public static final List<String> GREETING_MESSAGES = Arrays.asList("hi",
-			"hello", "hallo", "greetings", "hola", "witaj", "witam", "cześć", "czesc", "dzień dobry",
-			"dobry wieczór", "dzien dobry", "dobry wieczor", "siema", "siemaneczko", "elo", "eluwina");
+	private static final List<String> EN_GREETING = Arrays.asList(
+			"hello", "hallo", "hi", "greetings", "hola", "👋");
+	private static final List<String> PL_GREETING = Arrays.asList(
+			"witaj", "witam", "cześć", "dzień dobry", "dobry wieczór",
+			"siema", "siemaneczko", "elo", "eluwina");
+	public static final List<String> GREETING_MESSAGES = combine(EN_GREETING, PL_GREETING);
 
-	public static final List<String> JOB_MESSAGES = Arrays.asList("job", "work", "occupation",
+	private static final List<String> EN_JOB = Arrays.asList(
+			"job", "work", "occupation", "🧹");
+	private static final List<String> PL_JOB = Arrays.asList(
 			"praca", "zajęcie", "zawód");
+	public static final List<String> JOB_MESSAGES = combine(EN_JOB, PL_JOB);
 
-	public static final List<String> HELP_MESSAGES = Arrays.asList("help",
-			"ayuda", "pomoc", "pomocy", "pomóc", "pomagam", "pomożesz");
+	private static final List<String> EN_HELP = Arrays.asList(
+			"help", "ayuda", "❓");
+	private static final List<String> PL_HELP = Arrays.asList(
+			"pomoc", "pomocy", "pomóc", "pomagam", "pomożesz");
+	public static final List<String> HELP_MESSAGES = combine(EN_HELP, PL_HELP);
 
-	public static final List<String> QUEST_MESSAGES = Arrays.asList("task",
-			"quest", "favor", "favour", "zadanie", "misja", "zadanko", "przysługa",
-			"przysługę", "przysluga", "przyslugi", "przysluge", "zadaniem", "zadaniu", "zadania");
+	private static final List<String> EN_QUEST = Arrays.asList(
+			"task", "quest", "favor", "favour", "❗️");
+	private static final List<String> PL_QUEST = Arrays.asList(
+			"zadanie", "misja", "przysługa");
+	public static final List<String> QUEST_MESSAGES = combine(EN_QUEST, PL_QUEST);
 
-	public static final List<String> FINISH_MESSAGES = Arrays.asList("done",
-			"finish", "complete", "zrobione", "skończone", "zakończone", "ukończone", "załatwione");
+	public static final List<String> BEGIN_MESSAGES = Arrays.asList("begin", "start", "go", "zacznij", "rozpocznij");
+
+	private static final List<String> EN_FINISH = Arrays.asList(
+			"done", "finish", "complete", "‼️");
+	private static final List<String> PL_FINISH = Arrays.asList(
+			"zrobione", "skończone", "zakończone", "ukończone", "załatwione");
+	public static final List<String> FINISH_MESSAGES = combine(EN_FINISH, PL_FINISH);
+
 	public static final List<String> QUEST_FINISH_MESSAGES = combine(QUEST_MESSAGES, FINISH_MESSAGES);
 
-	public static final List<String> ABORT_MESSAGES = Arrays.asList("another", "abort", "inny", "przerwij");
+	private static final List<String> EN_ABORT = Arrays.asList(
+			"another", "abort");
+	private static final List<String> PL_ABORT = Arrays.asList(
+			"inny", "przerwij");
+	public static final List<String> ABORT_MESSAGES = combine(EN_ABORT, PL_ABORT);
 
-	public static final List<String> OFFER_MESSAGES = Arrays.asList("offer", "deal", "trade",
-			"ofert", "oferta", "ofertę", "oferte", "interes", "zaoferować", "zaoferowano",
-			"zaoferuj", "oferuję", "zaoferowałbyś", "pohandluję", "handluję", "pohandlować",
-			"handel", "oferować", "oferty", "zaoferuje", "zaoferowania", "ofert", "handlem");
+	private static final List<String> EN_OFFER = Arrays.asList(
+			"offer", "deal", "trade", "🪙");
+	private static final List<String> PL_OFFER = Arrays.asList(
+			"oferta", "transakcja", "interes", "handel");
+	public static final List<String> OFFER_MESSAGES = combine(EN_OFFER, PL_OFFER);
 
 	public static final List<String> YES_MESSAGES = Arrays.asList("yes", "ok", "yep", "sure",
-			"tak", "dobrze", "oczywiście", "oczywiscie");
+			"tak", "dobrze", "oczywiście", "oczywiscie", "👍");
 
 	public static final List<String> NO_MESSAGES = Arrays.asList(NO_EXPRESSION, "nope",
-			"nothing", "none", "no", "nie", "nic");
+			"nothing", "none", "no", "nie", "nic", "👎");
 
 	public static final List<String> GOODBYE_MESSAGES = Arrays.asList("bye", "goodbye",
 			"farewell", "cya", "adios", "do widzenia", "żegnaj", "zegnaj", "bywaj",
-			"nara", "tymczasem", "dobranoc", "na razie", "do jutra");
+			"nara", "tymczasem", "dobranoc", "na razie", "do jutra", "👋");
 
 	public static final List<String> PURCHASE_MESSAGES = Arrays.asList("buy", "purchase", "kup",
 			"kupię", "kupie", "kupno", "kupić", "kupic", "kupować", "kupowac", "zakup",
@@ -73,6 +96,10 @@ public class ConversationPhrases {
 
 	public static final List<String> SALES_MESSAGES = Arrays.asList("sell", "sales", "sprzedaż",
 			"sprzedaz", "sprzedam");
+
+	public static final ImmutableSet<String> KNOWN = ImmutableSet.of("witaj", "pomocy", "praca", 
+			"zadanie", "zrobione", "ukończone", "inne", "oferta", "tak", "nie", "bywaj", "kupię",
+			"sprzedam", "ulecz", "wyzwanie");
 
 	/**
 	 * Combine a string collection (list) with additional strings.
@@ -105,6 +132,7 @@ public class ConversationPhrases {
 		for (Collection<String> list : lists) {
 			ret.addAll(list);
 		}
+		Collections.sort(ret);
 		return ret;
 	}
 

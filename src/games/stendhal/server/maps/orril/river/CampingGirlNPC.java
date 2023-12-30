@@ -37,7 +37,7 @@ public class CampingGirlNPC implements ZoneConfigurator {
 		final SpeakerNPC sally = new SpeakerNPC("Sally") {
 			@Override
 			protected void createDialog() {
-				//addGreeting();
+				addGreeting("Cześć, jak się masz?");
 				addJob("Praca? Jestem tylko małą dziewczynką! Skautem.");
 				addHelp("Możesz znaleźć sporo użytecznych rzeczy w lesie na przykład drewno i grzyby. Uważaj, niektóre grzyby są trujące!");
 				addGoodbye();

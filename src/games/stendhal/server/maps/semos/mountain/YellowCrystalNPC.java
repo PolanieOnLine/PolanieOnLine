@@ -15,13 +15,12 @@ import java.util.Map;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.entity.npc.SpeakerNPC;
+import games.stendhal.server.entity.npc.CrystalNPCBase;
 
 /**
  * A crystal NPC
  *
  * @author AntumDeluge
- *
  */
 public class YellowCrystalNPC implements ZoneConfigurator {
 	/**
@@ -36,7 +35,7 @@ public class YellowCrystalNPC implements ZoneConfigurator {
 	}
 
 	private void buildNPC(final StendhalRPZone zone) {
-		final SpeakerNPC crystal = new SpeakerNPC("Żółty Kryształ") {
+		final CrystalNPCBase crystal = new CrystalNPCBase("Żółty Kryształ") {
 			@Override
 			protected void createDialog() {
 				addGreeting("Witaj mam nadzieję, że korzystasz z dóbr natury.");

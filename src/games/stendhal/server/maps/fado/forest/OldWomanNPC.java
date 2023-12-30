@@ -129,6 +129,8 @@ public class OldWomanNPC implements ZoneConfigurator {
 		npc.setEntityClass("oldwomannpc");
 		npc.setGender("F");
 		npc.setPosition(38, 8);
+		// hide location from website
+		npc.hideLocation();
 		zone.add(npc);
 	}
 }

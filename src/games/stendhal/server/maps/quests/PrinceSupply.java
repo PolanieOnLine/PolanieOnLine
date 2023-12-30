@@ -28,7 +28,7 @@ import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.action.DropInfostringItemAction;
+import games.stendhal.server.entity.npc.action.DropItemdataItemAction;
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
 import games.stendhal.server.entity.npc.action.IncreaseXPAction;
 import games.stendhal.server.entity.npc.action.MultipleActions;
@@ -39,7 +39,7 @@ import games.stendhal.server.entity.npc.action.SetQuestToTimeStampAction;
 import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
 import games.stendhal.server.entity.npc.condition.NotCondition;
-import games.stendhal.server.entity.npc.condition.PlayerHasInfostringItemWithHimCondition;
+import games.stendhal.server.entity.npc.condition.PlayerHasItemdataItemWithHimCondition;
 import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
@@ -118,21 +118,21 @@ public class PrinceSupply extends AbstractQuest {
 					new QuestInStateCondition(QUEST_SLOT, "start"),
 					new NotCondition(
 						new AndCondition(
-								new PlayerHasInfostringItemWithHimCondition("kolczuga", QUEST_SLOT),
-								new PlayerHasInfostringItemWithHimCondition("zbroja płytowa", QUEST_SLOT),
-								new PlayerHasInfostringItemWithHimCondition("spodnie kolcze", QUEST_SLOT),
-								new PlayerHasInfostringItemWithHimCondition("hełm kolczy", QUEST_SLOT),
-								new PlayerHasInfostringItemWithHimCondition("buty kolcze", QUEST_SLOT)))),
+								new PlayerHasItemdataItemWithHimCondition("kolczuga", QUEST_SLOT),
+								new PlayerHasItemdataItemWithHimCondition("zbroja płytowa", QUEST_SLOT),
+								new PlayerHasItemdataItemWithHimCondition("spodnie kolcze", QUEST_SLOT),
+								new PlayerHasItemdataItemWithHimCondition("hełm kolczy", QUEST_SLOT),
+								new PlayerHasItemdataItemWithHimCondition("buty kolcze", QUEST_SLOT)))),
 			ConversationStates.ATTENDING, 
 			"Masz wrócić do mnie z potrzebnym wyposażeniem!",
 			null);
 
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
-		reward.add(new DropInfostringItemAction("kolczuga", QUEST_SLOT));
-		reward.add(new DropInfostringItemAction("zbroja płytowa", QUEST_SLOT));
-		reward.add(new DropInfostringItemAction("spodnie kolcze", QUEST_SLOT));
-		reward.add(new DropInfostringItemAction("hełm kolczy", QUEST_SLOT));
-		reward.add(new DropInfostringItemAction("buty kolcze", QUEST_SLOT));
+		reward.add(new DropItemdataItemAction("kolczuga", QUEST_SLOT));
+		reward.add(new DropItemdataItemAction("zbroja płytowa", QUEST_SLOT));
+		reward.add(new DropItemdataItemAction("spodnie kolcze", QUEST_SLOT));
+		reward.add(new DropItemdataItemAction("hełm kolczy", QUEST_SLOT));
+		reward.add(new DropItemdataItemAction("buty kolcze", QUEST_SLOT));
 		reward.add(new IncreaseXPAction(9500));
 		reward.add(new SetQuestAction(QUEST_SLOT, "done;"));
 		reward.add(new SetQuestToTimeStampAction(QUEST_SLOT, 1));
@@ -150,11 +150,11 @@ public class PrinceSupply extends AbstractQuest {
 			ConversationPhrases.GREETING_MESSAGES,
 			new AndCondition(
 					new GreetingMatchesNameCondition(npc.getName()),
-					new PlayerHasInfostringItemWithHimCondition("kolczuga", QUEST_SLOT),
-					new PlayerHasInfostringItemWithHimCondition("zbroja płytowa", QUEST_SLOT),
-					new PlayerHasInfostringItemWithHimCondition("spodnie kolcze", QUEST_SLOT),
-					new PlayerHasInfostringItemWithHimCondition("hełm kolczy", QUEST_SLOT),
-					new PlayerHasInfostringItemWithHimCondition("buty kolcze", QUEST_SLOT)),
+					new PlayerHasItemdataItemWithHimCondition("kolczuga", QUEST_SLOT),
+					new PlayerHasItemdataItemWithHimCondition("zbroja płytowa", QUEST_SLOT),
+					new PlayerHasItemdataItemWithHimCondition("spodnie kolcze", QUEST_SLOT),
+					new PlayerHasItemdataItemWithHimCondition("hełm kolczy", QUEST_SLOT),
+					new PlayerHasItemdataItemWithHimCondition("buty kolcze", QUEST_SLOT)),
 			ConversationStates.ATTENDING,
 			"Dziękuję w imieniu całego królestwa...",
 			new MultipleActions(reward));
@@ -169,27 +169,27 @@ public class PrinceSupply extends AbstractQuest {
 
 		try {
 			Item item = SingletonRepository.getEntityManager().getItem("kolczuga");
-			item.setInfoString(QUEST_SLOT);
+			item.setItemData(QUEST_SLOT);
 			item.setDescription("Oto kolczuga należąca do specjalnego wyposażenia armii Książęcej.");
 			chest.add(item);
 
 			item = SingletonRepository.getEntityManager().getItem("zbroja płytowa");
-			item.setInfoString(QUEST_SLOT);
+			item.setItemData(QUEST_SLOT);
 			item.setDescription("Oto zbroja płytowa należąca do specjalnego wyposażenia armii Książęcej.");
 			chest.add(item);
 
 			item = SingletonRepository.getEntityManager().getItem("spodnie kolcze");
-			item.setInfoString(QUEST_SLOT);
+			item.setItemData(QUEST_SLOT);
 			item.setDescription("Oto spodnie kolcze należące do specjalnego wyposażenia armii Książęcej.");
 			chest.add(item);
 
 			item = SingletonRepository.getEntityManager().getItem("hełm kolczy");
-			item.setInfoString(QUEST_SLOT);
+			item.setItemData(QUEST_SLOT);
 			item.setDescription("Oto hełm kolczy należące do specjalnego wyposażenia armii Książęcej.");
 			chest.add(item);
 
 			item = SingletonRepository.getEntityManager().getItem("buty kolcze");
-			item.setInfoString(QUEST_SLOT);
+			item.setItemData(QUEST_SLOT);
 			item.setDescription("Oto buty kolcze należące do specjalnego wyposażenia armii Książęcej.");
 			chest.add(item);
 		} catch (SlotIsFullException e) {

@@ -454,7 +454,7 @@
 		<!--<item name="pierścień szmaragdowy" price="9000" /> should avoid selling bound rings -->
 		<item name="zaizolowany pierścień" price="25000" />
 		<item name="pierścień skorupy żółwia" price="25000" />
-		<item name="pierścień imperialny" price="50000" />
+		<item name="pierścień cesarski" price="50000" />
 
 		<merchant name="Sawyer" flags="configure,noOffer"/>
 	</shop>

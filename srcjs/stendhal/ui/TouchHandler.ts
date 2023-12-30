@@ -14,10 +14,16 @@ declare var stendhal: any;
 
 export class TouchHandler {
 
+	private touchEngaged = false;
+
 	private readonly longTouchDuration = 300;
 	private timestampTouchStart = 0;
 	private timestampTouchEnd = 0;
 	private held?: any;
+
+	// location when touch event began
+	private origin: {[index: string]: number}|undefined = undefined;
+	private readonly moveThreshold = 16;
 
 	/** Singleton instance. */
 	private static instance: TouchHandler;
@@ -41,10 +47,19 @@ export class TouchHandler {
 	}
 
 	/**
+	 * Checks for touch event.
+	 */
+	public isTouchEvent(evt: Event) {
+		return window["TouchEvent"] && evt instanceof TouchEvent;
+	}
+
+	/**
 	 * Sets timestamp when touch applied.
 	 */
-	onTouchStart() {
+	onTouchStart(x: number, y: number) {
 		this.timestampTouchStart = +new Date();
+		this.touchEngaged = true;
+		this.origin = {x: x, y: y};
 	}
 
 	/**
@@ -52,14 +67,32 @@ export class TouchHandler {
 	 */
 	onTouchEnd() {
 		this.timestampTouchEnd = +new Date();
+		this.touchEngaged = false;
+	}
+
+	/**
+	 * Can be used to detect if a mouse event was triggered by touch.
+	 */
+	isTouchEngaged(): boolean {
+		return this.touchEngaged;
 	}
 
 	/**
 	 * Checks if a touch event represents a long touch after release.
 	 */
-	isLongTouch(): boolean {
-		return (this.timestampTouchEnd - this.timestampTouchStart
-				> this.longTouchDuration);
+	isLongTouch(evt?: Event): boolean {
+		if (evt && !this.isTouchEvent(evt)) {
+			return false;
+		}
+		const durationMatch = (this.timestampTouchEnd - this.timestampTouchStart > this.longTouchDuration);
+		let positionMatch = true;
+		if (evt && this.origin) {
+			const pos = stendhal.ui.html.extractPosition(evt);
+			// if position has moved too much it's not a long touch
+			positionMatch = (Math.abs(pos.pageX - this.origin.x) <= this.moveThreshold)
+					&& (Math.abs(pos.pageY - this.origin.y) <= this.moveThreshold);
+		}
+		return durationMatch && positionMatch;
 	}
 
 	/**
@@ -81,6 +114,17 @@ export class TouchHandler {
 	 */
 	unsetHeldItem() {
 		this.held = undefined;
+	}
+
+	unsetOrigin() {
+		this.origin = undefined;
+	}
+
+	/**
+	 * Checks if there is currently an item being held.
+	 */
+	holdingItem(): boolean {
+		return this.held != undefined && this.held != null;
 	}
 
 	/**

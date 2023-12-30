@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import games.stendhal.common.constants.Occasion;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -80,6 +81,22 @@ public class GoodiesForRudolph extends AbstractQuest {
 
 	private static final String RUDOLPH_TALK_QUEST_ACCEPT = "Słyszałem o wspaniałych #przysmakach, które masz tutaj w Semos. Jeśli zdobędziesz 5 mchów renifera, 10 jabłek i 10 marchew to dam ci nagrodę.";
 	private static final String RUDOLPH_TALK_QUEST_OFFER = "Chcę pyszne przysmaki tylko ty możesz mi pomóc je zdobyć. Czy możesz mi pomóc?";
+
+	/**
+	 * Details are added to travel log if Christmas is active or player has completed quest.
+	 *
+	 * @param player
+	 *   Player for whom details are requested.
+	 * @return
+	 *   `true` if Christmas is active or quest is completed.
+	 */
+	@Override
+	public boolean isVisibleOnQuestStatus(final Player player) {
+		if (Occasion.CHRISTMAS) {
+			return true;
+		}
+		return isCompleted(player);
+	}
 
 	private void prepareRequestingStep() {
 		npc.add(
@@ -197,9 +214,19 @@ public class GoodiesForRudolph extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Przysmaki Rudolpha",
-				"Rudolph jest ulubionym reniferem świętego Mikołaja, który rozpaczliwie chce przysmaków.",
+				"Przysmaki Rudolfa",
+				"Rudolf jest ulubionym reniferem świętego Mikołaja, który rozpaczliwie chce przysmaków.",
 				false);
+
+		if (Occasion.CHRISTMAS) {
+			addStepsToWorld();
+		}
+	}
+
+	/**
+	 * This can be called after `addToWorld` to force steps to be loaded if Christmas isn't active.
+	 */
+	public void addStepsToWorld() {
 		prepareRequestingStep();
 		prepareBringingStep();
 	}

@@ -26,7 +26,7 @@ import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.DecreaseKarmaAction;
-import games.stendhal.server.entity.npc.action.DropInfostringItemAction;
+import games.stendhal.server.entity.npc.action.DropItemdataItemAction;
 import games.stendhal.server.entity.npc.action.DropItemAction;
 import games.stendhal.server.entity.npc.action.EquipItemAction;
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
@@ -38,7 +38,7 @@ import games.stendhal.server.entity.npc.action.SetQuestAction;
 import games.stendhal.server.entity.npc.action.SetQuestToTimeStampAction;
 import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.NotCondition;
-import games.stendhal.server.entity.npc.condition.PlayerHasInfostringItemWithHimCondition;
+import games.stendhal.server.entity.npc.condition.PlayerHasItemdataItemWithHimCondition;
 import games.stendhal.server.entity.npc.condition.PlayerHasItemWithHimCondition;
 import games.stendhal.server.entity.npc.condition.QuestActiveCondition;
 import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
@@ -93,7 +93,7 @@ public class WaterForXhiphin extends AbstractQuest {
 	private static final int REQUIRED_MINUTES = 7200;
 
 	/** How the water is marked as clean */
-	private static final String CLEAN_WATER_INFOSTRING = "clean";
+	private static final String CLEAN_WATER_ITEMDATA = "clean";
 
 	private void requestStep() {
 		// player asks about quest for first time (or rejected)
@@ -146,7 +146,7 @@ public class WaterForXhiphin extends AbstractQuest {
 		final SpeakerNPC waterNPC = npcs.get("Stefan");
 
 		// player gets water checked
-		// mark infostring of item to show it's good
+		// mark itemdata of item to show it's good
 		final List<ChatAction> actions = new LinkedList<ChatAction>();
 		// for now Stefan is just able to check one water at a time (even from a stack) and he always says it's fine and clean
 		// if you go to him with one checked and one unchecked he might just check the checked one again - depends what sits first in bag
@@ -155,7 +155,7 @@ public class WaterForXhiphin extends AbstractQuest {
 			@Override
 			public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
 				final Item water = SingletonRepository.getEntityManager().getItem("butelka wody");
-				water.setInfoString(CLEAN_WATER_INFOSTRING);
+				water.setItemData(CLEAN_WATER_ITEMDATA);
 				water.setDescription("Oto świeża woda. Jest smaczna i ożeźwiająca. Stefan sprawdzał ją.");
 				// remember the description
 				water.setPersistent(true);
@@ -168,7 +168,7 @@ public class WaterForXhiphin extends AbstractQuest {
 					new PlayerHasItemWithHimCondition("butelka wody"),
 					ConversationStates.ATTENDING, 
 					"Ta woda jak dla mnie, to wygląda na czystą! Musi być z dobrego źródła.",
-					// take the item and give them a new one with an infostring or mark all?
+					// take the item and give them a new one with an itemdata or mark all?
 					new MultipleActions(actions));
 
 		// player asks about water but doesn't have it with them
@@ -184,7 +184,7 @@ public class WaterForXhiphin extends AbstractQuest {
 		// Player has got water and it has been checked
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
 		// make sure we drop the checked water not any other water
-		reward.add(new DropInfostringItemAction("butelka wody", CLEAN_WATER_INFOSTRING));
+		reward.add(new DropItemdataItemAction("butelka wody", CLEAN_WATER_ITEMDATA));
 		reward.add(new EquipItemAction("eliksir", 3));
 		reward.add(new IncreaseXPAction(250));
 		reward.add(new IncrementQuestAction(QUEST_SLOT, 2, 1) );
@@ -197,7 +197,7 @@ public class WaterForXhiphin extends AbstractQuest {
 				ConversationPhrases.combine(ConversationPhrases.QUEST_MESSAGES, EXTRA_TRIGGER), 
 				new AndCondition(
 						new QuestActiveCondition(QUEST_SLOT),
-						new PlayerHasInfostringItemWithHimCondition("butelka wody", CLEAN_WATER_INFOSTRING)),
+						new PlayerHasItemdataItemWithHimCondition("butelka wody", CLEAN_WATER_ITEMDATA)),
 				ConversationStates.ATTENDING, 
 				"Bardzo dziękuję! To jest to czego aktualnie potrzebowałem! Przyjmij te mikstury, które dała mi Sarzina.",
 				new MultipleActions(reward));
@@ -218,7 +218,7 @@ public class WaterForXhiphin extends AbstractQuest {
 				new AndCondition(
 						new QuestActiveCondition(QUEST_SLOT),
 						new PlayerHasItemWithHimCondition("butelka wody"),
-						new NotCondition(new PlayerHasInfostringItemWithHimCondition("butelka wody", CLEAN_WATER_INFOSTRING))),
+						new NotCondition(new PlayerHasItemdataItemWithHimCondition("butelka wody", CLEAN_WATER_ITEMDATA))),
 				ConversationStates.ATTENDING, 
 				"Hmm... to nie to. Nie ufam Tobie, ale nie jestem pewien czy ta woda nadaje się do picia. Czy mógłbyś się udać do #Stefana i poprosić go o #sprawdzenie?",
 				null);
@@ -252,10 +252,10 @@ public class WaterForXhiphin extends AbstractQuest {
 		if (player.isQuestInState(QUEST_SLOT, "start") || isCompleted(player)) {
 			res.add(Grammar.genderVerb(player.getGender(), "Zgodziłem") + " się przynieść mu trochę wody, aby Xhiphin Zohos ugasił pragnienie.");
 		}
-		if (player.isQuestInState(QUEST_SLOT, "start") && player.isEquipped("butelka wody") && new NotCondition(new PlayerHasInfostringItemWithHimCondition("butelka wody", CLEAN_WATER_INFOSTRING)).fire(player, null, null) || isCompleted(player)) {
+		if (player.isQuestInState(QUEST_SLOT, "start") && player.isEquipped("butelka wody") && new NotCondition(new PlayerHasItemdataItemWithHimCondition("butelka wody", CLEAN_WATER_ITEMDATA)).fire(player, null, null) || isCompleted(player)) {
 			res.add(Grammar.genderVerb(player.getGender(), "Znalazłem") + " źródło świeżej wody, ale nie jestem " + Grammar.genderVerb(player.getGender(), "pewny") + " czy jest bezpieczna do picia dla Xhiphina.");
 		}
-		if (new PlayerHasInfostringItemWithHimCondition("butelka wody", CLEAN_WATER_INFOSTRING).fire(player, null, null) || isCompleted(player)) {
+		if (new PlayerHasItemdataItemWithHimCondition("butelka wody", CLEAN_WATER_ITEMDATA).fire(player, null, null) || isCompleted(player)) {
 			res.add("Stefan, szef w hotelu w Fado sprawdził wodę, którą zebrałem i jest czysta i zdatna do picia.");
 		}
 		// checked water was clean?

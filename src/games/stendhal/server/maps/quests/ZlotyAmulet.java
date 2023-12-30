@@ -72,7 +72,7 @@ public class ZlotyAmulet extends AbstractQuest {
 			ConversationPhrases.YES_MESSAGES,
 			null,
 			ConversationStates.ATTENDING,
-			"Dobrze! Pamiętaj, że jezioro znajduje się w dolinie Rybiego Potoku i musisz mi przynieść conajmniej 20 bryłek złota! Będę tutaj na Ciebie czekała!",
+			"Dobrze! Pamiętaj, że jezioro znajduje się w dolinie Rybiego Potoku i musisz mi przynieść co najmniej 20 bryłek złota! Będę tutaj na Ciebie czekała!",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "start", 5.0));
 
 		npc.add(

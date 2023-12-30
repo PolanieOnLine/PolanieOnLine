@@ -1,8 +1,8 @@
 <?xml version='1.0'?>
-
 <project xmlns:if="ant:if" xmlns:unless="ant:unless">
+  <import file="dist.xml" />
 
-  <target name="compile_polanieonlinetools" description="compiles the PolanieOnLine build tools">
+  <target name="compile_polanieonlinetools" description="Compile PolanieOnLine build tools.">
     <mkdir dir="${build_polanieonlinetools}"/>
 
     <javac srcdir="${src}" destdir="${build_polanieonlinetools}" source="1.8" target="1.8" debug="${javac.debug}" debuglevel="${javac.debuglevel}" deprecation="${javac.deprecation}" includeantruntime="true">
@@ -27,7 +27,42 @@
   </target> <!-- compile_polanieonlinetools -->
 
 
-	<target name="postman" description="Builds postman bot">
+	<target name="clean_whitespace" description="Clean whitespace in source and other specified file types." depends="compile_polanieonlinetools">
+	  	<!-- process main Java source, config, & scripting files -->
+	  	<java classname="games.stendhal.tools.CleanWhitespace">
+	      <classpath>
+	        <pathelement path="${build_polanieonlinetools}"/>
+	      </classpath>
+	      <arg value="src/"/>
+	      <arg value="tests/"/>
+	      <arg value="android/app/src/"/>
+	      <arg value="java,xml,lua"/>
+	    </java>
+
+	  	<!-- process web client source files -->
+	    <java classname="games.stendhal.tools.CleanWhitespace">
+	      <classpath>
+	        <pathelement path="${build_polanieonlinetools}"/>
+	      </classpath>
+	      <arg value="srcjs/"/>
+	      <arg value="js,ts,css"/>
+	    </java>
+
+	  	<!-- process config & scripting data files -->
+	    <java classname="games.stendhal.tools.CleanWhitespace">
+	      <classpath>
+	        <pathelement path="${build_polanieonlinetools}"/>
+	      </classpath>
+	      <arg value="data/"/>
+	      <arg value="tiled/"/>
+	      <arg value="xml,xsd,lua,py"/>
+	    </java>
+	  </target> <!-- clean_whitespace -->
+
+	  <target name="cleanwhitespace" depends="clean_whitespace" description="Alias of clean_whitespace."/>
+
+
+	<target name="postman" description="Build postman bot.">
 			<mkdir dir="${buildroot}/buildbot"/>
 			<javac srcdir="${src}" destdir="${buildroot}/buildbot" debug="${javac.debug}" debuglevel="${javac.debuglevel}" source="1.8" target="1.8" deprecation="${javac.deprecation}" includeantruntime="false">
 				<include name="net/sf/arianne/postman/*.java"/>
@@ -57,12 +92,11 @@
 					<attribute name="Main-Class" value="net.sf.arianne.postman.PostmanMain"/>
 				</manifest>
 			</jar>
-			<!-- end build bot -->
 
 		</target> <!-- postman -->
 
 
-  <target name="signupdates" description="signs updates" depends="compile_polanieonlinetools,jardiff" unless="exclude.signing">
+  <target name="signupdates" description="Sign updates." depends="compile_polanieonlinetools,jardiff" unless="exclude.signing">
     <taskdef name="updatesigner" classname="games.stendhal.tools.updateprop.UpdateSigner">
       <classpath>
         <pathelement path="."/>
@@ -78,7 +112,7 @@
   </target> <!-- signupdates -->
 
 
-  <target name="jardiff" depends="client_build" unless="exclude.jardiff">
+  <target name="jardiff" depends="client_build" unless="exclude.jardiff" description="Generate release changes info.">
     <echo>Creating update from ${version.old} to ${version}</echo>
     <delete>
       <fileset dir="${build-archive}">
@@ -123,7 +157,7 @@
 
 
   <!-- USAGE: ant balance -Dcreature="<creature_name>" -->
-  <target name="balance" description="Runs enemy balancer" depends="compile_polanieonlinetools,server_build">
+  <target name="balance" description="Run enemy balancer." depends="compile_polanieonlinetools,server_build">
     <java classname="games.stendhal.tools.BalanceRPGame">
       <classpath>
         <pathelement path="${build_polanieonlinetools}"/>

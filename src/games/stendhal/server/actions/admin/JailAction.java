@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2016 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -13,6 +13,7 @@ package games.stendhal.server.actions.admin;
 
 import static games.stendhal.common.constants.Actions.JAIL;
 import static games.stendhal.common.constants.Actions.MINUTES;
+import static games.stendhal.common.constants.Actions.REASON;
 import static games.stendhal.common.constants.Actions.TARGET;
 
 import java.sql.SQLException;
@@ -27,17 +28,14 @@ import marauroa.server.game.db.CharacterDAO;
 import marauroa.server.game.db.DAORegister;
 
 public class JailAction extends AdministrationAction {
-
 	private static final String USAGE_JAIL_NAME_MINUTES_REASON = "Użyj: /jail <wojownik> <minuty> <powód>";
 
 	public static void register() {
 		CommandCenter.register(JAIL, new JailAction(), 7);
-
 	}
 
 	@Override
 	public void perform(final Player player, final RPAction action) {
-
 		if (!action.has(TARGET) || !action.has(MINUTES)) {
 			player.sendPrivateText(USAGE_JAIL_NAME_MINUTES_REASON);
 			return;
@@ -67,13 +65,11 @@ public class JailAction extends AdministrationAction {
 
 		// extract reason
 		String reason = "";
-		if (action.has("reason")) {
-			reason = action.get("reason");
+		if (action.has(REASON)) {
+			reason = action.get(REASON);
 		}
 
 		SingletonRepository.getJail().imprison(target, player, minutes, reason);
 		new GameEvent(player.getName(), JAIL, target, Integer.toString(minutes), reason).raise();
-
 	}
-
 }

@@ -30,6 +30,9 @@ export class FloatingWindow extends Component {
 
 	private content: Component;
 
+	private windowId?: string;
+
+
 	constructor(title: string, protected contentComponent: Component, x: number, y: number) {
 		super("window-template");
 
@@ -59,7 +62,12 @@ export class FloatingWindow extends Component {
 		titleBar.addEventListener("touchstart", (event) => {
 			this.onTouchStart(event as TouchEvent)
 		});
-		this.child(".windowtitleclose")!.addEventListener("click", (event) => {
+		const closeButton = this.child(".windowtitleclose")!;
+		closeButton.addEventListener("click", (event) => {
+			this.onClose(event);
+			FloatingWindow.soundManager.playGlobalizedEffect(this.closeSound);
+		});
+		closeButton.addEventListener("touchend", (event) => {
 			this.onClose(event);
 			FloatingWindow.soundManager.playGlobalizedEffect(this.closeSound);
 		});
@@ -85,12 +93,6 @@ export class FloatingWindow extends Component {
 
 
 	public close() {
-		// store session position
-		const storepos = this.checkPos();
-		if (this.content instanceof DialogContentComponent) {
-			(<DialogContentComponent> this.content).updateConfig(storepos.x, storepos.y);
-		}
-
 		this.componentElement.remove();
 		this.contentComponent.onParentClose();
 		this.opened = false;
@@ -138,7 +140,6 @@ export class FloatingWindow extends Component {
 	private onMouseMovedDuringDrag(event: MouseEvent) {
 		this.componentElement.style.left = event.clientX - this.offsetX + 'px';
 		this.componentElement.style.top = event.clientY - this.offsetY + 'px';
-
 		this.onMoved();
 	}
 
@@ -164,13 +165,19 @@ export class FloatingWindow extends Component {
 		window.removeEventListener("touchend", this.onMouseUpDuringDragListener, true);
 	}
 
-	private checkPos() {
+	private checkPos(): any {
 		if (this.content) {
 			this.content.onMoved();
 		}
 
 		const dialogArea = this.componentElement.getBoundingClientRect();
 		const clientArea = document.documentElement.getBoundingClientRect();
+
+		// clientArea.height is 0, if there are now child elements (e. g. on login / choose character dialogs)
+		let clientAreaHeight = clientArea.height;
+		if (clientAreaHeight == 0) {
+			clientAreaHeight = window.visualViewport?.height || 200;
+		}
 
 		const offset = stendhal.ui.getPageOffset();
 
@@ -179,23 +186,30 @@ export class FloatingWindow extends Component {
 
 		if (newX < 0) {
 			newX = 0;
-			this.componentElement.style.left = "0px";
+			this.componentElement.style.left = (offset.x + newX) + "px";
 		} else if (dialogArea.x + dialogArea.width > clientArea.right + offset.x) {
 			newX = clientArea.right - dialogArea.width;
-			this.componentElement.style.left = newX + "px";
+			this.componentElement.style.left = (offset.x + newX) + "px";
 		}
 		if (newY < 0) {
 			newY = 0;
-			this.componentElement.style.top = "0px";
-		} else if (dialogArea.y + dialogArea.height > clientArea.bottom + offset.y) {
-			newY = clientArea.y + clientArea.height - dialogArea.height;
-			this.componentElement.style.top = newY + "px";
+			this.componentElement.style.top = (offset.y + newY) + "px";
+		} else if (dialogArea.y + dialogArea.height > clientAreaHeight) {
+			newY = clientAreaHeight - dialogArea.height;
+			this.componentElement.style.top = (offset.y + newY) + "px";
 		}
 
 		return {x: newX + offset.x, y: newY + offset.y};
 	}
 
 	public override onMoved() {
-		this.checkPos();
+		const pos = this.checkPos();
+		if (typeof(this.windowId) !== "undefined") {
+			stendhal.config.setWindowState(this.windowId, pos.x, pos.y);
+		}
+	}
+
+	public setId(id: string|undefined) {
+		this.windowId = id;
 	}
 }

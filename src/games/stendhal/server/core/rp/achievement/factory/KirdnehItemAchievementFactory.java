@@ -23,6 +23,7 @@ public class KirdnehItemAchievementFactory extends AbstractAchievementFactory {
 	public static final String ID_DEDICATED = "quest.special.weekly_item.0025";
 	public static final String ID_SENIOR = "quest.special.weekly_item.0050";
 	public static final String ID_MASTER = "quest.special.weekly_item.0100";
+	public static final String ID_HYPERBOLIST = "quest.special.weekly_item.0200";
 
 	@Override
 	protected Category getCategory() {
@@ -56,6 +57,12 @@ public class KirdnehItemAchievementFactory extends AbstractAchievementFactory {
 				"Ukończono tygodniowe zadanie na przedmiot 100 razy", 
 				Achievement.HARD_BASE_SCORE, true,
 				new QuestStateGreaterThanCondition("weekly_item", 2, 99)));
+
+		achievements.add(createAchievement(
+				ID_HYPERBOLIST, "Historyk Hiperbolisty",
+				"Ukończono tygodniowe zadanie na przedmiot 200 razy",
+				Achievement.EXTREME_BASE_SCORE, true,
+				new QuestStateGreaterThanCondition("weekly_item", 2, 199)));
 
 		return achievements;
 	}

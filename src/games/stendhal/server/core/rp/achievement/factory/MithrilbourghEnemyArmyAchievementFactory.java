@@ -58,6 +58,12 @@ public class MithrilbourghEnemyArmyAchievementFactory extends AbstractAchievemen
 				Achievement.HARD_BASE_SCORE, true,
 				new QuestStateGreaterThanCondition("kill_enemy_army", IDX, 99)));
 
+		achievements.add(createAchievement(
+				"quest.special.kill_enemy_army.0200", "Głównodowodzący",
+				"Ukończono zadanie 'Zabij Wrogą Armię' 200 razy",
+				Achievement.EXTREME_BASE_SCORE, true,
+				new QuestStateGreaterThanCondition("kill_enemy_army", IDX, 199)));
+
 		return achievements;
 	}
 }

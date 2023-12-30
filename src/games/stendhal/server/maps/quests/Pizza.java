@@ -392,7 +392,7 @@ public class Pizza extends AbstractQuest {
 		final CustomerData data = customerDB.get(name);
 
 		final Item pizza = SingletonRepository.getEntityManager().getItem("pizza");
-		pizza.setInfoString(data.flavor);
+		pizza.setItemData(data.flavor);
 		pizza.setDescription("Oto " + data.flavor + ".");
 		pizza.setBoundTo(name);
 
@@ -459,7 +459,7 @@ public class Pizza extends AbstractQuest {
 		if (player.isEquipped("pizza")) {
 			final CustomerData data = customerDB.get(npc.getName());
 			for (final Item pizza : player.getAllEquipped("pizza")) {
-				final String flavor = pizza.getInfoString();
+				final String flavor = pizza.getItemData();
 				if (data.flavor.equals(flavor)) {
 					player.drop(pizza);
 					// Check whether the player was supposed to deliver the
@@ -548,7 +548,7 @@ public class Pizza extends AbstractQuest {
 							// and because the player probably won't
 							// deliver it anymore anyway.
 							for (final Item pizza : player.getAllEquipped("pizza")) {
-								if (pizza.getInfoString()!=null) {
+								if (pizza.getItemData()!=null) {
 									player.drop(pizza);
 								}
 							}

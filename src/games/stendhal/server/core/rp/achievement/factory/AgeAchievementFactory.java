@@ -78,13 +78,13 @@ public class AgeAchievementFactory extends AbstractAchievementFactory {
 		achievements.add(createAchievement(
 				"age.less.10000", "Staruszek",
 				"Spędzono 10 000 godzin w grze",
-				Achievement.LEGENDARY_BASE_SCORE, true,
+				Achievement.EXTREME_BASE_SCORE, true,
 				new AgeGreaterThanCondition(599999)));
 
 		achievements.add(createAchievement(
 				"age.less.20000", "❤️",
 				"Spędzono ponad 20 000 godzin w grze!",
-				Achievement.LEGENDARY_BASE_SCORE, true,
+				Achievement.EXTREME_BASE_SCORE, true,
 				new AgeGreaterThanCondition(1199999)));
 
 		return achievements;

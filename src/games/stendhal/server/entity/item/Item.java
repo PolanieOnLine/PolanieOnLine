@@ -207,8 +207,11 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		// the fun for new players
 		entity.addAttribute("min_level", Type.INT, Definition.HIDDEN);
 
-		// To store addAttributeitional info with an item
+		// Used for compatibility with existing database objects, has been replaced by itemdata
 		entity.addAttribute("infostring", Type.STRING, Definition.HIDDEN);
+
+		// To store addAttributeitional info with an item
+		entity.addAttribute("itemdata", Type.STRING, Definition.HIDDEN);
 
 		// Some items have individual values
 		entity.addAttribute("persistent", Type.SHORT, Definition.HIDDEN);
@@ -269,6 +272,9 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 
 		// marked scroll
 		entity.addAttribute("dest", Type.STRING, Definition.VOLATILE);
+
+		// state (e. g. broken)
+		entity.addAttribute("state", Type.INT);
 	}
 
 	/**
@@ -501,6 +507,27 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	}
 
 	/**
+	 * gets the state of this item
+	 *
+	 * @return state
+	 */
+	public int getState() {
+		if (!has("state")) {
+			return 0;
+		}
+		return getInt("state");
+	}
+
+	/**
+	 * sets the state of this item
+	 *
+	 * @param state state
+	 */
+	public void setState(int state) {
+		put("state", state);
+	}
+
+	/**
 	 * Checks if the item is of type <i>type</i>.
 	 *
 	 * @param clazz
@@ -595,14 +622,14 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	}
 
 	/**
-	 * Get the item's infoString. The infoString contains context specific
+	 * Get the item's itemdata. The itemdata contains context specific
 	 * information that is used by the implementation.
 	 *
-	 * @return The infoString.
+	 * @return The itemdata.
 	 */
-	public String getInfoString() {
-		if (has("infostring")) {
-			return get("infostring");
+	public String getItemData() {
+		if (has("itemdata")) {
+			return get("itemdata");
 		} else {
 			return null;
 		}
@@ -663,17 +690,17 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	}
 
 	/**
-	 * Set the item's infostring. The infostring contains context specific
+	 * Set the item's itemdata. The itemdata contains context specific
 	 * information that is used by the implementation.
 	 *
-	 * @param infostring
-	 *            The item's infostring.
+	 * @param itemdata
+	 *            The item's itemdata.
 	 */
-	public void setInfoString(final String infostring) {
-		if (infostring != null) {
-			put("infostring", infostring);
-		} else if (has("infostring")) {
-			remove("infostring");
+	public void setItemData(final String itemdata) {
+		if (itemdata != null) {
+			put("itemdata", itemdata);
+		} else if (has("itemdata")) {
+			remove("itemdata");
 		}
 	}
 

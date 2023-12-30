@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2022 - Faiumoni e.V.                    *
+ *                 (C) Copyright 2022-2023 - Faiumoni e.V.                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,8 +11,11 @@
  ***************************************************************************/
 package games.stendhal.server.entity.npc.quest;
 
+import java.util.List;
+
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ChatCondition;
+import games.stendhal.server.entity.npc.condition.AlwaysTrueCondition;
 import games.stendhal.server.entity.player.Player;
 
 /**
@@ -22,9 +25,22 @@ import games.stendhal.server.entity.player.Player;
  */
 public abstract class QuestTaskBuilder {
 
+	// hide constructor
+	QuestTaskBuilder() {
+		super();
+	}
+
 	abstract void simulate(QuestSimulator simulator);
 
+	ChatCondition buildQuestPreCondition(@SuppressWarnings("unused") String questSlot) {
+		return new AlwaysTrueCondition();
+	}
+
 	abstract ChatAction buildStartQuestAction(String questSlot);
+
+	ChatAction buildRejectQuestAction(@SuppressWarnings("unused") String questSlot) {
+		return null;
+	}
 
 	abstract ChatCondition buildQuestCompletedCondition(String questSlot);
 
@@ -32,6 +48,13 @@ public abstract class QuestTaskBuilder {
 
 	boolean isCompleted(Player player, String questSlot) {
 		return buildQuestCompletedCondition(questSlot).fire(player, null, null);
+	}
+
+	List<String> calculateHistoryProgress(
+			@SuppressWarnings("unused") QuestHistoryBuilder history,
+			@SuppressWarnings("unused") Player player,
+			@SuppressWarnings("unused") String questSlot) {
+		return null;
 	}
 
 }

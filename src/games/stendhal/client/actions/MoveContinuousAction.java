@@ -47,7 +47,7 @@ public class MoveContinuousAction implements SlashAction {
 		WtWindowManager wm = WtWindowManager.getInstance();
 		boolean enabled = wm.getPropertyBoolean(MOVE_CONTINUOUS, false);
 		wm.setProperty(MOVE_CONTINUOUS, Boolean.toString(!enabled));
-		
+
 		return sendAction(!enabled);
 	}
 

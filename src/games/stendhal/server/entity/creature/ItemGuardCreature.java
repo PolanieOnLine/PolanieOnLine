@@ -39,7 +39,7 @@ public class ItemGuardCreature extends Creature {
 	private final String itemType;
 
 	/** optional Item info string */
-	private final String itemInfostring;
+	private final String itemitemdata;
 
  	/** optional Item description string */
 	private final String itemDescr;
@@ -105,7 +105,7 @@ public class ItemGuardCreature extends Creature {
 	 *            base creature
 	 * @param itemType
 	 *            the quest item to drop on death
-	 * @param itemInfostring
+	 * @param itemitemdata
 	 *            optional info string to add to item
 	 * @param itemDescr
 	 *            optional description string to add to item
@@ -116,12 +116,12 @@ public class ItemGuardCreature extends Creature {
 	 * @param questIndex
 	 * 			  the index of the quest slot to look in
 	 */
-	public ItemGuardCreature(final Creature copy, final String itemType, final String itemInfostring, final String itemDescr,
+	public ItemGuardCreature(final Creature copy, final String itemType, final String itemitemdata, final String itemDescr,
 			final String questSlot, final String questState, final int questIndex) {
 		super(copy);
 
 		this.itemType = itemType;
-		this.itemInfostring = itemInfostring;
+		this.itemitemdata = itemitemdata;
 		this.itemDescr = itemDescr;
 		this.questSlot = questSlot;
 		this.questState = questState;
@@ -143,7 +143,7 @@ public class ItemGuardCreature extends Creature {
 
 	@Override
 	public Creature getNewInstance() {
-		return new ItemGuardCreature(this, itemType, itemInfostring, itemDescr, questSlot, questState, questIndex);
+		return new ItemGuardCreature(this, itemType, itemitemdata, itemDescr, questSlot, questState, questIndex);
 	}
 
 	@Override
@@ -152,8 +152,8 @@ public class ItemGuardCreature extends Creature {
 		if (killer instanceof Player) {
 			final Player killerPlayer = (Player) killer;
 			boolean playerEquipped;
- 			if (itemInfostring != null) {
-				playerEquipped = killerPlayer.isEquippedWithInfostring(itemType, itemInfostring);
+ 			if (itemitemdata != null) {
+				playerEquipped = killerPlayer.isEquippedWithItemdata(itemType, itemitemdata);
 			} else {
 				playerEquipped = killerPlayer.isEquipped(itemType);
 			}
@@ -174,8 +174,8 @@ public class ItemGuardCreature extends Creature {
 
 	private void equipPlayerWithGuardedItem(final Player killerPlayer) {
 		final Item item = SingletonRepository.getEntityManager().getItem(itemType);
- 		if (itemInfostring != null) {
-			item.put("infostring", itemInfostring);
+ 		if (itemitemdata != null) {
+			item.put("itemdata", itemitemdata);
 		}
 		if (itemDescr != null) {
 			item.put("description", itemDescr);

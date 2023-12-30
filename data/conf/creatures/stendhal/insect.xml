@@ -6,7 +6,7 @@
 
 	<creature name="mały skarabeusz">
 		<type class="insect" subclass="scarab_tiny" tileid="insect.png:1"/>
-		<description></description>
+		<description>Oto mały skarabeusz. Jest to owad znany z pustynnych ekosystemów, który zjada prawie wszystko, łącznie z odchodami. Jego twardy pancerz zapewnia ochronę przed słońcem i zmiażdżeniem, więc nie myśl, że lekkie tupnięcie go zatrzyma.</description>
 		<attributes>
 			<atk value="182"/>
 			<def value="42"/>

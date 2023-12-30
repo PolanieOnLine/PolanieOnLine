@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -13,6 +13,7 @@ package games.stendhal.server.core.rp.achievement;
 
 import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.player.Player;
+
 /**
  * An Achievement a player can reach while playing the game.
  * Achievements are given for example for doing a certain number of quests or killing a number of special creatures
@@ -26,8 +27,8 @@ public class Achievement {
 	public static final int MEDIUM_BASE_SCORE = 2;
 	/** base score for difficult achievements */
 	public static final int HARD_BASE_SCORE = 5;
-	/** base score for very difficult achievements */
-	public static final int LEGENDARY_BASE_SCORE = 10;
+	/** base score for extreme achievement */
+	public static final int EXTREME_BASE_SCORE = 7;
 
 	private final String identifier;
 	private final String title;

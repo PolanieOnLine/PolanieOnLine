@@ -29,7 +29,7 @@ import games.stendhal.server.maps.quests.AbstractQuest;
  * @author hendrik
  */
 public class BuiltQuest extends AbstractQuest {
-	private QuestBuilder<?> questBuilder;
+	private QuestBuilder<?, ?, ?, ?> questBuilder;
 	private String questSlot = null;
 
 	/**
@@ -37,7 +37,7 @@ public class BuiltQuest extends AbstractQuest {
 	 *
 	 * @param questBuilder quest builder
 	 */
-	public BuiltQuest(QuestBuilder<?> questBuilder) {
+	public BuiltQuest(QuestBuilder<?, ?, ?, ?> questBuilder) {
 		this.questBuilder = questBuilder;
 		this.questSlot = questBuilder.info().getInternalName().toLowerCase();
 	}
@@ -57,14 +57,13 @@ public class BuiltQuest extends AbstractQuest {
 			return res;
 		}
 		res.add(history.getWhenQuestWasAccepted());
-		if ("done".equals(questState) || ("start".equals(questState) && questBuilder.task().isCompleted(player, questSlot))) {
-			res.add(history.getWhenTaskWasCompleted());
+		List<String> progress = questBuilder.task().calculateHistoryProgress(history, player, questSlot);
+		if (progress != null) {
+			res.addAll(progress);
 		}
-		if (questState.startsWith("forging")) {
-			if (new TimePassedCondition(questSlot, 1, questBuilder.info().getForgingDelay()).fire(player, null, null)) {
-				res.add(history.whenTimeWasPassed());
-			} else {
-				res.add(history.whenTimeWasNotEnded());
+		if ("done".equals(questState) || questBuilder.task().isCompleted(player, questSlot)) {
+			if (history.getWhenTaskWasCompleted() != null) {
+				res.add(history.getWhenTaskWasCompleted());
 			}
 		}
 		if ("done".equals(questState)) {
@@ -97,19 +96,17 @@ public class BuiltQuest extends AbstractQuest {
 				questBuilder.info().getDescription(),
 				questBuilder.info().getRepeatableAfterMinutes() > 0);
 
-		ChatAction startQuestAction = questBuilder.task().buildStartQuestAction(questSlot);
 		ChatCondition questCompletedCondition = questBuilder.task().buildQuestCompletedCondition(questSlot);
 		ChatAction questCompleteAction = questBuilder.task().buildQuestCompleteAction(questSlot);
 
 		final SpeakerNPC npc = npcs.get(questBuilder.info().getQuestGiverNpc());
-		questBuilder.offer().build(npc, questSlot, startQuestAction, questCompletedCondition, questBuilder.info().getRepeatableAfterMinutes(), questBuilder.info().getForgingDelay(), questBuilder.info().isRepeatable());
-		questBuilder.forging().build(npc, questSlot, questCompletedCondition, questCompleteAction, questBuilder.info().getForgingDelay());
-		questBuilder.complete().build(npc, questSlot, questCompletedCondition, questCompleteAction, questBuilder.info().getForgingDelay(), questBuilder.info().isRepeatable());
+		questBuilder.offer().build(npc, questSlot, questBuilder.task(), questCompletedCondition, questBuilder.info().getRepeatableAfterMinutes());
+		questBuilder.complete().build(npc, questSlot, questCompletedCondition, questCompleteAction);
 	}
 
 	@Override
 	public String getName() {
-		return questBuilder.info().getName();
+		return questBuilder.info().getInternalName();
 	}
 
 	@Override
@@ -132,10 +129,11 @@ public class BuiltQuest extends AbstractQuest {
 		return questSlot;
 	}
 
+
 	@Override
 	public boolean isRepeatable(final Player player) {
-		return isCompleted(player)
-				&& (questBuilder.info().getRepeatableAfterMinutes() > 0 || questBuilder.info().isRepeatable())
+		return questBuilder.info().getRepeatableAfterMinutes() > -1
+				&& isCompleted(player)
 				&& new TimePassedCondition(questSlot, 1, questBuilder.info().getRepeatableAfterMinutes()).fire(player,null, null);
 	}
 }

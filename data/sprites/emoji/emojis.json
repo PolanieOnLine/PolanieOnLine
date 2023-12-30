@@ -43,7 +43,11 @@
     "musicnotequarter",
     "musicnoteeighth",
     "musicnotesasc",
-    "musicnotesdesc"
+    "musicnotesdesc",
+
+    "thumbsup",
+    "thumbsdown",
+    "wave"
   ],
 
   "emojimap":
@@ -257,11 +261,19 @@
     ":nervous:": "sweat",
     "💧": "sweat",
 
+    ":thumbdown:": "thumbsdown",
+    "👎": "thumbsdown",
+
+    ":thumbup:": "thumbsup",
+    "👍": "thumbsup",
+
     ":p": "tongue",
     ":P": "tongue",
     ":-p": "tongue",
     ":-P": "tongue",
     "😛": "tongue",
+
+    "👋": "wave",
 
     ":winking:": "wink",
     ";)": "wink",

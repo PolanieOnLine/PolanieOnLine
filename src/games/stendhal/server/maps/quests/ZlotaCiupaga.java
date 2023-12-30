@@ -11,24 +11,21 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
-import games.stendhal.server.entity.npc.action.EquipItemAction;
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
 import games.stendhal.server.entity.npc.action.IncreaseXPAction;
-import games.stendhal.server.entity.npc.quest.BringMultiItemsTask;
-import games.stendhal.server.entity.npc.quest.QuestBuilder;
+import games.stendhal.server.entity.npc.quest.ForgeItemQuestBuilder;
 import games.stendhal.server.entity.npc.quest.QuestManuscript;
 import games.stendhal.server.maps.Region;
 
 public class ZlotaCiupaga implements QuestManuscript {
-	public QuestBuilder<?> story() {
-		QuestBuilder<BringMultiItemsTask> quest = new QuestBuilder<>(new BringMultiItemsTask());
+	public ForgeItemQuestBuilder story() {
+		ForgeItemQuestBuilder quest = new ForgeItemQuestBuilder();
 
 		quest.info()
 			.name("Złota Ciupaga")
 			.description("Andrzej o ile na to zasługujesz wykona dla Ciebie złotą ciupagę.")
 			.internalName("zlota_ciupaga")
 			.repeatableAfterMinutes(24 * 60) // Powtarzalne co 24 godziny
-			.forgingDelay(6 * 60) // Czas produkcji złotej ciupagi 6 godzin
 			.region(Region.ZAKOPANE_CITY)
 			.questGiverNpc("Kowal Andrzej");
 
@@ -43,32 +40,26 @@ public class ZlotaCiupaga implements QuestManuscript {
 			.whenQuestCanBeRepeated("Kowal chyba mógłby wykonać dla mnie kolejną taką ciupagę ze szczerego złota!");
 
 		quest.offer()
-			.needQuestsCompleted("kill_herszt_basehp").needLevelCondition("greater", 99).needKarmaCondition("greater", 99)
-			.respondToUnstartable("Wybacz mi proszę, ale musisz zasłużyć na uznanie gazdy Jędrzeja oraz zdobyć nieco większe doświadczenie i mieć dobrą karmę!")
+			.respondToUnstartableForge("Wybacz mi proszę, ale musisz zasłużyć na uznanie gazdy Jędrzeja oraz zdobyć nieco większe doświadczenie i mieć dobrą karmę!")
 			.respondToRequest("Jakiś czas temu wykonywałem nietypowe zlecenie w naszej kuźni, a chodzi dokładnie o wykonanie ciupagi ze szczerego złota. Może dzielny wojak chce również taką?")
 			.respondToUnrepeatableRequest("Jestem aktualnie troszkę zmęczony. Wróć do mnie za jakiś czas.")
 			.respondToRepeatedRequest("Potrzebujesz kolejnej złotej ciupagi?")
 			.respondToAccept("Słusznie! Przynieś mi te przedmioty potrzebne do nowej ciupagi:\n#1 ciupaga\n#5 drewna\n#25 sztabek złota\noraz #'50 000' money.")
 			.respondToReject("Cóż, to Twoja strata.")
-			.acceptedKarmaReward(10.0)
 			.rejectionKarmaPenalty(10.0)
 			.remind("Pamiętasz potrzebną listę? Przynieś mi te przedmioty potrzebne do nowej ciupagi:\n#1 ciupaga\n#5 drewna\n#25 sztabek złota\noraz #'50 000' money.");
 
-		quest.task()
-			.requestItem(1, "ciupaga")
-			.requestItem(5, "polano")
-			.requestItem(25, "sztabka złota")
-			.requestItem(50000, "money");
-
-		quest.forging()
-			.respondToAccept("Genialnie! Biorę się do pracy! Wróć do mnie za około 6 godzin.")
-			.respondToReject("Jak się zastanowisz to wróć.");
+		quest.task().forgeItem("złota ciupaga")
+			.minutesToForge(6 * 60) // 6 godzin
+			.playerMinLevel(100).playerMinKarma(100).completedQuest("kill_herszt_basehp")
+			.requiredItem(1, "ciupaga").requiredItem(5, "polano").requiredItem(25, "sztabka złota").requiredItem(50000, "money")
+			.respondToForging("Genialnie! Powoli wezmę się do pracy i twoja #'[itemName]' będzie gotowa za około 6 godzin. Wróć gdy skończę!")
+			.respondToRejectForge("Jak się zastanowisz to wróć.");
 
 		quest.complete()
 			.greet("Skończyłem swą pracę nad ciupagą! Warto było chyba nieco poczekać. Proszę, a oto i ona!")
 			.rewardWith(new IncreaseXPAction(15000))
-			.rewardWith(new IncreaseKarmaAction(25.0))
-			.rewardWith(new EquipItemAction("złota ciupaga", 1, true));
+			.rewardWith(new IncreaseKarmaAction(25.0));
 
 		return quest;
 	}

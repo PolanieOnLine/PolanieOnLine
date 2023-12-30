@@ -64,7 +64,7 @@ public class CiupagaAchievementFactory extends AbstractAchievementFactory {
 		achievements.add(createAchievement(
 				ID_CIUPAGA_3, "Złota Ciupaga z Trzema Wąsami",
 				"Wykonano złotą ciupagę z trzema wąsami u Hadrina",
-				Achievement.LEGENDARY_BASE_SCORE, true,
+				Achievement.EXTREME_BASE_SCORE, true,
 				new QuestCompletedCondition("ciupaga_trzy_wasy")));
 
 		return achievements;

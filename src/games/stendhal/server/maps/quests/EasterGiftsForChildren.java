@@ -219,8 +219,30 @@ public class EasterGiftsForChildren extends AbstractQuest {
 				"Prezent Wielkanocny Dla Dzieci",
 				"Caroline miła właścicielka tawerny w mieście Ados chce uszczęśliwić dzieci podczas świąt Wielkanocnych.",
 				false);
-		prepareRequestingStep();
-		prepareBringingStep();
+
+		if (System.getProperty("stendhal.easter") != null) {
+			prepareRequestingStep();
+			prepareBringingStep();
+		}
+	}
+
+	/**
+	 * Details are added to travel log if Easter is active or player has completed quest.
+	 *
+	 * @param player
+	 *   Player for whom details are requested.
+	 * @return
+	 *   `true` if Easter is active or quest is completed.
+	 * @todo
+	 *   - FIXME: may not show in travel log after year's end
+	 *   - FIXME: how to check if quest is repeatable?
+	 */
+	@Override
+	public boolean isVisibleOnQuestStatus(final Player player) {
+		if (System.getProperty("stendhal.easter") != null) {
+			return true;
+		}
+		return isCompleted(player);
 	}
 
 	@Override

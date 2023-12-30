@@ -59,7 +59,7 @@ public class MetalDetector extends AreaUseItem {
 						try {
 							if (detectRing(player, x, y, Integer.parseInt(slot[0]), Integer.parseInt(slot[1]))) {
 								final Item ring = em.getItem("pierścień zaręczynowy");
-								ring.setInfoString(ring_quest_info);
+								ring.setItemData(ring_quest_info);
 								ring.setDescription("W wiecznym oddaniu Emmie.");
 								ring.setBoundTo(player.getName());
 

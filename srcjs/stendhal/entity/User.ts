@@ -24,6 +24,7 @@ import { UIComponentEnum } from "../ui/UIComponentEnum";
 
 import { ItemInventoryComponent } from "../ui/component/ItemInventoryComponent";
 import { PlayerStatsComponent } from "../ui/component/PlayerStatsComponent";
+import { StatusesListComponent } from "../ui/component/StatusesListComponent";
 
 import { OutfitDialog } from "../ui/dialog/outfit/OutfitDialog";
 
@@ -69,6 +70,15 @@ export class User extends Player {
 			(ui.get(UIComponentEnum.PlayerStats) as PlayerStatsComponent).update(key);
 			(ui.get(UIComponentEnum.Bag) as ItemInventoryComponent).update();
 			(ui.get(UIComponentEnum.Keyring) as ItemInventoryComponent).update();
+			(ui.get(UIComponentEnum.StatusesList) as StatusesListComponent).update(this);
+		});
+	}
+
+	override unset(key: string) {
+		super.unset(key);
+
+		queueMicrotask( () => {
+			(ui.get(UIComponentEnum.StatusesList) as StatusesListComponent).update(this);
 		});
 	}
 
@@ -86,9 +96,9 @@ export class User extends Player {
 			action: function(_entity: any) {
 				let outfitDialog = ui.get(UIComponentEnum.OutfitDialog);
 				if (!outfitDialog) {
-					const dstate = stendhal.config.dialogstates["outfit"];
+					const dstate = stendhal.config.getWindowState("outfit");
 					outfitDialog = new OutfitDialog();
-					new FloatingWindow("Choose outfit", outfitDialog, dstate.x, dstate.y);
+					new FloatingWindow("Choose outfit", outfitDialog, dstate.x, dstate.y).setId("outfit");
 				}
 			}
 		});
@@ -138,6 +148,8 @@ export class User extends Player {
 	 * Actions when player leaves a zone.
 	 */
 	onExitZone() {
+		// speech bubbles & emojis from viewport
+		stendhal.ui.gamewindow.onExitZone();
 		// stop sounds & clear map sounds cache on zone change
 		const msgs: string[] = [];
 		if (!this.lssMan.removeAll()) {

@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -67,6 +66,7 @@ public final class Actions {
 
 	//jail
 	public static final String JAIL = "jail";
+	public static final String BAN = "ban";
 
 	//gag
 	public static final String GAG = "gag";
@@ -127,8 +127,8 @@ public final class Actions {
 	public static final String CHAT = "chat";
 	public static final String EMOTE = "emote";
 	public static final String GROUP_MESSAGE = "group_message";
-    public static final String REPORT_ERROR = "report_error";
-    public static final String SUPPORT = "support";
+	public static final String REPORT_ERROR = "report_error";
+	public static final String SUPPORT = "support";
 	public static final String TELL = "tell";
 
 	//summon
@@ -173,6 +173,7 @@ public final class Actions {
 	public static final String ALTER = "alter";
 	public static final String UNSET = "unset";
 	public static final String ALTERKILL = "alterkill";
+	public static final String ALTERQUEST = "alterquest";
 
 	// for listing e.g. ignore list
 	public static final String LIST = "list";
@@ -194,15 +195,20 @@ public final class Actions {
 	public static final String LOOK_CLOSELY = "look_closely";
 	public static final String LANGUAGE = "language";
 
-	// Movement/Control
+	// movement/control
 	public static final String WALK = "walk";
-	/* Property indicating player is using auto-walk. */
-	public final static String AUTOWALK = "autowalk";
-	/* Property indicating player is using continuous movement. */
-	public final static String MOVE_CONTINUOUS = MOVE_CONTINUOUS_PROPERTY;
-	public final static String COND_STOP = "conditional_stop";
+	public static final String STOPWALK = "stopwalk";
+	// indicates player is using auto-walk
+	public static final String AUTOWALK = "autowalk";
+	// indicates player is using continuous movement
+	public static final String MOVE_CONTINUOUS = MOVE_CONTINUOUS_PROPERTY;
+	public static final String COND_STOP = "conditional_stop";
 
-	public final static String BESTIARY = "bestiary";
+	public static final String BESTIARY = "bestiary";
+
+	// PvP
+	public static final String ACCEPT = "accept";
+	public static final String CHALLENGE = "challenge";
 
 	public final static String DROPPEDLIST = "droppeditemlist";
 

@@ -1,5 +1,5 @@
 /***************************************************************************
- *                     Copyright © 2022 - Arianne                          *
+ *                     Copyright © 2022-2023 - Arianne                     *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -73,12 +73,13 @@ public class MainActivity extends AppCompatActivity {
 				DebugLog.error(ste.toString());
 			}
 			DebugLog.error("// -- //");
-			Notifier.get().showPrompt(
-				"An unhandled exception has occurred: " + e.getMessage()
-				+ "\n\nYou can report this error at: https://stendhalgame.org/development/bug.html",
+			Notifier.showPrompt(
+				"Wystąpił nieobsługiwany wyjątek: " + e.getMessage()
+				+ "\n\nMożesz zgłosić ten błąd pod adresem: https://s1.polanieonline.eu/",
 				new Notifier.Action() {
 					protected void onCall() {
 						finish();
+						android.os.Process.killProcess(android.os.Process.myPid());
 					}
 				});
 		}

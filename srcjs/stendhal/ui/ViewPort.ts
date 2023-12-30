@@ -20,6 +20,11 @@ import { PlayerEquipmentComponent } from "./component/PlayerEquipmentComponent";
 import { ActionContextMenu } from "./dialog/ActionContextMenu";
 import { DropQuantitySelectorDialog } from "./dialog/DropQuantitySelectorDialog";
 
+import { DirectionPad } from "./joystick/DirectionPad";
+import { Joystick } from "./joystick/Joystick";
+import { JoystickBase } from "./joystick/JoystickBase";
+
+import { Client } from "../Client";
 import { singletons } from "../SingletonRepo";
 
 import { AchievementBanner } from "../sprite/AchievementBanner";
@@ -41,6 +46,10 @@ export class ViewPort {
 	private offsetY = 0;
 	private timeStamp = Date.now();
 
+	// dimensions
+	private readonly width: number;
+	private readonly height: number;
+
 	private ctx: CanvasRenderingContext2D;
 	private readonly targetTileWidth = 32;
 	private readonly targetTileHeight = 32;
@@ -50,6 +59,9 @@ export class ViewPort {
 	private notifSprites: TextBubble[] = [];
 	private emojiSprites: EmojiSprite[] = [];
 	private weatherRenderer = singletons.getWeatherRenderer();
+
+	/** On-screen joystick. */
+	private joystick: JoystickBase = new JoystickBase();
 
 	/** Singleton instance. */
 	private static instance: ViewPort;
@@ -69,7 +81,10 @@ export class ViewPort {
 	 * Hidden singleton constructor.
 	 */
 	private constructor() {
-		this.ctx = (document.getElementById("gamewindow")! as HTMLCanvasElement).getContext("2d")!;
+		const element = document.getElementById("gamewindow")! as HTMLCanvasElement;
+		this.ctx = element.getContext("2d")!;
+		this.width = element.width;
+		this.height = element.height;
 	}
 
 	draw() {
@@ -292,6 +307,19 @@ export class ViewPort {
 		return false;
 	}
 
+	onExitZone() {
+		// clear speech bubbles & emojis so they don't appear on the new map
+		for (const sgroup of [this.textSprites, this.emojiSprites]) {
+			for (let idx = sgroup.length-1; idx >= 0; idx--) {
+				const sprite = sgroup[idx];
+				sgroup.splice(idx, 1);
+				if (sprite instanceof SpeechBubble) {
+					sprite.onRemoved();
+				}
+			}
+		}
+	}
+
 	// Mouse click handling
 	onMouseDown = (function() {
 		var entity: any;
@@ -300,8 +328,15 @@ export class ViewPort {
 
 		const mHandle: any = {};
 
-		mHandle._onMouseDown = function(e: MouseEvent) {
+		mHandle._onMouseDown = function(e: MouseEvent|TouchEvent) {
 			var pos = stendhal.ui.html.extractPosition(e);
+			if (stendhal.ui.touch.isTouchEvent(e)) {
+				if (stendhal.ui.touch.holdingItem()) {
+					// prevent default viewport action when item is "held"
+					return;
+				}
+				stendhal.ui.touch.onTouchStart(pos.pageX, pos.pageY);
+			}
 			if (stendhal.ui.globalpopup) {
 				stendhal.ui.globalpopup.close();
 			}
@@ -342,12 +377,26 @@ export class ViewPort {
 		}
 
 		mHandle.onMouseUp = function(e: MouseEvent|TouchEvent) {
+			const is_touch = stendhal.ui.touch.isTouchEvent(e);
+			if (is_touch) {
+				stendhal.ui.touch.onTouchEnd(e);
+			}
 			var pos = stendhal.ui.html.extractPosition(e);
-			if (e instanceof MouseEvent && mHandle.isRightClick(e)) {
+			const long_touch = is_touch && stendhal.ui.touch.isLongTouch(e);
+			if ((e instanceof MouseEvent && mHandle.isRightClick(e)) || long_touch) {
 				if (entity != stendhal.zone.ground) {
+					const append: any[] = [];
+					/*
+					if (long_touch) {
+						// TODO: add option for "hold" to allow splitting item stacks
+					}
+					*/
 					stendhal.ui.actionContextMenu.set(ui.createSingletonFloatingWindow("Action",
-						new ActionContextMenu(entity), pos.pageX - 50, pos.pageY - 5));
+						new ActionContextMenu(entity, append), pos.pageX - 50, pos.pageY - 5));
 				}
+			} else if (stendhal.ui.touch.holdingItem()) {
+				// FIXME: this may be unnecessary
+				stendhal.ui.gamewindow.onDrop(e);
 			} else {
 				entity.onclick(pos.canvasRelativeX, pos.canvasRelativeY);
 			}
@@ -357,6 +406,10 @@ export class ViewPort {
 		}
 
 		mHandle.onDrag = function(e: MouseEvent) {
+			if (stendhal.ui.touch.isTouchEvent(e)) {
+				stendhal.ui.gamewindow.onDragStart(e);
+			}
+
 			var pos = stendhal.ui.html.extractPosition(e);
 			var xDiff = startX - pos.offsetX;
 			var yDiff = startY - pos.offsetY;
@@ -375,6 +428,10 @@ export class ViewPort {
 			e.target.removeEventListener("mousemove", mHandle.onDrag);
 			e.target.removeEventListener("touchend", mHandle.onMouseUp);
 			e.target.removeEventListener("touchmove", mHandle.onDrag);
+
+			// clean up item held via touch
+			stendhal.ui.touch.unsetHeldItem();
+			stendhal.ui.touch.unsetOrigin();
 		}
 
 		return mHandle._onMouseDown;
@@ -438,13 +495,15 @@ export class ViewPort {
 			img = stendhal.data.sprites.getAreaOf(stendhal.data.sprites.get(draggedEntity.sprite.filename), 32, 32);
 			stendhal.ui.heldItem = {
 				path: draggedEntity.getIdPath(),
-				zone: marauroa.currentZoneName
+				zone: marauroa.currentZoneName,
+				quantity: draggedEntity.hasOwnProperty("quantity") ? draggedEntity["quantity"] : 1
 			}
 		} else if (draggedEntity && draggedEntity.type === "corpse") {
 			img = stendhal.data.sprites.get(draggedEntity.sprite.filename);
 			stendhal.ui.heldItem = {
 				path: draggedEntity.getIdPath(),
-				zone: marauroa.currentZoneName
+				zone: marauroa.currentZoneName,
+				quantity: 1
 			}
 		} else {
 			e.preventDefault();
@@ -466,8 +525,8 @@ export class ViewPort {
 	}
 
 	onDrop(e: DragEvent) {
-		var pos = stendhal.ui.html.extractPosition(e);
 		if (stendhal.ui.heldItem) {
+			var pos = stendhal.ui.html.extractPosition(e);
 			var action = {
 				"x": Math.floor((pos.canvasRelativeX + stendhal.ui.gamewindow.offsetX) / 32).toString(),
 				"y": Math.floor((pos.canvasRelativeY + stendhal.ui.gamewindow.offsetY) / 32).toString(),
@@ -484,12 +543,14 @@ export class ViewPort {
 				action["baseitem"] = id;
 			}
 
+			const quantity = stendhal.ui.heldItem.quantity;
 			// item was dropped
 			stendhal.ui.heldItem = undefined;
 
-			// if ctrl is pressed, we ask for the quantity
-			if (e.ctrlKey) {
-				ui.createSingletonFloatingWindow("Quantity", new DropQuantitySelectorDialog(action), pos.pageX - 50, pos.pageY - 25);
+			const touch_held = stendhal.ui.touch.holdingItem() && quantity > 1;
+			// if ctrl is pressed or holding stackable item from touch event, we ask for the quantity
+			if (e.ctrlKey || touch_held) {
+				ui.createSingletonFloatingWindow("Quantity", new DropQuantitySelectorDialog(action, touch_held), pos.pageX - 50, pos.pageY - 25);
 			} else {
 				marauroa.clientFramework.sendAction(action);
 			}
@@ -498,14 +559,19 @@ export class ViewPort {
 		e.preventDefault();
 	}
 
+	/**
+	 * This is a workaround until it's figured out how to make it work using the same methods as
+	 * mouse event.
+	 */
 	onTouchEnd(e: TouchEvent) {
-		if (stendhal.ui.touch.held) {
-			// don't call this.onMouseUp
-			e.preventDefault();
-
-			stendhal.ui.gamewindow.onDrop(e);
+		stendhal.ui.touch.onTouchEnd();
+		stendhal.ui.gamewindow.onDrop(e);
+		if (stendhal.ui.touch.holdingItem()) {
 			stendhal.ui.touch.unsetHeldItem();
+			stendhal.ui.touch.unsetOrigin();
 		}
+		// execute here because "touchend" event propagation is cancelled on the veiwport
+		Client.handleClickIndicator(e);
 	}
 
 	onContentMenu(e: MouseEvent) {
@@ -543,5 +609,22 @@ export class ViewPort {
 		anchor.target = "_blank";
 		anchor.href = uri;
 		anchor.click();
+	}
+
+	/**
+	 * Updates the on-screen joystick.
+	 */
+	updateJoystick() {
+		this.joystick.onRemoved();
+		switch(stendhal.config.get("ui.joystick")) {
+			case "joystick":
+				this.joystick = new Joystick();
+				break;
+			case "dpad":
+				this.joystick = new DirectionPad();
+				break;
+			default:
+				this.joystick = new JoystickBase();
+		}
 	}
 }

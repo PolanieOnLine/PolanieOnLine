@@ -377,7 +377,7 @@
 		<corpse name="animal"/>
 		<drops>
 			<item value="duży eliksir" quantity="[2,4]" probability="30.0"/>
-			<item value="pierścień imperialny" quantity="[1,1]" probability="0.5"/>
+			<item value="pierścień cesarski" quantity="[1,1]" probability="0.5"/>
 		</drops>
 		<equips/>
 		<ai>
@@ -490,7 +490,7 @@
 		<drops>
 			<item value="duży eliksir" quantity="[1,4]" probability="30.0"/>
 			<item value="włócznia" quantity="[20,40]" probability="30.0"/>
-			<item value="pierścień imperialny" quantity="[1,1]" probability="0.5"/>
+			<item value="pierścień cesarski" quantity="[1,1]" probability="0.5"/>
 		</drops>
 		<ai>
 			<profile name="brave"/>

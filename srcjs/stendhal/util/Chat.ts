@@ -22,7 +22,13 @@ declare let stendhal: any;
  */
 export class Chat {
 
+	public static debugLogEnabled = false;
 	private static clog: ChatLogComponent;
+
+	// available actions from attending NPC
+	public static attending?: string;
+	// initialize with "hello" since we won't have received a ChatOptionsEvent at startup
+	public static options: string[] = ["hello"];
 
 
 	/**
@@ -86,5 +92,11 @@ export class Chat {
 	public static logH(type: string, message: string|string[]|HTMLElement,
 			orator?: string, profile?: string) {
 		Chat.log(type, message, orator, profile, true);
+	}
+
+	public static debug(message: string) {
+		if (Chat.debugLogEnabled) {
+			Chat.log("client", message);
+		}
 	}
 }

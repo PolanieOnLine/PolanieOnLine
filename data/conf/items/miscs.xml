@@ -22,7 +22,7 @@
 
 	<item name="bulwa">
 		<type class="misc" subclass="bulb" tileid="-1"/>
-		<description>Oto bulwa. Można ją zasadzić wszędzie, ale rozwinie się tylko na urodzajnej glebie.</description>
+		<description>Oto bulwa. Można sadzić w żyznej glebie, gdzie będzie mogło rosnąć.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Seed"/>
 		<attributes>
 			<quantity value="1"/>
@@ -40,9 +40,9 @@
 		</equipable>
 	</item>
 
-	<item name="nasionka">
+	<item name="nasiona">
 		<type class="misc" subclass="seed" tileid="-1"/>
-		<description>Oto nasionka. Zasadzisz je wszędzie, ale wyrosną wyłącznie na urodzajnej glebie.</description>
+		<description>Oto nasiona. Można sadzić w żyznej glebie, gdzie będzie mogło rosnąć.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Seed"/>
 		<attributes>
 			<quantity value="1"/>
@@ -372,7 +372,7 @@
 
 	<item name="róg jednorożca">
 		<type class="misc" subclass="rog_jednorozca" tileid="-1"/>
-		<description>Oto róg jednorożca. Zaplanuj dobrze do czego go użyjesz.</description>
+		<description>Oto spiralny róg jednorożca. Jest bardzo ceniony przez handlarzy i wykorzystywany do tworzenia magicznych przedmiotów.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<quantity value="1"/>

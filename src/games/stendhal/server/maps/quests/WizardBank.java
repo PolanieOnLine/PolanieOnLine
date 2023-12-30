@@ -242,7 +242,7 @@ public class WizardBank extends AbstractQuest implements LoginListener,LogoutLis
 								new PlayerHasItemWithHimCondition("money", COST),
 								new QuestNotActiveCondition(QUEST_SLOT)),
 						ConversationStates.IDLE,
-						"Skrzynie banków Semos, Nalwor i Fado są po mojej prawej. Skrzynie banków z Deniran i Ados oraz twojej przyjaciółki Zary są po mojej lewej. Jeżeli skończyłeś przed czasem to powiedz #wyjście.",
+						"Skrzynie banków Semos, Nalwor, Fado oraz magicznego miasta są po mojej prawej. Skrzynie banków z Kirdneh, Deniran i Ados oraz twojej przyjaciółki Zary są po mojej lewej. Jeżeli skończyłeś przed czasem to powiedz #wyjście.",
 						new MultipleActions(
 								new DropItemAction("money", COST),
 								new TeleportAction(ZONE_NAME, 10, 10, Direction.DOWN),

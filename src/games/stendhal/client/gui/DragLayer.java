@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -27,10 +26,10 @@ import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 
 import games.stendhal.client.entity.IEntity;
-import games.stendhal.client.entity.StackableItem;
+import games.stendhal.client.entity.Item;
 import games.stendhal.client.gui.j2d.entity.Entity2DView;
 import games.stendhal.client.gui.j2d.entity.EntityViewFactory;
-import games.stendhal.client.gui.j2d.entity.StackableItem2DView;
+import games.stendhal.client.gui.j2d.entity.Item2DView;
 import games.stendhal.client.sprite.Sprite;
 import games.stendhal.client.sprite.SpriteStore;
 
@@ -115,7 +114,7 @@ public class DragLayer extends JComponent implements AWTEventListener {
 	 *
 	 * @param entity dragged entity
 	 */
-	@SuppressWarnings("rawtypes") // cannot cast from <IEntity> to <? extends StackableItem> in Java 5
+	@SuppressWarnings("rawtypes") // cannot cast from <IEntity> to <? extends Item> in Java 5
 	public void startDrag(IEntity entity) {
 		if (entity != null) {
 			Entity2DView<IEntity> dragged = (Entity2DView<IEntity>) EntityViewFactory.create(entity);
@@ -128,8 +127,8 @@ public class DragLayer extends JComponent implements AWTEventListener {
 			 * Hide quantity until it can be made context sensitive to drag
 			 * modifiers.
 			 */
-			if (dragged instanceof StackableItem2DView) {
-				((StackableItem2DView) dragged).setShowQuantity(false);
+			if (dragged instanceof Item2DView) {
+				((Item2DView) dragged).setShowQuantity(false);
 			}
 
 			this.dragged = dragged;
@@ -186,7 +185,7 @@ public class DragLayer extends JComponent implements AWTEventListener {
 				Point componentPoint = SwingUtilities.convertPoint(this, point, (Component) target);
 				if (showAmountChooser(event, entity)) {
 					// Delegate dropping to the amount chooser
-					DropAmountChooser chooser = new DropAmountChooser((StackableItem) entity, target, componentPoint);
+					DropAmountChooser chooser = new DropAmountChooser((Item) entity, target, componentPoint);
 					chooser.show((Component) target, componentPoint);
 				} else {
 					// Dropping everything
@@ -211,8 +210,8 @@ public class DragLayer extends JComponent implements AWTEventListener {
 	 */
 	private boolean showAmountChooser(MouseEvent event, IEntity entity) {
 		if (((event.getModifiersEx() & (InputEvent.CTRL_DOWN_MASK|InputEvent.META_DOWN_MASK)) != 0)
-				&& (entity instanceof StackableItem)) {
-			return ((StackableItem) entity).getQuantity() > 1;
+				&& (entity instanceof Item)) {
+			return ((Item) entity).getQuantity() > 1;
 		}
 		return false;
 	}

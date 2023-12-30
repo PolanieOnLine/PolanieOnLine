@@ -30,7 +30,7 @@ import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.action.DropInfostringItemAction;
+import games.stendhal.server.entity.npc.action.DropItemdataItemAction;
 import games.stendhal.server.entity.npc.action.EquipItemAction;
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
 import games.stendhal.server.entity.npc.action.IncreaseXPAction;
@@ -43,7 +43,7 @@ import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
 import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.npc.condition.PlayerCanEquipItemCondition;
-import games.stendhal.server.entity.npc.condition.PlayerHasInfostringItemWithHimCondition;
+import games.stendhal.server.entity.npc.condition.PlayerHasItemdataItemWithHimCondition;
 import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
@@ -55,7 +55,7 @@ import games.stendhal.server.maps.Region;
 public class PochorowaneKonie extends AbstractQuest {
 	private static final String QUEST_SLOT = "pochorowane_konie";
 
-	private static final String INFOSTRING_NOTE = "wyniki badań";
+	private static final String ITEMDATA_NOTE = "wyniki badań";
 
 	// Ilosc potrzebnych lekow
 	private static final int ILE_LEKOW = 2;
@@ -126,8 +126,8 @@ public class PochorowaneKonie extends AbstractQuest {
 			@Override
 			public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
 				final Item note = SingletonRepository.getEntityManager().getItem("karteczka");
-				note.setInfoString(INFOSTRING_NOTE);
-				note.setDescription("Oto " + INFOSTRING_NOTE + ". Na karteczce widnieją różne liczby, a niektóre z nich są kolorem czerwonym oznaczone.");
+				note.setItemData(ITEMDATA_NOTE);
+				note.setDescription("Oto " + ITEMDATA_NOTE + ". Na karteczce widnieją różne liczby, a niektóre z nich są kolorem czerwonym oznaczone.");
 				note.setBoundTo(player.getName());
 				player.equipOrPutOnGround(note);
 			}
@@ -146,7 +146,7 @@ public class PochorowaneKonie extends AbstractQuest {
 				ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-						new PlayerHasInfostringItemWithHimCondition("karteczka", INFOSTRING_NOTE),
+						new PlayerHasItemdataItemWithHimCondition("karteczka", ITEMDATA_NOTE),
 						new QuestInStateCondition(QUEST_SLOT, "feelgood")),
 				ConversationStates.ATTENDING,
 				"Na co czekasz?! Idź do Dr. Feelgood! Szybko!",
@@ -161,7 +161,7 @@ public class PochorowaneKonie extends AbstractQuest {
 		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(
-						new NotCondition(new PlayerHasInfostringItemWithHimCondition("karteczka", INFOSTRING_NOTE)),
+						new NotCondition(new PlayerHasItemdataItemWithHimCondition("karteczka", ITEMDATA_NOTE)),
 						new PlayerCanEquipItemCondition("karteczka"),
 						new QuestInStateCondition(QUEST_SLOT, "feelgood")),
 				ConversationStates.ATTENDING,
@@ -177,11 +177,11 @@ public class PochorowaneKonie extends AbstractQuest {
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestInStateCondition(QUEST_SLOT, "feelgood"),
-						new PlayerHasInfostringItemWithHimCondition("karteczka", INFOSTRING_NOTE)),
+						new PlayerHasItemdataItemWithHimCondition("karteczka", ITEMDATA_NOTE)),
 				ConversationStates.ATTENDING,
 				"Och, weterynarz z tatrzańskiej krainy już mnie wcześniej powiadomił, iż pewny wojownik zjawi się z wynikami. Dobrze więc, przekaż mi dane i poczekaj 10 minut proszę. Po przeanalizowaniu powiem na co chorują.",
 				new MultipleActions(
-						new DropInfostringItemAction("karteczka", INFOSTRING_NOTE),
+						new DropItemdataItemAction("karteczka", ITEMDATA_NOTE),
 						new IncreaseXPAction(500),
 						new SetQuestAction(QUEST_SLOT, "wyniki;"),
 						new SetQuestToTimeStampAction(QUEST_SLOT, 1)));
@@ -190,7 +190,7 @@ public class PochorowaneKonie extends AbstractQuest {
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestInStateCondition(QUEST_SLOT, "feelgood"), 
-						new NotCondition(new PlayerHasInfostringItemWithHimCondition("karteczka", INFOSTRING_NOTE))),
+						new NotCondition(new PlayerHasItemdataItemWithHimCondition("karteczka", ITEMDATA_NOTE))),
 				ConversationStates.ATTENDING,
 				"Hej! Dr. Wojciech mnie powiadomił wcześniej, że jakiś wojownik zjawi się z wynikami badań, ale gdzie je masz?! Zgubiłeś je? Musisz to odnaleźć!",
 				null);

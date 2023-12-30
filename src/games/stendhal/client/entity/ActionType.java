@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2022 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -10,6 +10,8 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.client.entity;
+
+import java.util.Locale;
 
 import games.stendhal.client.StendhalClient;
 import games.stendhal.common.constants.Actions;
@@ -225,7 +227,7 @@ public enum ActionType {
 	 */
 	public static ActionType getbyRep(final String representation) {
 		for (final ActionType at : ActionType.values()) {
-			if (at.actionRepresentation.equals(representation)) {
+			if (at.actionRepresentation.toLowerCase(Locale.ENGLISH).equals(representation.toLowerCase(Locale.ENGLISH))) {
 				return at;
 			}
 

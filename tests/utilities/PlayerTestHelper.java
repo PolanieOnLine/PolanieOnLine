@@ -23,6 +23,7 @@ import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.engine.transformer.PlayerTransformer;
 import games.stendhal.server.entity.ActiveEntity;
+import games.stendhal.server.entity.CombatEntity;
 import games.stendhal.server.entity.DressedEntityRPClass;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.RPEntity;
@@ -224,7 +225,7 @@ public abstract class PlayerTestHelper {
 	public static boolean equipWithItem(final Player player, final String clazz, final String info) {
 		ItemTestHelper.generateRPClasses();
 		final Item item = SingletonRepository.getEntityManager().getItem(clazz);
-		item.setInfoString(info);
+		item.setItemData(info);
 
 		return player.equipToInventoryOnly(item);
 	}
@@ -323,6 +324,10 @@ public abstract class PlayerTestHelper {
 
 		if (!RPClass.hasRPClass("active_entity")) {
 			ActiveEntity.generateRPClass();
+		}
+
+		if (!RPClass.hasRPClass("combat_entity")) {
+			CombatEntity.generateRPClass();
 		}
 
 		if (!RPClass.hasRPClass("rpentity")) {

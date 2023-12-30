@@ -11,7 +11,7 @@ public class DetailsKillingsAction implements ChatAction, IRAQuestConstants {
 	public void fire(final Player player, final Sentence sentence, final EventRaiser mayor) {
 		if (RAQuestHelperFunctions.calculateReward(player)==0) {
 			mayor.say("Nie zabiłeś żadnego rozbójnika podczas napadu #zbójników. "+
-					  "Aby odebrać #nagrodę musisz zabić conajmniej "+
+					  "Aby odebrać #nagrodę musisz zabić co najmniej "+
 					  "jednego zbója.");
 			return;
 		}

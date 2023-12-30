@@ -1,5 +1,5 @@
 /***************************************************************************
- *                     Copyright © 2022 - Arianne                          *
+ *                     Copyright © 2022-2023 - Arianne                     *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -34,12 +34,9 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 
-import marauroa.common.Pair;
-
 import org.arianne.stendhal.client.input.DPad;
 import org.arianne.stendhal.client.js.JSInterface;
 import org.arianne.stendhal.client.sound.MusicPlayer;
-
 
 public class ClientView extends WebView {
 
@@ -47,10 +44,12 @@ public class ClientView extends WebView {
 
 	private ImageView splash;
 
-	private final String defaultServer = "https://stendhalgame.org/";
+	private final String defaultServer = "https://polanieonline.eu/";
 	private String clientUrlSuffix = "client";
 
 	private boolean testing = false;
+	private boolean testClient = false;
+	private boolean testServer = false;
 	private Boolean debugging;
 	private static PageId currentPage;
 	// denotes previous touch was remapped to mouse event
@@ -103,6 +102,9 @@ public class ClientView extends WebView {
 		viewSettings.setSupportZoom(false);
 		viewSettings.setBuiltInZoomControls(false);
 		viewSettings.setDisplayZoomControls(false);
+
+		// allow autoplay of music
+		viewSettings.setMediaPlaybackRequiresUserGesture(false);
 
 		if (debugEnabled()) {
 			// make WebView debuggable for debug builds
@@ -260,13 +262,14 @@ public class ClientView extends WebView {
 					final String contentDisposition, final String mimetype,
 					final long contentLength) {
 
-				final Pair<Boolean, String> res = new DownloadHandler().download(url, mimetype);
-				if (res.first()) {
-					final String msg = "Downloaded file: " + res.second();
+				DownloadHandler handler = new DownloadHandler();
+				handler.download(url, mimetype);
+				if (handler.getResult()) {
+					final String msg = "Downloaded file: " + handler.getMessage();
 					DebugLog.debug(msg);
 					Notifier.toast(msg);
 				} else {
-					final String msg = res.second();
+					final String msg = handler.getMessage();
 					DebugLog.error(msg);
 					Notifier.toast("ERROR: " + msg);
 				}
@@ -274,10 +277,31 @@ public class ClientView extends WebView {
 		});
 	}
 
+	public String getSelectedClient() {
+		if (ClientView.onTitleScreen()) {
+			return "none";
+		}
+		return testClient ? "test" : "main";
+	}
+
+	public String getSelectedServer() {
+		if (ClientView.onTitleScreen()) {
+			return "none";
+		}
+		return testServer ? "test" : "main";
+	}
+
+	private void reset() {
+		testClient = false;
+		testServer = false;
+		clientUrlSuffix = "client";
+	}
+
 	/**
 	 * Shows initial title screen.
 	 */
 	public void loadTitleScreen() {
+		reset();
 		setSplashResource(R.drawable.splash);
 		loadUrl("about:blank");
 		Menu.get().show();
@@ -288,8 +312,8 @@ public class ClientView extends WebView {
 	 */
 	public void loadLogin() {
 		if (debugEnabled() && PreferencesActivity.getString("client_url").trim().equals("")) {
-			// debug builds support choosing between main & test server
-			selectServer();
+			// debug builds support choosing between main & test client/server
+			selectClient();
 		} else {
 			onSelectServer();
 		}
@@ -311,31 +335,58 @@ public class ClientView extends WebView {
 	}
 
 	/**
+	 * Opens a message dialog for user to choose between main & test clients.
+	 */
+	private void selectClient() {
+		final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.get());
+		builder.setMessage("Select client");
+
+		builder.setPositiveButton("Main", new DialogInterface.OnClickListener() {
+			public void onClick(final DialogInterface dialog, final int id) {
+				testClient = false;
+				clientUrlSuffix = "client";
+				// skip server confirmation as only test client has this option
+				onSelectServer();
+				dialog.cancel();
+			}
+		});
+
+		builder.setNegativeButton("Test", new DialogInterface.OnClickListener() {
+			public void onClick(final DialogInterface dialog, final int id) {
+				testClient = true;
+				clientUrlSuffix = "testclient";
+				selectServer();
+				dialog.cancel();
+			}
+		});
+
+		builder.create().show();
+	}
+
+	/**
 	 * Opens a message dialog for user to choose between main & test servers.
 	 */
 	private void selectServer() {
 		final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.get());
-		builder.setMessage("Select a server");
+		builder.setMessage("Select server");
 
 		builder.setPositiveButton("Main", new DialogInterface.OnClickListener() {
 			public void onClick(final DialogInterface dialog, final int id) {
-				testing = false;
+				testServer = false;
 				dialog.cancel();
 				onSelectServer();
 			}
 		});
 
-		builder.setNegativeButton("Testing", new DialogInterface.OnClickListener() {
+		builder.setNegativeButton("Test", new DialogInterface.OnClickListener() {
 			public void onClick(final DialogInterface dialog, final int id) {
-				testing = true;
-				clientUrlSuffix = "testclient";
+				testServer = true;
 				dialog.cancel();
 				onSelectServer();
 			}
 		});
 
-		final AlertDialog selectServer = builder.create();
-		selectServer.show();
+		builder.create().show();
 	}
 
 	private void onSelectServer() {
@@ -351,12 +402,12 @@ public class ClientView extends WebView {
 			// initial page
 			loadUrl(defaultServer + "account/mycharacters.html");
 
-			if (testing) {
+			if (testServer) {
 				DebugLog.debug("Connecting to test server");
 			} else {
 				DebugLog.debug("Connecting to main server");
 
-				Notifier.get().showMessage("CAUTION: This software is in early development and not recommended"
+				Notifier.showMessage("CAUTION: This software is in early development and not recommended"
 					+ " for use on the main server. Proceed with caution.", false);
 			}
 		}
@@ -405,13 +456,30 @@ public class ClientView extends WebView {
 	private String checkClientUrl(String url) {
 		if (isClientUrl(url)) {
 			String replaceSuffix = "/testclient/";
-			if (testing) {
+			if (testClient) {
 				replaceSuffix = "/client/";
 			}
 
+			// ensure website directs to configured client
 			url = url.replace(replaceSuffix, "/" + clientUrlSuffix + "/");
+			url = formatCharName(url);
+			if (testClient && !testServer) {
+				// connect test client to main server
+				url += "&server=main";
+			}
 		}
 
+		return url;
+	}
+
+	/**
+	 * Extracts character name from URL fragment identifier & converts to query string.
+	 */
+	private String formatCharName(String url) {
+		final int idx = url.indexOf("#");
+		if (idx > -1) {
+			url = url.substring(0, idx) + "?char=" + url.substring(idx+1);
+		}
 		return url;
 	}
 
@@ -487,7 +555,7 @@ public class ClientView extends WebView {
 	 * @return
 	 *     <code>true</code> if debug flag set.
 	 */
-	private boolean debugEnabled() {
+	public boolean debugEnabled() {
 		if (debugging != null) {
 			return debugging;
 		}

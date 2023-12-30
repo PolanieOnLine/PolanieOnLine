@@ -115,8 +115,8 @@ class Honeymoon {
                                                                                                                   "zwój weselny");
                             invite2.setQuantity(1);
                             //
-							invite1.setInfoString("honeymoon," + partnerName);
-							invite2.setInfoString("honeymoon," + husband.getTitle());
+							invite1.setItemData("honeymoon," + partnerName);
+							invite2.setItemData("honeymoon," + husband.getTitle());
 							if (wife.equipToInventoryOnly(invite1) &&  husband.equipToInventoryOnly(invite2)) {
 								npc.say("Dobry wybór! Teraz zorganizuje to.");
 								husband.setQuest(marriage.getQuestSlot(), "done");

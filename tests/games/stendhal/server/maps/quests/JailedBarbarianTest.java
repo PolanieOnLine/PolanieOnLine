@@ -24,6 +24,7 @@ import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.fsm.Engine;
+import games.stendhal.server.entity.npc.quest.BuiltQuest;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.MockStendlRPWorld;
 import games.stendhal.server.maps.amazon.hut.JailedBarbNPC;
@@ -54,7 +55,7 @@ public class JailedBarbarianTest {
 
 		final AbstractQuest quest = new JailedBarbarian();
 		// Księżniczka Esclara's greeting response is defined in her quest
-		final AbstractQuest quest2 = new AmazonPrincess();
+		final AbstractQuest quest2 = new BuiltQuest(new AmazonPrincess().story());
 		quest.addToWorld();
 		quest2.addToWorld();
 
@@ -119,6 +120,7 @@ public class JailedBarbarianTest {
 		assertEquals("Napiłabym się drinka, powinien być egzotyczny. Czy możesz mi go przynieść?", getReply(npc));
 		en.step(player, "no");
 		assertEquals("Och, nieważne. Do widzenia.", getReply(npc));
+		en.step(player, "bye");
 
 		en.step(player, "hi");
 		assertEquals("Huh, co ty tutaj robisz?!", getReply(npc));

@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -76,6 +76,8 @@ public class CustomerAdvisorNPC implements ZoneConfigurator {
 						ConversationStates.ATTENDING,
 						"Może wyświadczyłbyś mi #przysługę, a wtedy powiem więcej o prywatnych skarbcach bankowych.",
 						null);
+				
+				addKnownChatOptions("skarbiec");
 			} // remaining behaviour defined in games.stendhal.server.maps.quests.ArmorForDagobert
 
 			@Override
@@ -84,7 +86,7 @@ public class CustomerAdvisorNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setDescription("Oto Dagobert. Wygląda na osobę budzącą zaufanie i niezawodną.");
+		npc.setDescription("Oto Dagobert. Wygląda na osobę bezpieczną i godną zaufania.");
 		npc.setEntityClass("youngnpc");
 		npc.setGender("M");
 		npc.setPosition(9, 23);

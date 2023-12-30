@@ -15,7 +15,7 @@ import java.util.Map;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.entity.npc.SpeakerNPC;
+import games.stendhal.server.entity.npc.CrystalNPCBase;
 
 /**
  * A crystal NPC
@@ -38,7 +38,7 @@ public class PinkCrystalNPC implements ZoneConfigurator {
 	}
 
 	private void buildNPC(final StendhalRPZone zone) {
-		final SpeakerNPC crystal = new SpeakerNPC("Różowy Kryształ") {
+		final CrystalNPCBase crystal = new CrystalNPCBase("Różowy Kryształ") {
 			@Override
 			protected void createDialog() {
 				addGreeting("Miło, że mnie tutaj znalazłeś! Ta wodą jest piękna.");

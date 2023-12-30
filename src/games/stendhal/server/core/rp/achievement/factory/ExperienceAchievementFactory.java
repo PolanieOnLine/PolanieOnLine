@@ -122,7 +122,7 @@ public class ExperienceAchievementFactory extends AbstractAchievementFactory {
 		achievements.add(createAchievement(
 				ID_KROL, "Król",
 				"Osiągnięto poziom 597",
-				Achievement.LEGENDARY_BASE_SCORE, true,
+				Achievement.EXTREME_BASE_SCORE, true,
 				new LevelGreaterThanCondition(596)));
 
 		return achievements;

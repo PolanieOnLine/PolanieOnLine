@@ -68,7 +68,7 @@ public class DumpItems extends ScriptImpl {
 
 		overwrite.put("maczuga cierniowa", "40");
 		overwrite.put("kij przywoływania nieumarłych", "9999");
-		overwrite.put("wzmocniony pierścień imperialny", "0");
+		overwrite.put("wzmocniony pierścień cesarski", "0");
 
 		overwrite.put("miecz treningowy", "10");
 		overwrite.put("dummy_melee_8", "9999");

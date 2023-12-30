@@ -197,7 +197,7 @@ public class ItemSetsAchievementFactory extends AbstractAchievementFactory {
 		achievements.add(createAchievement(
 				ID_MITHRIL, "Przejdź na Jasną Stronę",
 				"Zdobyto cały zestaw z mithrilu",
-				Achievement.LEGENDARY_BASE_SCORE, true,
+				Achievement.EXTREME_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, MITHRIL)));
 
 		achievements.add(createAchievement(
@@ -221,7 +221,7 @@ public class ItemSetsAchievementFactory extends AbstractAchievementFactory {
 		achievements.add(createAchievement(
 				ID_VAMPIRE, "Wampir",
 				"Zdobyto cały wampirzy zestaw",
-				Achievement.LEGENDARY_BASE_SCORE, true,
+				Achievement.EXTREME_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, VAMPIRE)));
 
 		achievements.add(createAchievement(

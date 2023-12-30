@@ -27,10 +27,10 @@ public class SeedSellerBehaviour extends SellerBehaviour {
         /*
          * flower names should be one word, no blank characters
          */
-		pricelist.put("lilia nasionka", 10);
-		pricelist.put("stokrotki nasionka", 20);
-		pricelist.put("bielikrasa bulwa", 15);
-		pricelist.put("bratek nasionka", 10);
+		pricelist.put("nasiona lilia", 10);
+		pricelist.put("nasiona stokrotki", 20);
+		pricelist.put("bulwa bielikrasa", 15);
+		pricelist.put("nasiona bratek", 10);
 	}
 
 	public SeedSellerBehaviour() {
@@ -45,7 +45,7 @@ public class SeedSellerBehaviour extends SellerBehaviour {
 	public Item getAskedItem(final String askedItem, final Player player) {
 		final String[] tokens = askedItem.split(" ");
 		final StackableItem item = (StackableItem) SingletonRepository.getEntityManager().getItem(tokens[1]);
-		item.setInfoString(tokens[0]);
+		item.setItemData(tokens[0]);
 		return item;
 	}
 }

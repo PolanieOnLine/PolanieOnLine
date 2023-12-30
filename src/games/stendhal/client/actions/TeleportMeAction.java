@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2022 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -10,6 +10,8 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.client.actions;
+
+import static games.stendhal.common.constants.Actions.TELEPORTME;
 
 import games.stendhal.client.ClientSingletonRepository;
 import marauroa.common.game.RPAction;
@@ -32,7 +34,7 @@ class TeleportMeAction implements SlashAction {
 	public boolean execute(final String[] params, final String remainder) {
 		final RPAction teleport = new RPAction();
 
-		teleport.put("type", "teleportme");
+		teleport.put("type", TELEPORTME);
 		teleport.put("zone", params[0]);
 		teleport.put("x", params[1]);
 		teleport.put("y", params[2]);

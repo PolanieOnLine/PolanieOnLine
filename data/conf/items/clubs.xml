@@ -269,7 +269,7 @@
 		<type class="club" subclass="rod_of_the_gm" tileid="-1"/>
 		<description>Oto rózga GM. Jest ona zarezerwowana dla tych którzy posiadają specjalne moce. Bądź ostrożny, aby nie dostała się ona w niepowołane ręce.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
-		<unattainable>true</unattainable>
+		<unattainable/>
 		<attributes>
 			<atk value="100"/>
 			<def value="100"/>

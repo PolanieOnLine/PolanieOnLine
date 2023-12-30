@@ -342,7 +342,7 @@ public class Blackjack extends AbstractQuest {
 
 		ramon.add(ConversationStates.ATTENDING, Arrays.asList("play", "graj", "zagraj", "zagram"), null,
 				ConversationStates.ATTENDING,
-				"Aby zagrać musisz #postawić conajmniej " + MIN_STAKE
+				"Aby zagrać musisz #postawić co najmniej " + MIN_STAKE
 						+ ", a najwięcej " + MAX_STAKE
 						+ " money. Ile chcesz zaryzykować?", null);
 

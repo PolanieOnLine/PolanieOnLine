@@ -1,6 +1,6 @@
 --[[
  ***************************************************************************
- *                       Copyright © 2021 - Arianne                        *
+ *                    Copyright © 2021-2023 - Arianne                      *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -18,14 +18,14 @@
 local zone_name = "int_semos_temple"
 
 if game:setZone(zone_name) then
-	local fishy = entities:createSilentNPC()
+	local fishy = entities:create({type="SilentNPC"})
 	fishy:setEntityClass("animal/fish_roach")
 	fishy:setDescription("Oto ryba.")
 	fishy:setVisibility(50)
-	fishy:setPathAndPosition({
+	fishy:setPathAndPosition(entities:fixedPath({
 		{13,15}, {13,18},
 		{10,18}, {10,15},
-	}, true)
+	}, true))
 	fishy:setIgnoresCollision(true)
 	fishy:setBaseSpeed(0.1)
 

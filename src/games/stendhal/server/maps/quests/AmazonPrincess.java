@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2021 - Stendhal                    *
+ *                   (C) Copyright 2003-2023 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,35 +11,12 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import games.stendhal.common.Rand;
-import games.stendhal.common.grammar.Grammar;
-import games.stendhal.common.parser.Sentence;
-import games.stendhal.server.entity.npc.ChatAction;
-import games.stendhal.server.entity.npc.ConversationPhrases;
-import games.stendhal.server.entity.npc.ConversationStates;
-import games.stendhal.server.entity.npc.EventRaiser;
-import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.action.DropItemAction;
-import games.stendhal.server.entity.npc.action.EquipItemAction;
-import games.stendhal.server.entity.npc.action.IncreaseXPAction;
+import games.stendhal.server.entity.npc.action.EquipRandomAmountOfItemAction;
+import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
 import games.stendhal.server.entity.npc.action.InflictStatusOnNPCAction;
-import games.stendhal.server.entity.npc.action.MultipleActions;
-import games.stendhal.server.entity.npc.action.SayTimeRemainingAction;
-import games.stendhal.server.entity.npc.action.SetQuestAndModifyKarmaAction;
-import games.stendhal.server.entity.npc.condition.AndCondition;
-import games.stendhal.server.entity.npc.condition.NotCondition;
-import games.stendhal.server.entity.npc.condition.PlayerHasItemWithHimCondition;
-import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
-import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
-import games.stendhal.server.entity.npc.condition.QuestNotInStateCondition;
-import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
-import games.stendhal.server.entity.npc.condition.QuestStateStartsWithCondition;
-import games.stendhal.server.entity.npc.condition.TimePassedCondition;
-import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.entity.npc.action.PlaySoundAction;
+import games.stendhal.server.entity.npc.quest.BringItemQuestBuilder;
+import games.stendhal.server.entity.npc.quest.QuestManuscript;
 import games.stendhal.server.maps.Region;
 
 /**
@@ -47,7 +24,7 @@ import games.stendhal.server.maps.Region;
  *
  * PARTICIPANTS:
  * <ul>
- * <li>Księżniczka Esclara, the Amazon Princess in a Hut on Amazon Island</li>
+ * <li>Princess Esclara, the Amazon Princess in a Hut on Amazon Island</li>
  * </ul>
  *
  * STEPS:
@@ -69,176 +46,51 @@ import games.stendhal.server.maps.Region;
  * <li>You can repeat it once an hour.</li>
  * </ul>
  */
-public class AmazonPrincess extends AbstractQuest {
-	private static final String QUEST_SLOT = "amazon_princess";
-	private final SpeakerNPC npc = npcs.get("Księżniczka Esclara");
-
-	// The delay between repeating quests is 60 minutes
-	private static final int REQUIRED_MINUTES = 60;
-	private static final List<String> triggers = Arrays.asList("drink", "napój","napój z oliwką");
-
-	private void offerQuestStep() {
-		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES,
-				new QuestNotStartedCondition(QUEST_SLOT),
-				ConversationStates.QUEST_OFFERED,
-				"Napiłabym się drinka, powinien być egzotyczny. Czy możesz mi go przynieść?",
-				null);
-
-		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES,
-				new QuestCompletedCondition(QUEST_SLOT),
-				ConversationStates.ATTENDING,
-				"Nie jestem teraz spragniona dziękuję!",
-				null);
-
-		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES,
-				new AndCondition(new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_MINUTES), new QuestStateStartsWithCondition(QUEST_SLOT, "drinking;")),
-				ConversationStates.QUEST_OFFERED,
-				"Ostatni napój, który mi kupiłeś był wspaniały. Przyniesiesz mi następny?",
-				null);
-
-		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES,
-				new AndCondition(new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_MINUTES)), new QuestStateStartsWithCondition(QUEST_SLOT, "drinking;")),
-				ConversationStates.ATTENDING,
-				null,
-				new SayTimeRemainingAction(QUEST_SLOT, 1, REQUIRED_MINUTES, "Jestem pełna, aby wypić następny napój przez co najmniej "));
-
-		npc.add(ConversationStates.ATTENDING,
-				ConversationPhrases.QUEST_MESSAGES, null,
-				ConversationStates.ATTENDING,
-				"Kocham te egzotyczne napoje ale zapomniałam nazwę mojego ulubionego.",
-				null);
-
-		// Player agrees to get the drink
-		npc.add(ConversationStates.QUEST_OFFERED,
-				ConversationPhrases.YES_MESSAGES, null,
-				ConversationStates.ATTENDING,
-				"Dziękuję! Jeżeli go znajdziesz to powiedz #napój a będę wiedziała, że go masz. W zamian dam Ci nagrodę.",
-				new SetQuestAndModifyKarmaAction(QUEST_SLOT, "start", 5.0));
-
-		// Player says no, they've lost karma.
-		npc.add(ConversationStates.QUEST_OFFERED,
-				ConversationPhrases.NO_MESSAGES, null, ConversationStates.IDLE,
-				"Och, nieważne. Do widzenia.",
-				new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -10.0));
-	}
-
-	/**
-	 * Get Drink Step :
-	 * src/games/stendhal/server/maps/athor/cocktail_bar/BarmanNPC.java he
-	 * serves drinks to all, not just those with the quest
-	 */
-	private void bringCocktailStep() {
-		npc.add(
-			ConversationStates.ATTENDING, triggers,
-			new AndCondition(new QuestInStateCondition(QUEST_SLOT, "start"), new PlayerHasItemWithHimCondition("napój z oliwką")),
-			ConversationStates.ATTENDING,
-			null,
-			new MultipleActions(
-					new IncreaseXPAction(200),
-					new DropItemAction("napój z oliwką"),
-					new ChatAction() {
-						@Override
-						public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
-							int pieAmount = Rand.roll1D6() + 1;
-							new EquipItemAction("tarta z rybnym nadzieniem", pieAmount, true).fire(player, sentence, npc);
-							npc.say("Dziękuję!! Proszę, weź " +
-									Grammar.thisthese(pieAmount) + " " +
-									Grammar.quantityplnoun(pieAmount, "tarta z rybnym nadzieniem") +
-									" z mojej kuchni i pocałunek ode mnie.");
-							new SetQuestAndModifyKarmaAction(getSlotName(), "drinking;" + System.currentTimeMillis(), 15.0).fire(player, sentence, npc);
-						}
-					},
-					new InflictStatusOnNPCAction("napój z oliwką")));
-
-		npc.add(
-			ConversationStates.ATTENDING, triggers,
-			new AndCondition(new QuestInStateCondition(QUEST_SLOT, "start"), new NotCondition(new PlayerHasItemWithHimCondition("napój z oliwką"))),
-			ConversationStates.ATTENDING,
-			"Nie masz napoju z oliwką. Idź i lepiej dostarcz mi go!",
-			null);
-
-		npc.add(
-			ConversationStates.ATTENDING, triggers,
-			new QuestNotInStateCondition(QUEST_SLOT, "start"),
-			ConversationStates.ATTENDING,
-			"Czasami mógłbyś mi wyświadczyć #przysługę...", null);
-	}
-
+public class AmazonPrincess implements QuestManuscript {
 	@Override
-	public void addToWorld() {
-		fillQuestInfo(
-				"Księżniczka Amazonki",
-				"Spragniona księżniczka chce pić.",
-				true);
-		offerQuestStep();
-		bringCocktailStep();
-	}
+	public BringItemQuestBuilder story() {
+		BringItemQuestBuilder quest = new BringItemQuestBuilder();
 
-	@Override
-	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
-		if (!player.hasQuest(QUEST_SLOT)) {
-			return res;
-		}
-		res.add("Księżniczka Esclara powitała mnie w domu na wyspie Amazonki.");
-		final String questState = player.getQuest(QUEST_SLOT);
-		if ("rejected".equals(questState)) {
-			res.add("Prosiła mnie aby dostarczył jej napój z oliwką, ale ja nie wiem czy znajdę czas na to.");
-		}
-		if (player.isQuestInState(QUEST_SLOT, "start") || isCompleted(player)) {
-			res.add("Księżniczka jest spragniona, obiecałem jej egzotyczny napój. Powinienem jej powiedzieć, #napój gdy go zdobędę.");
-		}
-		if ("start".equals(questState) && player.isEquipped("napój z oliwką") || isCompleted(player)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Znalazłem") + " napój z oliwką dla księżniczki.");
-		}
-        if (isCompleted(player)) {
-            if (isRepeatable(player)) {
-                res.add(Grammar.genderVerb(player.getGender(), "Dostarczyłem") + " napój dla księżniczki, ale założę się, że jest gotowa na następny. Może będę miał więcej tart z rybą.");
-            } else {
-                res.add("Księżniczka Esclara uwielbia napój z oliwką, dostarczyłem go jej. " + Grammar.genderVerb(player.getGender(), "dostałem") + " tartę z nadzieniem rybnym i pocałunek!!");
-            }
-		}
-		return res;
-	}
+		quest.info()
+			.name("Księżniczka Amazonki")
+			.description("Spragniona księżniczka chce się napić.")
+			.internalName("amazon_princess")
+			.repeatableAfterMinutes(60)
+			.minLevel(70)
+			.region(Region.AMAZON_ISLAND)
+			.questGiverNpc("Księżniczka Esclara");
 
-	@Override
-	public String getSlotName() {
-		return QUEST_SLOT;
-	}
+		quest.history()
+			.whenNpcWasMet("Księżniczka Esclara przywitała mnie w jej domu na wyspie Amazonek.")
+			.whenQuestWasRejected("Poprosiła mnie, żebym przyniósł jej drinka, ale uważam, że nie powinna go pić.")
+			.whenQuestWasAccepted("Księżniczka jest spragniona, obiecałem jej egzotyczny napój.")
+			.whenTaskWasCompleted("Znalazłem napój z oliwką dla księżniczki, myślę, że jej zasmakuje.")
+			.whenQuestWasCompleted("Księżniczka Esclara uwielbia napój z oliwką, którą jej przyniosłem. Dała mi placki rybne i całusa!!")
+			.whenQuestCanBeRepeated("Ale założę się, że jest będzie spragniona ponownie. Może dostanę więcej placków rybnych.");
 
-	@Override
-	public String getName() {
-		return "Księżniczka Amazonki";
-	}
+		quest.offer()
+			.respondToRequest("Szukam napoju, powinien być egzotyczny. Możesz mi przynieść?")
+			.respondToUnrepeatableRequest("Jestem pewna, że nie będę teraz w stanie wypić kolejnego takiego napoju.") // TODO:  for at least [time_remaining]
+			.respondToRepeatedRequest("Ostatni koktajl, który mi przyniosłeś, był taki cudowny. Przyniesiesz mi jeszcze jeden?")
+			.respondToAccept("Dziękuję! Jeśli będziesz w posiadaniu takiego napoju, na pewno dam ci miłą nagrodę.")
+			.respondToReject("Och nieważne. A więc do zobaczenia.")
+			.rejectionKarmaPenalty(10.0)
+			.remind("Lubię te egzotyczne napoje, tylko zapomniałam nazwy mojego ulubionego.");
 
-	// Amazon is dangerous below this level - don't hint to go there
-	@Override
-	public int getMinLevel() {
-		return 70;
-	}
+		// Get Drink Step : athor/cocktail_bar/BarmanNPC.java he serves drinks to all, not just those with the quest
+		quest.task()
+			.requestItem(1, "napój z oliwką");
 
-	@Override
-	public boolean isRepeatable(final Player player) {
-		return new AndCondition(new QuestStateStartsWithCondition(QUEST_SLOT,"drinking;"),
-				 new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_MINUTES)).fire(player,null, null);
-	}
+		quest.complete()
+			.greet("Ach, rozumiem, masz §'napój z oliwką'. Czy to dla mnie?")
+			.respondToReject("No cóż, mam nadzieję, że ktoś inny pomoże.")
+			.respondToAccept(null)
+			.rewardWith(new IncreaseKarmaAction(15))
+			.rewardWith(new EquipRandomAmountOfItemAction("tarta z rybnym nadzieniem", 1, 6, 1,
+					"Dziękuję! Przyjmij proszę [this_these] [number_item] mojej kuchni, oraz tego całusa ode mnie."))
+			.rewardWith(new PlaySoundAction("kiss-female-01"))
+			.rewardWith(new InflictStatusOnNPCAction("napój z oliwką"));
 
-	@Override
-	public boolean isCompleted(final Player player) {
-		return new QuestStateStartsWithCondition(QUEST_SLOT,"drinking;").fire(player, null, null);
-	}
-
-	@Override
-	public String getRegion() {
-		return Region.AMAZON_ISLAND;
-	}
-
-	@Override
-	public String getNPCName() {
-		return npc.getName();
+		return quest;
 	}
 }

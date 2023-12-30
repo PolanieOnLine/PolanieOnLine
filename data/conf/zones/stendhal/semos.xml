@@ -1426,19 +1426,19 @@ nigdy nie zapomnimy ich poświęceń."
 		<entity x="77" y="66">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign"/>
 			<attribute name="text">Ta ziemia została użyźniona i związku z tym można tutaj sadzić rośliny. Zapytaj (Jenny z młyna) o nasiona! Dopisek: obszar jest ogólnodostępny, a gdy twój kwiatek urośnie to każdy będzie mógł go zerwać. Dziękuję za sadzenie pięknych kwiatków.</attribute>
-			<attribute name="class">signpost</attribute>
+			<attribute name="class">notice_sign_text</attribute>
 		</entity>
 
 		<entity x="59" y="58">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign"/>
 			<attribute name="text">Ta ziemia została użyźniona i związku z tym można tutaj sadzić rośliny. Zapytaj (Jenny z młyna) o nasiona! Dopisek: obszar jest ogólnodostępny, a gdy twój kwiatek urośnie to każdy będzie mógł go zerwać. Dziękuję za sadzenie pięknych kwiatków.</attribute>
-			<attribute name="class">signpost</attribute>
+			<attribute name="class">notice_sign_text</attribute>
 		</entity>
 
 		<entity x="68" y="43">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign"/>
 			<attribute name="text">Ta ziemia została użyźniona i związku z tym można tutaj sadzić rośliny. Zapytaj (Jenny z młyna) o nasiona! Dopisek: obszar jest ogólnodostępny, a gdy twój kwiatek urośnie to każdy będzie mógł go zerwać. Dziękuję za sadzenie pięknych kwiatków.</attribute>
-			<attribute name="class">signpost</attribute>
+			<attribute name="class">notice_sign_text</attribute>
 		</entity>
 
 		<entity x="70" y="50">
@@ -1453,7 +1453,7 @@ Byłoby pięknie, gdyby każdy sadził tyle kwiatków ile wziął. Nie bierz wi�
 Jeżeli każdy by tak myślał to bylibyśmy na drodze do lepszego świata...
 
  - podpisano S.</attribute>
-			<attribute name="class">signpost</attribute>
+			<attribute name="class">notice_sign_text</attribute>
 		</entity>
 
 		<entity x="82" y="63">
@@ -1727,7 +1727,7 @@ Kup owcę od Nishiya, aby dostać najlepszą cenę!
 		<entity x="43" y="40">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign"/>
 			<attribute name="text">
-Porozmawiaj z Sato o sprzedaży owcy. Jego ceny nie są dobre, ale skupuje dla rynku... Płaci więcej za większe owce (spróbuj uzyskać wagę conajmniej 100).
+Porozmawiaj z Sato o sprzedaży owcy. Jego ceny nie są dobre, ale skupuje dla rynku... Płaci więcej za większe owce (spróbuj uzyskać wagę co najmniej 100).
 			</attribute>
 		</entity>
 
@@ -3451,13 +3451,11 @@ Potrzebna dorosła owca: proszę rozmawiać z Sato
 Północ: Miasto Semos
 Południe: Miasto Kirdneh
 Wschód: Miasto Nalwor
-Południowy-Zachód: Zamek Or'ril i Miasto Fado
-Zachód: Miasto Deniran
+Zachód: Zamek Or'ril i Miasto Deniran
+Południowy-zachód: Miasto Fado
 			</attribute>
 			<attribute name="class">signpost</attribute>
 		</entity>
-
-
 	</zone>
 
 	<!-- Level -1 -->

@@ -390,9 +390,9 @@
 		</equipable>
 	</item>
 
-	<item name="pierścień imperialny">
+	<item name="pierścień cesarski">
 		<type class="ring" subclass="imperial_ring" tileid="-1"/>
-		<description/>
+		<description>Oto pierścień cesarski. Jest nasiąknięty królewską potęgą.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="1"/>
@@ -409,9 +409,9 @@
 		</equipable>
 	</item>
 
-	<item name="wzmocniony pierścień imperialny">
+	<item name="wzmocniony pierścień cesarski">
 		<type class="ring" subclass="imperial_ring_enhanced" tileid="-1"/>
-		<description/>
+		<description>Oto ulepszony pierścień cesarski. Emanuje aurą siły i obrony.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="1"/>

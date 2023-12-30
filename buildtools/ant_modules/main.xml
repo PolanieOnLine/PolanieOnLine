@@ -2,10 +2,10 @@
 
 <project xmlns:if="ant:if" xmlns:unless="ant:unless">
 
-  <target name="init">
+  <target name="init" description="Update version and resource info.">
     <mkdir dir="${lib}"/>
 
-    <!-- We update the version number -->
+  	<!-- update version -->
     <replaceregexp file="${src}/games/stendhal/common/Debug.java"
       match="String VERSION ?= ?&quot;.*&quot;;"
       replace="String VERSION = &quot;${version}&quot;;"
@@ -22,11 +22,12 @@
       match="POL_VERSION ?= ?&quot;.*&quot;"
       replace="POL_VERSION=&quot;${version}&quot;"
       byline="true"/>
-    <replaceregexp file="buildtools/doxygen/Doxyfile"
-      match="^PROJECT_NUMBER .*$"
-      replace="PROJECT_NUMBER         = ${version}"
-      byline="true"/>
-    <!-- Update location of resources -->
+  	<replaceregexp file="${buildtools}/mkdocs/mkdocs.yml"
+  	  match="^site_name: .*$"
+  	  replace="site_name: PolanieOnLine ${version} Reference Documentation"
+  	  byline="true"/>
+
+  	<!-- update location of resources -->
     <replaceregexp file="${src}/games/stendhal/client/update/game-default.properties"
       match="GAME_NAME=.*"
       replace="GAME_NAME=${game_name}"
@@ -48,6 +49,13 @@
       replace="UPDATE_VERSION_CHECK=${version_server}"
       byline="true"/>
 
+  	<!-- date & timestamps -->
+	<replaceregexp file="${buildtools}/mkdocs/mkdocs.yml"
+		match="^copyright:.*"
+		replace="copyright: Copyright &#169; 2003-${year} Stendhal"
+		byline="true"
+		encoding="UTF-8"/>
+
     <!-- pre release version -->
     <replaceregexp file="${src}/games/stendhal/common/Debug.java"
       match="String PRE_RELEASE_VERSION ?= .*;"
@@ -57,12 +65,12 @@
   </target> <!-- init -->
 
 
-  <target name="checkxml" description="Verify XML files are well-formed">
+  <target name="checkxml" description="Verify XML files are well-formed.">
     <schemavalidate failonerror="yes" lenient="yes" warn="yes">
       <schema namespace="polanieonline" file="${config_dir}/zones.xsd"/>
       <fileset dir="${config_dir}/zones">
       	<include name="*.xml"/>
-      					<include name="/*/*.xml"/>
+		<include name="/*/*.xml"/>
       </fileset>
     </schemavalidate>
     <schemavalidate>
@@ -151,7 +159,7 @@
   </target> <!-- checkxml -->
 
 
-  <target name="internalUpdatePrereleaseVersion" if="PRE_RELEASE">
+  <target name="internalUpdatePrereleaseVersion" if="PRE_RELEASE" description="Add date to pre-release test client.">
     <tstamp prefix="date">
       <format property="iso" pattern="yyyy-MM-dd"/>
     </tstamp>

@@ -272,32 +272,38 @@ public final class stendhal {
 			}
 
 			String uiRendering = wm.getProperty(UI_RENDERING, "");
-			if (!"".equals(uiRendering)) {
-				UiRenderingMethod renderingMethod = UiRenderingMethod.fromPropertyValue(uiRendering);
-				switch (renderingMethod) {
-					case SOFTWARE: {
-						System.setProperty("sun.java2d.noddraw", "true");
-						break;
-					}
-					case DIRECT_DRAW_SCALE: {
-						System.setProperty("sun.java2d.translaccel", "true");
-						System.setProperty("ddscale", "true");
-						break;
-					}
-					case OPEN_GL: {
-						System.setProperty("sun.java2d.opengl", "true");
-						break;
-					}
-					case XRENDER: {
-						System.setProperty("sun.java2d.xrender", "true");
-						break;
-					}
-					case METAL: {
-						System.setProperty("sun.java2d.metal", "true");
-						break;
-					}
-				}
-			}
+//			if (!"".equals(uiRendering)) {
+//				UiRenderingMethod renderingMethod = UiRenderingMethod.fromPropertyValue(uiRendering);
+//				switch (renderingMethod) {
+//					case SOFTWARE: {
+//						System.setProperty("sun.java2d.noddraw", "true");
+//						break;
+//					}
+//					case DIRECT_DRAW: {
+//						System.setProperty("sun.java2d.d3d", "false");
+//						break;
+//					}
+//					case DDRAW_HWSCALE: {
+//						System.setProperty("sun.java2d.d3d", "true");
+//						System.setProperty("sun.java2d.ddforcevram", "true");
+//						System.setProperty("sun.java2d.translaccel", "true");
+//						System.setProperty("sun.java2d.ddscale", "true");
+//						break;
+//					}
+//					case OPEN_GL: {
+//						System.setProperty("sun.java2d.opengl", "true");
+//						break;
+//					}
+//					case XRENDER: {
+//						System.setProperty("sun.java2d.xrender", "true");
+//						break;
+//					}
+//					case METAL: {
+//						System.setProperty("sun.java2d.metal", "true");
+//						break;
+//					}
+//				}
+//			}
 
 			// initialize tileset animation data
 			TileStore.init();
