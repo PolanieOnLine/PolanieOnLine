@@ -5,6 +5,7 @@ Changelog
 - Dodano nową grafikę wraz z animacją strzały żaru
 - Dodano nowe oraz poprawiono niektóre emotikony
 - Wprowadzono w ustawieniach metody renderowania grafiki
+- Zmieniono grafiki przedmiotów: 'mandragora', 'sierp'
 
 *świat*
 - Dodano nowe osiągnięcia: (5)
@@ -13,6 +14,8 @@ Changelog
 	- "Historyk Hiperbolisty"
 	- "Głównodowodzący"
 	- "Władca Semos"
+- Dodano nową skrzynię magicznego miasta w banku czarodzieja (magiczne miasto)
+- Dodano nowe skrzynie miasta Kirdneh w Kirdneh, Fado oraz w banku czarodzieja (magiczne miasto)
 - Przedmioty takie jak nasiona i bulwy mają unikalne obrazy dla danego kawiatka
 - Kupon jest teraz układalny w stosy (stackowany)
 - Efekt krwawienia jest teraz zależna od siły uderzenia stwora
