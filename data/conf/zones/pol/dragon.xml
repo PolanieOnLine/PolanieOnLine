@@ -6,7 +6,7 @@
 	-->
 
 	<!-- Ground level -->
-	
+
 	<zone name="0_dragon_land_nw" level="0" x="513760" y="18048" file="Level 0/dragon/land_nw.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
