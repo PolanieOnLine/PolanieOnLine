@@ -1755,7 +1755,7 @@ $marauroa$$.$Deserializer$.$fromBinaryString$ = function($binary$jscomp$1$$) {
 };
 var $stendhal$$ = window.$A$ = window.$A$ || {};
 $stendhal$$.data = $stendhal$$.data || {};
-$stendhal$$.data.$build$ = {version:"1.38", $build$:"2023-12-30 06:53:47", $dist$:"webclient"};
+$stendhal$$.data.$build$ = {version:"1.38", $build$:"2023-12-30 15:34:25", $dist$:"webclient"};
 JXG = {$Util$:{}};
 JXG.$Util$.$Unzip$ = function() {
   Array(17)[0] = 0;
