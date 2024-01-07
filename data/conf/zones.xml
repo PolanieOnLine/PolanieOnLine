@@ -30,5 +30,6 @@
 	<group uri="zones/pol/wieliczka.xml"/>
 	<group uri="zones/pol/zakopane.xml"/>
 
+	<group uri="zones/alternatives.xml"/>
 	<group uri="zones/misc.xml"/>
 </groups>

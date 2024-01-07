@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zones xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../zones.xsd ">
+
+	<zone name="alt_dragon_land_n" level="1" x="513824" y="18048" file="Level 0/dragon/land_n.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+
+		<!-- Alternative creatures -->
+		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
+			<parameter name="factor">0.5</parameter>
+		</configurator>
+
+		<attributes>
+			<parameter name="color_method">multiply</parameter>
+			<parameter name="color">#99ff99</parameter>
+			<parameter name="weather">rain_heavy</parameter>
+		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-inthedark3</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<zone name="alt_dragon_land_s" level="1" x="513824" y="18176" file="Level 0/dragon/land_s.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+
+		<!-- Alternative creatures -->
+		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
+			<parameter name="factor">0.5</parameter>
+		</configurator>
+
+		<attributes>
+			<parameter name="color_method">multiply</parameter>
+			<parameter name="color">#99ff99</parameter>
+			<parameter name="weather">rain_heavy</parameter>
+		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-inthedark3</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<zone name="alt_zakopane_clouds" file="Level 6/zakopane/clouds.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
+		<attributes>
+			<parameter name="color_method">multiply</parameter>
+			<parameter name="color">#99ff99</parameter>
+			<parameter name="weather">fog_heavy</parameter>
+		</attributes>
+
+		<!-- Alternative creatures -->
+		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
+			<parameter name="factor">0.25</parameter>
+		</configurator>
+
+		<entity x="13" y="13">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-halny</parameter>
+				<parameter name="radius">20</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+		<entity x="13" y="13">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">pol-hawk2, pol-hawk1</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">120</parameter>
+				<parameter name="radius">20</parameter>
+				<parameter name="volume">70</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+</zones>
