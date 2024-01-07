@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="128" height="128" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="1">
+<map version="1.9" tiledversion="1.9.2" orientation="orthogonal" renderorder="right-down" compressionlevel="0" width="128" height="128" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="1">
  <tileset firstgid="1" name="sandy_rocks" tilewidth="32" tileheight="32" tilecount="15" columns="3">
   <image source="../../tileset/ground/rock/sandy_rocks.png" width="96" height="160"/>
  </tileset>
@@ -81,7 +81,7 @@
  </layer>
  <layer id="6" name="objects" width="128" height="128">
   <data encoding="base64" compression="zlib">
-   eAHt20EOgjAQBVC8/9LoJYx38Gi6JWVRQoWZznMnQey8D5NCdVm8CBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECNQW+Nxq1696AgQIECBAoIaAOU+NnFVJgACBCgJP9/EVYlZjIIGHay5QGoZSVcB1WDV5dRMgQGAOAc8l58hRFa2Ac7s1sWUuAc/g5spTNQQIECBAoKLA2/pGxdjV/BNwv+o0IECAAAECBEYKXP17hZd5/cg4HYsAAQKnC+jj2+TW4bZdom+9el4U3Wfv+PSHvWL2J1BDoKc3WP+pcS6okkB1gexzz55+Xj3jrPXLNmtyxk2AAIE8Au75zsnqbg32HGjfQoDASkDvWXE0b476HP18MyAbCBAgQKBbQA/uprIjAQIEQgvo56HjMTgCBAg0Avp2Q2IDAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIAAAQIECBAgQIBAIoFR/6cddZxEdGGHKouw0RjYHwW+kfUUoQ==
+   eAHt20EOgjAQBVC8/9LoJYx34Gi6Je2iBAJt/3Nng9p5HyeF6rJ4ECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIEMgWWB/Z9aueAAECBAgQyBCw5snIWZUECBBIEHi7jk+IWY0dCbx85zpKw1RSBXwPU5NXNwECBOYQcF9yjhxVUQo4t0sTI3MJuAc3V56qIUCAAAECiQJf+xuJsav5L+B61WlAgAABAgQInClw9+8VPtb1Z8bpvQgQIHC5gD5eJ7cPV3fpffTudVHvPnvnpz/sFXM8gQyBlt5g/yfjXFAlgXSB0deeLf08PeNR65ftqMmZNwECBMYRcM13TVZPe7DXQPsUAgQ2AnrPhqN4ctTn6OuLCRkgQIAAgWYBPbiZyoEECBDoWkA/7zoekyNAgEAhoG8XJAYIECBAgAABAgQIECBAgAABAgQIECBAgAABAgQIECBAgACBMAH/xxw7cPmNnV9t9jKtqRibXeAH83QUoQ==
   </data>
  </layer>
  <layer id="7" name="collision" width="128" height="128" opacity="0.2">

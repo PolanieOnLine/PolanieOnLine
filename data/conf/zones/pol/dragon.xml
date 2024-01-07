@@ -706,7 +706,7 @@
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.dragon.cave.eFuRNPC"/>
 		<configurator class-name="games.stendhal.server.maps.dragon.cave.JolandaNPC"/>
-		<configurator class-name="games.stendhal.server.maps.dragon.cave.Dragon"/>
+		<!-- <configurator class-name="games.stendhal.server.maps.dragon.cave.Dragon"/> -->
 
 		<attributes>
 			<parameter name="color_method">dark</parameter>
