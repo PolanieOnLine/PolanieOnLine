@@ -39,6 +39,8 @@ public class AlternativeCreatures implements ZoneConfigurator {
 			c.setHP(configureStats(c.getHP(), factor));
 			c.setXP(configureStats(c.getXP(), factor));
 			c.setLevel(configureStats(c.getLevel(), factor));
+
+			c.addDropItem("ciemnolit", 0.5, 1);
 		}
 	}
 
