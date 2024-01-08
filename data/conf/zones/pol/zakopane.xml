@@ -526,6 +526,13 @@
 		<!-- Public chest -->
 		<configurator class-name="games.stendhal.server.maps.zakopane.city.CommonChest"/>
 
+		<!-- TODO: remove alternative creature after tests -->
+		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
+			<parameter name="creature">dwugłowy zielony smok</parameter>
+			<parameter name="spawnX">88</parameter>
+			<parameter name="spawnY">17</parameter>
+		</configurator>
+
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">pol-goralskie</parameter>
