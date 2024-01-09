@@ -480,4 +480,23 @@
 			<slot name="keyring"/>
 		</equipable>
 	</item>
+
+	<item name="mgielny kamień">
+    	<type class="scroll" subclass="stonemist" tileid="-1"/>
+    	<description>Oto mgielny kamień.</description>
+    	<implementation class-name="games.stendhal.server.entity.item.Item"/>
+    	<attributes>
+    	</attributes>
+    	<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="keyring"/>
+		</equipable>
+	</item>
 </items>
