@@ -484,7 +484,7 @@
 	<item name="mgielny kamień">
     	<type class="scroll" subclass="stonemist" tileid="-1"/>
     	<description>Oto mgielny kamień.</description>
-    	<implementation class-name="games.stendhal.server.entity.item.Item"/>
+    	<implementation class-name="games.stendhal.server.entity.item.scroll.StonemistScroll"/>
     	<attributes>
     	</attributes>
     	<weight value="1.0"/>
