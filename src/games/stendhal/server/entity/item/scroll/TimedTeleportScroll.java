@@ -37,14 +37,13 @@ import games.stendhal.server.entity.player.Player;
  * elsewhere, i.e. in a quest file.
  */
 public class TimedTeleportScroll extends TeleportScroll {
-
 	private static final Logger logger = Logger.getLogger(TimedTeleportScroll.class);
 
-		private static final List<String> DESERT_MAPS = Arrays.asList("5_desert_ice_pyramid", "4_desert_ice_pyramid",
-				"3_desert_ice_pyramid", "2_desert_ice_pyramid", "1_desert_ice_pyramid", "0_desert_pyramid_ne",
-				"0_desert_pyramid_sw", "0_desert_pyramid_se", "int_desert_blacksmith", "-1_desert_fire_pyramid",
-				"-1_desert_pyramid", "-1_desert_corridor", "-1_desert_ice_pyramid", "-2_desert_black_river_n",
-				"-2_desert_black_river_s");
+	private static final List<String> DESERT_MAPS = Arrays.asList("5_desert_ice_pyramid", "4_desert_ice_pyramid",
+		"3_desert_ice_pyramid", "2_desert_ice_pyramid", "1_desert_ice_pyramid", "0_desert_pyramid_ne",
+		"0_desert_pyramid_sw", "0_desert_pyramid_se", "int_desert_blacksmith", "-1_desert_fire_pyramid",
+		"-1_desert_pyramid", "-1_desert_corridor", "-1_desert_ice_pyramid", "-2_desert_black_river_n",
+		"-2_desert_black_river_s");
 
 	/**
 	 * Teleport the player back from the target zone.
@@ -339,7 +338,6 @@ public class TimedTeleportScroll extends TeleportScroll {
 	 * to the player before teleporting back.
 	 */
 	static class TimedTeleportWarningTurnListener implements TurnListener {
-
 		private final Player player;
 		private final StendhalRPZone zone;
 		private final String warningMessage;
@@ -361,5 +359,4 @@ public class TimedTeleportScroll extends TeleportScroll {
 			}
 		}
 	}
-
 }
