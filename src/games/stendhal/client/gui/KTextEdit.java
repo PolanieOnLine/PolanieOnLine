@@ -100,8 +100,10 @@ class KTextEdit extends JComponent {
 	private static final Color HEAD_COLOR = new Color(255, 255, 220);
 	// kolor kursywy
 	private static final Color ITALIC_COLOR = new Color(65, 105, 225);
-	// kolor podkreslenia na !
+	// kolor podkreslenia na &
 	private static final Color UNDERLINE_COLOR = new Color(254, 76, 76);
+	// kolor tekstu admina przy ¡
+	private static final Color ADMIN_COLOR = new Color(225, 185, 65);
 	
 	/** Formatting class for text containing stendhal markup. */
 	private final StringFormatter<Style, StyleSet> formatter = new StringFormatter<Style, StyleSet>();
@@ -304,6 +306,11 @@ class KTextEdit extends JComponent {
 		attributes.setAttribute(StyleConstants.Underline, Boolean.TRUE);
 		attributes.setAttribute(StyleConstants.Foreground, UNDERLINE_COLOR);
 		formatter.addStyle('&', attributes);
+
+		attributes = defaultAttributes.copy();
+		attributes.setAttribute(StyleConstants.Italic, Boolean.TRUE);
+		attributes.setAttribute(StyleConstants.Foreground, ADMIN_COLOR);
+		formatter.addStyle('¡', attributes);
 	}
 
 	/**

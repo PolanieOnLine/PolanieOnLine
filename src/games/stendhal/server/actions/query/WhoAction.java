@@ -49,7 +49,10 @@ public class WhoAction implements ActionListener {
 			rules.getOnlinePlayers().forAllPlayersExecute(new Task<Player>() {
 				@Override
 				public void execute(final Player p) {
-					final StringBuilder text = new StringBuilder(p.getTitle());
+					String player = p.getTitle();
+					if (p.getAdminLevel() > 0)
+						player = "¡'" + p.getTitle()+ "'";
+					final StringBuilder text = new StringBuilder(player);
 
 					if (p.isGhost()) {
 						text.append("(!");
@@ -66,7 +69,11 @@ public class WhoAction implements ActionListener {
 			rules.getOnlinePlayers().forFilteredPlayersExecute(new Task<Player>() {
 				@Override
 				public void execute(final Player p) {
-					final StringBuilder text = new StringBuilder(p.getTitle());
+					String player = p.getTitle();
+					if (p.getAdminLevel() > 0)
+						player = "¡'" + p.getTitle()+ "'";
+					final StringBuilder text = new StringBuilder(player);
+
 					text.append("(");
 					text.append(p.getLevel());
 					text.append(") ");

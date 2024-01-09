@@ -79,11 +79,16 @@ public class TextBoxFactory {
 		set = new TextAttributeSet();
 		set.setAttribute(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
 		formatter.addStyle('§', set);
-		
+
 		set = new TextAttributeSet();
-		set.setAttribute(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
 		set.setAttribute(TextAttribute.FOREGROUND, new Color(254, 76, 76));
+		set.setAttribute(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
 		formatter.addStyle('&', set);
+
+		set = new TextAttributeSet();
+		set.setAttribute(TextAttribute.FOREGROUND, new Color(225, 185, 65));
+		set.setAttribute(TextAttribute.POSTURE, TextAttribute.POSTURE_OBLIQUE);
+		formatter.addStyle('¡', set);
 	}
 
 	/**
