@@ -36,10 +36,35 @@ public class RingOfTeleportation extends Item {
 	public RingOfTeleportation(final String name, final String clazz, final String subclass, final Map<String, String> attributes) {
 		super(name, clazz, subclass, attributes);
 		setPersistent(true);
+		updateState();
 	}
 
 	public RingOfTeleportation(final RingOfTeleportation item) {
 		super(item);
+		updateState();
+	}
+
+	/**
+	 * Create a RingOfTeleportation.
+	 */
+	public RingOfTeleportation() {
+		super("pierścień powrotu", "ring", "ametyst-ring", null);
+		put("amount", 0);
+		updateState();
+	}
+
+	private void updateState() {
+		if (isUsed()) {
+			setState(0);
+		} else {
+			setState(1);
+		}
+	}
+
+	@Override
+	public void fill(RPObject rpobject) {
+		super.fill(rpobject);
+		updateState();
 	}
 
 	public boolean isUsed() {
@@ -51,11 +76,13 @@ public class RingOfTeleportation extends Item {
 		setEntitySubclass("ametyst-ring");
 
 		put("amount", 0);
+		put("state", 0);
 		put("frequency", getLastUsed());
 	}
 
 	public void activeRing() {
 		put("amount", 1);
+		put("state", 1);
 	}
 
 	@Override
@@ -101,8 +128,7 @@ public class RingOfTeleportation extends Item {
 		final int secondsNeeded = getLastUsed() + getCoolingPeriod() - (int) (System.currentTimeMillis() / 1000);
 		if (secondsNeeded > 0) {
 			player.sendPrivateText("Pierścień jeszcze nie odzyskał w pełni swojej mocy. "
-					+ Grammar.genderVerb(player.getGender(), "Myślałeś")
-					+ ", że będzie gotowy w ciągu "
+					+ "Myślisz, że będzie gotowy w ciągu "
 					+ TimeUtil.approxTimeUntil(secondsNeeded) + ".");
 
 			return false;
