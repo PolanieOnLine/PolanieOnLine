@@ -132,19 +132,6 @@ public class ForgeItemTask extends QuestTaskBuilder {
 		return null;
 	}
 
-	boolean isProductionComplete(final Player player, String questSlot) {
-		if (player.hasQuest(questSlot) && !player.isQuestCompleted(questSlot)) {
-			final String[] questData = player.getQuest(questSlot).split(";");
-			final long forgeTime = Long.parseLong(questData[1]);
-			final long expectedTimeOfProduction = forgeTime
-				+ (long) 60 * 1000 * getProductionTime();
-			if (System.currentTimeMillis() > expectedTimeOfProduction) {
-				return true;
-			}
-		}
-		return false;
-	}
-
 	ChatCondition requiredConditionsBeforeForge() {
 		List<ChatCondition> conditions = new LinkedList<>();
 		if (getQuestName() != null) {
