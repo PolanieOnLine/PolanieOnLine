@@ -90,7 +90,7 @@ public class TimePassedCondition implements ChatCondition {
 				questtime = 0;
 			}
 			final long timeRemaining = (questtime + delayInMilliseconds) - System.currentTimeMillis();
-		return (timeRemaining <= 0L);
+			return (timeRemaining <= 0L);
 		}
 	}
 
