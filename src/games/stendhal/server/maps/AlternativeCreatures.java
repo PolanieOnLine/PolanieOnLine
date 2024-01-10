@@ -34,6 +34,7 @@ public class AlternativeCreatures implements ZoneConfigurator {
 			int y = Integer.parseInt(attributes.get("spawnY"));
 
 			creatureAttributes(monster, factor);
+			dropSpecialItem(monster, attributes);
 
 			final CreatureRespawnPoint spawnMonster = new CreatureRespawnPoint(zone, x, y, monster, 1);
 			zone.add(spawnMonster);
@@ -50,7 +51,22 @@ public class AlternativeCreatures implements ZoneConfigurator {
 			}
 		}
 	}
-	
+
+	private void dropSpecialItem(final Creature monster, final Map<String, String> attr) {
+		if (attr.containsKey("dropItem") && attr.containsKey("dropRate")) {
+			double probability = Double.parseDouble(attr.get("dropRate"));
+
+			int min = 1, max = 1;
+			if (attr.containsKey("dropMinMax")) {
+				String[] amount = attr.get("dropMinMax").split(",");
+				min = Integer.parseInt(amount[0]);
+				max = Integer.parseInt(amount[1]);
+			}
+
+			monster.addDropItem(attr.get("dropItem"), probability, min, max);
+		}
+	}
+
 	private void creatureAttributes(Creature c, double factor) {
 		c.setName("alt " + c.getName());
 		c.setAtk(configureStats(c.getAtk(), factor));

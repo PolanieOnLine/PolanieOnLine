@@ -277,6 +277,26 @@
 				<parameter name="volume">15</parameter>
 			</implementation>
 		</entity>
+
+		<!-- alternative creature -->
+		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
+			<parameter name="creature">lodowy olbrzym</parameter>
+			<parameter name="factory">0.75</parameter>
+			<parameter name="spawnX">42</parameter>
+			<parameter name="spawnY">109</parameter>
+			<parameter name="dropItem">mgielny kamień</parameter>
+			<parameter name="dropRate">3.0</parameter>
+		</configurator>
+
+		<!-- alternative creature -->
+		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
+			<parameter name="creature">lodowy starszy olbrzym</parameter>
+			<parameter name="factory">0.75</parameter>
+			<parameter name="spawnX">57</parameter>
+			<parameter name="spawnY">118</parameter>
+			<parameter name="dropItem">mgielny kamień</parameter>
+			<parameter name="dropRate">5.0</parameter>
+		</configurator>
 	</zone>
 	<!-- KONIEC Y: 19072 -->
 

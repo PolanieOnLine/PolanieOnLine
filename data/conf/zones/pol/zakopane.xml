@@ -104,6 +104,16 @@
 		<configurator class-name="games.stendhal.server.maps.zakopane.gorasmoka.OzoNPC"/>
 		<configurator class-name="games.stendhal.server.maps.zakopane.plains.RatownikNPC"/>
 
+		<!-- alternative creature -->
+		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
+			<parameter name="creature">kula śnieżna</parameter>
+			<parameter name="factory">0.75</parameter>
+			<parameter name="spawnX">32</parameter>
+			<parameter name="spawnY">109</parameter>
+			<parameter name="dropItem">mgielny kamień</parameter>
+			<parameter name="dropRate">2.0</parameter>
+		</configurator>
+
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">pol-littlemeadow2</parameter>
@@ -525,13 +535,6 @@
 		<configurator class-name="games.stendhal.server.maps.zakopane.city.DorianNPC"/>
 		<!-- Public chest -->
 		<configurator class-name="games.stendhal.server.maps.zakopane.city.CommonChest"/>
-
-		<!-- TODO: remove alternative creature after tests -->
-		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
-			<parameter name="creature">dwugłowy zielony smok</parameter>
-			<parameter name="spawnX">88</parameter>
-			<parameter name="spawnY">17</parameter>
-		</configurator>
 
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">

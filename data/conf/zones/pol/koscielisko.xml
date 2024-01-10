@@ -29,6 +29,16 @@
 			</implementation>
 		</entity>
 
+		<!-- alternative creature -->
+		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
+			<parameter name="creature">pokutnik nocny</parameter>
+			<parameter name="factory">0.5</parameter>
+			<parameter name="spawnX">78</parameter>
+			<parameter name="spawnY">3</parameter>
+			<parameter name="dropItem">mgielny kamień</parameter>
+			<parameter name="dropRate">2.0</parameter>
+		</configurator>
+
 		<portal x="102" y="52" ref="enterance_koscielisko_jail">
 			<destination zone="int_koscielisko_jail" ref="exit_koscielisko_jail"/>
 		</portal>

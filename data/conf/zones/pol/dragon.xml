@@ -39,6 +39,16 @@
 			<parameter name="weather">varying</parameter>
 		</attributes>
 
+		<!-- alternative creature -->
+		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
+			<parameter name="creature">dwugłowy czarny smok</parameter>
+			<parameter name="factory">0.75</parameter>
+			<parameter name="spawnX">60</parameter>
+			<parameter name="spawnY">10</parameter>
+			<parameter name="dropItem">mgielny kamień</parameter>
+			<parameter name="dropRate">7.0</parameter>
+		</configurator>
+
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
 				<parameter name="sound">pol-inthedark3</parameter>
