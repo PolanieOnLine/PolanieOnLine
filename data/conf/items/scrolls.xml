@@ -483,7 +483,7 @@
 
 	<item name="mgielny kamień">
     	<type class="scroll" subclass="stonemist" tileid="-1"/>
-    	<description>Oto mgielny kamień, wyglądem przypominający jakiś artefakt z innego wymiaru spowitego mgłą. Emanuje tajemniczymi siłami i magiczną mocą.</description>
+    	<description>Oto mgielny kamień, przypominający artefakt z innego wymiaru spowitego mgłą oraz emanuje tajemniczą aurą.</description>
     	<implementation class-name="games.stendhal.server.entity.item.scroll.StonemistScroll"/>
     	<attributes>
     		<autobind value=""/>
