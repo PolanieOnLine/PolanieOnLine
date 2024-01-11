@@ -2,7 +2,7 @@
 <zones xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="stendhal ../zones.xsd ">
 
-	<zone name="alt_dragon_land_n" level="1" x="513824" y="18048" file="Level 0/dragon/land_n.tmx">
+	<zone name="alt_0_dragon_land_n" level="1" x="513824" y="18048" file="Level 0/dragon/land_n.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
 
 		<!-- Alternative creatures -->
@@ -24,7 +24,7 @@
 		</entity>
 	</zone>
 
-	<zone name="alt_dragon_land_s" level="1" x="513824" y="18176" file="Level 0/dragon/land_s.tmx">
+	<zone name="alt_0_dragon_land_s" level="1" x="513824" y="18176" file="Level 0/dragon/land_s.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
 
 		<!-- Alternative creatures -->
@@ -46,7 +46,7 @@
 		</entity>
 	</zone>
 
-	<zone name="alt_zakopane_clouds" file="Level 6/zakopane/clouds.tmx">
+	<zone name="alt_6_zakopane_clouds" file="Level 6/zakopane/clouds.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
 
 		<!-- Alternative creatures -->

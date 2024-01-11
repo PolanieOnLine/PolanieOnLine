@@ -71,7 +71,7 @@ public class StonemistScroll extends Item {
 				createWarningBeforeRetransport(player, timeInTurns);
 				createReTransportTimer(player, timeInTurns);
 
-				player.setQuest("alt_teleportback", player.getZone().getName());
+				player.setQuest("alt_teleportback", "true");
 				player.setQuest("alt_usedtime", Integer.toString((int) (System.currentTimeMillis() / 1000)));
 				player.teleport(zone, player.getX(), player.getY(), null, player);
 				player.sendPrivateText(NotificationType.CLIENT, "Kamień otworzył portal i wciągnął cię do środka...");
@@ -102,21 +102,28 @@ public class StonemistScroll extends Item {
 		}
 	}
 
+	private String removeAltPrefix(String zoneName) {
+		if (zoneName.startsWith("alt_")) {
+			return zoneName.substring(4);
+		}
+		return zoneName;
+	}
+
 	private boolean checkZones(Player player, List<String> zones) {
-		String[] currentPlayerZone = player.getZone().getName().split("_");
-		if (currentPlayerZone.length < 3) {
+		String currentPlayerZone = removeAltPrefix(player.getZone().getName());
+		if (currentPlayerZone.length() < 3) {
 			return false;
 		}
 
 		for (String zone : zones) {
-			String[] zoneParts = zone.split("_");
-			if (zoneParts.length != currentPlayerZone.length) {
+			String zoneWithoutAlt = removeAltPrefix(zone);
+			if (zoneWithoutAlt.length() != currentPlayerZone.length()) {
 				continue;
 			}
 
 			boolean matches = true;
-			for (int i = 1; i < currentPlayerZone.length; i++) {
-				if (!zoneParts[i].equals(currentPlayerZone[i])) {
+			for (int i = 1; i < currentPlayerZone.length(); i++) {
+				if (zoneWithoutAlt.charAt(i) != currentPlayerZone.charAt(i)) {
 					matches = false;
 					break;
 				}
@@ -152,7 +159,7 @@ public class StonemistScroll extends Item {
 	}
 
 	public boolean teleportBack(final Player player) {
-		final StendhalRPZone returnZone = SingletonRepository.getRPWorld().getZone(player.getQuest("alt_teleportback"));
+		final StendhalRPZone returnZone = SingletonRepository.getRPWorld().getZone(removeAltPrefix(player.getZone().getName()));
 		int returnX = player.getX();
 		int returnY = player.getY();
 

@@ -110,7 +110,7 @@ public class StendhalRPZone extends MarauroaRPZone {
 	 */
 	private static final double DANGER_WEIGHT_CREATURE_DENSITY = 1.0;
 
-	private static final Pattern ZONE_NAME_PATTERN = Pattern.compile("^(-?[\\d]|alt|int)_(.+)$");
+	private static final Pattern ZONE_NAME_PATTERN = Pattern.compile("^(-?[\\d]|alt_-?[\\d]|int)_(.+)$");
 
 	TeleportationRules teleRules = new TeleportationRules();
 
@@ -1895,7 +1895,6 @@ public class StendhalRPZone extends MarauroaRPZone {
 	 * @return translated zone name
 	 */
 	private static String translateZoneName(final String zoneName) {
-
 		if (zoneNameMappings.get(zoneName) != null) {
 			return zoneNameMappings.get(zoneName);
 		}
@@ -1907,7 +1906,7 @@ public class StendhalRPZone extends MarauroaRPZone {
 			String remainder = m.group(2);
 			if ("int".equals(level)) {
 				return "w budynku na " + Grammar.makeUpperCaseWord(getInteriorName(zoneName));
-			} else if ("alt".equals(level)) {
+			} else if (level.startsWith("alt")) {
 				return "w świecie alternatywnym " + Grammar.makeUpperCaseWord(getInteriorName(zoneName));
 			} else if (level.startsWith("-")) {
 				try {
@@ -2034,7 +2033,7 @@ public class StendhalRPZone extends MarauroaRPZone {
 			result.append(dirBuf);
 			if ("int".equals(level)) {
 				result.append(", budynek");
-			} else if ("alt".equals(level)) {
+			} else if (level.startsWith("alt")) {
 				result.append(", świat alternatywny");
 			} else if (level.matches("^-?\\d")) {
 				int levelValue = MathHelper.parseInt(level);
