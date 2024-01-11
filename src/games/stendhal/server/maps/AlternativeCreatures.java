@@ -80,7 +80,11 @@ public class AlternativeCreatures implements ZoneConfigurator {
 	}
 
 	private int configureStats(int value, double factor) {
-		return (int) (value * (1 + factor));
+		int result = (int) (value * (1 + factor));
+		if (result > Short.MAX_VALUE) {
+			return Short.MAX_VALUE;
+		}
+		return result;
 	}
 
 	private boolean isCreatureValid(final Map<String, String> attr) {
