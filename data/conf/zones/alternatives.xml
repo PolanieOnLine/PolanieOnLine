@@ -2,6 +2,118 @@
 <zones xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="stendhal ../zones.xsd ">
 
+	<!-- hell -->
+	<zone name="alt_hell" file="Level -2/nalwor/hell.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport" />
+
+		<!-- Alternative creatures -->
+		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
+			<parameter name="factor">0.75</parameter>
+		</configurator>
+
+		<attributes>
+			<parameter name="color_method">multiply</parameter>
+			<parameter name="color">#992024</parameter>
+			<parameter name="weather">fog_heavy</parameter>
+		</attributes>
+		
+		<entity x="0" y="0">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">ambiance-demon-1</parameter>
+				<parameter name="volume">120</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<!-- kikareukin_islands -->
+	<zone name="alt_6_kikareukin_islands" file="Level 6/kikareukin/islands.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
+
+		<!-- Alternative creatures -->
+		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
+			<parameter name="factor">0.5</parameter>
+		</configurator>
+
+		<attributes>
+			<parameter name="color_method">multiply</parameter>
+			<parameter name="color">#d28dfc</parameter>
+			<parameter name="weather">fog_heavy</parameter>
+		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">loop/wind-01</parameter>
+				<parameter name="volume">40</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<!-- koscielisko_ne -->
+	<zone name="alt_0_koscielisko_ne" level="1" x="513056" y="18432" file="Level 0/koscielisko/ne.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
+
+		<!-- Alternative creatures -->
+		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
+			<parameter name="factor">0.75</parameter>
+		</configurator>
+
+		<attributes>
+			<parameter name="color_method">multiply</parameter>
+			<parameter name="color">#99ffeb</parameter>
+			<parameter name="weather">snow_heavy</parameter>
+		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-inthedark1</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="45" y="45">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03</parameter>
+				<parameter name="min">20</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">40</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<!-- koscielisko_nw -->
+	<zone name="alt_0_koscielisko_nw" level="1" x="512928" y="18432" file="Level 0/koscielisko/nw.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
+
+		<!-- Alternative creatures -->
+		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
+			<parameter name="factor">0.75</parameter>
+		</configurator>
+
+		<attributes>
+			<parameter name="color_method">multiply</parameter>
+			<parameter name="color">#99ffeb</parameter>
+			<parameter name="weather">snow_heavy</parameter>
+		</attributes>
+
+		<entity x="1" y="1">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
+				<parameter name="sound">pol-inthedark1</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="45" y="45">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">bird-blackbird-01, bird-blackbird-02, bird-blackbird-03</parameter>
+				<parameter name="min">20</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">40</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<!-- dragon_land_n -->
 	<zone name="alt_0_dragon_land_n" level="1" x="513824" y="18048" file="Level 0/dragon/land_n.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
 
@@ -24,6 +136,7 @@
 		</entity>
 	</zone>
 
+	<!-- dragon_land_s -->
 	<zone name="alt_0_dragon_land_s" level="1" x="513824" y="18176" file="Level 0/dragon/land_s.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
 
@@ -46,6 +159,7 @@
 		</entity>
 	</zone>
 
+	<!-- zakopane_clouds -->
 	<zone name="alt_6_zakopane_clouds" file="Level 6/zakopane/clouds.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
 
