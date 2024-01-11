@@ -8,8 +8,8 @@
 	<!-- Ground level -->
 
 	<zone name="0_dragon_land_nw" level="0" x="513760" y="18048" file="Level 0/dragon/land_nw.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
+
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -28,8 +28,7 @@
 	</zone>
 
 	<zone name="0_dragon_land_n" level="0" x="513824" y="18048" file="Level 0/dragon/land_n.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
 
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.dragon.YoungBoyNPC"/>
@@ -83,8 +82,8 @@
 	</zone>
 
 	<zone name="0_dragon_land_ne" level="0" x="513952" y="18048" file="Level 0/dragon/land_ne.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
+
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -99,8 +98,8 @@
 	</zone>
 
 	<zone name="0_dragon_land_sw" level="0" x="513760" y="18176" file="Level 0/dragon/land_sw.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
+
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -115,8 +114,7 @@
 	</zone>
 
 	<zone name="0_dragon_land_s" level="0" x="513824" y="18176" file="Level 0/dragon/land_s.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
 
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.dragon.GuardianNPC"/>
@@ -158,8 +156,8 @@
 	</zone>
 
 	<zone name="0_dragon_land_se" level="0" x="513952" y="18176" file="Level 0/dragon/land_se.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
+
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -176,64 +174,64 @@
 	<!-- interiors -->
 
 	<zone name="int_dragon_house_1" file="interiors/dragon/dragon_house_1.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
+
 		<portal x="8" y="11" ref="dragon_house_1_exit">
 			<destination zone="0_dragon_land_n" ref="dragon_house_1_entrance"/>
 		</portal>
 	</zone>
 
 	<zone name="int_dragon_house_2" file="interiors/dragon/dragon_house_2.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
+
 		<portal x="8" y="11" ref="dragon_house_2_exit">
 			<destination zone="0_dragon_land_n" ref="dragon_house_2_entrance"/>
 		</portal>
 	</zone>
 
 	<zone name="int_dragon_house_3" file="interiors/dragon/dragon_house_3.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
+
 		<portal x="8" y="11" ref="dragon_house_3_exit">
 			<destination zone="0_dragon_land_n" ref="dragon_house_3_entrance"/>
 		</portal>
 	</zone>
 
 	<zone name="int_dragon_house_4" file="interiors/dragon/dragon_house_4.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
+
 		<portal x="8" y="11" ref="dragon_house_4_exit">
 			<destination zone="0_dragon_land_n" ref="dragon_house_4_entrance"/>
 		</portal>
 	</zone>
 
 	<zone name="int_dragon_house_5" file="interiors/dragon/dragon_house_5.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
+
 		<portal x="8" y="11" ref="dragon_house_5_exit">
 			<destination zone="0_dragon_land_n" ref="dragon_house_5_entrance"/>
 		</portal>
 	</zone>
 
 	<zone name="int_dragon_house_6" file="interiors/dragon/dragon_house_6.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
+
 		<portal x="8" y="11" ref="dragon_house_6_exit">
 			<destination zone="0_dragon_land_n" ref="dragon_house_6_entrance"/>
 		</portal>
 	</zone>
 
 	<zone name="int_dragon_workshop" file="interiors/dragon/dragon_workshop.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
+
 		<portal x="8" y="11" ref="dragon_workshop_exit">
 			<destination zone="0_dragon_land_n" ref="dragon_workshop_entrance"/>
 		</portal>
 	</zone>
 
 	<zone name="int_dragon_castle" file="interiors/dragon/castle_hallway.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
+
 		<portal x="7" y="38" ref="dragons_castle_exit">
 			<destination zone="0_dragon_land_n" ref="dragons_castle_entrance"/>
 		</portal>
@@ -258,8 +256,8 @@
 	</zone>
 
 	<zone name="int_dragon_castle_room_1" file="interiors/dragon/castle_room1.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
+
 		<portal x="13" y="7" ref="castle_room_11_exit">
 			<destination zone="int_dragon_castle" ref="castle_room_11_entrance"/>
 		</portal>
@@ -269,8 +267,8 @@
 	</zone>
 
 	<zone name="int_dragon_castle_room_2" file="interiors/dragon/castle_room2.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
+
 		<portal x="13" y="7" ref="castle_room_21_exit">
 			<destination zone="int_dragon_castle" ref="castle_room_21_entrance"/>
 		</portal>
@@ -280,8 +278,8 @@
 	</zone>
 
 	<zone name="int_dragon_castle_room_3" file="interiors/dragon/castle_room3.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
+
 		<portal x="13" y="7" ref="castle_room_31_exit">
 			<destination zone="int_dragon_castle" ref="castle_room_31_entrance"/>
 		</portal>
@@ -291,8 +289,8 @@
 	</zone>
 
 	<zone name="int_dragon_castle_room_4" file="interiors/dragon/castle_room4.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
+
 		<portal x="1" y="7" ref="castle_room_41_exit">
 			<destination zone="int_dragon_castle" ref="castle_room_41_entrance"/>
 		</portal>
@@ -302,8 +300,8 @@
 	</zone>
 
 	<zone name="int_dragon_castle_room_5" file="interiors/dragon/castle_room5.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
+
 		<portal x="1" y="7" ref="castle_room_51_exit">
 			<destination zone="int_dragon_castle" ref="castle_room_51_entrance"/>
 		</portal>
@@ -313,8 +311,8 @@
 	</zone>
 
 	<zone name="int_dragon_castle_room_6" file="interiors/dragon/castle_room6.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
+
 		<portal x="1" y="7" ref="castle_room_61_exit">
 			<destination zone="int_dragon_castle" ref="castle_room_61_entrance"/>
 		</portal>
@@ -327,8 +325,8 @@
 	</zone>
 
 	<zone name="int_dragon_castle_dragon_npc" file="interiors/dragon/castle_dragon_npc.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
+
 		<portal x="8" y="11" ref="castle_dragon_npc_entrance">
 			<destination zone="int_dragon_castle_room_3" ref="castle_dragon_npc_exit"/>
 		</portal>
@@ -341,8 +339,8 @@
 	</zone>
 
 	<zone name="int_dragon_castle_dragon" file="interiors/dragon/castle_dragon.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
+
 		<portal x="3" y="18" ref="castles_dragon_1_exit">
 			<destination zone="int_dragon_castle_dragon_npc" ref="castles_dragon_1_entrance"/>
 		</portal>
@@ -355,7 +353,7 @@
 	</zone>
 
 	<zone name="int_dragon_wizard_tower_0" file="interiors/dragon/wizard_tower_0.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
 
 		<portal x="11" y="4" ref="wizardtower_firstfloor_entrance">
 			<destination zone="int_dragon_wizard_tower_1" ref="wizardtower_firstfloor_exit"/>
@@ -376,7 +374,7 @@
 	</zone>
 
 	<zone name="int_dragon_wizard_tower_1" file="interiors/dragon/wizard_tower_1.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
 
 		<portal x="11" y="4" ref="wizardtower_firstfloor_exit">
 			<destination zone="int_dragon_wizard_tower_0" ref="wizardtower_firstfloor_entrance"/>
@@ -387,7 +385,7 @@
 	</zone>
 
 	<zone name="int_dragon_wizard_tower_2" file="interiors/dragon/wizard_tower_2.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
 
 		<entity x="11" y="4">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.area.MessagingArea">
@@ -407,7 +405,7 @@
 	</zone>
 
 	<zone name="int_dragon_wizard_tower_3" file="interiors/dragon/wizard_tower_3.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
 
 		<entity x="11" y="4">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.area.MessagingArea">
@@ -464,7 +462,7 @@
 	</zone>
 
 	<zone name="int_dragon_wizard_tower_4" file="interiors/dragon/wizard_tower_4.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
 
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.dragon.wizardtower.WizardNPC"/>
@@ -478,7 +476,7 @@
 	</zone>
 
 	<zone name="int_dragon_wizard_tower_room_1" file="interiors/dragon/wizard_tower_room_1.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
 
 		<entity x="0" y="0">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.area.MessagingArea">
@@ -503,7 +501,7 @@
 	</zone>
 
 	<zone name="int_dragon_wizard_tower_room_2" file="interiors/dragon/wizard_tower_room_2.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
 		<attributes>
 			<parameter name="weather">rain_heavy</parameter>
 		</attributes>
@@ -524,7 +522,7 @@
 	</zone>
 
 	<zone name="int_dragon_wizard_tower_room_3" file="interiors/dragon/wizard_tower_room_3.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
 		<attributes>
 			<parameter name="color_method">softlight</parameter>
 			<parameter name="color">#0c4774</parameter>
@@ -627,7 +625,7 @@
 	</zone>
 
 	<zone name="int_dragon_wizard_tower_room_4" file="interiors/dragon/wizard_tower_room_4.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
 		<attributes>
 			<parameter name="color_method">softlight</parameter>
 			<parameter name="color">#0099da</parameter>
@@ -657,7 +655,7 @@
 	</zone>
 
 	<zone name="int_dragon_wizard_tower_room_5" file="interiors/dragon/wizard_tower_room_5.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
 		<attributes>
 			<parameter name="weather">fog</parameter>
 		</attributes>
@@ -678,7 +676,7 @@
 	</zone>
 
 	<zone name="int_dragon_wizard_tower_room_6" file="interiors/dragon/wizard_tower_room_6.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
 		<attributes>
 			<parameter name="weather">fog_heavy</parameter>
 		</attributes>
@@ -692,7 +690,7 @@
 	</zone>
 
 	<zone name="int_dragon_wizard_tower_room_7" file="interiors/dragon/wizard_tower_room_7.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
 
 		<portal x="29" y="10" ref="wizardtower_room7_exit">
 			<destination zone="int_dragon_wizard_tower_3" ref="wizardtower_room7_entrance"/>
@@ -700,7 +698,7 @@
 	</zone>
 
 	<zone name="int_dragon_wizard_tower_room_8" file="interiors/dragon/wizard_tower_room_8.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
 
 		<portal x="22" y="10" ref="wizardtower_room8_exit">
 			<destination zone="int_dragon_wizard_tower_3" ref="wizardtower_room8_entrance"/>
@@ -710,8 +708,8 @@
 	<!-- Level -1 -->
 
 	<zone name="-1_dragon_cave" level="-1" x="513824" y="18150" file="Level -1/dragon/cave.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
+
 
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.dragon.cave.eFuRNPC"/>
@@ -1384,8 +1382,8 @@ Uciekaj!</attribute>
 	</zone>
 	
 	<zone name="-1_dragon_cave_s" level="-1" x="513824" y="18300" file="Level -1/dragon/cave_s.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
+
 		<attributes>
 			<parameter name="color_method">dark</parameter>
 		</attributes>
@@ -2005,8 +2003,8 @@ Uciekaj!</attribute>
 	<!-- Level -2 -->
 
 	<zone name="-2_water_trap" level="-2" x="513696" y="18176" file="interiors/abstract/trap_water.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
+
 		<entity x="0" y="0">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.area.DamagingArea">
 				<parameter name="width">10</parameter>
@@ -2021,8 +2019,8 @@ Uciekaj!</attribute>
 	</zone>
 
 	<zone name="-2_poison_pit" level="-2" x="513707" y="18176" file="interiors/abstract/trap_poison.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
+
 		<entity x="0" y="0">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.area.DamagingArea">
 				<parameter name="width">10</parameter>
@@ -2041,8 +2039,8 @@ Uciekaj!</attribute>
 	</zone>
 
 	<zone name="-2_spikes_pit" level="-2" x="513718" y="18176" file="interiors/abstract/trap_spikes.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportOut"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
+
 		<entity x="0" y="0">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.area.DamagingArea">
 				<parameter name="width">10</parameter>
@@ -2057,7 +2055,7 @@ Uciekaj!</attribute>
 	</zone>
 	
 	<zone name="-2_dragon_cave" level="-2" x="513824" y="18176" file="Level -2/dragon/cave.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
 		<attributes>
 			<parameter name="color_method">dark</parameter>
 		</attributes>
@@ -2086,7 +2084,7 @@ Uciekaj!</attribute>
 	<!-- Level -3 -->
 
 	<zone name="-3_dragon_cave" level="-3" x="513824" y="18176" file="Level -3/dragon/cave.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
 		<attributes>
 			<parameter name="color_method">dark</parameter>
 		</attributes>
@@ -2106,7 +2104,7 @@ Uciekaj!</attribute>
 	<!-- Level -4 -->
 
 	<zone name="-4_dragon_cave" level="-4" x="513824" y="18176" file="Level -4/dragon/cave.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
 		<attributes>
 			<parameter name="color_method">dark</parameter>
 		</attributes>
