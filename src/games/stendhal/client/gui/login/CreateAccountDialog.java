@@ -272,7 +272,7 @@ public class CreateAccountDialog extends JDialog {
 		} catch (final NumberFormatException ex) {
 			JOptionPane.showMessageDialog(getOwner(),
 					"Niewłaściwy numer portu. Spróbuj ponownie.",
-					"Niewłaściwy Port", JOptionPane.WARNING_MESSAGE);
+					"Niewłaściwy port", JOptionPane.WARNING_MESSAGE);
 			return;
 		}
 		finalPort = port;
@@ -416,8 +416,8 @@ public class CreateAccountDialog extends JDialog {
 				// didn't like the password for some reason, show a dialog and
 				// try again
 				final int i = JOptionPane.showOptionDialog(owner, badPasswordReason,
-						"Niewałaściwe Hasło", JOptionPane.YES_NO_OPTION,
-						JOptionPane.WARNING_MESSAGE, null, null, 1);
+						"Niewłaściwe hasło", JOptionPane.YES_NO_OPTION,
+						JOptionPane.WARNING_MESSAGE, null, new String[]{"Tak", "Nie"}, 1);
 
 				if (i == JOptionPane.NO_OPTION) {
 					return false;
@@ -439,7 +439,7 @@ public class CreateAccountDialog extends JDialog {
 					"Czy mimo to chcesz kontynuować?";
 			final int i = JOptionPane.showOptionDialog(owner, warning, badEmailTitle,
 					JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE,
-					null, null, 1);
+					null, new String[]{"Tak", "Nie"}, 1);
 			if (i != 0) {
 				// no, let me type a valid email
 				return false;
