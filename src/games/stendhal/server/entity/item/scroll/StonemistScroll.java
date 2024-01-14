@@ -83,11 +83,11 @@ public class StonemistScroll extends Item {
 		return false;
 	}
 
-	boolean isTimePassed(final Player player) {
+	private boolean isTimePassed(final Player player) {
 		return (currentTime(player) <= 0L);
 	}
 
-	int currentTime(final Player player) {
+	private int currentTime(final Player player) {
 		if (player.getQuest("alt_usedtime") == null) {
 			return 0;
 		}
