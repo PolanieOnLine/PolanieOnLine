@@ -4,7 +4,8 @@
 
 	<!-- hell -->
 	<zone name="alt_hell" file="Level -2/nalwor/hell.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport" />
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
+		<configurator class-name="games.stendhal.server.maps.AlternativeZone"/>
 
 		<!-- Alternative creatures -->
 		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
@@ -29,6 +30,7 @@
 	<!-- kikareukin_islands -->
 	<zone name="alt_6_kikareukin_islands" file="Level 6/kikareukin/islands.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
+		<configurator class-name="games.stendhal.server.maps.AlternativeZone"/>
 
 		<!-- Alternative creatures -->
 		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
@@ -52,6 +54,7 @@
 	<!-- koscielisko_ne -->
 	<zone name="alt_0_koscielisko_ne" level="1" x="513056" y="18432" file="Level 0/koscielisko/ne.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
+		<configurator class-name="games.stendhal.server.maps.AlternativeZone"/>
 
 		<!-- Alternative creatures -->
 		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
@@ -84,6 +87,7 @@
 	<!-- koscielisko_nw -->
 	<zone name="alt_0_koscielisko_nw" level="1" x="512928" y="18432" file="Level 0/koscielisko/nw.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
+		<configurator class-name="games.stendhal.server.maps.AlternativeZone"/>
 
 		<!-- Alternative creatures -->
 		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
@@ -116,6 +120,7 @@
 	<!-- dragon_land_n -->
 	<zone name="alt_0_dragon_land_n" level="1" x="513824" y="18048" file="Level 0/dragon/land_n.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
+		<configurator class-name="games.stendhal.server.maps.AlternativeZone"/>
 
 		<!-- Alternative creatures -->
 		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
@@ -139,6 +144,7 @@
 	<!-- dragon_land_s -->
 	<zone name="alt_0_dragon_land_s" level="1" x="513824" y="18176" file="Level 0/dragon/land_s.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
+		<configurator class-name="games.stendhal.server.maps.AlternativeZone"/>
 
 		<!-- Alternative creatures -->
 		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
@@ -162,6 +168,7 @@
 	<!-- zakopane_clouds -->
 	<zone name="alt_6_zakopane_clouds" file="Level 6/zakopane/clouds.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
+		<configurator class-name="games.stendhal.server.maps.AlternativeZone"/>
 
 		<!-- Alternative creatures -->
 		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
