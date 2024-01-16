@@ -44,7 +44,7 @@ public class StonemistScroll extends Item {
 	public boolean onUsed(final RPEntity user) {
 		if (user instanceof Player) {
 			if (((Player) user).getQuest("alt_teleportback") != null)
-				return teleportBack((Player) user);
+				return teleportBack((Player) user, true);
 			else
 				return findAltZonesAndTeleport((Player) user);
 		}
@@ -157,20 +157,31 @@ public class StonemistScroll extends Item {
 				player.getZone(),
 				"Portal utworzony przez kamień słabnie, odczuwasz wrażenie potrzeby powrotu do swojego świata!"));
 	}
+	
+	private StendhalRPZone getRPZone(String zone) {
+		return SingletonRepository.getRPWorld().getZone(zone);
+	}
 
 	public boolean teleportBack(final Player player) {
-		final StendhalRPZone returnZone = SingletonRepository.getRPWorld().getZone(removeAltPrefix(player.getZone().getName()));
+		return teleportBack(player, false);
+	}
+
+	private boolean teleportBack(final Player player, boolean sendMessage) {
+		final StendhalRPZone returnZone = getRPZone(removeAltPrefix(player.getZone().getName()));
 		int returnX = player.getX();
 		int returnY = player.getY();
 
 		player.removeQuest("alt_teleportback");
 		boolean result = player.teleport(returnZone, returnX, returnY, null, player);
-		player.sendPrivateText(NotificationType.WARNING, "Moc kamienia tymczasowo się wyczerpała... Wymuszono na tobie powrót do realnego świata.");
+
+		if (sendMessage) {
+			player.sendPrivateText(NotificationType.WARNING, "Moc kamienia tymczasowo się wyczerpała... Wymuszono na tobie powrót do realnego świata.");
+		}
 
 		return result;
 	}
 
-	class TimedTeleportTurnListener implements TurnListener {
+	private class TimedTeleportTurnListener implements TurnListener {
 		private final Player player;
 
 		TimedTeleportTurnListener(final Player player) {
@@ -183,7 +194,7 @@ public class StonemistScroll extends Item {
 		}
 	}
 
-	static class TimedTeleportWarningTurnListener implements TurnListener {
+	private static class TimedTeleportWarningTurnListener implements TurnListener {
 		private final Player player;
 		private final StendhalRPZone zone;
 		private final String warningMessage;
