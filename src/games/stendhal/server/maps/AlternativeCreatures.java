@@ -69,19 +69,23 @@ public class AlternativeCreatures implements ZoneConfigurator {
 
 	private void creatureAttributes(Creature c, double factor) {
 		c.setName("mgielny " + c.getName());
-		c.setAtk(configureStats(c.getAtk(), factor));
-		c.setDef(configureStats(c.getDef(), factor));
-		c.setBaseHP(configureStats(c.getBaseHP(), factor));
-		c.setHP(configureStats(c.getHP(), factor));
-		c.setXP(configureStats(c.getXP(), factor));
-		c.setLevel(configureStats(c.getLevel(), factor));
+		c.setAtk(calculateStat(c.getAtk(), factor));
+		c.setDef(calculateStat(c.getDef(), factor));
+		c.setBaseHP(calculateStat(c.getBaseHP(), factor, true));
+		c.setHP(calculateStat(c.getHP(), factor, true));
+		c.setXP(calculateStat(c.getXP(), factor));
+		c.setLevel(calculateStat(c.getLevel(), factor));
 
 		c.addDropItem("kryształ ciemnolitu", 0.2, 1);
 	}
 
-	private int configureStats(int value, double factor) {
+	private int calculateStat(int value, double factor) {
+		return calculateStat(value, factor, false);
+	}
+
+	private int calculateStat(int value, double factor, boolean checkMaxValue) {
 		int result = (int) (value * (1 + factor));
-		if (result > Short.MAX_VALUE) {
+		if (checkMaxValue && result > Short.MAX_VALUE) {
 			return Short.MAX_VALUE;
 		}
 		return result;
