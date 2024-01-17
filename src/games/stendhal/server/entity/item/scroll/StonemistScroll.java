@@ -12,7 +12,6 @@
 package games.stendhal.server.entity.item.scroll;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -58,12 +57,11 @@ public class StonemistScroll extends Item {
 			return false;
 		}
 
-		List<String> altZones = new ArrayList<>();
 		for (IRPZone irpZone : SingletonRepository.getRPWorld()) {
 			StendhalRPZone zone = (StendhalRPZone) irpZone;
-			String[] zoneParts = zone.getName().split("_");
 
-			if (containsAlt(zoneParts)) {
+			List<String> altZones = new ArrayList<>();
+			if (containsAlt(zone.getName())) {
 				altZones.add(zone.getName());
 			}
 
@@ -102,8 +100,8 @@ public class StonemistScroll extends Item {
 		}
 	}
 
-	private String removeAltPrefix(String zoneName) {
-		if (zoneName.startsWith("alt_")) {
+	public String removeAltPrefix(String zoneName) {
+		if (containsAlt(zoneName)) {
 			return zoneName.substring(4);
 		}
 		return zoneName;
@@ -137,13 +135,12 @@ public class StonemistScroll extends Item {
 		return false;
 	}
 
-	private boolean playerIsSimiliarZone(Player player, List<String> altZones) {
+	public boolean playerIsSimiliarZone(Player player, List<String> altZones) {
 		return checkZones(player, altZones);
 	}
 
-	private boolean containsAlt(String[] zoneParts) {
-		List<String> zoneMatches = Arrays.asList(zoneParts);
-		return zoneMatches.contains("alt");
+	public boolean containsAlt(String zone) {
+		return zone.startsWith("alt_");
 	}
 
 	private void createReTransportTimer(final Player player, final int timeInTurns) {
@@ -157,7 +154,7 @@ public class StonemistScroll extends Item {
 				player.getZone(),
 				"Portal utworzony przez kamień słabnie, odczuwasz wrażenie potrzeby powrotu do swojego świata!"));
 	}
-	
+
 	private StendhalRPZone getRPZone(String zone) {
 		return SingletonRepository.getRPWorld().getZone(zone);
 	}

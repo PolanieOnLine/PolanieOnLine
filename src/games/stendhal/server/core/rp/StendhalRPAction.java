@@ -30,6 +30,7 @@ import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.engine.db.StendhalKillLogDAO;
 import games.stendhal.server.core.events.TutorialNotifier;
+import games.stendhal.server.core.events.ZoneAlternativeNotifier;
 import games.stendhal.server.core.events.ZoneNotifier;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.core.pathfinder.Path;
@@ -794,6 +795,7 @@ public class StendhalRPAction {
 
 					TutorialNotifier.zoneChange(player, source, destination);
 					ZoneNotifier.zoneChange(player, source, destination);
+					ZoneAlternativeNotifier.zoneChange(player, source, destination);
 				}
 			}
 		}
