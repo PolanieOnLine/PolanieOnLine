@@ -6,10 +6,14 @@ import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.LoginListener;
+import games.stendhal.server.core.rule.EntityManager;
 import games.stendhal.server.entity.item.scroll.StonemistScroll;
 import games.stendhal.server.entity.player.Player;
 
 public class AlternativeZone implements ZoneConfigurator {
+	private static final EntityManager em = SingletonRepository.getEntityManager();
+	private final StonemistScroll stoneMist = (StonemistScroll) em.getItem("mgielny kamień");
+
 	/**
 	 * Configure a zone.
 	 *
@@ -21,8 +25,7 @@ public class AlternativeZone implements ZoneConfigurator {
 		SingletonRepository.getLoginNotifier().addListener(new LoginListener() {
 			@Override
 			public void onLoggedIn(final Player player) {
-				StonemistScroll stonemist = (StonemistScroll) SingletonRepository.getEntityManager().getItem("mgielny kamień");
-				stonemist.teleportBack(player);
+				stoneMist.teleportBack(player);
 			}
 		});
 	}
