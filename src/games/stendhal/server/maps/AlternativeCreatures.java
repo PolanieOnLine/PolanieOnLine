@@ -20,6 +20,12 @@ import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
 
 public class AlternativeCreatures implements ZoneConfigurator {
+	/**
+	 * Configures the zone with alternative creatures based on the provided attributes.
+	 *
+	 * @param zone       The StendhalRPZone to be configured.
+	 * @param attributes A map containing attributes for configuring the zone.
+	 */
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		double factor = 0.1;
@@ -52,6 +58,12 @@ public class AlternativeCreatures implements ZoneConfigurator {
 		}
 	}
 
+	/**
+	 * Adds a special item drop to the given creature based on the provided attributes.
+	 *
+	 * @param monster The creature to receive the special item drop.
+	 * @param attr    A map containing attributes for configuring the special item drop.
+	 */
 	private void dropSpecialItem(final Creature monster, final Map<String, String> attr) {
 		if (attr.containsKey("dropItem") && attr.containsKey("dropRate")) {
 			double probability = Double.parseDouble(attr.get("dropRate"));
@@ -67,6 +79,12 @@ public class AlternativeCreatures implements ZoneConfigurator {
 		}
 	}
 
+	/**
+	 * Adjusts the attributes of the given creature based on the provided factor.
+	 *
+	 * @param c      The creature to be modified.
+	 * @param factor The factor by which to adjust the creature's attributes.
+	 */
 	private void creatureAttributes(Creature c, double factor) {
 		c.setName("mgielny " + c.getName());
 		c.setAtk(calculateStat(c.getAtk(), factor));
@@ -79,10 +97,25 @@ public class AlternativeCreatures implements ZoneConfigurator {
 		c.addDropItem("kryształ ciemnolitu", 0.2, 1);
 	}
 
+	/**
+	 * Calculates a new stat value based on the original value and a given factor.
+	 *
+	 * @param value         The original stat value.
+	 * @param factor        The factor by which to adjust the stat.
+	 * @return              The adjusted stat value.
+	 */
 	private int calculateStat(int value, double factor) {
 		return calculateStat(value, factor, false);
 	}
 
+	/**
+	 * Calculates a new stat value based on the original value, a given factor, and an option to check for the maximum value.
+	 *
+	 * @param value          The original stat value.
+	 * @param factor         The factor by which to adjust the stat.
+	 * @param checkMaxValue  A flag indicating whether to check for the maximum value.
+	 * @return               The adjusted stat value.
+	 */
 	private int calculateStat(int value, double factor, boolean checkMaxValue) {
 		int result = (int) (value * (1 + factor));
 		if (checkMaxValue && result > Short.MAX_VALUE) {
@@ -91,6 +124,12 @@ public class AlternativeCreatures implements ZoneConfigurator {
 		return result;
 	}
 
+	/**
+	 * Checks if the provided attributes contain valid creature information for spawning.
+	 *
+	 * @param attr A map containing attributes to be validated.
+	 * @return     True if the attributes are valid for creature spawning, otherwise false.
+	 */
 	private boolean isCreatureValid(final Map<String, String> attr) {
 		return attr.containsKey("creature") && attr.containsKey("spawnX") && attr.containsKey("spawnY");
 	}

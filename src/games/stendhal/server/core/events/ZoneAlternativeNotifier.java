@@ -27,14 +27,11 @@ public class ZoneAlternativeNotifier {
 	private static final StonemistScroll stoneMist = (StonemistScroll) em.getItem("mgielny kamień");
 
 	/**
-	 * Zone changes.
+	 * Handles zone changes for player and notifies about alternative teleportation options.
 	 *
-	 * @param player
-	 *			Player
-	 * @param sourceZone
-	 *			source zone
-	 * @param destinationZone
-	 *			destination zone
+	 * @param player           The player undergoing a zone change.
+	 * @param sourceZone       The source zone from which the player is moving.
+	 * @param destinationZone  The destination zone to which the player is moving.
 	 */
 	public static void zoneChange(final Player player, final String sourceZone,
 			final String destinationZone) {
@@ -45,6 +42,13 @@ public class ZoneAlternativeNotifier {
 		}
 	}
 
+	/**
+	 * Handles alternative zones for a player in a specific zone during a zone change.
+	 *
+	 * @param player           The player undergoing a zone change.
+	 * @param zone             The current zone being processed.
+	 * @param destinationZone  The destination zone to which the player is moving.
+	 */
 	private static void handleAltZones(Player player, StendhalRPZone zone, String destinationZone) {
 		List<String> altZones = new ArrayList<>();
 		if (stoneMist.containsAlt(zone.getName())) {
@@ -55,7 +59,14 @@ public class ZoneAlternativeNotifier {
 			notifyPlayerAboutAltTeleport(player, zone, destinationZone);
 		}
 	}
-	
+
+	/**
+	 * Notifies the player about the possibility of alternative teleportation.
+	 *
+	 * @param player           The player to be notified.
+	 * @param zone             The current zone being processed.
+	 * @param destinationZone  The destination zone to which the player is moving.
+	 */
 	private static void notifyPlayerAboutAltTeleport(Player player, StendhalRPZone zone, String destinationZone) {
 		if (player.isEquipped(stoneMist.getName()) && destinationZone.equals(stoneMist.removeAltPrefix(zone.getName()))) {
 			new DelayedPlayerTextSender(player, "Mgielny kamień drży i pulsuje tajemniczą energią. Wydaje się to być dobry moment i miejsce na stworzenie przejścia między światami...", NotificationType.SCENE_SETTING, 2);

@@ -27,14 +27,28 @@ import games.stendhal.server.util.TimeUtil;
 import marauroa.common.game.IRPZone;
 
 public class StonemistScroll extends Item {
+	// Constants for usage time and turn duration
 	private static final int MIN_USETIME = 1 * 60; // 1 hour
 	private final int timeInTurns = 24000; // 200 turns = 1 minute, 24000 = 2 hours
 
+	/**
+	 * Constructor for StonemistScroll.
+	 *
+	 * @param name       The name of the item.
+	 * @param clazz      The class of the item.
+	 * @param subclass   The subclass of the item.
+	 * @param attributes Additional attributes for the item.
+	 */
 	public StonemistScroll(final String name, final String clazz, final String subclass,
 			final Map<String, String> attributes) {
 		super(name, clazz, subclass, attributes);
 	}
 
+	/**
+	 * Copy constructor for StonemistScroll.
+	 *
+	 * @param item The StonemistScroll item to copy.
+	 */
 	public StonemistScroll(final StonemistScroll item) {
 		super(item);
 	}
@@ -50,6 +64,9 @@ public class StonemistScroll extends Item {
 		return false;
 	}
 
+	/**
+	 * Find alternative zones and initiate teleportation
+	 */
 	private boolean findAltZonesAndTeleport(Player player) {
 		if (!isTimePassed(player)) {
 			player.sendPrivateText("Wciąż wyczuwasz jak mgielny kamień zbiera energię do ponownego otworzenia portalu. "
@@ -77,14 +94,27 @@ public class StonemistScroll extends Item {
 			}
 		}
 
+		// Display a message if the Stonemist Scroll didn't do anything
 		player.sendPrivateText("Dziwnie błyszczący się kamień nic nie zrobił...");
 		return false;
 	}
 
+	/**
+	 * Checks if enough time has passed since the last usage of the StonemistScroll.
+	 *
+	 * @param player The player using the StonemistScroll.
+	 * @return True if enough time has passed, false otherwise.
+	 */
 	private boolean isTimePassed(final Player player) {
 		return (currentTime(player) <= 0L);
 	}
 
+	/**
+	 * Calculates the remaining time until the StonemistScroll can be used again.
+	 *
+	 * @param player The player using the StonemistScroll.
+	 * @return The remaining time in seconds.
+	 */
 	private int currentTime(final Player player) {
 		if (player.getQuest("alt_usedtime") == null) {
 			return 0;
@@ -100,6 +130,12 @@ public class StonemistScroll extends Item {
 		}
 	}
 
+	/**
+	 * Removes the "alt_" prefix from a zone name if present.
+	 *
+	 * @param zoneName The original zone name.
+	 * @return The zone name without the "alt_" prefix.
+	 */
 	public String removeAltPrefix(String zoneName) {
 		if (containsAlt(zoneName)) {
 			return zoneName.substring(4);
@@ -135,19 +171,44 @@ public class StonemistScroll extends Item {
 		return false;
 	}
 
+	/**
+	 * Checks if the player's zone is similar to any of the provided alternative zones.
+	 *
+	 * @param player   The player to check.
+	 * @param altZones The list of alternative zones.
+	 * @return True if the player's zone is similar to any of the alternative zones, false otherwise.
+	 */
 	public boolean playerIsSimiliarZone(Player player, List<String> altZones) {
 		return checkZones(player, altZones);
 	}
 
+	/**
+	 * Checks if a zone name contains the "alt_" prefix.
+	 *
+	 * @param zone The zone name to check.
+	 * @return True if the zone name contains the "alt_" prefix, false otherwise.
+	 */
 	public boolean containsAlt(String zone) {
 		return zone.startsWith("alt_");
 	}
 
+	/**
+	 * Creates a timer for re-transporting the player after a specified number of turns.
+	 *
+	 * @param player      The player to be re-transported.
+	 * @param timeInTurns The number of turns after which the re-transport should occur.
+	 */
 	private void createReTransportTimer(final Player player, final int timeInTurns) {
 		SingletonRepository.getTurnNotifier().notifyInTurns(timeInTurns,
 				new TimedTeleportTurnListener(player));
 	}
 
+	/**
+	 * Creates a warning timer before re-transporting the player.
+	 *
+	 * @param player      The player to receive the warning.
+	 * @param timeInTurns The number of turns before re-transport when the warning should be sent.
+	 */
 	private void createWarningBeforeRetransport(final Player player, final int timeInTurns) {
 		SingletonRepository.getTurnNotifier().notifyInTurns((int) (timeInTurns * 0.9),
 			new TimedTeleportWarningTurnListener(player,
@@ -163,6 +224,13 @@ public class StonemistScroll extends Item {
 		return teleportBack(player, false);
 	}
 
+	/**
+	 * Teleports the player back to the original zone.
+	 *
+	 * @param player      The player to be teleported.
+	 * @param sendMessage True if a message should be sent to the player, false otherwise.
+	 * @return True if the teleportation was successful, false otherwise.
+	 */
 	private boolean teleportBack(final Player player, boolean sendMessage) {
 		final StendhalRPZone returnZone = getRPZone(removeAltPrefix(player.getZone().getName()));
 		int returnX = player.getX();
@@ -178,9 +246,17 @@ public class StonemistScroll extends Item {
 		return result;
 	}
 
+	/**
+	 * Listener for the timed teleportation turn event.
+	 */
 	private class TimedTeleportTurnListener implements TurnListener {
 		private final Player player;
 
+		/**
+		 * Constructor for TimedTeleportTurnListener.
+		 *
+		 * @param player The player associated with the listener.
+		 */
 		TimedTeleportTurnListener(final Player player) {
 			this.player = player;
 		}
@@ -191,11 +267,21 @@ public class StonemistScroll extends Item {
 		}
 	}
 
+	/**
+	 * Listener for the timed teleportation warning turn event.
+	 */
 	private static class TimedTeleportWarningTurnListener implements TurnListener {
 		private final Player player;
 		private final StendhalRPZone zone;
 		private final String warningMessage;
 
+		/**
+		 * Constructor for TimedTeleportWarningTurnListener.
+		 *
+		 * @param player         The player associated with the listener.
+		 * @param zone           The zone associated with the warning.
+		 * @param warningMessage The warning message to be sent.
+		 */
 		TimedTeleportWarningTurnListener(final Player player, final StendhalRPZone zone,
 				final String warningMessage) {
 			this.player = player;
