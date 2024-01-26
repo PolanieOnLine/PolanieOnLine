@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                 (C) Copyright 2003-2024 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -24,11 +24,7 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.MultiProducerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.MultiProducerBehaviour;
 
-/**
- * @author ?
- */
 public class SilverNPC implements ZoneConfigurator {
-
 	/**
 	 * Configure a zone.
 	 *
@@ -42,12 +38,6 @@ public class SilverNPC implements ZoneConfigurator {
 
 	private void buildDrogosz(final StendhalRPZone zone) {
 		final SpeakerNPC drogosz = new SpeakerNPC("mistrz Drogosz") {
-
-			@Override
-			protected void createPath() {
-				setPath(null);
-			}
-
 			@Override
 			protected void createDialog(){
 				addGreeting("Witaj!");
@@ -62,8 +52,8 @@ public class SilverNPC implements ZoneConfigurator {
 				addGoodbye();
 
 				final HashSet<String> productsNames = new HashSet<String>();
-                productsNames.add("diament");
-                productsNames.add("sztabka srebra");
+				productsNames.add("diament");
+				productsNames.add("sztabka srebra");
 
 				final Map<String, Integer> required_diamond = new TreeMap<String, Integer>();
 				required_diamond.put("polano", 5);
@@ -76,24 +66,24 @@ public class SilverNPC implements ZoneConfigurator {
 				required_silver.put("money", 100);
 
 				final HashMap<String, Map<String, Integer>> requiredResourcesPerProduct = new HashMap<String, Map<String, Integer>>();
-                requiredResourcesPerProduct.put("diament", required_diamond);
-                requiredResourcesPerProduct.put("sztabka srebra", required_silver);
+				requiredResourcesPerProduct.put("diament", required_diamond);
+				requiredResourcesPerProduct.put("sztabka srebra", required_silver);
 
-                final HashMap<String, Integer> productionTimesPerProduct = new HashMap<String, Integer>();
-                productionTimesPerProduct.put("diament", 14 * 60);
-                productionTimesPerProduct.put("sztabka srebra", 10 * 60);
+				final HashMap<String, Integer> productionTimesPerProduct = new HashMap<String, Integer>();
+				productionTimesPerProduct.put("diament", 14 * 60);
+				productionTimesPerProduct.put("sztabka srebra", 10 * 60);
 
-                final HashMap<String, Boolean> productsBound = new HashMap<String, Boolean>();
-                productsBound.put("diament", false);
-                productsBound.put("sztabka srebra", false);
+				final HashMap<String, Boolean> productsBound = new HashMap<String, Boolean>();
+				productsBound.put("diament", false);
+				productsBound.put("sztabka srebra", false);
 
-                final MultiProducerBehaviour behaviour = new MultiProducerBehaviour(
-                        "drogosz_grindandcast",
-                        Arrays.asList("grind", "cast", "oszlifuj", "odlej"),
-                        productsNames,
-                        requiredResourcesPerProduct,
-                        productionTimesPerProduct,
-                        productsBound);
+				final MultiProducerBehaviour behaviour = new MultiProducerBehaviour(
+						"drogosz_grindandcast",
+						Arrays.asList("grind", "cast", "oszlifuj", "odlej"),
+						productsNames,
+						requiredResourcesPerProduct,
+						productionTimesPerProduct,
+						productsBound);
 
 				new MultiProducerAdder().addMultiProducer(this, behaviour,
 						"Pozdrawiam. Sądzę, że jesteś zainteresowany srebrem bądź diamentem. Jeżeli tak to zapytaj mnie o #'pomoc'.");
