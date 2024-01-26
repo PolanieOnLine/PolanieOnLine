@@ -11,11 +11,11 @@
  ***************************************************************************/
 package games.stendhal.server.entity.npc.quest;
 
-public class ForgeItemQuestBuilder extends QuestBuilder<ForgeItemTask, ForgeItemQuestOfferBuilder, ForgeItemQuestCompleteBuilder, ForgeItemQuestHistoryBuilder> {
-	public ForgeItemQuestBuilder() {
-		super(new ForgeItemTask());
-		offer = new ForgeItemQuestOfferBuilder();
-		complete = new ForgeItemQuestCompleteBuilder();
-		history = new ForgeItemQuestHistoryBuilder();
+public class CraftItemQuestBuilder extends QuestBuilder<CraftItemTask, CraftItemQuestOfferBuilder, CraftItemQuestCompleteBuilder, CraftItemQuestHistoryBuilder> {
+	public CraftItemQuestBuilder() {
+		super(new CraftItemTask());
+		offer = new CraftItemQuestOfferBuilder();
+		complete = new CraftItemQuestCompleteBuilder();
+		history = new CraftItemQuestHistoryBuilder();
 	}
 }

@@ -37,7 +37,7 @@ import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.util.StringUtils;
 import marauroa.common.Pair;
 
-public class ForgeItemTask extends QuestTaskBuilder {
+public class CraftItemTask extends QuestTaskBuilder {
 	private String itemName;
 
 	private int minutesToForge = 0;
@@ -53,32 +53,32 @@ public class ForgeItemTask extends QuestTaskBuilder {
 	private String respondToForging;
 	private String respondToRejectForge;
 
-	public ForgeItemTask forgeItem(String itemName) {
+	public CraftItemTask craftItem(String itemName) {
 		this.itemName = itemName;
 		return this;
 	}
 
-	public ForgeItemTask minutesToForge(int minutesToForge) {
+	public CraftItemTask minutesToForge(int minutesToForge) {
 		this.minutesToForge = minutesToForge;
 		return this;
 	}
 
-	public ForgeItemTask playerMinLevel(int playerMinLevel) {
+	public CraftItemTask playerMinLevel(int playerMinLevel) {
 		this.playerMinLevel = playerMinLevel;
 		return this;
 	}
 
-	public ForgeItemTask playerMinKarma(int playerMinKarma) {
+	public CraftItemTask playerMinKarma(int playerMinKarma) {
 		this.playerMinKarma = playerMinKarma;
 		return this;
 	}
 
-	public ForgeItemTask completedQuest(String questSlot) {
+	public CraftItemTask completedQuest(String questSlot) {
 		playerCompletedQuest.add(questSlot);
 		return this;
 	}
 
-	public ForgeItemTask completedQuest(String... questSlots) {
+	public CraftItemTask completedQuest(String... questSlots) {
 		for (String questSlot : questSlots) {
 			playerCompletedQuest.add(questSlot);
 		}
@@ -86,35 +86,35 @@ public class ForgeItemTask extends QuestTaskBuilder {
 		return this;
 	}
 
-	public ForgeItemTask requiredItem(int quantity, String name) {
+	public CraftItemTask requiredItem(int quantity, String name) {
 		requiredItem.add(new Pair<String, Integer>(name, quantity));
 		return this;
 	}
 
-	public ForgeItemTask requestMonster(String creature) {
+	public CraftItemTask requestMonster(String creature) {
 		playerRequiredMonster.add(creature);
 		return this;
 	}
 
-	public ForgeItemTask requestMonster(String... creatures) {
+	public CraftItemTask requestMonster(String... creatures) {
 		for (String creature : creatures) {
 			playerRequiredMonster.add(creature);
 		}
 		return this;
 	}
 
-	public ForgeItemTask respondToForging(String respondToForging) {
+	public CraftItemTask respondToForging(String respondToForging) {
 		this.respondToForging = respondToForging;
 		return this;
 	}
 
-	public ForgeItemTask respondToRejectForge(String respondToRejectForge) {
+	public CraftItemTask respondToRejectForge(String respondToRejectForge) {
 		this.respondToRejectForge = respondToRejectForge;
 		return this;
 	}
 
 	// hide constructor
-	ForgeItemTask() {
+	CraftItemTask() {
 		super();
 	}
 
@@ -264,7 +264,7 @@ public class ForgeItemTask extends QuestTaskBuilder {
 
 	@Override
 	List<String> calculateHistoryProgress(QuestHistoryBuilder historyBuilder, Player player, String questSlot) {
-		ForgeItemQuestHistoryBuilder history = (ForgeItemQuestHistoryBuilder) historyBuilder;
+		CraftItemQuestHistoryBuilder history = (CraftItemQuestHistoryBuilder) historyBuilder;
 		List<String> res = new LinkedList<>();
 		final String questState = player.getQuest(questSlot, 0);
 		if (questState.startsWith("forging")) {

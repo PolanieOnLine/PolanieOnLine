@@ -13,13 +13,13 @@ package games.stendhal.server.maps.quests;
 
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
 import games.stendhal.server.entity.npc.action.IncreaseXPAction;
-import games.stendhal.server.entity.npc.quest.ForgeItemQuestBuilder;
+import games.stendhal.server.entity.npc.quest.CraftItemQuestBuilder;
 import games.stendhal.server.entity.npc.quest.QuestManuscript;
 import games.stendhal.server.maps.Region;
 
 public class ZlotaCiupagaJedenWas implements QuestManuscript {
-	public ForgeItemQuestBuilder story() {
-		ForgeItemQuestBuilder quest = new ForgeItemQuestBuilder();
+	public CraftItemQuestBuilder story() {
+		CraftItemQuestBuilder quest = new CraftItemQuestBuilder();
 
 		quest.info()
 			.name("Złota Ciupaga z Wąsem")
@@ -49,7 +49,7 @@ public class ZlotaCiupagaJedenWas implements QuestManuscript {
 			.rejectionKarmaPenalty(10.0)
 			.remind("Pamiętasz potrzebną listę? Przynieś mi te przedmioty potrzebne do nowej ciupagi:\n#1 złota ciupaga\n#1 złoty róg\n#4 drewna\n#70 sztabek złota\noraz #'120 000' money.");
 
-		quest.task().forgeItem("złota ciupaga z wąsem")
+		quest.task().craftItem("złota ciupaga z wąsem")
 			.minutesToForge(8 * 60) // 8 godzin
 			.playerMinLevel(200).playerMinKarma(200).completedQuest("help_wielkolud_basehp").requestMonster("złota śmierć")
 			.requiredItem(1, "złota ciupaga").requiredItem(1, "złoty róg").requiredItem(4, "polano").requiredItem(70, "sztabka złota").requiredItem(120000, "money")

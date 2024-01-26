@@ -27,33 +27,33 @@ import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
 import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 
-public class ForgeItemQuestCompleteBuilder extends QuestCompleteBuilder {
+public class CraftItemQuestCompleteBuilder extends QuestCompleteBuilder {
 	private String greet = "Dzięki za skorzystanie z moich usług i proszę, oto twój sprzęt!";
 	private String respondToReject = null;
 	private String respondToAccept = null;
 	private List<ChatAction> rewardWith = new LinkedList<>();
 
 	// hide constructor
-	ForgeItemQuestCompleteBuilder() {
+	CraftItemQuestCompleteBuilder() {
 		super();
 	}
 
-	public ForgeItemQuestCompleteBuilder greet(String greet) {
+	public CraftItemQuestCompleteBuilder greet(String greet) {
 		this.greet = greet;
 		return this;
 	}
 
-	public ForgeItemQuestCompleteBuilder respondToReject(String respondToReject) {
+	public CraftItemQuestCompleteBuilder respondToReject(String respondToReject) {
 		this.respondToReject = respondToReject;
 		return this;
 	}
 
-	public ForgeItemQuestCompleteBuilder respondToAccept(String respondToAccept) {
+	public CraftItemQuestCompleteBuilder respondToAccept(String respondToAccept) {
 		this.respondToAccept = respondToAccept;
 		return this;
 	}
 
-	public ForgeItemQuestCompleteBuilder rewardWith(ChatAction action) {
+	public CraftItemQuestCompleteBuilder rewardWith(ChatAction action) {
 		this.rewardWith.add(action);
 		return this;
 	}
