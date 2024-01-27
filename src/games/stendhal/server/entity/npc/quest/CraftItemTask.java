@@ -40,7 +40,7 @@ import marauroa.common.Pair;
 public class CraftItemTask extends QuestTaskBuilder {
 	private String itemName;
 
-	private int minutesToForge = 0;
+	private int waitingTime = 0;
 
 	private int playerMinLevel = -1;
 	private int playerMinKarma = -1;
@@ -50,16 +50,16 @@ public class CraftItemTask extends QuestTaskBuilder {
 
 	private List<Pair<String, Integer>> requiredItem = new LinkedList<>();
 
-	private String respondToForging;
-	private String respondToRejectForge;
+	private String respondToCraft;
+	private String respondToCraftReject;
 
 	public CraftItemTask craftItem(String itemName) {
 		this.itemName = itemName;
 		return this;
 	}
 
-	public CraftItemTask minutesToForge(int minutesToForge) {
-		this.minutesToForge = minutesToForge;
+	public CraftItemTask waitingTime(int waitingTime) {
+		this.waitingTime = waitingTime;
 		return this;
 	}
 
@@ -103,13 +103,13 @@ public class CraftItemTask extends QuestTaskBuilder {
 		return this;
 	}
 
-	public CraftItemTask respondToForging(String respondToForging) {
-		this.respondToForging = respondToForging;
+	public CraftItemTask respondToCraft(String respondToCraft) {
+		this.respondToCraft = respondToCraft;
 		return this;
 	}
 
-	public CraftItemTask respondToRejectForge(String respondToRejectForge) {
-		this.respondToRejectForge = respondToRejectForge;
+	public CraftItemTask respondToCraftReject(String respondToCraftReject) {
+		this.respondToCraftReject = respondToCraftReject;
 		return this;
 	}
 
@@ -231,11 +231,11 @@ public class CraftItemTask extends QuestTaskBuilder {
 				params.put("time", Grammar.quantityplnoun(getProductionTime(), "minuta"));
 
 				if (playerIsEquippedRequiredItems(player)) {
-					npc.say(StringUtils.substitute(respondToForging, params));
+					npc.say(StringUtils.substitute(respondToCraft, params));
 					player.setQuest(questSlot, 0, "forging");
 					new SetQuestToTimeStampAction(questSlot, 1).fire(player, null, npc);
 				} else {
-					npc.say(respondToRejectForge);
+					npc.say(respondToCraftReject);
 				}
 			}
 		};
@@ -259,7 +259,7 @@ public class CraftItemTask extends QuestTaskBuilder {
 	}
 
 	int getProductionTime() {
-		return minutesToForge;
+		return waitingTime;
 	}
 
 	@Override

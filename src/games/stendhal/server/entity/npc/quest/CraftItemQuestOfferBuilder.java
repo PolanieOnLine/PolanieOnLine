@@ -31,14 +31,14 @@ import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 
 public class CraftItemQuestOfferBuilder extends QuestOfferBuilder<CraftItemQuestOfferBuilder> {
-	protected String respondToUnstartableForge = "Wybacz, ale musisz zasłużyć na zaufanie zanim rozpoczę nad takim zleceniem prace...";
+	protected String respondToCraftIssue = "Wybacz, ale musisz zasłużyć na zaufanie zanim rozpoczę nad takim zleceniem prace...";
 
 	CraftItemQuestOfferBuilder() {
 		super();
 	}
 
-	public CraftItemQuestOfferBuilder respondToUnstartableForge(String respondToUnstartableForge) {
-		this.respondToUnstartableForge = respondToUnstartableForge;
+	public CraftItemQuestOfferBuilder respondToCraftIssue(String respondToCraftIssue) {
+		this.respondToCraftIssue = respondToCraftIssue;
 		return this;
 	}
 
@@ -67,7 +67,7 @@ public class CraftItemQuestOfferBuilder extends QuestOfferBuilder<CraftItemQuest
 					new QuestNotStartedCondition(questSlot),
 					new NotCondition(beforeForgingConditions)),
 				ConversationStates.ATTENDING,
-				respondToUnstartableForge,
+				respondToCraftIssue,
 				null);
 
 		ChatAction startAction = new SetQuestAction(questSlot, 0, "start");
@@ -112,7 +112,7 @@ public class CraftItemQuestOfferBuilder extends QuestOfferBuilder<CraftItemQuest
 					new NotCondition(beforeForgingConditions),
 					new NotCondition(requiredItemsToForge)),
 				ConversationStates.ATTENDING,
-				respondToUnstartableForge,
+				respondToCraftIssue,
 				null);
 
 		npc.add(ConversationStates.ATTENDING,

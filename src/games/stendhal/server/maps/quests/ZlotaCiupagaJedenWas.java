@@ -40,7 +40,7 @@ public class ZlotaCiupagaJedenWas implements QuestManuscript {
 			.whenQuestCanBeRepeated("Wrócę chyba do Józka, a może wykona dla mnie drugą taką!");
 
 		quest.offer()
-			.respondToUnstartableForge("Wybacz mi proszę, ale musisz zasłużyć na uznanie Wielkoluda jak i pokonać samodzielnie złotą śmierć oraz zdobyć nieco większe doświadczenie i mieć wspaniałą karmę!")
+			.respondToCraftIssue("Wybacz mi proszę, ale musisz zasłużyć na uznanie Wielkoluda jak i pokonać samodzielnie złotą śmierć oraz zdobyć nieco większe doświadczenie i mieć wspaniałą karmę!")
 			.respondToRequest("Od jakiegoś czasu testuję ulepszanie broni. Może chcesz, abym udoskonalił dla Ciebie złotą ciupagę?")
 			.respondToUnrepeatableRequest("Jestem aktualnie troszkę zmęczony. Wróć do mnie za jakiś czas.")
 			.respondToRepeatedRequest("Potrzebujesz kolejnej ulepszonej złotej ciupagi?")
@@ -50,11 +50,11 @@ public class ZlotaCiupagaJedenWas implements QuestManuscript {
 			.remind("Pamiętasz potrzebną listę? Przynieś mi te przedmioty potrzebne do nowej ciupagi:\n#1 złota ciupaga\n#1 złoty róg\n#4 drewna\n#70 sztabek złota\noraz #'120 000' money.");
 
 		quest.task().craftItem("złota ciupaga z wąsem")
-			.minutesToForge(8 * 60) // 8 godzin
+			.waitingTime(8 * 60) // 8 godzin
 			.playerMinLevel(200).playerMinKarma(200).completedQuest("help_wielkolud_basehp").requestMonster("złota śmierć")
 			.requiredItem(1, "złota ciupaga").requiredItem(1, "złoty róg").requiredItem(4, "polano").requiredItem(70, "sztabka złota").requiredItem(120000, "money")
-			.respondToForging("Super! Przygotuję tylko narzędzia i biorę się do pracy! Twoja #'[itemName]' będzie gotowa za około 8 godzin.")
-			.respondToRejectForge("Jak się zastanowisz to wróć.");
+			.respondToCraft("Super! Przygotuję tylko narzędzia i biorę się do pracy! Twoja #'[itemName]' będzie gotowa za około 8 godzin.")
+			.respondToCraftReject("Jak się zastanowisz to wróć.");
 
 		quest.complete()
 			.greet("Skończyłem swą pracę nad ciupagą! Warto było chyba nieco poczekać. Proszę, a oto i ona!")

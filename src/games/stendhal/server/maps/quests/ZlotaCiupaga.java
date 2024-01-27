@@ -40,7 +40,7 @@ public class ZlotaCiupaga implements QuestManuscript {
 			.whenQuestCanBeRepeated("Kowal chyba mógłby wykonać dla mnie kolejną taką ciupagę ze szczerego złota!");
 
 		quest.offer()
-			.respondToUnstartableForge("Wybacz mi proszę, ale musisz zasłużyć na uznanie gazdy Jędrzeja oraz zdobyć nieco większe doświadczenie i mieć dobrą karmę!")
+			.respondToCraftIssue("Wybacz mi proszę, ale musisz zasłużyć na uznanie gazdy Jędrzeja oraz zdobyć nieco większe doświadczenie i mieć dobrą karmę!")
 			.respondToRequest("Jakiś czas temu wykonywałem nietypowe zlecenie w naszej kuźni, a chodzi dokładnie o wykonanie ciupagi ze szczerego złota. Może dzielny wojak chce również taką?")
 			.respondToUnrepeatableRequest("Jestem aktualnie troszkę zmęczony. Wróć do mnie za jakiś czas.")
 			.respondToRepeatedRequest("Potrzebujesz kolejnej złotej ciupagi?")
@@ -50,11 +50,11 @@ public class ZlotaCiupaga implements QuestManuscript {
 			.remind("Pamiętasz potrzebną listę? Przynieś mi te przedmioty potrzebne do nowej ciupagi:\n#1 ciupaga\n#5 drewna\n#25 sztabek złota\noraz #'50 000' money.");
 
 		quest.task().craftItem("złota ciupaga")
-			.minutesToForge(6 * 60) // 6 godzin
+			.waitingTime(6 * 60) // 6 godzin
 			.playerMinLevel(100).playerMinKarma(100).completedQuest("kill_herszt_basehp")
 			.requiredItem(1, "ciupaga").requiredItem(5, "polano").requiredItem(25, "sztabka złota").requiredItem(50000, "money")
-			.respondToForging("Genialnie! Powoli wezmę się do pracy i twoja #'[itemName]' będzie gotowa za około 6 godzin. Wróć gdy skończę!")
-			.respondToRejectForge("Jak się zastanowisz to wróć.");
+			.respondToCraft("Genialnie! Powoli wezmę się do pracy i twoja #'[itemName]' będzie gotowa za około 6 godzin. Wróć gdy skończę!")
+			.respondToCraftReject("Jak się zastanowisz to wróć.");
 
 		quest.complete()
 			.greet("Skończyłem swą pracę nad ciupagą! Warto było chyba nieco poczekać. Proszę, a oto i ona!")
