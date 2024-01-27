@@ -209,7 +209,7 @@
 
 	<!-- Giles (Kirdneh) -->
 	<producer npc="Giles" slot="ropemaker_braid_rope" type="item">
-		<welcome text="Hmmm... Myślę, że to dobre miejsce na zbudowania mojego sklepu. Och, cześć. Jak mogę ci #pomóc?"/>
+		<welcome text="Hmmm... Myślę, że to dobre miejsce na zbudowanie mojego sklepu. Och, cześć. Jak mogę ci #pomóc?"/>
 		<item name="lina" minutes="15">
 			<resource name="money" amount="200"/>
 			<resource name="końskie włosie" amount="6"/>
