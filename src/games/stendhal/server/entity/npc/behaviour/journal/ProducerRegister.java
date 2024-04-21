@@ -339,7 +339,7 @@ public class ProducerRegister {
 		return res;
 	}
 
-	public void configureNPC(final String npcName, ProducerBehaviour behaviour, final String text,
+	public void configureNPC(final String npcName, ProducerBehaviour behaviour, final String questComplete, final String text,
 			final int units, final int time, final boolean remind) {
 		if (!isProducerExist(npcName)) {
 			if (units > 0) {
@@ -349,16 +349,16 @@ public class ProducerRegister {
 				behaviour.setWaitingTime(time);
 			}
 			behaviour.setRemind(remind);
-			configureNPC(npcName, behaviour, text);
+			configureNPC(npcName, behaviour, questComplete, text);
 		}
 	}
 
-	public void configureNPC(final String npcName, ProducerBehaviour behaviour, final String text) {
+	public void configureNPC(final String npcName, ProducerBehaviour behaviour, final String questComplete, final String text) {
 		final SpeakerNPC npc = SingletonRepository.getNPCList().get(npcName);
 		if (npc == null) {
 			logger.error("Cannot configure a production for non-existing NPC " + npcName);
 			return;
 		}
-		new ProducerAdder().addProducer(npc, behaviour, text);
+		new ProducerAdder().addProducer(npc, behaviour, questComplete, text);
 	}
 }

@@ -30,10 +30,11 @@ public class ProducersXMLLoader extends DefaultHandler {
 	private static ProducersXMLLoader instance;
 	private final static ProducerRegister producers = ProducerRegister.get();
 
-	private String questSlot;
-	private String welcome;
-
 	private String npcName;
+	private String questSlot;
+	private String questComplete;
+
+	private String welcome;
 
 	private String itemName;
 	private int productsPerUnit;
@@ -114,6 +115,10 @@ public class ProducersXMLLoader extends DefaultHandler {
 		if (qName.equals("producer")) {
 			npcName = attrs.getValue("npc");
 			questSlot = attrs.getValue("slot");
+			questComplete = null;
+			if (attrs.getValue("complete") != null) {
+				questComplete = attrs.getValue("complete");
+			}
 			resources = new LinkedHashMap<String, Integer>();
 			activity = new LinkedList<String>();
 			itemName = null;
@@ -173,13 +178,14 @@ public class ProducersXMLLoader extends DefaultHandler {
 				SingletonRepository.getCachedActionManager().register(new Runnable() {
 					private final String _npcName = npcName;
 					private final ProducerBehaviour _behaviour = behaviour;
+					private final String _questComplete = questComplete;
 					private final String _welcome = welcome;
 					private final int _units = unitsPerTime;
 					private final int _waiting = waiting;
 					private final boolean _remind = remind;
 
 					public void run() {
-						producers.configureNPC(_npcName, _behaviour, _welcome, _units, _waiting, _remind);
+						producers.configureNPC(_npcName, _behaviour, _questComplete, _welcome, _units, _waiting, _remind);
 					}
 				});
 			}

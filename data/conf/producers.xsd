@@ -18,8 +18,8 @@
 		<attribute name="npc" type="string" use="required"/>
 		<attribute name="slot" type="string" use="required"/>
 		<attribute name="type" type="Q2:ProductType" use="required"/>
+		<attribute name="complete" type="string" use="optional"/>
 		<attribute name="remind" type="boolean" use="optional"/>
-		<attribute name="condition" type="string" use="optional"/>
 	</complexType>
 
 	<complexType name="ProductItem">

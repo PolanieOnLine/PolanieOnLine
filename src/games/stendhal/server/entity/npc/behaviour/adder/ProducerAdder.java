@@ -21,6 +21,7 @@ import games.stendhal.common.grammar.ItemParserResult;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.npc.ChatAction;
+import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.EventRaiser;
@@ -34,6 +35,7 @@ import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
 import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.npc.condition.QuestActiveCondition;
+import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotActiveCondition;
 import games.stendhal.server.entity.npc.condition.SentenceHasErrorCondition;
 import games.stendhal.server.entity.npc.condition.TransitionMayBeExecutedCondition;
@@ -64,6 +66,17 @@ public class ProducerAdder {
 		addProducer(npc, behaviour, "Witaj! W czym mogę #pomóc?");
 	}
 
+	public void addProducer(final SpeakerNPC npc, final ProducerBehaviour behaviour, final String welcomeMessage) {
+		addProducer(npc, behaviour, null, welcomeMessage);
+	}
+	
+	private ChatCondition checkQuestCompleted(String questComplete) {
+		if (questComplete != null) {
+			return new QuestCompletedCondition(questComplete);
+		}
+		return null;
+	}
+
     /**
      * Adds all the dialogue associated with a Producing NPC
      *
@@ -71,7 +84,7 @@ public class ProducerAdder {
      * @param behaviour
      * @param welcomeMessage
      */
-	public void addProducer(final SpeakerNPC npc, final ProducerBehaviour behaviour, final String welcomeMessage) {
+	public void addProducer(final SpeakerNPC npc, final ProducerBehaviour behaviour, final String questComplete, final String welcomeMessage) {
 		/** Which NPC is this? */
 		final Engine engine = npc.getEngine();
 		/** What quest slot is the production stored in? */
@@ -102,8 +115,19 @@ public class ProducerAdder {
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npcName),
 					new QuestNotActiveCondition(QUEST_SLOT),
+					checkQuestCompleted(questComplete),
 					new TransitionMayBeExecutedCondition(this)),
 				false, ConversationStates.ATTENDING, null, new SayTextAction(thisWelcomeMessage));
+		}
+		
+		if (questComplete != null) {
+			engine.add(ConversationStates.IDLE,
+				ConversationPhrases.GREETING_MESSAGES,
+				new AndCondition(new GreetingMatchesNameCondition(npcName),
+					new QuestNotActiveCondition(QUEST_SLOT),
+					new NotCondition(checkQuestCompleted(questComplete)),
+					new TransitionMayBeExecutedCondition(this)),
+				false, ConversationStates.ATTENDING, null, new SayTextAction("Hej! W czym mogę #pomóc?"));
 		}
 
 		engine.add(ConversationStates.ATTENDING,
@@ -121,6 +145,7 @@ public class ProducerAdder {
 			behaviour.getProductionActivity(),
 			new AndCondition(
 				new NotCondition(new SentenceHasErrorCondition()),
+				checkQuestCompleted(questComplete),
 				new QuestNotActiveCondition(QUEST_SLOT)),
 			false, ConversationStates.ATTENDING,
 			null, new ProducerBehaviourAction(behaviour) {
