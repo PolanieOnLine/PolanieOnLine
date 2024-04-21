@@ -275,6 +275,7 @@ public class StendhalQuestSystem {
 		/** 					**\
 		 *       WIELICZKA		 *
 		\**	                    **/
+		loadQuest(new GrindMistyGem());
 		loadQuest(new SaltForHerbert());
 		loadQuest(new WeeklyItemWieliczkaQuest());
 		loadQuest(new ZlotyPierscien());
