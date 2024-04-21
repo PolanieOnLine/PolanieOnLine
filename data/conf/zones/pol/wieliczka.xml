@@ -111,6 +111,7 @@
 		<configurator class-name="games.stendhal.server.maps.wieliczka.city.FlowerMarket"/>
 		<configurator class-name="games.stendhal.server.maps.wieliczka.city.ArthurNPC"/>
 		<configurator class-name="games.stendhal.server.maps.wieliczka.city.HerbertNPC"/>
+		<configurator class-name="games.stendhal.server.maps.wieliczka.blacksmith.CzeladnikNPC"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
