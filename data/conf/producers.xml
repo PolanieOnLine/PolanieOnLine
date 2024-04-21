@@ -535,6 +535,16 @@
 			<activity type="concoct,zrób,sporządź"/>
 		</item>
 	</producer>
+	<!-- czeladnik Jaromir (Wieliczka) -->
+	<producer npc="czeladnik Jaromir" slot="jaromir_cast_mistgem" type="item" complete="grind_misty_gem">
+		<welcome text="Witaj z powrotem! Jeśli chcesz, mogę #'oszlifować kryształ ciemnolitu' dla ciebie!"/>
+		<item name="klejnot ciemnolitu" minutes="15">
+			<resource name="money" amount="200"/>
+			<resource name="kryształ ciemnolitu"/>
+
+			<activity type="grind,oszlifuj"/>
+		</item>
+	</producer>
 
 	<!-- Małgosia (Zakopane) -->
 	<producer npc="Małgosia" slot="malgosia_bake_bread" type="food">
