@@ -262,7 +262,7 @@
 	</item>
 
 	<item name="kryształ ciemnolitu">
-		<type class="resource" subclass="nocturium_crystal" tileid="-1"/>
+		<type class="jewellery" subclass="nocturium_crystal" tileid="-1"/>
 		<description>Oto kryształ ciemnolitu, łączący kamień światłości z mrokiem. Druga strona wręcz hipnotyzuje.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
@@ -282,7 +282,7 @@
 	</item>
 
 	<item name="klejnot ciemnolitu">
-		<type class="resource" subclass="nocturium_gem" tileid="-1"/>
+		<type class="jewellery" subclass="nocturium_gem" tileid="-1"/>
 		<description>Oto klejnot ciemnolitu. Gdy się przypatrzysz to wewnątrz klejnotu jakby padał deszcz.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
