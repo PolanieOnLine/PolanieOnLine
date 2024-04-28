@@ -339,6 +339,15 @@ public class ProducerRegister {
 		return res;
 	}
 
+	public void configureNPC(final String npcName, ProducerBehaviour behaviour, final String text) {
+		configureNPC(npcName, behaviour, null, text);
+	}
+
+	public void configureNPC(final String npcName, ProducerBehaviour behaviour, final String text,
+			final int units, final int time, final boolean remind) {
+		configureNPC(npcName, behaviour, null, text, units, time, remind);
+	}
+
 	public void configureNPC(final String npcName, ProducerBehaviour behaviour, final String questComplete, final String text,
 			final int units, final int time, final boolean remind) {
 		if (!isProducerExist(npcName)) {
