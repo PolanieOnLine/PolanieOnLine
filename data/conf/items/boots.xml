@@ -268,6 +268,27 @@
 		</equipable>
 	</item>
 
+	<item name="buty ciemnomithrilowe">
+		<type class="boots" subclass="mithril_boots" tileid="-1"/>
+		<description>Oto para butów ciemnomithrilowych.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<def value="28"/>
+			<min_level value="250"/>
+		</attributes>
+		<weight value="14.0"/>
+		<value value="53625"/>
+		<susceptibility type="dark" value="0.9"/>
+		<susceptibility type="light" value="0.9"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="feet"/>
+		</equipable>
+	</item>
+
 	<item name="buty karmazynowe">
 		<type class="boots" subclass="red_boots" tileid="-1"/>
 		<description>Oto buty karmazynowe, kolor przypomina o świeżej krwi.</description>
