@@ -134,21 +134,23 @@ public class StatusResistantItem extends SlotActivatedItem {
 			double newResistance = this.getStatusResistanceValue(statusType);
 
 			if (!apply) {
-				/* Invert the new resistance value for removal instead of
+				/**
+				 * Invert the new resistance value for removal instead of
 				 * application.
 				 */
 				newResistance *= -1;
 			}
 
-			/* Apply current resistance value if applicable. */
+			// Apply current resistance value if applicable.
 			if (owner.has(resistAttribute)) {
 				currentResistance = owner.getDouble(resistAttribute);
 
-				/* If for some reason the owner already has the resistance
+				/**
+				 * If for some reason the owner already has the resistance
 				 * attribute is 0 or less when trying to remove it.
 				 */
 				if (!apply && currentResistance <= 0.0) {
-					/* Remove the residual attribute. */
+					// Remove the residual attribute.
 					owner.remove(resistAttribute);
 					return false;
 				}
@@ -156,7 +158,8 @@ public class StatusResistantItem extends SlotActivatedItem {
 				newResistance += currentResistance;
 			}
 
-			/* Safeguarding. Entity cannot be more than 100% resistant. Do not
+			/**
+			 * Safeguarding. Entity cannot be more than 100% resistant. Do not
 			 * need to worry about less than zero because resistance will be
 			 * removed in such case.
 			 *
@@ -170,7 +173,8 @@ public class StatusResistantItem extends SlotActivatedItem {
 				newResistance = 1.0;
 			}
 
-			/* Remove reference if entity is no longer resistant. This can be
+			/**
+			 * Remove reference if entity is no longer resistant. This can be
 			 * changed to allow a less than 0 value for items that cause a
 			 * weakness to status effects.
 			 */
