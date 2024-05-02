@@ -34,6 +34,7 @@ import games.stendhal.common.Rand;
 import games.stendhal.common.constants.Nature;
 import games.stendhal.common.constants.SoundLayer;
 import games.stendhal.common.constants.Testing;
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.WordList;
 import games.stendhal.server.actions.equip.DropAction;
 import games.stendhal.server.core.engine.GameEvent;
@@ -693,6 +694,10 @@ public abstract class RPEntity extends CombatEntity {
 
 	public String getGender() {
 		return gender;
+	}
+
+	public String getGenderVerb(String word) {
+		return Grammar.genderVerb(this.getGender(), word);
 	}
 
 	@Override
