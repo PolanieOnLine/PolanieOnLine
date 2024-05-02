@@ -13,6 +13,6 @@ public class NewArms extends StatusResistantItem {
 
 	@Override
 	public String describe() {
-		return super.describe();
+		return super.itemDescribe();
 	}
 }

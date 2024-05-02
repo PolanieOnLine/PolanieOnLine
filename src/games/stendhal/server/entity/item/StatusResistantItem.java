@@ -292,13 +292,17 @@ public class StatusResistantItem extends SlotActivatedItem {
 
 		return active;
 	}
+	
+	protected String itemDescribe() {
+		return super.describe();
+	}
 
 	/**
 	 * Add resistance values to description.
 	 */
 	@Override
 	public String describe() {
-		String description = super.describe();
+		String description = itemDescribe();
 		StringBuilder res = new StringBuilder();
 
 		/* Add statuses resistance stats to description. */
