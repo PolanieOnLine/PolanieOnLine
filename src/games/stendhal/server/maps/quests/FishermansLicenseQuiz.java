@@ -246,7 +246,7 @@ public class FishermansLicenseQuiz extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Santiago w chatce w mieście Ados. Jeżeli zaliczę jego egzamin to dostanę kartę wędkarską.");
+		res.add(player.getGenderVerb("Spotkałem") + " Santiago w chatce w mieście Ados. Jeżeli zaliczę jego egzamin to dostanę kartę wędkarską.");
 		if (!player.isQuestCompleted(QUEST_SLOT)) {
 			if (remainingTimeToWait(player)>0) {
 				res.add("Jest zbyt wcześnie, aby spróbować ponownie, przystąpić do egzaminu.");

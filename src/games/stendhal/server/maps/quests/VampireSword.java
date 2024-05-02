@@ -282,7 +282,7 @@ public class VampireSword extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Hogart w kuźni krasnalów.");
+		res.add(player.getGenderVerb("Spotkałem") + " Hogart w kuźni krasnalów.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if (questState.equals("rejected")) {
 			res.add("Nie potrzebny mi miecz zwany krwiopijca");
@@ -292,13 +292,13 @@ public class VampireSword extends AbstractQuest {
 		}
 		if (questState.equals("start") && player.isEquipped("czara")
 				|| questState.equals("done")) {
-			res.add(Grammar.genderVerb(player.getGender(), "Wziąłem") + " pełną czarę do Hogarata i teraz potrzebuję uzbierać 50 żelaza.");
+			res.add(player.getGenderVerb("Wziąłem") + " pełną czarę do Hogarata i teraz potrzebuję uzbierać 50 żelaza.");
 		}
 		if (player.getQuest(QUEST_SLOT).startsWith("forging;")) {
-			res.add(Grammar.genderVerb(player.getGender(), "Wziąłem") + " 50 żelaza i czarę do Hogarta. Teraz wyrabia mój miecz.");
+			res.add(player.getGenderVerb("Wziąłem") + " 50 żelaza i czarę do Hogarta. Teraz wyrabia mój miecz.");
 		}
 		if (questState.equals("done")) {
-			res.add("Nareszcie " + Grammar.genderVerb(player.getGender(), "dostałem") + " krwiopijcę.");
+			res.add("Nareszcie " + player.getGenderVerb("dostałem") + " krwiopijcę.");
 		}
 		return res;
 	}

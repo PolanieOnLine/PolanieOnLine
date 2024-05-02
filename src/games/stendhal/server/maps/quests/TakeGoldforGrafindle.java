@@ -217,25 +217,25 @@ public class TakeGoldforGrafindle extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Poszedłem") + " do banku w Nalwor i " + Grammar.genderVerb(player.getGender(), "spotkałem") + " Grafindle.");
+		res.add(player.getGenderVerb("Poszedłem") + " do banku w Nalwor i " + player.getGenderVerb("spotkałem") + " Grafindle.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if (questState.equals("rejected")) {
 			res.add("Odpowiedzialność za sztabki była dla mnie zbyt wysoka, więc byłem zmuszony odrzucić prośbę Grafindle. ");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "start", "lorithien", "done")) {
-			res.add("Ponieważ jestem osobą godną zaufania, " + Grammar.genderVerb(player.getGender(), "obiecałem") + " przynieść Grafindle złoto od Lorithien.");
+			res.add("Ponieważ jestem osobą godną zaufania, " + player.getGenderVerb("obiecałem") + " przynieść Grafindle złoto od Lorithien.");
 		}
 		if (questState.equals("lorithien") && player.isEquipped("sztabka złota",
 				GOLD_AMOUNT)
 				|| questState.equals("done")) {
-			res.add("Udało się! " + Grammar.genderVerb(player.getGender(), "Zebrałem") + " sztabki, których potrzebuje Grafindle.");
+			res.add("Udało się! " + player.getGenderVerb("Zebrałem") + " sztabki, których potrzebuje Grafindle.");
 		}
 		if (questState.equals("lorithien")
 				&& !player.isEquipped("sztabka złota", GOLD_AMOUNT)) {
-			res.add("O nie! " + Grammar.genderVerb(player.getGender(), "Zgubiłem") + " złote sztabki, które " + Grammar.genderVerb(player.getGender(), "miałem") + " przynieść Grafindle!");
+			res.add("O nie! " + player.getGenderVerb("Zgubiłem") + " złote sztabki, które " + player.getGenderVerb("miałem") + " przynieść Grafindle!");
 		}
 		if (questState.equals("done")) {
-			res.add(Grammar.genderVerb(player.getGender(), "Dałem") + " złote sztabki Grafindle, a on wynagrodził mnie - " + Grammar.genderVerb(player.getGender(), "dostałem") + " klucz do pokoju klienta banku Nalwor.");
+			res.add(player.getGenderVerb("Dałem") + " złote sztabki Grafindle, a on wynagrodził mnie - " + player.getGenderVerb("dostałem") + " klucz do pokoju klienta banku Nalwor.");
 		}
 		return res;
 	}

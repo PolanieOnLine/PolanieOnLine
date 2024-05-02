@@ -54,7 +54,7 @@ public class GrindMistyGem extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Rozmawiałem") + " z czeladnikiem napotkanym w Wieliczce.");
+		res.add(player.getGenderVerb("Rozmawiałem") + " z czeladnikiem napotkanym w Wieliczce.");
 
 		return res;
 	}

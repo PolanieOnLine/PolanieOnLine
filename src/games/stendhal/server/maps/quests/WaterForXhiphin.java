@@ -247,13 +247,13 @@ public class WaterForXhiphin extends AbstractQuest {
 		res.add("Xhiphin Zohos jest spragniony od stania cały dzień w słońcu.");
 		final String questState = player.getQuest(QUEST_SLOT, 0);
 		if ("rejected".equals(questState)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Powiedziałem") + " Xhiphin Zohos, że nie przyniosę mu wody.");
+			res.add(player.getGenderVerb("Powiedziałem") + " Xhiphin Zohos, że nie przyniosę mu wody.");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "start") || isCompleted(player)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Zgodziłem") + " się przynieść mu trochę wody, aby Xhiphin Zohos ugasił pragnienie.");
+			res.add(player.getGenderVerb("Zgodziłem") + " się przynieść mu trochę wody, aby Xhiphin Zohos ugasił pragnienie.");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "start") && player.isEquipped("butelka wody") && new NotCondition(new PlayerHasItemdataItemWithHimCondition("butelka wody", CLEAN_WATER_ITEMDATA)).fire(player, null, null) || isCompleted(player)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Znalazłem") + " źródło świeżej wody, ale nie jestem " + Grammar.genderVerb(player.getGender(), "pewny") + " czy jest bezpieczna do picia dla Xhiphina.");
+			res.add(player.getGenderVerb("Znalazłem") + " źródło świeżej wody, ale nie jestem " + player.getGenderVerb("pewny") + " czy jest bezpieczna do picia dla Xhiphina.");
 		}
 		if (new PlayerHasItemdataItemWithHimCondition("butelka wody", CLEAN_WATER_ITEMDATA).fire(player, null, null) || isCompleted(player)) {
 			res.add("Stefan, szef w hotelu w Fado sprawdził wodę, którą zebrałem i jest czysta i zdatna do picia.");
@@ -261,9 +261,9 @@ public class WaterForXhiphin extends AbstractQuest {
 		// checked water was clean?
         if (isCompleted(player)) {
             if (isRepeatable(player)) {
-                res.add(Grammar.genderVerb(player.getGender(), "Wziąłem") + " wodę do Xhiphin Zohos jakiś czas temu.");
+                res.add(player.getGenderVerb("Wziąłem") + " wodę do Xhiphin Zohos jakiś czas temu.");
             } else {
-                res.add(Grammar.genderVerb(player.getGender(), "Wziąłem") + " wcześniej wodę do Xhiphin Zohos i " + Grammar.genderVerb(player.getGender(), "" + Grammar.genderVerb(player.getGender(), "otrzymałem") + "") + " od niego trochę mikstur.");
+                res.add(player.getGenderVerb("Wziąłem") + " wcześniej wodę do Xhiphin Zohos i " + player.getGenderVerb("" + player.getGenderVerb("otrzymałem") + "") + " od niego trochę mikstur.");
             }			
 		}
 		return res;

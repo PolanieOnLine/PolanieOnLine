@@ -251,19 +251,19 @@ public class EasterGiftsForChildren extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Rozmawiałem") + " z Caroline w Ados. Pracuje tam w swojej tawernie.");
+		res.add(player.getGenderVerb("Rozmawiałem") + " z Caroline w Ados. Pracuje tam w swojej tawernie.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Odmówiłem") + " jej przyniesienia słodyczy.");
+			res.add(player.getGenderVerb("Odmówiłem") + " jej przyniesienia słodyczy.");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "start", "done")) {
-			res.add(Grammar.genderVerb(player.getGender(), "Przyrzekłem") + " , że przyniosę Caroline trochę słodyczy dla dzieci z okolic Faiumoni jako Wielkanocny prezent.");
+			res.add(player.getGenderVerb("Przyrzekłem") + " , że przyniosę Caroline trochę słodyczy dla dzieci z okolic Faiumoni jako Wielkanocny prezent.");
 		}
 		if ("start".equals(questState) && player.isEquipped("tabliczka czekolady", 5)  && player.isEquipped("małe jajo wielkanocne", 1) && player.isEquipped("jabłko", 5)  && player.isEquipped("wisienka", 5) || "done".equals(questState)) {
 			res.add("Mam wszystkie słodycze i zabiorę je do Caroline.");
 		}
 		if ("done".equals(questState)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Wziąłem") + " słodycze do Caroline. W zamian dała mi prezent Wielkanocny na moje podróże jako prawdziwemu bohaterowi. :)");
+			res.add(player.getGenderVerb("Wziąłem") + " słodycze do Caroline. W zamian dała mi prezent Wielkanocny na moje podróże jako prawdziwemu bohaterowi. :)");
 		}
 		return res;
 	}

@@ -91,11 +91,11 @@ public class ChallengeDragons extends ChallengeQuests {
 		res.add(npc.getName() + " zapronował mi wykonanie wyzwania na smoki.");
 		if (quest_state.equals("rejected")) {
 			res.add("Nie mam czasu na zabawy ze smokami, także "
-				+ Grammar.genderVerb(player.getGender(), "odrzuciłem")
+				+ player.getGenderVerb("odrzuciłem")
 				+ " propozycje tego durnego wyzwania.");
 		} else {
-			res.add("Z przyjemnością " + Grammar.genderVerb(player.getGender(), "zaakceptowałem")
-				+ " to specyficzne wyzwanie. Będę " + Grammar.genderVerb(player.getGender(), "notował")
+			res.add("Z przyjemnością " + player.getGenderVerb("zaakceptowałem")
+				+ " to specyficzne wyzwanie. Będę " + player.getGenderVerb("notował")
 				+ " każdego poskromionego smoka!");
 			if (quest_state.equals("done")) {
 				res.add("Udało mi się ukończyć to niezwykły wyzwanie od Racirada.");
@@ -212,7 +212,7 @@ public class ChallengeDragons extends ChallengeQuests {
 		if (killed > 0) {
 			return "Wciąż muszę poskromić " + Integer.toString(killed) + " " + verb + " do zakończenia wyzwania."; 
 		}
-		return "Udało mi się zakończyć wyzwanie! Może " + Grammar.genderVerb(player.getGender(), "powinienem") + " się teraz udać do niego z powrotem...";
+		return "Udało mi się zakończyć wyzwanie! Może " + player.getGenderVerb("powinienem") + " się teraz udać do niego z powrotem...";
 	}
 
 	@Override

@@ -186,7 +186,7 @@ public class SuntanCreamForZara extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Zarę na wyspie Athor.");
+		res.add(player.getGenderVerb("Spotkałem") + " Zarę na wyspie Athor.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if (questState.equals("rejected")) {
 			res.add("Nie chcę pomagać Zarze. Może się spiec.");
@@ -199,7 +199,7 @@ public class SuntanCreamForZara extends AbstractQuest {
 			res.add("Mam olejek do opalania.");
 		}
 		if (questState.equals("done")) {
-			res.add(Grammar.genderVerb(player.getGender(), "Zabrałem") + " olejek do Zary, a ona udostępniła mi klucz do swojego domku w północnej części miasta Ados. Powiedziała, że jest na końcu w niższym rzędzie.");
+			res.add(player.getGenderVerb("Zabrałem") + " olejek do Zary, a ona udostępniła mi klucz do swojego domku w północnej części miasta Ados. Powiedziała, że jest na końcu w niższym rzędzie.");
 		}
 		return res;
 	}

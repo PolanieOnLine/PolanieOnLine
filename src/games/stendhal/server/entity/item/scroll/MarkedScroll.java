@@ -91,14 +91,14 @@ public class MarkedScroll extends TeleportScroll {
 				if (temp == null) {
 					// invalid zone (the scroll may have been marked in an
 					// old version and the zone was removed)
-					player.sendPrivateText("Z dziwnych powodów zwój nie przeniósł mnie tam gdzie " + Grammar.genderVerb(player.getGender(), "chciałem") + ".");
+					player.sendPrivateText("Z dziwnych powodów zwój nie przeniósł mnie tam gdzie " + player.getGenderVerb("chciałem") + ".");
 					logger.warn("marked scroll to unknown zone " + itemdata
 							+ " teleported " + player.getName()
 							+ " to Semos instead");
 				} else {
 					if (player.getKeyedSlot("!visited", zoneName) == null) {
-						player.sendPrivateText(Grammar.genderVerb(player.getGender(), "Słyszałeś") + " wiele opowieści o miejscu, do którego chcesz się przenieść "
-								+ "i nie możesz się skoncentrować ponieważ nigdy tam nie " + Grammar.genderVerb(player.getGender(), "byłeś") + ".");
+						player.sendPrivateText(player.getGenderVerb("Słyszałeś") + " wiele opowieści o miejscu, do którego chcesz się przenieść "
+								+ "i nie możesz się skoncentrować ponieważ nigdy tam nie " + player.getGenderVerb("byłeś") + ".");
 						return false;
 					} else {
 					        zone = temp;

@@ -168,19 +168,19 @@ public class KrolewskiPlaszcz extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Rozmawiałem") + " z królem Krakiem. Za pomoc obiecał nadać mi status szlachcica.");
+		res.add(player.getGenderVerb("Rozmawiałem") + " z królem Krakiem. Za pomoc obiecał nadać mi status szlachcica.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
 			res.add("Nie zamierzam pomóc królowi.");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "start", "done")) {
-			res.add(Grammar.genderVerb(player.getGender(), "Postanowiłem") + " pomóc królowi w wykonaniu nowego płaszcza.");
+			res.add(player.getGenderVerb("Postanowiłem") + " pomóc królowi w wykonaniu nowego płaszcza.");
 		}
 		if ("start".equals(questState) && player.isEquipped("płaszcz czarnego smoka", 10) || "done".equals(questState)) {
 			res.add("Posiadam już 10 płaszczy dla Króla Kraka.");
 		}
 		if ("done".equals(questState)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Oddałem") + " potrzebne przedmioty do wykonania królewskiego płaszcza.");
+			res.add(player.getGenderVerb("Oddałem") + " potrzebne przedmioty do wykonania królewskiego płaszcza.");
 		}
 		return res;
 	}

@@ -224,7 +224,7 @@ public class PierscienBarona extends AbstractQuest {
 				return res;
 			}
 			final String questState = player.getQuest(QUEST_SLOT);
-			res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " smoka eDragon.");
+			res.add(player.getGenderVerb("Spotkałem") + " smoka eDragon.");
 			res.add("Zaproponował mi pierścień barona.");
 			if ("rejected".equals(questState)) {
 				res.add("Nie potrzebny mi jest pierścień.");
@@ -233,11 +233,11 @@ public class PierscienBarona extends AbstractQuest {
 			if ("start".equals(questState)) {
 				return res;
 			} 
-			res.add("Smok eDragon poprosił, abym mu " + Grammar.genderVerb(player.getGender(), "dostarczył") + ": pierścień rycerza, 100 rudy żelaza, 150 bryłek złota, 200 polan, 100 węgla, 100 siarki i 100 soli. Mam mu powiedzieć przedmioty gdy będę " + Grammar.genderVerb(player.getGender(), "miał") + " wszystko.");
+			res.add("Smok eDragon poprosił, abym mu " + player.getGenderVerb("dostarczył") + ": pierścień rycerza, 100 rudy żelaza, 150 bryłek złota, 200 polan, 100 węgla, 100 siarki i 100 soli. Mam mu powiedzieć przedmioty gdy będę " + player.getGenderVerb("miał") + " wszystko.");
 			if ("lista".equals(questState)) {
 				return res;
 			} 
-			res.add("Smok eDragon był zadowolony z mojej postawy. W zamian " + Grammar.genderVerb(player.getGender(), "dostałem") + " pierścień barona.");
+			res.add("Smok eDragon był zadowolony z mojej postawy. W zamian " + player.getGenderVerb("dostałem") + " pierścień barona.");
 			if (isCompleted(player)) {
 				return res;
 			} 

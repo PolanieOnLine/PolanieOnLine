@@ -102,7 +102,7 @@ public class JailedDwarf extends AbstractQuest {
 			}
 			res.add("Muszę zdobyć klucz aby uwolnić Hunela.");
 			if (isCompleted(player)) {
-				res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " króla Duergars i zdobyłem klucz do celi Hunela. Teraz jest zbyt przestraszony aby wyjść. Kupi każdą ilość zbroi. Biedny Hunel.");
+				res.add(player.getGenderVerb("Zabiłem") + " króla Duergars i zdobyłem klucz do celi Hunela. Teraz jest zbyt przestraszony aby wyjść. Kupi każdą ilość zbroi. Biedny Hunel.");
 			}
 			return res;
 	}

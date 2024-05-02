@@ -302,7 +302,7 @@ public class MealForGroongo extends AbstractQuest {
 		final String questState = player.getQuest(QUEST_SLOT, 0);
 		//logger.warn("Quest state: <" + player.getQuest(QUEST_SLOT) + ">");
 
-		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Groongo Rahnnt w restauracji hotelu w Fado.");
+		res.add(player.getGenderVerb("Spotkałem") + " Groongo Rahnnt w restauracji hotelu w Fado.");
 
 		if ("rejected".equals(questState)) {
 			res.add("Poprosił mnie, abym przyniósł mu jego posiłek, "

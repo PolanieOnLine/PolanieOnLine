@@ -57,7 +57,7 @@ public class MagicznyScroll extends TimedTeleportScroll {
 				// player used the scroll within the last DELAY hours
 				// so are not allowed to go yet. but don't reset the last time taken.
 				// the private text doesn't get sent because events are lost on zone change. (marauroa bug)
-				player.sendPrivateText(Grammar.genderVerb(player.getGender(), "Pochorowałeś") + " się od nadużywania magii.");
+				player.sendPrivateText(player.getGenderVerb("Pochorowałeś") + " się od nadużywania magii.");
 				this.removeOne();
 				final Item sick = SingletonRepository.getEntityManager().getItem("wymioty");
 				player.getZone().add(sick);

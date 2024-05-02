@@ -136,9 +136,9 @@ public class MeetHackim extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Rozmawiałem") + " z Hackim, bardzo miły pomocnik kowala Semos.");
+		res.add(player.getGenderVerb("Rozmawiałem") + " z Hackim, bardzo miły pomocnik kowala Semos.");
 		if (isCompleted(player)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Wysłuchałem") + " jego przydatnych informacji na temat Xin Blanca, faceta z tawerny Semos.");
+			res.add(player.getGenderVerb("Wysłuchałem") + " jego przydatnych informacji na temat Xin Blanca, faceta z tawerny Semos.");
 		}
 		return res;
 	}

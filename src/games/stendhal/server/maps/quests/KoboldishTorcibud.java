@@ -407,7 +407,7 @@ public class KoboldishTorcibud extends AbstractQuest {
 			res.add("Poprosiła mnie o pomoc w remoncie jej magazynu na zapasy potrzebne do zrobienia jej Nalewki Litworowej, "
 					+ " ale mam pilne sprawy do załatwienia.");
 		} else if ("done".equals(questState)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Pomogłem") + " w remoncie jej magazynu na zapasy, z których przygotowuje swój Nalewkę Litworową.");
+			res.add(player.getGenderVerb("Pomogłem") + " w remoncie jej magazynu na zapasy, z których przygotowuje swój Nalewkę Litworową.");
 			if (isRepeatable(player)) {
 				// enough time has passed, inform that the quest can be taken now.
 				res.add("Może zapytam ją ponownie czy nie potrzebuje więcej rzeczy do jej magazynu na zapasy.");

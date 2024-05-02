@@ -351,7 +351,7 @@ public class DailyItemZakopaneQuest extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Napotkałem") + " się na Gazdę Wojtka w ratuszu Zakopane.");
+		res.add(player.getGenderVerb("Napotkałem") + " się na Gazdę Wojtka w ratuszu Zakopane.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
 			res.add("Nie pomogę gaździe oraz mieszkańcom Zakopane.");
@@ -363,22 +363,22 @@ public class DailyItemZakopaneQuest extends AbstractQuest {
 			String questItem = player.getRequiredItemName(QUEST_SLOT,0);
 			int amount = player.getRequiredItemQuantity(QUEST_SLOT,0);
 			if (!player.isEquipped(questItem, amount)) {
-				res.add(Grammar.genderVerb(player.getGender(), "Zostałem") + " " + Grammar.genderVerb(player.getGender(), "poproszony") + " o przyniesienie "
+				res.add(player.getGenderVerb("Zostałem") + " " + player.getGenderVerb("poproszony") + " o przyniesienie "
 						+ Grammar.quantityplnoun(amount, questItem) + ", aby pomóc Zakopanemu. Nie mam tego jeszcze.");
 			} else {
-				res.add(Grammar.genderVerb(player.getGender(), "Znalazłem") + " "
+				res.add(player.getGenderVerb("Znalazłem") + " "
 						+ Grammar.quantityplnoun(amount, questItem) + " do pomocy Zakopanemu i muszę je dostarczyć.");
 			}
 		}
 		int repetitions = player.getNumberOfRepetitions(getSlotName(), 2);
 		if (repetitions > 0) {
-			res.add(Grammar.genderVerb(player.getGender(), "Pomogłem") + " Zakopanemu z dostawami "
+			res.add(player.getGenderVerb("Pomogłem") + " Zakopanemu z dostawami "
 					+ Grammar.quantityplnoun(repetitions, "raz") + " do tej pory.");
 		}
 		if (isRepeatable(player)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Dostarczyłem") + " ostatni przedmiot do Gazdy Wojtka i teraz Zakopane znów potrzebuje zapasów.");
+			res.add(player.getGenderVerb("Dostarczyłem") + " ostatni przedmiot do Gazdy Wojtka i teraz Zakopane znów potrzebuje zapasów.");
 		} else if (isCompleted(player)){
-			res.add(Grammar.genderVerb(player.getGender(), "Dostarczyłem") + " ostatni przedmiot do Gazdy Wojtka i odebrałem moją nagrodę w ciągu ostatnich 24 godzin.");
+			res.add(player.getGenderVerb("Dostarczyłem") + " ostatni przedmiot do Gazdy Wojtka i odebrałem moją nagrodę w ciągu ostatnich 24 godzin.");
 		}
 		return res;
 	}

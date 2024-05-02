@@ -325,7 +325,7 @@ public class TannerNPC implements ZoneConfigurator {
 					for (final String itemName: requiredItems.keySet()) {
 						final int quantity = requiredItems.get(itemName);
 						if (player.isEquipped(itemName, quantity)) {
-							res.add(Grammar.genderVerb(player.getGender(), "Zdobyłem") + " " + itemName + ".");
+							res.add(player.getGenderVerb("Zdobyłem") + " " + itemName + ".");
 						} else {
 							res.add("Nadal muszę znaleźć " + Integer.toString(quantity) + " " + itemName);
 						}

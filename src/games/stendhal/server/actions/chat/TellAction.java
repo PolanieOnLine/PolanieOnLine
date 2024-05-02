@@ -62,7 +62,7 @@ public class TellAction implements ActionListener {
 		receiver.sendPrivateText(NotificationType.PRIVMSG, message);
 
 		if (!senderName.equals(receiverName)) {
-			player.sendPrivateText(NotificationType.PRIVMSG, Grammar.genderVerb(player.getGender(), "Powiedziałeś") + " " + receiverName + ": " + text);
+			player.sendPrivateText(NotificationType.PRIVMSG, player.getGenderVerb("Powiedziałeś") + " " + receiverName + ": " + text);
 		}
 
 		receiver.setLastPrivateChatter(senderName);

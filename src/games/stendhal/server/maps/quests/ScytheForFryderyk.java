@@ -157,7 +157,7 @@ public class ScytheForFryderyk extends AbstractQuest {
 	public List<String> getHistory(final Player player) {
 		final List<String> res = new ArrayList<String>();
 		if (player.hasQuest(QUEST_SLOT)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Fryderyka jakiś czas temu.");
+			res.add(player.getGenderVerb("Spotkałem") + " Fryderyka jakiś czas temu.");
 		}
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
@@ -166,10 +166,10 @@ public class ScytheForFryderyk extends AbstractQuest {
 		if ((player.isQuestInState(QUEST_SLOT, "start")
 				&& player.isEquipped("kosa"))
 				|| player.isQuestCompleted(QUEST_SLOT)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Znalazłem") + " kosę.");
+			res.add(player.getGenderVerb("Znalazłem") + " kosę.");
 		}
 		if (player.isQuestCompleted(QUEST_SLOT)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Dostarczyłem") + " kosę Fryderykowi.");
+			res.add(player.getGenderVerb("Dostarczyłem") + " kosę Fryderykowi.");
 		}
 		return res;
 	}

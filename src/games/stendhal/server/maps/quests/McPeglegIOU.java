@@ -106,7 +106,7 @@ public class McPeglegIOU extends AbstractQuest {
 				res.add("Henry dał mi karteczkę z imieniem McPegleg na jej temat.");
 			}
 			if (isCompleted(player)) {
-				res.add("McPegleg poznała karteczkę z jej imieniem - " + Grammar.genderVerb(player.getGender(), "dostałem") + " za nią 250 money!");
+				res.add("McPegleg poznała karteczkę z jej imieniem - " + player.getGenderVerb("dostałem") + " za nią 250 money!");
 			}
 			return res;
 	}

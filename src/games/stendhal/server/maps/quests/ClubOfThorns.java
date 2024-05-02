@@ -155,19 +155,19 @@ public class ClubOfThorns extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " się z orczym szamanem w Kotoch.");
+		res.add(player.getGenderVerb("Spotkałem") + " się z orczym szamanem w Kotoch.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if (questState.equals("rejected")) {
 			res.add("Nie chcę nikogo zabijać dla Szamana Orków.");
 		}
 		if (questState.startsWith("start") || questState.equals("done")) {
-			res.add("Jako wyzwanie mam zabić szefa górskich orków oraz jego świtę. " + Grammar.genderVerb(player.getGender(), "dostałem") + " klucz do więzienia.");
+			res.add("Jako wyzwanie mam zabić szefa górskich orków oraz jego świtę. " + player.getGenderVerb("dostałem") + " klucz do więzienia.");
 		}
 		if (questState.startsWith("start") && (new KilledForQuestCondition(QUEST_SLOT, 1)).fire(player,null,null) || questState.equals("done")) {
-			res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " szefa górskich orków w więzieniu Kotoch.");
+			res.add(player.getGenderVerb("Zabiłem") + " szefa górskich orków w więzieniu Kotoch.");
 		}
 		if (questState.equals("done")) {
-			res.add(Grammar.genderVerb(player.getGender(), "Powiedziałem") + " Szamanowi o wykonaniu zadania, a w zamian " + Grammar.genderVerb(player.getGender(), "otrzymałem") + " potężną maczugę cierniową.");
+			res.add(player.getGenderVerb("Powiedziałem") + " Szamanowi o wykonaniu zadania, a w zamian " + player.getGenderVerb("otrzymałem") + " potężną maczugę cierniową.");
 		}
 		return res;
 	}

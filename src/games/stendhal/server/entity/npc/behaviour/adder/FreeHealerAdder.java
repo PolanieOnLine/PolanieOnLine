@@ -112,7 +112,7 @@ public class FreeHealerAdder {
 								// (low atk, low def AND low level)
 								raiser.say("Przepraszam, ale Twoje ręce splamionę są krwią niewinnych. Nie mogę Ciebie uleczyć.");
 							} else {
-								raiser.say(Grammar.genderVerb(player.getGender(), "Zostałeś") + " " + Grammar.genderVerb(player.getGender(), "uleczony") + ". W czym jeszcze mogę pomóc?");
+								raiser.say(player.getGenderVerb("Zostałeś") + " " + player.getGenderVerb("uleczony") + ". W czym jeszcze mogę pomóc?");
 								healerBehaviour.heal(player);
 							}
 						}
@@ -133,7 +133,7 @@ public class FreeHealerAdder {
 						if (player.drop("money",
 								cost)) {
 							healerBehaviour.heal(player);
-							raiser.say(Grammar.genderVerb(player.getGender(), "Zostałeś") + " " + Grammar.genderVerb(player.getGender(), "uleczony") + ". W czym jeszcze mogę pomóc?");
+							raiser.say(player.getGenderVerb("Zostałeś") + " " + player.getGenderVerb("uleczony") + ". W czym jeszcze mogę pomóc?");
 						} else {
 							raiser.say("Przepraszam, ale nie możesz sobie na to pozwolić.");
 						}

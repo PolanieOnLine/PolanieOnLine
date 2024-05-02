@@ -271,7 +271,7 @@ public class DailyItemGdanskQuest extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Mieczysława w Gdańsku");
+		res.add(player.getGenderVerb("Spotkałem") + " Mieczysława w Gdańsku");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
 			res.add("Nie pomogę miastu Gdańsk.");
@@ -283,22 +283,22 @@ public class DailyItemGdanskQuest extends AbstractQuest {
 			String questItem = player.getRequiredItemName(QUEST_SLOT,0);
 			int amount = player.getRequiredItemQuantity(QUEST_SLOT,0);
 			if (!player.isEquipped(questItem, amount)) {
-				res.add((Grammar.genderVerb(player.getGender(), "Zostałem") + " " + Grammar.genderVerb(player.getGender(), "poproszony") + " o przyniesienie "
+				res.add((player.getGenderVerb("Zostałem") + " " + player.getGenderVerb("poproszony") + " o przyniesienie "
 						+ Grammar.quantityplnoun(amount, questItem) + ", aby pomóc miastu Gdańsk. Nie mam tego jeszcze."));
 			} else {
-				res.add((Grammar.genderVerb(player.getGender(), "Znalazłem") + " "
+				res.add((player.getGenderVerb("Znalazłem") + " "
 						+ Grammar.quantityplnoun(amount, questItem) + " do pomocy miastu Gdańsk i muszę je dostarczyć."));
 			}
 		}
 		int repetitions = player.getNumberOfRepetitions(getSlotName(), 2);
 		if (repetitions > 0) {
-			res.add(Grammar.genderVerb(player.getGender(), "Pomogłem") + " miastu Gdańsk z dostawami "
+			res.add(player.getGenderVerb("Pomogłem") + " miastu Gdańsk z dostawami "
 					+ Grammar.quantityplnoun(repetitions, "raz") + " do tej pory.");
 		}
 		if (isRepeatable(player)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Dostarczyłem") + " ostatni przedmiot do Mieczysława i teraz Gdańsk znów potrzebuje zapasów.");
+			res.add(player.getGenderVerb("Dostarczyłem") + " ostatni przedmiot do Mieczysława i teraz Gdańsk znów potrzebuje zapasów.");
 		} else if (isCompleted(player)){
-			res.add(Grammar.genderVerb(player.getGender(), "Dostarczyłem") + " ostatni przedmiot do Mieczysław i odebrałem moją nagrodę w ciągu ostatnich 48 godzin.");
+			res.add(player.getGenderVerb("Dostarczyłem") + " ostatni przedmiot do Mieczysław i odebrałem moją nagrodę w ciągu ostatnich 48 godzin.");
 		}
 		return res;
 	}

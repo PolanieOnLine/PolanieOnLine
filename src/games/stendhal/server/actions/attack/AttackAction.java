@@ -61,7 +61,7 @@ public class AttackAction implements ActionListener {
 						return;
 					}
 					RingOfInvisibility.setVisible(player, false);
-					player.sendPrivateText(NotificationType.ERROR, Grammar.genderVerb(player.getGender(), "Rozpocząłeś") + " atak także inne potwory odnalazły ciebie.");
+					player.sendPrivateText(NotificationType.ERROR, player.getGenderVerb("Rozpocząłeś") + " atak także inne potwory odnalazły ciebie.");
 				}
 
 				StendhalRPAction.startAttack(player, (RPEntity) entity);

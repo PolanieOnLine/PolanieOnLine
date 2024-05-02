@@ -238,7 +238,7 @@ public class MixtureForOrtiv extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Ortiv Milquetoast emerytowanego nauczyciela w jego domku w Kirdneh River.");
+		res.add(player.getGenderVerb("Spotkałem") + " Ortiv Milquetoast emerytowanego nauczyciela w jego domku w Kirdneh River.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
 			res.add("Nie chcę teraz pomagać Ortivowi. Powinien sam poszukać składników.");
@@ -247,7 +247,7 @@ public class MixtureForOrtiv extends AbstractQuest {
 			missingItems.addFromQuestStateString(questState);
 			res.add("Wciąż muszę przynieść dla Ortiv " + Grammar.enumerateCollection(missingItems.toStringList()) + ".");
 		} else {
-			res.add(Grammar.genderVerb(player.getGender(), "Pomogłem") + " dla Ortiv. Teraz może spać bezpiecznie w swoim łóżku. On nagrodził mnie podniesieniem XP i sztyletem mordercy.");
+			res.add(player.getGenderVerb("Pomogłem") + " dla Ortiv. Teraz może spać bezpiecznie w swoim łóżku. On nagrodził mnie podniesieniem XP i sztyletem mordercy.");
 		}
 		return res;
 	}

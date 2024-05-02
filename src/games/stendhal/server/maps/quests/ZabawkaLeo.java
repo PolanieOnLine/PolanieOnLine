@@ -140,7 +140,7 @@ public class ZabawkaLeo extends AbstractQuest {
 			}
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Leo na placu zabaw.");
+		res.add(player.getGenderVerb("Spotkałem") + " Leo na placu zabaw.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if (questState.equals("rejected")) {
 			res.add("Nie chcę szukać pluszowego misia Leo.");
@@ -148,10 +148,10 @@ public class ZabawkaLeo extends AbstractQuest {
 		}
 		res.add("Nie chcę pomóc Leo w poszukaniu jego misia.");
 		if (player.isEquipped("pluszowy miś") || isCompleted(player)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Znalazłem") + " pluszowego misia Leo.");
+			res.add(player.getGenderVerb("Znalazłem") + " pluszowego misia Leo.");
 		}
 		if (isCompleted(player)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Dałem") + " Leo jego misia.");
+			res.add(player.getGenderVerb("Dałem") + " Leo jego misia.");
 		}
 		return res;
 	}

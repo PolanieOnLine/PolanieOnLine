@@ -251,9 +251,9 @@ public class StuffForBaldemar extends AbstractQuest {
 			return res;
 		}
 		final String questState = player.getQuest(QUEST_SLOT);
-		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Baldemar w  magic theater.");
+		res.add(player.getGenderVerb("Spotkałem") + " Baldemar w  magic theater.");
 		if (questState.equals("rejected")) {
-			res.add("Nie jestem " + Grammar.genderVerb(player.getGender(), "zainteresowany") + " tarczą wykonaną z mithrilu.");
+			res.add("Nie jestem " + player.getGenderVerb("zainteresowany") + " tarczą wykonaną z mithrilu.");
 			return res;
 		}
 		res.add("Baldemar zapytał mnie o przyniesienie wielu rzeczy.");
@@ -264,7 +264,7 @@ public class StuffForBaldemar extends AbstractQuest {
 			}
 			res.add("Wciąż potrzebuję przynieść " + questLogic.itemsStillNeeded(player) + suffix);
 		} else if (broughtAllItems(questState) || !questState.startsWith("start")) {
-			res.add(Grammar.genderVerb(player.getGender(), "Zaniosłem") + " wszystkie specjalne przedmioty do Baldemara.");
+			res.add(player.getGenderVerb("Zaniosłem") + " wszystkie specjalne przedmioty do Baldemara.");
 		}
 		if (broughtAllItems(questState) && !player.hasKilledSolo("czarny olbrzym")) {
 			res.add("Muszę odważnie stawić czoła samemu czarnemu olbrzymowi, zanim będę wart tej tarczy.");
@@ -273,7 +273,7 @@ public class StuffForBaldemar extends AbstractQuest {
 			res.add("Baldemar wykuwa dla mnie tarczę z mithrilu!");
 		}
 		if (isCompleted(player)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Dostarczyłem") + " Baldemarowi potrzebne surowce, " + Grammar.genderVerb(player.getGender(), "zabiłem") + " sam czarnego olbrzyma. W nagrodę " + Grammar.genderVerb(player.getGender(), "dostałem") + " tarcze z mithrilu.");
+			res.add(player.getGenderVerb("Dostarczyłem") + " Baldemarowi potrzebne surowce, " + player.getGenderVerb("zabiłem") + " sam czarnego olbrzyma. W nagrodę " + player.getGenderVerb("dostałem") + " tarcze z mithrilu.");
 		}
 		return res;
 	}

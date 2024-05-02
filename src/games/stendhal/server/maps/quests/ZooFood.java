@@ -245,7 +245,7 @@ public class ZooFood extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Katinkę w zoo");
+		res.add(player.getGenderVerb("Spotkałem") + " Katinkę w zoo");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if (questState.equals("rejected")) {
 			res.add("Nie mam czasu na zwierzęta i ich problemy z jedzeniem");
@@ -256,7 +256,7 @@ public class ZooFood extends AbstractQuest {
 			String questItem = player.getRequiredItemName(QUEST_SLOT,1);
 			int amount = player.getRequiredItemQuantity(QUEST_SLOT,1);
 			if (!player.isEquipped(questItem, amount)) {
-				res.add(String.format(Grammar.genderVerb(player.getGender(), "Zostałem") + " " + Grammar.genderVerb(player.getGender(), "poproszony") + ", aby przynieść " + Grammar.quantityplnoun(amount, questItem) + " dla zwierząt."));
+				res.add(String.format(player.getGenderVerb("Zostałem") + " " + player.getGenderVerb("poproszony") + ", aby przynieść " + Grammar.quantityplnoun(amount, questItem) + " dla zwierząt."));
 			} else {
 				res.add(String.format("Mam " + Grammar.quantityplnoun(amount, questItem) + " dla zwierząt, muszę to zanieść do schroniska w Ados."));
 			}

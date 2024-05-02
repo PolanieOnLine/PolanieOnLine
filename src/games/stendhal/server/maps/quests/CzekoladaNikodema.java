@@ -211,11 +211,11 @@ public class CzekoladaNikodema extends AbstractQuest {
 			res.add("Nikodem chce dostać tabliczkę czekolady.");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "start") && player.isEquipped("tabliczka czekolady") || isCompleted(player)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Znalazłem") + " pyszną tabliczkę czekolady dla Nikodema.");
+			res.add(player.getGenderVerb("Znalazłem") + " pyszną tabliczkę czekolady dla Nikodema.");
 		}
         if (isCompleted(player)) {
             if (isRepeatable(player)) {
-                res.add(Grammar.genderVerb(player.getGender(), "Przyniosłem") + " trochę czekolady dla Nikodema. Może chciałby więcej czekolady.");
+                res.add(player.getGenderVerb("Przyniosłem") + " trochę czekolady dla Nikodema. Może chciałby więcej czekolady.");
             } else {
                 res.add("Nikodem je czekoladę, którą mu dałem.");
             }

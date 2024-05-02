@@ -228,7 +228,7 @@ public class FishSoupForHughie extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Anastasia poprosiła mnie, żebym " + Grammar.genderVerb(player.getGender(), "przyniósł") + "  zupę rybną dla jej syna, Hughiego.");
+		res.add("Anastasia poprosiła mnie, żebym " + player.getGenderVerb("przyniósł") + "  zupę rybną dla jej syna, Hughiego.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
 			res.add("Nie chce pomóc dla Hughiego.");

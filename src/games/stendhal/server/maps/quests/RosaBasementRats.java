@@ -143,13 +143,13 @@ public class RosaBasementRats extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " barmankę w Gdańskiej karczmie.");
+		res.add(player.getGenderVerb("Spotkałem") + " barmankę w Gdańskiej karczmie.");
 		final String questState = player.getQuest(QUEST_SLOT, 0);
 		if ("rejected".equals(questState)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Odmówiłem") + " Rosie pomocy.");
+			res.add(player.getGenderVerb("Odmówiłem") + " Rosie pomocy.");
 		return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Postanowiłem") + " pomóc w oczyszczaniu piwnicy.");
+		res.add(player.getGenderVerb("Postanowiłem") + " pomóc w oczyszczaniu piwnicy.");
 		if (("start".equals(questState) && player.hasKilled("szczur") && player.hasKilled("szczur jaskiniowy") && player.hasKilled("wąż")) || "done".equals(questState)) {
 			res.add("Piwnica została oczyszczona z gryzoni i węży.");
 		}

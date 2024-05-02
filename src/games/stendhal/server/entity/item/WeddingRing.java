@@ -127,13 +127,13 @@ public class WeddingRing extends Item {
 	private boolean teleportToSpouse(final Player player) {
 		// don't allow use if on the ground
 		if (!isContained()) {
-			player.sendPrivateText(Grammar.genderVerb(player.getGender(), "Powinieneś") + " podnieść swoją obrączkę ślubną, by go użyć.");
+			player.sendPrivateText(player.getGenderVerb("Powinieneś") + " podnieść swoją obrączkę ślubną, by go użyć.");
 			return false;
 		}
 
 		// check if pets and sheep are near
 		if (!player.isZoneChangeAllowed()) {
-			player.sendPrivateText("Powiedziano Tobie, abyś " + Grammar.genderVerb(player.getGender(), "pilnował") + " swoje zwierzątka?");
+			player.sendPrivateText("Powiedziano Tobie, abyś " + player.getGenderVerb("pilnował") + " swoje zwierzątka?");
 			return false;
 		}
 
@@ -182,7 +182,7 @@ public class WeddingRing extends Item {
 		final int secondsNeeded = getLastUsed() + getCoolingPeriod(player, spouse) - (int) (System.currentTimeMillis() / 1000);
 		if (secondsNeeded > 0) {
 			player.sendPrivateText("Pierścień jeszcze nie odzyskał w pełni swojej mocy. " 
-					+ Grammar.genderVerb(player.getGender(), "Myślałeś")
+					+ player.getGenderVerb("Myślałeś")
 					+ ", że będzie gotowy w ciągu " 
 					+ TimeUtil.approxTimeUntil(secondsNeeded) + ".");
 
@@ -206,7 +206,7 @@ public class WeddingRing extends Item {
 		final String zoneName = destinationZone.getName();
 		// check if player has visited zone before
 		if (player.getKeyedSlot("!visited", zoneName) == null) {
-			player.sendPrivateText(Grammar.genderVerb(player.getGender(), "Słyszałeś") + " wiele plotek o miejscu docelowym. "
+			player.sendPrivateText(player.getGenderVerb("Słyszałeś") + " wiele plotek o miejscu docelowym. "
 					+ "Nie możesz dołączyć do " + spouseName + " ponieważ znajduje się w nieznany dla Ciebie miejscu.");
 			return false;
 		}

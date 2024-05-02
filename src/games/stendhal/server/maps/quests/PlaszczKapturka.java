@@ -252,7 +252,7 @@ public class PlaszczKapturka extends AbstractQuest {
 			}
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Balbine wraz z przyjaciółmi w parku zabaw");
+		res.add(player.getGenderVerb("Spotkałem") + " Balbine wraz z przyjaciółmi w parku zabaw");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if (questState.equals("rejected")) {
 			res.add("Nie chcę pomagać Balbinie w sprawie płaszcza czarwonego kapturka");
@@ -272,7 +272,7 @@ public class PlaszczKapturka extends AbstractQuest {
 			res.add("Mam już płaszcz kapturka dla Balbiny");
 		}
 		if (isCompleted(player)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Przekazałem") + " Balbinie jej wymarzony płaszcz czerwonego kapturka.");
+			res.add(player.getGenderVerb("Przekazałem") + " Balbinie jej wymarzony płaszcz czerwonego kapturka.");
 		}
 		return res;
 	}

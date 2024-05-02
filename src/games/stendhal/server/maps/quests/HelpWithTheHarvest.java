@@ -298,7 +298,7 @@ public class HelpWithTheHarvest extends AbstractQuest {
 			result.add("Doprowadziłem wystarczającą ilość wózków do stodoły. Mogę teraz powiedzieć Eheneumniraninowi, że skończyłem.");
 		}
 		if(createFinishedCondition().fire(player, null, null)) {
-			result.add(Grammar.genderVerb(player.getGender(), "Pomogłem") + " " + getNPCName() + " i " + Grammar.genderVerb(player.getGender(), "dostałem") + " swoją nagrodę.");
+			result.add(player.getGenderVerb("Pomogłem") + " " + getNPCName() + " i " + player.getGenderVerb("dostałem") + " swoją nagrodę.");
 		}
 		return result;
 	}

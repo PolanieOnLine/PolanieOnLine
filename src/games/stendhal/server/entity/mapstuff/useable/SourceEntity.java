@@ -131,7 +131,7 @@ public class SourceEntity extends PlayerActivityEntity {
 					player.incMiningXP(xp);
 				}
 
-				player.sendPrivateText(Grammar.genderVerb(player.getGender(), "Wydobyłeś") + " " + item.getTitle() + ".");
+				player.sendPrivateText(player.getGenderVerb("Wydobyłeś") + " " + item.getTitle() + ".");
 			} else {
 				logger.error("could not find item: " + itemName);
 			}
@@ -139,7 +139,7 @@ public class SourceEntity extends PlayerActivityEntity {
 			if (skill != null) {
 				player.incMiningXP((xp) / 10);
 			}
-			player.sendPrivateText("Nic nie " + Grammar.genderVerb(player.getGender(), "wydobyłeś") + ".");
+			player.sendPrivateText("Nic nie " + player.getGenderVerb("wydobyłeś") + ".");
 		}
 	}
 
@@ -180,6 +180,6 @@ public class SourceEntity extends PlayerActivityEntity {
 	 */
 	@Override
 	protected void onStarted(final Player player) {
-		sendMessage(player, Grammar.genderVerb(player.getGender(), "Rozpocząłeś") + " wydobywanie surowca.");
+		sendMessage(player, player.getGenderVerb("Rozpocząłeś") + " wydobywanie surowca.");
 	}
 }

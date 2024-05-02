@@ -194,7 +194,7 @@ public class MeetFryderyk extends AbstractQuest {
 				return res;
 			}
 			if (isCompleted(player)) {
-				res.add(Grammar.genderVerb(player.getGender(), "Rozmawiałem") + " z Fryderykiem i on zaproponował mi mapę. Zawsze mogę spytać się jego o mapę i ją dostanę.");
+				res.add(player.getGenderVerb("Rozmawiałem") + " z Fryderykiem i on zaproponował mi mapę. Zawsze mogę spytać się jego o mapę i ją dostanę.");
 			}
 			return res;
 	}

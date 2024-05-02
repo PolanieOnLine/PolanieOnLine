@@ -180,7 +180,7 @@ public class PierscienRycerza extends AbstractQuest {
 				return res;
 			}
 			final String questState = player.getQuest(QUEST_SLOT);
-			res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Edgarda na terenie Zakonu.");
+			res.add(player.getGenderVerb("Spotkałem") + " Edgarda na terenie Zakonu.");
 			res.add("Zaproponował mi pierścień rycerza wzamian za parę rzeczy.");
 			if ("rejected".equals(questState)) {
 				res.add("Nie potrzebny jest mi pierścień rycerza.");
@@ -189,11 +189,11 @@ public class PierscienRycerza extends AbstractQuest {
 			if ("start".equals(questState)) {
 				return res;
 			} 
-			res.add("Edgard poprosił, abym " + Grammar.genderVerb(player.getGender(), "dostarczył") + " potrzebne przedmioty. Jeżeli nie będę " + Grammar.genderVerb(player.getGender(), "pamiętał") + " co mam przynieść mam powiedzieć przypomnij.");
+			res.add("Edgard poprosił, abym " + player.getGenderVerb("dostarczył") + " potrzebne przedmioty. Jeżeli nie będę " + player.getGenderVerb("pamiętał") + " co mam przynieść mam powiedzieć przypomnij.");
 			if ("przedmioty".equals(questState)) {
 				return res;
 			} 
-			res.add("Edgard jest zadowolony z mojej postawy. W zamian " + Grammar.genderVerb(player.getGender(), "dostałem") + " pierścień rycerza.");
+			res.add("Edgard jest zadowolony z mojej postawy. W zamian " + player.getGenderVerb("dostałem") + " pierścień rycerza.");
 			if (isCompleted(player)) {
 				return res;
 			} 

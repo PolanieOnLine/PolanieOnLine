@@ -137,7 +137,7 @@ public class LearnAboutOrbs extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Ilise w świątyni w Semos.");
+		res.add(player.getGenderVerb("Spotkałem") + " Ilise w świątyni w Semos.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if (questState.equals("done")) {
 			res.add("Ilisa pokazała mi jak używać kul. Muszę uważać, ponieważ mogą mnie wysłać w inne niebezpieczne miejsce.");

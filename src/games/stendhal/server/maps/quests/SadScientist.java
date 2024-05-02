@@ -506,7 +506,7 @@ public class SadScientist extends AbstractQuest {
 			res.add("Vasi Elos poprosił mnie o pomoc, ale nie jestem zainteresowany, aby pomóc naukowcowi.");
 			return res;
 		}
-		res.add("Vasi Elos poprosił mnie, abym " + Grammar.genderVerb(player.getGender(), "dostarczył") + " mu złoto i mithril, aby mógł sprawić dla swej słodkiej Very spodnie wysadzane klejnotami jako prezent.");
+		res.add("Vasi Elos poprosił mnie, abym " + player.getGenderVerb("dostarczył") + " mu złoto i mithril, aby mógł sprawić dla swej słodkiej Very spodnie wysadzane klejnotami jako prezent.");
 		if (getConditionForBeingInCollectionPhase().fire(player,null,null)) {
 			final ItemCollection missingItems = new ItemCollection();
 			missingItems.addFromQuestStateString(questState);
@@ -533,7 +533,7 @@ public class SadScientist extends AbstractQuest {
 		if (questState.startsWith("kill_scientist") && !new KilledForQuestCondition(QUEST_SLOT, 1).fire(player, null, null)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " Imperial Scientist Sergej Elos i muszę jako dowód dostarczyć kielich z jego krwią.");
+		res.add(player.getGenderVerb("Zabiłem") + " Imperial Scientist Sergej Elos i muszę jako dowód dostarczyć kielich z jego krwią.");
 		if (questState.startsWith("kill_scientist") && new KilledForQuestCondition(QUEST_SLOT, 1).fire(player, null, null)) {
 			return res;
 		}

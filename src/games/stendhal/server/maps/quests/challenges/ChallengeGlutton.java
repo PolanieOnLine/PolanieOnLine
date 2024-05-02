@@ -75,11 +75,11 @@ public class ChallengeGlutton extends ChallengeQuests {
 		res.add(npc.getName() + " zapronował mi wykonanie wyzwania na pozyskanie mięsnego pokarmu.");
 		if (quest_state.equals("rejected")) {
 			res.add("Cóż za obrzydliwe wyzwanie... Także "
-				+ Grammar.genderVerb(player.getGender(), "odrzuciłem")
+				+ player.getGenderVerb("odrzuciłem")
 				+ " propozycje tego durnego wyzwania.");
 		} else {
-			res.add("Z przyjemnością " + Grammar.genderVerb(player.getGender(), "zaakceptowałem")
-				+ " to specyficzne wyzwanie. Będę " + Grammar.genderVerb(player.getGender(), "notował")
+			res.add("Z przyjemnością " + player.getGenderVerb("zaakceptowałem")
+				+ " to specyficzne wyzwanie. Będę " + player.getGenderVerb("notował")
 				+ " każde zdobyte mięso ze zwierząt!");
 			if (quest_state.equals("done")) {
 				res.add("Udało mi się ukończyć to niezwykły wyzwanie od Wszebora.");
@@ -178,7 +178,7 @@ public class ChallengeGlutton extends ChallengeQuests {
 		if (looted > 0) {
 			return "Wciąż muszę nazbierać " + Integer.toString(looted) + " pożywienia ze zwierząt do zakończenia wyzwania."; 
 		}
-		return "Udało mi się zakończyć wyzwanie! Może " + Grammar.genderVerb(player.getGender(), "powinienem") + " się teraz udać do niego z powrotem...";
+		return "Udało mi się zakończyć wyzwanie! Może " + player.getGenderVerb("powinienem") + " się teraz udać do niego z powrotem...";
 	}
 
 	@Override

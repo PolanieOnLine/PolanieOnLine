@@ -77,14 +77,14 @@ public class AntivenomRing extends AbstractQuest {
 	public List<String> getHistory(final Player player) {
 		final List<String> res = new ArrayList<String>();
 		if (player.hasQuest(QUEST_SLOT)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Znalazłem") + " aptekarza pustelnika w laboratorium w górach Semos.");
+			res.add(player.getGenderVerb("Znalazłem") + " aptekarza pustelnika w laboratorium w górach Semos.");
 
 			final String questState = player.getQuest(QUEST_SLOT, 0);
 			if (questState.equals("rejected")) {
 				res.add("Trucizna jest zbyt niebezpieczna. Nie chcę sobie zaszkodzić.");
 			} else {
 				if (questState.equals("mixing") || questState.equals("ringmaker") || questState.equals("fusing") || questState.equals("done")) {
-					res.add(Grammar.genderVerb(player.getGender(), "Znalazłem") + " wszystko o co mnie poprosił " + apothecary + ".");
+					res.add(player.getGenderVerb("Znalazłem") + " wszystko o co mnie poprosił " + apothecary + ".");
 					if (questState.equals("mixing")) {
 						res.add("Aktualnie miesza dla mnie antyjad.");
 					} else if (questState.equals("ringmaker") || questState.equals("fusing") || questState.equals("done")) {

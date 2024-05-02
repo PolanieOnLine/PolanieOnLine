@@ -137,7 +137,7 @@ public class LostClub extends AbstractQuest {
 	public List<String> getHistory(final Player player) {
 		final List<String> res = new ArrayList<String>();
 		if (player.hasQuest(QUEST_SLOT)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Doriana wędrującego między drzewami.");
+			res.add(player.getGenderVerb("Spotkałem") + " Doriana wędrującego między drzewami.");
 		}
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
@@ -146,10 +146,10 @@ public class LostClub extends AbstractQuest {
 		if ((player.isQuestInState(QUEST_SLOT, "start")
 				&& player.isEquipped("maczuga"))
 				|| player.isQuestCompleted(QUEST_SLOT)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Znalazłem") + " maczugę.");
+			res.add(player.getGenderVerb("Znalazłem") + " maczugę.");
 		}
 		if (player.isQuestCompleted(QUEST_SLOT)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Dostarczyłem") + " maczugę Dorianowi. Poczęstował mnie pączkami.");
+			res.add(player.getGenderVerb("Dostarczyłem") + " maczugę Dorianowi. Poczęstował mnie pączkami.");
 		}
 		return res;
 	}

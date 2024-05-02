@@ -195,11 +195,11 @@ public class LookUpQuote extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Pequod w domku w mieście Ados i poprosił mnie o znalezienie cytatu znanego rybaka.");
+		res.add(player.getGenderVerb("Spotkałem") + " Pequod w domku w mieście Ados i poprosił mnie o znalezienie cytatu znanego rybaka.");
 		if (!player.isQuestCompleted(QUEST_SLOT)) {
 			res.add("Cytat, który muszę znaleźć jest " + player.getQuest(QUEST_SLOT) + ".");
 		} else {
-			res.add(Grammar.genderVerb(player.getGender(), "Znalazłem") + " cytat dla Pequod i " + Grammar.genderVerb(player.getGender(), "dostałem") + " wędkę.");
+			res.add(player.getGenderVerb("Znalazłem") + " cytat dla Pequod i " + player.getGenderVerb("dostałem") + " wędkę.");
 		}
 		return res;
 	}

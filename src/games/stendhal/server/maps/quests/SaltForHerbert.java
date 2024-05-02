@@ -243,7 +243,7 @@ public class SaltForHerbert extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Poznałem") + " Herberta.");
+		res.add(player.getGenderVerb("Poznałem") + " Herberta.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
 			res.add("Nie chcę pomagać Herbertowi.");
@@ -251,10 +251,10 @@ public class SaltForHerbert extends AbstractQuest {
 		}
 		res.add("Chcę pomóc Herbertowi");
 		if (player.isEquipped("sól", REQUIRED_SALT) || isCompleted(player)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Wydobyłem") + " potrzebną sól dla Herbarta");
+			res.add(player.getGenderVerb("Wydobyłem") + " potrzebną sól dla Herbarta");
 		}
 		if (isCompleted(player)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Zaniosłem") + " Herbertowi sól.");
+			res.add(player.getGenderVerb("Zaniosłem") + " Herbertowi sól.");
 		}
 		if(isRepeatable(player)){
 			res.add("Herbert znowu potrzebuje sól.");

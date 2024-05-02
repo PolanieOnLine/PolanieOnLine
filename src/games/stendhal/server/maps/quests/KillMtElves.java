@@ -136,14 +136,14 @@ public class KillMtElves extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Czarnoksiężnika w jakieś starej wieży.");
+		res.add(player.getGenderVerb("Spotkałem") + " Czarnoksiężnika w jakieś starej wieży.");
 		final String questState = player.getQuest(QUEST_SLOT, 0);
 		if ("rejected".equals(questState)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Odmówiłem") + " Czarnoksiężnikowi pomocy.");
+			res.add(player.getGenderVerb("Odmówiłem") + " Czarnoksiężnikowi pomocy.");
 		return res;
 		}
 		if ("done".equals(questState)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " wszystkie elfy górskie, które Czarnoksiężnik mi zlecił.");
+			res.add(player.getGenderVerb("Zabiłem") + " wszystkie elfy górskie, które Czarnoksiężnik mi zlecił.");
 		}
 		return res;
 	}

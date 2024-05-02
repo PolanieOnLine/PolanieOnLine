@@ -272,7 +272,7 @@ public class BalloonForBobby extends AbstractQuest {
 				} else {
 					balloon = balloon + "ów";
 				}
- 				res.add(Grammar.genderVerb(player.getGender(), "Znalazłem") + " i dałem ładne " + Integer.toString(completedCount) + " " + balloon + " dla " + npc.getName() + ".");
+ 				res.add(player.getGenderVerb("Znalazłem") + " i dałem ładne " + Integer.toString(completedCount) + " " + balloon + " dla " + npc.getName() + ".");
 			}
 		}
 

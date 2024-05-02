@@ -296,7 +296,7 @@ public class ImperialPrincess extends AbstractQuest {
 			res.add("Muszę powiedzieć Księżniczce Ylflii, że mam \" zioła \", kiedy zbiorę wszystkie zioła, mikstury i odtrutki, które ona potrzebuję.");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "recommended", "done")) {
-			res.add(Grammar.genderVerb(player.getGender(), "Przyniosłem") + " Księżniczce Ylflii wszystkie składniki potrzebne do uzdrawiania i powiedziała mi, że ona mnie poleci swemu ojcu, królowi.");
+			res.add(player.getGenderVerb("Przyniosłem") + " Księżniczce Ylflii wszystkie składniki potrzebne do uzdrawiania i powiedziała mi, że ona mnie poleci swemu ojcu, królowi.");
 		}
 		if (questState.equals("done")) {
 			res.add("Król Cozart nadał mi obywatelstwo Kalavan.");

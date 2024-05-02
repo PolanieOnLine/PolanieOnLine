@@ -72,14 +72,14 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
 										if(player.getKarma() >= 2000) {
 											if(player.hasKilled("azazel")) {
 												if (!player.hasQuest(QUEST_SLOT) || "rejected".equals(player.getQuest(QUEST_SLOT))) {
-													raiser.say("Musisz być dzielnym wojownikiem skoro " + Grammar.genderVerb(player.getGender(), "dotarłeś") + " aż tu. Mam dla ciebie zadanie, czy jesteś gotów?");
+													raiser.say("Musisz być dzielnym wojownikiem skoro " + player.getGenderVerb("dotarłeś") + " aż tu. Mam dla ciebie zadanie, czy jesteś gotów?");
 												} else if (player.getQuest(QUEST_SLOT, 0).equals("start")) {
 													raiser.say("Już się Ciebie pytałem czy chcesz ulepszyć złotą ciupagę!");
 												} else if (player.isQuestCompleted(QUEST_SLOT)) {
 													raiser.say("Już ulepszyłem dla Ciebie złotą ciupagę.");
 													raiser.setCurrentState(ConversationStates.ATTENDING);
 												} else {
-													raiser.say("Dlaczego zawracasz mi głowę skoro nie " + Grammar.genderVerb(player.getGender(), "ukończyłeś") + " zadania?");
+													raiser.say("Dlaczego zawracasz mi głowę skoro nie " + player.getGenderVerb("ukończyłeś") + " zadania?");
 													raiser.setCurrentState(ConversationStates.ATTENDING);
 												}
 											} else {
@@ -264,17 +264,17 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
 			return res;
 		}
 		final String questState = player.getQuest(QUEST_SLOT);
-		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " się z Hadrinem.");
+		res.add(player.getGenderVerb("Spotkałem") + " się z Hadrinem.");
 		res.add("Hadrin może ulepszyć moją złotą ciupagę.");
 		if ("rejected".equals(questState)) {
 			res.add("Nie zamierzam ulepszać swej złotej ciupagi.");
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Udałem") + " się do Hadrina w celu ulepszenia ciupagi. Kazał mi przynnieść kilka przedmiotów. Gdybym " + Grammar.genderVerb(player.getGender(), "zapomniał") + " co mam przynieść mam mu powiedzieć: przypomnij."); 
+		res.add(player.getGenderVerb("Udałem") + " się do Hadrina w celu ulepszenia ciupagi. Kazał mi przynnieść kilka przedmiotów. Gdybym " + player.getGenderVerb("zapomniał") + " co mam przynieść mam mu powiedzieć: przypomnij."); 
 		if ("start".equals(questState)) {
 			return res;
 		} 
-		res.add(Grammar.genderVerb(player.getGender(), "Dostarczyłem") + " potrzebne przedmioty! Hadrin zabrał się za ulepszenie mojej ciupagi.");
+		res.add(player.getGenderVerb("Dostarczyłem") + " potrzebne przedmioty! Hadrin zabrał się za ulepszenie mojej ciupagi.");
 		if (questState.startsWith("forging")) {
 			if (new TimePassedCondition(QUEST_SLOT,1,REQUIRED_HOURS).fire(player, null, null)) {
 				res.add("Podobno Hadrin skończył moją ciupagę. Hasło: nagroda.");

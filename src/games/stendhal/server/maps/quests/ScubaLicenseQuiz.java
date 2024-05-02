@@ -93,7 +93,7 @@ public class ScubaLicenseQuiz extends AbstractQuest {
 						npc.say("Cześć jestem w krainie jedynym nauczycielem nurkowania. Jeżeli chcesz odkrywać wspaniały podwodny morski świat to potrzebujesz #licencji i #zbroi #akwalungowej.");
 					} else if (!player.isQuestCompleted(QUEST_SLOT)) {
 						final String name = player.getQuest(QUEST_SLOT);
-						npc.say(Grammar.genderVerb(player.getGender(), "Wróciłeś") + "! Wierzę, że " + Grammar.genderVerb(player.getGender(), "studiowałeś") + " i możesz odpowiedzieć na pytanie. " + name);
+						npc.say(player.getGenderVerb("Wróciłeś") + "! Wierzę, że " + player.getGenderVerb("studiowałeś") + " i możesz odpowiedzieć na pytanie. " + name);
 						npc.setCurrentState(ConversationStates.QUESTION_1);
 					} else {
 						npc.say("Witaj na pokładzie!");
@@ -125,7 +125,7 @@ public class ScubaLicenseQuiz extends AbstractQuest {
 					@Override
 					public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
 						final String name = player.getQuest(QUEST_SLOT);
-						npc.say("Wierzę, że " + Grammar.genderVerb(player.getGender(), "studiowałeś") + " i możesz odpowiedzieć na pytanie. " + name);
+						npc.say("Wierzę, że " + player.getGenderVerb("studiowałeś") + " i możesz odpowiedzieć na pytanie. " + name);
 					}
 				});
 
@@ -201,11 +201,11 @@ public class ScubaLicenseQuiz extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Edwarda byłego nurka, który uczy inne osoby. Jeżeli zdam jego egzamin to dostanę licencję nurka.");
+		res.add(player.getGenderVerb("Spotkałem") + " Edwarda byłego nurka, który uczy inne osoby. Jeżeli zdam jego egzamin to dostanę licencję nurka.");
 		if (!player.isQuestCompleted(QUEST_SLOT)) {
 			res.add("Pytanie na które muszę odpowiedzieć " + player.getQuest(QUEST_SLOT) + ".");
 		} else {
-			res.add(Grammar.genderVerb(player.getGender(), "Zdałem") + " egzamin Edwarda i " + Grammar.genderVerb(player.getGender(), "dostałem") + " licencję nurka.");
+			res.add(player.getGenderVerb("Zdałem") + " egzamin Edwarda i " + player.getGenderVerb("dostałem") + " licencję nurka.");
 		}
 		return res;
 	}

@@ -224,7 +224,7 @@ public class CloaksForBario extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " zmarźniętego krasnala, który ukrywa się pod ziemią w okolicy Ados. Poprosił mnie, żebym " + Grammar.genderVerb(player.getGender(), "przyniósł") + "  mu 10 lazurowych płaszczy elfickich.");
+		res.add(player.getGenderVerb("Spotkałem") + " zmarźniętego krasnala, który ukrywa się pod ziemią w okolicy Ados. Poprosił mnie, żebym " + player.getGenderVerb("przyniósł") + "  mu 10 lazurowych płaszczy elfickich.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if (questState.equals("rejected")) {
 			res.add("Nie chcę pomagać Bario...");

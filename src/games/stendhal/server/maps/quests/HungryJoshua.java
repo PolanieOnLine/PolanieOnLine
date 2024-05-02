@@ -250,13 +250,13 @@ public class HungryJoshua extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Zapytałem") + " Xoderos w kuźni w Semos czy nie ma dla mnie jakiegoś zadania.");
+		res.add(player.getGenderVerb("Zapytałem") + " Xoderos w kuźni w Semos czy nie ma dla mnie jakiegoś zadania.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if (questState.equals("rejected")) {
 			res.add("Nie chcę pomagać Xoderosowi i jemu bratu.");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "start", "joshua", "done")) {
-			res.add(Grammar.genderVerb(player.getGender(), "Zgodziłem") + " się na dostarczenie 5 kanapek do Joshui i powiedzenie mu, że mam jego 'jedzenie'.");
+			res.add(player.getGenderVerb("Zgodziłem") + " się na dostarczenie 5 kanapek do Joshui i powiedzenie mu, że mam jego 'jedzenie'.");
 		}
 		if (questState.equals("start") && player.isEquipped("kanapka",
 				FOOD_AMOUNT)
@@ -264,10 +264,10 @@ public class HungryJoshua extends AbstractQuest {
 			res.add("Mam pięć kanapek, które zabiorę do Joshui.");
 		}
 		if (questState.equals("joshua") || questState.equals("done")) {
-			res.add(Grammar.genderVerb(player.getGender(), "Wziąłem") + " jedzenie do Joshui, a on poprosił mnie o przekazanie wiadomości jego bratu Xoderosowi, że wszystko u niego jest w porządku mówiąc 'Joshua'.");
+			res.add(player.getGenderVerb("Wziąłem") + " jedzenie do Joshui, a on poprosił mnie o przekazanie wiadomości jego bratu Xoderosowi, że wszystko u niego jest w porządku mówiąc 'Joshua'.");
 		}
 		if (questState.equals("done")) {
-			res.add(Grammar.genderVerb(player.getGender(), "Przekazałem") + " wiadomość Xoderosowi, a on naprawił mój rzemyk.");
+			res.add(player.getGenderVerb("Przekazałem") + " wiadomość Xoderosowi, a on naprawił mój rzemyk.");
 		}
 		return res;
 	}

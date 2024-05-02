@@ -143,11 +143,11 @@ public class MakeRings {
 								"obrączka ślubna");
 						weddingRing.setBoundTo(player.getName());
 						if (player.getQuest(marriage.getQuestSlot()).startsWith("forgingagain")) {
-							npc.say("Skończyłem pracę nad następną obrączką ślubną. Następnym razem bądź " + Grammar.genderVerb(player.getGender(), "ostrożniejszy") + "!");
+							npc.say("Skończyłem pracę nad następną obrączką ślubną. Następnym razem bądź " + player.getGenderVerb("ostrożniejszy") + "!");
 							weddingRing.setItemData(player.getQuest(marriage.getSpouseQuestSlot()));
 							player.setQuest(marriage.getQuestSlot(), "done");
 						} else {
-							npc.say(Grammar.genderVerb(player.getGender(), "Zostałem") + " " + Grammar.genderVerb(player.getGender(), "poproszony") + ", aby przekazać, że obrączka ślubna dla twojej " + Grammar.genderVerb(player.getGender(), "narzeczonego") + " jest już skończona! Upewnij się, że jedna jest dla Ciebie! *psst* Jeszcze mała #rada na dzień ślubu...");
+							npc.say(player.getGenderVerb("Zostałem") + " " + player.getGenderVerb("poproszony") + ", aby przekazać, że obrączka ślubna dla twojej " + player.getGenderVerb("narzeczonego") + " jest już skończona! Upewnij się, że jedna jest dla Ciebie! *psst* Jeszcze mała #rada na dzień ślubu...");
 							player.setQuest(marriage.getQuestSlot(), "engaged_with_ring");
 							player.addXP(500);
 						}
@@ -182,7 +182,7 @@ public class MakeRings {
 							npc.setCurrentState(ConversationStates.IDLE);
 						} else {
 							// player said they had the money and/or gold but they lied
-							npc.say("Wróć, gdy będziesz " + Grammar.genderVerb(player.getGender(), "miał") + " pieniądze i złoto.");
+							npc.say("Wróć, gdy będziesz " + player.getGenderVerb("miał") + " pieniądze i złoto.");
 						}
 					}
 				});

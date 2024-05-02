@@ -287,7 +287,7 @@ public class ElfPrincess extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add("Dzielnie " + Grammar.genderVerb(player.getGender(), "dostałem") + " się na górę Wieży Nalwor, aby spotkać się z Księżniczką Tywysogą.");
+		res.add("Dzielnie " + player.getGenderVerb("dostałem") + " się na górę Wieży Nalwor, aby spotkać się z Księżniczką Tywysogą.");
 		// todo split on ; to put the 0th part in questState
 		final String questStateFull = player.getQuest(QUEST_SLOT);
 		final String[] parts = questStateFull.split(";");
@@ -299,14 +299,14 @@ public class ElfPrincess extends AbstractQuest {
 			res.add("Księżnika zleciła mi znalezienie cudownej Róży Kwiaciarki, aby odebrać cenną orchideę dla niej.");
 		}
 		if ("got_flower".equals(questState) || isCompleted(player)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Znalazłem") + " Różę Kwiaciarkę i mam kwiatek, który muszę doręczyć Księżniczce Tywysodze.");
+			res.add(player.getGenderVerb("Znalazłem") + " Różę Kwiaciarkę i mam kwiatek, który muszę doręczyć Księżniczce Tywysodze.");
 		}
 		if (isRepeatable(player)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Wziąłem") + " kwiatek do Księżniczki, a ona dała mi sztabki złota. Jeżeli chcę jej znowu sprawić radość to mogę znowu wziąć kolejne zadanie.");
+			res.add(player.getGenderVerb("Wziąłem") + " kwiatek do Księżniczki, a ona dała mi sztabki złota. Jeżeli chcę jej znowu sprawić radość to mogę znowu wziąć kolejne zadanie.");
 		}
 		final int repetitions = player.getNumberOfRepetitions(getSlotName(), 2);
 		if (repetitions > 0) {
-			res.add(Grammar.genderVerb(player.getGender(), "Zaniosłem") + " już Księżniczce Tywysodze " + Grammar.quantityplnoun(repetitions, "cenny kwiat") + ".");
+			res.add(player.getGenderVerb("Zaniosłem") + " już Księżniczce Tywysodze " + Grammar.quantityplnoun(repetitions, "cenny kwiat") + ".");
 		}
 		return res;
 	}

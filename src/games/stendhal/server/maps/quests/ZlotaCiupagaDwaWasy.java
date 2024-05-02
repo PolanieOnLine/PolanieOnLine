@@ -65,17 +65,17 @@ public class ZlotaCiupagaDwaWasy extends AbstractQuest {
 							if(player.getKarma() >= 1000) {
 								if(player.hasKilled("serafin")) {
 									if (!player.hasQuest(QUEST_SLOT) || "rejected".equals(player.getQuest(QUEST_SLOT))) {
-										raiser.say("Musisz być dzielnym wojownikiem skoro " + Grammar.genderVerb(player.getGender(), "dotarłeś") + " aż tu. Mam dla ciebie zadanie, czy jesteś gotów?");
+										raiser.say("Musisz być dzielnym wojownikiem skoro " + player.getGenderVerb("dotarłeś") + " aż tu. Mam dla ciebie zadanie, czy jesteś gotów?");
 									} else if (player.getQuest(QUEST_SLOT).startsWith("done;")) {
 										if (player.isQuestCompleted(QUEST_SLOT)) {
 											raiser.say("Jestem bardzo wdzięczny za pomoc. Moje smoki w końcu mnie słuchają.");
 											raiser.setCurrentState(ConversationStates.ATTENDING);
 										} else {
-											raiser.say("Dlaczego zawracasz mi głowę skoro nie " + Grammar.genderVerb(player.getGender(), "ukończyłeś") + " zadania?");
+											raiser.say("Dlaczego zawracasz mi głowę skoro nie " + player.getGenderVerb("ukończyłeś") + " zadania?");
 											raiser.setCurrentState(ConversationStates.ATTENDING);
 										}
 									} else if (player.getQuest(QUEST_SLOT).startsWith("zbroja;")) {
-										raiser.say("Dlaczego zawracasz mi głowę skoro nie " + Grammar.genderVerb(player.getGender(), "ukończyłeś") + " zadania u Krasnoluda?");
+										raiser.say("Dlaczego zawracasz mi głowę skoro nie " + player.getGenderVerb("ukończyłeś") + " zadania u Krasnoluda?");
 										raiser.setCurrentState(ConversationStates.ATTENDING);
 									}
 								} else {
@@ -103,7 +103,7 @@ public class ZlotaCiupagaDwaWasy extends AbstractQuest {
 			new ChatAction() {
 				@Override
 				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-					raiser.say("Sporo smoków zbuntowało się przeciwko mi. Chcę abyś " + Grammar.genderVerb(player.getGender(), "zabił") + " każdego z nich, którego spotkasz na swej drodze."
+					raiser.say("Sporo smoków zbuntowało się przeciwko mi. Chcę abyś " + player.getGenderVerb("zabił") + " każdego z nich, którego spotkasz na swej drodze."
 							+ " Dam ci też dobrą radę zbieraj ich pazury. Mój stary znajomy Krasnolud zbiera je. Słyszałem iż w zamian za nie "
 							+ "zrobi ci wspaniałą broń. Powiedz mu tylko moje #imie. Miłego polowania.");
 					player.setQuest(QUEST_SLOT, "start");
@@ -218,17 +218,17 @@ public class ZlotaCiupagaDwaWasy extends AbstractQuest {
 			return res;
 		}
 		final String questState = player.getQuest(QUEST_SLOT);
-		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " się z Władcą Smoków.");
-		res.add("Poprosił mnie abym " + Grammar.genderVerb(player.getGender(), "zabijał") + " wszystkie smoki, które wejdą mi w drogę. Zdradził mi też tajemnice. Podobno Krasnalud ulepsza złote ciupagi.");
+		res.add(player.getGenderVerb("Spotkałem") + " się z Władcą Smoków.");
+		res.add("Poprosił mnie abym " + player.getGenderVerb("zabijał") + " wszystkie smoki, które wejdą mi w drogę. Zdradził mi też tajemnice. Podobno Krasnalud ulepsza złote ciupagi.");
 		if ("rejected".equals(questState)) {
 			res.add("Mam stracha przed smokami więc będę schodził im z drogi.");
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Udałem") + " się do Krasnoluda w celu ulepszenia ciupagi. Kazał mi przynnieść kilka przedmiotów. Gdybym " + Grammar.genderVerb(player.getGender(), "zapomniał") + " co mam przynieść mam mu powiedzieć: przypomnij."); 
+		res.add(player.getGenderVerb("Udałem") + " się do Krasnoluda w celu ulepszenia ciupagi. Kazał mi przynnieść kilka przedmiotów. Gdybym " + player.getGenderVerb("zapomniał") + " co mam przynieść mam mu powiedzieć: przypomnij."); 
 		if ("start".equals(questState)) {
 			return res;
 		} 
-		res.add(Grammar.genderVerb(player.getGender(), "Dostarczyłem") + " potrzebne przedmioty! Krasnal zabrał się za ulepszenie mojej ciupagi.");
+		res.add(player.getGenderVerb("Dostarczyłem") + " potrzebne przedmioty! Krasnal zabrał się za ulepszenie mojej ciupagi.");
 		if (questState.startsWith("forging")) {
 			if (new TimePassedCondition(QUEST_SLOT,1,REQUIRED_HOURS).fire(player, null, null)) {
 				res.add("Podobno Krasnalud skończył moją ciupagę. Hasło: nagroda.");

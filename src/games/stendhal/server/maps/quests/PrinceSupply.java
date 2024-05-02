@@ -213,17 +213,17 @@ public class PrinceSupply extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Rozmawiałem") + " z księciem.");
+		res.add(player.getGenderVerb("Rozmawiałem") + " z księciem.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
 			res.add("Nie wykonam zadania księcia, ponieważ obawiam się, że zginę!");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "start", "done")) {
-			res.add(Grammar.genderVerb(player.getGender(), "Zgodziłem") + " się na odzyskanie arsenał dla armii książecej.");
+			res.add(player.getGenderVerb("Zgodziłem") + " się na odzyskanie arsenał dla armii książecej.");
 		}
 
 		if (isCompleted(player)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Przekazałem") + " potrzebny arsenał Księciu.");
+			res.add(player.getGenderVerb("Przekazałem") + " potrzebny arsenał Księciu.");
 		}
 		if(isRepeatable(player)){
 			res.add("Podejrzewam, że Książe przeliczył już wyposażenie armii i będzie znów potrzebował pomocy.");

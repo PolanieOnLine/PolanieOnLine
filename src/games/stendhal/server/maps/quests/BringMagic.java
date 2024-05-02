@@ -194,14 +194,14 @@ public class BringMagic extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Czarnoksiężnika w starej wieży w okolicy lasu.");
+		res.add(player.getGenderVerb("Spotkałem") + " Czarnoksiężnika w starej wieży w okolicy lasu.");
 		final String questState = player.getQuest(QUEST_SLOT, 0);
 		if ("rejected".equals(questState)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Odmówiłem") + " Czarnoksiężnikowi pomocy.");
+			res.add(player.getGenderVerb("Odmówiłem") + " Czarnoksiężnikowi pomocy.");
 		return res;
 		}
 		if ("done".equals(questState)) {
-			res.add("Za pomoc w zadaniach " + Grammar.genderVerb(player.getGender(), "otrzymałem") + " wspaniały magiczny hełm od Czarnoksiężnika.");
+			res.add("Za pomoc w zadaniach " + player.getGenderVerb("otrzymałem") + " wspaniały magiczny hełm od Czarnoksiężnika.");
 		}
 		return res;
 	}

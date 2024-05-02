@@ -163,25 +163,25 @@ public class MakaFarmera extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-			res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " farmera o imieniu Bruno, który znajduje się na plantacji zboża.");
+			res.add(player.getGenderVerb("Spotkałem") + " farmera o imieniu Bruno, który znajduje się na plantacji zboża.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if (questState.equals("rejected")) {
 			res.add("Nie chcę pomagać farmerowi.");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "start", "aisha", "done")) {
-			res.add(Grammar.genderVerb(player.getGender(), "Obiecałem") + " Bruno, że zaniosę zapasy mąki do krakowskiej piekarni");
+			res.add(player.getGenderVerb("Obiecałem") + " Bruno, że zaniosę zapasy mąki do krakowskiej piekarni");
 		}
 		if (questState.equals("aisha") && player.isEquipped("mąka",
 				ILOSC_MAKI)
 				|| questState.equals("done")) {
-			res.add("" + Grammar.genderVerb(player.getGender(), "otrzymałem") + " od Aishy zapasy mąki i teraz muszę zanieść to do Edny.");
+			res.add("" + player.getGenderVerb("otrzymałem") + " od Aishy zapasy mąki i teraz muszę zanieść to do Edny.");
 		}
 		if (questState.equals("aisha")
 				&& !player.isEquipped("mąka", ILOSC_MAKI)) {
 			res.add("O nie! Zgubiłem całą mąkę, którą miałem przynieść Ednie!");
 		}
 		if (questState.equals("done")) {
-			res.add(Grammar.genderVerb(player.getGender(), "Zaniosłem") + " zapasy do piekarni oraz zostałem pochwalony przez Edne.");
+			res.add(player.getGenderVerb("Zaniosłem") + " zapasy do piekarni oraz zostałem pochwalony przez Edne.");
 		}
 		return res;
 	}

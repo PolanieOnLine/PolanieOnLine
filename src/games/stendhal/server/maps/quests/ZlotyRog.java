@@ -74,7 +74,7 @@ public class ZlotyRog extends AbstractQuest {
 										if (waittimeRemaining > 0L) {
 											raiser.say("Mój brat musi odpocząć. Wróć za " + TimeUtil.approxTimeUntil((int) (waittimeRemaining / 1000L)) + ".");
 										} else {
-											raiser.say(Grammar.genderVerb(player.getGender(), "Przyszedłeś") + " po kolejny #'złoty róg'?");
+											raiser.say(player.getGenderVerb("Przyszedłeś") + " po kolejny #'złoty róg'?");
 											raiser.setCurrentState(ConversationStates.QUEST_OFFERED);
 										}
 									} else if (player.getQuest(QUEST_SLOT).startsWith("make;")) {
@@ -274,7 +274,7 @@ public class ZlotyRog extends AbstractQuest {
 			return res;
 		}
 		final String questState = player.getQuest(QUEST_SLOT);
-		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " się z Bartłomiejem w jaskiniach Zakopanego. Zaproponował mi złoty róg, który może zrobić jego brat.");
+		res.add(player.getGenderVerb("Spotkałem") + " się z Bartłomiejem w jaskiniach Zakopanego. Zaproponował mi złoty róg, który może zrobić jego brat.");
 		if (questState.equals("rejected")) {
 			res.add("Nie jestem muzykiem aby grać na tym rogu.");
 			return res;
@@ -282,11 +282,11 @@ public class ZlotyRog extends AbstractQuest {
 		if (questState.startsWith("start")) {
 			return res;
 		}
-		res.add("Bartłomiej kazał mi przynnieść kilka przedmiotów, które są potrzebne do tej pracy. Gdybym " + Grammar.genderVerb(player.getGender(), "zapomniał") + " co mam przynieść mam mu powiedzieć: przypomnij.");
+		res.add("Bartłomiej kazał mi przynnieść kilka przedmiotów, które są potrzebne do tej pracy. Gdybym " + player.getGenderVerb("zapomniał") + " co mam przynieść mam mu powiedzieć: przypomnij.");
 		if ("przedmioty".equals(questState)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Dostarczyłem") + " potrzebne przedmioty! Bartłomiej zaniósł je dla brata.");
+		res.add(player.getGenderVerb("Dostarczyłem") + " potrzebne przedmioty! Bartłomiej zaniósł je dla brata.");
 		if (questState.startsWith("make")) {
 			if (new TimePassedCondition(QUEST_SLOT,1,REQUIRED_MINUTES).fire(player, null, null)) {
 				res.add("Złoty róg chyba jest już gotowy. Hasło: róg.");

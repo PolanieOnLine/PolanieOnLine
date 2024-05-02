@@ -232,10 +232,10 @@ import games.stendhal.server.maps.quests.piedpiper.TPPQuestHelperFunctions;
 		}
 		final String questState = player.getQuest(QUEST_SLOT, 0);
 		if ("rats".equals(questState)) {
-			history.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " już kilka szczurów atakujących Ados i postaram się zabić ich więcej.");
+			history.add(player.getGenderVerb("Zabiłem") + " już kilka szczurów atakujących Ados i postaram się zabić ich więcej.");
 		}
 		if ("done".equals(questState)) {
-			history.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " już kilka szczurów atakujących Ados i " + Grammar.genderVerb(player.getGender(), "otrzymałem") + " nagrodę od Mayora Chalmersa!");
+			history.add(player.getGenderVerb("Zabiłem") + " już kilka szczurów atakujących Ados i " + player.getGenderVerb("otrzymałem") + " nagrodę od Mayora Chalmersa!");
 		}
 		return history;
  	}

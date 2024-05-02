@@ -94,7 +94,7 @@ public class HealerAdder {
 					raiser.setCurrentState(ConversationStates.HEAL_OFFERED); // success
 				} else {
 					if ((player.getAtk() > 35) || (player.getDef() > 35)) {
-						raiser.say("Przepraszam, ale nie mogę Cię uleczyć ponieważ jesteś zbyt " + Grammar.genderVerb(player.getGender(), "potężny") + " jak na moje możliwości");
+						raiser.say("Przepraszam, ale nie mogę Cię uleczyć ponieważ jesteś zbyt " + player.getGenderVerb("potężny") + " jak na moje możliwości");
 					} else if ((!player.isNew()
 							&& (player.getLastPVPActionTime() > System
 									.currentTimeMillis()
@@ -107,7 +107,7 @@ public class HealerAdder {
 					} else {
 						healerBehaviour.heal(player);
 						raiser.addEvent(new SoundEvent(SoundID.HEAL, SoundLayer.CREATURE_NOISE));
-						raiser.say(Grammar.genderVerb(player.getGender(), "Zostałeś") + " " + Grammar.genderVerb(player.getGender(), "uleczony") + ". W czym jeszcze mogę pomóc?");
+						raiser.say(player.getGenderVerb("Zostałeś") + " " + player.getGenderVerb("uleczony") + ". W czym jeszcze mogę pomóc?");
 					}
 				}
 			}
@@ -123,7 +123,7 @@ public class HealerAdder {
 				if (player.drop("money", cost)) {
 					healerBehaviour.heal(player);
 					raiser.addEvent(new SoundEvent(SoundID.HEAL, SoundLayer.CREATURE_NOISE));
-					raiser.say(Grammar.genderVerb(player.getGender(), "Zostałeś") + " " + Grammar.genderVerb(player.getGender(), "uleczony") + ". W czym jeszcze mogę pomóc?");
+					raiser.say(player.getGenderVerb("Zostałeś") + " " + player.getGenderVerb("uleczony") + ". W czym jeszcze mogę pomóc?");
 				} else {
 					raiser.say("Przepraszam, ale nie możesz sobie na to pozwolić.");
 				}

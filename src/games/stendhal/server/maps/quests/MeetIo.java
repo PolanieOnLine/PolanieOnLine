@@ -166,7 +166,7 @@ public class MeetIo extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " telepatkę Io Flotto w świątyni Semos.");
+		res.add(player.getGenderVerb("Spotkałem") + " telepatkę Io Flotto w świątyni Semos.");
 		if (isCompleted(player)) {
 			res.add("Io nauczyła mnie sześciu podstawowych zasad telepatii i przyrzekła przypomnieć mi jeżeli będę musiał odświeżyć moją wiedzę.");
 		}

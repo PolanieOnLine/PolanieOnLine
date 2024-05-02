@@ -180,7 +180,7 @@ public class PierscienMieszczanina extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " kowala Marianka.");
+		res.add(player.getGenderVerb("Spotkałem") + " kowala Marianka.");
 		res.add("Zaproponował mi pierścień mieszczanina.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if (questState.equals("rejected")) {
@@ -190,11 +190,11 @@ public class PierscienMieszczanina extends AbstractQuest {
 		if (questState.equals("start")) {
 			return res;
 		} 
-		res.add("Kowal Marianek poprosił, abym mu " + Grammar.genderVerb(player.getGender(), "dostarczył") + ": 50 sztabek srebra, 50 sztabek mithrilu, 150 sztabek złota i 30 bryłek mithrilu. po zdobyciu tych rzeczy mam mu powiedzieć: pierścień.");
+		res.add("Kowal Marianek poprosił, abym mu " + player.getGenderVerb("dostarczył") + ": 50 sztabek srebra, 50 sztabek mithrilu, 150 sztabek złota i 30 bryłek mithrilu. po zdobyciu tych rzeczy mam mu powiedzieć: pierścień.");
 		if (questState.equals("start")) {
 			return res;
 		} 
-		res.add("Kowal Marianek był zadowolony z mojej postawy. W zamian " + Grammar.genderVerb(player.getGender(), "dostałem") + " pierścień mieszczanina.");
+		res.add("Kowal Marianek był zadowolony z mojej postawy. W zamian " + player.getGenderVerb("dostałem") + " pierścień mieszczanina.");
 
 		if (isCompleted(player)) {
 			return res;

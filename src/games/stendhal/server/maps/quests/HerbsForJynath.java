@@ -83,7 +83,7 @@ public class HerbsForJynath extends AbstractQuest {
         } else if (!"done".equals(questState)) {
             questHistory.add("Potrzebuję zebrać zioła dla Jynath.");
         } else {
-        	questHistory.add(Grammar.genderVerb(player.getGender(), "Przyniosłem") + " zioła dla Jynath. Sądze, że użyje ich do sporządzenia mikstury.");
+        	questHistory.add(player.getGenderVerb("Przyniosłem") + " zioła dla Jynath. Sądze, że użyje ich do sporządzenia mikstury.");
         }
         return questHistory;
     }

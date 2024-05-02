@@ -75,11 +75,11 @@ public class ChallengeGreedy extends ChallengeQuests {
 		res.add(npc.getName() + " zapronował mi wykonanie wyzwania na grabież monet ze zwłok.");
 		if (quest_state.equals("rejected")) {
 			res.add("Cóż za obrzydliwe wyzwanie... Także "
-				+ Grammar.genderVerb(player.getGender(), "odrzuciłem")
+				+ player.getGenderVerb("odrzuciłem")
 				+ " propozycje tego durnego wyzwania.");
 		} else {
-			res.add("Z przyjemnością " + Grammar.genderVerb(player.getGender(), "zaakceptowałem")
-				+ " to specyficzne wyzwanie. Będę " + Grammar.genderVerb(player.getGender(), "notował")
+			res.add("Z przyjemnością " + player.getGenderVerb("zaakceptowałem")
+				+ " to specyficzne wyzwanie. Będę " + player.getGenderVerb("notował")
 				+ " każdą zdobytą monetę z potworów!");
 			if (quest_state.equals("done")) {
 				res.add("Udało mi się ukończyć to niezwykły wyzwanie od Chciwuraka.");
@@ -178,7 +178,7 @@ public class ChallengeGreedy extends ChallengeQuests {
 		if (looted > 0) {
 			return "Wciąż muszę nazbierać " + Integer.toString(looted) + " money z potworów do zakończenia wyzwania."; 
 		}
-		return "Udało mi się zakończyć wyzwanie! Może " + Grammar.genderVerb(player.getGender(), "powinienem") + " się teraz udać do niego z powrotem...";
+		return "Udało mi się zakończyć wyzwanie! Może " + player.getGenderVerb("powinienem") + " się teraz udać do niego z powrotem...";
 	}
 
 	@Override

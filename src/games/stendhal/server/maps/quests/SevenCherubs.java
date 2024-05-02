@@ -126,7 +126,7 @@ public class SevenCherubs extends AbstractQuest {
 							if (left > -1) {
 								raiser.say("Poszukaj innych aniołków, aby dostać nagrodę!");
 							} else {
-								raiser.say(Grammar.genderVerb(player.getGender(), "Szukałeś") + " i " + Grammar.genderVerb(player.getGender(), "znalazłeś") + " wszystkie aniołki! W nagrodę " + Grammar.genderVerb(player.getGender(), "dostałeś") + " potężny artefakt.");
+								raiser.say(player.getGenderVerb("Szukałeś") + " i " + player.getGenderVerb("znalazłeś") + " wszystkie aniołki! W nagrodę " + player.getGenderVerb("dostałeś") + " potężny artefakt.");
 							}
 						} else {
 							player.setQuest(QUEST_SLOT, npcDoneText + ";"
@@ -145,7 +145,7 @@ public class SevenCherubs extends AbstractQuest {
 									player.addXP((7 - left + 1) * 200);
 								}
 							} else {
-								raiser.say(Grammar.genderVerb(player.getGender(), "Udowodniłeś") + ", że jesteś w stanie nosić ten potężny artefakt!");
+								raiser.say(player.getGenderVerb("Udowodniłeś") + ", że jesteś w stanie nosić ten potężny artefakt!");
 
 								/*
 								 * Proposal by Daniel Herding (mort): once
@@ -239,13 +239,13 @@ public class SevenCherubs extends AbstractQuest {
 				if (!cherub.trim().equals("")) {
 					if (first) {
 						first = false;
-						res.add(Grammar.genderVerb(player.getGender(), "Zacząłem") + " szukać siedmiu aniołków.");
+						res.add(player.getGenderVerb("Zacząłem") + " szukać siedmiu aniołków.");
 					}
 					res.add(cherubsHistory.get(cherub));
 				}
 			}
 			if (isCompleted(player)) {
-				res.add("Zrobione! " + Grammar.genderVerb(player.getGender(), "Znalazłem") + " je wszystkie!");
+				res.add("Zrobione! " + player.getGenderVerb("Znalazłem") + " je wszystkie!");
 			}
 		}
 		return res;

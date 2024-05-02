@@ -111,9 +111,9 @@ public class FindDragons extends AbstractQuest {
 
 						if (list.contains(raiser.getName())) {
 							if (left > -1) {
-								raiser.say("Poszukaj innych smoków a zostaniesz " + Grammar.genderVerb(player.getGender(), "wynagrodzony") + "!");
+								raiser.say("Poszukaj innych smoków a zostaniesz " + player.getGenderVerb("wynagrodzony") + "!");
 							} else {
-								raiser.say(Grammar.genderVerb(player.getGender(), "Znalazłeś") + " wszystkie smoki! Mam nadzieję, że jesteś " + Grammar.genderVerb(player.getGender(), "zadowolony") + " z nagrody ☺☺☺");
+								raiser.say(player.getGenderVerb("Znalazłeś") + " wszystkie smoki! Mam nadzieję, że jesteś " + player.getGenderVerb("zadowolony") + " z nagrody ☺☺☺");
 							}
 						} else {
 							player.setQuest(QUEST_SLOT, npcDoneText + ";"
@@ -122,7 +122,7 @@ public class FindDragons extends AbstractQuest {
 							player.getStatusList().removeAll(PoisonStatus.class);
 
 							if (left > 0) {
-								raiser.say("Witaj! Mnie " + Grammar.genderVerb(player.getGender(), "odnalazłeś") + " ☺☺☺ Poszukaj jeszcze "
+								raiser.say("Witaj! Mnie " + player.getGenderVerb("odnalazłeś") + " ☺☺☺ Poszukaj jeszcze "
 												+ (13 - list.size())
 												+ " z moich braci. Żegnaj!");
 								if (raiser.getZone().getName().equals("0_kościelisko_e")) {
@@ -131,7 +131,7 @@ public class FindDragons extends AbstractQuest {
 									player.addXP((13 - left + 1) * 500);
 								}
 							} else {
-								raiser.say(Grammar.genderVerb(player.getGender(), "Udowodniłeś") + ", że jesteś " + Grammar.genderVerb(player.getGender(), "godny") + " tej nagrody!");
+								raiser.say(player.getGenderVerb("Udowodniłeś") + ", że jesteś " + player.getGenderVerb("godny") + " tej nagrody!");
 
 								final String[] items = { "magiczna tarcza płytowa", "tarcza chaosu", "tarcza xenocyjska" };
 								final Item item = SingletonRepository.getEntityManager()
@@ -225,13 +225,13 @@ public class FindDragons extends AbstractQuest {
 					res.add(dragon.toUpperCase());
 					if (first) {
 						first = false;
-						res.add(Grammar.genderVerb(player.getGender(), "Podjąłem") + " się znalezienia wszystkich smoków.");
+						res.add(player.getGenderVerb("Podjąłem") + " się znalezienia wszystkich smoków.");
 					}
 					res.add(dragonHistory.get(dragon));
 				}
 			}
 			if (isCompleted(player)) {
-				res.add("Smoki " + Grammar.genderVerb(player.getGender(), "znalazłem") + " i " + Grammar.genderVerb(player.getGender(), "dostałem") + " nagrodę.");
+				res.add("Smoki " + player.getGenderVerb("znalazłem") + " i " + player.getGenderVerb("dostałem") + " nagrodę.");
 			}
 		}
 		return res;

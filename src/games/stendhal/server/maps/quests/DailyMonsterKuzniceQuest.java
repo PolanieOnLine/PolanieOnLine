@@ -457,7 +457,7 @@ public class DailyMonsterKuzniceQuest extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " się z sołtysem w dzielnicy Zakopanego, Kuźnicach");
+		res.add(player.getGenderVerb("Spotkałem") + " się z sołtysem w dzielnicy Zakopanego, Kuźnicach");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
 			res.add("Nie chcę pomóc Kuźnicom.");
@@ -470,10 +470,10 @@ public class DailyMonsterKuzniceQuest extends AbstractQuest {
 					.fire(player, null, null);
 			final String creatureToKill = getCreatureToKillFromPlayer(player);
 			if (!questDone) {
-				res.add(Grammar.genderVerb(player.getGender(), "Zostałem") + " " + Grammar.genderVerb(player.getGender(), "poproszony") + " o zabicie " + creatureToKill
+				res.add(player.getGenderVerb("Zostałem") + " " + player.getGenderVerb("poproszony") + " o zabicie " + creatureToKill
 						+ ", aby pomóc Kuźnicom. Jeszcze go nie zabiłem.");
 			} else {
-				res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " " + creatureToKill
+				res.add(player.getGenderVerb("Zabiłem") + " " + creatureToKill
 						+ ", aby pomóc Kuźnicom.");
 			}
 		}
@@ -484,15 +484,15 @@ public class DailyMonsterKuzniceQuest extends AbstractQuest {
 					- System.currentTimeMillis();
 
 			if (timeRemaining > 0L) {
-				res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " ostatniego potwora o którego prosił mnie sołtys i odebrałem nagrodę w ciągu 48 godzin.");
+				res.add(player.getGenderVerb("Zabiłem") + " ostatniego potwora o którego prosił mnie sołtys i odebrałem nagrodę w ciągu 48 godzin.");
 			} else {
-				res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " ostatniego potwora o którego prosił mnie sołtys i teraz Kuźnice znów potrzebuje mojej pomocy.");
+				res.add(player.getGenderVerb("Zabiłem") + " ostatniego potwora o którego prosił mnie sołtys i teraz Kuźnice znów potrzebuje mojej pomocy.");
 			}
 		}
 		// add to history how often player helped Semos so far
 		final int repetitions = player.getNumberOfRepetitions(getSlotName(), 2);
 		if (repetitions > 0) {
-			res.add(Grammar.genderVerb(player.getGender(), "Pomogłem") + " Kuźnicom "
+			res.add(player.getGenderVerb("Pomogłem") + " Kuźnicom "
 					+ Grammar.quantityplnounCreature(repetitions, "raz") + " do tej pory.");
 		}
 		return res;

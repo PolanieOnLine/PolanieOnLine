@@ -249,7 +249,7 @@ public class FishermansLicenseCollector extends AbstractQuest {
 			if (!isCompleted(player)) {
 				res.add("Wciąż muszę przynieść " + Grammar.enumerateCollection(missingFish(player, false)) + " dla Santiago do sprawdzenia.");
 			} else {
-				res.add(Grammar.genderVerb(player.getGender(), "Przyniosłem") + " wszystkie gatunki ryb jakie Santiago chciał, a teraz jestem prawdziwym rybakiem! Będę miał więcej sukcesów podczas połowów.");
+				res.add(player.getGenderVerb("Przyniosłem") + " wszystkie gatunki ryb jakie Santiago chciał, a teraz jestem prawdziwym rybakiem! Będę miał więcej sukcesów podczas połowów.");
 			}
 			return res;
 	}

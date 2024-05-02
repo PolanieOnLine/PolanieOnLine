@@ -519,11 +519,11 @@ public class KillEnemyArmy extends AbstractQuest {
 			if(killedNumber == 0) {
 				kn="no";
 			}
-			history.add("Aktualnie " + Grammar.genderVerb(player.getGender(), "zabiłem") + " "+
+			history.add("Aktualnie " + player.getGenderVerb("zabiłem") + " "+
 					kn+" "+
 					Grammar.plnoun(killedNumber, givenEnemies));
 			if(new KilledInSumForQuestCondition(QUEST_SLOT, 2, givenNumber).fire(player, null, null)) {
-				history.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " wystaczająco dużo potworów, aby dostać moją nagrodę.");
+				history.add(player.getGenderVerb("Zabiłem") + " wystaczająco dużo potworów, aby dostać moją nagrodę.");
 			} else {
 				int enemyleft = givenNumber - killedNumber;
 				history.add("Zostało "+enemyleft+" "+
@@ -532,7 +532,7 @@ public class KillEnemyArmy extends AbstractQuest {
 		}
 
 		if(isCompleted(player)) {
-			history.add("Ukończyłem zadanie Despot's Halb Errvl i " + Grammar.genderVerb(player.getGender(), "otrzymałem") + " moja nagrodę!");
+			history.add("Ukończyłem zadanie Despot's Halb Errvl i " + player.getGenderVerb("otrzymałem") + " moja nagrodę!");
 		}
 		if (isRepeatable(player)) {
 			history.add("Despot Halb Errvl dostaje znowu paranoi o swoim bezpieczeństwie. Mogę teraz zaoferować swoje usługi.");

@@ -327,7 +327,7 @@ public class ZagadkiBrzezdoma extends AbstractQuest {
 			return res;
 		}
 		final String questState = player.getQuest(QUEST_SLOT);
-		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Brzezdoma na łąkach Kościeliska.");
+		res.add(player.getGenderVerb("Spotkałem") + " Brzezdoma na łąkach Kościeliska.");
 		res.add("Nurtuje go pytanie kto dał pas i kierpce Janosikowi. Mam mu też przynieść kierpce.");
 		if ("rejected".equals(questState)) {
 			res.add("Nie mam głowy do zagadek, może innym razem.");
@@ -336,11 +336,11 @@ public class ZagadkiBrzezdoma extends AbstractQuest {
 		if ("start".equals(questState)) {
 			return res;
 		} 
-		res.add(Grammar.genderVerb(player.getGender(), "Odpowiedziałem") + " Brzedomowi na pytanie, dostarczyłem też kierpce. Starego Bace nurtuje pytanie kogo spotkał juhas Kuba. Mam do niego iść z odpowiedzią.");
+		res.add(player.getGenderVerb("Odpowiedziałem") + " Brzedomowi na pytanie, dostarczyłem też kierpce. Starego Bace nurtuje pytanie kogo spotkał juhas Kuba. Mam do niego iść z odpowiedzią.");
 		if ("baca".equals(questState)) {
 			return res;
 		} 
-		res.add("Stary baca poprosił mnie, abym " + Grammar.genderVerb(player.getGender(), "spotkał") + " się z kowalem Andrzejem i powiedział mu jaki jest największy szczyt w Tatrach.");
+		res.add("Stary baca poprosił mnie, abym " + player.getGenderVerb("spotkał") + " się z kowalem Andrzejem i powiedział mu jaki jest największy szczyt w Tatrach.");
 		if ("gerlach".equals(questState)) {
 			return res;
 		}
@@ -348,7 +348,7 @@ public class ZagadkiBrzezdoma extends AbstractQuest {
 		if ("gorset".equals(questState)) {
 			return res;
 		}
-		res.add("Maryna poprosiła mnie abym " + Grammar.genderVerb(player.getGender(), "znalazł") + " odpowiedź na pytanie 'dlaczego w Zakopanym nie rośnie kapusta'. Odpowiedzi mam udzielić Bogusiowi.");
+		res.add("Maryna poprosiła mnie abym " + player.getGenderVerb("znalazł") + " odpowiedź na pytanie 'dlaczego w Zakopanym nie rośnie kapusta'. Odpowiedzi mam udzielić Bogusiowi.");
 		if ("kapusta".equals(questState)) {
 			return res;
 		}
@@ -360,7 +360,7 @@ public class ZagadkiBrzezdoma extends AbstractQuest {
 		if ("armor".equals(questState)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Dostałem") + " od Bercika za zbroje sztabki złota.");
+		res.add(player.getGenderVerb("Dostałem") + " od Bercika za zbroje sztabki złota.");
 		if (isCompleted(player)) {
 			return res;
 		}

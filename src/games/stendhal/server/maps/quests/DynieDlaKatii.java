@@ -185,7 +185,7 @@ public class DynieDlaKatii extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Poznałem") + " Katie.");
+		res.add(player.getGenderVerb("Poznałem") + " Katie.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
 			res.add("Nie chcę zbierać dla niej dyń...");
@@ -193,11 +193,11 @@ public class DynieDlaKatii extends AbstractQuest {
 		}
 		res.add("Chcę pozbierać kilka dyń!");
 		if (player.isEquipped("straszna dynia", WYMAGANE_DYNIE) || isCompleted(player)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Zdobyłem") + " straszne dynie dla Katii");
+			res.add(player.getGenderVerb("Zdobyłem") + " straszne dynie dla Katii");
 		}
 		if (isCompleted(player)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Zaniosłem") + " Katii dynie." +
-		             "W zamian " + Grammar.genderVerb(player.getGender(), "otrzymałem") + " tajemniczą srebrną skrzynkę.");
+			res.add(player.getGenderVerb("Zaniosłem") + " Katii dynie." +
+		             "W zamian " + player.getGenderVerb("otrzymałem") + " tajemniczą srebrną skrzynkę.");
 		}
 		if(isRepeatable(player)){
 			res.add("Ponownie mogę poszukać kilku dyń dla Katii!");

@@ -83,7 +83,7 @@ public class MeetMarieHenri extends AbstractQuest {
 							npc.say("Wiem, że jesteś bardzo mądry ale w tej chwili nie mam innego zadania dla ciebie.");
 							npc.setCurrentState(ConversationStates.ATTENDING);
 						} else if ("start".equals(questState)) {
-							npc.say(Grammar.genderVerb(player.getGender(), "Znalazłeś") + " już dla mnie pseudonim?");
+							npc.say(player.getGenderVerb("Znalazłeś") + " już dla mnie pseudonim?");
 							npc.setCurrentState(ConversationStates.QUESTION_1);
 						} else {
 							npc.say("Testuję w tej chwili wiedzę poszukiwaczy przygód w okolicy. "
@@ -201,16 +201,16 @@ public class MeetMarieHenri extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Marie-Henri w księgarni Ados.");
+		res.add(player.getGenderVerb("Spotkałem") + " Marie-Henri w księgarni Ados.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
-			res.add("Poprosił mnie, abym " + Grammar.genderVerb(player.getGender(), "poszukał") + " mu pseudonimu, którego użyje podczas pisania powieści. Nie czuje się na siłach aby mu pomóc.");
+			res.add("Poprosił mnie, abym " + player.getGenderVerb("poszukał") + " mu pseudonimu, którego użyje podczas pisania powieści. Nie czuje się na siłach aby mu pomóc.");
 		}
 		if ("start".equals(questState) || "done".equals(questState)) {
 			res.add("Postaram się znaleźć pseudonim dla niego.");
 		}
 		if ("done".equals(questState)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Odpowiedziałem") + " poprawnie na Marie-Henri pytanie, w zamian " + Grammar.genderVerb(player.getGender(), "dostałem") + " nagrodę.");
+			res.add(player.getGenderVerb("Odpowiedziałem") + " poprawnie na Marie-Henri pytanie, w zamian " + player.getGenderVerb("dostałem") + " nagrodę.");
 		}
 		return res;
 	}

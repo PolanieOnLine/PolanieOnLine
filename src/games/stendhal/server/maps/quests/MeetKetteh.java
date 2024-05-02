@@ -204,7 +204,7 @@ public class MeetKetteh extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Ketteh Wehoh w ratuszu w Semos.");
+		res.add(player.getGenderVerb("Spotkałem") + " Ketteh Wehoh w ratuszu w Semos.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("seen_naked".equals(questState)) {
 			res.add("Była w szoku i krzyczał na mnie, że nie powinienem biegać nago. Lepiej założe jakieś ubrania nim mnie znów zobaczy.");

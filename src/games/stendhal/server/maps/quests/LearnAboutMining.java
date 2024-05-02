@@ -126,7 +126,7 @@ public class LearnAboutMining extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Górnika w kopalni Zakopane, niedaleko chatki górniczej.");
+		res.add(player.getGenderVerb("Spotkałem") + " Górnika w kopalni Zakopane, niedaleko chatki górniczej.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if (questState.equals("done")) {
 			res.add("Górnik opowiedział mi o kopaniu i o tym, że mogę wrócić, aby przypomnieć sobie jak to działa.");

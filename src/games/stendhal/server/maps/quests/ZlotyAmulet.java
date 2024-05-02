@@ -242,7 +242,7 @@ public class ZlotyAmulet extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Rozmawiałem") + " z Jagienką.");
+		res.add(player.getGenderVerb("Rozmawiałem") + " z Jagienką.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
 			res.add("Nie pomogę Jagience.");
@@ -261,7 +261,7 @@ public class ZlotyAmulet extends AbstractQuest {
 			res.add("Mam złoty amulet dla Jagienki.");
 		}
 		if ("done".equals(questState)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Oddałem") + " złoty amulet Jagience.");
+			res.add(player.getGenderVerb("Oddałem") + " złoty amulet Jagience.");
 		}
 		return res;
 	}

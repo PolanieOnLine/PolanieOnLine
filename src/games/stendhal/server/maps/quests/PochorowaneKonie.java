@@ -464,7 +464,7 @@ public class PochorowaneKonie extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Marcela w Zakopańskiej stajni.");
+		res.add(player.getGenderVerb("Spotkałem") + " Marcela w Zakopańskiej stajni.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if (questState.equals("rejected")) {
 			res.add("Nie chcę pomagać stajennemu i weterynarzowi.");
@@ -475,7 +475,7 @@ public class PochorowaneKonie extends AbstractQuest {
 			res.add("Muszę zanieść wyniki badań do Dr. Feelgood");
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Zaniosłem") + " wyniki badań i muszę poczekać 10 minut jak weterynarz skończy analizować co to za choroba.");
+		res.add(player.getGenderVerb("Zaniosłem") + " wyniki badań i muszę poczekać 10 minut jak weterynarz skończy analizować co to za choroba.");
 		if (questState.startsWith("wyniki")) {
 			return res;
 		}
@@ -493,7 +493,7 @@ public class PochorowaneKonie extends AbstractQuest {
 			res.add("Kazał mi przynieść " + Grammar.quantityplnoun(ILE_LEKOW, questState) + ", i powiedzieć " + questState + " gdy wrócę.");
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Zaniosłem") + " potrzebne leki oraz kazał mi poczekać 1 godzinę.");
+		res.add(player.getGenderVerb("Zaniosłem") + " potrzebne leki oraz kazał mi poczekać 1 godzinę.");
 		if (questState.equals("godzina")) {
 			return res;
 		}
@@ -513,7 +513,7 @@ public class PochorowaneKonie extends AbstractQuest {
 		if (questState.equals("stajenny")) {
 			return res;
 		}
-		res.add("Stajenny się ucieszył! " + Grammar.genderVerb(player.getGender(), "otrzymałem") + " od niego pas skórzany w nagrodę za pomoc.");
+		res.add("Stajenny się ucieszył! " + player.getGenderVerb("otrzymałem") + " od niego pas skórzany w nagrodę za pomoc.");
 		if (questState.equals("done")) {
 			return res;
 		}

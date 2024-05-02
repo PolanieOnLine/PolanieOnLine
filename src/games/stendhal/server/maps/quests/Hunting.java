@@ -252,7 +252,7 @@ public class Hunting extends AbstractQuest {
 				new ChatAction() {
 					@Override
 					public void fire(Player player, Sentence sentence, EventRaiser npc) {
-						npc.say("Już " + Grammar.genderVerb(player.getGender(), "dostałeś") + " zadanie na upolowanie " +
+						npc.say("Już " + player.getGenderVerb("dostałeś") + " zadanie na upolowanie " +
 								player.getQuest(QUEST_SLOT,0).split(",")[0] +
 								" w ilości " +
 								player.getQuest(QUEST_SLOT,0).split(",")[2] +
@@ -431,7 +431,7 @@ public class Hunting extends AbstractQuest {
 		}
 
 		List<String> entries = new ArrayList<>();
-		entries.add(Grammar.genderVerb(player.getGender(), "Upolowałem") + ": <tally>" + killed + count + "</tally>");
+		entries.add(player.getGenderVerb("Upolowałem") + ": <tally>" + killed + count + "</tally>");
 		return entries;
 	}
 
@@ -461,7 +461,7 @@ public class Hunting extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Janisława w domku Zakopanego.");
+		res.add(player.getGenderVerb("Spotkałem") + " Janisława w domku Zakopanego.");
 		final String questStateFull = player.getQuest(QUEST_SLOT);
 		final String[] parts = questStateFull.split(";");
 		final String questState = parts[0];
@@ -477,10 +477,10 @@ public class Hunting extends AbstractQuest {
 			final String creatureToKill = getCreatureToKillFromPlayer(player);
 			final String creatureCountToKill = getCountCreatureToKillFromPlayer(player);
 			if (!questDone) {
-				res.add(Grammar.genderVerb(player.getGender(), "Zostałem") + " " + Grammar.genderVerb(player.getGender(), "poproszony") + " o upolowanie " + creatureToKill + " w ilości " + creatureCountToKill
+				res.add(player.getGenderVerb("Zostałem") + " " + player.getGenderVerb("poproszony") + " o upolowanie " + creatureToKill + " w ilości " + creatureCountToKill
 						+ ". Jeszcze mi się nie udało.");
 			} else {
-				res.add(Grammar.genderVerb(player.getGender(), "Upolowałem") + " wszystkie " + creatureToKill + ".");
+				res.add(player.getGenderVerb("Upolowałem") + " wszystkie " + creatureToKill + ".");
 			}
 
 			if (formatted) {
@@ -490,11 +490,11 @@ public class Hunting extends AbstractQuest {
 			}
 		}
 		if (player.isQuestCompleted(QUEST_SLOT)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " ostatniego potwora o którego prosił mnie Janisław. Może znowu będzie miał dla mnie wyzwanie.");
+			res.add(player.getGenderVerb("Zabiłem") + " ostatniego potwora o którego prosił mnie Janisław. Może znowu będzie miał dla mnie wyzwanie.");
 		}
 		final int repetitions = player.getNumberOfRepetitions(getSlotName(), 2);
 		if (repetitions > 0) {
-			res.add(Grammar.genderVerb(player.getGender(), "Pomogłem") + " Janisławowi "
+			res.add(player.getGenderVerb("Pomogłem") + " Janisławowi "
 					+ Grammar.quantityplnounCreature(repetitions, "raz") + " do tej pory.");
 		}
 		return res;

@@ -644,16 +644,16 @@ public class ProsbyWiedzmy extends AbstractQuest {
 			return res;
 		}
 		final String questState = player.getQuest(QUEST_SLOT);
-		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Benigne, która mieszka w jaskini w swej chatce.");
+		res.add(player.getGenderVerb("Spotkałem") + " Benigne, która mieszka w jaskini w swej chatce.");
 		if ("rejected".equals(questState)) {
 			res.add("Nie mam ochoty wykonywać próśb czarownicy - Benigny.");
 			return res;
 		}
-		res.add("Pierwsza prośba Benigny była, abym " + Grammar.genderVerb(player.getGender(), "zabił") + " błękitnego smoka, który znajduje się gdzieś w okolicy jej chatki.");
+		res.add("Pierwsza prośba Benigny była, abym " + player.getGenderVerb("zabił") + " błękitnego smoka, który znajduje się gdzieś w okolicy jej chatki.");
 		if (questState.startsWith("start")) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " błękitnego smoka i " + Grammar.genderVerb(player.getGender(), "zaniosłem") + " Benignie jego skórę w dowód, że pokonałem go samodzielnie!");
+		res.add(player.getGenderVerb("Zabiłem") + " błękitnego smoka i " + player.getGenderVerb("zaniosłem") + " Benignie jego skórę w dowód, że pokonałem go samodzielnie!");
 		if (questState.startsWith("czas_składniki")) {
 			if (new TimePassedCondition(QUEST_SLOT,1,DELAY_IN_MINUTES).fire(player, null, null)) {
 				res.add("Mam ponownie odwiedzić Benigne, aby dała mi kolejne zlecenie. Hasło: składniki");
@@ -670,7 +670,7 @@ public class ProsbyWiedzmy extends AbstractQuest {
 		if (questState.startsWith("dwuglowyzielonysmok")) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " dwugłowego zielonego smoka i " + Grammar.genderVerb(player.getGender(), "zaniosłem") + " Benignie potrzebne jej skóry!");
+		res.add(player.getGenderVerb("Zabiłem") + " dwugłowego zielonego smoka i " + player.getGenderVerb("zaniosłem") + " Benignie potrzebne jej skóry!");
 		if (questState.startsWith("czas_kiel")) {
 			if (new TimePassedCondition(QUEST_SLOT,1,DELAY_IN_MINUTES).fire(player, null, null)) {
 				res.add("Mam ponownie odwiedzić Benigne, aby dała mi kolejne zlecenie. Hasło: smok");
@@ -687,7 +687,7 @@ public class ProsbyWiedzmy extends AbstractQuest {
 		if (questState.startsWith("kielsmoka")) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Zaniosłem") + " potrzebne Benignie kły smoków!");
+		res.add(player.getGenderVerb("Zaniosłem") + " potrzebne Benignie kły smoków!");
 		if (questState.startsWith("czas_czarnysmok")) {
 			if (new TimePassedCondition(QUEST_SLOT,1,DELAY_IN_MINUTES).fire(player, null, null)) {
 				res.add("Mam ponownie odwiedzić Benigne, aby dała mi kolejne zlecenie. Hasło: kieł smoka");
@@ -700,11 +700,11 @@ public class ProsbyWiedzmy extends AbstractQuest {
 		if ("dużesmoki?".equals(questState)) {
 			return res;
 		}
-		res.add("Benigna poprosiła mnie, abym " + Grammar.genderVerb(player.getGender(), "zabił") + " czarne smoczysko i smoka arktycznego. Chciała również 3 skóry czarnego smoka oraz 3 skóry arktycznego smoka.");
+		res.add("Benigna poprosiła mnie, abym " + player.getGenderVerb("zabił") + " czarne smoczysko i smoka arktycznego. Chciała również 3 skóry czarnego smoka oraz 3 skóry arktycznego smoka.");
 		if (questState.startsWith("czarnesmoczysko")) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " czarne smoczysko i smoka arktycznego oraz " + Grammar.genderVerb(player.getGender(), "zaniosłem") + " jej potrzebne materiały!");
+		res.add(player.getGenderVerb("Zabiłem") + " czarne smoczysko i smoka arktycznego oraz " + player.getGenderVerb("zaniosłem") + " jej potrzebne materiały!");
 		if (questState.startsWith("czas_krewsmoka")) {
 			if (new TimePassedCondition(QUEST_SLOT,1,DELAY_IN_MINUTES).fire(player, null, null)) {
 				res.add("Mam ponownie odwiedzić Benigne, aby dała mi kolejne zlecenie. Hasło: duże smoki");
@@ -721,7 +721,7 @@ public class ProsbyWiedzmy extends AbstractQuest {
 		if (questState.startsWith("krewsmoka")) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Zaniosłem") + " potrzebną krew smoka Benignie!");
+		res.add(player.getGenderVerb("Zaniosłem") + " potrzebną krew smoka Benignie!");
 		if (questState.startsWith("czas_glodna")) {
 			if (new TimePassedCondition(QUEST_SLOT,1,DELAY_IN_MINUTES).fire(player, null, null)) {
 				res.add("Mam ponownie odwiedzić Benigne, aby dała mi kolejne zlecenie. Hasło: krew");
@@ -738,7 +738,7 @@ public class ProsbyWiedzmy extends AbstractQuest {
 		if (questState.startsWith("glodna")) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Przyniosłem") + " jedzenie dla Benigny tak jak mnie o to prosiła.");
+		res.add(player.getGenderVerb("Przyniosłem") + " jedzenie dla Benigny tak jak mnie o to prosiła.");
 		if (questState.startsWith("czas_ostatnie")) {
 			if (new TimePassedCondition(QUEST_SLOT,1,DELAY_IN_MINUTES).fire(player, null, null)) {
 				res.add("Mam ponownie odwiedzić Benigne, aby dała mi kolejne zlecenie. Hasło: jedzenie");

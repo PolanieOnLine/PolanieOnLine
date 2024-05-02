@@ -154,7 +154,7 @@ public class PlayerDieer {
 		}
 
 		String zoneinfo = player.getZone().describe();
-		String locationmsg = Grammar.genderVerb(player.getGender(), "Poległeś") + " w " + zoneinfo;
+		String locationmsg = player.getGenderVerb("Poległeś") + " w " + zoneinfo;
 		if(!player.getZone().isInterior()) {
 			// only tell the more precise location inside the zone if it's not an interior
 			int x = player.getZone().getWidth();

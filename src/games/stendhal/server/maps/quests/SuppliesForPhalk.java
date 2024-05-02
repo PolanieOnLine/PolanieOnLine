@@ -444,8 +444,8 @@ public class SuppliesForPhalk extends AbstractQuest {
 				return res;
 			}
 			final String questState = player.getQuest(QUEST_SLOT);
-			res.add(Grammar.genderVerb(player.getGender(), "Rozmawiałem") + " z Phalk, który pilnuje przejścia w Semos Mines.");
-			res.add("Phalk poprosił mnie, żebym " + Grammar.genderVerb(player.getGender(), "przyniósł") + " mu 3 kanapki, 3 soki z chmielu i 3 napoje z winogron.");
+			res.add(player.getGenderVerb("Rozmawiałem") + " z Phalk, który pilnuje przejścia w Semos Mines.");
+			res.add("Phalk poprosił mnie, żebym " + player.getGenderVerb("przyniósł") + " mu 3 kanapki, 3 soki z chmielu i 3 napoje z winogron.");
 			if ("rejected".equals(questState)) {
 				res.add("Nie mam ochoty pomagać Phalkowi.");
 				return res;
@@ -465,14 +465,14 @@ public class SuppliesForPhalk extends AbstractQuest {
 			res.add("Teraz Phalk potrzebuje płaszcza od Wrvil i zbroje od Mrotho.");
 			if (questState.startsWith("clothes")) {
 				if(new QuestInStateCondition(QUEST_SLOT, 1, "cloak").fire(player,null, null)){
-					res.add("Mam płaszcz, za który " + Grammar.genderVerb(player.getGender(), "musiałem") + " zapłacić!");
+					res.add("Mam płaszcz, za który " + player.getGenderVerb("musiałem") + " zapłacić!");
 				}
 				if(new QuestInStateCondition(QUEST_SLOT, 2, "armor").fire(player,null, null)){
 					res.add("Mrotho dał mi złotą zbroie dla Phalka, ale musiałem pokryć dług.");
 				}
 				return res;
 			}
-			res.add(Grammar.genderVerb(player.getGender(), "Oddałem") + " Phalkowi ekwipunek w nagrodę " + Grammar.genderVerb(player.getGender(), "dostałem") + " zbroję krasnoludzką!");
+			res.add(player.getGenderVerb("Oddałem") + " Phalkowi ekwipunek w nagrodę " + player.getGenderVerb("dostałem") + " zbroję krasnoludzką!");
 			if (isCompleted(player)) {
 				return res;
 			}

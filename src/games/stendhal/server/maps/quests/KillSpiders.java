@@ -74,19 +74,19 @@ public class KillSpiders extends AbstractQuest {
 					@Override
 					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 						if (!player.hasQuest(QUEST_SLOT) || player.getQuest(QUEST_SLOT).equals("rejected")) {
-							raiser.say(Grammar.genderVerb(player.getGender(), "Byłeś") + " kiedyś w szkolnej piwnicy? Odkąd studenci eksperymentowali to pokój jest pełen pająków i niektóre mogą być niebezpieczne! Czy " + Grammar.genderVerb(player.getGender(), "mógłbyś") + " mi pomóc z tym 'małym' problemem?");
+							raiser.say(player.getGenderVerb("Byłeś") + " kiedyś w szkolnej piwnicy? Odkąd studenci eksperymentowali to pokój jest pełen pająków i niektóre mogą być niebezpieczne! Czy " + player.getGenderVerb("mógłbyś") + " mi pomóc z tym 'małym' problemem?");
 							raiser.setCurrentState(ConversationStates.QUEST_OFFERED);
 						}  else if (player.isQuestCompleted(QUEST_SLOT)) {
-							raiser.say("Już Cię wysłałem, abyś " + Grammar.genderVerb(player.getGender(), "zabił") + " wszystkie kreatury w piwnicy!");
+							raiser.say("Już Cię wysłałem, abyś " + player.getGenderVerb("zabił") + " wszystkie kreatury w piwnicy!");
 						}  else if (player.getQuest(QUEST_SLOT).startsWith("killed;")) {
 							final String[] tokens = player.getQuest(QUEST_SLOT).split(";");
 							final long delay = MathHelper.MILLISECONDS_IN_ONE_WEEK;
 							final long timeRemaining = Long.parseLong(tokens[1]) + delay - System.currentTimeMillis();
 							if (timeRemaining > 0) {
-								raiser.say("Przepraszam, ale nic dla Ciebie nie mam. Może " + Grammar.genderVerb(player.getGender(), "mógłbyś") + " wrócić później. Muszę posprzątać szkołę raz w tygodniu.");
+								raiser.say("Przepraszam, ale nic dla Ciebie nie mam. Może " + player.getGenderVerb("mógłbyś") + " wrócić później. Muszę posprzątać szkołę raz w tygodniu.");
 								return;
 							}
-							raiser.say("Czy " + Grammar.genderVerb(player.getGender(), "mógłbyś") + " mi znów pomóc?");
+							raiser.say("Czy " + player.getGenderVerb("mógłbyś") + " mi znów pomóc?");
 							raiser.setCurrentState(ConversationStates.QUEST_OFFERED);
 						} else {
 							raiser.say("Dziękuję za pomoc. Teraz mogę spać spokojnie.");
@@ -195,7 +195,7 @@ public class KillSpiders extends AbstractQuest {
 			return history;
 		}
 		if ("killed".equals(questState)) {
-			history.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " wszystkie pająki w piwnicy w szkole magów i " + Grammar.genderVerb(player.getGender(), "dostałem") + " mityczne jajo.");
+			history.add(player.getGenderVerb("Zabiłem") + " wszystkie pająki w piwnicy w szkole magów i " + player.getGenderVerb("dostałem") + " mityczne jajo.");
 			return history;
 		}
 
@@ -207,16 +207,16 @@ public class KillSpiders extends AbstractQuest {
 		final boolean sp3 = "królowa pająków".equals(player.getQuest(QUEST_SLOT, 3));
 		final boolean sp = "start".equals(player.getQuest(QUEST_SLOT, 0));
 		if (sp1) {
-			history.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " pająka w piwnicy.");
+			history.add(player.getGenderVerb("Zabiłem") + " pająka w piwnicy.");
 		}
 		if (sp2) {
-			history.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " pająka ptasznika w piwnicy.");
+			history.add(player.getGenderVerb("Zabiłem") + " pająka ptasznika w piwnicy.");
 		}
 		if (sp3) {
-			history.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " królową pająków w piwnicy.");
+			history.add(player.getGenderVerb("Zabiłem") + " królową pająków w piwnicy.");
 		}
 		if (sp1 && sp2 && sp3) {
-			history.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " wszystkie 3 pająki w piwnicy. Teraz wracam do Morgrin, aby odebrać moją nagrodę.");
+			history.add(player.getGenderVerb("Zabiłem") + " wszystkie 3 pająki w piwnicy. Teraz wracam do Morgrin, aby odebrać moją nagrodę.");
 		}
 
 		// here is support for old-style quest
@@ -225,16 +225,16 @@ public class KillSpiders extends AbstractQuest {
 			final boolean osp2 = player.hasKilled("pająk ptasznik");
 			final boolean osp3 = player.hasKilled("królowa pająków");
 			if (osp1) {
-				history.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " pająka w piwnicy.");
+				history.add(player.getGenderVerb("Zabiłem") + " pająka w piwnicy.");
 			}
 			if (osp2) {
-				history.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " pająka ptasznika w piwnicy.");
+				history.add(player.getGenderVerb("Zabiłem") + " pająka ptasznika w piwnicy.");
 			}
 			if (osp3) {
-				history.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " królową pająków w piwnicy.");
+				history.add(player.getGenderVerb("Zabiłem") + " królową pająków w piwnicy.");
 			}
 			if (osp1 && osp2 && osp3) {
-				history.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " wszystkie 3 pająki w piwnicy. Teraz wracam do Morgrin, aby odebra moją nagrodę.");
+				history.add(player.getGenderVerb("Zabiłem") + " wszystkie 3 pająki w piwnicy. Teraz wracam do Morgrin, aby odebra moją nagrodę.");
 			}
 		}
 

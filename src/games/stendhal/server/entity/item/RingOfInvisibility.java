@@ -45,7 +45,7 @@ public class RingOfInvisibility extends Item {
 	}
 
 	public static void setVisible(Player player, boolean setVisible) {
-		String on = Grammar.genderVerb(player.getGender(), "Założyłeś") + " pierścień na palec! Używaj go mądrze!";
+		String on = player.getGenderVerb("Założyłeś") + " pierścień na palec! Używaj go mądrze!";
 		String off = "Pierścień stracił swoją moc ponieważ został zdjęty z dłoni.";
 
 		if (setVisible) {

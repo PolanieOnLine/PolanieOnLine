@@ -440,7 +440,7 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 			}
 
 			if (spent == 0) {
-				seller.say("Nie poznaję cię. Czy " + Grammar.genderVerb(player.getGender(), "kupiłeś") + " u mnie wcześniej?");
+				seller.say("Nie poznaję cię. Czy " + player.getGenderVerb("kupiłeś") + " u mnie wcześniej?");
 			} else if (spent >= req_purchase) {
 				seller.say("Dziękuję za wsparcie mojego sklepu! Poszukiwacze przygód, tacy jak ty, utrzymują ten świat na powierzchni.");
 			} else {

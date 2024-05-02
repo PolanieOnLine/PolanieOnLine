@@ -123,13 +123,13 @@ public class ClearTower extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Czarnoksiężnika w jakiejś starej wieży.");
+		res.add(player.getGenderVerb("Spotkałem") + " Czarnoksiężnika w jakiejś starej wieży.");
 		final String questState = player.getQuest(QUEST_SLOT, 0);
 		if ("rejected".equals(questState)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Odmówiłem") + " Czarnoksiężnikowi pomocy.");
+			res.add(player.getGenderVerb("Odmówiłem") + " Czarnoksiężnikowi pomocy.");
 		return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Postanowiłem") + " pomóc Czarnoksiężnikowi w pozbyciu się zalęgłych potworów.");
+		res.add(player.getGenderVerb("Postanowiłem") + " pomóc Czarnoksiężnikowi w pozbyciu się zalęgłych potworów.");
 		if (("start".equals(questState) && player.hasKilled("starszy gargulec") && player.hasKilled("mroczny gargulec")
 				&& player.hasKilled("trujący gargulec") && player.hasKilled("gargulec")
 				&& player.hasKilled("nietoperz wampir") && player.hasKilled("nietoperz")

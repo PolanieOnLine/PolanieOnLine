@@ -263,7 +263,7 @@ public class FindJefsMom extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Znalazłem") + " Jefa w Kirdneh. Czeka tam na swoją mamę.");
+		res.add(player.getGenderVerb("Znalazłem") + " Jefa w Kirdneh. Czeka tam na swoją mamę.");
         final String questStateFull = player.getQuest(QUEST_SLOT);
         final String[] parts = questStateFull.split(";");
         final String questState = parts[0];
@@ -275,13 +275,13 @@ public class FindJefsMom extends AbstractQuest {
 			res.add("Jef poprosił mnie, żebym rozejrzał się za jego matką, Amber, która nie wróciła z zakupów na rynku. Mam nadzieję, że wysłucha mnie, gdy powiem imię jej syna - Jefa.");
 		}
 		if ("found_mom".equals(questState)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Znalazłem") + " Amber, mamę Jefa, kiedy spacerowała gdzieś w lesie Fado. Dała mi kwiaty dla swojego syna i powiedziała mi, że te kwiaty powiedzą mu, że z nią wszystko w porządku.");
+			res.add(player.getGenderVerb("Znalazłem") + " Amber, mamę Jefa, kiedy spacerowała gdzieś w lesie Fado. Dała mi kwiaty dla swojego syna i powiedziała mi, że te kwiaty powiedzą mu, że z nią wszystko w porządku.");
 		}
 		if ("done".equals(questState)) {
             if (isRepeatable(player)) {
-                res.add(Grammar.genderVerb(player.getGender(), "Przyniosłem") + " Jefowi bielikrasę, a on bardzo się ucieszył, gdy dowiedził się, że jego mama, Amber, trzyma się dobrze. Chociaż Jef nie chce, żebym pilnował jej znowu, tzeba zapytać go, czy nie zmienił zdania.");
+                res.add(player.getGenderVerb("Przyniosłem") + " Jefowi bielikrasę, a on bardzo się ucieszył, gdy dowiedził się, że jego mama, Amber, trzyma się dobrze. Chociaż Jef nie chce, żebym pilnował jej znowu, tzeba zapytać go, czy nie zmienił zdania.");
             } else {
-                res.add(Grammar.genderVerb(player.getGender(), "Przyniosłem") + " Jefowi bielikrasę, a on bardzo się ucieszył, gdy dowiedział się, że jego mama, Amber, trzyma się dobrze. Chce zostawić mamę samą na jakiś czas.");
+                res.add(player.getGenderVerb("Przyniosłem") + " Jefowi bielikrasę, a on bardzo się ucieszył, gdy dowiedział się, że jego mama, Amber, trzyma się dobrze. Chce zostawić mamę samą na jakiś czas.");
             }
 		}
 

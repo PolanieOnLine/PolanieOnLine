@@ -107,7 +107,7 @@ public class Gornictwo extends AbstractQuest {
 				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 					if (player.isEquipped("siarka", 2)) {
 						if (player.isQuestCompleted(MINES_EXAM)) {
-							raiser.say("Super! Dziękuję za rudy siarki! Teraz poprosiłbym abyś " + Grammar.genderVerb(player.getGender(), "wykopał") + " dla mnie 5 rud żelaza.");
+							raiser.say("Super! Dziękuję za rudy siarki! Teraz poprosiłbym abyś " + player.getGenderVerb("wykopał") + " dla mnie 5 rud żelaza.");
 							player.drop("siarka", 2);
 							player.incMiningXP(1000);
 							player.addXP(500);
@@ -121,7 +121,7 @@ public class Gornictwo extends AbstractQuest {
 							player.setQuest(QUEST_SLOT, "exam");
 						}
 					} else {
-						raiser.say("Nie próbuj mnie oszukiwać... Wiem, że nie " + Grammar.genderVerb(player.getGender(), "wykopałeś") + " jeszcze tego surowca.");
+						raiser.say("Nie próbuj mnie oszukiwać... Wiem, że nie " + player.getGenderVerb("wykopałeś") + " jeszcze tego surowca.");
 					}
 				}
 			});
@@ -145,7 +145,7 @@ public class Gornictwo extends AbstractQuest {
 				@Override
 				public void fire(Player player, Sentence sentence, EventRaiser raiser) {
 					if (player.isQuestCompleted(MINES_EXAM)) {
-						raiser.say("Moje gratulacje zdania egzaminu! Teraz poprosiłbym abyś " + Grammar.genderVerb(player.getGender(), "wykopał") + " dla mnie 5 rud żelaza.");
+						raiser.say("Moje gratulacje zdania egzaminu! Teraz poprosiłbym abyś " + player.getGenderVerb("wykopał") + " dla mnie 5 rud żelaza.");
 						player.incMiningXP(1000);
 						player.setQuest(QUEST_SLOT, "dig_iron");
 					} else {
@@ -228,7 +228,7 @@ public class Gornictwo extends AbstractQuest {
 						return;
 					}
 
-					raiser.say("A oto twój nowy kilof! Teraz będziesz " + Grammar.genderVerb(player.getGender(), "mógł") + " wykopać dla mnie 7 bryłek złota. Złoże złota znajdziejsz niedaleko przejścia na poziom wyżej kopalni.");
+					raiser.say("A oto twój nowy kilof! Teraz będziesz " + player.getGenderVerb("mógł") + " wykopać dla mnie 7 bryłek złota. Złoże złota znajdziejsz niedaleko przejścia na poziom wyżej kopalni.");
 					player.addXP(500);
 					player.addKarma(10);
 					final Item item = SingletonRepository.getEntityManager().getItem("kilof stalowy");
@@ -276,7 +276,7 @@ public class Gornictwo extends AbstractQuest {
 				@Override
 				public void fire(Player player, Sentence sentence, EventRaiser raiser) {
 					if (player.isEquipped("kryształ szmaragdu", 7) && player.isEquipped("kryształ szafiru", 7) && player.isEquipped("kryształ rubinu", 7)) {
-						raiser.say("Ooo... super! Teraz proszę cię o wydobycia zupełnie nowego surowca! Są pogłoski iż gdzieś w tej kopalni znajduje się ruda cieni! Chcę, abyś " + Grammar.genderVerb(player.getGender(), "przyniósł") + " mi 12 rud tego surowca.");
+						raiser.say("Ooo... super! Teraz proszę cię o wydobycia zupełnie nowego surowca! Są pogłoski iż gdzieś w tej kopalni znajduje się ruda cieni! Chcę, abyś " + player.getGenderVerb("przyniósł") + " mi 12 rud tego surowca.");
 						player.drop("kryształ szmaragdu", 7);
 						player.drop("kryształ szafiru", 7);
 						player.drop("kryształ rubinu", 7);
@@ -302,7 +302,7 @@ public class Gornictwo extends AbstractQuest {
 				@Override
 				public void fire(Player player, Sentence sentence, EventRaiser raiser) {
 					if (player.isEquipped("ruda cieni", 12)) {
-						raiser.say("Ależ ten surowiec ma dziwne właściwości! Dziękuję, nie sądziłem, że to była prawda! Następnie chciałbym się prosić o wykopanie 10 rud srebra. Przynieś jeszcze 7 polan oraz kilof stalowy, a wtedy wykonam dla ciebie jeszcze mocniejszy kilof, dzięki niemu będziesz jeszcze szybciej " + Grammar.genderVerb(player.getGender(), "kopał") + ".");
+						raiser.say("Ależ ten surowiec ma dziwne właściwości! Dziękuję, nie sądziłem, że to była prawda! Następnie chciałbym się prosić o wykopanie 10 rud srebra. Przynieś jeszcze 7 polan oraz kilof stalowy, a wtedy wykonam dla ciebie jeszcze mocniejszy kilof, dzięki niemu będziesz jeszcze szybciej " + player.getGenderVerb("kopał") + ".");
 						player.drop("ruda cieni", 12);
 						player.incMiningXP(5000);
 						player.addXP(2200);
@@ -460,7 +460,7 @@ public class Gornictwo extends AbstractQuest {
 				@Override
 				public void fire(Player player, Sentence sentence, EventRaiser raiser) {
 					if (player.isEquipped("bryłka mithrilu", 20) && player.isEquipped("kilof złoty")) {
-						raiser.say("Prześliczne surowce! W nagrodę otrzymasz mój własny kilof wykonany z obsydianu przez co pozwolę sobie zabrać twój kilof złoty w ramach nowego. Cudownie się nim wykopuje surowce! Będziesz " + Grammar.genderVerb(player.getGender(), "chciał") + " go przetestować, prawda? Wykop w takim razie dla mnie 10 kryształów diamentu nowym kilofem!");
+						raiser.say("Prześliczne surowce! W nagrodę otrzymasz mój własny kilof wykonany z obsydianu przez co pozwolę sobie zabrać twój kilof złoty w ramach nowego. Cudownie się nim wykopuje surowce! Będziesz " + player.getGenderVerb("chciał") + " go przetestować, prawda? Wykop w takim razie dla mnie 10 kryształów diamentu nowym kilofem!");
 						player.drop("bryłka mithrilu", 20);
 						player.drop("kilof złoty", 1);
 						player.incMiningXP(25000);
@@ -547,14 +547,14 @@ public class Gornictwo extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Rozmawiałem") + " z Górnikiem w kopalni pod Zakopcem.");
+		res.add(player.getGenderVerb("Rozmawiałem") + " z Górnikiem w kopalni pod Zakopcem.");
 
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
 			res.add("Nie chcę brudzić swych rąk w kopalniach.");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "start", "done")) {
-			res.add(Grammar.genderVerb(player.getGender(), "Postanowiłem") + " pomóc Górnikowi uzupełnić informacje w swojej książce o minerałach.");
+			res.add(player.getGenderVerb("Postanowiłem") + " pomóc Górnikowi uzupełnić informacje w swojej książce o minerałach.");
 		}
 
 		if (player.isQuestInState(QUEST_SLOT, 0, "start")) {
@@ -610,7 +610,7 @@ public class Gornictwo extends AbstractQuest {
 		}
 
 		if (player.isQuestInState(QUEST_SLOT, 0, "done")) {
-			res.add("Wykopałem oraz przyniosłem wszystko o co poprosił mnie Górnik. W nagrodę " + Grammar.genderVerb(player.getGender(), "otrzymałem") + " kilof obsydianowy.");
+			res.add("Wykopałem oraz przyniosłem wszystko o co poprosił mnie Górnik. W nagrodę " + player.getGenderVerb("otrzymałem") + " kilof obsydianowy.");
 		}
 
 		return res;

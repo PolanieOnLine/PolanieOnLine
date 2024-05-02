@@ -151,16 +151,16 @@ public class SmoczyAmulet extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Rozmawiałem") + " z Robercikiem.");
+		res.add(player.getGenderVerb("Rozmawiałem") + " z Robercikiem.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
 			res.add("Nie potrzebuję jakiegoś amuletu...");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "start", "done")) {
-			res.add(Grammar.genderVerb(player.getGender(), "Zgodziłem") + " się zebrać pazurki dla Robercika w zamian za amulet.");
+			res.add(player.getGenderVerb("Zgodziłem") + " się zebrać pazurki dla Robercika w zamian za amulet.");
 		}
 		if ("done".equals(questState)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Zaniosłem") + " potrzebne smocze pazurki, a w zamian " + Grammar.genderVerb(player.getGender(), "otrzymałem") + " smoczy amulet.");
+			res.add(player.getGenderVerb("Zaniosłem") + " potrzebne smocze pazurki, a w zamian " + player.getGenderVerb("otrzymałem") + " smoczy amulet.");
 		}
 		return res;
 	}

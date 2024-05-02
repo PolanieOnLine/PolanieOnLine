@@ -392,7 +392,7 @@ public class EmotionCrystals extends AbstractQuest {
 
 		// Only include Julius in the quest log if player has spoken to him
 		if (player.isQuestInState(QUEST_SLOT, 0, "start") || player.isQuestInState(QUEST_SLOT, 0, "rejected")) {
-			res.add(Grammar.genderVerb(player.getGender(), "Rozmawiałem") + " z żołnierzen Juliusem, który pilnuje wejścia do Ados.");
+			res.add(player.getGenderVerb("Rozmawiałem") + " z żołnierzen Juliusem, który pilnuje wejścia do Ados.");
 			if (player.isQuestInState(QUEST_SLOT, 0, "rejected")) {
 				res.add("Jestem emocjonalnie nie przygotowany i musiałem odrzucić jego prośbę.");
 			}
@@ -421,11 +421,11 @@ public class EmotionCrystals extends AbstractQuest {
 		}
 
 		if (hasAllCrystals) {
-			res.add(Grammar.genderVerb(player.getGender(), "Zdobyłem") + " wszystkie kryształy emocji i powinienem zanieść je do Juliusa w Ados.");
+			res.add(player.getGenderVerb("Zdobyłem") + " wszystkie kryształy emocji i powinienem zanieść je do Juliusa w Ados.");
 		}
 
 		if (player.isQuestInState(QUEST_SLOT, 0, "done")) {
-			res.add(Grammar.genderVerb(player.getGender(), "Dałem") + " kryształy Juliusowi dla jego żony. " + Grammar.genderVerb(player.getGender(), "dostałem") + " doświadczenie, karmę i przydatne spodnie kamienne.");
+			res.add(player.getGenderVerb("Dałem") + " kryształy Juliusowi dla jego żony. " + player.getGenderVerb("dostałem") + " doświadczenie, karmę i przydatne spodnie kamienne.");
 		}
 		return res;
 	}

@@ -156,20 +156,20 @@ public class MagicznaTorba extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Rozmawiałem") + " z Wizariuszem.");
+		res.add(player.getGenderVerb("Rozmawiałem") + " z Wizariuszem.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
 			res.add("Nie zamierzam być pieskiem na posyłki...");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "start", "done")) {
-			res.add(Grammar.genderVerb(player.getGender(), "Zgodziłem") + " się zwrócić magiczny pergamin.");
+			res.add(player.getGenderVerb("Zgodziłem") + " się zwrócić magiczny pergamin.");
 		}
 		if ("start".equals(questState) && player.isEquipped("lodowy zwój")
 				|| "done".equals(questState)) {
 			res.add("Mam pergamin dla Wizariusza.");
 		}
 		if ("done".equals(questState)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Zwróciłem") + " zwój czarownikowi.");
+			res.add(player.getGenderVerb("Zwróciłem") + " zwój czarownikowi.");
 		}
 		return res;
 	}

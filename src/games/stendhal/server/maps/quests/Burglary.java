@@ -182,16 +182,16 @@ public class Burglary extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Rozmawiałem") + " z tajemniczą osobą.");
+		res.add(player.getGenderVerb("Rozmawiałem") + " z tajemniczą osobą.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
 			res.add("Nie dam się namówić na złe zamiary!");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "start", "done")) {
-			res.add(Grammar.genderVerb(player.getGender(), "Zgodziłem") + " się włamać do domu sołtysa.");
+			res.add(player.getGenderVerb("Zgodziłem") + " się włamać do domu sołtysa.");
 		}
 		if ("done".equals(questState)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Przekazałem") + " zawartość skrzynki tajemniczej osobie.");
+			res.add(player.getGenderVerb("Przekazałem") + " zawartość skrzynki tajemniczej osobie.");
 		}
 		return res;
 	}

@@ -42,11 +42,11 @@ class Eater implements Feeder {
 			player.setHP(playerHP - chokingDamage);
 
 			player.sendPrivateText(NotificationType.NEGATIVE,
-					Grammar.genderVerb(player.getGender(), "Zjadłeś")
+					player.getGenderVerb("Zjadłeś")
 					+ " tak dużo, że "
-					+ Grammar.genderVerb(player.getGender(), "zwymiotowałeś")
+					+ player.getGenderVerb("zwymiotowałeś")
 					+ " na ziemię i "
-					+ Grammar.genderVerb(player.getGender(), "straciłeś")
+					+ player.getGenderVerb("straciłeś")
 					+ " " + Integer.toString(chokingDamage) + " punkt" + " życia.");
 
 			final Item sick = SingletonRepository.getEntityManager().getItem("wymioty");
@@ -64,16 +64,16 @@ class Eater implements Feeder {
 			player.setHP(playerHP - chokingDamage);
 
 			player.sendPrivateText(NotificationType.NEGATIVE,
-					Grammar.genderVerb(player.getGender(), "Zjadłeś")
+					player.getGenderVerb("Zjadłeś")
 					+ " tak dużo na raz, że " 
-					+ Grammar.genderVerb(player.getGender(), "zadławiłeś")
+					+ player.getGenderVerb("zadławiłeś")
 					+ " się jedzeniem i "
-					+ Grammar.genderVerb(player.getGender(), "straciłeś")
+					+ player.getGenderVerb("straciłeś")
 					+ " " + Integer.toString(chokingDamage) + " punkt" + " życia. Jeżeli zjesz więcej to możesz się pochorować.");
 
 			player.notifyWorldAboutChanges();
 		} else if (count > COUNT_FULL) {
-			player.sendPrivateText(NotificationType.PRIVMSG, "Jesteś teraz " + Grammar.genderVerb(player.getGender(), "najedzony") + " i już więcej nie " + Grammar.genderVerb(player.getGender(), "powinieneś") + " jeść.");
+			player.sendPrivateText(NotificationType.PRIVMSG, "Jesteś teraz " + player.getGenderVerb("najedzony") + " i już więcej nie " + player.getGenderVerb("powinieneś") + " jeść.");
 		}
 
 		ConsumableItem splitOff = (ConsumableItem) item.splitOff(1);

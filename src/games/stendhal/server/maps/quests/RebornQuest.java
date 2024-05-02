@@ -429,13 +429,13 @@ public class RebornQuest extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " smoka Yerena w jaskini, w domku na górze Zakopane.");
+		res.add(player.getGenderVerb("Spotkałem") + " smoka Yerena w jaskini, w domku na górze Zakopane.");
 		final String questState = player.getQuest(QUEST_SLOT);
-		res.add(Grammar.genderVerb(player.getGender(), "Odmówiłem") + " cofnięcia się w czasie.");
+		res.add(player.getGenderVerb("Odmówiłem") + " cofnięcia się w czasie.");
 		if ("rejected".equals(questState)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Postanowiłem") + " wysłuchać smoka Yerena i cofnąć się w czasie.");
+		res.add(player.getGenderVerb("Postanowiłem") + " wysłuchać smoka Yerena i cofnąć się w czasie.");
 		if ("start".equals(questState)) {
 			return res;
 		}

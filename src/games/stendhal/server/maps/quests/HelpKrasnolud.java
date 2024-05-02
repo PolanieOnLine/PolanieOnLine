@@ -300,7 +300,7 @@ public class HelpKrasnolud extends AbstractQuest {
 			return res;
 		}
 		final String questState = player.getQuest(QUEST_SLOT);
-		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Krasnoluda w kuźni Zakopane.");
+		res.add(player.getGenderVerb("Spotkałem") + " Krasnoluda w kuźni Zakopane.");
 		res.add("Krasnolud poprosił mnie abym mu przyniósł lazurową zbroje od Wielkoluda.");
 		if ("rejected".equals(questState)) {
 			res.add("Nie mam ochoty bawić się w posłańca.");
@@ -317,15 +317,15 @@ public class HelpKrasnolud extends AbstractQuest {
 		if ("kiel_smoka".equals(questState)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Przyniosłem") + " Gulimo kły, niestety nie miał hełmu. Dał mi podpowiedź, że mogę go kupić u Hagnurk.");
+		res.add(player.getGenderVerb("Przyniosłem") + " Gulimo kły, niestety nie miał hełmu. Dał mi podpowiedź, że mogę go kupić u Hagnurk.");
 		if ("helmet".equals(questState)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Zaniosłem") + " hełm Wielkoludowi a ten zażądał jeszcze: po 30 skór zielonego, czerwonego, niebieskiego, czarnego oraz 10 złotego smoka.");
+		res.add(player.getGenderVerb("Zaniosłem") + " hełm Wielkoludowi a ten zażądał jeszcze: po 30 skór zielonego, czerwonego, niebieskiego, czarnego oraz 10 złotego smoka.");
 		if ("armor".equals(questState)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Dostarczyłem") + " wszystkie skóry Wielkoludowi w końcu dał mi lazurową zbroję dla Krasnoluda");
+		res.add(player.getGenderVerb("Dostarczyłem") + " wszystkie skóry Wielkoludowi w końcu dał mi lazurową zbroję dla Krasnoluda");
 		if ("gotarmor".equals(questState)) {
 			return res;
 		}
@@ -342,7 +342,7 @@ public class HelpKrasnolud extends AbstractQuest {
 			}
 			return res;
 		}
-		res.add("Krasnolud nagrodził mnie podniesieniem mojej esencji życiowej o 50 i " + Grammar.genderVerb(player.getGender(), "otrzymałem") + " sporo wskazówek dotyczących podróży.");
+		res.add("Krasnolud nagrodził mnie podniesieniem mojej esencji życiowej o 50 i " + player.getGenderVerb("otrzymałem") + " sporo wskazówek dotyczących podróży.");
 		if (isCompleted(player)) {
 			return res;
 		}

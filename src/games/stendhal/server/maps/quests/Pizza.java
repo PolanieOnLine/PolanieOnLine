@@ -629,7 +629,7 @@ public class Pizza extends AbstractQuest {
 			return res;
 		}
 		final String questState = player.getQuest(QUEST_SLOT);
-		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Ernesta i zgodził się pomóc przy roznoszeniu pizzy.");
+		res.add(player.getGenderVerb("Spotkałem") + " Ernesta i zgodził się pomóc przy roznoszeniu pizzy.");
 		if (!"done".equals(questState)) {
 			final String[] questData = questState.split(";");
 			final String customerName = questData[0];

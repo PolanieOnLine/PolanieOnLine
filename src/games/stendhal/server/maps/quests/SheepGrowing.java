@@ -333,13 +333,13 @@ public class SheepGrowing extends AbstractQuest {
 		
 		final String questState = player.getQuest(QUEST_SLOT);
 		if (questState.equals("rejected")) {
-			res.add(Grammar.genderVerb(player.getGender(), "Mówiłem") + " Nishiyi, że mam teraz ważniejsze sprawy na głowie... może będę mieć na to czas później.");
+			res.add(player.getGenderVerb("Mówiłem") + " Nishiyi, że mam teraz ważniejsze sprawy na głowie... może będę mieć na to czas później.");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "start", "handed_over", "done")) {
 			res.add("Obiecuję zaopiekować się jedną z jego owiec.");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "handed_over", "done")) {
-			res.add(Grammar.genderVerb(player.getGender(), "Przekazałem") + " owcę, by podrosła, Sato. Powinienem wrócić teraz do Nishiyi.");
+			res.add(player.getGenderVerb("Przekazałem") + " owcę, by podrosła, Sato. Powinienem wrócić teraz do Nishiyi.");
 		}
 		if(questState.equals("done")) {
 			res.add("Wróciłem do sprzedawcy owiec. Nishiya był bardzo szczęśliwy, że mu pomogłem!");

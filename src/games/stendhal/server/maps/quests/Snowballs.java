@@ -235,18 +235,18 @@ public class Snowballs extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Poszedłem") + " do jaskiń lodowych i " + Grammar.genderVerb(player.getGender(), "spotkałem") + " się z Panem Yeti.");
+		res.add(player.getGenderVerb("Poszedłem") + " do jaskiń lodowych i " + player.getGenderVerb("spotkałem") + " się z Panem Yeti.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if (questState.equals("rejected")) {
 			res.add("Nie chciałem tym razem pomóc Mr. Yeti, a on nazłość wysłał mnie w daleką podróż...");
 			return res;
 		}
-		res.add("Mr. Yeti poprosił mnie, abym zebrał dla niego trochę śnieżek. " + Grammar.genderVerb(player.getGender(), "Obiecałem") + " mu to.");
+		res.add("Mr. Yeti poprosił mnie, abym zebrał dla niego trochę śnieżek. " + player.getGenderVerb("Obiecałem") + " mu to.");
 		if ((player.isEquipped("śnieżka", REQUIRED_SNOWBALLS)) || isCompleted(player)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Znalazłem") + " trochę śnieżek, gdy " + Grammar.genderVerb(player.getGender(), "zabiłem") + " kilku lodowych golemów.");
+			res.add(player.getGenderVerb("Znalazłem") + " trochę śnieżek, gdy " + player.getGenderVerb("zabiłem") + " kilku lodowych golemów.");
 		}
 		if (isCompleted(player)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Sprawiłem") + ", że Pan Yeti poczuł się szczęśliwy, gdy " + Grammar.genderVerb(player.getGender(), "dałem") + " mu śnieżki, o które prosił.");
+			res.add(player.getGenderVerb("Sprawiłem") + ", że Pan Yeti poczuł się szczęśliwy, gdy " + player.getGenderVerb("dałem") + " mu śnieżki, o które prosił.");
 		}
 		if(isRepeatable(player)){
 			res.add("Pan Yeti potrzebuje śnieżek ponownie!");

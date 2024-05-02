@@ -229,7 +229,7 @@ public class KillMonks extends AbstractQuest {
 			if (!player.hasQuest(QUEST_SLOT)) {
 				return res;
 			}
-			res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Andiego w mieście Ados. Poprosił mnie o pomszczenie jego żony.");
+			res.add(player.getGenderVerb("Spotkałem") + " Andiego w mieście Ados. Poprosił mnie o pomszczenie jego żony.");
 			final String questStateFull = player.getQuest(QUEST_SLOT);
 			final String[] parts = questStateFull.split(";");
 			final String questState = parts[0];
@@ -238,7 +238,7 @@ public class KillMonks extends AbstractQuest {
 				res.add("Odrzuciłem prośbę.");
 			}
 			if ("start".equals(questState)) {
-				res.add(Grammar.genderVerb(player.getGender(), "Obiecałem") + " zabić 25 mnichów i 25 mnichów ciemności, aby dokonać zemsty za żone Andiego.");
+				res.add(player.getGenderVerb("Obiecałem") + " zabić 25 mnichów i 25 mnichów ciemności, aby dokonać zemsty za żone Andiego.");
 				if (formatted) {
 					res.addAll(howManyWereKilledFormatted(player, parts[1]));
 				} else {
@@ -249,7 +249,7 @@ public class KillMonks extends AbstractQuest {
 				if(isRepeatable(player)){
 					res.add("Po dwóch tygodniach powinienem może odwiedzić Andiego. Być może potrzebuje ponownie mojej pomocy!");
 				} else {
-					res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " paru mnichów, a Andi może teraz spać trochę spokojnie!");
+					res.add(player.getGenderVerb("Zabiłem") + " paru mnichów, a Andi może teraz spać trochę spokojnie!");
 				}
 			}
 			int repetitions = player.getNumberOfRepetitions(getSlotName(), 2);

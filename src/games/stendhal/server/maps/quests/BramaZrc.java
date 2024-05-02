@@ -60,7 +60,7 @@ public class BramaZrc extends AbstractQuest {
 							if (player.getLevel() >= 150) {
 								if (player.hasKilledSolo("zielone smoczysko")) {
 									if (!player.hasQuest(QUEST_SLOT) || "rejected".equals(player.getQuest(QUEST_SLOT))) {
-										raiser.say("Czyżbyś " + Grammar.genderVerb(player.getGender(), "chciał") + " przekroczyć bramy Zakonu Rycerzy Cienia poznać to co nie poznane? Jesteś zainteresowany?");
+										raiser.say("Czyżbyś " + player.getGenderVerb("chciał") + " przekroczyć bramy Zakonu Rycerzy Cienia poznać to co nie poznane? Jesteś zainteresowany?");
 									} else if (player.isQuestCompleted(QUEST_SLOT)) {
 										raiser.say("Och! Ponownie przybyłeś do mnie. Niestety mamy już stałego dostawce żywności i twoja pomoc jest zbędna.");
 										raiser.setCurrentState(ConversationStates.ATTENDING);
@@ -183,7 +183,7 @@ public class BramaZrc extends AbstractQuest {
 			return res;
 		}
 		final String questState = player.getQuest(QUEST_SLOT);
-		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " strażnika bram zakonu ZRC.");
+		res.add(player.getGenderVerb("Spotkałem") + " strażnika bram zakonu ZRC.");
 		res.add("Cień poprosił mnie o uzupełnienie jego magazynów.");
 		if ("rejected".equals(questState)) {
 			res.add("Nie mam ochoty pomagać Cieniowi...");
@@ -192,11 +192,11 @@ public class BramaZrc extends AbstractQuest {
 		if ("start".equals(questState)) {
 			return res;
 		}
-		res.add(npc.getName() + " poprosił, abym mu " + Grammar.genderVerb(player.getGender(), "dostarczył") + ": 20 steków, 30 sera, 20 szynki, 30 mięsa, 10 chlebów, 7 kanapek, 25 jabłek, 5 lodów i 10 butelek wody.");
+		res.add(npc.getName() + " poprosił, abym mu " + player.getGenderVerb("dostarczył") + ": 20 steków, 30 sera, 20 szynki, 30 mięsa, 10 chlebów, 7 kanapek, 25 jabłek, 5 lodów i 10 butelek wody.");
 		if ("dostawca".equals(questState)) {
 			return res;
 		}
-		res.add(npc.getName() + " jest szczęśliwy z mojej pomocy. W zamian " + Grammar.genderVerb(player.getGender(), "dostałem") + " klucz do bram zakonu.");
+		res.add(npc.getName() + " jest szczęśliwy z mojej pomocy. W zamian " + player.getGenderVerb("dostałem") + " klucz do bram zakonu.");
 		if (isCompleted(player)) {
 			return res;
 		}

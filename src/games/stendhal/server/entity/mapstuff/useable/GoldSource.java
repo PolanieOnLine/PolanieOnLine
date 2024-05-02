@@ -153,7 +153,7 @@ public class GoldSource extends PlayerActivityEntity {
 			if (item != null) {
 			    player.equipOrPutOnGround(item);
 			    player.incMinedForItem(item.getName(), item.getQuantity());
-				player.sendPrivateText(Grammar.genderVerb(player.getGender(), "Znalazłeś") + " "
+				player.sendPrivateText(player.getGenderVerb("Znalazłeś") + " "
 						+ item.getTitle() + ".");
 			} else {
 				logger.error("could not find item: " + itemName);

@@ -64,7 +64,7 @@ public class MetalDetector extends AreaUseItem {
 								ring.setBoundTo(player.getName());
 
 								player.equipOrPutOnGround(ring);
-								player.sendPrivateText(Grammar.genderVerb(player.getGender(), "Znalazłeś") + " pierścionek.");
+								player.sendPrivateText(player.getGenderVerb("Znalazłeś") + " pierścionek.");
 
 								// shift coordinates in case ring is lost & we need to access them again
 								player.setQuest(ring_quest_slot, "found_ring;" + slot[0] + ";" + slot[1]);

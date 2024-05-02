@@ -192,13 +192,13 @@ public class DzikiiWilki extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Mścisława tuż obok swojej farmy.");
+		res.add(player.getGenderVerb("Spotkałem") + " Mścisława tuż obok swojej farmy.");
 		final String questState = player.getQuest(QUEST_SLOT, 0);
 		if ("rejected".equals(questState)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Odmówiłem") + " farmerowi pomocy.");
+			res.add(player.getGenderVerb("Odmówiłem") + " farmerowi pomocy.");
 		return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Postanowiłem") + " pomóc farmerowi Mścisławowi.");
+		res.add(player.getGenderVerb("Postanowiłem") + " pomóc farmerowi Mścisławowi.");
 		if (("start".equals(questState) && player.hasKilled("wilk") && player.hasKilled("dzik") && player.hasKilled("lisicia")) || "done".equals(questState)) {
 			res.add("Okolice farmy Mścisława zostały oczyszczone od dzikich zwierząt.");
 		} else if(isRepeatable(player)){

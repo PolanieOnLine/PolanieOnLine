@@ -178,7 +178,7 @@ public class GroupManagementAction implements ActionListener {
 		// check if the target player is in a group and that this group has invited the player
 		group = SingletonRepository.getGroupManager().getGroup(targetPlayer.getName());
 		if ((group == null) || !group.hasBeenInvited(player.getName())) {
-			player.sendPrivateText(NotificationType.ERROR, "Nie " + Grammar.genderVerb(player.getGender(), "zostałeś") + " " + Grammar.genderVerb(player.getGender(), "zaproszony") + " do grupy lub zaproszenie wygasło.");
+			player.sendPrivateText(NotificationType.ERROR, "Nie " + player.getGenderVerb("zostałeś") + " " + player.getGenderVerb("zaproszony") + " do grupy lub zaproszenie wygasło.");
 			return;
 		}
 

@@ -172,7 +172,7 @@ public class HelpTomi extends AbstractQuest {
 			if (!"done".equals(questState)) {
 				final int repetitions = player.getNumberOfRepetitions(getSlotName(), 1);
 				if (repetitions>1) {
-					res.add(Grammar.genderVerb(player.getGender(), "Przekazałem") + " dotychczas " + repetitions + " mieczy lodowych Tomiemu.");
+					res.add(player.getGenderVerb("Przekazałem") + " dotychczas " + repetitions + " mieczy lodowych Tomiemu.");
 				}
 			}
 		}

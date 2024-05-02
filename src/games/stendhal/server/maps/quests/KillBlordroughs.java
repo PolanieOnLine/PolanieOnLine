@@ -425,12 +425,12 @@ public class KillBlordroughs extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 				return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Poznałem") + " Mrotho w barakach w mieście Ados.");
+		res.add(player.getGenderVerb("Poznałem") + " Mrotho w barakach w mieście Ados.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if (questState.contains("done")) {
-			res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " wszystkich żołnierzy blordroughs i za wsparcie " + Grammar.genderVerb(player.getGender(), "otrzymałem") + " nagrodę od " + QUEST_NPC);
+			res.add(player.getGenderVerb("Zabiłem") + " wszystkich żołnierzy blordroughs i za wsparcie " + player.getGenderVerb("otrzymałem") + " nagrodę od " + QUEST_NPC);
 		} else {
-			res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " " + Integer.toString(getKilledCreaturesNumber(player)) + " blordroughtów (muszę jeszcze zabić: " + Integer.toString(killsnumber) + " blordroughtów).");
+			res.add(player.getGenderVerb("Zabiłem") + " " + Integer.toString(getKilledCreaturesNumber(player)) + " blordroughtów (muszę jeszcze zabić: " + Integer.toString(killsnumber) + " blordroughtów).");
 		}
 
 		if (completedCount > 0) {

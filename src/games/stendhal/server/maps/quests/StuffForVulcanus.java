@@ -249,7 +249,7 @@ public class StuffForVulcanus extends AbstractQuest {
 			return res;
 		}
 		final String questState = player.getQuest(QUEST_SLOT);
-		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Vulcanus w Kotoch.");
+		res.add(player.getGenderVerb("Spotkałem") + " Vulcanus w Kotoch.");
 		if (questState.equals("rejected")) {
 			res.add("Nie potrzebny mi miecz nieśmiertelnych.");
 			return res;
@@ -262,7 +262,7 @@ public class StuffForVulcanus extends AbstractQuest {
 			}
 			res.add("Wciąż potrzebuję dostarczyć " + questLogic.itemsStillNeeded(player) + suffix);
 		} else if (broughtAllItems(questState) || !questState.startsWith("start")) {
-			res.add(Grammar.genderVerb(player.getGender(), "Dostarczyłem") + " wszystko co potrzebne dla Vulcanus.");
+			res.add(player.getGenderVerb("Dostarczyłem") + " wszystko co potrzebne dla Vulcanus.");
 		}
 		if (broughtAllItems(questState) && !player.hasKilled("giant")) {
 			res.add("Aby zasłużyć na miecz muszę zabić pare gigantów i zebrać ich serca.");
@@ -271,7 +271,7 @@ public class StuffForVulcanus extends AbstractQuest {
 			res.add("Vulcanus, syn Zeusa wykuwa mi miecz.");
 		}
 		if (isCompleted(player)) {
-			res.add("Za sztabki złota serca olbrzymów i pare innach drobiazgów " + Grammar.genderVerb(player.getGender(), "zostałem") + " " +Grammar.genderVerb(player.getGender(), "nagrodzony") + " mieczem nieśmiertelnych.");
+			res.add("Za sztabki złota serca olbrzymów i pare innach drobiazgów " + player.getGenderVerb("zostałem") + " " +player.getGenderVerb("nagrodzony") + " mieczem nieśmiertelnych.");
 		}
 		return res;
 	}

@@ -336,7 +336,7 @@ import games.stendhal.server.maps.Region;
 			return res;
 		}
 		final String questState = player.getQuest(QUEST_SLOT);
-		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " panią Yeti w lodowych jaskiniach poniżej Semos Mountain.");
+		res.add(player.getGenderVerb("Spotkałem") + " panią Yeti w lodowych jaskiniach poniżej Semos Mountain.");
 		res.add("Pani Yeti poprosiła mnie, aby przynieść od Salvy Mattori specjalny eliksir miłości dla jej męża.");
 		if ("rejected".equals(questState)) {
 			res.add("Nie chcę, mieszać się w historie miłosne ..");

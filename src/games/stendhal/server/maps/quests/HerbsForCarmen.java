@@ -283,7 +283,7 @@ public class HerbsForCarmen extends AbstractQuest {
 			missingItems.addFromQuestStateString(questState);
 			res.add("Wciąż muszę przynieść Carmen " + Grammar.enumerateCollection(missingItems.toStringList()) + ".");
 		} else {
-			res.add(Grammar.genderVerb(player.getGender(), "Pomogłem") + " Carmen i ona może teraz dalej uzdrawiać.");
+			res.add(player.getGenderVerb("Pomogłem") + " Carmen i ona może teraz dalej uzdrawiać.");
 		}
 		return res;
 	}

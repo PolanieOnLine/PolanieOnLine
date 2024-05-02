@@ -199,17 +199,17 @@ public class ZlotyPierscien extends AbstractQuest {
 			return res;
 		}
 		final String questState = player.getQuest(QUEST_SLOT);
-		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " się z Kowalem Wincentym.");
+		res.add(player.getGenderVerb("Spotkałem") + " się z Kowalem Wincentym.");
 		res.add("Kowal Wincenty może wykonać dla mnie złoty pierścień.");
 		if ("rejected".equals(questState)) {
 			res.add("Nie zamierzam robić złotego pierścienia.");
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Udałem") + " się do Kowala Wincenta w celu wykonania złotego pierścienia. Kazał mi przynnieść kilka przedmiotów. Gdybym " + Grammar.genderVerb(player.getGender(), "zapomniał") + " co mam przynieść mam mu powiedzieć: przypomnij.");
+		res.add(player.getGenderVerb("Udałem") + " się do Kowala Wincenta w celu wykonania złotego pierścienia. Kazał mi przynnieść kilka przedmiotów. Gdybym " + player.getGenderVerb("zapomniał") + " co mam przynieść mam mu powiedzieć: przypomnij.");
 		if ("start".equals(questState)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Dostarczyłem") + " potrzebne przedmioty! Kowal Wincenty zabrał się za wykuwanie pierścienia.");
+		res.add(player.getGenderVerb("Dostarczyłem") + " potrzebne przedmioty! Kowal Wincenty zabrał się za wykuwanie pierścienia.");
 		if (questState.startsWith("forging")) {
 			if (new TimePassedCondition(QUEST_SLOT,1,REQUIRED_HOURS).fire(player, null, null)) {
 				res.add("Podobno Kowal Wincenty skończył swoją robotę. Hasło: pierścień.");

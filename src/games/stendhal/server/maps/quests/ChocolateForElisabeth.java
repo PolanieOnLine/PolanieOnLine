@@ -320,16 +320,16 @@ public class ChocolateForElisabeth extends AbstractQuest {
 			res.add("Mała Elisabeth potrzebuje tabliczkę czekolady.");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "start","mummy") && player.isEquipped("tabliczka czekolady") || isCompleted(player)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Znalazłem") + " pyszną tabliczkę czekolady dla Elisabeth.");
+			res.add(player.getGenderVerb("Znalazłem") + " pyszną tabliczkę czekolady dla Elisabeth.");
 		}
         if ("mummy".equals(questState) || isCompleted(player)) {
-            res.add(Grammar.genderVerb(player.getGender(), "Rozmawiałem") + " z Carey, matką Elisabeth i zgodziła się, abym mógł dać jej córce tabliczkę czekolady.");
+            res.add(player.getGenderVerb("Rozmawiałem") + " z Carey, matką Elisabeth i zgodziła się, abym mógł dać jej córce tabliczkę czekolady.");
         }
         if (isCompleted(player)) {
             if (isRepeatable(player)) {
-                res.add(Grammar.genderVerb(player.getGender(), "Przyniosłem") + " trochę czekolady dla Elisabeth. Dała mi w zamian kwiatki. Może chciałaby więcej czekolady.");
+                res.add(player.getGenderVerb("Przyniosłem") + " trochę czekolady dla Elisabeth. Dała mi w zamian kwiatki. Może chciałaby więcej czekolady.");
             } else {
-                res.add("Elisabeth je czekoladę, którą jej dałem, a w zamian " + Grammar.genderVerb(player.getGender(), "otrzymałem") + " piękne kwiaty.");
+                res.add("Elisabeth je czekoladę, którą jej dałem, a w zamian " + player.getGenderVerb("otrzymałem") + " piękne kwiaty.");
             }
 		}
 		return res;

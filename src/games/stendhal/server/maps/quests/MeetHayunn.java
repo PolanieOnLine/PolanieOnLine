@@ -217,14 +217,14 @@ public class MeetHayunn extends AbstractQuest {
 			return res;
 		}
 		final String questState = player.getQuest(QUEST_SLOT);
-		res.add("Hayunn Naratha jest pierwszą osobą jaką kiedykolwiek " + Grammar.genderVerb(player.getGender(), "spotkałem") + " na tym świecie, kazał mi zabić szczura.");
+		res.add("Hayunn Naratha jest pierwszą osobą jaką kiedykolwiek " + player.getGenderVerb("spotkałem") + " na tym świecie, kazał mi zabić szczura.");
 		if (player.getQuest(QUEST_SLOT, 0).equals("start") && new KilledForQuestCondition(QUEST_SLOT,1).fire(player, null, null)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " tego szczura, powinienem wrócić i mu powiedzieć!");
+			res.add(player.getGenderVerb("Zabiłem") + " tego szczura, powinienem wrócić i mu powiedzieć!");
 		}
 		if (player.getQuest(QUEST_SLOT, 0).equals("start")) {
 			return res;
 		} 
-		res.add(Grammar.genderVerb(player.getGender(), "Zabiłem") + " szczura. Hayunn opowie mi teraz więcej o tym świecie.");
+		res.add(player.getGenderVerb("Zabiłem") + " szczura. Hayunn opowie mi teraz więcej o tym świecie.");
 		if ("killed".equals(questState)) {
 			return res;
 		} 

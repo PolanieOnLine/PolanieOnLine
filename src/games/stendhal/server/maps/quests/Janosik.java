@@ -200,7 +200,7 @@ public class Janosik extends AbstractQuest implements IRAQuestConstants {
 			history.add("Pozbyłem się kilku zbójników napadających Zakopane i postaram się pozbyć ich więcej.");
 		}
 		if ("done".equals(questState)) {
-			history.add("Pozbyłem się kilku zbójników napadających Zakopane i " + Grammar.genderVerb(player.getGender(), "otrzymałem") + " nagrodę od Gazdy Wojtka!");
+			history.add("Pozbyłem się kilku zbójników napadających Zakopane i " + player.getGenderVerb("otrzymałem") + " nagrodę od Gazdy Wojtka!");
 		}
 		return history;
  	}

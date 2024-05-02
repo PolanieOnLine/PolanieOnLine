@@ -121,7 +121,7 @@ public class RingOfTeleportation extends Item {
 	private boolean teleportToSavedPosition(final Player player) {
 		// don't allow use if on the ground
 		if (!isContained()) {
-			player.sendPrivateText(Grammar.genderVerb(player.getGender(), "Powinieneś") + " podnieść swój pierścień powrotu, by go użyć.");
+			player.sendPrivateText(player.getGenderVerb("Powinieneś") + " podnieść swój pierścień powrotu, by go użyć.");
 			return false;
 		}
 
@@ -159,8 +159,8 @@ public class RingOfTeleportation extends Item {
 								+ " teleported " + player.getName() + " to Semos instead");
 					} else {
 						if (player.getKeyedSlot("!visited", zoneName) == null) {
-							player.sendPrivateText(Grammar.genderVerb(player.getGender(), "Słyszałeś") + " wiele opowieści o miejscu, do którego chcesz się przenieść "
-									+ "i nie możesz się skoncentrować ponieważ nigdy tam nie " + Grammar.genderVerb(player.getGender(), "byłeś") + ".");
+							player.sendPrivateText(player.getGenderVerb("Słyszałeś") + " wiele opowieści o miejscu, do którego chcesz się przenieść "
+									+ "i nie możesz się skoncentrować ponieważ nigdy tam nie " + player.getGenderVerb("byłeś") + ".");
 							return false;
 						} else {
 							zone = temp;

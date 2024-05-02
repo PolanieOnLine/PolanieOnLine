@@ -457,7 +457,7 @@ public class DailyItemQuest extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " burmistrza Mayor Chalmers w Ratuszu Ados");
+		res.add(player.getGenderVerb("Spotkałem") + " burmistrza Mayor Chalmers w Ratuszu Ados");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
 			res.add("Nie chę pomóc Ados.");
@@ -469,22 +469,22 @@ public class DailyItemQuest extends AbstractQuest {
 			String questItem = player.getRequiredItemName(QUEST_SLOT,0);
 			int amount = player.getRequiredItemQuantity(QUEST_SLOT,0);
 			if (!player.isEquipped(questItem, amount)) {
-				res.add(Grammar.genderVerb(player.getGender(), "Zostałem") + " " + Grammar.genderVerb(player.getGender(), "poproszony") + " o przyniesienie "
+				res.add(player.getGenderVerb("Zostałem") + " " + player.getGenderVerb("poproszony") + " o przyniesienie "
 						+ Grammar.quantityplnoun(amount, questItem) + ", aby pomóc Ados. Nie mam tego jeszcze.");
 			} else {
-				res.add(Grammar.genderVerb(player.getGender(), "Znalazłem") + " "
+				res.add(player.getGenderVerb("Znalazłem") + " "
 						+ Grammar.quantityplnoun(amount, questItem) + " do pomocy Ados i muszę je dostarczyć.");
 			}
 		}
 		int repetitions = player.getNumberOfRepetitions(getSlotName(), 2);
 		if (repetitions > 0) {
-			res.add(Grammar.genderVerb(player.getGender(), "Pomogłem") + " Ados z dostawami "
+			res.add(player.getGenderVerb("Pomogłem") + " Ados z dostawami "
 					+ Grammar.quantityplnoun(repetitions, "raz") + " do tej pory.");
 		}
 		if (isRepeatable(player)) {
-            res.add(Grammar.genderVerb(player.getGender(), "Dostarczyłem") + " ostatni przedmiot do burmistrza i teraz Ados znów potrzebuje zapasów.");
+            res.add(player.getGenderVerb("Dostarczyłem") + " ostatni przedmiot do burmistrza i teraz Ados znów potrzebuje zapasów.");
 		} else if (isCompleted(player)){
-			res.add(Grammar.genderVerb(player.getGender(), "Dostarczyłem") + " ostatni przedmiot do burmistrza i odebrałem moją nagrodę w ciągu 24 godzin.");
+			res.add(player.getGenderVerb("Dostarczyłem") + " ostatni przedmiot do burmistrza i odebrałem moją nagrodę w ciągu 24 godzin.");
 		}
 		return res;
 	}

@@ -164,7 +164,7 @@ public class TheMissingBooks extends AbstractQuest {
 					final Sentence expected = ConversationParser.parse(quote, new ConvCtxForMatchingSource());
 
 					if (answer.matchesFull(expected)) {
-						npc.say("Super, " + Grammar.genderVerb(player.getGender(), "znalazłeś") + " ją! Jestem szczęśliwy, że jedna z siedmniu książek znalazła się. Proszę, oto nagroda za twój wysiłek. Myślę, że Imorgen będzie zadowolony z tej recepty. Strzeż jej to jest orginał.");
+						npc.say("Super, " + player.getGenderVerb("znalazłeś") + " ją! Jestem szczęśliwy, że jedna z siedmniu książek znalazła się. Proszę, oto nagroda za twój wysiłek. Myślę, że Imorgen będzie zadowolony z tej recepty. Strzeż jej to jest orginał.");
 						final Item recipe = SingletonRepository.getEntityManager().getItem("recepta");
 						recipe.setBoundTo(player.getName());
 						player.equipOrPutOnGround(recipe);
@@ -175,7 +175,7 @@ public class TheMissingBooks extends AbstractQuest {
 						npc.say("Czytasz... ech... zobaczymy się ponownie wkrótce!");
 						npc.setCurrentState(ConversationStates.IDLE);
 					} else {
-						npc.say("Och, Nie posiadam książki z takim cytatem. Możliwe, że " + Grammar.genderVerb(player.getGender(), "znalazłeś") + " nie tą co trzeba. Proszę poszukaj tej prawdziwej i podaj mi cytat z niej.");
+						npc.say("Och, Nie posiadam książki z takim cytatem. Możliwe, że " + player.getGenderVerb("znalazłeś") + " nie tą co trzeba. Proszę poszukaj tej prawdziwej i podaj mi cytat z niej.");
 						npc.setCurrentState(ConversationStates.IDLE);
 					}
 				}
@@ -197,11 +197,11 @@ public class TheMissingBooks extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(Grammar.genderVerb(player.getGender(), "Spotkałem") + " Cameron w Constantines Villa. Poprosił mnie abym " + Grammar.genderVerb(player.getGender(), "odnalazł") + " dla niego cytat z książki.");
+		res.add(player.getGenderVerb("Spotkałem") + " Cameron w Constantines Villa. Poprosił mnie abym " + player.getGenderVerb("odnalazł") + " dla niego cytat z książki.");
 		if (!player.isQuestCompleted(QUEST_SLOT)) {
 			res.add("To koniec tego cytatu ja muszę znaleźć początek: " + player.getQuest(QUEST_SLOT) + ".");
 		} else {
-			res.add(Grammar.genderVerb(player.getGender(), "Powiedziałem") + " cytat do Cameron w zamian " + Grammar.genderVerb(player.getGender(), "dostałem") + " receptę, która może przydać się dla Imorgen.");
+			res.add(player.getGenderVerb("Powiedziałem") + " cytat do Cameron w zamian " + player.getGenderVerb("dostałem") + " receptę, która może przydać się dla Imorgen.");
 		}
 		return res;
 	}

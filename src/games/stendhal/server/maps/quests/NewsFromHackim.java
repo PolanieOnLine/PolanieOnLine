@@ -165,15 +165,15 @@ public class NewsFromHackim extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-				res.add("Hackim asystent kowala chce, abym " + Grammar.genderVerb(player.getGender(), "dostarczył") + " tajną wiadomość do Xin Blanca w tawernie Semos.");
+				res.add("Hackim asystent kowala chce, abym " + player.getGenderVerb("dostarczył") + " tajną wiadomość do Xin Blanca w tawernie Semos.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if (questState.equals("rejected")) {
 			res.add("QUEST_REJECTED");
 			return res;
 		}
-			res.add("To zadanie było zbyt niebezpieczne dla mnie i nie " + Grammar.genderVerb(player.getGender(), "chciałem") + " zrobić niczego nielegalnego.");
+			res.add("To zadanie było zbyt niebezpieczne dla mnie i nie " + player.getGenderVerb("chciałem") + " zrobić niczego nielegalnego.");
 		if (isCompleted(player)) {
-			res.add(Grammar.genderVerb(player.getGender(), "Dostarczyłem") + " wiadomości do Xin Blanca. W zamian " + Grammar.genderVerb(player.getGender(), "dostałem") + " spodnie.");
+			res.add(player.getGenderVerb("Dostarczyłem") + " wiadomości do Xin Blanca. W zamian " + player.getGenderVerb("dostałem") + " spodnie.");
 		}
 		return res;
 	}
