@@ -27,7 +27,7 @@
 		</drops>
 		<equips/>
 		<ai>
-			<profile name="health-threatening" params="5"/>
+			<profile name="perilous" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -59,7 +59,7 @@
 		</drops>
 		<equips/>
 		<ai>
-			<profile name="health-threatening" params="5"/>
+			<profile name="perilous" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -94,7 +94,7 @@
 		</drops>
 		<equips/>
 		<ai>
-			<profile name="health-threatening" params="5"/>
+			<profile name="perilous" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -129,7 +129,7 @@
 		</drops>
 		<equips/>
 		<ai>
-			<profile name="health-threatening" params="5"/>
+			<profile name="perilous" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -162,7 +162,7 @@
 		</drops>
 		<equips/>
 		<ai>
-			<profile name="health-threatening" params="5"/>
+			<profile name="perilous" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -198,7 +198,7 @@
 		</drops>
 		<equips/>
 		<ai>
-			<profile name="health-threatening" params="5"/>
+			<profile name="perilous" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -231,7 +231,7 @@
 		</drops>
 		<equips/>
 		<ai>
-			<profile name="health-threatening" params="5"/>
+			<profile name="perilous" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -275,7 +275,7 @@
 				<sound value="skeleton-laugh-01"/>
 				<sound value="skeleton-laugh-02"/>
 			</says>
-			<profile name="health-threatening" params="5"/>
+			<profile name="perilous" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -313,7 +313,7 @@
 				<sound value="skeleton-laugh-01"/>
 				<sound value="skeleton-laugh-02"/>
 			</says>
-			<profile name="health-threatening" params="5"/>
+			<profile name="perilous" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -352,7 +352,7 @@
 				<sound value="skeleton-laugh-01"/>
 				<sound value="skeleton-laugh-02"/>
 			</says>
-			<profile name="health-threatening" params="5"/>
+			<profile name="perilous" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -388,7 +388,7 @@
 				<noise state="idle follow fight" value="Nie masz gustu, więc giń!"/>
 				<sound value="laugh-evil-01"/>
 			</says>
-			<profile name="health-threatening" params="5"/>
+			<profile name="perilous" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -424,7 +424,7 @@
 				<noise state="idle follow fight" value="Na proch cię zmielę!"/>
 				<sound value="laugh-evil-01"/>
 			</says>
-			<profile name="health-threatening" params="5"/>
+			<profile name="perilous" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -463,7 +463,7 @@
 				<noise state="idle follow fight" value="Nie wszystko złoto, co się świeci!"/>
 				<sound value="laugh-evil-01"/>
 			</says>
-			<profile name="health-threatening" params="5"/>
+			<profile name="perilous" params="5"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="heal" params="15,50"/>
@@ -743,7 +743,7 @@
 				<noise state="idle follow fight" value="Jednym cięciem twą głowę zdejmę! Założysz się?!"/>
 				<sound value="laugh-evil-02"/>
 			</says>
-			<profile name="health-threatening" params="2"/>
+			<profile name="perilous" params="2"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
 			<profile name="heal" params="5,50"/>
@@ -780,7 +780,7 @@
 				<noise state="idle follow fight" value="Zawsze z humorem spoglądaj na... śmierć!"/>
 				<sound value="laugh-evil-02"/>
 			</says>
-			<profile name="health-threatening" params="2"/>
+			<profile name="perilous" params="2"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
 			<profile name="heal" params="5,50"/>
@@ -818,7 +818,7 @@
 				<noise state="idle follow fight" value="Jednym cięciem twą głowę zdejmę! Założysz się?!"/>
 				<sound value="laugh-evil-02"/>
 			</says>
-			<profile name="health-threatening" params="2"/>
+			<profile name="perilous" params="2"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
 			<profile name="heal" params="5,50"/>

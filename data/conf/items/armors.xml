@@ -459,7 +459,7 @@
 		<attributes>
 			<def value="40"/>
 			<min_level value="400"/>
-			<statusresist slots="armor;" type="wounded" value="0.5"/>
+			<statusresist slots="armor;" type="bleeding" value="0.5"/>
 		</attributes>
 		<weight value="52.0"/>
 		<value value="323032"/>

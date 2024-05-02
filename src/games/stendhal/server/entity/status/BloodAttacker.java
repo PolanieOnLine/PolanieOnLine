@@ -60,7 +60,7 @@ public class BloodAttacker extends StatusAttacker {
 		final int roll = Rand.roll1D100();
 		if (roll <= myProbability) {
 			if (target.getStatusList().inflictStatus((Status) getStatus().clone(), attacker)) {
-				new GameEvent(attacker.getName(), "wounded", target.getName()).raise();
+				new GameEvent(attacker.getName(), "bleeding", target.getName()).raise();
 				target.sendPrivateText(target.getGenderVerb("Zostałeś") + " znacznie " + target.getGenderVerb("zraniony") + " przez " + attacker.getName() + ".");
 			}
 		}

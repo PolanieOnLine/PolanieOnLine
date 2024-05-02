@@ -23,7 +23,7 @@
 		</drops>
 		<equips/>
 		<ai>
-			<profile name="health-threatening" params="2"/>
+			<profile name="perilous" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -52,7 +52,7 @@
 		</drops>
 		<equips/>
 		<ai>
-			<profile name="health-threatening" params="2"/>
+			<profile name="perilous" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -81,7 +81,7 @@
 		</drops>
 		<equips/>
 		<ai>
-			<profile name="health-threatening" params="2"/>
+			<profile name="perilous" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -141,7 +141,7 @@
 		</drops>
 		<equips/>
 		<ai>
-			<profile name="health-threatening" params="2"/>
+			<profile name="perilous" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -174,7 +174,7 @@
 		</drops>
 		<equips/>
 		<ai>
-			<profile name="health-threatening" params="2"/>
+			<profile name="perilous" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -206,7 +206,7 @@
 		</drops>
 		<equips/>
 		<ai>
-			<profile name="health-threatening" params="2"/>
+			<profile name="perilous" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -238,7 +238,7 @@
 		</drops>
 		<equips/>
 		<ai>
-			<profile name="health-threatening" params="2"/>
+			<profile name="perilous" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -271,7 +271,7 @@
 		</drops>
 		<equips/>
 		<ai>
-			<profile name="health-threatening" params="5"/>
+			<profile name="perilous" params="5"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>

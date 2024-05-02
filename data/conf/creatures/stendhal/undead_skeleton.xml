@@ -115,7 +115,7 @@
 				<sound value="skeleton-laugh-01"/>
 				<sound value="skeleton-laugh-02"/>
 			</says>
-			<profile name="health-threatening" params="2"/>
+			<profile name="perilous" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -156,7 +156,7 @@
 				<sound value="skeleton-laugh-01"/>
 				<sound value="skeleton-laugh-02"/>
 			</says>
-			<profile name="health-threatening" params="2"/>
+			<profile name="perilous" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -195,7 +195,7 @@
 				<sound value="skeleton-laugh-01"/>
 				<sound value="skeleton-laugh-02"/>
 			</says>
-			<profile name="health-threatening" params="2"/>
+			<profile name="perilous" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -229,7 +229,7 @@
 			<says>
 				<sound value="gasha-yell-01"/>
 			</says>
-			<profile name="health-threatening" params="5"/>
+			<profile name="perilous" params="5"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="heal" params="50,50"/>
@@ -266,7 +266,7 @@
 		<equips>
 		</equips>
 		<ai>
-			<profile name="health-threatening" params="2"/>
+			<profile name="perilous" params="2"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
 			<profile name="heal" params="5,50"/>

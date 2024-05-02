@@ -484,7 +484,7 @@
 				<noise state="idle follow fight" value="Kose mam, kruca! I kie trza to uzyjem jej!"/>
 				<sound value="pol-wiesniak"/>
 			</says>
-			<profile name="health-threatening" params="2"/>
+			<profile name="perilous" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -556,7 +556,7 @@
 				<noise state="idle follow fight" value="Któż Ci zezwolił zabijać leśnego zwierza? Bedzies ukarany!"/>
 				<sound value="pol-gajowy"/>
 			</says>
-			<profile name="health-threatening" params="2"/>
+			<profile name="perilous" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
