@@ -938,8 +938,24 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		}
 		if ((susceptibilities != null) && !susceptibilities.isEmpty()) {
 			for (Entry<Nature, Double> entry : susceptibilities.entrySet()) {
+				String attackType = entry.getKey().toString().toLowerCase();
+				
+				if (attackType.equals("light")) {
+					attackType = "światło";
+				} if (attackType.equals("dark")) {
+					attackType = "mrok";
+				} if (attackType.equals("fire")) {
+					attackType = "ogień";
+				} if (attackType.equals("ice")) {
+					attackType = "lód";
+				} if (attackType.equals("earth")) {
+					attackType = "natura";
+				} if (attackType.equals("water")) {
+					attackType = "woda";
+				}
+
 				stats.append(" ");
-				stats.append(entry.getKey());
+				stats.append(attackType.toUpperCase());
 				stats.append(": ");
 				stats.append(Math.round(100*(1.0-entry.getValue())+100));
 				stats.append("%");
