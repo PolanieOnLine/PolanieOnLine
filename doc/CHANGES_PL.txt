@@ -1,5 +1,35 @@
 Changelog
 ---------
+1.39
+*klient*
+- Dodano grafiki nowych przedmiotów
+- Poprawiono emotikony
+- Przetłumaczono moce żywiołów w przedmiotach na polski
+
+*świat*
+- Dodano alternatywne mapy (expowiska)
+- Dodano dynamicznie modyfikowane statystyki potworów występujących na alternatywnych mapach
+- Dodano nowe przedmioty:
+	- kryształ ciemnolitu (surowiec) - drop możliwy tylko dla zmodyfikowanych potworów na alternatywnych mapach
+	- klejnot ciemnolitu (surowiec)
+	- mgielny kamień - przedmiot umożliwiający teleportacje na mapy alternatywne - drop możliwy tylko ze zmodyfikowanych potworów występujących na normalnych mapach
+	---- NOWY ZESTAW WYPOSAŻENIA ----
+	- hełm ciemnomithrilowy    - OBR: 39 | DARK i LIGHT: 110%
+	- zbroja ciemnomithrilowa  - OBR: 40 | DARK i LIGHT: 110%
+	- pas ciemnomithrilowy     - OBR: 26 | DARK i LIGHT: 110%
+	- spodnie ciemnomithrilowe - OBR: 30 | DARK i LIGHT: 110%
+	- buty ciemnomithrilowe    - OBR: 28 | DARK i LIGHT: 110%
+	- płaszcz ciemnomithrilowy - OBR: 38 | DARK i LIGHT: 110%
+	- tarcza ciemnomithrilowa  - ATK: 2 OBR: 55 | DARK i LIGHT: 110%
+- Dodano nowych NPC:
+	- czeladnik Jaromir
+	- kowal Przemysław
+- Dodano nowe zadanie wprowadzające możliwość oszlifowania kryształu ciemnolitu
+- Dodano możliwość szlifowania kryształu w większych ilościach po zakończonym zadaniu
+- Dodano ulepszanie wyposażenia z mithrilu na ciemnomithrilowe u kowala Przemysława
+- Dodano dla nowego wyposażenia odporność na krwawienie (pełen zestaw chroni przed krwawieniem w 100%)
+
+
 1.38
 *klient*
 - Dodano nową grafikę wraz z animacją strzały żaru
