@@ -282,11 +282,12 @@
 	<item name="tarcza ciemnomithrilowa">
 		<type class="shield" subclass="mithril_shield" tileid="-1"/>
 		<description>Oto tarcza ciemnomithrilowa.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.NewArms"/>
 		<attributes>
 			<atk value="2"/>
 			<def value="55"/>
 			<min_level value="350"/>
+			<statusresist slots="lhand;rhand;" type="bleeding" value="0.3"/>
 		</attributes>
 		<weight value="30.0"/>
 		<value value="718616"/>

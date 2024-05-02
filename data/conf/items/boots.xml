@@ -271,10 +271,11 @@
 	<item name="buty ciemnomithrilowe">
 		<type class="boots" subclass="mithril_boots" tileid="-1"/>
 		<description>Oto para butów ciemnomithrilowych.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.NewArms"/>
 		<attributes>
 			<def value="28"/>
 			<min_level value="250"/>
+			<statusresist slots="feet;" type="bleeding" value="0.1"/>
 		</attributes>
 		<weight value="14.0"/>
 		<value value="53625"/>
