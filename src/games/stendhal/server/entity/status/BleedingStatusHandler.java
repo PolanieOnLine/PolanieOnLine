@@ -38,7 +38,7 @@ public class BleedingStatusHandler implements StatusHandler<BleedingStatus> {
 			statusList.addInternal(status);
 		}
 
-		statusList.activateStatusAttribute("bleeding");
+		statusList.activateStatusAttribute("wounded");
 		if (entity instanceof Player) {
 			TutorialNotifier.bleeding((Player) entity);
 		}

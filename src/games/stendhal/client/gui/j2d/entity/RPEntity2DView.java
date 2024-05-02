@@ -193,10 +193,10 @@ abstract class RPEntity2DView<T extends RPEntity> extends ActiveEntity2DView<T> 
 		addIconManager(poisonManager);
 
 		/* bleeding status */
-		StatusIconManager injuredManager = new StatusIconManager(RPEntity.PROP_BLEEDING, bleedingSprite,
-				HorizontalAlignment.CENTER, VerticalAlignment.MIDDLE, StatusID.INJURED);
-		injuredManager.setOffsets(10, -13);
-		addIconManager(injuredManager);
+		StatusIconManager woundManager = new StatusIconManager(RPEntity.PROP_WOUNDED, bleedingSprite,
+				HorizontalAlignment.CENTER, VerticalAlignment.MIDDLE, StatusID.WOUND);
+		woundManager.setOffsets(10, -13);
+		addIconManager(woundManager);
 
 		/* shock status */
 		addIconManager(new StatusIconManager(RPEntity.PROP_SHOCK, shockedSprite,

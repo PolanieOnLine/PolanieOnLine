@@ -20,7 +20,7 @@ import games.stendhal.server.entity.RPEntity;
 
 public class BleedingStatusTurnListener implements TurnListener {
 	private StatusList statusList;
-	private static final String ATTRIBUTE_NAME = "bleeding";
+	private static final String ATTRIBUTE_NAME = "wounded";
 
 	public BleedingStatusTurnListener(StatusList statusList) {
 		this.statusList = statusList;

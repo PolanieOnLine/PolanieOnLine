@@ -22,7 +22,7 @@ public class BleedingStatus extends ConsumableStatus implements Killer {
 	 * @param regen      hp change on each event
 	 */
 	public BleedingStatus(int amount, int frequency, int regen) {
-		super("bleeding", amount, frequency, regen);
+		super("wounded", amount, frequency, regen);
 	}
 
 	@Override

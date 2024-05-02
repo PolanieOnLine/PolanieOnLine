@@ -192,7 +192,7 @@
 				<noise state="idle follow fight" value="Arrrrllllggggghhhh"/>
 				<sound value="balrog-growl-01"/>
 			</says>
-			<profile name="injured" params="5"/>
+			<profile name="health-threatening" params="5"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>

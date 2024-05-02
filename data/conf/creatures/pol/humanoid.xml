@@ -226,7 +226,7 @@
 		</drops>
 		<equips/>
 		<ai>
-			<profile name="injured" params="2"/>
+			<profile name="health-threatening" params="2"/>
 			<profile name="coward"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -259,7 +259,7 @@
 			<slot name="rhand" item="proca" quantity="1"/>
 		</equips>
 		<ai>
-			<profile name="injured" params="2"/>
+			<profile name="health-threatening" params="2"/>
 			<profile name="brave"/>
 			<profile name="archer"/>
 			<profile name="offensive"/>
@@ -327,7 +327,7 @@
 		</drops>
 		<equips/>
 		<ai>
-			<profile name="injured" params="2"/>
+			<profile name="health-threatening" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -499,7 +499,7 @@
 		</drops>
 		<equips/>
 		<ai>
-			<profile name="injured" params="5"/>
+			<profile name="health-threatening" params="5"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -537,7 +537,7 @@
 			<slot name="rhand" item="klejony łuk" quantity="1"/>
 		</equips>
 		<ai>
-			<profile name="injured" params="2"/>
+			<profile name="health-threatening" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>

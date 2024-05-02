@@ -61,7 +61,7 @@
 			<says>
 				<sound value="pol-giant"/>
 			</says>
-			<profile name="injured" params="5"/>
+			<profile name="health-threatening" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -124,7 +124,7 @@
 			<says>
 				<sound value="pol-stones2"/>
 			</says>
-			<profile name="injured" params="10"/>
+			<profile name="health-threatening" params="10"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -163,7 +163,7 @@
 			<says>
 				<sound value="pol-giant"/>
 			</says>
-			<profile name="injured" params="5"/>
+			<profile name="health-threatening" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -384,7 +384,7 @@
 			<susceptibility type="fire" value="1.7"/>
 		</abilities>
 		<ai>
-			<profile name="injured" params="5"/>
+			<profile name="health-threatening" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -427,7 +427,7 @@
 			<says>
 				<sound value="pol-giant"/>
 			</says>
-			<profile name="injured" params="5"/>
+			<profile name="health-threatening" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -496,7 +496,7 @@
 			<says>
 				<sound value="pol-snow"/>
 			</says>
-			<profile name="injured" params="5"/>
+			<profile name="health-threatening" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>

@@ -106,7 +106,6 @@ public abstract class CombatEntity extends GuidedEntity {
 			rpclass.addAttribute("crit", Type.FLAG);
 
 			// Status effects
-			rpclass.addAttribute("bleeding", Type.SHORT, Definition.VOLATILE);
 			rpclass.addAttribute("choking", Type.SHORT, Definition.VOLATILE);
 			rpclass.addAttribute("status_confuse", Type.SHORT, Definition.VOLATILE);
 			rpclass.addAttribute("eating", Type.SHORT, Definition.VOLATILE);
@@ -114,6 +113,7 @@ public abstract class CombatEntity extends GuidedEntity {
 			rpclass.addAttribute("status_shock", Type.SHORT, Definition.VOLATILE);
 			rpclass.addAttribute("status_zombie", Type.SHORT, Definition.VOLATILE);
 			rpclass.addAttribute("status_heavy", Type.SHORT, Definition.VOLATILE);
+			rpclass.addAttribute("wounded", Type.SHORT, Definition.VOLATILE);
 
 			// status effects resistances
 			rpclass.addAttribute("resist_confused", Type.FLOAT, Definition.VOLATILE);

@@ -31,7 +31,7 @@
 				<noise state="idle follow fight" value="Oczyść buty nim wejdziesz w nasze progi."/>
 				<noise state="idle follow fight" value="Nauczę cię czci dla naszego sanktuarium."/>
 			</says>
-			<profile name="injured" params="5"/>
+			<profile name="health-threatening" params="5"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
 			<profile name="patrolling"/>
@@ -62,7 +62,7 @@
 		</drops>
 		<equips/>
 		<ai>
-			<profile name="injured" params="5"/>
+			<profile name="health-threatening" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -97,7 +97,7 @@
 				<noise state="idle follow fight" value="Czego tu szukasz śmiertelniku?"/>
 				<noise state="idle follow fight" value="Uciekaj stąd jeśli ci życie miłe!"/>
 			</says>
-			<profile name="injured" params="5"/>
+			<profile name="health-threatening" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
