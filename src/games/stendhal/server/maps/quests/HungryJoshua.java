@@ -18,7 +18,6 @@ import java.util.List;
 
 import com.google.common.collect.ImmutableList;
 
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;

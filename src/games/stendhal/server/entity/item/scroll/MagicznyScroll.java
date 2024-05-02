@@ -3,13 +3,12 @@
  */
 package games.stendhal.server.entity.item.scroll;
 
+import java.util.Map;
+
 import games.stendhal.common.MathHelper;
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.player.Player;
-
-import java.util.Map;
 
 /**
  * Represents the rainbow beans that takes the player to the dream world zone,

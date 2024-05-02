@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -55,7 +54,7 @@ public class MeetIo extends AbstractQuest {
 
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.HELP_MESSAGES,
-			new QuestCompletedCondition(QUEST_SLOT),
+			new QuestCompletedsCondition(QUEST_SLOT),
 			ConversationStates.ATTENDING,
 			"Czy chcesz, abym powtórzyła sześć podstawowych elementów telepatii? Ja już znam odpowiedź, ale chcę być kulturalna...",
 			null);

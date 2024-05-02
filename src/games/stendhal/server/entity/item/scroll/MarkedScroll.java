@@ -19,7 +19,6 @@ import java.util.StringTokenizer;
 
 import org.apache.log4j.Logger;
 
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.TeleportNotifier;

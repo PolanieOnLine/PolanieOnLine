@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;

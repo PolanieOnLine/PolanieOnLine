@@ -16,12 +16,11 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import games.stendhal.common.constants.SoundLayer;
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.rule.EntityManager;
-import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.entity.RPEntity;
+import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.events.SoundEvent;
 
 public class MetalDetector extends AreaUseItem {

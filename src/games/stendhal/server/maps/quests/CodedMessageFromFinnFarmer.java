@@ -16,7 +16,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import games.stendhal.common.Rand;
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.npc.ChatAction;
@@ -67,7 +66,7 @@ import games.stendhal.server.maps.Region;
  * REPETITIONS:
  * <ul>
  *   <li>You can repeat it once per day.</li>
- * </ul>
+ * </ul>O
  * 
  * @author kymara, hendrik
  */

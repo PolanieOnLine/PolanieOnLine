@@ -18,7 +18,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -66,7 +65,7 @@ import games.stendhal.server.maps.Region;
  * <li>You get 52,000 experience points in all</li>
  * </ul>
  *
- * REPETITIONS:
+ * REPETITIONS:	
  * <ul>
  * <li>Not repeatable.</li>
  * </ul>

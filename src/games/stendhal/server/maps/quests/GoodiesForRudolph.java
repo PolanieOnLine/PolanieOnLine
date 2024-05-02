@@ -17,7 +17,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import games.stendhal.common.constants.Occasion;
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;

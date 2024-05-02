@@ -14,7 +14,6 @@ package games.stendhal.server.entity.item;
 import java.util.Map;
 
 import games.stendhal.common.NotificationType;
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.player.Player;
 import marauroa.common.game.SlotOwner;

@@ -19,7 +19,6 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import games.stendhal.common.Rand;
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.events.TurnListener;
 import games.stendhal.server.core.events.TurnNotifier;
 import games.stendhal.server.entity.player.Player;

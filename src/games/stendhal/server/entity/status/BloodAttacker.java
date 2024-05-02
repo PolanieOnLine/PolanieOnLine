@@ -12,7 +12,6 @@
 package games.stendhal.server.entity.status;
 
 import games.stendhal.common.Rand;
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.GameEvent;
 import games.stendhal.server.entity.RPEntity;
 

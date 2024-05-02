@@ -12,8 +12,9 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests.marriage;
 
+import java.util.Arrays;
+
 import games.stendhal.common.MathHelper;
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
@@ -32,8 +33,6 @@ import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.npc.condition.QuestStateStartsWithCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.util.TimeUtil;
-
-import java.util.Arrays;
 
 public class MakeRings {
 	private static final int REQUIRED_GOLD = 10;

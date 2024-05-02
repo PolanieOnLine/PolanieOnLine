@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 
 import games.stendhal.common.Rand;
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.ConvCtxForMatchingSource;
 import games.stendhal.common.parser.ConversationParser;
 import games.stendhal.common.parser.Expression;

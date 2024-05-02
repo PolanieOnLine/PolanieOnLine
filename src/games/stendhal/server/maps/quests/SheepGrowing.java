@@ -16,7 +16,6 @@ import java.util.LinkedList;
 import java.util.List;
 
 import games.stendhal.common.Level;
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.rp.StendhalRPAction;
 import games.stendhal.server.entity.Entity;

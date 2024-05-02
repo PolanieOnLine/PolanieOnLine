@@ -18,7 +18,6 @@ import org.apache.log4j.Logger;
 //
 
 import games.stendhal.common.Rand;
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.player.Player;

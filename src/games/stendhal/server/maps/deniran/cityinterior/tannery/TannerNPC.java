@@ -19,7 +19,6 @@ import java.util.Map;
 
 import games.stendhal.common.Direction;
 import games.stendhal.common.MathHelper;
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
