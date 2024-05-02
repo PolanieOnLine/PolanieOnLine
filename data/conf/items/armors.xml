@@ -455,10 +455,11 @@
 	<item name="zbroja ciemnomithrilowa">
 		<type class="armor" subclass="mithril_armor" tileid="-1"/>
 		<description>Oto zbroja ciemnomithrilowa. Udoskonalona pod każdym możliwym kątem wykorzystująca ciemnolit.</description>
-		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<implementation class-name="games.stendhal.server.entity.item.NewArms"/>
 		<attributes>
 			<def value="40"/>
 			<min_level value="400"/>
+			<statusresist slots="armor;" type="wounded" value="0.5"/>
 		</attributes>
 		<weight value="52.0"/>
 		<value value="323032"/>

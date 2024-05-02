@@ -121,6 +121,7 @@ public abstract class CombatEntity extends GuidedEntity {
 			rpclass.addAttribute("resist_heavy", Type.FLOAT, Definition.VOLATILE);
 			rpclass.addAttribute("resist_poisoned", Type.FLOAT, Definition.VOLATILE);
 			rpclass.addAttribute("resist_shocked", Type.FLOAT, Definition.VOLATILE);
+			rpclass.addAttribute("resist_wounded", Type.FLOAT, Definition.VOLATILE);
 			rpclass.addAttribute("resist_zombie", Type.FLOAT, Definition.VOLATILE);
 
 			// events
