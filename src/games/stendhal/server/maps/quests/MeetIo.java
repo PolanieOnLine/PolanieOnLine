@@ -54,7 +54,7 @@ public class MeetIo extends AbstractQuest {
 
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.HELP_MESSAGES,
-			new QuestCompletedsCondition(QUEST_SLOT),
+			new QuestCompletedCondition(QUEST_SLOT),
 			ConversationStates.ATTENDING,
 			"Czy chcesz, abym powtórzyła sześć podstawowych elementów telepatii? Ja już znam odpowiedź, ale chcę być kulturalna...",
 			null);
