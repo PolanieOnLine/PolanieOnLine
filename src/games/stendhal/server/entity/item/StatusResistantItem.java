@@ -314,23 +314,12 @@ public class StatusResistantItem extends SlotActivatedItem {
 			for (Entry<StatusType, Double> entry : resistances.entrySet()) {
 				String statusType = entry.getKey().toString().toLowerCase();
 
-				/* Special treatment for status names ending in "ed" where
-				 * only "d" should be removed.
-				 */
 				if (statusType.equals("confused")) {
-					statusType = "confuse";
-				}
-
-				/* Remove "ed" suffix from status name. */
-				final int nameLength = statusType.length();
-				if (statusType.substring(nameLength - 2).equals("ed")) {
-					statusType = statusType.substring(0, nameLength - 2);
-				}
-
-				if (statusType.equals("poison")) {
+					statusType = "dezorientację";
+				} if (statusType.equals("poisoned")) {
 					statusType = "truciznę";
-				} if (statusType.equals("shock")) {
-					statusType = "wstrząs";
+				} if (statusType.equals("shocked")) {
+					statusType = "doznanie szoku";
 				}
 
 				res.append(statusType);
