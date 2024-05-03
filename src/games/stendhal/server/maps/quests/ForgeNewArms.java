@@ -196,7 +196,7 @@ public class ForgeNewArms extends AbstractQuest {
 				new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, DELAY))),
 			ConversationStates.IDLE, 
 			null, 
-			new SayTimeRemainingAction(QUEST_SLOT, 2, DELAY, "Wciąż ciężko pracuje. Wróć za "));
+			new SayTimeRemainingAction(QUEST_SLOT, 1, DELAY, "Wciąż ciężko pracuję. Wróć za "));
 
 		npc.add(ConversationStates.ATTENDING,
 			questTrigger,
