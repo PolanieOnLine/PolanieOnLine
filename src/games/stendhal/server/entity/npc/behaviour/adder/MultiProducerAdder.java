@@ -34,7 +34,6 @@ import games.stendhal.server.entity.npc.condition.QuestActiveCondition;
 import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotActiveCondition;
 import games.stendhal.server.entity.npc.condition.SentenceHasErrorCondition;
-import games.stendhal.server.entity.npc.condition.TransitionMayBeExecutedCondition;
 import games.stendhal.server.entity.npc.fsm.Engine;
 import games.stendhal.server.entity.player.Player;
 
@@ -79,6 +78,7 @@ public class MultiProducerAdder {
 
 		/* add to producer register */
 		producerRegister.add(npcName, behaviour);
+		npc.put("job_producer", "");
 
 		/* The Player greets the NPC.
 		* The NPC is not currently producing for player (not started, is rejected, or is complete) */
