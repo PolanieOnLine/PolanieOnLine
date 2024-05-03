@@ -61,10 +61,11 @@ public class ForgeNewArms extends AbstractQuest {
 		}
 		res.add(player.getGenderVerb("Rozmawiałem") + " z kowalem napotkanym w Tarnowie.");
 		if ("start".equals(player.getQuest(QUEST_SLOT)) || "rejected".equals(player.getQuest(QUEST_SLOT))) {
-			res.add("Muszę przynieść surowce z tej listy:"
-				+ "\n- 5 sztuk #'klejnotu ciemnolitu'"
-				+ "\n- 14 sztuk #'sztabek platyny'"
-				+ "\n- 24 sztuki #'bryłek mithrilu'. Oraz nie mogę zapomnieć o swojej tarczy z mithrilu...");
+			res.add("Muszę przynieść surowce z tej listy:<html>"
+				+ "<br/>- 5 <b><font color='blue'>klejnotów ciemnolitu</font></b>"
+				+ "<br/>- 14 <b><font color='blue'>sztabek platyny</font></b>"
+				+ "<br/>- 24 <b><font color='blue'>bryłki mithrilu</font></b>."
+				+ "<br/>Oraz nie mogę zapomnieć o swojej tarczy z mithrilu...</html>");
 		}
 
 		if (player.getQuest(QUEST_SLOT).startsWith("forging")) {
