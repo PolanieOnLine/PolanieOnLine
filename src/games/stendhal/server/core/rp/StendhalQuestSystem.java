@@ -310,6 +310,10 @@ public class StendhalQuestSystem {
 		loadQuest(new ProsbyWiedzmy());
 		loadQuest(new RosaBasementRats());
 		/**                     **\
+		 *         TARNÓW        *
+		\**                     **/
+		loadQuest(new ForgeNewArms());
+		/**                     **\
 		 *          INNE         *
 		\**                     **/
 		loadQuest(new BiletTurystyczny());

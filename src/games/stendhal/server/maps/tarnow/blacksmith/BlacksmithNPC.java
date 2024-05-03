@@ -15,8 +15,12 @@ import java.util.Map;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.entity.npc.ConversationPhrases;
+import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.MultiProducerAdder;
+import games.stendhal.server.entity.npc.condition.NotCondition;
+import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 import games.stendhal.server.maps.tarnow.blacksmith.forge.ForgeItems;
 
 public class BlacksmithNPC implements ZoneConfigurator {
@@ -47,12 +51,48 @@ public class BlacksmithNPC implements ZoneConfigurator {
 			@Override
 			protected void createDialog() {
 				addGreeting();
-				addJob("");
-				addOffer("");
+				addJob("Zajmuję się wytwórstwem narzędzi oraz uzbrojenia dla pobliskich armii.");
 				addGoodbye();
 
-				new MultiProducerAdder().addMultiProducer(this, ForgeItems.getBehaviour(),
-						"Witaj w moich skromnych progach! W czymś mogę #pomóc?");
+				new MultiProducerAdder().addMultiProducer(this, ForgeItems.getBehaviour(), "forge_newarms",
+					"Witaj w moich skromnych progach! W czymś mogę #pomóc?");
+
+				String productionList = "Oto moja aktualna lista usług:"
+					+ "\n- #'hełm ciemnomithrilowy'"
+					+ "\n- #'zbroja ciemnomithrilowa'"
+					+ "\n- #'pas ciemnomithrilowy'"
+					+ "\n- #'spodnie ciemnomithrilowe'"
+					+ "\n- #'płaszcz ciemnomithrilowy'"
+					+ "\n- #'tarcza ciemnomithrilowa'"
+					+ "\nJeżeli jesteś zainteresowany to powiedz mi #stwórz i wybierz jakie uzbrojenie potrzebujesz.";
+
+				add(ConversationStates.ANY,
+					ConversationPhrases.HELP_MESSAGES,
+					new QuestCompletedCondition("forge_newarms"),
+					ConversationStates.ATTENDING,
+					"Mogę wykonać dla ciebie nowe uzbrojenie, jeśli zechcesz. " + productionList,
+					null);
+
+				add(ConversationStates.ANY,
+					ConversationPhrases.HELP_MESSAGES,
+					new NotCondition(new QuestCompletedCondition("forge_newarms")),
+					ConversationStates.ATTENDING,
+					"Żartujesz sobie? Jestem aktualnie zajęty innymi sprawami.",
+					null);
+
+				add(ConversationStates.ANY,
+					ConversationPhrases.HELP_MESSAGES,
+					new QuestCompletedCondition("forge_newarms"),
+					ConversationStates.ATTENDING,
+					"Mogę zaoferować ulepszenie twoich przedmiotów z mithrilu za pomocą klejnotu ciemnolitu. " + productionList,
+					null);
+
+				add(ConversationStates.ANY,
+					ConversationPhrases.OFFER_MESSAGES,
+					new NotCondition(new QuestCompletedCondition("forge_newarms")),
+					ConversationStates.ATTENDING,
+					"Nie mam nic Tobie do zaoferowania...",
+					null);
 			}
 		};
 
