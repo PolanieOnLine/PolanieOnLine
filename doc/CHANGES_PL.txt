@@ -24,9 +24,9 @@ Changelog
 - Dodano nowych NPC:
 	- czeladnik Jaromir
 	- kowal Przemysław
-- Dodano nowe zadanie wprowadzające możliwość oszlifowania kryształu ciemnolitu
+- Dodano 2 nowe zadania wprowadzające możliwość oszlifowania kryształu ciemnolitu oraz wprowadzające w ulepszenie wyposażenia z mithrilu
 - Dodano możliwość szlifowania kryształu w większych ilościach po zakończonym zadaniu
-- Dodano ulepszanie wyposażenia z mithrilu na ciemnomithrilowe u kowala Przemysława
+- Dodano ulepszanie wyposażenia z mithrilu na ciemnomithrilowe u kowala Przemysława po zakończonym zadaniu
 - Dodano dla nowego wyposażenia odporność na krwawienie (pełen zestaw chroni przed krwawieniem w 100%)
 
 
