@@ -17,6 +17,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.TreeMap;
 
+import games.stendhal.common.MathHelper;
 import games.stendhal.server.entity.npc.behaviour.impl.MultiProducerBehaviour;
 
 public class ForgeItems {
@@ -89,24 +90,24 @@ public class ForgeItems {
 	
 	private static HashMap<String, Integer> getProductionTime() {
 		final HashMap<String, Integer> productionTime = new HashMap<String, Integer>();
-		productionTime.put(helmet, 14 * 60);
-		productionTime.put(armor, 14 * 60);
-		productionTime.put(legs, 14 * 60);
-		productionTime.put(boots, 14 * 60);
-		productionTime.put(shield, 14 * 60);
-		productionTime.put(cloak, 14 * 60);
+		productionTime.put(helmet, MathHelper.MINUTES_IN_ONE_DAY);
+		productionTime.put(armor, MathHelper.MINUTES_IN_ONE_DAY * 4);
+		productionTime.put(legs, MathHelper.MINUTES_IN_ONE_DAY * 2);
+		productionTime.put(boots, MathHelper.MINUTES_IN_ONE_DAY);
+		productionTime.put(shield, MathHelper.MINUTES_IN_ONE_DAY * 2);
+		productionTime.put(cloak, MathHelper.MINUTES_IN_ONE_DAY);
 
 		return productionTime;
 	}
 	
 	private static HashMap<String, Boolean> getItemsBound() {
 		final HashMap<String, Boolean> itemsBound = new HashMap<String, Boolean>();
-		itemsBound.put(helmet, false);
-		itemsBound.put(armor, false);
-		itemsBound.put(legs, false);
-		itemsBound.put(boots, false);
-		itemsBound.put(shield, false);
-		itemsBound.put(cloak, false);
+		itemsBound.put(helmet, true);
+		itemsBound.put(armor, true);
+		itemsBound.put(legs, true);
+		itemsBound.put(boots, true);
+		itemsBound.put(shield, true);
+		itemsBound.put(cloak, true);
 
 		return itemsBound;
 	}
@@ -114,7 +115,7 @@ public class ForgeItems {
 	public static MultiProducerBehaviour getBehaviour() {
 		final MultiProducerBehaviour behaviour = new MultiProducerBehaviour(
 				"przemyslaw_newarms",
-				Arrays.asList("forge", "make", "stwórz"),
+				Arrays.asList("forge", "create", "make", "stwórz", "wytwórz", "ulepsz", "zrób"),
 				getNewItems(),
 				getItemResources(),
 				getProductionTime(),
