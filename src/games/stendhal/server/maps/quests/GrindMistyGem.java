@@ -153,7 +153,7 @@ public class GrindMistyGem extends AbstractQuest {
 					player.setQuest(QUEST_SLOT, 0, questState);
 					player.setQuest(QUEST_SLOT, 2, "");
 					new EquipItemAction(item, 1, false).fire(player, null, null);
-					new IncrementQuestAction(QUEST_SLOT, 1, 1).fire(player, null, null);;
+					new IncrementQuestAction(QUEST_SLOT, 1, 1).fire(player, null, null);
 				}
 			} else {
 				if (faultText != null) {
@@ -175,7 +175,6 @@ public class GrindMistyGem extends AbstractQuest {
 
 			return random <= (probability * 100);
 		}
-
 	}
 
 	@Override
