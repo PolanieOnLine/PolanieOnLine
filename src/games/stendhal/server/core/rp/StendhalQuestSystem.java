@@ -196,9 +196,9 @@ public class StendhalQuestSystem {
 		loadQuest(new ZooFood());
 		/** Questy ze świata POL */
 		///////////////////////////
-		/** 					**\
-		 *       ZAKOPANE		 *
-		\**	                    **/
+		/**                     **\
+		 *       ZAKOPANE        *
+		\**                     **/
 		loadQuest(new BringMagic());
 		loadQuest(new ClearTower());
 		loadQuest(new ChallengeGreedy());
@@ -231,9 +231,9 @@ public class StendhalQuestSystem {
 		loadQuest(new ZlotaCiupaga());
 		loadQuest(new ZlotaCiupagaDwaWasy());
 		loadQuest(new ZlotyRog());
-		/** 					**\
-		 *         TATRY 		 *
-		\**	                    **/
+		/**                     **\
+		 *         TATRY         *
+		\**                     **/
 		loadQuest(new Burglary());
 		loadQuest(new ChallengeGlutton());
 		loadQuest(new DailyMonsterKuzniceQuest());
@@ -243,17 +243,17 @@ public class StendhalQuestSystem {
 		loadQuest(new Imprezowicz());
 		loadQuest(new ZlotyAmulet());
 		loadQuest(new HelpOgi());
-		/** 					**\
-		 *      KOŚCIELISKO 	 *
-		\**	                    **/
+		/**                     **\
+		 *      KOŚCIELISKO      *
+		\**                     **/
 		loadQuest(new BramaZrc());
 		loadQuest(new PierscienRycerza());
 		loadQuest(new ProsbaWielkoluda());
 		loadQuest(new StazNaGornika());
 		loadQuest(new ZagadkiBrzezdoma());
-		/** 					**\
-		 *        KRAKÓW		 *
-		\**	                    **/
+		/**                     **\
+		 *        KRAKÓW         *
+		\**                     **/
 		loadQuest(new CzekoladaNikodema());
 		loadQuest(new KrakowBank());
 		loadQuest(new KrolewskiPlaszcz());
@@ -267,41 +267,41 @@ public class StendhalQuestSystem {
 		loadQuest(new ZabawkaLeo());
 		loadQuest(new ZamowienieStrazy());
 		loadQuest(new ZlotaCiupagaTrzyWasy());
-		/** 					**\
-		 *       WARSZAWA		 *
-		\**	                    **/
+		/**                     **\
+		 *       WARSZAWA        *
+		\**                     **/
 		loadQuest(new KillMadGuards());
 		loadQuest(new PrinceSupply());
-		/** 					**\
-		 *       WIELICZKA		 *
-		\**	                    **/
+		/**                     **\
+		 *       WIELICZKA       *
+		\**                     **/
 		loadQuest(new GrindMistyGem());
 		loadQuest(new SaltForHerbert());
 		loadQuest(new WeeklyItemWieliczkaQuest());
 		loadQuest(new ZlotyPierscien());
-		/** 					**\
-		 *     DRAGON_KNIGHTS	 *
-		\**	                    **/
+		/**                     **\
+		 *     DRAGON_KNIGHTS    *
+		\**                     **/
 		loadQuest(new ClearQuestPierscien());
 		loadQuest(new MeeteD());
 		loadQuest(new PierscienMagnata());
 		loadQuest(new PierscienMieszczanina());
-		/** 					**\
-		 *         DRAGON		 *
-		\**	                    **/
+		/**                     **\
+		 *         DRAGON        *
+		\**                     **/
 		loadQuest(new ChallengeDragons());
 		loadQuest(new MagicznaTorba());
 		loadQuest(new SmoczyAmulet());
 		if (Occasion.SECOND_WORLD) {
 			loadQuest(new DragonsGuard());
 		}
-		/** 					**\
-		 *         DESERT		 *
-		\**	                    **/
+		/**                     **\
+		 *         DESERT        *
+		\**                     **/
 		loadQuest(new ZlotaCiupagaJedenWas());
-		/** 					**\
-		 *         GDAŃSK		 *
-		\**	                    **/
+		/**                     **\
+		 *         GDAŃSK        *
+		\**                     **/
 		loadQuest(new BilliardGame());
 		loadQuest(new SkorySmokow());
 		loadQuest(new DailyItemGdanskQuest());
@@ -309,9 +309,9 @@ public class StendhalQuestSystem {
 		loadQuest(new Pizza());
 		loadQuest(new ProsbyWiedzmy());
 		loadQuest(new RosaBasementRats());
-		/**						**\
-		 *         INNE  	 	 *
-		\**	                    **/
+		/**                     **\
+		 *          INNE         *
+		\**                     **/
 		loadQuest(new BiletTurystyczny());
 		loadQuest(new MeetGuslarz());
 		loadQuest(new FindDragons());
