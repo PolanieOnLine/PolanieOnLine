@@ -100,7 +100,8 @@ public class MultiProducerAdder {
 
 		engine.add(ConversationStates.ATTENDING,
 			behaviour.getProductionActivity(),
-			new SentenceHasErrorCondition(),
+			new AndCondition(new SentenceHasErrorCondition(),
+					checkQuestCompleted(questComplete)),
 			false, ConversationStates.ATTENDING,
 			null, new ComplainAboutSentenceErrorAction());
 
@@ -111,11 +112,10 @@ public class MultiProducerAdder {
 			behaviour.getProductionActivity(),
 			new AndCondition(
 				new NotCondition(new SentenceHasErrorCondition()),
-				new QuestNotActiveCondition(QUEST_SLOT)
-			),
-			false,
-			ConversationStates.ATTENDING, null,
-			new MultiProducerBehaviourAction(behaviour) {
+				checkQuestCompleted(questComplete),
+				new QuestNotActiveCondition(QUEST_SLOT)),
+			false, ConversationStates.ATTENDING,
+			null, new MultiProducerBehaviourAction(behaviour) {
 				@Override
 				public void fireRequestOK(final ItemParserResult res, final Player player, final Sentence sentence, final EventRaiser npc) {
 					// Find out how much items we shall produce.
