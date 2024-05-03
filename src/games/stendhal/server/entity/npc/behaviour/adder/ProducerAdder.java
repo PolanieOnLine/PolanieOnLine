@@ -132,7 +132,8 @@ public class ProducerAdder {
 
 		engine.add(ConversationStates.ATTENDING,
 			behaviour.getProductionActivity(),
-			new SentenceHasErrorCondition(),
+			new AndCondition(new SentenceHasErrorCondition(),
+				checkQuestCompleted(questComplete)),
 			false, ConversationStates.ATTENDING,
 			null, new ComplainAboutSentenceErrorAction());
 
