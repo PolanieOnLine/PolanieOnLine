@@ -111,7 +111,7 @@
 		<configurator class-name="games.stendhal.server.maps.wieliczka.city.FlowerMarket"/>
 		<configurator class-name="games.stendhal.server.maps.wieliczka.city.ArthurNPC"/>
 		<configurator class-name="games.stendhal.server.maps.wieliczka.city.HerbertNPC"/>
-		<configurator class-name="games.stendhal.server.maps.wieliczka.blacksmith.CzeladnikNPC"/>
+
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
@@ -163,6 +163,11 @@
 
 		<portal x="87" y="96" ref="sh_entrance">
 			<destination zone="int_wieliczka_scientist_house" ref="sh_exit"/>
+			<attribute name="move.continuous" />
+		</portal>
+
+		<portal x="85" y="23" ref="lapidist_entrance">
+			<destination zone="int_wieliczka_lapidist" ref="lapidist_exit"/>
 			<attribute name="move.continuous" />
 		</portal>
 
@@ -354,6 +359,15 @@ Aktualne ceny u Zbigniewa:
 		</portal>
 		<portal x="16" y="46" ref="townhall_exit">
 			<destination zone="0_wieliczka_c" ref="townhall_entrance"/>
+			<attribute name="move.continuous" />
+		</portal>
+	</zone>
+
+	<zone name="int_wieliczka_lapidist" file="interiors/wieliczka/lapidary.tmx">
+		<configurator class-name="games.stendhal.server.maps.wieliczka.lapidary.LapidistNPC"/>
+
+		<portal x="10" y="11" ref="lapidist_exit">
+			<destination zone="0_wieliczka_c" ref="lapidist_entrance"/>
 			<attribute name="move.continuous" />
 		</portal>
 	</zone>
