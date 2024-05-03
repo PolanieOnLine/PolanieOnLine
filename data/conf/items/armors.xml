@@ -453,8 +453,8 @@
 	</item>
 
 	<item name="zbroja ciemnomithrilowa">
-		<type class="armor" subclass="mithril_armor" tileid="-1"/>
-		<description>Oto zbroja ciemnomithrilowa. Udoskonalona pod każdym możliwym kątem wykorzystująca ciemnolit.</description>
+		<type class="armor" subclass="nocturium_mithril_armor" tileid="-1"/>
+		<description>Oto zbroja ciemnomithrilowa. W połowie pokryta mrokiem, lecz wciąż świeci jasno.</description>
 		<implementation class-name="games.stendhal.server.entity.item.NewArms"/>
 		<attributes>
 			<def value="40"/>
