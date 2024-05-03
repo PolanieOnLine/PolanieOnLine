@@ -47,6 +47,7 @@ public final class Region {
 	public static final String WARSZAWA = "Warszawa";
 	public static final String KOSCIELISKO = "Dolina Kościeliska";
 	public static final String DESERT = "Pustynia";
+	public static final String TARNOW_VILLAGE = "Miasteczko Tarnów";
 
 	private Region() {
 		// hide constructor
