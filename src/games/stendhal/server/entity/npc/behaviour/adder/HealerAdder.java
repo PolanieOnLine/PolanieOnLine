@@ -16,7 +16,6 @@ import java.util.Arrays;
 import games.stendhal.common.MathHelper;
 import games.stendhal.common.constants.SoundID;
 import games.stendhal.common.constants.SoundLayer;
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.grammar.ItemParserResult;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
@@ -32,7 +31,6 @@ import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.events.SoundEvent;
 
 public class HealerAdder {
-
 	private final ServicersRegister servicersRegister = SingletonRepository.getServicersRegister();
 
 	/**
