@@ -234,6 +234,7 @@ public class ForgeNewArms extends AbstractQuest {
 			} else {
 				if (faultText != null) {
 					npc.say(faultText);
+					player.addXP(10);
 					player.setQuest(QUEST_SLOT, 0, "rejected");
 					new EquipItemAction("tarcza z mithrilu", 1, true).fire(player, null, null);
 				}
