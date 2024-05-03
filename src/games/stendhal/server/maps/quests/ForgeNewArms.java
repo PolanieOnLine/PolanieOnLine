@@ -104,6 +104,7 @@ public class ForgeNewArms extends AbstractQuest {
 		npc.add(ConversationStates.ATTENDING,
 			questTrigger,
 			new AndCondition(new QuestCompletedCondition(QUEST_COMPLETE),
+				new NotCondition(new QuestInStateCondition(QUEST_SLOT, 0, "rejected")),
 				new NotCondition(new QuestStartedCondition(QUEST_SLOT))),
 			ConversationStates.QUEST_OFFERED,
 			"Ostatnio po całej krainie chodzą pogłoski na temat nowego surowca z dosłownie nie z tego świata..."
@@ -114,6 +115,7 @@ public class ForgeNewArms extends AbstractQuest {
 		npc.add(ConversationStates.QUEST_OFFERED,
 			ConversationPhrases.YES_MESSAGES,
 			new AndCondition(
+				new NotCondition(new QuestInStateCondition(QUEST_SLOT, 0, "rejected")),
 				new NotCondition(new QuestStartedCondition(QUEST_SLOT)),
 				new NotCondition(PlayerHasItemsCondition())),
 			ConversationStates.ATTENDING,
@@ -152,6 +154,15 @@ public class ForgeNewArms extends AbstractQuest {
 			"Nazbierałeś nowe materiały do powtórzenia eksperymentu?",
 			null);
 
+		npc.add(ConversationStates.ATTENDING,
+			questTrigger,
+			new AndCondition(new QuestCompletedCondition(QUEST_COMPLETE),
+				new QuestInStateCondition(QUEST_SLOT, 0, "rejected"),
+				new NotCondition(PlayerHasItemsCondition())),
+			ConversationStates.ATTENDING,
+			"Wróć proszę gdy nazbierasz nowe materiały do powtórzenia ulepszenia.",
+			null);
+
 		npc.add(ConversationStates.QUEST_OFFERED,
 			ConversationPhrases.YES_MESSAGES,
 			PlayerHasItemsCondition(),
@@ -161,15 +172,6 @@ public class ForgeNewArms extends AbstractQuest {
 				DropItemsAction(),
 				new SetQuestAction(QUEST_SLOT, 0, "forging"),
 				new SetQuestToTimeStampAction(QUEST_SLOT, 1)));
-
-		npc.add(ConversationStates.ATTENDING,
-			questTrigger,
-			new AndCondition(new QuestCompletedCondition(QUEST_COMPLETE),
-				new QuestInStateCondition(QUEST_SLOT, 0, "rejected"),
-				new NotCondition(PlayerHasItemsCondition())),
-			ConversationStates.ATTENDING,
-			"Wróć proszę gdy nazbierasz nowe materiały do powtórzenia ulepszenia.",
-			null);
 
 		npc.add(ConversationStates.ATTENDING,
 			questTrigger,
@@ -206,7 +208,7 @@ public class ForgeNewArms extends AbstractQuest {
 			ConversationStates.IDLE,
 			null,
 			new ForgeItemAction("tarcza ciemnomithrilowa",
-				"Kurczę, te klejnoty nie chciały się złączyć z tarczą... Nie martw się, zreperowałem tarcze uszkodzenia jakie wywołałem, bryłkami. Zwracam twoją własność, jak nazbierasz kolejne surowce możemy powtórzyć proces...",
+				"Kurczę, te klejnoty nie chciały się złączyć z tarczą... Nie martw się, zreperowałem uszkodzenia jakie wywołałem na tarczy, bryłkami. Zwracam twoją własność, jak nazbierasz kolejne surowce możemy powtórzyć proces...",
 				"Udało się! Ino spójrz jak pięknie wygląda! Myślę, że już wiem w jaki sposób obchodzić się z tym surowcem."));
 	}
 
