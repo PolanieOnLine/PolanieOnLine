@@ -93,7 +93,6 @@
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.tarnow.city.MageNPC"/>
 		<configurator class-name="games.stendhal.server.maps.tarnow.city.MythNPC"/>
-		<configurator class-name="games.stendhal.server.maps.tarnow.blacksmith.BlacksmithNPC"/>
 
 		<entity x="53" y="90">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign" />
@@ -264,6 +263,11 @@
 			<destination zone="int_tarnow_weaponshop" ref="weaponshop_exit"/>
 			<attribute name="move.continuous" />
 		</portal>
+
+		<portal x="73" y="68" ref="blacksmith_entrance">
+			<destination zone="int_tarnow_blacksmith" ref="blacksmith_exit"/>
+			<attribute name="move.continuous" />
+		</portal>
 	</zone>
 
 	<zone name="0_tarnow_plains_n" level="0" x="514080" y="17920" file="Level 0/tarnow/plains_n.tmx">
@@ -414,6 +418,15 @@
 	<zone name="int_tarnow_weaponshop" file="interiors/tarnow/weaponshop.tmx">
 		<portal x="12" y="18" ref="weaponshop_exit">
 			<destination zone="0_tarnow_city" ref="weaponshop_entrance"/>
+			<attribute name="move.continuous" />
+		</portal>
+	</zone>
+
+	<zone name="int_tarnow_blacksmith" file="interiors/tarnow/blacksmith.tmx">
+		<configurator class-name="games.stendhal.server.maps.tarnow.blacksmith.BlacksmithNPC"/>
+
+		<portal x="18" y="1" ref="blacksmith_exit">
+			<destination zone="0_tarnow_city" ref="blacksmith_entrance"/>
 			<attribute name="move.continuous" />
 		</portal>
 	</zone>

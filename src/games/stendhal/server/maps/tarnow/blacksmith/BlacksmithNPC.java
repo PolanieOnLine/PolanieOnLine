@@ -11,10 +11,14 @@
  ***************************************************************************/
 package games.stendhal.server.maps.tarnow.blacksmith;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.core.pathfinder.FixedPath;
+import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
@@ -37,16 +41,25 @@ public class BlacksmithNPC implements ZoneConfigurator {
 
 	private void buildNPC(StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("kowal Przemysław") {
-//			@Override
-//			protected void createPath() {
-//				final List<Node> nodes = new LinkedList<Node>();
-//				nodes.add(new Node(86, 70));
-//				nodes.add(new Node(86, 74));
-//				nodes.add(new Node(80, 74));
-//				nodes.add(new Node(86, 74));
-//				nodes.add(new Node(86, 70));
-//				setPath(new FixedPath(nodes, true));
-//			}
+			@Override
+			protected void createPath() {
+				final List<Node> nodes = new LinkedList<Node>();
+				nodes.add(new Node(8, 10));
+				nodes.add(new Node(8, 12));
+				nodes.add(new Node(15, 12));
+				nodes.add(new Node(15, 9));
+				nodes.add(new Node(21, 9));
+				nodes.add(new Node(21, 8));
+				nodes.add(new Node(26, 8));
+				// mirror path
+				nodes.add(new Node(21, 8));
+				nodes.add(new Node(21, 9));
+				nodes.add(new Node(15, 9));
+				nodes.add(new Node(15, 12));
+				nodes.add(new Node(8, 12));
+				nodes.add(new Node(8, 10));
+				setPath(new FixedPath(nodes, true));
+			}
 
 			@Override
 			protected void createDialog() {
@@ -99,7 +112,7 @@ public class BlacksmithNPC implements ZoneConfigurator {
 		npc.setDescription("Oto kowal Przemysław. Jest w trakcie udoskonalania wyposażenia dla przyszłych rycerzy.");
 		npc.setEntityClass("blacksmithnpc");
 		npc.setGender("M");
-		npc.setPosition(1, 1);
+		npc.setPosition(8, 10);
 		zone.add(npc);
 	}
 }
