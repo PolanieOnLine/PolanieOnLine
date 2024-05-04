@@ -430,7 +430,7 @@
 	</item>
 
 	<item name="pas ciemnomithrilowy">
-		<type class="belts" subclass="mithril_belt" tileid="-1"/>
+		<type class="belts" subclass="nocturium_mithril_belt" tileid="-1"/>
 		<description>Oto pas ciemnomithrilowy.</description>
 		<implementation class-name="games.stendhal.server.entity.item.NewArms"/>
 		<attributes>
