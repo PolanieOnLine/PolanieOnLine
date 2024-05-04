@@ -409,7 +409,7 @@
 	</item>
 
 	<item name="płaszcz ciemnomithrilowy">
-		<type class="cloak" subclass="mithril_cloak" tileid="-1"/>
+		<type class="cloak" subclass="nocturium_mithril_cloak" tileid="-1"/>
 		<description>Oto płaszcz ciemnomithrilowy.</description>
 		<implementation class-name="games.stendhal.server.entity.item.NewArms"/>
 		<attributes>
