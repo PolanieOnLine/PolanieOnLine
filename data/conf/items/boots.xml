@@ -269,8 +269,8 @@
 	</item>
 
 	<item name="buty ciemnomithrilowe">
-		<type class="boots" subclass="mithril_boots" tileid="-1"/>
-		<description>Oto para butów ciemnomithrilowych.</description>
+		<type class="boots" subclass="nocturium_mithril_boots" tileid="-1"/>
+		<description>Oto para butów ciemnomithrilowych. Czuć w nich jak pulsuje, próbująca się wydostać energia.</description>
 		<implementation class-name="games.stendhal.server.entity.item.NewArms"/>
 		<attributes>
 			<def value="28"/>
