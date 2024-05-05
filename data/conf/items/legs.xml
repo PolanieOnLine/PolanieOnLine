@@ -268,7 +268,7 @@
 	</item>
 
 	<item name="spodnie ciemnomithrilowe">
-		<type class="legs" subclass="mithril_legs" tileid="-1"/>
+		<type class="legs" subclass="nocturium_mithril_legs" tileid="-1"/>
 		<description>Oto para spodni ciemnomithrilowych.</description>
 		<implementation class-name="games.stendhal.server.entity.item.NewArms"/>
 		<attributes>
