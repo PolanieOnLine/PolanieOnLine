@@ -280,7 +280,7 @@
 	</item>
 
 	<item name="tarcza ciemnomithrilowa">
-		<type class="shield" subclass="mithril_shield" tileid="-1"/>
+		<type class="shield" subclass="nocturium_mithril_shield" tileid="-1"/>
 		<description>Oto tarcza ciemnomithrilowa.</description>
 		<implementation class-name="games.stendhal.server.entity.item.NewArms"/>
 		<attributes>
