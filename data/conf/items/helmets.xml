@@ -398,7 +398,7 @@
 	</item>
 
 	<item name="hełm ciemnomithrilowy">
-		<type class="helmet" subclass="mithril_helmet" tileid="-1"/>
+		<type class="helmet" subclass="nocturium_mithril_helmet" tileid="-1"/>
 		<description>Oto hełm ciemnomithrilowy.</description>
 		<implementation class-name="games.stendhal.server.entity.item.NewArms"/>
 		<attributes>
