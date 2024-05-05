@@ -400,7 +400,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="12"/>
-			<def value="6"/>
+			<def value="8"/>
 			<min_level value="80"/>
 			<rate value="3"/>
 		</attributes>
@@ -487,7 +487,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="12"/>
-			<def value="6"/>
+			<def value="8"/>
 			<min_level value="80"/>
 			<rate value="3"/>
 		</attributes>

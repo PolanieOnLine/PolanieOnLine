@@ -6,7 +6,7 @@
 		<description>Oto zbroja barbarzyńcy. Jest brudna i cuchnie, ale obroni cię przed niejednym ciosem.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="15"/>
+			<def value="30"/>
 			<min_level value="35"/>
 			<max_improves value="3"/>
 		</attributes>
@@ -26,7 +26,7 @@
 		<description>Oto zbroja wampirza. Czuć bardzo dziwny metalowy zapach krwi.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="26"/>
+			<def value="52"/>
 			<min_use value="100"/>
 			<min_level value="200"/>
 		</attributes>
@@ -46,7 +46,7 @@
 		<description>Oto czarna zbroja. Czy jej posiadanie wpędza cię w zły humor?</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="28"/>
+			<def value="56"/>
 			<min_use value="150"/>
 			<min_level value="250"/>
 			<max_improves value="1"/>
@@ -69,7 +69,7 @@
 		<description>Oto zbroja lazurowa. Nie wiesz z czego jest zrobiona, ale wydaje się być całkiem wytrzmała.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="13"/>
+			<def value="26"/>
 			<min_level value="25"/>
 		</attributes>
 		<weight value="35.0"/>
@@ -88,7 +88,7 @@
 		<description>Oto kolczuga. Nawet jeśli jej nie potrzebujesz być może uda ci się ją sprzedać.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="6"/>
+			<def value="12"/>
 			<min_level value="7"/>
 		</attributes>
 		<weight value="45.0"/>
@@ -107,7 +107,7 @@
 		<description>Oto zbroja chaosu. Pochodzenie jej mieniącej się powłoki nie jest ci znane.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="20"/>
+			<def value="40"/>
 		<min_level value="100"/>
 		</attributes>
 		<weight value="45.0"/>
@@ -126,7 +126,7 @@
 		<description>Oto koszula. Jej lniane włókna pomagają tamować krew rannych wojowników.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="1"/>
+			<def value="2"/>
 			<min_level value="0"/>
 			<max_improves value="1"/>
 		</attributes>
@@ -146,7 +146,7 @@
 		<description>Oto zbroja krasnoludzka. Lekko ciasna lecz wykonana z wyjątkową zręcznością.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="17"/>
+			<def value="34"/>
 		<min_level value="50"/>
 		</attributes>
 		<weight value="40.0"/>
@@ -165,7 +165,7 @@
 		<description>Oto zbroja elficka. Zrobiona ze splecionych liści jest lekka ale zadziwiająco wytrzymała.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="14"/>
+			<def value="28"/>
 			<min_level value="30"/>
 			<max_improves value="1"/>
 		</attributes>
@@ -187,7 +187,7 @@
 		<description>Oto kolczuga wzmocniona. Ogniwa są ciasne więc mało co się przez nie przebije.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="7"/>
+			<def value="14"/>
 			<min_level value="7"/>
 			<max_improves value="2"/>
 		</attributes>
@@ -207,7 +207,7 @@
 		<description>Oto złota zbroja. Wykonano ją starannie z drogocennego metalu.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="16"/>
+			<def value="32"/>
 			<min_level value="40"/>
 		</attributes>
 		<weight value="45.0"/>
@@ -226,7 +226,7 @@
 		<description>Oto złota kolczuga. Wykonano ją z ogniw drogocennego metalu.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="9"/>
+			<def value="18"/>
 			<min_level value="5"/>
 			<max_improves value="2"/>
 		</attributes>
@@ -246,7 +246,7 @@
 		<description>Oto lodowa zbroja, która zmrozi serce każdego, który ją nosi.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="19"/>
+			<def value="38"/>
 			<min_level value="80"/>
 		</attributes>
 		<weight value="35.0"/>
@@ -264,10 +264,10 @@
 
 	<item name="ognista zbroja">
 		<type class="armor" subclass="fire_armor" tileid="-1"/>
-		<description></description>
+		<description/>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="21"/>
+			<def value="42"/>
 			<min_level value="130"/>
 		</attributes>
 		<weight value="35.0"/>
@@ -288,7 +288,7 @@
 		<description>Oto zbroja monarchistyczna. Odpowiednia dla króla.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="25"/>
+			<def value="50"/>
 			<min_level value="210"/>
 		</attributes>
 		<weight value="45.0"/>
@@ -311,7 +311,7 @@
 		<description>Oto żelazna zbroja łuskowa. Jej zaokrąglone płytki ochronią cię przed wieloma ciosami.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="8"/>
+			<def value="16"/>
 			<min_level value="10"/>
 		</attributes>
 		<weight value="45.0"/>
@@ -330,7 +330,7 @@
 		<description>Oto skórzana zbroja. Zapewnia tylko minimalną ochronę.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="3"/>
+			<def value="6"/>
 			<undroppableondeath value="1"/>
 			<min_level value="0"/>
 			<max_improves value="2"/>
@@ -351,7 +351,7 @@
 		<description>Oto skórzany kirys, zręcznie zrobiony by obronić cię przed mieczem wroga.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="4"/>
+			<def value="8"/>
 			<min_level value="1"/>
 		</attributes>
 		<weight value="15.0"/>
@@ -370,7 +370,7 @@
 		<description>Oto skórzana zbroja łuskowa. Skórę wzmocniono by lepiej chroniła.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="4"/>
+			<def value="8"/>
 			<min_level value="1"/>
 		</attributes>
 		<weight value="15.0"/>
@@ -390,7 +390,7 @@
 		<description>Oto magiczna zbroja płytowa. Ktoś rzucił na nią czar i ma niezwykłe właściwości.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="24"/>
+			<def value="48"/>
 			<min_use value="75"/>
 			<min_level value="150"/>
 			<max_improves value="6"/>
@@ -415,7 +415,7 @@
 		<description>Oto straszna zbroja mainiocyjska. Brak jej subtelności, ale nie ma to znaczenia, jeśli poznasz jej wytrzymałość w walce.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="22"/>
+			<def value="44"/>
 			<min_level value="125"/>
 		</attributes>
 		<weight value="45.0"/>
@@ -435,7 +435,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
 			<atk value="0"/>
-			<def value="30"/>
+			<def value="60"/>
 			<min_level value="300"/>
 			<max_improves value="1"/>
 		</attributes>
@@ -457,7 +457,7 @@
 		<description>Oto zbroja ciemnomithrilowa. W połowie pokryta mrokiem, lecz wciąż świeci jasno.</description>
 		<implementation class-name="games.stendhal.server.entity.item.NewArms"/>
 		<attributes>
-			<def value="40"/>
+			<def value="80"/>
 			<min_level value="400"/>
 			<statusresist slots="armor;" type="bleeding" value="0.2"/>
 		</attributes>
@@ -479,7 +479,7 @@
 		<description>Oto prześliczny żelazny kirys z naramiennikami. Naramienniki świetnie ochronią twój tułów.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="9"/>
+			<def value="18"/>
 			<min_level value="5"/>
 		</attributes>
 		<weight value="45.0"/>
@@ -498,7 +498,7 @@
 		<description>Oto skórzany kirys z naramiennikami. Z powodzeniem wytrzymuje niektóre ciosy.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="5"/>
+			<def value="10"/>
 			<min_level value="5"/>
 		</attributes>
 		<weight value="15.0"/>
@@ -517,7 +517,7 @@
 		<description>Oto zbroja płytowa. Wydaje się cieżka, lecz metal z jakiego ją wykuto daje świetną obronę.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="10"/>
+			<def value="20"/>
 			<min_level value="10"/>
 		</attributes>
 		<weight value="45.0"/>
@@ -536,7 +536,7 @@
 		<description>Oto zbroja karmazynowa. Jej karmazynowy blask cię oczarował.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="12"/>
+			<def value="24"/>
 			<min_level value="20"/>
 		</attributes>
 		<weight value="45.0"/>
@@ -555,7 +555,7 @@
 		<description>Oto zbroja łuskowa. Jest wygodna i dobrze się nosi, a przy okazji daje dobrą obronę.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="7"/>
+			<def value="14"/>
 			<min_level value="7"/>
 		</attributes>
 		<weight value="45.0"/>
@@ -574,7 +574,7 @@
 		<description>Oto zbroja akwalungowa z przymocowanym ciężkim hełmem. Zapewnia wystarczającą ochronę i jest doskonała do nurkowania.</description>
 		<implementation class-name="games.stendhal.server.entity.item.LifeSupportGear"/>
 		<attributes>
-			<def value="15"/>
+			<def value="30"/>
 			<life_support value="water"/>
 			<min_level value="50"/>
 		</attributes>
@@ -598,7 +598,7 @@
 		<description>Oto zbroja cieni. Trudno odgadnąć z czego jest zrobiona, bo zawsze skrywa ją półmrok.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="17"/>
+			<def value="34"/>
 		<min_level value="40"/>
 		</attributes>
 		<weight value="40.0"/>
@@ -619,7 +619,7 @@
 		<description>Oto kamienna zbroja. Miecze pękają gdy tylko w nią uderzą.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="18"/>
+			<def value="36"/>
 			<min_level value="60"/>
 			<max_improves value="5"/>
 		</attributes>
@@ -641,7 +641,7 @@
 		<description>Oto zbroja ćwiekowa. Niektóre ćwieki odpadły albo pordzewiały, ale zbroja wciąż spełnia swoją rolę.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="5"/>
+			<def value="10"/>
 			<min_level value="5"/>
 		</attributes>
 		<weight value="25.0"/>
@@ -660,7 +660,7 @@
 		<description>Oto zbroja xenocyjska. Jej wygląd przypomina skórę zabitych hybryd xenocium.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="21"/>
+			<def value="42"/>
 			<min_level value="120"/>
 		</attributes>
 		<weight value="45.0"/>
@@ -679,7 +679,7 @@
 		<description>Oto zardzewiała zbroja płytowa. Poszukaj kowala, może potrafi ją oczyścić.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="7"/>
+			<def value="14"/>
 			<min_level value="8"/>
 		</attributes>
 		<weight value="45.0"/>
@@ -698,7 +698,7 @@
 		<description>Oto cuha góralska. Wraz z bukowymi portkami, pasem, ciupagą, kapeluszem i kierpcami stanowi komplet wyjściowy górala.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="18"/>
+			<def value="36"/>
 			<min_level value="50"/>
 		</attributes>
 		<weight value="45.0"/>
@@ -718,7 +718,7 @@
 		<description>Oto góralski gorset. Wraz z wzorzystą spódnicą, chustą, koralami i kierpcami stanowi komplet wyjściowy góralki.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="5"/>
+			<def value="10"/>
 			<min_level value="4"/>
 		</attributes>
 		<weight value="45.0"/>
@@ -738,7 +738,7 @@
 		<description>Oto zbroja szamana barbarzyńców zrobiona z kory egzotycznego drzewa.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="19"/>
+			<def value="38"/>
 			<min_level value="65"/>
 		</attributes>
 		<weight value="15.0"/>
@@ -758,7 +758,7 @@
 		<description>Oto zbroja światła. Jest lekka więc nie utrudnia walki.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="23"/>
+			<def value="46"/>
 			<min_level value="135"/>
 			<max_improves value="3"/>
 		</attributes>
@@ -780,7 +780,7 @@
 		<description>Oto zbroja zabójcy. Miecz wroga tylko ją muska.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Item"/>
 		<attributes>
-			<def value="25"/>
+			<def value="50"/>
 			<min_level value="155"/>
 		</attributes>
 		<weight value="45.0"/>
@@ -799,7 +799,7 @@
 		<description>Oto brudna łuskowana zbroja orków. Cuchnie krwią.</description>
 		<implementation class-name="games.stendhal.server.entity.item.OrcDisguise"/>
 		<attributes>
-			<def value="7"/>
+			<def value="14"/>
 			<min_level value="10"/>
 		</attributes>
 		<weight value="45.0"/>

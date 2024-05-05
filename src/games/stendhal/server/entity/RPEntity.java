@@ -78,18 +78,6 @@ public abstract class RPEntity extends CombatEntity {
 	 * The title attribute name.
 	 */
 	protected static final String ATTR_TITLE = "title";
-
-	private static final float WEAPON_DEF_MULTIPLIER = 2.0f;
-	private static final float BOOTS_DEF_MULTIPLIER = 1.0f;
-	private static final float LEG_DEF_MULTIPLIER = 1.5f;
-	private static final float HELMET_DEF_MULTIPLIER = 1.0f;
-	private static final float CLOAK_DEF_MULTIPLIER = 1.0f;
-	private static final float ARMOR_DEF_MULTIPLIER = 2.0f;
-	private static final float SHIELD_DEF_MULTIPLIER = 3.0f;
-	private static final float RING_DEF_MULTIPLIER = 1.0f;
-	private static final float NECKLACE_DEF_MULTIPLIER = 1.0f;
-	private static final float GLOVE_DEF_MULTIPLIER = 1.0f;
-	private static final float BELT_DEF_MULTIPLIER = 1.0f;
 	private static Statistics stats;
 
 	protected static final int HIT_CHANCE_MULTIPLIER = 20;
@@ -3023,12 +3011,7 @@ public abstract class RPEntity extends CombatEntity {
 			}
 		}
 
-		return SHIELD_DEF_MULTIPLIER * shield + ARMOR_DEF_MULTIPLIER * armor
-				+ CLOAK_DEF_MULTIPLIER * cloak + GLOVE_DEF_MULTIPLIER * glove
-				+ HELMET_DEF_MULTIPLIER * helmet + NECKLACE_DEF_MULTIPLIER * necklace
-				+ LEG_DEF_MULTIPLIER * legs + BOOTS_DEF_MULTIPLIER * boots
-				+ RING_DEF_MULTIPLIER * ring + RING_DEF_MULTIPLIER * ringb
-				+ BELT_DEF_MULTIPLIER * belt + WEAPON_DEF_MULTIPLIER * weapon;
+		return shield + armor + cloak + glove + helmet + necklace + legs + boots + ring + ringb + belt + weapon;
 	}
 
 	/**

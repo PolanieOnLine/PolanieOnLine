@@ -29,7 +29,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="33"/>
-			<def value="3"/>
+			<def value="6"/>
 			<min_level value="10"/>
 			<rate value="9"/>
 		</attributes>
@@ -51,7 +51,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="15"/>
-			<def value="2"/>
+			<def value="4"/>
 			<min_level value="3"/>
 			<rate value="6"/>
 		</attributes>
@@ -120,7 +120,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="52"/>
-			<def value="3"/>
+			<def value="6"/>
 			<lifesteal value="0.2"/>
 			<min_level value="200"/>
 			<rate value="8"/>
@@ -143,7 +143,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="47"/>
-			<def value="3"/>
+			<def value="6"/>
 			<min_level value="60"/>
 			<max_improves value="6"/>
 			<damagetype value="ice"/>
@@ -167,7 +167,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="35"/>
-			<def value="3"/>
+			<def value="6"/>
 			<min_level value="50"/>
 			<damagetype value="light"/>
 			<rate value="7"/>
@@ -190,7 +190,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="40"/>
-			<def value="4"/>
+			<def value="8"/>
 			<min_level value="25"/>
 			<rate value="10"/>
 		</attributes>
@@ -233,7 +233,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="40"/>
-			<def value="4"/>
+			<def value="8"/>
 			<min_level value="150"/>
 			<damagetype value="light"/>
 			<rate value="7"/>
@@ -387,7 +387,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="29"/>
-			<def value="3"/>
+			<def value="6"/>
 			<min_level value="30"/>
 			<rate value="7"/>
 		</attributes>
@@ -473,7 +473,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="20"/>
-			<def value="1"/>
+			<def value="2"/>
 			<min_level value="0"/>
 			<rate value="3"/>
 		</attributes>
@@ -495,7 +495,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="22"/>
-			<def value="2"/>
+			<def value="4"/>
 			<lifesteal value="0.05"/>
 			<min_level value="0"/>
 			<rate value="3"/>
@@ -518,7 +518,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="24"/>
-			<def value="3"/>
+			<def value="6"/>
 			<lifesteal value="0.075"/>
 			<min_level value="0"/>
 			<rate value="2"/>
@@ -541,7 +541,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="24"/>
-			<def value="4"/>
+			<def value="8"/>
 			<lifesteal value="0.1"/>
 			<min_level value="0"/>
 			<max_improves value="3"/>

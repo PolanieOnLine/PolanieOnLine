@@ -272,7 +272,7 @@
 		<unattainable/>
 		<attributes>
 			<atk value="100"/>
-			<def value="100"/>
+			<def value="400"/>
 			<min_level value="0"/>
 			<rate value="2"/>
 		</attributes>
@@ -294,7 +294,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="22"/>
-			<def value="2"/>
+			<def value="8"/>
 			<lifesteal value="0.05"/>
 			<min_level value="8"/>
 			<max_improves value="1"/>
@@ -319,7 +319,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.Weapon"/>
 		<attributes>
 			<atk value="2"/>
-			<def value="1"/>
+			<def value="4"/>
 			<min_level value="0"/>
 			<rate value="2"/>
 		</attributes>
