@@ -1,5 +1,5 @@
 /***************************************************************************
- *                      (C) Copyright 2003 - Marauroa                      *
+ *                   (C) Copyright 2003-2024 - Marauroa                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -103,7 +103,7 @@ public class KnockAction implements ActionListener {
 					houseplayer.sendPrivateText(message);
 				}
 			} else {
-				logger.debug("Invalid zone associated with " + mainZone.getName());
+				logger.debug("Invalid zone associated with " + (mainZone != null ? mainZone.getName() : "null"));
 			}
 		}
 

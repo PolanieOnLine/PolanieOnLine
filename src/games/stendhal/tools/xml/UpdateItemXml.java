@@ -1,3 +1,14 @@
+/***************************************************************************
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
+ ***************************************************************************
+ ***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
 package games.stendhal.tools.xml;
 
 import java.io.BufferedReader;
@@ -87,10 +98,14 @@ public class UpdateItemXml {
 			if (testserverElement!=null) {
 				testserverElement.getParentNode().removeChild(testserverElement);
 			}
-			originalElement.removeAttribute("condition");
-		} else  if (!newValue.equals(testserverValue)) {
+			if (originalElement != null) {
+				originalElement.removeAttribute("condition");
+			}
+		} else if (!newValue.equals(testserverValue)) {
 			if (testserverValue != null) {
-				testserverElement.setAttribute("value", newValue);
+				if (testserverElement != null) {
+					testserverElement.setAttribute("value", newValue);
+				}
 			} else {
 				if (originalElement != null) {
 					originalElement.setAttribute("condition", "!stendhal.testserver");

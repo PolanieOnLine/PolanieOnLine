@@ -33,7 +33,7 @@
 
 	<!-- Loretta / Inez kupuje: -->
 	<shop name="buyiron" type="buy">
-		<item name="żelazo" price="75" />
+		<item name="sztabka żelaza" price="75" />
 
 		<merchant name="Inez" flags="configure"/>
 		<merchant name="Loretta" flags="configure"/>

@@ -119,7 +119,7 @@ public class PierscienRycerza extends AbstractQuest {
 					new SetQuestAction(QUEST_SLOT, "przedmioty"));
 
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
-		reward.add(new DropItemAction("żelazo",40));
+		reward.add(new DropItemAction("sztabka żelaza",40));
 		reward.add(new DropItemAction("sztabka złota",40));
 		reward.add(new DropItemAction("bryłka mithrilu",30));
 		reward.add(new DropItemAction("pierścień mieszczanina",1));
@@ -131,7 +131,7 @@ public class PierscienRycerza extends AbstractQuest {
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("wyposażenie", "wyposazenie","przedmioty"),
 			new AndCondition(new QuestInStateCondition(QUEST_SLOT,"przedmioty"),
-			new PlayerHasItemWithHimCondition("żelazo",40),
+			new PlayerHasItemWithHimCondition("sztabka żelaza",40),
 			new PlayerHasItemWithHimCondition("sztabka złota",40),
 			new PlayerHasItemWithHimCondition("bryłka mithrilu",30),
 			new PlayerHasItemWithHimCondition("pierścień mieszczanina",1),
@@ -143,7 +143,7 @@ public class PierscienRycerza extends AbstractQuest {
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("wyposażenie", "wyposazenie", "przedmioty", "przypomnij"),
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT,"przedmioty"),
 								 new NotCondition(
-								 new AndCondition(new PlayerHasItemWithHimCondition("żelazo",40),
+								 new AndCondition(new PlayerHasItemWithHimCondition("sztabka żelaza",40),
 												  new PlayerHasItemWithHimCondition("sztabka złota",40),
 												  new PlayerHasItemWithHimCondition("bryłka mithrilu",30),
 												  new PlayerHasItemWithHimCondition("pierścień mieszczanina",1),

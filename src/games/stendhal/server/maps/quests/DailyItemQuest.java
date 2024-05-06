@@ -273,7 +273,7 @@ public class DailyItemQuest extends AbstractQuest {
 		items.put("zboże",20);
 		items.put("sztabka złota",5);
 		items.put("bryłka złota",10);
-		items.put("żelazo",5);
+		items.put("sztabka żelaza",5);
 		items.put("ruda żelaza",10);
 		items.put("polano",10);
 
@@ -442,7 +442,7 @@ public class DailyItemQuest extends AbstractQuest {
 		fillQuestInfo(
 				"Dzienne Zadanie na Przedmiot",
 				"Mayor Chalmers potrzebuje zapasów dla miasta Ados.",
-				true);
+				true, 2);
 
 		buildItemsMap();
 

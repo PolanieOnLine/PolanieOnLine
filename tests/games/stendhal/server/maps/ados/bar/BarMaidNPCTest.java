@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2023 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -30,6 +30,7 @@ import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.NPC;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.fsm.Engine;
+import utilities.NPCTestHelper;
 import utilities.PlayerTestHelper;
 import utilities.QuestHelper;
 
@@ -129,7 +130,7 @@ public class BarMaidNPCTest {
 		assertThat(barMaid.getName(), is("Siandra"));
 
 		// configure Siandra's shop
-		SingletonRepository.getShopsList().configureNPC("Siandra", "buyfood", false, true);
+		NPCTestHelper.loadShops("Siandra");
 
 		final Engine engine = barMaid.getEngine();
 		engine.setCurrentState(ConversationStates.ATTENDING);

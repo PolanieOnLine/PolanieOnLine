@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2023 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -25,6 +25,7 @@ import games.stendhal.server.entity.npc.fsm.Engine;
 import games.stendhal.server.entity.npc.quest.BuiltQuest;
 import games.stendhal.server.maps.ados.market.BBQGrillmasterNPC;
 import games.stendhal.server.maps.semos.mines.MinerNPC;
+import utilities.NPCTestHelper;
 import utilities.PlayerTestHelper;
 import utilities.QuestHelper;
 import utilities.ZonePlayerAndNPCTestImpl;
@@ -71,7 +72,7 @@ public class CoalForHaunchyTest extends ZonePlayerAndNPCTestImpl {
 		Engine barbarusEng = barbarus.getEngine();
 
 		// configure Barbarus's shop
-		SingletonRepository.getShopsList().configureNPC("Barbarus", "minertools", true, false);
+		NPCTestHelper.loadShops("Barbarus");
 
 		// -----------------------------------------------
 		// start with Haunchy

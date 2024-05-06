@@ -1,5 +1,5 @@
 /***************************************************************************
- *                    (C) Copyright 2019-2023 - Stendhal                   *
+ *                    (C) Copyright 2019-2024 - Stendhal                   *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -95,6 +95,9 @@ public class EggsForMarianne implements QuestManuscript {
 			.rewardWith(new IncreaseXPAction(50))
 			.rewardWith(new IncreaseKarmaAction(50))
 			.rewardWith(new EquipRandomItemAction("bratek=12;stokrotki=12", false, "Dziękuję! Weź [this_these] [number_item]!"));
+
+		// completions count is stored in 3rd index of quest slot
+		quest.setCompletionsIndexes(2);
 
 		return quest;
 	}

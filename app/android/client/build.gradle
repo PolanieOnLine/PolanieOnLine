@@ -1,0 +1,141 @@
+plugins {
+	id 'com.android.application'
+}
+
+android {
+	namespace "org.stendhalgame.client"
+	compileSdk 32
+
+	defaultConfig {
+		applicationId namespace
+		minSdk 21
+		targetSdk 32
+		versionCode 1046005
+		versionName "1.46.5"
+		testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+		targetSdkVersion 32
+		minSdkVersion 21
+	}
+
+	// build output
+	project.setProperty("archivesBaseName", "${namespace}-${defaultConfig.versionCode}")
+	project.setProperty("buildDir", "${projectDir}/../../../build/build_android_client")
+
+	/* A keystore.properties file can be placed in the root Android project directory and must
+	 * include the following values:
+	 *   storeFile=<path-to-keystore-file>
+	 *   storePassword=<store-password>
+	 *   keyPassword=<key-password>
+	 *   keyAlias=<key-alias>
+	 * The `storeFile` path value must use double backslashes (\\) on Windows.
+	 */
+	def keystorePropertiesFile = rootProject.file("keystore.properties")
+	def keystoreProperties = new Properties()
+	if (keystorePropertiesFile.exists()) {
+		keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+	}
+
+	// denotes whether a signing key is found/configured
+	def unsigned = true;
+	// property to force use of ~/.android/debug.keystore signing key & generate if not found
+	def generateDebugKey = project.properties["generate-debug-key"] != null;
+
+	signingConfigs {
+		main {
+			if (keystorePropertiesFile.exists()) {
+				// use key configured in keystore.properties file
+				storeFile file(keystoreProperties["storeFile"])
+				storePassword keystoreProperties["storePassword"]
+				keyPassword keystoreProperties["keyPassword"]
+				keyAlias keystoreProperties["keyAlias"]
+				unsigned = false;
+			} else if (signingConfigs.debug.storeFile.exists()) {
+				// use debug key
+				initWith signingConfigs.debug
+				unsigned = false;
+			}
+		}
+
+		if (generateDebugKey && signingConfigs.main != signingConfigs.debug) {
+			// force using debug key
+			main {
+				initWith signingConfigs.debug
+			}
+			unsigned = false;
+		}
+	}
+
+	if (!unsigned && !generateDebugKey && !signingConfigs.main.storeFile.exists()) {
+		throw new Error("Signing key not found: " + signingConfigs.main.storeFile);
+	}
+
+	buildTypes {
+		debug {
+			applicationIdSuffix ".debug"
+			versionNameSuffix "-debug"
+			// prevent automatic generation of ~/.android/debug.keystore
+			signingConfig null
+		}
+
+		release {
+			minifyEnabled false
+			proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+		}
+
+		if (generateDebugKey) {
+			// force using debug key & generate if not found
+			debug.signingConfig signingConfigs.debug
+			release.signingConfig signingConfigs.debug
+		} else if (!unsigned) {
+			// apply configured signing key to builds
+			debug.signingConfig signingConfigs.main
+			release.signingConfig signingConfigs.main
+		}
+	}
+
+	buildTypes.all { type ->
+		if (!type.name.equals("debug")) {
+			sourceSets[type.name].java { srcDirs "src/shared/java/" }
+		}
+	}
+
+	applicationVariants.all { variant ->
+		variant.outputs.all {
+			def buildRoot = "../../../../"
+			if (variant.name.equals("release")) {
+				// exclude "-release" suffix
+				outputFileName = outputFileName.replaceAll("(-release)(?!.*-release)", "")
+			}
+			// output to <source_root>/build
+			outputFileName = new File("${buildRoot}", "${outputFileName}")
+		}
+	}
+
+	compileOptions {
+		sourceCompatibility JavaVersion.VERSION_11
+		targetCompatibility JavaVersion.VERSION_11
+	}
+	compileSdkVersion 32
+	buildToolsVersion '32.0.0'
+
+	lintOptions {
+		abortOnError false
+	}
+
+	// print some build info for debugging
+	println("Package:         " + namespace)
+	println("Application ID:  " + defaultConfig.applicationId)
+	println("Version:         " + defaultConfig.versionCode)
+	println("Output basename: " + archivesBaseName)
+	println("Signing key:     " + (unsigned ? "unsigned" : signingConfigs.main.storeFile))
+	println("Build directory: " + project.buildDir)
+}
+
+dependencies {
+	implementation "androidx.appcompat:appcompat:1.4.1"
+	implementation "com.google.android.material:material:1.4.0"
+	implementation "androidx.preference:preference-ktx:1.2.0"
+	//testImplementation 'junit:junit:4.+'
+	//androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+	//androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+}

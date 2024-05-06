@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2021 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -152,7 +152,7 @@ public class HelpTomi extends AbstractQuest {
 		fillQuestInfo(
 				"Schłodzenie Tomiego",
 				"Chłopiec Tomi jest torturowany w gorącym piekle. Jedyna rzecz, która może mu pomóc jest jego... MIECZ LODOWY!",
-				true);
+				true, null, 1);
 	    questTrigger = ConversationPhrases.combine(ConversationPhrases.QUEST_MESSAGES, extraTrigger);
 		step1();
 	}

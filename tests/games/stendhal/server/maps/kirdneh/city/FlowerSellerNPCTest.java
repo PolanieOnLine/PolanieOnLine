@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2023 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -19,9 +19,9 @@ import static utilities.SpeakerNPCTestHelper.getReply;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.fsm.Engine;
+import utilities.NPCTestHelper;
 import utilities.QuestHelper;
 import utilities.ZonePlayerAndNPCTestImpl;
 
@@ -68,7 +68,8 @@ public class FlowerSellerNPCTest extends ZonePlayerAndNPCTestImpl {
 		final SpeakerNPC npc = getNPC("Fleur");
 		final Engine en = npc.getEngine();
 
-		SingletonRepository.getShopsList().configureNPC("Fleur", "kirdnehflowerseller", true, true);
+		// configure shop
+		NPCTestHelper.loadShops("Fleur");
 
 		assertTrue(en.step(player, "hi"));
 		assertEquals("Cześć! Przyszedłeś tutaj #pohandlować?", getReply(npc));

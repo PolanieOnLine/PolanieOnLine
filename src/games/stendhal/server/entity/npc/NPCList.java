@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -20,6 +19,8 @@ import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 
+import com.google.common.collect.Sets;
+
 /**
  * This Singleton should contain all NPCs in the Stendhal world that are unique.
  */
@@ -29,6 +30,9 @@ public class NPCList implements Iterable<SpeakerNPC> {
 	private static NPCList instance;
 
 	private final Map<String, SpeakerNPC> contents;
+
+	/** Names reserved for NPCs created dynamically. */
+	private final Set<String> reserved = Sets.newHashSet("patrick"); // Herald NPC (games.stendhal.server.script.Herald)
 
 	/**
 	 * Returns the Singleton instance.
@@ -86,6 +90,10 @@ public class NPCList implements Iterable<SpeakerNPC> {
 			logger.error("Not adding " + npc
 					+ " to NPCList because there is already an NPC called "
 					+ npc.getName());
+		} else if (reserved.contains(name)) {
+			logger.error("Not adding " + npc
+					+ " to NPCList because name "
+					+ npc.getName() + " is reserved");
 		} else {
 			contents.put(name, npc);
 		}
@@ -128,4 +136,19 @@ public class NPCList implements Iterable<SpeakerNPC> {
 		return contents.values().iterator();
 	}
 
+	/**
+	 * Call when dynamically created NPC with reserved name is removed from world.
+	 */
+	public void reserve(String name) {
+		name = name.toLowerCase();
+		reserved.add(name);
+	}
+
+	/**
+	 * Call when an NPC with reserved name is created dynamically.
+	 */
+	public void unreserve(String name) {
+		name = name.toLowerCase();
+		reserved.remove(name);
+	}
 }

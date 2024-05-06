@@ -17,6 +17,8 @@ import java.util.Map;
 import games.stendhal.server.maps.gdansk.ship.GdanskFerry;
 import games.stendhal.server.maps.gdansk.ship.GdanskFerry.Status;
 import games.stendhal.common.Direction;
+import games.stendhal.common.constants.SoundID;
+import games.stendhal.common.constants.SoundLayer;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
@@ -27,6 +29,7 @@ import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.events.SoundEvent;
 
 /**
  * Factory for an NPC who brings players from the docks to Gdansk Ferry
@@ -107,6 +110,11 @@ public class FerryConveyerGdanskNPC implements ZoneConfigurator {
 							public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
 								if (player.drop("money", GdanskFerry.PRICE)) {
 									player.teleport(getShipZone(), 26, 34, Direction.LEFT, null);
+
+									// Note: player may not hear sound if only added to NPC, so we add to both player & NPC after teleport
+									final SoundEvent commerceSound = new SoundEvent(SoundID.COMMERCE, SoundLayer.CREATURE_NOISE);
+									player.addEvent(commerceSound);
+									npc.addEvent(commerceSound);
 								} else {
 									npc.say("Hej! Nie masz tyle pieniędzy!");
 								}
@@ -128,6 +136,7 @@ public class FerryConveyerGdanskNPC implements ZoneConfigurator {
 				ferrystate = status;
 				switch (status) {
 					case ANCHORED_AT_WARSZAWA:
+						npc.addEvent(new SoundEvent("ferry/arrive", SoundLayer.AMBIENT_SOUND));
 						npc.say("UWAGA: Prom przybył do wybrzeża! Można wejść na statek mówiąc #wejdź.");
 						break;
 					case DRIVING_TO_GDANSK:

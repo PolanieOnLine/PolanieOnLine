@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2023 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -93,6 +93,8 @@ public class ElfPrincess extends AbstractQuest {
 	private static final int DELAY = 5;
 
 	private void offerQuestStep() {
+		npc.addKnownChatOptions("kwiat");
+
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
 			new OrCondition(new QuestNotStartedCondition(QUEST_SLOT), new QuestInStateCondition(QUEST_SLOT, 0, "rejected")),
@@ -268,7 +270,7 @@ public class ElfPrincess extends AbstractQuest {
 		fillQuestInfo(
 				"Orchidea dla Księżniczki Elfów",
 				"Tywysoga Księżniczka Elfów z Nalwor Tower, zleciła znalezienie cudownej sprzedawczyni Róży Kwiaciarki, aby odebrać od niej cenną orchideę.",
-				false);
+				false, 2);
 		offerQuestStep();
 		getFlowerStep();
 		bringFlowerStep();

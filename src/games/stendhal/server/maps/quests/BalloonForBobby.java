@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2023 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -237,7 +237,7 @@ public class BalloonForBobby extends AbstractQuest {
 		fillQuestInfo(
 				"Balonik Bobbiego",
 				"Młody chłopiec Bobby w Fado wpatruje się w niebo, szukając balonów. On je kocha i chce mieć jednego dla siebie.",
-				true);
+				true, null, 1);
 		prepareRequestQuestStep();
 		prepareGreetWithBalloonStep();
 		prepareAttendingWithBalloonStep();

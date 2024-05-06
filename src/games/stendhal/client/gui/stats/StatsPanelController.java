@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -354,8 +353,8 @@ public final class StatsPanelController {
 			add = true;
 		}
 		if (set == null) {
+			set = new HashMap<String, RPObject>();
 			if (add) {
-				set = new HashMap<String, RPObject>();
 				money.put(slot, set);
 			}
 		} else if (set.containsKey(id) && object.has("quantity")) {

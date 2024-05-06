@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2023 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -152,6 +152,9 @@ public class TrapsForKlaas implements QuestManuscript {
 				ConversationStates.ATTENDING,
 				"Zgubiłeś notatkę? Cóż, mogę napisać kolejną. Ale wydaje się, że nie masz miejsca, aby ją przygarnąć.",
 				null);
+
+		// completions count is stored in 3rd index of quest slot
+		quest.setCompletionsIndexes(2);
 
 		return quest;
 	}

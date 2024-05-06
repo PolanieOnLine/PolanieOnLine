@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2021 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -508,7 +508,7 @@ public class WeeklyItemQuest extends AbstractQuest {
 		fillQuestInfo(
 				"Muzeum Kirdneh potrzebuje pomocy!",
 				"Hazel, kuratorka Muzeum Kirdneh, chce aby było one największym w kraju i potrzebuje mojej pomocy raz na tydzień.",
-				true);
+				true, 2);
 		buildItemsMap();
 
 		getQuest();

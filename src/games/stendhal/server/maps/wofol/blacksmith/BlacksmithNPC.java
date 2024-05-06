@@ -98,7 +98,7 @@ public class BlacksmithNPC implements ZoneConfigurator {
 				// bobbin from iron
 				// (uses sorted TreeMap instead of HashMap)
 				final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
-				requiredResources.put("żelazo", Integer.valueOf(1));
+				requiredResources.put("sztabka żelaza", Integer.valueOf(1));
 				requiredResources.put("money", Integer.valueOf(100));
 
 				// make sure alrak tells player to remind him to get bobbin back by overriding transactAgreedDeal

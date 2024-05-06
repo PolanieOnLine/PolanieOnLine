@@ -78,7 +78,7 @@ public class WizardsGuardStatueSpireNPC implements ZoneConfigurator {
 					add(ConversationStates.INFORMATION_1,
 							ConversationPhrases.YES_MESSAGES,
 							new AndCondition(
-									new NotCondition(new PlayerHasItemWithHimCondition("żelazo", 8)),
+									new NotCondition(new PlayerHasItemWithHimCondition("sztabka żelaza", 8)),
 									new PlayerHasItemWithHimCondition("tarcza płytowa", 1)),
 							ConversationStates.ATTENDING,
 							"Nie masz wystarczającej ilości Żelaza. Potrzebuję 8 sztabek żelaza i tarczy płytowej.",
@@ -87,19 +87,19 @@ public class WizardsGuardStatueSpireNPC implements ZoneConfigurator {
 							ConversationPhrases.YES_MESSAGES,
 							new AndCondition(
 									new NotCondition(new PlayerHasItemWithHimCondition("tarcza płytowa", 1)),
-									new PlayerHasItemWithHimCondition("żelazo", 8)),
+									new PlayerHasItemWithHimCondition("sztabka żelaza", 8)),
 							ConversationStates.ATTENDING,
 							"Nie masz tarczy dla mnie do wzmocnienia. Potrzebuję tarczy płytowej i 8 sztabek żelaza.",
 							null);
 					add(ConversationStates.INFORMATION_1,
 							ConversationPhrases.YES_MESSAGES,
 							new AndCondition(
-									new PlayerHasItemWithHimCondition("żelazo", 8),
+									new PlayerHasItemWithHimCondition("sztabka żelaza", 8),
 									new PlayerHasItemWithHimCondition("tarcza płytowa", 1)),
 							ConversationStates.ATTENDING,
 							"Oto twoja wzmocniona lwia tarcza.",
 							new MultipleActions(
-								new DropItemAction("żelazo", 8),
+								new DropItemAction("sztabka żelaza", 8),
 								new DropItemAction("tarcza płytowa", 1),
 								new EquipItemAction("wzmocniona lwia tarcza", 1, true),
 								new IncreaseXPAction(250)));

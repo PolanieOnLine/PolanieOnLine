@@ -1,0 +1,163 @@
+<?xml version='1.0'?>
+
+<project xmlns:if="ant:if" xmlns:unless="ant:unless">
+
+	<!-- property to exclude Android webview client build -->
+	<condition property="exclude.webview" value="true">
+		<and>
+			<not>
+				<isset property="env.ANDROID_SDK_ROOT"/>
+			</not>
+			<not>
+				<available file="${user.dir}/android/local.properties"/>
+			</not>
+		</and>
+	</condition>
+
+
+	<target name="nativehelper">
+		<!--
+			To setup up the development environment on Linux:
+			curl https://sh.rustup.rs -sSf | sh
+			apt-get install build-essential libssl-dev pkg-config mingw-w64
+			cargo install cargo-license
+			rustup target add x86_64-pc-windows-gnu
+		-->
+
+		<exec executable="cargo" dir="app/nativehelper" failonerror="true">
+			<arg value="rustc" />
+			<arg value="--release" />
+			<arg value="--" />
+			<arg value="-C" />
+			<arg value="link-arg=-Wl,-rpath,$ORIGIN" />
+		</exec>
+		<exec executable="cargo" dir="app/nativehelper" failonerror="true">
+			<arg value="rustc" />
+			<arg value="--release" />
+			<arg value="--target" />
+			<arg value="x86_64-pc-windows-gnu" />
+		</exec>
+		<exec executable="cargo" dir="app/nativehelper" failonerror="true" output="app/neutralinojs/extensions/binary/LICENSE.txt">
+			<arg value="license" />
+			<arg value="-ad" />
+		</exec>
+		<copy todir="app/neutralinojs/extensions/binary/" flatten="true">
+			<fileset dir="app/nativehelper/target">
+				<include name="release/nativehelper*" />
+				<include name="release/build/*/out/*.dll" />
+				<include name="release/build/*/out/*.so" />
+				<include name="*/release/nativehelper.exe" />
+				<include name="*/release/build/*/out/*.dll" />
+				<include name="*/release/build/*/out/*.so" />
+				<exclude name="**/*.d" />
+			</fileset>
+		</copy>
+		<chmod dir="app/neutralinojs/extensions/binary/" type="file" perm="ugo+rx">
+			<include name="nativehelper*" />
+		</chmod>
+	</target>
+
+	<!--
+	npm install -g @neutralinojs/neu
+	-->
+	<available file="app/neutralinojs/bin/neutralino-linux_x64" property="neutralinojs.present" />
+	<target name="prepare-neutralinojs" unless="neutralinojs.present">
+		<exec executable="neu" dir="app/neutralinojs" failonerror="true">
+			<arg value="update" />
+		</exec>
+	</target>
+	<target name="neutralinojs" depends="prepare-neutralinojs">
+		<exec executable="neu" dir="app/neutralinojs" failonerror="true">
+			<arg value="build" />
+		</exec>
+		<delete failonerror="false">
+			<fileset dir="app/neutralinojs/dist/stendhal-client/">
+				<include name="*arm*" />
+				<include name="*mac*" />
+				<include name="*.log" />
+			</fileset>
+		</delete>
+		<chmod dir="app/neutralinojs/dist/stendhal-client/" type="file" perm="ugo+rx">
+			<include name="stendhal*" />
+			<include name="**/nativehelper*" />
+		</chmod>
+		<!--
+		<copy todir="dist/stendhal-client" flatten="true">
+			<fileset dir="app/neutralinoks">
+				<include name="LICENSE.txt" />
+			</fileset>
+		</copy>
+		-->
+		<copy file="app/neutralinojs/LICENSE.txt" tofile="app/neutralinojs/dist/stendhal-client/LICENSE.txt">
+			<filterchain>
+				<concatfilter append="app/neutralinojs/extensions/binary/LICENSE.txt" />
+			</filterchain>
+		</copy>
+
+	</target>
+
+
+	<!-- START: Android WebView client -->
+
+	<target name="build_android">
+		<condition property="gradlew.exec" value="cmd">
+			<os family="windows"/>
+		</condition>
+		<condition property="gradlew.script" value="/c &quot;${user.dir}/app/android/gradlew.bat&quot;">
+			<os family="windows"/>
+		</condition>
+		<property name="gradlew.exec" value="sh"/>
+		<property name="gradlew.script" value="&quot;${user.dir}/app/android/gradlew&quot;"/>
+
+		<echo
+			if:set="exclude.webview"
+			message="ANDROID_SDK_ROOT environment variable not set. Skipping Android WebView client build."/>
+		<echo
+			unless:set="exclude.webview"
+			message="Building Android WebView client."/>
+		<echo
+			unless:set="exclude.webview"
+			message="Gradle command: ${gradlew.exec} ${gradlew.script}"/>
+
+		<property name="android.build" value="assembleDebug"/>
+
+		<condition property="android.build_wout_rev">
+			<and>
+				<not>
+					<isset property="android.rev"/>
+				</not>
+				<not>
+					<isset property="gradle.params"/>
+				</not>
+			</and>
+		</condition>
+		<condition property="android.build_w_rev">
+			<and>
+				<isset property="android.rev"/>
+				<not>
+					<isset property="gradle.params"/>
+				</not>
+			</and>
+		</condition>
+
+		<exec unless:set="exclude.webview" failonerror="true"
+				executable="${gradlew.exec}" dir="app/android/">
+			<arg line="${gradlew.script}"/>
+			<arg if:set="gradle.params" line="${gradle.params}"/>
+			<arg if:set="android.build_wout_rev" value="${android.build}"/>
+			<arg if:set="android.build_w_rev" line="-Pandroid.rev=${android.rev} ${android.build}"/>
+		</exec>
+	</target> <!-- client_android_build -->
+
+
+	<target name="android" description="Create Android client package for release and distribution.">
+		<echo
+			if:set="exclude.webview"
+			message="ANDROID_SDK_ROOT environment variable not set. Skipping Android WebView client build."/>
+
+		<antcall unless:set="exclude.webview" target="build_android"/>
+	</target> <!-- android -->
+
+	<!-- END: Android WebView client -->
+
+</project>

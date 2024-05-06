@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2023 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -203,7 +203,7 @@ public class KillMonks extends AbstractQuest {
 		fillQuestInfo(
 				"Zguba Mnichów",
 				"Żona Andiego została zamordowana przez mnichów, a teraz on chce dokonać na nich zemsty.",
-				false);
+				false, 2);
 		step_1();
 		step_2();
 		step_3();

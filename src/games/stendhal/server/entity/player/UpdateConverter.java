@@ -14,6 +14,7 @@ package games.stendhal.server.entity.player;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -46,14 +47,14 @@ public abstract class UpdateConverter {
 			"chain_armor_+1", "scale_armor_+1", "chain_armor_+3",
 			"scale_armor_+2", "twoside_axe_+3", "elf_cloak_+2", "mace_+1",
 			"mace_+2", "hammer_+3", "chain_helmet_+2", "golden_helmet_+3",
-			"longbow_+1", "lion_shield_+1"
+			"longbow_+1", "lion_shield_+1", "żelazo"
 	);
 	private static final List<String> ITEM_NAMES_NEW = Arrays.asList(
 			"morning star", "leather scale armor", "pauldroned leather cuirass",
 			"enhanced chainmail", "iron scale armor", "golden chainmail",
 			"pauldroned iron cuirass", "golden twoside axe", "blue elf cloak", "enhanced mace",
 			"golden mace", "golden hammer", "aventail", "horned golden helmet",
-			"composite bow", "enhanced lion shield"
+			"composite bow", "enhanced lion shield", "sztabka żelaza"
 	);
 
 	private static final List<String> ITEM_NAMES_OLD_0_66 = Arrays.asList(
@@ -197,6 +198,14 @@ public abstract class UpdateConverter {
 	 */
 	public static String updateItemName(String name) {
 		if (name != null) {
+			// some quest slots use key=value pairs
+			String value = null;
+			if (name.contains("=")) {
+				final int idx_temp = name.indexOf("=");
+				value = name.substring(idx_temp+1);
+				name = name.substring(0, idx_temp);
+			}
+
 			// handle renamed items
 			int idx = ITEM_NAMES_OLD.indexOf(name);
 			if (idx != -1) {
@@ -216,6 +225,10 @@ public abstract class UpdateConverter {
 			idx = STARE_NAZWY_POL_1_12.indexOf(name);
 			if (idx != -1) {
 				name = NOWE_NAZWY_POL_1_12.get(idx);
+			}
+
+			if (value != null) {
+				name += "=" + value;
 			}
 		}
 
@@ -563,12 +576,61 @@ public abstract class UpdateConverter {
 	}
 
 	/**
-	 * Update the quest slot to the current version.
-	 * @param player
+	 * Converts old object names to their new representation with correct grammar and without
+	 * underscores.
+	 *
+	 * @param contents
+	 *   Value of quest slot section (slots are delimited by semicolon).
+	 * @return
+	 *   Updated value for section.
 	 */
-	public static void updateQuests(final Player player) {
+	private static String updateQuestSection(final String contents) {
 		final EntityManager entityMgr = SingletonRepository.getEntityManager();
 
+		// object names slot section represents (may be delimited by comma to represent multiple
+		// objects in a section)
+		final List<String> names = new LinkedList<>();
+		if (contents.contains(",")) {
+			names.addAll(Arrays.asList(contents.split(",")));
+		} else {
+			names.add(contents);
+		}
+
+		final StringBuilder buffer = new StringBuilder();
+		boolean first = true;
+		for (int idx = 0; idx < names.size(); idx++) {
+			final String oldName = names.get(idx);
+			String newName = UpdateConverter.updateItemName(oldName);
+			// check for valid item and creature names if the update converter changed the name
+			if (!newName.equals(oldName)) {
+				// some quest slots use key=value pairs
+				String actualNewName = newName;
+				if (newName.contains("=")) {
+					actualNewName = newName.substring(0, newName.indexOf("="));
+				}
+				if (!entityMgr.isCreature(actualNewName) && !entityMgr.isItem(actualNewName)) {
+					// only valid item & creature names can be changed
+					newName = oldName;
+				}
+			}
+			if (first) { // cannot depend on buffer.length because section might be empty string
+				first = false;
+			} else {
+				// reinstate delimiter
+				buffer.append(',');
+			}
+			buffer.append(newName);
+		}
+		return buffer.toString();
+	}
+
+	/**
+	 * Update the quest slot to the current version.
+	 *
+	 * @param player
+	 *   Player instance being updated.
+	 */
+	public static void updateQuests(final Player player) {
 		// rename old quest slot "Valo_concoct_potion" to "valo_concoct_potion"
 		// We avoid to lose potion in case there is an entry with the old and the new name at the same
 		// time by combining them by calculating the minimum of the two times and the sum of the two amounts.
@@ -580,40 +642,24 @@ public abstract class UpdateConverter {
 		renameQuestSlot(player, "nagroda_wielkoluda", "help_wielkolud_basehp");
 		renameQuestSlot(player, "pomoc_dla_wielkoluda", null);
 
-		// From 0.66 to 0.67
-		// update quest slot content,
-		// replace "_" with " ", for item/creature names
+		// From 0.66 to 0.67:
+		//   - update quest slot content
+		//   - replace "_" with " ", for item/creature names
+		// 1.46:
+		//   - handle key=value pairs in quest slot strings
+		//   - handle slot sections delimited by ","
 		for (final String questSlot : player.getQuests()) {
-
 			if (player.hasQuest(questSlot)) {
-				final String itemString = player.getQuest(questSlot);
-
-				final String[] parts = itemString.split(";");
-
+				final String[] parts = player.getQuest(questSlot).split(";");
 				final StringBuilder buffer = new StringBuilder();
 				boolean first = true;
-
 				for (int i = 0; i < parts.length; ++i) {
-					final String oldName = parts[i];
-
-					// Convert old item names to their new representation with correct grammar
-					// and without underscores.
-					String newName = UpdateConverter.updateItemName(oldName);
-
-					// check for valid item and creature names if the update converter changed the name
-					if (!newName.equals(oldName)) {
-						if (!entityMgr.isCreature(newName) && !entityMgr.isItem(newName)) {
-							newName = oldName;
-						}
-					}
-
-					if (first) {
-						buffer.append(newName);
+					if (first) { // cannot depend on buffer.length because section might be empty string
 						first = false;
 					} else {
 						buffer.append(';');
-						buffer.append(newName);
 					}
+					buffer.append(UpdateConverter.updateQuestSection(parts[i]));
 				}
 
 				player.setQuest(questSlot, buffer.toString());
@@ -671,6 +717,13 @@ public abstract class UpdateConverter {
 					player.setQuest(slot, 0, "done");
 				}
 			}
+		}
+
+		// 1.47: an issue in update converter caused leading ";" to be trimmed
+		questSlot = "seven_cherubs";
+		String slotState = player.getQuest(questSlot);
+		if (player.hasQuest(questSlot) && !slotState.startsWith(";")) {
+			player.setQuest(questSlot, ";" + slotState);
 		}
 
 		// 1.36: Tracks completions

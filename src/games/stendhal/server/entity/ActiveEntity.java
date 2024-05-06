@@ -344,6 +344,7 @@ public abstract class ActiveEntity extends Entity {
 			}
 		}
 
+		movementOffset += getSpeed();
 		if (isGhost()) {
 			if (isMoveCompleted()) {
 				move(x, y, nx, ny);
@@ -405,8 +406,6 @@ public abstract class ActiveEntity extends Entity {
 	 * 		<code>true</code> if moved a whole tile
 	 */
 	protected boolean isMoveCompleted() {
-		movementOffset += getSpeed();
-
 		if (movementOffset >= 1.0) {
 			movementOffset -= 1.0;
 			return true;

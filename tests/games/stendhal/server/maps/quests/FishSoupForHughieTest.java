@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2023 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -32,6 +32,7 @@ import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.MockStendlRPWorld;
 import games.stendhal.server.maps.ados.farmhouse.FarmersWifeNPC;
 import games.stendhal.server.maps.ados.farmhouse.MotherNPC;
+import utilities.NPCTestHelper;
 import utilities.PlayerTestHelper;
 import utilities.QuestHelper;
 
@@ -82,7 +83,7 @@ public class FishSoupForHughieTest {
 		en = npc.getEngine();
 
 		// configure Philomena's shop
-		SingletonRepository.getShopsList().configureNPC("Philomena", "milkandbutter", true, true);
+		NPCTestHelper.loadShops("Philomena");
 
 		en.step(player, "hi");
 		assertEquals("Dzień dobry!", getReply(npc));

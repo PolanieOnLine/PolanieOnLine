@@ -1,0 +1,61 @@
+{
+  "$schema": "https://raw.githubusercontent.com/neutralinojs/neutralinojs/main/schemas/neutralino.config.schema.json",
+  "applicationId": "org.stendhalgame.client",
+  "version": "1.46.5",
+  "defaultMode": "window",
+  "port": 0,
+  "documentRoot": "/resources/",
+  "url": "/",
+  "enableServer": true,
+  "enableNativeAPI": true,
+  "enableExtensions": true,
+  "extensions": [
+    {
+        "id": "nativehelper",
+        "commandLinux": "${NL_PATH}/extensions/binary/nativehelper",
+        "commandWindows": "${NL_PATH}/extensions/binary/nativehelper.exe"
+    }
+  ],
+  "tokenSecurity": "one-time",
+  "logging": {
+    "enabled": true
+  },
+  "nativeAllowList": [
+    "app.*",
+    "extensions.*"
+  ],
+  "modes": {
+    "window": {
+      "exitProcessOnClose": true,
+      "extendUserAgentWith": "Stendhal",
+      "title": "Stendhal",
+      "width": 930,
+      "height": 700,
+      "minWidth": 400,
+      "minHeight": 200,
+      "icon": "resources/StendhalIcon.png",
+      "resizable": true
+    },
+    "chrome": {
+      "exitProcessOnClose": true,
+      "width": 930,
+      "height": 700,
+      "minWidth": 400,
+      "minHeight": 200,
+      "icon": "resources/StendhalIcon.png",
+      "args": "--user-agent=\"Stendhal\"",
+      "nativeBlockList": [
+        "filesystem.*",
+        "os.*"
+      ]
+    }
+  },
+  "cli": {
+    "binaryName": "stendhal-client",
+    "resourcesPath": "/resources/",
+    "extensionsPath": "/extensions/",
+    "clientLibrary": "/resources/js/neutralino.js",
+    "binaryVersion": "5.0.0",
+    "clientVersion": "5.0.1"
+  }
+}

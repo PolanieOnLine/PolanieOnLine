@@ -1,5 +1,5 @@
 /***************************************************************************
- *                    Copyright © 2003-2023 - Arianne                      *
+ *                    Copyright © 2003-2024 - Arianne                      *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -292,7 +292,7 @@ public class RestockFlowerShop extends AbstractQuest {
 		fillQuestInfo(
 			"Odnowienie Zapasów Kwiaciarni",
 			getNPCName() + " potrzebuje odnowić zapasy kwiaciarni w mieście Nalwor.",
-			true);
+			true, 2);
 		setupBasicResponses();
 		setupActiveQuestResponses();
 		prepareRequestingStep();

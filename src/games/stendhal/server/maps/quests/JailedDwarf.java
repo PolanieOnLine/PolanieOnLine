@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2021 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -89,7 +89,7 @@ public class JailedDwarf extends AbstractQuest {
 		fillQuestInfo(
 				"Uwięziony Krasnal",
 				"Na dole Kanmararn znajdziesz przrażonego, uwięzionego w celi krasnala czekającego na odwiedziny. Powinien być strażnikiem, ale duergary napadły na więzienie. Może potrzebować zbroi do ucieczki.",
-				true);
+				false);
 		step_1();
 	}
 

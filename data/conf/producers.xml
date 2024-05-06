@@ -257,7 +257,7 @@
 	<!-- Xoderos (Semos) -->
 	<producer npc="Xoderos" slot="xoderos_cast_iron" type="item">
 		<welcome text="Witaj! Przykro mi to mówić, ale z powodu trwającej wojny nie wolno mi sprzedawać broni nikomu spoza grona oficjalnych wojskowych. Mogę odlać dla Ciebie żelazo, a może interesuję Cię moja #oferta specjalna? Powiedz tylko #odlej."/>
-		<item name="żelazo" minutes="5">
+		<item name="sztabka żelaza" minutes="5">
 			<resource name="polano"/>
 			<resource name="ruda żelaza"/>
 
@@ -508,7 +508,7 @@
 		<welcome text="Cześć! Jestem tutejszym kowalem. Jeżeli będziesz chciał, abym zrobił dla Ciebie #bełt to daj znać!"/>
 		<item name="bełt" quantity="20" minutes="1">
 			<resource name="polano" amount="2"/>
-			<resource name="żelazo"/>
+			<resource name="sztabka żelaza"/>
 
 			<activity type="make,zrób"/>
 		</item>
@@ -582,7 +582,7 @@
 	<!-- Kowal Andrzej (Zakopane) -->
 	<producer npc="Kowal Andrzej" slot="andrzej_cast_iron" type="item">
 		<welcome text="Cześć! Jestem tutejszym kowalem. Jeżeli będziesz chciał, abym odlał dla Ciebie #żelazo to daj znać!"/>
-		<item name="żelazo" minutes="3">
+		<item name="sztabka żelaza" minutes="3">
 			<resource name="polano"/>
 			<resource name="ruda żelaza"/>
 

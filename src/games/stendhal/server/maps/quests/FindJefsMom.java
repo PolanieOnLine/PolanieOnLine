@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2021 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -250,7 +250,7 @@ public class FindJefsMom extends AbstractQuest {
 		fillQuestInfo(
 				"Poszukiwanie Matki Jefa",
 				"Jef, mały chłopiec w Kirdneh, czeka na swoją mamę Amber, która nie wróciła z zakupów na rynku.",
-				false);
+				false, 2);
 		offerQuestStep();
 		findMomStep();
 		bringFlowerToJefStep();

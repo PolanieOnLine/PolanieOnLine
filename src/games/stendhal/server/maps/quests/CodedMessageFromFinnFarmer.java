@@ -278,7 +278,7 @@ public class CodedMessageFromFinnFarmer extends AbstractQuest {
 		fillQuestInfo(
 			"Zaszyfrowana Wiadomość",
 			"Finn Farmer ma ważną oraz tajną informację dla George'a.",
-			false);
+			false, QUEST_INDEX_REPEATED);
 	}
 
 	@Override

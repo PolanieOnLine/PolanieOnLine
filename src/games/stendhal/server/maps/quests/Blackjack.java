@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2023 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -37,6 +37,7 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.BehaviourAction;
 import games.stendhal.server.entity.npc.behaviour.impl.Behaviour;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.events.ChatOptionsEvent;
 
 public class Blackjack extends AbstractQuest {
 	// spades ♠
@@ -310,6 +311,9 @@ public class Blackjack extends AbstractQuest {
 				cleanUpTable();
 			}
 		};
+
+		ramon.addKnownChatOptions("postaw");
+		ChatOptionsEvent.addMerchantActivity("postaw");
 
 		ramon.setEntityClass("naughtyteen2npc");
 		ramon.setPosition(26, 36);

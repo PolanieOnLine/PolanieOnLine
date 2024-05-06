@@ -1,3 +1,14 @@
+/***************************************************************************
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
+ ***************************************************************************
+ ***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
 package games.stendhal.server.core.rp.achievement.condition;
 
 import java.util.List;
@@ -29,8 +40,7 @@ public class QuestCountCompletedCondition implements ChatCondition {
 
 	@Override
 	public boolean fire(final Player player, final Sentence sentence, final Entity entity) {
-		List<String> quests = SingletonRepository.getStendhalQuestSystem().getCompletedQuests(player);
-
+		List<String> quests = SingletonRepository.getStendhalQuestSystem().getCompletedQuests(player, true);
 		return (quests.size() >= count);
 	}
 

@@ -566,7 +566,7 @@
 		<drops>
 			<item value="money" quantity="[30,140]" probability="80.0"/>
 			<item value="sztabka złota" quantity="[2,3]" probability="5.0"/>
-			<item value="żelazo" quantity="[2,6]" probability="7.0"/>
+			<item value="sztabka żelaza" quantity="[2,6]" probability="7.0"/>
 			<item value="obsydian" quantity="[1,1]" probability="0.5"/>
 			<item value="skórzane twarde rękawice" quantity="[1,1]" probability="2.0"/>
 			<item value="peleryna lutinów" quantity="[1,1]" probability="1.0"/>

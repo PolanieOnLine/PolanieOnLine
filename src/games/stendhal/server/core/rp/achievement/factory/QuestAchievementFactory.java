@@ -138,6 +138,13 @@ public class QuestAchievementFactory extends AbstractAchievementFactory {
 			Achievement.EXTREME_BASE_SCORE, true,
 			new QuestCountCompletedCondition(140)));
 
+		// deliver 5 hot pizzas
+		achievements.add(createAchievement(
+			"quest.pizza_delivery.hot.0025", "30 Minut lub Mniej",
+			"Dostarczył 25 jeszcze ciepłych pizz",
+			Achievement.EASY_BASE_SCORE, true,
+			new QuestStateGreaterThanCondition("pizza_delivery", 3, 24)));
+
 		return achievements;
 	}
 }

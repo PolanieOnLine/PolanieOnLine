@@ -208,7 +208,15 @@ public class CreateAccountDialog extends JDialog {
 		grid.add(showPWToggle);
 
 		// Warning label
-		JLabel logLabel = new JLabel("<html><body><p><font size=\"-2\">Przy logowaniu będą zapisywane informacje, które będą identyfikować <br>Twój komputer w internecie w celu zapobiegania nadużyciom <br>(np. przy próbie odgadnięcia hasła w celu włamania się na konto <br>lub tworzeniu wielu kont w celu sprawiania problemów). <br>Ponadto wszystkie zdarzenia i akcje, które wydarzą się w grze <br>(np. rozwiązywanie zadań, atakowanie potworów) <br>są umieszczane w dzienniku. Te informacje będą wykorzystywane <br>w celu analizy luk i czasami w sprawach nadużyć.</font></p></body></html>");// Add a bit more empty space around it
+		JLabel logLabel = new JLabel("<html><body><p><font size=\"-2\">Podczas logowania, informacje, które identyfikują twój komputer zostaną zapisane<br>"
+				+ "w celu zapobiegnięcia nadużyciom (np. przy próbie odgadnięcia hasła w celu włamania się na konto<br>"
+				+ "lub tworzeniu wielu kont w celu sprawiania problemów).</font></p>"
+				+ "<p><font size=\"-2\">Ponadto wszystkie zdarzenia i akcje, które wydarzą się w grze-<br>"
+				+ "(np. rozwiązywanie zadań, atakowanie potworów) będą zapisywane w logach.<br>"
+				+ "Informacje te wykorzystywane będą w celu analizy luk oraz rzadko w sprawach nadużyć.</font></p>"
+				+ "<br>"
+				+ "<p><font size=\"-2\">PolanieOnLine to niekomercyjny projekt spędzania czasu wolnego. NIE wykorzystujemy<br>"
+				+ "Twoich danych do celów reklamowych oraz NIE udostępniamy ich osobom trzecim.</font></p></body></html>");
 		logLabel.setBorder(BorderFactory.createEmptyBorder(padding, padding, padding, padding));
 		logLabel.setAlignmentX(CENTER_ALIGNMENT);
 		contentPane.add(logLabel, SBoxLayout.constraint(SLayout.EXPAND_X, SLayout.EXPAND_Y));

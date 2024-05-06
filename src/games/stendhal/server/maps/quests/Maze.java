@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2021 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -131,7 +131,7 @@ public class Maze extends AbstractQuest {
 		fillQuestInfo(
 				"Labirynt",
 				"Wszystko co potrzebujesz to dobre oko...",
-				false);
+				false, 2);
 		addMazeSign();
 		setupConversation();
 	}

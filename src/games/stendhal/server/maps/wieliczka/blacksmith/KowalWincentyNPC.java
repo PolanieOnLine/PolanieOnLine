@@ -61,7 +61,7 @@ public class KowalWincentyNPC implements ZoneConfigurator {
 						"Zajmuje się odlewaniem żelaza, znajduje się w swojej kuźni w Zakopcu.");
 				addReply(Arrays.asList("bełt", "bełty"),
 						"Jest to pocisk przypominający strzałę, używany do strzelania z kuszy.");
-				addReply(Arrays.asList("ruda", "żelazo", "ruda żelaza"),
+				addReply(Arrays.asList("ruda", "sztabka żelaza", "ruda żelaza"),
 						"Rudę żelaza znajdziesz w górach Zakopanego i Kościeliska. Uważaj tam na siebie!");
 			}
 		};

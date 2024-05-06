@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2019 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -37,7 +37,8 @@ public class ChefNPC implements ZoneConfigurator  {
 	}
 
 	private void buildNPC(StendhalRPZone zone) {
-		final SpeakerNPC npc = new SpeakerNPC("Patrick") {
+		// FIXME: rename as conflicts with games.stendhal.server.script.Herald
+		final SpeakerNPC npc = new SpeakerNPC("Preston") {
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -69,7 +70,7 @@ public class ChefNPC implements ZoneConfigurator  {
 			}
 		};
 
-		npc.setDescription("Oto Patrick. Nosi uroczy kapelusz szefa kuchni.");
+		npc.setDescription("Oto Preston. Nosi uroczy kapelusz szefa kuchni.");
 		npc.setEntityClass("chefnpc");
 		npc.setGender("M");
 		npc.setPosition(13, 3);

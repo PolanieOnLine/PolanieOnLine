@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2023 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -24,6 +24,7 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.fsm.Engine;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.fado.hut.SellerNPC;
+import utilities.NPCTestHelper;
 import utilities.PlayerTestHelper;
 import utilities.QuestHelper;
 
@@ -46,7 +47,7 @@ public class LearnAboutKarmaTest {
 		npc = SingletonRepository.getNPCList().get("Sarzina");
 
 		// configure Sarzina's shop
-		SingletonRepository.getShopsList().configureNPC("Sarzina", "superhealing", true);
+		NPCTestHelper.loadShops("Sarzina");
 
 		final AbstractQuest quest = new LearnAboutKarma();
 		quest.addToWorld();

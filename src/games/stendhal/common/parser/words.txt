@@ -319,7 +319,7 @@ apartment	OBJ	apartments
 apology	OBJ	apologies
 apothecary	OBJ	apothecaries
 apple	OBJ-FOO	apples
-arandula	OBJ
+arandula	OBJ	arandule
 armor	OBJ	armors
 armour	OBJ	=armor	armours
 arrow	OBJ	arrows
@@ -344,7 +344,7 @@ basket	OBJ	baskets
 battle	OBJ	battles
 bean	OBJ-FOO	beans
 beaver	OBJ-ANI	beavers
-beer	OBJ-FOO-FLU
+beer	OBJ-FOO-FLU	beery
 beeswax	OBJ	beeswaxes
 bicycle	OBJ	bicycles
 bike	OBJ	bikes
@@ -363,7 +363,7 @@ box	OBJ	boxes
 brain	OBJ	brains
 branch	OBJ	branches
 brandy	OBJ-FOO-FLU	brandies
-bread	OBJ-FOO
+bread	OBJ-FOO	bready
 broadsword	OBJ	broadswords
 broccoli	OBJ-FOO	broccolis
 bronze	OBJ	bronzes
@@ -378,7 +378,7 @@ bureau	OBJ	bureaux
 bus	OBJ	bus
 bush	OBJ	bushes
 buster	OBJ	busters
-butter	OBJ-FOO
+butter	OBJ-FOO	buttery
 button	OBJ	buttons
 caboose	OBJ	cabooses
 cake	OBJ-FOO	cakes
@@ -536,7 +536,7 @@ fuse	OBJ	fuses
 future	OBJ	futures
 gambling	OBJ	gamblings
 game	OBJ	games
-garlic	OBJ-FOO
+garlic	OBJ-FOO	garlice
 garnet	OBJ	garnet
 gate	OBJ	gates
 gem	OBJ	gems
@@ -656,7 +656,7 @@ madaram	OBJ	madarams
 magic	OBJ	magic
 mainio	OBJ	mainios
 mana	OBJ-FOO-FLU	mana
-mandragora	OBJ
+mandragora	OBJ	mandragory
 manner	OBJ	manners
 map	OBJ	maps
 marble	OBJ	marbles
@@ -706,7 +706,7 @@ number	OBJ	numbers
 o	OBJ	os
 obsidian	OBJ	obsidians
 offer	OBJ	offers
-oil	OBJ
+oil	OBJ	oily
 onion	OBJ-FOO	onions
 opposite	OBJ	opposites
 or'ril	OBJ	or'rils
@@ -928,7 +928,7 @@ whiskey	OBJ-FOO-FLU	whiskeys
 wikipedia	OBJ	wikipedias
 wind	OBJ	winds
 window	OBJ	windows
-wine	OBJ-FOO-FLU
+wine	OBJ-FOO-FLU	wina
 wish	OBJ	wishes
 wodka	OBJ-FOO-FLU	wodkas
 wood	OBJ	woods

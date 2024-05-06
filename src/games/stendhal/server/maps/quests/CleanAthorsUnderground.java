@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2023 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -95,6 +95,9 @@ public class CleanAthorsUnderground implements QuestManuscript {
 			.rewardWith(new IncreaseXPAction(20000))
 			.rewardWith(new IncreaseKarmaAction(10.0))
 			.rewardWith(new EquipItemAction("wielki eliksir", 10));
+
+		// completions count is stored in 3rd index of quest slot
+		quest.setCompletionsIndexes(2);
 
 		return quest;
 	}

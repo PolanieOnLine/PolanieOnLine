@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2023 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -89,6 +89,9 @@ public class Campfire implements QuestManuscript {
 			.rewardWith(new IncreaseKarmaAction(10))
 			.rewardWith(new EquipItemAction("węgiel drzewny", 10))
 			.rewardWith(new EquipRandomItemAction("mięso=10;szynka=10", false, "Dziękuję! Weź proszę [this_these] [number_item] oraz węgiel drzewny!"));
+
+		// completions count is stored in 3rd index of quest slot
+		quest.setCompletionsIndexes(2);
 
 		return quest;
 	}

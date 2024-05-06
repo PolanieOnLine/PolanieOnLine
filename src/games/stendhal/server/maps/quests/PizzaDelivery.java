@@ -285,6 +285,9 @@ public class PizzaDelivery implements QuestManuscript {
 			.respondToMissingItem("Pizza? Gdzie?")
 			.npcStatusEffect("pizza");
 
+		// completions count is stored in 3rd index of quest slot
+		quest.setCompletionsIndexes(2);
+
 		return quest;
 	}
 

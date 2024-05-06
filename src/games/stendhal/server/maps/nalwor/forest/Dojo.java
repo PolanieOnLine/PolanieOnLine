@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   Copyright © 2003-2020 - Arianne                       *
+ *                 Copyright © 2003-2024 - Faiumoni e. V.                  *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -103,6 +103,8 @@ public class Dojo implements ZoneConfigurator {
 		samurai.setGender("M");
 		samurai.setIdleDirection(Direction.DOWN);
 		samurai.setPosition(24, 74);
+
+		samurai.addKnownChatOptions("trenuj");
 
 		dojoZone.add(samurai);
 	}

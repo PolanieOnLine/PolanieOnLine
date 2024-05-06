@@ -1,5 +1,5 @@
 /***************************************************************************
- *                    Copyright © 2003-2023 - Arianne                      *
+ *                    Copyright © 2003-2024 - Arianne                      *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -411,6 +411,8 @@ public class CommerceAchievementFactory extends AbstractAchievementFactory {
 							csSellers = csSellers + ", ";
 						}
 						csSellers = csSellers + name;
+
+						seller.addKnownChatOptions("patronat");
 					} else {
 						logger.warn("Cannot set up NPC " + name
 							+ " for \"Community Supporter\" achievement");

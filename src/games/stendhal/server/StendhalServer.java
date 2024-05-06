@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -65,11 +64,10 @@ public class StendhalServer {
 		marauroa.server.marauroad.main(args);
 
 		// permanently sets DaylightPhase for testing purposes
-		String testPhase = System.getProperty("testing.daylightphase");
+		final String testPhase = System.getProperty("testing.daylightphase");
 		if (testPhase != null) {
-			testPhase = testPhase.toLowerCase();
 			for (DaylightPhase phase: DaylightPhase.values()) {
-				if (phase.toString().toLowerCase().equals(testPhase)) {
+				if (phase.toString().equalsIgnoreCase(testPhase)) {
 					logger.info("Setting testing DaylightPhase: " + phase);
 
 					DaylightPhase.setTestingPhase(phase);

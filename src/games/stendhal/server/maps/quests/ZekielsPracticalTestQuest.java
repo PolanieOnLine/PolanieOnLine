@@ -119,7 +119,7 @@ public class ZekielsPracticalTestQuest extends AbstractQuest {
 
 		// we should only answer to these ingredients questions if the candles stage is not yet done
 		npc.add(ConversationStates.ATTENDING,
-				Arrays.asList("iron", "żelazo", "żelazo", "żelaza"),
+				Arrays.asList("iron", "sztabka żelaza", "sztabka żelaza", "żelaza"),
 				new QuestInStateCondition(QUEST_SLOT, "start"),
 				ConversationStates.ATTENDING,
 				"Podstawa świecy będzie z tego zrobiona. Zgłoś się do kowala w Zakopanem lub Semos w sprawie żelaza.",
@@ -141,7 +141,7 @@ public class ZekielsPracticalTestQuest extends AbstractQuest {
 					new GreetingMatchesNameCondition(npc.getName()),
 					new QuestInStateCondition(QUEST_SLOT,"start"),
 					new NotCondition(new PlayerHasItemWithHimCondition("wosk pszczeli",REQUIRED_BEESWAX)),
-					new PlayerHasItemWithHimCondition("żelazo",REQUIRED_IRON)),
+					new PlayerHasItemWithHimCondition("sztabka żelaza",REQUIRED_IRON)),
 			ConversationStates.ATTENDING,
 			"Witaj, widzę, że zdobyłeś żelazo, ale wciąż potrzebujesz 6 plastrów wosku pszczelego. Wróć kiedy zdobędziesz " +
 			"wszystkie #składniki.",
@@ -152,7 +152,7 @@ public class ZekielsPracticalTestQuest extends AbstractQuest {
 			new AndCondition(
 					new GreetingMatchesNameCondition(npc.getName()),
 					new QuestInStateCondition(QUEST_SLOT,"start"),
-					new NotCondition(new PlayerHasItemWithHimCondition("żelazo",REQUIRED_IRON)),
+					new NotCondition(new PlayerHasItemWithHimCondition("sztabka żelaza",REQUIRED_IRON)),
 					new PlayerHasItemWithHimCondition("wosk pszczeli",REQUIRED_BEESWAX)),
 			ConversationStates.ATTENDING,
 			"Witaj, widzę, że zdobyłeś wosk pszczeli, ale wciąż brakuje ci 2 sztabek żelaza. Wróć kiedy zdobędziesz " +
@@ -164,7 +164,7 @@ public class ZekielsPracticalTestQuest extends AbstractQuest {
 			new AndCondition(
 					new GreetingMatchesNameCondition(npc.getName()),
 					new QuestInStateCondition(QUEST_SLOT,"start"),
-					new PlayerHasItemWithHimCondition("żelazo",REQUIRED_IRON),
+					new PlayerHasItemWithHimCondition("sztabka żelaza",REQUIRED_IRON),
 					new PlayerHasItemWithHimCondition("wosk pszczeli",REQUIRED_BEESWAX)),
 			ConversationStates.ATTENDING,
 			"Witaj. Wreszcie przyniosłeś mi wszystkie składniki, które potrzebuję to wyczarowania magicznych świec. Teraz"+
@@ -172,7 +172,7 @@ public class ZekielsPracticalTestQuest extends AbstractQuest {
 			new MultipleActions(
 					new SetQuestAction(QUEST_SLOT,"candles_done"),
 					new DropItemAction("wosk pszczeli", 6),
-					new DropItemAction("żelazo", 2),
+					new DropItemAction("sztabka żelaza", 2),
 					new IncreaseXPAction(4000),
 					new IncreaseKarmaAction(10)));
 
@@ -339,7 +339,7 @@ public class ZekielsPracticalTestQuest extends AbstractQuest {
 		}
 		final String questState = player.getQuest(QUEST_SLOT);
 		history.add("Wpuszczam do wieży Kręgu Czarodziejów. Zekiel, strażnik tego miejsa, zapytał mnie o przedmioty potrzebne do zrobienia magicznych świec.");
-		if (questState.equals("start") && player.isEquipped("wosk pszczeli", REQUIRED_BEESWAX) && player.isEquipped("żelazo", REQUIRED_IRON)
+		if (questState.equals("start") && player.isEquipped("wosk pszczeli", REQUIRED_BEESWAX) && player.isEquipped("sztabka żelaza", REQUIRED_IRON)
 				|| questState.equals("candles_done") || questState.endsWith("_step") || questState.equals("done")) {
 			history.add("Zbieram plastry wosku pszczelego i żelazo potrzebne do zrobienia magicznych świec.");
 		}

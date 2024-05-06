@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2021 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -231,7 +231,7 @@ public class WaterForXhiphin extends AbstractQuest {
 		fillQuestInfo(
 				"Woda Dla Xhiphina",
 				"Xhiphin Zohos potrzebuje trochę świeżej wody.",
-				true);
+				true, 2);
 		requestStep();
 		checkWaterStep();
 		finishStep();

@@ -2,140 +2,142 @@
 
 <project xmlns:if="ant:if" xmlns:unless="ant:unless">
 
-  <!-- To build executable package/installer, specific package type can be build only on it's native platform.
-    - First build client zip file using lowest supported Java version (JDK 8)
-    - Switch to newer JDK version which has included jpackage tool
-    - Follow jpackage error messages to install missing dependencies, like for example .NET runtime / wix on Windows
-  -->
+	<!-- NOTE: these are not used by the project or system administrator for created releases and may be removed in the future -->
 
-  <target name="stagePackage">
-    <delete dir="${build}/package/client"/>
-    <unzip dest="${build}/package/client" src="${buildroot}/polanieonline-${version}.zip"/>
-    <delete file="${build}/package/client/polanieonline-starter.exe"/>
-  </target>
+	<!-- To build executable package/installer, specific package type can be build only on it's native platform.
+		- First build client zip file using lowest supported Java version (JDK 8)
+		- Switch to newer JDK version which has included jpackage tool
+		- Follow jpackage error messages to install missing dependencies, like for example .NET runtime / wix on Windows
+	-->
 
-  <target name="msiPackage" description="Creates MSI installer package from current build" depends="stagePackage">
-    <delete dir="${build}/package/msi-app-image"/>
-    <exec executable="jpackage" dir="." failonerror="true">
-      <arg line="--type app-image"/>
-      <arg line="--dest ${build}/package/msi-app-image"/>
-      <arg line="--input ${build}/package/client"/>
-      <arg line="--name polanieonline"/>
-      <arg line="--app-version ${version}"/>
-      <arg line="--main-jar polanieonline-starter.jar"/>
-      <arg line="--main-class games.stendhal.client.update.Starter"/>
-      <arg line="--icon buildtools/package/icon.ico"/>
-    </exec>
-    <delete dir="${build}/package/msi-app-image/polanieonline/runtime"/>
-    <delete file="${build}/package/msi-app-image/polanieonline/polanieonline.exe"/>
-    <copy tofile="${build}/package/msi-app-image/polanieonline/polanieonline.exe" file="buildtools/package/polanieonline.exe"/>
-    <exec executable="jpackage" dir="." failonerror="true">
-      <arg line="--type msi"/>
-      <arg line="--dest ${build}"/>
-      <arg line="--app-image ${build}/package/msi-app-image/polanieonline"/>
-      <arg line="--app-version ${version}"/>
-      <arg line="--about-url https://polanieonline.eu"/>
-      <arg line="--license-file LICENSE.txt"/>
-      <arg line="--description &quot;PolanieOnLine to przyjazna i darmowa gra przygodowa online dla wielu graczy w starym stylu.&quot;"/>
-      <arg line="--icon buildtools/package/icon-64x64.png"/>
-      <arg line="--win-menu"/>
-      <arg line="--win-shortcut"/>
-      <arg line="--win-shortcut-prompt"/>
-    </exec>
-  </target> <!-- msiPackage -->
+	<target name="stagePackage">
+		<delete dir="${build}/package/client"/>
+		<unzip dest="${build}/package/client" src="${buildroot}/polanieonline-${version}.zip"/>
+		<delete file="${build}/package/client/polanieonline-starter.exe"/>
+	</target>
 
-  <target name="dmgPackage" description="Creates DMG package from current build" depends="stagePackage">
-    <delete dir="${build}/package/dmg-app-image"/>
-    <exec executable="jpackage" dir="." failonerror="true">
-      <arg line="--type app-image"/>
-      <arg line="--dest ${build}/package/dmg-app-image"/>
-      <arg line="--input ${build}/package/client"/>
-      <arg line="--name polanieonline"/>
-      <arg line="--app-version ${version}"/>
-      <arg line="--main-jar polanieonline-starter.jar"/>
-      <arg line="--main-class games.stendhal.client.update.Starter"/>
-      <arg line="--icon buildtools/package/icon.icns"/>
-    </exec>
-    <delete dir="${build}/package/dmg-app-image/polanieonline.app/Contents/runtime"/>
-    <delete file="${build}/package/dmg-app-image/polanieonline.app/Contents/MacOS/polanieonline"/>
-    <copy tofile="${build}/package/dmg-app-image/polanieonline.app/Contents/MacOS/polanieonline" file="buildtools/package/polanieonline-macos"/>
-    <chmod file="${build}/package/dmg-app-image/polanieonline.app/Contents/MacOS/polanieonline" perm="+x"/>
-    <exec executable="jpackage" dir="." failonerror="true">
-      <arg line="--type dmg"/>
-      <arg line="--dest ${build}"/>
-      <arg line="--app-image ${build}/package/dmg-app-image/polanieonline.app"/>
-      <arg line="--app-version ${version}"/>
-      <arg line="--about-url https://polanieonline.eu"/>
-      <arg line="--license-file LICENSE.txt"/>
-      <arg line="--description &quot;PolanieOnLine to przyjazna i darmowa gra przygodowa online dla wielu graczy w starym stylu.&quot;"/>
-      <arg line="--icon buildtools/package/icon.icns"/>
-    </exec>
-  </target> <!-- dmgPackage -->
+	<target name="msiPackage" description="Creates MSI installer package from current build" depends="stagePackage">
+		<delete dir="${build}/package/msi-app-image"/>
+		<exec executable="jpackage" dir="." failonerror="true">
+			<arg line="--type app-image"/>
+			<arg line="--dest ${build}/package/msi-app-image"/>
+			<arg line="--input ${build}/package/client"/>
+			<arg line="--name polanieonline"/>
+			<arg line="--app-version ${version}"/>
+			<arg line="--main-jar polanieonline-starter.jar"/>
+			<arg line="--main-class games.stendhal.client.update.Starter"/>
+			<arg line="--icon buildtools/package/icon.ico"/>
+		</exec>
+		<delete dir="${build}/package/msi-app-image/polanieonline/runtime"/>
+		<delete file="${build}/package/msi-app-image/polanieonline/polanieonline.exe"/>
+		<copy tofile="${build}/package/msi-app-image/polanieonline/polanieonline.exe" file="buildtools/package/polanieonline.exe"/>
+		<exec executable="jpackage" dir="." failonerror="true">
+			<arg line="--type msi"/>
+			<arg line="--dest ${build}"/>
+			<arg line="--app-image ${build}/package/msi-app-image/polanieonline"/>
+			<arg line="--app-version ${version}"/>
+			<arg line="--about-url https://polanieonline.eu"/>
+			<arg line="--license-file LICENSE.txt"/>
+			<arg line="--description &quot;PolanieOnLine to przyjazna i darmowa gra przygodowa online dla wielu graczy w starym stylu.&quot;"/>
+			<arg line="--icon buildtools/package/icon-64x64.png"/>
+			<arg line="--win-menu"/>
+			<arg line="--win-shortcut"/>
+			<arg line="--win-shortcut-prompt"/>
+		</exec>
+	</target> <!-- msiPackage -->
 
-  <target name="rpmPackage" description="Creates RPM package from current build" depends="stagePackage">
-    <delete dir="${build}/package/rpm-app-image"/>
-    <exec executable="jpackage" dir="." failonerror="true">
-      <arg line="--type app-image"/>
-      <arg line="--dest ${build}/package/rpm-app-image"/>
-      <arg line="--input ${build}/package/client"/>
-      <arg line="--name polanieonline"/>
-      <arg line="--app-version ${version}"/>
-      <arg line="--main-jar polanieonline-starter.jar"/>
-      <arg line="--main-class games.stendhal.client.update.Starter"/>
-      <arg line="--icon buildtools/package/icon-64x64.png"/>
-    </exec>
-    <delete dir="${build}/package/rpm-app-image/polanieonline/lib/runtime"/>
-    <delete file="${build}/package/rpm-app-image/polanieonline/lib/libapplauncher.so"/>
-    <delete file="${build}/package/rpm-app-image/polanieonline/bin/polanieonline"/>
-    <copy todir="${build}/package/rpm-app-image/polanieonline/bin" file="buildtools/package/polanieonline"/>
-    <chmod file="${build}/package/rpm-app-image/polanieonline/bin/polanieonline" perm="+x"/>
-    <exec executable="jpackage" dir="." failonerror="true">
-      <arg line="--type rpm"/>
-      <arg line="--dest ${build}"/>
-      <arg line="--app-image ${build}/package/rpm-app-image/polanieonline"/>
-      <arg line="--app-version ${version}"/>
-      <arg line="--about-url https://polanieonline.eu"/>
-      <arg line="--license-file LICENSE.txt"/>
-      <arg line="--description &quot;PolanieOnLine to przyjazna i darmowa gra przygodowa online dla wielu graczy w starym stylu.&quot;"/>
-      <arg line="--icon buildtools/package/icon-64x64.png"/>
-      <arg line="--linux-menu-group Game"/>
-      <arg line="--linux-package-deps &quot;jre >= 1.8.0&quot;"/>
-      <arg line="--linux-rpm-license-type GPLv2"/>
-      <arg line="--linux-shortcut"/>
-    </exec>
-  </target> <!-- rpmPackage -->
+	<target name="dmgPackage" description="Creates DMG package from current build" depends="stagePackage">
+		<delete dir="${build}/package/dmg-app-image"/>
+		<exec executable="jpackage" dir="." failonerror="true">
+			<arg line="--type app-image"/>
+			<arg line="--dest ${build}/package/dmg-app-image"/>
+			<arg line="--input ${build}/package/client"/>
+			<arg line="--name polanieonline"/>
+			<arg line="--app-version ${version}"/>
+			<arg line="--main-jar polanieonline-starter.jar"/>
+			<arg line="--main-class games.stendhal.client.update.Starter"/>
+			<arg line="--icon buildtools/package/icon.icns"/>
+		</exec>
+		<delete dir="${build}/package/dmg-app-image/polanieonline.app/Contents/runtime"/>
+		<delete file="${build}/package/dmg-app-image/polanieonline.app/Contents/MacOS/polanieonline"/>
+		<copy tofile="${build}/package/dmg-app-image/polanieonline.app/Contents/MacOS/polanieonline" file="buildtools/package/polanieonline-macos"/>
+		<chmod file="${build}/package/dmg-app-image/polanieonline.app/Contents/MacOS/polanieonline" perm="+x"/>
+		<exec executable="jpackage" dir="." failonerror="true">
+			<arg line="--type dmg"/>
+			<arg line="--dest ${build}"/>
+			<arg line="--app-image ${build}/package/dmg-app-image/polanieonline.app"/>
+			<arg line="--app-version ${version}"/>
+			<arg line="--about-url https://polanieonline.eu"/>
+			<arg line="--license-file LICENSE.txt"/>
+			<arg line="--description &quot;PolanieOnLine to przyjazna i darmowa gra przygodowa online dla wielu graczy w starym stylu.&quot;"/>
+			<arg line="--icon buildtools/package/icon.icns"/>
+		</exec>
+	</target> <!-- dmgPackage -->
 
-  <target name="debPackage" description="Creates DEB package from current build" depends="stagePackage">
-    <delete dir="${build}/package/deb-app-image"/>
-    <exec executable="jpackage" dir="." failonerror="true">
-      <arg line="--type app-image"/>
-      <arg line="--dest ${build}/package/deb-app-image"/>
-      <arg line="--input ${build}/package/client"/>
-      <arg line="--name polanieonline"/>
-      <arg line="--app-version ${version}"/>
-      <arg line="--main-jar polanieonline-starter.jar"/>
-      <arg line="--main-class games.stendhal.client.update.Starter"/>
-      <arg line="--icon buildtools/package/icon-64x64.png"/>
-    </exec>
-    <delete dir="${build}/package/deb-app-image/polanieonline/lib/runtime"/>
-    <delete file="${build}/package/deb-app-image/polanieonline/lib/libapplauncher.so"/>
-    <delete file="${build}/package/deb-app-image/polanieonline/bin/polanieonline"/>
-    <copy todir="${build}/package/deb-app-image/polanieonline/bin" file="buildtools/package/polanieonline"/>
-    <chmod file="${build}/package/deb-app-image/polanieonline/bin/polanieonline" perm="+x"/>
-    <exec executable="jpackage" dir="." failonerror="true">
-      <arg line="--type deb"/>
-      <arg line="--dest ${build}"/>
-      <arg line="--app-image ${build}/package/deb-app-image/polanieonline"/>
-      <arg line="--app-version ${version}"/>
-      <arg line="--about-url https://polanieonline.eu"/>
-      <arg line="--license-file LICENSE.txt"/>
-      <arg line="--description &quot;PolanieOnLine to przyjazna i darmowa gra przygodowa online dla wielu graczy w starym stylu.&quot;"/>
-      <arg line="--icon buildtools/package/icon-64x64.png"/>
-      <arg line="--linux-menu-group Game"/>
-      <arg line="--linux-app-category Game"/>
-      <arg line="--linux-package-deps &quot;default-jre (>= 1.8.0)&quot;"/>
-      <arg line="--linux-shortcut"/>
-    </exec>
-  </target> <!-- debPackage -->
+	<target name="rpmPackage" description="Creates RPM package from current build" depends="stagePackage">
+		<delete dir="${build}/package/rpm-app-image"/>
+		<exec executable="jpackage" dir="." failonerror="true">
+			<arg line="--type app-image"/>
+			<arg line="--dest ${build}/package/rpm-app-image"/>
+			<arg line="--input ${build}/package/client"/>
+			<arg line="--name polanieonline"/>
+			<arg line="--app-version ${version}"/>
+			<arg line="--main-jar polanieonline-starter.jar"/>
+			<arg line="--main-class games.stendhal.client.update.Starter"/>
+			<arg line="--icon buildtools/package/icon-64x64.png"/>
+		</exec>
+		<delete dir="${build}/package/rpm-app-image/polanieonline/lib/runtime"/>
+		<delete file="${build}/package/rpm-app-image/polanieonline/lib/libapplauncher.so"/>
+		<delete file="${build}/package/rpm-app-image/polanieonline/bin/polanieonline"/>
+		<copy todir="${build}/package/rpm-app-image/polanieonline/bin" file="buildtools/package/polanieonline"/>
+		<chmod file="${build}/package/rpm-app-image/polanieonline/bin/polanieonline" perm="+x"/>
+		<exec executable="jpackage" dir="." failonerror="true">
+			<arg line="--type rpm"/>
+			<arg line="--dest ${build}"/>
+			<arg line="--app-image ${build}/package/rpm-app-image/polanieonline"/>
+			<arg line="--app-version ${version}"/>
+			<arg line="--about-url https://polanieonline.eu"/>
+			<arg line="--license-file LICENSE.txt"/>
+			<arg line="--description &quot;PolanieOnLine to przyjazna i darmowa gra przygodowa online dla wielu graczy w starym stylu.&quot;"/>
+			<arg line="--icon buildtools/package/icon-64x64.png"/>
+			<arg line="--linux-menu-group Game"/>
+			<arg line="--linux-package-deps &quot;jre >= 1.8.0&quot;"/>
+			<arg line="--linux-rpm-license-type GPLv2"/>
+			<arg line="--linux-shortcut"/>
+		</exec>
+	</target> <!-- rpmPackage -->
+
+	<target name="debPackage" description="Creates DEB package from current build" depends="stagePackage">
+		<delete dir="${build}/package/deb-app-image"/>
+		<exec executable="jpackage" dir="." failonerror="true">
+			<arg line="--type app-image"/>
+			<arg line="--dest ${build}/package/deb-app-image"/>
+			<arg line="--input ${build}/package/client"/>
+			<arg line="--name polanieonline"/>
+			<arg line="--app-version ${version}"/>
+			<arg line="--main-jar polanieonline-starter.jar"/>
+			<arg line="--main-class games.stendhal.client.update.Starter"/>
+			<arg line="--icon buildtools/package/icon-64x64.png"/>
+		</exec>
+		<delete dir="${build}/package/deb-app-image/polanieonline/lib/runtime"/>
+		<delete file="${build}/package/deb-app-image/polanieonline/lib/libapplauncher.so"/>
+		<delete file="${build}/package/deb-app-image/polanieonline/bin/polanieonline"/>
+		<copy todir="${build}/package/deb-app-image/polanieonline/bin" file="buildtools/package/polanieonline"/>
+		<chmod file="${build}/package/deb-app-image/polanieonline/bin/polanieonline" perm="+x"/>
+		<exec executable="jpackage" dir="." failonerror="true">
+			<arg line="--type deb"/>
+			<arg line="--dest ${build}"/>
+			<arg line="--app-image ${build}/package/deb-app-image/polanieonline"/>
+			<arg line="--app-version ${version}"/>
+			<arg line="--about-url https://polanieonline.eu"/>
+			<arg line="--license-file LICENSE.txt"/>
+			<arg line="--description &quot;PolanieOnLine to przyjazna i darmowa gra przygodowa online dla wielu graczy w starym stylu.&quot;"/>
+			<arg line="--icon buildtools/package/icon-64x64.png"/>
+			<arg line="--linux-menu-group Game"/>
+			<arg line="--linux-app-category Game"/>
+			<arg line="--linux-package-deps &quot;default-jre (>= 1.8.0)&quot;"/>
+			<arg line="--linux-shortcut"/>
+		</exec>
+	</target> <!-- debPackage -->
 
 </project>

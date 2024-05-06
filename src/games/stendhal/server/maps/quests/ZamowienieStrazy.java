@@ -139,13 +139,13 @@ public class ZamowienieStrazy extends AbstractQuest {
 	    final ChatAction action = new MultipleActions(
 	    	new IncreaseXPAction(15000),
 	    	new SetQuestAction(QUEST_SLOT, "r_zapasow"),
-		    new DropItemAction("żelazo", ILOSC_ZELAZA)
+		    new DropItemAction("sztabka żelaza", ILOSC_ZELAZA)
 	    );
 
 	    npc.add(ConversationStates.ATTENDING,
 			Arrays.asList("zamówienie", "zamówienia", "karteczka", "list", "straż królewska"),
 			new AndCondition(new QuestStateStartsWithCondition(QUEST_SLOT, "zapasy"),
-				new PlayerHasItemWithHimCondition("żelazo", ILOSC_ZELAZA),
+				new PlayerHasItemWithHimCondition("sztabka żelaza", ILOSC_ZELAZA),
 				new PlayerHasItemWithHimCondition("ruda miedzi", ILOSC_MIEDZI),
 				new PlayerHasItemWithHimCondition("sztabka złota", ILOSC_ZLOTA)),
 			ConversationStates.IDLE,
@@ -156,7 +156,7 @@ public class ZamowienieStrazy extends AbstractQuest {
 			Arrays.asList("zamówienie", "zamówienia", "karteczka", "list", "straż królewska"),
 			new AndCondition(new QuestStateStartsWithCondition(QUEST_SLOT, "zapasy"),
 				new NotCondition(
-					new AndCondition(new PlayerHasItemWithHimCondition("żelazo", ILOSC_ZELAZA),
+					new AndCondition(new PlayerHasItemWithHimCondition("sztabka żelaza", ILOSC_ZELAZA),
 						new PlayerHasItemWithHimCondition("ruda miedzi", ILOSC_MIEDZI),
 						new PlayerHasItemWithHimCondition("sztabka złota", ILOSC_ZLOTA)))),
 			ConversationStates.ATTENDING,

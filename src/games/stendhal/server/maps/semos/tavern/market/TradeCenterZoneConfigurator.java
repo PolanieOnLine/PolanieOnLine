@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -17,6 +17,7 @@ import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.trade.Market;
+import games.stendhal.server.events.ChatOptionsEvent;
 import marauroa.common.game.RPObject;
 
 /**
@@ -71,6 +72,11 @@ public class TradeCenterZoneConfigurator implements ZoneConfigurator {
 		speaker.setGender("M");
 		// add icon denoting merchant
 		speaker.put("job_merchant", "");
+
+		// chat options
+		speaker.addKnownChatOptions("pokaż");
+		ChatOptionsEvent.addMerchantActivity("pokaż");
+
 		zone.add(speaker);
 	}
 

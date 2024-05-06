@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -23,6 +22,7 @@ import org.junit.Test;
 
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.fsm.Engine;
+import utilities.NPCTestHelper;
 import utilities.QuestHelper;
 import utilities.ShopHelper;
 import utilities.ZonePlayerAndNPCTestImpl;
@@ -58,8 +58,8 @@ public class GreeterNPCTest extends ZonePlayerAndNPCTestImpl {
 		assertNotNull(npc);
 		final Engine en = npc.getEngine();
 
-		// FIXME: this should be set up before test is run
-		ShopHelper.initSeller("allscrolls");
+		// configure shop
+		NPCTestHelper.loadShops("Erodel Bmud");
 
 		assertTrue(en.step(player, "hi"));
 		String reply = getReply(npc);

@@ -97,7 +97,7 @@ public class StuffForBaldemar extends AbstractQuest {
 				.bySaying("Potrzebuję %s na kawałki i części do twojej nowej tarczy.");
 		itemCollector.require().item("sztabka złota").pieces(10)
 				.bySaying("Potrzebuję %s, aby połączyć z mithrilem i żelazem.");
-		itemCollector.require().item("żelazo").pieces(20).bySaying("Potrzebuję %s, aby połączyć z mithrilem i złotem.");
+		itemCollector.require().item("sztabka żelaza").pieces(20).bySaying("Potrzebuję %s, aby połączyć z mithrilem i złotem.");
 		itemCollector.require().item("czarna perła").pieces(10)
 				.bySaying("Potrzebuję %s, aby zmielić na proszek do posypania na tarczę, aby dawała ładny połysk.");
 		itemCollector.require().item("shuriken").pieces(20).bySaying(

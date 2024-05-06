@@ -272,7 +272,7 @@ public class MealForGroongo extends AbstractQuest {
 		fillQuestInfo(
 			"Hotelowa Restauracja",
 			"Groongo jest głodny i potrzebuje skromny posiłek w restauracji hotelu w Fado.",
-			true);
+			true, 7);
 		stageBeginQuest();
 		stageCollectIngredientsForMainDish();
 		stageCheckForDessert();

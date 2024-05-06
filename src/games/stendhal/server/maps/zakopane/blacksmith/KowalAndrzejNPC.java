@@ -70,7 +70,7 @@ public class KowalAndrzejNPC implements ZoneConfigurator {
 						"Sztabkę złota wytapia Joshua w Ados. Potrzebne są do wyrabiania ostrzy oraz detali.");
 				addReply("money",
 						"Każdy ich potrzebuje. Po za tym potrzebne są do zakupienia specjalnych składników bez których złota ciupaga będzie nie wiele warta. Nie zdradzę Tobie o jakie chodzi. To tajemnica rodzinna przekazywana z pokolenia na pokolenie.");
-				addReply(Arrays.asList("ruda", "żelazo", "ruda żelaza"),
+				addReply(Arrays.asList("ruda", "sztabka żelaza", "ruda żelaza"),
 						"Rudę żelaza znajdziesz w górach Zakopanego i Kościeliska. Uważaj tam na siebie!");
 			}
 		};

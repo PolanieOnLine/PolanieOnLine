@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2023 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -29,6 +29,7 @@ import games.stendhal.server.entity.npc.fsm.Engine;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.ados.forest.FarmerNPC;
 import games.stendhal.server.maps.semos.tavern.BowAndArrowSellerNPC;
+import utilities.NPCTestHelper;
 import utilities.PlayerTestHelper;
 import utilities.QuestHelper;
 
@@ -54,7 +55,7 @@ public class BowsForOuchitTest {
 		// this is Karl
 		new FarmerNPC().configureZone(zone, null);
 		// configure shops
-		SingletonRepository.getShopsList().configureNPC("Ouchit", "sellrangedstuff", true);
+		NPCTestHelper.loadShops("Ouchit");
 
 		AbstractQuest quest = new BowsForOuchit();
 		quest.addToWorld();

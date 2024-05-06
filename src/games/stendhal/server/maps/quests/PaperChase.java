@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2019 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -151,6 +151,7 @@ public class PaperChase extends AbstractQuest implements TeleportListener {
 		final SpeakerNPC npc = npcs.get(state);
 		if (npc == null) {
 			logger.error("NPC " + state + " missing for paper chase");
+			return;
 		}
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("paper", "chase", "paperchase"), new SystemPropertyCondition("stendhal.minetown"),
 				ConversationStates.ATTENDING, null, new PaperChasePoint(idx));

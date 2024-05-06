@@ -21,7 +21,7 @@ public class ChefNPCTest extends ZonePlayerAndNPCTestImpl {
     private static final String QUEST = "pizzadelivery";
 
     public ChefNPCTest() {
-        setNpcNames("Patrick");
+        setNpcNames("Preston");
         setZoneForPlayer(ZONE_NAME);
         addZoneConfigurator(new ChefNPC(), ZONE_NAME);
 
@@ -43,7 +43,7 @@ public class ChefNPCTest extends ZonePlayerAndNPCTestImpl {
 
     @Test
     public void testJob() {
-        final SpeakerNPC npc = getNPC("Patrick");
+        final SpeakerNPC npc = getNPC("Preston");
         final Engine en = npc.getEngine();
         en.step(player, "hi");
         assertTrue(npc.isTalking());

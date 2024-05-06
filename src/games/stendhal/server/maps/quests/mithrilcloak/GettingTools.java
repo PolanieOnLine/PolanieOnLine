@@ -69,7 +69,8 @@ class GettingTools {
 
 		// player asks about scissors. they will need a random number of eggshells plus the metal
 		npc.add(ConversationStates.ATTENDING,
-			Arrays.asList("scissors", "magical","nożyczki", "magical scissors", "ida", "mithril", "cloak", "mithril cloak"),
+			Arrays.asList("scissors", "magical", "nożyczki", "magical scissors", "magiczne nożyczki",
+				"ida", "mithril", "cloak", "mithril cloak", "płaszcz", "płaszcz z mithrilu"),
 			new QuestInStateCondition(mithrilcloak.getQuestSlot(), "need_scissors"),
 			ConversationStates.ATTENDING,
 			null,
@@ -85,7 +86,8 @@ class GettingTools {
 
 		// player needs eggshells
 		npc.add(ConversationStates.ATTENDING,
-			Arrays.asList("scissors", "magical", "zaczarowane nożyczki","nożyczki", "ida", "mithril", "cloak", "mithril cloak"),
+			Arrays.asList("scissors", "magical", "nożyczki", "magical scissors", "magiczne nożyczki",
+					"ida", "mithril", "cloak", "mithril cloak", "płaszcz", "płaszcz z mithrilu"),
 			new QuestStateStartsWithCondition(mithrilcloak.getQuestSlot(), "need_eggshells"),
 			ConversationStates.SERVICE_OFFERED,
 			"Przyniosłeś mi przedmioty potrzebne do magicznych nożyc?", null);
@@ -112,10 +114,10 @@ class GettingTools {
 				public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
 					final String[] questslot = player.getQuest(mithrilcloak.getQuestSlot()).split(";");
 					final int neededEggshells = Integer.valueOf(questslot[1]);
-					if (player.isEquipped("żelazo")
+					if (player.isEquipped("sztabka żelaza")
 						&& player.isEquipped("sztabka mithrilu")
 						&& player.isEquipped("magiczne skorupki", neededEggshells)) {
-							player.drop("żelazo");
+							player.drop("sztabka żelaza");
 							player.drop("sztabka mithrilu");
 							player.drop("magiczne skorupki", neededEggshells);
 							npc.say("Dobrze. Zajmie mi to trochę czasu. Wróć za "
@@ -141,7 +143,8 @@ class GettingTools {
 
 		// player returns while hogart is making scissors or has made them
 		npc.add(ConversationStates.ATTENDING,
-			Arrays.asList("scissors", "magical", "zaczarowane nożyczki", "nożyczki", "ida", "mithril", "cloak", "mithril cloak"),
+			Arrays.asList("scissors", "magical", "nożyczki", "magical scissors", "magiczne nożyczki",
+					"ida", "mithril", "cloak", "mithril cloak", "płaszcz", "płaszcz z mithrilu"),
 			new QuestStateStartsWithCondition(mithrilcloak.getQuestSlot(), "makingscissors;"),
 			ConversationStates.ATTENDING, null, new ChatAction() {
 				@Override
@@ -152,7 +155,7 @@ class GettingTools {
 					final long timeRemaining = Long.parseLong(tokens[1]) + delay
 							- System.currentTimeMillis();
 					if (timeRemaining > 0L) {
-						npc.say("Pff jesteś niecierpliwy? Jeszcze nie skończyłem Twoich nożyc. Wróć za "
+						npc.say("Pff, jesteś niecierpliwy? Jeszcze nie skończyłem Twoich nożyc. Wróć za "
 							+ TimeUtil.approxTimeUntil((int) (timeRemaining / 1000L)) + ".");
 						return;
 					}
@@ -175,7 +178,8 @@ class GettingTools {
 
 		// offer eggshells when prompted
 		npc.add(ConversationStates.ATTENDING,
-				Arrays.asList("eggshells", "magical", "magiczne skorupki","skorupki", "nożyczki", "hogart", "ida", "cloak", "mithril cloak", "specials", "specjały"),
+				Arrays.asList("eggshells", "magical", "magiczne skorupki", "skorupki",
+					"nożyczki", "hogart", "ida", "cloak", "mithril cloak", "specials", "specjały"),
 				new QuestStateStartsWithCondition(mithrilcloak.getQuestSlot(), "need_eggshells"),
 				ConversationStates.QUEST_ITEM_QUESTION,
 				"Tak sprzedaję magicznych skorupek. Są dla mnie sporo warte. Dam ci jedną za każdą " + Integer.toString(REQUIRED_POISONS) + " zabójczą truciznę, którą mi przyniesiesz. Potrzebuję ich do wybijania szczurów. Ile potrzebujesz skorupek?",
@@ -190,7 +194,6 @@ class GettingTools {
 				new ChatAction() {
 					@Override
 					public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
-
                         final int required = (sentence.getNumeral().getAmount());
 						if (player.drop("zabójcza trucizna", required * REQUIRED_POISONS)) {
 							npc.say("Dobrze oto Twoje " + Integer.toString(required) + " skorupek. Ciesz się!");
@@ -203,7 +206,7 @@ class GettingTools {
 
 		// didn't want eggshells yet
 		npc.add(ConversationStates.QUEST_ITEM_QUESTION,
-				Arrays.asList("no", "none", "nothing", "nic", "nie"),
+				ConversationPhrases.NO_MESSAGES,
 				null,
 				ConversationStates.ATTENDING,
 				"Nie ma problemu. Gdy będziesz potrzebował pomocy to mów.",
@@ -215,7 +218,8 @@ class GettingTools {
 
 		// take scissors and ask for needle now
 		npc.add(ConversationStates.ATTENDING,
-				Arrays.asList("scissors", "magical", "zaczarowane nożyczki", "mithril", "cloak", "mithril cloak", "task", "quest", "zadanie", "misja"),
+				Arrays.asList("scissors", "magical", "zaczarowane nożyczki", "mithril", "cloak", "mithril cloak",
+					"task", "quest", "zadanie", "misja", "płaszcz", "płaszcz z mithrilu"),
 				new AndCondition(new QuestInStateCondition(mithrilcloak.getQuestSlot(), "got_scissors"), new PlayerHasItemWithHimCondition("zaczarowane nożyczki")),
 				ConversationStates.ATTENDING,
 				"Przyniosłeś magiczne nożyczki! Doskonale! Teraz mogę ciąć tkaninę. Potrzebuję teraz magiczną igłę. Możesz je kupić od handlarza w opuszczonej warowni w górach Ados. Nazywa się #Ritati Dragon lub jakoś inaczej. Idź do niego i zapytaj o 'specjały'.",
@@ -228,7 +232,8 @@ class GettingTools {
 
 		// remind about scissors
 		npc.add(ConversationStates.ATTENDING,
-				Arrays.asList("scissors", "magical", "zaczarowane nożyczki","nożyczki", "mithril", "cloak", "mithril cloak", "task", "quest", "zadanie", "misja"),
+				Arrays.asList("scissors", "magical", "zaczarowane nożyczki", "nożyczki", "mithril", "cloak",
+					"mithril cloak", "task", "quest", "zadanie", "misja", "płaszcz", "płaszcz z mithrilu"),
 				new OrCondition(
 								new QuestInStateCondition(mithrilcloak.getQuestSlot(), "need_scissors"),
 								new QuestStateStartsWithCondition(mithrilcloak.getQuestSlot(), "need_eggshells;"),
@@ -260,16 +265,16 @@ class GettingTools {
 
 		// ask for joke when prompted for needle
 		npc.add(ConversationStates.ATTENDING,
-				Arrays.asList("needle", "magical", "magical needle","igła", "ida", "cloak", "mithril cloak", "specials", "specjały"),
+				Arrays.asList("needle", "magical", "magical needle", "igła", "ida", "cloak", "mithril cloak", "specials", "specjały"),
 				new QuestStateStartsWithCondition(mithrilcloak.getQuestSlot(), "need_needle"),
 				ConversationStates.ATTENDING,
 				"Dobrze mam małą zasadę. Nigdy nie robię poważnych interesów z kimś dopóki"
-				+ "mnie nie rozśmieszy. Przyjdź do mnie i opowiedz mi #dowcip, a ja sprzedam Ci igłę.",
+				+ " mnie nie rozśmieszy. Przyjdź do mnie i opowiedz mi #dowcip, a ja sprzedam Ci igłę.",
 				null);
 
 		// ask for joke when player says joke
 		npc.add(ConversationStates.ATTENDING,
-				Arrays.asList("joke", "dowcip"),
+				Arrays.asList("joke", "dowcip", "żart"),
 				new QuestStateStartsWithCondition(mithrilcloak.getQuestSlot(), "need_needle"),
 				ConversationStates.QUESTION_1,
 				"Dobrze posłuchajmy Twojego żartu. Mam nadzieję, że jest z książki pochodzącej z biblioteki w Nalwor. To moja ulubiona. Który dowcip wybrałeś?",

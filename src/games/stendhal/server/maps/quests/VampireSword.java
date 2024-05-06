@@ -150,7 +150,7 @@ public class VampireSword extends AbstractQuest {
 	private void prepareForgingStep() {
 		final List<ChatAction> startforging = new LinkedList<ChatAction>();
 		startforging.add(new DropItemAction("czara"));
-		startforging.add(new DropItemAction("żelazo", 50));
+		startforging.add(new DropItemAction("sztabka żelaza", 50));
 		startforging.add(new IncreaseKarmaAction(5.0));
 		startforging.add(new SetQuestAction(QUEST_SLOT, "forging;"));
 		startforging.add(new SetQuestToTimeStampAction(QUEST_SLOT, 1));
@@ -161,7 +161,7 @@ public class VampireSword extends AbstractQuest {
 					new QuestInStateCondition(QUEST_SLOT,"start"),
 					new PlayerHasItemWithHimCondition("czara"),
 					new KilledCondition("lord wampir"),
-					new PlayerHasItemWithHimCondition("żelazo", REQUIRED_IRON)),
+					new PlayerHasItemWithHimCondition("sztabka żelaza", REQUIRED_IRON)),
 			ConversationStates.IDLE,
 			"Przyniosłeś wszystko czego potrzebuję do wyrobienia krwiopijcy. Wróć za "
 			+ REQUIRED_MINUTES
@@ -174,7 +174,7 @@ public class VampireSword extends AbstractQuest {
 						new QuestInStateCondition(QUEST_SLOT,"start"),
 						new PlayerHasItemWithHimCondition("czara"),
 						new KilledCondition("lord wampir"),
-						new NotCondition(new PlayerHasItemWithHimCondition("żelazo", REQUIRED_IRON))),
+						new NotCondition(new PlayerHasItemWithHimCondition("sztabka żelaza", REQUIRED_IRON))),
 				ConversationStates.QUEST_ITEM_BROUGHT,
 				"Stoczyłeś ciężkie boje, aby przynieść ten kielich. Użyję jego zawartość do wykucia (#'forge') miecza zwanego krwiopijcą",
 				null);
@@ -257,7 +257,7 @@ public class VampireSword extends AbstractQuest {
 			null);
 
 		npc.add(ConversationStates.QUEST_ITEM_BROUGHT,
-			"żelazo",
+			"sztabka żelaza",
 			null,
 			ConversationStates.IDLE,
 			"Zbierz rudę żelaza, a ja przetopię ją! Do widzenia!",

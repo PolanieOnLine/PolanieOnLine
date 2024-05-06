@@ -1,78 +1,118 @@
 <?xml version='1.0'?>
+
 <project xmlns:if="ant:if" xmlns:unless="ant:unless">
 
-  <target name="clean_javadocs" description="Delete javadoc generated HTML documentation.">
-      <delete dir="${docs}"/>
-  </target>
-
-  <target name="clean_mkdocs" description="Delete MkDocs generated HTML documentation.">
-      <delete dir="${buildroot}/mkdocs/"/>
-  </target>
-
-  <target name="javadocs" description="Generate HTML documentation for Java API with javadoc." depends="clean_javadocs">
-    <condition property="include.marauroa" value="true">
-      <available file="${marauroa_src}" type="dir"/>
-    </condition>
-
-    <javadoc
-        defaultexcludes="yes"
-        destdir="${docs}"
-        author="true"
-        encoding="UTF-8"
-        version="true"
-        use="true"
-        windowtitle="PolanieOnLine API Documentation Version: ${version}"
-        failonerror="yes"
-        additionalparam="-Xdoclint:-html">
-      <!-- include marauroa source if available -->
-      <fileset dir="${marauroa_src}" includes="**/*.java"
-          if:true="${include.marauroa}"/>
-      <fileset dir="${src}" includes="**/*.java"/>
-      <fileset dir="${testsrc}" includes="utilities/**/*.java"/>
-      <classpath>
-        <pathelement path="${marauroa_src}"
-            if:true="${include.marauroa}"/>
-        <pathelement path="${src}"/>
-        <pathelement path="${testsrc}"/>
-        <pathelement path="${guava_jar}"/>
-        <pathelement path="${groovy_jar}"/>
-        <pathelement path="${marauroa_jar}"/>
-        <pathelement path="${jorbis_jar}"/>
-        <pathelement path="${junit_jar}"/>
-        <pathelement path="${log4j_jar}"/>
-        <pathelement path="${simple_jar}"/>
-        <pathelement path="${swinglayout_jar}"/>
-        <pathelement path="${tiled_jar}"/>
-        <pathelement path="${libdir}/ant.jar"/>
-        <pathelement path="${libdir}/jcurses.jar"/>
-        <pathelement path="${libdir}/pircbot.jar"/>
-        <pathelement path="${luaj_jar}"/>
-        <pathelement path="${jsonsimple_jar}"/>
-        <pathelement path="${hamcrest_jar}"/>
-        <pathelement path="${easymock_jar}"/>
-        <pathelement path="${easymockclassextension_jar}"/>
-        <!-- put marauroa/libs last because it may contain duplicate
-             libraries of a different version -->
-        <pathelement path="${marauroa_libs}/*"
-            if:true="${include.marauroa}"/>
-      </classpath>
-    </javadoc>
-  </target> <!-- javadocs -->
+	<property name="build_docs" value="${buildroot}/build_docs/reference"/>
+	<property name="javadocs" value="${build_docs}/java"/>
+	<property name="tsdocs" value="${build_docs}/typescript"/>
+	<property name="luadocs" value="${build_docs}/lua"/>
 
 
-  <target name="mkdocs" description="Generate HTML documentation for Lua API with MkDocs." depends="clean_mkdocs">
+	<target name="clean_docs">
+		<delete dir="${buildroot}/build_docs"/>
+	</target>
 
-    <echo unless:true="${python.present}"
-      message="Python unavailable, cannot run mkdocs"/>
+	<target name="docs" description="Generate HTML documentation for Java, TypeScript, and Lua APIs." depends="luadocs,javadocs,tsdocs"/>
 
-  	<!-- Note: script will include Java documentation if "javadocs" build directory is found -->
-    <exec if:true="${python.present}" executable="python" failonerror="true"
-        dir="./buildtools/mkdocs/">
-      <arg value="-u"/>
-      <arg value="build.py"/>
-    </exec>
-  </target> <!-- mkdocs -->
 
-  <target name="docs" description="Generate HTML documentation for Java and Lua APIs." depends="javadocs,mkdocs"/>
+	<!-- Java documentation -->
+
+	<target name="clean_javadocs">
+		<delete dir="${javadocs}"/>
+	</target>
+
+
+	<target name="javadocs" depends="clean_javadocs">
+		<condition property="include.marauroa" value="true">
+			<available file="${marauroa_src}" type="dir"/>
+		</condition>
+
+		<javadoc
+				defaultexcludes="yes"
+				destdir="${javadocs}"
+				author="true"
+				encoding="UTF-8"
+				version="true"
+				use="true"
+				windowtitle="PolanieOnLineAPI Documentation Version: ${version}"
+				failonerror="yes"
+				additionalparam="-Xdoclint:-html">
+			<!-- include marauroa source if available -->
+			<sourcepath path="${marauroa_src}" if:true="${include.marauroa}"/>
+			<sourcepath path="${src}"/>
+			<sourcefiles>
+				<fileset dir="${testsrc}">
+					<include name="utilities/**/*.java"/>
+					<!-- some of the utilities depend on the following -->
+					<include name="games/stendhal/server/entity/mapstuff/block/BlockTest.java"/>
+					<include name="games/stendhal/server/maps/MockStendhalRPRuleProcessor.java"/>
+					<include name="games/stendhal/server/maps/MockStendlRPWorld.java"/>
+				</fileset>
+			</sourcefiles>
+			<classpath>
+				<pathelement path="${marauroa_src}"
+						if:true="${include.marauroa}"/>
+				<pathelement path="${src}"/>
+				<pathelement path="${testsrc}"/>
+				<pathelement path="${guava_jar}"/>
+				<pathelement path="${groovy_jar}"/>
+				<pathelement path="${marauroa_jar}"/>
+				<pathelement path="${jorbis_jar}"/>
+				<pathelement path="${junit_jar}"/>
+				<pathelement path="${log4j_jar}"/>
+				<pathelement path="${simple_jar}"/>
+				<pathelement path="${swinglayout_jar}"/>
+				<pathelement path="${tiled_jar}"/>
+				<pathelement path="${libdir}/ant.jar"/>
+				<pathelement path="${libdir}/jcurses.jar"/>
+				<pathelement path="${libdir}/pircbot.jar"/>
+				<pathelement path="${luaj_jar}"/>
+				<pathelement path="${jsonsimple_jar}"/>
+				<pathelement path="${hamcrest_jar}"/>
+				<pathelement path="${easymock_jar}"/>
+				<pathelement path="${easymockclassextension_jar}"/>
+				<!-- put marauroa/libs last because it may contain duplicate
+						 libraries of a different version -->
+				<pathelement path="${marauroa_libs}/*"
+						if:true="${include.marauroa}"/>
+			</classpath>
+		</javadoc>
+	</target> <!-- javadocs -->
+
+
+	<!-- TypeScript documentation -->
+
+	<target name="clean_tsdocs">
+		<delete dir="${tsdocs}"/>
+	</target>
+
+
+	<target name="tsdocs" depends="clean_tsdocs,js-prepare-node">
+		<exec executable="npx${executable.suffix}" dir="${srcjs}/stendhal" failonerror="true">
+			<arg value="typedoc"/>
+			<arg value="--entryPointStrategy"/>
+			<arg value="expand"/>
+		</exec>
+	</target>
+
+
+	<!-- Lua documentation -->
+
+	<target name="clean_luadocs">
+		<delete dir="${luadocs}"/>
+	</target>
+
+
+	<target name="luadocs" depends="clean_luadocs">
+		<echo unless:true="${python.present}"
+			message="Python unavailable, cannot run mkdocs"/>
+
+		<!-- NOTE: MkDocs create the top-level index.html -->
+		<exec if:true="${python.present}" executable="python" failonerror="true"
+				dir="./buildtools/mkdocs/">
+			<arg value="-u"/>
+			<arg value="build.py"/>
+		</exec>
+	</target>
 
 </project>

@@ -91,6 +91,9 @@ public class AmazonPrincess implements QuestManuscript {
 			.rewardWith(new PlaySoundAction("kiss-female-01"))
 			.rewardWith(new InflictStatusOnNPCAction("napój z oliwką"));
 
+		// completions count is stored in 3rd index of quest slot
+		quest.setCompletionsIndexes(2);
+
 		return quest;
 	}
 }

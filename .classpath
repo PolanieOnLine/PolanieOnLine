@@ -30,5 +30,5 @@
 	<classpathentry kind="lib" path="libs/postman/commons-logging-1.1.1.jar"/>
 	<classpathentry kind="lib" path="libs/postman/commons-lang3-3.2.1.jar"/>
 	<classpathentry kind="lib" path="libs/postman/commons-codec-1.9.jar"/>
-	<classpathentry kind="output" path="bin"/>
+	<classpathentry kind="output" path="build/eclipse"/>
 </classpath>

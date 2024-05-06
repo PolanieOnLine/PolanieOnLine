@@ -97,6 +97,9 @@ public class CoalForHaunchy implements QuestManuscript {
 			.rewardWith(new EquipRandomAmountOfItemAction("grillowany stek", 1, 4, 1,
 					"Dziękuję! Przyjmij oto [this_these] [number_item] z mojego grilla!"));
 
+		// completions count is stored in 3rd index of quest slot
+		quest.setCompletionsIndexes(2);
+
 		return quest;
 	}
 }
