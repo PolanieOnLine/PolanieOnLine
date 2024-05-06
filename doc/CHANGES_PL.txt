@@ -3,12 +3,15 @@ Changelog
 1.39
 *klient*
 - Dodano grafiki nowych przedmiotów
+- Dodano dźwięk zakotwiczenia statku gdy dopłynie do celu
 - Poprawiono emotikony
 - Przetłumaczono moce żywiołów w przedmiotach na polski
 
 *świat*
 - Dodano alternatywne mapy (expowiska)
 - Dodano dynamicznie modyfikowane statystyki potworów występujących na alternatywnych mapach
+- Dodano nowe osiągnięcie:
+	- 30 Minut lub Mniej (dostarczyć 25 ciepłych pizz do klientów)
 - Dodano nowe przedmioty:
 	- kryształ ciemnolitu (surowiec) - drop możliwy tylko dla zmodyfikowanych potworów na alternatywnych mapach
 	- klejnot ciemnolitu (surowiec)
@@ -28,6 +31,9 @@ Changelog
 - Dodano możliwość szlifowania kryształu w większych ilościach po zakończonym zadaniu
 - Dodano ulepszanie wyposażenia z mithrilu na ciemnomithrilowe u kowala Przemysława po zakończonym zadaniu
 - Dodano dla nowego wyposażenia odporność na krwawienie (pełen zestaw chroni przed krwawieniem w 100%)
+- Wgląd w grze jak i na stronie internetowej teraz pokazują efektywny atrybut defensywy przedmiotów (ukryte czynniki zostały uczynione transparentne)
+- Ziarna można użyć z inwentarza, aby zasiać
+- Muzyka podczas zmiany mapy nie resetuje się
 
 
 1.38
