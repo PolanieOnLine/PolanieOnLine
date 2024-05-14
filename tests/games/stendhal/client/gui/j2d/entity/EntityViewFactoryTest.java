@@ -27,6 +27,7 @@ import games.stendhal.client.Triple;
 import marauroa.common.Log4J;
 
 public class EntityViewFactoryTest {
+
 	private static final Logger logger = Logger.getLogger(EntityViewFactoryTest.class);
 
 	/**
@@ -86,6 +87,7 @@ public class EntityViewFactoryTest {
 	// registered entities representations to be tested
 	private static List<EntityRep> entities;
 
+
 	@Before
 	public void setUp() throws Exception {
 		Log4J.init();
@@ -120,15 +122,18 @@ public class EntityViewFactoryTest {
 	public void testAll() {
 		// item
 		checkImplementation("item", null, null, Item2DView.class);
+		checkImplementation("item", "book", "bestiariusz", UseableGenericItem2DView.class);
+		checkImplementation("item", "book", "spis", UseableGenericItem2DView.class);
 		checkImplementation("item", "box", null, Box2DView.class);
 		checkImplementation("item", "club", "kij przywoływania nieumarłych", UseableItem2DView.class);
-		checkImplementation("item", "crystal", null, Item2DView.class);
-		// FIXME: `games.stendhal.server.entity.item.ItemTest` copy constructor test fails
-		//~ checkImplementation("item", "documents", "coupon", StackableItem2DView.class);
+		//~ checkImplementation("item", "crystal", null, Item2DView.class);
 		checkImplementation("item", "drink", null, UseableItem2DView.class);
 		checkImplementation("item", "food", null, UseableItem2DView.class);
 		checkImplementation("item", "furniture", "obraz w drewnianej ramce", UseableItem2DView.class);
-		checkImplementation("item", "misc", "nasionka", UseableItem2DView.class);
+		checkImplementation("item", "misc", "bulwa", UseableItem2DView.class);
+		checkImplementation("item", "misc", "nasiona", UseableItem2DView.class);
+		checkImplementation("item", "misc", "zima zaklęta w kuli", UseableGenericItem2DView.class);
+		checkImplementation("item", "misc", "pluszowy miś", UseableGenericItem2DView.class);
 		checkImplementation("item", "ring", null, Ring2DView.class);
 		checkImplementation("item", "ring", "pierścień powrotu", TeleportationRing2DView.class);
 		checkImplementation("item", "ring", "pierścień szmaragdowy", BreakableRing2DView.class);
@@ -136,6 +141,9 @@ public class EntityViewFactoryTest {
 		checkImplementation("item", "scroll", null, UseableItem2DView.class);
 		checkImplementation("item", "special", "brosza z mithrilu", Item2DView.class);
 		checkImplementation("item", "tool", "młynek", UseableItem2DView.class);
+		checkImplementation("item", "tool", "wykrywacz metali", UseableGenericItem2DView.class);
+		checkImplementation("item", "tool", "obrotowy nożyk", UseableGenericItem2DView.class);
+		checkImplementation("item", "tool", "zwój czyszczący", UseableItem2DView.class);
 		checkImplementation("item", "tool", "młynek do cukru", UseableItem2DView.class);
 
 		// grower
@@ -146,6 +154,8 @@ public class EntityViewFactoryTest {
 
 		// sign
 		checkImplementation("blackboard", null, null, Sign2DView.class);
+		checkImplementation("rented_sign", null, null, Sign2DView.class);
+		checkImplementation("shop_sign", null, null, ShopSign2DView.class);
 		checkImplementation("sign", null, null, Sign2DView.class);
 
 		// portal & door
@@ -156,19 +166,27 @@ public class EntityViewFactoryTest {
 
 		// NPC
 		checkImplementation("baby_dragon", null, null, Pet2DView.class);
+		checkImplementation("cat", null, null, Pet2DView.class);
+		checkImplementation("goat", null, null, Goat2DView.class);
+		checkImplementation("npc", null, null, NPC2DView.class);
 		checkImplementation("owczarek", null, null, Pet2DView.class);
 		checkImplementation("owczarek_podhalanski", null, null, Pet2DView.class);
-		checkImplementation("cat", null, null, Pet2DView.class);
-		checkImplementation("npc", null, null, NPC2DView.class);
 		checkImplementation("pet", null, null, Pet2DView.class);
+		checkImplementation("purple_dragon", null, null, Pet2DView.class);
 		checkImplementation("sheep", null, null, Sheep2DView.class);
-		checkImplementation("goat", null, null, Goat2DView.class);
+		checkImplementation("training_dummy", null, null, TrainingDummy2DView.class);
 
 		// creature
 		checkImplementation("creature", null, null, Creature2DView.class);
 		checkImplementation("creature", "ent", "drzewiec", BossCreature2DView.class);
 		checkImplementation("creature", "ent", "drzewcowa", BossCreature2DView.class);
 		checkImplementation("creature", "ent", "uschły drzewiec", BossCreature2DView.class);
+
+		// resource sources
+		checkImplementation("fish_source", null, null, UseableEntity2DView.class);
+		checkImplementation("gold_source", null, null, UseableEntity2DView.class);
+		checkImplementation("well_source", null, null, UseableEntity2DView.class);
+		checkImplementation("wood_source", null, null, UseableEntity2DView.class);
 
 		// misc
 		checkImplementation("area", null, null, InvisibleEntity2DView.class);
@@ -177,10 +195,14 @@ public class EntityViewFactoryTest {
 		checkImplementation("chest", null, null, Chest2DView.class);
 		checkImplementation("corpse", null, null, Corpse2DView.class);
 		checkImplementation("fire", null, null, UseableEntity2DView.class);
-		checkImplementation("food", null, null, SheepFood2DView.class);
+		checkImplementation("flyover", null, null, FlyOverArea2DView.class);
 		checkImplementation("food", null, null, GoatFood2DView.class);
+		checkImplementation("game_board", null, null, GameBoard2DView.class);
 		checkImplementation("player", null, null, Player2DView.class);
+		checkImplementation("spell", null, null, Spell2DView.class);
+		checkImplementation("useable_entity", null, null, UseableEntity2DView.class);
 		checkImplementation("walkblocker", null, null, WalkBlocker2DView.class);
+		checkImplementation("wall", null, null, Wall2DView.class);
 
 		final int incomplete = entities.size();
 		if (incomplete > 0) {

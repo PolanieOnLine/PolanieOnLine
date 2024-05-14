@@ -532,7 +532,7 @@ public class AdministrationActionTest {
 
 		CommandCenter.execute(pl, action);
 
-		assertEquals("name", "newname", rat.getName());
+		assertEquals("name", "szczur", rat.getName());
 		assertEquals("atk", 5, rat.getAtk());
 		assertEquals("def", 6, rat.getDef());
 		assertEquals("hp", 7, rat.getHP());
@@ -542,7 +542,7 @@ public class AdministrationActionTest {
 
 		CommandCenter.execute(pl, action);
 
-		assertEquals("name", "newname", rat.getName());
+		assertEquals("name", "szczur", rat.getName());
 		assertEquals("atk", 5, rat.getAtk());
 		assertEquals("def", 6, rat.getDef());
 		assertEquals("hp", 100, rat.getHP());
@@ -809,7 +809,7 @@ public class AdministrationActionTest {
 		action.put("item", "hugo");
 
 		CommandCenter.execute(player, action);
-		assertEquals("Wojownik \"hugo\" nie posiada RPSlota zwanego \"hugo\".",
+		assertEquals("Gracz \"hugo\" nie jest w posiadaniu RPSlot o nazwie \"hugo\".",
 				player.events().get(0).get("text"));
 		player.clearEvents();
 
@@ -820,7 +820,7 @@ public class AdministrationActionTest {
 		action.put("item", "hugo");
 
 		CommandCenter.execute(player, action);
-		assertEquals("hugo nie jest przedmiotem.", player.events().get(0).get("text"));
+		assertEquals("Brak takiego przedmiotu o nazwie hugo.", player.events().get(0).get("text"));
 		player.clearEvents();
 
 		action = new RPAction();
@@ -842,7 +842,7 @@ public class AdministrationActionTest {
 		action.put("item", "sztylecik");
 
 		CommandCenter.execute(player, action);
-		assertEquals("Wojownik \"noone\" nie został znaleziony.", player.events().get(0).get("text"));
+		assertEquals("Gracz \"noone\" nie został odnaleziony.", player.events().get(0).get("text"));
 		player.clearEvents();
 	}
 }

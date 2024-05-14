@@ -64,46 +64,25 @@ public class PlinksToyTest {
 		en = npc.getEngine();
 
 		en.step(player, "hi");
-		assertEquals("*płacz* Wilki są w #parku! *płacz* Uciekłem, ale upuściłem mojego #misia! Proszę przyniesiesz go dla mnie? *siąknięcie* Proszę?", getReply(npc));
-		en.step(player, "park!");
-		assertEquals("Moi rodzice mówili mi żebym sam nie chodził do parku, ale się zgubiłem podczas zabawy... Proszę nie mów moim rodzicom! Czy możesz mi przynieść misia #teddy z powrotem?", getReply(npc));
-		en.step(player, "yes");
-		assertEquals("*siąknięcie* Dziękuję bardzo! *uśmiech*", getReply(npc));
-		en.step(player, "bye");
-
-		// -----------------------------------------------
-
-		en.step(player, "hi");
-		assertEquals("*płacz* Wilki są w #parku! *płacz* Uciekłem, ale upuściłem mojego #misia! Proszę przyniesiesz go dla mnie? *siąknięcie* Proszę?", getReply(npc));
-		en.step(player, "pluszowy miś");
-		assertEquals("Miś jest moją ulubioną zabawką! Przyniesiesz mi ją?", getReply(npc));
+		assertEquals("*płacze* W parku były wilki! *pociągnięcie nosem* Uciekłem, ale upuściłem mojego pluszaka! Czy możesz go dla mnie znaleźć? *pociągnięcie nosem* Proszę?", getReply(npc));
+		en.step(player, "miś");
+		assertEquals("Pluszak to moja ulubiona zabawka! Czy możesz go dla mnie przynieść?", getReply(npc));
 		en.step(player, "no");
-		assertEquals("*pociągnięcie nosem* Ale... ale... PROSZĘ! *płacz*", getReply(npc));
-
-		en.step(player, "teddy bear");
-		assertEquals("Teddy is my favourite toy! Please bring him back to me.", getReply(npc));
+		assertEquals("*pociągnięcie nosem* Ale... ale... PROSZĘ! *płacze*", getReply(npc));
 		en.step(player, "bye");
 
 		// -----------------------------------------------
 
-		/* TODO: Re-implement support for early quest completion
-		final Item teddy = ItemTestHelper.createItem("pluszowy miś");
-		teddy.setEquipableSlots(Arrays.asList("bag"));
-		player.equipToInventoryOnly(teddy);
-		assertTrue(player.isEquipped("pluszowy miś"));
-
 		en.step(player, "hi");
-		// [21:25] player earns 10 experience points.
-		assertEquals("Znalazłeś go! *przytula misia* Dziękuję, dziękuję! *uśmiech*", getReply(npc));
-
-		assertFalse(player.isEquipped("pluszowy miś"));
-
-		en.step(player, "help");
-		assertEquals("Bądź ostrożny idąc na wschód. Tam są wilki!", getReply(npc));
-		en.step(player, "job");
-		assertEquals("Bawię się cały dzień.", getReply(npc));
+		assertEquals("*płacze* W parku były wilki! *pociągnięcie nosem* Uciekłem, ale upuściłem mojego pluszaka! Czy możesz go dla mnie znaleźć? *pociągnięcie nosem* Proszę?", getReply(npc));
+		en.step(player, "park");
+		assertEquals("Rodzice mi mówili, żebym nie chodził do parku sam, ale zgubiłem się, gdy się bawiłem... Proszę, nie mów im! Czy możesz przynieść mi mojego pluszaka z powrotem?", getReply(npc));
+		en.step(player, "yes");
+		assertEquals("*pociągnięcie nosem* Dziękuję bardzo! *uśmiech*", getReply(npc));
 		en.step(player, "bye");
-		assertEquals("Do widzenia.", getReply(npc));
-		*/
+
+		// player.setQuest("plink_toy", "done");
+
+		// -----------------------------------------------
 	}
 }

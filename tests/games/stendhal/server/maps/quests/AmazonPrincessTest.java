@@ -81,7 +81,7 @@ public class AmazonPrincessTest {
 		en.setCurrentState(ConversationStates.ATTENDING);
 		player.setQuest(quest.getSlotName(), "done;0");
 		en.step(player, "task");
-		assertEquals("Ostatni napój, który mi kupiłeś był wspaniały. Przyniesiesz mi następny?", getReply(npc));
+		assertEquals("Ostatni koktajl, który mi przyniosłeś, był taki cudowny. Przyniesiesz mi jeszcze jeden?", getReply(npc));
 		assertEquals(ConversationStates.QUEST_OFFERED, en.getCurrentState());
 		en.step(player, "yes");
 		assertEquals("start", player.getQuest(quest.getSlotName(), 0));
@@ -98,9 +98,9 @@ public class AmazonPrincessTest {
 		en.step(player, "help");
 		assertEquals("Strzeż się moich sióstr na wyspie. One nie lubią obcych.", getReply(npc));
 		en.step(player, "task");
-		assertEquals("Napiłabym się drinka, powinien być egzotyczny. Czy możesz mi go przynieść?", getReply(npc));
+		assertEquals("Szukam napoju, powinien być egzotyczny. Możesz mi przynieść?", getReply(npc));
 		en.step(player, "yes");
-		assertEquals("Dziękuję! Jeżeli go znajdziesz to powiedz #napój a będę wiedziała, że go masz. W zamian dam Ci nagrodę.", getReply(npc));
+		assertEquals("Dziękuję! Jeśli będziesz w posiadaniu takiego napoju, na pewno dam ci miłą nagrodę.", getReply(npc));
 		en.step(player, "bye");
 		assertEquals("Do widzenia i strzeż się barbarzyńców.", getReply(npc));
 
@@ -109,20 +109,11 @@ public class AmazonPrincessTest {
 		en.step(player, "hi");
 		assertEquals("Huh, co ty tutaj robisz?!", getReply(npc));
 		en.step(player, "task");
-		assertEquals("Kocham te egzotyczne napoje ale zapomniałam nazwę mojego ulubionego.", getReply(npc));
-		en.step(player, "help");
-		assertEquals("Strzeż się moich sióstr na wyspie. One nie lubią obcych.", getReply(npc));
-		en.step(player, "napój z oliwką");
-		assertEquals("Nie masz napoju z oliwką. Idź i lepiej dostarcz mi go!", getReply(npc));
-		en.step(player, "exotic drink");
-		en.step(player, "napójzoliwką");
-		assertEquals("Nie masz napoju z oliwką. Idź i lepiej dostarcz mi go!", getReply(npc));
+		assertEquals("Lubię te egzotyczne napoje, tylko zapomniałam nazwy mojego ulubionego.", getReply(npc));
 		en.step(player, "help");
 		assertEquals("Strzeż się moich sióstr na wyspie. One nie lubią obcych.", getReply(npc));
 		en.step(player, "favor");
-		assertEquals("Kocham te egzotyczne napoje ale zapomniałam nazwę mojego ulubionego.", getReply(npc));
-		en.step(player, "napój z oliwką");
-		assertEquals("Nie masz napoju z oliwką. Idź i lepiej dostarcz mi go!", getReply(npc));
+		assertEquals("Lubię te egzotyczne napoje, tylko zapomniałam nazwy mojego ulubionego.", getReply(npc));
 		en.step(player, "bye");
 		assertEquals("Do widzenia i strzeż się barbarzyńców.", getReply(npc));
 
@@ -133,10 +124,7 @@ public class AmazonPrincessTest {
 		en.step(player, "help");
 		assertEquals("Strzeż się moich sióstr na wyspie. One nie lubią obcych.", getReply(npc));
 		en.step(player, "quest");
-		assertEquals("Kocham te egzotyczne napoje ale zapomniałam nazwę mojego ulubionego.", getReply(npc));
-		en.step(player, "done");
-		en.step(player, "drink");
-		assertEquals("Nie masz napoju z oliwką. Idź i lepiej dostarcz mi go!", getReply(npc));
+		assertEquals("Lubię te egzotyczne napoje, tylko zapomniałam nazwy mojego ulubionego.", getReply(npc));
 		en.step(player, "bye");
 		assertEquals("Do widzenia i strzeż się barbarzyńców.", getReply(npc));
 
@@ -145,9 +133,9 @@ public class AmazonPrincessTest {
 		player.getSlot("bag").add(item);
 
 		en.step(player, "hi");
-		assertEquals("Huh, co ty tutaj robisz?!", getReply(npc));
-		en.step(player, "napój z oliwką");
-		assertTrue(getReply(npc).startsWith("Dziękuję!! Proszę, weź "));
+		assertEquals("Ach, rozumiem, masz §'napój z oliwką'. Czy to dla mnie?", getReply(npc));
+		en.step(player, "yes");
+		assertTrue(getReply(npc).startsWith("Dziękuję! Przyjmij proszę "));
 		assertTrue(player.isEquipped("tarta z rybnym nadzieniem"));
 		en.step(player, "bye");
 		assertEquals("Do widzenia i strzeż się barbarzyńców.", getReply(npc));
@@ -157,18 +145,7 @@ public class AmazonPrincessTest {
 		en.step(player, "hi");
 		assertEquals("Huh, co ty tutaj robisz?!", getReply(npc));
 		en.step(player, "task");
-		assertTrue(getReply(npc).startsWith("Jestem pełna, aby wypić następny napój przez co najmniej "));
-		en.step(player, "bye");
-		assertEquals("Do widzenia i strzeż się barbarzyńców.", getReply(npc));
-
-		// -----------------------------------------------
-
-		en.step(player, "hi");
-		assertEquals("Huh, co ty tutaj robisz?!", getReply(npc));
-		en.step(player, "napój z oliwką");
-		assertEquals("Czasami mógłbyś mi wyświadczyć #przysługę...", getReply(npc));
-		en.step(player, "favour");
-		assertTrue(getReply(npc).startsWith("Jestem pełna, aby wypić następny napój przez co najmniej "));
+		assertTrue(getReply(npc).startsWith("Jestem pewna, że nie będę teraz w stanie wypić kolejnego takiego napoju."));
 		en.step(player, "bye");
 		assertEquals("Do widzenia i strzeż się barbarzyńców.", getReply(npc));
 	}

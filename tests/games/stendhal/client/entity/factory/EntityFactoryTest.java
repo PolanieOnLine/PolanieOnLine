@@ -26,7 +26,6 @@ import games.stendhal.client.entity.Corpse;
 import games.stendhal.client.entity.Creature;
 import games.stendhal.client.entity.Door;
 import games.stendhal.client.entity.Fire;
-import games.stendhal.client.entity.GoatFood;
 import games.stendhal.client.entity.GrainField;
 import games.stendhal.client.entity.IEntity;
 import games.stendhal.client.entity.InvisibleEntity;
@@ -36,6 +35,7 @@ import games.stendhal.client.entity.PlantGrower;
 import games.stendhal.client.entity.Player;
 import games.stendhal.client.entity.Portal;
 import games.stendhal.client.entity.Sheep;
+import games.stendhal.client.entity.SheepFood;
 import games.stendhal.client.entity.Sign;
 import games.stendhal.client.entity.StatefulEntity;
 import games.stendhal.client.entity.UseableItem;
@@ -204,12 +204,12 @@ public class EntityFactoryTest {
 	}
 
 	@Test
-	public final void goatFood() {
+	public final void sheepFood() {
 		final RPObject rp = new MockRPObject("food", null);
 		final IEntity en = EntityFactory.createEntity(rp);
 		assertNotNull("entity should be created", en);
-		assertEquals("we should have created a GoatFood by now",
-				GoatFood.class, en.getClass());
+		assertEquals("we should have created a SheepFood by now",
+				SheepFood.class, en.getClass());
 	}
 
 	@Test
@@ -269,7 +269,7 @@ public class EntityFactoryTest {
 	}
 
 	@Test
-	public final void Item() {
+	public final void stackableItem() {
 		// stackable items are now handled in the `Item` class
 
 		RPObject rp = new MockRPObject("item", "drink");

@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -20,7 +19,6 @@ import static utilities.SpeakerNPCTestHelper.getReply;
 import java.util.Date;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -61,7 +59,6 @@ public class CampfireTest {
 		MockStendlRPWorld.get();
 	}
 
-
 	@Before
 	public void setUp() {
 		player = PlayerTestHelper.createPlayer("player");
@@ -87,27 +84,27 @@ public class CampfireTest {
 		final Engine en = npc.getEngine();
 
 		assertTrue(en.step(player, "hi"));
-		assertEquals("Cześć! Potrzebuję małej #'przysługi'...", getReply(npc));
+		assertEquals("Cześć, jak się masz?", getReply(npc));
 		assertTrue(en.step(player, "bye"));
 
 		player.setQuest(CampfireTest.CAMPFIRE, 0, "start");
 		assertTrue(en.step(player, "hi"));
 		assertEquals(
-				"Już wróciłeś? Nie zapomnij, że obiecałeś mi zebrać dziesięć polan dla mnie!",
+				"Cześć, jak się masz?",
 				getReply(npc));
 		assertTrue(en.step(player, "bye"));
 
 		player.setQuest(CampfireTest.CAMPFIRE, 1, String.valueOf(System.currentTimeMillis()));
 		en.step(player, "hi");
 		assertEquals(
-				"Witaj ponownie!",
+				"Cześć, jak się masz?",
 				getReply(npc));
 		assertTrue(en.step(player, "bye"));
 
 		final long SIXMINUTESAGO = System.currentTimeMillis() - 6 * MathHelper.MILLISECONDS_IN_ONE_MINUTE;
 		player.setQuest(CampfireTest.CAMPFIRE, 1, String.valueOf(SIXMINUTESAGO));
 		en.step(player, "hi");
-		assertEquals("delay is 5 minutes, so 6 minutes should be enough", "Witaj ponownie!", getReply(npc));
+		assertEquals("delay is 5 minutes, so 6 minutes should be enough", "Cześć, jak się masz?", getReply(npc));
 		assertTrue(en.step(player, "bye"));
 	}
 
@@ -121,15 +118,15 @@ public class CampfireTest {
 
 		assertTrue(en.step(player, "hi"));
 		assertTrue(npc.isTalking());
-		assertEquals("Cześć! Potrzebuję małej #'przysługi'...", getReply(npc));
+		assertEquals("Cześć, jak się masz?", getReply(npc));
 		assertTrue(en.step(player, "favor"));
 
 		assertEquals(
-				"Potrzebuję więcej drewna, aby podtrzymać ognisko. Nie mogę pójść po nie i zostawić ogniska bez opieki! Czy mógłbyś pójść do lasu i zdobyć trochę dla mnie? Potrzebuję dziesięciu kawałków.",
+				"Potrzebuję więcej drewna, aby podtrzymać ogień w moim ognisku, ale nie mogę go zostawić bez opieki, żeby iść po nie! Czy mógłbyś przynieść trochę z lasu? Potrzebuję dziesięć kawałków.",
 				getReply(npc));
 		assertTrue(en.step(player, "yes"));
 		assertEquals(
-				"Dobrze. Drewno możesz znaleźć w lesie na północ stąd. Możesz również zaryzykować z bobrami w pobliżu rzeki na południe stąd. Wróć, gdy będziesz mieć dziesięć polan!",
+				"Dobra. Drewno znajdziesz na północ od tego miejsca. Wróć, gdy zdobędziesz dziesięć kawałków drewna!",
 				getReply(npc));
 		assertTrue(en.step(player, "bye"));
 		assertEquals("Do widzenia.", getReply(npc));
@@ -140,13 +137,12 @@ public class CampfireTest {
 		assertEquals(10, player.getNumberOfEquipped("polano"));
 		assertTrue(en.step(player, "hi"));
 		assertEquals(
-				"Witaj znów! Masz te 10 polan, o które wcześniej Cię pytałam?",
+				"Hej ponownie! Masz drewno, widzę; czy masz te 10 kawałków drewna, o które wcześniej pytałam?",
 				getReply(npc));
 		assertTrue(en.step(player, "yes"));
 		assertEquals(0, player.getNumberOfEquipped("polano"));
 		String reply = getReply(npc);
-		assertTrue("Dziękuję! Weź trochę mięsa oraz węgla drzewnego!".equals(reply)
-				|| "Dziękuję! Weź trochę szynki oraz węgla drzewnego!".equals(reply));
+		assertTrue(reply.contains("Dziękuję! Weź proszę "));
 		assertTrue((10 == player.getNumberOfEquipped("mięso"))
 				|| (10 == player.getNumberOfEquipped("szynka")));
 		assertTrue(en.step(player, "bye"));
@@ -164,7 +160,7 @@ public class CampfireTest {
 
 		assertTrue(en.step(player, "hi"));
 		assertTrue(npc.isTalking());
-		assertEquals("Cześć! Potrzebuję małej #'przysługi'...", getReply(npc));
+		assertEquals("Cześć, jak się masz?", getReply(npc));
 		assertTrue(en.step(player, "job"));
 		assertEquals("Praca? Jestem tylko małą dziewczynką! Skautem.",
 				getReply(npc));
@@ -195,7 +191,7 @@ public class CampfireTest {
 			en.setCurrentState(ConversationStates.ATTENDING);
 			en.step(player, request);
 			String reply = getReply(npc);
-			assertTrue("Dziękuję, ale drewno, które mi ostatnio przyniosłeś wystarczy na 60 minut.".equals(reply) || "Dziękuję, ale drewno, które mi ostatnio przyniosłeś wystarczy na 1 godzinę.".equals(reply));
+			assertTrue("Dzięki, ale myślę, że drewno, które przyniosłeś, wystarczy na 60 minut.".equals(reply) || "Dzięki, ale myślę, że drewno, które przyniosłeś, wystarczy na 1 godzinę.".equals(reply));
 			assertEquals(ConversationStates.ATTENDING, en.getCurrentState());
 			assertEquals("quest state unchanged", questState, player.getQuest(CAMPFIRE, 1));
 		}
@@ -214,7 +210,7 @@ public class CampfireTest {
 
 			en.setCurrentState(ConversationStates.ATTENDING);
 			en.step(player, request);
-			assertEquals("Moje ognisko znowu potrzebuje drewna! Czy mógłbyś pójść do lasu i zdobyć trochę dla mnie? Potrzebuję dziesięciu kawałków.", getReply(npc));
+			assertEquals("Moje ognisko znowu potrzebuje drewna, dziesięć kawałków #drewna będzie wystarczające. Czy mógłbyś przynieść te kawałki #drewna z lasu dla mnie? Proszę powiedz tak!", getReply(npc));
 			assertEquals(ConversationStates.QUEST_OFFERED, en.getCurrentState());
 			assertEquals("quest state unchanged", questState, player.getQuest(CAMPFIRE, 1));
 		}
@@ -231,7 +227,7 @@ public class CampfireTest {
 
 			en.setCurrentState(ConversationStates.ATTENDING);
 			en.step(player, request);
-			assertEquals("Potrzebuję więcej drewna, aby podtrzymać ognisko. Nie mogę pójść po nie i zostawić ogniska bez opieki! Czy mógłbyś pójść do lasu i zdobyć trochę dla mnie? Potrzebuję dziesięciu kawałków.", getReply(npc));
+			assertEquals("Potrzebuję więcej drewna, aby podtrzymać ogień w moim ognisku, ale nie mogę go zostawić bez opieki, żeby iść po nie! Czy mógłbyś przynieść trochę z lasu? Potrzebuję dziesięć kawałków.", getReply(npc));
 			assertEquals(ConversationStates.QUEST_OFFERED, en.getCurrentState());
 			assertEquals("quest state unchanged", "rejected", player.getQuest(CAMPFIRE, 0));
 		}
@@ -248,7 +244,7 @@ public class CampfireTest {
 		en.setCurrentState(ConversationStates.QUEST_OFFERED);
 		en.step(player, "no");
 
-		assertEquals("Jak mam upiec całe to mięso? Może powinnam nakarmić nim zwierzęta..."
+		assertEquals("Ojej, jak mam ugotować całe to mięso? Chyba będę musiała to po prostu podać zwierzętom..."
 , getReply(npc));
 		assertEquals(ConversationStates.ATTENDING, en.getCurrentState());
 		assertEquals("quest state 'rejected'", "rejected", player.getQuest(CAMPFIRE, 0 ));

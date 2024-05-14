@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -33,8 +32,6 @@ import utilities.QuestHelper;
 import utilities.RPClass.ItemTestHelper;
 
 public class JailedBarbarianTest {
-
-
 	//private static String questSlot = "jailedbarb";
 
 	private Player player = null;
@@ -54,12 +51,13 @@ public class JailedBarbarianTest {
 		new games.stendhal.server.maps.kalavan.castle.PrincessNPC().configureZone(zone, null);
 
 		final AbstractQuest quest = new JailedBarbarian();
-		// Księżniczka Esclara's greeting response is defined in her quest
+		// princess Esclara's greeting response is defined in her quest
 		final AbstractQuest quest2 = new BuiltQuest(new AmazonPrincess().story());
 		quest.addToWorld();
 		quest2.addToWorld();
 
 	}
+
 	@Before
 	public void setUp() {
 		player = PlayerTestHelper.createPlayer("player");
@@ -117,9 +115,9 @@ public class JailedBarbarianTest {
 		en.step(player, "hi");
 		assertEquals("Huh, co ty tutaj robisz?!", getReply(npc));
 		en.step(player, "task");
-		assertEquals("Napiłabym się drinka, powinien być egzotyczny. Czy możesz mi go przynieść?", getReply(npc));
+		assertEquals("Szukam napoju, powinien być egzotyczny. Możesz mi przynieść?", getReply(npc));
 		en.step(player, "no");
-		assertEquals("Och, nieważne. Do widzenia.", getReply(npc));
+		assertEquals("Och nieważne. A więc do zobaczenia.", getReply(npc));
 		en.step(player, "bye");
 
 		en.step(player, "hi");

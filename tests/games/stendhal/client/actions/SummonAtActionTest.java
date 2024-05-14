@@ -77,7 +77,7 @@ public class SummonAtActionTest {
 		// issue "/summonat bag 5x money"
 		assertTrue(action.execute(new String[]{"player", "bag", "5x"}, "money"));
 
-		assertEquals("Invalid amount: 5x", getInterface().getLastEventLine());
+		assertEquals("Nieprawidłowa liczba: 5x", getInterface().getLastEventLine());
 	}
 
 	/**
@@ -157,10 +157,10 @@ public class SummonAtActionTest {
 				assertEquals("memem", action.get("target"));
 				assertEquals("bag", action.get("slot"));
 				assertEquals(3, action.getInt("amount"));
-				assertEquals("greater potion", action.get("item"));
+				assertEquals("duży eliksir", action.get("item"));
 			}
 		};
 		SlashActionRepository.register();
-		ChatLineParser.parseAndHandle("/summonat memem bag 3 greater potion");
+		ChatLineParser.parseAndHandle("/summonat memem bag 3 duży eliksir");
 	}
 }

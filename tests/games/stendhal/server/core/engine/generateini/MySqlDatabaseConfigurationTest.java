@@ -7,7 +7,7 @@ public class MySqlDatabaseConfigurationTest extends TestCase {
     public void testToIni() {
         assertEquals(
                 "database_adapter=marauroa.server.db.adapter.MySQLDatabaseAdapter" + System.lineSeparator()
-                + "jdbc_url=jdbc:mysql://host/db?useUnicode=yes&characterEncoding=UTF-8" + System.lineSeparator()
+                + "jdbc_url=jdbc:mysql://host/db?useUnicode=yes&characterEncoding=UTF-8&serverTimezone=Europe/Warsaw" + System.lineSeparator()
                 + "jdbc_class=com.mysql.jdbc.Driver" + System.lineSeparator()
                 + "jdbc_user=user" + System.lineSeparator()
                 + "jdbc_pwd=password" + System.lineSeparator(),

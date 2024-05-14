@@ -73,15 +73,15 @@ public class ArmorForDagobertTest {
 		assertTrue(quest.getHistory(player).isEmpty());
 		en.step(player, "task");
 		assertTrue(quest.getHistory(player).isEmpty());
-		assertEquals("Obawiam się, że zostałem okradziony. Nie mam żadnej ochrony. Czy mógłbyś mi pomóc?",
+		assertEquals("Tak bardzo boję się, że zostanę okradziony podczas jakiegoś napadu. Nie mam żadnej ochrony. Myślisz, że jesteś w stanie mi pomóc?",
 				getReply(npc));
 		en.step(player, "no");
 		java.util.List<String> questHistory = new LinkedList<String>();
-		questHistory.add("Spotkałem Dagobert. Jest konsultantem w banku w Semos.");
-		questHistory.add("Poprosił mnie o znalezienie skórzanego kirysu, ale odrzuciłem jego prośbę.");
+		questHistory.add("W banku napotkany został Dagobert. Jest konsultantem w banku w Semos.");
+		questHistory.add("Poprosił mnie o znalezienie skórzanego kirysu, ale nie zamierzam pomagać z jego prośbą.");
 		assertEquals(questHistory, quest.getHistory(player));
 
-		assertEquals("Cóż, myślę, że po prostu się ukryję.", getReply(npc));
+		assertEquals("Cóż, w takim razie chyba po prostu schylę się i ukryję.", getReply(npc));
 		en.step(player, "bye");
 		assertEquals(questHistory, quest.getHistory(player));
 		assertEquals("Przyjemnie mi się z tobą pracowało!", getReply(npc));
@@ -93,20 +93,20 @@ public class ArmorForDagobertTest {
 		assertEquals(questHistory, quest.getHistory(player));
 		en.step(player, "task");
 		assertEquals(questHistory, quest.getHistory(player));
-		assertEquals("Obawiam się, że zostałem okradziony. Nie mam żadnej ochrony. Czy mógłbyś mi pomóc?",
+		assertEquals("Tak bardzo boję się, że zostanę okradziony podczas jakiegoś napadu. Nie mam żadnej ochrony. Myślisz, że jesteś w stanie mi pomóc?",
 				getReply(npc));
 		en.step(player, "yes");
 		questHistory = new LinkedList<String>();
-		questHistory.add("Spotkałem Dagobert. Jest konsultantem w banku w Semos.");
-		questHistory.add("Przyrzekłem, że znajdę dla niego skórzany kirys ponieważ został okradziony.");
+		questHistory.add("W banku napotkany został Dagobert. Jest konsultantem w banku w Semos.");
+		questHistory.add("Znajdę dla niego skórzany kirys, ponieważ został okradziony.");
 		assertEquals(questHistory, quest.getHistory(player));
 		assertEquals(
-				"Raz miałem #'skórzany kirys', ale został zniszczony podczas ostatniej kradzieży. Jeżeli znajdziesz nowy to dam Tobie nagrodę.",
+				"Kiedyś miałem fajny #'skórzany kirys', ale uległ zniszczeniu podczas ostatniego napadu. Jeśli znajdziesz nowy, dam ci nagrodę.",
 				getReply(npc));
 		en.step(player, "leather");
 		assertEquals(questHistory, quest.getHistory(player));
 		assertEquals(
-				"Skórzany kirys jest tradycyjną zbroją cyklopów. Kilka cyklopów mieszka w podziemiach głęboko pod miastem.",
+				"Skórzany kirys to tradycyjna zbroja cyklopa. Niektórzy cyklopi żyją w lochach głęboko pod miastem.",
 				getReply(npc));
 		en.step(player, "bye");
 		assertEquals(questHistory, quest.getHistory(player));
@@ -115,15 +115,15 @@ public class ArmorForDagobertTest {
 		// -----------------------------------------------
 		final Item item = ItemTestHelper.createItem("skórzany kirys");
 		player.getSlot("bag").add(item);
-		questHistory.add("Znalazłem skórzany kirys i zabiorę go do Dagoberta.");
+		questHistory.add("Znalazł się skórzany kirys i niosę już go Dagobertowi.");
 		assertEquals(questHistory, quest.getHistory(player));
 
 		en.step(player, "hi");
-		assertEquals("Przepraszam! Zauważyłem, że masz przy sobie skórzany kirys. Jest dla mnie?",
+		assertEquals("Przepraszam! Zauważyłem skórzany kirys, który nosisz. Czy to dla mnie?",
 				getReply(npc));
 		assertEquals(questHistory, quest.getHistory(player));
 		en.step(player, "no");
-		assertEquals("Cóż mam nadzieję, że znajdziesz i dasz mi inny nim zostanę ponownie obrabowany.",
+		assertEquals("No cóż, mam nadzieję, że znajdziesz inny i możesz mi go dać, zanim znowu zostanę obrabowany.",
 				getReply(npc));
 		assertEquals(questHistory, quest.getHistory(player));
 		en.step(player, "bye");
@@ -133,13 +133,13 @@ public class ArmorForDagobertTest {
 		// -----------------------------------------------
 
 		en.step(player, "hi");
-		assertEquals("Przepraszam! Zauważyłem, że masz przy sobie skórzany kirys. Jest dla mnie?",
+		assertEquals("Przepraszam! Zauważyłem skórzany kirys, który nosisz. Czy to dla mnie?",
 				getReply(npc));
 		assertEquals(questHistory, quest.getHistory(player));
 		// put it out of bag onto ground, then say yes.
 		player.drop("skórzany kirys");
 		assertFalse(player.isEquipped("skórzany kirys"));
-		questHistory.remove("Znalazłem skórzany kirys i zabiorę go do Dagoberta.");
+		questHistory.remove("Znalazł się skórzany kirys i niosę już go Dagobertowi.");
 		assertEquals(questHistory, quest.getHistory(player));
 		npc.remove("text");
 		en.step(player, "yes");
@@ -154,19 +154,19 @@ public class ArmorForDagobertTest {
 
 		player.getSlot("bag").add(item);
 		en.step(player, "hi");
-		questHistory.add("Znalazłem skórzany kirys i zabiorę go do Dagoberta.");
+		questHistory.add("Znalazł się skórzany kirys i niosę już go Dagobertowi.");
 		assertEquals(questHistory, quest.getHistory(player));
-		assertEquals("Przepraszam! Zauważyłem, że masz przy sobie skórzany kirys. Jest dla mnie?",
+		assertEquals("Przepraszam! Zauważyłem skórzany kirys, który nosisz. Czy to dla mnie?",
 				getReply(npc));
 		final int xpBeforeReward = player.getXP();
 		en.step(player, "yes");
-		questHistory.add("Wziąłem skórzany kirys do Dagoberta. Podziękował i dał mi nagrodę.");
+		questHistory.add("Skórzany kirys został zwrócony Dagobertowi. W ramach drobnej wdzięczności pozwoli mi skorzystać z prywatnego skarbca.");
 		assertEquals(questHistory, quest.getHistory(player));
-		assertEquals("Oh, jestem Ci tak wdzięczny, proszę weź to złoto, które znalazłem...ehm..gdzieś.", getReply(npc));
-		assertEquals(xpBeforeReward + 500, player.getXP());
+		assertEquals("Och, jestem bardzo wdzięczny! Oto trochę złota, które znalazłem… ehm… gdzieś. Masz moją dozgodną wdzięczność oraz zaufanie, w nagrodę teraz możesz mieć dostęp do własnego prywatnego skarbca, kiedy tylko chcesz.", getReply(npc));
+		assertEquals(xpBeforeReward + 50, player.getXP());
 		en.step(player, "task");
 		assertEquals(questHistory, quest.getHistory(player));
-		assertEquals("Dziękuję za zbroję, ale nie mam więcej zadań dla Ciebie.", getReply(npc));
+		assertEquals("Dziękuję bardzo za zbroję, ale nie mam dla ciebie innego zadania.", getReply(npc));
 	}
 
 

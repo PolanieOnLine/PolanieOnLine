@@ -57,14 +57,14 @@ public class FoodMillTest {
 		assertEquals("Twoja druga ręka wygląda na pustą.", PlayerTestHelper.getPrivateReply(user));
 		PlayerTestHelper.equipWithItemToSlot(user, "ser", "rhand");
 		fm.onUsed(user);
-		assertEquals("Musisz mieć conajmniej jabłko w drugiej dłoni.", PlayerTestHelper.getPrivateReply(user));
+		assertEquals("Musisz mieć co najmniej jabłko w drugiej dłoni.", PlayerTestHelper.getPrivateReply(user));
 
 		user.drop("ser");
 
 		PlayerTestHelper.equipWithItemToSlot(user, "trzcina cukrowa", "rhand");
 
 		fm.onUsed(user);
-		assertEquals("Musisz mieć conajmniej jabłko w drugiej dłoni.", PlayerTestHelper.getPrivateReply(user));
+		assertEquals("Musisz mieć co najmniej jabłko w drugiej dłoni.", PlayerTestHelper.getPrivateReply(user));
 		PlayerTestHelper.equipWithItem(user, "pusty worek");
 		fm.onUsed(user);
 		assertFalse(user.isEquipped("cukier"));
@@ -94,7 +94,7 @@ public class FoodMillTest {
 		PlayerTestHelper.equipWithItemToSlot(user, "ser", "rhand");
 		PlayerTestHelper.equipWithItemToSlot(user, "zwój zapisany","bag");
 		fm.onUsed(user);
-		assertEquals("Musisz mieć conajmniej jabłko w drugiej dłoni.", PlayerTestHelper.getPrivateReply(user));
+		assertEquals("Musisz mieć co najmniej jabłko w drugiej dłoni.", PlayerTestHelper.getPrivateReply(user));
 		assertFalse(user.isEquipped("niezapisany zwój"));
 
 		user.drop("ser");

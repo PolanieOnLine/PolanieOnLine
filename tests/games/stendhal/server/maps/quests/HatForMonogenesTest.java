@@ -87,10 +87,6 @@ public class HatForMonogenesTest {
 		final Player player = PlayerTestHelper.createPlayer("player");
 		en.step(player, "hi");
 		assertEquals(
-				"Hi again, player. How can I #help you this time?",
-				getReply(npc));
-		en.step(player, "quest");
-		assertEquals(
 				"Witaj nieznajomy! Nie bądź zbyt onieśmielony, gdy ludzie siedzą cicho lub są zajęci... strach przed Blordroughtem i jego wojskami padł na cały kraj. Jesteśmy trochę zaniepokojeni. Mogę dać Tobie trochę rad odnośnie zawierania przyjaźni. Chciałbyś je usłyszeć?",
 				getReply(npc));
 		en.step(player, "no");
@@ -104,15 +100,15 @@ public class HatForMonogenesTest {
 		assertEquals("Witaj ponownie player. W czym mogę #pomóc tym razem?", getReply(npc));
 		en.step(player, "task");
 		assertEquals(
-				"Czy mógłbyś przynieść mi #kapelusz do zakrycia mojej łysinki? Brrrrr! Dni w Semos robią się coraz chłodniejsze...",
+				"Czy mógłbyś przynieść mi #czapkę, żeby przykryć moją łysą głowę? Brrrrr! Dni tutaj w Semos robią się naprawdę zimne...",
 				getReply(npc));
-		en.step(player, "hat");
+		en.step(player, "czapka");
 		assertEquals(
-				"Nie wiesz co to jest kapelusz?! Wszystko co może zakryć moją świecącą głowę jak na przykład skóra. Zrobisz to dla mnie?",
+				"Nie wiesz, co to jest czapka?! Cokolwiek lekkiego, co może przykryć moją głowę; na przykład skóra. No, zrobisz to?",
 				getReply(npc));
 		en.step(player, "no");
 		assertEquals(
-				"Jestem pewien, że masz lepsze rzeczy do zrobienia. Będę stał tutaj i zamarzał na śmierć... *sniff*",
+				"Z pewnością masz ważniejsze rzeczy do zrobienia, a mało czasu, by je zrobić. Chyba zostanę tu i zamarznę... *pociągnięcie nosem*",
 				getReply(npc));
 		en.step(player, "bye");
 		assertEquals("Do widzenia.", getReply(npc));
@@ -123,14 +119,14 @@ public class HatForMonogenesTest {
 		assertEquals("Witaj ponownie player. W czym mogę #pomóc tym razem?", getReply(npc));
 		en.step(player, "task");
 		assertEquals(
-				"Czy mógłbyś przynieść mi #kapelusz do zakrycia mojej łysinki? Brrrrr! Dni w Semos robią się coraz chłodniejsze...",
+				"Czy mógłbyś przynieść mi #czapkę, żeby przykryć moją łysą głowę? Brrrrr! Dni tutaj w Semos robią się naprawdę zimne...",
 				getReply(npc));
-		en.step(player, "hat");
+		en.step(player, "czapka");
 		assertEquals(
-				"Nie wiesz co to jest kapelusz?! Wszystko co może zakryć moją świecącą głowę jak na przykład skóra. Zrobisz to dla mnie?",
+				"Nie wiesz, co to jest czapka?! Cokolwiek lekkiego, co może przykryć moją głowę; na przykład skóra. No, zrobisz to?",
 				getReply(npc));
 		en.step(player, "yes");
-		assertEquals("Dziękuję przyjacielu. Będę tutaj czekał na twój powrót!", getReply(npc));
+		assertEquals("Dzięki, mój dobry przyjacielu. Będę tu czekać na twój powrót!", getReply(npc));
 		en.step(player, "bye");
 		assertEquals("Do widzenia.", getReply(npc));
 
@@ -150,13 +146,13 @@ public class HatForMonogenesTest {
 		// -----------------------------------------------
 
 		en.step(player, "hi");
-		assertEquals("Hej! Czy ten skórzany hełm jest dla mnie?", getReply(npc));
+		assertEquals("Hej! Czy ta skórzana czapka jest dla mnie?", getReply(npc));
 		en.step(player, "no");
-		assertEquals("Ktoś miał dzisiaj dużo szczęścia... *Apsik*.", getReply(npc));
+		assertEquals("Chyba ktoś bardziej szczęśliwy dziś dostanie swoją czapkę... *kichnięcie*", getReply(npc));
 		en.step(player, "bye");
 		assertEquals("Do widzenia.", getReply(npc));
 		en.step(player, "hi");
-		assertEquals("Hej! Czy ten skórzany hełm jest dla mnie?", getReply(npc));
+		assertEquals("Hej! Czy ta skórzana czapka jest dla mnie?", getReply(npc));
 		npc.remove("text");
 		player.drop("skórzany hełm");
 		int oldXP = player.getXP();
@@ -170,7 +166,11 @@ public class HatForMonogenesTest {
 
 		en.step(player, "hi");
 		assertEquals(
-				"Hej, mój dobry przyjacielu, pamiętasz ten skórzany kapelusz, o który cię wcześniej pytałem? Nadal jest tu dość chłodno...",
+				"Witaj ponownie player. W czym mogę #pomóc tym razem?",
+				getReply(npc));
+		en.step(player, "quest");
+		assertEquals(
+				"Hej, mój dobry przyjacielu, pamiętasz tę skórzaną czapkę, o której ci mówiłem wcześniej? Wciąż tu dosyć zimno...",
 				getReply(npc));
 		en.step(player, "bye");
 		assertEquals("Do widzenia.", getReply(npc));
@@ -179,12 +179,12 @@ public class HatForMonogenesTest {
 
 		player.equip("bag", SingletonRepository.getEntityManager().getItem("skórzany hełm"));
 		en.step(player, "hi");
-		assertEquals("Hej! Czy ten skórzany hełm jest dla mnie?", getReply(npc));
+		assertEquals("Hej! Czy ta skórzana czapka jest dla mnie?", getReply(npc));
 		oldXP = player.getXP();
 		en.step(player, "yes");
-		assertEquals(oldXP + 300, player.getXP());
+		assertEquals(oldXP + 50, player.getXP());
 
-		assertEquals("Niech Cię pobłogosławię mój dobry przyjacielu! Teraz mojej głowie będzie wygodnie i ciepło.", getReply(npc));
+		assertEquals("Błogosławię cię, mój dobry przyjacielu! Teraz moja głowa będzie ładnie ciepła.", getReply(npc));
 		en.step(player, "bye");
 		assertEquals("Do widzenia.", getReply(npc));
 		// (sorry i meant to put it on ground to test if he noticed it went
@@ -201,18 +201,19 @@ public class HatForMonogenesTest {
 		assertEquals(history, quest.getHistory(player));
 
 		player.setQuest("hat_monogenes", "");
-		history.add("Spotkałem Monogenes na wiosnę w wiosce Semos");
-		history.add("Muszę znaleźć jakiś skórzany kapelusz, który trzymałby ciepło.");
+		history.add("Spotkałem Monogenesa przy źródle w wiosce Semos.");
+		history.add("Muszę znaleźć mu czapkę, coś skórzanego, żeby ogrzać mu głowę.");
 		assertEquals(history, quest.getHistory(player));
 
 		player.setQuest("hat_monogenes", "start");
 		player.equip("bag", ItemTestHelper.createItem("skórzany hełm"));
-		history.add("Zdobyłem kapelusz.");
+		history.add("Znalazłem czapkę.");
 
 		assertEquals(history, quest.getHistory(player));
 		player.setQuest("hat_monogenes", "done");
-		history.add("Dałem kapelusz Monogenesowi i nagrodził mnie swym doświadczeniem.");
+		history.add("Oddałem Monogenesowi czapkę, żeby ogrzała mu łysą głowę.");
 
 		assertEquals(history, quest.getHistory(player));
+
 	}
 }

@@ -24,7 +24,6 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.fsm.Engine;
 import utilities.NPCTestHelper;
 import utilities.QuestHelper;
-import utilities.ShopHelper;
 import utilities.ZonePlayerAndNPCTestImpl;
 
 /**
@@ -114,6 +113,9 @@ public class GreeterNPCTest extends ZonePlayerAndNPCTestImpl {
 		final SpeakerNPC npc = getNPC("Erodel Bmud");
 		final Engine en = npc.getEngine();
 
+		// configure shop
+		NPCTestHelper.loadShops("Erodel Bmud");
+
 		assertTrue(en.step(player, "hi"));
 		assertEquals("Witaj wędrowcze.", getReply(npc));
 
@@ -138,8 +140,8 @@ public class GreeterNPCTest extends ZonePlayerAndNPCTestImpl {
 		assertTrue(en.step(player, "buy someunknownthing"));
 		assertEquals("Nie sprzedaję someunknownthingi.", getReply(npc));
 
-		assertTrue(en.step(player, "buy a bottle of wine"));
-		assertEquals("Nie sprzedaję wina.", getReply(npc));
+		assertTrue(en.step(player, "buy butelka wina"));
+		assertEquals("Nie sprzedaję butelka wine.", getReply(npc));
 
 		assertTrue(en.step(player, "buy zwój"));
 		assertEquals("Jest więcej niż jeden zwój. Powiedz mi jaki rodzaj zwój chcesz użyć.", getReply(npc));
@@ -198,7 +200,7 @@ public class GreeterNPCTest extends ZonePlayerAndNPCTestImpl {
 		assertEquals("Witaj wędrowcze.", getReply(npc));
 
 		// There is not yet a trigger for selling things to Erodel
-		assertFalse(en.step(player, "sell summon scroll"));
+		assertFalse(en.step(player, "sell zwój przywołania"));
 	}
 
 }

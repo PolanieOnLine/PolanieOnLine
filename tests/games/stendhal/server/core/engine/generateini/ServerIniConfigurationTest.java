@@ -26,7 +26,7 @@ public class ServerIniConfigurationTest extends TestCase {
         StringWriter stringWriter = new StringWriter();
         cfg.write(new PrintWriter(stringWriter));
         assertEquals(
-            "# Generated .ini file for Test Game at " + DATE_FORMAT.format(FIXED_DATE) + System.lineSeparator()
+            "# Generated .ini file for Game at " + DATE_FORMAT.format(FIXED_DATE) + System.lineSeparator()
             + "# Database and factory classes. Don't edit." + System.lineSeparator()
             + "database_implementation=games.stendhal.server.core.engine.StendhalPlayerDatabase" + System.lineSeparator()
             + "factory_implementation=games.stendhal.server.core.engine.StendhalRPObjectFactory" + System.lineSeparator()
@@ -36,7 +36,7 @@ public class ServerIniConfigurationTest extends TestCase {
             + "jdbc_url=jdbc:h2:~/stendhal/database/h2db;AUTO_RECONNECT=TRUE" + System.lineSeparator()
             + "jdbc_class=org.h2.Driver" + System.lineSeparator()
             + "" + System.lineSeparator()
-            + "# TCP port stendhald will use. " + System.lineSeparator()
+            + "# TCP port polanieonline will use. " + System.lineSeparator()
             + "tcp_port=32160" + System.lineSeparator()
             + "" + System.lineSeparator()
             + "# World and RP configuration. Don't edit." + System.lineSeparator()
@@ -47,7 +47,7 @@ public class ServerIniConfigurationTest extends TestCase {
             + "" + System.lineSeparator()
             + "server_typeGame=polanieonline" + System.lineSeparator()
             + "server_name=polanieonline Marauroa server" + System.lineSeparator()
-            + "server_version=1.37.2" + System.lineSeparator()
+            + "server_version=1.38" + System.lineSeparator()
             + "server_contact=https://s1.polanieonline.eu/kontakt-gmgags.html" + System.lineSeparator()
             + "" + System.lineSeparator()
             + "# Extensions configured on the server. Enable at will." + System.lineSeparator()

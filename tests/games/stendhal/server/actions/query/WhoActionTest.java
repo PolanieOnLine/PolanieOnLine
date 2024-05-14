@@ -66,13 +66,13 @@ public class WhoActionTest {
 		player.setAdminLevel(AdministrationAction.getLevelForCommand("ghostmode"));
 		player.setGhost(true);
 		pq.onAction(player, action);
-		assertThat(player.events().get(0).get("text"), equalTo("1 w tejże chwili: player(!0) "));
+		assertThat(player.events().get(0).get("text"), equalTo("1 w tejże chwili: ¡'player'(!0) "));
 		player.clearEvents();
 
 		player.setAdminLevel(AdministrationAction.getLevelForCommand("ghostmode") + 1);
 		player.setGhost(true);
 		pq.onAction(player, action);
-		assertThat(player.events().get(0).get("text"), equalTo("1 w tejże chwili: player(!0) "));
+		assertThat(player.events().get(0).get("text"), equalTo("1 w tejże chwili: ¡'player'(!0) "));
 	}
 
 }

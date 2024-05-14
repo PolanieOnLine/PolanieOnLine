@@ -89,7 +89,7 @@ public class KillGnomesTest {
 
 		// Accept quest
 		en.step(player, "yes");
-		assertEquals("Doskonale. Obozowisko gnomów znajdziesz na północny-zachód od Semos. Upewnij się, że ubiłeś kilku liderów, conajmniej jednego zwiadowcę i jednego kawalerzystę.", getReply(npc));
+		assertEquals("Doskonale. Obozowisko gnomów znajdziesz na północny-zachód od Semos. Upewnij się, że ubiłeś kilku liderów, co najmniej jednego zwiadowcę i jednego kawalerzystę.", getReply(npc));
 		en.step(player, "bye");
 		assertEquals("Do widzenia.", getReply(npc));
 		assertThat(player.getQuest(questSlot, 0), equalTo("start"));
