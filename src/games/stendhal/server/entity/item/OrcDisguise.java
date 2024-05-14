@@ -25,24 +25,29 @@ public class OrcDisguise extends Item {
 	};
 
 	/**
-	 * copy constructor
+	 * Default constructor.
 	 *
-	 * @param item item to copy
-	 */
-	public OrcDisguise(OrcDisguise item) {
-		super(item);
-	}
-
-	/**
-	 * creates a new item
-	 *
-	 * @param name item name
-	 * @param clazz item class
-	 * @param subclass item subclass
-	 * @param attributes attributes
+	 * @param name
+	 * 		Item's name
+	 * @param clazz
+	 * 		Item's class or type
+	 * @param subclass
+	 * 		Item's subclass
+	 * @param attributes
+	 * 		Attributes available to this item
 	 */
 	public OrcDisguise(String name, String clazz, String subclass, Map<String, String> attributes) {
 		super(name, clazz, subclass, attributes);
+	}
+
+	/**
+	 * Copy constructor.
+	 *
+	 * @param item
+	 * 		Item to copy
+	 */
+	public OrcDisguise(OrcDisguise item) {
+		super(item);
 	}
 
 	public static boolean isEquipped(RPEntity entity) {
