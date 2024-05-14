@@ -78,7 +78,7 @@ public class HatForMonogenes implements QuestManuscript {
 
 		quest.complete()
 			.greet("Hej! Czy ta skórzana czapka jest dla mnie?")
-			.respondToReject("Chyba ktoś bardziej szczęśliwy dziś dostanie swoją czapkę... *kichanie*")
+			.respondToReject("Chyba ktoś bardziej szczęśliwy dziś dostanie swoją czapkę... *kichnięcie*")
 			.respondToAccept("Błogosławię cię, mój dobry przyjacielu! Teraz moja głowa będzie ładnie ciepła.")
 			.rewardWith(new IncreaseXPAction(50))
 			.rewardWith(new IncreaseKarmaAction(10));

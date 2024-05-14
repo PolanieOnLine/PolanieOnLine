@@ -82,7 +82,7 @@ public class Campfire implements QuestManuscript {
 			.requestItem(10, "polano");
 
 		quest.complete()
-			.greet("Cześć znów! Masz drewno, widzę; czy masz te 10 kawałków drewna, o które wcześniej pytałam?")
+			.greet("Hej ponownie! Masz drewno, widzę; czy masz te 10 kawałków drewna, o które wcześniej pytałam?")
 			.respondToReject("Och... cóż, mam nadzieję, że szybko coś znajdziesz; ten ogień zaraz zgaśnie!")
 			.respondToAccept(null)
 			.rewardWith(new IncreaseXPAction(50))
