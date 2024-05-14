@@ -1,7 +1,7 @@
 {
   "name": "polanieonline",
   "version": "1.0.0",
-  "description": "PolanieOnLine is a fun friendly and free multiplayer online adventure game with an old school feel. ",
+  "description": "PolanieOnLine is a fun friendly and free multiplayer online adventure game with an old school feel.",
   "main": "index.js",
   "directories": {
     "doc": "doc",
@@ -30,5 +30,9 @@
   "private": true,
   "dependencies": {
     "typescript": "^5.2.0"
+  },
+  "devDependencies": {
+    "showdown": "^2.1.0",
+    "typedoc": "^0.25.12"
   }
 }
