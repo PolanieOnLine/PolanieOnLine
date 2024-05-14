@@ -8,8 +8,8 @@
 		<mkdir dir="${build_polanieonlinetools}"/>
 
 		<javac srcdir="${src}" destdir="${build_polanieonlinetools}" source="1.8" target="1.8" debug="${javac.debug}" debuglevel="${javac.debuglevel}" deprecation="${javac.deprecation}" includeantruntime="true">
-			<include name="games/polanieonline/tools/**/*.java"/>
-			<include name="games/polanieonline/tools/*.java"/>
+			<include name="games/stendhal/tools/**/*.java"/>
+			<include name="games/stendhal/tools/*.java"/>
 			<compilerarg value="-encoding"/>
 			<compilerarg value="utf-8"/>
 			<compilerarg value="-Xlint:unchecked"/>

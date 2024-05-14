@@ -21,7 +21,7 @@
 	</target> <!-- test -->
 
 
-	<target name="compile_tests" description="Compile all tests." depends="server_build,client_build,compile_polanieonlinetools,compile_polanieonlinetextclient,postman">
+	<target name="compile_tests" description="Compile all tests." depends="server_build,client_build,compile_polanieonlinetools">
 		<mkdir dir="${build_tests}"/>
 
 		<copy todir="${build_tests}">
@@ -40,13 +40,11 @@
 
 			<classpath>
 				<pathelement path="${build_polanieonlinetools}"/>
-				<pathelement path="${build_polanieonlinetextclient}"/>
 				<pathelement path="${build_client}"/>
 				<pathelement path="${build_server}"/>
 				<pathelement path="${build_server_maps}"/>
 				<pathelement path="${build_server_script}"/>
 				<!--<pathelement path="${build_server_mods}"/>-->
-				<pathelement path="${build_postman}"/>
 				<pathelement path="${marauroa_jar}"/>
 				<pathelement path="${log4j_jar}"/>
 				<pathelement path="${hamcrest_jar}"/>
@@ -98,10 +96,8 @@ d = 9017093486007323270605414717455737376618092805104733236083857811315606869372
 					<pathelement path="${build_server}"/>
 					<pathelement path="${build_server_maps}"/>
 					<pathelement path="${build_polanieonlinetools}"/>
-					<pathelement path="${build_polanieonlinetextclient}"/>
 					<pathelement path="${build_server_script}"/>
 					<!--<pathelement path="${build_server_mods}"/>-->
-					<pathelement path="${build_postman}"/>
 					<pathelement path="${easymock_jar}"/>
 					<pathelement path="${easymockclassextension_jar}"/>
 					<pathelement path="${cglib_jar}"/>

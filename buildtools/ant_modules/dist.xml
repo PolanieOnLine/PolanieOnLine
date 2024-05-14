@@ -41,13 +41,13 @@
 	<target name="dist" depends="clean,dist_binary,dist_source,signupdates" description="Create all packages for PolanieOnLine release."/>
 
 
-	<target name="dist_binary" depends="clean,dist_server_binary,dist_client_binary,dist_client_starter,dist_webclient_binary"
-			description="Create all binary packages for PolanieOnLine release."/>
+	<target name="dist_binary" depends="clean,dist_server_binary,dist_client_binary,dist_client_starter"
+			description="Create all binary packages for PolanieOnLine release."/> <!-- FIXME: dist_webclient_binary reporting node.js error -->
 
 
 	<!-- START: source -->
 
-	<target name="dist_source" description="Create all source packages for Stendhal release.">
+	<target name="dist_source" description="Create all source packages for PolanieOnLine release.">
 		<mkdir dir="${buildroot}/polanieonline-${version}-src"/>
 
 		<copy todir="${buildroot}/polanieonline-${version}-src/src">
@@ -372,7 +372,7 @@
 
 		<copy todir="${buildroot}/polanieonline-server-${version}/data/conf" file="data/conf/admins.txt"/>
 
-		<antcall target="webclient_build" unless:set="exclude.webclientdist"/>
+		<!-- <antcall target="webclient_build" unless:set="exclude.webclientdist"/> FIXME: webclient reporting node.js error -->
 
 		<copy todir="${buildroot}/polanieonline-server-${version}" file="README.md"/>
 		<mkdir dir="${buildroot}/polanieonline-server-${version}/log"/>
@@ -380,14 +380,15 @@
 		<zip destfile="${dist_server_binary}">
 			<zipfileset dir="${buildroot}/polanieonline-server-${version}" excludes="${server_jarname}"/>
 			<zipfileset dir="${buildroot}/polanieonline-server-${version}" includes="${server_jarname}" filemode="755"/>
-			<!-- webclient files -->
+			<!-- webclient files
+				FIXME: webclient reporting node.js error 
 			<zipfileset dir="${build_client_data}" unless:set="exclude.webclientdist"/>
 			<zipfileset dir="${build_client_music_data}" unless:set="exclude.webclientdist"/>
 			<zipfileset dir="${build_client_sound_data}" unless:set="exclude.webclientdist"/>
-			<zipfileset dir="${build_webclient}" prefix="js" unless:set="exclude.webclientdist"/>
+			<zipfileset dir="${build_webclient}" prefix="js" unless:set="exclude.webclientdist"/> -->
 		</zip>
 		<delete dir="${buildroot}/polanieonline-server-${version}"/>
-		<delete dir="${build_webclient}"/>
+		<!-- <delete dir="${build_webclient}"/> FIXME: webclient reporting node.js error -->
 	</target> <!-- dist_server_binary -->
 
 
