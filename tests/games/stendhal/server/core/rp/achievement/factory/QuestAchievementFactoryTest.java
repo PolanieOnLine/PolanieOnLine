@@ -67,6 +67,7 @@ import games.stendhal.server.maps.quests.RestockFlowerShop;
 import games.stendhal.server.maps.quests.SheepGrowing;
 import games.stendhal.server.maps.quests.houses.HouseBuyingMain;
 import utilities.AchievementTestHelper;
+import utilities.NPCTestHelper;
 import utilities.QuestHelper;
 import utilities.QuestRunner;
 
@@ -368,13 +369,15 @@ public class QuestAchievementFactoryTest extends AchievementTestHelper {
 			questRudolph.addStepsToWorld();
 		}
 
+		NPCTestHelper.loadProducers();
+
 		// Meet Hayunn Naratha
 		assertNotNull(getSpeakerNPC("Hayunn Naratha"));
 		//~ assertTrue(QuestHelper.isLoaded("meet_hayunn"));
 		QuestRunner.doQuestMeetHayunn(player);
 		assertFalse(achievementReached(player, id));
-		player.drop("studded shield");
-		assertFalse(player.isEquipped("studded shield"));
+		player.drop("tarcza ćwiekowa");
+		assertFalse(player.isEquipped("tarcza ćwiekowa"));
 
 		// Beer for Hayunn
 		//~ assertTrue(QuestHelper.isLoaded("beer_hayunn"));
@@ -423,8 +426,8 @@ public class QuestAchievementFactoryTest extends AchievementTestHelper {
 		//~ assertTrue(QuestHelper.isLoaded("news_hackim"));
 		QuestRunner.doQuestNewsFromHackim(player);
 		assertFalse(achievementReached(player, id));
-		player.drop("leather legs");
-		assertFalse(player.isEquipped("leather legs"));
+		player.drop("skórzane spodnie");
+		assertFalse(player.isEquipped("skórzane spodnie"));
 
 		// Bows for Ouchit
 		assertNotNull(getSpeakerNPC("Ouchit"));
@@ -462,8 +465,8 @@ public class QuestAchievementFactoryTest extends AchievementTestHelper {
 		//~ assertTrue(QuestHelper.isLoaded("herbs_for_carmen"));
 		QuestRunner.doQuestHerbsForCarmen(player);
 		assertFalse(achievementReached(player, id));
-		player.drop("minor potion", player.getNumberOfEquipped("minor potion"));
-		assertFalse(player.isEquipped("minor potion"));
+		player.drop("mały eliskir", player.getNumberOfEquipped("mały eliskir"));
+		assertFalse(player.isEquipped("mały eliskir"));
 
 		// Learn About Orbs
 		assertNotNull(getSpeakerNPC("Ilisa"));

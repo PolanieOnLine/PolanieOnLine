@@ -16,14 +16,8 @@ import static utilities.PlayerTestHelper.equipWithItem;
 import static utilities.PlayerTestHelper.equipWithStackableItem;
 import static utilities.SpeakerNPCTestHelper.getSpeakerNPC;
 
-import java.util.Arrays;
-import java.util.Map;
-import java.util.TreeMap;
-
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 import games.stendhal.server.entity.npc.fsm.Engine;
 import games.stendhal.server.entity.player.Player;
 import utilities.quest_runner.ChildrensFriendStub;
@@ -198,14 +192,6 @@ public class QuestRunner {
 	}
 
 	public static void doQuestHungryJoshua(final Player player) {
-		final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
-		requiredResources.put("ser", 1);
-
-		SingletonRepository.getProducerRegister().configureNPC(
-				"Xoderos", new ProducerBehaviour("xoderos_test", Arrays.asList("cast"), "ser", requiredResources, 0), "");
-		SingletonRepository.getProducerRegister().configureNPC(
-				"Joshua", new ProducerBehaviour("joshua_test", Arrays.asList("cast"), "ser", requiredResources, 0), "");
-
 		final String questSlot = "hungry_joshua";
 		final SpeakerNPC xoderos = getSpeakerNPC("Xoderos");
 		Engine en = xoderos.getEngine();
@@ -409,11 +395,6 @@ public class QuestRunner {
 	public static void doQuestPizzaDelivery(final Player player, final boolean fast) {
 		final String questSlot = "pizza_delivery";
 		Engine en = getSpeakerNPC("Leander").getEngine();
-		
-		final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
-		requiredResources.put("ser", 1);
-		SingletonRepository.getProducerRegister().configureNPC(
-				"Leander", new ProducerBehaviour("leander_test", Arrays.asList("cast"), "ser", requiredResources, 0), "");
 
 		en.step(player, "hi");
 		en.step(player, "quest");
@@ -423,8 +404,6 @@ public class QuestRunner {
 			player.setQuest(questSlot, 1, "0");
 		}
 		en = getSpeakerNPC(player.getQuest(questSlot, 0)).getEngine();
-		SingletonRepository.getProducerRegister().configureNPC(
-				player.getQuest(questSlot, 0), new ProducerBehaviour(player.getQuest(questSlot, 0) + "_test", Arrays.asList("cast"), "ser", requiredResources, 0), "");
 
 		en.step(player, "hi");
 		en.step(player, "pizza");
