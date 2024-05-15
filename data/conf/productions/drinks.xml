@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<productions xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../productions.xsd">
+
+	<!-- Valo (Ados) -->
+	<production name="valo_concoct_potion" type="drink">
+		<item name="wielki eliksir" minutes="2">
+			<resource name="money" amount="20"/>
+			<resource name="serce olbrzyma"/>
+		</item>
+
+		<producer name="Valo" activities="concoct,zrób,sporządź"
+			message="Pozdrawiam młodzieńcze. #Uleczę Cię i #pomogę Tobie."/>
+	</production>
+
+	<!-- Uncle Dag (Ados) -->
+	<production name="uncle_dag_brew_fierywater" type="drink">
+		<item name="ekstrakt litworowy" minutes="20">
+			<resource name="trzcina cukrowa" amount="5"/>
+			<resource name="polano"/>
+		</item>
+
+		<producer name="Uncle Dag" activities="brew,nawarz"
+			message="Cześć! Jestem Uncle Dag, gorzelnik! Jeżeli przyniesiesz mi #'trzcinę cukrową' i #polano to #wywarzę dla Ciebie #'ekstrakt litworowy'."/>
+	</production>
+
+	<!-- Pedro (Athor) -->
+	<production name="barman_mix_pina" type="drink">
+		<item name="napój z oliwką" minutes="2">
+			<resource name="kokos"/>
+			<resource name="ananas"/>
+		</item>
+
+		<producer name="Pedro" activities="mix,wymieszaj,zrób"
+			message="Aloha!"/>
+	</production>
+
+	<!-- babcia Graham (Kalavan) -->
+	<production name="granny_brew_tea" type="drink">
+		<item name="filiżanka herbaty" minutes="3">
+			<resource name="mleko"/>
+			<resource name="miód"/>
+		</item>
+
+		<producer name="babcia Graham" activities="brew,zaparz"
+			message="Cześć. W czymś mogłabym #pomóc?"/>
+	</production>
+
+	<!-- Aron (Gdańsk) -->
+	<production name="aron_concoct_potion" type="drink">
+		<item name="duży smoczy eliksir" minutes="2">
+			<resource name="money" amount="80"/>
+			<resource name="gigantyczny eliksir"/>
+			<resource name="smocza krew" amount="3"/>
+		</item>
+
+		<producer name="Aron" activities="concoct,zrób,sporządź"
+			message="Witaj poszukiwaczu, co Ciebie sprowadza do mojej TAJNEJ kryjówki? Chcesz być moim #'królikiem doświadczalnym'?"/>
+	</production>
+
+	<!-- Ojciec Honorat (Kraków) -->
+	<production name="honorat_concoct_potion" type="drink">
+		<item name="duży eliksir" minutes="2">
+			<resource name="money" amount="20"/>
+			<resource name="truchło wampira"/>
+			<resource name="sclaria" amount="2"/>
+		</item>
+
+		<producer name="Ojciec Honorat" activities="concoct,zrób,sporządź"
+			message="Pozdrawiam młodzieńcze. W czym mogę Tobie #'pomóc'?"/>
+	</production>
+
+	<!-- Zbyszko (Kraków) -->
+	<production name="zbyszko_make_vine" type="drink">
+		<item name="napój z winogron" minutes="1">
+			<resource name="kiść winogron" amount="2"/>
+		</item>
+
+		<producer name="Zbyszko" activities="make,zrób"
+			message="Witajże, co szukasz w mym domu? Potrzebujesz #pomocy?"/>
+	</production>
+
+	<!-- Agrypin (Wieliczka) -->
+	<production name="agrypin_concoct_potion" type="drink">
+		<item name="smoczy eliksir" minutes="1">
+			<resource name="money" amount="60"/>
+			<resource name="wielki eliksir"/>
+			<resource name="smocza krew"/>
+		</item>
+
+		<producer name="Agrypin" activities="concoct,zrób,sporządź"
+			message="Witaj rycerzu, nie chciałbyś czasem wypróbować mojego nowego #'eliksiru'?"/>
+	</production>
+
+	<!-- Nosiwoda Gerwazy (Zakopane) -->
+	<production name="nosiwoda_fill_buklak" type="drink">
+		<item name="bukłak z wodą" minutes="1">
+			<resource name="pusty bukłak"/>
+			<resource name="money" amount="140"/>
+		</item>
+
+		<producer name="Nosiwoda Gerwazy" activities="fill,nalej"
+			message="Witaj [name]! Jeżeli przyniesiesz mi #'pusty bukłak' to naleję do niego wody ze źródełka. Powiedz tylko #nalej."/>
+	</production>
+
+	<!-- Nosiwoda Witek (Zakopane) -->
+	<production name="nosiwoda_fill_buteleczke" type="drink">
+		<item name="buteleczka wody" minutes="1">
+			<resource name="buteleczka"/>
+			<resource name="money" amount="70"/>
+		</item>
+
+		<producer name="Nosiwoda Witek" activities="fill,nalej"
+			message="Witaj [name]! Jeżeli przyniesiesz mi #buteleczkę to naleję Tobie do niej wody ze źródełka. Powiedz tylko #nalej."/>
+	</production>
+
+	<!-- Nosiwoda Jakub (Zakopane) -->
+	<production name="nosiwoda_fill_buklak" type="drink">
+		<item name="butelka wodą" minutes="1">
+			<resource name="butelka"/>
+			<resource name="money" amount="100"/>
+		</item>
+
+		<producer name="Nosiwoda Jakub" activities="fill,nalej"
+			message="Witaj [name]! Jeżeli przyniesiesz mi #butelkę to naleję Tobie do niej wody ze źródełka. Powiedz tylko #nalej."/>
+	</production>
+
+</productions>

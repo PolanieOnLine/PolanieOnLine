@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<productions xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../productions.xsd">
+
+	<!-- Arlindo (Ados) -->
+	<production name="arlindo_make_pie" type="food">
+		<item name="tarta" minutes="7">
+			<resource name="mąka" amount="2"/>
+			<resource name="mięso" amount="2"/>
+			<resource name="marchew"/>
+			<resource name="pieczarka" amount="2"/>
+		</item>
+
+		<producer name="Arlindo" activities="make,zrób,upiecz"
+			message="Witam! Założę się, że słyszałeś o moim słynnym placku. Mówiąc #upiecz zrobię go dla ciebie."/>
+	</production>
+
+	<!-- Blacksheep Bob (Ados) -->
+	<production name="blacksheepbob_make_sausage" type="food">
+		<item name="paróweczka" minutes="2">
+			<resource name="truchło wampira"/>
+			<resource name="truchło nietoperza"/>
+			<resource name="mięso"/>
+			<resource name="napój z winogron" amount="2"/>
+		</item>
+
+		<producer name="Blacksheep Bob" activities="make,zrób"
+			message="Hej! Witamy na naszym mięsnym targu Blacksheep. Czy mogę zrobić dla Ciebie paróweczki?"/>
+	</production>
+
+	<!-- Blacksheep Harry (Ados) -->
+	<production name="blacksheepharry_make_tuna" type="food">
+		<item name="prasowany tuńczyk" minutes="2">
+			<resource name="makrela"/>
+			<resource name="okoń"/>
+			<resource name="kolorowe kulki" amount="2"/>
+		</item>
+
+		<producer name="Blacksheep Harry" activities="make,zrób"
+			message="Witamy na mięsnym targu Blacksheep. Czy mogę zrobić dla Ciebie prasowanego tuńczyka?"/>
+	</production>
+
+	<!-- Blacksheep Joe (Ados) -->
+	<production name="blacksheepjoe_make_cheese_sausage" type="food">
+		<item name="kiełbasa serowa" minutes="2">
+			<resource name="truchło wampira"/>
+			<resource name="truchło nietoperza"/>
+			<resource name="udko"/>
+			<resource name="czarna perła"/>
+			<resource name="ser"/>
+		</item>
+
+		<producer name="Blacksheep Joe" activities="make,zrób"
+			message="Witamy na mięsnym targu Blacksheep. Czy mogę zrobić dla Ciebie kiełbasę z serem?"/>
+	</production>
+
+	<!-- Linzo (Fado) -->
+	<production name="linzo_make_fish_pie" type="food">
+		<item name="tarta z rybnym nadzieniem" minutes="5">
+			<resource name="mąka"/>
+			<resource name="dorsz" amount="2"/>
+			<resource name="makrela"/>
+			<resource name="por"/>
+		</item>
+
+		<producer name="Linzo" activities="make,zrób,upiecz"
+			message="Cześć, przyszedłeś spróbować moich rybnych placków? Mogę #upiec jeden dla Ciebie."/>
+	</production>
+
+	<!-- Martha (Kalavan) -->
+	<production name="martha_bake_applepie" type="food">
+		<item name="jabłecznik" minutes="15">
+			<resource name="mąka" amount="2"/>
+			<resource name="miód"/>
+			<resource name="mleko"/>
+			<resource name="jajo"/>
+			<resource name="jabłko"/>
+		</item>
+
+		<producer name="Martha" activities="bake,zrób,upiecz"
+			message="Cześć! Czy przyszedłeś, aby skosztować mojego pysznego jabłecznika? Mogę #upiec go dla Ciebie!"/>
+	</production>
+
+	<!-- Gertha (Kalavan) -->
+	<production name="gertha_bake_cherrypie" type="food">
+		<item name="ciasto z wiśniami" minutes="15">
+			<resource name="mąka" amount="2"/>
+			<resource name="miód"/>
+			<resource name="mleko"/>
+			<resource name="jajo"/>
+			<resource name="wisienka" amount="2"/>
+		</item>
+
+		<producer name="Gertha" activities="bake,zrób,upiecz"
+			message="Cześć! Czy przyszedłeś, aby skosztować mojego wspaniałego ciasta z wiśniami? Mogę z przyjemnością je dla Ciebie #upiec!"/>
+	</production>
+
+	<!-- Gaston (Rat City) -->
+	<production name="gaston_bake_crepesuzette" type="food">
+		<item name="naleśniki z polewą czekoladową" minutes="5">
+			<resource name="mąka"/>
+			<resource name="mleko"/>
+			<resource name="jajo"/>
+			<resource name="osełka masła"/>
+			<resource name="cukier"/>
+			<resource name="tabliczka czekolady"/>
+			<resource name="ekstrakt litworowy"/>
+		</item>
+
+		<producer name="Gaston" activities="bake,zrób,upiecz"
+			message="Witaj. Założe się, że przyszedłeś spróbować mojch pysznych #naleśników z polewą czekoladową! Mogę #upiec je dla Ciebie o ile chcesz."/>
+	</production>
+
+	<!-- Leander (Semos) -->
+	<production name="leander_make_sandwiches" type="food">
+		<item name="kanapka" minutes="3">
+			<resource name="chleb"/>
+			<resource name="szynka"/>
+			<resource name="ser" amount="2"/>
+		</item>
+
+		<producer name="Leander" activities="make,zrób"
+			message="Witaj w mojej piekarni, gdzie robię ciasto o zamorskiej nazwie #pizza oraz #kanapki!"/>
+	</production>
+
+	<!-- Erna (Semos) -->
+	<production name="erna_bake_bread" type="food">
+		<item name="chleb" minutes="10">
+			<resource name="mąka" amount="2"/>
+		</item>
+
+		<producer name="Erna" activities="bake,upiecz"
+			message="Witaj w piekarni w Semos! Możemy upiec pyszny chleb dla każdego kto pomoże nam, przynosząc #mąkę z młyna. Powiedz tylko #'upiecz'."/>
+	</production>
+
+	<!-- Kroip (Wo'fol) -->
+	<production name="kroip_make_pizza" type="food">
+		<item name="pizza" minutes="5">
+			<resource name="mąka" amount="2"/>
+			<resource name="ser"/>
+			<resource name="pomidor"/>
+			<resource name="borowik"/>
+			<resource name="szynka"/>
+			<resource name="pieczarka" amount="2"/>
+		</item>
+
+		<producer name="Kroip" activities="make,zrób,upiecz"
+			message="Witam! W czymś mogę #pomóc?"/>
+	</production>
+
+	<!-- Ernest (Gdańsk) -->
+	<production name="ernest_make_donuts" type="food">
+		<item name="pączek" minutes="3">
+			<resource name="mąka"/>
+			<resource name="mleko"/>
+			<resource name="jajo"/>
+			<resource name="osełka masła"/>
+			<resource name="cukier"/>
+		</item>
+
+		<producer name="Ernest" activities="make,zrób,upiecz"
+			message="Witaj w mojej piekarni, gdzie robię ciasto o przepysznej nazwie #pizza oraz #'pączki'!"/>
+	</production>
+
+	<!-- Lena (Gdańsk) -->
+	<production name="lena_bake_bread" type="food">
+		<item name="chleb" minutes="6">
+			<resource name="mąka" amount="2"/>
+		</item>
+
+		<producer name="Lena" activities="bake,upiecz"
+			message="Witamy serdecznie w naszej pięknie pachnącej pieczywem piekarni!"/>
+	</production>
+
+	<!-- Edna (Kraków) -->
+	<production name="edna_bake_bread" type="food">
+		<item name="chleb" minutes="7">
+			<resource name="mąka" amount="2"/>
+		</item>
+
+		<producer name="Edna" activities="bake,upiecz"
+			message="Witaj w naszej piekarni! Mogę dla ciebie upiec #'chleb'."/>
+	</production>
+
+	<!-- Lanosz (Kraków) -->
+	<production name="lanosz_make_sandwich" type="food">
+		<item name="kanapka z tuńczykiem" minutes="2">
+			<resource name="chleb"/>
+			<resource name="tuńczyk" amount="2"/>
+			<resource name="pomidor"/>
+			<resource name="sałata"/>
+		</item>
+
+		<producer name="Lanosz" activities="make,zrób"
+			message="Witaj w naszej piekarni! Przyszedłeś skosztować naszych specjalnych #kanapek?"/>
+	</production>
+
+	<!-- Szef Piotruś (Tarnów) -->
+	<production name="piotrus_make_potatoes" type="food">
+		<item name="gotowane ziemniaki" quantity="5" minutes="1">
+			<resource name="ziemniaki" amount="5"/>
+			<resource name="butelka wody" amount="2"/>
+		</item>
+
+		<producer name="Szef Piotruś" activities="make,zrób,ugotuj"
+			message="Witaj! W obecnej chwili wszyscy ludzie wraz z rycerzami są poza miastem. Podejrzewam, że niedługo oni wrócą! Jeśli chciałbyś skosztować moje pyszne ziemniaczki powiedz mi tylko #ugotuj."/>
+	</production>
+
+	<!-- Małgosia (Zakopane) -->
+	<production name="malgosia_bake_bread" type="food">
+		<item name="chleb" minutes="7">
+			<resource name="mąka" amount="2"/>
+		</item>
+
+		<producer name="Małgosia" activities="bake,zrób,upiecz"
+			message="Witaj w piekarni w Zakopanem! Możemy upiec pyszny chleb dla każdego kto pomoże nam przynosząc mąkę z młyna. Powiedz tylko #upiecz."/>
+	</production>
+
+	<!-- Jaś (Zakopane) -->
+	<production name="jas_make_carrot_pie" type="food">
+		<item name="tarta z marchewką" minutes="4">
+			<resource name="mąka"/>
+			<resource name="marchew" amount="2"/>
+			<resource name="por"/>
+		</item>
+
+		<producer name="Jaś" activities="bake,zrób,upiecz"
+			message="Witaj w mojej piekarni! Chcesz spróbować moich placków z marchewką? Mogę #upiec jeden dla Ciebie!"/>
+	</production>
+
+	<!-- Elwirka (Zakopane) -->
+	<production name="elwirka_make_dwojaki" type="food">
+		<item name="dwojaki" minutes="5">
+			<resource name="ziemniaki" amount="3"/>
+			<resource name="kiełbasa wiejska" amount="3"/>
+			<resource name="cebula"/>
+			<resource name="osełka masła"/>
+			<resource name="mleko"/>
+		</item>
+
+		<producer name="Elwirka" activities="make,zrób,ugotuj"
+			message="Witojcie! Co was tu sprowadza? Pewnie moje legendarne #dwojaki."/>
+	</production>
+
+</productions>
