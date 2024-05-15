@@ -20,15 +20,13 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import games.stendhal.server.core.engine.SingletonRepository;
-import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
-import games.stendhal.server.entity.npc.behaviour.journal.ProducerRegister;
+import games.stendhal.server.core.config.ProducerGroupsXMLLoader.ProducerConfigurator;
 
 public class ProducersXMLLoader extends DefaultHandler {
 	private final static Logger logger = Logger.getLogger(ProducersXMLLoader.class);
 
 	private static ProducersXMLLoader instance;
-	private final static ProducerRegister producers = ProducerRegister.get();
+	private List<ProducerConfigurator> configurators;
 
 	private String npcName;
 	private String questSlot;
@@ -64,11 +62,6 @@ public class ProducersXMLLoader extends DefaultHandler {
 
 		return instance;
 	}
-
-	/**
-	 * Private singleton constructor.
-	 */
-	private ProducersXMLLoader() {}
 
 	public void init() {
 		final String xml = "/data/conf/producers.xml";
@@ -171,26 +164,29 @@ public class ProducersXMLLoader extends DefaultHandler {
 	@Override
 	public void endElement(final String namespaceURI, final String sName, final String qName) {
 		if (qName.equals("producer")) {
-			final ProducerBehaviour behaviour =
-					new ProducerBehaviour(questSlot, activity, itemName, productsPerUnit, resources, time, bound);
+			final ProducerConfigurator pc = new ProducerConfigurator();
+			pc.npc = npcName;
+			pc.questComplete = questComplete;
+			pc.welcomeMessage = welcome;
+			pc.unitsPerTime = unitsPerTime;
+			pc.waitingTime = waiting;
+			pc.remind = remind;
 
-			if (behaviour.getProductionActivity() == activity) {
-				SingletonRepository.getCachedActionManager().register(new Runnable() {
-					private final String _npcName = npcName;
-					private final ProducerBehaviour _behaviour = behaviour;
-					private final String _questComplete = questComplete;
-					private final String _welcome = welcome;
-					private final int _units = unitsPerTime;
-					private final int _waiting = waiting;
-					private final boolean _remind = remind;
+			pc.questSlot = questSlot;
+			pc.produceItem = itemName;
+			pc.produceResources = resources;
+			pc.produceActivity = activity;
+			pc.producePerUnit = productsPerUnit;
+			pc.produceTime = time;
+			pc.itemBound = bound;
 
-					public void run() {
-						producers.configureNPC(_npcName, _behaviour, _questComplete, _welcome, _units, _waiting, _remind);
-					}
-				});
-			}
+			configurators.add(pc);
 		} else if (qName.equals("item")) {
 			productionTag = false;
 		}
+	}
+
+	public List<ProducerConfigurator> getConfigurators() {
+		return configurators;
 	}
 }
