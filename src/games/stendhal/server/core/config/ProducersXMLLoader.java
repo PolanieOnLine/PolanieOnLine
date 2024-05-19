@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -21,33 +22,40 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import games.stendhal.server.core.config.ProducerGroupsXMLLoader.ProducerConfigurator;
+import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 
 public class ProducersXMLLoader extends DefaultHandler {
 	private final static Logger logger = Logger.getLogger(ProducersXMLLoader.class);
 
-	private static ProducersXMLLoader instance;
+	private static boolean initialized = false;
+
+	private Map<String, ProducerBehaviour> behaviours;
 	private List<ProducerConfigurator> configurators;
 
-	private String npcName;
-	private String questSlot;
-	private String questComplete;
+	private String currentNPCName;
+	private String currentSlot;
+	private String currentCompleteQuest;
+	private ProducerBehaviour currentBehaviour;
 
-	private String welcome;
+	private String currentMessage;
 
-	private String itemName;
-	private int productsPerUnit;
+	private String currentItem;
+	private int productionPerCycle;
 
-	private Map<String, Integer> resources = new HashMap<String, Integer>();
-	private List<String> activity = new LinkedList<String>();
+	private Map<String, Integer> requiredResources = new HashMap<String, Integer>();
+	private List<String> currentActivities = new LinkedList<String>();
 
-	private int unitsPerTime;
-	private int waiting;
-	private int time;
+	private int minProductionUnits;
+	private int timeToRestart;
+	private int productionTime;
 	
 	private boolean remind;
 	private boolean bound;
 
 	private boolean productionTag = false;
+
+	private static ProducersXMLLoader instance;
 
 	/**
 	 * Singleton access method.
@@ -55,6 +63,7 @@ public class ProducersXMLLoader extends DefaultHandler {
 	 * @return
 	 *     The static instance.
 	 */
+	@Deprecated
 	public static ProducersXMLLoader get() {
 		if (instance == null) {
 			instance = new ProducersXMLLoader();
@@ -63,8 +72,14 @@ public class ProducersXMLLoader extends DefaultHandler {
 		return instance;
 	}
 
+	@Deprecated
 	public void init() {
-		final String xml = "/data/conf/producers.xml";
+		if (initialized) {
+			logger.warn("Tried to re-initialize productions loader");
+			return;
+		}
+
+		final String xml = "/data/conf/productions.xml";
 		final InputStream in = getClass().getResourceAsStream(xml);
 
 		if (in == null) {
@@ -75,6 +90,7 @@ public class ProducersXMLLoader extends DefaultHandler {
 		try {
 			load(new URI(xml));
 			in.close();
+			initialized = true;
 		} catch (final SAXException | URISyntaxException | IOException e) {
 			logger.error(e);
 		}
@@ -82,6 +98,11 @@ public class ProducersXMLLoader extends DefaultHandler {
 
 	public void load(final URI uri) throws SAXException {
 		try {
+			// reset data
+			behaviours = new HashMap<>();
+			configurators = new ArrayList<>();
+
+
 			// parse the input
 			final SAXParser saxParser = SAXParserFactory.newInstance().newSAXParser();
 			final InputStream is = ProducersXMLLoader.class.getResourceAsStream(uri.getPath());
@@ -105,85 +126,93 @@ public class ProducersXMLLoader extends DefaultHandler {
 	
 	@Override
 	public void startElement(final String namespaceURI, final String lName, final String qName, final Attributes attrs) {
-		if (qName.equals("producer")) {
-			npcName = attrs.getValue("npc");
-			questSlot = attrs.getValue("slot");
-			questComplete = null;
+		if (qName.equals("production")) {
+			currentSlot = attrs.getValue("name");
+			currentCompleteQuest = null;
 			if (attrs.getValue("complete") != null) {
-				questComplete = attrs.getValue("complete");
+				currentCompleteQuest = attrs.getValue("complete");
 			}
-			resources = new LinkedHashMap<String, Integer>();
-			activity = new LinkedList<String>();
-			itemName = null;
-			unitsPerTime = 0;
-			waiting = 0;
-			welcome = null;
 			remind = false;
 			if (attrs.getValue("remind") != null) {
 				remind = Boolean.parseBoolean(attrs.getValue("remind"));
 			}
-		} else if (qName.equals("welcome")) {
-			welcome = attrs.getValue("text");
+
+			//currentProduction = null;
+			currentBehaviour = null;
+			requiredResources = new LinkedHashMap<String, Integer>();
+			currentActivities = new LinkedList<String>();
+			currentItem = null;
+			minProductionUnits = 1;
+			timeToRestart = 0;
+			currentNPCName = null;
+			currentMessage = null;
 		} else if (qName.equals("item")) {
 			productionTag = true;
 
-			itemName = attrs.getValue("name");
-			productsPerUnit = 1;
-			if (attrs.getValue("quantity") != null) {
-				productsPerUnit = Integer.parseInt(attrs.getValue("quantity"));
-			}
-			if (attrs.getValue("pertime") != null) {
-				unitsPerTime = Integer.parseInt(attrs.getValue("pertime"));
-			}
-			if (attrs.getValue("wait") != null) {
-				waiting = Integer.parseInt(attrs.getValue("wait"));
-			}
-			// Time in minutes
-			time = 60 * Integer.parseInt(attrs.getValue("minutes"));
-
-			bound = false;
-			if (attrs.getValue("bound") != null) {
-				bound = Boolean.parseBoolean(attrs.getValue("bound"));
-			}
+			currentItem = attrs.getValue("name");
+			String _quantity = attrs.getValue("quantity");
+			productionPerCycle = Integer.parseInt(_quantity != null ? _quantity : "1"); // The amount that the NPC can produce. Default: 1
+			String _minProduction = attrs.getValue("pertime");
+			minProductionUnits = Integer.parseInt(_minProduction != null ? _minProduction : "0"); // The amount that the NPC can produce at one time. Default: 0
+			String _produceCooldown = attrs.getValue("wait");
+			timeToRestart = Integer.parseInt(_produceCooldown != null ? _produceCooldown : "0"); // Cooldown before next production. Default: 0
+			productionTime = 60 * Integer.parseInt(attrs.getValue("minutes")); // Time in minutes.
+			String _isBound = attrs.getValue("bound");
+			bound = Boolean.parseBoolean(_isBound != null ? _isBound : "false");
 		} else if (productionTag) {
 			if (qName.equals("resource")) {
 				int amount = 1;
 				if (attrs.getValue("amount") != null) {
 					amount = Integer.parseInt(attrs.getValue("amount"));
 				}
-				resources.put(attrs.getValue("name"), amount);
-			} else if (qName.equals("activity")) {
-				final String[] activities = attrs.getValue("type").split(",");
-				for (String activ : activities) {
-					activity.add(activ);
-				}
+				requiredResources.put(attrs.getValue("name"), amount);
 			}
+		} else if (qName.equals("producer")) {
+			final ProducerConfigurator pc = new ProducerConfigurator();
+			currentNPCName = attrs.getValue("name");
+			currentMessage = attrs.getValue("message");
+
+			final String[] activities = attrs.getValue("activities").split(",");
+			for (String activ : activities) {
+				currentActivities.add(activ);
+			}
+
+			currentBehaviour = new ProducerBehaviour(currentSlot, currentActivities, currentItem, productionPerCycle, requiredResources, productionTime, bound);
+
+			pc.npcName = currentNPCName;
+			pc.behaviour = currentBehaviour;
+			pc.questComplete = currentCompleteQuest;
+			pc.welcomeMessage = currentMessage;
+			pc.minProductionUnits = minProductionUnits;
+			pc.timeToRestart = timeToRestart;
+			pc.remind = remind;
+
+			configurators.add(pc);
 		}
 	}
 
 	@Override
 	public void endElement(final String namespaceURI, final String sName, final String qName) {
-		if (qName.equals("producer")) {
-			final ProducerConfigurator pc = new ProducerConfigurator();
-			pc.npc = npcName;
-			pc.questComplete = questComplete;
-			pc.welcomeMessage = welcome;
-			pc.unitsPerTime = unitsPerTime;
-			pc.waitingTime = waiting;
-			pc.remind = remind;
+		if (qName.equals("production")) {
+			if (currentBehaviour.getProductionActivity() == currentActivities) {
+				SingletonRepository.getCachedActionManager().register(new Runnable() {
+					private final String _npcName = currentNPCName;
+					private final ProducerBehaviour _behaviour = currentBehaviour;
 
-			pc.questSlot = questSlot;
-			pc.produceItem = itemName;
-			pc.produceResources = resources;
-			pc.produceActivity = activity;
-			pc.producePerUnit = productsPerUnit;
-			pc.produceTime = time;
-			pc.itemBound = bound;
-
-			configurators.add(pc);
+					public void run() {
+						if (!behaviours.containsKey(_npcName)) {
+							behaviours.put(_npcName, _behaviour);
+						}
+					}
+				});
+			}
 		} else if (qName.equals("item")) {
 			productionTag = false;
 		}
+	}
+
+	public Map<String, ProducerBehaviour> getBehaviours() {
+		return behaviours;
 	}
 
 	public List<ProducerConfigurator> getConfigurators() {
