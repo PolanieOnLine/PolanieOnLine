@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<groups xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal groups.xsd">
+
+	<group uri="productions/drinks.xml"/>
+	<group uri="productions/foods.xml"/>
+	<group uri="productions/items.xml"/>
+
+</groups>

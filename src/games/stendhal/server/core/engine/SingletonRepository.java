@@ -293,3 +293,4 @@ public class SingletonRepository {
 		return ShopsXMLLoader.get();
 	}
 }
+

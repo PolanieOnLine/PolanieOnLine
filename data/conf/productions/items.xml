@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<productions xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="stendhal ../productions.xsd">
+
+	<!-- Joshua (Ados) -->
+	<production name="joshua_cast_gold" type="item">
+		<item name="sztabka złota" minutes="15">
+			<resource name="polano" amount="3"/>
+			<resource name="bryłka złota"/>
+		</item>
+
+		<producer name="Joshua" activities="cast,odlej"
+			message="Cześć! Jestem tutejszym złotnikiem. Jeżeli będziesz chciał, abym odlał dla Ciebie #sztabkę #złota to daj znać! Wystarczy, że powiesz #odlej."/>
+	</production>
+
+	<!-- Pedinghaus (Ados) -->
+	<production name="Pedinghaus_cast_mithril" type="item">
+		<item name="sztabka mithrilu" minutes="18">
+			<resource name="polano" amount="20"/>
+			<resource name="bryłka mithrilu"/>
+		</item>
+
+		<producer name="Pedinghaus" activities="cast,odlej"
+			message="Pozdrawiam. Sądzę, że jesteś zainteresowany mithrilem. Jeżeli chcesz, abym odlał #'sztabkę mithrilu' to daj znać. Powiedz tylko #odlej."/>
+	</production>
+
+	<!-- Pequod (Ados) -->
+	<production name="pequod_make_oil" type="item" remind="true">
+		<item name="olejek" minutes="10">
+			<resource name="dorsz" amount="2"/>
+		</item>
+
+		<producer name="Pequod" activities="make,zrób"/>
+	</production>
+
+	<!-- Pam (Athor) -->
+	<production name="pamela_mix_cream" type="item">
+		<item name="olejek do opalania" minutes="10">
+			<resource name="arandula"/>
+			<resource name="kokuda"/>
+			<resource name="mały eliksir"/>
+		</item>
+
+		<producer name="Pam" activities="mix,wymieszaj,zrób"
+			message="Hallo!"/>
+	</production>
+
+	<!-- David (Athor) -->
+	<production name="david_mix_cream" type="item">
+		<item name="olejek do opalania" minutes="10">
+			<resource name="arandula"/>
+			<resource name="kokuda"/>
+			<resource name="mały eliksir"/>
+		</item>
+
+		<producer name="David" activities="mix,wymieszaj,zrób"
+			message="Hallo!"/>
+	</production>
+
+	<!-- Fletcher (Deniran) -->
+	<production name="fletcher_soak_arrows" type="item">
+		<item name="zatruta strzała" quantity="10" minutes="1">
+			<resource name="strzała" amount="10"/>
+			<resource name="trucizna"/>
+			<resource name="money" amount="500"/>
+		</item>
+
+		<producer name="Fletcher" activities="soak,nasącz"
+			message="Ładny dziś [daylightphase] mamy. Co mogę Wam dziś #zaoferować?"/>
+	</production>
+
+	<!-- Sue (Kalavan) -->
+	<production name="sue_swap_kalavan_city_scroll" type="item">
+		<item name="zwój kalavan" pertime="7" wait="24" minutes="1">
+			<resource name="filiżanka herbaty"/>
+			<resource name="kanapka"/>
+		</item>
+
+		<producer name="Sue" activities="swap,zamień"
+			message="Piękny [daylightphase]. Nieprawdaż?"/>
+	</production>
+
+	<!-- Giles (Kirdneh) -->
+	<production name="ropemaker_braid_rope" type="item">
+		<item name="lina" minutes="15">
+			<resource name="money" amount="200"/>
+			<resource name="końskie włosie" amount="6"/>
+		</item>
+
+		<producer name="Giles" activities="braid,zaplatanie,zapleść,pleść,zapleć"
+			message="Hmmm... Myślę, że to dobre miejsce na zbudowanie mojego sklepu. Och, cześć. Jak mogę ci #pomóc?"/>
+	</production>
+
+	<!-- Xoderos (Semos) -->
+	<production name="xoderos_cast_iron" type="item">
+		<item name="sztabka żelaza" minutes="5">
+			<resource name="polano"/>
+			<resource name="ruda żelaza"/>
+		</item>
+
+		<producer name="Xoderos" activities="cast,odlej"
+			message="Witaj! Przykro mi to mówić, ale z powodu trwającej wojny nie wolno mi sprzedawać broni nikomu spoza grona oficjalnych wojskowych. Mogę odlać dla Ciebie żelazo, a może interesuję Cię moja #oferta specjalna? Powiedz tylko #odlej."/>
+	</production>
+
+	<!-- Jenny (Semos) -->
+	<production name="jenny_mill_flour" type="item">
+		<item name="mąka" minutes="2">
+			<resource name="zboże" amount="5"/>
+		</item>
+
+		<producer name="Jenny" activities="mill,zmiel"
+			message="Pozdrawiam! Zwiem się Jenny oraz jestem szefową tutejszego młyna. Jeżeli przyniesiesz mi #kłosy zboża to zmielę je dla Ciebie na mąkę. Powiedz tylko #zmiel."/>
+	</production>
+
+	<!-- Markovich (Semos) -->
+	<production name="sicky_fill_goblet" type="item">
+		<item name="czara" minutes="5" bound="true">
+			<resource name="truchło wampira" amount="7"/>
+			<resource name="truchło nietoperza" amount="7"/>
+			<resource name="pierścień z czaszką"/>
+			<resource name="pusta czara"/>
+		</item>
+
+		<producer name="Markovich" activities="fill,napełnij"
+			message="Proszę nie próbuj mnie zabijać... Jestem tylko starym chorym #wampirem. Czy masz #krew, którą mógłbym wypić? Jeżeli masz #'pustą czarę' to napełnię ją krwią z mojego kotła."/>
+	</production>
+
+	<!-- czeladnik Wojtek (Gdańsk) -->
+	<production name="wojtek_cast_ametyst" type="item">
+		<item name="ametyst" minutes="4">
+			<resource name="money" amount="200"/>
+			<resource name="kryształ ametystu"/>
+		</item>
+
+		<producer name="czeladnik Wojtek" activities="grind,oszlifuj"
+			message="Dzień dobry. W czymś mogę ci #pomóc?"/>
+	</production>
+
+	<!-- czeladnik Ziemirad (Kościelisko) -->
+	<production name="ziemirad_cast_crbuncle" type="item">
+		<item name="rubin" minutes="4">
+			<resource name="money" amount="580"/>
+			<resource name="kryształ rubinu"/>
+		</item>
+
+		<producer name="czeladnik Ziemirad" activities="grind,oszlifuj"
+			message="Dzień dobry. W czymś mogę ci #pomóc?"/>
+	</production>
+
+	<!-- czeladnik Mieszek (Kościelisko) -->
+	<production name="mieszek_cast_emerald" type="item">
+		<item name="szmaragd" minutes="4">
+			<resource name="money" amount="180"/>
+			<resource name="kryształ szmaragdu"/>
+		</item>
+
+		<producer name="czeladnik Mieszek" activities="grind,oszlifuj"
+			message="Dzień dobry. W czymś mogę ci #pomóc?"/>
+	</production>
+
+	<!-- czeladnik Sobek (Kościelisko) -->
+	<production name="sobek_cast_obsidian" type="item">
+		<item name="obsydian" minutes="4">
+			<resource name="money" amount="980"/>
+			<resource name="kryształ obsydianu"/>
+		</item>
+
+		<producer name="czeladnik Sobek" activities="grind,oszlifuj"
+			message="Dzień dobry. W czymś mogę ci #pomóc?"/>
+	</production>
+
+	<!-- czeladnik Krzesim (Kościelisko) -->
+	<production name="krzesim_cast_sapphire" type="item">
+		<item name="szafir" minutes="4">
+			<resource name="money" amount="380"/>
+			<resource name="kryształ szafiru"/>
+		</item>
+
+		<producer name="czeladnik Krzesim" activities="grind,oszlifuj"
+			message="Dzień dobry. W czymś mogę ci #pomóc?"/>
+	</production>
+
+	<!-- Samson (Kraków) -->
+	<production name="samson_cast_copper" type="item">
+		<item name="sztabka miedzi" minutes="7">
+			<resource name="polano" amount="2"/>
+			<resource name="ruda miedzi"/>
+		</item>
+
+		<producer name="Samson" activities="cast,odlej"
+			message="Witaj w mej kuźni, wojowniku! Jeżeli będziesz coś potrzebował to zagadaj do mnie. Mogę dla Ciebie #odlać szatbkę miedzi. Powiedz mi tylko #'odlej sztabka miedzi'."/>
+	</production>
+
+	<!-- Hadrin (Kraków) -->
+	<production name="hadrin_cast_arrow" type="item">
+		<item name="strzała złota" quantity="15" minutes="2">
+			<resource name="polano"/>
+			<resource name="bryłka złota" amount="2"/>
+			<resource name="piórko" amount="2"/>
+			<resource name="money" amount="20"/>
+		</item>
+
+		<producer name="Hadrin" activities="make,zrób"
+			message="Witaj! Mogę zrobić dla ciebie złote strzały, a może interesuje cię moja #oferta specjalna? Powiedz tylko #'zrób'."/>
+	</production>
+
+	<!-- Aisha (Kraków) -->
+	<production name="aisha_mill_flour" type="item">
+		<item name="mąka" minutes="2">
+			<resource name="zboże" amount="5"/>
+		</item>
+
+		<producer name="Aisha" activities="mill,zmiel"
+			message="Witamy w okolicy naszego młynku! Jeżeli przyniesiesz mi #kłosy zboża to zmielę je dla Ciebie na mąkę. Powiedz mi tylko #zmiel."/>
+	</production>
+
+	<!-- Rymarz (Kraków) -->
+	<production name="rymarz_make_buklak" type="item">
+		<item name="pusty bukłak" minutes="2">
+			<resource name="money" amount="20"/>
+			<resource name="skóra zwierzęca"/>
+		</item>
+
+		<producer name="Rymarz" activities="sew,uszyj"
+			message="Pozdrawiam! Jeżeli przyniesiesz mi #skórę zwierzęcą to uszyję Tobie bukłak na wodę. Powiedz tylko #'uszyj pusty bukłak'."/>
+	</production>
+
+	<!-- Kowal Markusław (Tatry) -->
+	<production name="markuslaw_cast_platinum" type="item">
+		<item name="sztabka platyny" minutes="12">
+			<resource name="polano" amount="3"/>
+			<resource name="ruda platyny"/>
+			<resource name="money" amount="125"/>
+		</item>
+
+		<producer name="Kowal Markusław" activities="cast,odlej"
+			message="Cześć! Jestem tutejszym kowalem. Jeżeli będziesz chciał, abym #odlał dla Ciebie #'sztabkę platyny' to daj znać!"/>
+	</production>
+
+	<!-- Zygfryd (Tatry) -->
+	<production name="zygfryd_cast_shadow" type="item">
+		<item name="sztabka cieni" minutes="7">
+			<resource name="polano" amount="2"/>
+			<resource name="ruda cieni"/>
+			<resource name="money" amount="70"/>
+		</item>
+
+		<producer name="Zygfryd" activities="cast,odlej"
+			message="Cześć! Jestem pomocnikiem tutejszego kowala. Jeżeli będziesz chciał, abym #odlał dla Ciebie #'sztabkę cieni' to daj znać!"/>
+	</production>
+
+	<!-- Kowal Wincenty (Wieliczka) -->
+	<production name="wincenty_make_belt" type="item">
+		<item name="bełt" quantity="20" minutes="1">
+			<resource name="polano" amount="2"/>
+			<resource name="sztabka żelaza"/>
+		</item>
+
+		<producer name="Kowal Wincenty" activities="make,zrób"
+			message="Cześć! Jestem tutejszym kowalem. Jeżeli będziesz chciał, abym zrobił dla Ciebie #bełt to daj znać!"/>
+	</production>
+
+	<!-- Larrangin (Wieliczka) -->
+	<production name="larrangin_make_mithril_arrow" type="item">
+		<item name="strzała z mithrilu" quantity="10" minutes="1">
+			<resource name="polano" amount="4"/>
+			<resource name="bryłka mithrilu" amount="2"/>
+			<resource name="pióro" amount="2"/>
+		</item>
+
+		<producer name="Larrangin" activities="make,zrób"
+			message="Pozdrawiam przybysza. Sądzę, że jesteś zainteresowany strzałami z mithrilu. Jeżeli chcesz, abym wytworzył #'strzałę z mithrilu' to daj znać. Powiedz tylko #'zrób'."/>
+	</production>
+
+	<!-- czeladnik Jaromir (Wieliczka) -->
+	<production name="jaromir_cast_mistgem" type="item" complete="grind_misty_gem">
+		<item name="klejnot ciemnolitu" minutes="15">
+			<resource name="money" amount="200"/>
+			<resource name="kryształ ciemnolitu"/>
+		</item>
+
+		<producer name="czeladnik Jaromir" activities="grind,oszlifuj"
+			message="Witaj z powrotem! Jeśli chcesz, mogę #'oszlifować kryształ ciemnolitu' dla ciebie!"/>
+	</production>
+
+	<!-- Kowal Andrzej (Zakopane) -->
+	<production name="andrzej_cast_iron" type="item">
+		<item name="sztabka żelaza" minutes="3">
+			<resource name="polano"/>
+			<resource name="ruda żelaza"/>
+		</item>
+
+		<producer name="Kowal Andrzej" activities="cast,odlej"
+			message="Cześć! Jestem tutejszym kowalem. Jeżeli będziesz chciał, abym odlał dla Ciebie #żelazo to daj znać!"/>
+	</production>
+
+	<!-- Krasnolud (Zakopane) -->
+	<production name="krasnolud_cast_arrow" type="item">
+		<item name="strzała" quantity="5" minutes="1">
+			<resource name="polano"/>
+			<resource name="ruda żelaza"/>
+			<resource name="piórko"/>
+		</item>
+
+		<producer name="Krasnolud" activities="make,zrób"
+			message="Witaj! Mogę zrobić dla ciebie strzały, a może interesuje cię moja #oferta specjalna? Powiedz tylko #zrób."/>
+	</production>
+</productions>
