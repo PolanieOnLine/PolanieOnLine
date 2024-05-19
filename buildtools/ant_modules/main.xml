@@ -162,6 +162,7 @@
 				<filename name="items.xml"/>
 				<filename name="creatures.xml"/>
 				<filename name="shops.xml"/>
+				<filename name="productions.xml"/>
 			</fileset>
 		</schemavalidate>
 		<schemavalidate>
@@ -171,9 +172,9 @@
 			</fileset>
 		</schemavalidate>
 		<schemavalidate>
-			<schema namespace="polanieonline" file="${config_dir}/producers.xsd"/>
-			<fileset dir="${config_dir}">
-				<filename name="producers.xml"/>
+			<schema namespace="polanieonline" file="${config_dir}/productions.xsd"/>
+			<fileset dir="${config_dir}/productions">
+				<filename name="*.xml"/>
 			</fileset>
 		</schemavalidate>
 	</target> <!-- checkxml -->

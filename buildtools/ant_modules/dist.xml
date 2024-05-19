@@ -286,7 +286,8 @@
 				<include name="woodcutter_test.xml"/>
 				<include name="shops.xml"/>
 				<include name="shops/*.xml"/>
-				<include name="producers.xml"/>
+				<include name="productions/*.xml"/>
+				<include name="productions.xml"/>
 				<exclude name="items/meta.xml"/>
 			</fileset>
 		</copy>
