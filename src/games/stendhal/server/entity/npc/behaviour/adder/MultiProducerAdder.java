@@ -52,13 +52,6 @@ public class MultiProducerAdder {
 		addMultiProducer(npc, behaviour, null, welcomeMessage);
 	}
 
-	private ChatCondition checkQuestCompleted(String questComplete) {
-		if (questComplete != null) {
-			return new QuestCompletedCondition(questComplete);
-		}
-		return null;
-	}
-
 	/**
 	 * Adds all the dialogue associated with a Producing NPC
 	 *
@@ -82,26 +75,31 @@ public class MultiProducerAdder {
 
 		/* The Player greets the NPC.
 		* The NPC is not currently producing for player (not started, is rejected, or is complete) */
-		engine.add(ConversationStates.IDLE,
-			ConversationPhrases.GREETING_MESSAGES,
-			new AndCondition(new GreetingMatchesNameCondition(npcName),
-					new QuestNotActiveCondition(QUEST_SLOT),
-					checkQuestCompleted(questComplete)),
-			false, ConversationStates.ATTENDING, thisWelcomeMessage, null);
+		if (thisWelcomeMessage != null && questComplete == null) {
+			engine.add(ConversationStates.IDLE,
+				ConversationPhrases.GREETING_MESSAGES,
+				new AndCondition(new GreetingMatchesNameCondition(npcName),
+						new QuestNotActiveCondition(QUEST_SLOT)),
+				false, ConversationStates.ATTENDING, thisWelcomeMessage, null);
+		} else if (thisWelcomeMessage != null && questComplete != null) {
+			engine.add(ConversationStates.IDLE,
+				ConversationPhrases.GREETING_MESSAGES,
+				new AndCondition(new GreetingMatchesNameCondition(npcName),
+						new QuestNotActiveCondition(QUEST_SLOT),
+						new QuestCompletedCondition(questComplete)),
+				false, ConversationStates.ATTENDING, thisWelcomeMessage, null);
 
-		if (questComplete != null) {
 			engine.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
 				new AndCondition(new GreetingMatchesNameCondition(npcName),
 					new QuestNotActiveCondition(QUEST_SLOT),
-					new NotCondition(checkQuestCompleted(questComplete))),
+					new NotCondition(new QuestCompletedCondition(questComplete))),
 				false, ConversationStates.ATTENDING, null, new SayTextAction("Hej! W czym mogę #pomóc?"));
 		}
 
 		engine.add(ConversationStates.ATTENDING,
 			behaviour.getProductionActivity(),
-			new AndCondition(new SentenceHasErrorCondition(),
-					checkQuestCompleted(questComplete)),
+			new AndCondition(new SentenceHasErrorCondition()),
 			false, ConversationStates.ATTENDING,
 			null, new ComplainAboutSentenceErrorAction());
 
@@ -112,7 +110,6 @@ public class MultiProducerAdder {
 			behaviour.getProductionActivity(),
 			new AndCondition(
 				new NotCondition(new SentenceHasErrorCondition()),
-				checkQuestCompleted(questComplete),
 				new QuestNotActiveCondition(QUEST_SLOT)),
 			false, ConversationStates.ATTENDING,
 			null, new MultiProducerBehaviourAction(behaviour) {
