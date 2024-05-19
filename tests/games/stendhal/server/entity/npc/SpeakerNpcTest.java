@@ -19,13 +19,11 @@ import games.stendhal.server.core.config.zone.ConfiguratorDescriptor;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.MockStendlRPWorld;
-import utilities.NPCTestHelper;
 import utilities.NpcLoader;
 import utilities.PlayerTestHelper;
 
 @RunWith(Parameterized.class)
 public class SpeakerNpcTest {
-
 	private static final String ZONES_PATH = "/data/conf/zones/stendhal";
 
 	private static final String ZONE_PATH_ADOS = ZONES_PATH + "/ados.xml";
