@@ -25,19 +25,19 @@ import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 import games.stendhal.server.entity.npc.behaviour.journal.ProducerRegister;
 
-public class ProducerGroupsXMLLoader extends DefaultHandler {
-	private static final Logger logger = Logger.getLogger(ProducerGroupsXMLLoader.class);
+public class ProductionGroupsXMLLoader extends DefaultHandler {
+	private static final Logger logger = Logger.getLogger(ProductionGroupsXMLLoader.class);
 
 	private final static ProducerRegister productions = SingletonRepository.getProducerRegister();
 
 	private static boolean loaded = false;
 	protected final URI uri;
 
-	public ProducerGroupsXMLLoader(final URI uri) {
+	public ProductionGroupsXMLLoader(final URI uri) {
 		this.uri = uri;
 	}
 
-	public ProducerGroupsXMLLoader(final String path) {
+	public ProductionGroupsXMLLoader(final String path) {
 		this(URI.create(path));
 	}
 
@@ -72,7 +72,7 @@ public class ProducerGroupsXMLLoader extends DefaultHandler {
 	private void loadInternal(final List<String> npcNames) {
 		try {
 			final List<URI> groups = new GroupsXMLLoader(uri).load();
-			final ProducersXMLLoader producersLoader = new ProducersXMLLoader();
+			final ProductionsXMLLoader producersLoader = new ProductionsXMLLoader();
 			final List<ProducerConfigurator> configurators = new ArrayList<>();
 			for (final URI groupUri: groups) {
 				producersLoader.load(groupUri);

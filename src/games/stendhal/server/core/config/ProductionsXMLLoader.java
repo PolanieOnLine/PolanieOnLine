@@ -21,12 +21,12 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-import games.stendhal.server.core.config.ProducerGroupsXMLLoader.ProducerConfigurator;
+import games.stendhal.server.core.config.ProductionGroupsXMLLoader.ProducerConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 
-public class ProducersXMLLoader extends DefaultHandler {
-	private final static Logger logger = Logger.getLogger(ProducersXMLLoader.class);
+public class ProductionsXMLLoader extends DefaultHandler {
+	private final static Logger logger = Logger.getLogger(ProductionsXMLLoader.class);
 
 	private static boolean initialized = false;
 
@@ -55,7 +55,7 @@ public class ProducersXMLLoader extends DefaultHandler {
 
 	private boolean productionTag = false;
 
-	private static ProducersXMLLoader instance;
+	private static ProductionsXMLLoader instance;
 
 	/**
 	 * Singleton access method.
@@ -64,9 +64,9 @@ public class ProducersXMLLoader extends DefaultHandler {
 	 *     The static instance.
 	 */
 	@Deprecated
-	public static ProducersXMLLoader get() {
+	public static ProductionsXMLLoader get() {
 		if (instance == null) {
-			instance = new ProducersXMLLoader();
+			instance = new ProductionsXMLLoader();
 		}
 
 		return instance;
@@ -105,7 +105,7 @@ public class ProducersXMLLoader extends DefaultHandler {
 
 			// parse the input
 			final SAXParser saxParser = SAXParserFactory.newInstance().newSAXParser();
-			final InputStream is = ProducersXMLLoader.class.getResourceAsStream(uri.getPath());
+			final InputStream is = ProductionsXMLLoader.class.getResourceAsStream(uri.getPath());
 
 			if (is == null) {
 				throw new FileNotFoundException("cannot find resource '" + uri + "' in classpath");
