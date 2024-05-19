@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2023 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -19,7 +19,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import games.stendhal.common.MathHelper;
 import games.stendhal.common.Rand;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
@@ -45,8 +44,8 @@ import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
 import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.npc.condition.OrCondition;
-import games.stendhal.server.entity.npc.condition.PlayerHasItemdataItemWithHimCondition;
 import games.stendhal.server.entity.npc.condition.PlayerHasItemWithHimCondition;
+import games.stendhal.server.entity.npc.condition.PlayerHasItemdataItemWithHimCondition;
 import games.stendhal.server.entity.npc.condition.PlayerOwnsItemIncludingBankCondition;
 import games.stendhal.server.entity.npc.condition.QuestActiveCondition;
 import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
@@ -236,7 +235,7 @@ public class MealForGroongo extends AbstractQuest {
 	private static final int BRINGTHANKS_DELAY = 10;
 
 	//Every when the quest can be repeated
-	private static final int REPEATQUEST_DELAY = 1 * MathHelper.MINUTES_IN_ONE_DAY;
+	private static final int REPEATQUEST_DELAY = 1 * TimeUtil.MINUTES_IN_DAY;
 
 	// how much XP is given as the reward
 	private static final int XP_REWARD = 1000;
@@ -327,7 +326,7 @@ public class MealForGroongo extends AbstractQuest {
 					timestamp = 0;
 				}
 				final long timeBeforeRepeatable = timestamp
-				+ REPEATQUEST_DELAY * MathHelper.MILLISECONDS_IN_ONE_MINUTE
+				+ REPEATQUEST_DELAY * TimeUtil.MILLISECONDS_IN_MINUTE
 				- System.currentTimeMillis();
 				res.add(
 					"Będzie najedzony przez " +
@@ -696,7 +695,7 @@ public class MealForGroongo extends AbstractQuest {
 			} else if ("fetch_dessert".equals(player.getQuest(QUEST_SLOT, 0))) {
 				final long timestamp = Long.parseLong(player.getQuest(QUEST_SLOT, 6));
 				final long timeToWaitForMealReady = timestamp
-				+ MEALREADY_DELAY * MathHelper.MILLISECONDS_IN_ONE_MINUTE
+				+ MEALREADY_DELAY * TimeUtil.MILLISECONDS_IN_MINUTE
 				- System.currentTimeMillis();
 				player.setQuest(QUEST_SLOT, 0, "prepare_decentmeal");
 				SpeakerNPC.say(

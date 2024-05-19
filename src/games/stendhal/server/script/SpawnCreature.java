@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   Copyright © 2003-2023 - Arianne                       *
+ *                 Copyright © 2003-2024 - Faiumoni e. V.                  *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,14 +11,15 @@
  ***************************************************************************/
 package games.stendhal.server.script;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.Arrays;
 import java.util.List;
 
-import games.stendhal.common.NotificationType;
+import games.stendhal.server.constants.StandardMessages;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.scripting.AbstractAdminScript;
 import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
-import games.stendhal.server.entity.player.Player;
 
 /**
  * Script for invoking spawning of creature spawn point.
@@ -27,26 +28,26 @@ import games.stendhal.server.entity.player.Player;
  */
 public class SpawnCreature extends AbstractAdminScript {
 	@Override
-	protected void run(final Player admin, final List<String> args) {
+	protected void run(final List<String> args) {
+		checkNotNull(admin);
 		int x;
 		int y;
 		try {
 			x = Integer.parseInt(args.get(0));
 		} catch (final NumberFormatException e) {
-			admin.sendPrivateText(NotificationType.ERROR, "Współrzędna X musi być liczbą");
+			StandardMessages.paramMustBeNumber(admin, "Współrzędna X");
 			return;
 		}
 		try {
 			y = Integer.parseInt(args.get(1));
 		} catch (final NumberFormatException e) {
-			admin.sendPrivateText(NotificationType.ERROR, "Współrzędna Y musi być liczbą");
+			StandardMessages.paramMustBeNumber(admin, "Współrzędna Y");
 			return;
 		}
 
 		final StendhalRPZone zone = admin.getZone();
 		if (zone == null) {
-			admin.sendPrivateText(NotificationType.ERROR, "Nie znajdujesz się w"
-					+ " odpowiednim miejscu do odradzania stworzeń.");
+			sendError("Znajdujesz się w nieodpowiednim miejscu do odradzania stworzeń.");
 			return;
 		}
 
@@ -54,8 +55,8 @@ public class SpawnCreature extends AbstractAdminScript {
 		boolean spawned = false;
 		for (final CreatureRespawnPoint p: zone.getRespawnPointList()) {
 			if (p.getX() == x && p.getY() == y) {
-				admin.sendPrivateText("Odradzanie " + p.getPrototypeCreature().getName()
-						+ " w strefie " + zoneName + " " + x + "," + y);
+				sendText("Odradzanie " + p.getPrototypeCreature().getName() + " w strefie "
+						+ zoneName + " " + x + "," + y);
 				p.spawnNow();
 				spawned = true;
 			}
@@ -64,10 +65,8 @@ public class SpawnCreature extends AbstractAdminScript {
 			return;
 		}
 
-		admin.sendPrivateText(NotificationType.ERROR, "Nie znaleziono punktu odradzania w "
-				+ zoneName + " " + x + "," + y + ". Wykonaj `/script "
-				+ ListSpawnPoints.class.getSimpleName()
-				+ ".class` aby wyświetlić listę dostępnych punktów odrodzeń.");
+		sendError("Nie znaleziono punktu odradzania w " + zoneName + " " + x + "," + y + ". Wykonaj `/script "
+				+ ListSpawnPoints.class.getSimpleName() + ".class` aby wyświetlić listę dostępnych punktów odrodzeń.");
 	}
 
 	@Override

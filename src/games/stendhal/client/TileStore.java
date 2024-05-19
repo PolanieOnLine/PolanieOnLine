@@ -116,6 +116,19 @@ class TileStore implements Tileset {
 	}
 
 	/**
+	 * Create a tile store with a specific sprite store.
+	 *
+	 * @param store
+	 *            A sprite store.
+	 */
+	private TileStore(final SpriteStore store) {
+		this.store = store;
+
+		tiles = new ArrayList<Sprite>();
+		tiles.add(store.getEmptySprite());
+	}
+
+	/**
 	 * Initializes landscape & weather tile animations.
 	 */
 	public static void init() {
@@ -130,12 +143,11 @@ class TileStore implements Tileset {
 			public void run() {
 				final JSONObject document = (JSONObject) loader.data;
 				if (document.containsKey("landscape")) {
-					landscapeAnimationMap = loadAnimations(
-							(Map<String, List<String>>) document.get("landscape"), "tileset/");
+					landscapeAnimationMap = loadAnimations(checkMap(document.get("landscape")), "tileset/");
 				}
 				if (document.containsKey("weather")) {
-					weatherAnimationMap = loadAnimations(
-							(Map<String, List<String>>) document.get("weather"), "data/sprites/weather/");
+					weatherAnimationMap = loadAnimations(checkMap(document.get("weather")),
+							"data/sprites/weather/");
 				}
 			}
 		};
@@ -143,16 +155,29 @@ class TileStore implements Tileset {
 	}
 
 	/**
-	 * Create a tile store with a specific sprite store.
+	 * Type checks data loaded from JSON.
 	 *
-	 * @param store
-	 *            A sprite store.
+	 * @param obj
+	 *   Data returned from {@code JSONObject.get}.
+	 * @return
+	 *   Data converted to correct {@code Map} type.
 	 */
-	private TileStore(final SpriteStore store) {
-		this.store = store;
-
-		tiles = new ArrayList<Sprite>();
-		tiles.add(store.getEmptySprite());
+	private static Map<String, List<String>> checkMap(final Object obj) {
+		final Map<String, List<String>> map = new HashMap<>();
+		if (obj instanceof Map) {
+			for (final Map.Entry<?, ?> entry: ((Map<?, ?>) obj).entrySet()) {
+				final String key = (String) entry.getKey();
+				final List<String> value = new LinkedList<>();
+				final Object tmp = entry.getValue();
+				if (tmp instanceof List) {
+					for (final Object v: (List<?>) tmp) {
+						value.add((String) v);
+					}
+				}
+				map.put(key, value);
+			}
+		}
+		return map;
 	}
 
 	//
@@ -347,8 +372,6 @@ class TileStore implements Tileset {
 	/**
 	 * Loads animations from <code>tileset/animation.json</code>.
 	 *
-	 * TODO: fix unchecked casts
-	 *
 	 * @param id
 	 *     Key to load from <code>animations.json</code>.
 	 * @return
@@ -372,7 +395,7 @@ class TileStore implements Tileset {
 				}
 
 				if (document.containsKey(id)) {
-					for (final Map.Entry<String, List<String>> entry: ((Map<String, List<String>>) document.get(id)).entrySet()) {
+					for (final Map.Entry<String, List<String>> entry: checkMap(document.get(id)).entrySet()) {
 						animations.put(entry.getKey(), entry.getValue());
 					}
 				}

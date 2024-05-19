@@ -1,5 +1,5 @@
 /***************************************************************************
- *                      (C) Copyright 2023 - Stendhal                      *
+ *                 Copyright © 2023-2024 - Faiumoni e. V.                  *
  ***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import games.stendhal.common.Direction;
-import games.stendhal.common.MathHelper;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -24,6 +23,7 @@ import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.mapstuff.sign.OutfitShopSign;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.shop.OutfitShopInventory;
+import games.stendhal.server.util.TimeUtil;
 
 /**
  * An NPC that sells special accessories for player outfits that do not expire.
@@ -55,7 +55,7 @@ public class DealerNPC implements ZoneConfigurator {
 				new Node(9, 6),
 				new Node(9, 4)
 			), true));
-		gwen.addSuspend(MathHelper.TURNS_IN_ONE_MINUTE / 2, Direction.DOWN, 4);
+		gwen.addSuspend(TimeUtil.TURNS_IN_MINUTE / 2, Direction.DOWN, 4);
 
 		return gwen;
 	}

@@ -17,7 +17,7 @@ local zone = "int_tarnow_weaponshop"
 
 local ringsmith = nil
 local questSlot = "goslawa_forge_ring"
-local waitTime = MathHelper.MINUTES_IN_ONE_HOUR * 6
+local waitTime = TimeUtil.MINUTES_IN_HOUR * 6
 local ring = "wzmocniony pierścień zdrowia"
 
 local fee = 480000

@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,7 +11,17 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests.maze;
 
-import games.stendhal.common.MathHelper;
+import java.awt.Point;
+import java.awt.geom.Rectangle2D;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+
+import org.apache.log4j.Logger;
+
 import games.stendhal.common.Rand;
 import games.stendhal.common.color.ARGB;
 import games.stendhal.common.color.HSL;
@@ -34,21 +44,9 @@ import games.stendhal.server.entity.npc.action.IncrementQuestAction;
 import games.stendhal.server.entity.npc.action.SetQuestAction;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.util.TimeUtil;
-
-import java.awt.Point;
-import java.awt.geom.Rectangle2D;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
-
 import marauroa.common.game.RPObject;
 import marauroa.server.db.command.DBCommandPriority;
 import marauroa.server.db.command.DBCommandQueue;
-
-import org.apache.log4j.Logger;
 
 /**
  * A random maze zone.
@@ -548,7 +546,7 @@ public class MazeGenerator {
 	 */
 	protected void rewardPlayer(Player player) {
 		long timediff = System.currentTimeMillis() - timeStamp;
-		double normalized = timediff / (double) (DEFAULT_SOLVING_TIME * MathHelper.MILLISECONDS_IN_ONE_MINUTE);
+		double normalized = timediff / (double) (DEFAULT_SOLVING_TIME * TimeUtil.MILLISECONDS_IN_MINUTE);
 		// theoretical maximum e * DEFAULT_REWARD_POINTS
 		int points = (int) (DEFAULT_REWARD_POINTS * Math.exp(1 - normalized));
 		// Give at least one xp for persistent but hopelessly slow players

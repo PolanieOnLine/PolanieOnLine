@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -13,16 +13,16 @@ package games.stendhal.server.entity.item.scroll;
 
 import java.util.Map;
 
-import games.stendhal.common.MathHelper;
 import games.stendhal.server.core.events.DelayedPlayerTextSender;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.util.TimeUtil;
 
 /**
  * Represents the balloon that takes the player to 7 kikareukin clouds,
  * after which it will teleport player to a random location in 6 kikareukin islands.
  */
 public class WhiteBalloonScroll extends TimedTeleportScroll {
-	private static final long DELAY = 6 * MathHelper.MILLISECONDS_IN_ONE_HOUR;
+	private static final long DELAY = 6 * TimeUtil.MILLISECONDS_IN_HOUR;
 	private static final int NEWTIME = 540;
 
 	/**

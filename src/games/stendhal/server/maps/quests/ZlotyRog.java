@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2021 - Stendhal                    *
+ *                 (C) Copyright 2003-2024 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -18,7 +18,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import games.stendhal.common.MathHelper;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
@@ -68,7 +67,7 @@ public class ZlotyRog extends AbstractQuest {
 										raiser.say("Czyżbyś przyszedł po #'złoty róg'?. Mój brat zna tajemnice ich wyrabiania. Jesteś zainteresowany?");
 									} else if (player.getQuest(QUEST_SLOT).startsWith("done;")) {
 										final String[] waittokens = player.getQuest(QUEST_SLOT).split(";");
-										final long waitdelay = REQUIRED_WAIT_DAYS * MathHelper.MILLISECONDS_IN_ONE_DAY;
+										final long waitdelay = REQUIRED_WAIT_DAYS * TimeUtil.MILLISECONDS_IN_DAY;
 										final long waittimeRemaining = (Long.parseLong(waittokens[1]) + waitdelay) - System.currentTimeMillis();
 										if (waittimeRemaining > 0L) {
 											raiser.say("Mój brat musi odpocząć. Wróć za " + TimeUtil.approxTimeUntil((int) (waittimeRemaining / 1000L)) + ".");
@@ -176,7 +175,7 @@ public class ZlotyRog extends AbstractQuest {
 				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 					final String[] tokens = player.getQuest(QUEST_SLOT).split(";");
 
-					final long delay = REQUIRED_MINUTES * MathHelper.MILLISECONDS_IN_ONE_MINUTE;
+					final long delay = REQUIRED_MINUTES * TimeUtil.MILLISECONDS_IN_MINUTE;
 					final long timeRemaining = Long.parseLong(tokens[1]) + delay
 							- System.currentTimeMillis();
 

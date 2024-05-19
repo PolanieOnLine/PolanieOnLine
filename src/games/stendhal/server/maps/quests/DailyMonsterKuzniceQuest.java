@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2021 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -21,7 +21,6 @@ import java.util.Random;
 
 import org.apache.log4j.Logger;
 
-import games.stendhal.common.MathHelper;
 import games.stendhal.common.constants.Occasion;
 import games.stendhal.common.constants.Testing;
 import games.stendhal.common.grammar.Grammar;
@@ -55,13 +54,14 @@ import games.stendhal.server.entity.npc.condition.QuestStartedCondition;
 import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
+import games.stendhal.server.util.TimeUtil;
 
 public class DailyMonsterKuzniceQuest extends AbstractQuest {
 	private static final String QUEST_SLOT = "daily_kuznice_kill_monster";
 	private final SpeakerNPC npc = npcs.get("Sołtys");
 
-	private final static int delay = MathHelper.MINUTES_IN_ONE_DAY;
-	private final static int expireDelay = MathHelper.MINUTES_IN_ONE_WEEK;
+	private final static int delay = TimeUtil.MINUTES_IN_DAY;
+	private final static int expireDelay = TimeUtil.MINUTES_IN_WEEK;
 
 	private static Logger logger = Logger.getLogger("DailyMonsterKuzniceQuest");
 
@@ -480,7 +480,7 @@ public class DailyMonsterKuzniceQuest extends AbstractQuest {
 		if (player.isQuestCompleted(QUEST_SLOT)) {
 			final String[] tokens = (questState + ";0;0;0").split(";");
 			final String questLast = tokens[1];
-			final long timeRemaining = Long.parseLong(questLast) + MathHelper.MILLISECONDS_IN_ONE_DAY
+			final long timeRemaining = Long.parseLong(questLast) + TimeUtil.MILLISECONDS_IN_DAY
 					- System.currentTimeMillis();
 
 			if (timeRemaining > 0L) {

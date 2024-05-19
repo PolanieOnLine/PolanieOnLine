@@ -34,6 +34,7 @@ import games.stendhal.server.entity.npc.action.IncreaseXPAction;
 import games.stendhal.server.entity.npc.action.MultipleActions;
 import games.stendhal.server.entity.npc.action.SayRequiredItemAction;
 import games.stendhal.server.entity.npc.action.SetQuestAction;
+import games.stendhal.server.entity.npc.action.SetQuestToTimeStampAction;
 import games.stendhal.server.entity.npc.action.StartRecordingRandomItemCollectionAction;
 import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
@@ -45,9 +46,11 @@ import games.stendhal.server.entity.npc.condition.QuestActiveCondition;
 import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
+import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.events.SoundEvent;
 import games.stendhal.server.maps.Region;
+import games.stendhal.server.util.TimeUtil;
 
 /**
  * QUEST: Ultimate Collector
@@ -166,9 +169,16 @@ public class UltimateCollector extends AbstractQuest {
 			null);
 	}
 
-	private void requestItem() {
-		final Map<String,Integer> items = new HashMap<String, Integer>();
-
+	/**
+	 * Determines items to select from.
+	 *
+	 * @param exclude
+	 *   An item name to exclude from returned value or {@code null} to include all. Used to prevent
+	 *   re-requesting same item when player asks for "another".
+	 * @return
+	 *   Items that may be requested from player.
+	 */
+	private Map<String, Integer> getItems(final String exclude) {
 		/* Updated 2022-05-22
 		 *
 		 * Rarity calculations (lower means more rare):
@@ -181,6 +191,7 @@ public class UltimateCollector extends AbstractQuest {
 		 * Items given as rewards from quests or otherwise acquirable via
 		 * methods other than creature drops should not be included.
 		 */
+		final Map<String, Integer> items = new HashMap<>();
 		items.put("nihonto",1); // 1.39
 		items.put("magiczny topór obosieczny",1); // 1.72
 		items.put("miecz cesarski",1); // 0.33
@@ -194,7 +205,13 @@ public class UltimateCollector extends AbstractQuest {
 		items.put("lodowy młot bojowy",1); // 0.15
 		items.put("miecz orków",1); // 0.86
 		items.put("czarna halabarda",1); // 0.12
+		if (exclude != null) {
+			items.remove(exclude);
+		}
+		return items;
+	}
 
+	private void requestItem() {
 		// If all quests are completed, ask for an item
 		npc.add(ConversationStates.ATTENDING,
 				Arrays.asList("challenge", "wyzwanie", "wyzwania"),
@@ -213,8 +230,11 @@ public class UltimateCollector extends AbstractQuest {
 						new QuestCompletedCondition(IMMORTAL_SWORD_QUEST_SLOT)),
 				ConversationStates.ATTENDING,
 				null,
-				new StartRecordingRandomItemCollectionAction(QUEST_SLOT, items, "Właśnie udowodniłeś mieszkańcom Faiumoni, że możesz być największym kolekcjonerem,"
-					+ " ale mam dla Ciebie ostatnie wyzwanie. Proszę przynieś mi [item]."));
+				new MultipleActions(
+						new StartRecordingRandomItemCollectionAction(QUEST_SLOT, getItems(null),
+								"Właśnie udowodniłeś mieszkańcom Faiumoni, że możesz być największym kolekcjonerem,"
+								+ " ale mam dla Ciebie ostatnie wyzwanie. Proszę przynieś mi [item]."),
+						new SetQuestToTimeStampAction(QUEST_SLOT, 1)));
 	}
 
 	private void collectItem() {
@@ -269,6 +289,51 @@ public class UltimateCollector extends AbstractQuest {
 				new QuestNotCompletedCondition(QUEST_SLOT),
 				ConversationStates.ATTENDING,
 				"Kupię czarne przedmioty po ukończeniu każdego #wyzwania , które postawie Ci.", null);
+	}
+
+	private void abortQuest() {
+		// approximately 6 months
+		final int expireTime = TimeUtil.MINUTES_IN_HALF_YEAR;
+
+		npc.add(ConversationStates.ATTENDING,
+				ConversationPhrases.ABORT_MESSAGES,
+				new AndCondition(
+					new QuestActiveCondition(QUEST_SLOT),
+					new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, expireTime))
+				),
+				ConversationStates.ATTENDING,
+				null,
+				new SayRequiredItemAction(QUEST_SLOT, 0, "Jesteś na misji, aby znaleźć [item]. Nie możesz jeszcze poprosić o nowy przedmiot."));
+
+		npc.add(ConversationStates.ATTENDING,
+				ConversationPhrases.ABORT_MESSAGES,
+				new AndCondition(
+					new QuestActiveCondition(QUEST_SLOT),
+					new TimePassedCondition(QUEST_SLOT, 1, expireTime)
+				),
+				ConversationStates.QUEST_OFFERED,
+				null,
+				new SayRequiredItemAction(QUEST_SLOT, 0, "Jesteś na misji, aby znaleźć [item]. Czy chcesz poszukać innego przedmiotu?"));
+
+		npc.add(ConversationStates.QUEST_OFFERED,
+				ConversationPhrases.YES_MESSAGES,
+				new AndCondition(
+					new QuestActiveCondition(QUEST_SLOT),
+					new TimePassedCondition(QUEST_SLOT, 1, expireTime)
+				),
+				ConversationStates.ATTENDING,
+				null,
+				new RequestAnotherAction());
+
+		npc.add(ConversationStates.QUEST_OFFERED,
+				ConversationPhrases.NO_MESSAGES,
+				new AndCondition(
+					new QuestActiveCondition(QUEST_SLOT),
+					new TimePassedCondition(QUEST_SLOT, 1, expireTime)
+				),
+				ConversationStates.ATTENDING,
+				null,
+				new SayRequiredItemAction(QUEST_SLOT, 0, "Zatem przynieś mi [item]."));
 	}
 
 	private void replaceLRSwords() {
@@ -405,7 +470,7 @@ public class UltimateCollector extends AbstractQuest {
 		requestItem();
 		collectItem();
 		offerSteps();
-
+		abortQuest();
 		replaceLRSwords();
 	}
 
@@ -455,5 +520,16 @@ public class UltimateCollector extends AbstractQuest {
 	@Override
 	public String getRegion() {
 		return Region.ADOS_SURROUNDS;
+	}
+
+	private class RequestAnotherAction implements ChatAction {
+		@Override
+		public void fire(Player player, Sentence sentence, EventRaiser npc) {
+			final String previousItem = player.getQuest(QUEST_SLOT, 0).split("=")[0];
+			new StartRecordingRandomItemCollectionAction(QUEST_SLOT, 0, getItems(previousItem),
+					"Być może znalezienie " + previousItem + " okazało się dla ciebie zbyt trudne."
+							+ " Tym razem chcę, żebyś znalazł [item].").fire(player, sentence, npc);
+			new SetQuestToTimeStampAction(QUEST_SLOT, 1).fire(player, sentence, npc);
+		}
 	}
 }

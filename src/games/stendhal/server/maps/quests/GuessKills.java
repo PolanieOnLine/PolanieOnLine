@@ -89,7 +89,7 @@ public class GuessKills extends AbstractQuest {
 	private static final int MIN_KILLS_REQUIRED = 1000;
 	private static final int EXACT_REWARD = 15000;
 	private static final int CLOSE_REWARD = 2500;
-	private static final int INTERVAL_BETWEEN_TRIES = MathHelper.MINUTES_IN_ONE_WEEK;
+	private static final int INTERVAL_BETWEEN_TRIES = TimeUtil.MINUTES_IN_WEEK;
 	/** List of existing creatures that may be asked about. */
 	private static final List<Creature> POSSIBLE_CREATURES = new ArrayList<Creature>();
 
@@ -159,7 +159,7 @@ public class GuessKills extends AbstractQuest {
 		} else if ("3".equals(state)) {
 			res.add("Pozostała mi jedne próba.");
 		} else if ("done".equals(state)) {
-			final long timeRemaining = MathHelper.parseLong(time) + INTERVAL_BETWEEN_TRIES * MathHelper.MILLISECONDS_IN_ONE_MINUTE
+			final long timeRemaining = MathHelper.parseLong(time) + INTERVAL_BETWEEN_TRIES * TimeUtil.MILLISECONDS_IN_MINUTE
 					- System.currentTimeMillis();
 
 			if (timeRemaining > 0) {

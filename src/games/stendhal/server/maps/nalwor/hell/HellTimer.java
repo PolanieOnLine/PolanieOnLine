@@ -1,10 +1,20 @@
+/***************************************************************************
+ *                 Copyright © 2018-2024 - Faiumoni e. V.                  *
+ ***************************************************************************
+ ***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
 package games.stendhal.server.maps.nalwor.hell;
 
 import java.util.IdentityHashMap;
 import java.util.Map;
 
 import games.stendhal.common.Direction;
-import games.stendhal.common.MathHelper;
 import games.stendhal.common.NotificationType;
 import games.stendhal.common.Rand;
 import games.stendhal.server.core.config.ZoneConfigurator;
@@ -22,6 +32,7 @@ import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.events.GlobalVisualEffectEvent;
+import games.stendhal.server.util.TimeUtil;
 import marauroa.common.game.RPObject;
 
 /**
@@ -37,17 +48,17 @@ public class HellTimer implements ZoneConfigurator, ZoneEnterExitListener {
 	 * The mean time player may normally stay in hell (excluding grace time).
 	 * The actual time is random.
 	 */
-	private static final int MEAN_WAIT_TIME = MathHelper.SECONDS_IN_ONE_HOUR;
+	private static final int MEAN_WAIT_TIME = TimeUtil.SECONDS_IN_HOUR;
 	/**
 	 * The mean time player may stay in hell (excluding grace time) when they
 	 * have been caught recently. The actual time is random.
 	 */
-	private static final int SHORT_WAIT_TIME = 3 * MathHelper.SECONDS_IN_ONE_MINUTE;
+	private static final int SHORT_WAIT_TIME = 3 * TimeUtil.SECONDS_IN_MINUTE;
 	/**
 	 * The time in minutes that the player should stay away from hell until the
 	 * guardian has forgotten about them.
 	 */
-	private static final int GUARDIAN_WARNED_TIME = 6 * MathHelper.MINUTES_IN_ONE_HOUR;
+	private static final int GUARDIAN_WARNED_TIME = 6 * TimeUtil.MINUTES_IN_HOUR;
 	/**
 	 * The time how long a caught state is considered valid. The player can log
 	 * out before being moved to the pit. Normally they'd be moved immediately

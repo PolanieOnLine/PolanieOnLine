@@ -2820,6 +2820,32 @@ public abstract class RPEntity extends CombatEntity {
 		// does nothing in this implementation.
 	}
 
+	/**
+	 * Sends a message that only this entity can read.
+	 *
+	 * @param sender
+	 *   Name of entity sending message.
+	 * @param text
+	 *   Message contents.
+	 */
+	public void sendPrivateText(final String sender, final String text) {
+		// does nothing in this implementation.
+	}
+
+	/**
+	 * Sends a message that only this entity can read.
+	 *
+	 * @param type
+	 *   NotificationType.
+	 * @param sender
+	 *   Name of entity sending message.
+	 * @param text
+	 *   Message contents.
+	 */
+	public void sendPrivateText(final NotificationType type, final String sender, final String text) {
+		// does nothing in this implementation.
+	}
+
 	private float getWeaponsAtk() {
 		float weapon = 0;
 

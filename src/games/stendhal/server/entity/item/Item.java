@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2023 - Marauroa                    *
+ *                   (C) Copyright 2003-2024 - Marauroa                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -23,7 +22,6 @@ import org.apache.log4j.Logger;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
 
-import games.stendhal.common.MathHelper;
 import games.stendhal.common.Rand;
 import games.stendhal.common.constants.Nature;
 import games.stendhal.common.constants.Testing;
@@ -39,6 +37,7 @@ import games.stendhal.server.entity.mapstuff.spawner.PassiveEntityRespawnPoint;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.entity.status.StatusAttacker;
 import games.stendhal.server.entity.status.StatusType;
+import games.stendhal.server.util.TimeUtil;
 import marauroa.common.game.Definition;
 import marauroa.common.game.Definition.Type;
 import marauroa.common.game.RPClass;
@@ -66,10 +65,10 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	/**
 	 * mean time an item is constantly usable in hours
 	 */
-	private static final long MEAN_LIFETIME = 12 * MathHelper.MILLISECONDS_IN_ONE_HOUR;
+	private static final long MEAN_LIFETIME = 12 * TimeUtil.MILLISECONDS_IN_HOUR;
 
 	// 10 minutes
-	public static final int DEGRADATION_TIMEOUT = 10 * MathHelper.SECONDS_IN_ONE_MINUTE;
+	public static final int DEGRADATION_TIMEOUT = 10 * TimeUtil.SECONDS_IN_MINUTE;
 
 
 	/** list of possible slots for this item. */

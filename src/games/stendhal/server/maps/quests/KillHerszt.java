@@ -1,5 +1,5 @@
 /***************************************************************************
- *                 (C) Copyright 2003-2023 - PolanieOnLine                 *
+ *                 (C) Copyright 2003-2024 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,7 +11,6 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
-import games.stendhal.common.MathHelper;
 import games.stendhal.server.entity.npc.action.EquipItemAction;
 import games.stendhal.server.entity.npc.action.IncreaseBaseHPOnlyOnceAction;
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
@@ -19,6 +18,7 @@ import games.stendhal.server.entity.npc.action.IncreaseXPAction;
 import games.stendhal.server.entity.npc.quest.KillAndBringQuestBuilder;
 import games.stendhal.server.entity.npc.quest.QuestManuscript;
 import games.stendhal.server.maps.Region;
+import games.stendhal.server.util.TimeUtil;
 
 /**
  * QUEST: Pozbycie się Rozbójników
@@ -56,7 +56,7 @@ public class KillHerszt implements QuestManuscript {
 			.name("Rozgardiasz Zbójników")
 			.description("Pogłoski krażą po zimowej krainie iż Jędrzej ma kłopoty z rozbójnikami, którzy zasiedlili się w jaskini nie daleko miasta.")
 			.internalName(QUEST_SLOT)
-			.repeatableAfterMinutes(MathHelper.MINUTES_IN_ONE_DAY * 3)
+			.repeatableAfterMinutes(TimeUtil.MINUTES_IN_DAY * 3)
 			.minLevel(30)
 			.region(Region.ZAKOPANE_CITY)
 			.questGiverNpc("Gazda Jędrzej");

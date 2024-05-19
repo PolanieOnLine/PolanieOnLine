@@ -1,5 +1,5 @@
 /***************************************************************************
- *                     Copyright © 2023 - Arianne                          *
+ *                 Copyright © 2023-2024 - Faiumoni e. V.                  *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,19 +11,20 @@
  ***************************************************************************/
 package games.stendhal.server.script;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import games.stendhal.common.NotificationType;
+import games.stendhal.server.constants.StandardMessages;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.scripting.AbstractAdminScript;
 import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
 import games.stendhal.server.entity.mapstuff.spawner.PassiveEntityRespawnPoint;
-import games.stendhal.server.entity.player.Player;
 
 /**
  * Script to list spawn points located in a zone.
@@ -33,18 +34,19 @@ public class ListSpawnPoints extends AbstractAdminScript {
 	private int count;
 
 	@Override
-	protected void run(final Player admin, final List<String> args) {
+	protected void run(final List<String> args) {
+		checkNotNull(admin);
 		final int argc = args.size();
 		String zonename = null;
 		String spawntype = null;
 		for (int idx = 0; idx < argc; idx++) {
 			final String key = args.get(idx);
 			if ("-help".equals(key)) {
-				showUsage(admin);
+				showUsage();
 				return;
 			}
 			if (!params.contains(key)) {
-				admin.sendPrivateText(NotificationType.ERROR, "Nieznany parametr: " + key);
+				StandardMessages.unknownParameter(admin, key);
 				return;
 			}
 			String value = null;
@@ -53,7 +55,7 @@ public class ListSpawnPoints extends AbstractAdminScript {
 				value = args.get(idx);
 			}
 			if (value == null) {
-				admin.sendPrivateText(NotificationType.ERROR, "Brak wartości parametru: " + key);
+				StandardMessages.missingParamValue(admin, key);
 				return;
 			}
 
@@ -71,7 +73,7 @@ public class ListSpawnPoints extends AbstractAdminScript {
 			zone = SingletonRepository.getRPWorld().getZone(zonename);
 		}
 		if (zone == null) {
-			admin.sendPrivateText(NotificationType.ERROR, "Nieznana strefa" + (zonename == null ? "." : ": " + zonename));
+			sendError("Nieznana strefa" + (zonename == null ? "." : ": " + zonename));
 			return;
 		}
 		zonename = zone.getName();
@@ -89,14 +91,14 @@ public class ListSpawnPoints extends AbstractAdminScript {
 		}
 		if (count == 0) {
 			if (unknowntype) {
-				admin.sendPrivateText(NotificationType.ERROR, "Nieznany typ spawnu: " + spawntype);
+				sendError("Nieznany typ spawnu: " + spawntype);
 			} else {
-				admin.sendPrivateText("Nie" + (spawntype == null ? "" : " " + spawntype) + " znaleziono punktów odradzania w " + zonename + ".");
+				sendText("Nie" + (spawntype == null ? "" : " " + spawntype) + " znaleziono punktów odradzania w " + zonename + ".");
 			}
 			return;
 		}
 		spawns.add(0, count + (spawntype == null ? "" : " " + spawntype) + " znaleziono punktów odradzania w " + zonename + ":");
-		admin.sendPrivateText(String.join("\n", spawns));
+		sendText(String.join("\n", spawns));
 	}
 
 	private List<String> getCreatureSpawns(final StendhalRPZone zone) {
@@ -132,7 +134,7 @@ public class ListSpawnPoints extends AbstractAdminScript {
 
 	@Override
 	protected List<String> getParamStrings() {
-		return Arrays.asList("[-zone <strefa>] [-type <typ>]", "-help");
+		return Arrays.asList("[-zone <strefa>] [-type <typ>]");
 	}
 
 	@Override

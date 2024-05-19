@@ -1,5 +1,5 @@
 /***************************************************************************
- *                     Copyright © 2020 - Arianne                          *
+ *                 Copyright © 2020-2024 - Faiumoni e. V.                  *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 
 import games.stendhal.common.Direction;
-import games.stendhal.common.MathHelper;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -67,7 +66,7 @@ public class TannerNPC implements ZoneConfigurator {
 	// players must have looted at least 100,000 money to get the money pouch
 	private static final int requiredMoneyLoot = 100000;
 	private static final int serviceFee = 50000;
-	private static final int TAN_TIME = MathHelper.MINUTES_IN_ONE_DAY;
+	private static final int TAN_TIME = TimeUtil.MINUTES_IN_DAY;
 	// required items to make pouch
 	private static final Map<String, Integer> requiredItems = new LinkedHashMap<String, Integer>() {{
 		put("igła do skór", 1);
@@ -341,7 +340,7 @@ public class TannerNPC implements ZoneConfigurator {
 						res.add(tannerName + " skończył robienie mojej sakiewki na pieniądze.");
 					} else {
 						try {
-							final long timeRemains = Long.parseLong(questState) + (TAN_TIME * MathHelper.MILLISECONDS_IN_ONE_MINUTE) - System.currentTimeMillis();
+							final long timeRemains = Long.parseLong(questState) + (TAN_TIME * TimeUtil.MILLISECONDS_IN_MINUTE) - System.currentTimeMillis();
 							final int secondsRemain = (int) (timeRemains / 1000L);
 
 							res.add(tannerName + " robi moją sakiewkę z pieniędzmi. Skończy za "

@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -14,7 +13,6 @@ package games.stendhal.server.maps.quests.marriage;
 
 import java.util.Arrays;
 
-import games.stendhal.common.MathHelper;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
@@ -121,7 +119,7 @@ public class MakeRings {
 	 				@Override
 	 				public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
 	 					final String[] tokens = player.getQuest(marriage.getQuestSlot()).split(";");
-						final long delayInMIlliSeconds = REQUIRED_MINUTES * MathHelper.MILLISECONDS_IN_ONE_MINUTE;
+						final long delayInMIlliSeconds = REQUIRED_MINUTES * TimeUtil.MILLISECONDS_IN_MINUTE;
 						final long timeRemaining = (Long.parseLong(tokens[1]) + delayInMIlliSeconds)
 								- System.currentTimeMillis();
 						// ring is not ready yet

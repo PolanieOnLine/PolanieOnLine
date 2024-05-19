@@ -23,7 +23,6 @@ import java.util.Map;
 //import org.apache.log4j.Logger;
 
 import games.stendhal.common.Direction;
-import games.stendhal.common.MathHelper;
 import games.stendhal.common.constants.SoundID;
 import games.stendhal.common.constants.SoundLayer;
 import games.stendhal.common.constants.Testing;
@@ -94,7 +93,7 @@ public class TolimirNPC implements ZoneConfigurator,LoginListener,LogoutListener
 	private static final int RATK_LIMIT = 50;
 
 	/** time (in seconds) allowed for training session */
-	private static final int TRAIN_TIME = 60 * MathHelper.SECONDS_IN_ONE_MINUTE;
+	private static final int TRAIN_TIME = 60 * TimeUtil.SECONDS_IN_MINUTE;
 
 	/** time player must wait to train again */
 	private static final int COOLDOWN = 30;
@@ -502,7 +501,7 @@ public class TolimirNPC implements ZoneConfigurator,LoginListener,LogoutListener
 				ConversationPhrases.YES_MESSAGES,
 				new PlayerHasItemWithHimCondition("money", COST),
 				ConversationStates.IDLE,
-				"Możesz trenować maksymalnie do " + Integer.toString(TRAIN_TIME / MathHelper.SECONDS_IN_ONE_MINUTE) + " minut. Więc dobrze wykorzystaj swój czas.",
+				"Możesz trenować maksymalnie do " + Integer.toString(TRAIN_TIME / TimeUtil.SECONDS_IN_MINUTE) + " minut. Więc dobrze wykorzystaj swój czas.",
 				new MultipleActions(
 						new DropItemAction("money", COST),
 						new SetQuestAction(QUEST_SLOT, STATE_ACTIVE + ";" + Integer.toString(TRAIN_TIME)),
@@ -712,8 +711,8 @@ public class TolimirNPC implements ZoneConfigurator,LoginListener,LogoutListener
 			if (playerTemp != null) {
 				if (timeRemaining != null && timeRemaining > 0) {
 					// notify players at 10 minute mark & every minute after 5 minute mark
-					if (timeRemaining == 10 * MathHelper.SECONDS_IN_ONE_MINUTE ||
-							(timeRemaining <= 5 * MathHelper.SECONDS_IN_ONE_MINUTE && timeRemaining % 60 == 0)) {
+					if (timeRemaining == 10 * TimeUtil.SECONDS_IN_MINUTE ||
+							(timeRemaining <= 5 * TimeUtil.SECONDS_IN_MINUTE && timeRemaining % 60 == 0)) {
 						npc.say(playerTemp.getName() + ", pozostało Tobie " + TimeUtil.timeUntil(timeRemaining) + ".");
 					}
 					// remaining time needs to be updated every second in order to be saved if player logs out

@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2020-2021 - Stendhal                    *
+ *                   (C) Copyright 2020-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import games.stendhal.common.MathHelper;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
@@ -216,7 +215,7 @@ public class Gornictwo extends AbstractQuest {
 				public void fire(Player player, Sentence sentence, EventRaiser raiser) {
 					final String[] tokens = player.getQuest(QUEST_SLOT).split(";");
 
-					final long delay = REQUIRED_MINUTES * MathHelper.MILLISECONDS_IN_ONE_MINUTE;
+					final long delay = REQUIRED_MINUTES * TimeUtil.MILLISECONDS_IN_MINUTE;
 					final long timeRemaining = Long.parseLong(tokens[1]) + delay
 							- System.currentTimeMillis();
 
@@ -352,7 +351,7 @@ public class Gornictwo extends AbstractQuest {
 				public void fire(Player player, Sentence sentence, EventRaiser raiser) {
 					final String[] tokens = player.getQuest(QUEST_SLOT).split(";");
 
-					final long delay = REQUIRED_MINUTES * MathHelper.MILLISECONDS_IN_ONE_MINUTE;
+					final long delay = REQUIRED_MINUTES * TimeUtil.MILLISECONDS_IN_MINUTE;
 					final long timeRemaining = Long.parseLong(tokens[1]) + delay
 							- System.currentTimeMillis();
 

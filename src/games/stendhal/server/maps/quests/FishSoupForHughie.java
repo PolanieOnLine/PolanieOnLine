@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2018 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -15,7 +15,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import games.stendhal.common.MathHelper;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
@@ -42,6 +41,7 @@ import games.stendhal.server.entity.npc.condition.QuestStartedCondition;
 import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
+import games.stendhal.server.util.TimeUtil;
 import marauroa.common.game.IRPZone;
 
 /**
@@ -77,7 +77,7 @@ public class FishSoupForHughie extends AbstractQuest {
 	private static final String QUEST_SLOT = "fishsoup_for_hughie";
 	private final SpeakerNPC npc = npcs.get("Anastasia");
 
-	private static final int REQUIRED_MINUTES = 7 * MathHelper.MINUTES_IN_ONE_DAY;
+	private static final int REQUIRED_MINUTES = 7 * TimeUtil.MINUTES_IN_DAY;
 
 	private void prepareRequestingStep() {
 		// player returns with the promised fish soup

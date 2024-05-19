@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2021 - Stendhal                    *
+ *                 (C) Copyright 2003-2024 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -18,7 +18,6 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import games.stendhal.common.MathHelper;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
@@ -40,6 +39,7 @@ import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestStateStartsWithCondition;
 import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.util.TimeUtil;
 
 public class ZlotaCiupagaDwaWasy extends AbstractQuest {
 	private static final String QUEST_SLOT = "ciupaga_dwa_wasy";
@@ -168,7 +168,7 @@ public class ZlotaCiupagaDwaWasy extends AbstractQuest {
 
 	private void step_3() { 
 		final SpeakerNPC npc = npcs.get("Krasnolud");
-		final int delay = REQUIRED_HOURS * MathHelper.SECONDS_IN_ONE_MINUTE;
+		final int delay = REQUIRED_HOURS * TimeUtil.SECONDS_IN_MINUTE;
 
 		npc.add(ConversationStates.ATTENDING, 
 			Arrays.asList("złota", "ciupaga", "nagroda"),

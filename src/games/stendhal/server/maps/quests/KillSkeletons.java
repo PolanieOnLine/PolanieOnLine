@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2021 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -16,7 +16,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import games.stendhal.common.MathHelper;
 import games.stendhal.common.Rand;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
@@ -66,7 +65,7 @@ public class KillSkeletons extends AbstractQuest {
 							raiser.setCurrentState(ConversationStates.ATTENDING);
 						} else if (player.getQuest(QUEST_SLOT).startsWith("killed;")) {
 							final String[] tokens = player.getQuest(QUEST_SLOT).split(";");
-							final long delay = 1 * MathHelper.MILLISECONDS_IN_ONE_DAY;
+							final long delay = 1 * TimeUtil.MILLISECONDS_IN_DAY;
 							final long timeRemaining = Long.parseLong(tokens[1]) + delay - System.currentTimeMillis();
 							if (timeRemaining > 0) {
 								raiser.say("W imieniu wszystkich mieszkańców Zakopanego, dziękuję. Pozostanę tutaj jeszcze trochę, aby zobaczyć, czy nie powstaną ponownie szkielety. Wróć za " + TimeUtil.approxTimeUntil((int) (timeRemaining / 1000L)) + ".");
@@ -200,7 +199,7 @@ public class KillSkeletons extends AbstractQuest {
 	@Override
 	public boolean isRepeatable(final Player player) {
 		return new AndCondition(new QuestStateStartsWithCondition(QUEST_SLOT,"killed"),
-				new TimePassedCondition(QUEST_SLOT, 1, 1*MathHelper.MINUTES_IN_ONE_DAY)).fire(player,null, null);
+				new TimePassedCondition(QUEST_SLOT, 1, 1*TimeUtil.MINUTES_IN_DAY)).fire(player,null, null);
 	}
 
 	@Override

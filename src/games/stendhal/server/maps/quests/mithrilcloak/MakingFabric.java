@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -12,7 +11,12 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests.mithrilcloak;
 
-import games.stendhal.common.MathHelper;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.grammar.ItemParserResult;
 import games.stendhal.common.parser.Sentence;
@@ -42,19 +46,10 @@ import games.stendhal.server.entity.npc.condition.QuestStateStartsWithCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.util.TimeUtil;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-
-
 /**
  * @author kymara
 */
-
 class MakingFabric {
-
 	private static final int REQUIRED_MINUTES_THREAD = 10;
 	private static final int REQUIRED_HOURS_MITHRIL_THREAD = 4;
 	private static final int REQUIRED_HOURS_FABRIC = 2;
@@ -124,7 +119,7 @@ class MakingFabric {
 							+ " "
 							+ getProductName()
 							+ ". Bądź dyskretny i wróć za "
-							+ TimeUtil.approxTimeUntil(REQUIRED_MINUTES_THREAD * amount * MathHelper.SECONDS_IN_ONE_MINUTE) + ".");
+							+ TimeUtil.approxTimeUntil(REQUIRED_MINUTES_THREAD * amount * TimeUtil.SECONDS_IN_MINUTE) + ".");
 					return true;
 				}
 			}
@@ -148,7 +143,7 @@ class MakingFabric {
 				// String productName = order[1];
 				final long orderTime = Long.parseLong(order[3]);
 				final long timeNow = new Date().getTime();
-				final long timeRemaining = orderTime + ((long)REQUIRED_MINUTES_THREAD * numberOfProductItems * MathHelper.MILLISECONDS_IN_ONE_MINUTE) - timeNow;
+				final long timeRemaining = orderTime + ((long)REQUIRED_MINUTES_THREAD * numberOfProductItems * TimeUtil.MILLISECONDS_IN_MINUTE) - timeNow;
 				if (timeRemaining > 0L) {
 					npc.say("Ciii wciąż pracuję nad Twoim zleceniem na "
 							+ getProductName()
@@ -162,7 +157,7 @@ class MakingFabric {
 		}
 
 		final ProducerBehaviour behaviour = new SpecialProducerBehaviour(
-				Arrays.asList("make", "zrób"), "przędza jedwabna", requiredResources, REQUIRED_MINUTES_THREAD * MathHelper.SECONDS_IN_ONE_MINUTE);
+				Arrays.asList("make", "zrób"), "przędza jedwabna", requiredResources, REQUIRED_MINUTES_THREAD * TimeUtil.SECONDS_IN_MINUTE);
 
 		npc.add(ConversationStates.ATTENDING,
 			Arrays.asList("make", "zrób"),
@@ -278,7 +273,7 @@ class MakingFabric {
 						final int numberOfProductItems = Integer.parseInt(order[1]);
 						final long orderTime = Long.parseLong(order[3]);
 						final long timeNow = new Date().getTime();
-						if (timeNow - orderTime < (long)REQUIRED_MINUTES_THREAD * numberOfProductItems * MathHelper.MILLISECONDS_IN_ONE_MINUTE) {
+						if (timeNow - orderTime < (long)REQUIRED_MINUTES_THREAD * numberOfProductItems * TimeUtil.MILLISECONDS_IN_MINUTE) {
 							npc.say("Haaaa heee łoooo hoo!");
 						} else {
 							npc.say("Szef dał mi "
@@ -335,7 +330,7 @@ class MakingFabric {
 						final long timeNow = new Date().getTime();
 						player.setQuest(mithrilcloak.getQuestSlot(), "fusingthread;" + timeNow);
 						npc.say("Zrobię 40 przędzy z mithrilu dla Ciebie. Wróć za "
-								+ TimeUtil.approxTimeUntil((int) (REQUIRED_HOURS_MITHRIL_THREAD * MathHelper.MILLISECONDS_IN_ONE_HOUR / 1000L)) + ".");
+								+ TimeUtil.approxTimeUntil((int) (REQUIRED_HOURS_MITHRIL_THREAD * TimeUtil.MILLISECONDS_IN_HOUR / 1000L)) + ".");
 						player.notifyWorldAboutChanges();
 					} else {
 						npc.say("Dla 40 szpulek przędzy z mithrilu, które potrzebne są do płaszcza potrzebuję 40 #przędzy #jedwabnej, 7 #bryłek #mithrilu i #balonik.");
@@ -354,7 +349,7 @@ class MakingFabric {
 					public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
 						final String orderString = player.getQuest(mithrilcloak.getQuestSlot());
 						final String[] order = orderString.split(";");
-						final long delay = REQUIRED_HOURS_MITHRIL_THREAD * MathHelper.MILLISECONDS_IN_ONE_HOUR;
+						final long delay = REQUIRED_HOURS_MITHRIL_THREAD * TimeUtil.MILLISECONDS_IN_HOUR;
 						final long timeRemaining = (Long.parseLong(order[1]) + delay)
 							- System.currentTimeMillis();
 						if (timeRemaining > 0L) {
@@ -497,7 +492,7 @@ class MakingFabric {
 				@Override
 				public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
 					final String[] tokens = player.getQuest(mithrilcloak.getQuestSlot()).split(";");
-					final long delay = REQUIRED_HOURS_FABRIC * MathHelper.MILLISECONDS_IN_ONE_HOUR;
+					final long delay = REQUIRED_HOURS_FABRIC * TimeUtil.MILLISECONDS_IN_HOUR;
 					final long timeRemaining = Long.parseLong(tokens[1]) + delay
 							- System.currentTimeMillis();
 					if (timeRemaining > 0L) {

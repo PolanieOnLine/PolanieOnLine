@@ -401,7 +401,7 @@ public class ProducerBehaviour extends TransactionBehaviour {
 		if (getWaitingTime() > 0) {
 			if (player.hasQuest(getQuestSlot()) && player.getQuest(getQuestSlot()).startsWith("done;")) {
 				final String[] tokens = player.getQuest(getQuestSlot()).split(";");
-				final long delay = (Long.parseLong(tokens[1])) * (MathHelper.MILLISECONDS_IN_ONE_HOUR * getWaitingTime());
+				final long delay = (Long.parseLong(tokens[1])) * (TimeUtil.MILLISECONDS_IN_HOUR * getWaitingTime());
 				final long timeRemaining = (Long.parseLong(tokens[2]) + delay) - System.currentTimeMillis();
 				if (timeRemaining > 0) {
 					npc.say("Wciąż jestem " + Grammar.genderVerb(npc.getGender(), "zajęty")

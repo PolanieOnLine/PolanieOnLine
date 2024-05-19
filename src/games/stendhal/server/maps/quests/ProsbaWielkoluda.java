@@ -1,5 +1,5 @@
 /***************************************************************************
- *                 (C) Copyright 2019-2023 - PolanieOnLine                 *
+ *                 (C) Copyright 2019-2024 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -13,7 +13,6 @@ package games.stendhal.server.maps.quests;
 
 import java.util.Arrays;
 
-import games.stendhal.common.MathHelper;
 import games.stendhal.server.entity.npc.NPCList;
 import games.stendhal.server.entity.npc.action.EquipItemAction;
 import games.stendhal.server.entity.npc.action.IncreaseBaseHPOnlyOnceAction;
@@ -22,6 +21,7 @@ import games.stendhal.server.entity.npc.action.IncreaseXPAction;
 import games.stendhal.server.entity.npc.quest.KillCreaturesQuestBuilder;
 import games.stendhal.server.entity.npc.quest.QuestManuscript;
 import games.stendhal.server.maps.Region;
+import games.stendhal.server.util.TimeUtil;
 
 /**
  * QUEST: Wsparcie dla Wielkoluda
@@ -59,7 +59,7 @@ public class ProsbaWielkoluda implements QuestManuscript {
 			.name("Widmo Wzgórza")
 			.description("Wielkolud poszukuje wojaka, który pozbędzie się grasujących pokutników i lawiny kamiennej z przejścia, co utrudniają życie innym.")
 			.internalName("help_wielkolud")
-			.repeatableAfterMinutes(MathHelper.MINUTES_IN_ONE_WEEK) // Powtarzalne co 1 tydzien
+			.repeatableAfterMinutes(TimeUtil.MINUTES_IN_WEEK) // Powtarzalne co 1 tydzien
 			.minLevel(100)
 			.region(Region.KOSCIELISKO)
 			.questGiverNpc("Wielkolud");

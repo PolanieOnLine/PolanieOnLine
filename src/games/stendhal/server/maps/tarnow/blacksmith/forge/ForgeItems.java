@@ -17,8 +17,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.TreeMap;
 
-import games.stendhal.common.MathHelper;
 import games.stendhal.server.entity.npc.behaviour.impl.MultiProducerBehaviour;
+import games.stendhal.server.util.TimeUtil;
 
 public class ForgeItems {
 	private final static String helmet = "hełm ciemnomithrilowy";
@@ -90,12 +90,12 @@ public class ForgeItems {
 	
 	private static HashMap<String, Integer> getProductionTime() {
 		final HashMap<String, Integer> productionTime = new HashMap<String, Integer>();
-		productionTime.put(helmet, MathHelper.MINUTES_IN_ONE_DAY);
-		productionTime.put(armor, MathHelper.MINUTES_IN_ONE_DAY * 4);
-		productionTime.put(legs, MathHelper.MINUTES_IN_ONE_DAY * 2);
-		productionTime.put(boots, MathHelper.MINUTES_IN_ONE_DAY);
-		productionTime.put(shield, MathHelper.MINUTES_IN_ONE_DAY * 2);
-		productionTime.put(cloak, MathHelper.MINUTES_IN_ONE_DAY);
+		productionTime.put(helmet, TimeUtil.MINUTES_IN_DAY);
+		productionTime.put(armor, TimeUtil.MINUTES_IN_DAY * 4);
+		productionTime.put(legs, TimeUtil.MINUTES_IN_DAY * 2);
+		productionTime.put(boots, TimeUtil.MINUTES_IN_DAY);
+		productionTime.put(shield, TimeUtil.MINUTES_IN_DAY * 2);
+		productionTime.put(cloak, TimeUtil.MINUTES_IN_DAY);
 
 		return productionTime;
 	}

@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -14,8 +13,8 @@ package games.stendhal.server.entity.mapstuff.office;
 
 import java.awt.Shape;
 
-import games.stendhal.common.MathHelper;
 import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.util.TimeUtil;
 
 /**
  * A list of RentedSign as frontend for the zone storage.
@@ -23,7 +22,7 @@ import games.stendhal.server.core.engine.StendhalRPZone;
  * @author hendrik
  */
 public class RentedSignList extends StorableEntityList<RentedSign> {
-	private static final long EXPIRE_TIMEOUT = MathHelper.MILLISECONDS_IN_ONE_DAY;
+	private static final long EXPIRE_TIMEOUT = TimeUtil.MILLISECONDS_IN_DAY;
 
 	/**
 	 * Creates a new RentedSignList.

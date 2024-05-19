@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import games.stendhal.common.MathHelper;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -64,7 +63,7 @@ public class DzikiiWilki extends AbstractQuest {
 	private static final String QUEST_SLOT = "dzikie_zwierzyny";
 	private final SpeakerNPC npc = npcs.get("Farmer Mścisław");
 
-	private static final int WEEK_IN_MINUTES = MathHelper.MINUTES_IN_ONE_DAY;
+	private static final int WEEK_IN_MINUTES = TimeUtil.MINUTES_IN_DAY;
 
 	private void step_1() {
 		npc.add(ConversationStates.ATTENDING,
@@ -92,7 +91,7 @@ public class DzikiiWilki extends AbstractQuest {
 					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 						if (player.getQuest(QUEST_SLOT).startsWith("killed;")) {
 							final String[] tokens = player.getQuest(QUEST_SLOT).split(";");
-							final long delay = WEEK_IN_MINUTES * MathHelper.SECONDS_IN_ONE_DAY;
+							final long delay = WEEK_IN_MINUTES * TimeUtil.SECONDS_IN_DAY;
 							final long timeRemaining = Long.parseLong(tokens[1]) + delay - System.currentTimeMillis();
 							if (timeRemaining > 0) {
 								raiser.say("Boję się, że ponownie zwierzęta te wrócą na moją farmę, proszę.. wróć za #'" + TimeUtil.approxTimeUntil((int) (timeRemaining / 1000L)) + "'.");
@@ -237,7 +236,7 @@ public class DzikiiWilki extends AbstractQuest {
 	@Override
 	public boolean isRepeatable(final Player player) {
 		return new AndCondition(new QuestStateStartsWithCondition(QUEST_SLOT,"killed"),
-				 new TimePassedCondition(QUEST_SLOT, 1, MathHelper.MINUTES_IN_ONE_HOUR*24*2)).fire(player,null, null);
+				 new TimePassedCondition(QUEST_SLOT, 1, TimeUtil.MINUTES_IN_HOUR*24*2)).fire(player,null, null);
 	}
 	
 	@Override

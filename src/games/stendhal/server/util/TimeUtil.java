@@ -1,12 +1,15 @@
-/*
- * @(#) src/games/stendhal/server/util/TimeUtil.java
- *
- * $Id$
- */
+/***************************************************************************
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
+ ***************************************************************************
+ ***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
 package games.stendhal.server.util;
-
-//
-//
 
 import games.stendhal.common.grammar.Grammar;
 
@@ -14,14 +17,21 @@ import games.stendhal.common.grammar.Grammar;
  * Utility functions for time in the game.
  */
 public class TimeUtil {
+	public static final long MILLISECONDS_IN_MINUTE = 60 * 1000;
+	public static final long MILLISECONDS_IN_HOUR = 60 * MILLISECONDS_IN_MINUTE;
+	public static final long MILLISECONDS_IN_DAY = 24 * MILLISECONDS_IN_HOUR;
+	public static final long MILLISECONDS_IN_WEEK = 7 * MILLISECONDS_IN_DAY;
+	public static final int SECONDS_IN_MINUTE = 60;
+	public static final int SECONDS_IN_HOUR = 60 * SECONDS_IN_MINUTE;
+	public static final int SECONDS_IN_DAY = 24 * SECONDS_IN_HOUR;
+	public static final int SECONDS_IN_WEEK = 7 * SECONDS_IN_DAY;
+	public static final int MINUTES_IN_HOUR = 60;
+	public static final int MINUTES_IN_DAY = MINUTES_IN_HOUR * 24;
+	public static final int MINUTES_IN_WEEK = MINUTES_IN_DAY * 7;
+	public static final int MINUTES_IN_YEAR = MINUTES_IN_DAY * 365; // 525,600
+	public static final int MINUTES_IN_HALF_YEAR = MINUTES_IN_YEAR / 2; // 262,800
 
-	protected static final int SECONDS_IN_WEEK = 60 * 60 * 24 * 7;
-
-	protected static final int SECONDS_IN_DAY = 60 * 60 * 24;
-
-	protected static final int SECONDS_IN_HOUR = 60 * 60;
-
-	protected static final int SECONDS_IN_MINUTE = 60;
+	public static final int TURNS_IN_MINUTE = (int) (SECONDS_IN_MINUTE / 0.3); // 200
 
 	/**
 	 * Create a text representing a saying of approximate time until.

@@ -120,7 +120,7 @@ public class StonemistScroll extends Item {
 			return 0;
 		}
 
-		final int usageDelay = MIN_USETIME * MathHelper.MINUTES_IN_ONE_HOUR;
+		final int usageDelay = MIN_USETIME * TimeUtil.MINUTES_IN_HOUR;
 		try {
 			int lastUsageTime = Integer.parseInt(player.getQuest("alt_usedtime"));
 			return (lastUsageTime + usageDelay) - (int) (System.currentTimeMillis() / 1000);

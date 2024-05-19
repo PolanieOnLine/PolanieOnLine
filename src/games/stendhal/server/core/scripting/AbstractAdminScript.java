@@ -1,5 +1,5 @@
 /***************************************************************************
- *                     Copyright © 2023-2024 - Arianne                     *
+ *                 Copyright © 2023-2024 - Faiumoni e. V.                  *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,44 +11,110 @@
  ***************************************************************************/
 package games.stendhal.server.core.scripting;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import games.stendhal.common.NotificationType;
+import games.stendhal.server.constants.StandardMessages;
 import games.stendhal.server.entity.player.Player;
 
 public abstract class AbstractAdminScript extends ScriptImpl {
+	/** Admin player executing script. */
+	protected Player admin;
+
 	/**
 	 * Instructions to execute after parameter count sanity is checked.
 	 *
-	 * @param admin
-	 *     The player executing the script.
 	 * @param args
-	 *     Parameters passed to the script.
+	 *   Parameters passed to the script.
 	 */
-	protected abstract void run(final Player admin, final List<String> args);
+	protected abstract void run(final List<String> args);
 
 	@Override
 	public void execute(final Player admin, final List<String> args) {
+		this.admin = admin;
 		final int minparams = getMinParams();
 		final int maxparams = getMaxParams();
 		if (maxparams > -1 && maxparams < minparams) {
-			admin.sendPrivateText(NotificationType.ERROR, "Parametry maksymalne ("
-					+ maxparams + ") są mniejsze niż parametry minimalne ("
-					+ minparams + ").");
-			return;
+			throw new IllegalArgumentException("Parametry maksymalne (" + maxparams
+					+ ") są mniejsze niż parametry minimalne (" + minparams + ").");
 		}
 		final int argc = args.size();
-		if (argc < minparams) {
-			admin.sendPrivateText(NotificationType.ERROR, "Brakujący parametr.");
-			showUsage(admin);
-			return;
-		} else if (maxparams > -1 && argc > maxparams) {
-			admin.sendPrivateText(NotificationType.ERROR, "Zbyt wiele parametrów.");
-			showUsage(admin);
+		if (argc > 0 && Arrays.asList("-?", "-h", "-help", "--help")
+				.contains(args.get(0).toLowerCase())) {
+			showUsage();
 			return;
 		}
-		run(admin, args);
+		if (argc < minparams) {
+			StandardMessages.missingParameter(admin);
+			showUsage();
+			return;
+		} else if (maxparams > -1 && argc > maxparams) {
+			StandardMessages.excessParameter(admin);
+			showUsage();
+			return;
+		}
+		run(args);
+	}
+
+	/**
+	 * Sends a private text to admin if set.
+	 *
+	 * @param _type
+	 *   Notification type.
+	 * @param msg
+	 *   Message contents.
+	 */
+	private void sendTextInternal(final NotificationType _type, final String msg) {
+		if (admin == null) {
+			return;
+		}
+		if (_type == null) {
+			admin.sendPrivateText(msg);
+		} else {
+			admin.sendPrivateText(_type, msg);
+		}
+	}
+
+	/**
+	 * Wrapper for sending standard text to admin.
+	 *
+	 * @param msg
+	 *   Message contents.
+	 */
+	protected void sendText(final String msg) {
+		sendTextInternal(null, msg);
+	}
+
+	/**
+	 * Wrapper for sending information text to admin.
+	 *
+	 * @param msg
+	 *   Messag contents.
+	 */
+	protected void sendInfo(final String msg) {
+		sendTextInternal(NotificationType.INFORMATION, msg);
+	}
+
+	/**
+	 * Wrapper for sending warning text to admin.
+	 *
+	 * @param msg
+	 *   Message contents.
+	 */
+	protected void sendWarning(final String msg) {
+		sendTextInternal(NotificationType.WARNING, msg);
+	}
+
+	/**
+	 * Wrapper for sending error text to admin.
+	 *
+	 * @param msg
+	 *   Message contents.
+	 */
+	protected void sendError(final String msg) {
+		sendTextInternal(NotificationType.ERROR, msg);
 	}
 
 	/**
@@ -59,30 +125,40 @@ public abstract class AbstractAdminScript extends ScriptImpl {
 	}
 
 	/**
-	 * Retrieves maximum number of parameters required to run script.
+	 * Retrieves maximum number of parameters required to run script. An indefinite amount can be
+	 * specified with {@code -1}.
 	 */
 	protected int getMaxParams() {
 		return -1;
 	}
 
 	/**
-	 * Displays usage information.
-	 *
-	 * @param admin
-	 *     Player to whom information is sent.
+	 * The script is assumed to have help info if it accepts any number of parameters.
 	 */
-	public void showUsage(final Player admin) {
-		admin.sendPrivateText(getUsage());
+	private boolean hasHelp() {
+		return getMaxParams() != 0;
+	}
+
+	/**
+	 * Displays usage information to admin.
+	 */
+	public void showUsage() {
+		sendTextInternal(null, getUsage());
 	}
 
 	/**
 	 * Retrieves a string representation of usage information.
 	 */
 	public String getUsage() {
+		final boolean includeHelp = hasHelp();
 		final String cmd = "/script " + getClass().getSimpleName() + ".class";
 		String usage = "Użycie:";
-		List<String> params = getParamStrings();
-		params = params != null ? params : new ArrayList<>();
+		final List<String> params = new LinkedList<>();
+		// make a copy in case returned value is immutable
+		params.addAll(getParamStrings());
+		if (includeHelp) {
+			params.add("-?");
+		}
 		final int pcount =  params.size();
 		if (pcount == 0) {
 			usage += " " + cmd;
@@ -90,17 +166,22 @@ public abstract class AbstractAdminScript extends ScriptImpl {
 			usage += " " + cmd + " " + params.get(0);
 		} else {
 			for (final String paramset: params) {
-				usage += "\n  " + cmd;
+				usage += "\n&nbsp;&nbsp;" + cmd;
 				if (paramset.length() > 0) {
 					usage += " " + paramset;
 				}
 			}
 		}
-		List<String> details = getParamDetails();
-		if (details != null && details.size() > 0) {
+		final List<String> details = new LinkedList<>();
+		// make a copy in case returned value is immutable
+		details.addAll(getParamDetails());
+		if (includeHelp) {
+			details.add("-?: Pokazuje informacje pomocnicze.");
+		}
+		if (details.size() > 0) {
 			usage += "\nParametry:";
 			for (final String detail: details) {
-				usage += "\n  " + detail;
+				usage += "\n&nbsp;&nbsp;" + detail;
 			}
 		}
 		return usage;
@@ -111,19 +192,15 @@ public abstract class AbstractAdminScript extends ScriptImpl {
 	 *
 	 * An empty string can be included to show execution without
 	 * parameters.
-	 *
-	 * FIXME: might be simpler to return empty list
 	 */
 	protected List<String> getParamStrings() {
-		return null;
+		return new LinkedList<String>();
 	}
 
 	/**
 	 * Retrieves extended instructions on parameter usage.
-	 *
-	 * FIXME: might be simpler to return empty list
 	 */
 	protected List<String> getParamDetails() {
-		return null;
+		return new LinkedList<String>();
 	}
 }
