@@ -61,7 +61,7 @@ public class HalfElfNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-				addGreeting("Witaj #'przyjacielu. Cieszę się, że ciebie widzę.");
+				addGreeting("Witaj #'przyjacielu'. Cieszę się, że ciebie widzę.");
 				addHelp("Potrzebujesz pomocy? Mogę powiedzieć, że zdobywanie #doświadczenia i #wiedzy może być dla ciebie korzystne.");
 				addJob("Jestem pół-elfem. Mój #ojciec był #człowiekiem, a moja #matka #elfem z #Nalwor. Jako, że chciałam lepiej poznać obie #kultury to zdecydowałam się na podróż po #Faiumoni, aby nauczyć się jak najwięcej o #kulturach i zwyczajach.");
 				addOffer("Nie mam nic do zaoferowania z wyjątkiem mojego #czasu na rozmowę z tobą.");
