@@ -26,9 +26,9 @@ import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 import games.stendhal.server.entity.npc.behaviour.journal.ProducerRegister;
 
 public class ProducerGroupsXMLLoader extends DefaultHandler {
-	private static final Logger logger = Logger.getLogger(ShopGroupsXMLLoader.class);
+	private static final Logger logger = Logger.getLogger(ProducerGroupsXMLLoader.class);
 
-	private final static ProducerRegister producers = ProducerRegister.get();
+	private final static ProducerRegister productions = SingletonRepository.getProducerRegister();
 
 	private static boolean loaded = false;
 	protected final URI uri;
@@ -42,7 +42,7 @@ public class ProducerGroupsXMLLoader extends DefaultHandler {
 	}
 
 	/**
-	 * Loads shops from XML and configures NPC merchants.
+	 * Loads productions from XML and configures NPC producers.
 	 */
 	public void load() {
 		if (loaded) {
@@ -76,19 +76,22 @@ public class ProducerGroupsXMLLoader extends DefaultHandler {
 			final List<ProducerConfigurator> configurators = new ArrayList<>();
 			for (final URI groupUri: groups) {
 				producersLoader.load(groupUri);
+				addProducer(producersLoader.getBehaviours());
 				for (final ProducerConfigurator pc: producersLoader.getConfigurators()) {
 					if (npcNames != null) {
-						if (npcNames.contains(pc.npc)) {
+						if (npcNames.contains(pc.npcName)) {
 							pc.configure();
 						}
 						// loading was called for specific NPCs only
 						continue;
 					}
+					if (pc.behaviour.getQuestSlot() != null) {
+						configurators.add(pc);
+					}
 				}
 			}
 
 			if (configurators.size() == 0) {
-				// don't cache runner if no merchants are to be configured at startup
 				return;
 			}
 
@@ -96,8 +99,8 @@ public class ProducerGroupsXMLLoader extends DefaultHandler {
 				private final List<ProducerConfigurator> _configurators = configurators;
 				@Override
 				public void run() {
-					for (final ProducerConfigurator mc: _configurators) {
-						mc.configure();
+					for (final ProducerConfigurator pc: _configurators) {
+						pc.configure();
 					}
 				}
 			});
@@ -108,28 +111,27 @@ public class ProducerGroupsXMLLoader extends DefaultHandler {
 		}
 	}
 
-	public static class ProducerConfigurator {
-		// behaviour
-		public String questSlot;
-		public String produceItem;
-		public Map<String, Integer> produceResources;
-		public List<String> produceActivity;
-		public int producePerUnit;
-		public int produceTime;
-		public boolean itemBound;
+	private void addProducer(final Map<String, ProducerBehaviour> producers) {
+		for (final Map.Entry<String, ProducerBehaviour> producer : producers.entrySet()) {
+			final String npc = producer.getKey();
+			final ProducerBehaviour produce = producer.getValue();
+			productions.add(npc, produce);
+		}
+	}
 
+	public static class ProducerConfigurator {
+		public ProducerBehaviour behaviour;
 		// producer
-		public String npc;
+		public String npcName;
 		public String questComplete;
 		public String welcomeMessage;
-		public int unitsPerTime;
-		public int waitingTime;
+		public int minProductionUnits;
+		public int timeToRestart;
 		public boolean remind;
 
 		public void configure() {
-			final ProducerBehaviour behaviour = new ProducerBehaviour(questSlot, produceActivity, produceItem, producePerUnit, produceResources, produceTime, itemBound);
-
-			producers.configureNPC(npc, behaviour, questComplete, welcomeMessage, unitsPerTime, waitingTime, remind);
+			//behaviour.setRemind(remind);
+			productions.configureNPC(npcName, behaviour, questComplete, welcomeMessage, minProductionUnits, timeToRestart, remind);
 		}
 	}
 }
