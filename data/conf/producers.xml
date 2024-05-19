@@ -537,7 +537,7 @@
 	</producer>
 	<!-- czeladnik Jaromir (Wieliczka) -->
 	<producer npc="czeladnik Jaromir" slot="jaromir_cast_mistgem" type="item" complete="grind_misty_gem">
-		<welcome text="Witaj z powrotem! Jeśli chcesz, mogę #'oszlifować kryształ ciemnolitu' dla ciebie!"/>
+		<welcome text="Witaj z powrotem! Jeśli chcesz, mogę #'oszlifować klejnot ciemnolitu' dla ciebie!"/>
 		<item name="klejnot ciemnolitu" minutes="15">
 			<resource name="money" amount="200"/>
 			<resource name="kryształ ciemnolitu"/>
