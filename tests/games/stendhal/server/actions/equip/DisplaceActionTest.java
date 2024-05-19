@@ -98,7 +98,7 @@ public class DisplaceActionTest extends ZoneAndPlayerTestImpl {
 		localzone.add(player);
 
 		// first put some nasionas on the floor
-		StackableItem item = (StackableItem) SingletonRepository.getEntityManager().getItem("nasionka");
+		StackableItem item = (StackableItem) SingletonRepository.getEntityManager().getItem("nasiona");
 		item.setQuantity(5);
 		localzone.add(item);
 		StackableItem[] items = localzone.getItemsOnGround().toArray(new StackableItem[0]);
@@ -165,7 +165,7 @@ public class DisplaceActionTest extends ZoneAndPlayerTestImpl {
 		localzone.add(player);
 
 		// first put some nasionas on the floor
-		StackableItem item = (StackableItem) SingletonRepository.getEntityManager().getItem("nasionka");
+		StackableItem item = (StackableItem) SingletonRepository.getEntityManager().getItem("nasiona");
 		item.setQuantity(5);
 		localzone.add(item);
 		assertEquals(1, localzone.getItemsOnGround().size());
@@ -197,7 +197,7 @@ public class DisplaceActionTest extends ZoneAndPlayerTestImpl {
 		localzone.add(player);
 
 		// first put some nasionas on the floor
-		StackableItem item = (StackableItem) SingletonRepository.getEntityManager().getItem("nasionka");
+		StackableItem item = (StackableItem) SingletonRepository.getEntityManager().getItem("nasiona");
 		item.setQuantity(5);
 		localzone.add(item);
 		assertEquals(1, localzone.getItemsOnGround().size());

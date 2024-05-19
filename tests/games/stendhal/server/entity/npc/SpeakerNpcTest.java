@@ -13,11 +13,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
+import games.stendhal.server.core.config.ProductionsXMLLoader;
 import games.stendhal.server.core.config.ShopsXMLLoader;
 import games.stendhal.server.core.config.zone.ConfiguratorDescriptor;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.MockStendlRPWorld;
+import utilities.NPCTestHelper;
 import utilities.NpcLoader;
 import utilities.PlayerTestHelper;
 
@@ -58,6 +60,7 @@ public class SpeakerNpcTest {
 	@Parameterized.Parameters
 	public static Collection<SpeakerNPC[]> npcs() {
 		ShopsXMLLoader.get().init(); // default shops are now configured in XML
+		ProductionsXMLLoader.get().init();
 		setUpZone();
 
 		Collection<SpeakerNPC[]> npcArrays = new LinkedList<SpeakerNPC[]>();

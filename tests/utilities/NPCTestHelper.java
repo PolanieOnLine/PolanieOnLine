@@ -14,7 +14,7 @@ package utilities;
 import java.util.ArrayList;
 import java.util.List;
 
-import games.stendhal.server.core.config.ProducersXMLLoader;
+import games.stendhal.server.core.config.ProductionGroupsXMLLoader;
 import games.stendhal.server.core.config.ShopGroupsXMLLoader;
 import games.stendhal.server.core.engine.StendhalRPWorld;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -87,8 +87,8 @@ public class NPCTestHelper {
 		loader.load(npcNames);
 	}
 
-	public static void loadProducers() {
-		final ProducersXMLLoader loader = ProducersXMLLoader.get();
-		loader.init();
+	public static void loadProductions(final String... npcNames) {
+		final ProductionGroupsXMLLoader loader = new ProductionGroupsXMLLoader("/data/conf/productions.xml");
+		loader.load(npcNames);
 	}
 }

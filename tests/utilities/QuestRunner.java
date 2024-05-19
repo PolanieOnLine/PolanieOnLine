@@ -195,6 +195,8 @@ public class QuestRunner {
 		final String questSlot = "hungry_joshua";
 		final SpeakerNPC xoderos = getSpeakerNPC("Xoderos");
 		Engine en = xoderos.getEngine();
+		// configure Xoderos production
+		NPCTestHelper.loadProductions("Xoderos");
 		en.step(player, "hi");
 		en.step(player, "quest");
 		en.step(player, "food");
@@ -202,6 +204,8 @@ public class QuestRunner {
 		en.step(player, "bye");
 		equipWithStackableItem(player, "kanapka", 5);
 		en = getSpeakerNPC("Joshua").getEngine();
+		// configure Xoderos production
+		NPCTestHelper.loadProductions("Joshua");
 		en.step(player, "hi");
 		en.step(player, "kanapka");
 		en.step(player, "yes");
@@ -395,6 +399,8 @@ public class QuestRunner {
 	public static void doQuestPizzaDelivery(final Player player, final boolean fast) {
 		final String questSlot = "pizza_delivery";
 		Engine en = getSpeakerNPC("Leander").getEngine();
+		// configure Leander production
+		NPCTestHelper.loadProductions("Leander");
 
 		en.step(player, "hi");
 		en.step(player, "quest");
@@ -404,6 +410,8 @@ public class QuestRunner {
 			player.setQuest(questSlot, 1, "0");
 		}
 		en = getSpeakerNPC(player.getQuest(questSlot, 0)).getEngine();
+		// configure random NPC who has production
+		NPCTestHelper.loadProductions(player.getQuest(questSlot, 0));
 
 		en.step(player, "hi");
 		en.step(player, "pizza");

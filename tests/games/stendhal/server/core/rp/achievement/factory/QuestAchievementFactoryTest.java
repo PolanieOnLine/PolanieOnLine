@@ -67,7 +67,6 @@ import games.stendhal.server.maps.quests.RestockFlowerShop;
 import games.stendhal.server.maps.quests.SheepGrowing;
 import games.stendhal.server.maps.quests.houses.HouseBuyingMain;
 import utilities.AchievementTestHelper;
-import utilities.NPCTestHelper;
 import utilities.QuestHelper;
 import utilities.QuestRunner;
 
@@ -368,8 +367,6 @@ public class QuestAchievementFactoryTest extends AchievementTestHelper {
 		if (System.getProperty("stendhal.christmas") == null) {
 			questRudolph.addStepsToWorld();
 		}
-
-		NPCTestHelper.loadProducers();
 
 		// Meet Hayunn Naratha
 		assertNotNull(getSpeakerNPC("Hayunn Naratha"));

@@ -8,10 +8,6 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static utilities.SpeakerNPCTestHelper.getReply;
 
-import java.util.Arrays;
-import java.util.Map;
-import java.util.TreeMap;
-
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -19,11 +15,11 @@ import org.junit.Test;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import games.stendhal.server.entity.npc.behaviour.impl.ProducerBehaviour;
 import games.stendhal.server.entity.npc.fsm.Engine;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.athor.dressingroom_female.LifeguardNPC;
 import games.stendhal.server.maps.athor.holiday_area.TouristFromAdosNPC;
+import utilities.NPCTestHelper;
 import utilities.PlayerTestHelper;
 import utilities.QuestHelper;
 
@@ -45,14 +41,9 @@ public class SuntanCreamForZaraTest {
 		final StendhalRPZone zone = new StendhalRPZone("admin_test");
 		new TouristFromAdosNPC().configureZone(zone, null);
 		new LifeguardNPC().configureZone(zone, null);
-
-		final Map<String, Integer> requiredResources = new TreeMap<String, Integer>();
-		requiredResources.put("mały eliksir", 1);
-		requiredResources.put("kokuda", 1);
-		requiredResources.put("arandula", 1);
-
-		SingletonRepository.getProducerRegister().configureNPC(
-			"Pam", new ProducerBehaviour("pamela_mix_cream", Arrays.asList("mix"), "olejek do opalania", requiredResources, 10*60), "Hallo!");
+		
+		// configure Pam production
+		NPCTestHelper.loadProductions("Pam");
 
 		AbstractQuest quest = new SuntanCreamForZara();
 		quest.addToWorld();
