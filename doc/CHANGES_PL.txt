@@ -17,13 +17,13 @@ Changelog
 	- klejnot ciemnolitu (surowiec)
 	- mgielny kamień - przedmiot umożliwiający teleportacje na mapy alternatywne - drop możliwy tylko ze zmodyfikowanych potworów występujących na normalnych mapach
 	---- NOWY ZESTAW WYPOSAŻENIA ----
-	- hełm ciemnomithrilowy    - OBR: 39 | DARK i LIGHT: 110%
-	- zbroja ciemnomithrilowa  - OBR: 40 | DARK i LIGHT: 110%
-	- pas ciemnomithrilowy     - OBR: 26 | DARK i LIGHT: 110%
-	- spodnie ciemnomithrilowe - OBR: 30 | DARK i LIGHT: 110%
-	- buty ciemnomithrilowe    - OBR: 28 | DARK i LIGHT: 110%
-	- płaszcz ciemnomithrilowy - OBR: 38 | DARK i LIGHT: 110%
-	- tarcza ciemnomithrilowa  - ATK: 2 OBR: 55 | DARK i LIGHT: 110%
+	- hełm ciemnomithrilowy
+	- zbroja ciemnomithrilowa
+	- pas ciemnomithrilowy
+	- spodnie ciemnomithrilowe
+	- buty ciemnomithrilowe
+	- płaszcz ciemnomithrilowy
+	- tarcza ciemnomithrilowa
 - Dodano nowych NPC:
 	- czeladnik Jaromir
 	- kowal Przemysław
@@ -31,9 +31,12 @@ Changelog
 - Dodano możliwość szlifowania kryształu w większych ilościach po zakończonym zadaniu
 - Dodano ulepszanie wyposażenia z mithrilu na ciemnomithrilowe u kowala Przemysława po zakończonym zadaniu
 - Dodano dla nowego wyposażenia odporność na krwawienie (pełen zestaw chroni przed krwawieniem w 100%)
+- Dodano wsparcie ciągłej muzyki podczas zmiany strefy/mapy bez przerywania jej
 - Wgląd w grze jak i na stronie internetowej teraz pokazują efektywny atrybut defensywy przedmiotów (ukryte czynniki zostały uczynione transparentne)
 - Ziarna można użyć z inwentarza, aby zasiać
-- Muzyka podczas zmiany mapy nie resetuje się
+
+*naprawiono błędy*
+- Naprawiono sklep kupczyka Piotra w Krakowie oraz sklep Jimbo w Deniran
 
 
 1.38
