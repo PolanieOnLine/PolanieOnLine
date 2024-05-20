@@ -12,6 +12,8 @@
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
+			<parameter name="music">pol-littlemeadow1</parameter>
+			<parameter name="music_volume">0.15</parameter>
 		</attributes>
 
 		<point-of-interest x="30" y="20">
@@ -21,12 +23,6 @@
 			<url>https://s1.polanieonline.eu/wieliczka</url>
 		</point-of-interest>
 
-		<entity x="1" y="1">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">pol-littlemeadow1</parameter>
-				<parameter name="volume">15</parameter>
-			</implementation>
-		</entity>
 		<entity x="100" y="83">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">hammer-1, smith-1</parameter>
@@ -49,14 +45,9 @@
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
+			<parameter name="music">pol-littlemeadow1</parameter>
+			<parameter name="music_volume">0.15</parameter>
 		</attributes>
-
-		<entity x="1" y="1">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">pol-littlemeadow1</parameter>
-				<parameter name="volume">15</parameter>
-			</implementation>
-		</entity>
 	</zone>
 
 	<!-- wieliczka_ne -->
@@ -64,14 +55,9 @@
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
+			<parameter name="music">pol-littlemeadow1</parameter>
+			<parameter name="music_volume">0.15</parameter>
 		</attributes>
-
-		<entity x="1" y="1">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">pol-littlemeadow1</parameter>
-				<parameter name="volume">15</parameter>
-			</implementation>
-		</entity>
 	</zone>
 
 	<!-- wieliczka_ne2 -->
@@ -79,14 +65,9 @@
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
+			<parameter name="music">pol-littlemeadow1</parameter>
+			<parameter name="music_volume">0.15</parameter>
 		</attributes>
-
-		<entity x="1" y="1">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">pol-littlemeadow1</parameter>
-				<parameter name="volume">15</parameter>
-			</implementation>
-		</entity>
 	</zone>
 
 	<!-- wieliczka_w -->
@@ -94,14 +75,9 @@
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
+			<parameter name="music">pol-littlemeadow1</parameter>
+			<parameter name="music_volume">0.15</parameter>
 		</attributes>
-
-		<entity x="1" y="1">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">pol-littlemeadow1</parameter>
-				<parameter name="volume">15</parameter>
-			</implementation>
-		</entity>
 	</zone>
 
 	<!-- wieliczka_c -->
@@ -115,14 +91,9 @@
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
+			<parameter name="music">pol-littlemeadow1</parameter>
+			<parameter name="music_volume">0.15</parameter>
 		</attributes>
-
-		<entity x="1" y="1">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">pol-littlemeadow1</parameter>
-				<parameter name="volume">15</parameter>
-			</implementation>
-		</entity>
 		
 		<entity x="106" y="46">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
@@ -181,14 +152,9 @@
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
+			<parameter name="music">pol-littlemeadow1</parameter>
+			<parameter name="music_volume">0.15</parameter>
 		</attributes>
-
-		<entity x="1" y="1">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">pol-littlemeadow1</parameter>
-				<parameter name="volume">15</parameter>
-			</implementation>
-		</entity>
 	</zone>
 
 	<!-- wieliczka_e2 -->
@@ -196,14 +162,9 @@
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
+			<parameter name="music">pol-littlemeadow1</parameter>
+			<parameter name="music_volume">0.15</parameter>
 		</attributes>
-
-		<entity x="1" y="1">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">pol-littlemeadow1</parameter>
-				<parameter name="volume">15</parameter>
-			</implementation>
-		</entity>
 	</zone>
 
 	<!-- wieliczka_sw -->
@@ -211,14 +172,9 @@
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
+			<parameter name="music">pol-littlemeadow1</parameter>
+			<parameter name="music_volume">0.15</parameter>
 		</attributes>
-
-		<entity x="1" y="1">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">pol-littlemeadow1</parameter>
-				<parameter name="volume">15</parameter>
-			</implementation>
-		</entity>
 	</zone>
 
 	<!-- wieliczka_s -->
@@ -226,14 +182,9 @@
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
+			<parameter name="music">pol-littlemeadow1</parameter>
+			<parameter name="music_volume">0.15</parameter>
 		</attributes>
-
-		<entity x="1" y="1">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">pol-littlemeadow1</parameter>
-				<parameter name="volume">15</parameter>
-			</implementation>
-		</entity>
 	</zone>
 
 	<!-- wieliczka_se -->
@@ -241,14 +192,9 @@
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
+			<parameter name="music">pol-littlemeadow1</parameter>
+			<parameter name="music_volume">0.15</parameter>
 		</attributes>
-
-		<entity x="1" y="1">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">pol-littlemeadow1</parameter>
-				<parameter name="volume">15</parameter>
-			</implementation>
-		</entity>
 	</zone>
 
 	<!-- wieliczka_se2 -->
@@ -256,14 +202,9 @@
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
+			<parameter name="music">pol-littlemeadow1</parameter>
+			<parameter name="music_volume">0.15</parameter>
 		</attributes>
-
-		<entity x="1" y="1">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">pol-littlemeadow1</parameter>
-				<parameter name="volume">15</parameter>
-			</implementation>
-		</entity>
 	</zone>
 
 	<!-- interiors -->
@@ -315,18 +256,17 @@
 	</zone>
 
 	<zone name="int_wieliczka_townhall" file="interiors/wieliczka/townhall.tmx">
-		<configurator class-name="games.stendhal.server.maps.wieliczka.townhall.ZbigniewNPC"/>
+		<attributes>
+			<parameter name="music">pol-littlemeadow1</parameter>
+			<parameter name="music_volume">0.15</parameter>
+		</attributes>
 
-		<entity x="1" y="1">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">pol-littlemeadow1</parameter>
-				<parameter name="volume">15</parameter>
-			</implementation>
-		</entity>
+		<configurator class-name="games.stendhal.server.maps.wieliczka.townhall.ZbigniewNPC"/>
 
 		<entity x="7" y="2">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Clock" />
 		</entity>
+
 		<!-- ticking clock sound effect -->
 		<entity x="7" y="2">
 			<implementation	class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
@@ -353,10 +293,12 @@ Aktualne ceny u Zbigniewa:
 			<destination zone="0_wieliczka_c" ref="townhall_entrance"/>
 			<attribute name="move.continuous" />
 		</portal>
+
 		<portal x="14" y="46" ref="townhall_exit">
 			<destination zone="0_wieliczka_c" ref="townhall_entrance"/>
 			<attribute name="move.continuous" />
 		</portal>
+
 		<portal x="16" y="46" ref="townhall_exit">
 			<destination zone="0_wieliczka_c" ref="townhall_entrance"/>
 			<attribute name="move.continuous" />
@@ -451,13 +393,10 @@ Aktualne ceny u Zbigniewa:
 	<zone name="-1_wieliczka_salt_mines_c" level="-1" x="514080" y="18560" file="Level -1/wieliczka/salt_mines_c.tmx">
 		<attributes>
 			<parameter name="color_method">dark</parameter>
+			<parameter name="music">pol-dj_zai-darkbells</parameter>
+			<parameter name="music_volume">0.3</parameter>
 		</attributes>
-		<entity x="1" y="1">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">pol-dj_zai-darkbells</parameter>
-				<parameter name="volume">30</parameter>
-			</implementation>
-		</entity>
+
 		<entity x="64" y="64">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">pol-stones1, pol-stones2, pol-mines, hammer-1</parameter>
@@ -477,14 +416,12 @@ Aktualne ceny u Zbigniewa:
 	<zone name="-1_wieliczka_salt_mines_e" level="-1" x="514208" y="18560" file="Level -1/wieliczka/salt_mines_e.tmx">
 		<attributes>
 			<parameter name="color_method">dark</parameter>
+			<parameter name="music">pol-dj_zai-darkbells</parameter>
+			<parameter name="music_volume">0.3</parameter>
 		</attributes>
+
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<entity x="1" y="1">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">pol-dj_zai-darkbells</parameter>
-				<parameter name="volume">30</parameter>
-			</implementation>
-		</entity>
+
 		<entity x="64" y="64">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">pol-stones1, pol-stones2, pol-mines, hammer-1</parameter>
@@ -499,15 +436,13 @@ Aktualne ceny u Zbigniewa:
 	<zone name="-1_wieliczka_salt_mines_e2" level="-1" x="514336" y="18560" file="Level -1/wieliczka/salt_mines_e2.tmx">
 		<attributes>
 			<parameter name="color_method">dark</parameter>
+			<parameter name="music">pol-dj_zai-darkbells</parameter>
+			<parameter name="music_volume">0.3</parameter>
 		</attributes>
+
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<configurator class-name="games.stendhal.server.maps.wieliczka.mines.Skille550NPC"/>
-		<entity x="1" y="1">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">pol-dj_zai-darkbells</parameter>
-				<parameter name="volume">30</parameter>
-			</implementation>
-		</entity>
+
 		<entity x="64" y="64">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">pol-stones1, pol-stones2, pol-mines, hammer-1</parameter>
@@ -522,14 +457,12 @@ Aktualne ceny u Zbigniewa:
 	<zone name="-1_wieliczka_salt_mines_e3" level="-1" x="514464" y="18560" file="Level -1/wieliczka/salt_mines_e3.tmx">
 		<attributes>
 			<parameter name="color_method">dark</parameter>
+			<parameter name="music">pol-dj_zai-darkbells</parameter>
+			<parameter name="music_volume">0.3</parameter>
 		</attributes>
+
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<entity x="1" y="1">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">pol-dj_zai-darkbells</parameter>
-				<parameter name="volume">30</parameter>
-			</implementation>
-		</entity>
+
 		<entity x="64" y="64">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">pol-stones1, pol-stones2, pol-mines, hammer-1</parameter>
@@ -685,14 +618,12 @@ Aktualne ceny u Zbigniewa:
 	<zone name="-1_wieliczka_salt_mines_se" level="-1" x="514208" y="18688" file="Level -1/wieliczka/salt_mines_se.tmx">
 		<attributes>
 			<parameter name="color_method">dark</parameter>
+			<parameter name="music">pol-dj_zai-darkbells</parameter>
+			<parameter name="music_volume">0.3</parameter>
 		</attributes>
+
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<entity x="1" y="1">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">pol-dj_zai-darkbells</parameter>
-				<parameter name="volume">30</parameter>
-			</implementation>
-		</entity>
+
 		<entity x="64" y="64">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">pol-stones1, pol-stones2, pol-mines, hammer-1</parameter>
@@ -707,14 +638,12 @@ Aktualne ceny u Zbigniewa:
 	<zone name="-1_wieliczka_salt_mines_se2" level="-1" x="514336" y="18688" file="Level -1/wieliczka/salt_mines_se2.tmx">
 		<attributes>
 			<parameter name="color_method">dark</parameter>
+			<parameter name="music">pol-dj_zai-darkbells</parameter>
+			<parameter name="music_volume">0.3</parameter>
 		</attributes>
+
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<entity x="1" y="1">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">pol-dj_zai-darkbells</parameter>
-				<parameter name="volume">30</parameter>
-			</implementation>
-		</entity>
+
 		<entity x="64" y="64">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">pol-stones1, pol-stones2, pol-mines, hammer-1</parameter>
@@ -729,14 +658,12 @@ Aktualne ceny u Zbigniewa:
 	<zone name="-1_wieliczka_salt_mines_se3" level="-1" x="514464" y="18688" file="Level -1/wieliczka/salt_mines_se3.tmx">
 		<attributes>
 			<parameter name="color_method">dark</parameter>
+			<parameter name="music">pol-dj_zai-darkbells</parameter>
+			<parameter name="music_volume">0.3</parameter>
 		</attributes>
+
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<entity x="1" y="1">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">pol-dj_zai-darkbells</parameter>
-				<parameter name="volume">30</parameter>
-			</implementation>
-		</entity>
+
 		<entity x="64" y="64">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">pol-stones1, pol-stones2, pol-mines, hammer-1</parameter>
@@ -751,27 +678,17 @@ Aktualne ceny u Zbigniewa:
 	<zone name="-1_wieliczka_cave_s" level="-1" x="513952" y="18432" file="Level -1/wieliczka/cave_s.tmx">
 		<attributes>
 			<parameter name="color_method">dark</parameter>
+			<parameter name="music">pol-inthedark3</parameter>
+			<parameter name="music_volume">0.2</parameter>
 		</attributes>
-
-		<entity x="1" y="1">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">pol-inthedark3</parameter>
-				<parameter name="volume">20</parameter>
-			</implementation>
-		</entity>
 	</zone>
 
 	<zone name="-1_wieliczka_cave_n" level="-1" x="513952" y="18304" file="Level -1/wieliczka/cave_n.tmx">
 		<attributes>
 			<parameter name="color_method">dark</parameter>
+			<parameter name="music">pol-inthedark3</parameter>
+			<parameter name="music_volume">0.2</parameter>
 		</attributes>
-
-		<entity x="1" y="1">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">pol-inthedark3</parameter>
-				<parameter name="volume">20</parameter>
-			</implementation>
-		</entity>
 
 		<portal x="2" y="106" ref="dragon_cave_entrance">
 			<destination zone="-1_dragon_cave_s" ref="dragon_cave_exit"/>

@@ -13,13 +13,9 @@
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
+			<parameter name="music">pol-piracka-wyspa</parameter>
+			<parameter name="music_volume">0.8</parameter>
 		</attributes>
-		<entity x="1" y="1">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">pol-piracka-wyspa</parameter>
-				<parameter name="volume">80</parameter>
-			</implementation>
-		</entity>
 
 		<entity x="74" y="56">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
@@ -90,13 +86,9 @@
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
+			<parameter name="music">pol-piracka-wyspa</parameter>
+			<parameter name="music_volume">0.8</parameter>
 		</attributes>
-		<entity x="1" y="1">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">pol-piracka-wyspa</parameter>
-				<parameter name="volume">80</parameter>
-			</implementation>
-		</entity>
 		
 		<entity x="64" y="54">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
@@ -130,13 +122,9 @@
 	<zone name="-1_pirates_island_cave_w" level="-1" x="513184" y="1024" file="Level -1/pirates/cave_w.tmx">
 		<attributes>
 			<parameter name="color_method">dark</parameter>
+			<parameter name="music">pol-pirackie-jaskinie2</parameter>
+			<parameter name="music_volume">0.15</parameter>
 		</attributes>
-		<entity x="1" y="1">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">pol-pirackie-jaskinie2</parameter>
-				<parameter name="volume">15</parameter>
-			</implementation>
-		</entity>
 
 		<portal x="102" y="63" ref="cave_up">
 			<destination zone="-2_pirates_island_cave_w" ref="cave_down"/>
@@ -151,13 +139,9 @@
 	<zone name="-1_pirates_island_cave_e" level="-1" x="513312" y="1024" file="Level -1/pirates/cave_e.tmx">
 		<attributes>
 			<parameter name="color_method">dark</parameter>
+			<parameter name="music">pol-pirackie-jaskinie2</parameter>
+			<parameter name="music_volume">0.15</parameter>
 		</attributes>
-		<entity x="1" y="1">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">pol-pirackie-jaskinie2</parameter>
-				<parameter name="volume">15</parameter>
-			</implementation>
-		</entity>
 
 		<portal x="83" y="13" ref="cave1_exit">
 			<destination zone="0_pirates_island_e" ref="cave1_entrance"/>
@@ -174,13 +158,9 @@
 	<zone name="-2_pirates_island_cave_w" level="-2" x="513184" y="1024" file="Level -2/pirates/cave_w.tmx">
 		<attributes>
 			<parameter name="color_method">dark</parameter>
+			<parameter name="music">pol-pirackie-jaskinie2</parameter>
+			<parameter name="music_volume">0.15</parameter>
 		</attributes>
-		<entity x="1" y="1">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">pol-pirackie-jaskinie2</parameter>
-				<parameter name="volume">15</parameter>
-			</implementation>
-		</entity>
 
 		<portal x="104" y="20" ref="cave_down">
 			<destination zone="-1_pirates_island_cave_w" ref="cave_up"/>
@@ -191,13 +171,9 @@
 	<zone name="-2_pirates_island_cave_e" level="-2" x="513312" y="1024" file="Level -2/pirates/cave_e.tmx">
 		<attributes>
 			<parameter name="color_method">dark</parameter>
+			<parameter name="music">pol-pirackie-jaskinie2</parameter>
+			<parameter name="music_volume">0.15</parameter>
 		</attributes>
-		<entity x="1" y="1">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">pol-pirackie-jaskinie2</parameter>
-				<parameter name="volume">15</parameter>
-			</implementation>
-		</entity>
 	</zone>
 
 	<!-- Level -3 -->
@@ -206,26 +182,18 @@
 	<zone name="-3_pirates_island_cave_w" level="-3" x="513184" y="1024" file="Level -3/pirates/cave_w.tmx">
 		<attributes>
 			<parameter name="color_method">dark</parameter>
+			<parameter name="music">pol-pirackie-jaskinie2</parameter>
+			<parameter name="music_volume">0.15</parameter>
 		</attributes>
-		<entity x="1" y="1">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">pol-pirackie-jaskinie2</parameter>
-				<parameter name="volume">15</parameter>
-			</implementation>
-		</entity>
 	</zone>
 
 	<!-- Cave E -->
 	<zone name="-3_pirates_island_cave_e" level="-3" x="513312" y="1024" file="Level -3/pirates/cave_e.tmx">
 		<attributes>
 			<parameter name="color_method">dark</parameter>
+			<parameter name="music">pol-pirackie-jaskinie2</parameter>
+			<parameter name="music_volume">0.15</parameter>
 		</attributes>
-		<entity x="1" y="1">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">pol-pirackie-jaskinie2</parameter>
-				<parameter name="volume">15</parameter>
-			</implementation>
-		</entity>
 	</zone>
 
 	<!-- interiors -->

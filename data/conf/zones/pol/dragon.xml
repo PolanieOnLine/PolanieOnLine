@@ -13,14 +13,9 @@
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
+			<parameter name="music">pol-inthedark3</parameter>
+			<parameter name="music_volume">0.2</parameter>
 		</attributes>
-
-		<entity x="1" y="1">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">pol-inthedark3</parameter>
-				<parameter name="volume">20</parameter>
-			</implementation>
-		</entity>
 
 		<portal x="51" y="72" ref="dwizard_entrance">
 			<destination zone="int_dragon_wizard_tower_0" ref="dwizard_exit"/>
@@ -36,6 +31,8 @@
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
+			<parameter name="music">pol-inthedark3</parameter>
+			<parameter name="music_volume">0.2</parameter>
 		</attributes>
 
 		<!-- alternative creature -->
@@ -47,13 +44,6 @@
 			<parameter name="dropItem">mgielny kamień</parameter>
 			<parameter name="dropRate">7.0</parameter>
 		</configurator>
-
-		<entity x="1" y="1">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">pol-inthedark3</parameter>
-				<parameter name="volume">20</parameter>
-			</implementation>
-		</entity>
 
 		<portal x="31" y="27" ref="dragons_castle_entrance">
 			<destination zone="int_dragon_castle" ref="dragons_castle_exit"/>
@@ -87,14 +77,9 @@
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
+			<parameter name="music">pol-inthedark3</parameter>
+			<parameter name="music_volume">0.2</parameter>
 		</attributes>
-
-		<entity x="1" y="1">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">pol-inthedark3</parameter>
-				<parameter name="volume">20</parameter>
-			</implementation>
-		</entity>
 	</zone>
 
 	<zone name="0_dragon_land_sw" level="0" x="513760" y="18176" file="Level 0/dragon/land_sw.tmx">
@@ -103,14 +88,9 @@
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
+			<parameter name="music">pol-inthedark3</parameter>
+			<parameter name="music_volume">0.2</parameter>
 		</attributes>
-
-		<entity x="1" y="1">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">pol-inthedark3</parameter>
-				<parameter name="volume">20</parameter>
-			</implementation>
-		</entity>
 	</zone>
 
 	<zone name="0_dragon_land_s" level="0" x="513824" y="18176" file="Level 0/dragon/land_s.tmx">
@@ -122,14 +102,9 @@
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
+			<parameter name="music">pol-inthedark3</parameter>
+			<parameter name="music_volume">0.2</parameter>
 		</attributes>
-
-		<entity x="1" y="1">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">pol-inthedark3</parameter>
-				<parameter name="volume">20</parameter>
-			</implementation>
-		</entity>
 
 		<portal x="107" y="35" ref="dragon_tunnel_1_entrance">
 			<destination zone="-1_dragon_cave" ref="tunnel_dragon_1_exit"/>
@@ -161,14 +136,9 @@
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
+			<parameter name="music">pol-inthedark3</parameter>
+			<parameter name="music_volume">0.2</parameter>
 		</attributes>
-
-		<entity x="1" y="1">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">pol-inthedark3</parameter>
-				<parameter name="volume">20</parameter>
-			</implementation>
-		</entity>
 	</zone>
 
 	<!-- interiors -->
@@ -708,29 +678,25 @@
 	<!-- Level -1 -->
 
 	<zone name="-1_dragon_cave" level="-1" x="513824" y="18150" file="Level -1/dragon/cave.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+			<parameter name="music">pol-inthedark3</parameter>
+			<parameter name="music_volume">0.2</parameter>
+		</attributes>
 
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
 
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.dragon.cave.eFuRNPC"/>
 		<configurator class-name="games.stendhal.server.maps.dragon.cave.JolandaNPC"/>
 		<!-- <configurator class-name="games.stendhal.server.maps.dragon.cave.Dragon"/> -->
 
-		<attributes>
-			<parameter name="color_method">dark</parameter>
-		</attributes>
 		<entity x="143" y="20">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign"/>
 			<attribute name="text">Wojowniku wszedłeś do niebezpiecznej krainy! Śmierć czycha na każdym kroku czekając na Twój błąd.
 Wielu śmiałków zignorowało to ostrzeżenie i spotkała ich kara.
 Uciekaj!</attribute>
 			<attribute name="class">signpost</attribute>
-		</entity>
-		<entity x="1" y="1">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">pol-inthedark3</parameter>
-				<parameter name="volume">20</parameter>
-			</implementation>
 		</entity>
 
 		<!--<portal x="66" y="136" ref="tunnel_krakow_1_exit">
@@ -1382,17 +1348,13 @@ Uciekaj!</attribute>
 	</zone>
 	
 	<zone name="-1_dragon_cave_s" level="-1" x="513824" y="18300" file="Level -1/dragon/cave_s.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
-
 		<attributes>
 			<parameter name="color_method">dark</parameter>
+			<parameter name="music">pol-inthedark3</parameter>
+			<parameter name="music_volume">0.2</parameter>
 		</attributes>
-		<entity x="1" y="1">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">pol-inthedark3</parameter>
-				<parameter name="volume">20</parameter>
-			</implementation>
-		</entity>
+
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
 
 		<portal x="109" y="4" ref="dragon_tunnel_entrance">
 			<destination zone="-1_dragon_cave" ref="dragon_tunnel_exit"/>
@@ -2055,10 +2017,14 @@ Uciekaj!</attribute>
 	</zone>
 	
 	<zone name="-2_dragon_cave" level="-2" x="513824" y="18176" file="Level -2/dragon/cave.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
 		<attributes>
 			<parameter name="color_method">dark</parameter>
+			<parameter name="music">pol-inthedark3</parameter>
+			<parameter name="music_volume">0.2</parameter>
 		</attributes>
+
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
+
 		<entity x="53" y="74">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign"/>
 			<attribute name="text">Wojowniku wszedłeś do niebezpiecznej krainy! Śmierć czycha na każdym kroku czekając na Twój błąd.
@@ -2066,16 +2032,11 @@ Wielu śmiałków zignorowało to ostrzeżenie i spotkała ich kara.
 Uciekaj!</attribute>
 			<attribute name="class">signpost</attribute>
 		</entity>
-		<entity x="1" y="1">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">pol-inthedark3</parameter>
-				<parameter name="volume">20</parameter>
-			</implementation>
-		</entity>
 
 		<portal x="55" y="76" ref="dragon_tunnel_-2_entrance">
 			<destination zone="-1_dragon_cave" ref="tunnel_dragon_-2_exit"/>
 		</portal>
+
 		<portal x="13" y="126" ref="dragon_tunnel_-3_entrance">
 			<destination zone="-3_dragon_cave" ref="tunnel_dragon_-3_exit"/>
 		</portal>
@@ -2084,17 +2045,13 @@ Uciekaj!</attribute>
 	<!-- Level -3 -->
 
 	<zone name="-3_dragon_cave" level="-3" x="513824" y="18176" file="Level -3/dragon/cave.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
 		<attributes>
 			<parameter name="color_method">dark</parameter>
+			<parameter name="music">pol-inthedark3</parameter>
+			<parameter name="music_volume">0.2</parameter>
 		</attributes>
 
-		<entity x="1" y="1">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">pol-inthedark3</parameter>
-				<parameter name="volume">20</parameter>
-			</implementation>
-		</entity>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
 
 		<portal x="18" y="57" ref="tunnel_dragon_-3_exit">
 			<destination zone="-2_dragon_cave" ref="dragon_tunnel_-3_entrance"/>
@@ -2104,17 +2061,13 @@ Uciekaj!</attribute>
 	<!-- Level -4 -->
 
 	<zone name="-4_dragon_cave" level="-4" x="513824" y="18176" file="Level -4/dragon/cave.tmx">
-		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
 		<attributes>
 			<parameter name="color_method">dark</parameter>
+			<parameter name="music">pol-inthedark3</parameter>
+			<parameter name="music_volume">0.2</parameter>
 		</attributes>
 
-		<entity x="1" y="1">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">pol-inthedark3</parameter>
-				<parameter name="volume">20</parameter>
-			</implementation>
-		</entity>
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
 	</zone>
 
 	<!-- Level -5 -->

@@ -13,14 +13,8 @@
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
+			<parameter name="music">caravan</parameter>
 		</attributes>
-
-		<!-- Music -->
-		<entity x="0" y="0">
-		  <implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-			<parameter name="sound">caravan</parameter>
-		  </implementation>
-		</entity>
 
 		<entity x="127" y="127">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
@@ -56,14 +50,8 @@
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
+			<parameter name="music">caravan</parameter>
 		</attributes>
-
-		<!-- Music -->
-		<entity x="0" y="0">
-		  <implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-			<parameter name="sound">caravan</parameter>
-		  </implementation>
-		</entity>
 
 		<entity x="127" y="127">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
@@ -86,14 +74,8 @@
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
+			<parameter name="music">caravan</parameter>
 		</attributes>
-
-		<!-- Music -->
-		<entity x="0" y="0">
-		  <implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-			<parameter name="sound">caravan</parameter>
-		  </implementation>
-		</entity>
 
 		<entity x="127" y="0">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
@@ -154,14 +136,8 @@
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<attributes>
 			<parameter name="color_method">time</parameter>
+			<parameter name="music">caravan</parameter>
 		</attributes>
-
-		<!-- Music -->
-		<entity x="0" y="0">
-		  <implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-			<parameter name="sound">caravan</parameter>
-		  </implementation>
-		</entity>
 
 		<entity x="0" y="0">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
@@ -318,6 +294,12 @@
 
 	<!-- Level -2 -->
 	<zone name="-2_desert_black_river_n" level="-2" x="513184" y="0" file="Level -2/desert/black_river_n.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+			<parameter name="music">pol-inthedark3</parameter>
+			<parameter name="music_volume">0.2</parameter>
+		</attributes>
+
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<entity x="1" y="1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
@@ -332,13 +314,13 @@
 	</zone>
 
 	<zone name="-2_desert_black_river_s" level="-2" x="513184" y="80" file="Level -2/desert/black_river_s.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+			<parameter name="music">pol-inthedark3</parameter>
+			<parameter name="music_volume">0.2</parameter>
+		</attributes>
+
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<entity x="1" y="1">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">pol-inthedark3</parameter>
-				<parameter name="volume">20</parameter>
-			</implementation>
-		</entity>
 
 		<portal x="66" y="63" ref="blacksmith_entrance_1">
 			<destination zone="int_desert_blacksmith" ref="exit_blacksmith_1"/>
