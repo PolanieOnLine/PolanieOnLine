@@ -1375,6 +1375,7 @@ kupić 100 niezapisany zwój
 		<configurator class-name="games.stendhal.server.maps.nalwor.hell.ReaperNPC" />
 		<configurator class-name="games.stendhal.server.maps.nalwor.hell.Reaper2NPC" />
 		<configurator class-name="games.stendhal.server.maps.nalwor.hell.CaptiveNPC" />
+		<configurator class-name="games.stendhal.server.maps.nalwor.hell.HellTimer"/>
 		<portal x="9" y="9" ref="start">
 			<implementation
 				class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination" />
