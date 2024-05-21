@@ -199,4 +199,422 @@
 		</entity>
 	</zone>
 
+	<!-- desert_fire_pyramid -->
+	<zone name="alt_-1_desert_fire_pyramid" level="-2" x="513312" y="128" file="Level -1/desert/fire_pyramid.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.maps.AlternativeZone"/>
+
+		<!-- Alternative creatures -->
+		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
+			<parameter name="factor">0.75</parameter>
+		</configurator>
+
+		<entity x="64" y="64">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">fire-8</parameter>
+				<parameter name="radius">128</parameter>
+				<parameter name="volume">30</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="65" y="65">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">fire-sparkes-1</parameter>
+				<parameter name="radius">5</parameter>
+				<parameter name="volume">30</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<!-- desert_black_river_n -->
+	<zone name="alt_-2_desert_black_river_n" level="-3" x="513184" y="0" file="Level -2/desert/black_river_n.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+			<parameter name="music">pol-inthedark3</parameter>
+			<parameter name="music_volume">0.2</parameter>
+		</attributes>
+
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.maps.AlternativeZone"/>
+
+		<!-- Alternative creatures -->
+		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
+			<parameter name="factor">0.75</parameter>
+		</configurator>
+	</zone>
+
+	<!-- desert_black_river_s -->
+	<zone name="alt_-2_desert_black_river_s" level="-3" x="513184" y="80" file="Level -2/desert/black_river_s.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+			<parameter name="music">pol-inthedark3</parameter>
+			<parameter name="music_volume">0.2</parameter>
+		</attributes>
+
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.maps.AlternativeZone"/>
+
+		<!-- Alternative creatures -->
+		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
+			<parameter name="factor">0.75</parameter>
+		</configurator>
+	</zone>
+
+	<!-- koscielisko_zamek -->
+	<zone name="alt_1_koscielisko_zamek" level="2" x="513440" y="18048" file="Level 1/koscielisko/zamek_zrc.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.maps.AlternativeZone"/>
+
+		<!-- Alternative creatures -->
+		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
+			<parameter name="factor">0.5</parameter>
+		</configurator>
+
+		<portal x="36" y="41" ref="wejscie_lewo">
+			<destination zone="1_koscielisko_zamek" ref="wyjscie_lewo"/>
+		</portal>
+
+		<portal x="124" y="84" ref="most_an">
+			<destination zone="1_koscielisko_zamek" ref="most_aus"/>
+			<attribute name="hidden"/>
+		</portal>
+
+		<portal x="124" y="83" ref="most_aus">
+			<destination zone="1_koscielisko_zamek" ref="most_an"/>
+			<attribute name="hidden"/>
+		</portal>
+
+		<portal x="86" y="41" ref="wejscie_prawo">
+			<destination zone="1_koscielisko_zamek" ref="wyjscie_prawo"/>
+		</portal>
+
+		<portal x="35" y="35" ref="lewa_wieza_an">
+			<destination zone="1_koscielisko_zamek" ref="lewa_wieza_aus"/>
+			<attribute name="hidden"/>
+		</portal>
+
+		<portal x="85" y="35" ref="wieza_prawa_an">
+			<destination zone="1_koscielisko_zamek" ref="wieza_prawa_aus"/>
+			<attribute name="hidden"/>
+		</portal>
+
+		<portal x="87" y="35" ref="wieza_prawa_rein">
+			<destination zone="1_koscielisko_zamek" ref="wieza_prawa_raus"/>
+			<attribute name="hidden"/>
+		</portal>
+
+		<portal x="36" y="39" ref="wyjscie_lewo">
+			<destination zone="1_koscielisko_zamek" ref="wejscie_lewo"/>
+		</portal>
+
+		<portal x="33" y="35" ref="lewa_wieza_aus">
+			<destination zone="1_koscielisko_zamek" ref="lewa_wieza_an"/>
+		</portal>
+
+		<portal x="83" y="35" ref="wieza_prawa_aus">
+			<destination zone="1_koscielisko_zamek" ref="wieza_prawa_an"/>
+		</portal>
+
+		<portal x="89" y="35" ref="wieza_prawa_raus">
+			<destination zone="1_koscielisko_zamek" ref="wieza_prawa_rein"/>
+		</portal>
+
+		<portal x="86" y="39" ref="wyjscie_prawo">
+			<destination zone="1_koscielisko_zamek" ref="wejscie_prawo"/>
+		</portal>
+
+		<portal x="89" y="21" ref="wejscie_zamek">
+			<destination zone="1_koscielisko_zamek" ref="wyjscie_zamek"/>
+		</portal>
+
+		<portal x="89" y="19" ref="wyjscie_zamek">
+			<destination zone="1_koscielisko_zamek" ref="wejscie_zamek"/>
+		</portal>
+	</zone>
+
+	<!-- koscielisko_podzamcze_zrc -->
+	<zone name="alt_1_koscielisko_podzamcze_zrc" level="2" x="513440" y="18176" file="Level 1/koscielisko/podzamcze_zrc.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.maps.AlternativeZone"/>
+
+		<!-- Alternative creatures -->
+		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
+			<parameter name="factor">0.25</parameter>
+		</configurator>
+
+		<portal x="61" y="44" ref="2most">
+			<destination zone="1_koscielisko_podzamcze_zrc" ref="brama_2exit"/>
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.KeyedPortal">
+				<parameter name="key">klucz do bram Zakonu</parameter>
+				<parameter name="rejected">Nie wejdziesz na teren #'Zakonu Rycerzy Cienia' dopóki nie porozmawiasz z Cieniem i nie spełnisz jego prośby.</parameter>
+			</implementation>
+		</portal>
+
+		<portal x="61" y="38" ref="brama_2exit">
+			<destination zone="1_koscielisko_podzamcze_zrc" ref="2most"/>
+		</portal>
+
+		<portal x="57" y="38" ref="mur_etrance">
+			<destination zone="1_koscielisko_podzamcze_zrc" ref="mur_exit"/>
+			<attribute name="hidden"/>
+		</portal>
+
+		<portal x="55" y="36" ref="mur_exit">
+			<destination zone="1_koscielisko_podzamcze_zrc" ref="mur_etrance"/>
+		</portal>
+
+		<portal x="60" y="38" ref="brama_1exit">
+			<destination zone="1_koscielisko_podzamcze_zrc" ref="1most"/>
+		</portal>
+
+		<portal x="60" y="46" ref="1most">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+
+		<portal x="43" y="116" ref="wejscie_las">
+			<destination zone="1_koscielisko_podzamcze_zrc" ref="wyjscie_las"/>
+			<attribute name="hidden"/>
+		</portal>
+
+		<portal x="34" y="110" ref="wyjscie_las">
+			<destination zone="1_koscielisko_podzamcze_zrc" ref="obok_lasu"/>
+			<attribute name="hidden"/>
+		</portal>
+
+		<portal x="48" y="125" ref="obok_lasu">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
+		</portal>
+	</zone>
+
+	<!-- pirates_island_w -->
+	<zone name="alt_0_pirates_island_w" level="1" x="513184" y="1024" file="Level 0/pirates/island_w.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+			<parameter name="music">pol-piracka-wyspa</parameter>
+			<parameter name="music_volume">0.8</parameter>
+		</attributes>
+
+		<configurator class-name="games.stendhal.server.maps.AlternativeZone"/>
+
+		<!-- Alternative creatures -->
+		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
+			<parameter name="factor">0.25</parameter>
+		</configurator>
+
+		<entity x="74" y="56">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">coins-01, coins-2</parameter>
+				<parameter name="min">60</parameter>
+				<parameter name="max">120</parameter>
+				<parameter name="radius">15</parameter>
+				<parameter name="volume">10</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="68" y="54">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="radius">10</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="82" y="59">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="radius">10</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="80" y="61">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">pol-ognisko</parameter>
+				<parameter name="radius">10</parameter>
+				<parameter name="volume">15</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<!-- pirates_island_e -->
+	<zone name="alt_0_pirates_island_e" level="1" x="513312" y="1024" file="Level 0/pirates/island_e.tmx">
+		<attributes>
+			<parameter name="color_method">time</parameter>
+			<parameter name="weather">varying</parameter>
+			<parameter name="music">pol-piracka-wyspa</parameter>
+			<parameter name="music_volume">0.8</parameter>
+		</attributes>
+
+		<configurator class-name="games.stendhal.server.maps.AlternativeZone"/>
+
+		<!-- Alternative creatures -->
+		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
+			<parameter name="factor">0.25</parameter>
+		</configurator>
+
+		<entity x="64" y="54">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">water-slosh-01, water-slosh-02, water-slosh-03</parameter>
+				<parameter name="min">1</parameter>
+				<parameter name="max">1</parameter>
+				<parameter name="radius">28</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="88" y="54">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">water-slosh-01, water-slosh-02, water-slosh-03</parameter>
+				<parameter name="min">1</parameter>
+				<parameter name="max">1</parameter>
+				<parameter name="radius">21</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<!-- pirates_island_cave_w -->
+	<zone name="alt_-3_pirates_island_cave_w" level="-4" x="513184" y="1024" file="Level -3/pirates/cave_w.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+			<parameter name="music">pol-pirackie-jaskinie2</parameter>
+			<parameter name="music_volume">0.15</parameter>
+		</attributes>
+
+		<configurator class-name="games.stendhal.server.maps.AlternativeZone"/>
+
+		<!-- Alternative creatures -->
+		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
+			<parameter name="factor">0.5</parameter>
+		</configurator>
+	</zone>
+
+	<!-- pirates_island_cave_e -->
+	<zone name="alt_-3_pirates_island_cave_e" level="-4" x="513312" y="1024" file="Level -3/pirates/cave_e.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+			<parameter name="music">pol-pirackie-jaskinie2</parameter>
+			<parameter name="music_volume">0.15</parameter>
+		</attributes>
+
+		<configurator class-name="games.stendhal.server.maps.AlternativeZone"/>
+
+		<!-- Alternative creatures -->
+		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
+			<parameter name="factor">0.5</parameter>
+		</configurator>
+	</zone>
+
+	<!-- krakow_cave_sw -->
+	<zone name="alt_-1_krakow_cave_sw" level="-2" x="513568" y="18048" file="Level -1/krakow/smok_wawelski_cave.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+			<parameter name="music">pol-inthedark3</parameter>
+			<parameter name="music_volume">0.2</parameter>
+		</attributes>
+
+		<configurator class-name="games.stendhal.server.maps.AlternativeZone"/>
+
+		<!-- Alternative creatures -->
+		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
+			<parameter name="factor">0.5</parameter>
+		</configurator>
+
+		<entity x="98" y="36">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">ghost-1, ghost-2, saur-4</parameter>
+				<parameter name="min">30</parameter>
+				<parameter name="max">60</parameter>
+				<parameter name="radius">25</parameter>
+				<parameter name="volume">50</parameter>
+			</implementation>
+		</entity>
+
+		<portal x="17" y="92" ref="smokwawelski_entrance">
+			<destination zone="-1_krakow_cave_sw" ref="smokwawelski_exit"/>
+		</portal>
+
+		<portal x="17" y="93" ref="smokwawelski_exit">
+			<destination zone="-1_krakow_cave_sw" ref="smokwawelski_entrance"/>
+		</portal>
+	</zone>
+
+	<!-- krakow_cave_se -->
+	<zone name="alt_-1_krakow_cave_se" level="-2" x="513696" y="18048" file="Level -1/krakow/cave_se.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+			<parameter name="music">pol-inthedark3</parameter>
+			<parameter name="music_volume">0.2</parameter>
+		</attributes>
+
+		<configurator class-name="games.stendhal.server.maps.AlternativeZone"/>
+
+		<!-- Alternative creatures -->
+		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
+			<parameter name="factor">0.5</parameter>
+		</configurator>
+
+		<entity x="111" y="83">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
+				<parameter name="sound">loop/river-01</parameter>
+				<parameter name="min">1</parameter>
+				<parameter name="max">1</parameter>
+				<parameter name="radius">25</parameter>
+				<parameter name="volume">30</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="63" y="106">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">water-slosh-01, water-slosh-02, water-slosh-03</parameter>
+				<parameter name="min">1</parameter>
+				<parameter name="max">1</parameter>
+				<parameter name="radius">14</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+
+		<entity x="92" y="94">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+				<parameter name="sound">water-slosh-01, water-slosh-02, water-slosh-03</parameter>
+				<parameter name="min">1</parameter>
+				<parameter name="max">1</parameter>
+				<parameter name="radius">25</parameter>
+				<parameter name="volume">20</parameter>
+			</implementation>
+		</entity>
+	</zone>
+
+	<!-- krakow_cave_ne -->
+	<zone name="alt_-1_krakow_cave_ne" level="-2" x="513696" y="17920" file="Level -1/krakow/cave_ne.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+			<parameter name="music">pol-inthedark3</parameter>
+			<parameter name="music_volume">0.2</parameter>
+		</attributes>
+
+		<configurator class-name="games.stendhal.server.maps.AlternativeZone"/>
+
+		<!-- Alternative creatures -->
+		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
+			<parameter name="factor">0.5</parameter>
+		</configurator>
+	</zone>
+
+	<!-- krakow_cave_nw -->
+	<zone name="alt_-1_krakow_cave_nw" level="-2" x="513568" y="17920" file="Level -1/krakow/cave_nw.tmx">
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+			<parameter name="music">pol-inthedark3</parameter>
+			<parameter name="music_volume">0.2</parameter>
+		</attributes>
+
+		<configurator class-name="games.stendhal.server.maps.AlternativeZone"/>
+
+		<!-- Alternative creatures -->
+		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
+			<parameter name="factor">0.5</parameter>
+		</configurator>
+	</zone>
+
 </zones>
