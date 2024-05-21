@@ -104,7 +104,7 @@ public class StonemistScroll extends Item {
 	 * @param player The player using the StonemistScroll.
 	 * @return True if enough time has passed, false otherwise.
 	 */
-	private boolean isTimePassed(final Player player) {
+	public boolean isTimePassed(final Player player) {
 		return (currentTime(player) <= 0L);
 	}
 

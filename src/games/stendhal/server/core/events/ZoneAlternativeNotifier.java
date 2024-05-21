@@ -69,7 +69,9 @@ public class ZoneAlternativeNotifier {
 	 */
 	private static void notifyPlayerAboutAltTeleport(Player player, StendhalRPZone zone, String destinationZone) {
 		if (player.isEquipped(stoneMist.getName()) && destinationZone.equals(stoneMist.removeAltPrefix(zone.getName()))) {
-			new DelayedPlayerTextSender(player, "Mgielny kamień drży i pulsuje tajemniczą energią. Wydaje się to być dobry moment i miejsce na stworzenie przejścia między światami...", NotificationType.SCENE_SETTING, 2);
+			if (stoneMist.isTimePassed(player)) {
+				new DelayedPlayerTextSender(player, "Mgielny kamień drży i pulsuje tajemniczą energią. Wydaje się to być dobry moment i miejsce na stworzenie przejścia między światami...", NotificationType.SCENE_SETTING, 2);
+			}
 		}
 	}
 }
