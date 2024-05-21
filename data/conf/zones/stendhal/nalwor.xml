@@ -1346,11 +1346,9 @@ kupić 100 niezapisany zwój
 				class-name="games.stendhal.server.entity.mapstuff.area.MessagingArea">
 				<parameter name="width">32</parameter>
 				<parameter name="height">22</parameter>
-				<parameter name="enterMessage">Wpadłeś na jedwabną pajęczą nić, w którą zapłatane są zwłokami. Ciała należą do wielkich wojowników, którzy trafili na godnego siebie przeciwnika.</parameter>
+				<parameter name="enterMessage">Potykasz się i przewracasz na ciała owinięte jedwabną pajęczyną. Wiele z tych ciał to wielcy wojownicy, którzy najwyraźniej znaleźli swojego godnego przeciwnika.</parameter>
 			</implementation>
 		</entity>
-
-
 	</zone>
 
 
@@ -1398,6 +1396,28 @@ kupić 100 niezapisany zwój
 				<parameter name="sound">ambiance-demon-1</parameter>
 				<parameter name="volume">120</parameter>
 			</implementation>
+		</entity>
+	</zone>
+
+	<zone name="int_hell_pit" file="interiors/nalwor/hell_pit.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
+		<configurator class-name="games.stendhal.server.maps.nalwor.hell.ReaperClones"/>
+		<attributes>
+			<parameter name="color_method">softlight</parameter>
+			<parameter name="color">#882200</parameter>
+			<parameter name="blend_method">truecolor</parameter>
+		</attributes>
+		<entity x="0" y="0">
+			<implementation
+				class-name="games.stendhal.server.entity.mapstuff.area.MessagingArea">
+				<parameter name="coversZone">true</parameter>
+				<parameter name="enterMessage">Zostałeś złapany przez piekielnego urzędnika i znalazłeś się w Dole, gdzie musisz odpowiadać na pytania żniwiarzy.</parameter>
+			</implementation>
+		</entity>
+		<entity x="6" y="2">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.Sign"/>
+			<attribute name="text">Starkad tu był!</attribute>
+			<attribute name="class">transparent</attribute>
 		</entity>
 	</zone>
 
