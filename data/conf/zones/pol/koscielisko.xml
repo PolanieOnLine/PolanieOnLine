@@ -896,7 +896,7 @@ kopalnia węgla!
 			<destination zone="1_koscielisko_podzamcze_zrc" ref="brama_2exit"/>
 			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.KeyedPortal">
 				<parameter name="key">klucz do bram Zakonu</parameter>
-				<parameter name="rejected">Nie wejdziesz na teren #'Zakonu Rycerzy Cienia' dopóki nie porozmawiasz z Cieniem i nie spełnisz jego proźby.</parameter>
+				<parameter name="rejected">Nie wejdziesz na teren #'Zakonu Rycerzy Cienia' dopóki nie porozmawiasz z Cieniem i nie spełnisz jego prośby.</parameter>
 			</implementation>
 		</portal>
 
