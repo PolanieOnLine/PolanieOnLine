@@ -617,4 +617,20 @@
 		</configurator>
 	</zone>
 
+	<!-- dragon_knights_dungeons -->
+	<zone name="alt_int_dragon_knights_dungeons" file="interiors/dragon_knights/dungeons.tmx">
+		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+
+		<attributes>
+			<parameter name="color_method">dark</parameter>
+		</attributes>
+
+		<configurator class-name="games.stendhal.server.maps.AlternativeZone"/>
+
+		<!-- Alternative creatures -->
+		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
+			<parameter name="factor">0.75</parameter>
+		</configurator>
+	</zone>
+
 </zones>
