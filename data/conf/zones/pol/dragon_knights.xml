@@ -258,9 +258,21 @@
 	<!-- Dragon Knights dungeons -->
 	<zone name="int_dragon_knights_dungeons" file="interiors/dragon_knights/dungeons.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+
 		<attributes>
 			<parameter name="color_method">dark</parameter>
 		</attributes>
+
+		<!-- alternative creature -->
+		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
+			<parameter name="creature">jeździec chaosu na czerwonym smoku</parameter>
+			<parameter name="factory">0.5</parameter>
+			<parameter name="spawnX">7</parameter>
+			<parameter name="spawnY">55</parameter>
+			<parameter name="dropItem">mgielny kamień</parameter>
+			<parameter name="dropRate">2.0</parameter>
+		</configurator>
+
 		<portal x="4" y="1" ref="dungeons_exit">
 			<destination zone="int_dragon_knights_room" ref="dungeons_entrance"/>
 		</portal>
