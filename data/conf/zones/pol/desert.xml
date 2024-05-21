@@ -11,10 +11,39 @@
 	<!-- Pyramid NW -->
 	<zone name="0_desert_pyramid_nw" level="0" x="513184" y="0" file="Level 0/desert/pyramid_nw.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="music">caravan</parameter>
 		</attributes>
+
+		<!-- alternative creatures -->
+		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
+			<parameter name="creature">słoń</parameter>
+			<parameter name="factory">0.75</parameter>
+			<parameter name="spawnX">13</parameter>
+			<parameter name="spawnY">38</parameter>
+			<parameter name="dropItem">mgielny kamień</parameter>
+			<parameter name="dropRate">0.5</parameter>
+		</configurator>
+
+		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
+			<parameter name="creature">wielbłąd</parameter>
+			<parameter name="factory">0.75</parameter>
+			<parameter name="spawnX">89</parameter>
+			<parameter name="spawnY">93</parameter>
+			<parameter name="dropItem">mgielny kamień</parameter>
+			<parameter name="dropRate">0.5</parameter>
+		</configurator>
+
+		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
+			<parameter name="creature">wielbłąd</parameter>
+			<parameter name="factory">0.75</parameter>
+			<parameter name="spawnX">68</parameter>
+			<parameter name="spawnY">35</parameter>
+			<parameter name="dropItem">mgielny kamień</parameter>
+			<parameter name="dropRate">0.5</parameter>
+		</configurator>
 
 		<entity x="127" y="127">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
@@ -23,6 +52,7 @@
 				<parameter name="volume">5</parameter>
 			</implementation>
 		</entity>
+
 		<entity x="64" y="64">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
 				<parameter name="sound">loop/wind-01</parameter>
@@ -30,6 +60,7 @@
 				<parameter name="volume">10</parameter>
 			</implementation>
 		</entity>
+
 		<entity x="0" y="0">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.area.MessagingArea">
 				<parameter name="coversZone">true</parameter>
@@ -40,6 +71,7 @@
 		<portal x="125" y="2" ref="desert_exit_zakopane">
 			<destination zone="int_zakopane_home" ref="zakopane_entrance_desert"/>
 		</portal>
+
 		<portal x="22" y="19" ref="corridor_entrance">
 			<destination zone="-1_desert_corridor" ref="corridor_exit"/>
 		</portal>
@@ -48,10 +80,30 @@
 	<!-- Pyramid NE -->
 	<zone name="0_desert_pyramid_ne" level="0" x="513312" y="0" file="Level 0/desert/pyramid_ne.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="music">caravan</parameter>
 		</attributes>
+
+		<!-- alternative creatures -->
+		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
+			<parameter name="creature">uczeń mordercy</parameter>
+			<parameter name="factory">0.75</parameter>
+			<parameter name="spawnX">93</parameter>
+			<parameter name="spawnY">61</parameter>
+			<parameter name="dropItem">mgielny kamień</parameter>
+			<parameter name="dropRate">1.5</parameter>
+		</configurator>
+
+		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
+			<parameter name="creature">ninja</parameter>
+			<parameter name="factory">0.75</parameter>
+			<parameter name="spawnX">66</parameter>
+			<parameter name="spawnY">77</parameter>
+			<parameter name="dropItem">mgielny kamień</parameter>
+			<parameter name="dropRate">1.5</parameter>
+		</configurator>
 
 		<entity x="127" y="127">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
@@ -60,6 +112,7 @@
 				<parameter name="volume">5</parameter>
 			</implementation>
 		</entity>
+
 		<entity x="66" y="62">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">water-slosh-01, water-slosh-03</parameter>
@@ -72,6 +125,7 @@
 	<!-- Pyramid SW -->
 	<zone name="0_desert_pyramid_sw" level="0" x="513184" y="128" file="Level 0/desert/pyramid_sw.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="music">caravan</parameter>
@@ -84,6 +138,7 @@
 				<parameter name="volume">5</parameter>
 			</implementation>
 		</entity>
+
 		<entity x="64" y="64">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
 				<parameter name="sound">loop/wind-01</parameter>
@@ -95,24 +150,31 @@
 		<portal x="66" y="61" ref="fire_pyramid_entrance_1">
 			<destination zone="-1_desert_fire_pyramid" ref="fire_pyramid_exit_1"/>
 		</portal>
+
 		<portal x="67" y="61" ref="fire_pyramid_entrance_2">
 			<destination zone="-1_desert_fire_pyramid" ref="fire_pyramid_exit_2"/>
 		</portal>
+
 		<portal x="66" y="62" ref="fire_pyramid_entrance_3">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
 		</portal>
+
 		<portal x="43" y="73" ref="desert_exit_1">
 			<destination zone="-1_desert_pyramid" ref="pyramid_entrance_1"/>
 		</portal>
+
 		<portal x="44" y="73" ref="desert_exit_2">
 			<destination zone="-1_desert_pyramid" ref="pyramid_entrance_2"/>
 		</portal>
+
 		<portal x="43" y="74" ref="desert_entrance_1">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
 		</portal>
+
 		<portal x="44" y="74" ref="desert_entrance_2">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
 		</portal>
+
 		<portal x="45" y="74" ref="desert_entrance_3">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
 		</portal>
@@ -120,12 +182,15 @@
 		<portal x="34" y="90" ref="ice_pyramid_entrance_1">
 			<destination zone="5_desert_ice_pyramid" ref="ice_pyramid_exit_1"/>
 		</portal>
+
 		<portal x="35" y="90" ref="ice_pyramid_entrance_2">
 			<destination zone="5_desert_ice_pyramid" ref="ice_pyramid_exit_2"/>
 		</portal>
+
 		<portal x="34" y="91" ref="ice_pyramid_entrance_3">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
 		</portal>
+
 		<portal x="35" y="91" ref="ice_pyramid_entrance_4">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
 		</portal>
@@ -134,10 +199,21 @@
 	<!-- Pyramid SE -->
 	<zone name="0_desert_pyramid_se" level="0" x="513312" y="128" file="Level 0/desert/pyramid_se.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="music">caravan</parameter>
 		</attributes>
+
+		<!-- alternative creature -->
+		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
+			<parameter name="creature">łucznik imperium lider</parameter>
+			<parameter name="factory">0.5</parameter>
+			<parameter name="spawnX">92</parameter>
+			<parameter name="spawnY">102</parameter>
+			<parameter name="dropItem">mgielny kamień</parameter>
+			<parameter name="dropRate">2.0</parameter>
+		</configurator>
 
 		<entity x="0" y="0">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
@@ -161,6 +237,7 @@
 	<zone name="int_desert_blacksmith" file="interiors/desert/blacksmith.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<configurator class-name="games.stendhal.server.maps.desert.blackriver.JozekNPC"/>
+
 		<entity x="3" y="3">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">fire-sparkes-1, fire-3, fire-8</parameter>
@@ -169,6 +246,7 @@
 				<parameter name="volume">20</parameter>
 			</implementation>
 		</entity>
+
 		<entity x="3" y="3">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">hammer-1, smith-1</parameter>
@@ -259,6 +337,17 @@
 
 	<zone name="-1_desert_corridor" level="-1" x="513312" y="512" file="Level -1/desert/corridor.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+
+		<!-- alternative creature -->
+		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
+			<parameter name="creature">książę szkieletów</parameter>
+			<parameter name="factory">0.5</parameter>
+			<parameter name="spawnX">18</parameter>
+			<parameter name="spawnY">25</parameter>
+			<parameter name="dropItem">mgielny kamień</parameter>
+			<parameter name="dropRate">3.5</parameter>
+		</configurator>
+
 		<portal x="59" y="60" ref="corridor_exit">
 			<destination zone="0_desert_pyramid_nw" ref="corridor_entrance"/>
 		</portal>
