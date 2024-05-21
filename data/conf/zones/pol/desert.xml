@@ -301,12 +301,6 @@
 		</attributes>
 
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
-		<entity x="1" y="1">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.BackgroundMusicSource">
-				<parameter name="sound">pol-inthedark3</parameter>
-				<parameter name="volume">20</parameter>
-			</implementation>
-		</entity>
 
 		<portal x="29" y="29" ref="black_river_exit">
 			<destination zone="-1_desert_pyramid" ref="pyramid_entrance"/>
