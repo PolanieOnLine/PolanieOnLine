@@ -19,6 +19,7 @@ import java.time.LocalTime;
 import java.time.Month;
 import java.time.Year;
 import java.time.format.DateTimeParseException;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -31,8 +32,7 @@ import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPWorld;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.engine.ZoneAttributes;
-import games.stendhal.server.core.scripting.ScriptImpl;
-import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.core.scripting.AbstractAdminScript;
 import marauroa.common.game.IRPZone;
 
 /**
@@ -48,35 +48,35 @@ import marauroa.common.game.IRPZone;
  * Second argument is the freezing duration in HH:MM[:SS] format. Default is one
  * day.
  */
-public class FreezeHell extends ScriptImpl {
+public class FreezeHell extends AbstractAdminScript {
 	private static final Logger LOGGER = Logger.getLogger(FreezeHell.class);
 
 	private static final LocalDateTime DEFAULT_FREEZING_TIME = Year.now().atMonth(Month.APRIL).atDay(1).atStartOfDay();
 	private static final Duration DEFAULT_FREEZING_DURATION = Duration.ofDays(1);
 
 	@Override
-	public void execute(final Player admin, final List<String> args) {
+	protected void run(final List<String> args) {
 		LocalDateTime startTime;
 		LocalDateTime now = LocalDateTime.now();
-		startTime = determineStartTime(admin, args, now);
+		startTime = determineStartTime(args, now);
 		int waitSec = (int) Duration.between(now, startTime).getSeconds();
 
-		Duration freezingDuration = determineDuration(admin, args);
+		Duration freezingDuration = determineDuration(args);
 
-		String message = "Zaplanuj mroźne piekło za " + waitSec
-				+ " sekund w dniu " + startTime + ". Zamrożenie będzie trwać " + freezingDuration + ".";
-		admin.sendPrivateText(message);
+		String message = "Zamarznięte piekło zaplanowane jest za " + waitSec
+				+ " sekund w dniu " + startTime + ". Mróz będzie trwać " + freezingDuration + ".";
+		sendText(message);
 		LOGGER.info(message);
 		SingletonRepository.getTurnNotifier().notifyInSeconds(waitSec, currentTurn -> freezeOrThaw(true, freezingDuration));
 	}
 
-	private Duration determineDuration(final Player admin, final List<String> args) {
+	private Duration determineDuration(final List<String> args) {
 		if (args.size() > 1) {
 			try {
 				LocalTime time = LocalTime.parse(args.get(1));
 				return Duration.between(LocalTime.MIN, time);
 			} catch (DateTimeParseException e) {
-				admin.sendPrivateText(e.getMessage());
+				sendText(e.getMessage());
 				throw e;
 			}
 		}
@@ -84,11 +84,10 @@ public class FreezeHell extends ScriptImpl {
 		return DEFAULT_FREEZING_DURATION;
 	}
 
-	private LocalDateTime determineStartTime(final Player admin, final List<String> args,
-			LocalDateTime now) {
+	private LocalDateTime determineStartTime(final List<String> args, LocalDateTime now) {
 		LocalDateTime startTime;
 		if (!args.isEmpty()) {
-			startTime = parseStartTime(admin, args, now);
+			startTime = parseStartTime(args, now);
 		} else {
 			startTime = DEFAULT_FREEZING_TIME;
 		}
@@ -98,8 +97,7 @@ public class FreezeHell extends ScriptImpl {
 		return startTime;
 	}
 
-	private LocalDateTime parseStartTime(Player admin, final List<String> args,
-			LocalDateTime now) {
+	private LocalDateTime parseStartTime(final List<String> args, LocalDateTime now) {
 		LocalDateTime startTime;
 		try {
 			LocalTime time = LocalTime.parse(args.get(0));
@@ -115,7 +113,7 @@ public class FreezeHell extends ScriptImpl {
 					throw new DateTimeParseException("Określony czas rozpoczęcia przypada w przeszłości.", args.get(0), 0);
 				}
 			} catch (DateTimeParseException ex) {
-				admin.sendPrivateText(ex.getMessage());
+				sendText(ex.getMessage());
 				throw ex;
 			}
 		}
@@ -225,5 +223,13 @@ public class FreezeHell extends ScriptImpl {
 		if (layer != null) {
 			zone.addLayer(zone.getName() + "." + layerName, layer);
 		}
+	}
+
+	/**
+	 * Schedules hell freezing for April 1st.
+	 */
+	public static void scheduleDefault() {
+		// is this safe or should it be executed through ScriptRunner?
+		new FreezeHell().run(Arrays.asList());
 	}
 }
