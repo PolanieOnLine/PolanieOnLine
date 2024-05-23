@@ -514,9 +514,9 @@
 			</fileset>
 			<manifest>
 				<attribute name="Application-Name" value="PolanieOnLine"/>
-				<attribute name="Application-Library-Allowable-Codebase" value="https://arianne-project.org http://arianne.sf.net http://arianne.sourceforge.net https://arianne.sf.net https://arianne.sourceforge.net https://stendhalgame.org *"/>
+				<attribute name="Application-Library-Allowable-Codebase" value="https://s1.polanieonline.eu https://polanieonline.eu http://game-polanieonline.sf.net http://game-polanieonline.sourceforge.net *"/>
 				<attribute name="Main-Class" value="games.stendhal.client.update.Starter"/>
-				<attribute name="Class-path" value="."/>
+				<attribute name="Class-path" value=". lib/${jsonsimple_jarname}"/>
 				<attribute name="Permissions" value="all-permissions"/>
 				<attribute name="Codebase" value="*"/>
 				<attribute name="Trusted-Library" value="true"/>
