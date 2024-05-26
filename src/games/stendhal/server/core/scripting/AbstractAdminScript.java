@@ -166,7 +166,7 @@ public abstract class AbstractAdminScript extends ScriptImpl {
 			usage += " " + cmd + " " + params.get(0);
 		} else {
 			for (final String paramset: params) {
-				usage += "\n&nbsp;&nbsp;" + cmd;
+				usage += "\n\t" + cmd;
 				if (paramset.length() > 0) {
 					usage += " " + paramset;
 				}
@@ -181,7 +181,7 @@ public abstract class AbstractAdminScript extends ScriptImpl {
 		if (details.size() > 0) {
 			usage += "\nParametry:";
 			for (final String detail: details) {
-				usage += "\n&nbsp;&nbsp;" + detail;
+				usage += "\n\t" + detail;
 			}
 		}
 		return usage;
