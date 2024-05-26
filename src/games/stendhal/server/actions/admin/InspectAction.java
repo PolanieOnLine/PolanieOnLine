@@ -63,7 +63,7 @@ public class InspectAction extends AdministrationAction {
 				name = inspected.getTitle();
 			}
 			if (name != null && !name.equals("")) {
-				st.append(" zwany \"&'");
+				st.append(" zwany \"~'");
 				st.append(name);
 				st.append("'\"");
 			} else {
@@ -75,7 +75,7 @@ public class InspectAction extends AdministrationAction {
 
 			// st.append(target.toString());
 			// st.append("\n===========================\n");
-			st.append("\nID: " + action.get(TARGET) + " w &" + inspected.getZone().getName() + " (" + inspected.getX() + ", " + inspected.getY() + ")");
+			st.append("\nID: " + action.get(TARGET) + " w ~" + inspected.getZone().getName() + " (" + inspected.getX() + ", " + inspected.getY() + ")");
 			st.append("\nPłeć:  " + inspected.getGender());
 			st.append("\nPZ:     " + inspected.getHP() + " / " + inspected.getBaseHP());
 			st.append("\nATK:    " + inspected.getAtk() + "("

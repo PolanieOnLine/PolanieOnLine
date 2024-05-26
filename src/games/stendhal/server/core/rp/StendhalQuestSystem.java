@@ -538,7 +538,7 @@ public class StendhalQuestSystem {
 
 		for (final IQuest quest : quests) {
 			if (quest.isStarted(player) && !quest.isCompleted(player)) {
-				sb.append("\r\n" + quest.getName() + " (&'" + quest.getSlotName() + "'): " + player.getQuest(quest.getSlotName()));
+				sb.append("\r\n" + quest.getName() + " (~'" + quest.getSlotName() + "'): " + player.getQuest(quest.getSlotName()));
 			}
 		}
 
@@ -546,7 +546,7 @@ public class StendhalQuestSystem {
 		sb.append("\n#'Ukończone zadania': ");
 		for (final IQuest quest : quests) {
 			if (quest.isCompleted(player)) {
-				sb.append("\r\n" + quest.getName() + " (&'" + quest.getSlotName() + "'): " + player.getQuest(quest.getSlotName()));
+				sb.append("\r\n" + quest.getName() + " (~'" + quest.getSlotName() + "'): " + player.getQuest(quest.getSlotName()));
 			}
 		}
 

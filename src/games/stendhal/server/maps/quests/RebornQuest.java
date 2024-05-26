@@ -70,12 +70,12 @@ public class RebornQuest extends AbstractQuest {
 	private final String POWITANIE_2 = "Abym mógła cofnąć Ciebie w czasie to musisz osiągnąć maksymalny poziom! Aktualnie twój poziom to: #";
 	private final String POWITANIE_3 = "Witaj ponownie. Przybyłeś znów, by narodzić się na nowo?";
 
-	private final String INFORMACJA_1 = "Pamiętaj, iż &'stracisz' zdobyte doświadczenie w tym świecie, lecz #'zadania', #'umiejętności' oraz otrzymasz mały bonus do #zdrowia! Chcesz tego? (#'tak')";
+	private final String INFORMACJA_1 = "Pamiętaj, iż ~'stracisz' zdobyte doświadczenie w tym świecie, lecz #'zadania', #'umiejętności' oraz otrzymasz mały bonus do #zdrowia! Chcesz tego? (#'tak')";
 	private final String INFORMACJA_2 = "Proszę... Zastanów się jeszcze raz. Czy jesteś tego pewien? (#'tak')";
-	private final String INFORMACJA_3 = "Cofnięcie się w czasie spowoduje, iż &'stracisz' swój aktualny #'poziom', lecz twoje #umiejętności zostaną takie jakie były wcześniej oraz otrzymasz mały bonus do #zdrowia! Aktualne zdrowie również pozostanie bez zmian. Czy jesteś tego pewien? (#'tak')";
+	private final String INFORMACJA_3 = "Cofnięcie się w czasie spowoduje, iż ~'stracisz' swój aktualny #'poziom', lecz twoje #umiejętności zostaną takie jakie były wcześniej oraz otrzymasz mały bonus do #zdrowia! Aktualne zdrowie również pozostanie bez zmian. Czy jesteś tego pewien? (#'tak')";
 
-	private final String INFORMACJA_4 = "Pamiętaj, iż &'stracisz' zdobyte doświadczenie w tym świecie, lecz #'zadania' oraz #'umiejętności' już nie, jak i otrzymasz mały bonus do #zdrowia! Chcesz tego? (#'tak')";
-	private final String INFORMACJA_5 = "Cofnięcie się w czasie spowoduje, iż &'stracisz' swój aktualny #'poziom', lecz twoje #umiejętności zostaną takie jakie były wcześniej oraz otrzymasz mały bonus do #zdrowia! Czy jesteś tego pewien? (#'tak')";
+	private final String INFORMACJA_4 = "Pamiętaj, iż ~'stracisz' zdobyte doświadczenie w tym świecie, lecz #'zadania' oraz #'umiejętności' już nie, jak i otrzymasz mały bonus do #zdrowia! Chcesz tego? (#'tak')";
+	private final String INFORMACJA_5 = "Cofnięcie się w czasie spowoduje, iż ~'stracisz' swój aktualny #'poziom', lecz twoje #umiejętności zostaną takie jakie były wcześniej oraz otrzymasz mały bonus do #zdrowia! Czy jesteś tego pewien? (#'tak')";
 
 	private final String ODRZUCENIE = "To jest tylko Twoja decyzja czy chcesz ponownie poczuć przygodę na zerowym poziomie. Życzę powodzenia!";
 	private final String NAGRODA = "Została zagięta Twoja teraźniejszość przez potężnego smoka czasu, #'Yereny'... abyś mógł przeżyć przygodę jeszcze raz... Podążaj nową ścieżką, którą sobie obierzesz...";

@@ -305,7 +305,7 @@ class KTextEdit extends JComponent {
 		attributes = defaultAttributes.copy();
 		attributes.setAttribute(StyleConstants.Underline, Boolean.TRUE);
 		attributes.setAttribute(StyleConstants.Foreground, UNDERLINE_COLOR);
-		formatter.addStyle('&', attributes);
+		formatter.addStyle('~', attributes);
 
 		attributes = defaultAttributes.copy();
 		attributes.setAttribute(StyleConstants.Italic, Boolean.TRUE);

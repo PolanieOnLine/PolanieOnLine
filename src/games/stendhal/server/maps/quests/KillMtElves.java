@@ -114,7 +114,7 @@ public class KillMtElves extends AbstractQuest {
 				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
 						new QuestInStateCondition(QUEST_SLOT, 0, "start"), new NotCondition(new KilledForQuestCondition(QUEST_SLOT, 1))),
 				ConversationStates.IDLE,
-				"Jeszcze nie skończyłeś, wróć do mnie jak wybijesz &'wszystkie' elfy górskie!",
+				"Jeszcze nie skończyłeś, wróć do mnie jak wybijesz ~'wszystkie' elfy górskie!",
 				null);
 	}
 
