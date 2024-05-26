@@ -1,5 +1,18 @@
 Changelog
 ---------
+1.39.1
+*serwer*
+- Dodano brakujące atrybuty modyfikujące światło alternatywnych map
+- Dodano brakujące odgłosy w budynku kowala w Tarnowie
+- Zmieniono znak odwołania do czerwonego koloru tekstu
+- Usunięto oznaczenie bota - postmana - jako administratora podczas wywoływania komendy /who
+
+*naprawiono błędy*
+- Poprawiono gramatykę, dialogi oraz dziennik w zadaniu 'Zgładzenie Wrogiej Armii'
+- Naprawiono błąd z brakującym dźwiękiem zamykania / minimalizowania okienka w kliencie
+- Naprawiono błąd w zadaniu 'Zgładzenie Wrogiej Armii', który uniemożliwiał ukończenie oraz przyjęcie innych zadań
+
+
 1.39
 *klient*
 - Dodano grafiki nowych przedmiotów
