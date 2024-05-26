@@ -331,11 +331,11 @@ public class KillEnemyArmy extends AbstractQuest {
 			if(killed == killsnumber) {
 				// player killed no more no less then needed soldiers
 				speakerNPC.say("Dobra robota! Oto twoja zapłata: " + moneyreward +
-						" monet. Gdy będziesz potrzebował znów pracy jako najemnik, zapytaj mnie za tydzień. Moi doradcy mówią mi, że mogą spróbować ponownie mnie zaatakować.");
+						" monet. Gdy będziesz potrzebować znów pracy jako najemnik, zapytaj mnie za tydzień. Moi doradcy mówią mi, że mogą spróbować ponownie mnie zaatakować.");
 			} else {
 				// player killed more then needed soldiers
-				speakerNPC.say("Całkiem nieźle! Pokonałeś dodatkowych " + (killed-killsnumber) + " " + "żołnierzy! Weź te " +
-						moneyreward + " monet i pamiętaj, że mogę chcieć, abyś wykonał to zadanie ponownie za tydzień!");
+				speakerNPC.say("Całkiem nieźle! " + player.getGenderVerb("Pokonałeś") + " dodatkowych " + (killed-killsnumber) + " " + "żołnierzy! Weź te " +
+						moneyreward + " monet i pamiętaj, że mogę chcieć, abyś " + player.getGenderVerb("wykonał") + " to zadanie ponownie za tydzień!");
 			}
 			int karmabonus = 5 * (2 * killed / killsnumber - 1);
 			final StackableItem money = (StackableItem)
@@ -365,7 +365,7 @@ public class KillEnemyArmy extends AbstractQuest {
 				}
 				if(killed < killsnumber) {
 					// player killed less then needed soldiers.
-					npc.say("Pokonałeś tylko " + killed + " " + Grammar.plnoun(killed, player.getQuest(QUEST_SLOT, 1))+
+					npc.say(player.getGenderVerb("Pokonałeś") + " tylko " + killed + " " + Grammar.plnoun(killed, player.getQuest(QUEST_SLOT, 1))+
 							". Musisz pokonać co najmniej " + killsnumber + " " + Grammar.plnoun(killed, player.getQuest(QUEST_SLOT, 1)));
 					return;
 				}
@@ -556,7 +556,7 @@ public class KillEnemyArmy extends AbstractQuest {
 			history.add(player.getGenderVerb("Ukończyłem") + " zadanie Despoty Halba Errvl i " + player.getGenderVerb("otrzymałem") + " nagrodę!");
 		}
 		if (isRepeatable(player)) {
-			history.add("Despot Halb Errvl znowu staje się paranoiczny o swoje bezpieczeństwo, mogę zaoferować swoje usługi.");
+			history.add("Despot Halb Errvl znowu staje się paranoiczny o swoje bezpieczeństwo, mogę mu zaoferować swoje usługi.");
 		}
 		int repetitions = player.getNumberOfRepetitions(getSlotName(), 3);
 		if (repetitions > 0) {
