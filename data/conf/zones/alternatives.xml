@@ -209,6 +209,12 @@
 			<parameter name="factor">0.75</parameter>
 		</configurator>
 
+		<attributes>
+			<parameter name="color_method">multiply</parameter>
+			<parameter name="color">#bf7707</parameter>
+			<parameter name="weather">fog_heavy</parameter>
+		</attributes>
+
 		<entity x="64" y="64">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
 				<parameter name="sound">fire-8</parameter>
@@ -241,6 +247,12 @@
 		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
 			<parameter name="factor">0.75</parameter>
 		</configurator>
+
+		<attributes>
+			<parameter name="color_method">multiply</parameter>
+			<parameter name="color">#bf7707</parameter>
+			<parameter name="weather">fog_heavy</parameter>
+		</attributes>
 	</zone>
 
 	<!-- desert_black_river_s -->
@@ -258,6 +270,12 @@
 		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
 			<parameter name="factor">0.75</parameter>
 		</configurator>
+
+		<attributes>
+			<parameter name="color_method">multiply</parameter>
+			<parameter name="color">#bf7707</parameter>
+			<parameter name="weather">fog_heavy</parameter>
+		</attributes>
 	</zone>
 
 	<!-- koscielisko_zamek -->
@@ -269,6 +287,12 @@
 		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
 			<parameter name="factor">0.5</parameter>
 		</configurator>
+
+		<attributes>
+			<parameter name="color_method">multiply</parameter>
+			<parameter name="color">#cfe2f6</parameter>
+			<parameter name="weather">fog_heavy</parameter>
+		</attributes>
 
 		<portal x="36" y="41" ref="wejscie_lewo">
 			<destination zone="1_koscielisko_zamek" ref="wyjscie_lewo"/>
@@ -342,6 +366,12 @@
 			<parameter name="factor">0.25</parameter>
 		</configurator>
 
+		<attributes>
+			<parameter name="color_method">multiply</parameter>
+			<parameter name="color">#cfe2f6</parameter>
+			<parameter name="weather">fog_heavy</parameter>
+		</attributes>
+
 		<portal x="61" y="44" ref="2most">
 			<destination zone="1_koscielisko_podzamcze_zrc" ref="brama_2exit"/>
 			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.KeyedPortal">
@@ -402,6 +432,12 @@
 			<parameter name="factor">0.25</parameter>
 		</configurator>
 
+		<attributes>
+			<parameter name="color_method">multiply</parameter>
+			<parameter name="color">#99ff99</parameter>
+			<parameter name="weather">rain_heavy</parameter>
+		</attributes>
+
 		<entity x="74" y="56">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">coins-01, coins-2</parameter>
@@ -453,6 +489,12 @@
 			<parameter name="factor">0.25</parameter>
 		</configurator>
 
+		<attributes>
+			<parameter name="color_method">multiply</parameter>
+			<parameter name="color">#99ff99</parameter>
+			<parameter name="weather">rain_heavy</parameter>
+		</attributes>
+
 		<entity x="64" y="54">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
 				<parameter name="sound">water-slosh-01, water-slosh-02, water-slosh-03</parameter>
@@ -486,6 +528,12 @@
 		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
 			<parameter name="factor">0.5</parameter>
 		</configurator>
+
+		<attributes>
+			<parameter name="color_method">multiply</parameter>
+			<parameter name="color">#cfe2f6</parameter>
+			<parameter name="weather">fog_heavy</parameter>
+		</attributes>
 	</zone>
 
 	<!-- pirates_island_cave_e -->
@@ -502,6 +550,12 @@
 		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
 			<parameter name="factor">0.5</parameter>
 		</configurator>
+
+		<attributes>
+			<parameter name="color_method">multiply</parameter>
+			<parameter name="color">#cfe2f6</parameter>
+			<parameter name="weather">fog_heavy</parameter>
+		</attributes>
 	</zone>
 
 	<!-- krakow_cave_sw -->
@@ -518,6 +572,12 @@
 		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
 			<parameter name="factor">0.5</parameter>
 		</configurator>
+
+		<attributes>
+			<parameter name="color_method">multiply</parameter>
+			<parameter name="color">#99ff99</parameter>
+			<parameter name="weather">fog_heavy</parameter>
+		</attributes>
 
 		<entity x="98" y="36">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
@@ -552,6 +612,12 @@
 		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
 			<parameter name="factor">0.5</parameter>
 		</configurator>
+
+		<attributes>
+			<parameter name="color_method">multiply</parameter>
+			<parameter name="color">#99ff99</parameter>
+			<parameter name="weather">fog_heavy</parameter>
+		</attributes>
 
 		<entity x="111" y="83">
 			<implementation
@@ -599,6 +665,12 @@
 		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
 			<parameter name="factor">0.5</parameter>
 		</configurator>
+
+		<attributes>
+			<parameter name="color_method">multiply</parameter>
+			<parameter name="color">#99ff99</parameter>
+			<parameter name="weather">fog_heavy</parameter>
+		</attributes>
 	</zone>
 
 	<!-- krakow_cave_nw -->
@@ -615,6 +687,12 @@
 		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
 			<parameter name="factor">0.5</parameter>
 		</configurator>
+
+		<attributes>
+			<parameter name="color_method">multiply</parameter>
+			<parameter name="color">#99ff99</parameter>
+			<parameter name="weather">fog_heavy</parameter>
+		</attributes>
 	</zone>
 
 	<!-- dragon_knights_dungeons -->
@@ -631,6 +709,12 @@
 		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
 			<parameter name="factor">0.75</parameter>
 		</configurator>
+
+		<attributes>
+			<parameter name="color_method">multiply</parameter>
+			<parameter name="color">#cfe2f6</parameter>
+			<parameter name="weather">fog_heavy</parameter>
+		</attributes>
 	</zone>
 
 </zones>
