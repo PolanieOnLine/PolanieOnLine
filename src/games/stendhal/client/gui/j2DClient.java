@@ -295,7 +295,7 @@ public class j2DClient implements UserInterface {
 	private SoundGroup initSoundSystem() {
 		SoundGroup group = getSoundSystemFacade().getGroup(SoundLayer.USER_INTERFACE.groupName);
 		group.loadSound("ui/login", "ui/login.ogg", SoundFileType.OGG, false);
-		group.loadSound("ui/window-fold", "ui/window-fold.ogg", SoundFileType.OGG, false);
+		group.loadSound("ui/window_fold", "ui/window_fold.ogg", SoundFileType.OGG, false);
 		return group;
 	}
 
