@@ -784,7 +784,7 @@ public class AdministrationActionTest {
 		assertTrue(CommandCenter.execute(pl, action));
 		assertThat(pl.events().get(0).get("text"),
 				startsWith(
-						"Sprawdzany jest #'creature' zwany \"&'szczur'\" zdefiniowany jako "
+						"Sprawdzany jest #'creature' zwany \"~'szczur'\" zdefiniowany jako "
 						+ "#'games.stendhal.server.entity.creature.RaidCreature'. "
 						+ "Posiada następujące atrybuty:"));
 	}
