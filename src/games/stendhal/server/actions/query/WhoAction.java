@@ -50,7 +50,7 @@ public class WhoAction implements ActionListener {
 				@Override
 				public void execute(final Player p) {
 					String player = p.getTitle();
-					if (p.getAdminLevel() > 0)
+					if (p.getAdminLevel() > 0 && !"postman".equals(p.getName()))
 						player = "¡'" + p.getTitle()+ "'";
 					final StringBuilder text = new StringBuilder(player);
 
@@ -70,7 +70,7 @@ public class WhoAction implements ActionListener {
 				@Override
 				public void execute(final Player p) {
 					String player = p.getTitle();
-					if (p.getAdminLevel() > 0)
+					if (p.getAdminLevel() > 0 && !"postman".equals(p.getName()))
 						player = "¡'" + p.getTitle()+ "'";
 					final StringBuilder text = new StringBuilder(player);
 
