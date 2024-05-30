@@ -64,19 +64,13 @@ public class RPEntityRPClass {
 		entity.addAttribute("immortal", Type.FLAG, Definition.VOLATILE);
 
 		/* Equipment */
-		entity.addRPSlot("head", 1, Definition.PRIVATE);
-		entity.addRPSlot("neck", 1, Definition.PRIVATE);
-		entity.addRPSlot("rhand", 1, Definition.PRIVATE);
-		entity.addRPSlot("lhand", 1, Definition.PRIVATE);
-		entity.addRPSlot("armor", 1, Definition.PRIVATE);
-		entity.addRPSlot("finger", 1, Definition.PRIVATE);
-		entity.addRPSlot("fingerb", 1, Definition.PRIVATE);
-		entity.addRPSlot("cloak", 1, Definition.PRIVATE);
-		entity.addRPSlot("glove", 1, Definition.PRIVATE);
-		entity.addRPSlot("legs", 1, Definition.PRIVATE);
-		entity.addRPSlot("feet", 1, Definition.PRIVATE);
+		final String[] equipSlots = { "head", "neck", "rhand", "lhand", "armor", "finger", "fingerb", "cloak", "glove", "legs", "feet", "pas" };
+		for (String equipSlot : equipSlots) {
+			String alternativeEquipment = equipSlot + "_alt";
+			entity.addRPSlot(equipSlot, 1, Definition.PRIVATE);
+			entity.addRPSlot(alternativeEquipment, 1, Definition.PRIVATE);
+		}
 		entity.addRPSlot("back", 1, Definition.PRIVATE);
-		entity.addRPSlot("pas", 1, Definition.PRIVATE);
 		entity.addRPSlot("belt", 1, (byte) (Definition.PRIVATE | Definition.VOLATILE));
 
 		entity.addRPSlot("money", 1, Definition.VOLATILE);

@@ -290,6 +290,9 @@ public abstract class UpdateConverter {
 				"legs", "glove", "feet", "finger", "cloak", "fingerb", "pas", "bank", "bank_ados", "bank_deniran",
 				"zaras_chest_ados", "bank_fado", "bank_kirdneh", "bank_magic", "bank_nalwor", "bank_zakopane", "bank_krakow",
 				"bank_gdansk", "spells", "keyring", "magicbag", /*"portfolio", */ "trade", "pouch", "vault" };
+		
+		final String[] altEquipSlots = { "rhand_alt", "lhand_alt", "head_alt", "neck_alt", "armor_alt",
+				"legs_alt", "glove_alt", "feet_alt", "finger_alt", "cloak_alt", "fingerb_alt", "pas_alt" };
 
 		final String[] slotsSpecial = { "!quests", "!kills", "!buddy", "!ignore",
 				"!visited", "skills", "!tutorial"};
@@ -315,6 +318,13 @@ public abstract class UpdateConverter {
 		// Port from 1.29 to 1.30: bank_deniran
 		// Port from 1.44 to 1.45: bank_magic, bank_kirdneh
 		for (final String slotName : slotsNormal) {
+			if (!object.hasSlot(slotName)) {
+				object.addSlot(new PlayerSlot(slotName));
+			}
+		}
+
+		// Port from POL1.39 to POL1.40: alternative equipment slots
+		for (final String slotName : altEquipSlots) {
 			if (!object.hasSlot(slotName)) {
 				object.addSlot(new PlayerSlot(slotName));
 			}

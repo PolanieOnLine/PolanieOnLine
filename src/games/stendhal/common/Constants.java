@@ -28,7 +28,10 @@ public final class Constants {
 	public static final String[] CARRYING_SLOTS = {
 			"pouch", "bag", "magicbag", "portfolio", "keyring", "back", "belt", "neck",
 			"head", "cloak", "lhand", "armor", "rhand", "finger", "fingerb",
-			"glove", "pas", "legs", "feet"
+			"glove", "pas", "legs", "feet",
+			// alternative equipment slot names
+			"head_alt", "neck_alt", "rhand_alt", "lhand_alt", "armor_alt",
+			"finger_alt", "fingerb_alt", "cloak_alt", "glove_alt", "legs_alt", "feet_alt", "pas_alt"
 	};
 
 	/** Distance at which entity sounds can be heard. */
