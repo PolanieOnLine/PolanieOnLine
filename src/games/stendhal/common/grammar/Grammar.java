@@ -1361,4 +1361,22 @@ public class Grammar {
 
 		return word;
 	}
+
+	public static String getPolishSlotName(String slot) {
+        switch (slot) {
+            case "neck": return "naszyjnika";
+            case "head": return "hełmu";
+            case "armor": return "zbroi";
+            case "rhand": return "prawej ręki";
+            case "lhand": return "lewej ręki";
+            case "pas": return "pasa";
+            case "legs": return "spodni";
+            case "cloak": return "peleryny";
+            case "glove": return "rękawic";
+            case "feet": return "butów";
+            case "finger": return "pierścienia";
+            case "fingerb": return "pierścienia";
+            default: return slot;
+        }
+    }
 }
