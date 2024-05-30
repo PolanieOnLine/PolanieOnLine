@@ -147,35 +147,39 @@ Inspectable {
 		main_content = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, PADDING);
 		// Layout containers
 		content = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
+		JComponent arrowContainer = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, PADDING);
+		arrowContainer.add(createArrowButton());
+		content.add(arrowContainer);
+
 		JComponent row = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, PADDING);
 		JComponent left = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
 		JComponent middle = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
 		JComponent right = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
 		left.setAlignmentY(CENTER_ALIGNMENT);
 		right.setAlignmentY(CENTER_ALIGNMENT);
+		
 		row.add(left);
 		row.add(middle);
 		row.add(right);
 
-		JComponent arrow = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
-		row.add(arrow);
-		arrow.add(createArrow());
-		arrow.setAlignmentY(CENTER_ALIGNMENT);
-
 		// alt
 		contentAlt = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
-		JComponent row_alt = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, PADDING);
-		JComponent left_alt = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
-		JComponent middle_alt = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
-		JComponent right_alt = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
-		left_alt.setAlignmentY(CENTER_ALIGNMENT);
-		right_alt.setAlignmentY(CENTER_ALIGNMENT);
-		row_alt.add(left_alt);
-		row_alt.add(middle_alt);
-		row_alt.add(right_alt);
+		JComponent changeContainer = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, PADDING);
+		changeContainer.add(createChangeButton());
+		contentAlt.add(changeContainer);
+
+		JComponent rowAlt = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, PADDING);
+		JComponent leftAlt = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
+		JComponent middleAlt = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
+		JComponent rightAlt = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
+		leftAlt.setAlignmentY(CENTER_ALIGNMENT);
+		rightAlt.setAlignmentY(CENTER_ALIGNMENT);
+		rowAlt.add(leftAlt);
+		rowAlt.add(middleAlt);
+		rowAlt.add(rightAlt);
 
 		content.add(row);
-		contentAlt.add(row_alt);
+		contentAlt.add(rowAlt);
 		main_content.add(content);
 		main_content.add(contentAlt);
 
@@ -191,18 +195,18 @@ Inspectable {
 		 * the column uses the other half at the bottom.
 		 */
 		left.add(Box.createVerticalStrut(HAND_YSHIFT * 2));
-		left_alt.add(Box.createVerticalStrut(HAND_YSHIFT * 2));
+		leftAlt.add(Box.createVerticalStrut(HAND_YSHIFT * 2));
 		right.add(Box.createVerticalStrut(HAND_YSHIFT * 2));
-		right_alt.add(Box.createVerticalStrut(HAND_YSHIFT * 2));
+		rightAlt.add(Box.createVerticalStrut(HAND_YSHIFT * 2));
 
 		// Add item panels using loops
 		addPanels(left, "left", itemClass, store);
 		addPanels(middle, "middle", itemClass, store);
 		addPanels(right, "right", itemClass, store);
 
-		addPanels(left_alt, "left", itemClass, store, true);
-		addPanels(middle_alt, "middle", itemClass, store, true);
-		addPanels(right_alt, "right", itemClass, store, true);
+		addPanels(leftAlt, "left", itemClass, store, true);
+		addPanels(middleAlt, "middle", itemClass, store, true);
+		addPanels(rightAlt, "right", itemClass, store, true);
 
 		pouch = new FeatureEnabledItemPanel("pouch", SpriteStore.get().getSprite("data/gui/slot-pouch.png"));
 		slotPanels.put("pouch", pouch);
@@ -391,13 +395,25 @@ Inspectable {
 	/**
 	 * Adding the toggle button to show/hide contentAlt
 	 */
-	private JButton createArrow() {
-		arrowButton.setPreferredSize(new Dimension(12, 100));
-		arrowButton.setMinimumSize(new Dimension(12, 100));
-		arrowButton.setMaximumSize(new Dimension(12, 100));
+	private JButton createArrowButton() {
+		arrowButton.setAlignmentX(CENTER_ALIGNMENT);
+		arrowButton.setPreferredSize(new Dimension(122, 14));
+		arrowButton.setMinimumSize(new Dimension(122, 14));
+		arrowButton.setMaximumSize(new Dimension(122, 14));
 		arrowButton.addActionListener(e -> toggleContent());
 
 		return arrowButton;
+	}
+
+	private JButton createChangeButton() {
+		JButton changeButton = new JButton("🔁 zamień");
+		changeButton.setAlignmentX(CENTER_ALIGNMENT);
+		changeButton.setPreferredSize(new Dimension(122, 14));
+		changeButton.setMinimumSize(new Dimension(122, 14));
+		changeButton.setMaximumSize(new Dimension(122, 14));
+		//arrowButton.addActionListener(e -> toggleContent());
+
+		return changeButton;
 	}
 
 	@Override
