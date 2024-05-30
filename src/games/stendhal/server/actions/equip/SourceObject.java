@@ -12,11 +12,14 @@
 package games.stendhal.server.actions.equip;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
 import games.stendhal.common.EquipActionConsts;
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.actions.ItemAccessPermissions;
 import games.stendhal.server.core.engine.ItemLogger;
 import games.stendhal.server.core.engine.SingletonRepository;
@@ -319,13 +322,18 @@ public class SourceObject extends MoveableObject {
 		String targetSlot = dest.getContentSlotName();
 
 		if (!((EquipListener) item).canBeEquippedIn(targetSlot)) {
-			if (targetSlot.equals("keyring")) {
-				targetSlot = "rzemyku";
-			} else if (targetSlot.equals("magicbag")) {
-				targetSlot = "magicznej torby";
-			}
+			final String[] baseSlots = { "neck", "head", "armor", "rhand", "lhand", "pas", "legs", "cloak", "glove", "feet", "finger", "fingerb" };
+			final Map<String, String> plTargetSlots = new HashMap<>();
+			for (String slot : baseSlots) {
+	            plTargetSlots.put(slot, Grammar.getPolishSlotName(slot));
+	            plTargetSlots.put(slot + "_alt", Grammar.getPolishSlotName(slot) + " (alternatywny)");
+	        }
+			plTargetSlots.put("keyring", "rzemyku");
+			plTargetSlots.put("magicbag", "magicznej torby");
+			String translatedSlot = plTargetSlots.getOrDefault(targetSlot, targetSlot);
+
 			// give some feedback
-			player.sendPrivateText("Nie możesz wziąć " + item.getTitle() + " do " + targetSlot + ".");
+			player.sendPrivateText("Nie możesz założyć " + item.getTitle() + " na miejscu " + translatedSlot + ".");
 			logger.warn("tried to equip an entity into disallowed slot: " + item.getClass() + "; equip rejected");
 			return false;
 		}
