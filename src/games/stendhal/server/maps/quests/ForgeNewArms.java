@@ -43,11 +43,12 @@ import games.stendhal.server.entity.npc.condition.QuestStartedCondition;
 import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
+import games.stendhal.server.util.TimeUtil;
 
 public class ForgeNewArms extends AbstractQuest {
 	private static final String QUEST_SLOT = "forge_newarms";
 	private static final String QUEST_COMPLETE = "grind_misty_gem";
-	private static final int DELAY = 48 * 60; // 48 godzin
+	private static final int DELAY = TimeUtil.MINUTES_IN_DAY * 2; // 48 godzin
 
 	private final SpeakerNPC npc = npcs.get("kowal Przemysław");
 
