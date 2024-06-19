@@ -65,6 +65,9 @@ public class AndCondition implements ChatCondition {
 	@Override
 	public boolean fire(final Player player, final Sentence sentence, final Entity entity) {
 		for (final ChatCondition condition : conditions) {
+			if (condition == null) {
+				continue;
+			}
 			final boolean res = condition.fire(player, sentence, entity);
 			if (!res) {
 				return false;

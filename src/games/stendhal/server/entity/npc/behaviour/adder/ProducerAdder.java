@@ -21,6 +21,7 @@ import games.stendhal.common.grammar.ItemParserResult;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.npc.ChatAction;
+import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.EventRaiser;
@@ -69,6 +70,13 @@ public class ProducerAdder {
 		addProducer(npc, behaviour, null, welcomeMessage);
 	}
 
+	private ChatCondition setQuestCondition(String questComplete) {
+		if (questComplete != null) {
+			return new QuestCompletedCondition(questComplete);
+		}
+		return null;
+	}
+
     /**
      * Adds all the dialogue associated with a Producing NPC
      *
@@ -102,34 +110,38 @@ public class ProducerAdder {
 		 * The Player greets the NPC.
 		 * The NPC is not currently producing for player (not started, is rejected, or is complete).
 		 */
-		if (thisWelcomeMessage != null && questComplete == null) {
-			engine.add(ConversationStates.IDLE,
-				ConversationPhrases.GREETING_MESSAGES,
-				new AndCondition(new GreetingMatchesNameCondition(npcName),
-					new QuestNotActiveCondition(QUEST_SLOT),
-					new TransitionMayBeExecutedCondition(this)),
-				false, ConversationStates.ATTENDING, null, new SayTextAction(thisWelcomeMessage));
-		} else if (thisWelcomeMessage != null && questComplete != null) {
-			engine.add(ConversationStates.IDLE,
-				ConversationPhrases.GREETING_MESSAGES,
-				new AndCondition(new GreetingMatchesNameCondition(npcName),
-					new QuestNotActiveCondition(QUEST_SLOT),
-					new QuestCompletedCondition(questComplete),
-					new TransitionMayBeExecutedCondition(this)),
-				false, ConversationStates.ATTENDING, null, new SayTextAction(thisWelcomeMessage));
+		if (thisWelcomeMessage != null) {
+			if (questComplete == null) {
+				engine.add(ConversationStates.IDLE,
+					ConversationPhrases.GREETING_MESSAGES,
+					new AndCondition(new GreetingMatchesNameCondition(npcName),
+						new QuestNotActiveCondition(QUEST_SLOT),
+						new TransitionMayBeExecutedCondition(this)),
+					false, ConversationStates.ATTENDING, null, new SayTextAction(thisWelcomeMessage));
+			}
 
-			engine.add(ConversationStates.IDLE,
-				ConversationPhrases.GREETING_MESSAGES,
-				new AndCondition(new GreetingMatchesNameCondition(npcName),
-					new QuestNotActiveCondition(QUEST_SLOT),
-					new NotCondition(new QuestCompletedCondition(questComplete)),
-					new TransitionMayBeExecutedCondition(this)),
-				false, ConversationStates.ATTENDING, null, new SayTextAction("Hej! W czym mogę #pomóc?"));
+			if (questComplete != null) {
+				engine.add(ConversationStates.IDLE,
+					ConversationPhrases.GREETING_MESSAGES,
+					new AndCondition(new GreetingMatchesNameCondition(npcName),
+						new QuestNotActiveCondition(QUEST_SLOT),
+						new QuestCompletedCondition(questComplete),
+						new TransitionMayBeExecutedCondition(this)),
+					false, ConversationStates.ATTENDING, null, new SayTextAction(thisWelcomeMessage));
+	
+				engine.add(ConversationStates.IDLE,
+					ConversationPhrases.GREETING_MESSAGES,
+					new AndCondition(new GreetingMatchesNameCondition(npcName),
+						new QuestNotActiveCondition(QUEST_SLOT),
+						new NotCondition(new QuestCompletedCondition(questComplete)),
+						new TransitionMayBeExecutedCondition(this)),
+					false, ConversationStates.ATTENDING, null, new SayTextAction("Hej! W czym mogę #pomóc?"));
+			}
 		}
 
 		engine.add(ConversationStates.ATTENDING,
 			behaviour.getProductionActivity(),
-			new AndCondition(new SentenceHasErrorCondition()),
+			new AndCondition(new SentenceHasErrorCondition(), setQuestCondition(questComplete)),
 			false, ConversationStates.ATTENDING,
 			null, new ComplainAboutSentenceErrorAction());
 
@@ -142,7 +154,8 @@ public class ProducerAdder {
 			behaviour.getProductionActivity(),
 			new AndCondition(
 				new NotCondition(new SentenceHasErrorCondition()),
-				new QuestNotActiveCondition(QUEST_SLOT)),
+				new QuestNotActiveCondition(QUEST_SLOT),
+				setQuestCondition(questComplete)),
 			false, ConversationStates.ATTENDING,
 			null, new ProducerBehaviourAction(behaviour) {
 				@Override

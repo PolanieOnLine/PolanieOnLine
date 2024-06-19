@@ -51,6 +51,13 @@ public class MultiProducerAdder {
 	public void addMultiProducer(final SpeakerNPC npc, final MultiProducerBehaviour behaviour, final String welcomeMessage) {
 		addMultiProducer(npc, behaviour, null, welcomeMessage);
 	}
+	
+	private ChatCondition setQuestCondition(String questComplete) {
+		if (questComplete != null) {
+			return new QuestCompletedCondition(questComplete);
+		}
+		return null;
+	}
 
 	/**
 	 * Adds all the dialogue associated with a Producing NPC
@@ -75,31 +82,35 @@ public class MultiProducerAdder {
 
 		/* The Player greets the NPC.
 		* The NPC is not currently producing for player (not started, is rejected, or is complete) */
-		if (thisWelcomeMessage != null && questComplete == null) {
-			engine.add(ConversationStates.IDLE,
-				ConversationPhrases.GREETING_MESSAGES,
-				new AndCondition(new GreetingMatchesNameCondition(npcName),
+		if (thisWelcomeMessage != null) {
+			if (questComplete == null) {
+				engine.add(ConversationStates.IDLE,
+					ConversationPhrases.GREETING_MESSAGES,
+					new AndCondition(new GreetingMatchesNameCondition(npcName),
 						new QuestNotActiveCondition(QUEST_SLOT)),
-				false, ConversationStates.ATTENDING, thisWelcomeMessage, null);
-		} else if (thisWelcomeMessage != null && questComplete != null) {
-			engine.add(ConversationStates.IDLE,
-				ConversationPhrases.GREETING_MESSAGES,
-				new AndCondition(new GreetingMatchesNameCondition(npcName),
+					false, ConversationStates.ATTENDING, thisWelcomeMessage, null);
+			}
+
+			if (questComplete != null) {
+				engine.add(ConversationStates.IDLE,
+					ConversationPhrases.GREETING_MESSAGES,
+					new AndCondition(new GreetingMatchesNameCondition(npcName),
 						new QuestNotActiveCondition(QUEST_SLOT),
 						new QuestCompletedCondition(questComplete)),
-				false, ConversationStates.ATTENDING, thisWelcomeMessage, null);
+					false, ConversationStates.ATTENDING, thisWelcomeMessage, null);
 
-			engine.add(ConversationStates.IDLE,
-				ConversationPhrases.GREETING_MESSAGES,
-				new AndCondition(new GreetingMatchesNameCondition(npcName),
-					new QuestNotActiveCondition(QUEST_SLOT),
-					new NotCondition(new QuestCompletedCondition(questComplete))),
-				false, ConversationStates.ATTENDING, null, new SayTextAction("Hej! W czym mogę #pomóc?"));
+				engine.add(ConversationStates.IDLE,
+					ConversationPhrases.GREETING_MESSAGES,
+					new AndCondition(new GreetingMatchesNameCondition(npcName),
+						new QuestNotActiveCondition(QUEST_SLOT),
+						new NotCondition(new QuestCompletedCondition(questComplete))),
+					false, ConversationStates.ATTENDING, null, new SayTextAction("Hej! W czym mogę #pomóc?"));
+			}
 		}
 
 		engine.add(ConversationStates.ATTENDING,
 			behaviour.getProductionActivity(),
-			new AndCondition(new SentenceHasErrorCondition()),
+			new AndCondition(new SentenceHasErrorCondition(), setQuestCondition(questComplete)),
 			false, ConversationStates.ATTENDING,
 			null, new ComplainAboutSentenceErrorAction());
 
@@ -110,7 +121,8 @@ public class MultiProducerAdder {
 			behaviour.getProductionActivity(),
 			new AndCondition(
 				new NotCondition(new SentenceHasErrorCondition()),
-				new QuestNotActiveCondition(QUEST_SLOT)),
+				new QuestNotActiveCondition(QUEST_SLOT),
+				setQuestCondition(questComplete)),
 			false, ConversationStates.ATTENDING,
 			null, new MultiProducerBehaviourAction(behaviour) {
 				@Override

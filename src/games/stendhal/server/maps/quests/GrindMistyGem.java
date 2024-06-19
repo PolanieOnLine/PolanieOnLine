@@ -36,7 +36,6 @@ import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
 import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.npc.condition.PlayerHasItemWithHimCondition;
 import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
-import games.stendhal.server.entity.npc.condition.QuestStateStartsWithCondition;
 import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
@@ -109,7 +108,7 @@ public class GrindMistyGem extends AbstractQuest {
 		npc.add(ConversationStates.ATTENDING, 
 			questTrigger,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-				new QuestStateStartsWithCondition(QUEST_SLOT, "grinding;"),
+				new QuestInStateCondition(QUEST_SLOT, 0, "grinding"),
 				new NotCondition(new TimePassedCondition(QUEST_SLOT, 2, DELAY))),
 			ConversationStates.IDLE, 
 			null, 
@@ -118,7 +117,7 @@ public class GrindMistyGem extends AbstractQuest {
 		npc.add(ConversationStates.ATTENDING,
 			questTrigger,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-				new QuestStateStartsWithCondition(QUEST_SLOT, "grinding;"),
+				new QuestInStateCondition(QUEST_SLOT, 0, "grinding"),
 				new TimePassedCondition(QUEST_SLOT, 2, DELAY)),
 			ConversationStates.IDLE,
 			null,
@@ -167,10 +166,12 @@ public class GrindMistyGem extends AbstractQuest {
 			final int random = Rand.roll1D100();
 			double probability = 0.3;
 			String questSlot = player.getQuest(QUEST_SLOT, 1);
-			int countCompletedQuest = Integer.parseInt(questSlot);
-			if (countCompletedQuest > 0 && !questSlot.isEmpty()) {
-				double temp = 0.05 * countCompletedQuest;
-				probability = Math.min(1.0, probability + temp);
+			if (!questSlot.isEmpty()) {
+				int countCompletedQuest = Integer.parseInt(questSlot);
+				if (countCompletedQuest > 0) {
+					double temp = 0.05 * countCompletedQuest;
+					probability = Math.min(1.0, probability + temp);
+				}
 			}
 
 			return random <= (probability * 100);
