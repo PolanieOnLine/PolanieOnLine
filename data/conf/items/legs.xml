@@ -272,7 +272,7 @@
 		<description>Oto para spodni ciemnomithrilowych.</description>
 		<implementation class-name="games.stendhal.server.entity.item.NewArms"/>
 		<attributes>
-			<def value="30"/>
+			<def value="36"/>
 			<min_level value="400"/>
 			<statusresist slots="legs;" type="bleeding" value="0.1"/>
 		</attributes>

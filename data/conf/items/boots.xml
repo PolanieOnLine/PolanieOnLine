@@ -273,7 +273,7 @@
 		<description>Oto para butów ciemnomithrilowych. Czuć w nich jak pulsuje, próbująca się wydostać energia.</description>
 		<implementation class-name="games.stendhal.server.entity.item.NewArms"/>
 		<attributes>
-			<def value="28"/>
+			<def value="30"/>
 			<min_level value="250"/>
 			<statusresist slots="feet;" type="bleeding" value="0.1"/>
 		</attributes>

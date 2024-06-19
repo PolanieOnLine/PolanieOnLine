@@ -285,7 +285,7 @@
 		<implementation class-name="games.stendhal.server.entity.item.NewArms"/>
 		<attributes>
 			<atk value="2"/>
-			<def value="165"/>
+			<def value="180"/>
 			<min_level value="350"/>
 			<statusresist slots="lhand;rhand;" type="bleeding" value="0.3"/>
 		</attributes>

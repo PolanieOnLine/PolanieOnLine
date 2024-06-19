@@ -457,7 +457,7 @@
 		<description>Oto zbroja ciemnomithrilowa. W połowie pokryta mrokiem, lecz wciąż świeci jasno.</description>
 		<implementation class-name="games.stendhal.server.entity.item.NewArms"/>
 		<attributes>
-			<def value="80"/>
+			<def value="90"/>
 			<min_level value="400"/>
 			<statusresist slots="armor;" type="bleeding" value="0.2"/>
 		</attributes>
