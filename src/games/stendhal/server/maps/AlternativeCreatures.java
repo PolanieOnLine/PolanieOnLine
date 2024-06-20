@@ -87,8 +87,8 @@ public class AlternativeCreatures implements ZoneConfigurator {
 	 */
 	private void creatureAttributes(Creature c, double factor) {
 		c.setName("mgielny " + c.getName());
-		c.setAtk(calculateStat(c.getAtk(), factor));
-		c.setDef(calculateStat(c.getDef(), factor));
+		c.setAtk(calculateStat(c.getAtk(), factor, true));
+		c.setDef(calculateStat(c.getDef(), factor, true));
 		c.setBaseHP(calculateStat(c.getBaseHP(), factor, true));
 		c.setHP(calculateStat(c.getHP(), factor, true));
 		c.setXP(calculateStat(c.getXP(), factor));
