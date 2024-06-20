@@ -1,5 +1,16 @@
 Changelog
 ---------
+1.39.2
+*świat*
+- Ekwipunek ciemnomithrilowy otrzymał wzmocnienie w ilościach punktów obrony
+
+*naprawiono błędy*
+- Poprawiono na odpowiedni ze wcześniejszymi założeniami czas oczekiwania na wyprodukowanie elementu ekwipunku
+- Naprawiono inicjowanie odpowiedniego typu instancji obiektu podczas produkcji przedmiotu
+- Naprawiono sprawdzanie maksymalnego zakresu wartości liczby ataku i obrony dla mgielnych potworów
+- Naprawiono inicjowanie komendy 'offer/oferta' u kowala Przemysława
+
+
 1.39.1
 *serwer*
 - Dodano brakujące atrybuty modyfikujące światło alternatywnych map
