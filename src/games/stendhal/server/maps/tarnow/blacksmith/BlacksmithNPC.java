@@ -94,7 +94,7 @@ public class BlacksmithNPC implements ZoneConfigurator {
 					null);
 
 				add(ConversationStates.ANY,
-					ConversationPhrases.HELP_MESSAGES,
+					ConversationPhrases.OFFER_MESSAGES,
 					new QuestCompletedCondition("forge_newarms"),
 					ConversationStates.ATTENDING,
 					"Mogę zaoferować ulepszenie twoich przedmiotów z mithrilu za pomocą klejnotu ciemnolitu. " + productionList,
