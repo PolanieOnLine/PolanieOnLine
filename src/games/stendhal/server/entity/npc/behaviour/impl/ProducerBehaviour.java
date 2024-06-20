@@ -17,7 +17,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import games.stendhal.common.MathHelper;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.grammar.ItemParserResult;
 import games.stendhal.common.parser.ExpressionType;
