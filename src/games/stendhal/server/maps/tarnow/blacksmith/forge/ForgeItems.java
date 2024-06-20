@@ -90,12 +90,12 @@ public class ForgeItems {
 	
 	private static HashMap<String, Integer> getProductionTime() {
 		final HashMap<String, Integer> productionTime = new HashMap<String, Integer>();
-		productionTime.put(helmet, TimeUtil.MINUTES_IN_DAY);
-		productionTime.put(armor, TimeUtil.MINUTES_IN_DAY * 4);
-		productionTime.put(legs, TimeUtil.MINUTES_IN_DAY * 2);
-		productionTime.put(boots, TimeUtil.MINUTES_IN_DAY);
-		productionTime.put(shield, TimeUtil.MINUTES_IN_DAY * 2);
-		productionTime.put(cloak, TimeUtil.MINUTES_IN_DAY);
+		productionTime.put(helmet, TimeUtil.SECONDS_IN_DAY);
+		productionTime.put(armor, TimeUtil.SECONDS_IN_DAY * 4);
+		productionTime.put(legs, TimeUtil.SECONDS_IN_DAY * 2);
+		productionTime.put(boots, TimeUtil.SECONDS_IN_DAY);
+		productionTime.put(shield, TimeUtil.SECONDS_IN_DAY * 2);
+		productionTime.put(cloak, TimeUtil.SECONDS_IN_DAY);
 
 		return productionTime;
 	}
