@@ -18,6 +18,7 @@ import games.stendhal.common.Rand;
 import games.stendhal.common.constants.Testing;
 import games.stendhal.server.core.engine.GameEvent;
 import games.stendhal.server.entity.RPEntity;
+import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.item.ConsumableItem;
 import games.stendhal.server.entity.player.Player;
 
@@ -89,7 +90,7 @@ public class PoisonAttacker extends StatusAttacker {
 		final int roll = Rand.roll1D100();
 		if (roll <= actualProbability) {
 			if (target.getStatusList().inflictStatus((Status) getStatus().clone(), attacker)) {
-				new GameEvent(attacker.getName(), "poison", target.getName()).raise();
+				new GameEvent(attacker.getName(), "poison", target.getName(), entityToType(attacker), entityToType(target)).raise();
 				target.sendPrivateText(target.getGenderVerb("Zostałeś") + " " + target.getGenderVerb("otruty") + " przez " + attacker.getName() + ".");
 			}
 		}
@@ -98,6 +99,16 @@ public class PoisonAttacker extends StatusAttacker {
 	@Override
 	public void onHit(RPEntity target, RPEntity attacker, int damage) {
 		// do nothing, especially do not process the logic of the super class
+	}
+
+	public String entityToType(final RPEntity entity) {
+		if (entity instanceof Player) {
+			return "P";
+		} else if (entity instanceof Creature) {
+			return "C";
+		} else {
+			return "E";
+		}
 	}
 
 }
