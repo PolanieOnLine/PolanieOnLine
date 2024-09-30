@@ -434,6 +434,7 @@
 		<description>Oto pas ciemnomithrilowy. Zaklęty w pół mrok, który przyćmiewa w połowie światło.</description>
 		<implementation class-name="games.stendhal.server.entity.item.NewArms"/>
 		<attributes>
+			<atk value="1"/>
 			<def value="33"/>
 			<min_level value="300"/>
 			<statusresist slots="pas;" type="bleeding" value="0.1"/>

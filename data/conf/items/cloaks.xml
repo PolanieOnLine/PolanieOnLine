@@ -413,6 +413,7 @@
 		<description>Oto płaszcz ciemnomithrilowy.</description>
 		<implementation class-name="games.stendhal.server.entity.item.NewArms"/>
 		<attributes>
+			<atk value="1"/>
 			<def value="40"/>
 			<min_use value="250"/>
 			<min_level value="400"/>

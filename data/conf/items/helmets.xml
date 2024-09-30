@@ -402,6 +402,7 @@
 		<description>Oto hełm ciemnomithrilowy.</description>
 		<implementation class-name="games.stendhal.server.entity.item.NewArms"/>
 		<attributes>
+			<atk value="1"/>
 			<def value="42"/>
 			<min_level value="300"/>
 			<statusresist slots="head;" type="bleeding" value="0.1"/>
