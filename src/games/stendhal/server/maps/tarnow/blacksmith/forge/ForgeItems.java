@@ -23,6 +23,7 @@ import games.stendhal.server.util.TimeUtil;
 public class ForgeItems {
 	private final static String helmet = "hełm ciemnomithrilowy";
 	private final static String armor = "zbroja ciemnomithrilowa";
+	private final static String belt = "pas ciemnomithrilowy";
 	private final static String legs = "spodnie ciemnomithrilowe";
 	private final static String boots = "buty ciemnomithrilowe";
 	private final static String shield = "tarcza ciemnomithrilowa";
@@ -32,6 +33,7 @@ public class ForgeItems {
 		final HashSet<String> productionItems = new HashSet<String>();
 		productionItems.add(helmet);
 		productionItems.add(armor);
+		productionItems.add(belt);
 		productionItems.add(legs);
 		productionItems.add(boots);
 		productionItems.add(shield);
@@ -52,6 +54,12 @@ public class ForgeItems {
 		productionArmor.put("sztabka platyny", 10);
 		productionArmor.put("bryłka mithrilu", 19);
 		productionArmor.put("zbroja z mithrilu", 1);
+		
+		final Map<String, Integer> productionBelt = new TreeMap<String, Integer>();
+		productionBelt.put("klejnot ciemnolitu", 5);
+		productionBelt.put("sztabka platyny", 10);
+		productionBelt.put("bryłka mithrilu", 20);
+		productionBelt.put("pas z mithrilu", 1);
 
 		final Map<String, Integer> productionLegs = new TreeMap<String, Integer>();
 		productionLegs.put("klejnot ciemnolitu", 3);
@@ -80,6 +88,7 @@ public class ForgeItems {
 		final HashMap<String, Map<String, Integer>> requiredResources = new HashMap<String, Map<String, Integer>>();
 		requiredResources.put(helmet, productionHelmet);
 		requiredResources.put(armor, productionArmor);
+		requiredResources.put(belt, productionBelt);
 		requiredResources.put(legs, productionLegs);
 		requiredResources.put(boots, productionBoots);
 		requiredResources.put(shield, productionShield);
@@ -92,6 +101,7 @@ public class ForgeItems {
 		final HashMap<String, Integer> productionTime = new HashMap<String, Integer>();
 		productionTime.put(helmet, TimeUtil.SECONDS_IN_DAY);
 		productionTime.put(armor, TimeUtil.SECONDS_IN_DAY * 4);
+		productionTime.put(belt, TimeUtil.SECONDS_IN_DAY * 2);
 		productionTime.put(legs, TimeUtil.SECONDS_IN_DAY * 2);
 		productionTime.put(boots, TimeUtil.SECONDS_IN_DAY);
 		productionTime.put(shield, TimeUtil.SECONDS_IN_DAY * 2);
@@ -104,6 +114,7 @@ public class ForgeItems {
 		final HashMap<String, Boolean> itemsBound = new HashMap<String, Boolean>();
 		itemsBound.put(helmet, true);
 		itemsBound.put(armor, true);
+		itemsBound.put(belt, true);
 		itemsBound.put(legs, true);
 		itemsBound.put(boots, true);
 		itemsBound.put(shield, true);
