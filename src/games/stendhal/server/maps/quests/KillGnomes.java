@@ -90,9 +90,6 @@ public class KillGnomes implements QuestManuscript {
 			.rewardWith(new IncreaseXPAction(1000))
 			.rewardWith(new EquipItemAction("eliksir", 10));
 
-		// completions count is stored in 3rd index of quest slot
-		quest.setCompletionsIndexes(2);
-
 		return quest;
 	}
 }

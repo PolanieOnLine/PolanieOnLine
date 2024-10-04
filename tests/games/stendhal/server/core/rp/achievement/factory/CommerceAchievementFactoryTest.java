@@ -22,6 +22,7 @@ import org.junit.Test;
 
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.fsm.Engine;
+import games.stendhal.server.entity.npc.shop.ShopType;
 import games.stendhal.server.entity.npc.shop.ShopsList;
 import games.stendhal.server.entity.player.Player;
 import utilities.AchievementTestHelper;
@@ -59,8 +60,8 @@ public class CommerceAchievementFactoryTest extends AchievementTestHelper {
 		npc.addGreeting();
 		npc.addGoodbye();
 		final ShopsList shops = ShopsList.get();
-		shops.addBuyer("buygrain", "zboże", 1);
-		shops.configureNPC(npc, "buygrain", false, false);
+		shops.add("buygrain", ShopType.ITEM_BUY, "zboże", 1);
+		shops.configureNPC(npc, "buygrain", ShopType.ITEM_BUY, false);
 		final Engine en = npc.getEngine();
 		en.step(player, "hi");
 		equipWithStackableItem(player, "zboże", 20000);

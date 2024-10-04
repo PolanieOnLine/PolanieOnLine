@@ -19,6 +19,7 @@ import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.UseListener;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.npc.SilentNPC;
+import games.stendhal.server.entity.npc.behaviour.impl.idle.WanderIdleBehaviour;
 
 /**
  * A playful puppy
@@ -41,8 +42,7 @@ public class DogNPC implements ZoneConfigurator {
 		dog.setDescription("Oto Tommy.");
 		dog.setEntityClass("animal/puppy");
 		dog.setBaseSpeed(0.5);
-		dog.moveRandomly();
-		dog.setRandomMovementRadius(5, true);
+		dog.setIdleBehaviour(new WanderIdleBehaviour(5));
         dog.setSounds(Arrays.asList("dog-small-bark-1", "dog-small-bark-2"));
 		zone.add(dog);
 	}

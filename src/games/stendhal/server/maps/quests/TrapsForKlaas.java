@@ -91,6 +91,9 @@ public class TrapsForKlaas implements QuestManuscript {
 			.whenQuestWasAccepted("Obiecałem zebrać 20 pułapek na gryzonie i dostarczyć je Klaasowi.")
 			.whenTaskWasCompleted("Mam wystarczająco pułapek.")
 			.whenQuestWasCompleted("Dostarczyłem pułapki na gryzonie Klaasowi. Otrzymałem trochę doświadczenia i antidotum.")
+			.whenQuestWasCompleted("Klaas otrzymał ode mnie pułapki na gryzonie. W zamian otrzymałem trochę doświadczenia i antidotum."
+					+ " Wspomniał także o aptekarzu i powiedział, że powinienem porozmawiać z żołnierzami strzegącymi miasta"
+					+ " Ados.")
 			.whenQuestCanBeRepeated("Powinienem sprawdzić, czy Klaas znowu nie potrzebuje mojej pomocy.");
 
 		quest.offer()
@@ -152,9 +155,6 @@ public class TrapsForKlaas implements QuestManuscript {
 				ConversationStates.ATTENDING,
 				"Zgubiłeś notatkę? Cóż, mogę napisać kolejną. Ale wydaje się, że nie masz miejsca, aby ją przygarnąć.",
 				null);
-
-		// completions count is stored in 3rd index of quest slot
-		quest.setCompletionsIndexes(2);
 
 		return quest;
 	}

@@ -226,7 +226,7 @@ public class WeeklyItemQuest extends AbstractQuest {
 		addMed("pierścień leczniczy", 1); // 78.26, 73
 
 		// special (easy)
-		addEasy("czterolistna koniczyna",1); // 76.37, 9
+		addEasy("talizman szczęścia",1); // 76.37, 9
 		// special (medium)
 		addMed("mityczne jajo",1); // n/a, n/a (quest reward)
 

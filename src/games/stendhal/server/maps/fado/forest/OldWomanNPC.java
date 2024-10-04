@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -12,15 +12,12 @@
 package games.stendhal.server.maps.fado.forest;
 
 import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.core.pathfinder.FixedPath;
-import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
+import games.stendhal.server.entity.npc.behaviour.impl.idle.WanderIdleBehaviour;
 
 /**
  * Creates Jefs mother Amber in Fado Forest and other areas (she moves in different zones)
@@ -41,6 +38,7 @@ public class OldWomanNPC implements ZoneConfigurator {
 
 	private void buildNPC(final StendhalRPZone zone) {
 		final SpeakerNPC npc = new SpeakerNPC("Amber") {
+			/*
 			@Override
 			protected void createPath() {
 				final List<Node> nodes = new LinkedList<Node>();
@@ -108,6 +106,7 @@ public class OldWomanNPC implements ZoneConfigurator {
 				nodes.add(new Node(38,8));
 				setPath(new FixedPath(nodes, true));
 			}
+			*/
 
 			@Override
 			protected void createDialog() {
@@ -129,6 +128,7 @@ public class OldWomanNPC implements ZoneConfigurator {
 		npc.setEntityClass("oldwomannpc");
 		npc.setGender("F");
 		npc.setPosition(38, 8);
+		npc.setIdleBehaviour(new WanderIdleBehaviour());
 		// hide location from website
 		npc.hideLocation();
 		zone.add(npc);

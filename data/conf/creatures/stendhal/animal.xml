@@ -32,6 +32,7 @@
 			<profile name="animal"/>
 			<profile name="offensive"/>
 			<profile name="patrolling"/>
+			<profile name="wander"/>
 		</ai>
 	</creature>
 
@@ -840,7 +841,7 @@
 
 	<creature name="niedźwiedź biały">
 		<type class="animal" subclass="polar_bear" tileid="animal.png:3"/>
-		<description></description>
+		<description>Oto niedźwiedź biały, który żyje na lodowatej pustyni. Strzec się! Może cię powalić swoimi potężnymi pazurami!</description>
 		<attributes>
 			<atk value="225"/>
 			<def value="51"/>
@@ -982,7 +983,7 @@
 	
 	<creature name="nietoperz olbrzymi wampir">
 		<type class="animal" subclass="bat_giant_red" tileid="animal.png:6"/>
-		<description></description>
+		<description>Oto gigantyczny nietoperz wampir. Jakby małe nie było wystarczająco brzydkie, te gigantyczne są w stanie pokonać każdego, kto ośmieli się stanąć przed nimi.</description>
 		<attributes>
 			<atk value="752"/>
 			<def value="161"/>

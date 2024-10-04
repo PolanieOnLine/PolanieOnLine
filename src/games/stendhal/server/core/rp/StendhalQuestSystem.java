@@ -135,6 +135,7 @@ public class StendhalQuestSystem {
 		loadQuest(new LearnAboutOrbs());
 		loadQuest(new LookBookforCeryl());
 		loadQuest(new LookUpQuote());
+		loadQuest(new LuckyFourLeafClover());
 		loadQuest(new KanmararnSoldiers());
 		loadQuest(new KillBlordroughs());
 		loadQuest(new KillDarkElves());

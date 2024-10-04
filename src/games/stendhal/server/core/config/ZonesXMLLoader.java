@@ -1,9 +1,14 @@
-/*
- * @(#) src/games/stendhal/server/config/ZonesXMLLoader.java
- *
- * $Id$
- */
-
+/***************************************************************************
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
+ ***************************************************************************
+ ***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
 package games.stendhal.server.core.config;
 
 import java.io.FileNotFoundException;
@@ -20,9 +25,6 @@ import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
-
-//
-//
 
 import games.stendhal.common.tiled.LayerDefinition;
 import games.stendhal.common.tiled.StendhalMapStructure;
@@ -217,6 +219,8 @@ public final class ZonesXMLLoader {
 		// Effect layers are optional too
 		loadOptionalLayer(zone, zonedata, "blend_ground");
 		loadOptionalLayer(zone, zonedata, "blend_roof");
+		// alternative floor layer for clients that support parallax backgrounds
+		loadOptionalLayer(zone, zonedata, "0_floor_parallax");
 
 		zone.addCollisionLayer(name + ".collision",
 				zonedata.getLayer("collision"));

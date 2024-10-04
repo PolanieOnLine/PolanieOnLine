@@ -73,7 +73,7 @@ public class UnicornHornsForZelan implements QuestManuscript {
 					+ " Jest to naprawdę niebezpieczne w lasach otaczających Atlantydę."
 					+ " Jeśli jesteś odważny, przydałaby mi się pomoc w zbieraniu"
 					+ " rogów jednorożca. Pomożesz mi?")
-			.respondToAccept("Świetnie! Uważaj, tam jest dużo ogromnych"
+			.respondToAccept("Świetnie! Potrzebuję 10 rogów. Uważaj, tam jest dużo ogromnych"
 					+ " stworów, a te centaury są naprawdę okropne.")
 			.respondToReject("W porządku, znajdę kogoś, kto mi pomoże.")
 			.rejectionKarmaPenalty(10.0)
@@ -94,9 +94,6 @@ public class UnicornHornsForZelan implements QuestManuscript {
 			.rewardWith(new IncreaseKarmaAction(30.0))
 			.rewardWith(new EquipItemAction("zupa", 3))
 			.rewardWith(new EquipItemAction("money", 20000));
-
-		// completions count is stored in 3rd index of quest slot
-		quest.setCompletionsIndexes(2);
 
 		return quest;
 	}

@@ -38,6 +38,7 @@ import games.stendhal.common.Debug;
 import games.stendhal.common.Direction;
 import games.stendhal.common.Line;
 import games.stendhal.common.MathHelper;
+import games.stendhal.common.Rand;
 import games.stendhal.common.filter.FilterCriteria;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.tiled.LayerDefinition;
@@ -55,10 +56,10 @@ import games.stendhal.server.entity.creature.AttackableCreature;
 import games.stendhal.server.entity.creature.BabyDragon;
 import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.creature.DomesticAnimal;
+import games.stendhal.server.entity.creature.Goat;
 import games.stendhal.server.entity.creature.Owczarek;
 import games.stendhal.server.entity.creature.OwczarekPodhalanski;
 import games.stendhal.server.entity.creature.Sheep;
-import games.stendhal.server.entity.creature.Goat;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.mapstuff.WeatherEntity;
 import games.stendhal.server.entity.mapstuff.area.WalkBlocker;
@@ -66,6 +67,7 @@ import games.stendhal.server.entity.mapstuff.area.WalkBlockerFactory;
 import games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination;
 import games.stendhal.server.entity.mapstuff.portal.Portal;
 import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
+import games.stendhal.server.entity.mapstuff.spawner.GoatFood;
 import games.stendhal.server.entity.mapstuff.spawner.PassiveEntityRespawnPoint;
 import games.stendhal.server.entity.mapstuff.spawner.PassiveEntityRespawnPointFactory;
 import games.stendhal.server.entity.mapstuff.spawner.SheepFood;
@@ -86,7 +88,6 @@ import games.stendhal.server.entity.mapstuff.useable.sources.SourceSapphire;
 import games.stendhal.server.entity.mapstuff.useable.sources.SourceShadow;
 import games.stendhal.server.entity.mapstuff.useable.sources.SourceSilver;
 import games.stendhal.server.entity.mapstuff.useable.sources.SourceSulfur;
-import games.stendhal.server.entity.mapstuff.spawner.GoatFood;
 import games.stendhal.server.entity.npc.NPC;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.TrainingDummy;
@@ -479,12 +480,28 @@ public class StendhalRPZone extends MarauroaRPZone {
 		attributes = attr;
 	}
 
+	/**
+	 * Sets collision information for this zone.
+	 *
+	 * @param name
+	 *   Layer name.
+	 * @param collisionLayer
+	 *   Layer definition.
+	 */
 	public void addCollisionLayer(final String name, final LayerDefinition collisionLayer)
 			throws IOException {
 		addToContent(name, collisionLayer.encode());
 		collisionMap.setCollisionData(collisionLayer);
 	}
 
+	/**
+	 * Sets protection information for this zone.
+	 *
+	 * @param name
+	 *   Layer name.
+	 * @param protectionLayer
+	 *   Layer definition.
+	 */
 	public void addProtectionLayer(final String name, final LayerDefinition protectionLayer)
 			throws IOException {
 		addToContent(name, protectionLayer.encode());
@@ -1217,9 +1234,9 @@ public class StendhalRPZone extends MarauroaRPZone {
 	 * Checks an area for collision.
 	 *
 	 * @param shape
-	 * 		Rectangle area.
+	 *   Rectangle area.
 	 * @return
-	 * 		<code>true</code> if any collision tiles are found in the area.
+	 *   {@code true} if any collision tiles are found in the area.
 	 */
 	public boolean collides(final Rectangle2D shape) {
 		return collisionMap.collides(shape);
@@ -1639,6 +1656,19 @@ public class StendhalRPZone extends MarauroaRPZone {
 		}
 	}
 
+	public void preLogic() {
+		for (final NPC npc : npcs) {
+			try {
+				// SpeakerNPC logic should have already been executed in rule processor
+				if (!(npc instanceof SpeakerNPC)) {
+					npc.preLogic();
+				}
+			} catch (final Exception e) {
+				logger.error("Error in npc pre-logic for zone " + getID().getID(), e);
+			}
+		}
+	}
+
 	public void logic() {
 		for (final NPC npc : npcs) {
 			try {
@@ -1706,23 +1736,60 @@ public class StendhalRPZone extends MarauroaRPZone {
         return false;
     }
 
-
+    /**
+	 * Get entities on map filtered by criteria.
+	 *
+	 * @param criteria
+	 *   Filter criteria.
+	 * @return
+	 *   List of entities that meet {@code criteria}.
+	 */
 	public List<Entity> getFilteredEntities(final FilterCriteria<Entity> criteria) {
 		final List <Entity> result = new LinkedList<Entity>();
-
 		for (final RPObject obj : objects.values()) {
-	            if (obj instanceof Entity) {
-					final Entity entity = (Entity) obj;
-					if (criteria.passes(entity)) {
-						result.add(entity);
-					}
-
+			if (obj instanceof Entity) {
+				final Entity entity = (Entity) obj;
+				if (criteria.passes(entity)) {
+					result.add(entity);
 				}
-	        }
-
+			}
+		}
 		return result;
+	}
 
+	/**
+	 * Get entities on map of a specific class type.
+	 *
+	 * @param clazz
+	 *   Entity class type.
+	 * @param subclasses
+	 *   If {@code true}, include subclass instances.
+	 * @return
+	 *   List of entities of type {@code clazz}.
+	 */
+	public List<? extends Entity> getEntitiesOfClass(Class<? extends Entity> clazz,
+			boolean subclasses) {
+		return getFilteredEntities(new FilterCriteria<Entity>() {
+			@Override
+			public boolean passes(Entity o) {
+				if (subclasses) {
+					return clazz.isInstance(o);
+				}
+				return o.getClass() == clazz;
+			}
+		});
+	}
 
+	/**
+	 * Get entities on map of a specific class type including subclass instances.
+	 *
+	 * @param clazz
+	 *   Entity class type.
+	 * @return
+	 *   List of entities of type {@code clazz}.
+	 */
+	public List<? extends Entity> getEntitiesOfClass(Class<? extends Entity> clazz) {
+		return getEntitiesOfClass(clazz, true);
 	}
 
 	/**
@@ -2089,5 +2156,39 @@ public class StendhalRPZone extends MarauroaRPZone {
 			logger.warn("Found multiple weather entities in zone " + getName() + ".");
 		}
 		return (WeatherEntity) entities.get(0);
+	}
+
+	/**
+	 * Attempts to find a position where an entity can be spawned.
+	 *
+	 * @param entity
+	 *   Entity attempting to spawn.
+	 * @param checkObjects
+	 *   If {@code false}, only the collision map will be used.
+	 * @return
+	 *   Appropriate position or `null` if none found.
+	 */
+	public Point getRandomSpawnPosition(final Entity entity, boolean checkObjects) {
+		final short retries = 50;
+		for (short t = 0; t < retries; t++) {
+			final int x = Rand.rand(getWidth());
+			final int y = Rand.rand(getHeight());
+			if (!collides(entity, x, y, checkObjects)) {
+				return new Point(x, y);
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Attempts to find a position where an entity can be spawned.
+	 *
+	 * @param entity
+	 *   Entity attempting to spawn.
+	 * @return
+	 *   Appropriate position or `null` if none found.
+	 */
+	public Point getRandomSpawnPosition(final Entity entity) {
+		return getRandomSpawnPosition(entity, true);
 	}
 }

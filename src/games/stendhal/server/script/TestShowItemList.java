@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2018 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -13,6 +13,7 @@ package games.stendhal.server.script;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import games.stendhal.common.NotificationType;
@@ -20,6 +21,7 @@ import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.scripting.ScriptImpl;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.ItemInformation;
+import games.stendhal.server.entity.npc.shop.ShopType;
 import games.stendhal.server.entity.npc.shop.ShopsList;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.events.ShowItemListEvent;
@@ -33,23 +35,39 @@ import games.stendhal.server.events.ShowItemListEvent;
  * As admin uses /script AdminMaker.class to summon her right next to him/her.
  * Please unload it with /script -unload AdminMaker.class
  */
-
 public class TestShowItemList extends ScriptImpl {
-
 	@Override
 	public void execute(final Player admin, final List<String> args) {
 		super.execute(admin, args);
 
 		List<Item> itemList = new LinkedList<Item>();
 
+		int argc = args.size();
 		if (args.isEmpty()) {
 			itemList.add(prepareItem("maczuga", 100));
 			itemList.add(prepareItem("skórzana zbroja", -100));
 			itemList.add(prepareItem("miecz lodowy", -10000));
 		} else {
-			final String shopName = args.get(0);
+			final String shopName;
+			ShopType shopType = null;
+			if (argc > 1) {
+				shopType = ShopType.fromString(args.get(0).toLowerCase(Locale.ENGLISH));
+				shopName = args.get(1);
+			} else {
+				shopName = args.get(0);
+			}
 			ShopsList shops = SingletonRepository.getShopsList();
-			Map<String, Integer> items = shops.get(shopName);
+			Map<String, Integer> items = null;
+			if (shopType != null) {
+				items = shops.get(shopName, shopType);
+			} else {
+				for (ShopType st: ShopType.values()) {
+					items = shops.get(shopName, st);
+					if (items != null) {
+						break;
+					}
+				}
+			}
 
 			if (items == null) {
 				admin.sendPrivateText(NotificationType.ERROR, "Nie znaleziono sklepu \"" + shopName + "\"");

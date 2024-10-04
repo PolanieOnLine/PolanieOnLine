@@ -19,9 +19,11 @@ import java.util.Map;
 
 import games.stendhal.common.constants.Occasion;
 import games.stendhal.common.grammar.Grammar;
+import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
+import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.DropRecordedItemAction;
 import games.stendhal.server.entity.npc.action.IncreaseAtkXPDependentOnLevelAction;
@@ -244,7 +246,7 @@ public class DailyItemQuest extends AbstractQuest {
 		items.put("sclaria",5);
 		items.put("mandragora",3);
 		items.put("kekik",5);
-		
+
 		// legs
 		items.put("spodnie lazurowe",1);
 		items.put("spodnie kolcze",1);
@@ -322,24 +324,35 @@ public class DailyItemQuest extends AbstractQuest {
 
 	private ChatAction startQuestAction() {
 		// common place to get the start quest actions as we can both starts it and abort and start again
-		
+
 		final List<ChatAction> actions = new LinkedList<ChatAction>();
 		actions.add(new StartRecordingRandomItemCollectionAction(QUEST_SLOT,0,items,"Ados potrzebuje zapasów. Zdobądź [item]"
 				+ " i powiedz #załatwione, gdy przyniesiesz."));	
 		actions.add(new SetQuestToTimeStampAction(QUEST_SLOT, 1));
-		
+
 		return new MultipleActions(actions);
 	}
-	
+
 	private void getQuest() {
 		npc.add(ConversationStates.ATTENDING, ConversationPhrases.QUEST_MESSAGES,
 				new AndCondition(new QuestActiveCondition(QUEST_SLOT),
 								 new NotCondition(new TimePassedCondition(QUEST_SLOT,1,expireDelay))), 
 				ConversationStates.ATTENDING,
 				null,
-				new SayRequiredItemAction(QUEST_SLOT,0,"Już dostałeś zadanie by przynieść [item]"
-						+ ". Powiedz #załatwione jeżeli przyniesiesz!"));
-		
+				new ChatAction() {
+					@Override
+					public void fire(Player player, Sentence sentence, EventRaiser raiser) {
+						if ("kanapka".equals(player.getRequiredItemName(QUEST_SLOT, 0))
+								&& player.getNumberOfEquipped("kanapka") >= player.getRequiredItemQuantity(QUEST_SLOT, 0)) {
+							// experimental sandwich was detected in condition
+							npc.say("Jest coś dziwnego w tych kanapkach. Wróć, gdy będziesz mieć takie, które są niezmodyfikowane.");
+						} else {
+							new SayRequiredItemAction(QUEST_SLOT,0,"Już dostałeś zadanie by przynieść [item]"
+									+ ". Powiedz #załatwione jeżeli przyniesiesz!").fire(player, sentence, raiser);
+						}
+					}
+				});
+
 		npc.add(ConversationStates.ATTENDING, ConversationPhrases.QUEST_MESSAGES,
 				new AndCondition(new QuestActiveCondition(QUEST_SLOT),
 								 new TimePassedCondition(QUEST_SLOT,1,expireDelay)), 
@@ -347,7 +360,7 @@ public class DailyItemQuest extends AbstractQuest {
 				null,
 				new SayRequiredItemAction(QUEST_SLOT,0,"Jesteś na etapie poszukiwania [item]"
 						+ ", powiedz #załatwione, jak przyniesiesz. Być może nie ma tych przedmiotów! Możesz przynieść #inny przedmiot jeżeli chcesz lub wróć z tym, o który cię na początku prosiłem."));
-	
+
 		npc.add(ConversationStates.ATTENDING, ConversationPhrases.QUEST_MESSAGES,
 				new AndCondition(new QuestCompletedCondition(QUEST_SLOT),
 								 new NotCondition(new TimePassedCondition(QUEST_SLOT,1,delay))), 
@@ -363,7 +376,7 @@ public class DailyItemQuest extends AbstractQuest {
 				null,
 				startQuestAction());
 	}
-	
+
 	private void completeQuest() {
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.FINISH_MESSAGES, 
@@ -371,14 +384,14 @@ public class DailyItemQuest extends AbstractQuest {
 				ConversationStates.ATTENDING, 
 				"Obawiam się, że jeszcze nie dałem tobie #zadania.",
 				null);
-		
+
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.FINISH_MESSAGES, 
 				new QuestCompletedCondition(QUEST_SLOT),
 				ConversationStates.ATTENDING, 
 				"Już ukończyłeś ostatnie zadanie, które ci dałem.",
 				null);
-		
+
 		final List<ChatAction> actions = new LinkedList<ChatAction>();
 		actions.add(new DropRecordedItemAction(QUEST_SLOT,0));
 		actions.add(new SetQuestToTimeStampAction(QUEST_SLOT, 1));
@@ -390,7 +403,7 @@ public class DailyItemQuest extends AbstractQuest {
 			actions.add(new IncreaseDefXPDependentOnLevelAction(8, 90.0));
 		}
 		actions.add(new IncreaseKarmaAction(10.0));
-		
+
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.FINISH_MESSAGES,
 				new AndCondition(new QuestActiveCondition(QUEST_SLOT),
@@ -398,7 +411,7 @@ public class DailyItemQuest extends AbstractQuest {
 				ConversationStates.ATTENDING, 
 				"Dobra robota! Pozwól sobie podziękować w imieniu obywateli Ados!",
 				new MultipleActions(actions));
-		
+
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.FINISH_MESSAGES,
 				new AndCondition(new QuestActiveCondition(QUEST_SLOT),
@@ -407,9 +420,8 @@ public class DailyItemQuest extends AbstractQuest {
 				null,
 				new SayRequiredItemAction(QUEST_SLOT,0,"Jeszcze nie przyniosłeś [item]"
 						+ ". Idź i zdobądź, a wtedy wróć i powiedz #załatwione jak skończysz."));
-
 	}
-	
+
 	private void abortQuest() {
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.ABORT_MESSAGES,
@@ -419,7 +431,7 @@ public class DailyItemQuest extends AbstractQuest {
 				null, 
 				// start quest again immediately
 				startQuestAction());
-		
+
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.ABORT_MESSAGES,
 				new AndCondition(new QuestActiveCondition(QUEST_SLOT),
@@ -427,14 +439,13 @@ public class DailyItemQuest extends AbstractQuest {
 				ConversationStates.ATTENDING, 
 				"Nie minęło zbyt wiele czasu, od rozpoczęcia zadania. Nie pozwolę Tobie poddać się tak szybko.", 
 				null);
-		
+
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.ABORT_MESSAGES,
 				new QuestNotActiveCondition(QUEST_SLOT),
 				ConversationStates.ATTENDING, 
 				"Obawiam się, że jeszcze nie dałem tobie #zadania.", 
 				null);
-		
 	}
 
 	@Override
@@ -468,7 +479,7 @@ public class DailyItemQuest extends AbstractQuest {
 		if (player.hasQuest(QUEST_SLOT) && !player.isQuestCompleted(QUEST_SLOT)) {
 			String questItem = player.getRequiredItemName(QUEST_SLOT,0);
 			int amount = player.getRequiredItemQuantity(QUEST_SLOT,0);
-			if (!player.isEquipped(questItem, amount)) {
+			if (!player.isSubmittableEquipped(questItem, amount)) {
 				res.add(player.getGenderVerb("Zostałem") + " " + player.getGenderVerb("poproszony") + " o przyniesienie "
 						+ Grammar.quantityplnoun(amount, questItem) + ", aby pomóc Ados. Nie mam tego jeszcze.");
 			} else {

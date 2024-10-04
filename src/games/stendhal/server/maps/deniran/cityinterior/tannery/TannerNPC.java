@@ -136,7 +136,7 @@ public class TannerNPC implements ZoneConfigurator {
 				return true;
 			}
 		};
-		// player can start quest if they have looted 1,000,000 money & they have not already started or finished the quest
+		// player can start quest if they have looted 100,000 money & they have not already started or finished the quest
 		final ChatCondition canStartQuestCondition = new AndCondition(
 				new QuestNotStartedCondition(QUEST_SLOT),
 				new QuestNotCompletedCondition(QUEST_SLOT),
@@ -378,7 +378,7 @@ public class TannerNPC implements ZoneConfigurator {
 
 			@Override
 			public String getRegion() {
-				return Region.DENIRAN;
+				return Region.DENIRAN_CITY;
 			}
 
 			@Override

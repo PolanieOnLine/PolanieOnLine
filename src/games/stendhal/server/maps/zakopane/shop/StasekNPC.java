@@ -20,6 +20,7 @@ import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.QuestCompletedSellerBehaviour;
+import games.stendhal.server.entity.npc.shop.ShopType;
 import games.stendhal.server.entity.npc.shop.ShopsList;
 
 /**
@@ -47,7 +48,9 @@ public class StasekNPC implements ZoneConfigurator {
 				addHelp("Zapytaj mnie o #zadanie, a może będziesz w stanie mi pomóc...");
 				addJob("Zarządzam tym sklepem z uzbrojeniem w Zakopcu.");
 				addGoodbye("Miło było Cię poznać.");
-				new SellerAdder().addSeller(this, new QuestCompletedSellerBehaviour("wegiel_na_opal", "Musiałbyś wykonać moje #'zadanie', abym mógł tobie zaufać!", shops.get("stasek")), false);
+				new SellerAdder().addSeller(this, new QuestCompletedSellerBehaviour("wegiel_na_opal",
+						"Musiałbyś wykonać moje #'zadanie', abym mógł tobie zaufać!",
+						shops.get("stasek", ShopType.ITEM_SELL)), false);
 			}
 		};
 

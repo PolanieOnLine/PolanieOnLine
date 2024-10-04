@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,10 +11,8 @@
  ***************************************************************************/
 package games.stendhal.server.maps;
 
-
 /**
- * contains region names
- *
+ * Contains region names.
  */
 public final class Region {
 	public static final String ADOS_CITY = "Miasto Ados";
@@ -23,6 +21,7 @@ public final class Region {
 	public static final String ATHOR_ISLAND = "Wyspa Athor";
 	public static final String ATLANTIS = "Atlantyda";
 	public static final String DENIRAN = "Deniran";
+	public static final String DENIRAN_CITY = "Miasto Deniran";
 	public static final String SEMOS_CITY = "Miasto Semos";
 	public static final String SEMOS_SURROUNDS = "Okolice Semos";
 	public static final String SEMOS_MINES = "Kopalnie Semos";

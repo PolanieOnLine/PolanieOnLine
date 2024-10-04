@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -12,18 +11,35 @@
  ***************************************************************************/
 package games.stendhal.server.entity.creature.impl.idle;
 
-
 import java.util.Map;
+
+import games.stendhal.common.MathHelper;
+import games.stendhal.common.Rand;
+import games.stendhal.server.entity.npc.behaviour.impl.idle.IdleBehaviour;
+import games.stendhal.server.entity.npc.behaviour.impl.idle.WanderIdleBehaviour;
 
 public class IdleBehaviourFactory {
 	private static final IdleBehaviour nothing = new StandOnIdle();
 
 	public static IdleBehaviour get(final Map<String, String> aiProfiles) {
-		if (aiProfiles.containsKey("patrolling")) {
-			return new Patroller();
-        } else if (aiProfiles.containsKey("camouflage")) {
-            return new CamouflagedIdleBehaviour();
-        }
-        return nothing;
+		IdleBehaviour behaviour = nothing;
+		if (aiProfiles.containsKey("wander")) {
+			final int wanderRadius = MathHelper.parseIntDefault(aiProfiles.get("wander"), 0);
+			if (wanderRadius > 0) {
+				behaviour = new WanderIdleBehaviour(wanderRadius);
+			} else {
+				behaviour = new WanderIdleBehaviour();
+			}
+		} else if (aiProfiles.containsKey("patrolling") && aiProfiles.containsKey("wander")) {
+			// randomly select between "patrolling" & "wander" for individual entity instance
+			behaviour = Rand.flipCoin() ? new Patroller() : behaviour;
+		} else if (aiProfiles.containsKey("patrolling")) {
+			behaviour = new Patroller();
+		} else if (aiProfiles.containsKey("camouflage")) {
+			behaviour = new CamouflagedIdleBehaviour();
+		} else if (aiProfiles.containsKey("wander")) {
+			behaviour = new WanderIdleBehaviour();
+		}
+		return behaviour;
 	}
 }

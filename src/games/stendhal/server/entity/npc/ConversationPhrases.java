@@ -97,9 +97,11 @@ public class ConversationPhrases {
 	public static final List<String> SALES_MESSAGES = Arrays.asList("sell", "sales", "sprzedaż",
 			"sprzedaz", "sprzedam");
 
+	public static final ImmutableSet<String> REPAIR_MESSAGES = ImmutableSet.of("repair", "fix", "napraw");
+
 	public static final ImmutableSet<String> KNOWN = ImmutableSet.of("witaj", "pomocy", "praca", 
 			"zadanie", "zrobione", "ukończone", "inne", "oferta", "tak", "nie", "bywaj", "kupię",
-			"sprzedam", "ulecz", "wyzwanie");
+			"sprzedam", "ulecz", "wyzwanie", "napraw");
 
 	/**
 	 * Combine a string collection (list) with additional strings.

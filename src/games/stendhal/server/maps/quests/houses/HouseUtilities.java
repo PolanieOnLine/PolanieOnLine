@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -59,7 +58,7 @@ public class HouseUtilities {
 	 * @return portal to the house owned by the player, or <code>null</code>
 	 * if he does not own one.
 	 */
-	protected static HousePortal getPlayersHouse(final Player player) {
+	public static HousePortal getPlayersHouse(final Player player) {
 		if (player.hasQuest(HOUSE_QUEST_SLOT)) {
 			final String claimedHouse = player.getQuest(HOUSE_QUEST_SLOT);
 
@@ -79,6 +78,23 @@ public class HouseUtilities {
 			}
 		}
 
+		return null;
+	}
+
+	/**
+	 * Find a portal corresponding to a house ID.
+	 *
+	 * @param doorId
+	 *   House portal ID.
+	 * @return
+	 *   The portal to the house or {@code null} if no such house exists.
+	 */
+	public static HousePortal getHousePortal(final String doorId) {
+		for (final HousePortal portal: getHousePortals()) {
+			if (doorId.equals(portal.getDoorId())) {
+				return portal;
+			}
+		}
 		return null;
 	}
 

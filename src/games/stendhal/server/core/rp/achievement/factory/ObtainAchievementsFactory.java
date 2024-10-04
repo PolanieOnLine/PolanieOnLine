@@ -179,6 +179,13 @@ public class ObtainAchievementsFactory extends AbstractAchievementFactory {
 					}
 				}));
 
+		// find the lucky four-leaf clover
+		achievements.add(createAchievement(
+			"obtain.clover", "Powodzenia Irlandczycy",
+			"Znajdź szczęśliwą czterolistną koniczynę",
+			Achievement.MEDIUM_BASE_SCORE, true,
+			new PlayerHasHarvestedNumberOfItemsCondition(1, "czterolistna koniczyna")));
+
 		return achievements;
 	}
 }

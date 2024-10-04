@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                      (C) Copyright 2003 - Marauroa                      *
+ *                   (C) Copyright 2003-2024 - Marauroa                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -163,7 +162,7 @@ public abstract class GrowingPassiveEntityRespawnPoint extends
 	}
 
 	@Override
-	protected void growNewFruit() {
+	protected Item growNewFruit() {
 		setRipeness(ripeness + 1);
 		logger.debug("Grow " + ripeness + " up to " + maxRipeness);
 		notifyWorldAboutChanges();
@@ -171,6 +170,7 @@ public abstract class GrowingPassiveEntityRespawnPoint extends
 		if (ripeness < maxRipeness) {
 			SingletonRepository.getTurnNotifier().notifyInTurns(getRandomTurnsForRegrow(), this);
 		}
+		return null;
 	}
 
 	@Override

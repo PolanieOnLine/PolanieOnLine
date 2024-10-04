@@ -430,6 +430,26 @@
 		</equipable>
 	</item>
 
+	<item name="pierścień czystości">
+		<type class="ring" subclass="clarity" tileid="-1"/>
+		<description>Oto pierścień czystości. Nosząc go, czujesz się bardziej świadomy.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<min_level value="0"/>
+			<accuracy_bonus value="25.0"/>
+		</attributes>
+		<weight value="0.1"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="finger"/>
+			<slot name="keyring"/>
+		</equipable>
+	</item>
+
 	<item name="pierścień zdrowia">
 		<type class="ring" subclass="lifesteal_ring" tileid="-1"/>
 		<description/>

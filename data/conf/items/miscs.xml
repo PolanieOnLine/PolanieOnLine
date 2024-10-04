@@ -412,7 +412,7 @@
 
 	<item name="futro">
 		<type class="misc" subclass="pelt" tileid="-1"/>
-		<description></description>
+		<description>Oto futro. Wyrabia się z niego ubrania i zbroje skórzane.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<quantity value="1"/>

@@ -173,74 +173,82 @@ public class FindRatChildren extends AbstractQuest {
 				ConversationStates.QUESTION_1,
 				"Jeżeli znajdziesz moje #dziecko to podaj mi jego imię.", null);
 
-		for(final String name : NEEDED_KIDS) {
-			npc.add(ConversationStates.QUESTION_1, name, null,
-					ConversationStates.QUESTION_1, null,
+		for (final String name : NEEDED_KIDS) {
+			npc.add(
+					ConversationStates.QUESTION_1,
+					name,
+					null,
+					ConversationStates.QUESTION_1,
+					null,
 					new ChatAction() {
-				@Override
-				public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
-					final String npcQuestText = player.getQuest(QUEST_SLOT).toLowerCase();
-					final String[] npcDoneText = npcQuestText.split(":");
-					final String lookingStr;
-					final String saidStr;
-					if (npcDoneText.length > 1) {
-						lookingStr = npcDoneText[0];
-						saidStr = npcDoneText[1];
-					} else {
-						// compatibility with broken quests - should never happen
-						logger.warn("Player " + player.getTitle() + " found with find_rat_kids quest slot in state " + player.getQuest(QUEST_SLOT) + " - now setting this to done.");
-						player.setQuest(QUEST_SLOT, "done");
-						npc.say("Przepraszam, wygląda na to, że już je znalazłeś. Jestem roztrzepana.");
-						player.notifyWorldAboutChanges();
-						npc.setCurrentState(ConversationStates.ATTENDING);
-						return;
-					}
-
-					final List<String> looking = Arrays.asList(lookingStr.split(";"));
-					final List<String> said = Arrays.asList(saidStr.split(";"));
-					String reply = "";
-					List<String> missing = missingNames(player);
-					final boolean isMissing = missing.contains(name);
-
-					if (isMissing && looking.contains(name) && !said.contains(name)) {
-						// we haven't said the name yet so we add it to the list
-						player.setQuest(QUEST_SLOT, lookingStr
-								+ ":" + saidStr + ";" + name);
-						reply = "Dziękuję.";
-					} else if (!looking.contains(name)) {
-						// we have said it was a valid name but haven't seen them
-						reply = "Czy aby na pewno widziałeś to dziecko, chyba mnie oszukujesz.";
-					} else if (!isMissing && said.contains(name)) {
-						// we have said the name so we are stupid!
-						reply = "Już mi mówiłeś, że z tym dzieckiem jest wszystko dobrze.";
-					} else {
-						assert false;
-					}
-
-					// we may have changed the missing list
-					missing = missingNames(player);
-
-					if (!missing.isEmpty()) {
-						reply += " Jeżeli widziałeś inne z moich dzieci to proszę powiedz mi które.";
-						npc.say(reply);
-					} else {
-						player.addXP(5000);
-						player.addKarma(15);
-						reply += " Uff... teraz mogę odsapnąć wiedząc, że z dziećmi jest wszystko w porządku.";
-						npc.say(reply);
-						player.setQuest(QUEST_SLOT, "done;" + System.currentTimeMillis());
-						player.notifyWorldAboutChanges();
-						npc.setCurrentState(ConversationStates.ATTENDING);
-					}
-				}
-			});
+						@Override
+						public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
+							final String npcQuestText = player.getQuest(QUEST_SLOT).toLowerCase();
+							final String[] npcDoneText = npcQuestText.split(":");
+							final String lookingStr;
+							final String saidStr;
+							if (npcDoneText.length > 1) {
+								lookingStr = npcDoneText[0];
+								saidStr = npcDoneText[1];
+							} else {
+								// compatibility with broken quests - should never happen
+								logger.warn("Player " + player.getTitle() + " found with find_rat_kids quest slot in state " + player.getQuest(QUEST_SLOT) + " - now setting this to done.");
+								player.setQuest(QUEST_SLOT, "done");
+								npc.say("Przepraszam, wygląda na to, że już je znalazłeś. Jestem roztrzepana.");
+								player.notifyWorldAboutChanges();
+								npc.setCurrentState(ConversationStates.ATTENDING);
+								return;
+							}
+		
+							final List<String> looking = Arrays.asList(lookingStr.split(";"));
+							final List<String> said = Arrays.asList(saidStr.split(";"));
+							String reply = "";
+							List<String> missing = missingNames(player);
+							final boolean isMissing = missing.contains(name);
+		
+							if (isMissing && looking.contains(name) && !said.contains(name)) {
+								// we haven't said the name yet so we add it to the list
+								player.setQuest(QUEST_SLOT, lookingStr
+										+ ":" + saidStr + ";" + name);
+								reply = "Dziękuję.";
+							} else if (!looking.contains(name)) {
+								// we have said it was a valid name but haven't seen them
+								reply = "Czy aby na pewno widziałeś to dziecko, chyba mnie oszukujesz.";
+							} else if (!isMissing && said.contains(name)) {
+								// we have said the name so we are stupid!
+								reply = "Już mi mówiłeś, że z tym dzieckiem jest wszystko dobrze.";
+							} else {
+								assert false;
+							}
+		
+							// we may have changed the missing list
+							missing = missingNames(player);
+		
+							if (!missing.isEmpty()) {
+								reply += " Jeżeli widziałeś inne z moich dzieci to proszę powiedz mi które.";
+								npc.say(reply);
+							} else {
+								player.addXP(5000);
+								player.addKarma(15);
+								reply += " Uff... teraz mogę odsapnąć wiedząc, że z dziećmi jest wszystko w porządku.";
+								npc.say(reply);
+								player.setQuest(QUEST_SLOT, "done;" + System.currentTimeMillis());
+								player.notifyWorldAboutChanges();
+								npc.setCurrentState(ConversationStates.ATTENDING);
+							}
+						}
+					});
 		}
 
 		final List<String> triggers = new ArrayList<String>();
 		triggers.add(ConversationPhrases.NO_EXPRESSION);
 		triggers.addAll(ConversationPhrases.GOODBYE_MESSAGES);
-		npc.add(ConversationStates.QUESTION_1, triggers, null,
-				ConversationStates.IDLE, "Nie ma problemu, wróć później.", null);
+		npc.add(
+				ConversationStates.QUESTION_1,
+				triggers,
+				null,
+				ConversationStates.IDLE, "Nie ma problemu, wróć później.",
+				null);
 
 		// player says something which isn't in the needed kids list.
 		npc.add(

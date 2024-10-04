@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                    Copyright © 2024 - Faiumoni e. V.                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -10,11 +9,24 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-package games.stendhal.server.entity.creature.impl.idle;
+package games.stendhal.server.maps.global;
 
-import games.stendhal.server.entity.creature.Creature;
+import java.util.Map;
 
-public interface IdleBehaviour {
+import games.stendhal.server.core.config.ZoneConfigurator;
+import games.stendhal.server.core.engine.CachedActionManager;
+import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.entity.mapstuff.spawner.CloverSpawner;
 
-	void perform(Creature creature);
+public class FourLeafClover implements ZoneConfigurator {
+	@Override
+	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
+		// don't add to world until server maps are loaded
+		CachedActionManager.get().register(new Runnable() {
+			@Override
+			public void run() {
+				CloverSpawner.get().init();
+			}
+		});
+	}
 }

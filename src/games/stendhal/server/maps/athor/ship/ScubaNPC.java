@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2023 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -26,6 +26,7 @@ import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.QuestCompletedSellerBehaviour;
+import games.stendhal.server.entity.npc.shop.ShopType;
 import games.stendhal.server.entity.npc.shop.ShopsList;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.athor.ship.AthorFerry.Status;
@@ -47,7 +48,9 @@ public class ScubaNPC implements ZoneConfigurator  {
 				addGoodbye("Żegnaj...");
 				addHelp("Hm może chcesz wyruszyć po przygody?");
 				addOffer("Licencjonowanym nurkom mogę sprzedać #zbroję #akwalungową.");
-				new SellerAdder().addSeller(this, new QuestCompletedSellerBehaviour("get_diving_license", "Nie mogę sprzedać każdemu #'zbroi akwalungowej'!", shops.get("sellscubastuff")), false);
+				new SellerAdder().addSeller(this, new QuestCompletedSellerBehaviour("get_diving_license",
+						"Nie mogę sprzedać każdemu #'zbroi akwalungowej'!",
+						shops.get("sellscubastuff", ShopType.ITEM_SELL)), false);
 				addJob("Jestem pomocnikiem na tym statku.");
 				
 				//scuba gear phrases

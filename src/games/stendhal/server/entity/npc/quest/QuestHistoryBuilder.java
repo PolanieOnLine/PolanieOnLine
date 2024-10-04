@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2022 - Faiumoni e.V.                    *
+ *                 (C) Copyright 2022-2024 - Faiumoni e.V.                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -24,6 +24,7 @@ public class QuestHistoryBuilder {
 	private String whenQuestWasCompleted;
 	private String whenQuestCanBeRepeated;
 	private String whenCompletionsShown;
+	private String whenEarlyCompletionsShown;
 
 	// hide constructor
 	QuestHistoryBuilder() {
@@ -32,6 +33,22 @@ public class QuestHistoryBuilder {
 
 	public QuestHistoryBuilder whenNpcWasMet(String whenNpcWasMet) {
 		this.whenNpcWasMet = whenNpcWasMet;
+		return this;
+	}
+
+	/**
+	 * Will be shown in travel log when player has complete quest within time limit at least
+	 * 1 time. Instances of "[count"] in the string will be replaced with the number of on-time
+	 * completions. Anything else within square brackets ("[]") will be replaced with the
+	 * equivalent singular or plural noun form.
+	 *
+	 * @param whenEarlyCompletionsShown
+	 *   Text to display in history.
+	 * @return
+	 *   This history builder instance.
+	 */
+	public QuestHistoryBuilder whenEarlyCompletionsShown(String whenEarlyCompletionsShown) {
+		this.whenEarlyCompletionsShown = whenEarlyCompletionsShown;
 		return this;
 	}
 
@@ -100,4 +117,7 @@ public class QuestHistoryBuilder {
 		return this.whenCompletionsShown;
 	}
 
+	String getWhenEarlyCompletionsShown() {
+		return this.whenEarlyCompletionsShown;
+	}
 }

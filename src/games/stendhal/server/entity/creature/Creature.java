@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2012 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -10,6 +10,8 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.entity.creature;
+
+import static games.stendhal.common.Constants.DEFAULT_SOUND_RADIUS;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
@@ -43,7 +45,6 @@ import games.stendhal.server.entity.creature.impl.attack.AttackStrategy;
 import games.stendhal.server.entity.creature.impl.attack.AttackStrategyFactory;
 import games.stendhal.server.entity.creature.impl.heal.HealerBehavior;
 import games.stendhal.server.entity.creature.impl.heal.HealerBehaviourFactory;
-import games.stendhal.server.entity.creature.impl.idle.IdleBehaviour;
 import games.stendhal.server.entity.creature.impl.idle.IdleBehaviourFactory;
 import games.stendhal.server.entity.item.Corpse;
 import games.stendhal.server.entity.item.Item;
@@ -129,15 +130,12 @@ public class Creature extends NPC {
 	private int respawnTime;
 
 	private Map<String, String> aiProfiles;
-	private IdleBehaviour idler;
 
 	private int targetX;
 
 	private int targetY;
 
 	private final int attackTurn = Rand.rand(5);
-
-	private boolean isIdle;
 
 	/** The type of the damage this creature does */
 	private Nature damageType = Nature.CUT;
@@ -558,7 +556,7 @@ public class Creature extends NPC {
     			}
 			}
 		}
-		idler = IdleBehaviourFactory.get(aiProfiles);
+		setIdleBehaviour(IdleBehaviourFactory.get(aiProfiles));
 	}
 
 	/**
@@ -964,10 +962,19 @@ public class Creature extends NPC {
 	}
 
 	@Override
+	public void preLogic() {
+		// do nothing
+	}
+
+	@Override
 	public void logic() {
 		healer.heal(this);
 		if (!this.getZone().getPlayerAndFriends().isEmpty()) {
 			if (strategy.hasValidTarget(this)) {
+				if (idler != null) {
+					// disable stop/direction queues so creature doesn't stop chasing
+					idler.reset();
+				}
 				strategy.getBetterAttackPosition(this);
 				this.applyMovement();
 				if (strategy.canAttackNow(this)) {
@@ -1044,7 +1051,7 @@ public class Creature extends NPC {
 	 * FIXME: doesn't play sound
 	 */
 	private void loopMovementSound() {
-	    movementSoundEvent = new SoundEvent(movementSound, SOUND_RADIUS, 100, SoundLayer.CREATURE_NOISE);
+		movementSoundEvent = new SoundEvent(movementSound, DEFAULT_SOUND_RADIUS, 100, SoundLayer.CREATURE_NOISE);
 	    this.addEvent(movementSoundEvent);
 	    this.notifyWorldAboutChanges();
 	}

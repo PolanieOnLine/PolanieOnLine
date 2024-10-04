@@ -25,6 +25,7 @@ import games.stendhal.server.entity.CollisionAction;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
+import games.stendhal.server.entity.npc.shop.ShopType;
 import games.stendhal.server.entity.npc.shop.ShopsList;
 
 /**
@@ -71,7 +72,8 @@ public class GreeterNPC implements ZoneConfigurator {
 				addReply(Arrays.asList("koczowniczy", "normadic"), "Nie mamy stałego domu podróżujemy pomiędzy lasami i dolinami. Kiedy znajdujemy miejsce to osiedlamy się w nim. Lubimy to miejsce, ponieważ niedaleko są zabytkowe #kamienie.");
 				addReply(Arrays.asList("kamienie", "stones"), "Posiadają właściwości mistyczne. Lubimy być w pobliżu nich, gdy zmienia się pora roku.");
 				addHelp("Mógłbym sprzedać Ci zaczarowane zwoje, abyś mógł wrócić do Fado. Mam dojście do tanich zwojów.");
-				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("fadoscrolls")) {
+				new SellerAdder().addSeller(this, new SellerBehaviour(shops.get("fadoscrolls",
+						ShopType.ITEM_SELL)) {
 					@Override
 					public int getUnitPrice(final String item) {
 						// Player gets 20 % rebate

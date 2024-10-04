@@ -16,6 +16,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.Predicate;
 
 import org.apache.log4j.Logger;
 
@@ -170,6 +171,9 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		// Some items have ranged attack values
 		entity.addAttribute("ratk", Type.SHORT, Definition.HIDDEN);
 
+		// alters weapon accuracy by a percentage
+		entity.addAttribute("accuracy_bonus", Type.FLOAT, Definition.HIDDEN);
+
 		// Some items indicate how often you can attack.
 		entity.addAttribute("rate", Type.SHORT, Definition.HIDDEN);
 
@@ -251,8 +255,9 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		// True for items that should be bound automatically at loot (or login)
 		entity.addAttribute("autobind", Type.FLAG, (byte) (Definition.HIDDEN | Definition.VOLATILE));
 
-		// Number of uses for BreakableWeapon
+		// number of times item can be used before chance of break ({@code BreakableWeapon})
 		entity.addAttribute("durability", Type.INT, Definition.VOLATILE);
+		// current number of times item has been used
 		entity.addAttribute("uses", Type.INT);
 
 		entity.addAttribute("max_improves", Type.INT, Definition.VOLATILE);
@@ -960,6 +965,10 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 				stats.append("%");
 			}
 		}
+		if (has("accuracy_bonus")) {
+			stats.append(" BONUS-PRECYZJI: ");
+			stats.append((getDouble("accuracy_bonus") + "%").replaceFirst("\\.[0]+%$", "%"));
+		}
 
 		if (has("min_use")) {
 			stats.append(" MIN-UŻYCIE: ");
@@ -1254,5 +1263,45 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		} else { 
 			setImprove(increaseImproveValue());
 		}
+	}
+
+	/**
+	 * Determines if an item can be submitted as quest item.
+	 *
+	 * Currently only makes special case for experimental sandwich rewarded from Meal for Groongo
+	 * quest.
+	 *
+	 * @return
+	 *   {@code false} if the item should not be submitted in quests.
+	 */
+	public boolean isSubmittable() {
+		if ("kanapka".equals(getName()) && getDescription().contains("eksperymentalna")) {
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * A convenience method for getting a method for matching item names.
+	 *
+	 * @param name
+	 *   Item name to match.
+	 * @return
+	 *   A predicate for matching the name.
+	 */
+	public static Predicate<Item> nameMatches(String name) {
+		return item -> name.equalsIgnoreCase(item.getName());
+	}
+
+	/**
+	 * A convenience method for getting a method for matching item names and submittable status.
+	 *
+	 * @param name
+	 *   Item name to match.
+	 * @return
+	 *   A predicate for matching the name.
+	 */
+	public static Predicate<Item> nameMatchesSubmittable(String name) {
+		return item -> name.equalsIgnoreCase(item.getName()) && item.isSubmittable();
 	}
 }

@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2023 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -92,30 +92,14 @@ public final class ShopsList {
 	}
 
 	/**
-	 * Gets the items offered by a shop with their prices.
+	 * Add items to a shop.
 	 *
 	 * @param name
-	 *     Shop name.
-	 * @return
-	 *     Item names and prices.
-	 */
-	@Deprecated
-	public Map<String, Integer> get(final String name) {
-		if (sellerContents.containsKey(name)) {
-			return sellerContents.get(name);
-		}
-		return buyerContents.get(name);
-	}
-
-	/**
-	 * Add an items to a shop.
-	 *
-	 * @param name
-	 *     Shop name.
+	 *   Shop name.
 	 * @param stype
-	 *     Seller, buyer, or trader shop.
+	 *   Seller, buyer, or trader shop.
 	 * @param inventory
-	 *     Item list with prices.
+	 *   Item list with prices.
 	 */
 	public void add(final String name, final ShopType stype, final ItemShopInventory inventory) {
 		final Map<String, ItemShopInventory> selectedContents = getContents(stype);
@@ -134,34 +118,18 @@ public final class ShopsList {
 	 * Add an item to a shop.
 	 *
 	 * @param name
-	 *     Shop name.
+	 *   Shop name.
 	 * @param stype
-	 *     Seller, buyer, or trader shop.
+	 *   Seller, buyer, or trader shop.
 	 * @param item
-	 *     Name of item to add.
+	 *   Name of item to add.
 	 * @param price
-	 *     Value of the item.
-	 * @deprecated Shops should be defined on data/conf/shops/*.xml
+	 *   Item price.
 	 */
-	@Deprecated
 	public void add(final String name, final ShopType stype, final String item, final int price) {
 		final ItemShopInventory inventory = new ItemShopInventory(stype, name);
 		inventory.put(item, price);
 		add(name, stype, inventory);
-	}
-
-	/**
-	 * Add an item to a buyer shop.
-	 *
-	 * @param name
-	 *     Shop name.
-	 * @param item
-	 *     Name of item to add.
-	 * @param price
-	 *     Value of the item.
-	 */
-	public void addBuyer(final String name, final String item, final int price) {
-		add(name, ShopType.ITEM_BUY, item, price);
 	}
 
 	/**

@@ -1,16 +1,5 @@
 /***************************************************************************
- *                    Copyright © 2003-2022 - Arianne                      *
- ***************************************************************************
- ***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
-/***************************************************************************
- *                    Copyright © 2003-2022 - Arianne                      *
+ *                    Copyright © 2003-2024 - Arianne                      *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -102,7 +91,7 @@ public class AGrandfathersWish extends AbstractQuest {
 
 	@Override
 	public String getRegion() {
-		return Region.DENIRAN;
+		return Region.DENIRAN_CITY;
 	}
 
 	@Override

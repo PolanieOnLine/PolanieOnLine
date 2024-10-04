@@ -1,5 +1,5 @@
 /***************************************************************************
- *                    Copyright © 2003-2023 - Arianne                      *
+ *                    Copyright © 2003-2024 - Arianne                      *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -13,7 +13,6 @@ package games.stendhal.server.entity;
 
 import static games.stendhal.common.constants.General.PATHSET;
 
-import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 import java.util.LinkedList;
 import java.util.List;
@@ -376,7 +375,7 @@ public abstract class GuidedEntity extends ActiveEntity {
 
 				final GuidedEntity tmp = this;
 
-				TurnNotifier.get().notifyInTurns(guide.path.getSuspendValue(guide.pathPosition), new TurnListener() {
+				TurnNotifier.get().notifyInSeconds(guide.path.getSuspendValue(guide.pathPosition), new TurnListener() {
 					@Override
 					public void onTurnReached(final int currentTurn) {
 						setBaseSpeed(storedSpeed);
@@ -410,7 +409,7 @@ public abstract class GuidedEntity extends ActiveEntity {
 	 * Add a suspension to the entity's path.
 	 *
 	 * @param duration
-	 * 		Amount of time (in turns) the entity will be suspended.
+	 * 		Amount of time (in seconds) the entity will be suspended.
 	 * @param dir
 	 * 		Direction to face while suspended, or <code>null</code>
 	 * 		if direction should not be changed.
@@ -425,8 +424,7 @@ public abstract class GuidedEntity extends ActiveEntity {
 	 * Add a suspension to the entity's path.
 	 *
 	 * @param duration
-	 * 		Amount of time (in turns) the entity will be suspended.
-	 * 		if direction should not be changed.
+	 * 		Amount of time (in seconds) the entity will be suspended.
 	 * @param pos
 	 * 		The position(s) in the path where to add the suspension.
 	 */
@@ -516,13 +514,11 @@ public abstract class GuidedEntity extends ActiveEntity {
 	 *
 	 * @return <code>true</code> if the entity has moved outside its movement
 	 * 	area, othwewise <code>false</code>
+	 * @deprecated Use {@code NPC.setIdleBehaviour(new WanderIdleBehaviour())} for random movement.
 	 */
+	@Deprecated
 	public final boolean atMovementRadius() {
-		Point difference = getDistanceFromOrigin();
-
-		// Set the maximum movement distance at exact radius
-		int max = movementRadius - 1;
-		return (movementRadius > 0 && (difference.getX() > max || difference.getY() > max));
+		return Math.sqrt(getDistanceFromOrigin()) >= movementRadius;
 	}
 
 	protected final Direction getDirectionFromOrigin() {
@@ -531,21 +527,15 @@ public abstract class GuidedEntity extends ActiveEntity {
 
 		return dir;
 	}
+
 	/**
-	 * Get the distance that the entity has moved away from its starting point
+	 * Get the distance that the entity has moved away from its starting point.
 	 *
-	 * @return The distance from entity's starting point
+	 * @return
+	 *   Squared distance from starting point.
 	 */
-	protected final Point getDistanceFromOrigin() {
-		int originX = getOrigin().x;
-		int originY = getOrigin().y;
-		int currentX = getX();
-		int currentY = getY();
-
-		int Xdiff = Math.abs(currentX - originX);
-		int Ydiff = Math.abs(currentY - originY);
-
-		return new Point(Xdiff, Ydiff);
+	public double getDistanceFromOrigin() {
+		return squaredDistance(origin.x, origin.y);
 	}
 
 	/**
@@ -557,7 +547,10 @@ public abstract class GuidedEntity extends ActiveEntity {
 
 	/**
 	 * Changed path of entity when radius is reached
+	 *
+	 * @deprecated Use {@code NPC.setIdleBehaviour(new WanderIdleBehaviour())} for random movement.
 	 */
+	@Deprecated
 	public void onOutsideMovementRadius() {
 		List<Node> nodes = new LinkedList<Node>();
 

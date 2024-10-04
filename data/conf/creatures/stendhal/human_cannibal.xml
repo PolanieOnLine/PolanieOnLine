@@ -74,7 +74,7 @@
 
 	<creature name="starszy kanibal">
 		<type class="human" subclass="elder_cannibal" tileid="human_cannibal.png:2"/>
-		<description></description>
+		<description>Oto starszy kanibal. Od lat zjada ludzi. Nie przestanie, dopóki jego głód nie zostanie zaspokojony.</description>
 		<attributes>
 			<atk value="315"/>
 			<def value="111"/>

@@ -59,6 +59,8 @@ import games.stendhal.server.util.ResetSpeakerNPC;
  * </ul>
  */
 public class PizzaDelivery implements QuestManuscript {
+	private static final String questSlot = "pizza_delivery";
+
 	@Override
 	public DeliverItemQuestBuilder story() {
 		DeliverItemQuestBuilder quest = new DeliverItemQuestBuilder();
@@ -66,7 +68,7 @@ public class PizzaDelivery implements QuestManuscript {
 		quest.info()
 			.name("Dostawca Pizzy")
 			.description("Pizzeria Leandera radzi sobie tak dobrze, że teraz rekrutuje chętnych na dostawcę.")
-			.internalName("pizza_delivery")
+			.internalName(questSlot)
 			.repeatableAfterMinutes(0)
 			.minLevel(0)
 			.region(Region.SEMOS_CITY)
@@ -81,7 +83,8 @@ public class PizzaDelivery implements QuestManuscript {
 			.whenInTime("Jeśli się pospieszę, może jeszcze dotrę na miejsce z gorącą pizzą.")
 			.whenOutOfTime("Pizza już wystygła.")
 			.whenQuestWasCompleted("Ostatnia pizza została dostarczona, którą dał mi Leander.")
-			.whenQuestCanBeRepeated("Ale założę się, że Leander ma więcej zamówień.");
+			.whenQuestCanBeRepeated("Ale założę się, że Leander ma więcej zamówień.")
+			.whenEarlyCompletionsShown("Udało się dostarczyć [count] ciepłych [pizza].");
 
 		quest.offer()
 			.respondToRequest("Musisz szybko dostarczyć gorącą pizzę. Jeśli będziesz wystarczająco szybko, możesz otrzymać całkiem niezły napiwek. Więc, zrobisz to?")
@@ -92,12 +95,14 @@ public class PizzaDelivery implements QuestManuscript {
 			.respondToReject("Szkoda. Mam nadzieję, że moja córka #Sally wkrótce wróci ze swojego obozu, aby pomóc mi przy zamówieniach.")
 			.remind("Nadal musisz dostarczyć pizzę dla [customerName], oraz pospiesz się!")
 			.respondIfLastQuestFailed("Widzę, że nie udało Ci się dostarczyć pizzy dla [customerName] na czas. Czy tym razem dasz radę dostarczyć na czas?")
-			.respondIfInventoryIsFull("Wróć, gdy znajdziesz nieco miejsca aby nieść pizze!");
+			.respondIfInventoryIsFull("Wróć, gdy znajdziesz nieco miejsca aby nieść pizze!")
+			.respondToAnotherIfLostItem("Zgubiłeś [item]? Cóż, będzie cię to kosztować [charge] money. Więc chcesz kolejną?");
 
 		quest.task()
 			.itemName("pizza")
 			.itemDescription("Oto [flavor].")
-			.outfitUniform(new Outfit(null, Integer.valueOf(990), null, null, null, null, null, null, null));
+			.outfitUniform(new Outfit(null, Integer.valueOf(990), null, null, null, null, null, null, null))
+			.chargeForLostItem(500);
 
 		// Don't add Sally here, as it would conflict with Leander telling
 		// about his daughter.
@@ -284,9 +289,6 @@ public class PizzaDelivery implements QuestManuscript {
 			.respondToItemForOtherNPC("Nie, dziękuję. Dla mnie lepsza jest [flavor].")
 			.respondToMissingItem("Pizza? Gdzie?")
 			.npcStatusEffect("pizza");
-
-		// completions count is stored in 3rd index of quest slot
-		quest.setCompletionsIndexes(2);
 
 		return quest;
 	}

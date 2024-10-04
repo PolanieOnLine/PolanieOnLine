@@ -13,10 +13,12 @@ package games.stendhal.server.events;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeSet;
 
 import com.google.common.base.Function;
@@ -64,7 +66,7 @@ public class ChatOptionsEvent extends RPEvent {
 		}
 
 		// common triggers for merchants & producers
-		private static final List<String> merchantActivities = new LinkedList<>(Arrays.asList("buy", "sell"));
+		private static final List<String> merchantActivities = new LinkedList<>(Arrays.asList("buy", "sell", "repair"));
 
 		private String trigger;
 		private String label;
@@ -146,6 +148,18 @@ public class ChatOptionsEvent extends RPEvent {
 			processTransition(npc, player, res, sentence, transition);
 		}
 
+		if (npc.getAttending() instanceof Player) {
+			final Set<String> temp = new HashSet<>();
+			temp.addAll(npc.getForcedWordsInCurrentConversation());
+			temp.addAll(npc.getKnownChatOptions());
+			for (final String trigger: temp) {
+				final ChatOption copt = new ChatOption(trigger);
+				if (!res.contains(copt)) {
+					res.add(copt);
+				}
+			}
+		}
+
 		if (currentState != ConversationStates.IDLE) {
 			for (final Transition transition : transitions) {
 				if (transition.getState() != ConversationStates.ANY) {
@@ -169,7 +183,6 @@ public class ChatOptionsEvent extends RPEvent {
 			String trigger = expr.getNormalized().toLowerCase(Locale.ENGLISH);
 			ChatOption option = new ChatOption(trigger);
 			if (ConversationPhrases.KNOWN.contains(trigger)
-					|| npc.getKnownChatOptions().contains(trigger)
 					|| npc.hasLearnedWordInCurrentConversation(trigger)
 					|| npc.hasLearnedWordInCurrentConversation(Grammar.plural(trigger))) {
 				res.add(option);

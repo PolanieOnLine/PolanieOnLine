@@ -228,9 +228,10 @@
 		<drops>
 			<item value="cudowna krew" quantity="[1,1]" probability="100.0"/>
 			<item value="tarcza jednorożca" quantity="[1,1]" probability="80.0"/>
-			<item value="czterolistna koniczyna" quantity="[1,1]" probability="80.0"/>
+			<item value="talizman szczęścia" quantity="[1,1]" probability="80.0"/>
 			<item value="diament" quantity="[1,1]" probability="20.0"/>
 			<item value="róg jednorożca" quantity="[1,1]" probability="100.0"/>
+			<item value="pierścień czystości" quantity="1" probability="5.0"/>
 		</drops>
 		<equips/>
 		<ai>

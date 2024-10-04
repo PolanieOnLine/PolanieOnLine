@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2019 - Arianne                          *
+ *                    (C) Copyright 2019-2024 - Arianne                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -24,9 +24,7 @@ import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.CollisionAction;
 
 public abstract class PassiveNPC extends NPC {
-
 	private boolean teleports = false;
-
 
 	public PassiveNPC() {
 		put("title_type", "npc");
@@ -130,12 +128,10 @@ public abstract class PassiveNPC extends NPC {
 	}
 
 	@Override
-	protected void onMoved(final int oldX, final int oldY, final int newX, final int newY) {
-		super.onMoved(oldX, oldY, newX, newY);
-	}
-
-	@Override
 	protected void handleObjectCollision() {
+		if (isIdle && idler != null && idler.handleObjectCollision(this)) {
+			return;
+		}
 		if (pathIsBlocked()) {
 			stop();
 			return;
@@ -156,6 +152,9 @@ public abstract class PassiveNPC extends NPC {
 
 	@Override
 	protected void handleSimpleCollision(final int nx, final int ny) {
+		if (isIdle && idler != null && idler.handleSimpleCollision(this, nx, ny)) {
+			return;
+		}
 		CollisionAction action = getCollisionAction();
 		if (!ignoresCollision()) {
 			if (usesRandomPath()) {

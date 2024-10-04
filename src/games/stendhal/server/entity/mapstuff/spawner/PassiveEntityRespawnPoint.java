@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2023 - Marauroa                    *
+ *                   (C) Copyright 2003-2024 - Marauroa                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -48,7 +48,7 @@ public class PassiveEntityRespawnPoint extends Entity implements TurnListener {
 	/**
 	 * Is there still a fruit that has not yet been picked up?
 	 */
-	private boolean hasPickableFruit;
+	protected boolean hasPickableFruit;
 
 	/**
 	 * The name of the fruit (Item) that is grown by the PlantGrower.
@@ -163,7 +163,8 @@ public class PassiveEntityRespawnPoint extends Entity implements TurnListener {
 	/**
 	 * Creates a new fruit.
 	 */
-	protected void growNewFruit() {
+	protected Item growNewFruit() {
+		Item grownItem = null;
 		if (!hasPickableFruit) {
 			LOGGER.debug("Growing " + growingItemName);
 
@@ -171,8 +172,7 @@ public class PassiveEntityRespawnPoint extends Entity implements TurnListener {
 			final StendhalRPZone zone = world.getZone(getID().getZoneID());
 
 			// create a new grown item
-			final Item grownItem = SingletonRepository.getEntityManager().getItem(
-					growingItemName);
+			grownItem = SingletonRepository.getEntityManager().getItem(growingItemName);
 			grownItem.setPlantGrower(this);
 			grownItem.setPosition(getX(), getY());
 			grownItem.setFromCorpse(true);
@@ -182,6 +182,7 @@ public class PassiveEntityRespawnPoint extends Entity implements TurnListener {
 			zone.add(grownItem, false);
 			hasPickableFruit = true;
 		}
+		return grownItem;
 	}
 
 	public void setToFullGrowth() {

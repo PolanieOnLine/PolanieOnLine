@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2023 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -16,7 +16,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
+import games.stendhal.common.MathHelper;
 import games.stendhal.common.Rand;
+import games.stendhal.common.constants.SoundID;
+import games.stendhal.common.constants.SoundLayer;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
@@ -33,14 +38,17 @@ import games.stendhal.server.entity.npc.condition.AlwaysFalseCondition;
 import games.stendhal.server.entity.npc.condition.AlwaysTrueCondition;
 import games.stendhal.server.entity.npc.condition.OutfitCompatibleWithClothesCondition;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.events.SoundEvent;
 import games.stendhal.server.util.StringUtils;
 
 
 public class DeliverItemTask extends QuestTaskBuilder {
+	private static final Logger logger = Logger.getLogger(DeliverItemTask.class);
 
 	private Outfit outfit;
 	private String itemDescription;
 	private String itemName;
+	private int chargeForLostItem = 100;
 
 	private Map<String, DeliverItemOrder> orders = new HashMap<>();
 
@@ -67,6 +75,15 @@ public class DeliverItemTask extends QuestTaskBuilder {
 
 	public DeliverItemTask outfitUniform(Outfit outfit) {
 		this.outfit = outfit;
+		return this;
+	}
+
+	public DeliverItemTask chargeForLostItem(int chargeForLostItem) {
+		if (chargeForLostItem < 0) {
+			logger.warn("Tried to set charge for lost item to negative value");
+			chargeForLostItem = 0;
+		}
+		this.chargeForLostItem = chargeForLostItem;
 		return this;
 	}
 
@@ -103,19 +120,24 @@ public class DeliverItemTask extends QuestTaskBuilder {
 	 *         time, or if he doesn't have a delivery to do currently.
 	 */
 	boolean isDeliveryTooLate(final Player player, String questSlot) {
-		if (player.hasQuest(questSlot) && !player.isQuestCompleted(questSlot)) {
-			final String[] questData = player.getQuest(questSlot).split(";");
-			final String customerName = questData[0];
-			final DeliverItemOrder customerData = orders.get(customerName);
-			final long bakeTime = Long.parseLong(questData[1]);
-			final long expectedTimeOfDelivery = bakeTime
-				+ (long) 60 * 1000 * customerData.getExpectedMinutes();
-			if (System.currentTimeMillis() > expectedTimeOfDelivery) {
-				return true;
+		try {
+			if (player.hasQuest(questSlot) && !player.isQuestCompleted(questSlot)) {
+				final String[] questData = player.getQuest(questSlot).split(";");
+				final String customerName = questData[0];
+				final DeliverItemOrder customerData = orders.get(customerName);
+				final long bakeTime = Long.parseLong(questData[1]);
+				final long expectedTimeOfDelivery = bakeTime
+					+ (long) 60 * 1000 * customerData.getExpectedMinutes();
+				if (System.currentTimeMillis() > expectedTimeOfDelivery) {
+					return true;
+				} else {
+					return false;
+				}
 			}
+		} catch (final NumberFormatException | ArrayIndexOutOfBoundsException e) {
+			logger.error(e);
 		}
-		return false;
-
+		return true;
 	}
 
 	/** Takes away the player's uniform, if the he is wearing it.
@@ -149,7 +171,13 @@ public class DeliverItemTask extends QuestTaskBuilder {
 		return new ChatAction() {
 			@Override
 			public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
-				final String name = Rand.rand(getAllowedCustomers(player));
+				// target same NPC if player requests to restart
+				String name = player.getQuest(questSlot, 0);
+				final List<String> allowedNames = getAllowedCustomers(player);
+				final boolean restarting = allowedNames.contains(name);
+				if (!restarting) {
+					name = Rand.rand(allowedNames);
+				}
 				final DeliverItemOrder data = orders.get(name);
 
 				Map<String, String> params = new HashMap<>();
@@ -167,8 +195,17 @@ public class DeliverItemTask extends QuestTaskBuilder {
 					if (outfit != null) {
 						player.setOutfit(outfit, true);
 					}
-					player.setQuest(questSlot, 0, name);
-					new SetQuestToTimeStampAction(questSlot, 1).fire(player, null, npc);
+					if (restarting) {
+						// player is charged for having lost item
+						player.addEvent(new SoundEvent(SoundID.COMMERCE, SoundLayer.CREATURE_NOISE));
+						player.drop("money", chargeForLostItem);
+					} else {
+						player.setQuest(questSlot, 0, name);
+					}
+					// time limit for restarting is not updated unless slot state was corrupted
+					if (!restarting || MathHelper.parseLongDefault(player.getQuest(questSlot, 1), 0) == 0) {
+						new SetQuestToTimeStampAction(questSlot, 1).fire(player, null, npc);
+					}
 				} else {
 					npc.say(respondIfInventoryIsFull);
 				}
@@ -244,6 +281,10 @@ public class DeliverItemTask extends QuestTaskBuilder {
 
 	String getItemName() {
 		return itemName;
+	}
+
+	int getChargeForLostItem() {
+		return chargeForLostItem;
 	}
 
 	@Override

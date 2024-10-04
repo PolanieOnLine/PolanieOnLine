@@ -14,6 +14,7 @@ package games.stendhal.server.maps.krakow.planty;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.SilentNPC;
+import games.stendhal.server.entity.npc.behaviour.impl.idle.WanderIdleBehaviour;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -54,7 +55,7 @@ public class RabbitNPC implements ZoneConfigurator {
 	        mammal.setDescription("Oto królik.");
 	        mammal.setEntityClass("animal/rabbit");
 	        mammal.setBaseSpeed(0.2);
-	        mammal.moveRandomly();
+	        mammal.setIdleBehaviour(new WanderIdleBehaviour());
 	        mammal.setTitle("królik");
 	        mammal.setPathCompletedPause(20);
 	        zone.add(mammal);

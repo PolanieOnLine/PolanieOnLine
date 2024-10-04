@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2023 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -23,6 +23,7 @@ import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.QuestCompletedBuyerBehaviour;
+import games.stendhal.server.entity.npc.shop.ShopType;
 import games.stendhal.server.entity.npc.shop.ShopsList;
 
 /**
@@ -64,7 +65,9 @@ public class CraftsmanNPC implements ZoneConfigurator {
 			    //addGreeting("Co cię sprowadza do lasu, na południe od rzeki Or'ril.");
 				addJob("Jestem rzemieślnikiem. Pewnego dnia, mam nadzieję, uda mi się wytworzyć taki przedmiot jaki robią zielone elfy.");
 				addHelp("Mój przyjaciel Orchiwald jest największym gadułą. Mógłby z tobą rozmawiać godzinami o albino elfach i jak tutaj się dostaliśmy.");
-				new BuyerAdder().addBuyer(this, new QuestCompletedBuyerBehaviour("elvish_armor", "W tej chwili nie mogę nic od ciebie kupić.", shops.get("buyelvish")), false);
+				new BuyerAdder().addBuyer(this, new QuestCompletedBuyerBehaviour("elvish_armor",
+						"W tej chwili nie mogę nic od ciebie kupić.",
+						shops.get("buyelvish", ShopType.ITEM_BUY)), false);
 				addGoodbye("Do widzenia.");
 			}
 		};

@@ -11,9 +11,8 @@
  ***************************************************************************/
 package games.stendhal.server.maps.nalwor.forest;
 
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -39,199 +38,136 @@ import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.events.SoundEvent;
 import marauroa.common.Pair;
 
+/**
+ * Functions for repairing items that are "worn" or "broken".
+ */
 public class AssassinRepairerAdder {
 	private static final Logger logger = Logger.getLogger(AssassinRepairerAdder.class);
 
-	//private SpeakerNPC repairer;
-	private Map<String, Integer> priceList;
+	/**
+	 * IDs for responses to repair requests.
+	 *
+	 * TODO:
+	 *   - move to behavior
+	 */
+	public static enum ResponseId {
+		DENIED, // player does not satisfy preconditions
+		UNDECLARED, // player did not specify which item to repair
+		NO_REPAIR, // NPC does not repair requested item
+		NO_CARRY, // player is not carrying requested item
+		NO_AFFORD, // player doesn't have enough money to pay for repair
+		SAY_COUNT, // NPC should say how many items player is carrying that need repair
+		REJECT_REPAIR, // player does not confirm repair after request
+		DROPPED, // player dropped item after request
+		REPAIR_DONE, // repair was completed
+		ERROR; // an unknown error occurred
+	}
 
-	private String currentRepairItem = null;
-	private Integer currentRepairCount = null;
-	private Integer currentRepairFee = null;
-
-	private static final List<String> repairPhrases = Arrays.asList("repair", "fix", "napraw", "naprawa", "naprawić", "naprawiam", "naprawiane");
-
-	// reply IDs
-	public final static String ID_DENIED = "denied";
-	public final static String ID_UNDECLARED = "undeclared";
-	public final static String ID_NO_REPAIR = "cannot_repair";
-	public final static String ID_NO_CARRY = "not_carrying";
-	public final static String ID_NO_AFFORD = "cannot_afford";
-	public final static String ID_SAY_COUNT = "say_count";
-	public final static String ID_REJECT_REPAIR = "reject_repair";
-	public final static String ID_DROPPED = "dropped";
-	public final static String ID_REPAIR_DONE = "repair_done";
-	public final static String ID_ERROR = "error";
-
-	final Map<String, Object> replies = new HashMap<String, Object>() {{
-		put(ID_DENIED, "Tylko członkowie gildii skrytobójców mogą naprawiać przedmioty.");
-		put(ID_UNDECLARED, "Powiedz mi tylko co chcesz naprawić.");
-		put(ID_NO_REPAIR, null);
-		put(ID_NO_CARRY, null);
-		put(ID_NO_AFFORD, "Nie masz dość pieniędzy.");
-		put(ID_SAY_COUNT, null);
-		put(ID_REJECT_REPAIR, "W takim razie powodzenia. Pamiętaj, że gdy się zepsują, nie będzie można już ich naprawić.");
-		put(ID_DROPPED, "Upuściłeś przedmiot?");
-		put(ID_REPAIR_DONE, null);
-		put(ID_ERROR, "Wygląda na to, że nie mogę przetworzyć transakcji. Przepraszam.");
-	}};
-
-
-	public void add(final AssassinRepairer repairer, final Map<String, Integer> priceList) {
-		//this.repairer = repairer;
-		this.priceList = priceList;
-
-
+	/**
+	 * Adds repairer behavior to an NPC.
+	 *
+	 * @param repairer
+	 *   Item repairing NPC.
+	 */
+	public void add(final AssassinRepairer repairer) {
+		// requests repair but does not meet preconditions
 		repairer.add(ConversationStates.ATTENDING,
-				repairPhrases,
+				ConversationPhrases.REPAIR_MESSAGES,
 				new NotCondition(new PlayerHasItemWithHimCondition("licencja na zabijanie")),
 				ConversationStates.ATTENDING,
-				//"Only members of the assassins guild can have their #'auto crossbows' repaired.",
-				getReply("denied"),
-				null);
+				null,
+				new ChatAction() {
+					@Override
+					public void fire(Player player, Sentence sentence, EventRaiser npc) {
+						repairer.say(repairer.getReply(ResponseId.DENIED));
+					}
+				});
 
+		// meets requirements and does meet preconditions
 		repairer.add(ConversationStates.ATTENDING,
-				repairPhrases,
+				ConversationPhrases.REPAIR_MESSAGES,
 				new PlayerHasItemWithHimCondition("licencja na zabijanie"),
-				ConversationStates.QUESTION_2,
+				null,
 				null,
 				requestRepairAction(repairer));
 
+		// changes mind / does not want repair
 		repairer.add(ConversationStates.QUESTION_2,
 				ConversationPhrases.NO_MESSAGES,
 				null,
 				ConversationStates.ATTENDING,
-				getReply(ID_REJECT_REPAIR),
-				null);
-
-		// player dropped item before accepting
-		repairer.add(ConversationStates.QUESTION_2,
-				ConversationPhrases.YES_MESSAGES,
-				new NotCondition(needsRepairCondition()),
-				ConversationStates.ATTENDING,
-				getReply(ID_DROPPED),
-				null);
+				null,
+				new ChatAction() {
+					@Override
+					public void fire(Player player, Sentence sentence, EventRaiser npc) {
+						repairer.say(repairer.getReply(ResponseId.REJECT_REPAIR));
+					}
+				});
 
 		// this should not happen
 		repairer.add(ConversationStates.QUESTION_2,
 				ConversationPhrases.YES_MESSAGES,
-				feeNotSetCondition(),
-				ConversationStates.ATTENDING,
-				getReply(ID_ERROR),
-				null);
-
-		repairer.add(ConversationStates.QUESTION_2,
-				ConversationPhrases.YES_MESSAGES,
-				new AndCondition(
-						needsRepairCondition(),
-						new NotCondition(canAffordCondition())),
-				ConversationStates.ATTENDING,
-				getReply(ID_NO_AFFORD),
-				null);
-
-		repairer.add(ConversationStates.QUESTION_2,
-				ConversationPhrases.YES_MESSAGES,
-				new AndCondition(
-						needsRepairCondition(),
-						canAffordCondition()),
+				feeNotSetCondition(repairer),
 				ConversationStates.ATTENDING,
 				null,
-				repairAction());
+				new ChatAction() {
+					@Override
+					public void fire(Player player, Sentence sentence, EventRaiser npc) {
+						repairer.say(repairer.getReply(ResponseId.ERROR));
+					}
+				});
+
+		// player dropped item before accepting
+		repairer.add(ConversationStates.QUESTION_2,
+				ConversationPhrases.YES_MESSAGES,
+				new AndCondition(
+						new NotCondition(feeNotSetCondition(repairer)),
+						itemsChangedCondition(repairer)),
+				ConversationStates.ATTENDING,
+				null,
+				new ChatAction() {
+					@Override
+					public void fire(Player player, Sentence sentence, EventRaiser npc) {
+						repairer.say(repairer.getReply(ResponseId.DROPPED));
+					}
+				});
+
+		// wants repair but doesn't have enough money
+		repairer.add(ConversationStates.QUESTION_2,
+				ConversationPhrases.YES_MESSAGES,
+				new AndCondition(
+						new NotCondition(feeNotSetCondition(repairer)),
+						new NotCondition(itemsChangedCondition(repairer)),
+						new NotCondition(canAffordCondition(repairer))),
+				ConversationStates.ATTENDING,
+				null,
+				new ChatAction() {
+					@Override
+					public void fire(Player player, Sentence sentence, EventRaiser npc) {
+						repairer.say(repairer.getReply(ResponseId.NO_AFFORD));
+					}
+				});
+
+		// wants repair and does have enough money
+		repairer.add(ConversationStates.QUESTION_2,
+				ConversationPhrases.YES_MESSAGES,
+				new AndCondition(
+						new NotCondition(feeNotSetCondition(repairer)),
+						new NotCondition(itemsChangedCondition(repairer)),
+						canAffordCondition(repairer)),
+				ConversationStates.ATTENDING,
+				null,
+				repairAction(repairer));
 	}
 
-	private void reset() {
-		currentRepairItem = null;
-		currentRepairCount = null;
-		currentRepairFee = null;
-	}
-
-	public void setReply(final String id, final String... phrases) {
-		/*
-		if (phrases.length > 2) {
-			logger.warn("Maximum of 2 phrases allowed: singular & plural forms");
-		}
-		*/
-
-		if (replies.containsKey(id)) {
-			if (phrases.length == 1) {
-				replies.put(id, phrases[0]);
-			} else {
-				replies.put(id, new Pair<String, String>(phrases[0], phrases[1]));
-
-				if (phrases.length > 2) {
-					logger.warn("Maximum of 2 phrases allowed: singular & plural forms");
-				}
-			}
-
-			return;
-		}
-
-		logger.warn("Tried to add unused reply: " + id);
-	}
-
-	@SuppressWarnings("unchecked")
-	private String getReply(final String id, final boolean plural) {
-		final Object reply = replies.get(id);
-		if (reply instanceof Pair) {
-			if (plural) {
-				return ((Pair<String, String>) reply).second();
-			} else {
-				return ((Pair<String, String>) reply).first();
-			}
-		}
-
-		return (String) reply;
-	}
-
-	private String getReply(final String id) {
-		return getReply(id, false);
-	}
-
-	private void setRepairItem(final String itemName) {
-		for (final String repairable: priceList.keySet()) {
-			if (itemName.toLowerCase().equals(repairable.toLowerCase())) {
-				currentRepairItem = repairable;
-				return;
-			}
-		}
-
-		currentRepairItem = itemName;
-	}
-
-	private boolean canRepair(final String item) {
-		for (String bow: priceList.keySet()) {
-			if (item.toLowerCase().equals(bow.toLowerCase())) {
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	private void setRepairCount(final Player player) {
-		if (!canRepair(currentRepairItem)) {
-			return;
-		}
-
-		int count = 0;
-		for (final Item item: player.getAllEquipped(currentRepairItem)) {
-			if (((BreakableWeapon) item).isUsed()) {
-				count++;
-			}
-		}
-
-		currentRepairCount = count;
-	}
-
-	private void calculateRepairFee() {
-		for (final String item: priceList.keySet()) {
-			if (currentRepairItem.toLowerCase().equals(item.toLowerCase())) {
-				currentRepairFee = currentRepairCount * (priceList.get(currentRepairItem));
-				return;
-			}
-		}
-	}
-
+	/**
+	 * Creates action for requesting item(s) repair.
+	 *
+	 * @param repairer
+	 *   Item repairing NPC.
+	 * @return
+	 *   Action for requesting repair.
+	 */
 	private ChatAction requestRepairAction(final AssassinRepairer repairer) {
 		return new ChatAction() {
 			@Override
@@ -239,40 +175,42 @@ public class AssassinRepairerAdder {
 				final int repairables = repairer.getNumberOfRepairables();
 
 				String request = sentence.getTrimmedText();
-				if (repairPhrases.contains(request.toLowerCase())) {
+				if (ConversationPhrases.REPAIR_MESSAGES.contains(request.toLowerCase(Locale.ENGLISH))) {
 					if (repairables > 1) {
-						repairer.say(getReply(ID_UNDECLARED));
+						repairer.say(repairer.getReply(ResponseId.UNDECLARED));
 						repairer.setCurrentState(ConversationStates.ATTENDING);
 						return;
 					}
-
 					// player does not need to specify item name if repairer only repairs one item
 					request = request + " " + repairer.getFirstRepairable();
 				}
 
-				for (final String rWord: repairPhrases) {
-					if (request.startsWith(rWord)) {
+				// compare with lower-case to make request line case-insensitive
+				String requestL = request.toLowerCase(Locale.ENGLISH);
+				for (final String rWord: ConversationPhrases.REPAIR_MESSAGES) {
+					if (requestL.startsWith(rWord.toLowerCase(Locale.ENGLISH))) {
+						// trim trigger word
 						request = request.substring(rWord.length() + 1);
 						break;
 					}
 				}
 
-				setRepairItem(request);
-				setRepairCount(player);
+				repairer.setRepairItem(request);
+				repairer.setRepairCount(player);
 
-				if (currentRepairCount == null) {
-					String cannotRepairReply = getReply(ID_NO_REPAIR);
+				if (!repairer.canRepair()) {
+					String cannotRepairReply = repairer.getReply(ResponseId.NO_REPAIR);
 					if (cannotRepairReply == null) {
-						cannotRepairReply = "Nie jestem w stanie naprawić " + Grammar.plural(currentRepairItem) + ".";
+						cannotRepairReply = "Nie jestem w stanie naprawić " + Grammar.plural(repairer.currentRepairItem) + ".";
 					}
 
 					repairer.say(cannotRepairReply);
 					repairer.setCurrentState(ConversationStates.ATTENDING);
 					return;
-				} else if (currentRepairCount < 1) {
-					String notCarryingReply = getReply(ID_NO_CARRY);
+				} else if (repairer.currentRepairCount < 1) {
+					String notCarryingReply = repairer.getReply(ResponseId.NO_CARRY);
 					if (notCarryingReply == null) {
-						notCarryingReply = "Nie posiadasz ani jednego przedmiotu #'" + Grammar.plural(currentRepairItem) + "', który potrzebuje naprawy.";
+						notCarryingReply = "Nie posiadasz ani jednego przedmiotu #'" + Grammar.plural(repairer.currentRepairItem) + "', który potrzebuje naprawy.";
 					}
 
 					repairer.say(notCarryingReply);
@@ -280,137 +218,359 @@ public class AssassinRepairerAdder {
 					return;
 				}
 
-				calculateRepairFee();
-				final boolean multiple = currentRepairCount > 1;
+				repairer.calculateRepairFee();
+				final boolean multiple = repairer.currentRepairCount > 1;
 
 				String sayCountReply;
 				if (multiple) {
-					sayCountReply = getReply(ID_SAY_COUNT, true);
+					sayCountReply = repairer.getReply(ResponseId.SAY_COUNT, true);
 				} else {
-					sayCountReply = getReply(ID_SAY_COUNT);
+					sayCountReply = repairer.getReply(ResponseId.SAY_COUNT);
 				}
 
 				if (sayCountReply == null) {
-					final StringBuilder sb = new StringBuilder("Masz " + Integer.toString(currentRepairCount) + " zużyte " + currentRepairItem); //Grammar.plnoun(usedBows, bowType)); // formats name all lowercase
+					final StringBuilder sb = new StringBuilder("Masz " + repairer.currentRepairCount
+									+ " zużyte " + repairer.currentRepairItem); //Grammar.plnoun(repairer.currentRepairCount, repairer.currentRepairItem)); // formats name all lowercase
 					sb.append(". Mogę naprawić ");
 					if (multiple) {
 						sb.append("je wszystkie");
 					} else {
 						sb.append("to");
 					}
-					sb.append(" za " + Integer.toString(currentRepairFee) + " money. Chcesz, abym to zrobił?");
+					sb.append(" za " + repairer.currentRepairFee + " money. Chcesz, abym to zrobił?");
 
 					sayCountReply = sb.toString();
 				}
 
 				repairer.say(sayCountReply);
+				repairer.setCurrentState(ConversationStates.QUESTION_2);
 			}
 		};
 	}
 
-	private ChatAction repairAction() {
+	/**
+	 * Creates action for executing item(s) repair.
+	 *
+	 * @param repairer
+	 *   Item repairing NPC.
+	 * @return
+	 *   Action for executing repair.
+	 */
+	private ChatAction repairAction(AssassinRepairer repairer) {
 		return new ChatAction() {
 			@Override
-			public void fire(final Player player, final Sentence sentence, final EventRaiser repairer) {
-				//final int usedBows = getUsedBowsCount(player);
-				player.drop("money", currentRepairFee);
+			public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
+				player.drop("money", repairer.currentRepairFee);
 
-				for (final Item bow: player.getAllEquipped(currentRepairItem)) {
+				for (final Item bow: player.getAllEquipped(repairer.currentRepairItem)) {
 					final BreakableWeapon breakable = (BreakableWeapon) bow;
 					if (breakable.isUsed()) {
 						breakable.repair();
 					}
 				}
 
-				final boolean multiple = currentRepairCount > 1;
+				final boolean multiple = repairer.currentRepairCount > 1;
 
 				String doneReply;
 				if (multiple) {
-					doneReply = getReply(ID_REPAIR_DONE, true);
+					doneReply = repairer.getReply(ResponseId.REPAIR_DONE, true);
 				} else {
-					doneReply = getReply(ID_REPAIR_DONE);
+					doneReply = repairer.getReply(ResponseId.REPAIR_DONE);
 				}
 
 				if (doneReply == null) {
 					doneReply = "Zrobione! ";
 					if (multiple) {
-						doneReply += "Twoje " + Grammar.plural(currentRepairItem) + " wyglądają jak nowe.";
+						doneReply += "Twoje " + Grammar.plural(repairer.currentRepairItem) + " wyglądają jak nowe.";
 					} else {
-						doneReply += "Twój " + currentRepairItem + " wygląda jak nowy.";
+						doneReply += "Twój " + repairer.currentRepairItem + " wygląda jak nowy.";
 					}
 				}
-
-				/*
-				if (currentRepairCount > 1) {
-					ranger.say("Done! Your " + Grammar.plural(bowType) + " are as good as new.");
-				} else {
-					ranger.say("Done! Your " + bowType + " is as good as new.");
-				}
-				*/
 
 				repairer.say(doneReply);
 				repairer.addEvent(new SoundEvent(SoundID.COMMERCE, SoundLayer.CREATURE_NOISE));
 
 				// reset item name, count, & fee back to null
-				/*
-				reset();
-				*/
+				repairer.reset();
 			}
 		};
 	}
 
-	private ChatCondition feeNotSetCondition() {
+	/**
+	 * Creates condition to check if fee has been determined.
+	 *
+	 * @param repairer
+	 *   Item repairing NPC.
+	 * @return
+	 *   Condition.
+	 */
+	private ChatCondition feeNotSetCondition(AssassinRepairer repairer) {
 		return new ChatCondition() {
 			@Override
-			public boolean fire(final Player player, final Sentence sentence, final Entity repairer) {
-				if (currentRepairFee == null) {
+			public boolean fire(final Player player, final Sentence sentence, final Entity raiser) {
+				if (repairer.currentRepairFee == null) {
 					logger.error("Cannot create transaction, repair fee not set");
 					return true;
 				}
-
 				return false;
 			}
 		};
 	}
 
-	private ChatCondition canAffordCondition() {
+	/**
+	 * Creates condition to check if player can afford fee.
+	 *
+	 * @param repairer
+	 *   Item repairing NPC.
+	 * @return
+	 *   Condition.
+	 */
+	private ChatCondition canAffordCondition(AssassinRepairer repairer) {
 		return new ChatCondition() {
 			@Override
-			public boolean fire(final Player player, final Sentence sentence, final Entity repairer) {
-				return player.isEquipped("money", currentRepairFee);
+			public boolean fire(final Player player, final Sentence sentence, final Entity raiser) {
+				return player.isEquipped("money", repairer.currentRepairFee);
 			}
 		};
 	}
 
-	private ChatCondition needsRepairCondition() {
+	/**
+	 * Creates condition to check if number of items in need of repair changed after initial request
+	 * (e.g. player either dropped item and/or picked up from ground to try to get discount).
+	 *
+	 * @param repairer
+	 *   Item repairing NPC.
+	 * @return
+	 *   Condition.
+	 */
+	private ChatCondition itemsChangedCondition(AssassinRepairer repairer) {
 		return new ChatCondition() {
 			@Override
-			public boolean fire(final Player player, final Sentence sentence, Entity repairer) {
-				return currentRepairCount != null && currentRepairCount > 0;
+			public boolean fire(Player player, Sentence sentence, Entity entity) {
+				return repairer.getWornItemsCount(player) != repairer.currentRepairCount;
 			}
 		};
 	}
 
-	public class AssassinRepairer extends SpeakerNPC {
+	/**
+	 * NPC entity that supports repairing items.
+	 */
+	public static class AssassinRepairer extends SpeakerNPC {
+		private static Logger logger = Logger.getLogger(AssassinRepairer.class);
+
+		/** Prices for repairing items. */
 		private final Map<String, Integer> repairList;
 
+		/** Subject item name of current conversation. */
+		private String currentRepairItem = null;
+		/** Subject number of items to repair of current conversation. */
+		private Integer currentRepairCount = null;
+		/** Subject fee of current conversation. */
+		private Integer currentRepairFee = null;
+
+		/** Responses for repair requests conditions. */
+		private final Map<ResponseId, Object> replies = new HashMap<ResponseId, Object>() {{
+			put(ResponseId.DENIED, "Tylko członkowie gildii skrytobójców mogą naprawiać przedmioty.");
+			put(ResponseId.UNDECLARED, "Powiedz mi tylko co chcesz naprawić.");
+			put(ResponseId.NO_REPAIR, null);
+			put(ResponseId.NO_CARRY, null);
+			put(ResponseId.NO_AFFORD, "Nie masz dość pieniędzy.");
+			put(ResponseId.SAY_COUNT, null);
+			put(ResponseId.REJECT_REPAIR, "W takim razie powodzenia. Pamiętaj, że gdy się zepsują, nie będzie można już ich naprawić.");
+			put(ResponseId.DROPPED, "Upuściłeś przedmiot?");
+			put(ResponseId.REPAIR_DONE, null);
+			put(ResponseId.ERROR, "Wygląda na to, że nie mogę przetworzyć transakcji. Przepraszam.");
+		}};
+
+		/**
+		 * Creates a new NPC.
+		 *
+		 * @param name
+		 *   Name of NPC.
+		 * @param repairList
+		 *   List of item names and prices for repair.
+		 */
 		public AssassinRepairer(String name, final Map<String, Integer> repairList) {
 			super(name);
-
 			this.repairList = repairList;
 		}
 
-		@Override
-		public void onGoodbye(final RPEntity attending) {
-			// reset item name, count, & fee to null
-			reset();
+		/**
+		 * Resets subjects of current conversation.
+		 */
+		private void reset() {
+			currentRepairItem = null;
+			currentRepairCount = null;
+			currentRepairFee = null;
+		}
+
+		/**
+		 * Adds/Changes a reply for a certain condition.
+		 *
+		 * @param id
+		 *   Condition ID.
+		 * @param responses
+		 *   Replies for condition.
+		 */
+		public void setReply(final ResponseId id, final String... responses) {
+			if (replies.containsKey(id)) {
+				if (responses.length == 1) {
+					replies.put(id, responses[0]);
+				} else {
+					replies.put(id, new Pair<String, String>(responses[0], responses[1]));
+					if (responses.length > 2) {
+						logger.warn("Maximum of 2 phrases allowed: singular & plural forms");
+					}
+				}
+				return;
+			}
+			logger.warn("Tried to add unused reply: " + id);
+		}
+
+		/**
+		 * Retrieves reply for certain condition.
+		 *
+		 * @param id
+		 *   Condition ID.
+		 * @param plural
+		 *   {@code true} if multiple items are to be repaired.
+		 * @return
+		 *   NPC response to condition.
+		 */
+		private String getReply(final ResponseId id, final boolean plural) {
+			final Object reply = replies.get(id);
+			if (reply instanceof Pair) {
+				Pair<?, ?> p = (Pair<?, ?>) reply;
+				if (plural) {
+					return (String) p.second();
+				} else {
+					return (String) p.first();
+				}
+			}
+			return (String) reply;
+		}
+
+		/**
+		 * Retrieves reply for certain condition.
+		 *
+		 * @param id
+		 *   Condition ID.
+		 * @return
+		 *   NPC response to condition.
+		 */
+		private String getReply(final ResponseId id) {
+			return getReply(id, false);
+		}
+
+		/**
+		 * Sets subject item name of current conversation.
+		 *
+		 * @param itemName
+		 *   Name of item.
+		 */
+		private void setRepairItem(String itemName) {
+			itemName = Grammar.singular(itemName);
+			for (final String repairable: repairList.keySet()) {
+				if (itemName.toLowerCase(Locale.ENGLISH).equals(repairable.toLowerCase(Locale.ENGLISH))) {
+					// use name from repair list in case request does not match character case (e.g.
+					// repairable item is "foo" but player requested "Foo")
+					currentRepairItem = repairable;
+					return;
+				}
+			}
+			currentRepairItem = itemName;
+		}
+
+		/**
+		 * Checks if current item subject is included in list of items that NPC can repair.
+		 *
+		 * @return
+		 *   {@code true} if repairing item is supported.
+		 */
+		public boolean canRepair() {
+			if (currentRepairItem == null) {
+				return false;
+			}
+			String itemNameL = currentRepairItem.toLowerCase(Locale.ENGLISH);
+			for (String repairable: repairList.keySet()) {
+				if (repairable.toLowerCase(Locale.ENGLISH).equals(itemNameL)) {
+					return true;
+				}
+			}
+			return false;
+		}
+
+		/**
+		 * Retrieves number of items player is carrying that need repair.
+		 *
+		 * @param player
+		 *   Player requesting repair.
+		 * @return
+		 *   Number of "worn" items player is carrying.
+		 */
+		private int getWornItemsCount(final Player player) {
+			if (!canRepair()) {
+				return 0;
+			}
+			int count = 0;
+			for (final Item item: player.getAllEquipped(currentRepairItem)) {
+				if (((BreakableWeapon) item).isUsed()) {
+					count++;
+				}
+			}
+			return count;
+		}
+
+		/**
+		 * Sets subject number of items to repair of current conversation.
+		 *
+		 * @param player
+		 *   Player requesting repair.
+		 */
+		private void setRepairCount(final Player player) {
+			currentRepairCount = getWornItemsCount(player);
+		}
+
+		/**
+		 * Retrieves price of single item repair.
+		 *
+		 * @return
+		 *   Unit price.
+		 */
+		private Integer getUnitPrice() {
+			if (currentRepairItem == null) {
+				logger.warn("Repair item name not set, cannot get unit price.");
+				return null;
+			}
+			String itemNameL = currentRepairItem.toLowerCase(Locale.ENGLISH);
+			for (String repairable: repairList.keySet()) {
+				if (repairable.toLowerCase(Locale.ENGLISH).equals(itemNameL)) {
+					return repairList.get(repairable);
+				}
+			}
+			logger.warn("Item " + currentRepairItem + " not found in repair list, cannot get unit price");
+			return null;
+		}
+
+		/**
+		 * Sets subject fee of current conversation.
+		 */
+		private void calculateRepairFee() {
+			if (currentRepairCount == null) {
+				logger.warn("Repair count not set, cannot calculate repair fee");
+				return;
+			}
+			Integer unitPrice = getUnitPrice();
+			if (unitPrice != null) {
+				currentRepairFee = currentRepairCount * unitPrice;
+			}
 		}
 
 		/**
 		 * Retrieves number of item types that can be repaired by this NPC.
 		 *
 		 * @return
-		 * 		Number of repairable item types.
+		 *   Number of supported item types.
 		 */
 		public int getNumberOfRepairables() {
 			return repairList.size();
@@ -419,12 +579,32 @@ public class AssassinRepairerAdder {
 		/**
 		 * Retrieves the first item name from repair list.
 		 *
+		 * Used when player asks for repair without declaring item name.
+		 *
 		 * @return
-		 * 		First item.
+		 *   Name of first item in list of items that can be repaired.
 		 */
-		@SuppressWarnings("unchecked")
 		public String getFirstRepairable() {
 			return repairList.keySet().toArray(new String[] {})[0];
+		}
+
+		/**
+		 * Overridden to reset subjects at end of conversation.
+		 */
+		@Override
+		public void onGoodbye(final RPEntity attending) {
+			reset();
+		}
+
+		/**
+		 * Overridden to reset subjects at end of conversation.
+		 */
+		@Override
+		public void setCurrentState(ConversationStates state) {
+			super.setCurrentState(state);
+			if (ConversationStates.IDLE.equals(state)) {
+				reset();
+			}
 		}
 	}
 }

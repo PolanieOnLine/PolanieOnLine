@@ -8,6 +8,7 @@ import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.scripting.ScriptImpl;
 import games.stendhal.server.core.scripting.ScriptingNPC;
 import games.stendhal.server.core.scripting.ScriptingSandbox;
+import games.stendhal.server.entity.npc.shop.ShopType;
 import games.stendhal.server.entity.player.Player;
 
 /**
@@ -55,7 +56,7 @@ public class Bileter extends ScriptImpl {
 		npc.behave("bye",
 				"Do widzenia. Podziwiaj mecz.");
 		try {
-			npc.behave("sell", SingletonRepository.getShopsList().get("mecz"));
+			npc.behave("sell", SingletonRepository.getShopsList().get("mecz", ShopType.ITEM_SELL));
 		} catch (NoSuchMethodException e) {
 			logger.error(e, e);
 		}

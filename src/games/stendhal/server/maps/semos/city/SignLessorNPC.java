@@ -48,6 +48,7 @@ import games.stendhal.server.entity.npc.condition.PlayerHasItemWithHimCondition;
 import games.stendhal.server.entity.npc.condition.PlayerHasStorableEntityCondition;
 import games.stendhal.server.entity.npc.condition.TextHasParameterCondition;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.events.ChatOptionsEvent;
 import games.stendhal.server.util.StringUtils;
 
 /**
@@ -205,6 +206,9 @@ public class SignLessorNPC implements ZoneConfigurator {
 				setPath(new FixedPath(nodes, true));
 			}
 		};
+
+		npc.addKnownChatOptions("rent");
+		ChatOptionsEvent.addMerchantActivity("rent");
 
 		npc.setDescription("Oto Gordon. Umieszcza wiadomości na tabliczkach.");
 		npc.setEntityClass("signguynpc");

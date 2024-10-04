@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -14,7 +13,9 @@ package games.stendhal.server.maps.quests;
 
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.oneOf;
+import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
@@ -28,6 +29,7 @@ import org.junit.Test;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.item.Item;
+import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.fsm.Engine;
 import games.stendhal.server.entity.player.Player;
@@ -38,8 +40,6 @@ import utilities.QuestHelper;
 import utilities.RPClass.ItemTestHelper;
 
 public class DailyItemQuestTest {
-
-
 	private static String questSlot = "daily_item";
 
 	private Player player = null;
@@ -58,11 +58,12 @@ public class DailyItemQuestTest {
 
 		final AbstractQuest quest = new DailyItemQuest();
 		quest.addToWorld();
-
 	}
+
 	@Before
 	public void setUp() {
 		player = PlayerTestHelper.createPlayer("player");
+		assertFalse(player.hasQuest(questSlot));
 	}
 
 	/**
@@ -77,9 +78,9 @@ public class DailyItemQuestTest {
 		en.step(player, "hi");
 		assertEquals("Pozdrawiam Cię w imieniu mieszkańców Ados.", getReply(npc));
 		en.step(player, "task");
-		assertTrue(getReply(npc).startsWith("Ados potrzebuje zapasów. Zdobądź "));
+		assertThat(getReply(npc), startsWith("Ados potrzebuje zapasów. Zdobądź "));
 		en.step(player, "complete");
-		assertTrue(getReply(npc).startsWith("Jeszcze nie przyniosłeś "));
+		assertThat(getReply(npc), startsWith("Jeszcze nie przyniosłeś "));
 		en.step(player, "bye");
 		assertEquals("Życzę miłego dnia.", getReply(npc));
 
@@ -114,7 +115,7 @@ public class DailyItemQuestTest {
 		en.step(player, "hi");
 		assertEquals("Pozdrawiam Cię w imieniu mieszkańców Ados.", getReply(npc));
 		en.step(player, "task");
-		assertTrue(getReply(npc).startsWith("Ados potrzebuje zapasów. Zdobądź "));
+		assertThat(getReply(npc), startsWith("Ados potrzebuje zapasów. Zdobądź "));
 		en.step(player, "bye");
 		assertEquals("Życzę miłego dnia.", getReply(npc));
 
@@ -130,6 +131,62 @@ public class DailyItemQuestTest {
 		assertTrue(getReply(npc).startsWith("Ados potrzebuje zapasów. Zdobądź "));
 		en.step(player, "bye");
 		assertEquals("Życzę miłego dnia.", getReply(npc));
+	}
 
+	@Test
+	public void testExperimentalSandwich() {
+		StackableItem sandwich = (StackableItem) ItemTestHelper.createItem("kanapka", 5);
+		StackableItem experimentalSandwich = (StackableItem) ItemTestHelper.createItem("kanapka", 5);
+		experimentalSandwich.setDescription("Oto eksperymentalna kanapka przygotowana przez szefa kuchni Stefana.");
+		experimentalSandwich.put("amount", player.getBaseHP() / 2);
+		experimentalSandwich.put("frequency", 10);
+		experimentalSandwich.put("regen", 50);
+		experimentalSandwich.put("persistent", 1);
+		npc = SingletonRepository.getNPCList().get("Mayor Chalmers");
+		assertThat(npc, notNullValue());
+		en = npc.getEngine();
+		player.setQuest(questSlot, "kanapka=5");
+		assertThat(player.getNumberOfEquipped("kanapka"), is(0));
+		// not carrying any sandwiches
+		en.step(player, "hi");
+		en.step(player, "done");
+		assertThat(getReply(npc), is("Jeszcze nie przyniosłeś 5 kanapka. Idź i zdobądź, a wtedy wróć"
+				+ " i powiedz #załatwione jak skończysz."));
+		// carrying experimental sandwiches only
+		player.equip("bag", experimentalSandwich);
+		assertThat(player.getNumberOfEquipped("kanapka"), is(5));
+		assertThat(player.getNumberOfSubmittableEquipped("kanapka"), is(0));
+		assertThat(player.getFirstEquipped("kanapka").isSubmittable(), is(false));
+		en.step(player, "done");
+		assertThat(getReply(npc), is("Jest coś dziwnego w tych kanapkach. Wróć, gdy będziesz mieć"
+				+ " takie, które są niezmodyfikowane."));
+		assertThat(player.getNumberOfEquipped("kanapka"), is(5));
+		assertThat(player.getNumberOfSubmittableEquipped("kanapka"), is(0));
+		// carrying experimental sandwiches before unmodified ones
+		player.equip("bag", sandwich);
+		assertThat(player.getNumberOfEquipped("kanapka"), is(10));
+		assertThat(player.getNumberOfSubmittableEquipped("kanapka"), is(5));
+		assertThat(player.getFirstEquipped("kanapka").isSubmittable(), is(false));
+		en.step(player, "done");
+		assertThat(getReply(npc), is("Dobra robota! Pozwól sobie podziękować w imieniu obywateli Ados!"));
+		assertThat(player.getQuest(questSlot, 0), is("done"));
+		assertThat(player.getNumberOfEquipped("kanapka"), is(5));
+		assertThat(player.getNumberOfSubmittableEquipped("kanapka"), is(0));
+		player.setQuest(questSlot, "kanapka=5");
+		player.drop("kanapka", 5);
+		assertThat(player.getNumberOfEquipped("kanapka"), is(0));
+		// carrying experimental sandwiches after unmodified ones
+		player.equip("bag", sandwich);
+		player.equip("bag", experimentalSandwich);
+		assertThat(player.getNumberOfEquipped("kanapka"), is(10));
+		assertThat(player.getNumberOfSubmittableEquipped("kanapka"), is(5));
+		assertThat(player.getFirstEquipped("kanapka").isSubmittable(), is(true));
+		en.step(player, "done");
+		assertThat(getReply(npc), is("Dobra robota! Pozwól sobie podziękować w imieniu obywateli Ados!"));
+		assertThat(player.getQuest(questSlot, 0), is("done"));
+		assertThat(player.getNumberOfEquipped("kanapka"), is(5));
+		assertThat(player.getNumberOfSubmittableEquipped("kanapka"), is(0));
+		en.step(player, "bye");
+		player.setQuest(questSlot, null);
 	}
 }

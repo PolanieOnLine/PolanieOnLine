@@ -490,7 +490,7 @@ public class KillEnemyArmy extends AbstractQuest {
 		fillQuestInfo(
 				"Zgładzenie Wrogiej Armii",
 				"Despot Halb Errvl ma vendettę przeciwko każdej armii, która mu się sprzeciwia.",
-				true);
+				true, 3);
 		step_1();
 	}
 
@@ -574,17 +574,5 @@ public class KillEnemyArmy extends AbstractQuest {
 	@Override
 	public String getRegion() {
 		return Region.SEMOS_SURROUNDS;
-	}
-
-	@Override
-	public int getCompletedCount(final Player player) {
-		int count = 0;
-		if (player.hasQuest(QUEST_SLOT) && isCompleted(player)) {
-			final String[] state = player.getQuest(QUEST_SLOT).split(";");
-			if (state.length > 0) {
-				count = Integer.parseInt(state[state.length-1]);
-			}
-		}
-		return count;
 	}
 }

@@ -11,8 +11,6 @@
  ***************************************************************************/
 package games.stendhal.server.maps.nalwor.forest;
 
-import static games.stendhal.server.maps.nalwor.forest.AssassinRepairerAdder.ID_NO_AFFORD;
-
 import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 import java.lang.ref.WeakReference;
@@ -63,6 +61,7 @@ import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.events.ShowItemListEvent;
 import games.stendhal.server.maps.nalwor.forest.AssassinRepairerAdder.AssassinRepairer;
+import games.stendhal.server.maps.nalwor.forest.AssassinRepairerAdder.ResponseId;
 import games.stendhal.server.util.TimeUtil;
 
 /**
@@ -204,7 +203,7 @@ public class ArcheryRange implements ZoneConfigurator,LoginListener,LogoutListen
 	private void initNPC() {
 		repairerAdder = new AssassinRepairerAdder();
 
-		ranger = repairerAdder.new AssassinRepairer(npcName, repairableSellPrices) {
+		ranger = new AssassinRepairerAdder.AssassinRepairer(npcName, repairableSellPrices) {
 			@Override
 			public void say(final String text) {
 				// don't turn toward player
@@ -318,8 +317,8 @@ public class ArcheryRange implements ZoneConfigurator,LoginListener,LogoutListen
 			repairPrices.put(itemName, repairableSellPrices.get(itemName) / 2);
 		}
 
-		repairerAdder.add(ranger, repairPrices);
-		repairerAdder.setReply(ID_NO_AFFORD, "Nie masz dość pieniędzy. Wynoś się stąd!");
+		repairerAdder.add(ranger);
+		ranger.setReply(ResponseId.NO_AFFORD, "Nie masz dość pieniędzy. Wynoś się stąd!");
 	}
 
 	/**

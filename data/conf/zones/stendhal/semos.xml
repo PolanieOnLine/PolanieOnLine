@@ -634,6 +634,11 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 
 	<!-- Interiors of the wizards tower -->
 	<zone name="int_semos_wizards_tower_basement" file="interiors/semos/wizards_tower_basement.tmx">
+		<attributes>
+			<parameter name="parallax">stars</parameter>
+			<parameter name="parallax_ignore_tiles">sky/stars</parameter>
+		</attributes>
+
 		<configurator
 			class-name="games.stendhal.server.maps.semos.wizardstower.WizardsGuardStatueNPC"/>
 
@@ -655,8 +660,14 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 				class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination"/>
 		</portal>
 	</zone>
+
 	<!-- Interiors of the wizards tower -->
 	<zone name="int_semos_wizards_tower_1" file="interiors/semos/wizards_tower_1.tmx">
+		<attributes>
+			<parameter name="parallax">stars</parameter>
+			<parameter name="parallax_ignore_tiles">sky/stars</parameter>
+		</attributes>
+
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<configurator
 			class-name="games.stendhal.server.maps.semos.wizardstower.FirstFloorCreatures"/>
@@ -741,8 +752,14 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 			<attribute name="hidden"/>
 		</portal>
 	</zone>
+
 	<!-- Interiors of the wizards tower -->
 	<zone name="int_semos_wizards_tower_2" file="interiors/semos/wizards_tower_2.tmx">
+		<attributes>
+			<parameter name="parallax">stars</parameter>
+			<parameter name="parallax_ignore_tiles">sky/stars</parameter>
+		</attributes>
+
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<configurator
 			class-name="games.stendhal.server.maps.semos.wizardstower.SecondFloorCreatures"/>
@@ -814,8 +831,14 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 			<attribute name="hidden"/>
 		</portal>
 	</zone>
+
 	<!-- Interiors of the wizards tower -->
 	<zone name="int_semos_wizards_tower_3" file="interiors/semos/wizards_tower_3.tmx">
+		<attributes>
+			<parameter name="parallax">stars</parameter>
+			<parameter name="parallax_ignore_tiles">sky/stars</parameter>
+		</attributes>
+
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<configurator
 			class-name="games.stendhal.server.maps.semos.wizardstower.ThirdFloorCreatures"/>
@@ -887,8 +910,14 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 			<attribute name="hidden"/>
 		</portal>
 	</zone>
+
 	<!-- Interiors of the wizards tower -->
 	<zone name="int_semos_wizards_tower_4" file="interiors/semos/wizards_tower_4.tmx">
+		<attributes>
+			<parameter name="parallax">stars</parameter>
+			<parameter name="parallax_ignore_tiles">sky/stars</parameter>
+		</attributes>
+
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<configurator
 			class-name="games.stendhal.server.maps.semos.wizardstower.FourthFloorCreatures"/>
@@ -960,8 +989,14 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 			<attribute name="hidden"/>
 		</portal>
 	</zone>
+
 	<!-- Interiors of the wizards tower -->
 	<zone name="int_semos_wizards_tower_5" file="interiors/semos/wizards_tower_5.tmx">
+		<attributes>
+			<parameter name="parallax">stars</parameter>
+			<parameter name="parallax_ignore_tiles">sky/stars</parameter>
+		</attributes>
+
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<configurator
 			class-name="games.stendhal.server.maps.semos.wizardstower.FifthFloorCreatures"/>
@@ -1033,8 +1068,14 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 			<attribute name="hidden"/>
 		</portal>
 	</zone>
+
 	<!-- Interiors of the wizards tower -->
 	<zone name="int_semos_wizards_tower_6" file="interiors/semos/wizards_tower_6.tmx">
+		<attributes>
+			<parameter name="parallax">stars</parameter>
+			<parameter name="parallax_ignore_tiles">sky/stars</parameter>
+		</attributes>
+
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
 		<configurator
 			class-name="games.stendhal.server.maps.semos.wizardstower.SixthFloorCreatures"/>
@@ -1106,8 +1147,14 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 			<attribute name="hidden"/>
 		</portal>
 	</zone>
+
 	<!-- Interiors of the wizards tower -->
 	<zone name="int_semos_wizards_tower_7" file="interiors/semos/wizards_tower_7.tmx">
+		<attributes>
+			<parameter name="parallax">stars</parameter>
+			<parameter name="parallax_ignore_tiles">sky/stars</parameter>
+		</attributes>
+
 		<configurator
 			class-name="games.stendhal.server.maps.semos.wizardstower.WizardsGuardStatueSpireNPC"/>
 
@@ -1132,6 +1179,11 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 	</zone>
 	<!-- Interiors of the wizards tower -->
 	<zone name="int_semos_wizards_tower_8" file="interiors/semos/wizards_tower_spire_1.tmx">
+		<attributes>
+			<parameter name="parallax">view_wizards_tower</parameter>
+			<parameter name="parallax_ignore_tiles">sky/view_wizards_tower</parameter>
+		</attributes>
+
 		<configurator
 			class-name="games.stendhal.server.maps.semos.wizardstower.RedFireWizardNPC"/>
 		<configurator
@@ -1206,6 +1258,11 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 
 	<!-- Interiors of the wizards tower -->
 	<zone name="int_semos_wizards_tower_9" file="interiors/semos/wizards_tower_spire_2.tmx">
+		<attributes>
+			<parameter name="parallax">view_wizards_tower</parameter>
+			<parameter name="parallax_ignore_tiles">sky/view_wizards_tower</parameter>
+		</attributes>
+
 		<configurator
 			class-name="games.stendhal.server.maps.semos.wizardstower.BlackDeathWizardNPC"/>
 		<configurator
@@ -1325,6 +1382,9 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 			class-name="games.stendhal.server.maps.semos.plains.AddPostmanListener"/>
 		<configurator
 			class-name="games.stendhal.server.maps.semos.plains.ButterfliesNPC"/>
+
+		<!-- four-leaf clover: spawns in random zones but needs to be initialized with configurator -->
+		<configurator class-name="games.stendhal.server.maps.global.FourLeafClover"/>
 
 		<configurator class-name="games.stendhal.server.maps.FertileGrounds">
 			<parameter name="x">60</parameter>

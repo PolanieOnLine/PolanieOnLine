@@ -25,6 +25,7 @@ import games.stendhal.server.entity.npc.condition.OrCondition;
 import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotInStateCondition;
 import games.stendhal.server.entity.npc.condition.TimePassedCondition;
+import games.stendhal.server.entity.npc.shop.ShopType;
 import games.stendhal.server.entity.npc.shop.ShopsList;
 import games.stendhal.server.entity.player.Player;
 
@@ -75,8 +76,8 @@ public class Maria extends ScriptImpl {
 		int y = 4;
 		String shop = "food&drinks";
 		final ShopsList shops = SingletonRepository.getShopsList();
-		if (args.size() > 0 ) {
-			if (shops.get(args.get(0))!= null) {
+		if (args.size() > 0) {
+			if (shops.get(args.get(0), ShopType.ITEM_SELL) != null) {
 				shop = args.get(0);
 			} else {
 				admin.sendPrivateText(args.get(0)
@@ -106,7 +107,7 @@ public class Maria extends ScriptImpl {
 				"Możesz otrzymać #ofertę napojów lub zrobić przerwę na poznanie nowych ludzi!");
 		npc.behave("bye", "Do widzenia, do widzenia!");
 		try {
-			npc.behave("sell", SingletonRepository.getShopsList().get(shop));
+			npc.behave("sell", SingletonRepository.getShopsList().get(shop, ShopType.ITEM_SELL));
 		} catch (final NoSuchMethodException e) {
 			logger.error(e, e);
 		}

@@ -57,7 +57,7 @@ public class EggsForMarianne implements QuestManuscript {
 			.internalName("eggs_for_marianne")
 			.repeatableAfterMinutes(60)
 			.minLevel(0)
-			.region(Region.DENIRAN)
+			.region(Region.DENIRAN_CITY)
 			.questGiverNpc("Marianne");
 
 		quest.history()
@@ -95,9 +95,6 @@ public class EggsForMarianne implements QuestManuscript {
 			.rewardWith(new IncreaseXPAction(50))
 			.rewardWith(new IncreaseKarmaAction(50))
 			.rewardWith(new EquipRandomItemAction("bratek=12;stokrotki=12", false, "Dziękuję! Weź [this_these] [number_item]!"));
-
-		// completions count is stored in 3rd index of quest slot
-		quest.setCompletionsIndexes(2);
 
 		return quest;
 	}

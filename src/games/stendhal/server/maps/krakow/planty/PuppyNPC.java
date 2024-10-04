@@ -11,16 +11,17 @@
  ***************************************************************************/
 package games.stendhal.server.maps.krakow.planty;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.UseListener;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.npc.SilentNPC;
-
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import games.stendhal.server.entity.npc.behaviour.impl.idle.WanderIdleBehaviour;
 
 /**
  * A playful puppy
@@ -57,8 +58,7 @@ public class PuppyNPC implements ZoneConfigurator {
 			dog.setDescription("Widzisz zabawnego szczeniaczka.");
 			dog.setEntityClass("animal/puppy");
 			dog.setBaseSpeed(0.5);
-			dog.moveRandomly();
-			dog.setRandomMovementRadius(25, true);
+			dog.setIdleBehaviour(new WanderIdleBehaviour(25));
 			dog.setSounds(Arrays.asList("dog-small-bark-1", "dog-small-bark-2"));
 			zone.add(dog);
 		}

@@ -11,6 +11,8 @@
  ***************************************************************************/
 package games.stendhal.server.util;
 
+import java.time.LocalTime;
+
 import games.stendhal.common.grammar.Grammar;
 
 /**
@@ -30,8 +32,6 @@ public class TimeUtil {
 	public static final int MINUTES_IN_WEEK = MINUTES_IN_DAY * 7;
 	public static final int MINUTES_IN_YEAR = MINUTES_IN_DAY * 365; // 525,600
 	public static final int MINUTES_IN_HALF_YEAR = MINUTES_IN_YEAR / 2; // 262,800
-
-	public static final int TURNS_IN_MINUTE = (int) (SECONDS_IN_MINUTE / 0.3); // 200
 
 	/**
 	 * Create a text representing a saying of approximate time until.
@@ -250,4 +250,13 @@ public class TimeUtil {
 		}
 	}
 
+	/**
+	 * Retrieves seconds to next day.
+	 *
+	 * @return
+	 *   Remaining seconds to midnight hour in local time.
+	 */
+	public static int secondsToMidnight() {
+		return SECONDS_IN_DAY - LocalTime.now().toSecondOfDay();
+	}
 }

@@ -244,6 +244,8 @@ public class CloakCollector extends AbstractQuest implements BringListOfItemsQue
 				"Płaszcze Kolekcjonerki",
 				"Josephine szuka płaszczy w wielu kolorach.",
 				false);
+
+		npcs.get("Josephine").addKnownChatOptions("cloaks");
 	}
 
 	@Override

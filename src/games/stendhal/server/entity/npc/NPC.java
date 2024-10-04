@@ -1,15 +1,17 @@
 /***************************************************************************
- *						(C) Copyright 2019 - Marauroa					   *
+ *                   (C) Copyright 2003-2024 - Marauroa                    *
  ***************************************************************************
  ***************************************************************************
- *																		   *
- *	 This program is free software; you can redistribute it and/or modify  *
- *	 it under the terms of the GNU General Public License as published by  *
- *	 the Free Software Foundation; either version 2 of the License, or	   *
- *	 (at your option) any later version.								   *
- *																		   *
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.entity.npc;
+
+import static games.stendhal.common.Constants.DEFAULT_SOUND_RADIUS;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,6 +29,7 @@ import games.stendhal.server.core.pathfinder.Path;
 import games.stendhal.server.entity.DressedEntity;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.item.Corpse;
+import games.stendhal.server.entity.npc.behaviour.impl.idle.IdleBehaviour;
 import games.stendhal.server.events.SoundEvent;
 import marauroa.common.game.Definition;
 import marauroa.common.game.Definition.Type;
@@ -41,10 +44,6 @@ public abstract class NPC extends DressedEntity {
 	 * specified sounds.
 	 */
 	private static final int SOUND_PROBABILITY = 20;
-	/**
-	 * Creature sound radius.
-	 */
-	protected static final int SOUND_RADIUS = 23;
 	/**
 	 * Minimum delay in milliseconds between playing creature sounds.
 	 */
@@ -71,9 +70,9 @@ public abstract class NPC extends DressedEntity {
 	/**
 	 * Idling between path cycles
 	 */
-    protected int pauseTurns = 0;
-    public int pauseTurnsRemaining = 0;
-    protected Direction pauseDirection;
+	protected int pauseTurns = 0;
+	public int pauseTurnsRemaining = 0;
+	protected Direction pauseDirection;
 
 	/**
 	 * Possible sound events.
@@ -81,6 +80,10 @@ public abstract class NPC extends DressedEntity {
 	private List<String> sounds;
 	/** The time stamp of previous sound event. */
 	private long lastSoundTime;
+
+	protected IdleBehaviour idler;
+	// considered idle by default
+	protected boolean isIdle = true;
 
 	public static void generateRPClass() {
 		try {
@@ -290,81 +293,103 @@ public abstract class NPC extends DressedEntity {
 	 * Checks if the NPC should remain stationary or begin walking
 	 */
 	public void checkPause() {
-        if (pauseTurnsRemaining == 0) {
-            if (hasPath()) {
-                setSpeed(getBaseSpeed());
-            }
+		if (pauseTurnsRemaining == 0) {
+			if (hasPath()) {
+				setSpeed(getBaseSpeed());
+			}
 
-            applyMovement();
-        } else {
-            if (!stopped()) {
-                stop();
-                if (pauseDirection != null) {
+			applyMovement();
+		} else {
+			if (!stopped()) {
+				stop();
+				if (pauseDirection != null) {
 					setDirection(pauseDirection);
 				}
-            }
+			}
 
-            pauseTurnsRemaining -= 1;
-        }
+			pauseTurnsRemaining -= 1;
+		}
+	}
+
+	public void preLogic() {
+		if (idler != null) {
+			// handled in pre-logic to minimize sprite jumping
+			idler.perform(this);
+		}
 	}
 
 	@Override
 	public void logic() {
-	    if (atMovementRadius()) {
-	        onOutsideMovementRadius();
-	    }
-		if (!hasPath()) {
-		    if (logger.isDebugEnabled()) {
-		        String title = getTitle();
-		        String zone = getZone().getName();
-		        String coords = Integer.toString(getX()) + ", " + Integer.toString(getY());
-		        logger.debug("Moving entity " + title + " at " + zone + " " + coords + " does not have a path");
-		    }
+		if (idler != null) {
+			// handled in pre-logic
+			return;
+		} else {
+			if (atMovementRadius()) {
+				onOutsideMovementRadius();
+			}
+			if (!hasPath()) {
+				if (logger.isDebugEnabled()) {
+					String title = getTitle();
+					String zone = getZone().getName();
+					String coords = Integer.toString(getX()) + ", " + Integer.toString(getY());
+					logger.debug("Moving entity " + title + " at " + zone + " " + coords + " does not have a path");
+				}
+			}
 		}
 
 		maybeMakeSound();
 		checkPause();
-        notifyWorldAboutChanges();
+		notifyWorldAboutChanges();
 	}
 
-    /**
-     * Give NPC a random path
-     */
-    public void moveRandomly() {
-        setRandomPathFrom(getX(), getY(), getMovementRange() / 2);
-    }
+	/**
+	 * Give NPC a random path
+	 *
+	 * NOTE: can this be replaced with {@code NPC.setIdleBehaviour(new WanderIdleBehaviour())}?
+	 */
+	public void moveRandomly() {
+		setRandomPathFrom(getX(), getY(), getMovementRange() / 2);
+	}
 
-    @Override
-    public void onFinishedPath() {
-        super.onFinishedPath();
+	@Override
+	public void onFinishedPath() {
+		super.onFinishedPath();
 
-        if (usesRandomPath()) {
-            // FIXME: There is a pause when renewing path
-            moveRandomly();
-        }
+		if (usesRandomPath()) {
+			// FIXME: There is a pause when renewing path
+			moveRandomly();
+		}
 
-        pauseTurnsRemaining = pauseTurns;
-    }
+		pauseTurnsRemaining = pauseTurns;
+	}
 
-    /**
-     * Pause the entity when path is completed.
-     * Call setDirection() first to specify which
-     * way entity should face during pause.
-     *
-     * @param pause
-     *         Number of turns entity should stay paused
-     */
-    public void setPathCompletedPause(final int pause) {
-        //setPathCompletedPause(pause, getDirection());
-        this.pauseTurns = pause;
-    }
+	@Override
+	protected void onMoved(final int oldX, final int oldY, final int newX, final int newY) {
+		super.onMoved(oldX, oldY, newX, newY);
+		if (idler != null) {
+			idler.onMoved(this);
+		}
+	}
 
-    public void setPathCompletedPause(final int pause, final Direction dir) {
-        this.pauseTurns = pause;
-        this.pauseDirection = dir;
-    }
+	/**
+	 * Pause the entity when path is completed.
+	 * Call setDirection() first to specify which
+	 * way entity should face during pause.
+	 *
+	 * @param pause
+	 *		 Number of turns entity should stay paused
+	 */
+	public void setPathCompletedPause(final int pause) {
+		//setPathCompletedPause(pause, getDirection());
+		this.pauseTurns = pause;
+	}
 
-    /**
+	public void setPathCompletedPause(final int pause, final Direction dir) {
+		this.pauseTurns = pause;
+		this.pauseDirection = dir;
+	}
+
+	/**
 	 * Generate a sound event with the probability of SOUND_PROBABILITY, if
 	 * the previous sound event happened long enough ago.
 	 */
@@ -383,9 +408,59 @@ public abstract class NPC extends DressedEntity {
 			long time = System.currentTimeMillis();
 			if (lastSoundTime + SOUND_DEAD_TIME < time) {
 				lastSoundTime = time;
-				this.addEvent(new SoundEvent(Rand.rand(sounds), SOUND_RADIUS, 100, SoundLayer.CREATURE_NOISE));
+				this.addEvent(new SoundEvent(Rand.rand(sounds), DEFAULT_SOUND_RADIUS, 100,
+						SoundLayer.CREATURE_NOISE));
 				this.notifyWorldAboutChanges();
 			}
 		}
+	}
+
+	/**
+	 * Sets the idle movement behavior manager.
+	 *
+	 * Not related to idle conversation state.
+	 *
+	 * @param idler
+	 *   Manager for executing behavior.
+	 */
+	public void setIdleBehaviour(final IdleBehaviour idler) {
+		this.idler = idler;
+	}
+
+	/**
+	 * Faces a new random direction.
+	 */
+	public void changeDirection() {
+		final Direction oldDir = getDirection();
+		Direction newDir = Direction.rand();
+		short failsafe = 50;
+		while (newDir.equals(oldDir)) {
+			// find a direction different than previous
+			newDir = Direction.rand();
+			failsafe--;
+			if (failsafe < 1) {
+				break;
+			}
+		}
+		if (newDir.equals(oldDir)) {
+			logger.warn("Failed to change entity's direction");
+		}
+		setDirection(newDir);
+	}
+
+	@Override
+	protected void handleSimpleCollision(final int nx, final int ny) {
+		if (isIdle && idler != null && idler.handleSimpleCollision(this, nx, ny)) {
+			return;
+		}
+		super.handleSimpleCollision(nx, ny);
+	}
+
+	@Override
+	protected void handleObjectCollision() {
+		if (isIdle && idler != null && idler.handleObjectCollision(this)) {
+			return;
+		}
+		super.handleObjectCollision();
 	}
 }

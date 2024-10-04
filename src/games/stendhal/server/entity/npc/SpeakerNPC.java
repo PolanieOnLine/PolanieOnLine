@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2022 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -171,6 +171,8 @@ public class SpeakerNPC extends PassiveNPC {
 	 * a set of blue words used since the start of the conversation
 	 */
 	private Set<String> learnedWordsInCurrentConversation = new HashSet<>();
+	/** Chat options triggers to be shown even if not registered with transition. */
+	private Set<String> forcedWordsInCurrentConversation = new HashSet<>();
 
 	/**
 	 * alternative image for website
@@ -351,6 +353,7 @@ public class SpeakerNPC extends PassiveNPC {
 			}
 			setIdea(null);
 			learnedWordsInCurrentConversation = new HashSet<>();
+			forcedWordsInCurrentConversation = new HashSet<>();
 			// send chat option event when NPC becomes "idle"
 			if (wasAttending instanceof Player) {
 				engine.addChatOptionsEvent((Player) wasAttending);
@@ -423,8 +426,8 @@ public class SpeakerNPC extends PassiveNPC {
 		// respond to player in the chat log before the player says something.
 	}
 
+	@Override
 	public void preLogic() {
-
 		if (this.getZone().getPlayerAndFriends().isEmpty() && !isTalking() && !actingAlone) {
 			return;
 		}
@@ -439,10 +442,14 @@ public class SpeakerNPC extends PassiveNPC {
 			if (getAttending() != null) {
 				setAttending(null);
 			}
-			if (hasPath()) {
-				setSpeed(getBaseSpeed());
+			if (idler != null) {
+				idler.perform(this);
+			} else {
+				if (hasPath()) {
+					setSpeed(getBaseSpeed());
+				}
+				applyMovement();
 			}
-			applyMovement();
 		} else if (attending != null) {
 			// If the player is too far away
 			if ((attending.squaredDistance(this) > squaredGoodByeRange)
@@ -506,7 +513,53 @@ public class SpeakerNPC extends PassiveNPC {
 	public void say(final String text) {
 		// turn towards player if necessary, then say it.
 		say(text, true);
+	}
+
+	protected void say(final String text, final boolean turnToPlayer) {
+		// be polite and face the player we are talking to
+		if (turnToPlayer && (attending != null)) {
+			faceToward(attending);
+		}
+		super.say(text);
 		learnWordsInCurrentConversation(text);
+	}
+
+	/**
+	 * Adds a trigger that should be shown as chat option even if not registered in a transition.
+	 *
+	 * @param triggers
+	 *   Trigger word(s).
+	 */
+	public void forceWordsInCurrentConversation(String... triggers) {
+		for (String trigger: triggers) {
+			trigger = trigger.toLowerCase(Locale.ENGLISH);
+			if (!forcedWordsInCurrentConversation.contains(trigger)) {
+				forcedWordsInCurrentConversation.add(trigger);
+			}
+		}
+	}
+
+	/**
+	 * Retrieves triggers that should be shown as chat options even if not registered in a transition.
+	 *
+	 * @return
+	 *   Trigger words.
+	 */
+	public Set<String> getForcedWordsInCurrentConversation() {
+		return forcedWordsInCurrentConversation;
+	}
+
+	/**
+	 * Adds a word to list of learned words.
+	 *
+	 * @param trigger
+	 *   Word to be added.
+	 */
+	private void addLearnedWordInCurrentConversation(String trigger) {
+		trigger = trigger.toLowerCase(Locale.ENGLISH);
+		if (!hasLearnedWordInCurrentConversation(trigger)) {
+			learnedWordsInCurrentConversation.add(trigger);
+		}
 	}
 
 	public boolean hasLearnedWordInCurrentConversation(String trigger) {
@@ -514,6 +567,11 @@ public class SpeakerNPC extends PassiveNPC {
 	}
 
 	private void learnWordsInCurrentConversation(String text) {
+		if (!(getAttending() instanceof Player)) {
+			// don't remember words when not interacting with a player
+			return;
+		}
+
 		int pos = 0;
 		pos = text.indexOf('#', pos);
 		loop:
@@ -524,7 +582,7 @@ public class SpeakerNPC extends PassiveNPC {
 				continue;
 			} else if (next == '\'') {
 				int end = text.indexOf('\'', pos + 2);
-				learnedWordsInCurrentConversation.add(text.substring(pos + 2, end).toLowerCase(Locale.ENGLISH));
+				addLearnedWordInCurrentConversation(text.substring(pos + 2, end));
 				pos = text.indexOf('#', end);
 				continue;
 			} else {
@@ -532,24 +590,15 @@ public class SpeakerNPC extends PassiveNPC {
 				for (i = pos + 1; i < text.length(); i++) {
 					char endChar = text.charAt(i);
 					if (!Character.isJavaIdentifierPart(endChar)) {
-						learnedWordsInCurrentConversation.add(text.substring(pos + 1, i).toLowerCase(Locale.ENGLISH));
+						addLearnedWordInCurrentConversation(text.substring(pos + 1, i));
 						pos = text.indexOf('#', i);
 						continue loop;
 					}
 				}
-				learnedWordsInCurrentConversation.add(text.substring(pos + 1).toLowerCase(Locale.ENGLISH));
+				addLearnedWordInCurrentConversation(text.substring(pos + 1));
 				break;
 			}
 		}
-	}
-
-	protected void say(final String text, final boolean turnToPlayer) {
-		// be polite and face the player we are talking to
-		if (turnToPlayer && (attending != null)) {
-			faceToward(attending);
-		}
-
-		super.say(text);
 	}
 
 	/** Message when NPC is attending another player.
@@ -769,7 +818,56 @@ public class SpeakerNPC extends PassiveNPC {
 		return(engine.remove(label));
 	}
 
+	/**
+	 * Removes matching transitions.
+	 *
+	 * @param state
+	 * @param trigger
+	 * @param condition
+	 * @return
+	 *   {@code true} if at least one transition was removed.
+	 */
+	public boolean del(final ConversationStates state, final Expression trigger,
+			final ChatCondition condition) {
+		return engine.remove(state, trigger, condition);
+	}
 
+	/**
+	 * Wrapper method.
+	 *
+	 * Lua struggles with overloaded methods, so create a wrapper with a different name.
+	 *
+	 * @param state
+	 * @param trigger
+	 * @param condition
+	 * @return
+	 *   {@code true} if at least one transition was removed.
+	 */
+	public boolean removeTransition(final ConversationStates state, final Object trigger,
+			final ChatCondition condition) {
+		Expression expr;
+		if (trigger instanceof Expression) {
+			expr = (Expression) trigger;
+		} else if (trigger instanceof String) {
+			expr = new Expression(String.valueOf(trigger), ExpressionType.UNKNOWN);
+		} else if (trigger instanceof List) {
+			final List<?> l = (List<?>) trigger;
+			boolean res = false;
+			for (final Object obj: l) {
+				if (obj instanceof String) {
+					if (del(state, new Expression(String.valueOf(obj), ExpressionType.UNKNOWN), condition)) {
+						res = true;
+					}
+				}
+			}
+			return res;
+		} else {
+			logger.warn("Unknown trigger:" + trigger);
+			return false;
+		}
+
+		return del(state, expr, condition);
+	}
 
 	public void listenTo(final Player player, final String text) {
 		tell(player, text);
@@ -1174,7 +1272,8 @@ public class SpeakerNPC extends PassiveNPC {
 	 *   Keyword(s) to be added.
 	 */
 	public void addKnownChatOptions(final String... keywords) {
-		for (final String keyword: keywords) {
+		for (String keyword: keywords) {
+			keyword = keyword.toLowerCase(Locale.ENGLISH);
 			if (!knownChatOptions.contains(keyword)) {
 				knownChatOptions.add(keyword);
 			}

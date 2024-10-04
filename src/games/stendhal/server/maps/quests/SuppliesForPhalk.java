@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2021 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -129,6 +129,13 @@ public class SuppliesForPhalk extends AbstractQuest {
 		// the extra parts in the quest state are for wrvil and mrotho not to give them cloaks and armor twice
 		actions.add(new SetQuestAndModifyKarmaAction(QUEST_SLOT, "clothes;none;none", 2.0));
 		actions.add(new InflictStatusOnNPCAction("kanapka"));
+		actions.add(new ChatAction() {
+			@Override
+			public void fire(Player player, Sentence sentence, EventRaiser raiser) {
+				// workaround because "clothes" is not parsed from NPC dialogue
+				npc.forceWordsInCurrentConversation("clothes");
+			}
+		});
 
 		npc.add(ConversationStates.QUEST_ITEM_QUESTION, ConversationPhrases.YES_MESSAGES,
 				new AndCondition(
@@ -420,7 +427,13 @@ public class SuppliesForPhalk extends AbstractQuest {
 				new QuestInStateCondition(QUEST_SLOT, 0, "clothes"),
 				ConversationStates.ATTENDING,
 				"Czekam na ciebie aż przyniesiesz mi nowe #ubrania od Wrvila i Mrotho.",
-				null);
+				new ChatAction() {
+					@Override
+					public void fire(Player player, Sentence sentence, EventRaiser raiser) {
+						// workaround because "clothes" is not parsed from NPC dialogue
+						npc.forceWordsInCurrentConversation("clothes");
+					}
+				});
 	}
 
 	@Override

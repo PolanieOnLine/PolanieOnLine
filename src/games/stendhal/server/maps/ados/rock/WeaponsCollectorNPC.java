@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2023 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -20,6 +20,7 @@ import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.BuyerAdder;
 import games.stendhal.server.entity.npc.behaviour.impl.QuestCompletedBuyerBehaviour;
+import games.stendhal.server.entity.npc.shop.ShopType;
 import games.stendhal.server.entity.npc.shop.ShopsList;
 
 public class WeaponsCollectorNPC implements ZoneConfigurator {
@@ -45,7 +46,9 @@ public class WeaponsCollectorNPC implements ZoneConfigurator {
 				addJob("Jestem zbyt stary, aby pracować. Żyję tutaj jak pustelnik.");
 				addGoodbye("Miło było Cię poznać.");
 				// will buy black items once the Ultimate Collector quest is completed
-				new BuyerAdder().addBuyer(this, new QuestCompletedBuyerBehaviour("ultimate_collector", "Kupię od ciebie czarne przedmioty, gdy ukończysz każde #'wyzwanie', które ci postawie.", shops.get("buyblack")), false);
+				new BuyerAdder().addBuyer(this, new QuestCompletedBuyerBehaviour("ultimate_collector",
+						"Kupię od ciebie czarne przedmioty, gdy ukończysz każde #'wyzwanie', które ci postawie.",
+						shops.get("buyblack", ShopType.ITEM_BUY)), false);
 			}
 			/* remaining behaviour is defined in:
 			 * maps.quests.WeaponsCollector,

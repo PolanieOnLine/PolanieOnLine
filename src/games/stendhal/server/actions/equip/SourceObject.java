@@ -346,7 +346,7 @@ public class SourceObject extends MoveableObject {
 
 		//Stackable lucky charm item
 		String destObject = dest.getContentSlotName();
-		boolean isLuckyCharm = item.getName().equals("czterolistna koniczyna");
+		boolean isLuckyCharm = item.getName().equals("talizman szczęścia");
 
 		if (destObject != null && isLuckyCharm) {
 			StackableItem luckycharm = (StackableItem) removeFromWorld();
