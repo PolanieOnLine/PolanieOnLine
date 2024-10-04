@@ -450,9 +450,9 @@
 		<item name="pierścień z czaszką" price="250" />
 		<item name="pierścień zaręczynowy" price="1000" />
 		<item name="pierścień leczniczy" price="2500" />
-		<item name="pierścień spokoju" price="2800" />
+		<item name="pierścień ukojenia" price="2800" />
 		<!--<item name="pierścień szmaragdowy" price="9000" /> should avoid selling bound rings -->
-		<item name="zaizolowany pierścień" price="25000" />
+		<item name="pierścień izolacji" price="25000" />
 		<item name="pierścień skorupy żółwia" price="25000" />
 		<item name="pierścień cesarski" price="50000" />
 

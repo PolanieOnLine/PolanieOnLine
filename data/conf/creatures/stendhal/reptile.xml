@@ -91,7 +91,7 @@
 		<corpse name="snake_2x2" harmless="snake_2x2-safe" />
 		<drops>
 			<item value="trucizna" quantity="[2,5]" probability="20.0"/>
-			<item value="zaizolowany pierścień" quantity="[1,1]" probability="0.08"/>
+			<item value="pierścień izolacji" quantity="[1,1]" probability="0.08"/>
 			<item value="magiczne buty płytowe" quantity="[1,1]" probability="0.01"/>
 		</drops>
 		<equips>

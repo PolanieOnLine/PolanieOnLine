@@ -680,7 +680,7 @@
 		<drops>
 			<item value="szynka" quantity="[4,10]" probability="75.0"/>
 			<item value="stek" quantity="[3,11]" probability="35.0"/>
-			<item value="pierścień spokoju" quantity="[1,1]" probability="0.5"/>
+			<item value="pierścień ukojenia" quantity="[1,1]" probability="0.5"/>
 		</drops>
 		<equips>
 		</equips>
@@ -859,7 +859,7 @@
 			<item value="futro" quantity="[1,1]" probability="100.0"/>
 			<item value="kieł niedźwiedzi" quantity="[1,1]" probability="3.0"/>
 			<item value="niedźwiedzie pazury" quantity="[1,1]" probability="5.0"/>
-			<item value="pierścień spokoju" quantity="[1,1]" probability="0.1"/>
+			<item value="pierścień ukojenia" quantity="[1,1]" probability="0.1"/>
 		</drops>
 		<equips>
 		</equips>

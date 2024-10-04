@@ -17,8 +17,9 @@
 		<respawn value="9000"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[1,2]" probability="100.0"/>
-			<item value="duży eliksir" quantity="[1,2]" probability="50.0"/>
+			<item value="money" quantity="[1,1]" probability="100.0"/>
+			<item value="duży eliksir" quantity="[1,3]" probability="50.0"/>
+			<item value="ruda platyny" quantity="[1,1]" probability="5.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -46,7 +47,7 @@
 		<corpse name="humanoid"/>
 		<drops>
 			<item value="money" quantity="[1,2]" probability="100.0"/>
-			<item value="duży eliksir" quantity="[1,3]" probability="50.0"/>
+			<item value="duży eliksir" quantity="[1,7]" probability="50.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -73,8 +74,9 @@
 		<respawn value="9920"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[1,2]" probability="100.0"/>
-			<item value="duży eliksir" quantity="[1,3]" probability="50.0"/>
+			<item value="money" quantity="[1,200]" probability="100.0"/>
+			<item value="duży eliksir" quantity="[1,11]" probability="50.0"/>
+			<item value="pierścień ukojenia" quantity="[1,1]" probability="1.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -101,8 +103,8 @@
 		<respawn value="10420"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[1,2]" probability="100.0"/>
-			<item value="duży eliksir" quantity="[1,3]" probability="60.0"/>
+			<item value="money" quantity="[1,1]" probability="100.0"/>
+			<item value="wielki eliksir" quantity="[1,2]" probability="60.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -130,7 +132,7 @@
 		<corpse name="humanoid"/>
 		<drops>
 			<item value="money" quantity="[1,2]" probability="100.0"/>
-			<item value="duży eliksir" quantity="[1,3]" probability="60.0"/>
+			<item value="wielki eliksir" quantity="[1,3]" probability="60.0"/>
 			<item value="lodowa tarcza" quantity="[1,1]" probability="1.0"/>
 		</drops>
 		<equips>
@@ -157,8 +159,8 @@
 		<respawn value="11480"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[1,2]" probability="100.0"/>
-			<item value="duży eliksir" quantity="[1,4]" probability="50.0"/>
+			<item value="money" quantity="[1,2000]" probability="100.0"/>
+			<item value="wielki eliksir" quantity="[1,4]" probability="50.0"/>
 			<item value="lodowa tarcza" quantity="[1,1]" probability="1.0"/>
 		</drops>
 		<equips>
@@ -185,8 +187,8 @@
 		<respawn value="12060"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[1,2]" probability="100.0"/>
-			<item value="duży eliksir" quantity="[1,4]" probability="50.0"/>
+			<item value="money" quantity="[1,2000]" probability="100.0"/>
+			<item value="wielki eliksir" quantity="[1,5]" probability="50.0"/>
 		</drops>
 		<equips>
 		</equips>
@@ -213,8 +215,9 @@
 		<respawn value="12660"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[1,2]" probability="100.0"/>
-			<item value="duży eliksir" quantity="[1,4]" probability="50.0"/>
+			<item value="money" quantity="[1,2000]" probability="100.0"/>
+			<item value="wielki eliksir" quantity="[1,6]" probability="50.0"/>
+			<item value="zbroja światła" quantity="[1,1]" probability="0.05"/>
 		</drops>
 		<equips>
 		</equips>
@@ -241,9 +244,10 @@
 		<respawn value="13300"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[1,2]" probability="100.0"/>
-			<item value="duży eliksir" quantity="[1,5]" probability="50.0"/>
+			<item value="money" quantity="[1,4000]" probability="100.0"/>
+			<item value="wielki eliksir" quantity="[1,7]" probability="50.0"/>
 			<item value="magiczny topór obosieczny" quantity="[1,1]" probability="1.0"/>
+			<item value="zbroja światła" quantity="[1,1]" probability="0.1"/>
 		</drops>
 		<equips>
 		</equips>
@@ -270,10 +274,12 @@
 		<respawn value="13960"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="money" quantity="[1,2]" probability="100.0"/>
-			<item value="duży eliksir" quantity="[2,6]" probability="50.0"/>
+			<item value="money" quantity="[1,9000]" probability="100.0"/>
+			<item value="wielki eliksir" quantity="[2,8]" probability="50.0"/>
 			<item value="srebrny sztylecik" quantity="[1,1]" probability="0.5"/>
 			<item value="sztabka platyny" quantity="[1,2]" probability="5.0"/>
+			<item value="pierścień izolacji" quantity="[1,1]" probability="2.0"/>
+			<item value="sztylet dusz" quantity="[1,1]" probability="0.08"/>
 		</drops>
 		<equips>
 		</equips>

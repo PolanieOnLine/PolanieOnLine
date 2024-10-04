@@ -102,7 +102,7 @@
 		<respawn value="1200"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="pierścień spokoju" quantity="[1,1]" probability="0.005"/>
+			<item value="pierścień ukojenia" quantity="[1,1]" probability="0.005"/>
 		</drops>
 		<equips>
 		</equips>

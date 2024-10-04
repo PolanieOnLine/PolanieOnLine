@@ -196,7 +196,7 @@
 		<respawn value="2820"/>
 		<corpse name="humanoid"/>
 		<drops>
-			<item value="pierścień spokoju" quantity="[1,1]" probability="0.5"/>
+			<item value="pierścień ukojenia" quantity="[1,1]" probability="0.5"/>
 			<item value="zatruty bicz" quantity="1" probability="0.9"/>
 		</drops>
 		<equips>

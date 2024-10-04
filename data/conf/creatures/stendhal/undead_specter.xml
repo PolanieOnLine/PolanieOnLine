@@ -19,7 +19,7 @@
 		<respawn value="1230"/>
 		<corpse name="cloaked_white" harmless="cloaked_white" />
 		<drops>
-			<item value="pierścień spokoju" quantity="[1,1]" probability="0.02"/>
+			<item value="pierścień ukojenia" quantity="[1,1]" probability="0.02"/>
 		</drops>
 		<equips>
 		</equips>
@@ -218,7 +218,7 @@
 		<corpse name="humanoid"/>
 		<drops>
 			<item value="money" quantity="[3,30]" probability="90.0"/>
-			<item value="pierścień spokoju" quantity="[1,1]" probability="0.3"/>
+			<item value="pierścień ukojenia" quantity="[1,1]" probability="0.3"/>
 		</drops>
 		<equips>
 		</equips>

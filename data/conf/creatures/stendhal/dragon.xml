@@ -436,7 +436,7 @@
 			<item value="ametyst" quantity="[1,4]" probability="10.0"/>
 			<item value="kieł smoka" quantity="[1,1]" probability="7.5"/>
 			<item value="magiczne buty płytowe" quantity="[1,1]" probability="1.0"/>
-			<item value="pierścień spokoju" quantity="[1,1]" probability="2.5"/>
+			<item value="pierścień ukojenia" quantity="[1,1]" probability="2.5"/>
 		</drops>
 		<equips>
 		</equips>

@@ -86,7 +86,7 @@
 		<respawn value="3900"/>
 		<corpse name="carapace" harmless="carapace"/>
 		<drops>
-			<item value="pierścień spokoju" quantity="[1,1]" probability="0.75"/>
+			<item value="pierścień ukojenia" quantity="[1,1]" probability="0.75"/>
 		</drops>
 		<ai>
 			<profile name="brave"/>
