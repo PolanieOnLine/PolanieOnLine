@@ -376,16 +376,23 @@ Inspectable {
 		for (RPObject obj : removed) {
 			ID id = obj.getID();
 			IEntity entity = panel.getEntity();
+			logger.info("Trying to remove: " + obj + " from panel containing: " + entity);
 			if (entity != null && id.equals(entity.getRPObject().getID())) {
 				if (obj.size() == 1) {
 					// The object was removed
 					panel.setEntity(null);
+					logger.info("Successfully removed: " + obj);
 					continue;
 				}
 			} else {
 				logger.error("Tried removing wrong object from a panel. "
 						+ "removing: " + obj + " , but panel contains: "
-						+ panel.getEntity(), new Throwable());
+						+ (entity != null ? entity : "null"), new Throwable());
+				// Dodaj dodatkowe sprawdzenie, aby upewnić się, że obiekt jest zgodny
+				if (entity != null && !id.equals(entity.getRPObject().getID())) {
+					logger.warn("Attempted to remove an object that does not match the panel's entity.");
+					return; // Zatrzymaj dalsze usuwanie, jeśli obiekt nie pasuje
+				}
 			}
 		}
 	}
@@ -419,38 +426,42 @@ Inspectable {
 
 	// Dodaj nową metodę do zamiany ekwipunku
 	private void swapEquipment() {
-		for (String slotName : slotPanels.keySet()) {
-			ItemPanel mainPanel = slotPanels.get(slotName);
-			ItemPanel altPanel = slotPanels.get(slotName + "_alt");
+		for (final Entry<String, ItemPanel> entry : slotPanels.entrySet()) {
+			final String slotName = entry.getKey();
+			final ItemPanel entitySlot = entry.getValue();
+			final String altSlotName = slotName + "_alt";
+			final ItemPanel altEntitySlot = slotPanels.get(altSlotName);
 
-			if (mainPanel != null && altPanel != null) {
-				// Pobierz obiekty z slotów
-				RPSlot mainSlot = player.getSlot(slotName);
-				RPSlot altSlot = player.getSlot(slotName + "_alt");
+			if (entitySlot != null && altEntitySlot != null) {
+				// Pobierz zawartość slotów
+				final RPSlot slot = player.getSlot(slotName);
+				final RPSlot altSlot = player.getSlot(altSlotName);
 
-				if (mainSlot != null && altSlot != null) {
-					// Zamień obiekty między slotami
-					RPObject mainObject = mainSlot.iterator().hasNext() ? mainSlot.iterator().next() : null;
-					RPObject altObject = altSlot.iterator().hasNext() ? altSlot.iterator().next() : null;
-					if (mainObject == null && altObject == null) {
-						return;
+				if (slot != null && altSlot != null) {
+					final Iterator<RPObject> iter = slot.iterator();
+					final Iterator<RPObject> altIter = altSlot.iterator();
+
+					// Sprawdź, czy oba sloty mają przedmioty
+					if (iter.hasNext() && altIter.hasNext()) {
+						final RPObject object = iter.next();
+						final RPObject altObject = altIter.next();
+
+						// Sprawdź, czy obiekt i jego odpowiednik _alt są tego samego typu
+						if (object.getRPClass().equals(altObject.getRPClass())) {
+							final IEntity entity = GameObjects.getInstance().get(object);
+							final IEntity altEntity = GameObjects.getInstance().get(altObject);
+
+							// Zamień przedmioty w slotach
+							entitySlot.setEntity(altEntity); // Ustaw nowy przedmiot w slot
+							altEntitySlot.setEntity(entity); // Ustaw nowy przedmiot w alternatywnym slocie
+						} else {
+							logger.error("Tried to swap objects of different types. " + "Slot: " + slotName + " contains: " + object + ", but altSlot: " + altSlotName + " contains: " + altObject, new Throwable());
+						}
+					} else {
+						// Jeśli jeden z slotów jest pusty, ustaw oba na null
+						entitySlot.setEntity(null);
+						altEntitySlot.setEntity(null);
 					}
-					// Ustaw obiekty w slotach
-					//if (mainObject != null) {
-						altSlot.add(mainObject); // Dodaj obiekt z głównego slotu do alternatywnego
-					//}
-
-					//if (altObject != null) {
-						mainSlot.add(altObject); // Dodaj obiekt z alternatywnego slotu do głównego
-					//}
-
-					IEntity mainEntity = GameObjects.getInstance().get(mainObject);
-					IEntity altEntity = GameObjects.getInstance().get(altObject);
-
-					
-					// Zaktualizuj panele
-					mainPanel.setEntity(altEntity);
-					altPanel.setEntity(mainEntity);
 				}
 			}
 		}
