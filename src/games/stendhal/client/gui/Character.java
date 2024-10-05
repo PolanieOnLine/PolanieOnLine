@@ -319,9 +319,7 @@ Inspectable {
 			}
 		}
 
-		/*
-		 * Refresh gets called from outside the EDT.
-		 */
+		// Refresh gets called from outside the EDT.
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -411,9 +409,51 @@ Inspectable {
 		changeButton.setPreferredSize(new Dimension(122, 14));
 		changeButton.setMinimumSize(new Dimension(122, 14));
 		changeButton.setMaximumSize(new Dimension(122, 14));
-		//arrowButton.addActionListener(e -> toggleContent());
+		changeButton.addActionListener(e -> {
+			// Zamiana ekwipunku między panelami
+			swapEquipment();
+		});
 
 		return changeButton;
+	}
+
+	// Dodaj nową metodę do zamiany ekwipunku
+	private void swapEquipment() {
+		for (String slotName : slotPanels.keySet()) {
+			ItemPanel mainPanel = slotPanels.get(slotName);
+			ItemPanel altPanel = slotPanels.get(slotName + "_alt");
+
+			if (mainPanel != null && altPanel != null) {
+				// Pobierz obiekty z slotów
+				RPSlot mainSlot = player.getSlot(slotName);
+				RPSlot altSlot = player.getSlot(slotName + "_alt");
+
+				if (mainSlot != null && altSlot != null) {
+					// Zamień obiekty między slotami
+					RPObject mainObject = mainSlot.iterator().hasNext() ? mainSlot.iterator().next() : null;
+					RPObject altObject = altSlot.iterator().hasNext() ? altSlot.iterator().next() : null;
+					if (mainObject == null && altObject == null) {
+						return;
+					}
+					// Ustaw obiekty w slotach
+					//if (mainObject != null) {
+						altSlot.add(mainObject); // Dodaj obiekt z głównego slotu do alternatywnego
+					//}
+
+					//if (altObject != null) {
+						mainSlot.add(altObject); // Dodaj obiekt z alternatywnego slotu do głównego
+					//}
+
+					IEntity mainEntity = GameObjects.getInstance().get(mainObject);
+					IEntity altEntity = GameObjects.getInstance().get(altObject);
+
+					
+					// Zaktualizuj panele
+					mainPanel.setEntity(altEntity);
+					altPanel.setEntity(mainEntity);
+				}
+			}
+		}
 	}
 
 	@Override
