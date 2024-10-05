@@ -221,7 +221,8 @@ public class ImproverAdder {
 
 		countImproveItems(player);
 		if (!hasItemToImprove()) {
-			improver.say("Wybacz. Przedmiot #'" + getTargetItemName() + "' jest niemożliwy do udoskonalenia. Poproś o ulepszenie innego przedmiotu.");
+			improver.say("Wybacz. Przedmiot #'" + getTargetItemName() + "' jest niemożliwy do udoskonalenia."
+					+ " Poproś o ulepszenie innego przedmiotu.");
 			improver.setCurrentState(ConversationStates.ATTENDING);
 			return;
 		}
@@ -238,7 +239,9 @@ public class ImproverAdder {
 
 		// Special answer for mithril items
 		if (toImprove.getName().endsWith(" z mithrilu") && toImprove.getMaxImproves() == 1) {
-			offerUpgrade = "Czy jesteś pewien, aby udoskonalać #" + getTargetItemName() + "? Jest to bardzo wyjątkowy przedmiot, także cena też będzie wyjątkowa, koszt wynosi #" + Integer.toString(currentUpgradeFee) + " money.";
+			offerUpgrade = "Czy jesteś pewien, aby udoskonalać #'" + getTargetItemName() + "'? Jest to bardzo wyjątkowy przedmiot,"
+					+ " także cena też będzie wyjątkowa, koszt wynosi #" + Integer.toString(currentUpgradeFee) + " money."
+					+ getNeedResourcesNames(player);
 		}
 
 		improver.say(offerUpgrade + youWant);
