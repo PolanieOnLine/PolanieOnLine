@@ -53,7 +53,7 @@ public class Seed extends StackableItem {
 		if (!this.isContained()) {
 			// the seed is on the ground, but not next to the player
 			if (!this.nextTo(user)) {
-				user.sendPrivateText("" + this.getName() + " jest zbyt daleko");
+				user.sendPrivateText("" + this.getName() + " jest zbyt daleko.");
 				return false;
 			}
 			// use seed's location if on ground

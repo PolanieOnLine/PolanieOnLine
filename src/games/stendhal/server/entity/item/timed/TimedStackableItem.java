@@ -80,7 +80,7 @@ public abstract class TimedStackableItem extends StackableItem {
 				}
 				result = true;
 			} else {
-				user.sendPrivateText(getTitle() + " jest zbyt daleko");
+				user.sendPrivateText(getTitle() + " jest zbyt daleko.");
 				logger.debug(getTitle() + " is too far away");
 			}
 		} else {
