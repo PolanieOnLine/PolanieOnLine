@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -33,6 +32,7 @@ import games.stendhal.client.gui.layout.AnimatedLayout;
 import games.stendhal.client.gui.layout.SBoxLayout;
 import games.stendhal.client.gui.wt.core.WtWindowManager;
 import marauroa.common.game.RPSlot;
+
 /**
  * A wrapper container for WtPanels outside the game screen.
  */
@@ -69,7 +69,7 @@ class ContainerPanel extends JScrollPane implements Inspector, InternalManagedWi
 		}
 		setViewportView(panel);
 		setBorder(null);
-		String orderProp = WtWindowManager.getInstance().getProperty(WINDOW_ORDER_PROPERTY, "character;bag;keyring;magicbag"); /*;portfolio");*/
+		String orderProp = WtWindowManager.getInstance().getProperty(WINDOW_ORDER_PROPERTY, "character;bag;keyring;magicbag;runicaltar"); /*;portfolio");*/
 		windowOrder = new ArrayList<String>(Arrays.asList(orderProp.split(";")));
 		getVerticalScrollBar().setUnitIncrement(16);
 	}

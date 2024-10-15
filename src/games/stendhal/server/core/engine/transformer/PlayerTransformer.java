@@ -159,7 +159,9 @@ public class PlayerTransformer implements Transformer {
 		// load items
 		final String[] slotsItems = { "bag", "rhand", "lhand", "neck", "head", "armor",
 				"legs", "feet", "finger", "fingerb", "glove", "cloak", "back", "pas", "belt",
-				"keyring", "magicbag", /*"portfolio",*/ "trade", "pouch", "money" };
+				"keyring", "magicbag", /*"portfolio",*/ "trade", "pouch", "money",
+				"offensive_rune", "defensive_rune", "resistance_rune", "utility_rune", "healing_rune",
+				"control_rune", "special_rune" };
 
 		try {
 			for (final String slotName : slotsItems) {

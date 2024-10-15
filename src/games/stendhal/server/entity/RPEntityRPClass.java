@@ -85,6 +85,16 @@ public class RPEntityRPClass {
 		entity.addRPSlot("keyring", 18, Definition.PRIVATE);
 		entity.addRPSlot("magicbag", 6, Definition.PRIVATE);
 
+		entity.addRPSlot("runicaltar", 7, (byte) (Definition.PRIVATE | Definition.VOLATILE));
+		/* Rune altar slots */
+		entity.addRPSlot("offensive_rune", 1, Definition.PRIVATE);
+		entity.addRPSlot("defensive_rune", 1, Definition.PRIVATE);
+		entity.addRPSlot("resistance_rune", 1, Definition.PRIVATE);
+		entity.addRPSlot("utility_rune", 1, Definition.PRIVATE);
+		entity.addRPSlot("healing_rune", 1, Definition.PRIVATE);
+		entity.addRPSlot("control_rune", 1, Definition.PRIVATE);
+		entity.addRPSlot("special_rune", 1, Definition.PRIVATE);
+
 		entity.addRPSlot("portfolio", 9, Definition.VOLATILE);
 	}
 }

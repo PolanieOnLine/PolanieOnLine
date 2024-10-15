@@ -17,7 +17,9 @@ package games.stendhal.common;
 public final class Constants {
 	public static final String[] EQUIPMENT_SLOTS = {
 			"head", "rhand", "lhand", "armor", "finger", "cloak", "legs", "feet",
-			"neck", "glove", "fingerb", "pas"
+			"neck", "glove", "fingerb", "pas",
+			"offensive_rune", "defensive_rune", "resistance_rune", "utility_rune", "healing_rune",
+			"control_rune", "special_rune"
 	};
 
 	/**
@@ -28,7 +30,9 @@ public final class Constants {
 	public static final String[] CARRYING_SLOTS = {
 			"pouch", "bag", "magicbag", "portfolio", "keyring", "back", "belt", "neck",
 			"head", "cloak", "lhand", "armor", "rhand", "finger", "fingerb",
-			"glove", "pas", "legs", "feet"
+			"glove", "pas", "legs", "feet",
+			"offensive_rune", "defensive_rune", "resistance_rune", "utility_rune", "healing_rune",
+			"control_rune", "special_rune"
 	};
 
 	/** Distance at which entity sounds can be heard. */
