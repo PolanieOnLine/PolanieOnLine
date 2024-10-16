@@ -332,21 +332,34 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	}
 
 	/**
+	 * Returns the value of a specified attribute for the item, factoring in deterioration
+	 * and possible improvements. If the item has undergone maximum improvements, an additional
+	 * value is added to the base attribute value. If the item has deteriorated beyond the
+	 * allowed threshold, the default value is returned.
+	 *
+	 * @param attribute
+	 *      The name of the attribute to retrieve (e.g., "atk" for attack, "def" for defense).
+	 * @param defaultValue
+	 *      The default value to return if the attribute is not found or the item is too deteriorated.
+	 * @return
+	 *      The base attribute value, with additional improvement if applicable, or the default value.
+	 */
+	private int getAttributeWithImprovement(String attribute, int defaultValue) {
+		if (has(attribute) && getDeterioration() <= MAX_DETERIORATION) {
+			int baseValue = getInt(attribute);
+			return hasMaxImproves() ? baseValue + getImprove() : baseValue;
+		}
+		return defaultValue;
+	}
+
+	/**
 	 * Returns the attack points of this item. Positive and negative values are
 	 * allowed. If this item doesn't modify the attack it should return '0'.
 	 *
 	 * @return attack points
 	 */
 	public int getAttack() {
-		if (has("atk") && getDeterioration() <= MAX_DETERIORATION) {
-			if (hasMaxImproves()) {
-				return getInt("atk") + getImprove();
-			} else {
-				return getInt("atk");
-			}
-		}
-
-		return 0;
+		return getAttributeWithImprovement("atk", 0);
 	}
 
 	/**
@@ -356,15 +369,7 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	 * @return defense points
 	 */
 	public int getDefense() {
-		if (has("def") && getDeterioration() <= MAX_DETERIORATION) {
-			if (hasMaxImproves()) {
-				return getInt("def") + getImprove();
-			} else {
-				return getInt("def");
-			}
-		}
-
-		return 0;
+		return getAttributeWithImprovement("def", 0);
 	}
 
 	/**
@@ -375,17 +380,14 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	 * @return ranged attack points
 	 */
 	public int getRangedAttack() {
-		if (has("ratk") && getDeterioration() <= MAX_DETERIORATION) {
-			if (hasMaxImproves()) {
-				return getInt("ratk") + getImprove();
-			} else {
-				return getInt("ratk");
-			}
-		}
-
-		return 0;
+		return getAttributeWithImprovement("ratk", 0);
 	}
 
+	/**
+	 * Returns the range of this item. Positive values are allowed.
+	 *
+	 * @return range
+	 */
 	public int getRange() {
 		if (has("range")) {
 			if (hasMaxImproves() && isMaxImproved()) {
@@ -404,15 +406,11 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	 * @return each how many turns this item can attack.
 	 */
 	public int getAttackRate() {
-		if (has("rate")) {
-			if ((hasMaxImproves() && isMaxImproved()) && getInt("rate") > 2) {
-				return getInt("rate") - 1;
-			} else {
-				return getInt("rate");
-			}
+		int rate = getAttributeWithImprovement("rate", DEFAULT_ATTACK_RATE);
+		if (hasMaxImproves() && isMaxImproved() && rate > 2) {
+			return rate - 1;
 		}
-
-		return DEFAULT_ATTACK_RATE;
+		return rate;
 	}
 
 	/**
