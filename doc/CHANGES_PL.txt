@@ -3,11 +3,13 @@ Changelog
 1.40
 *klient*
 - Dodano oraz poprawiono wiele grafik
+- Dodano GUI dla nowego okienka obsługującego ołtarz runiczny
 
 *świat*
 - Dodano muzykę dla wysp Athor
 - Żółwiki, kraby oraz NPC Amber będą podróżować losowo po mapie
 - NPC Mayor Chalmers nie będzie już akceptował eksperymentalnych kanapek w dziennym zadaniu
+- Wprowadzono nowy ołtarz runiczny, w którym znajduje się 7 różnych miejsc na glify wzmacniające statystyki gracza
 - Zmieniono nazwy przedmiotom:
 	- dotychczasowa "czterolistna koniczyna" -> "talizman szczęścia"
 	- "pierścień spokoju" -> "pierścień ukojenia"
@@ -15,6 +17,18 @@ Changelog
 - Dodano nowe przedmioty:
 	- czterolistna koniczyna: specjalny przedmiot, który będzie pojawiał się losowo na mapach
 	- pierścień czystości: zwiększa szansę na celny atak o 25%
+- Dodano nowe przedmioty - glify:
+	- glif daru Mokoszy: zwiększa punkty zdrowia o 1000
+	- glif siły: zwiększa siłę ataku o 5 punktów
+	- glif Peruna: zwiększa siłę ataku o 10% posiadanego ataku
+	- glif czaszy: zwiększa obrażenia zadawane przez ataki krytyczne o 25%
+	- glif tarczy: zwiększa ilość obrony o 20 punktów
+	- glif Swaroga: zwiększa ilość obrony o 20% posiadanej obrony
+	- glif Tytana: zwiększa atak i obronę o 10 punktów oraz zwiększa zdrowie o 400
+	- glif Strzyboga: zwiększa prędkość ataku wszystkich broni (nie liczą się bronie posiadające 1 wagi)
+	- glif Jarowita: zwiększa odporność na wszystkie żywioły redukując ich wpływ o 50%
+	- glif kryzysu: zwiększa szansę na wyprowadzenie ataku krytycznego o 15%
+	- glif krwi: zwiększa leczenie z kradzieży życia o 20%
 - Dodano nowe osiągnięcie:
 	- Powodzenia Irlandczycy: Znajdź szczęśliwą czterolistną koniczynę
 - Dodano nowego NPC:
@@ -28,6 +42,8 @@ Changelog
 *naprawiono błędy*
 - Naprawiono wiele problemów z naprawianiem przedmiotów u Akutagawy
 - Naprawiono możliwość wytworzenia pasu z ciemnomithrilu
+- Naprawiono, że kowal Tworzymir nie podawał potrzebnych surowców do ulepszenia przedmiotów z mithrilu
+- Poprawiono oznaczenie przedmiotu, którego nazwa jest dwuczłonowa lub więcej na niebiesko u kowala Tworzymira
 
 
 1.39.2
