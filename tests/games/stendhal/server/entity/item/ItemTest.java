@@ -134,10 +134,10 @@ public class ItemTest {
 		item.put("range", 6);
 		item.put("lifesteal", 7);
 
-		assertThat(item.describe(), equalTo("Description. Oto specjalna nagroda dla hero, która nie może być wykorzystana przez innych. Parametry (ATK: 2 OBR: 3 WAGA: 4 PZ: 5 ZASIĘG: 6 LIFESTEAL: 7 MIN-POZIOM: 1)."));
+		assertThat(item.describe(), equalTo("Description. Oto specjalna nagroda dla hero, która nie może być wykorzystana przez innych. Parametry (ATK: 2 OBR: 3 WAGA: 4 PZ: 5 ZASIĘG: 6 KRADZIEŻ-ŻYCIA: 7 MIN-POZIOM: 1)."));
 
 		item.setDamageType(Nature.FIRE);
-		assertThat(item.describe(), equalTo("Description. Oto specjalna nagroda dla hero, która nie może być wykorzystana przez innych. Parametry (ATK: 2 [FIRE] OBR: 3 WAGA: 4 PZ: 5 ZASIĘG: 6 LIFESTEAL: 7 MIN-POZIOM: 1)."));
+		assertThat(item.describe(), equalTo("Description. Oto specjalna nagroda dla hero, która nie może być wykorzystana przez innych. Parametry (ATK: 2 [OGIEŃ] OBR: 3 WAGA: 4 PZ: 5 ZASIĘG: 6 KRADZIEŻ-ŻYCIA: 7 MIN-POZIOM: 1)."));
 	}
 
 
