@@ -22,6 +22,11 @@ public final class Constants {
 			"control_rune", "special_rune"
 	};
 
+	public static final String[] RUNE_SLOTS = {
+			"offensive_rune", "defensive_rune", "resistance_rune", "utility_rune", "healing_rune",
+			"control_rune", "special_rune"
+	};
+
 	/**
 	 * All the slots considered to be "with" the entity. Listed in priority
 	 * order (i.e. bag first).

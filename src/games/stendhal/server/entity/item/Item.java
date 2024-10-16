@@ -228,6 +228,24 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		// Consumable items the heas status effects
 		entity.addAttribute("immunization", Type.STRING, (byte) (Definition.HIDDEN | Definition.VOLATILE));
 
+		// Some glyph items new attributes
+		// Extra player attack bonus, affecting the player's overall attack strength.
+		entity.addAttribute("skill_atk", Type.SHORT, Definition.HIDDEN);
+		// Additional bonus to attack damage, applied as a floating-point value.
+		entity.addAttribute("atk_additional_bonus", Type.FLOAT, Definition.HIDDEN);
+		// Additional bonus to critical hit damage, applied as a floating-point value.
+		entity.addAttribute("critical_additional_bonus", Type.FLOAT, Definition.HIDDEN);
+		// Additional bonus to defense, enhancing the player's protective capabilities.
+		entity.addAttribute("def_additional_bonus", Type.FLOAT, Definition.HIDDEN);
+		// Increase in attack rate, expressed as a short value, allowing for faster attacks.
+		entity.addAttribute("rate_increase", Type.SHORT, Definition.HIDDEN);
+		// Chance to land a critical hit, represented as a floating-point value that enhances damage potential.
+		entity.addAttribute("critical_chance", Type.FLOAT, Definition.HIDDEN);
+		// Increase in lifesteal effect, allowing the player to regain health based on dealt damage, expressed as a floating-point value.
+		entity.addAttribute("lifesteal_increase", Type.FLOAT, Definition.HIDDEN);
+		// Extra health provided by glyphs, helping to boost the player's survivability.
+		entity.addAttribute("health", Type.SHORT, Definition.HIDDEN);
+
 		// Some items are quest rewards that other players
 		// don't deserve. Not hidden because the client uses it for an anti
 		// theft hack
@@ -894,9 +912,21 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 				stats.append(" [" + dts + "]");
 			}
 		}
+		if (has("skill_atk")) {
+			stats.append(" SIŁA-ATAKU: ");
+			stats.append(get("skill_atk"));
+		}
+		if (has("atk_additional_bonus")) {
+			stats.append(" BONUS-ATAKU: ");
+			stats.append((getDouble("atk_additional_bonus") + "%").replaceFirst("\\.[0]+%$", "%"));
+		}
 		if (has("def")) {
 			stats.append(" OBR: ");
 			stats.append(getDefense());
+		}
+		if (has("def_additional_bonus")) {
+			stats.append(" BONUS-OBRONY: ");
+			stats.append((getDouble("def_additional_bonus") + "%").replaceFirst("\\.[0]+%$", "%"));
 		}
 		if (has("ratk")) {
 			stats.append(" STR: ");
@@ -911,6 +941,9 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		if (has("rate")) {
 			stats.append(" WAGA: ");
 			stats.append(getAttackRate());
+		}
+		if (has("rate_increase")) {
+			stats.append(" ZMNIEJSZA-WAGĘ-BRONI ");
 		}
 		if (has("amount")) {
 			stats.append(" PZ: ");
@@ -937,7 +970,7 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 			}
 		}
 		if (has("lifesteal")) {
-			stats.append(" LIFESTEAL: ");
+			stats.append(" KRADZIEŻ-ŻYCIA: ");
 			stats.append(get("lifesteal"));
 		}
 		if ((susceptibilities != null) && !susceptibilities.isEmpty()) {
@@ -983,6 +1016,22 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		if (has("life_support")) {
 			stats.append(" PODTRZYMUJĄCE-ŻYCIE: ");
 			stats.append(get("life_support"));
+		}
+		if (has("critical_chance")) {
+			stats.append(" SZANSA-NA-ATAK-KRYTYCZNY: ");
+			stats.append((getDouble("critical_chance") + "%").replaceFirst("\\.[0]+%$", "%"));
+		}
+		if (has("critical_additional_bonus")) {
+			stats.append(" SILNIEJSZE-ATAKI-KRYTYCZNE: ");
+			stats.append((getDouble("critical_additional_bonus") + "%").replaceFirst("\\.[0]+%$", "%"));
+		}
+		if (has("lifesteal_increase")) {
+			stats.append(" ZWIĘKSZONA-KRADZIEŻ-ŻYCIA: ");
+			stats.append((getDouble("lifesteal_increase") + "%").replaceFirst("\\.[0]+%$", "%"));
+		}
+		if (has("health")) {
+			stats.append(" ZDROWIE: ");
+			stats.append(get("health"));
 		}
 		if (Testing.WEIGHT && getWeight() > 0.0) {
 			stats.append(" CIĘŻAR: ");

@@ -518,7 +518,7 @@ public abstract class RPEntity extends CombatEntity {
 		final int levelDifferenceToNotNeedKarmaDefending = (int) (IGNORE_KARMA_MULTIPLIER * defender.getLevel());
 
 		// using karma here decreases damage done by enemy
-		if (!(effectiveDefenderLevel - levelDifferenceToNotNeedKarmaDefending  > effectiveAttackerLevel)) {
+		if (!(effectiveDefenderLevel - levelDifferenceToNotNeedKarmaDefending > effectiveAttackerLevel)) {
 			defence += defence * defender.useKarma(0.1);
 		}
 
@@ -606,7 +606,7 @@ public abstract class RPEntity extends CombatEntity {
 	 * @param defender
 	 *			The defender.
 	 * @param attackingWeaponsValue
-	 * 			  ATK-value of all attacking weapons/spells
+	 * 			ATK-value of all attacking weapons/spells
 	 * @param damageType nature of damage
 	 * @return The number of hitpoints that the target should lose. 0 if the
 	 *		 attack was completely blocked by the defender.
@@ -711,7 +711,7 @@ public abstract class RPEntity extends CombatEntity {
 
 	protected void setAtkInternal(final int atk, boolean notify) {
 		this.atk = atk;
-		put("atk", atk);  // visible atk
+		put("atk", atk); // visible atk
 		if(notify) {
 			this.updateModifiedAttributes();
 		}
@@ -779,7 +779,7 @@ public abstract class RPEntity extends CombatEntity {
 
 	protected void setDefInternal(final int def, boolean notify) {
 		this.def = def;
-		put("def", def);  // visible def
+		put("def", def); // visible def
 		if(notify) {
 			this.updateModifiedAttributes();
 		}
@@ -863,7 +863,7 @@ public abstract class RPEntity extends CombatEntity {
 	 */
 	protected void setRatkInternal(final int ratk, boolean notify) {
 		this.ratk = ratk;
-		put("ratk", ratk);  // visible ratk
+		put("ratk", ratk); // visible ratk
 		if(notify) {
 			this.updateModifiedAttributes();
 		}
@@ -1369,12 +1369,12 @@ public abstract class RPEntity extends CombatEntity {
 	/**
 	 * return list of all droppable items in entity's hands.
 	 *
-	 * currently only considers items in hands.  no other part of body
+	 * currently only considers items in hands. no other part of body
 	 *
 	 * currently, there is only one type of droppable item - CaptureTheFlagFlag.
 	 *	 need some more general solution
 	 *
-	 * @return list of droppable items.  returns null if no droppable items found
+	 * @return list of droppable items. returns null if no droppable items found
 	 */
 	public List<Item> getDroppables() {
 		final String[] slots = { "lhand", "rhand" };
@@ -1387,17 +1387,17 @@ public abstract class RPEntity extends CombatEntity {
 	 * Drop specified item from entity's equipment
 	 *
 	 * note: seems like this.drop(droppable) should work, but
-	 *	   the item just disappears - does not end up on ground.
+	 *		the item just disappears - does not end up on ground.
 	 *
 	 * TODO: probably need to refactor this in to the general drop system
-	 *	   (maybe fixing some of the other code paths)
+	 *		(maybe fixing some of the other code paths)
 	 *
 	 * @param droppable item to be dropped
 	 */
 	public void dropDroppableItem(Item droppable) {
 
 		// note: this.drop() does not do all necessary operations -
-		//	   item disappears from hand, but disappears competely
+		//		item disappears from hand, but disappears competely
 
 		Player	player = (Player) this;
 		RPObject  parent = droppable.getContainer();
@@ -1406,7 +1406,7 @@ public abstract class RPEntity extends CombatEntity {
 		action.put("type",						"drop");
 		action.put("baseitem",					droppable.getID().getObjectID());
 		action.put(EquipActionConsts.BASE_OBJECT, parent.getID().getObjectID());
-		action.put(EquipActionConsts.BASE_SLOT,   droppable.getContainerSlot().getName());
+		action.put(EquipActionConsts.BASE_SLOT,	droppable.getContainerSlot().getName());
 
 		// TODO: better to drop "behind" the player, if they have been running
 		action.put("x", this.getX());
@@ -1430,7 +1430,7 @@ public abstract class RPEntity extends CombatEntity {
 	 *
 	 * XXX this does not belong here - should be in some Effect framework
 	 *
-	 * returns string - what happened.  no effect returns null
+	 * returns string - what happened. no effect returns null
 	 *
 	 * @param attacker
 	 * @return event description
@@ -1443,7 +1443,7 @@ public abstract class RPEntity extends CombatEntity {
 
 		for (Item droppable : droppables) {
 			// roll two dice, tie goes to defender
-			//   TODO: integrate skills, ctf atk/def
+			//	TODO: integrate skills, ctf atk/def
 			int attackerRoll = Rand.roll1D20();
 			int defenderRoll = Rand.roll1D20();
 
@@ -2429,10 +2429,26 @@ public abstract class RPEntity extends CombatEntity {
 	 * Retrieves items carried in equipment slots (weapons, armor, etc.).
 	 *
 	 * @return
-	 *   Equipped items.
+	 *	Equipped items.
 	 */
 	protected List<Item> getAllEquipment() {
 		final Stream<String> slotNames = Slots.EQUIPMENT.getNames().stream();
+		final Stream<RPSlot> slots = slotNames.map(this::getSlot).filter(Objects::nonNull);
+		return slots.flatMap(this::slotStream).collect(Collectors.toList());
+	}
+
+	/**
+	 * Retrieves all glyphs or runes currently equipped in the rune slots.
+	 * 
+	 * These glyphs provide various magical effects such as offensive, 
+	 * defensive, utility, and resistance boosts depending on the type 
+	 * of rune equipped.
+	 *
+	 * @return
+	 *	Equipped glyphs (runes).
+	 */
+	public List<Item> getAllEquippedGlyphs() {
+		final Stream<String> slotNames = Slots.GLYPHS.getNames().stream();
 		final Stream<RPSlot> slots = slotNames.map(this::getSlot).filter(Objects::nonNull);
 		return slots.flatMap(this::slotStream).collect(Collectors.toList());
 	}
@@ -2836,9 +2852,9 @@ public abstract class RPEntity extends CombatEntity {
 	 * Sends a message that only this entity can read.
 	 *
 	 * @param sender
-	 *   Name of entity sending message.
+	 *	Name of entity sending message.
 	 * @param text
-	 *   Message contents.
+	 *	Message contents.
 	 */
 	public void sendPrivateText(final String sender, final String text) {
 		// does nothing in this implementation.
@@ -2848,11 +2864,11 @@ public abstract class RPEntity extends CombatEntity {
 	 * Sends a message that only this entity can read.
 	 *
 	 * @param type
-	 *   NotificationType.
+	 *	NotificationType.
 	 * @param sender
-	 *   Name of entity sending message.
+	 *	Name of entity sending message.
 	 * @param text
-	 *   Message contents.
+	 *	Message contents.
 	 */
 	public void sendPrivateText(final NotificationType type, final String sender, final String text) {
 		// does nothing in this implementation.
@@ -2889,41 +2905,69 @@ public abstract class RPEntity extends CombatEntity {
 	 * Retrieves total ATK value of held weapons.
 	 */
 	public float getItemAtk() {
-		float weapon = getWeaponsAtk();
-		int glove = 0;
-		int ring = 0;
-		int ringb = 0;
-		int shield = 0;
-		int belt = 0;
-		int neck = 0;
-		int legs = 0;
-		int helmet = 0;
-		int cloak = 0;
-		int boots = 0;
+		double atkBonus = 0;
 
-		if (hasGloves()) {
-			glove += getGloves().getAttack();
-		} if (hasRing()) {
-			ring += getRing().getAttack();
-		} if (hasRingB()) {
-			ringb += getRingB().getAttack();
-		} if (hasShield()) {
-			shield += getShield().getAttack();
-		} if (hasBelt()) {
-			belt += getBelt().getAttack();
-		} if (hasNecklace()) {
-			neck += getNecklace().getAttack();
-		} if (hasLegs()) {
-			legs += getLegs().getAttack();
-		} if (hasHelmet()) {
-			helmet += getHelmet().getAttack();
-		} if (hasCloak()) {
-			cloak += getCloak().getAttack();
-		} if (hasBoots()) {
-			boots += getBoots().getAttack();
+		// Obliczanie łącznego bonusu z glifów
+		for (final Item equip : getAllEquippedGlyphs()) {
+			if (equip.has("atk_additional_bonus")) {
+				atkBonus += equip.getDouble("atk_additional_bonus") / 100;
+			}
 		}
 
-		return weapon + glove + ring + ringb + shield + belt + neck + legs + helmet + cloak + boots;
+		// Inicjalizacja ataku z różnych przedmiotów
+		float totalAttack = getWeaponsAtk();
+
+		if (hasGloves()) {
+			totalAttack += getGloves().getAttack();
+		}
+
+		if (hasRing()) {
+			totalAttack += getRing().getAttack();
+		}
+
+		if (hasRingB()) {
+			totalAttack += getRingB().getAttack();
+		}
+
+		if (hasShield()) {
+			totalAttack += getShield().getAttack();
+		}
+
+		if (hasBelt()) {
+			totalAttack += getBelt().getAttack();
+		}
+
+		if (hasNecklace()) {
+			totalAttack += getNecklace().getAttack();
+		}
+
+		if (hasLegs()) {
+			totalAttack += getLegs().getAttack();
+		}
+
+		if (hasHelmet()) {
+			totalAttack += getHelmet().getAttack();
+		}
+
+		if (hasCloak()) {
+			totalAttack += getCloak().getAttack();
+		}
+
+		if (hasBoots()) {
+			totalAttack += getBoots().getAttack();
+		}
+
+		// Dodaj atak z glyphów
+		if (getAllEquippedGlyphs() != null) {
+			for (final Item equip : getAllEquippedGlyphs()) {
+				totalAttack += equip.has("atk") ? equip.getInt("atk") : 0;
+			}
+		}
+
+		// Dodaj bonus procentowy do całkowitego ataku
+		totalAttack += totalAttack * atkBonus;
+
+		return (int) Math.round(totalAttack);
 	}
 
 	/**
@@ -2967,89 +3011,88 @@ public abstract class RPEntity extends CombatEntity {
 	}
 
 	public float getItemDef() {
-		int shield = 0;
-		int armor = 0;
-		int helmet = 0;
-		int legs = 0;
-		int boots = 0;
-		int cloak = 0;
-		int weapon = 0;
-		int glove = 0;
-		int necklace = 0;
-		int ring = 0;
-		int ringb = 0;
-		int belt = 0;
+		double defBonus = 0;
 
-		Item item;
-
-		if (hasShield()) {
-			item = getShield();
-			shield = (int) (item.getDefense() / getItemLevelModifier(item));
-		}
-
-		if (hasArmor()) {
-			item = getArmor();
-			armor = (int) (item.getDefense() / getItemLevelModifier(item));
-		}
-
-		if (hasHelmet()) {
-			item = getHelmet();
-			helmet = (int) (item.getDefense() / getItemLevelModifier(item));
-		}
-
-		if (hasLegs()) {
-			item = getLegs();
-			legs = (int) (item.getDefense() / getItemLevelModifier(item));
-		}
-
-		if (hasBoots()) {
-			item = getBoots();
-			boots = (int) (item.getDefense() / getItemLevelModifier(item));
-		}
-
-		if (hasCloak()) {
-			item = getCloak();
-			cloak = (int) (item.getDefense() / getItemLevelModifier(item));
-		}
-
-		if (hasNecklace()) {
-			item = getNecklace();
-			necklace = (int) (item.getDefense() / getItemLevelModifier(item));
-		}
-
-		if (hasRing()) {
-			item = getRing();
-			ring = (int) (item.getDefense() / getItemLevelModifier(item));
-		}
-
-		if (hasRingB()) {
-			item = getRingB();
-			ringb = (int) (item.getDefense() / getItemLevelModifier(item));
-		}
-
-		if (hasGloves()) {
-			item = getGloves();
-			glove = (int) (item.getDefense() / getItemLevelModifier(item));
-		}
-
-		if (hasBelt()) {
-			item = getBelt();
-			belt = (int) (item.getDefense() / getItemLevelModifier(item));
-		}
-
-		final List<Item> targetWeapons = getWeapons();
-		for (final Item weaponItem : targetWeapons) {
-			weapon += (int) (weaponItem.getDefense() / getItemLevelModifier(weaponItem));
-		}
-
-		if (getWandWeapon() != null) {
-			Item amm = getMagicSpells();
-			if (amm != null) {
-				weapon += amm.getDefense();
+		// Obliczanie łącznego bonusu z glifów
+		for (final Item equip : getAllEquippedGlyphs()) {
+			if (equip.has("def_additional_bonus")) {
+				defBonus += equip.getDouble("def_additional_bonus") / 100;
 			}
 		}
 
-		return shield + armor + cloak + glove + helmet + necklace + legs + boots + ring + ringb + belt + weapon;
+		// Inicjalizacja obrony z różnych przedmiotów
+		int totalDefense = 0;
+
+		// Przedmioty z obroną
+		if (hasShield()) {
+			totalDefense += (int) (getShield().getDefense() / getItemLevelModifier(getShield()));
+		}
+
+		if (hasArmor()) {
+			totalDefense += (int) (getArmor().getDefense() / getItemLevelModifier(getArmor()));
+		}
+
+		if (hasHelmet()) {
+			totalDefense += (int) (getHelmet().getDefense() / getItemLevelModifier(getHelmet()));
+		}
+
+		if (hasLegs()) {
+			totalDefense += (int) (getLegs().getDefense() / getItemLevelModifier(getLegs()));
+		}
+
+		if (hasBoots()) {
+			totalDefense += (int) (getBoots().getDefense() / getItemLevelModifier(getBoots()));
+		}
+
+		if (hasCloak()) {
+			totalDefense += (int) (getCloak().getDefense() / getItemLevelModifier(getCloak()));
+		}
+
+		if (hasNecklace()) {
+			totalDefense += (int) (getNecklace().getDefense() / getItemLevelModifier(getNecklace()));
+		}
+
+		if (hasRing()) {
+			totalDefense += (int) (getRing().getDefense() / getItemLevelModifier(getRing()));
+		}
+
+		if (hasRingB()) {
+			totalDefense += (int) (getRingB().getDefense() / getItemLevelModifier(getRingB()));
+		}
+
+		if (hasGloves()) {
+			totalDefense += (int) (getGloves().getDefense() / getItemLevelModifier(getGloves()));
+		}
+
+		if (hasBelt()) {
+			totalDefense += (int) (getBelt().getDefense() / getItemLevelModifier(getBelt()));
+		}
+
+		// Dodaj obronę z broni
+		final List<Item> targetWeapons = getWeapons();
+		for (final Item weaponItem : targetWeapons) {
+			totalDefense += (int) (weaponItem.getDefense() / getItemLevelModifier(weaponItem));
+		}
+
+		// Jeśli gracz ma zaklęcie, dodaj jego obronę
+		if (getWandWeapon() != null) {
+			Item amm = getMagicSpells();
+			if (amm != null) {
+				totalDefense += amm.getDefense();
+			}
+		}
+
+		// Dodaj obronę z glyphów
+		if (getAllEquippedGlyphs() != null) {
+			for (final Item equip : getAllEquippedGlyphs()) {
+				totalDefense += equip.has("def") ? equip.getInt("def") : 0;
+			}
+		}
+
+		// Dodaj bonus procentowy do całkowitej obrony
+		totalDefense += totalDefense * defBonus;
+
+		return (int) Math.round(totalDefense);
 	}
 
 	/**
@@ -3332,7 +3375,11 @@ public abstract class RPEntity extends CombatEntity {
 		if (weapons.isEmpty()) {
 			return Item.getDefaultAttackRate();
 		}
+
+		// Pobierz bazową wartość rate z pierwszej broni
 		int best = weapons.get(0).getAttackRate(meleeDistance);
+
+		// Sprawdź najlepszą wartość rate z wszystkich broni
 		for (final Item weapon : weapons) {
 			final int res = weapon.getAttackRate(meleeDistance);
 			if (res < best) {
@@ -3340,8 +3387,23 @@ public abstract class RPEntity extends CombatEntity {
 			}
 		}
 
-		// Level effect
+		// Zastosuj modyfikator poziomu
 		best = (int) Math.ceil(best * getItemLevelModifier(weapons.get(0)));
+
+		// Pobierz wartość rate_increase z wszystkich wyposażonych przedmiotów (np. glifów)
+		double rateIncrease = 0;
+		for (final Item equip : getAllEquippedGlyphs()) {
+			rateIncrease += equip.has("rate_increase") ? equip.getDouble("rate_increase") : 0;
+		}
+
+		// Sprawdź, czy wartość rate jest większa niż 2 i zmniejsz ją o rate_increase
+		if (best > 1) {
+			best -= rateIncrease;
+			// Upewnij się, że rate nie spadnie poniżej 2
+			if (best < 1) {
+				best = 1;
+			}
+		}
 
 		return best;
 	}
@@ -3436,8 +3498,7 @@ public abstract class RPEntity extends CombatEntity {
 
 			// Roll a critical hit chance for a creature to player (default: 2%).
 			final boolean critical = Rand.roll1D100() <= 2;
-			defender.hitCritical(critical);
-			// critical damage is doubled to one normal hit
+			// Calculate the total damage for a critical hit
 			if (critical) {
 				damage *= 2;
 			}
@@ -3529,6 +3590,13 @@ public abstract class RPEntity extends CombatEntity {
 				sumLifesteal += sumAll * getRing().getDouble("lifesteal");
 			} else if (hasRingB() && getRingB().has("lifesteal")) {
 				sumLifesteal += sumAll * getRingB().getDouble("lifesteal");
+			}
+
+			// Add lifesteal increase from glyphs
+			for (Item glyph : getAllEquippedGlyphs()) {
+				if (glyph.has("lifesteal_increase")) {
+					sumLifesteal += sumAll * glyph.getDouble("lifesteal_increase") / 100;
+				}
 			}
 		}
 

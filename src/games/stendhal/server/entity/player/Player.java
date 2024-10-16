@@ -2610,6 +2610,10 @@ public class Player extends DressedEntity implements UseListener {
 			}
 		}
 
+		for (Item glyph : getAllEquippedGlyphs()) {
+			sus *= glyph.getSusceptibility(type);
+		}
+
 		return sus;
 	}
 

@@ -24,6 +24,9 @@ public enum Slots {
 	/** Slots where equipment can be carried for use (weapons, armor, and rings). */
 	EQUIPMENT(ImmutableList.copyOf(Constants.EQUIPMENT_SLOTS)),
 
+	/** Slots designated for carrying magical runes or glyphs. */
+	GLYPHS(ImmutableList.copyOf(Constants.RUNE_SLOTS)),
+
 	/**
 	 * slots which may be carried by an entity (e. g. a bag)
 	 */

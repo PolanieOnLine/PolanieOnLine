@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2022 - Marauroa                    *
+ *                   (C) Copyright 2003-2024 - Marauroa                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -82,7 +82,7 @@ public class StendhalRPAction {
 	 * Initializes the StendhalRPAction.
 	 *
 	 * @param rpMan
-	 *     RPServerManager.
+	 *	 RPServerManager.
 	 */
 	public static void initialize(final RPServerManager rpMan) {
 		StendhalRPAction.rpman = rpMan;
@@ -92,9 +92,9 @@ public class StendhalRPAction {
 	 * Do logic for starting an attack on an entity.
 	 *
 	 * @param player
-	 *     The player wanting to attack.
+	 *	 The player wanting to attack.
 	 * @param victim
-	 *     The target of attack.
+	 *	 The target of attack.
 	 */
 	public static void startAttack(final Player player, final RPEntity victim) {
 		// Player's can't attack themselves
@@ -174,11 +174,11 @@ public class StendhalRPAction {
 	 * Checks whether a player may attack another player.
 	 *
 	 * @param attacker
-	 *     Player attempting attack.
+	 *	 Player attempting attack.
 	 * @param victim
-	 *     Player being targeted.
+	 *	 Player being targeted.
 	 * @return
-	 *     <code>true</code> if the attack is acceptable.
+	 *	 <code>true</code> if the attack is acceptable.
 	 */
 	private static boolean mayAttackPlayer(final Player attacker, final Player victim) {
 
@@ -209,12 +209,12 @@ public class StendhalRPAction {
 	 * Check that the victim has high enough level compared to the attacker.
 	 *
 	 * @param player
-	 *     The player trying to attack.
+	 *	 The player trying to attack.
 	 * @param victim
-	 *     The entity being attacked.
+	 *	 The entity being attacked.
 	 * @return
-	 *     <code>true</code> if the victim is strong enough to allow
-	 *     the attack to happen, <code>false</code> otherwise.
+	 *	 <code>true</code> if the victim is strong enough to allow
+	 *	 the attack to happen, <code>false</code> otherwise.
 	 */
 	private static boolean victimIsStrongEnough(final Player player, final Player victim) {
 		return getPlayerStrength(victim) >= ACCEPTABLE_STRENGTH_RATIO
@@ -225,9 +225,9 @@ public class StendhalRPAction {
 	 * Get the relative strength of a player, ignoring equipment.
 	 *
 	 * @param player
-	 *     Subject being analyzed.
+	 *	 Subject being analyzed.
 	 * @return
-	 *     Player strength.
+	 *	 Player strength.
 	 */
 	private static double getPlayerStrength(final Player player) {
 		return STRENGTH_STATS_MULTIPLIER * (player.getAtk() + player.getDef())
@@ -264,14 +264,90 @@ public class StendhalRPAction {
 	}
 
 	/**
+	 * Calculates and returns the total bonus to critical hit chance 
+	 * based on equipped glyphs.
+	 * 
+	 * For each glyph that has an assigned "critical_chance" value, 
+	 * that value is multiplied, allowing for the accumulation of bonuses 
+	 * from different glyphs. The default multiplier is 1.0, meaning 
+	 * no effect if there are no active glyphs.
+	 *
+	 * @return A multiplier for critical chance that can increase 
+	 *		 or decrease the base critical hit chance 
+	 *		 depending on equipped glyphs.
+	 */
+	private static double getCriticalChanceBonus(Player player) {
+		double multiplier = 1.0; // Default critical chance multiplier.
+
+		// Iterates through all active glyphs in the inventory.
+		for (final Item equip : player.getAllEquippedGlyphs()) {
+			// Checks if the glyph has an assigned "critical_chance" value.
+			if (equip.has("critical_chance")) {
+				// Multiplies the current multiplier by the "critical_chance" value from the glyph.
+				multiplier *= equip.getDouble("critical_chance");
+			}
+		}
+
+		// Returns the total critical chance multiplier.
+		return multiplier;
+	}
+
+	/**
+	 * Calculates the total critical hit chance for the player based on equipped glyphs.
+	 *
+	 * @param player The attacking player.
+	 * @return The total critical hit chance as an integer.
+	 */
+	private static int calculateCriticalChance(Player player) {
+		final int maxCriticalChance = 50; // Maximum critical hit chance.
+		final int baseCriticalChance = 10; // Default critical hit chance.
+		
+		// Calculates the total critical hit chance considering the base value and bonuses from glyphs.
+		int totalCriticalChance = Math.min(baseCriticalChance + (int) getCriticalChanceBonus(player), maxCriticalChance);
+		
+		return totalCriticalChance;
+	}
+
+	/**
+	 * Handles the critical hit logic for the player.
+	 *
+	 * @param player The attacking player.
+	 * @param damage The base damage dealt by the attack.
+	 * @return An array where the first element is the total damage after applying critical hit bonuses,
+	 *		 and the second element is a boolean indicating whether the hit was critical.
+	 */
+	private static Object[] handleCritical(Player player, int damage) {
+		// Initialize the critical hit bonus
+		float criticalBonus = 0.0f;
+
+		// Check all equipped glyphs for critical hit bonuses
+		for (final Item glyph : player.getAllEquippedGlyphs()) {
+			if (glyph.has("critical_additional_bonus")) {
+				criticalBonus += glyph.getDouble("critical_additional_bonus");
+			}
+		}
+
+		// Determine if it's a critical hit
+		int totalCriticalChance = calculateCriticalChance(player);
+		final boolean critical = Rand.roll1D100() <= totalCriticalChance;
+
+		// Calculate the total damage for a critical hit
+		if (critical) {
+			damage = (int) (damage * 2) + (int) criticalBonus;
+		}
+
+		return new Object[] { damage, critical }; // Returning both damage and critical status
+	}
+
+	/**
 	 * Lets the attacker try to attack the defender.
 	 *
 	 * @param player
-	 *     The attacker.
+	 *	 The attacker.
 	 * @param defender
-	 *     The defending RPEntity.
+	 *	 The defending RPEntity.
 	 * @return
-	 *     <code>true</code> if the attacker has done damage to the defender.
+	 *	 <code>true</code> if the attacker has done damage to the defender.
 	 *
 	 */
 	public static boolean playerAttack(final Player player, final RPEntity defender) {
@@ -374,13 +450,11 @@ public class StendhalRPAction {
 			damage = player.damageDone(defender, itemAtk, player.getDamageType());
 			final boolean didDamage = damage > 0;
 
-			// Roll a crit chance (default: 10%).
-			final boolean critical = Rand.roll1D100() <= 10;
+			// Handle critical hit logic
+			Object[] criticalResult = handleCritical(player, damage);
+			boolean critical = (boolean) criticalResult[1];
 			defender.hitCritical(critical);
-			// critical damage is doubled to one normal hit
-			if (critical) {
-				damage *= 2;
-			}
+			damage = (int) criticalResult[0];
 
 			// give xp even if attack was blocked
 			getsDefXp = defender.getsDefXpFrom(player, didDamage);
@@ -497,11 +571,11 @@ public class StendhalRPAction {
 	 * Remove a used up missile from an attacking player.
 	 *
 	 * @param player
-	 *     The player to remove the projectile from.
+	 *	 The player to remove the projectile from.
 	 * @param target
-	 *     Entity player is attacking.
+	 *	 Entity player is attacking.
 	 * @param damage
-	 *     Amount of damage done during attack (-1 means attack missed).
+	 *	 Amount of damage done during attack (-1 means attack missed).
 	 */
 	private static void useMissile(Player player, final RPEntity target, final int damage) {
 		// Get the projectile that will be thrown/shot.
@@ -531,7 +605,7 @@ public class StendhalRPAction {
 	 * Send the content of the zone the player is in to the client.
 	 *
 	 * @param player
-	 *     Player for whom content is sent.
+	 *	 Player for whom content is sent.
 	 */
 	public static void transferContent(final Player player) {
 		transferContent(player, player.getZone().getContents());
@@ -543,9 +617,9 @@ public class StendhalRPAction {
 	 * Transfers arbritary content.
 	 *
 	 * @param player
-	 *     Player for whom content is sent.
+	 *	 Player for whom content is sent.
 	 * @param contents
-	 *     Content being sent.
+	 *	 Content being sent.
 	 */
 	public static void transferContent(final Player player, final List<TransferContent> contents) {
 		if (rpman != null) {
@@ -564,11 +638,11 @@ public class StendhalRPAction {
 	 * Change an entity's zone based on its global world coordinates.
 	 *
 	 * @param entity
-	 *     The entity changing zones.
+	 *	 The entity changing zones.
 	 * @param x
-	 *     The entity's old zone X coordinate.
+	 *	 The entity's old zone X coordinate.
 	 * @param y
-	 *     The entity's old zone Y coordinate.
+	 *	 The entity's old zone Y coordinate.
 	 */
 	public static void decideChangeZone(final Entity entity, final int x, final int y) {
 		final StendhalRPZone origin = entity.getZone();
@@ -606,15 +680,15 @@ public class StendhalRPAction {
 	 * entity from any existing zone and add it to the target zone if needed.
 	 *
 	 * @param zone
-	 *     Zone to place the entity in.
+	 *	 Zone to place the entity in.
 	 * @param entity
-	 *     The entity to place.
+	 *	 The entity to place.
 	 * @param x
-	 *     Zone X coordinate.
+	 *	 Zone X coordinate.
 	 * @param y
-	 *     Zone Y coordinate.
+	 *	 Zone Y coordinate.
 	 * @return
-	 *     <code>true</code> if it was possible to place the entity, false otherwise.
+	 *	 <code>true</code> if it was possible to place the entity, false otherwise.
 	 */
 	public static boolean placeat(final StendhalRPZone zone, final Entity entity,
 			final int x, final int y) {
@@ -635,18 +709,18 @@ public class StendhalRPAction {
 	 * needed.
 	 *
 	 * @param zone
-	 *     Zone to place the entity in.
+	 *	 Zone to place the entity in.
 	 * @param entity
-	 *     The entity to place.
+	 *	 The entity to place.
 	 * @param x
-	 *     Zone X coordinate.
+	 *	 Zone X coordinate.
 	 * @param y
-	 *     Zone Y coordinate.
+	 *	 Zone Y coordinate.
 	 * @param allowedArea
-	 *     If not <code>null</code>, only search within this area for a possible
-	 *     new position.
+	 *	 If not <code>null</code>, only search within this area for a possible
+	 *	 new position.
 	 * @return
-	 *     <code>true</code> if it was possible to place the entity, false otherwise.
+	 *	 <code>true</code> if it was possible to place the entity, false otherwise.
 	 */
 	public static boolean placeat(final StendhalRPZone zone, final Entity entity,
 			int x, int y, final Shape allowedArea) {
@@ -812,23 +886,23 @@ public class StendhalRPAction {
 	 * Finds a new place for entity.
 	 *
 	 * @param zone
-	 *     Zone to place the entity in.
+	 *	 Zone to place the entity in.
 	 * @param entity
-	 *     The entity to place.
+	 *	 The entity to place.
 	 * @param allowedArea
-	 *     Only search within this area for a possible new position,
-	 *     or <code>null</code> if the whole normal search area should
-	 *     be used.
+	 *	 Only search within this area for a possible new position,
+	 *	 or <code>null</code> if the whole normal search area should
+	 *	 be used.
 	 * @param x
-	 *     The x coordinate of the search center.
+	 *	 The x coordinate of the search center.
 	 * @param y
-	 *     The y coordinate of the search center.
+	 *	 The y coordinate of the search center.
 	 * @param checkPath
-	 *     If <code>true</code>, check that there's a valid path to the
-	 *     center.
+	 *	 If <code>true</code>, check that there's a valid path to the
+	 *	 center.
 	 * @return
-	 *     Location of the new placement, or <code>null</code> if no
-	 *     suitable place was found.
+	 *	 Location of the new placement, or <code>null</code> if no
+	 *	 suitable place was found.
 	 */
 	private static Point findLocation(final StendhalRPZone zone, final Entity entity,
 			final Shape allowedArea, final int x, final int y, final boolean checkPath) {
@@ -908,27 +982,27 @@ public class StendhalRPAction {
 	 * Checks if a new placement for an entity is valid.
 	 *
 	 * @param zone
-	 *     Zone to place the entity in.
+	 *	 Zone to place the entity in.
 	 * @param entity
-	 *     The entity to place.
+	 *	 The entity to place.
 	 * @param allowedArea
-	 *     Only search within this area for a possible new position,
-	 *     or <code>null</code> if the whole normal search area should
-	 *     be used.
+	 *	 Only search within this area for a possible new position,
+	 *	 or <code>null</code> if the whole normal search area should
+	 *	 be used.
 	 * @param oldX
-	 *     The X coordinate from where the entity was displaced.
+	 *	 The X coordinate from where the entity was displaced.
 	 * @param oldY
-	 *     The Y coordinate from where the entity was displaced.
+	 *	 The Y coordinate from where the entity was displaced.
 	 * @param newX
-	 *     The X coordinate of the new placement.
+	 *	 The X coordinate of the new placement.
 	 * @param newY
-	 *     The Y coordinate of the new placement.
+	 *	 The Y coordinate of the new placement.
 	 * @param checkPath
-	 *     If <code>true</code>, check that there is a path from
-	 *     <code>(newX, newY)</code> to <code>(oldX, oldY)</code>.
+	 *	 If <code>true</code>, check that there is a path from
+	 *	 <code>(newX, newY)</code> to <code>(oldX, oldY)</code>.
 	 * @return
-	 *     <code>true</code> if placing is possible,
-	 *     <code>false</code> otherwise.
+	 *	 <code>true</code> if placing is possible,
+	 *	 <code>false</code> otherwise.
 	 */
 	private static boolean isValidPlacement(final StendhalRPZone zone, final Entity entity,
 			final Shape allowedArea, final int oldX, final int oldY,
@@ -973,14 +1047,14 @@ public class StendhalRPAction {
 	 * path to the player.
 	 *
 	 * @param zone
-	 *     Zone to place the entity in.
+	 *	 Zone to place the entity in.
 	 * @param player
-	 *     Pet owner.
+	 *	 Pet owner.
 	 * @param pet
-	 *     The entity to place.
+	 *	 The entity to place.
 	 * @return
-	 *     <code>true</code> if the pet could be placed properly,
-	 *     <code>false</code> otherwise.
+	 *	 <code>true</code> if the pet could be placed properly,
+	 *	 <code>false</code> otherwise.
 	 */
 	private static boolean placePet(final StendhalRPZone zone, final Player player,
 			final Entity pet) {

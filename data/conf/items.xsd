@@ -65,6 +65,14 @@
 			<element name="max_quantity" type="Q1:attribute" minOccurs="0"/>
 			<element name="regen" type="Q1:attribute" minOccurs="0" maxOccurs="unbounded"/>
 			<element name="lifesteal" type="Q1:attribute" minOccurs="0"/>
+			<element name="skill_atk" type="Q1:attribute" minOccurs="0"/>
+			<element name="atk_additional_bonus" type="Q1:attribute" minOccurs="0"/>
+			<element name="critical_additional_bonus" type="Q1:attribute" minOccurs="0"/>
+			<element name="def_additional_bonus" type="Q1:attribute" minOccurs="0"/>
+			<element name="rate_increase" type="Q1:attribute" minOccurs="0"/>
+			<element name="critical_chance" type="Q1:attribute" minOccurs="0"/>
+			<element name="lifesteal_increase" type="Q1:attribute" minOccurs="0"/>
+			<element name="health" type="Q1:attribute" minOccurs="0"/>
 			<element name="persistent" type="Q1:attribute" minOccurs="0"/>
 			<element name="life_support" type="Q1:attribute" minOccurs="0"/>
 			<element name="slot_name" type="Q1:attribute" minOccurs="0"/>

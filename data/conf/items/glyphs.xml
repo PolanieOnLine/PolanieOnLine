@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="stendhal ../items.xsd ">
+
+	<item name="glif daru Mokoszy">
+		<type class="glyph" subclass="glyph_health" tileid="-1"/>
+		<description>Oto glif daru Mokoszy. Przynosi uzdrowienie, dodając 1000 punktów zdrowia. Mokosz, bogini płodności i urodzaju, błogosławi swoich wyznawców siłą i odnowieniem.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
+		<attributes>
+			<health value="1000"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="10000"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="healing_rune"/>
+		</equipable>
+	</item>
+
+	<item name="glif siły">
+		<type class="glyph" subclass="glyph_strength" tileid="-1"/>
+		<description>Oto glif siły. Przyznaje 5 punktów dodatkowego ataku, potęgując Twoją moc w walce. Wyposaż się w niego, aby stać się jeszcze groźniejszym przeciwnikiem.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
+		<attributes>
+			<atk value="5"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="10000"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="offensive_rune"/>
+		</equipable>
+	</item>
+
+	<item name="glif Peruna">
+		<type class="glyph" subclass="glyph_attack" tileid="-1"/>
+		<description>Oto glif Peruna. Niosący moc piorunów glif zwiększa Twoje obrażenia o dodatkowe 10%. Przywołaj gniew boga burzy, by stać się niepokonanym na polu bitwy.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
+		<attributes>
+			<atk_additional_bonus value="10.0"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="10000"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="offensive_rune"/>
+		</equipable>
+	</item>
+
+	<item name="glif czaszy">
+		<type class="glyph" subclass="glyph_attack_critical" tileid="-1"/>
+		<description>Oto glif czaszy. Zwiększający obrażenia krytyczne o 25%, sprawi, że Twoje ataki zyskują na sile. Odkryj w sobie moc, która przełamie wszelkie przeszkody!</description>
+		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
+		<attributes>
+			<critical_additional_bonus value="25.0"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="10000"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="offensive_rune"/>
+		</equipable>
+	</item>
+
+	<item name="glif tarczy">
+		<type class="glyph" subclass="glyph_shield" tileid="-1"/>
+		<description>Oto glif tarczy. Obronny glif dający 20 punktów obrony. Poczuj ochronę, która pozwoli Ci przetrwać najcięższe starcia.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
+		<attributes>
+			<def value="20"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="10000"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="defensive_rune"/>
+		</equipable>
+	</item>
+
+	<item name="glif Swaroga">
+		<type class="glyph" subclass="glyph_defensive" tileid="-1"/>
+		<description>Oto glif Swaroga. Obdarzający Cię dodatkową obroną w wysokości 20% glif ten stanie się Twoim nieocenionym sojusznikiem w obronie przed wrogami. Przyjmij siłę Słowiańskiego boga ognia.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
+		<attributes>
+			<def_additional_bonus value="20.0"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="10000"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="defensive_rune"/>
+		</equipable>
+	</item>
+
+	<item name="glif Tytana">
+		<type class="glyph" subclass="glyph_titan" tileid="-1"/>
+		<description>Oto glif Tytana. Przyznający 10 punktów ataku, 10 punktów obrony oraz 400 punktów zdrowia, uczyni Cię prawdziwym tytanem na polu walki. Wzmocnij swoje ciało i umysł potęgą przodków.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
+		<attributes>
+			<atk value="10"/>
+			<def value="10"/>
+			<health value="400"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="10000"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="special_rune"/>
+		</equipable>
+	</item>
+
+	<item name="glif Strzyboga">
+		<type class="glyph" subclass="glyph_rate" tileid="-1"/>
+		<description>Oto glif Strzyboga. Sprawi iż twoje bronie staną się lżejsze, dając Ci przewagę w walce. Niezawodny towarzysz, który pomoże Ci w każdej sytuacji.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
+		<attributes>
+			<rate_increase value="1"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="10000"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="utility_rune"/>
+		</equipable>
+	</item>
+
+	<item name="glif Jarowita">
+		<type class="glyph" subclass="glyph_resistance" tileid="-1"/>
+		<description>Oto glif Jarowita. Zapewnia odporność na wszystkie żywioły, redukując ich wpływ o 50%. Poznaj moc, która chroni przed wszelkim złem i niesprzyjającymi okolicznościami.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
+		<attributes>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="10000"/>
+		<susceptibility type="earth" value="0.5"/>
+		<susceptibility type="water" value="0.5"/>
+		<susceptibility type="fire" value="0.5"/>
+		<susceptibility type="ice" value="0.5"/>
+		<susceptibility type="dark" value="0.5"/>
+		<susceptibility type="light" value="0.5"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="resistance_rune"/>
+		</equipable>
+	</item>
+
+	<item name="glif kryzysu">
+		<type class="glyph" subclass="glyph_critical" tileid="-1"/>
+		<description>Oto glif kryzysu. Zwiększający szansę na atak krytyczny o 15%, jest idealnym wsparciem w trudnych sytuacjach. Przyciągnij łaskę losu i zaskocz przeciwników potężnymi ciosami.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
+		<attributes>
+			<critical_chance value="15.0"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="10000"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="control_rune"/>
+		</equipable>
+	</item>
+
+	<item name="glif krwi">
+		<type class="glyph" subclass="glyph_blood" tileid="-1"/>
+		<description>Oto glif krwi. Umożliwiający kradzież życia w wysokości 20%, pozwoli Ci na regenerację w trakcie walki. Stawiaj czoła wrogom, a jednocześnie odzyskuj zdrowie dzięki ich słabościom.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
+		<attributes>
+			<lifesteal_increase value="20.0"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="10000"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+			<slot name="control_rune"/>
+		</equipable>
+	</item>
+
+</items>

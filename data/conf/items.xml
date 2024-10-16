@@ -39,6 +39,7 @@
 	<group uri="items/whips.xml"/>
 
 	<group uri="items/gloves.xml"/>
+	<group uri="items/glyphs.xml"/>
 	<group uri="items/magia.xml"/>
 	<group uri="items/necklaces.xml"/>
 	<group uri="items/wand.xml"/>
