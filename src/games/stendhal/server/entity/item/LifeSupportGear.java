@@ -82,7 +82,7 @@ public class LifeSupportGear extends Item {
 	private void handleCriticalUnequipped(final Player player) {
 		final String[] target = player.getZone().getAttributes().get("life_support_failure_location").split("[,; ]+");
 		player.addEvent(new GlobalVisualEffectEvent("blacken", 1000));
-		player.sendPrivateText("Nie możesz oddychać, a świat wokół ciebie staje się czarny.");
+		player.sendPrivateText("Nie możesz oddychać, a świat wokół ciebie staje się ciemniejszy.");
 		TurnNotifier.get().notifyInTurns(4, new TurnListener() {
 
 			@Override
