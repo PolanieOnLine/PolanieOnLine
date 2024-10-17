@@ -22,7 +22,7 @@ import games.stendhal.common.NotificationType;
  *
  * @author madmetzger
  */
-class BareBonesBrowserLaunchCommand implements SlashAction{
+class BareBonesBrowserLaunchCommand implements SlashAction {
 
 	private final String urlToOpen;
 
