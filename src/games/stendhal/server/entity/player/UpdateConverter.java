@@ -441,11 +441,6 @@ public abstract class UpdateConverter {
 				object.put("features", "magicbag", "");
 			}
 
-			// runic altar
-			if (KeyedSlotUtil.getKeyedSlot(object, "!features", "runicaltar") != null) {
-				object.put("features", "runicaltar", "");
-			}
-
 			object.removeSlot("!features");
 		}
 		if (KeyedSlotUtil.getKeyedSlot(object, "!quests", "learn_karma") != null) {
