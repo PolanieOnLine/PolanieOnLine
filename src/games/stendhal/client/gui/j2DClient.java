@@ -324,6 +324,10 @@ public class j2DClient implements UserInterface {
 		gui.requestQuit(client);
 	}
 
+	public void getVisibleRunicAltar() {
+		gui.getVisibleRunicAltar();
+	}
+
 	@Override
 	public void addEventLine(final EventLine line) {
 		channelManager.addEventLine(line);

@@ -110,7 +110,7 @@ class SwingClientGUI implements J2DClientGUI {
 	/** the Key ring panel. */
 	private KeyRing keyring;
 	private MagicBag magicbag;
-	private RunicAltar runicaltar;
+	private RunicAltar runicAltar;
 	//private Portfolio portfolio;
 	private Spells spells;
 	private boolean offline;
@@ -136,13 +136,11 @@ class SwingClientGUI implements J2DClientGUI {
 		// initialize the screen controller
 		screenController = ScreenController.get(screen);
 		pane.addComponentListener(new GameScreenResizer(screen));
-
-		runicaltar = new RunicAltar();
-		//runicaltar.setAcceptedTypes(EntityMap.getClass("item", null, null));
-		screen.add(runicaltar);
-
 		// ... and put it on the ground layer of the pane
 		pane.add(screen, Component.LEFT_ALIGNMENT, JLayeredPane.DEFAULT_LAYER);
+
+		runicAltar = new RunicAltar();
+		pane.add(runicAltar.getRunicAltar(), JLayeredPane.MODAL_LAYER);
 
 		quitDialog = new QuitDialog();
 		pane.add(quitDialog.getQuitDialog(), JLayeredPane.MODAL_LAYER);
@@ -347,6 +345,11 @@ class SwingClientGUI implements J2DClientGUI {
 	}
 
 	@Override
+	public void getVisibleRunicAltar() {
+		runicAltar.getVisibleRunicAltar();
+	}
+
+	@Override
 	public void setOffline(final boolean offline) {
 		screenController.setOffline(offline);
 		this.offline = offline;
@@ -418,7 +421,7 @@ class SwingClientGUI implements J2DClientGUI {
 		 * screen and show a bit of the chat.
 		 */
 		verticalSplit.setDividerLocation(Math.min(stendhal.getDisplaySize().height,
-				maxBounds.height  - 80));
+				maxBounds.height - 80));
 	}
 
 	/**
@@ -443,7 +446,7 @@ class SwingClientGUI implements J2DClientGUI {
 		 */
 		keyring.setVisible(false);
 		magicbag.setVisible(false);
-		runicaltar.setVisible(true);
+		runicAltar.getRunicAltar().setVisible(false);
 		//portfolio.setVisible(false);
 		spells.setVisible(false);
 	}
@@ -566,7 +569,7 @@ class SwingClientGUI implements J2DClientGUI {
 		//portfolio.setSlot(user, "portfolio");
 		spells.setSlot(user, "spells");
 		inventory.setSlot(user, "bag");
-		runicaltar.setPlayer(user);
+		runicAltar.setPlayer(user);
 	}
 
 	@Override

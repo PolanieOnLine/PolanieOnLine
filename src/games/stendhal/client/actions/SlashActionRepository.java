@@ -138,6 +138,8 @@ public class SlashActionRepository {
 		actions.put(Actions.REMOVEDETAIL, new RemoveDetailAction());
 
 		actions.put("emojilist", new EmojiListAction());
+
+		actions.put("runicaltar", new RunicAltarAction());
 	}
 
 	/**

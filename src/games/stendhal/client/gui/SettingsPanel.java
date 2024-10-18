@@ -216,6 +216,8 @@ class SettingsPanel extends JButton {
 		column.addComponent(item);
 		item = createMenuItem("Dziennik Osiągnięć", Actions.ACHIEVEMENTLOG);
 		column.addComponent(item);
+		item = createMenuItem("Ołtarz Runiczny", "runicaltar");
+		column.addComponent(item);
 	}
 
 	/**

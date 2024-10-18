@@ -1,12 +1,12 @@
 package games.stendhal.client.gui;
 
+import java.awt.Component;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.swing.JComponent;
-import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
 
@@ -16,16 +16,15 @@ import games.stendhal.client.entity.IEntity;
 import games.stendhal.client.entity.User;
 import games.stendhal.client.entity.factory.EntityMap;
 import games.stendhal.client.gui.layout.SBoxLayout;
-import games.stendhal.client.listener.FeatureChangeListener;
 import games.stendhal.client.sprite.SpriteStore;
 import marauroa.common.game.RPObject;
 import marauroa.common.game.RPObject.ID;
 import marauroa.common.game.RPSlot;
 
-@SuppressWarnings("serial")
-class RunicAltar extends InternalManagedWindow implements ContentChangeListener,
-FeatureChangeListener {
+class RunicAltar implements ContentChangeListener {
 	private static final Logger logger = Logger.getLogger(RunicAltar.class);
+
+	private InternalManagedWindow runicAltarDialog;
 
 	private final Map<String, ItemPanel> slotPanels = new HashMap<String, ItemPanel>();
 	private User player;
@@ -38,10 +37,16 @@ FeatureChangeListener {
 	 * The constructor also configures the window to be closeable by the user.
 	 */
 	public RunicAltar() {
-		super("runicaltar", "RunicAltar");
-		// This method configures the window to be closeable by the user (through a close button).
-		setCloseable(true);
-		createLayout();
+		runicAltarDialog = createLayout();
+		runicAltarDialog.setVisible(false);
+	}
+
+	public Component getRunicAltar() {
+		return runicAltarDialog;
+	}
+
+	public void getVisibleRunicAltar() {
+		runicAltarDialog.setVisible(true);
 	}
 
 	public void setPlayer(final User userEntity) {
@@ -50,16 +55,16 @@ FeatureChangeListener {
 		refreshContents();
 	}
 
-	private void createLayout() {
+	private InternalManagedWindow createLayout() {
 		JComponent content = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
 		JComponent row = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, 20);
 		JComponent left = SBoxLayout.createContainer(SBoxLayout.VERTICAL, 15);
 		JComponent middle = SBoxLayout.createContainer(SBoxLayout.VERTICAL, 20);
 		JComponent right = SBoxLayout.createContainer(SBoxLayout.VERTICAL, 15);
 
-		left.setAlignmentY(CENTER_ALIGNMENT);
-		middle.setAlignmentY(CENTER_ALIGNMENT);
-		right.setAlignmentY(CENTER_ALIGNMENT);
+		left.setAlignmentY(Component.CENTER_ALIGNMENT);
+		middle.setAlignmentY(Component.CENTER_ALIGNMENT);
+		right.setAlignmentY(Component.CENTER_ALIGNMENT);
 
 		row.add(left);
 		row.add(middle);
@@ -79,7 +84,13 @@ FeatureChangeListener {
 		right.add(createItemPanel(itemClass, store, "healing_rune", "data/gui/rune-healing.png"));
 		right.add(createItemPanel(itemClass, store, "resistance_rune", "data/gui/rune-resistance.png"));
 
-		setContent(content);
+		InternalManagedWindow window = new InternalManagedWindow("runicaltar", "Ołtarz Runiczny");
+		window.setContent(content);
+		window.setHideOnClose(true);
+		window.setMinimizable(true);
+		window.setMovable(true);
+
+		return window;
 	}
 
 	private ItemPanel createItemPanel(Class<? extends IEntity> itemClass, SpriteStore store, String id, String image) {
@@ -88,29 +99,6 @@ FeatureChangeListener {
 		panel.setAcceptedTypes(itemClass);
 
 		return panel;
-	}
-
-	/**
-	 * This method will be called when a feature associated with this class is disabled.
-	 * It is currently not implemented and serves as a placeholder for future functionality.
-	 *
-	 * @param name The name of the disabled feature.
-	 */
-	@Override
-	public void featureDisabled(String name) {
-		// Placeholder method, not yet implemented.
-	}
-
-	/**
-	 * This method will be called when a feature associated with this class is enabled.
-	 * It is currently not implemented and serves as a placeholder for future functionality.
-	 *
-	 * @param name  The name of the enabled feature.
-	 * @param value The value or additional data associated with the enabled feature.
-	 */
-	@Override
-	public void featureEnabled(String name, String value) {
-		// Placeholder method, not yet implemented.
 	}
 
 	/**
@@ -143,16 +131,6 @@ FeatureChangeListener {
 				}
 			}
 		}
-
-		/*
-		 * Refresh gets called from outside the EDT.
-		 */
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				setTitle("Ołtarz Runiczny");
-			}
-		});
 	}
 
 	@Override
