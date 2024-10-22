@@ -1,6 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <items xmlns="stendhal" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="stendhal ../items.xsd ">
 
+	<item name="fragment glifu">
+		<type class="glyph" subclass="glyph_fragment" tileid="-1"/>
+		<description></description>
+		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<attributes>
+			<quantity value="1"/>
+			<max_quantity value="2147483647"/>
+		</attributes>
+		<weight value="1.0"/>
+		<value value="1"/>
+		<equipable>
+			<slot name="ground"/>
+			<slot name="content"/>
+			<slot name="bag"/>
+			<slot name="trade"/>
+			<slot name="lhand"/>
+			<slot name="rhand"/>
+		</equipable>
+	</item>
+
 	<item name="glif daru Mokoszy">
 		<type class="glyph" subclass="glyph_health" tileid="-1"/>
 		<description>Oto glif daru Mokoszy. Przynosi uzdrowienie, dodając 1000 punktów zdrowia. Mokosz, bogini płodności i urodzaju, błogosławi swoich wyznawców siłą i odnowieniem.</description>

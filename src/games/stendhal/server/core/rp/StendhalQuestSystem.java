@@ -299,6 +299,7 @@ public class StendhalQuestSystem {
 		/**                     **\
 		 *         DESERT        *
 		\**                     **/
+		loadQuest(new GlifFragments());
 		loadQuest(new ZlotaCiupagaJedenWas());
 		/**                     **\
 		 *         GDAŃSK        *

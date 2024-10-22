@@ -80,6 +80,7 @@
 	<!-- Pyramid NE -->
 	<zone name="0_desert_pyramid_ne" level="0" x="513312" y="0" file="Level 0/desert/pyramid_ne.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleportIn"/>
+		<configurator class-name="games.stendhal.server.maps.desert.DesertWandererNPC"/>
 
 		<attributes>
 			<parameter name="color_method">time</parameter>
