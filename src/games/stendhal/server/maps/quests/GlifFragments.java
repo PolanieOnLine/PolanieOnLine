@@ -57,6 +57,17 @@ public class GlifFragments extends AbstractQuest {
 			return res;
 		}
 		res.add("Spotkałem Omara, tajemniczego wędrowca na pustyni, i otrzymałem zadanie odnalezienia fragmentów glifów.");
+		if ("start".equals(player.getQuest(QUEST_SLOT, 0))) {
+			String questMap = player.getQuest(QUEST_SLOT, 1);
+			int x = Integer.parseInt(player.getQuest(QUEST_SLOT, 2));
+			int y = Integer.parseInt(player.getQuest(QUEST_SLOT, 3));
+			int[] cords = sendApproximateCoordinates(player, x, y);
+			res.add("Muszę poszukać fragmentu w regionie " + getQuestMapName(questMap) + ". Gdzieś w pobliżu (#'" + cords[0] + "', #'" + cords[1] + "').");
+		}
+		if ("found_fragment".equals(player.getQuest(QUEST_SLOT, 0))) {
+			String fragmentStatus = player.getQuest(QUEST_SLOT, 1);
+			res.add("Udało się wykopać " + fragmentStatus + " " + itemName + ".");
+		}
 		if ("done".equals(player.getQuest(QUEST_SLOT, 0))) {
 			res.add("Dostarczyłem Omarowi fragmenty glifów i otrzymałem nagrodę.");
 		}
