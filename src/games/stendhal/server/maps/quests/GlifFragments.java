@@ -84,7 +84,7 @@ public class GlifFragments extends AbstractQuest {
 					int x = Integer.parseInt(player.getQuest(QUEST_SLOT, 2));
 					int y = Integer.parseInt(player.getQuest(QUEST_SLOT, 3));
 					int[] cords = sendApproximateCoordinates(player, x, y);
-					npc.say("Udaj się proszę na taki region jak " + getRandomQuestMapName(questMap) + ". Przybliżone miejsce"
+					npc.say("Udaj się proszę w taki region jak " + getQuestMapName(questMap) + ". Przybliżone miejsce"
 						+ " gdzie mogą się znajdować fragmenty to (#'" + cords[0] + "', #'" + cords[1] + "').");
 				}
 			});
@@ -109,7 +109,7 @@ public class GlifFragments extends AbstractQuest {
 					int[] similiarCords = sendApproximateCoordinates(player, cords[0], cords[1]);
 					npc.say("Świetnie, będziesz potrzebował do tego zadania łopaty, aby odnaleźć fragmenty."
 						+ " Mogą one delikatnie różnić się w zależności w jakim stanie go wykopiesz."
-						+ " Pamiętam, że ostatnio zbadałem prawie wszystkie regiony prócz regionu " + getRandomQuestMapName(questMap) + "."
+						+ " Pamiętam, że ostatnio zbadałem prawie wszystkie regiony prócz regionu " + getQuestMapName(questMap) + "."
 						+ " Spróbuj tam poszukać! Przybliżone miejsce gdzie mogą się znajdować fragmenty to"
 						+ " (#'" + similiarCords[0] + "', #'" + similiarCords[1] + "').");
 					player.setQuest(QUEST_SLOT, questMap);
@@ -218,7 +218,7 @@ public class GlifFragments extends AbstractQuest {
 		};
 	}
 
-	private String getRandomQuestMapName(String map) {
+	private String getQuestMapName(String map) {
 		String direction = map.substring(map.length() - 2);
 
 		switch (direction) {
@@ -268,7 +268,7 @@ public class GlifFragments extends AbstractQuest {
 						int[] similiarCords = sendApproximateCoordinates(player, cords[0], cords[1]);
 
 						raiser.say("Niestety, nie udało się naprawić. Może w innym miejscu znajdziesz nowy fragment!"
-							+ " Przy twojej nieobecności badałem ten region " + getRandomQuestMapName(questMap) + ". Spróbuj tam poszukać!"
+							+ " Przy twojej nieobecności badałem ten region " + getQuestMapName(questMap) + "."
 							+ " Spróbuj tam poszukać! Przybliżone miejsce gdzie mogą się znajdować fragmenty to"
 							+ " (#'" + similiarCords[0] + "', #'" + similiarCords[1] + "').");
 						player.setQuest(QUEST_SLOT, getQuestStringAction(questMap, cords));
