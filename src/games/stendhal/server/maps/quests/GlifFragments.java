@@ -32,7 +32,6 @@ import games.stendhal.server.entity.npc.condition.PlayerHasItemdataItemWithHimCo
 import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
-import games.stendhal.server.entity.npc.condition.QuestStartedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 
@@ -85,7 +84,7 @@ public class GlifFragments extends AbstractQuest {
 
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
-			new QuestStartedCondition(QUEST_SLOT),
+			new QuestInStateCondition(QUEST_SLOT, 0, "start"),
 			ConversationStates.ATTENDING,
 			null,
 			new ChatAction() {
