@@ -34,9 +34,9 @@ public class Shovel extends AreaUseItem {
 	private static final String glif_fragments_quest_slot = "glif_fragments";
 	private static final Map<String, Double> fragmentChances = new HashMap<>();
 	static {
-		fragmentChances.put("zniszczony", 50.0);
-		fragmentChances.put("spękany", 22.5);
-		fragmentChances.put("nadkruszony", 10.0);
+		fragmentChances.put("zniszczony", 60.0);
+		fragmentChances.put("spękany", 30.0);
+		fragmentChances.put("nadkruszony", 15.0);
 	}
 	private static final Map<String, String> fragmentSprite = new HashMap<>();
 	static {
