@@ -301,11 +301,11 @@ public class GlifFragments extends AbstractQuest {
 	private double getRepairChance(final String fragmentType) {
 		switch (fragmentType) {
 			case "zniszczony":
-				return 10.0;
-			case "spękany":
 				return 25.0;
-			case "nadkruszony":
+			case "spękany":
 				return 50.0;
+			case "nadkruszony":
+				return 75.0;
 			default:
 				return 0.0;
 		}
