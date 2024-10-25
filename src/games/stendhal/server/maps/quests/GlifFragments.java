@@ -207,7 +207,7 @@ public class GlifFragments extends AbstractQuest {
 	}
 
 	private String getQuestStringAction(String map, int[] cords) {
-		return "start;" + map + ";" + cords[0] + ";" + cords[1];
+		return "start;" + map + ";" + cords[0] + ";" + cords[1] + ";0";
 	}
 
 	private ChatCondition getItemWithItemdataCondition() {
@@ -249,7 +249,7 @@ public class GlifFragments extends AbstractQuest {
 		return new ChatAction() {
 			@Override
 			public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-				player.setQuest(QUEST_SLOT, "start;" + player.getQuest(QUEST_SLOT, 2) + ";" + player.getQuest(QUEST_SLOT, 3) + ";" + player.getQuest(QUEST_SLOT, 4));
+				player.setQuest(QUEST_SLOT, "start;" + player.getQuest(QUEST_SLOT, 2) + ";" + player.getQuest(QUEST_SLOT, 3) + ";" + player.getQuest(QUEST_SLOT, 4) + ";0");
 			}
 		};
 	}

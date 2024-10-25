@@ -100,6 +100,7 @@ public class Shovel extends AreaUseItem {
 					final String expectedMap = fragmentSlot[1];
 					final int fragmentX = Integer.parseInt(fragmentSlot[2]);
 					final int fragmentY = Integer.parseInt(fragmentSlot[3]);
+					final int attemptCount = Integer.parseInt(fragmentSlot[4]);
 
 					if (zone.getName().equals(expectedMap) && x == fragmentX && y == fragmentY) {
 						String fragment = determineFragment();
@@ -117,13 +118,16 @@ public class Shovel extends AreaUseItem {
 							player.equipOrPutOnGround(item);
 							player.sendPrivateText(player.getGenderVerb("Znalazłeś") + " " + fragment + " " + item.getName() + "!");
 
-							player.setQuest(glif_fragments_quest_slot, "found_fragment;" + fragment + ";" + fragmentSlot[1] + ";" + fragmentSlot[2] + ";" + fragmentSlot[3]);
+							player.setQuest(glif_fragments_quest_slot, "found_fragment;" + fragment + ";" + expectedMap + ";" + fragmentX + ";" + fragmentY);
 						} else {
-							player.sendPrivateText("Niestety, nie udało ci się wykopać żadnego fragmentu. Spróbuj w innym miejscu.");
-
-							int[] newCoordinates = getRandomCoordinates(zone);
-							player.setQuest(glif_fragments_quest_slot, "start;" + expectedMap + ";" + newCoordinates[0] + ";" + newCoordinates[1]);
-							sendApproximateCoordinates(player, newCoordinates[0], newCoordinates[1]);
+							if (attemptCount < 2) {
+								player.sendPrivateText("Spróbuj wkopać się głębiej!");
+								player.setQuest(glif_fragments_quest_slot, "start;" + expectedMap + ";" + fragmentX + ";" + fragmentY + ";" + (attemptCount + 1));
+							} else {
+								int[] newCoordinates = getRandomCoordinates(zone);
+								player.setQuest(glif_fragments_quest_slot, "start;" + expectedMap + ";" + newCoordinates[0] + ";" + newCoordinates[1] + ";0");
+								sendApproximateCoordinates(player, newCoordinates[0], newCoordinates[1]);
+							}
 						}
 					} else if (zone.getName().equals(expectedMap) && nearItem(x, y, fragmentX, fragmentY)) {
 						player.sendPrivateText("Widzisz ślady stóp na piasku. Ktoś już czegoś tutaj szukał, może fragment znajduje się niedaleko.");
@@ -155,7 +159,7 @@ public class Shovel extends AreaUseItem {
 		int approxY = fragmentY + random.nextInt(11) - 5;
 
 		// Send a message to the player with the approximate coordinates.
-		player.sendPrivateText("Czujesz, że fragment glifu może znajdować się w pobliżu: (" + approxX + ", " + approxY + ").");
+		player.sendPrivateText("Niestety, w tym miejscu nie " + player.getGenderVerb("znalazłeś") + " tego czego szukasz. Czujesz, że fragment glifu może znajdować się w pobliżu: (" + approxX + ", " + approxY + ").");
 	}
 
 	/**
