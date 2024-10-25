@@ -102,7 +102,7 @@ public class Shovel extends AreaUseItem {
 					final int fragmentY = Integer.parseInt(fragmentSlot[3]);
 					final int attemptCount = Integer.parseInt(fragmentSlot[4]);
 
-					if (zone.getName().equals(expectedMap) && x == fragmentX && y == fragmentY) {
+					if (zone.getName().equals(expectedMap) && nearDigRange(x, y, fragmentX, fragmentY, 1)) {
 						String fragment = determineFragment();
 						if (fragment != null) {
 							final Item item = em.getItem("fragment glifu");
@@ -200,6 +200,22 @@ public class Shovel extends AreaUseItem {
 		int newY = random.nextInt(mapHeight);
 
 		return new int[] { newX, newY };
+	}
+
+	/**
+	 * Checks if the player's digging attempt is within for example a 3x3 grid around the specified coordinates.
+	 *
+	 * @param px
+	 *	 The player's X coordinate.
+	 * @param py
+	 *	 The player's Y coordinate.
+	 * @param targetX
+	 *	 The exact X coordinate of the target location.
+	 * @param targetY
+	 *	 The exact Y coordinate of the target location.
+	 */
+	private boolean nearDigRange(final int px, final int py, final int rx, final int ry, final int range) {
+		return Math.abs(rx - px) <= range && Math.abs(ry - py) <= range;
 	}
 
 	/**
