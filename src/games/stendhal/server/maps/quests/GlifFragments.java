@@ -184,7 +184,6 @@ public class GlifFragments extends AbstractQuest {
 	 */
 	private int[] sendApproximateCoordinates(Player player, int fragmentX, int fragmentY) {
 		Random random = new Random();
-
 		// Generate random offsets within a small range (e.g., -8 to 8) for both X and Y.
 		int approxX = Math.max(0, fragmentX + random.nextInt(11) - 8);
 		int approxY = Math.max(0, fragmentY + random.nextInt(11) - 8);
@@ -195,11 +194,10 @@ public class GlifFragments extends AbstractQuest {
 
 	private int[] getRandomCoordinates() {
 		Random random = new Random();
+		int x = random.nextInt(128);
+		int y = random.nextInt(128);
 
-		int approxX = random.nextInt(128);
-		int approxY = random.nextInt(128);
-
-		return new int[] { approxX, approxY };
+		return new int[] { x, y };
 	}
 
 	private String getRandomMap() {
