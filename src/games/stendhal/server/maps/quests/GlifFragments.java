@@ -122,7 +122,7 @@ public class GlifFragments extends AbstractQuest {
 						+ " Pamiętam, że ostatnio zbadałem prawie wszystkie regiony prócz regionu " + getQuestMapName(questMap) + "."
 						+ " Spróbuj tam poszukać! Przybliżone miejsce gdzie mogą się znajdować fragmenty to"
 						+ " (#'" + similiarCords[0] + "', #'" + similiarCords[1] + "').");
-					player.setQuest(QUEST_SLOT, questMap);
+					player.setQuest(QUEST_SLOT, getQuestStringAction(questMap, cords));
 				}
 			});
 
