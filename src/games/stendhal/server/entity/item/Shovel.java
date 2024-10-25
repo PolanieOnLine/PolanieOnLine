@@ -97,10 +97,10 @@ public class Shovel extends AreaUseItem {
 			if (player.hasQuest(glif_fragments_quest_slot)) {
 				final String[] fragmentSlot = player.getQuest(glif_fragments_quest_slot).split(";");
 				if (fragmentSlot.length > 3 && "start".equals(fragmentSlot[0])) {
-					final String expectedMap = fragmentSlot[1];
-					final int fragmentX = Integer.parseInt(fragmentSlot[2]);
-					final int fragmentY = Integer.parseInt(fragmentSlot[3]);
-					final int attemptCount = Integer.parseInt(fragmentSlot[4]);
+					final String expectedMap = fragmentSlot[2];
+					final int fragmentX = Integer.parseInt(fragmentSlot[3]);
+					final int fragmentY = Integer.parseInt(fragmentSlot[4]);
+					final int attemptCount = Integer.parseInt(fragmentSlot[5]);
 
 					if (zone.getName().equals(expectedMap) && nearDigRange(x, y, fragmentX, fragmentY, 1)) {
 						String fragment = determineFragment();
@@ -118,14 +118,14 @@ public class Shovel extends AreaUseItem {
 							player.equipOrPutOnGround(item);
 							player.sendPrivateText(player.getGenderVerb("Znalazłeś") + " " + fragment + " " + item.getName() + "!");
 
-							player.setQuest(glif_fragments_quest_slot, "found_fragment;" + fragment + ";" + expectedMap + ";" + fragmentX + ";" + fragmentY);
+							setGlifQuestAction(player, "found_fragment", fragment, expectedMap, fragmentX, fragmentY);
 						} else {
 							if (attemptCount < 2) {
 								player.sendPrivateText("Spróbuj wkopać się głębiej!");
-								player.setQuest(glif_fragments_quest_slot, "start;" + expectedMap + ";" + fragmentX + ";" + fragmentY + ";" + (attemptCount + 1));
+								setGlifQuestAction(player, "start", expectedMap, fragmentX, fragmentY, (attemptCount + 1));
 							} else {
 								int[] newCoordinates = getRandomCoordinates(zone);
-								player.setQuest(glif_fragments_quest_slot, "start;" + expectedMap + ";" + newCoordinates[0] + ";" + newCoordinates[1] + ";0");
+								setGlifQuestAction(player, "start", expectedMap, newCoordinates[0], newCoordinates[1], 0);
 								sendApproximateCoordinates(player, newCoordinates[0], newCoordinates[1]);
 							}
 						}
@@ -139,6 +139,23 @@ public class Shovel extends AreaUseItem {
 		}
 
 		return true;
+	}
+
+	private void setGlifQuestAction(Player player, String questStatus, String mapName, int cordX, int cordY, int attempt) {
+		setGlifQuestAction(player, questStatus, "", mapName, cordX, cordY, attempt);
+	}
+
+	private void setGlifQuestAction(Player player, String questStatus, String fragment, String mapName, int cordX, int cordY) {
+		setGlifQuestAction(player, questStatus, fragment, mapName, cordX, cordY, 0);
+	}
+
+	private void setGlifQuestAction(Player player, String questStatus, String fragment, String mapName, int cordX, int cordY, int attempt) {
+		player.setQuest(glif_fragments_quest_slot, 0, questStatus);
+		player.setQuest(glif_fragments_quest_slot, 1, fragment);
+		player.setQuest(glif_fragments_quest_slot, 2, mapName);
+		player.setQuest(glif_fragments_quest_slot, 3, Integer.toString(cordX));
+		player.setQuest(glif_fragments_quest_slot, 4, Integer.toString(cordY));
+		player.setQuest(glif_fragments_quest_slot, 5, Integer.toString(attempt + 1));
 	}
 
 	/**

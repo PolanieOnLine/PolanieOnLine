@@ -16,15 +16,19 @@ import java.util.List;
 import java.util.Random;
 
 import games.stendhal.common.parser.Sentence;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.Entity;
-import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
+import games.stendhal.server.entity.npc.action.EquipItemAction;
+import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
+import games.stendhal.server.entity.npc.action.IncreaseXPAction;
+import games.stendhal.server.entity.npc.action.IncrementQuestAction;
+import games.stendhal.server.entity.npc.action.MultipleActions;
+import games.stendhal.server.entity.npc.action.SayTextAction;
 import games.stendhal.server.entity.npc.action.SetQuestAction;
 import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.NotCondition;
@@ -57,15 +61,15 @@ public class GlifFragments extends AbstractQuest {
 		}
 		res.add("Spotkałem Omara, tajemniczego wędrowca na pustyni, i otrzymałem zadanie odnalezienia fragmentów glifów.");
 		if ("start".equals(player.getQuest(QUEST_SLOT, 0))) {
-			String questMap = player.getQuest(QUEST_SLOT, 1);
-			int x = Integer.parseInt(player.getQuest(QUEST_SLOT, 2));
-			int y = Integer.parseInt(player.getQuest(QUEST_SLOT, 3));
+			String questMap = player.getQuest(QUEST_SLOT, 2);
+			int x = Integer.parseInt(player.getQuest(QUEST_SLOT, 3));
+			int y = Integer.parseInt(player.getQuest(QUEST_SLOT, 4));
 			int[] cords = sendApproximateCoordinates(player, x, y);
 			res.add("Muszę poszukać fragmentu w regionie " + getQuestMapName(questMap) + ". Gdzieś w pobliżu (#'" + cords[0] + "', #'" + cords[1] + "').");
 		}
 		if ("found_fragment".equals(player.getQuest(QUEST_SLOT, 0))) {
-			String fragmentStatus = player.getQuest(QUEST_SLOT, 1);
-			res.add("Udało się wykopać " + fragmentStatus + " " + itemName + ".");
+			String fragment = player.getQuest(QUEST_SLOT, 1);
+			res.add("Udało się wykopać " + fragment + " " + itemName + ".");
 		}
 		if ("done".equals(player.getQuest(QUEST_SLOT, 0))) {
 			res.add("Dostarczyłem Omarowi fragmenty glifów i otrzymałem nagrodę.");
@@ -90,9 +94,9 @@ public class GlifFragments extends AbstractQuest {
 			new ChatAction() {
 				@Override
 				public void fire(Player player, Sentence sentence, EventRaiser npc) {
-					String questMap = player.getQuest(QUEST_SLOT, 1);
-					int x = Integer.parseInt(player.getQuest(QUEST_SLOT, 2));
-					int y = Integer.parseInt(player.getQuest(QUEST_SLOT, 3));
+					String questMap = player.getQuest(QUEST_SLOT, 2);
+					int x = Integer.parseInt(player.getQuest(QUEST_SLOT, 3));
+					int y = Integer.parseInt(player.getQuest(QUEST_SLOT, 4));
 					int[] cords = sendApproximateCoordinates(player, x, y);
 					npc.say("Udaj się proszę w taki region jak " + getQuestMapName(questMap) + ". Przybliżone miejsce"
 						+ " gdzie mogą się znajdować fragmenty to (#'" + cords[0] + "', #'" + cords[1] + "').");
@@ -122,7 +126,7 @@ public class GlifFragments extends AbstractQuest {
 						+ " Pamiętam, że ostatnio zbadałem prawie wszystkie regiony prócz regionu " + getQuestMapName(questMap) + "."
 						+ " Spróbuj tam poszukać! Przybliżone miejsce gdzie mogą się znajdować fragmenty to"
 						+ " (#'" + similiarCords[0] + "', #'" + similiarCords[1] + "').");
-					player.setQuest(QUEST_SLOT, getQuestStringAction(questMap, cords));
+					setStartQuestAction(player, questMap, cords);
 				}
 			});
 
@@ -204,8 +208,13 @@ public class GlifFragments extends AbstractQuest {
 		return maps[random.nextInt(maps.length)];
 	}
 
-	private String getQuestStringAction(String map, int[] cords) {
-		return "start;" + map + ";" + cords[0] + ";" + cords[1] + ";0";
+	private void setStartQuestAction(Player player, String mapName, int[] cords) {
+		player.setQuest(QUEST_SLOT, 0, "start");
+		player.setQuest(QUEST_SLOT, 1, "");
+		player.setQuest(QUEST_SLOT, 2, mapName);
+		player.setQuest(QUEST_SLOT, 3, Integer.toString(cords[0]));
+		player.setQuest(QUEST_SLOT, 4, Integer.toString(cords[1]));
+		player.setQuest(QUEST_SLOT, 5, "0");
 	}
 
 	private ChatCondition getItemWithItemdataCondition() {
@@ -247,7 +256,11 @@ public class GlifFragments extends AbstractQuest {
 		return new ChatAction() {
 			@Override
 			public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-				player.setQuest(QUEST_SLOT, "start;" + player.getQuest(QUEST_SLOT, 2) + ";" + player.getQuest(QUEST_SLOT, 3) + ";" + player.getQuest(QUEST_SLOT, 4) + ";0");
+				int[] cords = new int[] {
+					Integer.parseInt(player.getQuest(QUEST_SLOT, 3)),
+					Integer.parseInt(player.getQuest(QUEST_SLOT, 4))
+				};
+				setStartQuestAction(player, player.getQuest(QUEST_SLOT, 2), cords);
 			}
 		};
 	}
@@ -263,13 +276,14 @@ public class GlifFragments extends AbstractQuest {
 					player.dropWithItemdata(itemName, fragmentType + " " + itemName);
 					Random random = new Random();
 					if (random.nextDouble() * 100 <= repairChance) {
-						raiser.say("Udało mi się naprawić ten fragment glifu. Proszę oto i ono!");
-						player.addXP(5000);
-						player.addKarma(5);
-						final Item item = SingletonRepository.getEntityManager().getItem(itemName);
-						player.equipOrPutOnGround(item);
-						player.notifyWorldAboutChanges();
-						player.setQuest(QUEST_SLOT, "done");
+						new MultipleActions(
+							new IncreaseXPAction(5000),
+							new IncreaseKarmaAction(5),
+							new EquipItemAction(itemName),
+							new SetQuestAction(QUEST_SLOT, 0, "done"),
+							new IncrementQuestAction(QUEST_SLOT, 6, 1),
+							new SayTextAction("Udało mi się naprawić ten fragment glifu. Proszę oto i ono!")
+						).fire(player, sentence, raiser);
 					} else {
 						String questMap = getRandomMap();
 						int[] cords = getRandomCoordinates();
@@ -279,7 +293,7 @@ public class GlifFragments extends AbstractQuest {
 							+ " Przy twojej nieobecności badałem ten region " + getQuestMapName(questMap) + "."
 							+ " Spróbuj tam poszukać! Przybliżone miejsce gdzie mogą się znajdować fragmenty to"
 							+ " (#'" + similiarCords[0] + "', #'" + similiarCords[1] + "').");
-						player.setQuest(QUEST_SLOT, getQuestStringAction(questMap, cords));
+						setStartQuestAction(player, questMap, cords);
 					}
 				} else {
 					raiser.say("Nie rozumiem, jakiego rodzaju fragment próbujesz naprawić.");
@@ -338,5 +352,10 @@ public class GlifFragments extends AbstractQuest {
 	@Override
 	public String getRegion() {
 		return Region.DESERT;
+	}
+
+	@Override
+	public boolean isRepeatable(final Player player) {
+		return true;
 	}
 }
