@@ -39,7 +39,7 @@ import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 
-public class GlifFragments extends AbstractQuest {
+public class GlyphFragments extends AbstractQuest {
 	private static final String QUEST_SLOT = "glif_fragments";
 	private final SpeakerNPC npc = npcs.get("Omar");
 	private final String itemName = "fragment glifu";
