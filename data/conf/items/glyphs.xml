@@ -191,12 +191,12 @@
 		</attributes>
 		<weight value="1.0"/>
 		<value value="10000"/>
-		<susceptibility type="earth" value="0.5"/>
-		<susceptibility type="water" value="0.5"/>
-		<susceptibility type="fire" value="0.5"/>
-		<susceptibility type="ice" value="0.5"/>
-		<susceptibility type="dark" value="0.5"/>
-		<susceptibility type="light" value="0.5"/>
+		<susceptibility type="earth" value="0.75"/>
+		<susceptibility type="water" value="0.75"/>
+		<susceptibility type="fire" value="0.75"/>
+		<susceptibility type="ice" value="0.75"/>
+		<susceptibility type="dark" value="0.75"/>
+		<susceptibility type="light" value="0.75"/>
 		<equipable>
 			<slot name="ground"/>
 			<slot name="content"/>
