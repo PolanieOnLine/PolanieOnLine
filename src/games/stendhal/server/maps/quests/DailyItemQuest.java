@@ -471,11 +471,11 @@ public class DailyItemQuest extends AbstractQuest {
 		res.add(player.getGenderVerb("Spotkałem") + " burmistrza Mayor Chalmers w Ratuszu Ados");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
-			res.add("Nie chę pomóc Ados.");
+			res.add("Nie chcę pomagać miastu Ados.");
 			return res;
 		}
 
-		res.add("Chcę pomóc Ados.");
+		res.add("Pomogę w dostawie miastu Ados.");
 		if (player.hasQuest(QUEST_SLOT) && !player.isQuestCompleted(QUEST_SLOT)) {
 			String questItem = player.getRequiredItemName(QUEST_SLOT,0);
 			int amount = player.getRequiredItemQuantity(QUEST_SLOT,0);
