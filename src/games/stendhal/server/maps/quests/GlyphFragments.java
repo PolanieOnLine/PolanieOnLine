@@ -15,6 +15,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
+import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.npc.ChatAction;
@@ -73,6 +74,10 @@ public class GlyphFragments extends AbstractQuest {
 		}
 		if ("done".equals(player.getQuest(QUEST_SLOT, 0))) {
 			res.add("Dostarczyłem Omarowi fragmenty glifów i otrzymałem nagrodę.");
+		}
+		int repetitions = player.getNumberOfRepetitions(QUEST_SLOT, 6);
+		if (repetitions > 0) {
+			res.add("Omar naprawił dla mnie " + Grammar.quantityplnoun(repetitions, "raz") + " fragment glifu.");
 		}
 		return res;
 	}
