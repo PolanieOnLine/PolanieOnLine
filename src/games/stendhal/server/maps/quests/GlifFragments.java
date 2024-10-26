@@ -280,9 +280,9 @@ public class GlifFragments extends AbstractQuest {
 							new IncreaseXPAction(5000),
 							new IncreaseKarmaAction(5),
 							new EquipItemAction(itemName),
-							new SetQuestAction(QUEST_SLOT, 0, "done"),
+							new SetQuestAction(QUEST_SLOT, "done;;;;;"),
 							new IncrementQuestAction(QUEST_SLOT, 6, 1),
-							new SayTextAction("Udało mi się naprawić ten fragment glifu. Proszę oto i ono!")
+							new SayTextAction("Udało mi się naprawić fragment glifu. Proszę oto i ono!")
 						).fire(player, sentence, raiser);
 					} else {
 						String questMap = getRandomMap();
