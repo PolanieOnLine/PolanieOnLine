@@ -185,7 +185,7 @@
 
 	<item name="glif Jarowita">
 		<type class="glyph" subclass="glyph_resistance" tileid="-1"/>
-		<description>Oto glif Jarowita. Zapewnia odporność na wszystkie żywioły, redukując ich wpływ o 50%. Poznaj moc, która chroni przed wszelkim złem i niesprzyjającymi okolicznościami.</description>
+		<description>Oto glif Jarowita. Zapewnia odporność na wszystkie żywioły, redukując ich wpływ o 25%. Poznaj moc, która chroni przed wszelkim złem i niesprzyjającymi okolicznościami.</description>
 		<implementation class-name="games.stendhal.server.entity.item.Glyph"/>
 		<attributes>
 		</attributes>
