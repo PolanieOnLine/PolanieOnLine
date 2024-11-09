@@ -87,7 +87,7 @@ if game:setZone(zone_name) then
 			.. "\n- Naciśnij przycisk \"Skanuj\", aby go włączyć."
 			.. "\n- Urządzenie wyda sygnał dźwiękowy, jeśli znajdziesz się w pobliżu."
 			.. "\n- Im bliżej jesteś, tym szybciej emituje sygnał dźwiękowy.",
-		class = "paper",
+		class = "../items/documents/paper",
 	})
 
 	game:add(note)
