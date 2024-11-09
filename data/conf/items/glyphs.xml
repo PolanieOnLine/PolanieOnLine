@@ -3,7 +3,7 @@
 
 	<item name="fragment glifu">
 		<type class="glyph" subclass="glyph_fragment" tileid="-1"/>
-		<description></description>
+		<description>Oto fragment glifu, który może posłużyć aby nasycić go magią.</description>
 		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
 		<attributes>
 			<quantity value="1"/>
