@@ -825,10 +825,16 @@ public abstract class Entity2DView<T extends IEntity> implements EntityView<T> {
 		 * Special admin options
 		 */
 		if (User.isAdmin()) {
-			list.add(ActionType.ADMIN_GAG.getRepresentation());
+			if (isEntityType("player")) {
+				list.add(ActionType.ADMIN_GAG.getRepresentation());
+			}
 			list.add(ActionType.ADMIN_INSPECT.getRepresentation());
-			list.add(ActionType.ADMIN_JAIL.getRepresentation());
-			list.add(ActionType.ADMIN_DESTROY.getRepresentation());
+			if (isEntityType("player")) {
+				list.add(ActionType.ADMIN_JAIL.getRepresentation());
+			}
+			if (!isEntityType("npc") && !isEntityType("player")) {
+				list.add(ActionType.ADMIN_DESTROY.getRepresentation());
+			}
 			if (!this.isContained()) {
 				list.add(ActionType.ADMIN_ALTER.getRepresentation());
 			}
@@ -837,6 +843,10 @@ public abstract class Entity2DView<T extends IEntity> implements EntityView<T> {
 		reorderActions(list);
 
 		return list.toArray(new String[list.size()]);
+	}
+
+	private boolean isEntityType(String type) {
+		return this.entity.getType().equals(type);
 	}
 
 	/**
