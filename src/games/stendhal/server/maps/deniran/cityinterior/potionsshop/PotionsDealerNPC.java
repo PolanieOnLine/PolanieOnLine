@@ -138,7 +138,7 @@ public class PotionsDealerNPC implements ZoneConfigurator {
 		buys.setEntityClass("book_blue");
 		buys.setPosition(5, 6);
 
-		final ShopSign sells = new ShopSign("deniranpotionssell", "Sklepik Wandy (sprzedaje)", "Możesz kupić te rzeczy od Wandy.", false);
+		final ShopSign sells = new ShopSign("deniranpotionssell", "Sklepik Wandy (sprzedaje)", "Możesz kupić te rzeczy od Wandy.", true);
 		sells.setEntityClass("book_red");
 		sells.setPosition(10, 6);
 
