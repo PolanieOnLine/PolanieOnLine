@@ -445,6 +445,13 @@ public class Player extends DressedEntity implements UseListener {
 		}
 	}
 
+	public void removeAwayStatus() {
+		if (has(AWAY)) {
+			remove(AWAY);
+			setVisibility(100);
+		}
+	}
+
 	/**
 	 * Get the grumpy message.
 	 *

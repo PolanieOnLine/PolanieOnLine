@@ -12,7 +12,6 @@
 package games.stendhal.server.actions.move;
 
 import static games.stendhal.common.constants.Actions.AUTOWALK;
-import static games.stendhal.common.constants.Actions.AWAY;
 import static games.stendhal.common.constants.Actions.MOVETO;
 import static games.stendhal.common.constants.Actions.TELECLICKMODE;
 import static games.stendhal.common.constants.Actions.X;
@@ -97,10 +96,8 @@ public class MoveToAction implements ActionListener {
 		if (action.has(X) && action.has(Y)) {
 			final int x = action.getInt(X);
 			final int y = action.getInt(Y);
-			if (player.has(AWAY)) {
-				player.remove(AWAY);
-				player.setVisibility(100);
-			}
+			player.removeAwayStatus();
+
 			if (player.has(TELECLICKMODE) && action.has("double_click")) {
 				// Teleport
 				final StendhalRPZone zone = player.getZone();

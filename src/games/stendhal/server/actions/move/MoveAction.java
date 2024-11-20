@@ -11,7 +11,6 @@
  ***************************************************************************/
 package games.stendhal.server.actions.move;
 
-import static games.stendhal.common.constants.Actions.AWAY;
 import static games.stendhal.common.constants.Actions.DIR;
 import static games.stendhal.common.constants.Actions.MOVE;
 
@@ -44,10 +43,7 @@ public class MoveAction implements ActionListener {
 				player.removeClientDirection(Direction.build(-dirval));
 			} else {
 				player.addClientDirection(Direction.build(dirval));
-				if (player.has(AWAY)) {
-					player.remove(AWAY);
-					player.setVisibility(100);
-				}
+				player.removeAwayStatus();
 			}
 
 			player.applyClientDirection(true);
