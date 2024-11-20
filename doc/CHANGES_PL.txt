@@ -4,6 +4,7 @@ Changelog
 *klient*
 - Dodano oraz poprawiono wiele grafik
 - Dodano GUI dla nowego okienka obsługującego ołtarz runiczny
+- Menu administratora zmienia się dynamicznie w zależności jaki to obiekt w grze
 
 *świat*
 - Dodano muzykę dla wysp Athor
@@ -40,6 +41,10 @@ Changelog
 - Wzmocniono całe wyposażenie z ciemnomithrilu o dodatkowy punkt ataku
 
 *naprawiono błędy*
+- Naprawiono usuwanie statusu oddalonego (AWAY), gdy klient gry straci skupienie (np.: poprzez zminimalizowanie)
+- Naprawiono usuwanie statusu oddalonego (AWAY) poprzez używanie przedmiotów przez gracza
+- Naprawiono brakującą grafikę notatki na stole przy NPC Sawyer
+- Naprawiono wyświetlanie listy przedmiotów sprzedawanych u Wandy
 - Naprawiono wiele problemów z naprawianiem przedmiotów u Akutagawy
 - Naprawiono możliwość wytworzenia pasu z ciemnomithrilu
 - Naprawiono, że kowal Tworzymir nie podawał potrzebnych surowców do ulepszenia przedmiotów z mithrilu
