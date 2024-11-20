@@ -35,7 +35,6 @@ public class ShowItemListEvent extends RPEvent {
 	private static final String CAPTION = "caption";
 	private static final String TITLE = "title";
 
-
 	/** the logger instance. */
 	private static final Logger logger = Logger.getLogger(ShowItemListEvent.class);
 

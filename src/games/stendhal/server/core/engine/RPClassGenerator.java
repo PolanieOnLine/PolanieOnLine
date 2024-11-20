@@ -90,6 +90,7 @@ import games.stendhal.server.events.PrivateTextEvent;
 import games.stendhal.server.events.ProgressStatusEvent;
 import games.stendhal.server.events.ReachedAchievementEvent;
 import games.stendhal.server.events.ShowItemListEvent;
+import games.stendhal.server.events.ShowItemRecipeListEvent;
 import games.stendhal.server.events.ShowOutfitListEvent;
 import games.stendhal.server.events.SoundEvent;
 import games.stendhal.server.events.TextEvent;
@@ -324,6 +325,9 @@ public class RPClassGenerator {
 		}
 		if (!RPClass.hasRPClass("show_item_list")) {
 			ShowItemListEvent.generateRPClass();
+		}
+		if (!RPClass.hasRPClass("show_item_recipe_list")) {
+			ShowItemRecipeListEvent.generateRPClass();
 		}
 		if (!RPClass.hasRPClass(Events.SOUND)) {
 			SoundEvent.generateRPClass();
