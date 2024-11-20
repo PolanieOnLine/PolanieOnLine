@@ -27,7 +27,7 @@ Changelog
 	- glif Swaroga: zwiększa ilość obrony o 20% posiadanej obrony
 	- glif Tytana: zwiększa atak i obronę o 10 punktów oraz zwiększa zdrowie o 400
 	- glif Strzyboga: zwiększa prędkość ataku wszystkich broni (nie liczą się bronie posiadające 1 wagi)
-	- glif Jarowita: zwiększa odporność na wszystkie żywioły redukując ich wpływ o 50%
+	- glif Jarowita: zwiększa odporność na wszystkie żywioły redukując ich wpływ o 25%
 	- glif kryzysu: zwiększa szansę na wyprowadzenie ataku krytycznego o 15%
 	- glif krwi: zwiększa leczenie z kradzieży życia o 20%
 - Dodano nowe osiągnięcie:
