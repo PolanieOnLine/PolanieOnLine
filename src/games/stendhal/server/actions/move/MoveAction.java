@@ -44,14 +44,13 @@ public class MoveAction implements ActionListener {
 				player.removeClientDirection(Direction.build(-dirval));
 			} else {
 				player.addClientDirection(Direction.build(dirval));
+				if (player.has(AWAY)) {
+					player.remove(AWAY);
+					player.setVisibility(100);
+				}
 			}
 
 			player.applyClientDirection(true);
-		}
-
-		if (player.has(AWAY)) {
-			player.remove(AWAY);
-			player.setVisibility(100);
 		}
 
 		TutorialNotifier.move(player);

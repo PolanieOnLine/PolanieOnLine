@@ -74,11 +74,6 @@ public class MoveToAction implements ActionListener {
 			player.clearPath();
 		}
 
-		if (player.has(AWAY)) {
-			player.remove(AWAY);
-			player.setVisibility(100);
-		}
-
 		/* Disable auto-walk if player clicks with mouse. */
 		if (player.has(AUTOWALK)) {
 			player.remove(AUTOWALK);
