@@ -11,6 +11,7 @@
  ***************************************************************************/
 package games.stendhal.server.actions;
 
+import static games.stendhal.common.constants.Actions.AWAY;
 import static games.stendhal.common.constants.Actions.BASEITEM;
 import static games.stendhal.common.constants.Actions.BASEOBJECT;
 import static games.stendhal.common.constants.Actions.BASESLOT;
@@ -44,6 +45,10 @@ public class UseAction implements ActionListener {
 		}
 		if (action.has(TARGET_PATH)) {
 			useEntityFromPath(player, action);
+			if (player.has(AWAY)) {
+				player.remove(AWAY);
+				player.setVisibility(100);
+			}
 		} else if (isItemInSlot(action)) {
 			// When use is casted over something in a slot
 			// Compatibility code
