@@ -19,6 +19,7 @@ Changelog
 	- czterolistna koniczyna: specjalny przedmiot, który będzie pojawiał się losowo na mapach
 	- pierścień czystości: zwiększa szansę na celny atak o 25%
 	- wampirza krew
+	- fragment glifu
 - Dodano nowe przedmioty - glify:
 	- glif daru Mokoszy: zwiększa punkty zdrowia o 1000
 	- glif siły: zwiększa siłę ataku o 5 punktów
@@ -36,6 +37,7 @@ Changelog
 - Dodano nowego NPC:
 	- Maple
 	- Zoryk Runiczny
+	- Omar
 - Dodano nowe zadanie:
 	- Szczęśliwa Czterolistna Koniczynka: wykonuje się u Maple
 - Poprawiono listę przedmiotów możliwych do zdobycia u wszystkich szaraków
