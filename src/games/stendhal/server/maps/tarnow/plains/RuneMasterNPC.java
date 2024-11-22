@@ -152,7 +152,7 @@ public class RuneMasterNPC implements ZoneConfigurator {
 	}
 
 	private void buildNPC(final StendhalRPZone zone) {
-		final SpeakerNPC npc = new SpeakerNPC("Runiczny Mistrz") {
+		final SpeakerNPC npc = new SpeakerNPC("Zoryk Runiczny") {
 			@Override
 			protected void createDialog() {
 				addGreeting("Witaj, poszukiwaczu starożytnej mocy! Czy szukasz tajemnicy run?");
@@ -353,7 +353,7 @@ public class RuneMasterNPC implements ZoneConfigurator {
 			}
 		};
 
-		npc.setDescription("Runiczny Mistrz to stary, mądry człowiek, który spędził lata na zgłębianiu sztuki tworzenia potężnych run.");
+		npc.setDescription("Oto Zoryk Runiczny. Stary i mądry człowiek, który spędził lata na zgłębianiu sztuki tworzenia potężnych run.");
 		npc.setEntityClass("oldwizardnpc");
 		npc.setGender("M");
 		npc.setPosition(10, 12);
