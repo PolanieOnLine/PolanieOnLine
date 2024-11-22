@@ -91,6 +91,7 @@
 		</attributes>
 
 		<!-- NPCs -->
+		<configurator class-name="games.stendhal.server.maps.tarnow.city.RuneMasterNPC"/>
 		<configurator class-name="games.stendhal.server.maps.tarnow.city.MageNPC"/>
 		<configurator class-name="games.stendhal.server.maps.tarnow.city.MythNPC"/>
 
@@ -276,7 +277,6 @@
 			<parameter name="weather">varying</parameter>
 		</attributes>
 
-		<configurator class-name="games.stendhal.server.maps.tarnow.plains.RuneMasterNPC"/>
 		<configurator class-name="games.stendhal.server.maps.tarnow.plains.BarbarianShopKeeperNPC"/>
 
 		<entity x="83" y="71">

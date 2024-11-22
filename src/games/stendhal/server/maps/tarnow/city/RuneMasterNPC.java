@@ -9,7 +9,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-package games.stendhal.server.maps.tarnow.plains;
+package games.stendhal.server.maps.tarnow.city;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -356,7 +356,7 @@ public class RuneMasterNPC implements ZoneConfigurator {
 		npc.setDescription("Oto Zoryk Runiczny. Stary i mądry człowiek, który spędził lata na zgłębianiu sztuki tworzenia potężnych run.");
 		npc.setEntityClass("oldwizardnpc");
 		npc.setGender("M");
-		npc.setPosition(10, 12);
+		npc.setPosition(60, 18);
 		zone.add(npc);
 	}
 }
