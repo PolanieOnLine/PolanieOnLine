@@ -406,7 +406,7 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	 * @return each how many turns this item can attack.
 	 */
 	public int getAttackRate() {
-		int rate = getAttributeWithImprovement("rate", DEFAULT_ATTACK_RATE);
+		int rate = has("rate") ? getInt("rate") : DEFAULT_ATTACK_RATE;
 		if (hasMaxImproves() && isMaxImproved() && rate > 2) {
 			return rate - 1;
 		}
