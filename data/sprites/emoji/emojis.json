@@ -25,7 +25,7 @@
     "nomouth",
     "astonished",
     "confounded",
-    "vomiting",
+    "vomit",
     "glasses",
     "sunglasses",
     "angel",
@@ -291,7 +291,7 @@
     ";-P": "winktongue",
     "😜": "winktongue",
 
-    ":vomiting:": "vomiting",
-    "🤮": "vomiting"
+    ":vomiting:": "vomit",
+    "🤮": "vomit"
   }
 }
