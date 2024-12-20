@@ -24,6 +24,7 @@
     "nomouth",
     "astonished",
     "confounded",
+    "vomiting",
     "glasses",
     "sunglasses",
     "angel",
@@ -50,8 +51,7 @@
     "wave"
   ],
 
-  "emojimap":
-  {
+  "emojimap": {
     ":halo:": "angel",
     "O:-)": "angel",
     "(-:O": "angel",
@@ -285,6 +285,9 @@
     ";P": "winktongue",
     ";-p": "winktongue",
     ";-P": "winktongue",
-    "😜": "winktongue"
+    "😜": "winktongue",
+
+    ":vomiting:": "vomiting",
+    "🤮": "vomiting"
   }
 }
