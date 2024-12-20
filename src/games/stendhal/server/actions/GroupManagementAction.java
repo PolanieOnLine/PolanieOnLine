@@ -48,7 +48,6 @@ public class GroupManagementAction implements ActionListener {
 	 */
 	@Override
 	public void onAction(final Player player, final RPAction action) {
-
 		// vaidate parameters
 		String actionStr = action.get("action");
 		String params = action.get("params");
@@ -100,9 +99,7 @@ public class GroupManagementAction implements ActionListener {
 	 * @param targetPlayer player who is invited
 	 */
 	private void invite(Player player, Player targetPlayer) {
-
 		// TODO: make checks reusable, some of these checks are used at many places
-
 		if (!player.getChatBucket().checkAndAdd(0)) {
 			return;
 		}
@@ -191,7 +188,6 @@ public class GroupManagementAction implements ActionListener {
 		group.addMember(player.getName());
 	}
 
-
 	/**
 	 * changes the leadership of the group
 	 *
@@ -199,7 +195,6 @@ public class GroupManagementAction implements ActionListener {
 	 * @param targetPlayer new leader
 	 */
 	private void leader(Player player, Player targetPlayer) {
-
 		// check if the player is in a group
 		Group group = SingletonRepository.getGroupManager().getGroup(player.getName());
 		if (group == null) {
@@ -224,8 +219,6 @@ public class GroupManagementAction implements ActionListener {
 		group.setLeader(targetPlayer.getName());
 	}
 
-
-
 	/**
 	 * changes the lootmode
 	 *
@@ -233,7 +226,6 @@ public class GroupManagementAction implements ActionListener {
 	 * @param lootmode new lootmode
 	 */
 	private void lootmode(Player player, String lootmode) {
-
 		// check if the player is already in a group
 		Group group = SingletonRepository.getGroupManager().getGroup(player.getName());
 		if (group == null) {
@@ -244,13 +236,13 @@ public class GroupManagementAction implements ActionListener {
 		// check leader
 		group = SingletonRepository.getGroupManager().getGroup(player.getName());
 		if (!group.hasLeader(player.getName())) {
-			player.sendPrivateText(NotificationType.ERROR, "Tylko lider grupy może zmienić zbieracza.");
+			player.sendPrivateText(NotificationType.ERROR, "Tylko lider grupy może zmienić tryb zbierania przedmiotów.");
 			return;
 		}
 
 		// check if the loot mode is valid
 		if ((lootmode == null) || (!lootmode.equals("single") && !lootmode.equals("shared"))) {
-			player.sendPrivateText(NotificationType.ERROR, "Poprawny tryb zbierania jest \"single\" i \"shared\".");
+			player.sendPrivateText(NotificationType.ERROR, "Poprawny tryb zbierania to \"single\" lub \"shared\".");
 			return;
 		}
 
@@ -273,7 +265,6 @@ public class GroupManagementAction implements ActionListener {
 		group.removeMember(player.getName());
 	}
 
-
 	/**
 	 * status report about the group
 	 *
@@ -292,7 +283,6 @@ public class GroupManagementAction implements ActionListener {
 		group.sendGroupChangeEvent(player);
 	}
 
-
 	/**
 	 * kicks a player from the group
 	 *
@@ -300,7 +290,6 @@ public class GroupManagementAction implements ActionListener {
 	 * @param targetPlayer the kicked player
 	 */
 	private void kick(Player player, String targetPlayer) {
-
 		// if someone tries to kick himself, do a normal /part
 		if (player.getName().equals(targetPlayer)) {
 			part(player);
