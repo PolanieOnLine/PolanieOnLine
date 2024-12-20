@@ -260,7 +260,7 @@ public class AdosDeathmatch extends AbstractQuest {
 	private void recruiterInformation() {
 		final SpeakerNPC npc2 = npcs.get("Thonatus");
 
-		npc2.add(ConversationStates.ATTENDING, Arrays.asList("heroes", "who", "hero", "status", "kto", "bohater"),
+		npc2.add(ConversationStates.ATTENDING, Arrays.asList("heroes", "who", "hero", "status", "kto", "bohater", "bohaterów"),
 				 new NotCondition(new DeathMatchEmptyCondition()), ConversationStates.ATTENDING,
 				 null,
 				 new ChatAction() {
@@ -277,7 +277,7 @@ public class AdosDeathmatch extends AbstractQuest {
 					 }
 				 });
 
-		npc2.add(ConversationStates.ATTENDING, Arrays.asList("heroes", "who", "hero", "status", "kto", "bohater") , new DeathMatchEmptyCondition(),
+		npc2.add(ConversationStates.ATTENDING, Arrays.asList("heroes", "who", "hero", "status", "kto", "bohater", "bohaterów") , new DeathMatchEmptyCondition(),
 				 ConversationStates.ATTENDING,
 				 "Jesteś takim bohaterem? Mogę Cię zabrać na takie #wyzwanie", null);
 
