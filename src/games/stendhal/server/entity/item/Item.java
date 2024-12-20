@@ -455,10 +455,10 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	public void deteriorate() {
 		double propabilityForMeanExp = Rand.propabilityForMeanExp(MEAN_LIFETIME / 300 * this.getAttackRate());
 		if(Rand.flipCoin(propabilityForMeanExp) && getDeterioration() <= MAX_DETERIORATION) {
-			Logger.getLogger(getClass()).debug("The item"+ this.getName() +"deteriorated from "+this.getDeterioration()+".");
+			Logger.getLogger(getClass()).debug("The item " + this.getName() + " deteriorated from " + this.getDeterioration() + ".");
 //			this.add("deterioration", 1);
 		} else {
-			Logger.getLogger(getClass()).debug("The item"+ this.getName() +"did not deteriorate from "+this.getDeterioration()+".");
+			Logger.getLogger(getClass()).debug("The item " + this.getName() + " did not deteriorate from " + this.getDeterioration() + ".");
 		}
 	}
 
