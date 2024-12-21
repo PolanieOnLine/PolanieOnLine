@@ -61,14 +61,20 @@ public class EdgardNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-				addGreeting("Widzisz jak latam, pewno sam byś tak chciał?");
-				addJob("Przenoszę wiadomości z dalekich pól bitew i rozkazy od Samego Mistrza Zakonu Cieni.");
-				addHelp("Latam tu i tam, nie potrzebuje od nikogo pomocy.");
-				addGoodbye("No to hej, ja lecę.");
+				addGreeting("Ha! Widzisz, jak latam? Zazdrościsz, co? Tylko nieliczni potrafią tak jak ja.");
+				addJob("Jestem posłańcem. #Wiadomości z dalekich pól #bitew? Rozkazy od #Mistrza #Zakonu? To wszystko moja działka. Bez mnie ten Zakon by stanął w miejscu.");
+				addHelp("Pomocy? Proszę cię, ja latam, gdy ty chodzisz. Co mógłbyś mi zaoferować?");
+				addGoodbye("Do zobaczenia na wietrze, śmiertelniku!");
+
+				addReply("zakon", "Zakon Cieni? To jak mgła nad rzeką – zawsze obecny, ale nieuchwytny. Wierz mi, nie chcesz wiedzieć, jak naprawdę działa.");
+				addReply("mistrz", "Mistrz Zakonu... Mówią, że widzi wszystko i kieruje każdym cieniem. Czasem zastanawiam się, czy nawet ja nie jestem tylko pionkiem w jego grze.");
+				addReply("wiadomości", "Niektóre wiadomości są jak ostrze miecza – szybkie, ciche i śmiertelne. Inne... cóż, bardziej przypominają listę zakupów.");
+				addReply("bitwy", "Pola bitew... miejsce, gdzie cienie tańczą w rytm śmierci. To nie jest widok dla każdego.");
+				addReply("tajemnice", "Powiem ci jedną tajemnicę: lepiej nie pytać. Cienie mają długą pamięć, a ja nie jestem tu, by cię chronić.");
 			}
 		};
 
-		npc.setDescription("Oto Edgard, który szybko lata.");
+		npc.setDescription("Oto Edgard, posłaniec Zakonu Cieni, szybki jak wiatr i równie tajemniczy. Niewiele mówi o sobie, ale jego przenikliwe spojrzenie zdradza, że wie więcej, niż chciałbyś usłyszeć.");
 		npc.setEntityClass("npcedgard");
 		npc.setGender("M");
 		npc.setShadowStyle("48x64_floating");
