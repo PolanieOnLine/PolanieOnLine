@@ -26,6 +26,7 @@ import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.quests.*;
 import games.stendhal.server.maps.quests.antivenom_ring.AntivenomRing;
 import games.stendhal.server.maps.quests.challenges.*;
+import games.stendhal.server.maps.quests.socialstatusrings.*;
 
 /**
  * Loads and manages all quests.

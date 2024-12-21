@@ -9,7 +9,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-package games.stendhal.server.maps.quests;
+package games.stendhal.server.maps.quests.socialstatusrings;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,6 +38,7 @@ import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.maps.quests.AbstractQuest;
 
 public class PierscienRycerza extends AbstractQuest {
 	private static final String QUEST_SLOT = "pierscien_rycerza";
@@ -55,7 +56,7 @@ public class PierscienRycerza extends AbstractQuest {
 				@Override
 				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 					if (player.isBadBoy()) { 
-						raiser.say("Twe czyny ciążą na twej duszy jak chmury burzowe nad równiną. Dopóki nie zmażesz piętna, nie znajdziesz u mnie łaski.");
+						raiser.say("Twe czyny splamiły twoją duszę niczym chmury burzowe zasłaniające gwiazdy. Zmaż swe winy, nim powrócisz.");
 					} else {
 						if (player.getLevel() >= 250) {
 							if (!player.hasQuest(QUEST_SLOT) || "rejected".equals(player.getQuest(QUEST_SLOT))) {
@@ -167,7 +168,7 @@ public class PierscienRycerza extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-				"Pierścień Rycerza",
+				"Status Społeczny: Rycerz",
 				"Uporaj się z wyzwaniami i udowodnij swą odwagę, aby zdobyć pierścień od Edgarda.",
 				true);
 
@@ -178,16 +179,17 @@ public class PierscienRycerza extends AbstractQuest {
 
 	@Override
 	public List<String> getHistory(final Player player) {
-		final List<String> res = new ArrayList<String>();
+		final List<String> res = new ArrayList<>();
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
 		final String questState = player.getQuest(QUEST_SLOT);
-		res.add(player.getGenderVerb("Spotkałem") + " Edgarda na terenie Zakonu.");
-		res.add("Zaproponował mi pierścień rycerza w zamian za dostarczenie określonych przedmiotów.");
+
+		res.add(player.getGenderVerb("Spotkałem") + " Edgarda, posłańca mistrza Zakonu Rycerzy Cienia, w ich siedzibie.");
+		res.add("Edgard poinformował mnie, że mistrz Zakonu zdecydował się uhonorować moje dokonania w świecie, nadając mi tytuł rycerza. Jednak aby to się stało, muszę udowodnić swoje męstwo, determinację i oddanie sprawom wyższym poprzez dostarczenie odpowiednich przedmiotów.");
 
 		if ("rejected".equals(questState)) {
-			res.add("Odrzuciłem ofertę Edgarda i uznałem, że pierścień rycerza nie jest mi potrzebny.");
+			res.add("Odrzuciłem ofertę Edgarda. Uznaję, że tytuł rycerza nie jest mi w tej chwili potrzebny.");
 			return res;
 		}
 
@@ -195,23 +197,31 @@ public class PierscienRycerza extends AbstractQuest {
 			return res;
 		}
 
-		res.add("Edgard poprosił, abym " + player.getGenderVerb("dostarczył") + " potrzebne przedmioty. Jeśli zapomnę, co mam przynieść, mogę powiedzieć 'przypomnij'.");
-		
+		res.add("Edgard poprosił, abym " + player.getGenderVerb("dostarczył") + " następujące przedmioty, które świadczą o mojej wartości:");
+		res.add("- Pierścień mieszczanina – symbol mojego dotychczasowego statusu społecznego.");
+		res.add("- 40 sztabek żelaza – symbol siły i niezłomności w obliczu trudności.");
+		res.add("- 40 sztabek złota – dar na rzecz wspólnoty, podkreślający moją hojność.");
+		res.add("- 30 bryłek mithrilu – rzadki surowiec, świadczący o mojej wytrwałości.");
+		res.add("- 1 tarczę z czaszką – dowód odwagi w walce i gotowości do poświęceń.");
+		res.add("- 1 spodnie elfickie – oznaka zdolności do współpracy i zdobywania tego, co najtrudniej osiągalne.");
+		res.add("Edgard przypomniał, że gdy zbiorę wszystkie przedmioty, mam do niego wrócić, aby dokończyć ceremonię nadania tytułu. Jeśli zapomnę, mogę powiedzieć 'przypomnij', a on poda mi szczegóły.");
+
 		if ("przedmioty".equals(questState)) {
 			return res;
 		}
 
-		res.add("Ukończyłem zadanie Edgarda. W nagrodę " + player.getGenderVerb("otrzymałem") + " pierścień rycerza, symbol mojej odwagi i determinacji.");
-		
+		res.add("Po dostarczeniu wszystkich przedmiotów Edgard ogłosił, że mistrz Zakonu zatwierdził nadanie mi tytułu rycerza.");
+		res.add(player.getGenderVerb("Uzyskałem") + " tytuł rycerza, co jest świadectwem mojego awansu społecznego i uznania wśród mieszkańców świata.");
+
 		if (isCompleted(player)) {
-			res.add("Zadanie zakończone. Mogę teraz nosić pierścień rycerza z dumą.");
+			res.add("Zadanie zakończone. Tytuł rycerza otwiera przede mną nowe możliwości i zwiększa mój prestiż w społeczeństwie.");
 			return res;
 		}
 
-		// if things have gone wrong and the quest state didn't match any of the above, debug a bit:
-		final List<String> debug = new ArrayList<String>();
+		// Debugging info for unexpected quest state
+		final List<String> debug = new ArrayList<>();
 		debug.add("Stan zadania to: " + questState);
-		logger.error("Historia nie pasuje do stanu poszukiwania " + questState);
+		logger.error("Historia nie pasuje do stanu zadania: " + questState);
 		return debug;
 	}
 
