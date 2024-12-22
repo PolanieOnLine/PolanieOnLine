@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2010-2021 - Stendhal                    *
+ *                   (C) Copyright 2010-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -9,7 +9,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-package games.stendhal.server.maps.quests;
+package games.stendhal.server.maps.quests.socialstatusrings;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,6 +40,7 @@ import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.maps.quests.AbstractQuest;
 
 public class PierscienMagnata extends AbstractQuest {
 	private static final String QUEST_SLOT = "pierscien_magnata";
@@ -64,22 +65,22 @@ public class PierscienMagnata extends AbstractQuest {
 				@Override
 				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 					if (player.isBadBoy()){ 
-						raiser.say("Z twej ręki zginął rycerz! Nie masz tu czego szukać, pozbądź się piętna czaszki. A teraz precz mi z oczu!");
+						raiser.say("Zbrodniarz, który na brata swego rękę podniósł, nie znajdzie spokoju w moich progach! Odejdź, nim złorzeczenia sprowadzą na ciebie gniew bogów. Oczyść swe imię, a może cię wysłucham.");
 					} else {
 						if (player.isQuestCompleted(PIERSCIEN_BARONA_QUEST_SLOT)) {
 							if (player.getLevel() >= 500) {
 								if (!player.hasQuest(QUEST_SLOT) || "rejected".equals(player.getQuest(QUEST_SLOT))) {
-									raiser.say("Czy chcesz zdobyć pierścień magnata?.");
+									raiser.say("Pragniesz zdobyć pierścień magnata, symbol potęgi, roztropności i łaski bogów? Niechaj twe czyny przemówią, czy jesteś godzien.");
 								} else if (player.isQuestCompleted(QUEST_SLOT)) {
-									raiser.say("Odebrałeś już swój pierścień, żegnaj.");
+									raiser.say("Pierścień został już powierzony w twe ręce. Odejdź w pokoju, wędrowcze, i pamiętaj: moc to brzemię, nie przywilej.");
 									raiser.setCurrentState(ConversationStates.ATTENDING);
 								}
 							} else {
-								npc.say("Twój stan społeczny jest zbyt niski aby podjąć te zadanie. Wróć gdy zdobędziesz 500 lvl.");
+								npc.say("Widzę, że nosisz pierścień barona. To znak, że przebyłeś trudną ścieżkę. Lecz powiadam ci, młodzieńcze, że na mądrość i potęgę Magnata wciąż musisz zasłużyć. Powróć, gdy twe czyny zyskają uznanie bogów, a twe doświadczenie sięgnie 500 cykli księżyca.");
 								raiser.setCurrentState(ConversationStates.ATTENDING);
 							}
 						} else {
-							npc.say("Widzę, że nie posiadasz pierścienia barona, wróć gdy zdobędziesz go.");
+							npc.say("Nie widzę pierścienia barona w twoim posiadaniu. Niechaj twe serce cię prowadzi, by zdobyć go w imię chwały i odwagi. Wróć, gdy sprostasz temu wyzwaniu.");
 							raiser.setCurrentState(ConversationStates.ATTENDING);
 						}
 					}
@@ -111,52 +112,52 @@ public class PierscienMagnata extends AbstractQuest {
 							 new QuestCompletedCondition(PIERSCIEN_BARONA_QUEST_SLOT),
 							 new QuestNotStartedCondition(QUEST_SLOT)),
 			ConversationStates.ATTENDING,
-			"Witaj przyjacielu. Mam dla Ciebie wyzwanie dzięki, któremu zdobędziesz #pierścień magnata.",
+			"Witaj, wędrowcze! Widzę, że dzielność twa została uwieńczona pierścieniem barona. Czy masz w sobie odwagę i mądrość, by sięgnąć po #pierścień magnata, symbol władzy i szacunku tej ziemi?",
 			null);
 
 		npc.add(ConversationStates.ATTENDING,
-			Arrays.asList("challenge", "pierścień", "pierscien"), 
+			Arrays.asList("challenge", "wyzwanie", "pierścień", "pierscien"), 
 			new AndCondition(new QuestCompletedCondition(PIERSCIEN_BARONA_QUEST_SLOT),
 							 new QuestNotStartedCondition(QUEST_SLOT),
 							 new OrCondition(new QuestNotCompletedCondition(CLUB_THORNS_QUEST_SLOT),
 							 new QuestNotCompletedCondition(IMMORTAL_SWORD_QUEST_SLOT))),
 			ConversationStates.ATTENDING, 
-			"Wciąż masz zadanie do wykonania w Kotoch. Szukaj dokładnie, a zdobędziesz pierścień!",
+			"Twoja podróż wiedzie przez jeszcze inne próby. W Kotochu czekają #wyzwania, które musisz przezwyciężyć, zanim znów stanę przed tobą. Bogowie niechaj cię prowadzą!",
 			null);
 
 		npc.add(ConversationStates.ATTENDING,
-			Arrays.asList("challenge", "pierścień", "pierscien"), 
+			Arrays.asList("challenge", "wyzwanie", "pierścień", "pierscien"), 
 			new AndCondition(new QuestCompletedCondition(PIERSCIEN_BARONA_QUEST_SLOT),
 							 new QuestNotStartedCondition(QUEST_SLOT),
 							 new OrCondition(new QuestNotCompletedCondition(KILL_DRAGONS_QUEST_SLOT),
 							 new QuestNotCompletedCondition(VAMPIRE_SWORD_QUEST_SLOT))),
 			ConversationStates.ATTENDING, 
-			"Nie pomogłeś małej Alicji lub brakuje tobie miecza wampira.",
+			"Nie przyniosłeś pomocy małej Alicji lub nie zdobyłeś przeklętego miecza wampira. Powróć, gdy wypełnisz te powinności.",
 			null);
 
 		npc.add(ConversationStates.ATTENDING,
-			Arrays.asList("challenge", "pierścień", "pierscien"),
+			Arrays.asList("challenge", "wyzwanie", "pierścień", "pierscien"),
 			new AndCondition(new QuestCompletedCondition(PIERSCIEN_BARONA_QUEST_SLOT),
 							 new QuestNotStartedCondition(QUEST_SLOT),
 							 new OrCondition(new QuestNotCompletedCondition(FIND_RAT_KIDS_QUEST_SLOT),
 							 	 	 	 	 new QuestNotCompletedCondition(FIND_GHOSTS_QUEST_SLOT))),
 			ConversationStates.ATTENDING, 
-			"Musisz odnaleść błąkające się duchy lub dzieci Agnus.",
+			"Musisz odnaleźć błąkające się duchy, które utraciły drogę, lub dzieci Agnus, które wciąż pozostają w rozpaczy.",
 			null);
 
 		npc.add(ConversationStates.ATTENDING,
-			Arrays.asList("challenge", "pierścień", "pierscien"),
+			Arrays.asList("challenge", "wyzwanie", "pierścień", "pierscien"),
 			new AndCondition(new QuestCompletedCondition(PIERSCIEN_BARONA_QUEST_SLOT),
 							 new QuestNotStartedCondition(QUEST_SLOT),
 							 new QuestNotCompletedCondition(SAD_SCIENTIST_QUEST_SLOT)),
 			ConversationStates.ATTENDING, 
-			"Uzbierałeś sporo specjalnych przedmiotów, ale nie zdobyłeś czarnych spodni.",
+			"Twoje wysiłki są godne pochwały, lecz czarne spodnie, symbol smutku i uporu, wciąż ci umykają. Powróć, gdy je zdobędziesz.",
 			null);
 	}
 
 	private void requestItem() {
 		npc.add(ConversationStates.ATTENDING,
-			Arrays.asList("challenge", "pierścień", "pierscien"),
+			Arrays.asList("challenge", "wyzwanie", "pierścień", "pierscien"),
 			new AndCondition(
 					new QuestCompletedCondition(PIERSCIEN_BARONA_QUEST_SLOT),
 					new QuestNotStartedCondition(QUEST_SLOT),
@@ -167,8 +168,15 @@ public class PierscienMagnata extends AbstractQuest {
 					new QuestCompletedCondition(KILL_DRAGONS_QUEST_SLOT),
 					new QuestCompletedCondition(CLUB_THORNS_QUEST_SLOT),
 					new QuestCompletedCondition(IMMORTAL_SWORD_QUEST_SLOT)),
-			ConversationStates.ATTENDING, "Aby zdobyć #pierścień musisz przynieść kilka przedmiotów.",
-			new SetQuestAction(QUEST_SLOT, "start" ));
+			ConversationStates.ATTENDING, "Niech słowa me będą #wyzwaniem, które bogowie ci zsyłają. Aby zdobyć #pierścień magnata, przynieś mi dary godne tej ziemi:"
+					+ "#'pierścień barona' – dowód twej odwagi\n"
+					+ "#'70 sztabek srebra' – łzy Peruna\n" 
+					+ "#'70 sztabek mithrilu' – oddech Swaroga\n"
+					+ "#'250 sztabek złota' – blask Dziwii\n"
+					+ "#'100 bryłek mithrilu' – dar Łady\n"
+					+ "#'200 bryłek złota' – ofiara dla Mokoszy\n"
+					+ "#'500,000 monet' – dziedzictwo twego rodu\n",
+			new SetQuestAction(QUEST_SLOT, "start"));
 
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
 		reward.add(new DropItemAction("sztabka srebra",70));
@@ -182,7 +190,7 @@ public class PierscienMagnata extends AbstractQuest {
 		reward.add(new IncreaseXPAction(500000));
 		reward.add(new SetQuestAction(QUEST_SLOT, "done"));
 
-		npc.add(ConversationStates.ATTENDING, Arrays.asList("challenge", "pierścień", "pierscien"),
+		npc.add(ConversationStates.ATTENDING, Arrays.asList("challenge", "wyzwanie", "pierścień", "pierscien"),
 			new AndCondition(
 					new QuestInStateCondition(QUEST_SLOT,"start"),
 					new PlayerHasItemWithHimCondition("sztabka srebra",70),
@@ -192,36 +200,36 @@ public class PierscienMagnata extends AbstractQuest {
 					new PlayerHasItemWithHimCondition("bryłka złota",200),
 					new PlayerHasItemWithHimCondition("money",500000),
 					new PlayerHasItemWithHimCondition("pierścień barona",1)),
-			ConversationStates.ATTENDING, "Widzę, że masz wszystko o co cię prosiłem. A oto nagroda pierścień magnata.",
+			ConversationStates.ATTENDING, "Twoje wysiłki zostały docenione. Przyjmij pierścień magnata – symbol chwały, mądrości i opieki bogów. Noś go z honorem, wędrowcze.",
 			new MultipleActions(reward));
 
-		npc.add(ConversationStates.ATTENDING, Arrays.asList("challenge", "pierścień", "pierscien"),
+		npc.add(ConversationStates.ATTENDING, Arrays.asList("challenge", "wyzwanie", "pierścień", "pierscien"),
 			new AndCondition(
 					new QuestInStateCondition(QUEST_SLOT,"start"),
 					new NotCondition(
 							new AndCondition(new PlayerHasItemWithHimCondition("sztabka srebra",70),
-							new PlayerHasItemWithHimCondition("sztabka mithrilu",70),
-							new PlayerHasItemWithHimCondition("sztabka złota",250),
-							new PlayerHasItemWithHimCondition("bryłka mithrilu",100),
-							new PlayerHasItemWithHimCondition("bryłka złota",200),
-							new PlayerHasItemWithHimCondition("money",500000),
-							new PlayerHasItemWithHimCondition("pierścień barona",1)))),
-			ConversationStates.ATTENDING, "Potrzebuję:\n"
-									+"#'70 sztabka srebra'\n" 
-									+"#'70 sztabek mithrilu'\n"
-									+"#'250 sztabek złota'\n"
-									+"#'100 bryłek mithrilu'\n"
-									+"#'200 bryłek złota'\n"
-									+"#'500000 money'\n"
-									+"#'1 pierścień barona'\n"
-									+" Proszę przynieś mi to wszystko naraz. Słowo klucz to #'/pierścień/'. Dziękuję!", null);
+							new PlayerHasItemWithHimCondition("sztabka mithrilu", 70),
+							new PlayerHasItemWithHimCondition("sztabka złota", 250),
+							new PlayerHasItemWithHimCondition("bryłka mithrilu", 100),
+							new PlayerHasItemWithHimCondition("bryłka złota", 200),
+							new PlayerHasItemWithHimCondition("money", 500000),
+							new PlayerHasItemWithHimCondition("pierścień barona", 1)))),
+			ConversationStates.ATTENDING, "Wciąż brakuje mi darów, które ci wymieniłem:\n"
+					+ " - 70 sztabek srebra – łzy Peruna\n" 
+					+ " - 70 sztabek mithrilu – oddech Swaroga\n"
+					+ " - 250 sztabek złota – blask Dziwii\n"
+					+ " - 100 bryłek mithrilu – dar Łady\n"
+					+ " - 200 bryłek złota – ofiara dla Mokoszy\n"
+					+ " - 500,000 monet – dziedzictwo twego rodu\n"
+					+ " - pierścień barona – dowód twej odwagi\n"
+					+ "Niech twe kroki poprowadzi mądrość. Czekam tu na ciebie, młody śmiałku.", null);
 	}
 
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-			"Pierścień Magnata",
-			"Uporaj się z wyzwaniami, które postawił przed tobą jubiler Zdzichu.",
+			"Status Społeczny: Magnat",
+			"Zdobądź pierścień magnata, przechodząc próby wyznaczone przez Zdzicha, mistrza jubilerstwa i strażnika pradawnych tradycji.",
 			true);
 
 		checkLevelHelm(); 
@@ -235,27 +243,27 @@ public class PierscienMagnata extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(player.getGenderVerb("Spotkałem") + " jubilera Zdzicha.");
-		res.add("Zaproponował mi pierścień magnata.");
+		res.add(player.getGenderVerb("Spotkałem") + " Zdzicha, mistrza jubilerstwa i strażnika starodawnych tradycji.");
+		res.add("Zaprosił mnie do podjęcia próby zdobycia pierścienia godnego magnata.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if (questState.equals("rejected")) {
-			res.add("Nie potrzebne mi są błyskotki.");
+			res.add(player.getGenderVerb("Odrzuciłem") + " propozycję Zdzicha, nie ulegając pokusie błyskotek.");
 			return res;
 		} 
 		if (questState.equals("start")) {
 			return res;
 		} 
-		res.add("Zdzichu poprosił, abym mu " + player.getGenderVerb("dostarczył") + " mu parę rzeczy. Gdy zdobędę te przedmioty mam mu powiedzieć: pierścień.");
+		res.add("Zdzichu poprosił, bym " + player.getGenderVerb("przyniósł") + " mu kilka cennych przedmiotów. Kiedy je zgromadzę, mam wypowiedzieć słowo: pierścień.");
 		if (questState.equals("start")) {
 			return res;
 		} 
-		res.add("Jubiler Zdzichu był zadowolony z mojej postawy. W zamian " + player.getGenderVerb("dostałem") + " pierścień magnata.");
+		res.add("Po spełnieniu próśb Zdzicha " + player.getGenderVerb("otrzymałem") + " pierścień magnata – symbol władzy i szacunku.");
 
 		if (isCompleted(player)) {
 			return res;
 		} 
 
-		// if things have gone wrong and the quest state didn't match any of the above, debug a bit:
+		// Jeśli stan zadania nie pasuje do powyższych warunków, dodaj informacje debugujące
 		final List<String> debug = new ArrayList<String>();
 		debug.add("Stan zadania to: " + questState);
 		logger.error("Historia nie pasuje do stanu poszukiwania " + questState);
