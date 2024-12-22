@@ -120,7 +120,7 @@ public class PierscienRycerza extends AbstractQuest {
 				+ "\n#'40 sztabek żelaza'"
 				+ "\n#'40 sztabek złota'"
 				+ "\n#'30 bryłek mithrilu'"
-				+ "\n#'1 pierścień mieszczanina'"
+				+ "\n#'pierścień mieszczanina'"
 				+ "\n#'1 tarcza z czaszką'"
 				+ "\n#'1 spodnie elfickie'\n. Zbierz je wszystkie i wróć, bym mógł cię uhonorować. Gdy będziesz czuć potrzebę przypomnieć listę to wróć i powiedz #przypomnij.",
 			new SetQuestAction(QUEST_SLOT, "przedmioty"));
@@ -160,7 +160,7 @@ public class PierscienRycerza extends AbstractQuest {
 				+ "\n#'40 sztabek żelaza'"
 				+ "\n#'40 sztabek złota'"
 				+ "\n#'30 bryłek mithrilu'"
-				+ "\n#'1 pierścień mieszczanina'"
+				+ "\n#'pierścień mieszczanina'"
 				+ "\n#'1 tarcza z czaszką'"
 				+ "\n#'1 spodnie elfickie'\n. Zbierz je wszystkie i wróć, bym mógł cię uhonorować.", null);
 	}

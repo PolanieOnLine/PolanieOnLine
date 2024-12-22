@@ -66,7 +66,7 @@ public class PierscienBarona extends AbstractQuest {
 
 	private String requiredItemsList() {
 		return "Przynieś mi:\n"
-			+ "#'1 pierścień rycerza'\n"
+			+ "#'pierścień rycerza'\n"
 			+ "#'100 rudy żelaza'\n"
 			+ "#'150 bryłek złota'\n"
 			+ "#'200 polan'\n"
