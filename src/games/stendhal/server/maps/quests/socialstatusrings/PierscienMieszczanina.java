@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2010-2021 - Stendhal                    *
+ *                   (C) Copyright 2010-2024 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -9,7 +9,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-package games.stendhal.server.maps.quests;
+package games.stendhal.server.maps.quests.socialstatusrings;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,6 +39,7 @@ import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.maps.quests.AbstractQuest;
 
 public class PierscienMieszczanina extends AbstractQuest {
 	private static final String QUEST_SLOT = "pierscien_mieszczanina";
@@ -57,22 +58,22 @@ public class PierscienMieszczanina extends AbstractQuest {
 				@Override
 				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 					if (player.isBadBoy()){ 
-						raiser.say("Z twej ręki zginął rycerz! Nie masz tu czego szukać, pozbądź się piętna czaszki. A teraz precz mi z oczu!");
+						raiser.say("Z twej ręki zginął rycerz! Zhańbiłeś swoje imię piętnem czaszki. Nie masz tu czego szukać, aż oczyścisz swoją duszę. A teraz, precz mi z oczu!");
 					} else {
 						if (player.isQuestCompleted(MRSYETI_QUEST_SLOT)) {
 							if (player.getLevel() >= 150) {
 								if (!player.hasQuest(QUEST_SLOT) || "rejected".equals(player.getQuest(QUEST_SLOT))) {
-									raiser.say("Czy chcesz zdobyć pierścień mieszczanina?.");
+									raiser.say("Byłem kowalem starego klanu, The Soldiers of Honor. Czasy ich świetności minęły, ale ich duch nadal żyje we mnie. Teraz oferuję pierścień mieszczanina, symbol honoru i przynależności. Czy chcesz go zdobyć?");
 								} else if (player.isQuestCompleted(QUEST_SLOT)) {
-									raiser.say("Odebrałeś już swój pierścień, żegnaj.");
+									raiser.say("Już odebrałeś swój pierścień, nie potrzebujesz kolejnego. Żegnaj.");
 									raiser.setCurrentState(ConversationStates.ATTENDING);
 								}
 							} else {
-								npc.say("Twój stan społeczny jest zbyt niski aby podjąć te zadanie. Wróć gdy zdobędziesz 150 lvl.");
+								npc.say("Twoja siła i doświadczenie nie są wystarczające, by podjąć to wyzwanie. Powróć, gdy osiągniesz poziom 150 – wtedy będziesz godzien, by nosić pierścień honoru.");
 								raiser.setCurrentState(ConversationStates.ATTENDING);
 							}
 						} else {
-							npc.say("Widzę, że nie pomogłeś mrs.Yeti! Wróć gdy jej pomożesz.");
+							npc.say("Nie widzę w Tobie ducha honoru. Nie pomogłeś Mrs. Yeti, a to ona była lojalnym sprzymierzeńcem TSoH. Powróć, gdy okażesz jej wsparcie.");
 							raiser.setCurrentState(ConversationStates.ATTENDING);
 						}
 					}
@@ -85,7 +86,7 @@ public class PierscienMieszczanina extends AbstractQuest {
 			new ChatAction() {
 				@Override
 				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-					raiser.say("Ale wpierw sprawdzę czy masz wszystkie zadania zrobione nim dostaniesz #pierścień.");
+					raiser.say("Wspaniale. #Pierścień mieszczanina to symbol honoru, ale również ciężkiej pracy. Zanim go otrzymasz, musisz mi przynieść odpowiednie materiały. Przygotuj się!");
 					player.addKarma(10);
 				}
 			});
@@ -93,7 +94,7 @@ public class PierscienMieszczanina extends AbstractQuest {
 		npc.add(ConversationStates.QUEST_OFFERED,
 			ConversationPhrases.NO_MESSAGES, null,
 			ConversationStates.IDLE,
-			"Nie to nie.",
+			"Nie interesuje Cię przynależność ani honor? Jak chcesz. Wracaj, gdy zmienisz zdanie.",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -10.0));
 	}
 
@@ -104,27 +105,32 @@ public class PierscienMieszczanina extends AbstractQuest {
 					new QuestCompletedCondition(MRSYETI_QUEST_SLOT),
 					new QuestNotStartedCondition(QUEST_SLOT)),
 			ConversationStates.ATTENDING,
-			"Witaj przyjacielu. Mam dla Ciebie wyzwanie dzięki, któremu zdobędziesz #pierścień mieszczanina.",
+			"Witaj, wędrowcze. Mam dla Ciebie #wyzwanie, które wystawi Twoją wytrwałość na próbę. Dzięki temu zdobędziesz #pierścień mieszczanina – symbol prawdziwego honoru.",
 			null);
 
 			npc.add(ConversationStates.ATTENDING,
-			Arrays.asList("challenge", "pierścień", "pierscien"), 
+			Arrays.asList("challenge", "wyzwanie", "pierścień", "pierscien"), 
 			new AndCondition(new QuestCompletedCondition(MRSYETI_QUEST_SLOT),
 					new QuestNotStartedCondition(QUEST_SLOT),
 					new QuestNotCompletedCondition(ANDRZEJ_MAKE_ZLOTA_CIUPAGA_QUEST_SLOT)),
 			ConversationStates.ATTENDING, 
-			"Wciąż masz zadanie do wykonania u kowala Andrzeja!",
+			"Najpierw musisz wykazać się lojalnością wobec Andrzeja, mistrza kowalstwa – wykuć złotą ciupagę. To była tradycja w TSoH, by kowale wspierali się nawzajem. Gdy się z tym uporasz, przyjdź do mnie.",
 			null);
 	}
 
 	private void requestItem() {
 		npc.add(ConversationStates.ATTENDING,
-			Arrays.asList("challenge", "pierścień", "pierscien"),
+			Arrays.asList("challenge", "wyzwanie", "pierścień", "pierscien"),
 			new AndCondition(
 					new QuestCompletedCondition(MRSYETI_QUEST_SLOT),
 					new QuestNotStartedCondition(QUEST_SLOT)),
-			ConversationStates.ATTENDING, "Aby zdobyć #pierścień musisz przynieść kilka przedmiotów.",
-			new SetQuestAction(QUEST_SLOT, "start" ));
+			ConversationStates.ATTENDING, "Potrzebuję kilku rzeczy, by przygotować #pierścień. Przynieś mi:\n"
+					+ "#'200,000 złota'\n"
+					+ "#'ciupagę'\n"
+					+ "#'50 sztabek złota'\n"
+					+ "#'20 bryłek mithrilu'\n"
+					+ "To będzie hołd dla dawnej chwały TSoH. Powróć, gdy wszystko zgromadzisz.",
+			new SetQuestAction(QUEST_SLOT, "start"));
 
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
 		reward.add(new DropItemAction("money",200000));
@@ -135,37 +141,37 @@ public class PierscienMieszczanina extends AbstractQuest {
 		reward.add(new IncreaseXPAction(1000));
 		reward.add(new SetQuestAction(QUEST_SLOT, "done"));
 
-		npc.add(ConversationStates.ATTENDING, Arrays.asList("challenge", "pierścień", "pierscien"),
+		npc.add(ConversationStates.ATTENDING, Arrays.asList("challenge", "wyzwanie", "pierścień", "pierscien"),
 			new AndCondition(
 					new QuestInStateCondition(QUEST_SLOT,"start"),
 					new PlayerHasItemWithHimCondition("money",200000),
 					new PlayerHasItemWithHimCondition("ciupaga",1),
 					new PlayerHasItemWithHimCondition("sztabka złota",50),
 					new PlayerHasItemWithHimCondition("bryłka mithrilu",20)),
-			ConversationStates.ATTENDING, "Widzę, że masz wszystko o co cię prosiłem. A oto nagroda pierścień mieszczanina.",
+			ConversationStates.ATTENDING, "Widzę, że przyniosłeś wszystko, co było potrzebne. To dowód, że duch TSoH wciąż żyje w Tobie. Przyjmij ten pierścień jako symbol honoru i przynależności.",
 			new MultipleActions(reward));
 
-		npc.add(ConversationStates.ATTENDING, Arrays.asList("challenge", "pierścień", "pierscien"),
+		npc.add(ConversationStates.ATTENDING, Arrays.asList("challenge", "wyzwanie", "pierścień", "pierscien"),
 			new AndCondition(
 					new QuestInStateCondition(QUEST_SLOT,"start"),
 					new NotCondition(
-							new AndCondition(new PlayerHasItemWithHimCondition("money",200000),
-							new PlayerHasItemWithHimCondition("ciupaga",1),
-							new PlayerHasItemWithHimCondition("sztabka złota",50),
+							new AndCondition(new PlayerHasItemWithHimCondition("money", 200000),
+							new PlayerHasItemWithHimCondition("ciupaga", 1),
+							new PlayerHasItemWithHimCondition("sztabka złota", 50),
 							new PlayerHasItemWithHimCondition("bryłka mithrilu", 20)))),
-			ConversationStates.ATTENDING, "Potrzebuję:\n"
-									+"#'200000 money'\n" 
-									+"#'1 ciupaga'\n"
-									+"#'50 sztabek złota'\n"
-									+"#'20 bryłek mithrilu'\n"
-									+" Proszę przynieś mi to wszystko naraz. Słowo klucz to #'/pierścień/'. Dziękuję!", null);
+			ConversationStates.ATTENDING, "Brakuje Ci potrzebnych przedmiotów. Aby otrzymać #pierścień, musisz przynieść wszystko naraz:\n"
+					+ "#'200,000 złota'\n"
+					+ "#'ciupagę'\n"
+					+ "#'50 sztabek złota'\n"
+					+ "#'20 bryłek mithrilu'\n"
+					+ "Nie wracaj, póki tego nie skompletujesz.", null);
 	}
 
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
-			"Pierścień Mieszczanina",
-			"Uporaj się z wyzwaniami, które postawił przed tobą kowal Marianek.",
+			"Status Społeczny: Mieszczanin",
+			"Kowal Marianek, mistrz rzemiosła i znawca sztuki kowalskiej, stawia przed tobą wyzwanie. Pokaż swoją wartość, zdobywając jego uznanie.",
 			true);
 
 		checkLevelHelm(); 
@@ -179,30 +185,35 @@ public class PierscienMieszczanina extends AbstractQuest {
 		if (!player.hasQuest(QUEST_SLOT)) {
 			return res;
 		}
-		res.add(player.getGenderVerb("Spotkałem") + " kowala Marianka.");
-		res.add("Zaproponował mi pierścień mieszczanina.");
+		res.add(player.getGenderVerb("Spotkałem") + " kowala Marianka, znanego z kunsztu rzemiosła.");
+		res.add("Zaprosił mnie, bym " + player.getGenderVerb("zasłużył") + " na pierścień mieszczanina – symbol poważania wśród ludu.");
+		
 		final String questState = player.getQuest(QUEST_SLOT);
 		if (questState.equals("rejected")) {
-			res.add("Nie potrzebne mi są błyskotki..");
+			res.add("Odrzuciłem propozycję kowala Marianka, uznając, że błyskotki nie są mi potrzebne.");
 			return res;
 		} 
 		if (questState.equals("start")) {
 			return res;
 		} 
-		res.add("Kowal Marianek poprosił, abym mu " + player.getGenderVerb("dostarczył") + ": 50 sztabek srebra, 50 sztabek mithrilu, 150 sztabek złota i 30 bryłek mithrilu. po zdobyciu tych rzeczy mam mu powiedzieć: pierścień.");
+		res.add("Kowal Marianek zlecił mi trudne zadanie, dostarczyć:" + 
+				" 50 sztabek złota, 20 bryłek czystego mithrilu, ciupagę oraz nieco złota w ilości 200,000. " +
+				"Gdy zdobędę te rzeczy, mam do niego wrócić i wypowiedzieć słowo: pierścień.");
 		if (questState.equals("start")) {
 			return res;
 		} 
-		res.add("Kowal Marianek był zadowolony z mojej postawy. W zamian " + player.getGenderVerb("dostałem") + " pierścień mieszczanina.");
+		res.add("Po spełnieniu jego żądań Marianek uznał moje starania za godne podziwu. W zamian " + 
+				player.getGenderVerb("otrzymałem") + 
+				" pierścień mieszczanina, symbol szacunku i pozycji wśród miejskich społeczności.");
 
 		if (isCompleted(player)) {
 			return res;
 		} 
 
-		// if things have gone wrong and the quest state didn't match any of the above, debug a bit:
+		// Jeśli stan questa jest nieznany, dodaj debugowanie
 		final List<String> debug = new ArrayList<String>();
 		debug.add("Stan zadania to: " + questState);
-		logger.error("Historia nie pasuje do stanu poszukiwania " + questState);
+		logger.error("Historia nie pasuje do stanu zadania: " + questState);
 		return debug;
 	}
 
