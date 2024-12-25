@@ -1,5 +1,16 @@
 Changelog
 ---------
+1.40.5
+*klient*
+- Przyśpieszono animacje ikon AWAY oraz GRUMPY
+- Poprawionio graficznie emoji z szerokim uśmiechem
+- Dodano dwie nowe emoji wyrażające obrzydzenie oraz głośny płacz
+
+*świat*
+- Dodano nowe dialogi u npc - Edgarda
+- Poprawiono dialogi oraz opisy w dzienniku zadań we wszystkich zadanich na pierścień określające status społeczny (pierścień mieszczanina, rycerza, barona oraz magnata)
+
+
 1.40
 *klient*
 - Dodano oraz poprawiono wiele grafik
