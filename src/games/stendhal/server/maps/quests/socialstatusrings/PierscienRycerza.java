@@ -48,6 +48,26 @@ public class PierscienRycerza extends AbstractQuest {
 
 	private static Logger logger = Logger.getLogger(PierscienRycerza.class);
 
+	private AndCondition hasRequiredItemsCondition() {
+		return new AndCondition(
+			new PlayerHasItemWithHimCondition("sztabka żelaza", 40),
+			new PlayerHasItemWithHimCondition("sztabka złota", 40),
+			new PlayerHasItemWithHimCondition("bryłka mithrilu", 30),
+			new PlayerHasItemWithHimCondition("pierścień mieszczanina", 1),
+			new PlayerHasItemWithHimCondition("tarcza z czaszką", 1),
+			new PlayerHasItemWithHimCondition("spodnie elfickie", 1)
+		);
+	}
+
+	private String requiredItemsList() {
+		return "\n#'40 sztabek żelaza'\n"
+			+ "#'40 sztabek złota'\n"
+			+ "#'30 bryłek mithrilu'\n"
+			+ "#'pierścień mieszczanina'\n"
+			+ "#'1 tarcza z czaszką'\n"
+			+ "#'1 spodnie elfickie'\n";
+	}
+
 	private void checkLevelHelm() {
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES, null,
@@ -117,12 +137,8 @@ public class PierscienRycerza extends AbstractQuest {
 					new QuestNotStartedCondition(QUEST_SLOT),
 					new QuestCompletedCondition(MITHRILSHIELD_QUEST_SLOT)),
 			ConversationStates.ATTENDING, "Pierścień zdobyć możesz, jeśli przyniesiesz mi #przedmioty godne rycerza. Oto ich lista:"
-				+ "\n#'40 sztabek żelaza'"
-				+ "\n#'40 sztabek złota'"
-				+ "\n#'30 bryłek mithrilu'"
-				+ "\n#'pierścień mieszczanina'"
-				+ "\n#'1 tarcza z czaszką'"
-				+ "\n#'1 spodnie elfickie'\n. Zbierz je wszystkie i wróć, bym mógł cię uhonorować. Gdy będziesz czuć potrzebę przypomnieć listę to wróć i powiedz #przypomnij.",
+				+ requiredItemsList()
+				+ "Zbierz je wszystkie i wróć, bym mógł cię uhonorować. Gdy będziesz czuć potrzebę przypomnieć listę to wróć i powiedz #przypomnij.",
 			new SetQuestAction(QUEST_SLOT, "przedmioty"));
 
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
@@ -137,32 +153,17 @@ public class PierscienRycerza extends AbstractQuest {
 		reward.add(new SetQuestAction(QUEST_SLOT, "done"));
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("wyposażenie", "wyposazenie", "przedmioty"),
-			new AndCondition(new QuestInStateCondition(QUEST_SLOT,"przedmioty"),
-					new PlayerHasItemWithHimCondition("sztabka żelaza", 40),
-					new PlayerHasItemWithHimCondition("sztabka złota", 40),
-					new PlayerHasItemWithHimCondition("bryłka mithrilu", 30),
-					new PlayerHasItemWithHimCondition("pierścień mieszczanina", 1),
-					new PlayerHasItemWithHimCondition("tarcza z czaszką", 1),
-					new PlayerHasItemWithHimCondition("spodnie elfickie", 1)),
+			new AndCondition(new QuestInStateCondition(QUEST_SLOT, "przedmioty"),
+					hasRequiredItemsCondition()),
 			ConversationStates.ATTENDING, "Widzę, że zebrałeś wszystko, co potrzebne. Oto twój pierścień rycerza. Noś go z dumą, a duchy przodków będą cię strzec.",
 			new MultipleActions(reward));
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("wyposażenie", "wyposazenie", "przedmioty", "przypomnij"),
-			new AndCondition(new QuestInStateCondition(QUEST_SLOT,"przedmioty"),
-				new NotCondition(
-				new AndCondition(new PlayerHasItemWithHimCondition("sztabka żelaza", 40),
-						new PlayerHasItemWithHimCondition("sztabka złota", 40),
-						new PlayerHasItemWithHimCondition("bryłka mithrilu", 30),
-						new PlayerHasItemWithHimCondition("pierścień mieszczanina", 1),
-						new PlayerHasItemWithHimCondition("tarcza z czaszką", 1),
-						new PlayerHasItemWithHimCondition("spodnie elfickie", 1)))),
+			new AndCondition(new QuestInStateCondition(QUEST_SLOT, "przedmioty"),
+				new NotCondition(hasRequiredItemsCondition())),
 			ConversationStates.ATTENDING, "Przynieś mi następujące #przedmioty, które dowiodą twej odwagi i męstwa:"
-				+ "\n#'40 sztabek żelaza'"
-				+ "\n#'40 sztabek złota'"
-				+ "\n#'30 bryłek mithrilu'"
-				+ "\n#'pierścień mieszczanina'"
-				+ "\n#'1 tarcza z czaszką'"
-				+ "\n#'1 spodnie elfickie'\n. Zbierz je wszystkie i wróć, bym mógł cię uhonorować.", null);
+				+ requiredItemsList()
+				+ "Zbierz je wszystkie i wróć, bym mógł cię uhonorować.", null);
 	}
 
 	@Override

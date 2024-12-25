@@ -50,6 +50,22 @@ public class PierscienMieszczanina extends AbstractQuest {
 
 	private static Logger logger = Logger.getLogger(PierscienMieszczanina.class);
 
+	private AndCondition hasRequiredItemsCondition() {
+		return new AndCondition(
+			new PlayerHasItemWithHimCondition("money", 200000),
+			new PlayerHasItemWithHimCondition("ciupaga", 1),
+			new PlayerHasItemWithHimCondition("sztabka złota", 50),
+			new PlayerHasItemWithHimCondition("bryłka mithrilu", 20)
+		);
+	}
+
+	private String requiredItemsList() {
+		return "\n#'ciupagę'\n"
+			+ "#'200,000 monet'\n"
+			+ "#'50 sztabek złota'\n"
+			+ "#'20 bryłek mithrilu'\n";
+	}
+
 	private void checkLevelHelm() {
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES, null,
@@ -58,22 +74,27 @@ public class PierscienMieszczanina extends AbstractQuest {
 				@Override
 				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 					if (player.isBadBoy()){ 
-						raiser.say("Z twej ręki zginął rycerz! Zhańbiłeś swoje imię piętnem czaszki. Nie masz tu czego szukać, aż oczyścisz swoją duszę. A teraz, precz mi z oczu!");
+						raiser.say("Z twej ręki zginął rycerz! Zhańbiłeś swoje imię piętnem czaszki. Nie masz tu czego"
+							+ " szukać, aż oczyścisz swoją duszę. A teraz, precz mi z oczu!");
 					} else {
 						if (player.isQuestCompleted(MRSYETI_QUEST_SLOT)) {
 							if (player.getLevel() >= 150) {
 								if (!player.hasQuest(QUEST_SLOT) || "rejected".equals(player.getQuest(QUEST_SLOT))) {
-									raiser.say("Byłem kowalem starego klanu, The Soldiers of Honor. Czasy ich świetności minęły, ale ich duch nadal żyje we mnie. Teraz oferuję pierścień mieszczanina, symbol honoru i przynależności. Czy chcesz go zdobyć?");
+									raiser.say("Byłem kowalem starego klanu, The Soldiers of Honor. Czasy ich świetności minęły,"
+										+ " ale ich duch nadal żyje we mnie. Teraz oferuję pierścień mieszczanina, symbol"
+										+ " honoru i przynależności. Czy chcesz go zdobyć?");
 								} else if (player.isQuestCompleted(QUEST_SLOT)) {
 									raiser.say("Już odebrałeś swój pierścień, nie potrzebujesz kolejnego. Żegnaj.");
 									raiser.setCurrentState(ConversationStates.ATTENDING);
 								}
 							} else {
-								npc.say("Twoja siła i doświadczenie nie są wystarczające, by podjąć to wyzwanie. Powróć, gdy osiągniesz poziom 150 – wtedy będziesz godzien, by nosić pierścień honoru.");
+								npc.say("Twoja siła i doświadczenie nie są wystarczające, by podjąć to wyzwanie. Powróć, gdy osiągniesz"
+									+ " poziom 150 – wtedy będziesz godzien, by nosić pierścień honoru.");
 								raiser.setCurrentState(ConversationStates.ATTENDING);
 							}
 						} else {
-							npc.say("Nie widzę w Tobie ducha honoru. Nie pomogłeś Mrs. Yeti, a to ona była lojalnym sprzymierzeńcem TSoH. Powróć, gdy okażesz jej wsparcie.");
+							npc.say("Nie widzę w Tobie ducha honoru. Nie pomogłeś Mrs. Yeti, a to ona była lojalnym"
+									+ " sprzymierzeńcem TSoH. Powróć, gdy okażesz jej wsparcie.");
 							raiser.setCurrentState(ConversationStates.ATTENDING);
 						}
 					}
@@ -86,7 +107,8 @@ public class PierscienMieszczanina extends AbstractQuest {
 			new ChatAction() {
 				@Override
 				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-					raiser.say("Wspaniale. #Pierścień mieszczanina to symbol honoru, ale również ciężkiej pracy. Zanim go otrzymasz, musisz mi przynieść odpowiednie materiały. Przygotuj się!");
+					raiser.say("Wspaniale. #Pierścień mieszczanina to symbol honoru, ale również ciężkiej pracy."
+						+ " Zanim go otrzymasz, musisz mi przynieść odpowiednie materiały. Przygotuj się!");
 					player.addKarma(10);
 				}
 			});
@@ -105,7 +127,8 @@ public class PierscienMieszczanina extends AbstractQuest {
 					new QuestCompletedCondition(MRSYETI_QUEST_SLOT),
 					new QuestNotStartedCondition(QUEST_SLOT)),
 			ConversationStates.ATTENDING,
-			"Witaj, wędrowcze. Mam dla Ciebie #wyzwanie, które wystawi Twoją wytrwałość na próbę. Dzięki temu zdobędziesz #pierścień mieszczanina – symbol prawdziwego honoru.",
+			"Witaj, wędrowcze. Mam dla Ciebie #wyzwanie, które wystawi Twoją wytrwałość na próbę."
+				+ " Dzięki temu zdobędziesz #pierścień mieszczanina – symbol prawdziwego honoru.",
 			null);
 
 			npc.add(ConversationStates.ATTENDING,
@@ -114,7 +137,8 @@ public class PierscienMieszczanina extends AbstractQuest {
 					new QuestNotStartedCondition(QUEST_SLOT),
 					new QuestNotCompletedCondition(ANDRZEJ_MAKE_ZLOTA_CIUPAGA_QUEST_SLOT)),
 			ConversationStates.ATTENDING, 
-			"Najpierw musisz wykazać się lojalnością wobec Andrzeja, mistrza kowalstwa – wykuć złotą ciupagę. To była tradycja w TSoH, by kowale wspierali się nawzajem. Gdy się z tym uporasz, przyjdź do mnie.",
+			"Najpierw musisz wykazać się lojalnością wobec Andrzeja, mistrza kowalstwa – wykuć złotą ciupagę."
+				+ " To była tradycja w TSoH, by kowale wspierali się nawzajem. Gdy się z tym uporasz, przyjdź do mnie.",
 			null);
 	}
 
@@ -124,11 +148,8 @@ public class PierscienMieszczanina extends AbstractQuest {
 			new AndCondition(
 					new QuestCompletedCondition(MRSYETI_QUEST_SLOT),
 					new QuestNotStartedCondition(QUEST_SLOT)),
-			ConversationStates.ATTENDING, "Potrzebuję kilku rzeczy, by przygotować #pierścień. Przynieś mi:\n"
-					+ "#'200,000 złota'\n"
-					+ "#'ciupagę'\n"
-					+ "#'50 sztabek złota'\n"
-					+ "#'20 bryłek mithrilu'\n"
+			ConversationStates.ATTENDING, "Potrzebuję kilku rzeczy, by przygotować #pierścień. Przynieś mi:"
+					+ requiredItemsList()
 					+ "To będzie hołd dla dawnej chwały TSoH. Powróć, gdy wszystko zgromadzisz.",
 			new SetQuestAction(QUEST_SLOT, "start"));
 
@@ -143,27 +164,18 @@ public class PierscienMieszczanina extends AbstractQuest {
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("challenge", "wyzwanie", "pierścień", "pierscien"),
 			new AndCondition(
-					new QuestInStateCondition(QUEST_SLOT,"start"),
-					new PlayerHasItemWithHimCondition("money",200000),
-					new PlayerHasItemWithHimCondition("ciupaga",1),
-					new PlayerHasItemWithHimCondition("sztabka złota",50),
-					new PlayerHasItemWithHimCondition("bryłka mithrilu",20)),
-			ConversationStates.ATTENDING, "Widzę, że przyniosłeś wszystko, co było potrzebne. To dowód, że duch TSoH wciąż żyje w Tobie. Przyjmij ten pierścień jako symbol honoru i przynależności.",
+					new QuestInStateCondition(QUEST_SLOT, "start"),
+					hasRequiredItemsCondition()),
+			ConversationStates.ATTENDING, "Widzę, że przyniosłeś wszystko, co było potrzebne. To dowód, że duch TSoH wciąż żyje w Tobie."
+					+ " Przyjmij ten pierścień jako symbol honoru i przynależności.",
 			new MultipleActions(reward));
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("challenge", "wyzwanie", "pierścień", "pierscien"),
 			new AndCondition(
-					new QuestInStateCondition(QUEST_SLOT,"start"),
-					new NotCondition(
-							new AndCondition(new PlayerHasItemWithHimCondition("money", 200000),
-							new PlayerHasItemWithHimCondition("ciupaga", 1),
-							new PlayerHasItemWithHimCondition("sztabka złota", 50),
-							new PlayerHasItemWithHimCondition("bryłka mithrilu", 20)))),
-			ConversationStates.ATTENDING, "Brakuje Ci potrzebnych przedmiotów. Aby otrzymać #pierścień, musisz przynieść wszystko naraz:\n"
-					+ "#'200,000 złota'\n"
-					+ "#'ciupagę'\n"
-					+ "#'50 sztabek złota'\n"
-					+ "#'20 bryłek mithrilu'\n"
+					new QuestInStateCondition(QUEST_SLOT, "start"),
+					new NotCondition(hasRequiredItemsCondition())),
+			ConversationStates.ATTENDING, "Brakuje Ci potrzebnych przedmiotów. Aby otrzymać #pierścień, musisz przynieść wszystko naraz:"
+					+ requiredItemsList()
 					+ "Nie wracaj, póki tego nie skompletujesz.", null);
 	}
 

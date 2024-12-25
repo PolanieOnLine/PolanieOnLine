@@ -57,6 +57,28 @@ public class PierscienMagnata extends AbstractQuest {
 
 	private static Logger logger = Logger.getLogger(PierscienMagnata.class);
 
+	private AndCondition hasRequiredItemsCondition() {
+		return new AndCondition(
+			new PlayerHasItemWithHimCondition("sztabka srebra", 70),
+			new PlayerHasItemWithHimCondition("sztabka mithrilu", 70),
+			new PlayerHasItemWithHimCondition("sztabka złota", 250),
+			new PlayerHasItemWithHimCondition("bryłka mithrilu", 100),
+			new PlayerHasItemWithHimCondition("bryłka złota", 200),
+			new PlayerHasItemWithHimCondition("money", 500000),
+			new PlayerHasItemWithHimCondition("pierścień barona", 1)
+		);
+	}
+
+	private String requiredItemsList() {
+		return "\n#'pierścień barona' – dowód twej odwagi\n"
+			+ "#'70 sztabek srebra' – łzy Peruna\n" 
+			+ "#'70 sztabek mithrilu' – oddech Swaroga\n"
+			+ "#'250 sztabek złota' – blask Dziwii\n"
+			+ "#'100 bryłek mithrilu' – dar Łady\n"
+			+ "#'200 bryłek złota' – ofiara dla Mokoszy\n"
+			+ "#'500,000 monet' – dziedzictwo twego rodu\n";
+	}
+
 	private void checkLevelHelm() {
 		npc.add(ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES, null,
@@ -64,23 +86,29 @@ public class PierscienMagnata extends AbstractQuest {
 			new ChatAction() {
 				@Override
 				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-					if (player.isBadBoy()){ 
-						raiser.say("Zbrodniarz, który na brata swego rękę podniósł, nie znajdzie spokoju w moich progach! Odejdź, nim złorzeczenia sprowadzą na ciebie gniew bogów. Oczyść swe imię, a może cię wysłucham.");
+					if (player.isBadBoy()) { 
+						raiser.say("Zbrodniarz, który na brata swego rękę podniósł, nie znajdzie spokoju w moich progach! Odejdź,"
+							+ " nim złorzeczenia sprowadzą na ciebie gniew bogów. Oczyść swe imię, a może cię wysłucham.");
 					} else {
 						if (player.isQuestCompleted(PIERSCIEN_BARONA_QUEST_SLOT)) {
 							if (player.getLevel() >= 500) {
 								if (!player.hasQuest(QUEST_SLOT) || "rejected".equals(player.getQuest(QUEST_SLOT))) {
-									raiser.say("Pragniesz zdobyć pierścień magnata, symbol potęgi, roztropności i łaski bogów? Niechaj twe czyny przemówią, czy jesteś godzien.");
+									raiser.say("Pragniesz zdobyć pierścień magnata, symbol potęgi, roztropności"
+										+ " i łaski bogów? Niechaj twe czyny przemówią, czy jesteś godzien.");
 								} else if (player.isQuestCompleted(QUEST_SLOT)) {
-									raiser.say("Pierścień został już powierzony w twe ręce. Odejdź w pokoju, wędrowcze, i pamiętaj: moc to brzemię, nie przywilej.");
+									raiser.say("Pierścień został już powierzony w twe ręce. Odejdź w pokoju,"
+										+ " wędrowcze, i pamiętaj: moc to brzemię, nie przywilej.");
 									raiser.setCurrentState(ConversationStates.ATTENDING);
 								}
 							} else {
-								npc.say("Widzę, że nosisz pierścień barona. To znak, że przebyłeś trudną ścieżkę. Lecz powiadam ci, młodzieńcze, że na mądrość i potęgę Magnata wciąż musisz zasłużyć. Powróć, gdy twe czyny zyskają uznanie bogów, a twe doświadczenie sięgnie 500 cykli księżyca.");
+								npc.say("Widzę, że nosisz pierścień barona. To znak, że przebyłeś trudną ścieżkę. Lecz powiadam"
+									+ " ci, młodzieńcze, że na mądrość i potęgę Magnata wciąż musisz zasłużyć. Powróć, gdy twe"
+									+ " czyny zyskają uznanie bogów, a twe doświadczenie sięgnie 500 cykli księżyca.");
 								raiser.setCurrentState(ConversationStates.ATTENDING);
 							}
 						} else {
-							npc.say("Nie widzę pierścienia barona w twoim posiadaniu. Niechaj twe serce cię prowadzi, by zdobyć go w imię chwały i odwagi. Wróć, gdy sprostasz temu wyzwaniu.");
+							npc.say("Nie widzę pierścienia barona w twoim posiadaniu. Niechaj twe serce cię prowadzi, by"
+								+ " zdobyć go w imię chwały i odwagi. Wróć, gdy sprostasz temu wyzwaniu.");
 							raiser.setCurrentState(ConversationStates.ATTENDING);
 						}
 					}
@@ -93,7 +121,8 @@ public class PierscienMagnata extends AbstractQuest {
 			new ChatAction() {
 				@Override
 				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-					raiser.say("Dobrze, wędrowcze, lecz najpierw upewnię się, czyś sprostał wszystkim próbom, zanim otrzymasz #pierścień, który symbolizuje władzę i potęgę.");
+					raiser.say("Dobrze, wędrowcze, lecz najpierw upewnię się, czyś sprostał wszystkim próbom,"
+						+ " zanim otrzymasz #pierścień, który symbolizuje władzę i potęgę.");
 					player.addKarma(10);
 				}
 			});
@@ -112,7 +141,8 @@ public class PierscienMagnata extends AbstractQuest {
 							 new QuestCompletedCondition(PIERSCIEN_BARONA_QUEST_SLOT),
 							 new QuestNotStartedCondition(QUEST_SLOT)),
 			ConversationStates.ATTENDING,
-			"Witaj, wędrowcze! Widzę, że dzielność twa została uwieńczona pierścieniem barona. Czy masz w sobie odwagę i mądrość, by sięgnąć po #pierścień magnata, symbol władzy i szacunku tej ziemi?",
+			"Witaj, wędrowcze! Widzę, że dzielność twa została uwieńczona pierścieniem barona. Czy masz w sobie odwagę i mądrość,"
+				+ " by sięgnąć po #pierścień magnata, symbol władzy i szacunku tej ziemi?",
 			null);
 
 		npc.add(ConversationStates.ATTENDING,
@@ -122,7 +152,8 @@ public class PierscienMagnata extends AbstractQuest {
 							 new OrCondition(new QuestNotCompletedCondition(CLUB_THORNS_QUEST_SLOT),
 							 new QuestNotCompletedCondition(IMMORTAL_SWORD_QUEST_SLOT))),
 			ConversationStates.ATTENDING, 
-			"Twoja podróż wiedzie przez jeszcze inne próby. W Kotochu czekają #wyzwania, które musisz przezwyciężyć, zanim znów stanę przed tobą. Bogowie niechaj cię prowadzą!",
+			"Twoja podróż wiedzie przez jeszcze inne próby. W Kotochu czekają #wyzwania, które musisz przezwyciężyć,"
+				+ " zanim znów stanę przed tobą. Bogowie niechaj cię prowadzą!",
 			null);
 
 		npc.add(ConversationStates.ATTENDING,
@@ -168,14 +199,9 @@ public class PierscienMagnata extends AbstractQuest {
 					new QuestCompletedCondition(KILL_DRAGONS_QUEST_SLOT),
 					new QuestCompletedCondition(CLUB_THORNS_QUEST_SLOT),
 					new QuestCompletedCondition(IMMORTAL_SWORD_QUEST_SLOT)),
-			ConversationStates.ATTENDING, "Niech słowa me będą #wyzwaniem, które bogowie ci zsyłają. Aby zdobyć #pierścień magnata, przynieś mi dary godne tej ziemi:"
-					+ "#'pierścień barona' – dowód twej odwagi\n"
-					+ "#'70 sztabek srebra' – łzy Peruna\n" 
-					+ "#'70 sztabek mithrilu' – oddech Swaroga\n"
-					+ "#'250 sztabek złota' – blask Dziwii\n"
-					+ "#'100 bryłek mithrilu' – dar Łady\n"
-					+ "#'200 bryłek złota' – ofiara dla Mokoszy\n"
-					+ "#'500,000 monet' – dziedzictwo twego rodu\n",
+			ConversationStates.ATTENDING, "Niech słowa me będą #wyzwaniem, które bogowie ci zsyłają."
+					+ " Aby zdobyć #pierścień magnata, przynieś mi dary godne tej ziemi:"
+					+ requiredItemsList(),
 			new SetQuestAction(QUEST_SLOT, "start"));
 
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
@@ -192,36 +218,17 @@ public class PierscienMagnata extends AbstractQuest {
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("challenge", "wyzwanie", "pierścień", "pierscien"),
 			new AndCondition(
-					new QuestInStateCondition(QUEST_SLOT,"start"),
-					new PlayerHasItemWithHimCondition("sztabka srebra",70),
-					new PlayerHasItemWithHimCondition("sztabka mithrilu",70),
-					new PlayerHasItemWithHimCondition("sztabka złota",250),
-					new PlayerHasItemWithHimCondition("bryłka mithrilu",100),
-					new PlayerHasItemWithHimCondition("bryłka złota",200),
-					new PlayerHasItemWithHimCondition("money",500000),
-					new PlayerHasItemWithHimCondition("pierścień barona",1)),
+					new QuestInStateCondition(QUEST_SLOT, "start"),
+					hasRequiredItemsCondition()),
 			ConversationStates.ATTENDING, "Twoje wysiłki zostały docenione. Przyjmij pierścień magnata – symbol chwały, mądrości i opieki bogów. Noś go z honorem, wędrowcze.",
 			new MultipleActions(reward));
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("challenge", "wyzwanie", "pierścień", "pierscien"),
 			new AndCondition(
-					new QuestInStateCondition(QUEST_SLOT,"start"),
-					new NotCondition(
-							new AndCondition(new PlayerHasItemWithHimCondition("sztabka srebra",70),
-							new PlayerHasItemWithHimCondition("sztabka mithrilu", 70),
-							new PlayerHasItemWithHimCondition("sztabka złota", 250),
-							new PlayerHasItemWithHimCondition("bryłka mithrilu", 100),
-							new PlayerHasItemWithHimCondition("bryłka złota", 200),
-							new PlayerHasItemWithHimCondition("money", 500000),
-							new PlayerHasItemWithHimCondition("pierścień barona", 1)))),
-			ConversationStates.ATTENDING, "Wciąż brakuje mi darów, które ci wymieniłem:\n"
-					+ " - 70 sztabek srebra – łzy Peruna\n" 
-					+ " - 70 sztabek mithrilu – oddech Swaroga\n"
-					+ " - 250 sztabek złota – blask Dziwii\n"
-					+ " - 100 bryłek mithrilu – dar Łady\n"
-					+ " - 200 bryłek złota – ofiara dla Mokoszy\n"
-					+ " - 500,000 monet – dziedzictwo twego rodu\n"
-					+ " - pierścień barona – dowód twej odwagi\n"
+					new QuestInStateCondition(QUEST_SLOT, "start"),
+					new NotCondition(hasRequiredItemsCondition())),
+			ConversationStates.ATTENDING, "Wciąż brakuje mi darów, które ci wymieniłem:"
+					+ requiredItemsList()
 					+ "Niech twe kroki poprowadzi mądrość. Czekam tu na ciebie, młody śmiałku.", null);
 	}
 
