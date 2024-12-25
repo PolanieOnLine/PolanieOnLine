@@ -69,8 +69,8 @@ class Player2DView<T extends Player> extends RPEntity2DView<T> {
 		final Sprite gotGrumpySprite = store.getSprite("data/sprites/ideas/grumpy.png");
 		final Sprite gotPkSprite = store.getSprite("data/sprites/ideas/pk.png");
 		skullSprite = store.getAnimatedSprite(gotPkSprite, 16, 200);
-		awaySprite = store.getAnimatedSprite(gotAwaySprite, 2000);
-		grumpySprite = store.getAnimatedSprite(gotGrumpySprite, 2000);
+		awaySprite = store.getAnimatedSprite(gotAwaySprite, 1000);
+		grumpySprite = store.getAnimatedSprite(gotGrumpySprite, 500);
 	}
 
 	private boolean ignored = false;
