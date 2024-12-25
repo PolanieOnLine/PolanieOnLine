@@ -93,7 +93,7 @@ public class PierscienMagnata extends AbstractQuest {
 			new ChatAction() {
 				@Override
 				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-					raiser.say("Ale wpierw sprawdzę czy masz wszystkie zadania zrobione nim dostaniesz #pierścień.");
+					raiser.say("Dobrze, wędrowcze, lecz najpierw upewnię się, czyś sprostał wszystkim próbom, zanim otrzymasz #pierścień, który symbolizuje władzę i potęgę.");
 					player.addKarma(10);
 				}
 			});
@@ -101,7 +101,7 @@ public class PierscienMagnata extends AbstractQuest {
 		npc.add(ConversationStates.QUEST_OFFERED,
 			ConversationPhrases.NO_MESSAGES, null,
 			ConversationStates.IDLE,
-			"Nie to nie.",
+			"Niechaj tak będzie. Odrzucasz wyzwanie, a wraz z nim nadzieję na chwałę.",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -10.0));
 	}
 
