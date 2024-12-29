@@ -13,19 +13,18 @@ package games.stendhal.server.maps.quests;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import org.apache.log4j.Logger;
 
-import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
-import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.IncreaseKarmaAction;
 import games.stendhal.server.entity.npc.action.MultipleActions;
@@ -46,570 +45,511 @@ import games.stendhal.server.entity.player.Player;
 import marauroa.common.Pair;
 
 public class ProsbyWiedzmy extends AbstractQuest {
+	private static Logger logger = Logger.getLogger(ProsbyWiedzmy.class);
+
 	private static final String QUEST_SLOT = "prosby_wiedzmy";
 	private final SpeakerNPC npc = npcs.get("Benigna");
+	private static final int DELAY_IN_MINUTES = 60;
+	private static final List<String> HELP_MESSAGES = Arrays.asList("pomożesz", "pomozesz", "pomogę", "pomoge", "tak");
 
-	private static final int DELAY_IN_MINUTES = 60*1;
-
-	private static Logger logger = Logger.getLogger(ProsbyWiedzmy.class);
+	private void giveRewards(Player player, Map<String, Integer> items, int xp, int karma) {
+		Optional.ofNullable(player).ifPresent(p -> {
+			items.forEach(p::drop);
+			p.addXP(xp);
+			p.addKarma(karma);
+		});
+	}
 
 	private void step1() {
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestCompletedCondition(QUEST_SLOT),
-				ConversationStates.ATTENDING,
-				"Dziękuję, że się pytasz ale wykonałeś już swoje zadanie.",
-				null);
+				ConversationStates.ATTENDING, null,
+				(player, sentence, raiser) -> {
+					raiser.say("Już " + player.getGenderVerb("wypełniłeś") + " moje zadanie. Idź w pokoju.");
+				});
 
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
 				new QuestNotStartedCondition(QUEST_SLOT),
 				ConversationStates.QUEST_OFFERED,
-				"Denerwuje mnie pewny smok, który znajduje się obok mojej chatki. Czy mógłbyś mi pomóc?",
+				"W mej chacie, wśród pradawnych ksiąg, odkryłam sekret kontroli smoków. Jednakże potrzebuję twojej pomocy."
+					+ " W okolicy krąży błękitny smok. Czy wesprzesz mnie w walce z nim?",
 				null);
 
-		final HashMap<String, Pair<Integer, Integer>> toKill = new HashMap<String, Pair<Integer, Integer>>();
-				toKill.put("błękitny smok", new Pair<Integer, Integer>(1,0));
-		final List<ChatAction> actions = new LinkedList<ChatAction>();
-				actions.add(new IncreaseKarmaAction(5.0));
-				actions.add(new SetQuestAction(QUEST_SLOT, 0, "start"));
-				actions.add(new StartRecordingKillsAction(QUEST_SLOT, 1, toKill));
+		Map<String, Pair<Integer, Integer>> toKill = Map.of("błękitny smok", new Pair<>(1, 0));
+		List<ChatAction> actions = List.of(
+			new IncreaseKarmaAction(5),
+			new SetQuestAction(QUEST_SLOT, 0, "start"),
+			new StartRecordingKillsAction(QUEST_SLOT, 1, toKill)
+		);
 
 		npc.add(ConversationStates.QUEST_OFFERED,
 				ConversationPhrases.YES_MESSAGES, null,
 				ConversationStates.ATTENDING,
-				"Och, wspaniale! Tak jak powiedziałam wcześniej... denerwuje mnie #'błękitny smok', który znajduje się obok mojej chatki, nie daje mi wyjść z niej."
-				+ " Jakbyś mógł to zabij go i przynieś mi co najmniej #'1 skórę niebieskiego smoka' w dowód tego, że go zabiłeś!",
+				"Smok ów, jak mówiłam, nawiedza me ziemie. Jeśli go zgładzisz, przynieś mi jego skórę na dowód twej odwagi.",
 				new MultipleActions(actions));
 
-		// Player says no, they've lost karma.
 		npc.add(ConversationStates.QUEST_OFFERED,
 				ConversationPhrases.NO_MESSAGES, null, ConversationStates.IDLE,
-				"No cóż, może doczekam się odpowiedniego dzielnego wojownika w tej krainie.",
-				new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -10.0));
+				"Niech inny śmiałek podejmie to wyzwanie. Nie będę cię zatrzymywać.",
+				new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -10));
 	}
 
 	private void step2() {
-		//player nie zabil smoka
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
-				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0, "start"),
-								 new NotCondition(new KilledForQuestCondition(QUEST_SLOT, 1))),
+				new AndCondition(
+					new QuestInStateCondition(QUEST_SLOT, 0, "start"),
+					new NotCondition(new KilledForQuestCondition(QUEST_SLOT, 1))
+				),
 				ConversationStates.ATTENDING, null,
-				new ChatAction() {
-					@Override
-					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-						raiser.say("Jeszcze nawet nie postanowiełeś wyzwać błękitnego smoka na walkę. Dlaczego mnie oszukujesz? Nie zabiłeś go jeszcze.");
-					}
+				(player, sentence, raiser) -> {
+					raiser.say("Czyżbyś " + player.getGenderVerb("lękał") + " się zmierzyć z błękitnym smokiem? Nie zawiedź mnie.");
 				});
 
-		//player zabil smoka ale nie ma potrzebnych resurce
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
-				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0,"start"),
-								 new KilledForQuestCondition(QUEST_SLOT, 1),
-								 new NotCondition(new PlayerHasItemWithHimCondition("skóra niebieskiego smoka", 1))),
+				new AndCondition(
+					new QuestInStateCondition(QUEST_SLOT, 0, "start"),
+					new KilledForQuestCondition(QUEST_SLOT, 1),
+					new NotCondition(new PlayerHasItemWithHimCondition("skóra niebieskiego smoka", 1))
+				),
 				ConversationStates.ATTENDING, null,
-				new ChatAction() {
-					@Override
-					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-						raiser.say("Nawet jeśli zabiłeś tego przerośniętego gada to jak mam Tobie zaufać? Masz mi przynieść co najmniej #'1 skórę niebieskiego smoka', abym mogła Tobie zaufać.");
-					}
+				(player, sentence, raiser) -> {
+					raiser.say("Przynieś mi dowód swego zwycięstwa, abym mogła uwierzyć w twe czyny.");
 				});
 
-		//player wykonal obydwa zlecenia
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
-				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0,"start"),
-								 new KilledForQuestCondition(QUEST_SLOT, 1),
-								 new PlayerHasItemWithHimCondition("skóra niebieskiego smoka", 1)),
+				new AndCondition(
+					new QuestInStateCondition(QUEST_SLOT, 0, "start"),
+					new KilledForQuestCondition(QUEST_SLOT, 1),
+					new PlayerHasItemWithHimCondition("skóra niebieskiego smoka", 1)
+				),
 				ConversationStates.ATTENDING, null,
-				new ChatAction() {
-					@Override
-					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-						raiser.say("Świetnie, teraz w końcu będę mogła wyjść z tej mojej chatki i pozbierać co niektóre potrzebne mi składniki. Właśnie... będę jeszcze potrzebowała twojej pomocy, przyjdź do mnie za godzinę i powiedz mi #'składniki'.");
-						player.drop("skóra niebieskiego smoka", 1);
-						player.addXP(5000);
-						player.addKarma(10);
-						player.setQuest(QUEST_SLOT, "czas_składniki;"+System.currentTimeMillis());
-					}
+				(player, sentence, raiser) -> {
+					raiser.say("Twoja odwaga mnie nie zawiodła. Wróć za godzinę, a przygotuję kolejne zadanie.");
+					giveRewards(player, Map.of("skóra niebieskiego smoka", 1), 5000, 10);
+					player.setQuest(QUEST_SLOT, "czas_składniki;" + System.currentTimeMillis());
 				});
 	}
 
 	private void czas1() {
 		final String extraTrigger = "składniki";
-		List<String> questTrigger;
-		questTrigger = new LinkedList<String>(ConversationPhrases.QUEST_MESSAGES);
+		List<String> questTrigger = new LinkedList<>(ConversationPhrases.QUEST_MESSAGES);
 		questTrigger.add(extraTrigger);
 
 		npc.add(ConversationStates.ATTENDING, questTrigger,
-				new AndCondition(new QuestStateStartsWithCondition(QUEST_SLOT, "czas_składniki"),
-								 // jeszcze nie minal czas
-								 new NotCondition(new TimePassedCondition(QUEST_SLOT,1,DELAY_IN_MINUTES))),
+				new AndCondition(
+					new QuestStateStartsWithCondition(QUEST_SLOT, "czas_składniki"),
+					new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, DELAY_IN_MINUTES))
+				),
 				ConversationStates.ATTENDING, null,
-				new SayTimeRemainingAction(QUEST_SLOT, 1, DELAY_IN_MINUTES, " Jeszcze nie mineła godzina. Wróć proszę za "));
+				new SayTimeRemainingAction(QUEST_SLOT, 1, DELAY_IN_MINUTES, " Czas jeszcze nie nadszedł. Wróć za "));
 
 		npc.add(ConversationStates.ATTENDING, questTrigger,
-				new AndCondition(new QuestStateStartsWithCondition(QUEST_SLOT, "czas_składniki"),
-								 // czas minal, dalszy krok
-								 new TimePassedCondition(QUEST_SLOT,1,DELAY_IN_MINUTES)),
+				new AndCondition(
+					new QuestStateStartsWithCondition(QUEST_SLOT, "czas_składniki"),
+					new TimePassedCondition(QUEST_SLOT, 1, DELAY_IN_MINUTES)
+				),
 				ConversationStates.ATTENDING,
-				"O wróciłeś... Potrzebuję pewnych składników, których ja sama nie mogę zdobyć. #'Pomożesz'?",
-				new SetQuestAction(QUEST_SLOT,"dwuglowyzielonysmok?"));
+				"Witaj ponownie, śmiałku. Nadszedł czas na kolejną próbę. Muszę zdobyć materiały do stworzenia amuletu kontroli smoków. Pomożesz mi?",
+				new SetQuestAction(QUEST_SLOT, "dwuglowyzielonysmok?"));
 
-		//kogo ma zabic w nastepnym kroku
-		final HashMap<String, Pair<Integer, Integer>> toKill = new HashMap<String, Pair<Integer, Integer>>();
-							toKill.put("dwugłowy zielony smok", new Pair<Integer, Integer>(1,0));
-		final List<ChatAction> actions = new LinkedList<ChatAction>();
-							actions.add(new SetQuestAction(QUEST_SLOT, 0, "dwuglowyzielonysmok"));
-							actions.add(new StartRecordingKillsAction(QUEST_SLOT, 1, toKill));
+		Map<String, Pair<Integer, Integer>> toKill = Map.of("dwugłowy zielony smok", new Pair<>(1, 0));
+		List<ChatAction> actions = List.of(
+			new SetQuestAction(QUEST_SLOT, 0, "dwuglowyzielonysmok"),
+			new StartRecordingKillsAction(QUEST_SLOT, 1, toKill)
+		);
 
-		// gracz zgadza sie wykonac prozbe
-		npc.add(ConversationStates.ATTENDING, Arrays.asList("pomożesz", "pomozesz", "pomogę", "pomoge", "tak"),
-					new QuestInStateCondition(QUEST_SLOT, "dwuglowyzielonysmok?"),
-					ConversationStates.ATTENDING,
-					"Wspaniale... Musisz pójść zabić dla mnie #'dwugłowego zielonego smoka' i przynieść mi potrzebny materiał."
-					+ " Chodzi mi dokładnie, abyś przyniósł dla mnie #'5 skór zielonego smoka'. Potrzebuję, aby wykonać amulet by te stworzenia słuchały się mnie."
-					+ " Pamiętaj, że musisz zabić go samodzielnie!",
+		npc.add(ConversationStates.ATTENDING, HELP_MESSAGES,
+				new QuestInStateCondition(QUEST_SLOT, "dwuglowyzielonysmok?"),
+				ConversationStates.ATTENDING,
+				"Twa odwaga jest godna podziwu, a czy idzie ona w patrze z honorem? Poskrom proszę dwugłowego zielonego smoka oraz przynieść mi pięć skór w dowód jego pokonania.",
 				new MultipleActions(actions));
 	}
 
 	private void step3() {
-		//player nie zabil smoka
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
-				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0, "dwuglowyzielonysmok"),
-								 new NotCondition(new KilledForQuestCondition(QUEST_SLOT, 1))),
+				new AndCondition(
+					new QuestInStateCondition(QUEST_SLOT, 0, "dwuglowyzielonysmok"),
+					new NotCondition(new KilledForQuestCondition(QUEST_SLOT, 1))
+				),
 				ConversationStates.ATTENDING, null,
-				new ChatAction() {
-					@Override
-					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-						raiser.say("Jeszcze nie postanowiłeś zabić samodzielnie dwugłowego zielonego smoka, dlaczego mnie oszukujesz?");
-					}
+				(player, sentence, raiser) -> {
+					raiser.say("Czyżby dwugłowy zielony smok przerósł twoją odwagę? Nie cofaj się w tej chwili próby!");
 				});
 
-		//player zabil smoka ale nie ma potrzebnych resurce
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
-				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0,"dwuglowyzielonysmok"),
-								 new KilledForQuestCondition(QUEST_SLOT, 1),
-								 new NotCondition(new PlayerHasItemWithHimCondition("skóra zielonego smoka", 5))),
+				new AndCondition(
+					new QuestInStateCondition(QUEST_SLOT, 0, "dwuglowyzielonysmok"),
+					new KilledForQuestCondition(QUEST_SLOT, 1),
+					new NotCondition(new PlayerHasItemWithHimCondition("skóra zielonego smoka", 5))
+				),
 				ConversationStates.ATTENDING, null,
-				new ChatAction() {
-					@Override
-					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-						raiser.say("Nawet jeśli zabiłeś dwugłowego zielonego smok to musisz przynieść mi dowód tego, że go ubiłeś. Proszę, przynieś mi #'5 skór zielonego smoka'.");
-					}
+				(player, sentence, raiser) -> {
+					raiser.say(player.getGenderVerb("Pokonałeś") + " smoka, lecz potrzebuję pięciu skór zielonego smoka. Przynieś je, bym mogła kontynuować swe dzieło.");
 				});
-		//player wykonal obydwa zlecenia
+
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
-			new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0,"dwuglowyzielonysmok"),
-							 new KilledForQuestCondition(QUEST_SLOT, 1),
-							 new PlayerHasItemWithHimCondition("skóra zielonego smoka", 5)),
-			ConversationStates.ATTENDING, null,
-			new ChatAction() {
-				@Override
-				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-					raiser.say("Och, pokonałeś go! Dziękuję! Wróć za godzinę po następne zadanie. Jak wrócisz powiedz mi #'smok'.");
-					player.drop("skóra zielonego smoka", 5);
-					player.addXP(7500);
-					player.addKarma(20);
-					player.setQuest(QUEST_SLOT, "czas_kiel;"+System.currentTimeMillis());
-				}
-			});
+				new AndCondition(
+					new QuestInStateCondition(QUEST_SLOT, 0, "dwuglowyzielonysmok"),
+					new KilledForQuestCondition(QUEST_SLOT, 1),
+					new PlayerHasItemWithHimCondition("skóra zielonego smoka", 5)
+				),
+				ConversationStates.ATTENDING, null,
+				(player, sentence, raiser) -> {
+					raiser.say("Twoja determinacja godna jest pochwały! Wróć za godzinę, a dam ci nowe wyzwanie.");
+					giveRewards(player, Map.of("skóra zielonego smoka", 5), 7500, 20);
+					player.setQuest(QUEST_SLOT, "czas_kiel;" + System.currentTimeMillis());
+				});
 	}
 
 	private void czas2() {
 		final String extraTrigger = "smok";
-		List<String> questTrigger;
-		questTrigger = new LinkedList<String>(ConversationPhrases.QUEST_MESSAGES);
+		List<String> questTrigger = new LinkedList<>(ConversationPhrases.QUEST_MESSAGES);
 		questTrigger.add(extraTrigger);
 
 		npc.add(ConversationStates.ATTENDING, questTrigger,
-				new AndCondition(new QuestStateStartsWithCondition(QUEST_SLOT, "czas_kiel"),
-								 // jeszcze nie minal czas
-								 new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, DELAY_IN_MINUTES))),
+				new AndCondition(
+					new QuestStateStartsWithCondition(QUEST_SLOT, "czas_kiel"),
+					new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, DELAY_IN_MINUTES))
+				),
 				ConversationStates.ATTENDING, null,
-				new SayTimeRemainingAction(QUEST_SLOT, 1, DELAY_IN_MINUTES, " Jeszcze nie minęła godzina. Wróć proszę za "));
+				new SayTimeRemainingAction(QUEST_SLOT, 1, DELAY_IN_MINUTES, " Jeszcze trochę cierpliwości, powróć za "));
 
 		npc.add(ConversationStates.ATTENDING, questTrigger,
-				new AndCondition(new QuestStateStartsWithCondition(QUEST_SLOT, "czas_kiel"),
-								 // czas minal, dalszy krok
-								 new TimePassedCondition(QUEST_SLOT, 1, DELAY_IN_MINUTES)),
+				new AndCondition(
+					new QuestStateStartsWithCondition(QUEST_SLOT, "czas_kiel"),
+					new TimePassedCondition(QUEST_SLOT, 1, DELAY_IN_MINUTES)
+				),
 				ConversationStates.ATTENDING,
-				"Dobrze więc... Tym razem potrzebuję nowych składników. #Pomożesz mi?",
-				new SetQuestAction(QUEST_SLOT,"kly?"));
-
-		final List<ChatAction> actions = new LinkedList<ChatAction>();
-							actions.add(new SetQuestAction(QUEST_SLOT, 0, "kielsmoka"));
-
-		// gracz zgadza sie wykonac prozbe
-		npc.add(ConversationStates.ATTENDING, Arrays.asList("pomożesz", "pomozesz", "pomogę", "pomoge", "tak"),
-				new QuestInStateCondition(QUEST_SLOT, "kly?"),
-				ConversationStates.ATTENDING,
-				"Och, wspaniale! Same skóry zielonego smoka nic nie pomogą, potrzebuję coś, żeby wszystkie smoki mnie słuchały."
-				+ " Aaaah... już wiem.. musisz przynieść mi co najmniej #'50 kłów smoka'. Powinno to wystarczyć aby wyrobić idealny amulet.",
-				new MultipleActions(actions));
+				"Ach, cieszę się, że jesteś znowu tutaj! Potrzebuję teraz kłów smoków, by zakończyć pewien magiczny rytuał. Przynieś ich pięćdziesiąt!",
+				new SetQuestAction(QUEST_SLOT, "kielsmoka"));
 	}
 
 	private void step4() {
-		//player nie ma potrzebnych resurce
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
-			new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0,"kielsmoka"),
-							 new NotCondition(new PlayerHasItemWithHimCondition("kieł smoka", 50))),
-			ConversationStates.ATTENDING, null,
-			new ChatAction() {
-				@Override
-				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-					raiser.say("Co mnie oszukujesz? Przecież wiem, że nie masz przy sobie jeszcze wystarczającej liczny kłów smoka.");
-				}
-			});
+				new AndCondition(
+					new QuestInStateCondition(QUEST_SLOT, 0, "kielsmoka"),
+					new NotCondition(new PlayerHasItemWithHimCondition("kieł smoka", 50))
+				),
+				ConversationStates.ATTENDING, null,
+				(player, sentence, raiser) -> {
+					raiser.say("Nie mam jeszcze wszystkich kłów smoka, a czas nagli. Przyspiesz swe działania!");
+				});
 
-		//player wykonal obydwa zlecenia
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
-			new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0,"kielsmoka"),
-							 new PlayerHasItemWithHimCondition("kieł smoka", 50)),
-			ConversationStates.ATTENDING, null,
-			new ChatAction() {
-				@Override
-				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-					raiser.say("Dziękuję, że przyniosłeś te kły dla mnie! Wróć proszę za 1 godzinę, powiem ci, czy te składniki pomogły. Przypomnij mi mówiąc #'kieł smoka'.");
-					player.drop("kieł smoka", 50);
-					player.addXP(10000);
-					player.addKarma(20);
-					player.setQuest(QUEST_SLOT, "czas_czarnysmok;"+System.currentTimeMillis());
-				}
-			});
+				new AndCondition(
+					new QuestInStateCondition(QUEST_SLOT, 0, "kielsmoka"),
+					new PlayerHasItemWithHimCondition("kieł smoka", 50)
+				),
+				ConversationStates.ATTENDING, null,
+				(player, sentence, raiser) -> {
+					raiser.say("Znakomicie! Teraz mogę kontynuować swój rytuał. Wróć za godzinę, a dowiesz się, co dalej.");
+					giveRewards(player, Map.of("kieł smoka", 50), 10000, 20);
+					player.setQuest(QUEST_SLOT, "czas_czarnysmok;" + System.currentTimeMillis());
+				});
 	}
 
 	private void czas3() {
 		final String extraTrigger = "kieł smoka";
-		List<String> questTrigger;
-		questTrigger = new LinkedList<String>(ConversationPhrases.QUEST_MESSAGES);
+		List<String> questTrigger = new LinkedList<>(ConversationPhrases.QUEST_MESSAGES);
 		questTrigger.add(extraTrigger);
 
 		npc.add(ConversationStates.ATTENDING, questTrigger,
-				new AndCondition(new QuestStateStartsWithCondition(QUEST_SLOT, "czas_czarnysmok"),
-								 // jeszcze nie minal czas
-								 new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, DELAY_IN_MINUTES))),
+				new AndCondition(
+					new QuestStateStartsWithCondition(QUEST_SLOT, "czas_czarnysmok"),
+					new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, DELAY_IN_MINUTES))
+				),
 				ConversationStates.ATTENDING, null,
-				new SayTimeRemainingAction(QUEST_SLOT, 1, DELAY_IN_MINUTES, " Jeszcze nie minęła godzina. Wróć proszę za "));
+				new SayTimeRemainingAction(QUEST_SLOT, 1, DELAY_IN_MINUTES, " Jeszcze czas nie nadszedł. Wróć za "));
 
 		npc.add(ConversationStates.ATTENDING, questTrigger,
-				new AndCondition(new QuestStateStartsWithCondition(QUEST_SLOT, "czas_czarnysmok"),
-								 // czas minal, dalszy krok
-								 new TimePassedCondition(QUEST_SLOT, 1,DELAY_IN_MINUTES)),
+				new AndCondition(
+					new QuestStateStartsWithCondition(QUEST_SLOT, "czas_czarnysmok"),
+					new TimePassedCondition(QUEST_SLOT, 1, DELAY_IN_MINUTES)
+				),
 				ConversationStates.ATTENDING,
-				"Amulet zadziałał, lecz tylko na dwa olbrzymie smoki. Potrzebuję nadal twojej pomocy. #'Pomożesz'?",
-				new SetQuestAction(QUEST_SLOT,"dużesmoki?"));
+				"Dobrze więc, smocze kły nieco pomogły podczas odprawienia rytuału. Jednak potrzebuję czegoś więcej. Pomożesz?",
+				new SetQuestAction(QUEST_SLOT, "dużesmoki?"));
 
-		//kogo ma zabic w nastepnym kroku
-		final HashMap<String, Pair<Integer, Integer>> toKill = new HashMap<String, Pair<Integer, Integer>>();
-							toKill.put("czarne smoczysko", new Pair<Integer, Integer>(1,0));
-							toKill.put("smok arktyczny", new Pair<Integer, Integer>(1,0));
-		final List<ChatAction> actions = new LinkedList<ChatAction>();
-							actions.add(new SetQuestAction(QUEST_SLOT, 0, "czarnesmoczysko"));
-							actions.add(new StartRecordingKillsAction(QUEST_SLOT, 1, toKill));
+		Map<String, Pair<Integer, Integer>> toKill = Map.of(
+				"czarne smoczysko", new Pair<>(1, 0),
+				"smok arktyczny", new Pair<>(1, 0)
+			);
+		List<ChatAction> actions = List.of(
+			new SetQuestAction(QUEST_SLOT, 0, "czarnesmoczysko"),
+			new StartRecordingKillsAction(QUEST_SLOT, 1, toKill)
+		);
 
-		// gracz zgadza sie wykonac prozbe
-		npc.add(ConversationStates.ATTENDING, Arrays.asList("pomożesz", "pomozesz", "pomogę", "pomoge", "tak"),
+		npc.add(ConversationStates.ATTENDING, HELP_MESSAGES,
 				new QuestInStateCondition(QUEST_SLOT, "dużesmoki?"),
 				ConversationStates.ATTENDING,
-				"Dobrze. Niestety amulet zadziałał jedynie na #'czarne smoczysko' oraz #'smoka arktycznego'."
-				+ " Proszę, musisz zabić te dwa smoki, czuję, że ten mój nowy amulet jest nadal niestabilny."
-				+ " Nie wiem jak długo będą się mnie słuchać, więc wolę jednak mieć na chwilę spokoju od nich. Przynieś mi jeszcze #'3 skóry czarnego smoka' i #'3 skóry arktycznego smoka'.",
+				"Dobrze. Niestety wykonany rytuał, aby wzmocnić amulet nie podziałał na #'czarne smoczysko' oraz #'smoka arktycznego'."
+					+ " Pokonaj te oba przerośnięte gady oraz przynieś jeszcze po #'3 skóry czarnego smoka' i #'3 skóry arktycznego smoka'.",
 				new MultipleActions(actions));
-
 	}
 
 	private void step5() {
-		//player nie zabil smoka
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
-				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0, "czarnesmoczysko"),
-								 new NotCondition(new KilledForQuestCondition(QUEST_SLOT, 1))),
+				new AndCondition(
+					new QuestInStateCondition(QUEST_SLOT, 0, "czarnesmoczysko"),
+					new NotCondition(new KilledForQuestCondition(QUEST_SLOT, 1))
+				),
 				ConversationStates.ATTENDING, null,
-				new ChatAction() {
-					@Override
-					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-						raiser.say("Nie udało Ci się jeszcze zabić czarnego smoczyska i smoka arktycznego. Masz ich zabić!");
-					}
+				(player, sentence, raiser) -> {
+					raiser.say("Nie podjąłeś jeszcze starcia z czarnym smoczyskiem i smokiem arktycznym? Odwagi!");
 				});
 
-		//player zabil smoka ale nie ma potrzebnych resurce
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
-				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0,"czarnesmoczysko"),
-								 new KilledForQuestCondition(QUEST_SLOT, 1),
-								 new NotCondition(
-								 new AndCondition(
-													new PlayerHasItemWithHimCondition("skóra czarnego smoka", 3),
-													new PlayerHasItemWithHimCondition("skóra arktycznego smoka", 3)))),
+				new AndCondition(
+					new QuestInStateCondition(QUEST_SLOT, 0, "czarnesmoczysko"),
+					new KilledForQuestCondition(QUEST_SLOT, 1),
+					new NotCondition(new AndCondition(
+						new PlayerHasItemWithHimCondition("skóra czarnego smoka", 3),
+						new PlayerHasItemWithHimCondition("skóra arktycznego smoka", 3)
+					))
+				),
 				ConversationStates.ATTENDING, null,
-				new ChatAction() {
-					@Override
-					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-						raiser.say("Nawet jeśli ubiłeś te dwa smoki to jak mam Tobie jeszcze zaufać? Przynieś mi #'3 skóry czarnego smoka' jak i również #'3 skóry arktycznego smoka'.");
-					}
+				(player, sentence, raiser) -> {
+					raiser.say("Choć " + player.getGenderVerb("pokonałeś") + " smoki, ale brakuje mi jeszcze odpowiednich skór. Przynieś trzy skóry czarnego i arktycznego smoka.");
 				});
 
-		//player wykonal obydwa zlecenia
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
-				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0,"czarnesmoczysko"),
-								 new KilledForQuestCondition(QUEST_SLOT, 1),
-								 new PlayerHasItemWithHimCondition("skóra czarnego smoka", 3),
-								 new PlayerHasItemWithHimCondition("skóra arktycznego smoka", 3)),
+				new AndCondition(
+					new QuestInStateCondition(QUEST_SLOT, 0, "czarnesmoczysko"),
+					new KilledForQuestCondition(QUEST_SLOT, 1),
+					new PlayerHasItemWithHimCondition("skóra czarnego smoka", 3),
+					new PlayerHasItemWithHimCondition("skóra arktycznego smoka", 3)
+				),
 				ConversationStates.ATTENDING, null,
-				new ChatAction() {
-					@Override
-					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-						raiser.say("Udało Ci się! Dziękuję! Wróć proszę za 1 godzinę po kolejne zadanie. Przypomnij mi mówiąc #'duże smoki'.");
-						player.drop("skóra czarnego smoka", 3);
-						player.drop("skóra arktycznego smoka", 3);
-						player.addXP(12500);
-						player.addKarma(20);
-						player.setQuest(QUEST_SLOT, "czas_krewsmoka;"+System.currentTimeMillis());
-					}
+				(player, sentence, raiser) -> {
+					raiser.say("Znakomicie! Dzięki tobie mogę dalej kontynuować. Wróć za godzinę, a dowiesz się, co dalej.");
+					giveRewards(player, Map.of(
+						"skóra czarnego smoka", 3,
+						"skóra arktycznego smoka", 3
+					), 12500, 20);
+					player.setQuest(QUEST_SLOT, "czas_krewsmoka;" + System.currentTimeMillis());
 				});
 	}
 
 	private void czas4() {
 		final String extraTrigger = "duże smoki";
-		List<String> questTrigger;
-		questTrigger = new LinkedList<String>(ConversationPhrases.QUEST_MESSAGES);
+		List<String> questTrigger = new LinkedList<>(ConversationPhrases.QUEST_MESSAGES);
 		questTrigger.add(extraTrigger);
 
 		npc.add(ConversationStates.ATTENDING, questTrigger,
-				new AndCondition(new QuestStateStartsWithCondition(QUEST_SLOT, "czas_krewsmoka"),
-								 // jeszcze nie minal czas
-								 new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, DELAY_IN_MINUTES))),
+				new AndCondition(
+					new QuestStateStartsWithCondition(QUEST_SLOT, "czas_krewsmoka"),
+					new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, DELAY_IN_MINUTES))
+				),
 				ConversationStates.ATTENDING, null,
-				new SayTimeRemainingAction(QUEST_SLOT, 1, DELAY_IN_MINUTES, " Jeszcze nie minęła godzina. Wróć proszę za "));
+				new SayTimeRemainingAction(QUEST_SLOT, 1, DELAY_IN_MINUTES, " Nie przeszkadzaj mi teraz, powróć za "));
 
 		npc.add(ConversationStates.ATTENDING, questTrigger,
-				new AndCondition(new QuestStateStartsWithCondition(QUEST_SLOT, "czas_krewsmoka"),
-								 // czas minal, dalszy krok
-								 new TimePassedCondition(QUEST_SLOT, 1, DELAY_IN_MINUTES)),
+				new AndCondition(
+					new QuestStateStartsWithCondition(QUEST_SLOT, "czas_krewsmoka"),
+					new TimePassedCondition(QUEST_SLOT, 1, DELAY_IN_MINUTES)
+				),
 				ConversationStates.ATTENDING,
-				"Jeszcze nie sprawdzałam czy mój amulet jest już wstanie kontrolować inne smoki, więc wolę nie ryzykować jeszcze. Przeczytałam w swej magicznej książce, aby udoskonalić swój amulet potrzebuję jeszcze kilku składników. #'Pomożesz'?",
-				new SetQuestAction(QUEST_SLOT,"krew?"));
+				"Smoki to potężne istoty, a ich moc jest trudna do ujarzmienia. Aby udoskonalić mój amulet, potrzebuję pomocy. Czy podejmiesz się tego zadania?",
+				new SetQuestAction(QUEST_SLOT, "krew?"));
 
-		final List<ChatAction> actions = new LinkedList<ChatAction>();
-							actions.add(new SetQuestAction(QUEST_SLOT, 0, "krewsmoka"));
-
-		// gracz zgadza sie wykonac prozbe
-		npc.add(ConversationStates.ATTENDING, Arrays.asList("pomożesz", "pomozesz", "pomogę", "pomoge", "tak"),
+		npc.add(ConversationStates.ATTENDING, HELP_MESSAGES,
 				new QuestInStateCondition(QUEST_SLOT, "krew?"),
 				ConversationStates.ATTENDING,
-				"Och, wspaniale! Potrzebuję jeszcze sporo składników, tym razem nie powinnam się pomylić!"
-				+ " Żebyś się nie męczył długo zbieraniem ich to podziele je na kilka zadań. Niektóre składniki również uda mi się samemu zdobyć."
-				+ " Wpierw musisz mi przynieść co najmniej #'30 krwi smoków', abym mogła skroplić swój amulet pewnym specyfikiem, który wykonam.",
-				new MultipleActions(actions));
+				"Twoja odwaga jest godna podziwu. Przynieś mi 30 fiolek z krwią smoków, abym mogła wzmocnić amulet i zabezpieczyć się przed ich gniewem.",
+				new SetQuestAction(QUEST_SLOT, 0, "krewsmoka"));
 	}
 
 	private void step6() {
-		//player nie ma potrzebnych resurce
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
-				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0,"krewsmoka"),
-								 new NotCondition(new PlayerHasItemWithHimCondition("krew smoka", 30))),
+				new AndCondition(
+					new QuestInStateCondition(QUEST_SLOT, 0, "krewsmoka"),
+					new NotCondition(new AndCondition(
+						new PlayerHasItemWithHimCondition("smocza krew", 30)
+					))
+				),
 				ConversationStates.ATTENDING, null,
-				new ChatAction() {
-					@Override
-					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-						raiser.say("Nawet jeśli zabiłeś czerwonego smoka, na pewno odwiedzi mnie ponownie w koszmarze jeśli nie będę miała amuletu. Proszę, dostarcz mi skóry czerwonego smoka.");
-					}
-		});
-		//player wykonal obydwa zlecenia
+				(player, sentence, raiser) -> {
+					raiser.say("Smocza krew jest kluczem do ujarzmienia ich mocy. Przynieś ją, abyśmy mogli uczynić amulet niezwyciężonym.");
+				});
+
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
-				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0,"krewsmoka"),
-								 new PlayerHasItemWithHimCondition("krew smoka", 30)),
+				new AndCondition(
+					new QuestInStateCondition(QUEST_SLOT, 0, "krewsmoka"),
+					new PlayerHasItemWithHimCondition("smocza krew", 30)
+				),
 				ConversationStates.ATTENDING, null,
-				new ChatAction() {
-					@Override
-					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-						raiser.say("Dziękuję za krew smoka. Za chwilę będę się brała do pracy, wykonam pewny specyfik, którym będę mogła skroplić nim trochę swój amulet. Przyjdź do mnie dopiero za godzine i powiedz mi #'krew'.");
-						player.drop("krew smoka", 30);
-						player.addXP(15000);
-						player.addKarma(20);
-						player.setQuest(QUEST_SLOT, "czas_glodna;"+System.currentTimeMillis());
-					}
+				(player, sentence, raiser) -> {
+					raiser.say("Twoja pomoc jest bezcenna. Wróć za godzinę, a zdradzę ci, co musimy uczynić dalej.");
+					giveRewards(player, Map.of("smocza krew", 30), 15000, 20);
+					player.setQuest(QUEST_SLOT, "czas_glodna;" + System.currentTimeMillis());
 				});
 	}
 
 	private void czas5() {
 		final String extraTrigger = "krew";
-		List<String> questTrigger;
-		questTrigger = new LinkedList<String>(ConversationPhrases.QUEST_MESSAGES);
+		List<String> questTrigger = new LinkedList<>(ConversationPhrases.QUEST_MESSAGES);
 		questTrigger.add(extraTrigger);
 
 		npc.add(ConversationStates.ATTENDING, questTrigger,
-				new AndCondition(new QuestStateStartsWithCondition(QUEST_SLOT, "czas_glodna"),
-								 // jeszcze nie minal czas
-								 new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, DELAY_IN_MINUTES))),
+				new AndCondition(
+					new QuestStateStartsWithCondition(QUEST_SLOT, "czas_glodna"),
+					new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, DELAY_IN_MINUTES))
+				),
 				ConversationStates.ATTENDING, null,
-				new SayTimeRemainingAction(QUEST_SLOT, 1, DELAY_IN_MINUTES, " Jeszcze nie skończyłam robić swojego specyfiku. Nie przeszkadzaj mi w tym momencie. Wróć proszę za "));
+				new SayTimeRemainingAction(QUEST_SLOT, 1, DELAY_IN_MINUTES, " Nie przeszkadzaj mi w tym momencie. Powróć za "));
 
 		npc.add(ConversationStates.ATTENDING, questTrigger,
-				new AndCondition(new QuestStateStartsWithCondition(QUEST_SLOT, "czas_glodna"),
-								 // czas minal, dalszy krok
-								 new TimePassedCondition(QUEST_SLOT, 1, DELAY_IN_MINUTES)),
+				new AndCondition(
+					new QuestStateStartsWithCondition(QUEST_SLOT, "czas_glodna"),
+					new TimePassedCondition(QUEST_SLOT, 1, DELAY_IN_MINUTES)
+				),
 				ConversationStates.ATTENDING,
-				"Od pewnego momentu trochę zgłodniałam, a w tej jaskini nie ma żadnej tawerny! #'Pomożesz'?",
-				new SetQuestAction(QUEST_SLOT,"glodna?"));
+				"Czuję, że czas wielkiego rytuału zbliża się, lecz nie mogę działać o pustym żołądku. Pomożesz mi zdobyć zapasy, abym miała siłę na dalsze przygotowania?",
+				new SetQuestAction(QUEST_SLOT, "glodna?"));
 
-		final List<ChatAction> actions = new LinkedList<ChatAction>();
-							actions.add(new SetQuestAction(QUEST_SLOT, 0, "glodna"));
-
-		// gracz zgadza sie wykonac prozbe
-		npc.add(ConversationStates.ATTENDING, Arrays.asList("pomożesz", "pomozesz", "pomogę", "pomoge", "tak"),
+		npc.add(ConversationStates.ATTENDING, HELP_MESSAGES,
 				new QuestInStateCondition(QUEST_SLOT, "glodna?"),
 				ConversationStates.ATTENDING,
-				"Wiesz.. Ciężko mi się pracuje jak jest się głonym. Proszę przynieś mi co najmniej #'100 mięsa', #'40 chleba', #'40 sera' oraz #'20 bukłaków z wodą', abym miała zapas na kolejny rok.",
-				new MultipleActions(actions));
+				"Przynieś mi 100 kawałków mięsa, 40 bochenków chleba, 40 kawałków sera oraz 20 bukłaków z wodą. To da mi siłę na kolejne wyzwania.",
+				new SetQuestAction(QUEST_SLOT, 0, "glodna"));
 	}
 
 	private void step7() {
-		//player nie ma potrzebnych resurce
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
-				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0,"glodna"),
-								 new NotCondition(
-								 new AndCondition(
-													new PlayerHasItemWithHimCondition("mięso", 100),
-													new PlayerHasItemWithHimCondition("chleb", 40),
-													new PlayerHasItemWithHimCondition("ser", 40),
-													new PlayerHasItemWithHimCondition("bukłak z wodą", 20)))),
+				new AndCondition(
+					new QuestInStateCondition(QUEST_SLOT, 0, "glodna"),
+					new NotCondition(new AndCondition(
+						new PlayerHasItemWithHimCondition("mięso", 100),
+						new PlayerHasItemWithHimCondition("chleb", 40),
+						new PlayerHasItemWithHimCondition("ser", 40),
+						new PlayerHasItemWithHimCondition("bukłak z wodą", 20)
+					))
+				),
 				ConversationStates.ATTENDING, null,
-				new ChatAction() {
-					@Override
-					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-						raiser.say("Nie przyniosłeś mi jeszcze mojego jedzenia! Potrzebuję go, abym mogła dalej pracować! Proszę przynieś mi je.");
-					}
+				(player, sentence, raiser) -> {
+					raiser.say("Nie " + player.getGenderVerb("przyniosłeś") + " jeszcze zapasów, których potrzebuję. Bez nich nie dokończę przygotowań.");
 				});
-		//player wykonal obydwa zlecenia
+
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
-				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0,"glodna"),
-								new PlayerHasItemWithHimCondition("mięso", 100),
-								new PlayerHasItemWithHimCondition("chleb", 40),
-								new PlayerHasItemWithHimCondition("ser", 40),
-								new PlayerHasItemWithHimCondition("bukłak z wodą", 20)),
+				new AndCondition(
+					new QuestInStateCondition(QUEST_SLOT, 0, "glodna"),
+					new PlayerHasItemWithHimCondition("mięso", 100),
+					new PlayerHasItemWithHimCondition("chleb", 40),
+					new PlayerHasItemWithHimCondition("ser", 40),
+					new PlayerHasItemWithHimCondition("bukłak z wodą", 20)
+				),
 				ConversationStates.ATTENDING, null,
-				new ChatAction() {
-					@Override
-					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-						raiser.say("Świetnie! W końcu będę mogła porządnie najeść się i pracować dalej! Przyjdź do mnie za godzinę i powiedz mi #'jedzenie' wtedy otrzymasz kolejne zadanie ode mnie.");
-						player.drop("mięso", 100);
-						player.drop("chleb", 40);
-						player.drop("ser", 40);
-						player.drop("bukłak z wodą", 20);
-						player.addXP(20000);
-						player.addKarma(40);
-						player.setQuest(QUEST_SLOT, "czas_ostatnie;"+System.currentTimeMillis());
-					}
+				(player, sentence, raiser) -> {
+					raiser.say("Wspaniale! Teraz mogę skupić się na naszym celu. Wróć za godzinę, a dam ci nowe zadanie.");
+					giveRewards(player, Map.of(
+						"mięso", 100,
+						"chleb", 40,
+						"ser", 40,
+						"bukłak z wodą", 20
+					), 20000, 40);
+					player.setQuest(QUEST_SLOT, "czas_ostatnie;" + System.currentTimeMillis());
 				});
 	}
 
 	private void czas6() {
 		final String extraTrigger = "jedzenie";
-		List<String> questTrigger;
-		questTrigger = new LinkedList<String>(ConversationPhrases.QUEST_MESSAGES);
+		List<String> questTrigger = new LinkedList<>(ConversationPhrases.QUEST_MESSAGES);
 		questTrigger.add(extraTrigger);
 
 		npc.add(ConversationStates.ATTENDING, questTrigger,
-				new AndCondition(new QuestStateStartsWithCondition(QUEST_SLOT, "czas_ostatnie"),
-								 // jeszcze nie minal czas
-								 new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, DELAY_IN_MINUTES))),
+				new AndCondition(
+					new QuestStateStartsWithCondition(QUEST_SLOT, "czas_ostatnie"),
+					new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, DELAY_IN_MINUTES))
+				),
 				ConversationStates.ATTENDING, null,
 				new SayTimeRemainingAction(QUEST_SLOT, 1, DELAY_IN_MINUTES, " Jeszcze nie minęła godzina. Wróć proszę za "));
 
 		npc.add(ConversationStates.ATTENDING, questTrigger,
-				new AndCondition(new QuestStateStartsWithCondition(QUEST_SLOT, "czas_ostatnie"),
-								 // czas minal, dalszy krok
-								 new TimePassedCondition(QUEST_SLOT, 1, DELAY_IN_MINUTES)),
+				new AndCondition(
+					new QuestStateStartsWithCondition(QUEST_SLOT, "czas_ostatnie"),
+					new TimePassedCondition(QUEST_SLOT, 1, DELAY_IN_MINUTES)
+				),
 				ConversationStates.ATTENDING,
-				"Już prawie mój amulet do kontrolowania smoków jest skończony. #'Pomógłbyś' mi ponownie?",
-				new SetQuestAction(QUEST_SLOT,"ostatnie?"));
+				"Już prawie mój amulet jest ukończony, lecz potrzebuję twojej pomocy, by dokończyć dzieła. Podejmiesz wyzwanie?",
+				new SetQuestAction(QUEST_SLOT, "ostatnie?"));
 
 		//kogo ma zabic w nastepnym kroku
-		final HashMap<String, Pair<Integer, Integer>> toKill = new HashMap<String, Pair<Integer, Integer>>();
-							toKill.put("czerwony smok", new Pair<Integer, Integer>(1,0));
-							toKill.put("zielony smok", new Pair<Integer, Integer>(1,0));
-							toKill.put("dwugłowy czerwony smok", new Pair<Integer, Integer>(1,0));
-							toKill.put("dwugłowy czarny smok", new Pair<Integer, Integer>(1,0));
-							toKill.put("dwugłowy niebieski smok", new Pair<Integer, Integer>(1,0));
-							toKill.put("złoty smok", new Pair<Integer, Integer>(1,0));
-		final List<ChatAction> actions = new LinkedList<ChatAction>();
-							actions.add(new SetQuestAction(QUEST_SLOT, 0, "ostatnie"));
-							actions.add(new StartRecordingKillsAction(QUEST_SLOT, 1, toKill));
+		final Map<String, Pair<Integer, Integer>> toKill = Map.of(
+			"czerwony smok", new Pair<>(1, 0),
+			"zielony smok", new Pair<>(1, 0),
+			"dwugłowy czerwony smok", new Pair<>(1, 0),
+			"dwugłowy czarny smok", new Pair<>(1, 0),
+			"dwugłowy niebieski smok", new Pair<>(1, 0),
+			"złoty smok", new Pair<>(1, 0)
+		);
+		final List<ChatAction> actions = List.of(
+			new SetQuestAction(QUEST_SLOT, 0, "ostatnie"),
+			new StartRecordingKillsAction(QUEST_SLOT, 1, toKill)
+		);
 
-		// gracz zgadza sie wykonac prozbe
-		npc.add(ConversationStates.ATTENDING, Arrays.asList("pomożesz", "pomozesz", "pomogę", "pomoge", "tak"),
+		npc.add(ConversationStates.ATTENDING, HELP_MESSAGES,
 				new QuestInStateCondition(QUEST_SLOT, "ostatnie?"),
 				ConversationStates.ATTENDING,
-				"Wspaniale! Abym mogła ukończyć swój amulet musisz zabić:\n"
-				+ "#'dwugłowy czarny smok',\n"
-				+ "#'dwugłowy czerwony smok',\n"
-				+ "#'dwugłowy niebieski smok',\n"
-				+ "#'czerwony smok',\n"
-				+ "#'zielony smok' oraz #'złoty smok'.\n"
-				+ " Oczywiście samo zabicie nic nie da, musisz przynieść mi co najmniej 10 skór każdego rodzaju.",
+				"Musisz pokonać najpotężniejsze smoki tego świata: dwugłowy czarny smok, dwugłowy czerwony smok, dwugłowy niebieski smok, czerwony smok, zielony smok oraz złoty smok. Przynieś po 10 skór każdego z nich, abyśmy mogli zakończyć dzieło!",
 				new MultipleActions(actions));
 	}
 
 	private void step8() {
-		//player nie zabil smoka
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
-				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0, "ostatnie"),
-								 new NotCondition(new KilledForQuestCondition(QUEST_SLOT, 1))),
+				new AndCondition(
+					new QuestInStateCondition(QUEST_SLOT, 0, "ostatnie"),
+					new NotCondition(new KilledForQuestCondition(QUEST_SLOT, 1))
+				),
 				ConversationStates.ATTENDING, null,
-				new ChatAction() {
-					@Override
-					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-						raiser.say("Jeszcze nie zabiłeś samodzielnie smoków, dlaczego mnie oszukujesz?");
-					}
+				(player, sentence, raiser) -> {
+					raiser.say("Nie " + player.getGenderVerb("pokonałeś") + " jeszcze smoków. Musisz działać szybko, aby udowodnić swą wartość!");
 				});
 
-		//player zabil smoka ale nie ma potrzebnych resurce
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
-				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0,"ostatnie"),
-								 new KilledForQuestCondition(QUEST_SLOT, 1),
-								 new NotCondition(
-								 new AndCondition(
-												new PlayerHasItemWithHimCondition("skóra złotego smoka", 10),
-												new PlayerHasItemWithHimCondition("skóra czarnego smoka", 10),
-												new PlayerHasItemWithHimCondition("skóra czerwonego smoka", 10),
-												new PlayerHasItemWithHimCondition("skóra zielonego smoka", 10),
-												new PlayerHasItemWithHimCondition("skóra niebieskiego smoka", 10)))),
+				new AndCondition(
+					new QuestInStateCondition(QUEST_SLOT, 0, "ostatnie"),
+					new KilledForQuestCondition(QUEST_SLOT, 1),
+					new NotCondition(new AndCondition(
+						new PlayerHasItemWithHimCondition("skóra złotego smoka", 10),
+						new PlayerHasItemWithHimCondition("skóra czarnego smoka", 10),
+						new PlayerHasItemWithHimCondition("skóra czerwonego smoka", 10),
+						new PlayerHasItemWithHimCondition("skóra zielonego smoka", 10),
+						new PlayerHasItemWithHimCondition("skóra niebieskiego smoka", 10)
+					))
+				),
 				ConversationStates.ATTENDING, null,
-				new ChatAction() {
-					@Override
-					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-						raiser.say("Nawet jeśli zabiłeś smoki, na pewno nie zaufam Tobie gdy nie przyniesiesz mi ich skór! Pamiętaj co najmniej 10 skór każdego rodzaju, masz mi to przynieść!");
-					}
+				(player, sentence, raiser) -> {
+					raiser.say("Choć " + player.getGenderVerb("pokonałeś") + " smoki, brakuje mi jeszcze ich skór. Przynieś po 10 skór każdego rodzaju, abyśmy mogli zakończyć nasz rytuał.");
 				});
 
-		//player wykonal obydwa zlecenia
 		npc.add(ConversationStates.IDLE, ConversationPhrases.GREETING_MESSAGES,
-				new AndCondition(new QuestInStateCondition(QUEST_SLOT, 0,"ostatnie"),
-								 new KilledForQuestCondition(QUEST_SLOT, 1),
-								 new PlayerHasItemWithHimCondition("skóra złotego smoka", 10),
-							     new PlayerHasItemWithHimCondition("skóra czarnego smoka", 10),
-								 new PlayerHasItemWithHimCondition("skóra czerwonego smoka", 10),
-								 new PlayerHasItemWithHimCondition("skóra zielonego smoka", 10),
-								 new PlayerHasItemWithHimCondition("skóra niebieskiego smoka", 10)),
+				new AndCondition(
+					new QuestInStateCondition(QUEST_SLOT, 0, "ostatnie"),
+					new KilledForQuestCondition(QUEST_SLOT, 1),
+					new PlayerHasItemWithHimCondition("skóra złotego smoka", 10),
+					new PlayerHasItemWithHimCondition("skóra czarnego smoka", 10),
+					new PlayerHasItemWithHimCondition("skóra czerwonego smoka", 10),
+					new PlayerHasItemWithHimCondition("skóra zielonego smoka", 10),
+					new PlayerHasItemWithHimCondition("skóra niebieskiego smoka", 10)
+				),
 				ConversationStates.ATTENDING, null,
-				new ChatAction() {
-					@Override
-					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-						raiser.say("Och, widzę, że w końcu przyniosłeś ostatnie potrzebne mi składniki do skończenia mojego nowego amuletu. Powinno to zadziałać, przynajmniej tak w książce pisze..."
-						+ "Proszę, przyjmij mój stary amulet... dostałam go od swej zmarłej już babci, która była również czarownicą tak jak ja."
-						+ "Od teraz pozwalam Ci korzystać z mej magicznej kuli. Zabierze Ciebie ona w bardzo ciekawe miejsce!");
-						player.drop("skóra złotego smoka", 10);
-						player.drop("skóra czarnego smoka", 10);
-						player.drop("skóra czerwonego smoka", 10);
-						player.drop("skóra zielonego smoka", 10);
-						player.drop("skóra niebieskiego smoka", 10);
-						final Item pazurek = SingletonRepository.getEntityManager().getItem("pazur niebieskiego smoka");
-						pazurek.setBoundTo(player.getName());
-						player.equipOrPutOnGround(pazurek);
-						player.setBaseHP(20 + player.getBaseHP());
-						player.heal(20, true);
-						player.addXP(35000);
-						player.addKarma(100);
-						player.setQuest(QUEST_SLOT, "done");
-					}
+				(player, sentence, raiser) -> {
+					raiser.say("Znakomicie! Teraz mogę ukończyć amulet, który ujarzmi smoki. Przyjmij tę nagrodę jako znak mojej wdzięczności i używaj jej mądrze.");
+					giveRewards(player, Map.of(
+						"skóra złotego smoka", 10,
+						"skóra czarnego smoka", 10,
+						"skóra czerwonego smoka", 10,
+						"skóra zielonego smoka", 10,
+						"skóra niebieskiego smoka", 10
+					), 35000, 100);
+					final Item pazurek = SingletonRepository.getEntityManager().getItem("pazur niebieskiego smoka");
+					pazurek.setBoundTo(player.getName());
+					player.equipOrPutOnGround(pazurek);
+					player.setBaseHP(20 + player.getBaseHP());
+					player.heal(20, true);
+					player.setQuest(QUEST_SLOT, "done");
 				});
 	}
 
@@ -756,7 +696,7 @@ public class ProsbyWiedzmy extends AbstractQuest {
 		if (questState.startsWith("ostatnie")) {
 			return res;
 		}
-		res.add("To było ostatnie zadanie Benigny. Oddała mi ostatnią pamiątkę po swej zmarłej babci, był to amulet - pazur niebieskiego smoka. Powiedziała mi również, że od teraz mogę korzystać z jej magicznej kuli, która leży na stole.");
+		res.add("To było ostatnie zadanie Benigny. Oddała mi ostatnią pamiątkę po swej zmarłej babce, był to amulet - pazur niebieskiego smoka. Powiedziała mi również, że od teraz mogę korzystać z jej magicznej kuli, która leży na stole.");
 		if (isCompleted(player)) {
 			return res;
 		}
