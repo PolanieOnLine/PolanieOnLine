@@ -1,6 +1,6 @@
 Changelog
 ---------
-1.40.5
+1.40.1
 *klient*
 - Przyśpieszono animacje ikon AWAY oraz GRUMPY
 - Poprawiono graficznie emoji z szerokim uśmiechem
