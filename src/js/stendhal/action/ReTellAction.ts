@@ -10,36 +10,27 @@
  *                                                                         *
  ***************************************************************************/
 
-import { Enumeration } from "./Enumeration";
+import { TellAction } from "./TellAction";
+import { ParamList } from "./ParamList";
+
+import { Pair } from "../util/Pair";
 
 
-/**
- * Represents a numeric enumeration type.
- */
-export class NumericEnumeration extends Enumeration<number> {
+export class ReTellAction extends TellAction {
 
-	/** Tracks value of most recent instance created. */
-	private static currentValue = -1;
+	constructor() {
+		super(0, 0);
+	}
 
-	/** Numeric value representation of this instance. */
-	override readonly value: number;
-
-
-	/**
-	 * Creates a new numeric enumeration.
-	 *
-	 * @param value {number}
-	 *   Numeric value representation of this instance. If `undefined`, increments value from most
-	 *   recent instance created (default: `undefined`).
-	 */
-	constructor(value?: number) {
-		super(value);
-		if (typeof(value) === "undefined") {
-			NumericEnumeration.currentValue++;
-			value = NumericEnumeration.currentValue;
-		} else {
-			NumericEnumeration.currentValue = value;
+	override execute(_type: string, params: string[], remainder: string): boolean {
+		const target = ReTellAction.getLastPlayerTell();
+		if (typeof(target) !== "undefined") {
+			return super.execute(_type, [target], remainder);
 		}
-		this.value = value;
+		return true;
+	}
+
+	override getHelp(params?: ParamList|Pair<string, string>[]): string[] {
+		return ["<message>", "Send a private message to the last player you sent a message to."];
 	}
 }

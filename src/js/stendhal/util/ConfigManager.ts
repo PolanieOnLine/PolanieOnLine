@@ -31,6 +31,7 @@ export class ConfigManager {
 	 */
 	private readonly defaults: {[id: string]: string} = {
 		"activity-indicator": "true",
+		"activity-indicator.animate": "false",
 		// TODO: possible change key prefixes pertaining directly to chat panel to "panel.chat."
 		"chat.autohide": "false",
 		"chat.float": "false",
@@ -41,10 +42,11 @@ export class ConfigManager {
 		"chat-opts.custom": "",
 		"click-indicator": "false",
 		"effect.blood": "true",
-		// TODO: change default to "true" when ready
-		"effect.lighting": "false",
+		"effect.entity-overlay": "true",
+		"effect.lighting": "true",
 		"effect.weather": "true",
 		"effect.no-nude": "true",
+		"effect.parallax": "true",
 		"effect.shadows": "true",
 		"emojis.native": "false",
 		"font.body": "Carlito",
@@ -64,7 +66,7 @@ export class ConfigManager {
 		"pathfinding": "true",
 		"pathfinding.minimap": "true",
 		"sound": "false",
-		"sound.master.volume": "100",
+		"sound.master.volume": "50",
 		"sound.ambient.volume": "100",
 		"sound.creature.volume": "100",
 		"sound.gui.volume": "100",

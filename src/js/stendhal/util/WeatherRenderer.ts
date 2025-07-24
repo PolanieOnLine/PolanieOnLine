@@ -9,15 +9,13 @@
  *                                                                         *
  ***************************************************************************/
 
-import { singletons } from "../SingletonRepo";
-
 import { TileStore } from "../data/TileStore";
-import { SoundObject } from "../data/SoundFactory";
+
+import { SoundObject } from "../data/sound/SoundFactory";
 
 declare var stendhal: any;
 
 
-// TODO: incorporate thunder
 const weatherLoops = {
 	"rain": true,
 	"rain_heavy": true,
@@ -39,7 +37,13 @@ export class WeatherRenderer {
 	private tilesX = 0;
 	private tilesY = 0;
 	private audio?: SoundObject;
-	private soundLayer = singletons.getSoundManager().layers.indexOf("ambient");
+	private soundLayer = stendhal.sound.layers.indexOf("ambient");
+
+	private weatherName?: string;
+
+	/** Special handling for fog animation. */
+	private fog: boolean;
+	private heavyFog: boolean;
 
 	/** Singleton instance. */
 	private static instance: WeatherRenderer;
@@ -64,7 +68,8 @@ export class WeatherRenderer {
 	 * Use <code>WeatherRenderer.get()</code>.
 	 */
 	private constructor() {
-		// do nothing
+		this.fog = false;
+		this.heavyFog = false;
 	}
 
 	/**
@@ -75,16 +80,27 @@ export class WeatherRenderer {
 	 */
 	update(weather?: string) {
 		this.enabled = stendhal.config.getBoolean("effect.weather");
+		if (!this.enabled) {
+			// prevent playing sound & other weather-related instructions
+			return;
+		}
+		this.heavyFog = weather === "fog_heavy";
+		this.fog = this.heavyFog || weather === "fog";
+		if (this.fog) {
+			weather = "fog_ani";
+		}
+
+		this.weatherName = weather;
+
 		this.frameIdx = 0;
 		this.lastUpdate = Date.now();
 		// reset warning messages
 		this.warned = {};
 
-		const soundMan = singletons.getSoundManager();
 		// stop previous sounds
 		// FIXME: should continue playing if weather is same on next map
 		if (this.audio) {
-			soundMan.stop(this.soundLayer, this.audio);
+			stendhal.sound.stop(this.soundLayer, this.audio);
 			this.audio = undefined;
 		}
 
@@ -132,16 +148,13 @@ export class WeatherRenderer {
 			this.tilesY = Math.ceil(canvas.height / spriteH) + 1;
 
 			if (weatherLoops[weather]) {
-				this.audio = soundMan.playGlobalizedLoop("weather/" + weather,
-						this.soundLayer);
+				this.audio = stendhal.sound.playGlobalizedLoop("weather/" + weather, this.soundLayer);
 			}
 		}
 	}
 
 	/**
 	 * Draws the weather animation.
-	 *
-	 * TODO: don't move animation with character movement.
 	 *
 	 * @param ctx
 	 *    Drawing target element.
@@ -162,30 +175,101 @@ export class WeatherRenderer {
 				}
 				return;
 			}
-
-			// width & height dimensions should be the same
-			const dim = this.sprite.height;
-			const clipLeft = stendhal.ui.gamewindow.offsetX % dim;
-			const clipTop = stendhal.ui.gamewindow.offsetY % dim;
-			for (let ix = 0; ix < this.tilesX; ix++) {
-				for (let iy = 0; iy < this.tilesY; iy++) {
-					ctx.drawImage(this.sprite,
-							this.sprite.frames[this.frameIdx]*dim,
-							0,
-							dim, dim,
-							(ix*dim)+stendhal.ui.gamewindow.offsetX-clipLeft,
-							(iy*dim)+stendhal.ui.gamewindow.offsetY-clipTop,
-							dim, dim);
-				}
+			if (this.weatherName === "clouds") {
+				ctx.save();
+				ctx.globalAlpha = 0.80;
+				this.drawClouds(ctx, stendhal.ui.gamewindow.offsetX, stendhal.ui.gamewindow.offsetY);
+				ctx.restore();
+			} else if (this.fog) {
+				this.drawFog(ctx, stendhal.ui.gamewindow.offsetX, stendhal.ui.gamewindow.offsetY);
+			} else {
+				this.drawOther(ctx, stendhal.ui.gamewindow.offsetX, stendhal.ui.gamewindow.offsetY);
 			}
+		}
+	}
 
-			if (this.sprite.delays) {
-				const cycleTime = Date.now();
-				const elapsed = cycleTime - this.lastUpdate;
-				if (elapsed >= this.sprite.delays[this.frameIdx]) {
-					this.lastUpdate = cycleTime;
-					this.frameIdx = this.getNextFrame(elapsed);
-				}
+	/**
+	 * Draws clouds animation.
+	 *
+	 * @param {CanvasRenderingContext2D) ctx
+	 * @param {number} offsetX
+	 * @param {number} offsetY
+	 */
+	private drawClouds(ctx: CanvasRenderingContext2D, offsetX: number, offsetY: number) {
+		const drawStart = Date.now();
+		const timeDiff = drawStart - this.lastUpdate;
+		const dim = {width: this.sprite!.width, height: this.sprite!.height};
+
+		// horizontal drift rate for wind effect (1 pixel per 100 milliseconds)
+		let wind = Math.floor(timeDiff / 100);
+		if (wind >= dim.width) {
+			wind = 0;
+			this.lastUpdate = drawStart;
+		}
+
+		// drift relative to movement for depth effect
+		const driftX = offsetX - Math.floor(offsetX * 0.25);
+		const driftY = offsetY - Math.floor(offsetY * 0.25);
+
+		const clipLeft = offsetX - (offsetX % dim.width) + driftX + wind;
+		const clipTop = offsetY - (offsetY % dim.height) + driftY;
+
+		for (let dy = -clipTop; dy < offsetY + ctx.canvas.height; dy += dim.height) {
+			for (let dx = -clipLeft; dx < offsetX + ctx.canvas.width; dx += dim.width) {
+				ctx.drawImage(this.sprite!,
+						0, 0, dim.width, dim.height,
+						dx, dy, dim.width, dim.height);
+			}
+		}
+	}
+
+	/**
+	 * Draws fog animation.
+	 *
+	 * @param {CanvasRenderingContext2D) ctx
+	 * @param {number} offsetX
+	 * @param {number} offsetY
+	 */
+	private drawFog(ctx: CanvasRenderingContext2D, offsetX: number, offsetY: number) {
+		ctx.save();
+		if (!this.heavyFog) {
+			// reduce opacity for light fog
+			ctx.globalAlpha = 0.5;
+		}
+		this.drawClouds(ctx, offsetX, offsetY);
+		ctx.restore();
+	}
+
+	/**
+	 * Draws types of weather other than fog.
+	 *
+	 * @param {CanvasRenderingContext2D) ctx
+	 * @param {number} offsetX
+	 * @param {number} offsetY
+	 */
+	private drawOther(ctx: CanvasRenderingContext2D, offsetX: number, offsetY: number) {
+		// width & height dimensions should be the same
+		const dim = this.sprite!.height;
+		const clipLeft = offsetX % dim;
+		const clipTop = offsetY % dim;
+		for (let ix = 0; ix < this.tilesX; ix++) {
+			for (let iy = 0; iy < this.tilesY; iy++) {
+				ctx.drawImage(this.sprite!,
+						this.sprite!.frames[this.frameIdx]*dim,
+						0,
+						dim, dim,
+						(ix*dim)+offsetX-clipLeft,
+						(iy*dim)+offsetY-clipTop,
+						dim, dim);
+			}
+		}
+
+		if (this.sprite!.delays) {
+			const cycleTime = Date.now();
+			const elapsed = cycleTime - this.lastUpdate;
+			if (elapsed >= this.sprite!.delays[this.frameIdx]) {
+				this.lastUpdate = cycleTime;
+				this.frameIdx = this.getNextFrame(elapsed);
 			}
 		}
 	}

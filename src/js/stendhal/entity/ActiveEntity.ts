@@ -280,10 +280,34 @@ export class ActiveEntity extends Entity {
 	/**
 	 * Retrieves entities direction of movement.
 	 *
-	 * @return {util.Direction.Direction}
+	 * Default is `Direction.STOP`.
+	 *
+	 * @returns {Direction}
 	 *   Current direction entity is moving or stopped.
 	 */
 	getWalkDirection(): Direction {
-		return Direction.VALUES[parseInt(this["dir"], 10)];
+		const val = parseInt(this["dir"], 10);
+		if (Number.isNaN(val) || !Number.isFinite(val)) {
+			// assume stopped if cannot determine walking direction
+			return Direction.STOP;
+		}
+		return Direction.VALUES[Math.max(Direction.STOP.val, Math.min(Direction.LEFT.val, val))];
+	}
+
+	/**
+	 * Retrieves direction entity is facing.
+	 *
+	 * If direction cannot be determined (e.g. `Direction.STOP`) defaults to `Direction.DOWN`.
+	 *
+	 * @returns {Direction}
+	 *   Entity's facing direction.
+	 */
+	getFaceDirection(): Direction {
+		const dir = this.getWalkDirection();
+		if (dir === Direction.STOP) {
+			// assume down if cannot determine facing direction
+			return Direction.DOWN;
+		}
+		return dir;
 	}
 }

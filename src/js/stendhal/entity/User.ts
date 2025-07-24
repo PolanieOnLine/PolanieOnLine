@@ -19,6 +19,8 @@ import { singletons } from "../SingletonRepo";
 
 import { MenuItem } from "../action/MenuItem";
 
+import { Color } from "../data/color/Color";
+
 import { ui } from "../ui/UI";
 import { UIComponentEnum } from "../ui/UIComponentEnum";
 
@@ -30,7 +32,6 @@ import { OutfitDialog } from "../ui/dialog/outfit/OutfitDialog";
 
 import { FloatingWindow } from "../ui/toolkit/FloatingWindow";
 
-import { Color } from "../util/Color";
 import { Direction } from "../util/Direction";
 
 
@@ -38,9 +39,6 @@ import { Direction } from "../util/Direction";
  * Class representing the player controlled by this client.
  */
 export class User extends Player {
-
-	private readonly soundMan = singletons.getSoundManager();
-	private readonly lssMan = singletons.getLoopedSoundSourceManager();
 
 	override minimapStyle = Color.USER;
 
@@ -57,7 +55,7 @@ export class User extends Player {
 
 		if ((key === "x" || key === "y") && this["x"] && this["y"]
 				&& (this["x"] !== oldX || this["y"] !== oldY)) {
-			this.lssMan.onDistanceChanged(this["x"], this["y"]);
+			singletons.getLoopedSoundSourceManager().onDistanceChanged(this["x"], this["y"]);
 		}
 
 		queueMicrotask( () => {
@@ -139,6 +137,27 @@ export class User extends Player {
 	}
 
 	/**
+	 * Checks if player is within range to hear a sound event.
+	 *
+	 * @param {number} radius
+	 *   Distance at which sound can be heard.
+	 * @param {Entity} entity
+	 *   Entity emitting sound event.
+	 * @returns {boolean}
+	 *   `true` if sound should be loaded (when event radius is more than -1 & user position is within
+	 *   radial distance from event origin).
+	 */
+	isInSoundRange(radius: number, entity: Entity): boolean {
+		if (entity === this) {
+			return true;
+		}
+		if (radius < 0) {
+			return false;
+		}
+		return Math.abs(this["x"] - entity["x"]) + Math.abs(this["y"] - entity["y"]) <= radius;
+	}
+
+	/**
 	 * Actions when player leaves a zone.
 	 */
 	override onExitZone() {
@@ -147,18 +166,19 @@ export class User extends Player {
 		stendhal.ui.gamewindow.onExitZone();
 		// stop sounds & clear map sounds cache on zone change
 		const msgs: string[] = [];
-		if (!this.lssMan.removeAll()) {
+		const lssm = singletons.getLoopedSoundSourceManager();
+		if (!lssm.removeAll()) {
 			let tmp = "LoopedSoundSourceManager reported not all sources stopped on zone change:";
-			const loopSources = this.lssMan.getSources();
+			const loopSources = lssm.getSources();
 			for (const id in loopSources) {
 				const snd = loopSources[id].sound;
 				tmp += "\n- ID: " + id + " (" + snd.src + ")";
 			}
 			msgs.push(tmp);
 		}
-		if (!this.soundMan.stopAll()) {
+		if (!stendhal.sound.stopAll()) {
 			let tmp = "SoundManager reported not all sounds stopped on zone change:";
-			for (const snd of this.soundMan.getActive()) {
+			for (const snd of stendhal.sound.getActive()) {
 				tmp += "\n- " + snd.src;
 				if (snd.loop) {
 					tmp += " (loop)";
@@ -178,7 +198,7 @@ export class User extends Player {
 	override onEnterZone() {
 		super.onEnterZone();
 		// play looped sound sources
-		this.lssMan.onZoneReady();
+		singletons.getLoopedSoundSourceManager().onZoneReady();
 	}
 
 	/**

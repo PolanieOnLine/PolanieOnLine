@@ -18,8 +18,11 @@ import { AboutAction } from "./action/AboutAction";
 import { DebugAction } from "./action/DebugAction";
 import { OpenWebsiteAction } from "./action/OpenWebsiteAction";
 import { ProgressStatusAction } from "./action/ProgressStatusAction";
+import { ReTellAction } from "./action/ReTellAction";
+import { ScreenCaptureAction } from "./action/ScreenCaptureAction";
 import { SettingsAction } from "./action/SettingsAction";
 import { SlashActionImpl } from "./action/SlashAction";
+import { TellAction } from "./action/TellAction";
 
 import { ui } from "./ui/UI";
 import { UIComponentEnum } from "./ui/UIComponentEnum";
@@ -27,6 +30,7 @@ import { UIComponentEnum } from "./ui/UIComponentEnum";
 import { ChatLogComponent } from "./ui/component/ChatLogComponent";
 
 import { Chat } from "./util/Chat";
+import { Debug } from "./util/Debug";
 
 
 /**
@@ -108,7 +112,7 @@ export class SlashActionRepo {
 			"CHATTING": [
 				"chat",
 				"me",
-				"msg",
+				"tell",
 				"answer",
 				"/",
 				"p",
@@ -116,13 +120,13 @@ export class SlashActionRepo {
 				{
 					type: "who",
 					getHelp: function(): string[] {
-						return ["", "List all players currently online."];
+						return ["", "Lista wszystkich graczy aktualnie online."];
 					}
 				},
 				{
 					type: "where",
 					getHelp: function(): string[] {
-						return ["[<player>]", "Show the current location of #player."];
+						return ["[<player>]", "Pokaż bieżącą lokalizację #gracza."];
 					}
 				},
 				"sentence"
@@ -130,6 +134,7 @@ export class SlashActionRepo {
 			"TOOLS": [
 				"progressstatus",
 				"screenshot",
+				//"screencap",
 				"atlas",
 				"beginnersguide"
 			],
@@ -138,7 +143,7 @@ export class SlashActionRepo {
 				{
 					type: "faq",
 					getHelp: function(): string[] {
-						return ["", "Open Stendhal FAQs wiki page in browser."];
+						return ["", "Otwórz stronę FAQ wiki Stendhal w przeglądarce."];
 					}
 				}
 			],
@@ -147,31 +152,31 @@ export class SlashActionRepo {
 				{
 					type: "markscroll",
 					getHelp: function(): string[] {
-						return ["<text>", "Mark your empty scroll and add a #text label."];
+						return ["<text>", "Oznacz swój pusty zwój i dodaj etykietę #tekstu."];
 					}
 				}
 			],
 			"BUDDIES AND ENEMIES": [
 				"add",
 				"remove",
-				{type: "ignore", sparams: "<player> [minutes|*|- [reason...]]"},
+				{type: "ignore", sparams: "<gracz> [minuty|*|- [powód...]]"},
 				"ignore",
 				{
 					type: "unignore",
 					getHelp: function(): string[] {
-						return ["<player>", "Remove #player from your ignore list."];
+						return ["<player>", "Usuń #gracza z twojej listy ignorów."];
 					}
 				}
 			],
 			"STATUS": [
-				{type: "away", sparams: "<message>"},
+				{type: "away", sparams: "<wiadomość>"},
 				"away",
-				{type: "grumpy", sparams: "<message>"},
+				{type: "grumpy", sparams: "<wiadomość>"},
 				"grumpy",
 				{
 					type: "name",
 					getHelp: function(): string[] {
-						return ["<pet> <name>", "Give a name to your pet."];
+						return ["<zwierzak> <nazwa>", "Nadaj imię twojemu zwierzakowi."];
 					}
 				},
 				"profile"
@@ -185,7 +190,7 @@ export class SlashActionRepo {
 			"CLIENT SETTINGS": [
 				"settings",
 				"mute",
-				{type: "volume", sparams: "<layer> <value>"},
+				{type: "volume", sparams: "<warstwa> <wartość>"},
 				"volume"
 			],
 			"MISC": [
@@ -193,7 +198,7 @@ export class SlashActionRepo {
 				{
 					type: "info",
 					getHelp: function(): string[] {
-						return ["", "Find out what the current server time is."];
+						return ["", "Sprawdź, która jest aktualnie godzina na serwerze."];
 					}
 				},
 				"clear",
@@ -203,21 +208,26 @@ export class SlashActionRepo {
 					getHelp: function(): string[] {
 						return [
 							"",
-							"Remove the detail layer (e.g. balloon, umbrella, etc.) from character. #WARNING:"
-									+ " Cannot be undone."
+							"Usuwa warstwę detaliczną (t.j. balonik, parasol, itd.) z postaci. #OSTRZEŻENIE:"
+									+ " Nie może zostać przywrócone."
 						];
 					}
 				},
 				"emojilist",
-				{type: "group", sparams: "invite <player>"},
-				{type: "group", sparams: "join <player"},
-				{type: "group", sparams: "leader <player>"},
+				{type: "group", sparams: "invite <gracz>"},
+				{type: "group", sparams: "join <gracz"},
+				{type: "group", sparams: "leader <gracz>"},
 				{type: "group", sparams: "lootmode single|shared"},
-				{type: "group", sparams: "kick <player>"},
+				{type: "group", sparams: "kick <gracz>"},
 				{type: "group", sparams: "part"},
 				{type: "group", sparams: "status"}
 			]
 		};
+
+		if (Debug.isActive("screencap")) {
+			grouping["TOOLS"].push("screencap");
+		}
+
 		return {
 			info: [
 				"For a detailed reference, visit #https://stendhalgame.org/wiki/Stendhal_Manual",
@@ -1049,51 +1059,13 @@ export class SlashActionRepo {
 		}
 	};
 
-	// name of player most recently messaged
-	private lastPlayerTell?: string;
-
-	"msg": SlashActionImpl = {
-		execute: (type: string, params: string[], remainder: string): boolean => {
-			this.lastPlayerTell = params[0];
-			const action: Action = {
-				"type": "tell",
-				"target": params[0],
-				"text": remainder
-			};
-			this.sendAction(action);
-			return true;
-		},
-		minParams: 1,
-		maxParams: 1,
-		aliases: ["tell"],
-		getHelp: function(): string[] {
-			return ["<player> <message>", "Send a private message to #player."];
-		}
-	};
-	"tell": SlashActionImpl = this["msg"];
-
-	"/": SlashActionImpl = {
-		execute: (type: string, params: string[], remainder: string): boolean => {
-			if (typeof(this.lastPlayerTell) != "undefined") {
-				const action: Action = {
-					"type": "tell",
-					"target": this.lastPlayerTell,
-					"text": remainder
-				};
-				this.sendAction(action);
-			}
-			return true;
-		},
-		minParams: 0,
-		maxParams: 0,
-		getHelp: function(): string[] {
-			return ["<message>", "Send a private message to the last player you sent a message to."];
-		}
-	};
+	"tell" = new TellAction();
+	"msg" = this["tell"];
+	"/" = new ReTellAction();
 
 	"mute": SlashActionImpl = {
 		execute: (type: string, params: string[], remainder: string): boolean => {
-			singletons.getSoundManager().toggleSound();
+			stendhal.sound.toggleSound();
 			if (stendhal.config.getBoolean("sound")) {
 				Chat.log("info", "Sounds are now on.");
 			} else {
@@ -1158,6 +1130,8 @@ export class SlashActionRepo {
 		}
 	};
 
+	"screencap" = new ScreenCaptureAction();
+
 	"sentence": SlashActionImpl = {
 		execute: (type: string, params: string[], remainder: string): boolean => {
 			if (params == null) {
@@ -1205,22 +1179,22 @@ export class SlashActionRepo {
 			const layername = params[0];
 			let vol = params[1];
 			if (typeof(layername) === "undefined") {
-				const layers = ["master", ...stendhal.ui.soundMan.getLayerNames()];
+				const layers = ["master", ...stendhal.sound.getLayerNames()];
 				Chat.log("info", "Please use /volume <layer> <value> to adjust the volume.");
 				Chat.log("client", "<layer> is one of \"" + layers.join("\", \"") + "\"");
 				Chat.log("client", "<value> is a number in the range 0 to 100.");
 				Chat.log("client", "Current volume levels:");
 				for (const l of layers) {
-					Chat.log("client", "&nbsp;&nbsp;- " + l + " -> " + stendhal.ui.soundMan.getVolume(l) * 100);
+					Chat.log("client", "&nbsp;&nbsp;- " + l + " -> " + stendhal.sound.getVolume(l) * 100);
 				}
 			} else if (typeof(vol) !== "undefined") {
 				if (!/^\d+$/.test(vol)) {
 					Chat.log("error", "Value must be a number.");
 					return true;
 				}
-				if (stendhal.ui.soundMan.setVolume(layername, parseInt(vol, 10) / 100)) {
+				if (stendhal.sound.setVolume(layername, parseInt(vol, 10) / 100)) {
 					Chat.log("client", "Channel \"" + layername + "\" volume set to "
-							+ (stendhal.ui.soundMan.getVolume(layername) * 100) + ".");
+							+ (stendhal.sound.getVolume(layername) * 100) + ".");
 				} else {
 					Chat.log("error", "Unknown layer \"" + layername + "\".");
 				}

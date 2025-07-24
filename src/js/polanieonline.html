@@ -14,7 +14,7 @@
 -->
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>Stendhal</title>
+	<title>PolanieOnLine</title>
 	<link rel="stylesheet" type="text/css" href="css/main.css">
 	<link rel="stylesheet" type="text/css" href="css/font.css">
 	<link rel="stylesheet" type="text/css" href="css/res.css">
@@ -42,13 +42,13 @@
 			</div>
 			<div id="group-panel">
 				<div class="group-nogroup">
-					<div>You are not a member of a group</div>
+					<div>Nie jesteś członkiem grupy</div>
 					<div class="group-invites"></div>
 				</div>
 				<div class="group-group hidden">
-					<div>Looting: <button class="group-lootmode"></div>
-					Leader: <span class="group-leader"></span>
-					Members:
+					<div>Zbieractwo: <button class="group-lootmode"></div>
+					Lider: <span class="group-leader"></span>
+					Członkowie:
 					<div class="group-members">
 					</div>
 				</div>
@@ -64,11 +64,11 @@
 			<div id="topPanel"></div>
 			<!-- FIXME: "viewport" and "chat" elements don't use fonts defined in "emoji-text" attribute, probably because
 			            font is overridden in class definitions -->
-			<canvas id="viewport" class="emoji-text" width="640" height="480" tabindex="-1">Sorry, this page only works in modern web browsers.</canvas>
+			<canvas id="viewport" class="emoji-text" width="640" height="480" tabindex="-1">Przepraszamy, ta strona działa tylko w nowszych przeglądarkach.</canvas>
 			<div id="bottomPanel" class="mainColumn">
 				<div class="horizontalgroup">
 					<input id="chatinput" class="emoji-text" type="text" name="chatinput" autocomplete="off" autofocus>
-					<button id="send-button">send</button>
+					<button id="send-button">wyślij</button>
 					<button id="keywords-button">Hi!</button>
 					<button id="emojis-button" class="emoji-text">emoji</button>
 				</div>
@@ -86,6 +86,7 @@
 			<img class="qm-button" id="qm-chatopts">
 			<img class="qm-button" id="qm-rotate-l">
 			<img class="qm-button" id="qm-rotate-r">
+			<img class="qm-button" id="qm-pathfinding">
 		</div>
 
 		<div id="rightColumn" class="mainColumn">
@@ -98,13 +99,17 @@
 
 			<div id="equipmentborder">
 				<div id="equipment" class="equipment">
+					<div id="neck0" class="itemSlot"></div>
 					<div id="head0" class="itemSlot"></div>
+					<div id="cloak0" class="itemSlot"></div>
 					<div id="lhand0" class="itemSlot"></div>
+					<div id="armor0" class="itemSlot"></div>
 					<div id="rhand0" class="itemSlot"></div>
 					<div id="finger0" class="itemSlot"></div>
-					<div id="armor0" class="itemSlot"></div>
-					<div id="cloak0" class="itemSlot"></div>
+					<div id="pas0" class="itemSlot"></div>
 					<div id="legs0" class="itemSlot"></div>
+					<div id="glove0" class="itemSlot"></div>
+					<div id="fingerb0" class="itemSlot"></div>
 					<div id="feet0" class="itemSlot"></div>
 					<div id="pouch0" class="itemSlot"></div>
 				</div>
@@ -119,7 +124,7 @@
 	</div>
 
 	<div id="loginpopup" class="popupdiv">
-		Cross world teleport initiated. Please hold tight.
+		Rozpoczęto teleport między światami. Proszę trzymać się mocno.
 		<div class="progressbar"><div class="progressbarvalue">&nbsp;</div></div>
 	</div>
 
@@ -133,8 +138,8 @@
 	<template id="aboutdialog-template">
 		<div class="verticalgroup">
 			<div id="aboutdialog-content">
-				<p>Stendhal is an open source project, written and released under the <a href="https://www.gnu.org/licenses/agpl-3.0.html">GNU AGPL license</a> by the <a href="https://arianne-project.org">Arianne project</a>.
-				<p>Do you want to contribute? Have a look at <a href="/development/introduction.html">Development section</a> to join the list of contributors.
+				<p>Stendhal to projekt open source, napisany i wydany na <a href="https://www.gnu.org/licenses/agpl-3.0.html">licencji GNU AGPL</a> przez <a href="https://arianne-project.org">projekt Arianne</a>.
+				<p>Czy chcesz wnieść swój wkład? Zajrzyj do <a href="/development/introduction.html">sekcji Rozwój</a>, aby dołączyć do listy autorów.
 				<div id="license" class="limitedsize"></div>
 				<div id="contributors" class="limitedsize"></div>
 			</div>
@@ -145,11 +150,11 @@
 	<template id="createaccountdialog-template">
 		<div>
 			<form class="credential-dialog">
-			<label for="username">Username*:</label> <input id="username" minlength="6" maxlength="20" required><br>
-			<label for="password">Password*:</label> <input id="password" type="password" minlength="6" maxlength="50" required><br>
-			<label for="passwordrepeat">Repeat Password*:</label> <input id="passwordrepeat" type="password" minlength="6" maxlength="50" required><br>
+			<label for="username">Nazwa użytkownika*:</label> <input id="username" minlength="6" maxlength="20" required><br>
+			<label for="password">Hasło*:</label> <input id="password" type="password" minlength="6" maxlength="50" required><br>
+			<label for="passwordrepeat">Powtórz hasło*:</label> <input id="passwordrepeat" type="password" minlength="6" maxlength="50" required><br>
 			<label for="password">Email:</label> <input id="email" type="email"><br>
-			<input type="submit" id="loginbutton" value="Create Account"> <a id="loginlink" href="#login">Login with existing account...</a>
+			<input type="submit" id="loginbutton" value="Utwórz konto"> <a id="loginlink" href="#login">Zaloguj się na istniejące konto...</a>
 			</form>
 		</div>
 	</template>
@@ -157,15 +162,19 @@
 	<template id="logindialog-template">
 		<div>
 			<form class="credential-dialog">
-			<label for="username">Username*:</label> <input id="username" required><br>
-			<label for="password">Password*:</label> <input id="password" type="password" required><br>
-			<button id="loginbutton">Login</button> <a id="createlink" href="#create">Create new account...</a>
+			<label for="username">Nazwa użytkownika*:</label> <input id="username" required><br>
+			<label for="password">Hasło*:</label> <input id="password" type="password" required><br>
+			<button id="loginbutton">Zaloguj</button> <a id="createlink" href="#create">Utwórz nowe konto...</a>
 			</form>
 		</div>
 	</template>
 
 	<template id="choose-character-template">
-		<div>
+		<div class="verticalgroup">
+			<div id="characters" class="horizontalgroup"></div>
+			<div class="horizontalgroup dialogbuttons">
+				<button type="button" id="logout" class="dialogbutton">Wyloguj</button>
+			</div>
 		</div>
 	</template>
 
@@ -228,19 +237,19 @@
 	<template id="tradedialog-template">
 		<div class="tradepopup">
 			<div id="trade-partner-column" class="trade-column">
-				<div id="trade-partner-name">Other's offer</div>
+				<div id="trade-partner-name">Oferta innych</div>
 				<div id="trade-partner-items"></div>
-				<div id="trade-partner-status">Changing</div>
-				<button id="trade-accept" disabled>Accept</button>
+				<div id="trade-partner-status">Wymiana</div>
+				<button id="trade-accept" disabled>Akceptuj</button>
 			</div>
 			<div id="trade-my-column" class="trade-column">
-				<div id="trade-my-name">My offer</div>
+				<div id="trade-my-name">Moja oferta</div>
 				<div id="trade-my-items"></div>
-				<div id="trade-my-status">Changing</div>
-				<button id="trade-offer">Offer</button>
+				<div id="trade-my-status">Wymiana</div>
+				<button id="trade-offer">Zaoferuj</button>
 			</div>
 			<hr class="clear">
-			<button id="trade-cancel">Cancel</button>
+			<button id="trade-cancel">Zamknij</button>
 		</div>
 	</template>
 
@@ -267,17 +276,13 @@
 
 		<div class="verticalgroup" id="settings-tabs">
 
+		<!-- TODO: create dynamically with ui/toolkit/SettingsComponent class -->
+
 		<div class="horizontalgroup pad-contents" id="settings-general">
 		<div id="settings_panel1" class="verticalgroup vgroupcol">
-			<label class="checksetting"><input type="checkbox" id="chk_light" class="experimental">Light effects</label>
-			<label class="checksetting"><input type="checkbox" id="chk_weather">Weather</label>
-			<label class="checksetting"><input type="checkbox" id="chk_blood">Blood</label>
-			<label class="checksetting"><input type="checkbox" id="chk_nonude">Cover naked entities</label>
-			<label class="checksetting"><input type="checkbox" id="chk_shadows">Shadows</label>
-			<label class="checksetting"><input type="checkbox" id="chk_speechcr">Creature speech bubbles</label>
+			<label class="checksetting"><input type="checkbox" id="chk_speechcr">Dymki z mową stworów</label>
 			<label class="checksetting"><input type="checkbox" id="chk_charname">Status panel character name</label>
 			<label class="checksetting"><input type="checkbox" id="chk_hpbar">Status panel HP bar</label>
-			<label class="checksetting"><input type="checkbox" id="chk_activityindicator">Object activity indicator</label>
 			<label class="checksetting"><input type="checkbox" id="chk_floatchat">Floating chat panel</label>
 			<label class="checksetting"><input type="checkbox" id="chk_hidechat" class="experimental">Auto-hide chat panel</label>
 			<label class="checksetting"><input type="checkbox" id="chk_zoom">Touch zoom</label>
@@ -287,7 +292,6 @@
 			<label class="checksetting"><input type="checkbox" id="chk_chestqp">Quick pickup from chests and corpses</label>
 			<label class="checksetting"><input type="checkbox" id="chk_movecont">Continuous movement</label>
 			<label class="checksetting"><input type="checkbox" id="chk_pvtsnd">Private message notifications</label>
-			<label class="checksetting"><input type="checkbox" id="chk_clickindicator">Display clicks/touches</label>
 			<label class="checksetting"><input type="checkbox" id="chk_nativeemojis" class="experimental">Native emojis</label>
 		</div>
 		<div id="settings_panel3" class="verticalgroup vgroupcolr">
@@ -318,7 +322,20 @@
 		</div>
 		</div>
 
-		<!--<div class="horizontalgroup pad-contents" id="settings-sound"></div>-->
+		<div class="horizontalgroup pad-contents" id="settings-visuals">
+			<div class="verticalgroup vgroupcol" id="col1">
+				<label class="checksetting"><input type="checkbox" id="chk_light">Light effects</label>
+				<label class="checksetting"><input type="checkbox" id="chk_weather">Weather</label>
+				<label class="checksetting"><input type="checkbox" id="chk_blood">Blood</label>
+				<label class="checksetting"><input type="checkbox" id="chk_nonude">Cover naked entities</label>
+				<label class="checksetting"><input type="checkbox" id="chk_shadows">Shadows</label>
+				<label class="checksetting"><input type="checkbox" id="chk_clickindicator">Display clicks/touches</label>
+			</div>
+		</div>
+
+		<div class="horizontalgroup pad-contents" id="settings-sound">
+			<div class="verticalgroup vgroupcol" id="col1"></div>
+		</div>
 
 		<div class="horizontalgroup pad-contents" id="settings-input">
 			<div class="verticalgroup vgroupcol">
@@ -346,6 +363,10 @@
 		<div class="horizontalgroup dialogbuttons"></div>
 
 		</div>
+	</template>
+
+	<template id="outfit-preview-template">
+		<canvas id="outfit-preview" width="48" height="64"></canvas>
 	</template>
 
 	<template id="outfitdialog-template">
@@ -447,8 +468,14 @@
 
 			</div>
 
-			<!-- horizontal group -->
-			<div><canvas id="setoutfitcompositecanvas" width="48" height="64"></canvas></div>
+			<!-- full composite preview -->
+			<div id="outfit-preview" class="verticalgroup">
+				<div id="outfit-preview-composite"></div>
+				<div class="horizontalgroup">
+					<button type="button" id="rotate-c">&#8635;</button>
+					<button type="button" id="rotate-cc">&#8634;</button>
+				</div>
+			</div>
 		</div>
 		<div align="right"><button type="button" id="setoutfitcancel">Cancel</button>
 		<button type="button" id="setoutfitapply">Change Outfit</button></div>

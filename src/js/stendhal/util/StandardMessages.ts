@@ -1,5 +1,6 @@
 /***************************************************************************
- *                    Copyright © 2003-2023 - Arianne                      *
+ *                    Copyright © 2024 - Faiumoni e. V.                    *
+ ***************************************************************************
  ***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -9,15 +10,24 @@
  *                                                                         *
  ***************************************************************************/
 
+import { Chat } from "./Chat";
 
-/** Configured sounds associated with IDs. */
-export const SoundId = {
-	"level_up": "player/tadaa",
-	"level_down": undefined,
-	"stat_up": "player/stat_up-01",
-	"stat_down": undefined,
-	"achievement": "player/yay",
-	"commerce": "coins-01",
-	"commerce2": "cha-ching",
-	"heal": "heal-01"
-} as {[index: string]: string|undefined;};
+
+/**
+ * Class for displaying some commonly used messages in chat log.
+ */
+export class StandardMessages {
+
+	/**
+	 * Static class.
+	 */
+	private constructor() {}
+
+	/**
+	 * Message when a change is made to the client that won't take effect until after player changes
+	 * maps or the page is reloaded.
+	 */
+	public static changeNeedsRefresh() {
+		Chat.log("client", "Changes will take effect after changing maps or reloading page.");
+	}
+}

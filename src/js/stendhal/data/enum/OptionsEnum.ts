@@ -12,30 +12,8 @@
 
 
 /**
- * Represents an enumaration type.
+ * Represents label/value pairs for options enumeration.
  */
-export class Enumeration<T> {
-
-	/**
-	 * Creates a new enumeration instance.
-	 *
-	 * @param value {T}
-	 *   Value representation of this instance.
-	 */
-	constructor(readonly value?: T) {}
-
-	/**
-	 * Checks for equality between two objects.
-	 *
-	 * @param obj {any}
-	 *   The other object to compare against this instance.
-	 * @return {boolean}
-	 *   `true` if `obj` is instance of same type & their values are the same.
-	 */
-	equals(obj: any): boolean {
-		if (!(obj instanceof Enumeration)) {
-			return false;
-		}
-		return this.value === obj.value;
-	}
+export class OptionsEnum {
+	[label: string]: string;
 }

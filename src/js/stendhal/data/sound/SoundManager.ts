@@ -12,18 +12,26 @@
 declare var marauroa: any;
 declare var stendhal: any;
 
-import { ui } from "./UI";
+import { SoundFactory } from "./SoundFactory";
+import { SoundObject } from "./SoundFactory";
+import { SoundLayer } from "./SoundLayer";
 
-import { singletons } from "../SingletonRepo";
+import { singletons } from "../../SingletonRepo";
 
-import { SoundFactory } from "../data/SoundFactory";
-import { SoundObject } from "../data/SoundFactory";
+import { ui } from "../../ui/UI";
 
 
 /**
  * Manages playing sounds & music.
+ *
+ * TODO:
+ * - rework to handle looped sounds/music better (without gap)
+ * - move "<js-root>/data/sound" directory to "<js-root>/sound"
  */
 export class SoundManager {
+
+	/** Distance at which entity sounds can be heard. */
+	public static readonly DEFAULT_RADIUS = 23;
 
 	/** Layer names & ordering. */
 	readonly layers: string[];
@@ -55,7 +63,7 @@ export class SoundManager {
 	 * Hidden singleton constructor.
 	 */
 	private constructor() {
-		this.layers = ["music", "ambient", "creature", "sfx", "gui"];
+		this.layers = SoundLayer.names();
 		this.cacheGlobal = {};
 		this.cache = {};
 		this.active = {};
@@ -265,6 +273,8 @@ export class SoundManager {
 	/**
 	 * Plays a sound with volume relative to distance.
 	 *
+	 * TODO: re-order parameters to put sound name first
+	 *
 	 * @param x {number}
 	 *   X coordinate of sound source.
 	 * @param y {number}
@@ -334,6 +344,8 @@ export class SoundManager {
 	/**
 	 * Loops a sound with volume relative to distance.
 	 *
+	 * TODO: re-order parameters to put sound name first
+	 *
 	 * @param x {number}
 	 *   X coordinate of sound source.
 	 * @param y {number}
@@ -372,6 +384,8 @@ export class SoundManager {
 
 	/**
 	 * Loops a sound with volume relative to distance.
+	 *
+	 * TODO: re-order parameters to put music name first
 	 *
 	 * @param x {number}
 	 *   X coordinate of sound source.
@@ -608,6 +622,10 @@ export class SoundManager {
 	 *   Normalized volume level between 0.0 and 1.0.
 	 */
 	private normVolume(vol: number): number {
+		if (isNaN(vol) || !isFinite(vol)) {
+			console.warn("Tried to set invalid volume level: " + vol, new Error());
+			vol = 1;
+		}
 		return vol < 0 ? 0 : vol > 1 ? 1 : vol;
 	}
 
@@ -622,9 +640,18 @@ export class SoundManager {
 	 *   Volume level adjusted with "master" & associated layer.
 	 */
 	private getAdjustedVolume(layerName: string, volBase: number): number {
-		let volActual = volBase * stendhal.config.getFloat("sound.master.volume");
-		const lvol = stendhal.config.getFloat("sound." + layerName + ".volume");
-		if (typeof(lvol) !== "number") {
+		let volActual = stendhal.config.getInt("sound.master.volume");
+		if (typeof(volActual) === "number") {
+			// convert to float in range between 0-1
+			volActual /= 100;
+		} else {
+			volActual = 1;
+		}
+		let lvol = stendhal.config.getInt("sound." + layerName + ".volume");
+		if (typeof(lvol) === "number") {
+			// convert to float in range between 0-1
+			lvol /= 100;
+		} else {
 			console.warn("cannot adjust volume for layer \"" + layerName + "\"");
 			return volActual;
 		}
@@ -656,12 +683,15 @@ export class SoundManager {
 	 *   `true` if volume level was set.
 	 */
 	setVolume(layerName: string, vol: number): boolean {
-		const volOld = stendhal.config.getFloat("sound." + layerName + ".volume");
-		if (typeof(volOld) === "undefined" || volOld === "") {
+		let volOld = stendhal.config.getInt("sound." + layerName + ".volume");
+		if (typeof(volOld) === "number") {
+			// convert to float in range between 0-1
+			volOld /= 100;
+		} else {
 			return false;
 		}
 
-		stendhal.config.set("sound." + layerName + ".volume", this.normVolume(vol));
+		stendhal.config.set("sound." + layerName + ".volume", Math.floor(this.normVolume(vol) * 100));
 
 		const layerSet = layerName === "master" ? this.layers : [layerName];
 		for (const l of layerSet) {
@@ -696,22 +726,28 @@ export class SoundManager {
 	 *   Current volume level of layer (returns 1 on error).
 	 */
 	getVolume(layerName="master"): number {
-		let vol = stendhal.config.getFloat("sound." + layerName + ".volume");
+		// NOTE: config value is integer in range between 0-100
+		let vol = stendhal.config.getInt("sound." + layerName + ".volume");
 		if (typeof(vol) === "undefined" || isNaN(vol) || !isFinite(vol)) {
 			console.warn("could not get volume for channel \"" + layerName + "\"");
 			return 1;
 		}
-		return this.normVolume(vol);
+		return this.normVolume(vol / 100);
 	}
 
 	/**
 	 * Toggles muted state of sound system.
 	 */
 	toggleSound() {
-		const enabled = !stendhal.config.getBoolean("sound");
-		stendhal.config.set("sound", enabled);
+		stendhal.config.set("sound", !stendhal.config.getBoolean("sound"));
+		this.onStateChanged();
+	}
 
-		if (enabled) {
+	/**
+	 * Called when sound enabled/disabled state is changed.
+	 */
+	onStateChanged() {
+		if (stendhal.config.getBoolean("sound")) {
 			if (!this.unmuteAll()) {
 				let errmsg = "Failed to unmute sounds:";
 				for (const snd of this.getActive()) {
@@ -732,9 +768,26 @@ export class SoundManager {
 				console.warn(errmsg);
 			}
 		}
-
 		// notify client
 		ui.onSoundUpdate();
+	}
+
+	/**
+	 * Can be called when configuration values change.
+	 */
+	onConfigUpdate() {
+		for (const layerName of ["master", ...this.layers]) {
+			let vol = stendhal.config.getInt("sound." + layerName + ".volume");
+			if (typeof(vol) === "number") {
+				// convert to float in range between 0-1
+				vol /= 100;
+			} else {
+				console.warn("Unrecognized volume value for layer \"" + layerName + "\":", vol);
+				// default to 100%
+				vol = 1.0;
+			}
+			this.setVolume(layerName, vol);
+		}
 	}
 
 	/**

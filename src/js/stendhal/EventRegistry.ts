@@ -15,6 +15,7 @@ declare var stendhal: any;
 import { RPEntity } from "./entity/RPEntity";
 import { RPObject } from "./entity/RPObject";
 
+import { BestiaryEvent } from "./event/BestiaryEvent";
 import { ChatOptionsEvent } from "./event/ChatOptionsEvent";
 import { ExamineEvent } from "./event/ExamineEvent";
 import { GroupChangeEvent } from "./event/GroupChangeEvent";
@@ -23,6 +24,7 @@ import { PlayerLoggedOnEvent } from "./event/PlayerLoggedOnEvent";
 import { PlayerLoggedOutEvent } from "./event/PlayerLoggedOutEvent";
 import { ProgressStatusEvent } from "./event/ProgressStatusEvent";
 import { RPEvent } from "./event/RPEvent";
+import { SoundEvent } from "./event/SoundEvent";
 import { TradeEvent } from "./event/TradeEvent";
 import { ViewChangeEvent } from "./event/ViewChangeEvent";
 
@@ -31,7 +33,6 @@ import { ui } from "./ui/UI";
 import { DialogContentComponent } from "./ui/toolkit/DialogContentComponent";
 
 import { Chat } from "./util/Chat";
-import { SoundId } from "./util/SoundId";
 
 
 export class EventRegistry {
@@ -96,102 +97,7 @@ export class EventRegistry {
 			}
 		}); // attack
 
-		this.register("bestiary", {
-			execute: function(rpobject: RPObject) {
-				if (!this.hasOwnProperty("enemies")) {
-					// FIXME: proper logging of errors?
-					console.log("ERROR: event does not have \"enemies\" attribute");
-					return;
-				}
-
-				/* --- title & headers --- */
-
-				const header = ["Bestiary:", "\"???\" = unknown"];
-				const hasRare = this["enemies"].includes("(rare)");
-				const hasAbnormal = this["enemies"].includes("(abnormal)");
-
-				// show explanation of "rare" & "abnormal" creatures in header
-				if (hasRare || hasAbnormal) {
-					let subheader = "";
-					if (!hasRare) {
-						subheader += "\"abnormal\"";
-					} else {
-						subheader += "\"rare\"";
-						if (hasAbnormal) {
-							subheader += " and \"abnormal\"";
-						}
-					}
-					header[1] = subheader + " creatures not required for achievements";
-				}
-
-				/* --- contents --- */
-
-				// TODO: clean up columns
-
-				const content = new class extends DialogContentComponent {} ("empty-div-template");
-				content.setConfigId("bestiary");
-				content.componentElement.classList.add("bestiary");
-
-				const layout = document.createElement("div");
-				layout.className = "horizontalgroup stretchgroup";
-				const col1 = document.createElement("div");
-				const col2 = document.createElement("div");
-				const col3 = document.createElement("div");
-				col1.className = "verticalgroup stretchgroup";
-				col2.className = "verticalgroup stretchgroup";
-				col3.className = "verticalgroup stretchgroup";
-
-				const t1 = document.createElement("div");
-				const t2 = document.createElement("div");
-				const t3 = document.createElement("div");
-				t1.classList.add("shopcol");
-				t2.classList.add("shopcol");
-				t3.classList.add("shopcol");
-				t1.textContent = "Name";
-				t2.textContent = "Solo";
-				t3.textContent = "Shared";
-
-				col1.appendChild(t1);
-				col2.appendChild(t2);
-				col3.appendChild(t3);
-
-				for (const e of this["enemies"].split(";")) {
-					const info = e.split(",");
-					// empty text will not render outline
-					let solo = "-";
-					let shared = "-";
-					if (info[1] == "true") {
-						solo = "✔";
-					}
-					if (info[2] == "true") {
-						shared = "✔";
-					}
-
-					const l1 = document.createElement("div");
-					const l2 = document.createElement("div");
-					const l3 = document.createElement("div");
-					l1.classList.add("shopcol");
-					l2.classList.add("shopcol");
-					l3.classList.add("shopcol");
-
-					l1.textContent = info[0];
-					l2.textContent = solo;
-					l3.textContent = shared;
-
-					col1.appendChild(l1);
-					col2.appendChild(l2);
-					col3.appendChild(l3);
-				}
-
-				layout.appendChild(col1);
-				layout.appendChild(col2);
-				layout.appendChild(col3);
-				content.componentElement.appendChild(layout);
-
-				stendhal.ui.globalInternalWindow.set(ui.createSingletonFloatingWindow(header.join(" "),
-						content, 20, 20));
-			}
-		}); // bestiary
+		this.register("bestiary", new BestiaryEvent());
 
 		this.register("global_visual_effect", {
 			execute: function(rpobject: RPObject) {
@@ -238,7 +144,7 @@ export class EventRegistry {
 				// play notification sound
 				const notif = stendhal.config.get("chat.private.sound");
 				if (notif && this.soundTextEvents[ttype]) {
-					stendhal.ui.soundMan.playGlobalizedEffect(notif);
+					stendhal.sound.playGlobalizedEffect(notif);
 				}
 			}
 		}); // private_text
@@ -251,7 +157,7 @@ export class EventRegistry {
 
 		this.register("show_item_list", {
 			execute: function(rpobject: RPObject) {
-				let title = "Items";
+				let title = "Przedmioty";
 				let caption = "";
 				let items = [];
 
@@ -287,7 +193,7 @@ export class EventRegistry {
 				content.componentElement.classList.add("shopsign");
 				const captionElement = document.createElement("div");
 				captionElement.className = "horizontalgroup shopcaption";
-				captionElement.textContent = caption + "\nItem\t-\tPrice\t-\tDescription";
+				captionElement.textContent = caption + "\nPrzedmiot\t-\tCena\t-\tOpis";
 				content.componentElement.appendChild(captionElement);
 				const itemList = document.createElement("div");
 				itemList.className = "shoplist";
@@ -319,7 +225,7 @@ export class EventRegistry {
 
 		this.register("show_outfit_list", {
 			execute: function(rpobject: RPObject) {
-				let title = "Outfits";
+				let title = "Stroje";
 				let caption = "";
 				let outfits = [];
 
@@ -364,31 +270,14 @@ export class EventRegistry {
 			}
 		}); // show_outfit_list
 
-		this.register("sound_event", {
-			execute: function(rpobject: RPObject) {
-				var volume = 1;
-				// Adjust by the server specified volume, if any
-				if (this.hasOwnProperty("volume")) {
-					volume *= parseInt(this["volume"], 10) / 100;
-				}
-				var radius = parseInt(this["radius"], 10);
-
-				let sound = this["sound"];
-				const sound_id = this["sound_id"];
-				if (sound_id) {
-					sound = SoundId[sound_id];
-				}
-
-				stendhal.ui.soundMan.playLocalizedEffect(rpobject["_x"], rpobject["_y"], radius, this["layer"], sound, volume);
-			}
-		}); // sound_event
+		this.register("sound_event", new SoundEvent());
 
 		this.register("text", {
-			execute: function(rpobject: RPObject) {
+			execute: function(entity: RPEntity) {
 				if (this.hasOwnProperty("range")) {
-					rpobject.say(this["text"], this["range"]);
+					entity.say(this["text"], this["range"]);
 				} else {
-					rpobject.say(this["text"]);
+					entity.say(this["text"]);
 				}
 			}
 		}); // text

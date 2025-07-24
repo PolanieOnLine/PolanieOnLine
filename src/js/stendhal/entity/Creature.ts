@@ -11,7 +11,11 @@
 
 import { RPEntity } from "./RPEntity";
 
-import { Color } from "../util/Color";
+import { EntityOverlayRegistry } from "../data/EntityOverlayRegistry";
+
+import { Color } from "../data/color/Color";
+
+import { SkillEffect } from "../sprite/action/SkillEffect";
 
 declare var marauroa: any;
 declare var stendhal: any;
@@ -21,6 +25,16 @@ export class Creature extends RPEntity {
 	override minimapStyle = Color.CREATURE;
 	override spritePath = "monsters";
 	override titleStyle = "#ffc8c8";
+
+
+	override set(key: string, value: string) {
+		super.set(key, value);
+
+		if (key === "name") {
+			// overlay animation
+			this.overlay = EntityOverlayRegistry.get("creature", this);
+		}
+	}
 
 	override onclick(_x: number, _y: number) {
 		var action = {
@@ -41,4 +55,17 @@ export class Creature extends RPEntity {
 		return "url(" + stendhal.paths.sprites + "/cursor/attack.png) 1 3, auto";
 	}
 
+	/**
+	 * Shows a temporary animation overlay for certain entities.
+	 *
+	 * FIXME: does not restore previous overlay
+	 */
+	protected override onTransformed() {
+		if (!this["name"].startsWith("vampire")) {
+			return;
+		}
+		const delay = 100;
+		const frames = 5;
+		this.overlay = new SkillEffect("transform", delay, delay * frames);
+	}
 }

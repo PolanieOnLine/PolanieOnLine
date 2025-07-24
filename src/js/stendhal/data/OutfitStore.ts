@@ -1,5 +1,5 @@
 /***************************************************************************
- *                     Copyright © 2003-2023 - Arianne                     *
+ *                 Copyright © 2003-2024 - Faiumoni e. V.                  *
  ***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -14,6 +14,12 @@ import { JSONLoader } from "../util/JSONLoader";
 
 
 export class OutfitStore {
+
+	// layer names in draw order
+	private static readonly layers: string[] = ["body", "dress", "head", "mouth", "eyes", "mask", "hair", "hat", "detail"];
+	private static readonly layersLegacy: string[] = ["body", "dress", "head", "hair", "detail"];
+	// layers using skin coloring
+	private static readonly skinLayers: string[] = ["body", "head"];
 
 	private detailRearLayers: number[] = [];
 
@@ -68,6 +74,31 @@ export class OutfitStore {
 			this.detailRearLayers = loader.data["detail"]["rear"];
 		}
 		loader.load(Paths.sprites + "/outfit/outfits.json");
+	}
+
+	/**
+	 * Retrieves names of applicable outfit layers.
+	 *
+	 * @returns {string[]}
+	 *   Layer names.
+	 */
+	getLayerNames(legacy=false): string[] {
+		if (legacy) {
+			return [...OutfitStore.layersLegacy];
+		}
+		return [...OutfitStore.layers];
+	}
+
+	/**
+	 * Determines if a layer uses skin coloring.
+	 *
+	 * @param name {string}
+	 *   Layer name.
+	 * @return {boolean}
+	 *   `true` if the layer is considered to be a "skin" layer.
+	 */
+	isSkinLayer(name: string): boolean {
+		return OutfitStore.skinLayers.indexOf(name) > -1;
 	}
 
 	/**

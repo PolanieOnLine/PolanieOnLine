@@ -30,7 +30,7 @@ import { ZoneInfoComponent } from "../component/ZoneInfoComponent";
 import { PlayerEquipmentComponent } from "../component/PlayerEquipmentComponent";
 import { PlayerStatsComponent } from "../component/PlayerStatsComponent";
 
-import { Layout } from "../../util/Layout";
+import { Layout } from "../../data/enum/Layout";
 
 
 export class DesktopUserInterfaceFactory {
@@ -80,9 +80,9 @@ export class DesktopUserInterfaceFactory {
 		ui.registerComponent(UIComponentEnum.RightPanel, rightPanel);
 		this.add(rightPanel, UIComponentEnum.PlayerEquipment, new PlayerEquipmentComponent());
 		this.add(rightPanel, UIComponentEnum.Bag,
-			new BagComponent(undefined, "bag", 3, 4, false, undefined));
+			new BagComponent(undefined, "bag", 6, 6, false, undefined));
 
-		const keyring = new KeyringComponent(undefined, "keyring", 2, 4, false, "slot-key.png");
+		const keyring = new KeyringComponent(undefined, "keyring", 6, 2, false, "slot-key.png");
 		// hide keyring by default
 		keyring.setVisible(false);
 		this.add(rightPanel, UIComponentEnum.Keyring, keyring);

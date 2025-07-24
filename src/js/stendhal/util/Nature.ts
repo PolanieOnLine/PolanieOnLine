@@ -26,12 +26,16 @@ export class Nature {
 	public static readonly FIRE  = new Nature("#ff6400", "fire");
 	/** ice magic */
 	public static readonly ICE   = new Nature("#8c8cff", "ice");
+	/** water magic */
+	public static readonly WATER   = new Nature("#2f7afa", "water");
+	/** earth magic */
+	public static readonly EARTH   = new Nature("#90fa66", "earth");
 	/** light magic */
 	public static readonly LIGHT = new Nature("#fff08c", "light");
 	/** dark magic */
 	public static readonly DARK  = new Nature("#404040", "dark");
 
-	public static readonly VALUES = [Nature.CUT, Nature.FIRE, Nature.ICE, Nature.LIGHT, Nature.DARK];
+	public static readonly VALUES = [Nature.CUT, Nature.FIRE, Nature.ICE, Nature.WATER, Nature.EARTH, Nature.LIGHT, Nature.DARK];
 
 	private constructor(
 		public readonly color: string,

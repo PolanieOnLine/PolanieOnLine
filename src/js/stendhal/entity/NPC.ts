@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2023 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -11,7 +11,9 @@
 
 import { RPEntity } from "./RPEntity";
 
-import { Color } from "../util/Color";
+import { EntityOverlayRegistry } from "../data/EntityOverlayRegistry";
+
+import { Color } from "../data/color/Color";
 
 declare var stendhal: any;
 
@@ -29,9 +31,14 @@ export class NPC extends RPEntity {
 	override set(key: string, value: string) {
 		super.set(key, value);
 
-		if (key === "name" && value.startsWith("Zekiel")) {
-			// Zekiel uses transparentnpc sprite but he is taller
-			this.titleDrawYOffset = -32;
+		if (key === "name") {
+			// overlay animation
+			this.overlay = EntityOverlayRegistry.get("NPC", this);
+
+			if (value.startsWith("Zekiel")) {
+				// Zekiel uses transparentnpc sprite but he is taller
+				this.titleDrawYOffset = -32;
+			}
 		}
 	}
 

@@ -1,5 +1,6 @@
 /***************************************************************************
- *                       Copyright © 2023 - Stendhal                       *
+ *                    Copyright © 2024 - Faiumoni e. V.                    *
+ ***************************************************************************
  ***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -9,20 +10,23 @@
  *                                                                         *
  ***************************************************************************/
 
-
-export abstract class ActionSprite {
-
-	protected readonly initTime: number;
+import { ConfigManager } from "./ConfigManager";
+import { SessionManager } from "./SessionManager";
 
 
-	constructor() {
-		this.initTime = Date.now();
-	}
+export namespace Globals {
 
-	public abstract draw(ctx: CanvasRenderingContext2D, x: number, y: number, entityWidth: number,
-			entityHeight: number): void;
+	const config = ConfigManager.get();
+	const session = SessionManager.get();
 
-	public expired(): boolean {
-		return Date.now() - this.initTime > 180;
-	}
+	/**
+	 * Retrieves menu style from session/config.
+	 *
+	 * @returns {string}
+	 *   Either "traditional" or "floating".
+	 */
+	export function getMenuStyle(): string {
+		return !config.isSet("menu.style") && session.touchOnly() ? "floating"
+				: config.get("menu.style") || "traditional";
+	};
 }

@@ -17,6 +17,8 @@ import { singletons } from "./SingletonRepo";
 
 import { Paths } from "./data/Paths";
 
+import { Color } from "./data/color/Color";
+
 import { Ground } from "./entity/Ground";
 import { RPObject } from "./entity/RPObject";
 
@@ -36,8 +38,8 @@ import { DesktopUserInterfaceFactory } from "./ui/factory/DesktopUserInterfaceFa
 import { SingletonFloatingWindow } from "./ui/toolkit/SingletonFloatingWindow";
 
 import { Chat } from "./util/Chat";
-import { Color } from "./util/Color";
 import { DialogHandler } from "./util/DialogHandler";
+import { Globals } from "./util/Globals";
 
 
 /**
@@ -96,8 +98,10 @@ export class Client {
 		stendhal.paths = singletons.getPaths();
 		stendhal.config = singletons.getConfigManager();
 		stendhal.session = singletons.getSessionManager();
+		stendhal.actions = singletons.getSlashActionRepo();
 
 		this.initData();
+		this.initSound();
 		this.initUI();
 		this.initZone();
 	}
@@ -121,6 +125,17 @@ export class Client {
 	}
 
 	/**
+	 * Initializes sound manager.
+	 *
+	 * Should be called after config is initialized.
+	 */
+	private initSound() {
+		stendhal.sound = singletons.getSoundManager();
+		// update sound levels from config at startup
+		stendhal.sound.onConfigUpdate();
+	}
+
+	/**
 	 * Initializes GUI elements, input management, sound management, & other interface tools.
 	 */
 	private initUI() {
@@ -131,7 +146,8 @@ export class Client {
 		stendhal.ui.viewport = singletons.getViewPort();
 		// alias for backward-compat until changed in all source
 		stendhal.ui.gamewindow = stendhal.ui.viewport;
-		stendhal.ui.soundMan = singletons.getSoundManager();
+
+		stendhal.ui.getMenuStyle = Globals.getMenuStyle;
 	}
 
 	/**
@@ -169,7 +185,7 @@ export class Client {
 
 		new DesktopUserInterfaceFactory().create();
 
-		Chat.log("client", "Client loaded. Connecting...");
+		Chat.log("client", "Klient załadowany. Łączenie...");
 
 		this.registerMarauroaEventHandlers();
 		this.registerBrowserEventHandlers();
@@ -178,9 +194,8 @@ export class Client {
 		if (stendhal.session.isTestClient() && !stendhal.session.isServerDefault()) {
 			ws = ws.replace(/t/, "s");
 			// disclaimer for using the test client on the main server
-			Chat.log("warning", "WARNING: You are connecting to the production server with a development"
-					+ " build of the test client which may contain bugs or not function as intented. Proceeed"
-					+ " with caution.");
+			Chat.log("warning", "OSTRZEŻENIE: Łączysz się z serwerem przy użyciu deweloperskiej wersji testowego"
+					+ " klienta, która może zawierać błędy lub nie działać zgodnie z przeznaczeniem. Postępuj ostrożnie.");
 		}
 		marauroa.clientFramework.connect(null, null, ws);
 
@@ -189,7 +204,7 @@ export class Client {
 
 		// pre-cache images & sounds
 		stendhal.data.sprites.startupCache();
-		singletons.getSoundManager().startupCache();
+		stendhal.sound.startupCache();
 
 		if (document.getElementById("viewport")) {
 			stendhal.ui.gamewindow.draw.apply(stendhal.ui.gamewindow, arguments);
@@ -201,8 +216,8 @@ export class Client {
 	 */
 	devWarning() {
 		console.log("%c ", "padding: 30px; background: url(" + window.location.protocol + "://" + window.location.host + "/images/buttons/devtools-warning.png) no-repeat; color: #AF0");
-		console.log("%cIf someone told you, to copy and paste something here, it's a scam and will give them access to your account.", "color:#A00; background-color:#FFF; font-size:150%");
-		console.log("If you are a developer and curious about Stendhal, have a look at https://stendhalgame.org/development/introduction.html to get the source code. And perhaps, contribute a feature or a bugfix. ");
+		console.log("%cJeśli ktoś kazał ci coś skopiować i wkleić tutaj, to oszustwo i da im dostęp do twojego konta.", "color:#A00; background-color:#FFF; font-size:150%");
+		console.log("Jeśli jesteś deweloperem i ciekawi cię Stendhal, zajrzyj na https://stendhalgame.org/development/introduction.html, aby pobrać kod źródłowy. Może nawet dodasz nową funkcję lub naprawisz błąd! ");
 		console.log(" ");
 		console.log(" ");
 		window["eval"] = function() {};
@@ -214,7 +229,7 @@ export class Client {
 	onError(error: ErrorEvent): boolean|undefined {
 		this.errorCounter++;
 		if (this.errorCounter > 5) {
-			console.log("Too many errors, stopped reporting");
+			console.log("Zbyt wiele błędów, raportowanie zatrzymane.");
 			return;
 		}
 		var text = error.message + "\r\n";
@@ -245,7 +260,7 @@ export class Client {
 	registerMarauroaEventHandlers() {
 		marauroa.clientFramework.onDisconnect = function(_reason: string, _error: string) {
 			if (!Client.instance.unloading) {
-				Chat.logH("error", "Disconnected from server.");
+				Chat.logH("error", "Odłączono od serwera.");
 			}
 		};
 
@@ -264,12 +279,12 @@ export class Client {
 			ui.createSingletonFloatingWindow(
 				"Login",
 				new LoginDialog(),
-				100, 50);
+				100, 50).enableCloseButton(false);
 		};
 
 		marauroa.clientFramework.onCreateAccountAck = function(username: string) {
 			// TODO: We should login automatically
-			alert("Account succesfully created, please login.");
+			alert("Konto zostało pomyślnie utworzone, proszę się zalogować.");
 			window.location.reload();
 		};
 
@@ -278,7 +293,7 @@ export class Client {
 		};
 
 		marauroa.clientFramework.onLoginFailed = function(_reason: string, _text: string) {
-			alert("Login failed. " + _text);
+			alert("Logowanie nie powiodło się. " + _text);
 			// TODO: Server closes the connection, so we need to open a new one
 			window.location.reload();
 		};
@@ -303,9 +318,9 @@ export class Client {
 			body.style.cursor = "auto";
 			document.getElementById("loginpopup")!.style.display = "none";
 			ui.createSingletonFloatingWindow(
-				"Choose Character",
+				"Wybierz postać.",
 				new ChooseCharacterDialog(characters),
-				100, 50);
+				100, 50).enableCloseButton(false);
 		};
 
 		marauroa.clientFramework.onTransferREQ = function(items: any) {
@@ -366,10 +381,10 @@ export class Client {
 	chooseCharacter(name: string) {
 		stendhal.session.setCharName(name);
 		marauroa.clientFramework.chooseCharacter(name);
-		Chat.log("client", "Loading world...");
+		Chat.log("client", "Ładowanie świata...");
 
 		// play login sound for this user
-		singletons.getSoundManager().playGlobalizedEffect("ui/login");
+		stendhal.sound.playGlobalizedEffect("ui/login");
 	}
 
 	/**
@@ -428,7 +443,7 @@ export class Client {
 		// main sound button
 		const soundButton = document.getElementById("soundbutton")!;
 		soundButton.addEventListener("click", function(e: Event) {
-			stendhal.ui.soundMan.toggleSound();
+			stendhal.sound.toggleSound();
 		});
 
 		// click/touch indicator
@@ -460,16 +475,30 @@ export class Client {
 
 		// global zone music
 		const musicVolume = parseFloat(zoneinfo["music_volume"]);
-		stendhal.ui.soundMan.playSingleGlobalizedMusic(zoneinfo["music"],
+		stendhal.sound.playSingleGlobalizedMusic(zoneinfo["music"],
 				!Number.isNaN(musicVolume) ? musicVolume : 1.0);
 
-		if (zoneinfo["color"]) {
-			const hsl = Color.hexToHSL(Color.numToHex(Number(zoneinfo["color"])));
-			// workaround until able to get right saturation level from color methods
-			const sat = 1.0;
-			stendhal.ui.gamewindow.filter = "hue-rotate(" + hsl.H + "deg) saturate(" + sat
+		// parallax background
+		if (stendhal.config.getBoolean("effect.parallax")) {
+			stendhal.data.map.setParallax(zoneinfo["parallax"]);
+			stendhal.data.map.setIgnoredTiles(zoneinfo["parallax_ignore_tiles"]);
+		}
+
+		// coloring information
+		if (zoneinfo["color"] && stendhal.config.getBoolean("effect.lighting")) {
+			if (zoneinfo["color_method"]) {
+				stendhal.ui.gamewindow.setColorMethod(zoneinfo["color_method"]);
+			}
+			if (zoneinfo["blend_method"]) {
+				stendhal.ui.gamewindow.setBlendMethod(zoneinfo["blend_method"]);
+			}
+			const hsl = Color.numToHSL(Number(zoneinfo["color"]));
+			stendhal.ui.gamewindow.HSLFilter = hsl.toString();
+			// deprecated
+			stendhal.ui.gamewindow.filter = "hue-rotate(" + hsl.H + "deg) saturate(" + hsl.S
 					+ ") brightness(" + hsl.L + ")";
 		} else {
+			stendhal.ui.gamewindow.HSLFilter = undefined;
 			stendhal.ui.gamewindow.filter = undefined;
 		}
 

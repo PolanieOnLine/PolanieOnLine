@@ -19,10 +19,10 @@ declare var marauroa: any;
  */
 export class PlayerEquipmentComponent extends Component {
 
-	private slotNames = ["head", "lhand", "rhand", "finger", "armor", "cloak", "legs", "feet", "pouch"];
-	private slotSizes = [   1,       1,      1,       1,        1,       1,       1,     1,       1];
-	private slotImages = ["slot-helmet.png", "slot-shield.png", "slot-weapon.png", "slot-ring.png", "slot-armor.png", "slot-cloak.png",
-		"slot-legs.png", "slot-boots.png", "slot-pouch.png"];
+	private slotNames = ["neck", "head", "cloak", "lhand", "armor", "rhand", "finger", "pas", "legs", "glove", "fingerb", "feet", "pouch"];
+	private slotSizes = [  1,      1,       1,      1,       1,        1,       1,       1,      1,      1,       1,        1,       1];
+	private slotImages = ["slot-neck.png", "slot-helmet.png", "slot-cloak.png", "slot-shield.png", "slot-armor.png", "slot-weapon.png",
+		"slot-belt.png", "slot-ring.png", "slot-legs.png", "slot-gloves.png", "slot-ringb.png", "slot-boots.png", "slot-pouch.png"];
 	private inventory: ItemContainerImplementation[] = [];
 
 	private pouchVisible = false;
@@ -83,9 +83,9 @@ export class PlayerEquipmentComponent extends Component {
 			// resize the inventory window
 			var equip = document.getElementById("equipment")!;
 			if (show) {
-				equip.style.height = "200px";
+				equip.style.height = "210px";
 			} else {
-				equip.style.height = "160px";
+				equip.style.height = "210px";
 			}
 			this.pouchVisible = show;
 		}

@@ -16,6 +16,7 @@ import { Paths } from "./Paths";
 
 import { LandscapeRenderingStrategy, CombinedTilesetRenderingStrategy } from "../landscape/LandscapeRenderingStrategy";
 import { IndividualTilesetRenderingStrategy } from "../landscape/IndividualTilesetRenderingStrategy";
+import { ParallaxBackground } from "../landscape/ParallaxBackground";
 
 
 export class Map {
@@ -63,6 +64,10 @@ export class Map {
 		Paths.tileset + "/item/blood/small_stains"
 	];
 
+	private parallax: ParallaxBackground;
+	private parallaxImage?: string;
+	private ignoredTiles: string[];
+
 	/** Singleton instance. */
 	private static instance: Map;
 
@@ -86,6 +91,8 @@ export class Map {
 		} else {
 			this.strategy = new CombinedTilesetRenderingStrategy();
 		}
+		this.parallax = ParallaxBackground.get();
+		this.ignoredTiles = [];
 	}
 
 	/**
@@ -122,6 +129,11 @@ export class Map {
 		this.layerGroupIndexes = this.mapLayerGroup();
 
 		this.strategy.onMapLoaded(this);
+
+		if (this.parallaxImage) {
+			this.parallax.setImage(this.parallaxImage, this.zoneSizeX * this.tileWidth,
+					this.zoneSizeY * this.tileHeight);
+		}
 	}
 
 	decodeTileset(content: any, name: string) {
@@ -139,12 +151,17 @@ export class Map {
 			// This is not input validation. It just rewrites a path used by the
 			// Java client to a path matching the webserver directory layout.
 			var filename = "/" + source.replace(/\.\.\/\.\.\//g, "");
+			const basename = filename.replace(/\.png$/, "").replace(/^\/tileset\//, "");
+			const targetname = Paths.tileset + "/" + basename;
 
-			let baseFilename = filename.replace(/\.png$/, "").replace("/tileset", Paths.tileset);
-			if (!stendhal.config.getBoolean("effect.blood") && this.hasSafeTileset(baseFilename)) {
-				this.tilesetFilenames.push(baseFilename + "-safe.png");
+			if (this.ignoredTiles.indexOf(basename) > -1) {
+				// server has specified that certain tiles should not be drawn on this map
+				continue;
+			}
+			if (!stendhal.config.getBoolean("effect.blood") && this.hasSafeTileset(targetname)) {
+				this.tilesetFilenames.push(targetname + "-safe.png");
 			} else {
-				this.tilesetFilenames.push(baseFilename + ".png");
+				this.tilesetFilenames.push(targetname + ".png");
 			}
 
 			this.firstgids.push(firstgid);
@@ -164,7 +181,14 @@ export class Map {
 	}
 
 	decodeMapLayer(content: any, name: string): number[]|undefined {
-		var layerData = content[name];
+		var layerData: any;
+		if (name === "0_floor" && stendhal.config.getBoolean("effect.parallax")) {
+			// check for parallax-supporive floor layer
+			layerData = content["0_floor_parallax"];
+		}
+		if (!layerData) {
+			layerData = content[name];
+		}
 		if (!layerData) {
 			return;
 		}
@@ -221,5 +245,37 @@ export class Map {
 	 */
 	hasSafeTileset(filename: string) {
 		return this.knownSafeTilesets.indexOf(filename) > -1;
+	}
+
+	/**
+	 * Sets or unsets parallax image.
+	 *
+	 * @param {string=} name
+	 *   Background image filename.
+	 */
+	setParallax(name?: string) {
+		this.parallaxImage = name;
+		if (typeof(name) === "undefined") {
+			this.parallax.reset();
+		}
+	}
+
+	/**
+	 * Adds tilesets to be ignored when drawing.
+	 *
+	 * @param {string=} tilesets
+	 *   Comma-delimited string. If empty or `undefined`, ignored tilesets list will be reset.
+	 */
+	setIgnoredTiles(tilesets?: string) {
+		if (!tilesets) {
+			this.ignoredTiles = [];
+			return;
+		}
+		for (let t of tilesets.split(",")) {
+			t = t.trim();
+			if (t !== "") {
+				this.ignoredTiles.push(t);
+			}
+		}
 	}
 }

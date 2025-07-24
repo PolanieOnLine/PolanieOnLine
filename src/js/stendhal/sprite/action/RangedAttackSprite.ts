@@ -1,5 +1,6 @@
 /***************************************************************************
- *                       Copyright © 2023 - Stendhal                       *
+ *                    Copyright © 2023-2024 - Stendhal                     *
+ ***************************************************************************
  ***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -9,13 +10,13 @@
  *                                                                         *
  ***************************************************************************/
 
-import { ActionSprite } from "./ActionSprite";
+import { AttackSprite } from "./AttackSprite";
 import { RPEntity } from "../../entity/RPEntity";
 
 declare var stendhal: any;
 
 
-export class RangedAttackSprite extends ActionSprite {
+export class RangedAttackSprite extends AttackSprite {
 
 	private readonly dir: number;
 	private readonly targetX: number;
@@ -34,8 +35,8 @@ export class RangedAttackSprite extends ActionSprite {
 		this.weapon = weapon;
 	}
 
-	public override draw(ctx: CanvasRenderingContext2D, x: number, y: number, entityWidth: number,
-			entityHeight: number) {
+	override draw(ctx: CanvasRenderingContext2D, x: number, y: number, entityWidth: number,
+			entityHeight: number): boolean {
 		// FIXME: alignment with entity is not correct
 
 		var dtime = Date.now() - this.initTime;
@@ -97,5 +98,6 @@ export class RangedAttackSprite extends ActionSprite {
 			ctx.drawImage(this.image, frame * drawWidth, yRow * drawHeight,
 					drawWidth, drawHeight, sx, sy, drawWidth, drawHeight);
 		}
+		return this.expired();
 	}
 }

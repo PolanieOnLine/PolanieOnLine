@@ -16,7 +16,7 @@ declare var marauroa: any;
 
 export class KeyringComponent extends ItemInventoryComponent {
 
-	private slotSize = "2 4";
+	private slotSize = "6 2";
 
 	constructor(object: any, slot: string, sizeX: number, sizeY: number, quickPickup: boolean, defaultImage?: string) {
 		super(object, slot, sizeX, sizeY, quickPickup, defaultImage);

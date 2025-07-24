@@ -691,7 +691,7 @@
 	</target>
 
 
-	<extension-point name="js-prepare" depends="js-prepare-marauroa,js-prepare-build,js-prepare-node,js-prepare-contribs"/>
+	<extension-point name="js-prepare" depends="js-prepare-marauroa,js-prepare-build,js-prepare-node"/>
 
 
 	<target name="js-prepare-node">
@@ -720,7 +720,7 @@
 			<arg value="tsc"/>
 		</exec>
 
-		<property name="js-debug"          value="--debug --formatting=PRETTY_PRINT --create_source_map ${srcjs}/polanieonline-compiled.js.map --source_map_include_content"/>
+		<property name="js-debug"          value="--debug --formatting=PRETTY_PRINT --create_source_map ${srcjs}/stendhal-compiled.js.map --source_map_include_content"/>
 
 		<property name="js-files-license"  value="${srcjs}/stendhal/license.js"/>
 		<property name="js-files-marauroa" value="build/js/marauroa.js build/js/client-framework.js build/js/message-factory.js build/js/perception.js build/js/rpfactory.js build/js/inflate.js build/js/deserializer.js"/>
@@ -736,7 +736,7 @@
 		<property name="js-files-ui3"      value=""/>
 		<property name="js-files-main1"    value=""/>
 		<property name="js-files-ui4"      value=""/>
-		<property name="js-files-main2"    value="${srcjs}/stendhal/main.js"/>
+		<property name="js-files-main2"    value=""/>
 		<property name="js-files-main3"    value=""/>
 		<property name="js-files-ts"       value="build/ts/*.js build/ts/**/*.js"/>
 		<property name="js-files-ts2"      value=""/>
@@ -757,7 +757,7 @@
 			<!-- DEBUG: -->
 			<!--<arg value="-\-jscomp_off=globalThis"/>-->
 
-			<arg value="--js_output_file=${srcjs}/polanieonline-compiled.js"/>
+			<arg value="--js_output_file=${srcjs}/stendhal-compiled.js"/>
 
 			<arg line="${js-files-license}"/>
 			<arg line="${js-files-marauroa}"/>
@@ -779,15 +779,15 @@
 			<arg line="${js-files-ts2}"/>
 		</java>
 
-		<echo file="${srcjs}/polanieonline-compiled.js" append="true">
-//# sourceMappingURL=polanieonline-compiled.js.map
+		<echo file="${srcjs}/stendhal-compiled.js" append="true">
+	//# sourceMappingURL=stendhal-compiled.js.map
 		</echo>
 
 		<antcall target="compilejs-hook" />
 
 		<copy todir="build/eclipse/js" preservelastmodified="true" failonerror="false" quiet="true">
 			<fileset dir="${srcjs}">
-				<include name="polanieonline-compiled.js*" />
+				<include name="stendhal-compiled.js*" />
 			</fileset>
 		</copy>
 	</target> <!-- js-invoke-compiler -->

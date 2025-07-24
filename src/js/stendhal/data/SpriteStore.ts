@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2023 - Stendhal                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -187,6 +187,19 @@ export class SpriteStore {
 		}
 		this.images[id] = img;
 		return img;
+	}
+
+	/**
+	 * Adds an image to cache.
+	 *
+	 * @param {string} id
+	 *   Cache identifier.
+	 * @param {SpriteImage}
+	 *   Image to be cached.
+	 */
+	cache(id: string, image: SpriteImage) {
+		image.counter = 0;
+		this.images[id] = image;
 	}
 
 	/**
@@ -541,6 +554,8 @@ export class SpriteStore {
 	 * Called at startup to pre-cache certain images.
 	 */
 	startupCache() {
+		// failsafe image
+		this.getFailsafe();
 		// tutorial profile
 		this.get(Paths.sprites + "/npc/floattingladynpc.png");
 		// achievement assets
@@ -553,7 +568,7 @@ export class SpriteStore {
 			this.get(Paths.achievements + "/" + cat + ".png");
 		}
 		// weather
-		for (const weather of ["fog", "fog_heavy", "rain", "rain_heavy",
+		for (const weather of ["clouds", "fog", "fog_heavy", "rain", "rain_heavy",
 				"rain_light", "snow", "snow_heavy", "snow_light", "wave"]) {
 			this.get(Paths.weather + "/" + weather + ".png");
 		}

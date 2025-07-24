@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   id="svg3043"
+   sodipodi:docname="joystick.svg"
+   viewBox="0 0 47.999998 48"
+   version="1.1"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   width="48"
+   height="48"
+   inkscape:label="foreground"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <defs
+     id="defs11" />
+  <sodipodi:namedview
+     id="base"
+     bordercolor="#666666"
+     inkscape:pageshadow="2"
+     inkscape:window-y="-8"
+     fit-margin-left="0"
+     pagecolor="#ffffff"
+     fit-margin-top="0"
+     inkscape:window-maximized="1"
+     inkscape:zoom="7.919596"
+     inkscape:window-x="-8"
+     inkscape:window-height="1025"
+     showgrid="false"
+     borderopacity="1.0"
+     inkscape:current-layer="svg3043"
+     inkscape:cx="23.549181"
+     inkscape:cy="5.3664354"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:window-width="1920"
+     inkscape:pageopacity="0.0"
+     inkscape:document-units="px"
+     inkscape:pagecheckerboard="true"
+     inkscape:showpageshadow="2"
+     inkscape:deskcolor="#d1d1d1" />
+  <metadata
+     id="metadata8">
+    <rdf:RDF>
+      <cc:Work>
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <cc:license
+           rdf:resource="http://creativecommons.org/publicdomain/zero/1.0/" />
+        <dc:publisher>
+          <cc:Agent
+             rdf:about="http://openclipart.org/">
+            <dc:title>Openclipart</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:title>gamepad</dc:title>
+        <dc:date>2012-10-07T08:36:44</dc:date>
+        <dc:description>retro gamepad</dc:description>
+        <dc:source>https://openclipart.org/detail/172636</dc:source>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>sagism</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>game</rdf:li>
+            <rdf:li>gamepad</rdf:li>
+            <rdf:li>retro</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/publicdomain/zero/1.0/">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <g
+     id="g1098"
+     transform="translate(9.5152292,9.0101528)"
+     inkscape:label="g1"
+     sodipodi:insensitive="true">
+    <circle
+       style="fill:#000000;fill-opacity:1;stroke:none;stroke-width:2.71045"
+       id="path1"
+       cx="14.484771"
+       cy="14.989847"
+       r="16"
+       inkscape:label="background" />
+    <path
+       id="rect2985"
+       style="display:inline;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.999999;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       inkscape:connector-curvature="0"
+       d="m 4.5895285,9.0953473 c -1.1662854,0 -2.1045068,0.9382447 -2.1045068,2.1045067 v 7.579986 c 0,1.166286 0.9382449,2.104507 2.1045068,2.104507 H 24.380015 c 1.166285,0 2.104505,-0.938244 2.104505,-2.104507 v -7.579986 c 0,-1.166286 -0.938244,-2.1045067 -2.104505,-2.1045067 z M 16.590548,10.35939 c 1.162706,0 2.104506,0.941858 2.104506,2.104507 0,1.162649 -0.941858,2.104506 -2.104506,2.104506 -1.162649,0 -2.104507,-0.941857 -2.104507,-2.104506 0,-1.162649 0.941858,-2.104507 2.104507,-2.104507 z m 5.894442,0 c 1.162705,0 2.104506,0.941858 2.104506,2.104507 0,1.162649 -0.941858,2.104506 -2.104506,2.104506 -1.16265,0 -2.104507,-0.941857 -2.104507,-2.104506 0,-1.162649 0.941857,-2.104507 2.104507,-2.104507 z M 6.9060548,10.778456 H 9.853334 v 2.631845 h 2.631844 v 2.947278 H 9.853334 v 2.631847 H 6.9060548 V 16.357579 H 4.2742101 v -2.947278 h 2.6318447 z"
+       sodipodi:nodetypes="sssssssssssssssssssccccccccccccc"
+       inkscape:label="icon" />
+  </g>
+</svg>

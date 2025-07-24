@@ -11,7 +11,46 @@
  ***************************************************************************/
 
 
-export class StringUtil {
+/**
+ * String helper functions.
+ */
+export namespace StringUtil {
+
+	/**
+	 * Checks if a string is empty or contains only whitespace characters.
+	 *
+	 * @param {string} st
+	 *   String to be checked.
+	 * @returns {boolean}
+	 *   `true` if string length excluding whitespace characters is 0.
+	 */
+	export function isEmpty(st: string): boolean {
+		if (!st) {
+			return true;
+		}
+		return st.trim() === "";
+	};
+
+	/**
+	 * Adds character to left side of string if needed.
+	 *
+	 * @param {string} st
+	 *   String value being modified.
+	 * @param {string} c
+	 *   Character or set of characters to use for padding.
+	 * @param {number} len
+	 *   Length of resulting string (if padded).
+	 */
+	export function padLeft(st: string, c: string, len: number): string {
+		if (st.length >= len) {
+			// no padding needed
+			return st;
+		}
+		while (st.length < len) {
+			st = c + st;
+		}
+		return st.slice(-len);
+	};
 
 	/**
 	 * Converts a plain text string to data URL.
@@ -25,7 +64,7 @@ export class StringUtil {
 	 * @return {string}
 	 *   Data URL encoded string.
 	 */
-	static toDataURL(text: string, mime: string="text/plain", charset: string="utf-8"): string {
+	export function toDataURL(text: string, mime: string="text/plain", charset: string="utf-8"): string {
 		return "data:" + mime + ";charset=" + charset + "," + window.encodeURIComponent(text);
-	}
+	};
 }

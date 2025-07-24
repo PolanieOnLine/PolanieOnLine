@@ -10,13 +10,13 @@
  *                                                                         *
  ***************************************************************************/
 
-import { ActionSprite } from "./ActionSprite";
+import { AttackSprite } from "./AttackSprite";
 import { RPEntity } from "../../entity/RPEntity";
 
 declare var stendhal: any;
 
 
-export class BarehandAttackSprite extends ActionSprite {
+export class BarehandAttackSprite extends AttackSprite {
 
 	private readonly dir: number;
 	private readonly image: HTMLImageElement;
@@ -28,10 +28,10 @@ export class BarehandAttackSprite extends ActionSprite {
 		this.image = image;
 	}
 
-	public override draw(ctx: CanvasRenderingContext2D, x: number, y: number, entityWidth: number,
-			entityHeight: number) {
+	override draw(ctx: CanvasRenderingContext2D, x: number, y: number, entityWidth: number,
+			entityHeight: number): boolean {
 		if (!this.image || !this.image.height) {
-			return;
+			return this.expired();
 		}
 
 		const dtime = Date.now() - this.initTime;
@@ -67,5 +67,6 @@ export class BarehandAttackSprite extends ActionSprite {
 
 		ctx.drawImage(this.image, frameIndex * drawWidth, (this.dir - 1) * drawHeight,
 				drawWidth, drawHeight, sx, sy, drawWidth, drawHeight);
+		return this.expired();
 	}
 }

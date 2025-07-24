@@ -1,5 +1,5 @@
 /***************************************************************************
- *                    Copyright © 2024 - Faiumoni e. V.                    *
+ *                    Copyright © 2023-2024 - Stendhal                     *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -10,15 +10,25 @@
  *                                                                         *
  ***************************************************************************/
 
-import { NumericEnumeration } from "./NumericEnumeration";
+import { OverlaySpriteImpl } from "../OverlaySpriteImpl";
 
 
 /**
- * Enumeration type representing layout of elements.
+ * Sprite representing an attack animation.
  */
-export class Layout extends NumericEnumeration {
-	public static readonly TOP = new Layout(1);
-	public static readonly BOTTOM = new Layout();
-	public static readonly LEFT = new Layout();
-	public static readonly RIGHT = new Layout();
+export abstract class AttackSprite implements OverlaySpriteImpl {
+
+	protected readonly initTime: number;
+
+
+	constructor() {
+		this.initTime = Date.now();
+	}
+
+	abstract draw(ctx: CanvasRenderingContext2D, x: number, y: number, entityWidth: number,
+			entityHeight: number): boolean;
+
+	expired(): boolean {
+		return Date.now() - this.initTime > 180;
+	}
 }

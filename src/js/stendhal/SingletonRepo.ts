@@ -17,6 +17,7 @@ import { Zone } from "./entity/Zone";
 
 import { ConfigManager } from "./util/ConfigManager";
 import { DownloadUtil } from "./util/DownloadUtil";
+import { DrawingStage } from "./util/DrawingStage";
 import { FacingHandler } from "./util/FacingHandler";
 import { KeyHandler } from "./util/KeyHandler";
 import { SessionManager } from "./util/SessionManager";
@@ -32,14 +33,15 @@ import { Paths } from "./data/Paths";
 import { SpriteStore, store } from "./data/SpriteStore";
 import { TileStore } from "./data/TileStore";
 
+import { LoopedSoundSourceManager } from "./data/sound/LoopedSoundSourceManager";
+import { SoundManager } from "./data/sound/SoundManager";
+
 import { ui } from "./ui/UI";
 import { UIComponentEnum } from "./ui/UIComponentEnum";
 import { HeldObjectManager } from "./ui/HeldObject";
 import { HTMLManager } from "./ui/HTMLManager";
 import { Inventory } from "./ui/Inventory";
-import { LoopedSoundSourceManager } from "./ui/LoopedSoundSourceManager";
 import { SoftwareJoystickController } from "./ui/SoftwareJoystickController";
-import { SoundManager } from "./ui/SoundManager";
 import { TouchHandler } from "./ui/TouchHandler";
 import { UIUpdateObserver } from "./ui/UIUpdateObserver";
 import { ViewPort } from "./ui/ViewPort";
@@ -71,6 +73,10 @@ export class SingletonRepo {
 
 	static getDownloadUtil(): typeof DownloadUtil {
 		return DownloadUtil;
+	}
+
+	static getDrawingStage(): DrawingStage {
+		return DrawingStage.get();
 	}
 
 	static getEmojiStore(): EmojiStore {

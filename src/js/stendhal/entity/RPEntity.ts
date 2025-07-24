@@ -16,12 +16,15 @@ import { ActiveEntity } from "./ActiveEntity";
 import { Entity } from "./Entity";
 import { singletons } from "../SingletonRepo";
 import { MenuItem } from "../action/MenuItem";
+
+import { Color } from "../data/color/Color";
+
 import { Chat } from "../util/Chat";
-import { Color } from "../util/Color";
 import { Nature } from "../util/Nature";
 
 import { Floater } from "../sprite/Floater";
 import { EmojiSprite } from "../sprite/EmojiSprite";
+import { OverlaySpriteImpl } from "../sprite/OverlaySpriteImpl";
 import { SpeechBubble } from "../sprite/SpeechBubble";
 import { TextSprite } from "../sprite/TextSprite";
 
@@ -29,7 +32,6 @@ import { BarehandAttackSprite } from "../sprite/action/BarehandAttackSprite";
 //import { MeleeAttackSprite } from "../sprite/action/MeleeAttackSprite";
 import { RangedAttackSprite } from "../sprite/action/RangedAttackSprite";
 
-import { SoundManager } from "../ui/SoundManager";
 import { ImageWithDimensions } from "data/ImageWithDimensions";
 
 var HEALTH_BAR_HEIGHT = 6;
@@ -37,14 +39,12 @@ var HEALTH_BAR_HEIGHT = 6;
 
 export class RPEntity extends ActiveEntity {
 
-	private static readonly soundManager = SoundManager.get();
-
 	override zIndex = 8000;
 	drawY = 0;
 	spritePath = "";
 	titleStyle = "#FFFFFF";
 	_target?: RPEntity;
-	attackSprite: any = undefined; // TODO
+	protected attackSprite?: OverlaySpriteImpl;
 	attackResult: any = undefined; // TODO
 	dir = 3;
 	titleTextSprite?: TextSprite;
@@ -57,6 +57,13 @@ export class RPEntity extends ActiveEntity {
 	private octx?: CanvasRenderingContext2D;
 
 	private attackers: {[key: string]: any} = { size: 0 };
+
+	/**
+	 * Animation drawn over entity sprite.
+	 *
+	 * TODO: maybe support multiple overlays
+	 */
+	protected overlay?: OverlaySpriteImpl;
 
 
 	override set(key: string, value: any) {
@@ -95,6 +102,8 @@ export class RPEntity extends ActiveEntity {
 			this.onLevelChanged(key, value, oldValue);
 		} else if (["title", "name", "class", "type"].indexOf(key) >-1) {
 			this.createTitleTextSprite();
+		} else if (key === "subclass" && typeof(oldValue) !== "undefined" && value !== oldValue) {
+			this.onTransformed();
 		}
 	}
 
@@ -210,13 +219,12 @@ export class RPEntity extends ActiveEntity {
 	}
 
 	drawMultipartOutfit(ctx: CanvasRenderingContext2D) {
+		const store = singletons.getOutfitStore();
 		// layers in draw order
-		var layers: string[] = [];
+		var layers = store.getLayerNames();
 
 		var outfit: {[key: string]: number} = {};
 		if ("outfit_ext" in this) {
-			layers = ["body", "dress", "head", "mouth", "eyes", "mask", "hair", "hat", "detail"];
-
 			for (const part of this["outfit_ext"].split(",")) {
 				if (part.includes("=")) {
 					var tmp = part.split("=");
@@ -224,7 +232,7 @@ export class RPEntity extends ActiveEntity {
 				}
 			}
 		} else {
-			layers = ["body", "dress", "head", "hair", "detail"];
+			layers = store.getLayerNames(true);
 
 			outfit["body"] = this["outfit"] % 100;
 			outfit["dress"] = Math.floor(this["outfit"]/100) % 100;
@@ -271,6 +279,7 @@ export class RPEntity extends ActiveEntity {
 
 		if (this.octx) {
 			this.drawSpriteImage(ctx, this.octx.canvas);
+			this.drawOverlayAnimation(ctx);
 		}
 	}
 
@@ -305,7 +314,7 @@ export class RPEntity extends ActiveEntity {
 		const filename = stendhal.paths.sprites + "/outfit/" + part + "/" + n + ".png";
 		const colors = this["outfit_colors"];
 		let colorname;
-		if (part === "body" || part === "head") {
+		if (stendhal.data.outfit.isSkinLayer(part)) {
 			colorname = "skin";
 		} else {
 			colorname = part;
@@ -383,6 +392,7 @@ export class RPEntity extends ActiveEntity {
 			}
 
 			this.drawSpriteImage(ctx, image);
+			this.drawOverlayAnimation(ctx);
 		}
 	}
 
@@ -554,13 +564,14 @@ export class RPEntity extends ActiveEntity {
 		if (image.height) { // image.complete is true on missing image files
 			var nFrames = 3;
 			var nDirections = 4;
-			var yRow = this["dir"] - 1;
+			const facing = this.getFaceDirection().val;
+			var yRow = facing - 1;
 			var frame = 1; // draw center column when idle
 			// Ents are a hack in Java client too
 			if (this["class"] == "ent") {
 				nFrames = 1;
 				nDirections = 2;
-				yRow = Math.floor((this["dir"] - 1) / 2);
+				yRow = Math.floor((facing - 1) / 2);
 				frame = 0;
 			}
 			this["drawHeight"] = image.height as number / nDirections;
@@ -587,7 +598,13 @@ export class RPEntity extends ActiveEntity {
 				ctx.globalAlpha = opacity * 0.01;
 			}
 
-			ctx.drawImage(image, frame * this["drawWidth"], yRow * this["drawHeight"], this["drawWidth"], this["drawHeight"], localX + drawX, localY + drawY, this["drawWidth"], this["drawHeight"]);
+			// store offset for use by other drawing methods
+			this["drawOffsetX"] = localX + drawX;
+			this["drawOffsetY"] = localY + drawY;
+
+			ctx.drawImage(image, frame * this["drawWidth"], yRow * this["drawHeight"], this["drawWidth"],
+					this["drawHeight"], this["drawOffsetX"], this["drawOffsetY"], this["drawWidth"],
+					this["drawHeight"]);
 			// restore opacity
 			ctx.globalAlpha = opacity_orig;
 		}
@@ -648,11 +665,13 @@ export class RPEntity extends ActiveEntity {
 	}
 
 	drawAttack(ctx: CanvasRenderingContext2D) {
-		if (this.attackSprite == null) {
+		if (!this.attackSprite) {
 			return;
 		}
 		if (this.attackSprite.expired()) {
-			this.attackSprite = null;
+			// sprite expired & should be removed
+			// NOTE: if this is done after `this.attackSprite.draw` animation doesn't look right
+			this.attackSprite = undefined;
 			return;
 		}
 		var localX = this["_x"] * 32;
@@ -660,6 +679,20 @@ export class RPEntity extends ActiveEntity {
 		var localW = this["width"] * stendhal.ui.gamewindow.targetTileWidth;
 		var localH = this["height"] * stendhal.ui.gamewindow.targetTileHeight;
 		this.attackSprite.draw(ctx, localX, localY, localW, localH);
+	}
+
+	/**
+	 * Draws an animation over entity sprite.
+	 *
+	 * @param {CanvasRenderingContext2D} ctx
+	 *   Canvas context to draw on.
+	 */
+	private drawOverlayAnimation(ctx: CanvasRenderingContext2D) {
+		if (this.overlay && this.overlay.draw(ctx, this["drawOffsetX"], this["drawOffsetY"],
+				this["drawWidth"], this["drawHeight"])) {
+			// overlay sprite expired
+			this.overlay = undefined;
+		}
 	}
 
 	// attack handling
@@ -680,14 +713,14 @@ export class RPEntity extends ActiveEntity {
 		this.attackResult = this.createResultIcon(stendhal.paths.sprites + "/combat/hitted.png");
 		var sounds = ["attack-melee-01", "attack-melee-02", "attack-melee-03", "attack-melee-04", "attack-melee-05", "attack-melee-06", "attack-melee-07"];
 		var index = Math.floor(Math.random() * Math.floor(sounds.length));
-		RPEntity.soundManager.playLocalizedEffect(this["_x"], this["_y"], 20, 3, sounds[index], 1);
+		stendhal.sound.playLocalizedEffect(this["_x"], this["_y"], 20, 3, sounds[index], 1);
 	}
 
 	onBlocked(_source: Entity) {
 		this.attackResult = this.createResultIcon(stendhal.paths.sprites + "/combat/blocked.png");
 		var sounds = ["clang-metallic-1", "clang-dull-1"];
 		var index = Math.floor(Math.random() * Math.floor(sounds.length));
-		RPEntity.soundManager.playLocalizedEffect(this["_x"], this["_y"], 20, 3, sounds[index], 1);
+		stendhal.sound.playLocalizedEffect(this["_x"], this["_y"], 20, 3, sounds[index], 1);
 	}
 
 	onMissed(_source: Entity) {
@@ -815,5 +848,14 @@ export class RPEntity extends ActiveEntity {
 		if (this._target) {
 			this._target.onAttackStopped(this);
 		}
+	}
+
+	/**
+	 * Called when entity's subclass is changed.
+	 *
+	 * Does nothing in this implementation.
+	 */
+	protected onTransformed() {
+		// do nothing
 	}
 }

@@ -1,5 +1,5 @@
 /***************************************************************************
- *                    Copyright © 2003-2023 - Stendhal                     *
+ *                    Copyright © 2003-2024 - Stendhal                     *
  ***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -11,13 +11,10 @@
 
 import { InvisibleEntity } from "./InvisibleEntity";
 
-import { LoopedSoundSourceManager } from "../ui/LoopedSoundSourceManager";
+import { LoopedSoundSourceManager } from "../data/sound/LoopedSoundSourceManager";
 
 
 export class LoopedSoundSource extends InvisibleEntity {
-
-	private readonly lssMan = LoopedSoundSourceManager.get();
-
 
 	/**
 	 * Checks if a looped sound source has been loaded with this
@@ -27,6 +24,6 @@ export class LoopedSoundSource extends InvisibleEntity {
 	 *     <code>true</code> if the ID is found in the sources list.
 	 */
 	isLoaded(): boolean {
-		return typeof(this.lssMan.getSources()[this["id"]]) !== "undefined";
+		return typeof(LoopedSoundSourceManager.get().getSources()[this["id"]]) !== "undefined";
 	}
 }

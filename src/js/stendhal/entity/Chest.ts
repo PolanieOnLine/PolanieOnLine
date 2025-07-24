@@ -9,15 +9,16 @@
  *                                                                         *
  ***************************************************************************/
 
+import { PopupInventory } from "./PopupInventory";
+
+import { MenuItem } from "../action/MenuItem";
+
+import { Color } from "../data/color/Color";
+
 import { FloatingWindow } from "../ui/toolkit/FloatingWindow";
 import { ItemInventoryComponent } from "../ui/component/ItemInventoryComponent";
 
-import { PopupInventory } from "./PopupInventory";
-
 import { Chat } from "../util/Chat";
-import { Color } from "../util/Color";
-
-import { MenuItem } from "../action/MenuItem";
 
 declare var marauroa: any;
 declare var stendhal: any;
@@ -120,7 +121,7 @@ export class Chest extends PopupInventory {
 	openInventoryWindow() {
 		if (!this.inventory || !this.inventory.isOpen()) {
 			const invComponent = new ItemInventoryComponent(this,
-					"content", 5, 6, stendhal.config.getBoolean("inventory.quick-pickup"), undefined);
+					"content", 6, 6, stendhal.config.getBoolean("inventory.quick-pickup"), undefined);
 			// TODO: remove, deprecated
 			invComponent.setConfigId("chest");
 

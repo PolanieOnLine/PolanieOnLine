@@ -14,15 +14,17 @@ declare var stendhal: any;
 import { GeneralTab } from "./settings/GeneralTab";
 import { InputTab } from "./settings/InputTab";
 import { SoundTab } from "./settings/SoundTab";
+import { VisualsTab } from "./settings/VisualsTab";
 
 import { TabDialogContentComponent } from "../toolkit/TabDialogContentComponent";
+import { Tooltip } from "../toolkit/Tooltip";
 
-import { Layout } from "../../util/Layout";
+import { Layout } from "../../data/enum/Layout";
+
+import { Debug } from "../../util/Debug";
 
 
 export class SettingsDialog extends TabDialogContentComponent {
-
-	public static debugging = false;
 
 	public readonly storedStates: {[index: string]: string};
 	private readonly initialStates: {[index: string]: string};
@@ -39,12 +41,18 @@ export class SettingsDialog extends TabDialogContentComponent {
 		};
 
 		this.initialStates = {
+			"activity-indicator": stendhal.config.get("activity-indicator"),
+			"activity-indicator.animate": stendhal.config.get("activity-indicator.animate"),
 			"effect.blood": stendhal.config.get("effect.blood"),
+			"effect.entity-overlay": stendhal.config.get("effect.entity-overlay"),
+			"effect.lighting": stendhal.config.get("effect.lighting"),
+			"effect.parallax": stendhal.config.get("effect.parallax"),
 			"effect.weather": stendhal.config.get("effect.weather")
 		};
 
 		this.addTab("General", new GeneralTab(this, this.child("#settings-general")!));
-		//this.addTab("Sound", new SoundTabthis, this.child("#settings-sound")!));
+		this.addTab("Visuals", new VisualsTab(this, this.child("#settings-visuals")!));
+		this.addTab("Sound", new SoundTab(this, this.child("#settings-sound")!));
 		this.addTab("Input", new InputTab(this, this.child("#settings-input")!));
 
 
@@ -102,7 +110,7 @@ export class SettingsDialog extends TabDialogContentComponent {
 			label.innerHTML = "";
 			label.appendChild(checkbox);
 			label.appendChild(text);
-			if (!SettingsDialog.debugging) {
+			if (!Debug.isActive("settings")) {
 				// hide if settings debugging is not enabled
 				checkbox.disabled = true;
 				checkbox.style.setProperty("display", "none");
@@ -140,9 +148,13 @@ export class SettingsDialog extends TabDialogContentComponent {
 
 		const chk = this.createCheckBoxSkel(id)!;
 		chk.checked = stendhal.config.getBoolean(setid);
-		const tt = new CheckTooltip(ttpos, ttneg);
-		if (chk.parentElement) {
-			chk.parentElement.title = tt.getValue(chk.checked);
+		let tt: Tooltip;
+		if (ttpos !== "") {
+			let element: any = chk;
+			if (chk.parentElement) {
+				element = chk.parentElement;
+			}
+			tt = new Tooltip(element, ttpos, ttneg !== "" ? ttneg : undefined, chk.checked);
 		}
 		if (!chk.disabled) {
 			chk.addEventListener("change", (e) => {
@@ -153,7 +165,9 @@ export class SettingsDialog extends TabDialogContentComponent {
 				} else {
 					stendhal.config.set(setid, chk.checked);
 				}
-				chk.parentElement!.title = tt.getValue(chk.checked);
+				if (tt) {
+					tt.setState(chk.checked);
+				}
 				if (action) {
 					action();
 				}
@@ -238,16 +252,16 @@ export class SettingsDialog extends TabDialogContentComponent {
 	/**
 	 * Creates a select element.
 	 *
-	 * @param id
+	 * @param {string} id
 	 *   Identifier of element to retrieve.
-	 * @param cid
+	 * @param {string} ckey
 	 *   Configuration key associated with element.
-	 * @param tooltip
+	 * @param {string=} tooltip
 	 *   Optional popup tooltip text.
-	 * @param action
+	 * @param {Function=} action
 	 *   Action to execute when state changed.
-	 * @return
-	 *   `HTMLSelectElement`.
+	 * @returns {HTMLSelectElement}
+	 *   Select element.
 	 */
 	createSelectFromConfig(id: string, ckey: string, tooltip?: string, action?: Function): HTMLSelectElement {
 		const cvalue = stendhal.config.get(ckey);
@@ -342,21 +356,5 @@ export class SettingsDialog extends TabDialogContentComponent {
 		});
 
 		return input;
-	}
-}
-
-
-class CheckTooltip {
-	private valueEnabled: string;
-	private valueDisabled: string;
-	constructor(e: string, d: string) {
-		this.valueEnabled = e;
-		this.valueDisabled = d;
-	}
-	public getValue(enabled: boolean): string {
-		if (enabled) {
-			return this.valueEnabled;
-		}
-		return this.valueDisabled;
 	}
 }

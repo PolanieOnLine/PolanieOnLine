@@ -9,28 +9,31 @@
  *                                                                         *
  ***************************************************************************/
 
+import { ComponentBase } from "./ComponentBase";
 
-export abstract class Component {
+
+export abstract class Component extends ComponentBase {
 
 	/** The `HTMLElement` associated with this component. */
-	readonly componentElement!: HTMLElement;
-	/** The parent `Component` of this one. Usually a floating window. */
-	public parentComponent?: Component;
+	override readonly componentElement!: HTMLElement;
 	/** @deprecated */
 	public cid?: string;
-	/** Default display type when component is visible. */
+	/** Default display type when component is visible.
+	 *  NOTE: this might not be necessary
+	 */
 	private visibleDisplay: string;
 
 
 	/**
 	 * Creates a new component.
 	 *
-	 * @param el
+	 * @param {string|HTMLElement} el
 	 *   DOM element or ID of HTML element or template.
-	 * @param themable
-	 *   Inherits theming visuals (default: `false`).
+	 * @param {boolean} [themable=false]
+	 *   Inherits theming visuals.
 	 */
 	constructor(el: string|HTMLElement, themable=false) {
+		super();
 		let element: HTMLElement|null;
 		if (typeof(el) === "string") {
 			const id = el as string;
@@ -71,10 +74,6 @@ export abstract class Component {
 	 */
 	public onMoved() {
 		// do nothing
-	};
-
-	public refresh() {
-		// inheriting classes can override
 	};
 
 	/**
@@ -135,24 +134,5 @@ export abstract class Component {
 	 */
 	public toggleVisibility() {
 		this.setVisible(!this.isVisible());
-	}
-
-	/**
-	 * Retrieves a child element.
-	 *
-	 * @param selector
-	 *   Child element's identification string.
-	 * @return
-	 *   `HTMLElement` or `undefined` if child not found.
-	 */
-	protected child(selector: string): HTMLElement|undefined {
-		return this.componentElement.querySelector(selector) as HTMLElement|undefined;
-	}
-
-	/**
-	 * Checks if the associated element currently has focus.
-	 */
-	public hasFocus(): boolean {
-		return document.activeElement == this.componentElement;
 	}
 }
