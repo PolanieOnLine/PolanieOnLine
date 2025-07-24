@@ -498,12 +498,12 @@ local handleLendRequest = function(player, sentence, lender)
 
 	-- metal detector from shelf was already loaned out
 	if detector == nil then
-		lender:say("Hmmmm. I guess I forgot that I already loaned it out...")
-		lender:say("!me is thinking.")
+		lender:say("Hmmmm. Chyba zapomniałem, że już to komuś pożyczyłem...")
+		lender:say("!me myśli.")
 		lender:setCurrentState(ConversationStates.BUSY)
 
 		game:runAfter(10, function()
-			lender:say("Oh! That's right, I keep a spare just in case.")
+			lender:say("Och! Racja, trzymam zapasowy na wszelki wypadek.")
 			detector = sawyersShelf:getSpareMetalDetector()
 
 			game:runAfter(5, function()
