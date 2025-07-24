@@ -231,6 +231,7 @@ public class ForgeNewArms extends AbstractQuest {
 					npc.say(successText);
 					player.addXP(1000000);
 					player.setQuest(QUEST_SLOT, "done");
+					player.incProducedForItem(item, 1);
 					new EquipItemAction(item, 1, true).fire(player, null, null);
 				}
 			} else {
