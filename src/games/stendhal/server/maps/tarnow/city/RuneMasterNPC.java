@@ -301,10 +301,12 @@ public class RuneMasterNPC implements ZoneConfigurator {
 							selectedGlyph.getResources().forEach((resourceName, amount) -> {
 								player.drop(resourceName, amount);
 							});
-							player.equipOrPutOnGround(selectedGlyph.getItem());
+							raiser.say("Gratulacje! Otrzymujesz " + glyphName + ". Korzystaj z tego glifu mądrze.");
 
-							raiser.say("Gratulacje! Otrzymujesz " + glyphName + ". Wykorzystaj go mądrze.");
 							player.setQuest(QUEST_SLOT, "done");
+							player.notifyWorldAboutChanges();
+							player.equipOrPutOnGround(selectedGlyph.getItem());
+							player.incProducedForItem(glyphName, selectedGlyph.getItem().getQuantity());
 						}
 					}
 				);
@@ -313,7 +315,7 @@ public class RuneMasterNPC implements ZoneConfigurator {
 					glyphName,
 					new AndCondition(new QuestInStateCondition(QUEST_SLOT, 1, glyphName), new NotCondition(resourceConditions)),
 					ConversationStates.ATTENDING,
-					"Wróć, gdy będziesz miał przy sobie wszystkie potrzebne zasoby do utworzenia glifu " + glyphName + ". Oto lista: " + glyph.getFormattedResources() + ".",
+					"Wróć, gdy będziesz miał przy sobie wszystkie potrzebne zasoby do wytworzenia glifu " + glyphName + ". Oto lista: " + glyph.getFormattedResources() + ".",
 					null
 				);
 			}
