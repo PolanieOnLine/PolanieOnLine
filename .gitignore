@@ -55,6 +55,7 @@ build_server_xmlconf
 *.cmd
 updatesigner.bat
 update-1.16.properties
+/src/js/stendhal/node_modules
 /src/net
 /libs/postman
 /build-archive
