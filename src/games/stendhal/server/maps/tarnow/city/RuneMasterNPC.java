@@ -216,7 +216,7 @@ public class RuneMasterNPC implements ZoneConfigurator {
 				add(ConversationStates.ATTENDING,
 					glyphName,
 					new QuestNotInStateCondition(QUEST_SLOT, 0, "start"),
-					ConversationStates.ATTENDING,
+					ConversationStates.SERVICE_OFFERED,
 					null,
 					new ChatAction() {
 						@Override
@@ -233,9 +233,9 @@ public class RuneMasterNPC implements ZoneConfigurator {
 					}
 				);
 
-				add(ConversationStates.ATTENDING,
+				add(ConversationStates.SERVICE_OFFERED,
 					ConversationPhrases.YES_MESSAGES,
-					new QuestNotInStateCondition(QUEST_SLOT, 0, "start"),
+					new QuestInStateCondition("glyph_request", glyphName),
 					ConversationStates.ATTENDING,
 					null,
 					new ChatAction() {
@@ -255,9 +255,9 @@ public class RuneMasterNPC implements ZoneConfigurator {
 					}
 				);
 
-				add(ConversationStates.ATTENDING,
+				add(ConversationStates.SERVICE_OFFERED,
 					ConversationPhrases.NO_MESSAGES,
-					new QuestNotInStateCondition(QUEST_SLOT, 0, "start"),
+					new QuestInStateCondition("glyph_request", glyphName),
 					ConversationStates.ATTENDING,
 					null,
 					new ChatAction() {
