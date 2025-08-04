@@ -1,5 +1,14 @@
 Changelog
 ---------
+1.40.2
+*naprawiono błędy*
+- Naprawiono dialogi u Sawyera, które były w języku angielskim
+- Naprawiono naliczanie się wyprodukowanego przedmiotu podczas wykonywania zadania na tarczę ciemnomithrilową
+- Naprawiono książki z ofertami kupczyka Piotra w Krakowskiej tawernie
+- Naprawiono losowe dobieranie pomiędzy statusem patrolu, a włóczeniem się NPC
+- Naprawiono zduplikowane przejścia stanów konwersacji u Zoryka Runicznego
+
+
 1.40.1
 *klient*
 - Przyśpieszono animacje ikon AWAY oraz GRUMPY
