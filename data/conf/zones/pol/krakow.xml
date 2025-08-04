@@ -1430,7 +1430,7 @@ Południe: Zakopane
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
 				<parameter name="shop">buymerchant</parameter>
 				<parameter name="title">Sklep Piotra kupczyka (sprzedaż)</parameter>
-				<parameter name="seller">true</parameter>
+				<parameter name="seller">false</parameter>
 				<parameter name="caption">Możesz kupić te rzeczy od Piotra.</parameter>
 			</implementation>
 			<attribute name="class">book_blue</attribute>
@@ -1439,7 +1439,7 @@ Południe: Zakopane
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
 				<parameter name="shop">sellmerchant</parameter>
 				<parameter name="title">Sklep Piotra kupczyka (skup)</parameter>
-				<parameter name="seller">false</parameter>
+				<parameter name="seller">true</parameter>
 				<parameter name="caption">Możesz sprzedać te rzeczy Piotrowi.</parameter>
 			</implementation>
 			<attribute name="class">book_red</attribute>
