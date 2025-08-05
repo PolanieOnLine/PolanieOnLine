@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2025 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -27,8 +26,7 @@ import games.stendhal.server.entity.player.Player;
  */
 @Dev(category=Category.QUEST_SLOT, label="Completed?")
 public class QuestCompletedCondition implements ChatCondition {
-
-	private final String questname;
+	private final String questName;
 
 	/**
 	 * Creates a new QuestCompletedCondition.
@@ -36,8 +34,8 @@ public class QuestCompletedCondition implements ChatCondition {
 	 * @param questname
 	 *            name of quest-slot
 	 */
-	public QuestCompletedCondition(final String questname) {
-		this.questname = checkNotNull(questname);
+	public QuestCompletedCondition(final String questName) {
+		this.questName = checkNotNull(questName);
 	}
 
 	@Override
@@ -50,17 +48,17 @@ public class QuestCompletedCondition implements ChatCondition {
 		}
 		*/
 
-		return (player.isQuestCompleted(questname));
+		return (player.isQuestCompleted(questName));
 	}
 
 	@Override
 	public String toString() {
-		return "QuestCompleted <" + questname + ">";
+		return "QuestCompleted <" + questName + ">";
 	}
 
 	@Override
 	public int hashCode() {
-		return 45779 * questname.hashCode();
+		return 45779 * questName.hashCode();
 	}
 
 	@Override
@@ -69,7 +67,7 @@ public class QuestCompletedCondition implements ChatCondition {
 			return false;
 		}
 		QuestCompletedCondition other = (QuestCompletedCondition) obj;
-		return questname.equals(other.questname);
+		return questName.equals(other.questName);
 	}
 
 	public static ConditionBuilder questCompleted(String questName) {
