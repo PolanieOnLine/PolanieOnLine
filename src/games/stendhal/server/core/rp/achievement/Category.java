@@ -18,6 +18,8 @@ package games.stendhal.server.core.rp.achievement;
  * @author madmetzger
  */
 public enum Category {
+	/** craft items */
+	CRAFT,
 	/** xp points */
 	EXPERIENCE,
 	/** def level */

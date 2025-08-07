@@ -19,6 +19,7 @@ import games.stendhal.server.core.rp.achievement.Achievement;
 import games.stendhal.server.core.rp.achievement.Category;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.npc.ChatCondition;
+import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.PlayerGotNumberOfItemsFromWellCondition;
 import games.stendhal.server.entity.npc.condition.PlayerHasHarvestedNumberOfItemsCondition;
 import games.stendhal.server.entity.npc.condition.PlayerMinedNumberOfItemsCondition;
@@ -143,6 +144,14 @@ public class ObtainAchievementsFactory extends AbstractAchievementFactory {
 				new QuestCompletedCondition("mithrilshield_quest")));
 
 		achievements.add(createAchievement(
+				"quest.special.rings", "Komplet Pierścionków",
+				"Ukończono zadanie na srebrny oraz złoty pierścień",
+				Achievement.MEDIUM_BASE_SCORE, true,
+				new AndCondition(
+						new QuestCompletedCondition("zamowienie_strazy"),
+						new QuestCompletedCondition("zloty_pierscien"))));
+
+		achievements.add(createAchievement(
 				"quest.special.gornictwo", "Kopalnia Niestraszna",
 				"Ukończono zadanie na górnictwo",
 				Achievement.MEDIUM_BASE_SCORE, true,
@@ -185,6 +194,22 @@ public class ObtainAchievementsFactory extends AbstractAchievementFactory {
 			"Znajdź szczęśliwą czterolistną koniczynę",
 			Achievement.MEDIUM_BASE_SCORE, true,
 			new PlayerHasHarvestedNumberOfItemsCondition(1, "czterolistna koniczyna")));
+
+		achievements.add(createAchievement(
+			"obtain.glifhunter", "Łowca Glifów",
+			"Wykop oraz oddaj 10 fragmentów glifu Omarowi",
+			Achievement.MEDIUM_BASE_SCORE, true,
+			new ChatCondition() {
+				@Override
+				public boolean fire(Player player, Sentence sentence, Entity npc) {
+					int completed = 0;
+					if (player.isQuestCompleted("glif_fragments")) {
+						completed = player.getNumberOfRepetitions("glif_fragments", 6);
+					}
+					return completed >= 10;
+				}
+			}
+		));
 
 		return achievements;
 	}

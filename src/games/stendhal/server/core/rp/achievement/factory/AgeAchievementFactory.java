@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2023 - Stendhal                    *
+ *                   (C) Copyright 2003-2025 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -34,58 +34,28 @@ public class AgeAchievementFactory extends AbstractAchievementFactory {
 		final LinkedList<Achievement> achievements = new LinkedList<Achievement>();
 
 		achievements.add(createAchievement(
-				"age.less.00010", "Nowy Bywalec",
-				"Spędzono 10 godzin w grze",
+				"age.less.00010", "Dziecko Polany",
+				"Spędź w grze 10 godzin",
 				Achievement.EASY_BASE_SCORE, true,
 				new AgeGreaterThanCondition(599)));
 
 		achievements.add(createAchievement(
-				"age.less.00100", "Młodzik",
-				"Spędzono 100 godzin w grze",
+				"age.less.00050", "Syn Ziemi",
+				"Spędź w grze 50 godzin",
 				Achievement.EASY_BASE_SCORE, true,
-				new AgeGreaterThanCondition(5999)));
+				new AgeGreaterThanCondition(2999)));
 
 		achievements.add(createAchievement(
-				"age.less.00250", "Growy Obywatel",
-				"Spędzono 250 godzin w grze",
+				"age.less.00100", "Duch Lasu",
+				"Spędź w grze 100 godzin",
 				Achievement.EASY_BASE_SCORE, true,
-				new AgeGreaterThanCondition(14999)));
+				new AgeGreaterThanCondition(4999)));
 
 		achievements.add(createAchievement(
-				"age.less.00500", "W Ciągłym Ruchu",
-				"Spędzono 500 godzin w grze",
+				"age.less.00500", "Wieczny Strażnik",
+				"Spędź w grze 500 godzin",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new AgeGreaterThanCondition(29999)));
-
-		achievements.add(createAchievement(
-				"age.less.01000", "Ku Legendzie",
-				"Spędzono 1 000 godzin w grze",
-				Achievement.MEDIUM_BASE_SCORE, true,
-				new AgeGreaterThanCondition(59999)));
-
-		achievements.add(createAchievement(
-				"age.less.02500", "Pewna Ćwiara",
-				"Spędzono 2 500 godzin w grze",
-				Achievement.HARD_BASE_SCORE, true,
-				new AgeGreaterThanCondition(149999)));
-
-		achievements.add(createAchievement(
-				"age.less.05000", "Wciągnięto w Zamęt",
-				"Spędzono 5 000 godzin w grze",
-				Achievement.HARD_BASE_SCORE, true,
-				new AgeGreaterThanCondition(299999)));
-
-		achievements.add(createAchievement(
-				"age.less.10000", "Staruszek",
-				"Spędzono 10 000 godzin w grze",
-				Achievement.EXTREME_BASE_SCORE, true,
-				new AgeGreaterThanCondition(599999)));
-
-		achievements.add(createAchievement(
-				"age.less.20000", "❤️",
-				"Spędzono ponad 20 000 godzin w grze!",
-				Achievement.EXTREME_BASE_SCORE, true,
-				new AgeGreaterThanCondition(1199999)));
 
 		return achievements;
 	}

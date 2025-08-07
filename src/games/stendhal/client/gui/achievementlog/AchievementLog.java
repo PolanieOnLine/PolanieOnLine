@@ -11,151 +11,256 @@
  ***************************************************************************/
 package games.stendhal.client.gui.achievementlog;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Image;
+import java.awt.Insets;
 import java.awt.Window;
-import java.util.Enumeration;
 import java.util.List;
 
-import javax.swing.JComponent;
+import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JDialog;
-import javax.swing.JTable;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
+import javax.swing.Timer;
 import javax.swing.WindowConstants;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.TableColumn;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import games.stendhal.client.gui.WindowUtils;
 import games.stendhal.client.gui.j2DClient;
-import games.stendhal.client.gui.achievementlog.AchievementLogRenderers.HeaderRenderer;
-import games.stendhal.client.gui.layout.SBoxLayout;
+import games.stendhal.client.sprite.ImageSprite;
 import games.stendhal.client.sprite.Sprite;
 import games.stendhal.client.sprite.SpriteStore;
 
 /**
  * @author KarajuSs
  */
-class AchievementLog {
-	private static final int TABLE_WIDTH = 720;
-	private static final int TABLE_HEIGHT = 500;
-	/** The enclosing window. */
-	private JDialog window;
-	private JComponent page;
+public class AchievementLog {
+    private static final int TABLE_WIDTH = 720;
+    private static final int TABLE_HEIGHT = 500;
+    private static final int CARD_WIDTH = 200;
+    public static final int PAD = 5;
 
-	private AchievementLogRenderers renderer = AchievementLogRenderers.get();
+    private JDialog window;
+    private JPanel mainPanel;
+    private JPanel achievementPanel;
+    private JList<String> categoryList;
+    private DefaultListModel<String> listModel;
 
-	public static final int PAD = 5;
+    private AchievementLogRenderers renderer = AchievementLogRenderers.get();
 
-	AchievementLog(String name) {
-		window = new JDialog(j2DClient.get().getMainFrame(), name);
-		window.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		window.setLayout(new SBoxLayout(SBoxLayout.VERTICAL, PAD));
-		window.setResizable(false);
+    private JPanel expandedDescriptionPanel;
+    private Timer animationTimer;
+    private int expandedHeight = 0;
+    private final int maxDescriptionHeight = 100;
 
-		page = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PAD);
-		window.add(page);
+    private int expandedRowIndex = -1;
 
-		AchievementLogComponents component = new AchievementLogComponents();
-		page.add(component.getHeaderText(TABLE_WIDTH, PAD));
-		page.add(component.getViewTable(getTable(), TABLE_WIDTH, TABLE_HEIGHT, PAD));
-		page.add(component.getButtons(window));
+    AchievementLog(String name) {
+        window = new JDialog(j2DClient.get().getMainFrame(), name);
+        window.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+        window.setLayout(new BorderLayout(PAD, PAD));
+        window.setResizable(false);
 
-		WindowUtils.closeOnEscape(window);
-		WindowUtils.watchFontSize(window);
-		WindowUtils.trackLocation(window, "achievement_log", false);
-		window.pack();
-	}
+        mainPanel = new JPanel(new BorderLayout(PAD, PAD));
+        achievementPanel = new JPanel();
+        achievementPanel.setLayout(new GridBagLayout()); // Using GridBagLayout for more control
 
-	private JComponent getTable() {
-		final JTable table = createTable();
+        expandedDescriptionPanel = new JPanel();
+        expandedDescriptionPanel.setLayout(new BorderLayout());
+        expandedDescriptionPanel.setVisible(false);
 
-		table.setEnabled(false);
-		table.setFillsViewportHeight(true);
-		table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+        listModel = new DefaultListModel<>();
+        List<String> categories = AchievementLogController.get().getCategories();
+        for (String category : categories) {
+            listModel.addElement(category);
+        }
 
-		TableColumn col = table.getColumnModel().getColumn(0);
-		DefaultTableCellRenderer r = new DefaultTableCellRenderer();
-		r.setHorizontalAlignment(SwingConstants.CENTER);
-		col.setCellRenderer(r);
+        categoryList = new JList<>(listModel);
+        categoryList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        categoryList.setSelectedIndex(0);
+        categoryList.addListSelectionListener(new CategorySelectionListener());
 
-		col = table.getColumnModel().getColumn(1);
-		col.setCellRenderer(renderer.new SpriteCellRenderer());
+        JScrollPane categoryScrollPane = new JScrollPane(categoryList);
+        categoryScrollPane.setPreferredSize(new Dimension(150, TABLE_HEIGHT));
 
-		col = table.getColumnModel().getColumn(2);
-		col.setCellRenderer(renderer.new DescriptionCellRenderer());
+        mainPanel.add(categoryScrollPane, BorderLayout.WEST);
+        mainPanel.add(new JScrollPane(achievementPanel), BorderLayout.CENTER);
 
-		HeaderRenderer hr = new HeaderRenderer();
-		Enumeration<TableColumn> cols = table.getColumnModel().getColumns();
-		while (cols.hasMoreElements()) {
-			TableColumn c = cols.nextElement();
-			c.setHeaderRenderer(hr);
-		}
+        window.add(mainPanel);
+        loadAchievements(categories.get(0));
 
-		AchievementLogAdjusts adjust = new AchievementLogAdjusts();
-		adjust.columnWidths(table);
-		adjust.rowHeights(table);
+        WindowUtils.closeOnEscape(window);
+        WindowUtils.watchFontSize(window);
+        WindowUtils.trackLocation(window, "achievement_log", false);
+        window.pack();
+    }
 
-		return table;
-	}
+    private void loadAchievements(String category) {
+    	achievementPanel.removeAll();
+        expandedDescriptionPanel.setVisible(false);
+        expandedRowIndex = -1;
+        List<String> achievements = AchievementLogController.get().getAchievementsByCategory(category);
 
-	private JTable createTable() {
-		final String[] columnNames = { "#", "Ikona", "Opis" };
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.insets = new Insets(PAD, PAD, PAD, PAD);
+        constraints.weightx = 1;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
 
-		List<String> achievements = AchievementLogController.get().getList();
-		final Object[][] data = new Object[achievements.size()][];
-		int i = 0;
-		for (final String a: achievements) {
-			data[i] = createDataRow(a.split(":"));
-			i++;
-		}
+        int colCount = TABLE_WIDTH / CARD_WIDTH;
+        int currentCol = 0;
 
-		return new JTable(data, columnNames);
-	}
+        for (String achievement : achievements) {
+        	JPanel card = createAchievementCard(achievement.split(":"));
+            achievementPanel.add(card, constraints);
+            currentCol++;
+            if (currentCol == colCount) {
+                constraints.gridy++;
+                currentCol = 0;
+            }
+            constraints.gridx = currentCol;
+        }
 
-	private Object[] createDataRow(final String[] achievements) {
-		final Object[] rval = new Object[3];
+        achievementPanel.revalidate();
+        achievementPanel.repaint();
+    }
 
-		final String category = achievements[0];
-		final String title = achievements[1];
-		final String desc = achievements[2];
+    private JPanel createAchievementCard(final String[] achievementData) {
+        JPanel cardPanel = new JPanel();
+        cardPanel.setLayout(new BorderLayout());
+        cardPanel.setBorder(BorderFactory.createEmptyBorder(PAD, PAD, PAD, PAD));
+        cardPanel.setPreferredSize(new Dimension(CARD_WIDTH, 100));
 
-		boolean reached = achievements[3].equals("true");
+        final String title = achievementData[1];
+        final String desc = achievementData[2];
+        boolean reached = achievementData[3].equals("true");
 
-		rval[0] = "";
-		rval[1] = getAchievementImage(category, reached);
-		rval[2] = getAchievementDesc(title, desc);
+        JLabel iconLabel = new JLabel(new ImageIcon(convertToImage(getAchievementImage(achievementData[0], reached))));
+        JLabel titleLabel = new JLabel(title);
+        titleLabel.setFont(titleLabel.getFont().deriveFont(Font.BOLD));
+        titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 
-		if (reached) {
-			rval[0] = "✔";
-		}
+        JPanel headerPanel = new JPanel(new BorderLayout());
+        headerPanel.add(iconLabel, BorderLayout.CENTER);
+        headerPanel.add(titleLabel, BorderLayout.SOUTH);
 
-		return rval;
-	}
+        cardPanel.add(headerPanel, BorderLayout.NORTH);
 
-	private String getAchievementDesc(String title, String desc) {
-		String description = "<html><span style=\"font-weight: bold;\">" + title + "</span><br/>"
-				+ "<span style=\"font-weight: normal; font-style: italic;\">" + desc + ".</span></html>";
+        cardPanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+            	toggleExpandedDescription(title, desc, cardPanel);
+            }
+        });
 
-		return description;
-	}
+        return cardPanel;
+    }
 
-	private Sprite getAchievementImage(String category, boolean reached) {
-		String imagePath = "/data/sprites/achievements/" + category.toLowerCase() + ".png";
+    private void toggleExpandedDescription(String title, String desc, JPanel cardPanel) {
+        int cardIndex = achievementPanel.getComponentZOrder(cardPanel);
+        int colCount = TABLE_WIDTH / CARD_WIDTH;
+        int rowIndex = cardIndex / colCount;
 
-		Sprite sprite;
-		if (reached) {
-			sprite = SpriteStore.get().getSprite(imagePath);
-		} else {
-			sprite = SpriteStore.get().getColoredSprite(imagePath, Color.LIGHT_GRAY);
-		}
+        if (expandedRowIndex == rowIndex) {
+            achievementPanel.remove(expandedDescriptionPanel);
+            expandedRowIndex = -1;
+            achievementPanel.revalidate();
+            achievementPanel.repaint();
+            return;
+        }
 
-		if (sprite.getWidth() > sprite.getHeight()) {
-			sprite = SpriteStore.get().getAnimatedSprite(sprite, 100);
-		}
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.gridx = 0;
+        constraints.gridy = rowIndex + 1;
+        constraints.gridwidth = colCount;
+        constraints.fill = GridBagConstraints.HORIZONTAL;
 
-		return sprite;
-	}
+        expandedDescriptionPanel.removeAll();
 
-	Window getWindow() {
-		return window;
-	}
+        JLabel arrowLabel = new JLabel("▼", SwingConstants.CENTER);
+        arrowLabel.setFont(arrowLabel.getFont().deriveFont(16f));
+        arrowLabel.setPreferredSize(new Dimension(20, 20));
+
+        JPanel arrowPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, PAD, PAD));
+        arrowPanel.add(arrowLabel);
+
+        JTextArea descArea = new JTextArea(desc);
+        descArea.setFont(descArea.getFont().deriveFont(Font.ITALIC));
+        descArea.setLineWrap(true);
+        descArea.setWrapStyleWord(true);
+        descArea.setEditable(false);
+
+        expandedDescriptionPanel.add(arrowPanel, BorderLayout.NORTH);
+        expandedDescriptionPanel.add(descArea, BorderLayout.CENTER);
+
+        if (animationTimer != null && animationTimer.isRunning()) {
+            animationTimer.stop();
+        }
+
+        expandedHeight = 0;
+        expandedDescriptionPanel.setPreferredSize(new Dimension(TABLE_WIDTH, 0));
+        achievementPanel.add(expandedDescriptionPanel, constraints);
+        expandedRowIndex = rowIndex;
+
+        animationTimer = new Timer(10, e -> {
+            expandedHeight += 5;
+            expandedDescriptionPanel.setPreferredSize(new Dimension(TABLE_WIDTH, expandedHeight));
+            achievementPanel.revalidate();
+            if (expandedHeight >= maxDescriptionHeight) {
+                ((Timer) e.getSource()).stop();
+            }
+        });
+        animationTimer.start();
+
+        expandedDescriptionPanel.setVisible(true);
+
+        // Adjust arrow position dynamically
+        int arrowX = cardPanel.getX() + cardPanel.getWidth() / 2 - arrowLabel.getWidth() / 2;
+        arrowLabel.setLocation(arrowX, arrowLabel.getY());
+
+        achievementPanel.revalidate();
+        achievementPanel.repaint();
+    }
+
+    private Image convertToImage(Sprite sprite) {
+        if (sprite instanceof ImageSprite) {
+            return ((ImageSprite) sprite).getImage();
+        }
+        throw new IllegalArgumentException("Unsupported sprite type: " + sprite.getClass().getName());
+    }
+
+    private Sprite getAchievementImage(String category, boolean reached) {
+        String imagePath = "/data/sprites/achievements/" + category.toLowerCase() + ".png";
+        Sprite sprite = reached ? SpriteStore.get().getSprite(imagePath) : SpriteStore.get().getColoredSprite(imagePath, Color.LIGHT_GRAY);
+        return sprite;
+    }
+
+    private class CategorySelectionListener implements ListSelectionListener {
+        @Override
+        public void valueChanged(ListSelectionEvent e) {
+            if (!e.getValueIsAdjusting()) {
+                String selectedCategory = categoryList.getSelectedValue();
+                loadAchievements(selectedCategory);
+            }
+        }
+    }
+
+    Window getWindow() {
+        return window;
+    }
 }

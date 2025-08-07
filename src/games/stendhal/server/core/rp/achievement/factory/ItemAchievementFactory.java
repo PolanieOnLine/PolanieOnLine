@@ -19,9 +19,7 @@ import games.stendhal.server.core.rp.achievement.Achievement;
 import games.stendhal.server.core.rp.achievement.Category;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.npc.ChatCondition;
-import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.PlayerLootedNumberOfItemsCondition;
-import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 import games.stendhal.server.entity.player.Player;
 
 /**
@@ -55,88 +53,80 @@ public class ItemAchievementFactory extends AbstractAchievementFactory {
 		final LinkedList<Achievement> achievements = new LinkedList<Achievement>();
 
 		achievements.add(createAchievement(
-				"item.money.00000100", "Pierwsze Kieszonkowe",
-				"Zdobyto 100 monet na potworach",
+				"item.money.00000100", "Drobniaki",
+				"Zbierz 100 monet na potworach",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(100, MONEY)));
 
 		achievements.add(createAchievement(
-				"item.money.00010000", "Złoty Prysznic",
-				"Zdobyto 10,000 monet na potworach",
+				"item.money.00010000", "Niewielka Sakiewka",
+				"Zbierz 10,000 monet na potworach",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(10000, MONEY)));
 
 		achievements.add(createAchievement(
-				"item.money.00100000", "Mała Fortuna",
-				"Zdobyto 100,000 monet na potworach",
+				"item.money.00100000", "Pozłacane Wrota",
+				"Zbierz 100,000 monet na potworach",
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(100000, MONEY)));
 
 		achievements.add(createAchievement(
-				"item.money.01000000", "Już Nie Potrzebujesz Więcej",
-				"Zdobyto 1,000,000 monet na potworach",
+				"item.money.01000000", "Skarbiec Kupca",
+				"Zbierz 1,000,000 monet na potworach",
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1000000, MONEY)));
 
 		achievements.add(createAchievement(
-				"item.money.10000000", "Wielka Kąpiel w Złocie",
-				"Zdobyto 10,000,000 monet na potworach",
+				"item.money.10000000", "Złota Kąpiel",
+				"Zbierz 10,000,000 monet na potworach",
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(10000000, MONEY)));
 
 		achievements.add(createAchievement(
 				"item.cheese.2000", "Serowy Czarodziej",
-				"Zdobyto 2,000 sera",
+				"Zdobądź 2,000 sera",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(2000, "ser")));
 
 		achievements.add(createAchievement(
-				"item.ham.2500", "Stado Szynek",
-				"Zdobyto 2,500 szynki",
+				"item.ham.2500", "Szynkowy Magnat",
+				"Zdobądź 2,500 szynki",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(2500, "szynka")));
 
 		achievements.add(createAchievement(
-				"item.cod.1500", "Pływanie w Dorszach",
-				"Zdobyto 1,500 dorszy",
+				"item.cod.1500", "Łowca Dorszy",
+				"Zdobądź 1,500 dorszy",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1500, "dorsz")));
 
 		achievements.add(createAchievement(
-				"item.sausage.2000", "Parówkowy Król",
-				"Zdobyto 2,000 kiełbasy wiejskiej",
+				"item.sausage.2000", "Kiełbasiany Książę",
+				"Zdobądź 2,000 kiełbasy wiejskiej",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(2000, "kiełbasa wiejska")));
 
 		achievements.add(createAchievement(
-				"item.set.littlerings", "Mały Komplet Pierścionków",
-				"Zdobyto srebrny i złoty pierścień",
-				Achievement.MEDIUM_BASE_SCORE, true,
-				new AndCondition(
-						new QuestCompletedCondition("zamowienie_strazy"),
-						new QuestCompletedCondition("zloty_pierscien"))));
-
-		achievements.add(createAchievement(
-				"item.goldenblade", "Upragniona Nagroda",
-				"Zdobyto złotą klingę",
+				"item.goldenblade", "Złota Klinga",
+				"Zdobądź złotą klingę",
 				Achievement.HARD_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1, "złota klinga")));
 
 		achievements.add(createAchievement(
-				"item.jewellery", "Cenne Kamienie",
-				"Zdobyto 5 z każdego rodzaju drogocennych klejnotów",
+				"item.jewellery", "Zbieracz Klejnotów",
+				"Zdobądź 5 z każdego rodzaju drogocennych klejnotów",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(5, ITEMS_JEWELLERY)));
 
 		achievements.add(createAchievement(
 				"item.magicspells", "Zaklinacz",
-				"Zdobyto po 1,000 z każdego rodzaju zaklęć",
+				"Zdobądź po 1,000 z każdego rodzaju zaklęć",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(1000, ITEMS_MAGICSPELLS)));
 
 		achievements.add(createAchievement(
 				"item.dragonclaws", "Smocza Wystawa",
-				"Zdobyto łącznie 10 różnych smoczych pazurów",
+				"Zdobądź łącznie 10 różnych smoczych pazurów",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new ChatCondition() {
 					@Override
@@ -151,7 +141,7 @@ public class ItemAchievementFactory extends AbstractAchievementFactory {
 
 		achievements.add(createAchievement(
 				"item.angelfeathers", "Anielskie Skrzydła",
-				"Zdobyto łącznie 1,000 różnych anielskich piór",
+				"Zdobądź łącznie 1,000 różnych anielskich piór",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new ChatCondition() {
 					@Override
@@ -165,20 +155,20 @@ public class ItemAchievementFactory extends AbstractAchievementFactory {
 				}));
 
 		achievements.add(createAchievement(
-				"item.horns", "Rogaty Władca",
-				"Zdobyto po 200 rogów demona i jednorożca",
+				"item.horns", "Rogaty Pan",
+				"Zdobądź po 200 rogów demona i jednorożca",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(200, ITEMS_HORNS)));
 
 		achievements.add(createAchievement(
-				"item.potatoes", "Młoda Pyrka",
-				"Zdobyto 2,000 ziemniaków",
+				"item.potatoes", "Gorący Garnuszek",
+				"Zdobądź 2,000 ziemniaków",
 				Achievement.MEDIUM_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(2000, "ziemniaki")));
 
 		achievements.add(createAchievement(
-				"item.chicken.2000", "Deszcz Udek",
-				"Zdobyto 2,000 udek",
+				"item.chicken.2000", "Udkowy Szał",
+				"Zdobądź 2,000 udek",
 				Achievement.EASY_BASE_SCORE, true,
 				new PlayerLootedNumberOfItemsCondition(2000, "udko")));
 
