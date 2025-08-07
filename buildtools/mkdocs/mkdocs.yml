@@ -1,6 +1,6 @@
-site_name: PolanieOnLine 1.40.1 Reference Documentation
+site_name: PolanieOnLine 1.40.2 Reference Documentation
 site_description: A fun, friendly, & free multiplayer online adventure game.
-copyright: Copyright © 2003-2024 Stendhal
+copyright: Copyright © 2003-2025 Stendhal
 site_url: https://stendhalgame.org/
 nav:
   - Index: /reference/
