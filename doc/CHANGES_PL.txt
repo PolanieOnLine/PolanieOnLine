@@ -1,6 +1,9 @@
 Changelog
 ---------
 1.40.2
+*klient*
+- Poprawiono grafiki wykrywacza metalu oraz złotego rogu
+
 *naprawiono błędy*
 - Naprawiono dialogi u Sawyera, które były w języku angielskim
 - Naprawiono naliczanie się wyprodukowanego przedmiotu podczas wykonywania zadania na tarczę ciemnomithrilową
