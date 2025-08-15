@@ -17,6 +17,8 @@ import java.util.Random;
 
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
+import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ChatCondition;
@@ -124,7 +126,7 @@ public class GlyphFragments extends AbstractQuest {
 				@Override
 				public void fire(Player player, Sentence sentence, EventRaiser npc) {
 					String questMap = getRandomMap();
-					int[] cords = getRandomCoordinates();
+					int[] cords = getRandomCoordinates(getZone(questMap));
 					int[] similiarCords = sendApproximateCoordinates(player, cords[0], cords[1]);
 					npc.say("Świetnie, będziesz potrzebował do tego zadania łopaty, aby odnaleźć fragmenty."
 						+ " Mogą one delikatnie różnić się w zależności w jakim stanie go wykopiesz."
@@ -201,16 +203,33 @@ public class GlyphFragments extends AbstractQuest {
 		return new int[] { approxX, approxY };
 	}
 
-	private int[] getRandomCoordinates() {
+	/**
+	 * Generates random coordinates within the range [0, 127] for both X and Y,
+	 * ensuring that the generated position does not collide with any existing
+	 * objects or obstacles in the given zone.
+	 *
+	 * @param zone
+	 * 		The game zone in which the coordinates should be generated
+	 * @return an array containing the X and Y coordinates that are free of collisions
+	 */
+	private int[] getRandomCoordinates(final StendhalRPZone zone) {
 		Random random = new Random();
-		int x = random.nextInt(128);
-		int y = random.nextInt(128);
+		int x, y;
 
-		return new int[] { x, y };
+		do {
+			x = random.nextInt(128);
+			y = random.nextInt(128);
+		} while (zone.collides(x, y));
+
+		return new int[] {x, y};
 	}
 
 	private String getRandomMap() {
 		return maps[random.nextInt(maps.length)];
+	}
+
+	private StendhalRPZone getZone(final String map) {
+		return SingletonRepository.getRPWorld().getZone(map);
 	}
 
 	private void setStartQuestAction(Player player, String mapName, int[] cords) {
@@ -291,7 +310,7 @@ public class GlyphFragments extends AbstractQuest {
 						).fire(player, sentence, raiser);
 					} else {
 						String questMap = getRandomMap();
-						int[] cords = getRandomCoordinates();
+						int[] cords = getRandomCoordinates(getZone(questMap));
 						int[] similiarCords = sendApproximateCoordinates(player, cords[0], cords[1]);
 
 						raiser.say("Niestety, nie udało się naprawić. Może w innym miejscu znajdziesz nowy fragment!"
