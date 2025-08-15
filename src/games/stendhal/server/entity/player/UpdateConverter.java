@@ -646,6 +646,7 @@ public abstract class UpdateConverter {
 		renameQuestSlot(player, "prozba_wielkoluda", "help_wielkolud");
 		renameQuestSlot(player, "nagroda_wielkoluda", "help_wielkolud_basehp");
 		renameQuestSlot(player, "pomoc_dla_wielkoluda", null);
+		renameQuestSlot(player, "glif_fragments", "glyph_fragment");
 
 		// From 0.66 to 0.67:
 		//   - update quest slot content

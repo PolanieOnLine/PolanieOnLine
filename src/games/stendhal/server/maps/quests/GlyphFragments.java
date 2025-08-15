@@ -43,7 +43,7 @@ import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 
 public class GlyphFragments extends AbstractQuest {
-	private static final String QUEST_SLOT = "glif_fragments";
+	private static final String QUEST_SLOT = "glyph_fragment";
 	private final SpeakerNPC npc = npcs.get("Omar");
 	private final String itemName = "fragment glifu";
 

@@ -31,7 +31,7 @@ public class Shovel extends AreaUseItem {
 	private static final String ring_quest_slot = "lost_engagement_ring";
 	private static final String ring_quest_info = "pierścionek Ariego";
 
-	private static final String glif_fragments_quest_slot = "glif_fragments";
+	private static final String glyph_fragment_quest_slot = "glyph_fragment";
 	private static final Map<String, Double> fragmentChances = new HashMap<>();
 	static {
 		fragmentChances.put("zniszczony", 60.0);
@@ -94,8 +94,8 @@ public class Shovel extends AreaUseItem {
 				}
 			}
 
-			if (player.hasQuest(glif_fragments_quest_slot)) {
-				final String[] fragmentSlot = player.getQuest(glif_fragments_quest_slot).split(";");
+			if (player.hasQuest(glyph_fragment_quest_slot)) {
+				final String[] fragmentSlot = player.getQuest(glyph_fragment_quest_slot).split(";");
 				if (fragmentSlot.length > 3 && "start".equals(fragmentSlot[0])) {
 					final String expectedMap = fragmentSlot[2];
 					final int fragmentX = Integer.parseInt(fragmentSlot[3]);
@@ -150,12 +150,12 @@ public class Shovel extends AreaUseItem {
 	}
 
 	private void setGlifQuestAction(Player player, String questStatus, String fragment, String mapName, int cordX, int cordY, int attempt) {
-		player.setQuest(glif_fragments_quest_slot, 0, questStatus);
-		player.setQuest(glif_fragments_quest_slot, 1, fragment);
-		player.setQuest(glif_fragments_quest_slot, 2, mapName);
-		player.setQuest(glif_fragments_quest_slot, 3, Integer.toString(cordX));
-		player.setQuest(glif_fragments_quest_slot, 4, Integer.toString(cordY));
-		player.setQuest(glif_fragments_quest_slot, 5, Integer.toString(attempt + 1));
+		player.setQuest(glyph_fragment_quest_slot, 0, questStatus);
+		player.setQuest(glyph_fragment_quest_slot, 1, fragment);
+		player.setQuest(glyph_fragment_quest_slot, 2, mapName);
+		player.setQuest(glyph_fragment_quest_slot, 3, Integer.toString(cordX));
+		player.setQuest(glyph_fragment_quest_slot, 4, Integer.toString(cordY));
+		player.setQuest(glyph_fragment_quest_slot, 5, Integer.toString(attempt + 1));
 	}
 
 	/**
