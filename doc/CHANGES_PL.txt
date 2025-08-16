@@ -2,7 +2,7 @@ Changelog
 ---------
 1.40.3
 *naprawiono błędy*
-- Naprawiono losowanie koordynatów, które znajdowały się w kolizji na mapie w zadaniu u Omara
+- Naprawiono losowanie koordynat, które znajdowały się w kolizji na mapie w zadaniu u Omara
 
 
 1.40.2
