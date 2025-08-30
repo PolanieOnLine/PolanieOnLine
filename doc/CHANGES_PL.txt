@@ -3,6 +3,7 @@ Changelog
 1.40.3
 *naprawiono błędy*
 - Naprawiono losowanie koordynat, które znajdowały się w kolizji na mapie w zadaniu u Omara
+- Naprawiono błąd, który powodował znikanie glifów ze skrzynek osobistych lub innych slotów, jeśli nie były uwzględnione na liście slotów dla przedmiotów typu glyph
 
 
 1.40.2
