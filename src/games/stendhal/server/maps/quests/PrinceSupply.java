@@ -62,7 +62,7 @@ public class PrinceSupply extends AbstractQuest {
 			ConversationPhrases.QUEST_MESSAGES, 
 			new QuestNotStartedCondition(QUEST_SLOT),
 			ConversationStates.QUEST_OFFERED, 
-			"Poszukuję osoby, która odbije część wyposażenia dla moich rycerzy. Jesteś chętny?",
+			"Buntownicy opanowali arsenał w Warszawie! Potrzebuję śmiałka, który odbierze im rycerski rynsztunek mojej armii. Pomożesz mi odzyskać te skarby?",
 			null);
 
 		// player asks about quest which he has done already and he is allowed to repeat it
@@ -72,7 +72,7 @@ public class PrinceSupply extends AbstractQuest {
 					new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_MINUTES),
 					new QuestStateStartsWithCondition(QUEST_SLOT, "done;")),
 			ConversationStates.QUEST_OFFERED,
-			"Moja armia musi być przygotowana na wygnanie buntowników z zamku! Odbijesz mi arsenał?",
+			"Moja armia musi być przygotowana na wygnanie buntowników z zamku! Pomożesz mi odzyskać te skarby?",
 			null);
 		
 		// player asks about quest which he has done already but it is not time to repeat it
@@ -91,9 +91,9 @@ public class PrinceSupply extends AbstractQuest {
 			ConversationPhrases.YES_MESSAGES,
 			null,
 			ConversationStates.ATTENDING,
-			"Wejdź do budynku z arsenałem, znajduje się obok kuźni kowala.",
+			"Wejdź do budynku arsenału, który znajduje się obok kuźni kowala. Bądź ostrożny, buntownicy pilnują swojego łupu!",
 			new MultipleActions(
-				new SetQuestAndModifyKarmaAction(QUEST_SLOT, "start", -5.0),
+				new SetQuestAndModifyKarmaAction(QUEST_SLOT, "start", 5.0),
 				new ChatAction() {
 					@Override
 					public void fire(Player player, Sentence sentence, EventRaiser npc) {
@@ -123,7 +123,7 @@ public class PrinceSupply extends AbstractQuest {
 								new PlayerHasItemdataItemWithHimCondition("hełm kolczy", QUEST_SLOT),
 								new PlayerHasItemdataItemWithHimCondition("buty kolcze", QUEST_SLOT)))),
 			ConversationStates.ATTENDING, 
-			"Masz wrócić do mnie z potrzebnym wyposażeniem!",
+			"Nie wracaj bez pełnego wyposażenia! Potrzebuję całego kompletu, inaczej rycerze nie będą gotowi do walki.",
 			null);
 
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
@@ -155,12 +155,12 @@ public class PrinceSupply extends AbstractQuest {
 					new PlayerHasItemdataItemWithHimCondition("hełm kolczy", QUEST_SLOT),
 					new PlayerHasItemdataItemWithHimCondition("buty kolcze", QUEST_SLOT)),
 			ConversationStates.ATTENDING,
-			"Dziękuję w imieniu całego królestwa...",
+			"Doskonale! Dzięki Tobie buntownicy zostali upokorzeni, a moja armia znów jest gotowa. Królestwo będzie Ci wdzięczne.",
 			new MultipleActions(reward));
 	}
 
 	private static void prepareChest() {
-		final StendhalRPZone zone = SingletonRepository.getRPWorld().getZone("int_warszawa_arsenal");
+		final StendhalRPZone zone = SingletonRepository.getRPWorld().getZone("int_warszawa_armory");
 
 		final StoredChest chest = new StoredChest();
 		chest.setPosition(4, 2);
@@ -218,7 +218,7 @@ public class PrinceSupply extends AbstractQuest {
 			res.add("Nie wykonam zadania księcia, ponieważ obawiam się, że zginę!");
 		}
 		if (player.isQuestInState(QUEST_SLOT, "start", "done")) {
-			res.add(player.getGenderVerb("Zgodziłem") + " się na odzyskanie arsenał dla armii książecej.");
+			res.add(player.getGenderVerb("Zgodziłem") + " się na odzyskanie arsenału dla armii książecej.");
 		}
 
 		if (isCompleted(player)) {
