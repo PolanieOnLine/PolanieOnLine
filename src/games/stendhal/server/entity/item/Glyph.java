@@ -12,8 +12,8 @@ public class Glyph extends Item {
 		super(name, clazz, subclass, attributes);
 	}
 
-	public Glyph(Item item) {
-		super(item);
+	public Glyph(final Glyph glyph) {
+		super(glyph);
 	}
 
 	private int getAttackBonus(final Player player) {
