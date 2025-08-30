@@ -132,7 +132,7 @@
 		</portal>
 
 		<portal x="48" y="69" ref="arsenal_entrance">
-			<destination zone="int_warszawa_arsenal" ref="arsenal_exit"/>
+			<destination zone="int_warszawa_armory" ref="arsenal_exit"/>
 			<attribute name="move.continuous" />
 		</portal>
 
@@ -267,10 +267,10 @@
 		</portal>
 	</zone>
 
-	<!-- Arsenal house -->
-	<zone name="int_warszawa_arsenal" file="interiors/warszawa/arsenal_house.tmx">
-		<portal x="7" y="14" ref="arsenal_exit">
-			<destination zone="0_warszawa_e" ref="arsenal_entrance"/>
+	<!-- Armory house -->
+	<zone name="int_warszawa_armory" file="interiors/warszawa/arsenal_house.tmx">
+		<portal x="7" y="14" ref="armory_exit">
+			<destination zone="0_warszawa_e" ref="armory_entrance"/>
 			<attribute name="move.continuous" />
 		</portal>
 	</zone>
