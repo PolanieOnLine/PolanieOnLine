@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2025 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -22,6 +21,7 @@ import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.StackableItem;
+import games.stendhal.server.entity.item.money.MoneyUtils;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -42,9 +42,9 @@ import games.stendhal.server.events.SoundEvent;
 public class SellerAdder {
 	private static Logger logger = Logger.getLogger(SellerAdder.class);
 
-    private final MerchantsRegister merchantsRegister = SingletonRepository.getMerchantsRegister();
+	private final MerchantsRegister merchantsRegister = SingletonRepository.getMerchantsRegister();
 
-    /**
+	/**
 	 * Behaviour parse result in the current conversation.
 	 * Remark: There is only one conversation between a player and the NPC at any time.
 	 */
@@ -54,9 +54,9 @@ public class SellerAdder {
 	 * Configures an NPC to sell items.
 	 *
 	 * @param npc
-	 *     The NPC that buys.
+	 *	 The NPC that buys.
 	 * @param sellerBehavior
-	 *     The <code>SllerBehaviour</code>.
+	 *	 The <code>SllerBehaviour</code>.
 	 */
 	public void addSeller(final SpeakerNPC npc, final SellerBehaviour behaviour) {
 		addSeller(npc, behaviour, true);
@@ -66,11 +66,11 @@ public class SellerAdder {
 	 * Configures an NPC to sell items.
 	 *
 	 * @param npc
-	 *     The NPC that buys.
+	 *	 The NPC that buys.
 	 * @param sellerBehavior
-	 *     The <code>SllerBehaviour</code>.
+	 *	 The <code>SllerBehaviour</code>.
 	 * @param offer
-	 *     If <code>true</code>, adds reply to "offer".
+	 *	 If <code>true</code>, adds reply to "offer".
 	 */
 	public void addSeller(final SpeakerNPC npc, final SellerBehaviour sellerBehaviour, final boolean offer) {
 		final Engine engine = npc.getEngine();
@@ -145,18 +145,18 @@ public class SellerAdder {
 							}
 
 							int price = sellerBehaviour.getUnitPrice(chosenItemName) * res.getAmount();
-	    					if (player.isBadBoy()) {
-    							price = (int) (SellerBehaviour.BAD_BOY_BUYING_PENALTY * price);
-    							
-    							builder.append("Od przyjaciół biorę mniej, ale, że grasz nieczysto to ");
+							if (player.isBadBoy()) {
+								price = (int) (SellerBehaviour.BAD_BOY_BUYING_PENALTY * price);
+								
+								builder.append("Od przyjaciół biorę mniej, ale, że grasz nieczysto to ");
 								builder.append(Grammar.quantityplnoun(res.getAmount(), chosenItemName));
 							} else {
 								builder.append(Grammar.capitalize(Grammar.quantityplnoun(res.getAmount(), chosenItemName)));
-	    					}
+							}
 
-	    					builder.append(" kosztuje ");
-							builder.append(price);
-	    					builder.append(" monet. Chcesz ");
+							builder.append(" kosztuje ");
+							builder.append(MoneyUtils.formatPrice(price));
+							builder.append(". Chcesz ");
 							builder.append(Grammar.itthem(res.getAmount()));
 							builder.append(" kupić?");
 
@@ -164,9 +164,9 @@ public class SellerAdder {
 
 							currentBehavRes = res;
 							npc.setCurrentState(ConversationStates.BUY_PRICE_OFFERED); // success
-    					} else {
+						} else {
 							raiser.say("Ile " + Grammar.plnoun(res.getAmount(), chosenItemName) + " chcesz kupić?!");
-    					}
+						}
 					}
 				});
 

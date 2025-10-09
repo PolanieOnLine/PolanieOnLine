@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2025 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -20,6 +19,7 @@ import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.grammar.ItemParserResult;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.entity.item.money.MoneyUtils;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -39,7 +39,7 @@ import games.stendhal.server.events.SoundEvent;
 public class BuyerAdder {
 	private static Logger logger = Logger.getLogger(BuyerAdder.class);
 
-    private final MerchantsRegister merchantsRegister = SingletonRepository.getMerchantsRegister();
+	private final MerchantsRegister merchantsRegister = SingletonRepository.getMerchantsRegister();
 
 	/**
 	 * Behaviour parse result in the current conversation.
@@ -51,9 +51,9 @@ public class BuyerAdder {
 	 * Configures an NPC to buy items.
 	 *
 	 * @param npc
-	 *     The NPC that buys.
+	 *	 The NPC that buys.
 	 * @param buyerBehavior
-	 *     The <code>BuyerBehaviour</code>.
+	 *	 The <code>BuyerBehaviour</code>.
 	 */
 	public void addBuyer(final SpeakerNPC npc, final BuyerBehaviour buyerBehaviour) {
 		addBuyer(npc, buyerBehaviour, true);
@@ -63,11 +63,11 @@ public class BuyerAdder {
 	 * Configures an NPC to buy items.
 	 *
 	 * @param npc
-	 *     The NPC that buys.
+	 *	 The NPC that buys.
 	 * @param buyerBehavior
-	 *     The <code>BuyerBehaviour</code>.
+	 *	 The <code>BuyerBehaviour</code>.
 	 * @param offer
-	 *     If <code>true</code>, adds reply to "offer".
+	 *	 If <code>true</code>, adds reply to "offer".
 	 */
 	public void addBuyer(final SpeakerNPC npc, final BuyerBehaviour buyerBehaviour, final boolean offer) {
 		final Engine engine = npc.getEngine();
@@ -154,19 +154,20 @@ public class BuyerAdder {
 							final int price = buyerBehaviour.getCharge(res, player);
 
 							if (price != 0) {
-    							raiser.say(Grammar.capitalize(Grammar.quantityplnoun(res.getAmount(), chosenItemName))
-	    								+ " " + Grammar.isare(res.getAmount()) + " "
-    									+ Grammar.singular(res.getAmount(), "warty") + " "
-	    								+ price + " monet. Czy chcesz "
-    									+ Grammar.itthem(res.getAmount()) + " sprzedać?");
+								String quantityplnounItem = Grammar.quantityplnoun(res.getAmount(), chosenItemName);
+								raiser.say(Grammar.capitalize(quantityplnounItem)
+										+ " " + Grammar.isare(res.getAmount()) + " "
+										+ Grammar.worthForm(quantityplnounItem, res.getAmount()) + " "
+										+ MoneyUtils.formatPrice(price) + ". Czy chcesz "
+										+ Grammar.itthem(res.getAmount()) + " sprzedać?");
 
-    							currentBehavRes = res;
-    							npc.setCurrentState(ConversationStates.SELL_PRICE_OFFERED); // success
+								currentBehavRes = res;
+								npc.setCurrentState(ConversationStates.SELL_PRICE_OFFERED); // success
 							} else {
 								raiser.say("Przepraszam " 
 										+ Grammar.thatthose(res.getAmount()) + " " 
 										+ Grammar.plnoun(res.getAmount(), chosenItemName)
-	    								+ " " + Grammar.isare(res.getAmount()) + " jest nic nie warte.");
+										+ " " + Grammar.isare(res.getAmount()) + " jest nic nie warte.");
 							}
 						} else {
 							raiser.say("Przepraszam, ile " + Grammar.plural(chosenItemName) + " chcesz sprzedać?!");
@@ -196,5 +197,4 @@ public class BuyerAdder {
 				false,
 				ConversationStates.ATTENDING, "Dobrze w czym mogę pomóc?", null);
 	}
-
 }

@@ -22,11 +22,11 @@
 	</item>
 
 	<!-- START: Nowe rodzaje monet -->
-	<!-- 
-	<item name="miedziaki">
+
+	<item name="miedziak">
 		<type class="money" subclass="copper" tileid="-1"/>
 		<description>Oto miedziaki. Podstawowy środek płatniczy najniższych klas społecznych.</description>
-		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.money.CopperCoin"/>
 		<attributes>
 			<quantity value="1"/>
 		</attributes>
@@ -43,10 +43,10 @@
 		</equipable>
 	</item>
 
-	<item name="talary">
+	<item name="talar">
 		<type class="money" subclass="silver" tileid="-1"/>
 		<description>Oto srebrne talary. Podstawowy środek płatniczy średnich klas społecznych.</description>
-		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.money.SilverCoin"/>
 		<attributes>
 			<quantity value="1"/>
 		</attributes>
@@ -63,10 +63,10 @@
 		</equipable>
 	</item>
 
-	<item name="dukaty">
+	<item name="dukat">
 		<type class="money" subclass="gold" tileid="-1"/>
 		<description>Oto złote dukaty. Środek płatniczy najwyżych klas społecznych.</description>
-		<implementation class-name="games.stendhal.server.entity.item.StackableItem"/>
+		<implementation class-name="games.stendhal.server.entity.item.money.GoldCoin"/>
 		<attributes>
 			<quantity value="1"/>
 		</attributes>
@@ -82,6 +82,6 @@
 			<slot name="rhand"/>
 		</equipable>
 	</item>
-	-->
+	
 	<!-- END: Nowe rodzaje monet -->
 </items>

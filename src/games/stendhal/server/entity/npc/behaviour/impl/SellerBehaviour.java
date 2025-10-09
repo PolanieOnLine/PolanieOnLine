@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2024 - Stendhal                    *
+ *                   (C) Copyright 2003-2025 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -9,7 +9,6 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
 package games.stendhal.server.entity.npc.behaviour.impl;
 
 import java.util.HashMap;
@@ -21,6 +20,7 @@ import games.stendhal.common.grammar.ItemParserResult;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.StackableItem;
+import games.stendhal.server.entity.item.money.MoneyUtils;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.player.Player;
 
@@ -46,7 +46,7 @@ public class SellerBehaviour extends MerchantBehaviour {
 	 * Creates a new SellerBehaviour with a pricelist.
 	 *
 	 * @param priceList
-	 *            list of item names and their prices
+	 *			list of item names and their prices
 	 */
 	public SellerBehaviour(final Map<String, Integer> priceList) {
 		super(priceList);
@@ -69,11 +69,11 @@ public class SellerBehaviour extends MerchantBehaviour {
 	 * and setAmount().
 	 *
 	 * @param seller
-	 *            The NPC who sells
+	 *			The NPC who sells
 	 * @param player
-	 *            The player who buys
+	 *			The player who buys
 	 * @return true iff the transaction was successful, that is when the player
-	 *         was able to equip the item(s).
+	 *		 was able to equip the item(s).
 	 */
 	@Override
 	public boolean transactAgreedDeal(ItemParserResult res, final EventRaiser seller, final Player player) {
@@ -104,9 +104,10 @@ public class SellerBehaviour extends MerchantBehaviour {
 			price = (int) (BAD_BOY_BUYING_PENALTY * price);
 		}
 
-		if (player.isEquipped("money", price)) {
+		int playerCoins = MoneyUtils.getTotalCopper(player);
+		if (playerCoins >= price) {
 			if (player.equipToInventoryOnly(item)) {
-				player.drop("money", price);
+				MoneyUtils.removeCopper(player, price);
 				updatePlayerTransactions(player, seller.getName(), res);
 				seller.say("Gratulacje! Oto twój " + chosenItemName + "!");
 				return true;
@@ -138,11 +139,11 @@ public class SellerBehaviour extends MerchantBehaviour {
 	 * Updates stored information about Player-NPC commerce transactions.
 	 *
 	 * @param player
-	 *     Player to be updated.
+	 *	 Player to be updated.
 	 * @param merchant
-	 *     Name of merchant involved in transaction.
+	 *	 Name of merchant involved in transaction.
 	 * @param res
-	 *     Information about the transaction.
+	 *	 Information about the transaction.
 	 */
 	protected void updatePlayerTransactions(final Player player, final String merchant,
 			final ItemParserResult res) {
