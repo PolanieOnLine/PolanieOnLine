@@ -1,5 +1,5 @@
 /***************************************************************************
- *                    (C) Copyright 2009-2015 - Stendhal                    *
+ *                    (C) Copyright 2009-2025 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -41,7 +41,7 @@ public class Grammar {
 	 * "it" or "them", depending on the quantity.
 	 *
 	 * @param quantity
-	 *            The quantity to examine
+	 *			The quantity to examine
 	 * @return Either "it" or "them" as appropriate
 	 */
 	public static String itthem(final int quantity) {
@@ -73,7 +73,7 @@ public class Grammar {
 	 * "It" or "Them", depending on the quantity.
 	 *
 	 * @param quantity
-	 *            The quantity to examine
+	 *			The quantity to examine
 	 * @return Either "It" or "Them" as appropriate
 	 */
 	public static String ItThem(final int quantity) {
@@ -84,7 +84,7 @@ public class Grammar {
 	 * "it" or "they", depending on the quantity.
 	 *
 	 * @param quantity
-	 *            The quantity to examine
+	 *			The quantity to examine
 	 * @return Either "it" or "they" as appropriate
 	 */
 	public static String itthey(final int quantity) {
@@ -99,7 +99,7 @@ public class Grammar {
 	 * "It" or "They", depending on the quantity.
 	 *
 	 * @param quantity
-	 *            The quantity to examine
+	 *			The quantity to examine
 	 * @return Either "It" or "They" as appropriate
 	 */
 	public static String ItThey(final int quantity) {
@@ -110,7 +110,7 @@ public class Grammar {
 	 * "is" or "are", depending on the quantity.
 	 *
 	 * @param quantity
-	 *            The quantity to examine
+	 *			The quantity to examine
 	 * @return Either "is" or "are" as appropriate
 	 */
 	public static String isare(final int quantity) {
@@ -125,7 +125,7 @@ public class Grammar {
 	 * "Is" or "Are", depending on the quantity.
 	 *
 	 * @param quantity
-	 *            The quantity to examine
+	 *			The quantity to examine
 	 * @return Either "Is" or "Are" as appropriate
 	 */
 	public static String IsAre(final int quantity) {
@@ -136,7 +136,7 @@ public class Grammar {
 	 * "has" or "have", depending on the quantity.
 	 *
 	 * @param quantity
-	 *            The quantity to examine
+	 *			The quantity to examine
 	 * @return Either "has" or "have" as appropriate
 	 */
 	public static String hashave(final int quantity) {
@@ -151,7 +151,7 @@ public class Grammar {
 	 * "Has" or "Have", depending on the quantity.
 	 *
 	 * @param quantity
-	 *            The quantity to examine
+	 *			The quantity to examine
 	 * @return Either "Has" or "Have" as appropriate
 	 */
 	public static String HasHave(final int quantity) {
@@ -162,7 +162,7 @@ public class Grammar {
 	 * "that" or "those", depending on the quantity.
 	 *
 	 * @param quantity
-	 *            The quantity to examine
+	 *			The quantity to examine
 	 * @return Either "that" or "those" as appropriate
 	 */
 	public static String thatthose(final int quantity) {
@@ -177,7 +177,7 @@ public class Grammar {
 	 * "That or "Those", depending on the quantity.
 	 *
 	 * @param quantity
-	 *            The quantity to examine
+	 *			The quantity to examine
 	 * @return Either "That" or "Those" as appropriate
 	 */
 	public static String ThatThose(final int quantity) {
@@ -188,7 +188,7 @@ public class Grammar {
 	 * "this" or "these", depending on the quantity.
 	 *
 	 * @param quantity
-	 *            The quantity to examine
+	 *			The quantity to examine
 	 * @return Either "this" or "these" as appropriate
 	 */
 	public static String thisthese(final int quantity) {
@@ -203,7 +203,7 @@ public class Grammar {
 	 * "This or "These", depending on the quantity.
 	 *
 	 * @param quantity
-	 *            The quantity to examine
+	 *			The quantity to examine
 	 * @return Either "This" or "These" as appropriate
 	 */
 	public static String ThisThese(final int quantity) {
@@ -215,11 +215,11 @@ public class Grammar {
 	 * Adds a prefix unless it was already added.
 	 *
 	 * @param noun
-	 *            the noun (which may already start with the specified prefix
+	 *			the noun (which may already start with the specified prefix
 	 * @param prefixSingular
-	 *            prefix to add
+	 *			prefix to add
 	 * @param prefixPlural
-	 *            prefix, that may be present in plural form
+	 *			prefix, that may be present in plural form
 	 * @return noun starting with prefix
 	 */
 	static String addPrefixIfNotAlreadyThere(final String noun,
@@ -248,8 +248,8 @@ public class Grammar {
 		} else if (str.indexOf(" armor") > -1) {
 			str = addPrefixIfNotAlreadyThere(lowString, "suit of ", "suits of ");
 		} else if (str.startsWith("rękawic") || str.startsWith("spodni")) {
-			str = addPrefixIfNotAlreadyThere(lowString, "parę ", "par ");
-		} else if (str.startsWith("szynki") || str.startsWith("mięsa")) {
+			str = addPrefixIfNotAlreadyThere(lowString, "para ", "pary ");
+		} else if (str.startsWith("szynka") || str.startsWith("mięso")) {
 			str = addPrefixIfNotAlreadyThere(lowString, "kawałek ", "kawałków ");
 		} else {
 			str = replaceInternalByDisplayNames(PrefixManager.s_instance.fullForm(str, lowString));
@@ -281,17 +281,17 @@ public class Grammar {
 				// "teddy bear" -> "teddy"
 				(word1.getMainWord().equals("teddy") && word2.getMainWord().equals("bear"))) {
 
-		    // transform "ice cream" into the item name "icecream"
-		    if (word1.getMainWord().equals("ice")) {
-		    	word1.setNormalized("icecream");
-		    }
+			// transform "ice cream" into the item name "icecream"
+			if (word1.getMainWord().equals("ice")) {
+				word1.setNormalized("icecream");
+			}
 
-		    return word1;
-        } else {
-            word2.mergeLeft(word1, true);
+			return word1;
+		} else {
+			word2.mergeLeft(word1, true);
 
-            return word2;
-        }
+			return word2;
+		}
 	}
 
 	/**
@@ -362,7 +362,7 @@ public class Grammar {
 	 * form.
 	 *
 	 * @param noun
-	 *            The noun to examine
+	 *			The noun to examine
 	 * @return An appropriate plural form
 	 */
 	public static String plural(final String noun) {
@@ -495,7 +495,7 @@ public class Grammar {
 	 * form. Method to prevent collision of items and creatures.
 	 *
 	 * @param noun
-	 *            The noun to examine
+	 *			The noun to examine
 	 * @return An appropriate plural form
 	 */
 	public static String pluralCreature(final String noun) {
@@ -511,7 +511,7 @@ public class Grammar {
 	 * singular form.
 	 *
 	 * @param enoun
-	 *            The noun to examine
+	 *			The noun to examine
 	 * @return An appropriate singular form
 	 */
 	public static String singular(String enoun) {
@@ -527,37 +527,68 @@ public class Grammar {
 			enoun = enoun.substring(0, position - 1);
 		}
 
-		// in "of"-phrases build only the singular of the first part
+		if (enoun.startsWith("para ")) {
+			if (enoun.matches("^para spodnie(\\b.*)?")) {
+				enoun = enoun.replaceFirst("^para spodnie", "para spodni");
+			} else if (enoun.matches("^para rękawice(\\b.*)?")) {
+				enoun = enoun.replaceFirst("^para rękawice", "para rękawic");
+			} else if (enoun.matches("^para buty(\\b.*)?")) {
+				enoun = enoun.replaceFirst("^para buty", "para butów");
+			}
+
+			String[] parts = enoun.split(" ");
+			StringBuilder rebuilt = new StringBuilder();
+
+			for (String part : parts) {
+				if (part.endsWith("e")) {
+					if (part.endsWith("ce")) {
+						part = part.substring(0, part.length() - 2) + "czych";
+					} else if (part.endsWith("ne")) {
+						part = part.substring(0, part.length() - 2) + "nych";
+					} else if (part.endsWith("owe")) {
+						part = part.substring(0, part.length() - 3) + "owych";
+					} else if (part.endsWith("ane")) {
+						part = part.substring(0, part.length() - 3) + "anych";
+					} else if (part.endsWith("kie")) {
+						part = part.substring(0, part.length() - 3) + "kich";
+					} else if (part.endsWith("ze")) {
+						part = part.substring(0, part.length() - 2) + "zych";
+					} else {
+						part = part.substring(0, part.length() - 1) + "ych";
+					}
+				}
+				rebuilt.append(part).append(" ");
+			}
+
+			enoun = rebuilt.toString().trim();
+
+			return enoun;
+		}
+
+		if (enoun.startsWith("kawałek ")) {
+			if (enoun.matches("^kawałek szynka(\\b.*)?")) {
+				enoun = enoun.replaceFirst("^kawałek szynka", "kawałek szynki");
+			} else if (enoun.matches("^kawałek mięso(\\b.*)?")) {
+				enoun = enoun.replaceFirst("^kawałek mięso", "kawałek mięsa");
+			}
+
+			return enoun;
+		}
+
 		if (enoun.indexOf(of) > -1) {
 			return singular(enoun.substring(0, enoun.indexOf(of)))
 					+ enoun.substring(enoun.indexOf(of)) + postfix;
-
-		// first of all handle words which do not change
-		} else if (enoun.endsWith("money") || enoun.endsWith("dice")
-				|| enoun.endsWith("sheep") || enoun.endsWith("goat")
-				|| enoun.endsWith("legs") || enoun.endsWith("boots")
-				|| enoun.equals("moose") || enoun.equals("magic")
-				|| enoun.endsWith("kości do gry") || enoun.equals("jeleń")) {
-			return enoun + postfix;
-
-		// now all the special cases
-		} else if (enoun.equals("mnich")) {
-			return enoun + "a";
-
-		} else if (enoun.endsWith("iki")) {
-			return enoun.substring(0, enoun.length() - 1) + postfix;
-
-		} else if (enoun.startsWith("rękawice") || enoun.endsWith("czy")) {
-			return enoun.substring(0, enoun.length() - 1) + postfix;
-		} else if (enoun.endsWith("ów")) {
-			return enoun.substring(0, enoun.length() - 2) + postfix;
-		} else if (enoun.endsWith("tę") || enoun.endsWith("ło")) {
-			return enoun.substring(0, enoun.length() - 1) + "a" + postfix;
-		} else if (enoun.endsWith("na")) {
-			return enoun.substring(0, enoun.length() - 1) + "e" + postfix;
-		} else {
-			return enoun + postfix;
 		}
+
+		if (enoun.endsWith("czy")) {
+			return enoun.substring(0, enoun.length() - 1) + postfix;
+		}
+
+		if (enoun.endsWith("ów")) {
+			return enoun.substring(0, enoun.length() - 2) + postfix;
+		}
+
+		return enoun + postfix;
 	}
 
 	public static String youryour(int quantity, String noun) {
@@ -578,6 +609,82 @@ public class Grammar {
 		if (position != -1) {
 			postfix = enoun.substring(position - 1);
 			enoun = enoun.substring(0, position - 1);
+		}
+
+		if (enoun.startsWith("para ")) {
+			if (enoun.matches("^para spodnie(\\b.*)?")) {
+				enoun = enoun.replaceFirst("^para spodnie", "para spodni");
+			} else if (enoun.matches("^para rękawice(\\b.*)?")) {
+				enoun = enoun.replaceFirst("^para rękawice", "para rękawic");
+			} else if (enoun.matches("^para buty(\\b.*)?")) {
+				enoun = enoun.replaceFirst("^para buty", "para butów");
+			}
+
+			String[] parts = enoun.split(" ");
+			StringBuilder rebuilt = new StringBuilder();
+
+			for (String part : parts) {
+				if (part.endsWith("e")) {
+					if (part.endsWith("ce")) {
+						part = part.substring(0, part.length() - 2) + "czych";
+					} else if (part.endsWith("ne")) {
+						part = part.substring(0, part.length() - 2) + "nych";
+					} else if (part.endsWith("owe")) {
+						part = part.substring(0, part.length() - 3) + "owych";
+					} else if (part.endsWith("ane")) {
+						part = part.substring(0, part.length() - 3) + "anych";
+					} else if (part.endsWith("kie")) {
+						part = part.substring(0, part.length() - 3) + "kich";
+					} else if (part.endsWith("ze")) {
+						part = part.substring(0, part.length() - 2) + "zych";
+					} else {
+						part = part.substring(0, part.length() - 1) + "ych";
+					}
+				}
+				rebuilt.append(part).append(" ");
+			}
+
+			enoun = rebuilt.toString().trim();
+
+			String prefix;
+			int lastDigit = quantity % 10;
+			int lastTwo = quantity % 100;
+
+			if (lastDigit >= 2 && lastDigit <= 4 && (lastTwo < 12 || lastTwo > 14)) {
+				prefix = "pary ";
+			} else if (quantity > 1) {
+				prefix = "par ";
+			} else {
+				prefix = "para ";
+			}
+
+			enoun = enoun.replaceFirst("^para ", "").trim();
+
+			return prefix + enoun + postfix;
+		}
+
+		if (enoun.startsWith("kawałek ")) {
+			if (enoun.matches("^kawałek szynka(\\b.*)?")) {
+				enoun = enoun.replaceFirst("^kawałek szynka", "kawałek szynki");
+			} else if (enoun.matches("^kawałek mięso(\\b.*)?")) {
+				enoun = enoun.replaceFirst("^kawałek mięso", "kawałek mięsa");
+			}
+
+			if (quantity > 1) {
+				int lastDigit = quantity % 10;
+				int lastTwo = quantity % 100;
+				String prefix;
+
+				if (lastDigit >= 2 && lastDigit <= 4 && (lastTwo < 12 || lastTwo > 14))
+					prefix = "kawałki ";
+				else
+					prefix = "kawałków ";
+
+				enoun = enoun.replaceFirst("^kawałek ", "").trim();
+				return prefix + enoun + postfix;
+			} else {
+				return enoun + postfix;
+			}
 		}
 
 		String[] noun = enoun.split(" ");
@@ -735,9 +842,9 @@ public class Grammar {
 	 * on the quantity.
 	 *
 	 * @param quantity
-	 *            The quantity to examine
+	 *			The quantity to examine
 	 * @param noun
-	 *            The noun to examine
+	 *			The noun to examine
 	 * @return Either "[noun]" or plural("[noun]") as appropriate
 	 */
 	public static String plnoun(final int quantity, final String noun) {
@@ -755,9 +862,9 @@ public class Grammar {
 	 * on the quantity. Method to prevent collision of items and creatures.
 	 *
 	 * @param quantity
-	 *            The quantity to examine
+	 *			The quantity to examine
 	 * @param noun
-	 *            The noun to examine
+	 *			The noun to examine
 	 * @return Either "[noun]" or plural("[noun]") as appropriate
 	 */
 	public static String plnounCreature(final int quantity, final String noun) {
@@ -777,11 +884,11 @@ public class Grammar {
 	 * on the quantity; also prefixes the quantity.
 	 *
 	 * @param quantity
-	 *            The quantity to examine
+	 *			The quantity to examine
 	 * @param noun
-	 *            The noun to examine
+	 *			The noun to examine
 	 * @return Either "[quantity] [noun]" or "[quantity]" + plural("[noun]") as
-	 *         appropriate
+	 *		 appropriate
 	 */
 	public static String quantityplnoun(final int quantity, final String noun) {
 		final String end = plnoun(quantity, noun);
@@ -800,11 +907,11 @@ public class Grammar {
 	 *
 	 *
 	 * @param quantity
-	 *            The quantity to examine
+	 *			The quantity to examine
 	 * @param noun
-	 *            The noun to examine
+	 *			The noun to examine
 	 * @return Either "[quantity] [noun]" or "[quantity]" + plural("[noun]") as
-	 *         appropriate
+	 *		 appropriate
 	 */
 	public static String quantityplnounCreature(final int quantity, final String noun) {
 		if (noun.equals("chicken")) {
@@ -820,11 +927,11 @@ public class Grammar {
 	 * the quantity; also prefixes the quantity and prints the noun with a hash prefix.
 	 *
 	 * @param quantity
-	 *            The quantity to examine
+	 *			The quantity to examine
 	 * @param noun
-	 *            The noun to examine
+	 *			The noun to examine
 	 * @return Either "[quantity] [noun]" or "[quantity]" + plural("[noun]") as
-	 *         appropriate
+	 *		 appropriate
 	 */
 	public static String quantityplnounWithHash(final int quantity, final String noun) {
 		return quantityplnounWithMarker(quantity, noun, '#');
@@ -839,7 +946,7 @@ public class Grammar {
 	 * @param noun The noun to examine
 	 * @param marker The character use for the markup. '#' or '§'
 	 * @return Either "[quantity] [noun]" or "[quantity]" + plural("[noun]") as
-	 *         appropriate
+	 *		 appropriate
 	 */
 	public static String quantityplnounWithMarker(int quantity, String noun, char marker) {
 		final String fullNoun = plnoun(quantity, noun);
@@ -865,11 +972,11 @@ public class Grammar {
 	 * on the quantity; also prefixes the quantity as number string, if appropriate.
 	 *
 	 * @param quantity
-	 *            The quantity to examine
+	 *			The quantity to examine
 	 * @param noun
-	 *            The noun to examine
+	 *			The noun to examine
 	 * @return Either "[quantity string] [noun]" or "[quantity string]" + plural("[noun]") as
-	 *         appropriate
+	 *		 appropriate
 	 */
 	public static String quantityNumberStrNoun(final int quantity, final String noun) {
 		StringBuilder sb = new StringBuilder();
@@ -897,7 +1004,7 @@ public class Grammar {
 	 * Is the character a vowel?
 	 *
 	 * @param c
-	 *            The character to examine
+	 *			The character to examine
 	 * @return true if c is a vowel, false otherwise
 	 */
 	protected static boolean isVowel(final char c) {
@@ -909,7 +1016,7 @@ public class Grammar {
 	 * Is the character a consonant?
 	 *
 	 * @param c
-	 *            The character to examine
+	 *			The character to examine
 	 * @return true if c is a consonant, false otherwise
 	 */
 	protected static boolean isConsonant(final char c) {
@@ -920,7 +1027,7 @@ public class Grammar {
 	 * first, second, third, ...
 	 *
 	 * @param n
-	 *            a number
+	 *			a number
 	 * @return first, second, third, ...
 	 */
 	public static String ordered(final int n) {
@@ -973,7 +1080,7 @@ public class Grammar {
 	 * string "x, y, and z".
 	 *
 	 * @param collection
-	 *            The collection whose elements should be enumerated
+	 *			The collection whose elements should be enumerated
 	 * @return A nice String representation of the collection
 	 */
 	public static String enumerateCollection(final Collection<String> collection) {
@@ -987,7 +1094,7 @@ public class Grammar {
 	 * string "x, y, and z".
 	 *
 	 * @param collection
-	 *            The collection whose elements should be enumerated
+	 *			The collection whose elements should be enumerated
 	 * @param conjunction "and" or "or"
 	 * @return A nice String representation of the collection
 	 */
@@ -1026,7 +1133,7 @@ public class Grammar {
 	 * string "#x, #y, and #z".
 	 *
 	 * @param collection
-	 *            The collection whose elements should be enumerated
+	 *			The collection whose elements should be enumerated
 	 * @return A nice String representation of the collection with hashes
 	 */
 	public static String enumerateCollectionWithHash(final Collection<String> collection) {
@@ -1064,7 +1171,7 @@ public class Grammar {
 	 * Converts numbers into their textual representation for clocks.
 	 *
 	 * @param n
-	 *            a number
+	 *			a number
 	 * @return one, two, three, ...
 	 */
 	public static String clockNumberString(final int n) {
@@ -1104,7 +1211,7 @@ public class Grammar {
 	 * Converts numbers into their textual representation.
 	 *
 	 * @param n
-	 *            a number
+	 *			a number
 	 * @return one, two, three, ...
 	 */
 	public static String numberString(final int n) {
@@ -1144,7 +1251,7 @@ public class Grammar {
 	 * Interprets number texts.
 	 *
 	 * @param text
-	 *            a number
+	 *			a number
 	 * @return one, two, three, ...
 	 */
 	public static Integer number(final String text) {
@@ -1335,11 +1442,11 @@ public class Grammar {
 	 * 		If <code>false</code> if string is null or empty, the above code throws an exception.
 	 */
 	public static String capitalize(String str) {
-	    if(str == null || str.isEmpty()) {
-	        return str;
-	    }
+		if(str == null || str.isEmpty()) {
+			return str;
+		}
 
-	    return str.substring(0, 1).toUpperCase() + str.substring(1);
+		return str.substring(0, 1).toUpperCase() + str.substring(1);
 	}
 
 	public static String variation(String word) {
@@ -1360,5 +1467,50 @@ public class Grammar {
 		}
 
 		return word;
+	}
+
+	public static String polishCoinName(String base, int quantity) {
+		int lastTwo = quantity % 100;
+		int lastOne = quantity % 10;
+
+		boolean few = (lastOne >= 2 && lastOne <= 4) && !(lastTwo >= 12 && lastTwo <= 14);
+
+		switch (base.toLowerCase()) {
+			case "dukat":
+				if (quantity == 1) return "dukat";
+				if (few) return "dukaty";
+				return "dukatów";
+			case "talar":
+				if (quantity == 1) return "talar";
+				if (few) return "talary";
+				return "talarów";
+			case "miedziak":
+				if (quantity == 1) return "miedziak";
+				if (few) return "miedziaki";
+				return "miedziaków";
+			default:
+				return base;
+		}
+	}
+
+	public static String worthForm(String itemName, int quantity) {
+		String name = itemName.toLowerCase();
+
+		// liczba mnoga — "są warte"
+		if (quantity > 1 || name.endsWith("y") || name.endsWith("e") || name.endsWith("nie") || name.endsWith("i") || name.endsWith("o") || name.endsWith("um") || name.endsWith("ło")) {
+			return "warte";
+		}
+
+		// rodzaju żeńskiego — "warta"
+		if (name.startsWith("para ") || name.endsWith("a") || name.endsWith("ja") || name.endsWith("ra") || name.endsWith("ża") || name.endsWith("na")) {
+			return "warta";
+		}
+
+		if (name.endsWith("m") || name.endsWith("s") || name.endsWith("cz") || name.endsWith("rz") || name.endsWith("ż") || name.endsWith("ń")) {
+			return "warty";
+		}
+
+		// rodzaju męskiego — "warty"
+		return "warty";
 	}
 }
