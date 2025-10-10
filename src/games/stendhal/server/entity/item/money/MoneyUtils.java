@@ -134,4 +134,11 @@ public final class MoneyUtils {
 			return parts.get(0) + ", " + parts.get(1) + " i " + parts.get(2);
 		}
 	}
+
+	/**
+	 * Sprawdza, czy gracz ma wystarczająco pieniędzy (w przeliczeniu na miedziaki).
+	 */
+	public static boolean hasEnoughMoney(final Player player, int priceInCopper) {
+		return getTotalMoneyInCopper(player) >= priceInCopper;
+	}
 }

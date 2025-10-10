@@ -18,6 +18,7 @@ import games.stendhal.common.grammar.ItemParserResult;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.item.Item;
+import games.stendhal.server.entity.item.money.MoneyUtils;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.EventRaiser;
@@ -67,9 +68,9 @@ public class RepairerBehaviour extends TransactionBehaviour {
 			if(toRepair.getDeterioration() > 0) {
 				int price = priceCalculator.calculatePrice(toRepair, player);
 				//only repair if player can afford it
-				if (player.isEquipped("money", price)) {
+				if (MoneyUtils.hasEnoughMoney(player, price)) {
 					toRepair.repair();
-					player.drop("money", price);
+					MoneyUtils.removeMoney(player, price);
 					//tell player about result of repairing as for more than one found item the most damaged one is repaired
 					if(foundMoreThanOne) {
 						seller.say("Nosisz więcej niż jeden "+res.getChosenItemName()+" ze sobą. W takim razie naprawię najbardziej zniszczony.");
