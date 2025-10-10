@@ -17,6 +17,7 @@ import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.StackableItem;
+import games.stendhal.server.entity.item.money.MoneyUtils;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -231,7 +232,7 @@ public class ImproverAdder {
 
 		String youWant = " Chcesz, abym udoskonalił to?";
 		String offerUpgrade = "Wzmocnię #'" + getTargetItemName() + "', lecz koszt "
-				+ "będzie wynosił #" + Integer.toString(currentUpgradeFee) + " money. "
+				+ "będzie wynosił " + MoneyUtils.formatPrice(currentUpgradeFee) + ". "
 				+ getNeedResourcesNames(player);
 		if (toImprove.getImprove() > 0) {
 			offerUpgrade += " Szansa na powodzenie wynosi około #" + Integer.toString((int) (getSuccessProbability(player, toImprove) * 100)) + "%.";
@@ -240,7 +241,7 @@ public class ImproverAdder {
 		// Special answer for mithril items
 		if (toImprove.getName().endsWith(" z mithrilu") && toImprove.getMaxImproves() == 1) {
 			offerUpgrade = "Czy jesteś pewien, aby udoskonalać #'" + getTargetItemName() + "'? Jest to bardzo wyjątkowy przedmiot,"
-					+ " także cena też będzie wyjątkowa, koszt wynosi #" + Integer.toString(currentUpgradeFee) + " money."
+					+ " także cena też będzie wyjątkowa, koszt wynosi " + MoneyUtils.formatPrice(currentUpgradeFee) + "."
 					+ getNeedResourcesNames(player);
 		}
 
@@ -319,7 +320,7 @@ public class ImproverAdder {
 		}
 		sb.setLength(sb.length() - 2);
 
-		return "Będę potrzebował też nieprzypadkowe surowce do udoskonalenia takie jak " + sb.toString() + ".";
+		return "Będę potrzebował również nieprzypadkowe surowce do podniesienia jakości, takie jak " + sb.toString() + ".";
 	}
 
 	private ChatAction requestImproveAction(final ImproverNPC improver) {
@@ -351,7 +352,7 @@ public class ImproverAdder {
 			@Override
 			public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
 				Item toImprove = foundItem(player);
-				player.drop("money", currentUpgradeFee);
+				MoneyUtils.removeMoney(player, currentUpgradeFee);
 				dropNeededResources(player);
 
 				if (isSuccessful(player, toImprove)) {
@@ -359,16 +360,26 @@ public class ImproverAdder {
 					player.incImprovedForItem(player.getName(), 1);
 					player.incImprovedForItem(toImprove.getName(), 1);
 
-					npc.say("Zrobione! Twój przedmiot #'" + getTargetItemName() + "' został udoskonalony i jest lepszy od jego poprzedniego stanu!");
+					npc.say("Zrobione! Twój przedmiot #'" + getTargetItemName() + "' został ulepszony!");
 					npc.addEvent(new SoundEvent(SoundID.COMMERCE, SoundLayer.CREATURE_NOISE));
 
 					new GameEvent(player.getName(), "upgraded-item", toImprove.getName(), "+" + Integer.toString(toImprove.getImprove())).raise();
 				} else {
-					final StackableItem money = (StackableItem) SingletonRepository.getEntityManager().getItem("money");
-					money.setQuantity((int) (currentUpgradeFee * 0.4));
-					player.equipOrPutOnGround(money);
+					Map<String, Integer> refundMap = MoneyUtils.fromCopper((int)(currentUpgradeFee * 0.4));
+					for (Map.Entry<String, Integer> entry : refundMap.entrySet()) {
+					    if (entry.getValue() <= 0) continue;
+					    try {
+					        StackableItem refundCoin = (StackableItem)
+					            SingletonRepository.getEntityManager().getItem(entry.getKey());
+					        refundCoin.setQuantity(entry.getValue());
+					        player.equipOrPutOnGround(refundCoin);
+					    } catch (Exception e) {
+					        logger.error("Błąd przy dodawaniu rekompensaty: " + entry.getKey(), e);
+					    }
+					}
 
-					npc.say("Przepraszam, nie udało mi się udoskonalić twojego przedmiotu. Otrzymujesz " + money.getQuantity() + " monet jako rekompensatę.");
+					npc.say("Przepraszam, nie udało mi się udoskonalić twojego przedmiotu. "
+							+ "Otrzymujesz " + MoneyUtils.formatPrice((int)(currentUpgradeFee * 0.4)) + " jako rekompensatę.");
 				}
 			}
 		};
@@ -392,7 +403,7 @@ public class ImproverAdder {
 		return new ChatCondition() {
 			@Override
 			public boolean fire(final Player player, final Sentence sentence, final Entity improver) {
-				return player.isEquipped("money", currentUpgradeFee);
+				return MoneyUtils.hasEnoughMoney(player, currentUpgradeFee);
 			}
 		};
 	}
