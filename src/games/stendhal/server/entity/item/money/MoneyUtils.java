@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
@@ -12,6 +14,8 @@ import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.player.Player;
 
 public final class MoneyUtils {
+	private static final Logger logger = Logger.getLogger(MoneyUtils.class);
+
 	public static final int COPPER_VALUE = 1;
 	public static final int SILVER_VALUE = 100;
 	public static final int GOLD_VALUE = 10000;
@@ -105,7 +109,7 @@ public final class MoneyUtils {
 				coin.setQuantity(qty);
 				player.equipOrPutOnGround(coin);
 			} catch (Exception e) {
-				System.err.println("Błąd przy dodawaniu monet: " + coinName + " x" + qty);
+				logger.error("Błąd przy dodawaniu monet: " + coinName + " x" + qty);
 			}
 		}
 
