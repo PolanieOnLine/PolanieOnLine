@@ -48,7 +48,7 @@ public final class MoneyUtils {
 	/**
 	 * Zwraca łączną wartość wszystkich monet gracza w miedziakach.
 	 */
-	public static int getTotalCopper(Player player) {
+	public static int getTotalMoneyInCopper(final Player player) {
 		int totalCopper = 0;
 		String[] coins = {"miedziak", "talar", "dukat"};
 
@@ -72,15 +72,14 @@ public final class MoneyUtils {
 	 *  - odejmuje koszt,
 	 *  - usuwa stare monety i tworzy nowe z reszty.
 	 */
-	public static boolean removeCopper(Player player, int amountToRemove) {
-		int total = getTotalCopper(player);
+	public static boolean removeMoney(final Player player, int amountToRemove) {
+		int total = getTotalMoneyInCopper(player);
 		if (total < amountToRemove) {
-			return false; // za mało środków
+			return false;
 		}
 
-		int remaining = total - amountToRemove; // tyle zostanie po zakupie
+		int remaining = total - amountToRemove;
 
-		// 1️⃣ Usuń wszystkie istniejące monety (bezpiecznie)
 		String[] coins = {"miedziak", "talar", "dukat"};
 		for (String coinName : coins) {
 			List<Item> items = new ArrayList<>(player.getAllEquipped(coinName));
@@ -94,10 +93,8 @@ public final class MoneyUtils {
 			}
 		}
 
-		// 2️⃣ Przelicz resztę na odpowiednie nominały
 		Map<String, Integer> newCoins = fromCopper(remaining);
 
-		// 3️⃣ Dodaj graczowi odpowiednie monety
 		for (Map.Entry<String, Integer> entry : newCoins.entrySet()) {
 			String coinName = entry.getKey();
 			int qty = entry.getValue();

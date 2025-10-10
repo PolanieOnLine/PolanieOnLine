@@ -104,10 +104,10 @@ public class SellerBehaviour extends MerchantBehaviour {
 			price = (int) (BAD_BOY_BUYING_PENALTY * price);
 		}
 
-		int playerCoins = MoneyUtils.getTotalCopper(player);
+		int playerCoins = MoneyUtils.getTotalMoneyInCopper(player);
 		if (playerCoins >= price) {
 			if (player.equipToInventoryOnly(item)) {
-				MoneyUtils.removeCopper(player, price);
+				MoneyUtils.removeMoney(player, price);
 				updatePlayerTransactions(player, seller.getName(), res);
 				seller.say("Gratulacje! Oto twój " + chosenItemName + "!");
 				return true;
