@@ -1,5 +1,18 @@
 Changelog
 ---------
+1.41
+*klient*
+- Dodano i odświeżono grafiki nominałów monet
+
+*kod*
+- Wprowadzono nowy system walutowy (miedziaki, talary oraz dukaty zamiast dotychczasowego "money")
+- Dodano dwa nowe skrypty dla administratorów: RaidPlague oraz MassHeal
+
+*naprawiono błędy*
+- Naprawiono problem z nalewaniem wody do butelki u Nosiwody Jakuba
+- Poprawiono automatyczną odmianę rzeczowników i prefiksów w dialogach NPC
+
+
 1.40.3
 *naprawiono błędy*
 - Naprawiono losowanie koordynat, które znajdowały się w kolizji na mapie w zadaniu u Omara
