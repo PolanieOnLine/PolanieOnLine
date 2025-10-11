@@ -15,6 +15,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.util.HashMap;
+import java.util.Locale;
 
 import javax.swing.SwingUtilities;
 
@@ -32,7 +33,9 @@ import marauroa.common.game.RPSlot;
  * be show.
  */
 public final class StatsPanelController {
-	private static final String[] MONEY_SLOTS = { "bag", "lhand", "rhand", "pouch" };
+    private static final String[] MONEY_SLOTS = { "bag", "lhand", "rhand", "pouch", "money" };
+    private static final int COPPER_PER_TALAR = 100;
+    private static final int COPPER_PER_DUKAT = 10000;
 	/**
 	 * A string used as a white space at the status labels. This is a
 	 * combination of carriage return and no-break space, so that a possible
@@ -394,22 +397,149 @@ public final class StatsPanelController {
 	/**
 	 * Count the money, and update the label text.
 	 */
-	private void updateMoney() {
-		int amount = 0;
+        private void updateMoney() {
+                int dukaty = 0;
+                int talary = 0;
+                int miedziaki = 0;
+                int totalCopper = 0;
 
-		for (HashMap<String, RPObject> stack : money.values()) {
-			for (RPObject obj : stack.values()) {
-				amount += obj.getInt("quantity");
-			}
-		}
-		final String text = "Pieniądze:" + SPC + amount;
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				panel.setMoney(text);
-			}
-		});
-	}
+                for (HashMap<String, RPObject> stack : money.values()) {
+                        for (RPObject obj : stack.values()) {
+                                if (!obj.has("quantity")) {
+                                        continue;
+                                }
+
+                                int quantity = obj.getInt("quantity");
+                                if (quantity <= 0) {
+                                        continue;
+                                }
+
+                                CoinDescriptor descriptor = identifyCoin(obj);
+
+                                switch (descriptor.bucket) {
+                                case DUKAT:
+                                        dukaty += quantity;
+                                        break;
+                                case TALAR:
+                                        talary += quantity;
+                                        break;
+                                case COPPER:
+                                default:
+                                        miedziaki += quantity;
+                                        break;
+                                }
+
+                                totalCopper += quantity * descriptor.copperValue;
+                        }
+                }
+
+                final int finalDukaty = dukaty;
+                final int finalTalary = talary;
+                final int finalMiedziaki = miedziaki;
+                final int finalTotalCopper = totalCopper;
+
+                SwingUtilities.invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
+                                panel.setMoney(finalDukaty, finalTalary, finalMiedziaki, finalTotalCopper);
+                        }
+                });
+        }
+
+        private CoinDescriptor identifyCoin(RPObject obj) {
+                String name = resolveCoinName(obj);
+                if (name != null) {
+                        name = name.toLowerCase(Locale.ROOT);
+                }
+
+                if ("dukat".equals(name)) {
+                        return CoinDescriptor.dukat();
+                }
+                if ("talar".equals(name)) {
+                        return CoinDescriptor.talar();
+                }
+                if ("miedziak".equals(name) || "money".equals(name)) {
+                        return CoinDescriptor.copper();
+                }
+                if ("gold".equals(name)) {
+                        // spróbuj rozróżnić dukata od starego "money" po wartości
+                        if (obj.has("value") && obj.getInt("value") == COPPER_PER_DUKAT) {
+                                return CoinDescriptor.dukat();
+                        }
+                        return CoinDescriptor.copper();
+                }
+                if ("silver".equals(name)) {
+                        return CoinDescriptor.talar();
+                }
+                if ("copper".equals(name)) {
+                        return CoinDescriptor.copper();
+                }
+
+                // Spróbuj rozpoznać po wartości monety.
+                if (obj.has("value")) {
+                        int value = obj.getInt("value");
+                        if (value == COPPER_PER_DUKAT) {
+                                return CoinDescriptor.dukat();
+                        }
+                        if (value == COPPER_PER_TALAR) {
+                                return CoinDescriptor.talar();
+                        }
+                        if (value > 0) {
+                                return CoinDescriptor.customCopper(value);
+                        }
+                }
+
+                // Zachowaj kompatybilność traktując nierozpoznane monety jak miedziaki.
+                return CoinDescriptor.copper();
+        }
+
+        private String resolveCoinName(RPObject obj) {
+                String name = obj.get("name");
+                if (name != null) {
+                        return name;
+                }
+                name = obj.get("subclass");
+                if (name != null) {
+                        return name;
+                }
+                return obj.get("class");
+        }
+
+        private static class CoinDescriptor {
+                private enum Bucket {
+                        DUKAT,
+                        TALAR,
+                        COPPER
+                }
+
+                private static final CoinDescriptor DUKAT = new CoinDescriptor(Bucket.DUKAT, COPPER_PER_DUKAT);
+                private static final CoinDescriptor TALAR = new CoinDescriptor(Bucket.TALAR, COPPER_PER_TALAR);
+                private static final CoinDescriptor COPPER = new CoinDescriptor(Bucket.COPPER, 1);
+
+                final Bucket bucket;
+                final int copperValue;
+
+                private CoinDescriptor(Bucket bucket, int copperValue) {
+                        this.bucket = bucket;
+                        this.copperValue = copperValue;
+                }
+
+                static CoinDescriptor dukat() {
+                        return DUKAT;
+                }
+
+                static CoinDescriptor talar() {
+                        return TALAR;
+                }
+
+                static CoinDescriptor copper() {
+                        return COPPER;
+                }
+
+                static CoinDescriptor customCopper(int copperValue) {
+                        return new CoinDescriptor(Bucket.COPPER, copperValue);
+                }
+        }
 
 	/**
 	 * Called when capacity or baseCapacity changes.
