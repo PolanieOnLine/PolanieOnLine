@@ -27,13 +27,15 @@ class ReserveSetWindow extends InternalManagedWindow {
 
 	private final Character owner;
 	private boolean added;
-	private boolean anchoredToOwner = true;
 
 	ReserveSetWindow(Character owner, JComponent content) {
 		super("reserve_set", "Schowek");
 		this.owner = owner;
 		setContent(content);
-		setCloseable(true);
+		setCloseable(false);
+		setMinimizable(false);
+		setMovable(false);
+		setHideOnClose(true);
 		setVisible(false);
 		addComponentListener(new ComponentAdapter() {
 			@Override
@@ -44,22 +46,6 @@ class ReserveSetWindow extends InternalManagedWindow {
 			@Override
 			public void componentHidden(ComponentEvent event) {
 				owner.onReserveWindowVisibilityChange(false);
-			}
-		});
-		addWindowDragListener(new WindowDragListener() {
-			@Override
-			public void startDrag(Component component) {
-				anchoredToOwner = false;
-			}
-
-			@Override
-			public void endDrag(Component component) {
-				// Nothing to do.
-			}
-
-			@Override
-			public void windowDragged(Component component, Point point) {
-				// Nothing to do.
 			}
 		});
 	}
@@ -78,24 +64,13 @@ class ReserveSetWindow extends InternalManagedWindow {
 		}
 		setVisible(true);
 		setMinimized(false);
-		if (anchoredToOwner) {
-			Component parent = getParent();
-			Point location = anchor.getLocation();
-			if ((parent != null) && (anchor.getParent() != parent)) {
-				location = SwingUtilities.convertPoint(anchor.getParent(), location, parent);
-			}
-			location.translate(anchor.getWidth() + 4, 0);
-			moveTo(location.x, location.y);
+		Component parent = getParent();
+		Point location = anchor.getLocation();
+		if ((parent != null) && (anchor.getParent() != parent)) {
+			location = SwingUtilities.convertPoint(anchor.getParent(), location, parent);
 		}
-		raise();
-	}
-
-	void bringToFront() {
-		if (!added) {
-			return;
-		}
-		setVisible(true);
-		setMinimized(false);
+		location.translate(anchor.getWidth() + 4, 0);
+		moveTo(location.x, location.y);
 		raise();
 	}
 }
