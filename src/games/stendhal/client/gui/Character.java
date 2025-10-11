@@ -191,7 +191,7 @@ Inspectable {
 		Dimension toggleSize = setToggleButton.getPreferredSize();
 		toggleSize.height = Math.min(toggleSize.height, toggleHeight);
 		setToggleButton.setPreferredSize(new Dimension(toggleSize.width, toggleSize.height));
-		setToggleButton.setMinimumSize(new Dimension(0, toggleSize.height));
+		setToggleButton.setMinimumSize(new Dimension(toggleSize.width, toggleSize.height));
 		setToggleButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, toggleSize.height));
 		setToggleButton.addActionListener(new ActionListener() {
 			@Override
@@ -250,7 +250,7 @@ Inspectable {
 		Dimension swapSize = setSwapButton.getPreferredSize();
 		swapSize.height = Math.min(swapSize.height, swapHeight);
 		setSwapButton.setPreferredSize(new Dimension(swapSize.width, swapSize.height));
-		setSwapButton.setMinimumSize(new Dimension(0, swapSize.height));
+		setSwapButton.setMinimumSize(new Dimension(swapSize.width, swapSize.height));
 		setSwapButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, swapSize.height));
 		setSwapButton.addActionListener(new ActionListener() {
 			@Override
