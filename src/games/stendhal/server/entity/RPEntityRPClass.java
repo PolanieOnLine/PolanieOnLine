@@ -63,7 +63,7 @@ public class RPEntityRPClass {
 		/* Immortal creatures */
 		entity.addAttribute("immortal", Type.FLAG, Definition.VOLATILE);
 
-		/* Equipment */
+				/* Equipment */
 		entity.addRPSlot("head", 1, Definition.PRIVATE);
 		entity.addRPSlot("neck", 1, Definition.PRIVATE);
 		entity.addRPSlot("rhand", 1, Definition.PRIVATE);
@@ -77,6 +77,19 @@ public class RPEntityRPClass {
 		entity.addRPSlot("feet", 1, Definition.PRIVATE);
 		entity.addRPSlot("back", 1, Definition.PRIVATE);
 		entity.addRPSlot("pas", 1, Definition.PRIVATE);
+		entity.addRPSlot("neck_set", 1, Definition.PRIVATE);
+		entity.addRPSlot("rhand_set", 1, Definition.PRIVATE);
+		entity.addRPSlot("finger_set", 1, Definition.PRIVATE);
+		entity.addRPSlot("fingerb_set", 1, Definition.PRIVATE);
+		entity.addRPSlot("head_set", 1, Definition.PRIVATE);
+		entity.addRPSlot("armor_set", 1, Definition.PRIVATE);
+		entity.addRPSlot("pas_set", 1, Definition.PRIVATE);
+		entity.addRPSlot("legs_set", 1, Definition.PRIVATE);
+		entity.addRPSlot("feet_set", 1, Definition.PRIVATE);
+		entity.addRPSlot("cloak_set", 1, Definition.PRIVATE);
+		entity.addRPSlot("lhand_set", 1, Definition.PRIVATE);
+		entity.addRPSlot("glove_set", 1, Definition.PRIVATE);
+		entity.addRPSlot("pouch_set", 1, Definition.PRIVATE);
 		entity.addRPSlot("belt", 1, (byte) (Definition.PRIVATE | Definition.VOLATILE));
 
 		entity.addRPSlot("money", 1, Definition.VOLATILE);

@@ -286,10 +286,10 @@ public abstract class UpdateConverter {
 	 *			RPObject representing a player
 	 */
 	public static void updatePlayerRPObject(final RPObject object) {
-		final String[] slotsNormal = { "bag", "rhand", "lhand", "head", "neck", "armor",
-				"legs", "glove", "feet", "finger", "cloak", "fingerb", "pas", "bank", "bank_ados", "bank_deniran",
+		final String[] slotsNormal = { "bag", "rhand", "rhand_set", "lhand", "lhand_set", "head", "head_set", "neck", "neck_set", "armor", "armor_set",
+				"legs", "legs_set", "glove", "glove_set", "feet", "feet_set", "finger", "finger_set", "cloak", "cloak_set", "fingerb", "fingerb_set", "pas", "pas_set", "bank", "bank_ados", "bank_deniran",
 				"zaras_chest_ados", "bank_fado", "bank_kirdneh", "bank_magic", "bank_nalwor", "bank_zakopane", "bank_krakow",
-				"bank_gdansk", "spells", "keyring", "magicbag", /*"portfolio", */ "trade", "pouch", "vault",
+				"bank_gdansk", "spells", "keyring", "magicbag", /*"portfolio", */ "trade", "pouch", "pouch_set", "vault",
 				"offensive_rune", "defensive_rune", "resistance_rune", "utility_rune", "healing_rune",
 				"control_rune", "special_rune"};
 

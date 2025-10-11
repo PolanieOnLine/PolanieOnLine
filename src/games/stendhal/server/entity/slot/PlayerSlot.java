@@ -28,7 +28,14 @@ public class PlayerSlot extends EntitySlot {
 	 *            name of slot
 	 */
 	public PlayerSlot(final String name) {
-		super(name, name);
+		super(name, resolveContentSlotName(name));
+	}
+
+	private static String resolveContentSlotName(String name) {
+		if ((name != null) && name.endsWith("_set")) {
+			return name.substring(0, name.length() - 4);
+		}
+		return name;
 	}
 
 	@Override
