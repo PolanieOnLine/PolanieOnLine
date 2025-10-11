@@ -48,6 +48,7 @@ public class SwapEquipmentSetsAction implements ActionListener {
 	public void onAction(Player player, RPAction action) {
 		boolean changed = swapEquipment(player);
 		if (changed) {
+			player.notifyWorldAboutChanges();
 			player.updateItemAtkDef();
 		}
 	}
