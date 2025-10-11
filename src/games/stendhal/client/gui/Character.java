@@ -15,6 +15,8 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,7 +29,6 @@ import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
-import javax.swing.Timer;
 
 import org.apache.log4j.Logger;
 
@@ -74,7 +75,7 @@ Inspectable {
 	private JComponent setSlotsContainer;
 	private JComponent equipmentRow;
 	private boolean setSlotsVisible;
-	private Timer setDrawerRefreshTimer;
+	private boolean pendingSetDrawerRefresh;
 
 	private static final List<FeatureChangeListener> featureChangeListeners = new ArrayList<>();
 
@@ -209,6 +210,17 @@ Inspectable {
 		equipmentRow = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, PADDING);
 		equipmentRow.add(row);
 		setSlotsContainer = createSetSlotLayout(itemClass, store);
+		setSlotsContainer.addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentResized(ComponentEvent event) {
+				handleSetDrawerSizeChange();
+			}
+	
+			@Override
+			public void componentShown(ComponentEvent event) {
+				handleSetDrawerSizeChange();
+			}
+		});
 		setSlotsContainer.setVisible(false);
 		equipmentRow.add(setSlotsContainer);
 		content.add(equipmentRow);
@@ -358,9 +370,10 @@ Inspectable {
 				if (visible && (player != null)) {
 					refreshContents();
 					refreshSetPanels();
-					scheduleSetDrawerRefresh();
+					pendingSetDrawerRefresh = true;
+					handleSetDrawerSizeChange();
 				} else {
-					cancelSetDrawerRefresh();
+					pendingSetDrawerRefresh = false;
 				}
 			}
 		});
@@ -397,27 +410,17 @@ Inspectable {
 		}
 	}
 
-	private void scheduleSetDrawerRefresh() {
-		if (setDrawerRefreshTimer == null) {
-			setDrawerRefreshTimer = new Timer(550, new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent event) {
-					refreshSetDrawerAfterAnimation();
-				}
-			});
-			setDrawerRefreshTimer.setRepeats(false);
+	private void handleSetDrawerSizeChange() {
+		if (!pendingSetDrawerRefresh || !setSlotsVisible) {
+			return;
 		}
-		setDrawerRefreshTimer.stop();
-		setDrawerRefreshTimer.start();
-	}
-
-	private void cancelSetDrawerRefresh() {
-		if (setDrawerRefreshTimer != null) {
-			setDrawerRefreshTimer.stop();
+		if ((setSlotsContainer != null) && setSlotsContainer.isShowing() && (setSlotsContainer.getWidth() > 0)) {
+			pendingSetDrawerRefresh = false;
+			refreshSetDrawerAfterReveal();
 		}
 	}
 
-	private void refreshSetDrawerAfterAnimation() {
+	private void refreshSetDrawerAfterReveal() {
 		refreshSetDrawerLayout();
 		if (player != null) {
 			refreshContents();
