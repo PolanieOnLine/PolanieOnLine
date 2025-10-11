@@ -58,19 +58,28 @@ class ReserveSetWindow extends InternalManagedWindow {
 		j2DClient.get().addWindow(this);
 	}
 
-	void showBeside(Component anchor) {
+	void showBeside(final Component anchor) {
 		if (!added) {
 			return;
 		}
-		setVisible(true);
-		setMinimized(false);
-		Component parent = getParent();
-		Point location = anchor.getLocation();
-		if ((parent != null) && (anchor.getParent() != parent)) {
-			location = SwingUtilities.convertPoint(anchor.getParent(), location, parent);
-		}
-		location.translate(anchor.getWidth() + 4, 0);
-		moveTo(location.x, location.y);
-		raise();
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				if (!added) {
+					return;
+				}
+				setVisible(true);
+				setMinimized(false);
+				Component parent = getParent();
+				Point location = anchor.getLocation();
+				if ((parent != null) && (anchor.getParent() != parent)) {
+					location = SwingUtilities.convertPoint(anchor.getParent(), location, parent);
+				}
+				location.translate(anchor.getWidth() + 4, 0);
+				moveTo(location.x, location.y);
+				raise();
+			}
+		});
 	}
+
 }
