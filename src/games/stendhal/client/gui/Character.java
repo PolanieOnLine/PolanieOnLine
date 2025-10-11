@@ -11,15 +11,17 @@
  ***************************************************************************/
 package games.stendhal.client.gui;
 
+import java.awt.Dimension;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import javax.swing.Box;
 import javax.swing.JButton;
@@ -137,8 +139,7 @@ Inspectable {
 		right.setAlignmentY(CENTER_ALIGNMENT);
 		row.add(left);
 		row.add(middle);
-		row.add(right);
-		content.add(row);
+                row.add(right);
 
 		Class<? extends IEntity> itemClass = EntityMap.getClass("item", null, null);
 		SpriteStore store = SpriteStore.get();
@@ -192,31 +193,30 @@ Inspectable {
 		right.add(pouch);
 		featureChangeListeners.add(pouch);
 
-		setToggleRow = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, PADDING);
-		setToggleButton = new JButton("Pokaż zestaw II");
-		setToggleButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent event) {
-					toggleSetSlots();
-			}
-		});
-		setSwapButton = new JButton("Zamień zestawy");
-		setSwapButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent event) {
-					swapSets();
-			}
-		});
-		setToggleRow.add(Box.createHorizontalGlue());
-		setToggleRow.add(setToggleButton);
-		setToggleRow.add(setSwapButton);
-		setToggleRow.add(Box.createHorizontalGlue());
-		setToggleRow.setVisible(false);
-		content.add(setToggleRow);
+                setToggleRow = SBoxLayout.createContainer(SBoxLayout.VERTICAL, 0);
+                setToggleButton = new JButton("Pokaż zestaw II");
+                setToggleButton.setMargin(new Insets(2, 0, 2, 0));
+                Dimension toggleSize = setToggleButton.getPreferredSize();
+                toggleSize.height = Math.min(toggleSize.height, 22);
+                setToggleButton.setPreferredSize(new Dimension(0, toggleSize.height));
+                setToggleButton.setMinimumSize(new Dimension(0, toggleSize.height));
+                setToggleButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, toggleSize.height));
+                setToggleButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent event) {
+                                toggleSetSlots();
+                        }
+                });
+                setToggleRow.add(setToggleButton);
+                setToggleRow.setVisible(false);
+                content.add(setToggleRow);
 
-		setSlotsContainer = createSetSlotLayout(itemClass, store);
-		setSlotsContainer.setVisible(false);
-		content.add(setSlotsContainer);
+                JComponent equipmentRow = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, PADDING);
+                equipmentRow.add(row);
+                setSlotsContainer = createSetSlotLayout(itemClass, store);
+                setSlotsContainer.setVisible(false);
+                equipmentRow.add(setSlotsContainer);
+                content.add(equipmentRow);
 
 		// Bag, keyring, etc
 		specialSlots = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, PADDING);
@@ -249,70 +249,95 @@ Inspectable {
 		return panel;
 	}
 
-	private JComponent createSetSlotLayout(Class<? extends IEntity> itemClass, SpriteStore store) {
-		JComponent row = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, PADDING);
-		JComponent left = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
-		JComponent middle = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
-		JComponent right = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
-		left.setAlignmentY(CENTER_ALIGNMENT);
-		right.setAlignmentY(CENTER_ALIGNMENT);
-		row.add(left);
-		row.add(middle);
-		row.add(right);
+        private JComponent createSetSlotLayout(Class<? extends IEntity> itemClass, SpriteStore store) {
+                JComponent column = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
+                column.setAlignmentY(TOP_ALIGNMENT);
+                setSwapButton = new JButton("Zamień zestawy");
+                setSwapButton.setMargin(new Insets(2, 0, 2, 0));
+                Dimension swapSize = setSwapButton.getPreferredSize();
+                swapSize.height = Math.min(swapSize.height, 22);
+                setSwapButton.setPreferredSize(new Dimension(0, swapSize.height));
+                setSwapButton.setMinimumSize(new Dimension(0, swapSize.height));
+                setSwapButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, swapSize.height));
+                setSwapButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent event) {
+                                swapSets();
+                        }
+                });
+                column.add(setSwapButton);
 
-		left.add(Box.createVerticalStrut(HAND_YSHIFT * 2));
-		ItemPanel panel = createItemPanel(itemClass, store, "neck_set", "data/gui/slot-neck.png");
-		left.add(panel);
-		panel = createItemPanel(itemClass, store, "rhand_set", "data/gui/slot-weapon.png");
-		left.add(panel);
-		panel = createItemPanel(itemClass, store, "finger_set", "data/gui/slot-ring.png");
-		left.add(panel);
-		panel = createItemPanel(itemClass, store, "fingerb_set", "data/gui/slot-ringb.png");
-		left.add(panel);
+                JComponent row = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, PADDING);
+                JComponent left = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
+                JComponent middle = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
+                JComponent right = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
+                left.setAlignmentY(CENTER_ALIGNMENT);
+                right.setAlignmentY(CENTER_ALIGNMENT);
+                row.add(left);
+                row.add(middle);
+                row.add(right);
 
-		panel = createItemPanel(itemClass, store, "head_set", "data/gui/slot-helmet.png");
-		middle.add(panel);
-		panel = createItemPanel(itemClass, store, "armor_set", "data/gui/slot-armor.png");
-		middle.add(panel);
-		panel = createItemPanel(itemClass, store, "pas_set", "data/gui/slot-belt.png");
-		middle.add(panel);
-		panel = createItemPanel(itemClass, store, "legs_set", "data/gui/slot-legs.png");
-		middle.add(panel);
-		panel = createItemPanel(itemClass, store, "feet_set", "data/gui/slot-boots.png");
-		middle.add(panel);
+                left.add(Box.createVerticalStrut(HAND_YSHIFT * 2));
+                ItemPanel panel = createItemPanel(itemClass, store, "neck_set", "data/gui/slot-neck.png");
+                left.add(panel);
+                panel = createItemPanel(itemClass, store, "rhand_set", "data/gui/slot-weapon.png");
+                left.add(panel);
+                panel = createItemPanel(itemClass, store, "finger_set", "data/gui/slot-ring.png");
+                left.add(panel);
+                panel = createItemPanel(itemClass, store, "fingerb_set", "data/gui/slot-ringb.png");
+                left.add(panel);
 
-		right.add(Box.createVerticalStrut(HAND_YSHIFT * 2));
-		panel = createItemPanel(itemClass, store, "cloak_set", "data/gui/slot-cloak.png");
-		right.add(panel);
-		panel = createItemPanel(itemClass, store, "lhand_set", "data/gui/slot-shield.png");
-		right.add(panel);
-		panel = createItemPanel(itemClass, store, "glove_set", "data/gui/slot-gloves.png");
-		right.add(panel);
+                panel = createItemPanel(itemClass, store, "head_set", "data/gui/slot-helmet.png");
+                middle.add(panel);
+                panel = createItemPanel(itemClass, store, "armor_set", "data/gui/slot-armor.png");
+                middle.add(panel);
+                panel = createItemPanel(itemClass, store, "pas_set", "data/gui/slot-belt.png");
+                middle.add(panel);
+                panel = createItemPanel(itemClass, store, "legs_set", "data/gui/slot-legs.png");
+                middle.add(panel);
+                panel = createItemPanel(itemClass, store, "feet_set", "data/gui/slot-boots.png");
+                middle.add(panel);
 
-		FeatureEnabledItemPanel setPouch = new FeatureEnabledItemPanel("pouch_set", store.getSprite("data/gui/slot-pouch.png"));
-		slotPanels.put("pouch_set", setPouch);
-		setPouch.setAcceptedTypes(itemClass);
-		right.add(setPouch);
-		featureChangeListeners.add(setPouch);
+                right.add(Box.createVerticalStrut(HAND_YSHIFT * 2));
+                panel = createItemPanel(itemClass, store, "cloak_set", "data/gui/slot-cloak.png");
+                right.add(panel);
+                panel = createItemPanel(itemClass, store, "lhand_set", "data/gui/slot-shield.png");
+                right.add(panel);
+                panel = createItemPanel(itemClass, store, "glove_set", "data/gui/slot-gloves.png");
+                right.add(panel);
 
-		return row;
-	}
+                FeatureEnabledItemPanel setPouch = new FeatureEnabledItemPanel("pouch_set", store.getSprite("data/gui/slot-pouch.png"));
+                slotPanels.put("pouch_set", setPouch);
+                setPouch.setAcceptedTypes(itemClass);
+                right.add(setPouch);
+                featureChangeListeners.add(setPouch);
+
+                column.add(row);
+
+                return column;
+        }
 
 	private void toggleSetSlots() {
 		setSetSlotsVisible(!setSlotsVisible);
 	}
 
-	private void setSetSlotsVisible(boolean visible) {
-		setSlotsVisible = visible;
-		setSlotsContainer.setVisible(visible);
-		setSlotsContainer.revalidate();
-		setSlotsContainer.repaint();
-		revalidate();
-		repaint();
-		if (setToggleButton != null) {
-			setToggleButton.setText(visible ? "Ukryj zestaw II" : "Pokaż zestaw II");
-		}
-	}
+        private void setSetSlotsVisible(boolean visible) {
+                setSlotsVisible = visible;
+                setSlotsContainer.setVisible(visible);
+                if (setSwapButton != null) {
+                        setSwapButton.setVisible(visible);
+                }
+                setSlotsContainer.revalidate();
+                setSlotsContainer.repaint();
+                revalidate();
+                repaint();
+                if (setToggleButton != null) {
+                        setToggleButton.setText(visible ? "Ukryj zestaw II" : "Pokaż zestaw II");
+                }
+                if (visible && (player != null)) {
+                        refreshContents();
+                }
+        }
 
 	private void swapSets() {
 		if (player == null) {
