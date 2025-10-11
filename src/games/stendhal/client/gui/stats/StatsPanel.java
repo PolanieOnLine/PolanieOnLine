@@ -347,15 +347,15 @@ class StatsPanel extends JPanel {
 				}
 				add(titleLabel);
 
-				goldLabel = new CoinLabel("dukat", "data/gui/goldencoin.png", style);
+				goldLabel = new CoinLabel("dukat", style, "data/gui/goldencoin.png", "data/gui/goldcoin.png");
 				goldLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 6));
 				add(goldLabel);
 
-				silverLabel = new CoinLabel("talar", "data/gui/silvercoin.png", style);
+				silverLabel = new CoinLabel("talar", style, "data/gui/silvercoin.png");
 				silverLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 6));
 				add(silverLabel);
 
-				copperLabel = new CoinLabel("miedziak", "data/gui/coppercoin.png", style);
+				copperLabel = new CoinLabel("miedziak", style, "data/gui/coppercoin.png");
 				add(copperLabel);
 			}
 
@@ -393,13 +393,13 @@ class StatsPanel extends JPanel {
 				private static final long serialVersionUID = 1L;
 				private final String coinName;
 
-				CoinLabel(String coinName, String iconPath, Style style) {
+				CoinLabel(String coinName, Style style, String... iconPaths) {
 					super("0");
 					this.coinName = coinName;
 					setOpaque(false);
 					setBorder(null);
-					setCoinIcon(iconPath);
-					setHorizontalTextPosition(SwingConstants.RIGHT);
+					setCoinIcon(iconPaths);
+					setHorizontalTextPosition(SwingConstants.LEFT);
 					setIconTextGap(4);
 					if (style != null) {
 						setForeground(style.getForeground());
@@ -411,10 +411,21 @@ class StatsPanel extends JPanel {
 					setToolTipText(amount + " " + Grammar.polishCoinName(coinName, amount));
 				}
 
-				private void setCoinIcon(String iconPath) {
-					URL iconURL = (iconPath != null) ? DataLoader.getResource(iconPath) : null;
-					if (iconURL != null) {
-						setIcon(new ImageIcon(iconURL));
+				private void setCoinIcon(String... iconPaths) {
+					if (iconPaths == null) {
+						return;
+					}
+
+					for (String iconPath : iconPaths) {
+						if (iconPath == null) {
+							continue;
+						}
+
+						URL iconURL = DataLoader.getResource(iconPath);
+						if (iconURL != null) {
+							setIcon(new ImageIcon(iconURL));
+							return;
+						}
 					}
 				}
 			}
