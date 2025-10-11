@@ -15,8 +15,9 @@ import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashSet;
-import java.util.Set;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -27,7 +28,6 @@ import java.util.Map.Entry;
 import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JToggleButton;
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
@@ -42,10 +42,11 @@ import games.stendhal.client.entity.factory.EntityMap;
 import games.stendhal.client.gui.layout.SBoxLayout;
 import games.stendhal.client.listener.FeatureChangeListener;
 import games.stendhal.client.sprite.SpriteStore;
-import marauroa.common.game.RPAction;
+import games.stendhal.common.constants.Actions;
 import marauroa.common.game.RPObject;
 import marauroa.common.game.RPObject.ID;
 import marauroa.common.game.RPSlot;
+import marauroa.common.game.RPAction;
 
 /**
  * Window for showing the equipment the player is wearing.
@@ -63,73 +64,28 @@ Inspectable {
 	private static final int HAND_YSHIFT = 2; // before: 10
 	private static final Logger logger = Logger.getLogger(Character.class);
 
-	private static final int TOGGLE_HEIGHT = 16;
-
-	private static final class SlotInfo {
-		final String id;
-		final String sprite;
-		final boolean feature;
-
-		SlotInfo(String id, String sprite) {
-			this(id, sprite, false);
-		}
-
-		SlotInfo(String id, String sprite, boolean feature) {
-			this.id = id;
-			this.sprite = sprite;
-			this.feature = feature;
-		}
-	}
-
-	private static final SlotInfo[][] RESERVE_LAYOUT = new SlotInfo[][] {
-		{
-			new SlotInfo("neck_set", "data/gui/slot-neck.png"),
-			new SlotInfo("rhand_set", "data/gui/slot-weapon.png"),
-			new SlotInfo("finger_set", "data/gui/slot-ring.png"),
-			new SlotInfo("fingerb_set", "data/gui/slot-ringb.png")
-		},
-		{
-			new SlotInfo("head_set", "data/gui/slot-helmet.png"),
-			new SlotInfo("armor_set", "data/gui/slot-armor.png"),
-			new SlotInfo("pas_set", "data/gui/slot-belt.png"),
-			new SlotInfo("legs_set", "data/gui/slot-legs.png"),
-			new SlotInfo("feet_set", "data/gui/slot-boots.png")
-		},
-		{
-			new SlotInfo("cloak_set", "data/gui/slot-cloak.png"),
-			new SlotInfo("lhand_set", "data/gui/slot-shield.png"),
-			new SlotInfo("glove_set", "data/gui/slot-gloves.png"),
-			new SlotInfo("pouch_set", "data/gui/slot-pouch.png", true)
-		}
-	};
-
-	private static final Set<String> RESERVE_SLOT_NAMES = new HashSet<String>();
-
 	/** ItemPanels searchable by the respective slot name. */
 	private final Map<String, ItemPanel> slotPanels = new HashMap<String, ItemPanel>();
 	private User player;
 
 	private JComponent specialSlots;
-
-	private JToggleButton reserveToggle;
-	private ReserveSetWindow reserveWindow;
-	private boolean reserveWindowAdded;
-	private boolean updatingReserveToggle;
-	private boolean reserveWindowDesiredVisible;
-	private boolean reserveSlotsSeen;
+	private JComponent setToggleRow;
+	private JButton setToggleButton;
+	private JButton setSwapButton;
+	private JComponent setSlotsContainer;
+	private JComponent equipmentRow;
+	private boolean setSlotsVisible;
+	private boolean pendingSetDrawerRefresh;
 
 	private static final List<FeatureChangeListener> featureChangeListeners = new ArrayList<>();
 
 	private static FeatureEnabledItemPanel pouch;
-
-	private static FeatureEnabledItemPanel reservePouch;
 
 	/**
 	 * Create a new character window.
 	 */
 	public Character() {
 		super("character", "Character");
-		initializeReserveSlotNames();
 		createLayout();
 		// Don't allow the user close this. There's no way to get it back.
 		setCloseable(false);
@@ -144,15 +100,9 @@ Inspectable {
 	public void setPlayer(final User userEntity) {
 		player = userEntity;
 		userEntity.addContentChangeListener(this);
-		reserveSlotsSeen = false;
-
-		requestReserveWindowVisible(false);
-		if (reserveToggle != null) {
-			setReserveToggleSelected(false);
-		}
-
-
 		final RPObject obj = userEntity.getRPObject();
+
+		updateSetToggleVisibility(obj);
 
 		// Compatibility. Show additional slots only if the user has those.
 		// This can be removed after a couple of releases (and specialSlots
@@ -167,7 +117,6 @@ Inspectable {
 		}
 
 		refreshContents();
-		updateReserveAvailability();
 	}
 
 	/**
@@ -187,7 +136,6 @@ Inspectable {
 		mainRow.add(left);
 		mainRow.add(middle);
 		mainRow.add(right);
-
 
 		Class<? extends IEntity> itemClass = EntityMap.getClass("item", null, null);
 		SpriteStore store = SpriteStore.get();
@@ -241,8 +189,42 @@ Inspectable {
 		right.add(pouch);
 		featureChangeListeners.add(pouch);
 
-		reserveWindow = createReserveWindow(itemClass, store);
-		content.add(mainRow);
+		setToggleRow = SBoxLayout.createContainer(SBoxLayout.VERTICAL, 0);
+		setToggleButton = new JButton("Pokaż zestaw II");
+		setToggleButton.setMargin(new Insets(1, 0, 1, 0));
+		int toggleHeight = 16;
+		Dimension toggleSize = setToggleButton.getPreferredSize();
+		toggleSize.height = Math.min(toggleSize.height, toggleHeight);
+		setToggleButton.setPreferredSize(new Dimension(toggleSize.width, toggleSize.height));
+		setToggleButton.setMinimumSize(new Dimension(toggleSize.width, toggleSize.height));
+		setToggleButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, toggleSize.height));
+		setToggleButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				toggleSetSlots();
+			}
+		});
+		setToggleRow.add(setToggleButton);
+		setToggleRow.setVisible(false);
+		content.add(setToggleRow);
+
+		equipmentRow = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, PADDING);
+		equipmentRow.add(mainRow);
+		setSlotsContainer = createSetSlotLayout(itemClass, store);
+		setSlotsContainer.addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentResized(ComponentEvent event) {
+				handleSetDrawerSizeChange();
+			}
+	
+			@Override
+			public void componentShown(ComponentEvent event) {
+				handleSetDrawerSizeChange();
+			}
+		});
+		setSlotsContainer.setVisible(false);
+		equipmentRow.add(setSlotsContainer);
+		content.add(equipmentRow);
 
 		// Bag, keyring, etc
 		specialSlots = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, PADDING);
@@ -251,50 +233,11 @@ Inspectable {
 		specialSlots.setVisible(false);
 		content.add(specialSlots);
 
-		reserveToggle = new JToggleButton("Pokaż schowek");
-		reserveToggle.setFocusable(false);
-		reserveToggle.setMargin(new Insets(0, 4, 0, 4));
-		reserveToggle.setPreferredSize(new Dimension(0, TOGGLE_HEIGHT));
-		reserveToggle.setMaximumSize(new Dimension(Integer.MAX_VALUE, TOGGLE_HEIGHT));
-		reserveToggle.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent event) {
-				if (!updatingReserveToggle) {
-					requestReserveWindowVisible(reserveToggle.isSelected());
-				}
-				updateReserveToggleLabel();
-			}
-		});
-		reserveToggle.setVisible(false);
-		content.add(reserveToggle);
+		panel = createItemPanel(itemClass, store, "belt", "data/gui/slot-key.png");
+		specialSlots.add(panel);
 		setContent(content);
 	}
 
-	private void updateReserveToggleLabel() {
-		if (reserveToggle == null) {
-			return;
-		}
-		if (reserveToggle.isSelected()) {
-			reserveToggle.setText("Ukryj schowek");
-		} else {
-			reserveToggle.setText("Pokaż schowek");
-		}
-	}
-
-	private void setReserveToggleSelected(final boolean selected) {
-		if (reserveToggle == null) {
-			return;
-		}
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				updatingReserveToggle = true;
-				reserveToggle.setSelected(selected);
-				updatingReserveToggle = false;
-				updateReserveToggleLabel();
-			}
-		});
-	}
 
 	/**
 	 * Create an item panel to be placed to the character window.
@@ -314,13 +257,190 @@ Inspectable {
 		return panel;
 	}
 
-	private FeatureEnabledItemPanel createFeaturePanel(Class<? extends IEntity> itemClass, SpriteStore store, String id, String image) {
-		FeatureEnabledItemPanel panel = new FeatureEnabledItemPanel(id, store.getSprite(image));
-		slotPanels.put(id, panel);
-		panel.setAcceptedTypes(itemClass);
-		featureChangeListeners.add(panel);
+	private JComponent createSetSlotLayout(Class<? extends IEntity> itemClass, SpriteStore store) {
+		JComponent column = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
+		column.setAlignmentY(TOP_ALIGNMENT);
+		setSwapButton = new JButton("Zamień zestawy");
+		setSwapButton.setMargin(new Insets(1, 0, 1, 0));
+		int swapHeight = 16;
+		Dimension swapSize = setSwapButton.getPreferredSize();
+		swapSize.height = Math.min(swapSize.height, swapHeight);
+		setSwapButton.setPreferredSize(new Dimension(swapSize.width, swapSize.height));
+		setSwapButton.setMinimumSize(new Dimension(swapSize.width, swapSize.height));
+		setSwapButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, swapSize.height));
+		setSwapButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				swapSets();
+			}
+		});
+		column.add(setSwapButton);
 
-		return panel;
+		JComponent row = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, PADDING);
+		JComponent left = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
+		JComponent middle = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
+		JComponent right = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
+		left.setAlignmentY(CENTER_ALIGNMENT);
+		right.setAlignmentY(CENTER_ALIGNMENT);
+		row.add(left);
+		row.add(middle);
+		row.add(right);
+
+		left.add(Box.createVerticalStrut(HAND_YSHIFT * 2));
+		ItemPanel panel = createItemPanel(itemClass, store, "neck_set", "data/gui/slot-neck.png");
+		left.add(panel);
+		panel = createItemPanel(itemClass, store, "rhand_set", "data/gui/slot-weapon.png");
+		left.add(panel);
+		panel = createItemPanel(itemClass, store, "finger_set", "data/gui/slot-ring.png");
+		left.add(panel);
+		panel = createItemPanel(itemClass, store, "fingerb_set", "data/gui/slot-ringb.png");
+		left.add(panel);
+
+		panel = createItemPanel(itemClass, store, "head_set", "data/gui/slot-helmet.png");
+		middle.add(panel);
+		panel = createItemPanel(itemClass, store, "armor_set", "data/gui/slot-armor.png");
+		middle.add(panel);
+		panel = createItemPanel(itemClass, store, "pas_set", "data/gui/slot-belt.png");
+		middle.add(panel);
+		panel = createItemPanel(itemClass, store, "legs_set", "data/gui/slot-legs.png");
+		middle.add(panel);
+		panel = createItemPanel(itemClass, store, "feet_set", "data/gui/slot-boots.png");
+		middle.add(panel);
+
+		right.add(Box.createVerticalStrut(HAND_YSHIFT * 2));
+		panel = createItemPanel(itemClass, store, "cloak_set", "data/gui/slot-cloak.png");
+		right.add(panel);
+		panel = createItemPanel(itemClass, store, "lhand_set", "data/gui/slot-shield.png");
+		right.add(panel);
+		panel = createItemPanel(itemClass, store, "glove_set", "data/gui/slot-gloves.png");
+		right.add(panel);
+
+		FeatureEnabledItemPanel setPouch = new FeatureEnabledItemPanel("pouch_set", store.getSprite("data/gui/slot-pouch.png"));
+		slotPanels.put("pouch_set", setPouch);
+		setPouch.setAcceptedTypes(itemClass);
+		right.add(setPouch);
+		featureChangeListeners.add(setPouch);
+
+		column.add(row);
+
+		return column;
+	}
+
+	private void toggleSetSlots() {
+		setSetSlotsVisible(!setSlotsVisible);
+	}
+
+	private void updateSetToggleVisibility(final RPObject obj) {
+		if (obj == null) {
+			return;
+		}
+
+		boolean hasSetSlots = false;
+		for (final String slotName : slotPanels.keySet()) {
+			if (slotName.endsWith("_set") && obj.hasSlot(slotName)) {
+				hasSetSlots = true;
+				break;
+			}
+		}
+
+		final boolean showToggle = hasSetSlots;
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				setToggleRow.setVisible(showToggle);
+				if (!showToggle) {
+					setSetSlotsVisible(false);
+				}
+			}
+		});
+	}
+
+	private void setSetSlotsVisible(final boolean visible) {
+		setSlotsVisible = visible;
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				setSlotsContainer.setVisible(visible);
+				if (setSwapButton != null) {
+					setSwapButton.setVisible(visible);
+				}
+				refreshSetDrawerLayout();
+				if (setToggleButton != null) {
+					setToggleButton.setText(visible ? "Ukryj zestaw II" : "Pokaż zestaw II");
+				}
+				if (visible && (player != null)) {
+					refreshContents();
+					refreshSetPanels();
+					pendingSetDrawerRefresh = true;
+					handleSetDrawerSizeChange();
+				} else {
+					pendingSetDrawerRefresh = false;
+				}
+			}
+		});
+	}
+
+	private void refreshSetDrawerLayout() {
+		if (setSlotsContainer != null) {
+			setSlotsContainer.invalidate();
+			setSlotsContainer.revalidate();
+			setSlotsContainer.repaint();
+		}
+		if (equipmentRow != null) {
+			equipmentRow.invalidate();
+			equipmentRow.revalidate();
+			equipmentRow.doLayout();
+			equipmentRow.repaint();
+		}
+		revalidate();
+		repaint();
+	}
+
+	private void refreshSetPanels() {
+		for (final Entry<String, ItemPanel> entry : slotPanels.entrySet()) {
+			final String slotName = entry.getKey();
+			if (!slotName.endsWith("_set")) {
+				continue;
+			}
+			final ItemPanel panel = entry.getValue();
+			if (panel != null) {
+				panel.invalidate();
+				panel.revalidate();
+				panel.repaint();
+			}
+		}
+	}
+
+	private void handleSetDrawerSizeChange() {
+		if (!pendingSetDrawerRefresh || !setSlotsVisible) {
+			return;
+		}
+		if ((setSlotsContainer != null) && setSlotsContainer.isShowing() && (setSlotsContainer.getWidth() > 0)) {
+			pendingSetDrawerRefresh = false;
+			refreshSetDrawerAfterReveal();
+		}
+	}
+
+	private void refreshSetDrawerAfterReveal() {
+		refreshSetDrawerLayout();
+		if (player != null) {
+			refreshContents();
+		}
+		refreshSetPanels();
+	}
+	private void swapSets() {
+		if (player == null) {
+			return;
+		}
+
+		RPAction action = new RPAction();
+		action.put(Actions.TYPE, Actions.SET_CHANGE);
+		RPObject rpObject = player.getRPObject();
+		if ((rpObject != null) && rpObject.has("zone")) {
+			action.put(Actions.ZONE, rpObject.get("zone"));
+		}
+
+		StendhalClient.get().send(action);
 	}
 
 	/**
@@ -361,7 +481,6 @@ Inspectable {
 			@Override
 			public void run() {
 				setTitle(player.getName());
-				updateReserveAvailability();
 			}
 		});
 	}
@@ -373,11 +492,11 @@ Inspectable {
 			// Not a slot we are interested in
 			return;
 		}
-		if (isReserveSlot(added.getName())) {
-			updateReserveAvailability();
-		}
 
 		String slotName = added.getName();
+		if (slotName.endsWith("_set")) {
+			updateSetToggleVisibility(player.getRPObject());
+		}
 		if (("belt".equals(slotName) || "back".equals(slotName)) && !player.getRPObject().hasSlot(slotName)) {
 			// One of the new slots was added to the player. Set them visible.
 			SwingUtilities.invokeLater(new Runnable() {
@@ -414,8 +533,10 @@ Inspectable {
 			// Not a slot we are interested in
 			return;
 		}
-		if (isReserveSlot(removed.getName())) {
-			updateReserveAvailability();
+
+		String slotName = removed.getName();
+		if (slotName.endsWith("_set")) {
+			updateSetToggleVisibility(player.getRPObject());
 		}
 		for (RPObject obj : removed) {
 			ID id = obj.getID();
@@ -439,139 +560,6 @@ Inspectable {
 		for (ItemPanel panel : slotPanels.values()) {
 			panel.setInspector(inspector);
 		}
-	}
-
-	private void initializeReserveSlotNames() {
-		if (!RESERVE_SLOT_NAMES.isEmpty()) {
-			return;
-		}
-		for (SlotInfo[] column : RESERVE_LAYOUT) {
-			for (SlotInfo slot : column) {
-				RESERVE_SLOT_NAMES.add(slot.id);
-			}
-		}
-	}
-
-	private boolean isReserveSlot(String name) {
-		return RESERVE_SLOT_NAMES.contains(name);
-	}
-
-	private void updateReserveAvailability() {
-		if (reserveToggle == null || player == null) {
-			return;
-		}
-		boolean hasSetSlots = false;
-		RPObject object = player.getRPObject();
-		for (String slot : RESERVE_SLOT_NAMES) {
-			if (object.hasSlot(slot)) {
-				hasSetSlots = true;
-				break;
-			}
-		}
-		if (hasSetSlots) {
-			reserveSlotsSeen = true;
-		}
-		final boolean available = reserveSlotsSeen;
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				reserveToggle.setVisible(available);
-				if (!available) {
-					requestReserveWindowVisible(false);
-					setReserveToggleSelected(false);
-				} else if (reserveWindowDesiredVisible) {
-					applyReserveWindowVisibility();
-				}
-				updateReserveToggleLabel();
-			}
-		});
-	}
-
-	private void requestReserveWindowVisible(final boolean visible) {
-		reserveWindowDesiredVisible = visible;
-		applyReserveWindowVisibility();
-	}
-
-	private void applyReserveWindowVisibility() {
-		if (reserveWindow == null) {
-			return;
-		}
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				if (reserveWindowDesiredVisible && (reserveToggle == null || reserveToggle.isVisible())) {
-					ensureReserveWindowAdded();
-					reserveWindow.showBeside(Character.this);
-					if (player != null) {
-						refreshContents();
-					}
-				} else if (reserveWindowAdded) {
-					reserveWindow.hideWindow();
-				}
-			}
-		});
-	}
-
-	private void ensureReserveWindowAdded() {
-		if (reserveWindowAdded || reserveWindow == null) {
-			return;
-		}
-		reserveWindow.attach();
-		reserveWindowAdded = true;
-	}
-
-	void onReserveWindowVisibilityChange(boolean visible) {
-		reserveWindowDesiredVisible = visible;
-		setReserveToggleSelected(visible);
-	}
-
-	private void sendSwapSetsAction() {
-		if (player == null) {
-			return;
-		}
-		RPAction action = new RPAction();
-		action.put("type", "swap_sets");
-		StendhalClient.get().send(action);
-	}
-
-	private ReserveSetWindow createReserveWindow(Class<? extends IEntity> itemClass, SpriteStore store) {
-		JComponent drawer = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
-		JComponent row = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, PADDING);
-		for (int columnIndex = 0; columnIndex < RESERVE_LAYOUT.length; columnIndex++) {
-			JComponent column = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
-			if (columnIndex != 1) {
-				column.setAlignmentY(CENTER_ALIGNMENT);
-			}
-			if (columnIndex == 0 || columnIndex == RESERVE_LAYOUT.length - 1) {
-				column.add(Box.createVerticalStrut(HAND_YSHIFT * 2));
-			}
-			for (SlotInfo slot : RESERVE_LAYOUT[columnIndex]) {
-				if (slot.feature) {
-					reservePouch = createFeaturePanel(itemClass, store, slot.id, slot.sprite);
-					column.add(reservePouch);
-				} else {
-					ItemPanel reservePanel = createItemPanel(itemClass, store, slot.id, slot.sprite);
-					column.add(reservePanel);
-				}
-			}
-			row.add(column);
-		}
-		drawer.add(row);
-
-		JButton swap = new JButton("Zamień zestawy");
-		swap.setFocusable(false);
-		swap.setMargin(new Insets(0, 4, 0, 4));
-		swap.setPreferredSize(new Dimension(0, TOGGLE_HEIGHT));
-		swap.setMaximumSize(new Dimension(Integer.MAX_VALUE, TOGGLE_HEIGHT));
-		swap.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent event) {
-				sendSwapSetsAction();
-			}
-		});
-		drawer.add(swap);
-
-		return new ReserveSetWindow(this, drawer);
 	}
 
 	/**

@@ -289,7 +289,9 @@ public abstract class UpdateConverter {
 		final String[] slotsNormal = { "bag", "rhand", "rhand_set", "lhand", "lhand_set", "head", "head_set", "neck", "neck_set", "armor", "armor_set",
 				"legs", "legs_set", "glove", "glove_set", "feet", "feet_set", "finger", "finger_set", "cloak", "cloak_set", "fingerb", "fingerb_set", "pas", "pas_set", "bank", "bank_ados", "bank_deniran",
 				"zaras_chest_ados", "bank_fado", "bank_kirdneh", "bank_magic", "bank_nalwor", "bank_zakopane", "bank_krakow",
-				"bank_gdansk", "spells", "keyring", "magicbag", /*"portfolio", */ "trade", "pouch", "pouch_set", "vault",
+				"bank_gdansk", "spells", "keyring", "magicbag", /*"portfolio", */ "trade", "pouch", "vault",
+				"neck_set", "head_set", "cloak_set", "lhand_set", "armor_set", "rhand_set", "finger_set", "fingerb_set",
+				"glove_set", "pas_set", "legs_set", "feet_set", "pouch_set",
 				"offensive_rune", "defensive_rune", "resistance_rune", "utility_rune", "healing_rune",
 				"control_rune", "special_rune"};
 
@@ -470,8 +472,8 @@ public abstract class UpdateConverter {
 		// port to POL1.17
 		if (!object.has("mining")){
 			object.put("mining", "10");
-    		object.put("mining_xp", "0");
-    	}
+			object.put("mining_xp", "0");
+		}
 
 		// port to 1.39: keyring size
 		String keyring = object.get("features", "keyring");
