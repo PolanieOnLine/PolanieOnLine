@@ -112,9 +112,9 @@ Inspectable {
 	private JComponent specialSlots;
 
 	private JToggleButton reserveToggle;
-	private JComponent reserveDrawer;
-	private JButton swapButton;
-	private JComponent equipmentRow;
+	private ReserveSetWindow reserveWindow;
+	private boolean reserveWindowAdded;
+	private boolean updatingReserveToggle;
 
 	private static final List<FeatureChangeListener> featureChangeListeners = new ArrayList<>();
 
@@ -143,9 +143,9 @@ Inspectable {
 		player = userEntity;
 		userEntity.addContentChangeListener(this);
 
-		setSetSlotsVisible(false);
+		setReserveWindowVisible(false);
 		if (reserveToggle != null) {
-			reserveToggle.setSelected(false);
+			setReserveToggleSelected(false);
 		}
 
 
@@ -173,7 +173,7 @@ Inspectable {
 	private void createLayout() {
 		// Layout containers
 		JComponent content = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
-		equipmentRow = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, PADDING);
+
 
 		JComponent mainRow = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, PADDING);
 		JComponent left = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
@@ -184,7 +184,7 @@ Inspectable {
 		mainRow.add(left);
 		mainRow.add(middle);
 		mainRow.add(right);
-		equipmentRow.add(mainRow);
+
 
 		Class<? extends IEntity> itemClass = EntityMap.getClass("item", null, null);
 		SpriteStore store = SpriteStore.get();
@@ -238,10 +238,8 @@ Inspectable {
 		right.add(pouch);
 		featureChangeListeners.add(pouch);
 
-		reserveDrawer = createReserveDrawer(itemClass, store);
-		reserveDrawer.setVisible(false);
-		equipmentRow.add(reserveDrawer);
-		content.add(equipmentRow);
+		reserveWindow = createReserveWindow(itemClass, store);
+		content.add(mainRow);
 
 		// Bag, keyring, etc
 		specialSlots = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, PADDING);
@@ -258,13 +256,14 @@ Inspectable {
 		reserveToggle.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				setSetSlotsVisible(reserveToggle.isSelected());
+				if (!updatingReserveToggle) {
+					setReserveWindowVisible(reserveToggle.isSelected());
+				}
 				updateReserveToggleLabel();
 			}
 		});
 		reserveToggle.setVisible(false);
 		content.add(reserveToggle);
-
 		setContent(content);
 	}
 
@@ -277,6 +276,21 @@ Inspectable {
 		} else {
 			reserveToggle.setText("Pokaż schowek");
 		}
+	}
+
+	private void setReserveToggleSelected(final boolean selected) {
+		if (reserveToggle == null) {
+			return;
+		}
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				updatingReserveToggle = true;
+				reserveToggle.setSelected(selected);
+				updatingReserveToggle = false;
+				updateReserveToggleLabel();
+			}
+		});
 	}
 
 	/**
@@ -457,34 +471,44 @@ Inspectable {
 			public void run() {
 				reserveToggle.setVisible(available);
 				if (!available) {
-					setSetSlotsVisible(false);
-					reserveToggle.setSelected(false);
+					setReserveWindowVisible(false);
+					setReserveToggleSelected(false);
 				} else if (reserveToggle.isSelected()) {
-					setSetSlotsVisible(true);
+					setReserveWindowVisible(true);
 				}
 				updateReserveToggleLabel();
 			}
 		});
 	}
 
-	private void setSetSlotsVisible(boolean visible) {
-		boolean changed = false;
-		if (reserveDrawer != null) {
-			if (reserveDrawer.isVisible() != visible) {
-				reserveDrawer.setVisible(visible);
-				changed = true;
+	private void setReserveWindowVisible(final boolean visible) {
+		if (reserveWindow == null) {
+			return;
+		}
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				if (visible) {
+					ensureReserveWindowAdded();
+					reserveWindow.showBeside(Character.this);
+					refreshContents();
+				} else if (reserveWindowAdded) {
+					reserveWindow.setVisible(false);
+				}
 			}
+		});
+	}
+
+	private void ensureReserveWindowAdded() {
+		if (reserveWindowAdded || reserveWindow == null) {
+			return;
 		}
-		if (!visible && reserveToggle != null) {
-			reserveToggle.setSelected(false);
-		}
-		if (changed && equipmentRow != null) {
-			equipmentRow.revalidate();
-			equipmentRow.repaint();
-		}
-		if (changed && visible) {
-			refreshContents();
-		}
+		reserveWindow.attach();
+		reserveWindowAdded = true;
+	}
+
+	void onReserveWindowVisibilityChange(boolean visible) {
+		setReserveToggleSelected(visible);
 	}
 
 	private void sendSwapSetsAction() {
@@ -496,7 +520,7 @@ Inspectable {
 		StendhalClient.get().send(action);
 	}
 
-	private JComponent createReserveDrawer(Class<? extends IEntity> itemClass, SpriteStore store) {
+	private ReserveSetWindow createReserveWindow(Class<? extends IEntity> itemClass, SpriteStore store) {
 		JComponent drawer = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
 		JComponent row = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, PADDING);
 		for (int columnIndex = 0; columnIndex < RESERVE_LAYOUT.length; columnIndex++) {
@@ -520,20 +544,20 @@ Inspectable {
 		}
 		drawer.add(row);
 
-		swapButton = new JButton("Zamień zestawy");
-		swapButton.setFocusable(false);
-		swapButton.setMargin(new Insets(0, 4, 0, 4));
-		swapButton.setPreferredSize(new Dimension(0, TOGGLE_HEIGHT));
-		swapButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, TOGGLE_HEIGHT));
-		swapButton.addActionListener(new ActionListener() {
+		JButton swap = new JButton("Zamień zestawy");
+		swap.setFocusable(false);
+		swap.setMargin(new Insets(0, 4, 0, 4));
+		swap.setPreferredSize(new Dimension(0, TOGGLE_HEIGHT));
+		swap.setMaximumSize(new Dimension(Integer.MAX_VALUE, TOGGLE_HEIGHT));
+		swap.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				sendSwapSetsAction();
 			}
 		});
-		drawer.add(swapButton);
+		drawer.add(swap);
 
-		return drawer;
+		return new ReserveSetWindow(this, drawer);
 	}
 
 	/**
