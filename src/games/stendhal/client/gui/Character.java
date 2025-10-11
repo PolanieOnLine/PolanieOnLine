@@ -71,6 +71,7 @@ Inspectable {
 	private JButton setToggleButton;
 	private JButton setSwapButton;
 	private JComponent setSlotsContainer;
+	private JComponent equipmentRow;
 	private boolean setSlotsVisible;
 
 	private static final List<FeatureChangeListener> featureChangeListeners = new ArrayList<>();
@@ -203,7 +204,7 @@ Inspectable {
 		setToggleRow.setVisible(false);
 		content.add(setToggleRow);
 
-		JComponent equipmentRow = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, PADDING);
+		equipmentRow = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, PADDING);
 		equipmentRow.add(row);
 		setSlotsContainer = createSetSlotLayout(itemClass, store);
 		setSlotsContainer.setVisible(false);
@@ -351,6 +352,11 @@ Inspectable {
 				setSlotsContainer.invalidate();
 				setSlotsContainer.revalidate();
 				setSlotsContainer.repaint();
+				if (equipmentRow != null) {
+						equipmentRow.invalidate();
+						equipmentRow.revalidate();
+						equipmentRow.repaint();
+				}
 				revalidate();
 				repaint();
 				if (setToggleButton != null) {
