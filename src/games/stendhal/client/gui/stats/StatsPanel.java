@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2020 - Stendhal                    *
+ *                   (C) Copyright 2003-2025 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -14,10 +14,15 @@ package games.stendhal.client.gui.stats;
 import static games.stendhal.client.gui.settings.SettingsProperties.HP_BAR_PROPERTY;
 
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.net.URL;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
 
 import games.stendhal.client.entity.StatusID;
 import games.stendhal.client.gui.layout.SBoxLayout;
@@ -25,7 +30,9 @@ import games.stendhal.client.gui.layout.SLayout;
 import games.stendhal.client.gui.styled.Style;
 import games.stendhal.client.gui.styled.StyleUtil;
 import games.stendhal.client.gui.wt.core.WtWindowManager;
+import games.stendhal.client.sprite.DataLoader;
 import games.stendhal.common.constants.Testing;
+import games.stendhal.common.grammar.Grammar;
 
 /**
  * Display panel for status icons and player stats. The methods may be safely
@@ -37,11 +44,12 @@ class StatsPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = -353271026575752035L;
 
-	private final StatLabel hpLabel, atkLabel, defLabel, ratkLabel, miningLabel, xpLabel, levelLabel, moneyLabel, capacityLabel;
+	private final StatLabel hpLabel, atkLabel, defLabel, ratkLabel, miningLabel, xpLabel, levelLabel, capacityLabel;
 	private final HPIndicator hpBar;
 	private final StatusIconPanel statusIcons;
 	private final KarmaIndicator karmaIndicator;
 	private final ManaIndicator manaIndicator;
+	private final MoneyPanel moneyPanel;
 
 	StatsPanel() {
 		super();
@@ -94,8 +102,8 @@ class StatsPanel extends JPanel {
 		levelLabel = new StatLabel();
 		add(levelLabel, SLayout.EXPAND_X);
 
-		moneyLabel = new StatLabel();
-		add(moneyLabel, SLayout.EXPAND_X);
+		moneyPanel = new MoneyPanel();
+		add(moneyPanel, SLayout.EXPAND_X);
 
 		capacityLabel = new StatLabel();
 		add(capacityLabel, SLayout.EXPAND_X);
@@ -229,8 +237,8 @@ class StatsPanel extends JPanel {
 	 *
 	 * @param money
 	 */
-	void setMoney(String money) {
-		moneyLabel.setText(money);
+	void setMoney(int dukaty, int talary, int miedziaki, int totalCopper) {
+		moneyPanel.setMoney(dukaty, talary, miedziaki, totalCopper);
 	}
 
 	/**
@@ -267,12 +275,12 @@ class StatsPanel extends JPanel {
 	 * Show or hide status indicator.
 	 *
 	 * @param ID
-	 *         Status ID
+	 *	Status ID
 	 * @param visible
-	 *         Show indicator
+	 *	Show indicator
 	 */
 	void setStatus(final StatusID ID, final boolean visible) {
-	    statusIcons.setStatus(ID, visible);
+		statusIcons.setStatus(ID, visible);
 	}
 
 	/**
@@ -313,6 +321,112 @@ class StatsPanel extends JPanel {
 			Style style = StyleUtil.getStyle();
 			if (style != null) {
 				setForeground(style.getForeground());
+			}
+		}
+	}
+
+	private static class MoneyPanel extends JPanel {
+		private static final long serialVersionUID = 1L;
+
+		private final JLabel titleLabel;
+		private final CoinLabel goldLabel;
+		private final CoinLabel silverLabel;
+		private final CoinLabel copperLabel;
+
+		MoneyPanel() {
+			setOpaque(false);
+			setBorder(null);
+			setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+
+			Style style = StyleUtil.getStyle();
+
+			titleLabel = new JLabel("Pieniądze:");
+			titleLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 6));
+			if (style != null) {
+				titleLabel.setForeground(style.getForeground());
+			}
+			add(titleLabel);
+
+			goldLabel = new CoinLabel("dukat", style, "data/gui/goldencoin.png");
+			goldLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 6));
+			add(goldLabel);
+
+			silverLabel = new CoinLabel("talar", style, "data/gui/silvercoin.png");
+			silverLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 6));
+			add(silverLabel);
+
+			copperLabel = new CoinLabel("miedziak", style, "data/gui/coppercoin.png");
+			add(copperLabel);
+		}
+
+		void setMoney(int dukaty, int talary, int miedziaki, int totalCopper) {
+			goldLabel.setAmount(dukaty);
+			silverLabel.setAmount(talary);
+			copperLabel.setAmount(miedziaki);
+
+			StringBuilder tooltip = new StringBuilder("Łącznie: ");
+			boolean appended = false;
+			appended = appendPart(tooltip, dukaty, "dukat", appended);
+			appended = appendPart(tooltip, talary, "talar", appended);
+			appended = appendPart(tooltip, miedziaki, "miedziak", appended);
+			if (!appended) {
+				tooltip.append("0 ").append(Grammar.polishCoinName("miedziak", 0));
+			}
+			tooltip.append(" (" + totalCopper + " miedziaków)");
+			setToolTipText(tooltip.toString());
+		}
+
+		private boolean appendPart(StringBuilder tooltip, int amount, String coinName, boolean appended) {
+			if (amount <= 0) {
+				return appended;
+			}
+			if (appended) {
+				tooltip.append(", ");
+			}
+			tooltip.append(amount)
+				.append(' ')
+				.append(Grammar.polishCoinName(coinName, amount));
+			return true;
+		}
+
+		private static class CoinLabel extends JLabel {
+			private static final long serialVersionUID = 1L;
+			private final String coinName;
+
+			CoinLabel(String coinName, Style style, String... iconPaths) {
+				super("0");
+				this.coinName = coinName;
+				setOpaque(false);
+				setBorder(null);
+				setCoinIcon(iconPaths);
+				setHorizontalTextPosition(SwingConstants.LEFT);
+				setIconTextGap(4);
+				if (style != null) {
+					setForeground(style.getForeground());
+				}
+			}
+
+			void setAmount(int amount) {
+				setText(Integer.toString(amount));
+				setToolTipText(amount + " " + Grammar.polishCoinName(coinName, amount));
+			}
+
+			private void setCoinIcon(String... iconPaths) {
+				if (iconPaths == null) {
+					return;
+				}
+
+				for (String iconPath : iconPaths) {
+					if (iconPath == null) {
+						continue;
+					}
+
+					URL iconURL = DataLoader.getResource(iconPath);
+					if (iconURL != null) {
+						setIcon(new ImageIcon(iconURL));
+						return;
+					}
+				}
 			}
 		}
 	}
