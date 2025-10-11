@@ -348,53 +348,37 @@ public final class StatsPanelController {
 	 * @param object
 	 */
 	private void addMoney(String slot, RPObject object) {
-		boolean add = false;
-
 		HashMap<String, CoinStack> set = money.get(slot);
-		if (set == null) {
-			if (!object.has("quantity")) {
-				// First add of an empty slot. Wait for the actual object.
-				return;
-			}
+		boolean knownSet = set != null;
+		if (!knownSet) {
 			set = new HashMap<String, CoinStack>();
-			add = true;
 		}
 
 		String id = object.get("id");
 		if (id == null) {
-			// Something is very wrong.
 			return;
 		}
 
 		CoinStack existing = set.get(id);
-		if (existing == null) {
-			if (object.has("name")) {
-				if (!object.get("name").equals("money") && !object.get("name").equals("dukat")
-						&& !object.get("name").equals("talar") && !object.get("name").equals("miedziak")) {
-					return;
+		CoinDescriptor descriptor = identifyCoin(object, existing != null ? existing.descriptor : null);
+		if (descriptor == null) {
+			if (existing != null) {
+				set.remove(id);
+				if (set.isEmpty()) {
+					money.remove(slot);
 				}
-			} else if (!object.has("class")) {
-				return;
+				updateMoney();
 			}
-			if (set.isEmpty()) {
-				add = true;
-			}
-			if (add) {
-				money.put(slot, set);
-			}
-		} else if (object.has("quantity")) {
-			add = true;
-		}
-
-		if (!add) {
 			return;
 		}
 
 		int quantity = object.has("quantity") ? object.getInt("quantity") : (existing != null ? existing.quantity : 0);
-		CoinDescriptor descriptor = identifyCoin(object, existing != null ? existing.descriptor : null);
 
 		if (existing == null) {
 			set.put(id, new CoinStack(descriptor, quantity));
+			if (!knownSet) {
+				money.put(slot, set);
+			}
 		} else {
 			existing.descriptor = descriptor;
 			existing.quantity = quantity;
@@ -421,6 +405,9 @@ public final class StatsPanelController {
 		HashMap<String, CoinStack> set = money.get(slot);
 		String id = obj.get("id");
 		if (set != null && id != null && set.remove(id) != null) {
+			if (set.isEmpty()) {
+				money.remove(slot);
+			}
 			updateMoney();
 		}
 	}
@@ -438,22 +425,22 @@ public final class StatsPanelController {
 			for (CoinStack coin : stack.values()) {
 				int quantity = coin.quantity;
 				if (quantity <= 0) {
-				continue;
+					continue;
 				}
 
 				CoinDescriptor descriptor = coin.descriptor;
 
 				switch (descriptor.bucket) {
 				case DUKAT:
-				dukaty += quantity;
-				break;
+					dukaty += quantity;
+					break;
 				case TALAR:
-				talary += quantity;
-				break;
+					talary += quantity;
+					break;
 				case COPPER:
 				default:
-				miedziaki += quantity;
-				break;
+					miedziaki += quantity;
+					break;
 				}
 
 				totalCopper += quantity * descriptor.copperValue;
@@ -466,65 +453,57 @@ public final class StatsPanelController {
 		final int finalTotalCopper = totalCopper;
 
 		SwingUtilities.invokeLater(new Runnable() {
-		@Override
-		public void run() {
-		panel.setMoney(finalDukaty, finalTalary, finalMiedziaki, finalTotalCopper);
-		}
+			@Override
+			public void run() {
+				panel.setMoney(finalDukaty, finalTalary, finalMiedziaki, finalTotalCopper);
+			}
 		});
 	}
 
 	private CoinDescriptor identifyCoin(RPObject obj, CoinDescriptor fallback) {
-		boolean hasIdentification = false;
-
 		String name = resolveCoinName(obj);
 		if (name != null) {
-		hasIdentification = true;
-		name = name.toLowerCase(Locale.ROOT);
+			name = name.toLowerCase(Locale.ROOT);
 
-		if ("dukat".equals(name)) {
-		return CoinDescriptor.dukat();
-		}
-		if ("talar".equals(name)) {
-		return CoinDescriptor.talar();
-		}
-		if ("miedziak".equals(name) || "money".equals(name)) {
-		return CoinDescriptor.copper();
-		}
-		if ("gold".equals(name)) {
-		// spróbuj rozróżnić dukata od starego "money" po wartości
-		if (obj.has("value") && obj.getInt("value") == COPPER_PER_DUKAT) {
-		return CoinDescriptor.dukat();
-		}
-		return CoinDescriptor.copper();
-		}
-		if ("silver".equals(name)) {
-		return CoinDescriptor.talar();
-		}
-		if ("copper".equals(name)) {
-		return CoinDescriptor.copper();
-		}
+			if ("dukat".equals(name)) {
+				return CoinDescriptor.dukat();
+			}
+			if ("talar".equals(name)) {
+				return CoinDescriptor.talar();
+			}
+			if ("miedziak".equals(name) || "money".equals(name)) {
+				return CoinDescriptor.copper();
+			}
+			if ("gold".equals(name)) {
+				// spróbuj rozróżnić dukata od starego "money" po wartości
+				if (obj.has("value") && obj.getInt("value") == COPPER_PER_DUKAT) {
+					return CoinDescriptor.dukat();
+				}
+				return CoinDescriptor.copper();
+			}
+			if ("silver".equals(name)) {
+				return CoinDescriptor.talar();
+			}
+			if ("copper".equals(name)) {
+				return CoinDescriptor.copper();
+			}
+			return null;
 		}
 
 		if (obj.has("value")) {
-		hasIdentification = true;
-		int value = obj.getInt("value");
-		if (value == COPPER_PER_DUKAT) {
-		return CoinDescriptor.dukat();
-		}
-		if (value == COPPER_PER_TALAR) {
-		return CoinDescriptor.talar();
-		}
-		if (value > 0) {
-		return CoinDescriptor.customCopper(value);
-		}
+			int value = obj.getInt("value");
+			if (value == COPPER_PER_DUKAT) {
+				return CoinDescriptor.dukat();
+			}
+			if (value == COPPER_PER_TALAR) {
+				return CoinDescriptor.talar();
+			}
+			if (value > 0) {
+				return CoinDescriptor.customCopper(value);
+			}
 		}
 
-		if (!hasIdentification && fallback != null) {
 		return fallback;
-		}
-
-		// Zachowaj kompatybilność traktując nierozpoznane monety jak miedziaki.
-		return CoinDescriptor.copper();
 	}
 
         private String resolveCoinName(RPObject obj) {

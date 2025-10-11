@@ -412,19 +412,11 @@ class StatsPanel extends JPanel {
 				}
 
 				private void setCoinIcon(String iconPath) {
-					URL iconURL = loadIcon(iconPath, "data/sprites/items/money/" + coinName + ".png");
+					URL iconURL = (iconPath != null) ? DataLoader.getResource(iconPath) : null;
 					if (iconURL != null) {
 						setIcon(new ImageIcon(iconURL));
 					}
 				}
-			}
-
-			private static URL loadIcon(String primaryPath, String fallbackPath) {
-				URL iconURL = (primaryPath != null) ? DataLoader.getResource(primaryPath) : null;
-				if (iconURL == null && fallbackPath != null) {
-					iconURL = DataLoader.getResource(fallbackPath);
-				}
-				return iconURL;
 			}
 		}
 
