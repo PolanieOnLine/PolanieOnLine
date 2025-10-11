@@ -27,6 +27,7 @@ class ReserveSetWindow extends InternalManagedWindow {
 
 	private final Character owner;
 	private boolean added;
+	private boolean suppressVisibilityEvents;
 
 	ReserveSetWindow(Character owner, JComponent content) {
 		super("reserve_set", "Schowek");
@@ -36,16 +37,19 @@ class ReserveSetWindow extends InternalManagedWindow {
 		setMinimizable(false);
 		setMovable(false);
 		setHideOnClose(true);
-		setVisible(false);
 		addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentShown(ComponentEvent event) {
-				owner.onReserveWindowVisibilityChange(true);
+				if (!suppressVisibilityEvents) {
+					owner.onReserveWindowVisibilityChange(true);
+				}
 			}
 
 			@Override
 			public void componentHidden(ComponentEvent event) {
-				owner.onReserveWindowVisibilityChange(false);
+				if (!suppressVisibilityEvents) {
+					owner.onReserveWindowVisibilityChange(false);
+				}
 			}
 		});
 	}
@@ -55,31 +59,37 @@ class ReserveSetWindow extends InternalManagedWindow {
 			return;
 		}
 		added = true;
+		suppressVisibilityEvents = true;
+		setVisible(true);
+		setMinimized(false);
 		j2DClient.get().addWindow(this);
+		setVisible(false);
+		suppressVisibilityEvents = false;
 	}
 
 	void showBeside(final Component anchor) {
 		if (!added) {
 			return;
 		}
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				if (!added) {
-					return;
+		if (!SwingUtilities.isEventDispatchThread()) {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					showBeside(anchor);
 				}
-				setVisible(true);
-				setMinimized(false);
-				Component parent = getParent();
-				Point location = anchor.getLocation();
-				if ((parent != null) && (anchor.getParent() != parent)) {
-					location = SwingUtilities.convertPoint(anchor.getParent(), location, parent);
-				}
-				location.translate(anchor.getWidth() + 4, 0);
-				moveTo(location.x, location.y);
-				raise();
-			}
-		});
+			});
+			return;
+		}
+		setVisible(true);
+		setMinimized(false);
+		Component parent = getParent();
+		Point location = anchor.getLocation();
+		if ((parent != null) && (anchor.getParent() != parent)) {
+			location = SwingUtilities.convertPoint(anchor.getParent(), location, parent);
+		}
+		location.translate(anchor.getWidth() + 4, 0);
+		moveTo(location.x, location.y);
+		raise();
 	}
 
 }
