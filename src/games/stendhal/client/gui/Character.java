@@ -186,10 +186,11 @@ Inspectable {
 
 		setToggleRow = SBoxLayout.createContainer(SBoxLayout.VERTICAL, 0);
 		setToggleButton = new JButton("Pokaż zestaw II");
-		setToggleButton.setMargin(new Insets(2, 0, 2, 0));
+		setToggleButton.setMargin(new Insets(1, 0, 1, 0));
+		int toggleHeight = 16;
 		Dimension toggleSize = setToggleButton.getPreferredSize();
-		toggleSize.height = Math.min(toggleSize.height, 22);
-		setToggleButton.setPreferredSize(new Dimension(0, toggleSize.height));
+		toggleSize.height = Math.min(toggleSize.height, toggleHeight);
+		setToggleButton.setPreferredSize(new Dimension(toggleSize.width, toggleSize.height));
 		setToggleButton.setMinimumSize(new Dimension(0, toggleSize.height));
 		setToggleButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, toggleSize.height));
 		setToggleButton.addActionListener(new ActionListener() {
@@ -244,10 +245,11 @@ Inspectable {
 		JComponent column = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
 		column.setAlignmentY(TOP_ALIGNMENT);
 		setSwapButton = new JButton("Zamień zestawy");
-		setSwapButton.setMargin(new Insets(2, 0, 2, 0));
+		setSwapButton.setMargin(new Insets(1, 0, 1, 0));
+		int swapHeight = 16;
 		Dimension swapSize = setSwapButton.getPreferredSize();
-		swapSize.height = Math.min(swapSize.height, 22);
-		setSwapButton.setPreferredSize(new Dimension(0, swapSize.height));
+		swapSize.height = Math.min(swapSize.height, swapHeight);
+		setSwapButton.setPreferredSize(new Dimension(swapSize.width, swapSize.height));
 		setSwapButton.setMinimumSize(new Dimension(0, swapSize.height));
 		setSwapButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, swapSize.height));
 		setSwapButton.addActionListener(new ActionListener() {
