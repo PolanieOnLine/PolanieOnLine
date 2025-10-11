@@ -36,7 +36,6 @@ class ReserveSetWindow extends InternalManagedWindow {
 		setCloseable(false);
 		setMinimizable(false);
 		setMovable(false);
-		setHideOnClose(true);
 		addComponentListener(new ComponentAdapter() {
 			@Override
 			public void componentShown(ComponentEvent event) {
@@ -58,7 +57,7 @@ class ReserveSetWindow extends InternalManagedWindow {
 		if (added) {
 			return;
 		}
-		added = true;
+
 		if (!SwingUtilities.isEventDispatchThread()) {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
@@ -68,12 +67,11 @@ class ReserveSetWindow extends InternalManagedWindow {
 			});
 			return;
 		}
+
+		added = true;
 		suppressVisibilityEvents = true;
-		setVisible(false);
 		j2DClient.get().addWindow(this);
-		if (getParent() != null) {
-			setMinimized(false);
-		}
+		setVisible(false);
 		suppressVisibilityEvents = false;
 	}
 
@@ -81,6 +79,7 @@ class ReserveSetWindow extends InternalManagedWindow {
 		if (!added) {
 			return;
 		}
+
 		if (!SwingUtilities.isEventDispatchThread()) {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
@@ -90,16 +89,50 @@ class ReserveSetWindow extends InternalManagedWindow {
 			});
 			return;
 		}
-		setVisible(true);
-		setMinimized(false);
+
 		Component parent = getParent();
+		if (parent == null) {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					showBeside(anchor);
+				}
+			});
+			return;
+		}
+
 		Point location = anchor.getLocation();
-		if ((parent != null) && (anchor.getParent() != parent)) {
+		if (anchor.getParent() != parent) {
 			location = SwingUtilities.convertPoint(anchor.getParent(), location, parent);
 		}
+
 		location.translate(anchor.getWidth() + 4, 0);
 		moveTo(location.x, location.y);
+		suppressVisibilityEvents = true;
+		setVisible(true);
+		suppressVisibilityEvents = false;
 		raise();
+		owner.onReserveWindowVisibilityChange(true);
 	}
 
+	void hideWindow() {
+		if (!added) {
+			return;
+		}
+
+		if (!SwingUtilities.isEventDispatchThread()) {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					hideWindow();
+				}
+			});
+			return;
+		}
+
+		suppressVisibilityEvents = true;
+		setVisible(false);
+		suppressVisibilityEvents = false;
+		owner.onReserveWindowVisibilityChange(false);
+	}
 }
