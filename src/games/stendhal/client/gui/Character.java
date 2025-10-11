@@ -339,23 +339,42 @@ Inspectable {
 		});
 	}
 
-	private void setSetSlotsVisible(boolean visible) {
+	private void setSetSlotsVisible(final boolean visible) {
 		setSlotsVisible = visible;
-		setSlotsContainer.setVisible(visible);
-		if (setSwapButton != null) {
-			setSwapButton.setVisible(visible);
-		}
-		setSlotsContainer.revalidate();
-		setSlotsContainer.repaint();
-		revalidate();
-		repaint();
-		if (setToggleButton != null) {
-			setToggleButton.setText(visible ? "Ukryj zestaw II" : "Pokaż zestaw II");
-		}
-		if (visible && (player != null)) {
-			refreshContents();
-		}
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				setSlotsContainer.setVisible(visible);
+				if (setSwapButton != null) {
+					setSwapButton.setVisible(visible);
+				}
+				setSlotsContainer.invalidate();
+				setSlotsContainer.revalidate();
+				setSlotsContainer.repaint();
+				revalidate();
+				repaint();
+				if (setToggleButton != null) {
+					setToggleButton.setText(visible ? "Ukryj zestaw II" : "Pokaż zestaw II");
+				}
+				if (visible && (player != null)) {
+					refreshContents();
+					for (final Entry<String, ItemPanel> entry : slotPanels.entrySet()) {
+						final String slotName = entry.getKey();
+						if (!slotName.endsWith("_set")) {
+							continue;
+						}
+						final ItemPanel panel = entry.getValue();
+						if (panel != null) {
+							panel.invalidate();
+							panel.revalidate();
+							panel.repaint();
+						}
+					}
+				}
+			}
+		});
 	}
+
 
 	private void swapSets() {
 		if (player == null) {
