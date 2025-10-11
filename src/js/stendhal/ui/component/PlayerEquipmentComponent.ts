@@ -23,31 +23,17 @@ export class PlayerEquipmentComponent extends Component {
 	private slotSizes = [  1,      1,       1,      1,       1,        1,       1,       1,      1,      1,       1,        1,       1];
 	private slotImages = ["slot-neck.png", "slot-helmet.png", "slot-cloak.png", "slot-shield.png", "slot-armor.png", "slot-weapon.png",
 		"slot-belt.png", "slot-ring.png", "slot-legs.png", "slot-gloves.png", "slot-ringb.png", "slot-boots.png", "slot-pouch.png"];
-	private readonly secondarySlotNames = this.slotNames.map((name) => name + "_set");
 	private inventory: ItemContainerImplementation[] = [];
 
 	private pouchVisible = false;
-	private swapButton?: HTMLButtonElement;
 
 	constructor() {
 		super("equipment");
 		this.inventory = [];
-		for (let i = 0; i < this.slotNames.length; i++) {
+		for (var i in this.slotNames) {
 			this.inventory.push(
 				new ItemContainerImplementation(
 					document, this.slotNames[i], this.slotSizes[i], null, "", false, this.slotImages[i]));
-		}
-
-		for (let i = 0; i < this.secondarySlotNames.length; i++) {
-			this.inventory.push(
-				new ItemContainerImplementation(
-					document, this.secondarySlotNames[i], this.slotSizes[i], null, "", false, this.slotImages[i]));
-		}
-
-		const swapElement = document.getElementById("equipment-swap");
-		if (swapElement instanceof HTMLButtonElement) {
-			this.swapButton = swapElement;
-			this.swapButton.addEventListener("click", () => this.swapSets());
 		}
 
 		// hide pouch by default
@@ -93,9 +79,7 @@ export class PlayerEquipmentComponent extends Component {
 	}
 
 	private showPouch(show: boolean) {
-		const primaryChanged = this.showSlot("pouch0", show);
-		const secondaryChanged = this.showSlot("pouch_set0", show);
-		if (primaryChanged || secondaryChanged) {
+		if (this.showSlot("pouch0", show)) {
 			// resize the inventory window
 			var equip = document.getElementById("equipment")!;
 			if (show) {
@@ -105,14 +89,6 @@ export class PlayerEquipmentComponent extends Component {
 			}
 			this.pouchVisible = show;
 		}
-	}
-
-	private swapSets() {
-		const action: any = { type: "setchange" };
-		if (marauroa && marauroa.currentZoneName) {
-			action.zone = marauroa.currentZoneName;
-		}
-		marauroa.clientFramework.sendAction(action);
 	}
 
 }

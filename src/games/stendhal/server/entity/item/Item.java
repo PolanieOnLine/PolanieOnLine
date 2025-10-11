@@ -1056,19 +1056,9 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 			return true;
 		}
 
-		if (possibleSlots.contains(slot)) {
-			return true;
-		}
-
-		if (slot.endsWith("_set")) {
-			final String primarySlot = slot.substring(0, slot.length() - 4);
-			if (possibleSlots.contains(primarySlot)) {
-				return true;
-			}
-		}
-
-		return false;
+		return possibleSlots.contains(slot);
 	}
+
 
 	public void removeFromWorld() {
 

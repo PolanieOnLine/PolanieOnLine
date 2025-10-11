@@ -46,9 +46,6 @@ public final class Actions {
 	//list producers
 	public static final String LISTPRODUCERS = "listproducers";
 
-	// equipment set swapping
-	public static final String SET_CHANGE = "setchange";
-
 	//support
 	public static final String SUPPORTANSWER = "supportanswer";
 
