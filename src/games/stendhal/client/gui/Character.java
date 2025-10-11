@@ -266,8 +266,17 @@ Inspectable {
 		content.add(reserveToggle);
 
 		setContent(content);
-}
+	}
 
+	private void updateReserveToggleLabel() {
+		if (reserveToggle == null) {
+			return;
+		}
+		if (reserveToggle.isSelected()) {
+			reserveToggle.setText("Ukryj schowek");
+		} else {
+			reserveToggle.setText("Pokaż schowek");
+		}
 	}
 
 	/**
