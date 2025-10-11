@@ -13,6 +13,8 @@ package games.stendhal.server.entity;
 
 import static games.stendhal.common.constants.General.PATHSET;
 
+import java.util.Arrays;
+
 import marauroa.common.game.Definition;
 import marauroa.common.game.Definition.Type;
 import marauroa.common.game.RPClass;
@@ -78,6 +80,11 @@ public class RPEntityRPClass {
 		entity.addRPSlot("back", 1, Definition.PRIVATE);
 		entity.addRPSlot("pas", 1, Definition.PRIVATE);
 		entity.addRPSlot("belt", 1, (byte) (Definition.PRIVATE | Definition.VOLATILE));
+
+		for (String slot : Arrays.asList("neck", "head", "cloak", "lhand", "armor", "rhand",
+				"finger", "fingerb", "glove", "pas", "legs", "feet")) {
+			entity.addRPSlot(slot + "_set", 1, Definition.PRIVATE);
+		}
 
 		entity.addRPSlot("money", 1, Definition.VOLATILE);
 
