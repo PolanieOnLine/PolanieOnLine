@@ -18,7 +18,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import javax.swing.Box;
+import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 
@@ -58,6 +62,10 @@ Inspectable {
 	private User player;
 
 	private JComponent specialSlots;
+	private JComponent setToggleRow;
+	private JButton setToggleButton;
+	private JComponent setSlotsContainer;
+	private boolean setSlotsVisible;
 
 	private static final List<FeatureChangeListener> featureChangeListeners = new ArrayList<>();
 
@@ -84,6 +92,17 @@ Inspectable {
 		userEntity.addContentChangeListener(this);
 
 		final RPObject obj = userEntity.getRPObject();
+
+		final boolean hasSetSlots = obj.hasSlot("neck_set");
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				setToggleRow.setVisible(hasSetSlots);
+				if (!hasSetSlots) {
+					setSetSlotsVisible(false);
+				}
+			}
+		});
 
 		// Compatibility. Show additional slots only if the user has those.
 		// This can be removed after a couple of releases (and specialSlots
@@ -169,6 +188,24 @@ Inspectable {
 		right.add(pouch);
 		featureChangeListeners.add(pouch);
 
+		setToggleRow = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, PADDING);
+		setToggleButton = new JButton("Pokaż zestaw II");
+		setToggleButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				toggleSetSlots();
+			}
+		});
+		setToggleRow.add(Box.createHorizontalGlue());
+		setToggleRow.add(setToggleButton);
+		setToggleRow.add(Box.createHorizontalGlue());
+		setToggleRow.setVisible(false);
+		content.add(setToggleRow);
+
+		setSlotsContainer = createSetSlotLayout(itemClass, store);
+		setSlotsContainer.setVisible(false);
+		content.add(setSlotsContainer);
+
 		// Bag, keyring, etc
 		specialSlots = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, PADDING);
 		specialSlots.setAlignmentX(CENTER_ALIGNMENT);
@@ -198,6 +235,67 @@ Inspectable {
 		panel.setAcceptedTypes(itemClass);
 
 		return panel;
+	}
+
+	private JComponent createSetSlotLayout(Class<? extends IEntity> itemClass, SpriteStore store) {
+		JComponent row = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, PADDING);
+		JComponent left = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
+		JComponent middle = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
+		JComponent right = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
+		left.setAlignmentY(CENTER_ALIGNMENT);
+		right.setAlignmentY(CENTER_ALIGNMENT);
+		row.add(left);
+		row.add(middle);
+		row.add(right);
+
+		left.add(Box.createVerticalStrut(HAND_YSHIFT * 2));
+		ItemPanel panel = createItemPanel(itemClass, store, "neck_set", "data/gui/slot-neck.png");
+		left.add(panel);
+		panel = createItemPanel(itemClass, store, "rhand_set", "data/gui/slot-weapon.png");
+		left.add(panel);
+		panel = createItemPanel(itemClass, store, "finger_set", "data/gui/slot-ring.png");
+		left.add(panel);
+		panel = createItemPanel(itemClass, store, "fingerb_set", "data/gui/slot-ringb.png");
+		left.add(panel);
+
+		panel = createItemPanel(itemClass, store, "head_set", "data/gui/slot-helmet.png");
+		middle.add(panel);
+		panel = createItemPanel(itemClass, store, "armor_set", "data/gui/slot-armor.png");
+		middle.add(panel);
+		panel = createItemPanel(itemClass, store, "pas_set", "data/gui/slot-belt.png");
+		middle.add(panel);
+		panel = createItemPanel(itemClass, store, "legs_set", "data/gui/slot-legs.png");
+		middle.add(panel);
+		panel = createItemPanel(itemClass, store, "feet_set", "data/gui/slot-boots.png");
+		middle.add(panel);
+
+		right.add(Box.createVerticalStrut(HAND_YSHIFT * 2));
+		panel = createItemPanel(itemClass, store, "cloak_set", "data/gui/slot-cloak.png");
+		right.add(panel);
+		panel = createItemPanel(itemClass, store, "lhand_set", "data/gui/slot-shield.png");
+		right.add(panel);
+		panel = createItemPanel(itemClass, store, "glove_set", "data/gui/slot-gloves.png");
+		right.add(panel);
+
+		FeatureEnabledItemPanel setPouch = new FeatureEnabledItemPanel("pouch_set", store.getSprite("data/gui/slot-pouch.png"));
+		slotPanels.put("pouch_set", setPouch);
+		setPouch.setAcceptedTypes(itemClass);
+		right.add(setPouch);
+		featureChangeListeners.add(setPouch);
+
+		return row;
+	}
+
+	private void toggleSetSlots() {
+		setSetSlotsVisible(!setSlotsVisible);
+	}
+
+	private void setSetSlotsVisible(boolean visible) {
+		setSlotsVisible = visible;
+		setSlotsContainer.setVisible(visible);
+		if (setToggleButton != null) {
+			setToggleButton.setText(visible ? "Ukryj zestaw II" : "Pokaż zestaw II");
+		}
 	}
 
 	/**
@@ -251,6 +349,14 @@ Inspectable {
 		}
 
 		String slotName = added.getName();
+		if (slotName.endsWith("_set")) {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					setToggleRow.setVisible(true);
+				}
+			});
+		}
 		if (("belt".equals(slotName) || "back".equals(slotName)) && !player.getRPObject().hasSlot(slotName)) {
 			// One of the new slots was added to the player. Set them visible.
 			SwingUtilities.invokeLater(new Runnable() {
