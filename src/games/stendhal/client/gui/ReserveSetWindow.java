@@ -59,11 +59,21 @@ class ReserveSetWindow extends InternalManagedWindow {
 			return;
 		}
 		added = true;
+		if (!SwingUtilities.isEventDispatchThread()) {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					attach();
+				}
+			});
+			return;
+		}
 		suppressVisibilityEvents = true;
-		setVisible(true);
-		setMinimized(false);
-		j2DClient.get().addWindow(this);
 		setVisible(false);
+		j2DClient.get().addWindow(this);
+		if (getParent() != null) {
+			setMinimized(false);
+		}
 		suppressVisibilityEvents = false;
 	}
 
