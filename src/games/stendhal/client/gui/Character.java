@@ -115,6 +115,8 @@ Inspectable {
 	private ReserveSetWindow reserveWindow;
 	private boolean reserveWindowAdded;
 	private boolean updatingReserveToggle;
+	private boolean reserveWindowDesiredVisible;
+	private boolean reserveSlotsSeen;
 
 	private static final List<FeatureChangeListener> featureChangeListeners = new ArrayList<>();
 
@@ -142,8 +144,9 @@ Inspectable {
 	public void setPlayer(final User userEntity) {
 		player = userEntity;
 		userEntity.addContentChangeListener(this);
+		reserveSlotsSeen = false;
 
-		setReserveWindowVisible(false);
+		requestReserveWindowVisible(false);
 		if (reserveToggle != null) {
 			setReserveToggleSelected(false);
 		}
@@ -257,7 +260,7 @@ Inspectable {
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				if (!updatingReserveToggle) {
-					setReserveWindowVisible(reserveToggle.isSelected());
+					requestReserveWindowVisible(reserveToggle.isSelected());
 				}
 				updateReserveToggleLabel();
 			}
@@ -465,33 +468,43 @@ Inspectable {
 				break;
 			}
 		}
-		final boolean available = hasSetSlots;
+		if (hasSetSlots) {
+			reserveSlotsSeen = true;
+		}
+		final boolean available = reserveSlotsSeen;
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
 				reserveToggle.setVisible(available);
 				if (!available) {
-					setReserveWindowVisible(false);
+					requestReserveWindowVisible(false);
 					setReserveToggleSelected(false);
-				} else if (reserveToggle.isSelected()) {
-					setReserveWindowVisible(true);
+				} else if (reserveWindowDesiredVisible) {
+					applyReserveWindowVisibility();
 				}
 				updateReserveToggleLabel();
 			}
 		});
 	}
 
-	private void setReserveWindowVisible(final boolean visible) {
+	private void requestReserveWindowVisible(final boolean visible) {
+		reserveWindowDesiredVisible = visible;
+		applyReserveWindowVisibility();
+	}
+
+	private void applyReserveWindowVisibility() {
 		if (reserveWindow == null) {
 			return;
 		}
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				if (visible) {
+				if (reserveWindowDesiredVisible && (reserveToggle == null || reserveToggle.isVisible())) {
 					ensureReserveWindowAdded();
 					reserveWindow.showBeside(Character.this);
-					refreshContents();
+					if (player != null) {
+						refreshContents();
+					}
 				} else if (reserveWindowAdded) {
 					reserveWindow.hideWindow();
 				}
@@ -508,6 +521,7 @@ Inspectable {
 	}
 
 	void onReserveWindowVisibilityChange(boolean visible) {
+		reserveWindowDesiredVisible = visible;
 		setReserveToggleSelected(visible);
 	}
 
