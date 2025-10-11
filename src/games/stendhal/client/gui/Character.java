@@ -27,6 +27,7 @@ import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 
 import org.apache.log4j.Logger;
 
@@ -73,6 +74,7 @@ Inspectable {
 	private JComponent setSlotsContainer;
 	private JComponent equipmentRow;
 	private boolean setSlotsVisible;
+	private Timer setDrawerRefreshTimer;
 
 	private static final List<FeatureChangeListener> featureChangeListeners = new ArrayList<>();
 
@@ -349,39 +351,79 @@ Inspectable {
 				if (setSwapButton != null) {
 					setSwapButton.setVisible(visible);
 				}
-				setSlotsContainer.invalidate();
-				setSlotsContainer.revalidate();
-				setSlotsContainer.repaint();
-				if (equipmentRow != null) {
-						equipmentRow.invalidate();
-						equipmentRow.revalidate();
-						equipmentRow.repaint();
-				}
-				revalidate();
-				repaint();
+				refreshSetDrawerLayout();
 				if (setToggleButton != null) {
 					setToggleButton.setText(visible ? "Ukryj zestaw II" : "Pokaż zestaw II");
 				}
 				if (visible && (player != null)) {
 					refreshContents();
-					for (final Entry<String, ItemPanel> entry : slotPanels.entrySet()) {
-						final String slotName = entry.getKey();
-						if (!slotName.endsWith("_set")) {
-							continue;
-						}
-						final ItemPanel panel = entry.getValue();
-						if (panel != null) {
-							panel.invalidate();
-							panel.revalidate();
-							panel.repaint();
-						}
-					}
+					refreshSetPanels();
+					scheduleSetDrawerRefresh();
+				} else {
+					cancelSetDrawerRefresh();
 				}
 			}
 		});
 	}
 
+	private void refreshSetDrawerLayout() {
+		if (setSlotsContainer != null) {
+			setSlotsContainer.invalidate();
+			setSlotsContainer.revalidate();
+			setSlotsContainer.repaint();
+		}
+		if (equipmentRow != null) {
+			equipmentRow.invalidate();
+			equipmentRow.revalidate();
+			equipmentRow.doLayout();
+			equipmentRow.repaint();
+		}
+		revalidate();
+		repaint();
+	}
 
+	private void refreshSetPanels() {
+		for (final Entry<String, ItemPanel> entry : slotPanels.entrySet()) {
+			final String slotName = entry.getKey();
+			if (!slotName.endsWith("_set")) {
+				continue;
+			}
+			final ItemPanel panel = entry.getValue();
+			if (panel != null) {
+				panel.invalidate();
+				panel.revalidate();
+				panel.repaint();
+			}
+		}
+	}
+
+	private void scheduleSetDrawerRefresh() {
+		if (setDrawerRefreshTimer == null) {
+			setDrawerRefreshTimer = new Timer(200, new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent event) {
+					refreshSetDrawerAfterAnimation();
+				}
+			});
+			setDrawerRefreshTimer.setRepeats(false);
+		}
+		setDrawerRefreshTimer.stop();
+		setDrawerRefreshTimer.start();
+	}
+
+	private void cancelSetDrawerRefresh() {
+		if (setDrawerRefreshTimer != null) {
+			setDrawerRefreshTimer.stop();
+		}
+	}
+
+	private void refreshSetDrawerAfterAnimation() {
+		refreshSetDrawerLayout();
+		if (player != null) {
+			refreshContents();
+		}
+		refreshSetPanels();
+	}
 	private void swapSets() {
 		if (player == null) {
 			return;
