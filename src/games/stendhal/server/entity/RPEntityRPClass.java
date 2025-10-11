@@ -64,32 +64,43 @@ public class RPEntityRPClass {
 		entity.addAttribute("immortal", Type.FLAG, Definition.VOLATILE);
 
 				/* Equipment */
-		entity.addRPSlot("head", 1, Definition.PRIVATE);
-		entity.addRPSlot("neck", 1, Definition.PRIVATE);
-		entity.addRPSlot("rhand", 1, Definition.PRIVATE);
-		entity.addRPSlot("lhand", 1, Definition.PRIVATE);
-		entity.addRPSlot("armor", 1, Definition.PRIVATE);
-		entity.addRPSlot("finger", 1, Definition.PRIVATE);
-		entity.addRPSlot("fingerb", 1, Definition.PRIVATE);
-		entity.addRPSlot("cloak", 1, Definition.PRIVATE);
-		entity.addRPSlot("glove", 1, Definition.PRIVATE);
-		entity.addRPSlot("legs", 1, Definition.PRIVATE);
-		entity.addRPSlot("feet", 1, Definition.PRIVATE);
-		entity.addRPSlot("back", 1, Definition.PRIVATE);
-		entity.addRPSlot("pas", 1, Definition.PRIVATE);
-		entity.addRPSlot("neck_set", 1, Definition.PRIVATE);
-		entity.addRPSlot("rhand_set", 1, Definition.PRIVATE);
-		entity.addRPSlot("finger_set", 1, Definition.PRIVATE);
-		entity.addRPSlot("fingerb_set", 1, Definition.PRIVATE);
-		entity.addRPSlot("head_set", 1, Definition.PRIVATE);
-		entity.addRPSlot("armor_set", 1, Definition.PRIVATE);
-		entity.addRPSlot("pas_set", 1, Definition.PRIVATE);
-		entity.addRPSlot("legs_set", 1, Definition.PRIVATE);
-		entity.addRPSlot("feet_set", 1, Definition.PRIVATE);
-		entity.addRPSlot("cloak_set", 1, Definition.PRIVATE);
-		entity.addRPSlot("lhand_set", 1, Definition.PRIVATE);
-		entity.addRPSlot("glove_set", 1, Definition.PRIVATE);
-		entity.addRPSlot("pouch_set", 1, Definition.PRIVATE);
+		final String[] equipmentSlots = {
+			"head",
+			"neck",
+			"rhand",
+			"lhand",
+			"armor",
+			"finger",
+			"fingerb",
+			"cloak",
+			"glove",
+			"legs",
+			"feet",
+			"back",
+			"pas"
+		};
+		for (String slot : equipmentSlots) {
+			entity.addRPSlot(slot, 1, Definition.PRIVATE);
+		}
+
+		final String[] reserveSlots = {
+			"neck_set",
+			"rhand_set",
+			"finger_set",
+			"fingerb_set",
+			"head_set",
+			"armor_set",
+			"pas_set",
+			"legs_set",
+			"feet_set",
+			"cloak_set",
+			"lhand_set",
+			"glove_set",
+			"pouch_set"
+		};
+		for (String slot : reserveSlots) {
+			entity.addRPSlot(slot, 1, Definition.PRIVATE);
+		}
 		entity.addRPSlot("belt", 1, (byte) (Definition.PRIVATE | Definition.VOLATILE));
 
 		entity.addRPSlot("money", 1, Definition.VOLATILE);
