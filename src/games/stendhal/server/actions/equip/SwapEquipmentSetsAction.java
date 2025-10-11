@@ -18,6 +18,7 @@ import java.util.List;
 import games.stendhal.common.Constants;
 import games.stendhal.server.actions.ActionListener;
 import games.stendhal.server.actions.CommandCenter;
+import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.entity.slot.EntitySlot;
 import marauroa.common.game.RPAction;
@@ -63,23 +64,27 @@ public class SwapEquipmentSetsAction implements ActionListener {
 				continue;
 			}
 
-			RPObject mainItem = firstItem(primary);
-			RPObject reserveItem = firstItem(reserve);
+			Item mainItem = asItem(firstItem(primary));
+			Item reserveItem = asItem(firstItem(reserve));
 			if ((mainItem == null) && (reserveItem == null)) {
 				continue;
 			}
 
 			if (mainItem != null) {
+				mainItem.onUnequipped();
 				primary.remove(mainItem.getID());
 			}
 			if (reserveItem != null) {
+				reserveItem.onUnequipped();
 				reserve.remove(reserveItem.getID());
 			}
 			if (mainItem != null) {
 				reserve.add(mainItem);
+				mainItem.onEquipped(player, reserveSlotName);
 			}
 			if (reserveItem != null) {
 				primary.add(reserveItem);
+				reserveItem.onEquipped(player, baseSlot);
 			}
 			changed = true;
 		}
@@ -92,4 +97,12 @@ public class SwapEquipmentSetsAction implements ActionListener {
 		}
 		return null;
 	}
+
+	private Item asItem(RPObject object) {
+		if (object instanceof Item) {
+			return (Item) object;
+		}
+		return null;
+	}
 }
+
