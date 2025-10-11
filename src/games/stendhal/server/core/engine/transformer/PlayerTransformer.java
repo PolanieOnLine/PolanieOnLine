@@ -160,8 +160,6 @@ public class PlayerTransformer implements Transformer {
 		final String[] slotsItems = { "bag", "rhand", "lhand", "neck", "head", "armor",
 				"legs", "feet", "finger", "fingerb", "glove", "cloak", "back", "pas", "belt",
 				"keyring", "magicbag", /*"portfolio",*/ "trade", "pouch", "money",
-				"neck_set", "head_set", "cloak_set", "lhand_set", "armor_set", "rhand_set",
-				"finger_set", "fingerb_set", "glove_set", "pas_set", "legs_set", "feet_set", "pouch_set",
 				"offensive_rune", "defensive_rune", "resistance_rune", "utility_rune", "healing_rune",
 				"control_rune", "special_rune" };
 
@@ -419,13 +417,12 @@ public class PlayerTransformer implements Transformer {
 
 				newSlot.add(item);
 
-			       /* Check if item has attributes that can be activated by a slot.
-				*
-				* XXX: Perhaps onEquipped() should be run for all items when
-				*      player is created.
-				*/
-			       if ((item instanceof SlotActivatedItem)
-					       && !newSlot.getName().endsWith("_set")) {
+				/* Check if item has attributes that can be activated by a slot.
+				 *
+				 * XXX: Perhaps onEquipped() should be run for all items when
+				 *      player is created.
+				 */
+				if (item instanceof SlotActivatedItem) {
 					item.onEquipped(player, newSlot.getName());
 				}
 			} catch (final Exception e) {

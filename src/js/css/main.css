@@ -154,33 +154,33 @@ ul.uniform {
 }
 
 div.itemSlot {
-	width: 32px;
-	height: 32px;
-	position: relative;
-	float: left;
-	padding: 1px;
-	margin: 2px;
-	text-align: right;
-	color: #FFF;
-	font-weight: bold;
-	font-size: 10px;
-	border-radius: 6px;
-	border: 2px solid transparent;
-	border-image: linear-gradient(135deg,
-		rgba(255, 230, 150, 1) 0%,
-		rgba(255, 200, 80, 1) 15%,
-		rgba(255, 140, 40, 1) 35%,
-		rgba(200, 80, 20, 1) 80%,
-		rgba(255, 255, 255, 0.8) 98%,
-		rgba(255, 255, 255, 0) 100%
-	) 1;
-	border-image-slice: 1;
-	border-image-width: 2px;
-	border-image-repeat: stretch;
-	box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.8);
-	background-color: #50372baa;
-	text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;
-	mask-image: radial-gradient(circle, white 90%, transparent 100%);
+    width: 32px;
+    height: 32px;
+    position: relative;
+    float: left;
+    padding: 1px;
+    margin: 2px;
+    text-align: right;
+    color: #FFF;
+    font-weight: bold;
+    font-size: 10px;
+    border-radius: 6px;
+    border: 2px solid transparent;
+    border-image: linear-gradient(135deg, 
+        rgba(255, 230, 150, 1) 0%,
+        rgba(255, 200, 80, 1) 15%,
+        rgba(255, 140, 40, 1) 35%,
+        rgba(200, 80, 20, 1) 80%,
+        rgba(255, 255, 255, 0.8) 98%,
+        rgba(255, 255, 255, 0) 100%
+    ) 1;
+    border-image-slice: 1;
+    border-image-width: 2px;
+    border-image-repeat: stretch;
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.8);
+    background-color: #50372baa;
+    text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;
+    mask-image: radial-gradient(circle, white 90%, transparent 100%);
 }
 
 div.quickPickup div.itemSlot {
@@ -192,48 +192,6 @@ div.quickPickup div.itemSlot {
 	height: 210px;
 	border: 1px solid black;
 	width: 122px;
-}
-
-.equipment-wrapper {
-	display: flex;
-	gap: 12px;
-	align-items: flex-start;
-}
-
-.equipment-column {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	gap: 6px;
-}
-
-.equipment-title {
-	font-weight: bold;
-	color: #fff;
-	text-transform: uppercase;
-	letter-spacing: 0.05em;
-}
-
-.equipment-controls {
-	display: flex;
-	align-items: center;
-}
-
-.equipment-swap {
-	padding: 6px 10px;
-	border: 1px solid #000;
-	background-color: #6b4d3d;
-	color: #fff;
-	cursor: pointer;
-	font-weight: bold;
-	border-radius: 4px;
-	box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.5);
-	transition: background-color 0.2s ease;
-}
-
-.equipment-swap:hover,
-.equipment-swap:focus {
-	background-color: #815f4e;
 }
 /* Right panel */
 #neck0 {position:absolute; top:20px; left:0px}
@@ -251,21 +209,6 @@ div.quickPickup div.itemSlot {
 #lhand0 {position:absolute; top:60px; left:80px}
 #glove0 {position:absolute; top:100px; left:80px}
 #pouch0 {position:absolute; top:140px; left:80px}
-
-/* Secondary equipment panel */
-#neck_set0 {position:absolute; top:20px; left:0px}
-#rhand_set0 {position:absolute; top:60px; left:0px}
-#finger_set0 {position:absolute; top:100px; left:0px}
-#fingerb_set0 {position:absolute; top:140px; left:0px}
-#head_set0 {position:absolute; top:5px; left:40px}
-#armor_set0 {position:absolute; top:45px; left:40px}
-#pas_set0 {position:absolute; top:85px; left:40px}
-#legs_set0 {position:absolute; top:125px; left:40px}
-#feet_set0 {position:absolute; top:165px; left:40px}
-#cloak_set0 {position:absolute; top:20px; left:80px}
-#lhand_set0 {position:absolute; top:60px; left:80px}
-#glove_set0 {position:absolute; top:100px; left:80px}
-#pouch_set0 {position:absolute; top:140px; left:80px}
 
 #chat {
 	height: 100%;
@@ -442,7 +385,7 @@ div.logcolR {
 
 #equipmentborder {
 	float: left;
-	width: 320px;
+	width: 130px
 }
 
 #bag { border: 1px solid black; width: 120px; padding: 2px; float: left }
