@@ -399,7 +399,7 @@ Inspectable {
 
 	private void scheduleSetDrawerRefresh() {
 		if (setDrawerRefreshTimer == null) {
-			setDrawerRefreshTimer = new Timer(200, new ActionListener() {
+			setDrawerRefreshTimer = new Timer(550, new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent event) {
 					refreshSetDrawerAfterAnimation();
