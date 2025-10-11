@@ -29,6 +29,7 @@ import javax.swing.SwingUtilities;
 import org.apache.log4j.Logger;
 
 import games.stendhal.client.GameObjects;
+import games.stendhal.client.StendhalClient;
 import games.stendhal.client.entity.ContentChangeListener;
 import games.stendhal.client.entity.IEntity;
 import games.stendhal.client.entity.Inspector;
@@ -37,9 +38,11 @@ import games.stendhal.client.entity.factory.EntityMap;
 import games.stendhal.client.gui.layout.SBoxLayout;
 import games.stendhal.client.listener.FeatureChangeListener;
 import games.stendhal.client.sprite.SpriteStore;
+import games.stendhal.common.constants.Actions;
 import marauroa.common.game.RPObject;
 import marauroa.common.game.RPObject.ID;
 import marauroa.common.game.RPSlot;
+import marauroa.common.game.RPAction;
 
 /**
  * Window for showing the equipment the player is wearing.
@@ -64,6 +67,7 @@ Inspectable {
 	private JComponent specialSlots;
 	private JComponent setToggleRow;
 	private JButton setToggleButton;
+	private JButton setSwapButton;
 	private JComponent setSlotsContainer;
 	private boolean setSlotsVisible;
 
@@ -193,11 +197,19 @@ Inspectable {
 		setToggleButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				toggleSetSlots();
+					toggleSetSlots();
+			}
+		});
+		setSwapButton = new JButton("Zamień zestawy");
+		setSwapButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+					swapSets();
 			}
 		});
 		setToggleRow.add(Box.createHorizontalGlue());
 		setToggleRow.add(setToggleButton);
+		setToggleRow.add(setSwapButton);
 		setToggleRow.add(Box.createHorizontalGlue());
 		setToggleRow.setVisible(false);
 		content.add(setToggleRow);
@@ -293,9 +305,28 @@ Inspectable {
 	private void setSetSlotsVisible(boolean visible) {
 		setSlotsVisible = visible;
 		setSlotsContainer.setVisible(visible);
+		setSlotsContainer.revalidate();
+		setSlotsContainer.repaint();
+		revalidate();
+		repaint();
 		if (setToggleButton != null) {
 			setToggleButton.setText(visible ? "Ukryj zestaw II" : "Pokaż zestaw II");
 		}
+	}
+
+	private void swapSets() {
+		if (player == null) {
+			return;
+		}
+
+		RPAction action = new RPAction();
+		action.put(Actions.TYPE, Actions.SET_CHANGE);
+		RPObject rpObject = player.getRPObject();
+		if ((rpObject != null) && rpObject.has("zone")) {
+			action.put(Actions.ZONE, rpObject.get("zone"));
+		}
+
+		StendhalClient.get().send(action);
 	}
 
 	/**
