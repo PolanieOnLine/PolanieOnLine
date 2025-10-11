@@ -490,8 +490,12 @@ Inspectable {
 			public void run() {
 				if (visible) {
 					ensureReserveWindowAdded();
-					reserveWindow.showBeside(Character.this);
-					refreshContents();
+					if (!reserveWindow.isVisible()) {
+						reserveWindow.showBeside(Character.this);
+						refreshContents();
+					} else {
+						reserveWindow.bringToFront();
+					}
 				} else if (reserveWindowAdded) {
 					reserveWindow.setVisible(false);
 				}
