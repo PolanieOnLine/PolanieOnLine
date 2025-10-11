@@ -493,7 +493,7 @@ Inspectable {
 					reserveWindow.showBeside(Character.this);
 					refreshContents();
 				} else if (reserveWindowAdded) {
-					reserveWindow.setVisible(false);
+					reserveWindow.hideWindow();
 				}
 			}
 		});
