@@ -99,16 +99,7 @@ Inspectable {
 
 		final RPObject obj = userEntity.getRPObject();
 
-		final boolean hasSetSlots = obj.hasSlot("neck_set");
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				setToggleRow.setVisible(hasSetSlots);
-				if (!hasSetSlots) {
-					setSetSlotsVisible(false);
-				}
-			}
-		});
+		updateSetToggleVisibility(obj);
 
 		// Compatibility. Show additional slots only if the user has those.
 		// This can be removed after a couple of releases (and specialSlots
@@ -321,6 +312,31 @@ Inspectable {
 		setSetSlotsVisible(!setSlotsVisible);
 	}
 
+	private void updateSetToggleVisibility(final RPObject obj) {
+		if (obj == null) {
+			return;
+		}
+
+		boolean hasSetSlots = false;
+		for (final String slotName : slotPanels.keySet()) {
+			if (slotName.endsWith("_set") && obj.hasSlot(slotName)) {
+				hasSetSlots = true;
+				break;
+			}
+		}
+
+		final boolean showToggle = hasSetSlots;
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				setToggleRow.setVisible(showToggle);
+				if (!showToggle) {
+					setSetSlotsVisible(false);
+				}
+			}
+		});
+	}
+
 	private void setSetSlotsVisible(boolean visible) {
 		setSlotsVisible = visible;
 		setSlotsContainer.setVisible(visible);
@@ -406,12 +422,7 @@ Inspectable {
 
 		String slotName = added.getName();
 		if (slotName.endsWith("_set")) {
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					setToggleRow.setVisible(true);
-				}
-			});
+			updateSetToggleVisibility(player.getRPObject());
 		}
 		if (("belt".equals(slotName) || "back".equals(slotName)) && !player.getRPObject().hasSlot(slotName)) {
 			// One of the new slots was added to the player. Set them visible.
@@ -448,6 +459,11 @@ Inspectable {
 		if (panel == null) {
 			// Not a slot we are interested in
 			return;
+		}
+
+		String slotName = removed.getName();
+		if (slotName.endsWith("_set")) {
+			updateSetToggleVisibility(player.getRPObject());
 		}
 		for (RPObject obj : removed) {
 			ID id = obj.getID();
