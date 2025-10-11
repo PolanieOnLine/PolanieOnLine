@@ -281,7 +281,7 @@
 		</item>
 
 		<producer name="czeladnik Jaromir" activities="grind,oszlifuj"
-			message="Witaj z powrotem! Jeśli chcesz, mogę #'oszlifować kryształ ciemnolitu' dla ciebie!"/>
+			message="Witaj z powrotem! Jeśli chcesz, mogę #'oszlifować klejnot ciemnolitu' dla ciebie!"/>
 	</production>
 
 	<!-- Kowal Andrzej (Zakopane) -->
