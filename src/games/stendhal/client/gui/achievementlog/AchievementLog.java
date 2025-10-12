@@ -52,11 +52,21 @@ import games.stendhal.client.sprite.SpriteStore;
 
 class AchievementLog {
 	public static final int PAD = 5;
-	private static final int BOOK_WIDTH = 720;
-	private static final int BOOK_HEIGHT = 500;
-	private static final int DESCRIPTION_WIDTH = 260;
 	private static final int COLUMNS_PER_PAGE = 2;
-	private static final int ROWS_PER_PAGE = 4;
+	private static final int ROWS_PER_PAGE = 3;
+	private static final int CARD_WIDTH = 240;
+	private static final int CARD_HEIGHT = 160;
+	private static final int DESCRIPTION_WIDTH = CARD_WIDTH - 40;
+	private static final int FILTER_ICON_SIZE = 48;
+	private static final int BOOK_SIDE_BORDER = 16 + 30;
+	private static final int BOOK_TOP_BORDER = 12 + 20;
+	private static final int BOOK_WIDTH = (COLUMNS_PER_PAGE * CARD_WIDTH)
+		+ ((COLUMNS_PER_PAGE - 1) * (PAD * 2))
+		+ (BOOK_SIDE_BORDER * 2);
+	private static final int BOOK_HEIGHT = (ROWS_PER_PAGE * CARD_HEIGHT)
+		+ ((ROWS_PER_PAGE - 1) * (PAD * 2))
+		+ (BOOK_TOP_BORDER * 2);
+	private static final int CONTENT_WIDTH = BOOK_WIDTH + (PAD * 2);
 	private static final int ACHIEVEMENTS_PER_PAGE = COLUMNS_PER_PAGE * ROWS_PER_PAGE;
 	private static final Color BOOK_BACKGROUND = new Color(248, 243, 229);
 	private static final Color BOOK_BORDER = new Color(164, 136, 98);
@@ -186,6 +196,10 @@ class AchievementLog {
 
 	private JComponent createPlaceholderCard() {
 		JPanel placeholder = new JPanel();
+		Dimension cardSize = new Dimension(CARD_WIDTH, CARD_HEIGHT);
+		placeholder.setPreferredSize(cardSize);
+		placeholder.setMinimumSize(cardSize);
+		placeholder.setMaximumSize(cardSize);
 		placeholder.setOpaque(false);
 		return placeholder;
 	}
@@ -204,25 +218,39 @@ class AchievementLog {
 		wrapper.setBorder(BorderFactory.createEmptyBorder(PAD, PAD, PAD, PAD));
 		wrapper.setAlignmentX(Component.CENTER_ALIGNMENT);
 
+		Dimension bookSize = new Dimension(BOOK_WIDTH, BOOK_HEIGHT);
+		Dimension pagesSize = new Dimension((COLUMNS_PER_PAGE * CARD_WIDTH)
+				+ ((COLUMNS_PER_PAGE - 1) * (PAD * 2)),
+				(ROWS_PER_PAGE * CARD_HEIGHT) + ((ROWS_PER_PAGE - 1) * (PAD * 2)));
 		JPanel book = new JPanel(new BorderLayout());
 		book.setOpaque(true);
 		book.setBackground(BOOK_BACKGROUND);
 		book.setBorder(BorderFactory.createCompoundBorder(
-			BorderFactory.createMatteBorder(12, 16, 12, 16, BOOK_BORDER),
-			BorderFactory.createEmptyBorder(20, 30, 20, 30)));
-		book.setPreferredSize(new Dimension(BOOK_WIDTH, BOOK_HEIGHT));
+				BorderFactory.createMatteBorder(12, 16, 12, 16, BOOK_BORDER),
+				BorderFactory.createEmptyBorder(20, 30, 20, 30)));
+		book.setPreferredSize(bookSize);
+		book.setMinimumSize(bookSize);
+		book.setMaximumSize(bookSize);
 		bookPages.setOpaque(false);
 		bookPages.setBorder(BorderFactory.createEmptyBorder(PAD, PAD, PAD, PAD));
+		bookPages.setPreferredSize(pagesSize);
+		bookPages.setMinimumSize(pagesSize);
+		bookPages.setMaximumSize(pagesSize);
 		book.add(bookPages, BorderLayout.CENTER);
 
+		Dimension wrapperSize = new Dimension(CONTENT_WIDTH, bookSize.height + (PAD * 2));
+		wrapper.setPreferredSize(wrapperSize);
+		wrapper.setMinimumSize(wrapperSize);
+		wrapper.setMaximumSize(wrapperSize);
 		wrapper.add(book, BorderLayout.CENTER);
 		return wrapper;
 	}
 
 	private JComponent createNavigationPanel() {
-		JComponent nav = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, PAD);
+		JPanel nav = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, PAD * 4, PAD));
+		nav.setOpaque(false);
 		nav.setAlignmentX(Component.CENTER_ALIGNMENT);
-		nav.setBorder(BorderFactory.createEmptyBorder(0, PAD, PAD, PAD));
+		nav.setBorder(BorderFactory.createEmptyBorder(PAD, PAD, PAD, PAD));
 
 		previousButton = new JButton("← Poprzednia strona");
 		previousButton.setFocusPainted(false);
@@ -232,8 +260,19 @@ class AchievementLog {
 		nextButton.setFocusPainted(false);
 		nextButton.addActionListener(e -> showPage(currentPage + 1));
 
-		pageIndicator.setPreferredSize(new Dimension(160, previousButton.getPreferredSize().height));
+		int buttonHeight = previousButton.getPreferredSize().height;
+		int buttonWidth = Math.max(previousButton.getPreferredSize().width, nextButton.getPreferredSize().width);
+		Dimension buttonSize = new Dimension(buttonWidth, buttonHeight);
+		previousButton.setPreferredSize(buttonSize);
+		nextButton.setPreferredSize(buttonSize);
+
+		pageIndicator.setPreferredSize(new Dimension(140, buttonHeight));
 		pageIndicator.setHorizontalAlignment(SwingConstants.CENTER);
+
+		Dimension navSize = new Dimension(CONTENT_WIDTH, buttonHeight + (PAD * 4));
+		nav.setPreferredSize(navSize);
+		nav.setMinimumSize(navSize);
+		nav.setMaximumSize(navSize);
 
 		nav.add(previousButton);
 		nav.add(pageIndicator);
@@ -243,25 +282,34 @@ class AchievementLog {
 	}
 
 	private JComponent createFilterPanel() {
-		final JPanel filters = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, PAD, PAD / 2));
+		final JPanel filters = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, PAD, PAD));
 		filters.setOpaque(false);
 		filters.setBorder(BorderFactory.createEmptyBorder(0, PAD, 0, PAD));
 
-		filters.add(createFilterToggle(loadAllIcon(), "Wszystkie osiągnięcia", null, true));
+		ImageIcon allIcon = loadAllIcon();
+		filters.add(createFilterToggle(allIcon, "Wszystkie osiągnięcia", null, true));
 
 		for (CategoryInfo info : collectCategories().values()) {
-			filters.add(createFilterToggle(info.icon, info.displayName, info.key, false));
+			ImageIcon icon = info.icon != null ? info.icon : allIcon;
+			filters.add(createFilterToggle(icon, info.displayName, info.key, false));
 		}
 
-		JComponent wrapper = new JPanel(new BorderLayout()) {
-			@Override
-			public Dimension getPreferredSize() {
-				Dimension size = super.getPreferredSize();
-				size.width = BOOK_WIDTH;
-				return size;
-			}
-		};
+		int filterHeight = 0;
+		for (Component component : filters.getComponents()) {
+			filterHeight = Math.max(filterHeight, component.getPreferredSize().height);
+		}
+		filterHeight = Math.max(filterHeight, 1) + (PAD * 2);
+
+		Dimension filterSize = new Dimension(CONTENT_WIDTH, filterHeight);
+		filters.setPreferredSize(filterSize);
+		filters.setMinimumSize(filterSize);
+		filters.setMaximumSize(filterSize);
+
+		JPanel wrapper = new JPanel(new BorderLayout());
 		wrapper.setOpaque(false);
+		wrapper.setPreferredSize(filterSize);
+		wrapper.setMinimumSize(filterSize);
+		wrapper.setMaximumSize(filterSize);
 		wrapper.add(filters, BorderLayout.CENTER);
 
 		return wrapper;
@@ -269,6 +317,18 @@ class AchievementLog {
 
 	private JToggleButton createFilterToggle(ImageIcon icon, String tooltip, String categoryKey, boolean selected) {
 		JToggleButton toggle = new JToggleButton(icon);
+		if ((icon == null) || (icon.getIconWidth() == 0) || (icon.getIconHeight() == 0)) {
+			ImageIcon fallback = loadAllIcon();
+			toggle.setIcon(fallback);
+			icon = fallback;
+		}
+		toggle.setHorizontalAlignment(SwingConstants.CENTER);
+		toggle.setVerticalAlignment(SwingConstants.CENTER);
+		int toggleSide = FILTER_ICON_SIZE + (PAD * 4);
+		Dimension toggleSize = new Dimension(toggleSide, toggleSide);
+		toggle.setPreferredSize(toggleSize);
+		toggle.setMinimumSize(toggleSize);
+		toggle.setMaximumSize(toggleSize);
 		toggle.setFocusPainted(false);
 		toggle.setSelected(selected);
 		toggle.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -299,7 +359,7 @@ class AchievementLog {
 		for (AchievementEntry entry : allAchievements) {
 			if (!categories.containsKey(entry.categoryKey)) {
 				String display = entry.category == null || entry.category.isEmpty() ? "Inne" : entry.category;
-				categories.put(entry.categoryKey, new CategoryInfo(entry.categoryKey, display, entry.icon));
+				categories.put(entry.categoryKey, new CategoryInfo(entry.categoryKey, display, getFilterIcon(entry.categoryKey)));
 			}
 		}
 		return categories;
@@ -326,8 +386,13 @@ class AchievementLog {
 		card.setBorder(defaultBorder);
 		card.setAlignmentX(Component.CENTER_ALIGNMENT);
 		card.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		Dimension cardSize = new Dimension(CARD_WIDTH, CARD_HEIGHT);
+		card.setPreferredSize(cardSize);
+		card.setMinimumSize(cardSize);
+		card.setMaximumSize(cardSize);
 
 		JLabel iconLabel = new JLabel(entry.icon);
+		iconLabel.setPreferredSize(new Dimension(FILTER_ICON_SIZE, FILTER_ICON_SIZE));
 		iconLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		iconLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
 
@@ -343,6 +408,10 @@ class AchievementLog {
 		Color descColor = entry.reached ? Color.DARK_GRAY : LOCKED_TEXT_COLOR;
 		descLabel.setForeground(descColor);
 		descLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		Dimension descSize = new Dimension(DESCRIPTION_WIDTH, descLabel.getPreferredSize().height);
+		descLabel.setPreferredSize(descSize);
+		descLabel.setMinimumSize(descSize);
+		descLabel.setMaximumSize(new Dimension(DESCRIPTION_WIDTH, Integer.MAX_VALUE));
 
 		card.add(iconLabel);
 		card.add(javax.swing.Box.createVerticalStrut(PAD / 2));
@@ -433,6 +502,17 @@ class AchievementLog {
 
 	Window getWindow() {
 		return window;
+	}
+
+	private ImageIcon getFilterIcon(String categoryKey) {
+		if (categoryKey == null || categoryKey.isEmpty()) {
+			return loadAllIcon();
+		}
+		Sprite sprite = SpriteStore.get().getSprite("/data/sprites/achievements/" + categoryKey + ".png");
+		if (sprite == null) {
+			return loadAllIcon();
+		}
+		return createIcon(sprite);
 	}
 
 	private ImageIcon loadAllIcon() {
