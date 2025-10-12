@@ -21,6 +21,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.border.Border;
+import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 
@@ -69,6 +70,12 @@ public class AchievementLogRenderers {
 			super.getTableCellRendererComponent(table, value, isSelected,
 					hasFocus, row, column);
 			setBorder(border);
+			setOpaque(true);
+			setVerticalAlignment(SwingConstants.TOP);
+			int modelRow = table.convertRowIndexToModel(row);
+			Object status = table.getModel().getValueAt(modelRow, 0);
+			boolean reached = "✔".equals(status);
+			setBackground(reached ? AchievementLog.COMPLETED_BACKGROUND : AchievementLog.LOCKED_BACKGROUND);
 			return this;
 		}
 	}
@@ -76,16 +83,23 @@ public class AchievementLogRenderers {
 	@SuppressWarnings("serial")
 	public class SpriteCellRenderer extends JComponent implements TableCellRenderer {
 		private Sprite sprite;
+		private final Border border = BorderFactory.createEmptyBorder(PAD, PAD, PAD, PAD);
 
 		@Override
 		public Component getTableCellRendererComponent(JTable table, Object color,
 				boolean isSelected, boolean hasFocus, int row, int col) {
-			Object obj = table.getValueAt(row, col);
+			int modelRow = table.convertRowIndexToModel(row);
+			Object obj = table.getModel().getValueAt(modelRow, col);
 			if (obj instanceof Sprite) {
 				sprite = (Sprite) obj;
 			} else {
 				sprite = null;
 			}
+			Object status = table.getModel().getValueAt(modelRow, 0);
+			boolean reached = "✔".equals(status);
+			setBorder(border);
+			setOpaque(true);
+			setBackground(reached ? AchievementLog.COMPLETED_BACKGROUND : AchievementLog.LOCKED_BACKGROUND);
 			return this;
 		}
 
@@ -101,6 +115,7 @@ public class AchievementLogRenderers {
 
 		@Override
 		protected void paintComponent(Graphics g) {
+			super.paintComponent(g);
 			if (sprite != null) {
 				sprite.draw(g, (getWidth() - sprite.getWidth()) / 2, (getHeight() - sprite.getHeight()) / 2);
 			}
