@@ -285,7 +285,7 @@ class AchievementLog {
 	}
 
 	private JComponent createFilterPanel() {
-		JPanel container = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PAD / 2);
+		JComponent container = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PAD / 2);
 		container.setOpaque(false);
 		container.setBorder(BorderFactory.createEmptyBorder(PAD, PAD, PAD, PAD));
 		container.setAlignmentX(Component.CENTER_ALIGNMENT);
