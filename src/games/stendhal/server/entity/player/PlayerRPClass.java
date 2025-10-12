@@ -45,12 +45,12 @@ public class PlayerRPClass {
 		player.addRPEvent(Events.PLAYER_LOGGED_ON, Definition.PRIVATE);
 		player.addRPEvent(Events.PLAYER_LOGGED_OUT, Definition.PRIVATE);
 		player.addRPEvent(Events.TRADE_STATE_CHANGE, Definition.PRIVATE);
-player.addRPEvent(Events.REACHED_ACHIEVEMENT, Definition.PRIVATE);
-player.addRPEvent(Events.BESTIARY, Definition.PRIVATE);
-player.addRPEvent(Events.DROPPEDLIST, Definition.PRIVATE);
-player.addRPEvent(Events.NPC_SHOP_OFFER, Definition.PRIVATE);
+		player.addRPEvent(Events.REACHED_ACHIEVEMENT, Definition.PRIVATE);
+		player.addRPEvent(Events.BESTIARY, Definition.PRIVATE);
+		player.addRPEvent(Events.DROPPEDLIST, Definition.PRIVATE);
+		player.addRPEvent(Events.NPC_SHOP_OFFER, Definition.PRIVATE);
 
-player.addRPEvent(Events.ACHIEVEMENT_LOG, Definition.PRIVATE);
+		player.addRPEvent(Events.ACHIEVEMENT_LOG, Definition.PRIVATE);
 
 		player.addAttribute("dead", Type.FLAG, Definition.PRIVATE);
 
@@ -178,7 +178,7 @@ player.addRPEvent(Events.ACHIEVEMENT_LOG, Definition.PRIVATE);
 		player.addAttribute("npc_sales", Type.MAP, Definition.PRIVATE);
 	}
 
-	static void ensureNPCShopOfferEvent() {
+	public static void ensureNPCShopOfferEvent() {
 		final RPClass player = RPClass.getRPClass("player");
 		if ((player == null)
 				|| (player.getDefinition(DefinitionClass.RPEVENT, Events.NPC_SHOP_OFFER) != null)) {

@@ -67,6 +67,7 @@ import games.stendhal.server.entity.mapstuff.useable.WoodSource;
 import games.stendhal.server.entity.npc.NPC;
 import games.stendhal.server.entity.npc.TrainingDummy;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.entity.player.PlayerRPClass;
 import games.stendhal.server.entity.spell.Spell;
 import games.stendhal.server.entity.trade.Earning;
 import games.stendhal.server.entity.trade.Market;
@@ -325,12 +326,12 @@ public class RPClassGenerator {
 		if (!RPClass.hasRPClass(Events.PROGRESS_STATUS_CHANGE)) {
 			ProgressStatusEvent.generateRPClass();
 		}
-if (!RPClass.hasRPClass("show_item_list")) {
-ShowItemListEvent.generateRPClass();
-}
-if (!RPClass.hasRPClass(Events.NPC_SHOP_OFFER)) {
-NPCShopOfferEvent.generateRPClass();
-}
+		if (!RPClass.hasRPClass("show_item_list")) {
+			ShowItemListEvent.generateRPClass();
+		}
+		if (!RPClass.hasRPClass(Events.NPC_SHOP_OFFER)) {
+			NPCShopOfferEvent.generateRPClass();
+		}
 		if (!RPClass.hasRPClass(Events.SOUND)) {
 			SoundEvent.generateRPClass();
 		}
