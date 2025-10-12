@@ -195,11 +195,12 @@ Inspectable {
 		setToggleRow = SBoxLayout.createContainer(SBoxLayout.VERTICAL, 0);
 		setToggleRow.setAlignmentY(TOP_ALIGNMENT);
 		reserveToggleButton = new JButton("<");
-		reserveToggleButton.setMargin(new Insets(1, 2, 1, 2));
+		reserveToggleButton.setMargin(new Insets(1, 0, 1, 0));
+		reserveToggleButton.setFocusPainted(false);
 		int toggleHeight = 16;
 		Dimension toggleSize = reserveToggleButton.getPreferredSize();
 		toggleSize.height = Math.min(toggleSize.height, toggleHeight);
-		toggleSize.width = Math.max(toggleSize.width, 16);
+		toggleSize.width = Math.max(toggleSize.width, 12);
 		Dimension togglePreferred = new Dimension(toggleSize.width, toggleSize.height);
 		reserveToggleButton.setPreferredSize(togglePreferred);
 		reserveToggleButton.setMinimumSize(togglePreferred);
@@ -288,6 +289,7 @@ Inspectable {
 		column.setAlignmentY(TOP_ALIGNMENT);
 		setSwapButton = new JButton("Zamień zestawy");
 		setSwapButton.setMargin(new Insets(1, 0, 1, 0));
+		setSwapButton.setFocusPainted(false);
 		int swapHeight = 16;
 		Dimension swapSize = setSwapButton.getPreferredSize();
 		swapSize.height = Math.min(swapSize.height, swapHeight);
