@@ -359,7 +359,7 @@ class AchievementLog {
 	}
 
 	private String createDescriptionHtml(String desc) {
-		return "<html><div style="text-align: center; font-size: 11px;">" + desc + ".</div></html>";
+		return "<html><div style=\"text-align: center; font-size: 11px;\">" + desc + ".</div></html>";
 	}
 
 	private List<AchievementEntry> loadAchievements() {
