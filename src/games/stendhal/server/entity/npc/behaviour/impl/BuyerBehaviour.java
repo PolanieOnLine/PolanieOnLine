@@ -20,6 +20,7 @@ import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.item.money.MoneyUtils;
 import games.stendhal.server.entity.npc.EventRaiser;
+import games.stendhal.server.entity.npc.shop.ShopType;
 import games.stendhal.server.entity.player.Player;
 
 /**
@@ -33,9 +34,10 @@ public class BuyerBehaviour extends MerchantBehaviour {
 	 *
 	 * @param priceList
 	 *   List of item names and their prices.
-	 */
+	*/
 	public BuyerBehaviour(final Map<String, Integer> priceList) {
 		super(priceList);
+		setShopType(resolveShopType(priceList, ShopType.ITEM_BUY));
 	}
 
 	/**
@@ -45,9 +47,10 @@ public class BuyerBehaviour extends MerchantBehaviour {
 	 *   List of item names and their prices.
 	 * @param priceFactor
 	 *   Skews prices of all items for this merchant.
-	 */
+	*/
 	public BuyerBehaviour(final Map<String, Integer> priceList, final Float priceFactor) {
 		super(priceList, priceFactor);
+		setShopType(resolveShopType(priceList, ShopType.ITEM_BUY));
 	}
 
 	/**
@@ -58,7 +61,7 @@ public class BuyerBehaviour extends MerchantBehaviour {
 	 *
 	 * @param player
 	 *			The player who sells
-	 */
+	*/
 	protected void payPlayer(ItemParserResult res, final Player player) {
 		int copperValue = getCharge(res, player); // całkowita kwota w miedziakach
 		Map<String, Integer> payout = MoneyUtils.fromCopper(copperValue);
@@ -68,8 +71,8 @@ public class BuyerBehaviour extends MerchantBehaviour {
 			if (amount > 0) {
 				try {
 					StackableItem money = (StackableItem) SingletonRepository
-							.getEntityManager()
-							.getItem(coinName); // "dukat", "talar" lub "miedziak"
+					.getEntityManager()
+					.getItem(coinName); // "dukat", "talar" lub "miedziak"
 					money.setQuantity(amount);
 					player.equipOrPutOnGround(money);
 				} catch (Exception e) {
@@ -88,7 +91,7 @@ public class BuyerBehaviour extends MerchantBehaviour {
 	 *			The player who sells
 	 * @return true iff the transaction was successful, that is when the player
 	 *		 has the item(s).
-	 */
+	*/
 	@Override
 	public boolean transactAgreedDeal(ItemParserResult res, final EventRaiser seller, final Player player) {
 		if (player.drop(res.getChosenItemName(), res.getAmount())) {
@@ -122,9 +125,9 @@ public class BuyerBehaviour extends MerchantBehaviour {
 	 *	 Name of merchant involved in transaction.
 	 * @param res
 	 *	 Information about the transaction.
-	 */
+	*/
 	protected void updatePlayerTransactions(final Player player, final String merchant,
-			final ItemParserResult res) {
+	final ItemParserResult res) {
 		player.incSoldForItem(res.getChosenItemName(), res.getAmount());
 		player.incCommerceTransaction(merchant, getCharge(res, player), true);
 	}

@@ -24,6 +24,8 @@ import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.impl.prices.FixedPricePriceCalculationStrategy;
 import games.stendhal.server.entity.npc.behaviour.impl.prices.PriceCalculationStrategy;
+import games.stendhal.server.entity.npc.shop.ShopInventory;
+import games.stendhal.server.entity.npc.shop.ShopType;
 import games.stendhal.server.entity.player.Player;
 
 /**
@@ -32,10 +34,10 @@ import games.stendhal.server.entity.player.Player;
  */
 public abstract class MerchantBehaviour extends TransactionBehaviour {
 
-//	protected Map<String, Integer> priceList;
+	//	protected Map<String, Integer> priceList;
 
 	protected PriceCalculationStrategy priceCalculator;
-	
+
 	// merchant only deals with these items if condition is met
 	private Map<String, ChatCondition> conditions;
 
@@ -43,6 +45,8 @@ public abstract class MerchantBehaviour extends TransactionBehaviour {
 
 	// skews prices of all items for this merchant
 	private Float priceFactor = null;
+
+	private ShopType shopType;
 
 	public MerchantBehaviour() {
 		this(new HashMap<String, Integer>());
@@ -63,7 +67,7 @@ public abstract class MerchantBehaviour extends TransactionBehaviour {
 	 *   List of item names and their prices.
 	 * @param priceFactor
 	 *   Skews prices of all items for this merchant.
-	 */
+	*/
 	public MerchantBehaviour(final Map<String, Integer> priceList, final Float priceFactor) {
 		this(priceList);
 		if (priceFactor != null && priceFactor != 1) {
@@ -76,7 +80,7 @@ public abstract class MerchantBehaviour extends TransactionBehaviour {
 	 *
 	 * @return
 	 *     The dealt items.
-	 */
+	*/
 	public Set<String> dealtItems() {
 		if (conditions == null || conditions.isEmpty()) {
 			return priceCalculator.dealtItems();
@@ -111,7 +115,7 @@ public abstract class MerchantBehaviour extends TransactionBehaviour {
 	 *     The name of the item.
 	 * @return
 	 *     <code>true</code> if the NPC deals with the item.
-	 */
+	*/
 	public boolean hasItem(final String item) {
 		return dealtItems().contains(item);
 	}
@@ -122,7 +126,7 @@ public abstract class MerchantBehaviour extends TransactionBehaviour {
 	 * @param item
 	 *            the name of the item
 	 * @return the unit price
-	 */
+	*/
 	public int getUnitPrice(final String item) {
 		int price = priceCalculator.calculatePrice(item, null);
 		if (priceFactor != null) {
@@ -139,7 +143,7 @@ public abstract class MerchantBehaviour extends TransactionBehaviour {
 	 *            The player who considers buying/selling
 	 *
 	 * @return The price; 0 if no item was chosen or if the amount is 0.
-	 */
+	*/
 	public int getCharge(ItemParserResult res, final Player player) {
 		if (res.getChosenItemName() == null) {
 			return 0;
@@ -155,10 +159,25 @@ public abstract class MerchantBehaviour extends TransactionBehaviour {
 	 *     SpeakerNPC that is the merchant.
 	 * @param conditions
 	 *     List of conditions to check item availability against.
-	 */
+	*/
 	public void addConditions(final SpeakerNPC merchant, final Map<String, ChatCondition> conditions) {
 		this.merchant = merchant;
 		this.conditions = conditions;
+	}
+
+	protected ShopType resolveShopType(final Map<String, Integer> priceList, final ShopType fallback) {
+		if (priceList instanceof ShopInventory) {
+			return ((ShopInventory<?, ?>) priceList).getShopType();
+		}
+		return fallback;
+	}
+
+	protected void setShopType(final ShopType shopType) {
+		this.shopType = shopType;
+	}
+
+	public ShopType getShopType() {
+		return shopType;
 	}
 
 	@Override

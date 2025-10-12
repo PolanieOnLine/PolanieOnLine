@@ -22,6 +22,7 @@ import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.item.money.MoneyUtils;
 import games.stendhal.server.entity.npc.EventRaiser;
+import games.stendhal.server.entity.npc.shop.ShopType;
 import games.stendhal.server.entity.player.Player;
 
 /**
@@ -37,9 +38,9 @@ public class SellerBehaviour extends MerchantBehaviour {
 
 	/**
 	 * Creates a new SellerBehaviour with an empty pricelist.
-	 */
+	*/
 	public SellerBehaviour() {
-		super(new HashMap<String, Integer>());
+		this(new HashMap<String, Integer>());
 	}
 
 	/**
@@ -47,9 +48,10 @@ public class SellerBehaviour extends MerchantBehaviour {
 	 *
 	 * @param priceList
 	 *			list of item names and their prices
-	 */
+	*/
 	public SellerBehaviour(final Map<String, Integer> priceList) {
 		super(priceList);
+		setShopType(resolveShopType(priceList, ShopType.ITEM_SELL));
 	}
 
 	/**
@@ -59,9 +61,10 @@ public class SellerBehaviour extends MerchantBehaviour {
 	 *   List of item names and their prices.
 	 * @param priceFactor
 	 *   Skews prices of all items for this merchant.
-	 */
+	*/
 	public SellerBehaviour(final Map<String, Integer> priceList, final Float priceFactor) {
 		super(priceList, priceFactor);
+		setShopType(resolveShopType(priceList, ShopType.ITEM_SELL));
 	}
 
 	/**
@@ -74,7 +77,7 @@ public class SellerBehaviour extends MerchantBehaviour {
 	 *			The player who buys
 	 * @return true iff the transaction was successful, that is when the player
 	 *		 was able to equip the item(s).
-	 */
+	*/
 	@Override
 	public boolean transactAgreedDeal(ItemParserResult res, final EventRaiser seller, final Player player) {
 		String chosenItemName = res.getChosenItemName();
@@ -147,9 +150,9 @@ public class SellerBehaviour extends MerchantBehaviour {
 	 *	 Name of merchant involved in transaction.
 	 * @param res
 	 *	 Information about the transaction.
-	 */
+	*/
 	protected void updatePlayerTransactions(final Player player, final String merchant,
-			final ItemParserResult res) {
+	final ItemParserResult res) {
 		player.incBoughtForItem(res.getChosenItemName(), res.getAmount());
 		player.incCommerceTransaction(merchant, getCharge(res, player), false);
 	}

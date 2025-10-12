@@ -70,7 +70,7 @@ public final class NpcShopWindowManager {
 
 	private static final String MODE_BUY = "buy";
 	private static final String MODE_SELL = "sell";
-	private static final String MODE_BOTH = "both";
+	private static final String MODE_BOTH = "trade";
 	private static final String OFFER_TYPE_BUY = "buy";
 	private static final String OFFER_TYPE_SELL = "sell";
 	private static final String ATTR_MODE = "shop_mode";
@@ -162,8 +162,8 @@ public final class NpcShopWindowManager {
 		window.setTitleText(title);
 		window.setBackgroundTexture(event.has("background") ? event.get("background") : null);
 
-window.setOffers(parseOffers(event));
-window.setShopMode(parseShopMode(event));
+		window.setOffers(parseOffers(event));
+		window.setShopMode(parseShopMode(event));
 		window.setVisible(true);
 		window.toFront();
 	}
@@ -188,10 +188,10 @@ window.setShopMode(parseShopMode(event));
 			return ShopMode.BOTH;
 		}
 		if (MODE_SELL.equalsIgnoreCase(mode)) {
-			return ShopMode.SELL;
+			return ShopMode.BUY;
 		}
 		if (MODE_BUY.equalsIgnoreCase(mode)) {
-			return ShopMode.BUY;
+			return ShopMode.SELL;
 		}
 		return ShopMode.BUY;
 	}
@@ -226,7 +226,7 @@ window.setShopMode(parseShopMode(event));
 		final String flavor = object.has("shop_flavor") ? object.get("shop_flavor") : "";
 		final Sprite sprite = loadSprite(object);
 		final String rawType = object.has(ATTR_OFFER_TYPE) ? object.get(ATTR_OFFER_TYPE) : OFFER_TYPE_BUY;
-		final TransactionType type = OFFER_TYPE_SELL.equalsIgnoreCase(rawType) ? TransactionType.SELL : TransactionType.BUY;
+		final TransactionType type = OFFER_TYPE_SELL.equalsIgnoreCase(rawType) ? TransactionType.BUY : TransactionType.SELL;
 
 		return new Offer(commandKey, displayName, description, flavor, price, sprite, type);
 	}
@@ -332,19 +332,19 @@ window.setShopMode(parseShopMode(event));
 		final StringBuilder builder = new StringBuilder(value.length());
 		for (final char ch : value.toCharArray()) {
 			switch (ch) {
-			case '&':
+				case '&':
 				builder.append("&amp;");
 				break;
-			case '<':
+				case '<':
 				builder.append("&lt;");
 				break;
-			case '>':
+				case '>':
 				builder.append("&gt;");
 				break;
-			case '\"':
+				case '\"':
 				builder.append("&quot;");
 				break;
-			default:
+				default:
 				builder.append(ch);
 				break;
 			}
@@ -678,16 +678,16 @@ window.setShopMode(parseShopMode(event));
 			final String actionWord = (type == TransactionType.BUY) ? "zakup" : "sprzedaż";
 			final String dialogTitle = (type == TransactionType.BUY) ? "Potwierdź zakup" : "Potwierdź sprzedaż";
 			final String message = new StringBuilder()
-				.append("Czy potwierdzasz ")
-				.append(actionWord)
-				.append(' ')
-				.append(quantity)
-				.append(" × ")
-				.append(offer.displayName)
-				.append(" za ")
-				.append(formatPricePlain(capped))
-				.append('?')
-				.toString();
+			.append("Czy potwierdzasz ")
+			.append(actionWord)
+			.append(' ')
+			.append(quantity)
+			.append(" × ")
+			.append(offer.displayName)
+			.append(" za ")
+			.append(formatPricePlain(capped))
+			.append('?')
+			.toString();
 
 			final int result = JOptionPane.showConfirmDialog(this, message, dialogTitle, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
@@ -726,7 +726,7 @@ window.setShopMode(parseShopMode(event));
 		}
 	}
 
-		private static final class Offer {
+	private static final class Offer {
 		private final String commandKey;
 		private final String displayName;
 		private final String description;

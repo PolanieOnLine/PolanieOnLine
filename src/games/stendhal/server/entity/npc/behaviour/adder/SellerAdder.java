@@ -54,7 +54,7 @@ public class SellerAdder {
 	/**
 	 * Behaviour parse result in the current conversation.
 	 * Remark: There is only one conversation between a player and the NPC at any time.
-	 */
+	*/
 	private ItemParserResult currentBehavRes;
 
 	/**
@@ -64,7 +64,7 @@ public class SellerAdder {
 	 *	 The NPC that buys.
 	 * @param sellerBehavior
 	 *	 The <code>SllerBehaviour</code>.
-	 */
+	*/
 	public void addSeller(final SpeakerNPC npc, final SellerBehaviour behaviour) {
 		addSeller(npc, behaviour, true);
 	}
@@ -78,21 +78,21 @@ public class SellerAdder {
 	 *	 The <code>SllerBehaviour</code>.
 	 * @param offer
 	 *	 If <code>true</code>, adds reply to "offer".
-	 */
+	*/
 	public void addSeller(final SpeakerNPC npc, final SellerBehaviour sellerBehaviour, final boolean offer) {
 		final Engine engine = npc.getEngine();
 
 		merchantsRegister.add(npc, sellerBehaviour);
 		npc.put("job_merchant", "");
 
-final ShopWindowSupport shopSupport = new ShopWindowSupport(npc, sellerBehaviour, merchantsRegister);
+		final ShopWindowSupport shopSupport = new ShopWindowSupport(npc, sellerBehaviour, merchantsRegister);
 
 		if (offer) {
 			engine.add(
-				ConversationStates.ATTENDING,
-				ConversationPhrases.OFFER_MESSAGES,
-				null, false, ConversationStates.ATTENDING,
-				null, new ChatAction() {
+			ConversationStates.ATTENDING,
+			ConversationPhrases.OFFER_MESSAGES,
+			null, false, ConversationStates.ATTENDING,
+			null, new ChatAction() {
 				@Override
 				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 					raiser.say("Sprzedaję " + Grammar.enumerateCollection(sellerBehaviour.dealtItems()) + ".");
@@ -102,111 +102,111 @@ final ShopWindowSupport shopSupport = new ShopWindowSupport(npc, sellerBehaviour
 		}
 
 		engine.add(ConversationStates.ATTENDING,
-				ConversationPhrases.PURCHASE_MESSAGES,
-				new SentenceHasErrorCondition(),
-				false, ConversationStates.ATTENDING,
-				null, new ComplainAboutSentenceErrorAction());
+		ConversationPhrases.PURCHASE_MESSAGES,
+		new SentenceHasErrorCondition(),
+		false, ConversationStates.ATTENDING,
+		null, new ComplainAboutSentenceErrorAction());
 
 		ChatCondition condition = new AndCondition(
-			new NotCondition(new SentenceHasErrorCondition()),
-			new NotCondition(sellerBehaviour.getTransactionCondition()));
+		new NotCondition(new SentenceHasErrorCondition()),
+		new NotCondition(sellerBehaviour.getTransactionCondition()));
 
 		engine.add(ConversationStates.ATTENDING,
-				ConversationPhrases.PURCHASE_MESSAGES,
-				condition, false,
-				ConversationStates.ATTENDING, null,
-				sellerBehaviour.getRejectedTransactionAction());
+		ConversationPhrases.PURCHASE_MESSAGES,
+		condition, false,
+		ConversationStates.ATTENDING, null,
+		sellerBehaviour.getRejectedTransactionAction());
 
 		condition = new AndCondition(
-			new NotCondition(new SentenceHasErrorCondition()),
-			sellerBehaviour.getTransactionCondition());
+		new NotCondition(new SentenceHasErrorCondition()),
+		sellerBehaviour.getTransactionCondition());
 
 		engine.add(ConversationStates.ATTENDING,
-				ConversationPhrases.PURCHASE_MESSAGES,
-				condition, false,
-				ConversationStates.ATTENDING, null,
-				new BehaviourAction(sellerBehaviour, ConversationPhrases.PURCHASE_MESSAGES, "sell") {
-					@Override
-					public void fireRequestOK(final ItemParserResult res, final Player player, final Sentence sentence, final EventRaiser raiser) {
-						String chosenItemName = res.getChosenItemName();
+		ConversationPhrases.PURCHASE_MESSAGES,
+		condition, false,
+		ConversationStates.ATTENDING, null,
+		new BehaviourAction(sellerBehaviour, ConversationPhrases.PURCHASE_MESSAGES, "sell") {
+			@Override
+			public void fireRequestOK(final ItemParserResult res, final Player player, final Sentence sentence, final EventRaiser raiser) {
+				String chosenItemName = res.getChosenItemName();
 
-						// find out if the NPC sells this item, and if so,
-						// how much it costs.
-						if (res.getAmount() > 1000) {
-   								logger.warn("Refusing to sell very large amount of "
-									+ res.getAmount()
-									+ " " + chosenItemName
-									+ " to player "
-									+ player.getName() + " talking to "
-									+ raiser.getName() + " saying "
-									+ sentence);
-   							raiser.say("Maksymalną ilość " 
-									+ chosenItemName 
-									+ " jaką mogę sprzedać jest 1000 naraz.");
-						} else if (res.getAmount() > 0) {
-								StringBuilder builder = new StringBuilder();
+				// find out if the NPC sells this item, and if so,
+				// how much it costs.
+				if (res.getAmount() > 1000) {
+					logger.warn("Refusing to sell very large amount of "
+					+ res.getAmount()
+					+ " " + chosenItemName
+					+ " to player "
+					+ player.getName() + " talking to "
+					+ raiser.getName() + " saying "
+					+ sentence);
+					raiser.say("Maksymalną ilość "
+					+ chosenItemName
+					+ " jaką mogę sprzedać jest 1000 naraz.");
+				} else if (res.getAmount() > 0) {
+					StringBuilder builder = new StringBuilder();
 
-							// When the user tries to buy several of a non-stackable
-							// item, he is forced to buy only one.
-							if (res.getAmount() != 1) {
-								final Item item = sellerBehaviour.getAskedItem(chosenItemName);
+					// When the user tries to buy several of a non-stackable
+					// item, he is forced to buy only one.
+					if (res.getAmount() != 1) {
+						final Item item = sellerBehaviour.getAskedItem(chosenItemName);
 
-								if (item == null) {
-									logger.error("Trying to sell a nonexistent item: " + chosenItemName);
-								} else if (!(item instanceof StackableItem)) {
-									builder.append("Możesz kupić tylko pojedynczo " + chosenItemName + ". ");
-									res.setAmount(1);
-								}
-							}
-
-							int price = sellerBehaviour.getUnitPrice(chosenItemName) * res.getAmount();
-							if (player.isBadBoy()) {
-								price = (int) (SellerBehaviour.BAD_BOY_BUYING_PENALTY * price);
-								
-								builder.append("Od przyjaciół biorę mniej, ale, że grasz nieczysto to ");
-								builder.append(Grammar.quantityplnoun(res.getAmount(), chosenItemName));
-							} else {
-								builder.append(Grammar.capitalize(Grammar.quantityplnoun(res.getAmount(), chosenItemName)));
-							}
-
-							builder.append(" kosztuje ");
-							builder.append(MoneyUtils.formatPrice(price));
-							builder.append(". Chcesz ");
-							builder.append(Grammar.itthem(res.getAmount()));
-							builder.append(" kupić?");
-
-							raiser.say(builder.toString());
-
-							currentBehavRes = res;
-							npc.setCurrentState(ConversationStates.BUY_PRICE_OFFERED); // success
-						} else {
-							raiser.say("Ile " + Grammar.plnoun(res.getAmount(), chosenItemName) + " chcesz kupić?!");
+						if (item == null) {
+							logger.error("Trying to sell a nonexistent item: " + chosenItemName);
+						} else if (!(item instanceof StackableItem)) {
+							builder.append("Możesz kupić tylko pojedynczo " + chosenItemName + ". ");
+							res.setAmount(1);
 						}
 					}
-				});
 
-		engine.add(ConversationStates.BUY_PRICE_OFFERED,
-				ConversationPhrases.YES_MESSAGES, null,
-				false, ConversationStates.ATTENDING,
-				null, new ChatAction() {
-					@Override
-					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-						final String itemName = currentBehavRes.getChosenItemName();
-						logger.debug("Selling a " + itemName + " to player " + player.getName());
+					int price = sellerBehaviour.getUnitPrice(chosenItemName) * res.getAmount();
+					if (player.isBadBoy()) {
+						price = (int) (SellerBehaviour.BAD_BOY_BUYING_PENALTY * price);
 
-						boolean success = sellerBehaviour.transactAgreedDeal(currentBehavRes, raiser, player);
-						if (success) {
-							raiser.addEvent(new SoundEvent(SoundID.COMMERCE, SoundLayer.CREATURE_NOISE));
-						}
-
-						currentBehavRes = null;
+						builder.append("Od przyjaciół biorę mniej, ale, że grasz nieczysto to ");
+						builder.append(Grammar.quantityplnoun(res.getAmount(), chosenItemName));
+					} else {
+						builder.append(Grammar.capitalize(Grammar.quantityplnoun(res.getAmount(), chosenItemName)));
 					}
-				});
+
+					builder.append(" kosztuje ");
+					builder.append(MoneyUtils.formatPrice(price));
+					builder.append(". Chcesz ");
+					builder.append(Grammar.itthem(res.getAmount()));
+					builder.append(" kupić?");
+
+					raiser.say(builder.toString());
+
+					currentBehavRes = res;
+					npc.setCurrentState(ConversationStates.BUY_PRICE_OFFERED); // success
+				} else {
+					raiser.say("Ile " + Grammar.plnoun(res.getAmount(), chosenItemName) + " chcesz kupić?!");
+				}
+			}
+		});
 
 		engine.add(ConversationStates.BUY_PRICE_OFFERED,
-				ConversationPhrases.NO_MESSAGES, null,
-				false, ConversationStates.ATTENDING,
-				"Dobrze w czym jeszcze mogę pomóc?", null);
+		ConversationPhrases.YES_MESSAGES, null,
+		false, ConversationStates.ATTENDING,
+		null, new ChatAction() {
+			@Override
+			public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
+				final String itemName = currentBehavRes.getChosenItemName();
+				logger.debug("Selling a " + itemName + " to player " + player.getName());
+
+				boolean success = sellerBehaviour.transactAgreedDeal(currentBehavRes, raiser, player);
+				if (success) {
+					raiser.addEvent(new SoundEvent(SoundID.COMMERCE, SoundLayer.CREATURE_NOISE));
+				}
+
+				currentBehavRes = null;
+			}
+		});
+
+		engine.add(ConversationStates.BUY_PRICE_OFFERED,
+		ConversationPhrases.NO_MESSAGES, null,
+		false, ConversationStates.ATTENDING,
+		"Dobrze w czym jeszcze mogę pomóc?", null);
 	}
 
 	private static final class ShopWindowSupport {

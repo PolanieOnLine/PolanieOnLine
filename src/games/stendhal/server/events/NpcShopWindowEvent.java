@@ -20,6 +20,7 @@ import games.stendhal.server.entity.item.ItemInformation;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
 import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
+import games.stendhal.server.entity.npc.shop.ShopType;
 import games.stendhal.server.entity.player.Player;
 import marauroa.common.game.Definition;
 import marauroa.common.game.Definition.DefinitionClass;
@@ -40,16 +41,11 @@ public class NpcShopWindowEvent extends RPEvent {
 	private static final String ATTR_NPC = "npc";
 	private static final String ATTR_TITLE = "title";
 	private static final String ATTR_BACKGROUND = "background";
-private static final String ATTR_FLAVOR = "shop_flavor";
-private static final String ATTR_CATEGORY = "shop_category";
-private static final String ATTR_ITEM_KEY = "shop_item_key";
-private static final String ATTR_MODE = "shop_mode";
-private static final String ATTR_OFFER_TYPE = "shop_offer_type";
-private static final String MODE_BUY = "buy";
-private static final String MODE_SELL = "sell";
-private static final String MODE_BOTH = "both";
-private static final String OFFER_TYPE_BUY = "buy";
-private static final String OFFER_TYPE_SELL = "sell";
+	private static final String ATTR_FLAVOR = "shop_flavor";
+	private static final String ATTR_CATEGORY = "shop_category";
+	private static final String ATTR_ITEM_KEY = "shop_item_key";
+	private static final String ATTR_MODE = "shop_mode";
+	private static final String ATTR_OFFER_TYPE = "shop_offer_type";
 
 	private static final String ACTION_OPEN = "open";
 	private static final String ACTION_CLOSE = "close";
@@ -62,17 +58,17 @@ private static final String OFFER_TYPE_SELL = "sell";
 
 	/**
 	 * Registers the RPClass for NPC shop events.
-	 */
+	*/
 	public static void generateRPClass() {
-try {
-final RPClass rpclass = new RPClass(Events.NPC_SHOP);
-rpclass.add(DefinitionClass.ATTRIBUTE, ATTR_ACTION, Type.STRING, Definition.PRIVATE);
-rpclass.add(DefinitionClass.ATTRIBUTE, ATTR_NPC, Type.STRING, Definition.PRIVATE);
-rpclass.add(DefinitionClass.ATTRIBUTE, ATTR_TITLE, Type.STRING, Definition.PRIVATE);
-rpclass.add(DefinitionClass.ATTRIBUTE, ATTR_BACKGROUND, Type.STRING, Definition.PRIVATE);
-rpclass.add(DefinitionClass.ATTRIBUTE, ATTR_MODE, Type.STRING, Definition.PRIVATE);
-rpclass.addRPSlot(SLOT_OFFERS, 999);
-} catch (final SyntaxException e) {
+		try {
+			final RPClass rpclass = new RPClass(Events.NPC_SHOP);
+			rpclass.add(DefinitionClass.ATTRIBUTE, ATTR_ACTION, Type.STRING, Definition.PRIVATE);
+			rpclass.add(DefinitionClass.ATTRIBUTE, ATTR_NPC, Type.STRING, Definition.PRIVATE);
+			rpclass.add(DefinitionClass.ATTRIBUTE, ATTR_TITLE, Type.STRING, Definition.PRIVATE);
+			rpclass.add(DefinitionClass.ATTRIBUTE, ATTR_BACKGROUND, Type.STRING, Definition.PRIVATE);
+			rpclass.add(DefinitionClass.ATTRIBUTE, ATTR_MODE, Type.STRING, Definition.PRIVATE);
+			rpclass.addRPSlot(SLOT_OFFERS, 999);
+		} catch (final SyntaxException e) {
 			logger.error("cannot generateRPClass", e);
 		}
 	}
@@ -82,13 +78,16 @@ rpclass.addRPSlot(SLOT_OFFERS, 999);
 	 *
 	 * @param npc
 	 *            merchant speaking to the player
-	 * @param behaviour
-	 *            behaviour providing the offers
+	 * @param sellerBehaviour
+	 *            behaviour providing the sell offers
+	 * @param buyerBehaviour
+	 *            behaviour providing the buy offers
 	 * @param player
 	 *            player in the conversation
 	 * @return event describing shop inventory
-	 */
-	public static NpcShopWindowEvent open(final SpeakerNPC npc, final SellerBehaviour sellerBehaviour, final BuyerBehaviour buyerBehaviour, final Player player) {
+	*/
+	public static NpcShopWindowEvent open(final SpeakerNPC npc, final SellerBehaviour sellerBehaviour,
+	final BuyerBehaviour buyerBehaviour, final Player player) {
 		final NpcShopWindowEvent event = new NpcShopWindowEvent(ACTION_OPEN, npc.getName());
 		event.put(ATTR_TITLE, npc.getName() + " - Sklep");
 
@@ -101,7 +100,7 @@ rpclass.addRPSlot(SLOT_OFFERS, 999);
 
 		final boolean hasSeller = sellerBehaviour != null;
 		final boolean hasBuyer = buyerBehaviour != null;
-		event.put(ATTR_MODE, determineMode(hasSeller, hasBuyer));
+		event.put(ATTR_MODE, determineMode(hasSeller, hasBuyer, sellerBehaviour, buyerBehaviour));
 		event.addSlot(SLOT_OFFERS);
 		final RPSlot slot = event.getSlot(SLOT_OFFERS);
 
@@ -115,7 +114,8 @@ rpclass.addRPSlot(SLOT_OFFERS, 999);
 		return event;
 	}
 
-	private static void appendSellerOffers(final RPSlot slot, final SpeakerNPC npc, final SellerBehaviour behaviour, final Player player) {
+	private static void appendSellerOffers(final RPSlot slot, final SpeakerNPC npc, final SellerBehaviour behaviour,
+	final Player player) {
 		for (final String itemName : behaviour.dealtItems()) {
 			final Item item = behaviour.getAskedItem(itemName, player);
 			if (item == null) {
@@ -123,7 +123,7 @@ rpclass.addRPSlot(SLOT_OFFERS, 999);
 				continue;
 			}
 			final ItemInformation info = new ItemInformation(item);
-			populateOfferInfo(info, item, itemName, behaviour.getUnitPrice(itemName), OFFER_TYPE_BUY);
+			populateOfferInfo(info, item, itemName, behaviour.getUnitPrice(itemName), ShopType.ITEM_SELL);
 			slot.add(info);
 		}
 	}
@@ -136,12 +136,13 @@ rpclass.addRPSlot(SLOT_OFFERS, 999);
 				continue;
 			}
 			final ItemInformation info = new ItemInformation(item);
-			populateOfferInfo(info, item, itemName, behaviour.getUnitPrice(itemName), OFFER_TYPE_SELL);
+			populateOfferInfo(info, item, itemName, behaviour.getUnitPrice(itemName), ShopType.ITEM_BUY);
 			slot.add(info);
 		}
 	}
 
-	private static void populateOfferInfo(final ItemInformation info, final Item item, final String itemName, final int price, final String offerType) {
+	private static void populateOfferInfo(final ItemInformation info, final Item item, final String itemName,
+	final int price, final ShopType offerType) {
 		info.put("price", price);
 		info.put("description_info", info.describe());
 		info.put(ATTR_ITEM_KEY, itemName);
@@ -149,20 +150,37 @@ rpclass.addRPSlot(SLOT_OFFERS, 999);
 			info.put(ATTR_CATEGORY, item.get("class"));
 		}
 		info.put(ATTR_FLAVOR, extractFlavor(item));
-		info.put(ATTR_OFFER_TYPE, offerType);
+		info.put(ATTR_OFFER_TYPE, offerType.toString());
 	}
 
-	private static String determineMode(final boolean hasSeller, final boolean hasBuyer) {
+	private static String determineMode(final boolean hasSeller, final boolean hasBuyer,
+	final SellerBehaviour sellerBehaviour, final BuyerBehaviour buyerBehaviour) {
 		if (hasSeller && hasBuyer) {
-			return MODE_BOTH;
+			return ShopType.TRADE.toString();
 		}
 		if (hasSeller) {
-			return MODE_BUY;
+			return extractTypeOrDefault(sellerBehaviour, ShopType.ITEM_SELL).toString();
 		}
 		if (hasBuyer) {
-			return MODE_SELL;
+			return extractTypeOrDefault(buyerBehaviour, ShopType.ITEM_BUY).toString();
 		}
-		return MODE_BUY;
+		return ShopType.ITEM_SELL.toString();
+	}
+
+	private static ShopType extractTypeOrDefault(final SellerBehaviour behaviour, final ShopType fallback) {
+		if (behaviour == null) {
+			return fallback;
+		}
+		final ShopType type = behaviour.getShopType();
+		return type == null ? fallback : type;
+	}
+
+	private static ShopType extractTypeOrDefault(final BuyerBehaviour behaviour, final ShopType fallback) {
+		if (behaviour == null) {
+			return fallback;
+		}
+		final ShopType type = behaviour.getShopType();
+		return type == null ? fallback : type;
 	}
 
 	/**
@@ -171,25 +189,25 @@ rpclass.addRPSlot(SLOT_OFFERS, 999);
 	 * @param npc
 	 *            merchant finishing the conversation
 	 * @return closing event
-	 */
+	*/
 	public static NpcShopWindowEvent close(final SpeakerNPC npc) {
 		return new NpcShopWindowEvent(ACTION_CLOSE, npc.getName());
 	}
 
-private static String extractFlavor(final Item item) {
-if (item == null) {
-return "";
-}
-if (item.has("shop_flavor")) {
-return item.get("shop_flavor");
-}
-if (item.has("flavor_text")) {
-return item.get("flavor_text");
-}
-if (item.has("flavour_text")) {
-return item.get("flavour_text");
-}
-return "";
-}
+	private static String extractFlavor(final Item item) {
+		if (item == null) {
+			return "";
+		}
+		if (item.has("shop_flavor")) {
+			return item.get("shop_flavor");
+		}
+		if (item.has("flavor_text")) {
+			return item.get("flavor_text");
+		}
+		if (item.has("flavour_text")) {
+			return item.get("flavour_text");
+		}
+		return "";
+	}
 
 }
