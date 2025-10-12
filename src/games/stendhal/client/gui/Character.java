@@ -11,6 +11,7 @@
  ***************************************************************************/
 package games.stendhal.client.gui;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -40,6 +41,7 @@ import games.stendhal.client.entity.Inspector;
 import games.stendhal.client.entity.User;
 import games.stendhal.client.entity.factory.EntityMap;
 import games.stendhal.client.gui.layout.SBoxLayout;
+import games.stendhal.client.gui.layout.SLayout;
 import games.stendhal.client.listener.FeatureChangeListener;
 import games.stendhal.client.sprite.SpriteStore;
 import games.stendhal.common.constants.Actions;
@@ -198,21 +200,36 @@ Inspectable {
 		Dimension toggleSize = reserveToggleButton.getPreferredSize();
 		toggleSize.height = Math.min(toggleSize.height, toggleHeight);
 		toggleSize.width = Math.max(toggleSize.width, 20);
-		reserveToggleButton.setPreferredSize(new Dimension(toggleSize.width, toggleSize.height));
-		reserveToggleButton.setMinimumSize(new Dimension(toggleSize.width, toggleSize.height));
-		reserveToggleButton.setMaximumSize(new Dimension(toggleSize.width, toggleSize.height));
+		Dimension togglePreferred = new Dimension(toggleSize.width, toggleSize.height);
+		reserveToggleButton.setPreferredSize(togglePreferred);
+		reserveToggleButton.setMinimumSize(togglePreferred);
+		reserveToggleButton.setMaximumSize(new Dimension(toggleSize.width, Integer.MAX_VALUE));
+		setToggleRow.setMinimumSize(new Dimension(toggleSize.width, 0));
+		setToggleRow.setPreferredSize(togglePreferred);
+		setToggleRow.setMaximumSize(new Dimension(toggleSize.width, Integer.MAX_VALUE));
 		reserveToggleButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				toggleReserveWindow();
 			}
 		});
-		setToggleRow.add(reserveToggleButton);
+		setToggleRow.add(reserveToggleButton, SBoxLayout.constraint(SLayout.EXPAND_AXIAL));
 		setToggleRow.setVisible(false);
 
 		equipmentRow = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, PADDING);
-		equipmentRow.add(setToggleRow);
+		equipmentRow.add(setToggleRow, SBoxLayout.constraint(SLayout.EXPAND_PERPENDICULAR));
 		equipmentRow.add(mainRow);
+		equipmentRow.addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentResized(ComponentEvent event) {
+				updateToggleButtonHeight();
+			}
+
+			@Override
+			public void componentShown(ComponentEvent event) {
+				updateToggleButtonHeight();
+			}
+		});
 		setSlotsContainer = createSetSlotLayout(itemClass, store);
 		setSlotsContainer.addComponentListener(new ComponentAdapter() {
 			@Override
@@ -239,6 +256,12 @@ Inspectable {
 		panel = createItemPanel(itemClass, store, "belt", "data/gui/slot-key.png");
 		specialSlots.add(panel);
 		setContent(content);
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				updateToggleButtonHeight();
+			}
+		});
 	}
 
 
@@ -268,16 +291,17 @@ Inspectable {
 		int swapHeight = 16;
 		Dimension swapSize = setSwapButton.getPreferredSize();
 		swapSize.height = Math.min(swapSize.height, swapHeight);
-		setSwapButton.setPreferredSize(new Dimension(swapSize.width, swapSize.height));
-		setSwapButton.setMinimumSize(new Dimension(swapSize.width, swapSize.height));
+		Dimension swapPreferred = new Dimension(swapSize.width, swapSize.height);
+		setSwapButton.setPreferredSize(swapPreferred);
+		setSwapButton.setMinimumSize(new Dimension(0, swapSize.height));
 		setSwapButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, swapSize.height));
+		setSwapButton.setAlignmentX(Component.LEFT_ALIGNMENT);
 		setSwapButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				swapSets();
 			}
 		});
-		column.add(setSwapButton);
 
 		JComponent row = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, PADDING);
 		JComponent left = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
@@ -324,9 +348,33 @@ Inspectable {
 		right.add(setPouch);
 		featureChangeListeners.add(setPouch);
 
-		column.add(row);
+		column.add(row, SBoxLayout.constraint(SLayout.EXPAND_AXIAL));
+		column.add(Box.createVerticalStrut(PADDING));
+		column.add(setSwapButton, SBoxLayout.constraint(SLayout.EXPAND_PERPENDICULAR));
 
 		return column;
+	}
+
+	private void updateToggleButtonHeight() {
+		if ((reserveToggleButton == null) || (setToggleRow == null) || (equipmentRow == null)) {
+			return;
+		}
+		int height = equipmentRow.getHeight();
+		if (height <= 0) {
+			height = equipmentRow.getPreferredSize().height;
+		}
+		if (height <= 0) {
+			return;
+		}
+		Dimension toggleSize = reserveToggleButton.getPreferredSize();
+		Dimension newSize = new Dimension(toggleSize.width, height);
+		reserveToggleButton.setPreferredSize(newSize);
+		reserveToggleButton.setMinimumSize(new Dimension(toggleSize.width, height));
+		reserveToggleButton.setMaximumSize(new Dimension(toggleSize.width, height));
+		setToggleRow.setPreferredSize(newSize);
+		setToggleRow.setMinimumSize(new Dimension(toggleSize.width, height));
+		setToggleRow.setMaximumSize(new Dimension(toggleSize.width, height));
+		setToggleRow.revalidate();
 	}
 
 	private void toggleReserveWindow() {
