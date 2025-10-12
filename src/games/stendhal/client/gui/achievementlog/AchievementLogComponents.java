@@ -5,31 +5,17 @@ import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.util.List;
-
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 
 import games.stendhal.client.gui.layout.SBoxLayout;
 
 public class AchievementLogComponents {
 	JComponent getHeaderText(int width, int pad) {
-		List<String> achievementList = AchievementLogController.get().getList();
-		int achievementCount = achievementList.size();
-
-		JLabel header = new JLabel();
-		header.setBorder(BorderFactory.createEmptyBorder(pad, pad, pad, pad));
-		StringBuilder text = new StringBuilder();
-		text.append("<html><div width=").append(width - 10).append(">Liczba aktywnych osiągnięć: ");
-		text.append(achievementCount);
-		text.append("<br/><span style=\"font-size: 11px; color: #6b5842;\">");
-		text.append("Użyj kafelków filtrów i przycisków nawigacji, aby przeglądać dziennik niczym księgę.");
-		text.append("</span></div></html>");
-		header.setText(text.toString());
-
-		return header;
+		JComponent spacer = SBoxLayout.createContainer(SBoxLayout.VERTICAL, 0);
+		spacer.setBorder(BorderFactory.createEmptyBorder(pad, pad, pad, pad));
+		return spacer;
 	}
 
 	JComponent getButtons(Window window) {

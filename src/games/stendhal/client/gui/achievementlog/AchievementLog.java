@@ -285,6 +285,7 @@ class AchievementLog {
 		final JPanel filters = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, PAD, PAD));
 		filters.setOpaque(false);
 		filters.setBorder(BorderFactory.createEmptyBorder(0, PAD, 0, PAD));
+		filters.setAlignmentX(Component.LEFT_ALIGNMENT);
 
 		ImageIcon allIcon = loadAllIcon();
 		filters.add(createFilterToggle(allIcon, "Wszystkie osiągnięcia", null, true));
@@ -294,25 +295,7 @@ class AchievementLog {
 			filters.add(createFilterToggle(icon, info.displayName, info.key, false));
 		}
 
-		int filterHeight = 0;
-		for (Component component : filters.getComponents()) {
-			filterHeight = Math.max(filterHeight, component.getPreferredSize().height);
-		}
-		filterHeight = Math.max(filterHeight, 1) + (PAD * 2);
-
-		Dimension filterSize = new Dimension(CONTENT_WIDTH, filterHeight);
-		filters.setPreferredSize(filterSize);
-		filters.setMinimumSize(filterSize);
-		filters.setMaximumSize(filterSize);
-
-		JPanel wrapper = new JPanel(new BorderLayout());
-		wrapper.setOpaque(false);
-		wrapper.setPreferredSize(filterSize);
-		wrapper.setMinimumSize(filterSize);
-		wrapper.setMaximumSize(filterSize);
-		wrapper.add(filters, BorderLayout.CENTER);
-
-		return wrapper;
+		return filters;
 	}
 
 	private JToggleButton createFilterToggle(ImageIcon icon, String tooltip, String categoryKey, boolean selected) {
@@ -377,12 +360,13 @@ class AchievementLog {
 	}
 
 	private JComponent createAchievementCard(AchievementEntry entry) {
-		JComponent card = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PAD / 2);
+		JPanel card = new JPanel();
+		card.setLayout(new SBoxLayout(SBoxLayout.VERTICAL, PAD / 2));
 		Color baseBackground = entry.reached ? CARD_BACKGROUND : LOCKED_CARD_BACKGROUND;
 		card.setOpaque(true);
 		card.setBackground(baseBackground);
 		Border defaultBorder = BorderFactory.createCompoundBorder(new LineBorder(CARD_BORDER, 1, true),
-			BorderFactory.createEmptyBorder(12, 12, 12, 12));
+				BorderFactory.createEmptyBorder(12, 12, 12, 12));
 		card.setBorder(defaultBorder);
 		card.setAlignmentX(Component.CENTER_ALIGNMENT);
 		card.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -390,6 +374,7 @@ class AchievementLog {
 		card.setPreferredSize(cardSize);
 		card.setMinimumSize(cardSize);
 		card.setMaximumSize(cardSize);
+		card.setDoubleBuffered(true);
 
 		JLabel iconLabel = new JLabel(entry.icon);
 		iconLabel.setPreferredSize(new Dimension(FILTER_ICON_SIZE, FILTER_ICON_SIZE));
@@ -425,12 +410,14 @@ class AchievementLog {
 				card.setBackground(CARD_HOVER_BACKGROUND);
 				card.setBorder(BorderFactory.createCompoundBorder(new LineBorder(CARD_HOVER_BORDER, 2, true),
 					BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+				card.repaint();
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
 				card.setBackground(baseBackground);
 				card.setBorder(defaultBorder);
+				card.repaint();
 			}
 		});
 
