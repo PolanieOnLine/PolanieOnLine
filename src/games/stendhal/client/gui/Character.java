@@ -191,6 +191,7 @@ Inspectable {
 		featureChangeListeners.add(pouch);
 
 		setToggleRow = SBoxLayout.createContainer(SBoxLayout.VERTICAL, 0);
+		setToggleRow.setAlignmentY(TOP_ALIGNMENT);
 		reserveToggleButton = new JButton("<");
 		reserveToggleButton.setMargin(new Insets(1, 4, 1, 4));
 		int toggleHeight = 16;
@@ -199,7 +200,7 @@ Inspectable {
 		toggleSize.width = Math.max(toggleSize.width, 20);
 		reserveToggleButton.setPreferredSize(new Dimension(toggleSize.width, toggleSize.height));
 		reserveToggleButton.setMinimumSize(new Dimension(toggleSize.width, toggleSize.height));
-		reserveToggleButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, toggleSize.height));
+		reserveToggleButton.setMaximumSize(new Dimension(toggleSize.width, toggleSize.height));
 		reserveToggleButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
@@ -208,9 +209,9 @@ Inspectable {
 		});
 		setToggleRow.add(reserveToggleButton);
 		setToggleRow.setVisible(false);
-		content.add(setToggleRow);
 
 		equipmentRow = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, PADDING);
+		equipmentRow.add(setToggleRow);
 		equipmentRow.add(mainRow);
 		setSlotsContainer = createSetSlotLayout(itemClass, store);
 		setSlotsContainer.addComponentListener(new ComponentAdapter() {
