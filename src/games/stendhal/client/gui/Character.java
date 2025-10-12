@@ -195,11 +195,11 @@ Inspectable {
 		setToggleRow = SBoxLayout.createContainer(SBoxLayout.VERTICAL, 0);
 		setToggleRow.setAlignmentY(TOP_ALIGNMENT);
 		reserveToggleButton = new JButton("<");
-		reserveToggleButton.setMargin(new Insets(1, 4, 1, 4));
+		reserveToggleButton.setMargin(new Insets(1, 2, 1, 2));
 		int toggleHeight = 16;
 		Dimension toggleSize = reserveToggleButton.getPreferredSize();
 		toggleSize.height = Math.min(toggleSize.height, toggleHeight);
-		toggleSize.width = Math.max(toggleSize.width, 20);
+		toggleSize.width = Math.max(toggleSize.width, 16);
 		Dimension togglePreferred = new Dimension(toggleSize.width, toggleSize.height);
 		reserveToggleButton.setPreferredSize(togglePreferred);
 		reserveToggleButton.setMinimumSize(togglePreferred);
