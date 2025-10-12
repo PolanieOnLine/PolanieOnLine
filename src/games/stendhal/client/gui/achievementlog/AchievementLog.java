@@ -54,6 +54,7 @@ class AchievementLog {
 	public static final int PAD = 5;
 	private static final int BOOK_WIDTH = 720;
 	private static final int BOOK_HEIGHT = 500;
+	private static final int DESCRIPTION_WIDTH = 260;
 	private static final int COLUMNS_PER_PAGE = 2;
 	private static final int ROWS_PER_PAGE = 4;
 	private static final int ACHIEVEMENTS_PER_PAGE = COLUMNS_PER_PAGE * ROWS_PER_PAGE;
@@ -241,50 +242,48 @@ class AchievementLog {
 		return nav;
 	}
 
-	private JPanel createFilterPanel() {
-		JPanel filters = new JPanel();
+	private JComponent createFilterPanel() {
+		final JPanel filters = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, PAD, PAD / 2));
 		filters.setOpaque(false);
-		filters.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, PAD, PAD / 2));
 		filters.setBorder(BorderFactory.createEmptyBorder(0, PAD, 0, PAD));
-		filters.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-		filters.add(createFilterToggle("Wszystkie", null, true));
+		filters.add(createFilterToggle(loadAllIcon(), "Wszystkie osiągnięcia", null, true));
 
-		Map<String, String> categories = new LinkedHashMap<>();
-		for (AchievementEntry entry : allAchievements) {
-			if (!categories.containsKey(entry.categoryKey)) {
-				categories.put(entry.categoryKey, entry.category);
+		for (CategoryInfo info : collectCategories().values()) {
+			filters.add(createFilterToggle(info.icon, info.displayName, info.key, false));
+		}
+
+		JComponent wrapper = new JPanel(new BorderLayout()) {
+			@Override
+			public Dimension getPreferredSize() {
+				Dimension size = super.getPreferredSize();
+				size.width = BOOK_WIDTH;
+				return size;
 			}
-		}
-		for (Map.Entry<String, String> entry : categories.entrySet()) {
-			filters.add(createFilterToggle(formatCategoryLabel(entry.getValue()), entry.getKey(), false));
-		}
+		};
+		wrapper.setOpaque(false);
+		wrapper.add(filters, BorderLayout.CENTER);
 
-		return filters;
+		return wrapper;
 	}
 
-	private String formatCategoryLabel(String category) {
-		if (category == null || category.isEmpty()) {
-			return "Inne";
-		}
-		return category.toUpperCase(Locale.ROOT);
-	}
-
-	private JToggleButton createFilterToggle(String label, String categoryKey, boolean selected) {
-		JToggleButton toggle = new JToggleButton(label);
+	private JToggleButton createFilterToggle(ImageIcon icon, String tooltip, String categoryKey, boolean selected) {
+		JToggleButton toggle = new JToggleButton(icon);
 		toggle.setFocusPainted(false);
 		toggle.setSelected(selected);
 		toggle.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		Border defaultBorder = BorderFactory.createCompoundBorder(new LineBorder(CARD_BORDER, 1, true),
-			BorderFactory.createEmptyBorder(6, 16, 6, 16));
+				BorderFactory.createEmptyBorder(6, 6, 6, 6));
 		toggle.setBorder(defaultBorder);
 		toggle.setOpaque(true);
 		toggle.setBackground(selected ? CARD_HOVER_BACKGROUND : BOOK_BACKGROUND);
+		toggle.setToolTipText(tooltip);
+		toggle.getAccessibleContext().setAccessibleName(tooltip);
 		toggle.addChangeListener(e -> {
 			if (toggle.isSelected()) {
 				toggle.setBackground(CARD_HOVER_BACKGROUND);
 				toggle.setBorder(BorderFactory.createCompoundBorder(new LineBorder(CARD_HOVER_BORDER, 2, true),
-					BorderFactory.createEmptyBorder(4, 14, 4, 14)));
+						BorderFactory.createEmptyBorder(4, 4, 4, 4)));
 			} else {
 				toggle.setBackground(BOOK_BACKGROUND);
 				toggle.setBorder(defaultBorder);
@@ -293,6 +292,17 @@ class AchievementLog {
 		toggle.addActionListener(e -> applyFilter(categoryKey));
 		filterGroup.add(toggle);
 		return toggle;
+	}
+
+	private Map<String, CategoryInfo> collectCategories() {
+		Map<String, CategoryInfo> categories = new LinkedHashMap<>();
+		for (AchievementEntry entry : allAchievements) {
+			if (!categories.containsKey(entry.categoryKey)) {
+				String display = entry.category == null || entry.category.isEmpty() ? "Inne" : entry.category;
+				categories.put(entry.categoryKey, new CategoryInfo(entry.categoryKey, display, entry.icon));
+			}
+		}
+		return categories;
 	}
 
 	private void applyFilter(String categoryKey) {
@@ -359,7 +369,15 @@ class AchievementLog {
 	}
 
 	private String createDescriptionHtml(String desc) {
-		return "<html><div style=\"text-align: center; font-size: 11px;\">" + desc + ".</div></html>";
+		String text = desc == null ? "" : desc.trim();
+		if (!text.isEmpty()) {
+			char last = text.charAt(text.length() - 1);
+			if (last != '.' && last != '!' && last != '?') {
+				text = text + '.';
+			}
+		}
+		return "<html><div style=\"width: " + DESCRIPTION_WIDTH + "px; text-align: center; font-size: 11px;\">"
+				+ text + "</div></html>";
 	}
 
 	private List<AchievementEntry> loadAchievements() {
@@ -374,6 +392,10 @@ class AchievementLog {
 			String title = parts[1];
 			String description = parts[2];
 			boolean reached = Boolean.parseBoolean(parts[3]);
+			String categoryKey = category == null ? "" : category.toLowerCase(Locale.ROOT);
+			if (categoryKey.endsWith("ratk")) {
+				continue;
+			}
 			Sprite sprite = getAchievementImage(category, reached);
 			ImageIcon icon = createIcon(sprite);
 			entries.add(new AchievementEntry(category, title, description, reached, icon));
@@ -395,7 +417,8 @@ class AchievementLog {
 	}
 
 	private Sprite getAchievementImage(String category, boolean reached) {
-		String imagePath = "/data/sprites/achievements/" + category.toLowerCase(Locale.ROOT) + ".png";
+		String key = category == null ? "" : category.toLowerCase(Locale.ROOT);
+		String imagePath = "/data/sprites/achievements/" + key + ".png";
 		Sprite sprite;
 		if (reached) {
 			sprite = SpriteStore.get().getSprite(imagePath);
@@ -412,6 +435,16 @@ class AchievementLog {
 		return window;
 	}
 
+	private ImageIcon loadAllIcon() {
+		Sprite sprite = SpriteStore.get().getSprite("/data/sprites/achievements/special.png");
+		ImageIcon icon = createIcon(sprite);
+		if (icon == null || icon.getIconWidth() == 0) {
+			BufferedImage placeholder = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
+			return new ImageIcon(placeholder);
+		}
+		return icon;
+	}
+
 	private static class AchievementEntry {
 		private final String category;
 		private final String categoryKey;
@@ -426,6 +459,18 @@ class AchievementLog {
 			this.title = title;
 			this.description = description;
 			this.reached = reached;
+			this.icon = icon;
+		}
+	}
+
+	private static class CategoryInfo {
+		private final String key;
+		private final String displayName;
+		private final ImageIcon icon;
+
+		CategoryInfo(String key, String displayName, ImageIcon icon) {
+			this.key = key;
+			this.displayName = displayName;
 			this.icon = icon;
 		}
 	}
