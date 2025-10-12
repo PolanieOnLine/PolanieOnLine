@@ -24,7 +24,7 @@ public class AchievementLogComponents {
 		StringBuilder text = new StringBuilder();
 		text.append("<html><div width=").append(width - 10).append(">Liczba aktywnych osiągnięć: ");
 		text.append(achievementCount);
-		text.append("<br/><span style="font-size: 11px; color: #6b5842;">");
+		text.append("<br/><span style=\"font-size: 11px; color: #6b5842;\">");
 		text.append("Użyj kafelków filtrów i przycisków nawigacji, aby przeglądać dziennik niczym księgę.");
 		text.append("</span></div></html>");
 		header.setText(text.toString());
