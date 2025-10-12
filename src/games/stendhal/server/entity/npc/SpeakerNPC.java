@@ -40,6 +40,7 @@ import games.stendhal.server.entity.npc.condition.EmoteCondition;
 import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
 import games.stendhal.server.entity.npc.fsm.Engine;
 import games.stendhal.server.entity.npc.fsm.Transition;
+import games.stendhal.server.entity.npc.shop.ShopOfferSender;
 import games.stendhal.server.entity.player.Player;
 
 /**
@@ -486,14 +487,15 @@ public class SpeakerNPC extends PassiveNPC {
 		notifyWorldAboutChanges();
 	}
 
-	public void endConversation() {
-		if (goodbyeMessage != null) {
-			say(goodbyeMessage);
-		}
-		onGoodbye(attending);
-		engine.setCurrentState(ConversationStates.IDLE);
-		setAttending(null);
-	}
+public void endConversation() {
+if (goodbyeMessage != null) {
+say(goodbyeMessage);
+}
+onGoodbye(attending);
+ShopOfferSender.closeShopWindow(this, attending);
+engine.setCurrentState(ConversationStates.IDLE);
+setAttending(null);
+}
 
 	public boolean inConversationRange() {
 		if (attending == null) {
@@ -1080,18 +1082,19 @@ public class SpeakerNPC extends PassiveNPC {
 		addGoodbye("Do widzenia.");
 	}
 
-	public void addGoodbye(final String text) {
-		goodbyeMessage = text;
-		add(ConversationStates.ANY, ConversationPhrases.GOODBYE_MESSAGES,
-				ConversationStates.IDLE, text, new ChatAction() {
+public void addGoodbye(final String text) {
+goodbyeMessage = text;
+add(ConversationStates.ANY, ConversationPhrases.GOODBYE_MESSAGES,
+ConversationStates.IDLE, text, new ChatAction() {
 
-					@Override
-					public void fire(final Player player, final Sentence sentence,
-							final EventRaiser npc) {
-						((SpeakerNPC) npc.getEntity()).onGoodbye(player);
-					}
+@Override
+public void fire(final Player player, final Sentence sentence,
+final SpeakerNPC speaker = (SpeakerNPC) npc.getEntity();
+speaker.onGoodbye(player);
+ShopOfferSender.closeShopWindow(speaker, player);
+}
 
-					@Override
+@Override
 					public String toString() {
 						return "SpeakerNPC.onGoodbye";
 					}

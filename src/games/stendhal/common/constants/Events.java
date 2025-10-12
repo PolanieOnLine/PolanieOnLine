@@ -68,4 +68,6 @@ public final class Events {
 	public static final String DROPPEDLIST = Actions.DROPPEDLIST;
 
 	public static final String ACHIEVEMENT_LOG = Actions.ACHIEVEMENTLOG;
+
+	public static final String NPC_SHOP_OFFER = "npc_shop_offer";
 }

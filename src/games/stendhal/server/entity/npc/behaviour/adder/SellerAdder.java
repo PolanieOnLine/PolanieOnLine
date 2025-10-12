@@ -32,6 +32,7 @@ import games.stendhal.server.entity.npc.action.BehaviourAction;
 import games.stendhal.server.entity.npc.action.ComplainAboutSentenceErrorAction;
 import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 import games.stendhal.server.entity.npc.behaviour.journal.MerchantsRegister;
+import games.stendhal.server.entity.npc.shop.ShopOfferSender;
 import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.npc.condition.SentenceHasErrorCondition;
@@ -79,11 +80,17 @@ public class SellerAdder {
 		npc.put("job_merchant", "");
 
 		if (offer) {
+			final String offerMessage = "Sprzedaję " + Grammar.enumerateCollection(sellerBehaviour.dealtItems()) + \".";
 			engine.add(
 				ConversationStates.ATTENDING,
 				ConversationPhrases.OFFER_MESSAGES,
 				null, false, ConversationStates.ATTENDING,
-				"Sprzedaję " + Grammar.enumerateCollection(sellerBehaviour.dealtItems()) + ".", null);
+				offerMessage, new ChatAction() {
+					@Override
+					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
+						ShopOfferSender.openShopWindow(npc, player);
+					}
+				});
 		}
 
 		engine.add(ConversationStates.ATTENDING,
