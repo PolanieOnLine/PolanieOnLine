@@ -207,7 +207,7 @@ class AchievementLog {
 	private JPanel createEmptyPage() {
 		JPanel emptyPage = new JPanel(new BorderLayout());
 		emptyPage.setOpaque(false);
-		JLabel label = new JLabel("<html><div style="text-align: center; color: #777777;">Brak osiągnięć w tej kategorii.</div></html>", SwingConstants.CENTER);
+		JLabel label = new JLabel("<html><div style=\"text-align: center; color: #777777;\">Brak osiągnięć w tej kategorii.</div></html>", SwingConstants.CENTER);
 		emptyPage.add(label, BorderLayout.CENTER);
 		return emptyPage;
 	}
