@@ -12,6 +12,7 @@
 package games.stendhal.client.gui;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -106,7 +107,15 @@ class ReserveSetWindow extends InternalManagedWindow {
 			location = SwingUtilities.convertPoint(anchor.getParent(), location, parent);
 		}
 
-		location.translate(anchor.getWidth() + 4, 0);
+		Dimension size = getPreferredSize();
+		if ((size.width <= 0) || (size.height <= 0)) {
+			size = getSize();
+		}
+		if ((size.width <= 0) || (size.height <= 0)) {
+			size = anchor.getSize();
+		}
+		setSize(size);
+		location.translate(-size.width - 4, 0);
 		moveTo(location.x, location.y);
 		suppressVisibilityEvents = true;
 		setVisible(true);

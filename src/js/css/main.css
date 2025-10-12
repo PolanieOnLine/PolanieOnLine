@@ -215,8 +215,10 @@ div.quickPickup div.itemSlot {
 }
 
 .equipment-controls {
-	display: flex;
-	align-items: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
 }
 
 .equipment-swap {
@@ -233,7 +235,44 @@ div.quickPickup div.itemSlot {
 
 .equipment-swap:hover,
 .equipment-swap:focus {
-	background-color: #815f4e;
+        background-color: #815f4e;
+}
+
+.reserve-toggle {
+        padding: 6px 10px;
+        border: 1px solid #000;
+        background-color: #6b4d3d;
+        color: #fff;
+        cursor: pointer;
+        font-weight: bold;
+        border-radius: 4px;
+        box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.5);
+        transition: background-color 0.2s ease;
+        line-height: 1;
+        min-width: 36px;
+}
+
+.reserve-toggle:hover,
+.reserve-toggle:focus {
+        background-color: #815f4e;
+}
+
+.reserve-window {
+        position: absolute;
+        top: 0;
+        right: 100%;
+        margin-right: 12px;
+        padding: 8px 10px;
+        border: 1px solid #000;
+        border-radius: 6px;
+        background-color: rgba(59, 41, 31, 0.92);
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+        display: none;
+        z-index: 10;
+}
+
+.reserve-window.visible {
+        display: block;
 }
 /* Right panel */
 #neck0 {position:absolute; top:20px; left:0px}
@@ -441,8 +480,9 @@ div.logcolR {
 }
 
 #equipmentborder {
-	float: left;
-	width: 320px;
+        float: left;
+        width: 320px;
+        position: relative;
 }
 
 #bag { border: 1px solid black; width: 120px; padding: 2px; float: left }
