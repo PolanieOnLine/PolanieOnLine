@@ -35,6 +35,7 @@ import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.BehaviourAction;
 import games.stendhal.server.entity.npc.action.ComplainAboutSentenceErrorAction;
+import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
 import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 import games.stendhal.server.entity.npc.behaviour.journal.MerchantsRegister;
 import games.stendhal.server.entity.npc.condition.AndCondition;
@@ -84,7 +85,7 @@ public class SellerAdder {
 		merchantsRegister.add(npc, sellerBehaviour);
 		npc.put("job_merchant", "");
 
-		final ShopWindowSupport shopSupport = new ShopWindowSupport(npc, sellerBehaviour);
+final ShopWindowSupport shopSupport = new ShopWindowSupport(npc, sellerBehaviour, merchantsRegister);
 
 		if (offer) {
 			engine.add(
@@ -213,17 +214,20 @@ public class SellerAdder {
 
 		private final SpeakerNPC npc;
 		private final SellerBehaviour behaviour;
+		private final MerchantsRegister register;
 
-		ShopWindowSupport(final SpeakerNPC npc, final SellerBehaviour behaviour) {
+		ShopWindowSupport(final SpeakerNPC npc, final SellerBehaviour behaviour, final MerchantsRegister register) {
 			this.npc = npc;
 			this.behaviour = behaviour;
+			this.register = register;
 		}
 
 		void openShopWindow(final Player player) {
 			if (player == null) {
 				return;
 			}
-			player.addEvent(NpcShopWindowEvent.open(npc, behaviour, player));
+			final BuyerBehaviour buyerBehaviour = register.findBuyer(npc.getName());
+			player.addEvent(NpcShopWindowEvent.open(npc, behaviour, buyerBehaviour, player));
 			player.notifyWorldAboutChanges();
 			registerListener();
 		}
@@ -245,5 +249,6 @@ public class SellerAdder {
 			}
 		}
 	}
+
 
 }

@@ -42,7 +42,8 @@ public class ItemInformation extends Item {
 		entity.addAttribute("price", Type.INT, Definition.VOLATILE);
 
 		entity.addAttribute("shop_item_key", Type.STRING, Definition.PRIVATE);
-		entity.addAttribute("shop_flavor", Type.LONG_STRING, Definition.PRIVATE);
-		entity.addAttribute("shop_category", Type.STRING, Definition.PRIVATE);
+entity.addAttribute("shop_flavor", Type.LONG_STRING, Definition.PRIVATE);
+entity.addAttribute("shop_category", Type.STRING, Definition.PRIVATE);
+entity.addAttribute("shop_offer_type", Type.STRING, Definition.PRIVATE);
 }
 }

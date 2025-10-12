@@ -11,6 +11,11 @@
  ***************************************************************************/
 package games.stendhal.server.entity.npc.behaviour.adder;
 
+import java.util.Collections;
+import java.util.Set;
+import java.util.WeakHashMap;
+import java.util.function.Consumer;
+
 import org.apache.log4j.Logger;
 
 import games.stendhal.common.constants.SoundID;
@@ -20,6 +25,7 @@ import games.stendhal.common.grammar.ItemParserResult;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.money.MoneyUtils;
+import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -28,12 +34,14 @@ import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.action.BehaviourAction;
 import games.stendhal.server.entity.npc.action.ComplainAboutSentenceErrorAction;
 import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
+import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 import games.stendhal.server.entity.npc.behaviour.journal.MerchantsRegister;
 import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.npc.condition.SentenceHasErrorCondition;
 import games.stendhal.server.entity.npc.fsm.Engine;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.events.NpcShopWindowEvent;
 import games.stendhal.server.events.SoundEvent;
 
 public class BuyerAdder {
@@ -72,19 +80,26 @@ public class BuyerAdder {
 	public void addBuyer(final SpeakerNPC npc, final BuyerBehaviour buyerBehaviour, final boolean offer) {
 		final Engine engine = npc.getEngine();
 
-		merchantsRegister.add(npc, buyerBehaviour);
-		npc.put("job_merchant", "");
+merchantsRegister.add(npc, buyerBehaviour);
+npc.put("job_merchant", "");
+final ShopWindowSupport shopSupport = new ShopWindowSupport(npc, buyerBehaviour, merchantsRegister);
 
-		if (offer) {
-			engine.add(
-				ConversationStates.ATTENDING,
-				ConversationPhrases.OFFER_MESSAGES,
-				null,
-				false,
-				ConversationStates.ATTENDING,
-				"Skupuję " + Grammar.enumerateCollectionPlural(buyerBehaviour.dealtItems()) + ".",
-				null);
-		}
+if (offer) {
+engine.add(
+ConversationStates.ATTENDING,
+ConversationPhrases.OFFER_MESSAGES,
+null,
+false,
+ConversationStates.ATTENDING,
+null,
+new ChatAction() {
+@Override
+public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
+raiser.say("Skupuję " + Grammar.enumerateCollectionPlural(buyerBehaviour.dealtItems()) + ".");
+shopSupport.openShopWindow(player);
+}
+});
+}
 		engine.add(ConversationStates.ATTENDING,
 			ConversationPhrases.SALES_MESSAGES,
 			new SentenceHasErrorCondition(),
@@ -171,8 +186,8 @@ public class BuyerAdder {
 							}
 						} else {
 							raiser.say("Przepraszam, ile " + Grammar.plural(chosenItemName) + " chcesz sprzedać?!");
-						}
-					}
+}
+}
 				});
 
 		engine.add(ConversationStates.SELL_PRICE_OFFERED,
@@ -196,5 +211,44 @@ public class BuyerAdder {
 				ConversationPhrases.NO_MESSAGES, null,
 				false,
 				ConversationStates.ATTENDING, "Dobrze w czym mogę pomóc?", null);
+	private static final class ShopWindowSupport {
+		private static final Set<SpeakerNPC> REGISTERED = Collections.newSetFromMap(new WeakHashMap<SpeakerNPC, Boolean>());
+
+		private final SpeakerNPC npc;
+		private final BuyerBehaviour behaviour;
+		private final MerchantsRegister register;
+
+		ShopWindowSupport(final SpeakerNPC npc, final BuyerBehaviour behaviour, final MerchantsRegister register) {
+			this.npc = npc;
+			this.behaviour = behaviour;
+			this.register = register;
+		}
+
+		void openShopWindow(final Player player) {
+			if (player == null) {
+				return;
+			}
+			final SellerBehaviour sellerBehaviour = register.findSeller(npc.getName());
+			player.addEvent(NpcShopWindowEvent.open(npc, sellerBehaviour, behaviour, player));
+			player.notifyWorldAboutChanges();
+			registerListener();
+		}
+
+		private void registerListener() {
+			synchronized (REGISTERED) {
+				if (REGISTERED.add(npc)) {
+					npc.addGoodbyeListener(new Consumer<RPEntity>() {
+						@Override
+						public void accept(final RPEntity entity) {
+							if (entity instanceof Player) {
+								final Player player = (Player) entity;
+								player.addEvent(NpcShopWindowEvent.close(npc));
+								player.notifyWorldAboutChanges();
+							}
+						}
+					});
+				}
+			}
+		}
 	}
 }

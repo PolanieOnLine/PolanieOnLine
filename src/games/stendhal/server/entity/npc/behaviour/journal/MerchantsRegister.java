@@ -71,12 +71,30 @@ public class MerchantsRegister {
 		}
 	}
 
-	public List<Pair<String, BuyerBehaviour>> getBuyers() {
-		return buyers;
+public List<Pair<String, BuyerBehaviour>> getBuyers() {
+return buyers;
+}
+
+public List<Pair<String, SellerBehaviour>> getSellers() {
+return sellers;
+}
+
+	public BuyerBehaviour findBuyer(final String npcName) {
+		for (final Pair<String, BuyerBehaviour> entry : buyers) {
+			if (entry.first().equals(npcName)) {
+				return entry.second();
+			}
+		}
+		return null;
 	}
 
-	public List<Pair<String, SellerBehaviour>> getSellers() {
-		return sellers;
+	public SellerBehaviour findSeller(final String npcName) {
+		for (final Pair<String, SellerBehaviour> entry : sellers) {
+			if (entry.first().equals(npcName)) {
+				return entry.second();
+			}
+		}
+		return null;
 	}
 
 	/**
