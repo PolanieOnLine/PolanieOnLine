@@ -186,6 +186,7 @@ public class RPClassGenerator {
 		if (!RPClass.hasRPClass("item_information")) {
 			ItemInformation.generateRPClass();
 		}
+		ItemInformation.ensureShopAttributes();
 		if (!RPClass.hasRPClass("plant_grower")) {
 			PassiveEntityRespawnPoint.generateRPClass();
 		}
@@ -230,6 +231,7 @@ public class RPClassGenerator {
 		if (!RPClass.hasRPClass("player")) {
 			Player.generateRPClass();
 		}
+		PlayerRPClass.ensureNPCShopOfferEvent();
 
 		// NPC sub-classes
 		if (!RPClass.hasRPClass("creature")) {

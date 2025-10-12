@@ -18,6 +18,7 @@ import static games.stendhal.server.entity.player.PlayerLootedItemsHandler.LOOTE
 import games.stendhal.common.constants.Events;
 import marauroa.common.game.Definition;
 import marauroa.common.game.Definition.Type;
+import marauroa.common.game.Definition.DefinitionClass;
 import marauroa.common.game.RPClass;
 
 /**
@@ -175,5 +176,15 @@ player.addRPEvent(Events.ACHIEVEMENT_LOG, Definition.PRIVATE);
 		// commerce
 		player.addAttribute("npc_purchases", Type.MAP, Definition.PRIVATE);
 		player.addAttribute("npc_sales", Type.MAP, Definition.PRIVATE);
+	}
+
+	static void ensureNPCShopOfferEvent() {
+		final RPClass player = RPClass.getRPClass("player");
+		if ((player == null)
+				|| (player.getDefinition(DefinitionClass.RPEVENT, Events.NPC_SHOP_OFFER) != null)) {
+			return;
+		}
+
+		player.addRPEvent(Events.NPC_SHOP_OFFER, Definition.PRIVATE);
 	}
 }

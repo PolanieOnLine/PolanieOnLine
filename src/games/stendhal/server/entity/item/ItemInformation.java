@@ -14,6 +14,7 @@ package games.stendhal.server.entity.item;
 
 import marauroa.common.game.Definition;
 import marauroa.common.game.Definition.Type;
+import marauroa.common.game.Definition.DefinitionClass;
 import marauroa.common.game.RPClass;
 
 public class ItemInformation extends Item {
@@ -43,5 +44,23 @@ public class ItemInformation extends Item {
 		entity.addAttribute("price_copper", Type.INT, Definition.VOLATILE);
 		entity.addAttribute("stackable", Type.INT, Definition.VOLATILE);
 		entity.addAttribute("flavor_text", Type.LONG_STRING, Definition.VOLATILE);
+	}
+
+	public static void ensureShopAttributes() {
+		final RPClass entity = RPClass.getRPClass("item_information");
+		if (entity == null) {
+			return;
+		}
+
+		addAttributeIfMissing(entity, "price_copper", Type.INT, Definition.VOLATILE);
+		addAttributeIfMissing(entity, "stackable", Type.INT, Definition.VOLATILE);
+		addAttributeIfMissing(entity, "flavor_text", Type.LONG_STRING, Definition.VOLATILE);
+	}
+
+	private static void addAttributeIfMissing(final RPClass entity, final String name,
+			final Type type, final byte flags) {
+		if (entity.getDefinition(DefinitionClass.ATTRIBUTE, name) == null) {
+			entity.addAttribute(name, type, flags);
+		}
 	}
 }
