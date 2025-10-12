@@ -535,7 +535,7 @@ class AchievementLog {
 		iconLabel.setVerticalAlignment(SwingConstants.CENTER);
 		card.add(iconLabel, BorderLayout.WEST);
 
-		JPanel textPanel = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PAD);
+		JComponent textPanel = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PAD);
 		textPanel.setOpaque(false);
 
 		JLabel titleLabel = new JLabel(entry.title);
