@@ -69,14 +69,43 @@ class ReserveSetWindow extends InternalManagedWindow {
 			return;
 		}
 
-		added = true;
+		if (!tryAttach()) {
+			scheduleAttachRetry();
+		}
+	}
+
+	private boolean tryAttach() {
+		j2DClient ui = j2DClient.get();
+		if (ui == null) {
+			return false;
+		}
+
 		suppressVisibilityEvents = true;
-		j2DClient.get().addWindow(this);
-		setVisible(false);
-		suppressVisibilityEvents = false;
+		try {
+			ui.addWindow(this);
+			setVisible(false);
+			added = true;
+			return true;
+		} catch (NullPointerException exception) {
+			return false;
+		} finally {
+			suppressVisibilityEvents = false;
+		}
+	}
+
+	private void scheduleAttachRetry() {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				attach();
+			}
+		});
 	}
 
 	void showBeside(final Component anchor) {
+		if (!added) {
+			attach();
+		}
 		if (!added) {
 			return;
 		}
