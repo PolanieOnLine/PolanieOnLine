@@ -77,7 +77,8 @@ public class ConversationPhrases {
 	private static final List<String> EN_OFFER = Arrays.asList(
 			"offer", "deal", "trade", "🪙");
 	private static final List<String> PL_OFFER = Arrays.asList(
-			"oferta", "transakcja", "interes", "handel");
+"oferta", "transakcja", "interes", "handel", "sklep", "sklepik",
+"pokaż towary", "pokaz towary", "pokaż mi towary", "pokaz mi towary");
 	public static final List<String> OFFER_MESSAGES = combine(EN_OFFER, PL_OFFER);
 
 	public static final List<String> YES_MESSAGES = Arrays.asList("yes", "ok", "yep", "sure",

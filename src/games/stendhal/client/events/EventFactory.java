@@ -86,6 +86,8 @@ class EventFactory {
 			event = new ItemLogEvent();
 		} else if (name.equals(Events.ACHIEVEMENT_LOG)) {
 			event = new AchievementLogEvent();
+		} else if (name.equals(Events.NPC_SHOP)) {
+			event = new NpcShopWindowEvent();
 		}
 
 		if (event != null) {
