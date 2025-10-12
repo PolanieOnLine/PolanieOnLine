@@ -13,13 +13,18 @@ public final class ShopOfferSender {
 	private ShopOfferSender() {}
 
 	public static void openShopWindow(final SpeakerNPC npc, final Player player) {
+		openShopWindow(npc, player, null, null);
+	}
+
+	public static void openShopWindow(final SpeakerNPC npc, final Player player,
+			final SellerBehaviour sellerHint, final BuyerBehaviour buyerHint) {
 		if ((npc == null) || (player == null)) {
 			return;
 		}
 
 		final MerchantsRegister register = SingletonRepository.getMerchantsRegister();
-		final SellerBehaviour seller = register.getSeller(npc.getName());
-		final BuyerBehaviour buyer = register.getBuyer(npc.getName());
+		final SellerBehaviour seller = (sellerHint != null) ? sellerHint : register.getSeller(npc.getName());
+		final BuyerBehaviour buyer = (buyerHint != null) ? buyerHint : register.getBuyer(npc.getName());
 		final NPCShopOfferEvent event = NPCShopOfferEvent.open(npc, player, seller, buyer);
 
 		if (event != null) {

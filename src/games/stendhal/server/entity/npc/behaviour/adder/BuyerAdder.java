@@ -88,7 +88,8 @@ public class BuyerAdder {
 				new ChatAction() {
 					@Override
 					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-						ShopOfferSender.openShopWindow(npc, player);
+					ShopOfferSender.openShopWindow(npc, player,
+							merchantsRegister.getSeller(npc.getName()), buyerBehaviour);
 				}
 				});
 		}
