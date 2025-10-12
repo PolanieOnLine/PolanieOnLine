@@ -70,11 +70,12 @@ Inspectable {
 
 	private JComponent specialSlots;
 	private JComponent setToggleRow;
-	private JButton setToggleButton;
+	private JButton reserveToggleButton;
 	private JButton setSwapButton;
 	private JComponent setSlotsContainer;
 	private JComponent equipmentRow;
-	private boolean setSlotsVisible;
+	private ReserveSetWindow reserveWindow;
+	private boolean reserveWindowVisible;
 	private boolean pendingSetDrawerRefresh;
 
 	private static final List<FeatureChangeListener> featureChangeListeners = new ArrayList<>();
@@ -190,21 +191,22 @@ Inspectable {
 		featureChangeListeners.add(pouch);
 
 		setToggleRow = SBoxLayout.createContainer(SBoxLayout.VERTICAL, 0);
-		setToggleButton = new JButton("Pokaż zestaw II");
-		setToggleButton.setMargin(new Insets(1, 0, 1, 0));
+		reserveToggleButton = new JButton("<");
+		reserveToggleButton.setMargin(new Insets(1, 4, 1, 4));
 		int toggleHeight = 16;
-		Dimension toggleSize = setToggleButton.getPreferredSize();
+		Dimension toggleSize = reserveToggleButton.getPreferredSize();
 		toggleSize.height = Math.min(toggleSize.height, toggleHeight);
-		setToggleButton.setPreferredSize(new Dimension(toggleSize.width, toggleSize.height));
-		setToggleButton.setMinimumSize(new Dimension(toggleSize.width, toggleSize.height));
-		setToggleButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, toggleSize.height));
-		setToggleButton.addActionListener(new ActionListener() {
+		toggleSize.width = Math.max(toggleSize.width, 20);
+		reserveToggleButton.setPreferredSize(new Dimension(toggleSize.width, toggleSize.height));
+		reserveToggleButton.setMinimumSize(new Dimension(toggleSize.width, toggleSize.height));
+		reserveToggleButton.setMaximumSize(new Dimension(Integer.MAX_VALUE, toggleSize.height));
+		reserveToggleButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				toggleSetSlots();
+				toggleReserveWindow();
 			}
 		});
-		setToggleRow.add(setToggleButton);
+		setToggleRow.add(reserveToggleButton);
 		setToggleRow.setVisible(false);
 		content.add(setToggleRow);
 
@@ -216,14 +218,14 @@ Inspectable {
 			public void componentResized(ComponentEvent event) {
 				handleSetDrawerSizeChange();
 			}
-	
+
 			@Override
 			public void componentShown(ComponentEvent event) {
 				handleSetDrawerSizeChange();
 			}
 		});
-		setSlotsContainer.setVisible(false);
-		equipmentRow.add(setSlotsContainer);
+		reserveWindow = new ReserveSetWindow(this, setSlotsContainer);
+		reserveWindow.attach();
 		content.add(equipmentRow);
 
 		// Bag, keyring, etc
@@ -326,8 +328,8 @@ Inspectable {
 		return column;
 	}
 
-	private void toggleSetSlots() {
-		setSetSlotsVisible(!setSlotsVisible);
+	private void toggleReserveWindow() {
+		setReserveWindowVisible(!reserveWindowVisible);
 	}
 
 	private void updateSetToggleVisibility(final RPObject obj) {
@@ -348,25 +350,39 @@ Inspectable {
 			@Override
 			public void run() {
 				setToggleRow.setVisible(showToggle);
+				if (reserveToggleButton != null) {
+					reserveToggleButton.setEnabled(showToggle);
+				}
 				if (!showToggle) {
-					setSetSlotsVisible(false);
+					setReserveWindowVisible(false);
 				}
 			}
 		});
 	}
 
-	private void setSetSlotsVisible(final boolean visible) {
-		setSlotsVisible = visible;
-		SwingUtilities.invokeLater(new Runnable() {
+	private void setReserveWindowVisible(final boolean visible) {
+		if (reserveWindowVisible == visible) {
+			return;
+		}
+		reserveWindowVisible = visible;
+		if (reserveWindow == null) {
+			return;
+		}
+		if (visible) {
+			reserveWindow.showBeside(this);
+		} else {
+			reserveWindow.hideWindow();
+		}
+	}
+
+	void onReserveWindowVisibilityChange(final boolean visible) {
+		reserveWindowVisible = visible;
+		Runnable update = new Runnable() {
 			@Override
 			public void run() {
-				setSlotsContainer.setVisible(visible);
-				if (setSwapButton != null) {
-					setSwapButton.setVisible(visible);
-				}
 				refreshSetDrawerLayout();
-				if (setToggleButton != null) {
-					setToggleButton.setText(visible ? "Ukryj zestaw II" : "Pokaż zestaw II");
+				if (reserveToggleButton != null) {
+					reserveToggleButton.setText(visible ? ">" : "<");
 				}
 				if (visible && (player != null)) {
 					refreshContents();
@@ -377,7 +393,12 @@ Inspectable {
 					pendingSetDrawerRefresh = false;
 				}
 			}
-		});
+		};
+		if (SwingUtilities.isEventDispatchThread()) {
+			update.run();
+		} else {
+			SwingUtilities.invokeLater(update);
+		}
 	}
 
 	private void refreshSetDrawerLayout() {
@@ -385,6 +406,11 @@ Inspectable {
 			setSlotsContainer.invalidate();
 			setSlotsContainer.revalidate();
 			setSlotsContainer.repaint();
+		}
+		if (reserveWindow != null) {
+			reserveWindow.invalidate();
+			reserveWindow.revalidate();
+			reserveWindow.repaint();
 		}
 		if (equipmentRow != null) {
 			equipmentRow.invalidate();
@@ -395,7 +421,6 @@ Inspectable {
 		revalidate();
 		repaint();
 	}
-
 	private void refreshSetPanels() {
 		for (final Entry<String, ItemPanel> entry : slotPanels.entrySet()) {
 			final String slotName = entry.getKey();
@@ -412,7 +437,7 @@ Inspectable {
 	}
 
 	private void handleSetDrawerSizeChange() {
-		if (!pendingSetDrawerRefresh || !setSlotsVisible) {
+		if (!pendingSetDrawerRefresh || !reserveWindowVisible) {
 			return;
 		}
 		if ((setSlotsContainer != null) && setSlotsContainer.isShowing() && (setSlotsContainer.getWidth() > 0)) {
