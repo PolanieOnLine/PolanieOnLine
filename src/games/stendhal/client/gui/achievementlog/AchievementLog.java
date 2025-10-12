@@ -18,8 +18,10 @@ import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.Window;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -53,26 +55,29 @@ import games.stendhal.client.sprite.SpriteStore;
 class AchievementLog {
 	public static final int PAD = 5;
 	private static final int COLUMNS_PER_PAGE = 2;
-	private static final int ROWS_PER_PAGE = 3;
-	private static final int CARD_WIDTH = 240;
-	private static final int CARD_HEIGHT = 160;
-        private static final int DESCRIPTION_WIDTH = CARD_WIDTH - 40;
-        private static final int CARD_ICON_SIZE = 40;
-        private static final int FILTER_ICON_SIZE = 28;
-        private static final int FILTER_TOGGLE_PADDING = 2;
-        private static final int FILTERS_PER_ROW = 6;
+	private static final int ROWS_PER_PAGE = 4;
+	private static final int CARD_WIDTH = 320;
+	private static final int CARD_HEIGHT = 110;
+	private static final int CARD_ICON_SIZE = 64;
+	private static final int CARD_ICON_AREA = CARD_ICON_SIZE + (PAD * 6);
+	private static final int DESCRIPTION_WIDTH = CARD_WIDTH - CARD_ICON_AREA;
+	private static final int FILTER_TILE_COLUMNS = 3;
+	private static final int FILTER_TILE_ROWS = 2;
+	private static final int FILTER_TILE_PER_PAGE = FILTER_TILE_COLUMNS * FILTER_TILE_ROWS;
+	private static final int FILTER_ICON_SIZE = 36;
 	private static final int BOOK_SIDE_BORDER = 16 + 30;
 	private static final int BOOK_TOP_BORDER = 12 + 20;
 	private static final int BOOK_WIDTH = (COLUMNS_PER_PAGE * CARD_WIDTH)
-		+ ((COLUMNS_PER_PAGE - 1) * (PAD * 2))
-		+ (BOOK_SIDE_BORDER * 2);
+	+ ((COLUMNS_PER_PAGE - 1) * (PAD * 2))
+	+ (BOOK_SIDE_BORDER * 2);
 	private static final int BOOK_HEIGHT = (ROWS_PER_PAGE * CARD_HEIGHT)
-		+ ((ROWS_PER_PAGE - 1) * (PAD * 2))
-		+ (BOOK_TOP_BORDER * 2);
+	+ ((ROWS_PER_PAGE - 1) * (PAD * 2))
+	+ (BOOK_TOP_BORDER * 2);
 	private static final int CONTENT_WIDTH = BOOK_WIDTH + (PAD * 2);
 	private static final int ACHIEVEMENTS_PER_PAGE = COLUMNS_PER_PAGE * ROWS_PER_PAGE;
 	private static final Color BOOK_BACKGROUND = new Color(248, 243, 229);
 	private static final Color BOOK_BORDER = new Color(164, 136, 98);
+	private static final Color BOOK_SHADOW = new Color(210, 190, 160, 180);
 	private static final Color CARD_BACKGROUND = new Color(255, 252, 244);
 	private static final Color LOCKED_CARD_BACKGROUND = new Color(245, 241, 234);
 	private static final Color CARD_HOVER_BACKGROUND = new Color(255, 246, 220);
@@ -89,6 +94,14 @@ class AchievementLog {
 	private final JPanel bookPages = new JPanel(bookLayout);
 	private final JLabel pageIndicator = new JLabel("", SwingConstants.CENTER);
 	private final ButtonGroup filterGroup = new ButtonGroup();
+	private final CardLayout filterDeckLayout = new CardLayout();
+	private final JPanel filterDeck = new JPanel(filterDeckLayout);
+	private final List<JToggleButton> filterToggles = new ArrayList<>();
+	private int filterPageIndex;
+	private int filterPageCount;
+	private JButton filterPrevButton;
+	private JButton filterNextButton;
+	private boolean updatingFilterSelection;
 
 	private JButton previousButton;
 	private JButton nextButton;
@@ -223,14 +236,29 @@ class AchievementLog {
 
 		Dimension bookSize = new Dimension(BOOK_WIDTH, BOOK_HEIGHT);
 		Dimension pagesSize = new Dimension((COLUMNS_PER_PAGE * CARD_WIDTH)
-				+ ((COLUMNS_PER_PAGE - 1) * (PAD * 2)),
-				(ROWS_PER_PAGE * CARD_HEIGHT) + ((ROWS_PER_PAGE - 1) * (PAD * 2)));
-		JPanel book = new JPanel(new BorderLayout());
+		+ ((COLUMNS_PER_PAGE - 1) * (PAD * 2)),
+		(ROWS_PER_PAGE * CARD_HEIGHT) + ((ROWS_PER_PAGE - 1) * (PAD * 2)));
+		JPanel book = new JPanel(new BorderLayout()) {
+			@Override
+			protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				Graphics2D g2d = (Graphics2D) g.create();
+				int width = getWidth();
+				int height = getHeight();
+				g2d.setColor(BOOK_SHADOW);
+				int seamX = width / 2;
+				g2d.fillRect(seamX - 2, 0, 4, height);
+				g2d.setColor(new Color(255, 255, 255, 120));
+				g2d.drawLine(seamX - 6, 8, seamX - 6, height - 8);
+				g2d.drawLine(seamX + 6, 8, seamX + 6, height - 8);
+				g2d.dispose();
+			}
+		};
 		book.setOpaque(true);
 		book.setBackground(BOOK_BACKGROUND);
 		book.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createMatteBorder(12, 16, 12, 16, BOOK_BORDER),
-				BorderFactory.createEmptyBorder(20, 30, 20, 30)));
+		BorderFactory.createMatteBorder(12, 16, 12, 16, BOOK_BORDER),
+		BorderFactory.createEmptyBorder(20, 30, 20, 30)));
 		book.setPreferredSize(bookSize);
 		book.setMinimumSize(bookSize);
 		book.setMaximumSize(bookSize);
@@ -285,83 +313,151 @@ class AchievementLog {
 	}
 
 	private JComponent createFilterPanel() {
-		JComponent container = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PAD / 2);
+		for (JToggleButton toggle : new ArrayList<>(filterToggles)) {
+			filterGroup.remove(toggle);
+		}
+		filterToggles.clear();
+		filterDeck.removeAll();
+		filterGroup.clearSelection();
+		JPanel container = new JPanel(new BorderLayout(PAD * 2, 0));
 		container.setOpaque(false);
 		container.setBorder(BorderFactory.createEmptyBorder(PAD, PAD, PAD, PAD));
 		container.setAlignmentX(Component.CENTER_ALIGNMENT);
+		container.setPreferredSize(new Dimension(CONTENT_WIDTH, (FILTER_ICON_SIZE + (PAD * 10)) * FILTER_TILE_ROWS));
 		container.setMaximumSize(new Dimension(CONTENT_WIDTH, Integer.MAX_VALUE));
 
-		List<JToggleButton> toggles = new ArrayList<>();
+		List<CategoryInfo> categories = new ArrayList<>();
 		ImageIcon allIcon = loadAllIcon();
-		toggles.add(createFilterToggle(allIcon, "Wszystkie osiągnięcia", null, true));
+		categories.add(new CategoryInfo(null, "Wszystkie", allIcon));
+		categories.addAll(collectCategories().values());
 
-		for (CategoryInfo info : collectCategories().values()) {
+		List<JToggleButton> toggles = new ArrayList<>(categories.size());
+		for (CategoryInfo info : categories) {
 			ImageIcon icon = info.icon != null ? info.icon : allIcon;
-			toggles.add(createFilterToggle(icon, info.displayName, info.key, false));
+			toggles.add(createFilterToggle(icon, info.displayName, info.key, info.key == null));
 		}
 
-		JPanel currentRow = null;
-		int countInRow = 0;
-		for (JToggleButton toggle : toggles) {
-			if ((currentRow == null) || (countInRow >= FILTERS_PER_ROW)) {
-				currentRow = createFilterRow();
-				container.add(currentRow);
-				countInRow = 0;
+		filterToggles.addAll(toggles);
+		filterPageCount = (int) Math.ceil((double) toggles.size() / FILTER_TILE_PER_PAGE);
+		if (filterPageCount <= 0) {
+			filterPageCount = 1;
+		}
+
+		for (int pageIndex = 0; pageIndex < filterPageCount; pageIndex++) {
+			JPanel page = new JPanel(new GridLayout(FILTER_TILE_ROWS, FILTER_TILE_COLUMNS, PAD, PAD));
+			page.setOpaque(false);
+			int start = pageIndex * FILTER_TILE_PER_PAGE;
+			int end = Math.min(start + FILTER_TILE_PER_PAGE, toggles.size());
+			for (int i = start; i < end; i++) {
+				page.add(toggles.get(i));
 			}
-			currentRow.add(toggle);
-			countInRow++;
+			while (page.getComponentCount() < FILTER_TILE_PER_PAGE) {
+				page.add(createFilterPlaceholder());
+			}
+			filterDeck.add(page, "filter-page-" + pageIndex);
 		}
+		filterDeck.setOpaque(false);
 
+		filterPrevButton = createFilterPagerButton(true);
+		filterNextButton = createFilterPagerButton(false);
+		container.add(filterPrevButton, BorderLayout.WEST);
+		container.add(filterDeck, BorderLayout.CENTER);
+		container.add(filterNextButton, BorderLayout.EAST);
+
+		showFilterPage(0);
 		return container;
 	}
 
-	private JPanel createFilterRow() {
-		JPanel row = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, PAD, PAD));
-		row.setOpaque(false);
-		row.setAlignmentX(Component.LEFT_ALIGNMENT);
-		int rowHeight = FILTER_ICON_SIZE + (PAD * (FILTER_TOGGLE_PADDING + 3));
-		Dimension rowSize = new Dimension(CONTENT_WIDTH, rowHeight);
-		row.setPreferredSize(rowSize);
-		row.setMinimumSize(rowSize);
-		row.setMaximumSize(new Dimension(CONTENT_WIDTH, rowHeight + PAD));
-		return row;
+	private Component createFilterPlaceholder() {
+		JPanel placeholder = new JPanel();
+		placeholder.setOpaque(false);
+		return placeholder;
 	}
 
-	private JToggleButton createFilterToggle(ImageIcon icon, String tooltip, String categoryKey, boolean selected) {
-                JToggleButton toggle = new JToggleButton(icon);
-                if ((icon == null) || (icon.getIconWidth() == 0) || (icon.getIconHeight() == 0)) {
-			ImageIcon fallback = loadAllIcon();
-			toggle.setIcon(fallback);
-			icon = fallback;
+	private JButton createFilterPagerButton(boolean previous) {
+		String label = previous ? "◀" : "▶";
+		JButton button = new JButton(label);
+		button.setOpaque(false);
+		button.setFocusPainted(false);
+		button.setBorder(BorderFactory.createEmptyBorder(6, 6, 6, 6));
+		button.setContentAreaFilled(false);
+		button.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		button.setForeground(new Color(90, 70, 40));
+		button.setFont(button.getFont().deriveFont(Font.BOLD, button.getFont().getSize2D() + 2f));
+		button.setPreferredSize(new Dimension(36, 36));
+		button.addActionListener(e -> {
+			if (previous) {
+				showFilterPage(filterPageIndex - 1);
+			} else {
+				showFilterPage(filterPageIndex + 1);
+			}
+		});
+		return button;
+	}
+
+	private void showFilterPage(int index) {
+		if (filterPageCount <= 1) {
+			filterPageIndex = 0;
+			filterDeckLayout.show(filterDeck, "filter-page-0");
+			updateFilterPagerState();
+			return;
 		}
-                toggle.setHorizontalAlignment(SwingConstants.CENTER);
-                toggle.setVerticalAlignment(SwingConstants.CENTER);
-                int toggleSide = FILTER_ICON_SIZE + (PAD * FILTER_TOGGLE_PADDING);
-                Dimension toggleSize = new Dimension(toggleSide, toggleSide);
-                toggle.setPreferredSize(toggleSize);
-                toggle.setMinimumSize(toggleSize);
-                toggle.setMaximumSize(toggleSize);
-                toggle.setFocusPainted(false);
-		toggle.setSelected(selected);
+		if (index < 0) {
+			index = 0;
+		} else if (index >= filterPageCount) {
+			index = filterPageCount - 1;
+		}
+		filterPageIndex = index;
+		filterDeckLayout.show(filterDeck, "filter-page-" + filterPageIndex);
+		updateFilterPagerState();
+	}
+
+	private void updateFilterPagerState() {
+		if (filterPrevButton != null) {
+			filterPrevButton.setEnabled(filterPageIndex > 0);
+		}
+		if (filterNextButton != null) {
+			filterNextButton.setEnabled(filterPageIndex < filterPageCount - 1);
+		}
+	}
+
+	private JToggleButton createFilterToggle(ImageIcon icon, String displayName, String categoryKey, boolean selected) {
+		JToggleButton toggle = new JToggleButton();
+		ImageIcon usedIcon = icon;
+		if ((usedIcon == null) || (usedIcon.getIconWidth() == 0) || (usedIcon.getIconHeight() == 0)) {
+			usedIcon = loadAllIcon();
+		}
+		ImageIcon scaled = scaleIcon(usedIcon, FILTER_ICON_SIZE);
+		toggle.setIcon(scaled);
+		toggle.setText(displayName);
+		toggle.setHorizontalTextPosition(SwingConstants.CENTER);
+		toggle.setVerticalTextPosition(SwingConstants.BOTTOM);
+		toggle.setMargin(new Insets(PAD * 2, PAD * 2, PAD * 2, PAD * 2));
+		toggle.setFocusPainted(false);
 		toggle.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		Border defaultBorder = BorderFactory.createCompoundBorder(new LineBorder(CARD_BORDER, 1, true),
-				BorderFactory.createEmptyBorder(6, 6, 6, 6));
-		toggle.setBorder(defaultBorder);
 		toggle.setOpaque(true);
 		toggle.setBackground(selected ? CARD_HOVER_BACKGROUND : BOOK_BACKGROUND);
-		toggle.setToolTipText(tooltip);
-		toggle.getAccessibleContext().setAccessibleName(tooltip);
+		Border defaultBorder = BorderFactory.createCompoundBorder(new LineBorder(CARD_BORDER, 1, true),
+		BorderFactory.createEmptyBorder(8, 8, 8, 8));
+		toggle.setBorder(defaultBorder);
+		toggle.getAccessibleContext().setAccessibleName(displayName);
+		toggle.putClientProperty("categoryKey", categoryKey);
 		toggle.addChangeListener(e -> {
 			if (toggle.isSelected()) {
 				toggle.setBackground(CARD_HOVER_BACKGROUND);
 				toggle.setBorder(BorderFactory.createCompoundBorder(new LineBorder(CARD_HOVER_BORDER, 2, true),
-						BorderFactory.createEmptyBorder(4, 4, 4, 4)));
+				BorderFactory.createEmptyBorder(6, 6, 6, 6)));
 			} else {
 				toggle.setBackground(BOOK_BACKGROUND);
 				toggle.setBorder(defaultBorder);
 			}
 		});
-		toggle.addActionListener(e -> applyFilter(categoryKey));
+		toggle.addActionListener(e -> {
+			if (!updatingFilterSelection) {
+				applyFilter(categoryKey);
+			}
+		});
+		toggle.setSelected(selected);
 		filterGroup.add(toggle);
 		return toggle;
 	}
@@ -379,23 +475,48 @@ class AchievementLog {
 
 	private void applyFilter(String categoryKey) {
 		if ((categoryKey == null && activeCategory == null)
-			|| (categoryKey != null && categoryKey.equals(activeCategory))) {
+		|| (categoryKey != null && categoryKey.equals(activeCategory))) {
 			return;
 		}
 		activeCategory = categoryKey;
 		currentPage = 0;
 		updateVisibleAchievements();
 		updatePages();
+		updateFilterSelection();
+	}
+
+	private void updateFilterSelection() {
+		updatingFilterSelection = true;
+		try {
+			int selectedIndex = -1;
+			for (int i = 0; i < filterToggles.size(); i++) {
+				JToggleButton toggle = filterToggles.get(i);
+				String key = (String) toggle.getClientProperty("categoryKey");
+				boolean shouldSelect = (key == null && activeCategory == null)
+				|| (key != null && key.equals(activeCategory));
+				if (shouldSelect) {
+					filterGroup.setSelected(toggle.getModel(), true);
+					selectedIndex = i;
+				} else {
+					toggle.setSelected(false);
+				}
+			}
+			if (selectedIndex >= 0) {
+				int pageIndex = selectedIndex / FILTER_TILE_PER_PAGE;
+				showFilterPage(pageIndex);
+			}
+		} finally {
+			updatingFilterSelection = false;
+		}
 	}
 
 	private JComponent createAchievementCard(AchievementEntry entry) {
-		JPanel card = new JPanel();
-		card.setLayout(new SBoxLayout(SBoxLayout.VERTICAL, PAD / 2));
+		JPanel card = new JPanel(new BorderLayout(PAD * 2, 0));
 		Color baseBackground = entry.reached ? CARD_BACKGROUND : LOCKED_CARD_BACKGROUND;
 		card.setOpaque(true);
 		card.setBackground(baseBackground);
 		Border defaultBorder = BorderFactory.createCompoundBorder(new LineBorder(CARD_BORDER, 1, true),
-				BorderFactory.createEmptyBorder(12, 12, 12, 12));
+		BorderFactory.createEmptyBorder(12, 14, 12, 14));
 		card.setBorder(defaultBorder);
 		card.setAlignmentX(Component.CENTER_ALIGNMENT);
 		card.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -405,42 +526,39 @@ class AchievementLog {
 		card.setMaximumSize(cardSize);
 		card.setDoubleBuffered(true);
 
-		JLabel iconLabel = new JLabel(entry.icon);
-		iconLabel.setPreferredSize(new Dimension(CARD_ICON_SIZE, CARD_ICON_SIZE));
-		iconLabel.setMinimumSize(new Dimension(CARD_ICON_SIZE, CARD_ICON_SIZE));
-		iconLabel.setMaximumSize(new Dimension(CARD_ICON_SIZE, CARD_ICON_SIZE));
+		JLabel iconLabel = new JLabel(scaleIcon(entry.icon, CARD_ICON_SIZE));
+		Dimension iconArea = new Dimension(CARD_ICON_AREA, CARD_HEIGHT - (PAD * 4));
+		iconLabel.setPreferredSize(iconArea);
+		iconLabel.setMinimumSize(iconArea);
+		iconLabel.setMaximumSize(iconArea);
 		iconLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		iconLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+		iconLabel.setVerticalAlignment(SwingConstants.CENTER);
+		card.add(iconLabel, BorderLayout.WEST);
 
-		JLabel titleLabel = new JLabel(entry.title, SwingConstants.CENTER);
+		JPanel textPanel = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PAD);
+		textPanel.setOpaque(false);
+
+		JLabel titleLabel = new JLabel(entry.title);
 		Font baseFont = titleLabel.getFont();
 		titleLabel.setFont(baseFont.deriveFont(Font.BOLD, baseFont.getSize2D() + 1f));
-		titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		if (!entry.reached) {
-			titleLabel.setForeground(LOCKED_TEXT_COLOR);
-		}
+		titleLabel.setHorizontalAlignment(SwingConstants.LEFT);
+		titleLabel.setForeground(entry.reached ? Color.DARK_GRAY : LOCKED_TEXT_COLOR);
+		textPanel.add(titleLabel);
 
-		JLabel descLabel = new JLabel(createDescriptionHtml(entry.description), SwingConstants.CENTER);
-		Color descColor = entry.reached ? Color.DARK_GRAY : LOCKED_TEXT_COLOR;
+		JLabel descLabel = new JLabel(createDescriptionHtml(entry.description), SwingConstants.LEFT);
+		Color descColor = entry.reached ? new Color(80, 80, 80) : LOCKED_TEXT_COLOR;
 		descLabel.setForeground(descColor);
-		descLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
-		Dimension descSize = new Dimension(DESCRIPTION_WIDTH, descLabel.getPreferredSize().height);
-		descLabel.setPreferredSize(descSize);
-		descLabel.setMinimumSize(descSize);
-		descLabel.setMaximumSize(new Dimension(DESCRIPTION_WIDTH, Integer.MAX_VALUE));
+		descLabel.setVerticalAlignment(SwingConstants.TOP);
+		textPanel.add(descLabel);
 
-		card.add(iconLabel);
-		card.add(javax.swing.Box.createVerticalStrut(PAD / 2));
-		card.add(titleLabel);
-		card.add(javax.swing.Box.createVerticalStrut(PAD / 3));
-		card.add(descLabel);
+		card.add(textPanel, BorderLayout.CENTER);
 
 		card.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				card.setBackground(CARD_HOVER_BACKGROUND);
 				card.setBorder(BorderFactory.createCompoundBorder(new LineBorder(CARD_HOVER_BORDER, 2, true),
-					BorderFactory.createEmptyBorder(10, 10, 10, 10)));
+				BorderFactory.createEmptyBorder(10, 12, 10, 12)));
 				card.repaint();
 			}
 
@@ -463,8 +581,8 @@ class AchievementLog {
 				text = text + '.';
 			}
 		}
-		return "<html><div style=\"width: " + DESCRIPTION_WIDTH + "px; text-align: center; font-size: 11px;\">"
-				+ text + "</div></html>";
+		return "<html><div style=\"width: " + Math.max(120, DESCRIPTION_WIDTH) + "px; text-align: left; font-size: 12px;\">"
+		+ text + "</div></html>";
 	}
 
 	private List<AchievementEntry> loadAchievements() {
@@ -541,6 +659,20 @@ class AchievementLog {
 			return new ImageIcon(placeholder);
 		}
 		return icon;
+	}
+
+	private ImageIcon scaleIcon(ImageIcon icon, int size) {
+		if (icon == null || icon.getIconWidth() <= 0 || icon.getIconHeight() <= 0) {
+			return icon;
+		}
+		if (icon.getIconWidth() == size && icon.getIconHeight() == size) {
+			return icon;
+		}
+		BufferedImage scaled = new BufferedImage(size, size, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g2d = scaled.createGraphics();
+		g2d.drawImage(icon.getImage(), 0, 0, size, size, null);
+		g2d.dispose();
+		return new ImageIcon(scaled);
 	}
 
 	private static class AchievementEntry {
