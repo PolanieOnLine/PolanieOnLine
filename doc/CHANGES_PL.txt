@@ -3,14 +3,18 @@ Changelog
 1.41
 *klient*
 - Dodano i odświeżono grafiki nominałów monet
+- Dodano graficzne przedstawienie w lewym panelu pod statystykami gracza ilość posiadanych monet odpowiednich nominałów oraz ich sumę w najmniejszej wartości nominału
+- Dodano GUI nowego schowka na dodatkowy ekwipunek
 
 *kod*
-- Wprowadzono nowy system walutowy (miedziaki, talary oraz dukaty zamiast dotychczasowego "money")
+- Zaimplementowano możliwość szybkiej podmiany przedmiotów z głównego ekwipunku gracza z ekwipunkiem w schowku 
+- Zaimplementowano nowy system walutowy (miedziaki, talary oraz dukaty zamiast dotychczasowego "money")
 - Dodano dwa nowe skrypty dla administratorów: RaidPlague oraz MassHeal
 
 *naprawiono błędy*
 - Naprawiono problem z nalewaniem wody do butelki u Nosiwody Jakuba
 - Poprawiono automatyczną odmianę rzeczowników i prefiksów w dialogach NPC
+- Poprawiono tekst powitalny u czeladnika Jaromira, który sugerował oszlifowanie kryształu zamiast klejnotu
 
 
 1.40.3
