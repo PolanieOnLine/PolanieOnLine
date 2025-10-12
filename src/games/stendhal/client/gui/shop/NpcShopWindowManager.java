@@ -130,7 +130,7 @@ public final class NpcShopWindowManager {
 
 	private List<Offer> parseOffers(final RPEvent event) {
 		final List<Offer> offers = new ArrayList<Offer>();
-		if (!event.has("offers")) {
+		if (!event.hasSlot("offers")) {
 			return offers;
 		}
 
@@ -156,7 +156,6 @@ public final class NpcShopWindowManager {
 		final String displayName = object.has("name") ? object.get("name") : commandKey;
 		final String description = object.has("description_info") ? object.get("description_info") : "";
 		final String flavor = object.has("shop_flavor") ? object.get("shop_flavor") : "";
-		final String category = object.has("shop_category") ? object.get("shop_category") : null;
 		final Sprite sprite = loadSprite(object);
 
 		return new Offer(commandKey, displayName, description, flavor, price, sprite);
