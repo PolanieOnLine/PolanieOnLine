@@ -29,10 +29,7 @@ import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.DefaultListCellRenderer;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -162,7 +159,7 @@ public final class NpcShopWindowManager {
 		final String category = object.has("shop_category") ? object.get("shop_category") : null;
 		final Sprite sprite = loadSprite(object);
 
-		return new Offer(commandKey, displayName, description, flavor, category, price, sprite);
+		return new Offer(commandKey, displayName, description, flavor, price, sprite);
 	}
 
 	private Sprite loadSprite(final RPObject object) {
@@ -292,7 +289,6 @@ public final class NpcShopWindowManager {
 		private final List<Offer> allOffers = new ArrayList<Offer>();
 		private final OfferTableModel tableModel = new OfferTableModel();
 		private final JTable table = new JTable(tableModel);
-		private final JComboBox<CategoryFilter> filterCombo = new JComboBox<CategoryFilter>();
 		private final JTextArea descriptionArea = new JTextArea();
 		private final JLabel flavorLabel = new JLabel();
 		private final JLabel unitPriceValue = new JLabel("-");
@@ -323,16 +319,6 @@ public final class NpcShopWindowManager {
 			titleLabel.setFont(baseFont.deriveFont(baseFont.getStyle() | Font.BOLD, baseFont.getSize() + 2.0f));
 			headerPanel.add(titleLabel, BorderLayout.CENTER);
 
-			final JPanel filterPanel = new JPanel();
-			filterPanel.setOpaque(false);
-			filterPanel.setLayout(new BoxLayout(filterPanel, BoxLayout.X_AXIS));
-			final JLabel filterLabel = new JLabel("Filtr:");
-			filterPanel.add(filterLabel);
-			filterPanel.add(Box.createHorizontalStrut(6));
-			filterCombo.setModel(new DefaultComboBoxModel<CategoryFilter>(CategoryFilter.values()));
-			filterCombo.setRenderer(new CategoryRenderer());
-			filterPanel.add(filterCombo);
-			headerPanel.add(filterPanel, BorderLayout.EAST);
 
 			backgroundPanel.add(headerPanel, BorderLayout.NORTH);
 
@@ -421,13 +407,6 @@ public final class NpcShopWindowManager {
 
 			backgroundPanel.add(bottomPanel, BorderLayout.SOUTH);
 
-			filterCombo.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(final ActionEvent event) {
-					applyFilter(getSelectedOfferKey());
-				}
-			});
-
 			quantitySpinner.addChangeListener(new ChangeListener() {
 				@Override
 				public void stateChanged(final ChangeEvent event) {
@@ -467,23 +446,12 @@ public final class NpcShopWindowManager {
 			if (offers != null) {
 				allOffers.addAll(offers);
 			}
-			applyFilter(selected);
-		}
 
-		private void applyFilter(final String preferredKey) {
-			final CategoryFilter filter = (CategoryFilter) filterCombo.getSelectedItem();
-			final List<Offer> filtered = new ArrayList<Offer>();
-			for (final Offer offer : allOffers) {
-				if ((filter == null) || filter.accepts(offer.category)) {
-					filtered.add(offer);
-				}
-			}
-
-			tableModel.setOffers(filtered);
+			tableModel.setOffers(allOffers);
 
 			int preferredIndex = -1;
-			if ((preferredKey != null) && !preferredKey.isEmpty()) {
-				preferredIndex = tableModel.indexOf(preferredKey);
+			if ((selected != null) && !selected.isEmpty()) {
+				preferredIndex = tableModel.indexOf(selected);
 			}
 
 			if (preferredIndex >= 0) {
@@ -730,18 +698,6 @@ public final class NpcShopWindowManager {
 		}
 	}
 
-	private static final class CategoryRenderer extends DefaultListCellRenderer {
-		private static final long serialVersionUID = 1L;
-
-		@Override
-		public java.awt.Component getListCellRendererComponent(final javax.swing.JList<?> list, final Object value, final int index, final boolean isSelected, final boolean cellHasFocus) {
-			super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-			if (value instanceof CategoryFilter) {
-				setText(((CategoryFilter) value).getLabel());
-			}
-			return this;
-		}
-	}
 
 	private static final class BackgroundPanel extends JPanel {
 		private static final long serialVersionUID = 1L;
@@ -791,44 +747,18 @@ public final class NpcShopWindowManager {
 		private final String displayName;
 		private final String description;
 		private final String flavor;
-		private final String category;
 		private final int price;
 		private final Sprite sprite;
 
-		Offer(final String commandKey, final String displayName, final String description, final String flavor, final String category, final int price, final Sprite sprite) {
+		Offer(final String commandKey, final String displayName, final String description, final String flavor, final int price, final Sprite sprite) {
 			this.commandKey = commandKey;
 			this.displayName = displayName;
 			this.description = description != null ? description : "";
 			this.flavor = flavor != null ? flavor : "";
-			this.category = category;
 			this.price = price;
 			this.sprite = sprite != null ? sprite : SpriteStore.get().getFailsafe();
 		}
 	}
 
-	private enum CategoryFilter {
-		ALL("Wszystkie", null),
-		WEAPONS("Broń", "weapon"),
-		POTIONS("Eliksiry", "potion"),
-		MISC("Różne", "misc");
 
-		private final String label;
-		private final String code;
-
-		CategoryFilter(final String label, final String code) {
-			this.label = label;
-			this.code = code;
-		}
-
-		boolean accepts(final String category) {
-			if (code == null) {
-				return true;
-			}
-			return code.equals(category);
-		}
-
-		String getLabel() {
-			return label;
-		}
-	}
 }

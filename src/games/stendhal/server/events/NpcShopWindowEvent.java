@@ -11,11 +11,6 @@
  ***************************************************************************/
 package games.stendhal.server.events;
 
-import java.util.Arrays;
-import java.util.Locale;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import org.apache.log4j.Logger;
 
 import games.stendhal.common.constants.Events;
@@ -49,15 +44,6 @@ public class NpcShopWindowEvent extends RPEvent {
 
 	private static final String ACTION_OPEN = "open";
 	private static final String ACTION_CLOSE = "close";
-
-	private static final Set<String> WEAPON_TYPES = Arrays.stream(new String[] {
-		"weapon", "sword", "axe", "club", "dagger", "bow", "crossbow", "spear", "polearm",
-		"hammer", "staff", "wand"
-	}).collect(Collectors.toSet());
-
-	private static final Set<String> POTION_TYPES = Arrays.stream(new String[] {
-		"drink", "potion", "elixir"
-	}).collect(Collectors.toSet());
 
 	private NpcShopWindowEvent(final String action, final String npcName) {
 		super(Events.NPC_SHOP);
@@ -117,7 +103,9 @@ public class NpcShopWindowEvent extends RPEvent {
 			info.put("price", price);
 			info.put("description_info", info.describe());
 			info.put(ATTR_ITEM_KEY, itemName);
-			info.put(ATTR_CATEGORY, determineCategory(info));
+			if (item.has("class")) {
+				info.put(ATTR_CATEGORY, item.get("class"));
+			}
 			info.put(ATTR_FLAVOR, extractFlavor(item));
 
 			slot.add(info);
@@ -150,38 +138,4 @@ public class NpcShopWindowEvent extends RPEvent {
 		return "";
 	}
 
-	private static String determineCategory(final Item item) {
-		final String type = lowercase(item.get("class"));
-		final String subclass = lowercase(item.get("subclass"));
-		final String name = lowercase(item.getName());
-
-		if (matchesAny(type, subclass, name, WEAPON_TYPES)) {
-			return "weapon";
-		}
-		if (matchesAny(type, subclass, name, POTION_TYPES)) {
-			return "potion";
-		}
-		return "misc";
-	}
-
-	private static boolean matchesAny(final String type, final String subclass, final String name, final Set<String> keywords) {
-		if (type != null && keywords.contains(type)) {
-			return true;
-		}
-		if (subclass != null && keywords.contains(subclass)) {
-			return true;
-		}
-		if (name != null) {
-			for (final String keyword : keywords) {
-				if (name.contains(keyword)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	private static String lowercase(final String value) {
-		return value == null ? null : value.toLowerCase(Locale.ROOT);
-	}
 }
