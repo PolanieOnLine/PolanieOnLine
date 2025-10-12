@@ -144,7 +144,7 @@ class ReserveSetWindow extends InternalManagedWindow {
 			size = anchor.getSize();
 		}
 		setSize(size);
-		location.translate(-size.width - 4, 0);
+		location.translate(-size.width, 0);
 		moveTo(location.x, location.y);
 		suppressVisibilityEvents = true;
 		setVisible(true);
