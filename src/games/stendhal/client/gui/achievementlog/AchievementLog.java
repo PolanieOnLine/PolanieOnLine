@@ -38,8 +38,10 @@ import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JToggleButton;
 import javax.swing.SwingConstants;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.WindowConstants;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
@@ -57,7 +59,8 @@ class AchievementLog {
 	private static final int CARD_WIDTH = 240;
 	private static final int CARD_HEIGHT = 160;
 	private static final int DESCRIPTION_WIDTH = CARD_WIDTH - 40;
-	private static final int FILTER_ICON_SIZE = 48;
+        private static final int FILTER_ICON_SIZE = 36;
+        private static final int FILTER_TOGGLE_PADDING = 3;
 	private static final int BOOK_SIDE_BORDER = 16 + 30;
 	private static final int BOOK_TOP_BORDER = 12 + 20;
 	private static final int BOOK_WIDTH = (COLUMNS_PER_PAGE * CARD_WIDTH)
@@ -281,38 +284,50 @@ class AchievementLog {
 		return nav;
 	}
 
-	private JComponent createFilterPanel() {
-		final JPanel filters = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, PAD, PAD));
-		filters.setOpaque(false);
-		filters.setBorder(BorderFactory.createEmptyBorder(0, PAD, 0, PAD));
-		filters.setAlignmentX(Component.LEFT_ALIGNMENT);
+        private JComponent createFilterPanel() {
+                final JPanel filters = new JPanel(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, PAD, PAD));
+                filters.setOpaque(false);
+                filters.setBorder(BorderFactory.createEmptyBorder(PAD, PAD, PAD, PAD));
 
-		ImageIcon allIcon = loadAllIcon();
-		filters.add(createFilterToggle(allIcon, "Wszystkie osiągnięcia", null, true));
+                ImageIcon allIcon = loadAllIcon();
+                filters.add(createFilterToggle(allIcon, "Wszystkie osiągnięcia", null, true));
 
-		for (CategoryInfo info : collectCategories().values()) {
-			ImageIcon icon = info.icon != null ? info.icon : allIcon;
-			filters.add(createFilterToggle(icon, info.displayName, info.key, false));
-		}
+                for (CategoryInfo info : collectCategories().values()) {
+                        ImageIcon icon = info.icon != null ? info.icon : allIcon;
+                        filters.add(createFilterToggle(icon, info.displayName, info.key, false));
+                }
 
-		return filters;
-	}
+                JScrollPane scroller = new JScrollPane(filters, ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER,
+                                ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+                scroller.setBorder(BorderFactory.createEmptyBorder());
+                scroller.setOpaque(false);
+                scroller.getViewport().setOpaque(false);
+                scroller.setAlignmentX(Component.LEFT_ALIGNMENT);
+                int toggleSide = FILTER_ICON_SIZE + (PAD * FILTER_TOGGLE_PADDING) + (PAD * 2);
+                Dimension barSize = new Dimension(CONTENT_WIDTH, toggleSide + (PAD * 2));
+                scroller.setPreferredSize(barSize);
+                scroller.setMinimumSize(barSize);
+                scroller.setMaximumSize(new Dimension(CONTENT_WIDTH, toggleSide + (PAD * 4)));
+                scroller.getHorizontalScrollBar().setUnitIncrement(Math.max(1, toggleSide / 2));
 
-	private JToggleButton createFilterToggle(ImageIcon icon, String tooltip, String categoryKey, boolean selected) {
-		JToggleButton toggle = new JToggleButton(icon);
-		if ((icon == null) || (icon.getIconWidth() == 0) || (icon.getIconHeight() == 0)) {
+                return scroller;
+        }
+
+        private JToggleButton createFilterToggle(ImageIcon icon, String tooltip, String categoryKey, boolean selected) {
+                JToggleButton toggle = new JToggleButton(icon);
+                if ((icon == null) || (icon.getIconWidth() == 0) || (icon.getIconHeight() == 0)) {
 			ImageIcon fallback = loadAllIcon();
 			toggle.setIcon(fallback);
 			icon = fallback;
 		}
-		toggle.setHorizontalAlignment(SwingConstants.CENTER);
-		toggle.setVerticalAlignment(SwingConstants.CENTER);
-		int toggleSide = FILTER_ICON_SIZE + (PAD * 4);
-		Dimension toggleSize = new Dimension(toggleSide, toggleSide);
-		toggle.setPreferredSize(toggleSize);
-		toggle.setMinimumSize(toggleSize);
-		toggle.setMaximumSize(toggleSize);
-		toggle.setFocusPainted(false);
+                toggle.setHorizontalAlignment(SwingConstants.CENTER);
+                toggle.setVerticalAlignment(SwingConstants.CENTER);
+                int toggleSide = FILTER_ICON_SIZE + (PAD * FILTER_TOGGLE_PADDING);
+                Dimension toggleSize = new Dimension(toggleSide, toggleSide);
+                toggle.setPreferredSize(toggleSize);
+                toggle.setMinimumSize(toggleSize);
+                toggle.setMaximumSize(toggleSize);
+                toggle.setFocusPainted(false);
 		toggle.setSelected(selected);
 		toggle.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		Border defaultBorder = BorderFactory.createCompoundBorder(new LineBorder(CARD_BORDER, 1, true),
