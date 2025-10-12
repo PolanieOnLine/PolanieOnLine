@@ -80,7 +80,7 @@ public class SellerAdder {
 		npc.put("job_merchant", "");
 
 		if (offer) {
-			final String offerMessage = "Sprzedaję " + Grammar.enumerateCollection(sellerBehaviour.dealtItems()) + \".";
+			final String offerMessage = "Sprzedaję " + Grammar.enumerateCollection(sellerBehaviour.dealtItems()) + ".";
 			engine.add(
 				ConversationStates.ATTENDING,
 				ConversationPhrases.OFFER_MESSAGES,

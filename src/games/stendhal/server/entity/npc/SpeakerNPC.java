@@ -487,15 +487,15 @@ public class SpeakerNPC extends PassiveNPC {
 		notifyWorldAboutChanges();
 	}
 
-public void endConversation() {
-if (goodbyeMessage != null) {
-say(goodbyeMessage);
-}
-onGoodbye(attending);
-ShopOfferSender.closeShopWindow(this, attending);
-engine.setCurrentState(ConversationStates.IDLE);
-setAttending(null);
-}
+	public void endConversation() {
+		if (goodbyeMessage != null) {
+			say(goodbyeMessage);
+		}
+		onGoodbye(attending);
+		ShopOfferSender.closeShopWindow(this, attending);
+		engine.setCurrentState(ConversationStates.IDLE);
+		setAttending(null);
+	}
 
 	public boolean inConversationRange() {
 		if (attending == null) {
@@ -1082,25 +1082,27 @@ setAttending(null);
 		addGoodbye("Do widzenia.");
 	}
 
-public void addGoodbye(final String text) {
-goodbyeMessage = text;
-add(ConversationStates.ANY, ConversationPhrases.GOODBYE_MESSAGES,
-ConversationStates.IDLE, text, new ChatAction() {
+	public void addGoodbye(final String text) {
+		goodbyeMessage = text;
+		add(ConversationStates.ANY, ConversationPhrases.GOODBYE_MESSAGES,
+				ConversationStates.IDLE, text, new ChatAction() {
 
-@Override
-public void fire(final Player player, final Sentence sentence,
-final SpeakerNPC speaker = (SpeakerNPC) npc.getEntity();
-speaker.onGoodbye(player);
-ShopOfferSender.closeShopWindow(speaker, player);
-}
+			@Override
+			public void fire(final Player player, final Sentence sentence,
+				final EventRaiser npc) {
+				final SpeakerNPC speaker = (SpeakerNPC) npc.getEntity();
+				speaker.onGoodbye(player);
+				ShopOfferSender.closeShopWindow(speaker, player);
+			}
 
-@Override
-					public String toString() {
-						return "SpeakerNPC.onGoodbye";
-					}
-				});
+			@Override
+			public String toString() {
+				return "SpeakerNPC.onGoodbye";
+			}
+		});
 	}
 
+	
 	/**
 	 * Returns a copy of the transition table.
 	 *
