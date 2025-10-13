@@ -15,6 +15,7 @@ import static games.stendhal.client.gui.settings.SettingsProperties.DOUBLE_TAP_A
 import static games.stendhal.client.gui.settings.SettingsProperties.MOVE_CONTINUOUS_PROPERTY;
 import static games.stendhal.client.gui.settings.SettingsProperties.MSG_BLINK;
 import static games.stendhal.client.gui.settings.SettingsProperties.MSG_SOUND;
+import static games.stendhal.client.gui.settings.SettingsProperties.NPC_SHOP_WINDOW_PROPERTY;
 
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -75,6 +76,17 @@ class GeneralSettings {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				getState(e, "Tryb podwójnego klikania zostało ");
+			}
+		});
+
+		// NPC shop manager
+		final JCheckBox npcShopToggle = SettingsComponentFactory.createSettingsToggle(NPC_SHOP_WINDOW_PROPERTY, false,
+				"Menedżer sklepu NPC", "Włącza nowe wewnętrzne okno sklepu podczas rozmów z handlarzami.");
+		page.add(npcShopToggle);
+		npcShopToggle.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				getState(e, "Menedżer sklepu NPC został ");
 			}
 		});
 

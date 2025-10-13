@@ -77,6 +77,8 @@ import games.stendhal.client.gui.j2DClient;
 import games.stendhal.client.gui.textformat.AttributedStringBuilder;
 import games.stendhal.client.gui.textformat.StringFormatter;
 import games.stendhal.client.gui.textformat.TextAttributeSet;
+import games.stendhal.client.gui.wt.core.SettingChangeListener;
+import games.stendhal.client.gui.wt.core.WtWindowManager;
 import marauroa.common.game.RPEvent;
 import marauroa.common.game.RPObject;
 import marauroa.common.game.RPSlot;
@@ -113,6 +115,7 @@ public final class NpcShopWindowManager {
 	private static final String OFFER_TYPE_SELL = "sell";
 	private static final String ATTR_MODE = "shop_mode";
 	private static final String ATTR_OFFER_TYPE = "shop_offer_type";
+	private static final String SHOP_WINDOW_PROPERTY = "ui.npcshopwindow";
 	private static final StringFormatter<Map<TextAttribute, Object>, TextAttributeSet> DESCRIPTION_FORMATTER = createDescriptionFormatter();
 	private static final TextAttributeSet DESCRIPTION_NORMAL = new TextAttributeSet();
 	private static final ImageIcon ICON_DUKAT = loadCoinIcon("data/gui/goldencoin.png");
@@ -165,6 +168,18 @@ public final class NpcShopWindowManager {
 	private final Map<String, NpcShopWindow> openWindows = new HashMap<String, NpcShopWindow>();
 
 	private NpcShopWindowManager() {
+		WtWindowManager.getInstance().registerSettingChangeListener(SHOP_WINDOW_PROPERTY, new SettingChangeListener() {
+			@Override
+			public void changed(final String newValue) {
+				if (!Boolean.parseBoolean(newValue)) {
+					closeAllWindows();
+				}
+			}
+		});
+	}
+
+	private boolean isManagerEnabled() {
+		return WtWindowManager.getInstance().getPropertyBoolean(SHOP_WINDOW_PROPERTY, false);
 	}
 
 	public static NpcShopWindowManager get() {
@@ -194,6 +209,10 @@ public final class NpcShopWindowManager {
 	}
 
 	private void openWindow(final String npc, final RPEvent event) {
+		if (!isManagerEnabled()) {
+			return;
+		}
+
 		NpcShopWindow window = openWindows.get(npc);
 		if (window == null) {
 			window = new NpcShopWindow(npc);
@@ -223,6 +242,16 @@ public final class NpcShopWindowManager {
 		if (window != null) {
 			window.disposeFromManager();
 		}
+	}
+
+	private void closeAllWindows() {
+		final List<NpcShopWindow> windows = new ArrayList<NpcShopWindow>(openWindows.values());
+		for (final NpcShopWindow window : windows) {
+			if (window != null) {
+				window.disposeFromManager();
+			}
+		}
+		openWindows.clear();
 	}
 
 	private ShopMode parseShopMode(final RPEvent event) {

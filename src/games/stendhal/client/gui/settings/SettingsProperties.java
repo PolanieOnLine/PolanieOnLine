@@ -33,4 +33,6 @@ public class SettingsProperties {
 	public static final String BUBBLES_PROPERTY =  "ui.chat_bubbles";
 
 	public static final String UI_RENDERING = "ui.rendering";
+
+	public static final String NPC_SHOP_WINDOW_PROPERTY = "ui.npcshopwindow";
 }
