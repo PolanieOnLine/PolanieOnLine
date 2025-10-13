@@ -419,6 +419,7 @@ public class DefaultItem {
 				item.applyRarity(appliedRarity, baseAttributes, value, false);
 			} else {
 				item.applyRarity(rolledRarity, baseAttributes, value);
+			}
 		}
 
 		return item;
