@@ -773,6 +773,31 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	}
 
 	/**
+	 * Restores rarity metadata from a persisted RPObject without modifying combat
+	 * statistics.
+	 *
+	 * @param storedRarity
+	 *            rarity that was saved with the item
+	 * @param storedValue
+	 *            previously calculated rarity adjusted value or {@code null} if
+	 *            unavailable
+	 * @param badgeVisible
+	 *            whether the rarity badge was visible
+	 */
+	public void restoreRarity(ItemRarity storedRarity, Integer storedValue, boolean badgeVisible) {
+		ItemRarity resolved = (storedRarity == null) ? ItemRarity.COMMON : storedRarity;
+		rarity = resolved;
+		put("rarity", resolved.getId());
+		if (storedValue != null) {
+			rarityValue = storedValue.intValue();
+			put("rarity_value", rarityValue);
+		}
+		rarityBadgeVisible = badgeVisible;
+		put("rarity_badge", badgeVisible ? 1 : 0);
+		update();
+	}
+
+	/**
 	 * Controls whether the rarity badge should be rendered by the client.
 	 *
 	 * @param visible
