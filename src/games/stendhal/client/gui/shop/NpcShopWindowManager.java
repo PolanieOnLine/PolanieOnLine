@@ -70,7 +70,7 @@ public final class NpcShopWindowManager {
 
 	private static final String MODE_BUY = "buy";
 	private static final String MODE_SELL = "sell";
-	private static final String MODE_BOTH = "trade";
+	private static final String MODE_BOTH = "buy_sell";
 	private static final String OFFER_TYPE_BUY = "buy";
 	private static final String OFFER_TYPE_SELL = "sell";
 	private static final String ATTR_MODE = "shop_mode";
@@ -192,6 +192,9 @@ public final class NpcShopWindowManager {
 		}
 		if (MODE_BUY.equalsIgnoreCase(mode)) {
 			return ShopMode.SELL;
+		}
+		if ("trade".equalsIgnoreCase(mode)) {
+			return ShopMode.BUY;
 		}
 		return ShopMode.BUY;
 	}
@@ -726,6 +729,175 @@ public final class NpcShopWindowManager {
 		}
 	}
 
+	private static final class OfferTableModel extends AbstractTableModel {
+		private static final long serialVersionUID = 1L;
+
+		private static final String[] COLUMNS = new String[] {"", "Przedmiot", "Cena"};
+
+		private final List<Offer> offers = new ArrayList<Offer>();
+
+		void setOffers(final List<Offer> newOffers) {
+			offers.clear();
+			if (newOffers != null) {
+				offers.addAll(newOffers);
+			}
+			fireTableDataChanged();
+		}
+
+		Offer getOffer(final int row) {
+			if ((row < 0) || (row >= offers.size())) {
+				return null;
+			}
+			return offers.get(row);
+		}
+
+		int indexOf(final String selectionId) {
+			if ((selectionId == null) || selectionId.isEmpty()) {
+				return -1;
+			}
+			for (int i = 0; i < offers.size(); i++) {
+				final Offer offer = offers.get(i);
+				if (selectionId.equals(offer.selectionId)) {
+					return i;
+				}
+			}
+			return -1;
+		}
+
+		@Override
+		public int getRowCount() {
+			return offers.size();
+		}
+
+		@Override
+		public int getColumnCount() {
+			return COLUMNS.length;
+		}
+
+		@Override
+		public String getColumnName(final int column) {
+			return COLUMNS[column];
+		}
+
+		@Override
+		public Class<?> getColumnClass(final int columnIndex) {
+			if (columnIndex == 0) {
+				return Sprite.class;
+			}
+			return String.class;
+		}
+
+		@Override
+		public Object getValueAt(final int rowIndex, final int columnIndex) {
+			final Offer offer = getOffer(rowIndex);
+			if (offer == null) {
+				return null;
+			}
+			switch (columnIndex) {
+				case 0:
+				return offer.sprite;
+				case 1:
+				return offer.displayName;
+				case 2:
+				return formatPriceColored(offer.price);
+				default:
+				return null;
+			}
+		}
+	}
+
+	private static final class PriceRenderer extends DefaultTableCellRenderer {
+		private static final long serialVersionUID = 1L;
+
+		PriceRenderer() {
+			setHorizontalAlignment(SwingConstants.RIGHT);
+			setOpaque(false);
+		}
+
+		@Override
+		protected void setValue(final Object value) {
+			setText(value == null ? "" : value.toString());
+		}
+	}
+
+	private static final class SpriteCellRenderer extends JComponent implements TableCellRenderer {
+		private static final long serialVersionUID = 1L;
+
+		private Sprite sprite;
+		private boolean selected;
+		private Color selectionColor;
+
+		@Override
+		public JComponent getTableCellRendererComponent(final JTable table, final Object value, final boolean isSelected, final boolean hasFocus, final int row, final int column) {
+			sprite = value instanceof Sprite ? (Sprite) value : null;
+			selected = isSelected;
+			selectionColor = table.getSelectionBackground();
+			return this;
+		}
+
+		@Override
+		public Dimension getPreferredSize() {
+			return new Dimension(48, 48);
+		}
+
+		@Override
+		protected void paintComponent(final Graphics g) {
+			if (selected) {
+				g.setColor(selectionColor);
+				g.fillRect(0, 0, getWidth(), getHeight());
+			}
+
+			if (sprite != null) {
+				final int x = (getWidth() - sprite.getWidth()) / 2;
+				final int y = (getHeight() - sprite.getHeight()) / 2;
+				sprite.draw(g, x, y);
+			}
+		}
+	}
+
+	private static final class BackgroundPanel extends JPanel {
+		private static final long serialVersionUID = 1L;
+
+		private transient BufferedImage backgroundImage;
+
+		void setBackgroundTexture(final String path) {
+			if ((path == null) || path.trim().isEmpty()) {
+				backgroundImage = null;
+				return;
+			}
+
+			try {
+				final Sprite sprite = SpriteStore.get().getSprite(path);
+				if (sprite == null) {
+					backgroundImage = null;
+					return;
+				}
+				backgroundImage = new BufferedImage(sprite.getWidth(), sprite.getHeight(), BufferedImage.TYPE_INT_ARGB);
+				sprite.draw(backgroundImage.getGraphics(), 0, 0);
+			} catch (final RuntimeException e) {
+				logger.warn("Failed to load NPC shop background texture: " + path, e);
+				backgroundImage = null;
+			}
+		}
+
+		@Override
+		protected void paintComponent(final Graphics g) {
+			super.paintComponent(g);
+			if (backgroundImage == null) {
+				return;
+			}
+
+			final int width = backgroundImage.getWidth();
+			final int height = backgroundImage.getHeight();
+
+			for (int x = 0; x < getWidth(); x += width) {
+				for (int y = 0; y < getHeight(); y += height) {
+					g.drawImage(backgroundImage, x, y, null);
+				}
+			}
+		}
+	}
+
 	private static final class Offer {
 		private final String commandKey;
 		private final String displayName;
@@ -747,7 +919,4 @@ public final class NpcShopWindowManager {
 			this.selectionId = this.commandKey + ":" + this.type.name();
 		}
 	}
-
-
-
 }

@@ -46,6 +46,7 @@ public class NpcShopWindowEvent extends RPEvent {
 	private static final String ATTR_ITEM_KEY = "shop_item_key";
 	private static final String ATTR_MODE = "shop_mode";
 	private static final String ATTR_OFFER_TYPE = "shop_offer_type";
+	private static final String MODE_BUY_SELL = "buy_sell";
 
 	private static final String ACTION_OPEN = "open";
 	private static final String ACTION_CLOSE = "close";
@@ -156,7 +157,7 @@ public class NpcShopWindowEvent extends RPEvent {
 	private static String determineMode(final boolean hasSeller, final boolean hasBuyer,
 	final SellerBehaviour sellerBehaviour, final BuyerBehaviour buyerBehaviour) {
 		if (hasSeller && hasBuyer) {
-			return ShopType.TRADE.toString();
+			return MODE_BUY_SELL;
 		}
 		if (hasSeller) {
 			return extractTypeOrDefault(sellerBehaviour, ShopType.ITEM_SELL).toString();
