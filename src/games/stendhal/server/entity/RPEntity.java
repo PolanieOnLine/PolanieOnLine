@@ -104,7 +104,16 @@ public abstract class RPEntity extends CombatEntity {
 	public static boolean isWeaponClass(String clazz) {
 		return (clazz != null) && WEAPON_CLASSES.contains(clazz);
 	}
-	
+
+	/**
+	 * Provides the set of classes recognised as weapons by {@link #getWeapons()}.
+	 *
+	 * @return immutable collection of weapon class identifiers
+	 */
+	public static Set<String> getWeaponClasses() {
+		return WEAPON_CLASSES;
+	}
+
 	/**
 	 * Checks if the provided slot is used for equipment.
 	 *
@@ -115,7 +124,15 @@ public abstract class RPEntity extends CombatEntity {
 	public static boolean isEquipmentSlot(String slot) {
 		return (slot != null) && EQUIPMENT_SLOT_NAMES.contains(slot);
 	}
-	
+
+	/**
+	 * Provides the slot identifiers used by {@link #getAllEquipment()}.
+	 *
+	 * @return immutable collection of equipment slot names
+	 */
+	public static Set<String> getEquipmentSlotNames() {
+		return EQUIPMENT_SLOT_NAMES;
+	}
 	/** The title attribute name. */
 	protected static final String ATTR_TITLE = "title";
 	private static Statistics stats;

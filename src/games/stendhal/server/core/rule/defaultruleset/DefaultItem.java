@@ -13,15 +13,11 @@ package games.stendhal.server.core.rule.defaultruleset;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.EnumMap;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.common.constants.Nature;
@@ -45,30 +41,6 @@ import games.stendhal.server.entity.status.StatusType;
  */
 public class DefaultItem {
 
-	private static final Set<String> RARITY_EXCLUDED_CLASSES = Collections.unmodifiableSet(
-		new HashSet<String>(Arrays.asList(
-		"book",
-		"box",
-		"container",
-		"document",
-		"drink",
-		"flower",
-		"food",
-		"glyph",
-		"herb",
-		"ingredient",
-		"key",
-		"material",
-		"money",
-		"potion",
-		"present",
-		"quest",
-		"resource",
-		"scroll",
-		"ticket",
-		"tool",
-		"token")));
-		
 	/** Implementation creator. */
 	private AbstractCreator<Item> creator;
 
@@ -158,22 +130,18 @@ public class DefaultItem {
 	}
 
 	private boolean isRarityEligible(List<String> equipSlots, String itemClass) {
-		if ((itemClass != null) && RARITY_EXCLUDED_CLASSES.contains(itemClass)) {
-			return false;
-		}
-		if (RPEntity.isWeaponClass(itemClass)) {
+		if ((itemClass != null) && RPEntity.getWeaponClasses().contains(itemClass)) {
 			return true;
 		}
-		if (equipSlots != null) {
+		if ((equipSlots != null) && !equipSlots.isEmpty()) {
 			for (String slot : equipSlots) {
-				if (RPEntity.isEquipmentSlot(slot)) {
+				if (RPEntity.getEquipmentSlotNames().contains(slot)) {
 					return true;
 				}
 			}
 		}
 		return false;
 	}
-
 	public void setAttributes(final Map<String, String> attributes) {
 		this.attributes = attributes;
 	}
