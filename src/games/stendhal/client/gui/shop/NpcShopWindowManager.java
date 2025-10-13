@@ -14,6 +14,7 @@ package games.stendhal.client.gui.shop;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -22,11 +23,12 @@ import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Locale;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -34,6 +36,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
@@ -61,6 +64,7 @@ import games.stendhal.client.gui.InternalManagedWindow;
 import games.stendhal.client.gui.InternalWindow;
 import games.stendhal.client.gui.InternalWindow.CloseListener;
 import games.stendhal.client.scripting.ChatLineParser;
+import games.stendhal.client.sprite.DataLoader;
 import games.stendhal.client.sprite.Sprite;
 import games.stendhal.client.sprite.SpriteStore;
 import games.stendhal.common.grammar.Grammar;
@@ -86,6 +90,9 @@ public final class NpcShopWindowManager {
 	private static final String ATTR_OFFER_TYPE = "shop_offer_type";
 	private static final StringFormatter<Map<TextAttribute, Object>, TextAttributeSet> DESCRIPTION_FORMATTER = createDescriptionFormatter();
 	private static final TextAttributeSet DESCRIPTION_NORMAL = new TextAttributeSet();
+	private static final ImageIcon ICON_DUKAT = loadCoinIcon("data/gui/goldencoin.png");
+	private static final ImageIcon ICON_TALAR = loadCoinIcon("data/gui/silvercoin.png");
+	private static final ImageIcon ICON_MIEDZIAK = loadCoinIcon("data/gui/coppercoin.png");
 
 	private enum TransactionType {
 		BUY,
@@ -196,18 +203,27 @@ public final class NpcShopWindowManager {
 		if (mode == null) {
 			return ShopMode.BUY;
 		}
+
 		if (MODE_BOTH.equalsIgnoreCase(mode)) {
 			return ShopMode.BOTH;
 		}
+
 		if (MODE_SELL.equalsIgnoreCase(mode)) {
-			return ShopMode.SELL;
-		}
-		if (MODE_BUY.equalsIgnoreCase(mode)) {
 			return ShopMode.BUY;
 		}
+
+		if (MODE_BUY.equalsIgnoreCase(mode)) {
+			return ShopMode.SELL;
+		}
+
 		if ("trade".equalsIgnoreCase(mode)) {
 			return ShopMode.BUY;
 		}
+
+		if ("outfit".equalsIgnoreCase(mode)) {
+			return ShopMode.BUY;
+		}
+
 		return ShopMode.BUY;
 	}
 
@@ -269,43 +285,21 @@ public final class NpcShopWindowManager {
 		}
 	}
 
-	private static String formatPriceColored(final int copper) {
-		final int dukaty = copper / 10000;
-		final int afterDukaty = copper % 10000;
-		final int talary = afterDukaty / 100;
-		final int miedziaki = afterDukaty % 100;
-
-		final StringBuilder builder = new StringBuilder("<html>");
-		boolean appended = false;
-
-		appended = appendPricePart(builder, dukaty, "#f5c542", "dukat", appended);
-		appended = appendPricePart(builder, talary, "#d0d0d0", "talar", appended);
-		appended = appendPricePart(builder, miedziaki, "#d87f33", "miedziak", appended || (dukaty > 0) || (talary > 0));
-
-		if (!appended) {
-			appendPricePart(builder, 0, "#d87f33", "miedziak", false);
+	private static ImageIcon loadCoinIcon(final String path) {
+		if ((path == null) || path.trim().isEmpty()) {
+			return null;
 		}
 
-		builder.append("</html>");
-		return builder.toString();
-	}
-
-	private static boolean appendPricePart(final StringBuilder builder, final int amount, final String color, final String coinName, final boolean appended) {
-		if (amount <= 0) {
-			return appended;
+		try {
+			final URL url = DataLoader.getResource(path);
+			if (url != null) {
+				return new ImageIcon(url);
+			}
+		} catch (final RuntimeException e) {
+			logger.warn("Unable to load coin icon from " + path, e);
 		}
 
-		if (builder.length() > "<html>".length()) {
-			builder.append(' ');
-		}
-		builder.append("<span style=\"color:");
-		builder.append(color);
-		builder.append("; font-weight:bold;\">");
-		builder.append(amount);
-		builder.append(' ');
-		builder.append(Grammar.polishCoinName(coinName, amount));
-		builder.append("</span>");
-		return true;
+		return null;
 	}
 
 	private static String formatPricePlain(final int copper) {
@@ -400,8 +394,8 @@ public final class NpcShopWindowManager {
 	private final JTable table = new JTable(tableModel);
 	private final JTextArea descriptionArea = new JTextArea();
 	private final JLabel flavorLabel = new JLabel();
-	private final JLabel unitPriceValue = new JLabel("-");
-	private final JLabel totalPriceValue = new JLabel("-");
+	private final PriceView unitPriceValue = new PriceView(FlowLayout.LEFT);
+	private final PriceView totalPriceValue = new PriceView(FlowLayout.LEFT);
 	private final JSpinner quantitySpinner = new JSpinner(new SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), Integer.valueOf(1000), Integer.valueOf(1)));
 	private final JButton buyButton = new JButton("Kup");
 	private final JButton sellButton = new JButton("Sprzedaj");
@@ -410,7 +404,7 @@ public final class NpcShopWindowManager {
 	private final TintedPanel contentPanel = new TintedPanel();
 	private final JLabel itemsLabel = createSectionLabel("Przedmioty");
 	private final JLabel descriptionLabel = createSectionLabel("Opis przedmiotu");
-	private final Dimension expandedPreferredSize = new Dimension(640, 520);
+	private final Dimension expandedPreferredSize = new Dimension(520, 420);
 	private final JLabel totalsHeading = createSectionLabel("Podsumowanie");
 	private ShopMode shopMode = ShopMode.BUY;
 
@@ -596,13 +590,13 @@ public final class NpcShopWindowManager {
 		unitLabel.setAlignmentX(LEFT_ALIGNMENT);
 		unitLabel.setForeground(SECONDARY_TEXT);
 		unitPriceValue.setAlignmentX(LEFT_ALIGNMENT);
-		unitPriceValue.setForeground(PRIMARY_TEXT);
+		unitPriceValue.setTextColor(PRIMARY_TEXT);
 
 		final JLabel totalLabel = new JLabel("Łącznie:");
 		totalLabel.setAlignmentX(LEFT_ALIGNMENT);
 		totalLabel.setForeground(SECONDARY_TEXT);
 		totalPriceValue.setAlignmentX(LEFT_ALIGNMENT);
-		totalPriceValue.setForeground(PRIMARY_TEXT);
+		totalPriceValue.setTextColor(PRIMARY_TEXT);
 
 		totalsPanel.add(unitLabel);
 		totalsPanel.add(unitPriceValue);
@@ -715,7 +709,7 @@ public final class NpcShopWindowManager {
 		nameColumn.setPreferredWidth(240);
 
 		final TableColumn priceColumn = model.getColumn(2);
-		priceColumn.setPreferredWidth(140);
+		priceColumn.setPreferredWidth(120);
 	}
 
 	private void updateSelection() {
@@ -724,10 +718,8 @@ public final class NpcShopWindowManager {
 		if (offer == null) {
 			descriptionArea.setText("");
 			flavorLabel.setText("");
-			unitPriceValue.setText("-");
-			unitPriceValue.setToolTipText(null);
-			totalPriceValue.setText("-");
-			totalPriceValue.setToolTipText(null);
+			unitPriceValue.clearDisplay();
+			totalPriceValue.clearDisplay();
 			buyButton.setEnabled(false);
 			sellButton.setEnabled(false);
 			return;
@@ -741,8 +733,7 @@ public final class NpcShopWindowManager {
 			flavorLabel.setText("");
 		}
 
-		unitPriceValue.setText(formatPriceColored(offer.price));
-		unitPriceValue.setToolTipText(formatPricePlain(offer.price));
+		unitPriceValue.showPrice(Integer.valueOf(offer.price));
 		buyButton.setEnabled(isActionAvailable(TransactionType.BUY, offer));
 		sellButton.setEnabled(isActionAvailable(TransactionType.SELL, offer));
 
@@ -756,8 +747,7 @@ public final class NpcShopWindowManager {
 	private void updateTotalPrice() {
 		final Offer offer = getSelectedOffer();
 		if (offer == null) {
-			totalPriceValue.setText("-");
-			totalPriceValue.setToolTipText(null);
+			totalPriceValue.clearDisplay();
 			return;
 		}
 
@@ -765,8 +755,7 @@ public final class NpcShopWindowManager {
 		final long total = (long) offer.price * quantity;
 		final int capped = total > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) total;
 
-		totalPriceValue.setText(formatPriceColored(capped));
-		totalPriceValue.setToolTipText(formatPricePlain(capped));
+		totalPriceValue.showPrice(Integer.valueOf(capped));
 	}
 
 	private Offer getSelectedOffer() {
@@ -897,11 +886,11 @@ public final class NpcShopWindowManager {
 }
 
 	private static final class OfferTableModel extends AbstractTableModel {
-		private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-		private static final String[] COLUMNS = new String[] {"", "Przedmiot", "Cena"};
+	private static final String[] COLUMNS = new String[] {"", "Przedmiot", "Cena"};
 
-		private final List<Offer> offers = new ArrayList<Offer>();
+	private final List<Offer> offers = new ArrayList<Offer>();
 
 		void setOffers(final List<Offer> newOffers) {
 			offers.clear();
@@ -951,6 +940,9 @@ public final class NpcShopWindowManager {
 			if (columnIndex == 0) {
 				return Sprite.class;
 			}
+			if (columnIndex == 2) {
+				return Integer.class;
+			}
 			return String.class;
 		}
 
@@ -961,32 +953,160 @@ public final class NpcShopWindowManager {
 				return null;
 			}
 			switch (columnIndex) {
-				case 0:
+			case 0:
 				return offer.sprite;
-				case 1:
+			case 1:
 				return offer.displayName;
-				case 2:
-				return formatPriceColored(offer.price);
-				default:
+			case 2:
+				return Integer.valueOf(offer.price);
+			default:
 				return null;
 			}
 		}
+}
+
+	private static final class PriceBreakdown {
+		private final int dukaty;
+		private final int talary;
+		private final int miedziaki;
+		private final int totalCopper;
+
+		PriceBreakdown(final int dukaty, final int talary, final int miedziaki, final int totalCopper) {
+			this.dukaty = dukaty;
+			this.talary = talary;
+			this.miedziaki = miedziaki;
+			this.totalCopper = totalCopper;
+		}
 	}
 
-	private static final class PriceRenderer extends DefaultTableCellRenderer {
+	private static PriceBreakdown breakdownPrice(final int copper) {
+		final int safe = Math.max(0, copper);
+		final int dukaty = safe / 10000;
+		final int afterDukaty = safe % 10000;
+		final int talary = afterDukaty / 100;
+		final int miedziaki = afterDukaty % 100;
+		return new PriceBreakdown(dukaty, talary, miedziaki, safe);
+	}
+
+	private static class PriceView extends JPanel {
 		private static final long serialVersionUID = 1L;
 
-		PriceRenderer() {
-			setHorizontalAlignment(SwingConstants.RIGHT);
+		private final JLabel placeholder;
+		private Color textColor = PRIMARY_TEXT;
+
+		PriceView(final int alignment) {
 			setOpaque(false);
+			setBorder(BorderFactory.createEmptyBorder());
+			setLayout(new FlowLayout(alignment, 4, 0));
+			placeholder = new JLabel("-");
+			placeholder.setOpaque(false);
+			placeholder.setBorder(BorderFactory.createEmptyBorder());
+			placeholder.setForeground(textColor);
+			add(placeholder);
 		}
 
 		@Override
-		protected void setValue(final Object value) {
-			setText(value == null ? "" : value.toString());
+		public void setForeground(final Color color) {
+			super.setForeground(color);
+			setTextColor(color);
+		}
+
+		void setTextColor(final Color color) {
+			textColor = (color != null) ? color : PRIMARY_TEXT;
+			for (final java.awt.Component component : getComponents()) {
+				if (component instanceof JLabel) {
+					((JLabel) component).setForeground(textColor);
+				}
+			}
+		}
+
+		void clearDisplay() {
+			removeAll();
+			placeholder.setForeground(textColor);
+			add(placeholder);
+			setToolTipText(null);
+			revalidate();
+			repaint();
+		}
+
+		void showPrice(final Integer copper) {
+			if (copper == null) {
+				clearDisplay();
+				return;
+			}
+
+			final PriceBreakdown breakdown = breakdownPrice(copper.intValue());
+			removeAll();
+
+			boolean appended = appendCoinLabel(breakdown.dukaty, ICON_DUKAT);
+			appended |= appendCoinLabel(breakdown.talary, ICON_TALAR);
+			appended |= appendCoinLabel(breakdown.miedziaki, ICON_MIEDZIAK);
+
+			if (!appended) {
+				add(createCoinLabel(0, ICON_MIEDZIAK));
+			}
+
+			setToolTipText(formatPricePlain(breakdown.totalCopper));
+			revalidate();
+			repaint();
+		}
+
+		private boolean appendCoinLabel(final int amount, final ImageIcon icon) {
+			if (amount <= 0) {
+				return false;
+			}
+			add(createCoinLabel(amount, icon));
+			return true;
+		}
+
+		private JLabel createCoinLabel(final int amount, final ImageIcon icon) {
+			final JLabel label = new JLabel(Integer.toString(amount));
+			label.setOpaque(false);
+			label.setBorder(BorderFactory.createEmptyBorder());
+			label.setForeground(textColor);
+			label.setIcon(icon);
+			label.setHorizontalTextPosition(SwingConstants.LEFT);
+			label.setVerticalTextPosition(SwingConstants.CENTER);
+			label.setIconTextGap(4);
+			return label;
 		}
 	}
+	private static final class PriceRenderer extends PriceView implements TableCellRenderer {
+		private static final long serialVersionUID = 1L;
 
+		PriceRenderer() {
+			super(FlowLayout.RIGHT);
+		}
+
+		@Override
+		public java.awt.Component getTableCellRendererComponent(final JTable table, final Object value, final boolean isSelected, final boolean hasFocus, final int row, final int column) {
+			if (isSelected) {
+				setOpaque(true);
+				setBackground(table.getSelectionBackground());
+				setTextColor(table.getSelectionForeground());
+			} else {
+				setOpaque(false);
+				setBackground(null);
+				setTextColor(PRIMARY_TEXT);
+			}
+
+			if (value instanceof Integer) {
+				showPrice((Integer) value);
+			} else {
+				clearDisplay();
+			}
+			return this;
+		}
+
+		@Override
+		protected void paintComponent(final Graphics g) {
+			if (isOpaque() && (getBackground() != null)) {
+				g.setColor(getBackground());
+				g.fillRect(0, 0, getWidth(), getHeight());
+			}
+			super.paintComponent(g);
+		}
+	}
 	private static final class SpriteCellRenderer extends JComponent implements TableCellRenderer {
 		private static final long serialVersionUID = 1L;
 
