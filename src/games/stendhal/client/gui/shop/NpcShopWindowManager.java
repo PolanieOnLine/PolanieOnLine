@@ -17,6 +17,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Insets;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -53,6 +54,7 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
+import java.awt.font.TextAttribute;
 import org.apache.log4j.Logger;
 
 import games.stendhal.client.gui.InternalManagedWindow;
@@ -63,6 +65,9 @@ import games.stendhal.client.sprite.Sprite;
 import games.stendhal.client.sprite.SpriteStore;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.client.gui.j2DClient;
+import games.stendhal.client.gui.textformat.AttributedStringBuilder;
+import games.stendhal.client.gui.textformat.StringFormatter;
+import games.stendhal.client.gui.textformat.TextAttributeSet;
 import marauroa.common.game.RPEvent;
 import marauroa.common.game.RPObject;
 import marauroa.common.game.RPSlot;
@@ -79,6 +84,8 @@ public final class NpcShopWindowManager {
 	private static final String OFFER_TYPE_SELL = "sell";
 	private static final String ATTR_MODE = "shop_mode";
 	private static final String ATTR_OFFER_TYPE = "shop_offer_type";
+	private static final StringFormatter<Map<TextAttribute, Object>, TextAttributeSet> DESCRIPTION_FORMATTER = createDescriptionFormatter();
+	private static final TextAttributeSet DESCRIPTION_NORMAL = new TextAttributeSet();
 
 	private enum TransactionType {
 		BUY,
@@ -193,10 +200,10 @@ public final class NpcShopWindowManager {
 			return ShopMode.BOTH;
 		}
 		if (MODE_SELL.equalsIgnoreCase(mode)) {
-			return ShopMode.BUY;
+			return ShopMode.SELL;
 		}
 		if (MODE_BUY.equalsIgnoreCase(mode)) {
-			return ShopMode.SELL;
+			return ShopMode.BUY;
 		}
 		if ("trade".equalsIgnoreCase(mode)) {
 			return ShopMode.BUY;
@@ -229,9 +236,9 @@ public final class NpcShopWindowManager {
 	private Offer parseOffer(final RPObject object) {
 		final int price = object.has("price") ? object.getInt("price") : 0;
 		final String commandKey = object.has("shop_item_key") ? object.get("shop_item_key") : object.get("name");
-		final String displayName = object.has("name") ? object.get("name") : commandKey;
-		final String description = object.has("description_info") ? object.get("description_info") : "";
-		final String flavor = object.has("shop_flavor") ? object.get("shop_flavor") : "";
+		final String displayName = normalizeItemText(object.has("name") ? object.get("name") : commandKey);
+		final String description = normalizeItemText(object.has("description_info") ? object.get("description_info") : "");
+		final String flavor = normalizeItemText(object.has("shop_flavor") ? object.get("shop_flavor") : "");
 		final Sprite sprite = loadSprite(object);
 		final String rawType = object.has(ATTR_OFFER_TYPE) ? object.get(ATTR_OFFER_TYPE) : null;
 		final TransactionType type;
@@ -367,7 +374,7 @@ public final class NpcShopWindowManager {
 		return builder.toString();
 	}
 
-private static final class NpcShopWindow extends InternalManagedWindow {
+	private static final class NpcShopWindow extends InternalManagedWindow {
 	private static final long serialVersionUID = 1L;
 
 	private static final Color PRIMARY_TEXT = new Color(246, 236, 220);
@@ -380,8 +387,13 @@ private static final class NpcShopWindow extends InternalManagedWindow {
 	private static final Color HEADER_FG = new Color(255, 246, 232);
 	private static final Color PANEL_TINT = new Color(34, 24, 16, 215);
 	private static final Color BORDER_COLOR = new Color(117, 89, 63, 210);
-	private static final Color BUTTON_BG = new Color(198, 156, 94);
 	private static final Color BUTTON_BORDER = new Color(128, 94, 54);
+	private static final Color BUY_BUTTON_BG = new Color(32, 132, 58);
+	private static final Color BUY_BUTTON_BORDER = new Color(16, 78, 32);
+	private static final Color BUY_BUTTON_TEXT = new Color(252, 252, 244);
+	private static final Color SELL_BUTTON_BG = new Color(156, 48, 48);
+	private static final Color SELL_BUTTON_BORDER = new Color(96, 24, 24);
+	private static final Color SELL_BUTTON_TEXT = new Color(255, 240, 236);
 
 	private final List<Offer> allOffers = new ArrayList<Offer>();
 	private final OfferTableModel tableModel = new OfferTableModel();
@@ -398,6 +410,7 @@ private static final class NpcShopWindow extends InternalManagedWindow {
 	private final TintedPanel contentPanel = new TintedPanel();
 	private final JLabel itemsLabel = createSectionLabel("Przedmioty");
 	private final JLabel descriptionLabel = createSectionLabel("Opis przedmiotu");
+	private final Dimension expandedPreferredSize = new Dimension(640, 520);
 	private final JLabel totalsHeading = createSectionLabel("Podsumowanie");
 	private ShopMode shopMode = ShopMode.BUY;
 
@@ -410,7 +423,7 @@ private static final class NpcShopWindow extends InternalManagedWindow {
 		setHideOnClose(true);
 		setMinimizable(true);
 		setMovable(true);
-		setPreferredSize(new Dimension(640, 520));
+		setPreferredSize(new Dimension(expandedPreferredSize));
 
 		backgroundPanel.setBorder(BorderFactory.createEmptyBorder(12, 12, 12, 12));
 		backgroundPanel.setLayout(new BorderLayout());
@@ -619,20 +632,22 @@ private static final class NpcShopWindow extends InternalManagedWindow {
 		actionPanel.add(quantitySpinner);
 		actionPanel.add(Box.createHorizontalStrut(16));
 
-		styleButton(buyButton);
+		styleButton(buyButton, BUY_BUTTON_BG, BUY_BUTTON_BORDER, BUY_BUTTON_TEXT);
 		actionPanel.add(buyButton);
 		actionPanel.add(Box.createHorizontalStrut(8));
-		styleButton(sellButton);
+		styleButton(sellButton, SELL_BUTTON_BG, SELL_BUTTON_BORDER, SELL_BUTTON_TEXT);
 		actionPanel.add(sellButton);
 	}
 
-	private void styleButton(final JButton button) {
-		button.setBackground(BUTTON_BG);
-		button.setBorder(BorderFactory.createLineBorder(BUTTON_BORDER));
+	private void styleButton(final JButton button, final Color background, final Color border, final Color text) {
+		button.setBackground(background);
+		button.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(border, 2, true), BorderFactory.createEmptyBorder(4, 12, 4, 12)));
 		button.setFocusPainted(false);
+		button.setContentAreaFilled(true);
 		button.setOpaque(true);
-		button.setForeground(new Color(30, 20, 12));
-		button.setFont(button.getFont().deriveFont(Font.BOLD));
+		button.setForeground(text);
+		button.setFont(button.getFont().deriveFont(Font.BOLD, button.getFont().getSize() + 1.0f));
+		button.setMargin(new Insets(4, 10, 4, 10));
 	}
 
 	private JSeparator createSeparator() {
@@ -865,6 +880,20 @@ private static final class NpcShopWindow extends InternalManagedWindow {
 		backgroundPanel.setBackgroundTexture(path);
 		backgroundPanel.repaint();
 	}
+
+	@Override
+	public Dimension getPreferredSize() {
+		final Dimension base = super.getPreferredSize();
+		final int width = Math.max(base.width, expandedPreferredSize.width);
+		if (isMinimized()) {
+			final int titleHeight = getTitlebar().getPreferredSize().height;
+			final Insets insets = getInsets();
+			final int height = titleHeight + insets.top + insets.bottom;
+			return new Dimension(width, height);
+		}
+		final int height = Math.max(base.height, expandedPreferredSize.height);
+		return new Dimension(width, height);
+	}
 }
 
 	private static final class OfferTableModel extends AbstractTableModel {
@@ -1079,7 +1108,7 @@ private static final class NpcShopWindow extends InternalManagedWindow {
 
 		Offer(final String commandKey, final String displayName, final String description, final String flavor, final int price, final Sprite sprite, final TransactionType type) {
 			this.commandKey = commandKey;
-			this.displayName = displayName;
+			this.displayName = (displayName != null) ? displayName : "";
 			this.description = (description != null) ? description : "";
 			this.flavor = (flavor != null) ? flavor : "";
 			this.price = price;
@@ -1088,4 +1117,26 @@ private static final class NpcShopWindow extends InternalManagedWindow {
 			this.selectionId = this.commandKey + ":" + this.type.name();
 		}
 	}
+
+	private static String normalizeItemText(final String text) {
+		if ((text == null) || text.isEmpty()) {
+			return "";
+		}
+		final String cleaned = text.replace('\r', '\n');
+		final AttributedStringBuilder builder = new AttributedStringBuilder();
+		synchronized (DESCRIPTION_FORMATTER) {
+			DESCRIPTION_FORMATTER.format(cleaned, DESCRIPTION_NORMAL, builder);
+		}
+		return builder.toString().replace('\u00A0', ' ');
+	}
+
+	private static StringFormatter<Map<TextAttribute, Object>, TextAttributeSet> createDescriptionFormatter() {
+		final StringFormatter<Map<TextAttribute, Object>, TextAttributeSet> formatter = new StringFormatter<Map<TextAttribute, Object>, TextAttributeSet>();
+		formatter.addStyle(Character.valueOf('#'), new TextAttributeSet());
+		formatter.addStyle(Character.valueOf('§'), new TextAttributeSet());
+		formatter.addStyle(Character.valueOf('~'), new TextAttributeSet());
+		formatter.addStyle(Character.valueOf('¡'), new TextAttributeSet());
+		return formatter;
+	}
+
 }
