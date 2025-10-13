@@ -28,17 +28,17 @@ import games.stendhal.common.Rand;
  */
 public enum ItemRarity {
 
-	/** Common items are slightly weaker than the XML baseline. */
-	COMMON("common", "Zwykły", new Color(0x5b, 0x5b, 0x5b), 0.90, 1.04, 0.85, 70, 1.0),
+/** Common items are slightly weaker than the XML baseline. */
+COMMON("common", "Zwykły", new Color(0x5b, 0x5b, 0x5b), 0.97, 1.03, 0.92, 70, 1.0),
 
-	/** Rare items are marginally weaker than the XML baseline but better than common. */
-	RARE("rare", "Rzadki", new Color(0x1e, 0x90, 0xff), 0.96, 1.02, 0.95, 22, 0.6),
+/** Rare items are a touch stronger than the XML baseline while remaining close to it. */
+RARE("rare", "Rzadki", new Color(0x1e, 0x90, 0xff), 1.02, 0.99, 1.05, 22, 0.6),
 
-	/** Epic items provide a subtle improvement over the XML baseline. */
-	EPIC("epic", "Epicki", new Color(0x99, 0x32, 0xcc), 1.05, 0.98, 1.08, 6, 0.35),
+/** Epic items provide a noticeable improvement over the XML baseline. */
+EPIC("epic", "Epicki", new Color(0x99, 0x32, 0xcc), 1.07, 0.96, 1.12, 6, 0.35),
 
-	/** Legendary items are noticeably better than the XML baseline without being overpowering. */
-	LEGENDARY("legendary", "Legendarny", new Color(0xff, 0xa5, 0x00), 1.10, 0.95, 1.20, 2, 0.2);
+/** Legendary items are substantially better than the XML baseline without being overpowering. */
+LEGENDARY("legendary", "Legendarny", new Color(0xff, 0xa5, 0x00), 1.12, 0.93, 1.25, 2, 0.2);
 
 	private static final Map<String, ItemRarity> BY_ID = new HashMap<String, ItemRarity>();
 
