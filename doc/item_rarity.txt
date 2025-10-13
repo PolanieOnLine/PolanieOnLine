@@ -1,0 +1,25 @@
+Item rarity tiers are defined in shared code so both the server and the client agree on their
+identifiers, colours, and statistical modifiers. Four tiers exist: common, rare, epic, and
+legendary, each with progressively stronger multipliers for beneficial attributes, faster attack
+rates, and higher gold values, while common rolls are slightly weaker than the XML baseline.【F:src/games/stendhal/common/constants/ItemRarity.java†L25-L91】
+
+Only whitelisted combat gear participates in the rarity system. During item loading the server
+rejects consumable and utility classes such as food, books, money, tools, and similar entries, and
+then checks whether the item either belongs to one of the shared weapon classes or fits into a known
+equipment slot that armour uses.【F:src/games/stendhal/server/core/rule/defaultruleset/DefaultItem.java†L48-L182】【F:src/games/stendhal/server/entity/RPEntity.java†L81-L135】
+
+When a creature prepares its drop table it first determines whether the configured item can roll a
+rarity. Eligible loot rolls a rarity using the global weight table (70% common, 22% rare, 6% epic,
+2% legendary) and scales the creature's base drop chance by the rarity's drop-rate modifier to keep
+higher tiers rare.【F:src/games/stendhal/common/constants/ItemRarity.java†L148-L205】【F:src/games/stendhal/server/entity/creature/Creature.java†L902-L919】
+
+If the drop succeeds the entity manager requests a copy of the item while passing the forced rarity
+choice. The item factory copies the XML attributes and, only when a forced rarity is present, applies
+the rarity multipliers, adjusts the gold value, and asks the client to show a badge; otherwise it
+reapplies the baseline stats and keeps the badge hidden, which covers admin summons and quest rewards
+that call the factory without a forced rarity.【F:src/games/stendhal/server/core/rule/defaultruleset/DefaultEntityManager.java†L363-L394】【F:src/games/stendhal/server/entity/player/UpdateConverter.java†L242-L293】【F:src/games/stendhal/server/core/rule/defaultruleset/DefaultItem.java†L389-L397】
+
+The item instance stores the chosen rarity identifier, recalculates the allowed attributes, and saves
+the adjusted value. When items are persisted and later reconstructed (e.g. on login), the transformer
+replays the stored rarity metadata instead of rerolling so that the stats and badge visibility remain
+stable for every individual item.【F:src/games/stendhal/server/entity/item/Item.java†L742-L809】【F:src/games/stendhal/server/core/engine/transformer/ItemTransformer.java†L34-L135】
