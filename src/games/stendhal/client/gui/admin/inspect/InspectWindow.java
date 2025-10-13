@@ -264,16 +264,14 @@ public final class InspectWindow extends InternalManagedWindow {
 				builder.append(slot.getName()).append(':');
 				if (slot.getValues().isEmpty()) {
 					builder.append(" [puste]");
-				} else {
-					builder.append('
-');
+				}
+				builder.append('\n');
+				if (!slot.getValues().isEmpty()) {
 					for (String value : slot.getValues()) {
-						builder.append("  • ").append(value).append('
-');
+						builder.append("  • ").append(value).append('\n');
 					}
 				}
-				builder.append('
-');
+				builder.append('\n');
 			}
 			metaArea.setText(builder.toString().trim());
 		}
