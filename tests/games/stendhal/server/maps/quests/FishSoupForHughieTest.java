@@ -143,7 +143,7 @@ public class FishSoupForHughieTest {
 		assertEquals("Do widzenia.", getReply(npc));
 
 		// get values to test after reward
-		final int xp = player.getXP();
+		final long xp = player.getXP();
 		final double karma  = player.getKarma();
 
 		en.step(player, "hi");
@@ -154,7 +154,7 @@ public class FishSoupForHughieTest {
 		en.step(player, "bye");
 		assertEquals("Do widzenia.", getReply(npc));
 
-        // test reward
+	// test reward
 		assertEquals(xp + 200, player.getXP());
 		assertThat(player.getKarma(), greaterThan(karma));
 		assertTrue(player.isEquipped("eliksir", 10));

@@ -36,7 +36,7 @@ public class ExperienceAchievementFactory extends AbstractAchievementFactory {
 	public static final String ID_HRABIA = "xp.level.450";
 	public static final String ID_MAGNAT = "xp.level.500";
 	public static final String ID_KSIAZE = "xp.level.550";
-	public static final String ID_KROL = "xp.level.597";
+	public static final String ID_KROL = "xp.level.1000";
 
 	@Override
 	protected Category getCategory() {
@@ -121,9 +121,9 @@ public class ExperienceAchievementFactory extends AbstractAchievementFactory {
 
 		achievements.add(createAchievement(
 				ID_KROL, "Król",
-				"Osiągnięto poziom 597",
+				"Osiągnięto poziom 1000",
 				Achievement.EXTREME_BASE_SCORE, true,
-				new LevelGreaterThanCondition(596)));
+				new LevelGreaterThanCondition(999)));
 
 		return achievements;
 	}

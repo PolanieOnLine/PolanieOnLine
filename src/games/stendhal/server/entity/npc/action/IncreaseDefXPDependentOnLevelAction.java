@@ -42,15 +42,17 @@ public class IncreaseDefXPDependentOnLevelAction implements ChatAction {
 
 	@Override
 	public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-		final int start = Level.getXP(player.getLevel());
-		final int next = Level.getXP(player.getLevel() + 1);
+		final long start = Level.getXP(player.getLevel());
+		final long next = Level.getXP(player.getLevel() + 1);
 		if(!Occasion.SECOND_WORLD) {
 			if (player.getDef() < 140) {
-				int reward = (int) ((next - start) / (defXpDiff) / 20);
-				player.setDefXP(reward + player.getDefXP());
+				long reward = (long) ((next - start) / (defXpDiff) / 20);
+				long total = reward + player.getDefXP();
+				player.setDefXP((int) Math.min(Integer.MAX_VALUE, Math.max(Integer.MIN_VALUE, total)));
 			} else {
-				int reward = (int) ((next - start) / (defXpDiff) / 60);
-				player.setDefXP(reward + player.getDefXP());
+				long reward = (long) ((next - start) / (defXpDiff) / 60);
+				long total = reward + player.getDefXP();
+				player.setDefXP((int) Math.min(Integer.MAX_VALUE, Math.max(Integer.MIN_VALUE, total)));
 			}
 		}
 		player.notifyWorldAboutChanges();

@@ -185,7 +185,7 @@
 	</zone>
 
 	<zone name="0_ados_wall_n2" level="0" x="500768" y="499744" file="Level 0/ados/wall_n2.tmx">
- 		<attributes>
+		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
 		</attributes>
@@ -620,7 +620,7 @@
 			<name>Jaskinie Ados Północno-Zachodnie Wejście</name>
 			<title>Jaskinie Ados</title>
 			<type>dungeon</type>
-			<description>Jaskinie Ados składają się z wielu mniejszych jaskiń i tuneli. Znajduje się tam wiele różnych potworów, które pilnują ścieżek. Po północnym regionie ostrożnie mogą się poruszać wojownicy z niskim poziomem! (Poziom Wojownika 80 - 597)</description>
+		   <description>Jaskinie Ados składają się z wielu mniejszych jaskiń i tuneli. Znajduje się tam wiele różnych potworów, które pilnują ścieżek. Po północnym regionie ostrożnie mogą się poruszać wojownicy z niskim poziomem! (Poziom Wojownika 80 - 1000)</description>
 			<url>https://s1.polanieonline.eu/ados</url>
 	</point-of-interest>
 
@@ -628,7 +628,7 @@
 			<name>Jaskinie Ados Północno-Wschodnie Wejście</name>
 			<title>Jaskinie Ados</title>
 			<type>dungeon</type>
-			<description>Jaskinie Ados składają się z wielu mniejszych jaskiń i tuneli. Znajduje się tam wiele różnych potworów, które pilnują ścieżek. Po północnym regionie ostrożnie mogą się poruszać wojownicy z niskim poziomem! (Poziom Wojownika 80 - 597)</description>
+		   <description>Jaskinie Ados składają się z wielu mniejszych jaskiń i tuneli. Znajduje się tam wiele różnych potworów, które pilnują ścieżek. Po północnym regionie ostrożnie mogą się poruszać wojownicy z niskim poziomem! (Poziom Wojownika 80 - 1000)</description>
 			<url>https://s1.polanieonline.eu/ados</url>
 	</point-of-interest>
 
@@ -636,7 +636,7 @@
 			<name>Jaskinie Ados Południowe Wejście</name>
 			<title>Jaskinie Ados</title>
 			<type>dungeon</type>
-			<description>Jaskinie Ados składają się z wielu mniejszych jaskiń i tuneli. Znajduje się tam wiele różnych potworów, które pilnują ścieżek. (Poziom Wojownika Level 80 - 597)</description>
+		   <description>Jaskinie Ados składają się z wielu mniejszych jaskiń i tuneli. Znajduje się tam wiele różnych potworów, które pilnują ścieżek. (Poziom Wojownika Level 80 - 1000)</description>
 			<url>https://s1.polanieonline.eu/ados</url>
 	</point-of-interest>
 	</zone>
@@ -645,7 +645,7 @@
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.ados.outside.MagicianHouseGreeterNPC" />
 
- 		<attributes>
+		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying</parameter>
 		</attributes>
@@ -1903,8 +1903,8 @@ Nigdy nie należy nurkować z przeziębieniem lub z ciężką alergią, poniewa�
 
 		<!-- Portals -->
 		<portal x="10" y="14" ref="entrance">
-	 		<destination zone="0_ados_city_n2" ref="carolines_house_entrance" />
-	 		<attribute name="move.continuous" />
+			<destination zone="0_ados_city_n2" ref="carolines_house_entrance" />
+			<attribute name="move.continuous" />
 		</portal>
 
 	</zone>

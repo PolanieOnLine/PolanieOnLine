@@ -17,6 +17,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 
 import games.stendhal.common.Direction;
+import games.stendhal.common.Level;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
@@ -37,7 +38,7 @@ import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.player.Player;
 
 /**
- * Zadanie, które resetuje poziom graczowi z 597 na 0
+ * Zadanie, które resetuje poziom graczowi z 1000 na 0
  *
  * I reset: + 1000 base_hp
  * II reset: + 1000 base_hp
@@ -61,7 +62,7 @@ public class RebornQuest extends AbstractQuest {
 	/** WARTOŚCI DO ZRESETOWANIA **/
 	private static final int XP_TO_RESET = 0;
 	private static final int LEVEL_TO_RESET = 0;
-	private static final int BASEHP_TO_RESET = 5970;
+	private static final int BASEHP_TO_RESET = Level.maxLevel() * 10;
 	/** TELEPORT **/
 	private static final String HOME = "int_zakopane_home";
 
@@ -94,7 +95,7 @@ public class RebornQuest extends AbstractQuest {
 		return new ChatAction() {
 			@Override
 			public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-				if (player.getLevel() == 597) {
+				if (player.getLevel() >= Level.maxLevel()) {
 					raiser.say(POWITANIE_1);
 				} else {
 					raiser.say(POWITANIE_2 + player.getLevel());
@@ -203,7 +204,7 @@ public class RebornQuest extends AbstractQuest {
 					new ChatAction() {
 						@Override
 						public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-							if (player.hasQuest(QUEST_SLOT) && (player.getLevel() == 597)) {
+						    if (player.hasQuest(QUEST_SLOT) && (player.getLevel() >= Level.maxLevel())) {
 								// Ustaw graczowi zerowy poziom wraz z zerową ilością doświadczenia
 								player.setXP(XP_TO_RESET);
 								player.setLevel(LEVEL_TO_RESET);
@@ -242,7 +243,7 @@ public class RebornQuest extends AbstractQuest {
 					new ChatAction() {
 						@Override
 						public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-							if (player.hasQuest(QUEST_SLOT) && (player.getLevel() == 597)) {
+						    if (player.hasQuest(QUEST_SLOT) && (player.getLevel() >= Level.maxLevel())) {
 								// Ustaw graczowi zerowy poziom wraz z zerową ilością doświadczenia
 								player.setXP(XP_TO_RESET);
 								player.setLevel(LEVEL_TO_RESET);
@@ -281,7 +282,7 @@ public class RebornQuest extends AbstractQuest {
 					new ChatAction() {
 						@Override
 						public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-							if (player.hasQuest(QUEST_SLOT) && (player.getLevel() == 597)) {
+						    if (player.hasQuest(QUEST_SLOT) && (player.getLevel() >= Level.maxLevel())) {
 								// Ustaw graczowi zerowy poziom wraz z zerową ilością doświadczenia
 								player.setXP(XP_TO_RESET);
 								player.setLevel(LEVEL_TO_RESET);
@@ -330,7 +331,7 @@ public class RebornQuest extends AbstractQuest {
 					new ChatAction() {
 						@Override
 						public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-							if (player.hasQuest(QUEST_SLOT) && (player.getLevel() == 597)) {
+						    if (player.hasQuest(QUEST_SLOT) && (player.getLevel() >= Level.maxLevel())) {
 								// Ustaw graczowi zerowy poziom wraz z zerową ilością doświadczenia
 								player.setXP(XP_TO_RESET);
 								player.setLevel(LEVEL_TO_RESET);
@@ -376,7 +377,7 @@ public class RebornQuest extends AbstractQuest {
 					new ChatAction() {
 						@Override
 						public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-							if (player.hasQuest(QUEST_SLOT) && (player.getLevel() == 597)) {
+						    if (player.hasQuest(QUEST_SLOT) && (player.getLevel() >= Level.maxLevel())) {
 								// Ustaw graczowi zerowy poziom wraz z zerową ilością doświadczenia
 								player.setXP(XP_TO_RESET);
 								player.setLevel(LEVEL_TO_RESET);

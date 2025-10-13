@@ -116,7 +116,7 @@ public class KillMonksTest extends ZonePlayerAndNPCTestImpl {
 
 	@Test
 	public void testBackToNpc() {
-		int initialXp = player.getXP();
+		long initialXp = player.getXP();
 
 		player.setQuest(questSlot, QUEST_STATE_JUST_STARTED);
 		killCreatureShared("mnich", 25);
@@ -129,7 +129,7 @@ public class KillMonksTest extends ZonePlayerAndNPCTestImpl {
 
 		assertTrue(player.isEquipped("zupa"));
 		assertGainKarma(0);
-		assertEquals(15000, player.getXP() - initialXp);
+		assertEquals(15000L, player.getXP() - initialXp);
 		assertEquals("killed", player.getQuest(questSlot, 0));
 
 		en.step(player, "bye");

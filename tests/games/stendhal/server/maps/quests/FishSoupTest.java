@@ -115,7 +115,7 @@ public class FishSoupTest {
 		assertEquals("Zupa dla Ciebie jest na stole na rynku. Uzdrowi Ciebie. Mój magiczny sposób gotowania zupy daje też trochę karmy.", getReply(npc));
 		en.step(player, "bye");
 		assertEquals("Życzę miłego pobytu na rynku w Ados!", getReply(npc));
-		assertEquals(player.getXP(), 150);
+		assertEquals(player.getXP(), 150L);
 		en.step(player, "hi");
 		assertEquals("Przykro mi, ale muszę umyć mój garnek nim zacznę gotować moją zupę dla Ciebie. Wróć za 20 minut.", getReply(npc));
 		en.step(player, "bye");
@@ -152,7 +152,7 @@ public class FishSoupTest {
 		assertEquals("Zupa dla Ciebie jest na stole na rynku. Uzdrowi cię. Powiedz mi jeżeli mógłbym jeszcze w czymś pomóc.", getReply(npc));
 		en.step(player, "bye");
 		assertEquals("Życzę miłego pobytu na rynku w Ados!", getReply(npc));
-		assertEquals(player.getXP(), 180);
+		assertEquals(player.getXP(), 180L);
 		en.step(player, "hi");
 		assertEquals("Przykro mi, ale muszę umyć mój garnek nim zacznę gotować moją zupę dla Ciebie. Wróć za 20 minut.", getReply(npc));
 		en.step(player, "job");

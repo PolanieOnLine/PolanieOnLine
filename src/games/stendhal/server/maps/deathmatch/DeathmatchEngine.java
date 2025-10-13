@@ -174,7 +174,7 @@ public class DeathmatchEngine implements TurnListener {
 			helmet.put("def", "" + defense);
 			player.updateItemAtkDef();
 		} else {
-			int xp = player.getLevel() * 80;
+			long xp = (long) player.getLevel() * 80L;
 			if (xp > player.getXP()) {
 				xp = player.getXP();
 			}

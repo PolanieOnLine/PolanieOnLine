@@ -145,7 +145,7 @@ public class SuntanCreamForZaraTest {
 		// [10:02] Changed the state of quest 'pamela_mix_cream' from '1;suntan cream;1288519190459' to '1;suntan cream;0'
 		player.setQuest("pamela_mix_cream", "1;olejek do opalania;0");
 
-		final int xp = player.getXP();
+		final long xp = player.getXP();
 		en.step(player, "hi");
 		assertEquals("Witaj z powrotem! Skończyłam twoje zlecenie. Trzymaj, oto olejek do opalania.", getReply(npc));
 		// [10:02] kymara earns 1 experience point.
@@ -176,7 +176,7 @@ public class SuntanCreamForZaraTest {
 		en.step(player, "bye");
 		assertEquals("Mam nadzieję, że zobaczymy się później!", getReply(npc));
 
-		final int xp = player.getXP();
+		final long xp = player.getXP();
 		final double karma = player.getKarma();
 
 		en.step(player, "hi");

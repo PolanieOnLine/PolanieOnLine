@@ -22,10 +22,9 @@ public class Level {
 
 
 	// Max Level is LEVELS - 1.
-	// xp formula overflows for level = 599.
-	public static final int LEVELS = 598;
+	public static final int LEVELS = 1001;
 
-	private static int[] xp;
+	private static long[] xp;
 
 	private static double[] wisdom;
 
@@ -33,7 +32,7 @@ public class Level {
 		/*
 		 * Calculate eXPerience
 		 */
-		xp = new int[LEVELS + 1];
+		xp = new long[LEVELS + 1];
 
 		xp[0] = 0;
 		xp[1] = 50;
@@ -43,7 +42,7 @@ public class Level {
 		xp[5] = 800;
 
 		for (int i = 5; i < LEVELS; i++) {
-			final int exp = ((i * 16 + i * i * 5 + i * i * i * 10 + 300) / 100) * 100;
+			final long exp = ((long) i * 16 + (long) i * i * 5 + (long) i * i * i * 10 + 300) / 100 * 100L;
 			xp[i + 1] = exp;
 		}
 
@@ -98,7 +97,7 @@ public class Level {
 	 *            experience needed
 	 * @return level
 	 */
-	public static int getLevel(final int exp) {
+	public static int getLevel(final long exp) {
 
 		int first = 0;
 		int last = LEVELS - 1;
@@ -125,7 +124,7 @@ public class Level {
 	 * @param level level
 	 * @return experience needed
 	 */
-	public static int getXP(final int level) {
+	public static long getXP(final int level) {
 		if ((level >= 0) && (level < xp.length)) {
 			return xp[level];
 		}
@@ -142,7 +141,7 @@ public class Level {
 	 *            the added Experience
 	 * @return difference of levels
 	 */
-	public static int changeLevel(final int exp, final int added) {
+	public static int changeLevel(final long exp, final long added) {
 		int i;
 		for (i = 0; i < LEVELS; i++) {
 			if (exp < xp[i]) {
@@ -150,8 +149,17 @@ public class Level {
 			}
 		}
 
+		long target;
+		if (added > 0 && exp > Long.MAX_VALUE - added) {
+			target = Long.MAX_VALUE;
+		} else if (added < 0 && exp < Long.MIN_VALUE - added) {
+			target = Long.MIN_VALUE;
+		} else {
+			target = exp + added;
+		}
+
 		for (int j = i; j <= LEVELS; j++) {
-			if (exp + added < xp[j]) {
+			if (target < xp[j]) {
 				return j - i;
 			}
 		}
@@ -170,8 +178,8 @@ public class Level {
 	 *         <code>1.0</code> (exclusive).
 	 */
 	public static double getWisdom(final int level) {
-		if (level > LEVELS) {
-			return wisdom[LEVELS];
+		if (level >= LEVELS) {
+			return wisdom[LEVELS - 1];
 		}
 
 		return wisdom[level];

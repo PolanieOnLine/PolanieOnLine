@@ -158,7 +158,7 @@ public class CloakCollectorTest {
 		cc.rewardPlayer(player);
 		assertTrue(player.isEquipped("czarny płaszcz"));
 		assertEquals(oldKarma + 25.0, player.getKarma(), 0.01);
-		assertEquals(50000, player.getXP());
+		assertEquals(50000L, player.getXP());
 	}
 
 }

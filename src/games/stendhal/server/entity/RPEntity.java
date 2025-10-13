@@ -94,7 +94,7 @@ public abstract class RPEntity extends CombatEntity {
 	private int base_hp;
 	private int hp;
 	protected int lv_cap;
-	private int xp;
+	private long xp;
 	private String gender;
 	protected int level;
 	private int mana;
@@ -415,7 +415,7 @@ public abstract class RPEntity extends CombatEntity {
 			level = getInt("level");
 		}
 		if (has("xp")) {
-			xp = getInt("xp");
+			xp = getLong("xp");
 		}
 		if (has("mana")) {
 			mana = getInt("mana");
@@ -1189,7 +1189,7 @@ public abstract class RPEntity extends CombatEntity {
 		this.updateModifiedAttributes();
 	}
 
-	public final void setXP(final int newxp) {
+	public final void setXP(final long newxp) {
 		if (newxp < 0) {
 			return;
 		}
@@ -1197,22 +1197,25 @@ public abstract class RPEntity extends CombatEntity {
 		put("xp", xp);
 	}
 
-	public void subXP(final int newxp) {
+	public void subXP(final long newxp) {
 		addXP(-newxp);
 	}
 
-	public void addXP(final int newxp) {
-		if (Integer.MAX_VALUE - this.xp <= newxp) {
-			return;
-		}
+	public void addXP(final long newxp) {
 		if (newxp == 0) {
 			return;
 		}
 
-		// Increment experience points
-		this.xp += newxp;
+		if (newxp > 0 && this.xp > Long.MAX_VALUE - newxp) {
+			this.xp = Long.MAX_VALUE;
+		} else if (newxp < 0 && this.xp < Long.MIN_VALUE - newxp) {
+			this.xp = Long.MIN_VALUE;
+		} else {
+			this.xp += newxp;
+		}
+
 		put("xp", xp);
-		String[] params = { Integer.toString(newxp) };
+		String[] params = { Long.toString(newxp) };
 
 		new GameEvent(getName(), "added xp", params).raise();
 		new GameEvent(getName(), "xp", String.valueOf(xp)).raise();
@@ -1237,7 +1240,7 @@ public abstract class RPEntity extends CombatEntity {
 		}
 	}
 
-	public int getXP() {
+	public long getXP() {
 		return xp;
 	}
 
@@ -1660,8 +1663,8 @@ public abstract class RPEntity extends CombatEntity {
 	 * @param oldXP
 	 *			The XP that this RPEntity had before being killed.
 	 */
-	protected void rewardKillers(final int oldXP) {
-		final int xpReward = (int) (oldXP * 0.05);
+	protected void rewardKillers(final long oldXP) {
+		final long xpReward = Math.round(oldXP * 0.05);
 
 		for (Entry<Entity, Integer> entry : damageReceived.entrySet()) {
 			final int damageDone = entry.getValue();
@@ -1688,14 +1691,14 @@ public abstract class RPEntity extends CombatEntity {
 						+ totalDamageReceived + ". Reward was " + xpReward);
 			}
 
-			final int xpEarn = (int) (xpReward * ((float) damageDone / (float) totalDamageReceived));
+			final long xpEarn = Math.round(xpReward * ((double) damageDone / (double) totalDamageReceived));
 
 			if (logger.isDebugEnabled() || Testing.DEBUG) {
 				logger.debug("OnDead: " + xpReward + "\t" + damageDone + "\t"
 						+ totalDamageReceived + "\t");
 			}
 
-			int reward = xpEarn;
+			long reward = xpEarn;
 
 			// We ensure that the player gets at least 1 experience
 			// point, because getting nothing lowers motivation.
@@ -1730,11 +1733,11 @@ public abstract class RPEntity extends CombatEntity {
 	/*
 	 * Reward pets who kill enemies.  don't perks like AchievementNotifier that players.
 	 */
-	protected void rewardKillerAnimals(final int oldXP) {
+	protected void rewardKillerAnimals(final long oldXP) {
 		if (!System.getProperty("stendhal.petleveling", "false").equals("true")) {
 			return;
 		}
-		final int xpReward = (int) (oldXP * 0.05);
+		final long xpReward = Math.round(oldXP * 0.05);
 
 		for (Entry<Entity, Integer> entry : damageReceived.entrySet()) {
 			final int damageDone = entry.getValue();
@@ -1759,14 +1762,14 @@ public abstract class RPEntity extends CombatEntity {
 						+ totalDamageReceived + ". Reward was " + xpReward);
 			}
 
-			final int xpEarn = (int) (xpReward * ((float) damageDone / (float) totalDamageReceived));
+			final long xpEarn = Math.round(xpReward * ((double) damageDone / (double) totalDamageReceived));
 
 			if (logger.isDebugEnabled() || Testing.DEBUG) {
 				logger.debug("OnDead: " + xpReward + "\t" + damageDone + "\t"
 						+ totalDamageReceived + "\t");
 			}
 
-			int reward = xpEarn;
+			long reward = xpEarn;
 
 			// We ensure it gets at least 1 experience
 			// point, because getting nothing lowers motivation.
@@ -1853,7 +1856,7 @@ public abstract class RPEntity extends CombatEntity {
 		}
 
 		String killerName = killer.getName();
-		final int oldXP = this.getXP();
+		final long oldXP = this.getXP();
 
 		// Establish how much xp points your are rewarded
 		// give XP to everyone who helped killing this RPEntity

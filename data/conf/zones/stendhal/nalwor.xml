@@ -272,11 +272,11 @@ poniżej średniej.
 
 		<entity x="3" y="1">
 	      <implementation
-	        class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
-	        <parameter name="shop">elfbuyrare</parameter>
-	        <parameter name="title">Sklep Elodrin</parameter>
-	        <parameter name="seller">false</parameter>
-	        <parameter name="caption">Elodrin kupi te przedmioty.</parameter>
+		class-name="games.stendhal.server.entity.mapstuff.sign.ShopSign">
+		<parameter name="shop">elfbuyrare</parameter>
+		<parameter name="title">Sklep Elodrin</parameter>
+		<parameter name="seller">false</parameter>
+		<parameter name="caption">Elodrin kupi te przedmioty.</parameter>
 	      </implementation>
 
 	      <attribute name="class">blackboard</attribute>
@@ -871,7 +871,7 @@ kupić 100 niezapisany zwój
 			<name>Tunele Mrocznych Elfów w Nalwor 1</name>
 			<title>Tunele Mrocznych Elfów w Nalwor</title>
 			<type>dungeon</type>
-			<description>Tunele Mrocznych Elfów są zamieszkane przez złe mroczne elfy, które są bardzo niebezpieczne. Występuje też tam mityczny potór, który tylko czeka na swoją następną ofiarę... (Poziom Wojownika 60 - 597)</description>
+		   <description>Tunele Mrocznych Elfów są zamieszkane przez złe mroczne elfy, które są bardzo niebezpieczne. Występuje też tam mityczny potór, który tylko czeka na swoją następną ofiarę... (Poziom Wojownika 60 - 1000)</description>
 			<url>https://s1.polanieonline.eu/nalwor</url>
 		</point-of-interest>
 
@@ -879,7 +879,7 @@ kupić 100 niezapisany zwój
 			<name>Tunele Mrocznych Elfów w Nalwor 2</name>
 			<title>Tunele Mrocznych Elfów w Nalwor</title>
 			<type>dungeon</type>
-			<description>Tunele Mrocznych Elfów są zamieszkane przez złe mroczne elfy, które są bardzo niebezpieczne. Występuje też tam mityczny potór, który tylko czeka na swoją następną ofiarę... (Poziom Wojownika 60 - 597)</description>
+		   <description>Tunele Mrocznych Elfów są zamieszkane przez złe mroczne elfy, które są bardzo niebezpieczne. Występuje też tam mityczny potór, który tylko czeka na swoją następną ofiarę... (Poziom Wojownika 60 - 1000)</description>
 			<url>https://s1.polanieonline.eu/nalwor</url>
 		</point-of-interest>
 
@@ -937,7 +937,7 @@ kupić 100 niezapisany zwój
 			<name>Tunele Mrocznych Elfów w Nalwor 3</name>
 			<title>Tunele Mrocznych Elfów w Nalwor</title>
 			<type>dungeon</type>
-			<description>Tunele Mrocznych Elfów są zamieszkane przez złe mroczne elfy, które są bardzo niebezpieczne. Występuje też tam mityczny potór, który tylko czeka na swoją następną ofiarę... (Poziom Wojownika 60 - 597)</description>
+		   <description>Tunele Mrocznych Elfów są zamieszkane przez złe mroczne elfy, które są bardzo niebezpieczne. Występuje też tam mityczny potór, który tylko czeka na swoją następną ofiarę... (Poziom Wojownika 60 - 1000)</description>
 			<url>https://s1.polanieonline.eu/nalwor</url>
 		</point-of-interest>
 
@@ -1067,7 +1067,7 @@ kupić 100 niezapisany zwój
 			<name>Tunele Mrocznych Elfów w Nalwor 4</name>
 			<title>Tunele Mrocznych Elfów w Nalwor</title>
 			<type>dungeon</type>
-			<description>Tunele Mrocznych Elfów są zamieszkane przez złe mroczne elfy, które są bardzo niebezpieczne. Występuje też tam mityczny potór, który tylko czeka na swoją następną ofiarę... (Poziom Wojownika 60 - 597)</description>
+		   <description>Tunele Mrocznych Elfów są zamieszkane przez złe mroczne elfy, które są bardzo niebezpieczne. Występuje też tam mityczny potór, który tylko czeka na swoją następną ofiarę... (Poziom Wojownika 60 - 1000)</description>
 			<url>https://s1.polanieonline.eu/nalwor</url>
 		</point-of-interest>
 
