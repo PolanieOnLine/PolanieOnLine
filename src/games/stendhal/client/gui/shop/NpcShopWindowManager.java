@@ -113,6 +113,10 @@ public final class NpcShopWindowManager {
 	private static final ImageIcon ICON_DUKAT = loadCoinIcon("data/gui/goldencoin.png");
 	private static final ImageIcon ICON_TALAR = loadCoinIcon("data/gui/silvercoin.png");
 	private static final ImageIcon ICON_MIEDZIAK = loadCoinIcon("data/gui/coppercoin.png");
+	private static final int TABLE_PREFERRED_HEIGHT = 300;
+	private static final int DESCRIPTION_PREFERRED_HEIGHT = 110;
+	private static final int TABLE_ROW_HEIGHT = 40;
+
 
 	private enum TransactionType {
 		BUY,
@@ -426,8 +430,8 @@ public final class NpcShopWindowManager {
 		backgroundPanel.setOpaque(false);
 
 		contentPanel.setTint(PANEL_TINT);
-		contentPanel.setLayout(new BorderLayout(16, 16));
-		contentPanel.setBorder(BorderFactory.createEmptyBorder(16, 16, 16, 16));
+		contentPanel.setLayout(new BorderLayout(12, 12));
+		contentPanel.setBorder(BorderFactory.createEmptyBorder(12, 12, 12, 12));
 
 		backgroundPanel.add(contentPanel, BorderLayout.CENTER);
 		setContent(backgroundPanel);
@@ -521,7 +525,7 @@ public final class NpcShopWindowManager {
 
 	private void configureTable() {
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		table.setRowHeight(44);
+		table.setRowHeight(TABLE_ROW_HEIGHT);
 		table.setFillsViewportHeight(true);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
 		table.setOpaque(false);
@@ -557,7 +561,7 @@ public final class NpcShopWindowManager {
 		tableScroll.setOpaque(false);
 		tableScroll.getViewport().setOpaque(false);
 		tableScroll.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(BORDER_COLOR, 1, true), BorderFactory.createEmptyBorder(6, 6, 6, 6)));
-		tableScroll.setPreferredSize(new Dimension(0, 240));
+		tableScroll.setPreferredSize(new Dimension(0, TABLE_PREFERRED_HEIGHT));
 		configureTableColumns(table.getColumnModel());
 		return tableScroll;
 	}
@@ -570,7 +574,7 @@ public final class NpcShopWindowManager {
 		descriptionArea.setForeground(PRIMARY_TEXT);
 		descriptionArea.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 
-		flavorLabel.setBorder(BorderFactory.createEmptyBorder(4, 4, 0, 4));
+		flavorLabel.setBorder(BorderFactory.createEmptyBorder(2, 4, 0, 4));
 		flavorLabel.setForeground(MUTED_TEXT);
 		flavorLabel.setVerticalAlignment(SwingConstants.TOP);
 
@@ -578,7 +582,7 @@ public final class NpcShopWindowManager {
 		descriptionScroll.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(BORDER_COLOR, 1, true), BorderFactory.createEmptyBorder(6, 6, 6, 6)));
 		descriptionScroll.setOpaque(false);
 		descriptionScroll.getViewport().setOpaque(false);
-		descriptionScroll.setPreferredSize(new Dimension(0, 140));
+		descriptionScroll.setPreferredSize(new Dimension(0, DESCRIPTION_PREFERRED_HEIGHT));
 		return descriptionScroll;
 	}
 
@@ -587,30 +591,33 @@ public final class NpcShopWindowManager {
 		totalsPanel.setOpaque(false);
 		totalsPanel.setLayout(new BoxLayout(totalsPanel, BoxLayout.Y_AXIS));
 		totalsHeading.setAlignmentX(LEFT_ALIGNMENT);
+		final Font totalsFont = totalsHeading.getFont();
+		totalsHeading.setFont(totalsFont.deriveFont(totalsFont.getStyle(), Math.max(10.0f, totalsFont.getSize2D() - 1.0f)));
 		totalsPanel.add(totalsHeading);
-		totalsPanel.add(Box.createVerticalStrut(4));
+		totalsPanel.add(Box.createVerticalStrut(2));
 
 		final JLabel unitLabel = new JLabel("Cena za sztukę:");
 		unitLabel.setAlignmentX(LEFT_ALIGNMENT);
 		unitLabel.setForeground(SECONDARY_TEXT);
+		unitLabel.setFont(unitLabel.getFont().deriveFont(Math.max(9.0f, unitLabel.getFont().getSize2D() - 1.0f)));
 		unitPriceValue.setAlignmentX(LEFT_ALIGNMENT);
 		unitPriceValue.setTextColor(PRIMARY_TEXT);
 
 		final JLabel totalLabel = new JLabel("Łącznie:");
 		totalLabel.setAlignmentX(LEFT_ALIGNMENT);
 		totalLabel.setForeground(SECONDARY_TEXT);
+		totalLabel.setFont(totalLabel.getFont().deriveFont(Math.max(9.0f, totalLabel.getFont().getSize2D() - 1.0f)));
 		totalPriceValue.setAlignmentX(LEFT_ALIGNMENT);
 		totalPriceValue.setTextColor(PRIMARY_TEXT);
 
 		totalsPanel.add(unitLabel);
 		totalsPanel.add(unitPriceValue);
-		totalsPanel.add(Box.createVerticalStrut(8));
+		totalsPanel.add(Box.createVerticalStrut(4));
 		totalsPanel.add(totalLabel);
 		totalsPanel.add(totalPriceValue);
 
 		return totalsPanel;
 	}
-
 	private void configureActionPanel() {
 		actionPanel.setOpaque(true);
 		actionPanel.setBackground(BUTTON_PANEL_BG);
