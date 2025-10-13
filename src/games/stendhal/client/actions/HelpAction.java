@@ -74,10 +74,11 @@ class HelpAction implements SlashAction {
 				"* USTAWIENIA DŹWIĘKU:",
 				"- /mute \t\tUcisza lub przywraca dźwięki",
 				"- /volume \t\tWylicza lub ustawia poziom głośności dla dźwięków i muzyki",
-				"* RÓŻNE:",
-				"- /info \t\tPokazuje aktualny czas z serwera",
-				"- /clear \tWyczyść chat.",
-				"- /help \tWyświetla podstawowe komendy.",
+                                "* RÓŻNE:",
+                                "- /info \t\tPokazuje aktualny czas z serwera",
+                                "- /clear \tWyczyść chat.",
+                                "- /skilltree \t\tOtwiera drzewko umiejętności maga ognia.",
+                                "- /help \tWyświetla podstawowe komendy.",
 				"- /" + REMOVEDETAIL + " \tUsuń warstwę szczegółów (np. balon, parasol itp.) z postaci.",
 				"- /emojilist \tWyświetla pełną listę dostępnych emotek."
 		};
