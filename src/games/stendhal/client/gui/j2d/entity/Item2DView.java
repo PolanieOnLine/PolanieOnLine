@@ -12,9 +12,10 @@
 package games.stendhal.client.gui.j2d.entity;
 
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Font;
+import java.awt.FontMetrics;
 
 import javax.swing.SwingUtilities;
 
@@ -152,15 +153,15 @@ public class Item2DView<T extends Item> extends Entity2DView<T> {
 			final int width, final int height) {
 		super.draw(g2d, x, y, width, height);
 
-		drawRarityBorder(g2d, x, y, width, height);
+			drawRarityBadge(g2d, x, y, width, height);
 
 		if (showQuantity && (quantitySprite != null)) {
 			drawQuantity(g2d, x, y, width, height);
 		}
 	}
 
-	private void drawRarityBorder(final Graphics2D g2d, final int x, final int y,
-			final int width, final int height) {
+	private void drawRarityBadge(final Graphics2D g2d, final int x, final int y,
+				final int width, final int height) {
 		if (entity == null) {
 			return;
 		}
@@ -175,11 +176,35 @@ public class Item2DView<T extends Item> extends Entity2DView<T> {
 			return;
 		}
 
-		Graphics2D borderGraphics = (Graphics2D) g2d.create();
-		borderGraphics.setColor(color);
-		borderGraphics.setStroke(new BasicStroke(2f));
-		borderGraphics.drawRoundRect(x + 1, y + 1, width - 3, height - 3, 6, 6);
-		borderGraphics.dispose();
+		Graphics2D badgeGraphics = (Graphics2D) g2d.create();
+		int baseSize = Math.min(width, height);
+		int size = Math.max(10, baseSize / 3);
+		int padding = Math.max(2, baseSize / 12);
+		int centerX = x + padding + (size / 2);
+		int centerY = y + padding + (size / 2);
+		int half = size / 2;
+		int[] xPoints = new int[] { centerX, centerX + half, centerX, centerX - half };
+		int[] yPoints = new int[] { centerY - half, centerY, centerY + half, centerY };
+
+		Color fill = new Color(color.getRed(), color.getGreen(), color.getBlue(), 200);
+		badgeGraphics.setColor(fill);
+		badgeGraphics.fillPolygon(xPoints, yPoints, 4);
+		badgeGraphics.setColor(new Color(0, 0, 0, 160));
+		badgeGraphics.drawPolygon(xPoints, yPoints, 4);
+
+		String displayName = rarity.getDisplayName();
+		if ((displayName != null) && !displayName.isEmpty()) {
+			String initial = displayName.substring(0, 1).toUpperCase();
+			float fontSize = Math.max(8f, size / 2.5f);
+			badgeGraphics.setFont(badgeGraphics.getFont().deriveFont(Font.BOLD, fontSize));
+			FontMetrics metrics = badgeGraphics.getFontMetrics();
+			int textX = centerX - (metrics.stringWidth(initial) / 2);
+			int textY = centerY + ((metrics.getAscent() - metrics.getDescent()) / 2);
+			badgeGraphics.setColor(Color.WHITE);
+			badgeGraphics.drawString(initial, textX, textY);
+		}
+
+		badgeGraphics.dispose();
 	}
 
 	/**

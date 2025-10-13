@@ -12,11 +12,12 @@
  ***************************************************************************/
 package games.stendhal.client.gui;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.FontMetrics;
 import java.awt.Point;
 import java.awt.Transparency;
 import java.awt.event.MouseEvent;
@@ -269,15 +270,17 @@ class ItemPanel extends JComponent implements DropTarget, Inspectable {
 			vg.translate(x, y);
 			entityView.draw(vg);
 			vg.dispose();
-
-			drawRarityBorder(g, entityView);
-		} else if (placeholder != null) {
-			placeholder.draw(g, (getWidth() - placeholder.getWidth()) / 2,
+			drawRarityBadge(g, entityView);
+			} else if (placeholder != null) {
+				placeholder.draw(g, (getWidth() - placeholder.getWidth()) / 2,
 					(getHeight() - placeholder.getHeight()) / 2);
 		}
 	}
 
-	private void drawRarityBorder(Graphics g, EntityView<?> entityView) {
+	private static final int RARITY_BADGE_SIZE = 14;
+	private static final int RARITY_BADGE_PADDING = 4;
+
+	private void drawRarityBadge(Graphics g, EntityView<?> entityView) {
 		if (!(entityView.getEntity() instanceof Item)) {
 			return;
 		}
@@ -288,16 +291,37 @@ class ItemPanel extends JComponent implements DropTarget, Inspectable {
 			return;
 		}
 
-		Color borderColor = rarity.getColor();
-		if (borderColor == null) {
+		Color badgeColor = rarity.getColor();
+		if (badgeColor == null) {
 			return;
 		}
 
-		Graphics2D borderGraphics = (Graphics2D) g.create();
-		borderGraphics.setColor(borderColor);
-		borderGraphics.setStroke(new BasicStroke(2f));
-		borderGraphics.drawRoundRect(1, 1, getWidth() - 3, getHeight() - 3, 8, 8);
-		borderGraphics.dispose();
+		Graphics2D badgeGraphics = (Graphics2D) g.create();
+		int size = RARITY_BADGE_SIZE;
+		int centerX = RARITY_BADGE_PADDING + (size / 2);
+		int centerY = RARITY_BADGE_PADDING + (size / 2);
+		int half = size / 2;
+		int[] xPoints = new int[] { centerX, centerX + half, centerX, centerX - half };
+		int[] yPoints = new int[] { centerY - half, centerY, centerY + half, centerY };
+
+		Color fill = new Color(badgeColor.getRed(), badgeColor.getGreen(), badgeColor.getBlue(), 200);
+		badgeGraphics.setColor(fill);
+		badgeGraphics.fillPolygon(xPoints, yPoints, 4);
+		badgeGraphics.setColor(new Color(0, 0, 0, 160));
+		badgeGraphics.drawPolygon(xPoints, yPoints, 4);
+
+		String displayName = rarity.getDisplayName();
+		if ((displayName != null) && !displayName.isEmpty()) {
+			String initial = displayName.substring(0, 1).toUpperCase();
+			badgeGraphics.setFont(badgeGraphics.getFont().deriveFont(Font.BOLD, 9f));
+			FontMetrics metrics = badgeGraphics.getFontMetrics();
+			int textX = centerX - (metrics.stringWidth(initial) / 2);
+			int textY = centerY + ((metrics.getAscent() - metrics.getDescent()) / 2);
+			badgeGraphics.setColor(Color.WHITE);
+			badgeGraphics.drawString(initial, textX, textY);
+		}
+
+		badgeGraphics.dispose();
 	}
 
 	@Override
