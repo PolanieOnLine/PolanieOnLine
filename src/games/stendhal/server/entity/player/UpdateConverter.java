@@ -374,6 +374,16 @@ public abstract class UpdateConverter {
 			object.put("base_mana", 0);
 		}
 
+		if (!object.has("xp")) {
+			object.put("xp", 0L);
+		} else {
+			try {
+				object.put("xp", object.getLong("xp"));
+			} catch (NumberFormatException e) {
+				object.put("xp", (long) object.getInt("xp"));
+			}
+		}
+
 		if (Testing.WEIGHT && !object.has("capacity")) {
 			object.put("capacity", 0.0);
 		}

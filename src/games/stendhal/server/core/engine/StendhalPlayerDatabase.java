@@ -261,6 +261,11 @@ public class StendhalPlayerDatabase {
 			transaction.execute("UPDATE character_stats SET gender = 'M' WHERE gender IS NULL;", null);
 		}
 
+		// pol1.50: allow storing long experience totals
+		if (transaction.doesColumnExist("character_stats", "xp")) {
+			transaction.execute("ALTER TABLE character_stats MODIFY COLUMN xp BIGINT", null);
+		}
+
 		// pol1.10: add ratk column, fix lenght of description column from zoneinfo table & delete unused achievements
 		if (!transaction.doesColumnExist("character_stats", "ratk")) {
 			transaction.execute("ALTER TABLE character_stats ADD COLUMN (ratk INTEGER);", null);
