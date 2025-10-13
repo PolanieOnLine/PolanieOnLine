@@ -11,18 +11,16 @@
  ***************************************************************************/
 package games.stendhal.server.events;
 
-import java.util.Arrays;
-import java.util.Locale;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import org.apache.log4j.Logger;
 
 import games.stendhal.common.constants.Events;
+import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.ItemInformation;
 import games.stendhal.server.entity.npc.SpeakerNPC;
+import games.stendhal.server.entity.npc.behaviour.impl.BuyerBehaviour;
 import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
+import games.stendhal.server.entity.npc.shop.ShopType;
 import games.stendhal.server.entity.player.Player;
 import marauroa.common.game.Definition;
 import marauroa.common.game.Definition.DefinitionClass;
@@ -46,18 +44,12 @@ public class NpcShopWindowEvent extends RPEvent {
 	private static final String ATTR_FLAVOR = "shop_flavor";
 	private static final String ATTR_CATEGORY = "shop_category";
 	private static final String ATTR_ITEM_KEY = "shop_item_key";
+	private static final String ATTR_MODE = "shop_mode";
+	private static final String ATTR_OFFER_TYPE = "shop_offer_type";
+	private static final String MODE_BUY_SELL = "buy_sell";
 
 	private static final String ACTION_OPEN = "open";
 	private static final String ACTION_CLOSE = "close";
-
-	private static final Set<String> WEAPON_TYPES = Arrays.stream(new String[] {
-		"weapon", "sword", "axe", "club", "dagger", "bow", "crossbow", "spear", "polearm",
-		"hammer", "staff", "wand"
-	}).collect(Collectors.toSet());
-
-	private static final Set<String> POTION_TYPES = Arrays.stream(new String[] {
-		"drink", "potion", "elixir"
-	}).collect(Collectors.toSet());
 
 	private NpcShopWindowEvent(final String action, final String npcName) {
 		super(Events.NPC_SHOP);
@@ -67,7 +59,7 @@ public class NpcShopWindowEvent extends RPEvent {
 
 	/**
 	 * Registers the RPClass for NPC shop events.
-	 */
+	*/
 	public static void generateRPClass() {
 		try {
 			final RPClass rpclass = new RPClass(Events.NPC_SHOP);
@@ -75,6 +67,7 @@ public class NpcShopWindowEvent extends RPEvent {
 			rpclass.add(DefinitionClass.ATTRIBUTE, ATTR_NPC, Type.STRING, Definition.PRIVATE);
 			rpclass.add(DefinitionClass.ATTRIBUTE, ATTR_TITLE, Type.STRING, Definition.PRIVATE);
 			rpclass.add(DefinitionClass.ATTRIBUTE, ATTR_BACKGROUND, Type.STRING, Definition.PRIVATE);
+			rpclass.add(DefinitionClass.ATTRIBUTE, ATTR_MODE, Type.STRING, Definition.PRIVATE);
 			rpclass.addRPSlot(SLOT_OFFERS, 999);
 		} catch (final SyntaxException e) {
 			logger.error("cannot generateRPClass", e);
@@ -86,13 +79,16 @@ public class NpcShopWindowEvent extends RPEvent {
 	 *
 	 * @param npc
 	 *            merchant speaking to the player
-	 * @param behaviour
-	 *            behaviour providing the offers
+	 * @param sellerBehaviour
+	 *            behaviour providing the sell offers
+	 * @param buyerBehaviour
+	 *            behaviour providing the buy offers
 	 * @param player
 	 *            player in the conversation
 	 * @return event describing shop inventory
-	 */
-	public static NpcShopWindowEvent open(final SpeakerNPC npc, final SellerBehaviour behaviour, final Player player) {
+	*/
+	public static NpcShopWindowEvent open(final SpeakerNPC npc, final SellerBehaviour sellerBehaviour,
+	final BuyerBehaviour buyerBehaviour, final Player player) {
 		final NpcShopWindowEvent event = new NpcShopWindowEvent(ACTION_OPEN, npc.getName());
 		event.put(ATTR_TITLE, npc.getName() + " - Sklep");
 
@@ -103,9 +99,24 @@ public class NpcShopWindowEvent extends RPEvent {
 			event.put(ATTR_BACKGROUND, npc.get("shop_background"));
 		}
 
+		final boolean hasSeller = sellerBehaviour != null;
+		final boolean hasBuyer = buyerBehaviour != null;
+		event.put(ATTR_MODE, determineMode(hasSeller, hasBuyer, sellerBehaviour, buyerBehaviour));
 		event.addSlot(SLOT_OFFERS);
 		final RPSlot slot = event.getSlot(SLOT_OFFERS);
 
+		if (hasSeller) {
+			appendSellerOffers(slot, npc, sellerBehaviour, player);
+		}
+		if (hasBuyer) {
+			appendBuyerOffers(slot, npc, buyerBehaviour);
+		}
+
+		return event;
+	}
+
+	private static void appendSellerOffers(final RPSlot slot, final SpeakerNPC npc, final SellerBehaviour behaviour,
+	final Player player) {
 		for (final String itemName : behaviour.dealtItems()) {
 			final Item item = behaviour.getAskedItem(itemName, player);
 			if (item == null) {
@@ -113,17 +124,64 @@ public class NpcShopWindowEvent extends RPEvent {
 				continue;
 			}
 			final ItemInformation info = new ItemInformation(item);
-			final int price = behaviour.getUnitPrice(itemName);
-			info.put("price", price);
-			info.put("description_info", info.describe());
-			info.put(ATTR_ITEM_KEY, itemName);
-			info.put(ATTR_CATEGORY, determineCategory(info));
-			info.put(ATTR_FLAVOR, extractFlavor(item));
-
+			populateOfferInfo(info, item, itemName, behaviour.getUnitPrice(itemName), ShopType.ITEM_SELL);
 			slot.add(info);
 		}
+	}
 
-		return event;
+	private static void appendBuyerOffers(final RPSlot slot, final SpeakerNPC npc, final BuyerBehaviour behaviour) {
+		for (final String itemName : behaviour.dealtItems()) {
+			final Item item = SingletonRepository.getEntityManager().getItem(itemName);
+			if (item == null) {
+				logger.warn("Skipping null buy offer for item '" + itemName + "' from NPC " + npc.getName());
+				continue;
+			}
+			final ItemInformation info = new ItemInformation(item);
+			populateOfferInfo(info, item, itemName, behaviour.getUnitPrice(itemName), ShopType.ITEM_BUY);
+			slot.add(info);
+		}
+	}
+
+	private static void populateOfferInfo(final ItemInformation info, final Item item, final String itemName,
+	final int price, final ShopType offerType) {
+		info.put("price", price);
+		info.put("description_info", info.describe());
+		info.put(ATTR_ITEM_KEY, itemName);
+		if ((item != null) && item.has("class")) {
+			info.put(ATTR_CATEGORY, item.get("class"));
+		}
+		info.put(ATTR_FLAVOR, extractFlavor(item));
+		info.put(ATTR_OFFER_TYPE, offerType.toString());
+	}
+
+	private static String determineMode(final boolean hasSeller, final boolean hasBuyer,
+	final SellerBehaviour sellerBehaviour, final BuyerBehaviour buyerBehaviour) {
+		if (hasSeller && hasBuyer) {
+			return MODE_BUY_SELL;
+		}
+		if (hasSeller) {
+			return extractTypeOrDefault(sellerBehaviour, ShopType.ITEM_SELL).toString();
+		}
+		if (hasBuyer) {
+			return extractTypeOrDefault(buyerBehaviour, ShopType.ITEM_BUY).toString();
+		}
+		return ShopType.ITEM_SELL.toString();
+	}
+
+	private static ShopType extractTypeOrDefault(final SellerBehaviour behaviour, final ShopType fallback) {
+		if (behaviour == null) {
+			return fallback;
+		}
+		final ShopType type = behaviour.getShopType();
+		return type == null ? fallback : type;
+	}
+
+	private static ShopType extractTypeOrDefault(final BuyerBehaviour behaviour, final ShopType fallback) {
+		if (behaviour == null) {
+			return fallback;
+		}
+		final ShopType type = behaviour.getShopType();
+		return type == null ? fallback : type;
 	}
 
 	/**
@@ -132,12 +190,15 @@ public class NpcShopWindowEvent extends RPEvent {
 	 * @param npc
 	 *            merchant finishing the conversation
 	 * @return closing event
-	 */
+	*/
 	public static NpcShopWindowEvent close(final SpeakerNPC npc) {
 		return new NpcShopWindowEvent(ACTION_CLOSE, npc.getName());
 	}
 
 	private static String extractFlavor(final Item item) {
+		if (item == null) {
+			return "";
+		}
 		if (item.has("shop_flavor")) {
 			return item.get("shop_flavor");
 		}
@@ -150,38 +211,4 @@ public class NpcShopWindowEvent extends RPEvent {
 		return "";
 	}
 
-	private static String determineCategory(final Item item) {
-		final String type = lowercase(item.get("class"));
-		final String subclass = lowercase(item.get("subclass"));
-		final String name = lowercase(item.getName());
-
-		if (matchesAny(type, subclass, name, WEAPON_TYPES)) {
-			return "weapon";
-		}
-		if (matchesAny(type, subclass, name, POTION_TYPES)) {
-			return "potion";
-		}
-		return "misc";
-	}
-
-	private static boolean matchesAny(final String type, final String subclass, final String name, final Set<String> keywords) {
-		if (type != null && keywords.contains(type)) {
-			return true;
-		}
-		if (subclass != null && keywords.contains(subclass)) {
-			return true;
-		}
-		if (name != null) {
-			for (final String keyword : keywords) {
-				if (name.contains(keyword)) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	private static String lowercase(final String value) {
-		return value == null ? null : value.toLowerCase(Locale.ROOT);
-	}
 }

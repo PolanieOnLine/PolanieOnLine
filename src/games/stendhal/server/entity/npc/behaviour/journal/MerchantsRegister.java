@@ -33,7 +33,7 @@ public class MerchantsRegister {
 	 *
 	 * @return
 	 *     The static instance.
-	 */
+	*/
 	public static MerchantsRegister get() {
 		if (instance == null) {
 			instance = new MerchantsRegister();
@@ -44,8 +44,8 @@ public class MerchantsRegister {
 
 	protected MerchantsRegister() {
 		instance = this;
-		buyers  = new LinkedList<Pair<String, BuyerBehaviour>>();
-		sellers  = new LinkedList<Pair<String, SellerBehaviour>>();
+		buyers = new LinkedList<Pair<String, BuyerBehaviour>>();
+		sellers = new LinkedList<Pair<String, SellerBehaviour>>();
 	}
 
 	/**
@@ -57,7 +57,7 @@ public class MerchantsRegister {
 	 *            The NPC that should be added
 	 * @param behaviour
 	 *            The MerchantBehaviour of that NPC
-	 */
+	*/
 	public void add(final SpeakerNPC npc, final MerchantBehaviour behaviour) {
 		final String npcName = npc.getName();
 
@@ -79,12 +79,30 @@ public class MerchantsRegister {
 		return sellers;
 	}
 
+	public BuyerBehaviour findBuyer(final String npcName) {
+		for (final Pair<String, BuyerBehaviour> entry : buyers) {
+			if (entry.first().equals(npcName)) {
+				return entry.second();
+			}
+		}
+		return null;
+	}
+
+	public SellerBehaviour findSeller(final String npcName) {
+		for (final Pair<String, SellerBehaviour> entry : sellers) {
+			if (entry.first().equals(npcName)) {
+				return entry.second();
+			}
+		}
+		return null;
+	}
+
 	/**
 	 * Retrieves list of NPC names registered as buyers.
 	 *
 	 * @return
 	 *     Buyers names.
-	 */
+	*/
 	public List<String> getBuyersNames() {
 		final List<String> names = new LinkedList<>();
 
@@ -100,7 +118,7 @@ public class MerchantsRegister {
 	 *
 	 * @return
 	 *     Sellers names.
-	 */
+	*/
 	public List<String> getSellersNames() {
 		final List<String> names = new LinkedList<>();
 
