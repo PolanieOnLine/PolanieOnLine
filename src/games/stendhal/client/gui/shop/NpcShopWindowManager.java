@@ -993,81 +993,79 @@ private static final class NpcShopWindow extends InternalManagedWindow {
 		}
 	}
 
-	private static final class BackgroundPanel extends JPanel {
-		private static final long serialVersionUID = 1L;
+		private static final class BackgroundPanel extends JPanel {
+			private static final long serialVersionUID = 1L;
 
-		private transient BufferedImage backgroundImage;
+			private transient BufferedImage backgroundImage;
 
-		void setBackgroundTexture(final String path) {
-			if ((path == null) || path.trim().isEmpty()) {
-				backgroundImage = null;
-				return;
-			}
-
-			try {
-				final Sprite sprite = SpriteStore.get().getSprite(path);
-				if (sprite == null) {
+			void setBackgroundTexture(final String path) {
+				if ((path == null) || path.trim().isEmpty()) {
 					backgroundImage = null;
 					return;
 				}
-				backgroundImage = new BufferedImage(sprite.getWidth(), sprite.getHeight(), BufferedImage.TYPE_INT_ARGB);
-				sprite.draw(backgroundImage.getGraphics(), 0, 0);
-			} catch (final RuntimeException e) {
-				logger.warn("Failed to load NPC shop background texture: " + path, e);
-				backgroundImage = null;
-			}
-		}
 
-
-
-		@Override
-		protected void paintComponent(final Graphics g) {
-			super.paintComponent(g);
-			if (backgroundImage == null) {
-				return;
+				try {
+					final Sprite sprite = SpriteStore.get().getSprite(path);
+					if (sprite == null) {
+						backgroundImage = null;
+						return;
+					}
+					backgroundImage = new BufferedImage(sprite.getWidth(), sprite.getHeight(), BufferedImage.TYPE_INT_ARGB);
+					sprite.draw(backgroundImage.getGraphics(), 0, 0);
+				} catch (final RuntimeException e) {
+					logger.warn("Failed to load NPC shop background texture: " + path, e);
+					backgroundImage = null;
+				}
 			}
 
-			final int width = backgroundImage.getWidth();
-			final int height = backgroundImage.getHeight();
+			@Override
+			protected void paintComponent(final Graphics g) {
+				super.paintComponent(g);
+				if (backgroundImage == null) {
+					return;
+				}
 
-			for (int x = 0; x < getWidth(); x += width) {
-				for (int y = 0; y < getHeight(); y += height) {
-					g.drawImage(backgroundImage, x, y, null);
+				final int width = backgroundImage.getWidth();
+				final int height = backgroundImage.getHeight();
+
+				for (int x = 0; x < getWidth(); x += width) {
+					for (int y = 0; y < getHeight(); y += height) {
+						g.drawImage(backgroundImage, x, y, null);
+					}
 				}
 			}
 		}
 
-	private static final class TintedPanel extends JPanel {
-	private static final long serialVersionUID = 1L;
+		private static final class TintedPanel extends JPanel {
+			private static final long serialVersionUID = 1L;
 
-	private Color tint = new Color(0, 0, 0, 160);
+			private Color tint = new Color(0, 0, 0, 160);
 
-	TintedPanel() {
-		setOpaque(false);
-	}
+			TintedPanel() {
+				setOpaque(false);
+			}
 
-	void setTint(final Color tint) {
-		if (tint != null) {
-			this.tint = tint;
-			repaint();
+			void setTint(final Color tint) {
+				if (tint != null) {
+					this.tint = tint;
+					repaint();
+				}
+			}
+
+			@Override
+			protected void paintComponent(final Graphics g) {
+				super.paintComponent(g);
+				if ((tint == null) || (tint.getAlpha() == 0)) {
+					return;
+				}
+
+				final Graphics2D g2 = (Graphics2D) g.create();
+				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				g2.setColor(tint);
+				g2.fillRoundRect(0, 0, getWidth(), getHeight(), 18, 18);
+				g2.dispose();
+			}
 		}
-	}
-
-	@Override
-	protected void paintComponent(final Graphics g) {
-		super.paintComponent(g);
-		if ((tint == null) || (tint.getAlpha() == 0)) {
-			return;
-		}
-
-		final Graphics2D g2 = (Graphics2D) g.create();
-		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		g2.setColor(tint);
-		g2.fillRoundRect(0, 0, getWidth(), getHeight(), 18, 18);
-		g2.dispose();
-	}
-	}
-	}
 
 	private static final class Offer {
 		private final String commandKey;
