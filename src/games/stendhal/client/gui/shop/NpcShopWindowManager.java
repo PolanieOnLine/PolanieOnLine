@@ -90,12 +90,14 @@ public final class NpcShopWindowManager {
 	private static final Color PANEL_TINT = new Color(34, 24, 16, 215);
 	private static final Color BORDER_COLOR = new Color(117, 89, 63, 210);
 	private static final Color BUTTON_BORDER = new Color(128, 94, 54);
-	private static final Color BUY_BUTTON_BG = new Color(32, 132, 58);
-	private static final Color BUY_BUTTON_BORDER = new Color(16, 78, 32);
-	private static final Color BUY_BUTTON_TEXT = new Color(252, 252, 244);
-	private static final Color SELL_BUTTON_BG = new Color(156, 48, 48);
-	private static final Color SELL_BUTTON_BORDER = new Color(96, 24, 24);
-	private static final Color SELL_BUTTON_TEXT = new Color(255, 240, 236);
+	private static final Color BUTTON_PANEL_BG = new Color(255, 244, 224, 120);
+	private static final Color BUTTON_PANEL_BORDER = new Color(238, 220, 196, 160);
+	private static final Color BUY_BUTTON_BG = new Color(52, 166, 96);
+	private static final Color BUY_BUTTON_BORDER = new Color(24, 106, 58);
+	private static final Color BUY_BUTTON_TEXT = new Color(253, 254, 248);
+	private static final Color SELL_BUTTON_BG = new Color(198, 76, 76);
+	private static final Color SELL_BUTTON_BORDER = new Color(132, 40, 40);
+	private static final Color SELL_BUTTON_TEXT = new Color(255, 244, 240);
 
 	private static final NpcShopWindowManager INSTANCE = new NpcShopWindowManager();
 
@@ -404,7 +406,7 @@ public final class NpcShopWindowManager {
 	private final TintedPanel contentPanel = new TintedPanel();
 	private final JLabel itemsLabel = createSectionLabel("Przedmioty");
 	private final JLabel descriptionLabel = createSectionLabel("Opis przedmiotu");
-	private final Dimension expandedPreferredSize = new Dimension(520, 420);
+	private final Dimension expandedPreferredSize = new Dimension(520, 480);
 	private final JLabel totalsHeading = createSectionLabel("Podsumowanie");
 	private ShopMode shopMode = ShopMode.BUY;
 
@@ -555,6 +557,7 @@ public final class NpcShopWindowManager {
 		tableScroll.setOpaque(false);
 		tableScroll.getViewport().setOpaque(false);
 		tableScroll.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(BORDER_COLOR, 1, true), BorderFactory.createEmptyBorder(6, 6, 6, 6)));
+		tableScroll.setPreferredSize(new Dimension(0, 240));
 		configureTableColumns(table.getColumnModel());
 		return tableScroll;
 	}
@@ -575,6 +578,7 @@ public final class NpcShopWindowManager {
 		descriptionScroll.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(BORDER_COLOR, 1, true), BorderFactory.createEmptyBorder(6, 6, 6, 6)));
 		descriptionScroll.setOpaque(false);
 		descriptionScroll.getViewport().setOpaque(false);
+		descriptionScroll.setPreferredSize(new Dimension(0, 140));
 		return descriptionScroll;
 	}
 
@@ -608,9 +612,10 @@ public final class NpcShopWindowManager {
 	}
 
 	private void configureActionPanel() {
-		actionPanel.setOpaque(false);
+		actionPanel.setOpaque(true);
+		actionPanel.setBackground(BUTTON_PANEL_BG);
 		actionPanel.setLayout(new BoxLayout(actionPanel, BoxLayout.X_AXIS));
-		actionPanel.setBorder(BorderFactory.createEmptyBorder());
+		actionPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(BUTTON_PANEL_BORDER, 1, true), BorderFactory.createEmptyBorder(6, 12, 6, 12)));
 
 		final JLabel quantityLabel = new JLabel("Ilość:");
 		quantityLabel.setForeground(SECONDARY_TEXT);
