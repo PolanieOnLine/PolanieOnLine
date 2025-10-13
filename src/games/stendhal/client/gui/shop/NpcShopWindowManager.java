@@ -16,33 +16,33 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Locale;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
+import javax.swing.JSeparator;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
-import javax.swing.WindowConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
@@ -55,10 +55,14 @@ import javax.swing.table.TableColumnModel;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.client.gui.InternalManagedWindow;
+import games.stendhal.client.gui.InternalWindow;
+import games.stendhal.client.gui.InternalWindow.CloseListener;
 import games.stendhal.client.scripting.ChatLineParser;
 import games.stendhal.client.sprite.Sprite;
 import games.stendhal.client.sprite.SpriteStore;
 import games.stendhal.common.grammar.Grammar;
+import games.stendhal.client.gui.j2DClient;
 import marauroa.common.game.RPEvent;
 import marauroa.common.game.RPObject;
 import marauroa.common.game.RPSlot;
@@ -156,6 +160,7 @@ public final class NpcShopWindowManager {
 				}
 			});
 			openWindows.put(npc, window);
+			j2DClient.get().addWindow(window);
 		}
 
 		final String title = event.has("title") ? event.get("title") : npc + " - Sklep";
@@ -164,8 +169,8 @@ public final class NpcShopWindowManager {
 
 		window.setOffers(parseOffers(event));
 		window.setShopMode(parseShopMode(event));
+		window.setMinimized(false);
 		window.setVisible(true);
-		window.toFront();
 	}
 
 	private void closeWindow(final String npc) {
@@ -228,8 +233,15 @@ public final class NpcShopWindowManager {
 		final String description = object.has("description_info") ? object.get("description_info") : "";
 		final String flavor = object.has("shop_flavor") ? object.get("shop_flavor") : "";
 		final Sprite sprite = loadSprite(object);
-		final String rawType = object.has(ATTR_OFFER_TYPE) ? object.get(ATTR_OFFER_TYPE) : OFFER_TYPE_BUY;
-		final TransactionType type = OFFER_TYPE_SELL.equalsIgnoreCase(rawType) ? TransactionType.BUY : TransactionType.SELL;
+		final String rawType = object.has(ATTR_OFFER_TYPE) ? object.get(ATTR_OFFER_TYPE) : null;
+		final TransactionType type;
+		if (OFFER_TYPE_SELL.equalsIgnoreCase(rawType)) {
+			type = TransactionType.BUY;
+		} else if (OFFER_TYPE_BUY.equalsIgnoreCase(rawType)) {
+			type = TransactionType.SELL;
+		} else {
+			type = TransactionType.BUY;
+		}
 
 		return new Offer(commandKey, displayName, description, flavor, price, sprite, type);
 	}
@@ -355,379 +367,505 @@ public final class NpcShopWindowManager {
 		return builder.toString();
 	}
 
-	private static final class NpcShopWindow extends JFrame {
-		private static final long serialVersionUID = 1L;
+private static final class NpcShopWindow extends InternalManagedWindow {
+	private static final long serialVersionUID = 1L;
 
-		private final List<Offer> allOffers = new ArrayList<Offer>();
-		private final OfferTableModel tableModel = new OfferTableModel();
-		private final JTable table = new JTable(tableModel);
-		private final JTextArea descriptionArea = new JTextArea();
-		private final JLabel flavorLabel = new JLabel();
-		private final JLabel unitPriceValue = new JLabel("-");
-		private final JLabel totalPriceValue = new JLabel("-");
-		private final JSpinner quantitySpinner = new JSpinner(new SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), Integer.valueOf(1000), Integer.valueOf(1)));
-		private final JButton buyButton = new JButton("Kup");
-		private final JButton sellButton = new JButton("Sprzedaj");
-		private final JPanel actionPanel = new JPanel();
-		private final BackgroundPanel backgroundPanel = new BackgroundPanel();
-		private ShopMode shopMode = ShopMode.BUY;
+	private static final Color PRIMARY_TEXT = new Color(246, 236, 220);
+	private static final Color SECONDARY_TEXT = new Color(220, 204, 184);
+	private static final Color MUTED_TEXT = new Color(202, 182, 158);
+	private static final Color SELECTION_BG = new Color(123, 88, 55, 200);
+	private static final Color SELECTION_FG = new Color(255, 249, 240);
+	private static final Color GRID_COLOR = new Color(104, 80, 58, 160);
+	private static final Color HEADER_BG = new Color(90, 62, 38, 230);
+	private static final Color HEADER_FG = new Color(255, 246, 232);
+	private static final Color PANEL_TINT = new Color(34, 24, 16, 215);
+	private static final Color BORDER_COLOR = new Color(117, 89, 63, 210);
+	private static final Color BUTTON_BG = new Color(198, 156, 94);
+	private static final Color BUTTON_BORDER = new Color(128, 94, 54);
 
-		private Runnable onClose;
-		private boolean disposingFromManager;
+	private final List<Offer> allOffers = new ArrayList<Offer>();
+	private final OfferTableModel tableModel = new OfferTableModel();
+	private final JTable table = new JTable(tableModel);
+	private final JTextArea descriptionArea = new JTextArea();
+	private final JLabel flavorLabel = new JLabel();
+	private final JLabel unitPriceValue = new JLabel("-");
+	private final JLabel totalPriceValue = new JLabel("-");
+	private final JSpinner quantitySpinner = new JSpinner(new SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), Integer.valueOf(1000), Integer.valueOf(1)));
+	private final JButton buyButton = new JButton("Kup");
+	private final JButton sellButton = new JButton("Sprzedaj");
+	private final JPanel actionPanel = new JPanel();
+	private final BackgroundPanel backgroundPanel = new BackgroundPanel();
+	private final TintedPanel contentPanel = new TintedPanel();
+	private final JLabel itemsLabel = createSectionLabel("Przedmioty");
+	private final JLabel descriptionLabel = createSectionLabel("Opis przedmiotu");
+	private final JLabel totalsHeading = createSectionLabel("Podsumowanie");
+	private ShopMode shopMode = ShopMode.BUY;
 
-		NpcShopWindow(final String npc) {
-			super(npc + " - Sklep");
-			setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-			setMinimumSize(new Dimension(560, 460));
-			setLocationByPlatform(true);
+	private Runnable onClose;
+	private boolean disposingFromManager;
 
-			backgroundPanel.setBorder(BorderFactory.createEmptyBorder(12, 12, 12, 12));
-			backgroundPanel.setLayout(new BorderLayout(12, 12));
-			setContentPane(backgroundPanel);
+	NpcShopWindow(final String npc) {
+		super(buildHandle(npc), npc + " - Sklep");
+		setCloseable(true);
+		setHideOnClose(true);
+		setMinimizable(true);
+		setMovable(true);
+		setPreferredSize(new Dimension(640, 520));
 
-			final JPanel headerPanel = new JPanel(new BorderLayout(8, 4));
-			headerPanel.setOpaque(false);
+		backgroundPanel.setBorder(BorderFactory.createEmptyBorder(12, 12, 12, 12));
+		backgroundPanel.setLayout(new BorderLayout());
+		backgroundPanel.setOpaque(false);
 
-			final JLabel titleLabel = new JLabel(getTitle());
-			final Font baseFont = titleLabel.getFont();
-			titleLabel.setFont(baseFont.deriveFont(baseFont.getStyle() | Font.BOLD, baseFont.getSize() + 2.0f));
-			headerPanel.add(titleLabel, BorderLayout.CENTER);
+		contentPanel.setTint(PANEL_TINT);
+		contentPanel.setLayout(new BorderLayout(16, 16));
+		contentPanel.setBorder(BorderFactory.createEmptyBorder(16, 16, 16, 16));
 
+		backgroundPanel.add(contentPanel, BorderLayout.CENTER);
+		setContent(backgroundPanel);
 
-			backgroundPanel.add(headerPanel, BorderLayout.NORTH);
+		configureTable();
+		final JScrollPane tableScroll = createTableScroll();
 
-			table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-			table.setRowHeight(40);
-			table.setFillsViewportHeight(true);
-			table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
-			table.setOpaque(false);
-			table.setDefaultRenderer(Sprite.class, new SpriteCellRenderer());
-			final DefaultTableCellRenderer nameRenderer = new DefaultTableCellRenderer();
-			nameRenderer.setOpaque(false);
-			table.getColumnModel().getColumn(1).setCellRenderer(nameRenderer);
-			final PriceRenderer priceRenderer = new PriceRenderer();
-			table.getColumnModel().getColumn(2).setCellRenderer(priceRenderer);
-			table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-				@Override
-				public void valueChanged(final ListSelectionEvent event) {
-					if (!event.getValueIsAdjusting()) {
-						updateSelection();
-					}
-				}
-			});
+		final JPanel tableSection = new JPanel(new BorderLayout(0, 8));
+		tableSection.setOpaque(false);
+		itemsLabel.setLabelFor(table);
+		tableSection.add(itemsLabel, BorderLayout.NORTH);
+		tableSection.add(tableScroll, BorderLayout.CENTER);
 
-			final JScrollPane tableScroll = new JScrollPane(table);
-			tableScroll.setOpaque(false);
-			tableScroll.getViewport().setOpaque(false);
-			tableScroll.setBorder(BorderFactory.createTitledBorder("Przedmioty"));
-			configureTableColumns(table.getColumnModel());
-			backgroundPanel.add(tableScroll, BorderLayout.CENTER);
+		final JPanel centerWrapper = new JPanel(new BorderLayout(0, 12));
+		centerWrapper.setOpaque(false);
+		centerWrapper.add(tableSection, BorderLayout.CENTER);
+		centerWrapper.add(createSeparator(), BorderLayout.SOUTH);
 
-			descriptionArea.setEditable(false);
-			descriptionArea.setLineWrap(true);
-			descriptionArea.setWrapStyleWord(true);
-			descriptionArea.setOpaque(false);
-			descriptionArea.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+		contentPanel.add(centerWrapper, BorderLayout.CENTER);
 
-			final JScrollPane descriptionScroll = new JScrollPane(descriptionArea);
-			descriptionScroll.setBorder(BorderFactory.createTitledBorder("Opis przedmiotu"));
-			descriptionScroll.setOpaque(false);
-			descriptionScroll.getViewport().setOpaque(false);
+		final JScrollPane descriptionScroll = configureDescription();
+		final JPanel infoPanel = new JPanel(new BorderLayout(0, 8));
+		infoPanel.setOpaque(false);
+		descriptionLabel.setLabelFor(descriptionArea);
+		infoPanel.add(descriptionLabel, BorderLayout.NORTH);
+		infoPanel.add(descriptionScroll, BorderLayout.CENTER);
+		infoPanel.add(flavorLabel, BorderLayout.SOUTH);
 
-			flavorLabel.setBorder(BorderFactory.createEmptyBorder(4, 8, 0, 8));
-			flavorLabel.setForeground(new Color(230, 218, 184));
+		final JPanel totalsPanel = createTotalsPanel();
 
-			final JPanel infoPanel = new JPanel();
-			infoPanel.setOpaque(false);
-			infoPanel.setLayout(new BorderLayout(8, 8));
-			infoPanel.add(descriptionScroll, BorderLayout.CENTER);
-			infoPanel.add(flavorLabel, BorderLayout.SOUTH);
+		final JPanel infoRow = new JPanel(new BorderLayout(12, 0));
+		infoRow.setOpaque(false);
+		infoRow.add(infoPanel, BorderLayout.CENTER);
+		infoRow.add(totalsPanel, BorderLayout.EAST);
 
-			final JPanel totalsPanel = new JPanel();
-			totalsPanel.setOpaque(false);
-			totalsPanel.setLayout(new BoxLayout(totalsPanel, BoxLayout.Y_AXIS));
+		configureActionPanel();
+		final JPanel actionRow = new JPanel();
+		actionRow.setOpaque(false);
+		actionRow.setLayout(new BoxLayout(actionRow, BoxLayout.X_AXIS));
+		actionRow.add(Box.createHorizontalGlue());
+		actionRow.add(actionPanel);
 
-			final JLabel unitLabel = new JLabel("Cena za sztukę:");
-			unitLabel.setAlignmentX(LEFT_ALIGNMENT);
-			unitPriceValue.setAlignmentX(LEFT_ALIGNMENT);
-			final JLabel totalLabel = new JLabel("Łącznie:");
-			totalLabel.setAlignmentX(LEFT_ALIGNMENT);
-			totalPriceValue.setAlignmentX(LEFT_ALIGNMENT);
+		final JPanel bottomWrapper = new JPanel(new BorderLayout(0, 12));
+		bottomWrapper.setOpaque(false);
+		bottomWrapper.add(infoRow, BorderLayout.CENTER);
+		bottomWrapper.add(actionRow, BorderLayout.SOUTH);
 
-			totalsPanel.add(unitLabel);
-			totalsPanel.add(unitPriceValue);
-			totalsPanel.add(Box.createVerticalStrut(6));
-			totalsPanel.add(totalLabel);
-			totalsPanel.add(totalPriceValue);
+		contentPanel.add(bottomWrapper, BorderLayout.SOUTH);
 
-			actionPanel.setOpaque(false);
-			actionPanel.setLayout(new BoxLayout(actionPanel, BoxLayout.X_AXIS));
-			actionPanel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
-			actionPanel.add(new JLabel("Ilość:"));
-			actionPanel.add(Box.createHorizontalStrut(6));
-			actionPanel.add(quantitySpinner);
-			actionPanel.add(Box.createHorizontalStrut(12));
-			actionPanel.add(buyButton);
-			actionPanel.add(Box.createHorizontalStrut(6));
-			actionPanel.add(sellButton);
-
-			final JPanel bottomPanel = new JPanel();
-			bottomPanel.setOpaque(false);
-			bottomPanel.setLayout(new BorderLayout(12, 12));
-			bottomPanel.add(infoPanel, BorderLayout.CENTER);
-			bottomPanel.add(totalsPanel, BorderLayout.EAST);
-			bottomPanel.add(actionPanel, BorderLayout.SOUTH);
-
-			backgroundPanel.add(bottomPanel, BorderLayout.SOUTH);
-
-			quantitySpinner.addChangeListener(new ChangeListener() {
-				@Override
-				public void stateChanged(final ChangeEvent event) {
-					updateTotalPrice();
-				}
-			});
-
-			buyButton.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(final ActionEvent event) {
-					initiateTransaction(TransactionType.BUY);
-				}
-			});
-
-			sellButton.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(final ActionEvent event) {
-					initiateTransaction(TransactionType.SELL);
-				}
-			});
-
-			addWindowListener(new WindowAdapter() {
-				@Override
-				public void windowClosed(final WindowEvent event) {
-					if (!disposingFromManager && (onClose != null)) {
-						onClose.run();
-					}
-				}
-			});
-
-			updateSelection();
-		}
-
-		void setOffers(final List<Offer> offers) {
-			final String selectedId = getSelectedOfferId();
-			allOffers.clear();
-			if (offers != null) {
-				allOffers.addAll(offers);
+		quantitySpinner.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(final ChangeEvent event) {
+				updateTotalPrice();
 			}
+		});
 
-			tableModel.setOffers(allOffers);
+		buyButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent event) {
+				initiateTransaction(TransactionType.BUY);
+			}
+		});
 
-			int preferredIndex = -1;
-			if ((selectedId != null) && !selectedId.isEmpty()) {
-				preferredIndex = tableModel.indexOf(selectedId);
-				if ((preferredIndex >= 0) && !isRowCompatibleWithMode(preferredIndex)) {
-					preferredIndex = -1;
+		sellButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent event) {
+				initiateTransaction(TransactionType.SELL);
+			}
+		});
+
+		addCloseListener(new CloseListener() {
+			@Override
+			public void windowClosed(final InternalWindow window) {
+				if (!disposingFromManager && (onClose != null)) {
+					onClose.run();
 				}
 			}
+		});
 
-			if (preferredIndex < 0) {
-				preferredIndex = findFirstRowForMode();
-			}
+		updateSelection();
+	}
 
-			if (preferredIndex >= 0) {
-				table.getSelectionModel().setSelectionInterval(preferredIndex, preferredIndex);
-			} else {
-				table.clearSelection();
-			}
-
-			updateSelection();
+	private static String buildHandle(final String npc) {
+		String base = (npc == null) ? "npc" : npc.toLowerCase(Locale.ROOT).replaceAll("[^a-z0-9]+", "_").replaceAll("_+", "_");
+		base = base.replaceAll("^_", "").replaceAll("_$", "");
+		if (base.isEmpty()) {
+			base = "npc";
 		}
+		return "npcshop." + base;
+	}
 
-		void setShopMode(final ShopMode mode) {
-			shopMode = (mode != null) ? mode : ShopMode.BUY;
-			buyButton.setVisible(shopMode.allowsBuy());
-			sellButton.setVisible(shopMode.allowsSell());
-			actionPanel.revalidate();
-			actionPanel.repaint();
-			ensureSelectionForMode();
-			updateSelection();
-		}
-
-		private void configureTableColumns(final TableColumnModel model) {
-			final TableColumn iconColumn = model.getColumn(0);
-			iconColumn.setMinWidth(48);
-			iconColumn.setMaxWidth(64);
-			iconColumn.setPreferredWidth(56);
-
-			final TableColumn nameColumn = model.getColumn(1);
-			nameColumn.setPreferredWidth(240);
-
-			final TableColumn priceColumn = model.getColumn(2);
-			priceColumn.setPreferredWidth(140);
-		}
-
-		private void updateSelection() {
-			final Offer offer = getSelectedOffer();
-
-			if (offer == null) {
-				descriptionArea.setText("");
-				flavorLabel.setText("");
-				unitPriceValue.setText("-");
-				unitPriceValue.setToolTipText(null);
-				totalPriceValue.setText("-");
-				totalPriceValue.setToolTipText(null);
-				buyButton.setEnabled(false);
-				sellButton.setEnabled(false);
-				return;
-			}
-
-			descriptionArea.setText(offer.description);
-			descriptionArea.setCaretPosition(0);
-			if ((offer.flavor != null) && !offer.flavor.isEmpty()) {
-				flavorLabel.setText("<html><i>" + escapeHtml(offer.flavor) + "</i></html>");
-			} else {
-				flavorLabel.setText("");
-			}
-
-			unitPriceValue.setText(formatPriceColored(offer.price));
-			unitPriceValue.setToolTipText(formatPricePlain(offer.price));
-			buyButton.setEnabled(isActionAvailable(TransactionType.BUY, offer));
-			sellButton.setEnabled(isActionAvailable(TransactionType.SELL, offer));
-
-			if (((Integer) quantitySpinner.getValue()).intValue() < 1) {
-				quantitySpinner.setValue(Integer.valueOf(1));
-			}
-
-			updateTotalPrice();
-		}
-
-		private void updateTotalPrice() {
-			final Offer offer = getSelectedOffer();
-			if (offer == null) {
-				totalPriceValue.setText("-");
-				totalPriceValue.setToolTipText(null);
-				return;
-			}
-
-			final int quantity = ((Integer) quantitySpinner.getValue()).intValue();
-			final long total = (long) offer.price * quantity;
-			final int capped = total > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) total;
-
-			totalPriceValue.setText(formatPriceColored(capped));
-			totalPriceValue.setToolTipText(formatPricePlain(capped));
-		}
-
-		private Offer getSelectedOffer() {
-			final int selectedRow = table.getSelectedRow();
-			if (selectedRow < 0) {
-				return null;
-			}
-			return tableModel.getOffer(table.convertRowIndexToModel(selectedRow));
-		}
-
-		private String getSelectedOfferId() {
-			final Offer offer = getSelectedOffer();
-			return (offer != null) ? offer.selectionId : null;
-		}
-
-		private boolean isRowCompatibleWithMode(final int row) {
-			final Offer candidate = tableModel.getOffer(row);
-			return (candidate != null) && shopMode.allows(candidate.type);
-		}
-
-		private int findFirstRowForMode() {
-			for (int i = 0; i < tableModel.getRowCount(); i++) {
-				if (isRowCompatibleWithMode(i)) {
-					return i;
+	private void configureTable() {
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setRowHeight(44);
+		table.setFillsViewportHeight(true);
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+		table.setOpaque(false);
+		table.setForeground(PRIMARY_TEXT);
+		table.setGridColor(GRID_COLOR);
+		table.setShowHorizontalLines(false);
+		table.setShowVerticalLines(false);
+		table.setSelectionBackground(SELECTION_BG);
+		table.setSelectionForeground(SELECTION_FG);
+		table.setDefaultRenderer(Sprite.class, new SpriteCellRenderer());
+		final DefaultTableCellRenderer nameRenderer = new DefaultTableCellRenderer();
+		nameRenderer.setOpaque(false);
+		nameRenderer.setForeground(PRIMARY_TEXT);
+		table.getColumnModel().getColumn(1).setCellRenderer(nameRenderer);
+		final PriceRenderer priceRenderer = new PriceRenderer();
+		priceRenderer.setForeground(PRIMARY_TEXT);
+		table.getColumnModel().getColumn(2).setCellRenderer(priceRenderer);
+		table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(final ListSelectionEvent event) {
+				if (!event.getValueIsAdjusting()) {
+					updateSelection();
 				}
 			}
-			return -1;
+		});
+		table.getTableHeader().setReorderingAllowed(false);
+		table.getTableHeader().setForeground(HEADER_FG);
+		table.getTableHeader().setBackground(HEADER_BG);
+	}
+
+	private JScrollPane createTableScroll() {
+		final JScrollPane tableScroll = new JScrollPane(table);
+		tableScroll.setOpaque(false);
+		tableScroll.getViewport().setOpaque(false);
+		tableScroll.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(BORDER_COLOR, 1, true), BorderFactory.createEmptyBorder(6, 6, 6, 6)));
+		configureTableColumns(table.getColumnModel());
+		return tableScroll;
+	}
+
+	private JScrollPane configureDescription() {
+		descriptionArea.setEditable(false);
+		descriptionArea.setLineWrap(true);
+		descriptionArea.setWrapStyleWord(true);
+		descriptionArea.setOpaque(false);
+		descriptionArea.setForeground(PRIMARY_TEXT);
+		descriptionArea.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+
+		flavorLabel.setBorder(BorderFactory.createEmptyBorder(4, 4, 0, 4));
+		flavorLabel.setForeground(MUTED_TEXT);
+		flavorLabel.setVerticalAlignment(SwingConstants.TOP);
+
+		final JScrollPane descriptionScroll = new JScrollPane(descriptionArea);
+		descriptionScroll.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(BORDER_COLOR, 1, true), BorderFactory.createEmptyBorder(6, 6, 6, 6)));
+		descriptionScroll.setOpaque(false);
+		descriptionScroll.getViewport().setOpaque(false);
+		return descriptionScroll;
+	}
+
+	private JPanel createTotalsPanel() {
+		final JPanel totalsPanel = new JPanel();
+		totalsPanel.setOpaque(false);
+		totalsPanel.setLayout(new BoxLayout(totalsPanel, BoxLayout.Y_AXIS));
+		totalsHeading.setAlignmentX(LEFT_ALIGNMENT);
+		totalsPanel.add(totalsHeading);
+		totalsPanel.add(Box.createVerticalStrut(4));
+
+		final JLabel unitLabel = new JLabel("Cena za sztukę:");
+		unitLabel.setAlignmentX(LEFT_ALIGNMENT);
+		unitLabel.setForeground(SECONDARY_TEXT);
+		unitPriceValue.setAlignmentX(LEFT_ALIGNMENT);
+		unitPriceValue.setForeground(PRIMARY_TEXT);
+
+		final JLabel totalLabel = new JLabel("Łącznie:");
+		totalLabel.setAlignmentX(LEFT_ALIGNMENT);
+		totalLabel.setForeground(SECONDARY_TEXT);
+		totalPriceValue.setAlignmentX(LEFT_ALIGNMENT);
+		totalPriceValue.setForeground(PRIMARY_TEXT);
+
+		totalsPanel.add(unitLabel);
+		totalsPanel.add(unitPriceValue);
+		totalsPanel.add(Box.createVerticalStrut(8));
+		totalsPanel.add(totalLabel);
+		totalsPanel.add(totalPriceValue);
+
+		return totalsPanel;
+	}
+
+	private void configureActionPanel() {
+		actionPanel.setOpaque(false);
+		actionPanel.setLayout(new BoxLayout(actionPanel, BoxLayout.X_AXIS));
+		actionPanel.setBorder(BorderFactory.createEmptyBorder());
+
+		final JLabel quantityLabel = new JLabel("Ilość:");
+		quantityLabel.setForeground(SECONDARY_TEXT);
+		actionPanel.add(quantityLabel);
+		actionPanel.add(Box.createHorizontalStrut(8));
+		quantitySpinner.setMaximumSize(new Dimension(80, quantitySpinner.getPreferredSize().height));
+		if (quantitySpinner.getEditor() instanceof JSpinner.DefaultEditor) {
+			final JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) quantitySpinner.getEditor();
+			editor.getTextField().setColumns(3);
+			editor.getTextField().setBackground(new Color(255, 248, 236));
+			editor.getTextField().setForeground(new Color(30, 20, 12));
+		}
+		actionPanel.add(quantitySpinner);
+		actionPanel.add(Box.createHorizontalStrut(16));
+
+		styleButton(buyButton);
+		actionPanel.add(buyButton);
+		actionPanel.add(Box.createHorizontalStrut(8));
+		styleButton(sellButton);
+		actionPanel.add(sellButton);
+	}
+
+	private void styleButton(final JButton button) {
+		button.setBackground(BUTTON_BG);
+		button.setBorder(BorderFactory.createLineBorder(BUTTON_BORDER));
+		button.setFocusPainted(false);
+		button.setOpaque(true);
+		button.setForeground(new Color(30, 20, 12));
+		button.setFont(button.getFont().deriveFont(Font.BOLD));
+	}
+
+	private JSeparator createSeparator() {
+		final JSeparator separator = new JSeparator();
+		separator.setForeground(BORDER_COLOR);
+		separator.setOpaque(false);
+		return separator;
+	}
+
+	private JLabel createSectionLabel(final String text) {
+		final JLabel label = new JLabel(text);
+		final Font baseFont = label.getFont();
+		label.setFont(baseFont.deriveFont(baseFont.getStyle() | Font.BOLD, baseFont.getSize() + 1.0f));
+		label.setForeground(PRIMARY_TEXT);
+		return label;
+	}
+
+	void setOffers(final List<Offer> offers) {
+		final String selectedId = getSelectedOfferId();
+		allOffers.clear();
+		if (offers != null) {
+			allOffers.addAll(offers);
 		}
 
-		private void ensureSelectionForMode() {
-			final Offer offer = getSelectedOffer();
-			if ((offer != null) && shopMode.allows(offer.type)) {
-				return;
+		tableModel.setOffers(allOffers);
+
+		int preferredIndex = -1;
+		if ((selectedId != null) && !selectedId.isEmpty()) {
+			preferredIndex = tableModel.indexOf(selectedId);
+			if ((preferredIndex >= 0) && !isRowCompatibleWithMode(preferredIndex)) {
+				preferredIndex = -1;
 			}
-			final int row = findFirstRowForMode();
-			if (row >= 0) {
-				table.getSelectionModel().setSelectionInterval(row, row);
-			} else {
-				table.clearSelection();
+		}
+
+		if (preferredIndex < 0) {
+			preferredIndex = findFirstRowForMode();
+		}
+
+		if (preferredIndex >= 0) {
+			table.getSelectionModel().setSelectionInterval(preferredIndex, preferredIndex);
+		} else {
+			table.clearSelection();
+		}
+
+		updateSelection();
+	}
+
+	void setShopMode(final ShopMode mode) {
+		shopMode = (mode != null) ? mode : ShopMode.BUY;
+		buyButton.setVisible(shopMode.allowsBuy());
+		sellButton.setVisible(shopMode.allowsSell());
+		actionPanel.revalidate();
+		actionPanel.repaint();
+		ensureSelectionForMode();
+		updateSelection();
+	}
+
+	private void configureTableColumns(final TableColumnModel model) {
+		final TableColumn iconColumn = model.getColumn(0);
+		iconColumn.setMinWidth(48);
+		iconColumn.setMaxWidth(64);
+		iconColumn.setPreferredWidth(56);
+
+		final TableColumn nameColumn = model.getColumn(1);
+		nameColumn.setPreferredWidth(240);
+
+		final TableColumn priceColumn = model.getColumn(2);
+		priceColumn.setPreferredWidth(140);
+	}
+
+	private void updateSelection() {
+		final Offer offer = getSelectedOffer();
+
+		if (offer == null) {
+			descriptionArea.setText("");
+			flavorLabel.setText("");
+			unitPriceValue.setText("-");
+			unitPriceValue.setToolTipText(null);
+			totalPriceValue.setText("-");
+			totalPriceValue.setToolTipText(null);
+			buyButton.setEnabled(false);
+			sellButton.setEnabled(false);
+			return;
+		}
+
+		descriptionArea.setText(offer.description);
+		descriptionArea.setCaretPosition(0);
+		if ((offer.flavor != null) && !offer.flavor.isEmpty()) {
+			flavorLabel.setText("<html><i>" + escapeHtml(offer.flavor) + "</i></html>");
+		} else {
+			flavorLabel.setText("");
+		}
+
+		unitPriceValue.setText(formatPriceColored(offer.price));
+		unitPriceValue.setToolTipText(formatPricePlain(offer.price));
+		buyButton.setEnabled(isActionAvailable(TransactionType.BUY, offer));
+		sellButton.setEnabled(isActionAvailable(TransactionType.SELL, offer));
+
+		if (((Integer) quantitySpinner.getValue()).intValue() < 1) {
+			quantitySpinner.setValue(Integer.valueOf(1));
+		}
+
+		updateTotalPrice();
+	}
+
+	private void updateTotalPrice() {
+		final Offer offer = getSelectedOffer();
+		if (offer == null) {
+			totalPriceValue.setText("-");
+			totalPriceValue.setToolTipText(null);
+			return;
+		}
+
+		final int quantity = ((Integer) quantitySpinner.getValue()).intValue();
+		final long total = (long) offer.price * quantity;
+		final int capped = total > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) total;
+
+		totalPriceValue.setText(formatPriceColored(capped));
+		totalPriceValue.setToolTipText(formatPricePlain(capped));
+	}
+
+	private Offer getSelectedOffer() {
+		final int selectedRow = table.getSelectedRow();
+		if (selectedRow < 0) {
+			return null;
+		}
+		return tableModel.getOffer(table.convertRowIndexToModel(selectedRow));
+	}
+
+	private String getSelectedOfferId() {
+		final Offer offer = getSelectedOffer();
+		return (offer != null) ? offer.selectionId : null;
+	}
+
+	private boolean isRowCompatibleWithMode(final int row) {
+		final Offer candidate = tableModel.getOffer(row);
+		return (candidate != null) && shopMode.allows(candidate.type);
+	}
+
+	private int findFirstRowForMode() {
+		for (int i = 0; i < tableModel.getRowCount(); i++) {
+			if (isRowCompatibleWithMode(i)) {
+				return i;
 			}
 		}
+		return -1;
+	}
 
-		private boolean isActionAvailable(final TransactionType type, final Offer offer) {
-			return (offer != null) && shopMode.allows(type) && (offer.type == type);
+	private void ensureSelectionForMode() {
+		final Offer offer = getSelectedOffer();
+		if ((offer != null) && shopMode.allows(offer.type)) {
+			return;
 		}
-
-		private void initiateTransaction(final TransactionType type) {
-			final Offer offer = getSelectedOffer();
-			if (!isActionAvailable(type, offer)) {
-				return;
-			}
-
-			int quantity = ((Integer) quantitySpinner.getValue()).intValue();
-			if (quantity < 1) {
-				quantity = 1;
-				quantitySpinner.setValue(Integer.valueOf(1));
-			}
-
-			final long total = (long) offer.price * quantity;
-			final int capped = total > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) total;
-
-			ChatLineParser.parseAndHandle(buildCommand(type, quantity, offer.commandKey));
-
-			final String actionWord = (type == TransactionType.BUY) ? "zakup" : "sprzedaż";
-			final String dialogTitle = (type == TransactionType.BUY) ? "Potwierdź zakup" : "Potwierdź sprzedaż";
-			final String message = new StringBuilder()
-			.append("Czy potwierdzasz ")
-			.append(actionWord)
-			.append(' ')
-			.append(quantity)
-			.append(" × ")
-			.append(offer.displayName)
-			.append(" za ")
-			.append(formatPricePlain(capped))
-			.append('?')
-			.toString();
-
-			final int result = JOptionPane.showConfirmDialog(this, message, dialogTitle, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-
-			if (result == JOptionPane.YES_OPTION) {
-				ChatLineParser.parseAndHandle("tak");
-			} else {
-				ChatLineParser.parseAndHandle("nie");
-			}
-		}
-
-		private String buildCommand(final TransactionType type, final int quantity, final String commandKey) {
-			final StringBuilder builder = new StringBuilder();
-			builder.append(type == TransactionType.BUY ? "kup " : "sprzedaj ");
-			builder.append(quantity);
-			builder.append(' ');
-			builder.append(commandKey);
-			return builder.toString();
-		}
-
-		void setOnClose(final Runnable onClose) {
-			this.onClose = onClose;
-		}
-
-		void disposeFromManager() {
-			disposingFromManager = true;
-			dispose();
-		}
-
-		void setTitleText(final String title) {
-			setTitle(title);
-		}
-
-		void setBackgroundTexture(final String path) {
-			backgroundPanel.setBackgroundTexture(path);
-			backgroundPanel.repaint();
+		final int row = findFirstRowForMode();
+		if (row >= 0) {
+			table.getSelectionModel().setSelectionInterval(row, row);
+		} else {
+			table.clearSelection();
 		}
 	}
+
+	private boolean isActionAvailable(final TransactionType type, final Offer offer) {
+		return (offer != null) && shopMode.allows(type) && (offer.type == type);
+	}
+
+	private void initiateTransaction(final TransactionType type) {
+		final Offer offer = getSelectedOffer();
+		if (!isActionAvailable(type, offer)) {
+			return;
+		}
+
+		int quantity = ((Integer) quantitySpinner.getValue()).intValue();
+		if (quantity < 1) {
+			quantity = 1;
+			quantitySpinner.setValue(Integer.valueOf(1));
+		}
+
+		final long total = (long) offer.price * quantity;
+		final int capped = total > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) total;
+
+		ChatLineParser.parseAndHandle(buildCommand(type, quantity, offer.commandKey));
+
+		final String actionWord = (type == TransactionType.BUY) ? "zakup" : "sprzedaż";
+		final String dialogTitle = (type == TransactionType.BUY) ? "Potwierdź zakup" : "Potwierdź sprzedaż";
+		final String message = new StringBuilder()
+		.append("Czy potwierdzasz ")
+		.append(actionWord)
+		.append(' ')
+		.append(quantity)
+		.append(" × ")
+		.append(offer.displayName)
+		.append(" za ")
+		.append(formatPricePlain(capped))
+		.append('?')
+		.toString();
+
+		final int result = JOptionPane.showConfirmDialog(this, message, dialogTitle, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+		if (result == JOptionPane.YES_OPTION) {
+			ChatLineParser.parseAndHandle("tak");
+		} else {
+			ChatLineParser.parseAndHandle("nie");
+		}
+	}
+
+	private String buildCommand(final TransactionType type, final int quantity, final String commandKey) {
+		final StringBuilder builder = new StringBuilder();
+		builder.append(type == TransactionType.BUY ? "kup " : "sprzedaj ");
+		builder.append(quantity);
+		builder.append(' ');
+		builder.append(commandKey);
+		return builder.toString();
+	}
+
+	void setOnClose(final Runnable onClose) {
+		this.onClose = onClose;
+	}
+
+	void disposeFromManager() {
+		disposingFromManager = true;
+		close();
+		disposingFromManager = false;
+	}
+
+	void setTitleText(final String title) {
+		setTitle(title);
+	}
+
+	void setBackgroundTexture(final String path) {
+		backgroundPanel.setBackgroundTexture(path);
+		backgroundPanel.repaint();
+	}
+}
 
 	private static final class OfferTableModel extends AbstractTableModel {
 		private static final long serialVersionUID = 1L;
@@ -880,6 +1018,8 @@ public final class NpcShopWindowManager {
 			}
 		}
 
+
+
 		@Override
 		protected void paintComponent(final Graphics g) {
 			super.paintComponent(g);
@@ -896,6 +1036,37 @@ public final class NpcShopWindowManager {
 				}
 			}
 		}
+
+	private static final class TintedPanel extends JPanel {
+	private static final long serialVersionUID = 1L;
+
+	private Color tint = new Color(0, 0, 0, 160);
+
+	TintedPanel() {
+		setOpaque(false);
+	}
+
+	void setTint(final Color tint) {
+		if (tint != null) {
+			this.tint = tint;
+			repaint();
+		}
+	}
+
+	@Override
+	protected void paintComponent(final Graphics g) {
+		super.paintComponent(g);
+		if ((tint == null) || (tint.getAlpha() == 0)) {
+			return;
+		}
+
+		final Graphics2D g2 = (Graphics2D) g.create();
+		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g2.setColor(tint);
+		g2.fillRoundRect(0, 0, getWidth(), getHeight(), 18, 18);
+		g2.dispose();
+	}
+	}
 	}
 
 	private static final class Offer {
