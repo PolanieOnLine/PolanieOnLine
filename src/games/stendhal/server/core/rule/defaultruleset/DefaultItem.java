@@ -411,15 +411,16 @@ public class DefaultItem {
 
 			item.setUseBehavior(useBehavior);
 
-			Map<String, String> baseAttributes = copyAttributes();
-			boolean rarityEligible = isRarityEligible(baseAttributes, slots, clazz);
-			ItemRarity rolledRarity = (forcedRarity != null) ? forcedRarity : ItemRarity.rollRandom();
-			if (!rarityEligible) {
-				ItemRarity appliedRarity = (forcedRarity != null) ? forcedRarity : ItemRarity.COMMON;
-				item.applyRarity(appliedRarity, baseAttributes, value, false);
-			} else {
-				item.applyRarity(rolledRarity, baseAttributes, value);
-			}
+		Map<String, String> baseAttributes = copyAttributes();
+		boolean rarityEligible = isRarityEligible(baseAttributes, slots, clazz);
+		item.setRarityBadgeVisible(rarityEligible);
+		ItemRarity rolledRarity = (forcedRarity != null) ? forcedRarity : ItemRarity.rollRandom();
+		if (!rarityEligible) {
+			ItemRarity appliedRarity = (forcedRarity != null) ? forcedRarity : ItemRarity.COMMON;
+			item.applyRarity(appliedRarity, baseAttributes, value, false);
+		} else {
+			item.applyRarity(rolledRarity, baseAttributes, value);
+		}
 		}
 
 		return item;

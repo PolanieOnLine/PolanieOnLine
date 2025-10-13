@@ -105,6 +105,9 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	/** Gold value adjusted by the rarity. */
 	private int rarityValue;
 
+	/** Whether the rarity badge should be visible to clients. */
+	private boolean rarityBadgeVisible = true;
+
 	/**
 	 *
 	 * Creates a new Item.
@@ -144,6 +147,7 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		possibleSlots = new LinkedList<String>();
 		put("rarity", rarity.getId());
 		put("rarity_value", rarityValue);
+		put("rarity_badge", 1);
 		update();
 	}
 
@@ -166,6 +170,8 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		if (item.has("rarity_value")) {
 			put("rarity_value", item.getInt("rarity_value"));
 		}
+		rarityBadgeVisible = item.isRarityBadgeVisible();
+		put("rarity_badge", rarityBadgeVisible ? 1 : 0);
 	}
 
 	public static void generateRPClass() {
@@ -183,6 +189,8 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 
 		// rarity information for coloured borders and stat modifiers
 		entity.addAttribute("rarity", Type.STRING);
+		// hint for the client whether rarity badge should be rendered
+		entity.addAttribute("rarity_badge", Type.INT, Definition.HIDDEN);
 
 		// Some items have attack values
 		entity.addAttribute("atk", Type.SHORT, Definition.HIDDEN);
@@ -762,6 +770,30 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		put("rarity_value", rarityValue);
 
 		update();
+	}
+
+	/**
+	 * Controls whether the rarity badge should be rendered by the client.
+	 *
+	 * @param visible
+	 *            {@code true} to enable the badge, {@code false} to hide it
+	 */
+	public void setRarityBadgeVisible(boolean visible) {
+		rarityBadgeVisible = visible;
+		put("rarity_badge", visible ? 1 : 0);
+		update();
+	}
+
+	/**
+	 * Indicates if the rarity badge should be shown for this item instance.
+	 *
+	 * @return {@code true} if the badge should be displayed
+	 */
+	public boolean isRarityBadgeVisible() {
+		if (has("rarity_badge")) {
+			return getInt("rarity_badge") != 0;
+		}
+		return rarityBadgeVisible;
 	}
 
 	/**

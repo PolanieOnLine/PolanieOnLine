@@ -27,10 +27,14 @@ public class Item extends Entity {
 	public static final Property PROP_QUANTITY = new Property();
 	/** Rarity property. */
 	public static final Property PROP_RARITY = new Property();
+	/** Rarity badge visibility property. */
+	public static final Property PROP_RARITY_BADGE = new Property();
 	/** The item quantity. */
 	private int quantity;
 	/** Item rarity. */
 	private ItemRarity rarity = ItemRarity.COMMON;
+	/** Whether the rarity badge should be rendered. */
+	private boolean rarityBadgeVisible = true;
 
 	/**
 	 * Create an item.
@@ -62,6 +66,9 @@ public class Item extends Entity {
 			if (rarityValue != null) {
 				rarity = ItemRarity.byId(rarityValue.toString());
 			}
+		}
+		if (object.has("rarity_badge")) {
+			rarityBadgeVisible = object.getInt("rarity_badge") != 0;
 		}
 	}
 
@@ -110,6 +117,10 @@ public class Item extends Entity {
 				fireChange(PROP_RARITY);
 			}
 		}
+		if (changes.has("rarity_badge")) {
+			rarityBadgeVisible = changes.getInt("rarity_badge") != 0;
+			fireChange(PROP_RARITY_BADGE);
+		}
 	}
 
 	public int getState() {
@@ -122,4 +133,9 @@ public class Item extends Entity {
 	public ItemRarity getRarity() {
 		return rarity;
 	}
+
+	public boolean shouldDisplayRarityBadge() {
+		return rarityBadgeVisible;
+	}
 }
+

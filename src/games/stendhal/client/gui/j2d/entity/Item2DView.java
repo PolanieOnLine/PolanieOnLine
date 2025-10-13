@@ -14,6 +14,8 @@ package games.stendhal.client.gui.j2d.entity;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.geom.Ellipse2D;
 
 import javax.swing.SwingUtilities;
 
@@ -160,7 +162,7 @@ public class Item2DView<T extends Item> extends Entity2DView<T> {
 
 	private void drawRarityBadge(final Graphics2D g2d, final int x, final int y,
 				final int width, final int height) {
-		if (entity == null) {
+		if ((entity == null) || !entity.shouldDisplayRarityBadge()) {
 			return;
 		}
 
@@ -175,20 +177,19 @@ public class Item2DView<T extends Item> extends Entity2DView<T> {
 		}
 
 		Graphics2D badgeGraphics = (Graphics2D) g2d.create();
+		badgeGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		int baseSize = Math.min(width, height);
-		int size = Math.max(8, baseSize / 4);
-		int padding = Math.max(2, baseSize / 10);
-		int centerX = x + padding + (size / 2);
-		int centerY = y + padding + (size / 2);
-		int half = size / 2;
-		int[] xPoints = new int[] { centerX, centerX + half, centerX, centerX - half };
-		int[] yPoints = new int[] { centerY - half, centerY, centerY + half, centerY };
+		int diameter = Math.max(4, baseSize / 6);
+		int margin = Math.max(2, baseSize / 12);
+		int drawX = x + width - margin - diameter;
+		int drawY = y + margin;
+		Ellipse2D circle = new Ellipse2D.Double(drawX, drawY, diameter, diameter);
 
 		Color fill = new Color(color.getRed(), color.getGreen(), color.getBlue(), 200);
 		badgeGraphics.setColor(fill);
-		badgeGraphics.fillPolygon(xPoints, yPoints, 4);
-		badgeGraphics.setColor(new Color(0, 0, 0, 160));
-		badgeGraphics.drawPolygon(xPoints, yPoints, 4);
+		badgeGraphics.fill(circle);
+		badgeGraphics.setColor(new Color(0, 0, 0, 170));
+		badgeGraphics.draw(circle);
 
 		badgeGraphics.dispose();
 	}

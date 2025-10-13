@@ -17,6 +17,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.RenderingHints;
 import java.awt.Transparency;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -24,6 +25,8 @@ import java.awt.image.RescaleOp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import java.awt.geom.Ellipse2D;
 
 import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
@@ -275,8 +278,8 @@ class ItemPanel extends JComponent implements DropTarget, Inspectable {
 		}
 	}
 
-	private static final int RARITY_BADGE_SIZE = 10;
-	private static final int RARITY_BADGE_PADDING = 3;
+	private static final int RARITY_BADGE_DIAMETER = 6;
+	private static final int RARITY_BADGE_MARGIN = 2;
 
 	private void drawRarityBadge(Graphics g, EntityView<?> entityView) {
 		if (!(entityView.getEntity() instanceof Item)) {
@@ -284,6 +287,10 @@ class ItemPanel extends JComponent implements DropTarget, Inspectable {
 		}
 
 		Item item = (Item) entityView.getEntity();
+		if (!item.shouldDisplayRarityBadge()) {
+			return;
+		}
+
 		ItemRarity rarity = item.getRarity();
 		if (rarity == null) {
 			return;
@@ -295,18 +302,17 @@ class ItemPanel extends JComponent implements DropTarget, Inspectable {
 		}
 
 		Graphics2D badgeGraphics = (Graphics2D) g.create();
-		int size = RARITY_BADGE_SIZE;
-		int centerX = RARITY_BADGE_PADDING + (size / 2);
-		int centerY = RARITY_BADGE_PADDING + (size / 2);
-		int half = size / 2;
-		int[] xPoints = new int[] { centerX, centerX + half, centerX, centerX - half };
-		int[] yPoints = new int[] { centerY - half, centerY, centerY + half, centerY };
+		badgeGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		int diameter = RARITY_BADGE_DIAMETER;
+		int drawX = getWidth() - RARITY_BADGE_MARGIN - diameter;
+		int drawY = RARITY_BADGE_MARGIN;
+		Ellipse2D marker = new Ellipse2D.Double(drawX, drawY, diameter, diameter);
 
-		Color fill = new Color(badgeColor.getRed(), badgeColor.getGreen(), badgeColor.getBlue(), 200);
+		Color fill = new Color(badgeColor.getRed(), badgeColor.getGreen(), badgeColor.getBlue(), 210);
 		badgeGraphics.setColor(fill);
-		badgeGraphics.fillPolygon(xPoints, yPoints, 4);
-		badgeGraphics.setColor(new Color(0, 0, 0, 160));
-		badgeGraphics.drawPolygon(xPoints, yPoints, 4);
+		badgeGraphics.fill(marker);
+		badgeGraphics.setColor(new Color(0, 0, 0, 170));
+		badgeGraphics.draw(marker);
 
 		badgeGraphics.dispose();
 	}
