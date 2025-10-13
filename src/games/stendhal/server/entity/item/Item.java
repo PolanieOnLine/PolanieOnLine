@@ -106,7 +106,7 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	private int rarityValue;
 
 	/** Whether the rarity badge should be visible to clients. */
-	private boolean rarityBadgeVisible = true;
+	private boolean rarityBadgeVisible = false;
 
 	/**
 	 *
@@ -147,7 +147,7 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		possibleSlots = new LinkedList<String>();
 		put("rarity", rarity.getId());
 		put("rarity_value", rarityValue);
-		put("rarity_badge", 1);
+		put("rarity_badge", 0);
 		update();
 	}
 

@@ -179,8 +179,8 @@ public class Item2DView<T extends Item> extends Entity2DView<T> {
 		Graphics2D badgeGraphics = (Graphics2D) g2d.create();
 		badgeGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		int baseSize = Math.min(width, height);
-		int diameter = Math.max(4, baseSize / 6);
-		int margin = Math.max(2, baseSize / 12);
+		int diameter = Math.max(3, baseSize / 8);
+		int margin = Math.max(2, baseSize / 16);
 		int drawX = x + width - margin - diameter;
 		int drawY = y + margin;
 		Ellipse2D circle = new Ellipse2D.Double(drawX, drawY, diameter, diameter);

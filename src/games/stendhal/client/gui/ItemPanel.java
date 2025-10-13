@@ -12,12 +12,10 @@
  ***************************************************************************/
 package games.stendhal.client.gui;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
-import java.awt.RenderingHints;
 import java.awt.Transparency;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -25,8 +23,6 @@ import java.awt.image.RescaleOp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import java.awt.geom.Ellipse2D;
 
 import javax.swing.JComponent;
 import javax.swing.JPopupMenu;
@@ -36,7 +32,6 @@ import games.stendhal.client.IGameScreen;
 import games.stendhal.client.StendhalClient;
 import games.stendhal.client.entity.IEntity;
 import games.stendhal.client.entity.Inspector;
-import games.stendhal.client.entity.Item;
 import games.stendhal.client.entity.User;
 import games.stendhal.client.gui.j2d.entity.EntityView;
 import games.stendhal.client.gui.j2d.entity.EntityViewFactory;
@@ -48,7 +43,6 @@ import games.stendhal.client.sprite.ImageSprite;
 import games.stendhal.client.sprite.Sprite;
 import games.stendhal.client.sprite.SpriteStore;
 import games.stendhal.common.EquipActionConsts;
-import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.common.constants.Actions;
 import marauroa.common.game.RPAction;
 import marauroa.common.game.RPObject;
@@ -271,50 +265,10 @@ class ItemPanel extends JComponent implements DropTarget, Inspectable {
 			vg.translate(x, y);
 			entityView.draw(vg);
 			vg.dispose();
-			drawRarityBadge(g, entityView);
-			} else if (placeholder != null) {
-				placeholder.draw(g, (getWidth() - placeholder.getWidth()) / 2,
+		} else if (placeholder != null) {
+			placeholder.draw(g, (getWidth() - placeholder.getWidth()) / 2,
 					(getHeight() - placeholder.getHeight()) / 2);
 		}
-	}
-
-	private static final int RARITY_BADGE_DIAMETER = 6;
-	private static final int RARITY_BADGE_MARGIN = 2;
-
-	private void drawRarityBadge(Graphics g, EntityView<?> entityView) {
-		if (!(entityView.getEntity() instanceof Item)) {
-			return;
-		}
-
-		Item item = (Item) entityView.getEntity();
-		if (!item.shouldDisplayRarityBadge()) {
-			return;
-		}
-
-		ItemRarity rarity = item.getRarity();
-		if (rarity == null) {
-			return;
-		}
-
-		Color badgeColor = rarity.getColor();
-		if (badgeColor == null) {
-			return;
-		}
-
-		Graphics2D badgeGraphics = (Graphics2D) g.create();
-		badgeGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		int diameter = RARITY_BADGE_DIAMETER;
-		int drawX = getWidth() - RARITY_BADGE_MARGIN - diameter;
-		int drawY = RARITY_BADGE_MARGIN;
-		Ellipse2D marker = new Ellipse2D.Double(drawX, drawY, diameter, diameter);
-
-		Color fill = new Color(badgeColor.getRed(), badgeColor.getGreen(), badgeColor.getBlue(), 210);
-		badgeGraphics.setColor(fill);
-		badgeGraphics.fill(marker);
-		badgeGraphics.setColor(new Color(0, 0, 0, 170));
-		badgeGraphics.draw(marker);
-
-		badgeGraphics.dispose();
 	}
 
 	@Override

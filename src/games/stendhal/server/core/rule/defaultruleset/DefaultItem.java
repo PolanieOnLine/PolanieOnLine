@@ -69,22 +69,6 @@ public class DefaultItem {
 		"tool",
 		"token")));
 		
-	private static final Set<String> RARITY_ATTRIBUTE_KEYS = Collections.unmodifiableSet(
-		new HashSet<String>(Arrays.asList(
-		"atk",
-		"ratk",
-		"def",
-		"range",
-		"skill_atk",
-		"rate_increase",
-		"accuracy_bonus",
-		"atk_additional_bonus",
-		"critical_additional_bonus",
-		"def_additional_bonus",
-		"lifesteal",
-		"critical_chance",
-		"lifesteal_increase")));
-		
 	/** Implementation creator. */
 	private AbstractCreator<Item> creator;
 
@@ -170,17 +154,14 @@ public class DefaultItem {
 	}
 
 	public boolean isRarityEligible() {
-		return isRarityEligible(attributes, slots, clazz);
+		return isRarityEligible(slots, clazz);
 	}
 
-	private boolean isRarityEligible(Map<String, String> baseAttributes, List<String> equipSlots, String itemClass) {
+	private boolean isRarityEligible(List<String> equipSlots, String itemClass) {
 		if ((itemClass != null) && RARITY_EXCLUDED_CLASSES.contains(itemClass)) {
 			return false;
 		}
 		if (RPEntity.isWeaponClass(itemClass)) {
-			return true;
-		}
-		if (hasSupportedAttributes(baseAttributes)) {
 			return true;
 		}
 		if (equipSlots != null) {
@@ -190,19 +171,6 @@ public class DefaultItem {
 				}
 			}
 		}
-		return false;
-	}
-	private boolean hasSupportedAttributes(Map<String, String> baseAttributes) {
-		if (baseAttributes == null) {
-			return false;
-		}
-
-		for (String key : baseAttributes.keySet()) {
-			if (RARITY_ATTRIBUTE_KEYS.contains(key) || "rate".equals(key)) {
-				return true;
-			}
-		}
-
 		return false;
 	}
 
@@ -412,7 +380,7 @@ public class DefaultItem {
 			item.setUseBehavior(useBehavior);
 
 		Map<String, String> baseAttributes = copyAttributes();
-		boolean rarityEligible = isRarityEligible(baseAttributes, slots, clazz);
+		boolean rarityEligible = isRarityEligible(slots, clazz);
 		item.setRarityBadgeVisible(rarityEligible);
 		ItemRarity rolledRarity = (forcedRarity != null) ? forcedRarity : ItemRarity.rollRandom();
 		if (!rarityEligible) {

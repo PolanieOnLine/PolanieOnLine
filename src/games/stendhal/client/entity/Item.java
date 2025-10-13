@@ -34,7 +34,7 @@ public class Item extends Entity {
 	/** Item rarity. */
 	private ItemRarity rarity = ItemRarity.COMMON;
 	/** Whether the rarity badge should be rendered. */
-	private boolean rarityBadgeVisible = true;
+	private boolean rarityBadgeVisible = false;
 
 	/**
 	 * Create an item.
