@@ -190,7 +190,7 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		// rarity information for coloured borders and stat modifiers
 		entity.addAttribute("rarity", Type.STRING);
 		// hint for the client whether rarity badge should be rendered
-		entity.addAttribute("rarity_badge", Type.INT, Definition.HIDDEN);
+		entity.addAttribute("rarity_badge", Type.INT);
 
 		// Some items have attack values
 		entity.addAttribute("atk", Type.SHORT, Definition.HIDDEN);
