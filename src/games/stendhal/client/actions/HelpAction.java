@@ -77,7 +77,7 @@ class HelpAction implements SlashAction {
                                 "* RÓŻNE:",
                                 "- /info \t\tPokazuje aktualny czas z serwera",
                                 "- /clear \tWyczyść chat.",
-                                "- /skilltree \t\tOtwiera drzewko umiejętności maga ognia.",
+                                "- /skilltree [unlock <kod>] \tOtwiera drzewko maga ognia i odblokowuje węzły.",
                                 "- /help \tWyświetla podstawowe komendy.",
 				"- /" + REMOVEDETAIL + " \tUsuń warstwę szczegółów (np. balon, parasol itp.) z postaci.",
 				"- /emojilist \tWyświetla pełną listę dostępnych emotek."

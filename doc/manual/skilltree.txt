@@ -1,61 +1,63 @@
 [Skill Tree Interface]
-	- Wpisz /skilltree w kliencie aby otworzyć okno drzewka.
-	- Wszystkie poziomy i kody odpowiadają ścieżce maga ognia.
-	- Zależności pomiędzy gałęziami opisano na końcu dokumentu.
+	- Wpisz /skilltree, aby otworzyć okno maga ognia.
+	- Użyj /skilltree unlock <kod>, by wydać 1 punkt i odblokować wskazany węzeł.
+	- W legendzie okna: [✔] odblokowane, [☆] gotowe do zakupu, [✖] brak wymagań, [⛔] brak punktów.
+	- Stan drzewka jest zapisywany w atrybutach postaci i synchronizowany z serwerem.
 
-[Fire Mage Skill Tree]
-	Fire Dart
-		Focus
-			FOC_1	Skupienie LV1 – wzmacnia moc żywiołu.
-			FOC_2	Skupienie LV2 – zwiększa moc oraz odblokowuje Fire Bolt.
-			FOC_3	Skupienie LV3 – wymagane do dalszych zaklęć.
-			FOC_4	Skupienie LV4 – przygotowuje drogę do Fire Dart Rain.
-			FOC_5	Skupienie LV5 – maksimum dla Fire Dart Rain.
-		Extend
-			EXT_1	Rozszerzenie LV1 – dwie strzały w serii.
-			EXT_2	Rozszerzenie LV2 – trzy strzały, krok ku obszarom.
-			EXT_3	Rozszerzenie LV3 – warunek dla Fire Dart Rain.
-			EXT_4	Rozszerzenie LV4 – rozwinięcie do salwy.
-			EXT_5	Rozszerzenie LV5 – pełne przygotowanie Fire Dart Rain.
+[Punkty Umiejętności]
+	- Nowi magowie ognia startują z 2 punktami umiejętności.
+	- Każdy węzeł kosztuje 1 punkt. Kolejne źródła punktów (zadania, rytuały) zostaną dodane później.
+	- Po odblokowaniu węzła punkty są odejmowane natychmiast i okno aktualizuje się automatycznie.
+
+[Gałęzie Maga Ognia]
+	Fire Dart (podstawa, dostępny od startu)
+		Skupienie (FOC)
+			FOC_1	+10% mocy zaklęć ognia.
+			FOC_2	+15% obrażeń; odblokowuje Fire Bolt.
+			FOC_3	Wymagany do Fire Dart Rain.
+			FOC_4	Dodatkowy wzrost mocy pojedynczego pocisku.
+			FOC_5	Maksymalna forma Fire Dart.
+		Rozszerzenie (EXT)
+			EXT_1	Dwa pociski w jednej salwie.
+			EXT_2	Trzy pociski, przygotowanie pod salwę.
+			EXT_3	Warunek Fire Dart Rain.
+			EXT_4	Wzorzec salwy obszarowej.
+			EXT_5	Pełne przygotowanie Fire Dart Rain.
 
 	Fire Bolt (wymaga FOC_2)
-		Extend
-			EXT_1	Rozszerzenie LV1 – mocniejsze uderzenie pojedynczego celu.
-			EXT_2	Rozszerzenie LV2 – dodatkowe pociski.
-			EXT_3	Rozszerzenie LV3 – zwiększona siła ognia.
-			EXT_4	Rozszerzenie LV4 – maksymalne obrażenia.
-		Focus
-			FOC_1	Skupienie LV1 – podstawowe wzmocnienie czaru.
-			FOC_2	Skupienie LV2 – większa penetracja odporności.
-			FOC_3	Skupienie LV3 – otwiera Fire Dart Rain.
-			FOC_4	Skupienie LV4 – finalna forma pocisku.
+		Skupienie
+			FIRE_BOLT_FOC_1	Dodatkowe obrażenia pojedynczego trafienia.
+			FIRE_BOLT_FOC_2	Większa penetracja odporności.
+			FIRE_BOLT_FOC_3	Otwarcie Fire Dart Rain.
+		Rozszerzenie
+			FIRE_BOLT_EXT_1..4	Seria ulepszeń zwiększających siłę trafienia jednego celu.
 
 	Burn
-		FOC_1	Skupienie żaru LV1 – silniejszy status podpalenia.
-		FOC_2	Skupienie żaru LV2 – dłuższe poparzenia.
-		FOC_3	Skupienie żaru LV3 – maksymalny efekt.
+		BURN_FOC_1	Silniejszy status podpalenia.
+		BURN_FOC_2	Status trwa o 1 s dłużej.
+		BURN_FOC_3	Maksymalna moc podpalenia.
 
-	Fire Dart Rain (wymaga EXT_5 oraz FOC_3)
-		Focus
-			FOC_1	Skupienie LV1 – wzmacnia obrażenia obszarowe.
-			FOC_2	Skupienie LV2 – zwiększa promień.
-			FOC_3	Skupienie LV3 – maksymalny rozrzut.
+	Fire Dart Rain (wymaga EXT_5 i FOC_3)
+		FIRE_DART_RAIN_FOC_1	+10% obrażeń obszarowych.
+		FIRE_DART_RAIN_FOC_2	Większy promień rażenia.
+		FIRE_DART_RAIN_FOC_3	Maksymalne obrażenia na obszarze.
 
-	Burning Fire Dart (wymaga Burn oraz Fire Dart)
-		Burning Focus
-			BFOC_1	Płonące skupienie LV1 – mocniejszy efekt statusu.
-			BFOC_2	Płonące skupienie LV2 – dłuższe podpalenie.
-			BFOC_3	Płonące skupienie LV3 – maksymalna siła przypalenia.
-		Dart Focus
-			DFOC_1	Skupienie pocisku LV1 – większe obrażenia w chwili trafienia.
-			DFOC_2	Skupienie pocisku LV2 – dalsze zwiększenie obrażeń.
-			DFOC_3	Skupienie pocisku LV3 – maksymalna siła uderzenia.
-		Dart Extend
-			DEXT_1	Rozszerzenie pocisku LV1 – dodatkowe uderzenie przy trafieniu.
-			DEXT_2	Rozszerzenie pocisku LV2 – trzy pociski naraz.
-			DEXT_3	Rozszerzenie pocisku LV3 – największe obrażenia natychmiastowe.
+	Burning Fire Dart (wymaga Fire Dart i Burn)
+		Płonące skupienie (BFOC)
+			BFOC_1	Wzmocnione obrażenia DoT.
+			BFOC_2	DoT trwa dłużej o 1 s.
+			BFOC_3	Potrójne obrażenia DoT.
+		Skupienie pocisku (DFOC)
+			DFOC_1..3	Zwiększają obrażenia w chwili trafienia.
+		Rozszerzenie pocisku (DEXT)
+			DEXT_1..3	Dodają kolejne trafienia pocisku przy uderzeniu.
 
-	Powiązania kluczowe
-		- Fire Bolt	wymaga FOC_2 z gałęzi Fire Dart.
-		- Fire Dart Rain	wymaga EXT_5 i FOC_3 z gałęzi Fire Dart.
-		- Burning Fire Dart	wymaga ukończenia gałęzi Burn oraz Fire Dart.
+[Powiązania]
+	- Fire Bolt wymaga odblokowania FOC_2 z gałęzi Fire Dart.
+	- Fire Dart Rain wymaga EXT_5 i FOC_3 z Fire Dart.
+	- Burning Fire Dart wymaga ukończenia Burn oraz bazowego Fire Dart.
+
+[Efekty w rozgrywce]
+	- Premie do obrażeń zaklęć ognia wynikają z sumy bonusów FOC/DFOC i wpływają bezpośrednio na kalkulację obrażeń.
+	- Wzmocnienia podpalenia (BURN_FOC, BFOC) zwiększają mnożnik obrażeń ciągłych oraz długość statusu.
+	- Jeśli zabraknie punktów lub wymagań, węzeł zostaje oznaczony odpowiednim symbolem w oknie.
