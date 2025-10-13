@@ -14,10 +14,8 @@ package games.stendhal.client.gui;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.FontMetrics;
 import java.awt.Point;
 import java.awt.Transparency;
 import java.awt.event.MouseEvent;
@@ -277,8 +275,8 @@ class ItemPanel extends JComponent implements DropTarget, Inspectable {
 		}
 	}
 
-	private static final int RARITY_BADGE_SIZE = 14;
-	private static final int RARITY_BADGE_PADDING = 4;
+	private static final int RARITY_BADGE_SIZE = 10;
+	private static final int RARITY_BADGE_PADDING = 3;
 
 	private void drawRarityBadge(Graphics g, EntityView<?> entityView) {
 		if (!(entityView.getEntity() instanceof Item)) {
@@ -309,17 +307,6 @@ class ItemPanel extends JComponent implements DropTarget, Inspectable {
 		badgeGraphics.fillPolygon(xPoints, yPoints, 4);
 		badgeGraphics.setColor(new Color(0, 0, 0, 160));
 		badgeGraphics.drawPolygon(xPoints, yPoints, 4);
-
-		String displayName = rarity.getDisplayName();
-		if ((displayName != null) && !displayName.isEmpty()) {
-			String initial = displayName.substring(0, 1).toUpperCase();
-			badgeGraphics.setFont(badgeGraphics.getFont().deriveFont(Font.BOLD, 9f));
-			FontMetrics metrics = badgeGraphics.getFontMetrics();
-			int textX = centerX - (metrics.stringWidth(initial) / 2);
-			int textY = centerY + ((metrics.getAscent() - metrics.getDescent()) / 2);
-			badgeGraphics.setColor(Color.WHITE);
-			badgeGraphics.drawString(initial, textX, textY);
-		}
 
 		badgeGraphics.dispose();
 	}

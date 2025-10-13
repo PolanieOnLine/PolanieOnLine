@@ -14,8 +14,6 @@ package games.stendhal.client.gui.j2d.entity;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Font;
-import java.awt.FontMetrics;
 
 import javax.swing.SwingUtilities;
 
@@ -178,8 +176,8 @@ public class Item2DView<T extends Item> extends Entity2DView<T> {
 
 		Graphics2D badgeGraphics = (Graphics2D) g2d.create();
 		int baseSize = Math.min(width, height);
-		int size = Math.max(10, baseSize / 3);
-		int padding = Math.max(2, baseSize / 12);
+		int size = Math.max(8, baseSize / 4);
+		int padding = Math.max(2, baseSize / 10);
 		int centerX = x + padding + (size / 2);
 		int centerY = y + padding + (size / 2);
 		int half = size / 2;
@@ -191,18 +189,6 @@ public class Item2DView<T extends Item> extends Entity2DView<T> {
 		badgeGraphics.fillPolygon(xPoints, yPoints, 4);
 		badgeGraphics.setColor(new Color(0, 0, 0, 160));
 		badgeGraphics.drawPolygon(xPoints, yPoints, 4);
-
-		String displayName = rarity.getDisplayName();
-		if ((displayName != null) && !displayName.isEmpty()) {
-			String initial = displayName.substring(0, 1).toUpperCase();
-			float fontSize = Math.max(8f, size / 2.5f);
-			badgeGraphics.setFont(badgeGraphics.getFont().deriveFont(Font.BOLD, fontSize));
-			FontMetrics metrics = badgeGraphics.getFontMetrics();
-			int textX = centerX - (metrics.stringWidth(initial) / 2);
-			int textY = centerY + ((metrics.getAscent() - metrics.getDescent()) / 2);
-			badgeGraphics.setColor(Color.WHITE);
-			badgeGraphics.drawString(initial, textX, textY);
-		}
 
 		badgeGraphics.dispose();
 	}

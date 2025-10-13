@@ -149,6 +149,10 @@ public interface EntityManager {
 		return getItem(clazz);
 	}
 
+	default boolean isItemRarityEligible(String clazz) {
+		return true;
+	}
+
 	/**
 	 * Retrieves a Spell or null if the spell is unknown.
 	 *

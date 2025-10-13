@@ -384,6 +384,16 @@ public class DefaultEntityManager implements EntityManager {
 	}
 
 	@Override
+	public boolean isItemRarityEligible(final String clazz) {
+		final DefaultItem item = classToItem.get(clazz);
+		if (item == null) {
+			return false;
+		}
+
+		return item.isRarityEligible();
+	}
+
+	@Override
 	public Spell getSpell(String spell) {
 		if(spell == null) {
 			throw new IllegalArgumentException("spell name is null");

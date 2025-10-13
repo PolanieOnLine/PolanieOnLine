@@ -901,36 +901,45 @@ public class Creature extends NPC {
 
 		for (final DropItem dropped : dropsItems) {
 			final double roll = Rand.rand(1000000) / 10000.0;
-			final ItemRarity rarity = ItemRarity.rollRandom();
-			final double rarityProbability = Math.min(100.0,
-					(dropped.probability / SERVER_DROP_GENEROSITY) * rarity.getDropRateModifier());
+			final double baseProbability = dropped.probability / SERVER_DROP_GENEROSITY;
+			final boolean rarityEligible = defaultEntityManager.isItemRarityEligible(dropped.name);
+			ItemRarity chosenRarity = ItemRarity.COMMON;
+			double effectiveProbability = Math.min(100.0, baseProbability);
 
-			if (roll <= rarityProbability) {
-				final Item item = defaultEntityManager.getItem(dropped.name, rarity);
-				if (item == null) {
-					LOGGER.error("Unable to create item: " + dropped.name);
-					continue;
-				}
+			if (rarityEligible) {
+				chosenRarity = ItemRarity.rollRandom();
+				effectiveProbability = Math.min(100.0,
+						baseProbability * chosenRarity.getDropRateModifier());
+			}
 
-				final int quantity;
-				if (dropped.min == dropped.max) {
-					quantity = dropped.min;
-				} else {
-					quantity = Rand.randUniform(dropped.max, dropped.min);
-				}
+			if (roll > effectiveProbability) {
+				continue;
+			}
 
-				if (item instanceof StackableItem) {
-					final StackableItem stackItem = (StackableItem) item;
-					stackItem.setQuantity(quantity);
-					list.add(stackItem);
-				} else {
-					for (int count = 0; count < quantity; count++) {
-						if (count == 0) {
-							list.add(item);
-						} else {
-							// additional items must be new instances
-							list.add(new Item(item));
-						}
+			final Item item = defaultEntityManager.getItem(dropped.name, chosenRarity);
+			if (item == null) {
+				LOGGER.error("Unable to create item: " + dropped.name);
+				continue;
+			}
+
+			final int quantity;
+			if (dropped.min == dropped.max) {
+				quantity = dropped.min;
+			} else {
+				quantity = Rand.randUniform(dropped.max, dropped.min);
+			}
+
+			if (item instanceof StackableItem) {
+				final StackableItem stackItem = (StackableItem) item;
+				stackItem.setQuantity(quantity);
+				list.add(stackItem);
+			} else {
+				for (int count = 0; count < quantity; count++) {
+					if (count == 0) {
+						list.add(item);
+					} else {
+						// additional items must be new instances
+						list.add(new Item(item));
 					}
 				}
 			}

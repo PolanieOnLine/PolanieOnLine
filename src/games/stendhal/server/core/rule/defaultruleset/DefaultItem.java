@@ -13,11 +13,15 @@ package games.stendhal.server.core.rule.defaultruleset;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.EnumMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import games.stendhal.common.constants.Nature;
 import games.stendhal.common.constants.ItemRarity;
@@ -40,6 +44,63 @@ import games.stendhal.server.entity.status.StatusType;
  */
 public class DefaultItem {
 
+	private static final Set<String> RARITY_EXCLUDED_CLASSES = Collections.unmodifiableSet(
+		new HashSet<String>(Arrays.asList(
+		"book",
+		"box",
+		"container",
+		"document",
+		"drink",
+		"flower",
+		"food",
+		"glyph",
+		"herb",
+		"ingredient",
+		"key",
+		"material",
+		"money",
+		"potion",
+		"present",
+		"quest",
+		"resource",
+		"scroll",
+		"ticket",
+		"tool",
+		"token")));
+		
+	private static final Set<String> RARITY_ATTRIBUTE_KEYS = Collections.unmodifiableSet(
+		new HashSet<String>(Arrays.asList(
+		"atk",
+		"ratk",
+		"def",
+		"range",
+		"skill_atk",
+		"rate_increase",
+		"accuracy_bonus",
+		"atk_additional_bonus",
+		"critical_additional_bonus",
+		"def_additional_bonus",
+		"lifesteal",
+		"critical_chance",
+		"lifesteal_increase")));
+		
+	private static final Set<String> RARITY_EQUIPMENT_SLOTS = Collections.unmodifiableSet(
+		new HashSet<String>(Arrays.asList(
+		"armor",
+		"belt",
+		"cloak",
+		"feet",
+		"finger",
+		"fingerb",
+		"head",
+		"helmet",
+		"legs",
+		"lhand",
+		"neck",
+		"necklace",
+		"rhand",
+		"shield")));
+		
 	/** Implementation creator. */
 	private AbstractCreator<Item> creator;
 
@@ -122,6 +183,44 @@ public class DefaultItem {
 		}
 
 		return new LinkedHashMap<String, String>(attributes);
+	}
+
+	public boolean isRarityEligible() {
+		return isRarityEligible(attributes, slots, clazz);
+	}
+
+	private boolean isRarityEligible(Map<String, String> baseAttributes, List<String> equipSlots, String itemClass) {
+		if ((itemClass != null) && RARITY_EXCLUDED_CLASSES.contains(itemClass)) {
+			return false;
+		}
+
+		if (hasSupportedAttributes(baseAttributes)) {
+			return true;
+		}
+
+		if (equipSlots != null) {
+			for (String slot : equipSlots) {
+				if (RARITY_EQUIPMENT_SLOTS.contains(slot)) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	private boolean hasSupportedAttributes(Map<String, String> baseAttributes) {
+		if (baseAttributes == null) {
+			return false;
+		}
+
+		for (String key : baseAttributes.keySet()) {
+			if (RARITY_ATTRIBUTE_KEYS.contains(key) || "rate".equals(key)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	public void setAttributes(final Map<String, String> attributes) {
@@ -330,8 +429,13 @@ public class DefaultItem {
 			item.setUseBehavior(useBehavior);
 
 			Map<String, String> baseAttributes = copyAttributes();
-			ItemRarity rarity = (forcedRarity != null) ? forcedRarity : ItemRarity.rollRandom();
-			item.applyRarity(rarity, baseAttributes, value);
+			boolean rarityEligible = isRarityEligible(baseAttributes, slots, clazz);
+			ItemRarity rolledRarity = (forcedRarity != null) ? forcedRarity : ItemRarity.rollRandom();
+			if (!rarityEligible) {
+				ItemRarity appliedRarity = (forcedRarity != null) ? forcedRarity : ItemRarity.COMMON;
+				item.applyRarity(appliedRarity, baseAttributes, value, false);
+			} else {
+				item.applyRarity(rolledRarity, baseAttributes, value);
 		}
 
 		return item;

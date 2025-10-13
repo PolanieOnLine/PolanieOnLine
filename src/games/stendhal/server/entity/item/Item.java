@@ -740,16 +740,25 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	 * @param baseValue base gold value for the item
 	 */
 	public void applyRarity(ItemRarity rarity, Map<String, String> baseAttributes, int baseValue) {
+		applyRarity(rarity, baseAttributes, baseValue, true);
+	}
+
+	public void applyRarity(ItemRarity rarity, Map<String, String> baseAttributes, int baseValue,
+			boolean applyModifiers) {
 		ItemRarity applied = (rarity == null) ? ItemRarity.COMMON : rarity;
 		this.rarity = applied;
 		put("rarity", applied.getId());
 
-		if (baseAttributes != null) {
-			Map<String, String> adjusted = applied.applyToAttributes(baseAttributes);
-			overrideAttributes(adjusted);
+		if (applyModifiers) {
+			if (baseAttributes != null) {
+				Map<String, String> adjusted = applied.applyToAttributes(baseAttributes);
+				overrideAttributes(adjusted);
+			}
+		} else if (baseAttributes != null) {
+			overrideAttributes(baseAttributes);
 		}
 
-		rarityValue = applied.applyValueModifier(baseValue);
+		rarityValue = applyModifiers ? applied.applyValueModifier(baseValue) : baseValue;
 		put("rarity_value", rarityValue);
 
 		update();
