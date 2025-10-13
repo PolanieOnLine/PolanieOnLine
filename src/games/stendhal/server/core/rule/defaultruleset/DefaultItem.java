@@ -13,11 +13,15 @@ package games.stendhal.server.core.rule.defaultruleset;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.EnumMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.common.constants.Nature;
@@ -40,6 +44,36 @@ import games.stendhal.server.entity.status.StatusType;
  * @author Matthias Totz, chad3f
  */
 public class DefaultItem {
+
+	/** Classes that should never receive rarity modifiers or badges. */
+	private static final Set<String> RARITY_EXCLUDED_CLASSES = Collections.unmodifiableSet(
+			new HashSet<String>(Arrays.asList(
+				"food",
+				"drink",
+				"ammunition",
+				"book",
+				"box",
+				"container",
+				"crystal",
+				"documents",
+				"flower",
+				"furniture",
+				"glyph",
+				"grower",
+				"holiday",
+				"jewellery",
+				"key",
+				"magia",
+				"misc",
+				"missile",
+				"money",
+				"relic",
+				"resource",
+				"scent",
+				"scroll",
+				"special",
+				"token",
+				"tool")));
 
 	/** Implementation creator. */
 	private AbstractCreator<Item> creator;
@@ -130,6 +164,9 @@ public class DefaultItem {
 	}
 
 	private boolean isRarityEligible(List<String> equipSlots, String itemClass) {
+		if ((itemClass != null) && RARITY_EXCLUDED_CLASSES.contains(itemClass)) {
+			return false;
+		}
 		if ((itemClass != null) && RPEntity.getWeaponClasses().contains(itemClass)) {
 			return true;
 		}
@@ -142,6 +179,7 @@ public class DefaultItem {
 		}
 		return false;
 	}
+
 	public void setAttributes(final Map<String, String> attributes) {
 		this.attributes = attributes;
 	}
@@ -349,12 +387,11 @@ public class DefaultItem {
 
 			Map<String, String> baseAttributes = copyAttributes();
 			boolean rarityEligible = isRarityEligible(slots, clazz);
-			ItemRarity rolledRarity = (forcedRarity != null) ? forcedRarity : ItemRarity.rollRandom();
-			if (!rarityEligible) {
-				ItemRarity appliedRarity = (forcedRarity != null) ? forcedRarity : ItemRarity.COMMON;
-				item.applyRarity(appliedRarity, baseAttributes, value, false);
+			if (rarityEligible) {
+				ItemRarity appliedRarity = (forcedRarity != null) ? forcedRarity : ItemRarity.rollRandom();
+				item.applyRarity(appliedRarity, baseAttributes, value);
 			} else {
-				item.applyRarity(rolledRarity, baseAttributes, value);
+				item.applyRarity(ItemRarity.COMMON, baseAttributes, value, false);
 			}
 			item.setRarityBadgeVisible(rarityEligible);
 		}
