@@ -23,14 +23,15 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import games.stendhal.common.constants.Nature;
 import games.stendhal.common.constants.ItemRarity;
+import games.stendhal.common.constants.Nature;
 import games.stendhal.server.core.rule.defaultruleset.creator.AbstractCreator;
 import games.stendhal.server.core.rule.defaultruleset.creator.AttributesItemCreator;
 import games.stendhal.server.core.rule.defaultruleset.creator.DefaultItemCreator;
 import games.stendhal.server.core.rule.defaultruleset.creator.FullItemCreator;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.behavior.UseBehavior;
+import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.status.PoisonAttackerFactory;
 import games.stendhal.server.entity.status.StatusAttacker;
 import games.stendhal.server.entity.status.StatusAttackerFactory;
@@ -83,23 +84,6 @@ public class DefaultItem {
 		"lifesteal",
 		"critical_chance",
 		"lifesteal_increase")));
-		
-	private static final Set<String> RARITY_EQUIPMENT_SLOTS = Collections.unmodifiableSet(
-		new HashSet<String>(Arrays.asList(
-		"armor",
-		"belt",
-		"cloak",
-		"feet",
-		"finger",
-		"fingerb",
-		"head",
-		"helmet",
-		"legs",
-		"lhand",
-		"neck",
-		"necklace",
-		"rhand",
-		"shield")));
 		
 	/** Implementation creator. */
 	private AbstractCreator<Item> creator;
@@ -193,22 +177,21 @@ public class DefaultItem {
 		if ((itemClass != null) && RARITY_EXCLUDED_CLASSES.contains(itemClass)) {
 			return false;
 		}
-
+		if (RPEntity.isWeaponClass(itemClass)) {
+			return true;
+		}
 		if (hasSupportedAttributes(baseAttributes)) {
 			return true;
 		}
-
 		if (equipSlots != null) {
 			for (String slot : equipSlots) {
-				if (RARITY_EQUIPMENT_SLOTS.contains(slot)) {
+				if (RPEntity.isEquipmentSlot(slot)) {
 					return true;
 				}
 			}
 		}
-
 		return false;
 	}
-
 	private boolean hasSupportedAttributes(Map<String, String> baseAttributes) {
 		if (baseAttributes == null) {
 			return false;
