@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.text.ParseException;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -51,11 +52,15 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
+import javax.swing.JTextField;
+import javax.swing.plaf.basic.BasicButtonUI;
 
 import java.awt.font.TextAttribute;
 import org.apache.log4j.Logger;
@@ -90,13 +95,13 @@ public final class NpcShopWindowManager {
 	private static final Color PANEL_TINT = new Color(34, 24, 16, 215);
 	private static final Color BORDER_COLOR = new Color(117, 89, 63, 210);
 	private static final Color BUTTON_BORDER = new Color(128, 94, 54);
-	private static final Color BUTTON_PANEL_BG = new Color(255, 244, 224, 120);
-	private static final Color BUTTON_PANEL_BORDER = new Color(238, 220, 196, 160);
-	private static final Color BUY_BUTTON_BG = new Color(52, 166, 96);
-	private static final Color BUY_BUTTON_BORDER = new Color(24, 106, 58);
+	private static final Color BUTTON_PANEL_BG = new Color(255, 248, 236, 200);
+	private static final Color BUTTON_PANEL_BORDER = new Color(238, 224, 204, 200);
+	private static final Color BUY_BUTTON_BG = new Color(74, 182, 118);
+	private static final Color BUY_BUTTON_BORDER = new Color(32, 114, 66);
 	private static final Color BUY_BUTTON_TEXT = new Color(253, 254, 248);
-	private static final Color SELL_BUTTON_BG = new Color(198, 76, 76);
-	private static final Color SELL_BUTTON_BORDER = new Color(132, 40, 40);
+	private static final Color SELL_BUTTON_BG = new Color(210, 94, 94);
+	private static final Color SELL_BUTTON_BORDER = new Color(138, 48, 48);
 	private static final Color SELL_BUTTON_TEXT = new Color(255, 244, 240);
 
 	private static final NpcShopWindowManager INSTANCE = new NpcShopWindowManager();
@@ -113,9 +118,11 @@ public final class NpcShopWindowManager {
 	private static final ImageIcon ICON_DUKAT = loadCoinIcon("data/gui/goldencoin.png");
 	private static final ImageIcon ICON_TALAR = loadCoinIcon("data/gui/silvercoin.png");
 	private static final ImageIcon ICON_MIEDZIAK = loadCoinIcon("data/gui/coppercoin.png");
-	private static final int TABLE_PREFERRED_HEIGHT = 300;
-	private static final int DESCRIPTION_PREFERRED_HEIGHT = 110;
+	private static final int TABLE_PREFERRED_HEIGHT = 360;
+	private static final int DESCRIPTION_PREFERRED_HEIGHT = 80;
 	private static final int TABLE_ROW_HEIGHT = 40;
+	private static final int QUANTITY_MIN = 1;
+	private static final int QUANTITY_MAX = 1000;
 
 
 	private enum TransactionType {
@@ -402,7 +409,7 @@ public final class NpcShopWindowManager {
 	private final JLabel flavorLabel = new JLabel();
 	private final PriceView unitPriceValue = new PriceView(FlowLayout.LEFT);
 	private final PriceView totalPriceValue = new PriceView(FlowLayout.LEFT);
-	private final JSpinner quantitySpinner = new JSpinner(new SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), Integer.valueOf(1000), Integer.valueOf(1)));
+	private final JSpinner quantitySpinner = new JSpinner(new SpinnerNumberModel(Integer.valueOf(QUANTITY_MIN), Integer.valueOf(QUANTITY_MIN), Integer.valueOf(QUANTITY_MAX), Integer.valueOf(1)));
 	private final JButton buyButton = new JButton("Kup");
 	private final JButton sellButton = new JButton("Sprzedaj");
 	private final JPanel actionPanel = new JPanel();
@@ -572,11 +579,15 @@ public final class NpcShopWindowManager {
 		descriptionArea.setWrapStyleWord(true);
 		descriptionArea.setOpaque(false);
 		descriptionArea.setForeground(PRIMARY_TEXT);
+		final Font descriptionFont = descriptionArea.getFont();
+		descriptionArea.setFont(descriptionFont.deriveFont(Math.max(10.0f, descriptionFont.getSize2D() - 1.0f)));
 		descriptionArea.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 
 		flavorLabel.setBorder(BorderFactory.createEmptyBorder(2, 4, 0, 4));
 		flavorLabel.setForeground(MUTED_TEXT);
 		flavorLabel.setVerticalAlignment(SwingConstants.TOP);
+		final Font flavorFont = flavorLabel.getFont();
+		flavorLabel.setFont(flavorFont.deriveFont(Math.max(9.0f, flavorFont.getSize2D() - 1.5f)));
 
 		final JScrollPane descriptionScroll = new JScrollPane(descriptionArea);
 		descriptionScroll.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(BORDER_COLOR, 1, true), BorderFactory.createEmptyBorder(6, 6, 6, 6)));
@@ -634,6 +645,7 @@ public final class NpcShopWindowManager {
 			editor.getTextField().setColumns(3);
 			editor.getTextField().setBackground(new Color(255, 248, 236));
 			editor.getTextField().setForeground(new Color(30, 20, 12));
+			installQuantityEditorListener(editor.getTextField());
 		}
 		actionPanel.add(quantitySpinner);
 		actionPanel.add(Box.createHorizontalStrut(16));
@@ -645,7 +657,27 @@ public final class NpcShopWindowManager {
 		actionPanel.add(sellButton);
 	}
 
+	private void installQuantityEditorListener(final JTextField textField) {
+		textField.getDocument().addDocumentListener(new DocumentListener() {
+			@Override
+			public void insertUpdate(final DocumentEvent event) {
+				previewQuantityFromEditor(textField.getText());
+			}
+
+			@Override
+			public void removeUpdate(final DocumentEvent event) {
+				previewQuantityFromEditor(textField.getText());
+			}
+
+			@Override
+			public void changedUpdate(final DocumentEvent event) {
+				previewQuantityFromEditor(textField.getText());
+			}
+		});
+	}
+
 	private void styleButton(final JButton button, final Color background, final Color border, final Color text) {
+		button.setUI(new BasicButtonUI());
 		button.setBackground(background);
 		button.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(border, 2, true), BorderFactory.createEmptyBorder(4, 12, 4, 12)));
 		button.setFocusPainted(false);
@@ -757,17 +789,74 @@ public final class NpcShopWindowManager {
 	}
 
 	private void updateTotalPrice() {
+		updateTotalPriceForQuantity(((Integer) quantitySpinner.getValue()).intValue(), true);
+	}
+
+	private void previewQuantityFromEditor(final String text) {
+		final String trimmed = (text == null) ? "" : text.trim();
+		if (trimmed.isEmpty()) {
+			updateTotalPricePreview(0);
+			return;
+		}
+
+		try {
+			updateTotalPricePreview(Integer.parseInt(trimmed));
+		} catch (final NumberFormatException ex) {
+			updateTotalPricePreview(0);
+		}
+	}
+
+	private void updateTotalPricePreview(final int quantity) {
+		updateTotalPriceForQuantity(quantity, false);
+	}
+
+	private void updateTotalPriceForQuantity(final int quantity, final boolean clampToMinimum) {
 		final Offer offer = getSelectedOffer();
 		if (offer == null) {
 			totalPriceValue.clearDisplay();
 			return;
 		}
 
-		final int quantity = ((Integer) quantitySpinner.getValue()).intValue();
-		final long total = (long) offer.price * quantity;
+		if (quantity < QUANTITY_MIN) {
+			if (clampToMinimum) {
+				updateTotalPriceForQuantity(QUANTITY_MIN, false);
+			} else {
+				totalPriceValue.showPrice(Integer.valueOf(0));
+			}
+			return;
+		}
+
+		final int limited = Math.min(quantity, QUANTITY_MAX);
+		final long total = (long) offer.price * limited;
 		final int capped = total > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) total;
 
 		totalPriceValue.showPrice(Integer.valueOf(capped));
+	}
+
+	private int resolveQuantityForTransaction() {
+		commitQuantityEditor();
+		int quantity = ((Integer) quantitySpinner.getValue()).intValue();
+		if (quantity < QUANTITY_MIN) {
+			quantity = QUANTITY_MIN;
+			quantitySpinner.setValue(Integer.valueOf(QUANTITY_MIN));
+		} else if (quantity > QUANTITY_MAX) {
+			quantity = QUANTITY_MAX;
+			quantitySpinner.setValue(Integer.valueOf(QUANTITY_MAX));
+		}
+		return quantity;
+	}
+
+	private void commitQuantityEditor() {
+		if (quantitySpinner.getEditor() instanceof JSpinner.DefaultEditor) {
+			final JSpinner.DefaultEditor editor = (JSpinner.DefaultEditor) quantitySpinner.getEditor();
+			try {
+				editor.commitEdit();
+			} catch (final ParseException exception) {
+				if (logger.isDebugEnabled()) {
+					logger.debug("Nie można zaktualizować ilości z edytora", exception);
+				}
+			}
+		}
 	}
 
 	private Offer getSelectedOffer() {
@@ -820,10 +909,9 @@ public final class NpcShopWindowManager {
 			return;
 		}
 
-		int quantity = ((Integer) quantitySpinner.getValue()).intValue();
-		if (quantity < 1) {
-			quantity = 1;
-			quantitySpinner.setValue(Integer.valueOf(1));
+		final int quantity = resolveQuantityForTransaction();
+		if (quantity < QUANTITY_MIN) {
+			return;
 		}
 
 		final long total = (long) offer.price * quantity;
@@ -834,16 +922,16 @@ public final class NpcShopWindowManager {
 		final String actionWord = (type == TransactionType.BUY) ? "zakup" : "sprzedaż";
 		final String dialogTitle = (type == TransactionType.BUY) ? "Potwierdź zakup" : "Potwierdź sprzedaż";
 		final String message = new StringBuilder()
-		.append("Czy potwierdzasz ")
-		.append(actionWord)
-		.append(' ')
-		.append(quantity)
-		.append(" × ")
-		.append(offer.displayName)
-		.append(" za ")
-		.append(formatPricePlain(capped))
-		.append('?')
-		.toString();
+			.append("Czy potwierdzasz ")
+			.append(actionWord)
+			.append(' ')
+			.append(quantity)
+			.append(" × ")
+			.append(offer.displayName)
+			.append(" za ")
+			.append(formatPricePlain(capped))
+			.append('?')
+			.toString();
 
 		final int result = JOptionPane.showConfirmDialog(this, message, dialogTitle, JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
