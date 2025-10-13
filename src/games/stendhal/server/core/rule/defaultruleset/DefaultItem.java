@@ -60,6 +60,7 @@ public class DefaultItem {
 				"furniture",
 				"glyph",
 				"grower",
+				"herb",
 				"holiday",
 				"jewellery",
 				"key",
@@ -387,13 +388,13 @@ public class DefaultItem {
 
 			Map<String, String> baseAttributes = copyAttributes();
 			boolean rarityEligible = isRarityEligible(slots, clazz);
-			if (rarityEligible) {
-				ItemRarity appliedRarity = (forcedRarity != null) ? forcedRarity : ItemRarity.rollRandom();
-				item.applyRarity(appliedRarity, baseAttributes, value);
+			boolean applyRarity = rarityEligible && (forcedRarity != null);
+			if (applyRarity) {
+				item.applyRarity(forcedRarity, baseAttributes, value);
 			} else {
 				item.applyRarity(ItemRarity.COMMON, baseAttributes, value, false);
 			}
-			item.setRarityBadgeVisible(rarityEligible);
+			item.setRarityBadgeVisible(applyRarity);
 		}
 
 		return item;
