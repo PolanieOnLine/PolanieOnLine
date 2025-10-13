@@ -12,6 +12,7 @@
 package games.stendhal.client.gui.j2d.entity;
 
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
@@ -36,6 +37,7 @@ import games.stendhal.client.sprite.AnimatedSprite;
 import games.stendhal.client.sprite.Sprite;
 import games.stendhal.client.sprite.SpriteStore;
 import games.stendhal.client.sprite.TextSprite;
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.common.MathHelper;
 import marauroa.common.game.RPObject;
 import marauroa.common.game.RPSlot;
@@ -150,9 +152,34 @@ public class Item2DView<T extends Item> extends Entity2DView<T> {
 			final int width, final int height) {
 		super.draw(g2d, x, y, width, height);
 
+		drawRarityBorder(g2d, x, y, width, height);
+
 		if (showQuantity && (quantitySprite != null)) {
 			drawQuantity(g2d, x, y, width, height);
 		}
+	}
+
+	private void drawRarityBorder(final Graphics2D g2d, final int x, final int y,
+			final int width, final int height) {
+		if (entity == null) {
+			return;
+		}
+
+		ItemRarity rarity = entity.getRarity();
+		if (rarity == null) {
+			return;
+		}
+
+		Color color = rarity.getColor();
+		if (color == null) {
+			return;
+		}
+
+		Graphics2D borderGraphics = (Graphics2D) g2d.create();
+		borderGraphics.setColor(color);
+		borderGraphics.setStroke(new BasicStroke(2f));
+		borderGraphics.drawRoundRect(x + 1, y + 1, width - 3, height - 3, 6, 6);
+		borderGraphics.dispose();
 	}
 
 	/**

@@ -14,6 +14,7 @@ package games.stendhal.server.core.rule;
 
 import java.util.Collection;
 
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.server.core.rule.defaultruleset.DefaultCreature;
 import games.stendhal.server.core.rule.defaultruleset.DefaultItem;
 import games.stendhal.server.core.rule.defaultruleset.DefaultSpell;
@@ -143,6 +144,10 @@ public interface EntityManager {
 	 *
 	 */
 	Item getItem(String clazz);
+
+	default Item getItem(String clazz, ItemRarity rarity) {
+		return getItem(clazz);
+	}
 
 	/**
 	 * Retrieves a Spell or null if the spell is unknown.

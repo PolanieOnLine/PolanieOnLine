@@ -14,11 +14,13 @@ package games.stendhal.server.core.rule.defaultruleset;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
 import games.stendhal.common.constants.Nature;
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.server.core.rule.defaultruleset.creator.AbstractCreator;
 import games.stendhal.server.core.rule.defaultruleset.creator.AttributesItemCreator;
 import games.stendhal.server.core.rule.defaultruleset.creator.DefaultItemCreator;
@@ -106,6 +108,20 @@ public class DefaultItem {
 
 	public Map<String, String> getAttributes() {
 		return attributes;
+	}
+
+	/**
+	 * Returns a shallow copy of the configured attribute map. This allows callers to
+	 * adjust values without mutating the baseline configured in XML.
+	 *
+	 * @return copy of the attributes or {@code null}
+	 */
+	public Map<String, String> copyAttributes() {
+		if (attributes == null) {
+			return null;
+		}
+
+		return new LinkedHashMap<String, String>(attributes);
 	}
 
 	public void setAttributes(final Map<String, String> attributes) {
@@ -263,8 +279,11 @@ public class DefaultItem {
 	 *
 	 * @return An item, or <code>null</code> on error.
 	 */
-	public Item getItem() {
+	public Item createItem() {
+		return createItem(null);
+	}
 
+	public Item createItem(ItemRarity forcedRarity) {
 		/*
 		 * Just in case - Really should generate fatal error up front (in
 		 * ItemXMLLoader).
@@ -309,6 +328,10 @@ public class DefaultItem {
 			}
 
 			item.setUseBehavior(useBehavior);
+
+			Map<String, String> baseAttributes = copyAttributes();
+			ItemRarity rarity = (forcedRarity != null) ? forcedRarity : ItemRarity.rollRandom();
+			item.applyRarity(rarity, baseAttributes, value);
 		}
 
 		return item;

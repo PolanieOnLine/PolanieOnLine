@@ -12,6 +12,8 @@
  ***************************************************************************/
 package games.stendhal.client.gui;
 
+import java.awt.BasicStroke;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -32,6 +34,7 @@ import games.stendhal.client.IGameScreen;
 import games.stendhal.client.StendhalClient;
 import games.stendhal.client.entity.IEntity;
 import games.stendhal.client.entity.Inspector;
+import games.stendhal.client.entity.Item;
 import games.stendhal.client.entity.User;
 import games.stendhal.client.gui.j2d.entity.EntityView;
 import games.stendhal.client.gui.j2d.entity.EntityViewFactory;
@@ -43,6 +46,7 @@ import games.stendhal.client.sprite.ImageSprite;
 import games.stendhal.client.sprite.Sprite;
 import games.stendhal.client.sprite.SpriteStore;
 import games.stendhal.common.EquipActionConsts;
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.common.constants.Actions;
 import marauroa.common.game.RPAction;
 import marauroa.common.game.RPObject;
@@ -265,10 +269,35 @@ class ItemPanel extends JComponent implements DropTarget, Inspectable {
 			vg.translate(x, y);
 			entityView.draw(vg);
 			vg.dispose();
+
+			drawRarityBorder(g, entityView);
 		} else if (placeholder != null) {
 			placeholder.draw(g, (getWidth() - placeholder.getWidth()) / 2,
 					(getHeight() - placeholder.getHeight()) / 2);
 		}
+	}
+
+	private void drawRarityBorder(Graphics g, EntityView<?> entityView) {
+		if (!(entityView.getEntity() instanceof Item)) {
+			return;
+		}
+
+		Item item = (Item) entityView.getEntity();
+		ItemRarity rarity = item.getRarity();
+		if (rarity == null) {
+			return;
+		}
+
+		Color borderColor = rarity.getColor();
+		if (borderColor == null) {
+			return;
+		}
+
+		Graphics2D borderGraphics = (Graphics2D) g.create();
+		borderGraphics.setColor(borderColor);
+		borderGraphics.setStroke(new BasicStroke(2f));
+		borderGraphics.drawRoundRect(1, 1, getWidth() - 3, getHeight() - 3, 8, 8);
+		borderGraphics.dispose();
 	}
 
 	@Override
