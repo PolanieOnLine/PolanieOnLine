@@ -79,6 +79,24 @@ import marauroa.common.game.RPSlot;
 public final class NpcShopWindowManager {
 	private static final Logger logger = Logger.getLogger(NpcShopWindowManager.class);
 
+	private static final Color PRIMARY_TEXT = new Color(246, 236, 220);
+	private static final Color SECONDARY_TEXT = new Color(220, 204, 184);
+	private static final Color MUTED_TEXT = new Color(202, 182, 158);
+	private static final Color SELECTION_BG = new Color(123, 88, 55, 200);
+	private static final Color SELECTION_FG = new Color(255, 249, 240);
+	private static final Color GRID_COLOR = new Color(104, 80, 58, 160);
+	private static final Color HEADER_BG = new Color(90, 62, 38, 230);
+	private static final Color HEADER_FG = new Color(255, 246, 232);
+	private static final Color PANEL_TINT = new Color(34, 24, 16, 215);
+	private static final Color BORDER_COLOR = new Color(117, 89, 63, 210);
+	private static final Color BUTTON_BORDER = new Color(128, 94, 54);
+	private static final Color BUY_BUTTON_BG = new Color(32, 132, 58);
+	private static final Color BUY_BUTTON_BORDER = new Color(16, 78, 32);
+	private static final Color BUY_BUTTON_TEXT = new Color(252, 252, 244);
+	private static final Color SELL_BUTTON_BG = new Color(156, 48, 48);
+	private static final Color SELL_BUTTON_BORDER = new Color(96, 24, 24);
+	private static final Color SELL_BUTTON_TEXT = new Color(255, 240, 236);
+
 	private static final NpcShopWindowManager INSTANCE = new NpcShopWindowManager();
 
 	private static final String MODE_BUY = "buy";
@@ -370,24 +388,6 @@ public final class NpcShopWindowManager {
 
 	private static final class NpcShopWindow extends InternalManagedWindow {
 	private static final long serialVersionUID = 1L;
-
-	private static final Color PRIMARY_TEXT = new Color(246, 236, 220);
-	private static final Color SECONDARY_TEXT = new Color(220, 204, 184);
-	private static final Color MUTED_TEXT = new Color(202, 182, 158);
-	private static final Color SELECTION_BG = new Color(123, 88, 55, 200);
-	private static final Color SELECTION_FG = new Color(255, 249, 240);
-	private static final Color GRID_COLOR = new Color(104, 80, 58, 160);
-	private static final Color HEADER_BG = new Color(90, 62, 38, 230);
-	private static final Color HEADER_FG = new Color(255, 246, 232);
-	private static final Color PANEL_TINT = new Color(34, 24, 16, 215);
-	private static final Color BORDER_COLOR = new Color(117, 89, 63, 210);
-	private static final Color BUTTON_BORDER = new Color(128, 94, 54);
-	private static final Color BUY_BUTTON_BG = new Color(32, 132, 58);
-	private static final Color BUY_BUTTON_BORDER = new Color(16, 78, 32);
-	private static final Color BUY_BUTTON_TEXT = new Color(252, 252, 244);
-	private static final Color SELL_BUTTON_BG = new Color(156, 48, 48);
-	private static final Color SELL_BUTTON_BORDER = new Color(96, 24, 24);
-	private static final Color SELL_BUTTON_TEXT = new Color(255, 240, 236);
 
 	private final List<Offer> allOffers = new ArrayList<Offer>();
 	private final OfferTableModel tableModel = new OfferTableModel();
