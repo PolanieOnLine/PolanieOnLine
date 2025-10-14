@@ -22,6 +22,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -56,6 +57,7 @@ public final class InspectWindow extends InternalManagedWindow {
 	private static final String[] EQUIPMENT_LEFT_COLUMN = { "neck", "rhand", "finger", "fingerb" };
 	private static final String[] EQUIPMENT_MIDDLE_COLUMN = { "head", "armor", "pas", "legs", "feet" };
 	private static final String[] EQUIPMENT_RIGHT_COLUMN = { "cloak", "lhand", "glove", "pouch" };
+	private static final Map<String, Sprite> EQUIPMENT_PLACEHOLDERS = new HashMap<String, Sprite>();
 	private static final String LINE_SEPARATOR = System.lineSeparator();
 	private static final int EQUIPMENT_COLUMN_GAP = 12;
 	private static final Color QUANTITY_BACKGROUND = new Color(0, 0, 0, 180);
@@ -70,6 +72,29 @@ public final class InspectWindow extends InternalManagedWindow {
 		}
 		ITEM_SLOT_SIZE = new Dimension(width, height);
 		EQUIPMENT_HAND_SHIFT = Math.max(0, height / 3);
+
+		final SpriteStore store = SpriteStore.get();
+		registerPlaceholder(store, "neck", "data/gui/slot-neck.png");
+		registerPlaceholder(store, "rhand", "data/gui/slot-weapon.png");
+		registerPlaceholder(store, "finger", "data/gui/slot-ring.png");
+		registerPlaceholder(store, "fingerb", "data/gui/slot-ringb.png");
+		registerPlaceholder(store, "head", "data/gui/slot-helmet.png");
+		registerPlaceholder(store, "armor", "data/gui/slot-armor.png");
+		registerPlaceholder(store, "pas", "data/gui/slot-belt.png");
+		registerPlaceholder(store, "belt", "data/gui/slot-key.png");
+		registerPlaceholder(store, "legs", "data/gui/slot-legs.png");
+		registerPlaceholder(store, "feet", "data/gui/slot-boots.png");
+		registerPlaceholder(store, "cloak", "data/gui/slot-cloak.png");
+		registerPlaceholder(store, "lhand", "data/gui/slot-shield.png");
+		registerPlaceholder(store, "glove", "data/gui/slot-gloves.png");
+		registerPlaceholder(store, "pouch", "data/gui/slot-pouch.png");
+	}
+
+	private static void registerPlaceholder(final SpriteStore store, final String slot, final String path) {
+		final Sprite sprite = store.getSprite(path);
+		if (sprite != null) {
+			EQUIPMENT_PLACEHOLDERS.put(slot, sprite);
+		}
 	}
 
 	private InspectData data;
@@ -104,6 +129,7 @@ public final class InspectWindow extends InternalManagedWindow {
 		super("admin_inspect", "Inspekcja gracza");
 		setPreferredSize(new Dimension(820, 640));
 		setMinimumSize(new Dimension(680, 520));
+		setMinimizable(true);
 
 		final JPanel root = new JPanel(new BorderLayout(10, 10));
 		root.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -517,19 +543,17 @@ public final class InspectWindow extends InternalManagedWindow {
 		panel.setAlignmentY(JComponent.TOP_ALIGNMENT);
 
 		final String labelText = resolveEquipmentLabel(baseSlot, suffix);
+		final Sprite placeholder = resolveEquipmentPlaceholderSprite(baseSlot);
 		JComponent content;
 		if (slot != null && !slot.getItems().isEmpty()) {
-			content = createItemComponent(slot.getItems().get(0));
+			content = createItemComponent(slot.getItems().get(0), placeholder);
 		} else {
-			content = new ItemSlotComponent(null, 0, labelText + " (puste)");
+			content = new ItemSlotComponent(null, placeholder, 0, labelText + " (puste)");
 		}
 		panel.add(centerComponent(content), BorderLayout.CENTER);
-
-		final JLabel label = new JLabel(labelText, SwingConstants.CENTER);
-		label.setFont(label.getFont().deriveFont(Font.BOLD, 11f));
-		panel.add(label, BorderLayout.SOUTH);
 		return panel;
 	}
+
 
 	private JComponent createAdditionalEquipment(final Set<String> displayed) {
 		final List<InspectData.Slot> extras = new LinkedList<InspectData.Slot>();
@@ -579,38 +603,51 @@ public final class InspectWindow extends InternalManagedWindow {
 	private String fallbackEquipmentLabel(final String slotName) {
 		switch (slotName) {
 			case "rhand":
-			return "Broń prawa";
+				return "Broń prawa";
 			case "lhand":
-			return "Broń lewa";
+				return "Broń lewa";
 			case "neck":
-			return "Naszyjnik";
+				return "Naszyjnik";
 			case "head":
-			return "Hełm";
+				return "Hełm";
 			case "armor":
-			return "Zbroja";
+				return "Zbroja";
 			case "legs":
-			return "Spodnie";
+				return "Spodnie";
 			case "feet":
-			return "Buty";
+				return "Buty";
 			case "finger":
-			return "Pierścień";
+				return "Pierścień";
 			case "fingerb":
-			return "Pierścień (lewy)";
+				return "Pierścień (lewy)";
 			case "glove":
-			return "Rękawice";
+				return "Rękawice";
 			case "cloak":
-			return "Płaszcz";
+				return "Płaszcz";
 			case "pas":
 			case "belt":
-			return "Pas";
+				return "Pas";
 			case "pouch":
-			return "Mieszek";
+				return "Mieszek";
 			case "back":
-			return "Plecy";
+				return "Plecy";
 			default:
-			return slotName;
+				return slotName;
 		}
 	}
+
+	private Sprite resolveEquipmentPlaceholderSprite(final String slotName) {
+		Sprite sprite = EQUIPMENT_PLACEHOLDERS.get(slotName);
+		if (sprite != null) {
+			return sprite;
+		}
+		final int separator = slotName.indexOf('_');
+		if (separator > 0) {
+			sprite = EQUIPMENT_PLACEHOLDERS.get(slotName.substring(0, separator));
+		}
+		return sprite;
+	}
+
 
 	private JComponent centerComponent(final JComponent component) {
 		final JPanel wrapper = new JPanel(new GridBagLayout());
@@ -636,9 +673,13 @@ public final class InspectWindow extends InternalManagedWindow {
 	}
 
 	private JComponent createItemComponent(final InspectData.Item item) {
+		return createItemComponent(item, null);
+	}
+
+	private JComponent createItemComponent(final InspectData.Item item, final Sprite placeholder) {
 		final Sprite sprite = resolveSprite(item);
 		final String tooltip = buildTooltip(item);
-		return new ItemSlotComponent(sprite, item.getQuantity(), tooltip);
+		return new ItemSlotComponent(sprite, placeholder, item.getQuantity(), tooltip);
 	}
 
 	private String buildTooltip(final InspectData.Item item) {
@@ -822,10 +863,12 @@ public final class InspectWindow extends InternalManagedWindow {
 		private static final long serialVersionUID = 1L;
 
 		private final Sprite sprite;
+		private final Sprite placeholder;
 		private final int quantity;
 
-		ItemSlotComponent(final Sprite sprite, final int quantity, final String tooltip) {
+		ItemSlotComponent(final Sprite sprite, final Sprite placeholder, final int quantity, final String tooltip) {
 			this.sprite = sprite;
+			this.placeholder = placeholder;
 			this.quantity = quantity;
 			setPreferredSize(ITEM_SLOT_SIZE);
 			setMinimumSize(ITEM_SLOT_SIZE);
@@ -855,6 +898,10 @@ public final class InspectWindow extends InternalManagedWindow {
 				final int imageX = (width - sprite.getWidth()) / 2;
 				final int imageY = (height - sprite.getHeight()) / 2;
 				sprite.draw(graphics, imageX, imageY);
+			} else if (placeholder != null) {
+				final int imageX = (width - placeholder.getWidth()) / 2;
+				final int imageY = (height - placeholder.getHeight()) / 2;
+				placeholder.draw(graphics, imageX, imageY);
 			}
 
 			if (quantity > 1) {
@@ -876,4 +923,3 @@ public final class InspectWindow extends InternalManagedWindow {
 		}
 	}
 }
-
