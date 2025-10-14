@@ -13,6 +13,7 @@ package games.stendhal.client.gui.admin.inspect;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FlowLayout;
@@ -66,6 +67,13 @@ public final class InspectWindow extends InternalManagedWindow {
 	private static final String[] EQUIPMENT_MIDDLE_COLUMN = { "head", "armor", "pas", "legs", "feet" };
 	private static final String[] EQUIPMENT_RIGHT_COLUMN = { "cloak", "lhand", "glove", "pouch" };
 	private static final Map<String, Sprite> EQUIPMENT_PLACEHOLDERS = new HashMap<String, Sprite>();
+	private static final Map<String, Sprite> RUNE_BACKGROUNDS = new HashMap<String, Sprite>();
+	private static final String[] RUNE_LEFT_COLUMN = { "control_rune", "utility_rune" };
+	private static final String[] RUNE_MIDDLE_COLUMN = { "offensive_rune", "special_rune", "defensive_rune" };
+	private static final String[] RUNE_RIGHT_COLUMN = { "healing_rune", "resistance_rune" };
+	private static final int RUNE_COLUMN_GAP = 20;
+	private static final int RUNE_SIDE_VERTICAL_GAP = 15;
+	private static final int RUNE_MIDDLE_VERTICAL_GAP = 20;
 	private static final String LINE_SEPARATOR = System.lineSeparator();
 	private static final int EQUIPMENT_COLUMN_GAP = 12;
 	private static final Color QUANTITY_BACKGROUND = new Color(0, 0, 0, 180);
@@ -96,6 +104,13 @@ public final class InspectWindow extends InternalManagedWindow {
 		registerPlaceholder(store, "lhand", "data/gui/slot-shield.png");
 		registerPlaceholder(store, "glove", "data/gui/slot-gloves.png");
 		registerPlaceholder(store, "pouch", "data/gui/slot-pouch.png");
+		registerRuneBackground(store, "control_rune", "data/gui/rune-control.png");
+		registerRuneBackground(store, "utility_rune", "data/gui/rune-utility.png");
+		registerRuneBackground(store, "offensive_rune", "data/gui/rune-offensive.png");
+		registerRuneBackground(store, "special_rune", "data/gui/rune-special.png");
+		registerRuneBackground(store, "defensive_rune", "data/gui/rune-defensive.png");
+		registerRuneBackground(store, "healing_rune", "data/gui/rune-healing.png");
+		registerRuneBackground(store, "resistance_rune", "data/gui/rune-resistance.png");
 	}
 
 	private static void registerPlaceholder(final SpriteStore store, final String slot, final String path) {
@@ -103,12 +118,19 @@ public final class InspectWindow extends InternalManagedWindow {
 		if (sprite != null) {
 			EQUIPMENT_PLACEHOLDERS.put(slot, sprite);
 		}
-	}
+		}
+
+	private static void registerRuneBackground(final SpriteStore store, final String slot, final String path) {
+		final Sprite sprite = store.getSprite(path);
+		if (sprite != null) {
+			RUNE_BACKGROUNDS.put(slot, sprite);
+		}
+		}
 
 	private InspectData data;
 
-private final AvatarComponent avatarComponent;
-private final JLabel nameLabel;
+	private final AvatarComponent avatarComponent;
+	private final JLabel nameLabel;
 	private final JLabel classLabel;
 	private final JLabel idLabel;
 	private final JLabel locationLabel;
@@ -249,7 +271,7 @@ private final JLabel nameLabel;
 		questTabs.addTab("Powtarzalne", wrapScroll(repeatableQuestsArea));
 		tabs.addTab("Zadania", questTabs);
 
-		runeContent = new JPanel(new java.awt.GridLayout(0, 4, 8, 8));
+		runeContent = new JPanel(new GridBagLayout());
 		runeContent.setOpaque(false);
 		tabs.addTab("Runy", wrapScroll(runeContent));
 
@@ -452,26 +474,111 @@ private final JLabel nameLabel;
 	private void updateRunes() {
 		runeContent.removeAll();
 
-		final List<String> order = data.getRuneOrder();
-		final Set<String> handled = new HashSet<String>();
-		for (String slotName : order) {
-			final InspectData.Slot slot = data.getSlot(slotName);
-			if (slot != null) {
-				runeContent.add(createSlotCard(slot));
-				handled.add(slot.getName());
-			}
-		}
-		for (InspectData.Slot slot : data.getSlotsByCategory("rune")) {
-			if (!handled.contains(slot.getName())) {
-				runeContent.add(createSlotCard(slot));
+		final Set<String> displayed = new HashSet<String>();
+		final JComponent matrix = createRuneMatrix(displayed);
+		final GridBagConstraints constraints = new GridBagConstraints();
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		constraints.anchor = GridBagConstraints.CENTER;
+		runeContent.add(matrix, constraints);
+
+		final List<InspectData.Slot> extras = new ArrayList<InspectData.Slot>();
+		for (final InspectData.Slot slot : data.getSlotsByCategory("rune")) {
+			if (!displayed.contains(slot.getName())) {
+				extras.add(slot);
 			}
 		}
 
-		if (runeContent.getComponentCount() == 0) {
-			runeContent.add(createPlaceholderLabel("Brak run."));
+		if (!extras.isEmpty()) {
+			final JPanel extraPanel = new JPanel();
+			extraPanel.setLayout(new BoxLayout(extraPanel, BoxLayout.Y_AXIS));
+			extraPanel.setOpaque(false);
+			extraPanel.add(Box.createVerticalStrut(16));
+			for (InspectData.Slot slot : extras) {
+				extraPanel.add(createSlotCard(slot));
+				extraPanel.add(Box.createVerticalStrut(8));
+			}
+			if (extraPanel.getComponentCount() > 0) {
+				extraPanel.remove(extraPanel.getComponentCount() - 1);
+			}
+			final GridBagConstraints extrasConstraints = new GridBagConstraints();
+			extrasConstraints.gridx = 0;
+			extrasConstraints.gridy = 1;
+			extrasConstraints.insets = new Insets(12, 0, 0, 0);
+			extrasConstraints.anchor = GridBagConstraints.CENTER;
+			runeContent.add(extraPanel, extrasConstraints);
 		}
 	}
 
+	private JComponent createRuneMatrix(final Set<String> displayed) {
+		final JPanel row = new JPanel();
+		row.setLayout(new BoxLayout(row, BoxLayout.X_AXIS));
+		row.setOpaque(false);
+		row.setAlignmentY(Component.CENTER_ALIGNMENT);
+
+		row.add(createRuneColumn(RUNE_LEFT_COLUMN, RUNE_SIDE_VERTICAL_GAP, displayed));
+		row.add(Box.createHorizontalStrut(RUNE_COLUMN_GAP));
+		row.add(createRuneColumn(RUNE_MIDDLE_COLUMN, RUNE_MIDDLE_VERTICAL_GAP, displayed));
+		row.add(Box.createHorizontalStrut(RUNE_COLUMN_GAP));
+		row.add(createRuneColumn(RUNE_RIGHT_COLUMN, RUNE_SIDE_VERTICAL_GAP, displayed));
+
+		return row;
+	}
+
+	private JComponent createRuneColumn(final String[] slots, final int gap, final Set<String> displayed) {
+		final JPanel column = new JPanel();
+		column.setLayout(new BoxLayout(column, BoxLayout.Y_AXIS));
+		column.setOpaque(false);
+		column.setAlignmentY(Component.CENTER_ALIGNMENT);
+
+		boolean first = true;
+		for (final String slotName : slots) {
+			if (!first) {
+				column.add(Box.createVerticalStrut(gap));
+			}
+			column.add(createRuneSlotComponent(slotName, displayed));
+			first = false;
+		}
+
+		return column;
+	}
+
+	private JComponent createRuneSlotComponent(final String slotName, final Set<String> displayed) {
+		final InspectData.Slot slot = data.getSlot(slotName);
+		if (slot != null) {
+			displayed.add(slot.getName());
+		}
+
+		final InspectData.Item item = slot != null && !slot.getItems().isEmpty() ? slot.getItems().get(0) : null;
+		final Sprite background = resolveRuneBackground(slotName);
+		final Sprite placeholder = background != SLOT_BACKGROUND ? background : null;
+		final Sprite sprite = item != null ? resolveSprite(item) : null;
+		final int quantity = item != null ? item.getQuantity() : 0;
+		final String tooltip;
+		if (item != null) {
+			tooltip = buildTooltip(item);
+		} else {
+			final String label = slot != null ? resolveSlotLabel(slot) : slotName;
+			tooltip = label + " (puste)";
+		}
+
+		return new ItemSlotComponent(sprite, placeholder, background, quantity, tooltip);
+	}
+
+	private Sprite resolveRuneBackground(final String slotName) {
+		Sprite sprite = RUNE_BACKGROUNDS.get(slotName);
+		if (sprite != null) {
+			return sprite;
+		}
+		final int separator = slotName.indexOf('_');
+		if (separator > 0) {
+			sprite = RUNE_BACKGROUNDS.get(slotName.substring(separator + 1));
+			if (sprite != null) {
+				return sprite;
+			}
+		}
+		return SLOT_BACKGROUND;
+	}
 	private void updateContainers() {
 		containersTabs.removeAll();
 
@@ -646,7 +753,7 @@ private final JLabel nameLabel;
 		if (slot != null && !slot.getItems().isEmpty()) {
 			content = createItemComponent(slot.getItems().get(0), placeholder);
 		} else {
-			content = new ItemSlotComponent(null, placeholder, 0, labelText + " (puste)");
+			content = new ItemSlotComponent(null, placeholder, SLOT_BACKGROUND, 0, labelText + " (puste)");
 		}
 		panel.add(centerComponent(content), BorderLayout.CENTER);
 		return panel;
@@ -771,14 +878,18 @@ private final JLabel nameLabel;
 	}
 
 	private JComponent createItemComponent(final InspectData.Item item) {
-		return createItemComponent(item, null);
-	}
+		return createItemComponent(item, null, SLOT_BACKGROUND);
+}
 
 	private JComponent createItemComponent(final InspectData.Item item, final Sprite placeholder) {
+		return createItemComponent(item, placeholder, SLOT_BACKGROUND);
+}
+
+	private JComponent createItemComponent(final InspectData.Item item, final Sprite placeholder, final Sprite background) {
 		final Sprite sprite = resolveSprite(item);
 		final String tooltip = buildTooltip(item);
-		return new ItemSlotComponent(sprite, placeholder, item.getQuantity(), tooltip);
-	}
+		return new ItemSlotComponent(sprite, placeholder, background, item.getQuantity(), tooltip);
+}
 
 	private String buildTooltip(final InspectData.Item item) {
 		final StringBuilder builder = new StringBuilder("<html><b>");
@@ -1059,7 +1170,7 @@ private final JLabel nameLabel;
 
 	private boolean hasText(final String value) {
 		return value != null && !value.trim().isEmpty();
-}
+	}
 
 	private String normalizeName(final String value) {
 		if (value == null) {
@@ -1121,15 +1232,17 @@ private final JLabel nameLabel;
 	}
 
 	private static final class ItemSlotComponent extends JComponent {
-		private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
 		private final Sprite sprite;
 		private final Sprite placeholder;
+		private final Sprite background;
 		private final int quantity;
 
-		ItemSlotComponent(final Sprite sprite, final Sprite placeholder, final int quantity, final String tooltip) {
+		ItemSlotComponent(final Sprite sprite, final Sprite placeholder, final Sprite background, final int quantity, final String tooltip) {
 			this.sprite = sprite;
 			this.placeholder = placeholder;
+			this.background = background;
 			this.quantity = quantity;
 			setPreferredSize(ITEM_SLOT_SIZE);
 			setMinimumSize(ITEM_SLOT_SIZE);
@@ -1144,10 +1257,11 @@ private final JLabel nameLabel;
 			final int width = getWidth();
 			final int height = getHeight();
 
-			if (SLOT_BACKGROUND != null) {
-				final int backgroundX = (width - SLOT_BACKGROUND.getWidth()) / 2;
-				final int backgroundY = (height - SLOT_BACKGROUND.getHeight()) / 2;
-				SLOT_BACKGROUND.draw(graphics, backgroundX, backgroundY);
+			final Sprite base = background != null ? background : SLOT_BACKGROUND;
+			if (base != null) {
+				final int backgroundX = (width - base.getWidth()) / 2;
+				final int backgroundY = (height - base.getHeight()) / 2;
+				base.draw(graphics, backgroundX, backgroundY);
 			} else {
 				graphics.setColor(new Color(255, 255, 255, 40));
 				graphics.fillRoundRect(0, 0, width - 1, height - 1, 10, 10);
