@@ -10,8 +10,6 @@ public class Glyph extends Item {
 	private static final String ATTRIBUTE_ATTACK = "skill_atk";
 	private static final String ATTRIBUTE_ATTACK_ALIAS = "atk";
 	private static final String ATTRIBUTE_HEALTH = "health";
-	private static final String ATTRIBUTE_APPLIED_ATTACK = "applied_glyph_attack_bonus";
-	private static final String ATTRIBUTE_APPLIED_HEALTH = "applied_glyph_health_bonus";
 
 	public Glyph(final String name, final String clazz, final String subclass,
 			final Map<String, String> attributes) {
@@ -61,70 +59,36 @@ public class Glyph extends Item {
 	private void applyAttackBonus(final Player player) {
 		int attackBonus = getAttackBonus();
 		if (attackBonus == 0) {
-			forgetAppliedAttackBonus();
 			return;
 		}
 		player.setAtk(player.getAtk() + attackBonus);
-		rememberAppliedAttackBonus(attackBonus);
 	}
 
 	private void applyHealthBonus(final Player player) {
 		int healthBonus = getHealthBonus();
 		if (healthBonus == 0) {
-			forgetAppliedHealthBonus();
 			return;
 		}
 		player.setBaseHP(player.getBaseHP() + healthBonus);
-		rememberAppliedHealthBonus(healthBonus);
 	}
 
 	private void reduceAtk(final Player player) {
-		int appliedAttackBonus = getAppliedAttackBonus();
-		if (appliedAttackBonus == 0) {
+		int attackBonus = getAttackBonus();
+		if (attackBonus == 0) {
 			return;
 		}
-		player.setAtk(player.getAtk() - appliedAttackBonus);
-		forgetAppliedAttackBonus();
+		player.setAtk(player.getAtk() - attackBonus);
 	}
 
 	private void reduceHP(final Player player) {
-		int appliedHealthBonus = getAppliedHealthBonus();
-		if (appliedHealthBonus == 0) {
+		int healthBonus = getHealthBonus();
+		if (healthBonus == 0) {
 			return;
 		}
-		int newBaseHP = Math.max(player.getBaseHP() - appliedHealthBonus, 0);
+		int newBaseHP = Math.max(player.getBaseHP() - healthBonus, 0);
 		player.setBaseHP(newBaseHP);
 		if (player.getHP() > newBaseHP) {
 			player.setHP(newBaseHP);
 		}
-		forgetAppliedHealthBonus();
-	}
-
-	private void rememberAppliedAttackBonus(final int bonus) {
-		put(ATTRIBUTE_APPLIED_ATTACK, bonus);
-	}
-
-	private void rememberAppliedHealthBonus(final int bonus) {
-		put(ATTRIBUTE_APPLIED_HEALTH, bonus);
-	}
-
-	private void forgetAppliedAttackBonus() {
-		if (has(ATTRIBUTE_APPLIED_ATTACK)) {
-			remove(ATTRIBUTE_APPLIED_ATTACK);
-		}
-	}
-
-	private void forgetAppliedHealthBonus() {
-		if (has(ATTRIBUTE_APPLIED_HEALTH)) {
-			remove(ATTRIBUTE_APPLIED_HEALTH);
-		}
-	}
-
-	private int getAppliedAttackBonus() {
-		return has(ATTRIBUTE_APPLIED_ATTACK) ? getInt(ATTRIBUTE_APPLIED_ATTACK) : 0;
-	}
-
-	private int getAppliedHealthBonus() {
-		return has(ATTRIBUTE_APPLIED_HEALTH) ? getInt(ATTRIBUTE_APPLIED_HEALTH) : 0;
 	}
 }
