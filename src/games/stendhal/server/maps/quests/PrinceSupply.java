@@ -20,6 +20,8 @@ import org.apache.log4j.Logger;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.entity.Entity;
+import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.mapstuff.chest.StoredChest;
 import games.stendhal.server.entity.npc.ChatAction;
@@ -39,8 +41,6 @@ import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
 import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.npc.condition.PlayerHasItemdataItemWithHimCondition;
-import games.stendhal.server.entity.npc.condition.QuestInStateCondition;
-import games.stendhal.server.entity.npc.condition.QuestNotInStateCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.npc.condition.QuestStartedCondition;
 import games.stendhal.server.entity.npc.condition.QuestStateStartsWithCondition;
@@ -62,7 +62,7 @@ public class PrinceSupply extends AbstractQuest {
 			ConversationPhrases.QUEST_MESSAGES, 
 			new QuestNotStartedCondition(QUEST_SLOT),
 			ConversationStates.QUEST_OFFERED, 
-			"Buntownicy opanowali arsenał w Warszawie! Potrzebuję śmiałka, który odbierze im rycerski rynsztunek mojej armii. Pomożesz mi odzyskać te skarby?",
+			"Zdradziecki oddział magnata Gonta przejął warszawski arsenał i więzi moje zapasy. Potrzebuję emisariusza, który odzyska rycerski ekwipunek, nim morale upadnie. Wesprzesz mnie?",
 			null);
 
 		// player asks about quest which he has done already and he is allowed to repeat it
@@ -72,7 +72,7 @@ public class PrinceSupply extends AbstractQuest {
 					new TimePassedCondition(QUEST_SLOT, 1, REQUIRED_MINUTES),
 					new QuestStateStartsWithCondition(QUEST_SLOT, "done;")),
 			ConversationStates.QUEST_OFFERED,
-			"Moja armia musi być przygotowana na wygnanie buntowników z zamku! Pomożesz mi odzyskać te skarby?",
+			"Czas znów odświeżyć regiment. Czy ponownie przenikniesz do arsenału i zabierzesz to, co należy do Korony?",
 			null);
 		
 		// player asks about quest which he has done already but it is not time to repeat it
@@ -85,19 +85,19 @@ public class PrinceSupply extends AbstractQuest {
 			ConversationStates.ATTENDING,
 			null,
 			new SayTimeRemainingAction(QUEST_SLOT, 1, REQUIRED_MINUTES,
-			"Musimy przeliczyć wyposażenie. Wróć do mnie w ciągu "));
+			"Królowscy kwartmistrze nadal liczą zapasy. Wróć do mnie za "));
 
 		npc.add(ConversationStates.QUEST_OFFERED,
 			ConversationPhrases.YES_MESSAGES,
 			null,
 			ConversationStates.ATTENDING,
-			"Wejdź do budynku arsenału, który znajduje się obok kuźni kowala. Bądź ostrożny, buntownicy pilnują swojego łupu!",
+			"Idź do budynku arsenału obok kuźni kowala. Wewnątrz znajdziesz skrzynię oznaczoną Twoim imieniem. Buntownicy czuwają, więc działaj roztropnie!",
 			new MultipleActions(
 				new SetQuestAndModifyKarmaAction(QUEST_SLOT, "start", 5.0),
 				new ChatAction() {
 					@Override
 					public void fire(Player player, Sentence sentence, EventRaiser npc) {
-						PrinceSupply.prepareChest();
+						PrinceSupply.prepareChest(player);
 					}
 				}));
 
@@ -105,7 +105,7 @@ public class PrinceSupply extends AbstractQuest {
 			ConversationPhrases.NO_MESSAGES,
 			null,
 			ConversationStates.ATTENDING,
-			"Być może nie zasłużyłeś na odpowiednią nagrodę.",
+			"Rozumiem. Jednak bez bohaterów takich jak Ty moje królestwo wiele traci.",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -5.0));
 	}
 
@@ -114,7 +114,7 @@ public class PrinceSupply extends AbstractQuest {
 			ConversationStates.ATTENDING,
 			ConversationPhrases.QUEST_MESSAGES,
 			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-					new QuestInStateCondition(QUEST_SLOT, "start"),
+					new QuestStateStartsWithCondition(QUEST_SLOT, "start"),
 					new NotCondition(
 						new AndCondition(
 								new PlayerHasItemdataItemWithHimCondition("kolczuga", QUEST_SLOT),
@@ -123,7 +123,7 @@ public class PrinceSupply extends AbstractQuest {
 								new PlayerHasItemdataItemWithHimCondition("hełm kolczy", QUEST_SLOT),
 								new PlayerHasItemdataItemWithHimCondition("buty kolcze", QUEST_SLOT)))),
 			ConversationStates.ATTENDING, 
-			"Nie wracaj bez pełnego wyposażenia! Potrzebuję całego kompletu, inaczej rycerze nie będą gotowi do walki.",
+			"Nie wracaj bez całego regimentu! Każdy element jest zaklęty na Twoją pieczęć — tylko komplet ocali mój oddział.",
 			null);
 
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
@@ -140,7 +140,7 @@ public class PrinceSupply extends AbstractQuest {
 			new ChatAction() {
 				@Override
 				public void fire(Player player, Sentence sentence, EventRaiser npc) {
-					PrinceSupply.prepareChest();
+					PrinceSupply.removeChest(player);
 				}
 			});
 
@@ -155,44 +155,85 @@ public class PrinceSupply extends AbstractQuest {
 					new PlayerHasItemdataItemWithHimCondition("hełm kolczy", QUEST_SLOT),
 					new PlayerHasItemdataItemWithHimCondition("buty kolcze", QUEST_SLOT)),
 			ConversationStates.ATTENDING,
-			"Doskonale! Dzięki Tobie buntownicy zostali upokorzeni, a moja armia znów jest gotowa. Królestwo będzie Ci wdzięczne.",
+			"Doskonale! Dzięki Tobie Gont będzie szeptał ze strachu, a moi rycerze znów staną do marszu. Królestwo zawsze zapamięta Twoją odwagę.",
 			new MultipleActions(reward));
 	}
 
-	private static void prepareChest() {
+	private static void prepareChest(final Player player) {
 		final StendhalRPZone zone = SingletonRepository.getRPWorld().getZone("int_warszawa_armory");
 
-		final StoredChest chest = new StoredChest();
+		removeChest(player);
+
+		final PrinceArmoryChest chest = new PrinceArmoryChest(player);
 		chest.setPosition(4, 2);
 		zone.add(chest);
 
 		try {
 			Item item = SingletonRepository.getEntityManager().getItem("kolczuga");
 			item.setItemData(QUEST_SLOT);
-			item.setDescription("Oto kolczuga należąca do specjalnego wyposażenia armii Książęcej.");
+			item.setDescription("Kolczuga odznacza się herbem Księcia i reaguje na dotyk jej wybranego opiekuna.");
 			chest.add(item);
 
 			item = SingletonRepository.getEntityManager().getItem("zbroja płytowa");
 			item.setItemData(QUEST_SLOT);
-			item.setDescription("Oto zbroja płytowa należąca do specjalnego wyposażenia armii Książęcej.");
+			item.setDescription("Zbroja płytowa z warszawskiej kuźni. Książę wydał ją tylko Tobie.");
 			chest.add(item);
 
 			item = SingletonRepository.getEntityManager().getItem("spodnie kolcze");
 			item.setItemData(QUEST_SLOT);
-			item.setDescription("Oto spodnie kolcze należące do specjalnego wyposażenia armii Książęcej.");
+			item.setDescription("Spodnie kolcze z arsenału Księcia. Rozpoznają Twoją pieczęć zadania.");
 			chest.add(item);
 
 			item = SingletonRepository.getEntityManager().getItem("hełm kolczy");
 			item.setItemData(QUEST_SLOT);
-			item.setDescription("Oto hełm kolczy należące do specjalnego wyposażenia armii Książęcej.");
+			item.setDescription("Hełm kolczy odbija światło na kolor rodowej korony Księcia.");
 			chest.add(item);
 
 			item = SingletonRepository.getEntityManager().getItem("buty kolcze");
 			item.setItemData(QUEST_SLOT);
-			item.setDescription("Oto buty kolcze należące do specjalnego wyposażenia armii Książęcej.");
+			item.setDescription("Buty kolcze zostały zaczarowane tak, by kroczył w nich tylko bohater zadania.");
 			chest.add(item);
 		} catch (SlotIsFullException e) {
 			logger.info("Could not add items to quest chest", e);
+		}
+
+		player.setQuest(QUEST_SLOT, "start;" + player.getName());
+	}
+
+	private static void removeChest(final Player player) {
+		final StendhalRPZone zone = SingletonRepository.getRPWorld().getZone("int_warszawa_armory");
+
+		for (Entity entity : zone.getEntitiesOfClass(PrinceArmoryChest.class)) {
+			final PrinceArmoryChest chest = (PrinceArmoryChest) entity;
+			if (chest.isOwnedBy(player)) {
+				zone.remove(chest.getID());
+			}
+		}
+	}
+
+	private static class PrinceArmoryChest extends StoredChest {
+		private final String ownerName;
+
+		PrinceArmoryChest(final Player owner) {
+			super();
+			this.ownerName = owner.getName();
+			setDescription("Na skrzyni widnieje pieczęć Księcia i imię " + ownerName + ".");
+		}
+
+		boolean isOwnedBy(final Player player) {
+			return ownerName.equals(player.getName());
+		}
+
+		@Override
+		public boolean onUsed(final RPEntity user) {
+			if (user instanceof Player) {
+				final Player player = (Player) user;
+				if (!isOwnedBy(player)) {
+					player.sendPrivateText("Pieczęć na skrzyni żarzy się, odpychając Twoje dłonie. To wyposażenie należy do " + ownerName + ".");
+					return false;
+				}
+			}
+			return super.onUsed(user);
 		}
 	}
 
@@ -215,17 +256,15 @@ public class PrinceSupply extends AbstractQuest {
 		res.add(player.getGenderVerb("Rozmawiałem") + " z księciem.");
 		final String questState = player.getQuest(QUEST_SLOT);
 		if ("rejected".equals(questState)) {
-			res.add("Nie wykonam zadania księcia, ponieważ obawiam się, że zginę!");
-		}
-		if (player.isQuestInState(QUEST_SLOT, "start", "done")) {
-			res.add(player.getGenderVerb("Zgodziłem") + " się na odzyskanie arsenału dla armii książecej.");
-		}
-
-		if (isCompleted(player)) {
-			res.add(player.getGenderVerb("Przekazałem") + " potrzebny arsenał Księciu.");
+			res.add("Uznałem, że ryzyko infiltracji arsenału jest zbyt wielkie.");
+		} else if (questState.startsWith("start")) {
+			res.add(player.getGenderVerb("Przyjąłem") + " misję odbicia wyposażenia od buntowników magnata Gonta.");
+			res.add("Książę powierzył mi skrzynię oznaczoną moim imieniem — muszę wrócić z całym regimentem.");
+		} else if (questState.startsWith("done")) {
+			res.add(player.getGenderVerb("Oddałem") + " odzyskane uzbrojenie i odbudowałem morale armii.");
 		}
 		if(isRepeatable(player)){
-			res.add("Podejrzewam, że Książe przeliczył już wyposażenie armii i będzie znów potrzebował pomocy.");
+			res.add("Książę ponownie szykuje ofensywę; wkrótce znów poprosi mnie o wsparcie.");
 		}
 		return res;
 	}
@@ -252,13 +291,20 @@ public class PrinceSupply extends AbstractQuest {
 
 	@Override
 	public boolean isCompleted(final Player player) {
-		return player.hasQuest(QUEST_SLOT) && !"start".equals(player.getQuest(QUEST_SLOT)) && !"rejected".equals(player.getQuest(QUEST_SLOT));
+		if (!player.hasQuest(QUEST_SLOT)) {
+			return false;
+		}
+		final String questState = player.getQuest(QUEST_SLOT);
+		if (questState.startsWith("start")) {
+			return false;
+		}
+		return !"rejected".equals(questState);
 	}
 
 	@Override
 	public boolean isRepeatable(final Player player) {
 		return new AndCondition(
-				new QuestNotInStateCondition(QUEST_SLOT, "start"),
+				new NotCondition(new QuestStateStartsWithCondition(QUEST_SLOT, "start")),
 				new QuestStartedCondition(QUEST_SLOT),
 				new TimePassedCondition(QUEST_SLOT, REQUIRED_MINUTES)).fire(player, null, null);
 	}
