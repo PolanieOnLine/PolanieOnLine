@@ -49,12 +49,28 @@ import games.stendhal.client.sprite.SpriteStore;
 */
 public final class InspectWindow extends InternalManagedWindow {
 	private static final long serialVersionUID = 1L;
-	private static final Dimension ITEM_SLOT_SIZE = new Dimension(48, 48);
+	private static final Sprite SLOT_BACKGROUND = SpriteStore.get().getSprite("data/gui/slot.png");
+	private static final Dimension ITEM_SLOT_SIZE;
+	private static final int EQUIPMENT_HAND_SHIFT;
 	private static final int BASE_ITEM_FRAME_SIZE = 32;
 	private static final String[] EQUIPMENT_LEFT_COLUMN = { "neck", "rhand", "finger", "fingerb" };
 	private static final String[] EQUIPMENT_MIDDLE_COLUMN = { "head", "armor", "pas", "legs", "feet" };
 	private static final String[] EQUIPMENT_RIGHT_COLUMN = { "cloak", "lhand", "glove", "pouch" };
 	private static final String LINE_SEPARATOR = System.lineSeparator();
+	private static final int EQUIPMENT_COLUMN_GAP = 12;
+	private static final Color QUANTITY_BACKGROUND = new Color(0, 0, 0, 180);
+	private static final Color QUANTITY_TEXT = Color.WHITE;
+
+	static {
+		int width = 40;
+		int height = 40;
+		if (SLOT_BACKGROUND != null) {
+			width = SLOT_BACKGROUND.getWidth();
+			height = SLOT_BACKGROUND.getHeight();
+		}
+		ITEM_SLOT_SIZE = new Dimension(width, height);
+		EQUIPMENT_HAND_SHIFT = Math.max(0, height / 3);
+	}
 
 	private InspectData data;
 
@@ -84,10 +100,10 @@ public final class InspectWindow extends InternalManagedWindow {
 
 	private final JTabbedPane tabs;
 
-public InspectWindow() {
-super("admin_inspect", "Inspekcja gracza");
-setPreferredSize(new Dimension(820, 640));
-setMinimumSize(new Dimension(680, 520));
+	public InspectWindow() {
+		super("admin_inspect", "Inspekcja gracza");
+		setPreferredSize(new Dimension(820, 640));
+		setMinimumSize(new Dimension(680, 520));
 
 		final JPanel root = new JPanel(new BorderLayout(10, 10));
 		root.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -291,18 +307,21 @@ setMinimumSize(new Dimension(680, 520));
 		equipmentContent.removeAll();
 
 		final Set<String> displayed = new HashSet<String>();
-		final JComponent worn = createEquipmentMatrix("", displayed);
-		equipmentContent.add(createGroupPanel("Założone wyposażenie", worn));
-		equipmentContent.add(Box.createVerticalStrut(12));
-
-		final JComponent reserve = createEquipmentMatrix("_set", displayed);
-		equipmentContent.add(createGroupPanel("Schowek", reserve));
-		equipmentContent.add(Box.createVerticalStrut(12));
+		final JPanel pairedRow = new JPanel();
+		pairedRow.setLayout(new BoxLayout(pairedRow, BoxLayout.X_AXIS));
+		pairedRow.setOpaque(false);
+		pairedRow.setAlignmentX(JComponent.LEFT_ALIGNMENT);
+		pairedRow.add(createEquipmentGroupPanel("Założone wyposażenie", "", displayed));
+		pairedRow.add(Box.createHorizontalStrut(EQUIPMENT_COLUMN_GAP));
+		pairedRow.add(createEquipmentGroupPanel("Schowek", "_set", displayed));
+		equipmentContent.add(pairedRow);
 
 		final JComponent extras = createAdditionalEquipment(displayed);
 		if (extras != null) {
+			equipmentContent.add(Box.createVerticalStrut(12));
 			equipmentContent.add(createGroupPanel("Dodatkowe sloty", extras));
-		} else if (equipmentContent.getComponentCount() <= 2) {
+		} else {
+			equipmentContent.add(Box.createVerticalStrut(12));
 			equipmentContent.add(createGroupPanel("Dodatkowe sloty", createPlaceholderPanel("Brak dodatkowych slotów.")));
 		}
 	}
@@ -423,7 +442,7 @@ setMinimumSize(new Dimension(680, 520));
 		constraints.insets = new Insets(4, 4, 4, 4);
 		constraints.anchor = GridBagConstraints.CENTER;
 
-	int index = 0;
+		int index = 0;
 		for (InspectData.Item item : slot.getItems()) {
 			constraints.gridx = index % columns;
 			constraints.gridy = index / columns;
@@ -451,14 +470,23 @@ setMinimumSize(new Dimension(680, 520));
 		return panel;
 	}
 
+	private JComponent createEquipmentGroupPanel(final String title, final String suffix, final Set<String> displayed) {
+		final JPanel group = createGroupPanel(title, createEquipmentMatrix(suffix, displayed));
+		group.setAlignmentY(JComponent.TOP_ALIGNMENT);
+		final Dimension preferred = group.getPreferredSize();
+		group.setMaximumSize(new Dimension(preferred.width, Integer.MAX_VALUE));
+		return group;
+	}
+
 	private JComponent createEquipmentMatrix(final String suffix, final Set<String> displayed) {
 		final JPanel row = new JPanel();
 		row.setLayout(new BoxLayout(row, BoxLayout.X_AXIS));
 		row.setOpaque(false);
+		row.setAlignmentY(JComponent.TOP_ALIGNMENT);
 		row.add(createEquipmentColumn(EQUIPMENT_LEFT_COLUMN, suffix, displayed, true));
-		row.add(Box.createHorizontalStrut(16));
+		row.add(Box.createHorizontalStrut(EQUIPMENT_COLUMN_GAP));
 		row.add(createEquipmentColumn(EQUIPMENT_MIDDLE_COLUMN, suffix, displayed, false));
-		row.add(Box.createHorizontalStrut(16));
+		row.add(Box.createHorizontalStrut(EQUIPMENT_COLUMN_GAP));
 		row.add(createEquipmentColumn(EQUIPMENT_RIGHT_COLUMN, suffix, displayed, true));
 		return row;
 	}
@@ -467,15 +495,12 @@ setMinimumSize(new Dimension(680, 520));
 		final JPanel column = new JPanel();
 		column.setLayout(new BoxLayout(column, BoxLayout.Y_AXIS));
 		column.setOpaque(false);
+		column.setAlignmentY(JComponent.TOP_ALIGNMENT);
 		if (handShift) {
-			column.add(Box.createVerticalStrut(ITEM_SLOT_SIZE.height / 2));
+			column.add(Box.createVerticalStrut(EQUIPMENT_HAND_SHIFT));
 		}
 		for (final String baseSlot : slots) {
 			column.add(createEquipmentSlotComponent(baseSlot, suffix, displayed));
-			column.add(Box.createVerticalStrut(8));
-		}
-		if (column.getComponentCount() > 0) {
-			column.remove(column.getComponentCount() - 1);
 		}
 		return column;
 	}
@@ -488,7 +513,8 @@ setMinimumSize(new Dimension(680, 520));
 		}
 		final JPanel panel = new JPanel(new BorderLayout());
 		panel.setOpaque(false);
-		panel.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+		panel.setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
+		panel.setAlignmentY(JComponent.TOP_ALIGNMENT);
 
 		final String labelText = resolveEquipmentLabel(baseSlot, suffix);
 		JComponent content;
@@ -552,36 +578,36 @@ setMinimumSize(new Dimension(680, 520));
 
 	private String fallbackEquipmentLabel(final String slotName) {
 		switch (slotName) {
-		case "rhand":
+			case "rhand":
 			return "Broń prawa";
-		case "lhand":
+			case "lhand":
 			return "Broń lewa";
-		case "neck":
+			case "neck":
 			return "Naszyjnik";
-		case "head":
+			case "head":
 			return "Hełm";
-		case "armor":
+			case "armor":
 			return "Zbroja";
-		case "legs":
+			case "legs":
 			return "Spodnie";
-		case "feet":
+			case "feet":
 			return "Buty";
-		case "finger":
+			case "finger":
 			return "Pierścień";
-		case "fingerb":
+			case "fingerb":
 			return "Pierścień (lewy)";
-		case "glove":
+			case "glove":
 			return "Rękawice";
-		case "cloak":
+			case "cloak":
 			return "Płaszcz";
-		case "pas":
-		case "belt":
+			case "pas":
+			case "belt":
 			return "Pas";
-		case "pouch":
+			case "pouch":
 			return "Mieszek";
-		case "back":
+			case "back":
 			return "Plecy";
-		default:
+			default:
 			return slotName;
 		}
 	}
@@ -802,6 +828,8 @@ setMinimumSize(new Dimension(680, 520));
 			this.sprite = sprite;
 			this.quantity = quantity;
 			setPreferredSize(ITEM_SLOT_SIZE);
+			setMinimumSize(ITEM_SLOT_SIZE);
+			setMaximumSize(ITEM_SLOT_SIZE);
 			setToolTipText(tooltip);
 			setOpaque(false);
 		}
@@ -812,10 +840,16 @@ setMinimumSize(new Dimension(680, 520));
 			final int width = getWidth();
 			final int height = getHeight();
 
-			graphics.setColor(new Color(255, 255, 255, 40));
-			graphics.fillRoundRect(0, 0, width - 1, height - 1, 10, 10);
-			graphics.setColor(new Color(140, 110, 70));
-			graphics.drawRoundRect(0, 0, width - 1, height - 1, 10, 10);
+			if (SLOT_BACKGROUND != null) {
+				final int backgroundX = (width - SLOT_BACKGROUND.getWidth()) / 2;
+				final int backgroundY = (height - SLOT_BACKGROUND.getHeight()) / 2;
+				SLOT_BACKGROUND.draw(graphics, backgroundX, backgroundY);
+			} else {
+				graphics.setColor(new Color(255, 255, 255, 40));
+				graphics.fillRoundRect(0, 0, width - 1, height - 1, 10, 10);
+				graphics.setColor(new Color(140, 110, 70));
+				graphics.drawRoundRect(0, 0, width - 1, height - 1, 10, 10);
+			}
 
 			if (sprite != null) {
 				final int imageX = (width - sprite.getWidth()) / 2;
@@ -832,9 +866,9 @@ setMinimumSize(new Dimension(680, 520));
 				final int boxHeight = metrics.getHeight();
 				final int boxX = width - boxWidth - 4;
 				final int boxY = height - boxHeight - 4;
-				graphics.setColor(new Color(20, 20, 20, 170));
+				graphics.setColor(QUANTITY_BACKGROUND);
 				graphics.fillRoundRect(boxX, boxY, boxWidth, boxHeight, 8, 8);
-				graphics.setColor(Color.WHITE);
+				graphics.setColor(QUANTITY_TEXT);
 				final int textX = boxX + (boxWidth - metrics.stringWidth(text)) / 2;
 				final int textY = boxY + metrics.getAscent();
 				graphics.drawString(text, textX, textY);
