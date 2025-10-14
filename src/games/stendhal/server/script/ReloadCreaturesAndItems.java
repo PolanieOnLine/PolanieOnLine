@@ -17,9 +17,9 @@ import games.stendhal.server.entity.npc.behaviour.journal.MerchantsRegister;
 import games.stendhal.server.entity.npc.behaviour.journal.ProducerRegister;
 import games.stendhal.server.entity.npc.shop.ShopType;
 import games.stendhal.server.entity.npc.shop.ShopsList;
-import marauroa.server.game.resource.Reloadable;
-import marauroa.server.game.resource.ResourceProvider;
-import marauroa.server.game.resource.ResourceReloadService;
+import marauroa.common.resource.Reloadable;
+import marauroa.common.resource.ResourceProvider;
+import marauroa.common.resource.ResourceReloadService;
 
 public class ReloadCreaturesAndItems extends ScriptImpl {
 	private static final Logger LOGGER = Logger.getLogger(ReloadCreaturesAndItems.class);
