@@ -83,7 +83,7 @@ public final class InspectWindowManager {
 
 		if (window.getParent() == null) {
 			ui.addWindow(window);
-			window.center();
+			window.centerOnScreen();
 		}
 
 		window.setVisible(true);

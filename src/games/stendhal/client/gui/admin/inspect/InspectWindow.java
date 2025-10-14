@@ -81,10 +81,10 @@ public final class InspectWindow extends InternalManagedWindow {
 
 	private final JTabbedPane tabs;
 
-	public InspectWindow() {
-		super("admin_inspect", "Inspekcja gracza");
-		setPreferredSize(new Dimension(820, 640));
-		setMinimumSize(new Dimension(680, 520));
+public InspectWindow() {
+super("admin_inspect", "Inspekcja gracza");
+setPreferredSize(new Dimension(820, 640));
+setMinimumSize(new Dimension(680, 520));
 
 		final JPanel root = new JPanel(new BorderLayout(10, 10));
 		root.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -176,6 +176,10 @@ public final class InspectWindow extends InternalManagedWindow {
 		tabs.addTab("Runy", wrapScroll(runeContent));
 
 		showPlaceholderTabs();
+	}
+
+	public void centerOnScreen() {
+		super.center();
 	}
 
 	public void updateData(final InspectData newData) {
