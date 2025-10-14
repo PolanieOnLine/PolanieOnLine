@@ -14,7 +14,6 @@ package games.stendhal.client.gui.admin.inspect;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
@@ -51,6 +50,10 @@ import games.stendhal.client.sprite.SpriteStore;
 public final class InspectWindow extends InternalManagedWindow {
 	private static final long serialVersionUID = 1L;
 	private static final Dimension ITEM_SLOT_SIZE = new Dimension(48, 48);
+	private static final int BASE_ITEM_FRAME_SIZE = 32;
+	private static final String[] EQUIPMENT_LEFT_COLUMN = { "neck", "rhand", "finger", "fingerb" };
+	private static final String[] EQUIPMENT_MIDDLE_COLUMN = { "head", "armor", "pas", "legs", "feet" };
+	private static final String[] EQUIPMENT_RIGHT_COLUMN = { "cloak", "lhand", "glove", "pouch" };
 	private static final String LINE_SEPARATOR = System.lineSeparator();
 
 	private InspectData data;
@@ -152,7 +155,8 @@ setMinimumSize(new Dimension(680, 520));
 
 		tabs.addTab("Przegląd", wrapScroll(overviewContent));
 
-		equipmentContent = new JPanel(new java.awt.GridLayout(0, 4, 8, 8));
+		equipmentContent = new JPanel();
+		equipmentContent.setLayout(new BoxLayout(equipmentContent, BoxLayout.Y_AXIS));
 		equipmentContent.setOpaque(false);
 		tabs.addTab("Wyposażenie", wrapScroll(equipmentContent));
 
@@ -286,23 +290,20 @@ setMinimumSize(new Dimension(680, 520));
 	private void updateEquipment() {
 		equipmentContent.removeAll();
 
-		final List<String> order = data.getEquipmentOrder();
-		final Set<String> handled = new HashSet<String>();
-		for (String slotName : order) {
-			final InspectData.Slot slot = data.getSlot(slotName);
-			if (slot != null) {
-				equipmentContent.add(createSlotCard(slot));
-				handled.add(slot.getName());
-			}
-		}
-		for (InspectData.Slot slot : data.getSlotsByCategory("equipment")) {
-			if (!handled.contains(slot.getName())) {
-				equipmentContent.add(createSlotCard(slot));
-			}
-		}
+		final Set<String> displayed = new HashSet<String>();
+		final JComponent worn = createEquipmentMatrix("", displayed);
+		equipmentContent.add(createGroupPanel("Założone wyposażenie", worn));
+		equipmentContent.add(Box.createVerticalStrut(12));
 
-		if (equipmentContent.getComponentCount() == 0) {
-			equipmentContent.add(createPlaceholderLabel("Brak wyposażenia."));
+		final JComponent reserve = createEquipmentMatrix("_set", displayed);
+		equipmentContent.add(createGroupPanel("Schowek", reserve));
+		equipmentContent.add(Box.createVerticalStrut(12));
+
+		final JComponent extras = createAdditionalEquipment(displayed);
+		if (extras != null) {
+			equipmentContent.add(createGroupPanel("Dodatkowe sloty", extras));
+		} else if (equipmentContent.getComponentCount() <= 2) {
+			equipmentContent.add(createGroupPanel("Dodatkowe sloty", createPlaceholderPanel("Brak dodatkowych slotów.")));
 		}
 	}
 
@@ -335,7 +336,6 @@ setMinimumSize(new Dimension(680, 520));
 		final List<InspectData.Slot> slots = new LinkedList<InspectData.Slot>();
 		slots.addAll(data.getSlotsByCategory("bag"));
 		slots.addAll(data.getSlotsByCategory("container"));
-		slots.addAll(data.getSlotsByCategory("reserve"));
 		slots.addAll(data.getSlotsByCategory("other"));
 
 		if (slots.isEmpty()) {
@@ -371,10 +371,10 @@ setMinimumSize(new Dimension(680, 520));
 		final GridBagConstraints constraints = new GridBagConstraints();
 		constraints.insets = new Insets(2, 6, 2, 6);
 		constraints.anchor = GridBagConstraints.LINE_START;
-		constraints.gridy = 0;
 
 		if (source == null || source.isEmpty()) {
 			constraints.gridx = 0;
+			constraints.gridy = 0;
 			panel.add(new JLabel(emptyMessage), constraints);
 			return;
 		}
@@ -382,12 +382,20 @@ setMinimumSize(new Dimension(680, 520));
 		final List<Map.Entry<String, String>> entries = new ArrayList<Map.Entry<String, String>>(source.entrySet());
 		Collections.sort(entries, (left, right) -> left.getKey().compareToIgnoreCase(right.getKey()));
 
-		for (Map.Entry<String, String> entry : entries) {
-			constraints.gridx = 0;
-			panel.add(new JLabel(entry.getKey() + ":"), constraints);
-			constraints.gridx = 1;
-			panel.add(new JLabel(entry.getValue()), constraints);
-			constraints.gridy++;
+		final int entryCount = entries.size();
+		final int columns = Math.max(1, Math.min(3, (entryCount + 4) / 5));
+		final int rows = (int) Math.ceil(entryCount / (double) columns);
+
+		int index = 0;
+		for (int row = 0; row < rows; row++) {
+			for (int column = 0; column < columns && index < entryCount; column++) {
+				final Map.Entry<String, String> entry = entries.get(index++);
+				constraints.gridx = column * 2;
+				constraints.gridy = row;
+				panel.add(new JLabel(entry.getKey() + ":"), constraints);
+				constraints.gridx = column * 2 + 1;
+				panel.add(new JLabel(entry.getValue()), constraints);
+			}
 		}
 	}
 
@@ -397,19 +405,30 @@ setMinimumSize(new Dimension(680, 520));
 		final JLabel title = new JLabel(resolveSlotLabel(slot), SwingConstants.CENTER);
 		title.setFont(title.getFont().deriveFont(Font.BOLD));
 		card.add(title, BorderLayout.NORTH);
-		card.add(createItemsFlow(slot), BorderLayout.CENTER);
+		card.add(createItemsGrid(slot), BorderLayout.CENTER);
 		return card;
 	}
 
-	private JPanel createItemsFlow(final InspectData.Slot slot) {
-		final JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT, 6, 6));
+	private JPanel createItemsGrid(final InspectData.Slot slot) {
+		final JPanel panel = new JPanel(new GridBagLayout());
 		panel.setOpaque(false);
 		if (slot.getItems().isEmpty()) {
 			panel.add(createPlaceholderLabel("Puste"));
 			return panel;
 		}
+
+		final int total = slot.getItems().size();
+		final int columns = Math.max(1, Math.min(6, (int) Math.ceil(Math.sqrt(total))));
+		final GridBagConstraints constraints = new GridBagConstraints();
+		constraints.insets = new Insets(4, 4, 4, 4);
+		constraints.anchor = GridBagConstraints.CENTER;
+
+	int index = 0;
 		for (InspectData.Item item : slot.getItems()) {
-			panel.add(createItemComponent(item));
+			constraints.gridx = index % columns;
+			constraints.gridy = index / columns;
+			panel.add(createItemComponent(item), constraints);
+			index++;
 		}
 		return panel;
 	}
@@ -420,7 +439,7 @@ setMinimumSize(new Dimension(680, 520));
 		panel.setOpaque(false);
 
 		panel.add(Box.createVerticalStrut(4));
-		panel.add(createItemsFlow(slot));
+		panel.add(createItemsGrid(slot));
 
 		if (!slot.getRaw().isEmpty()) {
 			panel.add(Box.createVerticalStrut(8));
@@ -430,6 +449,164 @@ setMinimumSize(new Dimension(680, 520));
 			}
 		}
 		return panel;
+	}
+
+	private JComponent createEquipmentMatrix(final String suffix, final Set<String> displayed) {
+		final JPanel row = new JPanel();
+		row.setLayout(new BoxLayout(row, BoxLayout.X_AXIS));
+		row.setOpaque(false);
+		row.add(createEquipmentColumn(EQUIPMENT_LEFT_COLUMN, suffix, displayed, true));
+		row.add(Box.createHorizontalStrut(16));
+		row.add(createEquipmentColumn(EQUIPMENT_MIDDLE_COLUMN, suffix, displayed, false));
+		row.add(Box.createHorizontalStrut(16));
+		row.add(createEquipmentColumn(EQUIPMENT_RIGHT_COLUMN, suffix, displayed, true));
+		return row;
+	}
+
+	private JComponent createEquipmentColumn(final String[] slots, final String suffix, final Set<String> displayed, final boolean handShift) {
+		final JPanel column = new JPanel();
+		column.setLayout(new BoxLayout(column, BoxLayout.Y_AXIS));
+		column.setOpaque(false);
+		if (handShift) {
+			column.add(Box.createVerticalStrut(ITEM_SLOT_SIZE.height / 2));
+		}
+		for (final String baseSlot : slots) {
+			column.add(createEquipmentSlotComponent(baseSlot, suffix, displayed));
+			column.add(Box.createVerticalStrut(8));
+		}
+		if (column.getComponentCount() > 0) {
+			column.remove(column.getComponentCount() - 1);
+		}
+		return column;
+	}
+
+	private JComponent createEquipmentSlotComponent(final String baseSlot, final String suffix, final Set<String> displayed) {
+		final String slotName = baseSlot + suffix;
+		final InspectData.Slot slot = data.getSlot(slotName);
+		if (slot != null) {
+			displayed.add(slotName);
+		}
+		final JPanel panel = new JPanel(new BorderLayout());
+		panel.setOpaque(false);
+		panel.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
+
+		final String labelText = resolveEquipmentLabel(baseSlot, suffix);
+		JComponent content;
+		if (slot != null && !slot.getItems().isEmpty()) {
+			content = createItemComponent(slot.getItems().get(0));
+		} else {
+			content = new ItemSlotComponent(null, 0, labelText + " (puste)");
+		}
+		panel.add(centerComponent(content), BorderLayout.CENTER);
+
+		final JLabel label = new JLabel(labelText, SwingConstants.CENTER);
+		label.setFont(label.getFont().deriveFont(Font.BOLD, 11f));
+		panel.add(label, BorderLayout.SOUTH);
+		return panel;
+	}
+
+	private JComponent createAdditionalEquipment(final Set<String> displayed) {
+		final List<InspectData.Slot> extras = new LinkedList<InspectData.Slot>();
+		for (final String slotName : data.getEquipmentOrder()) {
+			if (!displayed.contains(slotName)) {
+				final InspectData.Slot slot = data.getSlot(slotName);
+				if (slot != null && !displayed.contains(slot.getName())) {
+					extras.add(slot);
+					displayed.add(slot.getName());
+				}
+			}
+		}
+		for (final InspectData.Slot slot : data.getSlotsByCategory("equipment")) {
+			if (!displayed.contains(slot.getName())) {
+				extras.add(slot);
+			}
+		}
+		if (extras.isEmpty()) {
+			return null;
+		}
+		final JPanel panel = new JPanel();
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		panel.setOpaque(false);
+		for (final InspectData.Slot slot : extras) {
+			panel.add(createSlotCard(slot));
+			panel.add(Box.createVerticalStrut(8));
+		}
+		if (panel.getComponentCount() > 0) {
+			panel.remove(panel.getComponentCount() - 1);
+		}
+		return panel;
+	}
+
+	private String resolveEquipmentLabel(final String baseSlot, final String suffix) {
+		final String slotName = baseSlot + suffix;
+		final InspectData.Slot slot = data.getSlot(slotName);
+		if (slot != null && slot.getLabel() != null && !slot.getLabel().equals(slot.getName())) {
+			return slot.getLabel();
+		}
+		final InspectData.Slot base = data.getSlot(baseSlot);
+		if (base != null && base.getLabel() != null) {
+			return base.getLabel();
+		}
+		return fallbackEquipmentLabel(baseSlot);
+	}
+
+	private String fallbackEquipmentLabel(final String slotName) {
+		switch (slotName) {
+		case "rhand":
+			return "Broń prawa";
+		case "lhand":
+			return "Broń lewa";
+		case "neck":
+			return "Naszyjnik";
+		case "head":
+			return "Hełm";
+		case "armor":
+			return "Zbroja";
+		case "legs":
+			return "Spodnie";
+		case "feet":
+			return "Buty";
+		case "finger":
+			return "Pierścień";
+		case "fingerb":
+			return "Pierścień (lewy)";
+		case "glove":
+			return "Rękawice";
+		case "cloak":
+			return "Płaszcz";
+		case "pas":
+		case "belt":
+			return "Pas";
+		case "pouch":
+			return "Mieszek";
+		case "back":
+			return "Plecy";
+		default:
+			return slotName;
+		}
+	}
+
+	private JComponent centerComponent(final JComponent component) {
+		final JPanel wrapper = new JPanel(new GridBagLayout());
+		wrapper.setOpaque(false);
+		final GridBagConstraints constraints = new GridBagConstraints();
+		constraints.anchor = GridBagConstraints.CENTER;
+		wrapper.add(component, constraints);
+		return wrapper;
+	}
+
+	private Sprite normalizeSprite(final Sprite sprite) {
+		if (sprite == null) {
+			return null;
+		}
+		final int width = sprite.getWidth();
+		final int height = sprite.getHeight();
+		final int regionWidth = Math.min(width, BASE_ITEM_FRAME_SIZE);
+		final int regionHeight = Math.min(height, BASE_ITEM_FRAME_SIZE);
+		if (width > BASE_ITEM_FRAME_SIZE || height > BASE_ITEM_FRAME_SIZE) {
+			return sprite.createRegion(0, 0, regionWidth, regionHeight, sprite.getReference());
+		}
+		return sprite;
 	}
 
 	private JComponent createItemComponent(final InspectData.Item item) {
@@ -481,7 +658,7 @@ setMinimumSize(new Dimension(680, 520));
 		if (sprite == null) {
 			sprite = store.getFailsafe();
 		}
-		return sprite;
+		return normalizeSprite(sprite);
 	}
 
 	private void fillQuestArea(final JTextArea area, final List<InspectData.QuestEntry> entries, final String emptyMessage) {
