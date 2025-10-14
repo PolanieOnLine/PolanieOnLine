@@ -24,7 +24,7 @@ import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.item.Item;
-import games.stendhal.server.entity.mapstuff.chest.StoredChest;
+import games.stendhal.server.entity.mapstuff.chest.Chest;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -112,6 +112,17 @@ public class PrinceSupply extends AbstractQuest {
 			ConversationStates.ATTENDING,
 			"Rozumiem. Jednak bez bohaterów takich jak Ty moje królestwo wiele traci.",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -5.0));
+	}
+
+	private static void removeAllQuestChests() {
+		final StendhalRPZone zone = SingletonRepository.getRPWorld().getZone("int_warszawa_armory");
+		final List<Entity> chestsToRemove = new ArrayList<Entity>();
+		for (Entity entity : zone.getEntitiesOfClass(PrinceArmoryChest.class)) {
+			chestsToRemove.add(entity);
+		}
+		for (Entity entity : chestsToRemove) {
+			zone.remove(entity.getID());
+		}
 	}
 
 	private void prepareBringingStep() {
@@ -280,12 +291,14 @@ public class PrinceSupply extends AbstractQuest {
 		}
 	}
 
-	private static class PrinceArmoryChest extends StoredChest {
+	private static class PrinceArmoryChest extends Chest {
 		private final String ownerName;
+		private Player attending;
 
 		PrinceArmoryChest(final Player owner) {
 			super();
 			this.ownerName = owner.getName();
+			this.attending = null;
 			super.removeSlot("content");
 			super.addSlot(new OwnerLockedChestSlot(this));
 			setDescription("Na skrzyni widnieje pieczęć Księcia i imię " + ownerName + ".");
@@ -295,13 +308,28 @@ public class PrinceSupply extends AbstractQuest {
 			return ownerName.equals(player.getName());
 		}
 
+		private boolean isAttendedBy(final Player player) {
+			return attending == player;
+		}
+
+		@Override
+		public void close() {
+			attending = null;
+			super.close();
+		}
+
 		@Override
 		public boolean onUsed(final RPEntity user) {
 			if (user instanceof Player) {
 				final Player player = (Player) user;
 				if (!isOwnedBy(player)) {
-					player.sendPrivateText("Pieczęć na skrzyni żarzy się, odpychając Twoje dłonie. To wyposażenie należy do " + ownerName + ".");
-					return false;
+				        player.sendPrivateText("Pieczęć na skrzyni żarzy się, odpychając Twoje dłonie. To wyposażenie należy do " + ownerName + ".");
+				        return false;
+				}
+				if (!isOpen()) {
+				        attending = player;
+				} else {
+				        attending = null;
 				}
 			}
 			return super.onUsed(user);
@@ -315,12 +343,16 @@ public class PrinceSupply extends AbstractQuest {
 			@Override
 			public boolean isReachableForTakingThingsOutOfBy(final Entity entity) {
 				if (!(entity instanceof Player)) {
-					return false;
+				        return false;
 				}
 				final Player player = (Player) entity;
 				if (!isOwnedBy(player)) {
-					setErrorMessage("Pieczęć na skrzyni chroni zapasy przed niepowołanymi dłońmi.");
-					return false;
+				        setErrorMessage("Pieczęć na skrzyni chroni zapasy przed niepowołanymi dłońmi.");
+				        return false;
+				}
+				if (!isAttendedBy(player)) {
+				        setErrorMessage("Skrzynia reaguje tylko na dotyk właściciela, który ją obecnie otworzył.");
+				        return false;
 				}
 				return super.isReachableForTakingThingsOutOfBy(entity);
 			}
@@ -328,6 +360,7 @@ public class PrinceSupply extends AbstractQuest {
 	}
 	@Override
 	public void addToWorld() {
+		removeAllQuestChests();
 		fillQuestInfo(
 				"Odbicie Arsenału",
 				"Książęca armia musi odbić swój arsenał z rąk buntowników.",
