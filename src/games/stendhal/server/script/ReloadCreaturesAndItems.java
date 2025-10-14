@@ -1,10 +1,23 @@
 package games.stendhal.server.script;
 
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.apache.log4j.Logger;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
 
 import games.stendhal.server.core.config.ProductionGroupsXMLLoader;
 import games.stendhal.server.core.config.ShopGroupsXMLLoader;
@@ -26,6 +39,8 @@ public class ReloadCreaturesAndItems extends ScriptImpl {
 
 	private static final ResourceReloadService RELOAD_SERVICE;
 	private static final Reloadable RELOADABLE;
+	private static final String CREATURES_INDEX = "data/conf/creatures.xml";
+	private static final String ITEMS_INDEX = "data/conf/items.xml";
 
 	static {
 		ResourceReloadService service = null;
@@ -79,6 +94,7 @@ public class ReloadCreaturesAndItems extends ScriptImpl {
 	}
 
 	private static void performReload() throws Exception {
+		touchResourcesFromFileSystem();
 		resetShopCaches();
 		resetProductionCaches();
 		final DefaultEntityManager refreshed = new DefaultEntityManager();
@@ -128,12 +144,95 @@ public class ReloadCreaturesAndItems extends ScriptImpl {
 	private static final class CreaturesAndItemsReloadable implements Reloadable {
 		@Override
 		public String resourcePath() {
-			return "data/conf";
+			return CREATURES_INDEX;
 		}
 
 		@Override
 		public void reload(final ResourceProvider provider) throws Exception {
+			touchResourcesFromProvider(provider);
 			performReload();
+		}
+	}
+
+	private static void touchResourcesFromProvider(final ResourceProvider provider) throws Exception {
+		final Set<String> resources = new LinkedHashSet<String>();
+		resources.addAll(readGroupResources(provider, CREATURES_INDEX));
+		resources.addAll(readGroupResources(provider, ITEMS_INDEX));
+		for (final String resource : resources) {
+			try (InputStream ignored = provider.open(resource)) {
+				// opening the resource is enough to ensure the provider refreshes it
+			}
+		}
+	}
+
+	private static Set<String> readGroupResources(final ResourceProvider provider, final String indexResource) throws Exception {
+		final Set<String> resources = new LinkedHashSet<String>();
+		resources.add(normalizeResource(indexResource));
+		final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+		factory.setNamespaceAware(true);
+		final DocumentBuilder builder = factory.newDocumentBuilder();
+		try (InputStream in = provider.open(indexResource)) {
+			final Document doc = builder.parse(in);
+			final NodeList nodes = doc.getElementsByTagNameNS("*", "group");
+			for (int i = 0; i < nodes.getLength(); i++) {
+				final Element element = (Element) nodes.item(i);
+				final String uri = element.getAttribute("uri");
+				if (uri == null || uri.isEmpty()) {
+					continue;
+				}
+				final String resolved = resolveRelativePath(indexResource, uri);
+				resources.add(resolved);
+			}
+		}
+		return resources;
+	}
+
+	private static String resolveRelativePath(final String indexResource, final String uri) {
+		final Path base = Paths.get(indexResource).getParent();
+		final Path resolved = (base == null ? Paths.get(uri) : base.resolve(uri)).normalize();
+		return normalizeResource(resolved.toString());
+	}
+
+	private static String normalizeResource(final String resource) {
+		return resource.replace('\\', '/');
+	}
+
+	private static String normalizeResource(final Path resource) {
+		return normalizeResource(resource.normalize().toString());
+	}
+
+	private static void touchResourcesFromFileSystem() {
+		final Set<Path> resources = new LinkedHashSet<Path>();
+		resources.add(Paths.get(CREATURES_INDEX));
+		resources.add(Paths.get(ITEMS_INDEX));
+		resources.addAll(listXmlFiles(Paths.get(CREATURES_INDEX).getParent()));
+		resources.addAll(listXmlFiles(Paths.get(ITEMS_INDEX).getParent()));
+		for (final Path path : resources) {
+			if (path == null) {
+				continue;
+			}
+			if (Files.isRegularFile(path)) {
+				try (InputStream ignored = Files.newInputStream(path)) {
+					// best effort to ensure the JVM notices file timestamp updates
+				} catch (final Exception e) {
+					LOGGER.debug("Unable to touch resource on filesystem: " + path, e);
+				}
+			}
+		}
+	}
+
+	private static List<Path> listXmlFiles(final Path directory) {
+		if (directory == null || !Files.isDirectory(directory)) {
+			return new ArrayList<Path>();
+		}
+		try (final java.util.stream.Stream<Path> stream = Files.list(directory)) {
+			final List<Path> files = new ArrayList<Path>();
+			stream.filter(path -> Files.isRegularFile(path) && path.toString().endsWith(".xml"))
+			.forEach(files::add);
+			return files;
+		} catch (final Exception e) {
+			LOGGER.debug("Unable to list XML files under " + directory, e);
+			return new ArrayList<Path>();
 		}
 	}
 }
