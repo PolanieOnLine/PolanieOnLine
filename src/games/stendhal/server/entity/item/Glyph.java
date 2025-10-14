@@ -16,28 +16,20 @@ public class Glyph extends Item {
 		super(glyph);
 	}
 
-	private int getAttackBonus(final Player player) {
-		int atk = 0;
-		for (final Item equip: player.getAllEquippedGlyphs()) {
-			atk += equip.has("skill_atk") ? equip.getInt("skill_atk") : 0;
-		}
-		return atk;
+	private int getAttackBonus() {
+		return has("skill_atk") ? getInt("skill_atk") : 0;
 	}
 
-	private int getHealthBonus(final Player player) {
-		int hp = 0;
-		for (final Item equip: player.getAllEquippedGlyphs()) {
-			hp += equip.has("health") ? equip.getInt("health") : 0;
-		}
-		return hp;
+	private int getHealthBonus() {
+		return has("health") ? getInt("health") : 0;
 	}
 
 	@Override
 	public boolean onEquipped(final RPEntity entity, final String slot) {
 		if (entity instanceof Player) {
 			Player player = (Player) entity;
-			entity.setAtk(entity.getAtk() + getAttackBonus(player));
-			entity.setBaseHP(entity.getBaseHP() + getHealthBonus(player));
+			player.setAtk(player.getAtk() + getAttackBonus());
+			player.setBaseHP(player.getBaseHP() + getHealthBonus());
 		}
 
 		return super.onEquipped(entity, slot);
@@ -55,14 +47,18 @@ public class Glyph extends Item {
 	}
 
 	private void reduceHP(Player player) {
-		int reduceHP = player.getBaseHP() - getHealthBonus(player);
+		int healthBonus = getHealthBonus();
+		if (healthBonus == 0) {
+			return;
+		}
+		int reduceHP = Math.max(player.getBaseHP() - healthBonus, 0);
 		if (player.getHP() == player.getBaseHP() || player.getHP() > reduceHP) {
 			player.setHP(reduceHP);
 		}
 		player.setBaseHP(reduceHP);
 	}
-	
+
 	private void reduceAtk(Player player) {
-		player.setAtk(player.getAtk() - getAttackBonus(player));
+		player.setAtk(player.getAtk() - getAttackBonus());
 	}
 }
