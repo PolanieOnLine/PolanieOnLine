@@ -109,6 +109,8 @@ public final class InspectWindow extends InternalManagedWindow {
 	private final JLabel outfitExpiresValue;
 	private final JLabel outfitClassValue;
 	private final JLabel outfitWarningValue;
+	private final JLabel playtimeLabel;
+	private final JLabel hpSummaryLabel;
 
 	private final JPanel statsContent;
 	private final JPanel resistancesContent;
@@ -158,6 +160,16 @@ public final class InspectWindow extends InternalManagedWindow {
 
 		locationLabel = new JLabel();
 		headerPanel.add(locationLabel);
+
+		final JPanel summaryRow = new JPanel();
+		summaryRow.setLayout(new BoxLayout(summaryRow, BoxLayout.X_AXIS));
+		summaryRow.setOpaque(false);
+		playtimeLabel = new JLabel();
+		summaryRow.add(playtimeLabel);
+		summaryRow.add(Box.createHorizontalStrut(12));
+		hpSummaryLabel = new JLabel();
+		summaryRow.add(hpSummaryLabel);
+		headerPanel.add(summaryRow);
 
 		headerPanel.add(Box.createVerticalStrut(6));
 
@@ -251,16 +263,10 @@ public final class InspectWindow extends InternalManagedWindow {
 
 	private void updateHeader() {
 		final InspectData.EntityInfo entity = data.getEntity();
-		final StringBuilder nameBuilder = new StringBuilder();
-		if (entity.getTitle() != null) {
-			nameBuilder.append(entity.getTitle()).append(' ');
-		}
-		if (entity.getName() != null) {
-			nameBuilder.append(entity.getName());
-		} else {
-			nameBuilder.append("(nieznane)");
-		}
-		nameLabel.setText(nameBuilder.toString());
+		final Map<String, String> stats = data.getStats();
+		final String level = stats.get("level");
+		final String displayName = buildDisplayName(entity, level);
+		nameLabel.setText(displayName);
 
 		final StringBuilder classBuilder = new StringBuilder();
 		if (entity.getType() != null) {
@@ -278,6 +284,7 @@ public final class InspectWindow extends InternalManagedWindow {
 			}
 			classBuilder.append("Płeć: ").append(entity.getGender());
 		}
+
 		classLabel.setText(classBuilder.toString());
 
 		idLabel.setText("ID: " + safeValue(data.getId()));
@@ -285,10 +292,33 @@ public final class InspectWindow extends InternalManagedWindow {
 		final InspectData.Location location = data.getLocation();
 		final String zone = location.getZone() != null ? location.getZone() : "(brak strefy)";
 		locationLabel.setText("Lokacja: " + zone + " (" + location.getX() + ", " + location.getY() + ")");
+
+		playtimeLabel.setText(formatPlaytime(stats));
+		hpSummaryLabel.setText(formatHitpoints(stats));
 	}
 
 	private void updateStats() {
-		fillKeyValuePanel(statsContent, data.getStats(), "Brak statystyk do wyświetlenia.");
+		statsContent.removeAll();
+		final Map<String, String> stats = data.getStats();
+		final GridBagConstraints constraints = new GridBagConstraints();
+		constraints.insets = new Insets(2, 6, 2, 6);
+		constraints.anchor = GridBagConstraints.LINE_START;
+
+		int row = 0;
+		row = addStatRow(statsContent, constraints, row, "Poziom ATK", formatLevelWithXp(stats, "atk", "atkXp"));
+		row = addStatRow(statsContent, constraints, row, "Poziom RATK", formatLevelWithXp(stats, "ratk", "ratkXp"));
+		row = addStatRow(statsContent, constraints, row, "Poziom DEF", formatLevelWithXp(stats, "def", "defXp"));
+		row = addStatRow(statsContent, constraints, row, "Poziom górnictwa", formatLevelWithXp(stats, "mining", "miningXp"));
+		row = addStatRow(statsContent, constraints, row, "Suma PD", stats.get("xp"));
+		row = addStatRow(statsContent, constraints, row, "Karma", stats.get("karma"));
+		row = addStatRow(statsContent, constraints, row, "Odporność", stats.get("resistance"));
+		row = addStatRow(statsContent, constraints, row, "Widoczność", stats.get("visibility"));
+
+		if (row == 0) {
+			constraints.gridx = 0;
+			constraints.gridy = 0;
+			statsContent.add(new JLabel("Brak statystyk do wyświetlenia."), constraints);
+		}
 	}
 
 	private void updateResistances() {
@@ -850,6 +880,110 @@ public final class InspectWindow extends InternalManagedWindow {
 
 	private String safeValue(final String value) {
 		return value != null ? value : "—";
+	}
+
+	private int addStatRow(final JPanel panel, final GridBagConstraints constraints, final int row, final String label, final String value) {
+		if (!hasText(value)) {
+			return row;
+		}
+		constraints.gridx = 0;
+		constraints.gridy = row;
+		panel.add(new JLabel(label + ':'), constraints);
+		constraints.gridx = 1;
+		panel.add(new JLabel(value), constraints);
+		return row + 1;
+	}
+
+	private String formatLevelWithXp(final Map<String, String> stats, final String levelKey, final String xpKey) {
+		final String level = stats.get(levelKey);
+		final String xp = stats.get(xpKey);
+		if (!hasText(level) && !hasText(xp)) {
+			return null;
+		}
+		final StringBuilder builder = new StringBuilder();
+		if (hasText(level)) {
+			builder.append(level);
+		}
+		if (hasText(xp)) {
+			if (builder.length() > 0) {
+				builder.append(' ');
+			}
+			builder.append('(').append(xp).append(" XP)");
+		}
+		return builder.toString();
+	}
+
+	private String buildDisplayName(final InspectData.EntityInfo entity, final String level) {
+		final String name = entity.getName();
+		final String title = entity.getTitle();
+		final StringBuilder builder = new StringBuilder();
+		if (hasText(title) && !equalsIgnoreCase(title, name)) {
+			builder.append(title.trim()).append(' ');
+		}
+		if (hasText(name)) {
+			builder.append(name.trim());
+		} else {
+			builder.append("(nieznane)");
+		}
+		if (hasText(level)) {
+			builder.append(" · Lv. ").append(level.trim());
+		}
+		return builder.toString();
+	}
+
+	private String formatPlaytime(final Map<String, String> stats) {
+		final int minutes = parseInt(stats, "age");
+		if (minutes <= 0) {
+			return "Czas gry: —";
+		}
+		final int hours = minutes / 60;
+		final int remainingMinutes = minutes % 60;
+		if (remainingMinutes == 0) {
+			return "Czas gry: " + hours + " h";
+		}
+		return "Czas gry: " + hours + " h " + remainingMinutes + " min";
+	}
+
+	private String formatHitpoints(final Map<String, String> stats) {
+		final String hp = stats.get("hp");
+		final String base = stats.get("hpBase");
+		if (hasText(hp) && hasText(base)) {
+			return "PZ: " + hp + " / " + base;
+		}
+		if (hasText(hp)) {
+			return "PZ: " + hp;
+		}
+		if (hasText(base)) {
+			return "PZ: " + base;
+		}
+		return "PZ: —";
+	}
+
+	private int parseInt(final Map<String, String> stats, final String key) {
+		final String value = stats.get(key);
+		if (!hasText(value)) {
+			return 0;
+		}
+		try {
+			return Integer.parseInt(value.trim());
+		} catch (final NumberFormatException exception) {
+			try {
+				return (int) Double.parseDouble(value.trim());
+			} catch (final NumberFormatException ignored) {
+				return 0;
+			}
+		}
+	}
+
+	private boolean hasText(final String value) {
+		return value != null && !value.trim().isEmpty();
+	}
+
+	private boolean equalsIgnoreCase(final String left, final String right) {
+		if (left == null || right == null) {
+			return false;
+		}
+		return left.trim().equalsIgnoreCase(right.trim());
 	}
 
 	private JPanel wrapInPanel(final JComponent component) {
