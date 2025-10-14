@@ -9,6 +9,7 @@ import marauroa.common.game.RPObject;
 public class Glyph extends Item {
 	private static final String ATTRIBUTE_ATTACK = "skill_atk";
 	private static final String ATTRIBUTE_ATTACK_ALIAS = "atk";
+	private static final String ATTRIBUTE_DEFENSE = "def";
 	private static final String ATTRIBUTE_HEALTH = "health";
 
 	public Glyph(final String name, final String clazz, final String subclass,
@@ -25,6 +26,7 @@ public class Glyph extends Item {
 		if (entity instanceof Player) {
 			Player player = (Player) entity;
 			applyAttackBonus(player);
+			applyDefenseBonus(player);
 			applyHealthBonus(player);
 		}
 
@@ -37,35 +39,38 @@ public class Glyph extends Item {
 		if (entity instanceof Player) {
 			Player player = (Player) entity;
 			reduceAtk(player);
+			reduceDefense(player);
 			reduceHP(player);
 		}
 		return super.onUnequipped();
 	}
 
-	private int getAttackBonus() {
-		if (has(ATTRIBUTE_ATTACK)) {
-			return getInt(ATTRIBUTE_ATTACK);
-		}
-		if (has(ATTRIBUTE_ATTACK_ALIAS)) {
-			return getInt(ATTRIBUTE_ATTACK_ALIAS);
-		}
-		return 0;
-	}
-
-	private int getHealthBonus() {
-		return has(ATTRIBUTE_HEALTH) ? getInt(ATTRIBUTE_HEALTH) : 0;
+	private int getIntAttribute(final String attributeName) {
+		return has(attributeName) ? getInt(attributeName) : 0;
 	}
 
 	private void applyAttackBonus(final Player player) {
-		int attackBonus = getAttackBonus();
-		if (attackBonus == 0) {
+		int skillAttackBonus = getIntAttribute(ATTRIBUTE_ATTACK);
+		if (skillAttackBonus != 0) {
+			player.setAtk(player.getAtk() + skillAttackBonus);
+		}
+
+		int attackBonus = getIntAttribute(ATTRIBUTE_ATTACK_ALIAS);
+		if (attackBonus != 0) {
+			player.setAtk(player.getAtk() + attackBonus);
+		}
+	}
+
+	private void applyDefenseBonus(final Player player) {
+		int defenseBonus = getIntAttribute(ATTRIBUTE_DEFENSE);
+		if (defenseBonus == 0) {
 			return;
 		}
-		player.setAtk(player.getAtk() + attackBonus);
+		player.setDef(player.getDef() + defenseBonus);
 	}
 
 	private void applyHealthBonus(final Player player) {
-		int healthBonus = getHealthBonus();
+		int healthBonus = getIntAttribute(ATTRIBUTE_HEALTH);
 		if (healthBonus == 0) {
 			return;
 		}
@@ -73,15 +78,28 @@ public class Glyph extends Item {
 	}
 
 	private void reduceAtk(final Player player) {
-		int attackBonus = getAttackBonus();
-		if (attackBonus == 0) {
+		int skillAttackBonus = getIntAttribute(ATTRIBUTE_ATTACK);
+		if (skillAttackBonus != 0) {
+			player.setAtk(player.getAtk() - skillAttackBonus);
+		}
+
+		int attackBonus = getIntAttribute(ATTRIBUTE_ATTACK_ALIAS);
+		if (attackBonus != 0) {
+			player.setAtk(player.getAtk() - attackBonus);
+		}
+	}
+
+	private void reduceDefense(final Player player) {
+		int defenseBonus = getIntAttribute(ATTRIBUTE_DEFENSE);
+		if (defenseBonus == 0) {
 			return;
 		}
-		player.setAtk(player.getAtk() - attackBonus);
+		int newDefense = player.getDef() - defenseBonus;
+		player.setDef(Math.max(newDefense, 0));
 	}
 
 	private void reduceHP(final Player player) {
-		int healthBonus = getHealthBonus();
+		int healthBonus = getIntAttribute(ATTRIBUTE_HEALTH);
 		if (healthBonus == 0) {
 			return;
 		}
