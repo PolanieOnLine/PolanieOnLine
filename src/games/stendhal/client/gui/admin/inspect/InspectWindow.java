@@ -15,6 +15,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FlowLayout;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
@@ -41,7 +42,9 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 import javax.swing.border.TitledBorder;
 
+import games.stendhal.client.OutfitStore;
 import games.stendhal.client.gui.InternalManagedWindow;
+import games.stendhal.client.gui.OutfitColor;
 import games.stendhal.client.sprite.Sprite;
 import games.stendhal.client.sprite.SpriteStore;
 
@@ -51,7 +54,8 @@ import games.stendhal.client.sprite.SpriteStore;
 public final class InspectWindow extends InternalManagedWindow {
 	private static final long serialVersionUID = 1L;
 	private static final Sprite SLOT_BACKGROUND = SpriteStore.get().getSprite("data/gui/slot.png");
-	private static final Dimension ITEM_SLOT_SIZE;
+private static final Dimension AVATAR_SIZE = new Dimension(96, 128);
+private static final Dimension ITEM_SLOT_SIZE;
 	private static final int EQUIPMENT_HAND_SHIFT;
 	private static final int BASE_ITEM_FRAME_SIZE = 32;
 	private static final String[] EQUIPMENT_LEFT_COLUMN = { "neck", "rhand", "finger", "fingerb" };
@@ -99,7 +103,8 @@ public final class InspectWindow extends InternalManagedWindow {
 
 	private InspectData data;
 
-	private final JLabel nameLabel;
+private final AvatarComponent avatarComponent;
+private final JLabel nameLabel;
 	private final JLabel classLabel;
 	private final JLabel idLabel;
 	private final JLabel locationLabel;
@@ -138,9 +143,13 @@ public final class InspectWindow extends InternalManagedWindow {
 		root.setOpaque(false);
 		setContent(root);
 
+		avatarComponent = new AvatarComponent();
+		avatarComponent.setAlignmentY(JComponent.TOP_ALIGNMENT);
+
 		final JPanel headerPanel = new JPanel();
 		headerPanel.setLayout(new BoxLayout(headerPanel, BoxLayout.Y_AXIS));
 		headerPanel.setOpaque(false);
+		headerPanel.setAlignmentY(JComponent.TOP_ALIGNMENT);
 
 		nameLabel = new JLabel();
 		nameLabel.setFont(nameLabel.getFont().deriveFont(Font.BOLD, 20f));
@@ -173,7 +182,14 @@ public final class InspectWindow extends InternalManagedWindow {
 
 		headerPanel.add(Box.createVerticalStrut(6));
 
-		root.add(headerPanel, BorderLayout.NORTH);
+		final JPanel headerRow = new JPanel();
+		headerRow.setLayout(new BoxLayout(headerRow, BoxLayout.X_AXIS));
+		headerRow.setOpaque(false);
+		headerRow.add(avatarComponent);
+		headerRow.add(Box.createHorizontalStrut(12));
+		headerRow.add(headerPanel);
+
+		root.add(headerRow, BorderLayout.NORTH);
 
 		tabs = new JTabbedPane();
 		root.add(tabs, BorderLayout.CENTER);
@@ -295,6 +311,7 @@ public final class InspectWindow extends InternalManagedWindow {
 
 		playtimeLabel.setText(formatPlaytime(stats));
 		hpSummaryLabel.setText(formatHitpoints(stats));
+		updateAvatar();
 	}
 
 	private void updateStats() {
@@ -309,7 +326,7 @@ public final class InspectWindow extends InternalManagedWindow {
 		row = addStatRow(statsContent, constraints, row, "Poziom RATK", formatLevelWithXp(stats, "ratk", "ratkXp"));
 		row = addStatRow(statsContent, constraints, row, "Poziom DEF", formatLevelWithXp(stats, "def", "defXp"));
 		row = addStatRow(statsContent, constraints, row, "Poziom górnictwa", formatLevelWithXp(stats, "mining", "miningXp"));
-		row = addStatRow(statsContent, constraints, row, "Suma PD", stats.get("xp"));
+		row = addStatRow(statsContent, constraints, row, "Suma expa", stats.get("xp"));
 		row = addStatRow(statsContent, constraints, row, "Karma", stats.get("karma"));
 		row = addStatRow(statsContent, constraints, row, "Odporność", stats.get("resistance"));
 		row = addStatRow(statsContent, constraints, row, "Widoczność", stats.get("visibility"));
@@ -363,12 +380,9 @@ public final class InspectWindow extends InternalManagedWindow {
 		equipmentContent.removeAll();
 
 		final Set<String> displayed = new HashSet<String>();
-		final JPanel pairedRow = new JPanel();
-		pairedRow.setLayout(new BoxLayout(pairedRow, BoxLayout.X_AXIS));
+		final JPanel pairedRow = new JPanel(new FlowLayout(FlowLayout.CENTER, EQUIPMENT_COLUMN_GAP, 0));
 		pairedRow.setOpaque(false);
-		pairedRow.setAlignmentX(JComponent.LEFT_ALIGNMENT);
 		pairedRow.add(createEquipmentGroupPanel("Założone wyposażenie", "", displayed));
-		pairedRow.add(Box.createHorizontalStrut(EQUIPMENT_COLUMN_GAP));
 		pairedRow.add(createEquipmentGroupPanel("Schowek", "_set", displayed));
 		equipmentContent.add(pairedRow);
 
@@ -828,7 +842,16 @@ public final class InspectWindow extends InternalManagedWindow {
 	private JPanel createGroupPanel(final String title, final JComponent content) {
 		final JPanel panel = new JPanel(new BorderLayout());
 		panel.setOpaque(false);
-		final TitledBorder border = BorderFactory.createTitledBorder(title);
+		final TitledBorder border = BorderFactory.createTitledBorder(
+			BorderFactory.createLineBorder(new Color(255, 255, 255, 90)), title);
+		Font borderFont = panel.getFont();
+		if (borderFont == null && content != null) {
+			borderFont = content.getFont();
+		}
+		if (borderFont != null) {
+			border.setTitleFont(borderFont.deriveFont(Font.BOLD));
+		}
+		border.setTitleColor(Color.WHITE);
 		panel.setBorder(border);
 		panel.add(content, BorderLayout.CENTER);
 		return panel;
@@ -914,15 +937,20 @@ public final class InspectWindow extends InternalManagedWindow {
 	}
 
 	private String buildDisplayName(final InspectData.EntityInfo entity, final String level) {
-		final String name = entity.getName();
-		final String title = entity.getTitle();
+		final String name = normalizeName(entity.getName());
+		final String title = normalizeName(entity.getTitle());
 		final StringBuilder builder = new StringBuilder();
 		if (hasText(title) && !equalsIgnoreCase(title, name)) {
-			builder.append(title.trim()).append(' ');
+			builder.append(title);
+			if (hasText(name)) {
+				builder.append(" ");
+			}
 		}
 		if (hasText(name)) {
-			builder.append(name.trim());
-		} else {
+			builder.append(name);
+		} else if (builder.length() == 0 && hasText(title)) {
+			builder.append(title);
+		} else if (builder.length() == 0) {
 			builder.append("(nieznane)");
 		}
 		if (hasText(level)) {
@@ -977,6 +1005,20 @@ public final class InspectWindow extends InternalManagedWindow {
 
 	private boolean hasText(final String value) {
 		return value != null && !value.trim().isEmpty();
+}
+
+	private String normalizeName(final String value) {
+		if (value == null) {
+			return null;
+		}
+		return value.replace("\"", "").trim();
+	}
+
+	private String normalizeOutfitCode(final String code) {
+		if (code == null) {
+			return null;
+		}
+		return code.trim();
 	}
 
 	private boolean equalsIgnoreCase(final String left, final String right) {
@@ -991,6 +1033,37 @@ public final class InspectWindow extends InternalManagedWindow {
 		panel.setOpaque(false);
 		panel.add(component, BorderLayout.CENTER);
 		return panel;
+	}
+
+	private static final class AvatarComponent extends JComponent {
+		private static final long serialVersionUID = 1L;
+
+		private Sprite sprite;
+
+		AvatarComponent() {
+			setPreferredSize(AVATAR_SIZE);
+			setMinimumSize(AVATAR_SIZE);
+			setMaximumSize(AVATAR_SIZE);
+			setOpaque(false);
+		}
+
+		void setSprite(final Sprite sprite) {
+			this.sprite = sprite;
+			repaint();
+		}
+
+		@Override
+		protected void paintComponent(final Graphics graphics) {
+			super.paintComponent(graphics);
+			if (sprite == null) {
+				return;
+			}
+			final int width = getWidth();
+			final int height = getHeight();
+			final int imageX = (width - sprite.getWidth()) / 2;
+			final int imageY = (height - sprite.getHeight()) / 2;
+			sprite.draw(graphics, imageX, imageY);
+		}
 	}
 
 	private static final class ItemSlotComponent extends JComponent {
