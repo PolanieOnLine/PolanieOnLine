@@ -54,8 +54,12 @@ import games.stendhal.client.sprite.SpriteStore;
 public final class InspectWindow extends InternalManagedWindow {
 	private static final long serialVersionUID = 1L;
 	private static final Sprite SLOT_BACKGROUND = SpriteStore.get().getSprite("data/gui/slot.png");
-private static final Dimension AVATAR_SIZE = new Dimension(96, 128);
-private static final Dimension ITEM_SLOT_SIZE;
+	private static final Dimension AVATAR_SIZE = new Dimension(96, 128);
+	private static final int AVATAR_FRAME_WIDTH = 48;
+	private static final int AVATAR_FRAME_HEIGHT = 64;
+	private static final int AVATAR_DIRECTION = 2;
+	private static final OutfitColor DEFAULT_OUTFIT_COLOR = OutfitColor.PLAIN;
+	private static final Dimension ITEM_SLOT_SIZE;
 	private static final int EQUIPMENT_HAND_SHIFT;
 	private static final int BASE_ITEM_FRAME_SIZE = 32;
 	private static final String[] EQUIPMENT_LEFT_COLUMN = { "neck", "rhand", "finger", "fingerb" };
@@ -314,6 +318,55 @@ private final JLabel nameLabel;
 		updateAvatar();
 	}
 
+	private void updateAvatar() {
+		final Sprite sprite = buildAvatarSprite(data.getOutfit());
+		avatarComponent.setSprite(sprite);
+	}
+
+	private Sprite buildAvatarSprite(final InspectData.Outfit outfit) {
+		final String code = resolveAvatarCode(outfit);
+		if (!hasText(code)) {
+			return SpriteStore.get().getFailsafe();
+		}
+		final String normalized = normalizeOutfitCode(code);
+		if (!hasText(normalized)) {
+			return SpriteStore.get().getFailsafe();
+		}
+		final OutfitStore store = OutfitStore.get();
+		Sprite tileset;
+		try {
+			tileset = store.getAdjustedOutfit(normalized, DEFAULT_OUTFIT_COLOR, null, null);
+		} catch (final RuntimeException exception) {
+			tileset = null;
+		}
+		if (tileset == null) {
+			try {
+				tileset = store.getFailsafeOutfit();
+			} catch (final RuntimeException ignored) {
+				tileset = null;
+			}
+		}
+		if (tileset == null) {
+			return SpriteStore.get().getFailsafe();
+		}
+		try {
+			return SpriteStore.get().getTile(tileset, AVATAR_FRAME_WIDTH, AVATAR_DIRECTION * AVATAR_FRAME_HEIGHT, AVATAR_FRAME_WIDTH,
+				AVATAR_FRAME_HEIGHT);
+		} catch (final RuntimeException exception) {
+			return tileset;
+		}
+	}
+
+	private String resolveAvatarCode(final InspectData.Outfit outfit) {
+		if (outfit == null) {
+			return null;
+		}
+		if (hasText(outfit.getTemporary())) {
+			return outfit.getTemporary();
+		}
+		return outfit.getCurrent();
+	}
+
 	private void updateStats() {
 		statsContent.removeAll();
 		final Map<String, String> stats = data.getStats();
@@ -541,7 +594,8 @@ private final JLabel nameLabel;
 	}
 
 	private JComponent createEquipmentGroupPanel(final String title, final String suffix, final Set<String> displayed) {
-		final JPanel group = createGroupPanel(title, createEquipmentMatrix(suffix, displayed));
+		final JComponent matrix = createEquipmentMatrix(suffix, displayed);
+		final JPanel group = createGroupPanel(title, centerComponent(matrix));
 		group.setAlignmentY(JComponent.TOP_ALIGNMENT);
 		final Dimension preferred = group.getPreferredSize();
 		group.setMaximumSize(new Dimension(preferred.width, Integer.MAX_VALUE));
