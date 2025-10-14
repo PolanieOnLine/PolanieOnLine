@@ -492,33 +492,26 @@ public final class InspectWindow extends InternalManagedWindow {
 			if (entry.getWarning() != null && !entry.getWarning().isEmpty()) {
 				builder.append(" (⚠ ").append(entry.getWarning()).append(')');
 			}
-			builder.append('
-');
+			builder.append(LINE_SEPARATOR);
 			if (entry.getState() != null) {
-				builder.append("Stan: ").append(entry.getState()).append('
-');
+				builder.append("Stan: ").append(entry.getState()).append(LINE_SEPARATOR);
 			}
 			if (entry.getSlot() != null) {
-				builder.append("Slot: ").append(entry.getSlot()).append('
-');
+				builder.append("Slot: ").append(entry.getSlot()).append(LINE_SEPARATOR);
 			}
 			if (entry.getDescription() != null && !entry.getDescription().isEmpty()) {
-				builder.append(entry.getDescription()).append('
-');
+				builder.append(entry.getDescription()).append(LINE_SEPARATOR);
 			}
 			if (!entry.getHistory().isEmpty()) {
 				for (String history : entry.getHistory()) {
-					builder.append("  • ").append(history).append('
-');
+					builder.append("  • ").append(history).append(LINE_SEPARATOR);
 				}
 			}
-			builder.append('
-');
+			builder.append(LINE_SEPARATOR);
 		}
 		area.setText(builder.toString().trim());
 		area.setCaretPosition(0);
 	}
-
 	private void populateOutfitPanel(final JPanel panel) {
 		final GridBagConstraints constraints = new GridBagConstraints();
 		constraints.insets = new Insets(2, 6, 2, 6);
