@@ -51,6 +51,7 @@ import games.stendhal.client.sprite.SpriteStore;
 public final class InspectWindow extends InternalManagedWindow {
 	private static final long serialVersionUID = 1L;
 	private static final Dimension ITEM_SLOT_SIZE = new Dimension(48, 48);
+	private static final String LINE_SEPARATOR = System.lineSeparator();
 
 	private InspectData data;
 
@@ -265,13 +266,13 @@ public final class InspectWindow extends InternalManagedWindow {
 				if (slot.getValues().isEmpty()) {
 					builder.append(" [puste]");
 				}
-				builder.append('\n');
+				builder.append(LINE_SEPARATOR);
 				if (!slot.getValues().isEmpty()) {
 					for (String value : slot.getValues()) {
-						builder.append("  • ").append(value).append('\n');
+						builder.append("  • ").append(value).append(LINE_SEPARATOR);
 					}
 				}
-				builder.append('\n');
+				builder.append(LINE_SEPARATOR);
 			}
 			metaArea.setText(builder.toString().trim());
 		}
