@@ -11,6 +11,7 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -46,6 +47,7 @@ import games.stendhal.server.entity.npc.condition.QuestStartedCondition;
 import games.stendhal.server.entity.npc.condition.QuestStateStartsWithCondition;
 import games.stendhal.server.entity.npc.condition.TimePassedCondition;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.entity.slot.ChestSlot;
 import games.stendhal.server.maps.Region;
 import marauroa.common.game.SlotIsFullException;
 
@@ -56,6 +58,9 @@ public class PrinceSupply extends AbstractQuest {
 	private final SpeakerNPC npc = npcs.get("Książę");
 
 	private static final int REQUIRED_MINUTES = 1440;
+	private static final int CHEST_BASE_X = 4;
+	private static final int CHEST_BASE_Y = 2;
+	private static final int CHEST_MAX_RADIUS = 3;
 
 	private void prepareRequestingStep() {
 		npc.add(ConversationStates.ATTENDING,
@@ -111,20 +116,25 @@ public class PrinceSupply extends AbstractQuest {
 
 	private void prepareBringingStep() {
 		npc.add(
-			ConversationStates.ATTENDING,
-			ConversationPhrases.QUEST_MESSAGES,
-			new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
-					new QuestStateStartsWithCondition(QUEST_SLOT, "start"),
-					new NotCondition(
-						new AndCondition(
-								new PlayerHasItemdataItemWithHimCondition("kolczuga", QUEST_SLOT),
-								new PlayerHasItemdataItemWithHimCondition("zbroja płytowa", QUEST_SLOT),
-								new PlayerHasItemdataItemWithHimCondition("spodnie kolcze", QUEST_SLOT),
-								new PlayerHasItemdataItemWithHimCondition("hełm kolczy", QUEST_SLOT),
-								new PlayerHasItemdataItemWithHimCondition("buty kolcze", QUEST_SLOT)))),
-			ConversationStates.ATTENDING, 
-			"Nie wracaj bez całego regimentu! Każdy element jest zaklęty na Twoją pieczęć — tylko komplet ocali mój oddział.",
-			null);
+				ConversationStates.ATTENDING,
+				ConversationPhrases.QUEST_MESSAGES,
+				new AndCondition(new GreetingMatchesNameCondition(npc.getName()),
+						new QuestStateStartsWithCondition(QUEST_SLOT, "start"),
+						new NotCondition(
+								new AndCondition(
+										new PlayerHasItemdataItemWithHimCondition("kolczuga", QUEST_SLOT),
+										new PlayerHasItemdataItemWithHimCondition("zbroja płytowa", QUEST_SLOT),
+										new PlayerHasItemdataItemWithHimCondition("spodnie kolcze", QUEST_SLOT),
+										new PlayerHasItemdataItemWithHimCondition("hełm kolczy", QUEST_SLOT),
+										new PlayerHasItemdataItemWithHimCondition("buty kolcze", QUEST_SLOT)))),
+				ConversationStates.ATTENDING,
+				"Nie wracaj bez całego regimentu! Każdy element jest zaklęty na Twoją pieczęć — tylko komplet ocali mój oddział.",
+				new ChatAction() {
+					@Override
+					public void fire(Player player, Sentence sentence, EventRaiser npc) {
+						PrinceSupply.ensureChestForPlayer(player);
+					}
+				});
 
 		final List<ChatAction> reward = new LinkedList<ChatAction>();
 		reward.add(new DropItemdataItemAction("kolczuga", QUEST_SLOT));
@@ -165,7 +175,14 @@ public class PrinceSupply extends AbstractQuest {
 		removeChest(player);
 
 		final PrinceArmoryChest chest = new PrinceArmoryChest(player);
-		chest.setPosition(4, 2);
+		final Point chestSpot = findAvailableChestSpot(zone, chest);
+		if (chestSpot == null) {
+			logger.warn("No free spot found for PrinceSupply chest in int_warszawa_armory");
+			player.sendPrivateText("Zbrojownia jest teraz zatłoczona. Zaczekaj chwilę, aż strażnicy uprzątną miejsce na Twoją skrzynię.");
+			return;
+		}
+
+		chest.setPosition(chestSpot.x, chestSpot.y);
 		zone.add(chest);
 
 		try {
@@ -200,6 +217,58 @@ public class PrinceSupply extends AbstractQuest {
 		player.setQuest(QUEST_SLOT, "start;" + player.getName());
 	}
 
+	private static Point findAvailableChestSpot(final StendhalRPZone zone, final PrinceArmoryChest chest) {
+		for (int radius = 0; radius <= CHEST_MAX_RADIUS; radius++) {
+			for (int dx = -radius; dx <= radius; dx++) {
+				for (int dy = -radius; dy <= radius; dy++) {
+					if (radius != 0 && Math.max(Math.abs(dx), Math.abs(dy)) != radius) {
+						continue;
+					}
+
+					final int candidateX = CHEST_BASE_X + dx;
+					final int candidateY = CHEST_BASE_Y + dy;
+					if (candidateX < 0 || candidateY < 0 || candidateX >= zone.getWidth() || candidateY >= zone.getHeight()) {
+						continue;
+					}
+
+					if (isChestSpotFree(zone, chest, candidateX, candidateY)) {
+						return new Point(candidateX, candidateY);
+					}
+				}
+			}
+		}
+		return null;
+	}
+
+	private static boolean isChestSpotFree(final StendhalRPZone zone, final PrinceArmoryChest chest, final int x, final int y) {
+		if (zone.collides(chest, x, y)) {
+			return false;
+		}
+		for (PrinceArmoryChest existing : zone.getEntitiesAt(x, y, PrinceArmoryChest.class)) {
+			if (Math.round(existing.getX()) == x && Math.round(existing.getY()) == y) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	private static boolean hasChest(final Player player) {
+		final StendhalRPZone zone = SingletonRepository.getRPWorld().getZone("int_warszawa_armory");
+		for (Entity entity : zone.getEntitiesOfClass(PrinceArmoryChest.class)) {
+			final PrinceArmoryChest chest = (PrinceArmoryChest) entity;
+			if (chest.isOwnedBy(player)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private static void ensureChestForPlayer(final Player player) {
+		if (!hasChest(player)) {
+			prepareChest(player);
+		}
+	}
+
 	private static void removeChest(final Player player) {
 		final StendhalRPZone zone = SingletonRepository.getRPWorld().getZone("int_warszawa_armory");
 
@@ -217,6 +286,8 @@ public class PrinceSupply extends AbstractQuest {
 		PrinceArmoryChest(final Player owner) {
 			super();
 			this.ownerName = owner.getName();
+			super.removeSlot("content");
+			super.addSlot(new OwnerLockedChestSlot(this));
 			setDescription("Na skrzyni widnieje pieczęć Księcia i imię " + ownerName + ".");
 		}
 
@@ -235,8 +306,26 @@ public class PrinceSupply extends AbstractQuest {
 			}
 			return super.onUsed(user);
 		}
-	}
 
+		private class OwnerLockedChestSlot extends ChestSlot {
+			OwnerLockedChestSlot(final PrinceArmoryChest chest) {
+				super(chest);
+			}
+
+			@Override
+			public boolean isReachableForTakingThingsOutOfBy(final Entity entity) {
+				if (!(entity instanceof Player)) {
+					return false;
+				}
+				final Player player = (Player) entity;
+				if (!isOwnedBy(player)) {
+					setErrorMessage("Pieczęć na skrzyni chroni zapasy przed niepowołanymi dłońmi.");
+					return false;
+				}
+				return super.isReachableForTakingThingsOutOfBy(entity);
+			}
+		}
+	}
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(
