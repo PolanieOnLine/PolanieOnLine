@@ -1856,6 +1856,25 @@ public class StendhalRPZone extends MarauroaRPZone {
 	}
 
 	/**
+	 * Allow teleporting to specified area.
+	 *
+	 * @param x left x coordinate
+	 * @param y top y coordinate
+	 * @param width width of the area
+	 * @param height height of the area
+	 */
+	public void allowIn(int x, int y, int width, int height) {
+		teleRules.allowIn(x, y, width, height);
+	}
+
+	/**
+	 * Allow teleporting to the entire zone using a scroll.
+	 */
+	public void allowIn() {
+		teleRules.allowIn();
+	}
+
+	/**
 	 * Forbid teleporting from the entire zone using a scroll.
 	 */
 	public void disallowOut() {
@@ -1872,6 +1891,25 @@ public class StendhalRPZone extends MarauroaRPZone {
 	 */
 	public void disallowOut(int x, int y, int width, int height) {
 		teleRules.disallowOut(x, y, width, height);
+	}
+
+	/**
+	 * Allow teleporting from specified area.
+	 *
+	 * @param x left x coordinate
+	 * @param y top y coordinate
+	 * @param width width of the area
+	 * @param height height of the area
+	 */
+	public void allowOut(int x, int y, int width, int height) {
+		teleRules.allowOut(x, y, width, height);
+	}
+
+	/**
+	 * Allow teleporting from the entire zone using a scroll.
+	 */
+	public void allowOut() {
+		teleRules.allowOut();
 	}
 
 	public void onRemoved() {

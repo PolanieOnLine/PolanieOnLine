@@ -14,6 +14,7 @@ package games.stendhal.server.core.config.zone;
 
 import java.awt.Rectangle;
 import java.awt.Shape;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -47,6 +48,33 @@ public class TeleportationRules {
 	}
 
 	/**
+	 * Allow teleporting to specified area.
+	 *
+	 * @param x x coordinate of the area
+	 * @param y y coordinate of the area
+	 * @param width width of the area
+	 * @param height height of the area
+	 */
+	public void allowIn(int x, int y, int width, int height) {
+		Rectangle target = new Rectangle(x, y, width, height);
+		Iterator<Shape> iterator = arrivingBarriers.iterator();
+		while (iterator.hasNext()) {
+			Shape barrier = iterator.next();
+			if (barrier.getBounds().equals(target)) {
+				iterator.remove();
+				break;
+			}
+		}
+	}
+
+	/**
+	 * Allow teleporting to the entire zone using a scroll.
+	 */
+	public void allowIn() {
+		allowIn(0, 0, Integer.MAX_VALUE, Integer.MAX_VALUE);
+	}
+
+	/**
 	 * Check if teleporting to a location is allowed.
 	 *
 	 * @param x x coordinate
@@ -74,6 +102,33 @@ public class TeleportationRules {
 	public void disallowOut(int x, int y, int width, int height) {
 		Rectangle r = new Rectangle(x, y, width, height);
 		leavingBarriers.add(r);
+	}
+
+	/**
+	 * Allow teleporting from specified area.
+	 *
+	 * @param x x coordinate of the area
+	 * @param y y coordinate of the area
+	 * @param width width of the area
+	 * @param height height of the area
+	 */
+	public void allowOut(int x, int y, int width, int height) {
+		Rectangle target = new Rectangle(x, y, width, height);
+		Iterator<Shape> iterator = leavingBarriers.iterator();
+		while (iterator.hasNext()) {
+			Shape barrier = iterator.next();
+			if (barrier.getBounds().equals(target)) {
+				iterator.remove();
+				break;
+			}
+		}
+	}
+
+	/**
+	 * Allow teleporting from the entire zone using a scroll.
+	 */
+	public void allowOut() {
+		allowOut(0, 0, Integer.MAX_VALUE, Integer.MAX_VALUE);
 	}
 
 	/**
