@@ -32,6 +32,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -49,7 +50,6 @@ import org.apache.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import games.stendhal.client.ClientSingletonRepository;
@@ -70,6 +70,8 @@ class ProducerWindow extends InternalManagedWindow {
 	private static final int PADDING = 8;
 	private static final String SLOT_IMAGE = "data/gui/slot.png";
 	private static final Set<String> DEFAULT_TRIGGER_WORDS = createDefaultTriggers();
+	private static final Pattern DIACRITIC_PATTERN = Pattern.compile("\\p{M}+");
+	private static final Pattern NON_LETTER_OR_DIGIT = Pattern.compile("[^\\p{L}\\p{Nd}]");
 
 	private final JComponent content;
 	private final ProducerData data = new ProducerData();
@@ -193,18 +195,8 @@ class ProducerWindow extends InternalManagedWindow {
 
 		String lower = trimmed.toLowerCase(Locale.ROOT);
 		String decomposed = Normalizer.normalize(lower, Normalizer.Form.NFD);
-		StringBuilder builder = new StringBuilder(decomposed.length());
-		for (int i = 0; i < decomposed.length(); i++) {
-			char ch = decomposed.charAt(i);
-			if (java.lang.Character.getType(ch) == java.lang.Character.NON_SPACING_MARK) {
-				continue;
-			}
-			if (java.lang.Character.isLetterOrDigit(ch)) {
-				builder.append(ch);
-			}
-		}
-
-		return builder.toString();
+		String withoutDiacritics = DIACRITIC_PATTERN.matcher(decomposed).replaceAll("");
+		return NON_LETTER_OR_DIGIT.matcher(withoutDiacritics).replaceAll("");
 	}
 
 
@@ -452,14 +444,12 @@ class ProducerWindow extends InternalManagedWindow {
 
 			try {
 				Document doc = parse(baseFile);
-				NodeList groups = doc.getElementsByTagName("group");
+				Element root = doc.getDocumentElement();
+				if (root == null) {
+					return;
+				}
 				Path baseDir = baseFile.getParent();
-				for (int i = 0; i < groups.getLength(); i++) {
-					Node node = groups.item(i);
-					if (!(node instanceof Element)) {
-						continue;
-					}
-					Element element = (Element) node;
+				for (Element element : getChildren(root, "group")) {
 					String uri = element.getAttribute("uri");
 					if (uri == null || uri.isEmpty()) {
 						continue;
@@ -479,13 +469,11 @@ class ProducerWindow extends InternalManagedWindow {
 		private void loadProductions(Path file) {
 			try {
 				Document doc = parse(file);
-				NodeList productions = doc.getElementsByTagName("production");
-				for (int i = 0; i < productions.getLength(); i++) {
-					Node node = productions.item(i);
-					if (!(node instanceof Element)) {
-						continue;
-					}
-					Element production = (Element) node;
+				Element root = doc.getDocumentElement();
+				if (root == null) {
+					return;
+				}
+				for (Element production : getChildren(root, "production")) {
 					Element producerElement = getChild(production, "producer");
 					Element itemElement = getChild(production, "item");
 					if (producerElement == null || itemElement == null) {
@@ -517,13 +505,7 @@ class ProducerWindow extends InternalManagedWindow {
 			int minutes = parseInt(item.getAttribute("minutes"), 0);
 
 			List<ProducerResource> resources = new ArrayList<ProducerResource>();
-			NodeList resourceNodes = item.getElementsByTagName("resource");
-			for (int i = 0; i < resourceNodes.getLength(); i++) {
-				Node node = resourceNodes.item(i);
-				if (!(node instanceof Element)) {
-					continue;
-				}
-				Element resource = (Element) node;
+			for (Element resource : getChildren(item, "resource")) {
 				String resourceName = resource.getAttribute("name");
 				if (resourceName == null || resourceName.isEmpty()) {
 					continue;
@@ -533,6 +515,30 @@ class ProducerWindow extends InternalManagedWindow {
 			}
 
 			return new ProducerProduct(name, quantity, minutes, resources);
+		}
+
+		private List<Element> getChildren(Element parent, String name) {
+			if (parent == null) {
+				return Collections.emptyList();
+			}
+			List<Element> elements = new ArrayList<Element>();
+			for (Node child = parent.getFirstChild(); child != null; child = child.getNextSibling()) {
+				if (child instanceof Element) {
+					Element element = (Element) child;
+					if (matchesLocalName(element, name)) {
+						elements.add(element);
+					}
+				}
+			}
+			return elements;
+		}
+
+		private boolean matchesLocalName(Element element, String name) {
+			String localName = element.getLocalName();
+			if (localName != null) {
+				return localName.equals(name);
+			}
+			return element.getTagName().equals(name);
 		}
 
 		private Document parse(Path file) throws ParserConfigurationException, SAXException, IOException {
@@ -545,12 +551,8 @@ class ProducerWindow extends InternalManagedWindow {
 		}
 
 		private Element getChild(Element parent, String name) {
-			NodeList nodes = parent.getElementsByTagName(name);
-			for (int i = 0; i < nodes.getLength(); i++) {
-				Node node = nodes.item(i);
-				if (node.getParentNode() == parent && node instanceof Element) {
-					return (Element) node;
-				}
+			for (Element element : getChildren(parent, name)) {
+				return element;
 			}
 			return null;
 		}
@@ -631,14 +633,12 @@ class ProducerWindow extends InternalManagedWindow {
 
 			try {
 				Document doc = parse(baseFile);
-				NodeList groups = doc.getElementsByTagName("group");
+				Element root = doc.getDocumentElement();
+				if (root == null) {
+					return;
+				}
 				Path baseDir = baseFile.getParent();
-				for (int i = 0; i < groups.getLength(); i++) {
-					Node node = groups.item(i);
-					if (!(node instanceof Element)) {
-						continue;
-					}
-					Element element = (Element) node;
+				for (Element element : getChildren(root, "group")) {
 					String uri = element.getAttribute("uri");
 					if (uri == null || uri.isEmpty()) {
 						continue;
@@ -656,13 +656,11 @@ class ProducerWindow extends InternalManagedWindow {
 		private void loadItems(Path file) {
 			try {
 				Document doc = parse(file);
-				NodeList items = doc.getElementsByTagName("item");
-				for (int i = 0; i < items.getLength(); i++) {
-					Node node = items.item(i);
-					if (!(node instanceof Element)) {
-						continue;
-					}
-					Element item = (Element) node;
+				Element root = doc.getDocumentElement();
+				if (root == null) {
+					return;
+				}
+				for (Element item : getChildren(root, "item")) {
 					String name = item.getAttribute("name");
 					if (name == null || name.isEmpty()) {
 						continue;
@@ -692,13 +690,33 @@ class ProducerWindow extends InternalManagedWindow {
 			}
 		}
 
-		private Element getChild(Element parent, String name) {
-			NodeList nodes = parent.getElementsByTagName(name);
-			for (int i = 0; i < nodes.getLength(); i++) {
-				Node node = nodes.item(i);
-				if (node.getParentNode() == parent && node instanceof Element) {
-					return (Element) node;
+		private List<Element> getChildren(Element parent, String name) {
+			if (parent == null) {
+				return Collections.emptyList();
+			}
+			List<Element> elements = new ArrayList<Element>();
+			for (Node child = parent.getFirstChild(); child != null; child = child.getNextSibling()) {
+				if (child instanceof Element) {
+					Element element = (Element) child;
+					if (matchesLocalName(element, name)) {
+						elements.add(element);
+					}
 				}
+			}
+			return elements;
+		}
+
+		private boolean matchesLocalName(Element element, String name) {
+			String localName = element.getLocalName();
+			if (localName != null) {
+				return localName.equals(name);
+			}
+			return element.getTagName().equals(name);
+		}
+
+		private Element getChild(Element parent, String name) {
+			for (Element element : getChildren(parent, name)) {
+				return element;
 			}
 			return null;
 		}
