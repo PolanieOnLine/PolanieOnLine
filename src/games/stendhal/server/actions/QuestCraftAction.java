@@ -69,7 +69,10 @@ public class QuestCraftAction implements ActionListener {
 		}
 
 		EventRaiser raiser = new EventRaiser(npc);
-		task.dropRequeredItemsToForge().fire(player, null, raiser);
 		task.buildForgeQuestAction(questSlot).fire(player, null, raiser);
+		String updatedQuestState = player.getQuest(questSlot, 0);
+		if (updatedQuestState != null && updatedQuestState.startsWith("forging")) {
+			task.dropRequeredItemsToForge().fire(player, null, raiser);
+		}
 	}
 }
