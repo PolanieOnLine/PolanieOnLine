@@ -113,19 +113,16 @@ class ProducerWindow extends InternalManagedWindow {
 	}
 
 	void showForNearestProducer() {
-                SwingUtilities.invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
 				NPC npc = findNearestProducer();
 				if (npc == null) {
 					displayMessage("Brak producentów w pobliżu.");
 					return;
 				}
 
-				ProducerDefinition definition = data.getDefinition(npc.getTitle());
-				if (definition == null) {
-					definition = data.getDefinition(npc.getName());
-				}
+				ProducerDefinition definition = data.getDefinition(npc);
 
 				if (definition == null) {
 					LOGGER.warn("No production data available for NPC: " + npc.getTitle());
@@ -133,11 +130,11 @@ class ProducerWindow extends InternalManagedWindow {
 					return;
 				}
 
-                                populate(definition, npc);
-                                setVisible(true);
-                                raise();
-                        }
-                });
+				populate(definition, npc);
+				setVisible(true);
+				raise();
+			}
+		});
 	}
 
 	private static Set<String> createDefaultTriggers() {
@@ -230,13 +227,13 @@ class ProducerWindow extends InternalManagedWindow {
 	}
 
 	private void displayMessage(String message) {
-                content.removeAll();
-                JLabel label = new JLabel(message, SwingConstants.CENTER);
-                content.add(label);
-                content.revalidate();
-                content.repaint();
-                setVisible(true);
-                raise();
+		content.removeAll();
+		JLabel label = new JLabel(message, SwingConstants.CENTER);
+		content.add(label);
+		content.revalidate();
+		content.repaint();
+		setVisible(true);
+		raise();
 	}
 
 	private NPC findNearestProducer() {
@@ -272,10 +269,7 @@ class ProducerWindow extends InternalManagedWindow {
 	}
 
 	private boolean isProducer(NPC npc) {
-		if (npc.getRPObject() == null) {
-			return false;
-		}
-		return npc.getRPObject().has("job_producer");
+		return data.getDefinition(npc) != null;
 	}
 
 	private JComponent createProductRow(ProducerDefinition definition, ProducerProduct product) {
@@ -416,6 +410,19 @@ class ProducerWindow extends InternalManagedWindow {
 				return null;
 			}
 			return DEFINITIONS.get(normalize(name));
+		}
+
+		ProducerDefinition getDefinition(NPC npc) {
+			if (npc == null) {
+				return null;
+			}
+
+			ProducerDefinition definition = getDefinition(npc.getTitle());
+			if (definition != null) {
+				return definition;
+			}
+
+			return getDefinition(npc.getName());
 		}
 
 		boolean matchesActivity(String normalizedWord) {
