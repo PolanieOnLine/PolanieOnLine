@@ -5,6 +5,7 @@ package games.stendhal.client.gui.npc;
 
 import java.awt.Component;
 import java.awt.Point;
+import java.util.List;
 
 import javax.swing.JMenuItem;
 
@@ -28,7 +29,6 @@ public class NPCInteractionMenu extends WtPopupMenu {
 	private final Component anchor;
 	private final Point popupLocation;
 	private final NPCInteractionManager manager;
-	private final QuestNpcRegistry questRegistry;
 
 	public NPCInteractionMenu(final NPC npc, final EntityView<?> view, final String[] defaultActions,
 				final Component anchor, final Point popupLocation) {
@@ -39,7 +39,6 @@ public class NPCInteractionMenu extends WtPopupMenu {
 		this.anchor = anchor;
 		this.popupLocation = popupLocation;
 		this.manager = NPCInteractionManager.get();
-		this.questRegistry = QuestNpcRegistry.get();
 
 		buildMenu();
 	}
@@ -59,6 +58,14 @@ public class NPCInteractionMenu extends WtPopupMenu {
 	}
 
 	private void addConversationItems() {
+		final List<NPCInteractionManager.ChatOption> options = manager.getChatOptions(npc);
+		if (!options.isEmpty()) {
+			for (final NPCInteractionManager.ChatOption option : options) {
+				add(createMenuItem(option.getLabel(), () -> manager.performChatOption(npc, option)));
+			}
+			return;
+		}
+
 		if (hasJobOption()) {
 			add(createMenuItem("Praca", () -> manager.requestJob(npc)));
 		}
@@ -66,9 +73,6 @@ public class NPCInteractionMenu extends WtPopupMenu {
 			add(createMenuItem("Oferta", () -> manager.requestOffer(npc)));
 		}
 		add(createMenuItem("Pomoc", () -> manager.requestHelp(npc)));
-		if (hasQuestOption()) {
-			add(createMenuItem("Zadanie", () -> manager.requestQuest(npc)));
-		}
 	}
 
 	private JMenuItem createMenuItem(final String label, final Runnable action) {
@@ -116,9 +120,5 @@ public class NPCInteractionMenu extends WtPopupMenu {
 		}
 		final RPObject object = npc.getRPObject();
 		return (object != null) && object.has("shop");
-	}
-
-	private boolean hasQuestOption() {
-		return questRegistry.hasQuestFor(npc);
 	}
 }

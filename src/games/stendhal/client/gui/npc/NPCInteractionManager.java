@@ -3,11 +3,16 @@
  ***************************************************************************/
 package games.stendhal.client.gui.npc;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import games.stendhal.client.ClientSingletonRepository;
 import games.stendhal.client.entity.NPC;
+import games.stendhal.client.gui.chattext.ChatTextController;
 import marauroa.common.game.RPAction;
 
 /**
@@ -23,7 +28,95 @@ public final class NPCInteractionManager {
 
 	private static final NPCInteractionManager INSTANCE = new NPCInteractionManager();
 
-	private final Set<Integer> activeNpcIds = new HashSet<Integer>();
+	/**
+	 * Available chat option provided by the server.
+	 */
+	public static final class ChatOption {
+		private final String trigger;
+		private final String label;
+		private final boolean requiresParameters;
+
+		public ChatOption(final String trigger, final String label, final boolean requiresParameters) {
+			this.trigger = trigger;
+			this.label = label;
+			this.requiresParameters = requiresParameters;
+		}
+
+		public String getTrigger() {
+			return trigger;
+		}
+
+		public String getLabel() {
+			return label;
+		}
+
+		public boolean requiresParameters() {
+			return requiresParameters;
+		}
+	}
+
+	private static final class InteractionContext {
+		private final int objectId;
+		private final WeakReference<NPC> npcRef;
+		private final String baseName;
+		private final String baseTitle;
+		private List<ChatOption> chatOptions;
+
+		InteractionContext(final NPC npc) {
+			objectId = npc.getObjectID();
+			npcRef = new WeakReference<NPC>(npc);
+			baseName = npc.getName();
+			baseTitle = npc.getTitle();
+			chatOptions = Collections.emptyList();
+		}
+
+		NPC getNpc() {
+			return npcRef.get();
+		}
+
+		boolean matches(final String npcName, final String npcTitle) {
+			final NPC npc = npcRef.get();
+			if (npc == null) {
+				return false;
+			}
+
+			if ((npcName != null) && npcName.equalsIgnoreCase(npc.getName())) {
+				return true;
+			}
+
+			if ((npcTitle != null) && npcTitle.equalsIgnoreCase(npc.getTitle())) {
+				return true;
+			}
+
+			if ((baseName != null) && (npcName != null) && baseName.equalsIgnoreCase(npcName)) {
+				return true;
+			}
+
+			if ((baseTitle != null) && (npcTitle != null) && baseTitle.equalsIgnoreCase(npcTitle)) {
+				return true;
+			}
+
+			return false;
+		}
+
+		int getObjectId() {
+			return objectId;
+		}
+
+		List<ChatOption> getChatOptions() {
+			return chatOptions;
+		}
+
+		void setChatOptions(final List<ChatOption> options) {
+			if ((options == null) || options.isEmpty()) {
+				chatOptions = Collections.emptyList();
+				return;
+			}
+			chatOptions = Collections.unmodifiableList(new ArrayList<ChatOption>(options));
+		}
+	}
+
+	private final Map<Integer, InteractionContext> activeContexts = new HashMap<Integer, InteractionContext>();
 
 	private NPCInteractionManager() {
 		// singleton
@@ -48,7 +141,7 @@ public final class NPCInteractionManager {
 		if (npc == null) {
 			return false;
 		}
-		return activeNpcIds.contains(npc.getObjectID());
+		return activeContexts.containsKey(npc.getObjectID());
 	}
 
 	/**
@@ -57,17 +150,60 @@ public final class NPCInteractionManager {
 	 * @param npc target npc
 	 */
 	public void startInteraction(final NPC npc) {
-	if (npc == null) {
-	return;
+		if (npc == null) {
+			return;
+		}
+		final int objectId = npc.getObjectID();
+		if (objectId < 0) {
+			return;
+		}
+		InteractionContext context = activeContexts.get(objectId);
+		if (context == null) {
+			context = new InteractionContext(npc);
+			activeContexts.put(objectId, context);
+		}
+		sendChat(GREETING_COMMAND);
 	}
-	final int objectId = npc.getObjectID();
-	if (objectId < 0) {
-	return;
+
+	/**
+	 * Updates known chat options for active NPC interactions.
+	 *
+	 * @param npcName name provided by the server
+	 * @param npcTitle title provided by the server
+	 * @param options chat options
+	 */
+	public void updateChatOptions(final String npcName, final String npcTitle, final List<ChatOption> options) {
+		final List<Integer> staleContexts = new ArrayList<Integer>();
+		for (final InteractionContext context : activeContexts.values()) {
+			final NPC npc = context.getNpc();
+			if (npc == null) {
+				staleContexts.add(Integer.valueOf(context.getObjectId()));
+				continue;
+			}
+			if (context.matches(npcName, npcTitle)) {
+				context.setChatOptions(options);
+			}
+		}
+		for (final Integer id : staleContexts) {
+			activeContexts.remove(id.intValue());
+		}
 	}
-	if (!activeNpcIds.contains(objectId)) {
-	activeNpcIds.add(objectId);
-	}
-	sendChat(GREETING_COMMAND);
+
+	/**
+	 * Retrieves the latest chat options received for the npc.
+	 *
+	 * @param npc target npc
+	 * @return immutable list of options
+	 */
+	public List<ChatOption> getChatOptions(final NPC npc) {
+		if (npc == null) {
+			return Collections.emptyList();
+		}
+		final InteractionContext context = activeContexts.get(npc.getObjectID());
+		if (context == null) {
+			return Collections.emptyList();
+		}
+		return context.getChatOptions();
 	}
 
 	/**
@@ -119,19 +255,51 @@ public final class NPCInteractionManager {
 	}
 
 	/**
+	 * Executes provided chat option.
+	 *
+	 * @param npc target npc
+	 * @param option option to execute
+	 */
+	public void performChatOption(final NPC npc, final ChatOption option) {
+		if ((option == null) || !isInteracting(npc)) {
+			return;
+		}
+		final int objectId = npc.getObjectID();
+		if (option.requiresParameters()) {
+			final ChatTextController chat = ClientSingletonRepository.getChatTextController();
+			chat.setChatLine(option.getTrigger() + " ");
+			chat.setFocus();
+		} else {
+			sendChat(option.getTrigger());
+			if (isFarewell(option.getTrigger())) {
+				activeContexts.remove(objectId);
+			}
+		}
+	}
+
+	private boolean isFarewell(final String trigger) {
+		if (trigger == null) {
+			return false;
+		}
+		final String normalized = trigger.trim().toLowerCase();
+		return normalized.equals("bywaj") || normalized.equals("bye") || normalized.equals(GOODBYE_COMMAND);
+	}
+
+	/**
 	 * Ends the current interaction.
 	 *
 	 * @param npc target npc
 	 */
 	public void endInteraction(final NPC npc) {
-	if (npc == null) {
-	return;
+		if (npc == null) {
+			return;
+		}
+		final int objectId = npc.getObjectID();
+		if (activeContexts.remove(objectId) != null) {
+			sendChat(GOODBYE_COMMAND);
+		}
 	}
-	if (activeNpcIds.remove(npc.getObjectID())) {
-	sendChat(GOODBYE_COMMAND);
-	}
-	}
-	
+
 	private void sendChat(final String text) {
 		final RPAction chat = new RPAction("chat");
 		chat.put("type", "chat");
