@@ -146,7 +146,7 @@ class ProducerWindow extends InternalManagedWindow {
 		User user = User.get();
 		GameObjects gameObjects = GameObjects.getInstance();
 		NPC closest = null;
-		int best = Integer.MAX_VALUE;
+		double best = Double.MAX_VALUE;
 
 		for (IEntity entity : gameObjects) {
 			if (!(entity instanceof NPC)) {
@@ -158,9 +158,9 @@ class ProducerWindow extends InternalManagedWindow {
 				continue;
 			}
 
-			int dx = npc.getX() - user.getX();
-			int dy = npc.getY() - user.getY();
-			int distSq = dx * dx + dy * dy;
+			double dx = npc.getX() - user.getX();
+			double dy = npc.getY() - user.getY();
+			double distSq = dx * dx + dy * dy;
 			if (distSq <= MAX_DISTANCE_SQ && distSq < best) {
 				best = distSq;
 				closest = npc;
