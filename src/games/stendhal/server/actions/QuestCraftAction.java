@@ -16,6 +16,7 @@ import static games.stendhal.common.constants.Actions.QUEST_CRAFT;
 import org.apache.log4j.Logger;
 
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.quest.CraftItemTask;
 import games.stendhal.server.entity.npc.quest.CraftItemTask.CraftDefinition;
@@ -67,7 +68,8 @@ public class QuestCraftAction implements ActionListener {
 			return;
 		}
 
-		task.dropRequeredItemsToForge().fire(player, null, npc);
-		task.buildForgeQuestAction(questSlot).fire(player, null, npc);
+		EventRaiser raiser = new EventRaiser(npc);
+		task.dropRequeredItemsToForge().fire(player, null, raiser);
+		task.buildForgeQuestAction(questSlot).fire(player, null, raiser);
 	}
 }

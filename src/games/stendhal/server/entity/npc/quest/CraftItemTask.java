@@ -58,7 +58,7 @@ public class CraftItemTask extends QuestTaskBuilder {
 			this.task = task;
 		}
 
-		CraftItemTask getTask() {
+		public CraftItemTask getTask() {
 			return task;
 		}
 
