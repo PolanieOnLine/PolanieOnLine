@@ -314,11 +314,6 @@ class ProducerWindow extends InternalManagedWindow {
 		}
 		container.add(slot);
 
-		if (name != null) {
-			JLabel label = new JLabel(name, SwingConstants.CENTER);
-			container.add(label);
-		}
-
 		return container;
 	}
 
