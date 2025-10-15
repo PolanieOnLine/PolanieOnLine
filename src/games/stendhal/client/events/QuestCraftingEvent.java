@@ -1,14 +1,14 @@
-	/***************************************************************************
-	 *                 (C) Copyright 2024 - PolanieOnLine                 *
-	 ***************************************************************************
-	 ***************************************************************************
-	 *                                                                         *
-	 *   This program is free software; you can redistribute it and/or modify  *
-	 *   it under the terms of the GNU General Public License as published by  *
-	 *   the Free Software Foundation; either version 2 of the License, or     *
-	 *   (at your option) any later version.                                   *
-	 *                                                                         *
-	 ***************************************************************************/
+/***************************************************************************
+	*                 (C) Copyright 2024 - PolanieOnLine                 *
+	***************************************************************************
+	***************************************************************************
+	*                                                                         *
+	*   This program is free software; you can redistribute it and/or modify  *
+	*   it under the terms of the GNU General Public License as published by  *
+	*   the Free Software Foundation; either version 2 of the License, or     *
+	*   (at your option) any later version.                                   *
+	*                                                                         *
+	***************************************************************************/
 package games.stendhal.client.events;
 
 import static games.stendhal.common.constants.Actions.QUEST_CRAFT;
@@ -16,6 +16,8 @@ import static games.stendhal.common.constants.Actions.QUEST_CRAFT;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -109,7 +111,7 @@ class QuestCraftingEvent extends Event<RPEntity> {
 			SwingUtilities.invokeLater(new Runnable() {
 				@Override
 				public void run() {
-					pack();
+					QuestCraftingWindow.this.setSize(QuestCraftingWindow.this.getPreferredSize());
 					j2DClient client = j2DClient.get();
 					if (client != null) {
 						client.addWindow(QuestCraftingWindow.this);
@@ -170,8 +172,7 @@ class QuestCraftingEvent extends Event<RPEntity> {
 				row.add(quantity);
 			}
 
-			Sprite sprite = item.loadSprite();
-			ImageIcon icon = new ImageIcon(sprite.getImage());
+			ImageIcon icon = item.createIcon();
 			JLabel iconLabel = new JLabel(icon);
 			row.add(iconLabel);
 
@@ -273,12 +274,41 @@ class QuestCraftingEvent extends Event<RPEntity> {
 			return result;
 		}
 
-		Sprite loadSprite() {
-			String path = "/data/sprites/items/" + clazz + "/" + subclass + ".png";
-			Sprite sprite = SpriteStore.get().getSprite(path);
+		ImageIcon createIcon() {
+			Sprite sprite = loadSprite();
 			if (sprite == null) {
 				sprite = SpriteStore.get().getFailsafe();
 			}
+
+			BufferedImage image = new BufferedImage(sprite.getWidth(), sprite.getHeight(), BufferedImage.TYPE_INT_ARGB);
+			Graphics2D graphics = image.createGraphics();
+			sprite.draw(graphics, 0, 0);
+			graphics.dispose();
+
+			return new ImageIcon(image);
+		}
+
+		private Sprite loadSprite() {
+			Sprite sprite = getItemImage(clazz, subclass);
+			if (sprite == null) {
+				sprite = SpriteStore.get().getFailsafe();
+			}
+			return sprite;
+		}
+
+		private Sprite getItemImage(String clazz, String subclazz) {
+			String imagePath = "/data/sprites/items/" + clazz + "/" + subclazz + ".png";
+
+			Sprite sprite = SpriteStore.get().getColoredSprite("/data/gui/bag.png", Color.LIGHT_GRAY);
+			Sprite requested = SpriteStore.get().getSprite(imagePath);
+			if (requested != null) {
+				sprite = requested;
+			}
+
+			if (sprite.getWidth() > sprite.getHeight()) {
+				sprite = SpriteStore.get().getAnimatedSprite(sprite, 100);
+			}
+
 			return sprite;
 		}
 	}
