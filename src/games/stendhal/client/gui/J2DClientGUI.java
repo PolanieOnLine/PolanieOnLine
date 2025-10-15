@@ -50,7 +50,7 @@ public interface J2DClientGUI {
 	void requestQuit(StendhalClient client);
 	void getVisibleRunicAltar();
 	void showProducerWindow();
-	void handleProducerChat(String text);
+	void showProducerWindow(String npcName, String npcTitle);
 	void setChatLine(String text);
 	void setOffline(boolean offline);
 	void switchToSpellState(RPObject spell);

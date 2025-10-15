@@ -69,7 +69,6 @@ class ProducerWindow extends InternalManagedWindow {
 	private static final int MAX_DISTANCE_SQ = MAX_DISTANCE * MAX_DISTANCE;
 	private static final int PADDING = 8;
 	private static final String SLOT_IMAGE = "data/gui/slot.png";
-	private static final Set<String> DEFAULT_TRIGGER_WORDS = createDefaultTriggers();
 	private static final Pattern DIACRITIC_PATTERN = Pattern.compile("\\p{M}+");
 	private static final Pattern NON_LETTER_OR_DIGIT = Pattern.compile("[^\\p{L}\\p{Nd}]");
 
@@ -86,101 +85,45 @@ class ProducerWindow extends InternalManagedWindow {
 		setVisible(false);
 	}
 
-	boolean shouldOpenForChat(String text) {
-		if (text == null) {
-			return false;
-		}
-
-		String trimmed = text.trim();
-		if (trimmed.isEmpty()) {
-			return false;
-		}
-
-		String lower = trimmed.toLowerCase(Locale.ROOT);
-		String[] tokens = lower.split("\\s+");
-		for (String token : tokens) {
-			String normalized = normalizeWord(token);
-			if (normalized.isEmpty()) {
-				continue;
-			}
-			if (DEFAULT_TRIGGER_WORDS.contains(normalized)) {
-				return true;
-			}
-			if (data.matchesActivity(normalized)) {
-				return true;
-			}
-		}
-
-		return false;
+	void showForNearestProducer() {
+		showForProducer(null, null);
 	}
 
-	void showForNearestProducer() {
+	void showForProducer(final String npcName, final String npcTitle) {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				NPC npc = findNearestProducer();
-				if (npc == null) {
-					displayMessage("Brak producentów w pobliżu.");
-					return;
+				NPC npc = findProducer(npcName, npcTitle);
+				ProducerDefinition definition = null;
+				if (npc != null) {
+					definition = data.getDefinition(npc);
 				}
-
-				ProducerDefinition definition = data.getDefinition(npc);
-
 				if (definition == null) {
-					LOGGER.warn("No production data available for NPC: " + npc.getTitle());
-					displayMessage("Brak danych produkcji dla " + npc.getTitle() + ".");
+					if ((npcName != null) && !npcName.isEmpty()) {
+						definition = data.getDefinition(npcName);
+					}
+					if ((definition == null) && (npcTitle != null) && !npcTitle.isEmpty()) {
+						definition = data.getDefinition(npcTitle);
+					}
+				}
+				if (definition == null) {
+					if (npc != null) {
+						LOGGER.warn("No production data available for NPC: " + npc.getTitle());
+					}
+					String name = npcTitle != null ? npcTitle : npcName;
+					if (name == null) {
+						displayMessage("Brak producentów w pobliżu.");
+					} else {
+						displayMessage("Brak danych produkcji dla " + name + ".");
+					}
 					return;
 				}
 
-				populate(definition, npc);
+				populate(definition);
 				setVisible(true);
 				raise();
 			}
 		});
-	}
-
-	private static Set<String> createDefaultTriggers() {
-		Set<String> triggers = new LinkedHashSet<String>();
-		addTrigger(triggers, "produkcja");
-		addTrigger(triggers, "produkcje");
-		addTrigger(triggers, "produkcji");
-		addTrigger(triggers, "produkt");
-		addTrigger(triggers, "produkty");
-		addTrigger(triggers, "produktow");
-		addTrigger(triggers, "produkowanie");
-		addTrigger(triggers, "produkowac");
-		addTrigger(triggers, "produkuj");
-		addTrigger(triggers, "produkuje");
-		addTrigger(triggers, "producent");
-		addTrigger(triggers, "wytworz");
-		addTrigger(triggers, "wytworzyc");
-		addTrigger(triggers, "wytwarzanie");
-		addTrigger(triggers, "wytwarzac");
-		addTrigger(triggers, "wyrob");
-		addTrigger(triggers, "wyroby");
-		addTrigger(triggers, "production");
-		addTrigger(triggers, "produce");
-		addTrigger(triggers, "producing");
-		addTrigger(triggers, "producer");
-		addTrigger(triggers, "product");
-		addTrigger(triggers, "products");
-		addTrigger(triggers, "craft");
-		addTrigger(triggers, "crafting");
-		addTrigger(triggers, "crafts");
-		addTrigger(triggers, "manufacture");
-		addTrigger(triggers, "manufacturing");
-		addTrigger(triggers, "forge");
-		addTrigger(triggers, "forging");
-		addTrigger(triggers, "create");
-		addTrigger(triggers, "creation");
-		return Collections.unmodifiableSet(triggers);
-	}
-
-	private static void addTrigger(Set<String> triggers, String word) {
-		String normalized = normalizeWord(word);
-		if (!normalized.isEmpty()) {
-			triggers.add(normalized);
-		}
 	}
 
 	private static String normalizeWord(String text) {
@@ -200,7 +143,7 @@ class ProducerWindow extends InternalManagedWindow {
 	}
 
 
-	private void populate(ProducerDefinition definition, NPC npc) {
+	private void populate(ProducerDefinition definition) {
 		content.removeAll();
 		setTitle("Produkcja - " + definition.getDisplayName());
 
@@ -258,6 +201,41 @@ class ProducerWindow extends InternalManagedWindow {
 		}
 
 		return closest;
+	}
+
+	private NPC findProducer(String npcName, String npcTitle) {
+		boolean hasName = npcName != null && !npcName.isEmpty();
+		boolean hasTitle = npcTitle != null && !npcTitle.isEmpty();
+		if (!hasName && !hasTitle) {
+			return findNearestProducer();
+		}
+
+		GameObjects gameObjects = GameObjects.getInstance();
+		for (IEntity entity : gameObjects) {
+			if (!(entity instanceof NPC)) {
+				continue;
+			}
+
+			NPC npc = (NPC) entity;
+			if (!isProducer(npc)) {
+				continue;
+			}
+
+			if (hasTitle) {
+				String title = npc.getTitle();
+				if ((title != null) && title.equalsIgnoreCase(npcTitle)) {
+					return npc;
+				}
+			}
+
+			if (hasName) {
+				if (npc.getName().equalsIgnoreCase(npcName)) {
+					return npc;
+				}
+			}
+		}
+
+		return null;
 	}
 
 	private boolean isProducer(NPC npc) {

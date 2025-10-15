@@ -36,6 +36,7 @@ import games.stendhal.server.entity.npc.condition.QuestNotActiveCondition;
 import games.stendhal.server.entity.npc.condition.SentenceHasErrorCondition;
 import games.stendhal.server.entity.npc.fsm.Engine;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.events.ProducerWindowEvent;
 
 public class MultiProducerAdder {
 	private static Logger logger = Logger.getLogger(MultiProducerAdder.class);
@@ -125,6 +126,12 @@ public class MultiProducerAdder {
 				setQuestCondition(questComplete)),
 			false, ConversationStates.ATTENDING,
 			null, new MultiProducerBehaviourAction(behaviour) {
+				@Override
+				public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
+					player.addEvent(new ProducerWindowEvent(npc.getName(), npc.getTitle()));
+					super.fire(player, sentence, npc);
+				}
+
 				@Override
 				public void fireRequestOK(final ItemParserResult res, final Player player, final Sentence sentence, final EventRaiser npc) {
 					// Find out how much items we shall produce.

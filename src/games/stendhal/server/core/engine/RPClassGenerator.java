@@ -87,6 +87,7 @@ import games.stendhal.server.events.ItemLogEvent;
 import games.stendhal.server.events.PlayerLoggedOnEvent;
 import games.stendhal.server.events.PlayerLoggedOutEvent;
 import games.stendhal.server.events.PrivateTextEvent;
+import games.stendhal.server.events.ProducerWindowEvent;
 import games.stendhal.server.events.ProgressStatusEvent;
 import games.stendhal.server.events.ReachedAchievementEvent;
 import games.stendhal.server.events.ShowItemListEvent;
@@ -312,6 +313,9 @@ public class RPClassGenerator {
 		}
 		if (!RPClass.hasRPClass(Events.CHAT_OPTIONS)) {
 			ChatOptionsEvent.generateRPClass();
+		}
+		if (!RPClass.hasRPClass(Events.PRODUCER_WINDOW)) {
+			ProducerWindowEvent.generateRPClass();
 		}
 		if (!RPClass.hasRPClass(Events.IMAGE)) {
 			ImageEffectEvent.generateRPClass();

@@ -333,8 +333,8 @@ public class j2DClient implements UserInterface {
 	}
 
 	@Override
-	public void handleProducerChat(String text) {
-		gui.handleProducerChat(text);
+	public void showProducerWindow(String npcName, String npcTitle) {
+		gui.showProducerWindow(npcName, npcTitle);
 	}
 
 	@Override

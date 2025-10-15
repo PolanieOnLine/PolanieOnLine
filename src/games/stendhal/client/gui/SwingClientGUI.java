@@ -358,9 +358,9 @@ class SwingClientGUI implements J2DClientGUI {
 	}
 
 	@Override
-	public void handleProducerChat(String text) {
-		if ((producerWindow != null) && producerWindow.shouldOpenForChat(text)) {
-			producerWindow.showForNearestProducer();
+	public void showProducerWindow(String npcName, String npcTitle) {
+		if (producerWindow != null) {
+			producerWindow.showForProducer(npcName, npcTitle);
 		}
 	}
 

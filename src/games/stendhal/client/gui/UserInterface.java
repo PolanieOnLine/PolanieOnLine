@@ -91,10 +91,12 @@ public interface UserInterface {
 	public void toggleDebugEnabled();
 
 	/**
-	 * Handles player chat that might trigger producer interactions.
+	 * Requests the producer window to open for a specific NPC.
 	 *
-	 * @param text
-	 *	    chat message entered by the player.
+	 * @param npcName
+	 *	    internal NPC name.
+	 * @param npcTitle
+	 *	    display title of the NPC.
 	 */
-	public void handleProducerChat(String text);
+	public void showProducerWindow(String npcName, String npcTitle);
 }
