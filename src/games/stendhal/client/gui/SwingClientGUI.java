@@ -358,6 +358,13 @@ class SwingClientGUI implements J2DClientGUI {
 	}
 
 	@Override
+	public void handleProducerChat(String text) {
+		if ((producerWindow != null) && producerWindow.shouldOpenForChat(text)) {
+			producerWindow.showForNearestProducer();
+		}
+	}
+
+	@Override
 	public void setOffline(final boolean offline) {
 		screenController.setOffline(offline);
 		this.offline = offline;

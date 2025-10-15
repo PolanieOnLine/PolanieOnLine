@@ -22,6 +22,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -68,6 +69,7 @@ class ProducerWindow extends InternalManagedWindow {
 	private static final int MAX_DISTANCE_SQ = MAX_DISTANCE * MAX_DISTANCE;
 	private static final int PADDING = 8;
 	private static final String SLOT_IMAGE = "data/gui/slot.png";
+	private static final Set<String> DEFAULT_TRIGGER_WORDS = createDefaultTriggers();
 
 	private final JComponent content;
 	private final ProducerData data = new ProducerData();
@@ -80,6 +82,34 @@ class ProducerWindow extends InternalManagedWindow {
 		setMinimizable(true);
 		setMovable(true);
 		setVisible(false);
+	}
+
+	boolean shouldOpenForChat(String text) {
+		if (text == null) {
+			return false;
+		}
+
+		String trimmed = text.trim();
+		if (trimmed.isEmpty()) {
+			return false;
+		}
+
+		String lower = trimmed.toLowerCase(Locale.ROOT);
+		String[] tokens = lower.split("\\s+");
+		for (String token : tokens) {
+			String normalized = normalizeWord(token);
+			if (normalized.isEmpty()) {
+				continue;
+			}
+			if (DEFAULT_TRIGGER_WORDS.contains(normalized)) {
+				return true;
+			}
+			if (data.matchesActivity(normalized)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	void showForNearestProducer() {
@@ -109,6 +139,77 @@ class ProducerWindow extends InternalManagedWindow {
                         }
                 });
 	}
+
+	private static Set<String> createDefaultTriggers() {
+		Set<String> triggers = new LinkedHashSet<String>();
+		addTrigger(triggers, "produkcja");
+		addTrigger(triggers, "produkcje");
+		addTrigger(triggers, "produkcji");
+		addTrigger(triggers, "produkt");
+		addTrigger(triggers, "produkty");
+		addTrigger(triggers, "produktow");
+		addTrigger(triggers, "produkowanie");
+		addTrigger(triggers, "produkowac");
+		addTrigger(triggers, "produkuj");
+		addTrigger(triggers, "produkuje");
+		addTrigger(triggers, "producent");
+		addTrigger(triggers, "wytworz");
+		addTrigger(triggers, "wytworzyc");
+		addTrigger(triggers, "wytwarzanie");
+		addTrigger(triggers, "wytwarzac");
+		addTrigger(triggers, "wyrob");
+		addTrigger(triggers, "wyroby");
+		addTrigger(triggers, "production");
+		addTrigger(triggers, "produce");
+		addTrigger(triggers, "producing");
+		addTrigger(triggers, "producer");
+		addTrigger(triggers, "product");
+		addTrigger(triggers, "products");
+		addTrigger(triggers, "craft");
+		addTrigger(triggers, "crafting");
+		addTrigger(triggers, "crafts");
+		addTrigger(triggers, "manufacture");
+		addTrigger(triggers, "manufacturing");
+		addTrigger(triggers, "forge");
+		addTrigger(triggers, "forging");
+		addTrigger(triggers, "create");
+		addTrigger(triggers, "creation");
+		return Collections.unmodifiableSet(triggers);
+	}
+
+	private static void addTrigger(Set<String> triggers, String word) {
+		String normalized = normalizeWord(word);
+		if (!normalized.isEmpty()) {
+			triggers.add(normalized);
+		}
+	}
+
+	private static String normalizeWord(String text) {
+		if (text == null) {
+			return "";
+		}
+
+		String trimmed = text.trim();
+		if (trimmed.isEmpty()) {
+			return "";
+		}
+
+		String lower = trimmed.toLowerCase(Locale.ROOT);
+		String decomposed = Normalizer.normalize(lower, Normalizer.Form.NFD);
+		StringBuilder builder = new StringBuilder(decomposed.length());
+		for (int i = 0; i < decomposed.length(); i++) {
+			char ch = decomposed.charAt(i);
+			if (Character.getType(ch) == Character.NON_SPACING_MARK) {
+				continue;
+			}
+			if (Character.isLetterOrDigit(ch)) {
+				builder.append(ch);
+			}
+		}
+
+		return builder.toString();
+	}
+
 
 	private void populate(ProducerDefinition definition, NPC npc) {
 		content.removeAll();
@@ -315,6 +416,20 @@ class ProducerWindow extends InternalManagedWindow {
 				return null;
 			}
 			return DEFINITIONS.get(normalize(name));
+		}
+
+		boolean matchesActivity(String normalizedWord) {
+			if (normalizedWord == null || normalizedWord.isEmpty()) {
+				return false;
+			}
+
+			for (ProducerDefinition definition : DEFINITIONS.values()) {
+				if (definition.matchesActivity(normalizedWord)) {
+					return true;
+				}
+			}
+
+			return false;
 		}
 
 		Sprite getSprite(String itemName) {
@@ -590,6 +705,7 @@ class ProducerWindow extends InternalManagedWindow {
 		private final String displayName;
 		private final List<ProducerProduct> products = new ArrayList<ProducerProduct>();
 		private final List<String> activities = new ArrayList<String>();
+		private final Set<String> normalizedActivities = new LinkedHashSet<String>();
 
 		ProducerDefinition(String displayName) {
 			this.displayName = displayName;
@@ -605,10 +721,28 @@ class ProducerWindow extends InternalManagedWindow {
 			if (newActivities == null || newActivities.isEmpty()) {
 				return;
 			}
-			Set<String> unique = new LinkedHashSet<String>(activities);
-			unique.addAll(newActivities);
+
+			LinkedHashSet<String> unique = new LinkedHashSet<String>(activities);
+			for (String activity : newActivities) {
+				if (activity == null) {
+					continue;
+				}
+				String trimmed = activity.trim();
+				if (trimmed.isEmpty()) {
+					continue;
+				}
+				unique.add(trimmed);
+			}
+
 			activities.clear();
 			activities.addAll(unique);
+
+			for (String activity : unique) {
+				String normalized = normalizeWord(activity);
+				if (!normalized.isEmpty()) {
+					normalizedActivities.add(normalized);
+				}
+			}
 		}
 
 		String getDisplayName() {
@@ -621,6 +755,10 @@ class ProducerWindow extends InternalManagedWindow {
 
 		List<String> getActivities() {
 			return Collections.unmodifiableList(activities);
+		}
+
+		boolean matchesActivity(String normalizedWord) {
+			return normalizedActivities.contains(normalizedWord);
 		}
 	}
 

@@ -89,4 +89,12 @@ public interface UserInterface {
 	 * toggle debug messages
 	 */
 	public void toggleDebugEnabled();
+
+	/**
+	 * Handles player chat that might trigger producer interactions.
+	 *
+	 * @param text
+	 *	    chat message entered by the player.
+	 */
+	public void handleProducerChat(String text);
 }

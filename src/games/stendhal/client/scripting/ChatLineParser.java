@@ -13,6 +13,7 @@
 package games.stendhal.client.scripting;
 
 import games.stendhal.client.ClientSingletonRepository;
+import games.stendhal.client.gui.UserInterface;
 import games.stendhal.client.gui.chatlog.HeaderLessEventLine;
 import games.stendhal.common.NotificationType;
 import marauroa.common.game.RPAction;
@@ -79,6 +80,11 @@ public abstract class ChatLineParser {
 			chat.put("text", text);
 
 			ClientSingletonRepository.getClientFramework().send(chat);
+
+			final UserInterface ui = ClientSingletonRepository.getUserInterface();
+			if (ui != null) {
+				ui.handleProducerChat(text);
+			}
 
 			return true;
 		}

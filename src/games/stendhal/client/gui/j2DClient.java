@@ -333,6 +333,11 @@ public class j2DClient implements UserInterface {
 	}
 
 	@Override
+	public void handleProducerChat(String text) {
+		gui.handleProducerChat(text);
+	}
+
+	@Override
 	public void addEventLine(final EventLine line) {
 		channelManager.addEventLine(line);
 	}
