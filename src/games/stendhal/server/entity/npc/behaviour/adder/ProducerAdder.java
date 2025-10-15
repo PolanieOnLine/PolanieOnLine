@@ -160,10 +160,11 @@ public class ProducerAdder {
 				false, ConversationStates.ATTENDING,
 				null, new ProducerBehaviourAction(behaviour) {
 					@Override
-					public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
-						player.addEvent(new ProducerWindowEvent(npc.getName(), npc.getTitle()));
-						super.fire(player, sentence, npc);
-					}
+                                       public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
+                                               player.addEvent(new ProducerWindowEvent(npc.getName(), npc.getTitle()));
+                                               player.notifyWorldAboutChanges();
+                                               super.fire(player, sentence, npc);
+                                       }
 
 					@Override
 					public void fireRequestOK(final ItemParserResult res, final Player player, final Sentence sentence, final EventRaiser npc) {
