@@ -17,6 +17,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
+import java.awt.Insets;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -92,16 +93,27 @@ class ProducerWindow extends InternalManagedWindow {
 
 	@Override
 	public Dimension getPreferredSize() {
-		Dimension preferred = super.getPreferredSize();
+		if (isMinimized()) {
+			return ProducerWindow.super.getPreferredSize();
+		}
+
+		Dimension preferred = ProducerWindow.super.getPreferredSize();
 		if ((preferred == null) || (preferred.width <= 0) || (preferred.height <= 0)) {
 			Dimension contentPreferred = content.getPreferredSize();
 			if ((contentPreferred != null) && (contentPreferred.width > 0) && (contentPreferred.height > 0)) {
 				preferred = new Dimension(contentPreferred);
+				Insets insets = getInsets();
+				if (insets != null) {
+					preferred.width += insets.left + insets.right;
+					preferred.height += insets.top + insets.bottom;
+				}
 			}
 		}
+
 		if ((preferred == null) || (preferred.width <= 0) || (preferred.height <= 0)) {
 			preferred = new Dimension(lastPreferredSize);
 		}
+
 		return preferred;
 	}
 
@@ -136,6 +148,9 @@ class ProducerWindow extends InternalManagedWindow {
 				}
 
 				populate(definition);
+				if (isMinimized()) {
+					setMinimized(false);
+				}
 				setVisible(true);
 				raise();
 			}
@@ -195,16 +210,62 @@ class ProducerWindow extends InternalManagedWindow {
 		content.repaint();
 
 		Dimension preferred = content.getPreferredSize();
-		if ((preferred == null) || (preferred.width <= 0) || (preferred.height <= 0)) {
+		if ((preferred != null) && (preferred.width > 0) && (preferred.height > 0)) {
+			preferred = new Dimension(preferred);
+			Insets insets = getInsets();
+			if (insets != null) {
+				preferred.width += insets.left + insets.right;
+				preferred.height += insets.top + insets.bottom;
+			}
+		} else {
 			preferred = new Dimension(lastPreferredSize);
 		}
-		setPreferredSize(preferred);
+
+		ProducerWindow.super.setPreferredSize(preferred);
 		lastPreferredSize = new Dimension(preferred);
-		setSize(preferred);
+		if (!isMinimized()) {
+			setSize(preferred);
+		}
 
 		if (centerWindow && (getParent() != null)) {
 			center();
 		}
+	}
+
+
+	@Override
+	public void setMinimized(boolean minimized) {
+		if (minimized == isMinimized()) {
+			return;
+		}
+
+		if (minimized) {
+			lastPreferredSize = getSize();
+			Dimension iconSize = computeIconSize();
+			ProducerWindow.super.setPreferredSize(iconSize);
+			super.setMinimized(true);
+			setSize(iconSize);
+		} else {
+			Dimension restore = new Dimension(lastPreferredSize);
+			ProducerWindow.super.setPreferredSize(restore);
+			super.setMinimized(false);
+			setSize(restore);
+			refreshLayout(false);
+		}
+	}
+
+	private Dimension computeIconSize() {
+		Dimension titleSize = getTitlebar().getPreferredSize();
+		if (titleSize == null) {
+			titleSize = new Dimension(160, 24);
+		}
+		Dimension iconSize = new Dimension(Math.max(160, titleSize.width + 16), titleSize.height);
+		Insets insets = getInsets();
+		if (insets != null) {
+			iconSize.width += insets.left + insets.right;
+			iconSize.height += insets.top + insets.bottom;
+		}
+		return iconSize;
 	}
 
 	private NPC findNearestProducer() {
@@ -358,7 +419,7 @@ class ProducerWindow extends InternalManagedWindow {
 			Object selected = activitySelect.getSelectedItem();
 			if (selected != null) {
 				button.setText(selected.toString());
-			}
+				}
 		});
 
 		button.addActionListener(event -> {
