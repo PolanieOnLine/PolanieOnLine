@@ -199,10 +199,10 @@ class ProducerWindow extends InternalManagedWindow {
 		StringBuilder builder = new StringBuilder(decomposed.length());
 		for (int i = 0; i < decomposed.length(); i++) {
 			char ch = decomposed.charAt(i);
-			if (Character.getType(ch) == Character.NON_SPACING_MARK) {
+			if (java.lang.Character.getType(ch) == java.lang.Character.NON_SPACING_MARK) {
 				continue;
 			}
-			if (Character.isLetterOrDigit(ch)) {
+			if (java.lang.Character.isLetterOrDigit(ch)) {
 				builder.append(ch);
 			}
 		}
