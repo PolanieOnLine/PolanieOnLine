@@ -74,6 +74,7 @@ class ProducerWindow extends InternalManagedWindow {
 
 	private final JComponent content;
 	private final ProducerData data = new ProducerData();
+	private Dimension lastPreferredSize = new Dimension(320, 200);
 
 	ProducerWindow() {
 		super("producer", "Produkcja");
@@ -87,6 +88,21 @@ class ProducerWindow extends InternalManagedWindow {
 
 	void showForNearestProducer() {
 		showForProducer(null, null);
+	}
+
+	@Override
+	public Dimension getPreferredSize() {
+		Dimension preferred = super.getPreferredSize();
+		if ((preferred == null) || (preferred.width <= 0) || (preferred.height <= 0)) {
+			Dimension contentPreferred = content.getPreferredSize();
+			if ((contentPreferred != null) && (contentPreferred.width > 0) && (contentPreferred.height > 0)) {
+				preferred = new Dimension(contentPreferred);
+			}
+		}
+		if ((preferred == null) || (preferred.width <= 0) || (preferred.height <= 0)) {
+			preferred = new Dimension(lastPreferredSize);
+		}
+		return preferred;
 	}
 
 	void showForProducer(final String npcName, final String npcTitle) {
@@ -174,23 +190,22 @@ class ProducerWindow extends InternalManagedWindow {
                 raise();
         }
 
-        private void refreshLayout(boolean centerWindow) {
-                content.revalidate();
-                content.repaint();
+	private void refreshLayout(boolean centerWindow) {
+		content.revalidate();
+		content.repaint();
 
-                Dimension preferred = getPreferredSize();
-                if ((preferred.width <= 0) || (preferred.height <= 0)) {
-                        preferred = content.getPreferredSize();
-                }
+		Dimension preferred = content.getPreferredSize();
+		if ((preferred == null) || (preferred.width <= 0) || (preferred.height <= 0)) {
+			preferred = new Dimension(lastPreferredSize);
+		}
+		setPreferredSize(preferred);
+		lastPreferredSize = new Dimension(preferred);
+		setSize(preferred);
 
-                if ((preferred.width > 0) && (preferred.height > 0)) {
-                        setSize(preferred);
-                }
-
-                if (centerWindow && (getParent() != null)) {
-                        center();
-                }
-        }
+		if (centerWindow && (getParent() != null)) {
+			center();
+		}
+	}
 
 	private NPC findNearestProducer() {
 		if (User.isNull()) {
