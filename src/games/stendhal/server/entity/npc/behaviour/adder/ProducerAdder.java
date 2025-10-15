@@ -141,10 +141,22 @@ public class ProducerAdder {
 		}
 
 		engine.add(ConversationStates.ATTENDING,
-			behaviour.getProductionActivity(),
-			new AndCondition(new SentenceHasErrorCondition(), setQuestCondition(questComplete)),
-			false, ConversationStates.ATTENDING,
-			null, new ComplainAboutSentenceErrorAction());
+				behaviour.getProductionActivity(),
+				new AndCondition(new SentenceHasErrorCondition(), setQuestCondition(questComplete)),
+				false, ConversationStates.ATTENDING,
+				null, new ComplainAboutSentenceErrorAction());
+
+		engine.add(ConversationStates.ATTENDING,
+				ConversationPhrases.PRODUCTION_MESSAGES,
+				null,
+				true, ConversationStates.ATTENDING,
+				null, new ChatAction() {
+					@Override
+					public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
+						player.addEvent(new ProducerWindowEvent(npc.getName(), npc.getTitle()));
+						player.notifyWorldAboutChanges();
+					}
+				});
 
 		/**
 		 * In the behaviour a production activity is defined, e.g. 'cast' or 'mill'

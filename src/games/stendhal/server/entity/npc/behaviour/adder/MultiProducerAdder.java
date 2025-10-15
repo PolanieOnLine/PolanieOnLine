@@ -110,14 +110,26 @@ public class MultiProducerAdder {
 		}
 
 		engine.add(ConversationStates.ATTENDING,
-			behaviour.getProductionActivity(),
-			new AndCondition(new SentenceHasErrorCondition(), setQuestCondition(questComplete)),
-			false, ConversationStates.ATTENDING,
-			null, new ComplainAboutSentenceErrorAction());
+				behaviour.getProductionActivity(),
+				new AndCondition(new SentenceHasErrorCondition(), setQuestCondition(questComplete)),
+				false, ConversationStates.ATTENDING,
+				null, new ComplainAboutSentenceErrorAction());
+
+		engine.add(ConversationStates.ATTENDING,
+				ConversationPhrases.PRODUCTION_MESSAGES,
+				null,
+				true, ConversationStates.ATTENDING,
+				null, new ChatAction() {
+					@Override
+					public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
+						player.addEvent(new ProducerWindowEvent(npc.getName(), npc.getTitle()));
+						player.notifyWorldAboutChanges();
+					}
+				});
 
 		/* In the behaviour a production activity is defined, e.g. 'cast' or 'mill'
-		* and this is used as the trigger to start the production,
-		* provided that the NPC is not currently producing for player (not started, is rejected, or is complete) */
+		 * and this is used as the trigger to start the production,
+		 * provided that the NPC is not currently producing for player (not started, is rejected, or is complete) */
 		engine.add(ConversationStates.ATTENDING,
 			behaviour.getProductionActivity(),
 			new AndCondition(
