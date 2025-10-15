@@ -77,7 +77,7 @@ public class QuestCraftingEvent extends RPEvent {
 		put(REQUIRED, required);
 		put(WAITING_TIME, waitingTime);
 		if (canCraft) {
-			put(CAN_CRAFT, true);
+			put(CAN_CRAFT, "");
 		}
 		put(BUTTON, buttonLabel);
 	}
