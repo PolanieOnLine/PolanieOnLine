@@ -143,33 +143,54 @@ class ProducerWindow extends InternalManagedWindow {
 	}
 
 
-	private void populate(ProducerDefinition definition) {
-		content.removeAll();
-		setTitle("Produkcja - " + definition.getDisplayName());
+        private void populate(ProducerDefinition definition) {
+                boolean centerWindow = !isVisible();
 
-		List<ProducerProduct> products = definition.getProducts();
-		if (products.isEmpty()) {
-			displayMessage("Brak produktów do wytworzenia.");
-			return;
-		}
+                content.removeAll();
+                setTitle("Produkcja - " + definition.getDisplayName());
 
-		for (ProducerProduct product : products) {
-			content.add(createProductRow(definition, product));
-		}
+                List<ProducerProduct> products = definition.getProducts();
+                if (products.isEmpty()) {
+                        displayMessage("Brak produktów do wytworzenia.");
+                        return;
+                }
 
-		content.revalidate();
-		content.repaint();
-	}
+                for (ProducerProduct product : products) {
+                        content.add(createProductRow(definition, product));
+                }
 
-	private void displayMessage(String message) {
-		content.removeAll();
-		JLabel label = new JLabel(message, SwingConstants.CENTER);
-		content.add(label);
-		content.revalidate();
-		content.repaint();
-		setVisible(true);
-		raise();
-	}
+                refreshLayout(centerWindow);
+        }
+
+        private void displayMessage(String message) {
+                boolean centerWindow = !isVisible();
+
+                content.removeAll();
+                JLabel label = new JLabel(message, SwingConstants.CENTER);
+                content.add(label);
+
+                refreshLayout(centerWindow);
+                setVisible(true);
+                raise();
+        }
+
+        private void refreshLayout(boolean centerWindow) {
+                content.revalidate();
+                content.repaint();
+
+                Dimension preferred = getPreferredSize();
+                if ((preferred.width <= 0) || (preferred.height <= 0)) {
+                        preferred = content.getPreferredSize();
+                }
+
+                if ((preferred.width > 0) && (preferred.height > 0)) {
+                        setSize(preferred);
+                }
+
+                if (centerWindow && (getParent() != null)) {
+                        center();
+                }
+        }
 
 	private NPC findNearestProducer() {
 		if (User.isNull()) {
