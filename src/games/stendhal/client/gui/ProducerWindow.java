@@ -36,7 +36,6 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JSpinner;
@@ -345,13 +344,17 @@ class ProducerWindow extends InternalManagedWindow {
 
 		JComponent resourcesPanel = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, 4);
 		resourcesPanel.setAlignmentY(Component.CENTER_ALIGNMENT);
+		List<SlotComponent> resourceSlots = new ArrayList<SlotComponent>();
 		List<ProducerResource> resources = product.getResources();
 		if (resources.isEmpty()) {
-			resourcesPanel.add(createSlot("Brak", 0, null));
+			SlotComponent empty = createSlot("Brak", 0, null);
+			resourcesPanel.add(empty);
 		} else {
 			for (ProducerResource resource : resources) {
 				Sprite sprite = data.getSprite(resource.getName());
-				resourcesPanel.add(createSlot(resource.getName(), resource.getAmount(), sprite));
+				SlotComponent slot = createSlot(resource.getName(), resource.getAmount(), sprite);
+				resourcesPanel.add(slot);
+				resourceSlots.add(slot);
 			}
 		}
 		row.add(resourcesPanel);
@@ -365,35 +368,28 @@ class ProducerWindow extends InternalManagedWindow {
 		JComponent productPanel = SBoxLayout.createContainer(SBoxLayout.VERTICAL, 4);
 		productPanel.setAlignmentY(Component.CENTER_ALIGNMENT);
 		Sprite productSprite = data.getSprite(product.getName());
-		productPanel.add(createSlot(product.getName(), product.getQuantity(), productSprite));
+		SlotComponent productSlot = createSlot(product.getName(), product.getQuantity(), productSprite);
+		productPanel.add(productSlot);
+		JLabel timeLabel = null;
 		if (product.getMinutes() > 0) {
-			productPanel.add(new JLabel("Czas: " + product.getMinutes() + " min"));
+			timeLabel = new JLabel("Czas: " + product.getMinutes() + " min");
+			productPanel.add(timeLabel);
 		}
 		row.add(productPanel);
 
-		row.add(createActionPanel(definition, product));
+		row.add(createActionPanel(definition, product, resourceSlots, productSlot, timeLabel));
 
 		return row;
 	}
 
-	private JComponent createSlot(String name, int amount, Sprite sprite) {
-		JComponent container = SBoxLayout.createContainer(SBoxLayout.VERTICAL, 2);
-		container.setAlignmentY(Component.CENTER_ALIGNMENT);
-
-		SlotComponent slot = new SlotComponent(sprite, amount);
-		if (name != null) {
-			String tooltip = name;
-			if (amount > 1) {
-				tooltip = name + " x" + amount;
-			}
-			slot.setToolTipText(tooltip);
-		}
-		container.add(slot);
-
-		return container;
+	private SlotComponent createSlot(String name, int amount, Sprite sprite) {
+		SlotComponent slot = new SlotComponent(name, sprite, amount);
+		slot.setAlignmentY(Component.CENTER_ALIGNMENT);
+		return slot;
 	}
 
-	private JComponent createActionPanel(ProducerDefinition definition, ProducerProduct product) {
+	private JComponent createActionPanel(ProducerDefinition definition, ProducerProduct product,
+			List<SlotComponent> resourceSlots, SlotComponent productSlot, JLabel timeLabel) {
 		JComponent panel = SBoxLayout.createContainer(SBoxLayout.VERTICAL, 4);
 		panel.setAlignmentY(Component.CENTER_ALIGNMENT);
 
@@ -404,36 +400,69 @@ class ProducerWindow extends InternalManagedWindow {
 		panel.add(spinner);
 
 		List<String> activities = definition.getActivities();
-		String[] activityArray = activities.toArray(new String[activities.size()]);
-		JComboBox<String> activitySelect = new JComboBox<String>(activityArray);
-		activitySelect.setAlignmentX(Component.CENTER_ALIGNMENT);
-		panel.add(activitySelect);
+		String activityCommand = selectActivityCommand(activities);
+		final List<ProducerResource> resources = product.getResources();
 
-		String defaultLabel = activities.isEmpty() ? "Produkuj" : activities.get(0);
-		JButton button = new JButton(defaultLabel);
-		button.setEnabled(!activities.isEmpty());
+		JButton button = new JButton("Wykonaj");
+		button.setEnabled(activityCommand != null && !activityCommand.isEmpty());
 		button.setAlignmentX(Component.CENTER_ALIGNMENT);
 		panel.add(button);
 
-		activitySelect.addActionListener(event -> {
-			Object selected = activitySelect.getSelectedItem();
-			if (selected != null) {
-				button.setText(selected.toString());
-				}
-		});
-
 		button.addActionListener(event -> {
-			Object selected = activitySelect.getSelectedItem();
-			String activity = selected != null ? selected.toString() : defaultLabel;
-			if (activity == null || activity.isEmpty()) {
+			if (activityCommand == null || activityCommand.isEmpty()) {
 				return;
 			}
 
 			int amount = ((Number) spinner.getValue()).intValue();
-			sendProductionRequest(activity, product.getName(), amount);
+			sendProductionRequest(activityCommand, product.getName(), amount);
 		});
 
+		Runnable updater = new Runnable() {
+			@Override
+			public void run() {
+				int amount = ((Number) spinner.getValue()).intValue();
+				int remainder = amount % baseAmount;
+				if (remainder != 0) {
+					amount -= remainder;
+					if (amount < baseAmount) {
+						amount = baseAmount;
+					}
+					spinner.setValue(amount);
+					return;
+				}
+				int multiplier = Math.max(1, amount / baseAmount);
+
+				if (productSlot != null) {
+					productSlot.setAmount(product.getQuantity() * multiplier);
+				}
+
+				for (int i = 0; i < resourceSlots.size(); i++) {
+					ProducerResource resource = resources.get(i);
+					SlotComponent slot = resourceSlots.get(i);
+					slot.setAmount(resource.getAmount() * multiplier);
+				}
+
+				if (timeLabel != null) {
+					int minutes = product.getMinutes() * multiplier;
+					timeLabel.setText("Czas: " + minutes + " min");
+				}
+			}
+		};
+
+		spinner.addChangeListener(event -> updater.run());
+		updater.run();
+
 		return panel;
+	}
+
+	private String selectActivityCommand(List<String> activities) {
+		if (activities == null || activities.isEmpty()) {
+			return null;
+		}
+		if (activities.size() > 1) {
+			return activities.get(1);
+		}
+		return activities.get(0);
 	}
 
 	private void sendProductionRequest(String activity, String product, int amount) {
@@ -909,11 +938,12 @@ class ProducerWindow extends InternalManagedWindow {
 		private static final long serialVersionUID = 1L;
 		private final Sprite background = SpriteStore.get().getSprite(SLOT_IMAGE);
 		private final Sprite sprite;
-		private final String amountText;
+		private final String name;
+		private int amount;
 
-		SlotComponent(Sprite sprite, int amount) {
+		SlotComponent(String name, Sprite sprite, int amount) {
+			this.name = name;
 			this.sprite = sprite;
-			this.amountText = amount > 1 ? String.valueOf(amount) : null;
 			int width = background.getWidth();
 			int height = background.getHeight();
 			Dimension size = new Dimension(width, height);
@@ -921,6 +951,21 @@ class ProducerWindow extends InternalManagedWindow {
 			setMinimumSize(size);
 			setMaximumSize(size);
 			setOpaque(false);
+			setAmount(amount);
+		}
+
+		void setAmount(int amount) {
+			this.amount = Math.max(0, amount);
+			if (name != null) {
+				String tooltip = name;
+				if (this.amount > 1) {
+					tooltip = name + " x" + this.amount;
+				}
+				setToolTipText(tooltip);
+			} else {
+				setToolTipText(null);
+			}
+			repaint();
 		}
 
 		@Override
@@ -932,7 +977,8 @@ class ProducerWindow extends InternalManagedWindow {
 				int y = (getHeight() - sprite.getHeight()) / 2;
 				sprite.draw(g, x, y);
 			}
-			if (amountText != null) {
+			if (amount > 1) {
+				String amountText = String.valueOf(amount);
 				Font old = g.getFont();
 				Font derived = old.deriveFont(Font.BOLD);
 				g.setFont(derived);
