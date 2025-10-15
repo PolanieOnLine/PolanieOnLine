@@ -8,9 +8,6 @@ import java.util.Set;
 
 import games.stendhal.client.ClientSingletonRepository;
 import games.stendhal.client.entity.NPC;
-import games.stendhal.client.entity.User;
-import games.stendhal.client.gui.ScreenController;
-import games.stendhal.common.NotificationType;
 import marauroa.common.game.RPAction;
 
 /**
@@ -60,18 +57,17 @@ public final class NPCInteractionManager {
 	 * @param npc target npc
 	 */
 	public void startInteraction(final NPC npc) {
-		if (npc == null) {
-			return;
-		}
-		final int objectId = npc.getObjectID();
-		if (objectId < 0) {
-			return;
-		}
-		if (!activeNpcIds.contains(objectId)) {
-			activeNpcIds.add(objectId);
-		}
-		sendChat(GREETING_COMMAND);
-		showPlayerBubble("Witasz się z " + npc.getTitle());
+	if (npc == null) {
+	return;
+	}
+	final int objectId = npc.getObjectID();
+	if (objectId < 0) {
+	return;
+	}
+	if (!activeNpcIds.contains(objectId)) {
+	activeNpcIds.add(objectId);
+	}
+	sendChat(GREETING_COMMAND);
 	}
 
 	/**
@@ -128,23 +124,14 @@ public final class NPCInteractionManager {
 	 * @param npc target npc
 	 */
 	public void endInteraction(final NPC npc) {
-		if (npc == null) {
-			return;
-		}
-		activeNpcIds.remove(npc.getObjectID());
-		sendChat(GOODBYE_COMMAND);
+	if (npc == null) {
+	return;
 	}
-
-	private void showPlayerBubble(final String message) {
-		if (User.isNull()) {
-			return;
-		}
-		final ScreenController controller = ClientSingletonRepository.getScreenController();
-		if (controller != null) {
-			controller.addText(User.get(), message, NotificationType.INFORMATION, true);
-		}
+	if (activeNpcIds.remove(npc.getObjectID())) {
+	sendChat(GOODBYE_COMMAND);
 	}
-
+	}
+	
 	private void sendChat(final String text) {
 		final RPAction chat = new RPAction("chat");
 		chat.put("type", "chat");

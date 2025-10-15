@@ -1,26 +1,25 @@
 /***************************************************************************
-*                   (C) Copyright 2024 - Polanie OnLine                   *
-***************************************************************************/
+ *                   (C) Copyright 2024 - Polanie OnLine                   *
+ ***************************************************************************/
 package games.stendhal.client.gui.npc;
 
 import java.awt.Component;
 import java.awt.Point;
 
-import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
 
 import games.stendhal.client.entity.NPC;
 import games.stendhal.client.entity.RPEntity;
 import games.stendhal.client.entity.StatusID;
 import games.stendhal.client.gui.j2d.entity.EntityView;
 import games.stendhal.client.gui.wt.EntityViewCommandList;
+import games.stendhal.client.gui.wt.core.WtPopupMenu;
 import marauroa.common.game.RPObject;
 
 /**
-* Context popup dedicated to NPC conversations.
-*/
-public class NPCInteractionMenu extends JPopupMenu {
+ * Context popup dedicated to NPC conversations.
+ */
+public class NPCInteractionMenu extends WtPopupMenu {
 	private static final long serialVersionUID = 1L;
 
 	private final NPC npc;
@@ -29,15 +28,18 @@ public class NPCInteractionMenu extends JPopupMenu {
 	private final Component anchor;
 	private final Point popupLocation;
 	private final NPCInteractionManager manager;
+	private final QuestNpcRegistry questRegistry;
 
 	public NPCInteractionMenu(final NPC npc, final EntityView<?> view, final String[] defaultActions,
-			final Component anchor, final Point popupLocation) {
+				final Component anchor, final Point popupLocation) {
+		super((npc != null) ? npc.getTitle() : "npc");
 		this.npc = npc;
 		this.view = view;
 		this.defaultActions = defaultActions;
 		this.anchor = anchor;
 		this.popupLocation = popupLocation;
 		this.manager = NPCInteractionManager.get();
+		this.questRegistry = QuestNpcRegistry.get();
 
 		buildMenu();
 	}
@@ -46,66 +48,35 @@ public class NPCInteractionMenu extends JPopupMenu {
 		removeAll();
 
 		if (!manager.isInteracting(npc)) {
-			add(createGreetingItem());
-			addSeparator();
+			add(createMenuItem("Przywitaj się", () -> manager.startInteraction(npc)));
 		} else {
-			add(createActionMenu());
-			addSeparator();
-			add(createEndConversationItem());
-			addSeparator();
+			addConversationItems();
+			add(createMenuItem("Zakończ rozmowę", () -> manager.endInteraction(npc)));
 		}
 
-		add(createCancelItem());
+		add(createMenuItem("Anuluj", () -> setVisible(false)));
 		addDefaultActions();
 	}
 
-	private JMenuItem createGreetingItem() {
-		final JMenuItem item = new JMenuItem("Przywitaj się");
-		item.addActionListener(e -> {
-			setVisible(false);
-			manager.startInteraction(npc);
-		});
-		return item;
-	}
-
-	private JMenu createActionMenu() {
-		final JMenu menu = new JMenu("Akcje");
-
+	private void addConversationItems() {
 		if (hasJobOption()) {
-			menu.add(createConversationItem("Praca", () -> manager.requestJob(npc)));
+			add(createMenuItem("Praca", () -> manager.requestJob(npc)));
 		}
 		if (hasOfferOption()) {
-			menu.add(createConversationItem("Oferta", () -> manager.requestOffer(npc)));
+			add(createMenuItem("Oferta", () -> manager.requestOffer(npc)));
 		}
-		menu.add(createConversationItem("Pomoc", () -> manager.requestHelp(npc)));
+		add(createMenuItem("Pomoc", () -> manager.requestHelp(npc)));
 		if (hasQuestOption()) {
-			menu.add(createConversationItem("Zadanie", () -> manager.requestQuest(npc)));
+			add(createMenuItem("Zadanie", () -> manager.requestQuest(npc)));
 		}
-
-		return menu;
 	}
 
-	private JMenuItem createConversationItem(final String label, final Runnable action) {
-		final JMenuItem item = new JMenuItem(label);
+	private JMenuItem createMenuItem(final String label, final Runnable action) {
+		final JMenuItem item = createItem(label, null);
 		item.addActionListener(e -> {
 			setVisible(false);
 			action.run();
 		});
-		return item;
-	}
-
-	private JMenuItem createEndConversationItem() {
-		final JMenuItem item = new JMenuItem("Zakończ rozmowę");
-		item.addActionListener(e -> {
-			setVisible(false);
-			manager.endInteraction(npc);
-		});
-		return item;
-	}
-
-	private JMenuItem createCancelItem() {
-		final JMenuItem item = new JMenuItem("Anuluj");
-		item.addActionListener(e -> setVisible(false));
 		return item;
 	}
 
@@ -114,10 +85,8 @@ public class NPCInteractionMenu extends JPopupMenu {
 			return;
 		}
 
-		final JMenuItem more = new JMenuItem("Pozostałe akcje…");
-		more.addActionListener(e -> showDefaultMenu());
 		addSeparator();
-		add(more);
+		add(createMenuItem("Pozostałe akcje…", this::showDefaultMenu));
 	}
 
 	private void showDefaultMenu() {
@@ -150,16 +119,6 @@ public class NPCInteractionMenu extends JPopupMenu {
 	}
 
 	private boolean hasQuestOption() {
-		final RPObject object = npc.getRPObject();
-		if (object == null) {
-			return false;
-		}
-		if (object.has("quest") || object.has("quest_available")) {
-			return true;
-		}
-		if (object.has("questgiver") || object.has("quest_giver")) {
-			return true;
-		}
-		return false;
+		return questRegistry.hasQuestFor(npc);
 	}
 }
