@@ -380,6 +380,10 @@ public class RPClassGenerator {
 			AchievementLogEvent.generateRPClass();
 		}
 
+		if (!RPClass.hasRPClass(Events.QUEST_CRAFTING)) {
+			QuestCraftingEvent.generateRPClass();
+		}
+
 		if (!RPClass.hasRPClass("action")) {
 			createActionRPClass();
 			createChatActionRPClass();

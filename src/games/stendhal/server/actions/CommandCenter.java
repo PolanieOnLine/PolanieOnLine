@@ -125,6 +125,7 @@ public class CommandCenter {
 		ProgressStatusQueryAction.register();
 		PushAction.register();
 		QuestListAction.register();
+		QuestCraftAction.register();
 		RemoveDetailAction.register();
 		ReorderAction.register();
 		SentenceAction.register();

@@ -717,13 +717,78 @@ div.logcolR {
 }
 
 .shopcolr {
+flex: 1;
+}
+
+.crafting-dialog {
+	min-width: 32em;
+}
+
+.crafting-columns {
+	display: flex;
+	gap: 1em;
+}
+
+.crafting-column {
+	display: flex;
+	flex-direction: column;
+	gap: 0.4em;
+}
+
+.crafting-section-title {
+	font-weight: bold;
+	margin-bottom: 0.3em;
+}
+
+.crafting-entry {
+	display: flex;
+	align-items: center;
+	gap: 0.6em;
+	padding: 0.3em 0;
+}
+
+.crafting-quantity {
+	min-width: 3.5em;
+	font-weight: bold;
+}
+
+.crafting-icon {
+	width: 34px;
+	height: 34px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.crafting-name {
 	flex: 1;
 }
 
+.crafting-footer {
+	margin-top: 0.8em;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.crafting-info {
+	font-style: italic;
+}
+
+.crafting-warning {
+	margin-top: 0.5em;
+	color: #c33;
+	font-weight: bold;
+}
+
+.crafting-empty {
+	font-style: italic;
+	color: #666;
+}
+
 .bestiary {
-	min-width: 35em;
-	height: 23em;
-	overflow-y: scroll;
+min-width: 35em;
+height: 23em;
+overflow-y: scroll;
 }
 
 .bestiary-cell {

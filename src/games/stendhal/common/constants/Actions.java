@@ -43,6 +43,8 @@ public final class Actions {
 	//list quests
 	public static final String LISTQUESTS = "listquests";
 
+	public static final String QUEST_CRAFT = "quest_craft";
+
 	//list producers
 	public static final String LISTPRODUCERS = "listproducers";
 

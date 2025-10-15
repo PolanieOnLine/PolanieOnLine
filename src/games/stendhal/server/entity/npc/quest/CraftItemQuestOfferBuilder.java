@@ -44,13 +44,13 @@ public class CraftItemQuestOfferBuilder extends QuestOfferBuilder<CraftItemQuest
 
 	@Override
 	public void build(SpeakerNPC npc, String questSlot, QuestTaskBuilder task, ChatCondition questCompletedCondition, int repeatableAfterMinutes) {
-		ChatAction startQuestAction = ((CraftItemTask) task).buildStartQuestAction(questSlot, respondToAccept, respondToReject);
-		ChatAction forgeQuestAction = ((CraftItemTask) task).buildForgeQuestAction(questSlot);
+		CraftItemTask craftTask = (CraftItemTask) task;
+		ChatAction startQuestAction = craftTask.buildStartQuestAction(questSlot, respondToAccept, respondToReject);
 		ChatAction rejectQuestAction = task.buildRejectQuestAction(questSlot);
 
-		ChatCondition beforeForgingConditions = ((CraftItemTask) task).requiredConditionsBeforeForge();
-		ChatCondition requiredItemsToForge = ((CraftItemTask) task).requeredItemsToStartForging();
-		int productionTime = ((CraftItemTask) task).getProductionTime();
+		ChatCondition beforeForgingConditions = craftTask.requiredConditionsBeforeForge();
+		ChatCondition requiredItemsToForge = craftTask.requeredItemsToStartForging();
+		int productionTime = craftTask.getProductionTime();
 
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
@@ -124,11 +124,7 @@ public class CraftItemQuestOfferBuilder extends QuestOfferBuilder<CraftItemQuest
 				null,
 				new SayTimeRemainingAction(questSlot, 1, productionTime, "Proszę... Nie poganiaj mnie! Wciąż pracuję nad Twoim zleceniem. Wróc za "));
 
-		ChatAction dropRequiredItemsToForge = ((CraftItemTask) task).dropRequeredItemsToForge();
-		ChatAction forgeAction = new SetQuestAction(questSlot, 0, "forging");
-		if (forgeQuestAction != null) {
-			forgeAction = forgeQuestAction;
-		}
+		ChatAction showCraftingWindow = craftTask.buildShowCraftingWindowAction(questSlot, npc.getName());
 
 		npc.add(ConversationStates.ATTENDING,
 				triggers,
@@ -138,7 +134,7 @@ public class CraftItemQuestOfferBuilder extends QuestOfferBuilder<CraftItemQuest
 					requiredItemsToForge),
 				ConversationStates.ATTENDING,
 				null,
-				new MultipleActions(forgeAction, dropRequiredItemsToForge));
+				showCraftingWindow);
 
 		if (repeatableAfterMinutes > -1) {
 			npc.add(ConversationStates.ATTENDING,
