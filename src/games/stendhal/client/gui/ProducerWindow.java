@@ -83,9 +83,9 @@ class ProducerWindow extends InternalManagedWindow {
 	}
 
 	void showForNearestProducer() {
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
+                SwingUtilities.invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
 				NPC npc = findNearestProducer();
 				if (npc == null) {
 					displayMessage("Brak producentów w pobliżu.");
@@ -103,11 +103,11 @@ class ProducerWindow extends InternalManagedWindow {
 					return;
 				}
 
-				populate(definition, npc);
-				setVisible(true);
-				toFront();
-			}
-		});
+                                populate(definition, npc);
+                                setVisible(true);
+                                raise();
+                        }
+                });
 	}
 
 	private void populate(ProducerDefinition definition, NPC npc) {
@@ -129,13 +129,13 @@ class ProducerWindow extends InternalManagedWindow {
 	}
 
 	private void displayMessage(String message) {
-		content.removeAll();
-		JLabel label = new JLabel(message, SwingConstants.CENTER);
-		content.add(label);
-		content.revalidate();
-		content.repaint();
-		setVisible(true);
-		toFront();
+                content.removeAll();
+                JLabel label = new JLabel(message, SwingConstants.CENTER);
+                content.add(label);
+                content.revalidate();
+                content.repaint();
+                setVisible(true);
+                raise();
 	}
 
 	private NPC findNearestProducer() {
