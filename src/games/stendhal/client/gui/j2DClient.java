@@ -328,6 +328,10 @@ public class j2DClient implements UserInterface {
 		gui.getVisibleRunicAltar();
 	}
 
+	public void showProducerWindow() {
+		gui.showProducerWindow();
+	}
+
 	@Override
 	public void addEventLine(final EventLine line) {
 		channelManager.addEventLine(line);
