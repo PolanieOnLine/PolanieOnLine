@@ -16,6 +16,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import games.stendhal.common.NotificationType;
 import games.stendhal.server.core.engine.SingletonRepository;
@@ -30,7 +32,7 @@ import games.stendhal.server.entity.player.Player;
  * Usage:
  * 		/script ListZones.class [filter]
  *
- * TODO: Allow using regular expression?
+ * Supports optional substring or regular expression filtering. Use 'regex:' prefix for regex.
  */
 public class ListZones extends ScriptImpl {
 
@@ -45,8 +47,25 @@ public class ListZones extends ScriptImpl {
 		final StringBuilder sb = new StringBuilder();
 
 		String filter = null;
+		Pattern filterPattern = null;
 		if (!args.isEmpty()) {
-			filter = args.get(0).toLowerCase();
+			final String rawFilter = args.get(0);
+			if (rawFilter.startsWith("regex:")) {
+				final String regex = rawFilter.substring("regex:".length());
+				if (regex.isEmpty()) {
+					admin.sendPrivateText(NotificationType.ERROR, "ERROR: Regular expression filter must not be empty.");
+					showUsage(admin);
+					return;
+				}
+				try {
+					filterPattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+				} catch (PatternSyntaxException ex) {
+					admin.sendPrivateText(NotificationType.ERROR, "ERROR: Invalid regular expression: " + ex.getDescription());
+					return;
+				}
+			} else {
+				filter = rawFilter.toLowerCase();
+			}
 		}
 
 
@@ -59,7 +78,11 @@ public class ListZones extends ScriptImpl {
 
 			for (final StendhalRPZone zone : zoneList) {
 				final String zoneName = zone.getName();
-				if (filter == null) {
+				if (filterPattern != null) {
+					if (filterPattern.matcher(zoneName).find()) {
+						addZones.add(zoneName);
+					}
+				} else if (filter == null) {
 					addZones.add(zoneName);
 				} else if (zoneName.toLowerCase().contains(filter)) {
 					addZones.add(zoneName);
@@ -88,10 +111,16 @@ public class ListZones extends ScriptImpl {
 
 			admin.sendPrivateText(sb.toString());
 		} else {
-			if (filter == null) {
+			if (filter == null && filterPattern == null) {
 				admin.sendPrivateText(NotificationType.WARNING, "WARNING: No zone information found.");
 			} else {
-				admin.sendPrivateText("No zone names found containing the text \"" + filter + "\".");
+				final String reason;
+				if (filterPattern != null) {
+					reason = "matching the regular expression \"" + filterPattern.pattern() + "\"";
+				} else {
+					reason = "containing the text \"" + filter + "\"";
+				}
+				admin.sendPrivateText("No zone names found " + reason + ".");
 			}
 		}
 	}
@@ -106,7 +135,8 @@ public class ListZones extends ScriptImpl {
 				"\nUsage:",
 				"    /script ListZones.class [filter]",
 				"Args:",
-				"    filter:\tOnly return zone names containing matching string.");
+				"    filter:\tOnly return zone names containing matching string.",
+				"            Prefix with 'regex:' to use a regular expression filter.")
 		admin.sendPrivateText(NotificationType.CLIENT, String.join("\n", usage));
 	}
 }
