@@ -12,6 +12,8 @@
 package games.stendhal.server.entity.npc.condition;
 
 import games.stendhal.common.parser.Sentence;
+import java.util.Objects;
+
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPRuleProcessor;
 import games.stendhal.server.entity.Entity;
@@ -58,12 +60,18 @@ public class PlayerNextToCondition implements ChatCondition {
 
 	@Override
 	public int hashCode() {
-		// FIXME: needs own implementation
-		return super.hashCode();
+		return Objects.hash(entityName);
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
-		return obj instanceof PlayerNextToCondition;
+		if (this == obj) {
+			return true;
+		}
+		if (!(obj instanceof PlayerNextToCondition)) {
+			return false;
+		}
+		final PlayerNextToCondition other = (PlayerNextToCondition) obj;
+		return Objects.equals(entityName, other.entityName);
 	}
 }
