@@ -194,7 +194,7 @@ public class CloneManager {
 					pendingCloneNames.remove(newCloneName.toLowerCase());
 					if (!register(origName, newCloneName)) {
 						logger.error("failed to register " + newCloneName
-								+ " as clone of " + origName);
+										+ " as clone of " + origName);
 						zone.remove(this);
 						return;
 					}
@@ -207,7 +207,7 @@ public class CloneManager {
 					pendingCloneNames.remove(newCloneName.toLowerCase());
 					if (registeredClone && !unregister(origName, newCloneName)) {
 						logger.error("failed to unregister " + newCloneName
-								+ " as clone of " + origName);
+										+ " as clone of " + origName);
 					}
 					registeredClone = false;
 				}
@@ -233,32 +233,24 @@ public class CloneManager {
 				}
 			}
 
-			final List<String> copySlots = Arrays.asList(
-					"loot"
-			);
+			// clones are displayed with name of original by default
+			clone.setTitle(origName);
+			// clones should not be displayed on website, but check for alternative image just to be safe
+			clone.setAlternativeImage(orig.getAlternativeImage());
+		}
 
-			for (String slot: copySlots) {
-				clone.copySlot(orig, slot);
+		if (clone == null) {
+			if (orig == null) {
+				logger.warn("attempted to clone null SpeakerNPC");
+			} else {
+				logger.warn("failed to clone SpeakerNPC: " + orig.getName());
 			}
-
-			clone.setAutoRespawn(orig.autoRespawn());
-			clone.setPerceptionRange(orig.getPerceptionRange());
-			clone.setMovementRange(orig.getMovementRange());
-			clone.setSpeed(orig.getSpeed());
-			clone.setTileRotation(orig.getTileRotation());
-			clone.setRespawnTime(orig.getRespawnTime());
-			clone.setAggressive(orig.isAggressive());
-			clone.setWalkspeed(orig.getWalkspeed());
-			clone.setGender(orig.getGender());
-			clone.setEntityClass(orig.getEntityClass());
-			clone.setDescription(orig.getDescription());
-			clone.setDirection(orig.getDirection());
-			clone.setPath(orig.getPath());
+		} else if (orig != null) {
+			logger.debug("cloned SpeakerNPC: " + orig.getName() + " (" + clone.getName() + ")");
 		}
 
 		return clone;
-	}
-
+}
 
 	/**
 	 * Creates a new clone.
