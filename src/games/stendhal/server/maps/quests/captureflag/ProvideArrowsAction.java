@@ -3,7 +3,6 @@ package games.stendhal.server.maps.quests.captureflag;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.EventRaiser;
-import games.stendhal.server.entity.npc.action.EquipItemAction;
 import games.stendhal.server.entity.player.Player;
 
 /**
@@ -21,14 +20,20 @@ public class ProvideArrowsAction implements ChatAction {
 	@Override
 	public void fire(Player player, Sentence sentence, EventRaiser npc) {
 
-		// TODO: should do some checks first
+		if (!CaptureFlagSupport.isPlaying(player)) {
+			player.sendPrivateText("Najpierw dołącz do gry Capture the Flag.");
+			return;
+		}
 
-		// will put it in player's hand, or on ground
-		new EquipItemAction("strzała pogrzebania",   100).fire(player,  sentence, npc);
-		// new EquipItemAction("strzała spowolnienia", 100).fire(player,  sentence, npc);
-		// new EquipItemAction("strzała przyspieszenia", 100).fire(player,  sentence, npc);
+		if (!(player.isEquipped("ctf bow") || player.isEquipped("łuk zf"))) {
+			player.sendPrivateText("Potrzebujesz łuku ZF, aby korzystać ze specjalnych strzał.");
+			return;
+		}
 
-		// new EquipItemAction("śnieżka pogrzebania",   100).fire(player,  sentence, npc);
-		// new EquipItemAction("śnieżka spowolnienia", 100).fire(player,  sentence, npc);
+		if (!CaptureFlagSupport.supplyIfMissing(player, sentence, npc, "strzała pogrzebania", 100)) {
+			if (npc != null) {
+				npc.say("Masz już strzały pogrzebania.");
+			}
+		}
 	}
 }

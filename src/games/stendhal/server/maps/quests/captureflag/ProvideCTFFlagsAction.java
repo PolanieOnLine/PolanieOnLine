@@ -5,6 +5,7 @@ import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.npc.action.EquipItemAction;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.maps.quests.captureflag.CaptureFlagSupport;
 
 
 
@@ -23,10 +24,18 @@ public class ProvideCTFFlagsAction implements ChatAction {
 	@Override
 	public void fire(Player player, Sentence sentence, EventRaiser npc) {
 
-		// TODO: should do some checks first
+		if (!CaptureFlagSupport.isPlaying(player)) {
+			player.sendPrivateText("Najpierw dołącz do gry Capture the Flag.");
+			return;
+		}
+
+		if (player.getNumberOfEquipped("flaga") > 0) {
+			player.sendPrivateText("Masz już flagę w dłoni.");
+			return;
+		}
 
 		// will put it in player's hand, or on ground
-		new EquipItemAction("flaga").fire(player,  sentence, npc);
+		new EquipItemAction("flaga").fire(player, sentence, npc);
 
 	}
 }

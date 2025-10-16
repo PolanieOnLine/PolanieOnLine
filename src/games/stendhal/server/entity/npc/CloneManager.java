@@ -14,13 +14,16 @@ package games.stendhal.server.entity.npc;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.entity.npc.NPCList;
 
 /**
  * Manages registered SpeakerNPC clones.
@@ -30,6 +33,7 @@ public class CloneManager {
 	/** The singleton instance. */
 	private static CloneManager instance;
 	private static final Map<String, List<String>> clonedList = new HashMap<>();
+	private static final Set<String> pendingCloneNames = new HashSet<String>();
 
 	/**
 	 * Retrieves the static instance.
@@ -140,6 +144,25 @@ public class CloneManager {
 		return !registeredClones.contains(cloneName);
 	}
 
+	private String reserveCloneName(final String origName, final String requestedName) {
+		final String base = (requestedName == null) ? origName : requestedName;
+		String candidate = base;
+		final String originalNormalized = origName.toLowerCase();
+		final NPCList npcList = SingletonRepository.getNPCList();
+		int suffix = 2;
+		while (true) {
+			final String normalized = candidate.toLowerCase();
+			if (!normalized.equals(originalNormalized)
+					&& !pendingCloneNames.contains(normalized)
+					&& !npcList.has(candidate)
+					&& !isClone(candidate)) {
+				pendingCloneNames.add(normalized);
+				return candidate;
+			}
+			candidate = base + suffix++;
+		}
+	}
+
 	/**
 	 * Creates a new clone.
 	 *
@@ -156,45 +179,37 @@ public class CloneManager {
 
 		if (orig != null) {
 			final String origName = orig.getName();
-
-			if (cloneName == null) {
-				logger.debug("determining clone name from original SpeakerNPC");
-
-				int cloneSuffix = 2;
-				while (isClone(origName + cloneSuffix)) {
-					cloneSuffix++;
-				}
-				cloneName = origName + cloneSuffix;
+			final String resolvedName = reserveCloneName(origName, cloneName);
+			if ((cloneName != null) && !cloneName.equals(resolvedName)) {
+				logger.warn("clone name " + cloneName + " is already in use, using " + resolvedName + " instead");
 			}
+			final String newCloneName = resolvedName;
 
-			// copy to "final" variable to be passed to inner class
-			final String newCloneName = cloneName;
-
-			/**
-			 * Registers the clone when it is added to the world.
-			 *
-			 * FIXME: clones using the same name can be added to world
-			 */
 			clone = new SpeakerNPC(newCloneName) {
+				private boolean registeredClone;
+
 				@Override
 				public void onAdded(final StendhalRPZone zone) {
 					super.onAdded(zone);
+					pendingCloneNames.remove(newCloneName.toLowerCase());
 					if (!register(origName, newCloneName)) {
 						logger.error("failed to register " + newCloneName
-							+ " as clone of " + origName);
+								+ " as clone of " + origName);
+						zone.remove(this);
+						return;
 					}
+					registeredClone = true;
 				}
 
-				/**
-				 * Unregisters the clone when it is removed from the world.
-				 */
 				@Override
 				public void onRemoved(final StendhalRPZone zone) {
 					super.onRemoved(zone);
-					if (!unregister(origName, newCloneName)) {
+					pendingCloneNames.remove(newCloneName.toLowerCase());
+					if (registeredClone && !unregister(origName, newCloneName)) {
 						logger.error("failed to unregister " + newCloneName
-							+ " as clone of " + origName);
+								+ " as clone of " + origName);
 					}
+					registeredClone = false;
 				}
 			};
 
@@ -218,25 +233,32 @@ public class CloneManager {
 				}
 			}
 
-			// clones are displayed with name of original by default
-			clone.setTitle(origName);
+			final List<String> copySlots = Arrays.asList(
+					"loot"
+			);
 
-			// clones should not be displayed on website, but check for alternative image just to be safe
-			clone.setAlternativeImage(orig.getAlternativeImage());
-		}
-
-		if (clone == null) {
-			if (orig == null) {
-				logger.warn("attempted to clone null SpeakerNPC");
-			} else {
-				logger.warn("failed to clone SpeakerNPC: " + orig.getName());
+			for (String slot: copySlots) {
+				clone.copySlot(orig, slot);
 			}
-		} else if (orig != null) {
-			logger.debug("cloned SpeakerNPC: " + orig.getName() + " (" + clone.getName() + ")");
+
+			clone.setAutoRespawn(orig.autoRespawn());
+			clone.setPerceptionRange(orig.getPerceptionRange());
+			clone.setMovementRange(orig.getMovementRange());
+			clone.setSpeed(orig.getSpeed());
+			clone.setTileRotation(orig.getTileRotation());
+			clone.setRespawnTime(orig.getRespawnTime());
+			clone.setAggressive(orig.isAggressive());
+			clone.setWalkspeed(orig.getWalkspeed());
+			clone.setGender(orig.getGender());
+			clone.setEntityClass(orig.getEntityClass());
+			clone.setDescription(orig.getDescription());
+			clone.setDirection(orig.getDirection());
+			clone.setPath(orig.getPath());
 		}
 
 		return clone;
 	}
+
 
 	/**
 	 * Creates a new clone.
@@ -290,7 +312,9 @@ public class CloneManager {
 	 */
 	public void registerAsClone(final SpeakerNPC orig, final SpeakerNPC clone) {
 		final String origName = orig.getName();
-		if (!register(origName, clone.getName())) {
+		final String cloneName = clone.getName();
+		pendingCloneNames.remove(cloneName.toLowerCase());
+		if (!register(origName, cloneName)) {
 			// abort if name registration fails
 			return;
 		}
@@ -311,6 +335,10 @@ public class CloneManager {
 	 */
 	public void registerAsClone(final String origName, final String cloneName) {
 		final SpeakerNPC clone = SingletonRepository.getNPCList().get(cloneName);
+		if (clone == null) {
+			return;
+		}
+		pendingCloneNames.remove(cloneName.toLowerCase());
 		if (!register(origName, cloneName)) {
 			// abort if name registration fails
 			return;
@@ -328,10 +356,18 @@ public class CloneManager {
 	 * 		<code>true</code> if the name is found in the registered list.
 	 */
 	public boolean isClone(final String name) {
-		// FIXME: this will fail if clone is not currently added to world
+		if (name == null) {
+			return false;
+		}
+		final String normalized = name.toLowerCase();
+		if (pendingCloneNames.contains(normalized)) {
+			return true;
+		}
 		for (final List<String> clones: clonedList.values()) {
-			if (clones.contains(name)) {
-				return true;
+			for (final String cloneName: clones) {
+				if (cloneName.equalsIgnoreCase(name)) {
+					return true;
+				}
 			}
 		}
 

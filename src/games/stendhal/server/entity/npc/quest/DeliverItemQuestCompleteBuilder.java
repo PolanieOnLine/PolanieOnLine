@@ -135,7 +135,50 @@ public class DeliverItemQuestCompleteBuilder extends QuestCompleteBuilder {
 
 	@Override
 	void simulate(String npc, QuestSimulator simulator) {
-		// TODO
+		if (deliverItemTask.getOrders().isEmpty()) {
+			simulator.info("Brak skonfigurowanych dostaw do zakończenia.");
+			simulator.info("");
+			return;
+		}
+
+		Map.Entry<String, DeliverItemOrder> sample = deliverItemTask.getOrders().entrySet().iterator().next();
+		String customerName = sample.getKey();
+		DeliverItemOrder order = sample.getValue();
+
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("flavor", order.getFlavor());
+		params.put("tip", Integer.valueOf(order.getTip()));
+
+		simulator.playerSays("hi");
+		simulator.playerSays(deliverItemTask.getItemName());
+		simulator.npcSays(customerName, respondToMissingItem);
+		simulator.info("");
+
+		simulator.info("Gracz przynosi przedmiot bez aktywnego zadania.");
+		simulator.playerSays("hi");
+		simulator.playerSays(deliverItemTask.getItemName());
+		simulator.npcSays(customerName, respondToItemWithoutQuest);
+		simulator.info("");
+
+		simulator.info("Gracz dostarcza " + order.getFlavor() + " na czas.");
+		simulator.playerSays("hi");
+		simulator.playerSays(deliverItemTask.getItemName());
+		String fastResponse = StringUtils.substitute(order.getRespondToFastDelivery(), params);
+		simulator.npcSays(customerName, fastResponse);
+		simulator.info("Nagroda: " + order.getTip() + " money i " + order.getXp() + " XP wraz z premią karmy.");
+		if (npcStatusEffect != null) {
+			simulator.info("NPC otrzymuje efekt statusu: " + npcStatusEffect + ".");
+		}
+		simulator.info("");
+
+		simulator.info("Gracz spóźnia się z dostawą.");
+		simulator.playerSays("hi");
+		simulator.playerSays(deliverItemTask.getItemName());
+		String slowResponse = StringUtils.substitute(order.getRespondToSlowDelivery(), params);
+		simulator.npcSays(customerName, slowResponse);
+		simulator.info("Nagroda: połowa doświadczenia (" + (order.getXp() / 2) + " XP) bez napiwku.");
+		simulator.info("Slot zadania zostaje ustawiony na "done" wraz ze znacznikiem czasu.");
+		simulator.info("");
 	}
 
 	@Override

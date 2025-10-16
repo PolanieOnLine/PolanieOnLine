@@ -111,18 +111,20 @@ export class SpriteStore {
 
 	getWithPromise(filename: string): any {
 		return new Promise((resolve) => {
-			if (typeof(this.images[filename]) != "undefined") {
-				this.images[filename].counter++;
-				resolve(this.images[filename]);
+			const image = this.get(filename) as SpriteImage;
+			if (!(image instanceof HTMLImageElement)) {
+				resolve(image);
+				return;
 			}
-
-			const image = new Image() as SpriteImage;
-			// TypeError: Image constructor: 'new' is required
-			//~ const image = new SpriteImage();
-			image.counter = 0;
-			this.images[filename] = image;
-			image.onload = () => resolve(image);
-			image.src = filename;
+			if (image.complete && image.naturalWidth !== 0 && image.naturalHeight !== 0) {
+				resolve(image);
+				return;
+			}
+			const onLoad = () => {
+				image.removeEventListener("load", onLoad);
+				resolve(image);
+			};
+			image.addEventListener("load", onLoad);
 		});
 	}
 

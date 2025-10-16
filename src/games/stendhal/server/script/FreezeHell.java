@@ -20,6 +20,7 @@ import java.time.Month;
 import java.time.Year;
 import java.time.format.DateTimeParseException;
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -139,9 +140,13 @@ public class FreezeHell extends AbstractAdminScript {
 		StendhalRPZone zone = (StendhalRPZone) zn;
 		StendhalMapStructure map;
 		try {
-			map = TMXLoader.load(StendhalRPWorld.MAPS_FOLDER + newMap);
+		map = TMXLoader.load(StendhalRPWorld.MAPS_FOLDER + newMap);
 		} catch (Exception e) {
 			LOGGER.error("Failed to load map", e);
+			return;
+		}
+		if (!validateMapCompatibility(zone, map)) {
+			LOGGER.error("Skipping map update because the replacement TMX is incompatible with zone dimensions.");
 			return;
 		}
 		try {
@@ -190,8 +195,6 @@ public class FreezeHell extends AbstractAdminScript {
 	 * @throws IOException When encoding the layer data fails
 	 */
 	private void updateZone(StendhalRPZone zone, StendhalMapStructure map) throws IOException {
-		// FIXME: Add some safety checking. As of now the script allows
-		// replacing any zone with any tmx, whether the size or collisions match.
 		String name = zone.getName();
 		zone.addTilesets(name + ".tilesets", map.getTilesets());
 		zone.addLayer(name + ".0_floor", map.getLayer("0_floor"));
@@ -207,6 +210,41 @@ public class FreezeHell extends AbstractAdminScript {
 
 		zone.addCollisionLayer(name + ".collision", map.getLayer("collision"));
 		zone.addProtectionLayer(name + ".protection", map.getLayer("protection"));
+	}
+
+	private boolean validateMapCompatibility(StendhalRPZone zone, StendhalMapStructure map) {
+		List<String> errors = new ArrayList<String>();
+		if ((map.getWidth() != zone.getWidth()) || (map.getHeight() != zone.getHeight())) {
+			errors.add("Expected " + zone.getWidth() + "x" + zone.getHeight() + " but TMX provides "
+				+ map.getWidth() + "x" + map.getHeight());
+		}
+		checkLayer(zone, map, "0_floor", true, errors);
+		checkLayer(zone, map, "1_terrain", true, errors);
+		checkLayer(zone, map, "2_object", true, errors);
+		checkLayer(zone, map, "collision", true, errors);
+		checkLayer(zone, map, "protection", true, errors);
+		if (!errors.isEmpty()) {
+			for (String message : errors) {
+				LOGGER.error("Incompatible TMX for hell zone: " + message);
+			}
+			return false;
+		}
+		return true;
+	}
+
+	private void checkLayer(StendhalRPZone zone, StendhalMapStructure map, String layerName,
+			boolean required, List<String> errors) {
+		LayerDefinition layer = map.getLayer(layerName);
+		if (layer == null) {
+			if (required) {
+				errors.add("Missing layer "" + layerName + """);
+			}
+			return;
+		}
+		if ((layer.getWidth() != zone.getWidth()) || (layer.getHeight() != zone.getHeight())) {
+			errors.add("Layer "" + layerName + "" has size " + layer.getWidth() + "x" + layer.getHeight()
+				+ " expected " + zone.getWidth() + "x" + zone.getHeight());
+		}
 	}
 
 	/**
@@ -232,4 +270,4 @@ public class FreezeHell extends AbstractAdminScript {
 		// is this safe or should it be executed through ScriptRunner?
 		new FreezeHell().run(Arrays.asList());
 	}
-}
+	}

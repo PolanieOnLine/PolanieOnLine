@@ -13,15 +13,15 @@
 package games.stendhal.server.core.config.zone;
 
 import java.awt.Rectangle;
-import java.awt.Shape;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 public class TeleportationRules {
 	/** Areas where teleporting out is blocked */
-	private final List<Shape> leavingBarriers = new LinkedList<Shape>();
+	private final List<Rectangle> leavingBarriers = new LinkedList<Rectangle>();
 	/** Areas where teleporting in is blocked */
-	private final List<Shape> arrivingBarriers = new LinkedList<Shape>();
+	private final List<Rectangle> arrivingBarriers = new LinkedList<Rectangle>();
 
 	/**
 	 * Block teleporting to a rectangular area.
@@ -47,6 +47,33 @@ public class TeleportationRules {
 	}
 
 	/**
+	 * Allow teleporting to specified area.
+	 *
+	 * @param x x coordinate of the area
+	 * @param y y coordinate of the area
+	 * @param width width of the area
+	 * @param height height of the area
+	 */
+	public void allowIn(int x, int y, int width, int height) {
+		Rectangle target = new Rectangle(x, y, width, height);
+		Iterator<Rectangle> iterator = arrivingBarriers.iterator();
+		while (iterator.hasNext()) {
+			Rectangle barrier = iterator.next();
+			if (barrier.equals(target)) {
+				iterator.remove();
+				break;
+			}
+		}
+	}
+
+	/**
+	 * Allow teleporting to the entire zone using a scroll.
+	 */
+	public void allowIn() {
+		allowIn(0, 0, Integer.MAX_VALUE, Integer.MAX_VALUE);
+	}
+
+	/**
 	 * Check if teleporting to a location is allowed.
 	 *
 	 * @param x x coordinate
@@ -54,7 +81,7 @@ public class TeleportationRules {
 	 * @return <code>true</code> if teleporting to the point is allowed, <code>false</code> otherwise
 	 */
 	public boolean isInAllowed(int x, int y) {
-		for (Shape r : arrivingBarriers) {
+		for (Rectangle r : arrivingBarriers) {
 			if (r.contains(x, y)) {
 				return false;
 			}
@@ -77,6 +104,33 @@ public class TeleportationRules {
 	}
 
 	/**
+	 * Allow teleporting from specified area.
+	 *
+	 * @param x x coordinate of the area
+	 * @param y y coordinate of the area
+	 * @param width width of the area
+	 * @param height height of the area
+	 */
+	public void allowOut(int x, int y, int width, int height) {
+		Rectangle target = new Rectangle(x, y, width, height);
+		Iterator<Rectangle> iterator = leavingBarriers.iterator();
+		while (iterator.hasNext()) {
+			Rectangle barrier = iterator.next();
+			if (barrier.equals(target)) {
+				iterator.remove();
+				break;
+			}
+		}
+	}
+
+	/**
+	 * Allow teleporting from the entire zone using a scroll.
+	 */
+	public void allowOut() {
+		allowOut(0, 0, Integer.MAX_VALUE, Integer.MAX_VALUE);
+	}
+
+	/**
 	 * Block teleporting out.
 	 */
 	public void disallowOut() {
@@ -94,7 +148,7 @@ public class TeleportationRules {
 	 * @return <code>true</code> if teleporting to the point is allowed, <code>false</code> otherwise
 	 */
 	public boolean isOutAllowed(int x, int y) {
-		for (Shape r : leavingBarriers) {
+		for (Rectangle r : leavingBarriers) {
 			if (r.contains(x, y)) {
 				return false;
 			}

@@ -58,9 +58,8 @@ public class ShopSignFactory implements ConfigurableFactory {
 	 *
 	 * @return The sign title.
 	 */
-	private boolean getSeller(ConfigurableFactoryContext ctx) {
-		// TODO: make this a required field
-		return ctx.getBoolean("seller", true);
+	private boolean getSeller(final ConfigurableFactoryContext ctx) {
+		return ctx.getRequiredBoolean("seller");
 	}
 
 	/**

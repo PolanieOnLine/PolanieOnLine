@@ -113,13 +113,12 @@ public class KillsQuestSlotNeedUpdateCondition implements ChatCondition {
 		final List<String> tokens = Arrays.asList(temp.split(","));
 		// check for size - it should be able to divide by 5 without reminder.
 		if ((tokens.size() % 5) != 0) {
-			logger.error("Wrong record in player's "+player.getName()+
-					" quest slot ("+questSlot+
-					"), position "+questIndex+
-					" : ["+	player.getQuest(questSlot)+
+			logger.error("Wrong record in player's " + player.getName() +
+					" quest slot (" + questSlot +
+					"), position " + questIndex +
+					" : [" + player.getQuest(questSlot) +
 					"]");
-			//npc.say("something wrong with you, i dont see how much monsters you killed.");
-			// TODO: clear player's quest slot
+			player.setQuest(questSlot, null);
 			return true;
 		}
 		// gathering creatures names

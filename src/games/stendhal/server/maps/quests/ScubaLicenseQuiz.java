@@ -107,12 +107,11 @@ public class ScubaLicenseQuiz extends AbstractQuest {
 				"Jesteś gotowy na test?",
 				null);
 
-		// TODO: point to diving location
 		instructor.add(ConversationStates.ATTENDING,
 				ConversationPhrases.combine(ConversationPhrases.QUEST_MESSAGES, Arrays.asList("exam", "test", "egzamin")),
 				new QuestCompletedCondition(QUEST_SLOT),
 				ConversationStates.ATTENDING,
-				"Egzamin zaliczony! Teraz znajdź dobre miejsce na odkrywanie oceanu.",
+				"Egzamin zaliczony! Teraz znajdź dobre miejsce na odkrywanie oceanu. Wypłyń na Athor i spróbuj zanurkować u jego raf.",
 				null);
 
 		instructor.add(ConversationStates.ATTENDING,

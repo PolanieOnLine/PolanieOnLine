@@ -13,8 +13,11 @@ package games.stendhal.server.core.rp;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -37,7 +40,9 @@ public class StendhalQuestSystem {
 	/** The singleton instance. */
 	private static StendhalQuestSystem instance;
 
-	private final static List<IQuest> quests = new LinkedList<IQuest>();
+	private final static List<IQuest> quests = new ArrayList<IQuest>();
+	private final static Map<String, List<IQuest>> questsBySlot = new LinkedHashMap<>();
+	private final static Map<String, List<IQuest>> questsByName = new LinkedHashMap<>();
 
 	private final static List<IQuest> cached = new ArrayList<>();
 	private static boolean cacheLoaded = false;
@@ -67,9 +72,57 @@ public class StendhalQuestSystem {
 	 * @param player
 	 */
 	public static void updatePlayerQuests(Player player) {
-		for(int i=0; i<quests.size(); i++) {
-			quests.get(i).updatePlayer(player);
+		for (final IQuest quest : quests) {
+			quest.updatePlayer(player);
 		}
+	}
+
+	private static void indexQuest(final IQuest quest) {
+		final String slot = quest.getSlotName();
+		final List<IQuest> indexed = questsBySlot.computeIfAbsent(slot, key -> new ArrayList<>());
+		indexed.add(quest);
+	}
+
+	private static void indexQuestByName(final IQuest quest) {
+		final String name = quest.getName();
+		final List<IQuest> indexed = questsByName.computeIfAbsent(name, key -> new ArrayList<>());
+		indexed.add(quest);
+	}
+
+	private static void removeIndexedQuest(final IQuest quest) {
+		final String slot = quest.getSlotName();
+		final List<IQuest> indexed = questsBySlot.get(slot);
+		if (indexed == null) {
+			return;
+		}
+		indexed.remove(quest);
+		if (indexed.isEmpty()) {
+			questsBySlot.remove(slot);
+		}
+	}
+
+	private static void removeNamedQuest(final IQuest quest) {
+		final String name = quest.getName();
+		final List<IQuest> indexed = questsByName.get(name);
+		if (indexed == null) {
+			return;
+		}
+		indexed.remove(quest);
+		if (indexed.isEmpty()) {
+			questsByName.remove(name);
+		}
+	}
+
+	private static void storeQuest(final IQuest quest) {
+		quests.add(quest);
+		indexQuest(quest);
+		indexQuestByName(quest);
+	}
+
+	private static void removeStoredQuest(final IQuest quest) {
+		quests.remove(quest);
+		removeIndexedQuest(quest);
+		removeNamedQuest(quest);
 	}
 
 	/**
@@ -379,7 +432,7 @@ public class StendhalQuestSystem {
 
 		logger.info("Loading Quest: " + quest.getName());
 		quest.addToWorld();
-		quests.add(quest);
+		storeQuest(quest);
 	}
 
 	/**
@@ -697,7 +750,11 @@ public class StendhalQuestSystem {
 	 */
 	public List<String> getQuestProgressDetails(final Player player, final String questName) {
 		List<String> res = new LinkedList<String>();
-		for (final IQuest quest : quests) {
+		final List<IQuest> indexed = questsByName.get(questName);
+		if (indexed == null) {
+			return res;
+		}
+		for (final IQuest quest : indexed) {
 			final QuestInfo questInfo = quest.getQuestInfo(player);
 			if (questInfo.getName().equals(questName)) {
 				final List<String> history = quest.getFormattedHistory(player);
@@ -716,13 +773,11 @@ public class StendhalQuestSystem {
 	 * @return IQuest or <code>null</code> if it does not exist.
 	 */
 	public IQuest getQuest(String questName) {
-		for (final IQuest quest : quests) {
-			if (quest.getName().equals(questName)) {
-				return quest;
-			}
+		final List<IQuest> indexed = questsByName.get(questName);
+		if (indexed == null || indexed.isEmpty()) {
+			return null;
 		}
-
-		return null;
+		return indexed.get(0);
 	}
 
 	/**
@@ -734,13 +789,11 @@ public class StendhalQuestSystem {
 	 * 		IQuest or <code>null</code> if it does not exist.
 	 */
 	public IQuest getQuestFromSlot(final String questSlot) {
-		for (final IQuest quest : quests) {
-			if (quest.getSlotName().equals(questSlot)) {
-				return quest;
-			}
+		final List<IQuest> indexed = questsBySlot.get(questSlot);
+		if (indexed == null || indexed.isEmpty()) {
+			return null;
 		}
-
-		return null;
+		return indexed.get(0);
 	}
 
 	/**
@@ -755,14 +808,13 @@ public class StendhalQuestSystem {
 	public boolean unloadQuest(final IQuest quest) {
 		logger.info("Unloading Quest: " + quest.getName());
 		// remove from loaded list before calling removeFromWorld to prevent redundancies
-		quests.remove(quest);
+		removeStoredQuest(quest);
 		if (quest.removeFromWorld()) {
 			return true;
-		} else {
-			logger.error(quest.getClass().getName() + " cannot be removed from the world");
 		}
+		logger.error(quest.getClass().getName() + " cannot be removed from the world");
 		// removal failed, re-add to loaded list
-		quests.add(quest);
+		storeQuest(quest);
 		return false;
 	}
 
@@ -788,13 +840,11 @@ public class StendhalQuestSystem {
 	 * Retrieves all loaded instances with slot.
 	 */
 	private List<IQuest> _getAllBySlot(final String slot) {
-		final List<IQuest> qfound = new ArrayList<>();
-		for (final IQuest q: quests) {
-			if (q.getSlotName().equals(slot)) {
-				qfound.add(q);
-			}
+		final List<IQuest> indexed = questsBySlot.get(slot);
+		if (indexed == null) {
+			return Collections.emptyList();
 		}
-		return qfound;
+		return new ArrayList<>(indexed);
 	}
 
 	/**
@@ -896,12 +946,8 @@ public class StendhalQuestSystem {
 	 *     <code>true</code> if the instance matches stored quests.
 	 */
 	public boolean isLoaded(final IQuest quest) {
-		for (final IQuest loaded: quests) {
-			if (loaded.equals(quest)) {
-				return true;
-			}
-		}
-		return false;
+		final List<IQuest> indexed = questsByName.get(quest.getName());
+		return indexed != null && indexed.contains(quest);
 	}
 
 	/**
@@ -913,12 +959,7 @@ public class StendhalQuestSystem {
 	 *     <code>true</code> if quest slot matches stored quests.
 	 */
 	public boolean isLoadedSlot(final String slot) {
-		for (final IQuest loaded: quests) {
-			if (loaded.getSlotName().equals(slot)) {
-				return true;
-			}
-		}
-		return false;
+		return questsBySlot.containsKey(slot);
 	}
 
 	/**

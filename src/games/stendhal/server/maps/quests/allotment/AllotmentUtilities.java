@@ -19,6 +19,7 @@ import games.stendhal.common.filter.FilterCriteria;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.TurnListener;
+import games.stendhal.server.core.engine.dbcommand.StoreMessageCommand;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.item.GateKey;
 import games.stendhal.server.entity.mapstuff.ExpirationTracker;
@@ -26,6 +27,7 @@ import games.stendhal.server.entity.mapstuff.area.Allotment;
 import games.stendhal.server.entity.mapstuff.portal.Gate;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.util.TimeUtil;
+import marauroa.server.db.command.DBCommandQueue;
 
 public class AllotmentUtilities implements TurnListener {
 	/**
@@ -57,6 +59,10 @@ public class AllotmentUtilities implements TurnListener {
 	 *
 	 */
 	private static int WARN_TIME = TimeUtil.SECONDS_IN_MINUTE / 2;
+
+	private static final String ALLOTMENT_OFFICE_NAME = "Zarząd Przydziału Działek Semos";
+
+	private static final String EXPIRATION_MESSAGE = "Chcę cię poinformować, że umowa o działkę wygasła.";
 
 	/**
 	 * List of zones which have allotments that can be rented
@@ -288,10 +294,10 @@ public class AllotmentUtilities implements TurnListener {
 
 	/**
 	 * Get all available allotments in a zone
-	 *
-	 * @param zoneName the zone to get allotments for
-	 * @return a list of available allotment numbers
-	 */
+ *
+ * @param zoneName the zone to get allotments for
+ * @return a list of available allotment numbers
+ */
 	public List<String> getAvailableAllotments(final String zoneName) {
 		List<String> available = new ArrayList<String>();
 
@@ -304,6 +310,14 @@ public class AllotmentUtilities implements TurnListener {
 		}
 
 		return available;
+	}
+
+	private void queueExpirationNotice(final ExpirationTracker tracker, final String message) {
+		String playerName = tracker.getPlayerName();
+		if ((playerName == null) || playerName.isEmpty()) {
+			return;
+		}
+		DBCommandQueue.get().enqueue(new StoreMessageCommand(ALLOTMENT_OFFICE_NAME, playerName, message, "N"));
 	}
 
 	/**
@@ -347,15 +361,16 @@ public class AllotmentUtilities implements TurnListener {
 						}
 
 						// tell the renter if they're not in the allotment
-						if (!renterFound) {
-							Player player = SingletonRepository.getRuleProcessor().getPlayer(tracker.getPlayerName());
+				if (!renterFound) {
+					Player player = SingletonRepository.getRuleProcessor().getPlayer(tracker.getPlayerName());
 
-							if (player != null) {
-								player.sendPrivateText("Chcę cię poinformować, że umowa o działkę wygasła.");
-							} else {
-								//TODO: schedule a message at login
-							}
-						}
+					if (player != null) {
+						player.sendPrivateText(EXPIRATION_MESSAGE);
+					} else {
+						queueExpirationNotice(tracker, EXPIRATION_MESSAGE);
+					}
+				}
+
 					}
 				}
 			}

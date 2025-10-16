@@ -1,8 +1,8 @@
 /* $Id$ */
 /***************************************************************************
  *                   (C) Copyright 2003-2010 - Stendhal                    *
- ***************************************************************************
- ***************************************************************************
+ ***************************************************************************/
+/***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -13,8 +13,11 @@
 package games.stendhal.server.entity.npc.condition;
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 
 import games.stendhal.common.parser.ConvCtxForMatchingSource;
 import games.stendhal.common.parser.ConversationContext;
@@ -33,9 +36,20 @@ import games.stendhal.server.entity.player.Player;
 @Dev(category=Category.CHAT, label="\"\"?")
 public class TriggerExactlyInListCondition implements ChatCondition {
 	private static final ConversationContext CONVERSION_CONTEXT = new ConvCtxForMatchingSource();
+	private static final Set<String> LEADING_CONNECTORS = new HashSet<String>(Arrays.asList("and", "or", "i"));
 
 	private final List<Sentence> triggers = new LinkedList<Sentence>();
+	private final List<TriggerText> triggerTexts = new LinkedList<TriggerText>();
 
+	private static final class TriggerText {
+		private final String normalized;
+		private final String stripped;
+
+		TriggerText(String normalized, String stripped) {
+			this.normalized = normalized;
+			this.stripped = stripped;
+		}
+	}
 
 	/**
 	 * Creates a new TriggerExactlyInListCondition.
@@ -57,21 +71,51 @@ public class TriggerExactlyInListCondition implements ChatCondition {
 		for (String trigger : triggers) {
 			final Sentence expected = ConversationParser.parse(trigger, matcher);
 			this.triggers.add(expected);
+			String normalized = normalizeText(trigger);
+			this.triggerTexts.add(new TriggerText(normalized, stripLeadingConnector(normalized)));
 		}
 	}
 
 	@Override
 	public boolean fire(final Player player, final Sentence sentence, final Entity entity) {
-
-		// TODO: lowercase "and" at the beginning of a sentence is ignored, even in full match mode: "and the other gold"
-
-		final Sentence answer = ConversationParser.parse(sentence.getOriginalText(), CONVERSION_CONTEXT);
+		final String originalText = sentence.getOriginalText();
+		final String normalizedOriginal = normalizeText(originalText);
+		final String strippedOriginal = stripLeadingConnector(normalizedOriginal);
+		final Sentence answer = ConversationParser.parse(originalText, CONVERSION_CONTEXT);
+		int index = 0;
 		for (Sentence trigger : triggers) {
 			if (answer.matchesFull(trigger)) {
 				return true;
 			}
+			TriggerText expected = triggerTexts.get(index);
+			if (normalizedOriginal != null && normalizedOriginal.equals(expected.normalized)) {
+				return true;
+			}
+			if (strippedOriginal != null && strippedOriginal.equals(expected.stripped)) {
+				return true;
+			}
+			index++;
 		}
 		return false;
+	}
+
+	private static String normalizeText(String text) {
+		if (text == null) {
+			return null;
+		}
+		return text.trim().toLowerCase(Locale.ENGLISH);
+	}
+
+	private static String stripLeadingConnector(String text) {
+		if (text == null || text.isEmpty()) {
+			return text;
+		}
+		for (String prefix : LEADING_CONNECTORS) {
+			if (text.startsWith(prefix + " ")) {
+				return text.substring(prefix.length()).trim();
+			}
+		}
+		return text;
 	}
 
 	@Override

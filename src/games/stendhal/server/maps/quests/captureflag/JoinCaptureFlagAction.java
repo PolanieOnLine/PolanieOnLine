@@ -27,12 +27,12 @@ public class JoinCaptureFlagAction implements ChatAction {
 	@Override
 	public void fire(Player player, Sentence sentence, EventRaiser npc) {
 
-		// TODO: set some rpentity slot
-
+		CaptureFlagSupport.markPlaying(player);
 		player.setUseListener("Tag", new CaptureFlagUseListener(player));
 
-		// only if player does not have bow already
-		new EquipItemAction("ctf bow").fire(player,  sentence, npc);
+		if (!(player.isEquipped("ctf bow") || player.isEquipped("łuk zf"))) {
+			new EquipItemAction("ctf bow").fire(player, sentence, npc);
+		}
 
 		new ProvideArrowsAction().fire(player, sentence, npc);
 	}

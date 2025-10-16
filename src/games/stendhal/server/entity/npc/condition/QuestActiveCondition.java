@@ -17,10 +17,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.config.annotations.Dev;
 import games.stendhal.server.core.config.annotations.Dev.Category;
+import games.stendhal.server.core.rp.StendhalQuestSystem;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.ConditionBuilder;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.maps.quests.IQuest;
 
 /**
  * Was this quest started but not completed?
@@ -42,7 +44,17 @@ public class QuestActiveCondition implements ChatCondition {
 
 	@Override
 	public boolean fire(final Player player, final Sentence sentence, final Entity entity) {
-		// FIXME: this should check IQuest.isCompleted
+		final IQuest quest = StendhalQuestSystem.get().getQuestFromSlot(questname);
+		if (quest != null) {
+			if (!quest.isStarted(player)) {
+				return false;
+			}
+			if (quest.isCompleted(player)) {
+				return false;
+			}
+			return !player.isQuestInState(questname, 0, "rejected");
+		}
+
 		return (player.hasQuest(questname) && !player.isQuestInState(questname, 0, "rejected") && !player.isQuestCompleted(questname));
 	}
 

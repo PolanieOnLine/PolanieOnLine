@@ -79,7 +79,22 @@ public class QuestInfoBuilder {
 		simulator.info(description);
 		simulator.info("");
 
-		// TODO
+		simulator.info("Region: " + region);
+		if (questGiverNpc != null) {
+			simulator.info("Quest giver: " + questGiverNpc);
+		}
+		if (minLevel > 0) {
+			simulator.info("Minimum level: " + minLevel);
+		} else {
+			simulator.info("Minimum level: none");
+		}
+		if (repeatableAfterMinutes < 0) {
+			simulator.info("Repeatable: no");
+		} else if (repeatableAfterMinutes == 0) {
+			simulator.info("Repeatable: immediately");
+		} else {
+			simulator.info("Repeatable after: " + repeatableAfterMinutes + " minutes");
+		}
 	}
 
 	String getName() {

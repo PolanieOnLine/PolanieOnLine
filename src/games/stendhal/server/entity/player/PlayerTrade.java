@@ -78,6 +78,16 @@ class PlayerTrade {
 			return false;
 		}
 
+		final String grumpy = partner.getGrumpyMessage();
+		if ((grumpy != null) && !partner.containsKey("buddies", player.getName())) {
+			if (grumpy.length() == 0) {
+				player.sendPrivateText(partner.getName() + " zamknął się i szuka spokoju od przyjaciół.");
+			} else {
+				player.sendPrivateText(partner.getName() + " szuka samotności od wszystkich z wyjątkiem najbliższych przyjaciół: " + grumpy);
+			}
+			return false;
+		}
+
 		if ((partner.getAwayMessage() != null)
 			|| (partner.getTradeState() != TradeState.NO_ACTIVE_TRADE)) {
 			player.sendPrivateText("Przepraszam, ale " + partner.getName() + " jest teraz zajęty.");
@@ -93,7 +103,6 @@ class PlayerTrade {
 		}
 
 
-		// TODO: check grumpy
 		return true;
 	}
 
@@ -166,8 +175,25 @@ class PlayerTrade {
 			partner.cancelTradeInternally(player.getName());
 		}
 		partnerName = null;
+		tradeState = TradeState.NO_ACTIVE_TRADE;
 		// Do not move own items back. This is done on login because the
 		// bag might be full and items might end up on the ground.
+	}
+
+	/**
+	 * Cancels the trade because one of the players changed zone.
+	 */
+	protected void cancelTradeDueToZoneChange() {
+		if (tradeState == TradeState.NO_ACTIVE_TRADE) {
+			return;
+		}
+		player.sendPrivateText("Opuszczasz strefę, więc handel został przerwany.");
+		Player partner = SingletonRepository.getRuleProcessor().getPlayer(partnerName);
+		if (partner != null) {
+			partner.sendPrivateText(player.getName() + " opuścił strefę i handel został przerwany.");
+			partner.cancelTradeInternally(player.getName());
+		}
+		cancelTradeInternally(partnerName);
 	}
 
 	/**
@@ -194,12 +220,26 @@ class PlayerTrade {
 	 * @param partnerName name of partner to make sure the correct trade is canceled
 	 */
 	protected void cancelTradeInternally(String partnerName) {
+		cancelTradeInternally(partnerName, true);
+	}
+
+	private void cancelTradeInternally(String partnerName, boolean notifyClients) {
 		if ((this.partnerName == null) || this.partnerName.equals(partnerName)) {
 			this.partnerName = null;
 			this.tradeState = TradeState.NO_ACTIVE_TRADE;
 			moveItemsBack();
-			tellClients();
+			if (notifyClients) {
+				tellClients();
+			}
 		}
+	}
+
+	void restoreTradeSlotOnLogin() {
+		RPSlot tradeSlot = player.getSlot("trade");
+		if (!tradeSlot.iterator().hasNext() && (tradeState == TradeState.NO_ACTIVE_TRADE) && (partnerName == null)) {
+			return;
+		}
+		cancelTradeInternally(null, false);
 	}
 
 	/**

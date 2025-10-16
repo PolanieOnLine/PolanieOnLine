@@ -2278,7 +2278,6 @@ public class Player extends DressedEntity implements UseListener {
 		 */
 		setKeyedSlot("!visited", zoneName,
 				Long.toString(System.currentTimeMillis()));
-		trade.cancelTrade();
 
 		if((zoneName.equals("0_ados_city_n")) || (zoneName.equals("0_fado_city"))
 			|| (zoneName.equals("0_kalavan_city")) || (zoneName.equals("0_kirdneh_city"))
@@ -2300,6 +2299,7 @@ public class Player extends DressedEntity implements UseListener {
 	 */
 	@Override
 	public void onRemoved(final StendhalRPZone zone) {
+		trade.cancelTradeDueToZoneChange();
 		/*
 		 * If player leaves afterlife, make them normal
 		 */
@@ -2832,6 +2832,10 @@ public class Player extends DressedEntity implements UseListener {
 	 */
 	public void cancelTradeInternally(String partnerName) {
 		trade.cancelTradeInternally(partnerName);
+	}
+
+	public void restoreTradeSlotOnLogin() {
+		trade.restoreTradeSlotOnLogin();
 	}
 
 	/**

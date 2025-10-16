@@ -29,6 +29,7 @@ import games.stendhal.server.core.scripting.ScriptingSandbox;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.EventRaiser;
+import games.stendhal.server.entity.npc.NPCList;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.condition.AdminCondition;
 import games.stendhal.server.entity.npc.condition.NotCondition;
@@ -43,9 +44,10 @@ public class Herald extends ScriptImpl {
 
 	// TODO: there is ability of using list of herald names,
 	// it will add to game more fun.
-    public final String HeraldName = "Patrick";
+	private static final List<String> DEFAULT_HERALD_NAMES = Arrays.asList("Patrick", "Brigid", "Cedric");
+	private String heraldName = DEFAULT_HERALD_NAMES.get(0);
 
-    // after some thinking, i decided to not implement here
+	// after some thinking, i decided to not implement here
 	// news records to file.
 	private final Logger logger = Logger.getLogger(Herald.class);
     private final int REQUIRED_ADMINLEVEL_INFO = 100;
@@ -155,8 +157,11 @@ public class Herald extends ScriptImpl {
 				admin.sendPrivateText("Miejsce obok ciebie jest zajęte. Nie można przenieść tam herolda.");
 				return;
 			}
+			final NPCList npcList = SingletonRepository.getNPCList();
+			npcList.unreserve(heraldName);
+			heraldName = selectHeraldName(admin, args, npcList);
 			// name must be unreserved before adding
-			SingletonRepository.getNPCList().unreserve(HeraldName);
+			npcList.unreserve(heraldName);
 			sandbox.setZone(admin.getZone());
 			sandbox.add(getHerald(sandbox.getZone(admin), admin.getX() + 1, admin.getY()));
 		}
@@ -165,7 +170,39 @@ public class Herald extends ScriptImpl {
 	@Override
 	public void unload(final Player admin, final List<String> args) {
 		// re-reserve name to prevent other NPCs from using
-		SingletonRepository.getNPCList().reserve(HeraldName);
+		SingletonRepository.getNPCList().reserve(heraldName);
+	}
+
+	private String selectHeraldName(Player admin, List<String> args, NPCList npcList) {
+		List<String> candidates = new LinkedList<String>();
+		if ((args != null) && !args.isEmpty()) {
+			for (String entry : args) {
+				if (entry == null) {
+					continue;
+				}
+				for (String part : entry.split(",")) {
+					String trimmed = part.trim();
+					if (!trimmed.isEmpty()) {
+						candidates.add(trimmed);
+					}
+				}
+			}
+		}
+		if (candidates.isEmpty()) {
+			candidates.addAll(DEFAULT_HERALD_NAMES);
+		}
+		for (String candidate : candidates) {
+			String normalized = candidate.trim();
+			if (normalized.isEmpty()) {
+				continue;
+			}
+			if (!npcList.has(normalized)) {
+				return normalized;
+			}
+		}
+		String fallback = candidates.get(0);
+		admin.sendPrivateText("Nie znaleziono wolnego imienia dla herolda, używam "" + fallback + "".");
+		return fallback;
 	}
 
 	/**
@@ -188,7 +225,7 @@ public class Herald extends ScriptImpl {
 			final String text = heraldNews.get(index).getNews();
 			int counter = heraldNews.get(index).getCounter();
 			HeraldListener tnl = heraldNews.get(index).getTNL();
-			final SpeakerNPC npc = SingletonRepository.getNPCList().get(HeraldName);
+			final SpeakerNPC npc = SingletonRepository.getNPCList().get(heraldName);
 			npc.say(text);
 			counter++;
 			turnNotifier.dontNotify(tnl);
@@ -214,7 +251,7 @@ public class Herald extends ScriptImpl {
 	 * @return herald NPC :-)
 	 */
 	private SpeakerNPC getHerald(StendhalRPZone zone, int x, int y) {
-		final SpeakerNPC npc = new SpeakerNPC(HeraldName) {
+		final SpeakerNPC npc = new SpeakerNPC(heraldName) {
 
 			/**
 			 * npc says his job list

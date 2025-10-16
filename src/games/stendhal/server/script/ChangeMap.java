@@ -12,6 +12,7 @@
 package games.stendhal.server.script;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import games.stendhal.common.tiled.LayerDefinition;
@@ -43,9 +44,12 @@ public class ChangeMap extends ScriptImpl {
 		StendhalRPZone zone = (StendhalRPZone) zn;
 		StendhalMapStructure map;
 		try {
-			map = TMXLoader.load(args.get(1));
+		map = TMXLoader.load(args.get(1));
 		} catch (Exception e) {
 			sandbox.privateText(admin, "Nie powiodło się ładowanie mapy: " + e);
+			return;
+		}
+		if (!validateMapCompatibility(admin, zone, map)) {
 			return;
 		}
 		try {
@@ -64,8 +68,6 @@ public class ChangeMap extends ScriptImpl {
 	 * @throws IOException When encoding the layer data fails
 	 */
 	private void updateZone(StendhalRPZone zone, StendhalMapStructure map) throws IOException {
-		// FIXME: Add some safety checking. As of now the script allows
-		// replacing any zone with any tmx, whether the size or collisions match.
 		String name = zone.getName();
 		zone.addTilesets(name + ".tilesets", map.getTilesets());
 		zone.addLayer(name + ".0_floor", map.getLayer("0_floor"));
@@ -83,8 +85,43 @@ public class ChangeMap extends ScriptImpl {
 
 		zone.addCollisionLayer(name + ".collision", map.getLayer("collision"));
 		zone.addProtectionLayer(name + ".protection", map.getLayer("protection"));
-		// FIXME: Should old spawn points be kept, or change those too?
-		// Currently they are kept.
+		// Spawn points are intentionally left untouched so existing coordinates remain valid.
+	}
+
+	private boolean validateMapCompatibility(Player admin, StendhalRPZone zone, StendhalMapStructure map) {
+		List<String> errors = new ArrayList<String>();
+		if ((map.getWidth() != zone.getWidth()) || (map.getHeight() != zone.getHeight())) {
+			errors.add("Nowa mapa ma wymiary " + map.getWidth() + "x" + map.getHeight()
+				+ " a strefa oczekuje " + zone.getWidth() + "x" + zone.getHeight() + ".");
+		}
+		checkLayer(zone, map, "0_floor", true, errors);
+		checkLayer(zone, map, "1_terrain", true, errors);
+		checkLayer(zone, map, "2_object", true, errors);
+		checkLayer(zone, map, "collision", true, errors);
+		checkLayer(zone, map, "protection", true, errors);
+		if (!errors.isEmpty()) {
+			for (String message : errors) {
+				sandbox.privateText(admin, message);
+			}
+			sandbox.privateText(admin, "Przerwano zmianę mapy z powodu niezgodności.");
+			return false;
+		}
+		return true;
+	}
+
+	private void checkLayer(StendhalRPZone zone, StendhalMapStructure map,
+			String layerName, boolean required, List<String> errors) {
+		LayerDefinition layer = map.getLayer(layerName);
+		if (layer == null) {
+			if (required) {
+				errors.add("Brak warstwy "" + layerName + "" w pliku TMX.");
+			}
+			return;
+		}
+		if ((layer.getWidth() != zone.getWidth()) || (layer.getHeight() != zone.getHeight())) {
+			errors.add("Warstwa "" + layerName + "" ma rozmiar " + layer.getWidth() + "x" + layer.getHeight()
+				+ " zamiast oczekiwanego " + zone.getWidth() + "x" + zone.getHeight() + ".");
+		}
 	}
 
 	/**
@@ -102,4 +139,4 @@ public class ChangeMap extends ScriptImpl {
 			zone.addLayer(zone.getName() + "." + layerName, layer);
 		}
 	}
-}
+	}
