@@ -40,7 +40,7 @@ public class StendhalQuestSystem {
 	/** The singleton instance. */
 	private static StendhalQuestSystem instance;
 
-	private final static List<IQuest> quests = new LinkedList<IQuest>();
+	private final static List<IQuest> quests = new ArrayList<IQuest>();
 	private final static Map<String, List<IQuest>> questsBySlot = new LinkedHashMap<>();
 
 	private final static List<IQuest> cached = new ArrayList<>();
@@ -71,8 +71,8 @@ public class StendhalQuestSystem {
 	 * @param player
 	 */
 	public static void updatePlayerQuests(Player player) {
-		for (int i = 0; i < quests.size(); i++) {
-			quests.get(i).updatePlayer(player);
+		for (final IQuest quest : quests) {
+			quest.updatePlayer(player);
 		}
 	}
 
