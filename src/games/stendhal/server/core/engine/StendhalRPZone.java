@@ -20,6 +20,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -190,6 +191,7 @@ public class StendhalRPZone extends MarauroaRPZone {
 
 	/** Zones that some event types propagate to from this one. */
 	private String associatedZones;
+	private transient List<String> associatedZoneNames;
 
 	public StendhalRPZone(final String name) {
 		super(name);
@@ -2174,6 +2176,7 @@ public class StendhalRPZone extends MarauroaRPZone {
 	 */
 	public void setAssociatedZones(final String zones) {
 		associatedZones = zones;
+		associatedZoneNames = null;
 	}
 
 	/**
@@ -2187,11 +2190,32 @@ public class StendhalRPZone extends MarauroaRPZone {
 	 * Gets other zones that should receive certain events such as knocking on door.
 	 */
 	public List<String> getAssociatedZonesList() {
-		if (associatedZones == null) {
-			return new ArrayList<>();
+		final List<String> cachedZones = associatedZoneNames;
+		if (cachedZones != null) {
+			return cachedZones;
 		}
 
-		return Arrays.asList(getAssociatedZones().split(","));
+		if ((associatedZones == null) || associatedZones.isEmpty()) {
+			associatedZoneNames = Collections.emptyList();
+			return associatedZoneNames;
+		}
+
+		final String[] rawNames = associatedZones.split(",");
+		final List<String> parsedNames = new ArrayList<>(rawNames.length);
+		for (final String zoneName : rawNames) {
+			final String trimmedName = zoneName.trim();
+			if (!trimmedName.isEmpty()) {
+				parsedNames.add(trimmedName);
+			}
+		}
+
+		if (parsedNames.isEmpty()) {
+			associatedZoneNames = Collections.emptyList();
+		} else {
+			associatedZoneNames = Collections.unmodifiableList(parsedNames);
+		}
+
+		return associatedZoneNames;
 	}
 
 	/**
