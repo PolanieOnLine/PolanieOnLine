@@ -16,10 +16,12 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.config.annotations.Dev;
 import games.stendhal.server.core.config.annotations.Dev.Category;
+import games.stendhal.server.core.rp.StendhalQuestSystem;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.ConditionBuilder;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.maps.quests.IQuest;
 
 /**
  * Was this quest completed?
@@ -40,15 +42,12 @@ public class QuestCompletedCondition implements ChatCondition {
 
 	@Override
 	public boolean fire(final Player player, final Sentence sentence, final Entity entity) {
-		// FIXME: this should check IQuest.isCompleted
-		/*
-		final IQuest quest = StendhalQuestSystem.get().getQuestFromSlot(questname);
+		final IQuest quest = StendhalQuestSystem.get().getQuestFromSlot(questName);
 		if (quest != null) {
 			return quest.isCompleted(player);
 		}
-		*/
 
-		return (player.isQuestCompleted(questName));
+		return player.isQuestCompleted(questName);
 	}
 
 	@Override
