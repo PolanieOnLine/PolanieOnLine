@@ -78,6 +78,16 @@ class PlayerTrade {
 			return false;
 		}
 
+		final String grumpy = partner.getGrumpyMessage();
+		if ((grumpy != null) && !partner.containsKey("buddies", player.getName())) {
+			if (grumpy.length() == 0) {
+				player.sendPrivateText(partner.getName() + " zamknął się i szuka spokoju od przyjaciół.");
+			} else {
+				player.sendPrivateText(partner.getName() + " szuka samotności od wszystkich z wyjątkiem najbliższych przyjaciół: " + grumpy);
+			}
+			return false;
+		}
+
 		if ((partner.getAwayMessage() != null)
 			|| (partner.getTradeState() != TradeState.NO_ACTIVE_TRADE)) {
 			player.sendPrivateText("Przepraszam, ale " + partner.getName() + " jest teraz zajęty.");
@@ -93,7 +103,6 @@ class PlayerTrade {
 		}
 
 
-		// TODO: check grumpy
 		return true;
 	}
 
