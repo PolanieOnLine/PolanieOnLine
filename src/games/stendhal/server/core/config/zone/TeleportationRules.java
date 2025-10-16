@@ -13,16 +13,15 @@
 package games.stendhal.server.core.config.zone;
 
 import java.awt.Rectangle;
-import java.awt.Shape;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
 public class TeleportationRules {
 	/** Areas where teleporting out is blocked */
-	private final List<Shape> leavingBarriers = new LinkedList<Shape>();
+	private final List<Rectangle> leavingBarriers = new LinkedList<Rectangle>();
 	/** Areas where teleporting in is blocked */
-	private final List<Shape> arrivingBarriers = new LinkedList<Shape>();
+	private final List<Rectangle> arrivingBarriers = new LinkedList<Rectangle>();
 
 	/**
 	 * Block teleporting to a rectangular area.
@@ -57,10 +56,10 @@ public class TeleportationRules {
 	 */
 	public void allowIn(int x, int y, int width, int height) {
 		Rectangle target = new Rectangle(x, y, width, height);
-		Iterator<Shape> iterator = arrivingBarriers.iterator();
+		Iterator<Rectangle> iterator = arrivingBarriers.iterator();
 		while (iterator.hasNext()) {
-			Shape barrier = iterator.next();
-			if (barrier.getBounds().equals(target)) {
+			Rectangle barrier = iterator.next();
+			if (barrier.equals(target)) {
 				iterator.remove();
 				break;
 			}
@@ -82,7 +81,7 @@ public class TeleportationRules {
 	 * @return <code>true</code> if teleporting to the point is allowed, <code>false</code> otherwise
 	 */
 	public boolean isInAllowed(int x, int y) {
-		for (Shape r : arrivingBarriers) {
+		for (Rectangle r : arrivingBarriers) {
 			if (r.contains(x, y)) {
 				return false;
 			}
@@ -114,10 +113,10 @@ public class TeleportationRules {
 	 */
 	public void allowOut(int x, int y, int width, int height) {
 		Rectangle target = new Rectangle(x, y, width, height);
-		Iterator<Shape> iterator = leavingBarriers.iterator();
+		Iterator<Rectangle> iterator = leavingBarriers.iterator();
 		while (iterator.hasNext()) {
-			Shape barrier = iterator.next();
-			if (barrier.getBounds().equals(target)) {
+			Rectangle barrier = iterator.next();
+			if (barrier.equals(target)) {
 				iterator.remove();
 				break;
 			}
@@ -149,7 +148,7 @@ public class TeleportationRules {
 	 * @return <code>true</code> if teleporting to the point is allowed, <code>false</code> otherwise
 	 */
 	public boolean isOutAllowed(int x, int y) {
-		for (Shape r : leavingBarriers) {
+		for (Rectangle r : leavingBarriers) {
 			if (r.contains(x, y)) {
 				return false;
 			}
