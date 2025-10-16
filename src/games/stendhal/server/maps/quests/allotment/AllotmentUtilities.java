@@ -179,6 +179,18 @@ public class AllotmentUtilities implements TurnListener {
 		return false;
 	}
 
+	public void clearRental(final String zoneName, final String allotment) {
+		for (Entity entity : getTrackers(zoneName)) {
+			ExpirationTracker tracker = (ExpirationTracker) entity;
+
+			if (tracker.getIdentifier().equals(ALLOTMENT_PREFIX + allotment)) {
+				tracker.setPlayerName("");
+				tracker.setExpirationTime(System.currentTimeMillis() - 1);
+				return;
+			}
+		}
+	}
+
 	/**
 	 * Gets a key to an allotment that has been rented out
 	 *
