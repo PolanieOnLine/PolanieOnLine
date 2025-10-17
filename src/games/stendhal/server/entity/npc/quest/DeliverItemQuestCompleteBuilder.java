@@ -177,7 +177,7 @@ public class DeliverItemQuestCompleteBuilder extends QuestCompleteBuilder {
 		String slowResponse = StringUtils.substitute(order.getRespondToSlowDelivery(), params);
 		simulator.npcSays(customerName, slowResponse);
 		simulator.info("Nagroda: połowa doświadczenia (" + (order.getXp() / 2) + " XP) bez napiwku.");
-		simulator.info("Slot zadania zostaje ustawiony na "done" wraz ze znacznikiem czasu.");
+simulator.info("Slot zadania zostaje ustawiony na \"done\" wraz ze znacznikiem czasu.");
 		simulator.info("");
 	}
 
