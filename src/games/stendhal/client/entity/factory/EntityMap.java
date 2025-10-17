@@ -143,7 +143,8 @@ public final class EntityMap {
 		register("looped_sound_source", null, null, LoopedSoundSource.class);
 		register("player", null, null, Player.class);
 		register("spell", null, null, Spell.class);
-                register("useable_entity", "golden_cauldron", null, GoldenCauldron.class);
+		register("golden_cauldron", null, null, GoldenCauldron.class);
+		register("useable_entity", "golden_cauldron", null, GoldenCauldron.class);
                 register("useable_entity", null, null, StatefulEntity.class);
 		register("walkblocker", null, null, WalkBlocker.class);
 		register("wall", null, null, Wall.class);
