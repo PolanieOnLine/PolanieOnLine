@@ -67,6 +67,7 @@ setRPClass(RPCLASS_NAME);
 put("class", RPCLASS_NAME);
 put("subclass", RPCLASS_NAME);
 setSize(1, 2);
+setName("cauldron");
 setStatus("Kocioł jest wygaszony. Wlej składniki, aby przygotować wywar.");
 setState(STATE_IDLE);
 
