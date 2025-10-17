@@ -30,6 +30,9 @@ import games.stendhal.client.sprite.ImageSprite;
 import games.stendhal.client.sprite.Sprite;
 import games.stendhal.client.sprite.SpriteStore;
 
+/**
+ * 2D representation for Draconia's golden cauldron that can toggle its state.
+ */
 class GoldenCauldron2DView extends UseableEntity2DView<GoldenCauldron> {
 	private static final String SPRITE_REF = "data/maps/tileset/item/pot/cauldron.png";
 	private static final int TILE_SIZE = 32;
@@ -52,6 +55,7 @@ class GoldenCauldron2DView extends UseableEntity2DView<GoldenCauldron> {
 			setSprite(store.getFailsafe());
 			return;
 		}
+
 		if (STATE_SPRITES[0] == null) {
 			STATE_SPRITES[0] = composeState(sheet, 0, 0, SPRITE_REF + "#idle");
 			STATE_SPRITES[1] = composeState(sheet, 0, 2, SPRITE_REF + "#active");
@@ -68,7 +72,7 @@ class GoldenCauldron2DView extends UseableEntity2DView<GoldenCauldron> {
 	}
 
 	private static Sprite composeState(final Sprite sheet, final int columnOffset, final int rowOffset,
-				final String ref) {
+			final String ref) {
 		final BufferedImage frame = new BufferedImage(FRAME_SIZE, FRAME_SIZE, BufferedImage.TYPE_INT_ARGB);
 		final Graphics2D g2 = frame.createGraphics();
 		try {
@@ -84,17 +88,17 @@ class GoldenCauldron2DView extends UseableEntity2DView<GoldenCauldron> {
 	}
 
 	private static void drawTile(final Sprite sheet, final int tileX, final int tileY, final Graphics2D g2,
-				final int destX, final int destY) {
+			final int destX, final int destY) {
 		final int sourceX = tileX * TILE_SIZE;
 		final int sourceY = tileY * TILE_SIZE;
 		final Sprite tile = sheet.createRegion(sourceX, sourceY, TILE_SIZE, TILE_SIZE,
-					SPRITE_REF + '[' + tileX + ',' + tileY + ']');
+				SPRITE_REF + '[' + tileX + ',' + tileY + ']');
 		tile.draw(g2, destX, destY);
 	}
 
 	@Override
 	protected void buildActions(final List<String> list) {
-		GoldenCauldron cauldron = entity;
+		final GoldenCauldron cauldron = entity;
 		if (cauldron != null && cauldron.isOpen()) {
 			list.add(ActionType.INSPECT.getRepresentation());
 			list.add(ActionType.CLOSE.getRepresentation());
@@ -106,7 +110,7 @@ class GoldenCauldron2DView extends UseableEntity2DView<GoldenCauldron> {
 
 	@Override
 	public void onAction() {
-		GoldenCauldron cauldron = entity;
+		final GoldenCauldron cauldron = entity;
 		if (cauldron != null && cauldron.isOpen()) {
 			onAction(ActionType.INSPECT);
 		} else {
@@ -115,29 +119,24 @@ class GoldenCauldron2DView extends UseableEntity2DView<GoldenCauldron> {
 	}
 
 	@Override
-	public void onAction(ActionType at) {
-		if (at == null) {
-			at = ActionType.OPEN;
+	public void onAction(ActionType actionType) {
+		if (actionType == null) {
+			actionType = ActionType.OPEN;
 		}
 		if (isReleased()) {
 			return;
 		}
 
-		switch (at) {
+		switch (actionType) {
 		case INSPECT:
 			showWindow();
 			return;
 		case OPEN:
-			sendUseAction();
-			return;
 		case CLOSE:
-			if (window != null) {
-				window.close();
-			}
-			sendUseAction();
+			actionType.send(actionType.fillTargetInfo(entity));
 			return;
 		default:
-			super.onAction(at);
+			super.onAction(actionType);
 			return;
 		}
 	}
@@ -218,7 +217,7 @@ class GoldenCauldron2DView extends UseableEntity2DView<GoldenCauldron> {
 		}
 
 		final GoldenCauldronWindow current = window;
-			final SlotWindow created = inspector.inspectMe(cauldron, cauldron.getMixSlot(), current, 4, 2);
+		final SlotWindow created = inspector.inspectMe(cauldron, cauldron.getMixSlot(), current, 4, 2);
 		if (created instanceof GoldenCauldronWindow) {
 			window = (GoldenCauldronWindow) created;
 			window.setCauldron(cauldron);
@@ -233,9 +232,5 @@ class GoldenCauldron2DView extends UseableEntity2DView<GoldenCauldron> {
 				});
 			}
 		}
-	}
-
-	private void sendUseAction() {
-		ActionType.USE.send(ActionType.USE.fillTargetInfo(entity));
 	}
 }

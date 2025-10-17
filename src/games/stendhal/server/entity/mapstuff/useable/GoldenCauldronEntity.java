@@ -1,6 +1,7 @@
 package games.stendhal.server.entity.mapstuff.useable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -21,11 +22,14 @@ import marauroa.common.game.RPClass;
 import marauroa.common.game.RPObject;
 import marauroa.common.game.RPSlot;
 
+/**
+ * Server-side logic for Draconia's golden cauldron that brews quest items.
+ */
 public class GoldenCauldronEntity extends UseableEntity {
 	private static final String RPCLASS_NAME = "golden_cauldron";
 	private static final String QUEST_SLOT = "ciupaga_trzy_wasy";
 	private static final String RESULT_ITEM = "wywar wąsatych smoków";
-	private static final String SLOT_CONTENT = "content";
+	public static final String SLOT_CONTENT = "content";
 	private static final int SLOT_CAPACITY = 8;
 	private static final int STATE_IDLE = 0;
 	private static final int STATE_ACTIVE = 1;
@@ -45,11 +49,11 @@ public class GoldenCauldronEntity extends UseableEntity {
 		}
 	}
 
-	private static final List<Ingredient> INGREDIENTS = List.of(
-		new Ingredient("pióro azazela", 3),
-		new Ingredient("magiczna krew", 10),
-		new Ingredient("smocza krew", 5),
-		new Ingredient("cudowna krew", 1)
+	private static final List<Ingredient> INGREDIENTS = Arrays.asList(
+			new Ingredient("pióro azazela", 3),
+			new Ingredient("magiczna krew", 10),
+			new Ingredient("smocza krew", 5),
+			new Ingredient("cudowna krew", 1)
 	);
 
 	private static final class CauldronSlot extends EntitySlot {
@@ -73,7 +77,7 @@ public class GoldenCauldronEntity extends UseableEntity {
 		@Override
 		public boolean isReachableForThrowingThingsIntoBy(final Entity entity) {
 			if (!entity.nextTo(cauldron)) {
-				setErrorMessage("Tylko stojąc obok kotła możesz dodawać składniki.");
+				setErrorMessage("Podejdź bliżej kotła zanim zaczniesz mieszać składniki.");
 				return false;
 			}
 			return true;
@@ -85,14 +89,14 @@ public class GoldenCauldronEntity extends UseableEntity {
 	private TurnListener stateReset;
 
 	public GoldenCauldronEntity() {
-	        setRPClass(RPCLASS_NAME);
-	        put("type", RPCLASS_NAME);
-	        setEntityClass("entity");
-	        setEntitySubclass("golden_cauldron");
-	        setSize(2, 2);
-	        put("state", STATE_IDLE);
-	        setDescription("Runiczny kocioł bulgocze miodowym światłem, gotów do mieszania smoczych esencji.");
-	        setMenu("Otwórz|Użyj");
+		setRPClass(RPCLASS_NAME);
+		put("type", RPCLASS_NAME);
+		setEntityClass("entity");
+		setEntitySubclass("golden_cauldron");
+		setSize(2, 2);
+		put("state", STATE_IDLE);
+		setDescription("Runiczny kocioł czeka na składniki Draconii.");
+		setMenu("Otwórz|Użyj");
 
 		addSlot(new CauldronSlot(this));
 	}
@@ -109,29 +113,28 @@ public class GoldenCauldronEntity extends UseableEntity {
 
 	@Override
 	public boolean onUsed(final RPEntity entity) {
-	        if (!(entity instanceof Player)) {
-	                return false;
-	        }
+		if (!(entity instanceof Player)) {
+			return false;
+		}
+		final Player player = (Player) entity;
 
-	        final Player player = (Player) entity;
+		if (!player.nextTo(this)) {
+			player.sendPrivateText("Musisz podejść bliżej kotła.");
+			return false;
+		}
 
-	        if (!player.nextTo(this)) {
-	                player.sendPrivateText("Musisz podejść bliżej kotła.");
-	                return false;
-	        }
+		if (!canWorkWith(player)) {
+			return false;
+		}
 
-	        if (!canWorkWith(player)) {
-	                return false;
-	        }
+		cancelStateReset();
 
-	        cancelStateReset();
-
-	        if (!open) {
-	                openFor(player);
-	        } else if (isCurrentBrewer(player)) {
-	                close(player);
-	        } else {
-			player.sendPrivateText("Draconia kręci głową: kocioł właśnie pracuje dla innego adepta.");
+		if (!open) {
+				openFor(player);
+		} else if (isCurrentBrewer(player)) {
+			close(player);
+		} else {
+			player.sendPrivateText("Kocioł jest właśnie używany przez kogoś innego.");
 			return false;
 		}
 
@@ -140,20 +143,20 @@ public class GoldenCauldronEntity extends UseableEntity {
 	}
 
 	public void close(final Player player) {
-	        if (!open || !isCurrentBrewer(player)) {
-	                return;
-	        }
-	        open = false;
-	        brewer = null;
-	        if (has("open")) {
-	                remove("open");
-	        }
-	        if (has("brewer")) {
-	                remove("brewer");
-	        }
-	        cancelStateReset();
-	        put("state", STATE_IDLE);
-	        notifyWorldAboutChanges();
+		if (!open || !isCurrentBrewer(player)) {
+			return;
+		}
+		open = false;
+		brewer = null;
+		if (has("open")) {
+			remove("open");
+		}
+		if (has("brewer")) {
+			remove("brewer");
+		}
+		cancelStateReset();
+		put("state", STATE_IDLE);
+		notifyWorldAboutChanges();
 	}
 
 	public void mix(final Player player) {
@@ -177,8 +180,8 @@ public class GoldenCauldronEntity extends UseableEntity {
 		final Map<String, Integer> amounts = new HashMap<>();
 		for (final Item item : items) {
 			final int quantity = (item instanceof StackableItem)
-				? ((StackableItem) item).getQuantity()
-				: 1;
+					? ((StackableItem) item).getQuantity()
+					: 1;
 			amounts.merge(item.getName(), quantity, Integer::sum);
 		}
 
@@ -190,7 +193,8 @@ public class GoldenCauldronEntity extends UseableEntity {
 			if (available < ingredient.amount) {
 				issues.add(ingredient.amount + "x " + ingredient.name);
 			} else if (available > ingredient.amount) {
-				issues.add("(za dużo) " + available + "x " + ingredient.name + ", potrzebne tylko " + ingredient.amount);
+				issues.add("(za dużo) " + available + "x " + ingredient.name + ", potrzebne tylko "
+						+ ingredient.amount);
 			}
 		}
 
@@ -208,8 +212,7 @@ public class GoldenCauldronEntity extends UseableEntity {
 		}
 
 		if (!issues.isEmpty()) {
-			player.sendPrivateText("Draconia ostrzega: coś się nie zgadza. Sprawdź składniki: "
-				+ String.join(", ", issues) + ".");
+			player.sendPrivateText("Coś jest nie tak. Sprawdź składniki: " + String.join(", ", issues) + ".");
 			return;
 		}
 
@@ -246,54 +249,54 @@ public class GoldenCauldronEntity extends UseableEntity {
 		}
 
 		if (!consumedAll) {
-			player.sendPrivateText("Kocioł prycha – część składników nie została zużyta. Spróbuj ponownie po uporządkowaniu porcji.");
+			player.sendPrivateText("Część składników pozostała nietknięta. Uporządkuj porcje i spróbuj ponownie.");
 			return;
 		}
 
-	        final Item result = SingletonRepository.getEntityManager().getItem(RESULT_ITEM);
-	        if (result == null) {
-	                player.sendPrivateText("Magia ucieka, bo wywar nie został zapisany w kronikach świata. Zgłoś to administracji.");
-	                return;
-	        }
+		final Item result = SingletonRepository.getEntityManager().getItem(RESULT_ITEM);
+		if (result == null) {
+			player.sendPrivateText("Magia ucieka, bo wywar nie istnieje w kronikach świata. Skontaktuj się z administracją.");
+			return;
+		}
 
-	        addEvent(new SoundEvent("bubble-1", 12, 90, games.stendhal.common.constants.SoundLayer.AMBIENT_SOUND));
-	        addEvent(new ImageEffectEvent("magic_brew", true));
+		addEvent(new SoundEvent("bubble-1", 12, 90, games.stendhal.common.constants.SoundLayer.AMBIENT_SOUND));
+		addEvent(new ImageEffectEvent("magic_brew", true));
 
-	        player.equipOrPutOnGround(result);
-	        player.sendPrivateText("Uzyskałeś wywar wąsatych smoków – zanieś go Hadrinowi do rytuału.");
+		player.equipOrPutOnGround(result);
+		player.sendPrivateText("Uzyskałeś wywar wąsatych smoków – zanieś go Hadrinowi.");
 
-	        finishBrewing();
+		finishBrewing();
 	}
 
 	private void openFor(final Player player) {
-	        open = true;
-	        brewer = player.getName();
-	        put("open", "");
-	        put("brewer", brewer);
-	        put("state", STATE_IDLE);
+		open = true;
+		brewer = player.getName();
+		put("open", "");
+		put("brewer", brewer);
+		put("state", STATE_IDLE);
 	}
 
 	private boolean canWorkWith(final Player player) {
 		final String questState = player.getQuest(QUEST_SLOT);
 		if (questState == null || questState.isEmpty()) {
-			player.sendPrivateText("Nie znasz przepisu Draconii. Zapytaj ją o wywar zanim zaczniesz mieszać.");
+			player.sendPrivateText("Nie znasz przepisu Draconii. Porozmawiaj z nią zanim zaczniesz mieszać.");
 			return false;
 		}
 		if (!"start".equals(questState)) {
-			player.sendPrivateText("Kocioł Draconii pomaga przy rytuale trzeciego wąsa, gdy jesteś na etapie zbierania składników.");
+			player.sendPrivateText("Kocioł pomaga tylko w trakcie zbierania składników trzeciego wąsa.");
 			return false;
 		}
 		if (player.isSubmittableEquipped(RESULT_ITEM, 1)) {
-			player.sendPrivateText("Masz już porcję wywaru wąsatych smoków. Zanieś ją Hadrinowi.");
+			player.sendPrivateText("Masz już porcję wywaru – zanieś ją Hadrinowi.");
 			return false;
 		}
 		return true;
 	}
 
 	private boolean isCurrentBrewer(final Player player) {
-	        if (brewer == null) {
-	                return false;
-	        }
+		if (brewer == null) {
+			return false;
+		}
 		if (!brewer.equals(player.getName())) {
 			final Player active = SingletonRepository.getRuleProcessor().getPlayer(brewer);
 			if (active == null) {
@@ -309,47 +312,47 @@ public class GoldenCauldronEntity extends UseableEntity {
 			}
 			return false;
 		}
-	        return true;
+		return true;
 	}
 
 	@Override
 	public String getName() {
-	        return "kocioł Draconii";
+		return "kocioł Draconii";
 	}
 
 	private void finishBrewing() {
-	        cancelStateReset();
-	        open = false;
-	        brewer = null;
-	        if (has("open")) {
-	                remove("open");
-	        }
-	        if (has("brewer")) {
-	                remove("brewer");
-	        }
-	        put("state", STATE_ACTIVE);
-	        notifyWorldAboutChanges();
+		cancelStateReset();
+		open = false;
+		brewer = null;
+		if (has("open")) {
+			remove("open");
+		}
+		if (has("brewer")) {
+			remove("brewer");
+		}
+		put("state", STATE_ACTIVE);
+		notifyWorldAboutChanges();
 
-	        stateReset = new TurnListener() {
-	                @Override
-	                public void onTurnReached(final int currentTurn) {
-	                        put("state", STATE_IDLE);
-	                        notifyWorldAboutChanges();
-	                        stateReset = null;
-	                }
+		stateReset = new TurnListener() {
+			@Override
+			public void onTurnReached(final int currentTurn) {
+				put("state", STATE_IDLE);
+				notifyWorldAboutChanges();
+				stateReset = null;
+			}
 
-	                @Override
-	                public String toString() {
-	                        return "golden_cauldron_reset";
-	                }
-	        };
-	        SingletonRepository.getTurnNotifier().notifyInSeconds(RESET_SECONDS, stateReset);
+			@Override
+			public String toString() {
+				return "golden_cauldron_reset";
+			}
+		};
+		SingletonRepository.getTurnNotifier().notifyInSeconds(RESET_SECONDS, stateReset);
 	}
 
 	private void cancelStateReset() {
-	        if (stateReset != null) {
-	                SingletonRepository.getTurnNotifier().dontNotify(stateReset);
-	                stateReset = null;
-	        }
+		if (stateReset != null) {
+			SingletonRepository.getTurnNotifier().dontNotify(stateReset);
+			stateReset = null;
+		}
 	}
 }

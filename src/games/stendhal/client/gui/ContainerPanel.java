@@ -264,7 +264,9 @@ class ContainerPanel extends JScrollPane implements Inspector, InternalManagedWi
 			window = new SlotWindow(entity.getName(), width, height);
 		}
 
-		if (content != null) {
+		if (entity instanceof GoldenCauldron) {
+			window.setSlot(entity, GoldenCauldron.CONTENT_SLOT);
+		} else if (content != null) {
 			window.setSlot(entity, content.getName());
 		}
 		window.setAcceptedTypes(EntityMap.getClass("item", null, null));

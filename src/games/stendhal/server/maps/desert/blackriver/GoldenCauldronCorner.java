@@ -25,7 +25,7 @@ public class GoldenCauldronCorner implements ZoneConfigurator {
 				addOffer("Jeśli potrzebujesz #'wywaru wąsatych smoków', powiem jak go przygotować.");
 				addReply(Arrays.asList("wywar", "przepis", "mieszanie", "mieszaj"),
 									"Do kotła dołóż #'3 pióro azazela'#,' #'10 magiczna krew'#,' #'5 smocza krew'# oraz #'1 cudowna krew'#. "
-+ "Stań obok kotła, kliknij prawym przyciskiem i wybierz 'Otwórz' – pojawi się okno z sześcioma miejscami na składniki i przyciskiem 'Mieszaj' do warzenia. "
+									+ "Stań obok kotła, kliknij prawym przyciskiem i wybierz 'Otwórz' – pojawi się okno z ośmioma miejscami na składniki oraz przyciskiem 'Mieszaj'. "
 									+ "Gdy bulgot ucichnie, zabierz wywar do Hadrina."
 				addHelp("Pamiętaj, że musisz mieć wszystkie składniki przy sobie – kocioł nie znosi braków.");
 				addGoodbye("Niech kocioł szepcze ci o zwycięstwie.");
