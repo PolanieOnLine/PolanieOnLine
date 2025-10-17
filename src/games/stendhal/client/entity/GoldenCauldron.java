@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2024 - PolanieOnLine                    *
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
  ***************************************************************************/
 /***************************************************************************
  *                                                                         *
@@ -12,33 +11,68 @@
  ***************************************************************************/
 package games.stendhal.client.entity;
 
+import games.stendhal.client.StendhalClient;
+import games.stendhal.client.entity.User;
 import marauroa.common.game.RPObject;
 import marauroa.common.game.RPSlot;
 
 /**
- * Client representation of Draconia's golden cauldron.
+ * Client representation of the golden cauldron entity.
  */
-public class GoldenCauldron extends StatefulEntity {
-	/** Property fired when the cauldron toggles its open state. */
+public class GoldenCauldron extends Entity {
 	public static final Property PROP_OPEN = new Property();
-	/** Property fired when the cauldron changes the current brewer. */
+	public static final Property PROP_STATE = new Property();
+	public static final Property PROP_STATUS = new Property();
 	public static final Property PROP_BREWER = new Property();
-	/** Slot name containing the ingredients dropped into the cauldron. */
-	public static final String CONTENT_SLOT = "content";
 
 	private boolean open;
+	private int state;
+	private String status;
 	private String brewer;
+	private RPSlot content;
+
+	public GoldenCauldron() {
+		status = "";
+	}
+
+	public RPSlot getContent() {
+		return content;
+	}
+
+	public boolean isOpen() {
+		return open;
+	}
+
+	public boolean isActive() {
+		return state > 0;
+	}
+
+	public String getStatusText() {
+		return status;
+	}
+
+	public boolean isControlledByUser() {
+		final User user = User.get();
+		if (user == null) {
+			return false;
+		}
+		return brewer != null && brewer.equalsIgnoreCase(StendhalClient.get().getCharacter());
+	}
 
 	@Override
 	public void initialize(final RPObject object) {
 		super.initialize(object);
 
-		open = object.has("open");
-		if (object.has("brewer")) {
-			brewer = object.get("brewer");
+		if (object.hasSlot("content")) {
+			content = object.getSlot("content");
 		} else {
-			brewer = null;
+			content = null;
 		}
+
+		open = object.has("open");
+		state = object.has("state") ? object.getInt("state") : 0;
+		status = object.has("status") ? object.get("status") : "";
+		brewer = object.has("brewer") ? object.get("brewer") : null;
 	}
 
 	@Override
@@ -48,6 +82,14 @@ public class GoldenCauldron extends StatefulEntity {
 		if (changes.has("open")) {
 			open = true;
 			fireChange(PROP_OPEN);
+		}
+		if (changes.has("state")) {
+			state = changes.getInt("state");
+			fireChange(PROP_STATE);
+		}
+		if (changes.has("status")) {
+			status = changes.get("status");
+			fireChange(PROP_STATUS);
 		}
 		if (changes.has("brewer")) {
 			brewer = changes.get("brewer");
@@ -63,49 +105,17 @@ public class GoldenCauldron extends StatefulEntity {
 			open = false;
 			fireChange(PROP_OPEN);
 		}
+		if (changes.has("state")) {
+			state = 0;
+			fireChange(PROP_STATE);
+		}
+		if (changes.has("status")) {
+			status = "";
+			fireChange(PROP_STATUS);
+		}
 		if (changes.has("brewer")) {
 			brewer = null;
 			fireChange(PROP_BREWER);
 		}
-	}
-
-	/**
-	 * Determine if the cauldron is currently open for brewing.
-	 *
-	 * @return {@code true} when the ingredient window should be visible
-	 */
-	public boolean isOpen() {
-		return open;
-	}
-
-	/**
-	 * Name of the player currently operating the cauldron.
-	 *
-	 * @return brewer name or {@code null}
-	 */
-	public String getBrewer() {
-		return brewer;
-	}
-
-	/**
-	 * Check whether the provided player name matches the current brewer.
-	 *
-	 * @param playerName player character name
-	 * @return {@code true} if the player operates the cauldron
-	 */
-	public boolean isBrewer(final String playerName) {
-		if (brewer == null || playerName == null) {
-			return false;
-		}
-		return brewer.equalsIgnoreCase(playerName);
-	}
-
-	/**
-	 * Access the ingredient slot.
-	 *
-	 * @return slot storing dropped ingredients
-	 */
-	public RPSlot getMixSlot() {
-		return getSlot(CONTENT_SLOT);
 	}
 }

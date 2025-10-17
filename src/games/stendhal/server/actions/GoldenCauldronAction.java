@@ -1,47 +1,55 @@
+/* $Id$ */
+/***************************************************************************
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
+ ***************************************************************************/
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
 package games.stendhal.server.actions;
 
+import static games.stendhal.common.constants.Actions.TARGET_PATH;
+
 import games.stendhal.server.entity.Entity;
-import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.entity.mapstuff.useable.GoldenCauldronEntity;
+import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.util.EntityHelper;
 import marauroa.common.game.RPAction;
 
 /**
- * Handles client actions directed at Draconia's golden cauldron.
+ * Handles custom actions for the golden cauldron.
  */
 public class GoldenCauldronAction implements ActionListener {
-	private static final String TYPE = "golden_cauldron";
+	private static final String ACTION = "goldencauldron";
+	private static final String COMMAND = "command";
+	private static final String MIX = "mix";
 
+	/**
+	 * Register the action.
+	 */
 	public static void register() {
-		CommandCenter.register(TYPE, new GoldenCauldronAction());
+		CommandCenter.register(ACTION, new GoldenCauldronAction());
 	}
 
 	@Override
 	public void onAction(final Player player, final RPAction action) {
-		final GoldenCauldronEntity cauldron = resolveTarget(player, action);
-		if (cauldron == null) {
+		if (!action.has(TARGET_PATH)) {
 			return;
 		}
 
-		final String command = action.get("action");
-		if ("open".equals(command)) {
-			cauldron.onUsed(player);
-		} else if ("close".equals(command)) {
-			cauldron.close(player);
-		} else if ("mix".equals(command)) {
+		final Entity entity = EntityHelper.getEntityFromPath(player, action.getList(TARGET_PATH));
+		if (!(entity instanceof GoldenCauldronEntity)) {
+			return;
+		}
+
+		final GoldenCauldronEntity cauldron = (GoldenCauldronEntity) entity;
+		final String command = action.get(COMMAND);
+		if (MIX.equals(command)) {
 			cauldron.mix(player);
 		}
-	}
-
-	private GoldenCauldronEntity resolveTarget(final Player player, final RPAction action) {
-		if (!action.has(games.stendhal.common.constants.Actions.TARGET_PATH)) {
-			return null;
-		}
-		final Entity entity = EntityHelper.getEntityFromPath(player,
-				action.getList(games.stendhal.common.constants.Actions.TARGET_PATH));
-		if (entity instanceof GoldenCauldronEntity) {
-			return (GoldenCauldronEntity) entity;
-		}
-		return null;
 	}
 }

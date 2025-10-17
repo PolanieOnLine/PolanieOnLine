@@ -32,7 +32,6 @@ import games.stendhal.client.entity.Fire;
 import games.stendhal.client.entity.FlyOverArea;
 import games.stendhal.client.entity.GameBoard;
 import games.stendhal.client.entity.Gate;
-import games.stendhal.client.entity.GoldenCauldron;
 import games.stendhal.client.entity.Goat;
 import games.stendhal.client.entity.GrainField;
 import games.stendhal.client.entity.HousePortal;
@@ -141,7 +140,6 @@ public final class EntityMap {
 		register("food", null, null, SheepFood.class);
 		register("game_board", null, null, GameBoard.class);
 		register("looped_sound_source", null, null, LoopedSoundSource.class);
-		register("golden_cauldron", null, null, GoldenCauldron.class);
 		register("player", null, null, Player.class);
 		register("spell", null, null, Spell.class);
 		register("useable_entity", null, null, StatefulEntity.class);
