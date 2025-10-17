@@ -15,17 +15,19 @@ package games.stendhal.client.gui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import games.stendhal.client.StendhalClient;
 import games.stendhal.client.entity.GoldenCauldron;
 import games.stendhal.client.entity.IEntity;
 import games.stendhal.client.entity.User;
 import games.stendhal.client.entity.factory.EntityMap;
-import games.stendhal.client.gui.layout.SBoxLayout;
 import games.stendhal.common.constants.Actions;
 import marauroa.common.game.RPAction;
 import marauroa.common.game.RPObject;
@@ -43,7 +45,8 @@ public class GoldenCauldronWindow extends SlotWindow {
 	public GoldenCauldronWindow() {
 		super("golden_cauldron", 4, 2);
 
-		statusLabel = new JLabel("Ułóż składniki w ośmiu miejscach i wybierz \"Mieszaj\".");
+                statusLabel = new JLabel("Ułóż składniki w ośmiu miejscach i wybierz \"Mieszaj\".");
+                statusLabel.setHorizontalAlignment(JLabel.CENTER);
 		mixButton = new JButton("Mieszaj");
 		mixButton.addActionListener(new ActionListener() {
 			@Override
@@ -57,28 +60,24 @@ public class GoldenCauldronWindow extends SlotWindow {
 		grid.setOpaque(false);
 		setSlotsLayout(4, 2);
 
-		final JComponent content = SBoxLayout.createContainer(SBoxLayout.VERTICAL, SBoxLayout.COMMON_PADDING);
+		final JPanel gridWrapper = new JPanel(new BorderLayout());
+		gridWrapper.setOpaque(false);
+		gridWrapper.setBorder(BorderFactory.createEmptyBorder(8, 10, 6, 10));
+		gridWrapper.add(statusLabel, BorderLayout.NORTH);
+		gridWrapper.add(grid, BorderLayout.CENTER);
+
+		final JPanel buttonPanel = new JPanel(new BorderLayout());
+		buttonPanel.setOpaque(false);
+		buttonPanel.setBorder(BorderFactory.createEmptyBorder(6, 0, 6, 0));
+		buttonPanel.add(mixButton, BorderLayout.CENTER);
+
+		final JPanel content = new JPanel(new BorderLayout());
 		content.setOpaque(false);
-		content.setBorder(BorderFactory.createEmptyBorder(4, 6, 6, 6));
+		content.add(gridWrapper, BorderLayout.CENTER);
+		content.add(buttonPanel, BorderLayout.SOUTH);
+		content.setBorder(BorderFactory.createEmptyBorder(4, 4, 6, 4));
 
-		statusLabel.setAlignmentX(JComponent.CENTER_ALIGNMENT);
-		content.add(statusLabel);
-
-		final JComponent gridRow = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, SBoxLayout.COMMON_PADDING);
-		gridRow.setOpaque(false);
-		SBoxLayout.addSpring(gridRow);
-		gridRow.add(grid);
-		SBoxLayout.addSpring(gridRow);
-		content.add(gridRow);
-
-		mixButton.setAlignmentX(JComponent.CENTER_ALIGNMENT);
-		final JComponent buttonRow = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, SBoxLayout.COMMON_PADDING);
-		buttonRow.setOpaque(false);
-		SBoxLayout.addSpring(buttonRow);
-		buttonRow.add(mixButton);
-		SBoxLayout.addSpring(buttonRow);
-		content.add(buttonRow);
-
+		mixButton.setPreferredSize(new Dimension(120, mixButton.getPreferredSize().height));
 		setContent(content);
 		setAcceptedTypes(EntityMap.getClass("item", null, null));
 
