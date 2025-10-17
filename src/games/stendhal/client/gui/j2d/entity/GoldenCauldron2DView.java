@@ -218,7 +218,7 @@ class GoldenCauldron2DView extends UseableEntity2DView<GoldenCauldron> {
 		}
 
 		final GoldenCauldronWindow current = window;
-		final SlotWindow created = inspector.inspectMe(cauldron, cauldron.getMixSlot(), current, 3, 2);
+			final SlotWindow created = inspector.inspectMe(cauldron, cauldron.getMixSlot(), current, 4, 2);
 		if (created instanceof GoldenCauldronWindow) {
 			window = (GoldenCauldronWindow) created;
 			window.setCauldron(cauldron);
