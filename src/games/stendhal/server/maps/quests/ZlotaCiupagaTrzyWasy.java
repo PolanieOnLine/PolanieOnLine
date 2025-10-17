@@ -46,6 +46,7 @@ import games.stendhal.server.util.TimeUtil;
 public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
 	private static final String QUEST_SLOT = "ciupaga_trzy_wasy";
 	private final SpeakerNPC npc = npcs.get("Hadrin");
+	private static final String WITCH_BREW = "wywar wąsatych smoków";
 
 	private static final String FRIEND_1 = "goralski_kolekcjoner3";
 	private static final String FRIEND_2 = "belts_collector";
@@ -71,7 +72,7 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
 										if(player.getKarma() >= 2000) {
 											if(player.hasKilled("azazel")) {
 												if (!player.hasQuest(QUEST_SLOT) || "rejected".equals(player.getQuest(QUEST_SLOT))) {
-													raiser.say("Musisz być dzielnym wojownikiem skoro " + player.getGenderVerb("dotarłeś") + " aż tu. Mam dla ciebie zadanie, czy jesteś gotów?");
+													raiser.say("Skoro " + player.getGenderVerb("dotarłeś") + " do mojej kuźni w sercu gór, domyślam się, że pragniesz trzeci wąs. Gotów na rytuał, który splata legendy moich przyjaciół?");
 												} else if (player.getQuest(QUEST_SLOT, 0).equals("start")) {
 													raiser.say("Już się Ciebie pytałem czy chcesz ulepszyć złotą ciupagę!");
 												} else if (player.isQuestCompleted(QUEST_SLOT)) {
@@ -118,8 +119,8 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
 			new ChatAction() {
 				@Override
 				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-					raiser.say("W takim razie oto potrzebna lista przedmiotów, gdzie umożliwi mi ulepszenie twej złotej ciupagi.\n"
-							+"Do jej udoskonalenia potrzebuję:\n"
+					raiser.say("Świetnie! Naszkicuję krąg runów. Aby go zasilić, potrzebuję:\n"
+							+"Oto spis ingrediencji:\n"
 							+"#'1 pazur arktycznego smoka'\n"
 							+"#'1 pazur niebieskiego smoka'\n"
 							+"#'1 pazur czarnego smoka'\n"
@@ -128,11 +129,8 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
 							+"#'240 sztabek złota'\n"
 							+"#'2500000 money'\n"
 							+"#'70 polan' oraz\n"
-							+"#'3 pióro azazela'\n"
-							+"#'10 magiczna krew'\n"
-							+"#'5 smocza krew'\n"
-							+"#'1 cudowna krew'\n"
-							+"Proszę przynieś mi to wszystko naraz. Jeżeli zapomnisz co masz przynieść to powiedz #'przypomnij'. Dziękuję!");
+							+"#'1 wywar wąsatych smoków' (użyj kotła Draconii obok Józka, aby połączyć smocze krwie i pióra)\n"
+							+"Przynieś mi wszystko naraz, bo tylko wtedy runy zwiążą się z ostrzem. Gdybyś zapomniał, powiedz #'przypomnij'. Dziękuję!");
 					player.setQuest(QUEST_SLOT, "start");
 					player.addKarma(10);
 
@@ -158,10 +156,7 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
 		ciupagaactions.add(new DropItemAction("sztabka złota", 240));
 		ciupagaactions.add(new DropItemAction("money", 2500000));
 		ciupagaactions.add(new DropItemAction("polano", 70));
-		ciupagaactions.add(new DropItemAction("pióro azazela", 3));
-		ciupagaactions.add(new DropItemAction("magiczna krew", 10));
-		ciupagaactions.add(new DropItemAction("smocza krew", 5));
-		ciupagaactions.add(new DropItemAction("cudowna krew", 1));
+		ciupagaactions.add(new DropItemAction(WITCH_BREW, 1));
 		ciupagaactions.add(new SetQuestAction(QUEST_SLOT, "forging;" + System.currentTimeMillis()));
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("przedmioty", "przypomnij", "ciupaga"),
@@ -174,29 +169,23 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
 								 new PlayerHasItemWithHimCondition("sztabka złota", 240),
 								 new PlayerHasItemWithHimCondition("money", 2500000),
 								 new PlayerHasItemWithHimCondition("polano", 70),
-								 new PlayerHasItemWithHimCondition("pióro azazela", 3),
-								 new PlayerHasItemWithHimCondition("magiczna krew", 10),
-								 new PlayerHasItemWithHimCondition("smocza krew", 5),
-								 new PlayerHasItemWithHimCondition("cudowna krew", 1)),
+								 new PlayerHasItemWithHimCondition(WITCH_BREW, 1)),
 				ConversationStates.IDLE, "Widzę, że masz wszystko o co cię prosiłem. Wróć za 24 godzin, a złota ciupaga z trzema wąsami będzie gotowa. Przypomnij mi mówiąc #'nagroda'.",
 				new MultipleActions(ciupagaactions));
 
 		npc.add(ConversationStates.ATTENDING, "przypomnij",
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, "start"),
 								 new NotCondition(
-								 new AndCondition(
-										 new PlayerHasItemWithHimCondition("pazur arktycznego smoka", 1),
-										 new PlayerHasItemWithHimCondition("pazur niebieskiego smoka", 1),
-										 new PlayerHasItemWithHimCondition("pazur czarnego smoka", 1),
-										 new PlayerHasItemWithHimCondition("pazur złotego smoka", 1),
-										 new PlayerHasItemWithHimCondition("złota ciupaga z dwoma wąsami", 1),
-										 new PlayerHasItemWithHimCondition("sztabka złota", 240),
-										 new PlayerHasItemWithHimCondition("money", 2500000),
-										 new PlayerHasItemWithHimCondition("polano", 70),
-										 new PlayerHasItemWithHimCondition("pióro azazela", 3),
-										 new PlayerHasItemWithHimCondition("magiczna krew", 10),
-										 new PlayerHasItemWithHimCondition("smocza krew", 5),
-										 new PlayerHasItemWithHimCondition("cudowna krew", 1)))),
+                                                                 new AndCondition(
+                                                                                 new PlayerHasItemWithHimCondition("pazur arktycznego smoka", 1),
+                                                                                 new PlayerHasItemWithHimCondition("pazur niebieskiego smoka", 1),
+                                                                                 new PlayerHasItemWithHimCondition("pazur czarnego smoka", 1),
+                                                                                 new PlayerHasItemWithHimCondition("pazur złotego smoka", 1),
+                                                                                 new PlayerHasItemWithHimCondition("złota ciupaga z dwoma wąsami", 1),
+                                                                                 new PlayerHasItemWithHimCondition("sztabka złota", 240),
+                                                                                 new PlayerHasItemWithHimCondition("money", 2500000),
+                                                                                 new PlayerHasItemWithHimCondition("polano", 70),
+                                                                                 new PlayerHasItemWithHimCondition(WITCH_BREW, 1)))),
 				ConversationStates.IDLE, "Do jej udoskonalenia potrzebuję:\n"
 								+"#'1 pazur arktycznego smoka'\n"
 								+"#'1 pazur niebieskiego smoka'\n"
@@ -206,11 +195,8 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
 								+"#'240 sztabek złota'\n"
 								+"#'2500000 money'\n"
 								+"#'70 polan' oraz\n"
-								+"#'3 pióro azazela'\n"
-								+"#'10 magiczna krew'\n"
-								+"#'5 smocza krew'\n"
-								+"#'1 cudowna krew'\n"
-								+"Proszę przynieś mi to wszystko naraz. Jeżeli zapomnisz co masz przynieść to powiedz #'przypomnij'. Dziękuję!", null);
+								+"#'1 wywar wąsatych smoków' (użyj kotła Draconii obok Józka, aby połączyć smocze krwie i pióra)\n"
+								+"Przynieś mi wszystko naraz, bo tylko wtedy runy zwiążą się z ostrzem. Gdybyś zapomniał, powiedz #'przypomnij'. Dziękuję!", null);
 	}
 
 	private void step_3() { 
@@ -223,7 +209,7 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
 					new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, delay))),
 			ConversationStates.IDLE, 
 			null, 
-			new SayTimeRemainingAction(QUEST_SLOT, 1, delay, "Wciąż pracuje nad ulepszeniem twojej złotej ciupagi. Wróć za "));
+			new SayTimeRemainingAction(QUEST_SLOT, 1, delay, "Trzeci wąs dopiero się splata – wróć za "));
 
 		npc.add(ConversationStates.ATTENDING,
 			Arrays.asList("złota", "ciupaga", "nagroda"),
@@ -233,7 +219,7 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
 			ConversationStates.IDLE, null, new ChatAction() {
 				@Override
 				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-					raiser.say("Warto było czekać. A oto i ona, czyż nie jest wspaniała?!");
+					raiser.say("Rytuał zakończony! Oto ciupaga, której trzy wąsy szumią jak górski wiatr.");
 					player.addXP(1000000);
 					player.addKarma(200);
 					final Item zlotaCiupagaZTrzemaWasami = SingletonRepository.getEntityManager().getItem("złota ciupaga z trzema wąsami");
@@ -263,26 +249,27 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
 			return res;
 		}
 		final String questState = player.getQuest(QUEST_SLOT);
-		res.add(player.getGenderVerb("Spotkałem") + " się z Hadrinem.");
-		res.add("Hadrin może ulepszyć moją złotą ciupagę.");
+		res.add(player.getGenderVerb("Spotkałem") + " Hadrina w jego górskiej kuźni.");
+		res.add("Hadrin obiecał splot trzeciego wąsa, jeśli udowodnię gotowość i przyniosę relikwie smoków.");
 		if ("rejected".equals(questState)) {
-			res.add("Nie zamierzam ulepszać swej złotej ciupagi.");
+			res.add("Na razie rezygnuję z legendy trzech wąsów.");
 			return res;
 		}
-		res.add(player.getGenderVerb("Udałem") + " się do Hadrina w celu ulepszenia ciupagi. Kazał mi przynnieść kilka przedmiotów. Gdybym " + player.getGenderVerb("zapomniał") + " co mam przynieść mam mu powiedzieć: przypomnij."); 
+		res.add(player.getGenderVerb("Udałem") + " się do Hadrina, który zdradził przepis na legendarny trzeci wąs. W razie amnezji hasło brzmi: przypomnij."); 
+		res.add("Draconia przy kotle Józka pilnuje, bym zmieszał wywar wąsatych smoków dla Hadrina.");
 		if ("start".equals(questState)) {
 			return res;
 		} 
-		res.add(player.getGenderVerb("Dostarczyłem") + " potrzebne przedmioty! Hadrin zabrał się za ulepszenie mojej ciupagi.");
+		res.add(player.getGenderVerb("Dostarczyłem") + " wszystkie relikwie, a Hadrin rozpoczął górski rytuał kucia.");
 		if (questState.startsWith("forging")) {
 			if (new TimePassedCondition(QUEST_SLOT,1,REQUIRED_HOURS).fire(player, null, null)) {
 				res.add("Podobno Hadrin skończył moją ciupagę. Hasło: nagroda.");
 			} else {
-				res.add("Po ciupagę mam zgłosić się za 24 godzin. Hasło: nagroda.");
+				res.add("Po ciupagę mam wrócić za dwadzieścia cztery godziny, gdy trzeci wąs zwiąże się z ostrzem. Hasło: nagroda.");
 			}
 			return res;
 		} 
-		res.add("Warto było czekać na ciupagę z trzema wąsami. Ta potężna i piękna broń należy teraz do mnie.");
+		res.add("Czas oczekiwania opłacił się – trzy wąsy wirują wokół ostrza jak góralska legenda.");
 		if (isCompleted(player)) {
 			return res;
 		}

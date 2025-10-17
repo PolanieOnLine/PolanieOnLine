@@ -20,6 +20,7 @@ import { Door } from "./Door";
 import { Food } from "./Food";
 import { GameBoard } from "./GameBoard";
 import { Gate } from "./Gate";
+import { GoldenCauldron } from "./GoldenCauldron";
 import { GrowingEntitySpawner } from "./GrowingEntitySpawner";
 import { InvisibleEntity } from "./InvisibleEntity";
 import { Item } from "./Item";
@@ -51,7 +52,8 @@ marauroa.rpobjectFactory["door"] = Door;
 marauroa.rpobjectFactory["flyover"] = InvisibleEntity;
 marauroa.rpobjectFactory["food"] = Food;
 marauroa.rpobjectFactory["game_board"] = GameBoard;
-marauroa.rpobjectFactory["gate"] = Gate
+marauroa.rpobjectFactory["gate"] = Gate;
+marauroa.rpobjectFactory["golden_cauldron"] = GoldenCauldron;
 marauroa.rpobjectFactory["growing_entity_spawner"] = GrowingEntitySpawner;
 marauroa.rpobjectFactory["house_portal"] = Portal;
 marauroa.rpobjectFactory["invisible_entity"] = InvisibleEntity;

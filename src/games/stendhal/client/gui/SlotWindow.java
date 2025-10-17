@@ -54,6 +54,15 @@ public class SlotWindow extends InternalManagedWindow implements Inspectable {
 		setContent(content);
 	}
 
+	/**
+	 * Access the grid presenting the slot contents.
+	 *
+	 * @return slot grid component
+	 */
+	protected SlotGrid getSlotGrid() {
+		return content;
+	}
+
 	protected void setSlotsLayout(final int width, final int height) {
 		content.setSlotsLayout(width, height);
 		setContent(content);
