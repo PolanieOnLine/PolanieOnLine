@@ -278,6 +278,54 @@ class ContainerPanel extends JScrollPane implements Inspector, InternalManagedWi
 		return window;
 	}
 
+	/**
+	 * Get the vertical center point of a component.
+	 *
+	 * @param component component to be checked
+	 * @return the Y coordinate of the component center point
+	 */
+	private int componentYCenter(Component component) {
+		return component.getY() + component.getHeight() / 2;
+	}
+
+	@Override
+	public void windowDragged(Component component, Point point) {
+		int centerY = point.y + component.getHeight() / 2;
+		for (int i = 0; i < panel.getComponentCount(); i++) {
+			Component tmp = panel.getComponent(i);
+			if ((tmp != component) && (tmp != panel.getPhantom())) {
+				if ((draggedPosition < i) && (centerY > componentYCenter(tmp))) {
+					draggedPosition = i;
+					panel.setComponentZOrder(panel.getPhantom(), draggedPosition);
+					panel.revalidate();
+					break;
+				} else if ((draggedPosition >= i) && (centerY < componentYCenter(tmp))) {
+					draggedPosition = i;
+					panel.setComponentZOrder(panel.getPhantom(), draggedPosition);
+					panel.revalidate();
+					break;
+				}
+			}
+		}
+	}
+
+	@Override
+	public void startDrag(Component component) {
+		draggedPosition = panel.getComponentZOrder(component);
+		panel.hideComponent(component);
+		panel.setComponentZOrder(component, 0);
+	}
+
+	@Override
+	public void endDrag(Component component) {
+		panel.setComponentZOrder(component, draggedPosition);
+		panel.revealComponent();
+		panel.revalidate();
+		if (component instanceof ManagedWindow) {
+			checkWindowOrder(((ManagedWindow) component).getName());
+		}
+	}
+
 
 	/**
 	 * A container that can hide a contained component from the layout manager,
