@@ -38,11 +38,12 @@ public class GoldenCauldronWindow extends SlotWindow {
 
 	private GoldenCauldron cauldron;
 	private boolean closingFromServer;
+	private boolean slotBound;
 
 	public GoldenCauldronWindow() {
 		super("golden_cauldron", 3, 2);
 
-		statusLabel = new JLabel("Ułóż składniki w sześciu miejscach i wybierz „Mieszaj”.");
+		statusLabel = new JLabel("Ułóż składniki w sześciu miejscach i wybierz \"Mieszaj\".");
 		mixButton = new JButton("Mieszaj");
 		mixButton.addActionListener(new ActionListener() {
 			@Override
@@ -70,19 +71,37 @@ public class GoldenCauldronWindow extends SlotWindow {
 		setAcceptedTypes(EntityMap.getClass("item", null, null));
 
 		closingFromServer = false;
+		slotBound = false;
 	}
 
 	@Override
 	public void setSlot(final IEntity parent, final String slot) {
-		super.setSlot(parent, slot);
+		String targetSlot = slot;
+		if (parent instanceof GoldenCauldron) {
+			if ((targetSlot == null) || targetSlot.isEmpty()) {
+				targetSlot = GoldenCauldron.MIX_SLOT;
+			}
+		}
+		slotBound = (targetSlot != null);
+		if (targetSlot != null) {
+			super.setSlot(parent, targetSlot);
+		} else {
+			super.setSlot(parent, slot);
+		}
 		if (parent instanceof GoldenCauldron) {
 			cauldron = (GoldenCauldron) parent;
+		} else {
+			cauldron = null;
 		}
 		updateState();
 	}
 
 	public void setCauldron(final GoldenCauldron entity) {
 		cauldron = entity;
+		if (!slotBound && entity != null) {
+			super.setSlot(entity, GoldenCauldron.MIX_SLOT);
+			slotBound = true;
+		}
 		updateState();
 	}
 
@@ -104,6 +123,7 @@ public class GoldenCauldronWindow extends SlotWindow {
 		cauldron = null;
 		mixButton.setEnabled(false);
 		closingFromServer = false;
+		slotBound = false;
 	}
 
 	private void updateState() {
@@ -120,7 +140,7 @@ public class GoldenCauldronWindow extends SlotWindow {
 			statusLabel.setText("Kocioł obsługuje obecnie: " + brewer + ".");
 			mixButton.setEnabled(false);
 		} else {
-			statusLabel.setText("Ułóż składniki w sześciu miejscach i wybierz „Mieszaj”.");
+			statusLabel.setText("Ułóż składniki w sześciu miejscach i wybierz \"Mieszaj\".");
 			mixButton.setEnabled(true);
 		}
 	}
