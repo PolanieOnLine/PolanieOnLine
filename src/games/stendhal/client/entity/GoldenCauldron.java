@@ -56,7 +56,8 @@ public class GoldenCauldron extends Entity {
 		if (user == null) {
 			return false;
 		}
-		return brewer != null && brewer.equalsIgnoreCase(StendhalClient.get().getCharacter());
+		return brewer != null
+			&& brewer.equalsIgnoreCase(StendhalClient.get().getCharacter());
 	}
 
 	@Override
