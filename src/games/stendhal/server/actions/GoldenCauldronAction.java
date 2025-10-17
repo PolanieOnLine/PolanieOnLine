@@ -41,7 +41,8 @@ public class GoldenCauldronAction implements ActionListener {
 			return;
 		}
 
-		final Entity entity = EntityHelper.getEntityFromPath(player, action.getList(TARGET_PATH));
+		final Entity entity =
+			EntityHelper.getEntityFromPath(player, action.getList(TARGET_PATH));
 		if (!(entity instanceof GoldenCauldronEntity)) {
 			return;
 		}

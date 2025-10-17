@@ -8,23 +8,21 @@
  ***************************************************************************/
 package games.stendhal.client.gui;
 
-import java.awt.BorderLayout;
-import java.awt.Graphics;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.geom.Rectangle2D;
-
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-
 import games.stendhal.client.StendhalClient;
 import games.stendhal.client.entity.IEntity;
 import games.stendhal.client.entity.Inspector;
 import games.stendhal.client.entity.User;
 import games.stendhal.client.entity.factory.EntityMap;
 import games.stendhal.client.gui.layout.SBoxLayout;
+import java.awt.BorderLayout;
+import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.geom.Rectangle2D;
+import javax.swing.JButton;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 import marauroa.common.game.RPObject;
 
 /**
@@ -133,7 +131,8 @@ public class GoldenCauldronWindow extends InternalManagedWindow implements Inspe
 
 		final RPObject root = parent.getRPObject().getBaseContainer();
 		if (root != null && root.has("name")) {
-			if (StendhalClient.get().getCharacter().equalsIgnoreCase(root.get("name"))) {
+			if (StendhalClient.get().getCharacter().equalsIgnoreCase(
+				    root.get("name"))) {
 				return true;
 			}
 		}
@@ -147,7 +146,7 @@ public class GoldenCauldronWindow extends InternalManagedWindow implements Inspe
 
 		final Rectangle2D area = parent.getArea();
 		area.setRect(area.getX() - MAX_DISTANCE, area.getY() - MAX_DISTANCE,
-				area.getWidth() + MAX_DISTANCE * 2, area.getHeight() + MAX_DISTANCE * 2);
+			area.getWidth() + MAX_DISTANCE * 2, area.getHeight() + MAX_DISTANCE * 2);
 
 		return area.contains(px, py);
 	}
