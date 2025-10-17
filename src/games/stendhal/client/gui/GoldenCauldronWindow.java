@@ -12,20 +12,21 @@
  ***************************************************************************/
 package games.stendhal.client.gui;
 
-import java.awt.Container;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.BorderFactory;
 
 import games.stendhal.client.StendhalClient;
 import games.stendhal.client.entity.GoldenCauldron;
 import games.stendhal.client.entity.IEntity;
 import games.stendhal.client.entity.User;
 import games.stendhal.client.entity.factory.EntityMap;
-import games.stendhal.client.gui.layout.SBoxLayout;
 import games.stendhal.common.constants.Actions;
 import marauroa.common.game.RPAction;
 import marauroa.common.game.RPObject;
@@ -54,18 +55,23 @@ public class GoldenCauldronWindow extends SlotWindow {
 		mixButton.setEnabled(false);
 
 		SlotGrid grid = getSlotGrid();
-		Container parent = grid.getParent();
-		if (parent != null) {
-			parent.remove(grid);
-		}
+		grid.setOpaque(false);
 
-		JComponent content = SBoxLayout.createContainer(SBoxLayout.VERTICAL, 4);
-		content.add(statusLabel);
-		content.add(grid);
+		JPanel content = new JPanel(new BorderLayout(0, 4));
+		content.setOpaque(false);
 
-		JComponent buttons = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, 4);
+		JPanel header = new JPanel(new BorderLayout());
+		header.setOpaque(false);
+		header.setBorder(BorderFactory.createEmptyBorder(0, 0, 4, 0));
+		header.add(statusLabel, BorderLayout.CENTER);
+		content.add(header, BorderLayout.NORTH);
+
+		content.add(grid, BorderLayout.CENTER);
+
+		JPanel buttons = new JPanel(new FlowLayout(FlowLayout.CENTER, 8, 0));
+		buttons.setOpaque(false);
 		buttons.add(mixButton);
-		content.add(buttons);
+		content.add(buttons, BorderLayout.SOUTH);
 
 		setContent(content);
 		setAcceptedTypes(EntityMap.getClass("item", null, null));
@@ -79,7 +85,7 @@ public class GoldenCauldronWindow extends SlotWindow {
 		String targetSlot = slot;
 		if (parent instanceof GoldenCauldron) {
 			if ((targetSlot == null) || targetSlot.isEmpty()) {
-				targetSlot = GoldenCauldron.MIX_SLOT;
+				targetSlot = GoldenCauldron.CONTENT_SLOT;
 			}
 		}
 		slotBound = (targetSlot != null);
@@ -99,7 +105,7 @@ public class GoldenCauldronWindow extends SlotWindow {
 	public void setCauldron(final GoldenCauldron entity) {
 		cauldron = entity;
 		if (!slotBound && entity != null) {
-			super.setSlot(entity, GoldenCauldron.MIX_SLOT);
+			super.setSlot(entity, GoldenCauldron.CONTENT_SLOT);
 			slotBound = true;
 		}
 		updateState();

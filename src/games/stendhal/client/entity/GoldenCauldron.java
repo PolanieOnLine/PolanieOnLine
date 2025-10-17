@@ -24,7 +24,7 @@ public class GoldenCauldron extends StatefulEntity {
 	/** Property fired when the cauldron changes the current brewer. */
 	public static final Property PROP_BREWER = new Property();
 	/** Slot name containing the ingredients dropped into the cauldron. */
-	public static final String MIX_SLOT = "mix";
+	public static final String CONTENT_SLOT = "content";
 
 	private boolean open;
 	private String brewer;
@@ -106,6 +106,6 @@ public class GoldenCauldron extends StatefulEntity {
 	 * @return slot storing dropped ingredients
 	 */
 	public RPSlot getMixSlot() {
-		return getSlot(MIX_SLOT);
+		return getSlot(CONTENT_SLOT);
 	}
 }

@@ -20,7 +20,7 @@ export class GoldenCauldronDialog extends DialogContentComponent {
 	constructor(private cauldron: GoldenCauldron) {
 		super("golden-cauldron-dialog-template");
 
-		this.mixComponent = new ItemInventoryComponent(cauldron, "mix", 3, 2, false, undefined);
+		this.mixComponent = new ItemInventoryComponent(cauldron, "content", 3, 2, false, undefined);
 		this.child("#cauldron-slots")!.append(this.mixComponent.componentElement);
 		this.child("#cauldron-mix")!.addEventListener("click", () => {
 			this.cauldron.requestMix();
