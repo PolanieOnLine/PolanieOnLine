@@ -26,7 +26,7 @@ public class GoldenCauldronEntity extends UseableEntity {
 	private static final String QUEST_SLOT = "ciupaga_trzy_wasy";
 	private static final String RESULT_ITEM = "wywar wąsatych smoków";
 	private static final String SLOT_CONTENT = "content";
-	private static final int SLOT_CAPACITY = 6;
+	private static final int SLOT_CAPACITY = 8;
 	private static final int STATE_IDLE = 0;
 	private static final int STATE_ACTIVE = 1;
 	private static final int RESET_SECONDS = 5;

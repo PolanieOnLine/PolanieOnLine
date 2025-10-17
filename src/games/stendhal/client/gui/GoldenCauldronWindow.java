@@ -41,9 +41,9 @@ public class GoldenCauldronWindow extends SlotWindow {
 	private boolean slotBound;
 
 	public GoldenCauldronWindow() {
-		super("golden_cauldron", 3, 2);
+		super("golden_cauldron", 4, 2);
 
-		statusLabel = new JLabel("Ułóż składniki w sześciu miejscach i wybierz \"Mieszaj\".");
+		statusLabel = new JLabel("Ułóż składniki w ośmiu miejscach i wybierz \"Mieszaj\".");
 		mixButton = new JButton("Mieszaj");
 		mixButton.addActionListener(new ActionListener() {
 			@Override
@@ -53,17 +53,18 @@ public class GoldenCauldronWindow extends SlotWindow {
 		});
 		mixButton.setEnabled(false);
 
-		SlotGrid grid = getSlotGrid();
+		final SlotGrid grid = getSlotGrid();
 		grid.setOpaque(false);
+		setSlotsLayout(4, 2);
 
-		JComponent content = SBoxLayout.createContainer(SBoxLayout.VERTICAL, SBoxLayout.COMMON_PADDING);
+		final JComponent content = SBoxLayout.createContainer(SBoxLayout.VERTICAL, SBoxLayout.COMMON_PADDING);
 		content.setOpaque(false);
 		content.setBorder(BorderFactory.createEmptyBorder(4, 6, 6, 6));
 
 		statusLabel.setAlignmentX(JComponent.CENTER_ALIGNMENT);
 		content.add(statusLabel);
 
-		JComponent gridRow = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, SBoxLayout.COMMON_PADDING);
+		final JComponent gridRow = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, SBoxLayout.COMMON_PADDING);
 		gridRow.setOpaque(false);
 		SBoxLayout.addSpring(gridRow);
 		gridRow.add(grid);
@@ -71,7 +72,7 @@ public class GoldenCauldronWindow extends SlotWindow {
 		content.add(gridRow);
 
 		mixButton.setAlignmentX(JComponent.CENTER_ALIGNMENT);
-		JComponent buttonRow = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, SBoxLayout.COMMON_PADDING);
+		final JComponent buttonRow = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, SBoxLayout.COMMON_PADDING);
 		buttonRow.setOpaque(false);
 		SBoxLayout.addSpring(buttonRow);
 		buttonRow.add(mixButton);
@@ -83,6 +84,13 @@ public class GoldenCauldronWindow extends SlotWindow {
 
 		closingFromServer = false;
 		slotBound = false;
+	}
+
+	@Override
+	protected void setSlotsLayout(final int width, final int height) {
+		getSlotGrid().setSlotsLayout(width, height);
+		revalidate();
+		repaint();
 	}
 
 	@Override
@@ -143,7 +151,7 @@ public class GoldenCauldronWindow extends SlotWindow {
 			statusLabel.setText("Kocioł obsługuje obecnie: " + brewer + ".");
 			mixButton.setEnabled(false);
 		} else {
-			statusLabel.setText("Ułóż składniki w sześciu miejscach i wybierz \"Mieszaj\".");
+			statusLabel.setText("Ułóż składniki w ośmiu miejscach i wybierz \"Mieszaj\".");
 			mixButton.setEnabled(true);
 		}
 	}
