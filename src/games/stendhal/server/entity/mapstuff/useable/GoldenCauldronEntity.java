@@ -25,7 +25,7 @@ public class GoldenCauldronEntity extends UseableEntity {
 	private static final String RPCLASS_NAME = "golden_cauldron";
 	private static final String QUEST_SLOT = "ciupaga_trzy_wasy";
 	private static final String RESULT_ITEM = "wywar wąsatych smoków";
-	private static final String SLOT_MIX = "mix";
+	private static final String SLOT_CONTENT = "content";
 	private static final int SLOT_CAPACITY = 6;
 	private static final int STATE_IDLE = 0;
 	private static final int STATE_ACTIVE = 1;
@@ -56,7 +56,7 @@ public class GoldenCauldronEntity extends UseableEntity {
 		private final GoldenCauldronEntity cauldron;
 
 		private CauldronSlot(final GoldenCauldronEntity owner) {
-			super(SLOT_MIX, SLOT_MIX);
+			super(SLOT_CONTENT, SLOT_CONTENT);
 			cauldron = owner;
 			setCapacity(SLOT_CAPACITY);
 		}
@@ -94,7 +94,7 @@ public class GoldenCauldronEntity extends UseableEntity {
 	        setDescription("Runiczny kocioł bulgocze miodowym światłem, gotów do mieszania smoczych esencji.");
 	        setMenu("Otwórz|Użyj");
 
-	        addSlot(new CauldronSlot(this));
+		addSlot(new CauldronSlot(this));
 	}
 
 	public static void generateRPClass() {
@@ -103,7 +103,7 @@ public class GoldenCauldronEntity extends UseableEntity {
 			rpclass.isA("useable_entity");
 			rpclass.addAttribute("open", Type.FLAG);
 			rpclass.addAttribute("brewer", Type.STRING);
-			rpclass.addRPSlot(SLOT_MIX, SLOT_CAPACITY);
+			rpclass.addRPSlot(SLOT_CONTENT, SLOT_CAPACITY);
 		}
 	}
 
@@ -165,7 +165,7 @@ public class GoldenCauldronEntity extends UseableEntity {
 			return;
 		}
 
-		final RPSlot slot = getSlot(SLOT_MIX);
+		final RPSlot slot = getSlot(SLOT_CONTENT);
 		final List<Item> items = new ArrayList<>();
 		for (final Iterator<RPObject> it = slot.iterator(); it.hasNext();) {
 			final RPObject object = it.next();
