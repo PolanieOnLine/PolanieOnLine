@@ -131,6 +131,7 @@ public class CommandCenter {
 		StoreMessageAction.register();
 		StopAction.register();
 		TradeAction.register();
+		GoldenCauldronAction.register();
 		UseAction.register();
 		AutoWalkAction.register();
 		WhereAction.register();

@@ -1726,4 +1726,22 @@
 			<slot name="trade"/>
 		</equipable>
 	</item>
+
+		<item name="wywar wąsatych smoków">
+			<type class="resource" subclass="wywar_wasatych_smokow" tileid="-1"/>
+			<description>Oto wywar wąsatych smoków. Hadrin potrzebuje go, by spleść trzeci wąs złotej ciupagi.</description>
+			<implementation class-name="games.stendhal.server.entity.item.Item"/>
+			<attributes>
+				<quantity value="1"/>
+				<menu value="Użyj|Użyj"/>
+			</attributes>
+			<weight value="0.1"/>
+			<value value="1"/>
+			<equipable>
+				<slot name="ground"/>
+				<slot name="content"/>
+				<slot name="bag"/>
+				<slot name="trade"/>
+			</equipable>
+		</item>
 </items>

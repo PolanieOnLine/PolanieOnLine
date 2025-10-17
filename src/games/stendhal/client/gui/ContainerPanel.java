@@ -25,6 +25,7 @@ import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import games.stendhal.client.entity.GoldenCauldron;
 import games.stendhal.client.entity.IEntity;
 import games.stendhal.client.entity.Inspector;
 import games.stendhal.client.entity.factory.EntityMap;
@@ -183,7 +184,7 @@ class ContainerPanel extends JScrollPane implements Inspector, InternalManagedWi
 					if (previous == null) {
 						// Moved to first position
 						newIndex = 0;
-					} else {
+		} else {
 						// Move after the preceding component
 						newIndex = windowOrder.indexOf(previous) + 1;
 					}
@@ -237,75 +238,46 @@ class ContainerPanel extends JScrollPane implements Inspector, InternalManagedWi
 	 * @param entity the inspected entity
 	 * @param content slot to be inspected
 	 * @param container previously created slot window for the inspected slot,
-	 * 	or <code>null</code> if there's no such window
+	 *      or <code>null</code> if there's no such window
 	 * @param width number of slot columns
 	 * @param height number of slot rows
 	 *
 	 * @return inspect window
 	 */
 	@Override
-	public SlotWindow inspectMe(IEntity entity, RPSlot content,
-			SlotWindow container, int width, int height) {
+	public SlotWindow inspectMe(final IEntity entity, final RPSlot content,
+			final SlotWindow container, final int width, final int height) {
 		if ((container != null) && container.isVisible()) {
-			// Nothing to do.
 			return container;
-		} else {
-			SlotWindow window = new SlotWindow(entity.getName(), width, height);
-			window.setSlot(entity, content.getName());
-			window.setAcceptedTypes(EntityMap.getClass("item", null, null));
-			window.setVisible(true);
-			addRepaintable(window);
-			return window;
 		}
-	}
 
-	/**
-	 * Get the vertical center point of a component.
-	 *
-	 * @param component component to be checked
-	 * @return the Y coordinate of the component center point
-	 */
-	private int componentYCenter(Component component) {
-		return component.getY() + component.getHeight() / 2;
-	}
-
-	@Override
-	public void windowDragged(Component component, Point point) {
-		int centerY = point.y + component.getHeight() / 2;
-		for (int i = 0; i < panel.getComponentCount(); i++) {
-			Component tmp = panel.getComponent(i);
-			if (tmp != component && tmp != panel.getPhantom()) {
-				if ((draggedPosition < i) && (centerY > componentYCenter(tmp))) {
-					draggedPosition = i;
-					panel.setComponentZOrder(panel.getPhantom(), draggedPosition);
-					panel.revalidate();
-					break;
-				} else if ((draggedPosition >= i) && (centerY < componentYCenter(tmp))) {
-					draggedPosition = i;
-					panel.setComponentZOrder(panel.getPhantom(), draggedPosition);
-					panel.revalidate();
-					break;
-				}
+		final SlotWindow window;
+		if (entity instanceof GoldenCauldron) {
+			GoldenCauldronWindow cauldronWindow;
+			if (container instanceof GoldenCauldronWindow) {
+				cauldronWindow = (GoldenCauldronWindow) container;
+			} else {
+				cauldronWindow = new GoldenCauldronWindow();
 			}
+			window = cauldronWindow;
+		} else {
+			window = new SlotWindow(entity.getName(), width, height);
 		}
+
+		if (content != null) {
+			window.setSlot(entity, content.getName());
+		}
+		window.setAcceptedTypes(EntityMap.getClass("item", null, null));
+		window.setVisible(true);
+		addRepaintable(window);
+
+		if (window instanceof GoldenCauldronWindow && entity instanceof GoldenCauldron) {
+			((GoldenCauldronWindow) window).setCauldron((GoldenCauldron) entity);
+		}
+
+		return window;
 	}
 
-	@Override
-	public void startDrag(Component component) {
-		draggedPosition = panel.getComponentZOrder(component);
-		panel.hideComponent(component);
-		panel.setComponentZOrder(component, 0);
-	}
-
-	@Override
-	public void endDrag(Component component) {
-		panel.setComponentZOrder(component, draggedPosition);
-		panel.revealComponent();
-		panel.revalidate();
-		if (component instanceof ManagedWindow) {
-			checkWindowOrder(((ManagedWindow) component).getName());
-		}
-	}
 
 	/**
 	 * A container that can hide a contained component from the layout manager,

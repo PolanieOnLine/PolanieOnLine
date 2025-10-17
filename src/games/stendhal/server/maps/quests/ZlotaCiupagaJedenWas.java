@@ -23,7 +23,7 @@ public class ZlotaCiupagaJedenWas implements QuestManuscript {
 
 		quest.info()
 			.name("Złota Ciupaga z Wąsem")
-			.description("Józek zaproponował ulepszenie mojej złotej ciupagi, którą wcześniej wykonał dla mnie kowal Andrzej.")
+			.description("Józek marzy o tym, by tchnąć w moją złotą ciupagę legendę pustynnych duchów i prosi mnie o udział w jego eksperymencie.")
 			.internalName("zlota_ciupaga_was")
 			.repeatableAfterMinutes(5 * 24 * 60) // Powtarzalne co 5 dni
 			.region(Region.DESERT)
@@ -32,32 +32,32 @@ public class ZlotaCiupagaJedenWas implements QuestManuscript {
 		quest.history()
 			.whenNpcWasMet("Spotkaliśmy Józka w pustynnej chatce.")
 			.whenQuestWasRejected("Szkoda mi materiałów na ulepszenie złotej ciupagi.")
-			.whenQuestWasAccepted("Postanowiliśmy ulepszyć moją złotą ciupagę! Potrzebuję: 1 złotej ciupagi, 1 złotego rogu, 4 sztuki drewna, 70 sztabek złota oraz 120 000 monet.")
-			.whenTaskWasCompleted("Mam już wszystkie potrzebne przedmioty do wykonania złotej ciupagi.")
-			.whenTimeWasNotEnded("Muszę odczekać 8 godzin. Tyle zajmie czasu Józkowi na ulepszenie mojej ciupagi.")
-			.whenTimeWasPassed("Mam przeczucie iż Józek skończył prace nad moją nową ciupagą!")
-			.whenQuestWasCompleted("Józek chętnie wręczył mi swój owoc ciężkiej pracy i mam teraz jeszcze lepszą ciupagę na złoczyńców!")
-			.whenQuestCanBeRepeated("Wrócę chyba do Józka, a może wykona dla mnie drugą taką!");
+			.whenQuestWasAccepted("Józek powierzył mi listę rzadkich składników, które pozwolą jego pustynnej pracowni upleść legendarny wąs dla mojej ciupagi.")
+			.whenTaskWasCompleted("Znalazłem wszystko, czego potrzebuje Józek, by jego piaskowe runy zadziałały.")
+			.whenTimeWasNotEnded("Rytuał pustynnego kucia wciąż trwa. Muszę poczekać osiem godzin, aż duchy wąsa ukoją metal.")
+			.whenTimeWasPassed("Piaski ucichły, a pustynny wiatr niesie wieści, że Józek zakończył rytuał.")
+			.whenQuestWasCompleted("Józek oddał mi broń, w której drzemie echo pustyni – nową złotą ciupagę z dumą góralskiego wąsa!")
+			.whenQuestCanBeRepeated("Może znów poproszę Józka, by przy pustynnych ogniskach wyśpiewał dla mnie kolejny wąs.");
 
 		quest.offer()
-			.respondToCraftIssue("Wybacz mi proszę, ale musisz zasłużyć na uznanie Wielkoluda jak i pokonać samodzielnie złotą śmierć oraz zdobyć nieco większe doświadczenie i mieć wspaniałą karmę!")
-			.respondToRequest("Od jakiegoś czasu testuję ulepszanie broni. Może chcesz, abym udoskonalił dla Ciebie złotą ciupagę?")
-			.respondToUnrepeatableRequest("Jestem aktualnie troszkę zmęczony. Wróć do mnie za jakiś czas.")
-			.respondToRepeatedRequest("Potrzebujesz kolejnej ulepszonej złotej ciupagi?")
-			.respondToAccept("Słusznie! Przynieś mi te przedmioty potrzebne do nowej ciupagi:\n#1 złota ciupaga\n#1 złoty róg\n#4 drewna\n#70 sztabek złota\noraz #'120 000' money. Pamiętaj! Pieniądze najważniejsze!")
-			.respondToReject("Cóż, to Twoja strata.")
+			.respondToCraftIssue("Wybacz, lecz zanim pozwolę duchom pustyni tchnąć w twoją broń nowy blask, musisz zdobyć szacunek Wielkoluda, pokonać złotą śmierć i wykazać się wyjątkową karmą.")
+			.respondToRequest("Odkąd badałem piaskowe wąsy, szukam śmiałka, który pozwoli mi przetestować legendarny rytuał na swojej złotej ciupadze. Podejmiesz się?")
+			.respondToUnrepeatableRequest("Rytuał wymaga skupienia. Daj mi chwilę, a pustynny wiatr znów mnie zainspiruje.")
+			.respondToRepeatedRequest("Wróciłeś po kolejny wąs z legendy? Piaski znów zatańczą, jeśli tylko chcesz.")
+			.respondToAccept("Doskonale! Aby duchy pustyni zatańczyły wokół twojej broni, potrzebuję:\n#1 złota ciupaga\n#1 złoty róg\n#4 drewna\n#70 sztabek złota\noraz #'120 000' money. Nie zapomnij o zapłacie dla wędrownego bajarza!")
+			.respondToReject("Cóż, legenda poczeka na innego śmiałka.")
 			.rejectionKarmaPenalty(10.0)
-			.remind("Pamiętasz potrzebną listę? Przynieś mi te przedmioty potrzebne do nowej ciupagi:\n#1 złota ciupaga\n#1 złoty róg\n#4 drewna\n#70 sztabek złota\noraz #'120 000' money.");
+			.remind("Nie zapomnij – duchy pustyni czekają na:\n#1 złota ciupaga\n#1 złoty róg\n#4 drewna\n#70 sztabek złota\noraz #'120 000' money. Tylko komplet otworzy bramy pustynnej kuźni.");
 
 		quest.task().craftItem("złota ciupaga z wąsem")
 			.waitingTime(8 * 60) // 8 godzin
 			.playerMinLevel(200).playerMinKarma(200).completedQuest("help_wielkolud_basehp").requestMonster("złota śmierć")
 			.requiredItem(1, "złota ciupaga").requiredItem(1, "złoty róg").requiredItem(4, "polano").requiredItem(70, "sztabka złota").requiredItem(120000, "money")
-			.respondToCraft("Super! Przygotuję tylko narzędzia i biorę się do pracy! Twoja #'[itemName]' będzie gotowa za około 8 godzin.")
-			.respondToCraftReject("Jak się zastanowisz to wróć.");
+			.respondToCraft("Świetnie! Rozstawię piaskowe lustra i zaproszę duchy wąsów. Twoja #'[itemName]' nasyci się legendą za około osiem godzin.")
+			.respondToCraftReject("Gdy tylko poczujesz piaskowe natchnienie, wróć do mnie.");
 
 		quest.complete()
-			.greet("Skończyłem swą pracę nad ciupagą! Warto było chyba nieco poczekać. Proszę, a oto i ona!")
+			.greet("Rytuał dobiegł końca! Wąs tańczy na ostrzu, a oto twoja odmieniona ciupaga.")
 			.rewardWith(new IncreaseXPAction(250000))
 			.rewardWith(new IncreaseKarmaAction(100.0));
 
