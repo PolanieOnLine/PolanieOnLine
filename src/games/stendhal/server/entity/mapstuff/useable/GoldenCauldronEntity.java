@@ -62,8 +62,8 @@ public class GoldenCauldronEntity extends UseableEntity {
 	public GoldenCauldronEntity() {
 		super();
 		setRPClass(RPCLASS_NAME);
-		put("class", RPCLASS_NAME);
-		put("subclass", RPCLASS_NAME);
+		setEntityClass("useable_entity");
+		setEntitySubclass(RPCLASS_NAME);
 		setSize(1, 2);
 		put("name", RPCLASS_NAME);
 		setStatus("Kocioł jest wygaszony. Wlej składniki, aby przygotować wywar.");

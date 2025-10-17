@@ -31,7 +31,8 @@ public class GoldenCauldronCorner implements ZoneConfigurator {
 	private void buildCauldron(final StendhalRPZone zone) {
 		final GoldenCauldronEntity cauldron = new GoldenCauldronEntity();
 		cauldron.setPosition(10, 5);
-		cauldron.setEntityClass("golden_cauldron");
+		cauldron.setEntityClass("useable_entity");
+		cauldron.setEntitySubclass("golden_cauldron");
 		cauldron.setDescription(
 			"Oto kocioł Draconii. Możesz w nim przygotować wywar wąsatych smoków.");
 		zone.add(cauldron);
