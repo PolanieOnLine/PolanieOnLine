@@ -1,7 +1,3 @@
-/* $Id$ */
-/***************************************************************************
- *                   (C) Copyright 2024 - PolanieOnLine                    *
- ***************************************************************************/
 /***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -13,172 +9,146 @@
 package games.stendhal.client.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Rectangle2D;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 
 import games.stendhal.client.StendhalClient;
-import games.stendhal.client.entity.GoldenCauldron;
 import games.stendhal.client.entity.IEntity;
+import games.stendhal.client.entity.Inspector;
 import games.stendhal.client.entity.User;
 import games.stendhal.client.entity.factory.EntityMap;
-import games.stendhal.common.constants.Actions;
-import marauroa.common.game.RPAction;
+import games.stendhal.client.gui.layout.SBoxLayout;
 import marauroa.common.game.RPObject;
 
 /**
- * Container window dedicated to Draconia's golden cauldron.
+ * Dedicated window for the golden cauldron slots.
  */
-public class GoldenCauldronWindow extends SlotWindow {
-	private static final long serialVersionUID = 920640738155432528L;
+public class GoldenCauldronWindow extends InternalManagedWindow implements Inspectable {
+	private static final int MAX_DISTANCE = 4;
 
+	private final SlotGrid grid;
 	private final JLabel statusLabel;
 	private final JButton mixButton;
 
-	private GoldenCauldron cauldron;
-	private boolean closingFromServer;
+	private IEntity parent;
+	private ActionListener mixListener;
 
-	/**
-	 * Create the cauldron window with an eight slot grid and a visible mix button.
-	 */
-	public GoldenCauldronWindow() {
-		super("golden_cauldron", 4, 2);
+	public GoldenCauldronWindow(final String title) {
+		super("golden_cauldron", title);
 
-		statusLabel = new JLabel("Przygotuj osiem składników i wybierz \"Mieszaj\".");
-		statusLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		setMinimizable(false);
+		setCloseable(true);
+		setHideOnClose(true);
 
+		grid = new SlotGrid(4, 2);
+		grid.setAcceptedTypes(EntityMap.getClass("item", null, null));
+
+		statusLabel = new JLabel("Wrzuć składniki i kliknij \"Mieszaj\".");
 		mixButton = new JButton("Mieszaj");
-		mixButton.setPreferredSize(new Dimension(120, mixButton.getPreferredSize().height));
-		mixButton.setEnabled(false);
 		mixButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(final ActionEvent event) {
-				sendCommand("mix");
+			public void actionPerformed(final ActionEvent e) {
+				if (mixListener != null && mixButton.isEnabled()) {
+					mixListener.actionPerformed(e);
+				}
 			}
 		});
 
-		final SlotGrid grid = getSlotGrid();
-		grid.setOpaque(false);
-
-		final JPanel gridPanel = new JPanel(new BorderLayout());
-		gridPanel.setOpaque(false);
-		gridPanel.add(statusLabel, BorderLayout.NORTH);
-		gridPanel.add(grid, BorderLayout.CENTER);
-
-		final JPanel buttonPanel = new JPanel();
-		buttonPanel.setOpaque(false);
-		buttonPanel.setBorder(BorderFactory.createEmptyBorder(8, 0, 0, 0));
-		buttonPanel.add(mixButton);
+		final JPanel layout = new JPanel();
+		layout.setLayout(new SBoxLayout(SBoxLayout.VERTICAL, 4));
+		layout.add(statusLabel);
+		layout.add(grid);
+		final JPanel buttonRow = new JPanel();
+		buttonRow.setLayout(new SBoxLayout(SBoxLayout.HORIZONTAL, 4));
+		SBoxLayout.addSpring(buttonRow);
+		buttonRow.add(mixButton);
+		layout.add(buttonRow);
 
 		final JPanel content = new JPanel(new BorderLayout());
-		content.setOpaque(false);
-		content.setBorder(BorderFactory.createEmptyBorder(8, 10, 10, 10));
-		content.add(gridPanel, BorderLayout.CENTER);
-		content.add(buttonPanel, BorderLayout.SOUTH);
-
+		content.add(layout, BorderLayout.CENTER);
 		setContent(content);
-		setAcceptedTypes(EntityMap.getClass("item", null, null));
+	}
 
-		closingFromServer = false;
+	public void setSlot(final IEntity parent, final String slot) {
+		this.parent = parent;
+		grid.setSlot(parent, slot);
+	}
+
+	public void setInspector(final Inspector inspector) {
+		grid.setInspector(inspector);
+	}
+
+	public void setStatusText(final String text) {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				statusLabel.setText(text);
+			}
+		});
+	}
+
+	public void setMixEnabled(final boolean enabled) {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				mixButton.setEnabled(enabled);
+			}
+		});
+	}
+
+	public void setMixAction(final ActionListener listener) {
+		mixListener = listener;
 	}
 
 	@Override
-	public void setSlot(final IEntity parent, final String slot) {
-		final String targetSlot;
-		if (parent instanceof GoldenCauldron) {
-			targetSlot = GoldenCauldron.CONTENT_SLOT;
-			cauldron = (GoldenCauldron) parent;
-		} else {
-			targetSlot = slot;
-			cauldron = null;
-		}
-		super.setSlot(parent, targetSlot);
-		updateState();
-	}
-
-	/**
-	 * Bind the window to the provided cauldron entity.
-	 *
-	 * @param entity cauldron entity displayed by this window
-	 */
-	public void setCauldron(final GoldenCauldron entity) {
-		cauldron = entity;
-		if (entity != null) {
-			final IEntity parent = entity;
-			super.setSlot(parent, GoldenCauldron.CONTENT_SLOT);
-		}
-		updateState();
-	}
-
-	/**
-	 * Refresh the button state after the brewer property changes.
-	 */
-	public void updateBrewer() {
-		updateState();
-	}
-
-	/**
-	 * Close the window because the server has closed the cauldron.
-	 */
-	public void closeFromServer() {
-		closingFromServer = true;
-		close();
+	public void paint(final Graphics g) {
+		super.paint(g);
+		checkDistance();
 	}
 
 	@Override
 	public void close() {
-		if (!closingFromServer && cauldron != null && cauldron.isOpen()) {
-			sendCommand("close");
-		}
+		grid.release();
 		super.close();
-		mixButton.setEnabled(false);
-		cauldron = null;
-		closingFromServer = false;
 	}
 
-	private void updateState() {
-		if (cauldron == null || !cauldron.isOpen()) {
-			statusLabel.setText("Kocioł jest zamknięty.");
-			mixButton.setEnabled(false);
-			return;
-		}
-
-		final String brewer = cauldron.getBrewer();
-		final String user = User.getCharacterName();
-
-		if (user == null) {
-			statusLabel.setText("Nie znam twojego imienia – zaloguj się ponownie.");
-			mixButton.setEnabled(false);
-		} else if (brewer != null && !brewer.equalsIgnoreCase(user)) {
-			statusLabel.setText("Kocioł obsługuje teraz: " + brewer + ".");
-			mixButton.setEnabled(false);
-		} else {
-			statusLabel.setText("Przygotuj osiem składników i wybierz \"Mieszaj\".");
-			mixButton.setEnabled(true);
+	private void checkDistance() {
+		if (!isCloseEnough()) {
+			close();
 		}
 	}
 
-	private void sendCommand(final String actionCommand) {
-		if (cauldron == null) {
-			return;
+	private boolean isCloseEnough() {
+		final User user = User.get();
+		if (user == null || parent == null) {
+			return true;
 		}
 
-		final RPAction action = new RPAction();
-		action.put("type", "golden_cauldron");
-		action.put("action", actionCommand);
-		action.put(Actions.TARGET_PATH, cauldron.getPath());
-
-		final RPObject base = cauldron.getRPObject().getBaseContainer();
-		if (base != null && base.has("zoneid")) {
-			action.put("zone", base.get("zoneid"));
+		final RPObject root = parent.getRPObject().getBaseContainer();
+		if (root != null && root.has("name")) {
+			if (StendhalClient.get().getCharacter().equalsIgnoreCase(root.get("name"))) {
+				return true;
+			}
 		}
 
-		StendhalClient.get().send(action);
+		return isCloseEnough(user.getX(), user.getY());
+	}
+
+	private boolean isCloseEnough(final double x, final double y) {
+		final int px = (int) x;
+		final int py = (int) y;
+
+		final Rectangle2D area = parent.getArea();
+		area.setRect(area.getX() - MAX_DISTANCE, area.getY() - MAX_DISTANCE,
+				area.getWidth() + MAX_DISTANCE * 2, area.getHeight() + MAX_DISTANCE * 2);
+
+		return area.contains(px, py);
 	}
 }
