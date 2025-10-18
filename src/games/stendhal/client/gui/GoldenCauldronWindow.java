@@ -15,6 +15,7 @@ import games.stendhal.client.entity.User;
 import games.stendhal.client.entity.factory.EntityMap;
 import games.stendhal.client.gui.layout.SBoxLayout;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,6 +23,8 @@ import java.awt.geom.Rectangle2D;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 import javax.swing.SwingUtilities;
 import marauroa.common.game.RPObject;
 
@@ -46,10 +49,14 @@ public class GoldenCauldronWindow extends InternalManagedWindow implements Inspe
 		setHideOnClose(true);
 
 		grid = new SlotGrid(4, 2);
+		grid.setOpaque(false);
 		grid.setAcceptedTypes(EntityMap.getClass("item", null, null));
 
 		statusLabel = new JLabel("Wrzuć składniki i kliknij \"Mieszaj\".");
+		statusLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		mixButton = new JButton("Mieszaj");
+		mixButton.setFocusable(false);
+		mixButton.setPreferredSize(new Dimension(110, 26));
 		mixButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
@@ -61,15 +68,19 @@ public class GoldenCauldronWindow extends InternalManagedWindow implements Inspe
 
 		final JPanel layout = new JPanel();
 		layout.setLayout(new SBoxLayout(SBoxLayout.VERTICAL, 4));
+		layout.setBorder(new EmptyBorder(4, 6, 6, 6));
+		layout.setOpaque(false);
 		layout.add(statusLabel);
 		layout.add(grid);
 		final JPanel buttonRow = new JPanel();
+		buttonRow.setOpaque(false);
 		buttonRow.setLayout(new SBoxLayout(SBoxLayout.HORIZONTAL, 4));
 		SBoxLayout.addSpring(buttonRow);
 		buttonRow.add(mixButton);
 		layout.add(buttonRow);
 
 		final JPanel content = new JPanel(new BorderLayout());
+		content.setOpaque(false);
 		content.add(layout, BorderLayout.CENTER);
 		setContent(content);
 	}

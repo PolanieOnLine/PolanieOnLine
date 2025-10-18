@@ -65,7 +65,7 @@ public class GoldenCauldronEntity extends UseableEntity {
 		setEntityClass("useable_entity");
 		setEntitySubclass(RPCLASS_NAME);
 		setSize(1, 2);
-		put("name", RPCLASS_NAME);
+		put("name", "Kocioł Draconii");
 		setStatus("Kocioł jest wygaszony. Wlej składniki, aby przygotować wywar.");
 		setState(STATE_IDLE);
 
@@ -323,10 +323,13 @@ public class GoldenCauldronEntity extends UseableEntity {
 				setErrorMessage("Musisz podejść bliżej kotła.");
 				return false;
 			}
+			if (!isOpen()) {
+				setErrorMessage("Najpierw otwórz kocioł, aby sięgnąć do środka.");
+				return false;
+			}
 			if (!isControlledBy(player)) {
 				if (brewer == null) {
-					setErrorMessage("Tylko aktualny mistrz mikstur może "
-						+ "dotykać kotła.");
+					setErrorMessage("Poproś Draconię o pozwolenie na mieszanie składników.");
 				} else {
 					setErrorMessage("Kocioł obsługuje teraz " + brewer + ".");
 				}
@@ -338,7 +341,29 @@ public class GoldenCauldronEntity extends UseableEntity {
 
 		@Override
 		public boolean isReachableForThrowingThingsIntoBy(final Entity entity) {
-			return isReachableForTakingThingsOutOfBy(entity);
+			if (!(entity instanceof Player)) {
+				setErrorMessage("Tylko alchemicy mogą sięgać do kotła.");
+				return false;
+			}
+
+			final Player player = (Player) entity;
+			if (!player.nextTo(GoldenCauldronEntity.this)) {
+				setErrorMessage("Musisz podejść bliżej kotła.");
+				return false;
+			}
+			if (!isOpen()) {
+				setErrorMessage("Najpierw otwórz kocioł, aby wrzucić składniki.");
+				return false;
+			}
+
+			if (!isControlledBy(player)) {
+				clearErrorMessage();
+				return true;
+			}
+
+			clearErrorMessage();
+			return true;
 		}
 	}
+
 }
