@@ -23,41 +23,41 @@ public class ZlotaCiupagaJedenWas implements QuestManuscript {
 
 		quest.info()
 			.name("Złota Ciupaga z Wąsem")
-			.description("Józek zaproponował ulepszenie mojej złotej ciupagi, którą wcześniej wykonał dla mnie kowal Andrzej.")
+			.description("Józek, kowal spod wydm, obiecał nasycić moją złotą ciupagę pustynnym blaskiem.")
 			.internalName("zlota_ciupaga_was")
 			.repeatableAfterMinutes(5 * 24 * 60) // Powtarzalne co 5 dni
 			.region(Region.DESERT)
 			.questGiverNpc("Józek");
 
 		quest.history()
-			.whenNpcWasMet("Spotkaliśmy Józka w pustynnej chatce.")
-			.whenQuestWasRejected("Szkoda mi materiałów na ulepszenie złotej ciupagi.")
-			.whenQuestWasAccepted("Postanowiliśmy ulepszyć moją złotą ciupagę! Potrzebuję: 1 złotej ciupagi, 1 złotego rogu, 4 sztuki drewna, 70 sztabek złota oraz 120 000 monet.")
-			.whenTaskWasCompleted("Mam już wszystkie potrzebne przedmioty do wykonania złotej ciupagi.")
-			.whenTimeWasNotEnded("Muszę odczekać 8 godzin. Tyle zajmie czasu Józkowi na ulepszenie mojej ciupagi.")
-			.whenTimeWasPassed("Mam przeczucie iż Józek skończył prace nad moją nową ciupagą!")
-			.whenQuestWasCompleted("Józek chętnie wręczył mi swój owoc ciężkiej pracy i mam teraz jeszcze lepszą ciupagę na złoczyńców!")
-			.whenQuestCanBeRepeated("Wrócę chyba do Józka, a może wykona dla mnie drugą taką!");
+			.whenNpcWasMet("Spotkaliśmy Józka w jego piaskowej kuźni pachnącej jałowcem.")
+			.whenQuestWasRejected("Odłożyłem sprawę; niech iskry Józka przygasną beze mnie.")
+			.whenQuestWasAccepted("Józek kazał mi zebrać 1 złotą ciupagę, 1 złoty róg, cztery polana, siedemdziesiąt sztabek złota i 120 000 monet.")
+			.whenTaskWasCompleted("Mam już wszystkie dary dla paleniska Józka.")
+			.whenTimeWasNotEnded("Kuźnia huczy jeszcze osiem godzin; trzeba cierpliwie czekać.")
+			.whenTimeWasPassed("Żar pewnie już stygnie, pora odebrać ciupagę.")
+			.whenQuestWasCompleted("Józek oddał mi ciupagę nasiąkniętą pustynnym ogniem.")
+			.whenQuestCanBeRepeated("Może znów poproszę Józka, by rozpalił dla mnie młot.");
 
 		quest.offer()
-			.respondToCraftIssue("Wybacz mi proszę, ale musisz zasłużyć na uznanie Wielkoluda jak i pokonać samodzielnie złotą śmierć oraz zdobyć nieco większe doświadczenie i mieć wspaniałą karmę!")
-			.respondToRequest("Od jakiegoś czasu testuję ulepszanie broni. Może chcesz, abym udoskonalił dla Ciebie złotą ciupagę?")
-			.respondToUnrepeatableRequest("Jestem aktualnie troszkę zmęczony. Wróć do mnie za jakiś czas.")
-			.respondToRepeatedRequest("Potrzebujesz kolejnej ulepszonej złotej ciupagi?")
-			.respondToAccept("Słusznie! Przynieś mi te przedmioty potrzebne do nowej ciupagi:\n#1 złota ciupaga\n#1 złoty róg\n#4 drewna\n#70 sztabek złota\noraz #'120 000' money. Pamiętaj! Pieniądze najważniejsze!")
-			.respondToReject("Cóż, to Twoja strata.")
+			.respondToCraftIssue("Najpierw pokaż, że znasz obyczaje Wielkoluda, pokonaj złotą śmierć i wzmocnij swe imię dobrą karmą.")
+			.respondToRequest("Od lat zapisuję pieśni o broni. Chcesz, abym twoją ciupagę nasycił pustynnym żarem?")
+			.respondToUnrepeatableRequest("Dziś kowadło stygnie. Wróć, gdy znów rozpalę palenisko.")
+			.respondToRepeatedRequest("Znowu pragniesz, bym wygładził twoją złotą ciupagę?")
+			.respondToAccept("Słuchaj uważnie. Przynieś wszystko naraz:\n#1 złota ciupaga\n#1 złoty róg\n#4 drewna\n#70 sztabek złota\noraz #'120 000' money. Dopiero wtedy zakręci się miech.")
+			.respondToReject("Jak chcesz, mój młot poczeka na innego śmiałka.")
 			.rejectionKarmaPenalty(10.0)
-			.remind("Pamiętasz potrzebną listę? Przynieś mi te przedmioty potrzebne do nowej ciupagi:\n#1 złota ciupaga\n#1 złoty róg\n#4 drewna\n#70 sztabek złota\noraz #'120 000' money.");
+			.remind("Lista dla twojej pamięci:\n#1 złota ciupaga\n#1 złoty róg\n#4 drewna\n#70 sztabek złota\noraz #'120 000' money.");
 
 		quest.task().craftItem("złota ciupaga z wąsem")
 			.waitingTime(8 * 60) // 8 godzin
 			.playerMinLevel(200).playerMinKarma(200).completedQuest("help_wielkolud_basehp").requestMonster("złota śmierć")
 			.requiredItem(1, "złota ciupaga").requiredItem(1, "złoty róg").requiredItem(4, "polano").requiredItem(70, "sztabka złota").requiredItem(120000, "money")
-			.respondToCraft("Super! Przygotuję tylko narzędzia i biorę się do pracy! Twoja #'[itemName]' będzie gotowa za około 8 godzin.")
-			.respondToCraftReject("Jak się zastanowisz to wróć.");
+			.respondToCraft("Dobrze. Rozżarzę miechy i wciągnę piasek do ognia. Twoja #'[itemName]' będzie gotowa za jakieś osiem godzin.")
+			.respondToCraftReject("Gdy zmienisz zdanie, palenisko znów przyjmie twe dary.");
 
 		quest.complete()
-			.greet("Skończyłem swą pracę nad ciupagą! Warto było chyba nieco poczekać. Proszę, a oto i ona!")
+			.greet("Żar spełnił swoje zadanie. Oto ciupaga, której klinga pamięta mój młot.")
 			.rewardWith(new IncreaseXPAction(250000))
 			.rewardWith(new IncreaseKarmaAction(100.0));
 
