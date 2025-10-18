@@ -155,9 +155,15 @@ public class GoldenCauldron extends Entity {
 	}
 
 	private void applyReadyInSeconds() {
-		if (readyInSeconds > 0) {
-			final long now = System.currentTimeMillis();
-			readyAt = now + (readyInSeconds * 1000L);
+		if (readyInSeconds <= 0) {
+			return;
+		}
+
+		final long candidate = System.currentTimeMillis() + (readyInSeconds * 1000L);
+		if (readyAt > 0) {
+			readyAt = Math.min(readyAt, candidate);
+		} else {
+			readyAt = candidate;
 		}
 	}
 }
