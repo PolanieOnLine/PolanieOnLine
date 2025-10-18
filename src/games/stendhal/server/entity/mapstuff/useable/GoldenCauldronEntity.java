@@ -41,6 +41,7 @@ public class GoldenCauldronEntity extends UseableEntity {
 	private static final String RPCLASS_NAME = "golden_cauldron";
 	private static final String SLOT_CONTENT = "content";
 	private static final String ATTR_READY_IN = "ready_in";
+	private static final String ATTR_STARTED_AT = "ready_started_at";
 	private static final int SLOT_CAPACITY = 8;
 	private static final int STATE_IDLE = 0;
 	private static final int STATE_ACTIVE = 1;
@@ -93,6 +94,7 @@ public class GoldenCauldronEntity extends UseableEntity {
 			rpClass.addAttribute("status", Type.LONG_STRING);
 			rpClass.addAttribute("ready_at", Type.LONG);
 			rpClass.addAttribute(ATTR_READY_IN, Type.INT);
+			rpClass.addAttribute(ATTR_STARTED_AT, Type.LONG);
 			rpClass.addRPSlot(SLOT_CONTENT, SLOT_CAPACITY);
 		}
 	}
@@ -107,6 +109,18 @@ public class GoldenCauldronEntity extends UseableEntity {
 		super.update();
 		brewer = get("brewer");
 		readyAt = has("ready_at") ? getLong("ready_at") : 0L;
+		if (!has("ready_at") && has(ATTR_STARTED_AT)) {
+			final long startedAt = getLong(ATTR_STARTED_AT);
+			final long candidate = startedAt + BREW_TIME_MILLIS;
+			if (candidate > System.currentTimeMillis()) {
+				readyAt = candidate;
+				put("ready_at", readyAt);
+				put(ATTR_READY_IN, secondsUntilReady());
+				notifyWorldAboutChanges();
+			} else {
+				remove(ATTR_STARTED_AT);
+			}
+		}
 
 		if (isBrewing()) {
 			if (readyAt <= System.currentTimeMillis()) {
@@ -218,6 +232,7 @@ public class GoldenCauldronEntity extends UseableEntity {
 		} else {
 			remove("ready_at");
 			remove(ATTR_READY_IN);
+			remove(ATTR_STARTED_AT);
 		}
 	}
 
@@ -272,7 +287,9 @@ public class GoldenCauldronEntity extends UseableEntity {
 
 		setState(STATE_ACTIVE);
 		setStatus(STATUS_WORKING);
-		setReadyAt(System.currentTimeMillis() + BREW_TIME_MILLIS);
+		final long startTime = System.currentTimeMillis();
+		put(ATTR_STARTED_AT, startTime);
+		setReadyAt(startTime + BREW_TIME_MILLIS);
 		player.sendPrivateText("Rozpoczynasz warzenie. Wywar będzie gotowy za 5 minut.");
 		notifyWorldAboutChanges();
 		scheduleCompletion(BREW_TIME_SECONDS);
@@ -440,7 +457,15 @@ public class GoldenCauldronEntity extends UseableEntity {
 
 	private int secondsUntilReady() {
 		if (readyAt <= 0) {
-			return BREW_TIME_SECONDS;
+			if (has(ATTR_STARTED_AT)) {
+				final long startedAt = getLong(ATTR_STARTED_AT);
+				final long diff = (startedAt + BREW_TIME_MILLIS) - System.currentTimeMillis();
+				if (diff > 0) {
+					final long seconds = diff / 1000L;
+					return (int) Math.max(1L, seconds);
+				}
+			}
+			return 0;
 		}
 		final long diff = readyAt - System.currentTimeMillis();
 		if (diff <= 0) {
