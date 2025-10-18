@@ -187,7 +187,7 @@ public class GoldenCauldronWindow extends InternalManagedWindow implements Inspe
 		statusLabel.setText(builder.toString());
 	}
 
- 	private void stopCountdown() {
+	private void stopCountdown() {
 		if (countdownTimer != null) {
 			countdownTimer.stop();
 			countdownTimer = null;
@@ -203,7 +203,7 @@ public class GoldenCauldronWindow extends InternalManagedWindow implements Inspe
 		final RPObject root = parent.getRPObject().getBaseContainer();
 		if (root != null && root.has("name")) {
 			if (StendhalClient.get().getCharacter().equalsIgnoreCase(
-				root.get("name"))) {
+			root.get("name"))) {
 				return true;
 			}
 		}
@@ -217,7 +217,7 @@ public class GoldenCauldronWindow extends InternalManagedWindow implements Inspe
 
 		final Rectangle2D area = parent.getArea();
 		area.setRect(area.getX() - MAX_DISTANCE, area.getY() - MAX_DISTANCE,
-				area.getWidth() + MAX_DISTANCE * 2, area.getHeight() + MAX_DISTANCE * 2);
+		area.getWidth() + MAX_DISTANCE * 2, area.getHeight() + MAX_DISTANCE * 2);
 
 		return area.contains(px, py);
 	}

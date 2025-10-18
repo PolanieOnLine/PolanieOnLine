@@ -29,8 +29,8 @@ public class GoldenCauldronAction implements ActionListener {
 	private static final String MIX = "mix";
 
 	/**
-	 * Register the action.
-	 */
+	* Register the action.
+	*/
 	public static void register() {
 		CommandCenter.register(ACTION, new GoldenCauldronAction());
 	}
@@ -42,7 +42,7 @@ public class GoldenCauldronAction implements ActionListener {
 		}
 
 		final Entity entity =
-			EntityHelper.getEntityFromPath(player, action.getList(TARGET_PATH));
+		EntityHelper.getEntityFromPath(player, action.getList(TARGET_PATH));
 		if (!(entity instanceof GoldenCauldronEntity)) {
 			return;
 		}

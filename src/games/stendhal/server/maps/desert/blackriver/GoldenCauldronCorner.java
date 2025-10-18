@@ -34,7 +34,7 @@ public class GoldenCauldronCorner implements ZoneConfigurator {
 		cauldron.setEntityClass("useable_entity");
 		cauldron.setEntitySubclass("golden_cauldron");
 		cauldron.setDescription(
-			"Oto kocioł Draconii. Możesz w nim przygotować wywar wąsatych smoków.");
+		"Oto kocioł Draconii. Możesz w nim przygotować wywar wąsatych smoków.");
 		zone.add(cauldron);
 	}
 
@@ -43,13 +43,13 @@ public class GoldenCauldronCorner implements ZoneConfigurator {
 			@Override
 			protected void createDialog() {
 				addGreeting(
-					"Witaj, podróżniku. Mój kocioł czeka na kolejne wyzwanie.");
+				"Witaj, podróżniku. Mój kocioł czeka na kolejne wyzwanie.");
 				addHelp("Jeżeli pragniesz ulepszyć złotą ciupagę, przygotuj #wywar "
-					+ "wąsatych smoków w moim kotle.");
+				+ "wąsatych smoków w moim kotle.");
 				addReply("wywar",
-					"Wrzuć do kotła wszystkie wymagane składniki, a następnie "
-					+ "kliknij 'Mieszaj'. Pamiętaj, że tylko osoba, która "
-					+ "otworzyła kocioł, może dokończyć wywar.");
+				"Wrzuć do kotła wszystkie wymagane składniki, a następnie "
+				+ "kliknij 'Mieszaj'. Pamiętaj, że tylko osoba, która "
+				+ "otworzyła kocioł, może dokończyć wywar.");
 				addJob("Pilnuję, by płomienie nie zgasły w kuźni Józka.");
 				addGoodbye("Niech płomienie prowadzą Cię ku sile.");
 			}
@@ -59,7 +59,7 @@ public class GoldenCauldronCorner implements ZoneConfigurator {
 		npc.setEntityClass("witchnpc");
 		npc.setGender("F");
 		npc.setDescription(
-			"Oto Draconia, strażniczka wąsatych smoków i ich tajemnych mikstur.");
+		"Oto Draconia, strażniczka wąsatych smoków i ich tajemnych mikstur.");
 		zone.add(npc);
 	}
 }

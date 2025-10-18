@@ -42,55 +42,55 @@ import marauroa.common.game.RPAction;
 public class GoldenCauldron2DView extends Entity2DView<GoldenCauldron> {
 	private static final String SPRITE_SHEET = "data/maps/tileset/item/pot/cauldron.png";
 	private static final int TILE = IGameScreen.SIZE_UNIT_PIXELS;
-		private static final int FRAME_WIDTH = TILE * 2;
-		private static final int FRAME_HEIGHT = TILE * 2;
-		private static final int SHEET_COLUMNS = 8;
-		private static final int ACTIVE_FRAME_DELAY = 250;
-		private static final int[] IDLE_FRAME_TILES = {0, 1, 2, 3};
-		private static final int[] ACTIVE_TOP_LEFT_SEQUENCE = {32, 34, 36, 38, 36, 34};
-		private static final int[] ACTIVE_TOP_RIGHT_SEQUENCE = {33, 35, 37, 39, 37, 35};
-		private static final int[] ACTIVE_BOTTOM_LEFT_SEQUENCE = {8, 10, 12, 14, 12, 10};
-		private static final int[] ACTIVE_BOTTOM_RIGHT_SEQUENCE = {9, 11, 13, 15, 13, 11};
-		private static final int[] ACTIVE_STIR_SEQUENCE = {5, 6};
-		private static final String SLOT_CONTENT = "content";
+	private static final int FRAME_WIDTH = TILE * 2;
+	private static final int FRAME_HEIGHT = TILE * 2;
+	private static final int SHEET_COLUMNS = 8;
+	private static final int ACTIVE_FRAME_DELAY = 250;
+	private static final int[] IDLE_FRAME_TILES = {0, 1, 2, 3};
+	private static final int[] ACTIVE_TOP_LEFT_SEQUENCE = {32, 34, 36, 38, 36, 34};
+	private static final int[] ACTIVE_TOP_RIGHT_SEQUENCE = {33, 35, 37, 39, 37, 35};
+	private static final int[] ACTIVE_BOTTOM_LEFT_SEQUENCE = {8, 10, 12, 14, 12, 10};
+	private static final int[] ACTIVE_BOTTOM_RIGHT_SEQUENCE = {9, 11, 13, 15, 13, 11};
+	private static final int[] ACTIVE_STIR_SEQUENCE = {5, 6};
+	private static final String SLOT_CONTENT = "content";
 
-		private Sprite idleSprite;
-		private AnimatedSprite activeAnimation;
-		private GoldenCauldronWindow window;
-		private Inspector inspector;
-		private boolean openChanged;
-		private boolean statusChanged;
-		private boolean brewerChanged;
-		private boolean readyAtChanged;
-		private boolean requestOpen;
+	private Sprite idleSprite;
+	private AnimatedSprite activeAnimation;
+	private GoldenCauldronWindow window;
+	private Inspector inspector;
+	private boolean openChanged;
+	private boolean statusChanged;
+	private boolean brewerChanged;
+	private boolean readyAtChanged;
+	private boolean requestOpen;
 
 	@Override
 	public void initialize(final GoldenCauldron entity) {
 		setSpriteAlignment(HorizontalAlignment.LEFT, VerticalAlignment.BOTTOM);
-				super.initialize(entity);
-				representationChanged = true;
-				openChanged = false;
-				statusChanged = false;
-				brewerChanged = false;
-				readyAtChanged = false;
-				requestOpen = false;
-		}
+		super.initialize(entity);
+		representationChanged = true;
+		openChanged = false;
+		statusChanged = false;
+		brewerChanged = false;
+		readyAtChanged = false;
+		requestOpen = false;
+	}
 
 	@Override
 	protected void buildRepresentation(final GoldenCauldron entity) {
 		ensureFrames();
 
-				if (entity.isActive()) {
-						if (activeAnimation != null) {
-								activeAnimation.reset(0);
-								setSprite(activeAnimation);
-						} else {
-								setSprite(idleSprite);
-						}
-				} else {
-						setSprite(idleSprite);
-				}
+		if (entity.isActive()) {
+			if (activeAnimation != null) {
+				activeAnimation.reset(0);
+				setSprite(activeAnimation);
+			} else {
+				setSprite(idleSprite);
+			}
+		} else {
+			setSprite(idleSprite);
 		}
+	}
 
 	@Override
 	protected void buildActions(final List<String> list) {
@@ -113,16 +113,16 @@ public class GoldenCauldron2DView extends Entity2DView<GoldenCauldron> {
 		if (property == GoldenCauldron.PROP_OPEN) {
 			openChanged = true;
 		}
-				if (property == GoldenCauldron.PROP_STATUS) {
-						statusChanged = true;
-				}
-				if (property == GoldenCauldron.PROP_BREWER) {
-						brewerChanged = true;
-				}
-				if (property == GoldenCauldron.PROP_READY_AT) {
-						readyAtChanged = true;
-				}
+		if (property == GoldenCauldron.PROP_STATUS) {
+			statusChanged = true;
 		}
+		if (property == GoldenCauldron.PROP_BREWER) {
+			brewerChanged = true;
+		}
+		if (property == GoldenCauldron.PROP_READY_AT) {
+			readyAtChanged = true;
+		}
+	}
 
 	@Override
 	protected void update() {
@@ -138,22 +138,22 @@ public class GoldenCauldron2DView extends Entity2DView<GoldenCauldron> {
 			requestOpen = false;
 		}
 
-				if (statusChanged) {
-						statusChanged = false;
-						updateStatus();
-				}
-
-				if (brewerChanged) {
-						brewerChanged = false;
-						updateMixAvailability();
-				}
-
-				if (readyAtChanged) {
-						readyAtChanged = false;
-						updateStatus();
-						updateMixAvailability();
-				}
+		if (statusChanged) {
+			statusChanged = false;
+			updateStatus();
 		}
+
+		if (brewerChanged) {
+			brewerChanged = false;
+			updateMixAvailability();
+		}
+
+		if (readyAtChanged) {
+			readyAtChanged = false;
+			updateStatus();
+			updateMixAvailability();
+		}
+	}
 
 	@Override
 	public void onAction(final ActionType at) {
@@ -163,20 +163,20 @@ public class GoldenCauldron2DView extends Entity2DView<GoldenCauldron> {
 
 		switch (at) {
 			case OPEN:
-				requestOpen = true;
-				at.send(at.fillTargetInfo(entity));
-				break;
+			requestOpen = true;
+			at.send(at.fillTargetInfo(entity));
+			break;
 			case CLOSE:
-				requestOpen = false;
-				at.send(at.fillTargetInfo(entity));
-				break;
+			requestOpen = false;
+			at.send(at.fillTargetInfo(entity));
+			break;
 			case INSPECT:
-				requestOpen = true;
-				maybeShowWindow();
-				break;
+			requestOpen = true;
+			maybeShowWindow();
+			break;
 			default:
-				super.onAction(at);
-				break;
+			super.onAction(at);
+			break;
 		}
 	}
 
@@ -212,12 +212,12 @@ public class GoldenCauldron2DView extends Entity2DView<GoldenCauldron> {
 			if (!requestOpen && !entity.isControlledByUser()) {
 				return;
 			}
-						final GoldenCauldronWindow newWindow =
-								new GoldenCauldronWindow(entity.getName());
-						newWindow.setSlot(entity, SLOT_CONTENT);
-						newWindow.setInspector(inspector);
-						newWindow.updateStatus(entity.getStatusText(), entity.getReadyAt());
-						newWindow.setMixEnabled(entity.isControlledByUser() && !entity.isActive());
+			final GoldenCauldronWindow newWindow =
+			new GoldenCauldronWindow(entity.getName());
+			newWindow.setSlot(entity, SLOT_CONTENT);
+			newWindow.setInspector(inspector);
+			newWindow.updateStatus(entity.getStatusText(), entity.getReadyAt());
+			newWindow.setMixEnabled(entity.isControlledByUser() && !entity.isActive());
 			newWindow.setMixAction(new ActionListener() {
 				@Override
 				public void actionPerformed(final ActionEvent event) {
@@ -232,7 +232,7 @@ public class GoldenCauldron2DView extends Entity2DView<GoldenCauldron> {
 					window = null;
 					if (entity.isOpen() && entity.isControlledByUser()) {
 						final RPAction closeAction =
-							ActionType.CLOSE.fillTargetInfo(entity);
+						ActionType.CLOSE.fillTargetInfo(entity);
 						ActionType.CLOSE.send(closeAction);
 					}
 				}
@@ -250,9 +250,9 @@ public class GoldenCauldron2DView extends Entity2DView<GoldenCauldron> {
 		}
 
 		requestOpen = false;
-				updateStatus();
-				updateMixAvailability();
-		}
+		updateStatus();
+		updateMixAvailability();
+	}
 
 	private void destroyWindow() {
 		final GoldenCauldronWindow current = window;
@@ -267,18 +267,18 @@ public class GoldenCauldron2DView extends Entity2DView<GoldenCauldron> {
 		}
 	}
 
-		private void updateStatus() {
-				if (window != null) {
-						window.updateStatus(entity.getStatusText(), entity.getReadyAt());
-				}
+	private void updateStatus() {
+		if (window != null) {
+			window.updateStatus(entity.getStatusText(), entity.getReadyAt());
 		}
+	}
 
-		private void updateMixAvailability() {
-				if (window != null) {
-						final boolean canMix = entity.isControlledByUser() && !entity.isActive();
-						window.setMixEnabled(canMix);
-				}
+	private void updateMixAvailability() {
+		if (window != null) {
+			final boolean canMix = entity.isControlledByUser() && !entity.isActive();
+			window.setMixEnabled(canMix);
 		}
+	}
 
 	private void sendMixAction() {
 		final RPAction action = new RPAction();
@@ -289,69 +289,69 @@ public class GoldenCauldron2DView extends Entity2DView<GoldenCauldron> {
 	}
 
 	private void ensureFrames() {
-				if ((idleSprite != null) && (activeAnimation != null)) {
-						return;
-				}
-
-				final SpriteStore store = SpriteStore.get();
-				final Sprite sheet = store.getSprite(SPRITE_SHEET);
-
-				if (sheet == null) {
-						idleSprite = store.getFailsafe();
-						activeAnimation = null;
-						return;
-				}
-
-				idleSprite = composeFrame(store, sheet, IDLE_FRAME_TILES, -1);
-
-				final int topFrameCount = ACTIVE_TOP_LEFT_SEQUENCE.length;
-				final int bottomFrameCount = ACTIVE_BOTTOM_LEFT_SEQUENCE.length;
-				final Sprite[] frames = new Sprite[topFrameCount];
-
-				for (int i = 0; i < topFrameCount; i++) {
-						final int[] indices = {
-										ACTIVE_TOP_LEFT_SEQUENCE[i],
-										ACTIVE_TOP_RIGHT_SEQUENCE[i],
-										ACTIVE_BOTTOM_LEFT_SEQUENCE[i % bottomFrameCount],
-										ACTIVE_BOTTOM_RIGHT_SEQUENCE[i % bottomFrameCount]
-						};
-						final int stirIndex = ACTIVE_STIR_SEQUENCE[i % ACTIVE_STIR_SEQUENCE.length];
-						frames[i] = composeFrame(store, sheet, indices, stirIndex);
-				}
-
-				activeAnimation = new AnimatedSprite(frames, ACTIVE_FRAME_DELAY, true);
+		if ((idleSprite != null) && (activeAnimation != null)) {
+			return;
 		}
 
-		private Sprite composeFrame(final SpriteStore store, final Sprite sheet, final int[] indices,
-						final int stirIndex) {
-				final BufferedImage image =
-						new BufferedImage(FRAME_WIDTH, FRAME_HEIGHT, BufferedImage.TYPE_INT_ARGB);
-				final Graphics2D g = image.createGraphics();
+		final SpriteStore store = SpriteStore.get();
+		final Sprite sheet = store.getSprite(SPRITE_SHEET);
 
-				try {
-						drawTile(store, sheet, g, indices[0], 0, 0);
-						drawTile(store, sheet, g, indices[1], TILE, 0);
-						drawTile(store, sheet, g, indices[2], 0, TILE);
-						drawTile(store, sheet, g, indices[3], TILE, TILE);
-						if (stirIndex >= 0) {
-								final int stirX = (stirIndex == 5) ? TILE : 0;
-								drawTile(store, sheet, g, stirIndex, stirX, 0);
-						}
-				} finally {
-						g.dispose();
-				}
-
-				return new ImageSprite(image);
+		if (sheet == null) {
+			idleSprite = store.getFailsafe();
+			activeAnimation = null;
+			return;
 		}
 
-		private void drawTile(final SpriteStore store, final Sprite sheet, final Graphics2D g,
-						final int index, final int drawX, final int drawY) {
-				final int column = index % SHEET_COLUMNS;
-				final int row = index / SHEET_COLUMNS;
-				final Sprite tile = store.getTile(sheet, column * TILE, row * TILE, TILE, TILE);
+		idleSprite = composeFrame(store, sheet, IDLE_FRAME_TILES, -1);
 
-				if (tile != null) {
-						tile.draw(g, drawX, drawY);
-				}
+		final int topFrameCount = ACTIVE_TOP_LEFT_SEQUENCE.length;
+		final int bottomFrameCount = ACTIVE_BOTTOM_LEFT_SEQUENCE.length;
+		final Sprite[] frames = new Sprite[topFrameCount];
+
+		for (int i = 0; i < topFrameCount; i++) {
+			final int[] indices = {
+				ACTIVE_TOP_LEFT_SEQUENCE[i],
+				ACTIVE_TOP_RIGHT_SEQUENCE[i],
+				ACTIVE_BOTTOM_LEFT_SEQUENCE[i % bottomFrameCount],
+				ACTIVE_BOTTOM_RIGHT_SEQUENCE[i % bottomFrameCount]
+			};
+			final int stirIndex = ACTIVE_STIR_SEQUENCE[i % ACTIVE_STIR_SEQUENCE.length];
+			frames[i] = composeFrame(store, sheet, indices, stirIndex);
 		}
+
+		activeAnimation = new AnimatedSprite(frames, ACTIVE_FRAME_DELAY, true);
+	}
+
+	private Sprite composeFrame(final SpriteStore store, final Sprite sheet, final int[] indices,
+	final int stirIndex) {
+		final BufferedImage image =
+		new BufferedImage(FRAME_WIDTH, FRAME_HEIGHT, BufferedImage.TYPE_INT_ARGB);
+		final Graphics2D g = image.createGraphics();
+
+		try {
+			drawTile(store, sheet, g, indices[0], 0, 0);
+			drawTile(store, sheet, g, indices[1], TILE, 0);
+			drawTile(store, sheet, g, indices[2], 0, TILE);
+			drawTile(store, sheet, g, indices[3], TILE, TILE);
+			if (stirIndex >= 0) {
+				final int stirX = (stirIndex == 5) ? TILE : 0;
+				drawTile(store, sheet, g, stirIndex, stirX, 0);
+			}
+		} finally {
+			g.dispose();
+		}
+
+		return new ImageSprite(image);
+	}
+
+	private void drawTile(final SpriteStore store, final Sprite sheet, final Graphics2D g,
+	final int index, final int drawX, final int drawY) {
+		final int column = index % SHEET_COLUMNS;
+		final int row = index / SHEET_COLUMNS;
+		final Sprite tile = store.getTile(sheet, column * TILE, row * TILE, TILE, TILE);
+
+		if (tile != null) {
+			tile.draw(g, drawX, drawY);
+		}
+	}
 }
