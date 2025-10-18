@@ -21,6 +21,7 @@ import games.stendhal.client.gui.GoldenCauldronWindow;
 import games.stendhal.client.gui.InternalWindow;
 import games.stendhal.client.gui.InternalWindow.CloseListener;
 import games.stendhal.client.gui.j2DClient;
+import games.stendhal.client.sprite.AnimatedSprite;
 import games.stendhal.client.sprite.ImageSprite;
 import games.stendhal.client.sprite.Sprite;
 import games.stendhal.client.sprite.SpriteStore;
@@ -39,15 +40,21 @@ import marauroa.common.game.RPAction;
 public class GoldenCauldron2DView extends Entity2DView<GoldenCauldron> {
 	private static final String SPRITE_SHEET = "data/maps/tileset/item/pot/cauldron.png";
 	private static final int TILE = IGameScreen.SIZE_UNIT_PIXELS;
-	private static final int FRAME_WIDTH = TILE * 2;
-	private static final int FRAME_HEIGHT = TILE * 2;
-        private static final int FRAME_COLUMN_SPAN = 2;
-	private static final int IDLE_FRAME = 0;
-	private static final int ACTIVE_FRAME = 1;
-	private static final String SLOT_CONTENT = "content";
+        private static final int FRAME_WIDTH = TILE * 2;
+        private static final int FRAME_HEIGHT = TILE * 2;
+        private static final int SHEET_COLUMNS = 8;
+        private static final int ACTIVE_FRAME_DELAY = 250;
+        private static final int[] IDLE_FRAME_TILES = {0, 1, 8, 9};
+        private static final int[][] ACTIVE_FRAME_TILES = {
+                        {24, 25, 32, 33},
+                        {26, 27, 34, 35},
+                        {28, 29, 36, 37},
+                        {30, 31, 38, 39}
+        };
+        private static final String SLOT_CONTENT = "content";
 
-	private Sprite idleSprite;
-	private Sprite activeSprite;
+        private Sprite idleSprite;
+        private AnimatedSprite activeAnimation;
 	private GoldenCauldronWindow window;
 	private Inspector inspector;
 	private boolean openChanged;
@@ -69,12 +76,17 @@ public class GoldenCauldron2DView extends Entity2DView<GoldenCauldron> {
 	protected void buildRepresentation(final GoldenCauldron entity) {
 		ensureFrames();
 
-		if (entity.isActive()) {
-			setSprite(activeSprite);
-		} else {
-			setSprite(idleSprite);
-		}
-	}
+                if (entity.isActive()) {
+                        if (activeAnimation != null) {
+                                activeAnimation.reset(0);
+                                setSprite(activeAnimation);
+                        } else {
+                                setSprite(idleSprite);
+                        }
+                } else {
+                        setSprite(idleSprite);
+                }
+        }
 
 	@Override
 	protected void buildActions(final List<String> list) {
@@ -263,53 +275,54 @@ public class GoldenCauldron2DView extends Entity2DView<GoldenCauldron> {
 	}
 
 	private void ensureFrames() {
-		if ((idleSprite != null) && (activeSprite != null)) {
-			return;
-		}
+                if ((idleSprite != null) && (activeAnimation != null)) {
+                        return;
+                }
 
-		final SpriteStore store = SpriteStore.get();
-		final Sprite sheet = store.getSprite(SPRITE_SHEET);
+                final SpriteStore store = SpriteStore.get();
+                final Sprite sheet = store.getSprite(SPRITE_SHEET);
 
-		if (sheet == null) {
-			idleSprite = store.getFailsafe();
-			activeSprite = idleSprite;
-			return;
-		}
+                if (sheet == null) {
+                        idleSprite = store.getFailsafe();
+                        activeAnimation = null;
+                        return;
+                }
 
-		idleSprite = composeFrame(store, sheet, IDLE_FRAME);
-		activeSprite = composeFrame(store, sheet, ACTIVE_FRAME);
-	}
+                idleSprite = composeFrame(store, sheet, IDLE_FRAME_TILES);
 
-	private Sprite composeFrame(final SpriteStore store, final Sprite sheet, final int frame) {
+                final Sprite[] frames = new Sprite[ACTIVE_FRAME_TILES.length];
+                for (int i = 0; i < ACTIVE_FRAME_TILES.length; i++) {
+                        frames[i] = composeFrame(store, sheet, ACTIVE_FRAME_TILES[i]);
+                }
+
+                activeAnimation = new AnimatedSprite(frames, ACTIVE_FRAME_DELAY, true);
+        }
+
+        private Sprite composeFrame(final SpriteStore store, final Sprite sheet, final int[] indices) {
                 final BufferedImage image =
                         new BufferedImage(FRAME_WIDTH, FRAME_HEIGHT, BufferedImage.TYPE_INT_ARGB);
                 final Graphics2D g = image.createGraphics();
 
                 try {
-                        final int column = frame * FRAME_COLUMN_SPAN;
-                        final int topRow = frame * 2;
-                        final int bottomRow = topRow + 1;
-                        drawRow(store, sheet, g, column, topRow, 0);
-                        drawRow(store, sheet, g, column, bottomRow, TILE);
-		} finally {
-			g.dispose();
-		}
+                        drawTile(store, sheet, g, indices[0], 0, 0);
+                        drawTile(store, sheet, g, indices[1], TILE, 0);
+                        drawTile(store, sheet, g, indices[2], 0, TILE);
+                        drawTile(store, sheet, g, indices[3], TILE, TILE);
+                } finally {
+                        g.dispose();
+                }
 
-		return new ImageSprite(image);
-	}
+                return new ImageSprite(image);
+        }
 
-	private void drawRow(final SpriteStore store, final Sprite sheet, final Graphics2D g,
-			final int column, final int row, final int y) {
-		final int x = column * TILE;
-		final Sprite left = store.getTile(sheet, x, row * TILE, TILE, TILE);
-		final Sprite right =
-			store.getTile(sheet, (column + 1) * TILE, row * TILE, TILE, TILE);
+        private void drawTile(final SpriteStore store, final Sprite sheet, final Graphics2D g,
+                        final int index, final int drawX, final int drawY) {
+                final int column = index % SHEET_COLUMNS;
+                final int row = index / SHEET_COLUMNS;
+                final Sprite tile = store.getTile(sheet, column * TILE, row * TILE, TILE, TILE);
 
-		if (left != null) {
-			left.draw(g, 0, y);
-		}
-		if (right != null) {
-			right.draw(g, TILE, y);
-		}
-	}
+                if (tile != null) {
+                        tile.draw(g, drawX, drawY);
+                }
+        }
 }
