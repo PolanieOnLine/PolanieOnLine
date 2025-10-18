@@ -51,7 +51,7 @@ public class GoldenCauldron2DView extends Entity2DView<GoldenCauldron> {
 		private static final int[] ACTIVE_TOP_RIGHT_SEQUENCE = {33, 35, 37, 39, 37, 35};
 		private static final int[] ACTIVE_BOTTOM_LEFT_SEQUENCE = {8, 10, 12, 14, 12, 10};
 		private static final int[] ACTIVE_BOTTOM_RIGHT_SEQUENCE = {9, 11, 13, 15, 13, 11};
-		private static final int[] ACTIVE_STIR_SEQUENCE = {4, 5};
+		private static final int[] ACTIVE_STIR_SEQUENCE = {5, 6};
 		private static final String SLOT_CONTENT = "content";
 
 		private Sprite idleSprite;
@@ -334,7 +334,8 @@ public class GoldenCauldron2DView extends Entity2DView<GoldenCauldron> {
 						drawTile(store, sheet, g, indices[2], 0, TILE);
 						drawTile(store, sheet, g, indices[3], TILE, TILE);
 						if (stirIndex >= 0) {
-								drawTile(store, sheet, g, stirIndex, 0, 0);
+								final int stirX = (stirIndex == 5) ? TILE : 0;
+								drawTile(store, sheet, g, stirIndex, stirX, 0);
 						}
 				} finally {
 						g.dispose();
