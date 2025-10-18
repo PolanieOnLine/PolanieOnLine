@@ -23,6 +23,7 @@ import games.stendhal.server.actions.ActionListener;
 import games.stendhal.server.entity.item.Container;
 import games.stendhal.server.entity.item.Corpse;
 import games.stendhal.server.entity.mapstuff.chest.Chest;
+import games.stendhal.server.entity.mapstuff.useable.GoldenCauldronEntity;
 import games.stendhal.server.entity.player.Player;
 import marauroa.common.game.RPAction;
 
@@ -50,7 +51,8 @@ public abstract class EquipmentAction implements ActionListener {
 
 	/** the list of valid container classes. */
 	private static final Class< ? >[] validContainerClasses = new Class< ? >[] {
-		Player.class, Chest.class, Corpse.class, Container.class };
+		Player.class, Chest.class, Corpse.class, Container.class,
+		GoldenCauldronEntity.class };
 
 	/** List of the valid container classes for easy access. */
 	protected final List<Class< ? >> validContainerClassesList = Arrays.asList(validContainerClasses);
