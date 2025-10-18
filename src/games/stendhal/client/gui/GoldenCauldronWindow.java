@@ -20,6 +20,7 @@ import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Rectangle2D;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -57,6 +58,7 @@ public class GoldenCauldronWindow extends InternalManagedWindow implements Inspe
 		mixButton = new JButton("Mieszaj");
 		mixButton.setFocusable(false);
 		mixButton.setPreferredSize(new Dimension(110, 26));
+		mixButton.setBorder(BorderFactory.createEmptyBorder());
 		mixButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {

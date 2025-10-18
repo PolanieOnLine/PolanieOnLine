@@ -21,6 +21,8 @@ import games.stendhal.client.gui.GoldenCauldronWindow;
 import games.stendhal.client.gui.InternalWindow;
 import games.stendhal.client.gui.InternalWindow.CloseListener;
 import games.stendhal.client.gui.j2DClient;
+import games.stendhal.client.gui.j2d.entity.helpers.HorizontalAlignment;
+import games.stendhal.client.gui.j2d.entity.helpers.VerticalAlignment;
 import games.stendhal.client.sprite.AnimatedSprite;
 import games.stendhal.client.sprite.ImageSprite;
 import games.stendhal.client.sprite.Sprite;
@@ -62,6 +64,7 @@ public class GoldenCauldron2DView extends Entity2DView<GoldenCauldron> {
 
 	@Override
 	public void initialize(final GoldenCauldron entity) {
+		setSpriteAlignment(HorizontalAlignment.LEFT, VerticalAlignment.BOTTOM);
 		super.initialize(entity);
 		representationChanged = true;
 		openChanged = false;
