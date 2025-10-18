@@ -44,13 +44,11 @@ public class GoldenCauldron2DView extends Entity2DView<GoldenCauldron> {
         private static final int FRAME_HEIGHT = TILE * 2;
         private static final int SHEET_COLUMNS = 8;
         private static final int ACTIVE_FRAME_DELAY = 250;
-        private static final int[] IDLE_FRAME_TILES = {0, 1, 8, 9};
-        private static final int[][] ACTIVE_FRAME_TILES = {
-                        {24, 25, 32, 33},
-                        {26, 27, 34, 35},
-                        {28, 29, 36, 37},
-                        {30, 31, 38, 39}
-        };
+        private static final int[] IDLE_FRAME_TILES = {16, 17, 32, 33};
+        private static final int[] ACTIVE_TOP_LEFT_SEQUENCE = {24, 26, 28, 30, 28, 26};
+        private static final int[] ACTIVE_TOP_RIGHT_SEQUENCE = {25, 27, 29, 31, 29, 27};
+        private static final int[] ACTIVE_BOTTOM_LEFT_SEQUENCE = {40, 42, 44, 46};
+        private static final int[] ACTIVE_BOTTOM_RIGHT_SEQUENCE = {41, 43, 45, 47};
         private static final String SLOT_CONTENT = "content";
 
         private Sprite idleSprite;
@@ -290,9 +288,18 @@ public class GoldenCauldron2DView extends Entity2DView<GoldenCauldron> {
 
                 idleSprite = composeFrame(store, sheet, IDLE_FRAME_TILES);
 
-                final Sprite[] frames = new Sprite[ACTIVE_FRAME_TILES.length];
-                for (int i = 0; i < ACTIVE_FRAME_TILES.length; i++) {
-                        frames[i] = composeFrame(store, sheet, ACTIVE_FRAME_TILES[i]);
+                final int topFrameCount = ACTIVE_TOP_LEFT_SEQUENCE.length;
+                final int bottomFrameCount = ACTIVE_BOTTOM_LEFT_SEQUENCE.length;
+                final Sprite[] frames = new Sprite[topFrameCount];
+
+                for (int i = 0; i < topFrameCount; i++) {
+                        final int[] indices = {
+                                        ACTIVE_TOP_LEFT_SEQUENCE[i],
+                                        ACTIVE_TOP_RIGHT_SEQUENCE[i],
+                                        ACTIVE_BOTTOM_LEFT_SEQUENCE[i % bottomFrameCount],
+                                        ACTIVE_BOTTOM_RIGHT_SEQUENCE[i % bottomFrameCount]
+                        };
+                        frames[i] = composeFrame(store, sheet, indices);
                 }
 
                 activeAnimation = new AnimatedSprite(frames, ACTIVE_FRAME_DELAY, true);
