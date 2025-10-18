@@ -64,7 +64,7 @@ public class GoldenCauldronEntity extends UseableEntity {
 		setRPClass(RPCLASS_NAME);
 		setEntityClass("useable_entity");
 		setEntitySubclass(RPCLASS_NAME);
-		setSize(1, 2);
+		setSize(2, 2);
 		put("name", "Kocioł Draconii");
 		setStatus("Kocioł jest wygaszony. Wlej składniki, aby przygotować wywar.");
 		setState(STATE_IDLE);
@@ -210,7 +210,8 @@ public class GoldenCauldronEntity extends UseableEntity {
 			return;
 		}
 
-		slot.add(result);
+                result.setBoundTo(player.getName());
+                slot.add(result);
 		setState(STATE_ACTIVE);
 		setStatus("Płomienie buchają spod kotła, a wywar nabiera wąsatego aromatu!");
 		player.sendPrivateText("Wywar wąsatych smoków jest gotowy.");
