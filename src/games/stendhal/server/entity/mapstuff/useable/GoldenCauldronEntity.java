@@ -40,38 +40,45 @@ public class GoldenCauldronEntity extends UseableEntity {
 
 	private static final String RPCLASS_NAME = "golden_cauldron";
 	private static final String SLOT_CONTENT = "content";
-	private static final int SLOT_CAPACITY = 8;
-	private static final int STATE_IDLE = 0;
-	private static final int STATE_ACTIVE = 1;
-	private static final int RESET_DELAY = 20;
+        private static final int SLOT_CAPACITY = 8;
+        private static final int STATE_IDLE = 0;
+        private static final int STATE_ACTIVE = 1;
+        private static final int BREW_TIME_SECONDS = 5 * 60;
+        private static final long BREW_TIME_MILLIS = BREW_TIME_SECONDS * 1000L;
+        private static final String STATUS_IDLE =
+                        "Kocioł nie pracuje. Włóż składniki i kliknij \"Mieszaj\".";
+        private static final String STATUS_WORKING = "Kocioł pracuje.";
+        private static final String STATUS_READY = "Wywar gotowy. Wyjmij go z kotła.";
+        private static final String STATUS_WAITING_FOR_PICKUP = "Wyjmij przygotowany wywar z kotła.";
 
-	private static final Map<String, Integer> RECIPE = new LinkedHashMap<String, Integer>();
-	static {
-		RECIPE.put("pióro azazela", 3);
-		RECIPE.put("magiczna krew", 10);
-		RECIPE.put("smocza krew", 5);
-		RECIPE.put("cudowna krew", 1);
-	}
+        private static final Map<String, Integer> RECIPE = new LinkedHashMap<String, Integer>();
+        static {
+                RECIPE.put("pióro azazela", 3);
+                RECIPE.put("magiczna krew", 10);
+                RECIPE.put("smocza krew", 5);
+                RECIPE.put("cudowna krew", 1);
+        }
 
-	private String brewer;
-	private TurnListener resetTask;
+        private String brewer;
+        private long readyAt;
+        private TurnListener brewTask;
 
-	/**
-	 * Create a new cauldron instance.
-	 */
-	public GoldenCauldronEntity() {
-		super();
-		setRPClass(RPCLASS_NAME);
-		setEntityClass("useable_entity");
-		setEntitySubclass(RPCLASS_NAME);
-		setSize(2, 2);
-		put("name", "Kocioł Draconii");
-		setStatus("Kocioł jest wygaszony. Wlej składniki, aby przygotować wywar.");
-		setState(STATE_IDLE);
+        /**
+         * Create a new cauldron instance.
+         */
+        public GoldenCauldronEntity() {
+                super();
+                setRPClass(RPCLASS_NAME);
+                setEntityClass("useable_entity");
+                setEntitySubclass(RPCLASS_NAME);
+                setSize(2, 2);
+                put("name", "Kocioł Draconii");
+                setStatus(STATUS_IDLE);
+                setState(STATE_IDLE);
 
-		final CauldronSlot slot = new CauldronSlot();
-		slot.setCapacity(SLOT_CAPACITY);
-		addSlot(slot);
+                final CauldronSlot slot = new CauldronSlot();
+                slot.setCapacity(SLOT_CAPACITY);
+                addSlot(slot);
 	}
 
 	/**
@@ -79,14 +86,15 @@ public class GoldenCauldronEntity extends UseableEntity {
 	 */
 	public static void generateRPClass() {
 		if (!RPClass.hasRPClass(RPCLASS_NAME)) {
-			final RPClass rpClass = new RPClass(RPCLASS_NAME);
-			rpClass.isA("useable_entity");
-			rpClass.addAttribute("open", Type.FLAG);
-			rpClass.addAttribute("brewer", Type.STRING);
-			rpClass.addAttribute("status", Type.LONG_STRING);
-			rpClass.addRPSlot(SLOT_CONTENT, SLOT_CAPACITY);
-		}
-	}
+                        final RPClass rpClass = new RPClass(RPCLASS_NAME);
+                        rpClass.isA("useable_entity");
+                        rpClass.addAttribute("open", Type.FLAG);
+                        rpClass.addAttribute("brewer", Type.STRING);
+                        rpClass.addAttribute("status", Type.LONG_STRING);
+                        rpClass.addAttribute("ready_at", Type.LONG);
+                        rpClass.addRPSlot(SLOT_CONTENT, SLOT_CAPACITY);
+                }
+        }
 
 	@Override
 	public String getDescriptionName() {
@@ -94,30 +102,45 @@ public class GoldenCauldronEntity extends UseableEntity {
 	}
 
 	@Override
-	public void update() {
-		super.update();
-		brewer = get("brewer");
-	}
+        public void update() {
+                super.update();
+                brewer = get("brewer");
+                readyAt = has("ready_at") ? getLong("ready_at") : 0L;
 
-	@Override
-	public boolean onUsed(final RPEntity user) {
-		if (!(user instanceof Player)) {
+                if (isBrewing()) {
+                        if (readyAt <= System.currentTimeMillis()) {
+                                finishBrewing();
+                        } else if (brewTask == null) {
+                                scheduleCompletion(secondsUntilReady());
+                        }
+                } else {
+                        releaseReservationIfIdle();
+                }
+        }
+
+        @Override
+        public boolean onUsed(final RPEntity user) {
+                if (!(user instanceof Player)) {
 			return false;
 		}
 
 		final Player player = (Player) user;
 
-		if (!player.nextTo(this)) {
-			player.sendPrivateText("Musisz podejść bliżej kotła.");
-			return false;
-		}
+                if (!player.nextTo(this)) {
+                        player.sendPrivateText("Musisz podejść bliżej kotła.");
+                        return false;
+                }
 
-		if (!isOpen()) {
-			openFor(player);
-			return true;
-		}
+                if (!isOpen()) {
+                        if ((brewer != null) && !isControlledBy(player)) {
+                                player.sendPrivateText("Kocioł jest teraz zarezerwowany przez " + brewer + ".");
+                                return false;
+                        }
+                        openFor(player);
+                        return true;
+                }
 
-		if (!isControlledBy(player)) {
+                if (!isControlledBy(player)) {
 			player.sendPrivateText("Ktoś już miesza w tym kotle.");
 			return false;
 		}
@@ -138,32 +161,62 @@ public class GoldenCauldronEntity extends UseableEntity {
 		brewer = player.getName();
 		put("open", "");
 		put("brewer", brewer);
-		setStatus("Draconia kiwa głową, gdy zaczynasz przygotowania.");
-		notifyWorldAboutChanges();
-		player.sendPrivateText("Otwierasz kocioł Draconii.");
-	}
+                if (isBrewing()) {
+                        setStatus(STATUS_WORKING);
+                } else {
+                        setStatus(STATUS_IDLE);
+                }
+                notifyWorldAboutChanges();
+                player.sendPrivateText("Otwierasz kocioł Draconii.");
+        }
 
-	private void close() {
+        private void close() {
 		if (!isOpen()) {
 			return;
 		}
 
-		remove("open");
-		remove("brewer");
-		brewer = null;
-		setStatus("Kocioł stygnie, a płomień gaśnie.");
-		notifyWorldAboutChanges();
-	}
+                remove("open");
+                if (!isBrewing() && isContentEmpty()) {
+                        clearBrewer();
+                        setStatus(STATUS_IDLE);
+                } else if (!isBrewing()) {
+                        setStatus(STATUS_WAITING_FOR_PICKUP);
+                }
+                notifyWorldAboutChanges();
+        }
 
-	private boolean isControlledBy(final Player player) {
-		return (brewer != null) && brewer.equalsIgnoreCase(player.getName());
-	}
+        private boolean isControlledBy(final Player player) {
+                return (brewer != null) && brewer.equalsIgnoreCase(player.getName());
+        }
 
-	private void setStatus(final String text) {
-		put("status", text);
-	}
+        private boolean isBrewing() {
+                return readyAt > System.currentTimeMillis();
+        }
 
-	/**
+        private boolean isContentEmpty() {
+                final RPSlot slot = getSlot(SLOT_CONTENT);
+                return (slot == null) || slot.isEmpty();
+        }
+
+        private void clearBrewer() {
+                remove("brewer");
+                brewer = null;
+        }
+
+        private void setReadyAt(final long timestamp) {
+                readyAt = timestamp;
+                if (timestamp > 0) {
+                        put("ready_at", timestamp);
+                } else {
+                        remove("ready_at");
+                }
+        }
+
+        private void setStatus(final String text) {
+                put("status", text);
+        }
+
+        /**
 	 * Start brewing the quest potion.
 	 *
 	 * @param player controlling player
@@ -175,16 +228,22 @@ public class GoldenCauldronEntity extends UseableEntity {
 			return;
 		}
 
-		if (!player.nextTo(this)) {
-			player.sendPrivateText("Musisz stać bliżej kotła, aby mieszać składniki.");
-			return;
-		}
+                if (!player.nextTo(this)) {
+                        player.sendPrivateText("Musisz stać bliżej kotła, aby mieszać składniki.");
+                        return;
+                }
 
-		final RPSlot slot = getSlot(SLOT_CONTENT);
-		if (slot == null) {
-			LOGGER.error("Golden cauldron missing content slot");
-			player.sendPrivateText("Kocioł nie jest gotowy do mieszania.");
-			return;
+                if (isBrewing()) {
+                        final String timeLeft = formatTimeRemaining();
+                        player.sendPrivateText("Kocioł już pracuje. Wywar będzie gotowy za " + timeLeft + ".");
+                        return;
+                }
+
+                final RPSlot slot = getSlot(SLOT_CONTENT);
+                if (slot == null) {
+                        LOGGER.error("Golden cauldron missing content slot");
+                        player.sendPrivateText("Kocioł nie jest gotowy do mieszania.");
+                        return;
 		}
 
 		final List<String> missing = getMissingIngredients(slot);
@@ -200,46 +259,82 @@ public class GoldenCauldronEntity extends UseableEntity {
 		if (!consumeIngredients(slot)) {
 			player.sendPrivateText("Coś poszło nie tak i składniki rozsypały się.");
 			return;
-		}
+                }
 
-		final Item result =
-			SingletonRepository.getEntityManager().getItem("wywar wąsatych smoków");
-		if (result == null) {
-			LOGGER.error("Unable to create wywar wąsatych smoków item");
-			player.sendPrivateText("Kocioł syczy, ale nic się nie wydarza.");
-			return;
-		}
+                setState(STATE_ACTIVE);
+                setStatus(STATUS_WORKING);
+                setReadyAt(System.currentTimeMillis() + BREW_TIME_MILLIS);
+                player.sendPrivateText("Rozpoczynasz warzenie. Wywar będzie gotowy za 5 minut.");
+                notifyWorldAboutChanges();
+                scheduleCompletion(BREW_TIME_SECONDS);
+        }
 
-                result.setBoundTo(player.getName());
+        private void scheduleCompletion(final int delaySeconds) {
+                final TurnNotifier notifier = SingletonRepository.getTurnNotifier();
+                if (brewTask != null) {
+                        notifier.dontNotify(brewTask);
+                }
+
+                brewTask = new TurnListener() {
+                        @Override
+                        public void onTurnReached(final int currentTurn) {
+                                brewTask = null;
+                                finishBrewing();
+                        }
+                };
+
+                notifier.notifyInSeconds(Math.max(1, delaySeconds), brewTask);
+        }
+
+        private void finishBrewing() {
+                if (brewTask != null) {
+                        SingletonRepository.getTurnNotifier().dontNotify(brewTask);
+                        brewTask = null;
+                }
+                if (!has("ready_at")) {
+                        setReadyAt(0);
+                        return;
+                }
+
+                final RPSlot slot = getSlot(SLOT_CONTENT);
+                if (slot == null) {
+                        LOGGER.error("Golden cauldron missing content slot during completion");
+                        setReadyAt(0);
+                        setState(STATE_IDLE);
+                        setStatus("Kocioł nie pracuje. Włóż składniki i kliknij \"Mieszaj\".");
+                        notifyWorldAboutChanges();
+                        return;
+                }
+
+                final Item result =
+                        SingletonRepository.getEntityManager().getItem("wywar wąsatych smoków");
+                if (result == null) {
+                        LOGGER.error("Unable to create wywar wąsatych smoków item");
+                        setReadyAt(0);
+                        setState(STATE_IDLE);
+                        setStatus("Kocioł syczy, ale nic się nie wydarza.");
+                        notifyWorldAboutChanges();
+                        return;
+                }
+
+                result.setBoundTo(brewer);
                 slot.add(result);
-		setState(STATE_ACTIVE);
-		setStatus("Płomienie buchają spod kotła, a wywar nabiera wąsatego aromatu!");
-		player.sendPrivateText("Wywar wąsatych smoków jest gotowy.");
-		notifyWorldAboutChanges();
-		scheduleReset();
-	}
+                setReadyAt(0);
+                setState(STATE_IDLE);
+                setStatus(STATUS_READY);
 
-	private void scheduleReset() {
-		final TurnNotifier notifier = SingletonRepository.getTurnNotifier();
-		if (resetTask != null) {
-			notifier.dontNotify(resetTask);
-		}
+                if (brewer != null) {
+                        final Player player = SingletonRepository.getRuleProcessor().getPlayer(brewer);
+                        if (player != null) {
+                                player.sendPrivateText("Wywar wąsatych smoków jest gotowy w kotle.");
+                        }
+                }
 
-		resetTask = new TurnListener() {
-			@Override
-			public void onTurnReached(final int currentTurn) {
-				resetTask = null;
-				setState(STATE_IDLE);
-				setStatus("Kocioł znów jest wygaszony.");
-				notifyWorldAboutChanges();
-			}
-		};
+                notifyWorldAboutChanges();
+        }
 
-		notifier.notifyInSeconds(RESET_DELAY, resetTask);
-	}
-
-	private List<String> getMissingIngredients(final RPSlot slot) {
-		final Map<String, Integer> present = new LinkedHashMap<String, Integer>();
+        private List<String> getMissingIngredients(final RPSlot slot) {
+                final Map<String, Integer> present = new LinkedHashMap<String, Integer>();
 
 		for (final RPObject obj : slot) {
 			if (obj instanceof Item) {
@@ -305,13 +400,51 @@ public class GoldenCauldronEntity extends UseableEntity {
 				item.removeFromWorld();
 			}
 		}
-		return true;
-	}
+                return true;
+        }
 
-	private final class CauldronSlot extends EntitySlot {
-		CauldronSlot() {
-			super(SLOT_CONTENT, SLOT_CONTENT);
-		}
+        private void releaseReservationIfIdle() {
+                if ((brewer == null) || !isContentEmpty() || isOpen()) {
+                        return;
+                }
+
+                clearBrewer();
+                setStatus(STATUS_IDLE);
+                notifyWorldAboutChanges();
+        }
+
+        private int secondsUntilReady() {
+                if (readyAt <= 0) {
+                        return BREW_TIME_SECONDS;
+                }
+                final long diff = readyAt - System.currentTimeMillis();
+                if (diff <= 0) {
+                        return 0;
+                }
+                final long seconds = diff / 1000L;
+                return (int) Math.max(1L, seconds);
+        }
+
+        private String formatTimeRemaining() {
+                final long remaining = readyAt - System.currentTimeMillis();
+                if (remaining <= 0) {
+                        return "moment";
+                }
+
+                final long totalSeconds = Math.max(0, remaining / 1000L);
+                final long minutes = totalSeconds / 60L;
+                final long seconds = totalSeconds % 60L;
+
+                if (minutes > 0) {
+                        return minutes + " min " + seconds + " s";
+                }
+                return seconds + " s";
+        }
+
+        private final class CauldronSlot extends EntitySlot {
+                CauldronSlot() {
+                        super(SLOT_CONTENT, SLOT_CONTENT);
+                }
 
 		@Override
 		public boolean isReachableForTakingThingsOutOfBy(final Entity entity) {

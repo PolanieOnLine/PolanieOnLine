@@ -20,16 +20,18 @@ import marauroa.common.game.RPSlot;
  * Client representation of the golden cauldron entity.
  */
 public class GoldenCauldron extends Entity {
-	public static final Property PROP_OPEN = new Property();
-	public static final Property PROP_STATE = new Property();
-	public static final Property PROP_STATUS = new Property();
-	public static final Property PROP_BREWER = new Property();
+        public static final Property PROP_OPEN = new Property();
+        public static final Property PROP_STATE = new Property();
+        public static final Property PROP_STATUS = new Property();
+        public static final Property PROP_BREWER = new Property();
+        public static final Property PROP_READY_AT = new Property();
 
-	private boolean open;
-	private int state;
-	private String status;
-	private String brewer;
-	private RPSlot content;
+        private boolean open;
+        private int state;
+        private String status;
+        private String brewer;
+        private RPSlot content;
+        private long readyAt;
 
 	public GoldenCauldron() {
 		status = "";
@@ -43,13 +45,17 @@ public class GoldenCauldron extends Entity {
 		return open;
 	}
 
-	public boolean isActive() {
-		return state > 0;
-	}
+        public boolean isActive() {
+                return state > 0;
+        }
 
-	public String getStatusText() {
-		return status;
-	}
+        public String getStatusText() {
+                return status;
+        }
+
+        public long getReadyAt() {
+                return readyAt;
+        }
 
 	public boolean isControlledByUser() {
 		final User user = User.get();
@@ -64,17 +70,18 @@ public class GoldenCauldron extends Entity {
 	public void initialize(final RPObject object) {
 		super.initialize(object);
 
-		if (object.hasSlot("content")) {
-			content = object.getSlot("content");
-		} else {
-			content = null;
-		}
+                if (object.hasSlot("content")) {
+                        content = object.getSlot("content");
+                } else {
+                        content = null;
+                }
 
-		open = object.has("open");
-		state = object.has("state") ? object.getInt("state") : 0;
-		status = object.has("status") ? object.get("status") : "";
-		brewer = object.has("brewer") ? object.get("brewer") : null;
-	}
+                open = object.has("open");
+                state = object.has("state") ? object.getInt("state") : 0;
+                status = object.has("status") ? object.get("status") : "";
+                brewer = object.has("brewer") ? object.get("brewer") : null;
+                readyAt = object.has("ready_at") ? object.getLong("ready_at") : 0L;
+        }
 
 	@Override
 	public void onChangedAdded(final RPObject object, final RPObject changes) {
@@ -88,15 +95,19 @@ public class GoldenCauldron extends Entity {
 			state = changes.getInt("state");
 			fireChange(PROP_STATE);
 		}
-		if (changes.has("status")) {
-			status = changes.get("status");
-			fireChange(PROP_STATUS);
-		}
-		if (changes.has("brewer")) {
-			brewer = changes.get("brewer");
-			fireChange(PROP_BREWER);
-		}
-	}
+                if (changes.has("status")) {
+                        status = changes.get("status");
+                        fireChange(PROP_STATUS);
+                }
+                if (changes.has("brewer")) {
+                        brewer = changes.get("brewer");
+                        fireChange(PROP_BREWER);
+                }
+                if (changes.has("ready_at")) {
+                        readyAt = changes.getLong("ready_at");
+                        fireChange(PROP_READY_AT);
+                }
+        }
 
 	@Override
 	public void onChangedRemoved(final RPObject object, final RPObject changes) {
@@ -110,13 +121,17 @@ public class GoldenCauldron extends Entity {
 			state = 0;
 			fireChange(PROP_STATE);
 		}
-		if (changes.has("status")) {
-			status = "";
-			fireChange(PROP_STATUS);
-		}
-		if (changes.has("brewer")) {
-			brewer = null;
-			fireChange(PROP_BREWER);
-		}
-	}
+                if (changes.has("status")) {
+                        status = "";
+                        fireChange(PROP_STATUS);
+                }
+                if (changes.has("brewer")) {
+                        brewer = null;
+                        fireChange(PROP_BREWER);
+                }
+                if (changes.has("ready_at")) {
+                        readyAt = 0L;
+                        fireChange(PROP_READY_AT);
+                }
+        }
 }
