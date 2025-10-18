@@ -39,6 +39,13 @@ import marauroa.common.game.RPAction;
 public class GoldenCauldron2DView extends Entity2DView<GoldenCauldron> {
 	private static final String SPRITE_SHEET = "data/maps/tileset/item/pot/cauldron.png";
 	private static final int TILE = IGameScreen.SIZE_UNIT_PIXELS;
+	private static final int FRAME_WIDTH = TILE * 2;
+	private static final int FRAME_HEIGHT = TILE * 2;
+	private static final int FRAME_TOP_ROW = 1;
+	private static final int FRAME_BOTTOM_ROW = 2;
+	private static final int FRAME_COLUMN_SPAN = 2;
+	private static final int IDLE_FRAME = 0;
+	private static final int ACTIVE_FRAME = 1;
 	private static final String SLOT_CONTENT = "content";
 
 	private Sprite idleSprite;
@@ -271,30 +278,38 @@ public class GoldenCauldron2DView extends Entity2DView<GoldenCauldron> {
 			return;
 		}
 
-		idleSprite = composeFrame(store, sheet, 0);
-		activeSprite = composeFrame(store, sheet, 1);
+		idleSprite = composeFrame(store, sheet, IDLE_FRAME);
+		activeSprite = composeFrame(store, sheet, ACTIVE_FRAME);
 	}
 
-	private Sprite composeFrame(final SpriteStore store, final Sprite sheet, final int column) {
+	private Sprite composeFrame(final SpriteStore store, final Sprite sheet, final int frame) {
 		final BufferedImage image =
-			new BufferedImage(TILE, TILE * 2, BufferedImage.TYPE_INT_ARGB);
+			new BufferedImage(FRAME_WIDTH, FRAME_HEIGHT, BufferedImage.TYPE_INT_ARGB);
 		final Graphics2D g = image.createGraphics();
 
 		try {
-			final int x = column * TILE;
-			final Sprite top = store.getTile(sheet, x, 0, TILE, TILE);
-			final Sprite bottom = store.getTile(sheet, x, TILE, TILE, TILE);
-
-			if (bottom != null) {
-				bottom.draw(g, 0, TILE);
-			}
-			if (top != null) {
-				top.draw(g, 0, 0);
-			}
+			final int column = frame * FRAME_COLUMN_SPAN;
+			drawRow(store, sheet, g, column, FRAME_TOP_ROW, 0);
+			drawRow(store, sheet, g, column, FRAME_BOTTOM_ROW, TILE);
 		} finally {
 			g.dispose();
 		}
 
 		return new ImageSprite(image);
+	}
+
+	private void drawRow(final SpriteStore store, final Sprite sheet, final Graphics2D g,
+			final int column, final int row, final int y) {
+		final int x = column * TILE;
+		final Sprite left = store.getTile(sheet, x, row * TILE, TILE, TILE);
+		final Sprite right =
+			store.getTile(sheet, (column + 1) * TILE, row * TILE, TILE, TILE);
+
+		if (left != null) {
+			left.draw(g, 0, y);
+		}
+		if (right != null) {
+			right.draw(g, TILE, y);
+		}
 	}
 }
