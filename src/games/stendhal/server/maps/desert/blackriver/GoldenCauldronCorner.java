@@ -30,7 +30,7 @@ public class GoldenCauldronCorner implements ZoneConfigurator {
 
 	private void buildCauldron(final StendhalRPZone zone) {
 		final GoldenCauldronEntity cauldron = new GoldenCauldronEntity();
-		cauldron.setPosition(10, 5);
+		cauldron.setPosition(10, 6);
 		cauldron.setEntityClass("useable_entity");
 		cauldron.setEntitySubclass("golden_cauldron");
 		cauldron.setDescription(
