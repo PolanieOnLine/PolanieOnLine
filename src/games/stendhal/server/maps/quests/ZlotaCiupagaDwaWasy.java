@@ -64,33 +64,33 @@ public class ZlotaCiupagaDwaWasy extends AbstractQuest {
 							if(player.getKarma() >= 1000) {
 								if(player.hasKilled("serafin")) {
 									if (!player.hasQuest(QUEST_SLOT) || "rejected".equals(player.getQuest(QUEST_SLOT))) {
-										raiser.say("Musisz być dzielnym wojownikiem skoro " + player.getGenderVerb("dotarłeś") + " aż tu. Mam dla ciebie zadanie, czy jesteś gotów?");
+						raiser.say("Przemaszerowałeś przez kurz i ogień, skoro " + player.getGenderVerb("dotarłeś") + " aż do mego skalnego kręgu. Mam dla ciebie zadanie, podejmiesz się?");
 									} else if (player.getQuest(QUEST_SLOT).startsWith("done;")) {
 										if (player.isQuestCompleted(QUEST_SLOT)) {
-											raiser.say("Jestem bardzo wdzięczny za pomoc. Moje smoki w końcu mnie słuchają.");
+						raiser.say("Dzięki twojej pomocy smoki znów krążą spokojnie wokół moich skał.");
 											raiser.setCurrentState(ConversationStates.ATTENDING);
 										} else {
-											raiser.say("Dlaczego zawracasz mi głowę skoro nie " + player.getGenderVerb("ukończyłeś") + " zadania?");
+						raiser.say("Nie wracaj, dopóki nie " + player.getGenderVerb("ukończyłeś") + " tego, o co cię prosiłem.");
 											raiser.setCurrentState(ConversationStates.ATTENDING);
 										}
 									} else if (player.getQuest(QUEST_SLOT).startsWith("zbroja;")) {
-										raiser.say("Dlaczego zawracasz mi głowę skoro nie " + player.getGenderVerb("ukończyłeś") + " zadania u Krasnoluda?");
+						raiser.say("Najpierw domknij robotę u Krasnoluda, potem wróć z wieściami.");
 										raiser.setCurrentState(ConversationStates.ATTENDING);
 									}
 								} else {
-									npc.say("Rozmawiam tylko z osobami, które wykazały się w walce zabijając serafina.");
+						npc.say("Wróć, gdy serafin padnie pod twoją ciupagą.");
 									raiser.setCurrentState(ConversationStates.ATTENDING);
 								}
 							} else {
-								npc.say("Twoja karma jest zbyt słaba aby podołać temu zadaniu. Postaraj się, aby była 1000 lub więcej");
+						npc.say("Twoje imię brzmi zbyt lekko. Zadbaj o karmę równą tysiącowi albo większą");
 								raiser.setCurrentState(ConversationStates.ATTENDING);
 							}
 						} else {
-							npc.say("Twój stan społeczny jest zbyt niski aby podjąć te zadanie. Wróć gdy zdobędziesz 250 poziom.");
+						npc.say("Najpierw wznieś się na dwusetny pięćdziesiąty poziom, potem porozmawiamy o smoczych pazurach.");
 							raiser.setCurrentState(ConversationStates.ATTENDING);
 						}
 					} else {
-						npc.say("Nim dam ci zadanie, udowodnij swe męstwo pomagając Krasnoludowi.");
+						npc.say("Najpierw wesprzyj Krasnoluda i pokaż, że nie boisz się kuźnianego dymu.");
 						raiser.setCurrentState(ConversationStates.ATTENDING);
 					}
 				}
@@ -102,9 +102,9 @@ public class ZlotaCiupagaDwaWasy extends AbstractQuest {
 			new ChatAction() {
 				@Override
 				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-					raiser.say("Sporo smoków zbuntowało się przeciwko mi. Chcę abyś " + player.getGenderVerb("zabił") + " każdego z nich, którego spotkasz na swej drodze."
-							+ " Dam ci też dobrą radę zbieraj ich pazury. Mój stary znajomy Krasnolud zbiera je. Słyszałem iż w zamian za nie "
-							+ "zrobi ci wspaniałą broń. Powiedz mu tylko moje #imie. Miłego polowania.");
+					raiser.say("Smocze gniazda syczą niespokojnie. Chcę, byś " + player.getGenderVerb("ścinał") + " każdego buntownika, którego spotkasz."
+							+ " Zbieraj ich pazury i zanieś mojemu towarzyszowi Krasnoludowi. Wystarczy, że wyszepczesz mu moje #imie."
+							+ " Niech łowy będą dla ciebie łaskawe.");
 					player.setQuest(QUEST_SLOT, "start");
 					player.addKarma(10);
 
@@ -114,7 +114,7 @@ public class ZlotaCiupagaDwaWasy extends AbstractQuest {
 		npc.add(ConversationStates.QUEST_OFFERED,
 			ConversationPhrases.NO_MESSAGES, null,
 			ConversationStates.IDLE,
-			"Obyś smoka wawelskiego spotkał na swej drodze.",
+			"Jak chcesz, piasek zasypie tę rozmowę.",
 			new SetQuestAndModifyKarmaAction(QUEST_SLOT, "rejected", -50.0));
 
 	}
@@ -140,7 +140,7 @@ public class ZlotaCiupagaDwaWasy extends AbstractQuest {
 								 new PlayerHasItemWithHimCondition("money",1200000),
 								 new PlayerHasItemWithHimCondition("polano",10),
 								 new PlayerHasItemWithHimCondition("pióro serafina",2)),
-				ConversationStates.IDLE, "Widzę, że masz wszystko o co cię prosiłem. Wróć za 12 godzin, a złota ciupaga z dwoma wąsami będzie gotowa. Przypomnij mi mówiąc #'nagroda'.",
+				ConversationStates.IDLE, "Widzę, że przyniosłeś wszystko naraz. Wróć za dwanaście godzin, a ciupaga z dwoma wąsami zabłyśnie. Przypomnij mi mówiąc #'nagroda'.",
 				new MultipleActions(ciupagaactions));
 
 		npc.add(ConversationStates.ATTENDING, Arrays.asList("przypomnij", "Władca Smoków", "władca", "smok"),
@@ -153,8 +153,7 @@ public class ZlotaCiupagaDwaWasy extends AbstractQuest {
 												  new PlayerHasItemWithHimCondition("money",1200000),
 												  new PlayerHasItemWithHimCondition("polano",10),
 												  new PlayerHasItemWithHimCondition("pióro serafina",2)))),
-				ConversationStates.IDLE, "Tak wiem Władca Smoków mówił mi o tobie. Zajmuję się udoskonalaniem złotej ciupagi.\n"
-									+"Do jej udoskonalenia potrzebuję:\n"
+				ConversationStates.IDLE, "Władca Smoków szepnął mi o tobie. Jeśli chcesz, by ciupaga nabrała nowego wąsa, przynieś mi wszystko naraz:\n"
 									+"#'1 pazur zielonego smoka'\n"
 									+"#'1 pazur czerwonego smoka'\n"
 									+"#'1 złota ciupaga z wąsem'\n"
@@ -162,7 +161,7 @@ public class ZlotaCiupagaDwaWasy extends AbstractQuest {
 									+"#'1200000 money'\n"
 									+"#'10 polan' oraz\n"
 									+"#'2 pióra serafina'\n"
-									+"Proszę przynieś mi to wszystko naraz. Jeżeli zapomnisz co masz przynieść to powiedz #'przypomnij'. Dziękuję!", null);
+									+"Jeżeli zapomnisz, powiedz #'przypomnij'.", null);
 
 	}
 
@@ -177,7 +176,7 @@ public class ZlotaCiupagaDwaWasy extends AbstractQuest {
 					new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, delay))),
 			ConversationStates.IDLE, 
 			null, 
-			new SayTimeRemainingAction(QUEST_SLOT, 1, delay, "Wciąż pracuje nad ulepszeniem twojej złotej ciupagi. Wróć za "));
+			new SayTimeRemainingAction(QUEST_SLOT, 1, delay, "Młot jeszcze tańczy nad twoją ciupagą. Wróć za "));
 
 		npc.add(ConversationStates.ATTENDING,
 			Arrays.asList("złota", "ciupaga", "nagroda"),
@@ -187,7 +186,7 @@ public class ZlotaCiupagaDwaWasy extends AbstractQuest {
 			ConversationStates.IDLE, null, new ChatAction() {
 				@Override
 				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-					raiser.say("Warto było czekać. A oto i ona, czyż nie jest wspaniała!");
+					raiser.say("Żar ostygł. Oto ciupaga z dwoma wąsami, pachnąca smoczą łuską.");
 					player.addXP(500000);
 					player.addKarma(100);
 					final Item zlotaCiupagaZDwomaWasami = SingletonRepository.getEntityManager().getItem("złota ciupaga z dwoma wąsami");
@@ -203,7 +202,7 @@ public class ZlotaCiupagaDwaWasy extends AbstractQuest {
 	public void addToWorld() {
 		fillQuestInfo(
 			"Złota Ciupaga z Dwoma Wąsami",
-			"Krasnolud wzmocni twoją Złotą Ciupagę z Jednym Wąsem.",
+			"Krasnolud doda drugi wąs twojej złotej ciupadze, jeśli przyniesiesz mu smocze trofea.",
 			true);
 		step_1();
 		step_2();
@@ -217,26 +216,26 @@ public class ZlotaCiupagaDwaWasy extends AbstractQuest {
 			return res;
 		}
 		final String questState = player.getQuest(QUEST_SLOT);
-		res.add(player.getGenderVerb("Spotkałem") + " się z Władcą Smoków.");
-		res.add("Poprosił mnie abym " + player.getGenderVerb("zabijał") + " wszystkie smoki, które wejdą mi w drogę. Zdradził mi też tajemnice. Podobno Krasnalud ulepsza złote ciupagi.");
+		res.add(player.getGenderVerb("Spotkałem") + " Władcę Smoków w zadymionej grocie.");
+		res.add("Kazał mi ścinać każdego smoka, który stanie na ścieżce, i zbierać pazury dla krasnoludzkiego mistrza.");
 		if ("rejected".equals(questState)) {
-			res.add("Mam stracha przed smokami więc będę schodził im z drogi.");
+			res.add("Wycofałem się; niech smoki same się gryzą.");
 			return res;
 		}
-		res.add(player.getGenderVerb("Udałem") + " się do Krasnoluda w celu ulepszenia ciupagi. Kazał mi przynnieść kilka przedmiotów. Gdybym " + player.getGenderVerb("zapomniał") + " co mam przynieść mam mu powiedzieć: przypomnij."); 
+		res.add(player.getGenderVerb("Udałem") + " się do kuźni Krasnoluda. Muszę przynieść mu wszystkie dary naraz i w razie potrzeby poprosić: przypomnij."); 
 		if ("start".equals(questState)) {
 			return res;
 		} 
-		res.add(player.getGenderVerb("Dostarczyłem") + " potrzebne przedmioty! Krasnal zabrał się za ulepszenie mojej ciupagi.");
+		res.add(player.getGenderVerb("Dostarczyłem") + " mu wszystko. Krasnolud zaczął wyginać metal.");
 		if (questState.startsWith("forging")) {
 			if (new TimePassedCondition(QUEST_SLOT,1,REQUIRED_HOURS).fire(player, null, null)) {
-				res.add("Podobno Krasnalud skończył moją ciupagę. Hasło: nagroda.");
+				res.add("Kuźnia już ucichła. Hasło: nagroda.");
 			} else {
-				res.add("Po ciupagę mam zgłosić się za 12 godzin. Hasło: nagroda.");
+				res.add("Mam wrócić po ciupagę za dwanaście godzin. Hasło: nagroda.");
 			}
 			return res;
 		} 
-		res.add("Warto było czekać na ciupagę z dwoma wąsami. Ta potężna i piękna broń należy teraz do mnie.");
+		res.add("Ciupaga z dwoma wąsami błyszczy jak świeżo zbita łuska. Jest moja.");
 		if (isCompleted(player)) {
 			return res;
 		} 

@@ -71,42 +71,42 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
 										if(player.getKarma() >= 2000) {
 											if(player.hasKilled("azazel")) {
 												if (!player.hasQuest(QUEST_SLOT) || "rejected".equals(player.getQuest(QUEST_SLOT))) {
-													raiser.say("Musisz być dzielnym wojownikiem skoro " + player.getGenderVerb("dotarłeś") + " aż tu. Mam dla ciebie zadanie, czy jesteś gotów?");
+													raiser.say("Skoro " + player.getGenderVerb("dotarłeś") + " aż do mojej kuźni, żar i piach nie są ci obce. Mam dla ciebie dzieło, podejmiesz się?");
 												} else if (player.getQuest(QUEST_SLOT, 0).equals("start")) {
-													raiser.say("Już się Ciebie pytałem czy chcesz ulepszyć złotą ciupagę!");
+													raiser.say("Już pytałem, czy pragniesz nadać ciupadze trzeci wąs!");
 												} else if (player.isQuestCompleted(QUEST_SLOT)) {
-													raiser.say("Już ulepszyłem dla Ciebie złotą ciupagę.");
+													raiser.say("Twoja ciupaga już lśni trzema wąsami. Nie mam tu dla ciebie kolejnej roboty.");
 													raiser.setCurrentState(ConversationStates.ATTENDING);
 												} else {
-													raiser.say("Dlaczego zawracasz mi głowę skoro nie " + player.getGenderVerb("ukończyłeś") + " zadania?");
+													raiser.say("Nie wracaj, dopóki nie " + player.getGenderVerb("ukończyłeś") + " tego, o co cię prosiłem.");
 													raiser.setCurrentState(ConversationStates.ATTENDING);
 												}
 											} else {
-												npc.say("Rozmawiam tylko z osobami, które wykazały się w walce zabijając azazela.");
+												npc.say("Wróć, gdy Azazel poczuje ostrze twojej ciupagi.");
 												raiser.setCurrentState(ConversationStates.ATTENDING);
 											}
 										} else {
-											npc.say("Twoja karma jest zbyt słaba aby podołać temu zadaniu. Postaraj się, aby była 2000 lub więcej!");
+											npc.say("Twoje imię brzmi jeszcze zbyt lekko; niech twoja karma sięgnie dwóch tysięcy.");
 											raiser.setCurrentState(ConversationStates.ATTENDING);
 										}
 									} else {
-										npc.say("Twój stan społeczny jest zbyt niski aby podjąć te zadanie. Wróć gdy zdobędziesz 350 poziom.");
+										npc.say("Najpierw osiągnij trzysta pięćdziesiąty krąg doświadczenia, potem pogadamy.");
 										raiser.setCurrentState(ConversationStates.ATTENDING);
 									}
 								} else {
-									npc.say("Jeśli pomożesz Królowi Krakowi, ja jako pierwszy o tym się dowiem.");
+									npc.say("Dopóki Król Krak czeka na pomoc, moje kowadło nie ruszy dla ciebie.");
 									raiser.setCurrentState(ConversationStates.ATTENDING);
 								}
 							} else {
-								npc.say("Poprosiła mnie o pomoc Anastazja, dobrze się składa. Ty jej pomożesz.");
+								npc.say("Anastazja liczy na ciebie. Pomóż jej, a wtedy wróć.");
 								raiser.setCurrentState(ConversationStates.ATTENDING);
 							}
 						} else {
-							npc.say("Wesprzyj moją przyjaciółkę Eltefię w jej marzeniu.");
+							npc.say("Najpierw spełnij marzenie Eltefii.");
 							raiser.setCurrentState(ConversationStates.ATTENDING);
 						}
 					} else {
-						npc.say("Musisz pierw udowodnić swe dobre zamiary. Pomóż mojemu pierwszemu znajomemu, Gazdzie Bartkowi, rozwiązać jego problem.");
+						npc.say("Najpierw pomóż Gazdzie Bartkowi i pokaż, że serce masz po właściwej stronie.");
 						raiser.setCurrentState(ConversationStates.ATTENDING);
 					}
 				}
@@ -118,7 +118,7 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
 			new ChatAction() {
 				@Override
 				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-					raiser.say("W takim razie oto potrzebna lista przedmiotów, gdzie umożliwi mi ulepszenie twej złotej ciupagi.\n"
+					raiser.say("Słuchaj uważnie. To lista darów, dzięki którym ciupaga otrzyma trzeci wąs.\n"
 							+"Do jej udoskonalenia potrzebuję:\n"
 							+"#'1 pazur arktycznego smoka'\n"
 							+"#'1 pazur niebieskiego smoka'\n"
@@ -133,8 +133,8 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
                                                         +"#'5 smocza krew'\n"
                                                         +"#'1 cudowna krew'\n"
                                                         +"#'1 wywar wąsatych smoków'\n"
-                                                        +"Wywar przygotujesz w kotle Draconii, który znajdziesz w kuźni Józka.\n"
-                                                        +"Proszę przynieś mi to wszystko naraz. Jeżeli zapomnisz co masz przynieść to powiedz #'przypomnij'. Dziękuję!");
+                                                        +"Wywar uwarz w kotle Draconii w kuźni Józka.\n"
+                                                        +"Przynieś wszystko naraz. Jeśli zapomnisz, powiedz #'przypomnij'.");
 					player.setQuest(QUEST_SLOT, "start");
 					player.addKarma(10);
 
@@ -144,7 +144,7 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
 		npc.add(ConversationStates.QUEST_OFFERED,
 			ConversationPhrases.NO_MESSAGES, null,
 			ConversationStates.IDLE,
-			"Twoja strata.",
+			"Jak chcesz, moje kowadło poczeka na innego.",
 			new SetQuestAction(QUEST_SLOT, "rejected"));
 
 	}
@@ -182,7 +182,7 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
                                                                  new PlayerHasItemWithHimCondition("smocza krew", 5),
                                                                  new PlayerHasItemWithHimCondition("cudowna krew", 1),
                                                                  new PlayerHasItemWithHimCondition("wywar wąsatych smoków", 1)),
-				ConversationStates.IDLE, "Widzę, że masz wszystko o co cię prosiłem. Wróć za 24 godzin, a złota ciupaga z trzema wąsami będzie gotowa. Przypomnij mi mówiąc #'nagroda'.",
+				ConversationStates.IDLE, "Widzę, że przyniosłeś wszystko naraz. Wróć za dwadzieścia cztery godziny, a ciupaga z trzema wąsami będzie czekać. Przypomnij mi mówiąc #'nagroda'.",
 				new MultipleActions(ciupagaactions));
 
 		npc.add(ConversationStates.ATTENDING, "przypomnij",
@@ -216,8 +216,8 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
                                                                 +"#'5 smocza krew'\n"
                                                                 +"#'1 cudowna krew'\n"
                                                                 +"#'1 wywar wąsatych smoków'\n"
-                                                                +"Wywar przygotujesz w kotle Draconii w tej kuźni.\n"
-                                                                +"Proszę przynieś mi to wszystko naraz. Jeżeli zapomnisz co masz przynieść to powiedz #'przypomnij'. Dziękuję!", null);
+                                                                +"Wywar uwarzysz w kotle Draconii obok mnie.\n"
+                                                                +"Przynieś wszystko naraz. Jeśli zapomnisz, powiedz #'przypomnij'.", null);
 	}
 
 	private void step_3() { 
@@ -230,7 +230,7 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
 					new NotCondition(new TimePassedCondition(QUEST_SLOT, 1, delay))),
 			ConversationStates.IDLE, 
 			null, 
-			new SayTimeRemainingAction(QUEST_SLOT, 1, delay, "Wciąż pracuje nad ulepszeniem twojej złotej ciupagi. Wróć za "));
+			new SayTimeRemainingAction(QUEST_SLOT, 1, delay, "Młoty nadal biją nad twoją ciupagą. Wróć za "));
 
 		npc.add(ConversationStates.ATTENDING,
 			Arrays.asList("złota", "ciupaga", "nagroda"),
@@ -240,7 +240,7 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
 			ConversationStates.IDLE, null, new ChatAction() {
 				@Override
 				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-					raiser.say("Warto było czekać. A oto i ona, czyż nie jest wspaniała?!");
+					raiser.say("Żar ostygł. Oto ciupaga z trzema wąsami, nasiąknięta smoczym szeptem.");
 					player.addXP(1000000);
 					player.addKarma(200);
 					final Item zlotaCiupagaZTrzemaWasami = SingletonRepository.getEntityManager().getItem("złota ciupaga z trzema wąsami");
@@ -256,7 +256,7 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
 	public void addToWorld() {
 		fillQuestInfo(
 			"Złota Ciupaga z Trzema Wąsami",
-			"Hadrin wzmocni twoją Złotą Ciupagę z Dwoma Wąsami.",
+			"Hadrin osadzi trzeci wąs w twojej złotej ciupadze, jeśli dostarczysz mu rzadkie trofea.",
 			true);
 		step_1();
 		step_2();
@@ -270,26 +270,26 @@ public class ZlotaCiupagaTrzyWasy extends AbstractQuest {
 			return res;
 		}
 		final String questState = player.getQuest(QUEST_SLOT);
-		res.add(player.getGenderVerb("Spotkałem") + " się z Hadrinem.");
-		res.add("Hadrin może ulepszyć moją złotą ciupagę.");
+		res.add(player.getGenderVerb("Spotkałem") + " Hadrina w kuźni pachnącej smołą.");
+		res.add("Obiecał osadzić trzeci wąs w mojej ciupadze, jeśli przyniosę wszystkie dary.");
 		if ("rejected".equals(questState)) {
-			res.add("Nie zamierzam ulepszać swej złotej ciupagi.");
+			res.add("Odłożyłem to dzieło; niech Hadrin kuje dla innego wojownika.");
 			return res;
 		}
-		res.add(player.getGenderVerb("Udałem") + " się do Hadrina w celu ulepszenia ciupagi. Kazał mi przynnieść kilka przedmiotów. Gdybym " + player.getGenderVerb("zapomniał") + " co mam przynieść mam mu powiedzieć: przypomnij."); 
+		res.add(player.getGenderVerb("Udałem") + " się do Hadrina z jego listą darów. Gdy zapomnę, mam powiedzieć: przypomnij."); 
 		if ("start".equals(questState)) {
 			return res;
 		} 
-		res.add(player.getGenderVerb("Dostarczyłem") + " potrzebne przedmioty! Hadrin zabrał się za ulepszenie mojej ciupagi.");
+		res.add(player.getGenderVerb("Dostarczyłem") + " wszystkie trofea. Hadrin rozżarzył miechy.");
 		if (questState.startsWith("forging")) {
 			if (new TimePassedCondition(QUEST_SLOT,1,REQUIRED_HOURS).fire(player, null, null)) {
-				res.add("Podobno Hadrin skończył moją ciupagę. Hasło: nagroda.");
+				res.add("Kuźnia Hadrina już ucichła. Hasło: nagroda.");
 			} else {
-				res.add("Po ciupagę mam zgłosić się za 24 godzin. Hasło: nagroda.");
+				res.add("Mam wrócić po ciupagę za dwadzieścia cztery godziny. Hasło: nagroda.");
 			}
 			return res;
 		} 
-		res.add("Warto było czekać na ciupagę z trzema wąsami. Ta potężna i piękna broń należy teraz do mnie.");
+		res.add("Ciupaga z trzema wąsami błyszczy jak rozgrzane złoto. Jest moja.");
 		if (isCompleted(player)) {
 			return res;
 		}
