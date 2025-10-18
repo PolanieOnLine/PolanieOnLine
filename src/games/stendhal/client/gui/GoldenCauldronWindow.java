@@ -15,12 +15,11 @@ import games.stendhal.client.entity.User;
 import games.stendhal.client.entity.factory.EntityMap;
 import games.stendhal.client.gui.layout.SBoxLayout;
 import java.awt.BorderLayout;
-import java.awt.Dimension;
+import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Rectangle2D;
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -55,15 +54,14 @@ public class GoldenCauldronWindow extends InternalManagedWindow implements Inspe
 
 		statusLabel = new JLabel("Wrzuć składniki i kliknij \"Mieszaj\".");
 		statusLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		mixButton = new JButton("Mieszaj");
-		mixButton.setFocusable(false);
-		mixButton.setPreferredSize(new Dimension(110, 26));
-		mixButton.setBorder(BorderFactory.createEmptyBorder());
-		mixButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(final ActionEvent e) {
-				if (mixListener != null && mixButton.isEnabled()) {
-					mixListener.actionPerformed(e);
+                mixButton = new JButton("Mieszaj");
+                mixButton.setFocusable(false);
+                mixButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+                mixButton.addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(final ActionEvent e) {
+                                if (mixListener != null && mixButton.isEnabled()) {
+                                        mixListener.actionPerformed(e);
 				}
 			}
 		});
@@ -71,15 +69,10 @@ public class GoldenCauldronWindow extends InternalManagedWindow implements Inspe
 		final JPanel layout = new JPanel();
 		layout.setLayout(new SBoxLayout(SBoxLayout.VERTICAL, 4));
 		layout.setBorder(new EmptyBorder(4, 6, 6, 6));
-		layout.setOpaque(false);
-		layout.add(statusLabel);
-		layout.add(grid);
-		final JPanel buttonRow = new JPanel();
-		buttonRow.setOpaque(false);
-		buttonRow.setLayout(new SBoxLayout(SBoxLayout.HORIZONTAL, 4));
-		SBoxLayout.addSpring(buttonRow);
-		buttonRow.add(mixButton);
-		layout.add(buttonRow);
+                layout.setOpaque(false);
+                layout.add(statusLabel);
+                layout.add(grid);
+                layout.add(mixButton);
 
 		final JPanel content = new JPanel(new BorderLayout());
 		content.setOpaque(false);
