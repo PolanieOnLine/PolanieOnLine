@@ -46,9 +46,8 @@ public class GoldenCauldronEntity extends UseableEntity {
         private static final int STATE_ACTIVE = 1;
         private static final int BREW_TIME_SECONDS = 5 * 60;
         private static final long BREW_TIME_MILLIS = BREW_TIME_SECONDS * 1000L;
-        private static final String STATUS_IDLE =
-                        "Kocioł nie pracuje. Włóż składniki i kliknij \"Mieszaj\".";
-        private static final String STATUS_WORKING = "Kocioł pracuje.";
+        private static final String STATUS_IDLE = "Kocioł nie pracuje.";
+        private static final String STATUS_WORKING = "";
         private static final String STATUS_READY = "Wywar gotowy. Wyjmij go z kotła.";
         private static final String STATUS_WAITING_FOR_PICKUP = "Wyjmij przygotowany wywar z kotła.";
 
@@ -311,7 +310,7 @@ public class GoldenCauldronEntity extends UseableEntity {
                         LOGGER.error("Golden cauldron missing content slot during completion");
                         setReadyAt(0);
                         setState(STATE_IDLE);
-                        setStatus("Kocioł nie pracuje. Włóż składniki i kliknij \"Mieszaj\".");
+                        setStatus(STATUS_IDLE);
                         notifyWorldAboutChanges();
                         return;
                 }
