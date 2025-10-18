@@ -40,6 +40,7 @@ public class GoldenCauldronEntity extends UseableEntity {
 
 	private static final String RPCLASS_NAME = "golden_cauldron";
 	private static final String SLOT_CONTENT = "content";
+        private static final String ATTR_READY_IN = "ready_in";
         private static final int SLOT_CAPACITY = 8;
         private static final int STATE_IDLE = 0;
         private static final int STATE_ACTIVE = 1;
@@ -92,6 +93,7 @@ public class GoldenCauldronEntity extends UseableEntity {
                         rpClass.addAttribute("brewer", Type.STRING);
                         rpClass.addAttribute("status", Type.LONG_STRING);
                         rpClass.addAttribute("ready_at", Type.LONG);
+                        rpClass.addAttribute(ATTR_READY_IN, Type.INT);
                         rpClass.addRPSlot(SLOT_CONTENT, SLOT_CAPACITY);
                 }
         }
@@ -110,10 +112,16 @@ public class GoldenCauldronEntity extends UseableEntity {
                 if (isBrewing()) {
                         if (readyAt <= System.currentTimeMillis()) {
                                 finishBrewing();
-                        } else if (brewTask == null) {
-                                scheduleCompletion(secondsUntilReady());
+                        } else {
+                                if (brewTask == null) {
+                                        scheduleCompletion(secondsUntilReady());
+                                }
+                                refreshReadyInAttribute();
                         }
                 } else {
+                        if (clearReadyInAttribute()) {
+                                notifyWorldAboutChanges();
+                        }
                         releaseReservationIfIdle();
                 }
         }
@@ -207,8 +215,10 @@ public class GoldenCauldronEntity extends UseableEntity {
                 readyAt = timestamp;
                 if (timestamp > 0) {
                         put("ready_at", timestamp);
+                        put(ATTR_READY_IN, secondsUntilReady());
                 } else {
                         remove("ready_at");
+                        remove(ATTR_READY_IN);
                 }
         }
 
@@ -401,6 +411,22 @@ public class GoldenCauldronEntity extends UseableEntity {
 			}
 		}
                 return true;
+        }
+
+        private void refreshReadyInAttribute() {
+                final int seconds = secondsUntilReady();
+                if (!has(ATTR_READY_IN) || getInt(ATTR_READY_IN) != seconds) {
+                        put(ATTR_READY_IN, seconds);
+                        notifyWorldAboutChanges();
+                }
+        }
+
+        private boolean clearReadyInAttribute() {
+                if (has(ATTR_READY_IN)) {
+                        remove(ATTR_READY_IN);
+                        return true;
+                }
+                return false;
         }
 
         private void releaseReservationIfIdle() {
