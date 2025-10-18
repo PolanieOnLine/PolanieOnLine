@@ -51,6 +51,7 @@ public class GoldenCauldron2DView extends Entity2DView<GoldenCauldron> {
         private static final int[] ACTIVE_TOP_RIGHT_SEQUENCE = {33, 35, 37, 39, 37, 35};
         private static final int[] ACTIVE_BOTTOM_LEFT_SEQUENCE = {8, 10, 12, 14, 12, 10};
         private static final int[] ACTIVE_BOTTOM_RIGHT_SEQUENCE = {9, 11, 13, 15, 13, 11};
+        private static final int[] ACTIVE_STIR_SEQUENCE = {4, 5};
         private static final String SLOT_CONTENT = "content";
 
         private Sprite idleSprite;
@@ -301,7 +302,7 @@ public class GoldenCauldron2DView extends Entity2DView<GoldenCauldron> {
                         return;
                 }
 
-                idleSprite = composeFrame(store, sheet, IDLE_FRAME_TILES);
+                idleSprite = composeFrame(store, sheet, IDLE_FRAME_TILES, -1);
 
                 final int topFrameCount = ACTIVE_TOP_LEFT_SEQUENCE.length;
                 final int bottomFrameCount = ACTIVE_BOTTOM_LEFT_SEQUENCE.length;
@@ -314,13 +315,15 @@ public class GoldenCauldron2DView extends Entity2DView<GoldenCauldron> {
                                         ACTIVE_BOTTOM_LEFT_SEQUENCE[i % bottomFrameCount],
                                         ACTIVE_BOTTOM_RIGHT_SEQUENCE[i % bottomFrameCount]
                         };
-                        frames[i] = composeFrame(store, sheet, indices);
+                        final int stirIndex = ACTIVE_STIR_SEQUENCE[i % ACTIVE_STIR_SEQUENCE.length];
+                        frames[i] = composeFrame(store, sheet, indices, stirIndex);
                 }
 
                 activeAnimation = new AnimatedSprite(frames, ACTIVE_FRAME_DELAY, true);
         }
 
-        private Sprite composeFrame(final SpriteStore store, final Sprite sheet, final int[] indices) {
+        private Sprite composeFrame(final SpriteStore store, final Sprite sheet, final int[] indices,
+                        final int stirIndex) {
                 final BufferedImage image =
                         new BufferedImage(FRAME_WIDTH, FRAME_HEIGHT, BufferedImage.TYPE_INT_ARGB);
                 final Graphics2D g = image.createGraphics();
@@ -330,6 +333,9 @@ public class GoldenCauldron2DView extends Entity2DView<GoldenCauldron> {
                         drawTile(store, sheet, g, indices[1], TILE, 0);
                         drawTile(store, sheet, g, indices[2], 0, TILE);
                         drawTile(store, sheet, g, indices[3], TILE, TILE);
+                        if (stirIndex >= 0) {
+                                drawTile(store, sheet, g, stirIndex, 0, 0);
+                        }
                 } finally {
                         g.dispose();
                 }
