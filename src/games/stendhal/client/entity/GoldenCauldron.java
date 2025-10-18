@@ -32,6 +32,7 @@ public class GoldenCauldron extends Entity {
         private String brewer;
         private RPSlot content;
         private long readyAt;
+        private int readyInSeconds;
 
 	public GoldenCauldron() {
 		status = "";
@@ -81,6 +82,8 @@ public class GoldenCauldron extends Entity {
                 status = object.has("status") ? object.get("status") : "";
                 brewer = object.has("brewer") ? object.get("brewer") : null;
                 readyAt = object.has("ready_at") ? object.getLong("ready_at") : 0L;
+                readyInSeconds = object.has("ready_in") ? object.getInt("ready_in") : 0;
+                applyReadyInSeconds();
         }
 
 	@Override
@@ -105,6 +108,13 @@ public class GoldenCauldron extends Entity {
                 }
                 if (changes.has("ready_at")) {
                         readyAt = changes.getLong("ready_at");
+                        if (readyInSeconds <= 0) {
+                                fireChange(PROP_READY_AT);
+                        }
+                }
+                if (changes.has("ready_in")) {
+                        readyInSeconds = changes.getInt("ready_in");
+                        applyReadyInSeconds();
                         fireChange(PROP_READY_AT);
                 }
         }
@@ -131,7 +141,24 @@ public class GoldenCauldron extends Entity {
                 }
                 if (changes.has("ready_at")) {
                         readyAt = 0L;
+                        if (!changes.has("ready_in")) {
+                                readyInSeconds = 0;
+                        }
                         fireChange(PROP_READY_AT);
                 }
+                if (changes.has("ready_in")) {
+                        readyInSeconds = 0;
+                        if (!changes.has("ready_at")) {
+                                fireChange(PROP_READY_AT);
+                        }
+                }
         }
+
+        private void applyReadyInSeconds() {
+                if (readyInSeconds > 0) {
+                        final long now = System.currentTimeMillis();
+                        readyAt = now + (readyInSeconds * 1000L);
+                }
+        }
+
 }
