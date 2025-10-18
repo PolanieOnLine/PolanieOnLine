@@ -20,6 +20,7 @@ import marauroa.common.game.RPSlot;
  * Client representation of the golden cauldron entity.
  */
 public class GoldenCauldron extends Entity {
+	private static final long BREW_TIME_MILLIS = 5L * 60L * 1000L;
 	public static final Property PROP_OPEN = new Property();
 	public static final Property PROP_STATE = new Property();
 	public static final Property PROP_STATUS = new Property();
@@ -33,6 +34,7 @@ public class GoldenCauldron extends Entity {
 	private RPSlot content;
 	private long readyAt;
 	private int readyInSeconds;
+	private long readyStartedAt;
 
 	public GoldenCauldron() {
 		status = "";
@@ -82,7 +84,9 @@ public class GoldenCauldron extends Entity {
 		status = object.has("status") ? object.get("status") : "";
 		brewer = object.has("brewer") ? object.get("brewer") : null;
 		readyAt = object.has("ready_at") ? object.getLong("ready_at") : 0L;
+		readyStartedAt = object.has("ready_started_at") ? object.getLong("ready_started_at") : 0L;
 		readyInSeconds = object.has("ready_in") ? object.getInt("ready_in") : 0;
+		ensureReadyAtFromStart();
 		applyReadyInSeconds();
 	}
 
@@ -109,6 +113,13 @@ public class GoldenCauldron extends Entity {
 		if (changes.has("ready_at")) {
 			readyAt = changes.getLong("ready_at");
 			if (readyInSeconds <= 0) {
+				fireChange(PROP_READY_AT);
+			}
+		}
+		if (changes.has("ready_started_at")) {
+			readyStartedAt = changes.getLong("ready_started_at");
+			ensureReadyAtFromStart();
+			if (!changes.has("ready_at") && !changes.has("ready_in")) {
 				fireChange(PROP_READY_AT);
 			}
 		}
@@ -152,18 +163,47 @@ public class GoldenCauldron extends Entity {
 				fireChange(PROP_READY_AT);
 			}
 		}
+		if (changes.has("ready_started_at")) {
+			readyStartedAt = 0L;
+			if (!changes.has("ready_at") && !changes.has("ready_in")) {
+				fireChange(PROP_READY_AT);
+			}
+		}
 	}
 
 	private void applyReadyInSeconds() {
 		if (readyInSeconds <= 0) {
+			ensureReadyAtFromStart();
 			return;
 		}
 
 		final long candidate = System.currentTimeMillis() + (readyInSeconds * 1000L);
 		if (readyAt > 0) {
 			readyAt = Math.min(readyAt, candidate);
+		} else if (readyStartedAt > 0) {
+			final long expected = readyStartedAt + BREW_TIME_MILLIS;
+			if (expected > System.currentTimeMillis()) {
+				readyAt = Math.min(expected, candidate);
+			} else {
+				readyAt = candidate;
+			}
 		} else {
 			readyAt = candidate;
+		}
+	}
+
+	private void ensureReadyAtFromStart() {
+		if (readyStartedAt <= 0) {
+			return;
+		}
+
+		final long expected = readyStartedAt + BREW_TIME_MILLIS;
+		if (expected <= 0) {
+			return;
+		}
+
+		if (readyAt <= 0 || readyAt > expected) {
+			readyAt = expected;
 		}
 	}
 }
