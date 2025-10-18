@@ -55,23 +55,25 @@ public class GoldenCauldron2DView extends Entity2DView<GoldenCauldron> {
 
         private Sprite idleSprite;
         private AnimatedSprite activeAnimation;
-	private GoldenCauldronWindow window;
-	private Inspector inspector;
-	private boolean openChanged;
-	private boolean statusChanged;
-	private boolean brewerChanged;
-	private boolean requestOpen;
+        private GoldenCauldronWindow window;
+        private Inspector inspector;
+        private boolean openChanged;
+        private boolean statusChanged;
+        private boolean brewerChanged;
+        private boolean readyAtChanged;
+        private boolean requestOpen;
 
 	@Override
 	public void initialize(final GoldenCauldron entity) {
 		setSpriteAlignment(HorizontalAlignment.LEFT, VerticalAlignment.BOTTOM);
-		super.initialize(entity);
-		representationChanged = true;
-		openChanged = false;
-		statusChanged = false;
-		brewerChanged = false;
-		requestOpen = false;
-	}
+                super.initialize(entity);
+                representationChanged = true;
+                openChanged = false;
+                statusChanged = false;
+                brewerChanged = false;
+                readyAtChanged = false;
+                requestOpen = false;
+        }
 
 	@Override
 	protected void buildRepresentation(final GoldenCauldron entity) {
@@ -110,13 +112,16 @@ public class GoldenCauldron2DView extends Entity2DView<GoldenCauldron> {
 		if (property == GoldenCauldron.PROP_OPEN) {
 			openChanged = true;
 		}
-		if (property == GoldenCauldron.PROP_STATUS) {
-			statusChanged = true;
-		}
-		if (property == GoldenCauldron.PROP_BREWER) {
-			brewerChanged = true;
-		}
-	}
+                if (property == GoldenCauldron.PROP_STATUS) {
+                        statusChanged = true;
+                }
+                if (property == GoldenCauldron.PROP_BREWER) {
+                        brewerChanged = true;
+                }
+                if (property == GoldenCauldron.PROP_READY_AT) {
+                        readyAtChanged = true;
+                }
+        }
 
 	@Override
 	protected void update() {
@@ -132,16 +137,22 @@ public class GoldenCauldron2DView extends Entity2DView<GoldenCauldron> {
 			requestOpen = false;
 		}
 
-		if (statusChanged) {
-			statusChanged = false;
-			updateStatus();
-		}
+                if (statusChanged) {
+                        statusChanged = false;
+                        updateStatus();
+                }
 
-		if (brewerChanged) {
-			brewerChanged = false;
-			updateMixAvailability();
-		}
-	}
+                if (brewerChanged) {
+                        brewerChanged = false;
+                        updateMixAvailability();
+                }
+
+                if (readyAtChanged) {
+                        readyAtChanged = false;
+                        updateStatus();
+                        updateMixAvailability();
+                }
+        }
 
 	@Override
 	public void onAction(final ActionType at) {
@@ -200,12 +211,12 @@ public class GoldenCauldron2DView extends Entity2DView<GoldenCauldron> {
 			if (!requestOpen && !entity.isControlledByUser()) {
 				return;
 			}
-			final GoldenCauldronWindow newWindow =
-				new GoldenCauldronWindow(entity.getName());
-			newWindow.setSlot(entity, SLOT_CONTENT);
-			newWindow.setInspector(inspector);
-			newWindow.setStatusText(entity.getStatusText());
-			newWindow.setMixEnabled(entity.isControlledByUser());
+                        final GoldenCauldronWindow newWindow =
+                                new GoldenCauldronWindow(entity.getName());
+                        newWindow.setSlot(entity, SLOT_CONTENT);
+                        newWindow.setInspector(inspector);
+                        newWindow.updateStatus(entity.getStatusText(), entity.getReadyAt());
+                        newWindow.setMixEnabled(entity.isControlledByUser() && !entity.isActive());
 			newWindow.setMixAction(new ActionListener() {
 				@Override
 				public void actionPerformed(final ActionEvent event) {
@@ -238,9 +249,9 @@ public class GoldenCauldron2DView extends Entity2DView<GoldenCauldron> {
 		}
 
 		requestOpen = false;
-		updateStatus();
-		updateMixAvailability();
-	}
+                updateStatus();
+                updateMixAvailability();
+        }
 
 	private void destroyWindow() {
 		final GoldenCauldronWindow current = window;
@@ -255,17 +266,18 @@ public class GoldenCauldron2DView extends Entity2DView<GoldenCauldron> {
 		}
 	}
 
-	private void updateStatus() {
-		if (window != null) {
-			window.setStatusText(entity.getStatusText());
-		}
-	}
+        private void updateStatus() {
+                if (window != null) {
+                        window.updateStatus(entity.getStatusText(), entity.getReadyAt());
+                }
+        }
 
-	private void updateMixAvailability() {
-		if (window != null) {
-			window.setMixEnabled(entity.isControlledByUser());
-		}
-	}
+        private void updateMixAvailability() {
+                if (window != null) {
+                        final boolean canMix = entity.isControlledByUser() && !entity.isActive();
+                        window.setMixEnabled(canMix);
+                }
+        }
 
 	private void sendMixAction() {
 		final RPAction action = new RPAction();
