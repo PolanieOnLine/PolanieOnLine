@@ -41,9 +41,7 @@ public class GoldenCauldron2DView extends Entity2DView<GoldenCauldron> {
 	private static final int TILE = IGameScreen.SIZE_UNIT_PIXELS;
 	private static final int FRAME_WIDTH = TILE * 2;
 	private static final int FRAME_HEIGHT = TILE * 2;
-	private static final int FRAME_TOP_ROW = 1;
-	private static final int FRAME_BOTTOM_ROW = 2;
-	private static final int FRAME_COLUMN_SPAN = 2;
+        private static final int FRAME_COLUMN_SPAN = 2;
 	private static final int IDLE_FRAME = 0;
 	private static final int ACTIVE_FRAME = 1;
 	private static final String SLOT_CONTENT = "content";
@@ -283,14 +281,16 @@ public class GoldenCauldron2DView extends Entity2DView<GoldenCauldron> {
 	}
 
 	private Sprite composeFrame(final SpriteStore store, final Sprite sheet, final int frame) {
-		final BufferedImage image =
-			new BufferedImage(FRAME_WIDTH, FRAME_HEIGHT, BufferedImage.TYPE_INT_ARGB);
-		final Graphics2D g = image.createGraphics();
+                final BufferedImage image =
+                        new BufferedImage(FRAME_WIDTH, FRAME_HEIGHT, BufferedImage.TYPE_INT_ARGB);
+                final Graphics2D g = image.createGraphics();
 
-		try {
-			final int column = frame * FRAME_COLUMN_SPAN;
-			drawRow(store, sheet, g, column, FRAME_TOP_ROW, 0);
-			drawRow(store, sheet, g, column, FRAME_BOTTOM_ROW, TILE);
+                try {
+                        final int column = frame * FRAME_COLUMN_SPAN;
+                        final int topRow = frame * 2;
+                        final int bottomRow = topRow + 1;
+                        drawRow(store, sheet, g, column, topRow, 0);
+                        drawRow(store, sheet, g, column, bottomRow, TILE);
 		} finally {
 			g.dispose();
 		}
