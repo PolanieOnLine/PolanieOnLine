@@ -79,6 +79,8 @@ public class GoldenCauldron extends Entity {
 	public void initialize(final RPObject object) {
 		super.initialize(object);
 
+		cacheKey = buildCacheKey(object);
+
 		if (object.hasSlot("content")) {
 			content = object.getSlot("content");
 		} else {
@@ -204,16 +206,26 @@ public class GoldenCauldron extends Entity {
 
 	private void cacheReadyTimes() {
 		final String key = getCacheKey();
+
 		if (readyAt > 0) {
-			READY_AT_CACHE.put(key, readyAt);
+			READY_AT_CACHE.put(key, Long.valueOf(readyAt));
 		} else {
-			READY_AT_CACHE.remove(key);
+			final Long cached = READY_AT_CACHE.get(key);
+			if ((cached != null) && (cached.longValue() <= System.currentTimeMillis())) {
+				READY_AT_CACHE.remove(key);
+			}
 		}
 
 		if (readyStartedAt > 0) {
-			READY_STARTED_CACHE.put(key, readyStartedAt);
+			READY_STARTED_CACHE.put(key, Long.valueOf(readyStartedAt));
 		} else {
-			READY_STARTED_CACHE.remove(key);
+			final Long cachedStart = READY_STARTED_CACHE.get(key);
+			if (cachedStart != null) {
+				final long finish = cachedStart.longValue() + BREW_TIME_MILLIS;
+				if (finish <= System.currentTimeMillis()) {
+					READY_STARTED_CACHE.remove(key);
+				}
+			}
 		}
 	}
 
@@ -226,6 +238,15 @@ public class GoldenCauldron extends Entity {
 			cacheKey = zone + ':' + px + ':' + py;
 		}
 		return cacheKey;
+	}
+
+	private String buildCacheKey(final RPObject object) {
+		final RPObject.ID id = object.getID();
+		final String zone = (id != null) ? id.getZoneID() : "";
+		final int px = object.has("x") ? object.getInt("x") : (int) Math.round(getX());
+		final int py = object.has("y") ? object.getInt("y") : (int) Math.round(getY());
+		final String name = object.has("name") ? object.get("name") : "";
+		return zone + ':' + name + ':' + px + ':' + py;
 	}
 
 	private void applyReadyInSeconds() {
