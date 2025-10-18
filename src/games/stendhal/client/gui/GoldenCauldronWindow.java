@@ -36,14 +36,14 @@ public class GoldenCauldronWindow extends InternalManagedWindow implements Inspe
 	private static final int MAX_DISTANCE = 4;
 
 	private final SlotGrid grid;
-        private final JLabel statusLabel;
-        private final JButton mixButton;
+	private final JLabel statusLabel;
+	private final JButton mixButton;
 
-        private IEntity parent;
-        private ActionListener mixListener;
-        private Timer countdownTimer;
-        private long readyAt;
-        private String baseStatus;
+	private IEntity parent;
+	private ActionListener mixListener;
+	private Timer countdownTimer;
+	private long readyAt;
+	private String baseStatus;
 
 	public GoldenCauldronWindow(final String title) {
 		super("golden_cauldron", title);
@@ -56,16 +56,16 @@ public class GoldenCauldronWindow extends InternalManagedWindow implements Inspe
 		grid.setOpaque(false);
 		grid.setAcceptedTypes(EntityMap.getClass("item", null, null));
 
-                statusLabel = new JLabel("Kocioł nie pracuje.");
-                statusLabel.setHorizontalAlignment(SwingConstants.CENTER);
-                mixButton = new JButton("Mieszaj");
-                mixButton.setFocusable(false);
-                mixButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-                mixButton.addActionListener(new ActionListener() {
-                        @Override
-                        public void actionPerformed(final ActionEvent e) {
-                                if (mixListener != null && mixButton.isEnabled()) {
-                                        mixListener.actionPerformed(e);
+		statusLabel = new JLabel("Kocioł nie pracuje.");
+		statusLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		mixButton = new JButton("Mieszaj");
+		mixButton.setFocusable(false);
+		mixButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+		mixButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				if (mixListener != null && mixButton.isEnabled()) {
+					mixListener.actionPerformed(e);
 				}
 			}
 		});
@@ -73,10 +73,10 @@ public class GoldenCauldronWindow extends InternalManagedWindow implements Inspe
 		final JPanel layout = new JPanel();
 		layout.setLayout(new SBoxLayout(SBoxLayout.VERTICAL, 4));
 		layout.setBorder(new EmptyBorder(4, 6, 6, 6));
-                layout.setOpaque(false);
-                layout.add(statusLabel);
-                layout.add(grid);
-                layout.add(mixButton);
+		layout.setOpaque(false);
+		layout.add(statusLabel);
+		layout.add(grid);
+		layout.add(mixButton);
 
 		final JPanel content = new JPanel(new BorderLayout());
 		content.setOpaque(false);
@@ -93,20 +93,20 @@ public class GoldenCauldronWindow extends InternalManagedWindow implements Inspe
 		grid.setInspector(inspector);
 	}
 
-        public void updateStatus(final String text, final long readyAtTimestamp) {
-                SwingUtilities.invokeLater(new Runnable() {
-                        @Override
-                        public void run() {
-                                baseStatus = (text == null) ? "" : text;
-                                readyAt = readyAtTimestamp;
-                                restartCountdown();
-                        }
-                });
-        }
+	public void updateStatus(final String text, final long readyAtTimestamp) {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				baseStatus = (text == null) ? "" : text;
+				readyAt = readyAtTimestamp;
+				restartCountdown();
+			}
+		});
+	}
 
-        public void setMixEnabled(final boolean enabled) {
-                SwingUtilities.invokeLater(new Runnable() {
-                        @Override
+	public void setMixEnabled(final boolean enabled) {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				mixButton.setEnabled(enabled);
 			}
@@ -123,77 +123,76 @@ public class GoldenCauldronWindow extends InternalManagedWindow implements Inspe
 		checkDistance();
 	}
 
-        @Override
-        public void close() {
-                grid.release();
-                stopCountdown();
-                super.close();
-        }
+	@Override
+	public void close() {
+		grid.release();
+		stopCountdown();
+		super.close();
+	}
 
-        private void checkDistance() {
-                if (!isCloseEnough()) {
-                        close();
-                }
-        }
+	private void checkDistance() {
+		if (!isCloseEnough()) {
+			close();
+		}
+	}
 
-        private void restartCountdown() {
-                stopCountdown();
+	private void restartCountdown() {
+		stopCountdown();
 
-                if (readyAt > System.currentTimeMillis()) {
-                        countdownTimer = new Timer(1000, new ActionListener() {
-                                @Override
-                                public void actionPerformed(final ActionEvent event) {
-                                        refreshStatusLabel();
-                                }
-                        });
-                        countdownTimer.setRepeats(true);
-                        countdownTimer.setInitialDelay(0);
-                        countdownTimer.start();
-                        refreshStatusLabel();
-                } else {
-                        statusLabel.setText(baseStatus);
-                }
-        }
+		if (readyAt > System.currentTimeMillis()) {
+			countdownTimer = new Timer(1000, new ActionListener() {
+				@Override
+				public void actionPerformed(final ActionEvent event) {
+					refreshStatusLabel();
+				}
+			});
+			countdownTimer.setRepeats(true);
+			countdownTimer.setInitialDelay(0);
+			countdownTimer.start();
+			refreshStatusLabel();
+		} else {
+			statusLabel.setText(baseStatus);
+		}
+	}
 
-        private void refreshStatusLabel() {
-                if (readyAt <= System.currentTimeMillis()) {
-                        stopCountdown();
-                        statusLabel.setText(baseStatus);
-                        return;
-                }
+	private void refreshStatusLabel() {
+		if (readyAt <= System.currentTimeMillis()) {
+			stopCountdown();
+			statusLabel.setText(baseStatus);
+			return;
+		}
 
-                final long remainingMillis = readyAt - System.currentTimeMillis();
-                final long totalSeconds = Math.max(0L, remainingMillis / 1000L);
-                final long minutes = totalSeconds / 60L;
-                final long seconds = totalSeconds % 60L;
-                final StringBuilder builder = new StringBuilder();
-                if (baseStatus != null && !baseStatus.isEmpty()) {
-                        builder.append(baseStatus).append(' ');
-                }
-                builder.append("Pozostało ");
-                if (minutes > 0) {
-                        if (minutes < 10) {
-                                builder.append('0');
-                        }
-                        builder.append(minutes).append(':');
-                        if (seconds < 10) {
-                                builder.append('0');
-                        }
-                        builder.append(seconds);
-                } else {
-                        builder.append(seconds).append(" s");
-                }
-                builder.append('.');
-                statusLabel.setText(builder.toString());
-        }
+		final long remainingMillis = readyAt - System.currentTimeMillis();
+		final long totalSeconds = Math.max(0L, remainingMillis / 1000L);
+		final long minutes = totalSeconds / 60L;
+		final long seconds = totalSeconds % 60L;
+		final StringBuilder builder = new StringBuilder();
+		if (baseStatus != null && !baseStatus.isEmpty()) {
+			builder.append(baseStatus).append(' ');
+		}
+		builder.append("Pozostało ");
+		if (minutes > 0) {
+			if (minutes < 10) {
+				builder.append('0');
+			}
+			builder.append(minutes).append(':');
+			if (seconds < 10) {
+				builder.append('0');
+			}
+			builder.append(seconds);
+		} else {
+			builder.append(seconds).append(" s");
+		}
+		builder.append('.');
+		statusLabel.setText(builder.toString());
+	}
 
-        private void stopCountdown() {
-                if (countdownTimer != null) {
-                        countdownTimer.stop();
-                        countdownTimer = null;
-                }
-        }
-}
+ 	private void stopCountdown() {
+		if (countdownTimer != null) {
+			countdownTimer.stop();
+			countdownTimer = null;
+		}
+	}
 
 	private boolean isCloseEnough() {
 		final User user = User.get();
@@ -204,7 +203,7 @@ public class GoldenCauldronWindow extends InternalManagedWindow implements Inspe
 		final RPObject root = parent.getRPObject().getBaseContainer();
 		if (root != null && root.has("name")) {
 			if (StendhalClient.get().getCharacter().equalsIgnoreCase(
-				    root.get("name"))) {
+				root.get("name"))) {
 				return true;
 			}
 		}
@@ -218,7 +217,7 @@ public class GoldenCauldronWindow extends InternalManagedWindow implements Inspe
 
 		final Rectangle2D area = parent.getArea();
 		area.setRect(area.getX() - MAX_DISTANCE, area.getY() - MAX_DISTANCE,
-			area.getWidth() + MAX_DISTANCE * 2, area.getHeight() + MAX_DISTANCE * 2);
+				area.getWidth() + MAX_DISTANCE * 2, area.getHeight() + MAX_DISTANCE * 2);
 
 		return area.contains(px, py);
 	}
