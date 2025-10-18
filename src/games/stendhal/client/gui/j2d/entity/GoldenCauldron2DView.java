@@ -51,6 +51,7 @@ public class GoldenCauldron2DView extends Entity2DView<GoldenCauldron> {
 	private static final int[] ACTIVE_TOP_RIGHT_SEQUENCE = {33, 35, 37, 39, 37, 35};
 	private static final int[] ACTIVE_BOTTOM_LEFT_SEQUENCE = {8, 10, 12, 14, 12, 10};
 	private static final int[] ACTIVE_BOTTOM_RIGHT_SEQUENCE = {9, 11, 13, 15, 13, 11};
+	private static final int ACTIVE_STIR_REPEAT = 3;
 	private static final int[] ACTIVE_STIR_SEQUENCE = {5, 6};
 	private static final String SLOT_CONTENT = "content";
 
@@ -315,7 +316,7 @@ public class GoldenCauldron2DView extends Entity2DView<GoldenCauldron> {
 				ACTIVE_BOTTOM_LEFT_SEQUENCE[i % bottomFrameCount],
 				ACTIVE_BOTTOM_RIGHT_SEQUENCE[i % bottomFrameCount]
 			};
-			final int stirIndex = ACTIVE_STIR_SEQUENCE[i % ACTIVE_STIR_SEQUENCE.length];
+			final int stirIndex = ACTIVE_STIR_SEQUENCE[(i / ACTIVE_STIR_REPEAT) % ACTIVE_STIR_SEQUENCE.length];
 			frames[i] = composeFrame(store, sheet, indices, stirIndex);
 		}
 
