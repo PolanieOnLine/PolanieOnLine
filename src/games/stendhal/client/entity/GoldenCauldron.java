@@ -13,6 +13,8 @@ package games.stendhal.client.entity;
 
 import games.stendhal.client.StendhalClient;
 import games.stendhal.client.entity.User;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import marauroa.common.game.RPObject;
 import marauroa.common.game.RPSlot;
 
@@ -35,6 +37,10 @@ public class GoldenCauldron extends Entity {
 	private long readyAt;
 	private int readyInSeconds;
 	private long readyStartedAt;
+	private String cacheKey;
+
+	private static final Map<String, Long> READY_AT_CACHE = new ConcurrentHashMap<String, Long>();
+	private static final Map<String, Long> READY_STARTED_CACHE = new ConcurrentHashMap<String, Long>();
 
 	public GoldenCauldron() {
 		status = "";
@@ -86,8 +92,10 @@ public class GoldenCauldron extends Entity {
 		readyAt = object.has("ready_at") ? object.getLong("ready_at") : 0L;
 		readyStartedAt = object.has("ready_started_at") ? object.getLong("ready_started_at") : 0L;
 		readyInSeconds = object.has("ready_in") ? object.getInt("ready_in") : 0;
+		restoreCachedTimes();
 		ensureReadyAtFromStart();
 		applyReadyInSeconds();
+		cacheReadyTimes();
 	}
 
 	@Override
@@ -112,12 +120,14 @@ public class GoldenCauldron extends Entity {
 		}
 		if (changes.has("ready_at")) {
 			readyAt = changes.getLong("ready_at");
+			cacheReadyTimes();
 			if (readyInSeconds <= 0) {
 				fireChange(PROP_READY_AT);
 			}
 		}
 		if (changes.has("ready_started_at")) {
 			readyStartedAt = changes.getLong("ready_started_at");
+			cacheReadyTimes();
 			ensureReadyAtFromStart();
 			if (!changes.has("ready_at") && !changes.has("ready_in")) {
 				fireChange(PROP_READY_AT);
@@ -126,6 +136,7 @@ public class GoldenCauldron extends Entity {
 		if (changes.has("ready_in")) {
 			readyInSeconds = changes.getInt("ready_in");
 			applyReadyInSeconds();
+			cacheReadyTimes();
 			fireChange(PROP_READY_AT);
 		}
 	}
@@ -155,6 +166,7 @@ public class GoldenCauldron extends Entity {
 			if (!changes.has("ready_in")) {
 				readyInSeconds = 0;
 			}
+			cacheReadyTimes();
 			fireChange(PROP_READY_AT);
 		}
 		if (changes.has("ready_in")) {
@@ -165,10 +177,55 @@ public class GoldenCauldron extends Entity {
 		}
 		if (changes.has("ready_started_at")) {
 			readyStartedAt = 0L;
+			cacheReadyTimes();
 			if (!changes.has("ready_at") && !changes.has("ready_in")) {
 				fireChange(PROP_READY_AT);
 			}
 		}
+	}
+
+	private void restoreCachedTimes() {
+		if (readyAt <= 0) {
+			final Long cached = READY_AT_CACHE.get(getCacheKey());
+			if ((cached != null) && (cached > System.currentTimeMillis())) {
+				readyAt = cached.longValue();
+			}
+		}
+
+		if (readyStartedAt <= 0) {
+			final Long cachedStart = READY_STARTED_CACHE.get(getCacheKey());
+			if (cachedStart != null) {
+				readyStartedAt = cachedStart.longValue();
+			} else if (readyAt > 0) {
+				readyStartedAt = readyAt - BREW_TIME_MILLIS;
+			}
+		}
+	}
+
+	private void cacheReadyTimes() {
+		final String key = getCacheKey();
+		if (readyAt > 0) {
+			READY_AT_CACHE.put(key, readyAt);
+		} else {
+			READY_AT_CACHE.remove(key);
+		}
+
+		if (readyStartedAt > 0) {
+			READY_STARTED_CACHE.put(key, readyStartedAt);
+		} else {
+			READY_STARTED_CACHE.remove(key);
+		}
+	}
+
+	private String getCacheKey() {
+		if (cacheKey == null) {
+			final RPObject.ID id = getID();
+			final String zone = (id != null) ? id.getZoneID() : "";
+			final int px = (int) Math.round(getX());
+			final int py = (int) Math.round(getY());
+			cacheKey = zone + ':' + px + ':' + py;
+		}
+		return cacheKey;
 	}
 
 	private void applyReadyInSeconds() {
