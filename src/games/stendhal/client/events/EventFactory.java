@@ -82,6 +82,8 @@ class EventFactory {
 			event = new ReachedAchievementEvent();
 		} else if (name.equals(Events.BESTIARY)) {
 			event = new BestiaryEvent();
+		} else if (name.equals(Events.QUEST_CRAFTING)) {
+			event = new QuestCraftingEvent();
 		} else if (name.equals(Events.DROPPEDLIST)) {
 			event = new ItemLogEvent();
 		} else if (name.equals(Events.ACHIEVEMENT_LOG)) {

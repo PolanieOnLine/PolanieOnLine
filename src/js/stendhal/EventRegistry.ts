@@ -23,6 +23,7 @@ import { GroupInviteEvent } from "./event/GroupInviteEvent";
 import { PlayerLoggedOnEvent } from "./event/PlayerLoggedOnEvent";
 import { PlayerLoggedOutEvent } from "./event/PlayerLoggedOutEvent";
 import { ProgressStatusEvent } from "./event/ProgressStatusEvent";
+import { QuestCraftingEvent } from "./event/QuestCraftingEvent";
 import { RPEvent } from "./event/RPEvent";
 import { SoundEvent } from "./event/SoundEvent";
 import { TradeEvent } from "./event/TradeEvent";
@@ -76,6 +77,7 @@ export class EventRegistry {
 		this.register("group_invite_event", new GroupInviteEvent());
 		this.register("progress_status_event", new ProgressStatusEvent());
 		this.register("trade_state_change_event", new TradeEvent());
+		this.register("quest_crafting", new QuestCraftingEvent());
 
 		this.register("attack", {
 			execute: function(entity: RPEntity) {
