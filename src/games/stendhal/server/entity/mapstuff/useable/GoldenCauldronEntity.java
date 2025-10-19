@@ -11,6 +11,13 @@
  ***************************************************************************/
 package games.stendhal.server.entity.mapstuff.useable;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.log4j.Logger;
+
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.events.TurnListener;
@@ -21,15 +28,10 @@ import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.entity.slot.EntitySlot;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
 import marauroa.common.game.Definition.Type;
 import marauroa.common.game.RPClass;
 import marauroa.common.game.RPObject;
 import marauroa.common.game.RPSlot;
-import org.apache.log4j.Logger;
 
 /**
  * A brewing cauldron used in the golden ciupaga quest line.

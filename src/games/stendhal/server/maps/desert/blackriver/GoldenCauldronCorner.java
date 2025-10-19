@@ -11,11 +11,12 @@
  ***************************************************************************/
 package games.stendhal.server.maps.desert.blackriver;
 
+import java.util.Map;
+
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.mapstuff.useable.GoldenCauldronEntity;
 import games.stendhal.server.entity.npc.SpeakerNPC;
-import java.util.Map;
 
 /**
  * Places Draconia and her golden cauldron inside Józek's forge.
@@ -30,11 +31,10 @@ public class GoldenCauldronCorner implements ZoneConfigurator {
 
 	private void buildCauldron(final StendhalRPZone zone) {
 		final GoldenCauldronEntity cauldron = new GoldenCauldronEntity();
-		cauldron.setPosition(10, 6);
+		cauldron.setPosition(18, 14);
 		cauldron.setEntityClass("useable_entity");
 		cauldron.setEntitySubclass("golden_cauldron");
-		cauldron.setDescription(
-		"Oto kocioł Draconii. Możesz w nim przygotować wywar wąsatych smoków.");
+		cauldron.setDescription("Oto kocioł Draconii. Możesz w nim przygotować wywar wąsatych smoków.");
 		zone.add(cauldron);
 	}
 
@@ -42,24 +42,21 @@ public class GoldenCauldronCorner implements ZoneConfigurator {
 		final SpeakerNPC npc = new SpeakerNPC("Draconia") {
 			@Override
 			protected void createDialog() {
-				addGreeting(
-				"Witaj, podróżniku. Mój kocioł czeka na kolejne wyzwanie.");
+				addGreeting("Witaj, podróżniku. Mój kocioł czeka na kolejne wyzwanie.");
 				addHelp("Jeżeli pragniesz ulepszyć złotą ciupagę, przygotuj #wywar "
-				+ "wąsatych smoków w moim kotle.");
-				addReply("wywar",
-				"Wrzuć do kotła wszystkie wymagane składniki, a następnie "
-				+ "kliknij 'Mieszaj'. Pamiętaj, że tylko osoba, która "
-				+ "otworzyła kocioł, może dokończyć wywar.");
+						+ "wąsatych smoków w moim kotle.");
+				addReply("wywar", "Wrzuć do kotła wszystkie wymagane składniki, a następnie "
+						+ "kliknij 'Mieszaj'. Pamiętaj, że tylko osoba, która "
+						+ "otworzyła kocioł, może dokończyć wywar.");
 				addJob("Pilnuję, by płomienie nie zgasły w kuźni Józka.");
 				addGoodbye("Niech płomienie prowadzą Cię ku sile.");
 			}
 		};
 
-		npc.setPosition(8, 5);
+		npc.setPosition(19, 12);
 		npc.setEntityClass("witchnpc");
 		npc.setGender("F");
-		npc.setDescription(
-		"Oto Draconia, strażniczka wąsatych smoków i ich tajemnych mikstur.");
+		npc.setDescription("Oto Draconia, strażniczka wąsatych smoków i ich tajemnych mikstur.");
 		zone.add(npc);
 	}
 }
