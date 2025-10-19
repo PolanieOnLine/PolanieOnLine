@@ -11,6 +11,7 @@
  ***************************************************************************/
 package games.stendhal.client.gui;
 
+import static games.stendhal.client.gui.settings.SettingsProperties.DISPLAY_SIZE_PROPERTY;
 import static games.stendhal.common.constants.Actions.COND_STOP;
 import static games.stendhal.common.constants.Actions.TYPE;
 
@@ -157,8 +158,9 @@ class SwingClientGUI implements J2DClientGUI {
 		setupOverallLayout();
 
 		int divWidth = verticalSplit.getDividerSize();
-		WtWindowManager.getInstance().registerSettingChangeListener(SCALE_PREFERENCE_PROPERTY,
-				new ScalingSettingChangeListener(divWidth));
+		WtWindowManager wm = WtWindowManager.getInstance();
+		wm.registerSettingChangeListener(SCALE_PREFERENCE_PROPERTY, new ScalingSettingChangeListener(divWidth));
+		wm.registerSettingChangeListener(DISPLAY_SIZE_PROPERTY, new DisplaySizeChangeListener());
 
 		setInitialWindowStates();
 		frame.setVisible(true);
@@ -518,7 +520,7 @@ class SwingClientGUI implements J2DClientGUI {
 		// Splitter between the left column and game screen
 		JSplitPane split = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, leftColumn, verticalSplit);
 		// Ensure that the limits are obeyed even when the component is resized
-		split.addComponentListener(new HorizontalSplitListener(displaySize, split));
+		split.addComponentListener(new HorizontalSplitListener(split));
 
 		horizontalSplit = split;
 		int divWidth = verticalSplit.getDividerSize();
@@ -708,19 +710,18 @@ class SwingClientGUI implements J2DClientGUI {
 	}
 
 	private final class HorizontalSplitListener extends ComponentAdapter {
-		private final Dimension displaySize;
 		private final JSplitPane split;
 		// Start with a large value, so that the divider is placed as left
 		// as possible
 		private int oldWidth = Integer.MAX_VALUE;
 
-		HorizontalSplitListener(Dimension displaySize, JSplitPane split) {
-			this.displaySize = displaySize;
+		HorizontalSplitListener(JSplitPane split) {
 			this.split = split;
 		}
 
 		@Override
 		public void componentResized(ComponentEvent e) {
+			Dimension displaySize = stendhal.getDisplaySize();
 			if (screen.isScaled()) {
 				/*
 				 * Default behavior is otherwise reasonable, except the
@@ -801,6 +802,59 @@ class SwingClientGUI implements J2DClientGUI {
 					verticalSplit.setDividerLocation(displaySize.height);
 				}
 			}
+		}
+	}
+
+	private class DisplaySizeChangeListener implements SettingChangeListener {
+		DisplaySizeChangeListener() {
+			String stored = WtWindowManager.getInstance().getProperty(DISPLAY_SIZE_PROPERTY,
+					Integer.toString(stendhal.getDisplaySizeIndex()));
+			changed(stored);
+		}
+
+		@Override
+		public void changed(String newValue) {
+			int maxIndex = Math.max(0, stendhal.getAvailableDisplaySizes().size() - 1);
+			int parsed = MathHelper.parseIntDefault(newValue, stendhal.getDisplaySizeIndex());
+			int clamped = MathHelper.clamp(parsed, 0, maxIndex);
+			if (clamped != parsed) {
+				WtWindowManager.getInstance().setProperty(DISPLAY_SIZE_PROPERTY, Integer.toString(clamped));
+			}
+			stendhal.setDisplaySizeIndex(clamped);
+			applyDisplaySize(stendhal.getDisplaySize());
+		}
+
+		private void applyDisplaySize(final Dimension displaySize) {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					int divWidth = verticalSplit.getDividerSize();
+					pane.setPreferredSize(new Dimension(displaySize.width + divWidth, displaySize.height));
+					pane.setSize(pane.getPreferredSize());
+					screen.setSize(displaySize);
+					screen.setPreferredSize(displaySize);
+					screen.revalidate();
+					pane.revalidate();
+					if (screen.isScaled()) {
+						verticalSplit.setMaximumSize(null);
+						pane.setMaximumSize(null);
+					} else {
+						verticalSplit.setMaximumSize(new Dimension(displaySize.width + divWidth, Integer.MAX_VALUE));
+						pane.setMaximumSize(displaySize);
+						int overflow = horizontalSplit.getWidth() - horizontalSplit.getDividerLocation()
+								- displaySize.width - divWidth;
+						if (overflow > 0) {
+							horizontalSplit.setDividerLocation(horizontalSplit.getDividerLocation() + overflow);
+						}
+						if (verticalSplit.getDividerLocation() > displaySize.height) {
+							verticalSplit.setDividerLocation(displaySize.height);
+						}
+					}
+					chatText.getPlayerChatText().setMaximumSize(new Dimension(displaySize.width, Integer.MAX_VALUE));
+					frame.pack();
+					horizontalSplit.setDividerLocation(leftColumn.getPreferredSize().width);
+				}
+			});
 		}
 	}
 
