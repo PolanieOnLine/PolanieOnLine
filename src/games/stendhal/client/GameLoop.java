@@ -18,6 +18,11 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.client.gui.settings.SettingsProperties;
+import games.stendhal.client.gui.wt.core.SettingChangeListener;
+import games.stendhal.client.gui.wt.core.WtWindowManager;
+import games.stendhal.common.MathHelper;
+
 /**
  * Game loop thread.
  */
@@ -42,10 +47,28 @@ public class GameLoop {
 	 */
 	private volatile boolean running;
 
+	private volatile long frameLength;
+
+	private volatile int currentFps;
+
+	private final SettingChangeListener fpsLimitListener;
+
 	/**
 	 * Create a new GameLoop.
 	 */
 	private GameLoop() {
+		fpsLimitListener = new SettingChangeListener() {
+			@Override
+			public void changed(String newValue) {
+				int limit = MathHelper.parseIntDefault(newValue, stendhal.getFpsLimit());
+				updateFrameLength(limit);
+			}
+		};
+		int configuredLimit = WtWindowManager.getInstance().getPropertyInt(
+				SettingsProperties.FPS_LIMIT_PROPERTY, stendhal.getFpsLimit());
+		updateFrameLength(configuredLimit);
+		WtWindowManager.getInstance().registerSettingChangeListener(
+				SettingsProperties.FPS_LIMIT_PROPERTY, fpsLimitListener);
 		loopThread = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -56,6 +79,13 @@ public class GameLoop {
 				}
 			}
 		}, "Game loop");
+	}
+
+	private void updateFrameLength(int limit) {
+		int sanitized = Math.max(1, limit);
+		stendhal.setFpsLimit(sanitized);
+		frameLength = Math.max(1L, Math.round(1000.0 / sanitized));
+		currentFps = sanitized;
 	}
 
 	/**
@@ -126,10 +156,8 @@ public class GameLoop {
 	 * The actual game loop.
 	 */
 	private void loop() {
-		final int frameLength = (int) (490.0 / stendhal.FPS_LIMIT);
 		int fps = 0;
 
-		// keep looping until the game ends
 		long refreshTime = System.currentTimeMillis();
 		long lastFpsTime = refreshTime;
 
@@ -150,17 +178,18 @@ public class GameLoop {
 					tempTask = temporaryTasks.poll();
 				}
 
-				if (logger.isDebugEnabled()) {
-					reportClientInfo(refreshTime, lastFpsTime, fps);
+				if ((refreshTime - lastFpsTime) >= 1000L) {
+					currentFps = fps;
+					if (logger.isDebugEnabled()) {
+						reportClientInfo(refreshTime, lastFpsTime, fps);
+					}
 					fps = 0;
 					lastFpsTime = refreshTime;
 				}
 
 				logger.debug("Start sleeping");
-				// we know how long we want per screen refresh (40ms) then
-				// we add the refresh time and subtract the current time
-				// leaving us with the amount we still need to sleep.
-				long wait = frameLength + refreshTime - System.currentTimeMillis();
+				final long frameDuration = frameLength;
+				long wait = frameDuration + refreshTime - System.currentTimeMillis();
 
 				if (wait > 0) {
 					if (wait > 100L) {
@@ -198,6 +227,10 @@ public class GameLoop {
 			logger.debug("Total/Used memory: " + totalMemory + "/"
 					+ (totalMemory - freeMemory));
 		}
+	}
+
+	public int getCurrentFps() {
+		return currentFps;
 	}
 
 	/**

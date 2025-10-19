@@ -11,6 +11,7 @@
  ***************************************************************************/
 package games.stendhal.client;
 
+import static games.stendhal.client.gui.settings.SettingsProperties.FPS_LIMIT_PROPERTY;
 import static games.stendhal.client.gui.settings.SettingsProperties.OVERRIDE_AA;
 import static games.stendhal.client.gui.settings.SettingsProperties.UI_RENDERING;
 import static games.stendhal.common.constants.Actions.MOVE_CONTINUOUS;
@@ -94,7 +95,9 @@ public final class stendhal {
 
 	public static final boolean FILTER_ATTACK_MESSAGES = true;
 
-	static final int FPS_LIMIT = 50;
+	public static final int DEFAULT_FPS_LIMIT = 60;
+
+	private static volatile int fpsLimit = DEFAULT_FPS_LIMIT;
 	/** For keeping the login status. Blocks until logged in. */
 	private static final CountDownLatch latch = new CountDownLatch(1);
 
@@ -161,6 +164,14 @@ public final class stendhal {
 		}
 
 		return displaySizes.get(DISPLAY_SIZE_INDEX);
+	}
+
+	public static int getFpsLimit() {
+		return fpsLimit;
+	}
+
+	public static void setFpsLimit(int limit) {
+		fpsLimit = Math.max(1, limit);
 	}
 
 	/**
@@ -265,6 +276,7 @@ public final class stendhal {
 
 		Startup(String[] args) {
 			WtWindowManager wm = WtWindowManager.getInstance();
+			stendhal.setFpsLimit(wm.getPropertyInt(FPS_LIMIT_PROPERTY, DEFAULT_FPS_LIMIT));
 
 			if (wm.getPropertyBoolean(OVERRIDE_AA, false)) {
 				System.setProperty("awt.useSystemAAFontSettings", "on");

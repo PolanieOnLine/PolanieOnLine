@@ -32,5 +32,9 @@ public class SettingsProperties {
 
 	public static final String BUBBLES_PROPERTY =  "ui.chat_bubbles";
 
+	public static final String FPS_LIMIT_PROPERTY = "ui.fps_limit";
+
+	public static final String FPS_COUNTER_PROPERTY = "ui.fps_counter";
+
 	public static final String UI_RENDERING = "ui.rendering";
 }
