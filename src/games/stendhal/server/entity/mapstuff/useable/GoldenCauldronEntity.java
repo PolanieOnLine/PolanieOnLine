@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2024 - Stendhal                    *
+ *               (C) Copyright 2024-2025 - PolanieOnLine                   *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -49,7 +48,7 @@ public class GoldenCauldronEntity extends UseableEntity {
 	private static final long BREW_TIME_MILLIS = BREW_TIME_SECONDS * 1000L;
 	private static final String STATUS_IDLE = "Kocioł nie pracuje.";
 	private static final String STATUS_WORKING = "";
-	private static final String STATUS_READY = "Wywar gotowy. Wyjmij go z kotła.";
+	private static final String STATUS_READY = "Wywar gotowy.";
 	private static final String STATUS_WAITING_FOR_PICKUP = "Wyjmij przygotowany wywar z kotła.";
 
 	private static final Map<String, Integer> RECIPE = new LinkedHashMap<String, Integer>();
@@ -247,8 +246,7 @@ public class GoldenCauldronEntity extends UseableEntity {
 	*/
 	public void mix(final Player player) {
 		if (!isControlledBy(player)) {
-			player.sendPrivateText(
-			"Najpierw poproś Draconię o pozwolenie i otwórz kocioł.");
+			player.sendPrivateText("Najpierw poproś Draconię o pozwolenie i otwórz kocioł.");
 			return;
 		}
 
@@ -332,8 +330,7 @@ public class GoldenCauldronEntity extends UseableEntity {
 			return;
 		}
 
-		final Item result =
-		SingletonRepository.getEntityManager().getItem("wywar wąsatych smoków");
+		final Item result = SingletonRepository.getEntityManager().getItem("wywar wąsatych smoków");
 		if (result == null) {
 			LOGGER.error("Unable to create wywar wąsatych smoków item");
 			setReadyAt(0);
@@ -549,5 +546,4 @@ public class GoldenCauldronEntity extends UseableEntity {
 			return true;
 		}
 	}
-
 }
