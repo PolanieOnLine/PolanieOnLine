@@ -13,6 +13,7 @@ package games.stendhal.server.core.engine.transformer;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.item.scroll.MarkedScroll;
@@ -35,7 +36,11 @@ public class ItemTransformer {
 		if (rpobject.get("type").equals("item")) {
 
 			final String name = UpdateConverter.updateItemName(rpobject.get("name"));
-			final Item item = UpdateConverter.updateItem(name);
+			ItemRarity storedRarity = null;
+			if (rpobject.has("rarity")) {
+				storedRarity = ItemRarity.byId(String.valueOf(rpobject.get("rarity")));
+			}
+			final Item item = UpdateConverter.updateItem(name, storedRarity);
 
 			if (item == null) {
 				// no such item in the game anymore
@@ -111,6 +116,12 @@ public class ItemTransformer {
 			}
 
 			UpdateConverter.updateImproveItemAttr(item);
+
+			if (rpobject.has("rarity") || rpobject.has("rarity_value") || rpobject.has("rarity_badge")) {
+				Integer storedValue = rpobject.has("rarity_value") ? Integer.valueOf(rpobject.getInt("rarity_value")) : null;
+				boolean badgeVisible = rpobject.has("rarity_badge") ? (rpobject.getInt("rarity_badge") != 0) : item.isRarityBadgeVisible();
+				item.restoreRarity(storedRarity, storedValue, badgeVisible);
+			}
 
 			// Contents, if the item has slot(s)
 			for (RPSlot slot : rpobject.slots()) {

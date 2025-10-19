@@ -21,6 +21,7 @@ import org.apache.log4j.Logger;
 
 import games.stendhal.common.ItemTools;
 import games.stendhal.common.KeyedSlotUtil;
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.common.constants.Testing;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.events.LoginListener;
@@ -239,6 +240,10 @@ public abstract class UpdateConverter {
 	}
 
 	public static Item updateItem(String name) {
+		return updateItem(name, null);
+	}
+
+	public static Item updateItem(String name, ItemRarity forcedRarity) {
 		// process the old keys for houses, now that we have change locks implemented
 		Item item;
 		if (name.startsWith("private key ")) {
@@ -249,7 +254,7 @@ public abstract class UpdateConverter {
 			final int number = 0;
 			final String[] parts = name.split(" ");
 			if (parts.length > 2) {
-			   	try {
+				try {
 					// house number
 					final int id;
 					id = Integer.parseInt(parts[2]);
@@ -266,17 +271,25 @@ public abstract class UpdateConverter {
 					((HouseKey) item).setup(doorId, number, null);
 				} catch (final NumberFormatException e) {
 					// shouldn't happen - give up and this will generate a warning
-					item = SingletonRepository.getEntityManager().getItem(name);
+					item = getItemByRarity(name, forcedRarity);
 				}
 			} else {
 				// shouldn't happen - give up and this will generate a warning
-				item = SingletonRepository.getEntityManager().getItem(name);
+				item = getItemByRarity(name, forcedRarity);
 			}
 		} else {
 			// item wasn't private key, just make it as normal
-			item = SingletonRepository.getEntityManager().getItem(name);
+			item = getItemByRarity(name, forcedRarity);
 		}
 		return item;
+	}
+
+	private static Item getItemByRarity(String name, ItemRarity forcedRarity) {
+		if (forcedRarity == null) {
+			return SingletonRepository.getEntityManager().getItem(name);
+		}
+
+		return SingletonRepository.getEntityManager().getItem(name, forcedRarity);
 	}
 
 	/**

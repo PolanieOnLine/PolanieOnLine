@@ -20,6 +20,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.common.parser.ExpressionType;
 import games.stendhal.common.parser.WordList;
 import games.stendhal.server.core.config.CreatureGroupsXMLLoader;
@@ -361,6 +362,11 @@ public class DefaultEntityManager implements EntityManager {
 	 */
 	@Override
 	public Item getItem(final String clazz) {
+		return getItem(clazz, null);
+	}
+
+	@Override
+	public Item getItem(final String clazz, final ItemRarity rarity) {
 		if (clazz == null) {
 			throw new IllegalArgumentException("entity class is null");
 		}
@@ -369,12 +375,22 @@ public class DefaultEntityManager implements EntityManager {
 		final DefaultItem item = classToItem.get(clazz);
 		if (item != null) {
 			if (createdItem.get(clazz) == null) {
-				createdItem.put(clazz, item.getItem());
+				createdItem.put(clazz, item.createItem());
 			}
-			return item.getItem();
+			return item.createItem(rarity);
 		}
 
 		return null;
+	}
+
+	@Override
+	public boolean isItemRarityEligible(final String clazz) {
+		final DefaultItem item = classToItem.get(clazz);
+		if (item == null) {
+			return false;
+		}
+
+		return item.isRarityEligible();
 	}
 
 	@Override

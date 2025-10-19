@@ -14,6 +14,8 @@ package games.stendhal.client.gui.j2d.entity;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.geom.Ellipse2D;
 
 import javax.swing.SwingUtilities;
 
@@ -36,6 +38,7 @@ import games.stendhal.client.sprite.AnimatedSprite;
 import games.stendhal.client.sprite.Sprite;
 import games.stendhal.client.sprite.SpriteStore;
 import games.stendhal.client.sprite.TextSprite;
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.common.MathHelper;
 import marauroa.common.game.RPObject;
 import marauroa.common.game.RPSlot;
@@ -150,9 +153,45 @@ public class Item2DView<T extends Item> extends Entity2DView<T> {
 			final int width, final int height) {
 		super.draw(g2d, x, y, width, height);
 
+			drawRarityBadge(g2d, x, y, width, height);
+
 		if (showQuantity && (quantitySprite != null)) {
 			drawQuantity(g2d, x, y, width, height);
 		}
+	}
+
+	private void drawRarityBadge(final Graphics2D g2d, final int x, final int y,
+				final int width, final int height) {
+		if ((entity == null) || !entity.shouldDisplayRarityBadge()) {
+			return;
+		}
+
+		ItemRarity rarity = entity.getRarity();
+		if (rarity == null) {
+			return;
+		}
+
+		Color color = rarity.getColor();
+		if (color == null) {
+			return;
+		}
+
+		Graphics2D badgeGraphics = (Graphics2D) g2d.create();
+		badgeGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		int baseSize = Math.min(width, height);
+		int diameter = Math.max(3, baseSize / 8);
+		int margin = Math.max(2, baseSize / 16);
+		int drawX = x + width - margin - diameter;
+		int drawY = y + margin;
+		Ellipse2D circle = new Ellipse2D.Double(drawX, drawY, diameter, diameter);
+
+		Color fill = new Color(color.getRed(), color.getGreen(), color.getBlue(), 200);
+		badgeGraphics.setColor(fill);
+		badgeGraphics.fill(circle);
+		badgeGraphics.setColor(new Color(0, 0, 0, 170));
+		badgeGraphics.draw(circle);
+
+		badgeGraphics.dispose();
 	}
 
 	/**
