@@ -11,6 +11,7 @@
  ***************************************************************************/
 package games.stendhal.client;
 
+import static games.stendhal.client.gui.settings.SettingsProperties.DISPLAY_SIZE_PROPERTY;
 import static games.stendhal.client.gui.settings.SettingsProperties.FPS_LIMIT_PROPERTY;
 import static games.stendhal.client.gui.settings.SettingsProperties.OVERRIDE_AA;
 import static games.stendhal.client.gui.settings.SettingsProperties.UI_RENDERING;
@@ -89,6 +90,8 @@ public final class stendhal {
 	public static final Integer SIZE_INDEX_WIDE = 2;
 	public static final Integer DISPLAY_SIZE_INDEX = SIZE_INDEX_LARGE;
 
+	private static final String DISPLAY_INDEX_PROPERTY = "display.index";
+
 	public static final boolean SHOW_COLLISION_DETECTION = false;
 
 	public static final boolean SHOW_EVERYONE_ATTACK_INFO = false;
@@ -154,16 +157,26 @@ public final class stendhal {
 	 * @return screen dimensions
 	 */
 	public static Dimension getDisplaySize() {
-		String spec = System.getProperty("display.index");
-		int sizeIndex = MathHelper.parseIntDefault(spec, DISPLAY_SIZE_INDEX);
+		int sizeIndex = getDisplaySizeIndex();
+		return displaySizes.get(MathHelper.clamp(sizeIndex, 0, Math.max(0, displaySizes.size() - 1)));
+	}
 
-		try {
-			return displaySizes.get(sizeIndex);
-		} catch (IndexOutOfBoundsException e) {
-			logger.error("Invalid client size index: " + spec + " (" + sizeIndex + ")", e);
+	public static List<Dimension> getAvailableDisplaySizes() {
+		return new ArrayList<Dimension>(displaySizes);
+	}
+
+	public static int getDisplaySizeIndex() {
+		String spec = System.getProperty(DISPLAY_INDEX_PROPERTY);
+		int parsedIndex = MathHelper.parseIntDefault(spec, DISPLAY_SIZE_INDEX);
+		if ((parsedIndex < 0) || (parsedIndex >= displaySizes.size())) {
+			logger.error("Invalid client size index: " + spec + " (" + parsedIndex + ")");
 		}
+		return MathHelper.clamp(parsedIndex, 0, Math.max(0, displaySizes.size() - 1));
+	}
 
-		return displaySizes.get(DISPLAY_SIZE_INDEX);
+	public static void setDisplaySizeIndex(int index) {
+		int sanitized = MathHelper.clamp(index, 0, Math.max(0, displaySizes.size() - 1));
+		System.setProperty(DISPLAY_INDEX_PROPERTY, Integer.toString(sanitized));
 	}
 
 	public static int getFpsLimit() {
@@ -276,6 +289,10 @@ public final class stendhal {
 
 		Startup(String[] args) {
 			WtWindowManager wm = WtWindowManager.getInstance();
+			List<Dimension> sizes = getAvailableDisplaySizes();
+			int configuredDisplayIndex = MathHelper.clamp(
+			wm.getPropertyInt(DISPLAY_SIZE_PROPERTY, getDisplaySizeIndex()), 0, Math.max(0, sizes.size() - 1));
+			setDisplaySizeIndex(configuredDisplayIndex);
 			stendhal.setFpsLimit(wm.getPropertyInt(FPS_LIMIT_PROPERTY, DEFAULT_FPS_LIMIT));
 
 			if (wm.getPropertyBoolean(OVERRIDE_AA, false)) {
@@ -345,7 +362,7 @@ public final class stendhal {
 				 * Should not happen as StyledLookAndFeel always returns true for
 				 * isSupportedLookAndFeel()
 				 */
-				logger.error("Failed to set Look and Feel", e);
+			logger.error("Failed to set Look and Feel", e);
 			}
 
 			UIManager.getLookAndFeelDefaults().put("ClassLoader", stendhal.class.getClassLoader());
