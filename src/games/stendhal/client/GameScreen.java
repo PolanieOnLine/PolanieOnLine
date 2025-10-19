@@ -94,6 +94,10 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 	 */
 	private static final int PAN_SCALE = 8;
 	/**
+	 * Reference frame duration for smoothing calculations (60 FPS baseline).
+	 */
+	private static final double BASE_FRAME_MILLIS = 1000.0 / 60.0;
+	/**
 	 * Speed factor for centering the screen. Smaller is faster,
 	 * and keeps the player closer to the center of the screen when walking.
 	 */
@@ -160,11 +164,12 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 
 	private double pendingDx;
 	private double pendingDy;
+	private long lastFrameNanos;
 
 	/**
 	 * Current panning speed.
 	 */
-	private int speed;
+	private double speed;
 
 	/**
 	 * Flag for telling if the screen should be scaled if it's not of the
@@ -359,7 +364,18 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 
 	@Override
 	public void nextFrame() {
-		adjustView();
+		final long now = System.nanoTime();
+		double deltaMillis;
+		if (lastFrameNanos == 0L) {
+			deltaMillis = BASE_FRAME_MILLIS;
+		} else {
+			deltaMillis = (now - lastFrameNanos) / 1_000_000.0;
+			if (deltaMillis <= 0.0) {
+				deltaMillis = BASE_FRAME_MILLIS;
+			}
+		}
+		lastFrameNanos = now;
+		adjustView(deltaMillis);
 	}
 
 	/**
@@ -406,13 +422,14 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 	/**
 	 * Update the view position to center the target position.
 	 */
-	private void adjustView() {
+	private void adjustView(final double deltaMillis) {
 		/*
 		 * Already centered?
 		 */
 		if ((dvx == 0) && (dvy == 0)) {
 			pendingDx = 0.0;
 			pendingDy = 0.0;
+			speed = 0.0;
 			return;
 		}
 
@@ -427,19 +444,19 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 			 */
 			center();
 		} else {
-			calculatePanningSpeed();
+			calculatePanningSpeed(deltaMillis);
 
 			/*
 			 * Moving?
 			 */
-			if (speed != 0) {
+			if (speed > 0.0) {
 				/*
 				 * Not a^2 + b^2 = c^2, but good enough
 				 */
 				final int scalediv = (Math.abs(dvx) + Math.abs(dvy)) * PAN_SCALE;
 
-				double dxStep = (double) speed * dvx / scalediv;
-				double dyStep = (double) speed * dvy / scalediv;
+				double dxStep = speed * dvx / scalediv;
+				double dyStep = speed * dvy / scalediv;
 
 				pendingDx += dxStep;
 				pendingDy += dyStep;
@@ -496,23 +513,20 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 	 * Calculate the target speed for moving the view position. The farther
 	 * away, the faster.
 	 */
-	private void calculatePanningSpeed() {
+	private void calculatePanningSpeed(final double deltaMillis) {
 		final int dux = dvx / PAN_INERTIA;
 		final int duy = dvy / PAN_INERTIA;
 
-		final int tspeed = ((dux * dux) + (duy * duy)) * PAN_SCALE;
+		final double targetSpeed = ((dux * dux) + (duy * duy)) * PAN_SCALE;
+		final double deltaFactor = Math.max(deltaMillis / BASE_FRAME_MILLIS, 0.0);
+		final double baseAlpha = 1.0 / 3.0;
+		final double alpha = 1.0 - Math.pow(1.0 - baseAlpha, Math.min(deltaFactor, 60.0));
 
-		if (speed > tspeed) {
-			speed = (2 * speed + tspeed) / 3;
-
-			/*
-			 * Don't stall
-			 */
-			if ((dvx != 0) || (dvy != 0)) {
-				speed = Math.max(speed, 1);
-			}
-		} else if (speed < tspeed) {
-			speed += 2;
+		speed += (targetSpeed - speed) * alpha;
+		if ((dvx != 0) || (dvy != 0)) {
+			speed = Math.max(speed, 1.0);
+		} else if (Math.abs(speed) < 0.0001) {
+			speed = 0.0;
 		}
 	}
 
