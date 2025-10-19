@@ -158,6 +158,9 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 	 */
 	private int dvy;
 
+	private double pendingDx;
+	private double pendingDy;
+
 	/**
 	 * Current panning speed.
 	 */
@@ -239,6 +242,8 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 		GameScreenSpriteHelper.setScreenViewY(-sh / 2);
 		dvx = 0;
 		dvy = 0;
+		pendingDx = 0.0;
+		pendingDy = 0.0;
 
 		speed = 0;
 
@@ -406,13 +411,15 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 		 * Already centered?
 		 */
 		if ((dvx == 0) && (dvy == 0)) {
+			pendingDx = 0.0;
+			pendingDy = 0.0;
 			return;
 		}
 
 		final int sx = GameScreenSpriteHelper.convertWorldXToScaledScreen(x)
-			- GameScreenSpriteHelper.getScreenViewX() + SIZE_UNIT_PIXELS / 2;
+				- GameScreenSpriteHelper.getScreenViewX() + SIZE_UNIT_PIXELS / 2;
 		final int sy = GameScreenSpriteHelper.convertWorldYToScaledScreen(y)
-			- GameScreenSpriteHelper.getScreenViewY() + SIZE_UNIT_PIXELS / 2;
+				- GameScreenSpriteHelper.getScreenViewY() + SIZE_UNIT_PIXELS / 2;
 
 		if ((sx < 0) || (sx >= sw) || (sy < -SIZE_UNIT_PIXELS) || (sy > sh)) {
 			/*
@@ -431,20 +438,27 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 				 */
 				final int scalediv = (Math.abs(dvx) + Math.abs(dvy)) * PAN_SCALE;
 
-				int dx = speed * dvx / scalediv;
-				int dy = speed * dvy / scalediv;
+				double dxStep = (double) speed * dvx / scalediv;
+				double dyStep = (double) speed * dvy / scalediv;
 
-				dx = limitMoveDelta(dx, dvx);
-				dy = limitMoveDelta(dy, dvy);
+				pendingDx += dxStep;
+				pendingDy += dyStep;
+
+				int dx = limitMoveDelta(extractMove(pendingDx, dvx), dvx);
+				int dy = limitMoveDelta(extractMove(pendingDy, dvy), dvy);
 
 				/*
 				 * Adjust view
 				 */
 				GameScreenSpriteHelper.setScreenViewX(GameScreenSpriteHelper.getScreenViewX() + dx);
 				dvx -= dx;
+				pendingDx -= dx;
+				pendingDx = Math.max(-1.0, Math.min(1.0, pendingDx));
 
 				GameScreenSpriteHelper.setScreenViewY(GameScreenSpriteHelper.getScreenViewY() + dy);
 				dvy -= dy;
+				pendingDy -= dy;
+				pendingDy = Math.max(-1.0, Math.min(1.0, pendingDy));
 			}
 		}
 	}
@@ -464,6 +478,18 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 			moveDelta = MathHelper.clamp(moveDelta, 1, viewDelta);
 		}
 		return moveDelta;
+	}
+
+	private int extractMove(double pending, int viewDelta) {
+		int move = 0;
+		if (pending > 1.0) {
+			move = (int) Math.floor(pending);
+		} else if (pending < -1.0) {
+			move = (int) Math.ceil(pending);
+		} else if ((viewDelta != 0) && (pending != 0.0) && (Math.abs(viewDelta) <= 1)) {
+			move = (viewDelta > 0) ? 1 : -1;
+		}
+		return move;
 	}
 
 	/**
@@ -516,6 +542,13 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 		// Differences from center
 		dvx = cvx - GameScreenSpriteHelper.getScreenViewX();
 		dvy = cvy - GameScreenSpriteHelper.getScreenViewY();
+
+		if ((pendingDx > 0.0 && dvx <= 0) || (pendingDx < 0.0 && dvx >= 0)) {
+			pendingDx = 0.0;
+		}
+		if ((pendingDy > 0.0 && dvy <= 0) || (pendingDy < 0.0 && dvy >= 0)) {
+			pendingDy = 0.0;
+		}
 	}
 
 	@Override
@@ -526,7 +559,10 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 		dvx = 0;
 		dvy = 0;
 		speed = 0;
+		pendingDx = 0.0;
+		pendingDy = 0.0;
 	}
+
 
 	@Override
 	public void paintImmediately(int x, int y, int w, int h) {
