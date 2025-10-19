@@ -11,7 +11,7 @@ create table if not exists character_stats
   outfit varchar(32),
   outfit_colors varchar(100),
   outfit_layers varchar(255),
-  xp integer,
+	xp bigint,
   money integer,
 
   married varchar(32),

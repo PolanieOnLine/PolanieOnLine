@@ -121,7 +121,7 @@ public class ClubOfThornsTest {
 		assertTrue(player.isEquipped("maczuga cierniowa"));
 		assertEquals("The club is bound", "player", player.getFirstEquipped("maczuga cierniowa").getBoundTo());
 		assertEquals("Final karma bonus", karma + 20.0, player.getKarma(), 0.01);
-		assertEquals("XP", 10000, player.getXP());
+		assertEquals("XP", 10000L, player.getXP());
 		assertEquals("done", player.getQuest(QUEST_NAME));
 
 		// don't allow restarting

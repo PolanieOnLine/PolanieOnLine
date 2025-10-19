@@ -68,7 +68,7 @@ class AlterCreatureAction extends AdministrationAction {
 			short newatk = parseShortError(parts[1], creature.getAtk(), "ATK", player);
 			short newdef = parseShortError(parts[2], creature.getDef(), "DEF", player);
 			short newHP = parseShortError(parts[3], creature.getBaseHP(), "HP", player);
-			final int newXP = MathHelper.parseIntDefault(parts[4], creature.getXP());
+			final long newXP = MathHelper.parseLongDefault(parts[4], creature.getXP());
 
 			if(!"-".equals(parts[0])) {
 				creature.setTitle(parts[0]);

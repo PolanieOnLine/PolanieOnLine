@@ -22,7 +22,7 @@ public class LevelTest {
 	 */
 	@Test
 	public final void testMaxLevel() {
-		assertEquals(597, Level.maxLevel());
+		assertEquals(1000, Level.maxLevel());
 	}
 
 	/**
@@ -38,11 +38,11 @@ public class LevelTest {
 	 */
 	@Test
 	public final void testGetXP() {
-		assertEquals(0, Level.getXP(0));
-		assertEquals(50, Level.getXP(1));
-		assertEquals(9753800, Level.getXP(100));
+		assertEquals(0L, Level.getXP(0));
+		assertEquals(50L, Level.getXP(1));
+		assertEquals(9_753_800L, Level.getXP(100));
 
-		assertEquals(2118873200, Level.getXP(Level.maxLevel()));
+		assertEquals(9_975_036_200L, Level.getXP(Level.maxLevel()));
 	}
 
 	/**
@@ -50,8 +50,8 @@ public class LevelTest {
 	 */
 	@Test
 	public final void testGetNegativeXP() {
-		assertEquals(-1, Level.getXP(-1));
-		assertEquals(-1, Level.getXP(-10));
+		assertEquals(-1L, Level.getXP(-1));
+		assertEquals(-1L, Level.getXP(-10));
 	}
 
 	/**
@@ -59,8 +59,8 @@ public class LevelTest {
 	 */
 	@Test
 	public final void testGetMoreThanMaxXP() {
-		assertEquals(2129553600, Level.getXP(Level.maxLevel() + 1));
-		assertEquals(-1, Level.getXP(Level.maxLevel() + 2));
+		assertEquals(10_005_016_300L, Level.getXP(Level.maxLevel() + 1));
+		assertEquals(-1L, Level.getXP(Level.maxLevel() + 2));
 	}
 
 	/**
@@ -85,15 +85,16 @@ public class LevelTest {
 	@Test
 	public final void testGetWisdom() {
 		assertEquals(0.0, Level.getWisdom(0), 0.001);
-		assertEquals(0.9973688848712813, Level.getWisdom(Level.maxLevel()), 0.001);
+		assertEquals(0.9999522881542902, Level.getWisdom(Level.maxLevel()), 0.001);
 	}
 
 	/**
 	 * Tests for getWisdomOverMaxlevel.
 	 */
-	@Test(expected = ArrayIndexOutOfBoundsException.class)
+	@Test
 	public final void testGetWisdomOverMaxlevel() {
-		assertEquals(1.0, Level.getWisdom(Level.maxLevel() + 1), 0.001);
+		assertEquals(Level.getWisdom(Level.maxLevel()),
+				Level.getWisdom(Level.maxLevel() + 1), 0.001);
 	}
 
 }

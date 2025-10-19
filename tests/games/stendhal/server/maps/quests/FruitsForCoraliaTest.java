@@ -239,7 +239,7 @@ public class FruitsForCoraliaTest extends ZonePlayerAndNPCTestImpl {
 		PlayerTestHelper.equipWithStackableItem(player, "granat", 2);
 		PlayerTestHelper.equipWithStackableItem(player, "arbuz", 1);
 
-		final int xp = player.getXP();
+		final long xp = player.getXP();
 		final double karma = player.getKarma();
 
 		en.step(player, "banan");

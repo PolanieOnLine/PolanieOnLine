@@ -130,7 +130,7 @@ public class HungryJoshuaTest {
 
 		Item item = ItemTestHelper.createItem("kanapka", 5);
 		player.getSlot("bag").add(item);
-		final int xp = player.getXP();
+		final long xp = player.getXP();
 
 		en.step(player, "hi");
 		assertEquals(joshua_greet, getReply(npc));
@@ -148,7 +148,7 @@ public class HungryJoshuaTest {
 		// -----------------------------------------------
 		npc = SingletonRepository.getNPCList().get("Xoderos");
 		en = npc.getEngine();
-		final int xp2 = player.getXP();
+		final long xp2 = player.getXP();
 
 		en.step(player, "hi");
 		assertEquals("Witaj! Przykro mi to mówić, ale z powodu trwającej wojny nie wolno mi sprzedawać broni nikomu spoza grona oficjalnych wojskowych. Mogę odlać dla Ciebie żelazo, a może interesuję Cię moja #oferta specjalna? Powiedz tylko #odlej.", getReply(npc));

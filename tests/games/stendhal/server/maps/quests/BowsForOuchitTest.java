@@ -176,7 +176,7 @@ public class BowsForOuchitTest {
 		PlayerTestHelper.equipWithItem(player, "końskie włosie");
 
 		// remember the xp and karma, did it go up?
-		final int xp = player.getXP();
+		final long xp = player.getXP();
 		final double karma = player.getKarma();
 
 		en.step(player, "hi");

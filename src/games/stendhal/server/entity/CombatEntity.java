@@ -23,6 +23,7 @@ import games.stendhal.server.entity.player.Player;
 import marauroa.common.game.Definition;
 import marauroa.common.game.Definition.Type;
 import marauroa.common.game.RPClass;
+import marauroa.common.game.LongCompatibleDefinition;
 import marauroa.common.game.RPObject;
 
 /**
@@ -81,7 +82,14 @@ public abstract class CombatEntity extends GuidedEntity {
 
 			// stats
 			rpclass.addAttribute("level", Type.SHORT);
-			rpclass.addAttribute("xp", Type.INT);
+			Definition xpDefinition = rpclass.getDefinition(Definition.DefinitionClass.ATTRIBUTE, "xp");
+			if (xpDefinition != null) {
+				xpDefinition.setType(Type.LONG);
+				xpDefinition.setFlags(Definition.STANDARD);
+			} else {
+				rpclass.addAttribute("xp", Type.LONG);
+			}
+			LongCompatibleDefinition.ensureXpCompatibility(rpclass);
 			rpclass.addAttribute("atk", Type.SHORT);
 			rpclass.addAttribute("atk_xp", Type.INT, Definition.PRIVATE);
 			// TODO: volatile flag should be removed when ready for main server

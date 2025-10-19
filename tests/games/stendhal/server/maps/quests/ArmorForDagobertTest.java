@@ -158,7 +158,7 @@ public class ArmorForDagobertTest {
 		assertEquals(questHistory, quest.getHistory(player));
 		assertEquals("Przepraszam! Zauważyłem skórzany kirys, który nosisz. Czy to dla mnie?",
 				getReply(npc));
-		final int xpBeforeReward = player.getXP();
+		final long xpBeforeReward = player.getXP();
 		en.step(player, "yes");
 		questHistory.add("Skórzany kirys został zwrócony Dagobertowi. W ramach drobnej wdzięczności pozwoli mi skorzystać z prywatnego skarbca.");
 		assertEquals(questHistory, quest.getHistory(player));

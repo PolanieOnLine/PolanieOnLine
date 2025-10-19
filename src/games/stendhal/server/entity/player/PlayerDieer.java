@@ -127,7 +127,8 @@ public class PlayerDieer {
 		// Using subXP() instead of using setXP() directly to get the level
 		// checks correctly done. setXP() can not do the magic unlike setAtkXP()
 		// & setDEFXP() because it's used by creatures as well
-		player.subXP((int) Math.round(player.getXP() * (1 - penaltyFactor)));
+		long xpLoss = Math.round(player.getXP() * (1 - penaltyFactor));
+		player.subXP(xpLoss);
 		player.setHP((int) Math.round(player.getHP() * 0.1));
 		if (killer instanceof Player) {
 			Player playerKiller = (Player) killer;

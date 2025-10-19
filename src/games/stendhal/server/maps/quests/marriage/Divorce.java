@@ -66,7 +66,7 @@ class Divorce {
 				},
 				ConversationStates.QUESTION_3,
 				null,
-			   	new ChatAction() {
+				new ChatAction() {
 					@Override
 					public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
 						Player husband;
@@ -102,7 +102,7 @@ class Divorce {
 				},
 				ConversationStates.QUESTION_3,
 				null,
-			   	new ChatAction() {
+				new ChatAction() {
 					  @Override
 					public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
 						Player husband;
@@ -115,7 +115,7 @@ class Divorce {
 						if ((wife != null)
 							&& wife.hasQuest(marriage.getQuestSlot())
 							&& wife.getQuest(marriage.getSpouseQuestSlot()).equals(
-										                                           husband.getName())) {
+															   husband.getName())) {
 							if (wife.isEquipped("money", 200*wife.getLevel())) {
 								additional = partnerName + " posiada " + 200*wife.getLevel() + " money na opłatę.";
 							} else {
@@ -132,7 +132,7 @@ class Divorce {
 						@Override
 						public boolean fire(final Player player, final Sentence sentence, final Entity npc) {
 							return (player.hasQuest(marriage.getQuestSlot())
-                                    && player.getQuest(marriage.getQuestSlot()).equals("just_married"))
+				    && player.getQuest(marriage.getQuestSlot()).equals("just_married"))
 									&& player.isEquipped("obrączka ślubna");
 
 						}
@@ -207,8 +207,8 @@ class Divorce {
 							if (wife.isEquipped("money", 200*wife.getLevel())) {
 								wife.drop("money", 200*wife.getLevel());
 							} else {
-								final int xp = (int) (wife.getXP() * 0.03);
-								wife.subXP(xp);
+							final long xp = Math.round(wife.getXP() * 0.03);
+							wife.subXP(xp);
 							}
 							wife.removeQuest(marriage.getQuestSlot());
 							wife.removeQuest(marriage.getSpouseQuestSlot());
@@ -220,7 +220,7 @@ class Divorce {
 						if (husband.isEquipped("money", 200*husband.getLevel())) {
 							husband.drop("money", 200*husband.getLevel());
 						} else {
-							final int xp = (int) (husband.getXP() * 0.03);
+							final long xp = Math.round(husband.getXP() * 0.03);
 							husband.subXP(xp);
 						}
 						husband.drop("obrączka ślubna");

@@ -271,9 +271,9 @@ public class SolveRiddles extends AbstractQuest {
 						player.teleport(zone, 31, 23, Direction.UP, player);
 						// clear quest slot so riddle is chosen randomly for player next time
 						player.removeQuest(QUEST_SLOT);
-						int oldXp = player.getXP();
+						long oldXp = player.getXP();
 						player.addXP(xpreward);
-						int xpDiff = player.getXP() - oldXp;
+						long xpDiff = player.getXP() - oldXp;
 						StringBuilder msg = new StringBuilder("Poprawnie rozwiązałeś zagadkę");
 						if (xpDiff > 0) {
 							msg.append(" i zarobiłeś " + xpreward + " PD");
@@ -290,7 +290,7 @@ public class SolveRiddles extends AbstractQuest {
 						npc.say("Możesz poprosić moje lustrzane odbicie, albo rozwiązać zagadkę, którą ci zadałem: " + riddle);
 					} else {
 						npc.say("Źle! Spróbuj ponownie lub poproś moje odbicie, aby Cię wypuściło.");
-						player.subXP(1000 * xpreward);
+						player.subXP(1000L * xpreward);
 					}
 				}
 			});

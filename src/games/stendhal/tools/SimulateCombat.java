@@ -313,7 +313,7 @@ public class SimulateCombat {
 			em = SingletonRepository.getEntityManager();
 		}
 
-		final int HIGHEST_LEVEL = 597;
+	   final int HIGHEST_LEVEL = 1000;
 
 		final int[] atkLevels = new int[HIGHEST_LEVEL + 1];
 		final int[] defLevels = new int[HIGHEST_LEVEL + 1];

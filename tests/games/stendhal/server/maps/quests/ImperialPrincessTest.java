@@ -139,7 +139,7 @@ public class ImperialPrincessTest {
 		item = ItemTestHelper.createItem("eliksir", 28);
 		player.getSlot("bag").add(item);
 
-		final int xp = player.getXP();
+		final long xp = player.getXP();
 		en.step(player, "hi");
 		assertEquals("He, co tutaj robisz?!", getReply(npc));
 		en.step(player, "task");
@@ -169,7 +169,7 @@ public class ImperialPrincessTest {
 		npc = SingletonRepository.getNPCList().get("King Cozart");
 		en = npc.getEngine();
 
-		final int xp2 = player.getXP();
+		final long xp2 = player.getXP();
 		en.step(player, "hi");
 		// [22:22] kymara earns 500 experience points.
 		assertEquals("Pozdrawiam! Moja cudowna córka poprosiła mnie o przyznanie Tobie obywatelstwa miasta Kalavan. Rozpatrywanie zostało zakończone. Teraz wybacz mi, że wrócę do mojego posiłku. Do widzenia.", getReply(npc));

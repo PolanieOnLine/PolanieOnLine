@@ -88,7 +88,7 @@ public class Hunting extends AbstractQuest {
 				String questCount = null;
 				String questLast = null;
 
-            	String previousCreature = null;
+		String previousCreature = null;
 
 				if (questInfo != null) {
 					final String[] tokens = (questInfo + ";0;0;0").split(";");
@@ -136,7 +136,7 @@ public class Hunting extends AbstractQuest {
 						questLast + ";" +
 						questCount);
 			}
-  		}
+		}
 
 		// Returns a random creature near the players level, returns null if
 		// there is a bug.
@@ -303,7 +303,7 @@ public class Hunting extends AbstractQuest {
 						new QuestStartedCondition(QUEST_SLOT),
 						new QuestNotCompletedCondition(QUEST_SLOT),
 						new NotCondition(
-						        new KilledForQuestCondition(QUEST_SLOT, 0))),
+							new KilledForQuestCondition(QUEST_SLOT, 0))),
 				ConversationStates.ATTENDING,
 				null,
 				new ChatAction() {
@@ -322,11 +322,11 @@ public class Hunting extends AbstractQuest {
 		rewards.add(new ChatAction() {
 			@Override
 			public void fire(Player player, Sentence sentence, EventRaiser npc) {
-				final int start = Level.getXP(player.getLevel());
-				final int next = Level.getXP(player.getLevel() + 1);
+				final long start = Level.getXP(player.getLevel());
+				final long next = Level.getXP(player.getLevel() + 1);
 
 				if (player.getNumberOfRepetitions(QUEST_SLOT, 2) <= 10) {
-					int reward = (int) ((next - start) / 6);
+					long reward = (long) ((next - start) / 6);
 					if (player.getLevel() >= Level.maxLevel()) {
 						reward = 0;
 						// no reward so give a lot karma instead
@@ -353,7 +353,7 @@ public class Hunting extends AbstractQuest {
 					player.equipOrPutOnGround(money);
 					player.notifyWorldAboutChanges();
 				} else if (player.getNumberOfRepetitions(QUEST_SLOT, 2) > 10 && player.getNumberOfRepetitions(QUEST_SLOT, 2) <= 34) {
-					int reward = (int) ((next - start) / 5);
+					long reward = (long) ((next - start) / 5);
 					if (player.getLevel() >= Level.maxLevel()) {
 						reward = 0;
 						// no reward so give a lot karma instead
@@ -371,7 +371,7 @@ public class Hunting extends AbstractQuest {
 					player.equipOrPutOnGround(goldenbar);
 					player.notifyWorldAboutChanges();
 				} else if (player.getNumberOfRepetitions(QUEST_SLOT, 2) > 34) {
-					int reward = (int) ((next - start) / 4);
+					long reward = (long) ((next - start) / 4);
 					if (player.getLevel() >= Level.maxLevel()) {
 						reward = 0;
 						// no reward so give a lot karma instead
@@ -401,7 +401,7 @@ public class Hunting extends AbstractQuest {
 				new AndCondition(
 						new QuestStartedCondition(QUEST_SLOT),
 						new QuestNotCompletedCondition(QUEST_SLOT),
-				        new KilledForQuestCondition(QUEST_SLOT, 0)),
+					new KilledForQuestCondition(QUEST_SLOT, 0)),
 				ConversationStates.ATTENDING,
 				"Gratuluje! Zasłużyłeś na odpowiednią nagrodę!",
 				new MultipleActions(rewards));

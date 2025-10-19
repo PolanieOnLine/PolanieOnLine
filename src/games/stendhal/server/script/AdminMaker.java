@@ -79,7 +79,8 @@ public class AdminMaker extends ScriptImpl {
 			player.addXP(Level.getXP(level + xlevel) - Level.getXP(level));
 
 			// set the atk and def to half the level (is a good rule of thumb)
-			final int skills = ((Level.getXP(level) + xlevel) / 2);
+			final long skillsLong = (Level.getXP(level) + xlevel) / 2;
+			final int skills = (int) Math.min(Integer.MAX_VALUE, Math.max(Integer.MIN_VALUE, skillsLong));
 			player.setAtkXP(skills);
 			player.setDefXP(skills);
 			player.incAtkXP();

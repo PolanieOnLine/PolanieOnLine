@@ -48,7 +48,7 @@ public class ExperienceAchievementFactoryTest extends AchievementTestHelper {
 		doCycle(ExperienceAchievementFactory.ID_HRABIA, 450);
 		doCycle(ExperienceAchievementFactory.ID_MAGNAT, 500);
 		doCycle(ExperienceAchievementFactory.ID_KSIAZE, 550);
-		doCycle(ExperienceAchievementFactory.ID_KROL, 597);
+		doCycle(ExperienceAchievementFactory.ID_KROL, 1000);
 	}
 
 	private void doCycle(final String id, final int reqLevel) {

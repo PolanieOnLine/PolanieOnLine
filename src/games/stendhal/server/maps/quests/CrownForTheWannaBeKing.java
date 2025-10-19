@@ -260,9 +260,11 @@ public class CrownForTheWannaBeKing extends AbstractQuest {
 	 */
 	protected void rewardPlayer(final Player player) {
 		player.addKarma(100.0);
-		player.setAtkXP(player.getAtkXP() + (int) (player.getXP() * ATK_REWARD_RATE));
+		final long reward = Math.round(player.getXP() * ATK_REWARD_RATE);
+		final int cappedReward = (int) Math.min(Integer.MAX_VALUE, Math.max(Integer.MIN_VALUE, reward));
+		player.setAtkXP(player.getAtkXP() + cappedReward);
 		player.incAtkXP();
-		player.sendPrivateText(NotificationType.POSITIVE, "Otrzymałeś " + Integer.toString((int) (player.getXP() * ATK_REWARD_RATE)) + " punktów doświadczenia ataku.");
+		player.sendPrivateText(NotificationType.POSITIVE, "Otrzymałeś " + Long.toString(reward) + " punktów doświadczenia ataku.");
 	}
 
 	@Override

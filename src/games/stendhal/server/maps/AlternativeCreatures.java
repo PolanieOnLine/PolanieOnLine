@@ -91,7 +91,8 @@ public class AlternativeCreatures implements ZoneConfigurator {
 		c.setDef(calculateStat(c.getDef(), factor, true));
 		c.setBaseHP(calculateStat(c.getBaseHP(), factor, true));
 		c.setHP(calculateStat(c.getHP(), factor, true));
-		c.setXP(calculateStat(c.getXP(), factor));
+		int baseXp = (int) Math.min(Integer.MAX_VALUE, Math.max(Integer.MIN_VALUE, c.getXP()));
+		c.setXP(calculateStat(baseXp, factor));
 		c.setLevel(calculateStat(c.getLevel(), factor));
 
 		c.addDropItem("kryształ ciemnolitu", 0.2, 1);

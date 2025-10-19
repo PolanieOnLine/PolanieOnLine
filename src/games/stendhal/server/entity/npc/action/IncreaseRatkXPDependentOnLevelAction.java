@@ -42,15 +42,17 @@ public class IncreaseRatkXPDependentOnLevelAction implements ChatAction {
 
 	@Override
 	public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
-		final int start = Level.getXP(player.getLevel());
-		final int next = Level.getXP(player.getLevel() + 1);
+		final long start = Level.getXP(player.getLevel());
+		final long next = Level.getXP(player.getLevel() + 1);
 		if(Testing.COMBAT) {
 			if (player.getRatk() < 90) {
-				int reward = (int) ((next - start) / (ratkXpDiff) / 20);
-				player.setRatkXP(reward + player.getRatkXP());
+				long reward = (long) ((next - start) / (ratkXpDiff) / 20);
+				long total = reward + player.getRatkXP();
+				player.setRatkXP((int) Math.min(Integer.MAX_VALUE, Math.max(Integer.MIN_VALUE, total)));
 			} else {
-				int reward = (int) ((next - start) / (ratkXpDiff) / 60);
-				player.setRatkXP(reward + player.getRatkXP());
+				long reward = (long) ((next - start) / (ratkXpDiff) / 60);
+				long total = reward + player.getRatkXP();
+				player.setRatkXP((int) Math.min(Integer.MAX_VALUE, Math.max(Integer.MIN_VALUE, total)));
 			}
 		}
 		player.notifyWorldAboutChanges();

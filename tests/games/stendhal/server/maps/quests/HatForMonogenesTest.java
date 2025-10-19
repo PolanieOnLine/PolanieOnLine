@@ -155,7 +155,7 @@ public class HatForMonogenesTest {
 		assertEquals("Hej! Czy ta skórzana czapka jest dla mnie?", getReply(npc));
 		npc.remove("text");
 		player.drop("skórzany hełm");
-		int oldXP = player.getXP();
+		long oldXP = player.getXP();
 		en.step(player, "yes");
 		assertEquals(oldXP, player.getXP());
 		assertEquals(null, getReply(npc));

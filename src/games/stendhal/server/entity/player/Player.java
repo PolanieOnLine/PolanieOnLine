@@ -1045,7 +1045,7 @@ public class Player extends DressedEntity implements UseListener {
 		}
 	}
 
- 	/**
+	/**
 	 * Sends a message that only this entity can read.
 	 *
 	 * @param type
@@ -1713,7 +1713,7 @@ public class Player extends DressedEntity implements UseListener {
 			}
 		} else {
 			for (final Map.Entry<String, Integer> entry: titles.entrySet()) {
-				if (getLevel() == 597) {
+				if (getLevel() >= Level.maxLevel()) {
 					title = Grammar.genderVerb(getGender(), "król");
 				} else if (getLevel() >= entry.getValue() && getLevel() < (entry.getValue() + 50)) {
 					title = Grammar.genderVerb(getGender(), entry.getKey());

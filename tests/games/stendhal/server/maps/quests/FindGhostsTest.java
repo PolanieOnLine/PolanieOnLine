@@ -179,7 +179,7 @@ public class FindGhostsTest {
 		player.setQuest("find_ghosts", "looking:said");
 		assertEquals("looking:said", player.getQuest("find_ghosts"));
 
-		int oldxp = player.getXP();
+		long oldxp = player.getXP();
 		npcGhost = SingletonRepository.getNPCList().get("Mary");
 		enGhost = npcGhost.getEngine();
 		enGhost.step(player, "hi");

@@ -216,7 +216,7 @@ public class ElvishArmorTest {
 	public void testQuestion1ToAttending() {
 		final Player player = PlayerTestHelper.createPlayer("bob");
 		final double oldKarma = player.getKarma();
-		final int oldXp = player.getXP();
+		final long oldXp = player.getXP();
 		npcEngine.setCurrentState(QUESTION_1);
 		for (final String playerSays : NEEDEDITEMS) {
 			PlayerTestHelper.equipWithItem(player, playerSays);
@@ -248,15 +248,15 @@ public class ElvishArmorTest {
     @Test
     // ignored because removed from quest logic now.
     public void testQuestion1toIdle() {
-            for (final String playerSays : ConversationPhrases.GOODBYE_MESSAGES) {
-                    final Player player = PlayerTestHelper.createPlayer("bob");
-                    npcEngine.setCurrentState(QUESTION_1);
+	    for (final String playerSays : ConversationPhrases.GOODBYE_MESSAGES) {
+		    final Player player = PlayerTestHelper.createPlayer("bob");
+		    npcEngine.setCurrentState(QUESTION_1);
 
-                    npcEngine.step(player, playerSays);
+		    npcEngine.step(player, playerSays);
 
-                    assertThat(playerSays, npcEngine.getCurrentState(), is(IDLE));
-                    assertThat(playerSays, getReply(npc), is("Do widzenia."));
-            }
+		    assertThat(playerSays, npcEngine.getCurrentState(), is(IDLE));
+		    assertThat(playerSays, getReply(npc), is("Do widzenia."));
+	    }
     }
 
 	/**

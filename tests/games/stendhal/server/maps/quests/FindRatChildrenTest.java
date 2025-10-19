@@ -167,7 +167,7 @@ public class FindRatChildrenTest {
 		player.setQuest(QUEST_SLOT, "looking:said");
 
 		// remember the xp and karma, did it go up?
-		final int xp = player.getXP();
+		final long xp = player.getXP();
 
 		en.step(player, "hi");
 		assertEquals("Cześć nazywam się Cody. Proszę powiedz mojej mamie, że ze mną jest wszystko w porządku.", getReply(npc));
@@ -262,7 +262,7 @@ public class FindRatChildrenTest {
 		assertEquals(player.getQuest(QUEST_SLOT),"looking;cody;mariel;opal;avalon:said;cody;mariel");
 
 		// remember the xp and karma, did it go up?
-		final int xp = player.getXP();
+		final long xp = player.getXP();
 		final double karma = player.getKarma();
 
 		en.step(player, "hi");

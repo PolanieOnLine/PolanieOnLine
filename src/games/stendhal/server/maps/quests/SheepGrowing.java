@@ -258,7 +258,7 @@ public class SheepGrowing extends AbstractQuest {
 			@Override
 			public void fire(Player player, Sentence sentence, EventRaiser npc) {
 				// give XP to level 2
-				int reward = Level.getXP( 2 ) - player.getXP();
+				long reward = Level.getXP( 2 ) - player.getXP();
 				if(reward > MIN_XP_GAIN) {
 					player.addXP(reward);
 				} else {

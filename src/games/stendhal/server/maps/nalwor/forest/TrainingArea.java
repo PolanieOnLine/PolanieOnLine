@@ -151,7 +151,7 @@ public class TrainingArea extends Area implements LoginListener,LogoutListener {
 	 * - up to level 55: player level
 	 * - above level 55: (player level / 10) + 50
 	 *
-	 * At max level (597), cap is 109.
+	 * At max level (1000), cap is 150.
 	 *
 	 * @param playerLevel
 	 * 		Level of player to be checked.

@@ -139,7 +139,7 @@ public class BabyDragon extends Pet {
 		//get important info before anything happens to them.
 		final Player player = this.owner;
 		final String currentTitle = this.getTitle();
-		final int currentXP = this.getXP();
+		final long currentXP = this.getXP();
 		final int currentLevel = this.getLevel();
 
 		final PurpleDragon purpledragon = new PurpleDragon(owner);

@@ -179,7 +179,7 @@ public class FindJefsMomTest extends ZonePlayerAndNPCTestImpl {
 
 	@Test
 	public void testBackToJef() {
-		int initialXp = player.getXP();
+		long initialXp = player.getXP();
 		PlayerTestHelper.equipWithItem(player, "bielikrasa");
 		player.setQuest(questSlot, "found_mom");
 
@@ -191,7 +191,7 @@ public class FindJefsMomTest extends ZonePlayerAndNPCTestImpl {
 		assertFalse(player.isEquipped("bielikrasa"));
 		assertTrue(player.isEquipped("skrzydlica"));
 		assertGainKarma(15);
-		assertEquals(800, player.getXP() - initialXp);
+		assertEquals(800L, player.getXP() - initialXp);
 		assertEquals("done", player.getQuest(questSlot, 0));
 
 		en.step(player, "bye");

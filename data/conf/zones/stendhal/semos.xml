@@ -257,7 +257,7 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 		<point-of-interest x="90" y="97">
 			<name>Kopalnie Semos</name>
 			<type>dungeon</type>
-			<description>Zachodnie wejście do kopalni Semos, miasta Wofoli i ogromnego systemu tuneli prowadzącego w góry. (Poziom Wojownika 6 - 597)</description>
+		   <description>Zachodnie wejście do kopalni Semos, miasta Wofoli i ogromnego systemu tuneli prowadzącego w góry. (Poziom Wojownika 6 - 1000)</description>
 			<url>https://s1.polanieonline.eu/semos.html</url>
 		</point-of-interest>
 
@@ -1210,7 +1210,7 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 			<destination zone="int_semos_wizards_tower_7" ref="portal_sparkle_enter_spire"/>
 		</portal>
 		<portal x="21" y="6" ref="portal_to_spire_2">
- 			<destination zone="int_semos_wizards_tower_9" ref="portal_from_spire_1"/>
+			<destination zone="int_semos_wizards_tower_9" ref="portal_from_spire_1"/>
 		</portal>
 		<!-- <portal x="7" y="28" ref="portal_to_malleus_plain"> <destination
 			zone="malleus_plain" ref="portal_to_malleus"/> </portal> -->
@@ -1410,7 +1410,7 @@ Niestety w tym roku nie będę mógł odwiedzić Athor. Miałem małego pecha. M
 		<configurator class-name="games.stendhal.server.maps.FertileGrounds">
 			<parameter name="x">103</parameter>
 			<parameter name="y">11</parameter>
- 			<parameter name="width">1</parameter>
+			<parameter name="width">1</parameter>
 			<parameter name="height">21</parameter>
 		</configurator>
 
@@ -1596,7 +1596,7 @@ Południowy-Wschód: Farma
 
 		<point-of-interest x="62" y="99">
 			<name>Jaskinie Semos Południowe Wejście</name>
-	 		<title>Jaskinie Semos</title>
+			<title>Jaskinie Semos</title>
 			<type>dungeon</type>
 			<description>Jedno z kilku wejść do systemu tuneli pod północnymi górami. Droga do Mithrilbourghtów i połączenie z jaskiniami Ados. (Poziom Wojownika 15 - 125)</description>
 			<url>https://s1.polanieonline.eu/semos</url>
@@ -1604,7 +1604,7 @@ Południowy-Wschód: Farma
 
 		<point-of-interest x="115" y="36">
 			<name>Jaskinie Semos Północne Wejście</name>
-	 		<title>Jaskinie Semos</title>
+			<title>Jaskinie Semos</title>
 			<type>dungeon</type>
 			<description>Jedno z kilku wejść do systemu tuneli pod północnymi górami. Droga do Mithrilbourghtów i połączenie z jaskiniami Ados. Uważaj jeśli wciąż masz niski poziom. (Poziom Wojownika 15 - 125)</description>
 			<url>https://s1.polanieonline.eu/semos</url>

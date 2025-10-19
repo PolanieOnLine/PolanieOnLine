@@ -144,7 +144,7 @@ public class KillDhohrNuggetcutterTest extends ZonePlayerAndNPCTestImpl {
 
 		en.step(player, "hi");
 		assertEquals("Bardzo dziękuję. Rzeczywiście jesteś wojownikiem! Masz jeden z nich. Znaleźliśmy je porozrzucane wokoło. Nie mamy pojęcia, czym one są.", getReply(npc));
-		assertEquals(4000, player.getXP());
+		assertEquals(4000L, player.getXP());
 		assertEquals("killed", player.getQuest(questSlot, 0));
 
 		en.step(player, "task");

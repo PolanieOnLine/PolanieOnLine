@@ -189,7 +189,7 @@ public class GoodiesForRudolphTest extends ZonePlayerAndNPCTestImpl {
 
 	@Test
 	public void testBackToRudolphOfferGoodies() {
-		int initialXp = player.getXP();
+		long initialXp = player.getXP();
 		player.setQuest(questSlot, "start");
 		prepareGoodies();
 
@@ -207,7 +207,7 @@ public class GoodiesForRudolphTest extends ZonePlayerAndNPCTestImpl {
 		assertTrue(player.isEquipped(ITEM_SNOWGLOBE));
 		assertTrue(player.isEquipped(ITEM_MONEY, 50));
 		assertGainKarma(60);
-		assertEquals(100, player.getXP() - initialXp);
+		assertEquals(100L, player.getXP() - initialXp);
 		assertEquals("done", player.getQuest(questSlot, 0));
 
 		assertHistory(HISTORY_DEFAULT, HISTORY_START, HISTORY_GOT_GOODIES,

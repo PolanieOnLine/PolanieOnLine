@@ -215,7 +215,7 @@ public class CloakCollector2Test {
 
 		// check the rewards
 		assertEquals(karma + 105.0, player.getKarma(), 0.01);
-		assertEquals(100000, player.getXP());
+		assertEquals(100000L, player.getXP());
 		assertEquals("done;rewarded", player.getQuest(QUEST_NAME));
 		assertEquals(true, player.isEquipped("buty zabójcy"));
 

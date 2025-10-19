@@ -137,13 +137,13 @@ public abstract class RPEntity extends AudibleEntity {
 
     private static final Map<StatusID, Property> statusProp;
     static {
-        statusProp = new EnumMap<StatusID, Property>(StatusID.class);
-        statusProp.put(StatusID.CONFUSE, PROP_CONFUSED);
-        statusProp.put(StatusID.POISON, PROP_POISONED);
-        statusProp.put(StatusID.BLEED, PROP_BLEEDING);
-        statusProp.put(StatusID.SHOCK, PROP_SHOCK);
-        statusProp.put(StatusID.ZOMBIE, PROP_ZOMBIE);
-        statusProp.put(StatusID.HEAVY, PROP_HEAVY);
+	statusProp = new EnumMap<StatusID, Property>(StatusID.class);
+	statusProp.put(StatusID.CONFUSE, PROP_CONFUSED);
+	statusProp.put(StatusID.POISON, PROP_POISONED);
+	statusProp.put(StatusID.BLEED, PROP_BLEEDING);
+	statusProp.put(StatusID.SHOCK, PROP_SHOCK);
+	statusProp.put(StatusID.ZOMBIE, PROP_ZOMBIE);
+	statusProp.put(StatusID.HEAVY, PROP_HEAVY);
     }
 
 	/**
@@ -196,7 +196,7 @@ public abstract class RPEntity extends AudibleEntity {
 
 	private int mining;
 
-	private int xp;
+	private long xp;
 
 	private int hp;
 
@@ -584,7 +584,7 @@ public abstract class RPEntity extends AudibleEntity {
 	/**
 	 * @return Returns the XP.
 	 */
-	public int getXP() {
+	public long getXP() {
 		return xp;
 	}
 
@@ -934,12 +934,12 @@ public abstract class RPEntity extends AudibleEntity {
      *         Show status overlay
      */
     private void setStatus(final StatusID status, final boolean show) {
-        if (show) {
-            statuses.add(status);
-        } else {
-            statuses.remove(status);
-        }
-        fireChange(statusProp.get(status));
+	if (show) {
+	    statuses.add(status);
+	} else {
+	    statuses.remove(status);
+	}
+	fireChange(statusProp.get(status));
     }
 
 	/**
@@ -1185,7 +1185,7 @@ public abstract class RPEntity extends AudibleEntity {
 		 */
 		setEatAndChoke(true, object.has("eating"), object.has("choking"));
 
-        /* Statuses */
+	/* Statuses */
 		for (StatusID id : StatusID.values()) {
 			if (object.has(id.getAttribute())) {
 				setStatus(id, true);
@@ -1582,12 +1582,13 @@ public abstract class RPEntity extends AudibleEntity {
 		}
 
 		if (changes.has("xp")) {
-			int newXp = changes.getInt("xp");
+			long newXp = changes.getLong("xp");
 
 			if (object.has("xp") && (isInHearingRange())) {
-				final int amount = newXp - xp;
+				final long amount = newXp - xp;
+				final int displayAmount = (int) Math.max(Math.min(amount, Integer.MAX_VALUE), Integer.MIN_VALUE);
 				if (amount > 0) {
-					if (amount == 1 || amount >= 2 && amount <= 4
+					if (displayAmount == 1 || displayAmount >= 2 && displayAmount <= 4
 						|| amount >= 22 && amount <= 24 || amount >= 102 && amount <= 104 || amount >= 122 && amount <= 124 || amount >= 132 && amount <= 134
 						|| amount >= 32 && amount <= 34 || amount >= 202 && amount <= 204 || amount >= 222 && amount <= 224 || amount >= 232 && amount <= 234
 						|| amount >= 42 && amount <= 44 || amount >= 302 && amount <= 304 || amount >= 322 && amount <= 324 || amount >= 332 && amount <= 334
@@ -1617,7 +1618,7 @@ public abstract class RPEntity extends AudibleEntity {
 						ClientSingletonRepository.getUserInterface().addEventLine(new HeaderLessEventLine(
 								getTitle()
 								+ " " + Grammar.genderVerb(getGender(), "dostał") + " "
-								+ Grammar.quantityplnoun(amount,
+								+ Grammar.quantityplnoun(displayAmount,
 								"punkt") + " doświadczenia.",
 								NotificationType.SIGNIFICANT_POSITIVE));
 					} else {
@@ -1635,7 +1636,7 @@ public abstract class RPEntity extends AudibleEntity {
 					ClientSingletonRepository.getUserInterface().addEventLine(new HeaderLessEventLine(
 							getTitle()
 							+ " traci "
-							+ Grammar.quantityplnoun(-amount,
+							+ Grammar.quantityplnoun(-displayAmount,
 							"punkt") + " doświadczenia.",
 							NotificationType.SIGNIFICANT_NEGATIVE));
 				}
