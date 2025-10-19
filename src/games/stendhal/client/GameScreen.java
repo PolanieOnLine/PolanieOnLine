@@ -11,6 +11,8 @@
  ***************************************************************************/
 package games.stendhal.client;
 
+import static games.stendhal.client.gui.settings.SettingsProperties.FPS_COUNTER_PROPERTY;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -23,6 +25,7 @@ import java.awt.Toolkit;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
+import java.awt.FontMetrics;
 import java.awt.geom.Point2D;
 import java.awt.image.VolatileImage;
 import java.util.Collection;
@@ -121,6 +124,8 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 	private final List<RemovableSprite> staticSprites;
 
 	private boolean offline;
+
+	private volatile boolean showFpsCounter;
 
 	/**
 	 * Off line indicator counter.
@@ -254,6 +259,13 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 		 */
 		setIgnoreRepaint(true);
 		client.getGameObjects().addGameObjectListener(this);
+		showFpsCounter = WtWindowManager.getInstance().getPropertyBoolean(FPS_COUNTER_PROPERTY, false);
+		WtWindowManager.getInstance().registerSettingChangeListener(FPS_COUNTER_PROPERTY, new SettingChangeListener() {
+			@Override
+			public void changed(String newValue) {
+				showFpsCounter = Boolean.parseBoolean(newValue);
+			}
+		});
 	}
 
 	/**
@@ -588,6 +600,7 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 		// Don't scale text to keep it readable
 		drawText(g2d);
 		drawEmojis(g2d);
+		drawFpsCounter(g2d);
 
 		paintOffLineIfNeeded(g2d);
 
@@ -731,6 +744,25 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 				}
 			}
 		}
+	}
+
+	private void drawFpsCounter(final Graphics2D g2d) {
+		if (!showFpsCounter) {
+			return;
+		}
+
+		int fps = GameLoop.get().getCurrentFps();
+		String fpsText = fps + " FPS";
+		FontMetrics metrics = g2d.getFontMetrics();
+		int textWidth = metrics.stringWidth(fpsText);
+		int textHeight = metrics.getHeight();
+		int padding = 4;
+		int x = getWidth() - textWidth - (padding * 2);
+		int y = padding;
+		g2d.setColor(new Color(0, 0, 0, 170));
+		g2d.fillRect(x - padding, y - padding, textWidth + padding * 2, textHeight + padding);
+		g2d.setColor(Color.WHITE);
+		g2d.drawString(fpsText, x, y + metrics.getAscent());
 	}
 
 	/**
