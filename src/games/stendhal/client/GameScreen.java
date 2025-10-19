@@ -139,14 +139,19 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 	private int blinkOffline;
 
 	/**
-	 * The targeted center of view X coordinate (truncated).
+	 * Epsilon used for filtering negligible position changes.
 	 */
-	private int x;
+	private static final double POSITION_EPSILON = 0.001;
 
 	/**
-	 * The targeted center of view Y coordinate (truncated).
+	 * The targeted center of view X coordinate (in world units).
 	 */
-	private int y;
+	private double x;
+
+	/**
+	 * The targeted center of view Y coordinate (in world units).
+	 */
+	private double y;
 
 	/** Actual size of the screen in pixels. */
 	private int sw;
@@ -241,8 +246,8 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 		sw = getWidth();
 		sh = getHeight();
 
-		x = 0;
-		y = 0;
+		x = 0.0;
+		y = 0.0;
 		GameScreenSpriteHelper.setScreenViewX(-sw / 2);
 		GameScreenSpriteHelper.setScreenViewY(-sh / 2);
 		dvx = 0;
@@ -537,12 +542,14 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 	 * @param x preferred x of center, if the map is large enough
 	 * @param y preferred y of center, if the map is large enough
 	 */
-	private void calculateView(int x, int y) {
+	private void calculateView(double x, double y) {
 		final double scale = GameScreenSpriteHelper.getScale();
 
 		// Coordinates for a screen centered on player
-		int cvx = (int) ((x * SIZE_UNIT_PIXELS) + (SIZE_UNIT_PIXELS / 2) - (sw / 2) / scale);
-		int cvy = (int) ((y * SIZE_UNIT_PIXELS) + (SIZE_UNIT_PIXELS / 2) - (sh / 2) / scale);
+		final double centerX = (x * SIZE_UNIT_PIXELS) + (SIZE_UNIT_PIXELS / 2.0);
+		final double centerY = (y * SIZE_UNIT_PIXELS) + (SIZE_UNIT_PIXELS / 2.0);
+		int cvx = (int) (centerX - (sw / 2.0) / scale);
+		int cvy = (int) (centerY - (sh / 2.0) / scale);
 
 		/*
 		 * Keep the world within the screen view
@@ -994,17 +1001,12 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 
 	@Override
 	public void positionChanged(final double x, final double y) {
-		final int ix = (int) x;
-		final int iy = (int) y;
+		if ((Math.abs(x - this.x) > POSITION_EPSILON)
+				|| (Math.abs(y - this.y) > POSITION_EPSILON)) {
+			this.x = x;
+			this.y = y;
 
-		/*
-		 * Save CPU cycles
-		 */
-		if ((ix != this.x) || (iy != this.y)) {
-			this.x = ix;
-			this.y = iy;
-
-			calculateView(ix, iy);
+			calculateView(x, y);
 		}
 	}
 
