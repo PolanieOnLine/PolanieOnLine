@@ -15,6 +15,7 @@ import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPRuleProcessor;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.maps.quests.marriage.MarriageQuestInfo;
 
 /**
  * Represents an teleport scroll that acts as an invitation to an event. The
@@ -28,6 +29,7 @@ public class InvitationScroll extends TeleportScroll {
 
 	private static final String HOTEL_ZONE = "int_fado_hotel_0";
 	private static final String HOTEL_SPOT = "4 40";
+	private static final MarriageQuestInfo marriageInfo = new MarriageQuestInfo();
 	/*
 	 * Creates a new invitation teleport scroll.
 	 *
@@ -137,13 +139,18 @@ public class InvitationScroll extends TeleportScroll {
 			player.sendPrivateText("Nie będzie ślubu dopóki " + playerName + " nie wejdzie do gry.");
 			return false;
 		}
-		//TODO: either activate this by finding out how to put 'marriage' in here:
-		//	if (marriage.isMarried(playerName)) {
-		//	player.sendPrivateText("It looks like you missed the wedding, because " + playerName + " is already married.");
-		//	return false;
-	   	//}
-		// or use sth like (engagedPlayer.isInQuestState("marriage","just_married") || engagedPlayer.isInQuestState("marriage","done")) in the
-		// if statement.
+		if (marriageInfo.isMarried(engagedPlayer)) {
+			player.sendPrivateText(playerName + " już wziął ślub i to zaproszenie straciło moc.");
+			return false;
+		}
+		if (marriageInfo.isMarried(player)) {
+			player.sendPrivateText("Wygląda na to, że już jesteś żonaty, więc to zaproszenie nie jest ci potrzebne.");
+			return false;
+		}
+		if (!marriageInfo.isEngaged(engagedPlayer) || !marriageInfo.isEngaged(player)) {
+			player.sendPrivateText("Zaproszenie działa tylko dla par, które nadal są zaręczone.");
+			return false;
+		}
 		return teleportTo(WEDDING_ZONE + " " + WEDDING_SPOT, player);
 	}
 

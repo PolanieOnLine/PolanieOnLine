@@ -16,6 +16,7 @@ import java.net.URI;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -82,9 +83,11 @@ public class StendhalRPWorld extends RPWorld {
 	@Override
 	public IRPZone removeRPZone(final ID zoneid) throws Exception {
 		final StendhalRPZone zone = (StendhalRPZone) super.getRPZone(zoneid);
-		for(final Set<StendhalRPZone> zones : regionMap.values()) {
-			if(zones.contains(zone)) {
-				zones.remove(zone);
+		for(final Iterator<Map.Entry<String, Set<StendhalRPZone>>> entryIterator = regionMap.entrySet().iterator(); entryIterator.hasNext();) {
+			final Map.Entry<String, Set<StendhalRPZone>> entry = entryIterator.next();
+			final Set<StendhalRPZone> zones = entry.getValue();
+			if (zones.remove(zone) && zones.isEmpty()) {
+				entryIterator.remove();
 			}
 		}
 		return super.removeRPZone(zoneid);
@@ -302,17 +305,18 @@ public class StendhalRPWorld extends RPWorld {
 	 */
 	public Collection<StendhalRPZone> getAllZonesFromRegion(final String region, final Boolean exterior, final Boolean aboveGround, final Boolean accessible) {
 		final Set<StendhalRPZone> zonesInRegion = new HashSet<StendhalRPZone>();
-		if(regionMap.containsKey(region)) {
-			zonesInRegion.addAll(regionMap.get(region));
-			if(exterior != null) {
-				filterOutInteriorOrExteriorZones(zonesInRegion, exterior);
-			}
-			if(aboveGround != null && exterior != null && exterior) {
-				filterOutAboveOrBelowGround(zonesInRegion, aboveGround);
-			}
-			if(accessible != null) {
-				filterByAccessibility(zonesInRegion, accessible);
-			}
+		if(!regionMap.containsKey(region)) {
+			return zonesInRegion;
+		}
+		zonesInRegion.addAll(regionMap.get(region));
+		if(exterior != null) {
+			filterOutInteriorOrExteriorZones(zonesInRegion, exterior);
+		}
+		if(aboveGround != null && exterior != null && exterior) {
+			filterOutAboveOrBelowGround(zonesInRegion, aboveGround);
+		}
+		if(accessible != null) {
+			filterByAccessibility(zonesInRegion, accessible);
 		}
 		return zonesInRegion;
 	}
@@ -323,19 +327,12 @@ public class StendhalRPWorld extends RPWorld {
 	 * @param exterior if true only exterior zones stay in the set
 	 */
 	private void filterOutInteriorOrExteriorZones(final Set<StendhalRPZone> zonesInRegion, final Boolean exterior) {
-		final Set<StendhalRPZone> removals = new HashSet<StendhalRPZone>();
-		for (StendhalRPZone zone : zonesInRegion) {
-			if(exterior) {
-				if(zone.isInterior()) {
-					removals.add(zone);
-				}
-			} else {
-				if(!zone.isInterior()) {
-					removals.add(zone);
-				}
+		for(final Iterator<StendhalRPZone> iterator = zonesInRegion.iterator(); iterator.hasNext();) {
+			final StendhalRPZone zone = iterator.next();
+			if (exterior.booleanValue() ? zone.isInterior() : !zone.isInterior()) {
+				iterator.remove();
 			}
 		}
-		zonesInRegion.removeAll(removals);
 	}
 
 	/**
@@ -345,34 +342,20 @@ public class StendhalRPWorld extends RPWorld {
 	 * @param aboveGround
 	 */
 	private void filterOutAboveOrBelowGround(final Set<StendhalRPZone> zonesInRegion, final Boolean aboveGround) {
-		final Set<StendhalRPZone> removals = new HashSet<StendhalRPZone>();
-		for (StendhalRPZone zone : zonesInRegion) {
-			if(aboveGround.booleanValue()) {
-				if(zone.getLevel() < 0) {
-					removals.add(zone);
-				}
-			} else {
-				if(zone.getLevel() >= 0) {
-					removals.add(zone);
-				}
+		for(final Iterator<StendhalRPZone> iterator = zonesInRegion.iterator(); iterator.hasNext();) {
+			final StendhalRPZone zone = iterator.next();
+			if (aboveGround.booleanValue() ? zone.getLevel() < 0 : zone.getLevel() >= 0) {
+				iterator.remove();
 			}
 		}
-		zonesInRegion.removeAll(removals);
 	}
 
 	private void filterByAccessibility(final Set<StendhalRPZone> zonesInRegion, final Boolean accessible) {
-		final Set<StendhalRPZone> removals = new HashSet<StendhalRPZone>();
-		for (StendhalRPZone zone : zonesInRegion) {
-			boolean addToRemovals = false;
-			if(accessible.booleanValue()) {
-				addToRemovals = !zone.isPublicAccessible();
-			} else {
-				addToRemovals = zone.isPublicAccessible();
-			}
-			if (addToRemovals) {
-				removals.add(zone);
+		for(final Iterator<StendhalRPZone> iterator = zonesInRegion.iterator(); iterator.hasNext();) {
+			final StendhalRPZone zone = iterator.next();
+			if (accessible.booleanValue() ? !zone.isPublicAccessible() : zone.isPublicAccessible()) {
+				iterator.remove();
 			}
 		}
-		zonesInRegion.removeAll(removals);
 	}
 }

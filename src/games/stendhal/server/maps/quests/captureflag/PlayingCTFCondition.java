@@ -10,8 +10,7 @@ public class PlayingCTFCondition implements ChatCondition {
 	@Override
 	public boolean fire(final Player player, final Sentence sentence, final Entity npc) {
 
-		// TODO: probably better to use an rpentity slot
-		return player.hasUseListener();
+		return CaptureFlagSupport.isPlaying(player) || player.hasUseListener();
 	}
 
 }

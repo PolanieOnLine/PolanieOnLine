@@ -44,6 +44,8 @@ import games.stendhal.server.entity.npc.behaviour.impl.SellerBehaviour;
 import games.stendhal.server.entity.npc.behaviour.impl.TeleporterBehaviour;
 import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.NotCondition;
+import games.stendhal.server.entity.npc.condition.QuestActiveCondition;
+import games.stendhal.server.entity.npc.condition.QuestCompletedCondition;
 import games.stendhal.server.entity.npc.condition.QuestNotStartedCondition;
 import games.stendhal.server.entity.npc.condition.QuestStartedCondition;
 import games.stendhal.server.entity.player.Player;
@@ -106,25 +108,9 @@ public class CollectEnemyData extends AbstractQuest {
 		put("atk", new Pair<String, String>("Jaki poziom ataku posiada", null));
 	}};
 
-	// FIXME: QuestActiveCondition doesn't work for this quest because of the overridden isCompleted method
-	private final ChatCondition questActiveCondition = new ChatCondition() {
-		@Override
-		public boolean fire(final Player player, final Sentence sentence, final Entity npc) {
-			if (player.getQuest(QUEST_SLOT) != null) {
-				return !isCompleted(player);
-			}
+	private final QuestActiveCondition questActiveCondition = new QuestActiveCondition(QUEST_SLOT);
 
-			return false;
-		}
-	};
-
-	// FIXME: QuestCompletedCondition doesn't work for this quest because of the overridden isCompleted method
-	private final ChatCondition questCompletedCondition = new ChatCondition() {
-		@Override
-		public boolean fire(final Player player, final Sentence sentence, final Entity npc) {
-			return isCompleted(player);
-		}
-	};
+	private final QuestCompletedCondition questCompletedCondition = new QuestCompletedCondition(QUEST_SLOT);
 
 	private void initNPC() {
 		npc = new SpeakerNPC("Rengard");
@@ -272,15 +258,13 @@ public class CollectEnemyData extends AbstractQuest {
 				ConversationPhrases.QUEST_MESSAGES,
 				new AndCondition(
 						new QuestStartedCondition(QUEST_SLOT),
-						//new NotCondition(new QuestCompletedCondition(QUEST_SLOT)),
-						new NotCondition(questCompletedCondition)),
+							new NotCondition(questCompletedCondition)),
 				ConversationStates.ATTENDING,
 				"Zgodziłeś się już mi pomóc w zbieraniu informacji o stworach.",
 				null);
 
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.QUEST_MESSAGES,
-				//new QuestCompletedCondition(QUEST_SLOT),
 				questCompletedCondition,
 				ConversationStates.ATTENDING,
 				"Dziękuje za pomoc w gromadzeniu informacji o stworach.",
@@ -303,7 +287,6 @@ public class CollectEnemyData extends AbstractQuest {
 		// player has to returned to give info
 		npc.add(ConversationStates.IDLE,
 				ConversationPhrases.GREETING_MESSAGES,
-				//new QuestActiveCondition(QUEST_SLOT), // FIXME: doesn't work for this quest because of the overridden isCompleted method
 				questActiveCondition,
 				ConversationStates.QUESTION_1,
 				"Czy przyniosłeś informacje o stworzeniu, o które prosiłem?",
@@ -445,7 +428,6 @@ public class CollectEnemyData extends AbstractQuest {
 
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.OFFER_MESSAGES,
-				//new QuestCompletedCondition(QUEST_SLOT),
 				questCompletedCondition,
 				ConversationStates.ATTENDING,
 				"Mogę sprzedać Ci #bestiariusz.",
@@ -453,7 +435,6 @@ public class CollectEnemyData extends AbstractQuest {
 
 		npc.add(ConversationStates.ATTENDING,
 				ConversationPhrases.HELP_MESSAGES,
-				//new QuestCompletedCondition(QUEST_SLOT),
 				questCompletedCondition,
 				ConversationStates.ATTENDING,
 				"Jeśli posiadasz już #bestiariusz, możesz być w stanie znaleźć medium, które da ci więcej wglądu w stwory, które spotkałeś.",
@@ -461,7 +442,6 @@ public class CollectEnemyData extends AbstractQuest {
 
 		npc.add(ConversationStates.ATTENDING,
 				Arrays.asList("bestiary", "bestiariusz"),
-				//new QuestCompletedCondition(QUEST_SLOT),
 				questCompletedCondition,
 				ConversationStates.ATTENDING,
 				"Bestiariusz pozwala śledzić wrogów, których pokonałeś.",

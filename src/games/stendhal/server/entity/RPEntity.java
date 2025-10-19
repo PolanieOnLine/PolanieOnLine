@@ -27,6 +27,7 @@ import org.apache.log4j.Logger;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
 
+import games.stendhal.common.Direction;
 import games.stendhal.common.EquipActionConsts;
 import games.stendhal.common.Level;
 import games.stendhal.common.NotificationType;
@@ -1408,14 +1409,22 @@ public abstract class RPEntity extends CombatEntity {
 		action.put(EquipActionConsts.BASE_OBJECT, parent.getID().getObjectID());
 		action.put(EquipActionConsts.BASE_SLOT,	droppable.getContainerSlot().getName());
 
-		// TODO: better to drop "behind" the player, if they have been running
-		action.put("x", this.getX());
-		action.put("y", this.getY() + 1);
+		Direction direction = player.getDirection();
+		int dropX = this.getX();
+		int dropY = this.getY() + 1;
+		if ((direction != null) && (direction != Direction.STOP)) {
+			dropX -= direction.getdx();
+			dropY -= direction.getdy();
+		}
+		action.put("x", dropX);
+		action.put("y", dropY);
 
 		DropAction dropAction = new DropAction();
 		dropAction.onAction(player, action);
 
-		// TODO: send message to player - you dropped ...
+		player.sendPrivateText("Upuściłeś "
+				+ Grammar.quantityplnoun(droppable.getQuantity(), droppable.getTitle())
+				+ ".");
 
 		this.notifyWorldAboutChanges();
 	}
