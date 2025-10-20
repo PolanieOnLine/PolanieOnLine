@@ -14,10 +14,13 @@ package games.stendhal.client.gui.chatlog;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.Icon;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
+import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 import org.apache.log4j.Logger;
 
@@ -34,6 +37,7 @@ public class ChatTextSink implements AttributedTextSink<StyleSet> {
 
 	/** Destination document. */
 	private final Document document;
+	private final StyledDocument styledDocument;
 
 	/** Emoji style template. */
 	private final Style emojiStyle;
@@ -82,6 +86,7 @@ public class ChatTextSink implements AttributedTextSink<StyleSet> {
 	*/
 	public ChatTextSink(Document document, Style emojiStyle) {
 		this.document = document;
+		this.styledDocument = (document instanceof StyledDocument) ? (StyledDocument) document : null;
 		this.emojiStyle = emojiStyle;
 	}
 
@@ -105,8 +110,11 @@ public class ChatTextSink implements AttributedTextSink<StyleSet> {
 				if (emojiAttrs == null) {
 					emojiAttrs = buildEmojiAttributes(attrs);
 				}
-				final String glyph = segment.getMatch().getGlyph();
-				document.insertString(document.getLength(), (glyph != null) ? glyph : segment.getToken(), emojiAttrs.contents());
+
+				if (!insertEmojiIcon(store, segment, emojiAttrs)) {
+					final String glyph = segment.getMatch().getGlyph();
+					document.insertString(document.getLength(), (glyph != null) ? glyph : segment.getToken(), emojiAttrs.contents());
+				}
 			}
 
 		} catch (BadLocationException e) {
@@ -146,6 +154,22 @@ public class ChatTextSink implements AttributedTextSink<StyleSet> {
 		}
 
 		return segments;
+	}
+
+	private boolean insertEmojiIcon(final EmojiStore store, final Segment segment, final StyleSet emojiAttrs) throws BadLocationException {
+		if (styledDocument == null) {
+			return false;
+		}
+
+		final Icon icon = store.getIcon(segment.getToken());
+		if (icon == null) {
+			return false;
+		}
+
+		final SimpleAttributeSet attributes = new SimpleAttributeSet(emojiAttrs.contents());
+		StyleConstants.setIcon(attributes, icon);
+		styledDocument.insertString(styledDocument.getLength(), "\uFFFC", attributes);
+		return true;
 	}
 
 	private StyleSet buildEmojiAttributes(final StyleSet attrs) {
