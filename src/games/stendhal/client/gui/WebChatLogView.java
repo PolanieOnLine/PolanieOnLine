@@ -277,9 +277,10 @@ class WebChatLogView extends JComponent implements ChatLogView {
                 StringBuilder html = new StringBuilder();
                 final EmojiStore store = EmojiStore.get();
                 final String embeddedFont = store.getBundledFontDataUrl();
-                final String emojiFontStack = ((embeddedFont != null) && !embeddedFont.isEmpty())
-                        ? "'StendhalEmoji'," + EMOJI_FONT_STACK
-                        : EMOJI_FONT_STACK;
+                final String emojiFamily = store.getFontFamily();
+                final String emojiCssFamily = cssFontFamilyName(emojiFamily);
+                final boolean hasEmbeddedFont = (embeddedFont != null) && !embeddedFont.isEmpty();
+                final String emojiFontStack = emojiCssFamily + "," + EMOJI_FONT_STACK;
                 html.append("<!DOCTYPE html><html><head><meta charset=\"UTF-8\"><style>");
                 html.append("body { background:").append(cssColor(defaultBackground)).append("; margin:0; padding:4px; font-family: ")
                         .append(cssFontFamily(regularStyle)).append("; font-size:").append(StyleConstants.getFontSize(regularStyle))
@@ -288,8 +289,9 @@ class WebChatLogView extends JComponent implements ChatLogView {
                 html.append(".timestamp { color:").append(cssColor(StyleConstants.getForeground(timestampStyle))).append("; font-style: italic; margin-right: 4px; }");
                 html.append(".header { color:").append(cssColor(StyleConstants.getForeground(headerStyle))).append("; font-style: italic; margin-right: 4px; }");
                 html.append(".bold { color:").append(cssColor(StyleConstants.getForeground(boldStyle))).append("; font-style: italic; font-weight: bold; }");
-                if ((embeddedFont != null) && !embeddedFont.isEmpty()) {
-                        html.append("@font-face { font-family:'StendhalEmoji'; src:url(").append(embeddedFont).append(") format('truetype'); }");
+                if (hasEmbeddedFont) {
+                        html.append("@font-face { font-family:").append(emojiCssFamily).append("; src:url(").append(embeddedFont)
+                                .append(") format('truetype'); }");
                 }
                 html.append(".emoji { font-family: ").append(emojiFontStack).append("; font-style: normal; font-weight: normal; }");
                 html.append(".emoji-img { height: 1.2em; width: auto; vertical-align: middle; }");
@@ -349,6 +351,13 @@ class WebChatLogView extends JComponent implements ChatLogView {
 		String family = StyleConstants.getFontFamily(style);
 		if ((family == null) || family.isEmpty()) {
 			family = "Dialog";
+		}
+		return '\'' + family.replace("'", "\\'") + '\'';
+	}
+
+	private static String cssFontFamilyName(String family) {
+		if ((family == null) || family.isEmpty()) {
+			family = "Noto Color Emoji";
 		}
 		return '\'' + family.replace("'", "\\'") + '\'';
 	}
