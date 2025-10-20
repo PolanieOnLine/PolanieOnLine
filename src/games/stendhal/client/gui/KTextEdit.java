@@ -77,7 +77,7 @@ import games.stendhal.common.NotificationType;
 /**
  * Appendable text component to be used as the chat log.
  */
-class KTextEdit extends JComponent {
+class KTextEdit extends JComponent implements ChatLogView {
 	/** Color of the time stamp written before the lines. */
 	protected static final Color HEADER_COLOR = new Color(210, 210, 210);
 
@@ -509,35 +509,44 @@ class KTextEdit extends JComponent {
 	 *
 	 * @param line event line
 	 */
-	void addLine(final EventLine line) {
-		this.addLine(line.getHeader(), line.getText(), line.getType());
-	}
+        @Override
+        public void addLine(final EventLine line) {
+                this.addLine(line.getHeader(), line.getText(), line.getType());
+        }
 
-	/**
-	 * Clear the context.
-	 */
-	void clear() {
-		textPane.setText("");
-	}
+        /**
+         * Clear the context.
+         */
+        @Override
+        public void clear() {
+                textPane.setText("");
+        }
 
-	/**
-	 * Set the background color to be used normally, when not highlighting
-	 * unread messages.
-	 *
-	 * @param color background color
-	 */
-	void setDefaultBackground(Color color) {
-		defaultBackground = color;
-	}
+        /**
+         * Set the background color to be used normally, when not highlighting
+         * unread messages.
+         *
+         * @param color background color
+         */
+        @Override
+        public void setDefaultBackground(Color color) {
+                defaultBackground = color;
+        }
 
-	/**
-	 * Set the name of the logged channel.
-	 *
-	 * @param name channel name
-	 */
-	void setChannelName(String name) {
-		this.name = name;
-	}
+        /**
+         * Set the name of the logged channel.
+         *
+         * @param name channel name
+         */
+        @Override
+        public void setChannelName(String name) {
+                this.name = name;
+        }
+
+        @Override
+        public JComponent getComponent() {
+                return this;
+        }
 
 	/**
 	 * Set a clear warning for the user that there are new, unread lines.
