@@ -11,12 +11,10 @@
  ***************************************************************************/
 package games.stendhal.client.gui.chatlog;
 
-import javax.swing.Icon;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
-import javax.swing.text.StyledDocument;
 
 import org.apache.log4j.Logger;
 
@@ -56,7 +54,6 @@ public class ChatTextSink implements AttributedTextSink<StyleSet> {
 			}
 
 			final EmojiStore store = EmojiStore.get();
-			final StyledDocument styled = (document instanceof StyledDocument) ? (StyledDocument) document : null;
 			final int length = s.length();
 			final StringBuilder plain = new StringBuilder();
 			StyleSet emojiAttrs = null;
@@ -72,18 +69,6 @@ public class ChatTextSink implements AttributedTextSink<StyleSet> {
 
 					if (emojiAttrs == null) {
 						emojiAttrs = buildEmojiAttributes(attrs);
-					}
-
-					if (styled != null) {
-						final Icon icon = store.getIcon(match.getName());
-						if (icon != null) {
-							final Style style = emojiAttrs.contents();
-							StyleConstants.setIcon(style, icon);
-							styled.insertString(styled.getLength(), " ", style);
-							StyleConstants.setIcon(style, null);
-							index += match.getConsumedLength();
-							continue;
-						}
 					}
 
 					document.insertString(document.getLength(), match.getGlyph(), emojiAttrs.contents());
