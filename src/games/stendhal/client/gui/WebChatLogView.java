@@ -24,8 +24,10 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -240,7 +242,8 @@ class WebChatLogView extends JComponent implements ChatLogView {
 		html.append(".timestamp { color:").append(cssColor(StyleConstants.getForeground(timestampStyle))).append("; font-style: italic; margin-right: 4px; }");
 		html.append(".header { color:").append(cssColor(StyleConstants.getForeground(headerStyle))).append("; font-style: italic; margin-right: 4px; }");
 		html.append(".bold { color:").append(cssColor(StyleConstants.getForeground(boldStyle))).append("; font-style: italic; font-weight: bold; }");
-			html.append(".emoji { font-family: ").append(EMOJI_FONT_STACK).append("; font-style: normal; font-weight: normal; }");
+		html.append(".emoji { font-family: ").append(EMOJI_FONT_STACK).append("; font-style: normal; font-weight: normal; }");
+		html.append(".emoji-img { height: 1.2em; width: auto; vertical-align: middle; }");
 		html.append("a { color: ").append(cssColor(new Color(65, 105, 225))).append("; }");
 		html.append("</style></head><body>");
 
@@ -425,7 +428,7 @@ class WebChatLogView extends JComponent implements ChatLogView {
 				final EmojiStore.EmojiMatch match = store.matchEmoji(s, index);
 				if (match != null) {
 					if (buffer.length() > 0) {
-						appendSpan(buffer.toString(), style, false);
+						appendSpan(store, buffer.toString(), style, false);
 						buffer.setLength(0);
 					}
 					final int consumed = Math.max(1, match.getConsumedLength());
@@ -433,7 +436,7 @@ class WebChatLogView extends JComponent implements ChatLogView {
 					if ((glyph == null) || glyph.isEmpty()) {
 						glyph = s.substring(index, Math.min(length, index + consumed));
 					}
-					appendSpan(glyph, style, true);
+					appendSpan(store, glyph, style, true);
 					index += consumed;
 					continue;
 				}
@@ -442,15 +445,16 @@ class WebChatLogView extends JComponent implements ChatLogView {
                                index += java.lang.Character.charCount(codePoint);
 			}
 			if (buffer.length() > 0) {
-				appendSpan(buffer.toString(), style, false);
+				appendSpan(store, buffer.toString(), style, false);
 			}
 		}
 
-		private void appendSpan(final String text, final Style style, final boolean emoji) {
+		private void appendSpan(final EmojiStore store, final String text, final Style style, final boolean emoji) {
 			if ((text == null) || text.isEmpty()) {
 				return;
 			}
 
+			final String dataUrl = (emoji && (store != null)) ? store.dataUrlFor(text) : null;
 			final StringBuilder span = new StringBuilder();
 			span.append("<span");
 			if (emoji) {
@@ -458,34 +462,43 @@ class WebChatLogView extends JComponent implements ChatLogView {
 			}
 			span.append(" style=\"");
 
-			final Color fg = StyleConstants.getForeground(style);
-			if (fg != null) {
-				span.append("color:").append(cssColor(fg)).append(';');
-			}
-			if (!emoji && StyleConstants.isBold(style)) {
-				span.append("font-weight:bold;");
-			}
-			if (!emoji && StyleConstants.isItalic(style)) {
-				span.append("font-style:italic;");
-				} else if (emoji) {
-				span.append("font-style:normal;");
-			}
-			if (StyleConstants.isUnderline(style)) {
-				span.append("text-decoration:underline;");
-			}
-			span.append("font-size:").append(StyleConstants.getFontSize(style)).append("px;");
-			if (emoji) {
-				span.append("font-family:").append(EMOJI_FONT_STACK).append(';');
-				span.append("font-weight:normal;");
+			if (dataUrl != null) {
+				span.append("display:inline-block;");
 			} else {
-				final String family = StyleConstants.getFontFamily(style);
-				if ((family != null) && !family.isEmpty()) {
-					span.append("font-family:").append(cssFontFamily(style)).append(';');
+				final Color fg = StyleConstants.getForeground(style);
+				if (fg != null) {
+					span.append("color:").append(cssColor(fg)).append(';');
+				}
+				if (!emoji && StyleConstants.isBold(style)) {
+					span.append("font-weight:bold;");
+				}
+				if (!emoji && StyleConstants.isItalic(style)) {
+					span.append("font-style:italic;");
+				} else if (emoji) {
+					span.append("font-style:normal;");
+				}
+				if (StyleConstants.isUnderline(style)) {
+					span.append("text-decoration:underline;");
+				}
+				span.append("font-size:").append(StyleConstants.getFontSize(style)).append("px;");
+				if (emoji) {
+					span.append("font-family:").append(EMOJI_FONT_STACK).append(';');
+					span.append("font-weight:normal;");
+				} else {
+					final String family = StyleConstants.getFontFamily(style);
+					if ((family != null) && !family.isEmpty()) {
+						span.append("font-family:").append(cssFontFamily(style)).append(';');
+					}
 				}
 			}
 			span.append('\"');
 			span.append('>');
-			span.append(escape(text));
+			if ((dataUrl != null) && emoji) {
+				span.append("<img class=\"emoji-img\" src=\"").append(dataUrl).append("\" alt=\"")
+					.append(escape(text)).append("\"/>");
+			} else {
+				span.append(escape(text));
+			}
 			span.append("</span>");
 			html.append(span);
 		}
@@ -499,18 +512,29 @@ class WebChatLogView extends JComponent implements ChatLogView {
 		private final Method runLater;
 		private final Constructor<?> webViewCtor;
 		private final Method setContextMenuEnabled;
-		private final Method getEngine;
-		private final Constructor<?> sceneCtor;
-		private final Method setScene;
-		private final Method loadContent;
-		private final Method executeScript;
+private final Method getEngine;
+private final Constructor<?> sceneCtor;
+private final Method setScene;
+private final Method loadContent;
+private final Method executeScript;
+		private final Method getLoadWorker;
+		private final Method workerStateProperty;
+		private final Method workerGetState;
+		private final Class<?> changeListenerClass;
+		private final Class<?> workerStateClass;
 		private final CountDownLatch ready = new CountDownLatch(1);
 
 		private volatile Object webEngine;
 		private volatile Throwable startupFailure;
+		private volatile Method propertyAddListener;
+		private volatile Method propertyRemoveListener;
+		private volatile Object succeededState;
+		private volatile Object failedState;
+		private volatile Object cancelledState;
 
 		private FxBridge(Object panel, Method runLater, Constructor<?> webViewCtor, Method setContextMenuEnabled,
-				Method getEngine, Constructor<?> sceneCtor, Method setScene, Method loadContent, Method executeScript) {
+				Method getEngine, Constructor<?> sceneCtor, Method setScene, Method loadContent, Method executeScript,
+				Method getLoadWorker, Method workerStateProperty, Method workerGetState, Class<?> changeListenerClass, Class<?> workerStateClass) {
 			this.panel = panel;
 			this.runLater = runLater;
 			this.webViewCtor = webViewCtor;
@@ -520,6 +544,11 @@ class WebChatLogView extends JComponent implements ChatLogView {
 			this.setScene = setScene;
 			this.loadContent = loadContent;
 			this.executeScript = executeScript;
+			this.getLoadWorker = getLoadWorker;
+			this.workerStateProperty = workerStateProperty;
+			this.workerGetState = workerGetState;
+			this.changeListenerClass = changeListenerClass;
+			this.workerStateClass = workerStateClass;
 		}
 
 		private static final Object fxGuard = new Object();
@@ -552,12 +581,20 @@ class WebChatLogView extends JComponent implements ChatLogView {
 					Constructor<?> sceneCtor = sceneClass.getConstructor(parentClass);
 					Method setScene = jfxPanelClass.getMethod("setScene", sceneClass);
 
-					Class<?> webEngineClass = Class.forName("javafx.scene.web.WebEngine");
-					Method loadContent = webEngineClass.getMethod("loadContent", String.class, String.class);
-					Method executeScript = webEngineClass.getMethod("executeScript", String.class);
+Class<?> webEngineClass = Class.forName("javafx.scene.web.WebEngine");
+Method loadContent = webEngineClass.getMethod("loadContent", String.class, String.class);
+Method executeScript = webEngineClass.getMethod("executeScript", String.class);
+Method getLoadWorker = webEngineClass.getMethod("getLoadWorker");
 
-					FxBridge bridge = new FxBridge(panel, runLater, webViewCtor, setContextMenuEnabled, getEngine, sceneCtor,
-							setScene, loadContent, executeScript);
+Class<?> workerClass = Class.forName("javafx.concurrent.Worker");
+Method workerStateProperty = workerClass.getMethod("stateProperty");
+Method workerGetState = workerClass.getMethod("getState");
+Class<?> changeListenerClass = Class.forName("javafx.beans.value.ChangeListener");
+Class<?> workerStateClass = Class.forName("javafx.concurrent.Worker$State");
+
+FxBridge bridge = new FxBridge(panel, runLater, webViewCtor, setContextMenuEnabled, getEngine, sceneCtor,
+setScene, loadContent, executeScript, getLoadWorker, workerStateProperty, workerGetState,
+changeListenerClass, workerStateClass);
 					bridge.init();
 					return bridge;
 				} catch (Throwable ex) {
@@ -669,6 +706,13 @@ class WebChatLogView extends JComponent implements ChatLogView {
 						Object scene = sceneCtor.newInstance(webView);
 						setScene.invoke(panel, scene);
 						webEngine = engine;
+						Object worker = null;
+						try {
+							worker = getLoadWorker.invoke(engine);
+						} catch (Throwable metadataEx) {
+							logger.debug("Unable to query WebView worker during init", metadataEx);
+						}
+						prepareWorkerMetadata(worker);
 					} catch (Throwable ex) {
 						startupFailure = ex;
 						logInitializationFailure(ex);
@@ -721,8 +765,27 @@ class WebChatLogView extends JComponent implements ChatLogView {
 						if (!awaitReady()) {
 							return;
 						}
+						Object worker = (webEngine != null) ? getLoadWorker.invoke(webEngine) : null;
+						Object property = null;
+						if (worker != null) {
+							property = workerStateProperty.invoke(worker);
+						}
+						Object listener = null;
+						boolean listenerAttached = false;
+						try {
+							if ((property != null) && (changeListenerClass != null)) {
+								prepareWorkerMetadata(worker);
+								listener = createLoadListener(property, afterLoad);
+								if ((listener != null) && (propertyAddListener != null)) {
+									propertyAddListener.invoke(property, listener);
+									listenerAttached = true;
+								}
+							}
+						} catch (Throwable attachEx) {
+							logger.debug("Unable to attach WebView load listener", attachEx);
+						}
 						loadContent.invoke(webEngine, html, "text/html");
-						if (afterLoad != null) {
+						if (!listenerAttached && (afterLoad != null)) {
 							SwingUtilities.invokeLater(afterLoad);
 						}
 					} catch (Throwable ex) {
@@ -731,6 +794,70 @@ class WebChatLogView extends JComponent implements ChatLogView {
 				}
 			};
 			invokeLater(task);
+		}
+
+		private void prepareWorkerMetadata(final Object worker) {
+			if ((worker == null) || (changeListenerClass == null)) {
+				return;
+			}
+			try {
+				Object property = workerStateProperty.invoke(worker);
+				if (property == null) {
+					return;
+				}
+				if ((propertyAddListener == null) || (propertyRemoveListener == null)) {
+					Class<?> propertyClass = property.getClass();
+					propertyAddListener = propertyClass.getMethod("addListener", changeListenerClass);
+					propertyRemoveListener = propertyClass.getMethod("removeListener", changeListenerClass);
+				}
+				if (succeededState == null) {
+					@SuppressWarnings("rawtypes")
+					Class enumClass = workerStateClass;
+					succeededState = Enum.valueOf(enumClass, "SUCCEEDED");
+					failedState = Enum.valueOf(enumClass, "FAILED");
+					cancelledState = Enum.valueOf(enumClass, "CANCELLED");
+				}
+			} catch (Throwable ex) {
+				logger.debug("Unable to initialize WebView worker metadata", ex);
+			}
+		}
+
+		private Object createLoadListener(final Object property, final Runnable afterLoad) {
+			if ((propertyAddListener == null) || (propertyRemoveListener == null) || (changeListenerClass == null)) {
+				return null;
+			}
+			final Method removeMethod = propertyRemoveListener;
+			final Runnable callback = afterLoad;
+			final Object successState = succeededState;
+			final Object failed = failedState;
+			final Object cancelled = cancelledState;
+			InvocationHandler handler = new InvocationHandler() {
+				@Override
+				public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+					if (!"changed".equals(method.getName()) || (args == null) || (args.length < 3)) {
+						return null;
+					}
+					Object newValue = args[2];
+					boolean completed = false;
+					if ((successState != null) && successState.equals(newValue)) {
+						completed = true;
+						if (callback != null) {
+							SwingUtilities.invokeLater(callback);
+						}
+					} else if (((failed != null) && failed.equals(newValue)) || ((cancelled != null) && cancelled.equals(newValue))) {
+						completed = true;
+					}
+					if (completed && (removeMethod != null)) {
+						try {
+							removeMethod.invoke(property, proxy);
+						} catch (Throwable removalEx) {
+							logger.debug("Failed to remove WebView load listener", removalEx);
+						}
+					}
+					return null;
+				}
+			};
+			return Proxy.newProxyInstance(changeListenerClass.getClassLoader(), new Class<?>[] { changeListenerClass }, handler);
 		}
 
 		void scrollToEnd() {
@@ -749,6 +876,70 @@ class WebChatLogView extends JComponent implements ChatLogView {
 				}
 			};
 			invokeLater(task);
+		}
+
+		private void prepareWorkerMetadata(final Object worker) {
+			if ((worker == null) || (changeListenerClass == null)) {
+				return;
+			}
+			try {
+				Object property = workerStateProperty.invoke(worker);
+				if (property == null) {
+					return;
+				}
+				if ((propertyAddListener == null) || (propertyRemoveListener == null)) {
+					Class<?> propertyClass = property.getClass();
+					propertyAddListener = propertyClass.getMethod("addListener", changeListenerClass);
+					propertyRemoveListener = propertyClass.getMethod("removeListener", changeListenerClass);
+				}
+				if (succeededState == null) {
+					@SuppressWarnings("rawtypes")
+					Class enumClass = workerStateClass;
+					succeededState = Enum.valueOf(enumClass, "SUCCEEDED");
+					failedState = Enum.valueOf(enumClass, "FAILED");
+					cancelledState = Enum.valueOf(enumClass, "CANCELLED");
+				}
+			} catch (Throwable ex) {
+				logger.debug("Unable to initialize WebView worker metadata", ex);
+			}
+		}
+
+		private Object createLoadListener(final Object property, final Runnable afterLoad) {
+			if ((propertyAddListener == null) || (propertyRemoveListener == null) || (changeListenerClass == null)) {
+				return null;
+			}
+			final Method removeMethod = propertyRemoveListener;
+			final Runnable callback = afterLoad;
+			final Object successState = succeededState;
+			final Object failed = failedState;
+			final Object cancelled = cancelledState;
+			InvocationHandler handler = new InvocationHandler() {
+				@Override
+				public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+					if (!"changed".equals(method.getName()) || (args == null) || (args.length < 3)) {
+						return null;
+					}
+					Object newValue = args[2];
+					boolean completed = false;
+					if ((successState != null) && successState.equals(newValue)) {
+						completed = true;
+						if (callback != null) {
+							SwingUtilities.invokeLater(callback);
+						}
+					} else if (((failed != null) && failed.equals(newValue)) || ((cancelled != null) && cancelled.equals(newValue))) {
+						completed = true;
+					}
+					if (completed && (removeMethod != null)) {
+						try {
+							removeMethod.invoke(property, proxy);
+						} catch (Throwable removalEx) {
+							logger.debug("Failed to remove WebView load listener", removalEx);
+						}
+					}
+					return null;
+				}
+			};
+			return Proxy.newProxyInstance(changeListenerClass.getClassLoader(), new Class<?>[] { changeListenerClass }, handler);
 		}
 
 		private void invokeLater(Runnable runnable) {

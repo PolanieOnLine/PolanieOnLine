@@ -30,6 +30,7 @@ import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
@@ -89,11 +90,13 @@ public class EmojiStore {
 		private final String glyph;
 		private final Icon icon;
 		private final Sprite sprite;
+		private final String dataUrl;
 
-		private RenderedEmoji(final String glyph, final Icon icon, final Sprite sprite) {
+		private RenderedEmoji(final String glyph, final Icon icon, final Sprite sprite, final String dataUrl) {
 			this.glyph = glyph;
 			this.icon = icon;
 			this.sprite = sprite;
+			this.dataUrl = dataUrl;
 		}
 	}
 
@@ -381,6 +384,14 @@ public class EmojiStore {
 		return rendered.icon;
 	}
 
+	public String dataUrlFor(final String text) {
+		final RenderedEmoji rendered = renderEmoji(text);
+		if ((rendered == null) || (rendered.dataUrl == null) || rendered.dataUrl.isEmpty()) {
+			return null;
+		}
+		return rendered.dataUrl;
+	}
+
 	private String ensureEmojiPresentation(final String glyph) {
 		if ((glyph == null) || glyph.isEmpty()) {
 			return glyph;
@@ -413,6 +424,7 @@ public class EmojiStore {
 
 		BufferedImage iconImage = null;
 		BufferedImage spriteImage = null;
+		String dataUrl = null;
 
 		ensureEmojiFont();
 		final String glyph = ensureEmojiPresentation(emojiGlyphs.getOrDefault(name, ":" + name + ":"));
@@ -442,9 +454,12 @@ public class EmojiStore {
 				spriteImage = scaleForSprite(assetImage);
 			}
 		}
+		if (iconImage != null) {
+			dataUrl = toDataUrl(iconImage);
+		}
 		final Icon icon = (iconImage != null) ? new ImageIcon(iconImage) : null;
 		final Sprite sprite = (spriteImage != null) ? new ImageSprite(spriteImage, name) : null;
-		cached = new RenderedEmoji(glyph, icon, sprite);
+		cached = new RenderedEmoji(glyph, icon, sprite, dataUrl);
 		emojiCache.put(name, cached);
 		return cached;
 	}
@@ -560,6 +575,21 @@ public class EmojiStore {
 				g2d.dispose();
 		}
 		return image;
+	}
+
+	private String toDataUrl(final BufferedImage image) {
+		if (image == null) {
+			return null;
+		}
+		try {
+			final ByteArrayOutputStream out = new ByteArrayOutputStream();
+			ImageIO.write(image, "png", out);
+			final String encoded = Base64.getEncoder().encodeToString(out.toByteArray());
+			return "data:image/png;base64," + encoded;
+		} catch (IOException e) {
+			logger.warn("Failed to encode emoji image", e);
+			return null;
+		}
 	}
 
 	/**
