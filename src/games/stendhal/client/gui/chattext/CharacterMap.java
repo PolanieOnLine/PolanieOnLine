@@ -11,7 +11,6 @@
  ***************************************************************************/
 package games.stendhal.client.gui.chattext;
 
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
@@ -21,6 +20,7 @@ import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+import javax.swing.Icon;
 
 import games.stendhal.client.scripting.ChatLineParser;
 import games.stendhal.client.sprite.EmojiStore;
@@ -31,19 +31,24 @@ import games.stendhal.client.sprite.EmojiStore;
  */
 public class CharacterMap extends JButton {
 	private final static EmojiStore emojis = EmojiStore.get();
-	private final static String iconGlyph = emojis.glyphFor(":grin:");
+	private final static String DEFAULT_BUTTON_TEXT = "\u263A";
 
 	/**
 	 * Create a new CharacterMap.
 	 */
 	public CharacterMap() {
 		super();
-		final Font origFont = getFont();
-		setFont(EmojiStore.deriveFont(origFont.getStyle(), origFont.getSize() + 2));
 		setFocusable(false);
 		setToolTipText("Emotikony");
 
-		setText(iconGlyph != null ? iconGlyph : "☺");
+		final Icon buttonIcon = emojis.getIcon(":grin:");
+		if (buttonIcon != null) {
+			setIcon(buttonIcon);
+			setText("");
+		} else {
+			final String glyph = emojis.glyphFor(":grin:");
+			setText(glyph != null ? glyph : DEFAULT_BUTTON_TEXT);
+		}
 
 		final JPopupMenu menu = new JPopupMenu();
 
@@ -81,9 +86,10 @@ public class CharacterMap extends JButton {
 		setMargin(insets);
 		for (String st: emojis.getEmojiList()) {
 			st = ":" + st + ":";
+			final Icon icon = emojis.getIcon(st);
 			final String glyph = emojis.glyphFor(st);
-			if (glyph != null) {
-				EmojiButton item = new EmojiButton(glyph, st);
+			if (icon != null || glyph != null) {
+				EmojiButton item = new EmojiButton(icon, glyph != null ? glyph : st, st);
 				item.setMargin(insets);
 				item.addActionListener(listener);
 				item.setBorder(null);
@@ -95,10 +101,15 @@ public class CharacterMap extends JButton {
 	private class EmojiButton extends JMenuItem {
 		private final String emojiText;
 
-		public EmojiButton(final String glyph, final String text) {
-			super(glyph);
-			setFont(EmojiStore.deriveFont(Font.PLAIN, 20));
+		public EmojiButton(final Icon icon, final String fallbackLabel, final String text) {
+			super();
 			emojiText = text;
+			if (icon != null) {
+				setIcon(icon);
+				setText("");
+			} else {
+				setText(fallbackLabel);
+			}
 			setIconTextGap(0);
 			setToolTipText(text);
 		}

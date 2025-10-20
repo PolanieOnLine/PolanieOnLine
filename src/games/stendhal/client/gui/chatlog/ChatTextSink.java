@@ -11,10 +11,12 @@
  ***************************************************************************/
 package games.stendhal.client.gui.chatlog;
 
+import javax.swing.Icon;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 import org.apache.log4j.Logger;
 
@@ -36,11 +38,11 @@ public class ChatTextSink implements AttributedTextSink<StyleSet> {
 	private final Style emojiStyle;
 
 	/**
-	 * Create a new ChatTextSink.
-	 *
-	 * @param document destination document
-	 * @param emojiStyle base style to apply for emoji glyphs
-	 */
+	* Create a new ChatTextSink.
+	*
+	* @param document destination document
+	* @param emojiStyle base style to apply for emoji glyphs
+	*/
 	public ChatTextSink(Document document, Style emojiStyle) {
 		this.document = document;
 		this.emojiStyle = emojiStyle;
@@ -54,6 +56,7 @@ public class ChatTextSink implements AttributedTextSink<StyleSet> {
 			}
 
 			final EmojiStore store = EmojiStore.get();
+			final StyledDocument styled = (document instanceof StyledDocument) ? (StyledDocument) document : null;
 			final int length = s.length();
 			final StringBuilder plain = new StringBuilder();
 			StyleSet emojiAttrs = null;
@@ -69,6 +72,18 @@ public class ChatTextSink implements AttributedTextSink<StyleSet> {
 
 					if (emojiAttrs == null) {
 						emojiAttrs = buildEmojiAttributes(attrs);
+					}
+
+					if (styled != null) {
+						final Icon icon = store.getIcon(match.getName());
+						if (icon != null) {
+							final Style style = emojiAttrs.contents();
+							StyleConstants.setIcon(style, icon);
+							styled.insertString(styled.getLength(), " ", style);
+							StyleConstants.setIcon(style, null);
+							index += match.getConsumedLength();
+							continue;
+						}
 					}
 
 					document.insertString(document.getLength(), match.getGlyph(), emojiAttrs.contents());
@@ -90,13 +105,13 @@ public class ChatTextSink implements AttributedTextSink<StyleSet> {
 	}
 
 	/**
-	 * Builds a copy of the provided attributes with emoji-specific font settings applied.
-	 *
-	 * @param attrs
-	 *     Style set to copy.
-	 * @return
-	 *     Style set with emoji font attributes.
-	 */
+	* Builds a copy of the provided attributes with emoji-specific font settings applied.
+	*
+	* @param attrs
+	*     Style set to copy.
+	* @return
+	*     Style set with emoji font attributes.
+	*/
 	private StyleSet buildEmojiAttributes(final StyleSet attrs) {
 		final StyleSet emojiAttrs = attrs.copy();
 

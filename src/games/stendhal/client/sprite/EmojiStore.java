@@ -18,20 +18,15 @@ import java.util.List;
 import java.util.Map;
 
 import java.awt.Font;
-import java.awt.FontFormatException;
-import java.awt.Graphics2D;
-import java.awt.GraphicsEnvironment;
-import java.awt.RenderingHints;
-import java.awt.font.FontRenderContext;
-import java.awt.font.LineMetrics;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
+import java.net.URL;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 
 import org.json.simple.JSONObject;
 import org.apache.log4j.Logger;
 
+import games.stendhal.client.ClientSingletonRepository;
 import games.stendhal.client.util.JSONLoader;
 import games.stendhal.client.sprite.DataLoader;
 
@@ -41,94 +36,26 @@ public class EmojiStore {
 	private List<String> emojilist;
 	private Map<String, String> emojimap;
 	private Map<String, String> emojiGlyphs;
+	private Map<String, Icon> emojiIcons;
 	private int longestKeyLength;
 
 	private static final String pathPrefix = "data/sprites/emoji/";
-	private static final String fontPrefix = "data/font/";
 	private static final Logger logger = Logger.getLogger(EmojiStore.class);
-
-	private static final String PRIMARY_EMOJI_FONT = "Noto Color Emoji";
-	private static final String FALLBACK_EMOJI_FONT = "Noto Emoji";
-	private static final int EMOJI_FONT_SIZE = 28;
-	private static final Font EMOJI_FONT = resolveEmojiFont();
-	private static final FontRenderContext FONT_CONTEXT;
-
-	static {
-		BufferedImage image = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D graphics = image.createGraphics();
-		graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-		FONT_CONTEXT = graphics.getFontRenderContext();
-		graphics.dispose();
-	}
-
-	private static Font resolveEmojiFont() {
-		Font font = createSystemFont(PRIMARY_EMOJI_FONT);
-		if (font != null) {
-			return font;
-		}
-		font = loadBundledFont("NotoColorEmoji-Regular.ttf");
-		if (font != null) {
-			return font;
-		}
-		font = createSystemFont(FALLBACK_EMOJI_FONT);
-		if (font != null) {
-			return font;
-		}
-		font = loadBundledFont("NotoEmoji-Regular.ttf");
-		if (font != null) {
-			return font;
-		}
-		return new Font(Font.SANS_SERIF, Font.PLAIN, EMOJI_FONT_SIZE);
-	}
-
-	private static boolean hasFontFamily(final String name) {
-		final String[] families = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
-		for (final String family: families) {
-			if (name.equals(family)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private static Font createSystemFont(final String family) {
-		if (hasFontFamily(family)) {
-			return new Font(family, Font.PLAIN, EMOJI_FONT_SIZE);
-		}
-		return null;
-	}
-
-	private static Font loadBundledFont(final String resource) {
-		final String path = fontPrefix + resource;
-		try (InputStream stream = DataLoader.getResourceAsStream(path)) {
-			if (stream == null) {
-				logger.warn("Emoji font resource not found: " + path);
-				return null;
-			}
-			Font font = Font.createFont(Font.TRUETYPE_FONT, stream);
-			GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(font);
-			return font.deriveFont(Font.PLAIN, (float) EMOJI_FONT_SIZE);
-		} catch (FontFormatException | IOException e) {
-			logger.error("Failed to load emoji font '" + resource + "'", e);
-			return null;
-		}
-	}
-
-	public static String getFontFamily() {
-		return EMOJI_FONT.getFamily();
-	}
-
-	public static Font deriveFont(final int style, final int size) {
-		return EMOJI_FONT.deriveFont(style, (float) size);
-	}
+	private static final String DEFAULT_EMOJI_FONT = Font.SANS_SERIF;
 
 	public static final class EmojiMatch {
+		private final String name;
 		private final String glyph;
 		private final int consumedLength;
 
-		private EmojiMatch(final String glyph, final int consumedLength) {
+		private EmojiMatch(final String name, final String glyph, final int consumedLength) {
+			this.name = name;
 			this.glyph = glyph;
 			this.consumedLength = consumedLength;
+		}
+
+		public String getName() {
+			return name;
 		}
 
 		public String getGlyph() {
@@ -140,66 +67,6 @@ public class EmojiStore {
 		}
 	}
 
-	private static final class EmojiFontSprite implements Sprite {
-		private final String glyph;
-		private final int width;
-		private final int height;
-		private final int ascent;
-
-		EmojiFontSprite(final String glyph) {
-			this.glyph = glyph;
-			Rectangle2D bounds = EMOJI_FONT.getStringBounds(glyph, FONT_CONTEXT);
-			LineMetrics metrics = EMOJI_FONT.getLineMetrics(glyph, FONT_CONTEXT);
-			width = (int) Math.ceil(bounds.getWidth());
-			height = (int) Math.ceil(metrics.getHeight());
-			ascent = Math.round(metrics.getAscent());
-		}
-
-		@Override
-		public Sprite createRegion(final int x, final int y, final int width,
-				final int height, final Object ref) {
-			return this;
-		}
-
-		@Override
-		public void draw(final java.awt.Graphics g, final int x, final int y) {
-			draw(g, x, y, 0, 0, width, height);
-		}
-
-		@Override
-		public void draw(final java.awt.Graphics g, final int destx, final int desty,
-				final int x, final int y, final int w, final int h) {
-			Graphics2D g2d = (Graphics2D) g;
-			Font oldFont = g2d.getFont();
-			Object oldAA = g2d.getRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING);
-			g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-			g2d.setFont(EMOJI_FONT);
-			g2d.drawString(glyph, destx, desty + ascent);
-			g2d.setFont(oldFont);
-			g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, oldAA);
-		}
-
-		@Override
-		public int getHeight() {
-			return height;
-		}
-
-		@Override
-		public Object getReference() {
-			return glyph;
-		}
-
-		@Override
-		public int getWidth() {
-			return width;
-		}
-
-		@Override
-		public boolean isConstant() {
-			return true;
-		}
-	}
-
 	public static EmojiStore get() {
 		if (instance == null) {
 			instance = new EmojiStore();
@@ -208,18 +75,19 @@ public class EmojiStore {
 	}
 
 	/**
-	 * Singleton.
-	 */
+	* Singleton.
+	*/
 	private EmojiStore() {
 		emojilist = new LinkedList<>();
 		emojimap = new HashMap<>();
 		emojiGlyphs = new LinkedHashMap<>();
+		emojiIcons = new HashMap<>();
 		longestKeyLength = 0;
 	}
 
 	/**
-	 * Loads emoji data from JSON.
-	 */
+	* Loads emoji data from JSON.
+	*/
 	public void init() {
 		final JSONLoader loader = new JSONLoader();
 		loader.onDataReady = new Runnable() {
@@ -273,29 +141,49 @@ public class EmojiStore {
 	}
 
 	/**
-	 * Creates an emoji sprite backed by a font glyph.
-	 *
-	 * @param text
-	 *     Text representing emoji.
-	 * @return
-	 *     Sprite that renders the emoji or <code>null</code> if emoji isn't available.
-	 */
+	* Creates an emoji sprite.
+	*
+	* @param text
+	*     Text representing emoji.
+	* @return
+	*     <code>Sprite</code> backed by the emoji image or <code>null</code> if unavailable.
+	*/
 	public Sprite create(final String text) {
-		final String glyph = glyphFor(text);
-		if (glyph == null) {
+		final String name = check(text);
+		if (name == null) {
 			return null;
 		}
-		return new EmojiFontSprite(glyph);
+		return ClientSingletonRepository.getSpriteStore().getSprite(pathPrefix + name + ".png");
+	}
+
+	public Icon getIcon(final String text) {
+		final String name = check(text);
+		if (name == null) {
+			return null;
+		}
+		final Icon cached = emojiIcons.get(name);
+		if (cached != null) {
+			return cached;
+		}
+		final String path = pathPrefix + name + ".png";
+		final URL resource = DataLoader.getResource(path);
+		if (resource == null) {
+			logger.warn("Emoji icon not found: " + path);
+			return null;
+		}
+		final ImageIcon icon = new ImageIcon(resource);
+		emojiIcons.put(name, icon);
+		return icon;
 	}
 
 	/**
-	 * Retrieves glyph string for the provided emoji text.
-	 *
-	 * @param text
-	 *     Text representing emoji.
-	 * @return
-	 *     Glyph string or <code>null</code> if unavailable.
-	 */
+	* Retrieves glyph string for the provided emoji text.
+	*
+	* @param text
+	*     Text representing emoji.
+	* @return
+	*     Glyph string or <code>null</code> if unavailable.
+	*/
 	public String glyphFor(final String text) {
 		final String name = check(text);
 		if (name == null) {
@@ -334,11 +222,11 @@ public class EmojiStore {
 		if (name == null) {
 			return null;
 		}
-		final String glyph = emojiGlyphs.get(name);
+		String glyph = emojiGlyphs.get(name);
 		if (glyph == null) {
-			return null;
+			glyph = ":" + name + ":";
 		}
-		return new EmojiMatch(glyph, consumedChars);
+		return new EmojiMatch(name, glyph, consumedChars);
 	}
 
 	private static String stripVariationSelectors(final String text) {
@@ -357,13 +245,13 @@ public class EmojiStore {
 	}
 
 	/**
-	 * Checks if text represents an emoji.
-	 *
-	 * @param text
-	 *     Text to be checked.
-	 * @return
-	 *     String representing emoji identifier or <code>null</code>.
-	 */
+	* Checks if text represents an emoji.
+	*
+	* @param text
+	*     Text to be checked.
+	* @return
+	*     String representing emoji identifier or <code>null</code>.
+	*/
 	public String check(String text) {
 		text = text.replace("\\\\", "\\");
 		String name = emojimap.containsKey(text) ? emojimap.get(text) : null;
@@ -376,15 +264,22 @@ public class EmojiStore {
 		return name;
 	}
 
+	public String absPath(final String name) {
+		final String checked = check(name);
+		if (checked != null) {
+			return pathPrefix + checked + ".png";
+		}
+		return null;
+	}
 
 	/**
-	 * Checks if an emoji is registered.
-	 *
-	 * @param name
-	 *     Text representing emoji image filename.
-	 * @return
-	 *     <code>true</code> if name is registered.
-	 */
+	* Checks if an emoji is registered.
+	*
+	* @param name
+	*     Text representing emoji image filename.
+	* @return
+	*     <code>true</code> if name is registered.
+	*/
 	public boolean isAvailable(String name) {
 		if (name.startsWith(":") && name.endsWith(":")) {
 			name = name.substring(1, name.length()-1);
@@ -393,12 +288,20 @@ public class EmojiStore {
 	}
 
 	/**
-	 * Get a list of available emojis.
-	 *
-	 * @return
-	 *     A copy of the emoji list.
-	 */
+	* Get a list of available emojis.
+	*
+	* @return
+	*     A copy of the emoji list.
+	*/
 	public List<String> getEmojiList() {
 		return new LinkedList<String>() {{ addAll(emojilist); }};
+	}
+
+	public static String getFontFamily() {
+		return DEFAULT_EMOJI_FONT;
+	}
+
+	public static Font deriveFont(final int style, final int size) {
+		return new Font(DEFAULT_EMOJI_FONT, style, size);
 	}
 }
