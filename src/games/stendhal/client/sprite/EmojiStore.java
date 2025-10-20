@@ -41,6 +41,7 @@ public class EmojiStore {
 	private List<String> emojilist;
 	private Map<String, String> emojimap;
 	private Map<String, String> emojiGlyphs;
+	private int longestKeyLength;
 
 	private static final String pathPrefix = "data/sprites/emoji/";
 	private static final String fontPrefix = "data/font/";
@@ -121,6 +122,24 @@ public class EmojiStore {
 		return EMOJI_FONT.deriveFont(style, (float) size);
 	}
 
+	public static final class EmojiMatch {
+		private final String glyph;
+		private final int consumedLength;
+
+		private EmojiMatch(final String glyph, final int consumedLength) {
+			this.glyph = glyph;
+			this.consumedLength = consumedLength;
+		}
+
+		public String getGlyph() {
+			return glyph;
+		}
+
+		public int getConsumedLength() {
+			return consumedLength;
+		}
+	}
+
 	private static final class EmojiFontSprite implements Sprite {
 		private final String glyph;
 		private final int width;
@@ -195,6 +214,7 @@ public class EmojiStore {
 		emojilist = new LinkedList<>();
 		emojimap = new HashMap<>();
 		emojiGlyphs = new LinkedHashMap<>();
+		longestKeyLength = 0;
 	}
 
 	/**
@@ -218,6 +238,7 @@ public class EmojiStore {
 						final String key = (String) e.getKey();
 						final String value = (String) e.getValue();
 						emojimap.put(key, value);
+						recordKeyLength(key);
 						if (looksLikeGlyph(key)) {
 							emojiGlyphs.putIfAbsent(value, key);
 						}
@@ -234,6 +255,12 @@ public class EmojiStore {
 			if (!emojiGlyphs.containsKey(name)) {
 				emojiGlyphs.put(name, ":" + name + ":");
 			}
+		}
+	}
+
+	private void recordKeyLength(final String key) {
+		if (key != null) {
+			longestKeyLength = Math.max(longestKeyLength, key.length());
 		}
 	}
 
@@ -275,6 +302,58 @@ public class EmojiStore {
 			return null;
 		}
 		return emojiGlyphs.get(name);
+	}
+
+	public EmojiMatch matchEmoji(final CharSequence text, final int index) {
+		if ((text == null) || (index < 0) || (index >= text.length()) || (longestKeyLength == 0)) {
+			return null;
+		}
+
+		final int maxEnd = Math.min(text.length(), index + longestKeyLength);
+		for (int end = maxEnd; end > index; end--) {
+			final String candidate = text.subSequence(index, end).toString();
+			final int consumed = end - index;
+			final EmojiMatch direct = matchCandidate(candidate, consumed);
+			if (direct != null) {
+				return direct;
+			}
+			final String normalized = stripVariationSelectors(candidate);
+			if (!normalized.isEmpty() && !normalized.equals(candidate)) {
+				final EmojiMatch normalizedMatch = matchCandidate(normalized, consumed);
+				if (normalizedMatch != null) {
+					return normalizedMatch;
+				}
+			}
+		}
+
+		return null;
+	}
+
+	private EmojiMatch matchCandidate(final String candidate, final int consumedChars) {
+		final String name = emojimap.get(candidate);
+		if (name == null) {
+			return null;
+		}
+		final String glyph = emojiGlyphs.get(name);
+		if (glyph == null) {
+			return null;
+		}
+		return new EmojiMatch(glyph, consumedChars);
+	}
+
+	private static String stripVariationSelectors(final String text) {
+		if ((text == null) || (text.indexOf("\uFE0E") == -1 && text.indexOf("\uFE0F") == -1)) {
+			return text;
+		}
+		final StringBuilder builder = new StringBuilder(text.length());
+		for (int i = 0; i < text.length(); i++) {
+			final char ch = text.charAt(i);
+			if ((ch == '\uFE0E') || (ch == '\uFE0F')) {
+				continue;
+			}
+			builder.append(ch);
+		}
+		return builder.toString();
 	}
 
 	/**

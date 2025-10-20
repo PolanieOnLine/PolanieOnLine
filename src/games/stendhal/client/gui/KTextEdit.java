@@ -365,7 +365,7 @@ class KTextEdit extends JComponent {
 	 * @param type type for formatting
 	 */
 	protected void insertText(String text, final NotificationType type) {
-		ChatTextSink dest = new ChatTextSink(textPane.getDocument());
+		ChatTextSink dest = new ChatTextSink(textPane.getDocument(), textPane.getStyle("emoji"));
 		final Color c = type.getColor();
 		Style s = getStyle(c, type.getStyleDescription());
 
