@@ -479,41 +479,53 @@ class WebChatLogView extends JComponent implements ChatLogView {
 		private static volatile boolean fxAvailable;
 		private static volatile boolean fxMissingLogged;
 		private static volatile boolean fxInitLogged;
+		private static volatile boolean softwarePipelineForced;
 
 		static FxBridge tryCreate() {
 			if (!ensureJavaFxPresent()) {
 				return null;
 			}
-			try {
-				Class<?> jfxPanelClass = Class.forName("javafx.embed.swing.JFXPanel");
-				Object panel = jfxPanelClass.getConstructor().newInstance();
+			boolean forcedSoftware = false;
+			for (int attempt = 0; attempt < 2; attempt++) {
+				try {
+					Class<?> jfxPanelClass = Class.forName("javafx.embed.swing.JFXPanel");
+					Object panel = jfxPanelClass.getConstructor().newInstance();
 
-				Class<?> platformClass = Class.forName("javafx.application.Platform");
-				Method runLater = platformClass.getMethod("runLater", Runnable.class);
+					Class<?> platformClass = Class.forName("javafx.application.Platform");
+					Method runLater = platformClass.getMethod("runLater", Runnable.class);
 
-				Class<?> webViewClass = Class.forName("javafx.scene.web.WebView");
-				Constructor<?> webViewCtor = webViewClass.getConstructor();
-				Method setContextMenuEnabled = webViewClass.getMethod("setContextMenuEnabled", boolean.class);
-				Method getEngine = webViewClass.getMethod("getEngine");
+					Class<?> webViewClass = Class.forName("javafx.scene.web.WebView");
+					Constructor<?> webViewCtor = webViewClass.getConstructor();
+					Method setContextMenuEnabled = webViewClass.getMethod("setContextMenuEnabled", boolean.class);
+					Method getEngine = webViewClass.getMethod("getEngine");
 
-				Class<?> parentClass = Class.forName("javafx.scene.Parent");
-				Class<?> sceneClass = Class.forName("javafx.scene.Scene");
-				Constructor<?> sceneCtor = sceneClass.getConstructor(parentClass);
-				Method setScene = jfxPanelClass.getMethod("setScene", sceneClass);
+					Class<?> parentClass = Class.forName("javafx.scene.Parent");
+					Class<?> sceneClass = Class.forName("javafx.scene.Scene");
+					Constructor<?> sceneCtor = sceneClass.getConstructor(parentClass);
+					Method setScene = jfxPanelClass.getMethod("setScene", sceneClass);
 
-				Class<?> webEngineClass = Class.forName("javafx.scene.web.WebEngine");
-				Method loadContent = webEngineClass.getMethod("loadContent", String.class, String.class);
-				Method executeScript = webEngineClass.getMethod("executeScript", String.class);
+					Class<?> webEngineClass = Class.forName("javafx.scene.web.WebEngine");
+					Method loadContent = webEngineClass.getMethod("loadContent", String.class, String.class);
+					Method executeScript = webEngineClass.getMethod("executeScript", String.class);
 
-				FxBridge bridge = new FxBridge(panel, runLater, webViewCtor, setContextMenuEnabled, getEngine, sceneCtor,
-					setScene, loadContent, executeScript);
-				bridge.init();
-				return bridge;
-			} catch (Throwable ex) {
-				logInitializationFailure(ex);
-				markUnavailable();
-				return null;
+					FxBridge bridge = new FxBridge(panel, runLater, webViewCtor, setContextMenuEnabled, getEngine, sceneCtor,
+							setScene, loadContent, executeScript);
+					bridge.init();
+					return bridge;
+				} catch (Throwable ex) {
+					if (!forcedSoftware && shouldRetryWithSoftwarePipeline(ex)) {
+						forcedSoftware = forceSoftwarePipeline();
+						if (forcedSoftware) {
+							continue;
+						}
+					}
+					logInitializationFailure(ex);
+					markUnavailable();
+					return null;
+				}
 			}
+			markUnavailable();
+			return null;
 		}
 
 		private static boolean ensureJavaFxPresent() {
@@ -612,7 +624,6 @@ class WebChatLogView extends JComponent implements ChatLogView {
 					} catch (Throwable ex) {
 						startupFailure = ex;
 						logInitializationFailure(ex);
-						markUnavailable();
 					} finally {
 						ready.countDown();
 					}
@@ -622,7 +633,6 @@ class WebChatLogView extends JComponent implements ChatLogView {
 			runLater.invoke(null, task);
 			try {
 				if (!ready.await(5, TimeUnit.SECONDS) || (webEngine == null)) {
-					markUnavailable();
 					Throwable failure = startupFailure;
 					if (failure != null) {
 						throw new IllegalStateException("JavaFX WebView failed to initialize", failure);
@@ -631,7 +641,6 @@ class WebChatLogView extends JComponent implements ChatLogView {
 				}
 			} catch (InterruptedException ex) {
 				Thread.currentThread().interrupt();
-				markUnavailable();
 				throw new IllegalStateException("Interrupted while waiting for JavaFX initialization", ex);
 			}
 		}
@@ -708,6 +717,34 @@ class WebChatLogView extends JComponent implements ChatLogView {
 				Thread.currentThread().interrupt();
 				return false;
 			}
+		private static boolean shouldRetryWithSoftwarePipeline(Throwable ex) {
+			Throwable cause = rootCause(ex);
+			if (cause == null) {
+				cause = ex;
+			}
+			String message = cause.getMessage();
+			if (message == null) {
+				return false;
+			}
+			String normalized = message.toLowerCase(Locale.ROOT);
+			return normalized.contains("quantumrenderer")
+					|| normalized.contains("no suitable pipeline")
+					|| normalized.contains("no toolkit found");
+		}
+
+		private static boolean forceSoftwarePipeline() {
+			synchronized (fxGuard) {
+				if (softwarePipelineForced) {
+					return false;
+				}
+				softwarePipelineForced = true;
+			}
+			System.setProperty("prism.order", "sw");
+			System.setProperty("prism.text", "t2k");
+			logger.info("Retrying JavaFX WebView initialization using the software renderer (prism.order=sw).");
+			return true;
+		}
+
 		}
 	}
 }
