@@ -69,6 +69,7 @@ import games.stendhal.client.gui.chatlog.EventLine;
 import games.stendhal.client.gui.chatlog.HeaderLessEventLine;
 import games.stendhal.client.gui.textformat.StringFormatter;
 import games.stendhal.client.gui.textformat.StyleSet;
+import games.stendhal.client.sprite.EmojiStore;
 import games.stendhal.common.MathHelper;
 import games.stendhal.common.NotificationType;
 
@@ -280,11 +281,10 @@ class KTextEdit extends JComponent {
 		s = textPane.getStyle("emoji");
 		if (s == null) {
 			s = textPane.addStyle("emoji", regular);
-			StyleConstants.setFontFamily(s, "Noto Emoji");
+			StyleConstants.setFontFamily(s, EmojiStore.getFontFamily());
 			StyleConstants.setBold(s, true);
 		}
 		StyleConstants.setFontSize(s, mainTextSize + 2);
-
 		//****** Styles used by the string formatter ******
 		StyleSet defaultAttributes = new StyleSet(StyleContext.getDefaultStyleContext(), regular);
 

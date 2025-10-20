@@ -39,7 +39,7 @@ public class CharacterMap extends JButton {
 	public CharacterMap() {
 		super();
 		final Font origFont = getFont();
-		setFont(new Font("Noto Emoji", origFont.getStyle(), origFont.getSize() + 2));
+		setFont(EmojiStore.deriveFont(origFont.getStyle(), origFont.getSize() + 2));
 		setFocusable(false);
 		setToolTipText("Emotikony");
 
@@ -75,40 +75,33 @@ public class CharacterMap extends JButton {
 	 * @param listener action listener that should be attached to the menu items
 	 */
 	private void fillMenu(JComponent menu, ActionListener listener) {
-		//~ String[][] characters = {
-				//~ { "☺", "☹", "😃", "😲", "😇", "😈", "😊", "😌", "😍", "😎", "😏", "😐", "😴" },
-				//~ { "🐭", "🐮", "🐱", "🐵", "🐯", "🐰", "🐴", "🐶", "🐷", "🐹", "🐺", "🐻", "🐼"  },
-				//~ { "♥", "♡", "💔", "💡", "☠" },
-				//~ { "£", "$", "€", "₤", "₱", "¥" },
-				//~ { "♩", "♪", "♫", "♬", "♭", "♮", "♯", "𝄞", "𝄢" } };
-		//~ menu.setLayout(new GridLayout(0, characters[0].length));
 		menu.setLayout(new GridLayout(0, 13));
 
 		Insets insets = new Insets(1, 1, 1, 1);
 		setMargin(insets);
-				for (String st: emojis.getEmojiList()) {
-						st = ":" + st + ":";
-						final String glyph = emojis.glyphFor(st);
-						if (glyph != null) {
-								EmojiButton item = new EmojiButton(glyph, st);
-								item.setMargin(insets);
-								item.addActionListener(listener);
-								item.setBorder(null);
-								menu.add(item);
-						}
-				}
+		for (String st: emojis.getEmojiList()) {
+			st = ":" + st + ":";
+			final String glyph = emojis.glyphFor(st);
+			if (glyph != null) {
+				EmojiButton item = new EmojiButton(glyph, st);
+				item.setMargin(insets);
+				item.addActionListener(listener);
+				item.setBorder(null);
+				menu.add(item);
+			}
 		}
+	}
 
-		private class EmojiButton extends JMenuItem {
-				private final String emojiText;
+	private class EmojiButton extends JMenuItem {
+		private final String emojiText;
 
-			public EmojiButton(final String glyph, final String text) {
-				super(glyph);
-				setFont(new Font("Noto Emoji", Font.PLAIN, 20));
-						emojiText = text;
-						setIconTextGap(0);
-						setToolTipText(text);
-				}
+		public EmojiButton(final String glyph, final String text) {
+			super(glyph);
+			setFont(EmojiStore.deriveFont(Font.PLAIN, 20));
+			emojiText = text;
+			setIconTextGap(0);
+			setToolTipText(text);
+		}
 
 		public String getEmojiText() {
 			return emojiText;

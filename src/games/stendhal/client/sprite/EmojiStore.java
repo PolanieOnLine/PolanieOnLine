@@ -19,6 +19,7 @@ import java.util.Map;
 
 import java.awt.Font;
 import java.awt.Graphics2D;
+import java.awt.GraphicsEnvironment;
 import java.awt.RenderingHints;
 import java.awt.font.FontRenderContext;
 import java.awt.font.LineMetrics;
@@ -38,7 +39,10 @@ public class EmojiStore {
 
 	private static final String pathPrefix = "data/sprites/emoji/";
 
-	private static final Font EMOJI_FONT = new Font("Noto Emoji", Font.PLAIN, 28);
+	private static final String PRIMARY_EMOJI_FONT = "Noto Color Emoji";
+	private static final String FALLBACK_EMOJI_FONT = "Noto Emoji";
+	private static final int EMOJI_FONT_SIZE = 28;
+	private static final Font EMOJI_FONT = resolveEmojiFont();
 	private static final FontRenderContext FONT_CONTEXT;
 
 	static {
@@ -47,6 +51,34 @@ public class EmojiStore {
 		graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		FONT_CONTEXT = graphics.getFontRenderContext();
 		graphics.dispose();
+	}
+
+	private static Font resolveEmojiFont() {
+		if (hasFontFamily(PRIMARY_EMOJI_FONT)) {
+			return new Font(PRIMARY_EMOJI_FONT, Font.PLAIN, EMOJI_FONT_SIZE);
+		}
+		if (hasFontFamily(FALLBACK_EMOJI_FONT)) {
+			return new Font(FALLBACK_EMOJI_FONT, Font.PLAIN, EMOJI_FONT_SIZE);
+		}
+		return new Font(Font.SANS_SERIF, Font.PLAIN, EMOJI_FONT_SIZE);
+	}
+
+	private static boolean hasFontFamily(final String name) {
+		final String[] families = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
+		for (final String family: families) {
+			if (name.equals(family)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public static String getFontFamily() {
+		return EMOJI_FONT.getFamily();
+	}
+
+	public static Font deriveFont(final int style, final int size) {
+		return EMOJI_FONT.deriveFont(style, (float) size);
 	}
 
 	private static final class EmojiFontSprite implements Sprite {
