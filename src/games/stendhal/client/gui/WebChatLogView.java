@@ -766,6 +766,8 @@ class WebChatLogView extends JComponent implements ChatLogView {
 				Thread.currentThread().interrupt();
 				return false;
 			}
+		}
+
 		private static boolean shouldRetryWithSoftwarePipeline(Throwable ex) {
 			Throwable cause = rootCause(ex);
 			if (cause == null) {
