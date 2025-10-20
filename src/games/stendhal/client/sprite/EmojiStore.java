@@ -27,6 +27,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -59,6 +61,7 @@ public class EmojiStore {
 	private String emojiFontFamily;
 	private FontRenderContext fontRenderContext;
 	private byte[] bundledFontBytes;
+	private EmojiBitmapExtractor bitmapExtractor;
 
 	private static final Logger logger = Logger.getLogger(EmojiStore.class);
 	private static final String DEFAULT_EMOJI_FONT = Font.SANS_SERIF;
@@ -198,8 +201,28 @@ public class EmojiStore {
 
 		baseEmojiFont = loaded.deriveFont(Font.PLAIN, DEFAULT_EMOJI_SIZE);
 		emojiFontFamily = baseEmojiFont.getFontName(Locale.ENGLISH);
+		initializeBitmapExtractor(baseEmojiFont);
 	}
 
+	private void initializeBitmapExtractor(final Font font) {
+		if ((font == null) || (bitmapExtractor != null)) {
+			return;
+		}
+
+		byte[] cblc = null;
+		byte[] cbdt = null;
+		try {
+			final Object font2D = getFont2D(font);
+			cblc = extractFontTable(font2D, "CBLC");
+			cbdt = extractFontTable(font2D, "CBDT");
+		} catch (Exception e) {
+			logger.debug("Unable to access emoji color tables", e);
+		}
+
+		if ((cblc != null) && (cbdt != null)) {
+			bitmapExtractor = new EmojiBitmapExtractor(font, fontRenderContext, cblc, cbdt);
+		}
+	}
 	private Font findSystemEmojiFont() {
 		try {
 			final String[] availableFamilies = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
@@ -338,8 +361,18 @@ public class EmojiStore {
 
 		ensureEmojiFont();
 		final String glyph = ensureEmojiPresentation(emojiGlyphs.getOrDefault(name, ":" + name + ":"));
-		BufferedImage iconImage = rasterizeGlyph(glyph, ICON_POINT_SIZE);
-		BufferedImage spriteImage = rasterizeGlyph(glyph, SPRITE_POINT_SIZE);
+		BufferedImage iconImage = null;
+		BufferedImage spriteImage = null;
+		if (bitmapExtractor != null) {
+			iconImage = bitmapExtractor.renderGlyph(glyph, ICON_POINT_SIZE, ICON_PADDING);
+			spriteImage = bitmapExtractor.renderGlyph(glyph, SPRITE_POINT_SIZE, ICON_PADDING);
+		}
+		if (iconImage == null) {
+			iconImage = rasterizeGlyph(glyph, ICON_POINT_SIZE);
+		}
+		if (spriteImage == null) {
+			spriteImage = rasterizeGlyph(glyph, SPRITE_POINT_SIZE);
+		}
 		if ((iconImage == null) || (spriteImage == null)) {
 			final BufferedImage fallback = loadEmojiAsset(name);
 			if (fallback != null) {
@@ -357,7 +390,6 @@ public class EmojiStore {
 		emojiCache.put(name, cached);
 		return cached;
 	}
-
 	private BufferedImage loadEmojiAsset(final String name) {
 		final String resource = EMOJI_IMAGE_PATH + name + ".png";
 		try (InputStream stream = DataLoader.getResourceAsStream(resource)) {
@@ -563,5 +595,47 @@ public class EmojiStore {
 			return store.baseEmojiFont.deriveFont(style, (float) size);
 		}
 		return new Font(DEFAULT_EMOJI_FONT, style, size);
+	}
+	private Object getFont2D(final Font font) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+		final Class<?> utilities = Class.forName("sun.font.FontUtilities");
+		final Method method = utilities.getMethod("getFont2D", Font.class);
+		return method.invoke(null, font);
+	}
+
+	private byte[] extractFontTable(final Object font2D, final String tag) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+		if (font2D == null) {
+			return null;
+		}
+
+		final Class<?> trueTypeClass = Class.forName("sun.font.TrueTypeFont");
+		if (trueTypeClass.isInstance(font2D)) {
+			return readTableBytes(font2D, trueTypeClass, tag);
+		}
+
+		final Class<?> compositeClass = Class.forName("sun.font.CompositeFont");
+		if (compositeClass.isInstance(font2D)) {
+			final Method getNumSlots = compositeClass.getDeclaredMethod("getNumSlots");
+			getNumSlots.setAccessible(true);
+			final Method getSlotFont = compositeClass.getMethod("getSlotFont", int.class);
+			final int slots = (Integer) getNumSlots.invoke(font2D);
+			for (int slot = 0; slot < slots; slot++) {
+				final Object slotFont = getSlotFont.invoke(font2D, slot);
+				final byte[] table = extractFontTable(slotFont, tag);
+				if ((table != null) && (table.length > 0)) {
+					return table;
+				}
+			}
+			return null;
+		}
+
+		return null;
+	}
+
+	private byte[] readTableBytes(final Object font2D, final Class<?> trueTypeClass, final String tag) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+		final Method getTableBytes = trueTypeClass.getDeclaredMethod("getTableBytes", int.class);
+		getTableBytes.setAccessible(true);
+		final int tagValue = ((tag.charAt(0) & 0xFF) << 24) | ((tag.charAt(1) & 0xFF) << 16) | ((tag.charAt(2) & 0xFF) << 8) | (tag.charAt(3) & 0xFF);
+		final byte[] data = (byte[]) getTableBytes.invoke(font2D, tagValue);
+		return (data != null && data.length > 0) ? data : null;
 	}
 }
