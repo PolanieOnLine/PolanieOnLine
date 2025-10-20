@@ -1,18 +1,19 @@
 /***************************************************************************
-*                   (C) Copyright 2003-2024 - Stendhal                    *
-***************************************************************************/
+ *                   (C) Copyright 2003-2024 - Stendhal                    *
+ ***************************************************************************/
 /***************************************************************************
-*                                                                         *
-*   This program is free software; you can redistribute it and/or modify  *
-*   it under the terms of the GNU General Public License as published by  *
-*   the Free Software Foundation; either version 2 of the License, or     *
-*   (at your option) any later version.                                   *
-*                                                                         *
-***************************************************************************/
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
 package games.stendhal.client.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,13 +23,17 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
@@ -51,18 +56,14 @@ import games.stendhal.client.gui.textformat.StyleSet;
 import games.stendhal.client.sprite.EmojiStore;
 import games.stendhal.client.stendhal;
 import games.stendhal.common.NotificationType;
-import javafx.application.Platform;
-import javafx.embed.swing.JFXPanel;
-import javafx.scene.Scene;
-import javafx.scene.control.ScrollBar;
-import javafx.scene.web.WebEngine;
-import javafx.scene.web.WebView;
-import netscape.javascript.JSObject;
 
 /**
-* Chat log implementation backed by a JavaFX WebView. Messages are rendered as
-* HTML so color emoji fonts are respected.
-*/
+ * Chat log implementation backed by JavaFX WebView when available. The class
+ * interacts with JavaFX through reflection so the client continues to compile
+ * even when the JavaFX modules are missing from the runtime. When the modules
+ * cannot be found the constructor throws an exception which is caught by the
+ * caller and the legacy Swing implementation is used instead.
+ */
 class WebChatLogView extends JComponent implements ChatLogView {
 	private static final long serialVersionUID = 4101968159599867093L;
 
@@ -75,7 +76,7 @@ class WebChatLogView extends JComponent implements ChatLogView {
 	private final Format dateFormatter = new SimpleDateFormat("[HH:mm:ss] ", Locale.getDefault());
 
 	/** Formatter for markup text. */
-	private final StringFormatter<Style, StyleSet> formatter = new StringFormatter<Style, StyleSet>();
+	private final StringFormatter<Style, StyleSet> formatter = new StringFormatter<>();
 
 	/** Style context used for building HTML spans. */
 	private final StyleContext styleContext = new StyleContext();
@@ -87,28 +88,26 @@ class WebChatLogView extends JComponent implements ChatLogView {
 	private final Style boldStyle;
 	private final Style emojiStyle;
 
-	/** JavaFX bridge. */
-	private final JFXPanel fxPanel = new JFXPanel();
-	private WebView webView;
-	private WebEngine webEngine;
+	/** JavaFX bridge accessed via reflection. */
+	private final FxBridge fx;
 
 	/** Cached chat lines in HTML and plain text form. */
-	private final List<String> htmlLines = new ArrayList<String>();
-	private final List<String> plainLines = new ArrayList<String>();
+	private final List<String> htmlLines = new ArrayList<>();
+	private final List<String> plainLines = new ArrayList<>();
 
 	/** State holders. */
 	private volatile boolean autoScroll = true;
-	private volatile boolean unread;
 	private Color defaultBackground = DEFAULT_BACKGROUND;
 	private String channelName = "";
 
-	/** Guard to avoid repeated scroll-bar lookup. */
-	private final AtomicBoolean scrollSetup = new AtomicBoolean(false);
+	WebChatLogView() throws Exception {
+		fx = FxBridge.tryCreate();
+		if (fx == null) {
+			throw new UnsupportedOperationException("JavaFX modules not available");
+		}
 
-	WebChatLogView() {
 		setLayout(new BorderLayout());
-		add(fxPanel, BorderLayout.CENTER);
-		fxPanel.setFocusable(false);
+		add(fx.getComponent(), BorderLayout.CENTER);
 
 		Font baseFont = UIManager.getFont("Label.font");
 		int mainSize = (baseFont != null) ? Math.max(8, baseFont.getSize() - 1) : 12;
@@ -116,6 +115,7 @@ class WebChatLogView extends JComponent implements ChatLogView {
 		regularStyle = styleContext.addStyle("regular", null);
 		StyleConstants.setFontFamily(regularStyle, "Dialog");
 		StyleConstants.setFontSize(regularStyle, mainSize);
+		StyleConstants.setForeground(regularStyle, Color.WHITE);
 
 		headerStyle = styleContext.addStyle("header", regularStyle);
 		StyleConstants.setItalic(headerStyle, true);
@@ -139,7 +139,12 @@ class WebChatLogView extends JComponent implements ChatLogView {
 		initFormatterStyles();
 		addMouseListener(new TextPaneMouseListener());
 
-		Platform.runLater(() -> initializeFxScene());
+		fx.whenReady(new Runnable() {
+			@Override
+			public void run() {
+				refreshHtml();
+			}
+		});
 	}
 
 	private void initFormatterStyles() {
@@ -166,494 +171,433 @@ class WebChatLogView extends JComponent implements ChatLogView {
 		formatter.addStyle('¡', admin);
 	}
 
-	private void initializeFxScene() {
-		webView = new WebView();
-		webView.setContextMenuEnabled(false);
-		webEngine = webView.getEngine();
-		webEngine.getLoadWorker().stateProperty().addListener((obs, oldState, newState) -> {
-			if (newState == javafx.concurrent.Worker.State.SUCCEEDED) {
-				exposeBridge();
+	@Override
+	public JComponent getComponent() {
+		return this;
+	}
+
+	@Override
+	public void addLine(EventLine line) {
+		if (line == null) {
+			return;
+		}
+
+		String html = buildLineHtml(line);
+		synchronized (htmlLines) {
+			htmlLines.add(html);
+			plainLines.add(buildPlainLine(line));
+		}
+
+		refreshHtml();
+	}
+
+	@Override
+	public void clear() {
+		synchronized (htmlLines) {
+			htmlLines.clear();
+			plainLines.clear();
+		}
+		refreshHtml();
+	}
+
+	@Override
+	public void setDefaultBackground(Color color) {
+		defaultBackground = (color != null) ? color : DEFAULT_BACKGROUND;
+		refreshHtml();
+	}
+
+	@Override
+	public void setChannelName(String name) {
+		channelName = (name != null) ? name : "";
+	}
+
+	private void refreshHtml() {
+		final String document;
+		synchronized (htmlLines) {
+			document = buildDocument();
+		}
+
+		fx.loadContent(document, new Runnable() {
+			@Override
+			public void run() {
 				if (autoScroll) {
-					scrollToBottom();
-				}
-			}
-		});
-
-		fxPanel.setScene(new Scene(webView));
-		refreshHtml();
-		setupScrollTracking();
-	}
-
-	private void setupScrollTracking() {
-		if (!scrollSetup.compareAndSet(false, true)) {
-			return;
-		}
-
-		Platform.runLater(() -> {
-			if (webView == null) {
-				return;
-			}
-			for (javafx.scene.Node node : webView.lookupAll(".scroll-bar")) {
-				if (node instanceof ScrollBar) {
-					ScrollBar bar = (ScrollBar) node;
-					if (bar.getOrientation() == javafx.geometry.Orientation.VERTICAL) {
-						bar.valueProperty().addListener((o, oldVal, newVal) -> {
-							boolean atBottom = newVal.doubleValue() >= bar.getMax();
-							autoScroll = atBottom;
-							if (atBottom) {
-								setUnreadLinesWarning(false);
-							}
-						});
-					}
+					fx.scrollToEnd();
 				}
 			}
 		});
 	}
 
-	private void exposeBridge() {
-		try {
-			JSObject window = (JSObject) webEngine.executeScript("window");
-			window.setMember("chatBridge", new ChatBridge());
-		webEngine.executeScript("if (typeof chatInit === 'function') { chatInit(); }");
-	} catch (RuntimeException ex) {
-	logger.warn("Failed to expose chat bridge", ex);
-}
-}
+	private String buildDocument() {
+		StringBuilder html = new StringBuilder();
+		html.append("<!DOCTYPE html><html><head><meta charset=\"UTF-8\"><style>");
+		html.append("body { background:").append(cssColor(defaultBackground)).append("; margin:0; padding:4px; font-family: ")
+			.append(cssFontFamily(regularStyle)).append("; font-size:").append(StyleConstants.getFontSize(regularStyle))
+			.append("px; color:").append(cssColor(StyleConstants.getForeground(regularStyle))).append("; }");
+		html.append(".line { white-space: pre-wrap; word-break: break-word; }");
+		html.append(".timestamp { color:").append(cssColor(StyleConstants.getForeground(timestampStyle))).append("; font-style: italic; margin-right: 4px; }");
+		html.append(".header { color:").append(cssColor(StyleConstants.getForeground(headerStyle))).append("; font-style: italic; margin-right: 4px; }");
+		html.append(".bold { color:").append(cssColor(StyleConstants.getForeground(boldStyle))).append("; font-style: italic; font-weight: bold; }");
+		html.append(".emoji { font-family: ").append(cssFontFamily(emojiStyle)).append("; }");
+		html.append("a { color: ").append(cssColor(new Color(65, 105, 225))).append("; }");
+		html.append("</style></head><body>");
 
-@Override
-public void setFont(Font font) {
-	super.setFont(font);
-	if (font == null) {
-		return;
-	}
-	int mainSize = Math.max(8, font.getSize() - 1);
-	StyleConstants.setFontSize(regularStyle, mainSize);
-	StyleConstants.setFontSize(headerStyle, mainSize);
-	StyleConstants.setFontSize(timestampStyle, Math.max(6, mainSize - 1));
-	StyleConstants.setFontSize(boldStyle, mainSize + 1);
-	StyleConstants.setFontSize(emojiStyle, mainSize + 2);
-	refreshHtml();
-}
-
-@Override
-public JComponent getComponent() {
-	return this;
-}
-
-@Override
-public void addLine(EventLine line) {
-	if (line == null) {
-		return;
-	}
-
-	Runnable task = () -> appendLine(line.getHeader(), line.getText(), line.getType());
-	if (SwingUtilities.isEventDispatchThread()) {
-		task.run();
-	} else {
-	SwingUtilities.invokeLater(task);
-}
-}
-
-@Override
-public void clear() {
-	Runnable task = () -> {
-		htmlLines.clear();
-		plainLines.clear();
-		refreshHtml();
-	};
-	if (SwingUtilities.isEventDispatchThread()) {
-		task.run();
-	} else {
-	SwingUtilities.invokeLater(task);
-}
-}
-
-@Override
-public void setDefaultBackground(Color color) {
-	defaultBackground = (color != null) ? color : DEFAULT_BACKGROUND;
-	refreshHtml();
-}
-
-@Override
-public void setChannelName(String name) {
-	channelName = (name != null) ? name : "";
-}
-
-private void appendLine(String header, String text, NotificationType type) {
-	insertNewLine(header, text, type);
-	refreshHtml();
-	if (!autoScroll) {
-		setUnreadLinesWarning(true);
-	}
-}
-
-private void insertNewLine(String header, String text, NotificationType type) {
-	String timestamp = dateFormatter.format(new Date());
-	StringBuilder html = new StringBuilder();
-	html.append("<div class="chat-line">");
-	html.append("<span class="chat-timestamp">");
-	html.append(escapeHtml(timestamp));
-	html.append("</span>");
-
-	if ((header != null) && !header.isEmpty()) {
-		html.append("<span class="chat-header">");
-		html.append(escapeHtml("<" + header + ">"));
-		html.append("</span>");
-	}
-
-	NotificationType effectiveType = (type != null) ? type : NotificationType.CLIENT;
-	String rendered = renderText(text, effectiveType);
-	String color = toCssColor(effectiveType.getColor());
-	html.append("<span class="chat-message" style="color:");
-	html.append(color);
-	html.append(";">");
-	html.append(rendered);
-	html.append("</span></div>");
-
-	htmlLines.add(html.toString());
-	plainLines.add(buildPlainLine(timestamp, header, text));
-}
-
-private String renderText(String text, NotificationType type) {
-	if (text == null) {
-		return "";
-	}
-	String normalized = text;
-	Style baseStyle = regularStyle;
-	if (type != null) {
-		if (NotificationType.EMOJI.equals(type)) {
-			normalized = normalizeEmojiText(text);
-			baseStyle = emojiStyle;
-		} else {
-		String description = type.getStyleDescription();
-		if (NotificationType.NORMALSTYLE.equals(description)) {
-			baseStyle = boldStyle;
-		} else if (NotificationType.REGULAR.equals(description)) {
-		baseStyle = regularStyle;
-	}
-}
-}
-
-StyleSet base = new StyleSet(styleContext, baseStyle);
-if (type != null) {
-	base.setAttribute(StyleConstants.Foreground, type.getColor());
-}
-
-HtmlTextSink sink = new HtmlTextSink();
-formatter.format(normalized, base, sink);
-return sink.toHtml();
-}
-
-private String normalizeEmojiText(final String text) {
-	if (text == null) {
-		return null;
-	}
-	final String trimmed = text.trim();
-	if (trimmed.isEmpty()) {
-		return trimmed;
-	}
-
-	final EmojiStore store = EmojiStore.get();
-	if (store.check(trimmed) != null) {
-		return trimmed;
-	}
-
-	String normalized = trimmed.replace('\', '/');
-	final int slash = normalized.lastIndexOf('/');
-	if (slash != -1) {
-		normalized = normalized.substring(slash + 1);
-	}
-	final int dot = normalized.lastIndexOf('.');
-	if (dot != -1) {
-		normalized = normalized.substring(0, dot);
-	}
-
-	if (normalized.isEmpty()) {
-		return trimmed;
-	}
-
-	if (!normalized.startsWith(":")) {
-		normalized = ":" + normalized;
-	}
-	if (!normalized.endsWith(":")) {
-		normalized = normalized + ":";
-	}
-
-	if ((store.check(normalized) != null) || store.isAvailable(normalized)) {
-		return normalized;
-	}
-
-	return trimmed;
-}
-
-private String buildPlainLine(String timestamp, String header, String text) {
-	StringBuilder sb = new StringBuilder();
-	sb.append(timestamp);
-	if ((header != null) && !header.isEmpty()) {
-		sb.append("<").append(header).append("> ");
-	}
-	sb.append(text != null ? text : "");
-	return sb.toString();
-}
-
-private void refreshHtml() {
-	if (webEngine == null) {
-		return;
-	}
-	String html = buildHtmlDocument();
-	Platform.runLater(() -> webEngine.loadContent(html, "text/html"));
-}
-
-private void scrollToBottom() {
-	if (webEngine == null) {
-		return;
-	}
-	try {
-		webEngine.executeScript("window.scrollTo(0, document.body.scrollHeight);");
-	} catch (RuntimeException ex) {
-	logger.debug("Failed to scroll chat", ex);
-}
-}
-
-private String buildHtmlDocument() {
-	StringBuilder sb = new StringBuilder();
-	sb.append("<!DOCTYPE html><html><head><meta charset="UTF-8"><style>");
-	sb.append(generateCss());
-	sb.append("</style><script>");
-sb.append("function chatInit(){document.addEventListener('click',function(e){var target=e.target.closest('[data-link]');if(target){e.preventDefault();if(window.chatBridge){window.chatBridge.openLink(target.getAttribute('data-link'));}}});}");
-sb.append("</script></head><body class="chat-body");
-if (unread) {
-	sb.append(" unread");
-}
-sb.append(""><div class="chat-log">");
-for (String line : htmlLines) {
-	sb.append(line);
-}
-sb.append("</div></body></html>");
-return sb.toString();
-}
-
-private String generateCss() {
-	StringBuilder css = new StringBuilder();
-	css.append("body.chat-body{margin:0;padding:0;background:");
-		css.append(toCssColor(defaultBackground));
-	css.append(";font-family:'Dialog',sans-serif;color:#f0f0f0;}");
-css.append("body.chat-body.unread{background:#3c003c;}");
-css.append(".chat-log{padding:6px;box-sizing:border-box;}");
-css.append(".chat-line{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:2px;}");
-css.append(".chat-timestamp{color:#dcdcdc;font-style:italic;font-size:0.85em;white-space:pre;}");
-css.append(".chat-header{color:#ffffdc;font-style:italic;white-space:pre;}");
-css.append(".chat-message{flex:1 1 auto;white-space:pre-wrap;word-break:break-word;}");
-css.append(".chat-fragment{white-space:pre-wrap;}");
-css.append(".chat-fragment.emoji{font-family:'");
-	css.append(EmojiStore.getFontFamily());
-css.append("','Noto Color Emoji','Segoe UI Emoji','Apple Color Emoji','sans-serif';}");
-css.append(".chat-link{text-decoration:underline;cursor:pointer;}");
-return css.toString();
-}
-
-private String toCssColor(Color color) {
-	if (color == null) {
-		return "#ffffff";
-	}
-	return String.format(Locale.ROOT, "#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
-}
-
-private String escapeHtml(String text) {
-	if (text == null) {
-		return "";
-	}
-	StringBuilder sb = new StringBuilder();
-	for (int i = 0; i < text.length(); i++) {
-		char ch = text.charAt(i);
-		switch (ch) {
-			case '<':
-			sb.append("&lt;");
-			break;
-			case '>':
-			sb.append("&gt;");
-			break;
-			case '&':
-			sb.append("&amp;");
-			break;
-			case ''':
-			sb.append("&#39;");
-			break;
-			case '"':
-			sb.append("&quot;");
-			break;
-			case '
-			':
-			sb.append("<br/>");
-			break;
-			case '
-			':
-			break;
-			case '	':
-			sb.append("&emsp;");
-			break;
-			default:
-			sb.append(ch);
+		for (String line : htmlLines) {
+			html.append(line);
 		}
-	}
-	return sb.toString();
-}
 
-private void setUnreadLinesWarning(boolean warn) {
-	if (warn == unread) {
-		return;
+		html.append("</body></html>");
+		return html.toString();
 	}
-	unread = warn;
-	refreshHtml();
-}
 
-private void save() {
-	String fname = getSaveFileName();
-	File target = new File(fname);
-	File parent = target.getParentFile();
-	if (parent != null) {
-		parent.mkdirs();
-	}
-	try (Writer out = new OutputStreamWriter(new FileOutputStream(target), java.nio.charset.StandardCharsets.UTF_8)) {
-		for (String line : plainLines) {
-			out.write(line);
-			out.write(System.lineSeparator());
+	private String buildLineHtml(EventLine line) {
+		StringBuilder html = new StringBuilder();
+		html.append("<div class=\"line\">");
+		html.append("<span class=\"timestamp\">").append(escape(dateFormatter.format(new Date()))).append("</span>");
+
+		String header = line.getHeader();
+		if ((header != null) && !header.isEmpty()) {
+			html.append("<span class=\"header\">").append(escape(header)).append(": </span>");
 		}
-		addLine(new HeaderLessEventLine("Dziennik rozmowy został zapisany do " + fname, NotificationType.CLIENT));
-	} catch (IOException ex) {
-	logger.error(ex, ex);
-}
-}
 
-private String getSaveFileName() {
-	String savename = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-	if (!"".equals(channelName)) {
-		savename = channelName + "_" + savename;
+		HtmlTextSink sink = new HtmlTextSink(html);
+		StyleSet base = new StyleSet(styleContext, regularStyle);
+		formatter.format(line.getText(), base, sink);
+		html.append("</div>");
+		return html.toString();
 	}
-	String charname = UserContext.get().getName();
-	if (charname != null) {
-		savename = charname + "_" + savename;
+
+	private String buildPlainLine(EventLine line) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(dateFormatter.format(new Date()));
+		if (!(line instanceof HeaderLessEventLine) && (line.getHeader() != null) && !line.getHeader().isEmpty()) {
+			sb.append(line.getHeader()).append(": ");
+		}
+		sb.append(line.getText());
+		return sb.toString();
 	}
-	return stendhal.getGameFolder() + "chat/" + savename + ".log";
-}
 
-private class TextPaneMouseListener extends MousePopupAdapter {
-	@Override
-	protected void showPopup(final MouseEvent e) {
-		final JPopupMenu popup = new JPopupMenu("zapisz");
-
-		JMenuItem saveItem = new JMenuItem("Zapisz");
-		saveItem.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent event) {
-				save();
-			}
-		});
-		popup.add(saveItem);
-
-		JMenuItem clearItem = new JMenuItem("Wyczyść");
-		clearItem.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent event) {
-				clear();
-			}
-		});
-		popup.add(clearItem);
-
-		popup.show(e.getComponent(), e.getX(), e.getY());
+	private static String cssColor(Color color) {
+		Color c = (color != null) ? color : Color.WHITE;
+		return "rgb(" + c.getRed() + "," + c.getGreen() + "," + c.getBlue() + ")";
 	}
-}
 
-private class ChatBridge {
-	public void openLink(String text) {
+	private static String cssFontFamily(Style style) {
+		String family = StyleConstants.getFontFamily(style);
+		if ((family == null) || family.isEmpty()) {
+			family = "Dialog";
+		}
+		return '\'' + family.replace("'", "\\'") + '\'';
+	}
+
+	private static String escape(String text) {
 		if (text == null) {
-			return;
-		}
-		LinkListener listener = new LinkListener();
-		listener.linkClicked(text);
-	}
-}
-
-private class LinkListener {
-	final java.util.regex.Pattern whitelist = java.util.regex.Pattern.compile("^https?://stendhalgame\.org(/.*)*$");
-
-	void linkClicked(String text) {
-		if (!whitelist.matcher(text).matches()) {
-			return;
-		}
-		SwingUtilities.invokeLater(() -> {
-			addLine(new HeaderLessEventLine("Próbuję otworzyć #'" + text + "' w twojej przeglądarce.", NotificationType.CLIENT));
-			BareBonesBrowserLaunch.openURL(text);
-			ClientSingletonRepository.getChatTextController().setFocus();
-		});
-	}
-}
-
-private class HtmlTextSink implements AttributedTextSink<StyleSet> {
-	private final StringBuilder builder = new StringBuilder();
-
-	@Override
-	public void append(String s, StyleSet attrs) {
-		if ((s == null) || s.isEmpty()) {
-			return;
-		}
-		Style style = attrs.contents();
-		String text = escapeHtml(s);
-
-		StringBuilder span = new StringBuilder();
-		span.append("<span class="chat-fragment");
-
-		Object fontFamily = StyleConstants.getFontFamily(style);
-		boolean isEmoji = (fontFamily != null) && fontFamily.equals(EmojiStore.getFontFamily());
-		if (isEmoji) {
-			span.append(" emoji");
-		}
-		Object linkAttr = style.getAttribute("linkact");
-		if (linkAttr != null) {
-			span.append(" chat-link" data-link="").append(escapeAttribute(s.trim())).append(""");
-		} else {
-		span.append(""");
-	}
-	span.append(" style="");
-
-		Color fg = StyleConstants.getForeground(style);
-		if (fg != null) {
-			span.append("color:").append(toCssColor(fg)).append(';');
-		}
-		int size = StyleConstants.getFontSize(style);
-		if (size > 0) {
-			span.append("font-size:").append(size).append("px;");
-		}
-		if (fontFamily != null) {
-			span.append("font-family:'").append(fontFamily).append("','Noto Color Emoji','Segoe UI Emoji','Apple Color Emoji',sans-serif;");
-		} else if (isEmoji) {
-			span.append("font-family:'").append(EmojiStore.getFontFamily()).append("','Noto Color Emoji','Segoe UI Emoji','Apple Color Emoji',sans-serif;");
-		}
-		if (StyleConstants.isBold(style)) {
-			span.append("font-weight:bold;");
-		}
-		if (StyleConstants.isItalic(style)) {
-			span.append("font-style:italic;");
-		}
-		if (StyleConstants.isUnderline(style)) {
-			span.append("text-decoration:underline;");
-		}
-		span.append("\">");
-		span.append(text);
-		span.append("</span>");
-		builder.append(span);
-}
-
-String toHtml() {
-	return builder.toString();
-}
-
-	private String escapeAttribute(String value) {
-		if (value == null) {
 			return "";
 		}
-		return value.replace("\\", "\\\\").replace("\"", "&quot;");
+		StringBuilder out = new StringBuilder(text.length());
+		for (int i = 0; i < text.length(); i++) {
+			char c = text.charAt(i);
+			switch (c) {
+			case '&':
+				out.append("&amp;");
+				break;
+			case '<':
+				out.append("&lt;");
+				break;
+			case '>':
+				out.append("&gt;");
+				break;
+			case '\"':
+				out.append("&quot;");
+				break;
+			default:
+				out.append(c);
+			}
+		}
+		return out.toString();
 	}
-}
-}
+
+	private void save() {
+		String fname = getSaveFileName();
+		Writer writer = null;
+		try {
+			File target = new File(fname);
+			target.getParentFile().mkdirs();
+			writer = new OutputStreamWriter(new FileOutputStream(target), "UTF-8");
+			synchronized (htmlLines) {
+				for (String line : plainLines) {
+					writer.write(line);
+					writer.write(System.lineSeparator());
+				}
+			}
+		} catch (IOException ex) {
+			logger.error("Failed to save chat log", ex);
+			return;
+		} finally {
+			if (writer != null) {
+				try {
+					writer.close();
+				} catch (IOException e) {
+					logger.warn("Failed to close chat log writer", e);
+				}
+			}
+		}
+
+		addLine(new HeaderLessEventLine("Dziennik rozmowy został zapisany do " + fname, NotificationType.CLIENT));
+	}
+
+	private String getSaveFileName() {
+		String savename = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+		if (!"".equals(channelName)) {
+			savename = channelName + "_" + savename;
+		}
+
+		String charname = UserContext.get().getName();
+		if (charname != null) {
+			savename = charname + "_" + savename;
+		}
+
+		return stendhal.getGameFolder() + "chat/" + savename + ".log";
+	}
+
+	private class TextPaneMouseListener extends MousePopupAdapter {
+		@Override
+		protected void showPopup(MouseEvent e) {
+			final JPopupMenu popup = new JPopupMenu("zapisz");
+
+			JMenuItem menuItem = new JMenuItem("Zapisz");
+			menuItem.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					save();
+				}
+			});
+			popup.add(menuItem);
+
+			menuItem = new JMenuItem("Wyczyść");
+			menuItem.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					clear();
+				}
+			});
+			popup.add(menuItem);
+
+			popup.show(e.getComponent(), e.getX(), e.getY());
+		}
+
+		@Override
+		public void mouseClicked(MouseEvent e) {
+			Object link = e.getSource();
+			if (link instanceof LinkListener) {
+				((LinkListener) link).linkClicked("");
+			}
+		}
+	}
+
+	class LinkListener {
+		void linkClicked(String text) {
+			ClientSingletonRepository.getChatTextController().setFocus();
+		}
+	}
+
+	private class HtmlTextSink implements AttributedTextSink<StyleSet> {
+		private final StringBuilder html;
+
+		HtmlTextSink(StringBuilder html) {
+			this.html = html;
+		}
+
+		@Override
+		public void append(String s, StyleSet attrs) {
+			if ((s == null) || s.isEmpty()) {
+				return;
+			}
+
+			Style style = attrs.contents();
+			StringBuilder span = new StringBuilder();
+			span.append("<span style=\"");
+
+			Color fg = StyleConstants.getForeground(style);
+			if (fg != null) {
+				span.append("color:").append(cssColor(fg)).append(';');
+			}
+			if (StyleConstants.isBold(style)) {
+				span.append("font-weight:bold;");
+			}
+			if (StyleConstants.isItalic(style)) {
+				span.append("font-style:italic;");
+			}
+			if (StyleConstants.isUnderline(style)) {
+				span.append("text-decoration:underline;");
+			}
+			span.append("font-size:").append(StyleConstants.getFontSize(style)).append("px;");
+			String family = StyleConstants.getFontFamily(style);
+			if ((family != null) && !family.isEmpty()) {
+				span.append("font-family:").append(cssFontFamily(style)).append(';');
+			}
+			span.append('\"');
+			span.append('>');
+			span.append(escape(s));
+			span.append("</span>");
+			html.append(span);
+		}
+	}
+
+	/**
+	 * Reflection based bridge to JavaFX WebView.
+	 */
+	private static final class FxBridge {
+		private final Object panel;
+		private final Method runLater;
+		private final Constructor<?> webViewCtor;
+		private final Method setContextMenuEnabled;
+		private final Method getEngine;
+		private final Constructor<?> sceneCtor;
+		private final Method setScene;
+		private final Method loadContent;
+		private final Method executeScript;
+		private final CountDownLatch ready = new CountDownLatch(1);
+
+		private volatile Object webEngine;
+
+		private FxBridge(Object panel, Method runLater, Constructor<?> webViewCtor, Method setContextMenuEnabled,
+				Method getEngine, Constructor<?> sceneCtor, Method setScene, Method loadContent, Method executeScript) {
+			this.panel = panel;
+			this.runLater = runLater;
+			this.webViewCtor = webViewCtor;
+			this.setContextMenuEnabled = setContextMenuEnabled;
+			this.getEngine = getEngine;
+			this.sceneCtor = sceneCtor;
+			this.setScene = setScene;
+			this.loadContent = loadContent;
+			this.executeScript = executeScript;
+		}
+
+		static FxBridge tryCreate() {
+			try {
+				Class<?> jfxPanelClass = Class.forName("javafx.embed.swing.JFXPanel");
+				Object panel = jfxPanelClass.getConstructor().newInstance();
+
+				Class<?> platformClass = Class.forName("javafx.application.Platform");
+				Method runLater = platformClass.getMethod("runLater", Runnable.class);
+
+				Class<?> webViewClass = Class.forName("javafx.scene.web.WebView");
+				Constructor<?> webViewCtor = webViewClass.getConstructor();
+				Method setContextMenuEnabled = webViewClass.getMethod("setContextMenuEnabled", boolean.class);
+				Method getEngine = webViewClass.getMethod("getEngine");
+
+				Class<?> parentClass = Class.forName("javafx.scene.Parent");
+				Class<?> sceneClass = Class.forName("javafx.scene.Scene");
+				Constructor<?> sceneCtor = sceneClass.getConstructor(parentClass);
+				Method setScene = jfxPanelClass.getMethod("setScene", sceneClass);
+
+				Class<?> webEngineClass = Class.forName("javafx.scene.web.WebEngine");
+				Method loadContent = webEngineClass.getMethod("loadContent", String.class, String.class);
+				Method executeScript = webEngineClass.getMethod("executeScript", String.class);
+
+				FxBridge bridge = new FxBridge(panel, runLater, webViewCtor, setContextMenuEnabled, getEngine, sceneCtor,
+						setScene, loadContent, executeScript);
+				bridge.init();
+				return bridge;
+			} catch (Throwable ex) {
+				logger.warn("Failed to initialize JavaFX WebView", ex);
+				return null;
+			}
+		}
+
+		private void init() throws IllegalAccessException, InvocationTargetException {
+			Runnable task = new Runnable() {
+				@Override
+				public void run() {
+					try {
+						Object webView = webViewCtor.newInstance();
+						setContextMenuEnabled.invoke(webView, Boolean.FALSE);
+						Object engine = getEngine.invoke(webView);
+						Object scene = sceneCtor.newInstance(webView);
+						setScene.invoke(panel, scene);
+						webEngine = engine;
+					} catch (Throwable ex) {
+						logger.error("Failed to initialize WebView", ex);
+					} finally {
+						ready.countDown();
+					}
+				}
+			};
+			runLater.invoke(null, task);
+		}
+
+		Component getComponent() {
+			return (Component) panel;
+		}
+
+		void whenReady(final Runnable runnable) {
+			Runnable task = new Runnable() {
+				@Override
+				public void run() {
+					try {
+						ready.await();
+					} catch (InterruptedException e) {
+						Thread.currentThread().interrupt();
+						return;
+					}
+					runnable.run();
+				}
+			};
+			SwingUtilities.invokeLater(task);
+		}
+
+		void loadContent(final String html, final Runnable afterLoad) {
+			Runnable task = new Runnable() {
+				@Override
+				public void run() {
+					try {
+						if (!awaitReady()) {
+							return;
+						}
+						loadContent.invoke(webEngine, html, "text/html");
+						if (afterLoad != null) {
+							SwingUtilities.invokeLater(afterLoad);
+						}
+					} catch (Throwable ex) {
+						logger.error("Failed to load chat HTML", ex);
+					}
+				}
+			};
+			invokeLater(task);
+		}
+
+		void scrollToEnd() {
+			Runnable task = new Runnable() {
+				@Override
+				public void run() {
+					try {
+						if (!awaitReady()) {
+							return;
+						}
+						executeScript.invoke(webEngine, "window.scrollTo(0, document.body.scrollHeight);");
+					} catch (Throwable ex) {
+						logger.warn("Failed to scroll chat", ex);
+					}
+				}
+			};
+			invokeLater(task);
+		}
+
+		private void invokeLater(Runnable runnable) {
+			try {
+				runLater.invoke(null, runnable);
+			} catch (IllegalAccessException | InvocationTargetException ex) {
+				logger.error("Failed to schedule JavaFX task", ex);
+			}
+		}
+
+		private boolean awaitReady() {
+			try {
+				return ready.await(5, TimeUnit.SECONDS) && (webEngine != null);
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+				return false;
+			}
+		}
+	}
 }
