@@ -659,66 +659,79 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 	public void paintComponent(final Graphics g) {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, getWidth(), getHeight());
-		if (StendhalClient.get().isInTransfer()) {
-			/*
-			 * A hack to prevent proper drawing during zone change when the draw
-			 * request comes from paintChildren() of the parent. Those are not
-			 * caught by the paintImmediately() wrapper. Prevents entity view
-			 * images from being initialized before zone coloring is ready.
-			 */
-			return;
-		}
 
 		Graphics2D g2d = (Graphics2D) g;
+		int viewX = GameScreenSpriteHelper.getScreenViewX();
+		int viewY = GameScreenSpriteHelper.getScreenViewY();
+		GameScreenSpriteHelper.beginFrame(viewX, viewY);
+		try {
+			if (StendhalClient.get().isInTransfer()) {
+				/*
+				 * A hack to prevent proper drawing during zone change when the draw
+				 * request comes from paintChildren() of the parent. Those are not
+				 * caught by the paintImmediately() wrapper. Prevents entity view
+				 * images from being initialized before zone coloring is ready.
+				 */
+				return;
+			}
 
-		Graphics2D graphics = (Graphics2D) g2d.create();
-		if (graphics.getClipBounds() == null) {
-			graphics.setClip(0, 0, getWidth(), getHeight());
-		}
-		Rectangle clip = graphics.getClipBounds();
-		boolean fullRedraw = (clip.width == sw && clip.height == sh);
-
-		int xAdjust = -GameScreenSpriteHelper.getScreenViewX();
-		int yAdjust = -GameScreenSpriteHelper.getScreenViewY();
-
-		if (useTripleBuffer) {
-			/*
-			 * Do the scaling in one pass to avoid artifacts at tile borders.
-			 */
-			final double scale = GameScreenSpriteHelper.getScale();
-			graphics.scale(scale, scale);
-			graphics.translate(xAdjust, yAdjust);
-			graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-			int width = stendhal.getDisplaySize().width;
-			int height = stendhal.getDisplaySize().height;
-			do {
-				GraphicsConfiguration gc = getGraphicsConfiguration();
-				if ((buffer == null) || (buffer.validate(gc) == VolatileImage.IMAGE_INCOMPATIBLE)) {
-					buffer = createVolatileImage(width, height);
+			Graphics2D graphics = (Graphics2D) g2d.create();
+			try {
+				if (graphics.getClipBounds() == null) {
+					graphics.setClip(0, 0, getWidth(), getHeight());
 				}
-				Graphics2D gr = buffer.createGraphics();
-				gr.setColor(Color.BLACK);
-				gr.fillRect(0, 0, width, height);
-				gr.setClip(0, 0, width, height);
-				renderScene(gr, xAdjust, yAdjust, fullRedraw);
-				graphics.drawImage(buffer, -xAdjust, -yAdjust, null);
-				gr.dispose();
-			} while (buffer.contentsLost());
-		} else {
-			renderScene(graphics, xAdjust, yAdjust, fullRedraw);
+				Rectangle clip = graphics.getClipBounds();
+				boolean fullRedraw = (clip.width == sw && clip.height == sh);
+
+				int xAdjust = -viewX;
+				int yAdjust = -viewY;
+
+				if (useTripleBuffer) {
+					/*
+					 * Do the scaling in one pass to avoid artifacts at tile borders.
+					 */
+					final double scale = GameScreenSpriteHelper.getScale();
+					graphics.scale(scale, scale);
+					graphics.translate(xAdjust, yAdjust);
+					graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+						RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+					int width = stendhal.getDisplaySize().width;
+					int height = stendhal.getDisplaySize().height;
+					do {
+						GraphicsConfiguration gc = getGraphicsConfiguration();
+						if ((buffer == null) || (buffer.validate(gc) == VolatileImage.IMAGE_INCOMPATIBLE)) {
+							buffer = createVolatileImage(width, height);
+						}
+						Graphics2D gr = buffer.createGraphics();
+						try {
+							gr.setColor(Color.BLACK);
+							gr.fillRect(0, 0, width, height);
+							gr.setClip(0, 0, width, height);
+							renderScene(gr, xAdjust, yAdjust, fullRedraw);
+						} finally {
+							gr.dispose();
+						}
+						graphics.drawImage(buffer, -xAdjust, -yAdjust, null);
+					} while (buffer.contentsLost());
+				} else {
+					renderScene(graphics, xAdjust, yAdjust, fullRedraw);
+				}
+			} finally {
+				graphics.dispose();
+			}
+
+			// Don't scale text to keep it readable
+			drawText(g2d, viewX, viewY);
+			drawEmojis(g2d, viewX, viewY);
+			drawFpsCounter(g2d);
+
+			paintOffLineIfNeeded(g2d);
+
+			// Ask window manager to not skip frame drawing
+			Toolkit.getDefaultToolkit().sync();
+		} finally {
+			GameScreenSpriteHelper.endFrame();
 		}
-
-		// Don't scale text to keep it readable
-		drawText(g2d);
-		drawEmojis(g2d);
-		drawFpsCounter(g2d);
-
-		paintOffLineIfNeeded(g2d);
-
-		// Ask window manager to not skip frame drawing
-		Toolkit.getDefaultToolkit().sync();
-
-		graphics.dispose();
 	}
 
 	/**
@@ -805,12 +818,12 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 	 *
 	 * @param g2d destination graphics
 	 */
-	private void drawText(final Graphics2D g2d) {
+	private void drawText(final Graphics2D g2d, final int viewX, final int viewY) {
 		/*
 		 * Text objects know their original placement relative to the screen,
 		 * not to the map. Pass them a shifted coordinate system.
 		 */
-		g2d.translate(-GameScreenSpriteHelper.getScreenViewX(), -GameScreenSpriteHelper.getScreenViewY());
+		g2d.translate(-viewX, -viewY);
 
 		final List<RemovableSprite> texts = GameScreenSpriteHelper.getTexts();
 		synchronized (texts) {
@@ -826,7 +839,7 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 		}
 
 		// Restore the coordinates
-		g2d.translate(GameScreenSpriteHelper.getScreenViewX(), GameScreenSpriteHelper.getScreenViewY());
+		g2d.translate(viewX, viewY);
 		// These are anchored to the screen, so they can use the usual proper
 		// coordinates.
 		synchronized (staticSprites) {
@@ -842,14 +855,14 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 		}
 	}
 
-	private void drawEmojis(final Graphics2D g2d) {
+	private void drawEmojis(final Graphics2D g2d, final int viewX, final int viewY) {
 		final List<RemovableSprite> emojis = GameScreenSpriteHelper.getEmojis();
 		synchronized (emojis) {
 			Iterator<RemovableSprite> it = emojis.iterator();
 			while (it.hasNext()) {
 				RemovableSprite emoji = it.next();
 				if (!emoji.shouldBeRemoved()) {
-					emoji.drawEmoji(g2d);
+					emoji.drawEmoji(g2d, viewX, viewY);
 				} else {
 					it.remove();
 				}
