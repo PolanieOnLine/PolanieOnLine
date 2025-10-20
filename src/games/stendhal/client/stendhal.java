@@ -84,7 +84,7 @@ public final class stendhal {
 	public static final String VERSION = Version.getVersion();
 
 	/** Display sizes optimized for different screen resolutions */
-	private static final List<Dimension> displaySizes = new ArrayList<Dimension>(12);
+	private static final List<Dimension> displaySizes = new ArrayList<Dimension>(7);
 	public static final Integer SIZE_INDEX = 0;
 	public static final Integer SIZE_INDEX_LARGE = 2;
 	public static final Integer SIZE_INDEX_WIDE = 2;
@@ -196,15 +196,10 @@ public final class stendhal {
 		displaySizes.add(new Dimension(800, 600)); // Smaller 4:3 (1024x768 and smaller)
 		displaySizes.add(new Dimension(864, 600)); // Larger 4:3 (1280x1024)
 		displaySizes.add(new Dimension(928, 644)); // Baseline widescreen (1366x768 and larger)
-		displaySizes.add(new Dimension(992, 688)); // Widescreen +1 step
-		displaySizes.add(new Dimension(1056, 732)); // Widescreen +2 steps
-		displaySizes.add(new Dimension(1120, 776)); // Widescreen +3 steps
-		displaySizes.add(new Dimension(1184, 820)); // Widescreen +4 steps
-		displaySizes.add(new Dimension(1248, 864)); // Widescreen +5 steps
-		displaySizes.add(new Dimension(1312, 908)); // Widescreen +6 steps
-		displaySizes.add(new Dimension(1376, 952)); // Widescreen +7 steps
-		displaySizes.add(new Dimension(1440, 996)); // Widescreen +8 steps
-		displaySizes.add(new Dimension(1504, 1040)); // Widescreen +9 steps (1080p friendly)
+		displaySizes.add(new Dimension(1056, 732)); // Widescreen +1 step
+		displaySizes.add(new Dimension(1184, 820)); // Widescreen +2 steps (height capped)
+		displaySizes.add(new Dimension(1280, 820)); // Widescreen +3 steps (height capped)
+		displaySizes.add(new Dimension(1376, 820)); // Widescreen maximum (height capped)
 	}
 
 	/**
