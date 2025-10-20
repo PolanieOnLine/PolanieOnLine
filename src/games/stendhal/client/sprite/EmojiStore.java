@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 import java.awt.Font;
+import java.awt.FontFormatException;
 import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
 import java.awt.RenderingHints;
@@ -25,10 +26,14 @@ import java.awt.font.FontRenderContext;
 import java.awt.font.LineMetrics;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 
 import org.json.simple.JSONObject;
+import org.apache.log4j.Logger;
 
 import games.stendhal.client.util.JSONLoader;
+import games.stendhal.client.sprite.DataLoader;
 
 public class EmojiStore {
 	private static EmojiStore instance;
@@ -38,6 +43,8 @@ public class EmojiStore {
 	private Map<String, String> emojiGlyphs;
 
 	private static final String pathPrefix = "data/sprites/emoji/";
+	private static final String fontPrefix = "data/font/";
+	private static final Logger logger = Logger.getLogger(EmojiStore.class);
 
 	private static final String PRIMARY_EMOJI_FONT = "Noto Color Emoji";
 	private static final String FALLBACK_EMOJI_FONT = "Noto Emoji";
@@ -54,11 +61,21 @@ public class EmojiStore {
 	}
 
 	private static Font resolveEmojiFont() {
-		if (hasFontFamily(PRIMARY_EMOJI_FONT)) {
-			return new Font(PRIMARY_EMOJI_FONT, Font.PLAIN, EMOJI_FONT_SIZE);
+		Font font = createSystemFont(PRIMARY_EMOJI_FONT);
+		if (font != null) {
+			return font;
 		}
-		if (hasFontFamily(FALLBACK_EMOJI_FONT)) {
-			return new Font(FALLBACK_EMOJI_FONT, Font.PLAIN, EMOJI_FONT_SIZE);
+		font = loadBundledFont("NotoColorEmoji-Regular.ttf");
+		if (font != null) {
+			return font;
+		}
+		font = createSystemFont(FALLBACK_EMOJI_FONT);
+		if (font != null) {
+			return font;
+		}
+		font = loadBundledFont("NotoEmoji-Regular.ttf");
+		if (font != null) {
+			return font;
 		}
 		return new Font(Font.SANS_SERIF, Font.PLAIN, EMOJI_FONT_SIZE);
 	}
@@ -71,6 +88,29 @@ public class EmojiStore {
 			}
 		}
 		return false;
+	}
+
+	private static Font createSystemFont(final String family) {
+		if (hasFontFamily(family)) {
+			return new Font(family, Font.PLAIN, EMOJI_FONT_SIZE);
+		}
+		return null;
+	}
+
+	private static Font loadBundledFont(final String resource) {
+		final String path = fontPrefix + resource;
+		try (InputStream stream = DataLoader.getResourceAsStream(path)) {
+			if (stream == null) {
+				logger.warn("Emoji font resource not found: " + path);
+				return null;
+			}
+			Font font = Font.createFont(Font.TRUETYPE_FONT, stream);
+			GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(font);
+			return font.deriveFont(Font.PLAIN, (float) EMOJI_FONT_SIZE);
+		} catch (FontFormatException | IOException e) {
+			logger.error("Failed to load emoji font '" + resource + "'", e);
+			return null;
+		}
 	}
 
 	public static String getFontFamily() {
