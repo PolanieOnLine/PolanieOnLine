@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -151,7 +152,7 @@ class WebChatLogView extends JComponent implements ChatLogView {
 		addMouseListener(new TextPaneMouseListener());
 
                 fx.whenReady(new Runnable() {
-                        @Override
+			@Override
                         public void run() {
                                 loadShellDocument();
                         }
@@ -211,10 +212,10 @@ class WebChatLogView extends JComponent implements ChatLogView {
 		refreshHtml();
 	}
 
-        @Override
+			@Override
         public void setDefaultBackground(Color color) {
                 defaultBackground = (color != null) ? color : DEFAULT_BACKGROUND;
-                if (fx != null) {
+			if (fx != null) {
                         loadShellDocument();
                 }
         }
@@ -225,8 +226,8 @@ class WebChatLogView extends JComponent implements ChatLogView {
 	}
 
         private void refreshHtml() {
-                if (fx == null) {
-                        return;
+			if (fx == null) {
+			return;
                 }
 
                 final String fragment;
@@ -246,8 +247,8 @@ class WebChatLogView extends JComponent implements ChatLogView {
                 synchronized (this) {
                         html = pendingHtml;
                 }
-                if (!shellLoaded || (fx == null)) {
-                        return;
+			if (!shellLoaded || (fx == null)) {
+			return;
                 }
                 fx.updateContent(html, autoScroll);
         }
@@ -265,7 +266,7 @@ class WebChatLogView extends JComponent implements ChatLogView {
                 shellLoaded = false;
                 final String shell = buildShellDocument(initial);
                 fx.loadShell(shell, new Runnable() {
-                        @Override
+			@Override
                         public void run() {
                                 shellLoaded = true;
                                 pushPendingHtml();
@@ -281,30 +282,31 @@ class WebChatLogView extends JComponent implements ChatLogView {
                 final String emojiCssFamily = cssFontFamilyName(emojiFamily);
                 final boolean hasEmbeddedFont = (embeddedFont != null) && !embeddedFont.isEmpty();
                 final String emojiFontStack = emojiCssFamily + "," + EMOJI_FONT_STACK;
-                html.append("<!DOCTYPE html><html><head><meta charset=\"UTF-8\"><style>");
-                html.append("body { background:").append(cssColor(defaultBackground)).append("; margin:0; padding:4px; font-family: ")
-                        .append(cssFontFamily(regularStyle)).append("; font-size:").append(StyleConstants.getFontSize(regularStyle))
-                        .append("px; color:").append(cssColor(StyleConstants.getForeground(regularStyle))).append("; }");
-                html.append(".line { white-space: pre-wrap; word-break: break-word; }");
-                html.append(".timestamp { color:").append(cssColor(StyleConstants.getForeground(timestampStyle))).append("; font-style: italic; margin-right: 4px; }");
-                html.append(".header { color:").append(cssColor(StyleConstants.getForeground(headerStyle))).append("; font-style: italic; margin-right: 4px; }");
-                html.append(".bold { color:").append(cssColor(StyleConstants.getForeground(boldStyle))).append("; font-style: italic; font-weight: bold; }");
-                if (hasEmbeddedFont) {
-                        html.append("@font-face { font-family:").append(emojiCssFamily).append("; src:url(").append(embeddedFont)
-                                .append(") format('truetype'); }");
+			html.append("<!DOCTYPE html><html><head><meta charset=\"UTF-8\"><style>");
+			html.append("html,body { height:100%; margin:0; padding:0; }");
+			html.append("body { background:").append(cssColor(defaultBackground)).append("; margin:0; padding:4px; font-family: ")
+				.append(cssFontFamily(regularStyle)).append("; font-size:").append(StyleConstants.getFontSize(regularStyle))
+				.append("px; color:").append(cssColor(StyleConstants.getForeground(regularStyle))).append("; overflow:hidden; }");
+			html.append("#chat-container { height:100%; overflow-y:auto; box-sizing:border-box; }");
+			html.append(".line { white-space: pre-wrap; word-break: break-word; }");
+			html.append(".timestamp { color:").append(cssColor(StyleConstants.getForeground(timestampStyle))).append("; font-style: italic; margin-right: 4px; }");
+			html.append(".header { color:").append(cssColor(StyleConstants.getForeground(headerStyle))).append("; font-style: italic; margin-right: 4px; }");
+			html.append(".bold { color:").append(cssColor(StyleConstants.getForeground(boldStyle))).append("; font-style: italic; font-weight: bold; }");
+			if (hasEmbeddedFont) {
+			html.append("@font-face { font-family:").append(emojiCssFamily).append("; src:url(").append(embeddedFont)
+				.append(") format('truetype'); }");
                 }
-                html.append(".emoji { font-family: ").append(emojiFontStack).append("; font-style: normal; font-weight: normal; }");
-                html.append(".emoji-img { height: 1.2em; width: auto; vertical-align: middle; }");
-                html.append("a { color: ").append(cssColor(new Color(65, 105, 225))).append("; }");
-                html.append("#chat-container { min-height: 100%; }");
-                html.append("</style><script>");
-                html.append("window.__stendhalChat={setContent:function(b64,scroll){var container=document.getElementById('chat-container');");
-                html.append("if(!container){return;}var html=atob(b64);container.innerHTML=html;");
-                html.append("if(scroll){window.requestAnimationFrame(function(){window.scrollTo(0,document.body.scrollHeight);});}}};");
-                html.append("</script></head><body><div id=\"chat-container\">");
-                html.append(initialContent);
-                html.append("</div></body></html>");
-                return html.toString();
+			html.append(".emoji { font-family: ").append(emojiFontStack).append("; font-style: normal; font-weight: normal; }");
+			html.append(".emoji-img { height: 1.2em; width: auto; vertical-align: middle; }");
+			html.append("a { color: ").append(cssColor(new Color(65, 105, 225))).append("; }");
+			html.append("</style><script>");
+			html.append("window.__stendhalChat={setContent:function(b64,scroll){var container=document.getElementById('chat-container');");
+			html.append("if(!container){return;}var html=atob(b64);container.innerHTML=html;");
+			html.append("if(scroll){window.requestAnimationFrame(function(){container.scrollTop=container.scrollHeight;window.scrollTo(0,document.body.scrollHeight);});}}};");
+			html.append("</script></head><body><div id=\"chat-container\">");
+			html.append(initialContent);
+			html.append("</div></body></html>");
+			return html.toString();
         }
 
         private String buildLinesFragment() {
@@ -312,7 +314,7 @@ class WebChatLogView extends JComponent implements ChatLogView {
                 for (String line : htmlLines) {
                         builder.append(line);
                 }
-                return builder.toString();
+			return builder.toString();
         }
 
 	private String buildLineHtml(EventLine line) {
@@ -754,6 +756,81 @@ changeListenerClass, workerStateClass);
 			}
 		}
 
+		private Object createLoadListener(final Object property, final Runnable afterLoad) {
+			if ((property == null) || (changeListenerClass == null)) {
+				return null;
+			}
+			try {
+				final Object listener = Proxy.newProxyInstance(changeListenerClass.getClassLoader(),
+				new Class<?>[] { changeListenerClass }, new InvocationHandler() {
+					@Override
+					public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
+						if ((method != null) && "changed".equals(method.getName()) && (args != null) && (args.length >= 3)) {
+							Object newState = args[2];
+							boolean terminal = isTerminalState(newState);
+							if (terminal && (afterLoad != null)) {
+								SwingUtilities.invokeLater(afterLoad);
+							}
+							if (propertyRemoveListener != null) {
+								try {
+									propertyRemoveListener.invoke(property, proxy);
+								} catch (Exception removeEx) {
+									logger.debug("Unable to detach WebView load listener", removeEx);
+								}
+							}
+						}
+						return null;
+					}
+				});
+				return listener;
+			} catch (IllegalArgumentException ex) {
+				logger.debug("Unable to create WebView load listener", ex);
+				return null;
+			}
+		}
+
+		private boolean isTerminalState(final Object state) {
+			if (state == null) {
+				return false;
+			}
+			return state.equals(succeededState) || state.equals(failedState) || state.equals(cancelledState);
+		}
+
+		private void prepareWorkerMetadata(final Object worker) {
+			if (worker == null) {
+				return;
+			}
+			if ((propertyAddListener == null) || (propertyRemoveListener == null)) {
+				try {
+					Object property = (workerStateProperty != null) ? workerStateProperty.invoke(worker) : null;
+					if ((property != null) && (changeListenerClass != null)) {
+						propertyAddListener = property.getClass().getMethod("addListener", changeListenerClass);
+						propertyRemoveListener = property.getClass().getMethod("removeListener", changeListenerClass);
+					}
+				} catch (Exception ex) {
+					logger.debug("Unable to resolve WebView listener methods", ex);
+				}
+			}
+			if (workerStateClass != null) {
+				succeededState = resolveStateField(succeededState, "SUCCEEDED");
+				failedState = resolveStateField(failedState, "FAILED");
+				cancelledState = resolveStateField(cancelledState, "CANCELLED");
+			}
+		}
+
+		private Object resolveStateField(Object currentValue, final String fieldName) {
+			if (currentValue != null || (workerStateClass == null)) {
+				return currentValue;
+			}
+			try {
+				Field field = workerStateClass.getField(fieldName);
+				return field.get(null);
+			} catch (NoSuchFieldException | IllegalAccessException ex) {
+				logger.debug("Unable to resolve WebView worker state: " + fieldName, ex);
+				return null;
+			}
+		}
+
 		private static Throwable rootCause(Throwable ex) {
 			Throwable current = ex;
 			while ((current != null) && (current.getCause() != null) && (current.getCause() != current)) {
@@ -826,9 +903,9 @@ changeListenerClass, workerStateClass);
 
                 void loadContent(final String html, final Runnable afterLoad) {
                         Runnable task = new Runnable() {
-                                @Override
+			@Override
                                 public void run() {
-                                        try {
+			try {
 						if (!awaitReady()) {
 							return;
 						}
@@ -868,18 +945,18 @@ changeListenerClass, workerStateClass);
                 }
 
                 void updateContent(final String html, final boolean scroll) {
-                        if (html == null) {
-                                return;
+			if (html == null) {
+			return;
                         }
                         final String encoded = Base64.getEncoder().encodeToString(html.getBytes(StandardCharsets.UTF_8));
                         final String script = "if(window.__stendhalChat){window.__stendhalChat.setContent('" + encoded + "',"
                                 + (scroll ? "true" : "false") + ");}";
                         Runnable task = new Runnable() {
-                                @Override
+			@Override
                                 public void run() {
-                                        try {
-                                                if (!awaitReady()) {
-                                                        return;
+			try {
+			if (!awaitReady()) {
+			return;
                                                 }
                                                 executeScript.invoke(webEngine, script);
                                         } catch (Throwable ex) {
@@ -892,9 +969,9 @@ changeListenerClass, workerStateClass);
 
                 void scrollToEnd() {
                         Runnable task = new Runnable() {
-                                @Override
+			@Override
                                 public void run() {
-                                        try {
+			try {
 						if (!awaitReady()) {
 							return;
 						}
@@ -953,4 +1030,4 @@ changeListenerClass, workerStateClass);
 			return true;
 		}
 	}
-}
+	}

@@ -436,47 +436,53 @@ public class EmojiStore {
                 if (bitmapExtractor != null) {
                         iconImage = bitmapExtractor.renderGlyph(glyph, ICON_POINT_SIZE, ICON_PADDING);
                         spriteImage = bitmapExtractor.renderGlyph(glyph, SPRITE_POINT_SIZE, ICON_PADDING);
-                        if ((iconImage == null) || (spriteImage == null)) {
-                                final String stripped = stripVariationSelectors(glyph);
-                                if ((iconImage == null) && (stripped != null)) {
-                                        iconImage = bitmapExtractor.renderGlyph(stripped, ICON_POINT_SIZE, ICON_PADDING);
-                                }
-                                if ((spriteImage == null) && (stripped != null)) {
-                                        spriteImage = bitmapExtractor.renderGlyph(stripped, SPRITE_POINT_SIZE, ICON_PADDING);
-                                }
-                        }
-                }
+				if ((iconImage == null) || (spriteImage == null)) {
+					final String stripped = stripVariationSelectors(glyph);
+					if ((iconImage == null) && (stripped != null)) {
+						iconImage = bitmapExtractor.renderGlyph(stripped, ICON_POINT_SIZE, ICON_PADDING);
+					}
+					if ((spriteImage == null) && (stripped != null)) {
+						spriteImage = bitmapExtractor.renderGlyph(stripped, SPRITE_POINT_SIZE, ICON_PADDING);
+					}
+				}
+			}
 
-                if ((iconImage == null) || (spriteImage == null)) {
-                        assetImage = loadEmojiAsset(name);
-                }
-                if ((iconImage == null) && (assetImage != null)) {
-                        iconImage = scaleForIcon(assetImage);
-                }
-                if ((spriteImage == null) && (assetImage != null)) {
-                        spriteImage = scaleForSprite(assetImage);
-                }
+			if ((iconImage == null) || (spriteImage == null)) {
+				assetImage = loadEmojiAsset(name);
+			}
+			if ((iconImage == null) && (assetImage != null)) {
+				iconImage = scaleForIcon(assetImage);
+			}
+			if ((spriteImage == null) && (assetImage != null)) {
+				spriteImage = scaleForSprite(assetImage);
+			}
 
-                if ((iconImage == null) || (spriteImage == null)) {
-                        if (bitmapExtractor != null) {
-                                if (iconImage == null) {
-                                        iconImage = rasterizeGlyph(glyph, ICON_POINT_SIZE);
-                                }
-                                if (spriteImage == null) {
-                                        spriteImage = rasterizeGlyph(glyph, SPRITE_POINT_SIZE);
-                                }
-                        } else if (assetImage == null) {
-                                if (iconImage == null) {
-                                        iconImage = rasterizeGlyph(glyph, ICON_POINT_SIZE);
-                                }
-                                if (spriteImage == null) {
-                                        spriteImage = rasterizeGlyph(glyph, SPRITE_POINT_SIZE);
-                                }
-                        }
-                }
-                if (iconImage != null) {
-                        dataUrl = toDataUrl(iconImage);
-                }
+			if ((iconImage == null) || (spriteImage == null)) {
+				if (bitmapExtractor != null) {
+					if (iconImage == null) {
+						iconImage = rasterizeGlyph(glyph, ICON_POINT_SIZE);
+					}
+					if (spriteImage == null) {
+						spriteImage = rasterizeGlyph(glyph, SPRITE_POINT_SIZE);
+					}
+				} else if (assetImage == null) {
+					if (iconImage == null) {
+						iconImage = rasterizeGlyph(glyph, ICON_POINT_SIZE);
+					}
+					if (spriteImage == null) {
+						spriteImage = rasterizeGlyph(glyph, SPRITE_POINT_SIZE);
+					}
+				}
+			}
+			if ((iconImage == null) && (spriteImage != null)) {
+				iconImage = scaleForIcon(spriteImage);
+			}
+			if ((spriteImage == null) && (iconImage != null)) {
+				spriteImage = scaleForSprite(iconImage);
+			}
+			if (iconImage != null) {
+				dataUrl = toDataUrl(iconImage);
+			}
 		final Icon icon = (iconImage != null) ? new ImageIcon(iconImage) : null;
 		final Sprite sprite = (spriteImage != null) ? new ImageSprite(spriteImage, name) : null;
 		cached = new RenderedEmoji(glyph, icon, sprite, dataUrl);
