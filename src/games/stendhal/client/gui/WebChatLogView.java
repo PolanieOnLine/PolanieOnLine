@@ -439,7 +439,7 @@ class WebChatLogView extends JComponent implements ChatLogView {
 				}
 				final int codePoint = s.codePointAt(index);
 				buffer.appendCodePoint(codePoint);
-				index += Character.charCount(codePoint);
+                               index += java.lang.Character.charCount(codePoint);
 			}
 			if (buffer.length() > 0) {
 				appendSpan(buffer.toString(), style, false);
@@ -794,8 +794,6 @@ class WebChatLogView extends JComponent implements ChatLogView {
 			System.setProperty("prism.text", "t2k");
 			logger.info("Retrying JavaFX WebView initialization using the software renderer (prism.order=sw).");
 			return true;
-		}
-
 		}
 	}
 }
