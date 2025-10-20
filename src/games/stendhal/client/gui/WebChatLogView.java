@@ -69,6 +69,9 @@ class WebChatLogView extends JComponent implements ChatLogView {
 
 	private static final Logger logger = Logger.getLogger(WebChatLogView.class);
 
+	/** Shared emoji font stack for HTML rendering. */
+	private static final String EMOJI_FONT_STACK = "'Segoe UI Emoji','Apple Color Emoji','Noto Color Emoji','Twitter Color Emoji','EmojiOne Color','Android Emoji','Noto Emoji',sans-serif";
+
 	/** Default chat background. */
 	private static final Color DEFAULT_BACKGROUND = new Color(60, 30, 0);
 
@@ -237,7 +240,7 @@ class WebChatLogView extends JComponent implements ChatLogView {
 		html.append(".timestamp { color:").append(cssColor(StyleConstants.getForeground(timestampStyle))).append("; font-style: italic; margin-right: 4px; }");
 		html.append(".header { color:").append(cssColor(StyleConstants.getForeground(headerStyle))).append("; font-style: italic; margin-right: 4px; }");
 		html.append(".bold { color:").append(cssColor(StyleConstants.getForeground(boldStyle))).append("; font-style: italic; font-weight: bold; }");
-		html.append(".emoji { font-family: ").append(cssFontFamily(emojiStyle)).append("; }");
+			html.append(".emoji { font-family: ").append(EMOJI_FONT_STACK).append("; font-style: normal; font-weight: normal; }");
 		html.append("a { color: ").append(cssColor(new Color(65, 105, 225))).append("; }");
 		html.append("</style></head><body>");
 
@@ -413,31 +416,76 @@ class WebChatLogView extends JComponent implements ChatLogView {
 				return;
 			}
 
-			Style style = attrs.contents();
-			StringBuilder span = new StringBuilder();
-			span.append("<span style=\"");
+			final Style style = attrs.contents();
+			final EmojiStore store = EmojiStore.get();
+			final StringBuilder buffer = new StringBuilder();
+			int index = 0;
+			final int length = s.length();
+			while (index < length) {
+				final EmojiStore.EmojiMatch match = store.matchEmoji(s, index);
+				if (match != null) {
+					if (buffer.length() > 0) {
+						appendSpan(buffer.toString(), style, false);
+						buffer.setLength(0);
+					}
+					final int consumed = Math.max(1, match.getConsumedLength());
+					String glyph = match.getGlyph();
+					if ((glyph == null) || glyph.isEmpty()) {
+						glyph = s.substring(index, Math.min(length, index + consumed));
+					}
+					appendSpan(glyph, style, true);
+					index += consumed;
+					continue;
+				}
+				final int codePoint = s.codePointAt(index);
+				buffer.appendCodePoint(codePoint);
+				index += Character.charCount(codePoint);
+			}
+			if (buffer.length() > 0) {
+				appendSpan(buffer.toString(), style, false);
+			}
+		}
 
-			Color fg = StyleConstants.getForeground(style);
+		private void appendSpan(final String text, final Style style, final boolean emoji) {
+			if ((text == null) || text.isEmpty()) {
+				return;
+			}
+
+			final StringBuilder span = new StringBuilder();
+			span.append("<span");
+			if (emoji) {
+				span.append(" class=\"emoji\"");
+			}
+			span.append(" style=\"");
+
+			final Color fg = StyleConstants.getForeground(style);
 			if (fg != null) {
 				span.append("color:").append(cssColor(fg)).append(';');
 			}
-			if (StyleConstants.isBold(style)) {
+			if (!emoji && StyleConstants.isBold(style)) {
 				span.append("font-weight:bold;");
 			}
-			if (StyleConstants.isItalic(style)) {
+			if (!emoji && StyleConstants.isItalic(style)) {
 				span.append("font-style:italic;");
+				} else if (emoji) {
+				span.append("font-style:normal;");
 			}
 			if (StyleConstants.isUnderline(style)) {
 				span.append("text-decoration:underline;");
 			}
 			span.append("font-size:").append(StyleConstants.getFontSize(style)).append("px;");
-			String family = StyleConstants.getFontFamily(style);
-			if ((family != null) && !family.isEmpty()) {
-				span.append("font-family:").append(cssFontFamily(style)).append(';');
+			if (emoji) {
+				span.append("font-family:").append(EMOJI_FONT_STACK).append(';');
+				span.append("font-weight:normal;");
+			} else {
+				final String family = StyleConstants.getFontFamily(style);
+				if ((family != null) && !family.isEmpty()) {
+					span.append("font-family:").append(cssFontFamily(style)).append(';');
+				}
 			}
 			span.append('\"');
 			span.append('>');
-			span.append(escape(s));
+			span.append(escape(text));
 			span.append("</span>");
 			html.append(span);
 		}
@@ -693,7 +741,8 @@ class WebChatLogView extends JComponent implements ChatLogView {
 						if (!awaitReady()) {
 							return;
 						}
-						executeScript.invoke(webEngine, "window.scrollTo(0, document.body.scrollHeight);");
+						executeScript.invoke(webEngine,
+								"window.requestAnimationFrame(function(){window.scrollTo(0, document.body.scrollHeight);});");
 					} catch (Throwable ex) {
 						logger.warn("Failed to scroll chat", ex);
 					}
