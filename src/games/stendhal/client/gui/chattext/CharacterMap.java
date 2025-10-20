@@ -39,7 +39,7 @@ public class CharacterMap extends JButton {
 	public CharacterMap() {
 		super();
 		final Font origFont = getFont();
-		setFont(new Font("Noto Emoji", origFont.getStyle(), origFont.getSize()+2));
+		setFont(new Font("Noto Emoji", origFont.getStyle(), origFont.getSize() + 2));
 		setFocusable(false);
 		setToolTipText("Emotikony");
 
@@ -102,9 +102,9 @@ public class CharacterMap extends JButton {
 		private class EmojiButton extends JMenuItem {
 				private final String emojiText;
 
-				public EmojiButton(final String glyph, final String text) {
-						super(glyph);
-						setFont(new Font("Noto Emoji", Font.PLAIN, 20f));
+			public EmojiButton(final String glyph, final String text) {
+				super(glyph);
+				setFont(new Font("Noto Emoji", Font.PLAIN, 20));
 						emojiText = text;
 						setIconTextGap(0);
 						setToolTipText(text);
