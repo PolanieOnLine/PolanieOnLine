@@ -12,6 +12,9 @@
 package games.stendhal.client.gui.chatlog;
 
 import javax.swing.Icon;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.SimpleAttributeSet;
@@ -41,6 +44,42 @@ public class ChatTextSink implements AttributedTextSink<StyleSet> {
 	/** Styled document reference for inserting icons when available. */
 	private final StyledDocument styledDocument;
 
+	private static final class Segment {
+		private final String text;
+		private final EmojiStore.EmojiMatch match;
+		private final String token;
+
+		private Segment(final String text, final EmojiStore.EmojiMatch match, final String token) {
+			this.text = text;
+			this.match = match;
+			this.token = token;
+		}
+
+		public static Segment text(final String text) {
+			return new Segment(text, null, null);
+		}
+
+		public static Segment emoji(final EmojiStore.EmojiMatch match, final String token) {
+			return new Segment(null, match, token);
+		}
+
+		public boolean isEmoji() {
+			return match != null;
+		}
+
+		public String getText() {
+			return text;
+		}
+
+		public EmojiStore.EmojiMatch getMatch() {
+			return match;
+		}
+
+		public String getToken() {
+			return token;
+		}
+	}
+
 	/**
 	* Create a new ChatTextSink.
 	*
@@ -61,63 +100,73 @@ public class ChatTextSink implements AttributedTextSink<StyleSet> {
 			}
 
 			final EmojiStore store = EmojiStore.get();
-			final int length = s.length();
-			final StringBuilder plain = new StringBuilder();
+			final List<Segment> segments = segmentText(store, s);
 			StyleSet emojiAttrs = null;
-			int index = 0;
 
-			while (index < length) {
-				final EmojiStore.EmojiMatch match = store.matchEmoji(s, index);
-				if (match != null) {
-					if (plain.length() > 0) {
-						document.insertString(document.getLength(), plain.toString(), attrs.contents());
-						plain.setLength(0);
-					}
-
-					final String token = s.substring(index, index + match.getConsumedLength());
-					boolean insertedIcon = false;
-					if (styledDocument != null) {
-						final Icon icon = store.getIcon(token);
-						if (icon != null) {
-							final SimpleAttributeSet iconAttrs = new SimpleAttributeSet();
-							StyleConstants.setIcon(iconAttrs, icon);
-							styledDocument.insertString(styledDocument.getLength(), " ", iconAttrs);
-							insertedIcon = true;
-						}
-					}
-
-					if (!insertedIcon) {
-						if (emojiAttrs == null) {
-							emojiAttrs = buildEmojiAttributes(attrs);
-						}
-						document.insertString(document.getLength(), match.getGlyph(), emojiAttrs.contents());
-					}
-
-					index += match.getConsumedLength();
+			for (final Segment segment : segments) {
+				if (!segment.isEmoji()) {
+					document.insertString(document.getLength(), segment.getText(), attrs.contents());
 					continue;
 				}
 
-				final int codePoint = s.codePointAt(index);
-				plain.appendCodePoint(codePoint);
-				index += Character.charCount(codePoint);
-			}
+				boolean insertedIcon = false;
+				if (styledDocument != null) {
+					final Icon icon = store.getIcon(segment.getToken());
+					if (icon != null) {
+						final SimpleAttributeSet iconAttrs = new SimpleAttributeSet();
+						StyleConstants.setIcon(iconAttrs, icon);
+						styledDocument.insertString(styledDocument.getLength(), " ", iconAttrs);
+						insertedIcon = true;
+					}
+				}
 
-			if (plain.length() > 0) {
-				document.insertString(document.getLength(), plain.toString(), attrs.contents());
+				if (!insertedIcon) {
+					if (emojiAttrs == null) {
+						emojiAttrs = buildEmojiAttributes(attrs);
+					}
+					final String glyph = segment.getMatch().getGlyph();
+					document.insertString(document.getLength(), (glyph != null) ? glyph : segment.getToken(), emojiAttrs.contents());
+				}
 			}
 		} catch (BadLocationException e) {
 			logger.error("Failed to insert text.", e);
 		}
 	}
 
-	/**
-	* Builds a copy of the provided attributes with emoji-specific font settings applied.
-	*
-	* @param attrs
-	*     Style set to copy.
-	* @return
-	*     Style set with emoji font attributes.
-	*/
+	private List<Segment> segmentText(final EmojiStore store, final String text) {
+		final List<Segment> segments = new ArrayList<>();
+		if ((text == null) || text.isEmpty()) {
+			return segments;
+		}
+
+		final StringBuilder buffer = new StringBuilder();
+		int index = 0;
+		final int length = text.length();
+		while (index < length) {
+			final EmojiStore.EmojiMatch match = store.matchEmoji(text, index);
+			if (match != null) {
+				if (buffer.length() > 0) {
+					segments.add(Segment.text(buffer.toString()));
+					buffer.setLength(0);
+				}
+				final int consumed = match.getConsumedLength();
+				final String token = text.substring(index, index + consumed);
+				segments.add(Segment.emoji(match, token));
+				index += consumed;
+				continue;
+			}
+			final int codePoint = text.codePointAt(index);
+			buffer.appendCodePoint(codePoint);
+			index += Character.charCount(codePoint);
+		}
+
+		if (buffer.length() > 0) {
+			segments.add(Segment.text(buffer.toString()));
+		}
+
+		return segments;
+	}
+
 	private StyleSet buildEmojiAttributes(final StyleSet attrs) {
 		final StyleSet emojiAttrs = attrs.copy();
 

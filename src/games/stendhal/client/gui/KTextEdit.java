@@ -368,21 +368,64 @@ class KTextEdit extends JComponent {
 	 * @param type type for formatting
 	 */
 	protected void insertText(String text, final NotificationType type) {
-		ChatTextSink dest = new ChatTextSink(textPane.getDocument(), textPane.getStyle("emoji"));
-		final Color c = type.getColor();
-		Style s = getStyle(c, type.getStyleDescription());
+		final ChatTextSink dest = new ChatTextSink(textPane.getDocument(), textPane.getStyle("emoji"));
+		final Color color = type.getColor();
+		Style baseStyle = getStyle(color, type.getStyleDescription());
 
 		if (type.equals(NotificationType.EMOJI)) {
-			Style emojiStyle = textPane.getStyle("emoji");
-			final StyleSet set = new StyleSet(StyleContext.getDefaultStyleContext(), emojiStyle);
-			set.setAttribute(StyleConstants.Foreground, c);
-			formatter.format(text, set, dest);
-			return;
+			text = normalizeEmojiText(text);
+			final Style emojiStyle = textPane.getStyle("emoji");
+			if (emojiStyle != null) {
+				baseStyle = emojiStyle;
+			}
 		}
-		final StyleSet set = new StyleSet(StyleContext.getDefaultStyleContext(), s);
-		set.setAttribute(StyleConstants.Foreground, c);
+
+		final StyleSet set = new StyleSet(StyleContext.getDefaultStyleContext(), baseStyle);
+		set.setAttribute(StyleConstants.Foreground, color);
 
 		formatter.format(text, set, dest);
+	}
+
+	private String normalizeEmojiText(final String text) {
+		if (text == null) {
+			return null;
+		}
+		final String trimmed = text.trim();
+		if (trimmed.isEmpty()) {
+			return trimmed;
+		}
+
+		final EmojiStore store = EmojiStore.get();
+		if (store.check(trimmed) != null) {
+			return trimmed;
+		}
+
+		String normalized = trimmed.replace('\\', '/');
+		final int slash = normalized.lastIndexOf('/');
+		if (slash != -1) {
+			normalized = normalized.substring(slash + 1);
+		}
+		final int dot = normalized.lastIndexOf('.');
+		if (dot != -1) {
+			normalized = normalized.substring(0, dot);
+		}
+
+		if (normalized.isEmpty()) {
+			return trimmed;
+		}
+
+		if (!normalized.startsWith(":")) {
+			normalized = ":" + normalized;
+		}
+		if (!normalized.endsWith(":")) {
+			normalized = normalized + ":";
+		}
+
+		if ((store.check(normalized) != null) || store.isAvailable(normalized)) {
+			return normalized;
+		}
+
+		return trimmed;
 	}
 
 	/**
