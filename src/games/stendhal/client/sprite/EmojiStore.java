@@ -414,28 +414,32 @@ public class EmojiStore {
 		BufferedImage iconImage = null;
 		BufferedImage spriteImage = null;
 
-		final BufferedImage assetImage = loadEmojiAsset(name);
-		if (assetImage != null) {
-			iconImage = scaleForIcon(assetImage);
-			spriteImage = scaleForSprite(assetImage);
-		}
-
 		ensureEmojiFont();
 		final String glyph = ensureEmojiPresentation(emojiGlyphs.getOrDefault(name, ":" + name + ":"));
-		if ((iconImage == null) || (spriteImage == null)) {
-			if (bitmapExtractor != null) {
-				if (iconImage == null) {
-					iconImage = bitmapExtractor.renderGlyph(glyph, ICON_POINT_SIZE, ICON_PADDING);
+		if (bitmapExtractor != null) {
+			iconImage = bitmapExtractor.renderGlyph(glyph, ICON_POINT_SIZE, ICON_PADDING);
+			spriteImage = bitmapExtractor.renderGlyph(glyph, SPRITE_POINT_SIZE, ICON_PADDING);
+			if ((iconImage == null) || (spriteImage == null)) {
+				final String stripped = stripVariationSelectors(glyph);
+				if ((iconImage == null) && (stripped != null)) {
+					iconImage = bitmapExtractor.renderGlyph(stripped, ICON_POINT_SIZE, ICON_PADDING);
 				}
-				if (spriteImage == null) {
-					spriteImage = bitmapExtractor.renderGlyph(glyph, SPRITE_POINT_SIZE, ICON_PADDING);
+				if ((spriteImage == null) && (stripped != null)) {
+					spriteImage = bitmapExtractor.renderGlyph(stripped, SPRITE_POINT_SIZE, ICON_PADDING);
 				}
 			}
-			if (iconImage == null) {
-				iconImage = rasterizeGlyph(glyph, ICON_POINT_SIZE);
-			}
-			if (spriteImage == null) {
-				spriteImage = rasterizeGlyph(glyph, SPRITE_POINT_SIZE);
+		}
+		if (iconImage == null) {
+			iconImage = rasterizeGlyph(glyph, ICON_POINT_SIZE);
+		}
+		if (spriteImage == null) {
+			spriteImage = rasterizeGlyph(glyph, SPRITE_POINT_SIZE);
+		}
+		if ((iconImage == null) && (spriteImage == null)) {
+			final BufferedImage assetImage = loadEmojiAsset(name);
+			if (assetImage != null) {
+				iconImage = scaleForIcon(assetImage);
+				spriteImage = scaleForSprite(assetImage);
 			}
 		}
 		final Icon icon = (iconImage != null) ? new ImageIcon(iconImage) : null;
