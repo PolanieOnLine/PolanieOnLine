@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.locks.LockSupport;
 
 import org.apache.log4j.Logger;
 
@@ -48,13 +49,17 @@ public class GameLoop {
 	private volatile boolean running;
 
 	private volatile long frameLengthNanos;
-	private volatile double logicStepMillis;
-	private static final double MAX_FRAME_DELTA_MS = 250.0;
+	private volatile long logicStepNanos;
+	private static final long MAX_FRAME_DELTA_NANOS = 250_000_000L;
 	private static final int MAX_CATCH_UP_STEPS = 5;
+	private static final long SPIN_THRESHOLD_NANOS = 200_000L;
+	private static final long PARK_MARGIN_NANOS = 100_000L;
 
 	private volatile int currentFps;
 
 	private final SettingChangeListener fpsLimitListener;
+	private long logicResidualNanos;
+	private long sleepAdjustmentNanos;
 
 	/**
 	 * Create a new GameLoop.
@@ -88,7 +93,7 @@ public class GameLoop {
 		int sanitized = Math.max(1, limit);
 		stendhal.setFpsLimit(sanitized);
 		frameLengthNanos = Math.max(1L, Math.round(1_000_000_000.0 / sanitized));
-		logicStepMillis = Math.max(1.0, 1000.0 / sanitized);
+		logicStepNanos = frameLengthNanos;
 		currentFps = sanitized;
 	}
 
@@ -162,7 +167,7 @@ public class GameLoop {
 	 */
 	private void loop() {
 		int fps = 0;
-		double accumulator = 0.0;
+		long accumulator = 0L;
 		long lastFrameTime = System.nanoTime();
 		long lastFpsTime = lastFrameTime;
 
@@ -170,28 +175,28 @@ public class GameLoop {
 			final long frameStart = System.nanoTime();
 			try {
 				long now = frameStart;
-				double frameDelta = (now - lastFrameTime) / 1_000_000.0;
-				if (frameDelta < 0.0) {
-					frameDelta = 0.0;
+				long frameDelta = now - lastFrameTime;
+				if (frameDelta < 0L) {
+					frameDelta = 0L;
 				}
-				frameDelta = Math.min(frameDelta, MAX_FRAME_DELTA_MS);
+				frameDelta = Math.min(frameDelta, MAX_FRAME_DELTA_NANOS);
 				lastFrameTime = now;
-				accumulator = Math.min(accumulator + frameDelta, MAX_FRAME_DELTA_MS);
+				accumulator = Math.min(accumulator + frameDelta, MAX_FRAME_DELTA_NANOS);
 
-				double stepMillis = logicStepMillis;
+				long stepNanos = logicStepNanos;
 				int updateCount = 0;
-				while ((accumulator >= stepMillis) && (updateCount < MAX_CATCH_UP_STEPS)) {
-					persistentTask.run((int) Math.max(1L, Math.round(stepMillis)));
-					accumulator -= stepMillis;
+				while ((accumulator >= stepNanos) && (updateCount < MAX_CATCH_UP_STEPS)) {
+					persistentTask.run(nanosToDelta(stepNanos));
+					accumulator -= stepNanos;
 					updateCount++;
 				}
 
-				if ((updateCount == 0) && (accumulator >= 1.0)) {
-					int delta = (int) Math.max(1L, Math.round(Math.min(accumulator, stepMillis)));
-					persistentTask.run(delta);
-					accumulator -= delta;
+				if ((updateCount == 0) && (accumulator >= 1_000_000L)) {
+					long slice = Math.min(accumulator, stepNanos);
+					persistentTask.run(nanosToDelta(slice));
+					accumulator -= slice;
 				}
-				accumulator = Math.max(0.0, accumulator);
+				accumulator = Math.max(0L, accumulator);
 
 				Runnable tempTask = temporaryTasks.poll();
 				while (tempTask != null) {
@@ -213,22 +218,43 @@ public class GameLoop {
 			} finally {
 				long frameDuration = frameLengthNanos;
 				long elapsed = System.nanoTime() - frameStart;
-				long wait = frameDuration - elapsed;
-				if (wait > 0) {
-					sleepNanos(wait);
+				long wait = frameDuration - elapsed + sleepAdjustmentNanos;
+				if (wait > 0L) {
+					sleepAdjustmentNanos = sleepNanos(wait);
+				} else {
+					sleepAdjustmentNanos = 0L;
 				}
 			}
 		}
 	}
 
-	private void sleepNanos(long nanos) {
-		long millis = nanos / 1_000_000L;
-		int nanosPart = (int) (nanos % 1_000_000L);
-		try {
-			Thread.sleep(millis, nanosPart);
-		} catch (InterruptedException e) {
-			logger.error(e, e);
+	private int nanosToDelta(long nanos) {
+		long total = nanos + logicResidualNanos;
+		long rounded = Math.max(1L, (total + 500_000L) / 1_000_000L);
+		logicResidualNanos = total - (rounded * 1_000_000L);
+		if (rounded > Integer.MAX_VALUE) {
+			return Integer.MAX_VALUE;
 		}
+		return (int) rounded;
+	}
+
+	private long sleepNanos(long nanos) {
+		long start = System.nanoTime();
+		long target = start + nanos;
+		long remaining = nanos;
+		if (remaining > SPIN_THRESHOLD_NANOS + PARK_MARGIN_NANOS) {
+			long parkNanos = remaining - SPIN_THRESHOLD_NANOS;
+			if (parkNanos > 0L) {
+				LockSupport.parkNanos(parkNanos);
+			}
+		}
+		while ((remaining = target - System.nanoTime()) > 0L) {
+			if (remaining > 1_000L) {
+				Thread.onSpinWait();
+			}
+		}
+		long actual = System.nanoTime() - start;
+		return nanos - actual;
 	}
 
 
