@@ -59,6 +59,7 @@ public class EmojiStore {
 	private static final String DEFAULT_EMOJI_FONT = Font.SANS_SERIF;
 	private static final String EMOJI_JSON_PATH = "data/sprites/emoji/emojis.json";
 	private static final String BUNDLED_FONT_PATH = "data/font/NotoColorEmoji-Regular.ttf";
+	private static final String SAMPLE_GLYPH = "\uD83D\uDE03";
 	private static final String[] FALLBACK_FONT_FAMILIES = {
 		"Noto Color Emoji",
 		"Segoe UI Emoji",
@@ -71,6 +72,8 @@ public class EmojiStore {
 	private static final float ICON_POINT_SIZE = 22f;
 	private static final float SPRITE_POINT_SIZE = 48f;
 	private static final int ICON_PADDING = 4;
+	private static final char VARIATION_SELECTOR_TEXT = '\uFE0E';
+	private static final char VARIATION_SELECTOR_EMOJI = '\uFE0F';
 
 	private static final class RenderedEmoji {
 		private final String glyph;
@@ -175,14 +178,21 @@ public class EmojiStore {
 		}
 
 		Font loaded = loadBundledEmojiFont();
+		if (!isValidEmojiFont(loaded)) {
+			loaded = null;
+		}
+
 		if (loaded == null) {
 			try {
 				final String[] availableFamilies = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
 				final List<String> families = Arrays.asList(availableFamilies);
 				for (final String family: FALLBACK_FONT_FAMILIES) {
 					if (families.contains(family)) {
-						loaded = new Font(family, Font.PLAIN, Math.round(DEFAULT_EMOJI_SIZE));
-						break;
+						final Font candidate = new Font(family, Font.PLAIN, Math.round(DEFAULT_EMOJI_SIZE));
+						if (isValidEmojiFont(candidate)) {
+							loaded = candidate;
+							break;
+						}
 					}
 				}
 			} catch (HeadlessException e) {
@@ -190,12 +200,19 @@ public class EmojiStore {
 			}
 		}
 
-		if (loaded == null) {
+		if (!isValidEmojiFont(loaded)) {
 			loaded = new Font(DEFAULT_EMOJI_FONT, Font.PLAIN, Math.round(DEFAULT_EMOJI_SIZE));
 		}
 
-		baseEmojiFont = loaded;
-		emojiFontFamily = baseEmojiFont.getFamily();
+		baseEmojiFont = loaded.deriveFont(Font.PLAIN, DEFAULT_EMOJI_SIZE);
+		emojiFontFamily = baseEmojiFont.getFontName();
+	}
+
+	private boolean isValidEmojiFont(final Font font) {
+		if (font == null) {
+			return false;
+		}
+		return font.canDisplayUpTo(SAMPLE_GLYPH) == -1;
 	}
 
 	private Font loadBundledEmojiFont() {
@@ -204,13 +221,13 @@ public class EmojiStore {
 				logger.warn("Bundled emoji font not found: " + BUNDLED_FONT_PATH);
 				return null;
 			}
-			final Font font = Font.createFont(Font.TRUETYPE_FONT, stream).deriveFont(Font.PLAIN, DEFAULT_EMOJI_SIZE);
+			final Font base = Font.createFont(Font.TRUETYPE_FONT, stream);
 			try {
-				GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(font);
+				GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(base);
 			} catch (Exception e) {
 				logger.debug("Failed to register bundled emoji font", e);
 			}
-			return font;
+			return base;
 		} catch (FontFormatException | IOException e) {
 			logger.warn("Unable to load bundled emoji font", e);
 			return null;
@@ -255,6 +272,23 @@ public class EmojiStore {
 		return rendered.icon;
 	}
 
+	private String ensureEmojiPresentation(final String glyph) {
+		if ((glyph == null) || glyph.isEmpty()) {
+			return glyph;
+		}
+		if ((glyph.indexOf(VARIATION_SELECTOR_TEXT) != -1) || (glyph.indexOf(VARIATION_SELECTOR_EMOJI) != -1)) {
+			return glyph;
+		}
+		if (glyph.codePointCount(0, glyph.length()) != 1) {
+			return glyph;
+		}
+		final int codePoint = glyph.codePointAt(0);
+		if (codePoint < 0x1F000) {
+			return glyph + VARIATION_SELECTOR_EMOJI;
+		}
+		return glyph;
+	}
+
 	private RenderedEmoji renderEmoji(final String text) {
 		if (text == null) {
 			return null;
@@ -269,7 +303,7 @@ public class EmojiStore {
 		}
 
 		ensureEmojiFont();
-		final String glyph = emojiGlyphs.getOrDefault(name, ":" + name + ":");
+		final String glyph = ensureEmojiPresentation(emojiGlyphs.getOrDefault(name, ":" + name + ":"));
 		final BufferedImage iconImage = rasterizeGlyph(glyph, ICON_POINT_SIZE);
 		final BufferedImage spriteImage = rasterizeGlyph(glyph, SPRITE_POINT_SIZE);
 		final Icon icon = (iconImage != null) ? new ImageIcon(iconImage) : null;
@@ -327,7 +361,11 @@ public class EmojiStore {
 		if (name == null) {
 			return null;
 		}
-		return emojiGlyphs.get(name);
+		final String glyph = emojiGlyphs.get(name);
+		if (glyph == null) {
+			return null;
+		}
+		return ensureEmojiPresentation(glyph);
 	}
 
 	public EmojiMatch matchEmoji(final CharSequence text, final int index) {
@@ -361,7 +399,9 @@ public class EmojiStore {
 			return null;
 		}
 		String glyph = emojiGlyphs.get(name);
-		if (glyph == null) {
+		if (glyph != null) {
+			glyph = ensureEmojiPresentation(glyph);
+		} else {
 			glyph = ":" + name + ":";
 		}
 		return new EmojiMatch(name, glyph, consumedChars);

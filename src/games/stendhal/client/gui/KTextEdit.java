@@ -33,6 +33,7 @@ import java.util.regex.Pattern;
 import javax.swing.DefaultBoundedRangeModel;
 import javax.swing.Icon;
 import javax.swing.JComponent;
+import javax.swing.JEditorPane;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollBar;
@@ -185,6 +186,7 @@ class KTextEdit extends JComponent {
 				}
 			}
 		};
+		textPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
 		textPane.setEditorKit(new WrapEditorKit());
 		textPane.setEditable(false);
 		textPane.setAutoscrolls(true);
@@ -281,9 +283,10 @@ class KTextEdit extends JComponent {
 		s = textPane.getStyle("emoji");
 		if (s == null) {
 			s = textPane.addStyle("emoji", regular);
-			StyleConstants.setFontFamily(s, EmojiStore.getFontFamily());
-			StyleConstants.setBold(s, true);
 		}
+		StyleConstants.setFontFamily(s, EmojiStore.getFontFamily());
+		StyleConstants.setBold(s, false);
+		StyleConstants.setItalic(s, false);
 		StyleConstants.setFontSize(s, mainTextSize + 2);
 		//****** Styles used by the string formatter ******
 		StyleSet defaultAttributes = new StyleSet(StyleContext.getDefaultStyleContext(), regular);

@@ -100,15 +100,16 @@ public class ChatTextSink implements AttributedTextSink<StyleSet> {
 	private StyleSet buildEmojiAttributes(final StyleSet attrs) {
 		final StyleSet emojiAttrs = attrs.copy();
 
+		emojiAttrs.setAttribute(StyleConstants.FontFamily, EmojiStore.getFontFamily());
+
+		int fontSize = StyleConstants.getFontSize(attrs.contents());
 		if (emojiStyle != null) {
-			emojiAttrs.setAttribute(StyleConstants.FontFamily, StyleConstants.getFontFamily(emojiStyle));
-			emojiAttrs.setAttribute(StyleConstants.FontSize, StyleConstants.getFontSize(emojiStyle));
-			emojiAttrs.setAttribute(StyleConstants.Bold, StyleConstants.isBold(emojiStyle));
-			emojiAttrs.setAttribute(StyleConstants.Italic, StyleConstants.isItalic(emojiStyle));
+			fontSize = StyleConstants.getFontSize(emojiStyle);
 			emojiAttrs.setAttribute(StyleConstants.Underline, StyleConstants.isUnderline(emojiStyle));
-		} else {
-			emojiAttrs.setAttribute(StyleConstants.FontFamily, EmojiStore.getFontFamily());
 		}
+		emojiAttrs.setAttribute(StyleConstants.FontSize, fontSize);
+		emojiAttrs.setAttribute(StyleConstants.Bold, Boolean.FALSE);
+		emojiAttrs.setAttribute(StyleConstants.Italic, Boolean.FALSE);
 
 		return emojiAttrs;
 	}
