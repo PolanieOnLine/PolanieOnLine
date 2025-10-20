@@ -459,6 +459,7 @@ class WebChatLogView extends JComponent implements ChatLogView {
 		private final CountDownLatch ready = new CountDownLatch(1);
 
 		private volatile Object webEngine;
+		private volatile Throwable startupFailure;
 
 		private FxBridge(Object panel, Method runLater, Constructor<?> webViewCtor, Method setContextMenuEnabled,
 				Method getEngine, Constructor<?> sceneCtor, Method setScene, Method loadContent, Method executeScript) {
@@ -477,6 +478,7 @@ class WebChatLogView extends JComponent implements ChatLogView {
 		private static volatile boolean fxChecked;
 		private static volatile boolean fxAvailable;
 		private static volatile boolean fxMissingLogged;
+		private static volatile boolean fxInitLogged;
 
 		static FxBridge tryCreate() {
 			if (!ensureJavaFxPresent()) {
@@ -504,11 +506,12 @@ class WebChatLogView extends JComponent implements ChatLogView {
 				Method executeScript = webEngineClass.getMethod("executeScript", String.class);
 
 				FxBridge bridge = new FxBridge(panel, runLater, webViewCtor, setContextMenuEnabled, getEngine, sceneCtor,
-						setScene, loadContent, executeScript);
+					setScene, loadContent, executeScript);
 				bridge.init();
 				return bridge;
 			} catch (Throwable ex) {
-				logger.warn("Failed to initialize JavaFX WebView", ex);
+				logInitializationFailure(ex);
+				markUnavailable();
 				return null;
 			}
 		}
@@ -552,6 +555,49 @@ class WebChatLogView extends JComponent implements ChatLogView {
 			}
 		}
 
+		private static void markUnavailable() {
+			synchronized (fxGuard) {
+				fxAvailable = false;
+				fxChecked = true;
+			}
+		}
+
+		private static void logInitializationFailure(Throwable ex) {
+			Throwable cause = rootCause(ex);
+			String message = (cause != null) ? cause.getMessage() : null;
+			if (message == null) {
+				message = "";
+			}
+			if (!fxInitLogged) {
+				if (message.contains("QuantumRenderer") || message.contains("no suitable pipeline")) {
+					logger.info("JavaFX WebView disabled: renderer pipeline unavailable. Update graphics drivers or launch the client with -Dprism.order=sw.");
+				} else if (message.contains("No toolkit found")) {
+					logger.info("JavaFX WebView disabled: JavaFX toolkit failed to start. Ensure the OpenJFX runtime matches the JRE.");
+				} else if (message.contains("Unsupported JavaFX configuration")) {
+					logger.info("JavaFX WebView disabled: unsupported JavaFX configuration detected. Verify module-path and graphics stack settings.");
+				} else {
+					String causeName = (cause != null) ? cause.getClass().getSimpleName() : ex.getClass().getSimpleName();
+					if (!message.isEmpty()) {
+						logger.warn("JavaFX WebView initialization failed: " + causeName + ": " + message);
+					} else {
+						logger.warn("JavaFX WebView initialization failed: " + causeName);
+					}
+				}
+				fxInitLogged = true;
+			}
+			if (logger.isDebugEnabled()) {
+				logger.debug("JavaFX initialization stack trace", ex);
+			}
+		}
+
+		private static Throwable rootCause(Throwable ex) {
+			Throwable current = ex;
+			while ((current != null) && (current.getCause() != null) && (current.getCause() != current)) {
+				current = current.getCause();
+			}
+			return current;
+		}
+
 		private void init() throws IllegalAccessException, InvocationTargetException {
 			Runnable task = new Runnable() {
 				@Override
@@ -564,13 +610,30 @@ class WebChatLogView extends JComponent implements ChatLogView {
 						setScene.invoke(panel, scene);
 						webEngine = engine;
 					} catch (Throwable ex) {
-						logger.error("Failed to initialize WebView", ex);
+						startupFailure = ex;
+						logInitializationFailure(ex);
+						markUnavailable();
 					} finally {
 						ready.countDown();
 					}
 				}
 			};
+			startupFailure = null;
 			runLater.invoke(null, task);
+			try {
+				if (!ready.await(5, TimeUnit.SECONDS) || (webEngine == null)) {
+					markUnavailable();
+					Throwable failure = startupFailure;
+					if (failure != null) {
+						throw new IllegalStateException("JavaFX WebView failed to initialize", failure);
+					}
+					throw new IllegalStateException("JavaFX WebView initialization did not complete");
+				}
+			} catch (InterruptedException ex) {
+				Thread.currentThread().interrupt();
+				markUnavailable();
+				throw new IllegalStateException("Interrupted while waiting for JavaFX initialization", ex);
+			}
 		}
 
 		Component getComponent() {
