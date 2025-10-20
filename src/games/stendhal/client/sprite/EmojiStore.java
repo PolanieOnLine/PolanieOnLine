@@ -32,6 +32,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
@@ -66,9 +67,9 @@ public class EmojiStore {
 	private static final String BUNDLED_FONT_PATH = "data/font/NotoColorEmoji-Regular.ttf";
 	private static final String SAMPLE_GLYPH = "\uD83D\uDE03";
 	private static final String[] FALLBACK_FONT_FAMILIES = {
-		"Noto Color Emoji",
 		"Segoe UI Emoji",
 		"Apple Color Emoji",
+		"Noto Color Emoji",
 		"Twitter Color Emoji",
 		"EmojiOne Color",
 		"Android Emoji"
@@ -182,20 +183,12 @@ public class EmojiStore {
 			return;
 		}
 
-		Font loaded = loadBundledEmojiFont();
-		if ((loaded == null) || !isValidEmojiFont(loaded)) {
-			try {
-				final String[] availableFamilies = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
-				final List<String> families = Arrays.asList(availableFamilies);
-				for (final String family: FALLBACK_FONT_FAMILIES) {
-					if (families.contains(family)) {
-						final Font candidate = new Font(family, Font.PLAIN, Math.round(DEFAULT_EMOJI_SIZE));
-						loaded = candidate;
-						break;
-					}
-				}
-			} catch (HeadlessException e) {
-				logger.warn("Unable to query system emoji fonts", e);
+		Font loaded = findSystemEmojiFont();
+		if (loaded == null) {
+			loaded = loadBundledEmojiFont();
+			if ((loaded != null) && !isValidEmojiFont(loaded)) {
+				logger.warn("Bundled emoji font cannot display sample glyphs; ignoring bundled font");
+				loaded = null;
 			}
 		}
 
@@ -204,8 +197,27 @@ public class EmojiStore {
 		}
 
 		baseEmojiFont = loaded.deriveFont(Font.PLAIN, DEFAULT_EMOJI_SIZE);
-		emojiFontFamily = baseEmojiFont.getFamily();
+		emojiFontFamily = baseEmojiFont.getFontName(Locale.ENGLISH);
 	}
+
+	private Font findSystemEmojiFont() {
+		try {
+			final String[] availableFamilies = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
+			final List<String> families = Arrays.asList(availableFamilies);
+			for (final String family: FALLBACK_FONT_FAMILIES) {
+				if (families.contains(family)) {
+					final Font candidate = new Font(family, Font.PLAIN, Math.round(DEFAULT_EMOJI_SIZE));
+					if (isValidEmojiFont(candidate)) {
+						return candidate;
+					}
+				}
+			}
+		} catch (HeadlessException e) {
+			logger.warn("Unable to query system emoji fonts", e);
+		}
+		return null;
+	}
+
 
 	private boolean isValidEmojiFont(final Font font) {
 		if (font == null) {
