@@ -11,28 +11,26 @@
  ***************************************************************************/
 package games.stendhal.client.sprite;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 import java.awt.AlphaComposite;
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
 import java.awt.HeadlessException;
+import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.font.GlyphVector;
 import java.awt.font.FontRenderContext;
-import java.awt.font.TextAttribute;
-import java.awt.font.TextLayout;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.AttributedString;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -324,15 +322,19 @@ public class EmojiStore {
 		}
 
 		final Font font = baseEmojiFont.deriveFont(Font.PLAIN, fontSize);
-		final AttributedString attributed = new AttributedString(glyph);
-		attributed.addAttribute(TextAttribute.FONT, font);
-		final TextLayout layout = new TextLayout(attributed.getIterator(), fontRenderContext);
-		final Rectangle2D bounds = layout.getBounds();
-		final float ascent = layout.getAscent();
-		final float descent = layout.getDescent();
-		final float leading = layout.getLeading();
-		final int width = Math.max(1, (int) Math.ceil(bounds.getWidth()) + (ICON_PADDING * 2));
-		final int height = Math.max(1, (int) Math.ceil(ascent + descent + leading) + (ICON_PADDING * 2));
+		final GlyphVector glyphVector = font.createGlyphVector(fontRenderContext, glyph);
+		Rectangle pixelBounds = glyphVector.getPixelBounds(fontRenderContext, 0f, 0f);
+		if ((pixelBounds.width <= 0) || (pixelBounds.height <= 0)) {
+			final Rectangle2D visualBounds = glyphVector.getVisualBounds();
+			pixelBounds = new Rectangle(
+				(int) Math.floor(visualBounds.getX()),
+				(int) Math.floor(visualBounds.getY()),
+				Math.max(1, (int) Math.ceil(visualBounds.getWidth())),
+				Math.max(1, (int) Math.ceil(visualBounds.getHeight()))
+			);
+		}
+		final int width = Math.max(1, pixelBounds.width + (ICON_PADDING * 2));
+		final int height = Math.max(1, pixelBounds.height + (ICON_PADDING * 2));
 		final BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		final Graphics2D g2d = image.createGraphics();
 		try {
@@ -344,9 +346,9 @@ public class EmojiStore {
 			g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
 			g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 			g2d.setFont(font);
-			final float drawX = ICON_PADDING - (float) bounds.getX();
-			final float drawY = ICON_PADDING + ascent;
-			layout.draw(g2d, drawX, drawY);
+			final float drawX = ICON_PADDING - pixelBounds.x;
+			final float drawY = ICON_PADDING - pixelBounds.y;
+			g2d.drawGlyphVector(glyphVector, drawX, drawY);
 		} finally {
 			g2d.dispose();
 		}
