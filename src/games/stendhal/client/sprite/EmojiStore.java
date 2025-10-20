@@ -19,10 +19,12 @@ import java.awt.GraphicsEnvironment;
 import java.awt.HeadlessException;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
-import java.awt.font.GlyphVector;
 import java.awt.font.FontRenderContext;
+import java.awt.font.GlyphVector;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
@@ -32,6 +34,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
@@ -39,6 +42,7 @@ import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
 
 import games.stendhal.client.sprite.DataLoader;
+import games.stendhal.client.sprite.ImageSprite;
 import games.stendhal.client.util.JSONLoader;
 
 public class EmojiStore {
@@ -53,10 +57,12 @@ public class EmojiStore {
 	private Font baseEmojiFont;
 	private String emojiFontFamily;
 	private FontRenderContext fontRenderContext;
+	private byte[] bundledFontBytes;
 
 	private static final Logger logger = Logger.getLogger(EmojiStore.class);
 	private static final String DEFAULT_EMOJI_FONT = Font.SANS_SERIF;
 	private static final String EMOJI_JSON_PATH = "data/sprites/emoji/emojis.json";
+	private static final String EMOJI_IMAGE_PATH = "data/sprites/emoji/";
 	private static final String BUNDLED_FONT_PATH = "data/font/NotoColorEmoji-Regular.ttf";
 	private static final String SAMPLE_GLYPH = "\uD83D\uDE03";
 	private static final String[] FALLBACK_FONT_FAMILIES = {
@@ -126,7 +132,7 @@ public class EmojiStore {
 		emojiGlyphs = new LinkedHashMap<>();
 		emojiCache = new HashMap<>();
 		longestKeyLength = 0;
-		fontRenderContext = new FontRenderContext(null, true, true);
+			fontRenderContext = new FontRenderContext(null, true, true);
 	}
 
 	/**
@@ -177,21 +183,15 @@ public class EmojiStore {
 		}
 
 		Font loaded = loadBundledEmojiFont();
-		if (!isValidEmojiFont(loaded)) {
-			loaded = null;
-		}
-
-		if (loaded == null) {
+		if ((loaded == null) || !isValidEmojiFont(loaded)) {
 			try {
 				final String[] availableFamilies = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
 				final List<String> families = Arrays.asList(availableFamilies);
 				for (final String family: FALLBACK_FONT_FAMILIES) {
 					if (families.contains(family)) {
 						final Font candidate = new Font(family, Font.PLAIN, Math.round(DEFAULT_EMOJI_SIZE));
-						if (isValidEmojiFont(candidate)) {
-							loaded = candidate;
-							break;
-						}
+						loaded = candidate;
+						break;
 					}
 				}
 			} catch (HeadlessException e) {
@@ -199,12 +199,12 @@ public class EmojiStore {
 			}
 		}
 
-		if (!isValidEmojiFont(loaded)) {
+		if (loaded == null) {
 			loaded = new Font(DEFAULT_EMOJI_FONT, Font.PLAIN, Math.round(DEFAULT_EMOJI_SIZE));
 		}
 
 		baseEmojiFont = loaded.deriveFont(Font.PLAIN, DEFAULT_EMOJI_SIZE);
-		emojiFontFamily = baseEmojiFont.getFontName();
+		emojiFontFamily = baseEmojiFont.getFamily();
 	}
 
 	private boolean isValidEmojiFont(final Font font) {
@@ -215,12 +215,25 @@ public class EmojiStore {
 	}
 
 	private Font loadBundledEmojiFont() {
-		try (InputStream stream = DataLoader.getResourceAsStream(BUNDLED_FONT_PATH)) {
-			if (stream == null) {
-				logger.warn("Bundled emoji font not found: " + BUNDLED_FONT_PATH);
-				return null;
+		if (bundledFontBytes == null) {
+			try (InputStream stream = DataLoader.getResourceAsStream(BUNDLED_FONT_PATH)) {
+				if (stream == null) {
+					logger.warn("Bundled emoji font not found: " + BUNDLED_FONT_PATH);
+					return null;
+				}
+				bundledFontBytes = readAllBytes(stream);
+			} catch (IOException e) {
+				logger.warn("Unable to read bundled emoji font", e);
+				bundledFontBytes = null;
 			}
-			final Font base = Font.createFont(Font.TRUETYPE_FONT, stream);
+		}
+
+		if (bundledFontBytes == null) {
+			return null;
+		}
+
+		try {
+			final Font base = Font.createFont(Font.TRUETYPE_FONT, new ByteArrayInputStream(bundledFontBytes));
 			try {
 				GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(base);
 			} catch (Exception e) {
@@ -231,6 +244,16 @@ public class EmojiStore {
 			logger.warn("Unable to load bundled emoji font", e);
 			return null;
 		}
+	}
+
+	private static byte[] readAllBytes(final InputStream stream) throws IOException {
+		final ByteArrayOutputStream out = new ByteArrayOutputStream();
+		final byte[] buffer = new byte[4096];
+		int read;
+		while ((read = stream.read(buffer)) != -1) {
+			out.write(buffer, 0, read);
+		}
+		return out.toByteArray();
 	}
 
 	private void recordKeyLength(final String key) {
@@ -303,13 +326,37 @@ public class EmojiStore {
 
 		ensureEmojiFont();
 		final String glyph = ensureEmojiPresentation(emojiGlyphs.getOrDefault(name, ":" + name + ":"));
-		final BufferedImage iconImage = rasterizeGlyph(glyph, ICON_POINT_SIZE);
-		final BufferedImage spriteImage = rasterizeGlyph(glyph, SPRITE_POINT_SIZE);
+		BufferedImage iconImage = rasterizeGlyph(glyph, ICON_POINT_SIZE);
+		BufferedImage spriteImage = rasterizeGlyph(glyph, SPRITE_POINT_SIZE);
+		if ((iconImage == null) || (spriteImage == null)) {
+			final BufferedImage fallback = loadEmojiAsset(name);
+			if (fallback != null) {
+				if (iconImage == null) {
+					iconImage = fallback;
+				}
+				if (spriteImage == null) {
+					spriteImage = fallback;
+				}
+			}
+		}
 		final Icon icon = (iconImage != null) ? new ImageIcon(iconImage) : null;
 		final Sprite sprite = (spriteImage != null) ? new ImageSprite(spriteImage, name) : null;
 		cached = new RenderedEmoji(glyph, icon, sprite);
 		emojiCache.put(name, cached);
 		return cached;
+	}
+
+	private BufferedImage loadEmojiAsset(final String name) {
+		final String resource = EMOJI_IMAGE_PATH + name + ".png";
+		try (InputStream stream = DataLoader.getResourceAsStream(resource)) {
+			if (stream == null) {
+				return null;
+			}
+			return ImageIO.read(stream);
+		} catch (IOException e) {
+			logger.warn("Unable to load fallback emoji asset: " + resource, e);
+			return null;
+		}
 	}
 
 	private BufferedImage rasterizeGlyph(final String glyph, final float fontSize) {
