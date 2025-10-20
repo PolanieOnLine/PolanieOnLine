@@ -12,13 +12,21 @@
 package games.stendhal.client.sprite;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.font.FontRenderContext;
+import java.awt.font.LineMetrics;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+
 import org.json.simple.JSONObject;
 
-import games.stendhal.client.ClientSingletonRepository;
 import games.stendhal.client.util.JSONLoader;
 
 public class EmojiStore {
@@ -26,59 +34,80 @@ public class EmojiStore {
 
 	private List<String> emojilist;
 	private Map<String, String> emojimap;
+	private Map<String, String> emojiGlyphs;
 
 	private static final String pathPrefix = "data/sprites/emoji/";
 
-	/* The Java client currently implements javax.swing.text.Document
-	 * which does not support displaying images, so this map is used to
-	 * display a character instead. Once the chat log does support
-	 * images this can be removed. It may be possible to switch to
-	 * javax.swing.text.html.HTMLDocument.
-	 */
-	@Deprecated
-	public static final Map<String, String> chatLogChars = new HashMap<String, String>() {{
-		/*
-		put("angel", "😇");
-		put("angermark", "💢");
-		put("astonished", "😲");
-		put("confounded", "😣");
-		put("confused", "😕");
-		put("cry", "😢");
-		put("expressionless", "😑");
-		put("frown", "☹");
-		put("frownslight", "🙁");
-		put("glasses", "🤓");
-		put("grin", "😀");
-		put("happycry", "🥲");
-		put("heart", "❤");
-		put("heartarrow", "💘");
-		put("heartblue", "💙");
-		put("heartbroken", "💔");
-		put("heartgreen", "💚");
-		put("heartviolet", "💜");
-		put("heartyellow", "💛");
-		put("joy", "😂");
-		put("lips", "🗢");
-		put("musicnoteeighth", "𝅘𝅥𝅮");
-		put("musicnotequarter", "𝅘𝅥");
-		put("musicnotesasc", "🎜");
-		put("musicnotesdesc", "🎝");
-		put("neutral", "😐");
-		put("nomouth", "😶");
-		put("rolledeyes", "🙄");
-		put("savor", "😋");
-		put("smile", "☺");
-		put("smileinvert", "🙃");
-		put("smileslight", "🙂");
-		put("smilingeyes", "😊");
-		put("sunglasses", "😎");
-		put("sweat", "💧");
-		put("tongue", "😛");
-		put("wink", "😉");
-		put("winktongue", "😜");
-		*/
-	}};
+	private static final Font EMOJI_FONT = new Font("Noto Emoji", Font.PLAIN, 28);
+	private static final FontRenderContext FONT_CONTEXT;
 
+	static {
+		BufferedImage image = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D graphics = image.createGraphics();
+		graphics.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		FONT_CONTEXT = graphics.getFontRenderContext();
+		graphics.dispose();
+	}
+
+	private static final class EmojiFontSprite implements Sprite {
+		private final String glyph;
+		private final int width;
+		private final int height;
+		private final int ascent;
+
+		EmojiFontSprite(final String glyph) {
+			this.glyph = glyph;
+			Rectangle2D bounds = EMOJI_FONT.getStringBounds(glyph, FONT_CONTEXT);
+			LineMetrics metrics = EMOJI_FONT.getLineMetrics(glyph, FONT_CONTEXT);
+			width = (int) Math.ceil(bounds.getWidth());
+			height = (int) Math.ceil(metrics.getHeight());
+			ascent = Math.round(metrics.getAscent());
+		}
+
+		@Override
+		public Sprite createRegion(final int x, final int y, final int width,
+				final int height, final Object ref) {
+			return this;
+		}
+
+		@Override
+		public void draw(final java.awt.Graphics g, final int x, final int y) {
+			draw(g, x, y, 0, 0, width, height);
+		}
+
+		@Override
+		public void draw(final java.awt.Graphics g, final int destx, final int desty,
+				final int x, final int y, final int w, final int h) {
+			Graphics2D g2d = (Graphics2D) g;
+			Font oldFont = g2d.getFont();
+			Object oldAA = g2d.getRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING);
+			g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+			g2d.setFont(EMOJI_FONT);
+			g2d.drawString(glyph, destx, desty + ascent);
+			g2d.setFont(oldFont);
+			g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, oldAA);
+		}
+
+		@Override
+		public int getHeight() {
+			return height;
+		}
+
+		@Override
+		public Object getReference() {
+			return glyph;
+		}
+
+		@Override
+		public int getWidth() {
+			return width;
+		}
+
+		@Override
+		public boolean isConstant() {
+			return true;
+		}
+	}
 
 	public static EmojiStore get() {
 		if (instance == null) {
@@ -93,6 +122,7 @@ public class EmojiStore {
 	private EmojiStore() {
 		emojilist = new LinkedList<>();
 		emojimap = new HashMap<>();
+		emojiGlyphs = new LinkedHashMap<>();
 	}
 
 	/**
@@ -113,28 +143,66 @@ public class EmojiStore {
 				}
 				if (em != null && em instanceof Map<?, ?>) {
 					for (final Map.Entry<?, ?> e: ((Map<?, ?>) em).entrySet()) {
-						emojimap.put((String) e.getKey(), (String) e.getValue());
+						final String key = (String) e.getKey();
+						final String value = (String) e.getValue();
+						emojimap.put(key, value);
+						if (looksLikeGlyph(key)) {
+							emojiGlyphs.putIfAbsent(value, key);
+						}
 					}
 				}
+				buildFallbackGlyphs();
 			}
 		};
 		loader.load(pathPrefix + "emojis.json");
 	}
 
+	private void buildFallbackGlyphs() {
+		for (final String name: emojilist) {
+			if (!emojiGlyphs.containsKey(name)) {
+				emojiGlyphs.put(name, ":" + name + ":");
+			}
+		}
+	}
+
+	private boolean looksLikeGlyph(final String key) {
+		if (key == null || key.isEmpty()) {
+			return false;
+		}
+		final int codePoint = key.codePointAt(0);
+		return codePoint > 0xFF;
+	}
+
 	/**
-	 * Creates an emoji sprite.
+	 * Creates an emoji sprite backed by a font glyph.
 	 *
 	 * @param text
 	 *     Text representing emoji.
 	 * @return
-	 *     <code>Image</code> or <code>undefined</code> if emoji isn't available.
+	 *     Sprite that renders the emoji or <code>null</code> if emoji isn't available.
 	 */
 	public Sprite create(final String text) {
-		final String filename = absPath(text);
-		if (filename == null) {
+		final String glyph = glyphFor(text);
+		if (glyph == null) {
 			return null;
 		}
-		return ClientSingletonRepository.getSpriteStore().getSprite(filename);
+		return new EmojiFontSprite(glyph);
+	}
+
+	/**
+	 * Retrieves glyph string for the provided emoji text.
+	 *
+	 * @param text
+	 *     Text representing emoji.
+	 * @return
+	 *     Glyph string or <code>null</code> if unavailable.
+	 */
+	public String glyphFor(final String text) {
+		final String name = check(text);
+		if (name == null) {
+			return null;
+		}
+		return emojiGlyphs.get(name);
 	}
 
 	/**
@@ -143,7 +211,7 @@ public class EmojiStore {
 	 * @param text
 	 *     Text to be checked.
 	 * @return
-	 *     String representing emoji sprite filename or <code>undefined</code>.
+	 *     String representing emoji identifier or <code>null</code>.
 	 */
 	public String check(String text) {
 		text = text.replace("\\\\", "\\");
@@ -157,21 +225,6 @@ public class EmojiStore {
 		return name;
 	}
 
-	/**
-	 * Retrieves full path to an emoji image.
-	 *
-	 * @param name
-	 *     Text representing emoji image filename.
-	 * @return
-	 *     String path to emoji image.
-	 */
-	public String absPath(final String name) {
-		final String checked = check(name);
-		if (checked != null) {
-			return pathPrefix + checked + ".png";
-		}
-		return null;
-	}
 
 	/**
 	 * Checks if an emoji is registered.

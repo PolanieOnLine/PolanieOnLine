@@ -14,7 +14,7 @@ package games.stendhal.client.gui.chatlog;
 import games.stendhal.common.NotificationType;
 
 public class EmojiEventLine extends EventLine {
-	public EmojiEventLine(final String header, final String emojiPath) {
-		super(header, emojiPath, NotificationType.EMOJI);
+	public EmojiEventLine(final String header, final String emojiText) {
+		super(header, emojiText, NotificationType.EMOJI);
 	}
 }

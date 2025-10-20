@@ -141,7 +141,11 @@ public class RemovableSprite implements Comparable<RemovableSprite> {
 			sx = GameScreenSpriteHelper.convertWorldToPixelUnits(owner.getX());
 			sy = GameScreenSpriteHelper.convertWorldToPixelUnits(owner.getY());
 		}
-		sprite.draw(g, sx - viewX - 16, sy - viewY - 32);
+		final int width = sprite.getWidth();
+		final int height = sprite.getHeight();
+		final int drawX = sx - viewX - (width / 2);
+		final int drawY = sy - viewY - height;
+		sprite.draw(g, drawX, drawY);
 	}
 
 	private int getAttachedX() {

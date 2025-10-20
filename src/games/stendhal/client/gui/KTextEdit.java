@@ -28,12 +28,10 @@ import java.io.Writer;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 import javax.swing.DefaultBoundedRangeModel;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
@@ -71,8 +69,6 @@ import games.stendhal.client.gui.chatlog.EventLine;
 import games.stendhal.client.gui.chatlog.HeaderLessEventLine;
 import games.stendhal.client.gui.textformat.StringFormatter;
 import games.stendhal.client.gui.textformat.StyleSet;
-import games.stendhal.client.sprite.EmojiStore;
-import games.stendhal.client.sprite.ImageSprite;
 import games.stendhal.common.MathHelper;
 import games.stendhal.common.NotificationType;
 
@@ -374,19 +370,11 @@ class KTextEdit extends JComponent {
 		Style s = getStyle(c, type.getStyleDescription());
 
 		if (type.equals(NotificationType.EMOJI)) {
-			// get file path basename
-			text = new File(text).getName().replaceFirst("[.][^.]+$", "");
-			final Map<String, String> chatLogChars = EmojiStore.chatLogChars;
-			if (chatLogChars.containsKey(text)) {
-				text = chatLogChars.get(text);
-			} else {
-				s = getStyle(c, NotificationType.NORMALSTYLE);
-				text = ":" + text + ":";
-				final ImageSprite emoji = (ImageSprite) EmojiStore.get().create(text);
-				// FIXME: should icons get cached?
-				textPane.insertIcon(new ImageIcon(emoji.getImage()));
-				return;
-			}
+			Style emojiStyle = textPane.getStyle("emoji");
+			final StyleSet set = new StyleSet(StyleContext.getDefaultStyleContext(), emojiStyle);
+			set.setAttribute(StyleConstants.Foreground, c);
+			formatter.format(text, set, dest);
+			return;
 		}
 		final StyleSet set = new StyleSet(StyleContext.getDefaultStyleContext(), s);
 		set.setAttribute(StyleConstants.Foreground, c);

@@ -17,7 +17,6 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
@@ -25,7 +24,6 @@ import javax.swing.JPopupMenu;
 
 import games.stendhal.client.scripting.ChatLineParser;
 import games.stendhal.client.sprite.EmojiStore;
-import games.stendhal.client.sprite.ImageSprite;
 
 /**
  * A drop down menu for selecting special characters that players may want to
@@ -33,7 +31,7 @@ import games.stendhal.client.sprite.ImageSprite;
  */
 public class CharacterMap extends JButton {
 	private final static EmojiStore emojis = EmojiStore.get();
-	private final static ImageSprite icon = (ImageSprite) emojis.create(":grin:");
+	private final static String iconGlyph = emojis.glyphFor(":grin:");
 
 	/**
 	 * Create a new CharacterMap.
@@ -45,11 +43,7 @@ public class CharacterMap extends JButton {
 		setFocusable(false);
 		setToolTipText("Emotikony");
 
-		if (icon != null) {
-			setIcon(new ImageIcon(icon.getImage()));
-		} else {
-			setText("☺");
-		}
+		setText(iconGlyph != null ? iconGlyph : "☺");
 
 		final JPopupMenu menu = new JPopupMenu();
 
@@ -92,28 +86,29 @@ public class CharacterMap extends JButton {
 
 		Insets insets = new Insets(1, 1, 1, 1);
 		setMargin(insets);
-		for (String st: emojis.getEmojiList()) {
-			st = ":" + st + ":";
-			final ImageSprite emoji = (ImageSprite) emojis.create(st);
-			if (emoji != null) {
-				EmojiButton item = new EmojiButton(emoji, st);
-				item.setMargin(insets);
-				item.addActionListener(listener);
-				item.setBorder(null);
-				menu.add(item);
-			}
+				for (String st: emojis.getEmojiList()) {
+						st = ":" + st + ":";
+						final String glyph = emojis.glyphFor(st);
+						if (glyph != null) {
+								EmojiButton item = new EmojiButton(glyph, st);
+								item.setMargin(insets);
+								item.addActionListener(listener);
+								item.setBorder(null);
+								menu.add(item);
+						}
+				}
 		}
-	}
 
-	private class EmojiButton extends JMenuItem {
-		private final String emojiText;
+		private class EmojiButton extends JMenuItem {
+				private final String emojiText;
 
-		public EmojiButton(final ImageSprite emoji, final String text) {
-			super(new ImageIcon(emoji.getImage()));
-			emojiText = text;
-			setIconTextGap(0);
-			setToolTipText(text);
-		}
+				public EmojiButton(final String glyph, final String text) {
+						super(glyph);
+						setFont(new Font("Noto Emoji", Font.PLAIN, 20f));
+						emojiText = text;
+						setIconTextGap(0);
+						setToolTipText(text);
+				}
 
 		public String getEmojiText() {
 			return emojiText;
