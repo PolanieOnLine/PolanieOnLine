@@ -34,10 +34,14 @@ public class GameLoop {
 		static GameLoop instance = new GameLoop();
 	}
 
-	/** The actual game loop thread. */
-	private final Thread loopThread;
+	/** The actual game logic loop thread. */
+	private final Thread logicThread;
+	/** Dedicated rendering loop thread. */
+	private final Thread renderThread;
 	/** Main game loop content. Run at every cycle.*/
 	private PersistentTask persistentTask;
+	/** Render task executed at the rendering rate. */
+	private Runnable renderTask;
 	/** Run once tasks, requested by other threads. */
 	private final Queue<Runnable> temporaryTasks = new ConcurrentLinkedQueue<Runnable>();
 	/** Tasks to be run when the game loop exits. */
@@ -47,6 +51,7 @@ public class GameLoop {
 	 * <code>false</code>, when it should continue to the cleanup tasks.
 	 */
 	private volatile boolean running;
+	private volatile boolean renderRunning;
 
 	private volatile long frameLengthNanos;
 	private volatile long logicStepNanos;
@@ -59,7 +64,8 @@ public class GameLoop {
 
 	private final SettingChangeListener fpsLimitListener;
 	private long logicResidualNanos;
-	private long sleepAdjustmentNanos;
+	private long logicSleepAdjustmentNanos;
+	private long renderSleepAdjustmentNanos;
 
 	/**
 	 * Create a new GameLoop.
@@ -77,7 +83,7 @@ public class GameLoop {
 		updateFrameLength(configuredLimit);
 		WtWindowManager.getInstance().registerSettingChangeListener(
 				SettingsProperties.FPS_LIMIT_PROPERTY, fpsLimitListener);
-		loopThread = new Thread(new Runnable() {
+		logicThread = new Thread(new Runnable() {
 			@Override
 			public void run() {
 				loop();
@@ -87,6 +93,12 @@ public class GameLoop {
 				}
 			}
 		}, "Game loop");
+		renderThread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				renderLoop();
+			}
+		}, "Render loop");
 	}
 
 	private void updateFrameLength(int limit) {
@@ -94,6 +106,8 @@ public class GameLoop {
 		stendhal.setFpsLimit(sanitized);
 		frameLengthNanos = Math.max(1L, Math.round(1_000_000_000.0 / sanitized));
 		logicStepNanos = frameLengthNanos;
+		logicSleepAdjustmentNanos = 0L;
+		renderSleepAdjustmentNanos = 0L;
 		currentFps = sanitized;
 	}
 
@@ -114,7 +128,7 @@ public class GameLoop {
 	 * 	<code>false</code> otherwise.
 	 */
 	public static boolean isGameLoop() {
-		return Thread.currentThread() == get().loopThread;
+		return Thread.currentThread() == get().logicThread;
 	}
 
 	/**
@@ -122,7 +136,9 @@ public class GameLoop {
 	 */
 	public void start() {
 		running = true;
-		loopThread.start();
+		renderRunning = true;
+		logicThread.start();
+		renderThread.start();
 	}
 
 	/**
@@ -131,6 +147,7 @@ public class GameLoop {
 	 */
 	public void stop() {
 		running = false;
+		renderRunning = false;
 	}
 
 	/**
@@ -141,6 +158,16 @@ public class GameLoop {
 	 */
 	public void runAllways(PersistentTask task) {
 		persistentTask = task;
+	}
+
+	/**
+	 * Set the render task that should be run at the rendering rate. This <b>must
+	 * not</b> be called after the GameLoop has been started.
+	 *
+	 * @param task render task
+	 */
+	public void runRenderer(Runnable task) {
+		renderTask = task;
 	}
 
 	/**
@@ -166,10 +193,8 @@ public class GameLoop {
 	 * The actual game loop.
 	 */
 	private void loop() {
-		int fps = 0;
 		long accumulator = 0L;
 		long lastFrameTime = System.nanoTime();
-		long lastFpsTime = lastFrameTime;
 
 		while (running) {
 			final long frameStart = System.nanoTime();
@@ -203,29 +228,53 @@ public class GameLoop {
 					tempTask.run();
 					tempTask = temporaryTasks.poll();
 				}
-
-				fps++;
-				if ((now - lastFpsTime) >= 1_000_000_000L) {
-					currentFps = fps;
-					if (logger.isDebugEnabled()) {
-						reportClientInfo(fps);
-					}
-					fps = 0;
-					lastFpsTime = now;
-				}
 			} catch (RuntimeException e) {
 				logger.error(e, e);
 			} finally {
 				long frameDuration = frameLengthNanos;
 				long elapsed = System.nanoTime() - frameStart;
-				long wait = frameDuration - elapsed + sleepAdjustmentNanos;
+				long wait = frameDuration - elapsed + logicSleepAdjustmentNanos;
 				if (wait > 0L) {
-					sleepAdjustmentNanos = sleepNanos(wait);
+					logicSleepAdjustmentNanos = sleepNanos(wait);
 				} else {
-					sleepAdjustmentNanos = 0L;
+					logicSleepAdjustmentNanos = 0L;
 				}
 			}
 		}
+	}
+
+	private void renderLoop() {
+		int fps = 0;
+		long lastFpsTime = System.nanoTime();
+		while (renderRunning) {
+			final long frameStart = System.nanoTime();
+			try {
+				Runnable task = renderTask;
+				if (task != null) {
+					task.run();
+				}
+				fps++;
+				if ((frameStart - lastFpsTime) >= 1_000_000_000L) {
+					currentFps = fps;
+					if (logger.isDebugEnabled()) {
+						reportClientInfo(fps);
+					}
+					fps = 0;
+					lastFpsTime = frameStart;
+				}
+			} catch (RuntimeException e) {
+				logger.error(e, e);
+			} finally {
+				long elapsed = System.nanoTime() - frameStart;
+				long wait = frameLengthNanos - elapsed + renderSleepAdjustmentNanos;
+				if (wait > 0L) {
+					renderSleepAdjustmentNanos = sleepNanos(wait);
+				} else {
+					renderSleepAdjustmentNanos = 0L;
+				}
+			}
+		}
+		currentFps = 0;
 	}
 
 	private int nanosToDelta(long nanos) {
