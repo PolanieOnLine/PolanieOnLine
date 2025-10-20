@@ -93,10 +93,12 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 	 * A scale factor for panning delta (to allow non-float precision).
 	 */
 	private static final int PAN_SCALE = 8;
-	/**
-	 * Reference frame duration for smoothing calculations (60 FPS baseline).
-	 */
+        /**
+         * Reference frame duration for smoothing calculations (60 FPS baseline).
+         */
 	private static final double BASE_FRAME_MILLIS = 1000.0 / 60.0;
+	private static final double MAX_STABLE_ACCUM_MS = 200.0;
+	private static final double STABLE_SAMPLE_INTERVAL_MS = 45.0;
 	/**
 	 * Speed factor for centering the screen. Smaller is faster,
 	 * and keeps the player closer to the center of the screen when walking.
@@ -170,6 +172,7 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 	private double pendingDx;
 	private double pendingDy;
 	private long lastFrameNanos;
+	private double stableAccumulator;
 
 	/**
 	 * Current panning speed.
@@ -435,6 +438,7 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 			pendingDx = 0.0;
 			pendingDy = 0.0;
 			speed = 0.0;
+			stableAccumulator = Math.min(stableAccumulator + deltaMillis, MAX_STABLE_ACCUM_MS);
 			return;
 		}
 
@@ -449,6 +453,21 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 			 */
 			center();
 		} else {
+			double deadZone = computeDynamicDeadZone(deltaMillis);
+			boolean nearX = Math.abs(dvx) <= deadZone;
+			boolean nearY = Math.abs(dvy) <= deadZone;
+
+			if (nearX && nearY && (Math.abs(pendingDx) < 0.5) && (Math.abs(pendingDy) < 0.5)) {
+				stableAccumulator = Math.min(stableAccumulator + deltaMillis, MAX_STABLE_ACCUM_MS);
+				if (stableAccumulator >= STABLE_SAMPLE_INTERVAL_MS) {
+					center();
+					stableAccumulator = 0.0;
+				}
+				speed = 0.0;
+				return;
+			}
+
+			stableAccumulator = 0.0;
 			calculatePanningSpeed(deltaMillis);
 
 			/*
@@ -462,9 +481,11 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 
 				double dxStep = speed * dvx / scalediv;
 				double dyStep = speed * dvy / scalediv;
+				double dxScale = applyDeadZoneScale(dvx, deadZone);
+				double dyScale = applyDeadZoneScale(dvy, deadZone);
 
-				pendingDx += dxStep;
-				pendingDy += dyStep;
+				pendingDx += dxStep * dxScale;
+				pendingDy += dyStep * dyScale;
 
 				int dx = limitMoveDelta(extractMove(pendingDx, dvx), dvx);
 				int dy = limitMoveDelta(extractMove(pendingDy, dvy), dvy);
@@ -472,27 +493,33 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 				/*
 				 * Adjust view
 				 */
-				GameScreenSpriteHelper.setScreenViewX(GameScreenSpriteHelper.getScreenViewX() + dx);
-				dvx -= dx;
-				pendingDx -= dx;
-				pendingDx = Math.max(-1.0, Math.min(1.0, pendingDx));
+				if (dx != 0) {
+					GameScreenSpriteHelper.setScreenViewX(GameScreenSpriteHelper.getScreenViewX() + dx);
+					dvx -= dx;
+					pendingDx -= dx;
+					pendingDx = clampDouble(pendingDx, -1.0, 1.0);
+				} else if (nearX) {
+					dvx = 0;
+					pendingDx = 0.0;
+				} else {
+					pendingDx = clampDouble(pendingDx, -1.0, 1.0);
+				}
 
-				GameScreenSpriteHelper.setScreenViewY(GameScreenSpriteHelper.getScreenViewY() + dy);
-				dvy -= dy;
-				pendingDy -= dy;
-				pendingDy = Math.max(-1.0, Math.min(1.0, pendingDy));
+				if (dy != 0) {
+					GameScreenSpriteHelper.setScreenViewY(GameScreenSpriteHelper.getScreenViewY() + dy);
+					dvy -= dy;
+					pendingDy -= dy;
+					pendingDy = clampDouble(pendingDy, -1.0, 1.0);
+				} else if (nearY) {
+					dvy = 0;
+					pendingDy = 0.0;
+				} else {
+					pendingDy = clampDouble(pendingDy, -1.0, 1.0);
+				}
 			}
 		}
 	}
 
-	/**
-	 * Adjust screen movement so that it does not stall, and that it does not
-	 * overshoot the target.
-	 *
-	 * @param moveDelta suggested movement of the screen
-	 * @param viewDelta distance from the target
-	 * @return moveDelta adjusted to sane range
-	 */
 	private int limitMoveDelta(int moveDelta, int viewDelta) {
 		if (viewDelta < 0) {
 			moveDelta = MathHelper.clamp(moveDelta, viewDelta, -1);
@@ -514,10 +541,6 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 		return move;
 	}
 
-	/**
-	 * Calculate the target speed for moving the view position. The farther
-	 * away, the faster.
-	 */
 	private void calculatePanningSpeed(final double deltaMillis) {
 		final int dux = dvx / PAN_INERTIA;
 		final int duy = dvy / PAN_INERTIA;
@@ -534,6 +557,32 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 			speed = 0.0;
 		}
 	}
+
+	private double computeDynamicDeadZone(final double deltaMillis) {
+		double fps = Math.max(1.0, GameLoop.get().getCurrentFps());
+		double fpsFactor = clampDouble(60.0 / fps, 0.5, 1.5);
+		double deltaFactor = clampDouble(deltaMillis / BASE_FRAME_MILLIS, 0.5, 1.5);
+		double speedFactor = clampDouble(speed / 12.0, 0.0, 1.5);
+		double base = 0.75 + ((fpsFactor - 0.5) * 1.5) + ((deltaFactor - 0.5) * 0.5) + (speedFactor * 1.25);
+		return clampDouble(base * 2.0, 1.0, 6.0);
+	}
+
+	private double applyDeadZoneScale(int viewDelta, double deadZone) {
+		int abs = Math.abs(viewDelta);
+		if (abs == 0) {
+			return 0.0;
+		}
+		if (abs <= deadZone) {
+			return 0.0;
+		}
+		double adjusted = (abs - deadZone) / abs;
+		return clampDouble(adjusted, 0.0, 1.0);
+	}
+
+	private double clampDouble(double value, double minValue, double maxValue) {
+		return Math.max(minValue, Math.min(maxValue, value));
+	}
+
 
 	/**
 	 * Updates the target position of the view center.
@@ -563,6 +612,7 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 		// Differences from center
 		dvx = cvx - GameScreenSpriteHelper.getScreenViewX();
 		dvy = cvy - GameScreenSpriteHelper.getScreenViewY();
+		stableAccumulator = 0.0;
 
 		if ((pendingDx > 0.0 && dvx <= 0) || (pendingDx < 0.0 && dvx >= 0)) {
 			pendingDx = 0.0;
@@ -571,6 +621,7 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 			pendingDy = 0.0;
 		}
 	}
+
 
 	@Override
 	public void center() {
@@ -582,6 +633,7 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 		speed = 0;
 		pendingDx = 0.0;
 		pendingDy = 0.0;
+		stableAccumulator = 0.0;
 	}
 
 

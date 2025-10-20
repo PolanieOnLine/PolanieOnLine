@@ -47,7 +47,10 @@ public class GameLoop {
 	 */
 	private volatile boolean running;
 
-	private volatile long frameLength;
+	private volatile long frameLengthNanos;
+	private volatile double logicStepMillis;
+	private static final double MAX_FRAME_DELTA_MS = 250.0;
+	private static final int MAX_CATCH_UP_STEPS = 5;
 
 	private volatile int currentFps;
 
@@ -84,9 +87,11 @@ public class GameLoop {
 	private void updateFrameLength(int limit) {
 		int sanitized = Math.max(1, limit);
 		stendhal.setFpsLimit(sanitized);
-		frameLength = Math.max(1L, Math.round(1000.0 / sanitized));
+		frameLengthNanos = Math.max(1L, Math.round(1_000_000_000.0 / sanitized));
+		logicStepMillis = Math.max(1.0, 1000.0 / sanitized);
 		currentFps = sanitized;
 	}
+
 
 	/**
 	 * Get the GameLoop instance.
@@ -157,59 +162,75 @@ public class GameLoop {
 	 */
 	private void loop() {
 		int fps = 0;
-
-		long refreshTime = System.currentTimeMillis();
-		long lastFpsTime = refreshTime;
+		double accumulator = 0.0;
+		long lastFrameTime = System.nanoTime();
+		long lastFpsTime = lastFrameTime;
 
 		while (running) {
+			final long frameStart = System.nanoTime();
 			try {
-				fps++;
-				final long now = System.currentTimeMillis();
-				final int delta = (int) (now - refreshTime);
-				refreshTime = now;
+				long now = frameStart;
+				double frameDelta = (now - lastFrameTime) / 1_000_000.0;
+				if (frameDelta < 0.0) {
+					frameDelta = 0.0;
+				}
+				frameDelta = Math.min(frameDelta, MAX_FRAME_DELTA_MS);
+				lastFrameTime = now;
+				accumulator = Math.min(accumulator + frameDelta, MAX_FRAME_DELTA_MS);
 
-				// process the persistent task
-				persistentTask.run(delta);
+				double stepMillis = logicStepMillis;
+				int updateCount = 0;
+				while ((accumulator >= stepMillis) && (updateCount < MAX_CATCH_UP_STEPS)) {
+					persistentTask.run((int) Math.max(1L, Math.round(stepMillis)));
+					accumulator -= stepMillis;
+					updateCount++;
+				}
 
-				// process the temporary tasks queue
+				if ((updateCount == 0) && (accumulator >= 1.0)) {
+					int delta = (int) Math.max(1L, Math.round(Math.min(accumulator, stepMillis)));
+					persistentTask.run(delta);
+					accumulator -= delta;
+				}
+				accumulator = Math.max(0.0, accumulator);
+
 				Runnable tempTask = temporaryTasks.poll();
 				while (tempTask != null) {
 					tempTask.run();
 					tempTask = temporaryTasks.poll();
 				}
 
-				if ((refreshTime - lastFpsTime) >= 1000L) {
+				fps++;
+				if ((now - lastFpsTime) >= 1_000_000_000L) {
 					currentFps = fps;
 					if (logger.isDebugEnabled()) {
-						reportClientInfo(refreshTime, lastFpsTime, fps);
+						reportClientInfo(fps);
 					}
 					fps = 0;
-					lastFpsTime = refreshTime;
+					lastFpsTime = now;
 				}
-
-				logger.debug("Start sleeping");
-				final long frameDuration = frameLength;
-				long wait = frameDuration + refreshTime - System.currentTimeMillis();
-
-				if (wait > 0) {
-					if (wait > 100L) {
-						logger.info("Waiting " + wait + " ms");
-						wait = 100L;
-					}
-
-					try {
-						Thread.sleep(wait);
-					} catch (final InterruptedException e) {
-						logger.error(e, e);
-					}
-				}
-
-				logger.debug("End sleeping");
 			} catch (RuntimeException e) {
 				logger.error(e, e);
+			} finally {
+				long frameDuration = frameLengthNanos;
+				long elapsed = System.nanoTime() - frameStart;
+				long wait = frameDuration - elapsed;
+				if (wait > 0) {
+					sleepNanos(wait);
+				}
 			}
 		}
 	}
+
+	private void sleepNanos(long nanos) {
+		long millis = nanos / 1_000_000L;
+		int nanosPart = (int) (nanos % 1_000_000L);
+		try {
+			Thread.sleep(millis, nanosPart);
+		} catch (InterruptedException e) {
+			logger.error(e, e);
+		}
+	}
+
 
 	/**
 	 * Write debugging data about the client memory usage and running speed.
@@ -218,16 +239,15 @@ public class GameLoop {
 	 * @param lastFpsTime
 	 * @param fps
 	 */
-	private void reportClientInfo(long refreshTime, long lastFpsTime, int fps) {
-		if ((refreshTime - lastFpsTime) >= 1000L) {
-			logger.debug("FPS: " + fps);
-			final long freeMemory = Runtime.getRuntime().freeMemory() / 1024;
-			final long totalMemory = Runtime.getRuntime().totalMemory() / 1024;
+	private void reportClientInfo(int fps) {
+		logger.debug("FPS: " + fps);
+		final long freeMemory = Runtime.getRuntime().freeMemory() / 1024;
+		final long totalMemory = Runtime.getRuntime().totalMemory() / 1024;
 
-			logger.debug("Total/Used memory: " + totalMemory + "/"
-					+ (totalMemory - freeMemory));
-		}
+		logger.debug("Total/Used memory: " + totalMemory + "/"
+				+ (totalMemory - freeMemory));
 	}
+
 
 	public int getCurrentFps() {
 		return currentFps;
