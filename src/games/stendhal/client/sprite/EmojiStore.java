@@ -411,29 +411,31 @@ public class EmojiStore {
 			return cached;
 		}
 
-		ensureEmojiFont();
-		final String glyph = ensureEmojiPresentation(emojiGlyphs.getOrDefault(name, ":" + name + ":"));
 		BufferedImage iconImage = null;
 		BufferedImage spriteImage = null;
-		if (bitmapExtractor != null) {
-			iconImage = bitmapExtractor.renderGlyph(glyph, ICON_POINT_SIZE, ICON_PADDING);
-			spriteImage = bitmapExtractor.renderGlyph(glyph, SPRITE_POINT_SIZE, ICON_PADDING);
+
+		final BufferedImage assetImage = loadEmojiAsset(name);
+		if (assetImage != null) {
+			iconImage = scaleForIcon(assetImage);
+			spriteImage = scaleForSprite(assetImage);
 		}
-		if (iconImage == null) {
-			iconImage = rasterizeGlyph(glyph, ICON_POINT_SIZE);
-		}
-		if (spriteImage == null) {
-			spriteImage = rasterizeGlyph(glyph, SPRITE_POINT_SIZE);
-		}
+
+		ensureEmojiFont();
+		final String glyph = ensureEmojiPresentation(emojiGlyphs.getOrDefault(name, ":" + name + ":"));
 		if ((iconImage == null) || (spriteImage == null)) {
-			final BufferedImage fallback = loadEmojiAsset(name);
-			if (fallback != null) {
+			if (bitmapExtractor != null) {
 				if (iconImage == null) {
-					iconImage = fallback;
+					iconImage = bitmapExtractor.renderGlyph(glyph, ICON_POINT_SIZE, ICON_PADDING);
 				}
 				if (spriteImage == null) {
-					spriteImage = fallback;
+					spriteImage = bitmapExtractor.renderGlyph(glyph, SPRITE_POINT_SIZE, ICON_PADDING);
 				}
+			}
+			if (iconImage == null) {
+				iconImage = rasterizeGlyph(glyph, ICON_POINT_SIZE);
+			}
+			if (spriteImage == null) {
+				spriteImage = rasterizeGlyph(glyph, SPRITE_POINT_SIZE);
 			}
 		}
 		final Icon icon = (iconImage != null) ? new ImageIcon(iconImage) : null;
@@ -442,6 +444,50 @@ public class EmojiStore {
 		emojiCache.put(name, cached);
 		return cached;
 	}
+	private BufferedImage scaleForIcon(final BufferedImage source) {
+		return scaleToFit(source, Math.round(ICON_POINT_SIZE) + (ICON_PADDING * 2));
+	}
+
+	private BufferedImage scaleForSprite(final BufferedImage source) {
+		return scaleToFit(source, Math.round(SPRITE_POINT_SIZE) + (ICON_PADDING * 2));
+	}
+
+	private BufferedImage scaleToFit(final BufferedImage source, final int targetSize) {
+		if ((source == null) || (targetSize <= 0)) {
+			return source;
+		}
+
+		final int width = source.getWidth();
+		final int height = source.getHeight();
+		final int maxDimension = Math.max(width, height);
+		if ((maxDimension <= 0) || (maxDimension == targetSize)) {
+			return source;
+		}
+
+		if (maxDimension < targetSize) {
+			return source;
+		}
+
+		final float scale = (float) targetSize / (float) maxDimension;
+		final int scaledWidth = Math.max(1, Math.round(width * scale));
+		final int scaledHeight = Math.max(1, Math.round(height * scale));
+
+		if ((scaledWidth == width) && (scaledHeight == height)) {
+			return source;
+		}
+
+		final BufferedImage result = new BufferedImage(scaledWidth, scaledHeight, BufferedImage.TYPE_INT_ARGB);
+		final Graphics2D graphics = result.createGraphics();
+		try {
+			graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+			graphics.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+			graphics.drawImage(source, 0, 0, scaledWidth, scaledHeight, null);
+		} finally {
+			graphics.dispose();
+		}
+		return result;
+	}
+
 	private BufferedImage loadEmojiAsset(final String name) {
 		final String resource = EMOJI_IMAGE_PATH + name + ".png";
 		try (InputStream stream = DataLoader.getResourceAsStream(resource)) {
