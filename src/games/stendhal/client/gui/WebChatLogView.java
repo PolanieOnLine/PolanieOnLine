@@ -473,7 +473,15 @@ class WebChatLogView extends JComponent implements ChatLogView {
 			this.executeScript = executeScript;
 		}
 
+		private static final Object fxGuard = new Object();
+		private static volatile boolean fxChecked;
+		private static volatile boolean fxAvailable;
+		private static volatile boolean fxMissingLogged;
+
 		static FxBridge tryCreate() {
+			if (!ensureJavaFxPresent()) {
+				return null;
+			}
 			try {
 				Class<?> jfxPanelClass = Class.forName("javafx.embed.swing.JFXPanel");
 				Object panel = jfxPanelClass.getConstructor().newInstance();
@@ -502,6 +510,39 @@ class WebChatLogView extends JComponent implements ChatLogView {
 			} catch (Throwable ex) {
 				logger.warn("Failed to initialize JavaFX WebView", ex);
 				return null;
+			}
+		}
+
+		private static boolean ensureJavaFxPresent() {
+			if (fxChecked) {
+				return fxAvailable;
+			}
+			synchronized (fxGuard) {
+				if (!fxChecked) {
+					fxAvailable = areRequiredClassesPresent();
+					fxChecked = true;
+					if (!fxAvailable && !fxMissingLogged) {
+						logger.info("JavaFX modules not found; using legacy chat log.");
+						fxMissingLogged = true;
+					}
+				}
+			}
+			return fxAvailable;
+		}
+
+		private static boolean areRequiredClassesPresent() {
+			return isClassPresent("javafx.embed.swing.JFXPanel")
+				&& isClassPresent("javafx.application.Platform")
+				&& isClassPresent("javafx.scene.web.WebView")
+				&& isClassPresent("javafx.scene.Scene");
+		}
+
+		private static boolean isClassPresent(String className) {
+			try {
+				Class.forName(className, false, WebChatLogView.class.getClassLoader());
+				return true;
+			} catch (ClassNotFoundException ex) {
+				return false;
 			}
 		}
 
