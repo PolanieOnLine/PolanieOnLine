@@ -537,19 +537,20 @@ class WebChatLogView extends JComponent implements ChatLogView {
 				&& isClassPresent("javafx.scene.Scene");
 		}
 
-               private static boolean isClassPresent(String className) {
-                       try {
-                               Class.forName(className, false, WebChatLogView.class.getClassLoader());
-                               return true;
-                       } catch (ClassNotFoundException ex) {
-                               return false;
-                       } catch (LinkageError ex) {
-                               if (!fxMissingLogged) {
-                                       logger.warn("JavaFX class present but incompatible: " + className + ": " + ex.getMessage());
-                               }
-                               return false;
-                       }
-               }
+		private static boolean isClassPresent(String className) {
+			try {
+				Class.forName(className, false, WebChatLogView.class.getClassLoader());
+				return true;
+			} catch (ClassNotFoundException ex) {
+				return false;
+			} catch (LinkageError ex) {
+				if (!fxMissingLogged) {
+					logger.warn("JavaFX class present but incompatible: " + className + " (" + ex.getMessage() + " ). Install a JavaFX build that matches this runtime.");
+					fxMissingLogged = true;
+				}
+				return false;
+			}
+		}
 
 		private void init() throws IllegalAccessException, InvocationTargetException {
 			Runnable task = new Runnable() {

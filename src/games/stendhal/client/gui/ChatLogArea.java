@@ -106,6 +106,9 @@ class ChatLogArea {
 	private ChatLogView createChatComponent() {
 		try {
 			return new WebChatLogView();
+		} catch (UnsupportedOperationException ex) {
+			logger.info(ex.getMessage() + "; using legacy chat log component.");
+			return new KTextEdit();
 		} catch (Throwable ex) {
 			logger.warn("Falling back to legacy chat log component", ex);
 			return new KTextEdit();
