@@ -21,35 +21,35 @@ import games.stendhal.client.gui.chatlog.EventLine;
  * Abstraction for chat log components.
  */
 public interface ChatLogView {
-/**
- * @return Swing component hosting the chat log UI.
- */
-JComponent getComponent();
+	/**
+	 * @return Swing component hosting the chat log UI.
+	 */
+	JComponent getComponent();
 
-/**
- * Append an event line to the chat log.
- *
- * @param line event to display
- */
-void addLine(EventLine line);
+	/**
+	 * Append an event line to the chat log.
+	 *
+	 * @param line event to display
+	 */
+	void addLine(EventLine line);
 
-/**
- * Clear all messages from the chat log.
- */
-void clear();
+	/**
+	 * Clear all messages from the chat log.
+	 */
+	void clear();
 
-/**
- * Configure the default background color used when no unread highlight is
- * active.
- *
- * @param color background color
- */
-void setDefaultBackground(Color color);
+	/**
+	 * Configure the default background color used when no unread highlight is
+	 * active.
+	 *
+	 * @param color background color
+	 */
+	void setDefaultBackground(Color color);
 
-/**
- * Set the associated channel name for persistence and logging.
- *
- * @param name channel name
- */
-void setChannelName(String name);
+	/**
+	 * Set the associated channel name for persistence and logging.
+	 *
+	 * @param name channel name
+	 */
+	void setChannelName(String name);
 }
