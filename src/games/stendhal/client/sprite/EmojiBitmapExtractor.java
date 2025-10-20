@@ -86,7 +86,11 @@ final class EmojiBitmapExtractor {
 			if ((tableOffset + BITMAP_SIZE_TABLE_LENGTH) > cblcBuffer.capacity()) {
 				break;
 			}
-			final int indexSubTableArrayOffset = getInt32(cblcBuffer, tableOffset);
+			final int indexSubTableArrayOffset = tableOffset + getInt32(cblcBuffer, tableOffset);
+			if ((indexSubTableArrayOffset < HEADER_SIZE) || (indexSubTableArrayOffset >= cblcBuffer.capacity())) {
+				tableOffset += BITMAP_SIZE_TABLE_LENGTH;
+				continue;
+			}
 			/* indexTablesSize */
 			getInt32(cblcBuffer, tableOffset + 4);
 			final int numberOfIndexSubTables = getInt32(cblcBuffer, tableOffset + 8);
@@ -106,6 +110,9 @@ final class EmojiBitmapExtractor {
 
 	private void parseIndexSubTables(final ByteBuffer cblcBuffer, final byte[] cbdt, final int arrayOffset, final int subTableCount,
 		final int startGlyphIndex, final int endGlyphIndex, final int ppemY) {
+		if ((arrayOffset < HEADER_SIZE) || (arrayOffset >= cblcBuffer.capacity())) {
+			return;
+		}
 		for (int index = 0; index < subTableCount; index++) {
 			final int entryOffset = arrayOffset + (index * 8);
 			if ((entryOffset + 8) > cblcBuffer.capacity()) {
@@ -115,6 +122,9 @@ final class EmojiBitmapExtractor {
 			final int lastGlyph = getUInt16(cblcBuffer, entryOffset + 2);
 			final int additionalOffset = getInt32(cblcBuffer, entryOffset + 4);
 			final int subTableOffset = arrayOffset + additionalOffset;
+			if ((subTableOffset < HEADER_SIZE) || (subTableOffset >= cblcBuffer.capacity())) {
+				continue;
+			}
 			parseIndexSubTable(cblcBuffer, cbdt, subTableOffset, firstGlyph, lastGlyph, startGlyphIndex, endGlyphIndex, ppemY);
 		}
 	}
