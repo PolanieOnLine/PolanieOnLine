@@ -27,8 +27,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -61,6 +61,7 @@ public class EmojiStore {
 	private String emojiFontFamily;
 	private FontRenderContext fontRenderContext;
 	private byte[] bundledFontBytes;
+	private boolean usingBundledFont;
 	private EmojiBitmapExtractor bitmapExtractor;
 
 	private static final Logger logger = Logger.getLogger(EmojiStore.class);
@@ -186,19 +187,26 @@ public class EmojiStore {
 			return;
 		}
 
-		Font loaded = findSystemEmojiFont();
-		if (loaded == null) {
-			loaded = loadBundledEmojiFont();
-			if ((loaded != null) && !isValidEmojiFont(loaded)) {
+		boolean bundled = false;
+		Font loaded = loadBundledEmojiFont();
+		if (loaded != null) {
+			if (isValidEmojiFont(loaded)) {
+				bundled = true;
+			} else {
 				logger.warn("Bundled emoji font cannot display sample glyphs; ignoring bundled font");
 				loaded = null;
 			}
 		}
 
 		if (loaded == null) {
+			loaded = findSystemEmojiFont();
+		}
+
+		if (loaded == null) {
 			loaded = new Font(DEFAULT_EMOJI_FONT, Font.PLAIN, Math.round(DEFAULT_EMOJI_SIZE));
 		}
 
+		usingBundledFont = bundled;
 		baseEmojiFont = loaded.deriveFont(Font.PLAIN, DEFAULT_EMOJI_SIZE);
 		emojiFontFamily = baseEmojiFont.getFontName(Locale.ENGLISH);
 		initializeBitmapExtractor(baseEmojiFont);
@@ -209,20 +217,19 @@ public class EmojiStore {
 			return;
 		}
 
-		byte[] cblc = null;
-		byte[] cbdt = null;
-		try {
-			final Object font2D = getFont2D(font);
-			cblc = extractFontTable(font2D, "CBLC");
-			cbdt = extractFontTable(font2D, "CBDT");
-		} catch (Exception e) {
-			logger.debug("Unable to access emoji color tables", e);
+		if (!usingBundledFont || (bundledFontBytes == null)) {
+			return;
 		}
 
+		final byte[] cblc = extractBundledFontTable("CBLC");
+		final byte[] cbdt = extractBundledFontTable("CBDT");
 		if ((cblc != null) && (cbdt != null)) {
 			bitmapExtractor = new EmojiBitmapExtractor(font, fontRenderContext, cblc, cbdt);
+		} else {
+			logger.debug("Bundled emoji font does not expose CBLC/CBDT tables; skipping bitmap extraction");
 		}
 	}
+
 	private Font findSystemEmojiFont() {
 		try {
 			final String[] availableFamilies = GraphicsEnvironment.getLocalGraphicsEnvironment().getAvailableFontFamilyNames();
@@ -289,6 +296,51 @@ public class EmojiStore {
 			out.write(buffer, 0, read);
 		}
 		return out.toByteArray();
+	}
+
+	private byte[] extractBundledFontTable(final String tag) {
+		if ((bundledFontBytes == null) || (tag == null) || (tag.length() != 4)) {
+			return null;
+		}
+
+		final ByteBuffer buffer = ByteBuffer.wrap(bundledFontBytes).order(ByteOrder.BIG_ENDIAN);
+		if (buffer.remaining() < 12) {
+			return null;
+		}
+
+		buffer.getInt();
+		final int numTables = Short.toUnsignedInt(buffer.getShort());
+		buffer.getShort();
+		buffer.getShort();
+		buffer.getShort();
+
+		final int tableRecordsOffset = 12;
+		final int targetTag = tagToInt(tag);
+		for (int index = 0; index < numTables; index++) {
+			final int entryOffset = tableRecordsOffset + (index * 16);
+			if ((entryOffset + 16) > bundledFontBytes.length) {
+				break;
+			}
+			buffer.position(entryOffset);
+			final int entryTag = buffer.getInt();
+			buffer.getInt();
+			final int offset = buffer.getInt();
+			final int length = buffer.getInt();
+			if (entryTag == targetTag) {
+				if ((offset < 0) || (length <= 0) || (((long) offset + length) > bundledFontBytes.length)) {
+					return null;
+				}
+				return Arrays.copyOfRange(bundledFontBytes, offset, offset + length);
+			}
+		}
+		return null;
+	}
+
+	private static int tagToInt(final String tag) {
+		return ((tag.charAt(0) & 0xFF) << 24)
+			| ((tag.charAt(1) & 0xFF) << 16)
+			| ((tag.charAt(2) & 0xFF) << 8)
+			| (tag.charAt(3) & 0xFF);
 	}
 
 	private void recordKeyLength(final String key) {
@@ -595,47 +647,5 @@ public class EmojiStore {
 			return store.baseEmojiFont.deriveFont(style, (float) size);
 		}
 		return new Font(DEFAULT_EMOJI_FONT, style, size);
-	}
-	private Object getFont2D(final Font font) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-		final Class<?> utilities = Class.forName("sun.font.FontUtilities");
-		final Method method = utilities.getMethod("getFont2D", Font.class);
-		return method.invoke(null, font);
-	}
-
-	private byte[] extractFontTable(final Object font2D, final String tag) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-		if (font2D == null) {
-			return null;
-		}
-
-		final Class<?> trueTypeClass = Class.forName("sun.font.TrueTypeFont");
-		if (trueTypeClass.isInstance(font2D)) {
-			return readTableBytes(font2D, trueTypeClass, tag);
-		}
-
-		final Class<?> compositeClass = Class.forName("sun.font.CompositeFont");
-		if (compositeClass.isInstance(font2D)) {
-			final Method getNumSlots = compositeClass.getDeclaredMethod("getNumSlots");
-			getNumSlots.setAccessible(true);
-			final Method getSlotFont = compositeClass.getMethod("getSlotFont", int.class);
-			final int slots = (Integer) getNumSlots.invoke(font2D);
-			for (int slot = 0; slot < slots; slot++) {
-				final Object slotFont = getSlotFont.invoke(font2D, slot);
-				final byte[] table = extractFontTable(slotFont, tag);
-				if ((table != null) && (table.length > 0)) {
-					return table;
-				}
-			}
-			return null;
-		}
-
-		return null;
-	}
-
-	private byte[] readTableBytes(final Object font2D, final Class<?> trueTypeClass, final String tag) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-		final Method getTableBytes = trueTypeClass.getDeclaredMethod("getTableBytes", int.class);
-		getTableBytes.setAccessible(true);
-		final int tagValue = ((tag.charAt(0) & 0xFF) << 24) | ((tag.charAt(1) & 0xFF) << 16) | ((tag.charAt(2) & 0xFF) << 8) | (tag.charAt(3) & 0xFF);
-		final byte[] data = (byte[]) getTableBytes.invoke(font2D, tagValue);
-		return (data != null && data.length > 0) ? data : null;
 	}
 }
