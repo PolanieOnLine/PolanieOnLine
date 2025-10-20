@@ -115,10 +115,10 @@ public class ChatTextSink implements AttributedTextSink<StyleSet> {
 					if (icon != null) {
 						final SimpleAttributeSet iconAttrs = new SimpleAttributeSet();
 						StyleConstants.setIcon(iconAttrs, icon);
-						styledDocument.insertString(styledDocument.getLength(), " ", iconAttrs);
+						styledDocument.insertString(styledDocument.getLength(), "\uFFFC", iconAttrs);
 						insertedIcon = true;
-					}
 				}
+			}
 
 				if (!insertedIcon) {
 					if (emojiAttrs == null) {

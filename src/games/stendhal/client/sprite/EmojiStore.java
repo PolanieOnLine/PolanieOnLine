@@ -20,7 +20,7 @@ import java.awt.HeadlessException;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
 import java.awt.font.FontRenderContext;
-import java.awt.font.GlyphVector;
+import java.awt.font.TextLayout;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
@@ -369,16 +369,30 @@ public class EmojiStore {
 		}
 
 		final Font font = baseEmojiFont.deriveFont(Font.PLAIN, fontSize);
-		final GlyphVector glyphVector = font.createGlyphVector(fontRenderContext, glyph);
-		Rectangle pixelBounds = glyphVector.getPixelBounds(fontRenderContext, 0f, 0f);
+		final TextLayout layout = new TextLayout(glyph, font, fontRenderContext);
+		Rectangle pixelBounds = layout.getPixelBounds(fontRenderContext, 0f, 0f);
 		if ((pixelBounds.width <= 0) || (pixelBounds.height <= 0)) {
-			final Rectangle2D visualBounds = glyphVector.getVisualBounds();
-			pixelBounds = new Rectangle(
-				(int) Math.floor(visualBounds.getX()),
-				(int) Math.floor(visualBounds.getY()),
-				Math.max(1, (int) Math.ceil(visualBounds.getWidth())),
-				Math.max(1, (int) Math.ceil(visualBounds.getHeight()))
-			);
+			final Rectangle2D visualBounds = layout.getBounds();
+			if ((visualBounds.getWidth() > 0d) && (visualBounds.getHeight() > 0d)) {
+				pixelBounds = new Rectangle(
+					(int) Math.floor(visualBounds.getX()),
+					(int) Math.floor(visualBounds.getY()),
+					Math.max(1, (int) Math.ceil(visualBounds.getWidth())),
+					Math.max(1, (int) Math.ceil(visualBounds.getHeight()))
+				);
+			} else {
+				final float ascent = layout.getAscent();
+				final float descent = layout.getDescent();
+				final float advance = layout.getAdvance();
+				final float fallbackWidth = (advance > 0f) ? advance : fontSize;
+				final float fallbackHeight = ((ascent + descent) > 0f) ? (ascent + descent) : fontSize;
+				pixelBounds = new Rectangle(
+					0,
+					(int) Math.floor(-ascent),
+					Math.max(1, (int) Math.ceil(fallbackWidth)),
+					Math.max(1, (int) Math.ceil(fallbackHeight))
+				);
+			}
 		}
 		final int width = Math.max(1, pixelBounds.width + (ICON_PADDING * 2));
 		final int height = Math.max(1, pixelBounds.height + (ICON_PADDING * 2));
@@ -395,9 +409,9 @@ public class EmojiStore {
 			g2d.setFont(font);
 			final float drawX = ICON_PADDING - pixelBounds.x;
 			final float drawY = ICON_PADDING - pixelBounds.y;
-			g2d.drawGlyphVector(glyphVector, drawX, drawY);
-		} finally {
-			g2d.dispose();
+			layout.draw(g2d, drawX, drawY);
+			} finally {
+				g2d.dispose();
 		}
 		return image;
 	}
