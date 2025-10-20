@@ -11,10 +11,13 @@
  ***************************************************************************/
 package games.stendhal.client.gui.chatlog;
 
+import javax.swing.Icon;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
+import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 import org.apache.log4j.Logger;
 
@@ -35,6 +38,9 @@ public class ChatTextSink implements AttributedTextSink<StyleSet> {
 	/** Emoji style template. */
 	private final Style emojiStyle;
 
+	/** Styled document reference for inserting icons when available. */
+	private final StyledDocument styledDocument;
+
 	/**
 	* Create a new ChatTextSink.
 	*
@@ -44,6 +50,7 @@ public class ChatTextSink implements AttributedTextSink<StyleSet> {
 	public ChatTextSink(Document document, Style emojiStyle) {
 		this.document = document;
 		this.emojiStyle = emojiStyle;
+		this.styledDocument = (document instanceof StyledDocument) ? (StyledDocument) document : null;
 	}
 
 	@Override
@@ -67,11 +74,25 @@ public class ChatTextSink implements AttributedTextSink<StyleSet> {
 						plain.setLength(0);
 					}
 
-					if (emojiAttrs == null) {
-						emojiAttrs = buildEmojiAttributes(attrs);
+					final String token = s.substring(index, index + match.getConsumedLength());
+					boolean insertedIcon = false;
+					if (styledDocument != null) {
+						final Icon icon = store.getIcon(token);
+						if (icon != null) {
+							final SimpleAttributeSet iconAttrs = new SimpleAttributeSet();
+							StyleConstants.setIcon(iconAttrs, icon);
+							styledDocument.insertString(styledDocument.getLength(), " ", iconAttrs);
+							insertedIcon = true;
+						}
 					}
 
-					document.insertString(document.getLength(), match.getGlyph(), emojiAttrs.contents());
+					if (!insertedIcon) {
+						if (emojiAttrs == null) {
+							emojiAttrs = buildEmojiAttributes(attrs);
+						}
+						document.insertString(document.getLength(), match.getGlyph(), emojiAttrs.contents());
+					}
+
 					index += match.getConsumedLength();
 					continue;
 				}
