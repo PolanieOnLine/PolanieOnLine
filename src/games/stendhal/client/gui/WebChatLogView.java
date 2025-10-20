@@ -15,6 +15,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
+import java.awt.HeadlessException;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
@@ -39,8 +41,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.JComponent;
+import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
@@ -48,6 +53,9 @@ import javax.swing.UIManager;
 import javax.swing.text.Style;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
+
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 
 import org.apache.log4j.Logger;
 
@@ -74,8 +82,11 @@ class WebChatLogView extends JComponent implements ChatLogView {
 
 	private static final Logger logger = Logger.getLogger(WebChatLogView.class);
 
-	/** Shared emoji font stack for HTML rendering. */
-	private static final String EMOJI_FONT_STACK = "'Segoe UI Emoji','Apple Color Emoji','Noto Color Emoji','Twitter Color Emoji','EmojiOne Color','Android Emoji','Noto Emoji',sans-serif";
+       /** Shared emoji font stack for HTML rendering. */
+       private static final String EMOJI_FONT_STACK = "'Segoe UI Emoji','Apple Color Emoji','Noto Color Emoji','Twitter Color Emoji','EmojiOne Color','Android Emoji','Noto Emoji',sans-serif";
+
+/** Font stack mimicking Discord's UI typography. */
+private static final String DISCORD_FONT_STACK = "'Whitney','Helvetica Neue','Helvetica','Arial',sans-serif";
 
 	/** Default chat background. */
 	private static final Color DEFAULT_BACKGROUND = new Color(60, 30, 0);
@@ -96,30 +107,39 @@ class WebChatLogView extends JComponent implements ChatLogView {
 	private final Style boldStyle;
 	private final Style emojiStyle;
 
-	/** JavaFX bridge accessed via reflection. */
-	private final FxBridge fx;
+       /** JavaFX bridge accessed via reflection. */
+       private final FxBridge fx;
 
-	/** Cached chat lines in HTML and plain text form. */
-        private final List<String> htmlLines = new ArrayList<>();
-        private final List<String> plainLines = new ArrayList<>();
+       /** Whether the logged in user has admin permissions. */
+       private final boolean adminUser;
+
+       /** Cached chat lines in HTML and plain text form. */
+       private final List<String> htmlLines = new ArrayList<>();
+       private final List<String> plainLines = new ArrayList<>();
+       private final List<NotificationType> lineTypes = new ArrayList<>();
 
         /** Cached HTML fragment waiting for the WebView shell. */
         private String pendingHtml = "";
 
         /** State holders. */
-        private volatile boolean autoScroll = true;
-        private volatile boolean shellLoaded;
-        private Color defaultBackground = DEFAULT_BACKGROUND;
-        private String channelName = "";
+private volatile boolean autoScroll = true;
+private volatile boolean shellLoaded;
+private volatile boolean moderatorMode;
+private Color defaultBackground = DEFAULT_BACKGROUND;
+private String channelName = "";
 
-	WebChatLogView() throws Exception {
-		fx = FxBridge.tryCreate();
-		if (fx == null) {
-			throw new UnsupportedOperationException("JavaFX modules not available");
-		}
+WebChatLogView() throws Exception {
+fx = FxBridge.tryCreate();
+if (fx == null) {
+throw new UnsupportedOperationException("JavaFX modules not available");
+}
 
-		setLayout(new BorderLayout());
-		add(fx.getComponent(), BorderLayout.CENTER);
+UserContext context = UserContext.get();
+adminUser = (context != null) && context.isAdmin();
+moderatorMode = adminUser;
+
+setLayout(new BorderLayout());
+add(fx.getComponent(), BorderLayout.CENTER);
 
 		Font baseFont = UIManager.getFont("Label.font");
 		int mainSize = (baseFont != null) ? Math.max(8, baseFont.getSize() - 1) : 12;
@@ -188,29 +208,31 @@ class WebChatLogView extends JComponent implements ChatLogView {
 		return this;
 	}
 
-	@Override
-	public void addLine(EventLine line) {
-		if (line == null) {
-			return;
-		}
+@Override
+public void addLine(EventLine line) {
+if (line == null) {
+return;
+}
 
-		String html = buildLineHtml(line);
-		synchronized (htmlLines) {
-			htmlLines.add(html);
-			plainLines.add(buildPlainLine(line));
-		}
+String html = buildLineHtml(line);
+synchronized (htmlLines) {
+htmlLines.add(html);
+plainLines.add(buildPlainLine(line));
+lineTypes.add(line.getType());
+}
 
-		refreshHtml();
-	}
+refreshHtml();
+}
 
-	@Override
-	public void clear() {
-		synchronized (htmlLines) {
-			htmlLines.clear();
-			plainLines.clear();
-		}
-		refreshHtml();
-	}
+@Override
+public void clear() {
+synchronized (htmlLines) {
+htmlLines.clear();
+plainLines.clear();
+lineTypes.clear();
+}
+refreshHtml();
+}
 
 			@Override
         public void setDefaultBackground(Color color) {
@@ -265,103 +287,282 @@ class WebChatLogView extends JComponent implements ChatLogView {
 
                 shellLoaded = false;
                 final String shell = buildShellDocument(initial);
-                fx.loadShell(shell, new Runnable() {
-			@Override
-                        public void run() {
-                                shellLoaded = true;
-                                pushPendingHtml();
-                        }
-                });
-        }
+fx.loadShell(shell, new Runnable() {
+@Override
+public void run() {
+shellLoaded = true;
+pushPendingHtml();
+setModeratorMode(moderatorMode);
+}
+});
+}
 
-        private String buildShellDocument(final String initialContent) {
-                StringBuilder html = new StringBuilder();
-                final EmojiStore store = EmojiStore.get();
-                final String embeddedFont = store.getBundledFontDataUrl();
-                final String emojiFamily = store.getFontFamily();
-                final String emojiCssFamily = cssFontFamilyName(emojiFamily);
-                final boolean hasEmbeddedFont = (embeddedFont != null) && !embeddedFont.isEmpty();
-                final String emojiFontStack = emojiCssFamily + "," + EMOJI_FONT_STACK;
-			html.append("<!DOCTYPE html><html><head><meta charset=\"UTF-8\"><style>");
-			html.append("html,body { height:100%; margin:0; padding:0; }");
-			html.append("body { background:").append(cssColor(defaultBackground)).append("; margin:0; padding:4px; font-family: ")
-				.append(cssFontFamily(regularStyle)).append("; font-size:").append(StyleConstants.getFontSize(regularStyle))
-				.append("px; color:").append(cssColor(StyleConstants.getForeground(regularStyle))).append("; overflow:hidden; }");
-			html.append("#chat-container { height:100%; overflow-y:auto; box-sizing:border-box; }");
-			html.append(".line { white-space: pre-wrap; word-break: break-word; }");
-			html.append(".timestamp { color:").append(cssColor(StyleConstants.getForeground(timestampStyle))).append("; font-style: italic; margin-right: 4px; }");
-			html.append(".header { color:").append(cssColor(StyleConstants.getForeground(headerStyle))).append("; font-style: italic; margin-right: 4px; }");
-			html.append(".bold { color:").append(cssColor(StyleConstants.getForeground(boldStyle))).append("; font-style: italic; font-weight: bold; }");
-			if (hasEmbeddedFont) {
-			html.append("@font-face { font-family:").append(emojiCssFamily).append("; src:url(").append(embeddedFont)
-				.append(") format('truetype'); }");
-                }
-			html.append(".emoji { font-family: ").append(emojiFontStack).append("; font-style: normal; font-weight: normal; }");
-			html.append(".emoji-img { height: 1.2em; width: auto; vertical-align: middle; }");
-			html.append("a { color: ").append(cssColor(new Color(65, 105, 225))).append("; }");
-			html.append("</style><script>");
-			html.append("window.__stendhalChat={setContent:function(b64,scroll){var container=document.getElementById('chat-container');");
-			html.append("if(!container){return;}var html=atob(b64);container.innerHTML=html;");
-			html.append("if(scroll){window.requestAnimationFrame(function(){container.scrollTop=container.scrollHeight;window.scrollTo(0,document.body.scrollHeight);});}}};");
-			html.append("</script></head><body><div id=\"chat-container\">");
-			html.append(initialContent);
-			html.append("</div></body></html>");
-			return html.toString();
-        }
+	private String buildShellDocument(final String initialContent) {
+	StringBuilder html = new StringBuilder();
+	final EmojiStore store = EmojiStore.get();
+	final String embeddedFont = store.getBundledFontDataUrl();
+	final String emojiFamily = store.getFontFamily();
+	final String emojiCssFamily = cssFontFamilyName(emojiFamily);
+	final boolean hasEmbeddedFont = (embeddedFont != null) && !embeddedFont.isEmpty();
+	final String emojiFontStack = emojiCssFamily + "," + EMOJI_FONT_STACK;
+	html.append("<!DOCTYPE html><html><head><meta charset=\"UTF-8\"><style>");
+	html.append("html,body{height:100%;margin:0;padding:0;}");
+	html.append("body{background:").append(cssColor(defaultBackground)).append(";margin:0;padding:0;color:#dbdee1;font-family:")
+	.append(DISCORD_FONT_STACK).append(";display:flex;flex-direction:column;overflow:hidden;}");
+	html.append(".chat-root{display:flex;flex-direction:column;height:100%;width:100%;}");
+	html.append("#chat-container{flex:1;overflow-y:auto;box-sizing:border-box;padding:16px 18px;background:rgba(15,15,18,0.55);backdrop-filter:blur(2px);}");
+	html.append(".message{display:flex;flex-direction:column;gap:4px;margin-bottom:6px;padding:8px 12px;border-radius:10px;background:rgba(255,255,255,0.02);transition:background 0.2s ease;border:1px solid rgba(255,255,255,0.04);}");
+	html.append(".message:hover{background:rgba(255,255,255,0.06);}");
+	html.append(".message.mod-muted{opacity:0.35;}");
+	html.append(".message.admin-alert{border-left:3px solid #f8a532;background:rgba(248,165,50,0.12);}");
+	html.append(".message.admin-alert:hover{background:rgba(248,165,50,0.2);}");
+	html.append(".header-line{display:flex;align-items:baseline;gap:8px;font-size:13px;line-height:1.35;}");
+	html.append(".author{font-weight:600;color:#f4f5f7;}");
+	html.append(".admin-badge{background:linear-gradient(135deg,#e36414,#f97316);color:#fff;padding:1px 6px;border-radius:6px;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;}");
+	html.append(".timestamp{margin-left:auto;color:#949ba4;font-size:11px;}");
+	html.append(".message-body{white-space:pre-wrap;word-break:break-word;font-size:")
+	.append(StyleConstants.getFontSize(regularStyle)).append("px;line-height:1.5;color:#dbdee1;}");
+	html.append(".message-body a{color:#5da9ff;text-decoration:none;font-weight:500;}");
+	html.append(".message-body a:hover{text-decoration:underline;}");
+	html.append(".mention{background:rgba(88,101,242,0.25);color:#dee0ff;padding:0 4px;border-radius:4px;font-weight:600;}");
+	html.append(".mention-global{background:rgba(237,66,69,0.3);color:#ffe0e5;}");
+	html.append(".emoji{font-family:").append(emojiFontStack).append(";font-style:normal;font-weight:normal;}");
+	html.append(".message.type-warning .author,.message.type-error .author{color:#ffb347;}");
+	html.append(".message.type-support .author,.message.type-server .author{color:#7cc5ff;}");
+	html.append("body.mod-mode .message{opacity:0.25;}");
+	html.append("body.mod-mode .message.admin-alert{opacity:1;}");
+	if (adminUser) {
+	html.append("#admin-banner{padding:10px 18px;background:rgba(88,101,242,0.15);border-bottom:1px solid rgba(88,101,242,0.3);color:#dee0ff;font-size:12px;font-weight:600;display:flex;gap:12px;align-items:center;}");
+	html.append("#admin-banner button{background:#5865f2;color:#f8f9ff;border:none;border-radius:6px;padding:4px 10px;font-size:12px;font-weight:600;cursor:pointer;transition:opacity 0.2s ease;}");
+	html.append("#admin-banner button:hover{opacity:0.85;}");
+	}
+	if (hasEmbeddedFont) {
+	html.append("@font-face{font-family:").append(emojiCssFamily).append(";src:url(").append(embeddedFont).append(") format('truetype');font-display:swap;}");
+	}
+	html.append("</style><script>");
+html.append("window.__stendhalChat={autoScroll:true,moderatorMode:false,decoder:null,ensureDecoder:function(){if(this.decoder!==null){return;}if(typeof TextDecoder!=='undefined'){try{this.decoder=new TextDecoder('utf-8');return;}catch(e){this.decoder=false;}}this.decoder=false;},decode:function(b64){this.ensureDecoder();var binary=atob(b64);if(this.decoder&&this.decoder!==false){var length=binary.length;var bytes=new Uint8Array(length);for(var i=0;i<length;i++){bytes[i]=binary.charCodeAt(i);}try{return this.decoder.decode(bytes);}catch(e){}}var escaped='';for(var j=0;j<binary.length;j++){var code=binary.charCodeAt(j).toString(16);if(code.length<2){code='0'+code;}escaped+='%'+code;}try{return decodeURIComponent(escaped);}catch(e){return binary;}},setContent:function(b64,scroll){var container=document.getElementById('chat-container');if(!container){return;}var html=this.decode(b64);container.innerHTML=html;if(scroll&&window.__stendhalChat.autoScroll){window.requestAnimationFrame(function(){container.scrollTop=container.scrollHeight;});}},setModeratorMode:function(enabled){var body=document.body;if(!body){return;}this.moderatorMode=!!enabled;if(enabled){body.classList.add('mod-mode');}else{body.classList.remove('mod-mode');}}};");
+	html.append("window.addEventListener('wheel',function(){var container=document.getElementById('chat-container');if(!container){return;}var atBottom=(container.scrollHeight-container.scrollTop-container.clientHeight)<=4;window.__stendhalChat.autoScroll=atBottom;},{passive:true});");
+	html.append("window.addEventListener('touchmove',function(){var container=document.getElementById('chat-container');if(!container){return;}var atBottom=(container.scrollHeight-container.scrollTop-container.clientHeight)<=4;window.__stendhalChat.autoScroll=atBottom;},{passive:true});");
+	html.append("window.addEventListener('keydown',function(ev){if(ev && (ev.key==='End'||ev.key==='PageDown')){var container=document.getElementById('chat-container');if(container){container.scrollTop=container.scrollHeight;window.__stendhalChat.autoScroll=true;}}});");
+	if (adminUser) {
+	html.append("function __stendhalToggleMod(){var current=window.__stendhalChat && window.__stendhalChat.moderatorMode;window.__stendhalChat.setModeratorMode(!current);}");
+	html.append("function __stendhalJumpBottom(){var container=document.getElementById('chat-container');if(container){container.scrollTop=container.scrollHeight;window.__stendhalChat.autoScroll=true;}}");
+	}
+	html.append("</script></head><body");
+	if (moderatorMode) {
+	html.append(" class=\"mod-mode\"");
+	}
+	html.append(">");
+	html.append("<div class=\"chat-root\">");
+	if (adminUser) {
+	html.append("<div id=\"admin-banner\"><span>Tryb eksperymentalny WebView – panel moderatora.</span><button type=\"button\" onclick=\"__stendhalToggleMod()\">Przełącz tryb moderatora</button><button type=\"button\" onclick=\"__stendhalJumpBottom()\">Przewiń na dół</button></div>");
+	}
+	html.append("<div id=\"chat-container\">");
+	html.append(initialContent);
+	html.append("</div></div></body></html>");
+	return html.toString();
+	}
 
-        private String buildLinesFragment() {
-                StringBuilder builder = new StringBuilder();
-                for (String line : htmlLines) {
-                        builder.append(line);
-                }
-			return builder.toString();
-        }
+	private String buildLinesFragment() {
+	StringBuilder builder = new StringBuilder();
+	for (String line : htmlLines) {
+	builder.append(line);
+	}
+	return builder.toString();
+	}
 
 	private String buildLineHtml(EventLine line) {
-		StringBuilder html = new StringBuilder();
-		html.append("<div class=\"line\">");
-		html.append("<span class=\"timestamp\">").append(escape(dateFormatter.format(new Date()))).append("</span>");
-
-		String header = line.getHeader();
-		if ((header != null) && !header.isEmpty()) {
-			html.append("<span class=\"header\">").append(escape(header)).append(": </span>");
-		}
-
-		HtmlTextSink sink = new HtmlTextSink(html);
-		StyleSet base = new StyleSet(styleContext, regularStyle);
-		formatter.format(line.getText(), base, sink);
-		html.append("</div>");
-		return html.toString();
+	NotificationType type = (line != null) ? line.getType() : NotificationType.NORMAL;
+	String typeClass = cssType(type);
+	boolean adminAlert = isAdminAlert(type);
+	String header = (line != null) ? line.getHeader() : "";
+	String timestamp = escape(dateFormatter.format(new Date()));
+	String plain = (line != null) ? escape(buildPlainLine(line)) : "";
+	StringBuilder body = new StringBuilder();
+	HtmlTextSink sink = new HtmlTextSink(body, adminAlert);
+	StyleSet base = new StyleSet(styleContext, regularStyle);
+	formatter.format(line.getText(), base, sink);
+	StringBuilder html = new StringBuilder();
+	html.append("<article class=\"message type-").append(typeClass);
+	if (adminAlert) {
+	html.append(" admin-alert");
+	}
+	html.append("\" data-plain=\"").append(plain).append("\">");
+	html.append("<div class=\"header-line\">");
+	if ((header != null) && !header.isEmpty()) {
+	html.append("<span class=\"author\">").append(escape(header)).append("</span>");
+	} else {
+	html.append("<span class=\"author\">PolanieOnLine</span>");
+	}
+	if (adminAlert) {
+	html.append("<span class=\"admin-badge\">ADMIN</span>");
+	}
+	html.append("<span class=\"timestamp\">").append(timestamp).append("</span>");
+	html.append("</div>");
+	html.append("<div class=\"message-body\">").append(body).append("</div>");
+	html.append("</article>");
+	return html.toString();
 	}
 
 	private String buildPlainLine(EventLine line) {
-		StringBuilder sb = new StringBuilder();
-		sb.append(dateFormatter.format(new Date()));
-		if (!(line instanceof HeaderLessEventLine) && (line.getHeader() != null) && !line.getHeader().isEmpty()) {
-			sb.append(line.getHeader()).append(": ");
-		}
-		sb.append(line.getText());
-		return sb.toString();
+	StringBuilder sb = new StringBuilder();
+	sb.append(dateFormatter.format(new Date()));
+	if (!(line instanceof HeaderLessEventLine) && (line.getHeader() != null) && !line.getHeader().isEmpty()) {
+	sb.append(line.getHeader()).append(": ");
+	}
+	sb.append(line.getText());
+	return sb.toString();
 	}
 
 	private static String cssColor(Color color) {
-		Color c = (color != null) ? color : Color.WHITE;
-		return "rgb(" + c.getRed() + "," + c.getGreen() + "," + c.getBlue() + ")";
+	Color c = (color != null) ? color : Color.WHITE;
+	return "rgb(" + c.getRed() + "," + c.getGreen() + "," + c.getBlue() + ")";
 	}
 
 	private static String cssFontFamily(Style style) {
-		String family = StyleConstants.getFontFamily(style);
-		if ((family == null) || family.isEmpty()) {
-			family = "Dialog";
-		}
-		return '\'' + family.replace("'", "\\'") + '\'';
+	String family = StyleConstants.getFontFamily(style);
+	if ((family == null) || family.isEmpty()) {
+	family = "Dialog";
+	}
+	return '\'' + family.replace("'", "\\'") + '\'';
 	}
 
 	private static String cssFontFamilyName(String family) {
-		if ((family == null) || family.isEmpty()) {
-			family = "Noto Color Emoji";
-		}
-		return '\'' + family.replace("'", "\\'") + '\'';
+	if ((family == null) || family.isEmpty()) {
+	family = "Noto Color Emoji";
+	}
+	return '\'' + family.replace("'", "\\'") + '\'';
+	}
+
+	private Pattern buildMentionPattern() {
+	StringBuilder regex = new StringBuilder("(?i)(@everyone|@here|!report|!helpmod|!alert");
+	UserContext context = UserContext.get();
+	String player = (context != null) ? context.getName() : null;
+	if ((player != null) && !player.isEmpty()) {
+	String escaped = Pattern.quote(player);
+	regex.append("|@").append(escaped).append("\\b");
+	regex.append("|\\b").append(escaped).append("\\b");
+	}
+	regex.append(')');
+	return Pattern.compile(regex.toString());
+	}
+
+	private String highlightMentions(final String text, final boolean adminLine) {
+	if ((text == null) || text.isEmpty()) {
+	return "";
+	}
+	Pattern pattern = buildMentionPattern();
+	Matcher matcher = pattern.matcher(text);
+	StringBuilder out = new StringBuilder();
+	int lastIndex = 0;
+	while (matcher.find()) {
+	int start = matcher.start();
+	if (start > lastIndex) {
+	out.append(escape(text.substring(lastIndex, start)));
+	}
+	String mention = text.substring(start, matcher.end());
+	String cssClass = "mention";
+	String normalized = mention.toLowerCase(Locale.ROOT);
+	if (normalized.startsWith("@everyone") || normalized.startsWith("@here")
+	|| normalized.startsWith("!report") || normalized.startsWith("!helpmod")
+	|| normalized.startsWith("!alert")) {
+	cssClass += " mention-global";
+	} else if (adminLine) {
+	cssClass += " mention-global";
+	}
+	out.append("<span class=\"").append(cssClass).append("\">")
+	.append(escape(mention)).append("</span>");
+	lastIndex = matcher.end();
+	}
+	if (lastIndex < text.length()) {
+	out.append(escape(text.substring(lastIndex)));
+	}
+	return out.toString();
+	}
+
+	private static String cssType(final NotificationType type) {
+	if (type == null) {
+	return "normal";
+	}
+	return type.name().toLowerCase(Locale.ROOT).replace('_', '-');
+	}
+
+	private static boolean isAdminAlert(final NotificationType type) {
+	if (type == null) {
+	return false;
+	}
+	switch (type) {
+	case SUPPORT:
+	case WARNING:
+	case ERROR:
+	case SERVER:
+	case TELLALL:
+	case CLIENT:
+	return true;
+	default:
+	return false;
+	}
+	}
+
+	private void copyLastLine() {
+	String latest = null;
+	synchronized (htmlLines) {
+	if (!plainLines.isEmpty()) {
+	latest = plainLines.get(plainLines.size() - 1);
+	}
+	}
+	copyToClipboard(latest, "Skopiowano ostatnią wiadomość do schowka.");
+	}
+
+	private void copyAdminHighlights() {
+	StringBuilder highlights = new StringBuilder();
+	synchronized (htmlLines) {
+	for (int i = 0; i < plainLines.size(); i++) {
+	if ((i < lineTypes.size()) && isAdminAlert(lineTypes.get(i))) {
+	if (highlights.length() > 0) {
+	highlights.append(System.lineSeparator());
+	}
+	highlights.append(plainLines.get(i));
+	}
+	}
+	}
+	if (highlights.length() == 0) {
+	logger.info("Brak wiadomości administratora do skopiowania.");
+	return;
+	}
+	copyToClipboard(highlights.toString(), "Skopiowano ostrzeżenia moderatora do schowka.");
+	}
+
+	private void copyToClipboard(final String text, final String infoMessage) {
+	if ((text == null) || text.isEmpty()) {
+	return;
+	}
+	try {
+	Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+	clipboard.setContents(new StringSelection(text), null);
+	if (infoMessage != null) {
+	logger.info(infoMessage);
+	}
+	} catch (HeadlessException ex) {
+	logger.warn("Schowek systemowy jest niedostępny", ex);
+	}
+	}
+
+	private void setModeratorMode(final boolean enabled) {
+	moderatorMode = enabled;
+	if (fx != null) {
+	fx.setModeratorMode(enabled);
+	}
+	}
+
+	private void syncModeratorMode() {
+	if (fx == null) {
+	return;
+	}
+	Boolean current = fx.queryModeratorMode();
+	if (current != null) {
+	moderatorMode = current.booleanValue();
+	}
 	}
 
 	private static String escape(String text) {
@@ -435,39 +636,72 @@ class WebChatLogView extends JComponent implements ChatLogView {
 	}
 
 	private class TextPaneMouseListener extends MousePopupAdapter {
-		@Override
+\t\t@Override
 		protected void showPopup(MouseEvent e) {
-			final JPopupMenu popup = new JPopupMenu("zapisz");
-
-			JMenuItem menuItem = new JMenuItem("Zapisz");
-			menuItem.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					save();
-				}
-			});
-			popup.add(menuItem);
-
-			menuItem = new JMenuItem("Wyczyść");
-			menuItem.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					clear();
-				}
-			});
-			popup.add(menuItem);
-
-			popup.show(e.getComponent(), e.getX(), e.getY());
+		final JPopupMenu popup = new JPopupMenu("zapisz");
+		if (adminUser) {
+		syncModeratorMode();
 		}
 
+		JMenuItem menuItem = new JMenuItem("Zapisz");
+		menuItem.addActionListener(new ActionListener() {
 		@Override
-		public void mouseClicked(MouseEvent e) {
-			Object link = e.getSource();
-			if (link instanceof LinkListener) {
-				((LinkListener) link).linkClicked("");
-			}
+		public void actionPerformed(ActionEvent e) {
+		save();
 		}
-	}
+		});
+		popup.add(menuItem);
+
+		menuItem = new JMenuItem("Wyczyść");
+		menuItem.addActionListener(new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+		clear();
+		}
+		});
+		popup.add(menuItem);
+
+		menuItem = new JMenuItem("Skopiuj ostatnią wiadomość");
+		menuItem.addActionListener(new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+		copyLastLine();
+		}
+		});
+		popup.add(menuItem);
+
+		if (adminUser) {
+		popup.addSeparator();
+		menuItem = new JMenuItem("Skopiuj alerty moderatora");
+		menuItem.addActionListener(new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+		copyAdminHighlights();
+		}
+		});
+		popup.add(menuItem);
+
+		JCheckBoxMenuItem modToggle = new JCheckBoxMenuItem("Tryb moderatora (eksperymentalny)", moderatorMode);
+		modToggle.addActionListener(new ActionListener() {
+		@Override
+		public void actionPerformed(ActionEvent event) {
+		setModeratorMode(modToggle.isSelected());
+		}
+		});
+		popup.add(modToggle);
+		}
+
+		popup.show(e.getComponent(), e.getX(), e.getY());
+		}
+
+@Override
+		public void mouseClicked(MouseEvent e) {
+		Object link = e.getSource();
+		if (link instanceof LinkListener) {
+		((LinkListener) link).linkClicked("");
+		}
+		}
+}
 
 	class LinkListener {
 		void linkClicked(String text) {
@@ -475,12 +709,14 @@ class WebChatLogView extends JComponent implements ChatLogView {
 		}
 	}
 
-	private class HtmlTextSink implements AttributedTextSink<StyleSet> {
-		private final StringBuilder html;
+private class HtmlTextSink implements AttributedTextSink<StyleSet> {
+private final StringBuilder html;
+private final boolean adminAlert;
 
-		HtmlTextSink(StringBuilder html) {
-			this.html = html;
-		}
+HtmlTextSink(StringBuilder html, boolean adminAlert) {
+this.html = html;
+this.adminAlert = adminAlert;
+}
 
 		@Override
 		public void append(String s, StyleSet attrs) {
@@ -488,9 +724,9 @@ class WebChatLogView extends JComponent implements ChatLogView {
 				return;
 			}
 
-			final Style style = attrs.contents();
-			final EmojiStore store = EmojiStore.get();
-			final StringBuilder buffer = new StringBuilder();
+final Style style = attrs.contents();
+final EmojiStore store = EmojiStore.get();
+final StringBuilder buffer = new StringBuilder();
 			int index = 0;
 			final int length = s.length();
 			while (index < length) {
@@ -518,60 +754,59 @@ class WebChatLogView extends JComponent implements ChatLogView {
 			}
 		}
 
-		private void appendSpan(final EmojiStore store, final String text, final Style style, final boolean emoji) {
-			if ((text == null) || text.isEmpty()) {
-				return;
-			}
+private void appendSpan(final EmojiStore store, final String text, final Style style, final boolean emoji) {
+if ((text == null) || text.isEmpty()) {
+return;
+}
 
-			final String dataUrl = (emoji && (store != null)) ? store.dataUrlFor(text) : null;
-			final StringBuilder span = new StringBuilder();
-			span.append("<span");
-			if (emoji) {
-				span.append(" class=\"emoji\"");
-			}
-			span.append(" style=\"");
+final StringBuilder span = new StringBuilder();
+span.append("<span");
+if (emoji) {
+span.append(" class=\"emoji\"");
+}
+span.append(" style=\"");
 
-			if (dataUrl != null) {
-				span.append("display:inline-block;");
-			} else {
-				final Color fg = StyleConstants.getForeground(style);
-				if (fg != null) {
-					span.append("color:").append(cssColor(fg)).append(';');
-				}
-				if (!emoji && StyleConstants.isBold(style)) {
-					span.append("font-weight:bold;");
-				}
-				if (!emoji && StyleConstants.isItalic(style)) {
-					span.append("font-style:italic;");
-				} else if (emoji) {
-					span.append("font-style:normal;");
-				}
-				if (StyleConstants.isUnderline(style)) {
-					span.append("text-decoration:underline;");
-				}
-				span.append("font-size:").append(StyleConstants.getFontSize(style)).append("px;");
-				if (emoji) {
-					span.append("font-family:").append(EMOJI_FONT_STACK).append(';');
-					span.append("font-weight:normal;");
-				} else {
-					final String family = StyleConstants.getFontFamily(style);
-					if ((family != null) && !family.isEmpty()) {
-						span.append("font-family:").append(cssFontFamily(style)).append(';');
-					}
-				}
-			}
-			span.append('\"');
-			span.append('>');
-			if ((dataUrl != null) && emoji) {
-				span.append("<img class=\"emoji-img\" src=\"").append(dataUrl).append("\" alt=\"")
-					.append(escape(text)).append("\"/>");
-			} else {
-				span.append(escape(text));
-			}
-			span.append("</span>");
-			html.append(span);
-		}
-	}
+final Color fg = StyleConstants.getForeground(style);
+if (fg != null) {
+span.append("color:").append(cssColor(fg)).append(';');
+}
+if (!emoji && StyleConstants.isBold(style)) {
+span.append("font-weight:bold;");
+}
+if (!emoji && StyleConstants.isItalic(style)) {
+span.append("font-style:italic;");
+} else if (emoji) {
+span.append("font-style:normal;");
+}
+if (StyleConstants.isUnderline(style)) {
+span.append("text-decoration:underline;");
+}
+span.append("font-size:").append(StyleConstants.getFontSize(style)).append("px;");
+if (emoji) {
+span.append("font-family:").append(EMOJI_FONT_STACK).append(';');
+span.append("font-weight:normal;");
+} else {
+span.append("font-family:").append(DISCORD_FONT_STACK).append(';');
+}
+span.append('\"');
+span.append('>');
+if (emoji) {
+String glyph = (store != null) ? store.glyphFor(text) : null;
+if ((glyph == null) || glyph.isEmpty()) {
+glyph = text;
+}
+span.append(escape(glyph));
+} else {
+span.append(renderContent(text));
+}
+span.append("</span>");
+html.append(span);
+}
+
+private String renderContent(final String text) {
+return highlightMentions(text, adminAlert);
+}
+}
 
 	/**
 	 * Reflection based bridge to JavaFX WebView.
@@ -944,11 +1179,11 @@ changeListenerClass, workerStateClass);
                         loadContent(html, afterLoad);
                 }
 
-                void updateContent(final String html, final boolean scroll) {
-			if (html == null) {
-			return;
-                        }
-                        final String encoded = Base64.getEncoder().encodeToString(html.getBytes(StandardCharsets.UTF_8));
+void updateContent(final String html, final boolean scroll) {
+if (html == null) {
+return;
+}
+final String encoded = Base64.getEncoder().encodeToString(html.getBytes(StandardCharsets.UTF_8));
                         final String script = "if(window.__stendhalChat){window.__stendhalChat.setContent('" + encoded + "',"
                                 + (scroll ? "true" : "false") + ");}";
                         Runnable task = new Runnable() {
@@ -964,13 +1199,60 @@ changeListenerClass, workerStateClass);
                                         }
                                 }
                         };
-                        invokeLater(task);
-                }
+invokeLater(task);
+}
 
-                void scrollToEnd() {
-                        Runnable task = new Runnable() {
-			@Override
-                                public void run() {
+void setModeratorMode(final boolean enabled) {
+final String script = "if(window.__stendhalChat){window.__stendhalChat.setModeratorMode(" + (enabled ? "true" : "false") + ");}";
+Runnable task = new Runnable() {
+@Override
+public void run() {
+try {
+if (!awaitReady()) {
+return;
+}
+executeScript.invoke(webEngine, script);
+} catch (Throwable ex) {
+logger.debug("Nie udało się przełączyć trybu moderatora", ex);
+}
+}
+};
+invokeLater(task);
+}
+
+Boolean queryModeratorMode() {
+final CountDownLatch latch = new CountDownLatch(1);
+final Boolean[] holder = new Boolean[1];
+Runnable task = new Runnable() {
+@Override
+public void run() {
+try {
+if (!awaitReady()) {
+return;
+}
+Object value = executeScript.invoke(webEngine,
+"return (window.__stendhalChat && window.__stendhalChat.moderatorMode===true);");
+holder[0] = coerceBoolean(value);
+} catch (Throwable ex) {
+logger.debug("Unable to query moderator mode", ex);
+} finally {
+latch.countDown();
+}
+}
+};
+invokeLater(task);
+try {
+latch.await(1, TimeUnit.SECONDS);
+} catch (InterruptedException ex) {
+Thread.currentThread().interrupt();
+}
+return holder[0];
+}
+
+void scrollToEnd() {
+Runnable task = new Runnable() {
+@Override
+public void run() {
 			try {
 						if (!awaitReady()) {
 							return;
@@ -985,13 +1267,26 @@ changeListenerClass, workerStateClass);
                         invokeLater(task);
                 }
 
-		private void invokeLater(Runnable runnable) {
-			try {
-				runLater.invoke(null, runnable);
-			} catch (IllegalAccessException | InvocationTargetException ex) {
-				logger.error("Failed to schedule JavaFX task", ex);
-			}
-		}
+private void invokeLater(Runnable runnable) {
+try {
+runLater.invoke(null, runnable);
+} catch (IllegalAccessException | InvocationTargetException ex) {
+logger.error("Failed to schedule JavaFX task", ex);
+}
+}
+
+private static Boolean coerceBoolean(final Object value) {
+if (value instanceof Boolean) {
+return (Boolean) value;
+}
+if (value instanceof Number) {
+return ((Number) value).intValue() != 0;
+}
+if (value instanceof String) {
+return Boolean.parseBoolean((String) value);
+}
+return null;
+}
 
 		private boolean awaitReady() {
 			try {
