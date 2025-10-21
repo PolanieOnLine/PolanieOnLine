@@ -100,7 +100,8 @@ public class ChatTextController {
 	*/
 	private void setupKeys() {
 		final InputMap input = playerChatText.getInputMap(JComponent.WHEN_FOCUSED);
-		input.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "submit");
+		input.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, false), "submit");
+		input.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, true), "submit");
 		input.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, KeyEvent.SHIFT_DOWN_MASK), "insert_line_break");
 		input.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, KeyEvent.SHIFT_DOWN_MASK), "history_previous");
 		input.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, KeyEvent.SHIFT_DOWN_MASK), "history_next");

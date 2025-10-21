@@ -422,13 +422,22 @@ public class EmojiStore {
 		return glyph;
 	}
 
-		private RenderedEmoji renderEmoji(final String text) {
+	private RenderedEmoji renderEmoji(final String text) {
 		if ((text == null) || text.isEmpty()) {
 			return null;
 		}
-		final String name = check(text);
+		String name = check(text);
+		String normalizedSource = null;
+		if (name == null) {
+			normalizedSource = stripVariationSelectors(text);
+			if ((normalizedSource != null) && !normalizedSource.equals(text)) {
+				name = emojimap.get(normalizedSource);
+			}
+		}
 		final boolean directGlyph = (name == null) && looksLikeGlyph(text);
-		final String normalizedGlyph = directGlyph ? ensureEmojiPresentation(stripVariationSelectors(text)) : null;
+		final String normalizedGlyph = directGlyph
+				? ensureEmojiPresentation(stripVariationSelectors(text))
+				: ensureEmojiPresentation((name != null) ? emojiGlyphs.get(name) : normalizedSource);
 		if ((name == null) && !directGlyph) {
 			return null;
 		}
@@ -447,13 +456,22 @@ public class EmojiStore {
 
 		ensureEmojiFont();
 		final String glyph;
-		final String assetName;
+		String assetName;
 		if (name != null) {
-			glyph = ensureEmojiPresentation(emojiGlyphs.getOrDefault(name, ":" + name + ":"));
+			final String mappedGlyph = emojiGlyphs.getOrDefault(name, ":" + name + ":");
+			glyph = ensureEmojiPresentation((normalizedGlyph != null) ? normalizedGlyph : mappedGlyph);
 			assetName = name;
 		} else {
 			glyph = normalizedGlyph;
-			assetName = null;
+			assetName = (normalizedSource != null) ? emojimap.get(normalizedSource) : null;
+			if ((assetName == null) && (glyph != null)) {
+				for (final Map.Entry<String, String> entry: emojiGlyphs.entrySet()) {
+					if (glyph.equals(entry.getValue())) {
+						assetName = entry.getKey();
+						break;
+					}
+				}
+			}
 		}
 		BufferedImage assetImage = null;
 		if (bitmapExtractor != null) {
@@ -469,7 +487,6 @@ public class EmojiStore {
 				}
 			}
 		}
-
 		if ((iconImage == null) || (spriteImage == null)) {
 			if (assetName != null) {
 				assetImage = loadEmojiAsset(assetName);
@@ -481,7 +498,6 @@ public class EmojiStore {
 		if ((spriteImage == null) && (assetImage != null)) {
 			spriteImage = scaleForSprite(assetImage);
 		}
-
 		if ((iconImage == null) || (spriteImage == null)) {
 			if (bitmapExtractor != null) {
 				if (iconImage == null) {
@@ -515,7 +531,6 @@ public class EmojiStore {
 		emojiCache.put(cacheKey, cached);
 		return cached;
 	}
-
 	private BufferedImage scaleForIcon(final BufferedImage source) {
 		return scaleToFit(source, Math.round(ICON_POINT_SIZE) + (ICON_PADDING * 2));
 	}
