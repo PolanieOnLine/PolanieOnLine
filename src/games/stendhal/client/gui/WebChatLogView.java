@@ -628,25 +628,55 @@ class WebChatLogView extends JComponent implements ChatLogView {
 
 		private void attachLoadListener(final Method getLoadWorker, final Class<?> changeListenerClass, final Object succeededState,
 				final Object failedState, final Class<?> workerClass, final Class<?> observableValueClass, final ClassLoader loader)
-				throws ReflectiveOperationException {
-				Object worker = getLoadWorker.invoke(engine);
-				Method stateProperty = workerClass.getMethod("stateProperty");
-				Object property = stateProperty.invoke(worker);
-				Method addListener = observableValueClass.getMethod("addListener", changeListenerClass);
-			Object listener = Proxy.newProxyInstance(loader, new Class<?>[] { changeListenerClass }, (proxy, method, args) -> {
-				if ("changed".equals(method.getName()) && (args != null) && (args.length == 3)) {
-					Object newValue = args[2];
-					if ((newValue != null) && newValue.equals(succeededState)) {
-						ready = true;
-						flushScripts();
-					} else if ((failedState != null) && failedState.equals(newValue)) {
-						LOGGER.warn("JavaFX WebView load failed");
+				throws ReflectiveOperationException, InterruptedException {
+			final CountDownLatch latch = new CountDownLatch(1);
+			final Throwable[] error = new Throwable[1];
+			try {
+				runLater.invoke(null, new Runnable() {
+					@Override
+					public void run() {
+						try {
+							Object worker = getLoadWorker.invoke(engine);
+							Method stateProperty = workerClass.getMethod("stateProperty");
+							Object property = stateProperty.invoke(worker);
+							Method addListener = observableValueClass.getMethod("addListener", changeListenerClass);
+							Object listener = Proxy.newProxyInstance(loader, new Class<?>[] { changeListenerClass }, new InvocationHandler() {
+								@Override
+								public Object invoke(final Object proxy, final Method method, final Object[] args) {
+									if ("changed".equals(method.getName()) && (args != null) && (args.length == 3)) {
+										Object newValue = args[2];
+										if ((newValue != null) && newValue.equals(succeededState)) {
+											ready = true;
+											flushScripts();
+										} else if ((failedState != null) && failedState.equals(newValue)) {
+											LOGGER.warn("JavaFX WebView load failed");
+										}
+									}
+									return null;
+								}
+							});
+							addListener.invoke(property, listener);
+						} catch (Throwable ex) {
+							error[0] = ex;
+						} finally {
+							latch.countDown();
+						}
 					}
+				});
+			} catch (IllegalAccessException | InvocationTargetException ex) {
+				throw new ReflectiveOperationException("Failed to schedule JavaFX listener registration", ex);
+			}
+			if (!latch.await(FX_INIT_TIMEOUT_SECONDS, TimeUnit.SECONDS)) {
+				throw new UnsupportedOperationException("Timed out waiting for JavaFX load listener registration");
+			}
+			if (error[0] != null) {
+				if (error[0] instanceof ReflectiveOperationException) {
+					throw (ReflectiveOperationException) error[0];
 				}
-				return null;
-			});
-			addListener.invoke(property, listener);
+				throw new ReflectiveOperationException("Failed to attach JavaFX load listener", error[0]);
+			}
 		}
+
 
 		JComponent getComponent() {
 			return component;
