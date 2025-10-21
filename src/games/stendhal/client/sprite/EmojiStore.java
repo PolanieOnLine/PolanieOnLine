@@ -58,13 +58,13 @@ public class EmojiStore {
 	private Map<String, RenderedEmoji> emojiCache;
 	private int longestKeyLength;
 
-        private Font baseEmojiFont;
-        private String emojiFontFamily;
-        private FontRenderContext fontRenderContext;
-        private byte[] bundledFontBytes;
-        private String bundledFontDataUrl;
-        private boolean usingBundledFont;
-        private EmojiBitmapExtractor bitmapExtractor;
+	private Font baseEmojiFont;
+	private String emojiFontFamily;
+	private FontRenderContext fontRenderContext;
+	private byte[] bundledFontBytes;
+	private String bundledFontDataUrl;
+	private boolean usingBundledFont;
+	private EmojiBitmapExtractor bitmapExtractor;
 
 	private static final Logger logger = Logger.getLogger(EmojiStore.class);
 	private static final String DEFAULT_EMOJI_FONT = Font.SANS_SERIF;
@@ -261,21 +261,21 @@ public class EmojiStore {
 	}
 
 	private Font loadBundledEmojiFont() {
-                if (bundledFontBytes == null) {
-                        try (InputStream stream = DataLoader.getResourceAsStream(BUNDLED_FONT_PATH)) {
-                                if (stream == null) {
-                                        logger.warn("Bundled emoji font not found: " + BUNDLED_FONT_PATH);
-                                        bundledFontDataUrl = null;
-                                        return null;
-                                }
-                                bundledFontBytes = readAllBytes(stream);
-                                bundledFontDataUrl = null;
-                        } catch (IOException e) {
-                                logger.warn("Unable to read bundled emoji font", e);
-                                bundledFontBytes = null;
-                                bundledFontDataUrl = null;
-                        }
-                }
+		if (bundledFontBytes == null) {
+			try (InputStream stream = DataLoader.getResourceAsStream(BUNDLED_FONT_PATH)) {
+				if (stream == null) {
+					logger.warn("Bundled emoji font not found: " + BUNDLED_FONT_PATH);
+					bundledFontDataUrl = null;
+					return null;
+				}
+				bundledFontBytes = readAllBytes(stream);
+				bundledFontDataUrl = null;
+			} catch (IOException e) {
+				logger.warn("Unable to read bundled emoji font", e);
+				bundledFontBytes = null;
+				bundledFontDataUrl = null;
+			}
+		}
 
 		if (bundledFontBytes == null) {
 			return null;
@@ -396,6 +396,15 @@ public class EmojiStore {
 		return rendered.dataUrl;
 	}
 
+	public Font deriveEmojiFont(final float pointSize) {
+		ensureEmojiFont();
+		if (baseEmojiFont == null) {
+			return null;
+		}
+		final float size = (pointSize > 0f) ? pointSize : DEFAULT_EMOJI_SIZE;
+		return baseEmojiFont.deriveFont(Font.PLAIN, size);
+	}
+
 	private String ensureEmojiPresentation(final String glyph) {
 		if ((glyph == null) || glyph.isEmpty()) {
 			return glyph;
@@ -430,12 +439,12 @@ public class EmojiStore {
 		BufferedImage spriteImage = null;
 		String dataUrl = null;
 
-                ensureEmojiFont();
-                final String glyph = ensureEmojiPresentation(emojiGlyphs.getOrDefault(name, ":" + name + ":"));
-                BufferedImage assetImage = null;
-                if (bitmapExtractor != null) {
-                        iconImage = bitmapExtractor.renderGlyph(glyph, ICON_POINT_SIZE, ICON_PADDING);
-                        spriteImage = bitmapExtractor.renderGlyph(glyph, SPRITE_POINT_SIZE, ICON_PADDING);
+		ensureEmojiFont();
+		final String glyph = ensureEmojiPresentation(emojiGlyphs.getOrDefault(name, ":" + name + ":"));
+		BufferedImage assetImage = null;
+		if (bitmapExtractor != null) {
+			iconImage = bitmapExtractor.renderGlyph(glyph, ICON_POINT_SIZE, ICON_PADDING);
+			spriteImage = bitmapExtractor.renderGlyph(glyph, SPRITE_POINT_SIZE, ICON_PADDING);
 				if ((iconImage == null) || (spriteImage == null)) {
 					final String stripped = stripVariationSelectors(glyph);
 					if ((iconImage == null) && (stripped != null)) {
@@ -737,25 +746,25 @@ public class EmojiStore {
 		return new LinkedList<String>() {{ addAll(emojilist); }};
 	}
 
-        public static String getFontFamily() {
-                final EmojiStore store = get();
-                store.ensureEmojiFont();
-                if ((store.emojiFontFamily != null) && !store.emojiFontFamily.isEmpty()) {
-                        return store.emojiFontFamily;
-                }
-                return DEFAULT_EMOJI_FONT;
-        }
+	public static String getFontFamily() {
+		final EmojiStore store = get();
+		store.ensureEmojiFont();
+		if ((store.emojiFontFamily != null) && !store.emojiFontFamily.isEmpty()) {
+			return store.emojiFontFamily;
+		}
+		return DEFAULT_EMOJI_FONT;
+	}
 
-        public String getBundledFontDataUrl() {
-                ensureEmojiFont();
-                if (bundledFontBytes == null) {
-                        return null;
-                }
-                if (bundledFontDataUrl == null) {
-                        bundledFontDataUrl = "data:font/ttf;base64," + Base64.getEncoder().encodeToString(bundledFontBytes);
-                }
-                return bundledFontDataUrl;
-        }
+	public String getBundledFontDataUrl() {
+		ensureEmojiFont();
+		if (bundledFontBytes == null) {
+			return null;
+		}
+		if (bundledFontDataUrl == null) {
+			bundledFontDataUrl = "data:font/ttf;base64," + Base64.getEncoder().encodeToString(bundledFontBytes);
+		}
+		return bundledFontDataUrl;
+	}
 
 	public static Font deriveFont(final int style, final int size) {
 		final EmojiStore store = get();
