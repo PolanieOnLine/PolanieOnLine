@@ -522,7 +522,7 @@ class WebChatLogView extends JComponent implements ChatLogView {
 		return String.format(Locale.ROOT, "rgb(%d,%d,%d)", color.getRed(), color.getGreen(), color.getBlue());
 	}
 
-		private static final class FxBridge {
+	private static final class FxBridge {
 		private final JComponent component;
 		private final Object engine;
 		private final Method loadContent;
@@ -539,7 +539,7 @@ class WebChatLogView extends JComponent implements ChatLogView {
 			this.runLater = runLater;
 		}
 
-		static FxBridge tryCreate() throws InterruptedException {
+	static FxBridge tryCreate() throws InterruptedException {
 			try {
 				ClassLoader loader = Thread.currentThread().getContextClassLoader();
 				if (loader == null) {
@@ -557,7 +557,9 @@ class WebChatLogView extends JComponent implements ChatLogView {
 				Class<?> sceneClass = Class.forName("javafx.scene.Scene", false, loader);
 				Class<?> parentClass = Class.forName("javafx.scene.Parent", false, loader);
 				Class<?> changeListenerClass = Class.forName("javafx.beans.value.ChangeListener", false, loader);
+				Class<?> workerClass = Class.forName("javafx.concurrent.Worker", false, loader);
 				Class<?> workerStateClass = Class.forName("javafx.concurrent.Worker$State", false, loader);
+				Class<?> observableValueClass = Class.forName("javafx.beans.value.ObservableValue", false, loader);
 
 				Method getEngine = webViewClass.getMethod("getEngine");
 				Method loadContent = webEngineClass.getMethod("loadContent", String.class);
@@ -602,7 +604,7 @@ class WebChatLogView extends JComponent implements ChatLogView {
 				}
 
 				FxBridge bridge = new FxBridge((JComponent) jfxPanel, engineHolder[0], loadContent, executeScript, runLater);
-				bridge.attachLoadListener(getLoadWorker, changeListenerClass, succeededState, failedState, loader);
+				bridge.attachLoadListener(getLoadWorker, changeListenerClass, succeededState, failedState, workerClass, observableValueClass, loader);
 				return bridge;
 			} catch (ClassNotFoundException ex) {
 				if (LOGGER.isDebugEnabled()) {
@@ -624,11 +626,13 @@ class WebChatLogView extends JComponent implements ChatLogView {
 			}
 		}
 
-		private void attachLoadListener(final Method getLoadWorker, final Class<?> changeListenerClass, final Object succeededState, final Object failedState, final ClassLoader loader) throws ReflectiveOperationException {
-			Object worker = getLoadWorker.invoke(engine);
-			Method stateProperty = worker.getClass().getMethod("stateProperty");
-			Object property = stateProperty.invoke(worker);
-			Method addListener = property.getClass().getMethod("addListener", changeListenerClass);
+		private void attachLoadListener(final Method getLoadWorker, final Class<?> changeListenerClass, final Object succeededState,
+				final Object failedState, final Class<?> workerClass, final Class<?> observableValueClass, final ClassLoader loader)
+				throws ReflectiveOperationException {
+				Object worker = getLoadWorker.invoke(engine);
+				Method stateProperty = workerClass.getMethod("stateProperty");
+				Object property = stateProperty.invoke(worker);
+				Method addListener = observableValueClass.getMethod("addListener", changeListenerClass);
 			Object listener = Proxy.newProxyInstance(loader, new Class<?>[] { changeListenerClass }, (proxy, method, args) -> {
 				if ("changed".equals(method.getName()) && (args != null) && (args.length == 3)) {
 					Object newValue = args[2];
