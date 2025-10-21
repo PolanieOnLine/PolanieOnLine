@@ -559,10 +559,8 @@ class WebChatLogView extends JComponent implements ChatLogView {
 		}
 
 		static FxBridge tryCreate() throws Exception {
-			ClassLoader loader = Thread.currentThread().getContextClassLoader();
-			if (loader == null) {
-				loader = FxBridge.class.getClassLoader();
-			}
+			ClassLoader contextLoader = Thread.currentThread().getContextClassLoader();
+			final ClassLoader loader = (contextLoader != null) ? contextLoader : FxBridge.class.getClassLoader();
 
 			Class<?> platformClass = Class.forName("javafx.application.Platform", true, loader);
 			Method runLater = platformClass.getMethod("runLater", Runnable.class);
