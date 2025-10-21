@@ -252,8 +252,8 @@ import games.stendhal.common.NotificationType;
 				return escape("?");
 			}
 			final int codePoint = source.codePointAt(0);
-			String label = new String(Character.toChars(codePoint));
-			if (Character.isLetter(codePoint)) {
+			String label = new String(java.lang.Character.toChars(codePoint));
+			if (java.lang.Character.isLetter(codePoint)) {
 				label = label.toUpperCase(Locale.ROOT);
 			}
 			return escape(label);
