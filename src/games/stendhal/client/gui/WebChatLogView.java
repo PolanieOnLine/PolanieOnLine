@@ -452,38 +452,45 @@ class WebChatLogView extends JComponent implements ChatLogView {
 		return String.format(Locale.ROOT, "rgb(%d,%d,%d)", color.getRed(), color.getGreen(), color.getBlue());
 	}
 
-	private static final class FxBridge {
-		private final JComponent component;
-		private final Object engine;
-		private final Method loadContent;
-		private final Method executeScript;
-		private final Method runLater;
+        		private static final class FxBridge {
+			private final JComponent component;
+			private final Object engine;
+			private final Method loadContent;
+			private final Method executeScript;
+			private final Method runLater;
 
-		private FxBridge(final JComponent component, final Object engine, final Method loadContent, final Method executeScript, final Method runLater) {
-			this.component = component;
-			this.engine = engine;
-			this.loadContent = loadContent;
-			this.executeScript = executeScript;
-			this.runLater = runLater;
-		}
+			private FxBridge(final JComponent component, final Object engine, final Method loadContent, final Method executeScript, final Method runLater) {
+				this.component = component;
+				this.engine = engine;
+				this.loadContent = loadContent;
+				this.executeScript = executeScript;
+				this.runLater = runLater;
+			}
 
-		static FxBridge tryCreate() throws InterruptedException {
-			try {
-				Class<?> jfxPanelClass = Class.forName("javafx.embed.swing.JFXPanel");
-				Class<?> platformClass = Class.forName("javafx.application.Platform");
-				Class<?> webViewClass = Class.forName("javafx.scene.web.WebView");
-				Class<?> webEngineClass = Class.forName("javafx.scene.web.WebEngine");
-				Class<?> sceneClass = Class.forName("javafx.scene.Scene");
-				Class<?> parentClass = Class.forName("javafx.scene.Parent");
+			static FxBridge tryCreate() throws InterruptedException {
+				try {
+					ClassLoader loader = Thread.currentThread().getContextClassLoader();
+					if (loader == null) {
+						loader = FxBridge.class.getClassLoader();
+					}
 
-				Object jfxPanel = jfxPanelClass.getConstructor().newInstance();
-				Method runLater = platformClass.getMethod("runLater", Runnable.class);
-				Method getEngine = webViewClass.getMethod("getEngine");
-				Method loadContent = webEngineClass.getMethod("loadContent", String.class);
-				Method executeScript = webEngineClass.getMethod("executeScript", String.class);
-				Constructor<?> webViewCtor = webViewClass.getConstructor();
-				Constructor<?> sceneCtor = sceneClass.getConstructor(parentClass);
-				Method setScene = jfxPanelClass.getMethod("setScene", sceneClass);
+					Class<?> jfxPanelClass = Class.forName("javafx.embed.swing.JFXPanel", true, loader);
+					Object jfxPanel = jfxPanelClass.getConstructor().newInstance();
+
+					Class<?> platformClass = Class.forName("javafx.application.Platform", true, loader);
+					Method runLater = platformClass.getMethod("runLater", Runnable.class);
+
+					Class<?> webViewClass = Class.forName("javafx.scene.web.WebView", false, loader);
+					Class<?> webEngineClass = Class.forName("javafx.scene.web.WebEngine", false, loader);
+					Class<?> sceneClass = Class.forName("javafx.scene.Scene", false, loader);
+					Class<?> parentClass = Class.forName("javafx.scene.Parent", false, loader);
+
+					Method getEngine = webViewClass.getMethod("getEngine");
+					Method loadContent = webEngineClass.getMethod("loadContent", String.class);
+					Method executeScript = webEngineClass.getMethod("executeScript", String.class);
+					Constructor<?> webViewCtor = webViewClass.getConstructor();
+					Constructor<?> sceneCtor = sceneClass.getConstructor(parentClass);
+					Method setScene = jfxPanelClass.getMethod("setScene", sceneClass);
 
 				CountDownLatch latch = new CountDownLatch(1);
 				Object[] engineHolder = new Object[1];
