@@ -200,6 +200,10 @@ public class j2DClient implements UserInterface {
 		GameObjects gameObjects = client.getGameObjects();
 
 		loop.runAllways(delta -> gameLoop(delta, gameObjects));
+		loop.runRenderer(() -> {
+			gui.triggerPainting();
+			gui.afterPainting();
+		});
 		loop.runAtQuit(this::cleanup);
 		gameRunning = true;
 		loop.start();
@@ -257,12 +261,10 @@ public class j2DClient implements UserInterface {
 			lastuser = user;
 		}
 
-		gui.triggerPainting();
 
 		logger.debug("Query network");
 
 		client.loop(0);
-		gui.afterPainting();
 	}
 
 	private void tryLogout() {

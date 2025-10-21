@@ -11,21 +11,19 @@
  ***************************************************************************/
 package games.stendhal.client.gui.chattext;
 
-import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+import javax.swing.Icon;
 
 import games.stendhal.client.scripting.ChatLineParser;
 import games.stendhal.client.sprite.EmojiStore;
-import games.stendhal.client.sprite.ImageSprite;
 
 /**
  * A drop down menu for selecting special characters that players may want to
@@ -33,22 +31,23 @@ import games.stendhal.client.sprite.ImageSprite;
  */
 public class CharacterMap extends JButton {
 	private final static EmojiStore emojis = EmojiStore.get();
-	private final static ImageSprite icon = (ImageSprite) emojis.create(":grin:");
+	private final static String DEFAULT_BUTTON_TEXT = "\u263A";
 
 	/**
 	 * Create a new CharacterMap.
 	 */
 	public CharacterMap() {
 		super();
-		final Font origFont = getFont();
-		setFont(new Font("Noto Emoji", origFont.getStyle(), origFont.getSize()+2));
 		setFocusable(false);
 		setToolTipText("Emotikony");
 
-		if (icon != null) {
-			setIcon(new ImageIcon(icon.getImage()));
+		final Icon buttonIcon = emojis.getIcon(":grin:");
+		if (buttonIcon != null) {
+			setIcon(buttonIcon);
+			setText("");
 		} else {
-			setText("☺");
+			final String glyph = emojis.glyphFor(":grin:");
+			setText(glyph != null ? glyph : DEFAULT_BUTTON_TEXT);
 		}
 
 		final JPopupMenu menu = new JPopupMenu();
@@ -81,22 +80,16 @@ public class CharacterMap extends JButton {
 	 * @param listener action listener that should be attached to the menu items
 	 */
 	private void fillMenu(JComponent menu, ActionListener listener) {
-		//~ String[][] characters = {
-				//~ { "☺", "☹", "😃", "😲", "😇", "😈", "😊", "😌", "😍", "😎", "😏", "😐", "😴" },
-				//~ { "🐭", "🐮", "🐱", "🐵", "🐯", "🐰", "🐴", "🐶", "🐷", "🐹", "🐺", "🐻", "🐼"  },
-				//~ { "♥", "♡", "💔", "💡", "☠" },
-				//~ { "£", "$", "€", "₤", "₱", "¥" },
-				//~ { "♩", "♪", "♫", "♬", "♭", "♮", "♯", "𝄞", "𝄢" } };
-		//~ menu.setLayout(new GridLayout(0, characters[0].length));
 		menu.setLayout(new GridLayout(0, 13));
 
 		Insets insets = new Insets(1, 1, 1, 1);
 		setMargin(insets);
 		for (String st: emojis.getEmojiList()) {
 			st = ":" + st + ":";
-			final ImageSprite emoji = (ImageSprite) emojis.create(st);
-			if (emoji != null) {
-				EmojiButton item = new EmojiButton(emoji, st);
+			final Icon icon = emojis.getIcon(st);
+			final String glyph = emojis.glyphFor(st);
+			if (icon != null || glyph != null) {
+				EmojiButton item = new EmojiButton(icon, glyph != null ? glyph : st, st);
 				item.setMargin(insets);
 				item.addActionListener(listener);
 				item.setBorder(null);
@@ -108,9 +101,15 @@ public class CharacterMap extends JButton {
 	private class EmojiButton extends JMenuItem {
 		private final String emojiText;
 
-		public EmojiButton(final ImageSprite emoji, final String text) {
-			super(new ImageIcon(emoji.getImage()));
+		public EmojiButton(final Icon icon, final String fallbackLabel, final String text) {
+			super();
 			emojiText = text;
+			if (icon != null) {
+				setIcon(icon);
+				setText("");
+			} else {
+				setText(fallbackLabel);
+			}
 			setIconTextGap(0);
 			setToolTipText(text);
 		}
