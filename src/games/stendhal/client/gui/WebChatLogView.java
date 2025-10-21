@@ -24,8 +24,10 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -60,21 +62,35 @@ class WebChatLogView extends JComponent implements ChatLogView {
 	private static final Logger LOGGER = Logger.getLogger(WebChatLogView.class);
 	private static final Color DEFAULT_BACKGROUND = new Color(60, 30, 0);
 	private static final String DEFAULT_FONT_STACK = "'Noto Color Emoji','Segoe UI Emoji','Apple Color Emoji','Twemoji Mozilla','EmojiOne Color','Noto Emoji',sans-serif";
-	private static final String DOCUMENT_TEMPLATE = "<!DOCTYPE html><html><head><meta charset=\"UTF-8\"><style>%s</style></head><body class=\"chat-root\" style=\"background:%s\"><main class=\"chat-log\">%s</main></body></html>";
-	private static final String STYLE_TEMPLATE = "body{margin:0;padding:0;background:%2$s;color:#f0f0f0;font-family:%1$s;font-size:%3$dpx;}" +
-		".chat-root{padding:12px;overflow:auto;}" +
-		".chat-log{display:flex;flex-direction:column;gap:8px;}" +
-		".message{background:rgba(0,0,0,0.35);border-radius:10px;padding:6px 12px;box-shadow:0 2px 4px rgba(0,0,0,0.35);}" +
-		".message.type-error{border-left:4px solid #ff5050;}" +
-		".message.type-warning{border-left:4px solid #ffae42;}" +
-		".message.type-positive{border-left:4px solid #4caf50;}" +
-		".message.type-support{border-left:4px solid #5ad4ff;}" +
-		".message-header{display:flex;align-items:center;gap:8px;font-size:0.85em;color:rgba(255,255,255,0.7);margin-bottom:4px;}" +
-		".message-author{font-weight:600;color:#ffffcc;}" +
-		".message-body{white-space:pre-wrap;word-break:break-word;font-size:1em;line-height:1.4;}" +
-		".message-body img.emoji{height:1.2em;width:1.2em;vertical-align:-0.2em;margin:0 2px;}" +
-		".message-admin{background:rgba(255,215,64,0.15);border-left:4px solid #ffd740;}" +
-		".admin-badge{display:inline-flex;align-items:center;justify-content:center;background:#ffd740;color:#2a2000;font-weight:700;font-size:0.75em;padding:0 6px;border-radius:6px;margin-right:6px;}";
+	private static final String DOCUMENT_TEMPLATE =
+		"<!DOCTYPE html><html><head><meta charset=\"UTF-8\"><style id=\"chat-style\">%s</style></head>"
+			+ "<body class=\"chat-root\" style=\"background:%s\"><main id=\"chat-log\" class=\"chat-log\"></main>"
+			+ "<script>(function(){const log=document.getElementById('chat-log');const styleTag=document.getElementById('chat-style');const pending=[];const container=document.scrollingElement||document.body||document.documentElement;"
+			+ "function scrollToBottom(){if(!container){return;}container.scrollTop=container.scrollHeight;}"
+			+ "function append(html,scroll){if(!log){return;}const template=document.createElement('template');template.innerHTML=html;log.appendChild(template.content);if(scroll){requestAnimationFrame(scrollToBottom);}}"
+			+ "function clearMessages(){if(log){log.innerHTML='';}}"
+			+ "function applyStyle(styleText,background){if(styleTag&&typeof styleText==='string'&&styleText.length){styleTag.textContent=styleText;}if(typeof background==='string'&&background.length&&document.body){document.body.style.background=background;}}"
+			+ "function flushPending(){if(!log){return;}while(pending.length){try{pending.shift()();}catch(ex){console.error(ex);}}}"
+			+ "window.ChatBridge={append:function(html,scroll){pending.push(function(){append(html,scroll);});if(document.readyState==='complete'){flushPending();}},"
+			+ "clear:function(){pending.push(clearMessages);if(document.readyState==='complete'){flushPending();}},"
+			+ "applyStyle:function(styleText,background){pending.push(function(){applyStyle(styleText,background);});if(document.readyState==='complete'){flushPending();}},"
+			+ "flush:flushPending};"
+			+ "if(document.readyState==='complete'){flushPending();}else{window.addEventListener('load',flushPending);}})();</script></body></html>";
+	private static final String STYLE_TEMPLATE =
+		"body{margin:0;padding:0;background:%2$s;color:#f0f0f0;font-family:%1$s;font-size:%3$dpx;}"
+			+ ".chat-root{padding:12px;overflow:auto;}"
+			+ ".chat-log{display:flex;flex-direction:column;gap:8px;}"
+			+ ".message{background:rgba(0,0,0,0.35);border-radius:10px;padding:6px 12px;box-shadow:0 2px 4px rgba(0,0,0,0.35);}"
+			+ ".message.type-error{border-left:4px solid #ff5050;}"
+			+ ".message.type-warning{border-left:4px solid #ffae42;}"
+			+ ".message.type-positive{border-left:4px solid #4caf50;}"
+			+ ".message.type-support{border-left:4px solid #5ad4ff;}"
+			+ ".message-header{display:flex;align-items:center;gap:8px;font-size:0.85em;color:rgba(255,255,255,0.7);margin-bottom:4px;}"
+			+ ".message-author{font-weight:600;color:#ffffcc;}"
+			+ ".message-body{white-space:pre-wrap;word-break:break-word;font-size:1em;line-height:1.4;}"
+			+ ".message-body .emoji{display:inline-flex;align-items:center;justify-content:center;font-family:%1$s;font-size:1.2em;line-height:1;vertical-align:-0.2em;margin:0 2px;}"
+			+ ".message-admin{background:rgba(255,215,64,0.15);border-left:4px solid #ffd740;}"
+			+ ".admin-badge{display:inline-flex;align-items:center;justify-content:center;background:#ffd740;color:#2a2000;font-weight:700;font-size:0.75em;padding:0 6px;border-radius:6px;margin-right:6px;}";
 	private static final long FX_INIT_TIMEOUT_SECONDS = 10L;
 
 	private final Format dateFormatter = new SimpleDateFormat("[HH:mm:ss] ", Locale.getDefault());
@@ -85,6 +101,8 @@ class WebChatLogView extends JComponent implements ChatLogView {
 	private Color defaultBackground = DEFAULT_BACKGROUND;
 	private String channelName = "";
 	private int fontSize;
+	private String backgroundCss;
+	private String styleSheet;
 
 	WebChatLogView() throws Exception {
 		bridge = FxBridge.tryCreate();
@@ -96,7 +114,8 @@ class WebChatLogView extends JComponent implements ChatLogView {
 		fontSize = (baseFont != null) ? Math.max(8, baseFont.getSize() - 1) : 12;
 
 		installPopupMenu();
-		bridge.loadHtml(buildDocument(), false);
+		refreshStyle();
+		bridge.loadShell(buildShellDocument());
 	}
 
 	@Override
@@ -132,7 +151,7 @@ class WebChatLogView extends JComponent implements ChatLogView {
 			plainLines.add(buildPlainLine(timestamp, line));
 		}
 
-		bridge.loadHtml(buildDocument(), true);
+		bridge.appendMessage(article, true);
 	}
 
 	@Override
@@ -141,13 +160,14 @@ class WebChatLogView extends JComponent implements ChatLogView {
 			htmlLines.clear();
 			plainLines.clear();
 		}
-		bridge.loadHtml(buildDocument(), false);
+		bridge.clearMessages();
 	}
 
 	@Override
 	public void setDefaultBackground(final Color color) {
 		defaultBackground = (color != null) ? color : DEFAULT_BACKGROUND;
-		bridge.loadHtml(buildDocument(), false);
+		refreshStyle();
+		bridge.applyStyle(styleSheet, backgroundCss);
 	}
 
 	@Override
@@ -306,17 +326,13 @@ class WebChatLogView extends JComponent implements ChatLogView {
 		return stendhal.getGameFolder() + "chat/" + nameBuilder.toString();
 	}
 
-	private String buildDocument() {
-		final String background = toCssColor(defaultBackground);
-		final String fontStack = buildFontStack();
-		final String style = buildStyleSheet(fontStack, background);
-		StringBuilder body = new StringBuilder();
-		synchronized (htmlLines) {
-			for (String line : htmlLines) {
-				body.append(line);
-			}
-		}
-		return String.format(Locale.ROOT, DOCUMENT_TEMPLATE, style, background, body.toString());
+	private void refreshStyle() {
+		backgroundCss = toCssColor(defaultBackground);
+		styleSheet = buildStyleSheet(buildFontStack(), backgroundCss);
+	}
+
+	private String buildShellDocument() {
+		return String.format(Locale.ROOT, DOCUMENT_TEMPLATE, styleSheet, backgroundCss);
 	}
 
 	private String buildStyleSheet(final String fontStack, final String background) {
@@ -394,16 +410,24 @@ class WebChatLogView extends JComponent implements ChatLogView {
 				}
 				int consumed = match.getConsumedLength();
 				String token = text.substring(index, index + consumed);
-				String dataUrl = store.dataUrlFor(token);
-				if ((dataUrl != null) && !dataUrl.isEmpty()) {
-					html.append("<img class=\\"emoji\\" src=\\"")
-						.append(dataUrl)
-						.append("\\" alt=\\"")
-						.append(escape(token))
-						.append("\\">");
+				String glyph = match.getGlyph();
+				if ((glyph != null) && !glyph.isEmpty()) {
+					html.append("<span class=\"emoji\">")
+						.append(escape(glyph))
+						.append("</span>");
 				} else {
-					String glyph = match.getGlyph();
-					html.append(escape((glyph != null) ? glyph : token));
+					String dataUrl = store.dataUrlFor(token);
+					if ((dataUrl != null) && !dataUrl.isEmpty()) {
+						html.append("<img class=\"emoji\" src=\"")
+							.append(dataUrl)
+							.append("\" alt=\"")
+							.append(escape(token))
+							.append("\">");
+					} else {
+						html.append("<span class=\"emoji\">")
+							.append(escape(token))
+							.append("</span>");
+					}
 				}
 				index += consumed;
 				continue;
@@ -447,50 +471,104 @@ class WebChatLogView extends JComponent implements ChatLogView {
 		}
 		return builder.toString();
 	}
-
+	
+	private static String toJsString(final String value) {
+		if (value == null) {
+			return "''";
+		}
+		StringBuilder builder = new StringBuilder();
+		builder.append('\'');
+		for (int i = 0; i < value.length(); i++) {
+			char ch = value.charAt(i);
+			switch (ch) {
+			case '\':
+				builder.append("\\");
+				break;
+			case '\'':
+				builder.append("\'");
+				break;
+			case '"':
+				builder.append("\\"");
+				break;
+			case '\n':
+				builder.append("\\n");
+				break;
+			case '\r':
+				builder.append("\\r");
+				break;
+			case '\t':
+				builder.append("\\t");
+				break;
+			case '\f':
+				builder.append("\\f");
+				break;
+			case '\b':
+				builder.append("\\b");
+				break;
+			default:
+				if ((ch < 0x20) || (ch > 0x7e)) {
+					builder.append(String.format(Locale.ROOT, "\\u%04x", (int) ch));
+				} else {
+					builder.append(ch);
+				}
+				break;
+			}
+		}
+		builder.append('\'');
+		return builder.toString();
+	}
+	
 	private static String toCssColor(final Color color) {
 		return String.format(Locale.ROOT, "rgb(%d,%d,%d)", color.getRed(), color.getGreen(), color.getBlue());
 	}
 
-        		private static final class FxBridge {
-			private final JComponent component;
-			private final Object engine;
-			private final Method loadContent;
-			private final Method executeScript;
-			private final Method runLater;
+		private static final class FxBridge {
+		private final JComponent component;
+		private final Object engine;
+		private final Method loadContent;
+		private final Method executeScript;
+		private final Method runLater;
+		private final List<String> pendingScripts = new ArrayList<>();
+		private volatile boolean ready;
 
-			private FxBridge(final JComponent component, final Object engine, final Method loadContent, final Method executeScript, final Method runLater) {
-				this.component = component;
-				this.engine = engine;
-				this.loadContent = loadContent;
-				this.executeScript = executeScript;
-				this.runLater = runLater;
-			}
+		private FxBridge(final JComponent component, final Object engine, final Method loadContent, final Method executeScript, final Method runLater) {
+			this.component = component;
+			this.engine = engine;
+			this.loadContent = loadContent;
+			this.executeScript = executeScript;
+			this.runLater = runLater;
+		}
 
-			static FxBridge tryCreate() throws InterruptedException {
-				try {
-					ClassLoader loader = Thread.currentThread().getContextClassLoader();
-					if (loader == null) {
-						loader = FxBridge.class.getClassLoader();
-					}
+		static FxBridge tryCreate() throws InterruptedException {
+			try {
+				ClassLoader loader = Thread.currentThread().getContextClassLoader();
+				if (loader == null) {
+					loader = FxBridge.class.getClassLoader();
+				}
 
-					Class<?> jfxPanelClass = Class.forName("javafx.embed.swing.JFXPanel", true, loader);
-					Object jfxPanel = jfxPanelClass.getConstructor().newInstance();
+				Class<?> jfxPanelClass = Class.forName("javafx.embed.swing.JFXPanel", true, loader);
+				Object jfxPanel = jfxPanelClass.getConstructor().newInstance();
 
-					Class<?> platformClass = Class.forName("javafx.application.Platform", true, loader);
-					Method runLater = platformClass.getMethod("runLater", Runnable.class);
+				Class<?> platformClass = Class.forName("javafx.application.Platform", true, loader);
+				Method runLater = platformClass.getMethod("runLater", Runnable.class);
 
-					Class<?> webViewClass = Class.forName("javafx.scene.web.WebView", false, loader);
-					Class<?> webEngineClass = Class.forName("javafx.scene.web.WebEngine", false, loader);
-					Class<?> sceneClass = Class.forName("javafx.scene.Scene", false, loader);
-					Class<?> parentClass = Class.forName("javafx.scene.Parent", false, loader);
+				Class<?> webViewClass = Class.forName("javafx.scene.web.WebView", false, loader);
+				Class<?> webEngineClass = Class.forName("javafx.scene.web.WebEngine", false, loader);
+				Class<?> sceneClass = Class.forName("javafx.scene.Scene", false, loader);
+				Class<?> parentClass = Class.forName("javafx.scene.Parent", false, loader);
+				Class<?> changeListenerClass = Class.forName("javafx.beans.value.ChangeListener", false, loader);
+				Class<?> workerStateClass = Class.forName("javafx.concurrent.Worker$State", false, loader);
 
-					Method getEngine = webViewClass.getMethod("getEngine");
-					Method loadContent = webEngineClass.getMethod("loadContent", String.class);
-					Method executeScript = webEngineClass.getMethod("executeScript", String.class);
-					Constructor<?> webViewCtor = webViewClass.getConstructor();
-					Constructor<?> sceneCtor = sceneClass.getConstructor(parentClass);
-					Method setScene = jfxPanelClass.getMethod("setScene", sceneClass);
+				Method getEngine = webViewClass.getMethod("getEngine");
+				Method loadContent = webEngineClass.getMethod("loadContent", String.class);
+				Method executeScript = webEngineClass.getMethod("executeScript", String.class);
+				Method getLoadWorker = webEngineClass.getMethod("getLoadWorker");
+				Constructor<?> webViewCtor = webViewClass.getConstructor();
+				Constructor<?> sceneCtor = sceneClass.getConstructor(parentClass);
+				Method setScene = jfxPanelClass.getMethod("setScene", sceneClass);
+
+				Enum<?> succeededState = Enum.valueOf((Class) workerStateClass, "SUCCEEDED");
+				Enum<?> failedState = Enum.valueOf((Class) workerStateClass, "FAILED");
 
 				CountDownLatch latch = new CountDownLatch(1);
 				Object[] engineHolder = new Object[1];
@@ -523,7 +601,9 @@ class WebChatLogView extends JComponent implements ChatLogView {
 					throw new UnsupportedOperationException(describeFailure(cause), cause);
 				}
 
-				return new FxBridge((JComponent) jfxPanel, engineHolder[0], loadContent, executeScript, runLater);
+				FxBridge bridge = new FxBridge((JComponent) jfxPanel, engineHolder[0], loadContent, executeScript, runLater);
+				bridge.attachLoadListener(getLoadWorker, changeListenerClass, succeededState, failedState, loader);
+				return bridge;
 			} catch (ClassNotFoundException ex) {
 				if (LOGGER.isDebugEnabled()) {
 					LOGGER.debug("JavaFX classes not found", ex);
@@ -541,6 +621,110 @@ class WebChatLogView extends JComponent implements ChatLogView {
 					LOGGER.debug("JavaFX runtime failure", ex);
 				}
 				throw new UnsupportedOperationException(describeFailure(ex), ex);
+			}
+		}
+
+		private void attachLoadListener(final Method getLoadWorker, final Class<?> changeListenerClass, final Object succeededState, final Object failedState, final ClassLoader loader) throws ReflectiveOperationException {
+			Object worker = getLoadWorker.invoke(engine);
+			Method stateProperty = worker.getClass().getMethod("stateProperty");
+			Object property = stateProperty.invoke(worker);
+			Method addListener = property.getClass().getMethod("addListener", changeListenerClass);
+			Object listener = Proxy.newProxyInstance(loader, new Class<?>[] { changeListenerClass }, (proxy, method, args) -> {
+				if ("changed".equals(method.getName()) && (args != null) && (args.length == 3)) {
+					Object newValue = args[2];
+					if ((newValue != null) && newValue.equals(succeededState)) {
+						ready = true;
+						flushScripts();
+					} else if ((failedState != null) && failedState.equals(newValue)) {
+						LOGGER.warn("JavaFX WebView load failed");
+					}
+				}
+				return null;
+			});
+			addListener.invoke(property, listener);
+		}
+
+		JComponent getComponent() {
+			return component;
+		}
+
+		void loadShell(final String html) {
+			if (html == null) {
+				return;
+			}
+			ready = false;
+			synchronized (pendingScripts) {
+				pendingScripts.clear();
+			}
+			try {
+				runLater.invoke(null, new Runnable() {
+					@Override
+					public void run() {
+						try {
+							loadContent.invoke(engine, html);
+						} catch (IllegalAccessException | InvocationTargetException ex) {
+							LOGGER.warn("Failed to render chat HTML", ex);
+						}
+					}
+				});
+			} catch (IllegalAccessException | InvocationTargetException ex) {
+				LOGGER.warn("Failed to schedule JavaFX update", ex);
+			}
+		}
+
+		void appendMessage(final String html, final boolean scrollToBottom) {
+			if (html == null) {
+				return;
+			}
+			final String script = "if(window.ChatBridge){ChatBridge.append(" + WebChatLogView.toJsString(html) + "," + (scrollToBottom ? "true" : "false") + ");}";
+			enqueueScript(script);
+		}
+
+		void clearMessages() {
+			enqueueScript("if(window.ChatBridge){ChatBridge.clear();}");
+		}
+
+		void applyStyle(final String styleText, final String background) {
+			final String script = "if(window.ChatBridge){ChatBridge.applyStyle(" + WebChatLogView.toJsString(styleText) + "," + WebChatLogView.toJsString(background) + ");}";
+			enqueueScript(script);
+		}
+
+		private void enqueueScript(final String script) {
+			if ((script == null) || script.isEmpty()) {
+				return;
+			}
+			synchronized (pendingScripts) {
+				pendingScripts.add(script);
+			}
+			if (ready) {
+				flushScripts();
+			}
+		}
+
+		private void flushScripts() {
+			final List<String> commands;
+			synchronized (pendingScripts) {
+				if (pendingScripts.isEmpty()) {
+					return;
+				}
+				commands = new ArrayList<>(pendingScripts);
+				pendingScripts.clear();
+			}
+			try {
+				runLater.invoke(null, new Runnable() {
+					@Override
+					public void run() {
+						for (String command : commands) {
+							try {
+								executeScript.invoke(engine, command);
+							} catch (IllegalAccessException | InvocationTargetException ex) {
+								LOGGER.warn("Failed to execute chat script", ex);
+							}
+						}
+					}
+				});
+			} catch (IllegalAccessException | InvocationTargetException ex) {
+				LOGGER.warn("Failed to schedule chat script execution", ex);
 			}
 		}
 
@@ -569,34 +753,11 @@ class WebChatLogView extends JComponent implements ChatLogView {
 					next = current.getCause();
 				}
 				if (next == null) {
-					return current;
+				return current;
 				}
 				current = next;
 			}
 		}
-
-		JComponent getComponent() {
-			return component;
-		}
-
-		void loadHtml(final String html, final boolean scrollToBottom) {
-			try {
-				runLater.invoke(null, new Runnable() {
-					@Override
-					public void run() {
-						try {
-							loadContent.invoke(engine, html);
-							if (scrollToBottom) {
-								executeScript.invoke(engine, "window.scrollTo(0, document.body.scrollHeight);");
-							}
-						} catch (IllegalAccessException | InvocationTargetException ex) {
-							LOGGER.warn("Failed to render chat HTML", ex);
-						}
-					}
-				});
-			} catch (IllegalAccessException | InvocationTargetException ex) {
-				LOGGER.warn("Failed to schedule JavaFX update", ex);
-			}
-		}
 	}
+
 }
