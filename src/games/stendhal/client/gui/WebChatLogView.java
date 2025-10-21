@@ -88,14 +88,14 @@ import games.stendhal.common.NotificationType;
 		+ "flush:flushPending};"
 		+ "if(document.readyState==='complete'){flushPending();scrollToBottom();}"
 		+ "else{window.addEventListener('load',function(){flushPending();scrollToBottom();});}})();</script></body></html>";
-		private static final String STYLE_TEMPLATE =
-		"html,body{height:100%;}"
+	private static final String STYLE_TEMPLATE =
+		"html,body{height:100%%;}"
 		+ "body{margin:0;padding:0;background:%2$s;color:#f2f3f5;font-family:%1$s;font-size:%3$dpx;box-sizing:border-box;}"
-		+ ".chat-root{min-height:100%;display:flex;flex-direction:column;background:%2$s;}"
+		+ ".chat-root{min-height:100%%;display:flex;flex-direction:column;background:%2$s;}"
 		+ ".chat-scroll{flex:1;overflow:auto;padding:16px 0;}"
 		+ ".chat-log{display:flex;flex-direction:column;gap:16px;padding:0 20px;}"
 		+ ".message{display:flex;gap:12px;align-items:flex-start;}"
-		+ ".message-avatar{width:36px;height:36px;border-radius:50%;background:#5865f2;color:#ffffff;font-weight:700;font-size:0.85em;display:flex;align-items:center;justify-content:center;text-transform:uppercase;box-shadow:0 4px 8px rgba(0,0,0,0.35);}"
+		+ ".message-avatar{width:36px;height:36px;border-radius:50%%;background:#5865f2;color:#ffffff;font-weight:700;font-size:0.85em;display:flex;align-items:center;justify-content:center;text-transform:uppercase;box-shadow:0 4px 8px rgba(0,0,0,0.35);}"
 		+ ".message-content{flex:1;display:flex;flex-direction:column;gap:6px;background:rgba(49,51,56,0.65);border-radius:12px;padding:10px 14px;border-left:4px solid transparent;box-shadow:0 6px 12px rgba(0,0,0,0.35);}"
 		+ ".message-header{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px;font-size:0.85em;color:#949ba4;}"
 		+ ".message-author{font-weight:600;color:#f2f3f5;}"
