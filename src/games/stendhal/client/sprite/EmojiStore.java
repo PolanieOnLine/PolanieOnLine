@@ -86,6 +86,7 @@ public class EmojiStore {
 	private static final int ICON_PADDING = 4;
 	private static final char VARIATION_SELECTOR_TEXT = '\uFE0E';
 	private static final char VARIATION_SELECTOR_EMOJI = '\uFE0F';
+	private static final int DIRECT_EMOJI_MAX_LENGTH = 16;
 
 	private static final class RenderedEmoji {
 		private final String glyph;
@@ -356,13 +357,41 @@ public class EmojiStore {
 		}
 	}
 
-	private boolean looksLikeGlyph(final String key) {
-		if (key == null || key.isEmpty()) {
-			return false;
-		}
-		final int codePoint = key.codePointAt(0);
-		return codePoint > 0xFF;
+private boolean looksLikeGlyph(final String key) {
+	if ((key == null) || key.isEmpty()) {
+		return false;
 	}
+	final int codePoint = key.codePointAt(0);
+	return codePoint > 0xFF;
+}
+
+private boolean looksLikeEmojiSequence(final String text) {
+	if ((text == null) || text.isEmpty()) {
+		return false;
+	}
+	if (looksLikeGlyph(text)) {
+		return true;
+	}
+	if (!text.isEmpty()) {
+		final char first = text.charAt(0);
+		if (((first == '#') || Character.isDigit(first)) && (text.indexOf('\u20E3') != -1)) {
+			return true;
+		}
+	}
+	for (int offset = 0; offset < text.length();) {
+		final int codePoint = text.codePointAt(offset);
+		if ((codePoint == 0x200D)
+				|| (codePoint == VARIATION_SELECTOR_TEXT)
+				|| (codePoint == VARIATION_SELECTOR_EMOJI)
+				|| ((codePoint >= 0x1F3FB) && (codePoint <= 0x1F3FF))
+				|| ((codePoint >= 0x1F1E6) && (codePoint <= 0x1F1FF))
+				|| (codePoint >= 0x1F000)) {
+			return true;
+		}
+		offset += Character.charCount(codePoint);
+	}
+	return false;
+}
 
 	/**
 	* Creates an emoji sprite.
@@ -681,11 +710,11 @@ public class EmojiStore {
 	}
 
 	public EmojiMatch matchEmoji(final CharSequence text, final int index) {
-		if ((text == null) || (index < 0) || (index >= text.length()) || (longestKeyLength == 0)) {
+		if ((text == null) || (index < 0) || (index >= text.length())) {
 			return null;
 		}
-
-		final int maxEnd = Math.min(text.length(), index + longestKeyLength);
+		final int scanLength = Math.max(longestKeyLength, DIRECT_EMOJI_MAX_LENGTH);
+		final int maxEnd = Math.min(text.length(), index + scanLength);
 		for (int end = maxEnd; end > index; end--) {
 			final String candidate = text.subSequence(index, end).toString();
 			final int consumed = end - index;
@@ -700,8 +729,17 @@ public class EmojiStore {
 					return normalizedMatch;
 				}
 			}
+			final EmojiMatch glyphMatch = matchDirectGlyph(candidate, consumed);
+			if (glyphMatch != null) {
+				return glyphMatch;
+			}
+			if (!normalized.isEmpty() && !normalized.equals(candidate)) {
+				final EmojiMatch normalizedGlyph = matchDirectGlyph(normalized, consumed);
+				if (normalizedGlyph != null) {
+					return normalizedGlyph;
+				}
+			}
 		}
-
 		return null;
 	}
 
@@ -717,6 +755,18 @@ public class EmojiStore {
 			glyph = ":" + name + ":";
 		}
 		return new EmojiMatch(name, glyph, consumedChars);
+	}
+
+	private EmojiMatch matchDirectGlyph(final String candidate, final int consumedChars) {
+		if ((candidate == null) || candidate.isEmpty() || !looksLikeEmojiSequence(candidate)) {
+			return null;
+		}
+		final RenderedEmoji rendered = renderEmoji(candidate);
+		if (rendered == null) {
+			return null;
+		}
+		final String glyph = (rendered.glyph != null) ? rendered.glyph : ensureEmojiPresentation(candidate);
+		return new EmojiMatch(candidate, glyph, consumedChars);
 	}
 
 	private static String stripVariationSelectors(final String text) {

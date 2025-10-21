@@ -199,8 +199,16 @@ class WebChatLogView extends JComponent implements ChatLogView {
 		css.append(".emoji{font-family:").append(emojiStack).append(";font-size:1.1em;line-height:1.1em;}");
 		css.append(".emoji-span{display:inline-flex;align-items:center;gap:2px;}");
 		css.append(".emoji-icon{height:1.25em;width:1.25em;vertical-align:middle;}");
+		css.append(".chat-log{scrollbar-color:#8a5f34 #2c1503;}");
+		css.append(".chat-log::-webkit-scrollbar{width:18px;background:#2c1503;}");
+		css.append(".chat-log::-webkit-scrollbar-track{background:linear-gradient(180deg,#452308 0%,#331703 50%,#452308 100%);border-left:1px solid rgba(255,230,170,0.25);border-right:1px solid rgba(0,0,0,0.45);box-shadow:inset 0 0 4px rgba(0,0,0,0.6);}");
+		css.append(".chat-log::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#9a6d3a 0%,#7f4f20 50%,#9a6d3a 100%);border:1px solid rgba(60,30,0,0.85);border-radius:6px;box-shadow:inset 0 0 4px rgba(0,0,0,0.5);}");
+		css.append(".chat-log::-webkit-scrollbar-thumb:hover{background:linear-gradient(180deg,#b78043 0%,#8f5a27 50%,#b78043 100%);}");
+		css.append(".chat-log::-webkit-scrollbar-button{height:18px;background:linear-gradient(180deg,#4d2608 0%,#331703 100%);border:1px solid rgba(60,30,0,0.8);box-shadow:inset 0 0 3px rgba(0,0,0,0.6);}");
+		css.append(".chat-log::-webkit-scrollbar-button:single-button:vertical:decrement{background-image:linear-gradient(180deg,rgba(255,230,170,0.45) 0%,rgba(255,230,170,0.1) 100%),url('data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjZmZlNmE0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMiIgaGVpZ2h0PSIxMiI+PHBhdGggZD0iTTYgMy4ybC0zLjQgNS42aDYuOHoiLz48L3N2Zz4=');background-repeat:no-repeat;background-position:center;background-size:12px 12px;}");
+		css.append(".chat-log::-webkit-scrollbar-button:single-button:vertical:increment{background-image:linear-gradient(180deg,rgba(0,0,0,0.35) 0%,rgba(0,0,0,0.65) 100%),url('data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjZmZlNmE0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMiIgaGVpZ2h0PSIxMiI+PHBhdGggZD0iTTIuNiAzLjRoNi44TDYgOS4yWiIvPjwvc3ZnPg==');background-repeat:no-repeat;background-position:center;background-size:12px 12px;}");
 		return css.toString();
-	}
+}
 
 	private String buildEmojiFontStack(final StringBuilder css) {
 		String stack = "'Noto Color Emoji','Segoe UI Emoji','Apple Color Emoji','Twitter Color Emoji','EmojiOne Color',sans-serif";

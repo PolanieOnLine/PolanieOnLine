@@ -99,13 +99,27 @@ public class ChatTextController {
 	* Add the special key bindings.
 	*/
 	private void setupKeys() {
-		final InputMap input = playerChatText.getInputMap(JComponent.WHEN_FOCUSED);
-		input.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, false), "submit");
-		input.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, true), "submit");
-		input.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, KeyEvent.SHIFT_DOWN_MASK), "insert_line_break");
-		input.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, KeyEvent.SHIFT_DOWN_MASK), "history_previous");
-		input.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, KeyEvent.SHIFT_DOWN_MASK), "history_next");
-		input.put(KeyStroke.getKeyStroke("F1"), "manual");
+		final KeyStroke enterPress = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, false);
+		final KeyStroke enterRelease = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, true);
+		final KeyStroke shiftEnter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, KeyEvent.SHIFT_DOWN_MASK);
+		final KeyStroke shiftEnterRelease = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, KeyEvent.SHIFT_DOWN_MASK, true);
+
+		bindSubmitKey(JComponent.WHEN_FOCUSED, enterPress);
+		bindSubmitKey(JComponent.WHEN_FOCUSED, enterRelease);
+		bindSubmitKey(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, enterPress);
+		bindSubmitKey(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, enterRelease);
+		bindSubmitKey(JComponent.WHEN_IN_FOCUSED_WINDOW, enterPress);
+		bindSubmitKey(JComponent.WHEN_IN_FOCUSED_WINDOW, enterRelease);
+
+		bindLineBreakKey(JComponent.WHEN_FOCUSED, shiftEnter);
+		bindLineBreakKey(JComponent.WHEN_FOCUSED, shiftEnterRelease);
+		bindLineBreakKey(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, shiftEnter);
+		bindLineBreakKey(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, shiftEnterRelease);
+
+		final InputMap focused = playerChatText.getInputMap(JComponent.WHEN_FOCUSED);
+		focused.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, KeyEvent.SHIFT_DOWN_MASK), "history_previous");
+		focused.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, KeyEvent.SHIFT_DOWN_MASK), "history_next");
+		focused.put(KeyStroke.getKeyStroke("F1"), "manual");
 
 		final ActionMap actions = playerChatText.getActionMap();
 		actions.put("submit", new AbstractAction() {
@@ -137,6 +151,20 @@ public class ChatTextController {
 				SlashActionRepository.get("manual").execute(null, null);
 			}
 		});
+	}
+
+	private void bindSubmitKey(final int condition, final KeyStroke stroke) {
+		final InputMap map = playerChatText.getInputMap(condition);
+		if (map != null) {
+			map.put(stroke, "submit");
+		}
+	}
+
+	private void bindLineBreakKey(final int condition, final KeyStroke stroke) {
+		final InputMap map = playerChatText.getInputMap(condition);
+		if (map != null) {
+			map.put(stroke, "insert_line_break");
+		}
 	}
 
 	private void submitCurrentLine() {
