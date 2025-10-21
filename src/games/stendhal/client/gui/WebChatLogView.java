@@ -117,10 +117,10 @@ class WebChatLogView extends JComponent implements ChatLogView {
 		final boolean admin = isAdmin(type, line);
 
 		final String cssClass = cssClassFor(type, admin);
-		final String adminBadge = admin ? "<span class="admin-badge">ADMIN</span>" : "";
+		final String adminBadge = admin ? "<span class=\"admin-badge\">ADMIN</span>" : "";
 		final String article = String.format(
-				Locale.ROOT,
-				"<article class="message %s"><div class="message-header">%s<span class="message-author">%s</span><span>%s</span></div><div class="message-body">%s</div></article>",
+			Locale.ROOT,
+			"<article class=\"message %s\"><div class=\"message-header\">%s<span class=\"message-author\">%s</span><span>%s</span></div><div class=\"message-body\">%s</div></article>",
 				cssClass,
 				adminBadge,
 				author,
@@ -345,7 +345,7 @@ class WebChatLogView extends JComponent implements ChatLogView {
 			case '"':
 				builder.append("&quot;");
 				break;
-			case ''':
+			case '\'':
 				builder.append("&#39;");
 				break;
 			default:
