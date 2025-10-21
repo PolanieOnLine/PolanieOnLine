@@ -1,30 +1,22 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2015 - Stendhal                    *
- ***************************************************************************
- ***************************************************************************
- *                                                                         *
- *   This program is free software; you can redistribute it and/or modify  *
- *   it under the terms of the GNU General Public License as published by  *
- *   the Free Software Foundation; either version 2 of the License, or     *
- *   (at your option) any later version.                                   *
- *                                                                         *
- ***************************************************************************/
+*                   (C) Copyright 2003-2015 - Stendhal                    *
+***************************************************************************
+***************************************************************************
+*                                                                         *
+*   This program is free software; you can redistribute it and/or modify  *
+*   it under the terms of the GNU General Public License as published by  *
+*   the Free Software Foundation; either version 2 of the License, or     *
+*   (at your option) any later version.                                   *
+*                                                                         *
+***************************************************************************/
 package games.stendhal.client.gui.chattext;
 
-import java.awt.Font;
-import java.awt.font.TextAttribute;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
-import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
@@ -39,23 +31,22 @@ import games.stendhal.client.stendhal;
 import games.stendhal.client.actions.SlashActionRepository;
 import games.stendhal.client.scripting.ChatLineParser;
 import games.stendhal.common.constants.SoundLayer;
-import games.stendhal.client.sprite.EmojiStore;
 
 public class ChatTextController {
 	/** Maximum text length. Public chat is limited to 1000 server side. */
 	private static final int MAX_TEXT_LENGTH = 1000;
 
-	private final JTextField playerChatText = new JTextField("");
+	private final EmojiTextPane playerChatText = new EmojiTextPane();
 
 	private ChatCache cache;
 	private static ChatTextController instance;
 
 	/**
-	 * Retrieves singleton instance.
-	 *
-	 * @return
-	 *   `ChatTextController` instance.
-	 */
+	* Retrieves singleton instance.
+	*
+	* @return
+	*   `ChatTextController` instance.
+	*/
 	public static ChatTextController get() {
 		if (ChatTextController.instance == null) {
 			ChatTextController.instance = new ChatTextController();
@@ -64,24 +55,14 @@ public class ChatTextController {
 	}
 
 	/**
-	 * Private singleton constructor.
-	 */
+	* Private singleton constructor.
+	*/
 	private ChatTextController() {
-		playerChatText.setFocusTraversalKeysEnabled(false);
-		final Font baseFont = playerChatText.getFont();
-		final float desiredSize = (baseFont != null) ? baseFont.getSize2D() : 14f;
-		final Font emojiFont = EmojiStore.get().deriveEmojiFont(desiredSize);
-		if ((baseFont != null) && (emojiFont != null)) {
-			final Map<TextAttribute, Object> attributes = new HashMap<TextAttribute, Object>(baseFont.getAttributes());
-			attributes.put(TextAttribute.FAMILY, Arrays.asList(baseFont.getFamily(), emojiFont.getFamily()));
-			playerChatText.setFont(baseFont.deriveFont(attributes));
-		}
 		Document doc = playerChatText.getDocument();
 		if (doc instanceof AbstractDocument) {
 			((AbstractDocument) doc).setDocumentFilter(new SizeFilter(MAX_TEXT_LENGTH));
 		}
 		setupKeys();
-		playerChatText.addActionListener(new ParserHandler());
 		StendhalClient client = StendhalClient.get();
 		String logFile = null;
 		if (client != null) {
@@ -94,11 +75,11 @@ public class ChatTextController {
 	}
 
 	/**
-	 * Sets focus to chat input.
-	 *
-	 * @return
-	 *   `true` if focus change is likely to succeed.
-	 */
+	* Sets focus to chat input.
+	*
+	* @return
+	*   `true` if focus change is likely to succeed.
+	*/
 	public boolean setFocus() {
 		return playerChatText.requestFocusInWindow();
 	}
@@ -112,15 +93,23 @@ public class ChatTextController {
 	}
 
 	/**
-	 * Add the special key bindings.
-	 */
+	* Add the special key bindings.
+	*/
 	private void setupKeys() {
 		InputMap input = playerChatText.getInputMap();
+		input.put(KeyStroke.getKeyStroke("ENTER"), "submit");
+		input.put(KeyStroke.getKeyStroke("shift ENTER"), "submit");
 		input.put(KeyStroke.getKeyStroke("shift UP"), "history_previous");
 		input.put(KeyStroke.getKeyStroke("shift DOWN"), "history_next");
 		input.put(KeyStroke.getKeyStroke("F1"), "manual");
 
 		ActionMap actions = playerChatText.getActionMap();
+		actions.put("submit", new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				submitCurrentLine();
+			}
+		});
 		actions.put("history_previous", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -145,14 +134,10 @@ public class ChatTextController {
 		});
 	}
 
-	private class ParserHandler implements ActionListener {
-		@Override
-		public void actionPerformed(final ActionEvent e) {
-			final String text = e.getActionCommand();
-
-			if (ChatLineParser.parseAndHandle(text)) {
-				clearLine();
-			}
+	private void submitCurrentLine() {
+		final String text = playerChatText.getText();
+		if (ChatLineParser.parseAndHandle(text)) {
+			clearLine();
 		}
 	}
 
@@ -179,8 +164,8 @@ public class ChatTextController {
 	}
 
 	/**
-	 * A document filter that limits the maximum allowed length of a document.
-	 */
+	* A document filter that limits the maximum allowed length of a document.
+	*/
 	private static class SizeFilter extends DocumentFilter {
 		/** Sound to play if the user tries to enter too long string. */
 		private static final String sound = "click-1";
@@ -188,18 +173,18 @@ public class ChatTextController {
 		final int maxSize;
 
 		/**
-		 * Create a new SizeFilter.
-		 *
-		 * @param maxSize maximum length of the document
-		 */
+		* Create a new SizeFilter.
+		*
+		* @param maxSize maximum length of the document
+		*/
 		SizeFilter(int maxSize) {
 			this.maxSize = maxSize;
 		}
 
 		@Override
 		public void insertString(FilterBypass fb, int offs, String str,
-				AttributeSet a) throws BadLocationException {
-			if ((fb.getDocument().getLength() + str.length()) <= maxSize) {
+		AttributeSet a) throws BadLocationException {
+			if (allowsChange(fb, offs, 0, str)) {
 				super.insertString(fb, offs, str, a);
 			} else {
 				fail();
@@ -208,17 +193,34 @@ public class ChatTextController {
 
 		@Override
 		public void replace(FilterBypass fb, int offs, int length, String str,
-				AttributeSet a) throws BadLocationException {
-			if ((fb.getDocument().getLength() + str.length() - length) <= maxSize) {
+		AttributeSet a) throws BadLocationException {
+			if (allowsChange(fb, offs, length, str)) {
 				super.replace(fb, offs, length, str, a);
 			} else {
 				fail();
 			}
 		}
 
+		private boolean allowsChange(final FilterBypass fb, final int offs, final int length, final String str)
+		throws BadLocationException {
+			final Document document = fb.getDocument();
+			int current = document.getLength();
+			int removal = length;
+			if (document instanceof EmojiTextPane.PlainTextSupport) {
+				final EmojiTextPane.PlainTextSupport support = (EmojiTextPane.PlainTextSupport) document;
+				current = support.getPlainLength();
+				removal = support.plainLengthForRange(offs, length);
+			}
+			int addition = (str != null) ? str.length() : 0;
+			if (document instanceof EmojiTextPane.PlainTextSupport) {
+				addition = ((EmojiTextPane.PlainTextSupport) document).plainLengthForText(str);
+			}
+			return ((current - removal) + addition) <= maxSize;
+		}
+
 		/**
-		 * Called when the document change is rejected. Notify the user.
-		 */
+		* Called when the document change is rejected. Notify the user.
+		*/
 		private void fail() {
 			ClientSingletonRepository.getSound().getGroup(SoundLayer.USER_INTERFACE.groupName).play(sound, 0, null, null, false, true);
 		}

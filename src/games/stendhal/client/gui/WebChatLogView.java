@@ -52,9 +52,9 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
 /**
- * JavaFX powered chat log view rendering messages with HTML/CSS styling and
- * emoji-aware formatting.
- */
+* JavaFX powered chat log view rendering messages with HTML/CSS styling and
+* emoji-aware formatting.
+*/
 class WebChatLogView extends JComponent implements ChatLogView {
 	private static final long serialVersionUID = 6623284543031880666L;
 
@@ -64,7 +64,7 @@ class WebChatLogView extends JComponent implements ChatLogView {
 	private static final char EMOJI_PLACEHOLDER_PREFIX = '\uFFF0';
 
 	private static final StringFormatter<java.util.Set<String>, CssClassSet> FORMATTER
-			= new StringFormatter<java.util.Set<String>, CssClassSet>();
+	= new StringFormatter<java.util.Set<String>, CssClassSet>();
 	private static final CssClassSet DEFAULT_FRAGMENT = new CssClassSet().addClass("fragment");
 
 	static {
@@ -127,7 +127,7 @@ class WebChatLogView extends JComponent implements ChatLogView {
 			plainLines.add(plainLine);
 		}
 
-		refreshDocument();
+		bridge.appendLine(htmlLine);
 	}
 
 	@Override
@@ -166,7 +166,7 @@ class WebChatLogView extends JComponent implements ChatLogView {
 			}
 		}
 		builder.append("</div>");
-		builder.append("<script>window.requestAnimationFrame(function(){var c=document.getElementById('chat');if(c){c.scrollTop=c.scrollHeight;}window.scrollTo(0, document.body.scrollHeight);});</script>");
+		builder.append("<script>(function(){var c=document.getElementById('chat');window.chatlog={container:c,appendLine:function(html){if(!this.container){return;}var wrapper=document.createElement('div');wrapper.innerHTML=html;while(wrapper.firstChild){this.container.appendChild(wrapper.firstChild);}this.scrollToBottom();},clear:function(){if(this.container){this.container.innerHTML='';}},scrollToBottom:function(){if(this.container){this.container.scrollTop=this.container.scrollHeight;}window.scrollTo(0,document.body.scrollHeight);}};window.chatlog.scrollToBottom();})();</script>");
 		builder.append("</body></html>");
 		return builder.toString();
 	}
@@ -319,8 +319,8 @@ class WebChatLogView extends JComponent implements ChatLogView {
 			final String classes = (attrs != null) ? attrs.classString() : "";
 			if ((classes != null) && !classes.isEmpty()) {
 				out.append("<span class=\"").append(classes).append("\">")
-					.append(escaped)
-					.append("</span>");
+				.append(escaped)
+				.append("</span>");
 			} else {
 				out.append(escaped);
 			}
@@ -354,25 +354,25 @@ class WebChatLogView extends JComponent implements ChatLogView {
 			return "";
 		}
 		switch (type) {
-		case ERROR:
-		case NEGATIVE:
-		case DAMAGE:
-		case POISON:
-		case SIGNIFICANT_NEGATIVE:
+			case ERROR:
+			case NEGATIVE:
+			case DAMAGE:
+			case POISON:
+			case SIGNIFICANT_NEGATIVE:
 			return "type-error";
-		case WARNING:
+			case WARNING:
 			return "type-warning";
-		case POSITIVE:
-		case HEAL:
-		case SIGNIFICANT_POSITIVE:
+			case POSITIVE:
+			case HEAL:
+			case SIGNIFICANT_POSITIVE:
 			return "type-positive";
-		case SUPPORT:
-		case RESPONSE:
+			case SUPPORT:
+			case RESPONSE:
 			return "type-support";
-		case CLIENT:
-		case INFORMATION:
+			case CLIENT:
+			case INFORMATION:
 			return "type-client";
-		default:
+			default:
 			return "";
 		}
 	}
@@ -484,22 +484,22 @@ class WebChatLogView extends JComponent implements ChatLogView {
 		for (int i = 0; i < text.length(); i++) {
 			final char ch = text.charAt(i);
 			switch (ch) {
-			case '<':
+				case '<':
 				builder.append("&lt;");
 				break;
-			case '>':
+				case '>':
 				builder.append("&gt;");
 				break;
-			case '"':
+				case '"':
 				builder.append("&quot;");
 				break;
-			case '&':
+				case '&':
 				builder.append("&amp;");
 				break;
-			case '\'':
+				case '\'':
 				builder.append("&#39;");
 				break;
-			default:
+				default:
 				builder.append(ch);
 				break;
 			}
@@ -520,7 +520,9 @@ class WebChatLogView extends JComponent implements ChatLogView {
 		private final JFXPanel panel;
 		private WebEngine engine;
 		private boolean initialized;
+		private boolean documentReady;
 		private String pendingContent;
+		private final List<String> pendingAppends = new ArrayList<String>();
 
 		private FxBridge(final JFXPanel panel) {
 			this.panel = panel;
@@ -535,7 +537,8 @@ class WebChatLogView extends JComponent implements ChatLogView {
 			engine.setJavaScriptEnabled(true);
 			engine.getLoadWorker().stateProperty().addListener((observable, oldValue, newValue) -> {
 				if (newValue == Worker.State.SUCCEEDED) {
-					engine.executeScript("window.scrollTo(0, document.body.scrollHeight);");
+					documentReady = true;
+					flushPendingAppends();
 				}
 			});
 
@@ -545,6 +548,8 @@ class WebChatLogView extends JComponent implements ChatLogView {
 			initialized = true;
 
 			if (pendingContent != null) {
+				documentReady = false;
+				pendingAppends.clear();
 				engine.loadContent(pendingContent, "text/html");
 				pendingContent = null;
 			}
@@ -556,8 +561,75 @@ class WebChatLogView extends JComponent implements ChatLogView {
 					pendingContent = html;
 					return;
 				}
+				documentReady = false;
+				pendingAppends.clear();
 				engine.loadContent(html, "text/html");
 			});
+		}
+
+		void appendLine(final String html) {
+			if ((html == null) || html.isEmpty()) {
+				return;
+			}
+			Platform.runLater(() -> {
+				if (!initialized || !documentReady) {
+					pendingAppends.add(html);
+					return;
+				}
+				final StringBuilder script = new StringBuilder();
+				script.append("if(window.chatlog){window.chatlog.appendLine(")
+					.append(toJsString(html))
+					.append(");window.chatlog.scrollToBottom();}");
+				engine.executeScript(script.toString());
+			});
+		}
+
+		private void flushPendingAppends() {
+			if (engine == null) {
+				pendingAppends.clear();
+				return;
+			}
+			final StringBuilder script = new StringBuilder("if(window.chatlog){");
+				for (final String line : pendingAppends) {
+					script.append("window.chatlog.appendLine(")
+					.append(toJsString(line))
+					.append(");");
+				}
+				script.append("window.chatlog.scrollToBottom();}");
+			pendingAppends.clear();
+			engine.executeScript(script.toString());
+		}
+
+		private static String toJsString(final String value) {
+			final StringBuilder out = new StringBuilder();
+			out.append('"');
+			if (value != null) {
+				for (int i = 0; i < value.length(); i++) {
+					final char ch = value.charAt(i);
+					switch (ch) {
+						case '\\':
+						out.append("\\\\");
+						break;
+						case '"':
+						out.append("\\\"");
+						break;
+						case '\n':
+						out.append("\\n");
+						break;
+						case '\r':
+						out.append("\\r");
+						break;
+						case '\t':
+						out.append("\\t");
+						break;
+						default:
+						out.append(ch);
+						break;
+					}
+				}
+			}
+			out.append('"');
+			return out.toString();
 		}
 	}
 }
