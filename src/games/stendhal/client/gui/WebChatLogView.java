@@ -45,6 +45,8 @@ import org.apache.log4j.Logger;
 import games.stendhal.client.UserContext;
 import games.stendhal.client.gui.chatlog.EventLine;
 import games.stendhal.client.gui.chatlog.HeaderLessEventLine;
+import games.stendhal.client.sprite.EmojiStore;
+import games.stendhal.client.sprite.EmojiStore.EmojiMatch;
 import games.stendhal.client.stendhal;
 import games.stendhal.common.NotificationType;
 
@@ -57,21 +59,22 @@ class WebChatLogView extends JComponent implements ChatLogView {
 
 	private static final Logger LOGGER = Logger.getLogger(WebChatLogView.class);
 	private static final Color DEFAULT_BACKGROUND = new Color(60, 30, 0);
-	private static final String FONT_STACK = "'Segoe UI Emoji','Apple Color Emoji','Noto Color Emoji','Twemoji Mozilla','EmojiOne Color','Noto Emoji',sans-serif";
+	private static final String DEFAULT_FONT_STACK = "'Segoe UI Emoji','Apple Color Emoji','Noto Color Emoji','Twemoji Mozilla','EmojiOne Color','Noto Emoji',sans-serif";
 	private static final String DOCUMENT_TEMPLATE = "<!DOCTYPE html><html><head><meta charset=\"UTF-8\"><style>%s</style></head><body class=\"chat-root\" style=\"background:%s\"><main class=\"chat-log\">%s</main></body></html>";
 	private static final String STYLE_TEMPLATE = "body{margin:0;padding:0;background:%2$s;color:#f0f0f0;font-family:%1$s;font-size:%3$dpx;}" +
-			".chat-root{padding:12px;overflow:auto;}" +
-			".chat-log{display:flex;flex-direction:column;gap:8px;}" +
-			".message{background:rgba(0,0,0,0.35);border-radius:10px;padding:6px 12px;box-shadow:0 2px 4px rgba(0,0,0,0.35);}" +
-			".message.type-error{border-left:4px solid #ff5050;}" +
-			".message.type-warning{border-left:4px solid #ffae42;}" +
-			".message.type-positive{border-left:4px solid #4caf50;}" +
-			".message.type-support{border-left:4px solid #5ad4ff;}" +
-			".message-header{display:flex;align-items:center;gap:8px;font-size:0.85em;color:rgba(255,255,255,0.7);margin-bottom:4px;}" +
-			".message-author{font-weight:600;color:#ffffcc;}" +
-			".message-body{white-space:pre-wrap;word-break:break-word;font-size:1em;line-height:1.4;}" +
-			".message-admin{background:rgba(255,215,64,0.15);border-left:4px solid #ffd740;}" +
-			".admin-badge{display:inline-flex;align-items:center;justify-content:center;background:#ffd740;color:#2a2000;font-weight:700;font-size:0.75em;padding:0 6px;border-radius:6px;margin-right:6px;}";
+		".chat-root{padding:12px;overflow:auto;}" +
+		".chat-log{display:flex;flex-direction:column;gap:8px;}" +
+		".message{background:rgba(0,0,0,0.35);border-radius:10px;padding:6px 12px;box-shadow:0 2px 4px rgba(0,0,0,0.35);}" +
+		".message.type-error{border-left:4px solid #ff5050;}" +
+		".message.type-warning{border-left:4px solid #ffae42;}" +
+		".message.type-positive{border-left:4px solid #4caf50;}" +
+		".message.type-support{border-left:4px solid #5ad4ff;}" +
+		".message-header{display:flex;align-items:center;gap:8px;font-size:0.85em;color:rgba(255,255,255,0.7);margin-bottom:4px;}" +
+		".message-author{font-weight:600;color:#ffffcc;}" +
+		".message-body{white-space:pre-wrap;word-break:break-word;font-size:1em;line-height:1.4;}" +
+		".message-body img.emoji{height:1.2em;width:1.2em;vertical-align:-0.2em;margin:0 2px;}" +
+		".message-admin{background:rgba(255,215,64,0.15);border-left:4px solid #ffd740;}" +
+		".admin-badge{display:inline-flex;align-items:center;justify-content:center;background:#ffd740;color:#2a2000;font-weight:700;font-size:0.75em;padding:0 6px;border-radius:6px;margin-right:6px;}";
 	private static final long FX_INIT_TIMEOUT_SECONDS = 10L;
 
 	private final Format dateFormatter = new SimpleDateFormat("[HH:mm:ss] ", Locale.getDefault());
@@ -243,8 +246,9 @@ class WebChatLogView extends JComponent implements ChatLogView {
 	}
 
 	private String buildDocument() {
-		String background = toCssColor(defaultBackground);
-		String style = String.format(Locale.ROOT, STYLE_TEMPLATE, FONT_STACK, background, fontSize);
+		final String background = toCssColor(defaultBackground);
+		final String fontStack = buildFontStack();
+		final String style = buildStyleSheet(fontStack, background);
 		StringBuilder body = new StringBuilder();
 		synchronized (htmlLines) {
 			for (String line : htmlLines) {
@@ -254,76 +258,103 @@ class WebChatLogView extends JComponent implements ChatLogView {
 		return String.format(Locale.ROOT, DOCUMENT_TEMPLATE, style, background, body.toString());
 	}
 
-	private String formatBody(final String text) {
-		if (text == null) {
+	private String buildStyleSheet(final String fontStack, final String background) {
+		StringBuilder css = new StringBuilder();
+		String fontFace = buildFontFaceRule();
+		if (!fontFace.isEmpty()) {
+			css.append(fontFace);
+		}
+		css.append(String.format(Locale.ROOT, STYLE_TEMPLATE, fontStack, background, fontSize));
+		return css.toString();
+	}
+
+	private String buildFontStack() {
+		String family = EmojiStore.getFontFamily();
+		if ((family == null) || family.isEmpty()) {
+			return DEFAULT_FONT_STACK;
+		}
+		String quoted = quoteFontFamily(family);
+		if (DEFAULT_FONT_STACK.contains(quoted) || quoted.isEmpty()) {
+			return DEFAULT_FONT_STACK;
+		}
+		return quoted + "," + DEFAULT_FONT_STACK;
+	}
+
+	private String buildFontFaceRule() {
+		EmojiStore store = EmojiStore.get();
+		String dataUrl = store.getBundledFontDataUrl();
+		if ((dataUrl == null) || dataUrl.isEmpty()) {
 			return "";
 		}
-		String escaped = escape(text);
-		return escaped.replace("\n", "<br>");
+		String family = store.getFontFamily();
+		if ((family == null) || family.isEmpty()) {
+			family = "Noto Color Emoji";
+		}
+		return String.format(Locale.ROOT, "@font-face{font-family:%s;src:url('%s');}", quoteFontFamily(family), dataUrl);
 	}
 
-	private String buildPlainLine(final String timestamp, final EventLine line) {
-		StringBuilder builder = new StringBuilder();
-		builder.append(timestamp);
-		String header = line.getHeader();
-		if ((header != null) && !header.isEmpty()) {
-			builder.append(header).append(':').append(' ');
+	private String quoteFontFamily(final String family) {
+		if ((family == null) || family.isEmpty()) {
+			return "";
 		}
-		String text = line.getText();
-		if (text != null) {
-			builder.append(text);
-		}
-		return builder.toString();
+		String sanitized = family.replace("\\", "\\\\").replace("'", "\\'");
+		return "'" + sanitized + "'";
 	}
 
-	private boolean isAdmin(final NotificationType type, final EventLine line) {
-		if (type == null) {
-			return false;
+	private String formatBody(final String text) {
+		if ((text == null) || text.isEmpty()) {
+			return "";
 		}
-		switch (type) {
-		case SUPPORT:
-		case SERVER:
-		case WARNING:
-			return true;
-		default:
-			break;
-		}
-		String header = line.getHeader();
-		return (header != null) && header.toLowerCase(Locale.ROOT).contains("admin");
-	}
-
-	private String cssClassFor(final NotificationType type, final boolean admin) {
-		StringBuilder classes = new StringBuilder("type-normal");
-		if (type != null) {
-			switch (type) {
-			case ERROR:
-			case NEGATIVE:
-			case SIGNIFICANT_NEGATIVE:
-			case DAMAGE:
-				classes = new StringBuilder("type-error");
-				break;
-			case WARNING:
-				classes = new StringBuilder("type-warning");
-				break;
-			case HEAL:
-			case POSITIVE:
-			case SIGNIFICANT_POSITIVE:
-				classes = new StringBuilder("type-positive");
-				break;
-			case SUPPORT:
-			case SERVER:
-				classes = new StringBuilder("type-support");
-				break;
-			default:
-				break;
+		EmojiStore store = EmojiStore.get();
+		StringBuilder html = new StringBuilder();
+		StringBuilder plain = new StringBuilder();
+		int length = text.length();
+		int index = 0;
+		while (index < length) {
+			char ch = text.charAt(index);
+			if (ch == '\r') {
+				index++;
+				continue;
 			}
+			if (ch == '\n') {
+				if (plain.length() > 0) {
+					html.append(escape(plain.toString()));
+					plain.setLength(0);
+				}
+				html.append("<br>");
+				index++;
+				continue;
+			}
+			EmojiMatch match = store.matchEmoji(text, index);
+			if (match != null) {
+				if (plain.length() > 0) {
+					html.append(escape(plain.toString()));
+					plain.setLength(0);
+				}
+				int consumed = match.getConsumedLength();
+				String token = text.substring(index, index + consumed);
+				String dataUrl = store.dataUrlFor(token);
+				if ((dataUrl != null) && !dataUrl.isEmpty()) {
+					html.append("<img class=\\"emoji\\" src=\\"")
+						.append(dataUrl)
+						.append("\\" alt=\\"")
+						.append(escape(token))
+						.append("\\">");
+				} else {
+					String glyph = match.getGlyph();
+					html.append(escape((glyph != null) ? glyph : token));
+				}
+				index += consumed;
+				continue;
+			}
+			plain.append(ch);
+			index++;
 		}
-		if (admin) {
-			classes.append(' ').append("message-admin");
+		if (plain.length() > 0) {
+			html.append(escape(plain.toString()));
 		}
-		return classes.toString();
+		return html.toString();
 	}
-
 	private static String escape(final String value) {
 		if (value == null) {
 			return "";
@@ -423,7 +454,10 @@ class WebChatLogView extends JComponent implements ChatLogView {
 				return new FxBridge((JComponent) jfxPanel, engineHolder[0], loadContent, executeScript, runLater);
 			} catch (ClassNotFoundException ex) {
 				return null;
-			} catch (InvocationTargetException | IllegalAccessException | InstantiationException | NoSuchMethodException ex) {
+			} catch (ReflectiveOperationException ex) {
+				LOGGER.warn("Failed to initialize JavaFX", ex);
+				return null;
+			} catch (RuntimeException | LinkageError ex) {
 				LOGGER.warn("Failed to initialize JavaFX", ex);
 				return null;
 			}
