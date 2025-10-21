@@ -155,6 +155,70 @@ class WebChatLogView extends JComponent implements ChatLogView {
 		channelName = (name != null) ? name : "";
 	}
 
+	private boolean isAdmin(final NotificationType type, final EventLine line) {
+		if (type == NotificationType.SUPPORT) {
+			return true;
+		}
+		if (line != null) {
+			final String header = line.getHeader();
+			if ((header != null) && header.toLowerCase(Locale.ROOT).contains("admin")) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private String cssClassFor(final NotificationType type, final boolean admin) {
+		final StringBuilder builder = new StringBuilder("message");
+		if (admin) {
+			builder.append(" message-admin");
+		}
+		if (type == null) {
+			return builder.toString();
+		}
+		switch (type) {
+		case ERROR:
+		case NEGATIVE:
+		case DAMAGE:
+		case POISON:
+		case SIGNIFICANT_NEGATIVE:
+			builder.append(" type-error");
+			break;
+		case WARNING:
+			builder.append(" type-warning");
+			break;
+		case POSITIVE:
+		case HEAL:
+		case SIGNIFICANT_POSITIVE:
+			builder.append(" type-positive");
+			break;
+		case SUPPORT:
+			builder.append(" type-support");
+			break;
+		default:
+			break;
+		}
+		return builder.toString();
+	}
+
+	private String buildPlainLine(final String timestamp, final EventLine line) {
+		final StringBuilder builder = new StringBuilder();
+		if (timestamp != null) {
+			builder.append(timestamp);
+		}
+		if (line != null) {
+			final String header = line.getHeader();
+			if ((header != null) && !header.isEmpty()) {
+				builder.append('<').append(header).append("> ");
+			}
+			final String text = line.getText();
+			if (text != null) {
+				builder.append(text);
+			}
+		}
+		return builder.toString();
+	}
+
 	private void installPopupMenu() {
 		final JPopupMenu popup = new JPopupMenu();
 
