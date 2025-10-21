@@ -11,6 +11,8 @@
  ***************************************************************************/
 package games.stendhal.client;
 
+import static games.stendhal.client.gui.settings.SettingsProperties.FPS_COUNTER_PROPERTY;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -23,6 +25,7 @@ import java.awt.Toolkit;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
+import java.awt.FontMetrics;
 import java.awt.geom.Point2D;
 import java.awt.image.VolatileImage;
 import java.util.Collection;
@@ -51,6 +54,8 @@ import games.stendhal.client.gui.j2d.RemovableSprite;
 import games.stendhal.client.gui.j2d.entity.Entity2DView;
 import games.stendhal.client.gui.j2d.entity.EntityView;
 import games.stendhal.client.gui.spellcasting.SpellCastingGroundContainerMouseState;
+import games.stendhal.client.gui.wt.core.SettingChangeListener;
+import games.stendhal.client.gui.wt.core.WtWindowManager;
 import games.stendhal.client.sprite.Sprite;
 import games.stendhal.client.sprite.SpriteStore;
 import games.stendhal.common.MathHelper;
@@ -88,6 +93,12 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 	 * A scale factor for panning delta (to allow non-float precision).
 	 */
 	private static final int PAN_SCALE = 8;
+        /**
+         * Reference frame duration for smoothing calculations (60 FPS baseline).
+         */
+	private static final double BASE_FRAME_MILLIS = 1000.0 / 60.0;
+	private static final double MAX_STABLE_ACCUM_MS = 200.0;
+	private static final double STABLE_SAMPLE_INTERVAL_MS = 45.0;
 	/**
 	 * Speed factor for centering the screen. Smaller is faster,
 	 * and keeps the player closer to the center of the screen when walking.
@@ -122,20 +133,27 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 
 	private boolean offline;
 
+	private volatile boolean showFpsCounter;
+
 	/**
 	 * Off line indicator counter.
 	 */
 	private int blinkOffline;
 
 	/**
-	 * The targeted center of view X coordinate (truncated).
+	 * Epsilon used for filtering negligible position changes.
 	 */
-	private int x;
+	private static final double POSITION_EPSILON = 0.001;
 
 	/**
-	 * The targeted center of view Y coordinate (truncated).
+	 * The targeted center of view X coordinate (in world units).
 	 */
-	private int y;
+	private double x;
+
+	/**
+	 * The targeted center of view Y coordinate (in world units).
+	 */
+	private double y;
 
 	/** Actual size of the screen in pixels. */
 	private int sw;
@@ -151,10 +169,15 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 	 */
 	private int dvy;
 
+	private double pendingDx;
+	private double pendingDy;
+	private long lastFrameNanos;
+	private double stableAccumulator;
+
 	/**
 	 * Current panning speed.
 	 */
-	private int speed;
+	private double speed;
 
 	/**
 	 * Flag for telling if the screen should be scaled if it's not of the
@@ -226,12 +249,14 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 		sw = getWidth();
 		sh = getHeight();
 
-		x = 0;
-		y = 0;
+		x = 0.0;
+		y = 0.0;
 		GameScreenSpriteHelper.setScreenViewX(-sw / 2);
 		GameScreenSpriteHelper.setScreenViewY(-sh / 2);
 		dvx = 0;
 		dvy = 0;
+		pendingDx = 0.0;
+		pendingDy = 0.0;
 
 		speed = 0;
 
@@ -254,6 +279,13 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 		 */
 		setIgnoreRepaint(true);
 		client.getGameObjects().addGameObjectListener(this);
+		showFpsCounter = WtWindowManager.getInstance().getPropertyBoolean(FPS_COUNTER_PROPERTY, false);
+		WtWindowManager.getInstance().registerSettingChangeListener(FPS_COUNTER_PROPERTY, new SettingChangeListener() {
+			@Override
+			public void changed(String newValue) {
+				showFpsCounter = Boolean.parseBoolean(newValue);
+			}
+		});
 	}
 
 	/**
@@ -340,7 +372,18 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 
 	@Override
 	public void nextFrame() {
-		adjustView();
+		final long now = System.nanoTime();
+		double deltaMillis;
+		if (lastFrameNanos == 0L) {
+			deltaMillis = BASE_FRAME_MILLIS;
+		} else {
+			deltaMillis = (now - lastFrameNanos) / 1_000_000.0;
+			if (deltaMillis <= 0.0) {
+				deltaMillis = BASE_FRAME_MILLIS;
+			}
+		}
+		lastFrameNanos = now;
+		adjustView(deltaMillis);
 	}
 
 	/**
@@ -387,18 +430,22 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 	/**
 	 * Update the view position to center the target position.
 	 */
-	private void adjustView() {
+	private void adjustView(final double deltaMillis) {
 		/*
 		 * Already centered?
 		 */
 		if ((dvx == 0) && (dvy == 0)) {
+			pendingDx = 0.0;
+			pendingDy = 0.0;
+			speed = 0.0;
+			stableAccumulator = Math.min(stableAccumulator + deltaMillis, MAX_STABLE_ACCUM_MS);
 			return;
 		}
 
 		final int sx = GameScreenSpriteHelper.convertWorldXToScaledScreen(x)
-			- GameScreenSpriteHelper.getScreenViewX() + SIZE_UNIT_PIXELS / 2;
+				- GameScreenSpriteHelper.getScreenViewX() + SIZE_UNIT_PIXELS / 2;
 		final int sy = GameScreenSpriteHelper.convertWorldYToScaledScreen(y)
-			- GameScreenSpriteHelper.getScreenViewY() + SIZE_UNIT_PIXELS / 2;
+				- GameScreenSpriteHelper.getScreenViewY() + SIZE_UNIT_PIXELS / 2;
 
 		if ((sx < 0) || (sx >= sw) || (sy < -SIZE_UNIT_PIXELS) || (sy > sh)) {
 			/*
@@ -406,43 +453,73 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 			 */
 			center();
 		} else {
-			calculatePanningSpeed();
+			double deadZone = computeDynamicDeadZone(deltaMillis);
+			boolean nearX = Math.abs(dvx) <= deadZone;
+			boolean nearY = Math.abs(dvy) <= deadZone;
+
+			if (nearX && nearY && (Math.abs(pendingDx) < 0.5) && (Math.abs(pendingDy) < 0.5)) {
+				stableAccumulator = Math.min(stableAccumulator + deltaMillis, MAX_STABLE_ACCUM_MS);
+				if (stableAccumulator >= STABLE_SAMPLE_INTERVAL_MS) {
+					center();
+					stableAccumulator = 0.0;
+				}
+				speed = 0.0;
+				return;
+			}
+
+			stableAccumulator = 0.0;
+			calculatePanningSpeed(deltaMillis);
 
 			/*
 			 * Moving?
 			 */
-			if (speed != 0) {
+			if (speed > 0.0) {
 				/*
 				 * Not a^2 + b^2 = c^2, but good enough
 				 */
 				final int scalediv = (Math.abs(dvx) + Math.abs(dvy)) * PAN_SCALE;
 
-				int dx = speed * dvx / scalediv;
-				int dy = speed * dvy / scalediv;
+				double dxStep = speed * dvx / scalediv;
+				double dyStep = speed * dvy / scalediv;
+				double dxScale = applyDeadZoneScale(dvx, deadZone);
+				double dyScale = applyDeadZoneScale(dvy, deadZone);
 
-				dx = limitMoveDelta(dx, dvx);
-				dy = limitMoveDelta(dy, dvy);
+				pendingDx += dxStep * dxScale;
+				pendingDy += dyStep * dyScale;
+
+				int dx = limitMoveDelta(extractMove(pendingDx, dvx), dvx);
+				int dy = limitMoveDelta(extractMove(pendingDy, dvy), dvy);
 
 				/*
 				 * Adjust view
 				 */
-				GameScreenSpriteHelper.setScreenViewX(GameScreenSpriteHelper.getScreenViewX() + dx);
-				dvx -= dx;
+				if (dx != 0) {
+					GameScreenSpriteHelper.setScreenViewX(GameScreenSpriteHelper.getScreenViewX() + dx);
+					dvx -= dx;
+					pendingDx -= dx;
+					pendingDx = clampDouble(pendingDx, -1.0, 1.0);
+				} else if (nearX) {
+					dvx = 0;
+					pendingDx = 0.0;
+				} else {
+					pendingDx = clampDouble(pendingDx, -1.0, 1.0);
+				}
 
-				GameScreenSpriteHelper.setScreenViewY(GameScreenSpriteHelper.getScreenViewY() + dy);
-				dvy -= dy;
+				if (dy != 0) {
+					GameScreenSpriteHelper.setScreenViewY(GameScreenSpriteHelper.getScreenViewY() + dy);
+					dvy -= dy;
+					pendingDy -= dy;
+					pendingDy = clampDouble(pendingDy, -1.0, 1.0);
+				} else if (nearY) {
+					dvy = 0;
+					pendingDy = 0.0;
+				} else {
+					pendingDy = clampDouble(pendingDy, -1.0, 1.0);
+				}
 			}
 		}
 	}
 
-	/**
-	 * Adjust screen movement so that it does not stall, and that it does not
-	 * overshoot the target.
-	 *
-	 * @param moveDelta suggested movement of the screen
-	 * @param viewDelta distance from the target
-	 * @return moveDelta adjusted to sane range
-	 */
 	private int limitMoveDelta(int moveDelta, int viewDelta) {
 		if (viewDelta < 0) {
 			moveDelta = MathHelper.clamp(moveDelta, viewDelta, -1);
@@ -452,29 +529,60 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 		return moveDelta;
 	}
 
-	/**
-	 * Calculate the target speed for moving the view position. The farther
-	 * away, the faster.
-	 */
-	private void calculatePanningSpeed() {
+	private int extractMove(double pending, int viewDelta) {
+		int move = 0;
+		if (pending > 1.0) {
+			move = (int) Math.floor(pending);
+		} else if (pending < -1.0) {
+			move = (int) Math.ceil(pending);
+		} else if ((viewDelta != 0) && (pending != 0.0) && (Math.abs(viewDelta) <= 1)) {
+			move = (viewDelta > 0) ? 1 : -1;
+		}
+		return move;
+	}
+
+	private void calculatePanningSpeed(final double deltaMillis) {
 		final int dux = dvx / PAN_INERTIA;
 		final int duy = dvy / PAN_INERTIA;
 
-		final int tspeed = ((dux * dux) + (duy * duy)) * PAN_SCALE;
+		final double targetSpeed = ((dux * dux) + (duy * duy)) * PAN_SCALE;
+		final double deltaFactor = Math.max(deltaMillis / BASE_FRAME_MILLIS, 0.0);
+		final double baseAlpha = 1.0 / 3.0;
+		final double alpha = 1.0 - Math.pow(1.0 - baseAlpha, Math.min(deltaFactor, 60.0));
 
-		if (speed > tspeed) {
-			speed = (2 * speed + tspeed) / 3;
-
-			/*
-			 * Don't stall
-			 */
-			if ((dvx != 0) || (dvy != 0)) {
-				speed = Math.max(speed, 1);
-			}
-		} else if (speed < tspeed) {
-			speed += 2;
+		speed += (targetSpeed - speed) * alpha;
+		if ((dvx != 0) || (dvy != 0)) {
+			speed = Math.max(speed, 1.0);
+		} else if (Math.abs(speed) < 0.0001) {
+			speed = 0.0;
 		}
 	}
+
+	private double computeDynamicDeadZone(final double deltaMillis) {
+		double fps = Math.max(1.0, GameLoop.get().getCurrentFps());
+		double fpsFactor = clampDouble(60.0 / fps, 0.5, 1.5);
+		double deltaFactor = clampDouble(deltaMillis / BASE_FRAME_MILLIS, 0.5, 1.5);
+		double speedFactor = clampDouble(speed / 12.0, 0.0, 1.5);
+		double base = 0.75 + ((fpsFactor - 0.5) * 1.5) + ((deltaFactor - 0.5) * 0.5) + (speedFactor * 1.25);
+		return clampDouble(base * 2.0, 1.0, 6.0);
+	}
+
+	private double applyDeadZoneScale(int viewDelta, double deadZone) {
+		int abs = Math.abs(viewDelta);
+		if (abs == 0) {
+			return 0.0;
+		}
+		if (abs <= deadZone) {
+			return 0.0;
+		}
+		double adjusted = (abs - deadZone) / abs;
+		return clampDouble(adjusted, 0.0, 1.0);
+	}
+
+	private double clampDouble(double value, double minValue, double maxValue) {
+		return Math.max(minValue, Math.min(maxValue, value));
+	}
+
 
 	/**
 	 * Updates the target position of the view center.
@@ -483,12 +591,14 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 	 * @param x preferred x of center, if the map is large enough
 	 * @param y preferred y of center, if the map is large enough
 	 */
-	private void calculateView(int x, int y) {
+	private void calculateView(double x, double y) {
 		final double scale = GameScreenSpriteHelper.getScale();
 
 		// Coordinates for a screen centered on player
-		int cvx = (int) ((x * SIZE_UNIT_PIXELS) + (SIZE_UNIT_PIXELS / 2) - (sw / 2) / scale);
-		int cvy = (int) ((y * SIZE_UNIT_PIXELS) + (SIZE_UNIT_PIXELS / 2) - (sh / 2) / scale);
+		final double centerX = (x * SIZE_UNIT_PIXELS) + (SIZE_UNIT_PIXELS / 2.0);
+		final double centerY = (y * SIZE_UNIT_PIXELS) + (SIZE_UNIT_PIXELS / 2.0);
+		int cvx = (int) (centerX - (sw / 2.0) / scale);
+		int cvy = (int) (centerY - (sh / 2.0) / scale);
 
 		/*
 		 * Keep the world within the screen view
@@ -502,7 +612,16 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 		// Differences from center
 		dvx = cvx - GameScreenSpriteHelper.getScreenViewX();
 		dvy = cvy - GameScreenSpriteHelper.getScreenViewY();
+		stableAccumulator = 0.0;
+
+		if ((pendingDx > 0.0 && dvx <= 0) || (pendingDx < 0.0 && dvx >= 0)) {
+			pendingDx = 0.0;
+		}
+		if ((pendingDy > 0.0 && dvy <= 0) || (pendingDy < 0.0 && dvy >= 0)) {
+			pendingDy = 0.0;
+		}
 	}
+
 
 	@Override
 	public void center() {
@@ -512,7 +631,11 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 		dvx = 0;
 		dvy = 0;
 		speed = 0;
+		pendingDx = 0.0;
+		pendingDy = 0.0;
+		stableAccumulator = 0.0;
 	}
+
 
 	@Override
 	public void paintImmediately(int x, int y, int w, int h) {
@@ -536,65 +659,79 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 	public void paintComponent(final Graphics g) {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, getWidth(), getHeight());
-		if (StendhalClient.get().isInTransfer()) {
-			/*
-			 * A hack to prevent proper drawing during zone change when the draw
-			 * request comes from paintChildren() of the parent. Those are not
-			 * caught by the paintImmediately() wrapper. Prevents entity view
-			 * images from being initialized before zone coloring is ready.
-			 */
-			return;
-		}
 
 		Graphics2D g2d = (Graphics2D) g;
+		int viewX = GameScreenSpriteHelper.getScreenViewX();
+		int viewY = GameScreenSpriteHelper.getScreenViewY();
+		GameScreenSpriteHelper.beginFrame(viewX, viewY);
+		try {
+			if (StendhalClient.get().isInTransfer()) {
+				/*
+				 * A hack to prevent proper drawing during zone change when the draw
+				 * request comes from paintChildren() of the parent. Those are not
+				 * caught by the paintImmediately() wrapper. Prevents entity view
+				 * images from being initialized before zone coloring is ready.
+				 */
+				return;
+			}
 
-		Graphics2D graphics = (Graphics2D) g2d.create();
-		if (graphics.getClipBounds() == null) {
-			graphics.setClip(0, 0, getWidth(), getHeight());
-		}
-		Rectangle clip = graphics.getClipBounds();
-		boolean fullRedraw = (clip.width == sw && clip.height == sh);
-
-		int xAdjust = -GameScreenSpriteHelper.getScreenViewX();
-		int yAdjust = -GameScreenSpriteHelper.getScreenViewY();
-
-		if (useTripleBuffer) {
-			/*
-			 * Do the scaling in one pass to avoid artifacts at tile borders.
-			 */
-			final double scale = GameScreenSpriteHelper.getScale();
-			graphics.scale(scale, scale);
-			graphics.translate(xAdjust, yAdjust);
-			graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-			int width = stendhal.getDisplaySize().width;
-			int height = stendhal.getDisplaySize().height;
-			do {
-				GraphicsConfiguration gc = getGraphicsConfiguration();
-				if ((buffer == null) || (buffer.validate(gc) == VolatileImage.IMAGE_INCOMPATIBLE)) {
-					buffer = createVolatileImage(width, height);
+			Graphics2D graphics = (Graphics2D) g2d.create();
+			try {
+				if (graphics.getClipBounds() == null) {
+					graphics.setClip(0, 0, getWidth(), getHeight());
 				}
-				Graphics2D gr = buffer.createGraphics();
-				gr.setColor(Color.BLACK);
-				gr.fillRect(0, 0, width, height);
-				gr.setClip(0, 0, width, height);
-				renderScene(gr, xAdjust, yAdjust, fullRedraw);
-				graphics.drawImage(buffer, -xAdjust, -yAdjust, null);
-				gr.dispose();
-			} while (buffer.contentsLost());
-		} else {
-			renderScene(graphics, xAdjust, yAdjust, fullRedraw);
+				Rectangle clip = graphics.getClipBounds();
+				boolean fullRedraw = (clip.width == sw && clip.height == sh);
+
+				int xAdjust = -viewX;
+				int yAdjust = -viewY;
+
+				if (useTripleBuffer) {
+					/*
+					 * Do the scaling in one pass to avoid artifacts at tile borders.
+					 */
+					final double scale = GameScreenSpriteHelper.getScale();
+					graphics.scale(scale, scale);
+					graphics.translate(xAdjust, yAdjust);
+					graphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+						RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+					int width = stendhal.getDisplaySize().width;
+					int height = stendhal.getDisplaySize().height;
+					do {
+						GraphicsConfiguration gc = getGraphicsConfiguration();
+						if ((buffer == null) || (buffer.validate(gc) == VolatileImage.IMAGE_INCOMPATIBLE)) {
+							buffer = createVolatileImage(width, height);
+						}
+						Graphics2D gr = buffer.createGraphics();
+						try {
+							gr.setColor(Color.BLACK);
+							gr.fillRect(0, 0, width, height);
+							gr.setClip(0, 0, width, height);
+							renderScene(gr, xAdjust, yAdjust, fullRedraw);
+						} finally {
+							gr.dispose();
+						}
+						graphics.drawImage(buffer, -xAdjust, -yAdjust, null);
+					} while (buffer.contentsLost());
+				} else {
+					renderScene(graphics, xAdjust, yAdjust, fullRedraw);
+				}
+			} finally {
+				graphics.dispose();
+			}
+
+			// Don't scale text to keep it readable
+			drawText(g2d, viewX, viewY);
+			drawEmojis(g2d, viewX, viewY);
+			drawFpsCounter(g2d);
+
+			paintOffLineIfNeeded(g2d);
+
+			// Ask window manager to not skip frame drawing
+			Toolkit.getDefaultToolkit().sync();
+		} finally {
+			GameScreenSpriteHelper.endFrame();
 		}
-
-		// Don't scale text to keep it readable
-		drawText(g2d);
-		drawEmojis(g2d);
-
-		paintOffLineIfNeeded(g2d);
-
-		// Ask window manager to not skip frame drawing
-		Toolkit.getDefaultToolkit().sync();
-
-		graphics.dispose();
 	}
 
 	/**
@@ -681,12 +818,12 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 	 *
 	 * @param g2d destination graphics
 	 */
-	private void drawText(final Graphics2D g2d) {
+	private void drawText(final Graphics2D g2d, final int viewX, final int viewY) {
 		/*
 		 * Text objects know their original placement relative to the screen,
 		 * not to the map. Pass them a shifted coordinate system.
 		 */
-		g2d.translate(-GameScreenSpriteHelper.getScreenViewX(), -GameScreenSpriteHelper.getScreenViewY());
+		g2d.translate(-viewX, -viewY);
 
 		final List<RemovableSprite> texts = GameScreenSpriteHelper.getTexts();
 		synchronized (texts) {
@@ -702,7 +839,7 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 		}
 
 		// Restore the coordinates
-		g2d.translate(GameScreenSpriteHelper.getScreenViewX(), GameScreenSpriteHelper.getScreenViewY());
+		g2d.translate(viewX, viewY);
 		// These are anchored to the screen, so they can use the usual proper
 		// coordinates.
 		synchronized (staticSprites) {
@@ -718,19 +855,38 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 		}
 	}
 
-	private void drawEmojis(final Graphics2D g2d) {
+	private void drawEmojis(final Graphics2D g2d, final int viewX, final int viewY) {
 		final List<RemovableSprite> emojis = GameScreenSpriteHelper.getEmojis();
 		synchronized (emojis) {
 			Iterator<RemovableSprite> it = emojis.iterator();
 			while (it.hasNext()) {
 				RemovableSprite emoji = it.next();
 				if (!emoji.shouldBeRemoved()) {
-					emoji.drawEmoji(g2d);
+					emoji.drawEmoji(g2d, viewX, viewY);
 				} else {
 					it.remove();
 				}
 			}
 		}
+	}
+
+	private void drawFpsCounter(final Graphics2D g2d) {
+		if (!showFpsCounter) {
+			return;
+		}
+
+		int fps = GameLoop.get().getCurrentFps();
+		String fpsText = fps + " FPS";
+		FontMetrics metrics = g2d.getFontMetrics();
+		int textWidth = metrics.stringWidth(fpsText);
+		int textHeight = metrics.getHeight();
+		int padding = 4;
+		int x = getWidth() - textWidth - (padding * 2);
+		int y = padding;
+		g2d.setColor(new Color(0, 0, 0, 170));
+		g2d.fillRect(x - padding, y - padding, textWidth + padding * 2, textHeight + padding);
+		g2d.setColor(Color.WHITE);
+		g2d.drawString(fpsText, x, y + metrics.getAscent());
 	}
 
 	/**
@@ -910,17 +1066,12 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 
 	@Override
 	public void positionChanged(final double x, final double y) {
-		final int ix = (int) x;
-		final int iy = (int) y;
+		if ((Math.abs(x - this.x) > POSITION_EPSILON)
+				|| (Math.abs(y - this.y) > POSITION_EPSILON)) {
+			this.x = x;
+			this.y = y;
 
-		/*
-		 * Save CPU cycles
-		 */
-		if ((ix != this.x) || (iy != this.y)) {
-			this.x = ix;
-			this.y = iy;
-
-			calculateView(ix, iy);
+			calculateView(x, y);
 		}
 	}
 

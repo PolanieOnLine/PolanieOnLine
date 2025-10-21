@@ -27,6 +27,9 @@ public class GameScreenSpriteHelper {
 	private static int wh;
 
 	private static int svx;
+	private static int frameViewX;
+	private static int frameViewY;
+	private static boolean frameActive;
 	private static int svy;
 
 	private static double scale = 1.0;
@@ -53,6 +56,24 @@ public class GameScreenSpriteHelper {
 	 * Private singleton constructor.
 	 */
 	private GameScreenSpriteHelper() {}
+
+	static void beginFrame(final int viewX, final int viewY) {
+		frameViewX = viewX;
+		frameViewY = viewY;
+		frameActive = true;
+	}
+
+	static void endFrame() {
+		frameActive = false;
+	}
+
+	private static int getActiveViewX() {
+		return frameActive ? frameViewX : svx;
+	}
+
+	private static int getActiveViewY() {
+		return frameActive ? frameViewY : svy;
+	}
 
 	/**
 	 * Sets screen scale.
@@ -231,7 +252,8 @@ public class GameScreenSpriteHelper {
 	 *     Pixel X coordinate on the screen.
 	 */
 	public static int convertWorldXToScaledScreen(final double x) {
-		return (int) (convertWorldToPixelUnits(x - svx / (double) IGameScreen.SIZE_UNIT_PIXELS) * scale) + svx;
+		int baseViewX = getActiveViewX();
+		return (int) (convertWorldToPixelUnits(x - baseViewX / (double) IGameScreen.SIZE_UNIT_PIXELS) * scale) + baseViewX;
 	}
 
 	/**
@@ -244,7 +266,8 @@ public class GameScreenSpriteHelper {
 	 *     Pixel Y coordinate on the screen.
 	 */
 	public static int convertWorldYToScaledScreen(final double y) {
-		return (int) (convertWorldToPixelUnits(y - svy / (double) IGameScreen.SIZE_UNIT_PIXELS) * scale) + svy;
+		int baseViewY = getActiveViewY();
+		return (int) (convertWorldToPixelUnits(y - baseViewY / (double) IGameScreen.SIZE_UNIT_PIXELS) * scale) + baseViewY;
 	}
 
 	/**
@@ -266,7 +289,7 @@ public class GameScreenSpriteHelper {
 		 * yet (as in immediately after a zone change)
 		 */
 		if (ww != 0) {
-			sx = Math.min(sx, Math.max(GameScreen.get().getWidth() + svx,
+			sx = Math.min(sx, Math.max(GameScreen.get().getWidth() + getActiveViewX(),
 				convertWorldXToScaledScreen(ww)) - sprite.getWidth());
 		}
 
@@ -292,7 +315,7 @@ public class GameScreenSpriteHelper {
 		 * yet (as in immediately after a zone change)
 		 */
 		if (wh != 0) {
-			sy = Math.min(sy, Math.max(GameScreen.get().getHeight() + svy,
+			sy = Math.min(sy, Math.max(GameScreen.get().getHeight() + getActiveViewY(),
 				convertWorldYToScaledScreen(wh)) - sprite.getHeight());
 		}
 

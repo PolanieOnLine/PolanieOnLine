@@ -772,8 +772,8 @@ public abstract class RPEntity extends AudibleEntity {
 		ClientSingletonRepository.getUserInterface().addEventLine(new StandardHeaderedEventLine(getTitle(), text));
 	}
 
-	void nonCreatureClientAddEmojiEventLine(final String emojiPath) {
-		ClientSingletonRepository.getUserInterface().addEventLine(new EmojiEventLine(getTitle(), emojiPath));
+	void nonCreatureClientAddEmojiEventLine(final String emojiText) {
+		ClientSingletonRepository.getUserInterface().addEventLine(new EmojiEventLine(getTitle(), emojiText));
 	}
 
 	/**
@@ -1034,7 +1034,8 @@ public abstract class RPEntity extends AudibleEntity {
 		if (User.isAdmin() || (rangeSquared < 0) || (isInHearingRange(rangeSquared))) {
 			final String ttext = trimText(text);
 			final EmojiStore emojiStore = ClientSingletonRepository.getEmojiStore();
-			final Sprite emoji = emojiStore.create(ttext);
+			final String emojiGlyph = emojiStore.glyphFor(ttext);
+			final Sprite emoji = (emojiGlyph != null) ? emojiStore.create(ttext) : null;
 
 			//an emote action is changed server side to an chat action with a leading !me
 			//this supports also invoking an emote with !me instead of /me
@@ -1044,9 +1045,8 @@ public abstract class RPEntity extends AudibleEntity {
 
 				return;
 			} else {
-				if (emoji != null) {
-					final String emojiPath = emojiStore.absPath(ttext);
-					nonCreatureClientAddEmojiEventLine(emojiPath);
+				if (emojiGlyph != null) {
+					nonCreatureClientAddEmojiEventLine(emojiGlyph);
 				} else {
 					//add the original version
 					nonCreatureClientAddEventLine(text);

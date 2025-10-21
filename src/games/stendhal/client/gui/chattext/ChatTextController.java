@@ -11,9 +11,15 @@
  ***************************************************************************/
 package games.stendhal.client.gui.chattext;
 
+import java.awt.Font;
+import java.awt.font.TextAttribute;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
@@ -33,6 +39,7 @@ import games.stendhal.client.stendhal;
 import games.stendhal.client.actions.SlashActionRepository;
 import games.stendhal.client.scripting.ChatLineParser;
 import games.stendhal.common.constants.SoundLayer;
+import games.stendhal.client.sprite.EmojiStore;
 
 public class ChatTextController {
 	/** Maximum text length. Public chat is limited to 1000 server side. */
@@ -61,6 +68,14 @@ public class ChatTextController {
 	 */
 	private ChatTextController() {
 		playerChatText.setFocusTraversalKeysEnabled(false);
+		final Font baseFont = playerChatText.getFont();
+		final float desiredSize = (baseFont != null) ? baseFont.getSize2D() : 14f;
+		final Font emojiFont = EmojiStore.get().deriveEmojiFont(desiredSize);
+		if ((baseFont != null) && (emojiFont != null)) {
+			final Map<TextAttribute, Object> attributes = new HashMap<TextAttribute, Object>(baseFont.getAttributes());
+			attributes.put(TextAttribute.FAMILY, Arrays.asList(baseFont.getFamily(), emojiFont.getFamily()));
+			playerChatText.setFont(baseFont.deriveFont(attributes));
+		}
 		Document doc = playerChatText.getDocument();
 		if (doc instanceof AbstractDocument) {
 			((AbstractDocument) doc).setDocumentFilter(new SizeFilter(MAX_TEXT_LENGTH));

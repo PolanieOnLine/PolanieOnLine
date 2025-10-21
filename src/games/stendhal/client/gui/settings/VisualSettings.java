@@ -12,17 +12,22 @@
 package games.stendhal.client.gui.settings;
 
 import static games.stendhal.client.gui.settings.SettingsProperties.BUBBLES_PROPERTY;
+import static games.stendhal.client.gui.settings.SettingsProperties.DISPLAY_SIZE_PROPERTY;
 import static games.stendhal.client.gui.settings.SettingsProperties.HP_BAR_PROPERTY;
 import static games.stendhal.client.gui.settings.SettingsProperties.OVERRIDE_AA;
+import static games.stendhal.client.gui.settings.SettingsProperties.FPS_COUNTER_PROPERTY;
+import static games.stendhal.client.gui.settings.SettingsProperties.FPS_LIMIT_PROPERTY;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.GraphicsEnvironment;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.BorderFactory;
@@ -37,6 +42,7 @@ import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 
 import games.stendhal.client.ClientSingletonRepository;
+import games.stendhal.client.stendhal;
 import games.stendhal.client.UiRenderingMethod;
 import games.stendhal.client.gui.chatlog.EventLine;
 import games.stendhal.client.gui.layout.SBoxLayout;
@@ -57,6 +63,8 @@ class VisualSettings {
 	private static final String STYLE_PROPERTY = "ui.style";
 	private static final String DEFAULT_STYLE = "Wood (domyślny)";
 	private static final String TRANSPARENCY_PROPERTY = "ui.transparency";
+
+	private static final int[] FPS_OPTIONS = new int[] {30, 60, 90, 120, 144, 165, 240};
 
 	/** Containers that have components to be toggled */
 	//private JPanel colorsPanel;
@@ -101,7 +109,13 @@ class VisualSettings {
 
 		page.add(createStyleTypeSelector(), SLayout.EXPAND_X);
 		page.add(createRenderingSelector(), SLayout.EXPAND_X);
-		page.add(createTransparencySelector(), SLayout.EXPAND_X);
+                page.add(createTransparencySelector(), SLayout.EXPAND_X);
+                page.add(createDisplaySizeSelector(), SLayout.EXPAND_X);
+                page.add(createFpsSelector(), SLayout.EXPAND_X);
+
+		final JCheckBox fpsCounterToggle = SettingsComponentFactory.createSettingsToggle(FPS_COUNTER_PROPERTY, false,
+				"Pokaż licznik FPS", "Wyświetla aktualny licznik klatek na sekundę na ekranie gry.");
+		page.add(fpsCounterToggle);
 
 		// Disable widgets not in use
 		toggleComponents(page);
@@ -411,6 +425,87 @@ class VisualSettings {
 	 *
 	 * @return layout for styles widgets
 	 */
+	private JComponent createDisplaySizeSelector() {
+		JComponent container = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, SBoxLayout.COMMON_PADDING);
+		JLabel label = new JLabel("Rozdzielczość obszaru gry:");
+		final JComboBox<DisplaySizeOption> combo = new JComboBox<DisplaySizeOption>();
+		final List<Dimension> sizes = stendhal.getAvailableDisplaySizes();
+		int maxIndex = Math.max(0, sizes.size() - 1);
+		int currentIndex = MathHelper.clamp(
+				WtWindowManager.getInstance().getPropertyInt(DISPLAY_SIZE_PROPERTY, stendhal.getDisplaySizeIndex()),
+				0, maxIndex);
+		for (int i = 0; i < sizes.size(); i++) {
+			combo.addItem(new DisplaySizeOption(i, sizes.get(i)));
+		}
+		combo.setSelectedIndex(MathHelper.clamp(currentIndex, 0, combo.getItemCount() - 1));
+		combo.setToolTipText("Określ szerokość i wysokość pola gry w pikselach.");
+		label.setToolTipText(combo.getToolTipText());
+		combo.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				DisplaySizeOption selected = (DisplaySizeOption) combo.getSelectedItem();
+				if (selected != null) {
+					WtWindowManager.getInstance().setProperty(DISPLAY_SIZE_PROPERTY,
+						Integer.toString(selected.getIndex()));
+				}
+			}
+		});
+		container.add(label);
+		container.add(Box.createHorizontalStrut(SBoxLayout.COMMON_PADDING));
+		container.add(combo);
+		return container;
+	}
+
+	private static final class DisplaySizeOption {
+		private final int index;
+		private final Dimension size;
+
+		DisplaySizeOption(int index, Dimension size) {
+			this.index = index;
+			this.size = size;
+		}
+
+		int getIndex() {
+			return index;
+		}
+
+		@Override
+		public String toString() {
+			return size.width + " × " + size.height;
+		}
+	}
+private JComponent createFpsSelector() {
+		JComponent container = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, SBoxLayout.COMMON_PADDING);
+		JLabel label = new JLabel("Limit liczby klatek na sekundę:");
+		final JComboBox<Integer> combo = new JComboBox<Integer>();
+		int configured = Math.max(1, WtWindowManager.getInstance().getPropertyInt(FPS_LIMIT_PROPERTY, stendhal.getFpsLimit()));
+		boolean match = false;
+		for (int option : FPS_OPTIONS) {
+			combo.addItem(Integer.valueOf(option));
+			if (option == configured) {
+				match = true;
+			}
+		}
+		if (!match) {
+			combo.addItem(Integer.valueOf(configured));
+		}
+		combo.setSelectedItem(Integer.valueOf(configured));
+		combo.setToolTipText("Wybierz maksymalną liczbę klatek na sekundę dla klienta.");
+		combo.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Integer selected = (Integer) combo.getSelectedItem();
+				if (selected != null) {
+					WtWindowManager.getInstance().setProperty(FPS_LIMIT_PROPERTY, Integer.toString(selected.intValue()));
+				}
+			}
+		});
+		container.add(label);
+		container.add(Box.createHorizontalStrut(SBoxLayout.COMMON_PADDING));
+		container.add(combo);
+		return container;
+	}
+
 	private JComponent createStyleTypeSelector() {
 		int pad = SBoxLayout.COMMON_PADDING;
 

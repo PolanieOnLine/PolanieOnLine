@@ -44,7 +44,8 @@ class Initializer {
 			initFont("Amaranth-" + ftype);
 			initFont("Carlito-" + ftype);
 		}
-		initFont("NotoEmoji-Regular"); // supports all unicode emoji characters
+		initFont("NotoColorEmoji-Regular"); // color glyph support for unicode emoji
+		initFont("NotoEmoji-Regular"); // monochrome fallback for unicode emoji
 		initApplicationName();
 	}
 
