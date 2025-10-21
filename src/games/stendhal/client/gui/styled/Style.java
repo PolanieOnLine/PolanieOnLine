@@ -21,6 +21,8 @@ import games.stendhal.client.sprite.Sprite;
  */
 public interface Style {
 
+	String CHANNEL_HILIGHT = "channel.hilight";
+
 	/**
 	 * Get the background texture.
 	 *

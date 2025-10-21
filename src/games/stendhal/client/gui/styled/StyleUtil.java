@@ -12,6 +12,7 @@
  ***************************************************************************/
 package games.stendhal.client.gui.styled;
 
+import java.awt.Color;
 import java.awt.Graphics;
 
 import javax.swing.UIManager;
@@ -32,6 +33,24 @@ public class StyleUtil {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Resolve a style-dependent color by key.
+	 *
+	 * @param key
+	 *		identifier of the desired color
+	 * @return matching color or {@code null} if none is configured
+	 */
+	public static Color getColor(String key) {
+		if (Style.CHANNEL_HILIGHT.equals(key)) {
+			Style style = getStyle();
+			if (style != null) {
+				return style.getHighLightColor();
+			}
+		}
+
+		return UIManager.getColor(key);
 	}
 
 	/**
