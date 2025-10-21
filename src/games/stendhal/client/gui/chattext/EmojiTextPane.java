@@ -226,7 +226,7 @@ class EmojiTextPane extends JTextPane {
 				return 0;
 			}
 			final Element element = getCharacterElement(index);
-			final Object value = (element != null) ? element.getAttributes().get(TOKEN_ATTRIBUTE) : null;
+			final Object value = (element != null) ? element.getAttributes().getAttribute(TOKEN_ATTRIBUTE) : null;
 			if (value instanceof String) {
 				return ((String) value).length();
 			}
