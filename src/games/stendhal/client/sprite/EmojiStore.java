@@ -422,15 +422,21 @@ public class EmojiStore {
 		return glyph;
 	}
 
-	private RenderedEmoji renderEmoji(final String text) {
-		if (text == null) {
+		private RenderedEmoji renderEmoji(final String text) {
+		if ((text == null) || text.isEmpty()) {
 			return null;
 		}
 		final String name = check(text);
-		if (name == null) {
+		final boolean directGlyph = (name == null) && looksLikeGlyph(text);
+		final String normalizedGlyph = directGlyph ? ensureEmojiPresentation(stripVariationSelectors(text)) : null;
+		if ((name == null) && !directGlyph) {
 			return null;
 		}
-		RenderedEmoji cached = emojiCache.get(name);
+		final String cacheKey = (name != null) ? name : normalizedGlyph;
+		if ((cacheKey == null) || cacheKey.isEmpty()) {
+			return null;
+		}
+		RenderedEmoji cached = emojiCache.get(cacheKey);
 		if (cached != null) {
 			return cached;
 		}
@@ -440,64 +446,76 @@ public class EmojiStore {
 		String dataUrl = null;
 
 		ensureEmojiFont();
-		final String glyph = ensureEmojiPresentation(emojiGlyphs.getOrDefault(name, ":" + name + ":"));
+		final String glyph;
+		final String assetName;
+		if (name != null) {
+			glyph = ensureEmojiPresentation(emojiGlyphs.getOrDefault(name, ":" + name + ":"));
+			assetName = name;
+		} else {
+			glyph = normalizedGlyph;
+			assetName = null;
+		}
 		BufferedImage assetImage = null;
 		if (bitmapExtractor != null) {
 			iconImage = bitmapExtractor.renderGlyph(glyph, ICON_POINT_SIZE, ICON_PADDING);
 			spriteImage = bitmapExtractor.renderGlyph(glyph, SPRITE_POINT_SIZE, ICON_PADDING);
-				if ((iconImage == null) || (spriteImage == null)) {
-					final String stripped = stripVariationSelectors(glyph);
-					if ((iconImage == null) && (stripped != null)) {
-						iconImage = bitmapExtractor.renderGlyph(stripped, ICON_POINT_SIZE, ICON_PADDING);
-					}
-					if ((spriteImage == null) && (stripped != null)) {
-						spriteImage = bitmapExtractor.renderGlyph(stripped, SPRITE_POINT_SIZE, ICON_PADDING);
-					}
+			if ((iconImage == null) || (spriteImage == null)) {
+				final String stripped = stripVariationSelectors(glyph);
+				if ((iconImage == null) && (stripped != null)) {
+					iconImage = bitmapExtractor.renderGlyph(stripped, ICON_POINT_SIZE, ICON_PADDING);
+				}
+				if ((spriteImage == null) && (stripped != null)) {
+					spriteImage = bitmapExtractor.renderGlyph(stripped, SPRITE_POINT_SIZE, ICON_PADDING);
 				}
 			}
+		}
 
-			if ((iconImage == null) || (spriteImage == null)) {
-				assetImage = loadEmojiAsset(name);
+		if ((iconImage == null) || (spriteImage == null)) {
+			if (assetName != null) {
+				assetImage = loadEmojiAsset(assetName);
 			}
-			if ((iconImage == null) && (assetImage != null)) {
-				iconImage = scaleForIcon(assetImage);
-			}
-			if ((spriteImage == null) && (assetImage != null)) {
-				spriteImage = scaleForSprite(assetImage);
-			}
+		}
+		if ((iconImage == null) && (assetImage != null)) {
+			iconImage = scaleForIcon(assetImage);
+		}
+		if ((spriteImage == null) && (assetImage != null)) {
+			spriteImage = scaleForSprite(assetImage);
+		}
 
-			if ((iconImage == null) || (spriteImage == null)) {
-				if (bitmapExtractor != null) {
-					if (iconImage == null) {
-						iconImage = rasterizeGlyph(glyph, ICON_POINT_SIZE);
-					}
-					if (spriteImage == null) {
-						spriteImage = rasterizeGlyph(glyph, SPRITE_POINT_SIZE);
-					}
-				} else if (assetImage == null) {
-					if (iconImage == null) {
-						iconImage = rasterizeGlyph(glyph, ICON_POINT_SIZE);
-					}
-					if (spriteImage == null) {
-						spriteImage = rasterizeGlyph(glyph, SPRITE_POINT_SIZE);
-					}
+		if ((iconImage == null) || (spriteImage == null)) {
+			if (bitmapExtractor != null) {
+				if (iconImage == null) {
+					iconImage = rasterizeGlyph(glyph, ICON_POINT_SIZE);
+				}
+				if (spriteImage == null) {
+					spriteImage = rasterizeGlyph(glyph, SPRITE_POINT_SIZE);
+				}
+			} else if (assetImage == null) {
+				if (iconImage == null) {
+					iconImage = rasterizeGlyph(glyph, ICON_POINT_SIZE);
+				}
+				if (spriteImage == null) {
+					spriteImage = rasterizeGlyph(glyph, SPRITE_POINT_SIZE);
 				}
 			}
-			if ((iconImage == null) && (spriteImage != null)) {
-				iconImage = scaleForIcon(spriteImage);
-			}
-			if ((spriteImage == null) && (iconImage != null)) {
-				spriteImage = scaleForSprite(iconImage);
-			}
-			if (iconImage != null) {
-				dataUrl = toDataUrl(iconImage);
-			}
+		}
+		if ((iconImage == null) && (spriteImage != null)) {
+			iconImage = scaleForIcon(spriteImage);
+		}
+		if ((spriteImage == null) && (iconImage != null)) {
+			spriteImage = scaleForSprite(iconImage);
+		}
+		if (iconImage != null) {
+			dataUrl = toDataUrl(iconImage);
+		}
 		final Icon icon = (iconImage != null) ? new ImageIcon(iconImage) : null;
-		final Sprite sprite = (spriteImage != null) ? new ImageSprite(spriteImage, name) : null;
+		final String spriteName = (assetName != null) ? assetName : glyph;
+		final Sprite sprite = (spriteImage != null) ? new ImageSprite(spriteImage, spriteName) : null;
 		cached = new RenderedEmoji(glyph, icon, sprite, dataUrl);
-		emojiCache.put(name, cached);
+		emojiCache.put(cacheKey, cached);
 		return cached;
 	}
+
 	private BufferedImage scaleForIcon(final BufferedImage source) {
 		return scaleToFit(source, Math.round(ICON_POINT_SIZE) + (ICON_PADDING * 2));
 	}

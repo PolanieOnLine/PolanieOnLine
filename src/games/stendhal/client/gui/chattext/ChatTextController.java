@@ -12,17 +12,20 @@
 package games.stendhal.client.gui.chattext;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
+import javax.swing.JComponent;
 import javax.swing.KeyStroke;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.text.DocumentFilter;
+import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.JTextComponent;
 
 import games.stendhal.client.ClientSingletonRepository;
@@ -96,23 +99,24 @@ public class ChatTextController {
 	* Add the special key bindings.
 	*/
 	private void setupKeys() {
-		InputMap input = playerChatText.getInputMap();
-		input.put(KeyStroke.getKeyStroke("ENTER"), "submit");
-		input.put(KeyStroke.getKeyStroke("shift ENTER"), "submit");
-		input.put(KeyStroke.getKeyStroke("shift UP"), "history_previous");
-		input.put(KeyStroke.getKeyStroke("shift DOWN"), "history_next");
+		final InputMap input = playerChatText.getInputMap(JComponent.WHEN_FOCUSED);
+		input.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "submit");
+		input.put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, KeyEvent.SHIFT_DOWN_MASK), "insert_line_break");
+		input.put(KeyStroke.getKeyStroke(KeyEvent.VK_UP, KeyEvent.SHIFT_DOWN_MASK), "history_previous");
+		input.put(KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, KeyEvent.SHIFT_DOWN_MASK), "history_next");
 		input.put(KeyStroke.getKeyStroke("F1"), "manual");
 
-		ActionMap actions = playerChatText.getActionMap();
+		final ActionMap actions = playerChatText.getActionMap();
 		actions.put("submit", new AbstractAction() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(final ActionEvent e) {
 				submitCurrentLine();
 			}
 		});
+		actions.put("insert_line_break", new DefaultEditorKit.InsertBreakAction());
 		actions.put("history_previous", new AbstractAction() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(final ActionEvent e) {
 				if (cache.hasPrevious()) {
 					setChatLine(cache.previous());
 				}
@@ -120,7 +124,7 @@ public class ChatTextController {
 		});
 		actions.put("history_next", new AbstractAction() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(final ActionEvent e) {
 				if (cache.hasNext()) {
 					setChatLine(cache.next());
 				}
@@ -128,7 +132,7 @@ public class ChatTextController {
 		});
 		actions.put("manual", new AbstractAction() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(final ActionEvent e) {
 				SlashActionRepository.get("manual").execute(null, null);
 			}
 		});

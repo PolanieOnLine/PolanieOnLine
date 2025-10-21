@@ -117,10 +117,15 @@ class EmojiTextPane extends JTextPane {
 					continue;
 				}
 				final String segment = new String(Character.toChars(codePoint));
-				insertPlainText(docPos, plainPos, segment);
-				final int length = segment.length();
-				docPos += length;
-				plainPos += length;
+				if (insertEmoji(docPos, plainPos, segment)) {
+					docPos += 1;
+					plainPos += segment.length();
+				} else {
+					insertPlainText(docPos, plainPos, segment);
+					final int length = segment.length();
+					docPos += length;
+					plainPos += length;
+				}
 				index += Character.charCount(codePoint);
 			}
 		}
