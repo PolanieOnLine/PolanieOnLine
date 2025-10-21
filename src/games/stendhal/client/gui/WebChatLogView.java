@@ -59,7 +59,7 @@ class WebChatLogView extends JComponent implements ChatLogView {
 
 	private static final Logger LOGGER = Logger.getLogger(WebChatLogView.class);
 	private static final Color DEFAULT_BACKGROUND = new Color(60, 30, 0);
-	private static final String DEFAULT_FONT_STACK = "'Segoe UI Emoji','Apple Color Emoji','Noto Color Emoji','Twemoji Mozilla','EmojiOne Color','Noto Emoji',sans-serif";
+	private static final String DEFAULT_FONT_STACK = "'Noto Color Emoji','Segoe UI Emoji','Apple Color Emoji','Twemoji Mozilla','EmojiOne Color','Noto Emoji',sans-serif";
 	private static final String DOCUMENT_TEMPLATE = "<!DOCTYPE html><html><head><meta charset=\"UTF-8\"><style>%s</style></head><body class=\"chat-root\" style=\"background:%s\"><main class=\"chat-log\">%s</main></body></html>";
 	private static final String STYLE_TEMPLATE = "body{margin:0;padding:0;background:%2$s;color:#f0f0f0;font-family:%1$s;font-size:%3$dpx;}" +
 		".chat-root{padding:12px;overflow:auto;}" +
@@ -88,9 +88,6 @@ class WebChatLogView extends JComponent implements ChatLogView {
 
 	WebChatLogView() throws Exception {
 		bridge = FxBridge.tryCreate();
-		if (bridge == null) {
-			throw new UnsupportedOperationException("JavaFX modules not available");
-		}
 
 		setLayout(new BorderLayout());
 		add(bridge.getComponent(), BorderLayout.CENTER);
@@ -426,6 +423,7 @@ class WebChatLogView extends JComponent implements ChatLogView {
 
 				CountDownLatch latch = new CountDownLatch(1);
 				Object[] engineHolder = new Object[1];
+				Throwable[] failureHolder = new Throwable[1];
 				runLater.invoke(null, new Runnable() {
 					@Override
 					public void run() {
@@ -436,7 +434,7 @@ class WebChatLogView extends JComponent implements ChatLogView {
 							setScene.invoke(jfxPanel, scene);
 							engineHolder[0] = engine;
 						} catch (IllegalAccessException | InstantiationException | InvocationTargetException ex) {
-							LOGGER.warn("Failed to initialize JavaFX WebView", ex);
+							failureHolder[0] = ex;
 						} finally {
 							latch.countDown();
 						}
@@ -444,22 +442,65 @@ class WebChatLogView extends JComponent implements ChatLogView {
 				});
 
 				if (!latch.await(FX_INIT_TIMEOUT_SECONDS, TimeUnit.SECONDS)) {
-					LOGGER.warn("Timed out waiting for JavaFX WebView");
-					return null;
+					throw new UnsupportedOperationException("Timed out waiting for JavaFX WebView initialization");
 				}
 				if (engineHolder[0] == null) {
-					return null;
+					Throwable cause = failureHolder[0];
+					if (LOGGER.isDebugEnabled() && cause != null) {
+						LOGGER.debug("JavaFX WebView initialization failed", cause);
+					}
+					throw new UnsupportedOperationException(describeFailure(cause), cause);
 				}
 
 				return new FxBridge((JComponent) jfxPanel, engineHolder[0], loadContent, executeScript, runLater);
 			} catch (ClassNotFoundException ex) {
-				return null;
+				if (LOGGER.isDebugEnabled()) {
+					LOGGER.debug("JavaFX classes not found", ex);
+				}
+				throw new UnsupportedOperationException("JavaFX modules not available", ex);
+			} catch (UnsupportedOperationException ex) {
+				throw ex;
 			} catch (ReflectiveOperationException ex) {
-				LOGGER.warn("Failed to initialize JavaFX", ex);
-				return null;
+				if (LOGGER.isDebugEnabled()) {
+					LOGGER.debug("JavaFX reflection failure", ex);
+				}
+				throw new UnsupportedOperationException(describeFailure(ex), ex);
 			} catch (RuntimeException | LinkageError ex) {
-				LOGGER.warn("Failed to initialize JavaFX", ex);
-				return null;
+				if (LOGGER.isDebugEnabled()) {
+					LOGGER.debug("JavaFX runtime failure", ex);
+				}
+				throw new UnsupportedOperationException(describeFailure(ex), ex);
+			}
+		}
+
+		private static String describeFailure(final Throwable cause) {
+			if (cause == null) {
+				return "JavaFX initialization failed";
+			}
+			Throwable root = unwrap(cause);
+			String message = (root.getMessage() != null) ? root.getMessage() : root.getClass().getSimpleName();
+			String lower = message.toLowerCase(Locale.ROOT);
+			if (lower.contains("quantumrenderer") || lower.contains("internal graphics not initialized")) {
+				return "JavaFX runtime failed to initialize graphics pipeline";
+			}
+			return "JavaFX initialization failed: " + message;
+		}
+
+		private static Throwable unwrap(final Throwable cause) {
+			Throwable current = cause;
+			while (true) {
+				Throwable next = null;
+				if (current instanceof InvocationTargetException && ((InvocationTargetException) current).getCause() != null) {
+					next = ((InvocationTargetException) current).getCause();
+				} else if (current instanceof ExceptionInInitializerError && ((ExceptionInInitializerError) current).getCause() != null) {
+					next = ((ExceptionInInitializerError) current).getCause();
+				} else if ((current.getCause() != null) && (current.getCause() != current)) {
+					next = current.getCause();
+				}
+				if (next == null) {
+					return current;
+				}
+				current = next;
 			}
 		}
 

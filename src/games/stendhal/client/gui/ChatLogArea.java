@@ -107,10 +107,18 @@ class ChatLogArea {
 		try {
 			return new WebChatLogView();
 		} catch (UnsupportedOperationException ex) {
-			logger.info(ex.getMessage() + "; using legacy chat log component.");
+			String reason = ex.getMessage();
+			if ((reason == null) || reason.isEmpty()) {
+				reason = ex.getClass().getSimpleName();
+			}
+			logger.info(reason + "; using legacy chat log component.");
+			if (logger.isDebugEnabled()) {
+				logger.debug("JavaFX chat initialization failure", ex);
+			}
 			return new KTextEdit();
 		} catch (Throwable ex) {
-			logger.warn("Falling back to legacy chat log component", ex);
+			logger.warn("Falling back to legacy chat log component: " + ex.getMessage());
+			logger.debug("Legacy chat fallback stacktrace", ex);
 			return new KTextEdit();
 		}
 	}
