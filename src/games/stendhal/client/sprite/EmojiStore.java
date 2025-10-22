@@ -804,15 +804,20 @@ private boolean looksLikeEmojiSequence(final String text) {
                         return Collections.emptyList();
                 }
                 final StringBuilder builder = new StringBuilder(glyph.length() * 5);
+                boolean appended = false;
                 for (int offset = 0; offset < glyph.length();) {
                         final int codePoint = glyph.codePointAt(offset);
-                        if (builder.length() > 0) {
+                        offset += Character.charCount(codePoint);
+                        if ((codePoint == VARIATION_SELECTOR_TEXT) || (codePoint == VARIATION_SELECTOR_EMOJI)) {
+                                continue;
+                        }
+                        if (appended) {
                                 builder.append('-');
                         }
                         builder.append(Integer.toHexString(codePoint).toLowerCase(Locale.ROOT));
-                        offset += Character.charCount(codePoint);
+                        appended = true;
                 }
-                if (builder.length() == 0) {
+                if (!appended) {
                         return Collections.emptyList();
                 }
                 final String path = builder.toString();

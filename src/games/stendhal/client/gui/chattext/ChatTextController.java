@@ -15,6 +15,8 @@ import java.awt.Font;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.CountDownLatch;
@@ -34,6 +36,8 @@ import games.stendhal.client.actions.SlashActionRepository;
 import games.stendhal.client.scripting.ChatLineParser;
 import games.stendhal.client.stendhal;
 import games.stendhal.common.constants.SoundLayer;
+import games.stendhal.client.sprite.DataLoader;
+import org.apache.log4j.Logger;
 import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
@@ -45,6 +49,8 @@ import javafx.scene.layout.BorderPane;
 public class ChatTextController {
     /** Maximum text length. Public chat is limited to 1000 server side. */
     private static final int MAX_TEXT_LENGTH = 1000;
+
+    private static final Logger LOGGER = Logger.getLogger(ChatTextController.class);
 
     private final FXChatInputPane playerChatText;
 
@@ -180,8 +186,22 @@ public class ChatTextController {
 
     private static final class FXChatInputPane extends JFXPanel {
         private static final long serialVersionUID = 885350581860244944L;
-        private static final String FONT_STACK = "'Arial','Segoe UI','Liberation Sans','DejaVu Sans','Noto Sans','SansSerif'";
+        private static final String FONT_STACK = "'Carlito','Amaranth','Konstytucja Polska','KonstytucjaPolska','Antykwa Torunska','AntykwaTorunska','Arial','Segoe UI','Liberation Sans','DejaVu Sans','Noto Sans','SansSerif'";
         private static final int MIN_FONT_SIZE = 12;
+        private static final String[] BUNDLED_FX_FONT_RESOURCES = new String[] {
+                "data/font/Carlito-Regular.ttf",
+                "data/font/Carlito-Bold.ttf",
+                "data/font/Carlito-Italic.ttf",
+                "data/font/Carlito-BoldItalic.ttf",
+                "data/font/Amaranth-Regular.ttf",
+                "data/font/Amaranth-Bold.ttf",
+                "data/font/Amaranth-Italic.ttf",
+                "data/font/Amaranth-BoldItalic.ttf",
+                "data/font/KonstytucjaPolska.ttf",
+                "data/font/AntykwaTorunska.ttf"
+        };
+
+        private static boolean fxFontsLoaded;
 
         private final int maxTextLength;
         private final Runnable lengthLimitHandler;
@@ -208,6 +228,7 @@ public class ChatTextController {
         }
 
         private void initializeFx() {
+            ensureFxFontsLoaded();
             textArea = new TextArea();
             textArea.setStyle(buildFontCss());
             textArea.setWrapText(true);
@@ -235,6 +256,30 @@ public class ChatTextController {
         private static String buildFontCss() {
             final int size = resolveFontSize();
             return String.format(Locale.ROOT, "-fx-font-family: %s; -fx-font-size: %dpx;", FONT_STACK, size);
+        }
+
+        private static synchronized void ensureFxFontsLoaded() {
+            if (fxFontsLoaded) {
+                return;
+            }
+            fxFontsLoaded = true;
+            for (final String resource : BUNDLED_FX_FONT_RESOURCES) {
+                if ((resource == null) || resource.isEmpty()) {
+                    continue;
+                }
+                try (InputStream stream = DataLoader.getResourceAsStream(resource)) {
+                    if (stream == null) {
+                        LOGGER.warn("Missing chat font resource: " + resource);
+                        continue;
+                    }
+                    final javafx.scene.text.Font font = javafx.scene.text.Font.loadFont(stream, MIN_FONT_SIZE);
+                    if (font == null) {
+                        LOGGER.warn("Unable to register chat font: " + resource);
+                    }
+                } catch (final IOException ex) {
+                    LOGGER.warn("Failed to load chat font: " + resource, ex);
+                }
+            }
         }
 
         private static int resolveFontSize() {

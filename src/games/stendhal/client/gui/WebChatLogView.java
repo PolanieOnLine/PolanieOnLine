@@ -203,7 +203,7 @@ class WebChatLogView extends JComponent implements ChatLogView {
                 builder.append("function applyFallback(img){if(!img){return;}var ds=img.dataset||{};if(ds.emojiFallbackApplied==='1'||img.getAttribute('data-emoji-fallback-applied')==='1'){return;}if(tryAlternateSource(img)){return;}var fallback=img.getAttribute('data-fallback');if(!fallback||fallback===img.src){return;}markFallbackApplied(img);img.src=fallback;}");
                 builder.append("function primeFallbacks(root){if(!root||!root.querySelectorAll){return;}var imgs=root.querySelectorAll('img[data-fallback],img[data-alt-src]');for(var i=0;i<imgs.length;i++){var img=imgs[i];if(img.complete&&img.naturalWidth===0){applyFallback(img);}}}");
                 builder.append("document.addEventListener('error',function(evt){var target=evt.target;if(!target||!target.classList){return;}if(target.classList.contains('emoji-icon')||target.classList.contains('emoji-layer-img')){applyFallback(target);}},true);");
-                builder.append("window.chatlog={container:c,appendLine:function(html){if(!this.container){return;}var wrapper=document.createElement('div');wrapper.innerHTML=html;while(wrapper.firstChild){var node=wrapper.firstChild;this.container.appendChild(node);primeFallbacks(node);}this.scrollToBottom();},clear:function(){if(this.container){this.container.innerHTML='';}},scrollToBottom:function(){if(this.container){this.container.scrollTop=this.container.scrollHeight;}window.scrollTo(0,document.body.scrollHeight);}};");
+                builder.append("window.chatlog={container:c,appendLine:function(html){if(!this.container){return;}var wrapper=document.createElement('div');wrapper.innerHTML=html;while(wrapper.firstChild){var node=wrapper.firstChild;this.container.appendChild(node);primeFallbacks(node);}this.scrollToBottom();},clear:function(){if(this.container){this.container.innerHTML='';}},scrollToBottom:function(){if(this.container){this.container.scrollTop=this.container.scrollHeight;}window.scrollTo(0,document.body.scrollHeight);},handleEmojiError:function(img){applyFallback(img);}};");
                 builder.append("if(window.chatlog&&window.chatlog.container){primeFallbacks(window.chatlog.container);}window.chatlog.scrollToBottom();})();</script>");
 		builder.append("</body></html>");
 		return builder.toString();
@@ -431,9 +431,10 @@ class WebChatLogView extends JComponent implements ChatLogView {
                                                                 if (!alternates.isEmpty()) {
                                                                                 builder.append(" data-alt-src=\"")
                                                                                                 .append(escapeHtml(alternates))
-                                                                                                .append("\"");
+                                                                                                .append("\" data-alt-index=\"0\"");
                                                                 }
                                                 }
+                                                builder.append(" onerror=\"if(window.chatlog&&window.chatlog.handleEmojiError){window.chatlog.handleEmojiError(this);}\"");
                                                 builder.append("/></span>");
                                                 return builder.toString();
                                 }
@@ -610,9 +611,10 @@ class WebChatLogView extends JComponent implements ChatLogView {
                                                                 if (!alternates.isEmpty()) {
                                                                                 builder.append(" data-alt-src=\"")
                                                                                                 .append(escapeHtml(alternates))
-                                                                                                .append("\"");
+                                                                                                .append("\" data-alt-index=\"0\"");
                                                                 }
                                                 }
+                                                builder.append(" onerror=\"if(window.chatlog&&window.chatlog.handleEmojiError){window.chatlog.handleEmojiError(this);}\"");
                                                 builder.append("/>");
                                 } else {
                                                 builder.append(escapeHtml((effectiveAlt != null) ? effectiveAlt : ""));
@@ -1372,6 +1374,13 @@ class WebChatLogView extends JComponent implements ChatLogView {
 
         private String buildChatFontStack() {
                 final java.util.Set<String> families = new LinkedHashSet<String>();
+                addFontFamily(families, BUNDLED_CHAT_FONT_FAMILY);
+                addFontFamily(families, "Carlito");
+                addFontFamily(families, "KonstytucjaPolska");
+                addFontFamily(families, "Konstytucja Polska");
+                addFontFamily(families, "AntykwaTorunska");
+                addFontFamily(families, "Antykwa Torunska");
+                addFontFamily(families, "Amaranth");
                 addFontFamily(families, "Arial");
                 addFontFamily(families, "Arial Unicode MS");
                 addFontFamily(families, "Helvetica");
@@ -1384,13 +1393,6 @@ class WebChatLogView extends JComponent implements ChatLogView {
                 addFontFamily(families, "Segoe UI Symbol");
                 addFontFamily(families, "Roboto");
                 addFontFamily(families, "Tahoma");
-                addFontFamily(families, BUNDLED_CHAT_FONT_FAMILY);
-                addFontFamily(families, "KonstytucjaPolska");
-                addFontFamily(families, "Konstytucja Polska");
-                addFontFamily(families, "AntykwaTorunska");
-                addFontFamily(families, "Antykwa Torunska");
-                addFontFamily(families, "Amaranth");
-                addFontFamily(families, "Carlito");
                 if (chatFont != null) {
                         addFontFamily(families, chatFont.getFamily());
                         addFontFamily(families, chatFont.getName());
@@ -1502,8 +1504,8 @@ class WebChatLogView extends JComponent implements ChatLogView {
 			if (pendingContent != null) {
 				documentReady = false;
 				pendingAppends.clear();
-				engine.loadContent(pendingContent, "text/html");
-				pendingContent = null;
+                                engine.loadContent(pendingContent, "text/html; charset=UTF-8");
+                                pendingContent = null;
 			}
 		}
 
@@ -1515,7 +1517,7 @@ class WebChatLogView extends JComponent implements ChatLogView {
 				}
 				documentReady = false;
 				pendingAppends.clear();
-				engine.loadContent(html, "text/html");
+                                engine.loadContent(html, "text/html; charset=UTF-8");
 			});
 		}
 
