@@ -16,14 +16,17 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.InputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -45,6 +48,7 @@ import games.stendhal.client.gui.chatlog.HeaderLessEventLine;
 import games.stendhal.client.gui.textformat.AttributedTextSink;
 import games.stendhal.client.gui.textformat.CssClassSet;
 import games.stendhal.client.gui.textformat.StringFormatter;
+import games.stendhal.client.sprite.DataLoader;
 import games.stendhal.client.sprite.EmojiStore;
 import games.stendhal.client.sprite.EmojiStore.EmojiMatch;
 import games.stendhal.client.stendhal;
@@ -67,6 +71,7 @@ class WebChatLogView extends JComponent implements ChatLogView {
 	private static final Logger LOGGER = Logger.getLogger(WebChatLogView.class);
 
 	private static final SimpleDateFormat TIMESTAMP_FORMAT = new SimpleDateFormat("[HH:mm:ss] ", Locale.getDefault());
+	private static final String BUNDLED_CHAT_FONT_FAMILY = "StendhalChat";
 	private static final char EMOJI_PLACEHOLDER_PREFIX = '\uFFF0';
 	private static final char LAYERED_EMOJI_PLACEHOLDER_PREFIX = '\uFFF1';
 	private static final Pattern LAYERED_EMOJI_PATTERN = Pattern.compile("\\[\\[(?:emoji|em):([^|\\]]+)(?:\\|([^\\]]+))?\\]\\]", Pattern.CASE_INSENSITIVE);
@@ -74,6 +79,12 @@ class WebChatLogView extends JComponent implements ChatLogView {
 	private static final StringFormatter<java.util.Set<String>, CssClassSet> FORMATTER
 	= new StringFormatter<java.util.Set<String>, CssClassSet>();
 	private static final CssClassSet DEFAULT_FRAGMENT = new CssClassSet().addClass("fragment");
+	private static final BundledFontFace[] BUNDLED_CHAT_FONTS = new BundledFontFace[] {
+		new BundledFontFace(BUNDLED_CHAT_FONT_FAMILY, "data/font/Carlito-Regular.ttf", "400", "normal"),
+		new BundledFontFace(BUNDLED_CHAT_FONT_FAMILY, "data/font/Carlito-Italic.ttf", "400", "italic"),
+		new BundledFontFace(BUNDLED_CHAT_FONT_FAMILY, "data/font/Carlito-Bold.ttf", "700", "normal"),
+		new BundledFontFace(BUNDLED_CHAT_FONT_FAMILY, "data/font/Carlito-BoldItalic.ttf", "700", "italic")
+	};
 
 	static {
 		FORMATTER.addStyle('#', style("fragment", "fmt-hash"));
@@ -107,6 +118,8 @@ class WebChatLogView extends JComponent implements ChatLogView {
 		if (!isJavaFxAvailable()) {
 			throw new UnsupportedOperationException("JavaFX modules not available");
 		}
+
+		EmojiStore.get().init();
 
 		setLayout(new BorderLayout());
 		fxPanel = new JFXPanel();
@@ -183,6 +196,7 @@ class WebChatLogView extends JComponent implements ChatLogView {
 
 	private String buildStylesheet() {
                 final StringBuilder css = new StringBuilder();
+                appendBundledChatFonts(css);
                 final String background = toHex(defaultBackground);
                 final String emojiStack = buildEmojiFontStack(css);
                 final String fontStack = buildChatFontStack();
@@ -380,14 +394,45 @@ class WebChatLogView extends JComponent implements ChatLogView {
 			return text.length();
 	}
 
-		private String buildEmojiHtml(final EmojiMatch match, final String token) {
-				final String glyph = ((match != null) && (match.getGlyph() != null)) ? match.getGlyph() : ((token != null) ? token : "");
-				final String dataUrl = (token != null) ? EmojiStore.get().dataUrlFor(token) : null;
-				if ((dataUrl != null) && !dataUrl.isEmpty()) {
-						return "<span class=\"emoji-span\"><img class=\"emoji-icon\" src=\"" + dataUrl + "\" alt=\"" + escapeHtml(glyph) + "\"/></span>";
-				}
-				return "<span class=\"emoji\">" + escapeHtml(glyph) + "</span>";
-		}
+                private String buildEmojiHtml(final EmojiMatch match, final String token) {
+                                final EmojiStore store = EmojiStore.get();
+                                final String glyph = ((match != null) && (match.getGlyph() != null)) ? match.getGlyph() : ((token != null) ? token : "");
+                                final String dataUrl = resolveEmojiDataUrl(store, match, token, glyph);
+                                if ((dataUrl != null) && !dataUrl.isEmpty()) {
+                                                return "<span class=\"emoji-span\"><img class=\"emoji-icon\" src=\"" + dataUrl + "\" alt=\"" + escapeHtml(glyph) + "\"/></span>";
+                                }
+                                return "<span class=\"emoji\">" + escapeHtml(glyph) + "</span>";
+                }
+
+                private String resolveEmojiDataUrl(final EmojiStore store, final EmojiMatch match, final String token, final String glyph) {
+                                if (store == null) {
+                                                return null;
+                                }
+                                final LinkedHashSet<String> queries = new LinkedHashSet<String>();
+                                if (match != null) {
+                                                final String canonical = match.getName();
+                                                if ((canonical != null) && !canonical.isEmpty()) {
+                                                                queries.add(':' + canonical + ':');
+                                                                queries.add(canonical);
+                                                }
+                                }
+                                if ((token != null) && !token.isEmpty()) {
+                                                queries.add(token);
+                                }
+                                if ((glyph != null) && !glyph.isEmpty()) {
+                                                queries.add(glyph);
+                                }
+                                for (final String query : queries) {
+                                                if ((query == null) || query.isEmpty()) {
+                                                                continue;
+                                                }
+                                                final String dataUrl = store.dataUrlFor(query);
+                                                if ((dataUrl != null) && !dataUrl.isEmpty()) {
+                                                                return dataUrl;
+                                                }
+                                }
+                                return null;
+                }
 
                 private String buildLayeredEmojiHtml(final LayeredEmojiSpec spec) {
                                 if ((spec == null) || !spec.hasRenderableLayers()) {
@@ -850,9 +895,52 @@ class WebChatLogView extends JComponent implements ChatLogView {
 				}
 		}
 
-	private static final class EmojiReplacement {
-		private final String placeholder;
-		private final String html;
+        private static final class BundledFontFace {
+                private final String family;
+                private final String resource;
+                private final String weight;
+                private final String style;
+                private String dataUrl;
+                private boolean attempted;
+
+                private BundledFontFace(final String family, final String resource, final String weight, final String style) {
+                        this.family = (family != null) ? family : "";
+                        this.resource = resource;
+                        this.weight = (weight != null) ? weight : "400";
+                        this.style = (style != null) ? style : "normal";
+                }
+
+                private synchronized String ensureDataUrl() {
+                        if (!attempted) {
+                                attempted = true;
+                                dataUrl = loadFontDataUrl(resource);
+                        }
+                        return dataUrl;
+                }
+
+                void appendCss(final StringBuilder css) {
+                        if (css == null) {
+                                return;
+                        }
+                        final String url = ensureDataUrl();
+                        if ((url == null) || url.isEmpty()) {
+                                return;
+                        }
+                        css.append("@font-face{font-family:'")
+                                .append(escapeFontFamily(family))
+                                .append("';font-style:")
+                                .append(style)
+                                .append(";font-weight:")
+                                .append(weight)
+                                .append(";src:url(")
+                                .append(url)
+                                .append(") format('truetype');font-display:swap;}");
+                }
+        }
+
+        private static final class EmojiReplacement {
+                private final String placeholder;
+                private final String html;
 
 		private EmojiReplacement(final String placeholder, final String html) {
 			this.placeholder = placeholder;
@@ -1096,10 +1184,20 @@ class WebChatLogView extends JComponent implements ChatLogView {
                                 families.add(psName);
                         }
                 }
-                families.add("Dialog");
+                families.add(BUNDLED_CHAT_FONT_FAMILY);
+                families.add("Carlito");
+                families.add("Segoe UI");
+                families.add("Segoe UI Variable");
+                families.add("Segoe UI Symbol");
+                families.add("Tahoma");
+                families.add("Roboto");
+                families.add("Noto Sans");
+                families.add("Noto Sans Display");
+                families.add("Liberation Sans");
                 families.add("DejaVu Sans");
                 families.add("Arial");
                 families.add("Helvetica");
+                families.add("Dialog");
 
                 final StringBuilder stack = new StringBuilder();
                 for (final String family : families) {
@@ -1116,6 +1214,40 @@ class WebChatLogView extends JComponent implements ChatLogView {
                 }
                 stack.append("sans-serif");
                 return stack.toString();
+        }
+
+        private void appendBundledChatFonts(final StringBuilder css) {
+                if (css == null) {
+                        return;
+                }
+                for (final BundledFontFace face : BUNDLED_CHAT_FONTS) {
+                        if (face != null) {
+                                face.appendCss(css);
+                        }
+                }
+        }
+
+        private static String loadFontDataUrl(final String resource) {
+                if ((resource == null) || resource.isEmpty()) {
+                        return null;
+                }
+                try (InputStream stream = DataLoader.getResourceAsStream(resource)) {
+                        if (stream == null) {
+                                LOGGER.warn("Bundled chat font not found: " + resource);
+                                return null;
+                        }
+                        final ByteArrayOutputStream out = new ByteArrayOutputStream();
+                        final byte[] buffer = new byte[4096];
+                        int read;
+                        while ((read = stream.read(buffer)) != -1) {
+                                out.write(buffer, 0, read);
+                        }
+                        final String encoded = Base64.getEncoder().encodeToString(out.toByteArray());
+                        return "data:font/ttf;base64," + encoded;
+                } catch (final IOException ex) {
+                        LOGGER.warn("Failed to load bundled chat font: " + resource, ex);
+                        return null;
+                }
         }
 
         private int chatBodyFontSize() {
