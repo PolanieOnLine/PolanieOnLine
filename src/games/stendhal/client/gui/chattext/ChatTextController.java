@@ -578,7 +578,7 @@ public class ChatTextController {
 
         private String toJsString(final String value) {
             final StringBuilder out = new StringBuilder();
-            out.append('\'');
+            out.append("'");
             if (value != null) {
                 for (int i = 0; i < value.length(); i++) {
                     final char ch = value.charAt(i);
@@ -607,7 +607,7 @@ public class ChatTextController {
                     }
                 }
             }
-            out.append('\'');
+            out.append("'");
             return out.toString();
         }
     }

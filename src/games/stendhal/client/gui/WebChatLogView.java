@@ -1412,7 +1412,7 @@ class WebChatLogView extends JComponent implements ChatLogView {
 			case '&':
 				builder.append("&amp;");
 				break;
-			case ''':
+			case '\'':
 				builder.append("&#39;");
 				break;
 			default:
@@ -1428,14 +1428,14 @@ class WebChatLogView extends JComponent implements ChatLogView {
 			return "''";
 		}
 		final StringBuilder builder = new StringBuilder(value.length() + 16);
-		builder.append(''');
+		builder.append("'");
 		for (int i = 0; i < value.length(); i++) {
 			final char ch = value.charAt(i);
 			switch (ch) {
 			case '\':
 				builder.append("\\");
 				break;
-			case ''':
+			case '\'':
 				builder.append("\'");
 				break;
 			case '\r':
@@ -1452,7 +1452,7 @@ class WebChatLogView extends JComponent implements ChatLogView {
 				break;
 			}
 		}
-		builder.append(''');
+		builder.append("'");
 		return builder.toString();
 	}
 
@@ -1589,7 +1589,7 @@ class WebChatLogView extends JComponent implements ChatLogView {
                         if (stack.length() > 0) {
                                 stack.append(',');
                         }
-                        stack.append('\'').append(escapeFontFamily(family)).append('\'');
+                        stack.append("'").append(escapeFontFamily(family)).append("'");
                 }
                 if (stack.length() > 0) {
                         stack.append(',');
