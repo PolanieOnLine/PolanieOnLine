@@ -39,6 +39,7 @@ import java.util.regex.Pattern;
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import org.apache.log4j.Logger;
@@ -109,7 +110,7 @@ class WebChatLogView extends JComponent implements ChatLogView {
 
         private final Font chatFont = resolveChatFont();
 
-	private Color defaultBackground = new Color(0x3c, 0x1e, 0x00);
+        private Color defaultBackground = new Color(0x3c, 0x1e, 0x00);
 	private String channelName = "";
 
 	private static CssClassSet style(final String... classes) {
@@ -129,16 +130,14 @@ class WebChatLogView extends JComponent implements ChatLogView {
 
 		EmojiStore.get().init();
 
-		setLayout(new BorderLayout());
+                setLayout(new BorderLayout());
                 fxPanel = new JFXPanel();
-                fxPanel.setOpaque(false);
-                fxPanel.setBackground(new java.awt.Color(0, 0, 0, 0));
-                bridge = new FxBridge(fxPanel);
-		add(fxPanel, BorderLayout.CENTER);
+                bridge = new FxBridge(fxPanel, defaultBackground);
+                add(fxPanel, BorderLayout.CENTER);
 
-		installPopupMenu();
-		refreshDocument();
-	}
+                installPopupMenu();
+                refreshDocument();
+        }
 
 	@Override
 	public JComponent getComponent() {
@@ -172,11 +171,14 @@ class WebChatLogView extends JComponent implements ChatLogView {
 		refreshDocument();
 	}
 
-	@Override
-	public void setDefaultBackground(final Color color) {
-		defaultBackground = (color != null) ? color : new Color(0x3c, 0x1e, 0x00);
-		refreshDocument();
-	}
+        @Override
+        public void setDefaultBackground(final Color color) {
+                defaultBackground = (color != null) ? color : new Color(0x3c, 0x1e, 0x00);
+                if (bridge != null) {
+                        bridge.setBackground(defaultBackground);
+                }
+                refreshDocument();
+        }
 
 	@Override
 	public void setChannelName(final String name) {
@@ -222,11 +224,18 @@ class WebChatLogView extends JComponent implements ChatLogView {
 
                 css.append("body.chat-body{margin:0;padding:0;background:")
                         .append(background)
+                        .append(";background-color:")
+                        .append(background)
                         .append(";color:#f4edd9;font-family:")
                         .append(fontStack)
                         .append(";font-size:")
                         .append(bodyFontSize)
                         .append("px;line-height:1.35;}");
+                css.append("html{background:")
+                        .append(background)
+                        .append(";background-color:")
+                        .append(background)
+                        .append(";}");
                 css.append(".chat-log{padding:8px 12px;display:flex;flex-direction:column;gap:2px;max-height:100%;overflow-y:auto;}");
                 css.append(".line{display:flex;flex-wrap:wrap;gap:4px;align-items:flex-start;padding:2px 0;border-bottom:1px solid rgba(255,255,255,0.06);}");
                 css.append(".line:last-child{border-bottom:none;}");
@@ -1393,6 +1402,18 @@ class WebChatLogView extends JComponent implements ChatLogView {
                 return String.format(Locale.ROOT, "#%02x%02x%02x", effective.getRed(), effective.getGreen(), effective.getBlue());
         }
 
+        private static String toCssRgba(final Color color) {
+                final Color effective = (color != null) ? color : new Color(0x3c, 0x1e, 0x00);
+                final double alpha = Math.max(0d, Math.min(1d, effective.getAlpha() / 255d));
+                return String.format(Locale.ROOT, "rgba(%d,%d,%d,%.3f)", effective.getRed(), effective.getGreen(), effective.getBlue(), alpha);
+        }
+
+        private static javafx.scene.paint.Color toFxColor(final Color color) {
+                final Color effective = (color != null) ? color : new Color(0x3c, 0x1e, 0x00);
+                final double alpha = Math.max(0d, Math.min(1d, effective.getAlpha() / 255d));
+                return javafx.scene.paint.Color.rgb(effective.getRed(), effective.getGreen(), effective.getBlue(), alpha);
+        }
+
         private static Font resolveChatFont() {
                 final Font uiFont = findUiFont();
                 final int size = ((uiFont != null) && (uiFont.getSize() > 0)) ? uiFont.getSize() : 13;
@@ -1544,24 +1565,32 @@ class WebChatLogView extends JComponent implements ChatLogView {
                 return Math.max(10, chatBodyFontSize() - 1);
         }
 
-	private static final class FxBridge {
-		private final JFXPanel panel;
-		private WebEngine engine;
-		private boolean initialized;
-		private boolean documentReady;
-		private String pendingContent;
-		private final List<String> pendingAppends = new ArrayList<String>();
+        private static final class FxBridge {
+                private final JFXPanel panel;
+                private WebEngine engine;
+                private WebView webView;
+                private BorderPane root;
+                private Scene scene;
+                private boolean initialized;
+                private boolean documentReady;
+                private String pendingContent;
+                private final List<String> pendingAppends = new ArrayList<String>();
+                private String cssBackground;
+                private javafx.scene.paint.Color fxBackground;
 
-		private FxBridge(final JFXPanel panel) {
-			this.panel = panel;
-			Platform.setImplicitExit(false);
-			Platform.runLater(this::init);
-		}
+                private FxBridge(final JFXPanel panel, final Color initialBackground) {
+                        this.panel = panel;
+                        setSwingBackground(initialBackground);
+                        cssBackground = toCssRgba(initialBackground);
+                        fxBackground = toFxColor(initialBackground);
+                        Platform.setImplicitExit(false);
+                        Platform.runLater(this::init);
+                }
 
-		private void init() {
-                        final WebView webView = new WebView();
+                private void init() {
+                        webView = new WebView();
                         webView.setContextMenuEnabled(false);
-                        webView.setStyle("-fx-background-color: transparent;");
+                        applyBackgroundStyles();
                         engine = webView.getEngine();
                         engine.setJavaScriptEnabled(true);
 			engine.getLoadWorker().stateProperty().addListener((observable, oldValue, newValue) -> {
@@ -1571,10 +1600,10 @@ class WebChatLogView extends JComponent implements ChatLogView {
 				}
 			});
 
-                        final BorderPane root = new BorderPane(webView);
-                        root.setStyle("-fx-background-color: transparent;");
-                        final Scene scene = new Scene(root);
-                        scene.setFill(javafx.scene.paint.Color.TRANSPARENT);
+                        root = new BorderPane(webView);
+                        applyBackgroundStyles();
+                        scene = new Scene(root);
+                        applyBackgroundStyles();
                         panel.setScene(scene);
                         initialized = true;
 
@@ -1583,12 +1612,52 @@ class WebChatLogView extends JComponent implements ChatLogView {
 				pendingAppends.clear();
                                 engine.loadContent(pendingContent, "text/html; charset=UTF-8");
                                 pendingContent = null;
-			}
-		}
+                        }
+                }
 
-		private void setContent(final String html) {
-			Platform.runLater(() -> {
-				if (!initialized) {
+                private void applyBackgroundStyles() {
+                        final String css = cssBackground;
+                        if ((webView != null) && (css != null) && !css.isEmpty()) {
+                                webView.setStyle("-fx-background-color: " + css + ";");
+                        }
+                        if ((root != null) && (css != null) && !css.isEmpty()) {
+                                root.setStyle("-fx-background-color: " + css + ";");
+                        }
+                        if (scene != null) {
+                                final javafx.scene.paint.Color fill = (fxBackground != null)
+                                                ? fxBackground
+                                                : javafx.scene.paint.Color.TRANSPARENT;
+                                scene.setFill(fill);
+                        }
+                }
+
+                private void setSwingBackground(final Color color) {
+                        final Color effective = (color != null) ? color : new Color(0x3c, 0x1e, 0x00);
+                        final Runnable update = () -> {
+                                panel.setOpaque(true);
+                                panel.setBackground(effective);
+                        };
+                        if (SwingUtilities.isEventDispatchThread()) {
+                                update.run();
+                        } else {
+                                SwingUtilities.invokeLater(update);
+                        }
+                }
+
+                private void updateBackgroundState(final Color color) {
+                        cssBackground = toCssRgba(color);
+                        fxBackground = toFxColor(color);
+                        setSwingBackground(color);
+                        Platform.runLater(this::applyBackgroundStyles);
+                }
+
+                void setBackground(final Color color) {
+                        updateBackgroundState(color);
+                }
+
+                private void setContent(final String html) {
+                        Platform.runLater(() -> {
+                                if (!initialized) {
 					pendingContent = html;
 					return;
 				}
@@ -1615,11 +1684,11 @@ class WebChatLogView extends JComponent implements ChatLogView {
 			});
 		}
 
-		private void flushPendingAppends() {
-			if (engine == null) {
-				pendingAppends.clear();
-				return;
-			}
+                private void flushPendingAppends() {
+                        if (engine == null) {
+                                pendingAppends.clear();
+                                return;
+                        }
 			final StringBuilder script = new StringBuilder("if(window.chatlog){");
 				for (final String line : pendingAppends) {
 					script.append("window.chatlog.appendLine(")
@@ -1629,38 +1698,38 @@ class WebChatLogView extends JComponent implements ChatLogView {
 				script.append("window.chatlog.scrollToBottom();}");
 			pendingAppends.clear();
 			engine.executeScript(script.toString());
-		}
+                }
 
-		private static String toJsString(final String value) {
-			final StringBuilder out = new StringBuilder();
-			out.append('"');
-			if (value != null) {
-				for (int i = 0; i < value.length(); i++) {
-					final char ch = value.charAt(i);
-					switch (ch) {
-						case '\\':
-						out.append("\\\\");
-						break;
-						case '"':
-						out.append("\\\"");
-						break;
-						case '\n':
-						out.append("\\n");
-						break;
-						case '\r':
-						out.append("\\r");
-						break;
-						case '\t':
-						out.append("\\t");
-						break;
-						default:
-						out.append(ch);
-						break;
-					}
-				}
-			}
-			out.append('"');
-			return out.toString();
-		}
+                private static String toJsString(final String value) {
+                        final StringBuilder out = new StringBuilder();
+                        out.append('"');
+                        if (value != null) {
+                                for (int i = 0; i < value.length(); i++) {
+                                        final char ch = value.charAt(i);
+                                        switch (ch) {
+                                                case '\\':
+                                                        out.append("\\\\");
+                                                        break;
+                                                case '"':
+                                                        out.append("\\\"");
+                                                        break;
+                                                case '\n':
+                                                        out.append("\\n");
+                                                        break;
+                                                case '\r':
+                                                        out.append("\\r");
+                                                        break;
+                                                case '\t':
+                                                        out.append("\\t");
+                                                        break;
+                                                default:
+                                                        out.append(ch);
+                                                        break;
+                                        }
+                                }
+                        }
+                        out.append('"');
+                        return out.toString();
+                }
 	}
 }
