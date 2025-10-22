@@ -1,7 +1,7 @@
 /***************************************************************************
 *                   (C) Copyright 2003-2015 - Stendhal                    *
-***************************************************************************
-***************************************************************************
+***************************************************************************/
+/***************************************************************************
 *                                                                         *
 *   This program is free software; you can redistribute it and/or modify  *
 *   it under the terms of the GNU General Public License as published by  *
@@ -11,6 +11,7 @@
 ***************************************************************************/
 package games.stendhal.client.gui.chattext;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -24,27 +25,30 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
-import java.util.Locale;
 
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import org.apache.log4j.Logger;
+
 import games.stendhal.client.ClientSingletonRepository;
 import games.stendhal.client.StendhalClient;
 import games.stendhal.client.actions.SlashActionRepository;
 import games.stendhal.client.scripting.ChatLineParser;
+import games.stendhal.client.sprite.DataLoader;
+import games.stendhal.client.sprite.EmojiStore;
 import games.stendhal.client.stendhal;
 import games.stendhal.common.constants.SoundLayer;
-import games.stendhal.client.sprite.DataLoader;
-import org.apache.log4j.Logger;
 import javafx.application.Platform;
+import javafx.concurrent.Worker;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextFormatter;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
+import netscape.javascript.JSObject;
 
 public class ChatTextController {
     /** Maximum text length. Public chat is limited to 1000 server side. */
@@ -60,8 +64,7 @@ public class ChatTextController {
     /**
      * Retrieves singleton instance.
      *
-     * @return
-     *   `ChatTextController` instance.
+     * @return `ChatTextController` instance.
      */
     public static ChatTextController get() {
         if (ChatTextController.instance == null) {
@@ -92,8 +95,7 @@ public class ChatTextController {
     /**
      * Sets focus to chat input.
      *
-     * @return
-     *   `true` if focus change is likely to succeed.
+     * @return `true` if focus change is likely to succeed.
      */
     public boolean setFocus() {
         return playerChatText.requestFocusInWindow();
@@ -111,6 +113,11 @@ public class ChatTextController {
         final KeyCode code = event.getCode();
         if (code == KeyCode.ENTER) {
             if (event.isShiftDown()) {
+                event.consume();
+                playerChatText.insertLineBreak();
+                return;
+            }
+            if (event.isControlDown() || event.isAltDown() || event.isMetaDown()) {
                 return;
             }
             event.consume();
@@ -150,7 +157,7 @@ public class ChatTextController {
     private void submitCurrentLine() {
         final String text = getText();
         if (text.isEmpty()) {
-            playerChatText.setText("");
+            playerChatText.clear();
             return;
         }
         if (ChatLineParser.parseAndHandle(text)) {
@@ -163,7 +170,8 @@ public class ChatTextController {
     }
 
     public String getText() {
-        return playerChatText.getText();
+        final String content = playerChatText.getText();
+        return (content != null) ? content : "";
     }
 
     private void setCache(final ChatCache cache) {
@@ -172,7 +180,7 @@ public class ChatTextController {
 
     private void clearLine(final String originalText) {
         cache.addlinetoCache(originalText);
-        playerChatText.setText("");
+        playerChatText.clear();
     }
 
     public void saveCache() {
@@ -186,8 +194,7 @@ public class ChatTextController {
 
     private static final class FXChatInputPane extends JFXPanel {
         private static final long serialVersionUID = 885350581860244944L;
-        private static final String FONT_STACK = "'Arial','Segoe UI','Segoe UI Symbol','Segoe UI Emoji','Liberation Sans','DejaVu Sans','Noto Sans','Carlito','Amaranth','Konstytucja Polska','KonstytucjaPolska','Antykwa Torunska','AntykwaTorunska','SansSerif'";
-        private static final int MIN_FONT_SIZE = 12;
+        private static final String TEXT_FONT_STACK = "'Arial','Segoe UI','Segoe UI Emoji','Noto Color Emoji','Twemoji Mozilla','Apple Color Emoji','Liberation Sans','DejaVu Sans','Noto Sans','sans-serif'";
         private static final String[] BUNDLED_FX_FONT_RESOURCES = new String[] {
                 "data/font/Carlito-Regular.ttf",
                 "data/font/Carlito-Bold.ttf",
@@ -198,7 +205,8 @@ public class ChatTextController {
                 "data/font/Amaranth-Italic.ttf",
                 "data/font/Amaranth-BoldItalic.ttf",
                 "data/font/KonstytucjaPolska.ttf",
-                "data/font/AntykwaTorunska.ttf"
+                "data/font/AntykwaTorunska.ttf",
+                "data/font/NotoEmoji-Regular.ttf"
         };
 
         private static boolean fxFontsLoaded;
@@ -208,7 +216,11 @@ public class ChatTextController {
         private final List<KeyListener> listeners = new CopyOnWriteArrayList<>();
         private final CountDownLatch ready = new CountDownLatch(1);
 
-        private TextArea textArea;
+        private volatile boolean documentReady;
+        private volatile String pendingText = "";
+
+        private WebView webView;
+        private WebEngine engine;
         private Consumer<javafx.scene.input.KeyEvent> keyPressedHandler;
 
         FXChatInputPane(final int maxTextLength, final Runnable lengthLimitHandler) {
@@ -217,7 +229,8 @@ public class ChatTextController {
             setFocusable(true);
             setRequestFocusEnabled(true);
             setOpaque(false);
-            setBackground(new java.awt.Color(0, 0, 0, 0));
+            setBackground(new Color(0, 0, 0, 0));
+            Platform.setImplicitExit(false);
             Platform.runLater(this::initializeFx);
         }
 
@@ -231,43 +244,109 @@ public class ChatTextController {
 
         private void initializeFx() {
             ensureFxFontsLoaded();
-            textArea = new TextArea();
-            textArea.setStyle(buildTextAreaCss());
-            textArea.setWrapText(true);
-            textArea.setPrefRowCount(2);
-            textArea.setFocusTraversable(true);
-            textArea.setTextFormatter(new TextFormatter<>(change -> {
-                if ((maxTextLength > 0) && (change.getControlNewText().length() > maxTextLength)) {
-                    if (lengthLimitHandler != null) {
-                        lengthLimitHandler.run();
+            webView = new WebView();
+            webView.setContextMenuEnabled(false);
+            webView.setFocusTraversable(true);
+            webView.setStyle("-fx-background-color: transparent;");
+
+            engine = webView.getEngine();
+            engine.setJavaScriptEnabled(true);
+            engine.getLoadWorker().stateProperty().addListener((observable, oldValue, newValue) -> {
+                if (newValue == Worker.State.SUCCEEDED) {
+                    if (documentReady) {
+                        return;
                     }
-                    return null;
+                    documentReady = true;
+                    injectJavaBridge();
+                    if (pendingText != null) {
+                        setTextInternal(pendingText);
+                        pendingText = "";
+                    }
+                    enforceMaxLengthInternal();
+                    moveCaretToEndInternal();
+                    ready.countDown();
                 }
-                return change;
-            }));
+            });
 
-            textArea.addEventFilter(javafx.scene.input.KeyEvent.KEY_PRESSED, this::handleKeyPressed);
-            textArea.addEventFilter(javafx.scene.input.KeyEvent.KEY_RELEASED, this::handleKeyReleased);
-            textArea.addEventFilter(javafx.scene.input.KeyEvent.KEY_TYPED, this::handleKeyTyped);
+            webView.addEventFilter(javafx.scene.input.KeyEvent.KEY_PRESSED, this::handleKeyPressed);
+            webView.addEventFilter(javafx.scene.input.KeyEvent.KEY_RELEASED, this::handleKeyReleased);
+            webView.addEventFilter(javafx.scene.input.KeyEvent.KEY_TYPED, this::handleKeyTyped);
 
-            final BorderPane pane = new BorderPane(textArea);
+            final BorderPane pane = new BorderPane(webView);
             pane.setStyle("-fx-background-color: transparent;");
             final Scene scene = new Scene(pane);
             scene.setFill(javafx.scene.paint.Color.TRANSPARENT);
             setScene(scene);
-            ready.countDown();
+
+            final String html = buildInputDocument();
+            engine.loadContent(html, "text/html; charset=UTF-8");
         }
 
-        private static String buildTextAreaCss() {
-            final int size = resolveFontSize();
-            return String.format(Locale.ROOT,
-                    "-fx-font-family: %s; -fx-font-size: %dpx; -fx-text-fill: #2c1503;"
-                            + " -fx-control-inner-background: #f4edd9; -fx-background-color: transparent;"
-                            + " -fx-background-insets: 0; -fx-background-radius: 0; -fx-prompt-text-fill: rgba(44,21,3,0.55);"
-                            + " -fx-highlight-fill: rgba(201,139,69,0.35); -fx-highlight-text-fill: #2c1503;"
-                            + " -fx-border-color: transparent; -fx-faint-focus-color: rgba(201,139,69,0.25);"
-                            + " -fx-focus-color: rgba(201,139,69,0.6);",
-                    FONT_STACK, size);
+        private void injectJavaBridge() {
+            try {
+                final JSObject window = (JSObject) engine.executeScript("window");
+                window.setMember("javaBridge", new ChatInputBridge(lengthLimitHandler));
+            } catch (final RuntimeException ex) {
+                LOGGER.warn("Failed to inject chat input bridge", ex);
+            }
+        }
+
+        private String buildInputDocument() {
+            final int fontSize = resolveFontSize();
+            final String emojiFontFace = buildEmojiFontFace();
+            final String fontStack = buildFontStack();
+
+            final StringBuilder html = new StringBuilder();
+            html.append("<!DOCTYPE html><html><head><meta charset=\"UTF-8\"/>");
+            html.append("<style>");
+            html.append("html,body{margin:0;padding:0;background:transparent;overflow:hidden;}");
+            if (!emojiFontFace.isEmpty()) {
+                html.append(emojiFontFace);
+            }
+            html.append(".chat-input{min-height:48px;padding:6px 8px;box-sizing:border-box;border-radius:4px;outline:none;border:none;")
+                    .append("font-family:").append(fontStack).append(";")
+                    .append("font-size:").append(fontSize).append("px;")
+                    .append("line-height:1.35;white-space:pre-wrap;word-break:break-word;")
+                    .append("background:rgba(244,237,217,0.95);color:#2c1503;}");
+            html.append(".chat-input:empty:before{content:attr(data-placeholder);pointer-events:none;color:rgba(44,21,3,0.55);}");
+            html.append("::-webkit-scrollbar{width:12px;height:12px;}");
+            html.append("::-webkit-scrollbar-thumb{background:rgba(0,0,0,0.25);border-radius:6px;}");
+            html.append("::-webkit-scrollbar-track{background:rgba(0,0,0,0.1);}");
+            html.append("</style></head><body>");
+            html.append("<div id=\"editor\" class=\"chat-input\" contenteditable=\"true\" spellcheck=\"false\" data-placeholder=\"Wpisz wiadomość&#8230;\"></div>");
+            html.append("<script>(function(){");
+            html.append("var editor=document.getElementById('editor');");
+            html.append("if(!editor){return;}");
+            html.append("var maxLen=").append(maxTextLength).append(";");
+            html.append("function getText(){var text=editor.innerText||'';text=text.replace(/\\u00a0/g,' ').replace(/\\r/g,'').replace(/\\u2028|\\u2029/g,'');if(text.endsWith('\n')){text=text.replace(/\n+$/,'');}return text;}");
+            html.append("function escapeHtml(value){return value.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/'/g,'&#39;');}");
+            html.append("function setText(value){if(value==null){value='';}var html=escapeHtml(value).replace(/\n/g,'<br>');editor.innerHTML=html;placeCaretAtEnd();}");
+            html.append("function placeCaretAtEnd(){if(!editor){return;}editor.focus();var range=document.createRange();range.selectNodeContents(editor);range.collapse(false);var sel=window.getSelection();if(sel){sel.removeAllRanges();sel.addRange(range);}}");
+            html.append("function notifyLimit(){if(window.javaBridge&&typeof window.javaBridge.onLengthLimitReached==='function'){window.javaBridge.onLengthLimitReached();}}");
+            html.append("function clamp(fromEnforce){var text=getText();if(text.length>maxLen){var truncated=text.substring(0,maxLen);if(truncated!==text){setText(truncated);}if(!fromEnforce){notifyLimit();}return true;}return false;}");
+            html.append("editor.addEventListener('input',function(){clamp(false);});");
+            html.append("editor.addEventListener('keydown',function(ev){if(ev.key==='Tab'){ev.preventDefault();}});");
+            html.append("editor.addEventListener('paste',function(ev){if(ev.clipboardData){ev.preventDefault();var data=ev.clipboardData.getData('text/plain');document.execCommand('insertText',false,data);}else if(window.clipboardData){ev.preventDefault();var legacy=window.clipboardData.getData('Text');document.execCommand('insertText',false,legacy);}});");
+            html.append("window.chatInput={getText:getText,setText:setText,focus:function(){setTimeout(placeCaretAtEnd,0);},moveCaretToEnd:function(){setTimeout(placeCaretAtEnd,0);},insertLineBreak:function(){document.execCommand('insertLineBreak');},clear:function(){setText('');},enforceLimit:function(){clamp(true);}};");
+            html.append("setTimeout(function(){editor.focus();},0);");
+            html.append("})();</script></body></html>");
+            return html.toString();
+        }
+
+        private String buildEmojiFontFace() {
+            final String bundled = EmojiStore.get().getBundledFontDataUrl();
+            if ((bundled == null) || bundled.isEmpty()) {
+                return "";
+            }
+            return "@font-face{font-family:'BundledEmoji';src:url(" + bundled + ") format('truetype');font-display:swap;}";
+        }
+
+        private String buildFontStack() {
+            final String bundled = EmojiStore.get().getBundledFontDataUrl();
+            if ((bundled != null) && !bundled.isEmpty()) {
+                return "'Arial','BundledEmoji','Segoe UI Emoji','Noto Color Emoji','Twemoji Mozilla','Apple Color Emoji','Segoe UI','Segoe UI Symbol','Liberation Sans','DejaVu Sans','Noto Sans','sans-serif'";
+            }
+            return TEXT_FONT_STACK;
         }
 
         private static synchronized void ensureFxFontsLoaded() {
@@ -281,10 +360,9 @@ public class ChatTextController {
                 }
                 try (InputStream stream = DataLoader.getResourceAsStream(resource)) {
                     if (stream == null) {
-                        LOGGER.warn("Missing chat font resource: " + resource);
                         continue;
                     }
-                    final javafx.scene.text.Font font = javafx.scene.text.Font.loadFont(stream, MIN_FONT_SIZE);
+                    final javafx.scene.text.Font font = javafx.scene.text.Font.loadFont(stream, 12);
                     if (font == null) {
                         LOGGER.warn("Unable to register chat font: " + resource);
                     }
@@ -297,15 +375,15 @@ public class ChatTextController {
         private static int resolveFontSize() {
             final Font textFieldFont = UIManager.getFont("TextField.font");
             if ((textFieldFont != null) && (textFieldFont.getSize() > 0)) {
-                return Math.max(MIN_FONT_SIZE, textFieldFont.getSize());
+                return Math.max(12, textFieldFont.getSize());
             }
             final Font textAreaFont = UIManager.getFont("TextArea.font");
             if ((textAreaFont != null) && (textAreaFont.getSize() > 0)) {
-                return Math.max(MIN_FONT_SIZE, textAreaFont.getSize());
+                return Math.max(12, textAreaFont.getSize());
             }
             final Font labelFont = UIManager.getFont("Label.font");
             if ((labelFont != null) && (labelFont.getSize() > 0)) {
-                return Math.max(MIN_FONT_SIZE, labelFont.getSize());
+                return Math.max(12, labelFont.getSize());
             }
             return 13;
         }
@@ -329,32 +407,74 @@ public class ChatTextController {
 
         private void requestFxFocus() {
             runFx(() -> {
-                if (textArea != null) {
-                    textArea.requestFocus();
-                    textArea.positionCaret(textArea.getText().length());
+                if (webView != null) {
+                    webView.requestFocus();
+                    if (documentReady) {
+                        engine.executeScript("if(window.chatInput){window.chatInput.focus();}");
+                    }
                 }
             });
         }
 
         String getText() {
-            return callFx(() -> textArea != null ? textArea.getText() : "");
+            return callFx(() -> {
+                if (!documentReady || (engine == null)) {
+                    return pendingText != null ? pendingText : "";
+                }
+                final Object result = engine.executeScript("window.chatInput ? window.chatInput.getText() : ''");
+                return (result != null) ? result.toString() : "";
+            });
         }
 
         void setText(final String text) {
             runFx(() -> {
-                if (textArea != null) {
-                    textArea.setText(text);
-                    textArea.positionCaret(textArea.getText().length());
+                if (!documentReady || (engine == null)) {
+                    pendingText = (text != null) ? text : "";
+                    return;
+                }
+                setTextInternal(text);
+                enforceMaxLengthInternal();
+                moveCaretToEndInternal();
+            });
+        }
+
+        void clear() {
+            setText("");
+        }
+
+        void moveCaretToEnd() {
+            runFx(this::moveCaretToEndInternal);
+        }
+
+        void insertLineBreak() {
+            runFx(() -> {
+                if (documentReady && (engine != null)) {
+                    engine.executeScript("if(window.chatInput){window.chatInput.insertLineBreak();window.chatInput.enforceLimit();}");
                 }
             });
         }
 
-        void moveCaretToEnd() {
-            runFx(() -> {
-                if (textArea != null) {
-                    textArea.positionCaret(textArea.getText().length());
-                }
-            });
+        void enforceMaxLength() {
+            runFx(this::enforceMaxLengthInternal);
+        }
+
+        private void moveCaretToEndInternal() {
+            if (documentReady && (engine != null)) {
+                engine.executeScript("if(window.chatInput){window.chatInput.moveCaretToEnd();}");
+            }
+        }
+
+        private void setTextInternal(final String text) {
+            if (engine != null) {
+                final String value = (text != null) ? text : "";
+                engine.executeScript("if(window.chatInput){window.chatInput.setText(" + toJsString(value) + ");}");
+            }
+        }
+
+        private void enforceMaxLengthInternal() {
+            if (documentReady && (engine != null)) {
+                engine.executeScript("if(window.chatInput){window.chatInput.enforceLimit();}");
+            }
         }
 
         private void handleKeyPressed(final javafx.scene.input.KeyEvent event) {
@@ -460,6 +580,62 @@ public class ChatTextController {
             } catch (final ExecutionException e) {
                 throw new RuntimeException(e.getCause());
             }
+        }
+
+        private String toJsString(final String value) {
+            final StringBuilder out = new StringBuilder();
+            out.append('\'');
+            if (value != null) {
+                for (int i = 0; i < value.length(); i++) {
+                    final char ch = value.charAt(i);
+                    switch (ch) {
+                    case '\\':
+                        out.append("\\\\");
+                        break;
+                    case '\'':
+                        out.append("\\'");
+                        break;
+                    case '"':
+                        out.append("\\\"");
+                        break;
+                    case '\n':
+                        out.append("\\n");
+                        break;
+                    case '\r':
+                        out.append("\\r");
+                        break;
+                    case '\t':
+                        out.append("\\t");
+                        break;
+                    default:
+                        out.append(ch);
+                        break;
+                    }
+                }
+            }
+            out.append('\'');
+            return out.toString();
+        }
+    }
+
+    private static final class ChatInputBridge {
+        private final Runnable lengthLimitHandler;
+
+        ChatInputBridge(final Runnable lengthLimitHandler) {
+            this.lengthLimitHandler = lengthLimitHandler;
+        }
+
+        public void onLengthLimitReached() {
+            if (lengthLimitHandler == null) {
+                return;
+            }
+            SwingUtilities.invokeLater(() -> {
+                try {
+                    lengthLimitHandler.run();
+                } catch (final RuntimeException ex) {
+                    LOGGER.warn("Length limit handler failed", ex);
+                }
+            });
         }
     }
 }
