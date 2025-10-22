@@ -720,14 +720,14 @@ private boolean looksLikeEmojiSequence(final String text) {
                 if (image == null) {
                         return null;
                 }
-                try {
-			final ByteArrayOutputStream out = new ByteArrayOutputStream();
-			ImageIO.write(image, "png", out);
-			final String encoded = Base64.getEncoder().encodeToString(out.toByteArray());
-			return "data:image/png;base64," + encoded;
-		} catch (IOException e) {
-			logger.warn("Failed to encode emoji image", e);
-			return null;
+                try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+                        ImageIO.write(image, "png", out);
+                        final String encoded = Base64.getEncoder().encodeToString(out.toByteArray());
+                        return "data:image/png;base64," + encoded;
+                } catch (IOException e) {
+                        logger.warn("Failed to encode emoji image", e);
+                }
+                return null;
         }
 
         private String buildRemoteEmojiUrl(final String glyph) {
@@ -748,7 +748,6 @@ private boolean looksLikeEmojiSequence(final String text) {
                 }
                 return EMOJI_CDN_BASE + builder.toString() + EMOJI_CDN_EXTENSION;
         }
-	}
 
 	/**
 	* Retrieves glyph string for the provided emoji text.
