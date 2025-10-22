@@ -11,11 +11,6 @@
  ***************************************************************************/
 package games.stendhal.client;
 
-import static games.stendhal.client.gui.settings.SettingsProperties.DISPLAY_SIZE_PROPERTY;
-import static games.stendhal.client.gui.settings.SettingsProperties.FPS_LIMIT_PROPERTY;
-import static games.stendhal.client.gui.settings.SettingsProperties.OVERRIDE_AA;
-import static games.stendhal.client.gui.settings.SettingsProperties.UI_RENDERING;
-import static games.stendhal.common.constants.Actions.MOVE_CONTINUOUS;
 import static java.io.File.separator;
 
 import java.awt.Dimension;
@@ -26,24 +21,14 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.CountDownLatch;
 
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-
 import org.apache.log4j.Logger;
 
-import games.stendhal.client.actions.MoveContinuousAction;
-import games.stendhal.client.gui.StendhalFirstScreen;
-import games.stendhal.client.gui.j2DClient;
-import games.stendhal.client.gui.login.LoginDialog;
-import games.stendhal.client.gui.login.Profile;
-import games.stendhal.client.gui.styled.StyledLookAndFeel;
-import games.stendhal.client.gui.styled.styles.StyleFactory;
-import games.stendhal.client.gui.wt.core.WtWindowManager;
+import games.stendhal.client.fx.StendhalFX;
 import games.stendhal.client.update.ClientGameConfiguration;
 import games.stendhal.common.Debug;
 import games.stendhal.common.MathHelper;
 import games.stendhal.common.Version;
+import javafx.application.Application;
 import marauroa.common.Log4J;
 import marauroa.common.MarauroaUncaughtExceptionHandler;
 
@@ -282,135 +267,9 @@ public final class stendhal {
 	 *            command line arguments
 	 */
 	public static void main(final String[] args) {
-		startLogSystem();
-		MarauroaUncaughtExceptionHandler.setup(false);
-		initUsableDisplaySizes();
-		new Startup(args);
-	}
-
-	private static class Startup {
-		StendhalFirstScreen splash;
-
-		Startup(String[] args) {
-			WtWindowManager wm = WtWindowManager.getInstance();
-			List<Dimension> sizes = getAvailableDisplaySizes();
-			int configuredDisplayIndex = MathHelper.clamp(
-			wm.getPropertyInt(DISPLAY_SIZE_PROPERTY, getDisplaySizeIndex()), 0, Math.max(0, sizes.size() - 1));
-			setDisplaySizeIndex(configuredDisplayIndex);
-			stendhal.setFpsLimit(wm.getPropertyInt(FPS_LIMIT_PROPERTY, DEFAULT_FPS_LIMIT));
-
-			if (wm.getPropertyBoolean(OVERRIDE_AA, false)) {
-				System.setProperty("awt.useSystemAAFontSettings", "on");
-			}
-
-			String uiRendering = wm.getProperty(UI_RENDERING, "");
-//			if (!"".equals(uiRendering)) {
-//				UiRenderingMethod renderingMethod = UiRenderingMethod.fromPropertyValue(uiRendering);
-//				switch (renderingMethod) {
-//					case SOFTWARE: {
-//						System.setProperty("sun.java2d.noddraw", "true");
-//						break;
-//					}
-//					case DIRECT_DRAW: {
-//						System.setProperty("sun.java2d.d3d", "false");
-//						break;
-//					}
-//					case DDRAW_HWSCALE: {
-//						System.setProperty("sun.java2d.d3d", "true");
-//						System.setProperty("sun.java2d.ddforcevram", "true");
-//						System.setProperty("sun.java2d.translaccel", "true");
-//						System.setProperty("sun.java2d.ddscale", "true");
-//						break;
-//					}
-//					case OPEN_GL: {
-//						System.setProperty("sun.java2d.opengl", "true");
-//						break;
-//					}
-//					case XRENDER: {
-//						System.setProperty("sun.java2d.xrender", "true");
-//						break;
-//					}
-//					case METAL: {
-//						System.setProperty("sun.java2d.metal", "true");
-//						break;
-//					}
-//					default:
-//						break;
-//				}
-//			}
-
-			// initialize tileset animation data
-			TileStore.init();
-			// initialize emoji data
-			ClientSingletonRepository.getEmojiStore().init();
-			// initialize outfit data
-			OutfitStore.get().init();
-
-			final UserContext userContext = UserContext.get();
-			final PerceptionDispatcher perceptionDispatch = new PerceptionDispatcher();
-			final StendhalClient client = new StendhalClient(userContext, perceptionDispatch);
-
-			try {
-				String style = wm.getProperty("ui.style", "Jasne drewno (default)");
-				StyledLookAndFeel look = new StyledLookAndFeel(StyleFactory.createStyle(style));
-				UIManager.setLookAndFeel(look);
-				/*
-				 * Prevents the click event at closing a popup menu by clicking
-				 * outside it being passed to the component underneath.
-				 */
-				UIManager.put("PopupMenu.consumeEventOnClose", Boolean.TRUE);
-				int fontSize = wm.getPropertyInt("ui.font_size", 12);
-				look.setDefaultFontSize(fontSize);
-			} catch (UnsupportedLookAndFeelException e) {
-				/*
-				 * Should not happen as StyledLookAndFeel always returns true for
-				 * isSupportedLookAndFeel()
-				 */
-			logger.error("Failed to set Look and Feel", e);
-			}
-
-			UIManager.getLookAndFeelDefaults().put("ClassLoader", stendhal.class.getClassLoader());
-
-			final Profile profile = Profile.createFromCommandline(args);
-
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					if (profile.isValid()) {
-						new LoginDialog(null, client).connect(profile);
-					} else {
-						splash = new StendhalFirstScreen(client);
-					}
-				}
-			});
-
-			waitForLogin();
-			CStatusSender.send();
-
-			/*
-			 * Pass the continuous movement setting is to the server.
-			 * It is done in game loop to ensure that the server version is
-			 * known before sending the command, to avoid sending invalid
-			 * commands.
-			 */
-			GameLoop.get().runOnce(new Runnable() {
-				@Override
-				public void run() {
-					boolean moveContinuous = WtWindowManager.getInstance().getPropertyBoolean(MOVE_CONTINUOUS, false);
-					if (moveContinuous) {
-						new MoveContinuousAction().sendAction(true, false);
-					}
-				}
-			});
-
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					j2DClient locclient = new j2DClient(client, userContext, splash);
-					perceptionDispatch.register(locclient.getPerceptionListener());
-					locclient.startGameLoop();
-				}
-			});
-		}
-	}
+                startLogSystem();
+                MarauroaUncaughtExceptionHandler.setup(false);
+                initUsableDisplaySizes();
+                Application.launch(StendhalFX.class, args);
+        }
 }
