@@ -13,6 +13,7 @@ package games.stendhal.client.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -34,6 +35,7 @@ import java.util.regex.Pattern;
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+import javax.swing.UIManager;
 
 import org.apache.log4j.Logger;
 
@@ -83,8 +85,10 @@ class WebChatLogView extends JComponent implements ChatLogView {
 	private final List<String> htmlLines = new ArrayList<>();
 	private final List<String> plainLines = new ArrayList<>();
 
-	private final JFXPanel fxPanel;
-	private final FxBridge bridge;
+        private final JFXPanel fxPanel;
+        private final FxBridge bridge;
+
+        private final Font chatFont = resolveChatFont();
 
 	private Color defaultBackground = new Color(0x3c, 0x1e, 0x00);
 	private String channelName = "";
@@ -178,20 +182,29 @@ class WebChatLogView extends JComponent implements ChatLogView {
 	}
 
 	private String buildStylesheet() {
-		final StringBuilder css = new StringBuilder();
-		final String background = toHex(defaultBackground);
-		final String emojiStack = buildEmojiFontStack(css);
+                final StringBuilder css = new StringBuilder();
+                final String background = toHex(defaultBackground);
+                final String emojiStack = buildEmojiFontStack(css);
+                final String fontStack = buildChatFontStack();
+                final int bodyFontSize = chatBodyFontSize();
+                final int timestampSize = timestampFontSize();
 
-		css.append("body.chat-body{margin:0;padding:0;background:")
-			.append(background)
-			.append(";color:#f4edd9;font-family:'Segoe UI','Noto Sans',sans-serif;font-size:14px;}");
-		css.append(".chat-log{padding:10px 14px;display:flex;flex-direction:column;gap:4px;max-height:100%;overflow-y:auto;}");
-		css.append(".line{display:flex;flex-wrap:wrap;gap:6px;align-items:flex-start;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.08);}");
-		css.append(".line:last-child{border-bottom:none;}");
-		css.append(".line.admin{border-left:3px solid rgba(240,200,120,0.9);padding-left:7px;}");
-		css.append(".timestamp{font-family:'Consolas','Courier New',monospace;color:rgba(255,255,255,0.65);margin-right:6px;}");
-		css.append(".header{color:#ffe6a1;font-weight:600;margin-right:6px;}");
-		css.append(".message{flex:1 1 auto;white-space:pre-wrap;word-break:break-word;line-height:1.45;}");
+                css.append("body.chat-body{margin:0;padding:0;background:")
+                        .append(background)
+                        .append(";color:#f4edd9;font-family:")
+                        .append(fontStack)
+                        .append(";font-size:")
+                        .append(bodyFontSize)
+                        .append("px;line-height:1.35;}");
+                css.append(".chat-log{padding:8px 12px;display:flex;flex-direction:column;gap:2px;max-height:100%;overflow-y:auto;}");
+                css.append(".line{display:flex;flex-wrap:wrap;gap:4px;align-items:flex-start;padding:2px 0;border-bottom:1px solid rgba(255,255,255,0.06);}");
+                css.append(".line:last-child{border-bottom:none;}");
+                css.append(".line.admin{border-left:3px solid rgba(240,200,120,0.9);padding-left:7px;}");
+                css.append(".timestamp{font-style:italic;color:rgba(255,255,255,0.65);margin-right:6px;font-size:")
+                        .append(timestampSize)
+                        .append("px;}");
+                css.append(".header{color:#ffe6a1;font-weight:600;margin-right:6px;font-style:italic;}");
+                css.append(".message{flex:1 1 auto;white-space:pre-wrap;word-break:break-word;}");
 		css.append(".fragment{color:inherit;}");
 		css.append(".fmt-hash{color:#5aaaff;font-style:italic;font-weight:600;}");
 		css.append(".fmt-section{text-decoration:underline;}");
@@ -202,14 +215,15 @@ class WebChatLogView extends JComponent implements ChatLogView {
 		css.append(".line.type-positive .message{color:#c9e5a3;}");
 		css.append(".line.type-support .message{color:#b4e1ff;}");
 		css.append(".line.type-client .message{color:#f2dec2;}");
-			css.append(".emoji{font-family:").append(emojiStack).append(";font-size:1.1em;line-height:1.1em;}");
-			css.append(".emoji-span{display:inline-flex;align-items:center;gap:2px;}");
-			css.append(".emoji-icon{height:1.25em;width:1.25em;vertical-align:middle;}");
-			css.append(".emoji-layered{position:relative;display:inline-flex;align-items:center;justify-content:center;width:1.65em;height:1.65em;margin:0 0.12em;--emoji-bg:transparent;--emoji-bg-opacity:1;--emoji-outline:rgba(0,0,0,0);--emoji-outline-width:0px;--emoji-shadow:0 0 0 0 transparent;}");
-			css.append(".emoji-layered::before{content:\"\";position:absolute;inset:0;border-radius:0.55em;background:var(--emoji-bg);opacity:var(--emoji-bg-opacity);box-shadow:0 0 0 var(--emoji-outline-width) var(--emoji-outline),var(--emoji-shadow);}");
-			css.append(".emoji-layered .emoji-layer{position:absolute;top:50%;left:50%;width:calc(100% - 0.2em);height:calc(100% - 0.2em);transform:translate(-50%,-50%);background-repeat:no-repeat;background-position:center;background-size:contain;pointer-events:none;}");
-			css.append(".emoji-layered .emoji-layer.glyph{display:flex;align-items:center;justify-content:center;font-size:0.95em;color:inherit;text-shadow:0 1px 2px rgba(0,0,0,0.35);}");
-			css.append(".emoji-layered .emoji-label{position:absolute;bottom:-0.3em;left:50%;transform:translateX(-50%);font-size:0.6em;padding:0.1em 0.35em;border-radius:999px;background:var(--emoji-label-bg,rgba(0,0,0,0.45));color:var(--emoji-label-color,#fff);line-height:1;font-weight:600;white-space:nowrap;pointer-events:none;}");
+                        css.append(".emoji{font-family:").append(emojiStack).append(";font-size:1.05em;line-height:1.05em;}");
+                        css.append(".emoji-span{display:inline-flex;align-items:center;gap:2px;}");
+                        css.append(".emoji-icon{height:1.25em;width:1.25em;vertical-align:middle;}");
+                        css.append(".emoji-layered{position:relative;display:inline-flex;align-items:center;justify-content:center;width:1.65em;height:1.65em;margin:0 0.12em;--emoji-bg:transparent;--emoji-bg-opacity:1;--emoji-outline:rgba(0,0,0,0);--emoji-outline-width:0px;--emoji-shadow:0 0 0 0 transparent;}");
+                        css.append(".emoji-layered::before{content:\"\";position:absolute;inset:0;border-radius:0.55em;background:var(--emoji-bg);opacity:var(--emoji-bg-opacity);box-shadow:0 0 0 var(--emoji-outline-width) var(--emoji-outline),var(--emoji-shadow);}");
+                        css.append(".emoji-layered .emoji-layer{position:absolute;top:50%;left:50%;width:calc(100% - 0.2em);height:calc(100% - 0.2em);transform:translate(-50%,-50%);display:flex;align-items:center;justify-content:center;pointer-events:none;}");
+                        css.append(".emoji-layered .emoji-layer-img{width:100%;height:100%;object-fit:contain;image-rendering:auto;}");
+                        css.append(".emoji-layered .emoji-layer.glyph{font-size:0.95em;color:inherit;text-shadow:0 1px 2px rgba(0,0,0,0.35);}");
+                        css.append(".emoji-layered .emoji-label{position:absolute;bottom:-0.3em;left:50%;transform:translateX(-50%);font-size:0.6em;padding:0.1em 0.35em;border-radius:999px;background:var(--emoji-label-bg,rgba(0,0,0,0.45));color:var(--emoji-label-color,#fff);line-height:1;font-weight:600;white-space:nowrap;pointer-events:none;}");
 			css.append(".chat-log{scrollbar-color:#8a5f34 #2c1503;}");
 		css.append(".chat-log::-webkit-scrollbar{width:18px;background:#2c1503;}");
 		css.append(".chat-log::-webkit-scrollbar-track{background:linear-gradient(180deg,#452308 0%,#331703 50%,#452308 100%);border-left:1px solid rgba(255,230,170,0.25);border-right:1px solid rgba(0,0,0,0.45);box-shadow:inset 0 0 4px rgba(0,0,0,0.6);}");
@@ -375,12 +389,12 @@ class WebChatLogView extends JComponent implements ChatLogView {
 				return "<span class=\"emoji\">" + escapeHtml(glyph) + "</span>";
 		}
 
-		private String buildLayeredEmojiHtml(final LayeredEmojiSpec spec) {
-				if ((spec == null) || !spec.hasRenderableLayers()) {
-						return null;
-				}
+                private String buildLayeredEmojiHtml(final LayeredEmojiSpec spec) {
+                                if ((spec == null) || !spec.hasRenderableLayers()) {
+                                                return null;
+                                }
 
-				final LayerAsset baseAsset = resolveEmojiAsset(spec.getBaseToken());
+                                final LayerAsset baseAsset = resolveEmojiAsset(spec.getBaseToken());
 				final List<LayerAsset> overlayAssets = new ArrayList<LayerAsset>();
 				for (final String token : spec.getOverlays()) {
 						final LayerAsset asset = resolveEmojiAsset(token);
@@ -408,21 +422,21 @@ class WebChatLogView extends JComponent implements ChatLogView {
 				}
 
 				builder.append(" data-token=\"").append(escapeHtml(spec.getBaseDisplay())).append("\">");
-				final String baseSpan = buildLayerSpan(baseAsset, true);
-				if (baseSpan.isEmpty()) {
-						builder.append("<span class=\"emoji-layer emoji-layer-base glyph\">")
-								.append(escapeHtml(spec.getBaseDisplay()))
-								.append("</span>");
-				} else {
-						builder.append(baseSpan);
-				}
-				for (final LayerAsset asset : overlayAssets) {
-						builder.append(buildLayerSpan(asset, false));
-				}
-				if (spec.getLabel() != null) {
-						builder.append("<span class=\"emoji-label\">")
-								.append(escapeHtml(spec.getLabel()))
-								.append("</span>");
+                                final String baseSpan = buildLayerSpan(baseAsset, true, spec.getBaseDisplay());
+                                if (baseSpan.isEmpty()) {
+                                                builder.append("<span class=\"emoji-layer emoji-layer-base glyph\">")
+                                                                .append(escapeHtml(spec.getBaseDisplay()))
+                                                                .append("</span>");
+                                } else {
+                                                builder.append(baseSpan);
+                                }
+                                for (final LayerAsset asset : overlayAssets) {
+                                                builder.append(buildLayerSpan(asset, false, null));
+                                }
+                                if (spec.getLabel() != null) {
+                                                builder.append("<span class=\"emoji-label\">")
+                                                                .append(escapeHtml(spec.getLabel()))
+                                                                .append("</span>");
 				}
 				builder.append("</span>");
 				return builder.toString();
@@ -458,26 +472,40 @@ class WebChatLogView extends JComponent implements ChatLogView {
 				return style.toString();
 		}
 
-		private String buildLayerSpan(final LayerAsset asset, final boolean baseLayer) {
-				if (asset == null) {
-						return "";
-				}
-				final StringBuilder builder = new StringBuilder("<span class=\"emoji-layer");
-				if (baseLayer) {
-						builder.append(" emoji-layer-base");
-				}
-				builder.append("\"");
-				final String dataUrl = asset.getDataUrl();
-				if ((dataUrl != null) && !dataUrl.isEmpty()) {
-						builder.append(" style=\"background-image:url('").append(dataUrl).append("');\"");
-				}
-				builder.append('>');
-				if ((dataUrl == null) || dataUrl.isEmpty()) {
-						builder.append(escapeHtml(asset.getGlyph()));
-				}
-				builder.append("</span>");
-				return builder.toString();
-		}
+                private String buildLayerSpan(final LayerAsset asset, final boolean baseLayer, final String altText) {
+                                if (asset == null) {
+                                                return "";
+                                }
+                                final StringBuilder builder = new StringBuilder("<span class=\"emoji-layer");
+                                if (baseLayer) {
+                                                builder.append(" emoji-layer-base");
+                                }
+                                final String dataUrl = asset.getDataUrl();
+                                final boolean hasImage = (dataUrl != null) && !dataUrl.isEmpty();
+                                if (!hasImage) {
+                                                builder.append(" glyph");
+                                }
+                                builder.append("\"");
+                                final String canonical = asset.getCanonicalToken();
+                                if ((canonical != null) && !canonical.isEmpty()) {
+                                                builder.append(" data-layer=\"")
+                                                                .append(escapeHtml(canonical))
+                                                                .append("\"");
+                                }
+                                builder.append('>');
+                                final String effectiveAlt = (altText != null) ? altText : asset.getGlyph();
+                                if (hasImage) {
+                                                builder.append("<img class=\"emoji-layer-img\" src=\"")
+                                                                .append(dataUrl)
+                                                                .append("\" alt=\"")
+                                                                .append(escapeHtml((effectiveAlt != null) ? effectiveAlt : ""))
+                                                                .append("\" loading=\"lazy\"/>");
+                                } else {
+                                                builder.append(escapeHtml((effectiveAlt != null) ? effectiveAlt : ""));
+                                }
+                                builder.append("</span>");
+                                return builder.toString();
+                }
 
 		private LayerAsset resolveEmojiAsset(final String token) {
 				if ((token == null) || token.trim().isEmpty()) {
@@ -621,14 +649,14 @@ class WebChatLogView extends JComponent implements ChatLogView {
 						return dataUrl;
 				}
 
-				String getGlyph() {
-						return glyph;
-				}
+                                String getGlyph() {
+                                                return glyph;
+                                }
 
-				String getCanonicalToken() {
-						return canonicalToken;
-				}
-		}
+                                String getCanonicalToken() {
+                                                return canonicalToken;
+                                }
+                }
 
 		private static final class LayeredEmojiSpec {
 				private final String baseToken;
@@ -1032,14 +1060,72 @@ class WebChatLogView extends JComponent implements ChatLogView {
 		return builder.toString();
 	}
 
-	private static String escapeFontFamily(final String family) {
-		return (family == null) ? "" : family.replace("'", "\\'");
-	}
+        private static String escapeFontFamily(final String family) {
+                return (family == null) ? "" : family.replace("'", "\\'");
+        }
 
-	private static String toHex(final Color color) {
-		final Color effective = (color != null) ? color : new Color(0x3c, 0x1e, 0x00);
-		return String.format(Locale.ROOT, "#%02x%02x%02x", effective.getRed(), effective.getGreen(), effective.getBlue());
-	}
+        private static String toHex(final Color color) {
+                final Color effective = (color != null) ? color : new Color(0x3c, 0x1e, 0x00);
+                return String.format(Locale.ROOT, "#%02x%02x%02x", effective.getRed(), effective.getGreen(), effective.getBlue());
+        }
+
+        private static Font resolveChatFont() {
+                Font font = UIManager.getFont("TextPane.font");
+                if (font == null) {
+                        font = UIManager.getFont("TextArea.font");
+                }
+                if (font == null) {
+                        font = UIManager.getFont("Label.font");
+                }
+                if (font == null) {
+                        return new Font("Dialog", Font.PLAIN, 13);
+                }
+                final int size = (font.getSize() > 0) ? font.getSize() : 13;
+                return font.deriveFont(Font.PLAIN, size);
+        }
+
+        private String buildChatFontStack() {
+                final java.util.Set<String> families = new LinkedHashSet<String>();
+                if (chatFont != null) {
+                        families.add(chatFont.getFamily());
+                        if ((chatFont.getName() != null) && !chatFont.getName().isEmpty()) {
+                                families.add(chatFont.getName());
+                        }
+                        final String psName = chatFont.getPSName();
+                        if ((psName != null) && !psName.isEmpty()) {
+                                families.add(psName);
+                        }
+                }
+                families.add("Dialog");
+                families.add("DejaVu Sans");
+                families.add("Arial");
+                families.add("Helvetica");
+
+                final StringBuilder stack = new StringBuilder();
+                for (final String family : families) {
+                        if ((family == null) || family.isEmpty()) {
+                                continue;
+                        }
+                        if (stack.length() > 0) {
+                                stack.append(',');
+                        }
+                        stack.append('\'').append(escapeFontFamily(family)).append('\'');
+                }
+                if (stack.length() > 0) {
+                        stack.append(',');
+                }
+                stack.append("sans-serif");
+                return stack.toString();
+        }
+
+        private int chatBodyFontSize() {
+                final int size = (chatFont != null) ? chatFont.getSize() - 1 : 13;
+                return Math.max(11, size);
+        }
+
+        private int timestampFontSize() {
+                return Math.max(10, chatBodyFontSize() - 1);
+        }
 
 	private static final class FxBridge {
 		private final JFXPanel panel;
