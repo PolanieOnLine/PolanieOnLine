@@ -228,10 +228,12 @@ class WebChatLogView extends JComponent implements ChatLogView {
                 builder.append("function markFallbackApplied(img){if(!img){return;}if(img.dataset){img.dataset.emojiFallbackApplied='1';}else{img.setAttribute('data-emoji-fallback-applied','1');}}");
                 builder.append("function tryAlternateSource(img){if(!img){return false;}var attr=img.getAttribute('data-alt-src');if(!attr){return false;}var sources=attr.split('|');if(!sources||!sources.length){return false;}var idxAttr=img.getAttribute('data-alt-index');var idx=idxAttr?parseInt(idxAttr,10):0;if(isNaN(idx)||idx<0){idx=0;}while(idx<sources.length){var candidate=sources[idx].trim();idx++;img.setAttribute('data-alt-index',idx);if(candidate&&candidate.length&&candidate!==img.src){img.src=candidate;return true;}}return false;}");
                 builder.append("function applyFallback(img){if(!img){return;}var ds=img.dataset||{};if(ds.emojiFallbackApplied==='1'||img.getAttribute('data-emoji-fallback-applied')==='1'){return;}if(tryAlternateSource(img)){return;}var fallback=img.getAttribute('data-fallback');if(!fallback||fallback===img.src){return;}markFallbackApplied(img);img.src=fallback;}");
-                builder.append("function primeFallbacks(root){if(!root||!root.querySelectorAll){return;}var imgs=root.querySelectorAll('img[data-fallback],img[data-alt-src]');for(var i=0;i<imgs.length;i++){var img=imgs[i];if(img.complete&&img.naturalWidth===0){applyFallback(img);}}}");
+                builder.append("function primeFallbacks(root){if(!root||!root.querySelectorAll){return;}var imgs=root.querySelectorAll('img[data-fallback],img[data-alt-src]');for(var i=0;i<imgs.length;i++){var img=imgs[i];if(img.complete&&img.naturalWidth==0){applyFallback(img);}}}");
                 builder.append("document.addEventListener('error',function(evt){var target=evt.target;if(!target||!target.classList){return;}if(target.classList.contains('emoji-icon')||target.classList.contains('emoji-layer-img')){applyFallback(target);}},true);");
-                builder.append("window.chatlog={container:c,appendLine:function(html){if(!this.container){return;}var wrapper=document.createElement('div');wrapper.innerHTML=html;while(wrapper.firstChild){var node=wrapper.firstChild;this.container.appendChild(node);primeFallbacks(node);}this.scrollToBottom();},clear:function(){if(this.container){this.container.innerHTML='';}},scrollToBottom:function(){if(this.container){this.container.scrollTop=this.container.scrollHeight;}window.scrollTo(0,document.body.scrollHeight);},handleEmojiError:function(img){applyFallback(img);}};");
-                builder.append("if(window.chatlog&&window.chatlog.container){primeFallbacks(window.chatlog.container);}window.chatlog.scrollToBottom();})();</script>");
+                builder.append("window.chatlog={container:c,appendLine:function(html){if(!this.container){return;}var wrapper=document.createElement('div');wrapper.innerHTML=html;while(wrapper.firstChild){var node=wrapper.firstChild;this.container.appendChild(node);primeFallbacks(node);}this.scrollToBottom();},clear:function(){if(this.container){this.container.innerHTML='';}},scrollToBottom:function(){if(this.container){this.container.scrollTop=this.container.scrollHeight;}window.scrollTo(0,document.body.scrollHeight);},handleEmojiError:function(img){applyFallback(img);},setBackground:function(css,bgHex){var color=css||bgHex||'';var root=document.documentElement;var body=document.body;if(root){root.style.background=color;root.style.backgroundColor=color;}if(body){body.style.background=color;body.style.backgroundColor=color;}if(this.container){this.container.style.background=color;this.container.style.backgroundColor=color;}}};");
+                builder.append("if(window.chatlog&&window.chatlog.container){primeFallbacks(window.chatlog.container);}window.chatlog.scrollToBottom();");
+                builder.append("if(window.chatlog&&window.chatlog.setBackground){window.chatlog.setBackground("+jsString(backgroundCss)+","+jsString(backgroundHex)+");}");
+                builder.append("})();</script>");
 		builder.append("</body></html>");
 		return builder.toString();
 	}
@@ -1398,22 +1400,22 @@ class WebChatLogView extends JComponent implements ChatLogView {
 		for (int i = 0; i < text.length(); i++) {
 			final char ch = text.charAt(i);
 			switch (ch) {
-				case '<':
+			case '<':
 				builder.append("&lt;");
 				break;
-				case '>':
+			case '>':
 				builder.append("&gt;");
 				break;
-				case '"':
+			case '"':
 				builder.append("&quot;");
 				break;
-				case '&':
+			case '&':
 				builder.append("&amp;");
 				break;
-				case '\'':
+			case ''':
 				builder.append("&#39;");
 				break;
-				default:
+			default:
 				builder.append(ch);
 				break;
 			}
@@ -1421,7 +1423,40 @@ class WebChatLogView extends JComponent implements ChatLogView {
 		return builder.toString();
 	}
 
-        private static String escapeFontFamily(final String family) {
+	private static String jsString(final String value) {
+		if (value == null) {
+			return "''";
+		}
+		final StringBuilder builder = new StringBuilder(value.length() + 16);
+		builder.append(''');
+		for (int i = 0; i < value.length(); i++) {
+			final char ch = value.charAt(i);
+			switch (ch) {
+			case '\':
+				builder.append("\\");
+				break;
+			case ''':
+				builder.append("\'");
+				break;
+			case '\r':
+				builder.append("\r");
+				break;
+			case '\n':
+				builder.append("\n");
+				break;
+			case '\t':
+				builder.append("\t");
+				break;
+			default:
+				builder.append(ch);
+				break;
+			}
+		}
+		builder.append(''');
+		return builder.toString();
+	}
+
+	private static String escapeFontFamily(final String family) {
                 return (family == null) ? "" : family.replace("'", "\\'");
         }
 
@@ -1602,14 +1637,16 @@ class WebChatLogView extends JComponent implements ChatLogView {
                 private boolean initialized;
                 private boolean documentReady;
                 private String pendingContent;
-                private final List<String> pendingAppends = new ArrayList<String>();
-                private String cssBackground;
-                private javafx.scene.paint.Color fxBackground;
+		private final List<String> pendingAppends = new ArrayList<String>();
+		private String cssBackground;
+		private String hexBackground;
+		private javafx.scene.paint.Color fxBackground;
 
                 private FxBridge(final JFXPanel panel, final Color initialBackground) {
                         this.panel = panel;
                         setSwingBackground(initialBackground);
                         cssBackground = toCssRgba(initialBackground);
+                        hexBackground = toHex(initialBackground);
                         fxBackground = toFxColor(initialBackground);
                         Platform.setImplicitExit(false);
                         Platform.runLater(this::init);
@@ -1624,6 +1661,7 @@ class WebChatLogView extends JComponent implements ChatLogView {
 			engine.getLoadWorker().stateProperty().addListener((observable, oldValue, newValue) -> {
 				if (newValue == Worker.State.SUCCEEDED) {
 					documentReady = true;
+					applyDocumentBackground();
 					flushPendingAppends();
 				}
 			});
@@ -1644,32 +1682,42 @@ class WebChatLogView extends JComponent implements ChatLogView {
                 }
 
 		private void applyBackgroundStyles() {
-			final String css = cssBackground;
-			final javafx.scene.paint.Color fill = (fxBackground != null)
-				? fxBackground
-				: javafx.scene.paint.Color.TRANSPARENT;
-			final Background backgroundFill = new Background(new BackgroundFill(fill, CornerRadii.EMPTY, Insets.EMPTY));
-			if (webView != null) {
-				if ((css != null) && !css.isEmpty()) {
-					webView.setStyle("-fx-background-color: " + css + ";");
-				} else {
-					webView.setStyle("-fx-background-color: transparent;");
-				}
+                        final javafx.scene.paint.Color fill = (fxBackground != null)
+                                ? fxBackground
+                                : javafx.scene.paint.Color.TRANSPARENT;
+                        final Background backgroundFill = new Background(new BackgroundFill(fill, CornerRadii.EMPTY, Insets.EMPTY));
+                        if (webView != null) {
+                                webView.setStyle("-fx-background-color: transparent;");
+                        }
+                        if (root != null) {
+                                root.setStyle("-fx-background-color: transparent;");
+                                root.setBackground(backgroundFill);
+                        }
+                        if (scene != null) {
+                                scene.setFill(fill);
+                        }
+                }
+
+		private void applyDocumentBackground() {
+			if (!documentReady || (engine == null)) {
+				return;
 			}
-			if (root != null) {
-				if ((css != null) && !css.isEmpty()) {
-					root.setStyle("-fx-background-color: " + css + ";");
-				} else {
-					root.setStyle("-fx-background-color: transparent;");
-				}
-				root.setBackground(backgroundFill);
-			}
-			if (scene != null) {
-				scene.setFill(fill);
-			}
+			final String css = ((cssBackground != null) && !cssBackground.isEmpty())
+				? cssBackground
+				: toCssRgba(null);
+			final String hex = ((hexBackground != null) && !hexBackground.isEmpty())
+				? hexBackground
+				: toHex(null);
+			final StringBuilder script = new StringBuilder();
+			script.append("if(window.chatlog&&window.chatlog.setBackground){window.chatlog.setBackground(")
+				.append(toJsString(css))
+				.append(',')
+				.append(toJsString(hex))
+				.append(");}");
+			engine.executeScript(script.toString());
 		}
 
-		private void setSwingBackground(final Color color) {
+                private void setSwingBackground(final Color color) {
 			final Color effective = (color != null) ? color : new Color(0x3c, 0x1e, 0x00);
 			final Runnable update = () -> {
 				panel.setOpaque(true);
@@ -1685,9 +1733,13 @@ class WebChatLogView extends JComponent implements ChatLogView {
 
                 private void updateBackgroundState(final Color color) {
                         cssBackground = toCssRgba(color);
+                        hexBackground = toHex(color);
                         fxBackground = toFxColor(color);
                         setSwingBackground(color);
-                        Platform.runLater(this::applyBackgroundStyles);
+                        Platform.runLater(() -> {
+                                applyBackgroundStyles();
+                                applyDocumentBackground();
+                        });
                 }
 
                 void setBackground(final Color color) {
