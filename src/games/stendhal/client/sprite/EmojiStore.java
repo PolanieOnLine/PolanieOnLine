@@ -70,7 +70,9 @@ public class EmojiStore {
 	private static final String DEFAULT_EMOJI_FONT = Font.SANS_SERIF;
 	private static final String EMOJI_JSON_PATH = "data/sprites/emoji/emojis.json";
 	private static final String EMOJI_IMAGE_PATH = "data/sprites/emoji/";
-	private static final String BUNDLED_FONT_PATH = "data/font/NotoColorEmoji-Regular.ttf";
+        private static final String BUNDLED_FONT_PATH = "data/font/NotoEmoji-Regular.ttf";
+        private static final String EMOJI_CDN_BASE = "https://cdn.jsdelivr.net/npm/twemoji@14.0.2/assets/72x72/";
+        private static final String EMOJI_CDN_EXTENSION = ".png";
 	private static final String SAMPLE_GLYPH = "\uD83D\uDE03";
 	private static final String[] FALLBACK_FONT_FAMILIES = {
 		"Segoe UI Emoji",
@@ -88,19 +90,44 @@ public class EmojiStore {
 	private static final char VARIATION_SELECTOR_EMOJI = '\uFE0F';
 	private static final int DIRECT_EMOJI_MAX_LENGTH = 16;
 
-	private static final class RenderedEmoji {
-		private final String glyph;
-		private final Icon icon;
-		private final Sprite sprite;
-		private final String dataUrl;
+        private static final class RenderedEmoji {
+                private final String glyph;
+                private final Icon icon;
+                private final Sprite sprite;
+                private final String primaryUrl;
+                private final String fallbackDataUrl;
 
-		private RenderedEmoji(final String glyph, final Icon icon, final Sprite sprite, final String dataUrl) {
-			this.glyph = glyph;
-			this.icon = icon;
-			this.sprite = sprite;
-			this.dataUrl = dataUrl;
-		}
-	}
+                private RenderedEmoji(final String glyph, final Icon icon, final Sprite sprite,
+                                final String primaryUrl, final String fallbackDataUrl) {
+                        this.glyph = glyph;
+                        this.icon = icon;
+                        this.sprite = sprite;
+                        this.primaryUrl = primaryUrl;
+                        this.fallbackDataUrl = fallbackDataUrl;
+                }
+        }
+
+        public static final class EmojiImage {
+                private final String primaryUrl;
+                private final String fallbackDataUrl;
+
+                private EmojiImage(final String primaryUrl, final String fallbackDataUrl) {
+                        this.primaryUrl = primaryUrl;
+                        this.fallbackDataUrl = fallbackDataUrl;
+                }
+
+                public String getPrimaryUrl() {
+                        return primaryUrl;
+                }
+
+                public String getFallbackDataUrl() {
+                        return fallbackDataUrl;
+                }
+
+                public boolean hasPrimary() {
+                        return (primaryUrl != null) && !primaryUrl.isEmpty();
+                }
+        }
 
 	public static final class EmojiMatch {
 		private final String name;
@@ -417,13 +444,21 @@ private boolean looksLikeEmojiSequence(final String text) {
 		return rendered.icon;
 	}
 
-	public String dataUrlFor(final String text) {
-		final RenderedEmoji rendered = renderEmoji(text);
-		if ((rendered == null) || (rendered.dataUrl == null) || rendered.dataUrl.isEmpty()) {
-			return null;
-		}
-		return rendered.dataUrl;
-	}
+        public String dataUrlFor(final String text) {
+                final RenderedEmoji rendered = renderEmoji(text);
+                if ((rendered == null) || (rendered.primaryUrl == null) || rendered.primaryUrl.isEmpty()) {
+                        return null;
+                }
+                return rendered.primaryUrl;
+        }
+
+        public EmojiImage imageFor(final String text) {
+                final RenderedEmoji rendered = renderEmoji(text);
+                if (rendered == null) {
+                        return null;
+                }
+                return new EmojiImage(rendered.primaryUrl, rendered.fallbackDataUrl);
+        }
 
 	public Font deriveEmojiFont(final float pointSize) {
 		ensureEmojiFont();
@@ -479,9 +514,10 @@ private boolean looksLikeEmojiSequence(final String text) {
 			return cached;
 		}
 
-		BufferedImage iconImage = null;
-		BufferedImage spriteImage = null;
-		String dataUrl = null;
+                BufferedImage iconImage = null;
+                BufferedImage spriteImage = null;
+                String primaryUrl = null;
+                String fallbackDataUrl = null;
 
 		ensureEmojiFont();
 		final String glyph;
@@ -550,16 +586,22 @@ private boolean looksLikeEmojiSequence(final String text) {
 		if ((spriteImage == null) && (iconImage != null)) {
 			spriteImage = scaleForSprite(iconImage);
 		}
-		if (iconImage != null) {
-			dataUrl = toDataUrl(iconImage);
-		}
-		final Icon icon = (iconImage != null) ? new ImageIcon(iconImage) : null;
-		final String spriteName = (assetName != null) ? assetName : glyph;
-		final Sprite sprite = (spriteImage != null) ? new ImageSprite(spriteImage, spriteName) : null;
-		cached = new RenderedEmoji(glyph, icon, sprite, dataUrl);
-		emojiCache.put(cacheKey, cached);
-		return cached;
-	}
+                if (iconImage != null) {
+                        fallbackDataUrl = toDataUrl(iconImage);
+                }
+                if ((glyph != null) && looksLikeEmojiSequence(glyph)) {
+                        primaryUrl = buildRemoteEmojiUrl(glyph);
+                }
+                if ((primaryUrl == null) || primaryUrl.isEmpty()) {
+                        primaryUrl = fallbackDataUrl;
+                }
+                final Icon icon = (iconImage != null) ? new ImageIcon(iconImage) : null;
+                final String spriteName = (assetName != null) ? assetName : glyph;
+                final Sprite sprite = (spriteImage != null) ? new ImageSprite(spriteImage, spriteName) : null;
+                cached = new RenderedEmoji(glyph, icon, sprite, primaryUrl, fallbackDataUrl);
+                emojiCache.put(cacheKey, cached);
+                return cached;
+        }
 	private BufferedImage scaleForIcon(final BufferedImage source) {
 		return scaleToFit(source, Math.round(ICON_POINT_SIZE) + (ICON_PADDING * 2));
 	}
@@ -674,11 +716,11 @@ private boolean looksLikeEmojiSequence(final String text) {
 		return image;
 	}
 
-	private String toDataUrl(final BufferedImage image) {
-		if (image == null) {
-			return null;
-		}
-		try {
+        private String toDataUrl(final BufferedImage image) {
+                if (image == null) {
+                        return null;
+                }
+                try {
 			final ByteArrayOutputStream out = new ByteArrayOutputStream();
 			ImageIO.write(image, "png", out);
 			final String encoded = Base64.getEncoder().encodeToString(out.toByteArray());
@@ -686,7 +728,26 @@ private boolean looksLikeEmojiSequence(final String text) {
 		} catch (IOException e) {
 			logger.warn("Failed to encode emoji image", e);
 			return null;
-		}
+        }
+
+        private String buildRemoteEmojiUrl(final String glyph) {
+                if ((glyph == null) || glyph.isEmpty()) {
+                        return null;
+                }
+                final StringBuilder builder = new StringBuilder(glyph.length() * 5);
+                for (int offset = 0; offset < glyph.length();) {
+                        final int codePoint = glyph.codePointAt(offset);
+                        if (builder.length() > 0) {
+                                builder.append('-');
+                        }
+                        builder.append(Integer.toHexString(codePoint).toLowerCase(Locale.ROOT));
+                        offset += Character.charCount(codePoint);
+                }
+                if (builder.length() == 0) {
+                        return null;
+                }
+                return EMOJI_CDN_BASE + builder.toString() + EMOJI_CDN_EXTENSION;
+        }
 	}
 
 	/**

@@ -79,12 +79,18 @@ class WebChatLogView extends JComponent implements ChatLogView {
 	private static final StringFormatter<java.util.Set<String>, CssClassSet> FORMATTER
 	= new StringFormatter<java.util.Set<String>, CssClassSet>();
 	private static final CssClassSet DEFAULT_FRAGMENT = new CssClassSet().addClass("fragment");
-	private static final BundledFontFace[] BUNDLED_CHAT_FONTS = new BundledFontFace[] {
-		new BundledFontFace(BUNDLED_CHAT_FONT_FAMILY, "data/font/Carlito-Regular.ttf", "400", "normal"),
-		new BundledFontFace(BUNDLED_CHAT_FONT_FAMILY, "data/font/Carlito-Italic.ttf", "400", "italic"),
-		new BundledFontFace(BUNDLED_CHAT_FONT_FAMILY, "data/font/Carlito-Bold.ttf", "700", "normal"),
-		new BundledFontFace(BUNDLED_CHAT_FONT_FAMILY, "data/font/Carlito-BoldItalic.ttf", "700", "italic")
-	};
+        private static final BundledFontFace[] BUNDLED_CHAT_FONTS = new BundledFontFace[] {
+                new BundledFontFace(BUNDLED_CHAT_FONT_FAMILY, "data/font/Carlito-Regular.ttf", "400", "normal"),
+                new BundledFontFace(BUNDLED_CHAT_FONT_FAMILY, "data/font/Carlito-Italic.ttf", "400", "italic"),
+                new BundledFontFace(BUNDLED_CHAT_FONT_FAMILY, "data/font/Carlito-Bold.ttf", "700", "normal"),
+                new BundledFontFace(BUNDLED_CHAT_FONT_FAMILY, "data/font/Carlito-BoldItalic.ttf", "700", "italic"),
+                new BundledFontFace("KonstytucjaPolska", "data/font/KonstytucjaPolska.ttf", "400", "normal"),
+                new BundledFontFace("AntykwaTorunska", "data/font/AntykwaTorunska.ttf", "400", "normal"),
+                new BundledFontFace("Amaranth", "data/font/Amaranth-Regular.ttf", "400", "normal"),
+                new BundledFontFace("Amaranth", "data/font/Amaranth-Italic.ttf", "400", "italic"),
+                new BundledFontFace("Amaranth", "data/font/Amaranth-Bold.ttf", "700", "normal"),
+                new BundledFontFace("Amaranth", "data/font/Amaranth-BoldItalic.ttf", "700", "italic")
+        };
 
 	static {
 		FORMATTER.addStyle('#', style("fragment", "fmt-hash"));
@@ -189,7 +195,7 @@ class WebChatLogView extends JComponent implements ChatLogView {
 			}
 		}
 		builder.append("</div>");
-		builder.append("<script>(function(){var c=document.getElementById('chat');window.chatlog={container:c,appendLine:function(html){if(!this.container){return;}var wrapper=document.createElement('div');wrapper.innerHTML=html;while(wrapper.firstChild){this.container.appendChild(wrapper.firstChild);}this.scrollToBottom();},clear:function(){if(this.container){this.container.innerHTML='';}},scrollToBottom:function(){if(this.container){this.container.scrollTop=this.container.scrollHeight;}window.scrollTo(0,document.body.scrollHeight);}};window.chatlog.scrollToBottom();})();</script>");
+                builder.append("<script>(function(){var c=document.getElementById('chat');function applyFallback(img){if(!img){return;}var ds=img.dataset||{};if(ds.emojiFallbackApplied==='1'||img.getAttribute('data-emoji-fallback-applied')==='1'){return;}var fallback=img.getAttribute('data-fallback');if(!fallback||fallback===img.src){return;}if(img.dataset){img.dataset.emojiFallbackApplied='1';}else{img.setAttribute('data-emoji-fallback-applied','1');}img.src=fallback;}function primeFallbacks(root){if(!root||!root.querySelectorAll){return;}var imgs=root.querySelectorAll('img[data-fallback]');for(var i=0;i<imgs.length;i++){var img=imgs[i];if(img.complete&&img.naturalWidth===0){applyFallback(img);}}}document.addEventListener('error',function(evt){var target=evt.target;if(!target||!target.classList){return;}if(target.classList.contains('emoji-icon')||target.classList.contains('emoji-layer-img')){applyFallback(target);}},true);window.chatlog={container:c,appendLine:function(html){if(!this.container){return;}var wrapper=document.createElement('div');wrapper.innerHTML=html;while(wrapper.firstChild){var node=wrapper.firstChild;this.container.appendChild(node);primeFallbacks(node);}this.scrollToBottom();},clear:function(){if(this.container){this.container.innerHTML='';}},scrollToBottom:function(){if(this.container){this.container.scrollTop=this.container.scrollHeight;}window.scrollTo(0,document.body.scrollHeight);}};if(window.chatlog&&window.chatlog.container){primeFallbacks(window.chatlog.container);}window.chatlog.scrollToBottom();})();</script>");
 		builder.append("</body></html>");
 		return builder.toString();
 	}
@@ -397,14 +403,27 @@ class WebChatLogView extends JComponent implements ChatLogView {
                 private String buildEmojiHtml(final EmojiMatch match, final String token) {
                                 final EmojiStore store = EmojiStore.get();
                                 final String glyph = ((match != null) && (match.getGlyph() != null)) ? match.getGlyph() : ((token != null) ? token : "");
-                                final String dataUrl = resolveEmojiDataUrl(store, match, token, glyph);
-                                if ((dataUrl != null) && !dataUrl.isEmpty()) {
-                                                return "<span class=\"emoji-span\"><img class=\"emoji-icon\" src=\"" + dataUrl + "\" alt=\"" + escapeHtml(glyph) + "\"/></span>";
+                                final EmojiImageSource image = resolveEmojiImage(store, match, token, glyph);
+                                if ((image != null) && image.hasPrimary()) {
+                                                final StringBuilder builder = new StringBuilder();
+                                                builder.append("<span class=\"emoji-span\"><img class=\"emoji-icon\"")
+                                                                .append(" src=\"")
+                                                                .append(escapeHtml(image.getPrimary()))
+                                                                .append("\" alt=\"")
+                                                                .append(escapeHtml(glyph))
+                                                                .append("\" loading=\"lazy\" decoding=\"async\" referrerpolicy=\"no-referrer\"");
+                                                if (image.hasFallback()) {
+                                                                builder.append(" data-fallback=\"")
+                                                                                .append(escapeHtml(image.getFallback()))
+                                                                                .append("\"");
+                                                }
+                                                builder.append("/></span>");
+                                                return builder.toString();
                                 }
                                 return "<span class=\"emoji\">" + escapeHtml(glyph) + "</span>";
                 }
 
-                private String resolveEmojiDataUrl(final EmojiStore store, final EmojiMatch match, final String token, final String glyph) {
+                private EmojiImageSource resolveEmojiImage(final EmojiStore store, final EmojiMatch match, final String token, final String glyph) {
                                 if (store == null) {
                                                 return null;
                                 }
@@ -426,12 +445,29 @@ class WebChatLogView extends JComponent implements ChatLogView {
                                                 if ((query == null) || query.isEmpty()) {
                                                                 continue;
                                                 }
-                                                final String dataUrl = store.dataUrlFor(query);
-                                                if ((dataUrl != null) && !dataUrl.isEmpty()) {
-                                                                return dataUrl;
+                                                final EmojiImageSource image = fetchEmojiImage(store, query);
+                                                if ((image != null) && image.hasPrimary()) {
+                                                                return image;
                                                 }
                                 }
                                 return null;
+                }
+
+                private EmojiImageSource fetchEmojiImage(final EmojiStore store, final String query) {
+                                if ((store == null) || (query == null) || query.isEmpty()) {
+                                                return null;
+                                }
+                                final EmojiStore.EmojiImage image = store.imageFor(query);
+                                if (image == null) {
+                                                return null;
+                                }
+                                final String primary = image.getPrimaryUrl();
+                                final String fallback = image.getFallbackDataUrl();
+                                final String effectivePrimary = ((primary != null) && !primary.isEmpty()) ? primary : fallback;
+                                if ((effectivePrimary == null) || effectivePrimary.isEmpty()) {
+                                                return null;
+                                }
+                                return new EmojiImageSource(effectivePrimary, fallback);
                 }
 
                 private String buildLayeredEmojiHtml(final LayeredEmojiSpec spec) {
@@ -525,8 +561,8 @@ class WebChatLogView extends JComponent implements ChatLogView {
                                 if (baseLayer) {
                                                 builder.append(" emoji-layer-base");
                                 }
-                                final String dataUrl = asset.getDataUrl();
-                                final boolean hasImage = (dataUrl != null) && !dataUrl.isEmpty();
+                                final EmojiImageSource image = asset.getImage();
+                                final boolean hasImage = (image != null) && image.hasPrimary();
                                 if (!hasImage) {
                                                 builder.append(" glyph");
                                 }
@@ -540,11 +576,18 @@ class WebChatLogView extends JComponent implements ChatLogView {
                                 builder.append('>');
                                 final String effectiveAlt = (altText != null) ? altText : asset.getGlyph();
                                 if (hasImage) {
-                                                builder.append("<img class=\"emoji-layer-img\" src=\"")
-                                                                .append(dataUrl)
+                                                builder.append("<img class=\"emoji-layer-img\"")
+                                                                .append(" src=\"")
+                                                                .append(escapeHtml(image.getPrimary()))
                                                                 .append("\" alt=\"")
                                                                 .append(escapeHtml((effectiveAlt != null) ? effectiveAlt : ""))
-                                                                .append("\" loading=\"lazy\"/>");
+                                                                .append("\" loading=\"lazy\" decoding=\"async\" referrerpolicy=\"no-referrer\"");
+                                                if (image.hasFallback()) {
+                                                                builder.append(" data-fallback=\"")
+                                                                                .append(escapeHtml(image.getFallback()))
+                                                                                .append("\"");
+                                                }
+                                                builder.append("/>");
                                 } else {
                                                 builder.append(escapeHtml((effectiveAlt != null) ? effectiveAlt : ""));
                                 }
@@ -559,34 +602,41 @@ class WebChatLogView extends JComponent implements ChatLogView {
 				final EmojiStore store = EmojiStore.get();
 				final String trimmed = token.trim();
 				String canonicalName = store.check(trimmed);
-				if ((canonicalName == null) && !trimmed.startsWith(":") && store.isAvailable(trimmed)) {
-						canonicalName = trimmed;
-				}
-				String queryToken = trimmed;
-				String dataUrl = store.dataUrlFor(queryToken);
-				if ((dataUrl == null) && (canonicalName != null)) {
-						final String colonToken = ":" + canonicalName + ":";
-						dataUrl = store.dataUrlFor(colonToken);
-						if (dataUrl != null) {
-								queryToken = colonToken;
-						}
-				}
-				String glyph = null;
-				if (canonicalName != null) {
+                                if ((canonicalName == null) && !trimmed.startsWith(":") && store.isAvailable(trimmed)) {
+                                                canonicalName = trimmed;
+                                }
+                                String queryToken = trimmed;
+                                EmojiImageSource image = fetchEmojiImage(store, queryToken);
+                                if (((image == null) || !image.hasPrimary()) && (canonicalName != null)) {
+                                                final String colonToken = ":" + canonicalName + ":";
+                                                final EmojiImageSource colonImage = fetchEmojiImage(store, colonToken);
+                                                if (colonImage != null) {
+                                                                image = colonImage;
+                                                                queryToken = colonToken;
+                                                }
+                                }
+                                String glyph = null;
+                                if (canonicalName != null) {
 						glyph = store.glyphFor(":" + canonicalName + ":");
 				}
-				if ((glyph == null) && !queryToken.equals(trimmed)) {
-						glyph = store.glyphFor(queryToken);
-				}
-				if (glyph == null) {
-						glyph = store.glyphFor(trimmed);
-				}
-				if (glyph == null) {
-						glyph = trimmed;
-				}
-				final String canonicalToken = (canonicalName != null) ? canonicalName : trimmed;
-				return new LayerAsset(trimmed, canonicalToken, dataUrl, glyph);
-		}
+                                if ((glyph == null) && !queryToken.equals(trimmed)) {
+                                                glyph = store.glyphFor(queryToken);
+                                }
+                                if (glyph == null) {
+                                                glyph = store.glyphFor(trimmed);
+                                }
+                                if ((image == null) && (glyph != null) && !glyph.isEmpty() && !glyph.equals(trimmed)) {
+                                                final EmojiImageSource glyphImage = fetchEmojiImage(store, glyph);
+                                                if (glyphImage != null) {
+                                                                image = glyphImage;
+                                                }
+                                }
+                                if (glyph == null) {
+                                                glyph = trimmed;
+                                }
+                                final String canonicalToken = (canonicalName != null) ? canonicalName : trimmed;
+                                return new LayerAsset(trimmed, canonicalToken, image, glyph);
+                }
 
 		private static String joinCssClasses(final Iterable<String> classes) {
 				if (classes == null) {
@@ -677,22 +727,22 @@ class WebChatLogView extends JComponent implements ChatLogView {
 				return trimmed;
 		}
 
-		private static final class LayerAsset {
-				private final String originalToken;
-				private final String canonicalToken;
-				private final String dataUrl;
-				private final String glyph;
+                private static final class LayerAsset {
+                                private final String originalToken;
+                                private final String canonicalToken;
+                                private final EmojiImageSource image;
+                                private final String glyph;
 
-				private LayerAsset(final String originalToken, final String canonicalToken, final String dataUrl, final String glyph) {
-						this.originalToken = originalToken;
-						this.canonicalToken = canonicalToken;
-						this.dataUrl = dataUrl;
-						this.glyph = (glyph != null) ? glyph : originalToken;
-				}
+                                private LayerAsset(final String originalToken, final String canonicalToken, final EmojiImageSource image, final String glyph) {
+                                                this.originalToken = originalToken;
+                                                this.canonicalToken = canonicalToken;
+                                                this.image = image;
+                                                this.glyph = (glyph != null) ? glyph : originalToken;
+                                }
 
-				String getDataUrl() {
-						return dataUrl;
-				}
+                                EmojiImageSource getImage() {
+                                                return image;
+                                }
 
                                 String getGlyph() {
                                                 return glyph;
@@ -942,11 +992,37 @@ class WebChatLogView extends JComponent implements ChatLogView {
                 private final String placeholder;
                 private final String html;
 
-		private EmojiReplacement(final String placeholder, final String html) {
-			this.placeholder = placeholder;
-			this.html = html;
-		}
-	}
+                private EmojiReplacement(final String placeholder, final String html) {
+                        this.placeholder = placeholder;
+                        this.html = html;
+                }
+        }
+
+        private static final class EmojiImageSource {
+                private final String primary;
+                private final String fallback;
+
+                private EmojiImageSource(final String primary, final String fallback) {
+                        this.primary = primary;
+                        this.fallback = fallback;
+                }
+
+                String getPrimary() {
+                        return primary;
+                }
+
+                String getFallback() {
+                        return fallback;
+                }
+
+                boolean hasPrimary() {
+                        return (primary != null) && !primary.isEmpty();
+                }
+
+                boolean hasFallback() {
+                        return (fallback != null) && !fallback.isEmpty() && !fallback.equals(primary);
+                }
+        }
 
 	private static final class HtmlFragmentBuilder implements AttributedTextSink<CssClassSet> {
 		private final StringBuilder out = new StringBuilder();
@@ -1185,6 +1261,11 @@ class WebChatLogView extends JComponent implements ChatLogView {
                         }
                 }
                 families.add(BUNDLED_CHAT_FONT_FAMILY);
+                families.add("KonstytucjaPolska");
+                families.add("Konstytucja Polska");
+                families.add("AntykwaTorunska");
+                families.add("Antykwa Torunska");
+                families.add("Amaranth");
                 families.add("Carlito");
                 families.add("Segoe UI");
                 families.add("Segoe UI Variable");

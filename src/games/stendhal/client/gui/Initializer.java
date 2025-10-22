@@ -40,14 +40,14 @@ class Initializer {
 	static {
 		initFont(DECORATIVE_FONT_NAME);
 		initFont(TALLY_FONT_NAME);
-		for (final String ftype: new String[]{"Bold", "BoldItalic", "Italic", "Regular"}) {
-			initFont("Amaranth-" + ftype);
-			initFont("Carlito-" + ftype);
-		}
-		initFont("NotoColorEmoji-Regular"); // color glyph support for unicode emoji
-		initFont("NotoEmoji-Regular"); // monochrome fallback for unicode emoji
-		initApplicationName();
-	}
+                for (final String ftype: new String[]{"Bold", "BoldItalic", "Italic", "Regular"}) {
+                        initFont("Amaranth-" + ftype);
+                        initFont("Carlito-" + ftype);
+                }
+                initFontIfPresent("NotoColorEmoji-Regular"); // color glyph support for unicode emoji when bundled
+                initFont("NotoEmoji-Regular"); // monochrome fallback for unicode emoji
+                initApplicationName();
+        }
 
 	/**
 	 * Call this from the window classes that can be the first game windows the
@@ -63,8 +63,8 @@ class Initializer {
 	 *
 	 * @param fontName Name of the font
 	 */
-	private static void initFont(String fontName) {
-		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+        private static void initFont(String fontName) {
+                GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		// Don't needlessly load the font if user already has it installed
 		boolean needsLoading = true;
 		for (String font : ge.getAvailableFontFamilyNames()) {
@@ -79,9 +79,18 @@ class Initializer {
 				ge.registerFont(Font.createFont(Font.TRUETYPE_FONT, DataLoader.getResourceAsStream(resource)));
 			} catch (IOException|FontFormatException e) {
 				logger.error("Error loading custom font '" + resource + '"', e);
-			}
-		}
-	}
+                        }
+                }
+        }
+
+        private static void initFontIfPresent(final String fontName) {
+                final String resource = "data/font/" + fontName + ".ttf";
+                if (DataLoader.getResource(resource) == null) {
+                        logger.debug("Custom font not bundled: " + resource);
+                        return;
+                }
+                initFont(fontName);
+        }
 
 	/**
 	 * Set the application name for the windowing system.
