@@ -16,7 +16,6 @@ import static games.stendhal.common.constants.Actions.COND_STOP;
 import static games.stendhal.common.constants.Actions.TYPE;
 
 import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.GraphicsEnvironment;
@@ -89,20 +88,24 @@ class SwingClientGUI implements J2DClientGUI {
 	private static final String SCALE_PREFERENCE_PROPERTY = "ui.scale_screen";
 	private static final Logger logger = Logger.getLogger(SwingClientGUI.class);
 
-	private final JLayeredPane pane;
-	private final GameScreen screen;
-	private final ScreenController screenController;
-	private final ContainerPanel containerPanel;
-	private final QuitDialog quitDialog;
-	private final UserContext userContext;
+    private final JLayeredPane pane;
+    private final GameScreen screen;
+    private final ScreenController screenController;
+    private final ContainerPanel containerPanel;
+    private final QuitDialog quitDialog;
+    private final UserContext userContext;
+    private final JComponent windowContent;
 	private final ChatTextController chatText = ChatTextController.get();
 	private MapPanelController minimap;
 	private JSplitPane verticalSplit;
-	private final JFrame frame;
-	private final JComponent chatLogArea;
-	private final JComponent leftColumn;
-	private JSplitPane horizontalSplit;
-	private final Dimension frameDefaultSize;
+    private final JFrame frame;
+    private final JComponent chatLogArea;
+    private final JComponent leftColumn;
+    private JSplitPane horizontalSplit;
+    private final Dimension frameDefaultSize;
+    private final boolean manageFrameLifecycle;
+    private volatile boolean externalWindowActive = true;
+    private volatile boolean externalWindowIconified;
 
 	/** the Character panel. */
 	private Character character;
@@ -120,69 +123,90 @@ class SwingClientGUI implements J2DClientGUI {
 	private GameKeyHandler gameKeyHandler;
 	private OutfitDialog outfitDialog;
 
-	public SwingClientGUI(StendhalClient client, UserContext context,
-			NotificationChannelManager channelManager, JFrame splash) {
-		this.userContext = context;
-		setupInternalWindowProperties();
-		/*
-		 * Add a layered pane for the game area, so that we can have
-		 * windows on top of it
-		 */
-		pane = new JLayeredPane();
-		pane.setLayout(new FreePlacementLayout());
+    public SwingClientGUI(StendhalClient client, UserContext context,
+                    NotificationChannelManager channelManager, JFrame splash) {
+        this(client, context, channelManager, splash, true);
+    }
 
-		// Create the main game screen
-		screen = GameScreen.get(client);
-		GameScreen.setDefaultScreen(screen);
-		// initialize the screen controller
-		screenController = ScreenController.get(screen);
-		pane.addComponentListener(new GameScreenResizer(screen));
-		// ... and put it on the ground layer of the pane
-		pane.add(screen, Component.LEFT_ALIGNMENT, JLayeredPane.DEFAULT_LAYER);
+    public SwingClientGUI(StendhalClient client, UserContext context,
+                    NotificationChannelManager channelManager, JFrame splash,
+                    boolean showFrame) {
+        this.userContext = context;
+        this.manageFrameLifecycle = showFrame;
+        setupInternalWindowProperties();
+        /*
+         * Add a layered pane for the game area, so that we can have
+         * windows on top of it
+         */
+        pane = new JLayeredPane();
+        pane.setLayout(new FreePlacementLayout());
 
-		runicAltar = new RunicAltar();
-		pane.add(runicAltar.getRunicAltar(), JLayeredPane.MODAL_LAYER);
+        // Create the main game screen
+        screen = GameScreen.get(client);
+        GameScreen.setDefaultScreen(screen);
+        // initialize the screen controller
+        screenController = ScreenController.get(screen);
+        pane.addComponentListener(new GameScreenResizer(screen));
+        // ... and put it on the ground layer of the pane
+        pane.add(screen, Component.LEFT_ALIGNMENT, JLayeredPane.DEFAULT_LAYER);
 
-		quitDialog = new QuitDialog();
-		pane.add(quitDialog.getQuitDialog(), JLayeredPane.MODAL_LAYER);
+        runicAltar = new RunicAltar();
+        pane.add(runicAltar.getRunicAltar(), JLayeredPane.MODAL_LAYER);
 
-		setupChatEntry();
-		chatLogArea = createChatLog(channelManager);
-		containerPanel = createContainerPanel();
-		leftColumn = createLeftPanel(client);
-		frame = prepareMainWindow(splash);
+        quitDialog = new QuitDialog();
+        pane.add(quitDialog.getQuitDialog(), JLayeredPane.MODAL_LAYER);
 
-		setupChatText();
+        setupChatEntry();
+        chatLogArea = createChatLog(channelManager);
+        containerPanel = createContainerPanel();
+        leftColumn = createLeftPanel(client);
+        frame = prepareMainWindow(splash);
+        windowContent = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL);
+        if (manageFrameLifecycle) {
+            frame.setContentPane(windowContent);
+        }
 
-		setupZoneChangeListeners(client);
-		setupOverallLayout();
+        setupChatText();
 
-		int divWidth = verticalSplit.getDividerSize();
-		WtWindowManager wm = WtWindowManager.getInstance();
-		wm.registerSettingChangeListener(SCALE_PREFERENCE_PROPERTY, new ScalingSettingChangeListener(divWidth));
-		wm.registerSettingChangeListener(DISPLAY_SIZE_PROPERTY, new DisplaySizeChangeListener());
+        setupZoneChangeListeners(client);
+        setupOverallLayout();
 
-		setInitialWindowStates();
-		frame.setVisible(true);
+        int divWidth = verticalSplit.getDividerSize();
+        WtWindowManager wm = WtWindowManager.getInstance();
+        wm.registerSettingChangeListener(SCALE_PREFERENCE_PROPERTY, new ScalingSettingChangeListener(divWidth));
+        wm.registerSettingChangeListener(DISPLAY_SIZE_PROPERTY, new DisplaySizeChangeListener());
 
-		/*
-		 * Used by settings dialog to restore the client's dimensions back to
-		 * the original width and height. Needs to be called after
-		 * frame.setSize().
-		 */
-		frameDefaultSize = frame.getSize();
-		frame.addWindowListener(new WindowAdapter() {
-			@Override
-			public void windowClosing(final WindowEvent e) {
-				requestQuit(client);
-			}
-		});
+        setInitialWindowStates();
+        if (manageFrameLifecycle) {
+            frame.setVisible(true);
+        }
 
-		setupKeyHandling(client);
+        /*
+         * Used by settings dialog to restore the client's dimensions back to
+         * the original width and height. Needs to be called after
+         * frame.setSize().
+         */
+        if (manageFrameLifecycle) {
+            frameDefaultSize = frame.getSize();
+        } else {
+            frameDefaultSize = windowContent.getPreferredSize();
+        }
+        if (manageFrameLifecycle) {
+            frame.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosing(final WindowEvent e) {
+                    requestQuit(client);
+                }
+            });
+        }
 
-		locationHacksAndBugWorkaround();
-		WindowUtils.restoreSize(frame);
-	}
+        setupKeyHandling(client);
+
+        if (manageFrameLifecycle) {
+            locationHacksAndBugWorkaround();
+            WindowUtils.restoreSize(frame);
+        }
+    }
 
 	private void setupInternalWindowProperties() {
 		WtWindowManager windowManager = WtWindowManager.getInstance();
@@ -320,16 +344,18 @@ class SwingClientGUI implements J2DClientGUI {
 		return leftColumn;
 	}
 
-	private JFrame prepareMainWindow(JFrame splash) {
-		JFrame frame = MainFrame.prepare(splash);
-		JComponent glassPane = DragLayer.get();
-		frame.setGlassPane(glassPane);
-		glassPane.setVisible(true);
-		setupWindowWideListeners(frame);
-		WindowUtils.watchFontSize(frame);
+    private JFrame prepareMainWindow(JFrame splash) {
+        JFrame frame = MainFrame.prepare(splash);
+        JComponent glassPane = DragLayer.get();
+        frame.setGlassPane(glassPane);
+        glassPane.setVisible(true);
+        if (manageFrameLifecycle) {
+            setupWindowWideListeners(frame);
+            WindowUtils.watchFontSize(frame);
+        }
 
-		return frame;
-	}
+        return frame;
+    }
 
 	private void setupChatText() {
 		Dimension displaySize = stendhal.getDisplaySize();
@@ -362,17 +388,19 @@ class SwingClientGUI implements J2DClientGUI {
 	 * game loop frame rate.
 	 */
 	@Override
-	public void triggerPainting() {
-		if (frame.getState() != Frame.ICONIFIED) {
-			paintCounter++;
-			if (frame.isActive() || "false".equals(System.getProperty("stendhal.skip.inactive", "false")) || paintCounter >= 20) {
-				paintCounter = 0;
-				logger.debug("Draw screen");
-				minimap.refresh();
-				containerPanel.repaintChildren();
-				screen.repaint();
-			}
-		}
+    public void triggerPainting() {
+        boolean iconified = manageFrameLifecycle ? frame.getState() == Frame.ICONIFIED : externalWindowIconified;
+        if (!iconified) {
+            paintCounter++;
+            boolean windowActive = manageFrameLifecycle ? frame.isActive() : externalWindowActive;
+            if (windowActive || "false".equals(System.getProperty("stendhal.skip.inactive", "false")) || paintCounter >= 20) {
+                paintCounter = 0;
+                logger.debug("Draw screen");
+                minimap.refresh();
+                containerPanel.repaintChildren();
+                screen.repaint();
+            }
+        }
     }
 
 	private void locationHacksAndBugWorkaround() {
@@ -490,14 +518,13 @@ class SwingClientGUI implements J2DClientGUI {
 		});
 	}
 
-	private void setupOverallLayout() {
-		Dimension displaySize = stendhal.getDisplaySize();
-		Container windowContent = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL);
-		frame.setContentPane(windowContent);
+    private void setupOverallLayout() {
+        Dimension displaySize = stendhal.getDisplaySize();
+        windowContent.removeAll();
 
-		// Set maximum size to prevent the entry requesting massive widths, but
-		// force expand if there's extra space anyway
-		chatText.getPlayerChatText().setMaximumSize(new Dimension(displaySize.width, Integer.MAX_VALUE));
+        // Set maximum size to prevent the entry requesting massive widths, but
+        // force expand if there's extra space anyway
+        chatText.getPlayerChatText().setMaximumSize(new Dimension(displaySize.width, Integer.MAX_VALUE));
 		JComponent chatEntryBox = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL);
 		chatEntryBox.add(chatText.getPlayerChatText(), SLayout.EXPAND_X);
 
@@ -534,11 +561,15 @@ class SwingClientGUI implements J2DClientGUI {
 		rightSidePanel.add(containerPanel, SBoxLayout.constraint(SLayout.EXPAND_Y, SLayout.EXPAND_X));
 		windowContent.add(rightSidePanel, SLayout.EXPAND_Y);
 
-		frame.pack();
-		horizontalSplit.setDividerLocation(leftColumn.getPreferredSize().width);
+        if (manageFrameLifecycle) {
+            frame.pack();
+        }
+        horizontalSplit.setDividerLocation(leftColumn.getPreferredSize().width);
 
-		smallScreenHacks();
-	}
+        if (manageFrameLifecycle) {
+            smallScreenHacks();
+        }
+    }
 
 	private void setupZoneChangeListeners(StendhalClient client) {
 		client.addZoneChangeListener(screen);
@@ -574,23 +605,48 @@ class SwingClientGUI implements J2DClientGUI {
 		runicAltar.setPlayer(user);
 	}
 
-	@Override
-	public JFrame getFrame() {
-		return frame;
-	}
+    @Override
+    public JFrame getFrame() {
+        return frame;
+    }
 
-	@Override
-	public void resetClientDimensions() {
-		int frameState = frame.getExtendedState();
+    public JComponent getRootComponent() {
+        return windowContent;
+    }
 
-		/*
-		 *  Do not attempt to reset client dimensions if window is maximized.
-		 *  Prevents resizing errors for child components.
-		 */
-		if (frameState != Frame.MAXIMIZED_BOTH) {
-			frame.setSize(frameDefaultSize);
-		}
-	}
+    public Dimension getPreferredClientSize() {
+        return windowContent.getPreferredSize();
+    }
+
+    public void setExternalWindowActive(boolean active) {
+        this.externalWindowActive = active;
+    }
+
+    public void setExternalWindowIconified(boolean iconified) {
+        this.externalWindowIconified = iconified;
+    }
+
+    public boolean isManagingFrameLifecycle() {
+        return manageFrameLifecycle;
+    }
+
+    @Override
+    public void resetClientDimensions() {
+        if (manageFrameLifecycle) {
+            int frameState = frame.getExtendedState();
+
+            /*
+             *  Do not attempt to reset client dimensions if window is maximized.
+             *  Prevents resizing errors for child components.
+             */
+            if (frameState != Frame.MAXIMIZED_BOTH) {
+                frame.setSize(frameDefaultSize);
+            }
+        } else {
+            windowContent.setPreferredSize(frameDefaultSize);
+            windowContent.revalidate();
+        }
+    }
 
 	@Override
 	public Collection<PositionChangeListener> getPositionChangeListeners() {

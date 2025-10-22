@@ -29,6 +29,7 @@ import games.stendhal.client.UserContext;
 import games.stendhal.client.actions.SlashActionRepository;
 import games.stendhal.client.entity.Entity;
 import games.stendhal.client.entity.User;
+import games.stendhal.client.fx.JavaFXClientGUI;
 import games.stendhal.client.gui.chatlog.EventLine;
 import games.stendhal.client.gui.chatlog.HeaderLessEventLine;
 import games.stendhal.client.gui.wt.core.WtWindowManager;
@@ -152,7 +153,12 @@ public class j2DClient implements UserInterface {
 		 */
 		SlashActionRepository.register();
 
-		gui = new SwingClientGUI(client, userContext, channelManager, splash);
+        boolean useJavaFx = Boolean.getBoolean("stendhal.ui.javafx");
+        if (useJavaFx) {
+            gui = new JavaFXClientGUI(client, userContext, channelManager, splash);
+        } else {
+            gui = new SwingClientGUI(client, userContext, channelManager, splash);
+        }
 
 		for (PositionChangeListener listener : gui.getPositionChangeListeners()) {
 			positionChangeListener.add(listener);
