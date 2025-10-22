@@ -1655,7 +1655,6 @@ class WebChatLogView extends JComponent implements ChatLogView {
 				} else {
 					webView.setStyle("-fx-background-color: transparent;");
 				}
-				webView.setBackground(backgroundFill);
 			}
 			if (root != null) {
 				if ((css != null) && !css.isEmpty()) {
