@@ -52,6 +52,15 @@ public class HUDPaneFX extends BorderPane {
                 + "-fx-border-width: 0 0 0 2; "
                 + "-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.45), 16, 0.2, 0, 0);");
 
+        healthBar = createBar("hud-health-bar", 0.82);
+        manaBar = createBar("hud-mana-bar", 0.54);
+        locationLabel = new Label("Pozycja: (128, 64)");
+        locationLabel.getStyleClass().add("hud-location-label");
+
+        chatLog = createChatLog();
+        chatInput = createChatInput();
+        playerList = createPlayerList();
+
         VBox content = new VBox(18);
         content.setFillWidth(true);
         Region statusSection = buildStatusSection();
@@ -69,15 +78,8 @@ public class HUDPaneFX extends BorderPane {
         statusBox.getStyleClass().add("hud-section");
 
         Label title = createSectionTitle("Status postaci");
-        healthBar = new ProgressBar(0.82);
-        manaBar = new ProgressBar(0.54);
-        configureBar(healthBar, "hud-health-bar");
-        configureBar(manaBar, "hud-mana-bar");
-
         Label healthLabel = new Label("Zdrowie");
         Label manaLabel = new Label("Mana");
-        locationLabel = new Label("Pozycja: (128, 64)");
-        locationLabel.getStyleClass().add("hud-location-label");
 
         statusBox.getChildren().addAll(title, healthLabel, healthBar, manaLabel, manaBar, locationLabel);
         return statusBox;
@@ -88,16 +90,6 @@ public class HUDPaneFX extends BorderPane {
         chatBox.getStyleClass().add("hud-section");
 
         Label title = createSectionTitle("Czat");
-        chatLog = new TextArea();
-        chatLog.setEditable(false);
-        chatLog.setWrapText(true);
-        chatLog.setPrefRowCount(10);
-        chatLog.setFocusTraversable(false);
-        chatLog.getStyleClass().add("hud-chat-log");
-
-        chatInput = new TextField();
-        chatInput.setPromptText("Wpisz wiadomość...");
-        chatInput.setOnAction(event -> sendChatMessage());
 
         Button sendButton = new Button("Wyślij");
         sendButton.setDefaultButton(true);
@@ -116,10 +108,6 @@ public class HUDPaneFX extends BorderPane {
         playerBox.getStyleClass().add("hud-section");
 
         Label title = createSectionTitle("Gracze w pobliżu");
-        playerList = new ListView<>();
-        playerList.setPrefHeight(160);
-        playerList.getStyleClass().add("hud-player-list");
-        playerList.getItems().addAll("Wojownik", "Mag", "Łowca");
 
         playerBox.getChildren().addAll(title, playerList);
         VBox.setVgrow(playerList, Priority.ALWAYS);
@@ -132,9 +120,36 @@ public class HUDPaneFX extends BorderPane {
         return label;
     }
 
-    private void configureBar(ProgressBar bar, String styleClass) {
+    private ProgressBar createBar(String styleClass, double initialProgress) {
+        ProgressBar bar = new ProgressBar(initialProgress);
         bar.setPrefWidth(Double.MAX_VALUE);
         bar.getStyleClass().add(styleClass);
+        return bar;
+    }
+
+    private TextArea createChatLog() {
+        TextArea area = new TextArea();
+        area.setEditable(false);
+        area.setWrapText(true);
+        area.setPrefRowCount(10);
+        area.setFocusTraversable(false);
+        area.getStyleClass().add("hud-chat-log");
+        return area;
+    }
+
+    private TextField createChatInput() {
+        TextField field = new TextField();
+        field.setPromptText("Wpisz wiadomość...");
+        field.setOnAction(event -> sendChatMessage());
+        return field;
+    }
+
+    private ListView<String> createPlayerList() {
+        ListView<String> list = new ListView<>();
+        list.setPrefHeight(160);
+        list.getStyleClass().add("hud-player-list");
+        list.getItems().addAll("Wojownik", "Mag", "Łowca");
+        return list;
     }
 
     private void sendChatMessage() {
