@@ -99,17 +99,17 @@ public class ChatTextController {
 	* Add the special key bindings.
 	*/
 	private void setupKeys() {
-		final KeyStroke enterPress = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, false);
-		final KeyStroke enterRelease = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0, true);
-		final KeyStroke shiftEnter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, KeyEvent.SHIFT_DOWN_MASK);
-		final KeyStroke shiftEnterRelease = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, KeyEvent.SHIFT_DOWN_MASK, true);
+				final KeyStroke ctrlEnter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, KeyEvent.CTRL_DOWN_MASK, false);
+				final KeyStroke ctrlEnterRelease = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, KeyEvent.CTRL_DOWN_MASK, true);
+				final KeyStroke shiftEnter = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, KeyEvent.SHIFT_DOWN_MASK);
+				final KeyStroke shiftEnterRelease = KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, KeyEvent.SHIFT_DOWN_MASK, true);
 
-		bindSubmitKey(JComponent.WHEN_FOCUSED, enterPress);
-		bindSubmitKey(JComponent.WHEN_FOCUSED, enterRelease);
-		bindSubmitKey(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, enterPress);
-		bindSubmitKey(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, enterRelease);
-		bindSubmitKey(JComponent.WHEN_IN_FOCUSED_WINDOW, enterPress);
-		bindSubmitKey(JComponent.WHEN_IN_FOCUSED_WINDOW, enterRelease);
+				bindSubmitKey(JComponent.WHEN_FOCUSED, ctrlEnter);
+				bindSubmitKey(JComponent.WHEN_FOCUSED, ctrlEnterRelease);
+				bindSubmitKey(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, ctrlEnter);
+				bindSubmitKey(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT, ctrlEnterRelease);
+				bindSubmitKey(JComponent.WHEN_IN_FOCUSED_WINDOW, ctrlEnter);
+				bindSubmitKey(JComponent.WHEN_IN_FOCUSED_WINDOW, ctrlEnterRelease);
 
 		bindLineBreakKey(JComponent.WHEN_FOCUSED, shiftEnter);
 		bindLineBreakKey(JComponent.WHEN_FOCUSED, shiftEnterRelease);

@@ -24,8 +24,12 @@ import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.JComponent;
 import javax.swing.JMenuItem;
@@ -62,6 +66,8 @@ class WebChatLogView extends JComponent implements ChatLogView {
 
 	private static final SimpleDateFormat TIMESTAMP_FORMAT = new SimpleDateFormat("[HH:mm:ss] ", Locale.getDefault());
 	private static final char EMOJI_PLACEHOLDER_PREFIX = '\uFFF0';
+	private static final char LAYERED_EMOJI_PLACEHOLDER_PREFIX = '\uFFF1';
+	private static final Pattern LAYERED_EMOJI_PATTERN = Pattern.compile("\\[\\[(?:emoji|em):([^|\\]]+)(?:\\|([^\\]]+))?\\]\\]", Pattern.CASE_INSENSITIVE);
 
 	private static final StringFormatter<java.util.Set<String>, CssClassSet> FORMATTER
 	= new StringFormatter<java.util.Set<String>, CssClassSet>();
@@ -196,10 +202,15 @@ class WebChatLogView extends JComponent implements ChatLogView {
 		css.append(".line.type-positive .message{color:#c9e5a3;}");
 		css.append(".line.type-support .message{color:#b4e1ff;}");
 		css.append(".line.type-client .message{color:#f2dec2;}");
-		css.append(".emoji{font-family:").append(emojiStack).append(";font-size:1.1em;line-height:1.1em;}");
-		css.append(".emoji-span{display:inline-flex;align-items:center;gap:2px;}");
-		css.append(".emoji-icon{height:1.25em;width:1.25em;vertical-align:middle;}");
-		css.append(".chat-log{scrollbar-color:#8a5f34 #2c1503;}");
+			css.append(".emoji{font-family:").append(emojiStack).append(";font-size:1.1em;line-height:1.1em;}");
+			css.append(".emoji-span{display:inline-flex;align-items:center;gap:2px;}");
+			css.append(".emoji-icon{height:1.25em;width:1.25em;vertical-align:middle;}");
+			css.append(".emoji-layered{position:relative;display:inline-flex;align-items:center;justify-content:center;width:1.65em;height:1.65em;margin:0 0.12em;--emoji-bg:transparent;--emoji-bg-opacity:1;--emoji-outline:rgba(0,0,0,0);--emoji-outline-width:0px;--emoji-shadow:0 0 0 0 transparent;}");
+			css.append(".emoji-layered::before{content:\"\";position:absolute;inset:0;border-radius:0.55em;background:var(--emoji-bg);opacity:var(--emoji-bg-opacity);box-shadow:0 0 0 var(--emoji-outline-width) var(--emoji-outline),var(--emoji-shadow);}");
+			css.append(".emoji-layered .emoji-layer{position:absolute;top:50%;left:50%;width:calc(100% - 0.2em);height:calc(100% - 0.2em);transform:translate(-50%,-50%);background-repeat:no-repeat;background-position:center;background-size:contain;pointer-events:none;}");
+			css.append(".emoji-layered .emoji-layer.glyph{display:flex;align-items:center;justify-content:center;font-size:0.95em;color:inherit;text-shadow:0 1px 2px rgba(0,0,0,0.35);}");
+			css.append(".emoji-layered .emoji-label{position:absolute;bottom:-0.3em;left:50%;transform:translateX(-50%);font-size:0.6em;padding:0.1em 0.35em;border-radius:999px;background:var(--emoji-label-bg,rgba(0,0,0,0.45));color:var(--emoji-label-color,#fff);line-height:1;font-weight:600;white-space:nowrap;pointer-events:none;}");
+			css.append(".chat-log{scrollbar-color:#8a5f34 #2c1503;}");
 		css.append(".chat-log::-webkit-scrollbar{width:18px;background:#2c1503;}");
 		css.append(".chat-log::-webkit-scrollbar-track{background:linear-gradient(180deg,#452308 0%,#331703 50%,#452308 100%);border-left:1px solid rgba(255,230,170,0.25);border-right:1px solid rgba(0,0,0,0.45);box-shadow:inset 0 0 4px rgba(0,0,0,0.6);}");
 		css.append(".chat-log::-webkit-scrollbar-thumb{background:linear-gradient(180deg,#9a6d3a 0%,#7f4f20 50%,#9a6d3a 100%);border:1px solid rgba(60,30,0,0.85);border-radius:6px;box-shadow:inset 0 0 4px rgba(0,0,0,0.5);}");
@@ -259,7 +270,8 @@ class WebChatLogView extends JComponent implements ChatLogView {
 		}
 
 		final List<EmojiReplacement> replacements = new ArrayList<>();
-		final String working = injectEmojiPlaceholders(text, replacements);
+		final String withLayered = injectLayeredEmojiPlaceholders(text, replacements);
+		final String working = injectEmojiPlaceholders(withLayered, replacements);
 		final HtmlFragmentBuilder builder = new HtmlFragmentBuilder();
 		FORMATTER.format(working, DEFAULT_FRAGMENT.copy(), builder);
 		String html = builder.toHtml();
@@ -269,12 +281,51 @@ class WebChatLogView extends JComponent implements ChatLogView {
 		return html;
 	}
 
+	private String injectLayeredEmojiPlaceholders(final String text, final List<EmojiReplacement> replacements) {
+		if ((text == null) || text.isEmpty()) {
+			return text;
+		}
+
+		final Matcher matcher = LAYERED_EMOJI_PATTERN.matcher(text);
+		final StringBuilder working = new StringBuilder();
+		int index = 0;
+		int counter = 0;
+		while (matcher.find()) {
+			working.append(text, index, matcher.start());
+			final LayeredEmojiSpec spec = LayeredEmojiSpec.parse(matcher.group(1), matcher.group(2));
+			if (spec != null) {
+				final String html = buildLayeredEmojiHtml(spec);
+				if ((html != null) && spec.hasRenderableLayers()) {
+					final String placeholder = buildLayeredEmojiPlaceholder(counter++);
+					replacements.add(new EmojiReplacement(placeholder, html));
+					working.append(placeholder);
+				} else {
+					working.append(matcher.group(0));
+				}
+			} else {
+				working.append(matcher.group(0));
+			}
+			index = matcher.end();
+		}
+		if (index < text.length()) {
+			working.append(text.substring(index));
+		}
+		return working.toString();
+	}
+
 	private String injectEmojiPlaceholders(final String text, final List<EmojiReplacement> replacements) {
 		final EmojiStore store = EmojiStore.get();
 		final StringBuilder working = new StringBuilder();
 		int index = 0;
 		int counter = 0;
 		while (index < text.length()) {
+			final char current = text.charAt(index);
+			if ((current == EMOJI_PLACEHOLDER_PREFIX) || (current == LAYERED_EMOJI_PLACEHOLDER_PREFIX)) {
+				final int end = findPlaceholderEnd(text, index, current);
+				working.append(text, index, end);
+				index = end;
+				continue;
+			}
 			final EmojiMatch match = store.matchEmoji(text, index);
 			if (match != null) {
 				final int consumed = match.getConsumedLength();
@@ -293,17 +344,483 @@ class WebChatLogView extends JComponent implements ChatLogView {
 	}
 
 	private String buildEmojiPlaceholder(final int index) {
-		return new StringBuilder(16).append(EMOJI_PLACEHOLDER_PREFIX).append(index).append(EMOJI_PLACEHOLDER_PREFIX).toString();
+			return new StringBuilder(16).append(EMOJI_PLACEHOLDER_PREFIX).append(index).append(EMOJI_PLACEHOLDER_PREFIX).toString();
 	}
 
-	private String buildEmojiHtml(final EmojiMatch match, final String token) {
-		final String glyph = ((match != null) && (match.getGlyph() != null)) ? match.getGlyph() : ((token != null) ? token : "");
-		final String dataUrl = (token != null) ? EmojiStore.get().dataUrlFor(token) : null;
-		if ((dataUrl != null) && !dataUrl.isEmpty()) {
-			return "<span class=\"emoji-span\"><img class=\"emoji-icon\" src=\"" + dataUrl + "\" alt=\"" + escapeHtml(glyph) + "\"/></span>";
-		}
-		return "<span class=\"emoji\">" + escapeHtml(glyph) + "</span>";
+	private String buildLayeredEmojiPlaceholder(final int index) {
+			return new StringBuilder(20).append(LAYERED_EMOJI_PLACEHOLDER_PREFIX).append(index)
+					.append(LAYERED_EMOJI_PLACEHOLDER_PREFIX).toString();
 	}
+
+	private int findPlaceholderEnd(final String text, final int start, final char prefix) {
+			if ((text == null) || (start < 0) || (start >= text.length())) {
+					return start + 1;
+			}
+			int offset = start + 1;
+			while (offset < text.length()) {
+					if (text.charAt(offset) == prefix) {
+							return offset + 1;
+					}
+					offset++;
+			}
+			return text.length();
+	}
+
+		private String buildEmojiHtml(final EmojiMatch match, final String token) {
+				final String glyph = ((match != null) && (match.getGlyph() != null)) ? match.getGlyph() : ((token != null) ? token : "");
+				final String dataUrl = (token != null) ? EmojiStore.get().dataUrlFor(token) : null;
+				if ((dataUrl != null) && !dataUrl.isEmpty()) {
+						return "<span class=\"emoji-span\"><img class=\"emoji-icon\" src=\"" + dataUrl + "\" alt=\"" + escapeHtml(glyph) + "\"/></span>";
+				}
+				return "<span class=\"emoji\">" + escapeHtml(glyph) + "</span>";
+		}
+
+		private String buildLayeredEmojiHtml(final LayeredEmojiSpec spec) {
+				if ((spec == null) || !spec.hasRenderableLayers()) {
+						return null;
+				}
+
+				final LayerAsset baseAsset = resolveEmojiAsset(spec.getBaseToken());
+				final List<LayerAsset> overlayAssets = new ArrayList<LayerAsset>();
+				for (final String token : spec.getOverlays()) {
+						final LayerAsset asset = resolveEmojiAsset(token);
+						if (asset != null) {
+								overlayAssets.add(asset);
+						}
+				}
+
+				final StringBuilder builder = new StringBuilder();
+				builder.append("<span class=\"emoji-layered");
+				final String extraClasses = joinCssClasses(spec.getExtraClasses());
+				if (!extraClasses.isEmpty()) {
+						builder.append(' ').append(extraClasses);
+				}
+				builder.append("\"");
+
+				final String style = buildContainerStyle(spec);
+				if (!style.isEmpty()) {
+						builder.append(" style=\"").append(style).append("\"");
+				}
+
+				final String tooltip = spec.getTooltip();
+				if ((tooltip != null) && !tooltip.isEmpty()) {
+						builder.append(" title=\"").append(escapeHtml(tooltip)).append("\"");
+				}
+
+				builder.append(" data-token=\"").append(escapeHtml(spec.getBaseDisplay())).append("\">");
+				final String baseSpan = buildLayerSpan(baseAsset, true);
+				if (baseSpan.isEmpty()) {
+						builder.append("<span class=\"emoji-layer emoji-layer-base glyph\">")
+								.append(escapeHtml(spec.getBaseDisplay()))
+								.append("</span>");
+				} else {
+						builder.append(baseSpan);
+				}
+				for (final LayerAsset asset : overlayAssets) {
+						builder.append(buildLayerSpan(asset, false));
+				}
+				if (spec.getLabel() != null) {
+						builder.append("<span class=\"emoji-label\">")
+								.append(escapeHtml(spec.getLabel()))
+								.append("</span>");
+				}
+				builder.append("</span>");
+				return builder.toString();
+		}
+
+		private String buildContainerStyle(final LayeredEmojiSpec spec) {
+				if (spec == null) {
+						return "";
+				}
+				final StringBuilder style = new StringBuilder();
+				if (spec.getBackground() != null) {
+						style.append("--emoji-bg:").append(spec.getBackground()).append(';');
+				}
+				if (spec.getBackgroundOpacity() != null) {
+						style.append("--emoji-bg-opacity:").append(spec.getBackgroundOpacity()).append(';');
+				}
+				if (spec.getOutline() != null) {
+						style.append("--emoji-outline:").append(spec.getOutline()).append(';');
+						final String outlineWidth = (spec.getOutlineWidth() != null) ? spec.getOutlineWidth() : "2px";
+						style.append("--emoji-outline-width:").append(outlineWidth).append(';');
+				} else if (spec.getOutlineWidth() != null) {
+						style.append("--emoji-outline-width:").append(spec.getOutlineWidth()).append(';');
+				}
+				if (spec.getShadow() != null) {
+						style.append("--emoji-shadow:").append(spec.getShadow()).append(';');
+				}
+				if (spec.getLabelColor() != null) {
+						style.append("--emoji-label-color:").append(spec.getLabelColor()).append(';');
+				}
+				if (spec.getLabelBackground() != null) {
+						style.append("--emoji-label-bg:").append(spec.getLabelBackground()).append(';');
+				}
+				return style.toString();
+		}
+
+		private String buildLayerSpan(final LayerAsset asset, final boolean baseLayer) {
+				if (asset == null) {
+						return "";
+				}
+				final StringBuilder builder = new StringBuilder("<span class=\"emoji-layer");
+				if (baseLayer) {
+						builder.append(" emoji-layer-base");
+				}
+				builder.append("\"");
+				final String dataUrl = asset.getDataUrl();
+				if ((dataUrl != null) && !dataUrl.isEmpty()) {
+						builder.append(" style=\"background-image:url('").append(dataUrl).append("');\"");
+				}
+				builder.append('>');
+				if ((dataUrl == null) || dataUrl.isEmpty()) {
+						builder.append(escapeHtml(asset.getGlyph()));
+				}
+				builder.append("</span>");
+				return builder.toString();
+		}
+
+		private LayerAsset resolveEmojiAsset(final String token) {
+				if ((token == null) || token.trim().isEmpty()) {
+						return null;
+				}
+				final EmojiStore store = EmojiStore.get();
+				final String trimmed = token.trim();
+				String canonicalName = store.check(trimmed);
+				if ((canonicalName == null) && !trimmed.startsWith(":") && store.isAvailable(trimmed)) {
+						canonicalName = trimmed;
+				}
+				String queryToken = trimmed;
+				String dataUrl = store.dataUrlFor(queryToken);
+				if ((dataUrl == null) && (canonicalName != null)) {
+						final String colonToken = ":" + canonicalName + ":";
+						dataUrl = store.dataUrlFor(colonToken);
+						if (dataUrl != null) {
+								queryToken = colonToken;
+						}
+				}
+				String glyph = null;
+				if (canonicalName != null) {
+						glyph = store.glyphFor(":" + canonicalName + ":");
+				}
+				if ((glyph == null) && !queryToken.equals(trimmed)) {
+						glyph = store.glyphFor(queryToken);
+				}
+				if (glyph == null) {
+						glyph = store.glyphFor(trimmed);
+				}
+				if (glyph == null) {
+						glyph = trimmed;
+				}
+				final String canonicalToken = (canonicalName != null) ? canonicalName : trimmed;
+				return new LayerAsset(trimmed, canonicalToken, dataUrl, glyph);
+		}
+
+		private static String joinCssClasses(final Iterable<String> classes) {
+				if (classes == null) {
+						return "";
+				}
+				final StringBuilder builder = new StringBuilder();
+				for (final String css : classes) {
+						if ((css == null) || css.isEmpty()) {
+								continue;
+						}
+						if (builder.length() > 0) {
+								builder.append(' ');
+						}
+						builder.append(css);
+				}
+				return builder.toString();
+		}
+
+		private static String sanitizeCssValue(final String value) {
+				if (value == null) {
+						return null;
+				}
+				final String trimmed = value.trim();
+				if (trimmed.isEmpty()) {
+						return null;
+				}
+				if (!trimmed.matches("[a-zA-Z0-9#.,%()\\s+\\-/*]+")) {
+						return null;
+				}
+				return trimmed;
+		}
+
+		private static String sanitizeOpacity(final String value) {
+				if (value == null) {
+						return null;
+				}
+				final String trimmed = value.trim();
+				if (trimmed.isEmpty()) {
+						return null;
+				}
+				try {
+						final double numeric = Double.parseDouble(trimmed);
+						final double clamped = Math.max(0d, Math.min(1d, numeric));
+						return String.format(Locale.ROOT, "%.3f", clamped);
+				} catch (NumberFormatException ex) {
+						final String sanitized = sanitizeCssValue(trimmed);
+						return (sanitized != null) ? sanitized : null;
+				}
+		}
+
+		private static String sanitizePixels(final String value) {
+				if (value == null) {
+						return null;
+				}
+				final String trimmed = value.trim();
+				if (trimmed.isEmpty()) {
+						return null;
+				}
+				try {
+						final double numeric = Double.parseDouble(trimmed);
+						final double clamped = Math.max(0d, Math.min(64d, numeric));
+						return String.format(Locale.ROOT, "%.2fpx", clamped);
+				} catch (NumberFormatException ex) {
+						final String sanitized = sanitizeCssValue(trimmed);
+						return (sanitized != null) ? sanitized : null;
+				}
+		}
+
+		private static String sanitizeText(final String value) {
+				if (value == null) {
+						return null;
+				}
+				final String cleaned = value.replaceAll("\\p{Cntrl}", "").trim();
+				return cleaned.isEmpty() ? null : cleaned;
+		}
+
+		private static String sanitizeCssIdentifier(final String value) {
+				if (value == null) {
+						return "";
+				}
+				final String trimmed = value.trim();
+				if (trimmed.isEmpty()) {
+						return "";
+				}
+				if (!trimmed.matches("[a-zA-Z0-9_-]+")) {
+						return "";
+				}
+				return trimmed;
+		}
+
+		private static final class LayerAsset {
+				private final String originalToken;
+				private final String canonicalToken;
+				private final String dataUrl;
+				private final String glyph;
+
+				private LayerAsset(final String originalToken, final String canonicalToken, final String dataUrl, final String glyph) {
+						this.originalToken = originalToken;
+						this.canonicalToken = canonicalToken;
+						this.dataUrl = dataUrl;
+						this.glyph = (glyph != null) ? glyph : originalToken;
+				}
+
+				String getDataUrl() {
+						return dataUrl;
+				}
+
+				String getGlyph() {
+						return glyph;
+				}
+
+				String getCanonicalToken() {
+						return canonicalToken;
+				}
+		}
+
+		private static final class LayeredEmojiSpec {
+				private final String baseToken;
+				private final String baseDisplay;
+				private final List<String> overlays = new ArrayList<String>();
+				private final Set<String> extraClasses = new LinkedHashSet<String>();
+				private String background;
+				private String backgroundOpacity;
+				private String outline;
+				private String outlineWidth;
+				private String shadow;
+				private String label;
+				private String labelColor;
+				private String labelBackground;
+				private String tooltip;
+
+				private LayeredEmojiSpec(final String baseToken) {
+						this.baseToken = baseToken;
+						final String cleaned = sanitizeText(baseToken);
+						this.baseDisplay = (cleaned != null) ? cleaned : baseToken;
+				}
+
+				static LayeredEmojiSpec parse(final String baseSegment, final String parameters) {
+						if (baseSegment == null) {
+								return null;
+						}
+						final String trimmed = baseSegment.trim();
+						if (trimmed.isEmpty()) {
+								return null;
+						}
+						final LayeredEmojiSpec spec = new LayeredEmojiSpec(trimmed);
+						if ((parameters != null) && !parameters.isEmpty()) {
+								final String[] segments = parameters.split("\\|");
+								for (final String segment : segments) {
+										spec.consume(segment);
+								}
+						}
+						return spec;
+				}
+
+				private void consume(final String segment) {
+						final String trimmed = (segment != null) ? segment.trim() : "";
+						if (trimmed.isEmpty()) {
+								return;
+						}
+						final int eq = trimmed.indexOf('=');
+						if (eq <= 0) {
+								addOverlay(trimmed);
+								return;
+						}
+						final String key = trimmed.substring(0, eq).trim().toLowerCase(Locale.ROOT);
+						final String value = trimmed.substring(eq + 1).trim();
+						applyParameter(key, value);
+				}
+
+				private void applyParameter(final String key, final String value) {
+						if ((value == null) || value.isEmpty()) {
+								return;
+						}
+						switch (key) {
+								case "bg":
+								case "background":
+								case "backgroundcolor":
+								case "bgcolor":
+										background = sanitizeCssValue(value);
+										break;
+								case "bgopacity":
+								case "bgalpha":
+								case "backgroundopacity":
+										backgroundOpacity = sanitizeOpacity(value);
+										break;
+								case "outline":
+								case "border":
+								case "stroke":
+										outline = sanitizeCssValue(value);
+										break;
+								case "outlinewidth":
+								case "strokewidth":
+								case "borderwidth":
+										outlineWidth = sanitizePixels(value);
+										break;
+								case "shadow":
+								case "glow":
+										shadow = sanitizeCssValue(value);
+										break;
+								case "layers":
+								case "layer":
+								case "overlays":
+										final String[] tokens = value.split("[,+;]");
+										for (final String token : tokens) {
+												addOverlay(token);
+										}
+										break;
+								case "label":
+										label = sanitizeText(value);
+										break;
+								case "tooltip":
+								case "title":
+										tooltip = sanitizeText(value);
+										break;
+								case "labelcolor":
+								case "labelcolour":
+								case "textcolor":
+										labelColor = sanitizeCssValue(value);
+										break;
+								case "labelbg":
+								case "labelbackground":
+								case "labelcolour":
+										labelBackground = sanitizeCssValue(value);
+										break;
+								case "class":
+								case "classes":
+										final String[] classTokens = value.split("[\\n\\r\\t, ]+");
+										for (final String css : classTokens) {
+												final String sanitized = sanitizeCssIdentifier(css);
+												if (!sanitized.isEmpty()) {
+														extraClasses.add(sanitized);
+												}
+										}
+										break;
+								default:
+										addOverlay(value);
+										break;
+						}
+				}
+
+				private void addOverlay(final String token) {
+						if (token == null) {
+								return;
+						}
+						final String trimmed = token.trim();
+						if (!trimmed.isEmpty()) {
+								overlays.add(trimmed);
+						}
+				}
+
+				boolean hasRenderableLayers() {
+						return baseToken != null;
+				}
+
+				String getBaseToken() {
+						return baseToken;
+				}
+
+				String getBaseDisplay() {
+						return baseDisplay;
+				}
+
+				List<String> getOverlays() {
+						return overlays;
+				}
+
+				Set<String> getExtraClasses() {
+						return extraClasses;
+				}
+
+				String getBackground() {
+						return background;
+				}
+
+				String getBackgroundOpacity() {
+						return backgroundOpacity;
+				}
+
+				String getOutline() {
+						return outline;
+				}
+
+				String getOutlineWidth() {
+						return outlineWidth;
+				}
+
+				String getShadow() {
+						return shadow;
+				}
+
+				String getLabel() {
+						return label;
+				}
+
+				String getLabelColor() {
+						return labelColor;
+				}
+
+				String getLabelBackground() {
+						return labelBackground;
+				}
+
+				String getTooltip() {
+						return tooltip;
+				}
+		}
 
 	private static final class EmojiReplacement {
 		private final String placeholder;
