@@ -366,7 +366,7 @@ class WebChatLogView extends JComponent implements ChatLogView {
 			}
 			final int codePoint = text.codePointAt(index);
 			working.appendCodePoint(codePoint);
-			index += Character.charCount(codePoint);
+                        index += java.lang.Character.charCount(codePoint);
 		}
 		return working.toString();
 	}
