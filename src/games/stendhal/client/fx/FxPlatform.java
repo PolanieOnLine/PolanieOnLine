@@ -8,7 +8,7 @@ import javafx.application.Platform;
 /**
  * Utility for ensuring that the JavaFX platform is initialised exactly once.
  */
-final class FxPlatform {
+public final class FxPlatform {
 
     private static final AtomicBoolean STARTED = new AtomicBoolean();
     private static final CountDownLatch STARTUP_LATCH = new CountDownLatch(1);
@@ -16,7 +16,7 @@ final class FxPlatform {
     private FxPlatform() {
     }
 
-    static void ensureStarted() {
+    public static void ensureStarted() {
         if (STARTED.get()) {
             waitForStartup();
             return;

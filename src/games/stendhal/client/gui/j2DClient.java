@@ -29,7 +29,6 @@ import games.stendhal.client.UserContext;
 import games.stendhal.client.actions.SlashActionRepository;
 import games.stendhal.client.entity.Entity;
 import games.stendhal.client.entity.User;
-import games.stendhal.client.fx.JavaFXClientGUI;
 import games.stendhal.client.gui.chatlog.EventLine;
 import games.stendhal.client.gui.chatlog.HeaderLessEventLine;
 import games.stendhal.client.gui.wt.core.WtWindowManager;
