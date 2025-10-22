@@ -496,7 +496,7 @@ public class Zone {
 	 * @return weather name, or <code>null</code> if the zone has no special
 	 * 	weather
 	 */
-	String getWeatherName() {
+	public String getWeatherName() {
 		return weatherName;
 	}
 
