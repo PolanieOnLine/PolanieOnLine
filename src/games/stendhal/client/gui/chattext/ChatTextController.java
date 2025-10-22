@@ -11,6 +11,7 @@
 ***************************************************************************/
 package games.stendhal.client.gui.chattext;
 
+import java.awt.Font;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -21,9 +22,11 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import java.util.Locale;
 
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 import games.stendhal.client.ClientSingletonRepository;
 import games.stendhal.client.StendhalClient;
@@ -177,6 +180,8 @@ public class ChatTextController {
 
     private static final class FXChatInputPane extends JFXPanel {
         private static final long serialVersionUID = 885350581860244944L;
+        private static final String FONT_STACK = "'Arial','Segoe UI','Liberation Sans','DejaVu Sans','Noto Sans','SansSerif'";
+        private static final int MIN_FONT_SIZE = 12;
 
         private final int maxTextLength;
         private final Runnable lengthLimitHandler;
@@ -204,6 +209,7 @@ public class ChatTextController {
 
         private void initializeFx() {
             textArea = new TextArea();
+            textArea.setStyle(buildFontCss());
             textArea.setWrapText(true);
             textArea.setPrefRowCount(2);
             textArea.setFocusTraversable(true);
@@ -224,6 +230,27 @@ public class ChatTextController {
             final BorderPane pane = new BorderPane(textArea);
             setScene(new Scene(pane));
             ready.countDown();
+        }
+
+        private static String buildFontCss() {
+            final int size = resolveFontSize();
+            return String.format(Locale.ROOT, "-fx-font-family: %s; -fx-font-size: %dpx;", FONT_STACK, size);
+        }
+
+        private static int resolveFontSize() {
+            final Font textFieldFont = UIManager.getFont("TextField.font");
+            if ((textFieldFont != null) && (textFieldFont.getSize() > 0)) {
+                return Math.max(MIN_FONT_SIZE, textFieldFont.getSize());
+            }
+            final Font textAreaFont = UIManager.getFont("TextArea.font");
+            if ((textAreaFont != null) && (textAreaFont.getSize() > 0)) {
+                return Math.max(MIN_FONT_SIZE, textAreaFont.getSize());
+            }
+            final Font labelFont = UIManager.getFont("Label.font");
+            if ((labelFont != null) && (labelFont.getSize() > 0)) {
+                return Math.max(MIN_FONT_SIZE, labelFont.getSize());
+            }
+            return 13;
         }
 
         void setOnKeyPressed(final Consumer<javafx.scene.input.KeyEvent> handler) {

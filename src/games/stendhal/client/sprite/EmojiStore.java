@@ -29,10 +29,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -71,7 +74,10 @@ public class EmojiStore {
 	private static final String EMOJI_JSON_PATH = "data/sprites/emoji/emojis.json";
 	private static final String EMOJI_IMAGE_PATH = "data/sprites/emoji/";
         private static final String BUNDLED_FONT_PATH = "data/font/NotoEmoji-Regular.ttf";
-        private static final String EMOJI_CDN_BASE = "https://cdn.jsdelivr.net/npm/twemoji@14.0.2/assets/72x72/";
+        private static final String[] EMOJI_CDN_BASES = {
+                "https://twemoji.maxcdn.com/v/latest/png/72x72/",
+                "https://cdn.jsdelivr.net/npm/twemoji@14.0.2/assets/72x72/"
+        };
         private static final String EMOJI_CDN_EXTENSION = ".png";
 	private static final String SAMPLE_GLYPH = "\uD83D\uDE03";
 	private static final String[] FALLBACK_FONT_FAMILIES = {
@@ -94,26 +100,73 @@ public class EmojiStore {
                 private final String glyph;
                 private final Icon icon;
                 private final Sprite sprite;
-                private final String primaryUrl;
+                private final List<String> remoteUrls;
+                private final List<String> alternateRemoteUrls;
                 private final String fallbackDataUrl;
 
                 private RenderedEmoji(final String glyph, final Icon icon, final Sprite sprite,
-                                final String primaryUrl, final String fallbackDataUrl) {
+                                final List<String> remoteUrls, final String fallbackDataUrl) {
                         this.glyph = glyph;
                         this.icon = icon;
                         this.sprite = sprite;
-                        this.primaryUrl = primaryUrl;
+                        if ((remoteUrls == null) || remoteUrls.isEmpty()) {
+                                this.remoteUrls = Collections.emptyList();
+                                this.alternateRemoteUrls = Collections.emptyList();
+                        } else {
+                                final List<String> sanitized = new ArrayList<String>(remoteUrls.size());
+                                for (final String url : remoteUrls) {
+                                        if ((url != null) && !url.isEmpty()) {
+                                                sanitized.add(url);
+                                        }
+                                }
+                                if (sanitized.isEmpty()) {
+                                        this.remoteUrls = Collections.emptyList();
+                                        this.alternateRemoteUrls = Collections.emptyList();
+                                } else {
+                                        this.remoteUrls = Collections.unmodifiableList(sanitized);
+                                        if (sanitized.size() > 1) {
+                                                this.alternateRemoteUrls = Collections.unmodifiableList(new ArrayList<String>(sanitized.subList(1, sanitized.size())));
+                                        } else {
+                                                this.alternateRemoteUrls = Collections.emptyList();
+                                        }
+                                }
+                        }
                         this.fallbackDataUrl = fallbackDataUrl;
+                }
+
+                String getPrimaryUrl() {
+                        if (!remoteUrls.isEmpty()) {
+                                return remoteUrls.get(0);
+                        }
+                        return fallbackDataUrl;
+                }
+
+                List<String> getRemoteUrls() {
+                        return remoteUrls;
+                }
+
+                List<String> getAlternateRemoteUrls() {
+                        return alternateRemoteUrls;
+                }
+
+                String getFallbackDataUrl() {
+                        return fallbackDataUrl;
                 }
         }
 
         public static final class EmojiImage {
                 private final String primaryUrl;
                 private final String fallbackDataUrl;
+                private final List<String> remoteUrls;
 
-                private EmojiImage(final String primaryUrl, final String fallbackDataUrl) {
+                private EmojiImage(final String primaryUrl, final String fallbackDataUrl, final List<String> remoteUrls) {
                         this.primaryUrl = primaryUrl;
                         this.fallbackDataUrl = fallbackDataUrl;
+                        if ((remoteUrls == null) || remoteUrls.isEmpty()) {
+                                this.remoteUrls = Collections.emptyList();
+                        } else {
+                                this.remoteUrls = Collections.unmodifiableList(new ArrayList<String>(remoteUrls));
+                        }
                 }
 
                 public String getPrimaryUrl() {
@@ -126,6 +179,21 @@ public class EmojiStore {
 
                 public boolean hasPrimary() {
                         return (primaryUrl != null) && !primaryUrl.isEmpty();
+                }
+
+                public List<String> getRemoteUrls() {
+                        return remoteUrls;
+                }
+
+                public boolean hasAlternateRemotes() {
+                        return remoteUrls.size() > 1;
+                }
+
+                public List<String> getAlternateRemotes() {
+                        if (remoteUrls.size() <= 1) {
+                                return Collections.emptyList();
+                        }
+                        return remoteUrls.subList(1, remoteUrls.size());
                 }
         }
 
@@ -446,10 +514,14 @@ private boolean looksLikeEmojiSequence(final String text) {
 
         public String dataUrlFor(final String text) {
                 final RenderedEmoji rendered = renderEmoji(text);
-                if ((rendered == null) || (rendered.primaryUrl == null) || rendered.primaryUrl.isEmpty()) {
+                if (rendered == null) {
                         return null;
                 }
-                return rendered.primaryUrl;
+                final String primary = rendered.getPrimaryUrl();
+                if ((primary == null) || primary.isEmpty()) {
+                        return null;
+                }
+                return primary;
         }
 
         public EmojiImage imageFor(final String text) {
@@ -457,7 +529,7 @@ private boolean looksLikeEmojiSequence(final String text) {
                 if (rendered == null) {
                         return null;
                 }
-                return new EmojiImage(rendered.primaryUrl, rendered.fallbackDataUrl);
+                return new EmojiImage(rendered.getPrimaryUrl(), rendered.getFallbackDataUrl(), rendered.getRemoteUrls());
         }
 
 	public Font deriveEmojiFont(final float pointSize) {
@@ -516,8 +588,8 @@ private boolean looksLikeEmojiSequence(final String text) {
 
                 BufferedImage iconImage = null;
                 BufferedImage spriteImage = null;
-                String primaryUrl = null;
                 String fallbackDataUrl = null;
+                List<String> remoteUrls = Collections.emptyList();
 
 		ensureEmojiFont();
 		final String glyph;
@@ -590,15 +662,12 @@ private boolean looksLikeEmojiSequence(final String text) {
                         fallbackDataUrl = toDataUrl(iconImage);
                 }
                 if ((glyph != null) && looksLikeEmojiSequence(glyph)) {
-                        primaryUrl = buildRemoteEmojiUrl(glyph);
-                }
-                if ((primaryUrl == null) || primaryUrl.isEmpty()) {
-                        primaryUrl = fallbackDataUrl;
+                        remoteUrls = buildRemoteEmojiUrls(glyph);
                 }
                 final Icon icon = (iconImage != null) ? new ImageIcon(iconImage) : null;
                 final String spriteName = (assetName != null) ? assetName : glyph;
                 final Sprite sprite = (spriteImage != null) ? new ImageSprite(spriteImage, spriteName) : null;
-                cached = new RenderedEmoji(glyph, icon, sprite, primaryUrl, fallbackDataUrl);
+                cached = new RenderedEmoji(glyph, icon, sprite, remoteUrls, fallbackDataUrl);
                 emojiCache.put(cacheKey, cached);
                 return cached;
         }
@@ -730,9 +799,9 @@ private boolean looksLikeEmojiSequence(final String text) {
                 return null;
         }
 
-        private String buildRemoteEmojiUrl(final String glyph) {
+        private List<String> buildRemoteEmojiUrls(final String glyph) {
                 if ((glyph == null) || glyph.isEmpty()) {
-                        return null;
+                        return Collections.emptyList();
                 }
                 final StringBuilder builder = new StringBuilder(glyph.length() * 5);
                 for (int offset = 0; offset < glyph.length();) {
@@ -744,9 +813,20 @@ private boolean looksLikeEmojiSequence(final String text) {
                         offset += Character.charCount(codePoint);
                 }
                 if (builder.length() == 0) {
-                        return null;
+                        return Collections.emptyList();
                 }
-                return EMOJI_CDN_BASE + builder.toString() + EMOJI_CDN_EXTENSION;
+                final String path = builder.toString();
+                final LinkedHashSet<String> urls = new LinkedHashSet<String>();
+                for (final String base : EMOJI_CDN_BASES) {
+                        if ((base == null) || base.isEmpty()) {
+                                continue;
+                        }
+                        urls.add(base + path + EMOJI_CDN_EXTENSION);
+                }
+                if (urls.isEmpty()) {
+                        return Collections.emptyList();
+                }
+                return new ArrayList<String>(urls);
         }
 
 	/**

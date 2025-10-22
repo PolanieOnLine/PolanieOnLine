@@ -27,6 +27,7 @@ import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -79,6 +80,7 @@ class WebChatLogView extends JComponent implements ChatLogView {
 	private static final StringFormatter<java.util.Set<String>, CssClassSet> FORMATTER
 	= new StringFormatter<java.util.Set<String>, CssClassSet>();
 	private static final CssClassSet DEFAULT_FRAGMENT = new CssClassSet().addClass("fragment");
+	private static final char[] POLISH_SAMPLE_CHARS = { 'ą', 'ć', 'ę', 'ł', 'ń', 'ó', 'ś', 'ż', 'ź' };
         private static final BundledFontFace[] BUNDLED_CHAT_FONTS = new BundledFontFace[] {
                 new BundledFontFace(BUNDLED_CHAT_FONT_FAMILY, "data/font/Carlito-Regular.ttf", "400", "normal"),
                 new BundledFontFace(BUNDLED_CHAT_FONT_FAMILY, "data/font/Carlito-Italic.ttf", "400", "italic"),
@@ -194,8 +196,15 @@ class WebChatLogView extends JComponent implements ChatLogView {
 				builder.append(line);
 			}
 		}
-		builder.append("</div>");
-                builder.append("<script>(function(){var c=document.getElementById('chat');function applyFallback(img){if(!img){return;}var ds=img.dataset||{};if(ds.emojiFallbackApplied==='1'||img.getAttribute('data-emoji-fallback-applied')==='1'){return;}var fallback=img.getAttribute('data-fallback');if(!fallback||fallback===img.src){return;}if(img.dataset){img.dataset.emojiFallbackApplied='1';}else{img.setAttribute('data-emoji-fallback-applied','1');}img.src=fallback;}function primeFallbacks(root){if(!root||!root.querySelectorAll){return;}var imgs=root.querySelectorAll('img[data-fallback]');for(var i=0;i<imgs.length;i++){var img=imgs[i];if(img.complete&&img.naturalWidth===0){applyFallback(img);}}}document.addEventListener('error',function(evt){var target=evt.target;if(!target||!target.classList){return;}if(target.classList.contains('emoji-icon')||target.classList.contains('emoji-layer-img')){applyFallback(target);}},true);window.chatlog={container:c,appendLine:function(html){if(!this.container){return;}var wrapper=document.createElement('div');wrapper.innerHTML=html;while(wrapper.firstChild){var node=wrapper.firstChild;this.container.appendChild(node);primeFallbacks(node);}this.scrollToBottom();},clear:function(){if(this.container){this.container.innerHTML='';}},scrollToBottom:function(){if(this.container){this.container.scrollTop=this.container.scrollHeight;}window.scrollTo(0,document.body.scrollHeight);}};if(window.chatlog&&window.chatlog.container){primeFallbacks(window.chatlog.container);}window.chatlog.scrollToBottom();})();</script>");
+                builder.append("</div>");
+                builder.append("<script>(function(){var c=document.getElementById('chat');");
+                builder.append("function markFallbackApplied(img){if(!img){return;}if(img.dataset){img.dataset.emojiFallbackApplied='1';}else{img.setAttribute('data-emoji-fallback-applied','1');}}");
+                builder.append("function tryAlternateSource(img){if(!img){return false;}var attr=img.getAttribute('data-alt-src');if(!attr){return false;}var sources=attr.split('|');if(!sources||!sources.length){return false;}var idxAttr=img.getAttribute('data-alt-index');var idx=idxAttr?parseInt(idxAttr,10):0;if(isNaN(idx)||idx<0){idx=0;}while(idx<sources.length){var candidate=sources[idx].trim();idx++;img.setAttribute('data-alt-index',idx);if(candidate&&candidate.length&&candidate!==img.src){img.src=candidate;return true;}}return false;}");
+                builder.append("function applyFallback(img){if(!img){return;}var ds=img.dataset||{};if(ds.emojiFallbackApplied==='1'||img.getAttribute('data-emoji-fallback-applied')==='1'){return;}if(tryAlternateSource(img)){return;}var fallback=img.getAttribute('data-fallback');if(!fallback||fallback===img.src){return;}markFallbackApplied(img);img.src=fallback;}");
+                builder.append("function primeFallbacks(root){if(!root||!root.querySelectorAll){return;}var imgs=root.querySelectorAll('img[data-fallback],img[data-alt-src]');for(var i=0;i<imgs.length;i++){var img=imgs[i];if(img.complete&&img.naturalWidth===0){applyFallback(img);}}}");
+                builder.append("document.addEventListener('error',function(evt){var target=evt.target;if(!target||!target.classList){return;}if(target.classList.contains('emoji-icon')||target.classList.contains('emoji-layer-img')){applyFallback(target);}},true);");
+                builder.append("window.chatlog={container:c,appendLine:function(html){if(!this.container){return;}var wrapper=document.createElement('div');wrapper.innerHTML=html;while(wrapper.firstChild){var node=wrapper.firstChild;this.container.appendChild(node);primeFallbacks(node);}this.scrollToBottom();},clear:function(){if(this.container){this.container.innerHTML='';}},scrollToBottom:function(){if(this.container){this.container.scrollTop=this.container.scrollHeight;}window.scrollTo(0,document.body.scrollHeight);}};");
+                builder.append("if(window.chatlog&&window.chatlog.container){primeFallbacks(window.chatlog.container);}window.chatlog.scrollToBottom();})();</script>");
 		builder.append("</body></html>");
 		return builder.toString();
 	}
@@ -417,6 +426,14 @@ class WebChatLogView extends JComponent implements ChatLogView {
                                                                                 .append(escapeHtml(image.getFallback()))
                                                                                 .append("\"");
                                                 }
+                                                if (image.hasAlternateRemotes()) {
+                                                                final String alternates = joinAlternateRemotes(image.getAlternateRemotes());
+                                                                if (!alternates.isEmpty()) {
+                                                                                builder.append(" data-alt-src=\"")
+                                                                                                .append(escapeHtml(alternates))
+                                                                                                .append("\"");
+                                                                }
+                                                }
                                                 builder.append("/></span>");
                                                 return builder.toString();
                                 }
@@ -463,11 +480,12 @@ class WebChatLogView extends JComponent implements ChatLogView {
                                 }
                                 final String primary = image.getPrimaryUrl();
                                 final String fallback = image.getFallbackDataUrl();
+                                final List<String> alternateRemotes = image.getAlternateRemotes();
                                 final String effectivePrimary = ((primary != null) && !primary.isEmpty()) ? primary : fallback;
                                 if ((effectivePrimary == null) || effectivePrimary.isEmpty()) {
                                                 return null;
                                 }
-                                return new EmojiImageSource(effectivePrimary, fallback);
+                                return new EmojiImageSource(effectivePrimary, fallback, alternateRemotes);
                 }
 
                 private String buildLayeredEmojiHtml(final LayeredEmojiSpec spec) {
@@ -587,6 +605,14 @@ class WebChatLogView extends JComponent implements ChatLogView {
                                                                                 .append(escapeHtml(image.getFallback()))
                                                                                 .append("\"");
                                                 }
+                                                if (image.hasAlternateRemotes()) {
+                                                                final String alternates = joinAlternateRemotes(image.getAlternateRemotes());
+                                                                if (!alternates.isEmpty()) {
+                                                                                builder.append(" data-alt-src=\"")
+                                                                                                .append(escapeHtml(alternates))
+                                                                                                .append("\"");
+                                                                }
+                                                }
                                                 builder.append("/>");
                                 } else {
                                                 builder.append(escapeHtml((effectiveAlt != null) ? effectiveAlt : ""));
@@ -669,11 +695,11 @@ class WebChatLogView extends JComponent implements ChatLogView {
 				return trimmed;
 		}
 
-		private static String sanitizeOpacity(final String value) {
-				if (value == null) {
-						return null;
-				}
-				final String trimmed = value.trim();
+                private static String sanitizeOpacity(final String value) {
+                                if (value == null) {
+                                                return null;
+                                }
+                                final String trimmed = value.trim();
 				if (trimmed.isEmpty()) {
 						return null;
 				}
@@ -681,11 +707,32 @@ class WebChatLogView extends JComponent implements ChatLogView {
 						final double numeric = Double.parseDouble(trimmed);
 						final double clamped = Math.max(0d, Math.min(1d, numeric));
 						return String.format(Locale.ROOT, "%.3f", clamped);
-				} catch (NumberFormatException ex) {
-						final String sanitized = sanitizeCssValue(trimmed);
-						return (sanitized != null) ? sanitized : null;
-				}
-		}
+                                } catch (NumberFormatException ex) {
+                                                final String sanitized = sanitizeCssValue(trimmed);
+                                                return (sanitized != null) ? sanitized : null;
+                                }
+                }
+
+                private static String joinAlternateRemotes(final List<String> remotes) {
+                                if ((remotes == null) || remotes.isEmpty()) {
+                                                return "";
+                                }
+                                final StringBuilder builder = new StringBuilder();
+                                for (final String remote : remotes) {
+                                                if ((remote == null) || remote.isEmpty()) {
+                                                                continue;
+                                                }
+                                                final String trimmed = remote.trim();
+                                                if (trimmed.isEmpty()) {
+                                                                continue;
+                                                }
+                                                if (builder.length() > 0) {
+                                                                builder.append('|');
+                                                }
+                                                builder.append(trimmed);
+                                }
+                                return builder.toString();
+                }
 
 		private static String sanitizePixels(final String value) {
 				if (value == null) {
@@ -1001,10 +1048,16 @@ class WebChatLogView extends JComponent implements ChatLogView {
         private static final class EmojiImageSource {
                 private final String primary;
                 private final String fallback;
+                private final List<String> alternateRemotes;
 
-                private EmojiImageSource(final String primary, final String fallback) {
+                private EmojiImageSource(final String primary, final String fallback, final List<String> alternateRemotes) {
                         this.primary = primary;
                         this.fallback = fallback;
+                        if ((alternateRemotes == null) || alternateRemotes.isEmpty()) {
+                                this.alternateRemotes = Collections.emptyList();
+                        } else {
+                                this.alternateRemotes = Collections.unmodifiableList(new ArrayList<String>(alternateRemotes));
+                        }
                 }
 
                 String getPrimary() {
@@ -1021,6 +1074,14 @@ class WebChatLogView extends JComponent implements ChatLogView {
 
                 boolean hasFallback() {
                         return (fallback != null) && !fallback.isEmpty() && !fallback.equals(primary);
+                }
+
+                boolean hasAlternateRemotes() {
+                        return !alternateRemotes.isEmpty();
+                }
+
+                List<String> getAlternateRemotes() {
+                        return alternateRemotes;
                 }
         }
 
@@ -1234,6 +1295,42 @@ class WebChatLogView extends JComponent implements ChatLogView {
         }
 
         private static Font resolveChatFont() {
+                final Font uiFont = findUiFont();
+                final int size = ((uiFont != null) && (uiFont.getSize() > 0)) ? uiFont.getSize() : 13;
+
+                final Font preferredArial = createFontIfAvailable("Arial", size);
+                if (preferredArial != null) {
+                        return preferredArial;
+                }
+
+                final Font unicodeArial = createFontIfAvailable("Arial Unicode MS", size);
+                if (unicodeArial != null) {
+                        return unicodeArial;
+                }
+
+                if ((uiFont != null) && supportsPolishCharacters(uiFont)) {
+                        return uiFont.deriveFont(Font.PLAIN, size);
+                }
+
+                final Font fallbackSegoe = createFontIfAvailable("Segoe UI", size);
+                if (fallbackSegoe != null) {
+                        return fallbackSegoe;
+                }
+
+                final Font fallbackDejaVu = createFontIfAvailable("DejaVu Sans", size);
+                if (fallbackDejaVu != null) {
+                        return fallbackDejaVu;
+                }
+
+                final Font fallbackLiberation = createFontIfAvailable("Liberation Sans", size);
+                if (fallbackLiberation != null) {
+                        return fallbackLiberation;
+                }
+
+                return new Font("Dialog", Font.PLAIN, size);
+        }
+
+        private static Font findUiFont() {
                 Font font = UIManager.getFont("TextPane.font");
                 if (font == null) {
                         font = UIManager.getFont("TextArea.font");
@@ -1241,44 +1338,65 @@ class WebChatLogView extends JComponent implements ChatLogView {
                 if (font == null) {
                         font = UIManager.getFont("Label.font");
                 }
-                if (font == null) {
-                        return new Font("Dialog", Font.PLAIN, 13);
+                return font;
+        }
+
+        private static Font createFontIfAvailable(final String family, final int size) {
+                if ((family == null) || family.isEmpty()) {
+                        return null;
                 }
-                final int size = (font.getSize() > 0) ? font.getSize() : 13;
-                return font.deriveFont(Font.PLAIN, size);
+                try {
+                        final Font candidate = new Font(family, Font.PLAIN, size);
+                        final String resolvedFamily = candidate.getFamily(Locale.ENGLISH);
+                        if ((resolvedFamily != null) && resolvedFamily.equalsIgnoreCase(family)
+                                        && supportsPolishCharacters(candidate)) {
+                                return candidate;
+                        }
+                } catch (final Exception ex) {
+                        LOGGER.debug("Unable to create preferred chat font: " + family, ex);
+                }
+                return null;
+        }
+
+        private static boolean supportsPolishCharacters(final Font font) {
+                if (font == null) {
+                        return false;
+                }
+                for (final char ch : POLISH_SAMPLE_CHARS) {
+                        if (!font.canDisplay(ch)) {
+                                return false;
+                        }
+                }
+                return true;
         }
 
         private String buildChatFontStack() {
                 final java.util.Set<String> families = new LinkedHashSet<String>();
+                addFontFamily(families, "Arial");
+                addFontFamily(families, "Arial Unicode MS");
+                addFontFamily(families, "Helvetica");
+                addFontFamily(families, "Liberation Sans");
+                addFontFamily(families, "DejaVu Sans");
+                addFontFamily(families, "Noto Sans");
+                addFontFamily(families, "Noto Sans Display");
+                addFontFamily(families, "Segoe UI");
+                addFontFamily(families, "Segoe UI Variable");
+                addFontFamily(families, "Segoe UI Symbol");
+                addFontFamily(families, "Roboto");
+                addFontFamily(families, "Tahoma");
+                addFontFamily(families, BUNDLED_CHAT_FONT_FAMILY);
+                addFontFamily(families, "KonstytucjaPolska");
+                addFontFamily(families, "Konstytucja Polska");
+                addFontFamily(families, "AntykwaTorunska");
+                addFontFamily(families, "Antykwa Torunska");
+                addFontFamily(families, "Amaranth");
+                addFontFamily(families, "Carlito");
                 if (chatFont != null) {
-                        families.add(chatFont.getFamily());
-                        if ((chatFont.getName() != null) && !chatFont.getName().isEmpty()) {
-                                families.add(chatFont.getName());
-                        }
-                        final String psName = chatFont.getPSName();
-                        if ((psName != null) && !psName.isEmpty()) {
-                                families.add(psName);
-                        }
+                        addFontFamily(families, chatFont.getFamily());
+                        addFontFamily(families, chatFont.getName());
+                        addFontFamily(families, chatFont.getPSName());
                 }
-                families.add(BUNDLED_CHAT_FONT_FAMILY);
-                families.add("KonstytucjaPolska");
-                families.add("Konstytucja Polska");
-                families.add("AntykwaTorunska");
-                families.add("Antykwa Torunska");
-                families.add("Amaranth");
-                families.add("Carlito");
-                families.add("Segoe UI");
-                families.add("Segoe UI Variable");
-                families.add("Segoe UI Symbol");
-                families.add("Tahoma");
-                families.add("Roboto");
-                families.add("Noto Sans");
-                families.add("Noto Sans Display");
-                families.add("Liberation Sans");
-                families.add("DejaVu Sans");
-                families.add("Arial");
-                families.add("Helvetica");
-                families.add("Dialog");
+                addFontFamily(families, "Dialog");
 
                 final StringBuilder stack = new StringBuilder();
                 for (final String family : families) {
@@ -1295,6 +1413,16 @@ class WebChatLogView extends JComponent implements ChatLogView {
                 }
                 stack.append("sans-serif");
                 return stack.toString();
+        }
+
+        private static void addFontFamily(final java.util.Set<String> families, final String family) {
+                if ((families == null) || (family == null)) {
+                        return;
+                }
+                final String trimmed = family.trim();
+                if (!trimmed.isEmpty()) {
+                        families.add(trimmed);
+                }
         }
 
         private void appendBundledChatFonts(final StringBuilder css) {
