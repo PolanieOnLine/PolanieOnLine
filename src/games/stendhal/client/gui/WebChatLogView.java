@@ -130,8 +130,10 @@ class WebChatLogView extends JComponent implements ChatLogView {
 		EmojiStore.get().init();
 
 		setLayout(new BorderLayout());
-		fxPanel = new JFXPanel();
-		bridge = new FxBridge(fxPanel);
+                fxPanel = new JFXPanel();
+                fxPanel.setOpaque(false);
+                fxPanel.setBackground(new java.awt.Color(0, 0, 0, 0));
+                bridge = new FxBridge(fxPanel);
 		add(fxPanel, BorderLayout.CENTER);
 
 		installPopupMenu();
@@ -476,17 +478,30 @@ class WebChatLogView extends JComponent implements ChatLogView {
                                                 return null;
                                 }
                                 final EmojiStore.EmojiImage image = store.imageFor(query);
-                                if (image == null) {
-                                                return null;
+                                if (image != null) {
+                                                final String primary = image.getPrimaryUrl();
+                                                final String fallback = image.getFallbackDataUrl();
+                                                final List<String> alternateRemotes = image.getAlternateRemotes();
+                                                final String effectivePrimary = ((primary != null) && !primary.isEmpty()) ? primary
+                                                                : fallback;
+                                                if ((effectivePrimary != null) && !effectivePrimary.isEmpty()) {
+                                                                return new EmojiImageSource(effectivePrimary, fallback, alternateRemotes);
+                                                }
                                 }
-                                final String primary = image.getPrimaryUrl();
-                                final String fallback = image.getFallbackDataUrl();
-                                final List<String> alternateRemotes = image.getAlternateRemotes();
-                                final String effectivePrimary = ((primary != null) && !primary.isEmpty()) ? primary : fallback;
-                                if ((effectivePrimary == null) || effectivePrimary.isEmpty()) {
-                                                return null;
+                                final List<String> remoteUrls = store.remoteUrlsForToken(query);
+                                final String fallbackData = (image != null) ? image.getFallbackDataUrl()
+                                                : store.fallbackDataUrlFor(query);
+                                if (!remoteUrls.isEmpty()) {
+                                                final String primary = remoteUrls.get(0);
+                                                final List<String> alternates = (remoteUrls.size() > 1)
+                                                                ? remoteUrls.subList(1, remoteUrls.size())
+                                                                : Collections.<String>emptyList();
+                                                return new EmojiImageSource(primary, fallbackData, alternates);
                                 }
-                                return new EmojiImageSource(effectivePrimary, fallback, alternateRemotes);
+                                if ((fallbackData != null) && !fallbackData.isEmpty()) {
+                                                return new EmojiImageSource(fallbackData, fallbackData, Collections.<String>emptyList());
+                                }
+                                return null;
                 }
 
                 private String buildLayeredEmojiHtml(final LayeredEmojiSpec spec) {
@@ -999,6 +1014,7 @@ class WebChatLogView extends JComponent implements ChatLogView {
                 private final String resource;
                 private final String weight;
                 private final String style;
+                private String fileUrl;
                 private String dataUrl;
                 private boolean attempted;
 
@@ -1009,11 +1025,80 @@ class WebChatLogView extends JComponent implements ChatLogView {
                         this.style = (style != null) ? style : "normal";
                 }
 
-                private synchronized String ensureDataUrl() {
-                        if (!attempted) {
-                                attempted = true;
-                                dataUrl = loadFontDataUrl(resource);
+                private synchronized void ensureLoaded() {
+                        if (attempted) {
+                                return;
                         }
+                        attempted = true;
+                        if ((resource == null) || resource.isEmpty()) {
+                                return;
+                        }
+                        try (InputStream stream = DataLoader.getResourceAsStream(resource)) {
+                                if (stream == null) {
+                                        LOGGER.warn("Bundled chat font not found: " + resource);
+                                        return;
+                                }
+                                final ByteArrayOutputStream memory = new ByteArrayOutputStream();
+                                File tempFile = null;
+                                FileOutputStream fileOut = null;
+                                try {
+                                        tempFile = File.createTempFile("stendhal-chat-font-", ".ttf");
+                                        tempFile.deleteOnExit();
+                                        fileOut = new FileOutputStream(tempFile);
+                                } catch (final IOException ex) {
+                                        LOGGER.warn("Unable to prepare chat font cache file: " + resource, ex);
+                                        tempFile = null;
+                                        fileOut = null;
+                                }
+                                final byte[] buffer = new byte[4096];
+                                int read;
+                                while ((read = stream.read(buffer)) != -1) {
+                                        memory.write(buffer, 0, read);
+                                        if (fileOut != null) {
+                                                try {
+                                                        fileOut.write(buffer, 0, read);
+                                                } catch (final IOException ex) {
+                                                        LOGGER.warn("Failed writing chat font cache file: " + resource, ex);
+                                                        try {
+                                                                fileOut.close();
+                                                        } catch (final IOException closeEx) {
+                                                                LOGGER.debug("Unable to close chat font cache stream", closeEx);
+                                                        }
+                                                        if ((tempFile != null) && !tempFile.delete()) {
+                                                                LOGGER.debug("Unable to delete chat font cache file: " + tempFile);
+                                                        }
+                                                        tempFile = null;
+                                                        fileOut = null;
+                                                }
+                                        }
+                                }
+                                if (fileOut != null) {
+                                        try {
+                                                fileOut.flush();
+                                                fileOut.close();
+                                        } catch (final IOException ex) {
+                                                LOGGER.debug("Unable to finalize chat font cache file", ex);
+                                        }
+                                }
+                                if ((tempFile != null) && tempFile.isFile()) {
+                                        fileUrl = tempFile.toURI().toASCIIString();
+                                        return;
+                                }
+                                if (memory.size() > 0) {
+                                        dataUrl = "data:font/ttf;base64," + Base64.getEncoder().encodeToString(memory.toByteArray());
+                                }
+                        } catch (final IOException ex) {
+                                LOGGER.warn("Failed to load bundled chat font: " + resource, ex);
+                        }
+                }
+
+                private String ensureFileUrl() {
+                        ensureLoaded();
+                        return fileUrl;
+                }
+
+                private String ensureDataUrl() {
+                        ensureLoaded();
                         return dataUrl;
                 }
 
@@ -1021,8 +1106,10 @@ class WebChatLogView extends JComponent implements ChatLogView {
                         if (css == null) {
                                 return;
                         }
-                        final String url = ensureDataUrl();
-                        if ((url == null) || url.isEmpty()) {
+                        final String fileSource = ensureFileUrl();
+                        final String dataSource = ensureDataUrl();
+                        if (((fileSource == null) || fileSource.isEmpty())
+                                        && ((dataSource == null) || dataSource.isEmpty())) {
                                 return;
                         }
                         css.append("@font-face{font-family:'")
@@ -1031,9 +1118,19 @@ class WebChatLogView extends JComponent implements ChatLogView {
                                 .append(style)
                                 .append(";font-weight:")
                                 .append(weight)
-                                .append(";src:url(")
-                                .append(url)
-                                .append(") format('truetype');font-display:swap;}");
+                                .append(";src:");
+                        boolean first = true;
+                        if ((fileSource != null) && !fileSource.isEmpty()) {
+                                css.append("url(").append(fileSource).append(") format('truetype')");
+                                first = false;
+                        }
+                        if ((dataSource != null) && !dataSource.isEmpty()) {
+                                if (!first) {
+                                        css.append(',');
+                                }
+                                css.append("url(").append(dataSource).append(") format('truetype')");
+                        }
+                        css.append(";font-display:swap;}");
                 }
         }
 
@@ -1374,30 +1471,30 @@ class WebChatLogView extends JComponent implements ChatLogView {
 
         private String buildChatFontStack() {
                 final java.util.Set<String> families = new LinkedHashSet<String>();
-                addFontFamily(families, BUNDLED_CHAT_FONT_FAMILY);
-                addFontFamily(families, "Carlito");
-                addFontFamily(families, "KonstytucjaPolska");
-                addFontFamily(families, "Konstytucja Polska");
-                addFontFamily(families, "AntykwaTorunska");
-                addFontFamily(families, "Antykwa Torunska");
-                addFontFamily(families, "Amaranth");
-                addFontFamily(families, "Arial");
-                addFontFamily(families, "Arial Unicode MS");
-                addFontFamily(families, "Helvetica");
-                addFontFamily(families, "Liberation Sans");
-                addFontFamily(families, "DejaVu Sans");
-                addFontFamily(families, "Noto Sans");
-                addFontFamily(families, "Noto Sans Display");
-                addFontFamily(families, "Segoe UI");
-                addFontFamily(families, "Segoe UI Variable");
-                addFontFamily(families, "Segoe UI Symbol");
-                addFontFamily(families, "Roboto");
-                addFontFamily(families, "Tahoma");
                 if (chatFont != null) {
                         addFontFamily(families, chatFont.getFamily());
                         addFontFamily(families, chatFont.getName());
                         addFontFamily(families, chatFont.getPSName());
                 }
+                addFontFamily(families, "Arial");
+                addFontFamily(families, "Arial Unicode MS");
+                addFontFamily(families, "Segoe UI");
+                addFontFamily(families, "Segoe UI Variable");
+                addFontFamily(families, "Segoe UI Symbol");
+                addFontFamily(families, "Helvetica");
+                addFontFamily(families, "Tahoma");
+                addFontFamily(families, "Liberation Sans");
+                addFontFamily(families, "DejaVu Sans");
+                addFontFamily(families, "Noto Sans");
+                addFontFamily(families, "Noto Sans Display");
+                addFontFamily(families, "Roboto");
+                addFontFamily(families, BUNDLED_CHAT_FONT_FAMILY);
+                addFontFamily(families, "Carlito");
+                addFontFamily(families, "Amaranth");
+                addFontFamily(families, "KonstytucjaPolska");
+                addFontFamily(families, "Konstytucja Polska");
+                addFontFamily(families, "AntykwaTorunska");
+                addFontFamily(families, "Antykwa Torunska");
                 addFontFamily(families, "Dialog");
 
                 final StringBuilder stack = new StringBuilder();
@@ -1438,29 +1535,6 @@ class WebChatLogView extends JComponent implements ChatLogView {
                 }
         }
 
-        private static String loadFontDataUrl(final String resource) {
-                if ((resource == null) || resource.isEmpty()) {
-                        return null;
-                }
-                try (InputStream stream = DataLoader.getResourceAsStream(resource)) {
-                        if (stream == null) {
-                                LOGGER.warn("Bundled chat font not found: " + resource);
-                                return null;
-                        }
-                        final ByteArrayOutputStream out = new ByteArrayOutputStream();
-                        final byte[] buffer = new byte[4096];
-                        int read;
-                        while ((read = stream.read(buffer)) != -1) {
-                                out.write(buffer, 0, read);
-                        }
-                        final String encoded = Base64.getEncoder().encodeToString(out.toByteArray());
-                        return "data:font/ttf;base64," + encoded;
-                } catch (final IOException ex) {
-                        LOGGER.warn("Failed to load bundled chat font: " + resource, ex);
-                        return null;
-                }
-        }
-
         private int chatBodyFontSize() {
                 final int size = (chatFont != null) ? chatFont.getSize() - 1 : 13;
                 return Math.max(11, size);
@@ -1485,10 +1559,11 @@ class WebChatLogView extends JComponent implements ChatLogView {
 		}
 
 		private void init() {
-			final WebView webView = new WebView();
-			webView.setContextMenuEnabled(false);
-			engine = webView.getEngine();
-			engine.setJavaScriptEnabled(true);
+                        final WebView webView = new WebView();
+                        webView.setContextMenuEnabled(false);
+                        webView.setStyle("-fx-background-color: transparent;");
+                        engine = webView.getEngine();
+                        engine.setJavaScriptEnabled(true);
 			engine.getLoadWorker().stateProperty().addListener((observable, oldValue, newValue) -> {
 				if (newValue == Worker.State.SUCCEEDED) {
 					documentReady = true;
@@ -1496,10 +1571,12 @@ class WebChatLogView extends JComponent implements ChatLogView {
 				}
 			});
 
-			final BorderPane root = new BorderPane(webView);
-			final Scene scene = new Scene(root);
-			panel.setScene(scene);
-			initialized = true;
+                        final BorderPane root = new BorderPane(webView);
+                        root.setStyle("-fx-background-color: transparent;");
+                        final Scene scene = new Scene(root);
+                        scene.setFill(javafx.scene.paint.Color.TRANSPARENT);
+                        panel.setScene(scene);
+                        initialized = true;
 
 			if (pendingContent != null) {
 				documentReady = false;

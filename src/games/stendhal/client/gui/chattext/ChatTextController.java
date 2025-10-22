@@ -186,7 +186,7 @@ public class ChatTextController {
 
     private static final class FXChatInputPane extends JFXPanel {
         private static final long serialVersionUID = 885350581860244944L;
-        private static final String FONT_STACK = "'Carlito','Amaranth','Konstytucja Polska','KonstytucjaPolska','Antykwa Torunska','AntykwaTorunska','Arial','Segoe UI','Liberation Sans','DejaVu Sans','Noto Sans','SansSerif'";
+        private static final String FONT_STACK = "'Arial','Segoe UI','Segoe UI Symbol','Segoe UI Emoji','Liberation Sans','DejaVu Sans','Noto Sans','Carlito','Amaranth','Konstytucja Polska','KonstytucjaPolska','Antykwa Torunska','AntykwaTorunska','SansSerif'";
         private static final int MIN_FONT_SIZE = 12;
         private static final String[] BUNDLED_FX_FONT_RESOURCES = new String[] {
                 "data/font/Carlito-Regular.ttf",
@@ -216,6 +216,8 @@ public class ChatTextController {
             this.lengthLimitHandler = lengthLimitHandler;
             setFocusable(true);
             setRequestFocusEnabled(true);
+            setOpaque(false);
+            setBackground(new java.awt.Color(0, 0, 0, 0));
             Platform.runLater(this::initializeFx);
         }
 
@@ -230,7 +232,7 @@ public class ChatTextController {
         private void initializeFx() {
             ensureFxFontsLoaded();
             textArea = new TextArea();
-            textArea.setStyle(buildFontCss());
+            textArea.setStyle(buildTextAreaCss());
             textArea.setWrapText(true);
             textArea.setPrefRowCount(2);
             textArea.setFocusTraversable(true);
@@ -249,13 +251,23 @@ public class ChatTextController {
             textArea.addEventFilter(javafx.scene.input.KeyEvent.KEY_TYPED, this::handleKeyTyped);
 
             final BorderPane pane = new BorderPane(textArea);
-            setScene(new Scene(pane));
+            pane.setStyle("-fx-background-color: transparent;");
+            final Scene scene = new Scene(pane);
+            scene.setFill(javafx.scene.paint.Color.TRANSPARENT);
+            setScene(scene);
             ready.countDown();
         }
 
-        private static String buildFontCss() {
+        private static String buildTextAreaCss() {
             final int size = resolveFontSize();
-            return String.format(Locale.ROOT, "-fx-font-family: %s; -fx-font-size: %dpx;", FONT_STACK, size);
+            return String.format(Locale.ROOT,
+                    "-fx-font-family: %s; -fx-font-size: %dpx; -fx-text-fill: #2c1503;"
+                            + " -fx-control-inner-background: #f4edd9; -fx-background-color: transparent;"
+                            + " -fx-background-insets: 0; -fx-background-radius: 0; -fx-prompt-text-fill: rgba(44,21,3,0.55);"
+                            + " -fx-highlight-fill: rgba(201,139,69,0.35); -fx-highlight-text-fill: #2c1503;"
+                            + " -fx-border-color: transparent; -fx-faint-focus-color: rgba(201,139,69,0.25);"
+                            + " -fx-focus-color: rgba(201,139,69,0.6);",
+                    FONT_STACK, size);
         }
 
         private static synchronized void ensureFxFontsLoaded() {

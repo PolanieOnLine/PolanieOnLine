@@ -532,6 +532,36 @@ private boolean looksLikeEmojiSequence(final String text) {
                 return new EmojiImage(rendered.getPrimaryUrl(), rendered.getFallbackDataUrl(), rendered.getRemoteUrls());
         }
 
+        public List<String> remoteUrlsForToken(final String text) {
+                if ((text == null) || text.isEmpty()) {
+                        return Collections.emptyList();
+                }
+                String glyph = glyphFor(text);
+                if ((glyph == null) || glyph.isEmpty()) {
+                        glyph = stripVariationSelectors(text);
+                }
+                if ((glyph == null) || glyph.isEmpty()) {
+                        return Collections.emptyList();
+                }
+                final String normalized = ensureEmojiPresentation(glyph);
+                if ((normalized == null) || normalized.isEmpty()) {
+                        return Collections.emptyList();
+                }
+                final List<String> urls = buildRemoteEmojiUrls(normalized);
+                if (urls.isEmpty()) {
+                        return Collections.emptyList();
+                }
+                return urls;
+        }
+
+        public String fallbackDataUrlFor(final String text) {
+                final RenderedEmoji rendered = renderEmoji(text);
+                if (rendered == null) {
+                        return null;
+                }
+                return rendered.getFallbackDataUrl();
+        }
+
 	public Font deriveEmojiFont(final float pointSize) {
 		ensureEmojiFont();
 		if (baseEmojiFont == null) {
