@@ -58,8 +58,12 @@ import games.stendhal.common.NotificationType;
 import javafx.application.Platform;
 import javafx.concurrent.Worker;
 import javafx.embed.swing.JFXPanel;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 
@@ -130,14 +134,16 @@ class WebChatLogView extends JComponent implements ChatLogView {
 
 		EmojiStore.get().init();
 
-                setLayout(new BorderLayout());
-                fxPanel = new JFXPanel();
-                bridge = new FxBridge(fxPanel, defaultBackground);
-                add(fxPanel, BorderLayout.CENTER);
+		setOpaque(true);
+		setBackground(defaultBackground);
+		setLayout(new BorderLayout());
+		fxPanel = new JFXPanel();
+		bridge = new FxBridge(fxPanel, defaultBackground);
+		add(fxPanel, BorderLayout.CENTER);
 
-                installPopupMenu();
-                refreshDocument();
-        }
+		installPopupMenu();
+		refreshDocument();
+	}
 
 	@Override
 	public JComponent getComponent() {
@@ -171,14 +177,24 @@ class WebChatLogView extends JComponent implements ChatLogView {
 		refreshDocument();
 	}
 
-        @Override
-        public void setDefaultBackground(final Color color) {
-                defaultBackground = (color != null) ? color : new Color(0x3c, 0x1e, 0x00);
-                if (bridge != null) {
-                        bridge.setBackground(defaultBackground);
-                }
-                refreshDocument();
-        }
+	@Override
+	public void setDefaultBackground(final Color color) {
+		defaultBackground = (color != null) ? color : new Color(0x3c, 0x1e, 0x00);
+		if (bridge != null) {
+			bridge.setBackground(defaultBackground);
+		}
+		final Color swingColor = defaultBackground;
+		final Runnable update = () -> {
+			setBackground(swingColor);
+			repaint();
+		};
+		if (SwingUtilities.isEventDispatchThread()) {
+			update.run();
+		} else {
+			SwingUtilities.invokeLater(update);
+		}
+		refreshDocument();
+	}
 
 	@Override
 	public void setChannelName(final String name) {
@@ -191,9 +207,16 @@ class WebChatLogView extends JComponent implements ChatLogView {
 	}
 
 	private String buildDocument() {
+		final String backgroundHex = toHex(defaultBackground);
+		final String backgroundCss = toCssRgba(defaultBackground);
 		final StringBuilder builder = new StringBuilder();
 		builder.append("<!DOCTYPE html><html><head><meta charset=\"UTF-8\"/>");
-		builder.append("<style>").append(buildStylesheet()).append("</style></head><body class=\"chat-body\">");
+		builder.append("<style>").append(buildStylesheet(backgroundHex, backgroundCss)).append("</style></head>");
+		builder.append("<body class=\"chat-body\" style=\"background:")
+			.append(backgroundHex)
+			.append(";background-color:")
+			.append(backgroundCss)
+			.append(";color:#f4edd9;\">");
 		builder.append("<div id=\"chat\" class=\"chat-log\">");
 		synchronized (htmlLines) {
 			for (final String line : htmlLines) {
@@ -213,30 +236,36 @@ class WebChatLogView extends JComponent implements ChatLogView {
 		return builder.toString();
 	}
 
-	private String buildStylesheet() {
-                final StringBuilder css = new StringBuilder();
-                appendBundledChatFonts(css);
-                final String background = toHex(defaultBackground);
-                final String emojiStack = buildEmojiFontStack(css);
-                final String fontStack = buildChatFontStack();
-                final int bodyFontSize = chatBodyFontSize();
-                final int timestampSize = timestampFontSize();
+	private String buildStylesheet(final String backgroundHex, final String backgroundCss) {
+		final StringBuilder css = new StringBuilder();
+		appendBundledChatFonts(css);
+		final String background = ((backgroundHex != null) && !backgroundHex.isEmpty()) ? backgroundHex : toHex(defaultBackground);
+		final String backgroundColor = ((backgroundCss != null) && !backgroundCss.isEmpty()) ? backgroundCss
+			: toCssRgba(defaultBackground);
+		final String emojiStack = buildEmojiFontStack(css);
+		final String fontStack = buildChatFontStack();
+		final int bodyFontSize = chatBodyFontSize();
+		final int timestampSize = timestampFontSize();
 
-                css.append("body.chat-body{margin:0;padding:0;background:")
-                        .append(background)
-                        .append(";background-color:")
-                        .append(background)
-                        .append(";color:#f4edd9;font-family:")
-                        .append(fontStack)
-                        .append(";font-size:")
-                        .append(bodyFontSize)
-                        .append("px;line-height:1.35;}");
-                css.append("html{background:")
-                        .append(background)
-                        .append(";background-color:")
-                        .append(background)
-                        .append(";}");
-                css.append(".chat-log{padding:8px 12px;display:flex;flex-direction:column;gap:2px;max-height:100%;overflow-y:auto;}");
+		css.append("body.chat-body{margin:0;padding:0;background:")
+			.append(background)
+			.append(";background-color:")
+			.append(backgroundColor)
+			.append(";color:#f4edd9;font-family:")
+			.append(fontStack)
+			.append(";font-size:")
+			.append(bodyFontSize)
+			.append("px;line-height:1.35;}");
+		css.append("html{background:")
+			.append(background)
+			.append(";background-color:")
+			.append(backgroundColor)
+			.append(";}");
+		css.append(".chat-log{padding:8px 12px;display:flex;flex-direction:column;gap:2px;max-height:100%;overflow-y:auto;background:")
+			.append(background)
+			.append(";background-color:")
+			.append(backgroundColor)
+			.append(";}");
                 css.append(".line{display:flex;flex-wrap:wrap;gap:4px;align-items:flex-start;padding:2px 0;border-bottom:1px solid rgba(255,255,255,0.06);}");
                 css.append(".line:last-child{border-bottom:none;}");
                 css.append(".line.admin{border-left:3px solid rgba(240,200,120,0.9);padding-left:7px;}");
@@ -1089,14 +1118,13 @@ class WebChatLogView extends JComponent implements ChatLogView {
                                                 LOGGER.debug("Unable to finalize chat font cache file", ex);
                                         }
                                 }
-                                if ((tempFile != null) && tempFile.isFile()) {
-                                        fileUrl = tempFile.toURI().toASCIIString();
-                                        return;
-                                }
-                                if (memory.size() > 0) {
-                                        dataUrl = "data:font/ttf;base64," + Base64.getEncoder().encodeToString(memory.toByteArray());
-                                }
-                        } catch (final IOException ex) {
+				if ((tempFile != null) && tempFile.isFile()) {
+					fileUrl = tempFile.toURI().toASCIIString();
+				}
+				if (memory.size() > 0) {
+					dataUrl = "data:font/ttf;base64," + Base64.getEncoder().encodeToString(memory.toByteArray());
+				}
+			} catch (final IOException ex) {
                                 LOGGER.warn("Failed to load bundled chat font: " + resource, ex);
                         }
                 }
@@ -1615,28 +1643,40 @@ class WebChatLogView extends JComponent implements ChatLogView {
                         }
                 }
 
-                private void applyBackgroundStyles() {
-                        final String css = cssBackground;
-                        if ((webView != null) && (css != null) && !css.isEmpty()) {
-                                webView.setStyle("-fx-background-color: " + css + ";");
-                        }
-                        if ((root != null) && (css != null) && !css.isEmpty()) {
-                                root.setStyle("-fx-background-color: " + css + ";");
-                        }
-                        if (scene != null) {
-                                final javafx.scene.paint.Color fill = (fxBackground != null)
-                                                ? fxBackground
-                                                : javafx.scene.paint.Color.TRANSPARENT;
-                                scene.setFill(fill);
-                        }
-                }
+		private void applyBackgroundStyles() {
+			final String css = cssBackground;
+			final javafx.scene.paint.Color fill = (fxBackground != null)
+				? fxBackground
+				: javafx.scene.paint.Color.TRANSPARENT;
+			final Background backgroundFill = new Background(new BackgroundFill(fill, CornerRadii.EMPTY, Insets.EMPTY));
+			if (webView != null) {
+				if ((css != null) && !css.isEmpty()) {
+					webView.setStyle("-fx-background-color: " + css + ";");
+				} else {
+					webView.setStyle("-fx-background-color: transparent;");
+				}
+				webView.setBackground(backgroundFill);
+			}
+			if (root != null) {
+				if ((css != null) && !css.isEmpty()) {
+					root.setStyle("-fx-background-color: " + css + ";");
+				} else {
+					root.setStyle("-fx-background-color: transparent;");
+				}
+				root.setBackground(backgroundFill);
+			}
+			if (scene != null) {
+				scene.setFill(fill);
+			}
+		}
 
-                private void setSwingBackground(final Color color) {
-                        final Color effective = (color != null) ? color : new Color(0x3c, 0x1e, 0x00);
-                        final Runnable update = () -> {
-                                panel.setOpaque(true);
-                                panel.setBackground(effective);
-                        };
+		private void setSwingBackground(final Color color) {
+			final Color effective = (color != null) ? color : new Color(0x3c, 0x1e, 0x00);
+			final Runnable update = () -> {
+				panel.setOpaque(true);
+				panel.setBackground(effective);
+				panel.repaint();
+			};
                         if (SwingUtilities.isEventDispatchThread()) {
                                 update.run();
                         } else {
