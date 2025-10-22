@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 import java.util.function.Consumer;
@@ -79,7 +78,6 @@ public class ChatTextController {
     private ChatTextController() {
         playerChatText = new FXChatInputPane(MAX_TEXT_LENGTH, this::notifyLengthLimit);
         playerChatText.setOnKeyPressed(this::handleFxKeyPressed);
-        playerChatText.awaitInitialization();
 
         StendhalClient client = StendhalClient.get();
         String logFile = null;
@@ -214,8 +212,6 @@ public class ChatTextController {
         private final int maxTextLength;
         private final Runnable lengthLimitHandler;
         private final List<KeyListener> listeners = new CopyOnWriteArrayList<>();
-        private final CountDownLatch ready = new CountDownLatch(1);
-
         private volatile boolean documentReady;
         private volatile String pendingText = "";
 
@@ -232,14 +228,6 @@ public class ChatTextController {
             setBackground(new Color(0, 0, 0, 0));
             Platform.setImplicitExit(false);
             Platform.runLater(this::initializeFx);
-        }
-
-        void awaitInitialization() {
-            try {
-                ready.await();
-            } catch (final InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
         }
 
         private void initializeFx() {
@@ -264,7 +252,13 @@ public class ChatTextController {
                     }
                     enforceMaxLengthInternal();
                     moveCaretToEndInternal();
-                    ready.countDown();
+                    return;
+                }
+            });
+
+            engine.getLoadWorker().exceptionProperty().addListener((obs, oldEx, newEx) -> {
+                if (newEx != null) {
+                    LOGGER.error("Failed to initialise chat input WebView", newEx);
                 }
             });
 
