@@ -1,27 +1,26 @@
 package games.stendhal.client.fx;
 
 import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 /**
- * Basic JavaFX application shell that hosts the chat view.
+ * JavaFX application entry point that coordinates the rebuilt client UI.
  */
 public class StendhalFX extends Application {
 
+        private FxClientController controller;
+
         @Override
         public void start(Stage primaryStage) {
-                BorderPane root = new BorderPane();
-                ChatView chatView = new ChatView();
-                root.setCenter(chatView);
-                root.setStyle("-fx-background-color: #101010;");
+                controller = new FxClientController(primaryStage);
+                controller.start();
+        }
 
-                Scene scene = new Scene(root, 720, 480);
-                primaryStage.setTitle("PolanieOnLine");
-                primaryStage.setScene(scene);
-                primaryStage.show();
-
-                chatView.addMessage("System", "Witamy w nowym czacie PolanieOnLine!", true);
+        @Override
+        public void stop() throws Exception {
+                if (controller != null) {
+                        controller.stop();
+                }
+                super.stop();
         }
 }

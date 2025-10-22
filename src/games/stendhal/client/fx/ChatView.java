@@ -45,6 +45,7 @@ public class ChatView extends BorderPane {
         private final TextField inputField;
         private final List<String> pendingMessages = new ArrayList<String>();
         private boolean documentReady;
+        private MessageHandler messageHandler;
 
         public ChatView() {
                 webView = new WebView();
@@ -78,7 +79,11 @@ public class ChatView extends BorderPane {
                         inputField.clear();
                         return;
                 }
-                addMessage("Ty", text.trim(), false);
+                String normalized = text.trim();
+                addMessage("Ty", normalized, false);
+                if (messageHandler != null) {
+                        messageHandler.onMessage(normalized);
+                }
                 inputField.clear();
         }
 
@@ -199,5 +204,21 @@ public class ChatView extends BorderPane {
                 }
                 builder.append('"');
                 return builder.toString();
+        }
+
+        /**
+         * Register a handler to receive local chat submissions.
+         *
+         * @param handler callback invoked after the message was enqueued locally
+         */
+        public void setMessageHandler(MessageHandler handler) {
+                this.messageHandler = handler;
+        }
+
+        /**
+         * Listener for chat submissions originating from the local player.
+         */
+        public interface MessageHandler {
+                void onMessage(String message);
         }
 }
