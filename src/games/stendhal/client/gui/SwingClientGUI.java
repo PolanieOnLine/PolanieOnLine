@@ -31,6 +31,9 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Consumer;
 
 import javax.swing.InputMap;
 import javax.swing.JComponent;
@@ -106,6 +109,8 @@ class SwingClientGUI implements J2DClientGUI {
     private final boolean manageFrameLifecycle;
     private volatile boolean externalWindowActive = true;
     private volatile boolean externalWindowIconified;
+    private final List<Consumer<Rectangle>> gamePaneBoundsListeners = new CopyOnWriteArrayList<>();
+    private Rectangle lastGamePaneBounds;
 
 	/** the Character panel. */
 	private Character character;
@@ -147,6 +152,17 @@ class SwingClientGUI implements J2DClientGUI {
         // initialize the screen controller
         screenController = ScreenController.get(screen);
         pane.addComponentListener(new GameScreenResizer(screen));
+        pane.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                refreshGamePaneBounds();
+            }
+
+            @Override
+            public void componentMoved(ComponentEvent e) {
+                refreshGamePaneBounds();
+            }
+        });
         // ... and put it on the ground layer of the pane
         pane.add(screen, Component.LEFT_ALIGNMENT, JLayeredPane.DEFAULT_LAYER);
 
@@ -474,12 +490,28 @@ class SwingClientGUI implements J2DClientGUI {
 		 * Keyring and spells, on the other hand, *should* be hidden until
 		 * revealed by feature change
 		 */
-		keyring.setVisible(false);
-		magicbag.setVisible(false);
-		runicAltar.getRunicAltar().setVisible(false);
-		//portfolio.setVisible(false);
-		spells.setVisible(false);
-	}
+                keyring.setVisible(false);
+                magicbag.setVisible(false);
+                runicAltar.getRunicAltar().setVisible(false);
+                //portfolio.setVisible(false);
+                spells.setVisible(false);
+                enforceFeatureVisibility();
+        }
+
+        private void enforceFeatureVisibility() {
+                if (!userContext.hasFeature("keyring")) {
+                        keyring.setVisible(false);
+                }
+                if (!userContext.hasFeature("magicbag")) {
+                        magicbag.setVisible(false);
+                }
+                if (!userContext.hasFeature("spells")) {
+                        spells.setVisible(false);
+                }
+                if (!userContext.hasFeature("runicaltar")) {
+                        runicAltar.getRunicAltar().setVisible(false);
+                }
+        }
 
 	private void setupWindowWideListeners(JFrame frame) {
 		frame.addWindowListener(new WindowAdapter() {
@@ -549,11 +581,15 @@ class SwingClientGUI implements J2DClientGUI {
 		// Ensure that the limits are obeyed even when the component is resized
 		split.addComponentListener(new HorizontalSplitListener(split));
 
-		horizontalSplit = split;
-		int divWidth = verticalSplit.getDividerSize();
-		pane.setPreferredSize(new Dimension(displaySize.width + divWidth, displaySize.height));
-		horizontalSplit.setBorder(null);
-		windowContent.add(horizontalSplit, SBoxLayout.constraint(SLayout.EXPAND_Y, SLayout.EXPAND_X));
+                horizontalSplit = split;
+                horizontalSplit.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY,
+                                evt -> refreshGamePaneBounds());
+                verticalSplit.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY,
+                                evt -> refreshGamePaneBounds());
+                int divWidth = verticalSplit.getDividerSize();
+                pane.setPreferredSize(new Dimension(displaySize.width + divWidth, displaySize.height));
+                horizontalSplit.setBorder(null);
+                windowContent.add(horizontalSplit, SBoxLayout.constraint(SLayout.EXPAND_Y, SLayout.EXPAND_X));
 
 		JComponent rightSidePanel = SBoxLayout.createContainer(SBoxLayout.VERTICAL);
 		JComponent settings = new SettingsPanel();
@@ -569,6 +605,7 @@ class SwingClientGUI implements J2DClientGUI {
         if (manageFrameLifecycle) {
             smallScreenHacks();
         }
+        SwingUtilities.invokeLater(this::notifyGamePaneBoundsListeners);
     }
 
 	private void setupZoneChangeListeners(StendhalClient client) {
@@ -616,6 +653,53 @@ class SwingClientGUI implements J2DClientGUI {
 
     public Dimension getPreferredClientSize() {
         return windowContent.getPreferredSize();
+    }
+
+    public void addGamePaneBoundsListener(Consumer<Rectangle> listener) {
+        if (listener == null) {
+            return;
+        }
+        gamePaneBoundsListeners.add(listener);
+        SwingUtilities.invokeLater(() -> {
+            if (lastGamePaneBounds != null) {
+                listener.accept(new Rectangle(lastGamePaneBounds));
+            } else {
+                notifyGamePaneBoundsListeners();
+            }
+        });
+    }
+
+    public void refreshGamePaneBounds() {
+        if (SwingUtilities.isEventDispatchThread()) {
+            notifyGamePaneBoundsListeners();
+        } else {
+            SwingUtilities.invokeLater(this::notifyGamePaneBoundsListeners);
+        }
+    }
+
+    private Rectangle getGamePaneBoundsInternal() {
+        if (pane == null || windowContent == null) {
+            return null;
+        }
+        Component parent = pane.getParent();
+        if (parent == null) {
+            return null;
+        }
+        return SwingUtilities.convertRectangle(parent, pane.getBounds(), windowContent);
+    }
+
+    private void notifyGamePaneBoundsListeners() {
+        if (!SwingUtilities.isEventDispatchThread()) {
+            return;
+        }
+        Rectangle bounds = getGamePaneBoundsInternal();
+        if (bounds == null) {
+            return;
+        }
+        lastGamePaneBounds = bounds;
+        for (Consumer<Rectangle> listener : gamePaneBoundsListeners) {
+            listener.accept(new Rectangle(bounds));
+        }
     }
 
     public void setExternalWindowActive(boolean active) {

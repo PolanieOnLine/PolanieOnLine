@@ -2,6 +2,7 @@ package games.stendhal.client.gui;
 
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.Rectangle;
 import java.net.URL;
 import java.util.Collection;
 import java.util.concurrent.CountDownLatch;
@@ -13,10 +14,15 @@ import javax.swing.SwingUtilities;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.embed.swing.SwingNode;
+import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Slider;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
@@ -51,17 +57,27 @@ import marauroa.common.game.RPObject;
 public class JavaFXClientGUI implements J2DClientGUI {
 
     private final SwingClientGUI delegate;
-    private final boolean usingFxWeather;
     private final String storedWeatherPreference;
+    private String fallbackWeatherPreference;
+    private boolean weatherPreferenceOverridden;
     private Stage stage;
     private SwingNode swingNode;
     private Label zoneLabel;
     private Label statusLabel;
     private Label weatherLabel;
+    private Label weatherIntensityLabel;
     private FadeTransition zoneHighlight;
     private FadeTransition weatherHighlight;
     private FxWeatherOverlay weatherOverlay;
     private GaussianBlur unfocusedBlur;
+    private CheckBox fxWeatherToggle;
+    private Slider weatherIntensitySlider;
+    private Button fullScreenButton;
+    private boolean fxWeatherEnabled;
+    private double weatherIntensity = 1.0;
+    private Rectangle2D latestGamePaneBounds;
+    private String latestWeatherName;
+    private String latestZoneName = "-";
 
     public JavaFXClientGUI(StendhalClient client, UserContext context,
             NotificationChannelManager channelManager, JFrame splash) {
@@ -69,13 +85,23 @@ public class JavaFXClientGUI implements J2DClientGUI {
         WtWindowManager windowManager = WtWindowManager.getInstance();
         String preference = windowManager.getProperty("ui.draw_weather", "true");
         storedWeatherPreference = preference;
-        boolean preferWeather = Boolean.parseBoolean(preference);
-        if (preferWeather) {
+        fallbackWeatherPreference = preference;
+        fxWeatherEnabled = Boolean.parseBoolean(preference);
+        if (fxWeatherEnabled) {
+            weatherPreferenceOverridden = true;
             windowManager.setProperty("ui.draw_weather", "false");
         }
-        usingFxWeather = preferWeather;
         FxPlatform.ensureStarted();
         CountDownLatch stageLatch = new CountDownLatch(1);
+
+        delegate.addGamePaneBoundsListener(bounds -> {
+            if (bounds == null) {
+                return;
+            }
+            Rectangle copy = new Rectangle(bounds);
+            Platform.runLater(() -> applyWeatherViewport(new Rectangle2D(copy.getX(), copy.getY(),
+                    copy.getWidth(), copy.getHeight())));
+        });
 
         Platform.runLater(() -> {
             stage = new Stage();
@@ -90,7 +116,12 @@ public class JavaFXClientGUI implements J2DClientGUI {
             root.getStyleClass().add("stendhal-fx-root");
 
             weatherOverlay = new FxWeatherOverlay();
-            weatherOverlay.setActive(usingFxWeather);
+            weatherOverlay.getView().setManaged(false);
+            weatherOverlay.setIntensity(weatherIntensity);
+            weatherOverlay.setActive(fxWeatherEnabled);
+            if (latestWeatherName != null) {
+                weatherOverlay.setWeather(latestWeatherName);
+            }
 
             VBox overlay = buildOverlay();
             StackPane.setAlignment(overlay, Pos.TOP_RIGHT);
@@ -106,9 +137,11 @@ public class JavaFXClientGUI implements J2DClientGUI {
             stage.setMinHeight(480);
 
             root.getChildren().add(swingNode);
-            StackPane.setAlignment(weatherOverlay.getView(), Pos.CENTER);
+            StackPane.setAlignment(weatherOverlay.getView(), Pos.TOP_LEFT);
             root.getChildren().add(weatherOverlay.getView());
             root.getChildren().add(overlay);
+            updateWeatherControlsState();
+            updateWeatherNodeVisibility();
 
             Scene scene = new Scene(root, preferredSize.width, preferredSize.height);
             stage.setScene(scene);
@@ -119,11 +152,11 @@ public class JavaFXClientGUI implements J2DClientGUI {
 
             scene.widthProperty().addListener((obs, oldValue, newValue) -> {
                 updateSwingSize(newValue.doubleValue(), scene.getHeight());
-                resizeWeather(newValue.doubleValue(), scene.getHeight());
+                delegate.refreshGamePaneBounds();
             });
             scene.heightProperty().addListener((obs, oldValue, newValue) -> {
                 updateSwingSize(scene.getWidth(), newValue.doubleValue());
-                resizeWeather(scene.getWidth(), newValue.doubleValue());
+                delegate.refreshGamePaneBounds();
             });
 
             stage.focusedProperty().addListener((obs, wasFocused, isFocused) -> {
@@ -150,9 +183,13 @@ public class JavaFXClientGUI implements J2DClientGUI {
 
             SwingUtilities.invokeLater(() -> swingNode.setContent(delegate.getRootComponent()));
 
-            resizeWeather(preferredSize.width, preferredSize.height);
-
             stage.show();
+            delegate.refreshGamePaneBounds();
+            if (latestGamePaneBounds != null) {
+                applyWeatherViewport(latestGamePaneBounds);
+            } else {
+                updateWeatherNodeVisibility();
+            }
             applyFocusEffect(stage.isFocused());
             refreshWeatherSuspension();
             stageLatch.countDown();
@@ -161,7 +198,7 @@ public class JavaFXClientGUI implements J2DClientGUI {
         waitForStage(stageLatch);
         registerZoneListener(client);
         GameLoop.get().runAtQuit(() -> {
-            if (usingFxWeather) {
+            if (weatherPreferenceOverridden) {
                 WtWindowManager.getInstance().setProperty("ui.draw_weather", storedWeatherPreference);
             }
             Platform.runLater(() -> {
@@ -205,17 +242,44 @@ public class JavaFXClientGUI implements J2DClientGUI {
         statusLabel.setTextFill(Color.ORANGERED);
         statusLabel.setStyle("-fx-font-size: 14px;");
 
-        String initialWeatherText = usingFxWeather ? "Pogoda: brak" : "Pogoda: wyłączona";
-        weatherLabel = new Label(initialWeatherText);
+        weatherLabel = new Label();
         weatherLabel.setTextFill(Color.LIGHTBLUE);
         weatherLabel.setStyle("-fx-font-size: 14px;");
+
+        fxWeatherToggle = new CheckBox("FX pogoda");
+        fxWeatherToggle.setSelected(fxWeatherEnabled);
+        fxWeatherToggle.setTextFill(Color.LIGHTBLUE);
+        fxWeatherToggle.setFocusTraversable(false);
+        fxWeatherToggle.selectedProperty().addListener((obs, wasSelected, isSelected) -> setFxWeatherEnabled(isSelected));
+
+        weatherIntensitySlider = new Slider(0.4, 1.6, weatherIntensity);
+        weatherIntensitySlider.setMaxWidth(Double.MAX_VALUE);
+        weatherIntensitySlider.setFocusTraversable(false);
+        weatherIntensitySlider.valueProperty().addListener((obs, oldValue, newValue) ->
+                setWeatherIntensity(newValue.doubleValue()));
+        weatherIntensitySlider.setDisable(!fxWeatherEnabled);
+
+        weatherIntensityLabel = new Label();
+        weatherIntensityLabel.setTextFill(Color.LIGHTBLUE);
+        weatherIntensityLabel.setStyle("-fx-font-size: 12px;");
+        updateIntensityLabel(weatherIntensity);
+
+        fullScreenButton = new Button();
+        fullScreenButton.setFocusTraversable(false);
+        fullScreenButton.setStyle("-fx-background-color: rgba(60,60,60,0.75); -fx-text-fill: white; -fx-background-radius: 6;");
+        fullScreenButton.textProperty().bind(Bindings.when(stage.fullScreenProperty())
+                .then("Tryb okna").otherwise("Pełny ekran"));
+        fullScreenButton.setOnAction(evt -> stage.setFullScreen(!stage.isFullScreen()));
+        fullScreenButton.setMaxWidth(Double.MAX_VALUE);
 
         ToggleButton toggle = new ToggleButton("Panel stanu");
         toggle.setSelected(true);
         toggle.setFocusTraversable(false);
         toggle.setStyle("-fx-background-color: rgba(60,60,60,0.75); -fx-text-fill: white; -fx-background-radius: 6;");
 
-        VBox infoBox = new VBox(6, zoneLabel, statusLabel, weatherLabel);
+        VBox infoBox = new VBox(6, zoneLabel, statusLabel, weatherLabel,
+                fxWeatherToggle, weatherIntensitySlider, weatherIntensityLabel, fullScreenButton);
+        infoBox.setFillWidth(true);
         infoBox.setAlignment(Pos.TOP_RIGHT);
         infoBox.setPadding(new Insets(10));
         infoBox.setStyle("-fx-background-color: rgba(20,20,20,0.78); -fx-background-radius: 10;" +
@@ -228,6 +292,8 @@ public class JavaFXClientGUI implements J2DClientGUI {
         overlay.setPadding(new Insets(16));
         overlay.setMaxWidth(280);
         overlay.setMouseTransparent(false);
+
+        updateWeatherLabelText();
 
         return overlay;
     }
@@ -254,42 +320,150 @@ public class JavaFXClientGUI implements J2DClientGUI {
     private void updateZone(Zone zone) {
         final String zoneName = (zone == null) ? "-" : zone.getReadableName();
         final String weatherName = (zone == null) ? null : zone.getWeatherName();
-        final String formattedWeather = usingFxWeather
-                ? formatWeatherLabel(weatherName)
-                : "Pogoda: wyłączona";
+        latestZoneName = zoneName;
+        latestWeatherName = weatherName;
         Platform.runLater(() -> {
-            if (zoneLabel != null) {
-                zoneLabel.setText("Strefa: " + zoneName);
-                if (zoneHighlight != null) {
-                    zoneHighlight.stop();
-                    zoneLabel.setOpacity(0.4);
-                    zoneHighlight.playFromStart();
-                }
-            }
-            if (weatherLabel != null) {
-                if (!formattedWeather.equals(weatherLabel.getText())) {
-                    weatherLabel.setText(formattedWeather);
-                    if (weatherHighlight != null) {
-                        weatherHighlight.stop();
-                        weatherLabel.setOpacity(0.4);
-                        weatherHighlight.playFromStart();
-                    }
-                }
-            }
-            if (usingFxWeather && weatherOverlay != null) {
-                weatherOverlay.setWeather(weatherName);
-            }
+            updateZoneLabel(zoneName);
+            updateWeatherDisplay();
         });
     }
 
-    private void resizeWeather(double width, double height) {
-        if (weatherOverlay != null) {
-            weatherOverlay.resize(width, height);
+    private void updateZoneLabel(String zoneName) {
+        if (zoneLabel == null) {
+            return;
+        }
+        zoneLabel.setText("Strefa: " + zoneName);
+        if (zoneHighlight != null) {
+            zoneHighlight.stop();
+            zoneLabel.setOpacity(0.4);
+            zoneHighlight.playFromStart();
         }
     }
 
+    private void updateWeatherDisplay() {
+        updateWeatherLabelText();
+        if (weatherOverlay != null) {
+            weatherOverlay.setWeather(latestWeatherName);
+        }
+    }
+
+    private void setWeatherIntensity(double intensityValue) {
+        double clamped = Math.max(0.4, Math.min(1.6, intensityValue));
+        double rounded = Math.round(clamped * 100.0) / 100.0;
+        weatherIntensity = rounded;
+        if (weatherOverlay != null) {
+            weatherOverlay.setIntensity(rounded);
+        }
+        updateIntensityLabel(rounded);
+        if (weatherIntensitySlider != null) {
+            double sliderValue = weatherIntensitySlider.getValue();
+            if (Math.abs(sliderValue - rounded) > 0.0001) {
+                weatherIntensitySlider.setValue(rounded);
+            }
+        }
+    }
+
+    private void updateIntensityLabel(double intensity) {
+        if (weatherIntensityLabel != null) {
+            int percent = (int) Math.round(intensity * 100.0);
+            weatherIntensityLabel.setText("Intensywność: " + percent + "%");
+        }
+    }
+
+    private void setFxWeatherEnabled(boolean enabled) {
+        if (fxWeatherEnabled == enabled) {
+            return;
+        }
+        fxWeatherEnabled = enabled;
+        WtWindowManager manager = WtWindowManager.getInstance();
+        if (enabled) {
+            weatherPreferenceOverridden = true;
+            fallbackWeatherPreference = manager.getProperty("ui.draw_weather", fallbackWeatherPreference);
+            manager.setProperty("ui.draw_weather", "false");
+        } else {
+            manager.setProperty("ui.draw_weather", fallbackWeatherPreference);
+        }
+        if (weatherOverlay != null) {
+            weatherOverlay.setActive(enabled);
+            weatherOverlay.setWeather(latestWeatherName);
+        }
+        updateWeatherControlsState();
+        updateWeatherLabelText();
+        updateWeatherNodeVisibility();
+        refreshWeatherSuspension();
+    }
+
+    private void updateWeatherControlsState() {
+        if (fxWeatherToggle != null) {
+            fxWeatherToggle.setSelected(fxWeatherEnabled);
+        }
+        if (weatherIntensitySlider != null) {
+            weatherIntensitySlider.setDisable(!fxWeatherEnabled);
+        }
+    }
+
+    private void updateWeatherNodeVisibility() {
+        if (weatherOverlay == null) {
+            return;
+        }
+        boolean hasBounds = latestGamePaneBounds != null
+                && latestGamePaneBounds.getWidth() > 1 && latestGamePaneBounds.getHeight() > 1;
+        weatherOverlay.getView().setVisible(fxWeatherEnabled && hasBounds);
+    }
+
+    private void applyWeatherViewport(Rectangle2D bounds) {
+        if (bounds == null) {
+            return;
+        }
+        latestGamePaneBounds = bounds;
+        if (weatherOverlay != null) {
+            weatherOverlay.getView().setLayoutX(bounds.getMinX());
+            weatherOverlay.getView().setLayoutY(bounds.getMinY());
+            weatherOverlay.resize(bounds.getWidth(), bounds.getHeight());
+        }
+        updateWeatherNodeVisibility();
+    }
+
+    private void updateWeatherLabelText() {
+        if (weatherLabel == null) {
+            return;
+        }
+        String newText = buildWeatherLabelText();
+        String current = weatherLabel.getText();
+        if (!newText.equals(current)) {
+            weatherLabel.setText(newText);
+            if (weatherHighlight != null) {
+                weatherHighlight.stop();
+                weatherLabel.setOpacity(0.4);
+                weatherHighlight.playFromStart();
+            }
+        }
+    }
+
+    private String buildWeatherLabelText() {
+        if (fxWeatherEnabled) {
+            return formatWeatherLabel(latestWeatherName);
+        }
+        if (shouldDisplaySwingWeather()) {
+            String base = formatWeatherLabel(latestWeatherName);
+            if (!base.contains("(Swing)")) {
+                base = base + " (Swing)";
+            }
+            return base;
+        }
+        return "Pogoda: wyłączona";
+    }
+
+    private boolean shouldDisplaySwingWeather() {
+        if (fxWeatherEnabled) {
+            return Boolean.parseBoolean(fallbackWeatherPreference);
+        }
+        return Boolean.parseBoolean(WtWindowManager.getInstance()
+                .getProperty("ui.draw_weather", fallbackWeatherPreference));
+    }
+
     private void refreshWeatherSuspension() {
-        if (!usingFxWeather) {
+        if (!fxWeatherEnabled) {
             return;
         }
         if (weatherOverlay != null && stage != null) {

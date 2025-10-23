@@ -28,6 +28,7 @@ public final class FxWeatherOverlay {
     private boolean running;
     private long lastFrameTime;
     private double fogPhase;
+    private double intensity = 1.0;
 
     public FxWeatherOverlay() {
         canvas = new Canvas();
@@ -67,6 +68,14 @@ public final class FxWeatherOverlay {
             resetParticles();
         }
         updateTimerState();
+    }
+
+    public void setIntensity(double intensity) {
+        double clamped = Math.max(0.4, Math.min(1.6, intensity));
+        if (Math.abs(clamped - this.intensity) > 0.0001) {
+            this.intensity = clamped;
+            resetParticles();
+        }
     }
 
     public void setActive(boolean active) {
@@ -132,21 +141,23 @@ public final class FxWeatherOverlay {
     }
 
     private void initialiseSnow(double width, double height) {
-        int count = (int) Math.min(280, Math.max(120, (width * height) / 6000));
+        int base = (int) Math.min(280, Math.max(120, (width * height) / 6000));
+        int count = Math.max(40, Math.min(420, (int) Math.round(base * intensity)));
         for (int i = 0; i < count; i++) {
             particles.add(Particle.snow(random, width, height));
         }
     }
 
     private void initialiseRain(double width, double height) {
-        int count = (int) Math.min(320, Math.max(140, (width * height) / 5000));
+        int base = (int) Math.min(320, Math.max(140, (width * height) / 5000));
+        int count = Math.max(50, Math.min(500, (int) Math.round(base * intensity)));
         for (int i = 0; i < count; i++) {
             particles.add(Particle.rain(random, width, height));
         }
     }
 
     private void initialiseFog(double width, double height) {
-        int count = 12;
+        int count = Math.max(4, Math.min(30, (int) Math.round(12 * intensity)));
         for (int i = 0; i < count; i++) {
             particles.add(Particle.fog(random, width, height));
         }
@@ -187,6 +198,7 @@ public final class FxWeatherOverlay {
 
     private void renderSnow(GraphicsContext gc, double width, double height, double dt) {
         gc.setFill(Color.rgb(255, 255, 255, 0.95));
+        double alphaScale = Math.min(1.0, 0.6 + intensity * 0.4);
         for (Particle particle : particles) {
             particle.x += particle.vx * dt;
             particle.y += particle.vy * dt;
@@ -199,7 +211,7 @@ public final class FxWeatherOverlay {
             } else if (particle.x > width + 20) {
                 particle.x = -random.nextDouble() * 20;
             }
-            gc.setGlobalAlpha(particle.opacity);
+            gc.setGlobalAlpha(Math.min(1.0, particle.opacity * alphaScale));
             gc.fillOval(particle.x, particle.y, particle.size, particle.size);
         }
         gc.setGlobalAlpha(1.0);
@@ -207,13 +219,14 @@ public final class FxWeatherOverlay {
 
     private void renderRain(GraphicsContext gc, double width, double height, double dt) {
         gc.setStroke(Color.rgb(160, 200, 255, 0.8));
+        double alphaScale = Math.min(1.0, 0.55 + intensity * 0.45);
         for (Particle particle : particles) {
             particle.x += particle.vx * dt;
             particle.y += particle.vy * dt;
             if (particle.y > height + 20) {
                 particle.resetRain(random, width);
             }
-            gc.setGlobalAlpha(particle.opacity);
+            gc.setGlobalAlpha(Math.min(1.0, particle.opacity * alphaScale));
             gc.setLineWidth(particle.size);
             gc.strokeLine(particle.x, particle.y, particle.x + particle.vx * 0.08,
                     particle.y + particle.length);
@@ -224,14 +237,16 @@ public final class FxWeatherOverlay {
 
     private void renderFog(GraphicsContext gc, double width, double height, double dt) {
         fogPhase += dt;
-        double baseAlpha = 0.12 + (Math.sin(fogPhase * 0.6) + 1.0) * 0.08;
+        double baseAlpha = 0.08 + (intensity - 1.0) * 0.05
+                + (Math.sin(fogPhase * 0.6) + 1.0) * (0.06 + (intensity - 1.0) * 0.04);
+        baseAlpha = Math.max(0.02, Math.min(0.45, baseAlpha));
         gc.setFill(Color.rgb(200, 205, 210, baseAlpha));
         gc.fillRect(0, 0, width, height);
-        gc.setGlobalAlpha(1.0);
+        double particleAlphaScale = Math.max(0.2, Math.min(1.0, 0.6 + intensity * 0.3));
         for (Particle particle : particles) {
             particle.x = (particle.x + particle.vx * dt + width + particle.size) % (width + particle.size);
             particle.y = (particle.y + particle.vy * dt + height + particle.size) % (height + particle.size);
-            gc.setFill(Color.rgb(220, 225, 235, particle.opacity));
+            gc.setFill(Color.rgb(220, 225, 235, Math.min(1.0, particle.opacity * particleAlphaScale)));
             gc.fillOval(particle.x - particle.size / 2.0, particle.y - particle.size / 2.0,
                     particle.size, particle.size);
         }
