@@ -95,17 +95,26 @@ public class InternalManagedWindow extends InternalWindow implements ManagedWind
 		return true;
 	}
 
-	@Override
-	public void setMinimized(boolean minimized) {
-		super.setMinimized(minimized);
-		/*
-		 * We are handling our own size management, so so we need to take care
-		 * of the new bounds.
-		 */
-		setSize(getPreferredSize());
-		relocate(getLocation());
-		WtWindowManager.getInstance().setMinimized(this, minimized);
-	}
+        @Override
+        public void setMinimized(boolean minimized) {
+                super.setMinimized(minimized);
+                /*
+                 * We are handling our own size management, so so we need to take care
+                 * of the new bounds.
+                 */
+                setSize(getPreferredSize());
+                relocate(getLocation());
+                WtWindowManager.getInstance().setMinimized(this, minimized);
+        }
+
+        @Override
+        public void setVisible(boolean visible) {
+                boolean changed = (visible != isVisible());
+                super.setVisible(visible);
+                if (changed) {
+                        WtWindowManager.getInstance().setVisible(this, visible);
+                }
+        }
 
 	@Override
 	public void addNotify() {

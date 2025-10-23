@@ -16,6 +16,7 @@ import javafx.application.Platform;
 import javafx.embed.swing.SwingNode;
 import javafx.beans.binding.Bindings;
 import javafx.geometry.Insets;
+import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
@@ -26,6 +27,9 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -42,6 +46,7 @@ import games.stendhal.client.sprite.DataLoader;
 import games.stendhal.client.stendhal;
 import games.stendhal.client.update.ClientGameConfiguration;
 import games.stendhal.common.Debug;
+import games.stendhal.client.actions.SlashActionRepository;
 import games.stendhal.client.entity.Entity;
 import games.stendhal.client.entity.User;
 import games.stendhal.client.listener.PositionChangeListener;
@@ -73,11 +78,18 @@ public class JavaFXClientGUI implements J2DClientGUI {
     private CheckBox fxWeatherToggle;
     private Slider weatherIntensitySlider;
     private Button fullScreenButton;
+    private CheckBox alwaysOnTopToggle;
     private boolean fxWeatherEnabled;
     private double weatherIntensity = 1.0;
     private Rectangle2D latestGamePaneBounds;
     private String latestWeatherName;
     private String latestZoneName = "-";
+    private Pane overlayLayer;
+    private VBox overlayPanel;
+    private ToggleButton overlayToggle;
+    private boolean overlayManuallyPositioned;
+    private double overlayDragOffsetX;
+    private double overlayDragOffsetY;
 
     public JavaFXClientGUI(StendhalClient client, UserContext context,
             NotificationChannelManager channelManager, JFrame splash) {
@@ -123,9 +135,17 @@ public class JavaFXClientGUI implements J2DClientGUI {
                 weatherOverlay.setWeather(latestWeatherName);
             }
 
-            VBox overlay = buildOverlay();
-            StackPane.setAlignment(overlay, Pos.TOP_RIGHT);
-            overlay.setPickOnBounds(false);
+            overlayLayer = new Pane();
+            overlayLayer.setPickOnBounds(false);
+            overlayLayer.setMouseTransparent(false);
+            overlayLayer.setMinSize(0, 0);
+            overlayLayer.prefWidthProperty().bind(root.widthProperty());
+            overlayLayer.prefHeightProperty().bind(root.heightProperty());
+
+            overlayPanel = buildOverlay();
+            overlayPanel.setManaged(false);
+            overlayLayer.getChildren().add(overlayPanel);
+            overlayPanel.layoutBoundsProperty().addListener((obs, oldVal, newVal) -> handleOverlayContainerChange());
 
             Dimension preferredSize = delegate.getPreferredClientSize();
             if (preferredSize == null) {
@@ -139,7 +159,8 @@ public class JavaFXClientGUI implements J2DClientGUI {
             root.getChildren().add(swingNode);
             StackPane.setAlignment(weatherOverlay.getView(), Pos.TOP_LEFT);
             root.getChildren().add(weatherOverlay.getView());
-            root.getChildren().add(overlay);
+            root.getChildren().add(overlayLayer);
+            StackPane.setAlignment(overlayLayer, Pos.TOP_LEFT);
             updateWeatherControlsState();
             updateWeatherNodeVisibility();
 
@@ -153,10 +174,12 @@ public class JavaFXClientGUI implements J2DClientGUI {
             scene.widthProperty().addListener((obs, oldValue, newValue) -> {
                 updateSwingSize(newValue.doubleValue(), scene.getHeight());
                 delegate.refreshGamePaneBounds();
+                handleOverlayContainerChange();
             });
             scene.heightProperty().addListener((obs, oldValue, newValue) -> {
                 updateSwingSize(scene.getWidth(), newValue.doubleValue());
                 delegate.refreshGamePaneBounds();
+                handleOverlayContainerChange();
             });
 
             stage.focusedProperty().addListener((obs, wasFocused, isFocused) -> {
@@ -167,6 +190,11 @@ public class JavaFXClientGUI implements J2DClientGUI {
             stage.iconifiedProperty().addListener((obs, wasIconified, isIconified) -> {
                 delegate.setExternalWindowIconified(isIconified);
                 refreshWeatherSuspension();
+            });
+            stage.alwaysOnTopProperty().addListener((obs, oldValue, newValue) -> {
+                if (alwaysOnTopToggle != null && alwaysOnTopToggle.isSelected() != newValue) {
+                    alwaysOnTopToggle.setSelected(newValue);
+                }
             });
 
             zoneHighlight = new FadeTransition(Duration.millis(240), zoneLabel);
@@ -184,6 +212,13 @@ public class JavaFXClientGUI implements J2DClientGUI {
             SwingUtilities.invokeLater(() -> swingNode.setContent(delegate.getRootComponent()));
 
             stage.show();
+            stage.toFront();
+            stage.requestFocus();
+            if (alwaysOnTopToggle != null) {
+                alwaysOnTopToggle.setSelected(stage.isAlwaysOnTop());
+            }
+            positionOverlayDefault();
+            ensureOverlayInside();
             delegate.refreshGamePaneBounds();
             if (latestGamePaneBounds != null) {
                 applyWeatherViewport(latestGamePaneBounds);
@@ -192,6 +227,7 @@ public class JavaFXClientGUI implements J2DClientGUI {
             }
             applyFocusEffect(stage.isFocused());
             refreshWeatherSuspension();
+            SwingUtilities.invokeLater(() -> delegate.getRootComponent().requestFocusInWindow());
             stageLatch.countDown();
         });
 
@@ -272,26 +308,53 @@ public class JavaFXClientGUI implements J2DClientGUI {
         fullScreenButton.setOnAction(evt -> stage.setFullScreen(!stage.isFullScreen()));
         fullScreenButton.setMaxWidth(Double.MAX_VALUE);
 
-        ToggleButton toggle = new ToggleButton("Panel stanu");
-        toggle.setSelected(true);
-        toggle.setFocusTraversable(false);
-        toggle.setStyle("-fx-background-color: rgba(60,60,60,0.75); -fx-text-fill: white; -fx-background-radius: 6;");
+        alwaysOnTopToggle = new CheckBox("Zawsze na wierzchu");
+        alwaysOnTopToggle.setFocusTraversable(false);
+        alwaysOnTopToggle.setTextFill(Color.LIGHTBLUE);
+        alwaysOnTopToggle.selectedProperty().addListener((obs, oldValue, newValue) -> {
+            if (stage != null && stage.isAlwaysOnTop() != newValue) {
+                stage.setAlwaysOnTop(newValue);
+            }
+        });
+
+        Button screenshotButton = new Button("Zrzut ekranu");
+        screenshotButton.setFocusTraversable(false);
+        screenshotButton.setStyle("-fx-background-color: rgba(60,60,60,0.75); -fx-text-fill: white; -fx-background-radius: 6;");
+        screenshotButton.setMaxWidth(Double.MAX_VALUE);
+        screenshotButton.setOnAction(evt -> takeScreenshot());
 
         VBox infoBox = new VBox(6, zoneLabel, statusLabel, weatherLabel,
-                fxWeatherToggle, weatherIntensitySlider, weatherIntensityLabel, fullScreenButton);
+                fxWeatherToggle, weatherIntensitySlider, weatherIntensityLabel,
+                fullScreenButton, alwaysOnTopToggle, screenshotButton);
         infoBox.setFillWidth(true);
         infoBox.setAlignment(Pos.TOP_RIGHT);
         infoBox.setPadding(new Insets(10));
         infoBox.setStyle("-fx-background-color: rgba(20,20,20,0.78); -fx-background-radius: 10;" +
                 "-fx-border-color: rgba(255,255,255,0.18); -fx-border-radius: 10; -fx-border-width: 1px;");
-        infoBox.visibleProperty().bind(toggle.selectedProperty());
-        infoBox.managedProperty().bind(infoBox.visibleProperty());
 
-        VBox overlay = new VBox(8, toggle, infoBox);
+        overlayToggle = new ToggleButton("Panel FX");
+        overlayToggle.setSelected(false);
+        overlayToggle.setFocusTraversable(false);
+        overlayToggle.setStyle("-fx-background-color: rgba(60,60,60,0.75); -fx-text-fill: white; -fx-background-radius: 6;");
+        infoBox.visibleProperty().bind(overlayToggle.selectedProperty());
+        infoBox.managedProperty().bind(infoBox.visibleProperty());
+        overlayToggle.selectedProperty().addListener((obs, wasSelected, selected) -> handleOverlayContainerChange());
+
+        Label dragHandle = new Label("\u2630");
+        dragHandle.setTextFill(Color.LIGHTGRAY);
+        dragHandle.setStyle("-fx-font-size: 14px; -fx-padding: 2 6 2 6; -fx-background-color: rgba(60,60,60,0.4); -fx-background-radius: 6;");
+        dragHandle.setOnMousePressed(this::beginOverlayDrag);
+        dragHandle.setOnMouseDragged(this::continueOverlayDrag);
+
+        HBox header = new HBox(8, dragHandle, overlayToggle);
+        header.setAlignment(Pos.CENTER_RIGHT);
+
+        VBox overlay = new VBox(8, header, infoBox);
         overlay.setAlignment(Pos.TOP_RIGHT);
-        overlay.setPadding(new Insets(16));
-        overlay.setMaxWidth(280);
+        overlay.setPadding(new Insets(12));
+        overlay.setMaxWidth(320);
         overlay.setMouseTransparent(false);
+        overlay.setPickOnBounds(false);
 
         updateWeatherLabelText();
 
@@ -368,6 +431,73 @@ public class JavaFXClientGUI implements J2DClientGUI {
             int percent = (int) Math.round(intensity * 100.0);
             weatherIntensityLabel.setText("Intensywność: " + percent + "%");
         }
+    }
+
+    private void handleOverlayContainerChange() {
+        if (overlayPanel == null) {
+            return;
+        }
+        if (overlayManuallyPositioned) {
+            ensureOverlayInside();
+        } else {
+            positionOverlayDefault();
+        }
+    }
+
+    private void beginOverlayDrag(MouseEvent event) {
+        if (!event.isPrimaryButtonDown() || overlayLayer == null || overlayPanel == null) {
+            return;
+        }
+        Point2D parentPoint = overlayLayer.sceneToLocal(event.getSceneX(), event.getSceneY());
+        overlayDragOffsetX = parentPoint.getX() - overlayPanel.getLayoutX();
+        overlayDragOffsetY = parentPoint.getY() - overlayPanel.getLayoutY();
+        overlayManuallyPositioned = true;
+        event.consume();
+    }
+
+    private void continueOverlayDrag(MouseEvent event) {
+        if (!event.isPrimaryButtonDown() || overlayLayer == null || overlayPanel == null) {
+            return;
+        }
+        Point2D parentPoint = overlayLayer.sceneToLocal(event.getSceneX(), event.getSceneY());
+        relocateOverlay(parentPoint.getX() - overlayDragOffsetX, parentPoint.getY() - overlayDragOffsetY);
+        event.consume();
+    }
+
+    private void relocateOverlay(double x, double y) {
+        if (overlayLayer == null || overlayPanel == null) {
+            return;
+        }
+        double maxX = Math.max(0, overlayLayer.getWidth() - overlayPanel.getWidth());
+        double maxY = Math.max(0, overlayLayer.getHeight() - overlayPanel.getHeight());
+        double clampedX = Math.min(Math.max(0, x), maxX);
+        double clampedY = Math.min(Math.max(0, y), maxY);
+        overlayPanel.relocate(clampedX, clampedY);
+    }
+
+    private void positionOverlayDefault() {
+        if (overlayLayer == null || overlayPanel == null) {
+            return;
+        }
+        double margin = 16.0;
+        double layerWidth = overlayLayer.getWidth();
+        double panelWidth = overlayPanel.prefWidth(-1);
+        if (panelWidth <= 0) {
+            panelWidth = overlayPanel.getWidth();
+        }
+        double x = Math.max(margin, layerWidth - panelWidth - margin);
+        overlayPanel.relocate(x, margin);
+    }
+
+    private void ensureOverlayInside() {
+        if (overlayLayer == null || overlayPanel == null) {
+            return;
+        }
+        relocateOverlay(overlayPanel.getLayoutX(), overlayPanel.getLayoutY());
+    }
+
+    private void takeScreenshot() {
+        SwingUtilities.invokeLater(() -> SlashActionRepository.get("takescreenshot").execute(new String[0], ""));
     }
 
     private void setFxWeatherEnabled(boolean enabled) {

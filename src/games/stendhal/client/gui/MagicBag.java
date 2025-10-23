@@ -13,6 +13,7 @@ package games.stendhal.client.gui;
 
 import javax.swing.SwingUtilities;
 
+import games.stendhal.client.UserContext;
 import games.stendhal.client.listener.FeatureChangeListener;
 
 @SuppressWarnings("serial")
@@ -31,8 +32,20 @@ class MagicBag extends SlotWindow implements FeatureChangeListener {
 	/**
 	 * Disable the magic bag.
 	 */
-	private void disableMagicBag() {
-	}
+        private void disableMagicBag() {
+                if (!SwingUtilities.isEventDispatchThread()) {
+                        SwingUtilities.invokeLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                        disableMagicBag();
+                                }
+                        });
+                        return;
+                }
+                if (isVisible()) {
+                        setVisible(false);
+                }
+        }
 
 	/**
 	 * A feature was disabled.
@@ -58,14 +71,23 @@ class MagicBag extends SlotWindow implements FeatureChangeListener {
 	@Override
 	public void featureEnabled(final String name, final String value) {
 		if (name.equals("magicbag")) {
-			SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-					if(!isVisible()) {
-						setVisible(true);
-					}
-				}
-			});
-		}
-	}
+                        SwingUtilities.invokeLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                        if (!isVisible()) {
+                                                setVisible(true);
+                                        }
+                                }
+                        });
+                }
+        }
+
+        @Override
+        public void setVisible(final boolean visible) {
+                boolean allow = visible;
+                if (visible && !UserContext.get().hasFeature("magicbag")) {
+                        allow = false;
+                }
+                super.setVisible(allow);
+        }
 }
