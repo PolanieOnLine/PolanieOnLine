@@ -152,7 +152,12 @@ public class j2DClient implements UserInterface {
 		 */
 		SlashActionRepository.register();
 
-		gui = new SwingClientGUI(client, userContext, channelManager, splash);
+        boolean useJavaFx = Boolean.getBoolean("stendhal.ui.javafx");
+        if (useJavaFx) {
+            gui = new JavaFXClientGUI(client, userContext, channelManager, splash);
+        } else {
+            gui = new SwingClientGUI(client, userContext, channelManager, splash);
+        }
 
 		for (PositionChangeListener listener : gui.getPositionChangeListeners()) {
 			positionChangeListener.add(listener);
