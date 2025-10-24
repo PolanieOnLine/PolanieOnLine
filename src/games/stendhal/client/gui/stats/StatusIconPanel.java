@@ -49,10 +49,14 @@ class StatusIconPanel extends JComponent {
 		setOpaque(false);
 
 		eating = new JLabel(eatingIcon);
+		eating.setToolTipText("Status: Jedzenie posiłku");
+		eating.getAccessibleContext().setAccessibleDescription("Status: Jedzenie posiłku");
 		add(eating);
 		eating.setVisible(false);
 
 		choking = new JLabel(chokingIcon);
+		choking.setToolTipText("Status: Duszenie się");
+		choking.getAccessibleContext().setAccessibleDescription("Status: Duszenie się");
 		add(choking);
 		choking.setVisible(false);
 
@@ -65,13 +69,13 @@ class StatusIconPanel extends JComponent {
 		grumpy.setVisible(false);
 
 		/** Initialize map */
-        statusIDMap = new EnumMap<StatusID, JLabel>(StatusID.class);
-        statusIDMap.put(StatusID.CONFUSE, createStatusIndicator("confuse"));
-        statusIDMap.put(StatusID.POISON, createStatusIndicator("poison"));
-        statusIDMap.put(StatusID.BLEED, createStatusIndicator("bleed"));
-        statusIDMap.put(StatusID.SHOCK, createStatusIndicator("shock"));
-        statusIDMap.put(StatusID.ZOMBIE, createStatusIndicator("zombie"));
-        statusIDMap.put(StatusID.HEAVY, createStatusIndicator("heavy"));
+		statusIDMap = new EnumMap<StatusID, JLabel>(StatusID.class);
+		addStatusIndicator(StatusID.CONFUSE, "confuse", "Status: Oszołomienie");
+		addStatusIndicator(StatusID.POISON, "poison", "Status: Zatrucie");
+		addStatusIndicator(StatusID.BLEED, "bleed", "Status: Krwawienie");
+		addStatusIndicator(StatusID.SHOCK, "shock", "Status: Porażenie");
+		addStatusIndicator(StatusID.ZOMBIE, "zombie", "Status: Przemiana w zombie");
+		addStatusIndicator(StatusID.HEAVY, "heavy", "Status: Przeciążenie");
 	}
 
 	/**
@@ -80,10 +84,19 @@ class StatusIconPanel extends JComponent {
 	 * @param identifier string identifier used to look up for the label icon
 	 * @return the created label
 	 */
-	private JLabel createStatusIndicator(String identifier) {
+	private void addStatusIndicator(StatusID id, String identifier, String tooltip) {
+		JLabel label = createStatusIndicator(identifier, tooltip);
+		statusIDMap.put(id, label);
+	}
+
+	private JLabel createStatusIndicator(String identifier, String tooltip) {
 		Icon icon = new ImageIcon(DataLoader.getResource(iconFolder + identifier + ".png"));
 		JLabel label = new JLabel(icon);
 		label.setVisible(false);
+		if ((tooltip != null) && !tooltip.isEmpty()) {
+			label.setToolTipText(tooltip);
+			label.getAccessibleContext().setAccessibleDescription(tooltip);
+		}
 		add(label);
 
 		return label;
@@ -158,7 +171,12 @@ class StatusIconPanel extends JComponent {
 	void setAway(String message) {
 		boolean isAway = message != null;
 		if (isAway) {
-			away.setToolTipText("<html>Jesteś oddalony z wiadomością:<br><b>" + message);
+			String tooltip = "<html>Jesteś oddalony z wiadomością:<br><b>" + message;
+			away.setToolTipText(tooltip);
+			away.getAccessibleContext().setAccessibleDescription(tooltip);
+		} else {
+			away.setToolTipText(null);
+			away.getAccessibleContext().setAccessibleDescription(null);
 		}
 		if (away.isVisible() != isAway) {
 			away.setVisible(isAway);
@@ -173,7 +191,12 @@ class StatusIconPanel extends JComponent {
 	void setGrumpy(String message) {
 		boolean isGrumpy = message != null;
 		if (isGrumpy) {
-			grumpy.setToolTipText("<html>Jesteś niedostępny z wiadomością:<br><b>" + message);
+			String tooltip = "<html>Jesteś niedostępny z wiadomością:<br><b>" + message;
+			grumpy.setToolTipText(tooltip);
+			grumpy.getAccessibleContext().setAccessibleDescription(tooltip);
+		} else {
+			grumpy.setToolTipText(null);
+			grumpy.getAccessibleContext().setAccessibleDescription(null);
 		}
 		if (grumpy.isVisible() != isGrumpy) {
 			grumpy.setVisible(isGrumpy);

@@ -98,6 +98,16 @@ class MapPanel extends JComponent {
 	 * thread.
 	 */
 	private Image mapImage;
+	/** Last collision data reference used to draw the minimap. */
+	private CollisionDetection lastCollision;
+	/** Last protection data reference used to draw the minimap. */
+	private CollisionDetection lastProtection;
+	/** Last secret data reference used to draw the minimap. */
+	private CollisionDetection lastSecret;
+	/** Width of the most recently rendered tile map. */
+	private int lastTileWidth;
+	/** Height of the most recently rendered tile map. */
+	private int lastTileHeight;
 
 	/**
 	 * Create a new MapPanel.
@@ -259,20 +269,44 @@ class MapPanel extends JComponent {
 	 * @param cd
 	 *            The collision map.
 	 * @param pd
-	 *      	  The protection map.
+	 *		The protection map.
+	 * @param sd
+	 *		The secret map.
+	 * @param forceRebuild
+	 *		Force rebuilding the minimap background even if the cached data appears unchanged.
 	 */
-	void update(final CollisionDetection cd, final CollisionDetection pd, final CollisionDetection sd) {
+	void update(final CollisionDetection cd, final CollisionDetection pd, final CollisionDetection sd, final boolean forceRebuild) {
 		// calculate the size and scale of the map
 		final int mapWidth = cd.getWidth();
 		final int mapHeight = cd.getHeight();
 		final int scale = Math.max(MINIMUM_SCALE, Math.min(MAP_HEIGHT / mapHeight, MAP_WIDTH / mapWidth));
 		final int width = Math.min(MAP_WIDTH, mapWidth * scale);
 		final int height = Math.min(MAP_HEIGHT, mapHeight * scale);
+		final boolean sizeChanged = (MapPanel.this.width != width) || (MapPanel.this.height != height);
+		final boolean tileSizeChanged = (lastTileWidth != mapWidth) || (lastTileHeight != mapHeight);
+		final boolean dataChanged = forceRebuild || tileSizeChanged || (cd != lastCollision) || (pd != lastProtection) || (sd != lastSecret);
+
+		if (!dataChanged) {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					MapPanel.this.scale = scale;
+					MapPanel.this.width = width;
+					MapPanel.this.height = height;
+					if (sizeChanged) {
+						updateSize(new Dimension(MAP_WIDTH, height));
+					}
+					updateView();
+				}
+			});
+			repaint();
+			return;
+		}
 
 		// this.getGraphicsConfiguration is not thread safe
 		GraphicsConfiguration gc = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
 		// create the map image, and fill it with the wanted details
-		final Image newMapImage  = gc.createCompatibleImage(mapWidth * scale, mapHeight * scale);
+		final Image newMapImage = gc.createCompatibleImage(mapWidth * scale, mapHeight * scale);
 		final Graphics g = newMapImage.getGraphics();
 		g.setColor(COLOR_BACKGROUND);
 		g.fillRect(0, 0, mapWidth * scale, mapHeight * scale);
@@ -282,11 +316,11 @@ class MapPanel extends JComponent {
 				if (cd.collides(x, y)) {
 					g.setColor(COLOR_BLOCKED);
 					g.fillRect(x * scale, y * scale, scale, scale);
-				} else if (pd != null && pd.collides(x, y)) {
+				} else if ((pd != null) && pd.collides(x, y)) {
 					// draw protection only if there is no collision to draw
 					g.setColor(COLOR_PROTECTION);
 					g.fillRect(x * scale, y * scale, scale, scale);
-				} else if (sd != null && sd.collides(x, y)) {
+				} else if ((sd != null) && sd.collides(x, y)) {
 					g.setColor(COLOR_SECRET);
 					g.fillRect(x * scale, y * scale, scale, scale);
 				}
@@ -299,16 +333,24 @@ class MapPanel extends JComponent {
 			public void run() {
 				// Swap the image only after the new one is ready
 				mapImage = newMapImage;
+				lastCollision = cd;
+				lastProtection = pd;
+				lastSecret = sd;
+				lastTileWidth = mapWidth;
+				lastTileHeight = mapHeight;
 				// Update the other data
 				MapPanel.this.scale = scale;
 				MapPanel.this.width = width;
 				MapPanel.this.height = height;
-				updateSize(new Dimension(MAP_WIDTH, height));
+				if (sizeChanged) {
+					updateSize(new Dimension(MAP_WIDTH, height));
+				}
 				updateView();
 			}
 		});
 		repaint();
 	}
+
 
 	/**
 	 * Tell the player to move to point p
