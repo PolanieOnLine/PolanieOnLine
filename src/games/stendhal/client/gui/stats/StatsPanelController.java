@@ -212,27 +212,28 @@ public final class StatsPanelController {
 
 		final boolean maxLevel = nextXP < 0;
 		final boolean invalidSpan = (previousXP < 0) || (nextXP <= previousXP);
-		final String progressText;
-		final String progressTooltip;
+		final String tooltip;
 		if (maxLevel) {
-			progressText = "Postęp poziomu:" + SPC + "100%";
-			progressTooltip = "Osiągnięto maksymalny poziom";
+			tooltip = "Postęp poziomu: 100% (osiągnięto maksymalny poziom)";
 		} else if (invalidSpan) {
-			progressText = "Postęp poziomu:" + SPC + "\u2014";
-			progressTooltip = "Brak danych o wymaganym doświadczeniu";
+			tooltip = "Postęp poziomu: — (brak danych o wymaganym doświadczeniu)";
 		} else {
 			final int gained = Math.max(0, xp - previousXP);
 			final int needed = nextXP - previousXP;
 			final int percent = MathHelper.clamp((int) Math.round((gained * 100.0) / (double) needed), 0, 100);
-			progressText = "Postęp poziomu:" + SPC + percent + "%";
-			progressTooltip = String.format(Locale.ROOT, "Postęp: %d / %d PD", gained, needed);
+			final int remaining = Math.max(0, next);
+			tooltip = String.format(Locale.ROOT,
+				"Postęp poziomu: %d%% (%d / %d PD). Do awansu: %d PD.",
+				percent,
+				gained,
+				needed,
+				remaining);
 		}
 
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				panel.setLevel(text);
-				panel.setLevelProgress(progressText, progressTooltip);
+				panel.setLevel(text, tooltip);
 			}
 		});
 	}
@@ -580,13 +581,58 @@ public final class StatsPanelController {
 	 * Called when capacity or baseCapacity changes.
 	 */
 	private void updateCapacity() {
-		final String text = "Udźwig:" + SPC + capacity + SPC + "/" + SPC + baseCapacity + "kg";
+		final double used = capacity;
+		final double max = baseCapacity;
+		final String text;
+		final double usageFraction;
+		final String tooltip;
+		if (max <= 0.0) {
+			text = "Udźwig:" + SPC + formatWeight(used) + SPC + "/" + SPC + "— kg";
+			usageFraction = 0.0;
+			tooltip = "Brak danych o maksymalnym udźwigu";
+		} else {
+			text = "Udźwig:" + SPC + formatWeight(used) + SPC + "/" + SPC + formatWeight(max) + " kg";
+			final double rawFraction = used / max;
+			usageFraction = MathHelper.clamp(rawFraction, 0.0, 1.0);
+			final int percent = MathHelper.clamp((int) Math.round(usageFraction * 100.0), 0, 100);
+			final double remaining = Math.max(0.0, max - used);
+			if (usageFraction >= 1.0) {
+				tooltip = String.format(Locale.ROOT,
+					"Przeciążenie! Zużyto %.1f / %.1f kg (%d%%).",
+					used,
+					max,
+					percent);
+			} else if (usageFraction >= 0.9) {
+				tooltip = String.format(Locale.ROOT,
+					"Uwaga: zużyto %.1f / %.1f kg (%d%%). Pozostało %.1f kg.",
+					used,
+					max,
+					percent,
+					remaining);
+			} else {
+				tooltip = String.format(Locale.ROOT,
+					"Udźwig: %.1f / %.1f kg (%d%%). Pozostało %.1f kg.",
+					used,
+					max,
+					percent,
+					remaining);
+			}
+		}
+
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
-				panel.setCapacity(text);
+				panel.setCapacity(text, usageFraction, tooltip);
 			}
 		});
+	}
+
+	private static String formatWeight(double weight) {
+		final double rounded = Math.rint(weight);
+		if (Math.abs(weight - rounded) < 0.01) {
+			return Integer.toString((int) Math.round(rounded));
+		}
+		return String.format(Locale.ROOT, "%.1f", weight);
 	}
 
 	/**

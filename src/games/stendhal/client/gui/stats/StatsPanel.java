@@ -13,6 +13,7 @@ package games.stendhal.client.gui.stats;
 
 import static games.stendhal.client.gui.settings.SettingsProperties.HP_BAR_PROPERTY;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.net.URL;
@@ -44,12 +45,13 @@ class StatsPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = -353271026575752035L;
 
-	private final StatLabel hpLabel, atkLabel, defLabel, ratkLabel, miningLabel, xpLabel, levelLabel, levelProgressLabel, capacityLabel;
+	private final StatLabel hpLabel, atkLabel, defLabel, ratkLabel, miningLabel, xpLabel, levelLabel, capacityLabel;
 	private final HPIndicator hpBar;
 	private final StatusIconPanel statusIcons;
 	private final KarmaIndicator karmaIndicator;
 	private final ManaIndicator manaIndicator;
 	private final MoneyPanel moneyPanel;
+	private final Color defaultCapacityColor;
 
 	StatsPanel() {
 		super();
@@ -100,18 +102,16 @@ class StatsPanel extends JPanel {
 		add(xpLabel, SLayout.EXPAND_X);
 
 		levelLabel = new StatLabel();
+		levelLabel.setToolTipText("Oczekiwanie na dane doświadczenia");
 		add(levelLabel, SLayout.EXPAND_X);
 
 		moneyPanel = new MoneyPanel();
 		add(moneyPanel, SLayout.EXPAND_X);
 
-		levelProgressLabel = new StatLabel();
-		add(levelProgressLabel, SLayout.EXPAND_X);
-		setLevelProgress("Postęp poziomu: —", "Oczekiwanie na dane doświadczenia");
-
 		capacityLabel = new StatLabel();
 		add(capacityLabel, SLayout.EXPAND_X);
 		capacityLabel.setVisible(false);
+		defaultCapacityColor = capacityLabel.getForeground();
 	}
 
 	/**
@@ -232,8 +232,9 @@ class StatsPanel extends JPanel {
 	 *
 	 * @param level level description
 	 */
-	void setLevel(String level) {
+	void setLevel(String level, String tooltip) {
 		levelLabel.setText(level);
+		levelLabel.setToolTipText(tooltip);
 	}
 
 	/**
@@ -250,16 +251,21 @@ class StatsPanel extends JPanel {
 	 *
 	 * @param money
 	 */
-	void setCapacity(String capacity) {
+	void setCapacity(String capacity, double usageFraction, String tooltip) {
 		if (Testing.WEIGHT) {
 			capacityLabel.setVisible(true);
 		}
 		capacityLabel.setText(capacity);
-	}
-
-	void setLevelProgress(String progressText, String tooltipText) {
-		levelProgressLabel.setText(progressText);
-		levelProgressLabel.setToolTipText(tooltipText);
+		capacityLabel.setToolTipText(tooltip);
+		if (usageFraction >= 1.0) {
+			capacityLabel.setForeground(Color.RED);
+		} else if (usageFraction >= 0.9) {
+			capacityLabel.setForeground(new Color(0xCC6600));
+		} else if (usageFraction >= 0.75) {
+			capacityLabel.setForeground(new Color(0xCC9900));
+		} else if (defaultCapacityColor != null) {
+			capacityLabel.setForeground(defaultCapacityColor);
+		}
 	}
 
 	/**
