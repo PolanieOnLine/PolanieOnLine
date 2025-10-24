@@ -229,6 +229,7 @@ public class MapPanelController implements GameObjects.GameObjectListener, Posit
 				@Override
 				public void run() {
 					panel.positionChanged(x, y);
+				infoPanel.setCoordinates(x, y);
 					/*
 					 * Set the refresh flag after the map offset has been
 					 * actually updated. The position listener for moving map
@@ -245,6 +246,12 @@ public class MapPanelController implements GameObjects.GameObjectListener, Posit
 	@Override
 	public void onZoneChange(Zone zone) {
 		forceBackgroundRefresh = true;
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				infoPanel.resetCoordinates();
+			}
+		});
 	}
 
 	@Override
