@@ -12,7 +12,9 @@
  ***************************************************************************/
 package games.stendhal.client.gui.stats;
 
+import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.swing.Icon;
@@ -76,6 +78,7 @@ class StatusIconPanel extends JComponent {
 		addStatusIndicator(StatusID.SHOCK, "shock", "Status: Porażenie");
 		addStatusIndicator(StatusID.ZOMBIE, "zombie", "Status: Przemiana w zombie");
 		addStatusIndicator(StatusID.HEAVY, "heavy", "Status: Przeciążenie");
+		updatePanelTooltip();
 	}
 
 	/**
@@ -102,6 +105,65 @@ class StatusIconPanel extends JComponent {
 		return label;
 	}
 
+	private void updatePanelTooltip() {
+		List<String> active = new ArrayList<String>();
+		if (eating.isVisible()) {
+			addNormalizedTooltip(active, eating.getToolTipText());
+		}
+		if (choking.isVisible()) {
+			addNormalizedTooltip(active, choking.getToolTipText());
+		}
+		for (Map.Entry<StatusID, JLabel> entry : statusIDMap.entrySet()) {
+			JLabel status = entry.getValue();
+			if (status.isVisible()) {
+				addNormalizedTooltip(active, status.getToolTipText());
+			}
+		}
+		if (away.isVisible()) {
+			addNormalizedTooltip(active, away.getToolTipText());
+		}
+		if (grumpy.isVisible()) {
+			addNormalizedTooltip(active, grumpy.getToolTipText());
+		}
+		if (active.isEmpty()) {
+			setToolTipText(null);
+			getAccessibleContext().setAccessibleDescription(null);
+			return;
+		}
+		StringBuilder html = new StringBuilder("<html><b>Aktywne statusy:</b><br>");
+		StringBuilder plain = new StringBuilder("Aktywne statusy: ");
+		for (int i = 0; i < active.size(); i++) {
+			if (i > 0) {
+				html.append("<br>");
+				plain.append("; ");
+			}
+			String entryText = active.get(i);
+			html.append(entryText.replace("\n", "<br>"));
+			plain.append(entryText.replace('\n', ' '));
+		}
+		html.append("</html>");
+		setToolTipText(html.toString());
+		getAccessibleContext().setAccessibleDescription(plain.toString());
+	}
+
+	private static void addNormalizedTooltip(List<String> target, String tooltip) {
+		String normalized = normalizeTooltip(tooltip);
+		if ((normalized != null) && !normalized.isEmpty()) {
+			target.add(normalized);
+		}
+	}
+
+	private static String normalizeTooltip(String tooltip) {
+		if ((tooltip == null) || tooltip.isEmpty()) {
+			return null;
+		}
+		String normalized = tooltip;
+		normalized = normalized.replaceAll("(?is)<br\\s*/?>", "\n");
+		normalized = normalized.replaceAll("(?is)<[^>]+>", "");
+		normalized = normalized.replace("&nbsp;", " ");
+		return normalized.trim();
+	}
+
 	/**
 	 * Display or hide eating icon
 	 *
@@ -119,6 +181,7 @@ class StatusIconPanel extends JComponent {
 				eating.setVisible(false);
 			}
 		}
+		updatePanelTooltip();
 	}
 
 	/**
@@ -135,33 +198,36 @@ class StatusIconPanel extends JComponent {
 		if (isChoking) {
 			eating.setVisible(false);
 		}
+		updatePanelTooltip();
 	}
 
-    /**
-     * Display or hide a status icon.
-     *
-     * @param ID
-     *      The ID value of the status
-     * @param visible
-     *      Show the icon
-     */
-    void setStatus(final StatusID ID, final boolean visible) {
-        final JLabel status = statusIDMap.get(ID);
-        if (status.isVisible() != visible) {
-            status.setVisible(visible);
-        }
-    }
+	/**
+	 * Display or hide a status icon.
+	 *
+	 * @param ID
+	 *	The ID value of the status
+	 * @param visible
+	 *	Show the icon
+	 */
+	void setStatus(final StatusID ID, final boolean visible) {
+		final JLabel status = statusIDMap.get(ID);
+		if (status.isVisible() != visible) {
+			status.setVisible(visible);
+		}
+		updatePanelTooltip();
+	}
 
-    /**
-     * Hide all status icons. This is called when the user entity is deleted.
-     */
-    void resetStatuses() {
-    	for (JLabel status : statusIDMap.values()) {
-    		if (status.isVisible()) {
-    			status.setVisible(false);
-    		}
-    	}
-    }
+	/**
+	 * Hide all status icons. This is called when the user entity is deleted.
+	 */
+	void resetStatuses() {
+		for (JLabel status : statusIDMap.values()) {
+			if (status.isVisible()) {
+				status.setVisible(false);
+			}
+		}
+		updatePanelTooltip();
+	}
 
 	/**
 	 * Set the away status message. null value will hide the icon.
@@ -181,6 +247,7 @@ class StatusIconPanel extends JComponent {
 		if (away.isVisible() != isAway) {
 			away.setVisible(isAway);
 		}
+		updatePanelTooltip();
 	}
 
 	/**
@@ -201,5 +268,6 @@ class StatusIconPanel extends JComponent {
 		if (grumpy.isVisible() != isGrumpy) {
 			grumpy.setVisible(isGrumpy);
 		}
+		updatePanelTooltip();
 	}
 }
