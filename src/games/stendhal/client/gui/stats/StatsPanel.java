@@ -44,7 +44,7 @@ class StatsPanel extends JPanel {
 	 */
 	private static final long serialVersionUID = -353271026575752035L;
 
-	private final StatLabel hpLabel, atkLabel, defLabel, ratkLabel, miningLabel, xpLabel, levelLabel, capacityLabel;
+	private final StatLabel hpLabel, atkLabel, defLabel, ratkLabel, miningLabel, xpLabel, levelLabel, sessionLabel, capacityLabel;
 	private final HPIndicator hpBar;
 	private final StatusIconPanel statusIcons;
 	private final KarmaIndicator karmaIndicator;
@@ -104,6 +104,11 @@ class StatsPanel extends JPanel {
 
 		moneyPanel = new MoneyPanel();
 		add(moneyPanel, SLayout.EXPAND_X);
+
+		sessionLabel = new StatLabel();
+		sessionLabel.setToolTipText("Czas trwania bieżącej sesji gry");
+		add(sessionLabel, SLayout.EXPAND_X);
+		resetSessionDuration();
 
 		capacityLabel = new StatLabel();
 		add(capacityLabel, SLayout.EXPAND_X);
@@ -251,6 +256,14 @@ class StatsPanel extends JPanel {
 			capacityLabel.setVisible(true);
 		}
 		capacityLabel.setText(capacity);
+	}
+
+	void setSessionDuration(String sessionText) {
+		sessionLabel.setText(sessionText);
+	}
+
+	void resetSessionDuration() {
+		setSessionDuration("Czas gry: 00:00:00");
 	}
 
 	/**

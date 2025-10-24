@@ -11,6 +11,8 @@
  ***************************************************************************/
 package games.stendhal.client.gui.stats;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
@@ -18,6 +20,7 @@ import java.util.HashMap;
 import java.util.Locale;
 
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 
 import org.apache.log4j.Logger;
 
@@ -47,6 +50,9 @@ public final class StatsPanelController {
 	private static final String SPC = "\r\u00a0";
 	private final StatsPanel panel;
 	private static	StatsPanelController instance;
+
+	private final Timer sessionTimer;
+	private long sessionStartMillis;
 
 	/**
 	 * The money objects.
@@ -87,6 +93,15 @@ public final class StatsPanelController {
 	 */
 	private StatsPanelController() {
 		panel = new StatsPanel();
+		sessionTimer = new Timer(1000, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				updateSessionDuration();
+			}
+		});
+		sessionTimer.setInitialDelay(0);
+		restartSessionTimer();
+		sessionTimer.start();
 	}
 
 	/**
@@ -111,12 +126,44 @@ public final class StatsPanelController {
 		return panel;
 	}
 
+	private void restartSessionTimer() {
+		sessionStartMillis = System.currentTimeMillis();
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				panel.resetSessionDuration();
+			}
+		});
+	}
+
+	private void updateSessionDuration() {
+		long elapsedSeconds = Math.max(0L, (System.currentTimeMillis() - sessionStartMillis) / 1000L);
+		panel.setSessionDuration(formatSessionDuration(elapsedSeconds));
+	}
+
+	private String formatSessionDuration(long elapsedSeconds) {
+		long hours = elapsedSeconds / 3600L;
+		long minutes = (elapsedSeconds % 3600L) / 60L;
+		long seconds = elapsedSeconds % 60L;
+		return String.format(Locale.ROOT, "Czas gry: %02d:%02d:%02d", hours, minutes, seconds);
+	}
+
+	private class SessionLifecycleListener implements PropertyChangeListener {
+		@Override
+		public void propertyChange(PropertyChangeEvent event) {
+			if (event == null) {
+				restartSessionTimer();
+			}
+		}
+	}
+
 	/**
 	 * Add listeners for all the properties this object follows.
 	 *
 	 * @param pcs property change support of the user
 	 */
 	public void registerListeners(PropertyChangeSupport pcs) {
+		restartSessionTimer();
 		PropertyChangeListener listener = new HPChangeListener();
 		addPropertyChangeListenerWithModifiedSupport(pcs, "base_hp", listener);
 		addPropertyChangeListenerWithModifiedSupport(pcs, "hp", listener);
@@ -177,6 +224,8 @@ public final class StatsPanelController {
 
 		listener = new GrumpyChangeListener();
 		pcs.addPropertyChangeListener("grumpy", listener);
+
+		pcs.addPropertyChangeListener(new SessionLifecycleListener());
 
 		listener = new KarmaChangeListener();
 		pcs.addPropertyChangeListener("karma", listener);
