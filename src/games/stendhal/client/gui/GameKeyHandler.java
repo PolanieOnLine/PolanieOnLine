@@ -23,6 +23,8 @@ import static games.stendhal.common.constants.Actions.TYPE;
 import static games.stendhal.common.constants.Actions.WALK;
 import static games.stendhal.common.constants.General.PATHSET;
 
+import java.awt.Component;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Arrays;
@@ -31,6 +33,7 @@ import games.stendhal.client.GameScreen;
 import games.stendhal.client.StendhalClient;
 import games.stendhal.client.entity.IEntity;
 import games.stendhal.client.entity.User;
+import games.stendhal.client.gui.chattext.ChatTextController;
 import games.stendhal.client.gui.j2d.entity.EntityView;
 import games.stendhal.client.gui.wt.core.SettingChangeListener;
 import games.stendhal.client.gui.wt.core.WtWindowManager;
@@ -106,6 +109,12 @@ class GameKeyHandler implements KeyListener {
 					 * Ctrl+R Remove text bubbles
 					 */
 					screen.clearTexts();
+				}
+				break;
+			case KeyEvent.VK_TAB:
+				if (wasdMovementEnabled) {
+					toggleChatFocus();
+					e.consume();
 				}
 				break;
 			case KeyEvent.VK_LEFT:
@@ -304,6 +313,21 @@ class GameKeyHandler implements KeyListener {
 
 		default:
 			return false;
+		}
+	}
+
+	/**
+	 * Toggle chat focus when WASD movement is active.
+	 */
+	private void toggleChatFocus() {
+		final KeyboardFocusManager focusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+		final Component focusOwner = focusManager.getFocusOwner();
+		final Component chatField = ChatTextController.get().getPlayerChatText();
+
+		if (focusOwner == chatField) {
+			screen.requestFocusInWindow();
+		} else {
+			chatField.requestFocusInWindow();
 		}
 	}
 
