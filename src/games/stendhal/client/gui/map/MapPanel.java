@@ -122,6 +122,7 @@ class MapPanel extends JComponent {
 		setBackground(Color.black);
 		updateSize(new Dimension(MAP_WIDTH, MAP_HEIGHT));
 		setOpaque(true);
+		setToolTipText("");
 
 		// handle clicks for moving.
 		this.addMouseListener(new MouseAdapter() {
@@ -372,4 +373,26 @@ class MapPanel extends JComponent {
 			client.send(action);
 		}
 	}
+
+
+	@Override
+	public String getToolTipText(final MouseEvent event) {
+		if ((mapImage == null) || (event == null)) {
+			return null;
+		}
+		final int localX = event.getX();
+		final int localY = event.getY();
+		if ((localY < 0) || (localY > height) || (localX < 0) || (localX > width)) {
+			return null;
+		}
+		final int tileX = (localX + xOffset) / scale;
+		final int tileY = (localY + yOffset) / scale;
+		final int mapTilesWide = mapImage.getWidth(null) / scale;
+		final int mapTilesHigh = mapImage.getHeight(null) / scale;
+		if ((tileX < 0) || (tileY < 0) || (tileX >= mapTilesWide) || (tileY >= mapTilesHigh)) {
+			return null;
+		}
+		return "(" + tileX + ", " + tileY + ")";
+	}
+
 }
