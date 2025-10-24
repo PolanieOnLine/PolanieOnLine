@@ -23,6 +23,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
+import javax.swing.ToolTipManager;
 
 import games.stendhal.client.StendhalClient;
 import games.stendhal.common.CollisionDetection;
@@ -72,6 +73,8 @@ class MapPanel extends JComponent {
 	 * The player Y coordinate.
 	 */
 	private double playerY;
+	/** Last known hover point while the pointer stays on the minimap. */
+	private Point lastHoverPoint;
 	/** X offset of the background image */
 	private int xOffset;
 	/** Y offset of the background image */
@@ -125,12 +128,24 @@ class MapPanel extends JComponent {
 		setToolTipText("");
 
 		// handle clicks for moving.
-		this.addMouseListener(new MouseAdapter() {
+		final MouseAdapter pointerHandler = new MouseAdapter() {
 			@Override
 			public void mouseClicked(final MouseEvent e) {
 				movePlayer(e.getPoint(), e.getClickCount() > 1);
 			}
-		});
+
+			@Override
+			public void mouseMoved(final MouseEvent event) {
+				updateHoverPoint(event.getPoint());
+			}
+
+			@Override
+			public void mouseExited(final MouseEvent event) {
+				lastHoverPoint = null;
+			}
+		};
+		addMouseListener(pointerHandler);
+		addMouseMotionListener(pointerHandler);
 	}
 
 	@Override
@@ -204,6 +219,9 @@ class MapPanel extends JComponent {
 		playerY = y;
 
 		updateView();
+		if (lastHoverPoint != null) {
+			refreshTooltipForHover();
+		}
 	}
 
 	@Override
@@ -377,12 +395,42 @@ class MapPanel extends JComponent {
 
 	@Override
 	public String getToolTipText(final MouseEvent event) {
-		if ((mapImage == null) || (event == null)) {
+		if ((event == null) || !isInsideMapArea(event.getX(), event.getY())) {
 			return null;
 		}
-		final int localX = event.getX();
-		final int localY = event.getY();
-		if ((localY < 0) || (localY > height) || (localX < 0) || (localX > width)) {
+		return getPlayerCoordinateTooltip();
+	}
+
+	private boolean isInsideMapArea(final int x, final int y) {
+		if ((mapImage == null) || (scale <= 0)) {
+			return false;
+		}
+		return (y >= 0) && (y <= height) && (x >= 0) && (x <= width);
+	}
+
+	private void updateHoverPoint(final Point point) {
+		if ((point == null) || !isInsideMapArea(point.x, point.y)) {
+			lastHoverPoint = null;
+			return;
+		}
+		lastHoverPoint = point;
+	}
+
+	private void refreshTooltipForHover() {
+		if (lastHoverPoint == null) {
+			return;
+		}
+		final String tooltip = getPlayerCoordinateTooltip();
+		if (tooltip == null) {
+			return;
+		}
+		final MouseEvent synthetic = new MouseEvent(this, MouseEvent.MOUSE_MOVED,
+				System.currentTimeMillis(), 0, lastHoverPoint.x, lastHoverPoint.y, 0, false);
+		ToolTipManager.sharedInstance().mouseMoved(synthetic);
+	}
+
+	private String getPlayerCoordinateTooltip() {
+		if ((mapImage == null) || (scale <= 0)) {
 			return null;
 		}
 		final int mapTilesWide = mapImage.getWidth(null) / scale;

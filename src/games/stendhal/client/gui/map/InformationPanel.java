@@ -60,6 +60,8 @@ class InformationPanel extends JComponent {
 	private final SimpleAttributeSet center = new SimpleAttributeSet();
 	/** Danger level icons */
 	private final DangerIndicator dangerIndicator;
+	/** Textual description of the current zone danger. */
+	private final JLabel dangerDescription;
 	/** Current relative danger level. */
 	private int dangerLevel;
 	/**
@@ -94,6 +96,12 @@ class InformationPanel extends JComponent {
 		dangerIndicator = new DangerIndicator(MAX_SKULLS);
 		dangerIndicator.setAlignmentX(CENTER_ALIGNMENT);
 		container.add(dangerIndicator);
+		dangerDescription = new JLabel();
+		dangerDescription.setAlignmentX(CENTER_ALIGNMENT);
+		dangerDescription.setOpaque(false);
+		dangerDescription.setForeground(Color.WHITE);
+		dangerDescription.getAccessibleContext().setAccessibleDescription(dangerLevelStrings[0]);
+		container.add(dangerDescription, SLayout.EXPAND_X);
 		// Default to safe, so that we always have a tooltip
 		describeDanger(0);
 	}
@@ -104,7 +112,10 @@ class InformationPanel extends JComponent {
 	 * @param dangerLevel zone danger level, value in range [0-5].
 	 */
 	private void describeDanger(int dangerLevel) {
-		glassPane.setToolTipText(dangerLevelStrings[dangerLevel]);
+		final String description = dangerLevelStrings[dangerLevel];
+		glassPane.setToolTipText(description);
+		dangerDescription.setText(description);
+		dangerDescription.getAccessibleContext().setAccessibleDescription(description);
 	}
 
 	/**
