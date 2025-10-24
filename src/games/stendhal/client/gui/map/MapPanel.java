@@ -385,14 +385,14 @@ class MapPanel extends JComponent {
 		if ((localY < 0) || (localY > height) || (localX < 0) || (localX > width)) {
 			return null;
 		}
-		final int tileX = (localX + xOffset) / scale;
-		final int tileY = (localY + yOffset) / scale;
 		final int mapTilesWide = mapImage.getWidth(null) / scale;
 		final int mapTilesHigh = mapImage.getHeight(null) / scale;
-		if ((tileX < 0) || (tileY < 0) || (tileX >= mapTilesWide) || (tileY >= mapTilesHigh)) {
+		final int playerTileX = (int) Math.round(playerX);
+		final int playerTileY = (int) Math.round(playerY);
+		if ((playerTileX < 0) || (playerTileY < 0) || (playerTileX >= mapTilesWide) || (playerTileY >= mapTilesHigh)) {
 			return null;
 		}
-		return "(" + tileX + ", " + tileY + ")";
+		return "(" + playerTileX + ", " + playerTileY + ")";
 	}
 
 }

@@ -60,8 +60,6 @@ class InformationPanel extends JComponent {
 	private final SimpleAttributeSet center = new SimpleAttributeSet();
 	/** Danger level icons */
 	private final DangerIndicator dangerIndicator;
-	/** Displays the player's current coordinates. */
-	private final JLabel coordinateLabel;
 	/** Current relative danger level. */
 	private int dangerLevel;
 	/**
@@ -91,17 +89,6 @@ class InformationPanel extends JComponent {
 		nameField.setFocusable(false);
 		nameField.setEditable(false);
 		container.add(nameField, SLayout.EXPAND_X);
-
-		// ** Coordinates **
-		coordinateLabel = new JLabel();
-		coordinateLabel.setAlignmentX(CENTER_ALIGNMENT);
-		coordinateLabel.setOpaque(true);
-		coordinateLabel.setBackground(getBackground());
-		coordinateLabel.setForeground(Color.WHITE);
-		coordinateLabel.setFocusable(false);
-		coordinateLabel.setText("Pozycja: --, --");
-		coordinateLabel.setToolTipText("Aktualna pozycja postaci na minimapie.");
-		container.add(coordinateLabel, SLayout.EXPAND_X);
 
 		// ** Danger display **
 		dangerIndicator = new DangerIndicator(MAX_SKULLS);
@@ -150,31 +137,6 @@ class InformationPanel extends JComponent {
 			dangerIndicator.setRelativeDanger(skulls);
 			describeDanger(skulls);
 		}
-	}
-
-	/**
-	 * Update the coordinate display.
-	 *
-	 * @param x współrzędna X w jednostkach świata
-	 * @param y współrzędna Y w jednostkach świata
-	 */
-	void setCoordinates(double x, double y) {
-		final String text = new StringBuilder(24)
-				.append("Pozycja: ")
-				.append(Math.round(x))
-				.append(", ")
-				.append(Math.round(y))
-				.toString();
-		if (!text.equals(coordinateLabel.getText())) {
-			coordinateLabel.setText(text);
-		}
-	}
-
-	/**
-	 * Reset the coordinate display when the zone changes.
-	 */
-	void resetCoordinates() {
-		coordinateLabel.setText("Pozycja: --, --");
 	}
 
 	/**
