@@ -34,6 +34,8 @@ import org.apache.log4j.Logger;
 import games.stendhal.client.entity.User;
 import games.stendhal.client.gui.chatlog.HeaderLessEventLine;
 import games.stendhal.client.gui.login.CharacterDialog;
+import games.stendhal.client.gui.settings.SettingsProperties;
+import games.stendhal.client.gui.wt.core.WtWindowManager;
 import games.stendhal.client.sprite.DataLoader;
 import games.stendhal.client.update.ClientGameConfiguration;
 import games.stendhal.client.update.HttpClient;
@@ -855,14 +857,27 @@ public class StendhalClient extends ClientFramework {
 	 *         Direction key found in pressedStateKeys list
 	 */
 	public boolean directionKeyIsPressed() {
-		return pressedStateKeys.contains(KeyEvent.VK_UP)
+		if (pressedStateKeys.contains(KeyEvent.VK_UP)
 				|| pressedStateKeys.contains(KeyEvent.VK_DOWN)
 				|| pressedStateKeys.contains(KeyEvent.VK_LEFT)
 				|| pressedStateKeys.contains(KeyEvent.VK_RIGHT)
 				|| pressedStateKeys.contains(KeyEvent.VK_KP_LEFT)
 				|| pressedStateKeys.contains(KeyEvent.VK_KP_RIGHT)
 				|| pressedStateKeys.contains(KeyEvent.VK_KP_UP)
-				|| pressedStateKeys.contains(KeyEvent.VK_KP_DOWN);
+				|| pressedStateKeys.contains(KeyEvent.VK_KP_DOWN)) {
+			return true;
+		}
+
+		if (pressedStateKeys.contains(KeyEvent.VK_A)
+				|| pressedStateKeys.contains(KeyEvent.VK_D)
+				|| pressedStateKeys.contains(KeyEvent.VK_W)
+				|| pressedStateKeys.contains(KeyEvent.VK_S)) {
+			String scheme = WtWindowManager.getInstance().getProperty(
+					SettingsProperties.MOVE_KEY_SCHEME_PROPERTY, SettingsProperties.MOVE_KEY_SCHEME_ARROWS);
+			return SettingsProperties.MOVE_KEY_SCHEME_WASD.equalsIgnoreCase(scheme);
+		}
+
+		return false;
 	}
 
 	/**
