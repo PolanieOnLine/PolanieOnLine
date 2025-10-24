@@ -127,7 +127,9 @@ class StatusIconPanel extends JComponent {
 		}
 		if (active.isEmpty()) {
 			setToolTipText(null);
-			getAccessibleContext().setAccessibleDescription(null);
+			if (getAccessibleContext() != null) {
+				getAccessibleContext().setAccessibleDescription(null);
+			}
 			return;
 		}
 		StringBuilder html = new StringBuilder("<html><b>Aktywne statusy:</b><br>");
@@ -143,7 +145,9 @@ class StatusIconPanel extends JComponent {
 		}
 		html.append("</html>");
 		setToolTipText(html.toString());
-		getAccessibleContext().setAccessibleDescription(plain.toString());
+		if (getAccessibleContext() != null) {
+			getAccessibleContext().setAccessibleDescription(plain.toString());
+		}
 	}
 
 	private static void addNormalizedTooltip(List<String> target, String tooltip) {
