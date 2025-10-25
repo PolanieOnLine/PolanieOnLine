@@ -41,7 +41,7 @@ import games.stendhal.client.gui.layout.SLayout;
 import games.stendhal.client.listener.PositionChangeListener;
 import games.stendhal.common.CollisionDetection;
 
-/**
+	/**
  * Controller object for the map panel.
  */
 public class MapPanelController implements GameObjects.GameObjectListener, PositionChangeListener, ZoneChangeListener {
@@ -53,10 +53,12 @@ public class MapPanelController implements GameObjects.GameObjectListener, Posit
 	private double x, y;
 
 	/**
-	 * <code>true</code> if the map should be repainted, <code>false</code>
-	 * otherwise.
-	 */
+ * <code>true</code> if the map should be repainted, <code>false</code>
+ * otherwise.
+ */
 	private volatile boolean needsRefresh;
+	/** Force rebuilding the minimap background on the next update. */
+	private volatile boolean forceBackgroundRefresh = true;
 
 	/**
 	 * Create a MapPanelController.
@@ -194,7 +196,9 @@ public class MapPanelController implements GameObjects.GameObjectListener, Posit
 	private void update(final CollisionDetection cd, final CollisionDetection pd, final CollisionDetection sd,
 			final String zone, final double dangerLevel) {
 		// Panel will do the relevant part in EDT.
-		panel.update(cd, pd, sd);
+		final boolean rebuild = forceBackgroundRefresh;
+		panel.update(cd, pd, sd, rebuild);
+		forceBackgroundRefresh = false;
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -240,6 +244,7 @@ public class MapPanelController implements GameObjects.GameObjectListener, Posit
 
 	@Override
 	public void onZoneChange(Zone zone) {
+		forceBackgroundRefresh = true;
 	}
 
 	@Override

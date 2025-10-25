@@ -104,7 +104,8 @@ class InformationPanel extends JComponent {
 	 * @param dangerLevel zone danger level, value in range [0-5].
 	 */
 	private void describeDanger(int dangerLevel) {
-		glassPane.setToolTipText(dangerLevelStrings[dangerLevel]);
+		final String description = dangerLevelStrings[dangerLevel];
+		glassPane.setToolTipText(description);
 	}
 
 	/**

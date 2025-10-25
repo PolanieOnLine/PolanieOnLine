@@ -20,8 +20,12 @@ import java.util.Map.Entry;
 
 import javax.swing.JComponent;
 import javax.swing.JList;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import games.stendhal.client.gui.layout.SBoxLayout;
 import games.stendhal.client.gui.layout.SLayout;
@@ -45,9 +49,35 @@ public final class BuddyPanelController implements PropertyChangeListener {
 	private BuddyPanelController() {
 		// The panel is actually just the background
 		buddyPanel = new JPanel();
-		buddyPanel.setLayout(new SBoxLayout(SBoxLayout.VERTICAL));
+		buddyPanel.setLayout(new SBoxLayout(SBoxLayout.VERTICAL, SBoxLayout.COMMON_PADDING));
 		// now the actual sorted list
 		model = new BuddyListModel();
+
+		JComponent filterRow = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, SBoxLayout.COMMON_PADDING);
+		JLabel filterLabel = new JLabel("Szukaj znajomych:");
+		filterRow.add(filterLabel);
+		final JTextField filterField = new JTextField();
+		filterField.setColumns(12);
+		filterField.setToolTipText("Filtruj listę znajomych według nazwy");
+		filterField.getDocument().addDocumentListener(new DocumentListener() {
+			@Override
+			public void insertUpdate(DocumentEvent e) {
+				model.setFilter(filterField.getText());
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent e) {
+				model.setFilter(filterField.getText());
+			}
+
+			@Override
+			public void changedUpdate(DocumentEvent e) {
+				model.setFilter(filterField.getText());
+			}
+		});
+		filterRow.add(filterField, SLayout.EXPAND_X);
+		buddyPanel.add(filterRow, SLayout.EXPAND_X);
+
 		JList<Buddy> list = new BuddyPanel(model);
 		buddyPanel.add(list, SLayout.EXPAND_X);
 	}

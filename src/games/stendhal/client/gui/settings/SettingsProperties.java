@@ -24,6 +24,15 @@ public class SettingsProperties {
 	/** Property for display HP bar. */
 	public static final String HP_BAR_PROPERTY =  "ui.hp_bar";
 
+	/** Property for selecting the movement key scheme. */
+	public static final String MOVE_KEY_SCHEME_PROPERTY = "move.keys";
+
+	/** Property value for the arrow key movement scheme. */
+	public static final String MOVE_KEY_SCHEME_ARROWS = "arrows";
+
+	/** Property value for the WASD movement scheme. */
+	public static final String MOVE_KEY_SCHEME_WASD = "wasd";
+
 	public static final String MSG_BLINK = "ui.msg_blink";
 
 	public static final String MSG_SOUND = "ui.msg_sound";

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.swing.AbstractListModel;
@@ -27,6 +28,11 @@ import org.apache.log4j.Logger;
  * status and secondarily by buddy name.
  */
 class BuddyListModel extends AbstractListModel<Buddy> {
+	/**
+	 * serial version uid
+	 */
+	private static final long serialVersionUID = -2770930669293485239L;
+
 	/*
 	 * LinkedHashMap would nicely combine order and fast searches, but
 	 * unfortunately it does not allow sorting after creation. (Likewise for
@@ -35,16 +41,35 @@ class BuddyListModel extends AbstractListModel<Buddy> {
 	 * The map is for a quick lookup, the list is needed for the ordering.
 	 */
 	private final List<Buddy> buddyList = new ArrayList<Buddy>();
+	private final List<Buddy> visibleBuddies = new ArrayList<Buddy>();
 	private final Map<String, Buddy> buddyMap = new HashMap<String, Buddy>();
+	private String filterText = "";
+
+	BuddyListModel() {
+		rebuildVisibleList();
+	}
 
 	@Override
 	public Buddy getElementAt(int index) {
-		return buddyList.get(index);
+		return visibleBuddies.get(index);
 	}
 
 	@Override
 	public int getSize() {
-		return buddyList.size();
+		return visibleBuddies.size();
+	}
+
+	/**
+	 * Update the active name filter for the visible buddy list.
+	 *
+	 * @param filter the new filter string, case insensitive; {@code null} clears the filter
+	 */
+	void setFilter(String filter) {
+		String normalized = normalizeFilter(filter);
+		if (!filterText.equals(normalized)) {
+			filterText = normalized;
+			rebuildVisibleList();
+		}
 	}
 
 	/**
@@ -61,22 +86,19 @@ class BuddyListModel extends AbstractListModel<Buddy> {
 			return;
 		}
 		Buddy buddy = buddyMap.get(name);
+		boolean requiresResort = false;
 		if (buddy == null) {
 			buddy = new Buddy(name);
 			buddy.setOnline(online);
 			buddyList.add(buddy);
 			buddyMap.put(name, buddy);
-			Collections.sort(buddyList);
-			int index = buddyList.indexOf(buddy);
-			fireIntervalAdded(this, index, index);
+			requiresResort = true;
 		} else {
-			int index1 = buddyList.indexOf(buddy);
-			boolean changed = buddy.setOnline(online);
+			requiresResort = buddy.setOnline(online);
+		}
+		if (requiresResort) {
 			Collections.sort(buddyList);
-			int index2 = buddyList.indexOf(buddy);
-			if (changed) {
-				fireContentsChanged(this, index1, index2);
-			}
+			rebuildVisibleList();
 		}
 	}
 
@@ -86,12 +108,45 @@ class BuddyListModel extends AbstractListModel<Buddy> {
 	 * @param name name of the removed player
 	 */
 	void removeBuddy(String name) {
-		Buddy buddy = buddyMap.get(name);
+		Buddy buddy = buddyMap.remove(name);
 		if (buddy != null) {
-			buddyMap.remove(name);
-			int index = buddyList.indexOf(buddy);
 			buddyList.remove(buddy);
-			fireIntervalRemoved(this, index, index);
+			rebuildVisibleList();
 		}
+	}
+
+	private void rebuildVisibleList() {
+		int oldSize = visibleBuddies.size();
+		visibleBuddies.clear();
+		for (Buddy buddy : buddyList) {
+			if (matchesFilter(buddy)) {
+				visibleBuddies.add(buddy);
+			}
+		}
+		int newSize = visibleBuddies.size();
+		if (newSize > oldSize) {
+			fireIntervalAdded(this, oldSize, newSize - 1);
+		} else if (newSize < oldSize) {
+			fireIntervalRemoved(this, newSize, oldSize - 1);
+		}
+		if (newSize > 0) {
+			fireContentsChanged(this, 0, newSize - 1);
+		} else if (oldSize > 0) {
+			fireContentsChanged(this, 0, 0);
+		}
+	}
+
+	private boolean matchesFilter(Buddy buddy) {
+		if (filterText.isEmpty()) {
+			return true;
+		}
+		return buddy.getName().toLowerCase(Locale.ROOT).contains(filterText);
+	}
+
+	private String normalizeFilter(String filter) {
+		if (filter == null) {
+			return "";
+		}
+		return filter.trim().toLowerCase(Locale.ROOT);
 	}
 }

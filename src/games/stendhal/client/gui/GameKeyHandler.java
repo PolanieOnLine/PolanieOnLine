@@ -12,6 +12,9 @@
 package games.stendhal.client.gui;
 
 import static games.stendhal.client.gui.settings.SettingsProperties.DOUBLE_TAP_AUTOWALK_PROPERTY;
+import static games.stendhal.client.gui.settings.SettingsProperties.MOVE_KEY_SCHEME_ARROWS;
+import static games.stendhal.client.gui.settings.SettingsProperties.MOVE_KEY_SCHEME_PROPERTY;
+import static games.stendhal.client.gui.settings.SettingsProperties.MOVE_KEY_SCHEME_WASD;
 import static games.stendhal.common.constants.Actions.AUTOWALK;
 import static games.stendhal.common.constants.Actions.DIR;
 import static games.stendhal.common.constants.Actions.FACE;
@@ -20,6 +23,8 @@ import static games.stendhal.common.constants.Actions.TYPE;
 import static games.stendhal.common.constants.Actions.WALK;
 import static games.stendhal.common.constants.General.PATHSET;
 
+import java.awt.Component;
+import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Arrays;
@@ -28,7 +33,9 @@ import games.stendhal.client.GameScreen;
 import games.stendhal.client.StendhalClient;
 import games.stendhal.client.entity.IEntity;
 import games.stendhal.client.entity.User;
+import games.stendhal.client.gui.chattext.ChatTextController;
 import games.stendhal.client.gui.j2d.entity.EntityView;
+import games.stendhal.client.gui.wt.core.SettingChangeListener;
 import games.stendhal.client.gui.wt.core.WtWindowManager;
 import games.stendhal.common.Direction;
 import marauroa.common.game.RPAction;
@@ -54,6 +61,9 @@ class GameKeyHandler implements KeyListener {
 	 */
 	private DelayedDirectionRelease directionRelease;
 
+	/** Flag indicating whether WASD movement is enabled. */
+	private boolean wasdMovementEnabled;
+
 	/**
 	 * Create a new GameKeyHandler.
 	 *
@@ -63,6 +73,15 @@ class GameKeyHandler implements KeyListener {
 	GameKeyHandler(StendhalClient client, GameScreen screen) {
 		this.client = client;
 		this.screen = screen;
+
+		WtWindowManager windowManager = WtWindowManager.getInstance();
+		updateMovementScheme(windowManager.getProperty(MOVE_KEY_SCHEME_PROPERTY, MOVE_KEY_SCHEME_ARROWS));
+		windowManager.registerSettingChangeListener(MOVE_KEY_SCHEME_PROPERTY, new SettingChangeListener() {
+			@Override
+			public void changed(final String newValue) {
+				updateMovementScheme(newValue);
+			}
+		});
 	}
 
 	@Override
@@ -92,7 +111,12 @@ class GameKeyHandler implements KeyListener {
 					screen.clearTexts();
 				}
 				break;
-
+			case KeyEvent.VK_TAB:
+				if (wasdMovementEnabled) {
+					toggleChatFocus();
+					e.consume();
+				}
+				break;
 			case KeyEvent.VK_LEFT:
 			case KeyEvent.VK_RIGHT:
 			case KeyEvent.VK_UP:
@@ -101,6 +125,13 @@ class GameKeyHandler implements KeyListener {
 			case KeyEvent.VK_KP_RIGHT:
 			case KeyEvent.VK_KP_UP:
 			case KeyEvent.VK_KP_DOWN:
+			case KeyEvent.VK_A:
+			case KeyEvent.VK_D:
+			case KeyEvent.VK_W:
+			case KeyEvent.VK_S:
+				if (!acceptsMovementKey(keyCode)) {
+					break;
+				}
 				/*
 				 * Ctrl means face, otherwise move. Alt turns on auto-walk.
 				 */
@@ -170,11 +201,18 @@ class GameKeyHandler implements KeyListener {
 			case KeyEvent.VK_KP_RIGHT:
 			case KeyEvent.VK_KP_UP:
 			case KeyEvent.VK_KP_DOWN:
+			case KeyEvent.VK_A:
+			case KeyEvent.VK_D:
+			case KeyEvent.VK_W:
+			case KeyEvent.VK_S:
+				if (!acceptsMovementKey(keyCode)) {
+					break;
+				}
 				/*
 				 * Ctrl means face, otherwise move
 				 */
 				processDirectionRelease(keyCodeToDirection(e.getKeyCode()),
-						e.isControlDown());
+							e.isControlDown());
 			}
 		}
 	}
@@ -221,6 +259,80 @@ class GameKeyHandler implements KeyListener {
 	}
 
 	/**
+	 * Update the currently active movement scheme flag.
+	 *
+	 * @param propertyValue
+	 *		configured movement scheme value
+	 */
+	private void updateMovementScheme(final String propertyValue) {
+		wasdMovementEnabled = MOVE_KEY_SCHEME_WASD.equalsIgnoreCase(propertyValue);
+	}
+
+	/**
+	 * Check if the provided key code is allowed to control movement.
+	 *
+	 * @param keyCode
+	 *		keyboard code to check
+	 * @return <code>true</code> when the key triggers movement
+	 */
+	private boolean acceptsMovementKey(final int keyCode) {
+		if (isWasdKey(keyCode)) {
+			return wasdMovementEnabled;
+		}
+
+		switch (keyCode) {
+		case KeyEvent.VK_LEFT:
+		case KeyEvent.VK_RIGHT:
+		case KeyEvent.VK_UP:
+		case KeyEvent.VK_DOWN:
+		case KeyEvent.VK_KP_LEFT:
+		case KeyEvent.VK_KP_RIGHT:
+		case KeyEvent.VK_KP_UP:
+		case KeyEvent.VK_KP_DOWN:
+			return true;
+
+		default:
+			return false;
+		}
+	}
+
+	/**
+	 * Determine whether the key belongs to the WASD cluster.
+	 *
+	 * @param keyCode
+	 *		keyboard code to check
+	 * @return <code>true</code> for WASD keys
+	 */
+	private boolean isWasdKey(final int keyCode) {
+		switch (keyCode) {
+		case KeyEvent.VK_A:
+		case KeyEvent.VK_D:
+		case KeyEvent.VK_W:
+		case KeyEvent.VK_S:
+			return true;
+
+		default:
+			return false;
+		}
+	}
+
+	/**
+	 * Toggle chat focus when WASD movement is active.
+	 */
+	private void toggleChatFocus() {
+		final KeyboardFocusManager focusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+		final Component focusOwner = focusManager.getFocusOwner();
+		final Component chatField = ChatTextController.get().getPlayerChatText();
+
+		if (focusOwner == chatField) {
+			screen.requestFocusInWindow();
+		} else {
+			chatField.requestFocusInWindow();
+		}
+	}
+
+
+	/**
 	 * Convert a keycode to the corresponding direction.
 	 *
 	 * @param keyCode The keycode.
@@ -231,21 +343,26 @@ class GameKeyHandler implements KeyListener {
 		switch (keyCode) {
 		case KeyEvent.VK_LEFT:
 		case KeyEvent.VK_KP_LEFT:
+		case KeyEvent.VK_A:
 			return Direction.LEFT;
 		case KeyEvent.VK_RIGHT:
 		case KeyEvent.VK_KP_RIGHT:
+		case KeyEvent.VK_D:
 			return Direction.RIGHT;
 		case KeyEvent.VK_KP_UP:
 		case KeyEvent.VK_UP:
+		case KeyEvent.VK_W:
 			return Direction.UP;
 		case KeyEvent.VK_KP_DOWN:
 		case KeyEvent.VK_DOWN:
+		case KeyEvent.VK_S:
 			return Direction.DOWN;
 
 		default:
 			return null;
 		}
 	}
+
 
 	/**
 	 * Handle direction press actions.
