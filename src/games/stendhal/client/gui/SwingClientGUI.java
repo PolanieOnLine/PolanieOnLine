@@ -111,6 +111,7 @@ class SwingClientGUI implements J2DClientGUI {
 	private KeyRing keyring;
 	private MagicBag magicbag;
 	private RunicAltar runicAltar;
+	private ProducerWindow producerWindow;
 	//private Portfolio portfolio;
 	private Spells spells;
 	private boolean offline;
@@ -141,6 +142,9 @@ class SwingClientGUI implements J2DClientGUI {
 
 		runicAltar = new RunicAltar();
 		pane.add(runicAltar.getRunicAltar(), JLayeredPane.MODAL_LAYER);
+
+		producerWindow = new ProducerWindow();
+		pane.add(producerWindow, JLayeredPane.MODAL_LAYER);
 
 		quitDialog = new QuitDialog();
 		pane.add(quitDialog.getQuitDialog(), JLayeredPane.MODAL_LAYER);
@@ -347,6 +351,17 @@ class SwingClientGUI implements J2DClientGUI {
 	@Override
 	public void getVisibleRunicAltar() {
 		runicAltar.getVisibleRunicAltar();
+	}
+
+	public void showProducerWindow() {
+		producerWindow.showForNearestProducer();
+	}
+
+	@Override
+	public void showProducerWindow(String npcName, String npcTitle) {
+		if (producerWindow != null) {
+			producerWindow.showForProducer(npcName, npcTitle);
+		}
 	}
 
 	@Override
