@@ -12,8 +12,11 @@
  ***************************************************************************/
 package games.stendhal.client.gui.stats;
 
+import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -27,8 +30,14 @@ import games.stendhal.client.sprite.Sprite;
 import games.stendhal.client.sprite.SpriteStore;
 
 class StatusIconPanel extends JComponent {
-    /** Status bar icons */
-    private static final String iconFolder = "data/sprites/status/panel/";
+	/** Pattern matching HTML break tags. */
+	private static final Pattern BREAK_PATTERN = Pattern.compile("(?is)<br\\s*/?>");
+
+	/** Pattern matching any HTML tag. */
+	private static final Pattern TAG_PATTERN = Pattern.compile("(?is)<[^>]+>");
+
+	/** Status bar icons */
+	private static final String iconFolder = "data/sprites/status/panel/";
 
 	private static final ImageIcon eatingIcon = new ImageIcon(DataLoader.getResource("data/sprites/ideas/eat.png"));
 	private static final ImageIcon chokingIcon = new ImageIcon(DataLoader.getResource("data/sprites/ideas/choking.png"));
@@ -40,19 +49,28 @@ class StatusIconPanel extends JComponent {
 		grumpySprite = store.getSprite("data/sprites/ideas/grumpy.png");
 	}
 
-	final JLabel eating, choking;
-	final AnimatedIcon away, grumpy;
-    private final Map<StatusID, JLabel> statusIDMap;
+		final JLabel eating, choking;
+		final AnimatedIcon away, grumpy;
+	private final Map<StatusID, JLabel> statusIDMap;
+	private final List<String> activeTooltips;
+	private String currentTooltipHtml;
+	private String currentTooltipPlain;
+	private String awayMessage;
+	private String grumpyMessage;
 
 	protected StatusIconPanel() {
 		setLayout(new SBoxLayout(SBoxLayout.HORIZONTAL));
 		setOpaque(false);
 
 		eating = new JLabel(eatingIcon);
+		eating.setToolTipText("Status: Jedzenie posiłku");
+		eating.getAccessibleContext().setAccessibleDescription("Status: Jedzenie posiłku");
 		add(eating);
 		eating.setVisible(false);
 
 		choking = new JLabel(chokingIcon);
+		choking.setToolTipText("Status: Duszenie się");
+		choking.getAccessibleContext().setAccessibleDescription("Status: Duszenie się");
 		add(choking);
 		choking.setVisible(false);
 
@@ -60,18 +78,21 @@ class StatusIconPanel extends JComponent {
 		add(away);
 		away.setVisible(false);
 
-		grumpy = new AnimatedIcon(grumpySprite, 500);
-		add(grumpy);
-		grumpy.setVisible(false);
+				grumpy = new AnimatedIcon(grumpySprite, 500);
+				add(grumpy);
+				grumpy.setVisible(false);
 
-		/** Initialize map */
-        statusIDMap = new EnumMap<StatusID, JLabel>(StatusID.class);
-        statusIDMap.put(StatusID.CONFUSE, createStatusIndicator("confuse"));
-        statusIDMap.put(StatusID.POISON, createStatusIndicator("poison"));
-        statusIDMap.put(StatusID.BLEED, createStatusIndicator("bleed"));
-        statusIDMap.put(StatusID.SHOCK, createStatusIndicator("shock"));
-        statusIDMap.put(StatusID.ZOMBIE, createStatusIndicator("zombie"));
-        statusIDMap.put(StatusID.HEAVY, createStatusIndicator("heavy"));
+				activeTooltips = new ArrayList<String>();
+
+				/** Initialize map */
+				statusIDMap = new EnumMap<StatusID, JLabel>(StatusID.class);
+		addStatusIndicator(StatusID.CONFUSE, "confuse", "Status: Oszołomienie");
+		addStatusIndicator(StatusID.POISON, "poison", "Status: Zatrucie");
+		addStatusIndicator(StatusID.BLEED, "bleed", "Status: Krwawienie");
+		addStatusIndicator(StatusID.SHOCK, "shock", "Status: Porażenie");
+		addStatusIndicator(StatusID.ZOMBIE, "zombie", "Status: Przemiana w zombie");
+		addStatusIndicator(StatusID.HEAVY, "heavy", "Status: Przeciążenie");
+		updatePanelTooltip();
 	}
 
 	/**
@@ -80,103 +101,238 @@ class StatusIconPanel extends JComponent {
 	 * @param identifier string identifier used to look up for the label icon
 	 * @return the created label
 	 */
-	private JLabel createStatusIndicator(String identifier) {
+	private void addStatusIndicator(StatusID id, String identifier, String tooltip) {
+		JLabel label = createStatusIndicator(identifier, tooltip);
+		statusIDMap.put(id, label);
+	}
+
+	private JLabel createStatusIndicator(String identifier, String tooltip) {
 		Icon icon = new ImageIcon(DataLoader.getResource(iconFolder + identifier + ".png"));
 		JLabel label = new JLabel(icon);
 		label.setVisible(false);
+		if ((tooltip != null) && !tooltip.isEmpty()) {
+			label.setToolTipText(tooltip);
+			label.getAccessibleContext().setAccessibleDescription(tooltip);
+		}
 		add(label);
 
 		return label;
 	}
+
+		private void updatePanelTooltip() {
+				activeTooltips.clear();
+				if (eating.isVisible()) {
+						addNormalizedTooltip(activeTooltips, eating.getToolTipText());
+				}
+				if (choking.isVisible()) {
+						addNormalizedTooltip(activeTooltips, choking.getToolTipText());
+				}
+				for (Map.Entry<StatusID, JLabel> entry : statusIDMap.entrySet()) {
+						JLabel status = entry.getValue();
+						if (status.isVisible()) {
+								addNormalizedTooltip(activeTooltips, status.getToolTipText());
+						}
+				}
+				if (away.isVisible()) {
+						addNormalizedTooltip(activeTooltips, away.getToolTipText());
+				}
+				if (grumpy.isVisible()) {
+						addNormalizedTooltip(activeTooltips, grumpy.getToolTipText());
+				}
+				if (activeTooltips.isEmpty()) {
+						if (currentTooltipHtml != null) {
+								currentTooltipHtml = null;
+								setToolTipText(null);
+						}
+						if ((getAccessibleContext() != null) && (currentTooltipPlain != null)) {
+								currentTooltipPlain = null;
+								getAccessibleContext().setAccessibleDescription(null);
+						}
+						return;
+				}
+				StringBuilder html = new StringBuilder("<html><b>Aktywne statusy:</b><br>");
+				StringBuilder plain = new StringBuilder("Aktywne statusy: ");
+				for (int i = 0; i < activeTooltips.size(); i++) {
+						if (i > 0) {
+								html.append("<br>");
+								plain.append("; ");
+						}
+						String entryText = activeTooltips.get(i);
+						html.append(entryText.replace("\n", "<br>"));
+						plain.append(entryText.replace('\n', ' '));
+				}
+				html.append("</html>");
+				String newHtml = html.toString();
+				if (!newHtml.equals(currentTooltipHtml)) {
+						currentTooltipHtml = newHtml;
+						setToolTipText(newHtml);
+				}
+				if (getAccessibleContext() != null) {
+						String newPlain = plain.toString();
+						if (!newPlain.equals(currentTooltipPlain)) {
+								currentTooltipPlain = newPlain;
+								getAccessibleContext().setAccessibleDescription(newPlain);
+						}
+				}
+		}
+
+	private static void addNormalizedTooltip(List<String> target, String tooltip) {
+		String normalized = normalizeTooltip(tooltip);
+		if ((normalized != null) && !normalized.isEmpty()) {
+			target.add(normalized);
+		}
+	}
+
+		private static String normalizeTooltip(String tooltip) {
+				if ((tooltip == null) || tooltip.isEmpty()) {
+						return null;
+				}
+				String normalized = tooltip;
+				normalized = BREAK_PATTERN.matcher(normalized).replaceAll("\n");
+				normalized = TAG_PATTERN.matcher(normalized).replaceAll("");
+				normalized = normalized.replace("&nbsp;", " ");
+				return normalized.trim();
+		}
 
 	/**
 	 * Display or hide eating icon
 	 *
 	 * @param isEating
 	 */
-	protected void setEating(boolean isEating) {
-		if (eating.isVisible() != isEating) {
-			// A hack to prevent eating and choking icons appearing
-			// at the same time
-			if (isEating) {
-				if (!choking.isVisible()) {
-					eating.setVisible(true);
+		protected void setEating(boolean isEating) {
+				boolean changed = false;
+				if (isEating) {
+						if (choking.isVisible()) {
+								if (eating.isVisible()) {
+										eating.setVisible(false);
+										changed = true;
+								}
+						} else if (!eating.isVisible()) {
+								eating.setVisible(true);
+								changed = true;
+						}
+				} else if (eating.isVisible()) {
+						eating.setVisible(false);
+						changed = true;
 				}
-			} else {
-				eating.setVisible(false);
-			}
+				if (changed) {
+						updatePanelTooltip();
+				}
 		}
-	}
 
 	/**
 	 * Display or hide choking icon
 	 *
 	 * @param isChoking
 	 */
-	protected void setChoking(boolean isChoking) {
-		if (choking.isVisible() != isChoking) {
-			choking.setVisible(isChoking);
+		protected void setChoking(boolean isChoking) {
+				boolean changed = false;
+				if (choking.isVisible() != isChoking) {
+						choking.setVisible(isChoking);
+						changed = true;
+				}
+				// A hack to prevent eating and choking icons appearing
+				// at the same time
+				if (isChoking && eating.isVisible()) {
+						eating.setVisible(false);
+						changed = true;
+				}
+				if (changed) {
+						updatePanelTooltip();
+				}
 		}
-		// A hack to prevent eating and choking icons appearing
-		// at the same time
-		if (isChoking) {
-			eating.setVisible(false);
+
+	/**
+	 * Display or hide a status icon.
+	 *
+	 * @param ID
+	 *	The ID value of the status
+	 * @param visible
+	 *	Show the icon
+	 */
+		void setStatus(final StatusID ID, final boolean visible) {
+				final JLabel status = statusIDMap.get(ID);
+				if (status.isVisible() != visible) {
+						status.setVisible(visible);
+						updatePanelTooltip();
+				}
 		}
-	}
 
-    /**
-     * Display or hide a status icon.
-     *
-     * @param ID
-     *      The ID value of the status
-     * @param visible
-     *      Show the icon
-     */
-    void setStatus(final StatusID ID, final boolean visible) {
-        final JLabel status = statusIDMap.get(ID);
-        if (status.isVisible() != visible) {
-            status.setVisible(visible);
-        }
-    }
-
-    /**
-     * Hide all status icons. This is called when the user entity is deleted.
-     */
-    void resetStatuses() {
-    	for (JLabel status : statusIDMap.values()) {
-    		if (status.isVisible()) {
-    			status.setVisible(false);
-    		}
-    	}
-    }
+	/**
+	 * Hide all status icons. This is called when the user entity is deleted.
+	 */
+		void resetStatuses() {
+				boolean changed = false;
+				for (JLabel status : statusIDMap.values()) {
+						if (status.isVisible()) {
+								status.setVisible(false);
+								changed = true;
+						}
+				}
+				if (changed) {
+						updatePanelTooltip();
+				}
+		}
 
 	/**
 	 * Set the away status message. null value will hide the icon.
 	 *
 	 * @param message
 	 */
-	void setAway(String message) {
-		boolean isAway = message != null;
-		if (isAway) {
-			away.setToolTipText("<html>Jesteś oddalony z wiadomością:<br><b>" + message);
+		void setAway(String message) {
+				boolean isAway = message != null;
+				boolean changed = false;
+				if (isAway) {
+						if ((awayMessage == null) || !message.equals(awayMessage)) {
+								awayMessage = message;
+								String tooltip = "<html>Jesteś oddalony z wiadomością:<br><b>" + message;
+								away.setToolTipText(tooltip);
+								away.getAccessibleContext().setAccessibleDescription(tooltip);
+								changed = true;
+						}
+				} else if (awayMessage != null) {
+						awayMessage = null;
+						away.setToolTipText(null);
+						away.getAccessibleContext().setAccessibleDescription(null);
+						changed = true;
+				}
+				if (away.isVisible() != isAway) {
+						away.setVisible(isAway);
+						changed = true;
+				}
+				if (changed) {
+						updatePanelTooltip();
+				}
 		}
-		if (away.isVisible() != isAway) {
-			away.setVisible(isAway);
-		}
-	}
 
 	/**
 	 * Set the grumpy status message. null value will hide the icon.
 	 *
 	 * @param message
 	 */
-	void setGrumpy(String message) {
-		boolean isGrumpy = message != null;
-		if (isGrumpy) {
-			grumpy.setToolTipText("<html>Jesteś niedostępny z wiadomością:<br><b>" + message);
+		void setGrumpy(String message) {
+				boolean isGrumpy = message != null;
+				boolean changed = false;
+				if (isGrumpy) {
+						if ((grumpyMessage == null) || !message.equals(grumpyMessage)) {
+								grumpyMessage = message;
+								String tooltip = "<html>Jesteś niedostępny z wiadomością:<br><b>" + message;
+								grumpy.setToolTipText(tooltip);
+								grumpy.getAccessibleContext().setAccessibleDescription(tooltip);
+								changed = true;
+						}
+				} else if (grumpyMessage != null) {
+						grumpyMessage = null;
+						grumpy.setToolTipText(null);
+						grumpy.getAccessibleContext().setAccessibleDescription(null);
+						changed = true;
+				}
+				if (grumpy.isVisible() != isGrumpy) {
+						grumpy.setVisible(isGrumpy);
+						changed = true;
+				}
+				if (changed) {
+						updatePanelTooltip();
+				}
 		}
-		if (grumpy.isVisible() != isGrumpy) {
-			grumpy.setVisible(isGrumpy);
-		}
-	}
 }

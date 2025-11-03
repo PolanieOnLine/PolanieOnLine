@@ -23,6 +23,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
+import javax.swing.ToolTipManager;
 
 import games.stendhal.client.StendhalClient;
 import games.stendhal.common.CollisionDetection;
@@ -72,6 +73,8 @@ class MapPanel extends JComponent {
 	 * The player Y coordinate.
 	 */
 	private double playerY;
+	/** Last known hover point while the pointer stays on the minimap. */
+	private Point lastHoverPoint;
 	/** X offset of the background image */
 	private int xOffset;
 	/** Y offset of the background image */
@@ -98,6 +101,16 @@ class MapPanel extends JComponent {
 	 * thread.
 	 */
 	private Image mapImage;
+	/** Last collision data reference used to draw the minimap. */
+	private CollisionDetection lastCollision;
+	/** Last protection data reference used to draw the minimap. */
+	private CollisionDetection lastProtection;
+	/** Last secret data reference used to draw the minimap. */
+	private CollisionDetection lastSecret;
+	/** Width of the most recently rendered tile map. */
+	private int lastTileWidth;
+	/** Height of the most recently rendered tile map. */
+	private int lastTileHeight;
 
 	/**
 	 * Create a new MapPanel.
@@ -112,14 +125,27 @@ class MapPanel extends JComponent {
 		setBackground(Color.black);
 		updateSize(new Dimension(MAP_WIDTH, MAP_HEIGHT));
 		setOpaque(true);
+		setToolTipText("");
 
 		// handle clicks for moving.
-		this.addMouseListener(new MouseAdapter() {
+		final MouseAdapter pointerHandler = new MouseAdapter() {
 			@Override
 			public void mouseClicked(final MouseEvent e) {
 				movePlayer(e.getPoint(), e.getClickCount() > 1);
 			}
-		});
+
+			@Override
+			public void mouseMoved(final MouseEvent event) {
+				updateHoverPoint(event.getPoint());
+			}
+
+			@Override
+			public void mouseExited(final MouseEvent event) {
+				lastHoverPoint = null;
+			}
+		};
+		addMouseListener(pointerHandler);
+		addMouseMotionListener(pointerHandler);
 	}
 
 	@Override
@@ -193,6 +219,9 @@ class MapPanel extends JComponent {
 		playerY = y;
 
 		updateView();
+		if (lastHoverPoint != null) {
+			refreshTooltipForHover();
+		}
 	}
 
 	@Override
@@ -259,20 +288,44 @@ class MapPanel extends JComponent {
 	 * @param cd
 	 *            The collision map.
 	 * @param pd
-	 *      	  The protection map.
+	 *		The protection map.
+	 * @param sd
+	 *		The secret map.
+	 * @param forceRebuild
+	 *		Force rebuilding the minimap background even if the cached data appears unchanged.
 	 */
-	void update(final CollisionDetection cd, final CollisionDetection pd, final CollisionDetection sd) {
+	void update(final CollisionDetection cd, final CollisionDetection pd, final CollisionDetection sd, final boolean forceRebuild) {
 		// calculate the size and scale of the map
 		final int mapWidth = cd.getWidth();
 		final int mapHeight = cd.getHeight();
 		final int scale = Math.max(MINIMUM_SCALE, Math.min(MAP_HEIGHT / mapHeight, MAP_WIDTH / mapWidth));
 		final int width = Math.min(MAP_WIDTH, mapWidth * scale);
 		final int height = Math.min(MAP_HEIGHT, mapHeight * scale);
+		final boolean sizeChanged = (MapPanel.this.width != width) || (MapPanel.this.height != height);
+		final boolean tileSizeChanged = (lastTileWidth != mapWidth) || (lastTileHeight != mapHeight);
+		final boolean dataChanged = forceRebuild || tileSizeChanged || (cd != lastCollision) || (pd != lastProtection) || (sd != lastSecret);
+
+		if (!dataChanged) {
+			SwingUtilities.invokeLater(new Runnable() {
+				@Override
+				public void run() {
+					MapPanel.this.scale = scale;
+					MapPanel.this.width = width;
+					MapPanel.this.height = height;
+					if (sizeChanged) {
+						updateSize(new Dimension(MAP_WIDTH, height));
+					}
+					updateView();
+				}
+			});
+			repaint();
+			return;
+		}
 
 		// this.getGraphicsConfiguration is not thread safe
 		GraphicsConfiguration gc = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDefaultConfiguration();
 		// create the map image, and fill it with the wanted details
-		final Image newMapImage  = gc.createCompatibleImage(mapWidth * scale, mapHeight * scale);
+		final Image newMapImage = gc.createCompatibleImage(mapWidth * scale, mapHeight * scale);
 		final Graphics g = newMapImage.getGraphics();
 		g.setColor(COLOR_BACKGROUND);
 		g.fillRect(0, 0, mapWidth * scale, mapHeight * scale);
@@ -282,11 +335,11 @@ class MapPanel extends JComponent {
 				if (cd.collides(x, y)) {
 					g.setColor(COLOR_BLOCKED);
 					g.fillRect(x * scale, y * scale, scale, scale);
-				} else if (pd != null && pd.collides(x, y)) {
+				} else if ((pd != null) && pd.collides(x, y)) {
 					// draw protection only if there is no collision to draw
 					g.setColor(COLOR_PROTECTION);
 					g.fillRect(x * scale, y * scale, scale, scale);
-				} else if (sd != null && sd.collides(x, y)) {
+				} else if ((sd != null) && sd.collides(x, y)) {
 					g.setColor(COLOR_SECRET);
 					g.fillRect(x * scale, y * scale, scale, scale);
 				}
@@ -299,16 +352,24 @@ class MapPanel extends JComponent {
 			public void run() {
 				// Swap the image only after the new one is ready
 				mapImage = newMapImage;
+				lastCollision = cd;
+				lastProtection = pd;
+				lastSecret = sd;
+				lastTileWidth = mapWidth;
+				lastTileHeight = mapHeight;
 				// Update the other data
 				MapPanel.this.scale = scale;
 				MapPanel.this.width = width;
 				MapPanel.this.height = height;
-				updateSize(new Dimension(MAP_WIDTH, height));
+				if (sizeChanged) {
+					updateSize(new Dimension(MAP_WIDTH, height));
+				}
 				updateView();
 			}
 		});
 		repaint();
 	}
+
 
 	/**
 	 * Tell the player to move to point p
@@ -330,4 +391,56 @@ class MapPanel extends JComponent {
 			client.send(action);
 		}
 	}
+
+
+	@Override
+	public String getToolTipText(final MouseEvent event) {
+		if ((event == null) || !isInsideMapArea(event.getX(), event.getY())) {
+			return null;
+		}
+		return getPlayerCoordinateTooltip();
+	}
+
+	private boolean isInsideMapArea(final int x, final int y) {
+		if ((mapImage == null) || (scale <= 0)) {
+			return false;
+		}
+		return (y >= 0) && (y <= height) && (x >= 0) && (x <= width);
+	}
+
+	private void updateHoverPoint(final Point point) {
+		if ((point == null) || !isInsideMapArea(point.x, point.y)) {
+			lastHoverPoint = null;
+			return;
+		}
+		lastHoverPoint = point;
+	}
+
+	private void refreshTooltipForHover() {
+		if (lastHoverPoint == null) {
+			return;
+		}
+		final String tooltip = getPlayerCoordinateTooltip();
+		if (tooltip == null) {
+			return;
+		}
+		final MouseEvent synthetic = new MouseEvent(this, MouseEvent.MOUSE_MOVED,
+				System.currentTimeMillis(), 0, lastHoverPoint.x, lastHoverPoint.y, 0, false);
+		ToolTipManager.sharedInstance().mouseMoved(synthetic);
+	}
+
+	private String getPlayerCoordinateTooltip() {
+		if ((mapImage == null) || (scale <= 0)) {
+			return null;
+		}
+		final int mapTilesWide = mapImage.getWidth(null) / scale;
+		final int mapTilesHigh = mapImage.getHeight(null) / scale;
+		final int playerTileX = (int) Math.round(playerX);
+		final int playerTileY = (int) Math.round(playerY);
+		if ((playerTileX < 0) || (playerTileY < 0) || (playerTileX >= mapTilesWide) || (playerTileY >= mapTilesHigh)) {
+			return null;
+		}
+		return "(" + playerTileX + ", " + playerTileY + ")";
+	}
+
 }
