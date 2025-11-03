@@ -25,6 +25,7 @@ import java.awt.event.ItemListener;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.border.TitledBorder;
 
@@ -140,6 +141,29 @@ class GeneralSettings {
 		});
 		page.add(moveContinuousToggle);
 
+		final WtWindowManager windowManager = WtWindowManager.getInstance();
+		final JComboBox<MovementKeyOption> movementSchemeSelector = new JComboBox<MovementKeyOption>(MovementKeyOption.values());
+		movementSchemeSelector.setToolTipText(
+			"Wybierz, czy poruszasz się strzałkami, czy klawiszami WASD. WASD wyłącza automatyczne ustawianie fokusu na czacie.");
+		final MovementKeyOption selectedScheme = MovementKeyOption.fromProperty(
+			windowManager.getProperty(SettingsProperties.MOVE_KEY_SCHEME_PROPERTY,
+					SettingsProperties.MOVE_KEY_SCHEME_ARROWS));
+		movementSchemeSelector.setSelectedItem(selectedScheme);
+		movementSchemeSelector.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				Object choice = movementSchemeSelector.getSelectedItem();
+				if (choice instanceof MovementKeyOption) {
+					MovementKeyOption option = (MovementKeyOption) choice;
+					windowManager.setProperty(SettingsProperties.MOVE_KEY_SCHEME_PROPERTY, option.getPropertyValue());
+					String msg = "Sterowanie ruchem ustawione na " + option.getLabel() + ".";
+					ClientSingletonRepository.getUserInterface()
+							.addEventLine(new EventLine("", msg, NotificationType.CLIENT));
+				}
+			}
+		});
+		page.add(movementSchemeSelector);
+
 		final JCheckBox msgBlinkToggle = SettingsComponentFactory.createSettingsToggle(
 				MSG_BLINK, true, "Migaj przy wiadomości na kanale prywatnym", "Karta kanału czatu miga w wiadomości, gdy nie jest skoncentrowana");
 		page.add(msgBlinkToggle);
@@ -209,5 +233,40 @@ class GeneralSettings {
 	private void resetClientDimensions() {
 		j2DClient clientFrame = j2DClient.get();
 		clientFrame.resetClientDimensions();
+	}
+
+	private enum MovementKeyOption {
+		ARROWS(SettingsProperties.MOVE_KEY_SCHEME_ARROWS, "strzałki"),
+		WASD(SettingsProperties.MOVE_KEY_SCHEME_WASD, "WASD");
+
+		private final String propertyValue;
+		private final String label;
+
+		MovementKeyOption(final String propertyValue, final String label) {
+			this.propertyValue = propertyValue;
+			this.label = label;
+		}
+
+		String getPropertyValue() {
+			return propertyValue;
+		}
+
+		String getLabel() {
+			return label;
+		}
+
+		@Override
+		public String toString() {
+			return label;
+		}
+
+		static MovementKeyOption fromProperty(final String propertyValue) {
+			for (MovementKeyOption option : values()) {
+				if (option.propertyValue.equalsIgnoreCase(propertyValue)) {
+					return option;
+				}
+			}
+			return ARROWS;
+		}
 	}
 }
