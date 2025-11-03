@@ -72,6 +72,7 @@ import games.stendhal.client.gui.layout.SLayout;
 import games.stendhal.client.gui.map.MapPanelController;
 import games.stendhal.client.gui.spells.Spells;
 import games.stendhal.client.gui.stats.StatsPanelController;
+import games.stendhal.client.gui.settings.SettingsProperties;
 import games.stendhal.client.gui.styled.StyledTabbedPaneUI;
 import games.stendhal.client.gui.wt.core.SettingChangeListener;
 import games.stendhal.client.gui.wt.core.WtWindowManager;
@@ -119,6 +120,8 @@ class SwingClientGUI implements J2DClientGUI {
 	private User user;
 	private GameKeyHandler gameKeyHandler;
 	private OutfitDialog outfitDialog;
+	private FocusAdapter chatFocusRedirector;
+	private boolean chatFocusRedirectInstalled;
 
 	public SwingClientGUI(StendhalClient client, UserContext context,
 			NotificationChannelManager channelManager, JFrame splash) {
@@ -195,15 +198,40 @@ class SwingClientGUI implements J2DClientGUI {
 				World.get().getPlayerList().getNamesList(),
 				SlashActionRepository.getCommandNames());
 		chatText.addKeyListener(tabcompletion);
-		/*
-		 * Always redirect focus to chat field
-		 */
-		screen.addFocusListener(new FocusAdapter() {
+
+		chatFocusRedirector = new FocusAdapter() {
 			@Override
 			public void focusGained(final FocusEvent e) {
 				chatText.getPlayerChatText().requestFocus();
 			}
+		};
+
+		final WtWindowManager windowManager = WtWindowManager.getInstance();
+		updateChatFocusRedirector(windowManager.getProperty(SettingsProperties.MOVE_KEY_SCHEME_PROPERTY,
+					SettingsProperties.MOVE_KEY_SCHEME_ARROWS));
+		windowManager.registerSettingChangeListener(SettingsProperties.MOVE_KEY_SCHEME_PROPERTY,
+				new SettingChangeListener() {
+			@Override
+			public void changed(String newValue) {
+				updateChatFocusRedirector(newValue);
+			}
 		});
+	}
+
+	private void updateChatFocusRedirector(final String propertyValue) {
+		final boolean shouldRedirect = !SettingsProperties.MOVE_KEY_SCHEME_WASD.equalsIgnoreCase(propertyValue);
+
+		if (shouldRedirect) {
+			if (!chatFocusRedirectInstalled) {
+				screen.addFocusListener(chatFocusRedirector);
+				chatFocusRedirectInstalled = true;
+				chatText.getPlayerChatText().requestFocus();
+			}
+		} else if (chatFocusRedirectInstalled) {
+			screen.removeFocusListener(chatFocusRedirector);
+			chatFocusRedirectInstalled = false;
+			screen.requestFocusInWindow();
+		}
 	}
 
 	private void setupKeyHandling(StendhalClient client) {
