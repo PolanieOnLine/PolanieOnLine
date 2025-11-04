@@ -1,14 +1,14 @@
 {
 	"compilerOptions": {
 		"baseUrl": ".",
-		"lib": ["dom", "es2015"],
+		"lib": [ "dom", "es2017" ],
 		"module": "commonjs",
 		"noImplicitOverride": true,
 		"outDir": "../../../build/ts",
 		"rootDir": ".",
 		"sourceMap": true,
 		"strict": true,
-		"target": "es6"
+		"target": "es2017"
 	},
 	"typedocOptions": {
 		"entryPoints": ["."],
