@@ -28,21 +28,21 @@ export class Portal extends Entity {
 
 		if (this["_rpclass"] == "house_portal") {
 			list.push({
-				title: "Use",
+				title: "Użyj",
 				type: "use"
 			});
 			list.push({
-				title: "Knock",
+				title: "Zapukaj",
 				type: "knock"
 			});
 
 		} else {
 
 			// remove default action "look" unless it is a house portal
-			list.splice(list.indexOf({title: "Look", type: "look"}), 1);
+			list.splice(list.indexOf({title: "Zobacz", type: "look"}), 1);
 
 			list.push({
-				title: "Use",
+				title: "Użyj",
 				type: "use"
 			});
 		}

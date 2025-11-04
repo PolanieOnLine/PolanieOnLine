@@ -78,13 +78,13 @@ export class User extends Player {
 		super.buildActions(list);
 		const charname = this["_name"];
 		list.push({
-			title: this.stopped() ? "Walk" : "Stop",
+			title: this.stopped() ? "Chódź" : "Stój",
 			action: function(_entity: any) {
 				marauroa.clientFramework.sendAction({"type": "walk"});
 			}
 		});
 		list.push({
-			title: "Set outfit",
+			title: "Ustaw wygląd",
 			action: function(_entity: any) {
 				let outfitDialog = ui.get(UIComponentEnum.OutfitDialog);
 				if (!outfitDialog) {
@@ -95,7 +95,7 @@ export class User extends Player {
 			}
 		});
 		list.push({
-			title: "Where",
+			title: "Gdzie",
 			action: function(_entity: any) {
 				var action = {
 					"type": "where",

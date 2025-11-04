@@ -83,7 +83,7 @@ export class Player extends RPEntity {
 		var isUnknown = (marauroa.me !== this) && ((marauroa.me["buddies"] == null) || !(playerName in marauroa.me["buddies"]));
 		if (isUnknown) {
 			list.push({
-				title: "Add to buddies",
+				title: "Dodaj do przyjaciół",
 				action: function(_entity: any) {
 					var action = {
 						"type": "addbuddy",
@@ -97,7 +97,7 @@ export class Player extends RPEntity {
 
 		if (this.isIgnored()) {
 			list.push({
-				title: "Remove ignore",
+				title: "Usuń ignorowanie",
 				action: function(_entity: any) {
 					var action = {
 						"type": "unignore",
@@ -109,7 +109,7 @@ export class Player extends RPEntity {
 			});
 		} else if (isUnknown) {
 			list.push({
-				title: "Ignore",
+				title: "Ignoruj",
 				action: function(_entity: any) {
 					var action = {
 						"type": "ignore",
@@ -123,7 +123,7 @@ export class Player extends RPEntity {
 
 		if (marauroa.me !== this) {
 			list.push({
-				title: "Trade",
+				title: "Handluj",
 					action: function(_entity: any) {
 						var action = {
 							"type": "trade",
@@ -136,7 +136,7 @@ export class Player extends RPEntity {
 			});
 			if (marauroa.me.canInviteToGroup()) {
 				list.push({
-					title: "Invite",
+					title: "Zaproś",
 					action: (_entity: any) => {
 						marauroa.clientFramework.sendAction({
 							"type": "group_management",

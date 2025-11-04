@@ -18,7 +18,7 @@ const config = singletons.getConfigManager();
 declare var marauroa: any;
 
 const defaultUse = {
-	title: "Use",
+	title: "Użyj",
 	type: "use",
 	index: 0
 }
@@ -30,7 +30,7 @@ export const ItemMap: {[index: string]: any} = {
 			cursor: "bag",
 			actions: [
 				{
-					title: "Open",
+					title: "Otwórz",
 					type: "use",
 					index: 0
 				}
@@ -62,7 +62,7 @@ export const ItemMap: {[index: string]: any} = {
 				const count = parseInt(e["quantity"], 10);
 				if (count > 1 && e._parent) {
 					return [{
-						title: "Mark all",
+						title: "Zapisz wszystkie",
 						index: 1,
 						action: function(entity: Entity) {
 							// FIXME: doesn't work if scrolls are on ground

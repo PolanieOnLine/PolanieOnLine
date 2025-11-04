@@ -32,7 +32,7 @@ export class Gate extends Entity {
 	override buildActions(list: MenuItem[]) {
 		var id = this["id"];
 		list.push({
-			title: (this["locked"]) ? "Open" : "Close",
+			title: (this["locked"]) ? "Otwórz" : "Zamknij",
 			action: function(_entity: Entity) {
 				var action = {
 					"type": "use",

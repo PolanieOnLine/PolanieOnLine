@@ -47,7 +47,7 @@ export class UseableEntity extends Entity {
 		// FIXME: Java client adds "look" to Entity super class. Should this do the same? If so, there
 		//        is an issue where certain entities, such as signs, end up with two options, "read" &
 		//        "look" which do the same thing.
-		const lookItem = {title: "Look", type: "look"} as MenuItem;
+		const lookItem = {title: "Zobacz", type: "look"} as MenuItem;
 		if (list.indexOf(lookItem) < 0) {
 			list.push(lookItem);
 		}

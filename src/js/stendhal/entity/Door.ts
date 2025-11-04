@@ -37,11 +37,11 @@ export class Door extends Portal {
 
 	override buildActions(list: MenuItem[]) {
 		list.push({
-			title: "Look",
+			title: "Zobacz",
 			type: "look"
 		});
 		list.push({
-			title: "Use",
+			title: "Użyj",
 			type: "use"
 		});
 	}

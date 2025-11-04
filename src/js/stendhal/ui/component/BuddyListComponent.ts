@@ -142,7 +142,7 @@ export class BuddyListComponent extends Component {
 
 		if (this.current.className === "online") {
 			actions.push({
-				title: "Talk",
+				title: "Porozmawiaj",
 				action: function(buddyListComponent: BuddyListComponent) {
 					(ui.get(UIComponentEnum.ChatInput) as ChatInputComponent).setText("/msg "
 							+ buddyListComponent.current!.textContent!.trim()
@@ -150,7 +150,7 @@ export class BuddyListComponent extends Component {
 				}
 			});
 			actions.push({
-				title: "Where",
+				title: "Gdzie jest",
 				action: function(buddyListComponent: BuddyListComponent) {
 					let action = {
 						"type": "where",
@@ -163,7 +163,7 @@ export class BuddyListComponent extends Component {
 			// Invite
 		} else {
 			actions.push({
-				title: "Leave Message",
+				title: "Zostaw wiadomość",
 				action: function(buddyListComponent: BuddyListComponent) {
 					(ui.get(UIComponentEnum.ChatInput) as ChatInputComponent).setText("/storemessage "
 							+ buddyListComponent.current!.textContent!.trim()
@@ -172,7 +172,7 @@ export class BuddyListComponent extends Component {
 			});
 		}
 		actions.push({
-			title: "Remove",
+			title: "Usuń",
 			action: function(buddyListComponent: BuddyListComponent) {
 				let action = {
 					"type": "removebuddy",

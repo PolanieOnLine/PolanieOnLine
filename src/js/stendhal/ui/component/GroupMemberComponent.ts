@@ -70,7 +70,7 @@ export class GroupMemberComponent extends Component {
 	buildActions(actions: any) {
 		let playerName = this.memberName;
 		actions.push({
-			title: "Talk",
+			title: "Porozmawiaj",
 			action: function(_groupMemberComponent: GroupMemberComponent) {
 				(ui.get(UIComponentEnum.ChatInput) as ChatInputComponent).setText("/msg "
 						+ playerName
@@ -78,7 +78,7 @@ export class GroupMemberComponent extends Component {
 			}
 		});
 		actions.push({
-			title: "Where",
+			title: "Gdzie jest",
 			action: function(_groupMemberComponent: GroupMemberComponent) {
 				let action = {
 					"type": "where",
@@ -90,7 +90,7 @@ export class GroupMemberComponent extends Component {
 		});
 		if (this.isUserLeader && (!marauroa.me || this.memberName != marauroa.me["_name"])) {
 			actions.push({
-				title: "Kick",
+				title: "Wyrzuć",
 				action: function(_groupMemberComponent: GroupMemberComponent) {
 					let action = {
 						"type": "group_management",
@@ -102,7 +102,7 @@ export class GroupMemberComponent extends Component {
 				}
 			});
 			actions.push({
-				title: "Make leader",
+				title: "Powołaj lidera",
 				action: function(_groupMemberComponent: GroupMemberComponent) {
 					let action = {
 						"type": "group_management",

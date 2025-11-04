@@ -75,14 +75,14 @@ export class Chest extends PopupInventory {
 		const that = this;
 		if (this.open) {
 			list.push({
-				title: "Inspect",
+				title: "Sprawdź",
 				action: function(_entity: any) {
 					that.checkOpenInventoryWindow();
 				}
 			});
 		}
 		list.push({
-			title: that.open ? "Close" : "Open",
+			title: that.open ? "Zamknij" : "Otwórz",
 			action: function(_entity: any) {
 				that.onUsed();
 			}
@@ -126,7 +126,7 @@ export class Chest extends PopupInventory {
 			invComponent.setConfigId("chest");
 
 			const dstate = stendhal.config.getWindowState("chest");
-			this.inventory = new FloatingWindow("Chest", invComponent,
+			this.inventory = new FloatingWindow("Skrzynia", invComponent,
 					dstate.x, dstate.y);
 			this.inventory.setId("chest");
 		}
@@ -139,7 +139,7 @@ export class Chest extends PopupInventory {
 		if (this.canViewContents()) {
 			this.openInventoryWindow();
 		} else {
-			Chat.log("client", "The chest is too far away.");
+			Chat.log("client", "Skrzynia znajduje się zbyt daleko.");
 		}
 	}
 

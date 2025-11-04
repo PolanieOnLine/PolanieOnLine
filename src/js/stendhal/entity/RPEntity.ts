@@ -136,7 +136,7 @@ export class RPEntity extends ActiveEntity {
 		if (!this["menu"]) {
 			if (marauroa.me._target === this) {
 				list.push({
-					title: "Stop attack",
+					title: "Przerwij atak",
 					action: function(_entity: Entity) {
 						var action = {
 							"type": "stop",
@@ -148,14 +148,14 @@ export class RPEntity extends ActiveEntity {
 				});
 			} else if (this !== marauroa.me) {
 				list.push({
-					title: "Attack",
+					title: "Atakuj",
 					type: "attack"
 				});
 			}
 		}
 		if (this != marauroa.me) {
 			list.push({
-				title: "Push",
+				title: "Popchnij",
 				type: "push"
 			});
 		}

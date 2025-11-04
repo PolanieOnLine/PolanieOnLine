@@ -29,73 +29,73 @@ export class ApplicationMenuDialog extends DialogContentComponent {
 
 	private actions = [
 			{
-				title: "Account",
+				title: "Konto",
 				children: [
 					{
-						title: "Select character",
+						title: "Wybierz postać",
 						action: "characterselector"
 					},
 					{
-						title: "Login History",
+						title: "Historia logowań",
 						action: "loginhistory"
 					},
 					{
-						title: "Change Password",
+						title: "Zmień hasło",
 						action: "changepassword"
 					},
 					{
-						title: "Logout",
+						title: "Wyloguj",
 						action: "logout"
 					}
 				] as MenuAction[]
 			},
 			{
-				title: "Tools",
+				title: "Narzędzia",
 				children: [
 					{
-						title: "Take Screenshot",
+						title: "Wykonaj zrzut ekranu",
 						action: "screenshot",
 					},
 					/*
 					{
-						title: "Capture Video",
-						alt: "Stop Capture",
+						title: "Nagraj wideo",
+						alt: "Zatrzymaj nagrywanie",
 						condition: ScreenCapture.isActive,
 						action: "screencap"
 					},
 					*/
 					{
-						title: "Settings",
+						title: "Ustawienia",
 						action: "settings",
 					}
 				] as MenuAction[]
 			},
 			{
-				title: "Commands",
+				title: "Komendy",
 				children: [
 					{
 						title: "Atlas",
 						action: "atlas",
 					},
 					{
-						title: "Online Players",
+						title: "Gracze online",
 						action: "who",
 					},
 					{
-						title: "Hall of Fame",
+						title: "Aleja sław",
 						action: "halloffame",
 					},
 					{
-						title: "Travel Log",
+						title: "Dziennik zadań",
 						action: "progressstatus",
 					}
 				] as MenuAction[]
 			},
 			{
-				title: "Help",
+				title: "Pomoc",
 				children: [
 					{
-						title: "Manual",
+						title: "Przewodnik",
 						action: "manual",
 					},
 					{
@@ -103,20 +103,16 @@ export class ApplicationMenuDialog extends DialogContentComponent {
 						action: "faq",
 					},
 					{
-						title: "Beginners Guide",
+						title: "Dla początkujących",
 						action: "beginnersguide",
 					},
 					{
-						title: "Commands",
+						title: "Polecenia",
 						action: "help",
 					},
 					{
-						title: "Rules",
+						title: "Regulamin",
 						action: "rules",
-					},
-					{
-						title: "About",
-						action: "about",
 					}
 				] as MenuAction[]
 			},
@@ -127,8 +123,8 @@ export class ApplicationMenuDialog extends DialogContentComponent {
 
 		if (Debug.isActive("screencap")) {
 			this.actions[1].children.push({
-				title: "Capture Video",
-				alt: "Stop Capture",
+				title: "Nagraj wideo",
+				alt: "Zatrzymaj nagrywanie",
 				condition: ScreenCapture.isActive,
 				action: "screencap"
 			});

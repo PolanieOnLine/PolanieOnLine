@@ -32,7 +32,7 @@ export class GrowingEntitySpawner extends Entity {
 	override buildActions(list: MenuItem[]) {
 		if (!this["menu"]) {
 			list.push({
-				title: "Harvest",
+				title: "Zbierz",
 				type: "use",
 			});
 		}

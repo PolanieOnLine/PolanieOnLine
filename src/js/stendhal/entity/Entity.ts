@@ -172,7 +172,7 @@ export class Entity extends RPObject {
 			var pos = this["menu"].indexOf("|");
 			list.push({
 				title: this["menu"].substring(0, pos),
-				type: this["menu"].substring(pos + 1).toLowerCase()
+				type: "use"
 			});
 		}
 
@@ -184,7 +184,7 @@ export class Entity extends RPObject {
 			});
 		} else {
 			list.push({
-				title: "Look",
+				title: "Zobacz",
 				type: "look"
 			});
 		}

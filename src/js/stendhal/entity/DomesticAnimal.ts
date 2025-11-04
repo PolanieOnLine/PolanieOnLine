@@ -66,7 +66,7 @@ export class DomesticAnimal extends RPEntity {
 		let playerOwned = marauroa.me[species];
 		if (!playerOwned) {
 			list.push({
-				title: "Own",
+				title: "Przygarnij",
 				action: function(_entity: any) {
 					let action = {
 						"type": "own",
@@ -79,7 +79,7 @@ export class DomesticAnimal extends RPEntity {
 		}
 		if (playerOwned === this["id"]) {
 			list.push({
-				title: "Leave",
+				title: "Zostaw",
 				action: function(_entity: any) {
 					let action = {
 						"type": "forsake",
