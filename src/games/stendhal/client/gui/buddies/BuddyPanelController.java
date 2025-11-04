@@ -23,6 +23,7 @@ import java.awt.RenderingHints;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
+import java.net.URL;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -47,6 +48,7 @@ import games.stendhal.client.gui.styled.Style;
 import games.stendhal.client.gui.styled.StyleUtil;
 import games.stendhal.client.gui.styled.StyledButtonUI;
 import games.stendhal.client.sprite.DataLoader;
+import games.stendhal.client.stendhal;
 
 /**
  * Controller object for the buddy list.
@@ -160,15 +162,58 @@ public final class BuddyPanelController implements PropertyChangeListener {
 	}
 
 	private static Icon loadSearchIcon() {
-		java.net.URL resource = DataLoader.getResource("data/gui/loupe.png");
-		if (resource != null) {
-			return new ImageIcon(resource);
+		ImageIcon icon = createIcon(DataLoader.getResource("data/gui/loupe.png"));
+		if (icon != null) {
+			return icon;
 		}
-		File fallback = new File("data/gui/loupe.png");
-		if (fallback.isFile()) {
-			return new ImageIcon(fallback.getAbsolutePath());
+		File[] candidates = new File[] {
+			new File("data/gui/loupe.png"),
+			new File(stendhal.getGameFolder(), "data/gui/loupe.png"),
+			resolveInstallIcon()
+		};
+		for (File candidate : candidates) {
+			if (candidate == null) {
+				continue;
+			}
+			icon = createIcon(candidate);
+			if (icon != null) {
+				return icon;
+			}
 		}
 		return new SearchIcon();
+	}
+
+	private static ImageIcon createIcon(URL resource) {
+		if (resource == null) {
+			return null;
+		}
+		ImageIcon icon = new ImageIcon(resource);
+		return (icon.getIconWidth() > 0) ? icon : null;
+	}
+
+	private static ImageIcon createIcon(File file) {
+		if (!file.isFile()) {
+			return null;
+		}
+		ImageIcon icon = new ImageIcon(file.getAbsolutePath());
+		return (icon.getIconWidth() > 0) ? icon : null;
+	}
+
+	private static File resolveInstallIcon() {
+		try {
+			java.net.URL location = BuddyPanelController.class.getProtectionDomain().getCodeSource().getLocation();
+			if (location == null) {
+				return null;
+			}
+			File source = new File(location.toURI());
+			File base = source.isFile() ? source.getParentFile() : source;
+			if (base == null) {
+				return null;
+			}
+			return new File(base, "data/gui/loupe.png");
+		} catch (Exception ignored) {
+			return null;
+		}
 	}
 
 	private static final class SearchIcon implements Icon {
