@@ -22,6 +22,7 @@ import java.awt.Insets;
 import java.awt.RenderingHints;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -162,6 +163,10 @@ public final class BuddyPanelController implements PropertyChangeListener {
 		java.net.URL resource = DataLoader.getResource("data/gui/loupe.png");
 		if (resource != null) {
 			return new ImageIcon(resource);
+		}
+		File fallback = new File("data/gui/loupe.png");
+		if (fallback.isFile()) {
+			return new ImageIcon(fallback.getAbsolutePath());
 		}
 		return new SearchIcon();
 	}
