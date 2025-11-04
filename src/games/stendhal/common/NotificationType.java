@@ -218,8 +218,7 @@ public enum NotificationType {
 	public static final Color COLOR_SIGNIFICANT_NEGATIVE = Color.pink;
 
 	/** bright turquoise blue */
-	public static final Color COLOR_SIGNIFICANT_POSITIVE = new Color(65,
-			105, 225);
+	public static final Color COLOR_SIGNIFICANT_POSITIVE = new Color(65, 105, 225);
 
 	/** purple */
 	public static final Color COLOR_TUTORIAL = new Color(255, 220, 255);
