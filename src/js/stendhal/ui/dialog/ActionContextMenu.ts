@@ -30,8 +30,16 @@ export class ActionContextMenu extends Component {
 
 		var content = "<div class=\"actionmenu verticalgroup\">";
 		for (var i = 0; i < this.actions.length; i++) {
-			// FIXME: the addition of "sub-actionbutton" class should no longer be needed
-			content += "<button class=\"actionbutton" + (i > 0 ? " sub-actionbutton" : "") + "\" id=\"actionbutton." + i + "\">" + stendhal.ui.html.esc(this.actions[i].title) + "</button>";
+			const a = this.actions[i];
+			const isAdmin = !!a.admin;
+
+			// jeśli ktoś jeszcze podaje "(*) ..." w tytule, wyczyść tylko do wyświetlenia:
+			const cleanTitle = String(a.title).replace(/^\(\*\)\s*/, "");
+
+			const extra = (i > 0 ? " sub-actionbutton" : "") + (isAdmin ? " admin" : "");
+			content += `<button class="actionbutton${extra}" id="actionbutton.${i}">`
+					+ stendhal.ui.html.esc(cleanTitle)
+					+ `</button>`;
 		}
 		content += "</div>";
 		this.componentElement.innerHTML = content;
@@ -78,52 +86,53 @@ export class ActionContextMenu extends Component {
 
 	}
 
-	private gatherActions(){
+	private gatherActions() {
 		let actions: any[] = [];
 		this.entity.buildActions(actions);
+	
 		for (const action of this.appendActions) {
 			actions.push(action);
 		}
+	
 		if (marauroa.me["adminlevel"] && marauroa.me["adminlevel"] >= 600) {
 			actions.push({
-				title: "(*) Inspect",
+				title: "Zbadaj (inspect)",
+				admin: true,
 				action: function(entity: any) {
-					const action = {"type": "inspect"} as {[key: string]: string};
+					const action = { type: "inspect" } as { [k: string]: string };
 					if (entity.hasOwnProperty("id")) {
 						action["target"] = "#" + entity["id"];
 					}
-
 					marauroa.clientFramework.sendAction(action);
 				}
 			});
+	
 			actions.push({
-				title: "(*) Destroy",
+				title: "Zniszcz (destroy)",
+				admin: true,
 				action: function(entity: any) {
-					var action = {
-						"type": "destroy",
-					} as {[key: string]: string};
-
+					const action = { type: "destroy" } as { [k: string]: string };
 					if (entity.isContained()) {
 						action["baseobject"] = marauroa.me["id"];
-						action["baseslot"] = entity.getContainer()._name;
-						action["baseitem"] = entity["id"];
+						action["baseslot"]	 = entity.getContainer()._name;
+						action["baseitem"]	 = entity["id"];
 					} else {
 						action["target"] = "#" + entity["id"];
 					}
-
 					marauroa.clientFramework.sendAction(action);
 				}
 			});
+	
 			actions.push({
-				title: "(*) Alter",
+				title: "Zmień (alter)",
+				admin: true,
 				action: function(entity: any) {
-					(ui.get(UIComponentEnum.ChatInput) as ChatInputComponent).setText("/alter #"
-							+ entity["id"]
-							+ " ");
+					(ui.get(UIComponentEnum.ChatInput) as ChatInputComponent)
+						.setText("/alter #" + entity["id"] + " ");
 				}
 			});
 		}
+	
 		this.actions = actions;
 	}
-
 }

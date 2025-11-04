@@ -412,11 +412,77 @@ span.lognick {
 }
 
 .actionmenu {
+	position: relative;
+	background: url("/data/gui/panel_wood.jpg") repeat;
+	border: 1px solid #2a0e06;
+	box-shadow: 0 0 0 1px #2a0e06 inset;
+	padding: 0;
+	min-width: 150px;
 }
 
-.actionmenu button {
-	min-width: 5em;
-	width: 100%
+.actionmenu::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	border-top: 1px solid rgba(255,255,255,0.35);
+	border-left: 1px solid rgba(255,255,255,0.35);
+	pointer-events: none;
+}
+
+.actionmenu .actionbutton {
+	display: block;
+	width: 100%;
+	text-align: left;
+	cursor: pointer;
+	background:
+		linear-gradient(rgba(0,0,0,.10), rgba(255,255,255,.04)),
+		url("/data/gui/panel_wood.jpg") repeat;
+	border: none;
+	margin: 0;
+	padding: 2px 10px;
+	color: #ececec;
+	font: 12px/16px Verdana, sans-serif;
+	letter-spacing: .2px;
+	text-shadow: 0 1px 0 rgba(0,0,0,.85);
+
+	border-top: 1px solid rgba(255,255,255,.22);
+	border-bottom: 1px solid rgba(0,0,0,.55);
+	border-radius: 0;
+}
+
+.actionmenu .actionbutton:first-child {
+	border-top-color: rgba(255,255,255,.35);
+}
+.actionmenu .actionbutton:last-child {
+	border-bottom-color: rgba(0,0,0,.65);
+}
+
+.actionmenu .actionbutton:hover {
+	background-color: #a86b3a;
+	background-image: none;
+	color: #fff4d0;
+	text-shadow: 0 1px 0 rgba(0,0,0,.8);
+}
+
+.actionmenu .actionbutton:active {
+	filter: brightness(0.92);
+}
+
+.actionmenu .actionbutton.admin {
+	color: #f5d07b;
+}
+.actionmenu .actionbutton.admin::before {
+	content: "✚";
+	display: inline-block;
+	width: 12px;
+	margin-right: 8px;
+	color: #ffb73a;
+	font-weight: 700;
+	text-shadow: 0 0 2px rgba(0,0,0,.7), 0 0 5px rgba(255,183,58,.6);
+	transform: translateY(-1px);
+}
+.actionmenu .actionbutton:not(.admin) {
+	color: #ececec;
 }
 
 .mainColumn {
