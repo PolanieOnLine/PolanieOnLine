@@ -15,27 +15,30 @@ package games.stendhal.client.gui.buddies;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Insets;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Insets;
 import java.awt.RenderingHints;
-import java.awt.Dimension;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.net.URL;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import javax.swing.AbstractAction;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JComponent;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.AbstractAction;
-import javax.swing.KeyStroke;
-import javax.swing.Icon;
 
 import java.awt.event.ActionEvent;
 
@@ -44,6 +47,8 @@ import games.stendhal.client.gui.layout.SLayout;
 import games.stendhal.client.gui.styled.Style;
 import games.stendhal.client.gui.styled.StyleUtil;
 import games.stendhal.client.gui.styled.StyledButtonUI;
+import games.stendhal.client.sprite.DataLoader;
+import games.stendhal.client.stendhal;
 
 /**
  * Controller object for the buddy list.
@@ -53,6 +58,8 @@ public final class BuddyPanelController implements PropertyChangeListener {
 	 * Controller instance. The first class referring (j2dClient) this class
 	 * will need the panel anyway, so it's OK to instantiate it right away.
 	 */
+	private static final Icon SEARCH_ICON = loadSearchIcon();
+
 	private static final BuddyPanelController instance = new BuddyPanelController();
 
 	private static final Icon SEARCH_ICON = new SearchIcon();
@@ -141,18 +148,80 @@ public final class BuddyPanelController implements PropertyChangeListener {
 	}
 
 	private static void configureFilterToggle(final JToggleButton toggle) {
-		toggle.setMargin(new Insets(2, 6, 2, 6));
+		toggle.setMargin(new Insets(2, 2, 2, 2));
 		toggle.setText(null);
 		toggle.setFocusable(false);
 		toggle.setFocusPainted(false);
 		toggle.setIconTextGap(0);
-		toggle.setPreferredSize(new Dimension(24, 24));
+		final int iconWidth = Math.max(SEARCH_ICON.getIconWidth(), 16);
+		final int iconHeight = Math.max(SEARCH_ICON.getIconHeight(), 16);
+		final Dimension size = new Dimension(iconWidth + 8, iconHeight + 8);
+		toggle.setPreferredSize(size);
+		toggle.setMinimumSize(size);
+		toggle.setMaximumSize(size);
 		toggle.setToolTipText("Wyszukaj znajomego");
 		Style style = StyleUtil.getStyle();
 		if (style != null) {
 			toggle.setUI(new StyledButtonUI(style));
 			toggle.setOpaque(false);
 			toggle.setRolloverEnabled(true);
+		}
+	}
+
+	private static Icon loadSearchIcon() {
+		ImageIcon icon = createIcon(DataLoader.getResource("data/gui/loupe.png"));
+		if (icon != null) {
+			return icon;
+		}
+		String gameFolderPath = stendhal.getGameFolder();
+		File gameFolderIcon = (gameFolderPath != null) ? new File(gameFolderPath, "data/gui/loupe.png") : null;
+		File[] candidates = new File[] {
+			new File("data/gui/loupe.png"),
+			gameFolderIcon,
+			resolveInstallIcon()
+		};
+		for (File candidate : candidates) {
+			if (candidate == null) {
+				continue;
+			}
+			icon = createIcon(candidate);
+			if (icon != null) {
+				return icon;
+			}
+		}
+		return new SearchIcon();
+	}
+
+	private static ImageIcon createIcon(URL resource) {
+		if (resource == null) {
+			return null;
+		}
+		ImageIcon icon = new ImageIcon(resource);
+		return (icon.getIconWidth() > 0) ? icon : null;
+	}
+
+	private static ImageIcon createIcon(File file) {
+		if (!file.isFile()) {
+			return null;
+		}
+		ImageIcon icon = new ImageIcon(file.getAbsolutePath());
+		return (icon.getIconWidth() > 0) ? icon : null;
+	}
+
+	private static File resolveInstallIcon() {
+		try {
+			java.net.URL location = BuddyPanelController.class.getProtectionDomain().getCodeSource().getLocation();
+			if (location == null) {
+				return null;
+			}
+			File source = new File(location.toURI());
+			File base = source.isFile() ? source.getParentFile() : source;
+			if (base == null) {
+				return null;
+			}
+			return new File(base, "data/gui/loupe.png");
+		} catch (Exception ignored) {
+			return null;
 		}
 	}
 
