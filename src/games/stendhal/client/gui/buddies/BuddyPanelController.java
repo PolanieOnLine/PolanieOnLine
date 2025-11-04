@@ -58,9 +58,9 @@ public final class BuddyPanelController implements PropertyChangeListener {
 	 * Controller instance. The first class referring (j2dClient) this class
 	 * will need the panel anyway, so it's OK to instantiate it right away.
 	 */
-	private static final BuddyPanelController instance = new BuddyPanelController();
-
 	private static final Icon SEARCH_ICON = loadSearchIcon();
+
+	private static final BuddyPanelController instance = new BuddyPanelController();
 
 	private final JComponent buddyPanel;
 	private final BuddyListModel model;
@@ -171,9 +171,11 @@ public final class BuddyPanelController implements PropertyChangeListener {
 		if (icon != null) {
 			return icon;
 		}
+		String gameFolderPath = stendhal.getGameFolder();
+		File gameFolderIcon = (gameFolderPath != null) ? new File(gameFolderPath, "data/gui/loupe.png") : null;
 		File[] candidates = new File[] {
 			new File("data/gui/loupe.png"),
-			new File(stendhal.getGameFolder(), "data/gui/loupe.png"),
+			gameFolderIcon,
 			resolveInstallIcon()
 		};
 		for (File candidate : candidates) {
