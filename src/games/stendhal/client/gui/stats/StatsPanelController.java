@@ -593,7 +593,7 @@ public final class StatsPanelController {
 		} else {
 			text = "Udźwig:" + SPC + formatWeight(used) + SPC + "/" + SPC + formatWeight(max) + " kg";
 			final double rawFraction = used / max;
-			usageFraction = MathHelper.clamp(rawFraction, 0.0, 1.0);
+			usageFraction = MathHelper.clamp((int) Math.round(rawFraction * 100.0), 0, 1);
 			final int percent = MathHelper.clamp((int) Math.round(usageFraction * 100.0), 0, 100);
 			final double remaining = Math.max(0.0, max - used);
 			if (usageFraction >= 1.0) {
