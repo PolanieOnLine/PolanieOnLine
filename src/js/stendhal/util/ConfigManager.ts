@@ -166,7 +166,7 @@ export class ConfigManager {
 			"parquet": "panel_wood_parquet.png",
 			"stone": "panel_stone.png",
 			"tile": "panel_aqua_tile.png",
-			"wood": "panel_wood_v.png",
+			"wood": "panel_wood.jpg",
 			"wood2": "panel_wood_h.png"
 		},
 
