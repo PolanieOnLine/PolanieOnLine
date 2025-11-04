@@ -71,19 +71,17 @@ export class ChatLogComponent extends Component {
 	 */
 	private createTimestamp(): HTMLSpanElement {
 		const date = new Date();
-		let time = "" + date.getHours() + ":";
-		if (date.getHours() < 10) {
-			time = "0" + time;
-		}
-		if (date.getMinutes() < 10) {
-			time = time + "0";
-		}
-		time = time + date.getMinutes();
 
+		const hours = date.getHours().toString().padStart(2, "0");
+		const minutes = date.getMinutes().toString().padStart(2, "0");
+		const seconds = date.getSeconds().toString().padStart(2, "0");
+
+		const time = `${hours}:${minutes}:${seconds}`;
+	
 		const timestamp = document.createElement("span");
 		timestamp.className = "logtimestamp";
-		timestamp.innerHTML = "[" + time + "]";
-
+		timestamp.textContent = `[${time}]`;
+	
 		return timestamp;
 	}
 
@@ -115,22 +113,20 @@ export class ChatLogComponent extends Component {
 	 * @param timestamp {boolean}
 	 *   If `false`, suppresses prepending message with timestamp (default: `true`).
 	 */
-	public addLine(type: string, message: string, orator?: string, timestamp=true) {
-		if (orator) {
-			message = orator + ": " + message;
-		}
-
+	public addLine(type: string, message: string, orator?: string, timestamp = true) {
 		const lcol = document.createElement("div");
 		lcol.className = "logcolL";
-		if (timestamp) {
-			lcol.appendChild(this.createTimestamp());
-		} else {
-			// add whitespace to preserve margin of right column
-			lcol.innerHTML = " ";
-		}
+		lcol.appendChild(timestamp ? this.createTimestamp() : document.createTextNode(" "));
 
 		const rcol = document.createElement("div");
 		rcol.className = "logcolR log" + type;
+
+		if (orator) {
+			rcol.appendChild(this.makeSpan("lognick", `<${orator}>`));
+			rcol.appendChild(document.createTextNode(" "));
+		}
+
+		// bez logmsg, bez dodatkowego spana
 		rcol.innerHTML += this.formatLogEntry(message);
 
 		const row = document.createElement("div");
@@ -178,11 +174,13 @@ export class ChatLogComponent extends Component {
 
 		const rcol = document.createElement("div");
 		rcol.className = "logcolR lognormal";
+
 		if (orator) {
-			rcol.innerHTML += orator + ": ";
+			rcol.appendChild(this.makeSpan("lognick", `<${orator}>`));
+			rcol.appendChild(document.createTextNode(" "));
 		}
-		// create a copy so old emoji line isn't removed
-		rcol.appendChild(emoji.cloneNode());
+
+		rcol.appendChild(emoji.cloneNode() as HTMLImageElement);
 
 		const row = document.createElement("div");
 		row.className = "logrow";
@@ -373,6 +371,13 @@ export class ChatLogComponent extends Component {
 		}
 
 		return res;
+	}
+
+	private makeSpan(className: string, text: string): HTMLSpanElement {
+		const s = document.createElement("span");
+		s.className = className;
+		s.textContent = text;
+		return s;
 	}
 
 	/**

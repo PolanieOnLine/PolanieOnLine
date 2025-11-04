@@ -313,7 +313,7 @@ div.quickPickup div.itemSlot {
 	overflow-y: scroll;
 	word-wrap: break-word;
 	display: block;
-	color: #000;
+	color: rgb(200, 255, 200);
 	background-color: rgb(60, 30, 0);
 	flex: 1;
 }
@@ -377,6 +377,8 @@ div.logsupport { color: rgb(255, 220, 200) }
 span.logtimestamp {
 	font-size: 8pt;
 	color: gray;
+	font-weight: 400;
+	margin-right: 3px;
 }
 
 span.logh { color: rgb(65, 105, 225) }
@@ -400,6 +402,13 @@ div.logcolL {
 div.logcolR {
 	height: 100%;
 	overflow-y: auto;
+}
+
+span.lognick {
+	font-style: italic;
+	font-weight: 400;
+	color: gray;
+	opacity: .95;
 }
 
 .actionmenu {
