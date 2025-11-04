@@ -22,7 +22,7 @@ export class PlayerEquipmentComponent extends Component {
 	private slotNames = ["neck", "head", "cloak", "lhand", "armor", "rhand", "finger", "pas", "legs", "glove", "fingerb", "feet", "pouch"];
 	private slotSizes = [  1,      1,       1,      1,       1,        1,       1,       1,      1,      1,       1,        1,       1];
 	private slotImages = ["slot-neck.png", "slot-helmet.png", "slot-cloak.png", "slot-shield.png", "slot-armor.png", "slot-weapon.png",
-		"slot-belt.png", "slot-ring.png", "slot-legs.png", "slot-gloves.png", "slot-ringb.png", "slot-boots.png", "slot-pouch.png"];
+		"slot-ring.png", "slot-belt.png", "slot-legs.png", "slot-gloves.png", "slot-ringb.png", "slot-boots.png", "slot-pouch.png"];
 	private readonly secondarySlotNames = this.slotNames.map((name) => name + "_set");
         private inventory: ItemContainerImplementation[] = [];
 
