@@ -121,7 +121,7 @@ public class InternalManagedWindow extends InternalWindow implements ManagedWind
 	/**
 	 * Raise the window if possible-
 	 */
-	void raise() {
+	public void raise() {
 		final Container parent = getParent();
 
 		if (parent instanceof JLayeredPane) {
