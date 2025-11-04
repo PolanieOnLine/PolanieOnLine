@@ -146,12 +146,17 @@ public final class BuddyPanelController implements PropertyChangeListener {
 	}
 
 	private static void configureFilterToggle(final JToggleButton toggle) {
-		toggle.setMargin(new Insets(2, 6, 2, 6));
+		toggle.setMargin(new Insets(2, 2, 2, 2));
 		toggle.setText(null);
 		toggle.setFocusable(false);
 		toggle.setFocusPainted(false);
 		toggle.setIconTextGap(0);
-		toggle.setPreferredSize(new Dimension(24, 24));
+		final int iconWidth = Math.max(SEARCH_ICON.getIconWidth(), 16);
+		final int iconHeight = Math.max(SEARCH_ICON.getIconHeight(), 16);
+		final Dimension size = new Dimension(iconWidth + 8, iconHeight + 8);
+		toggle.setPreferredSize(size);
+		toggle.setMinimumSize(size);
+		toggle.setMaximumSize(size);
 		toggle.setToolTipText("Wyszukaj znajomego");
 		Style style = StyleUtil.getStyle();
 		if (style != null) {
