@@ -207,8 +207,8 @@ export class ChatLogComponent extends Component {
 		let res = "";
 		let delims = [" ", ",", ".", "!", "?", ":", ";"];
 		let length = message.length;
-		let inHighlight = false, inUnderline = false,
-			inHighlightQuote = false, inUnderlineQuote = false;
+		let inHighlight = false, inUnderline = false, inUnderlineColor = false, inAdmin = false,
+			inHighlightQuote = false, inUnderlineQuote = false, inUnderlineColorQuote = false, inAdminQuote = false;
 		for (let i = 0; i < length; i++) {
 			let c = message[i];
 
@@ -255,8 +255,58 @@ export class ChatLogComponent extends Component {
 				inUnderline = true;
 				res += "<span class=\"logi\">";
 
+			// Underline with color start?
+			} else if (c === "~") {
+				if (inUnderlineColor) {
+					res += c;
+					continue;
+				}
+				let n = message[i + 1];
+				if (n === "~") {
+					res += c;
+					i++;
+					continue;
+				}
+				if (n === "'") {
+					inUnderlineColorQuote = true;
+					i++;
+				}
+				inUnderlineColor = true;
+				res += "<span class=\"logu\">";
+
+			// Admin highlight start?
+			} else if (c === "¡") {
+				if (inAdmin) {
+					res += c;
+					continue;
+				}
+				let n = message[i + 1];
+				if (n === "¡") {
+					res += c;
+					i++;
+					continue;
+				}
+				if (n === "'") {
+					inAdminQuote = true;
+					i++;
+				}
+				inAdmin = true;
+				res += "<span class=\"logadmin\">";
+
 			// End Highlight and Underline?
 			} else if (c === "'") {
+				if (inAdminQuote) {
+					inAdmin = false;
+					inAdminQuote = false;
+					res += "</span>";
+					continue;
+				}
+				if (inUnderlineColorQuote) {
+					inUnderlineColor = false;
+					inUnderlineColorQuote = false;
+					res += "</span>";
+					continue;
+				}
 				if (inUnderlineQuote) {
 					inUnderline = false;
 					inUnderlineQuote = false;
@@ -279,12 +329,22 @@ export class ChatLogComponent extends Component {
 			} else if (delims.indexOf(c) > -1) {
 				let n = message[i + 1];
 				if (c === " " || n === " " || n == undefined) {
+					if (inAdmin && !inAdminQuote && !inHighlightQuote && !inUnderlineQuote && !inUnderlineColorQuote) {
+						inAdmin = false;
+						res += "</span>" + c;
+						continue;
+					}
+					if (inUnderlineColor && !inUnderlineColorQuote && !inHighlightQuote && !inUnderlineQuote && !inAdminQuote) {
+						inUnderlineColor = false;
+						res += "</span>" + c;
+						continue;
+					}
 					if (inUnderline && !inUnderlineQuote && !inHighlightQuote) {
 						inUnderline = false;
 						res += "</span>" + c;
 						continue;
 					}
-					if (inHighlight && !inUnderlineQuote && !inHighlightQuote) {
+					if (inHighlight && !inUnderlineQuote && !inHighlightQuote && !inUnderlineColorQuote && !inAdminQuote) {
 						inHighlight = false;
 						res += "</span>" + c;
 						continue;
@@ -302,7 +362,13 @@ export class ChatLogComponent extends Component {
 		if (inUnderline) {
 			res += "</span>";
 		}
+		if (inUnderlineColor) {
+			res += "</span>";
+		}
 		if (inHighlight) {
+			res += "</span>";
+		}
+		if (inAdmin) {
 			res += "</span>";
 		}
 

@@ -215,10 +215,10 @@ div.quickPickup div.itemSlot {
 }
 
 .equipment-controls {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 8px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 8px;
 }
 
 .equipment-swap {
@@ -235,44 +235,44 @@ div.quickPickup div.itemSlot {
 
 .equipment-swap:hover,
 .equipment-swap:focus {
-        background-color: #815f4e;
+	background-color: #815f4e;
 }
 
 .reserve-toggle {
-        padding: 6px 10px;
-        border: 1px solid #000;
-        background-color: #6b4d3d;
-        color: #fff;
-        cursor: pointer;
-        font-weight: bold;
-        border-radius: 4px;
-        box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.5);
-        transition: background-color 0.2s ease;
-        line-height: 1;
-        min-width: 36px;
+	padding: 6px 10px;
+	border: 1px solid #000;
+	background-color: #6b4d3d;
+	color: #fff;
+	cursor: pointer;
+	font-weight: bold;
+	border-radius: 4px;
+	box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.5);
+	transition: background-color 0.2s ease;
+	line-height: 1;
+	min-width: 36px;
 }
 
 .reserve-toggle:hover,
 .reserve-toggle:focus {
-        background-color: #815f4e;
+	background-color: #815f4e;
 }
 
 .reserve-window {
-        position: absolute;
-        top: 0;
-        right: 100%;
-        margin-right: 12px;
-        padding: 8px 10px;
-        border: 1px solid #000;
-        border-radius: 6px;
-        background-color: rgba(59, 41, 31, 0.92);
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
-        display: none;
-        z-index: 10;
+	position: absolute;
+	top: 0;
+	right: 100%;
+	margin-right: 12px;
+	padding: 8px 10px;
+	border: 1px solid #000;
+	border-radius: 6px;
+	background-color: rgba(59, 41, 31, 0.92);
+	box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
+	display: none;
+	z-index: 10;
 }
 
 .reserve-window.visible {
-        display: block;
+	display: block;
 }
 /* Right panel */
 #neck0 {position:absolute; top:20px; left:0px}
@@ -314,7 +314,7 @@ div.quickPickup div.itemSlot {
 	word-wrap: break-word;
 	display: block;
 	color: #000;
-	background-color: #FFF;
+	background-color: rgb(60, 30, 0);
 	flex: 1;
 }
 
@@ -356,34 +356,38 @@ div.quickPickup div.itemSlot {
 	margin-top: 0.2em;
 }
 
-div.logerror { color: #F00 }
-div.logwarning { color: #a00000 }
-div.logprivmsg { color: #444 }
-div.logclient { color: #888}
-div.loginformation { color: #ffc800}
-div.lognegative { color: #f00}
-div.lognormal { color: #000}
-div.logpositive { color: #0f0}
-div.loggroup { color: #633d8b }
-div.logemote { color: #633d8b }
-div.logresponse { color: #006400 }
-div.logscene_setting { color: #572002 }
-div.logsignificant_negative { color: #ff8f8f }
-div.logsignificant_positive { color: #4169e1 }
-div.logtutorial { color: #ac00ac }
-div.logsupport { color: #ff7200 }
+div.logerror { color: rgb(255, 80, 80) }
+div.logwarning { color: rgb(160, 0, 0) }
+div.logprivmsg { color: rgb(200, 255, 200) }
+div.logclient { color: rgb(128, 128, 128) }
+div.loginformation { color: rgb(255, 200, 0) }
+div.lognegative { color: rgb(255, 0, 0) }
+div.lognormal { color: rgb(200, 240, 240) }
+div.lognormalblack { color: rgb(0, 0, 0) }
+div.logpositive { color: rgb(128, 255, 128) }
+div.loggroup { color: rgb(120, 120, 255) }
+div.logemote { color: rgb(220, 200, 160) }
+div.logresponse { color: rgb(128, 255, 128) }
+div.logscene_setting { color: rgb(128, 128, 128) }
+div.logsignificant_negative { color: rgb(255, 175, 175) }
+div.logsignificant_positive { color: rgb(65, 105, 225) }
+div.logtutorial { color: rgb(255, 220, 255) }
+div.logsupport { color: rgb(255, 220, 200) }
 
 span.logtimestamp {
 	font-size: 8pt;
 	color: gray;
 }
 
-span.logh {
-	color: #00F
+span.logh { color: rgb(65, 105, 225) }
+span.logi { text-decoration: underline }
+span.logu {
+	text-decoration: underline;
+	color: rgb(254, 76, 76)
 }
-
-span.logi {
-	text-decoration: underline
+span.logadmin {
+	font-style: italic;
+	color: rgb(225, 185, 65)
 }
 
 div.logcolL {
@@ -480,9 +484,9 @@ div.logcolR {
 }
 
 #equipmentborder {
-        float: left;
-        width: 320px;
-        position: relative;
+	float: left;
+	width: 320px;
+	position: relative;
 }
 
 #bag { border: 1px solid black; width: 120px; padding: 2px; float: left }

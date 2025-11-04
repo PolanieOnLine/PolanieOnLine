@@ -23,6 +23,7 @@ export const NotificationType = {
 	"information": Color.CHAT_INFO,
 	"negative": Color.CHAT_NEGATIVE,
 	"normal": Color.CHAT_NORMAL,
+	"normalblack": Color.CHAT_NORMALBLACK,
 	"poison": Color.CHAT_POISON,
 	"positive": Color.CHAT_POSITIVE,
 	"privmsg": Color.CHAT_PRIVATE,

@@ -188,14 +188,27 @@ export abstract class TextBubble {
 	 * @param parts {util.Pair.Pair[]}
 	 *   Array to be populated.
 	 * @param defaultColor {string}
-	 *   Unformatted text color (default: `util.Color.Color.CHAT_NORMAL`).
+	 *   Unformatted text color (default: `util.Color.Color.CHAT_NORMALBLACK`).
 	 */
-	protected segregate(parts: Pair<string, string>[], defaultColor=Color.CHAT_NORMAL) {
+	protected segregate(parts: Pair<string, string>[], defaultColor=Color.CHAT_NORMALBLACK) {
 		let fillStyle = defaultColor;
 		let inHighlight = false, inHighlightQuote = false;
+		let inUnderline = false, inUnderlineQuote = false;
 		let idxStart = 0, idxEnd = 0;
 		for (idxEnd; idxEnd < this.text.length; idxEnd++) {
-			if (inHighlightQuote && this.text[idxEnd] === "'") {
+			if (inUnderlineQuote && this.text[idxEnd] === "'") {
+				inUnderlineQuote = false;
+				inUnderline = false;
+				parts.push(new Pair(fillStyle, this.text.substring(idxStart, idxEnd)));
+				idxEnd++;
+				idxStart = idxEnd;
+				fillStyle = defaultColor;
+			} else if (!inUnderlineQuote && inUnderline && this.text[idxEnd] === " ") {
+				inUnderline = false;
+				parts.push(new Pair(fillStyle, this.text.substring(idxStart, idxEnd)));
+				idxStart = idxEnd;
+				fillStyle = defaultColor;
+			} else if (inHighlightQuote && this.text[idxEnd] === "'") {
 				inHighlightQuote = false;
 				inHighlight = false;
 				parts.push(new Pair(fillStyle, this.text.substring(idxStart, idxEnd)));
@@ -215,6 +228,17 @@ export abstract class TextBubble {
 				fillStyle = Color.CHAT_HIGHLIGHT;
 				if (this.text[idxEnd+1] === "'") {
 					inHighlightQuote = true;
+					idxEnd++;
+				}
+				idxStart = idxEnd+1;
+			} else if (this.text[idxEnd] === "~") {
+				inUnderline = true;
+				if (idxEnd > idxStart) {
+					parts.push(new Pair(fillStyle, this.text.substring(idxStart, idxEnd)));
+				}
+				fillStyle = Color.CHAT_UNDERLINE;
+				if (this.text[idxEnd+1] === "'") {
+					inUnderlineQuote = true;
 					idxEnd++;
 				}
 				idxStart = idxEnd+1;

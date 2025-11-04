@@ -155,12 +155,12 @@ export class Color {
 	public static readonly CYAN = Color.AQUA;
 	public static readonly DARK_GRAY = "rgb(96, 96, 96)"; // #606060
 	public static readonly GRAY = "rgb(128, 128, 128)"; // #808080
-	public static readonly GREEN = "rgb(0, 128, 0)"; // #008000
+	public static readonly GREEN = "rgb(128, 255, 128)"; // #80FF80 (light green)
 	public static readonly LIGHT_GRAY = "rgb(192, 192, 192)"; // #C0C0C0
 	public static readonly MAGENTA = "rgb(255, 0, 255)" // #FF00FF
-	public static readonly ORANGE = "rgb(255, 165, 0)"; // #FFA500
-	public static readonly PINK = "rgb(255, 192, 203)"; // #FFC0CB
-	public static readonly RED = "rgb(255, 0, 0)"; // #FF0000
+	public static readonly ORANGE = "rgb(255, 200, 0)"; // #FFC800 (amber)
+	public static readonly PINK = "rgb(255, 175, 175)"; // #FFAFAF (soft pink)
+	public static readonly RED = "rgb(255, 80, 80)"; // #FF5050 (light red)
 	public static readonly VIOLET = "rgb(238, 130, 238)"; // #EE82EE
 	public static readonly WHITE = "rgb(255, 255, 255)"; // #FFFFFF
 	public static readonly YELLOW = "rgb(255, 255, 0)"; // #FFFF00
@@ -187,24 +187,27 @@ export class Color {
 
 	public static readonly CHAT_CLIENT = Color.GRAY;
 	public static readonly CHAT_DETAILED = Color.BLACK;
-	public static readonly CHAT_EMOTE = Color.GROUP;
+	public static readonly CHAT_EMOTE = "rgb(220, 200, 160)"; // #DCC8A0 (tan)
 	public static readonly CHAT_ERROR = Color.RED;
-	public static readonly CHAT_GROUP = "rgb(00, 00, 160)"; // #0000A0 (dark blue)
+	public static readonly CHAT_GROUP = "rgb(120, 120, 255)"; // #7878FF (soft blue)
 	public static readonly CHAT_HEAL = Color.GREEN;
 	public static readonly CHAT_HIGHLIGHT = Color.BLUE;
 	public static readonly CHAT_INFO = Color.ORANGE;
 	public static readonly CHAT_NEGATIVE = Color.RED;
-	public static readonly CHAT_NORMAL = Color.BLACK;
+	public static readonly CHAT_NORMAL = "rgb(200, 240, 240)"; // #C8F0F0 (pale cyan)
+	public static readonly CHAT_NORMALBLACK = Color.BLACK;
 	public static readonly CHAT_POISON = Color.RED;
 	public static readonly CHAT_POSITIVE = Color.GREEN;
-	public static readonly CHAT_PRIVATE = Color.DARK_GRAY;
-	public static readonly CHAT_RESPONSE = "rgb(0, 100, 0)"; // #006400 (dark green)
-	public static readonly CHAT_SCENE = "rgb(87, 32, 2)"; // #572002 (brown)
+	public static readonly CHAT_PRIVATE = "rgb(200, 255, 200)"; // #C8FFC8 (mint)
+	public static readonly CHAT_RESPONSE = Color.GREEN;
+	public static readonly CHAT_SCENE = Color.GRAY;
 	public static readonly CHAT_SERVER = Color.GRAY;
 	public static readonly CHAT_SIG_NEGATIVE = Color.PINK;
 	public static readonly CHAT_SIG_POSITIVE = "rgb(65, 105, 225)"; // #4169FF (light blue)
-	public static readonly CHAT_SUPPORT = "rgb(255, 114, 0)"; // #FF7200 (orange)
-	public static readonly CHAT_TUTORIAL = "rgb(172, 0, 172)"; // #AC00AC (violet)
+	public static readonly CHAT_SUPPORT = "rgb(255, 220, 200)"; // #FFDCC8 (peach)
+	public static readonly CHAT_TUTORIAL = "rgb(255, 220, 255)"; // #FFDCFF (lavender)
+	public static readonly CHAT_UNDERLINE = "rgb(254, 76, 76)"; // #FE4C4C
+	public static readonly CHAT_ADMIN = "rgb(225, 185, 65)"; // #E1B941
 	public static readonly CHAT_WARN = "rgb(160, 0, 0)"; // #A00000 // (red)
 
 
