@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2025 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -61,8 +60,6 @@ public final class BuddyPanelController implements PropertyChangeListener {
 	private static final Icon SEARCH_ICON = loadSearchIcon();
 
 	private static final BuddyPanelController instance = new BuddyPanelController();
-
-	private static final Icon SEARCH_ICON = new SearchIcon();
 
 	private final JComponent buddyPanel;
 	private final BuddyListModel model;
