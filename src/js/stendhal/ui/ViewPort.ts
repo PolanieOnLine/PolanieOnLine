@@ -17,6 +17,7 @@ import { ui } from "./UI";
 import { UIComponentEnum } from "./UIComponentEnum";
 
 import { PlayerEquipmentComponent } from "./component/PlayerEquipmentComponent";
+import { MiniMapComponent } from "./component/MiniMapComponent";
 
 import { ActionContextMenu } from "./dialog/ActionContextMenu";
 import { DropQuantitySelectorDialog } from "./dialog/DropQuantitySelectorDialog";
@@ -31,6 +32,8 @@ import { SpeechBubble } from "../sprite/SpeechBubble";
 import { TextBubble } from "../sprite/TextBubble";
 
 import { Point } from "../util/Point";
+import { GameLoop } from "../util/GameLoop";
+import { SpringVector, Vector2 } from "../util/SpringVector";
 
 
 /**
@@ -42,10 +45,17 @@ export class ViewPort {
 	private offsetX = 0;
 	/** Vertical screen offset in pixels. */
 	private offsetY = 0;
-	/** Prevents adjusting offset based on player position. */
-	private freeze = false;
-	/** Time of most recent redraw. */
-	private timeStamp = Date.now();
+        /** Prevents adjusting offset based on player position. */
+        private freeze = false;
+
+        private loop?: GameLoop;
+        private readonly cameraSpring = new SpringVector();
+        private cameraTarget: Vector2 = {x: 0, y: 0};
+        private cameraInitialized = false;
+        private readonly renderOffset: Vector2 = {x: 0, y: 0};
+        private readonly lastWorldSize: Vector2 = {x: 0, y: 0};
+        private readonly entityStates = new WeakMap<any, {prevX: number; prevY: number; currX: number; currY: number}>();
+        private fpsLabel?: HTMLElement;
 
 	// dimensions
 	// TODO: remove & use CSS style instead
@@ -107,9 +117,11 @@ export class ViewPort {
 		//~ this.initialStyle["max-width"] = stylesheet.getPropertyValue("max-width");
 		//~ this.initialStyle["max-height"] = stylesheet.getPropertyValue("max-height");
 		// NOTE: this doesn't work if properties set in css
-		this.initialStyle["max-width"] = "calc((100dvh - 5em) * 640 / 480)";
-		this.initialStyle["max-height"] = "calc(100dvh - 5em)";
-	}
+                this.initialStyle["max-width"] = "calc((100dvh - 5em) * 640 / 480)";
+                this.initialStyle["max-height"] = "calc(100dvh - 5em)";
+
+                this.fpsLabel = this.createFpsLabel(element);
+        }
 
 	/**
 	 * Retrieves the viewport element.
@@ -117,58 +129,247 @@ export class ViewPort {
 	 * @return {HTMLElement}
 	 *   Viewport `HTMLElement`.
 	 */
-	public getElement(): HTMLElement {
-		return document.getElementById("viewport")!;
-	}
+        public getElement(): HTMLElement {
+                return document.getElementById("viewport")!;
+        }
 
-	/**
-	 * Draws terrain tiles & entity sprites in the viewport.
-	 */
-	draw() {
-		var startTime = new Date().getTime();
+        private createFpsLabel(canvas: HTMLCanvasElement): HTMLElement {
+                const label = document.createElement("div");
+                label.className = "fps-counter";
+                label.style.position = "absolute";
+                label.style.top = "0";
+                label.style.left = "0";
+                label.style.padding = "2px 4px";
+                label.style.background = "rgba(0, 0, 0, 0.35)";
+                label.style.color = "#fff";
+                label.style.fontFamily = "monospace";
+                label.style.fontSize = "10px";
+                label.style.pointerEvents = "none";
+                label.style.userSelect = "none";
+                label.textContent = "-- fps";
 
-		if (marauroa.me && document.visibilityState === "visible") {
-			if (marauroa.currentZoneName === stendhal.data.map.currentZoneName
-				|| stendhal.data.map.currentZoneName === "int_vault"
-				|| stendhal.data.map.currentZoneName === "int_adventure_island"
-				|| stendhal.data.map.currentZoneName === "tutorial_island") {
-				this.drawingError = false;
+                const parent = canvas.parentElement;
+                if (parent) {
+                        if (!parent.style.position) {
+                                parent.style.position = "relative";
+                        }
+                        parent.appendChild(label);
+                }
 
-				this.ctx.globalAlpha = 1.0;
-				this.adjustView(this.ctx.canvas);
-				this.ctx.fillStyle = "black";
-				this.ctx.fillRect(0, 0, 10000, 10000);
+                return label;
+        }
 
-				var tileOffsetX = Math.floor(this.offsetX / this.targetTileWidth);
-				var tileOffsetY = Math.floor(this.offsetY / this.targetTileHeight);
+        /**
+         * Starts the render loop if it is not already active.
+         */
+        draw() {
+                if (!this.loop) {
+                        const prefer144 = stendhal.config.getBoolean("loop.prefer144hz");
+                        const configuredLimit = stendhal.config.getFloat("loop.fps.limit");
+                        const fpsLimit = this.normalizeFpsLimit(configuredLimit);
+                        this.loop = new GameLoop(
+                                (dt) => this.update(dt),
+                                (alpha) => this.render(alpha),
+                                {
+                                        prefer144hz: prefer144,
+                                        fpsLimit,
+                                        onFpsSample: (fps) => this.updateFpsCounter(fps)
+                                }
+                        );
+                }
+                this.loop.start();
+        }
 
-				// FIXME: filter should not be applied to "blend" layers
-				//this.applyFilter();
-				stendhal.data.map.parallax.draw(this.ctx, this.offsetX, this.offsetY);
-				stendhal.data.map.strategy.render(this.ctx.canvas, this, tileOffsetX, tileOffsetY, this.targetTileWidth, this.targetTileHeight);
+        private update(dtMs: number) {
+                if (!this.shouldRenderFrame()) {
+                        return;
+                }
 
-				this.weatherRenderer.draw(this.ctx);
-				//this.removeFilter();
-				this.applyHSLFilter();
-				this.drawEntitiesTop();
-				this.drawEmojiSprites();
-				this.drawTextSprites();
-				this.drawTextSprites(this.notifSprites);
+                this.drawingError = false;
+                this.updateCamera(dtMs);
+                this.updateEntities(dtMs);
+                this.advanceMiniMap(dtMs);
+        }
 
-				// redraw inventory sprites
-				stendhal.ui.equip.update();
-				(ui.get(UIComponentEnum.PlayerEquipment) as PlayerEquipmentComponent).update();
-			}
-		}
-		window.setTimeout(function() {
-			stendhal.ui.gamewindow.draw.apply(stendhal.ui.gamewindow, arguments);
-		}, Math.max((1000/20) - (new Date().getTime()-startTime), 1));
-	}
+        private render(alpha: number) {
+                if (!this.shouldRenderFrame()) {
+                        return;
+                }
 
-	/**
-	 * Adds map's coloring filter to viewport.
-	 *
-	 * FIXME:
+                this.ctx.globalAlpha = 1.0;
+                this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+                this.ctx.imageSmoothingEnabled = false;
+
+                const interpolated = this.cameraSpring.getInterpolated(alpha);
+                this.renderOffset.x = interpolated.x;
+                this.renderOffset.y = interpolated.y;
+
+                this.offsetX = interpolated.x;
+                this.offsetY = interpolated.y;
+
+                this.ctx.fillStyle = "black";
+                this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+
+                this.ctx.translate(-interpolated.x, -interpolated.y);
+
+                const tileOffsetX = Math.floor(this.offsetX / this.targetTileWidth);
+                const tileOffsetY = Math.floor(this.offsetY / this.targetTileHeight);
+
+                stendhal.data.map.parallax.draw(this.ctx, this.offsetX, this.offsetY);
+                stendhal.data.map.strategy.render(
+                        this.ctx.canvas,
+                        this,
+                        tileOffsetX,
+                        tileOffsetY,
+                        this.targetTileWidth,
+                        this.targetTileHeight,
+                        alpha
+                );
+
+                this.weatherRenderer.draw(this.ctx);
+                this.applyHSLFilter();
+                this.drawEntitiesTop(alpha);
+                this.drawEmojiSprites();
+                this.drawTextSprites();
+                this.drawTextSprites(this.notifSprites);
+
+                stendhal.ui.equip.update();
+                (ui.get(UIComponentEnum.PlayerEquipment) as PlayerEquipmentComponent).update();
+
+                this.renderMiniMap(alpha);
+        }
+
+        private shouldRenderFrame(): boolean {
+                if (!marauroa.me || document.visibilityState !== "visible") {
+                        return false;
+                }
+                if (marauroa.currentZoneName !== stendhal.data.map.currentZoneName
+                                && stendhal.data.map.currentZoneName !== "int_vault"
+                                && stendhal.data.map.currentZoneName !== "int_adventure_island"
+                                && stendhal.data.map.currentZoneName !== "tutorial_island") {
+                        return false;
+                }
+                return true;
+        }
+
+        private updateCamera(dtMs: number) {
+                const canvas = this.ctx.canvas;
+                const target = this.computeCameraTarget(canvas);
+
+                const worldWidth = stendhal.data.map.zoneSizeX * this.targetTileWidth;
+                const worldHeight = stendhal.data.map.zoneSizeY * this.targetTileHeight;
+
+                if (this.lastWorldSize.x !== worldWidth || this.lastWorldSize.y !== worldHeight) {
+                        this.lastWorldSize.x = worldWidth;
+                        this.lastWorldSize.y = worldHeight;
+                        this.cameraInitialized = false;
+                }
+
+                if (!this.cameraInitialized) {
+                        this.cameraSpring.snap(target);
+                        this.cameraInitialized = true;
+                } else {
+                        this.cameraSpring.step(target, dtMs);
+                }
+
+                const maxX = Math.max(0, worldWidth - canvas.width);
+                const maxY = Math.max(0, worldHeight - canvas.height);
+                this.cameraSpring.clamp(0, maxX, 0, maxY);
+                this.cameraTarget = target;
+        }
+
+        private computeCameraTarget(canvas: HTMLCanvasElement): Vector2 {
+                if (this.freeze) {
+                        return this.cameraSpring.getPosition();
+                }
+
+                const playerX = (typeof(marauroa.me["_x"]) === "number") ? marauroa.me["_x"] : marauroa.me["x"];
+                const playerY = (typeof(marauroa.me["_y"]) === "number") ? marauroa.me["_y"] : marauroa.me["y"];
+
+                let centerX = playerX * this.targetTileWidth + this.targetTileWidth / 2 - canvas.width / 2;
+                let centerY = playerY * this.targetTileHeight + this.targetTileHeight / 2 - canvas.height / 2;
+
+                const worldWidth = stendhal.data.map.zoneSizeX * this.targetTileWidth;
+                const worldHeight = stendhal.data.map.zoneSizeY * this.targetTileHeight;
+
+                centerX = Math.min(centerX, worldWidth - canvas.width);
+                centerX = Math.max(centerX, 0);
+
+                centerY = Math.min(centerY, worldHeight - canvas.height);
+                centerY = Math.max(centerY, 0);
+
+                return {x: centerX, y: centerY};
+        }
+
+        private updateEntities(dtMs: number) {
+                for (const key in stendhal.zone.entities) {
+                        const entity = stendhal.zone.entities[key];
+                        if (!entity) {
+                                continue;
+                        }
+
+                        let state = this.entityStates.get(entity);
+                        if (!state) {
+                                const pos = this.getEntityPosition(entity);
+                                state = {prevX: pos.x, prevY: pos.y, currX: pos.x, currY: pos.y};
+                        }
+
+                        state.prevX = state.currX;
+                        state.prevY = state.currY;
+
+                        entity.updatePosition(dtMs);
+
+                        const currentPos = this.getEntityPosition(entity);
+                        state.currX = currentPos.x;
+                        state.currY = currentPos.y;
+                        this.entityStates.set(entity, state);
+                }
+        }
+
+        private getEntityPosition(entity: any): Vector2 {
+                const x = (typeof(entity["_x"]) === "number") ? entity["_x"] : entity["x"];
+                const y = (typeof(entity["_y"]) === "number") ? entity["_y"] : entity["y"];
+                return {x: x || 0, y: y || 0};
+        }
+
+        private advanceMiniMap(dtMs: number) {
+                const minimap = ui.get(UIComponentEnum.MiniMap) as MiniMapComponent | undefined;
+                if (minimap && typeof(minimap.advance) === "function") {
+                        minimap.advance(dtMs, this.cameraSpring.getPosition(), this.cameraTarget);
+                }
+        }
+
+        private renderMiniMap(alpha: number) {
+                const minimap = ui.get(UIComponentEnum.MiniMap) as MiniMapComponent | undefined;
+                if (minimap && typeof(minimap.renderFrame) === "function") {
+                        minimap.renderFrame(alpha);
+                }
+        }
+
+        private updateFpsCounter(fps: number) {
+                if (this.fpsLabel) {
+                        this.fpsLabel.textContent = fps.toFixed(0) + " fps";
+                }
+        }
+
+        public setFpsLimit(limit?: number) {
+                const normalized = this.normalizeFpsLimit(limit);
+                if (this.loop) {
+                        this.loop.setFpsLimit(normalized);
+                }
+        }
+
+        private normalizeFpsLimit(limit?: number): number|undefined {
+                if (typeof(limit) === "number" && Number.isFinite(limit) && limit > 0) {
+                        return limit;
+                }
+                return undefined;
+        }
+
+        /**
+         * Adds map's coloring filter to viewport.
+         *
+         * FIXME:
 	 * - colors are wrong
 	 * - doesn't support "blend" layers
 	 * - very slow
@@ -258,37 +459,71 @@ export class ViewPort {
 		this.blendMethod = method;
 	}
 
-	/**
-	 * Draws overall entity sprites.
-	 */
-	drawEntities() {
-		var currentTime = new Date().getTime();
-		var time = currentTime - this.timeStamp;
-		this.timeStamp = currentTime;
-		for (var i in stendhal.zone.entities) {
-			var entity = stendhal.zone.entities[i];
-			if (typeof(entity.draw) != "undefined") {
-				entity.updatePosition(time);
-				entity.draw(this.ctx);
-			}
-		}
-	}
+        /**
+         * Draws overall entity sprites.
+         */
+        drawEntities(alpha: number) {
+                for (const key in stendhal.zone.entities) {
+                        const entity = stendhal.zone.entities[key];
+                        if (!entity || typeof(entity.draw) === "undefined") {
+                                continue;
+                        }
+                        this.drawEntityInterpolated(entity, alpha, () => entity.draw(this.ctx));
+                }
+        }
 
-	/**
-	 * Draws titles & HP bars associated with entities.
-	 */
-	drawEntitiesTop() {
-		var i;
-		for (i in stendhal.zone.entities) {
-			const entity = stendhal.zone.entities[i];
-			if (typeof(entity.setStatusBarOffset) !== "undefined") {
-				entity.setStatusBarOffset();
-			}
-			if (typeof(entity.drawTop) != "undefined") {
-				entity.drawTop(this.ctx);
-			}
-		}
-	}
+        /**
+         * Draws titles & HP bars associated with entities.
+         */
+        drawEntitiesTop(alpha: number) {
+                for (const key in stendhal.zone.entities) {
+                        const entity = stendhal.zone.entities[key];
+                        if (!entity) {
+                                continue;
+                        }
+                        this.drawEntityInterpolated(entity, alpha, () => {
+                                if (typeof(entity.setStatusBarOffset) !== "undefined") {
+                                        entity.setStatusBarOffset();
+                                }
+                                if (typeof(entity.drawTop) !== "undefined") {
+                                        entity.drawTop(this.ctx);
+                                }
+                        });
+                }
+        }
+
+        private drawEntityInterpolated(entity: any, alpha: number, drawFn: () => void) {
+                const state = this.entityStates.get(entity);
+                if (!state) {
+                        drawFn();
+                        return;
+                }
+
+                const renderX = state.prevX + (state.currX - state.prevX) * alpha;
+                const renderY = state.prevY + (state.currY - state.prevY) * alpha;
+
+                const hadX = typeof(entity["_x"]) !== "undefined";
+                const hadY = typeof(entity["_y"]) !== "undefined";
+                const originalX = entity["_x"]; // may be undefined
+                const originalY = entity["_y"];
+
+                entity["_x"] = renderX;
+                entity["_y"] = renderY;
+                try {
+                        drawFn();
+                } finally {
+                        if (hadX) {
+                                entity["_x"] = originalX;
+                        } else {
+                                delete entity["_x"];
+                        }
+                        if (hadY) {
+                                entity["_y"] = originalY;
+                        } else {
+                                delete entity["_y"];
+                        }
+                }
+        }
 
 	/**
 	 * Draws active notifications or speech bubbles associated with characters, NPCs, & creatures.
@@ -330,42 +565,6 @@ export class ViewPort {
 				i--;
 			}
 		}
-	}
-
-	/**
-	 * Updates viewport drawing position of map based on player position.
-	 *
-	 * @param canvas {HTMLCanvasElement}
-	 *   Viewport canvas element.
-	 */
-	adjustView(canvas: HTMLCanvasElement) {
-		// IE does not support ctx.resetTransform(), so use the following workaround:
-		this.ctx.setTransform(1, 0, 0, 1, 0, 0);
-
-		// Coordinates for a screen centered on player
-		let centerX: number, centerY: number;
-		if (this.freeze) {
-			centerX = this.offsetX + this.targetTileWidth / 2;
-			centerY = this.offsetY + this.targetTileHeight / 2;
-		} else {
-			centerX = marauroa.me["_x"] * this.targetTileWidth + this.targetTileWidth / 2 - canvas.width / 2;
-			centerY = marauroa.me["_y"] * this.targetTileHeight + this.targetTileHeight / 2 - canvas.height / 2;
-		}
-
-		// Keep the world within the screen view
-		centerX = Math.min(centerX, stendhal.data.map.zoneSizeX * this.targetTileWidth - canvas.width);
-		centerX = Math.max(centerX, 0);
-
-		centerY = Math.min(centerY, stendhal.data.map.zoneSizeY * this.targetTileHeight - canvas.height);
-		centerY = Math.max(centerY, 0);
-
-		if (this.freeze) {
-			this.ctx.translate(-Math.round(centerX), -Math.round(centerY));
-			return;
-		}
-		this.offsetX = Math.round(centerX);
-		this.offsetY = Math.round(centerY);
-		this.ctx.translate(-this.offsetX, -this.offsetY);
 	}
 
 	/**

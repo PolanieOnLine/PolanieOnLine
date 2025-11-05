@@ -16,6 +16,8 @@ import { ImagePreloader } from "../data/ImagePreloader";
 import { Chat } from "../util/Chat";
 
 
+const TILE_EPSILON = 0.01;
+
 export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrategy {
 
 	private targetTileWidth = 32;
@@ -40,9 +42,10 @@ export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrate
 		});
 	}
 
-	public render(
-		canvas: HTMLCanvasElement, gamewindow: any,
-		tileOffsetX: number, tileOffsetY: number, targetTileWidth: number, targetTileHeight: number): void {
+        public render(
+                canvas: HTMLCanvasElement, gamewindow: any,
+                tileOffsetX: number, tileOffsetY: number, targetTileWidth: number, targetTileHeight: number,
+                alpha: number): void {
 
 		this.targetTileWidth = targetTileWidth;
 		this.targetTileHeight = targetTileHeight;
@@ -53,8 +56,8 @@ export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrate
 				&& name !== "blend_ground" && name !== "blend_roof") {
 				this.paintLayer(canvas, drawingLayer, tileOffsetX, tileOffsetY);
 			}
-			if (name === "2_object") {
-				gamewindow.drawEntities();
+                        if (name === "2_object") {
+                                gamewindow.drawEntities(alpha);
 			}
 		}
 	}
@@ -100,8 +103,8 @@ export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrate
 					(idx % tilesPerRow) * stendhal.data.map.tileWidth,
 					Math.floor(idx / tilesPerRow) * stendhal.data.map.tileHeight,
 					stendhal.data.map.tileWidth, stendhal.data.map.tileHeight,
-					pixelX, pixelY,
-					this.targetTileWidth, this.targetTileHeight);
+					pixelX - TILE_EPSILON, pixelY - TILE_EPSILON,
+					this.targetTileWidth + (TILE_EPSILON * 2), this.targetTileHeight + (TILE_EPSILON * 2));
 		} else {
 			ctx.translate(pixelX, pixelY);
 			// an ugly hack to restore the previous transformation matrix

@@ -21,9 +21,10 @@ export abstract class LandscapeRenderingStrategy {
 
 	public abstract onTilesetLoaded(): void;
 
-	public abstract render(
-		canvas: HTMLCanvasElement, gamewindow: any,
-		tileOffsetX: number, tileOffsetY: number, targetTileWidth: number, targetTileHeight: number): void;
+        public abstract render(
+                canvas: HTMLCanvasElement, gamewindow: any,
+                tileOffsetX: number, tileOffsetY: number, targetTileWidth: number, targetTileHeight: number,
+                alpha: number): void;
 
 }
 
@@ -39,21 +40,22 @@ export class CombinedTilesetRenderingStrategy extends LandscapeRenderingStrategy
 		body.style.cursor = "auto";
 	}
 
-	public render(
-		canvas: HTMLCanvasElement, gamewindow: any,
-		tileOffsetX: number, tileOffsetY: number, targetTileWidth: number, targetTileHeight: number): void {
+        public render(
+                canvas: HTMLCanvasElement, gamewindow: any,
+                tileOffsetX: number, tileOffsetY: number, targetTileWidth: number, targetTileHeight: number,
+                alpha: number): void {
 
-		let landscapeRenderder = new LandscapeRenderer();
-		landscapeRenderder.drawLayer(
-			canvas,
-			stendhal.data.map.combinedTileset,
-			0,
-			tileOffsetX, tileOffsetY, targetTileWidth, targetTileHeight);
+                let landscapeRenderder = new LandscapeRenderer();
+                landscapeRenderder.drawLayer(
+                        canvas,
+                        stendhal.data.map.combinedTileset,
+                        0,
+                        tileOffsetX, tileOffsetY, targetTileWidth, targetTileHeight);
 
-		gamewindow.drawEntities();
+                gamewindow.drawEntities(alpha);
 
-		landscapeRenderder.drawLayer(
-			canvas,
+                landscapeRenderder.drawLayer(
+                        canvas,
 			stendhal.data.map.combinedTileset,
 			1,
 			tileOffsetX, tileOffsetY, targetTileWidth, targetTileHeight);

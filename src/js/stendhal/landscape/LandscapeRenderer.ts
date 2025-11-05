@@ -13,42 +13,44 @@ import { CombinedTileset } from "./CombinedTileset";
 
 declare var stendhal: any;
 
+const TILE_EPSILON = 0.01;
+
 export class LandscapeRenderer {
 
-	drawLayer(
-			canvas: HTMLCanvasElement,
-			combinedTileset: CombinedTileset, layerNo: number,
-			tileOffsetX: number, tileOffsetY: number, targetTileWidth: number, targetTileHeight: number): void {
-		if (!combinedTileset) {
-			return;
-		}
-		let ctx = canvas.getContext("2d")!;
+        drawLayer(
+                        canvas: HTMLCanvasElement,
+                        combinedTileset: CombinedTileset, layerNo: number,
+                        tileOffsetX: number, tileOffsetY: number, targetTileWidth: number, targetTileHeight: number): void {
+                if (!combinedTileset) {
+                        return;
+                }
+                let ctx = canvas.getContext("2d")!;
 
-		const layer = combinedTileset.combinedLayers[layerNo];
-		const yMax = Math.min(tileOffsetY + canvas.height / targetTileHeight + 1, stendhal.data.map.zoneSizeY);
-		const xMax = Math.min(tileOffsetX + canvas.width / targetTileWidth + 1, stendhal.data.map.zoneSizeX);
+                const layer = combinedTileset.combinedLayers[layerNo];
+                const yMax = Math.min(tileOffsetY + canvas.height / targetTileHeight + 1, stendhal.data.map.zoneSizeY);
+                const xMax = Math.min(tileOffsetX + canvas.width / targetTileWidth + 1, stendhal.data.map.zoneSizeX);
 
-		for (let y = tileOffsetY; y < yMax; y++) {
-			for (let x = tileOffsetX; x < xMax; x++) {
-				let index = layer[y * stendhal.data.map.zoneSizeX + x];
-				if (index > -1) {
+                for (let y = tileOffsetY; y < yMax; y++) {
+                        for (let x = tileOffsetX; x < xMax; x++) {
+                                let index = layer[y * stendhal.data.map.zoneSizeX + x];
+                                if (index > -1) {
 
-					try {
-						const pixelX = x * targetTileWidth;
-						const pixelY = y * targetTileHeight;
+                                        try {
+                                                const pixelX = x * targetTileWidth;
+                                                const pixelY = y * targetTileHeight;
 
-						ctx.drawImage(combinedTileset.canvas,
+                                                ctx.drawImage(combinedTileset.canvas,
 
-							(index % combinedTileset.tilesPerRow) * stendhal.data.map.tileWidth,
-							Math.floor(index / combinedTileset.tilesPerRow) * stendhal.data.map.tileHeight,
+                                                        (index % combinedTileset.tilesPerRow) * stendhal.data.map.tileWidth,
+                                                        Math.floor(index / combinedTileset.tilesPerRow) * stendhal.data.map.tileHeight,
 
-							stendhal.data.map.tileWidth, stendhal.data.map.tileHeight,
-							pixelX, pixelY,
-							targetTileWidth, targetTileHeight);
-					} catch (e) {
-						console.error(e);
-					}
-				}
+                                                        stendhal.data.map.tileWidth, stendhal.data.map.tileHeight,
+                                                        pixelX - TILE_EPSILON, pixelY - TILE_EPSILON,
+                                                        targetTileWidth + (TILE_EPSILON * 2), targetTileHeight + (TILE_EPSILON * 2));
+                                        } catch (e) {
+                                                console.error(e);
+                                        }
+                                }
 			}
 		}
 	}

@@ -15,10 +15,13 @@ import { AbstractSettingsTab } from "./AbstractSettingsTab";
 import { SettingsDialog } from "../SettingsDialog";
 
 import { SettingsComponent } from "../../toolkit/SettingsComponent";
+import { WidgetType } from "../../../data/enum/WidgetType";
 
 import { singletons } from "../../../SingletonRepo";
 
 import { StandardMessages } from "../../../util/StandardMessages";
+
+import { ViewPort } from "../../ViewPort";
 
 
 export class VisualsTab extends AbstractSettingsTab {
@@ -72,17 +75,44 @@ export class VisualsTab extends AbstractSettingsTab {
 		chkAnimate.addTo(col1);
 		chkAnimate.componentElement.classList.add("indented");
 
-		const chkParallax = new SettingsComponent("chk_parallax", "Parallax scrolling backgrounds");
-		chkParallax.setTooltip("Parallax scrolling enabled", "Parallax scrolling disabled");
-		chkParallax.setConfigId("effect.parallax");
-		chkParallax.addListener((evt: Event) => {
-			StandardMessages.changeNeedsRefresh();
-			parent.refresh();
-		});
-		chkParallax.addTo(col1);
+                const chkParallax = new SettingsComponent("chk_parallax", "Parallax scrolling backgrounds");
+                chkParallax.setTooltip("Parallax scrolling enabled", "Parallax scrolling disabled");
+                chkParallax.setConfigId("effect.parallax");
+                chkParallax.addListener((evt: Event) => {
+                        StandardMessages.changeNeedsRefresh();
+                        parent.refresh();
+                });
+                chkParallax.addTo(col1);
 
-		const chkEntityOverlay = new SettingsComponent("chk_entity_overlay",
-				"Entity overlay effects");
+                const fpsOptions = [
+                        {label: "Unlimited (match monitor)", value: 0},
+                        {label: "60 FPS", value: 60},
+                        {label: "90 FPS", value: 90},
+                        {label: "120 FPS", value: 120},
+                        {label: "144 FPS", value: 144}
+                ];
+                const fpsSelect = new SettingsComponent("sel_fps_limit", "Frame rate limit", WidgetType.SELECT);
+                for (const option of fpsOptions) {
+                        fpsSelect.addOption(option.label, option.value.toString());
+                }
+                const currentLimit = Math.trunc(config.getFloat("loop.fps.limit", 0));
+                let selectedIndex = fpsOptions.findIndex((opt) => opt.value === currentLimit);
+                if (selectedIndex < 0) {
+                        selectedIndex = 0;
+                }
+                fpsSelect.setValue(selectedIndex);
+                fpsSelect.setTooltip("Restrict rendering to a specific frames-per-second cap", "Render at the full refresh rate");
+                fpsSelect.addListener(() => {
+                        const idx = fpsSelect.getValue() as number;
+                        const choice = fpsOptions[idx] || fpsOptions[0];
+                        config.set("loop.fps.limit", choice.value.toString());
+                        ViewPort.get().setFpsLimit(choice.value);
+                        parent.refresh();
+                });
+                fpsSelect.addTo(col1);
+
+                const chkEntityOverlay = new SettingsComponent("chk_entity_overlay",
+                                "Entity overlay effects");
 		chkEntityOverlay.setValue(config.getBoolean("effect.entity-overlay"));
 		chkEntityOverlay.addListener((evt: Event) => {
 			config.set("effect.entity-overlay", chkEntityOverlay.getValue());
