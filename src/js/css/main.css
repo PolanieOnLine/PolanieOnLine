@@ -140,10 +140,6 @@ ul.uniform {
 	white-space: nowrap;
 }
 
-#menubutton {
-	width: 90px;
-}
-
 #soundbutton {
 	width: 20%;
 	padding: 0;
@@ -411,6 +407,79 @@ span.lognick {
 	opacity: .95;
 }
 
+.appmenu-grid {
+	background: url("/data/gui/panel_wood.jpg") repeat;
+	border: 1px solid #2a0e06;
+	box-shadow: 0 0 0 1px #2a0e06 inset;
+	display: flex;
+	gap: 0;
+}
+
+.appmenu-grid::before {
+	content: "";
+	position: relative;
+	display: block;
+}
+
+.appmenu-grid .buttonColumn {
+	display: inline-block;
+	border-left: 1px solid rgba(255,255,255,.28);
+	box-shadow: -1px 0 0 rgba(0,0,0,.45) inset;
+}
+.appmenu-grid .buttonColumn:first-child {
+	border-left-color: rgba(255,255,255,.35);
+}
+
+.appmenu-grid .menugroup {
+	margin: 0 0 6px 0;
+	padding: 2px 8px;
+	font: 700 13px/18px Verdana, sans-serif;
+	color: #e8e3d8;
+	text-shadow: 0 1px 0 rgba(0,0,0,.85);
+	background:
+		linear-gradient(rgba(0,0,0,.12), rgba(255,255,255,.05)),
+		url("/data/gui/panel_wood.jpg") repeat;
+	border-top: 1px solid rgba(255,255,255,.22);
+	border-bottom: 1px solid rgba(0,0,0,.55);
+}
+
+.appmenu-grid .menubutton {
+	display: block;
+	width: 100%;
+	text-align: left;
+	cursor: pointer;
+
+	background:
+		linear-gradient(rgba(0,0,0,.10), rgba(255,255,255,.04)),
+		url("/data/gui/panel_wood.jpg") repeat;
+	border: none;
+	margin: 0;
+	padding: 2px 10px;
+
+	color: #ececec;
+	font: 12px/16px Verdana, sans-serif;
+	letter-spacing: .2px;
+	text-shadow: 0 1px 0 rgba(0,0,0,.85);
+
+	border-top: 1px solid rgba(255,255,255,.22);
+	border-bottom: 1px solid rgba(0,0,0,.55);
+}
+
+.appmenu-grid .menubutton:first-of-type {
+	border-top-color: rgba(255,255,255,.35);
+}
+
+.appmenu-grid .menubutton:hover {
+	background-color: #a86b3a;
+	background-image: none;
+	color: #fff4d0;
+	text-shadow: 0 1px 0 rgba(0,0,0,.8);
+}
+
+.appmenu-grid .menubutton:active {
+	filter: brightness(.94);
+}
+
 .actionmenu {
 	position: relative;
 	background: url("/data/gui/panel_wood.jpg") repeat;
@@ -508,11 +577,6 @@ span.lognick {
 	float: left;
 	width: 260px;
 	overflow: auto;
-}
-
-.buttonColumn {
-	margin-left: 2px;
-	margin-right: 2px;
 }
 
 #minimap {
@@ -645,12 +709,6 @@ span.lognick {
 .inlineblock {
 	display: inline-block;
 	vertical-align: top;
-}
-
-.menugroup {
-	color: #000;
-	background: #FFF;
-	text-align: center;
 }
 
 .horizontalgroup {
@@ -881,7 +939,7 @@ span.lognick {
 	margin-left: 2px;
 }
 
-.menubutton, .shortcut-button {
+.shortcut-button {
 	margin: 2px;
 }
 

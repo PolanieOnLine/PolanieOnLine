@@ -53,7 +53,7 @@ export class ApplicationMenuDialog extends DialogContentComponent {
 				title: "Narzędzia",
 				children: [
 					{
-						title: "Wykonaj zrzut ekranu",
+						title: "Zrzut ekranu",
 						action: "screenshot",
 					},
 					/*
@@ -130,19 +130,21 @@ export class ApplicationMenuDialog extends DialogContentComponent {
 			});
 		}
 
-		var content = "";
+		var content = '<div class="appmenu-grid">';
 		for (var i = 0; i < this.actions.length; i++) {
-			content += "<div class=\"inlineblock buttonColumn\"><h4 class=\"menugroup\">" + stendhal.ui.html.esc(this.actions[i].title) + "</h4>"
+			content += '<div class="inlineblock buttonColumn">';
+			content += '<h4 class="menugroup">' + stendhal.ui.html.esc(this.actions[i].title) + '</h4>';
 			for (var j = 0; j < this.actions[i].children.length; j++) {
 				const action = this.actions[i].children[j];
 				let title = action.title;
 				if (action.alt && action.condition && action.condition()) {
 					title = action.alt;
 				}
-				content += "<button id=\"menubutton." + action.action + "\" class=\"menubutton\">" + stendhal.ui.html.esc(title) + "</button><br>";
+				content += '<button id="menubutton.' + action.action + '" class="menubutton">' + stendhal.ui.html.esc(title) + '</button>';
 			}
-			content += "</div>";
+			content += '</div>';
 		}
+		content += '</div>';
 		this.componentElement.innerHTML = content;
 
 		this.componentElement.addEventListener("click", (event) => {
