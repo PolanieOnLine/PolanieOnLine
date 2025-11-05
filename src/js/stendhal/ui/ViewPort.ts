@@ -166,10 +166,10 @@ export class ViewPort {
 		if (!this.loop) {
 			const prefer144 = stendhal.config.getBoolean("loop.prefer144hz");
 			const configuredLimit = stendhal.config.getFloat("loop.fps.limit");
-			const fpsLimit = (typeof(configuredLimit) === "number" && configuredLimit > 0) ? configuredLimit : undefined;
+			const fpsLimit = this.normalizeFpsLimit(configuredLimit);
 			this.loop = new GameLoop(
-			(dt) => this.update(dt),
-			(alpha) => this.render(alpha),
+				(dt) => this.update(dt),
+				(alpha) => this.render(alpha),
 				{
 					prefer144hz: prefer144,
 					fpsLimit,
@@ -198,21 +198,25 @@ export class ViewPort {
 
 		this.ctx.globalAlpha = 1.0;
 		this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+		this.ctx.imageSmoothingEnabled = false;
 
 		const interpolated = this.cameraSpring.getInterpolated(alpha);
 		this.renderOffset.x = interpolated.x;
 		this.renderOffset.y = interpolated.y;
 
-		this.offsetX = interpolated.x;
-		this.offsetY = interpolated.y;
+		const snappedX = this.snapToDevicePixel(interpolated.x);
+		const snappedY = this.snapToDevicePixel(interpolated.y);
+
+		this.offsetX = snappedX;
+		this.offsetY = snappedY;
 
 		this.ctx.fillStyle = "black";
 		this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 
-		this.ctx.translate(-interpolated.x, -interpolated.y);
+		this.ctx.translate(-snappedX, -snappedY);
 
-		const tileOffsetX = Math.floor(this.offsetX / this.targetTileWidth);
-		const tileOffsetY = Math.floor(this.offsetY / this.targetTileHeight);
+		const tileOffsetX = Math.floor(snappedX / this.targetTileWidth);
+		const tileOffsetY = Math.floor(snappedY / this.targetTileHeight);
 
 		stendhal.data.map.parallax.draw(this.ctx, this.offsetX, this.offsetY);
 		stendhal.data.map.strategy.render(
@@ -304,7 +308,7 @@ export class ViewPort {
 		for (const key in stendhal.zone.entities) {
 			const entity = stendhal.zone.entities[key];
 			if (!entity) {
-					continue;
+				continue;
 			}
 
 			let state = this.entityStates.get(entity);
@@ -351,6 +355,25 @@ export class ViewPort {
 		}
 	}
 
+	private snapToDevicePixel(value: number): number {
+		const ratio = window.devicePixelRatio || 1;
+		return Math.round(value * ratio) / ratio;
+	}
+
+	public setFpsLimit(limit?: number) {
+		const normalized = this.normalizeFpsLimit(limit);
+		if (this.loop) {
+			this.loop.setFpsLimit(normalized);
+		}
+	}
+
+	private normalizeFpsLimit(limit?: number): number|undefined {
+		if (typeof(limit) === "number" && Number.isFinite(limit) && limit > 0) {
+			return limit;
+		}
+		return undefined;
+	}
+
 	/**
 	 * Adds map's coloring filter to viewport.
 	 *
@@ -385,7 +408,7 @@ export class ViewPort {
 		}
 		this.ctx.save();
 		// FIXME: is this the appropriate alpha level to use? "color_method" value from server doesn't
-		// appear to include alpha information
+		//	appear to include alpha information
 		this.ctx.globalAlpha = 0.75;
 		this.ctx.globalCompositeOperation = (this.colorMethod || this.ctx.globalCompositeOperation) as GlobalCompositeOperation;
 		this.ctx.fillStyle = this.HSLFilter;

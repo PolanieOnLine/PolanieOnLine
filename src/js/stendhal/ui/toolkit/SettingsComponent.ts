@@ -55,7 +55,9 @@ export class SettingsComponent extends WidgetComponent {
 		this.labelElement = document.createElement("label") as HTMLLabelElement;
 
 		if (WidgetType.SELECT === type) {
-			this.componentElement = this.initSelect(id, label, options);
+			this.componentElement = this.initSelect(id, label);
+			this.populateSelectOptions(options);
+			this.setSelected(0);
 		} else {
 			this.componentElement = this.initInput(id, label);
 		}
@@ -109,18 +111,21 @@ export class SettingsComponent extends WidgetComponent {
 	 * @returns {HTMLElement}
 	 *   Main component element.
 	 */
-	private initSelect(id: string, label: string, options: OptionsEnum={}): HTMLElement {
+	private initSelect(id: string, label: string): HTMLSelectElement {
 		this.labelElement.htmlFor = id;
 		this.labelElement.innerText = label;
 		const componentElement = document.createElement("select");
 		componentElement.id = id;
-
-		// populate options
-		for (const ol in options) {
-			this.addOption(ol, options[ol]);
-		}
-		this.setSelected(0);
 		return componentElement;
+	}
+
+	private populateSelectOptions(options: OptionsEnum={}) {
+		for (const label in options) {
+			if (!Object.prototype.hasOwnProperty.call(options, label)) {
+				continue;
+			}
+			this.addOption(label, options[label]);
+		}
 	}
 
 	override refresh() {

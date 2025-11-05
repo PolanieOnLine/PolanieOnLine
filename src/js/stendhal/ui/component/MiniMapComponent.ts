@@ -19,6 +19,8 @@ import { Player } from "../../entity/Player";
 import { Color } from "../../data/color/Color";
 import { SpringVector, Vector2 } from "../../util/SpringVector";
 
+type EntityState = {prevX: number; prevY: number; currX: number; currY: number};
+
 
 /**
  * mini map
@@ -39,8 +41,8 @@ export class MiniMapComponent extends Component {
 	private readonly cameraSpring = new SpringVector(600);
 	private cameraTarget: Vector2 = {x: 0, y: 0};
 	private cameraInitialized = false;
-	private readonly renderOffset: Vector2 = {x: 0, y: 0};
 	private needsBackgroundRefresh = true;
+	private entityStates = new WeakMap<any, EntityState>();
 
 	// ground/collision colors
 	private static readonly COLOR_COLLISION = Color.parseRGB(Color.COLLISION); // red
@@ -65,6 +67,7 @@ export class MiniMapComponent extends Component {
 		this.scale = Math.max(this.minimumScale, Math.min(this.height / this.mapHeight, this.width / this.mapWidth));
 		this.cameraInitialized = false;
 		this.needsBackgroundRefresh = true;
+		this.entityStates = new WeakMap<any, EntityState>();
 	};
 
 	public draw() {
@@ -80,7 +83,7 @@ export class MiniMapComponent extends Component {
 		}
 	}
 
-	public advance(dtMs: number, viewportPosition?: Vector2, viewportTarget?: Vector2) {
+	public advance(dtMs: number, _viewportPosition?: Vector2, _viewportTarget?: Vector2) {
 		if (!marauroa.me) {
 			return;
 		}
@@ -91,11 +94,12 @@ export class MiniMapComponent extends Component {
 			this.needsBackgroundRefresh = false;
 		}
 
-		const target = viewportTarget ? this.worldToMini(viewportTarget) : this.computePlayerTarget();
-		const start = viewportPosition ? this.worldToMini(viewportPosition) : target;
+		this.updateEntities();
+
+		const target = this.computePlayerTarget();
 
 		if (!this.cameraInitialized) {
-			this.cameraSpring.snap(start);
+			this.cameraSpring.snap(target);
 			this.cameraInitialized = true;
 		}
 
@@ -123,36 +127,16 @@ export class MiniMapComponent extends Component {
 		const ctx = (this.componentElement as HTMLCanvasElement).getContext("2d")!;
 
 		ctx.setTransform(1, 0, 0, 1, 0, 0);
+		ctx.imageSmoothingEnabled = false;
 		ctx.fillStyle = Color.DARK_GRAY;
 		ctx.fillRect(0, 0, this.width, this.height);
 
 		const interpolated = this.cameraSpring.getInterpolated(alpha);
-		this.renderOffset.x = interpolated.x;
-		this.renderOffset.y = interpolated.y;
-
 		ctx.save();
 		ctx.translate(-interpolated.x, -interpolated.y);
 		this.drawBackground(ctx);
-		this.drawEntities(ctx);
+		this.drawEntities(ctx, alpha);
 		ctx.restore();
-	}
-
-	private clampOffset(offset: Vector2): Vector2 {
-		const maxX = Math.max(0, this.mapWidth * this.scale - this.width);
-		const maxY = Math.max(0, this.mapHeight * this.scale - this.height);
-		return {
-			x: Math.min(Math.max(offset.x, 0), maxX),
-			y: Math.min(Math.max(offset.y, 0), maxY)
-		};
-	}
-
-	private worldToMini(position: Vector2): Vector2 {
-		const tileWidth = stendhal.ui.gamewindow ? stendhal.ui.gamewindow.targetTileWidth : 32;
-		const tileHeight = stendhal.ui.gamewindow ? stendhal.ui.gamewindow.targetTileHeight : 32;
-		return this.clampOffset({
-			x: (position.x / tileWidth) * this.scale,
-			y: (position.y / tileHeight) * this.scale
-		});
 	}
 
 	private computePlayerTarget(): Vector2 {
@@ -160,26 +144,35 @@ export class MiniMapComponent extends Component {
 		const imageHeight = this.mapHeight * this.scale;
 		const playerX = (typeof(marauroa.me["_x"]) === "number") ? marauroa.me["_x"] : marauroa.me["x"];
 		const playerY = (typeof(marauroa.me["_y"]) === "number") ? marauroa.me["_y"] : marauroa.me["y"];
+		const playerWidth = typeof(marauroa.me["width"]) === "number" ? marauroa.me["width"] : 1;
+		const playerHeight = typeof(marauroa.me["height"]) === "number" ? marauroa.me["height"] : 1;
 
-		let targetX = 0;
-		let targetY = 0;
+		const halfViewportWidth = this.width / 2;
+		const halfViewportHeight = this.height / 2;
 
-		if (imageWidth > this.width) {
-			const rawX = Math.round((playerX * this.scale) + 0.5) - this.width / 2;
-			if ((rawX + this.width) > imageWidth) {
-				targetX = imageWidth - this.width;
-			} else if (rawX > 0) {
-				targetX = rawX;
-			}
+		let targetX = (playerX + playerWidth / 2) * this.scale - halfViewportWidth;
+		let targetY = (playerY + playerHeight / 2) * this.scale - halfViewportHeight;
+
+		const maxX = Math.max(0, imageWidth - this.width);
+		const maxY = Math.max(0, imageHeight - this.height);
+
+		if (!Number.isFinite(targetX)) {
+			targetX = 0;
+		}
+		if (!Number.isFinite(targetY)) {
+			targetY = 0;
 		}
 
-		if (imageHeight > this.height) {
-			const rawY = Math.round((playerY * this.scale) + 0.5) - this.height / 2;
-			if ((rawY + this.height) > imageHeight) {
-				targetY = imageHeight - this.height;
-			} else if (rawY > 0) {
-				targetY = rawY;
-			}
+		if (targetX < 0) {
+			targetX = 0;
+		} else if (targetX > maxX) {
+			targetX = maxX;
+		}
+
+		if (targetY < 0) {
+			targetY = 0;
+		} else if (targetY > maxY) {
+			targetY = maxY;
 		}
 
 		return {x: targetX, y: targetY};
@@ -240,14 +233,14 @@ export class MiniMapComponent extends Component {
 		}
 	}
 
-	drawEntities(ctx: CanvasRenderingContext2D) {
+	drawEntities(ctx: CanvasRenderingContext2D, alpha: number) {
 		ctx.fillStyle = Color.RED;
 		ctx.strokeStyle = Color.BLACK;
 		let isAdmin = marauroa.me["adminlevel"] && marauroa.me["adminlevel"] >= 600;
 
 		for (let i in marauroa.currentZone) {
 			let o = marauroa.currentZone[i];
-			if (typeof(o["x"]) != "undefined" && typeof(o["y"]) != "undefined" && (o.minimapShow || isAdmin)) {
+			if (this.hasRenderablePosition(o) && (o.minimapShow || isAdmin)) {
 				o.onMiniMapDraw();
 
 				// this.ctx.fillText(o.id, o.x * this.scale, o.y * this.scale);
@@ -257,6 +250,10 @@ export class MiniMapComponent extends Component {
 					ctx.strokeStyle = Color.GRAY;
 				}
 
+				const pos = this.getEntityInterpolatedPosition(o, alpha);
+				const width = this.getEntityDimension(o, "width");
+				const height = this.getEntityDimension(o, "height");
+
 				if (o instanceof Player) {
 					let adj_scale = this.scale;
 					if (adj_scale < 6) {
@@ -264,10 +261,10 @@ export class MiniMapComponent extends Component {
 						adj_scale = 6;
 					}
 
-					let ho = (o["width"] * adj_scale) / 2;
-					let vo = (o["height"] * adj_scale) / 2;
-					const hc = o["x"] * this.scale + ho;
-					const vc = o["y"] * this.scale + vo;
+					let ho = (width * adj_scale) / 2;
+					let vo = (height * adj_scale) / 2;
+					const hc = pos.x * this.scale + ho;
+					const vc = pos.y * this.scale + vo;
 
 					ctx.beginPath();
 					ctx.moveTo(hc - ho, vc);
@@ -277,10 +274,64 @@ export class MiniMapComponent extends Component {
 					ctx.stroke();
 					ctx.closePath();
 				} else {
-					ctx.strokeRect(o["x"] * this.scale, o["y"] * this.scale, o["width"] * this.scale, o["height"] * this.scale);
+					ctx.strokeRect(pos.x * this.scale, pos.y * this.scale, width * this.scale, height * this.scale);
 				}
 			}
 		}
+	}
+
+	private updateEntities() {
+		for (const key in marauroa.currentZone) {
+			const obj = marauroa.currentZone[key];
+			if (!this.hasRenderablePosition(obj)) {
+				continue;
+			}
+
+			const pos = this.getEntityPosition(obj);
+			let state = this.entityStates.get(obj);
+			if (!state) {
+				state = {prevX: pos.x, prevY: pos.y, currX: pos.x, currY: pos.y};
+			} else {
+				state.prevX = state.currX;
+				state.prevY = state.currY;
+				state.currX = pos.x;
+				state.currY = pos.y;
+			}
+			this.entityStates.set(obj, state);
+		}
+	}
+
+	private hasRenderablePosition(obj: any): boolean {
+		if (!obj) {
+			return false;
+		}
+		const hasX = typeof(obj["x"]) !== "undefined" || typeof(obj["_x"]) === "number";
+		const hasY = typeof(obj["y"]) !== "undefined" || typeof(obj["_y"]) === "number";
+		return hasX && hasY;
+	}
+
+	private getEntityPosition(obj: any): Vector2 {
+		const x = (typeof(obj["_x"]) === "number") ? obj["_x"] : obj["x"];
+		const y = (typeof(obj["_y"]) === "number") ? obj["_y"] : obj["y"];
+		return {x: x || 0, y: y || 0};
+	}
+
+	private getEntityInterpolatedPosition(obj: any, alpha: number): Vector2 {
+		const state = this.entityStates.get(obj);
+		if (!state) {
+			return this.getEntityPosition(obj);
+		}
+
+		const lerp = (a: number, b: number) => a + (b - a) * alpha;
+		return {
+			x: lerp(state.prevX, state.currX),
+			y: lerp(state.prevY, state.currY)
+		};
+	}
+
+	private getEntityDimension(obj: any, key: "width" | "height"): number {
+		const value = typeof(obj[key]) === "number" ? obj[key] : 1;
+		return value || 1;
 	}
 
 	onClick(event: MouseEvent) {
@@ -304,5 +355,4 @@ export class MiniMapComponent extends Component {
 			marauroa.me.moveTo(action);
 		}
 	}
-
 }

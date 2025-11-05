@@ -16,6 +16,10 @@ import { ImagePreloader } from "../data/ImagePreloader";
 import { Chat } from "../util/Chat";
 
 
+// Trim a fraction of a texel from each side so bilinear filtering never pulls
+// colour from neighbouring tiles when the canvas is translated sub-pixel.
+const TILE_EDGE_TRIM = 0.02;
+
 export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrategy {
 
 	private targetTileWidth = 32;
@@ -41,9 +45,9 @@ export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrate
 	}
 
 	public render(
-			canvas: HTMLCanvasElement, gamewindow: any,
-			tileOffsetX: number, tileOffsetY: number, targetTileWidth: number, targetTileHeight: number,
-			alpha: number): void {
+		canvas: HTMLCanvasElement, gamewindow: any,
+		tileOffsetX: number, tileOffsetY: number, targetTileWidth: number, targetTileHeight: number,
+		alpha: number): void {
 
 		this.targetTileWidth = targetTileWidth;
 		this.targetTileHeight = targetTileHeight;
@@ -80,7 +84,9 @@ export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrate
 
 					try {
 						if (stendhal.data.map.aImages[tileset].height > 0) {
-							this.drawTile(ctx, stendhal.data.map.aImages[tileset], idx, x, y, flip);
+							const screenX = x * this.targetTileWidth;
+							const screenY = y * this.targetTileHeight;
+							this.drawTile(ctx, stendhal.data.map.aImages[tileset], idx, screenX, screenY, flip);
 						}
 					} catch (e) {
 						console.error(e);
@@ -90,53 +96,50 @@ export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrate
 		}
 	}
 
-	private drawTile(ctx: CanvasRenderingContext2D, tileset: HTMLImageElement, idx: number, x: number, y: number, flip = 0) {
+	private drawTile(ctx: CanvasRenderingContext2D, tileset: HTMLImageElement, idx: number,
+		screenX: number, screenY: number, flip = 0) {
 		const tilesetWidth = tileset.width;
 		const tilesPerRow = Math.floor(tilesetWidth / stendhal.data.map.tileWidth);
-		const pixelX = x * this.targetTileWidth;
-		const pixelY = y * this.targetTileHeight;
+		const destX = screenX;
+		const destY = screenY;
+		const destWidth = this.targetTileWidth;
+		const destHeight = this.targetTileHeight;
+		const sourceX = (idx % tilesPerRow) * stendhal.data.map.tileWidth + TILE_EDGE_TRIM;
+		const sourceY = Math.floor(idx / tilesPerRow) * stendhal.data.map.tileHeight + TILE_EDGE_TRIM;
+		const sourceWidth = stendhal.data.map.tileWidth - TILE_EDGE_TRIM * 2;
+		const sourceHeight = stendhal.data.map.tileHeight - TILE_EDGE_TRIM * 2;
 
 		if (flip === 0) {
 			ctx.drawImage(tileset,
-					(idx % tilesPerRow) * stendhal.data.map.tileWidth,
-					Math.floor(idx / tilesPerRow) * stendhal.data.map.tileHeight,
-					stendhal.data.map.tileWidth, stendhal.data.map.tileHeight,
-					pixelX, pixelY,
-					this.targetTileWidth, this.targetTileHeight);
+					sourceX,
+					sourceY,
+					sourceWidth, sourceHeight,
+					destX, destY,
+					destWidth, destHeight);
 		} else {
-			ctx.translate(pixelX, pixelY);
-			// an ugly hack to restore the previous transformation matrix
-			const restore = [[1, 0, 0, 1, -pixelX, -pixelY]];
+			ctx.save();
+			ctx.translate(screenX, screenY);
 
 			if ((flip & 0x80000000) !== 0) {
-				// flip horizontally
-				ctx.transform(-1, 0, 0, 1, 0, 0);
+				ctx.scale(-1, 1);
 				ctx.translate(-this.targetTileWidth, 0);
-
-				restore.push([-1, 0, 0, 1, 0, 0]);
-				restore.push([1, 0, 0, 1, this.targetTileWidth, 0]);
 			}
 			if ((flip & 0x40000000) !== 0) {
-				// flip vertically
-				ctx.transform(1, 0, 0, -1, 0, 0);
-				ctx.translate(0, -this.targetTileWidth);
-
-				restore.push([1, 0, 0, -1, 0, 0]);
-				restore.push([1, 0, 0, 1, 0, this.targetTileHeight]);
+				ctx.scale(1, -1);
+				ctx.translate(0, -this.targetTileHeight);
 			}
 			if ((flip & 0x20000000) !== 0) {
-				// Coordinate swap
 				ctx.transform(0, 1, 1, 0, 0, 0);
-				restore.push([0, 1, 1, 0, 0, 0]);
 			}
 
-			this.drawTile(ctx, tileset, idx, 0, 0);
+			ctx.drawImage(tileset,
+					sourceX,
+					sourceY,
+					sourceWidth, sourceHeight,
+					0, 0,
+					destWidth, destHeight);
 
-			restore.reverse();
-			for (const args of restore) {
-				ctx.transform(args[0], args[1], args[2], args[3], args[4], args[5]);
-			}
+			ctx.restore();
 		}
 	}
-
 }

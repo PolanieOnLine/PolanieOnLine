@@ -29,7 +29,7 @@ export class GameLoop {
 	private static readonly MAX_FRAME_TIME = 250; // ms
 
 	private readonly fixedDt: number;
-	private readonly minFrameInterval?: number;
+	private minFrameInterval?: number;
 
 	private accumulator = 0;
 	private limiterAccumulator = 0;
@@ -48,9 +48,7 @@ export class GameLoop {
 		const baseHz = options.prefer144hz ? 144 : 120;
 		this.fixedDt = 1000 / baseHz;
 
-		if (options.fpsLimit && options.fpsLimit > 0) {
-			this.minFrameInterval = 1000 / options.fpsLimit;
-		}
+		this.setFpsLimit(options.fpsLimit);
 	}
 
 	/**
@@ -115,6 +113,15 @@ export class GameLoop {
 		}
 
 		this.rafHandle = requestAnimationFrame((nextNow) => this.tick(nextNow));
+	}
+
+	setFpsLimit(limit?: number) {
+		if (typeof(limit) === "number" && Number.isFinite(limit) && limit > 0) {
+			this.minFrameInterval = 1000 / limit;
+		} else {
+			this.minFrameInterval = undefined;
+		}
+		this.limiterAccumulator = 0;
 	}
 
 	private trackFps(frameTime: number) {

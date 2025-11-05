@@ -13,6 +13,10 @@ import { CombinedTileset } from "./CombinedTileset";
 
 declare var stendhal: any;
 
+// Trim a fraction of a texel from each side so bilinear filtering never pulls
+// colour from neighbouring tiles when the canvas is translated sub-pixel.
+const TILE_EDGE_TRIM = 0.02;
+
 export class LandscapeRenderer {
 
 	drawLayer(
@@ -36,13 +40,17 @@ export class LandscapeRenderer {
 					try {
 						const pixelX = x * targetTileWidth;
 						const pixelY = y * targetTileHeight;
+						const tilesPerRow = combinedTileset.tilesPerRow;
+						const sourceX = (index % tilesPerRow) * stendhal.data.map.tileWidth + TILE_EDGE_TRIM;
+						const sourceY = Math.floor(index / tilesPerRow) * stendhal.data.map.tileHeight + TILE_EDGE_TRIM;
+						const sourceWidth = stendhal.data.map.tileWidth - TILE_EDGE_TRIM * 2;
+						const sourceHeight = stendhal.data.map.tileHeight - TILE_EDGE_TRIM * 2;
 
 						ctx.drawImage(combinedTileset.canvas,
 
-							(index % combinedTileset.tilesPerRow) * stendhal.data.map.tileWidth,
-							Math.floor(index / combinedTileset.tilesPerRow) * stendhal.data.map.tileHeight,
-
-							stendhal.data.map.tileWidth, stendhal.data.map.tileHeight,
+							sourceX,
+							sourceY,
+							sourceWidth, sourceHeight,
 							pixelX, pixelY,
 							targetTileWidth, targetTileHeight);
 					} catch (e) {
@@ -52,5 +60,4 @@ export class LandscapeRenderer {
 			}
 		}
 	}
-
 }
