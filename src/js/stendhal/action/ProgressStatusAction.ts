@@ -40,19 +40,19 @@ export class ProgressStatusAction extends SlashAction {
 			// & not confused by potential delay in response
 			const dstate = ConfigManager.get().getWindowState("travel-log");
 			travelLogDialog = new TravelLogDialog();
-			new FloatingWindow("Travel Log", travelLogDialog, dstate.x, dstate.y).setId("travel-log");
+			new FloatingWindow("Dziennik Zadań", travelLogDialog, dstate.x, dstate.y).setId("travel-log");
 		}
 
 		const action: any = {"type": _type};
 		if (_remainder.length > 0) {
-			if (_remainder.indexOf("Open Quests") > -1) {
-				action["progress_type"] = "Open Quests";
+			if (_remainder.indexOf("Otwarte zadania") > -1) {
+				action["progress_type"] = "Otwarte zadania";
 				_remainder = _remainder.substring(12);
-			} else if (_remainder.indexOf("Completed Quests") > -1) {
-				action["progress_type"] = "Completed Quests";
+			} else if (_remainder.indexOf("Ukończone zadania") > -1) {
+				action["progress_type"] = "Ukończone zadania";
 				_remainder = _remainder.substring(17);
-			} else if (_remainder.indexOf("Production") > -1) {
-				action["progress_type"] = "Production";
+			} else if (_remainder.indexOf("Produkcja") > -1) {
+				action["progress_type"] = "Produkcja";
 				_remainder = _remainder.substring(11);
 			} else {
 
@@ -67,6 +67,6 @@ export class ProgressStatusAction extends SlashAction {
 
 	override getHelp(params?: ParamList|Pair<string, string>[]): string[] {
 		// FIXME: including parameter in chat command input should set visible tab
-		return ["", "Open travel log dialog window."];
+		return ["", "Otwórz okno dialogowe dziennika podróży."];
 	}
 }

@@ -31,6 +31,6 @@ export class ReTellAction extends TellAction {
 	}
 
 	override getHelp(params?: ParamList|Pair<string, string>[]): string[] {
-		return ["<message>", "Send a private message to the last player you sent a message to."];
+		return ["<wiadomość>", "Wyślij prywatną wiadomość do ostatniego gracza, z którym wcześniej pisałeś."];
 	}
 }

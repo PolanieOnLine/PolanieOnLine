@@ -31,14 +31,14 @@ export class InputTab extends AbstractSettingsTab {
 		/* *** pathfinding *** */
 
 		parent.createCheckBox("chk_pathfinding", "pathfinding",
-				"Click/Tap ground to walk", "Ground pathfinding disabled",
+				"Kliknij/dotknij podłoża, aby chodzić", "Chodzenie po kliknięciu/dotknięcia podłoża wyłączone",
 				function(e: Event) {
 					// update quick menu button image
 					(ui.get(UIComponentEnum.QMPathFinding) as QuickMenuButton).update();
 				});
 
 		parent.createCheckBox("chk_pathfindingmm", "pathfinding.minimap",
-				"Click/Tap minimap to walk", "Minimap pathfinding disabled");
+				"Kliknij/dotknij minimapy, aby chodzić", "Chodzenie po kliknięciu/dotknięcia minimapy wyłączone");
 
 
 		/* *** joystick interface *** */
@@ -62,7 +62,7 @@ export class InputTab extends AbstractSettingsTab {
 		for (const o of ["x", "y"]) {
 			const orienter = parent.createNumberInput("txtjoystick" + o,
 					parseInt(parent.storedStates["txtjoystick" + o], 10),
-					"Joystick position on " + o.toUpperCase() + " axis");
+					"Pozycja joysticka na osi " + o.toUpperCase());
 			orienter.addEventListener("input", (e) => {
 				// update configuration
 				singletons.getConfigManager().set("joystick.center." + o, orienter.value || 0);

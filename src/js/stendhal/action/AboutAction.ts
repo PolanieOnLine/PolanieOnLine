@@ -32,7 +32,7 @@ export class AboutAction extends SlashAction {
 
 		const content = new AboutDialog();
 		const dialog = ui.createSingletonFloatingWindow(
-			"About", content,
+			"O nas", content,
 			wstate.x - offset.x, wstate.y - offset.y);
 		dialog.setId("about");
 		content.setFrame(dialog);
@@ -40,6 +40,6 @@ export class AboutAction extends SlashAction {
 	}
 
 	override getHelp(params?: ParamList|Pair<string, string>[]): string[] {
-		return ["", "Show dialog with information about project."];
+		return ["", "Pokaż okno dialogowe z informacjami o projekcie."];
 	}
 }

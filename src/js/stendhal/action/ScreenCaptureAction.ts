@@ -22,7 +22,7 @@ export class ScreenCaptureAction extends SlashAction {
 	readonly minParams = 0;
 	readonly maxParams = 0;
 
-	override desc = "Start or stop capturing video of the client viewport";
+	override desc = "Zacznij lub zatrzymaj nagrywanie wideo widoku gry";
 
 	private recorder?: ScreenCapture;
 

@@ -29,11 +29,11 @@ export class CreateAccountDialog extends DialogContentComponent {
 			let passwordRepeat = (this.child("#passwordrepeat") as HTMLInputElement).value;
 			let email = (this.child("#email") as HTMLInputElement).value;
 			if (!username || !password || !passwordRepeat) {
-				alert("Please fill in all required fields.");
+				alert("Proszę wypełnić wszystkie wymagane pola.");
 				return;
 			}
 			if (password != passwordRepeat) {
-				alert("Password and password repetition do not match.");
+				alert("Hasło i powtórzenie hasła nie są takie same.");
 				return;
 			}
 			marauroa.clientFramework.createAccount(username, password, email);
@@ -43,7 +43,7 @@ export class CreateAccountDialog extends DialogContentComponent {
 			event.preventDefault();
 			this.close();
 			ui.createSingletonFloatingWindow(
-				"Login",
+				"Logowanie",
 				new LoginDialog(),
 				100, 50);
 		});

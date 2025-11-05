@@ -26,7 +26,7 @@ export class DropQuantitySelectorDialog extends Component {
 		if (is_touch) {
 			const allButton = document.createElement("button");
 			allButton.className = "allselectorbutton";
-			allButton.innerText = "All";
+			allButton.innerText = "Wszystko";
 			this.componentElement.appendChild(allButton);
 			allButton.addEventListener("click", (event) => {
 				this.onDropAll(event);

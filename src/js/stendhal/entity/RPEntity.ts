@@ -91,9 +91,9 @@ export class RPEntity extends ActiveEntity {
 				this._target.onTargeted(this);
 			}
 		} else if (key === "away") {
-			this.addFloater("Away", "#ffff00");
+			this.addFloater("Zajęty", "#ffff00");
 		} else if (key === "grumpy") {
-			this.addFloater("Grumpy", "#ffff00");
+			this.addFloater("Niedostępny", "#ffff00");
 		} else if (key === "xp" && typeof(oldValue) !== "undefined") {
 			this.onXPChanged(this[key] - oldValue);
 		} else if (["level", "atk", "ratk", "def"].indexOf(key) > -1
@@ -112,9 +112,9 @@ export class RPEntity extends ActiveEntity {
 			this._target.onAttackStopped(this);
 			this._target = undefined;
 		} else if (key === "away") {
-			this.addFloater("Back", "#ffff00");
+			this.addFloater("Powrócił", "#ffff00");
 		} else if (key === "grumpy") {
-			this.addFloater("Receptive", "#ffff00");
+			this.addFloater("Dostępny", "#ffff00");
 		}
 		super.unset(key);
 	}
@@ -172,10 +172,10 @@ export class RPEntity extends ActiveEntity {
 	 * says a text
 	 *
 	 * @param text
-	 *     Message contents.
+	 *				 Message contents.
 	 * @param rangeSquared
-	 *     Distance at which message can be heard (-1 represents
-	 *     entire map).
+	 *				 Distance at which message can be heard (-1 represents
+	 *				 entire map).
 	 */
 	override say(text: string, rangeSquared?: number) {
 		if (!marauroa.me) {
@@ -201,7 +201,7 @@ export class RPEntity extends ActiveEntity {
 	 * Displays a speech bubble attached to an entity.
 	 *
 	 * @param text
-	 *     Text to display.
+	 *				 Text to display.
 	 */
 	addSpeechBubble(text: string) {
 		stendhal.ui.gamewindow.addTextSprite(new SpeechBubble(text, this));
@@ -286,7 +286,7 @@ export class RPEntity extends ActiveEntity {
 	/**
 	 * Get an outfit part (Image or a Promise)
 	 *
-	 * @param {string}  part
+	 * @param {string}		part
 	 * @param {number} index
 	 * @param {number} body
 	 */
@@ -453,6 +453,9 @@ export class RPEntity extends ActiveEntity {
 		}
 		if (this.hasOwnProperty("status_shock")) {
 			drawAnimatedIcon(stendhal.paths.sprites + "/status/shock.png", 200, x + 32 * this["width"] - 25, y - 32, 38);
+		}
+		if (this.hasOwnProperty("bleeding")) {
+			drawAnimatedIcon(stendhal.paths.sprites + "/status/bleeding.png", 100, x + 32 * this["width"] - 10, y - this["drawHeight"]);
 		}
 		// NPC job icons
 		let nextX = x;
@@ -685,7 +688,7 @@ export class RPEntity extends ActiveEntity {
 	 * Draws an animation over entity sprite.
 	 *
 	 * @param {CanvasRenderingContext2D} ctx
-	 *   Canvas context to draw on.
+	 *		 Canvas context to draw on.
 	 */
 	private drawOverlayAnimation(ctx: CanvasRenderingContext2D) {
 		if (this.overlay && this.overlay.draw(ctx, this["drawOffsetX"], this["drawOffsetY"],
@@ -736,32 +739,53 @@ export class RPEntity extends ActiveEntity {
 	}
 
 	protected onXPChanged(change: number) {
+		if (change === 0) return;
+
+		const qty = this.polishQuantity(Math.abs(change), "punkt");
+
 		if (change > 0) {
 			this.addFloater("+" + change, "#4169e1");
-			Chat.log("significant_positive", this.getTitle() + " earns " + change + " experience points.");
-		} else if (change < 0) {
+			Chat.log("significant_positive",
+				`${this.getTitle()} zdobył ${qty} doświadczenia.`);
+		} else {
 			this.addFloater(change.toString(), "#ff8f8f");
-			Chat.log("significant_negative", this.getTitle() + " loses " + Math.abs(change) + " experience points.");
+			Chat.log("significant_negative",
+				`${this.getTitle()} traci ${qty} doświadczenia.`);
 		}
 	}
 
 	protected onLevelChanged(stat: string, newlevel: number, oldlevel: number) {
-		if (!marauroa.me || newlevel === oldlevel) {
-			return;
+		if (!marauroa?.me || newlevel === oldlevel) return;
+		if (!marauroa.me.isInHearingRange(this)) return;
+
+		const statMap: Record<string, string> = {
+				def: "obrony",
+				ratk: "strzelnictwa",
+				atk: "ataku",
+				mining: "górnictwa",
+				level: "level"
+		};
+
+		let msg = this.getTitle() + " ";
+		let msgtype: "significant_positive" | "significant_negative" = "significant_positive";
+
+		if (newlevel > oldlevel) {
+				msg += "osiągnął ";
+		} else {
+				msg += "spadł do ";
+				msgtype = "significant_negative";
 		}
 
-		if (marauroa.me.isInHearingRange(this)) {
-			let msg = this.getTitle();
-			let msgtype = "significant_positive";
-			if (newlevel > oldlevel ) {
-				msg += " reaches ";
-			} else if (newlevel < oldlevel) {
-				msg += " drops to ";
-				msgtype = "significant_negative";
-			}
-			msg += stat + " " + newlevel;
-			Chat.logH(msgtype, msg);
+		const label = statMap[stat] ?? stat;
+		const poziom = (newlevel > oldlevel) ? " poziom" : " poziomu";
+
+		if (stat === "level") {
+				msg += String(newlevel) + poziom;
+		} else {
+				msg += String(newlevel) + poziom + " " + label;
 		}
+
+		Chat.logH(msgtype, msg);
 	}
 
 	addFloater(message: string, color: string) {
@@ -857,5 +881,40 @@ export class RPEntity extends ActiveEntity {
 	 */
 	protected onTransformed() {
 		// do nothing
+	}
+
+	protected polishQuantity(n: number, word: string): string {
+		const abs = Math.abs(n);
+		const mod10 = abs % 10;
+		const mod100 = abs % 100;
+		let form: string;
+
+		let fewForm: string;
+		let manyForm: string;
+
+		switch (true) {
+			case word.endsWith("k") || word.endsWith("g"):
+				fewForm = word + "i";
+				manyForm = word + "ów";
+				break;
+			default:
+				fewForm = word + "y";
+				manyForm = word + "ów";
+				break;
+		}
+
+		switch (true) {
+			case mod10 === 1 && mod100 !== 11:
+				form = word;
+				break;
+			case mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14):
+				form = fewForm;
+				break;
+			default:
+				form = manyForm;
+				break;
+		}
+
+		return `${abs} ${form}`;
 	}
 }

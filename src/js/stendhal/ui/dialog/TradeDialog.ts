@@ -41,16 +41,16 @@ export class TradeDialog extends DialogContentComponent {
 		element.className = "trade-" + state;
 		switch (state) {
 			case "NO_ACTIVE_TRADE":
-				element.innerText = "Inactive";
+				element.innerText = "Nieaktywny";
 				break;
 			case "MAKING_OFFERS":
-				element.innerText = "Changing";
+				element.innerText = "Wymiana";
 				break;
 			case "LOCKED":
-				element.innerText = "Offered";
+				element.innerText = "Oferowane";
 				break;
 			case "DEAL_WAITING_FOR_OTHER_DEAL":
-				element.innerText = "ACCEPTED";
+				element.innerText = "PRZYJĘTE";
 				break;
 		}
 	}

@@ -54,7 +54,7 @@ export class TellAction extends SlashAction {
 	}
 
 	override getHelp(params?: ParamList|Pair<string, string>[]): string[] {
-		return ["<player> <message>", "Send a private message to #player."];
+		return ["<gracz> <wiadomość>", "Wyślij prywatną wiadomość do #gracza."];
 	}
 
 	/**

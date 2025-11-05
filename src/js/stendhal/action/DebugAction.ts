@@ -47,24 +47,24 @@ export class DebugAction extends SlashAction {
 		} else if (params[0] === "log") {
 			Chat.debugLogEnabled = true;
 		} else if (params[0] === "settings") {
-			Chat.log("client", "Experimental settings " + (Debug.toggle("settings") ? "enabled"
-					: "disabled"));
+			Chat.log("client", "Ustawienia eksperymentalne " + (Debug.toggle("settings") ? "włączone"
+					: "wyłączone"));
 		} else if (params[0] === "touch") {
-			Chat.log("client", "Touch debugging " + (Debug.toggle("touch") ? "enabled" : "disabled"));
+			Chat.log("client", "Debugowanie dotyku " + (Debug.toggle("touch") ? "włączone" : "wyłączone"));
 		} else if (params[0] === "screencap") {
 			Debug.setActive("screencap", !Debug.isActive("screencap"));
-			Chat.log("client", "Screen capture debugging " + (Debug.isActive("screencap") ? "enabled"
-					: "disabled"));
+			Chat.log("client", "Debugowanie przechwytywania ekranu " + (Debug.isActive("screencap") ? "włączone"
+					: "wyłączone"));
 		}
 		return true;
 	}
 
 	showUsage() {
 		const usage = [
-			"Usage:",
+			"Użycie:",
 			"  /debug log",
 			"  /debug ui [pop]",
-			"  /debug weather [<name>]",
+			"  /debug weather [<nazwa>]",
 			"  /debug settings",
 			"  /debug touch"
 		];
@@ -82,20 +82,20 @@ export class DebugAction extends SlashAction {
 	}
 
 	uiPop() {
-		this.uiFloatComponent(UIComponentEnum.LeftPanel, "Left panel", 10, 10);
-		this.uiFloatComponent(UIComponentEnum.RightPanel, "Right panel", 500, 10);
-		this.uiFloatComponent(UIComponentEnum.TopPanel, "Top panel", 200, 10);
-		this.uiFloatComponent(UIComponentEnum.BottomPanel, "Bottom panel", 10, 500);
+		this.uiFloatComponent(UIComponentEnum.LeftPanel, "Lewy panel", 10, 10);
+		this.uiFloatComponent(UIComponentEnum.RightPanel, "Prawy panel", 500, 10);
+		this.uiFloatComponent(UIComponentEnum.TopPanel, "Górny panel", 200, 10);
+		this.uiFloatComponent(UIComponentEnum.BottomPanel, "Dolny panel", 10, 500);
 
-		this.uiFloatComponent(UIComponentEnum.MiniMap, "Map", 10, 50);
-		this.uiFloatComponent(UIComponentEnum.PlayerStats, "Stats", 10, 190);
-		this.uiFloatComponent(UIComponentEnum.BuddyList, "Buddies", 10, 250);
+		this.uiFloatComponent(UIComponentEnum.MiniMap, "Mapa", 10, 50);
+		this.uiFloatComponent(UIComponentEnum.PlayerStats, "Statystyki", 10, 190);
+		this.uiFloatComponent(UIComponentEnum.BuddyList, "Przyjaciele", 10, 250);
 
 		this.uiFloatComponent(UIComponentEnum.PlayerEquipment, marauroa.me["_name"], 500, 50);
-		this.uiFloatComponent(UIComponentEnum.Bag, "Bag", 500, 200);
-		this.uiFloatComponent(UIComponentEnum.Keyring, "Keyring", 500, 300);
-		this.uiFloatComponent(UIComponentEnum.ChatInput, "Chat", 100, 500);
-		this.uiFloatComponent(UIComponentEnum.ChatLog, "Chat log", 100, 560);
+		this.uiFloatComponent(UIComponentEnum.Bag, "Plecak", 500, 200);
+		this.uiFloatComponent(UIComponentEnum.Keyring, "Rzemyk", 500, 300);
+		this.uiFloatComponent(UIComponentEnum.ChatInput, "Czat", 100, 500);
+		this.uiFloatComponent(UIComponentEnum.ChatLog, "Czat log", 100, 560);
 
 		this.uiPopped = true;
 	}
@@ -124,20 +124,20 @@ export class DebugAction extends SlashAction {
 	 *     weather animation off.
 	 */
 	private debugWeather(weather?: string) {
-		const usage = ["Usage:", "  /debug weather [<name>]"];
+		const usage = ["Użycie:", "  /debug weather [<nazwa>]"];
 		if (weather && ["help", "?"].indexOf(weather) > -1) {
 			Chat.log("client", usage);
 			return;
 		}
 		if (!stendhal.config.getBoolean("effect.weather")) {
-			Chat.logH("warning", "Weather is disabled.");
+			Chat.logH("warning", "Pogoda jest wyłączona.");
 		}
 
 		if (weather) {
 			weather = weather.replace(/ /g, "_");
 			const wfilename = stendhal.paths.weather + "/" + weather + ".png";
 			if (!stendhal.data.sprites.getCached(wfilename)) {
-				Chat.logH("error", "unknown weather: " + wfilename);
+				Chat.logH("error", "nieznana pogoda: " + wfilename);
 				return;
 			}
 		}

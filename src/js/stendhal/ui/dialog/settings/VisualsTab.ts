@@ -30,28 +30,28 @@ export class VisualsTab extends AbstractSettingsTab {
 		const col1 = this.child("#col1")!;
 
 		parent.createCheckBox("chk_light", "effect.lighting",
-				"Lighting effects are enabled", "Lighting effects are disabled", function() {
+				"Efekty świetlne są włączone", "Efekty świetlne są wyłączone", function() {
 					StandardMessages.changeNeedsRefresh();
 				});
 
 		parent.createCheckBox("chk_weather", "effect.weather",
-				"Weather is enabled", "Weather is disabled", function() {
+				"Efekty pogodowe są włączone", "Efekty pogodowe są wyłączone", function() {
 					StandardMessages.changeNeedsRefresh();
 				})!;
 
 		parent.createCheckBox("chk_blood", "effect.blood",
-				"Gory images are enabled", "Gory images are disabled");
+				"Efekty krwi są włączone", "Efekty krwi są wyłączone");
 
 		parent.createCheckBox("chk_nonude", "effect.no-nude",
-				"Naked entities have undergarments", "Naked entities are not covered");
+				"Nadzy bohaterowie mają bieliznę", "Nadzy bohaterowie nie są zakryci");
 
 		parent.createCheckBox("chk_shadows", "effect.shadows",
-				"Shadows are enabled", "Shadows are disabled");
+				"Cienie są włączone", "Cienie są wyłączone");
 
 		parent.createCheckBox("chk_clickindicator", "click-indicator",
-				"Displaying clicks", "Not displaying clicks");
+				"Wyświetlanie kliknięć", "Brak wyświetlania kliknięć");
 
-		const chkAnimate = new SettingsComponent("chk_animate", "Animate");
+		const chkAnimate = new SettingsComponent("chk_animate", "Animacja wskaźnika aktywności");
 		chkAnimate.setConfigId("activity-indicator.animate");
 		chkAnimate.setEnabled(config.getBoolean("activity-indicator"));
 		chkAnimate.addListener((evt: Event) => {
@@ -59,10 +59,10 @@ export class VisualsTab extends AbstractSettingsTab {
 			parent.refresh();
 		});
 
-		const chkActivityInd = new SettingsComponent("chk_activityindicator", "Object activity indicator");
+		const chkActivityInd = new SettingsComponent("chk_activityindicator", "Wskaźnik aktywności obiektów");
 		chkActivityInd.setConfigId("activity-indicator");
-		chkActivityInd.setTooltip("Display an indictor over certain interactive objects and corpses"
-				+ " that aren't empty");
+		chkActivityInd.setTooltip("Wyświetlaj wskaźnik nad interaktywnymi obiektami i ciałami,"
+				+ " które nie są puste");
 		chkActivityInd.addListener((evt: Event) => {
 			chkAnimate.setEnabled(chkActivityInd.getValue() as boolean);
 			StandardMessages.changeNeedsRefresh();
@@ -72,8 +72,8 @@ export class VisualsTab extends AbstractSettingsTab {
 		chkAnimate.addTo(col1);
 		chkAnimate.componentElement.classList.add("indented");
 
-		const chkParallax = new SettingsComponent("chk_parallax", "Parallax scrolling backgrounds");
-		chkParallax.setTooltip("Parallax scrolling enabled", "Parallax scrolling disabled");
+		const chkParallax = new SettingsComponent("chk_parallax", "Paralaksa tła");
+		chkParallax.setTooltip("Przewijanie paralaksy włączone", "Przewijanie paralaksy wyłączone");
 		chkParallax.setConfigId("effect.parallax");
 		chkParallax.addListener((evt: Event) => {
 			StandardMessages.changeNeedsRefresh();
@@ -82,7 +82,7 @@ export class VisualsTab extends AbstractSettingsTab {
 		chkParallax.addTo(col1);
 
 		const chkEntityOverlay = new SettingsComponent("chk_entity_overlay",
-				"Entity overlay effects");
+				"Efekty nakładek na jednostkach");
 		chkEntityOverlay.setValue(config.getBoolean("effect.entity-overlay"));
 		chkEntityOverlay.addListener((evt: Event) => {
 			config.set("effect.entity-overlay", chkEntityOverlay.getValue());

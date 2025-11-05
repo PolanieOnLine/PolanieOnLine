@@ -41,7 +41,7 @@ export class GeneralTab extends AbstractSettingsTab {
 		/* *** left panel *** */
 
 		parent.createCheckBox("chk_speechcr", "speech.creature",
-				"Creature speech bubbles are enabled", "Creature speech bubbles are disabled");
+				"Włączono dymki tekstu stworzeń", "Dymki tekstu stworzeń są wyłączone");
 
 		const player_stats = ui.get(UIComponentEnum.PlayerStats) as PlayerStatsComponent;
 
@@ -64,12 +64,12 @@ export class GeneralTab extends AbstractSettingsTab {
 				});
 
 		parent.createCheckBox("chk_hidechat", "chat.autohide",
-				"Chat panel will be hidden after sending text", "Chat panel will remain on-screen");
+				"Panel czatu zostanie ukryty po wysłaniu tekstu", "Panel czatu pozostanie na ekranie");
 
 		// FIXME: are there unique properties for pinch & tap zooming?
 		parent.createCheckBox("chk_zoom", "zoom.touch",
-				"Touch zooming enabled (may not work with all browsers)",
-				"Touch zooming disabled (may not work with all browsers)",
+				"Włączono powiększanie dotykiem (może nie działać we wszystkich przeglądarkach)",
+				"Powiększanie dotykiem wyłączone (może nie działać we wszystkich przeglądarkach)",
 				function() {
 					singletons.getSessionManager().update();
 				});
@@ -78,8 +78,8 @@ export class GeneralTab extends AbstractSettingsTab {
 		/* *** center panel *** */
 
 		parent.createCheckBox("chk_dblclick", "inventory.double-click",
-				"Items are used/consumed with double click/touch",
-				"Items are used/consumed with single click/touch",
+				"Przedmioty są używane/konsumowane poprzez dwukrotne kliknięcie/dotknięcie",
+				"Przedmioty są używane/konsumowane za pomocą jednego kliknięcia/dotyku",
 				function() {
 					// update cursors
 					(ui.get(UIComponentEnum.PlayerEquipment) as PlayerEquipmentComponent).markDirty();
@@ -90,12 +90,12 @@ export class GeneralTab extends AbstractSettingsTab {
 
 		// FIXME: open chest windows are not refreshed
 		parent.createCheckBox("chk_chestqp", "inventory.quick-pickup",
-				"Click tranfers items from chests and corpses to player inventory",
-				"Click executes default action on items in chests and corpses");
+				"Kliknięcie przenosi przedmioty ze skrzyń i zwłok do ekwipunku gracza",
+				"Kliknięcie wykonuje domyślną akcję na przedmiotach w skrzyniach i zwłokach");
 
 		const chk_movecont = parent.createCheckBox("chk_movecont", "move.cont",
-				"Player will continue to walk after changing areas",
-				"Player will stop after changing areas",
+				"Gracz będzie kontynuował chodzenie po zmianie obszaru",
+				"Gracz zatrzyma się po zmianie obszaru",
 				function() {
 					const action = {"type": "move.continuous"} as {[index: string]: string;};
 					if (chk_movecont.checked) {
@@ -106,13 +106,13 @@ export class GeneralTab extends AbstractSettingsTab {
 
 		// TODO: make this multiple choice
 		const chk_pvtsnd = parent.createCheckBox("chk_pvtsnd", "chat.private.sound",
-				"Private message audio notifications enabled",
-				"Private message audio notifications disabled",
+				"Włączono prywatne powiadomienia audio",
+				"Wyłączono prywatne powiadomienia audio",
 				undefined, "ui/notify_up", "null");
 		chk_pvtsnd.checked = config.get("chat.private.sound") === "ui/notify_up";
 
 		parent.createCheckBox("chk_nativeemojis", "emojis.native",
-				"Using native emojis", "Using built-in emojis",
+				"Korzystanie z natywnych emotikonów", "Korzystanie z wbudowanych emotikonów",
 				function() {
 					singletons.getChatInput().refresh();
 				});
@@ -182,7 +182,7 @@ export class GeneralTab extends AbstractSettingsTab {
 
 		// common chat keyword options
 		const txt_chatopts = parent.createTextInput("txtchatopts", config.get("chat-opts.custom")!,
-				"Comma-separated list accessible from the chat options dialog");
+				"Lista rozdzielona przecinkami dostępna w oknie dialogowym opcji czatu");
 		txt_chatopts.addEventListener("change", (e) => {
 			config.set("chat-opts.custom", txt_chatopts.value);
 		});

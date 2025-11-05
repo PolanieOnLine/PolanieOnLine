@@ -58,15 +58,15 @@ export class SettingsDialog extends TabDialogContentComponent {
 
 		/* *** buttons *** */
 
-		const btn_reload = this.addButton("Reload", () => {
+		const btn_reload = this.addButton("Odśwież", () => {
 			this.close();
 			location.reload();
 		}, "button-reload");
-		btn_reload.title = "Reloads page if required by changes";
+		btn_reload.title = "Odśwież stronę, jeśli wymagają tego zmiany";
 		btn_reload.disabled = true;
 
 		const btn_close = this.addCloseButton();
-		btn_close.title = "Close this dialog without reloading page";
+		btn_close.title = "Zamknij to okno dialogowe bez odświeżenia strony";
 	}
 
 	public override getConfigId(): string {
@@ -106,7 +106,7 @@ export class SettingsDialog extends TabDialogContentComponent {
 			// add "experimental" denotation to label
 			const label = checkbox.parentElement!;
 			const text = document.createElement("span");
-			text.innerText = label.innerText + " (experimental)";
+			text.innerText = label.innerText + " (eksperymentalne)";
 			label.innerHTML = "";
 			label.appendChild(checkbox);
 			label.appendChild(text);

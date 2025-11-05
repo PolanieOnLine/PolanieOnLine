@@ -683,7 +683,7 @@ export class SlashActionRepo {
 		minParams: 1,
 		maxParams: 0,
 		getHelp: function(): string[] {
-			return ["<message>", "Send a private message to the last player who sent a message to you."];
+			return ["<wiadomość>", "Wyślij prywatną wiadomość do ostatniego gracza, z którym pisałeś."];
 		}
 	};
 

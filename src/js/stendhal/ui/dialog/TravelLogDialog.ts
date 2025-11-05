@@ -28,7 +28,7 @@ export class TravelLogDialog extends DialogContentComponent {
 		ui.registerComponent(UIComponentEnum.TravelLogDialog, this);
 		this.refresh();
 
-		this.child(".travellogitems")!.innerHTML = "<option value=\"\">(loading)</option>";
+		this.child(".travellogitems")!.innerHTML = "<option value=\"\">(ładowanie)</option>";
 		if (dataItems) {
 			this.setDataItems(dataItems);
 		}
@@ -99,7 +99,7 @@ export class TravelLogDialog extends DialogContentComponent {
 		marauroa.clientFramework.sendAction(action);
 
 		// request repeatable quests
-		if (this.currentProgressType === "Completed Quests") {
+		if (this.currentProgressType === "Ukończone zadania") {
 			marauroa.clientFramework.sendAction({
 				"type": "progressstatus",
 				"progress_type": "repeatable"
@@ -151,7 +151,7 @@ export class TravelLogDialog extends DialogContentComponent {
 			itemList.dispatchEvent(new Event("change"));
 		} else if (stendhal.session.touchOnly()) {
 			// show a "none" option for touch enabled devices
-			itemList.innerHTML = "<option value=\"\">(none)</option>";
+			itemList.innerHTML = "<option value=\"\">(nic)</option>";
 			itemList.selectedIndex = 0;
 		}
 	}
@@ -167,7 +167,7 @@ export class TravelLogDialog extends DialogContentComponent {
 		detailsSpan.innerHTML = "<h3>" + stendhal.ui.html.esc(selectedItem) + "</h3>";
 		if (this.repeatable[selectedItem]) {
 			detailsSpan.innerHTML += "<p id=\"travellogrepeatable\">"
-				+ "<img src=\"" + stendhal.paths.gui + "/rp.png\" /> <em>I can do this quest again.</em></p>";
+				+ "<img src=\"" + stendhal.paths.gui + "/rp.png\" /> <em>Mogę wykonać to zadanie jeszcze raz.</em></p>";
 		}
 
 		detailsSpan.innerHTML += "<p id=\"travellogdescription\">"

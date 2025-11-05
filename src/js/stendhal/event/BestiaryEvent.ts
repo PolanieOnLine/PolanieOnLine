@@ -32,22 +32,22 @@ export class BestiaryEvent extends RPEvent {
 
 		// --- title & headers --- //
 
-		const header = ["Bestiary:", "\"???\" = unknown"];
-		const hasRare = this["enemies"].includes("(rare)");
-		const hasAbnormal = this["enemies"].includes("(abnormal)");
+		const header = ["Bestiariusz:", "\"???\" = niewiadome"];
+		const hasRare = this["enemies"].includes("(rzadkie)");
+		const hasAbnormal = this["enemies"].includes("(anormalne)");
 
 		// show explanation of "rare" & "abnormal" creatures in header
 		if (hasRare || hasAbnormal) {
 			let subheader = "";
 			if (!hasRare) {
-				subheader += "\"abnormal\"";
+				subheader += "\"anormalne\"";
 			} else {
-				subheader += "\"rare\"";
+				subheader += "\"rzadkie\"";
 				if (hasAbnormal) {
-					subheader += " and \"abnormal\"";
+					subheader += " i \"anormalne\"";
 				}
 			}
-			header[1] = subheader + " creatures not required for achievements";
+			header[1] = subheader + " stwory nie są wymagane do osiągnięć";
 		}
 
 		// --- contents --- //
@@ -73,9 +73,9 @@ export class BestiaryEvent extends RPEvent {
 		}
 		t2.classList.add("center-text");
 		t3.classList.add("center-text");
-		t1.textContent = "Name";
-		t2.textContent = "Solo";
-		t3.textContent = "Shared";
+		t1.textContent = "Nazwa";
+		t2.textContent = "Sam";
+		t3.textContent = "Wspólnie";
 
 		col1.appendChild(t1);
 		col2.appendChild(t2);

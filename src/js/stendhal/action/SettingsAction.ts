@@ -23,7 +23,7 @@ export class SettingsAction extends SlashAction {
 	readonly minParams = 0;
 	readonly maxParams = 0;
 
-	override readonly desc = "Opens settings dialog.";
+	override readonly desc = "Otwiera okno dialogowe ustawień.";
 
 
 	execute(_type: string, _params: string[], _remainder: string): boolean {
@@ -32,7 +32,7 @@ export class SettingsAction extends SlashAction {
 
 		const content = new SettingsDialog();
 		const dialog = ui.createSingletonFloatingWindow(
-			"Settings", content,
+			"Ustawienia", content,
 			wstate.x - offset.x, wstate.y - offset.y);
 		dialog.setId("menu");
 		content.setFrame(dialog);

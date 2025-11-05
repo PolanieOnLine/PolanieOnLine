@@ -36,8 +36,8 @@ export class ChatOptionsDialog extends DialogContentComponent {
 	 * serve as alternatives to "quest", may be highlighted in dialogue so keep those.
 	 */
 	private static readonly aliases: {[keyword: string]: string} = {
-		"bye": "goodbye",
-		"hi": "hello",
+		"bye": "do widzenia",
+		"hi": "cześć",
 	}
 
 
@@ -143,7 +143,7 @@ export class ChatOptionsDialog extends DialogContentComponent {
 	public static createOptions() {
 		const wstate = stendhal.config.getWindowState("shortcuts");
 		const content = new ChatOptionsDialog();
-		const dialog = ui.createSingletonFloatingWindow("Chat Options", content, wstate.x, wstate.y);
+		const dialog = ui.createSingletonFloatingWindow("Opcje Czatu", content, wstate.x, wstate.y);
 		dialog.setId("shortcuts");
 		// needed in order to close dialog from within
 		content.setFrame(dialog);

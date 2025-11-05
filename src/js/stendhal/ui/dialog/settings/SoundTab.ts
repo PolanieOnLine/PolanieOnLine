@@ -37,7 +37,7 @@ export class SoundTab extends AbstractSettingsTab {
 		let soundEnabled = config.getBoolean("sound");
 
 		// TODO: add DOM element creation to `SettingsDialog.createCheckBox`
-		const chkSound = new SettingsComponent("chk_sound", "Enable sound");
+		const chkSound = new SettingsComponent("chk_sound", "Włącz dźwięk");
 		chkSound.setConfigId("sound");
 		chkSound.addListener((evt: Event) => {
 			sound.onStateChanged();
@@ -46,12 +46,12 @@ export class SoundTab extends AbstractSettingsTab {
 		chkSound.addTo(col1);
 
 		const layers = [
-			["master", "Master"],
+			["master", "Ogólne"],
 			["gui", "GUI"],
-			["sfx", "Effects"],
-			["creature", "Creatures"],
-			["ambient", "Ambient"],
-			["music", "Music"]
+			["sfx", "Efekty"],
+			["creature", "Stworzenia"],
+			["ambient", "Otoczenie"],
+			["music", "Muzyka"]
 		];
 
 		for (const group of layers) {
