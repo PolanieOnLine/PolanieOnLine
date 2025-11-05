@@ -204,16 +204,19 @@ export class ViewPort {
                 this.renderOffset.x = interpolated.x;
                 this.renderOffset.y = interpolated.y;
 
-                this.offsetX = interpolated.x;
-                this.offsetY = interpolated.y;
+                const snappedX = this.snapToDevicePixel(interpolated.x);
+                const snappedY = this.snapToDevicePixel(interpolated.y);
+
+                this.offsetX = snappedX;
+                this.offsetY = snappedY;
 
                 this.ctx.fillStyle = "black";
                 this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 
-                this.ctx.translate(-interpolated.x, -interpolated.y);
+                this.ctx.translate(-snappedX, -snappedY);
 
-                const tileOffsetX = Math.floor(this.offsetX / this.targetTileWidth);
-                const tileOffsetY = Math.floor(this.offsetY / this.targetTileHeight);
+                const tileOffsetX = Math.floor(snappedX / this.targetTileWidth);
+                const tileOffsetY = Math.floor(snappedY / this.targetTileHeight);
 
                 stendhal.data.map.parallax.draw(this.ctx, this.offsetX, this.offsetY);
                 stendhal.data.map.strategy.render(
@@ -350,6 +353,11 @@ export class ViewPort {
                 if (this.fpsLabel) {
                         this.fpsLabel.textContent = fps.toFixed(0) + " fps";
                 }
+        }
+
+        private snapToDevicePixel(value: number): number {
+                const ratio = window.devicePixelRatio || 1;
+                return Math.round(value * ratio) / ratio;
         }
 
         public setFpsLimit(limit?: number) {

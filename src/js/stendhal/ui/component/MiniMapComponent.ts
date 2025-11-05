@@ -131,8 +131,11 @@ export class MiniMapComponent extends Component {
                 this.renderOffset.x = interpolated.x;
                 this.renderOffset.y = interpolated.y;
 
+                const snappedX = this.snapToDevicePixel(interpolated.x);
+                const snappedY = this.snapToDevicePixel(interpolated.y);
+
                 ctx.save();
-                ctx.translate(-interpolated.x, -interpolated.y);
+                ctx.translate(-snappedX, -snappedY);
                 this.drawBackground(ctx);
                 this.drawEntities(ctx);
                 ctx.restore();
@@ -195,6 +198,11 @@ export class MiniMapComponent extends Component {
                         ctx.drawImage(this.bgImage as CanvasImageSource, 0, 0);
                 }
                 ctx.restore();
+        }
+
+        private snapToDevicePixel(value: number): number {
+                const ratio = window.devicePixelRatio || 1;
+                return Math.round(value * ratio) / ratio;
         }
 
         createBackgroundImage() {
