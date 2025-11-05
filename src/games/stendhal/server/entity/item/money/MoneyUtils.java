@@ -121,9 +121,9 @@ public final class MoneyUtils {
 
 		List<String> parts = new ArrayList<>();
 
-		if (dukaty > 0) parts.add(dukaty + " " + Grammar.polishCoinName("dukat", dukaty));
-		if (talary > 0) parts.add(talary + " " + Grammar.polishCoinName("talar", talary));
-		if (miedziaki > 0 || parts.isEmpty()) parts.add(miedziaki + " " + Grammar.polishCoinName("miedziak", miedziaki));
+		if (dukaty > 0) parts.add(dukaty + " " + Grammar.polishQuantity("dukat", dukaty));
+		if (talary > 0) parts.add(talary + " " + Grammar.polishQuantity("talar", talary));
+		if (miedziaki > 0 || parts.isEmpty()) parts.add(miedziaki + " " + Grammar.polishQuantity("miedziak", miedziaki));
 
 		if (parts.size() == 1) {
 			return parts.get(0);

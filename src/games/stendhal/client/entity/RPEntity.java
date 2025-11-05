@@ -1587,56 +1587,18 @@ public abstract class RPEntity extends AudibleEntity {
 			if (object.has("xp") && (isInHearingRange())) {
 				final int amount = newXp - xp;
 				if (amount > 0) {
-					if (amount == 1 || amount >= 2 && amount <= 4
-						|| amount >= 22 && amount <= 24 || amount >= 102 && amount <= 104 || amount >= 122 && amount <= 124 || amount >= 132 && amount <= 134
-						|| amount >= 32 && amount <= 34 || amount >= 202 && amount <= 204 || amount >= 222 && amount <= 224 || amount >= 232 && amount <= 234
-						|| amount >= 42 && amount <= 44 || amount >= 302 && amount <= 304 || amount >= 322 && amount <= 324 || amount >= 332 && amount <= 334
-						|| amount >= 52 && amount <= 54 || amount >= 402 && amount <= 404 || amount >= 422 && amount <= 424 || amount >= 432 && amount <= 434
-						|| amount >= 62 && amount <= 64 || amount >= 502 && amount <= 504 || amount >= 522 && amount <= 524 || amount >= 532 && amount <= 534
-						|| amount >= 72 && amount <= 74 || amount >= 602 && amount <= 604 || amount >= 622 && amount <= 624 || amount >= 632 && amount <= 634
-						|| amount >= 82 && amount <= 84 || amount >= 702 && amount <= 704 || amount >= 722 && amount <= 724 || amount >= 732 && amount <= 734
-						|| amount >= 92 && amount <= 94 || amount >= 802 && amount <= 804 || amount >= 822 && amount <= 824 || amount >= 832 && amount <= 834
-						|| amount >= 902 && amount <= 904 || amount >= 922 && amount <= 924 || amount >= 932 && amount <= 934
-						|| amount >= 142 && amount <= 144 || amount >= 242 && amount <= 244 || amount >= 342 && amount <= 344 || amount >= 442 && amount <= 444
-						|| amount >= 152 && amount <= 154 || amount >= 252 && amount <= 254 || amount >= 352 && amount <= 354 || amount >= 452 && amount <= 454
-						|| amount >= 162 && amount <= 164 || amount >= 262 && amount <= 264 || amount >= 362 && amount <= 364 || amount >= 462 && amount <= 464
-						|| amount >= 172 && amount <= 174 || amount >= 272 && amount <= 274 || amount >= 372 && amount <= 374 || amount >= 472 && amount <= 474
-						|| amount >= 182 && amount <= 184 || amount >= 282 && amount <= 284 || amount >= 382 && amount <= 384 || amount >= 482 && amount <= 484
-						|| amount >= 192 && amount <= 194 || amount >= 292 && amount <= 294 || amount >= 392 && amount <= 394 || amount >= 492 && amount <= 494
-						|| amount >= 542 && amount <= 544 || amount >= 642 && amount <= 644 || amount >= 742 && amount <= 744 || amount >= 842 && amount <= 844
-						|| amount >= 552 && amount <= 554 || amount >= 652 && amount <= 654 || amount >= 752 && amount <= 754 || amount >= 852 && amount <= 854
-						|| amount >= 562 && amount <= 564 || amount >= 662 && amount <= 664 || amount >= 762 && amount <= 764 || amount >= 862 && amount <= 864
-						|| amount >= 572 && amount <= 574 || amount >= 672 && amount <= 674 || amount >= 772 && amount <= 774 || amount >= 872 && amount <= 874
-						|| amount >= 582 && amount <= 584 || amount >= 682 && amount <= 684 || amount >= 782 && amount <= 784 || amount >= 882 && amount <= 884
-						|| amount >= 592 && amount <= 594 || amount >= 692 && amount <= 694 || amount >= 792 && amount <= 794 || amount >= 892 && amount <= 894
-						|| amount >= 942 && amount <= 944 || amount >= 952 && amount <= 954 || amount >= 962 && amount <= 964 || amount >= 972 && amount <= 974
-						|| amount >= 982 && amount <= 984 || amount >= 992 && amount <= 994) {
-						addTextIndicator("+" + amount,
-								NotificationType.SIGNIFICANT_POSITIVE);
-
-						ClientSingletonRepository.getUserInterface().addEventLine(new HeaderLessEventLine(
-								getTitle()
-								+ " " + Grammar.genderVerb(getGender(), "dostał") + " "
-								+ Grammar.quantityplnoun(amount,
-								"punkt") + " doświadczenia.",
-								NotificationType.SIGNIFICANT_POSITIVE));
-					} else {
-						addTextIndicator("+" + amount,
-								NotificationType.SIGNIFICANT_POSITIVE);
-
-						ClientSingletonRepository.getUserInterface().addEventLine(new HeaderLessEventLine(
-								getTitle()
-								+ " " + Grammar.genderVerb(getGender(), "dostał") + " " + amount + " punktów doświadczenia.",
-								NotificationType.SIGNIFICANT_POSITIVE));
-					}
+					addTextIndicator("+" + amount, NotificationType.SIGNIFICANT_POSITIVE);
+					ClientSingletonRepository.getUserInterface().addEventLine(new HeaderLessEventLine(
+							getTitle()
+							+ " " + Grammar.genderVerb(getGender(), "dostał") + " "
+							+ Grammar.polishQuantity("punkt", amount) + " doświadczenia.",
+							NotificationType.SIGNIFICANT_POSITIVE));
 				} else if (amount < 0) {
-					addTextIndicator("" + amount,
-							NotificationType.SIGNIFICANT_NEGATIVE);
+					addTextIndicator("" + amount, NotificationType.SIGNIFICANT_NEGATIVE);
 					ClientSingletonRepository.getUserInterface().addEventLine(new HeaderLessEventLine(
 							getTitle()
 							+ " traci "
-							+ Grammar.quantityplnoun(-amount,
-							"punkt") + " doświadczenia.",
+							+ Grammar.polishQuantity("punkt", -amount) + " doświadczenia.",
 							NotificationType.SIGNIFICANT_NEGATIVE));
 				}
 			}

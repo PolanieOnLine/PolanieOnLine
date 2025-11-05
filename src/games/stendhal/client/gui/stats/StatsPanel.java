@@ -385,7 +385,7 @@ class StatsPanel extends JPanel {
 			appended = appendPart(tooltip, talary, "talar", appended);
 			appended = appendPart(tooltip, miedziaki, "miedziak", appended);
 			if (!appended) {
-				tooltip.append("0 ").append(Grammar.polishCoinName("miedziak", 0));
+				tooltip.append("0 ").append(Grammar.polishQuantity("miedziak", 0));
 			}
 			tooltip.append(" (" + totalCopper + " miedziaków)");
 			setToolTipText(tooltip.toString());
@@ -400,7 +400,7 @@ class StatsPanel extends JPanel {
 			}
 			tooltip.append(amount)
 				.append(' ')
-				.append(Grammar.polishCoinName(coinName, amount));
+				.append(Grammar.polishQuantity(coinName, amount));
 			return true;
 		}
 
@@ -423,7 +423,7 @@ class StatsPanel extends JPanel {
 
 			void setAmount(int amount) {
 				setText(Integer.toString(amount));
-				setToolTipText(amount + " " + Grammar.polishCoinName(coinName, amount));
+				setToolTipText(amount + " " + Grammar.polishQuantity(coinName, amount));
 			}
 
 			private void setCoinIcon(String... iconPaths) {

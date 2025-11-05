@@ -1469,7 +1469,7 @@ public class Grammar {
 		return word;
 	}
 
-	public static String polishCoinName(String base, int quantity) {
+	public static String polishQuantity(String base, int quantity) {
 		int lastTwo = quantity % 100;
 		int lastOne = quantity % 10;
 
@@ -1488,6 +1488,10 @@ public class Grammar {
 				if (quantity == 1) return "miedziak";
 				if (few) return "miedziaki";
 				return "miedziaków";
+			case "punkt":
+				if (quantity == 1) return "punkt";
+				if (few) return "punkty";
+				return "punktów";
 			default:
 				return base;
 		}
