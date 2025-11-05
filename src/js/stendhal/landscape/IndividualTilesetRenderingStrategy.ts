@@ -41,8 +41,9 @@ export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrate
 	}
 
 	public render(
-		canvas: HTMLCanvasElement, gamewindow: any,
-		tileOffsetX: number, tileOffsetY: number, targetTileWidth: number, targetTileHeight: number): void {
+			canvas: HTMLCanvasElement, gamewindow: any,
+			tileOffsetX: number, tileOffsetY: number, targetTileWidth: number, targetTileHeight: number,
+			alpha: number): void {
 
 		this.targetTileWidth = targetTileWidth;
 		this.targetTileHeight = targetTileHeight;
@@ -54,7 +55,7 @@ export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrate
 				this.paintLayer(canvas, drawingLayer, tileOffsetX, tileOffsetY);
 			}
 			if (name === "2_object") {
-				gamewindow.drawEntities();
+				gamewindow.drawEntities(alpha);
 			}
 		}
 	}

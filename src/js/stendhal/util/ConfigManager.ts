@@ -59,6 +59,8 @@ export class ConfigManager {
 		"joystick.center.x": "224",
 		"joystick.center.y": "384",
 		"joystick.style": "joystick",
+		"loop.prefer144hz": "false",
+		"loop.fps.limit": "0",
 		"menu.style": "traditional",
 		"move.cont": "false",
 		"panel.stats.charname": "true",

@@ -23,7 +23,8 @@ export abstract class LandscapeRenderingStrategy {
 
 	public abstract render(
 		canvas: HTMLCanvasElement, gamewindow: any,
-		tileOffsetX: number, tileOffsetY: number, targetTileWidth: number, targetTileHeight: number): void;
+		tileOffsetX: number, tileOffsetY: number, targetTileWidth: number, targetTileHeight: number,
+		alpha: number): void;
 
 }
 
@@ -40,8 +41,9 @@ export class CombinedTilesetRenderingStrategy extends LandscapeRenderingStrategy
 	}
 
 	public render(
-		canvas: HTMLCanvasElement, gamewindow: any,
-		tileOffsetX: number, tileOffsetY: number, targetTileWidth: number, targetTileHeight: number): void {
+			canvas: HTMLCanvasElement, gamewindow: any,
+			tileOffsetX: number, tileOffsetY: number, targetTileWidth: number, targetTileHeight: number,
+			alpha: number): void {
 
 		let landscapeRenderder = new LandscapeRenderer();
 		landscapeRenderder.drawLayer(
@@ -50,7 +52,7 @@ export class CombinedTilesetRenderingStrategy extends LandscapeRenderingStrategy
 			0,
 			tileOffsetX, tileOffsetY, targetTileWidth, targetTileHeight);
 
-		gamewindow.drawEntities();
+		gamewindow.drawEntities(alpha);
 
 		landscapeRenderder.drawLayer(
 			canvas,
