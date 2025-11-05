@@ -13,7 +13,9 @@ import { CombinedTileset } from "./CombinedTileset";
 
 declare var stendhal: any;
 
-const TILE_EPSILON = 0.5;
+// Trim a fraction of a texel from each side so bilinear filtering never pulls
+// colour from neighbouring tiles when the canvas is translated sub-pixel.
+const TILE_EDGE_TRIM = 0.02;
 
 export class LandscapeRenderer {
 
@@ -30,37 +32,32 @@ export class LandscapeRenderer {
                 const yMax = Math.min(tileOffsetY + canvas.height / targetTileHeight + 1, stendhal.data.map.zoneSizeY);
                 const xMax = Math.min(tileOffsetX + canvas.width / targetTileWidth + 1, stendhal.data.map.zoneSizeX);
 
-                const previousTransform = ctx.getTransform();
-                const cameraOffsetX = -previousTransform.e;
-                const cameraOffsetY = -previousTransform.f;
-                ctx.setTransform(1, 0, 0, 1, 0, 0);
+                for (let y = tileOffsetY; y < yMax; y++) {
+                        for (let x = tileOffsetX; x < xMax; x++) {
+                                let index = layer[y * stendhal.data.map.zoneSizeX + x];
+                                if (index > -1) {
 
-                try {
-                        for (let y = tileOffsetY; y < yMax; y++) {
-                                for (let x = tileOffsetX; x < xMax; x++) {
-                                        let index = layer[y * stendhal.data.map.zoneSizeX + x];
-                                        if (index > -1) {
+                                        try {
+                                                const pixelX = x * targetTileWidth;
+                                                const pixelY = y * targetTileHeight;
+                                                const tilesPerRow = combinedTileset.tilesPerRow;
+                                                const sourceX = (index % tilesPerRow) * stendhal.data.map.tileWidth + TILE_EDGE_TRIM;
+                                                const sourceY = Math.floor(index / tilesPerRow) * stendhal.data.map.tileHeight + TILE_EDGE_TRIM;
+                                                const sourceWidth = stendhal.data.map.tileWidth - TILE_EDGE_TRIM * 2;
+                                                const sourceHeight = stendhal.data.map.tileHeight - TILE_EDGE_TRIM * 2;
 
-                                                try {
-                                                        const screenX = Math.round(x * targetTileWidth - cameraOffsetX);
-                                                        const screenY = Math.round(y * targetTileHeight - cameraOffsetY);
+                                                ctx.drawImage(combinedTileset.canvas,
 
-                                                        ctx.drawImage(combinedTileset.canvas,
-
-                                                                (index % combinedTileset.tilesPerRow) * stendhal.data.map.tileWidth,
-                                                                Math.floor(index / combinedTileset.tilesPerRow) * stendhal.data.map.tileHeight,
-
-                                                                stendhal.data.map.tileWidth, stendhal.data.map.tileHeight,
-                                                                screenX - TILE_EPSILON, screenY - TILE_EPSILON,
-                                                                targetTileWidth + (TILE_EPSILON * 2), targetTileHeight + (TILE_EPSILON * 2));
-                                                } catch (e) {
-                                                        console.error(e);
-                                                }
+                                                        sourceX,
+                                                        sourceY,
+                                                        sourceWidth, sourceHeight,
+                                                        pixelX, pixelY,
+                                                        targetTileWidth, targetTileHeight);
+                                        } catch (e) {
+                                                console.error(e);
                                         }
                                 }
                         }
-                } finally {
-                        ctx.setTransform(previousTransform);
                 }
         }
 

@@ -16,7 +16,9 @@ import { ImagePreloader } from "../data/ImagePreloader";
 import { Chat } from "../util/Chat";
 
 
-const TILE_EPSILON = 0.5;
+// Trim a fraction of a texel from each side so bilinear filtering never pulls
+// colour from neighbouring tiles when the canvas is translated sub-pixel.
+const TILE_EDGE_TRIM = 0.02;
 
 export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrategy {
 
@@ -69,37 +71,28 @@ export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrate
                 const xMax = Math.min(tileOffsetX + canvas.width / this.targetTileWidth + 1, stendhal.data.map.zoneSizeX);
                 let ctx = canvas.getContext("2d")!;
 
-                const previousTransform = ctx.getTransform();
-                const cameraOffsetX = -previousTransform.e;
-                const cameraOffsetY = -previousTransform.f;
-                ctx.setTransform(1, 0, 0, 1, 0, 0);
+                for (let y = tileOffsetY; y < yMax; y++) {
+                        for (let x = tileOffsetX; x < xMax; x++) {
+                                let gid = layer[y * stendhal.data.map.zoneSizeX + x];
+                                const flip = gid & 0xE0000000;
+                                gid &= 0x1FFFFFFF;
 
-                try {
-                        for (let y = tileOffsetY; y < yMax; y++) {
-                                for (let x = tileOffsetX; x < xMax; x++) {
-                                        let gid = layer[y * stendhal.data.map.zoneSizeX + x];
-                                        const flip = gid & 0xE0000000;
-                                        gid &= 0x1FFFFFFF;
+                                if (gid > 0) {
+                                        const tileset = stendhal.data.map.getTilesetForGid(gid);
+                                        const base = stendhal.data.map.firstgids[tileset];
+                                        const idx = gid - base;
 
-                                        if (gid > 0) {
-                                                const tileset = stendhal.data.map.getTilesetForGid(gid);
-                                                const base = stendhal.data.map.firstgids[tileset];
-                                                const idx = gid - base;
-
-                                                try {
-                                                        if (stendhal.data.map.aImages[tileset].height > 0) {
-                                                                const screenX = Math.round(x * this.targetTileWidth - cameraOffsetX);
-                                                                const screenY = Math.round(y * this.targetTileHeight - cameraOffsetY);
-                                                                this.drawTile(ctx, stendhal.data.map.aImages[tileset], idx, screenX, screenY, flip);
-                                                        }
-                                                } catch (e) {
-                                                        console.error(e);
+                                        try {
+                                                if (stendhal.data.map.aImages[tileset].height > 0) {
+                                                        const screenX = x * this.targetTileWidth;
+                                                        const screenY = y * this.targetTileHeight;
+                                                        this.drawTile(ctx, stendhal.data.map.aImages[tileset], idx, screenX, screenY, flip);
                                                 }
+                                        } catch (e) {
+                                                console.error(e);
                                         }
                                 }
                         }
-                } finally {
-                        ctx.setTransform(previousTransform);
                 }
         }
 
@@ -107,18 +100,20 @@ export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrate
                 screenX: number, screenY: number, flip = 0) {
                 const tilesetWidth = tileset.width;
                 const tilesPerRow = Math.floor(tilesetWidth / stendhal.data.map.tileWidth);
-                const destX = screenX - TILE_EPSILON;
-                const destY = screenY - TILE_EPSILON;
-                const destWidth = this.targetTileWidth + (TILE_EPSILON * 2);
-                const destHeight = this.targetTileHeight + (TILE_EPSILON * 2);
-                const sourceX = (idx % tilesPerRow) * stendhal.data.map.tileWidth;
-                const sourceY = Math.floor(idx / tilesPerRow) * stendhal.data.map.tileHeight;
+                const destX = screenX;
+                const destY = screenY;
+                const destWidth = this.targetTileWidth;
+                const destHeight = this.targetTileHeight;
+                const sourceX = (idx % tilesPerRow) * stendhal.data.map.tileWidth + TILE_EDGE_TRIM;
+                const sourceY = Math.floor(idx / tilesPerRow) * stendhal.data.map.tileHeight + TILE_EDGE_TRIM;
+                const sourceWidth = stendhal.data.map.tileWidth - TILE_EDGE_TRIM * 2;
+                const sourceHeight = stendhal.data.map.tileHeight - TILE_EDGE_TRIM * 2;
 
                 if (flip === 0) {
                         ctx.drawImage(tileset,
                                         sourceX,
                                         sourceY,
-                                        stendhal.data.map.tileWidth, stendhal.data.map.tileHeight,
+                                        sourceWidth, sourceHeight,
                                         destX, destY,
                                         destWidth, destHeight);
                 } else {
@@ -140,8 +135,8 @@ export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrate
                         ctx.drawImage(tileset,
                                         sourceX,
                                         sourceY,
-                                        stendhal.data.map.tileWidth, stendhal.data.map.tileHeight,
-                                        -TILE_EPSILON, -TILE_EPSILON,
+                                        sourceWidth, sourceHeight,
+                                        0, 0,
                                         destWidth, destHeight);
 
                         ctx.restore();
