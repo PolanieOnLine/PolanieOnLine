@@ -13,7 +13,7 @@ import { CombinedTileset } from "./CombinedTileset";
 
 declare var stendhal: any;
 
-const TILE_EPSILON = 0.01;
+const TILE_EPSILON = 0.5;
 
 export class LandscapeRenderer {
 
@@ -30,29 +30,38 @@ export class LandscapeRenderer {
                 const yMax = Math.min(tileOffsetY + canvas.height / targetTileHeight + 1, stendhal.data.map.zoneSizeY);
                 const xMax = Math.min(tileOffsetX + canvas.width / targetTileWidth + 1, stendhal.data.map.zoneSizeX);
 
-                for (let y = tileOffsetY; y < yMax; y++) {
-                        for (let x = tileOffsetX; x < xMax; x++) {
-                                let index = layer[y * stendhal.data.map.zoneSizeX + x];
-                                if (index > -1) {
+                const previousTransform = ctx.getTransform();
+                const cameraOffsetX = -previousTransform.e;
+                const cameraOffsetY = -previousTransform.f;
+                ctx.setTransform(1, 0, 0, 1, 0, 0);
 
-                                        try {
-                                                const pixelX = x * targetTileWidth;
-                                                const pixelY = y * targetTileHeight;
+                try {
+                        for (let y = tileOffsetY; y < yMax; y++) {
+                                for (let x = tileOffsetX; x < xMax; x++) {
+                                        let index = layer[y * stendhal.data.map.zoneSizeX + x];
+                                        if (index > -1) {
 
-                                                ctx.drawImage(combinedTileset.canvas,
+                                                try {
+                                                        const screenX = Math.round(x * targetTileWidth - cameraOffsetX);
+                                                        const screenY = Math.round(y * targetTileHeight - cameraOffsetY);
 
-                                                        (index % combinedTileset.tilesPerRow) * stendhal.data.map.tileWidth,
-                                                        Math.floor(index / combinedTileset.tilesPerRow) * stendhal.data.map.tileHeight,
+                                                        ctx.drawImage(combinedTileset.canvas,
 
-                                                        stendhal.data.map.tileWidth, stendhal.data.map.tileHeight,
-                                                        pixelX - TILE_EPSILON, pixelY - TILE_EPSILON,
-                                                        targetTileWidth + (TILE_EPSILON * 2), targetTileHeight + (TILE_EPSILON * 2));
-                                        } catch (e) {
-                                                console.error(e);
+                                                                (index % combinedTileset.tilesPerRow) * stendhal.data.map.tileWidth,
+                                                                Math.floor(index / combinedTileset.tilesPerRow) * stendhal.data.map.tileHeight,
+
+                                                                stendhal.data.map.tileWidth, stendhal.data.map.tileHeight,
+                                                                screenX - TILE_EPSILON, screenY - TILE_EPSILON,
+                                                                targetTileWidth + (TILE_EPSILON * 2), targetTileHeight + (TILE_EPSILON * 2));
+                                                } catch (e) {
+                                                        console.error(e);
+                                                }
                                         }
                                 }
-			}
-		}
-	}
+                        }
+                } finally {
+                        ctx.setTransform(previousTransform);
+                }
+        }
 
 }

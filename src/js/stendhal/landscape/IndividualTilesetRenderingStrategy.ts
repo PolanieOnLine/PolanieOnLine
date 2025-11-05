@@ -16,7 +16,7 @@ import { ImagePreloader } from "../data/ImagePreloader";
 import { Chat } from "../util/Chat";
 
 
-const TILE_EPSILON = 0.01;
+const TILE_EPSILON = 0.5;
 
 export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrategy {
 
@@ -64,81 +64,88 @@ export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrate
 
 	private paintLayer(canvas: HTMLCanvasElement, drawingLayer: number,
 		tileOffsetX: number, tileOffsetY: number) {
-		const layer = stendhal.data.map.layers[drawingLayer];
-		const yMax = Math.min(tileOffsetY + canvas.height / this.targetTileHeight + 1, stendhal.data.map.zoneSizeY);
-		const xMax = Math.min(tileOffsetX + canvas.width / this.targetTileWidth + 1, stendhal.data.map.zoneSizeX);
-		let ctx = canvas.getContext("2d")!;
+                const layer = stendhal.data.map.layers[drawingLayer];
+                const yMax = Math.min(tileOffsetY + canvas.height / this.targetTileHeight + 1, stendhal.data.map.zoneSizeY);
+                const xMax = Math.min(tileOffsetX + canvas.width / this.targetTileWidth + 1, stendhal.data.map.zoneSizeX);
+                let ctx = canvas.getContext("2d")!;
 
-		for (let y = tileOffsetY; y < yMax; y++) {
-			for (let x = tileOffsetX; x < xMax; x++) {
-				let gid = layer[y * stendhal.data.map.zoneSizeX + x];
-				const flip = gid & 0xE0000000;
-				gid &= 0x1FFFFFFF;
+                const previousTransform = ctx.getTransform();
+                const cameraOffsetX = -previousTransform.e;
+                const cameraOffsetY = -previousTransform.f;
+                ctx.setTransform(1, 0, 0, 1, 0, 0);
 
-				if (gid > 0) {
-					const tileset = stendhal.data.map.getTilesetForGid(gid);
-					const base = stendhal.data.map.firstgids[tileset];
-					const idx = gid - base;
+                try {
+                        for (let y = tileOffsetY; y < yMax; y++) {
+                                for (let x = tileOffsetX; x < xMax; x++) {
+                                        let gid = layer[y * stendhal.data.map.zoneSizeX + x];
+                                        const flip = gid & 0xE0000000;
+                                        gid &= 0x1FFFFFFF;
 
-					try {
-						if (stendhal.data.map.aImages[tileset].height > 0) {
-							this.drawTile(ctx, stendhal.data.map.aImages[tileset], idx, x, y, flip);
-						}
-					} catch (e) {
-						console.error(e);
-					}
-				}
-			}
-		}
-	}
+                                        if (gid > 0) {
+                                                const tileset = stendhal.data.map.getTilesetForGid(gid);
+                                                const base = stendhal.data.map.firstgids[tileset];
+                                                const idx = gid - base;
 
-	private drawTile(ctx: CanvasRenderingContext2D, tileset: HTMLImageElement, idx: number, x: number, y: number, flip = 0) {
-		const tilesetWidth = tileset.width;
-		const tilesPerRow = Math.floor(tilesetWidth / stendhal.data.map.tileWidth);
-		const pixelX = x * this.targetTileWidth;
-		const pixelY = y * this.targetTileHeight;
+                                                try {
+                                                        if (stendhal.data.map.aImages[tileset].height > 0) {
+                                                                const screenX = Math.round(x * this.targetTileWidth - cameraOffsetX);
+                                                                const screenY = Math.round(y * this.targetTileHeight - cameraOffsetY);
+                                                                this.drawTile(ctx, stendhal.data.map.aImages[tileset], idx, screenX, screenY, flip);
+                                                        }
+                                                } catch (e) {
+                                                        console.error(e);
+                                                }
+                                        }
+                                }
+                        }
+                } finally {
+                        ctx.setTransform(previousTransform);
+                }
+        }
 
-		if (flip === 0) {
-			ctx.drawImage(tileset,
-					(idx % tilesPerRow) * stendhal.data.map.tileWidth,
-					Math.floor(idx / tilesPerRow) * stendhal.data.map.tileHeight,
-					stendhal.data.map.tileWidth, stendhal.data.map.tileHeight,
-					pixelX - TILE_EPSILON, pixelY - TILE_EPSILON,
-					this.targetTileWidth + (TILE_EPSILON * 2), this.targetTileHeight + (TILE_EPSILON * 2));
-		} else {
-			ctx.translate(pixelX, pixelY);
-			// an ugly hack to restore the previous transformation matrix
-			const restore = [[1, 0, 0, 1, -pixelX, -pixelY]];
+        private drawTile(ctx: CanvasRenderingContext2D, tileset: HTMLImageElement, idx: number,
+                screenX: number, screenY: number, flip = 0) {
+                const tilesetWidth = tileset.width;
+                const tilesPerRow = Math.floor(tilesetWidth / stendhal.data.map.tileWidth);
+                const destX = screenX - TILE_EPSILON;
+                const destY = screenY - TILE_EPSILON;
+                const destWidth = this.targetTileWidth + (TILE_EPSILON * 2);
+                const destHeight = this.targetTileHeight + (TILE_EPSILON * 2);
+                const sourceX = (idx % tilesPerRow) * stendhal.data.map.tileWidth;
+                const sourceY = Math.floor(idx / tilesPerRow) * stendhal.data.map.tileHeight;
 
-			if ((flip & 0x80000000) !== 0) {
-				// flip horizontally
-				ctx.transform(-1, 0, 0, 1, 0, 0);
-				ctx.translate(-this.targetTileWidth, 0);
+                if (flip === 0) {
+                        ctx.drawImage(tileset,
+                                        sourceX,
+                                        sourceY,
+                                        stendhal.data.map.tileWidth, stendhal.data.map.tileHeight,
+                                        destX, destY,
+                                        destWidth, destHeight);
+                } else {
+                        ctx.save();
+                        ctx.translate(screenX, screenY);
 
-				restore.push([-1, 0, 0, 1, 0, 0]);
-				restore.push([1, 0, 0, 1, this.targetTileWidth, 0]);
-			}
-			if ((flip & 0x40000000) !== 0) {
-				// flip vertically
-				ctx.transform(1, 0, 0, -1, 0, 0);
-				ctx.translate(0, -this.targetTileWidth);
+                        if ((flip & 0x80000000) !== 0) {
+                                ctx.scale(-1, 1);
+                                ctx.translate(-this.targetTileWidth, 0);
+                        }
+                        if ((flip & 0x40000000) !== 0) {
+                                ctx.scale(1, -1);
+                                ctx.translate(0, -this.targetTileHeight);
+                        }
+                        if ((flip & 0x20000000) !== 0) {
+                                ctx.transform(0, 1, 1, 0, 0, 0);
+                        }
 
-				restore.push([1, 0, 0, -1, 0, 0]);
-				restore.push([1, 0, 0, 1, 0, this.targetTileHeight]);
-			}
-			if ((flip & 0x20000000) !== 0) {
-				// Coordinate swap
-				ctx.transform(0, 1, 1, 0, 0, 0);
-				restore.push([0, 1, 1, 0, 0, 0]);
-			}
+                        ctx.drawImage(tileset,
+                                        sourceX,
+                                        sourceY,
+                                        stendhal.data.map.tileWidth, stendhal.data.map.tileHeight,
+                                        -TILE_EPSILON, -TILE_EPSILON,
+                                        destWidth, destHeight);
 
-			this.drawTile(ctx, tileset, idx, 0, 0);
-
-			restore.reverse();
-			for (const args of restore) {
-				ctx.transform(args[0], args[1], args[2], args[3], args[4], args[5]);
-			}
-		}
-	}
+                        ctx.restore();
+                }
+        }
 
 }

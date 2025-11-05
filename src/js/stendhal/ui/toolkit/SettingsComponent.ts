@@ -48,19 +48,21 @@ export class SettingsComponent extends WidgetComponent {
 	 * @param {boolean} [experimental=false]
 	 *   Marks this element to be hidden unless settings debugging is enabled.
 	 */
-	constructor(id: string, label: string, type=WidgetType.CHECK, options: OptionsEnum={},
-			experimental=false) {
-		super(type);
-		// create label first
-		this.labelElement = document.createElement("label") as HTMLLabelElement;
+        constructor(id: string, label: string, type=WidgetType.CHECK, options: OptionsEnum={},
+                        experimental=false) {
+                super(type);
+                // create label first
+                this.labelElement = document.createElement("label") as HTMLLabelElement;
 
-		if (WidgetType.SELECT === type) {
-			this.componentElement = this.initSelect(id, label, options);
-		} else {
-			this.componentElement = this.initInput(id, label);
-		}
-		// listen for changes to component element
-		this.initChangeListener();
+                if (WidgetType.SELECT === type) {
+                        this.componentElement = this.initSelect(id, label);
+                        this.populateSelectOptions(options);
+                        this.setSelected(0);
+                } else {
+                        this.componentElement = this.initInput(id, label);
+                }
+                // listen for changes to component element
+                this.initChangeListener();
 
 		if (experimental) {
 			this.componentElement.classList.add("experimental");
@@ -109,19 +111,22 @@ export class SettingsComponent extends WidgetComponent {
 	 * @returns {HTMLElement}
 	 *   Main component element.
 	 */
-	private initSelect(id: string, label: string, options: OptionsEnum={}): HTMLElement {
-		this.labelElement.htmlFor = id;
-		this.labelElement.innerText = label;
-		const componentElement = document.createElement("select");
-		componentElement.id = id;
+        private initSelect(id: string, label: string): HTMLSelectElement {
+                this.labelElement.htmlFor = id;
+                this.labelElement.innerText = label;
+                const componentElement = document.createElement("select");
+                componentElement.id = id;
+                return componentElement;
+        }
 
-		// populate options
-		for (const ol in options) {
-			this.addOption(ol, options[ol]);
-		}
-		this.setSelected(0);
-		return componentElement;
-	}
+        private populateSelectOptions(options: OptionsEnum={}) {
+                for (const label in options) {
+                        if (!Object.prototype.hasOwnProperty.call(options, label)) {
+                                continue;
+                        }
+                        this.addOption(label, options[label]);
+                }
+        }
 
 	override refresh() {
 		if (WidgetType.CHECK === this.type && this.tooltip) {
