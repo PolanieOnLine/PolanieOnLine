@@ -403,14 +403,96 @@ div.quickPickup div.itemSlot {
 
 #chat {
 	height: 100%;
-	border: 1px solid #000;
 	padding: 0.5em;
 	overflow-y: scroll;
 	word-wrap: break-word;
 	display: block;
 	color: rgb(200, 255, 200);
 	background-color: rgb(60, 30, 0);
+	border-top: 2px solid var(--border-top-color);
+	border-left: 2px solid var(--border-top-color);
+	border-right: 2px solid var(--border-bottom-color);
+	border-bottom: 3px solid var(--border-bottom-color);
+	box-shadow: inset 2px 2px var(--border-bottom-color),
+		inset -2px -2px var(--border-top-color);
 	flex: 1;
+	box-sizing: border-box;
+}
+
+#chat::-webkit-scrollbar {
+	width: 16px;
+	background: transparent;
+}
+
+#chat::-webkit-scrollbar-track {
+	background: #A37861;
+	box-shadow: inset 1px 0 0 0 var(--border-bottom-color), inset -1px 0 0 0 var(--border-bottom-color);
+	border-top: 0;
+	border-bottom: 0;
+	border-radius: 0;
+	box-shadow: none;
+}
+
+#chat::-webkit-scrollbar-thumb {
+	background: var(--background-url) repeat;
+	border-top: 2px solid var(--border-top-color);
+	border-left: 2px solid var(--border-top-color);
+	border-right: 2px solid var(--border-bottom-color);
+	border-bottom: 2px solid var(--border-bottom-color);
+	border-radius: 0;
+}
+
+#chat::-webkit-scrollbar-thumb:hover {
+	filter: brightness(1.05);
+}
+#chat::-webkit-scrollbar-thumb:active {
+	filter: brightness(0.95);
+}
+
+#chat::-webkit-scrollbar-button {
+	width: 16px;
+	background-image:
+		url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'><path fill='%23ffffff' d='M1,6 L5,2 L9,6 Z'/></svg>"),
+		var(--background-url);
+	background-repeat: no-repeat, no-repeat;
+	background-position: center, center;
+	background-size: 10px 10px, cover;
+	border-radius: 0;
+	box-shadow: none;
+	cursor: pointer;
+}
+
+#chat::-webkit-scrollbar-button:hover {
+	box-shadow: inset 0 0 0 1px var(--border-top-color);
+}
+
+#chat::-webkit-scrollbar-button:single-button:vertical:decrement {
+	height: 18px;
+	border-top: 2px solid var(--border-top-color);
+	border-left: 2px solid var(--border-top-color);
+	border-right: 2px solid var(--border-bottom-color);
+	border-bottom: 3px solid var(--border-bottom-color);
+	background-image:
+		url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'><path fill='%23ffffff' d='M1,6 L5,2 L9,6 Z'/></svg>"),
+		var(--background-url);
+}
+
+#chat::-webkit-scrollbar-button:single-button:vertical:increment {
+	height: 18px;
+	border-top: 2px solid var(--border-top-color);
+	border-left: 2px solid var(--border-top-color);
+	border-right: 2px solid var(--border-bottom-color);
+	border-bottom: 3px solid var(--border-bottom-color);
+	background-image:
+		url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'><path fill='%23ffffff' d='M1,4 L5,8 L9,4 Z'/></svg>"),
+		var(--background-url);
+}
+
+#chat::-webkit-scrollbar-track-piece,
+#chat::-webkit-scrollbar-corner {
+	border-radius: 0;
+	background: #A37861;
+	box-shadow: inset 1px 0 0 0 var(--border-bottom-color), inset -1px 0 0 0 var(--border-bottom-color);
 }
 
 #zoneinfo {
@@ -429,9 +511,9 @@ div.quickPickup div.itemSlot {
 	white-space: pre;
 	padding: 0.1em;
 	border-top: 2px solid var(--border-top-color);
-    border-left: 2px solid var(--border-top-color);
-    border-right: 2px solid var(--border-bottom-color);
-    border-bottom: 2px solid var(--border-bottom-color);
+		border-left: 2px solid var(--border-top-color);
+		border-right: 2px solid var(--border-bottom-color);
+		border-bottom: 2px solid var(--border-bottom-color);
 }
 
 #charname {
@@ -442,11 +524,15 @@ div.quickPickup div.itemSlot {
 }
 
 .statbar {
-	outline: 1px solid #000000;
-	height: 8px;
+	outline: 1px solid #000;
+	height: 4px;
 	margin-left: 2px;
 	margin-right: 5px;
 	margin-bottom: 3px;
+}
+
+#hpbar.statbar {
+	outline: 1px solid #FFF;
 }
 
 #karmabar {
@@ -455,21 +541,27 @@ div.quickPickup div.itemSlot {
 
 div.logerror { color: rgb(255, 80, 80) }
 div.logwarning { color: rgb(160, 0, 0) }
+div.logdamage { color: rgb(255, 80, 80) }
 div.logprivmsg { color: rgb(200, 255, 200) }
 div.logclient { color: rgb(128, 128, 128) }
+div.logdetailed { color: rgb(0, 0, 0) }
 div.loginformation { color: rgb(255, 200, 0) }
 div.lognegative { color: rgb(255, 0, 0) }
 div.lognormal { color: rgb(200, 240, 240) }
 div.lognormalblack { color: rgb(0, 0, 0) }
 div.logpositive { color: rgb(128, 255, 128) }
+div.logheal { color: rgb(128, 255, 128) }
 div.loggroup { color: rgb(120, 120, 255) }
 div.logemote { color: rgb(220, 200, 160) }
 div.logresponse { color: rgb(128, 255, 128) }
 div.logscene_setting { color: rgb(128, 128, 128) }
+div.logserver { color: rgb(210, 170, 120) }
 div.logsignificant_negative { color: rgb(255, 175, 175) }
 div.logsignificant_positive { color: rgb(65, 105, 225) }
 div.logtutorial { color: rgb(255, 220, 255) }
 div.logsupport { color: rgb(255, 220, 200) }
+div.logtellall { color: rgb(255, 255, 180) }
+div.logpoison { color: rgb(255, 80, 80) }
 
 span.logtimestamp {
 	font-size: 8pt;
@@ -491,20 +583,18 @@ span.logadmin {
 
 div.logcolL {
 	float: left;
-	min-width: 2.5em;
 	height: 100%;
-	white-space: pre;
 }
 
 div.logcolR {
-	height: 100%;
-	overflow-y: auto;
 }
 
 span.lognick {
+	font-family: 'Arial';
 	font-style: italic;
+	font-size: smaller;
 	font-weight: 400;
-	color: gray;
+	color: #FFFFDC;
 	opacity: .95;
 }
 
@@ -723,7 +813,8 @@ div#menupanel button#menubutton:before {
 }
 
 div#menupanel button#menubutton:hover,
-div#menupanel #soundbutton:hover {
+div#menupanel #soundbutton:hover,
+.shortcut-button:hover, #send-button:hover, #keywords-button:hover, #emojis-button:hover {
 	box-shadow: inset 0 0 0 1px var(--border-top-color);
 }
 
@@ -735,6 +826,7 @@ div#menupanel #soundbutton {
 	border-left: 2px solid var(--border-top-color);
 	border-right: 2px solid var(--border-bottom-color);
 	border-bottom: 2px solid var(--border-bottom-color);
+	cursor: pointer;
 }
 
 .qm-button, img#held-object {
@@ -798,9 +890,9 @@ div#menupanel #soundbutton {
 	background-color: #FFF;
 	box-shadow: 2px 2px 4px 0px rgba(0,0,0,0.75);
 	border-top: 1px solid var(--border-top-color);
-    border-left: 2px solid var(--border-top-color);
-    border-right: 2px solid var(--border-bottom-color);
-    border-bottom: 2px solid var(--border-bottom-color);
+	border-left: 2px solid var(--border-top-color);
+	border-right: 2px solid var(--border-bottom-color);
+	border-bottom: 2px solid var(--border-bottom-color);
 }
 
 .popuptitle, .windowtitlebar {
@@ -815,17 +907,17 @@ div#menupanel #soundbutton {
 .popuptitleclose, .windowtitleclose {
 	float: right;
 	min-width: 1.5em;
-    border: none;
-    background: rgba(34, 20, 11, 0.9);
-    color: #f9e7c5;
-    cursor: pointer;
-    font-weight: bold;
-    font-size: 0.95rem;
-    padding: 0 4px;
-    border-top: 1px solid var(--border-top-color);
-    border-left: 1px solid var(--border-top-color);
-    border-right: 1px solid var(--border-bottom-color);
-    border-bottom: 1px solid var(--border-bottom-color);
+	border: none;
+	background: rgba(34, 20, 11, 0.9);
+	color: #f9e7c5;
+	cursor: pointer;
+	font-weight: bold;
+	font-size: 0.95rem;
+	padding: 0 4px;
+	border-top: 1px solid var(--border-top-color);
+	border-left: 1px solid var(--border-top-color);
+	border-right: 1px solid var(--border-bottom-color);
+	border-bottom: 1px solid var(--border-bottom-color);
 }
 
 .windowtitleclose:hover {
@@ -872,6 +964,11 @@ div#menupanel #soundbutton {
 .horizontalgroup {
 	display: flex;
 	align-items: center;
+	background: var(--background-url);
+	border-top: 2px solid var(--border-top-color);
+	border-left: 2px solid var(--border-top-color);
+	border-right: 2px solid var(--border-bottom-color);
+	border-bottom: 2px solid var(--border-bottom-color);
 }
 
 .verticalgroup {
@@ -1054,15 +1151,12 @@ div#menupanel #soundbutton {
 
 .dialogcontents {
 	padding: 9px;
-	border-style: solid;
-	border-width: 1px;
-	border-color: #000000;
 }
 
 .dialogbuttons {
 	margin-left: auto;
 	margin-right: 0px;
-	padding-top: 15px;
+	margin-top: 15px;
 }
 
 .dialogbutton + .dialogbutton {
@@ -1095,10 +1189,27 @@ div#menupanel #soundbutton {
 
 #send-button, #keywords-button, #emojis-button {
 	margin-left: 2px;
+	background: var(--background-url);
+	border-top: 2px solid var(--border-top-color);
+	border-left: 2px solid var(--border-top-color);
+	border-right: 2px solid var(--border-bottom-color);
+	border-bottom: 2px solid var(--border-bottom-color);
+	color: #FFF;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
 }
 
 .shortcut-button {
 	margin: 2px;
+	background: var(--background-url);
+	border-top: 2px solid var(--border-top-color);
+	border-left: 2px solid var(--border-top-color);
+	border-right: 2px solid var(--border-bottom-color);
+	border-bottom: 2px solid var(--border-bottom-color);
+	color: #FFF;
+	cursor: pointer;
 }
 
 img.status-icon {

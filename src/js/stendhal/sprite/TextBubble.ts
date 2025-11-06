@@ -12,8 +12,13 @@
 declare var stendhal: any;
 
 import { Color } from "../data/color/Color";
-import { Pair } from "../util/Pair";
 
+export interface TextSegment {
+	text: string;
+	color: string;
+	underline?: boolean;
+	italic?: boolean;
+}
 
 export abstract class TextBubble {
 
@@ -190,68 +195,198 @@ export abstract class TextBubble {
 	 * @param defaultColor {string}
 	 *   Unformatted text color (default: `util.Color.Color.CHAT_NORMALBLACK`).
 	 */
-	protected segregate(parts: Pair<string, string>[], defaultColor=Color.CHAT_NORMALBLACK) {
-		let fillStyle = defaultColor;
-		let inHighlight = false, inHighlightQuote = false;
-		let inUnderline = false, inUnderlineQuote = false;
-		let idxStart = 0, idxEnd = 0;
-		for (idxEnd; idxEnd < this.text.length; idxEnd++) {
-			if (inUnderlineQuote && this.text[idxEnd] === "'") {
-				inUnderlineQuote = false;
-				inUnderline = false;
-				parts.push(new Pair(fillStyle, this.text.substring(idxStart, idxEnd)));
-				idxEnd++;
-				idxStart = idxEnd;
-				fillStyle = defaultColor;
-			} else if (!inUnderlineQuote && inUnderline && this.text[idxEnd] === " ") {
-				inUnderline = false;
-				parts.push(new Pair(fillStyle, this.text.substring(idxStart, idxEnd)));
-				idxStart = idxEnd;
-				fillStyle = defaultColor;
-			} else if (inHighlightQuote && this.text[idxEnd] === "'") {
-				inHighlightQuote = false;
-				inHighlight = false;
-				parts.push(new Pair(fillStyle, this.text.substring(idxStart, idxEnd)));
-				idxEnd++;
-				idxStart = idxEnd;
-				fillStyle = defaultColor;
-			} else if (!inHighlightQuote && inHighlight && this.text[idxEnd] === " ") {
-				inHighlight = false;
-				parts.push(new Pair(fillStyle, this.text.substring(idxStart, idxEnd)));
-				idxStart = idxEnd;
-				fillStyle = defaultColor;
-			} else if (this.text[idxEnd] === "#") {
-				inHighlight = true;
-				if (idxEnd > idxStart) {
-					parts.push(new Pair(fillStyle, this.text.substring(idxStart, idxEnd)));
-				}
-				fillStyle = Color.CHAT_HIGHLIGHT;
-				if (this.text[idxEnd+1] === "'") {
-					inHighlightQuote = true;
-					idxEnd++;
-				}
-				idxStart = idxEnd+1;
-			} else if (this.text[idxEnd] === "~") {
-				inUnderline = true;
-				if (idxEnd > idxStart) {
-					parts.push(new Pair(fillStyle, this.text.substring(idxStart, idxEnd)));
-				}
-				fillStyle = Color.CHAT_UNDERLINE;
-				if (this.text[idxEnd+1] === "'") {
-					inUnderlineQuote = true;
-					idxEnd++;
-				}
-				idxStart = idxEnd+1;
+	protected segregate(parts: TextSegment[], defaultColor=Color.CHAT_NORMALBLACK) {
+		const delims = [" ", ",", ".", "!", "?", ":", ";"];
+		let highlight = false;
+		let underline = false;
+		let underlineColor = false;
+		let admin = false;
+		let highlightQuote = false;
+		let underlineQuote = false;
+		let underlineColorQuote = false;
+		let adminQuote = false;
+		let buffer = "";
+
+		const currentStyle = () => {
+			let color = defaultColor;
+			if (underlineColor) {
+				color = Color.CHAT_UNDERLINE;
+			} else if (highlight) {
+				color = Color.CHAT_HIGHLIGHT;
+			} else if (admin) {
+				color = Color.CHAT_ADMIN;
 			}
+			return {
+				color,
+				underline: underline || underlineColor,
+				italic: admin
+			};
+		};
+		let style = currentStyle();
+
+		const flush = () => {
+			if (!buffer) {
+				return;
+			}
+			parts.push({
+				text: buffer,
+				color: style.color,
+				underline: style.underline,
+				italic: style.italic
+			});
+			buffer = "";
+		};
+
+		for (let idx = 0; idx < this.text.length; idx++) {
+			const c = this.text[idx];
+
+			if (c === "\\") {
+				const next = this.text[idx + 1];
+				if (typeof next !== "undefined") {
+					buffer += next;
+					idx++;
+				}
+				continue;
+			} else if (c === "#") {
+				if (highlight) {
+					buffer += c;
+					continue;
+				}
+				const next = this.text[idx + 1];
+				if (next === "#") {
+					buffer += c;
+					idx++;
+					continue;
+				}
+				if (next === "'") {
+					highlightQuote = true;
+					idx++;
+				}
+				flush();
+				highlight = true;
+				style = currentStyle();
+				continue;
+			} else if (c === "§") {
+				if (underline) {
+					buffer += c;
+					continue;
+				}
+				const next = this.text[idx + 1];
+				if (next === "§") {
+					buffer += c;
+					idx++;
+					continue;
+				}
+				if (next === "'") {
+					underlineQuote = true;
+					idx++;
+				}
+				flush();
+				underline = true;
+				style = currentStyle();
+				continue;
+			} else if (c === "~") {
+				if (underlineColor) {
+					buffer += c;
+					continue;
+				}
+				const next = this.text[idx + 1];
+				if (next === "~") {
+					buffer += c;
+					idx++;
+					continue;
+				}
+				if (next === "'") {
+					underlineColorQuote = true;
+					idx++;
+				}
+				flush();
+				underlineColor = true;
+				style = currentStyle();
+				continue;
+			} else if (c === "¡") {
+				if (admin) {
+					buffer += c;
+					continue;
+				}
+				const next = this.text[idx + 1];
+				if (next === "¡") {
+					buffer += c;
+					idx++;
+					continue;
+				}
+				if (next === "'") {
+					adminQuote = true;
+					idx++;
+				}
+				flush();
+				admin = true;
+				style = currentStyle();
+				continue;
+			} else if (c === "'") {
+				if (adminQuote) {
+					flush();
+					admin = false;
+					adminQuote = false;
+					style = currentStyle();
+					continue;
+				}
+				if (underlineColorQuote) {
+					flush();
+					underlineColor = false;
+					underlineColorQuote = false;
+					style = currentStyle();
+					continue;
+				}
+				if (underlineQuote) {
+					flush();
+					underline = false;
+					underlineQuote = false;
+					style = currentStyle();
+					continue;
+				}
+				if (highlightQuote) {
+					flush();
+					highlight = false;
+					highlightQuote = false;
+					style = currentStyle();
+					continue;
+				}
+				buffer += c;
+				continue;
+			} else if (delims.indexOf(c) > -1) {
+				const next = this.text[idx + 1];
+				if (c === " " || next === " " || typeof next === "undefined") {
+					if (admin && !adminQuote && !highlightQuote && !underlineQuote && !underlineColorQuote) {
+						flush();
+						admin = false;
+						style = currentStyle();
+					}
+					if (underlineColor && !underlineColorQuote && !highlightQuote && !underlineQuote && !adminQuote) {
+						flush();
+						underlineColor = false;
+						style = currentStyle();
+					}
+					if (underline && !underlineQuote && !highlightQuote) {
+						flush();
+						underline = false;
+						style = currentStyle();
+					}
+					if (highlight && !underlineQuote && !highlightQuote && !underlineColorQuote && !adminQuote) {
+						flush();
+						highlight = false;
+						style = currentStyle();
+					}
+				}
+				buffer += c;
+				continue;
+			}
+
+			buffer += c;
 		}
-		if (idxEnd > idxStart) {
-			// remainder
-			parts.push(new Pair(fillStyle, this.text.substring(idxStart, idxEnd)));
-		}
-		// remove symbols
-		this.text = "";
-		for (const p of parts) {
-			this.text += p.second;
-		}
+
+		flush();
+
+		this.text = parts.map((part) => part.text).join("");
 	}
 }

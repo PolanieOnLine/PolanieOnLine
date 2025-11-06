@@ -11,7 +11,7 @@
 
 declare var stendhal: any;
 
-import { TextBubble } from "./TextBubble";
+import { TextBubble, TextSegment } from "./TextBubble";
 
 import { Color } from "../data/color/Color";
 
@@ -22,13 +22,11 @@ import { Speech } from "../util/Speech";
 
 
 export class SpeechBubble extends TextBubble {
-
 	private entity: RPEntity;
 	private offsetY: number;
 
 	/** Formatted sections. */
-	private parts: Pair<string, string>[];
-
+	private parts: TextSegment[];
 
 	constructor(text: string, entity: RPEntity) {
 		text = text.replace(/\\\\/g, "\\");
@@ -53,8 +51,10 @@ export class SpeechBubble extends TextBubble {
 	}
 
 	override draw(ctx: CanvasRenderingContext2D): boolean {
+		const baseFont = "14px Arial";
+		const italicFont = "italic 14px Arial";
 		ctx.lineWidth = 2;
-		ctx.font = "14px Arial";
+		ctx.font = baseFont;
 		ctx.fillStyle = Color.WHITE;
 		ctx.strokeStyle = Color.BLACK;
 
@@ -69,10 +69,22 @@ export class SpeechBubble extends TextBubble {
 
 		x += 4;
 		ctx.save();
-		for (const p of this.parts) {
-			ctx.fillStyle = p.first;
-			ctx.fillText(p.second, x, y + TextBubble.adjustY);
-			x += ctx.measureText(p.second).width;
+		for (const segment of this.parts) {
+			ctx.font = segment.italic ? italicFont : baseFont;
+			ctx.fillStyle = segment.color;
+			ctx.fillText(segment.text, x, y + TextBubble.adjustY);
+			const width = ctx.measureText(segment.text).width;
+			if (segment.underline && width > 0) {
+				ctx.save();
+				ctx.strokeStyle = segment.color;
+				ctx.lineWidth = 1;
+				ctx.beginPath();
+				ctx.moveTo(x, y + TextBubble.adjustY + 1);
+				ctx.lineTo(x + width, y + TextBubble.adjustY + 1);
+				ctx.stroke();
+				ctx.restore();
+			}
+			x += width;
 		}
 		ctx.restore();
 

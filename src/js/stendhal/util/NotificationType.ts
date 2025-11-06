@@ -15,6 +15,7 @@ import { Color } from "../data/color/Color";
 
 export const NotificationType = {
 	"client": Color.CHAT_CLIENT,
+	"damage": Color.CHAT_NEGATIVE,
 	"detailed": Color.CHAT_DETAILED,
 	"emote": Color.CHAT_EMOTE,
 	"error": Color.CHAT_ERROR,
@@ -33,6 +34,7 @@ export const NotificationType = {
 	"significant_negative": Color.CHAT_SIG_NEGATIVE,
 	"significant_positive": Color.CHAT_SIG_POSITIVE,
 	"support": Color.CHAT_SUPPORT,
+	"tellall": Color.CHAT_TELLALL,
 	"tutorial": Color.CHAT_TUTORIAL,
 	"warning": Color.CHAT_WARN
 } as {[index: string]: string;};

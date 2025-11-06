@@ -151,7 +151,7 @@ export class HSLColor extends ColorType {
 export class Color {
 	public static readonly AQUA = "rgb(0, 255, 255)"; // #00FFFF
 	public static readonly BLACK = "rgb(0, 0, 0)"; // #000000
-	public static readonly BLUE = "rgb(0, 0, 255)"; // #0000FF
+	public static readonly BLUE = "rgb(65, 105, 225)"; // #4169E1
 	public static readonly CYAN = Color.AQUA;
 	public static readonly DARK_GRAY = "rgb(96, 96, 96)"; // #606060
 	public static readonly GRAY = "rgb(128, 128, 128)"; // #808080
@@ -201,7 +201,7 @@ export class Color {
 	public static readonly CHAT_PRIVATE = "rgb(200, 255, 200)"; // #C8FFC8 (mint)
 	public static readonly CHAT_RESPONSE = Color.GREEN;
 	public static readonly CHAT_SCENE = Color.GRAY;
-	public static readonly CHAT_SERVER = Color.GRAY;
+	public static readonly CHAT_SERVER = "rgb(210, 170, 120)";
 	public static readonly CHAT_SIG_NEGATIVE = Color.PINK;
 	public static readonly CHAT_SIG_POSITIVE = "rgb(65, 105, 225)"; // #4169FF (light blue)
 	public static readonly CHAT_SUPPORT = "rgb(255, 220, 200)"; // #FFDCC8 (peach)
@@ -209,6 +209,7 @@ export class Color {
 	public static readonly CHAT_UNDERLINE = "rgb(254, 76, 76)"; // #FE4C4C
 	public static readonly CHAT_ADMIN = "rgb(225, 185, 65)"; // #E1B941
 	public static readonly CHAT_WARN = "rgb(160, 0, 0)"; // #A00000 // (red)
+	public static readonly CHAT_TELLALL = "rgb(255, 255, 180)"; // #FFFFB4 (pale yellow)
 
 
 	/**
