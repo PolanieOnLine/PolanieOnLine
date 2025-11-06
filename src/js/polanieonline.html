@@ -95,26 +95,72 @@
 				<button id="soundbutton">🔇</button>
 			</div>
 
-			<div id="equipmentborder">
-				<div class="equipment-wrapper">
-					<div class="equipment-column">
-						<div id="equipment" class="equipment">
-							<div id="neck0" class="itemSlot"></div>
-							<div id="head0" class="itemSlot"></div>
-							<div id="cloak0" class="itemSlot"></div>
-							<div id="lhand0" class="itemSlot"></div>
-							<div id="armor0" class="itemSlot"></div>
-							<div id="rhand0" class="itemSlot"></div>
-							<div id="finger0" class="itemSlot"></div>
-							<div id="pas0" class="itemSlot"></div>
-							<div id="legs0" class="itemSlot"></div>
-							<div id="glove0" class="itemSlot"></div>
-							<div id="fingerb0" class="itemSlot"></div>
-							<div id="feet0" class="itemSlot"></div>
-							<div id="pouch0" class="itemSlot"></div>
+			<div id="equipmentborder" class="inventory-window" data-inventory-window>
+				<div class="inventory-window__titlebar">
+					<span id="equipment-title" class="inventory-window__title" data-window-title>PolanieOnLine</span>
+					<button id="equipment-toggle" class="inventory-window__toggle" type="button" data-window-toggle aria-expanded="true" aria-controls="equipment-body">−</button>
+				</div>
+				<div id="equipment-body" class="inventory-window__body" data-window-body>
+					<div class="equipment-wrapper">
+						<div class="equipment-column">
+							<div id="equipment" class="equipment">
+								<div id="neck0" class="itemSlot"></div>
+								<div id="head0" class="itemSlot"></div>
+								<div id="cloak0" class="itemSlot"></div>
+								<div id="lhand0" class="itemSlot"></div>
+								<div id="armor0" class="itemSlot"></div>
+								<div id="rhand0" class="itemSlot"></div>
+								<div id="finger0" class="itemSlot"></div>
+								<div id="pas0" class="itemSlot"></div>
+								<div id="legs0" class="itemSlot"></div>
+								<div id="glove0" class="itemSlot"></div>
+								<div id="fingerb0" class="itemSlot"></div>
+								<div id="feet0" class="itemSlot"></div>
+								<div id="pouch0" class="itemSlot"></div>
+							</div>
+						</div>
+					</div>
+					<div class="equipment-controls">
+						<button id="equipment-swap" class="equipment-swap">Zamień</button>
+						<button id="reserve-toggle" class="reserve-toggle" aria-expanded="false" aria-controls="reserve-window" aria-label="Pokaż schowek">&lt;</button>
+					</div>
+					<div id="reserve-window" class="reserve-window" aria-hidden="true">
+						<div class="equipment-column">
+							<div class="equipment-title">Schowek</div>
+							<div id="equipment-set" class="equipment">
+								<div id="neck_set0" class="itemSlot"></div>
+								<div id="head_set0" class="itemSlot"></div>
+								<div id="cloak_set0" class="itemSlot"></div>
+								<div id="lhand_set0" class="itemSlot"></div>
+								<div id="armor_set0" class="itemSlot"></div>
+								<div id="rhand_set0" class="itemSlot"></div>
+								<div id="finger_set0" class="itemSlot"></div>
+								<div id="pas_set0" class="itemSlot"></div>
+								<div id="legs_set0" class="itemSlot"></div>
+								<div id="glove_set0" class="itemSlot"></div>
+								<div id="fingerb_set0" class="itemSlot"></div>
+								<div id="feet_set0" class="itemSlot"></div>
+								<div id="pouch_set0" class="itemSlot"></div>
+							</div>
 						</div>
 					</div>
 				</div>
+			</div>
+
+			<div id="bag-window" class="inventory-window" data-inventory-window>
+				<div class="inventory-window__titlebar">
+					<span class="inventory-window__title" data-window-title>Plecak</span>
+					<button class="inventory-window__toggle" type="button" data-window-toggle aria-expanded="true" aria-controls="bag-window-body">−</button>
+				</div>
+				<div id="bag-window-body" class="inventory-window__body" data-window-body></div>
+			</div>
+
+			<div id="keyring-window" class="inventory-window" data-inventory-window>
+				<div class="inventory-window__titlebar">
+					<span class="inventory-window__title" data-window-title>Rzemyk</span>
+					<button class="inventory-window__toggle" type="button" data-window-toggle aria-expanded="true" aria-controls="keyring-window-body">−</button>
+				</div>
+				<div id="keyring-window-body" class="inventory-window__body" data-window-body></div>
 			</div>
 		</div>
 	</div>

@@ -163,20 +163,93 @@ div.itemSlot {
 	border-radius: 6px;
 	border: 2px solid transparent;
 	border-image: linear-gradient(135deg,
-		rgba(255, 230, 150, 1) 0%,
-		rgba(255, 200, 80, 1) 15%,
-		rgba(255, 140, 40, 1) 35%,
-		rgba(200, 80, 20, 1) 80%,
-		rgba(255, 255, 255, 0.8) 98%,
+		rgba(255, 230, 150, .6) 0%,
+		rgba(255, 200, 80, .6) 15%,
+		rgba(255, 140, 40, .6) 35%,
+		rgba(200, 80, 20, .6) 80%,
+		rgba(255, 255, 255, .4) 98%,
 		rgba(255, 255, 255, 0) 100%
 	) 1;
 	border-image-slice: 1;
 	border-image-width: 2px;
 	border-image-repeat: stretch;
-	box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.8);
-	background-color: #50372baa;
+	box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.7);
+	background-color: rgba(72, 43, 23, 0.85);
 	text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;
 	mask-image: radial-gradient(circle, white 90%, transparent 100%);
+}
+
+div#equipmentborder { width: 140px; }
+
+.inventory-window {
+	width: 253px;
+	background: url("/data/gui/panel_wood.jpg") repeat;
+	border-top: 1px solid #f6d9aa;
+	border-left: 1px solid #f6d9aa;
+	border-right: 1px solid #3c160b;
+	border-bottom: 1px solid #3c160b;
+	border-radius: 0;
+	box-shadow: none;
+}
+
+.inventory-window__titlebar {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 6px;
+	padding: 1px 3px;
+	background: url("/data/gui/panel_wood.jpg") repeat;
+	color: #f9e7c5;
+	text-shadow: 1px 1px 2px #000;
+	border-top: 1px solid #f6d9aa;
+	border-left: 1px solid #f6d9aa;
+	border-right: 1px solid #3c160b;
+	border-bottom: 3px solid #3c160b;
+}
+
+.inventory-window__title {
+	font-weight: bold;
+	font-size: 14px;
+	letter-spacing: 0.04em;
+	flex: 1;
+}
+
+.inventory-window__toggle {
+	min-width: 1.5em;
+	border: none;
+	background: rgba(34, 20, 11, 0.9);
+	color: #f9e7c5;
+	cursor: pointer;
+	font-weight: bold;
+	font-size: 0.95rem;
+	padding: 0 4px;
+	border-top: 1px solid #f6d9aa;
+	border-left: 1px solid #f6d9aa;
+	border-right: 1px solid #3c160b;
+	border-bottom: 1px solid #3c160b;
+}
+
+.inventory-window__toggle:hover,
+.inventory-window__toggle:focus {
+	background: rgba(52, 30, 14, 0.95);
+	outline: none;
+}
+
+.inventory-window__body {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	background: url("/data/gui/panel_wood.jpg") repeat;
+	border-right: 1px solid #3c160b;
+	border-bottom: 2px solid #3c160b;
+}
+
+.inventory-window--collapsed .inventory-window__body {
+	display: none;
+}
+
+.inventory-window--hidden {
+	display: none !important;
 }
 
 div.quickPickup div.itemSlot {
@@ -186,14 +259,13 @@ div.quickPickup div.itemSlot {
 .equipment {
 	position: relative;
 	height: 210px;
-	border: 1px solid black;
 	width: 122px;
 }
 
 .equipment-wrapper {
 	display: flex;
+	justify-content: center;
 	gap: 12px;
-	align-items: flex-start;
 }
 
 .equipment-column {
@@ -623,13 +695,9 @@ span.lognick {
 }
 
 #equipmentborder {
-	float: left;
-	width: 320px;
 	position: relative;
 }
 
-#bag { border: 1px solid black; width: 120px; padding: 2px; float: left }
-#keyring { border: 1px solid black; width: 80px; padding: 2px; float: left }
 #portfolio { border: 1px solid black; width: 80px; padding: 2px; float: left }
 
 #chatinput {
@@ -637,10 +705,11 @@ span.lognick {
 }
 
 .inventorypopup {
-	border: 1px solid black;
-	background-color: #FFF;
-	padding: 2px;
-	float: left
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-start;
+	align-content: flex-start;
+	background: transparent;
 }
 
 .inventorypopup_2 {

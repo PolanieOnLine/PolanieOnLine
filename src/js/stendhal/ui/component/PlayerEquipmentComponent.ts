@@ -11,6 +11,7 @@
 
 import { Component } from "../toolkit/Component";
 import { ItemContainerImplementation } from "./ItemContainerImplementation";
+import { InventoryWindowController } from "./InventoryWindowController";
 
 declare var marauroa: any;
 
@@ -20,17 +21,18 @@ declare var marauroa: any;
 export class PlayerEquipmentComponent extends Component {
 
 	private slotNames = ["neck", "head", "cloak", "lhand", "armor", "rhand", "finger", "pas", "legs", "glove", "fingerb", "feet", "pouch"];
-	private slotSizes = [  1,      1,       1,      1,       1,        1,       1,       1,      1,      1,       1,        1,       1];
+	private slotSizes = [  1,      1,       1,      1,       1,	1,       1,       1,      1,      1,       1,	1,       1];
 	private slotImages = ["slot-neck.png", "slot-helmet.png", "slot-cloak.png", "slot-shield.png", "slot-armor.png", "slot-weapon.png",
 		"slot-ring.png", "slot-belt.png", "slot-legs.png", "slot-gloves.png", "slot-ringb.png", "slot-boots.png", "slot-pouch.png"];
 	private readonly secondarySlotNames = this.slotNames.map((name) => name + "_set");
-        private inventory: ItemContainerImplementation[] = [];
+	private inventory: ItemContainerImplementation[] = [];
 
-        private pouchVisible = false;
-        private swapButton?: HTMLButtonElement;
-        private reserveToggle?: HTMLButtonElement;
-        private reserveWindow?: HTMLElement;
-        private reserveVisible = false;
+	private pouchVisible = false;
+	private swapButton?: HTMLButtonElement;
+	private reserveToggle?: HTMLButtonElement;
+	private reserveWindow?: HTMLElement;
+	private reserveVisible = false;
+	private currentTitle = "";
 
 	constructor() {
 		super("equipment");
@@ -47,31 +49,33 @@ export class PlayerEquipmentComponent extends Component {
 					document, this.secondarySlotNames[i], this.slotSizes[i], null, "", false, this.slotImages[i]));
 		}
 
-                const swapElement = document.getElementById("equipment-swap");
-                if (swapElement instanceof HTMLButtonElement) {
-                        this.swapButton = swapElement;
-                        this.swapButton.addEventListener("click", () => this.swapSets());
-                }
+		const swapElement = document.getElementById("equipment-swap");
+		if (swapElement instanceof HTMLButtonElement) {
+			this.swapButton = swapElement;
+			this.swapButton.addEventListener("click", () => this.swapSets());
+		}
 
-                const reserveToggleElement = document.getElementById("reserve-toggle");
-                if (reserveToggleElement instanceof HTMLButtonElement) {
-                        this.reserveToggle = reserveToggleElement;
-                        this.reserveToggle.addEventListener("click", () => this.toggleReserveWindow());
-                }
-                const reserveWindowElement = document.getElementById("reserve-window");
-                if (reserveWindowElement instanceof HTMLElement) {
-                        this.reserveWindow = reserveWindowElement;
-                }
-                this.updateReserveWindow(false);
+		const reserveToggleElement = document.getElementById("reserve-toggle");
+		if (reserveToggleElement instanceof HTMLButtonElement) {
+			this.reserveToggle = reserveToggleElement;
+			this.reserveToggle.addEventListener("click", () => this.toggleReserveWindow());
+		}
+		const reserveWindowElement = document.getElementById("reserve-window");
+		if (reserveWindowElement instanceof HTMLElement) {
+			this.reserveWindow = reserveWindowElement;
+		}
+		this.updateReserveWindow(false);
 
-                // hide pouch by default
-                this.showPouch(false);
-        }
+		// hide pouch by default
+		this.showPouch(false);
+	}
 
 	public update() {
 		for (var i in this.inventory) {
 			this.inventory[i].update();
 		}
+
+		this.updateWindowTitle();
 
 		if (!this.pouchVisible) {
 			var features = null
@@ -121,31 +125,39 @@ export class PlayerEquipmentComponent extends Component {
 		}
 	}
 
-        private swapSets() {
-                const action: any = { type: "setchange" };
-                if (marauroa && marauroa.currentZoneName) {
-                        action.zone = marauroa.currentZoneName;
-                }
-                marauroa.clientFramework.sendAction(action);
-        }
+	private swapSets() {
+		const action: any = { type: "setchange" };
+		if (marauroa && marauroa.currentZoneName) {
+			action.zone = marauroa.currentZoneName;
+		}
+		marauroa.clientFramework.sendAction(action);
+	}
 
-        private toggleReserveWindow() {
-                this.updateReserveWindow(!this.reserveVisible);
-        }
+	private toggleReserveWindow() {
+		this.updateReserveWindow(!this.reserveVisible);
+	}
 
-        private updateReserveWindow(show: boolean) {
-                this.reserveVisible = show;
+	private updateReserveWindow(show: boolean) {
+		this.reserveVisible = show;
 
-                if (this.reserveWindow) {
-                        this.reserveWindow.classList.toggle("visible", show);
-                        this.reserveWindow.setAttribute("aria-hidden", (!show).toString());
-                }
+		if (this.reserveWindow) {
+			this.reserveWindow.classList.toggle("visible", show);
+			this.reserveWindow.setAttribute("aria-hidden", (!show).toString());
+		}
 
-                if (this.reserveToggle) {
-                        this.reserveToggle.textContent = show ? ">" : "<";
-                        this.reserveToggle.setAttribute("aria-expanded", show.toString());
-                        this.reserveToggle.setAttribute("aria-label", show ? "Ukryj schowek" : "Pokaż schowek");
-                }
-        }
+		if (this.reserveToggle) {
+			this.reserveToggle.textContent = show ? ">" : "<";
+			this.reserveToggle.setAttribute("aria-expanded", show.toString());
+			this.reserveToggle.setAttribute("aria-label", show ? "Ukryj schowek" : "Pokaż schowek");
+		}
+	}
 
+	private updateWindowTitle() {
+		const player = marauroa?.me;
+		const title = player ? (player["_name"] || player["name"]) : "";
+		if (title && title !== this.currentTitle) {
+			InventoryWindowController.setTitle("equipmentborder", title);
+			this.currentTitle = title;
+		}
+	}
 }
