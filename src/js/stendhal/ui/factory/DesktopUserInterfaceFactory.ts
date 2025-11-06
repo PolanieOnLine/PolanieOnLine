@@ -54,8 +54,8 @@ export class DesktopUserInterfaceFactory {
 
 		this.add(socialPanel, UIComponentEnum.BuddyList, new BuddyListComponent());
 		this.add(socialPanel, UIComponentEnum.GroupPanel, new GroupPanelComponent());
-		socialPanel.addTab("Friends");
-		socialPanel.addTab("Group");
+		socialPanel.addTab("Przyjaciele");
+		socialPanel.addTab("Grupa");
 
 		// workaround issue where some events aren't received at login by updating when tab changes
 		const that = this;

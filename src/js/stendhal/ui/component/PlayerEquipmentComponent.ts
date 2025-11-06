@@ -21,7 +21,7 @@ declare var marauroa: any;
 export class PlayerEquipmentComponent extends Component {
 
 	private slotNames = ["neck", "head", "cloak", "lhand", "armor", "rhand", "finger", "pas", "legs", "glove", "fingerb", "feet", "pouch"];
-	private slotSizes = [  1,      1,       1,      1,       1,	1,       1,       1,      1,      1,       1,	1,       1];
+	private slotSizes = [  1,      1,       1,      1,       1,	       1,       1,       1,      1,      1,       1,	    1,       1];
 	private slotImages = ["slot-neck.png", "slot-helmet.png", "slot-cloak.png", "slot-shield.png", "slot-armor.png", "slot-weapon.png",
 		"slot-ring.png", "slot-belt.png", "slot-legs.png", "slot-gloves.png", "slot-ringb.png", "slot-boots.png", "slot-pouch.png"];
 	private readonly secondarySlotNames = this.slotNames.map((name) => name + "_set");
@@ -33,6 +33,7 @@ export class PlayerEquipmentComponent extends Component {
 	private reserveWindow?: HTMLElement;
 	private reserveVisible = false;
 	private currentTitle = "";
+	private readonly handleLayoutChange = () => this.refreshReserveWindowPosition();
 
 	constructor() {
 		super("equipment");
@@ -65,6 +66,15 @@ export class PlayerEquipmentComponent extends Component {
 			this.reserveWindow = reserveWindowElement;
 		}
 		this.updateReserveWindow(false);
+		this.refreshReserveWindowPosition();
+
+		window.addEventListener("resize", this.handleLayoutChange);
+		const passiveOptions = { passive: true } as AddEventListenerOptions;
+		window.addEventListener("scroll", this.handleLayoutChange, passiveOptions);
+		const rightColumn = document.getElementById("rightColumn");
+		if (rightColumn) {
+			rightColumn.addEventListener("scroll", this.handleLayoutChange, passiveOptions);
+		}
 
 		// hide pouch by default
 		this.showPouch(false);
@@ -140,6 +150,8 @@ export class PlayerEquipmentComponent extends Component {
 	private updateReserveWindow(show: boolean) {
 		this.reserveVisible = show;
 
+		this.refreshReserveWindowPosition();
+
 		if (this.reserveWindow) {
 			this.reserveWindow.classList.toggle("visible", show);
 			this.reserveWindow.setAttribute("aria-hidden", (!show).toString());
@@ -150,6 +162,32 @@ export class PlayerEquipmentComponent extends Component {
 			this.reserveToggle.setAttribute("aria-expanded", show.toString());
 			this.reserveToggle.setAttribute("aria-label", show ? "Ukryj schowek" : "Pokaż schowek");
 		}
+	}
+	
+	private refreshReserveWindowPosition() {
+		if (!this.reserveWindow) {
+			return;
+		}
+
+		const anchor = document.getElementById("equipmentborder");
+		if (!anchor) {
+			return;
+		}
+
+		const anchorRect = anchor.getBoundingClientRect();
+		const width = this.reserveWindow.offsetWidth || this.reserveWindow.scrollWidth;
+		if (!width) {
+			return;
+		}
+
+		const gap = 0;
+		const left = Math.round(anchorRect.left - width - gap);
+		const top = Math.round(anchorRect.top);
+
+		this.reserveWindow.style.setProperty("--reserve-window-left", `${left}px`);
+		this.reserveWindow.style.setProperty("--reserve-window-top", `${top}px`);
+		this.reserveWindow.style.setProperty("--reserve-window-slide", `${width + gap}px`);
+		this.reserveWindow.style.removeProperty("--reserve-window-height");
 	}
 
 	private updateWindowTitle() {
