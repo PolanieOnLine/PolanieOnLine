@@ -29,6 +29,7 @@ import { MiniMapComponent } from "../component/MiniMapComponent";
 import { ZoneInfoComponent } from "../component/ZoneInfoComponent";
 import { PlayerEquipmentComponent } from "../component/PlayerEquipmentComponent";
 import { PlayerStatsComponent } from "../component/PlayerStatsComponent";
+import { InventoryWindowController } from "../component/InventoryWindowController";
 
 import { Layout } from "../../data/enum/Layout";
 
@@ -76,16 +77,26 @@ export class DesktopUserInterfaceFactory {
 		// since this isn't available at time of construction execute for good measure
 		socialPanel.onTabChanged();
 
-		let rightPanel = new Panel("rightColumn");
-		ui.registerComponent(UIComponentEnum.RightPanel, rightPanel);
-		this.add(rightPanel, UIComponentEnum.PlayerEquipment, new PlayerEquipmentComponent());
-		this.add(rightPanel, UIComponentEnum.Bag,
-			new BagComponent(undefined, "bag", 6, 6, false, undefined));
+                let rightPanel = new Panel("rightColumn");
+                ui.registerComponent(UIComponentEnum.RightPanel, rightPanel);
 
-		const keyring = new KeyringComponent(undefined, "keyring", 6, 2, false, "slot-key.png");
-		// hide keyring by default
-		keyring.setVisible(false);
-		this.add(rightPanel, UIComponentEnum.Keyring, keyring);
+                InventoryWindowController.register("equipmentborder", { collapsed: false });
+                InventoryWindowController.register("bag-window", { title: "Plecak" });
+                InventoryWindowController.register("keyring-window", { title: "Klucze" });
+
+                const equipmentComponent = new PlayerEquipmentComponent();
+                InventoryWindowController.attachComponent("equipmentborder", equipmentComponent);
+                this.add(rightPanel, UIComponentEnum.PlayerEquipment, equipmentComponent);
+
+                const bagComponent = new BagComponent(undefined, "bag", 6, 6, false, undefined);
+                InventoryWindowController.attachComponent("bag-window", bagComponent);
+                ui.registerComponent(UIComponentEnum.Bag, bagComponent);
+
+                const keyring = new KeyringComponent(undefined, "keyring", 6, 2, false, "slot-key.png");
+                InventoryWindowController.attachComponent("keyring-window", keyring);
+                // hide keyring by default
+                keyring.setVisible(false);
+                ui.registerComponent(UIComponentEnum.Keyring, keyring);
 
 
 		// hide pouch by default

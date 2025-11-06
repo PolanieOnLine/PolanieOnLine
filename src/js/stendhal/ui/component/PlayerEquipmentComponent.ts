@@ -11,6 +11,7 @@
 
 import { Component } from "../toolkit/Component";
 import { ItemContainerImplementation } from "./ItemContainerImplementation";
+import { InventoryWindowController } from "./InventoryWindowController";
 
 declare var marauroa: any;
 
@@ -31,6 +32,7 @@ export class PlayerEquipmentComponent extends Component {
         private reserveToggle?: HTMLButtonElement;
         private reserveWindow?: HTMLElement;
         private reserveVisible = false;
+        private currentTitle = "";
 
 	constructor() {
 		super("equipment");
@@ -68,16 +70,18 @@ export class PlayerEquipmentComponent extends Component {
                 this.showPouch(false);
         }
 
-	public update() {
-		for (var i in this.inventory) {
-			this.inventory[i].update();
-		}
+        public update() {
+                for (var i in this.inventory) {
+                        this.inventory[i].update();
+                }
 
-		if (!this.pouchVisible) {
-			var features = null
-			if (marauroa.me != null) {
-				features = marauroa.me["features"];
-			}
+                this.updateWindowTitle();
+
+                if (!this.pouchVisible) {
+                        var features = null
+                        if (marauroa.me != null) {
+                                features = marauroa.me["features"];
+                        }
 
 			if (features != null) {
 				if (features["pouch"] != null) {
@@ -145,6 +149,15 @@ export class PlayerEquipmentComponent extends Component {
                         this.reserveToggle.textContent = show ? ">" : "<";
                         this.reserveToggle.setAttribute("aria-expanded", show.toString());
                         this.reserveToggle.setAttribute("aria-label", show ? "Ukryj schowek" : "Pokaż schowek");
+                }
+        }
+
+        private updateWindowTitle() {
+                const player = marauroa?.me;
+                const title = player ? (player["_name"] || player["name"]) : "";
+                if (title && title !== this.currentTitle) {
+                        InventoryWindowController.setTitle("equipmentborder", title);
+                        this.currentTitle = title;
                 }
         }
 
