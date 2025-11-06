@@ -763,14 +763,10 @@ export class RPEntity extends ActiveEntity {
 		if (newlevel === oldlevel) return;
 		if (!marauroa?.me || !marauroa.me.isInHearingRange(this)) return;
 
-		const key = (stat ?? "").toLowerCase().trim();
-
-		const statMap: Record<string, string> = {
-			atk: "ataku",
-			def: "obrony",
-			ratk: "strzelnictwa",
-			mining: "górnictwa"
-		};
+		stat = stat.replace("def", "obrony");
+		stat = stat.replace("ratk", "strzelnictwa");
+		stat = stat.replace("atk", "ataku");
+		stat = stat.replace("mining", "górnictwa");
 
 		let msg = this.getTitle() + " ";
 		let msgtype: "significant_positive" | "significant_negative" = "significant_positive";
@@ -783,11 +779,10 @@ export class RPEntity extends ActiveEntity {
 		}
 
 		const poziom = (newlevel > oldlevel) ? " poziom" : " poziomu";
-		const label = statMap[key] ?? key;
-		if (key === "level") {
+		if (stat === "level") {
 			msg += `${newlevel}${poziom}`;
 		} else {
-			msg += `${newlevel}${poziom} ${label}`;
+			msg += `${newlevel}${poziom} ${stat}`;
 		}
 
 		Chat.logH(msgtype, msg);
