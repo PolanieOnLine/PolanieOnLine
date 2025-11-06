@@ -714,7 +714,12 @@ export class RPEntity extends ActiveEntity {
 
 	onDamaged(_source: Entity, damage: number) {
 		this.attackResult = this.createResultIcon(stendhal.paths.sprites + "/combat/hitted.png");
-		var sounds = ["attack-melee-01", "attack-melee-02", "attack-melee-03", "attack-melee-04", "attack-melee-05", "attack-melee-06", "attack-melee-07"];
+		var sounds = ["attack",
+				"attack-melee-01",	"attack-melee-02",	"attack-melee-03",
+				"attack-melee-04",	"attack-melee-05",	"attack-melee-06",
+				"attack-range-01",	"attack-swing-01",	"attack-slap-01",
+				"pol-attack-slash",	"pol-attack-crash",	"pol-attack-sword",
+				"pol-attack-swing",	"pol-attack-kling"];
 		var index = Math.floor(Math.random() * Math.floor(sounds.length));
 		stendhal.sound.playLocalizedEffect(this["_x"], this["_y"], 20, 3, sounds[index], 1);
 	}
@@ -754,35 +759,35 @@ export class RPEntity extends ActiveEntity {
 		}
 	}
 
-	protected onLevelChanged(stat: string, newlevel: number, oldlevel: number) {
-		if (!marauroa?.me || newlevel === oldlevel) return;
-		if (!marauroa.me.isInHearingRange(this)) return;
+	protected onLevelChanged(stat: string, newlevel: number, oldlevel: number): void {
+		if (newlevel === oldlevel) return;
+		if (!marauroa?.me || !marauroa.me.isInHearingRange(this)) return;
+
+		const key = (stat ?? "").toLowerCase().trim();
 
 		const statMap: Record<string, string> = {
-				def: "obrony",
-				ratk: "strzelnictwa",
-				atk: "ataku",
-				mining: "górnictwa",
-				level: "level"
+			atk: "ataku",
+			def: "obrony",
+			ratk: "strzelnictwa",
+			mining: "górnictwa"
 		};
 
 		let msg = this.getTitle() + " ";
 		let msgtype: "significant_positive" | "significant_negative" = "significant_positive";
 
 		if (newlevel > oldlevel) {
-				msg += "osiągnął ";
+			msg += "osiągnął ";
 		} else {
-				msg += "spadł do ";
-				msgtype = "significant_negative";
+			msg += "spadł do ";
+			msgtype = "significant_negative";
 		}
 
-		const label = statMap[stat] ?? stat;
 		const poziom = (newlevel > oldlevel) ? " poziom" : " poziomu";
-
-		if (stat === "level") {
-				msg += String(newlevel) + poziom;
+		const label = statMap[key] ?? key;
+		if (key === "level") {
+			msg += `${newlevel}${poziom}`;
 		} else {
-				msg += String(newlevel) + poziom + " " + label;
+			msg += `${newlevel}${poziom} ${label}`;
 		}
 
 		Chat.logH(msgtype, msg);
