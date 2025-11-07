@@ -35,7 +35,7 @@ export class MiniMapComponent extends Component {
 	private mapWidth = 1;
 	private mapHeight = 1;
 	private scale = 1;
-	private bgImage!: HTMLCanvasElement|OffscreenCanvas;
+	private bgImage?: HTMLCanvasElement|OffscreenCanvas;
 	private lastZone?: number[];
 
 	private readonly cameraSpring = new SpringVector(600);
@@ -49,7 +49,6 @@ export class MiniMapComponent extends Component {
 	private static readonly COLOR_GROUND = Color.parseRGB(Color.BACKGROUND); // light gray
 	private static readonly COLOR_PROTECTION = Color.parseRGB(Color.PROTECTION); // green
 
-
 	constructor() {
 		super("minimap");
 		this.componentElement.addEventListener("click", (event) => {
@@ -60,11 +59,13 @@ export class MiniMapComponent extends Component {
 		});
 	}
 
-
 	private zoneChange() {
 		this.mapWidth = stendhal.data.map.zoneSizeX;
 		this.mapHeight = stendhal.data.map.zoneSizeY;
-		this.scale = Math.max(this.minimumScale, Math.min(this.height / this.mapHeight, this.width / this.mapWidth));
+		const fitScale = Math.min(this.height / this.mapHeight, this.width / this.mapWidth);
+		const normalizedFit = Number.isFinite(fitScale) ? fitScale : this.minimumScale;
+		const quantizedFit = normalizedFit >= this.minimumScale ? Math.round(normalizedFit) : this.minimumScale;
+		this.scale = Math.max(this.minimumScale, quantizedFit);
 		this.cameraInitialized = false;
 		this.needsBackgroundRefresh = true;
 		this.entityStates = new WeakMap<any, EntityState>();
@@ -78,8 +79,7 @@ export class MiniMapComponent extends Component {
 
 			this.scale = 10;
 			this.zoneChange();
-			this.createBackgroundImage();
-			this.needsBackgroundRefresh = false;
+			this.needsBackgroundRefresh = !this.createBackgroundImage();
 		}
 	}
 
@@ -90,8 +90,7 @@ export class MiniMapComponent extends Component {
 
 		if (this.needsBackgroundRefresh) {
 			this.zoneChange();
-			this.createBackgroundImage();
-			this.needsBackgroundRefresh = false;
+			this.needsBackgroundRefresh = !this.createBackgroundImage();
 		}
 
 		this.updateEntities();
@@ -120,20 +119,23 @@ export class MiniMapComponent extends Component {
 		}
 
 		if (this.needsBackgroundRefresh) {
-			this.createBackgroundImage();
-			this.needsBackgroundRefresh = false;
+			this.needsBackgroundRefresh = !this.createBackgroundImage();
 		}
 
 		const ctx = (this.componentElement as HTMLCanvasElement).getContext("2d")!;
 
 		ctx.setTransform(1, 0, 0, 1, 0, 0);
 		ctx.imageSmoothingEnabled = false;
-		ctx.fillStyle = Color.DARK_GRAY;
+		ctx.fillStyle = Color.BLACK;
 		ctx.fillRect(0, 0, this.width, this.height);
 
 		const interpolated = this.cameraSpring.getInterpolated(alpha);
+		const renderX = Math.round(interpolated.x);
+		const renderY = Math.round(interpolated.y);
+		this.xOffset = renderX;
+		this.yOffset = renderY;
 		ctx.save();
-		ctx.translate(-interpolated.x, -interpolated.y);
+		ctx.translate(-renderX, -renderY);
 		this.drawBackground(ctx);
 		this.drawEntities(ctx, alpha);
 		ctx.restore();
@@ -189,53 +191,60 @@ export class MiniMapComponent extends Component {
 		ctx.restore();
 	}
 
-	createBackgroundImage() {
-		let width = this.mapWidth;
-		let height = this.mapHeight;
+	createBackgroundImage(): boolean {
+		const width = this.mapWidth;
+		const height = this.mapHeight;
 		if (width <= 0 || height <= 0) {
-			return;
+			return false;
 		}
 
-		if (stendhal.data.map.collisionData !== this.lastZone) {
-			this.lastZone = stendhal.data.map.collisionData;
-			let buffer: HTMLCanvasElement|OffscreenCanvas;
-			if (typeof OffscreenCanvas !== "undefined") {
-				buffer = new OffscreenCanvas(width, height);
-			} else {
-				buffer = document.createElement("canvas");
-			}
-			buffer.width = width;
-			buffer.height = height;
+		if (stendhal.data.map.collisionData === this.lastZone && this.bgImage) {
+			return true;
+		}
 
-			const ctx = buffer.getContext("2d")!;
-			let imgData = ctx.createImageData(width, height);
+		this.lastZone = stendhal.data.map.collisionData;
+		let buffer: HTMLCanvasElement|OffscreenCanvas;
+		if (typeof OffscreenCanvas !== "undefined") {
+			buffer = new OffscreenCanvas(width, height);
+		} else {
+			buffer = document.createElement("canvas");
+		}
+		buffer.width = width;
+		buffer.height = height;
 
-			for (let y = 0; y < height; y++) {
-				for (let x = 0; x < width; x++) {
-					let color = MiniMapComponent.COLOR_GROUND;
-					// RGBA array. Find the actual position
-					let pos = 4 * (y * width + x);
-					if (stendhal.data.map.collision(x, y)) {
-						// red collision
-						color = MiniMapComponent.COLOR_COLLISION;
-					} else if (stendhal.data.map.isProtected(x, y)) {
-						// light green for protection
-						color = MiniMapComponent.COLOR_PROTECTION;
-					}
-					imgData.data[pos] = color.R;
-					imgData.data[pos + 1] = color.G;
-					imgData.data[pos + 2] = color.B;
-					imgData.data[pos + 3] = 255; // opacity
+		const ctx = buffer.getContext("2d")!;
+		const imgData = ctx.createImageData(width, height);
+
+		for (let y = 0; y < height; y++) {
+			for (let x = 0; x < width; x++) {
+				let color = MiniMapComponent.COLOR_GROUND;
+				// RGBA array. Find the actual position
+				const pos = 4 * (y * width + x);
+				if (stendhal.data.map.collision(x, y)) {
+					// red collision
+					color = MiniMapComponent.COLOR_COLLISION;
+				} else if (stendhal.data.map.isProtected(x, y)) {
+					// light green for protection
+					color = MiniMapComponent.COLOR_PROTECTION;
 				}
+				imgData.data[pos] = color.R;
+				imgData.data[pos + 1] = color.G;
+				imgData.data[pos + 2] = color.B;
+				imgData.data[pos + 3] = 255; // opacity
 			}
-			this.bgImage = buffer;
-			ctx.putImageData(imgData, 0, 0);
 		}
+		ctx.putImageData(imgData, 0, 0);
+		this.bgImage = buffer;
+		return true;
 	}
 
 	drawEntities(ctx: CanvasRenderingContext2D, alpha: number) {
 		ctx.fillStyle = Color.RED;
 		ctx.strokeStyle = Color.BLACK;
+		ctx.lineWidth = 1;
+		ctx.lineCap = "butt";
+		ctx.lineJoin = "miter";
+		ctx.imageSmoothingEnabled = false;
 		let isAdmin = marauroa.me["adminlevel"] && marauroa.me["adminlevel"] >= 600;
 
 		for (let i in marauroa.currentZone) {
@@ -253,28 +262,34 @@ export class MiniMapComponent extends Component {
 				const pos = this.getEntityInterpolatedPosition(o, alpha);
 				const width = this.getEntityDimension(o, "width");
 				const height = this.getEntityDimension(o, "height");
+				const drawX = Math.round(pos.x * this.scale);
+				const drawY = Math.round(pos.y * this.scale);
+				const scaledWidth = Math.max(1, Math.round(width * this.scale));
+				const scaledHeight = Math.max(1, Math.round(height * this.scale));
 
 				if (o instanceof Player) {
-					let adj_scale = this.scale;
-					if (adj_scale < 6) {
-						// + is hard to see in wider views
-						adj_scale = 6;
-					}
-
-					let ho = (width * adj_scale) / 2;
-					let vo = (height * adj_scale) / 2;
-					const hc = pos.x * this.scale + ho;
-					const vc = pos.y * this.scale + vo;
-
-					ctx.beginPath();
-					ctx.moveTo(hc - ho, vc);
-					ctx.lineTo(hc + ho, vc);
-					ctx.moveTo(hc, vc - vo);
-					ctx.lineTo(hc, vc + vo);
-					ctx.stroke();
-					ctx.closePath();
+					const centerX = Math.round((pos.x + width / 2) * this.scale);
+					const centerY = Math.round((pos.y + height / 2) * this.scale);
+					const armLength = Math.max(3, Math.round(Math.max(scaledWidth, scaledHeight) / 2));
+					const crossSpan = armLength * 2 + 1;
+					const originalFill: CanvasGradient|CanvasPattern|string = ctx.fillStyle;
+					ctx.fillStyle = ctx.strokeStyle as typeof ctx.fillStyle;
+					ctx.fillRect(centerX, centerY - armLength, 1, crossSpan);
+					ctx.fillRect(centerX - armLength, centerY, crossSpan, 1);
+					ctx.fillStyle = originalFill;
 				} else {
-					ctx.strokeRect(pos.x * this.scale, pos.y * this.scale, width * this.scale, height * this.scale);
+					const rectX = drawX + 0.5;
+					const rectY = drawY + 0.5;
+					const rectWidth = Math.max(0, scaledWidth - 1);
+					const rectHeight = Math.max(0, scaledHeight - 1);
+					if (rectWidth === 0 && rectHeight === 0) {
+						const originalFill: CanvasGradient|CanvasPattern|string = ctx.fillStyle;
+						ctx.fillStyle = ctx.strokeStyle as typeof ctx.fillStyle;
+						ctx.fillRect(drawX, drawY, 1, 1);
+						ctx.fillStyle = originalFill;
+					} else {
+						ctx.strokeRect(rectX, rectY, rectWidth, rectHeight);
+					}
 				}
 			}
 		}
