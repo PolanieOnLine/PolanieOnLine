@@ -11,10 +11,13 @@
 
 import { Entity } from "./Entity";
 
+import { Color } from "../data/color/Color";
+
 declare var stendhal: any;
 
 export class WalkBlocker extends Entity {
-
+	override minimapShow = true;
+	override minimapStyle = Color.WALKBLOCK;
 	override zIndex = 3000;
 
 	override isVisibleToAction(_filter: boolean) {
@@ -24,5 +27,4 @@ export class WalkBlocker extends Entity {
 	override getCursor(_x: number, _y: number) {
 		return "url(" + stendhal.paths.sprites + "/cursor/stop.png) 1 3, auto";
 	}
-
 }

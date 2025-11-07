@@ -21,7 +21,7 @@ declare var marauroa: any;
 declare var stendhal: any;
 
 export class Creature extends RPEntity {
-
+	override minimapShow = true;
 	override minimapStyle = Color.CREATURE;
 	override spritePath = "monsters";
 	override titleStyle = "#ffc8c8";

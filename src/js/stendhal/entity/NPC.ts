@@ -18,6 +18,7 @@ import { Color } from "../data/color/Color";
 declare var stendhal: any;
 
 export class NPC extends RPEntity {
+	override minimapShow = true;
 	override minimapStyle = Color.NPC;
 	override spritePath = "npc";
 	override titleStyle = "#c8c8ff";

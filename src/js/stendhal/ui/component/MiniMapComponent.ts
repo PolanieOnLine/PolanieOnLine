@@ -15,18 +15,22 @@ declare let stendhal: any;
 import { Component } from "../toolkit/Component";
 
 import { Player } from "../../entity/Player";
+import { NPC } from "../../entity/NPC";
+import { Creature } from "../../entity/Creature";
+import { DomesticAnimal } from "../../entity/DomesticAnimal";
+import { Portal } from "../../entity/Portal";
+import { Chest } from "../../entity/Chest";
+import { WalkBlocker } from "../../entity/WalkBlocker";
 
 import { Color } from "../../data/color/Color";
 import { SpringVector, Vector2 } from "../../util/SpringVector";
 
 type EntityState = {prevX: number; prevY: number; currX: number; currY: number};
 
-
 /**
  * mini map
  */
 export class MiniMapComponent extends Component {
-
 	private width = 128;
 	private height = 128;
 	private minimumScale = 2;
@@ -37,6 +41,9 @@ export class MiniMapComponent extends Component {
 	private scale = 1;
 	private bgImage?: HTMLCanvasElement|OffscreenCanvas;
 	private lastZone?: number[];
+	private pixelRatio = 1;
+	private marginX = 0;
+	private marginY = 0;
 
 	private readonly cameraSpring = new SpringVector(600);
 	private cameraTarget: Vector2 = {x: 0, y: 0};
@@ -51,6 +58,21 @@ export class MiniMapComponent extends Component {
 
 	constructor() {
 		super("minimap");
+		const canvas = this.componentElement as HTMLCanvasElement;
+		const cssWidth = canvas.clientWidth || canvas.width;
+		const cssHeight = canvas.clientHeight || canvas.height;
+		this.width = cssWidth;
+		this.height = cssHeight;
+		if (typeof window !== "undefined" && typeof window.devicePixelRatio === "number") {
+			this.pixelRatio = window.devicePixelRatio || 1;
+		}
+		if (this.pixelRatio < 1) {
+			this.pixelRatio = 1;
+		}
+		canvas.style.width = cssWidth + "px";
+		canvas.style.height = cssHeight + "px";
+		canvas.width = Math.round(cssWidth * this.pixelRatio);
+		canvas.height = Math.round(cssHeight * this.pixelRatio);
 		this.componentElement.addEventListener("click", (event) => {
 			this.onClick(event);
 		});
@@ -63,9 +85,15 @@ export class MiniMapComponent extends Component {
 		this.mapWidth = stendhal.data.map.zoneSizeX;
 		this.mapHeight = stendhal.data.map.zoneSizeY;
 		const fitScale = Math.min(this.height / this.mapHeight, this.width / this.mapWidth);
-		const normalizedFit = Number.isFinite(fitScale) ? fitScale : this.minimumScale;
-		const quantizedFit = normalizedFit >= this.minimumScale ? Math.round(normalizedFit) : this.minimumScale;
-		this.scale = Math.max(this.minimumScale, quantizedFit);
+		let quantizedFit = Number.isFinite(fitScale) ? fitScale : this.minimumScale;
+		if (quantizedFit >= this.minimumScale) {
+			const rounded = Math.round(quantizedFit);
+			quantizedFit = Math.max(this.minimumScale, rounded || this.minimumScale);
+		} else {
+			quantizedFit = Math.max(this.minimumScale, quantizedFit);
+		}
+		this.scale = quantizedFit;
+		this.updateMargins();
 		this.cameraInitialized = false;
 		this.needsBackgroundRefresh = true;
 		this.entityStates = new WeakMap<any, EntityState>();
@@ -124,7 +152,7 @@ export class MiniMapComponent extends Component {
 
 		const ctx = (this.componentElement as HTMLCanvasElement).getContext("2d")!;
 
-		ctx.setTransform(1, 0, 0, 1, 0, 0);
+		ctx.setTransform(this.pixelRatio, 0, 0, this.pixelRatio, 0, 0);
 		ctx.imageSmoothingEnabled = false;
 		ctx.fillStyle = Color.BLACK;
 		ctx.fillRect(0, 0, this.width, this.height);
@@ -135,7 +163,7 @@ export class MiniMapComponent extends Component {
 		this.xOffset = renderX;
 		this.yOffset = renderY;
 		ctx.save();
-		ctx.translate(-renderX, -renderY);
+		ctx.translate(this.marginX - renderX, this.marginY - renderY);
 		this.drawBackground(ctx);
 		this.drawEntities(ctx, alpha);
 		ctx.restore();
@@ -178,6 +206,13 @@ export class MiniMapComponent extends Component {
 		}
 
 		return {x: targetX, y: targetY};
+	}
+
+	private updateMargins() {
+		const scaledWidth = this.mapWidth * this.scale;
+		const scaledHeight = this.mapHeight * this.scale;
+		this.marginX = Math.max(0, Math.floor((this.width - scaledWidth) / 2));
+		this.marginY = Math.max(0, Math.floor((this.height - scaledHeight) / 2));
 	}
 
 	drawBackground(ctx: CanvasRenderingContext2D) {
@@ -245,60 +280,61 @@ export class MiniMapComponent extends Component {
 		ctx.lineCap = "butt";
 		ctx.lineJoin = "miter";
 		ctx.imageSmoothingEnabled = false;
-		let isAdmin = marauroa.me["adminlevel"] && marauroa.me["adminlevel"] >= 600;
+		const isAdmin = marauroa.me["adminlevel"] && marauroa.me["adminlevel"] >= 6;
 
 		for (let i in marauroa.currentZone) {
 			let o = marauroa.currentZone[i];
-			if (this.hasRenderablePosition(o) && (o.minimapShow || isAdmin)) {
-				o.onMiniMapDraw();
+			if (!this.canDisplayOnMinimap(o, isAdmin)) {
+				continue;
+			}
+			o.onMiniMapDraw();
 
-				// this.ctx.fillText(o.id, o.x * this.scale, o.y * this.scale);
-				if (o.minimapStyle) {
-					ctx.strokeStyle = o.minimapStyle;
-				} else {
-					ctx.strokeStyle = Color.GRAY;
-				}
+			if (o.minimapStyle) {
+				ctx.strokeStyle = o.minimapStyle;
+			} else {
+				ctx.strokeStyle = Color.GRAY;
+			}
 
-				const pos = this.getEntityInterpolatedPosition(o, alpha);
-				const width = this.getEntityDimension(o, "width");
-				const height = this.getEntityDimension(o, "height");
-				const drawX = Math.round(pos.x * this.scale);
-				const drawY = Math.round(pos.y * this.scale);
-				const scaledWidth = Math.max(1, Math.round(width * this.scale));
-				const scaledHeight = Math.max(1, Math.round(height * this.scale));
+			const pos = this.getEntityInterpolatedPosition(o, alpha);
+			const width = this.getEntityDimension(o, "width");
+			const height = this.getEntityDimension(o, "height");
+			const drawX = Math.round(pos.x * this.scale);
+			const drawY = Math.round(pos.y * this.scale);
+			const scaledWidth = Math.max(1, Math.round(width * this.scale));
+			const scaledHeight = Math.max(1, Math.round(height * this.scale));
 
-				if (o instanceof Player) {
-					const centerX = Math.round((pos.x + width / 2) * this.scale);
-					const centerY = Math.round((pos.y + height / 2) * this.scale);
-					const armLength = Math.max(3, Math.round(Math.max(scaledWidth, scaledHeight) / 2));
-					const crossSpan = armLength * 2 + 1;
+			if (o instanceof Player) {
+				const centerX = Math.round((pos.x + width / 2) * this.scale);
+				const centerY = Math.round((pos.y + height / 2) * this.scale);
+				const armLength = Math.max(3, Math.round(Math.max(scaledWidth, scaledHeight) / 2));
+				const crossSpan = armLength * 2 + 1;
+				const originalFill: CanvasGradient|CanvasPattern|string = ctx.fillStyle;
+				ctx.fillStyle = ctx.strokeStyle as typeof ctx.fillStyle;
+				ctx.fillRect(centerX, centerY - armLength, 1, crossSpan);
+				ctx.fillRect(centerX - armLength, centerY, crossSpan, 1);
+				ctx.fillStyle = originalFill;
+			} else {
+				const rectX = drawX + 0.5;
+				const rectY = drawY + 0.5;
+				const rectWidth = Math.max(0, scaledWidth - 1);
+				const rectHeight = Math.max(0, scaledHeight - 1);
+				if (rectWidth === 0 && rectHeight === 0) {
 					const originalFill: CanvasGradient|CanvasPattern|string = ctx.fillStyle;
 					ctx.fillStyle = ctx.strokeStyle as typeof ctx.fillStyle;
-					ctx.fillRect(centerX, centerY - armLength, 1, crossSpan);
-					ctx.fillRect(centerX - armLength, centerY, crossSpan, 1);
+					ctx.fillRect(drawX, drawY, 1, 1);
 					ctx.fillStyle = originalFill;
 				} else {
-					const rectX = drawX + 0.5;
-					const rectY = drawY + 0.5;
-					const rectWidth = Math.max(0, scaledWidth - 1);
-					const rectHeight = Math.max(0, scaledHeight - 1);
-					if (rectWidth === 0 && rectHeight === 0) {
-						const originalFill: CanvasGradient|CanvasPattern|string = ctx.fillStyle;
-						ctx.fillStyle = ctx.strokeStyle as typeof ctx.fillStyle;
-						ctx.fillRect(drawX, drawY, 1, 1);
-						ctx.fillStyle = originalFill;
-					} else {
-						ctx.strokeRect(rectX, rectY, rectWidth, rectHeight);
-					}
+					ctx.strokeRect(rectX, rectY, rectWidth, rectHeight);
 				}
 			}
 		}
 	}
 
 	private updateEntities() {
+		const isAdmin = marauroa.me["adminlevel"] && marauroa.me["adminlevel"] >= 6;
 		for (const key in marauroa.currentZone) {
 			const obj = marauroa.currentZone[key];
-			if (!this.hasRenderablePosition(obj)) {
+			if (!this.canDisplayOnMinimap(obj, isAdmin)) {
 				continue;
 			}
 
@@ -314,6 +350,40 @@ export class MiniMapComponent extends Component {
 			}
 			this.entityStates.set(obj, state);
 		}
+	}
+
+	private canDisplayOnMinimap(obj: any, isAdmin: boolean): boolean {
+		if (!obj || !this.hasRenderablePosition(obj)) {
+			return false;
+		}
+		if (isAdmin) {
+			return true;
+		}
+		if (!obj.minimapShow) {
+			return false;
+		}
+		if (obj instanceof Player) {
+			return true;
+		}
+		if (obj instanceof NPC) {
+			return true;
+		}
+		if (obj instanceof Creature) {
+			return true;
+		}
+		if (obj instanceof DomesticAnimal) {
+			return true;
+		}
+		if (obj instanceof Portal) {
+			return !obj["hidden"];
+		}
+		if (obj instanceof Chest) {
+			return true;
+		}
+		if (obj instanceof WalkBlocker) {
+			return true;
+		}
+		return false;
 	}
 
 	private hasRenderablePosition(obj: any): boolean {
@@ -353,14 +423,21 @@ export class MiniMapComponent extends Component {
 		if (!stendhal.config.getBoolean("pathfinding.minimap")) {
 			return;
 		}
-		let pos = stendhal.ui.html.extractPosition(event);
-		let x = Math.floor((pos.canvasRelativeX + this.xOffset) / this.scale);
-		let y = Math.floor((pos.canvasRelativeY + this.yOffset) / this.scale);
+		const pos = stendhal.ui.html.extractPosition(event);
+		const localX = pos.canvasRelativeX - this.marginX;
+		const localY = pos.canvasRelativeY - this.marginY;
+		const mapPixelX = localX + this.xOffset;
+		const mapPixelY = localY + this.yOffset;
+		const x = Math.floor(mapPixelX / this.scale);
+		const y = Math.floor(mapPixelY / this.scale);
+		if (x < 0 || y < 0 || x >= this.mapWidth || y >= this.mapHeight) {
+			return;
+		}
 		if (!stendhal.data.map.collision(x, y)) {
 			let action: any = {
-					type: "moveto",
-					x: x.toString(),
-					y: y.toString()
+				type: "moveto",
+				x: x.toString(),
+				y: y.toString()
 			};
 
 			if ("type" in event && event["type"] === "dblclick") {

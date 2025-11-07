@@ -18,7 +18,7 @@ declare var marauroa: any;
 declare var stendhal: any;
 
 export class DomesticAnimal extends RPEntity {
-
+	override minimapShow = true;
 	override minimapStyle = Color.DOMESTICANIMAL;
 
 	override drawMain(ctx: CanvasRenderingContext2D) {

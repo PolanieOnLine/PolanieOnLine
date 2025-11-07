@@ -22,34 +22,46 @@ import { Chat } from "../util/Chat";
 
 declare var marauroa: any;
 declare var stendhal: any;
+const CHEST_SPRITE_FILENAME = "/chest.png";
 
+let OPEN_SPRITE: any;
+let CLOSED_SPRITE: any;
 
-let OPEN_SPRITE = {
-	filename: stendhal.paths.sprites + "/chest.png",
-	height: 32,
-	width: 32,
-	offsetY: 32
-};
+function getChestSprite(offsetY?: number) {
+	return {
+		filename: stendhal.paths.sprites + CHEST_SPRITE_FILENAME,
+		height: 32,
+		width: 32,
+		...(offsetY !== undefined ? { offsetY } : {})
+	};
+}
 
-let CLOSED_SPRITE = {
-	filename: stendhal.paths.sprites + "/chest.png",
-	height: 32,
-	width: 32
-};
+function getOpenSprite() {
+	if (!OPEN_SPRITE) {
+		OPEN_SPRITE = getChestSprite(32);
+	}
+	return OPEN_SPRITE;
+}
+
+function getClosedSprite() {
+	if (!CLOSED_SPRITE) {
+		CLOSED_SPRITE = getChestSprite();
+	}
+	return CLOSED_SPRITE;
+}
 
 export class Chest extends PopupInventory {
-
 	override minimapShow = true;
 	override minimapStyle = Color.CHEST;
 
 	override zIndex = 5000;
-	sprite = CLOSED_SPRITE;
+	sprite = getClosedSprite();
 	open = false;
 
 	override set(key: string, value: any) {
 		super.set(key, value);
 		if (key === "open") {
-			this.sprite = OPEN_SPRITE;
+			this.sprite = getOpenSprite();
 			this.open = true;
 		}
 		if (this.isNextTo(marauroa.me)) {
@@ -60,7 +72,7 @@ export class Chest extends PopupInventory {
 	override unset(key: string) {
 		super.unset(key);
 		if (key === "open") {
-			this.sprite = CLOSED_SPRITE;
+			this.sprite = getClosedSprite();
 			this.open = false;
 			if (this.inventory && this.inventory.isOpen()) {
 				this.inventory.close();

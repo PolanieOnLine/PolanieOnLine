@@ -774,9 +774,16 @@ span.lognick {
 	overflow-x: visible;
 }
 
+#minimap-frame {
+	background-color: #000;
+}
+
 #minimap {
 	border: 1px solid black;
-	float: left
+	display: block;
+	margin: 0 auto;
+	image-rendering: pixelated;
+	image-rendering: crisp-edges;
 }
 
 #skullsbackground {
