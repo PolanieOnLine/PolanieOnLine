@@ -127,7 +127,7 @@ export class Corpse extends PopupInventory {
 			invComponent.setConfigId("corpse");
 
 			const dstate = stendhal.config.getWindowState("corpse");
-			this.inventory = new FloatingWindow("Corpse", invComponent,
+			this.inventory = new FloatingWindow("Zwłoki", invComponent,
 					dstate.x, dstate.y);
 			this.inventory.setId("corpse");
 		}
@@ -140,7 +140,7 @@ export class Corpse extends PopupInventory {
 		if (this.canViewContents()) {
 			this.openCorpseInventory();
 		} else {
-			Chat.log("client", "The corpse is too far away.");
+			Chat.log("client", "Zwłoki są za daleko.");
 		}
 	}
 

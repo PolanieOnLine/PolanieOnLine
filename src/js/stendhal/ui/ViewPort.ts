@@ -761,7 +761,7 @@ export class ViewPort {
 						// TODO: add option for "hold" to allow splitting item stacks
 					}
 					*/
-					stendhal.ui.actionContextMenu.set(ui.createSingletonFloatingWindow("Action",
+					stendhal.ui.actionContextMenu.set(ui.createSingletonFloatingWindow("Czynności",
 						new ActionContextMenu(entity, append), pos.pageX - 50, pos.pageY - 5));
 				}
 			} else {

@@ -118,7 +118,7 @@ export class GroupMemberComponent extends Component {
 	}
 
 	onMouseUp(event: MouseEvent) {
-		stendhal.ui.actionContextMenu.set(ui.createSingletonFloatingWindow("Action",
+		stendhal.ui.actionContextMenu.set(ui.createSingletonFloatingWindow("Czynności",
 			new ActionContextMenu(this), Math.max(10, event.pageX - 50), event.pageY - 5));
 	}
 

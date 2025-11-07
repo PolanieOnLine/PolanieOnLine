@@ -289,7 +289,7 @@ export class ItemContainerImplementation {
 			const split_action = !sameSlot && ((event instanceof DragEvent && event.ctrlKey) || touch_held);
 			if (split_action) {
 				const pos = stendhal.ui.html.extractPosition(event);
-				ui.createSingletonFloatingWindow("Quantity",
+				ui.createSingletonFloatingWindow("Ilość",
 					new DropQuantitySelectorDialog(action, touch_held),
 					pos.pageX - 50, pos.pageY - 25);
 			} else {
@@ -369,7 +369,7 @@ export class ItemContainerImplementation {
 						}
 					});
 				}
-				stendhal.ui.actionContextMenu.set(ui.createSingletonFloatingWindow("Action",
+				stendhal.ui.actionContextMenu.set(ui.createSingletonFloatingWindow("Czynności",
 					new ActionContextMenu((event.target as any).dataItem, append),
 					event.pageX - 50, event.pageY - 5));
 			} else if (!stendhal.ui.heldObject) {

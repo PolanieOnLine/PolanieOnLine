@@ -277,7 +277,7 @@ export class Client {
 			body.style.cursor = "auto";
 			document.getElementById("loginpopup")!.style.display = "none";
 			ui.createSingletonFloatingWindow(
-				"Login",
+				"Logowanie",
 				new LoginDialog(),
 				100, 50).enableCloseButton(false);
 		};

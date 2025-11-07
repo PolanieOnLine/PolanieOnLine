@@ -237,7 +237,7 @@ export class ChatInputComponent extends Component {
 	private buildEmojiMap() {
 		const wstate = stendhal.config.getWindowState("shortcuts");
 		const content = new EmojiMapDialog();
-		const dialog = ui.createSingletonFloatingWindow("Emojis", content, wstate.x, wstate.y);
+		const dialog = ui.createSingletonFloatingWindow("Emotikony", content, wstate.x, wstate.y);
 		dialog.setId("shortcuts");
 		// needed in order to close dialog from within
 		content.setFrame(dialog);

@@ -277,7 +277,7 @@
 	<template id="dropquantityselectordialog-template">
 		<div>
 			<input type="number" min="0" value="1" class="quantityselectorvalue">
-			<button class="quantityselectorbutton">Drop</button>
+			<button class="quantityselectorbutton">Wyrzuć</button>
 		</div>
 	</template>
 
@@ -335,42 +335,42 @@
 		<div class="horizontalgroup pad-contents" id="settings-general">
 		<div id="settings_panel1" class="verticalgroup vgroupcol">
 			<label class="checksetting"><input type="checkbox" id="chk_speechcr">Dymki z mową stworów</label>
-			<label class="checksetting"><input type="checkbox" id="chk_charname">Status panel character name</label>
-			<label class="checksetting"><input type="checkbox" id="chk_hpbar">Status panel HP bar</label>
-			<label class="checksetting"><input type="checkbox" id="chk_floatchat">Floating chat panel</label>
-			<label class="checksetting"><input type="checkbox" id="chk_hidechat" class="experimental">Auto-hide chat panel</label>
-			<label class="checksetting"><input type="checkbox" id="chk_zoom">Touch zoom</label>
+			<label class="checksetting"><input type="checkbox" id="chk_charname">Nazwa postaci w panelu statystyk</label>
+			<label class="checksetting"><input type="checkbox" id="chk_hpbar">Pasek zdrowia w panelu statystyk</label>
+			<label class="checksetting"><input type="checkbox" id="chk_floatchat">Pływający panel czatu</label>
+			<label class="checksetting"><input type="checkbox" id="chk_hidechat" class="experimental">Automatyczne ukrywanie panelu czatu</label>
+			<label class="checksetting"><input type="checkbox" id="chk_zoom">Zoomowanie dotykiem</label>
 		</div>
 		<div id="settings_panel2" class="verticalgroup vgroupcol">
-			<label class="checksetting"><input type="checkbox" id="chk_dblclick">Double-click items</label>
-			<label class="checksetting"><input type="checkbox" id="chk_chestqp">Quick pickup from chests and corpses</label>
-			<label class="checksetting"><input type="checkbox" id="chk_movecont">Continuous movement</label>
-			<label class="checksetting"><input type="checkbox" id="chk_pvtsnd">Private message notifications</label>
-			<label class="checksetting"><input type="checkbox" id="chk_nativeemojis" class="experimental">Native emojis</label>
+			<label class="checksetting"><input type="checkbox" id="chk_dblclick">Klikanie dwukrotne przedmiotów</label>
+			<label class="checksetting"><input type="checkbox" id="chk_chestqp">Szybkie podnoszenie ze skrzyń i zwłok</label>
+			<label class="checksetting"><input type="checkbox" id="chk_movecont">Ciągły ruch</label>
+			<label class="checksetting"><input type="checkbox" id="chk_pvtsnd">Powiadomienia o wiadomościach prywatnych</label>
+			<label class="checksetting"><input type="checkbox" id="chk_nativeemojis" class="experimental">Natywne emotikony</label>
 		</div>
 		<div id="settings_panel3" class="verticalgroup vgroupcolr">
 			<div>
-				<label for="selecttheme">Theme:</label>
+				<label for="selecttheme">Tło:</label>
 				<select id="selecttheme"></select>
 			</div>
 			<div>
-				<label for="selfontbody">Main font:</label>
+				<label for="selfontbody">Główna czcionka:</label>
 				<select id="selfontbody"></select>
 			</div>
 			<div>
-				<label for="selfontchat">Chat log font:</label>
+				<label for="selfontchat">Czcionka dziennika czatu:</label>
 				<select id="selfontchat"></select>
 			</div>
 			<div>
-				<label for="selfonttlog">Travel log font:</label>
+				<label for="selfonttlog">Czcionka dziennika zadań:</label>
 				<select id="selfonttlog"></select>
 			</div>
 			<div>
-				<label for="selmenustyle">Menu style:</label>
+				<label for="selmenustyle">Styl menu:</label>
 				<select id="selmenustyle"></select>
 			</div>
 			<div>
-				<label for="txtchatopts">Custom chat keywords:</label>
+				<label for="txtchatopts">Niestandardowe słowa kluczowe czatu:</label>
 				<input type="text" id="txtchatopts">
 			</div>
 		</div>
@@ -378,12 +378,12 @@
 
 		<div class="horizontalgroup pad-contents" id="settings-visuals">
 			<div class="verticalgroup vgroupcol" id="col1">
-				<label class="checksetting"><input type="checkbox" id="chk_light">Light effects</label>
-				<label class="checksetting"><input type="checkbox" id="chk_weather">Weather</label>
-				<label class="checksetting"><input type="checkbox" id="chk_blood">Blood</label>
-				<label class="checksetting"><input type="checkbox" id="chk_nonude">Cover naked entities</label>
-				<label class="checksetting"><input type="checkbox" id="chk_shadows">Shadows</label>
-				<label class="checksetting"><input type="checkbox" id="chk_clickindicator">Display clicks/touches</label>
+				<label class="checksetting"><input type="checkbox" id="chk_light">Efekty świetlne</label>
+				<label class="checksetting"><input type="checkbox" id="chk_weather">Pogoda</label>
+				<label class="checksetting"><input type="checkbox" id="chk_blood">Krew</label>
+				<label class="checksetting"><input type="checkbox" id="chk_nonude">Zakrycie nagich istot</label>
+				<label class="checksetting"><input type="checkbox" id="chk_shadows">Cienie</label>
+				<label class="checksetting"><input type="checkbox" id="chk_clickindicator">Wyświetlanie kliknięcia/dotknięcia</label>
 			</div>
 		</div>
 
@@ -393,20 +393,20 @@
 
 		<div class="horizontalgroup pad-contents" id="settings-input">
 			<div class="verticalgroup vgroupcol">
-				<label class="checksetting"><input type="checkbox" id="chk_pathfinding">Pathfinding via ground</label>
-				<label class="checksetting"><input type="checkbox" id="chk_pathfindingmm">Pathfinding via minimap</label>
+				<label class="checksetting"><input type="checkbox" id="chk_pathfinding">Wyznaczanie ścieżki przez ziemię</label>
+				<label class="checksetting"><input type="checkbox" id="chk_pathfindingmm">Wyznaczanie ścieżki przez minimapę</label>
 			</div>
 			<div class="verticalgroup vgroupcolr">
 				<div>
-					<label class="checksetting"><input type="checkbox" id="chk_joystick">On-screen joystick:</label>
+					<label class="checksetting"><input type="checkbox" id="chk_joystick">Joystick ekranowy:</label>
 					<select id="seljoystick"></select>
 				</div>
 				<div>
-					<label for="txtjoystickx">Joystick center X:</label>
+					<label for="txtjoystickx">Środek joysticka X:</label>
 					<input type="number" id="txtjoystickx">
 				</div>
 				<div>
-					<label for="txtjoysticky">Joystick center Y:</label>
+					<label for="txtjoysticky">Środek joysticka Y:</label>
 					<input type="number" id="txtjoysticky">
 				</div>
 			</div>
@@ -471,7 +471,7 @@
 			<div class="verticalgroup">
 			<div class="horizontalgroup">
 			<input type="checkbox" id="setoutfithaircolortoggle">
-			<label for="setoutfithaircolortoggle">Hair color</label>
+			<label for="setoutfithaircolortoggle">Kolor włosów</label>
 			</div>
 			<canvas id="setoutfithaircolorcanvas" width="80" height="52"></canvas>
 			<canvas id="setoutfithaircolorgradient" width="80" height="10"></canvas>
@@ -480,7 +480,7 @@
 			<div class="verticalgroup">
 			<div class="horizontalgroup">
 			<input type="checkbox" id="setoutfiteyescolortoggle">
-			<label for="setoutfiteyescolortoggle">Eyes color</label>
+			<label for="setoutfiteyescolortoggle">Kolor oczu</label>
 			</div>
 			<canvas id="setoutfiteyescolorcanvas" width="80" height="52"></canvas>
 			<canvas id="setoutfiteyescolorgradient" width="80" height="10"></canvas>
@@ -489,7 +489,7 @@
 			<div class="verticalgroup">
 			<div class="horizontalgroup">
 			<input type="checkbox" id="setoutfitskincolortoggle">
-			<label for="setoutfitskincolortoggle">Skin color</label>
+			<label for="setoutfitskincolortoggle">Kolor skóry</label>
 			</div>
 			<canvas id="setoutfitskincolorcanvas" width="80" height="52"></canvas>
 			<canvas id="setoutfitskincolorgradient" width="80" height="10"></canvas>
@@ -498,7 +498,7 @@
 			<div class="verticalgroup">
 			<div class="horizontalgroup">
 			<input type="checkbox" id="setoutfitdresscolortoggle">
-			<label for="setoutfitdresscolortoggle">Dress color</label>
+			<label for="setoutfitdresscolortoggle">Kolor ubrań</label>
 			</div>
 			<canvas id="setoutfitdresscolorcanvas" width="80" height="52"></canvas>
 			<canvas id="setoutfitdresscolorgradient" width="80" height="10"></canvas>
@@ -531,8 +531,8 @@
 				</div>
 			</div>
 		</div>
-		<div align="right"><button type="button" id="setoutfitcancel">Cancel</button>
-		<button type="button" id="setoutfitapply">Change Outfit</button></div>
+		<div align="right"><button type="button" id="setoutfitcancel">Zamknij</button>
+		<button type="button" id="setoutfitapply">Zmień wygląd</button></div>
 		</div>
 	</template> <!-- outfitdialog-template -->
 

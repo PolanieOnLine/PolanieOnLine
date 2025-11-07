@@ -91,7 +91,7 @@ export class User extends Player {
 				if (!outfitDialog) {
 					const dstate = stendhal.config.getWindowState("outfit");
 					outfitDialog = new OutfitDialog();
-					new FloatingWindow("Choose outfit", outfitDialog, dstate.x, dstate.y).setId("outfit");
+					new FloatingWindow("Zmień wygląd postaci", outfitDialog, dstate.x, dstate.y).setId("outfit");
 				}
 			}
 		});

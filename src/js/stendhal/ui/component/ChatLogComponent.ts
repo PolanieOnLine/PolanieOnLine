@@ -543,16 +543,16 @@ export class ChatLogComponent extends Component {
 		// setting "log" to "this" here doesn't work
 		const log = ui.get(UIComponentEnum.ChatLog) as ChatLogComponent;
 		const options: MenuItem[] = [
-			new MenuItem("Save", function() { log.exportContents(false); }),
-			new MenuItem("Clear", function() { log.clear(); })
+			new MenuItem("Zapisz", function() { log.exportContents(false); }),
+			new MenuItem("Wyczyść", function() { log.clear(); })
 		];
 
 		if (navigator && navigator.clipboard) {
-			options.unshift(new MenuItem("Copy", function() { log.exportContents(); }));
+			options.unshift(new MenuItem("Kopiuj", function() { log.exportContents(); }));
 		}
 
 		const pos = stendhal.ui.html.extractPosition(evt);
-		stendhal.ui.actionContextMenu.set(ui.createSingletonFloatingWindow("Action",
+		stendhal.ui.actionContextMenu.set(ui.createSingletonFloatingWindow("Czynności",
 				new LogContextMenu(options), pos.pageX - 50, pos.pageY - 5));
 
 		evt.preventDefault();
