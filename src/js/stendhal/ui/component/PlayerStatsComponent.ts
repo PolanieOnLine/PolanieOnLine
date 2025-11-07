@@ -115,7 +115,7 @@ export class PlayerStatsComponent extends Component {
 	 *     Player's potential max HP.
 	 */
 	private updateHp(hp: number, base_hp: number) {
-		this.hpText.innerText = "HP: " + hp + " / " + base_hp;
+		this.hpText.innerText = "PZ: " + hp + " / " + base_hp;
 		if (this.isBarEnabled("hp")) {
 			this.bars["hp"].draw(hp / base_hp);
 		}
@@ -140,11 +140,11 @@ export class PlayerStatsComponent extends Component {
 		let xpTNL: number|string = (lvl < this.getMaxLevel()) ? this.getTNL(lvl, xp) : "-";
 
 		this.otherText.innerText =
-			"ATK: " + atk + " x " + object["atk_item"] + "\r\n  (" + atkTNL + ")\r\n"
-			+ "DEF: " + def + " x " + object["def_item"] + "\r\n  (" + defTNL + ")\r\n"
-			+ "XP: " + xp + "\r\n"
-			+ "Level: " + lvl + "\r\n  (" + xpTNL + ")\r\n"
-			+ "Money: " + this.calculateMoney();
+			"ATK: " + atk + " x " + object["atk_item"] + "  (" + atkTNL + ")\r\n"
+			+ "OBR: " + def + " x " + object["def_item"] + " (" + defTNL + ")\r\n"
+			+ "PD: " + xp + "\r\n"
+			+ "Poziom: " + lvl + "  (" + xpTNL + ")\r\n"
+			+ "Pieniądze: " + this.calculateMoney();
 	}
 
 	/**

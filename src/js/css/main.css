@@ -8,6 +8,7 @@
 	overflow: hidden;
 	--border-top-color: #B3988B;
 	--border-bottom-color: #3B1C09;
+	--chat-scroll-track-bg: #A37861;
 }
 
 /* disable pull down refresh in browsers that support it */
@@ -474,7 +475,7 @@ div.quickPickup div.itemSlot {
 }
 
 #chat::-webkit-scrollbar-track {
-	background: #A37861;
+	background: var(--chat-scroll-track-bg);
 	box-shadow: inset 1px 0 0 0 var(--border-bottom-color), inset -1px 0 0 0 var(--border-bottom-color);
 	border-top: 0;
 	border-bottom: 0;
@@ -560,7 +561,7 @@ div.quickPickup div.itemSlot {
 
 #stats {
 	float: left;
-	font-size: 0.8em;
+	font-size: 0.9em;
 	white-space: pre;
 	padding: 0.1em;
 	border-top: 2px solid var(--border-top-color);
@@ -807,7 +808,7 @@ span.lognick {
 
 #leftColumn {
 	float: left;
-	width: 150px;
+	width: 170px;
 }
 
 #middleColumn {
