@@ -83,7 +83,7 @@ export class GeneralTab extends AbstractSettingsTab {
 				function() {
 					// update cursors
 					(ui.get(UIComponentEnum.PlayerEquipment) as PlayerEquipmentComponent).markDirty();
-					for (const cid of [UIComponentEnum.Bag, UIComponentEnum.Keyring]) {
+					for (const cid of [UIComponentEnum.Bag, UIComponentEnum.Keyring, UIComponentEnum.MagicBag]) {
 						(ui.get(cid) as ItemInventoryComponent).markDirty();
 					}
 				});

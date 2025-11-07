@@ -25,6 +25,7 @@ import { ChatInputComponent } from "../component/ChatInputComponent";
 import { ChatLogComponent } from "../component/ChatLogComponent";
 import { GroupPanelComponent } from "../component/GroupPanelComponent";
 import { KeyringComponent } from "../component/KeyringComponent";
+import { MagicBagComponent } from "../component/MagicBagComponent";
 import { MiniMapComponent } from "../component/MiniMapComponent";
 import { ZoneInfoComponent } from "../component/ZoneInfoComponent";
 import { PlayerEquipmentComponent } from "../component/PlayerEquipmentComponent";
@@ -80,6 +81,7 @@ export class DesktopUserInterfaceFactory {
 		InventoryWindowController.register("equipmentborder", { collapsed: false });
 		InventoryWindowController.register("bag-window", { title: "Plecak" });
 		InventoryWindowController.register("keyring-window", { title: "Rzemyk" });
+		InventoryWindowController.register("magicbag-window", { title: "Magiczna torba" });
 
 		const equipmentComponent = new PlayerEquipmentComponent();
 		InventoryWindowController.attachComponent("equipmentborder", equipmentComponent);
@@ -94,7 +96,12 @@ export class DesktopUserInterfaceFactory {
 		// hide keyring by default
 		keyring.setVisible(false);
 		ui.registerComponent(UIComponentEnum.Keyring, keyring);
-
+		
+		const magicbag = new MagicBagComponent(undefined, "magicbag", 6, 1, false, undefined);
+		InventoryWindowController.attachComponent("magicbag-window", magicbag);
+		// hide magicbag by default
+		magicbag.setVisible(false);
+		ui.registerComponent(UIComponentEnum.MagicBag, magicbag);
 
 		// hide pouch by default
 

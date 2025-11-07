@@ -32,11 +32,12 @@ export class UIComponentEnum {
 	public static readonly GroupPanel = 105;
 	public static readonly PlayerEquipment = 106;
 	public static readonly Keyring = 107;
-	public static readonly MiniMap = 108;
-	public static readonly ZoneInfo = 109;
-	public static readonly PlayerStats = 110;
-	public static readonly SocialPanel = 111;
-	public static readonly StatusesList = 112;
+	public static readonly MagicBag = 108;
+	public static readonly MiniMap = 109;
+	public static readonly ZoneInfo = 110;
+	public static readonly PlayerStats = 111;
+	public static readonly SocialPanel = 112;
+	public static readonly StatusesList = 113;
 
 	// Dialog
 	public static readonly TradeDialog = 201;

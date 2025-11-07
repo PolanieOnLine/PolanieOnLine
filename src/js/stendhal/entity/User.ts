@@ -62,6 +62,7 @@ export class User extends Player {
 			(ui.get(UIComponentEnum.PlayerStats) as PlayerStatsComponent).update(key);
 			(ui.get(UIComponentEnum.Bag) as ItemInventoryComponent).update();
 			(ui.get(UIComponentEnum.Keyring) as ItemInventoryComponent).update();
+			(ui.get(UIComponentEnum.MagicBag) as ItemInventoryComponent).update();
 			(ui.get(UIComponentEnum.StatusesList) as StatusesListComponent).update(this);
 		});
 	}
