@@ -714,12 +714,11 @@ export class RPEntity extends ActiveEntity {
 
 	onDamaged(_source: Entity, damage: number) {
 		this.attackResult = this.createResultIcon(stendhal.paths.sprites + "/combat/hitted.png");
-		var sounds = ["attack",
-				"attack-melee-01",	"attack-melee-02",	"attack-melee-03",
-				"attack-melee-04",	"attack-melee-05",	"attack-melee-06",
-				"attack-range-01",	"attack-swing-01",	"attack-slap-01",
-				"pol-attack-slash",	"pol-attack-crash",	"pol-attack-sword",
-				"pol-attack-swing",	"pol-attack-kling"];
+		var sounds = ["attack-melee-01", "attack-melee-02",	"attack-melee-03",
+				"attack-melee-04", "attack-melee-05", "attack-melee-06",
+				"attack-range-01", "attack-swing-01", "attack-slap-01",
+				"pol-attack-slash", "pol-attack-crash", "pol-attack-sword",
+				"pol-attack-swing", "pol-attack-kling"];
 		var index = Math.floor(Math.random() * Math.floor(sounds.length));
 		stendhal.sound.playLocalizedEffect(this["_x"], this["_y"], 20, 3, sounds[index], 1);
 	}
