@@ -36,7 +36,7 @@ export class DebugAction extends SlashAction {
 
 	execute(_type: string, params: string[], _remainder: string): boolean {
 		if (params.length < 1) {
-			Chat.logH("error", "Expected parameters")
+			Chat.logH("error", "Oczekiwane parametry")
 			this.showUsage();
 		} else if (["help", "?"].indexOf(params[0]) > -1) {
 			this.showUsage();
@@ -94,8 +94,9 @@ export class DebugAction extends SlashAction {
 		this.uiFloatComponent(UIComponentEnum.PlayerEquipment, marauroa.me["_name"], 500, 50);
 		this.uiFloatComponent(UIComponentEnum.Bag, "Plecak", 500, 200);
 		this.uiFloatComponent(UIComponentEnum.Keyring, "Rzemyk", 500, 300);
+		this.uiFloatComponent(UIComponentEnum.MagicBag, "Magiczna torba", 500, 400);
 		this.uiFloatComponent(UIComponentEnum.ChatInput, "Czat", 100, 500);
-		this.uiFloatComponent(UIComponentEnum.ChatLog, "Czat log", 100, 560);
+		this.uiFloatComponent(UIComponentEnum.ChatLog, "Dziennik czatu", 100, 560);
 
 		this.uiPopped = true;
 	}

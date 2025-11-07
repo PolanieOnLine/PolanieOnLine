@@ -916,6 +916,10 @@ div#menupanel #soundbutton {
 	flex: 1;
 	height: auto;
 	overflow: hidden;
+	border-top: 1px solid var(--border-top-color);
+	border-left: 1px solid var(--border-top-color);
+	border-right: 1px solid var(--border-bottom-color);
+	border-bottom: 1px solid var(--border-bottom-color);
 }
 
 #equipmentborder {
@@ -1027,16 +1031,13 @@ div#menupanel #soundbutton {
 	display: flex;
 	align-items: center;
 	background: var(--background-url);
-	border-top: 2px solid var(--border-top-color);
-	border-left: 2px solid var(--border-top-color);
-	border-right: 2px solid var(--border-bottom-color);
-	border-bottom: 2px solid var(--border-bottom-color);
 }
 
 .verticalgroup {
 	display: flex;
 	align-items: center;
 	flex-direction: column;
+	gap: 2px;
 }
 
 .stretchgroup {
@@ -1228,6 +1229,134 @@ div#menupanel #soundbutton {
 .checksetting {
 	margin-left: 0px;
 	margin-right: auto;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.settings-toggle {
+	display: inline-flex;
+	flex-shrink: 0;
+}
+
+.toggle {
+	position: relative;
+	width: 56px;
+	height: 20px;
+	box-sizing: border-box;
+	border-top: 2px solid var(--border-top-color);
+	border-left: 2px solid var(--border-top-color);
+	border-right: 2px solid var(--border-bottom-color);
+	border-bottom: 2px solid var(--border-bottom-color);
+	padding: 0;
+	background: transparent;
+	user-select: none;
+	cursor: pointer;
+	overflow: visible;
+}
+
+.toggle:disabled {
+	opacity: 0.6;
+	cursor: not-allowed;
+}
+
+.toggle:focus-visible {
+	outline: 2px solid var(--border-top-color);
+	outline-offset: 2px;
+}
+
+.toggle__track {
+	position: absolute;
+	inset: 0;
+	background: var(--chat-scroll-track-bg);
+	font-weight: 700;
+	color: #fff;
+	line-height: 1;
+	transition: filter 120ms linear;
+	padding: 0 6px;
+	pointer-events: none;
+}
+
+.toggle--off .toggle__track {
+	filter: grayscale(100%);
+}
+
+.toggle__track::after {
+	content: "I";
+	position: absolute;
+	top: 50%;
+	left: 6px;
+	transform: translateY(-50%);
+}
+
+.toggle--off .toggle__track::after {
+	content: "O";
+	left: auto;
+	right: 6px;
+}
+
+.toggle__thumb {
+	position: absolute;
+	top: -2px;
+	bottom: -2px;
+	width: 26px;
+	background: var(--background-url);
+	border-top: 2px solid var(--border-top-color);
+	border-left: 2px solid var(--border-top-color);
+	border-right: 2px solid var(--border-bottom-color);
+	border-bottom: 2px solid var(--border-bottom-color);
+	transition: left 120ms linear;
+}
+
+.toggle:not(.toggle--off) .toggle__thumb {
+	left: calc(100% - 26px);
+}
+
+.toggle--off .toggle__thumb {
+	left: 0;
+}
+
+#settings-general {
+	display: flex;
+	flex-direction: column;
+	align-items: stretch;
+	gap: 12px;
+	max-width: 520px;
+	margin: 0 auto;
+}
+
+.settings-general__toggle-columns {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	gap: 12px;
+	width: 100%;
+}
+
+#settings-general .verticalgroup {
+	align-items: stretch;
+}
+
+#settings_panel3 > div {
+	display: flex;
+	flex-direction: row;
+	align-items: stretch;
+	width: 100%;
+}
+
+#settings_panel3 select,
+#settings_panel3 input {
+	width: 100%;
+	flex: 0 0 auto;
+	min-width: 0;
+	max-width: 100%;
+}
+
+#settings_panel3 button {
+	align-self: flex-start;
+}
+
+#settings_panel3 label {
+	width: 100%;
 }
 
 .vgroupcol {
@@ -1261,6 +1390,7 @@ div#menupanel #soundbutton {
 	justify-content: center;
 	align-items: center;
 	cursor: pointer;
+	padding: 3px 5px;
 }
 
 .shortcut-button {

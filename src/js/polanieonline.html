@@ -335,61 +335,63 @@
 		<!-- TODO: create dynamically with ui/toolkit/SettingsComponent class -->
 
 		<div class="horizontalgroup pad-contents" id="settings-general">
-		<div id="settings_panel1" class="verticalgroup vgroupcol">
-			<label class="checksetting"><input type="checkbox" id="chk_speechcr">Dymki z mową stworów</label>
-			<label class="checksetting"><input type="checkbox" id="chk_charname">Nazwa postaci w panelu statystyk</label>
-			<label class="checksetting"><input type="checkbox" id="chk_hpbar">Pasek zdrowia w panelu statystyk</label>
-			<label class="checksetting"><input type="checkbox" id="chk_floatchat">Pływający panel czatu</label>
-			<label class="checksetting"><input type="checkbox" id="chk_hidechat" class="experimental">Automatyczne ukrywanie panelu czatu</label>
-			<label class="checksetting"><input type="checkbox" id="chk_zoom">Zoomowanie dotykiem</label>
+			<div class="settings-general__toggle-columns">
+				<div id="settings_panel1" class="verticalgroup vgroupcol">
+					<label class="checksetting"><span class="settings-toggle" data-toggle-id="chk_speechcr"></span>Dymki z mową stworów</label>
+					<label class="checksetting"><span class="settings-toggle" data-toggle-id="chk_charname"></span>Nazwa postaci w panelu statystyk</label>
+					<label class="checksetting"><span class="settings-toggle" data-toggle-id="chk_hpbar"></span>Pasek zdrowia w panelu statystyk</label>
+					<label class="checksetting"><span class="settings-toggle" data-toggle-id="chk_floatchat"></span>Pływający panel czatu</label>
+					<label class="checksetting"><span class="settings-toggle experimental" data-toggle-id="chk_hidechat"></span>Automatyczne ukrywanie panelu czatu</label>
+					<label class="checksetting"><span class="settings-toggle" data-toggle-id="chk_zoom"></span>Zoomowanie dotykiem</label>
+					<label class="checksetting"><span class="settings-toggle" data-toggle-id="chk_dblclick"></span>Klikanie dwukrotne przedmiotów</label>
+					<label class="checksetting"><span class="settings-toggle" data-toggle-id="chk_chestqp"></span>Szybkie podnoszenie ze skrzyń i zwłok</label>
+					<label class="checksetting"><span class="settings-toggle" data-toggle-id="chk_movecont"></span>Ciągły ruch</label>
+					<label class="checksetting"><span class="settings-toggle" data-toggle-id="chk_pvtsnd"></span>Powiadomienia o wiadomościach prywatnych</label>
+					<label class="checksetting"><span class="settings-toggle experimental" data-toggle-id="chk_nativeemojis"></span>Natywne emotikony</label>
+				</div>
+				<div id="settings_panel2" class="verticalgroup vgroupcol">
+					<label class="checksetting"><span class="settings-toggle" data-toggle-id="chk_rightpanel_personalize"></span>Personalizuj prawy panel</label>
+					<button id="btn_rightpanel_reset" type="button">Resetuj układ</button>
+				</div>
+			</div>
+			<div id="settings_panel3" class="verticalgroup vgroupcolr">
+				<div>
+					<label for="selecttheme">Tło:</label>
+					<select id="selecttheme"></select>
+				</div>
+				<div>
+					<label for="selfontbody">Główna czcionka:</label>
+					<select id="selfontbody"></select>
+				</div>
+				<div>
+					<label for="selfontchat">Czcionka dziennika czatu:</label>
+					<select id="selfontchat"></select>
+				</div>
+				<div>
+					<label for="selfonttlog">Czcionka dziennika zadań:</label>
+					<select id="selfonttlog"></select>
+				</div>
+				<div>
+					<label for="selmenustyle">Styl menu:</label>
+					<select id="selmenustyle"></select>
+				</div>
+				<div>
+					
+				</div>
+				<div>
+					<label for="txtchatopts">Niestandardowe słowa czatu:</label>
+					<input type="text" id="txtchatopts">
+				</div>
+			</div>
 		</div>
-		<div id="settings_panel2" class="verticalgroup vgroupcol">
-			<label class="checksetting"><input type="checkbox" id="chk_dblclick">Klikanie dwukrotne przedmiotów</label>
-			<label class="checksetting"><input type="checkbox" id="chk_chestqp">Szybkie podnoszenie ze skrzyń i zwłok</label>
-			<label class="checksetting"><input type="checkbox" id="chk_movecont">Ciągły ruch</label>
-			<label class="checksetting"><input type="checkbox" id="chk_pvtsnd">Powiadomienia o wiadomościach prywatnych</label>
-			<label class="checksetting"><input type="checkbox" id="chk_nativeemojis" class="experimental">Natywne emotikony</label>
-		</div>
-		<div id="settings_panel3" class="verticalgroup vgroupcolr">
-			<div>
-				<label for="selecttheme">Tło:</label>
-				<select id="selecttheme"></select>
-			</div>
-			<div>
-				<label for="selfontbody">Główna czcionka:</label>
-				<select id="selfontbody"></select>
-			</div>
-			<div>
-				<label for="selfontchat">Czcionka dziennika czatu:</label>
-				<select id="selfontchat"></select>
-			</div>
-			<div>
-				<label for="selfonttlog">Czcionka dziennika zadań:</label>
-				<select id="selfonttlog"></select>
-			</div>
-			<div>
-				<label for="selmenustyle">Styl menu:</label>
-				<select id="selmenustyle"></select>
-			</div>
-			<div>
-				<label class="checksetting"><input type="checkbox" id="chk_rightpanel_personalize">Personalizuj prawy panel</label>
-				<button id="btn_rightpanel_reset" type="button">Resetuj układ</button>
-			</div>
-			<div>
-				<label for="txtchatopts">Niestandardowe słowa kluczowe czatu:</label>
-				<input type="text" id="txtchatopts">
-			</div>
-		</div>
-		</div>
-
 		<div class="horizontalgroup pad-contents" id="settings-visuals">
 			<div class="verticalgroup vgroupcol" id="col1">
-				<label class="checksetting"><input type="checkbox" id="chk_light">Efekty świetlne</label>
-				<label class="checksetting"><input type="checkbox" id="chk_weather">Pogoda</label>
-				<label class="checksetting"><input type="checkbox" id="chk_blood">Krew</label>
-				<label class="checksetting"><input type="checkbox" id="chk_nonude">Zakrycie nagich istot</label>
-				<label class="checksetting"><input type="checkbox" id="chk_shadows">Cienie</label>
-				<label class="checksetting"><input type="checkbox" id="chk_clickindicator">Wyświetlanie kliknięcia/dotknięcia</label>
+				<label class="checksetting"><span class="settings-toggle" data-toggle-id="chk_light"></span>Efekty świetlne</label>
+				<label class="checksetting"><span class="settings-toggle" data-toggle-id="chk_weather"></span>Pogoda</label>
+				<label class="checksetting"><span class="settings-toggle" data-toggle-id="chk_blood"></span>Krew</label>
+				<label class="checksetting"><span class="settings-toggle" data-toggle-id="chk_nonude"></span>Zakrycie nagich istot</label>
+				<label class="checksetting"><span class="settings-toggle" data-toggle-id="chk_shadows"></span>Cienie</label>
+				<label class="checksetting"><span class="settings-toggle" data-toggle-id="chk_clickindicator"></span>Wyświetlanie kliknięcia/dotknięcia</label>
 			</div>
 		</div>
 
@@ -399,12 +401,12 @@
 
 		<div class="horizontalgroup pad-contents" id="settings-input">
 			<div class="verticalgroup vgroupcol">
-				<label class="checksetting"><input type="checkbox" id="chk_pathfinding">Wyznaczanie ścieżki przez ziemię</label>
-				<label class="checksetting"><input type="checkbox" id="chk_pathfindingmm">Wyznaczanie ścieżki przez minimapę</label>
+				<label class="checksetting"><span class="settings-toggle" data-toggle-id="chk_pathfinding"></span>Wyznaczanie ścieżki przez ziemię</label>
+				<label class="checksetting"><span class="settings-toggle" data-toggle-id="chk_pathfindingmm"></span>Wyznaczanie ścieżki przez minimapę</label>
 			</div>
 			<div class="verticalgroup vgroupcolr">
 				<div>
-					<label class="checksetting"><input type="checkbox" id="chk_joystick">Joystick ekranowy:</label>
+					<label class="checksetting"><span class="settings-toggle" data-toggle-id="chk_joystick"></span>Joystick ekranowy:</label>
 					<select id="seljoystick"></select>
 				</div>
 				<div>

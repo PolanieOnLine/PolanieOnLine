@@ -60,7 +60,7 @@ export class GeneralTab extends AbstractSettingsTab {
 				undefined, undefined,
 				function() {
 					(ui.get(UIComponentEnum.BottomPanel) as ChatPanel).setFloating(chk_floatchat.checked);
-				});
+				})!;
 
 		parent.createCheckBox("chk_hidechat", "chat.autohide",
 				"Panel czatu zostanie ukryty po wysłaniu tekstu", "Panel czatu pozostanie na ekranie");
@@ -106,7 +106,7 @@ export class GeneralTab extends AbstractSettingsTab {
 		const chk_pvtsnd = parent.createCheckBox("chk_pvtsnd", "chat.private.sound",
 				"Włączono prywatne powiadomienia audio",
 				"Wyłączono prywatne powiadomienia audio",
-				undefined, "ui/notify_up", "null");
+				undefined, "ui/notify_up", "null")!;
 		chk_pvtsnd.checked = config.get("chat.private.sound") === "ui/notify_up";
 
 		parent.createCheckBox("chk_nativeemojis", "emojis.native",
@@ -183,23 +183,23 @@ export class GeneralTab extends AbstractSettingsTab {
 			console.warn("Right panel personalization unavailable", err);
 		}
 
-		const personalizeCheckbox = this.child("#chk_rightpanel_personalize") as HTMLInputElement | undefined;
+		const personalizeToggle = parent.createToggle("chk_rightpanel_personalize");
 		const resetButton = parent.createButton("btn_rightpanel_reset");
 		if (orderManager) {
-			if (personalizeCheckbox) {
-				personalizeCheckbox.checked = orderManager.isPersonalizationEnabled();
-				personalizeCheckbox.addEventListener("change", () => {
-					orderManager!.setPersonalizationEnabled(personalizeCheckbox.checked);
+			if (personalizeToggle) {
+				personalizeToggle.checked = orderManager.isPersonalizationEnabled();
+				personalizeToggle.addEventListener("change", () => {
+					orderManager!.setPersonalizationEnabled(personalizeToggle.checked);
 				});
 			}
 			resetButton.addEventListener("click", () => {
 				orderManager!.resetLayout();
 			});
 		} else {
-			if (personalizeCheckbox) {
-				personalizeCheckbox.checked = false;
-				personalizeCheckbox.disabled = true;
-				const wrapper = personalizeCheckbox.closest("label");
+			if (personalizeToggle) {
+				personalizeToggle.checked = false;
+				personalizeToggle.disabled = true;
+				const wrapper = personalizeToggle.closest("label");
 				wrapper?.classList.add("hidden");
 			}
 			resetButton.classList.add("hidden");

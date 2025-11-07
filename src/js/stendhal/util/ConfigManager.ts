@@ -56,7 +56,7 @@ export class ConfigManager {
 		"inventory.double-click": "false",
 		"inventory.quick-pickup": "true",
 		"joystick": "false",
-		"joystick.center.x": "224",
+		"joystick.center.x": "264",
 		"joystick.center.y": "384",
 		"joystick.style": "joystick",
 		"loop.prefer144hz": "false",
@@ -93,12 +93,12 @@ export class ConfigManager {
 	 */
 	private readonly opts: {[key: string]: {[id: string]: string}} = {
 		"joystick.style": {
-			"joystick": "",
-			"dpad": "direction pad"
+			"joystick": "Drążek",
+			"dpad": "Krzyżak"
 		},
 		"menu.style": {
-			"traditional": "",
-			"floating": ""
+			"traditional": "Tradycyjny",
+			"floating": "Pływający"
 		}
 	};
 

@@ -84,33 +84,6 @@ export class VisualsTab extends AbstractSettingsTab {
 		});
 		chkParallax.addTo(col1);
 
-		const fpsOptions = [
-			{label: "Unlimited (match monitor)", value: 0},
-			{label: "60 FPS", value: 60},
-			{label: "90 FPS", value: 90},
-			{label: "120 FPS", value: 120},
-			{label: "144 FPS", value: 144}
-		];
-		const fpsSelect = new SettingsComponent("sel_fps_limit", "Frame rate limit", WidgetType.SELECT);
-		for (const option of fpsOptions) {
-			fpsSelect.addOption(option.label, option.value.toString());
-		}
-		const currentLimit = Math.trunc(config.getFloat("loop.fps.limit", 0));
-		let selectedIndex = fpsOptions.findIndex((opt) => opt.value === currentLimit);
-		if (selectedIndex < 0) {
-			selectedIndex = 0;
-		}
-		fpsSelect.setValue(selectedIndex);
-		fpsSelect.setTooltip("Restrict rendering to a specific frames-per-second cap", "Render at the full refresh rate");
-		fpsSelect.addListener(() => {
-			const idx = fpsSelect.getValue() as number;
-			const choice = fpsOptions[idx] || fpsOptions[0];
-			config.set("loop.fps.limit", choice.value.toString());
-			ViewPort.get().setFpsLimit(choice.value);
-			parent.refresh();
-		});
-		fpsSelect.addTo(col1);
-
 		const chkEntityOverlay = new SettingsComponent("chk_entity_overlay",
 				"Efekty nakładek na jednostkach");
 		chkEntityOverlay.setValue(config.getBoolean("effect.entity-overlay"));
@@ -120,5 +93,32 @@ export class VisualsTab extends AbstractSettingsTab {
 			parent.refresh();
 		});
 		chkEntityOverlay.addTo(col1);
+
+		const fpsOptions = [
+			{label: "Nieograniczone", value: 0},
+			{label: "60 FPS", value: 60},
+			{label: "90 FPS", value: 90},
+			{label: "120 FPS", value: 120},
+			{label: "144 FPS", value: 144}
+		];
+		const fpsSelect = new SettingsComponent("sel_fps_limit", "Liczba klatek na sekundę", WidgetType.SELECT);
+		for (const option of fpsOptions) {
+			fpsSelect.addOption(option.label, option.value.toString());
+		}
+		const currentLimit = Math.trunc(config.getFloat("loop.fps.limit", 0));
+		let selectedIndex = fpsOptions.findIndex((opt) => opt.value === currentLimit);
+		if (selectedIndex < 0) {
+			selectedIndex = 0;
+		}
+		fpsSelect.setValue(selectedIndex);
+		fpsSelect.setTooltip("Ogranicz renderowanie do określonego limitu klatek na sekundę", "Renderuj z pełną częstotliwością odświeżania");
+		fpsSelect.addListener(() => {
+			const idx = fpsSelect.getValue() as number;
+			const choice = fpsOptions[idx] || fpsOptions[0];
+			config.set("loop.fps.limit", choice.value.toString());
+			ViewPort.get().setFpsLimit(choice.value);
+			parent.refresh();
+		});
+		fpsSelect.addTo(col1);
 	}
 }

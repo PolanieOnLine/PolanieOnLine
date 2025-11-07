@@ -146,7 +146,11 @@ export class SettingsComponent extends WidgetComponent {
 					+ "\" does not support index selection");
 		}
 		const selectElement = this.componentElement as HTMLSelectElement;
-		if (selectElement.options.length <= idx) {
+		const optionCount = selectElement.options.length;
+		if (optionCount === 0) {
+			return;
+		}
+		if (optionCount <= idx) {
 			console.warn("Invalid index of HTMLSelectElement");
 			return;
 		}

@@ -23,6 +23,74 @@ import { Layout } from "../../data/enum/Layout";
 
 import { Debug } from "../../util/Debug";
 
+import { ToggleSwitch } from "../component/ToggleSwitch";
+
+
+class SettingsToggleControl {
+	public readonly element: HTMLButtonElement;
+
+	private readonly toggle: ToggleSwitch;
+
+	constructor(
+		private readonly container: HTMLElement,
+		private readonly labelElement: HTMLElement | null,
+		id: string,
+		labelText: string
+	) {
+		this.toggle = new ToggleSwitch({
+			id,
+			checked: false,
+			label: labelText,
+			onChange: () => {}
+		});
+		this.toggle.mount(this.container);
+		this.element = this.toggle.el as HTMLButtonElement;
+	}
+
+	public setAriaLabel(text: string): void {
+		this.element.setAttribute("aria-label", text);
+	}
+
+	public get style(): CSSStyleDeclaration {
+		return this.element.style;
+	}
+
+	public get parentElement(): HTMLElement | null {
+		return this.labelElement;
+	}
+
+	public get checked(): boolean {
+		return this.toggle.getChecked();
+	}
+
+	public set checked(value: boolean) {
+		this.toggle.setChecked(value);
+	}
+
+	public get disabled(): boolean {
+		return this.element.disabled;
+	}
+
+	public set disabled(value: boolean) {
+		this.toggle.setDisabled(value);
+	}
+
+	public addEventListener(type: string, listener: EventListenerOrEventListenerObject): void {
+		this.element.addEventListener(type, listener);
+	}
+
+	public removeEventListener(type: string, listener: EventListenerOrEventListenerObject): void {
+		this.element.removeEventListener(type, listener);
+	}
+
+	public closest(selector: string): Element | null {
+		return this.element.closest(selector);
+	}
+
+	public getTooltipAnchor(): HTMLElement {
+		return this.labelElement ?? this.element;
+	}
+}
 
 export class SettingsDialog extends TabDialogContentComponent {
 
@@ -85,86 +153,75 @@ export class SettingsDialog extends TabDialogContentComponent {
 		(this.child("#button-reload")! as HTMLButtonElement).disabled = !reloadRequired;
 	}
 
-	/**
-	 * Creates a checkbox element.
-	 *
-	 * @param id
-	 *     Identifier of element to retrieve.
-	 * @param tooltip
-	 *     Optional popup tooltip text.
-	 * @return
-	 *     HTMLInputElement.
-	 */
-	private createCheckBoxSkel(id: string, tooltip?: string): HTMLInputElement {
-		const checkbox = <HTMLInputElement> this.child("input[type=checkbox][id=" + id + "]")!;
-		if (tooltip) {
-			checkbox.title = tooltip;
+	private createToggleSwitch(id: string, tooltip?: string): SettingsToggleControl | undefined {
+		const container = this.child("[data-toggle-id=\"" + id + "\"]") as HTMLElement | null;
+		if (!container) {
+			return undefined;
 		}
-		if (checkbox.classList.contains("experimental")) {
-			// add "experimental" denotation to label
-			const label = checkbox.parentElement!;
+		const label = container.closest("label");
+		const initialLabelText = label ? label.textContent?.trim() ?? "" : "";
+		const isExperimental = container.classList.contains("experimental");
+		let labelText = initialLabelText;
+		let hideExperimental = false;
+		if (isExperimental && label) {
 			const text = document.createElement("span");
-			text.innerText = label.innerText + " (eksperymentalne)";
+			text.innerText = (initialLabelText !== "" ? initialLabelText : label.innerText.trim()) + " (eksperymentalne)";
 			label.innerHTML = "";
-			label.appendChild(checkbox);
+			label.appendChild(container);
 			label.appendChild(text);
-			if (!Debug.isActive("settings")) {
-				// hide if settings debugging is not enabled
-				checkbox.disabled = true;
-				checkbox.style.setProperty("display", "none");
+			labelText = text.innerText;
+			hideExperimental = !Debug.isActive("settings");
+		} else if (label && label.firstElementChild !== container) {
+			label.insertBefore(container, label.firstChild);
+		}
+		const toggle = new SettingsToggleControl(container, label ?? null, id, (labelText !== "" ? labelText : id));
+		toggle.setAriaLabel(labelText !== "" ? labelText : id);
+		if (tooltip) {
+			toggle.element.title = tooltip;
+		}
+		if (hideExperimental) {
+			toggle.disabled = true;
+			toggle.style.setProperty("display", "none");
+			if (label) {
 				label.style.setProperty("display", "none");
 			}
 		}
-		return checkbox;
+		return toggle;
+	}
+
+	public createToggle(id: string, tooltip?: string): SettingsToggleControl | undefined {
+		return this.createToggleSwitch(id, tooltip);
 	}
 
 	/**
-	 * Creates a fully function checkbox element.
-	 *
-	 * @param id
-	 *     Identifier of element to retrieve.
-	 * @param setid
-	 *     Identifier of associated configuration setting.
-	 * @param ttpos
-	 *     Tooltip to display when setting is enabled.
-	 * @param ttneg
-	 *     Tooltip to display when setting is disabled.
-	 * @param action
-	 *     Action to execute when state changed.
-	 * @param von
-	 *     Optional value to set when enabled (<code>null</code> can be
-	 *     used).
-	 * @param voff
-	 *     Optional value to set when disabled (<code>null</code> can be
-	 *     used).
-	 * @return
-	 *     HTMLInputElement.
+	 * Creates a fully functional toggle element bound to configuration.
 	 */
 	createCheckBox(id: string, setid: string, ttpos: string="",
-			ttneg: string="", action?: Function,
-			von?: string, voff?: string): HTMLInputElement {
+		ttneg: string="", action?: Function,
+		von?: string, voff?: string): SettingsToggleControl | undefined {
 
-		const chk = this.createCheckBoxSkel(id)!;
+		const chk = this.createToggleSwitch(id);
+		if (!chk) {
+			return undefined;
+		}
 		chk.checked = stendhal.config.getBoolean(setid);
-		let tt: Tooltip;
+		let tt: Tooltip | undefined;
 		if (ttpos !== "") {
-			let element: any = chk;
-			if (chk.parentElement) {
-				element = chk.parentElement;
-			}
-			tt = new Tooltip(element, ttpos, ttneg !== "" ? ttneg : undefined, chk.checked);
+			const anchor = chk.getTooltipAnchor();
+			tt = new Tooltip(anchor, ttpos, ttneg !== "" ? ttneg : undefined, chk.checked);
 		}
 		if (!chk.disabled) {
-			chk.addEventListener("change", (e) => {
-				if (chk.checked && typeof(von) !== "undefined") {
+			chk.addEventListener("change", () => {
+				const nextState = chk.checked;
+				if (nextState && typeof(von) !== "undefined") {
 					stendhal.config.set(setid, von);
-				} else if (!chk.checked && typeof(voff) !== "undefined") {
+				} else if (!nextState && typeof(voff) !== "undefined") {
 					stendhal.config.set(setid, voff);
 				} else {
-					stendhal.config.set(setid, chk.checked);
+					stendhal.config.set(setid, nextState);
 				}
 				if (tt) {
-					tt.setState(chk.checked);
+					tt.setState(nextState);
 				}
 				if (action) {
 					action();

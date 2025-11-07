@@ -54,7 +54,7 @@ export class InputTab extends AbstractSettingsTab {
 				function(e: Event) {
 					sel_joystick.disabled = !chk_joystick.checked;
 					singletons.getJoystickController().update();
-				});
+				})!;
 		chk_joystick.checked = singletons.getSessionManager().joystickEnabled();
 		sel_joystick.disabled = !chk_joystick.checked;
 

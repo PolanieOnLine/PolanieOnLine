@@ -40,7 +40,7 @@ export abstract class JoystickImpl {
 	 *   Joystick center.
 	 */
 	protected static getCenterX(): number {
-		return stendhal.config.getInt("joystick.center.x", 224);
+		return stendhal.config.getInt("joystick.center.x", 264);
 	}
 
 	/**
