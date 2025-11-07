@@ -209,6 +209,11 @@ div#equipmentborder { width: 147px; }
 	border-bottom: 3px solid var(--border-bottom-color);
 }
 
+.inventory-window__titlebar:focus-visible {
+	outline: 2px solid var(--border-top-color);
+	outline-offset: 2px;
+}
+
 .inventory-window__title {
 	font-weight: bold;
 	font-size: 14px;
@@ -235,6 +240,50 @@ div#equipmentborder { width: 147px; }
 .inventory-window__toggle:focus {
 	background: rgba(52, 30, 14, 0.95);
 	outline: none;
+}
+
+.inventory-window__reorder {
+	width: 40px;
+	height: 40px;
+	min-width: 40px;
+	min-height: 40px;
+	border: none;
+	background: rgba(34, 20, 11, 0.9);
+	color: #f9e7c5;
+	cursor: pointer;
+	font-weight: bold;
+	font-size: 1.1rem;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-top: 1px solid var(--border-top-color);
+	border-left: 1px solid var(--border-top-color);
+	border-right: 1px solid var(--border-bottom-color);
+	border-bottom: 1px solid var(--border-bottom-color);
+	border-radius: 4px;
+	padding: 0;
+}
+
+.inventory-window__reorder:hover,
+.inventory-window__reorder:focus {
+	background: rgba(52, 30, 14, 0.95);
+	outline: none;
+}
+
+.inventory-window__reorder[hidden] {
+	display: none;
+}
+
+.inventory-window.dragging {
+	opacity: 0.9;
+}
+
+.inventory-window__drop-indicator {
+	height: 32px;
+	margin: 4px 0;
+	border: 2px dashed var(--border-top-color);
+	background: rgba(249, 231, 197, 0.15);
+	border-radius: 4px;
 }
 
 .inventory-window__body {

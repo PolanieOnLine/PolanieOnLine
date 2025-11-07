@@ -22,6 +22,7 @@ import { ui } from "../../UI";
 import { UIComponentEnum } from "../../UIComponentEnum";
 
 import { ChatLogComponent } from "../../component/ChatLogComponent";
+import { InventoryWindowOrderManager } from "../../component/InventoryWindowOrderManager";
 import { ItemInventoryComponent } from "../../component/ItemInventoryComponent";
 import { PlayerEquipmentComponent } from "../../component/PlayerEquipmentComponent";
 import { PlayerStatsComponent } from "../../component/PlayerStatsComponent";
@@ -32,14 +33,12 @@ import { Globals } from "../../../util/Globals";
 
 
 export class GeneralTab extends AbstractSettingsTab {
-
 	constructor(parent: SettingsDialog, element: HTMLElement) {
 		super(element);
 		const config = singletons.getConfigManager();
 		const chatLog = (ui.get(UIComponentEnum.ChatLog) as ChatLogComponent);
 
 		/* *** left panel *** */
-
 		parent.createCheckBox("chk_speechcr", "speech.creature",
 				"Włączono dymki tekstu stworzeń", "Dymki tekstu stworzeń są wyłączone");
 
@@ -76,7 +75,6 @@ export class GeneralTab extends AbstractSettingsTab {
 
 
 		/* *** center panel *** */
-
 		parent.createCheckBox("chk_dblclick", "inventory.double-click",
 				"Przedmioty są używane/konsumowane poprzez dwukrotne kliknięcie/dotknięcie",
 				"Przedmioty są używane/konsumowane za pomocą jednego kliknięcia/dotyku",
@@ -119,11 +117,10 @@ export class GeneralTab extends AbstractSettingsTab {
 
 
 		/* *** right panel *** */
-
 		const themes = {} as {[index: string]: string};
 		for (const t of Object.keys(config.getThemesMap())) {
 			if (t === "wood") {
-				themes[t] = t + " (default)";
+				themes[t] = t + " (domyślne)";
 			} else {
 				themes[t] = t;
 			}
@@ -140,7 +137,6 @@ export class GeneralTab extends AbstractSettingsTab {
 		/* TODO:
 		 *   - create components to change font size, weight, style, etc.
 		 */
-
 		const fonts = Object.keys(config.getFontsMap());
 
 		const sel_fontbody = parent.createFontSelect("selfontbody",
@@ -179,6 +175,36 @@ export class GeneralTab extends AbstractSettingsTab {
 				});
 		const menuStyleElement = this.child("#selmenustyle")! as HTMLSelectElement;
 		menuStyleElement.selectedIndex = Globals.getMenuStyle() === "traditional" ? 0 : 1;
+
+		let orderManager: InventoryWindowOrderManager|undefined;
+		try {
+			orderManager = InventoryWindowOrderManager.get();
+		} catch (err) {
+			console.warn("Right panel personalization unavailable", err);
+		}
+
+		const personalizeCheckbox = this.child("#chk_rightpanel_personalize") as HTMLInputElement | undefined;
+		const resetButton = parent.createButton("btn_rightpanel_reset");
+		if (orderManager) {
+			if (personalizeCheckbox) {
+				personalizeCheckbox.checked = orderManager.isPersonalizationEnabled();
+				personalizeCheckbox.addEventListener("change", () => {
+					orderManager!.setPersonalizationEnabled(personalizeCheckbox.checked);
+				});
+			}
+			resetButton.addEventListener("click", () => {
+				orderManager!.resetLayout();
+			});
+		} else {
+			if (personalizeCheckbox) {
+				personalizeCheckbox.checked = false;
+				personalizeCheckbox.disabled = true;
+				const wrapper = personalizeCheckbox.closest("label");
+				wrapper?.classList.add("hidden");
+			}
+			resetButton.classList.add("hidden");
+			resetButton.disabled = true;
+		}
 
 		// common chat keyword options
 		const txt_chatopts = parent.createTextInput("txtchatopts", config.get("chat-opts.custom")!,

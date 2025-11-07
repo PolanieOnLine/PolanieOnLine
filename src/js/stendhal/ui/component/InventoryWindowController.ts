@@ -1,4 +1,5 @@
 import { Component } from "../toolkit/Component";
+import { InventoryWindowOrderManager } from "./InventoryWindowOrderManager";
 
 interface InventoryWindowElements {
 	root: HTMLElement;
@@ -25,6 +26,12 @@ export class InventoryWindowController {
 		};
 
 		this.windows.set(id, elements);
+
+		try {
+			InventoryWindowOrderManager.get().registerWindow(id, root);
+		} catch (err) {
+			console.warn("Unable to register inventory window for personalization", err);
+		}
 
 		if (options?.title && elements.title) {
 			elements.title.textContent = options.title;
