@@ -50,14 +50,12 @@ export class SettingsDialog extends TabDialogContentComponent {
 			"effect.weather": stendhal.config.get("effect.weather")
 		};
 
-		this.addTab("General", new GeneralTab(this, this.child("#settings-general")!));
-		this.addTab("Visuals", new VisualsTab(this, this.child("#settings-visuals")!));
-		this.addTab("Sound", new SoundTab(this, this.child("#settings-sound")!));
-		this.addTab("Input", new InputTab(this, this.child("#settings-input")!));
-
+		this.addTab("Ogólne", new GeneralTab(this, this.child("#settings-general")!));
+		this.addTab("Wizualne", new VisualsTab(this, this.child("#settings-visuals")!));
+		this.addTab("Dźwięki", new SoundTab(this, this.child("#settings-sound")!));
+		this.addTab("Sterowanie", new InputTab(this, this.child("#settings-input")!));
 
 		/* *** buttons *** */
-
 		const btn_reload = this.addButton("Odśwież", () => {
 			this.close();
 			location.reload();

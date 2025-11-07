@@ -23,8 +23,8 @@ export class AboutDialog extends TabDialogContentComponent {
 	constructor() {
 		super("aboutdialog-template", Layout.TOP, "#aboutdialog-content");
 
-		this.addTab("License", new Panel(this.child("#license")!));
-		this.addTab("Contributors", new Panel(this.child("#contributors")!));
+		this.addTab("Licencja", new Panel(this.child("#license")!));
+		this.addTab("Kontributorzy", new Panel(this.child("#contributors")!));
 		this.addCloseButton();
 
 		this.child("#aboutdialog-content")!.addEventListener("contextmenu", (evt: MouseEvent) => {

@@ -93,7 +93,7 @@ export abstract class DialogContentComponent extends Component {
 	 *   The created button.
 	 */
 	addCloseButton(id?: string): HTMLButtonElement {
-		return this.addButton("Close", () => {
+		return this.addButton("Zamknij", () => {
 			this.close();
 		}, id ? id : "button-close");
 	}
