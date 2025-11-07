@@ -500,6 +500,10 @@ div.quickPickup div.itemSlot {
 	background-color: #000;
 }
 
+#zonename {
+	text-align: center;
+}
+
 #stats, .group-members, .group-member-component {
 	display: flex;
 	flex-direction: column;
