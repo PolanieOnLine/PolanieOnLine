@@ -120,10 +120,21 @@ export class QuickMenu {
 	public static refresh() {
 		// place buttons in upper-right corner of viewport
 		const btn_main = QuickMenu.getElement();
-		const rect = document.getElementById("viewport")!.getBoundingClientRect();
+		const viewportRect = document.getElementById("viewport")!.getBoundingClientRect();
+		const parentElement = btn_main.offsetParent as HTMLElement | null;
+		let parentLeft = 0;
+		let parentTop = 0;
 
-		let drawLeft = rect.right - btn_main.width;
-		let drawTop = rect.top;
+		if (parentElement) {
+			const parentRect = parentElement.getBoundingClientRect();
+			parentLeft = parentRect.left + parentElement.clientLeft;
+			parentTop = parentRect.top + parentElement.clientTop;
+		}
+
+		const baseLeft = viewportRect.right - btn_main.width - parentLeft;
+		const baseTop = viewportRect.top - parentTop;
+		let drawLeft = baseLeft;
+		let drawTop = baseTop;
 		// main button
 		btn_main.style["left"] = drawLeft + "px";
 		btn_main.style["top"] = drawTop + "px";
@@ -139,7 +150,8 @@ export class QuickMenu {
 		}
 
 		// vertical buttons
-		drawLeft = rect.right - btn_main.width
+		drawLeft = baseLeft;
+		drawTop = baseTop;
 		for (const btn of QuickMenu.buttonListY) {
 			if (!btn.enabled) {
 				continue;

@@ -766,6 +766,7 @@ span.lognick {
 	width: 640px;
 	max-width: calc(100vw - 130px - 150px - 10px);
 	background-color: #000;
+	position: relative;
 }
 
 #rightColumn {
