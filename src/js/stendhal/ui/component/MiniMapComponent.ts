@@ -280,7 +280,7 @@ export class MiniMapComponent extends Component {
 		ctx.lineCap = "butt";
 		ctx.lineJoin = "miter";
 		ctx.imageSmoothingEnabled = false;
-		const isAdmin = marauroa.me["adminlevel"] && marauroa.me["adminlevel"] >= 6;
+		const isAdmin = marauroa.me["adminlevel"] && marauroa.me["adminlevel"] >= 1000;
 
 		for (let i in marauroa.currentZone) {
 			let o = marauroa.currentZone[i];
@@ -331,7 +331,7 @@ export class MiniMapComponent extends Component {
 	}
 
 	private updateEntities() {
-		const isAdmin = marauroa.me["adminlevel"] && marauroa.me["adminlevel"] >= 6;
+		const isAdmin = marauroa.me["adminlevel"] && marauroa.me["adminlevel"] >= 1000;
 		for (const key in marauroa.currentZone) {
 			const obj = marauroa.currentZone[key];
 			if (!this.canDisplayOnMinimap(obj, isAdmin)) {

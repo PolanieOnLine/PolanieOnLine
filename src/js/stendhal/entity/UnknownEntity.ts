@@ -27,7 +27,7 @@ export class UnknownEntity extends Entity {
 	}
 
 	override isVisibleToAction(_filter: boolean) {
-		return (marauroa.me["adminlevel"] && marauroa.me["adminlevel"] >= 600);
+		return (marauroa.me["adminlevel"] && marauroa.me["adminlevel"] >= 1000);
 	}
 
 }
