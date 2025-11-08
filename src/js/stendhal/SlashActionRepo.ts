@@ -126,7 +126,7 @@ export class SlashActionRepo {
 				{
 					type: "where",
 					getHelp: function(): string[] {
-						return ["[<player>]", "Pokaż bieżącą lokalizację #gracza."];
+						return ["[<gracz>]", "Pokaż bieżącą lokalizację #gracza."];
 					}
 				},
 				"sentence"
@@ -152,7 +152,7 @@ export class SlashActionRepo {
 				{
 					type: "markscroll",
 					getHelp: function(): string[] {
-						return ["<text>", "Oznacz swój pusty zwój i dodaj etykietę #tekstu."];
+						return ["<tekst>", "Oznacz swój pusty zwój i dodaj etykietę #tekstu."];
 					}
 				}
 			],
@@ -164,7 +164,7 @@ export class SlashActionRepo {
 				{
 					type: "unignore",
 					getHelp: function(): string[] {
-						return ["<player>", "Usuń #gracza z twojej listy ignorów."];
+						return ["<gracz>", "Usuń #gracza z twojej listy ignorów."];
 					}
 				}
 			],
@@ -307,7 +307,7 @@ export class SlashActionRepo {
 				{
 					type: "destroy",
 					getHelp: function(): string[] {
-						return ["<entity>", "Niszczy byt całkowicie."];
+						return ["<byt>", "Niszczy byt całkowicie."];
 					}
 				}
 			],
@@ -500,9 +500,9 @@ export class SlashActionRepo {
 		maxParams: 1,
 		getHelp: function(sparams?: string): string[] {
 			if (sparams) {
-				return [sparams, "For more info about alter, script or the supportanswer shortcuts."];
+				return [sparams, "Aby uzyskać więcej informacji o alter, script lub skrótach supportanswer."];
 			}
-			return ["", "Show this help message."];
+			return ["", "Wyświetl ten komunikat pomocy."];
 		}
 	};
 
@@ -524,7 +524,7 @@ export class SlashActionRepo {
 		minParams: 1,
 		maxParams: 1,
 		getHelp: function(): string[] {
-			return ["<player>", "Add #player to your buddy list."];
+			return ["<gracz>", "Dodaj #gracza do swojej listy znajomych."];
 		}
 	};
 
@@ -541,7 +541,7 @@ export class SlashActionRepo {
 		minParams: 1,
 		maxParams: 1,
 		getHelp: function(): string[] {
-			return ["<player> <note>", "Logs a note about #player."];
+			return ["<gracz> <notatka>", "Zapisuje notatkę o #graczu."];
 		}
 	};
 
@@ -560,7 +560,7 @@ export class SlashActionRepo {
 		minParams: 1,
 		maxParams: 2,
 		getHelp: function(): string[] {
-			return ["<player> [<newlevel>]", "Display or set the adminlevel of the specified #player."];
+			return ["<gracz> [<nowypoziom>]", "Wyświetla lub ustawia poziom administratora wskazanego #gracza."];
 		}
 	};
 
@@ -580,9 +580,9 @@ export class SlashActionRepo {
 		maxParams: 3,
 		getHelp: function(): string[] {
 			return [
-				"<player> <attrib> <mode> <value>",
-				"Alter stat #attrib of #player by the given amount; #mode can be ADD, SUB, SET or UNSET."
-						+ " See #/gmhelp #alter for details."
+				"<gracz> <atrybut> <tryb> <wartość>",
+				"Zmień statystykę #atrybut #gracza o podaną wartość; #tryb może przyjmować wartości ADD, SUB, SET lub UNSET."
+						+ " Zobacz #/gmhelp #alter po szczegóły."
 			];
 		}
 	};
@@ -602,9 +602,9 @@ export class SlashActionRepo {
 		maxParams: 2,
 		getHelp: function(): string[] {
 			return [
-				"<id> set|unset|add|sub <attribute> [<value>]",
-				"Change values of the creature. Use #- as a placeholder to keep default value. Useful in"
-						+ " raids."
+				"<id> set|unset|add|sub <atrybut> [<wartość>]",
+				"Zmień wartości stwora. Użyj #- jako symbolu zastępczego, aby zachować domyślną wartość. Przydatne w"
+						+ " rajdach."
 			];
 		}
 	};
@@ -638,8 +638,8 @@ export class SlashActionRepo {
 		maxParams: 3,
 		getHelp: function(): string[] {
 			return [
-				"<player> <type> <count> <creature>",
-				"Change number of #creature killed #type (\"solo\" or \"shared\") to #count for #player."
+				"<gracz> <typ> <liczba> <stwór>",
+				"Zmień liczbę #stworzeń zabitych w trybie #typ (\"solo\" lub \"shared\") na wpisaną #liczbe dla #gracza."
 			];
 		}
 	};
@@ -662,7 +662,7 @@ export class SlashActionRepo {
 		minParams: 2,
 		maxParams: 3,
 		getHelp: function(): string[] {
-			return ["<player> <questslot> <value>", "Update the #questslot for #player to be #value."];
+			return ["<gracz> <questslot> <wartość>", "Zaktualizuj #questslot dla #gracza do podanej #wartości."];
 		}
 	};
 
@@ -701,10 +701,10 @@ export class SlashActionRepo {
 		minParams: 0,
 		maxParams: 0,
 		getHelp: function(sparams: string): string[] {
-			if (sparams === "<message>") {
-				return [sparams,  "Set an away message."];
+			if (sparams === "<wiadomość>") {
+				return [sparams,  "Ustaw wiadomość o nieobecności."];
 			}
-			return ["", "Remove away status."];
+			return ["", "Usuń status nieobecności."];
 		}
 	};
 
@@ -723,9 +723,9 @@ export class SlashActionRepo {
 		maxParams: 2,
 		getHelp: function(): string[] {
 			return [
-					"<character> <hours> <reason>",
-					"Bans the account of the character from logging onto the game server or website for the"
-							+ " specified amount of hours (-1 till end of time)."
+					"<postać> <godziny> <powód>",
+					"Banuje konto postaci i uniemożliwia logowanie na serwer gry lub stronę internetową przez"
+							+ " określoną liczbę godzin (-1 oznacza do końca świata)."
 			];
 		}
 	};
@@ -743,8 +743,8 @@ export class SlashActionRepo {
 		maxParams: 0,
 		getHelp: function(): string[] {
 			return [
-				"<message>",
-				"Send a public chat message (same as sending text without prefixed chat command)."
+				"<wiadomość>",
+				"Wyślij publiczną wiadomość na czacie (tak samo jak wpisanie tekstu bez poprzedzającej komendy)."
 			];
 		}
 	};
@@ -757,7 +757,7 @@ export class SlashActionRepo {
 		minParams: 0,
 		maxParams: 0,
 		getHelp: function(): string[] {
-			return ["", "Clear chat log."];
+			return ["", "Wyczyść dziennik czatu."];
 		}
 	};
 
@@ -769,9 +769,9 @@ export class SlashActionRepo {
 			stendhal.ui.gamewindow.updateClickMode();
 
 			if (newMode) {
-				Chat.log("info", "Click mode is now set to double click.");
+				Chat.log("info", "Tryb kliknięcia ustawiono na podwójne kliknięcie.");
 			} else {
-				Chat.log("info", "Click mode is now set to single click.");
+				Chat.log("info", "Tryb kliknięcia ustawiono na pojedyncze kliknięcie.");
 			}
 			return true;
 		},
@@ -807,7 +807,7 @@ export class SlashActionRepo {
 		minParams: 0,
 		maxParams: 1,
 		getHelp: function(): string[] {
-			return ["[<quantity>] <item_name>", "Drops items from inventory where you stand."];
+			return ["[<ilość>] <nazwa_przedmiotu>", "Upuszcza przedmioty z ekwipunku w miejscu, w którym stoisz."];
 		}
 	};
 
@@ -817,14 +817,14 @@ export class SlashActionRepo {
 			for (const idx in emojilist) {
 				emojilist[idx] = "&nbsp;&nbsp;- :" + emojilist[idx] + ":";
 			}
-			emojilist.splice(0, 0, emojilist.length + " emojis available:");
+			emojilist.splice(0, 0, emojilist.length + " emotikon dostępnych:");
 			Chat.log("client", emojilist);
 			return true;
 		},
 		minParams: 0,
 		maxParams: 0,
 		getHelp: function(): string[] {
-			return ["", "List available emojis."];
+			return ["", "Wyświetl dostępne emotikony."];
 		}
 	};
 
@@ -843,8 +843,8 @@ export class SlashActionRepo {
 		maxParams: 2,
 		getHelp: function(): string[] {
 			return [
-				"<player> <minutes> <reason>",
-				"Gags #player for a given length of time (player is unable to send messages to anyone)."
+				"<gracz> <minuty> <powód>",
+				"Wycisza #gracza na określony czas (gracz nie może wysyłać wiadomości do nikogo)."
 			];
 		}
 	};
@@ -864,21 +864,21 @@ export class SlashActionRepo {
 		getHelp: function(sparams: string): string[] {
 			const desc: string[] = [];
 			if (sparams === "invite <player>") {
-				desc.push("Invite a player to join your group.");
+				desc.push("Zaproś gracza do swojej grupy.");
 			} else if (sparams === "join <player") {
-				desc.push("Accept invite to join #player's group.");
+				desc.push("Przyjmij zaproszenie do grupy #gracza.");
 			} else if (sparams === "leader <player>") {
-				desc.push("Make #player leader of group.");
+				desc.push("Uczyń #gracza liderem grupy.");
 			} else if (sparams === "lootmode single|shared") {
-				desc.push("Set looting mode for group.");
-				desc.push("&nbsp;&nbsp;single: Only group leader can loot.");
-				desc.push("&nbsp;&nbsp;shared: Any group member can loot.");
+				desc.push("Ustaw tryb zdobywania łupów dla grupy.");
+				desc.push("&nbsp;&nbsp;single: Tylko lider grupy może zbierać łupy.");
+				desc.push("&nbsp;&nbsp;shared: Każdy członek grupy może zbierać łupy.");
 			} else if (sparams === "kick <player>") {
-				desc.push("Kick #player from group.");
+				desc.push("Wyrzuć #gracza z grupy.");
 			} else if (sparams === "part") {
-				desc.push("Leave group.");
+				desc.push("Opuść grupę.");
 			} else if (sparams === "status") {
-				desc.push("Broken?");
+				desc.push("Nie działa?");
 			}
 			return [sparams, ...desc];
 		}
@@ -898,10 +898,10 @@ export class SlashActionRepo {
 		minParams: 0,
 		maxParams: 0,
 		getHelp: function(sparams: string): string[] {
-			if (sparams === "<message>") {
-				return [sparams,  "Set a message to ignore all non-buddies."];
+			if (sparams === "<wiadomość>") {
+				return [sparams,  "Ustaw wiadomość, aby ignorować wszystkich spoza listy znajomych."];
 			}
-			return ["", "Remove grumpy status."];
+			return ["", "Usuń status zgryźliwego."];
 		}
 	};
 
@@ -945,9 +945,9 @@ export class SlashActionRepo {
 		maxParams: 2,
 		getHelp: function(sparams?: string): string[] {
 			if (sparams) {
-				return [sparams, "Add #player to your ignore list."];
+				return [sparams, "Dodaj #gracza do swojej listy ignorowanych."];
 			}
-			return ["", "Find out who is on your ignore list."];
+			return ["", "Zobacz, kto znajduje się na twojej liście ignorowanych."];
 		}
 	};
 
@@ -974,7 +974,7 @@ export class SlashActionRepo {
 		minParams: 1,
 		maxParams: 1,
 		getHelp: function(): string[] {
-			return ["<player> <creature>", "Show creature kill counts of #player for #creature."];
+			return ["<gracz> <stwór>", "Pokaż liczbę zabójstw #stworzeń dokonanych przez #gracz."];
 		}
 	};
 
@@ -993,7 +993,7 @@ export class SlashActionRepo {
 		minParams: 1,
 		maxParams: 2,
 		getHelp: function(): string[] {
-			return ["<player> [<quest_slot>]", "Show the state of quest for #player."];
+			return ["<gracz> [<gniazdo_zadania>]", "Pokaż stan zadania dla #gracz."];
 		}
 	};
 
@@ -1012,7 +1012,7 @@ export class SlashActionRepo {
 		minParams: 2,
 		maxParams: 2,
 		getHelp: function(): string[] {
-			return ["<player> <minutes> <reason>", "Imprisons #player for a given length of time."];
+			return ["<gracz> <minuty> <powód>", "Wtrąca #gracza do więzienia na określony czas."];
 		}
 	};
 
@@ -1028,7 +1028,7 @@ export class SlashActionRepo {
 		minParams: 0,
 		maxParams: 0,
 		getHelp: function(): string[] {
-			return ["<action>", "Show a message about what you are doing."];
+			return ["<akcja>", "Wyświetl wiadomość opisującą, co robisz."];
 		}
 	};
 
@@ -1043,9 +1043,9 @@ export class SlashActionRepo {
 			}
 			this.sendAction(action);
 			// update config
-			stendhal.config.set("move.cont", enable);
-			Chat.log("info", "Continuous movement "
-					+ (enable ? "enabled" : "disabled") + ".");
+		stendhal.config.set("move.cont", enable);
+		Chat.log("info", "Ciągły ruch "
+				+ (enable ? "włączony" : "wyłączony") + ".");
 			return true;
 		},
 		minParams: 0,
@@ -1053,8 +1053,8 @@ export class SlashActionRepo {
 		getHelp: function(): string[] {
 			return [
 				"",
-				"Toggle continuous movement (allows players to continue walking after map change or"
-						+ " teleport without releasing direction key)."
+				"Przełącz tryb ciągłego ruchu (pozwala kontynuować chodzenie po zmianie mapy lub"
+						+ " teleportacji bez puszczania klawisza kierunku)."
 			];
 		}
 	};
@@ -1067,16 +1067,16 @@ export class SlashActionRepo {
 		execute: (type: string, params: string[], remainder: string): boolean => {
 			stendhal.sound.toggleSound();
 			if (stendhal.config.getBoolean("sound")) {
-				Chat.log("info", "Sounds are now on.");
+				Chat.log("info", "Dźwięki są teraz włączone.");
 			} else {
-				Chat.log("info", "Sounds are now off.");
+				Chat.log("info", "Dźwięki są teraz wyłączone.");
 			}
 			return true;
 		},
 		minParams: 0,
 		maxParams: 0,
 		getHelp: function(): string[] {
-			return ["", "Mute or unmute the sounds."];
+			return ["", "Wycisz lub włącz dźwięki."];
 		}
 	};
 
@@ -1092,7 +1092,7 @@ export class SlashActionRepo {
 		minParams: 0,
 		maxParams: 0,
 		getHelp: function(): string[] {
-			return ["<message>", "Send a message to group members."];
+			return ["<wiadomość>", "Wyślij wiadomość do członków grupy."];
 		}
 	};
 
@@ -1115,7 +1115,7 @@ export class SlashActionRepo {
 		minParams: 1,
 		maxParams: 1,
 		getHelp: function(): string[] {
-			return ["<player>", "Remove #player from your buddy list."];
+			return ["<gracz>", "Usuń #gracza ze swojej listy znajomych."];
 		}
 	};
 
@@ -1126,7 +1126,7 @@ export class SlashActionRepo {
 		minParams: 0,
 		maxParams: 0,
 		getHelp: function(): string[] {
-			return ["", "Capture a screenshot of the viewport area."];
+			return ["", "Wykonaj zrzut ekranu obszaru widocznego w oknie."];
 		}
 	};
 
@@ -1150,8 +1150,8 @@ export class SlashActionRepo {
 		maxParams: 0,
 		getHelp: function(): string[] {
 			return [
-				"<text>",
-				"Set message on stendhalgame.org profile page and what players see when using #Look."
+				"<tekst>",
+				"Ustaw wiadomość na stronie profilu polanieonline.eu oraz tekst wyświetlany przy użyciu komendy #Zobacz."
 			];
 		}
 	};
@@ -1170,7 +1170,7 @@ export class SlashActionRepo {
 		minParams: 0,
 		maxParams: 0,
 		getHelp: function(): string[] {
-			return ["", "Turns autowalk off."];
+			return ["", "Wyłącza automatyczne chodzenie."];
 		}
 	};
 
@@ -1180,26 +1180,26 @@ export class SlashActionRepo {
 			let vol = params[1];
 			if (typeof(layername) === "undefined") {
 				const layers = ["master", ...stendhal.sound.getLayerNames()];
-				Chat.log("info", "Please use /volume <layer> <value> to adjust the volume.");
-				Chat.log("client", "<layer> is one of \"" + layers.join("\", \"") + "\"");
-				Chat.log("client", "<value> is a number in the range 0 to 100.");
-				Chat.log("client", "Current volume levels:");
+				Chat.log("info", "Użyj /volume <warstwa> <wartość>, aby dostosować głośność.");
+				Chat.log("client", "<warstwa> to jedna z \"" + layers.join("\", \"") + "\"");
+				Chat.log("client", "<wartość> to liczba z zakresu od 0 do 100.");
+				Chat.log("client", "Aktualne poziomy głośności:");
 				for (const l of layers) {
 					Chat.log("client", "&nbsp;&nbsp;- " + l + " -> " + stendhal.sound.getVolume(l) * 100);
 				}
 			} else if (typeof(vol) !== "undefined") {
 				if (!/^\d+$/.test(vol)) {
-					Chat.log("error", "Value must be a number.");
+					Chat.log("error", "Wartość musi być liczbą.");
 					return true;
 				}
 				if (stendhal.sound.setVolume(layername, parseInt(vol, 10) / 100)) {
-					Chat.log("client", "Channel \"" + layername + "\" volume set to "
+					Chat.log("client", "Kanał \"" + layername + "\" ustawiono na "
 							+ (stendhal.sound.getVolume(layername) * 100) + ".");
 				} else {
-					Chat.log("error", "Unknown layer \"" + layername + "\".");
+					Chat.log("error", "Nieznana warstwa \"" + layername + "\".");
 				}
 			} else {
-				Chat.log("error", "Please use /volume for help.");
+				Chat.log("error", "Użyj /volume, aby uzyskać pomoc.");
 			}
 
 			return true;
@@ -1208,9 +1208,9 @@ export class SlashActionRepo {
 		maxParams: 2,
 		getHelp: function(sparams?: string): string[] {
 			if (sparams) {
-				return [sparams, "Lists or sets the volume for sound and music."];
+				return [sparams, "Wyświetla lub ustawia głośność dźwięków i muzyki."];
 			}
-			return ["", "Shows current volume levels."];
+			return ["", "Pokazuje bieżące poziomy głośności."];
 		}
 	};
 
@@ -1268,9 +1268,9 @@ export class SlashActionRepo {
 		getHelp: function(sparams: string): string[] {
 			let desc: any;
 			if (sparams === "<creature>|<item> [<x> <y>]") {
-				desc = "Summon a creature.";
+				desc = "Przyzwij stwora.";
 			} else if (sparams === "<stackable_item> [<x> <y>] [quantity]") {
-				desc = "Summon the specified item or creature at co-ordinates #x, #y in the current zone.";
+				desc = "Przyzwij wskazany przedmiot lub stwora na współrzędnych #x, #y w bieżącej strefie.";
 			}
 			return [sparams, desc];
 		}
@@ -1303,9 +1303,9 @@ export class SlashActionRepo {
 		maxParams: 3,
 		getHelp: function(): string[] {
 			return [
-				"<player> <slot> [amount] <item>",
-				"Summon the specified item into the specified slot of <player>; <amount> defaults to 1 if"
-						+ " not specified."
+				"<gracz> <slot> [ilość] <przedmiot>",
+				"Przyzwij wskazany przedmiot do określonego slotu #gracza; <ilość> domyślnie wynosi 1, jeśli"
+						+ " nie zostanie podana."
 			];
 		}
 	};
@@ -1322,7 +1322,7 @@ export class SlashActionRepo {
 		minParams: 0,
 		maxParams: 0,
 		getHelp: function(): string[] {
-			return ["<message>", "Ask an administrator for help."];
+			return ["<wiadomość>", "Poproś administratora o pomoc."];
 		}
 	};
 
@@ -1341,9 +1341,9 @@ export class SlashActionRepo {
 		aliases: ["supporta"],
 		getHelp: function(): string[] {
 			return [
-				"<player> <message>",
-				"Replies to a support question. Replace #message with $faq, $faqsocial, $ignore, $faqpvp,"
-						+ " $wiki, $knownbug, $bugstracker, $rules, $notsupport or $spam shortcuts if desired."
+				"<gracz> <wiadomość>",
+				"Odpowiada na zgłoszenie wsparcia. Zastąp #message skrótami $faq, $faqsocial, $ignore, $faqpvp,"
+						+ " $wiki, $knownbug, $bugstracker, $rules, $notsupport lub $spam, jeśli chcesz użyć skrótów."
 			];
 		}
 	};
@@ -1364,7 +1364,7 @@ export class SlashActionRepo {
 		minParams: 4,
 		maxParams: 4,
 		getHelp: function(): string[] {
-			return ["<player> <zone> <x> <y>", "Teleport #player to the given location."];
+			return ["<gracz> <strefa> <x> <y>", "Teleportuj #gracza w podane miejsce."];
 		}
 	};
 
@@ -1380,7 +1380,7 @@ export class SlashActionRepo {
 		minParams: 0,
 		maxParams: 0,
 		getHelp: function(): string[] {
-			return ["<name>", "Teleport yourself near the specified player or NPC."];
+			return ["<nazwa>", "Teleportuj się w pobliże wskazanego gracza lub NPC."];
 		}
 	};
 
@@ -1396,7 +1396,7 @@ export class SlashActionRepo {
 		minParams: 0,
 		maxParams: 0,
 		getHelp: function(): string[] {
-			return ["<message>", "Send a private message to all logged-in players."];
+			return ["<wiadomość>", "Wyślij prywatną wiadomość do wszystkich zalogowanych graczy."];
 		}
 	};
 
@@ -1411,44 +1411,44 @@ export class SlashActionRepo {
 		minParams: 0,
 		maxParams: 0,
 		getHelp: function(): string[] {
-			return ["", "Toggles autowalk on/off."];
+			return ["", "Przełącza automatyczne chodzenie."];
 		}
 	};
 
 	"atlas": SlashActionImpl = {
 		execute: (type: string, params: string[], remainder: string): boolean => {
-			window.location.href = "https://stendhalgame.org/world/atlas.html?me="
+			window.location.href = "https://s1.polanieonline.eu/atlas.html?me="
 				+ marauroa.currentZoneName + "." + marauroa.me.x + "." + marauroa.me.y;
 			return true;
 		},
 		minParams: 0,
 		maxParams: 0,
 		getHelp: function(): string[] {
-			return ["", "Opens atlas page on stendhalgame.org."];
+			return ["", "Otwiera stronę atlasu na polanieonline.eu."];
 		}
 	};
 
 	"beginnersguide": SlashActionImpl = {
 		execute: (type: string, params: string[], remainder: string): boolean => {
-			window.location.href = "https://stendhalgame.org/wiki/Stendhal_Beginner's_Guide";
+			window.location.href = "https://s1.polanieonline.eu/wiki/PolanieOnLine_Poradniki_dla_Początkujących";
 			return true;
 		},
 		minParams: 0,
 		maxParams: 0,
 		getHelp: function(): string[] {
-			return ["", "Opens beginner's guide wiki page on stendhalgame.org."];
+			return ["", "Otwiera stronę wiki z poradnikiem dla początkujących na polanieonline.eu."];
 		}
 	};
 
-	"characterselector" = new OpenWebsiteAction("https://stendhalgame.org/account/mycharacters.html");
+	"characterselector" = new OpenWebsiteAction("https://s1.polanieonline.eu/account/mycharacters.html");
 
-	"faq" = new OpenWebsiteAction("https://stendhalgame.org/wiki/Stendhal_FAQ");
+	"faq" = new OpenWebsiteAction("https://s1.polanieonline.eu/wiki/PolanieOnLineFAQ");
 
-	"manual" = new OpenWebsiteAction("https://stendhalgame.org/wiki/Stendhal_Manual/Controls_and_Game_Settings");
+	"manual" = new OpenWebsiteAction("https://s1.polanieonline.eu/wiki/PolanieOnLine_Przewodnik/Sterowanie_i_Ustawienia_Gry");
 
 	"profile": SlashActionImpl = {
 		execute: (type: string, params: string[], remainder: string): boolean => {
-			var url = "https://stendhalgame.org/character/";
+			var url = "https://s1.polanieonline.eu/character/";
 			var name = marauroa.me["_name"] || singletons.getSessionManager().getCharName();
 
 			if (params.length > 0 && params[0] != null) {
@@ -1460,26 +1460,26 @@ export class SlashActionRepo {
 			}
 
 			url += name + ".html";
-			Chat.log("info", "Trying to open #" + url + " in your browser.");
+			Chat.log("info", "Próba otwarcia #" + url + " w przeglądarce.");
 			window.location.href = url;
 			return true;
 		},
 		minParams: 0,
 		maxParams: 1,
 		getHelp: function(): string[] {
-			return ["[<name>]", "Opens a player profile page on stendhalgame.org."];
+			return ["[<nazwa>]", "Otwiera stronę profilu gracza na polanieonline.eu."];
 		}
 	};
 
-	"rules" = new OpenWebsiteAction("https://stendhalgame.org/wiki/Stendhal_Rules");
+	"rules" = new OpenWebsiteAction("https://s1.polanieonline.eu/wiki/PolanieOnLine_Regulaminy");
 
-	"changepassword" = new OpenWebsiteAction("https://stendhalgame.org/account/change-password.html");
+	"changepassword" = new OpenWebsiteAction("https://s1.polanieonline.eu/account/change-password.html");
 
-	"loginhistory" = new OpenWebsiteAction("https://stendhalgame.org/account/history.html");
+	"loginhistory" = new OpenWebsiteAction("https://s1.polanieonline.eu/account/history.html");
 
 	"logout" = new OpenWebsiteAction("/account/logout.html");
 
-	"halloffame" = new OpenWebsiteAction("https://stendhalgame.org/world/hall-of-fame/active_overview.html");
+	"halloffame" = new OpenWebsiteAction("https://s1.polanieonline.eu/aleja-slaw/active_overview.html");
 
 	"storemessage": SlashActionImpl = {
 		execute: (type: string, params: string[], remainder: string): boolean => {
@@ -1494,7 +1494,7 @@ export class SlashActionRepo {
 		minParams: 1,
 		maxParams: 1,
 		getHelp: function(): string[] {
-			return ["<player> <message>", "Store a private message to deliver for an offline #player."];
+			return ["<gracz> <wiadomość>", "Zapisz prywatną wiadomość do dostarczenia nieobecnemu #graczowi."];
 		}
 	};
 
@@ -1572,7 +1572,7 @@ export class SlashActionRepo {
 			array.slice(action.maxParams);
 			return action.execute(name, array, remainder.trim());
 		} else {
-			Chat.log("error", "Missing arguments. Try /help");
+			Chat.log("error", "Brak argumentów. Spróbuj /help");
 			return false;
 		}
 		return true;
