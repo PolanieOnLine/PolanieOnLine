@@ -14,6 +14,8 @@ package games.stendhal.server.entity.npc.behaviour.impl;
 import java.util.Map;
 
 import games.stendhal.common.grammar.ItemParserResult;
+import games.stendhal.server.core.economy.CommerceType;
+import games.stendhal.server.core.economy.EconomyBalanceManager;
 import games.stendhal.server.entity.item.money.MoneyUtils;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.player.Player;
@@ -56,6 +58,7 @@ public class BuyerBehaviour extends MerchantBehaviour {
 	protected void payPlayer(ItemParserResult res, final Player player) {
 		int copperValue = getCharge(res, player);
 		MoneyUtils.giveMoney(player, copperValue);
+		EconomyBalanceManager.getInstance().recordMerchantTransaction(getMerchantName(), copperValue, CommerceType.NPC_BUYING);
 	}
 
 	/**

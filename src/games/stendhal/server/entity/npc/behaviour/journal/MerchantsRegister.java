@@ -60,6 +60,7 @@ public class MerchantsRegister {
 	 */
 	public void add(final SpeakerNPC npc, final MerchantBehaviour behaviour) {
 		final String npcName = npc.getName();
+		behaviour.bindMerchant(npc);
 
 		if (behaviour instanceof BuyerBehaviour) {
 			Pair<String, BuyerBehaviour> pair = new Pair<String, BuyerBehaviour>(npcName, (BuyerBehaviour) behaviour);

@@ -18,6 +18,8 @@ import games.stendhal.common.constants.SoundLayer;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.grammar.ItemParserResult;
 import games.stendhal.common.parser.Sentence;
+import games.stendhal.server.core.economy.CommerceType;
+import games.stendhal.server.core.economy.PriceQuote;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.money.MoneyUtils;
 import games.stendhal.server.entity.npc.ChatAction;
@@ -151,14 +153,22 @@ public class BuyerAdder {
 								// handle other items as appropriate
 							}
 
-							final int price = buyerBehaviour.getCharge(res, player);
+							final PriceQuote quote = buyerBehaviour.createPriceQuote(res, player, CommerceType.NPC_BUYING);
+							final int price = quote.getTotalPrice();
+
 
 							if (price != 0) {
 								String quantityplnounItem = Grammar.quantityplnoun(res.getAmount(), chosenItemName);
+								String priceInfo = MoneyUtils.formatPrice(price);
+								final String adjustment = quote.describeAdjustment();
+								if (!adjustment.isEmpty()) {
+									priceInfo += " (" + adjustment + ")";
+								}
+
 								raiser.say(Grammar.capitalize(quantityplnounItem)
 										+ " " + Grammar.isare(res.getAmount()) + " "
 										+ Grammar.worthForm(quantityplnounItem, res.getAmount()) + " "
-										+ MoneyUtils.formatPrice(price) + ". Czy chcesz "
+										+ priceInfo + ". Czy chcesz "
 										+ Grammar.itthem(res.getAmount()) + " sprzedać?");
 
 								currentBehavRes = res;

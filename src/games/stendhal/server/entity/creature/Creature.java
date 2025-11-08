@@ -28,6 +28,7 @@ import games.stendhal.common.Rand;
 import games.stendhal.common.constants.Nature;
 import games.stendhal.common.constants.Occasion;
 import games.stendhal.common.constants.SoundLayer;
+import games.stendhal.server.core.economy.EconomyBalanceManager;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPRuleProcessor;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -908,11 +909,16 @@ public class Creature extends NPC {
 					continue;
 				}
 
-				final int quantity;
+				final int baseQuantity;
 				if (dropped.min == dropped.max) {
-					quantity = dropped.min;
+					baseQuantity = dropped.min;
 				} else {
-					quantity = Rand.randUniform(dropped.max, dropped.min);
+					baseQuantity = Rand.randUniform(dropped.max, dropped.min);
+				}
+
+				int quantity = baseQuantity;
+				if ("money".equalsIgnoreCase(item.getName())) {
+					quantity = EconomyBalanceManager.getInstance().balanceCurrencyDrop(this, item.getName(), baseQuantity);
 				}
 
 				if (item instanceof StackableItem) {

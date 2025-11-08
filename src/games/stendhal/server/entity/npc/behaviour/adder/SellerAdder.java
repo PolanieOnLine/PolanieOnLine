@@ -18,6 +18,8 @@ import games.stendhal.common.constants.SoundLayer;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.grammar.ItemParserResult;
 import games.stendhal.common.parser.Sentence;
+import games.stendhal.server.core.economy.CommerceType;
+import games.stendhal.server.core.economy.PriceQuote;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.StackableItem;
@@ -144,7 +146,9 @@ public class SellerAdder {
 								}
 							}
 
-							int price = sellerBehaviour.getUnitPrice(chosenItemName) * res.getAmount();
+							final PriceQuote quote = sellerBehaviour.createPriceQuote(res, player, CommerceType.NPC_SELLING);
+							int price = quote.getTotalPrice();
+
 							if (player.isBadBoy()) {
 								price = (int) (SellerBehaviour.BAD_BOY_BUYING_PENALTY * price);
 								
@@ -156,6 +160,12 @@ public class SellerAdder {
 
 							builder.append(" kosztuje ");
 							builder.append(MoneyUtils.formatPrice(price));
+							final String adjustment = quote.describeAdjustment();
+							if (!adjustment.isEmpty()) {
+								builder.append(" (");
+								builder.append(adjustment);
+								builder.append(")");
+							}
 							builder.append(". Chcesz ");
 							builder.append(Grammar.itthem(res.getAmount()));
 							builder.append(" kupić?");

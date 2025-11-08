@@ -17,6 +17,8 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import games.stendhal.common.grammar.ItemParserResult;
+import games.stendhal.server.core.economy.CommerceType;
+import games.stendhal.server.core.economy.EconomyBalanceManager;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.StackableItem;
@@ -108,6 +110,7 @@ public class SellerBehaviour extends MerchantBehaviour {
 		if (playerCoins >= price) {
 			if (player.equipToInventoryOnly(item)) {
 				MoneyUtils.removeMoney(player, price);
+				EconomyBalanceManager.getInstance().recordMerchantTransaction(getMerchantName(), price, CommerceType.NPC_SELLING);
 				updatePlayerTransactions(player, seller.getName(), res);
 				seller.say("Gratulacje! Oto twój " + chosenItemName + "!");
 				return true;

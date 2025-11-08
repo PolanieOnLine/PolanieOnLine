@@ -19,6 +19,10 @@ import java.util.Set;
 import games.stendhal.common.grammar.ItemParserResult;
 import games.stendhal.common.parser.ExpressionType;
 import games.stendhal.common.parser.WordList;
+import games.stendhal.server.core.economy.CommerceType;
+import games.stendhal.server.core.economy.EconomyBalanceManager;
+import games.stendhal.server.core.economy.PriceAdjustment;
+import games.stendhal.server.core.economy.PriceQuote;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.SpeakerNPC;
@@ -40,6 +44,8 @@ public abstract class MerchantBehaviour extends TransactionBehaviour {
 	private Map<String, ChatCondition> conditions;
 
 	private SpeakerNPC merchant;
+	private String merchantName;
+	private transient PriceQuote lastQuote;
 
 	// skews prices of all items for this merchant
 	private Float priceFactor = null;
@@ -143,9 +149,43 @@ public abstract class MerchantBehaviour extends TransactionBehaviour {
 	public int getCharge(ItemParserResult res, final Player player) {
 		if (res.getChosenItemName() == null) {
 			return 0;
-		} else {
-			return res.getAmount() * getUnitPrice(res.getChosenItemName());
 		}
+		final PriceQuote quote = createPriceQuote(res, player, resolveCommerceType());
+		return quote.getTotalPrice();
+	}
+
+	public PriceQuote createPriceQuote(final ItemParserResult res, final Player player, final CommerceType type) {
+		final String itemName = res.getChosenItemName();
+		int amount = res.getAmount();
+		if (amount < 0) {
+			amount = 0;
+		}
+		int basePrice = priceCalculator.calculatePrice(itemName, player);
+		if (priceFactor != null) {
+			basePrice = (int) (basePrice * priceFactor);
+		}
+		if (basePrice < 0) {
+			lastQuote = new PriceQuote(amount, new PriceAdjustment(0, 0, 1.0, java.util.Collections.<String>emptyList()), type);
+			return lastQuote;
+		}
+		final PriceAdjustment adjustment = EconomyBalanceManager.getInstance().adjustMerchantPrice(merchantName, player, itemName, basePrice, type);
+		lastQuote = new PriceQuote(amount, adjustment, type);
+		return lastQuote;
+	}
+
+	protected PriceQuote getLastQuote() {
+		return lastQuote;
+	}
+
+	protected String getMerchantName() {
+		return merchantName;
+	}
+
+	private CommerceType resolveCommerceType() {
+		if (this instanceof BuyerBehaviour) {
+			return CommerceType.NPC_BUYING;
+		}
+		return CommerceType.NPC_SELLING;
 	}
 
 	/**
@@ -157,8 +197,15 @@ public abstract class MerchantBehaviour extends TransactionBehaviour {
 	 *     List of conditions to check item availability against.
 	 */
 	public void addConditions(final SpeakerNPC merchant, final Map<String, ChatCondition> conditions) {
-		this.merchant = merchant;
+		bindMerchant(merchant);
 		this.conditions = conditions;
+	}
+
+	public void bindMerchant(final SpeakerNPC merchant) {
+		this.merchant = merchant;
+		if (merchant != null) {
+			this.merchantName = merchant.getName();
+		}
 	}
 
 	@Override
