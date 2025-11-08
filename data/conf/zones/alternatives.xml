@@ -32,6 +32,11 @@
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
 		<configurator class-name="games.stendhal.server.maps.AlternativeZone"/>
 
+		<configurator class-name="games.stendhal.server.util.IgnorePortalDestinationConfigurator">
+			<parameter name="x">20</parameter>
+			<parameter name="y">8</parameter>
+		</configurator>
+
 		<!-- Alternative creatures -->
 		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">
 			<parameter name="factor">0.5</parameter>
@@ -545,6 +550,11 @@
 		</attributes>
 
 		<configurator class-name="games.stendhal.server.maps.AlternativeZone"/>
+
+		<configurator class-name="games.stendhal.server.util.IgnorePortalDestinationConfigurator">
+			<parameter name="x">46</parameter>
+			<parameter name="y">31</parameter>
+		</configurator>
 
 		<!-- Alternative creatures -->
 		<configurator class-name="games.stendhal.server.maps.AlternativeCreatures">

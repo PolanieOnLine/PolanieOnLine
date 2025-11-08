@@ -124,6 +124,16 @@ public class Portal extends Entity implements UseListener {
 	}
 
 	/**
+	 * Determines if missing destination warnings should be suppressed for this
+	 * portal.
+	 *
+	 * @return {@code true} if validation should ignore missing destination information.
+	 */
+	public boolean isIgnoringNoDestination() {
+		return ignoreNoDestination;
+	}
+
+	/**
 	 * gets the identifier of this portal.
 	 *
 	 * @return identifier

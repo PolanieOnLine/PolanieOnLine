@@ -183,6 +183,13 @@ public class StendhalRPWorld extends RPWorld {
 
 	protected void validatePortal(final Portal portal) {
 		if (!portal.loaded()) {
+			if (!portal.isIgnoringNoDestination()) {
+				logger.warn(portal + " has no destination");
+			}
+			return;
+		}
+
+		if (!portal.loaded()) {
 			logger.warn(portal + " has no destination");
 			return;
 		}
