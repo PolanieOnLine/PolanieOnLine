@@ -74,6 +74,7 @@ public class Chest extends Entity implements UseListener {
 			final RPClass chest = new RPClass(CHEST_RPCLASS_NAME);
 			chest.isA("entity");
 			chest.addAttribute("open", Type.FLAG);
+			chest.addAttribute("bank_slot", Type.STRING);
 			chest.addRPSlot("content", 36);
 		}
 	}

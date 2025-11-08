@@ -12,7 +12,8 @@
  ***************************************************************************/
 package games.stendhal.client.gui.j2d.entity;
 
-
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,11 +30,38 @@ import games.stendhal.client.gui.SlotWindow;
 import games.stendhal.client.gui.styled.cursor.StendhalCursor;
 import games.stendhal.client.sprite.Sprite;
 import games.stendhal.client.sprite.SpriteStore;
+import marauroa.common.game.RPObject;
 
 /**
  * The 2D view of a chest.
  */
 class Chest2DView extends StateEntity2DView<Chest> {
+	private static final String DEFAULT_CHEST_SPRITE = "chest";
+	private static final String CHEST_SPRITE_DIRECTORY = "chests/";
+	private static final String BANK_SLOT_ATTRIBUTE = "bank_slot";
+	private static final Map<String, String> ZONE_SPRITES;
+	private static final Map<String, String> BANK_SLOT_SPRITES;
+
+	static {
+		final Map<String, String> zoneSprites = new HashMap<String, String>();
+		zoneSprites.put("0_semos_city", chestSprite("chest_public"));
+		zoneSprites.put("0_zakopane_s", chestSprite("chest_public_snow"));
+		ZONE_SPRITES = Collections.unmodifiableMap(zoneSprites);
+
+		final Map<String, String> bankSlotSprites = new HashMap<String, String>();
+		bankSlotSprites.put("bank", chestSprite("chest_semos"));
+		bankSlotSprites.put("bank_ados", chestSprite("chest_ados"));
+		bankSlotSprites.put("bank_fado", chestSprite("chest_fado"));
+		bankSlotSprites.put("bank_kirdneh", chestSprite("chest_kirdneh"));
+		bankSlotSprites.put("bank_krakow", chestSprite("chest_krakow"));
+		bankSlotSprites.put("bank_nalwor", chestSprite("chest_nalwor"));
+		BANK_SLOT_SPRITES = Collections.unmodifiableMap(bankSlotSprites);
+	}
+
+	private static String chestSprite(final String fileName) {
+		return CHEST_SPRITE_DIRECTORY + fileName;
+	}
+
 	/*
 	 * The closed state.
 	 */
@@ -87,7 +115,7 @@ class Chest2DView extends StateEntity2DView<Chest> {
 	protected void buildSprites(Chest entity, final Map<Object, Sprite> map) {
 		final SpriteStore store = SpriteStore.get();
 		ZoneInfo info = ZoneInfo.get();
-		final Sprite tiles = store.getModifiedSprite(translate(entity.getType()),
+		final Sprite tiles = store.getModifiedSprite(translate(resolveSpriteName(entity)),
 				info.getZoneColor(), info.getColorMethod());
 
 		map.put(STATE_CLOSED, store.getTile(tiles, 0, 0,
@@ -95,6 +123,33 @@ class Chest2DView extends StateEntity2DView<Chest> {
 		map.put(STATE_OPEN, store.getTile(tiles, 0,
 				IGameScreen.SIZE_UNIT_PIXELS, IGameScreen.SIZE_UNIT_PIXELS,
 				IGameScreen.SIZE_UNIT_PIXELS));
+	}
+
+	private String resolveSpriteName(final Chest entity) {
+		if (entity == null) {
+			return DEFAULT_CHEST_SPRITE;
+		}
+
+		final RPObject object = entity.getRPObject();
+		if ((object != null) && object.has(BANK_SLOT_ATTRIBUTE)) {
+			final String bankSlot = object.get(BANK_SLOT_ATTRIBUTE).toString();
+			final String bankSprite = BANK_SLOT_SPRITES.get(bankSlot);
+			if (bankSprite != null) {
+				return bankSprite;
+			}
+		}
+
+		final RPObject.ID id = entity.getID();
+		final String zone = (id != null) ? id.getZoneID() : null;
+		if (zone != null) {
+			final String zoneSprite = ZONE_SPRITES.get(zone);
+			if (zoneSprite != null) {
+				return zoneSprite;
+			}
+		}
+
+		final String type = entity.getType();
+		return (type != null) ? type : DEFAULT_CHEST_SPRITE;
 	}
 
 	/**

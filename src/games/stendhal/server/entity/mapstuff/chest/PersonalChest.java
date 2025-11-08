@@ -38,19 +38,16 @@ import marauroa.common.game.RPSlot;
  * the owner is looking at his items.
  */
 public class PersonalChest extends Chest {
-
 	/**
 	 * The default bank slot name.
 	 */
 	public static final String DEFAULT_BANK = "bank";
+	private static final String BANK_SLOT_ATTRIBUTE = "bank_slot";
 
 	private static Logger LOGGER = Logger.getLogger(PersonalChest.class);
 
-
 	private RPEntity attending;
-
 	private final String bankName;
-
 	private SyncContent chestSynchronizer;
 
 	/**
@@ -69,6 +66,8 @@ public class PersonalChest extends Chest {
 	public PersonalChest(final String bankName) {
 		this.bankName = bankName;
 		attending = null;
+
+		put(BANK_SLOT_ATTRIBUTE, bankName);
 
 		super.removeSlot("content");
 		super.addSlot(new PersonalChestSlot(this));
