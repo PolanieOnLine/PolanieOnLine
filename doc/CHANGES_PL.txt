@@ -3,18 +3,32 @@ Changelog
 1.41
 *klient*
 - Dodano i odświeżono grafiki nominałów monet
-- Dodano graficzne przedstawienie w lewym panelu pod statystykami gracza ilość posiadanych monet odpowiednich nominałów oraz ich sumę w najmniejszej wartości nominału
-- Dodano GUI nowego schowka na dodatkowy ekwipunek
+- Ulepszono panel gracza, wyświetlając liczbę monet każdego nominału oraz ich sumę w najmniejszym nominale (eksperymentalne - wyłączone na głównym serwerze)
+- Dodano interfejs schowka na dodatkowy ekwipunek
+- Wprowadzono lupę w panelu listy znajomych, aby szybko przefiltrować znajomych po wpisanej nazwie
+- Dodano eksperymentalne przełączenie sterowania postacią z klawiszy strzałek na WASD wraz z przełączaniem fokusu czatu klawiszem TAB
+- Dodano wybór rozdzielczości gry w ustawieniach
+- Dodano możliwość włączenia licznika aktualnych klatek na sekundę (FPS)
+- Dodano w ustawieniach listę wyboru docelowej liczby FPS
+- Po najechaniu kursorem na minimapę pojawia się dymek z dokładną, dynamicznie aktualizowaną pozycją gracza
+- Poprawiono płynność poruszania kamery i działania całego klienta Java
+- Dodano nową animację pracy kotła Draconii oraz nowy interfejs obsługi kotła
+
+*świat*
+- Dodano nowy kocioł Draconii i NPC Draconię stojącą w pobliżu Józka na pustyni
+- Wprowadzono przedmiot "wywar wąsatych smoków", możliwy do uwarzenia w kotle Draconii z odpowiednich składników
+- Zmieniono listę wymaganych przedmiotów na złotą ciupagę z trzema wąsami, rozszerzając ją o nowy wywar wąsatych smoków
 
 *kod*
-- Zaimplementowano możliwość szybkiej podmiany przedmiotów z głównego ekwipunku gracza z ekwipunkiem w schowku 
-- Zaimplementowano nowy system walutowy (miedziaki, talary oraz dukaty zamiast dotychczasowego "money")
-- Dodano dwa nowe skrypty dla administratorów: RaidPlague oraz MassHeal
+- Zaimplementowano szybkie podmienianie przedmiotów między głównym ekwipunkiem gracza a schowkiem
+- Wprowadzono nowy system walutowy z miedziakami, talarami i dukatami zamiast pojedynczego zasobu "money" (eksperymentalne - wyłączone na głównym serwerze)
+- Dodano skrypty administracyjne `RaidPlague` oraz `MassHeal`
 
 *naprawiono błędy*
-- Naprawiono problem z nalewaniem wody do butelki u Nosiwody Jakuba
+- Naprawiono portal na mapie int_warszawa_armory
+- Naprawiono nalewanie wody do butelki u Nosiwody Jakuba
 - Poprawiono automatyczną odmianę rzeczowników i prefiksów w dialogach NPC
-- Poprawiono tekst powitalny u czeladnika Jaromira, który sugerował oszlifowanie kryształu zamiast klejnotu
+- Uaktualniono tekst powitalny u czeladnika Jaromira, aby poprawnie wskazywał na oszlifowanie klejnotu
 
 
 1.40.3
