@@ -37,4 +37,4 @@ test("a §'b c' d",  "a <span class=\"logi\">b c</span> d");
 test("a #§'b c' d", "a <span class=\"logh\"><span class=\"logi\">b c</span></span> d");
 test("\\\\a",       "\\a");
 test("\\§a",        "§a");
-test("#https://stendhalgame.org", "<span class=\"logh\">https://stendhalgame.org</span>");
+test("#https://polanieonline.eu", "<span class=\"logh\">https://polanieonline.eu</span>");
