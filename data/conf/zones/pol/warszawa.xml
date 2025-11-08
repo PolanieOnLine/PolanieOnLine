@@ -131,8 +131,8 @@
 			<attribute name="move.continuous" />
 		</portal>
 
-		<portal x="48" y="69" ref="arsenal_entrance">
-			<destination zone="int_warszawa_armory" ref="arsenal_exit"/>
+		<portal x="48" y="69" ref="armory_entrance">
+			<destination zone="int_warszawa_armory" ref="armory_exit"/>
 			<attribute name="move.continuous" />
 		</portal>
 
