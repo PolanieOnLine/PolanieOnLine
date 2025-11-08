@@ -230,8 +230,8 @@ export class SlashActionRepo {
 
 		return {
 			info: [
-				"For a detailed reference, visit #https://stendhalgame.org/wiki/Stendhal_Manual",
-				"Here are the most-used commands:"
+				"Aby uzyskać szczegółowe informacje, odwiedź #https://s1.polanieonline.eu/wiki/PolanieOnLine_Przewodnik",
+				"Oto najczęściej używane polecenia:"
 			],
 			grouping: grouping
 		}
@@ -251,7 +251,7 @@ export class SlashActionRepo {
 				{
 					type: "inspect",
 					getHelp: function(): string[] {
-						return ["<player>", "Show complete details of #player."];
+						return ["<gracz>", "Pokaż pełne szczegóły dotyczące #gracza."];
 					}
 				},
 				"inspectkill",
@@ -261,7 +261,7 @@ export class SlashActionRepo {
 					getHelp: function(): string[] {
 						return [
 							"<scriptname>",
-							"Load (or reload) a script on the server. See #/gmhelp #script for details."
+							"Załaduj (lub przeładuj) skrypt na serwerze. Szczegóły znajdziesz w #/gmhelp #script."
 						];
 					}
 				}
@@ -275,19 +275,19 @@ export class SlashActionRepo {
 				{
 					type: "teleclickmode",
 					getHelp: function(): string[] {
-						return ["", "Makes you teleport to the location you double click."];
+						return ["", "Umożliwia teleportację do miejsca, w które kliknięto dwukrotnie."];
 					}
 				},
 				{
 					type: "ghostmode",
 					getHelp: function(): string[] {
-						return ["", "Makes yourself invisible and intangible."];
+						return ["", "Sprawia, że ​​stajesz się niewidzialny i nieuchwytny."];
 					}
 				},
 				{
 					type: "invisible",
 					getHelp: function(): string[] {
-						return ["", "Toggles whether or not you are invisible to creatures."];
+						return ["", "Włącza lub wyłącza niewidzialność dla stworzeń."];
 					}
 				}
 			],
@@ -301,13 +301,13 @@ export class SlashActionRepo {
 				"altercreature",
 				"alterkill",
 				"alterquest",
-				{type: "summon", sparams: "<creature>|<item> [<x> <y>]"},
-				{type: "summon", sparams: "<stackable_item> [<x> <y>] [quantity]"},
+				{type: "summon", sparams: "<stwór>|<przedmiot> [<x> <y>]"},
+				{type: "summon", sparams: "<przedmiot> [<x> <y>] [ilość]"},
 				"summonat",
 				{
 					type: "destroy",
 					getHelp: function(): string[] {
-						return ["<entity>", "Destroy an entity completely."];
+						return ["<entity>", "Niszczy byt całkowicie."];
 					}
 				}
 			],
@@ -315,15 +315,15 @@ export class SlashActionRepo {
 				{
 					type: "jailreport",
 					getHelp: function(): string[] {
-						return ["[<player>]", "List the jailed players and their sentences."];
+						return ["[<gracz>]", "Wymień uwięzionych graczy i ich wyroki."];
 					}
 				}
 			]
 		};
 		return {
 			info: [
-				"For a detailed reference, visit #https://stendhalgame.org/wiki/Stendhal:Administration",
-				"Here are the most-used GM commands:"
+				"Aby uzyskać szczegółowe informacje, odwiedź #https://s1.polanieonline.eu/wiki/PolanieOnLine:Administrowanie",
+				"Oto najczęściej używane polecenia GM:"
 			],
 			grouping: grouping
 		};
@@ -434,7 +434,7 @@ export class SlashActionRepo {
 		minParams: 0,
 		maxParams: 0,
 		getHelp: function(): string[] {
-			return ["", "Show this help message."];
+			return ["", "Pokaż komunikat pomocy."];
 		}
 	};
 
@@ -446,38 +446,38 @@ export class SlashActionRepo {
 			} else if ((params.length == 1) && (params[0] != null)) {
 				if ("alter" == params[0]) {
 					msg = [
-						"/alter <player> <attrib> <mode> <value>",
-						"\t\tAlter stat <attrib> of <player> by the given amount; <mode> can be ADD, SUB, SET or UNSET.",
-						"\t\t- Examples of <attrib>: atk, def, base_hp, hp, atk_xp, def_xp, xp, outfit",
-						"\t\t- When modifying 'outfit', you should use SET mode and provide an 8-digit number; the first 2 digits are the 'hair' setting, then 'head', 'outfit', then 'body'",
-						"\t\t  For example: #'/alter testplayer outfit set 12109901'",
-						"\t\t  This will make <testplayer> look like danter"
+						"/alter <gracz> <atrybut> <tryb> <wartość>",
+						"\t\tZmień statystykę <atrybut> gracza <gracz> o podaną wartość; <tryb> może być ADD, SUB, SET lub UNSET.",
+						"\t\t- Przykłady atrybutów: atk, def, base_hp, hp, atk_xp, def_xp, xp, outfit",
+						"\t\t- Modyfikując 'outfit', należy użyć trybu SET i podać 8-cyfrową liczbę; pierwsze 2 cyfry oznaczają 'włosy', następnie 'głowę', 'strój' i 'ciało'.",
+						"\t\t  Przykład: #'/alter testplayer outfit set 12109901'",
+						"\t\t  Sprawi to, że <testplayer> będzie wyglądać jak danter"
 					];
 				} else if ("script" == params[0]) {
 					msg = [
-						"usage: /script [-list|-load|-unload|-execute] [params]",
-						"\t-list : shows available scripts. In this mode can be given one optional parameter for filenames filtering, with using well-known wildcards for filenames ('*' and '?', for example \"*.class\" for java-only scripts).",
-						"\t-load : load script with first parameter's filename.",
-						"\t-unload : unload script with first parameter's filename from server",
-						"\t-execute : run selected script.",
+						"Użycie: /script [-list|-load|-unload|-execute] [parametry]",
+						"\t-list : pokazuje dostępne skrypty. W tym trybie można podać opcjonalny parametr do filtrowania nazw plików, używając znanych symboli wieloznacznych ('*' i '?', np. \"*.class\" dla skryptów Javy).",
+						"\t-load : ładuje skrypt o nazwie podanej jako pierwszy parametr.",
+						"\t-unload : usuwa z serwera skrypt o nazwie z pierwszego parametru.",
+						"\t-execute : uruchamia wybrany skrypt.",
 						"",
-						"All scripts are ran using: /script scriptname [params]. After running a script you can remove any traces of it with /script -unload scriptname, this would remove any summoned creatures, for example. It's good practise to do this after summoning creatures for a raid using scripts.",
-						"#/script #AdminMaker.class : For test servers only, summons an adminmaker to aid testing.",
-						"#/script #AdminSign.class #zone #x #y #text : Makes an AdminSign in zone at (x,y) with text. To put it next to you do /script AdminSign.class - - - text.",
-						"#/script #AlterQuest.class #player #questname #state : Update the quest for a player to be in a certain state. Omit #state to remove the quest.",
-						"#/script #DeepInspect.class #player : Deep inspects a player and all his/her items.",
-						"#/script #DropPlayerItems.class #player #[amount] #item : Drop the specified amount of items from the player if they are equipped in the bag or body.",
-						"#/script #EntitySearch.class #nonrespawn : Shows the locations of all creatures that don't respawn, for example creatures that were summoned by a GM, deathmatch creatures, etc.",
-						"#/script #FixDM.class #player : sets a player's DeathMatch slot to victory status.",
-						"#/script #ListNPCs.class : lists all npcs and their position.",
-						"#/script #LogoutPlayer.class #player : kicks a player from the game.",
-						"#/script #NPCShout.class #npc #text : NPC shouts text.",
-						"#/script #NPCShoutZone.class #npc #zone #text : NPC shouts text to players in given zone. Use - in place of zone to make it your current zone.",
-						"#/script #Plague.class #1 #creature : summon a plague of raid creatures around you.",
-						"#/script #WhereWho.class : Lists where all the online players are",
-						"#/script #Maria.class : Summons Maria, who sells food&drinks. Don't forget to -unload her after you're done.",
-						"#/script #ServerReset.class : use only in a real emergency to shut down server. If possible please warn the players to logout and give them some time. It kills the server the hard way.",
-						"#/script #ResetSlot.class #player #slot : Resets the named slot such as !kills or !quests. Useful for debugging."
+						"Wszystkie skrypty uruchamia się komendą: /script nazwaskryptu [parametry]. Po uruchomieniu można usunąć jego ślady poleceniem /script -unload nazwaskryptu, co np. usunie przywołane stworzenia. To dobra praktyka po użyciu skryptów do tworzenia rajdów.",
+						"#/script #AdminMaker.class : Tylko dla serwerów testowych — przywołuje NPC adminmakera do testów.",
+						"#/script #AdminSign.class #strefa #x #y #tekst : Tworzy znak administracyjny (AdminSign) w strefie podanych współrzędnych z tekstem. Aby postawić go obok siebie, wpisz: /script AdminSign.class - - - tekst.",
+						"#/script #AlterQuest.class #gracz #nazwa_questa #stan : Ustawia stan questa u gracza. Pominięcie #stan usuwa questa.",
+						"#/script #DeepInspect.class #gracz : Szczegółowo analizuje gracza i wszystkie jego przedmioty.",
+						"#/script #DropPlayerItems.class #gracz #[ilość] #przedmiot : Upuszcza określoną ilość przedmiotów z ekwipunku gracza (jeśli są w torbie lub założone).",
+						"#/script #EntitySearch.class #nonrespawn : Pokazuje lokalizacje wszystkich stworzeń, które się nie odradzają (np. przywołane przez GM-a, z Deathmatcha itp.).",
+						"#/script #FixDM.class #gracz : Ustawia slot DeathMatch gracza na status zwycięstwa.",
+						"#/script #ListNPCs.class : Wypisuje listę wszystkich NPC i ich pozycje.",
+						"#/script #LogoutPlayer.class #gracz : Wyrzuca gracza z gry.",
+						"#/script #NPCShout.class #npc #tekst : NPC wykrzykuje wiadomość.",
+						"#/script #NPCShoutZone.class #npc #strefa #tekst : NPC wykrzykuje wiadomość do graczy w podanej strefie. Użyj '-' zamiast nazwy strefy, aby była to Twoja aktualna strefa.",
+						"#/script #Plague.class #1 #stworzenie : Przywołuje plagę stworzeń rajdowych wokół Ciebie.",
+						"#/script #WhereWho.class : Pokazuje, gdzie znajdują się wszyscy zalogowani gracze.",
+						"#/script #Maria.class : Przywołuje NPC Marię, sprzedającą jedzenie i napoje. Po zakończeniu użycia nie zapomnij jej usunąć komendą -unload.",
+						"#/script #ServerReset.class : Używać tylko w nagłych wypadkach — natychmiast wyłącza serwer. Jeśli to możliwe, ostrzeż wcześniej graczy i daj im czas na wylogowanie. To twarde zatrzymanie serwera.",
+						"#/script #ResetSlot.class #gracz #slot : Resetuje wskazany slot, np. !kills lub !quests. Przydatne przy debugowaniu."
 					];
 				/* TODO:
 				} else if ("support" == params[0]) {

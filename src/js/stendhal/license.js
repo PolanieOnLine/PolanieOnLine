@@ -15,7 +15,7 @@
 
 
 
- Have a look at https://stendhalgame.org/development/introduction.html to get the source code.
+ Have a look at https://s1.polanieonline.eu/dla-projektantow.html to get the source code.
  And perhaps, contribute a feature or bugfix.
 
 

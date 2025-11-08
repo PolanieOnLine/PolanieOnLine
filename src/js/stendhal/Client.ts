@@ -217,7 +217,7 @@ export class Client {
 	devWarning() {
 		console.log("%c ", "padding: 30px; background: url(" + window.location.protocol + "://" + window.location.host + "/images/buttons/devtools-warning.png) no-repeat; color: #AF0");
 		console.log("%cJeśli ktoś kazał ci coś skopiować i wkleić tutaj, to oszustwo i da im dostęp do twojego konta.", "color:#A00; background-color:#FFF; font-size:150%");
-		console.log("Jeśli jesteś deweloperem i ciekawi cię Stendhal, zajrzyj na https://stendhalgame.org/development/introduction.html, aby pobrać kod źródłowy. Może nawet dodasz nową funkcję lub naprawisz błąd! ");
+		console.log("Jeśli jesteś deweloperem i ciekawi cię PolanieOnLine, zajrzyj na https://s1.polanieonline.eu/dla-projektantow.html, aby pobrać kod źródłowy. Może nawet dodasz nową funkcję lub naprawisz błąd! ");
 		console.log(" ");
 		console.log(" ");
 		window["eval"] = function() {};
