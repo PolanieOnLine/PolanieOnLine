@@ -16,7 +16,6 @@ import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.item.Item;
-import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.item.money.MoneyUtils;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ChatCondition;
@@ -365,18 +364,7 @@ public class ImproverAdder {
 
 					new GameEvent(player.getName(), "upgraded-item", toImprove.getName(), "+" + Integer.toString(toImprove.getImprove())).raise();
 				} else {
-					Map<String, Integer> refundMap = MoneyUtils.fromCopper((int)(currentUpgradeFee * 0.4));
-					for (Map.Entry<String, Integer> entry : refundMap.entrySet()) {
-					    if (entry.getValue() <= 0) continue;
-					    try {
-					        StackableItem refundCoin = (StackableItem)
-					            SingletonRepository.getEntityManager().getItem(entry.getKey());
-					        refundCoin.setQuantity(entry.getValue());
-					        player.equipOrPutOnGround(refundCoin);
-					    } catch (Exception e) {
-					        logger.error("Błąd przy dodawaniu rekompensaty: " + entry.getKey(), e);
-					    }
-					}
+					MoneyUtils.giveMoney(player, (int) (currentUpgradeFee * 0.4));
 
 					npc.say("Przepraszam, nie udało mi się udoskonalić twojego przedmiotu. "
 							+ "Otrzymujesz " + MoneyUtils.formatPrice((int)(currentUpgradeFee * 0.4)) + " jako rekompensatę.");

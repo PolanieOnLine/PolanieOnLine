@@ -33,6 +33,7 @@ import games.stendhal.client.gui.styled.StyleUtil;
 import games.stendhal.client.gui.wt.core.WtWindowManager;
 import games.stendhal.client.sprite.DataLoader;
 import games.stendhal.common.constants.Testing;
+import games.stendhal.common.constants.CurrencyReform;
 import games.stendhal.common.grammar.Grammar;
 
 /**
@@ -347,6 +348,7 @@ class StatsPanel extends JPanel {
 		private final CoinLabel goldLabel;
 		private final CoinLabel silverLabel;
 		private final CoinLabel copperLabel;
+		private final CoinLabel legacyLabel;
 
 		MoneyPanel() {
 			setOpaque(false);
@@ -362,19 +364,39 @@ class StatsPanel extends JPanel {
 			}
 			add(titleLabel);
 
-			goldLabel = new CoinLabel("dukat", style, "data/gui/goldencoin.png");
-			goldLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 6));
-			add(goldLabel);
-
-			silverLabel = new CoinLabel("talar", style, "data/gui/silvercoin.png");
-			silverLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 6));
-			add(silverLabel);
-
-			copperLabel = new CoinLabel("miedziak", style, "data/gui/coppercoin.png");
-			add(copperLabel);
+			if (CurrencyReform.useReformedCurrency()) {
+				goldLabel = new CoinLabel("dukat", style, "data/gui/goldencoin.png");
+				goldLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 6));
+				add(goldLabel);
+		
+				silverLabel = new CoinLabel("talar", style, "data/gui/silvercoin.png");
+				silverLabel.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 6));
+				add(silverLabel);
+		
+				copperLabel = new CoinLabel("miedziak", style, "data/gui/coppercoin.png");
+				add(copperLabel);
+				legacyLabel = null;
+			} else {
+				goldLabel = null;
+				silverLabel = null;
+				copperLabel = null;
+				legacyLabel = new CoinLabel("money", style, "data/gui/goldencoin.png");
+				add(legacyLabel);
+			}
 		}
 
 		void setMoney(int dukaty, int talary, int miedziaki, int totalCopper) {
+			if (!CurrencyReform.useReformedCurrency()) {
+				if (legacyLabel != null) {
+					legacyLabel.setAmount(totalCopper);
+					legacyLabel.setToolTipText("Łącznie: " + totalCopper + " "
+						+ Grammar.polishQuantity("money", totalCopper));
+				}
+				setToolTipText("Łącznie: " + totalCopper + " "
+					+ Grammar.polishQuantity("money", totalCopper));
+				return;
+			}
+
 			goldLabel.setAmount(dukaty);
 			silverLabel.setAmount(talary);
 			copperLabel.setAmount(miedziaki);

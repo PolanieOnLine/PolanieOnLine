@@ -27,6 +27,7 @@ import games.stendhal.server.core.scripting.ScriptingNPC;
 import games.stendhal.server.core.scripting.ScriptingSandbox;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.StackableItem;
+import games.stendhal.server.entity.item.money.MoneyUtils;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.EventRaiser;
@@ -101,6 +102,11 @@ public class AdminMaker extends ScriptImpl {
 			// Give 5000 of each stack in list, regardless of how many are
 			// already there
 			for (final String itemName : itemsStack) {
+				if ("money".equals(itemName)) {
+					MoneyUtils.giveMoney(player, 5000);
+					continue;
+				}
+
 				final Item item = sandbox.getItem(itemName);
 				if (item instanceof StackableItem) {
 					final StackableItem stackableItem = (StackableItem) item;
@@ -108,6 +114,7 @@ public class AdminMaker extends ScriptImpl {
 					player.equipToInventoryOnly(stackableItem);
 				}
 			}
+
 			// turn on their keyring for them
 			player.setFeature("keyring", "6 2");
 		}

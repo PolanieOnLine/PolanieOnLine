@@ -1,12 +1,13 @@
 package games.stendhal.server.entity.item.money;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.common.constants.CurrencyReform;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
@@ -20,28 +21,46 @@ public final class MoneyUtils {
 	public static final int SILVER_VALUE = 100;
 	public static final int GOLD_VALUE = 10000;
 
+	private static final String MONEY = "money";
+	private static final String COPPER = "miedziak";
+	private static final String SILVER = "talar";
+	private static final String GOLD = "dukat";
+
 	private MoneyUtils() {}
 
 	public static int toCopper(String coinName, int quantity) {
 		if (coinName == null) return 0;
 		switch (coinName.toLowerCase()) {
-			case "miedziak": return quantity * COPPER_VALUE;
-			case "talar":	return quantity * SILVER_VALUE;
-			case "dukat":	return quantity * GOLD_VALUE;
-			default: return 0;
+			case MONEY:
+			case COPPER:
+				return quantity * COPPER_VALUE;
+			case SILVER:
+				return quantity * SILVER_VALUE;
+			case GOLD:
+				return quantity * GOLD_VALUE;
+			default:
+				return 0;
 		}
 	}
 
 	public static Map<String, Integer> fromCopper(int totalCopper) {
-		Map<String, Integer> result = new HashMap<>();
-		int dukaty = totalCopper / GOLD_VALUE;
-		totalCopper %= GOLD_VALUE;
-		int talary = totalCopper / SILVER_VALUE;
-		int miedziaki = totalCopper % SILVER_VALUE;
+		Map<String, Integer> result = new LinkedHashMap<>();
+		if (CurrencyReform.useReformedCurrency()) {
+			int dukaty = totalCopper / GOLD_VALUE;
+			totalCopper %= GOLD_VALUE;
+			int talary = totalCopper / SILVER_VALUE;
+			int miedziaki = totalCopper % SILVER_VALUE;
 
-		result.put("dukat", dukaty);
-		result.put("talar", talary);
-		result.put("miedziak", miedziaki);
+			result.put(GOLD, dukaty);
+			result.put(SILVER, talary);
+			result.put(COPPER, miedziaki);
+			result.put(MONEY, 0);
+		} else {
+			result.put(GOLD, 0);
+			result.put(SILVER, 0);
+			result.put(COPPER, 0);
+			result.put(MONEY, totalCopper);
+		}
 		return result;
 	}
 
@@ -50,7 +69,7 @@ public final class MoneyUtils {
 	 */
 	public static int getTotalMoneyInCopper(final Player player) {
 		int totalCopper = 0;
-		String[] coins = {"miedziak", "talar", "dukat"};
+		String[] coins = getKnownCoinNames();
 
 		for (String name : coins) {
 			List<Item> items = player.getAllEquipped(name);
@@ -80,7 +99,7 @@ public final class MoneyUtils {
 
 		int remaining = total - amountToRemove;
 
-		String[] coins = {"miedziak", "talar", "dukat"};
+		String[] coins = getKnownCoinNames();
 		for (String coinName : coins) {
 			List<Item> items = new ArrayList<>(player.getAllEquipped(coinName));
 			for (Item item : items) {
@@ -93,37 +112,26 @@ public final class MoneyUtils {
 			}
 		}
 
-		Map<String, Integer> newCoins = fromCopper(remaining);
-
-		for (Map.Entry<String, Integer> entry : newCoins.entrySet()) {
-			String coinName = entry.getKey();
-			int qty = entry.getValue();
-			if (qty <= 0) continue;
-
-			try {
-				StackableItem coin = (StackableItem)
-						SingletonRepository.getEntityManager().getItem(coinName);
-				coin.setQuantity(qty);
-				player.equipOrPutOnGround(coin);
-			} catch (Exception e) {
-				logger.error("Błąd przy dodawaniu monet: " + coinName + " x" + qty);
-			}
-		}
+		giveMoney(player, remaining);
 
 		return true;
 	}
 
 	public static String formatPrice(int totalCopper) {
+		if (!CurrencyReform.useReformedCurrency()) {
+			return totalCopper + " " + Grammar.polishQuantity(MONEY, totalCopper);
+		}
+
 		Map<String, Integer> map = fromCopper(totalCopper);
-		int dukaty = map.get("dukat");
-		int talary = map.get("talar");
-		int miedziaki = map.get("miedziak");
+		int dukaty = map.get(GOLD);
+		int talary = map.get(SILVER);
+		int miedziaki = map.get(COPPER);
 
 		List<String> parts = new ArrayList<>();
 
-		if (dukaty > 0) parts.add(dukaty + " " + Grammar.polishQuantity("dukat", dukaty));
-		if (talary > 0) parts.add(talary + " " + Grammar.polishQuantity("talar", talary));
-		if (miedziaki > 0 || parts.isEmpty()) parts.add(miedziaki + " " + Grammar.polishQuantity("miedziak", miedziaki));
+		if (dukaty > 0) parts.add(dukaty + " " + Grammar.polishQuantity(GOLD, dukaty));
+		if (talary > 0) parts.add(talary + " " + Grammar.polishQuantity(SILVER, talary));
+		if (miedziaki > 0 || parts.isEmpty()) parts.add(miedziaki + " " + Grammar.polishQuantity(COPPER, miedziaki));
 
 		if (parts.size() == 1) {
 			return parts.get(0);
@@ -140,5 +148,41 @@ public final class MoneyUtils {
 	 */
 	public static boolean hasEnoughMoney(final Player player, int priceInCopper) {
 		return getTotalMoneyInCopper(player) >= priceInCopper;
+	}
+
+	/**
+	 * Adds money to player's inventory according to the active currency model.
+	 *
+	 * @param player
+	 *            player who will receive the money
+	 * @param totalCopper
+	 *            amount expressed in copper units
+	 */
+	public static void giveMoney(final Player player, int totalCopper) {
+		Map<String, Integer> newCoins = fromCopper(totalCopper);
+
+		for (Map.Entry<String, Integer> entry : newCoins.entrySet()) {
+			String coinName = entry.getKey();
+			int qty = entry.getValue();
+			if (qty <= 0) {
+				continue;
+			}
+
+			try {
+				StackableItem coin = (StackableItem)
+					SingletonRepository.getEntityManager().getItem(coinName);
+				coin.setQuantity(qty);
+				player.equipOrPutOnGround(coin);
+			} catch (Exception e) {
+				logger.error("Błąd przy dodawaniu monet: " + coinName + " x" + qty, e);
+			}
+		}
+	}
+
+	private static String[] getKnownCoinNames() {
+		if (CurrencyReform.useReformedCurrency()) {
+			return new String[] {COPPER, SILVER, GOLD};
+		}
+		return new String[] {MONEY, COPPER, SILVER, GOLD};
 	}
 }

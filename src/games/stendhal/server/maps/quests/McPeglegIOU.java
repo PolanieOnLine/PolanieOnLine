@@ -18,9 +18,8 @@ import java.util.List;
 import games.stendhal.common.constants.SoundID;
 import games.stendhal.common.constants.SoundLayer;
 import games.stendhal.common.parser.Sentence;
-import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
-import games.stendhal.server.entity.item.StackableItem;
+import games.stendhal.server.entity.item.money.MoneyUtils;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationStates;
 import games.stendhal.server.entity.npc.EventRaiser;
@@ -73,9 +72,7 @@ public class McPeglegIOU extends AbstractQuest {
 						raiser.say("Skąd to wziąłeś? Nie ważne tutaj są twoje pieniądze. *westchnienie*");
 						raiser.addEvent(new SoundEvent(SoundID.COMMERCE, SoundLayer.CREATURE_NOISE));
 						player.drop(iouNote);
-						final StackableItem money = (StackableItem) SingletonRepository.getEntityManager().getItem("money");
-						money.setQuantity(250);
-						player.equipToInventoryOnly(money);
+						MoneyUtils.giveMoney(player, 250);
 						player.setQuest(QUEST_SLOT, "done");
 						raiser.setCurrentState(ConversationStates.ATTENDING);
 					} else {

@@ -13,11 +13,7 @@ package games.stendhal.server.entity.npc.behaviour.impl;
 
 import java.util.Map;
 
-import org.apache.log4j.Logger;
-
 import games.stendhal.common.grammar.ItemParserResult;
-import games.stendhal.server.core.engine.SingletonRepository;
-import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.item.money.MoneyUtils;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.player.Player;
@@ -26,8 +22,6 @@ import games.stendhal.server.entity.player.Player;
  * Represents the behaviour of a NPC who is able to buy items from a player.
  */
 public class BuyerBehaviour extends MerchantBehaviour {
-	private static Logger logger = Logger.getLogger(BuyerBehaviour.class);
-
 	/**
 	 * Creates a new BuyerBehaviour with price list.
 	 *
@@ -60,23 +54,8 @@ public class BuyerBehaviour extends MerchantBehaviour {
 	 *			The player who sells
 	 */
 	protected void payPlayer(ItemParserResult res, final Player player) {
-		int copperValue = getCharge(res, player); // całkowita kwota w miedziakach
-		Map<String, Integer> payout = MoneyUtils.fromCopper(copperValue);
-
-		// wypłacamy kolejno od największego nominału
-		payout.forEach((coinName, amount) -> {
-			if (amount > 0) {
-				try {
-					StackableItem money = (StackableItem) SingletonRepository
-							.getEntityManager()
-							.getItem(coinName); // "dukat", "talar" lub "miedziak"
-					money.setQuantity(amount);
-					player.equipOrPutOnGround(money);
-				} catch (Exception e) {
-					logger.error("Nie udało się wygenerować monet: " + coinName, e);
-				}
-			}
-		});
+		int copperValue = getCharge(res, player);
+		MoneyUtils.giveMoney(player, copperValue);
 	}
 
 	/**

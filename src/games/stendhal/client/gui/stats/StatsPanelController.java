@@ -22,6 +22,7 @@ import javax.swing.SwingUtilities;
 import org.apache.log4j.Logger;
 
 import games.stendhal.client.entity.StatusID;
+import games.stendhal.common.constants.CurrencyReform;
 import games.stendhal.common.Level;
 import games.stendhal.common.MathHelper;
 import games.stendhal.common.constants.Testing;
@@ -471,6 +472,12 @@ public final class StatsPanelController {
 				totalCopper += quantity * descriptor.copperValue;
 				continue;
 			}
+		}
+
+		if (!CurrencyReform.useReformedCurrency()) {
+			dukaty = 0;
+			talary = 0;
+			miedziaki = totalCopper;
 		}
 
 		final int finalDukaty = dukaty;

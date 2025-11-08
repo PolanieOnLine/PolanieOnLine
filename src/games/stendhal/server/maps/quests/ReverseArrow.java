@@ -29,7 +29,7 @@ import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.LoginListener;
 import games.stendhal.server.core.events.TurnListener;
 import games.stendhal.server.entity.RPEntity;
-import games.stendhal.server.entity.item.StackableItem;
+import games.stendhal.server.entity.item.money.MoneyUtils;
 import games.stendhal.server.entity.item.token.Token;
 import games.stendhal.server.entity.mapstuff.portal.OnePlayerRoomDoor;
 import games.stendhal.server.entity.mapstuff.portal.Portal;
@@ -164,10 +164,7 @@ public class ReverseArrow extends AbstractQuest implements Token.TokenMoveListen
 					npc.say("Gratulacje znowu rozwiązałeś zadanie, ale nie mam dla ciebie nagrody.");
 				} else {
 					npc.say("Gratulacje rozwiązałeś zadanie.");
-					final StackableItem money = (StackableItem) SingletonRepository.getEntityManager().getItem(
-									"money");
-					money.setQuantity(50);
-					player.equipToInventoryOnly(money);
+					MoneyUtils.giveMoney(player, 50);
 					player.addXP(100);
 				}
 				player.setQuest(QUEST_SLOT, "done");

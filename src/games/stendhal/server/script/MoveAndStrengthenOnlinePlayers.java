@@ -26,6 +26,7 @@ import games.stendhal.server.core.events.TurnListener;
 import games.stendhal.server.core.scripting.ScriptImpl;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.StackableItem;
+import games.stendhal.server.entity.item.money.MoneyUtils;
 import games.stendhal.server.entity.player.Player;
 import marauroa.common.game.IRPZone;
 
@@ -108,9 +109,7 @@ public class MoveAndStrengthenOnlinePlayers extends ScriptImpl {
 				}
 
 				private void equipPlayer(Player player) {
-					StackableItem money = (StackableItem) SingletonRepository.getEntityManager().getItem("money");
-					money.setQuantity(5000);
-					player.equipToInventoryOnly(money);
+					MoneyUtils.giveMoney(player, 5000);
 					StackableItem potions = (StackableItem) SingletonRepository.getEntityManager().getItem("duży eliksir");
 					potions.setQuantity(5000);
 					player.equipToInventoryOnly(potions);
