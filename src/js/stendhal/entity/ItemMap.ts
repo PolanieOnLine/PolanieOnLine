@@ -53,14 +53,7 @@ export const ItemMap: {[index: string]: any} = {
 			actions: [defaultUse]
 		},
 		["bestiariusz"]: {
-			cursor: "itemuse",
-			actions: [
-				{
-					title: "Otwórz",
-					type: "use",
-					index: 0
-				}
-			]
+			cursor: "itemuse"
 		},
 		["bulwa"]: {
 			cursor: "itemuse"
