@@ -61,9 +61,11 @@ export class Creature extends RPEntity {
 	 * FIXME: does not restore previous overlay
 	 */
 	protected override onTransformed() {
-		if (!this["name"].startsWith("vampire")) {
+		const allowed = ["panna wampir", "lord wampir", "wampirzyca"];
+		if (!allowed.includes(this["name"])) {
 			return;
 		}
+
 		const delay = 100;
 		const frames = 5;
 		this.overlay = new SkillEffect("transform", delay, delay * frames);
