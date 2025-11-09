@@ -14,7 +14,7 @@
 			<parameter name="weather" condition="!stendhal.christmas">varying(temperature=+1)</parameter>
 			<parameter name="weather" condition="stendhal.christmas">snow</parameter>
 			<parameter name="music">pol-inthedark1</parameter>
-			<parameter name="music_volume">0.15</parameter>
+			<parameter name="music_volume">0.1</parameter>
 		</attributes>
 
 		<entity x="85" y="45">
@@ -43,7 +43,7 @@
 			<parameter name="weather" condition="!stendhal.christmas">varying(temperature=-1,rain=+1)</parameter>
 			<parameter name="weather" condition="stendhal.christmas">snow</parameter>
 			<parameter name="music">pol-inthedark1</parameter>
-			<parameter name="music_volume">0.15</parameter>
+			<parameter name="music_volume">0.1</parameter>
 		</attributes>
 
 		<!-- NPCs -->
@@ -94,7 +94,7 @@
 			<parameter name="weather" condition="!stendhal.christmas">varying(temperature=-1)</parameter>
 			<parameter name="weather" condition="stendhal.christmas">snow</parameter>
 			<parameter name="music">pol-littlemeadow2</parameter>
-			<parameter name="music_volume">0.15</parameter>
+			<parameter name="music_volume">0.1</parameter>
 		</attributes>
 
 		<!-- NPCs -->
@@ -165,7 +165,7 @@
 			<parameter name="weather" condition="!stendhal.christmas">varying(temperature=+1)</parameter>
 			<parameter name="weather" condition="stendhal.christmas">snow</parameter>
 			<parameter name="music">pol-littlemeadow2</parameter>
-			<parameter name="music_volume">0.15</parameter>
+			<parameter name="music_volume">0.1</parameter>
 		</attributes>
 	</zone>
 
@@ -176,7 +176,7 @@
 			<parameter name="weather" condition="!stendhal.christmas">varying(temperature=-1)</parameter>
 			<parameter name="weather" condition="stendhal.christmas">snow</parameter>
 			<parameter name="music">pol-littlemeadow2</parameter>
-			<parameter name="music_volume">0.15</parameter>
+			<parameter name="music_volume">0.1</parameter>
 		</attributes>
 
 		<entity x="110" y="25">
@@ -219,7 +219,7 @@
 			<parameter name="file" condition="stendhal.easter">Level 0/zakopane/c_easter.tmx</parameter>
 			<parameter name="weather" condition="stendhal.christmas">snow</parameter>
 			<parameter name="music">pol-goralskie</parameter>
-			<parameter name="music_volume">0.15</parameter>
+			<parameter name="music_volume">0.1</parameter>
 		</attributes>
 
 		<entity x="100" y="12">
@@ -314,7 +314,7 @@
 			<parameter name="weather" condition="!stendhal.christmas">varying(temperature=-1)</parameter>
 			<parameter name="weather" condition="stendhal.christmas">snow</parameter>
 			<parameter name="music">pol-littlemeadow2</parameter>
-			<parameter name="music_volume">0.15</parameter>
+			<parameter name="music_volume">0.1</parameter>
 		</attributes>
 
 		<!-- NPCs -->
@@ -414,7 +414,7 @@
 			<parameter name="weather" condition="!stendhal.christmas">varying(temperature=+1)</parameter>
 			<parameter name="weather" condition="stendhal.christmas">snow</parameter>
 			<parameter name="music">pol-littlemeadow2</parameter>
-			<parameter name="music_volume">0.15</parameter>
+			<parameter name="music_volume">0.1</parameter>
 		</attributes>
 	</zone>
 
@@ -425,7 +425,7 @@
 			<parameter name="weather" condition="!stendhal.christmas">varying(temperature=-2)</parameter>
 			<parameter name="weather" condition="stendhal.christmas">snow</parameter>
 			<parameter name="music">pol-goralskie</parameter>
-			<parameter name="music_volume">0.15</parameter>
+			<parameter name="music_volume">0.1</parameter>
 		</attributes>
 
 		<!-- NPCs -->
@@ -518,7 +518,7 @@
 			<parameter name="file" condition="stendhal.easter">Level 0/zakopane/s_easter.tmx</parameter>
 			<parameter name="weather" condition="stendhal.christmas">snow</parameter>
 			<parameter name="music">pol-goralskie</parameter>
-			<parameter name="music_volume">0.15</parameter>
+			<parameter name="music_volume">0.1</parameter>
 		</attributes>
 
 		<!-- NPCs -->
@@ -786,7 +786,7 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 			<parameter name="file" condition="stendhal.easter">Level 0/zakopane/se_easter.tmx</parameter>
 			<parameter name="weather" condition="stendhal.christmas">snow</parameter>
 			<parameter name="music">pol-goralskie</parameter>
-			<parameter name="music_volume">0.15</parameter>
+			<parameter name="music_volume">0.1</parameter>
 		</attributes>
 
 		<entity x="115" y="105">
@@ -968,7 +968,7 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 			<parameter name="weather" condition="!stendhal.christmas">varying(temperature=-1)</parameter>
 			<parameter name="weather" condition="stendhal.christmas">snow</parameter>
 			<parameter name="music">pol-goralskie</parameter>
-			<parameter name="music_volume">0.15</parameter>
+			<parameter name="music_volume">0.1</parameter>
 		</attributes>
 		
 		<!-- NPCs -->
@@ -2008,7 +2008,7 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 			<parameter name="file" condition="stendhal.christmas">interiors/zakopane/home_xmas.tmx</parameter>
 			<parameter name="music" condition="!stendhal.christmas">pol-goralskie</parameter>
 			<parameter name="music" condition="stendhal.christmas">snowflakelittlewhiteskirt</parameter>
-			<parameter name="music_volume">0.15</parameter>
+			<parameter name="music_volume">0.1</parameter>
 		</attributes>
 
 		<!-- NPCs -->
@@ -2024,11 +2024,11 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 			</implementation>
 		</entity>
 
-		<entity x="22" y="17">
+		<entity x="22" y="18">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
 				<parameter name="sound">pol-halny</parameter>
 				<parameter name="radius">3</parameter>
-				<parameter name="volume">5</parameter>
+				<parameter name="volume">2</parameter>
 			</implementation>
 		</entity>
 
@@ -2465,7 +2465,7 @@ Jesteś w bezpiecznym miejscu. Zanim zdecydujesz się wyjść zapoznaj się z po
 		<attributes>
 			<parameter name="file" condition="stendhal.christmas">interiors/zakopane/townhall_xmas.tmx</parameter>
 			<parameter name="music">pol-goralskie</parameter>
-			<parameter name="music_volume">0.15</parameter>
+			<parameter name="music_volume">0.1</parameter>
 		</attributes>
 
 		<!-- NPCs -->
