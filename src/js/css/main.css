@@ -158,7 +158,6 @@ div.itemSlot {
 	position: relative;
 	float: left;
 	padding: 1px;
-	margin: 2px;
 	text-align: right;
 	color: #FFF;
 	font-weight: bold;
@@ -185,7 +184,7 @@ div.itemSlot {
 div#equipmentborder { width: 147px; }
 
 .inventory-window {
-	width: 253px;
+	width: 233px;
 	background: var(--background-url) repeat;
 	border-top: 1px solid var(--border-top-color);
 	border-left: 1px solid var(--border-top-color);
@@ -935,17 +934,17 @@ div#menupanel #soundbutton {
 .inventorypopup {
 	display: flex;
 	flex-wrap: wrap;
-	justify-content: flex-start;
+	justify-content: center;
 	align-content: flex-start;
 	background: transparent;
 }
 
 .inventorypopup_2 {
-	width: 84px;
+	width: 78px;
 }
 
 .inventorypopup_6 {
-	width: 252px;
+	width: 232px;
 }
 
 .inventorypopup_5 {
