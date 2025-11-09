@@ -22,32 +22,105 @@ import { Chat } from "../util/Chat";
 
 declare var marauroa: any;
 declare var stendhal: any;
-const CHEST_SPRITE_FILENAME = "/chest.png";
+const DEFAULT_CHEST_SPRITE = "chest";
+const BANK_SLOT_ATTRIBUTE = "bank_slot";
+const SPRITE_EXTENSION = ".png";
 
-let OPEN_SPRITE: any;
-let CLOSED_SPRITE: any;
+const ZONE_SPRITES: { [key: string]: string } = {
+	"0_semos_city": "chests/chest_public",
+	"0_zakopane_s": "chests/chest_public_snow"
+};
 
-function getChestSprite(offsetY?: number) {
-	return {
-		filename: stendhal.paths.sprites + CHEST_SPRITE_FILENAME,
-		height: 32,
-		width: 32,
-		...(offsetY !== undefined ? { offsetY } : {})
-	};
+const BANK_SLOT_SPRITES: { [key: string]: string } = {
+	"bank": "chests/chest_semos",
+	"bank_ados": "chests/chest_ados",
+	"bank_fado": "chests/chest_fado",
+	"bank_kirdneh": "chests/chest_kirdneh",
+	"bank_krakow": "chests/chest_krakow",
+	"bank_nalwor": "chests/chest_nalwor"
+};
+
+const SPRITE_RELEVANT_KEYS = [BANK_SLOT_ATTRIBUTE, "type", "zoneid", "id"];
+
+type ChestSpriteDescriptor = {
+	filename: string;
+	height: number;
+	width: number;
+	offsetY?: number;
+};
+
+type ChestSpritePair = {
+	open: ChestSpriteDescriptor;
+	closed: ChestSpriteDescriptor;
+};
+
+const SPRITE_CACHE: { [key: string]: ChestSpritePair } = {};
+
+function translateSprite(name: string) {
+	return stendhal.paths.sprites + "/" + name + SPRITE_EXTENSION;
 }
 
-function getOpenSprite() {
-	if (!OPEN_SPRITE) {
-		OPEN_SPRITE = getChestSprite(32);
+function getSpritePair(name: string): ChestSpritePair {
+	if (!SPRITE_CACHE[name]) {
+		const filename = translateSprite(name);
+		SPRITE_CACHE[name] = {
+			open: {
+				filename,
+				height: 32,
+				width: 32,
+				offsetY: 32
+			},
+			closed: {
+				filename,
+				height: 32,
+				width: 32
+			}
+		};
 	}
-	return OPEN_SPRITE;
+	return SPRITE_CACHE[name];
 }
 
-function getClosedSprite() {
-	if (!CLOSED_SPRITE) {
-		CLOSED_SPRITE = getChestSprite();
+function getZoneId(chest: Chest): string | undefined {
+	const zoneId = chest["zoneid"];
+	if (typeof zoneId === "string" && zoneId.length > 0) {
+		return zoneId;
 	}
-	return CLOSED_SPRITE;
+
+	const identifier = chest["id"];
+	if (identifier && typeof identifier.zoneid === "string" && identifier.zoneid.length > 0) {
+		return identifier.zoneid;
+	}
+
+	if (typeof marauroa?.currentZoneName === "string" && marauroa.currentZoneName.length > 0) {
+		return marauroa.currentZoneName;
+	}
+
+	return undefined;
+}
+
+function resolveSpriteName(chest: Chest): string {
+	const bankSlotValue = chest[BANK_SLOT_ATTRIBUTE];
+	if (typeof bankSlotValue === "string") {
+		const bankSprite = BANK_SLOT_SPRITES[bankSlotValue];
+		if (bankSprite) {
+			return bankSprite;
+		}
+	}
+
+	const zoneId = getZoneId(chest);
+	if (zoneId) {
+		const zoneSprite = ZONE_SPRITES[zoneId];
+		if (zoneSprite) {
+			return zoneSprite;
+		}
+	}
+
+	const typeValue = chest["type"];
+	if (typeof typeValue === "string" && typeValue.length > 0) {
+		return typeValue;
+	}
+
+	return DEFAULT_CHEST_SPRITE;
 }
 
 export class Chest extends PopupInventory {
@@ -55,14 +128,27 @@ export class Chest extends PopupInventory {
 	override minimapStyle = Color.CHEST;
 
 	override zIndex = 5000;
-	sprite = getClosedSprite();
+	sprite = getSpritePair(DEFAULT_CHEST_SPRITE).closed;
 	open = false;
+	private spriteName = DEFAULT_CHEST_SPRITE;
+
+	private refreshSprite() {
+		const resolvedName = resolveSpriteName(this);
+		if (this.spriteName !== resolvedName) {
+			this.spriteName = resolvedName;
+		}
+		const spritePair = getSpritePair(this.spriteName);
+		this.sprite = this.open ? spritePair.open : spritePair.closed;
+	}
 
 	override set(key: string, value: any) {
 		super.set(key, value);
 		if (key === "open") {
-			this.sprite = getOpenSprite();
 			this.open = true;
+			this.refreshSprite();
+		}
+		if (SPRITE_RELEVANT_KEYS.indexOf(key) > -1) {
+			this.refreshSprite();
 		}
 		if (this.isNextTo(marauroa.me)) {
 			this.openInventoryWindow();
@@ -72,12 +158,15 @@ export class Chest extends PopupInventory {
 	override unset(key: string) {
 		super.unset(key);
 		if (key === "open") {
-			this.sprite = getClosedSprite();
 			this.open = false;
+			this.refreshSprite();
 			if (this.inventory && this.inventory.isOpen()) {
 				this.inventory.close();
 				this.inventory = undefined;
 			}
+		}
+		if (SPRITE_RELEVANT_KEYS.indexOf(key) > -1) {
+			this.refreshSprite();
 		}
 	}
 
