@@ -41,7 +41,6 @@ import { Chat } from "./util/Chat";
 import { DialogHandler } from "./util/DialogHandler";
 import { Globals } from "./util/Globals";
 
-
 /**
  * Main class representing client.
  */
@@ -62,6 +61,12 @@ export class Client {
 
 	/** Singleton instance. */
 	private static instance: Client;
+
+	/** Cached parser used to decode HTML entities embedded in character names. */
+	private static htmlEntityParser?: HTMLTextAreaElement;
+
+	/** Cached UTF-8 decoder for converting Latin-1 encoded character names. */
+	private static utf8Decoder?: TextDecoder;
 
 
 	/**
@@ -300,20 +305,43 @@ export class Client {
 
 		marauroa.clientFramework.onAvailableCharacterDetails = function(characters: {[key: string]: RPObject}) {
 			SingletonFloatingWindow.closeAll();
-			if (!Object.keys(characters).length && this.username) {
+			const rawKeys = Object.keys(characters);
+			const storedBeforeHash = stendhal.session.getCharName();
+			Client.debugCharacterNameFlow("available_characters_received", {
+				rawKeys,
+				storedBeforeHash,
+				rawHash: window.location.hash || undefined
+			});
+			if (!rawKeys.length && this.username) {
 				marauroa.clientFramework.createCharacter(this.username, {});
 				return;
 			}
 			if (window.location.hash) {
-				let name = window.location.hash.substring(1);
-				stendhal.session.setCharName(name);
+				const hashValue = window.location.hash.substring(1);
+				Client.debugCharacterNameFlow("hash_candidate_detected", {hashValue});
+				const resolved = Client.resolveCharacterNameFromHash(hashValue, characters);
+				Client.debugCharacterNameFlow("hash_candidate_processed", {hashValue, resolved});
+				if (resolved) {
+					stendhal.session.setCharName(resolved);
+					Client.debugCharacterNameFlow("hash_selection_stored", {resolved});
+				}
 			}
 
-			let name = stendhal.session.getCharName();
+			const storedAfterHash = stendhal.session.getCharName();
+			let name = storedAfterHash;
 			if (name) {
-				Client.get().chooseCharacter(name);
-				return;
+				const resolvedStored = Client.findMatchingCharacterName(name, characters);
+				Client.debugCharacterNameFlow("stored_selection_checked", {candidate: name, resolvedStored});
+				if (resolvedStored) {
+					Client.debugCharacterNameFlow("stored_selection_accepted", {candidate: name, resolvedStored});
+					Client.get().chooseCharacter(resolvedStored);
+					return;
+				}
 			}
+			Client.debugCharacterNameFlow("displaying_character_dialog", {
+				storedAfterHash,
+				rawKeys
+			});
 			let body = document.getElementById("body")!;
 			body.style.cursor = "auto";
 			document.getElementById("loginpopup")!.style.display = "none";
@@ -379,6 +407,7 @@ export class Client {
 	 * Creates a character selection dialog window.
 	 */
 	chooseCharacter(name: string) {
+		Client.debugCharacterNameFlow("choose_character_request", {selected: name});
 		stendhal.session.setCharName(name);
 		marauroa.clientFramework.chooseCharacter(name);
 		Chat.log("client", "Ładowanie świata...");
@@ -541,5 +570,339 @@ export class Client {
 		Client.click_indicator_id = window.setTimeout(function() {
 			click_indicator.style["display"] = "none";
 		}, 300);
+	}
+
+	private static debugCharacterNameFlow(stage: string, payload: Record<string, unknown>) {
+		if (typeof console === "undefined") {
+			return;
+		}
+		const message = "[CharacterName] " + stage;
+		if (typeof console.debug === "function") {
+			console.debug(message, payload);
+			return;
+		}
+		if (typeof console.log === "function") {
+			console.log(message, payload);
+		}
+	}
+
+	private static decodeCharacterNameFromHash(rawName: string): string|undefined {
+		if (!Client.isNonEmptyString(rawName)) {
+			Client.debugCharacterNameFlow("decode_hash_rejected", {rawName, reason: "empty"});
+			return undefined;
+		}
+		let candidate = rawName.trim();
+		if (!candidate.length) {
+			Client.debugCharacterNameFlow("decode_hash_rejected", {rawName, reason: "whitespace_only"});
+			return undefined;
+		}
+		candidate = candidate.replace(/_/g, " ");
+		candidate = candidate.replace(/\+/g, " ");
+		candidate = Client.decodeUnicodeEscapes(candidate);
+		const percentDecoded = Client.tryDecodeURIComponent(candidate);
+		if (percentDecoded !== undefined) {
+			candidate = percentDecoded;
+		}
+		candidate = Client.decodePossibleLatin1(candidate);
+		candidate = candidate.trim();
+		const result = Client.isValidCharacterName(candidate) ? candidate : undefined;
+		Client.debugCharacterNameFlow("decode_hash_complete", {rawName, candidate, result});
+		return result;
+	}
+
+	private static decodeUnicodeEscapes(value: string): string {
+		return value.replace(/%u([0-9a-fA-F]{4})|\\u([0-9a-fA-F]{4})/g, function(_match, percentHex, slashHex) {
+			const hex = percentHex || slashHex;
+			return String.fromCharCode(parseInt(hex, 16));
+		});
+	}
+
+	private static tryDecodeURIComponent(value: string): string|undefined {
+		try {
+			return decodeURIComponent(value);
+		} catch (_e) {
+			return undefined;
+		}
+	}
+	private static sanitizeCharacterName(value: unknown): string|undefined {
+		if (!Client.isNonEmptyString(value)) {
+			Client.debugCharacterNameFlow("sanitize_rejected", {value, reason: "empty"});
+			return undefined;
+		}
+		let candidate = value.trim();
+		if (!candidate.length) {
+			Client.debugCharacterNameFlow("sanitize_rejected", {value, reason: "whitespace_only"});
+			return undefined;
+		}
+		candidate = Client.decodeUnicodeEscapes(candidate);
+		const percentDecoded = Client.tryDecodeURIComponent(candidate);
+		if (percentDecoded !== undefined) {
+			candidate = percentDecoded;
+		}
+		candidate = Client.decodeHtmlEntities(candidate);
+		candidate = Client.decodePossibleLatin1(candidate);
+		candidate = candidate.trim();
+		const result = candidate.length ? candidate : undefined;
+		Client.debugCharacterNameFlow("sanitize_complete", {value, candidate, result});
+		return result;
+	}
+
+	private static decodeHtmlEntities(value: string): string {
+		if (value.indexOf("&") === -1 || typeof(document) === "undefined") {
+			return value;
+		}
+		if (!Client.htmlEntityParser) {
+			Client.htmlEntityParser = document.createElement("textarea");
+		}
+		Client.htmlEntityParser.innerHTML = value;
+		return Client.htmlEntityParser.value;
+	}
+
+	private static decodePossibleLatin1(value: string): string {
+		let needsConversion = false;
+		for (let index = 0; index < value.length; index++) {
+			const code = value.charCodeAt(index);
+			if (code > 0xFF) {
+				return value;
+			}
+			if (code >= 0x80) {
+				needsConversion = true;
+				break;
+			}
+		}
+		if (!needsConversion) {
+			return value;
+		}
+		const bytes = new Uint8Array(value.length);
+		for (let index = 0; index < value.length; index++) {
+			bytes[index] = value.charCodeAt(index) & 0xFF;
+		}
+		return Client.decodeUtf8Bytes(bytes);
+	}
+
+	private static decodeUtf8Bytes(bytes: Uint8Array): string {
+		if (typeof(TextDecoder) !== "undefined") {
+			try {
+				if (!Client.utf8Decoder) {
+					Client.utf8Decoder = new TextDecoder("utf-8", {fatal: false});
+				}
+				return Client.utf8Decoder.decode(bytes);
+			} catch (_e) {
+				// fall through to manual decoder
+			}
+		}
+		let result = "";
+		for (let index = 0; index < bytes.length; index++) {
+			const byte1 = bytes[index];
+			if (byte1 < 0x80) {
+				result += String.fromCharCode(byte1);
+				continue;
+			}
+			if (byte1 >= 0xC0 && byte1 < 0xE0 && index + 1 < bytes.length) {
+				const byte2 = bytes[++index];
+				result += String.fromCharCode(((byte1 & 0x1F) << 6) | (byte2 & 0x3F));
+				continue;
+			}
+			if (byte1 >= 0xE0 && byte1 < 0xF0 && index + 2 < bytes.length) {
+				const byte2 = bytes[++index];
+				const byte3 = bytes[++index];
+				result += String.fromCharCode(((byte1 & 0x0F) << 12) | ((byte2 & 0x3F) << 6) | (byte3 & 0x3F));
+				continue;
+			}
+			if (byte1 >= 0xF0 && byte1 < 0xF8 && index + 3 < bytes.length) {
+				const byte2 = bytes[++index];
+				const byte3 = bytes[++index];
+				const byte4 = bytes[++index];
+				const codepoint = ((byte1 & 0x07) << 18) | ((byte2 & 0x3F) << 12) | ((byte3 & 0x3F) << 6) | (byte4 & 0x3F);
+				result += String.fromCodePoint(codepoint);
+				continue;
+			}
+			return Array.from(bytes).map((byte) => String.fromCharCode(byte)).join("");
+		}
+		return result;
+	}
+
+
+	private static resolveCharacterNameFromHash(rawName: string, characters: {[key: string]: RPObject}): string|undefined {
+		Client.debugCharacterNameFlow("resolve_from_hash_start", {rawName});
+		const decoded = Client.decodeCharacterNameFromHash(rawName);
+		if (decoded) {
+			Client.debugCharacterNameFlow("resolve_from_hash_decoded", {rawName, decoded});
+			const matchFromDecoded = Client.findMatchingCharacterName(decoded, characters);
+			if (matchFromDecoded) {
+				Client.debugCharacterNameFlow("resolve_from_hash_match", {rawName, decoded, matchFromDecoded});
+				return matchFromDecoded;
+			}
+		}
+		const fallback = Client.findMatchingCharacterName(rawName, characters);
+		Client.debugCharacterNameFlow("resolve_from_hash_fallback", {rawName, fallback});
+		return fallback;
+	}
+
+	public static getCharacterDisplayName(key: string, entry: RPObject|undefined): string|undefined {
+		let attributeName: string|undefined;
+		let directName: string|undefined;
+		let decodedKey: string|undefined;
+		let sanitizedKey: string|undefined;
+		let resolved: string|undefined;
+		if (entry && typeof(entry) === "object") {
+			const record = entry as any;
+			attributeName = Client.sanitizeCharacterName(record?.a?.name);
+			if (attributeName && Client.isValidCharacterName(attributeName)) {
+				resolved = attributeName;
+			}
+			if (!resolved) {
+				directName = Client.sanitizeCharacterName(record?.name);
+				if (directName && Client.isValidCharacterName(directName)) {
+					resolved = directName;
+				}
+			}
+		}
+		if (!resolved) {
+			decodedKey = Client.decodeCharacterNameFromHash(key);
+			if (decodedKey) {
+				resolved = decodedKey;
+			}
+		}
+		if (!resolved) {
+			sanitizedKey = Client.sanitizeCharacterName(key);
+			if (sanitizedKey && Client.isValidCharacterName(sanitizedKey)) {
+				resolved = sanitizedKey;
+			}
+		}
+		Client.debugCharacterNameFlow("display_name_resolved", {key, attributeName, directName, decodedKey, sanitizedKey, resolved});
+		return resolved;
+	}
+
+	private static findMatchingCharacterName(candidate: string|undefined, characters: {[key: string]: RPObject}): string|undefined {
+		Client.debugCharacterNameFlow("match_candidate_received", {candidate});
+		const sanitizedCandidate = Client.sanitizeCharacterName(candidate);
+		if (!sanitizedCandidate) {
+			Client.debugCharacterNameFlow("match_candidate_rejected", {candidate, reason: "sanitize_failed"});
+			return undefined;
+		}
+		const normalizedCandidate = Client.normalizeCharacterName(sanitizedCandidate);
+		Client.debugCharacterNameFlow("match_candidate_normalized", {candidate, sanitizedCandidate, normalizedCandidate});
+		if (!normalizedCandidate.length) {
+			Client.debugCharacterNameFlow("match_candidate_rejected", {candidate, reason: "normalize_empty"});
+			return undefined;
+		}
+		for (const key in characters) {
+			if (!Object.prototype.hasOwnProperty.call(characters, key)) {
+				continue;
+			}
+			const entry = characters[key];
+			const displayName = Client.getCharacterDisplayName(key, entry);
+			if (displayName && Client.normalizeCharacterName(displayName) === normalizedCandidate) {
+				Client.debugCharacterNameFlow("match_candidate_success", {candidate, key, displayName});
+				return displayName;
+			}
+			const sanitizedKey = Client.sanitizeCharacterName(key);
+			if (sanitizedKey && Client.normalizeCharacterName(sanitizedKey) === normalizedCandidate) {
+				Client.debugCharacterNameFlow("match_candidate_success", {candidate, key, displayName: sanitizedKey});
+				return sanitizedKey;
+			}
+		}
+		Client.debugCharacterNameFlow("match_candidate_not_found", {candidate, normalizedCandidate});
+		return undefined;
+	}
+
+	private static normalizeCharacterName(value: string): string {
+		const sanitized = Client.sanitizeCharacterName(value);
+		if (!sanitized) {
+			return "";
+		}
+		let normalized = sanitized;
+		try {
+			normalized = normalized.normalize("NFC");
+		} catch (_e) {
+			// ignore browsers without Unicode normalization support
+		}
+		return normalized.toLocaleLowerCase("pl-PL");
+	}
+
+	private static isNonEmptyString(value: unknown): value is string {
+		return typeof value === "string" && value.trim().length > 0;
+	}
+
+	private static isValidCharacterName(value: string): boolean {
+		if (!value.length) {
+			return false;
+		}
+		for (let index = value.length - 1; index >= 0; index--) {
+			const chr = value.charAt(index);
+			if (!Client.isAllowedCharacter(chr)) {
+				return false;
+			}
+		}
+		const first = value.charAt(0);
+		return Client.isAllowedFirstCharacter(first);
+	}
+
+	private static isAllowedCharacter(chr: string): boolean {
+		const code = chr.charCodeAt(0);
+		if ((code >= 0x30 && code <= 0x39) || (code >= 0x41 && code <= 0x5A) || (code >= 0x61 && code <= 0x7A)) {
+			return true;
+		}
+		switch (chr) {
+			case "ą":
+			case "ć":
+			case "ę":
+			case "ł":
+			case "ń":
+			case "ó":
+			case "ś":
+			case "ź":
+			case "ż":
+			case "Ą":
+			case "Ć":
+			case "Ę":
+			case "Ł":
+			case "Ń":
+			case "Ó":
+			case "Ś":
+			case "Ź":
+			case "Ż":
+			case "-":
+			case "_":
+			case ".":
+			case " ":
+			case "!":
+			case "$":
+			case "%":
+			case "^":
+			case "&":
+			case "*":
+			case "(":
+			case ")":
+			case "+":
+			case "=":
+			case "?":
+			case "{":
+			case "}":
+				return true;
+		}
+		return false;
+	}
+
+	private static isAllowedFirstCharacter(chr: string): boolean {
+		const code = chr.charCodeAt(0);
+		if ((code >= 0x41 && code <= 0x5A) || (code >= 0x61 && code <= 0x7A)) {
+			return true;
+		}
+		switch (chr) {
+			case "ć":
+			case "ł":
+			case "ś":
+			case "ź":
+			case "ż":
+			case "Ć":
+			case "Ł":
+			case "Ś":
+			case "Ź":
+			case "Ż":
+				return true;
+		}
+		return false;
 	}
 }
