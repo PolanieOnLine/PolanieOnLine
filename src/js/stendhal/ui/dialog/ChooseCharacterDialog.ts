@@ -25,17 +25,22 @@ export class ChooseCharacterDialog extends DialogContentComponent {
 
 		const characterList = this.child("#characters")!;
 		for (var i in characters) {
-			if (characters.hasOwnProperty(i)) {
-				let name = characters[i]["a"]["name"];
-				let button = document.createElement("button");
-				button.classList.add("menubutton");
-				button.innerText = name;
-				button.addEventListener("click", () => {
-					this.componentElement.dispatchEvent(new Event("close"));
-					Client.get().chooseCharacter(name);
-				});
-				characterList.append(button);
+			if (!characters.hasOwnProperty(i)) {
+				continue;
 			}
+			const entry = characters[i];
+			const displayName = Client.getCharacterDisplayName(i, entry);
+			if (!displayName) {
+				continue;
+			}
+			const button = document.createElement("button");
+			button.classList.add("menubutton");
+			button.innerText = displayName;
+			button.addEventListener("click", () => {
+				this.componentElement.dispatchEvent(new Event("close"));
+				Client.get().chooseCharacter(displayName);
+			});
+			characterList.append(button);
 		}
 
 		this.child("#logout")!.addEventListener("click", (e: Event) => {
