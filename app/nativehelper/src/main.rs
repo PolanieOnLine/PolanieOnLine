@@ -1,9 +1,12 @@
+use lazy_static::lazy_static;
 use serde_json::Value;
 use std::io;
 use std::io::Read;
+use std::process;
 use std::sync::Arc;
 use std::sync::atomic::AtomicBool;
 use std::sync::atomic::Ordering;
+use std::sync::Mutex;
 use std::sync::mpsc::Sender;
 use std::sync::mpsc::channel;
 use std::thread;
@@ -15,6 +18,10 @@ use steamworks::Client;
 use websocket::client::ClientBuilder;
 use websocket::{Message, OwnedMessage};
 
+
+lazy_static! {
+	static ref AUTHENTICATED: Mutex<bool> = Mutex::new(false);
+}
 
 fn connect() -> (Sender<OwnedMessage>, JoinHandle<()>) {
 	println!("Read connection parameters");
@@ -112,58 +119,70 @@ fn connect() -> (Sender<OwnedMessage>, JoinHandle<()>) {
 			}
 		}
 	});
-	
-    return (tx, receive_loop);
+
+	return (tx, receive_loop);
 }
 
 fn handle_message(nl_token: &String, tx: Sender<OwnedMessage>, message: String) {
 	if message.contains("event\":\"request_authentication\"") {
 		authenticate(tx, nl_token.clone());
+	} else if message.contains("event\":\"clientDisconnect\"") {
+		let authenticated = AUTHENTICATED.lock().unwrap();
+		if *authenticated {
+			println!("Authenticated, exiting extension ...");
+		} else {
+			println!("Unauthenticated, exiting extension ...");
+		}
+		process::exit(0);
 	}
 }
 
 fn authenticate(tx: Sender<OwnedMessage>, nl_token: String) {
-    match Client::init() {
-        Ok((client, single)) => {
+	match Client::init() {
+		Ok((client, single)) => {
 			let called = Arc::new(AtomicBool::new(false));
 			let callback_called = called.clone();
 
-            let (_ticket_handle, session_ticket): (steamworks::AuthTicket, Vec<u8>) = client.user().authentication_session_ticket();
-            let _callback =
-            client.register_callback(move |session_ticket_response: AuthSessionTicketResponse| {
-                //if session_ticket_response.ticket == ticket_handle {
-                println!("Ticket Response Result: {:?}", session_ticket_response.result);
-                callback_called.store(true, Ordering::Relaxed);
-                // println!("Ticket : {:?}", session_ticket_response.ticket);
-                // println!("Ticket Response: {:?}", session_ticket);
+			let (_ticket_handle, session_ticket): (steamworks::AuthTicket, Vec<u8>) = client.user().authentication_session_ticket();
+			let _callback =
+			client.register_callback(move |session_ticket_response: AuthSessionTicketResponse| {
+				//if session_ticket_response.ticket == ticket_handle {
+				if session_ticket_response.result.is_ok() {
+					let mut authenticated = AUTHENTICATED.lock().unwrap();
+					*authenticated = true;
+				}
+				println!("Ticket Response Result: {:?}", session_ticket_response.result);
+				callback_called.store(true, Ordering::Relaxed);
+				// println!("Ticket : {:?}", session_ticket_response.ticket);
+				// println!("Ticket Response: {:?}", session_ticket);
 
-                let message = OwnedMessage::Text(format!("\
-                {{\
-                    \"id\": \"15fb0ffb-7b18-48d2-89a3-39b1ce4b2645\",\
-                    \"method\": \"app.broadcast\",\
-                    \"accessToken\": {:?},\
-                    \"data\": {{\
-                        \"event\": \"steamAuthToken\",\
-                        \"data\": {:?}\
-                    }}\
-                }}", nl_token, &session_ticket));
-                match tx.send(message) {
-                    Ok(()) => (),
-                    Err(e) => {
-                        println!("Websocket send error: {:?}", e);
-                    }
-                }
+				let message = OwnedMessage::Text(format!("\
+				{{\
+					\"id\": \"15fb0ffb-7b18-48d2-89a3-39b1ce4b2645\",\
+					\"method\": \"app.broadcast\",\
+					\"accessToken\": {:?},\
+					\"data\": {{\
+						\"event\": \"steamAuthToken\",\
+						\"data\": {:?}\
+					}}\
+				}}", nl_token, &session_ticket));
+				match tx.send(message) {
+					Ok(()) => (),
+					Err(e) => {
+						println!("Websocket send error: {:?}", e);
+					}
+				}
 
-            });
-            for _ in 0..100 {
-                single.run_callbacks();
-                if called.load(Ordering::Relaxed) {
-                    return;
-                }
-                ::std::thread::sleep(::std::time::Duration::from_millis(50));
-            }
-        },
-        Err(_) => {
+			});
+			for _ in 0..100 {
+				single.run_callbacks();
+				if called.load(Ordering::Relaxed) {
+					return;
+				}
+				::std::thread::sleep(::std::time::Duration::from_millis(50));
+			}
+		},
+		Err(_) => {
 			println!("Steam not available");
 			let message = OwnedMessage::Text(format!("\
 			{{\
@@ -181,10 +200,10 @@ fn authenticate(tx: Sender<OwnedMessage>, nl_token: String) {
 				}
 			}
 		}
-    }
+	}
 }
 
 fn main() {
-    let (_tx, receive_loop) = connect();
+	let (_tx, receive_loop) = connect();
 	let _ = receive_loop.join();
 }
