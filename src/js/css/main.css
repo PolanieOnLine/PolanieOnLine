@@ -913,7 +913,8 @@ div#menupanel #soundbutton {
 
 #bottomPanel {
 	flex: 1;
-	height: auto;
+	max-width: calc(0.00208333 * (-3200em + (640 * 100dvh)));
+	max-height: calc(-5em + 100dvh);
 	overflow: hidden;
 	border-top: 1px solid var(--border-top-color);
 	border-left: 1px solid var(--border-top-color);
