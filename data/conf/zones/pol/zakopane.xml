@@ -2025,10 +2025,8 @@ Np. 25 klików = 1x Złota Skrzynia, 2x Srebrna Skrzynie oraz 5x Brązowa Skrzyn
 		</entity>
 
 		<entity x="22" y="17">
-			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
+			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.LoopedAmbientSoundSource">
 				<parameter name="sound">pol-halny</parameter>
-				<parameter name="min">10</parameter>
-				<parameter name="max">45</parameter>
 				<parameter name="radius">3</parameter>
 				<parameter name="volume">5</parameter>
 			</implementation>
