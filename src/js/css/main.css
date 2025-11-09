@@ -805,23 +805,34 @@ span.lognick {
 	height: 99dvh;
 }
 
+#client {
+	display: none;
+	flex-wrap: nowrap;
+	align-items: flex-start;
+}
+
 #leftColumn {
-	float: left;
+	float: none;
 	width: 170px;
+	flex: 0 0 170px;
 }
 
 #middleColumn {
-	float: left;
+	float: none;
+	flex: 1 1 640px;
 	width: 640px;
-	max-width: calc(100vw - 130px - 150px - 10px);
+	max-width: min(640px, calc(100vw - 170px - 248px));
 	background-color: #000;
 	position: relative;
 }
 
 #rightColumn {
-	float: left;
+	float: none;
+	flex: 0 0 248px;
+	width: 248px;
+	min-width: 248px;
 	overflow-y: auto;
-	overflow-x: visible;
+	overflow-x: hidden;
 }
 
 #minimap-frame {
@@ -1115,10 +1126,6 @@ div#menupanel #soundbutton {
 }
 
 #portfolio {
-	display: none;
-}
-
-#client {
 	display: none;
 }
 
