@@ -43,21 +43,29 @@ export const ItemMap: {[index: string]: any} = {
 			cursor: "itemuse"
 		},
 		["scroll"]: {
-			cursor: "itemuse"
+			cursor: "itemuse",
+			actions: [defaultUse]
 		}
 	},
 
 	["name"]: {
-		["ashen holy water"]: {
+		["woda święcona z popiołem"]: {
 			actions: [defaultUse]
 		},
-		["bestiary"]: {
+		["bestiariusz"]: {
+			cursor: "itemuse",
+			actions: [
+				{
+					title: "Otwórz",
+					type: "use",
+					index: 0
+				}
+			]
+		},
+		["bulwa"]: {
 			cursor: "itemuse"
 		},
-		["bulb"]: {
-			cursor: "itemuse"
-		},
-		["empty scroll"]: {
+		["niezapisany zwój"]: {
 			actions: function(e: Entity) {
 				const count = parseInt(e["quantity"], 10);
 				if (count > 1 && e._parent) {
@@ -77,34 +85,48 @@ export const ItemMap: {[index: string]: any} = {
 				}
 			}
 		},
-		["food mill"]: {
+		["moździerz z tłuczkiem"]: {
 			cursor: "itemuse"
 		},
-		["metal detector"]: {
+		["wykrywacz metali"]: {
 			cursor: "itemuse"
 		},
-		["picture in wooden frame"]: {
+		["obraz w drewnianej ramce"]: {
 			cursor: "itemuse"
 		},
-		["rotary cutter"]: {
+		["obrotowy nożyk"]: {
 			cursor: "itemuse"
 		},
-		["scroll eraser"]: {
+		["zwój czyszczący"]: {
 			cursor: "itemuse"
 		},
-		["seed"]: {
+		["nasiona"]: {
 			cursor: "itemuse"
 		},
-		["snowglobe"]: {
+		["zima zaklęta w kuli"]: {
+			cursor: "itemuse",
+			actions: [
+				{
+					title: "Potrząśnij",
+					type: "use",
+					index: 0
+				}
+			]
+		},
+		["młynek do cukru"]: {
 			cursor: "itemuse"
 		},
-		["sugar mill"]: {
-			cursor: "itemuse"
+		["pluszowy miś"]: {
+			cursor: "itemuse",
+			actions: [
+				{
+					title: "Przytul",
+					type: "use",
+					index: 0
+				}
+			]
 		},
-		["teddy"]: {
-			cursor: "itemuse"
-		},
-		["wedding ring"]: {
+		["obrączka ślubna"]: {
 			cursor: "itemuse",
 			actions: [defaultUse]
 		}
