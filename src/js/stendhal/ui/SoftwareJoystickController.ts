@@ -52,7 +52,11 @@ export class SoftwareJoystickController {
 	 * Hidden singleton constructor.
 	 */
 	private constructor() {
-		// do nothing
+		window.addEventListener("resize", () => {
+			if (this.joystick) {
+				this.joystick.update();
+			}
+		});
 	}
 
 	/**

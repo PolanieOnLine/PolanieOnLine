@@ -83,8 +83,9 @@ export class DirectionPad extends JoystickImpl {
 	 * Updates buttons positioning based on joystick's configured center and radius.
 	 */
 	public override update() {
-		const centerX = DirectionPad.getCenterX();
-		const centerY = DirectionPad.getCenterY();
+		const center = this.updateCenter();
+		const centerX = center.x;
+		const centerY = center.y;
 		for (const button of this.buttons) {
 			button.update(this.radius, centerX, centerY);
 		}

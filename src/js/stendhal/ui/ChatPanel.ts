@@ -68,12 +68,16 @@ export class ChatPanel extends Panel {
 	public override refresh() {
 		const floating = this.isFloating();
 		if (floating) {
-			const rect = singletons.getViewPort().getElement().getBoundingClientRect();
-			const halfHeight = Math.abs(rect.height / 2);
-			this.componentElement.style["width"] = rect.width + "px";
+			const viewportRect = singletons.getViewPort().getElement().getBoundingClientRect();
+			const offsetParent = this.componentElement.offsetParent as HTMLElement | null;
+			const parentRect = offsetParent ? offsetParent.getBoundingClientRect() : null;
+			const halfHeight = Math.abs(viewportRect.height / 2);
+			const offsetLeft = parentRect ? viewportRect.left - parentRect.left : viewportRect.left;
+			const offsetTop = parentRect ? (viewportRect.top + halfHeight) - parentRect.top : viewportRect.top + halfHeight;
+			this.componentElement.style["width"] = viewportRect.width + "px";
 			this.componentElement.style["height"] = halfHeight + "px";
-			this.componentElement.style["left"] = rect.left + "px";
-			this.componentElement.style["top"] = (rect.top + halfHeight) + "px";
+			this.componentElement.style["left"] = offsetLeft + "px";
+			this.componentElement.style["top"] = offsetTop + "px";
 			// remove theming when floating
 			this.componentElement.classList.remove("background");
 		} else {

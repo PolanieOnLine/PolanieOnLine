@@ -15,7 +15,7 @@ declare var stendhal: any;
 import { ui } from "../UI";
 import { SoftwareJoystickController } from "../SoftwareJoystickController";
 import { Direction } from "../../util/Direction";
-
+import { Point } from "../../util/Point";
 
 /**
  * On-screen movement control implementation.
@@ -28,6 +28,8 @@ export abstract class JoystickImpl {
 	protected radius = 0;
 	/** Property denoting joystick is in an engaged state. */
 	protected engaged = false;
+	/** Current center position used for joystick calculations. */
+	protected center = new Point(JoystickImpl.getCenterX(), JoystickImpl.getCenterY());
 
 	/** ID used to veto buffered time before sending stop event to server. */
 	private stopTimeoutId = 0;
@@ -63,6 +65,42 @@ export abstract class JoystickImpl {
 	 */
 	public static getResource(basename: string): string {
 		return stendhal.paths.gui + "/joystick/" + basename + ".png";
+	}
+
+	/**
+	 * Updates cached center position based on current configuration.
+	 */
+	protected updateCenter(): Point {
+		const resolved = this.resolveCenter();
+		this.center = resolved;
+		return resolved;
+	}
+
+	/**
+	 * Retrieves current center used for calculations.
+	 */
+	protected getCenter(): Point {
+		return this.center;
+	}
+
+	/**
+	 * Determines the center position considering auto-position settings.
+	 */
+	private resolveCenter(): Point {
+		if (stendhal.config.getBoolean("joystick.autoposition")) {
+			const viewport = document.getElementById("viewport");
+			if (viewport) {
+				const rect = viewport.getBoundingClientRect();
+				const horizontalMin = rect.left + this.radius;
+				const horizontalMax = rect.right - this.radius;
+				const verticalMin = rect.top + this.radius;
+				const verticalMax = rect.bottom - this.radius;
+				const x = Math.round(horizontalMin <= horizontalMax ? horizontalMin : rect.left + (rect.width / 2));
+				const y = Math.round(verticalMin <= verticalMax ? verticalMax : rect.top + (rect.height / 2));
+				return new Point(x, y);
+			}
+		}
+		return new Point(JoystickImpl.getCenterX(), JoystickImpl.getCenterY());
 	}
 
 	/**

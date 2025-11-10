@@ -160,8 +160,9 @@ export class Joystick extends JoystickImpl {
 	 * Updates joystick positioning based on configured center X & Y coordinates.
 	 */
 	public override update() {
-		const centerX = Joystick.getCenterX();
-		const centerY = Joystick.getCenterY();
+		const center = this.updateCenter();
+		const centerX = center.x;
+		const centerY = center.y;
 		this.outer.style.left = (centerX - this.radius) + "px";
 		this.outer.style.top = (centerY - this.radius) + "px";
 		// we could call `updateInner` but there is no need for calling checks to keep inside radius here
@@ -297,8 +298,9 @@ export class Joystick extends JoystickImpl {
 	 */
 	private getPressedDirection(): number {
 		const irect = this.inner.getBoundingClientRect();
-		const ix = irect.left + Math.floor(this.inner.width / 2) - Joystick.getCenterX();
-		const iy = irect.top + Math.floor(this.inner.height / 2) - Joystick.getCenterY();
+		const center = this.getCenter();
+		const ix = irect.left + Math.floor(this.inner.width / 2) - center.x;
+		const iy = irect.top + Math.floor(this.inner.height / 2) - center.y;
 		if (this.inDeadZone(ix, iy)) {
 			return Direction.STOP.val;
 		}

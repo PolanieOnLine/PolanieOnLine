@@ -59,16 +59,33 @@ export class InputTab extends AbstractSettingsTab {
 		sel_joystick.disabled = !chk_joystick.checked;
 
 		// joystck positioning
+		const joystickInputs: HTMLInputElement[] = [];
 		for (const o of ["x", "y"]) {
 			const orienter = parent.createNumberInput("txtjoystick" + o,
-					parseInt(parent.storedStates["txtjoystick" + o], 10),
-					"Pozycja joysticka na osi " + o.toUpperCase());
+				parseInt(parent.storedStates["txtjoystick" + o], 10),
+				"Pozycja joysticka na osi " + o.toUpperCase());
+			joystickInputs.push(orienter);
 			orienter.addEventListener("input", (e) => {
 				// update configuration
 				singletons.getConfigManager().set("joystick.center." + o, orienter.value || 0);
 				// update on-screen joystick position
 				singletons.getJoystickController().update();
 			});
+		}
+		const updateJoystickInputsState = (autoEnabled: boolean) => {
+			for (const input of joystickInputs) {
+				input.disabled = autoEnabled;
+			}
+		};
+		const chk_autoposition = parent.createCheckBox("chk_joystick_auto", "joystick.autoposition",
+			"Automatyczne dopasowanie joysticka do ekranu gry",
+			"Ręczna konfiguracja pozycji joysticka",
+			() => {
+				updateJoystickInputsState(chk_autoposition!.checked);
+				singletons.getJoystickController().update();
+			});
+		if (chk_autoposition) {
+			updateJoystickInputsState(chk_autoposition.checked);
 		}
 	}
 }

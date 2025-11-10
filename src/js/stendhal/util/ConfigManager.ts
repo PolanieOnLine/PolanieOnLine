@@ -56,6 +56,7 @@ export class ConfigManager {
 		"inventory.double-click": "false",
 		"inventory.quick-pickup": "true",
 		"joystick": "false",
+		"joystick.autoposition": "true",
 		"joystick.center.x": "264",
 		"joystick.center.y": "384",
 		"joystick.style": "joystick",
