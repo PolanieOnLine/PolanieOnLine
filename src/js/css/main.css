@@ -499,10 +499,11 @@ div.quickPickup div.itemSlot {
 }
 
 ::-webkit-scrollbar-button {
+	display: none;
+}
+
+::-webkit-scrollbar-button:single-button {
 	width: 16px;
-	background-image:
-		url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'><path fill='%23ffffff' d='M1,6 L5,2 L9,6 Z'/></svg>"),
-		var(--background-url);
 	background-repeat: no-repeat, no-repeat;
 	background-position: center, center;
 	background-size: 10px 10px, cover;
@@ -511,11 +512,12 @@ div.quickPickup div.itemSlot {
 	cursor: pointer;
 }
 
-::-webkit-scrollbar-button:hover {
+::-webkit-scrollbar-button:single-button:hover {
 	box-shadow: inset 0 0 0 1px var(--border-top-color);
 }
 
 ::-webkit-scrollbar-button:single-button:vertical:decrement {
+	display: block;
 	height: 18px;
 	border-top: 2px solid var(--border-top-color);
 	border-left: 2px solid var(--border-top-color);
@@ -527,6 +529,7 @@ div.quickPickup div.itemSlot {
 }
 
 ::-webkit-scrollbar-button:single-button:vertical:increment {
+	display: block;
 	height: 18px;
 	border-top: 2px solid var(--border-top-color);
 	border-left: 2px solid var(--border-top-color);
