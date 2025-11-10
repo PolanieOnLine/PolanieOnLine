@@ -453,7 +453,7 @@ div.quickPickup div.itemSlot {
 #chat {
 	height: 100%;
 	padding: 0.5em;
-	overflow-y: scroll;
+	overflow-y: auto;
 	word-wrap: break-word;
 	display: block;
 	color: rgb(200, 255, 200);
@@ -468,12 +468,12 @@ div.quickPickup div.itemSlot {
 	box-sizing: border-box;
 }
 
-#chat::-webkit-scrollbar {
+::-webkit-scrollbar {
 	width: 16px;
 	background: transparent;
 }
 
-#chat::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
 	background: var(--chat-scroll-track-bg);
 	box-shadow: inset 1px 0 0 0 var(--border-bottom-color), inset -1px 0 0 0 var(--border-bottom-color);
 	border-top: 0;
@@ -482,7 +482,7 @@ div.quickPickup div.itemSlot {
 	box-shadow: none;
 }
 
-#chat::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
 	background: var(--background-url) repeat;
 	border-top: 2px solid var(--border-top-color);
 	border-left: 2px solid var(--border-top-color);
@@ -491,14 +491,14 @@ div.quickPickup div.itemSlot {
 	border-radius: 0;
 }
 
-#chat::-webkit-scrollbar-thumb:hover {
+::-webkit-scrollbar-thumb:hover {
 	filter: brightness(1.05);
 }
-#chat::-webkit-scrollbar-thumb:active {
+::-webkit-scrollbar-thumb:active {
 	filter: brightness(0.95);
 }
 
-#chat::-webkit-scrollbar-button {
+::-webkit-scrollbar-button {
 	width: 16px;
 	background-image:
 		url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'><path fill='%23ffffff' d='M1,6 L5,2 L9,6 Z'/></svg>"),
@@ -511,11 +511,11 @@ div.quickPickup div.itemSlot {
 	cursor: pointer;
 }
 
-#chat::-webkit-scrollbar-button:hover {
+::-webkit-scrollbar-button:hover {
 	box-shadow: inset 0 0 0 1px var(--border-top-color);
 }
 
-#chat::-webkit-scrollbar-button:single-button:vertical:decrement {
+::-webkit-scrollbar-button:single-button:vertical:decrement {
 	height: 18px;
 	border-top: 2px solid var(--border-top-color);
 	border-left: 2px solid var(--border-top-color);
@@ -526,7 +526,7 @@ div.quickPickup div.itemSlot {
 		var(--background-url);
 }
 
-#chat::-webkit-scrollbar-button:single-button:vertical:increment {
+::-webkit-scrollbar-button:single-button:vertical:increment {
 	height: 18px;
 	border-top: 2px solid var(--border-top-color);
 	border-left: 2px solid var(--border-top-color);
@@ -537,8 +537,8 @@ div.quickPickup div.itemSlot {
 		var(--background-url);
 }
 
-#chat::-webkit-scrollbar-track-piece,
-#chat::-webkit-scrollbar-corner {
+::-webkit-scrollbar-track-piece,
+::-webkit-scrollbar-corner {
 	border-radius: 0;
 	background: #A37861;
 	box-shadow: inset 1px 0 0 0 var(--border-bottom-color), inset -1px 0 0 0 var(--border-bottom-color);
@@ -809,19 +809,33 @@ span.lognick {
 	display: none;
 	flex-wrap: nowrap;
 	align-items: flex-start;
+	position: relative;
+	--left-panel-width: 170px;
+	--right-panel-width: 248px;
+}
+
+#client.left-panel-collapsed {
+	--left-panel-width: 0px;
+}
+
+#client.right-panel-collapsed {
+	--right-panel-width: 0px;
 }
 
 #leftColumn {
 	float: none;
 	width: 170px;
 	flex: 0 0 170px;
+	transition: width 0.3s ease, flex-basis 0.3s ease, opacity 0.3s ease;
+	overflow: hidden;
+	opacity: 1;
 }
 
 #middleColumn {
 	float: none;
 	flex: 1 1 640px;
 	width: 640px;
-	max-width: min(640px, calc(100vw - 170px - 248px));
+	max-width: min(640px, calc(100vw - var(--left-panel-width) - var(--right-panel-width)));
 	background-color: #000;
 	position: relative;
 }
@@ -831,8 +845,113 @@ span.lognick {
 	flex: 0 0 248px;
 	width: 248px;
 	min-width: 248px;
+	transition: width 0.3s ease, min-width 0.3s ease, flex-basis 0.3s ease, opacity 0.3s ease;
 	overflow-y: auto;
 	overflow-x: hidden;
+	opacity: 1;
+}
+
+.panel-toggle {
+	display: none;
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	z-index: 25;
+	width: 36px;
+	height: 48px;
+	background: var(--background-url) repeat;
+	border-top: 2px solid var(--border-top-color);
+	border-left: 2px solid var(--border-top-color);
+	border-right: 2px solid var(--border-bottom-color);
+	border-bottom: 2px solid var(--border-bottom-color);
+	color: var(--text-color);
+	font-size: 20px;
+	line-height: 1;
+	padding: 0;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	transition: left 0.3s ease, right 0.3s ease;
+}
+
+.panel-toggle:hover {
+	box-shadow: inset 0 0 0 1px var(--border-top-color);
+}
+
+.panel-toggle:focus {
+	outline: 2px solid var(--border-top-color);
+	outline-offset: 2px;
+}
+
+.panel-toggle--left {
+	left: 8px;
+}
+
+.panel-toggle--right {
+	right: 8px;
+}
+
+#minimap-overlay {
+	position: absolute;
+	top: 12px;
+	left: 12px;
+	z-index: 20;
+	display: none;
+}
+
+#minimap-overlay > #minimap-frame {
+	margin: 0;
+}
+
+@media screen and (max-width: 1024px) {
+	.panel-toggle {
+		display: inline-flex;
+	}
+
+	#middleColumn {
+		flex: 1 1 auto;
+		width: 100%;
+		max-width: none;
+	}
+
+	#client.left-panel-collapsed #leftColumn,
+	#client.right-panel-collapsed #rightColumn {
+		opacity: 0;
+		pointer-events: none;
+	}
+
+	#client.left-panel-collapsed #leftColumn {
+		flex: 0 0 0;
+		width: 0;
+		min-width: 0;
+	}
+
+	#client.right-panel-collapsed #rightColumn {
+		flex: 0 0 0;
+		width: 0;
+		min-width: 0;
+		overflow: hidden;
+	}
+
+	#client.left-panel-collapsed #minimap-overlay {
+		display: block;
+	}
+
+	.panel-toggle--left {
+		left: calc(var(--left-panel-width));
+	}
+
+	.panel-toggle--right {
+		right: calc(var(--right-panel-width));
+	}
+
+	#client.left-panel-collapsed .panel-toggle--left {
+		left: 8px;
+	}
+
+	#client.right-panel-collapsed .panel-toggle--right {
+		right: 8px;
+	}
 }
 
 #minimap-frame {

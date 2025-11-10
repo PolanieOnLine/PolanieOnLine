@@ -23,6 +23,7 @@
 
 <body id="body" class="background">
 	<div id="client">
+		<button id="left-panel-toggle" class="panel-toggle panel-toggle--left" type="button" aria-controls="leftColumn" aria-expanded="true" aria-label="Schowaj lewy panel">◀</button>
 		<div id="leftColumn" class="unselectable mainColumn">
 			<div id="minimap-frame">
 				<canvas id="minimap" width="128" height="128"></canvas>
@@ -63,6 +64,7 @@
 		</div>
 
 		<div id="middleColumn" class="mainColumn">
+			<div id="minimap-overlay" hidden></div>
 			<div id="topPanel"></div>
 			<!-- FIXME: "viewport" and "chat" elements don't use fonts defined in "emoji-text" attribute, probably because
 					font is overridden in class definitions -->
@@ -108,19 +110,19 @@
 						<div class="equipment-window__main">
 							<div class="equipment-panel">
 								<div id="equipment" class="equipment-grid">
-										<div id="neck0" class="itemSlot"></div>
-										<div id="head0" class="itemSlot"></div>
-										<div id="cloak0" class="itemSlot"></div>
-										<div id="lhand0" class="itemSlot"></div>
-										<div id="armor0" class="itemSlot"></div>
-										<div id="rhand0" class="itemSlot"></div>
-										<div id="finger0" class="itemSlot"></div>
-										<div id="pas0" class="itemSlot"></div>
-										<div id="legs0" class="itemSlot"></div>
-										<div id="glove0" class="itemSlot"></div>
-										<div id="fingerb0" class="itemSlot"></div>
-										<div id="feet0" class="itemSlot"></div>
-										<div id="pouch0" class="itemSlot"></div>
+									<div id="neck0" class="itemSlot"></div>
+									<div id="head0" class="itemSlot"></div>
+									<div id="cloak0" class="itemSlot"></div>
+									<div id="lhand0" class="itemSlot"></div>
+									<div id="armor0" class="itemSlot"></div>
+									<div id="rhand0" class="itemSlot"></div>
+									<div id="finger0" class="itemSlot"></div>
+									<div id="pas0" class="itemSlot"></div>
+									<div id="legs0" class="itemSlot"></div>
+									<div id="glove0" class="itemSlot"></div>
+									<div id="fingerb0" class="itemSlot"></div>
+									<div id="feet0" class="itemSlot"></div>
+									<div id="pouch0" class="itemSlot"></div>
 								</div>
 							</div>
 						</div>
@@ -173,6 +175,7 @@
 				<div id="magicbag-window-body" class="inventory-window__body" data-window-body></div>
 			</div>
 		</div>
+		<button id="right-panel-toggle" class="panel-toggle panel-toggle--right" type="button" aria-controls="rightColumn" aria-expanded="true" aria-label="Schowaj prawy panel">▶</button>
 	</div>
 
 	<div id="joystick-container"></div>

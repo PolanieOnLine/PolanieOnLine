@@ -35,6 +35,8 @@ import { LoginDialog } from "./ui/dialog/LoginDialog";
 
 import { DesktopUserInterfaceFactory } from "./ui/factory/DesktopUserInterfaceFactory";
 
+import { LayoutController } from "./ui/LayoutController";
+
 import { SingletonFloatingWindow } from "./ui/toolkit/SingletonFloatingWindow";
 
 import { Chat } from "./util/Chat";
@@ -184,6 +186,7 @@ export class Client {
 		stendhal.data.outfit.init();
 
 		new DesktopUserInterfaceFactory().create();
+		LayoutController.get().init();
 
 		Chat.log("client", "Klient załadowany. Łączenie...");
 
