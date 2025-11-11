@@ -897,6 +897,7 @@ span.lognick {
 	left: 12px;
 	z-index: 20;
 	display: none;
+	align-items: flex-start;
 }
 
 #minimap-overlay > #minimap-frame {
@@ -928,7 +929,10 @@ span.lognick {
 	}
 
 	#client.left-panel-collapsed #minimap-overlay {
-		display: block;
+		display: flex;
+		left: calc(12px - var(--left-panel-width));
+		width: var(--left-panel-width);
+		justify-content: center;
 	}
 
 	.panel-toggle--left {
