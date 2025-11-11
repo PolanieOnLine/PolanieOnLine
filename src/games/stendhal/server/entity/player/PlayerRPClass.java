@@ -163,6 +163,7 @@ public class PlayerRPClass {
 		player.addRPEvent(Events.GROUP_CHANGE, Definition.PRIVATE);
 		player.addRPEvent(Events.GROUP_INVITE, Definition.PRIVATE);
 		player.addRPEvent(Events.PROGRESS_STATUS_CHANGE, Definition.PRIVATE);
+		player.addRPEvent(Events.PRODUCER_WINDOW, Definition.PRIVATE);
 		player.addRPEvent(Events.GLOBAL_VISUAL, Definition.PRIVATE);
 
 		// Maps
