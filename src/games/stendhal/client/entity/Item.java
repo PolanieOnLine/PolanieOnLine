@@ -14,17 +14,27 @@ package games.stendhal.client.entity;
 import marauroa.common.game.RPObject;
 import marauroa.common.game.RPSlot;
 
+import games.stendhal.common.constants.ItemRarity;
+
 public class Item extends Entity {
 	/**
 	 * The content slot, or <code>null</code> if the item has none or it's not
 	 * accessible.
-	 */
+	*/
 	private RPSlot content;
 
 	/** Quantity property. */
 	public static final Property PROP_QUANTITY = new Property();
+	/** Rarity property. */
+	public static final Property PROP_RARITY = new Property();
+	/** Rarity badge visibility property. */
+	public static final Property PROP_RARITY_BADGE = new Property();
 	/** The item quantity. */
 	private int quantity;
+	/** Item rarity. */
+	private ItemRarity rarity = ItemRarity.COMMON;
+	/** Whether the rarity badge should be rendered. */
+	private boolean rarityBadgeVisible = false;
 
 	/**
 	 * Create an item.
@@ -49,6 +59,16 @@ public class Item extends Entity {
 			content = object.getSlot("content");
 		} else {
 			content = null;
+		}
+
+		if (object.has("rarity")) {
+			Object rarityValue = object.get("rarity");
+			if (rarityValue != null) {
+				rarity = ItemRarity.byId(rarityValue.toString());
+			}
+		}
+		if (object.has("rarity_badge")) {
+			rarityBadgeVisible = object.getInt("rarity_badge") != 0;
 		}
 	}
 
@@ -90,6 +110,17 @@ public class Item extends Entity {
 			quantity = changes.getInt("quantity");
 			fireChange(PROP_QUANTITY);
 		}
+		if (changes.has("rarity")) {
+			Object rarityValue = changes.get("rarity");
+			if (rarityValue != null) {
+				rarity = ItemRarity.byId(rarityValue.toString());
+				fireChange(PROP_RARITY);
+			}
+		}
+		if (changes.has("rarity_badge")) {
+			rarityBadgeVisible = changes.getInt("rarity_badge") != 0;
+			fireChange(PROP_RARITY_BADGE);
+		}
 	}
 
 	public int getState() {
@@ -98,4 +129,13 @@ public class Item extends Entity {
 		}
 		return 0;
 	}
+
+	public ItemRarity getRarity() {
+		return rarity;
+	}
+
+	public boolean shouldDisplayRarityBadge() {
+		return rarityBadgeVisible;
+	}
 }
+

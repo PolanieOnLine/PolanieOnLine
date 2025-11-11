@@ -12,6 +12,7 @@
 package games.stendhal.server.entity.item;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +25,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
 
 import games.stendhal.common.Rand;
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.common.constants.Nature;
 import games.stendhal.common.constants.Testing;
 import games.stendhal.server.core.engine.ItemLogger;
@@ -97,6 +99,15 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	 */
 	private UseBehavior useBehavior;
 
+	/** Rarity assigned to this item instance. */
+	private ItemRarity rarity = ItemRarity.COMMON;
+
+	/** Gold value adjusted by the rarity. */
+	private int rarityValue;
+
+	/** Whether the rarity badge should be visible to clients. */
+	private boolean rarityBadgeVisible = false;
+
 	/**
 	 *
 	 * Creates a new Item.
@@ -134,6 +145,9 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		setRPClass("item");
 		put("type", "item");
 		possibleSlots = new LinkedList<String>();
+		put("rarity", rarity.getId());
+		put("rarity_value", rarityValue);
+		put("rarity_badge", 0);
 		update();
 	}
 
@@ -150,6 +164,14 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		weight = item.weight;
 		damageType = item.damageType;
 		susceptibilities = item.susceptibilities;
+		rarity = item.getRarity();
+		rarityValue = item.getRarityValue();
+		put("rarity", rarity.getId());
+		if (item.has("rarity_value")) {
+			put("rarity_value", item.getInt("rarity_value"));
+		}
+		rarityBadgeVisible = item.isRarityBadgeVisible();
+		put("rarity_badge", rarityBadgeVisible ? 1 : 0);
 	}
 
 	public static void generateRPClass() {
@@ -164,6 +186,11 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 
 		// name of item (ie 'Kings Sword')
 		entity.addAttribute("name", Type.STRING);
+
+		// rarity information for coloured borders and stat modifiers
+		entity.addAttribute("rarity", Type.STRING);
+		// hint for the client whether rarity badge should be rendered
+		entity.addAttribute("rarity_badge", Type.INT);
 
 		// Some items have attack values
 		entity.addAttribute("atk", Type.SHORT, Definition.HIDDEN);
@@ -266,6 +293,9 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		// Size of the container slot, if the item has one, and the size is
 		// other than the default
 		entity.addAttribute("slot_size", Type.STRING, Definition.VOLATILE);
+
+		// Gold value adjusted based on rarity for the current instance
+		entity.addAttribute("rarity_value", Type.INT, Definition.HIDDEN);
 
 		// Container slot
 		entity.addRPSlot("content", -1, Definition.PRIVATE);
@@ -707,6 +737,139 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	 */
 	public void setUseBehavior(UseBehavior behavior) {
 		useBehavior = behavior;
+	}
+
+	/**
+	 * Applies the provided rarity to this item instance and updates relevant
+	 * attributes.
+	 *
+	 * @param rarity rarity to assign
+	 * @param baseAttributes base attributes defined in the XML configuration
+	 * @param baseValue base gold value for the item
+	 */
+	public void applyRarity(ItemRarity rarity, Map<String, String> baseAttributes, int baseValue) {
+		applyRarity(rarity, baseAttributes, baseValue, true);
+	}
+
+	public void applyRarity(ItemRarity rarity, Map<String, String> baseAttributes, int baseValue,
+			boolean applyModifiers) {
+		ItemRarity applied = (rarity == null) ? ItemRarity.COMMON : rarity;
+		this.rarity = applied;
+		put("rarity", applied.getId());
+
+		if (applyModifiers) {
+			if (baseAttributes != null) {
+				Map<String, String> adjusted = applied.applyToAttributes(baseAttributes);
+				overrideAttributes(adjusted);
+			}
+		} else if (baseAttributes != null) {
+			overrideAttributes(baseAttributes);
+		}
+
+		rarityValue = applyModifiers ? applied.applyValueModifier(baseValue) : baseValue;
+		put("rarity_value", rarityValue);
+
+		update();
+	}
+
+	/**
+	 * Restores rarity metadata from a persisted RPObject without modifying combat
+	 * statistics.
+	 *
+	 * @param storedRarity
+	 *            rarity that was saved with the item
+	 * @param storedValue
+	 *            previously calculated rarity adjusted value or {@code null} if
+	 *            unavailable
+	 * @param badgeVisible
+	 *            whether the rarity badge was visible
+	 */
+	public void restoreRarity(ItemRarity storedRarity, Integer storedValue, boolean badgeVisible) {
+		ItemRarity resolved = (storedRarity == null) ? ItemRarity.COMMON : storedRarity;
+		rarity = resolved;
+		put("rarity", resolved.getId());
+		if (storedValue != null) {
+			rarityValue = storedValue.intValue();
+			put("rarity_value", rarityValue);
+		}
+		rarityBadgeVisible = badgeVisible;
+		put("rarity_badge", badgeVisible ? 1 : 0);
+		update();
+	}
+
+	/**
+	 * Controls whether the rarity badge should be rendered by the client.
+	 *
+	 * @param visible
+	 *            {@code true} to enable the badge, {@code false} to hide it
+	 */
+	public void setRarityBadgeVisible(boolean visible) {
+		rarityBadgeVisible = visible;
+		put("rarity_badge", visible ? 1 : 0);
+		update();
+	}
+
+	/**
+	 * Indicates if the rarity badge should be shown for this item instance.
+	 *
+	 * @return {@code true} if the badge should be displayed
+	 */
+	public boolean isRarityBadgeVisible() {
+		if (has("rarity_badge")) {
+			return getInt("rarity_badge") != 0;
+		}
+		return rarityBadgeVisible;
+	}
+
+	/**
+	 * Overrides item attributes with the provided values.
+	 *
+	 * @param attributes attributes to apply
+	 */
+	public void overrideAttributes(Map<String, String> attributes) {
+		if (attributes == null) {
+			return;
+		}
+
+		for (Entry<String, String> entry : attributes.entrySet()) {
+			String key = entry.getKey();
+			String value = entry.getValue();
+
+			if (value == null) {
+				if (has(key)) {
+					remove(key);
+				}
+			} else {
+				put(key, value);
+			}
+		}
+	}
+
+	/**
+	 * Returns the rarity of the item.
+	 *
+	 * @return current rarity
+	 */
+	public ItemRarity getRarity() {
+		if ((rarity == null) && has("rarity")) {
+			Object rarityAttribute = get("rarity");
+			if (rarityAttribute != null) {
+				rarity = ItemRarity.byId(rarityAttribute.toString());
+			}
+		}
+		return (rarity == null) ? ItemRarity.COMMON : rarity;
+	}
+
+	/**
+	 * Returns the rarity adjusted item value.
+	 *
+	 * @return rarity adjusted gold value
+	 */
+	public int getRarityValue() {
+		if ((rarityValue == 0) && has("rarity_value")) {
+			rarityValue = getInt("rarity_value");
+		}
+		return rarityValue;
 	}
 
 	/**

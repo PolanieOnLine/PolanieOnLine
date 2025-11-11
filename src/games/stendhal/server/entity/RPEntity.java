@@ -13,10 +13,14 @@ package games.stendhal.server.entity;
 
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -74,9 +78,62 @@ public abstract class RPEntity extends CombatEntity {
 	/** The logger instance. */
 	private static final Logger logger = Logger.getLogger(RPEntity.class);
 
+	/** Classes that are considered melee or ranged weapons. */
+	public static final Set<String> WEAPON_CLASSES = Collections.unmodifiableSet(
+			new HashSet<String>(Arrays.asList(
+				"club",
+				"sword",
+				"dagger",
+				"axe",
+				"ranged",
+				"missile",
+				"wand",
+				"whip")));
+	
+	/** Slots used for equipping armour, weapons, jewellery, and similar gear. */
+	public static final Set<String> EQUIPMENT_SLOT_NAMES = Collections.unmodifiableSet(
+			new HashSet<String>(Slots.EQUIPMENT.getNames()));
+	
 	/**
-	 * The title attribute name.
+	 * Checks if the provided class represents a weapon type.
+	 *
+	 * @param clazz
+	 *		item class identifier
+	 * @return {@code true} if the class belongs to the known weapon set
 	 */
+	public static boolean isWeaponClass(String clazz) {
+		return (clazz != null) && WEAPON_CLASSES.contains(clazz);
+	}
+
+	/**
+	 * Provides the set of classes recognised as weapons by {@link #getWeapons()}.
+	 *
+	 * @return immutable collection of weapon class identifiers
+	 */
+	public static Set<String> getWeaponClasses() {
+		return WEAPON_CLASSES;
+	}
+
+	/**
+	 * Checks if the provided slot is used for equipment.
+	 *
+	 * @param slot
+	 *		slot identifier
+	 * @return {@code true} if the slot belongs to the equipment slot set
+	 */
+	public static boolean isEquipmentSlot(String slot) {
+		return (slot != null) && EQUIPMENT_SLOT_NAMES.contains(slot);
+	}
+
+	/**
+	 * Provides the slot identifiers used by {@link #getAllEquipment()}.
+	 *
+	 * @return immutable collection of equipment slot names
+	 */
+	public static Set<String> getEquipmentSlotNames() {
+		return EQUIPMENT_SLOT_NAMES;
+	}
+	/** The title attribute name. */
 	protected static final String ATTR_TITLE = "title";
 	private static Statistics stats;
 
@@ -166,6 +223,7 @@ public abstract class RPEntity extends CombatEntity {
 		}
 		return super.handlePortal(portal);
 	}
+	
 
 	public static void generateRPClass() {
 		try {
@@ -2549,9 +2607,7 @@ public abstract class RPEntity extends CombatEntity {
 	 *		 left hand.
 	 */
 	public Item getWeapon() {
-		final String[] weaponsClasses = { "club", "sword", "dagger", "axe", "ranged", "missile", "wand", "whip" };
-
-		for (final String weaponClass : weaponsClasses) {
+		for (final String weaponClass : WEAPON_CLASSES) {
 			final String[] slots = { "lhand", "rhand" };
 			for (final String slot : slots) {
 				final Item item = getEquippedItemClass(slot, weaponClass);
@@ -2561,7 +2617,6 @@ public abstract class RPEntity extends CombatEntity {
 				}
 			}
 		}
-
 		return null;
 	}
 
