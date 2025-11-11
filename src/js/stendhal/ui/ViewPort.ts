@@ -546,62 +546,46 @@ export class ViewPort {
 	}
 
 	private resolveOverlayOptions(): {alpha: number; operation: GlobalCompositeOperation; fillStyle: string}|undefined {
-	const fillStyle = this.determineOverlayFillStyle();
-	if (!fillStyle) {
-	return;
-	}
-	const alpha = this.determineOverlayAlpha();
-	if (alpha <= 0) {
-	return;
-	}
-	return {
-	alpha,
-	operation: this.determineOverlayOperation(),
-	fillStyle
-	};
+		const fillStyle = this.determineOverlayFillStyle();
+		if (!fillStyle) {
+			return;
+		}
+		const alpha = this.determineOverlayAlpha();
+		if (alpha <= 0) {
+			return;
+		}
+		return {
+			alpha,
+			operation: this.determineOverlayOperation(),
+			fillStyle
+		};
 	}
 
 	private determineOverlayFillStyle(): string|undefined {
-	const filter = this.HSLFilter ? this.HSLFilter.trim() : "";
-	if (filter) {
-	return filter;
-	}
-	switch (this.blendMethod) {
-	case "bleach":
-	case "generic_light":
-	case "truecolor":
-	return "rgba(255, 255, 255, 1)";
-	}
-	return undefined;
+		const filter = this.HSLFilter ? this.HSLFilter.trim() : "";
+		if (filter) {
+			return filter;
+		}
+		return undefined;
 	}
 
 	private determineOverlayAlpha(): number {
-	const fallback = 0.75;
-	const configured = stendhal.config.getFloat("effect.lighting.overlay.alpha", fallback);
-	let alpha = typeof(configured) === "number" && !Number.isNaN(configured) ? configured : fallback;
-	switch (this.blendMethod) {
-	case "bleach":
-	alpha = this.clampAlpha(alpha + 0.15);
-	break;
-	case "generic_light":
-	alpha = this.clampAlpha(alpha * 0.6);
-	break;
-	default:
-	alpha = this.clampAlpha(alpha);
-	}
-	return alpha;
+		const fallback = 0.75;
+		const configured = stendhal.config.getFloat("effect.lighting.overlay.alpha", fallback);
+		const alpha = typeof(configured) === "number" && !Number.isNaN(configured) ? configured : fallback;
+		return this.clampAlpha(alpha);
 	}
 
 	private determineOverlayOperation(): GlobalCompositeOperation {
-	const blendOperation = this.normalizeBlendComposite(this.blendMethod);
-	if (blendOperation) {
-	return blendOperation;
-	}
-	const colorOperation = this.normalizeCompositeOperation(this.colorMethod);
-	if (colorOperation) {
-	return colorOperation;
-	}
-	return this.ctx.globalCompositeOperation;
+		const colorOperation = this.normalizeCompositeOperation(this.colorMethod);
+		if (colorOperation) {
+			return colorOperation;
+		}
+		const blendOperation = this.normalizeBlendComposite(this.blendMethod);
+		if (blendOperation) {
+			return blendOperation;
+		}
+		return this.ctx.globalCompositeOperation;
 	}
 
 	private normalizeBlendComposite(method?: string): GlobalCompositeOperation|undefined {
