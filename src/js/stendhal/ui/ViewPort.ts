@@ -82,6 +82,9 @@ export class ViewPort {
 
 	/** Styles to be applied when chat panel is not floating. */
 	private readonly initialStyle: {[prop: string]: string};
+	private readonly baseAspectRatio: number;
+	private parentResizeObserver?: ResizeObserver;
+	private readonly handleWindowResize: () => void;
 
 	/** Singleton instance. */
 	private static instance: ViewPort;
@@ -134,6 +137,11 @@ export class ViewPort {
 
 		this.initialStyle = {};
 		this.captureInitialStyles(element);
+		this.baseAspectRatio = element.width / element.height;
+		this.handleWindowResize = () => this.updateCanvasBounds();
+		this.observeParent(element);
+		this.updateCanvasBounds();
+		window.addEventListener("resize", this.handleWindowResize, {passive: true});
 
 		this.fpsLabel = this.createFpsLabel(element);
 	}
@@ -160,6 +168,87 @@ export class ViewPort {
 		if (!this.initialStyle["max-height"]) {
 			this.initialStyle["max-height"] = "calc(100dvh - 5em)";
 		}
+	}
+
+	private observeParent(canvas: HTMLCanvasElement) {
+		const parent = canvas.parentElement as HTMLElement | null;
+		if (!parent || typeof ResizeObserver !== "function") {
+			return;
+		}
+		this.parentResizeObserver = new ResizeObserver(() => {
+			this.updateCanvasBounds();
+		});
+		this.parentResizeObserver.observe(parent);
+	}
+
+	private updateCanvasBounds() {
+		const canvas = this.ctx?.canvas as HTMLCanvasElement | undefined;
+		if (!canvas || !canvas.isConnected) {
+			return;
+		}
+		const parent = canvas.parentElement as HTMLElement | null;
+		if (!parent) {
+			return;
+		}
+
+		const parentStyle = getComputedStyle(parent);
+		const paddingLeft = parseFloat(parentStyle.paddingLeft) || 0;
+		const paddingRight = parseFloat(parentStyle.paddingRight) || 0;
+		const paddingTop = parseFloat(parentStyle.paddingTop) || 0;
+		const paddingBottom = parseFloat(parentStyle.paddingBottom) || 0;
+		let availableWidth = Math.floor(parent.clientWidth - paddingLeft - paddingRight);
+		let availableHeight = Math.floor(parent.clientHeight - paddingTop - paddingBottom);
+		if (!Number.isFinite(availableWidth) || !Number.isFinite(availableHeight)) {
+			return;
+		}
+		if (availableWidth <= 0 || availableHeight <= 0) {
+			return;
+		}
+
+		let reservedHeight = 0;
+		for (const child of Array.from(parent.children)) {
+			if (!(child instanceof HTMLElement) || child === canvas) {
+				continue;
+			}
+			const childStyle = getComputedStyle(child);
+			if (childStyle.display === "none" || childStyle.position === "absolute" || childStyle.position === "fixed") {
+				continue;
+			}
+			const flexGrow = parseFloat(childStyle.flexGrow || "0");
+			if (flexGrow > 0) {
+				continue;
+			}
+			reservedHeight += child.getBoundingClientRect().height;
+			reservedHeight += (parseFloat(childStyle.marginTop) || 0) + (parseFloat(childStyle.marginBottom) || 0);
+		}
+
+		const usableHeight = Math.floor(Math.max(1, availableHeight - reservedHeight));
+		if (!Number.isFinite(usableHeight) || usableHeight <= 0) {
+			return;
+		}
+
+		let targetWidth = Math.floor(availableWidth);
+		let targetHeight = Math.floor(targetWidth / this.baseAspectRatio);
+		if (!Number.isFinite(targetHeight) || targetHeight <= 0) {
+			return;
+		}
+		if (targetHeight > usableHeight) {
+			targetHeight = usableHeight;
+			targetWidth = Math.floor(targetHeight * this.baseAspectRatio);
+		}
+
+		targetWidth = Math.max(1, targetWidth);
+		targetHeight = Math.max(1, targetHeight);
+
+		if (canvas.width === targetWidth && canvas.height === targetHeight
+				&& canvas.style.width === `${targetWidth}px` && canvas.style.height === `${targetHeight}px`) {
+			return;
+		}
+
+		canvas.width = targetWidth;
+		canvas.height = targetHeight;
+		canvas.style.width = `${targetWidth}px`;
+		canvas.style.height = `${targetHeight}px`;
 	}
 
 	private assignInitialStyleFrom(value: string|null|undefined, prop: string) {
@@ -1213,5 +1302,6 @@ export class ViewPort {
 				element.style.setProperty(prop, this.initialStyle[prop]);
 			}
 		}
+		this.updateCanvasBounds();
 	}
 }
