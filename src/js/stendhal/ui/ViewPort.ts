@@ -83,6 +83,8 @@ export class ViewPort {
 	/** Styles to be applied when chat panel is not floating. */
 	private readonly initialStyle: {[prop: string]: string};
 	private readonly baseAspectRatio: number;
+	private readonly minCanvasWidth = 1080;
+	private readonly minCanvasHeight = 500;
 	private parentResizeObserver?: ResizeObserver;
 	private readonly handleWindowResize: () => void;
 
@@ -232,9 +234,26 @@ export class ViewPort {
 		if (!Number.isFinite(targetHeight) || targetHeight <= 0) {
 			return;
 		}
-		if (targetHeight > usableHeight) {
-			targetHeight = usableHeight;
+		targetWidth = Math.max(this.minCanvasWidth, targetWidth);
+		targetHeight = Math.floor(targetWidth / this.baseAspectRatio);
+		if (targetHeight < this.minCanvasHeight) {
+			targetHeight = this.minCanvasHeight;
 			targetWidth = Math.floor(targetHeight * this.baseAspectRatio);
+		}
+		if (targetHeight > usableHeight) {
+			if (usableHeight < this.minCanvasHeight) {
+				targetHeight = Math.max(1, usableHeight);
+				targetWidth = Math.floor(targetHeight * this.baseAspectRatio);
+				targetWidth = Math.max(this.minCanvasWidth, targetWidth);
+				targetHeight = Math.floor(targetWidth / this.baseAspectRatio);
+			} else {
+				targetHeight = Math.max(this.minCanvasHeight, usableHeight);
+				targetWidth = Math.floor(targetHeight * this.baseAspectRatio);
+				if (targetWidth < this.minCanvasWidth) {
+					targetWidth = this.minCanvasWidth;
+					targetHeight = Math.floor(targetWidth / this.baseAspectRatio);
+				}
+			}
 		}
 
 		targetWidth = Math.max(1, targetWidth);
