@@ -13,6 +13,7 @@ package games.stendhal.client.gui.spells;
 
 import javax.swing.SwingUtilities;
 
+import games.stendhal.client.UserContext;
 import games.stendhal.client.gui.SlotWindow;
 import games.stendhal.client.listener.FeatureChangeListener;
 /**
@@ -34,12 +35,12 @@ public class Spells extends SlotWindow implements FeatureChangeListener {
 	@Override
 	public void featureDisabled(final String name) {
 		if (name.equals("spells")) {
-			if(isVisible()) {
-				SwingUtilities.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						setVisible(false);
-					}
+                        if (isVisible()) {
+                                SwingUtilities.invokeLater(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                                setVisible(false);
+                                        }
 				});
 			}
 		}
@@ -48,15 +49,24 @@ public class Spells extends SlotWindow implements FeatureChangeListener {
 	@Override
 	public void featureEnabled(final String name, final String value) {
 		if (name.equals("spells")) {
-			if(!isVisible()) {
-				SwingUtilities.invokeLater(new Runnable() {
-					@Override
-					public void run() {
-						setVisible(true);
-					}
-				});
-			}
-		}
-	}
+                        if (!isVisible()) {
+                                SwingUtilities.invokeLater(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                                setVisible(true);
+                                        }
+                                });
+                        }
+                }
+        }
+
+        @Override
+        public void setVisible(final boolean visible) {
+                boolean allow = visible;
+                if (visible && !UserContext.get().hasFeature("spells")) {
+                        allow = false;
+                }
+                super.setVisible(allow);
+        }
 
 }
