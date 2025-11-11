@@ -814,11 +814,7 @@ span.lognick {
 	align-items: flex-start;
 	position: relative;
 	--left-panel-width: 170px;
-	--right-panel-width: 248px;
-}
-
-#client.left-panel-collapsed {
-	--left-panel-width: 0px;
+	--right-panel-width: 277px;
 }
 
 #client.right-panel-collapsed {
@@ -827,8 +823,7 @@ span.lognick {
 
 #leftColumn {
 	float: none;
-	width: 170px;
-	flex: 0 0 170px;
+	flex: 0 0 207px;
 	transition: width 0.3s ease, flex-basis 0.3s ease, opacity 0.3s ease;
 	overflow: hidden;
 	opacity: 1;
@@ -836,18 +831,13 @@ span.lognick {
 
 #middleColumn {
 	float: none;
-	flex: 1 1 640px;
-	width: 640px;
-	max-width: min(640px, calc(100vw - var(--left-panel-width) - var(--right-panel-width)));
 	background-color: #000;
 	position: relative;
 }
 
 #rightColumn {
 	float: none;
-	flex: 0 0 248px;
-	width: 248px;
-	min-width: 248px;
+	flex: 0 0 277px;
 	transition: width 0.3s ease, min-width 0.3s ease, flex-basis 0.3s ease, opacity 0.3s ease;
 	overflow-y: auto;
 	overflow-x: hidden;
@@ -900,6 +890,7 @@ span.lognick {
 	left: 12px;
 	z-index: 20;
 	display: none;
+	align-items: flex-start;
 }
 
 #minimap-overlay > #minimap-frame {
@@ -923,12 +914,6 @@ span.lognick {
 		pointer-events: none;
 	}
 
-	#client.left-panel-collapsed #leftColumn {
-		flex: 0 0 0;
-		width: 0;
-		min-width: 0;
-	}
-
 	#client.right-panel-collapsed #rightColumn {
 		flex: 0 0 0;
 		width: 0;
@@ -937,7 +922,10 @@ span.lognick {
 	}
 
 	#client.left-panel-collapsed #minimap-overlay {
-		display: block;
+		display: flex;
+		left: calc(12px - var(--left-panel-width));
+		width: var(--left-panel-width);
+		justify-content: center;
 	}
 
 	.panel-toggle--left {
@@ -946,6 +934,7 @@ span.lognick {
 
 	.panel-toggle--right {
 		right: calc(var(--right-panel-width));
+		display: none;
 	}
 
 	#client.left-panel-collapsed .panel-toggle--left {
@@ -1035,14 +1024,14 @@ div#menupanel #soundbutton {
 
 #viewport {
 	display: block;
-/*
-	max-height: calc(100vh - 5em);
-	max-width: calc((100vh - 5em) * 640 / 480);
-	max-height: calc(100dvh - 5em);
-	max-width: calc((100dvh - 5em) * 640 / 480);
-*/
+	--viewport-max-height: calc(100dvh - 5em);
+	--viewport-max-width: calc((100dvh - 5em) * 800 / 600);
+	--viewport-min-render-width: 800px;
+	--viewport-min-render-height: 600px;
+	max-height: var(--viewport-max-height);
+	max-width: var(--viewport-max-width);
+	image-rendering: pixelated;
 }
-
 
 #bottomPanel {
 	flex: 1;

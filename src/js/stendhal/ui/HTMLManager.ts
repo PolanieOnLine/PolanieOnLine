@@ -93,29 +93,64 @@ export class HTMLManager {
 	extractPosition(event: any): any {
 		let pos = event;
 		const target = this.extractTarget(event);
-		const canvas = target as HTMLCanvasElement;
+		if (!(target instanceof HTMLElement)) {
+			return pos;
+		}
+		const element = target as HTMLElement;
+		let clientX: number|undefined;
+		let clientY: number|undefined;
+		let pageX: number|undefined;
+		let pageY: number|undefined;
 		if (event.changedTouches) {
 			// FIXME: Always uses last index. Any way to detect which touch index was engaged?
 			const tidx = event.changedTouches.length - 1;
+			const touch = event.changedTouches[tidx];
 			pos = {
-				pageX: Math.round(event.changedTouches[tidx].pageX),
-				pageY: Math.round(event.changedTouches[tidx].pageY),
-				clientX: Math.round(event.changedTouches[tidx].clientX),
-				clientY: Math.round(event.changedTouches[tidx].clientY),
+				pageX: Math.round(touch.pageX),
+				pageY: Math.round(touch.pageY),
+				clientX: Math.round(touch.clientX),
+				clientY: Math.round(touch.clientY),
 				target: target
-			}
-			if (["touchmove", "touchend"].indexOf(event.type) > -1) {
-				// touch events target source element
-				const rect = canvas.getBoundingClientRect();
-				pos.offsetX = pos.pageX - rect.left;
-				pos.offsetY = pos.pageY - rect.top;
-			} else {
-				pos.offsetX = pos.pageX - canvas.offsetLeft;
-				pos.offsetY = pos.pageY - canvas.offsetTop;
+			};
+			clientX = pos.clientX;
+			clientY = pos.clientY;
+			pageX = pos.pageX;
+			pageY = pos.pageY;
+		} else {
+			clientX = typeof pos.clientX === "number" ? pos.clientX : undefined;
+			clientY = typeof pos.clientY === "number" ? pos.clientY : undefined;
+			pageX = typeof pos.pageX === "number" ? pos.pageX : undefined;
+			pageY = typeof pos.pageY === "number" ? pos.pageY : undefined;
+			if (!pos.target) {
+				pos.target = target;
 			}
 		}
-		pos.canvasRelativeX = Math.round(pos.offsetX * canvas.width / canvas.clientWidth);
-		pos.canvasRelativeY = Math.round(pos.offsetY * canvas.height / canvas.clientHeight);
+
+		const rect = element.getBoundingClientRect();
+		if (typeof clientX === "number" && typeof clientY === "number") {
+			pos.offsetX = Math.round(clientX - rect.left);
+			pos.offsetY = Math.round(clientY - rect.top);
+		} else if (typeof pageX === "number" && typeof pageY === "number") {
+			const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft || 0;
+			const scrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
+			pos.offsetX = Math.round(pageX - (rect.left + scrollLeft));
+			pos.offsetY = Math.round(pageY - (rect.top + scrollTop));
+		} else {
+			if (typeof pos.offsetX !== "number") {
+				pos.offsetX = 0;
+			}
+			if (typeof pos.offsetY !== "number") {
+				pos.offsetY = 0;
+			}
+		}
+		const canvas = element instanceof HTMLCanvasElement ? element : null;
+		if (canvas && canvas.clientWidth && canvas.clientHeight) {
+			pos.canvasRelativeX = Math.round(pos.offsetX * canvas.width / canvas.clientWidth);
+			pos.canvasRelativeY = Math.round(pos.offsetY * canvas.height / canvas.clientHeight);
+		} else {
+			pos.canvasRelativeX = Math.round(pos.offsetX);
+			pos.canvasRelativeY = Math.round(pos.offsetY);
+		}
 		return pos;
 	}
 

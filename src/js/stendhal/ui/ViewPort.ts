@@ -57,11 +57,6 @@ export class ViewPort {
 	private readonly entityStates = new WeakMap<any, {prevX: number; prevY: number; currX: number; currY: number}>();
 	private fpsLabel?: HTMLElement;
 
-	// dimensions
-	// TODO: remove & use CSS style instead
-	private readonly width: number;
-	private readonly height: number;
-
 	/** Drawing context. */
 	private ctx: CanvasRenderingContext2D;
 	/** Map tile pixel width. */
@@ -87,10 +82,16 @@ export class ViewPort {
 
 	/** Styles to be applied when chat panel is not floating. */
 	private readonly initialStyle: {[prop: string]: string};
+	private readonly baseRenderWidth: number;
+	private readonly baseRenderHeight: number;
+	private readonly baseAspectRatio: number;
+	private readonly minCanvasWidth: number;
+	private readonly minCanvasHeight: number;
+	private parentResizeObserver?: ResizeObserver;
+	private readonly handleWindowResize: () => void;
 
 	/** Singleton instance. */
 	private static instance: ViewPort;
-
 
 	/**
 	 * Retrieves singleton instance.
@@ -108,17 +109,22 @@ export class ViewPort {
 	private constructor() {
 		const element = this.getElement() as HTMLCanvasElement;
 		this.ctx = element.getContext("2d")!;
-		this.width = element.width;
-		this.height = element.height;
+		this.baseRenderWidth = element.width || 800;
+		this.baseRenderHeight = element.height || 600;
+		this.baseAspectRatio = this.baseRenderWidth && this.baseRenderHeight
+			? this.baseRenderWidth / this.baseRenderHeight
+			: (4 / 3);
 
 		this.initialStyle = {};
-		//~ const stylesheet = getComputedStyle(element);
-		// FIXME: how to get literal "calc()" instead of value of calc()?
-		//~ this.initialStyle["max-width"] = stylesheet.getPropertyValue("max-width");
-		//~ this.initialStyle["max-height"] = stylesheet.getPropertyValue("max-height");
-		// NOTE: this doesn't work if properties set in css
-		this.initialStyle["max-width"] = "calc((100dvh - 5em) * 640 / 480)";
-		this.initialStyle["max-height"] = "calc(100dvh - 5em)";
+		const styles = getComputedStyle(element);
+		this.captureInitialStyles(element, styles);
+		const minSize = this.computeMinimumCanvasSize(styles);
+		this.minCanvasWidth = minSize.x;
+		this.minCanvasHeight = minSize.y;
+		this.handleWindowResize = () => this.updateCanvasBounds();
+		this.observeParent(element);
+		this.updateCanvasBounds();
+		window.addEventListener("resize", this.handleWindowResize, {passive: true});
 
 		this.fpsLabel = this.createFpsLabel(element);
 	}
@@ -131,6 +137,187 @@ export class ViewPort {
 	 */
 	public getElement(): HTMLElement {
 		return document.getElementById("viewport")!;
+	}
+
+	private captureInitialStyles(element: HTMLElement, styles: CSSStyleDeclaration) {
+		this.assignInitialStyleFrom(styles.getPropertyValue("--viewport-max-width"), "max-width");
+		this.assignInitialStyleFrom(styles.getPropertyValue("--viewport-max-height"), "max-height");
+		this.assignInitialStyleFrom(element.style.getPropertyValue("max-width"), "max-width");
+		this.assignInitialStyleFrom(element.style.getPropertyValue("max-height"), "max-height");
+		if (!this.initialStyle["max-width"]) {
+			this.initialStyle["max-width"] = "calc((100dvh - 5em) * 800 / 600)";
+		}
+		if (!this.initialStyle["max-height"]) {
+			this.initialStyle["max-height"] = "calc(100dvh - 5em)";
+		}
+	}
+
+	private computeMinimumCanvasSize(styles: CSSStyleDeclaration): Vector2 {
+		let minWidth = Math.max(1, Math.round(this.baseRenderWidth));
+		let minHeight = Math.max(1, Math.round(this.baseRenderHeight));
+		const minWidthSetting = this.parseCssLength(styles.getPropertyValue("--viewport-min-render-width"));
+		const minHeightSetting = this.parseCssLength(styles.getPropertyValue("--viewport-min-render-height"));
+		if (minWidthSetting && minWidthSetting > 0) {
+			minWidth = Math.max(minWidth, Math.round(minWidthSetting));
+		}
+		if (minHeightSetting && minHeightSetting > 0) {
+			minHeight = Math.max(minHeight, Math.round(minHeightSetting));
+		}
+		const aspect = this.baseAspectRatio || (4 / 3);
+		const widthFromHeight = Math.max(1, Math.round(minHeight * aspect));
+		const heightFromWidth = Math.max(1, Math.round(minWidth / aspect));
+		if (widthFromHeight > minWidth) {
+			minWidth = widthFromHeight;
+		}
+		if (heightFromWidth > minHeight) {
+			minHeight = heightFromWidth;
+		}
+		return {x: minWidth, y: minHeight};
+	}
+
+	private parseCssLength(value: string|null|undefined): number|null {
+		if (!value) {
+			return null;
+		}
+		const trimmed = value.trim();
+		if (!trimmed) {
+			return null;
+		}
+		const parsed = parseFloat(trimmed);
+		if (!Number.isFinite(parsed)) {
+			return null;
+		}
+		return parsed;
+	}
+
+	private observeParent(canvas: HTMLCanvasElement) {
+		const parent = canvas.parentElement as HTMLElement | null;
+		if (!parent || typeof ResizeObserver !== "function") {
+			return;
+		}
+		this.parentResizeObserver = new ResizeObserver(() => {
+			this.updateCanvasBounds();
+		});
+		this.parentResizeObserver.observe(parent);
+	}
+
+	private updateCanvasBounds() {
+		const canvas = this.ctx?.canvas as HTMLCanvasElement | undefined;
+		if (!canvas || !canvas.isConnected) {
+			return;
+		}
+		const parent = canvas.parentElement as HTMLElement | null;
+		if (!parent) {
+			return;
+		}
+
+		const parentStyle = getComputedStyle(parent);
+		const paddingLeft = parseFloat(parentStyle.paddingLeft) || 0;
+		const paddingRight = parseFloat(parentStyle.paddingRight) || 0;
+		const paddingTop = parseFloat(parentStyle.paddingTop) || 0;
+		const paddingBottom = parseFloat(parentStyle.paddingBottom) || 0;
+		let availableWidth = Math.floor(parent.clientWidth - paddingLeft - paddingRight);
+		let availableHeight = Math.floor(parent.clientHeight - paddingTop - paddingBottom);
+		const parentRect = parent.getBoundingClientRect();
+		if (parentRect && Number.isFinite(parentRect.width)) {
+			const rectWidth = Math.floor(parentRect.width - paddingLeft - paddingRight);
+			if (rectWidth > 0) {
+				availableWidth = rectWidth;
+			}
+		}
+		if (parentRect && Number.isFinite(parentRect.height)) {
+			const rectHeight = Math.floor(parentRect.height - paddingTop - paddingBottom);
+			if (rectHeight > 0) {
+				availableHeight = rectHeight;
+			}
+		}
+		if (!Number.isFinite(availableWidth) || !Number.isFinite(availableHeight)) {
+			return;
+		}
+		if (availableWidth <= 0 || availableHeight <= 0) {
+			return;
+		}
+
+		let reservedHeight = 0;
+		for (const child of Array.from(parent.children)) {
+			if (!(child instanceof HTMLElement) || child === canvas) {
+				continue;
+			}
+			const childStyle = getComputedStyle(child);
+			if (childStyle.display === "none" || childStyle.position === "absolute" || childStyle.position === "fixed") {
+				continue;
+			}
+			const flexGrow = parseFloat(childStyle.flexGrow || "0");
+			if (flexGrow > 0) {
+				continue;
+			}
+			reservedHeight += child.getBoundingClientRect().height;
+			reservedHeight += (parseFloat(childStyle.marginTop) || 0) + (parseFloat(childStyle.marginBottom) || 0);
+		}
+
+		const usableHeight = Math.floor(Math.max(1, availableHeight - reservedHeight));
+		if (!Number.isFinite(usableHeight) || usableHeight <= 0) {
+			return;
+		}
+
+		let displayWidth = Math.floor(availableWidth);
+		let displayHeight = Math.floor(displayWidth / this.baseAspectRatio);
+		if (!Number.isFinite(displayHeight) || displayHeight <= 0) {
+			return;
+		}
+		if (displayHeight > usableHeight) {
+			displayHeight = Math.max(1, usableHeight);
+			displayWidth = Math.floor(displayHeight * this.baseAspectRatio);
+		}
+		if (displayWidth > availableWidth) {
+			displayWidth = Math.floor(availableWidth);
+			displayHeight = Math.floor(displayWidth / this.baseAspectRatio);
+			if (displayHeight > usableHeight) {
+				displayHeight = Math.max(1, usableHeight);
+				displayWidth = Math.floor(displayHeight * this.baseAspectRatio);
+			}
+		}
+
+		displayWidth = Math.max(1, displayWidth);
+		displayHeight = Math.max(1, displayHeight);
+
+		let renderWidth = Math.max(this.minCanvasWidth, displayWidth);
+		let renderHeight = Math.floor(renderWidth / this.baseAspectRatio);
+		if (renderHeight < this.minCanvasHeight) {
+			renderHeight = this.minCanvasHeight;
+			renderWidth = Math.floor(renderHeight * this.baseAspectRatio);
+			if (renderWidth < this.minCanvasWidth) {
+				renderWidth = this.minCanvasWidth;
+				renderHeight = Math.floor(renderWidth / this.baseAspectRatio);
+			}
+		}
+
+		renderWidth = Math.max(1, renderWidth);
+		renderHeight = Math.max(1, renderHeight);
+
+		if (canvas.width === renderWidth && canvas.height === renderHeight
+				&& canvas.style.width === `${displayWidth}px` && canvas.style.height === `${displayHeight}px`) {
+			return;
+		}
+
+		canvas.width = renderWidth;
+		canvas.height = renderHeight;
+		canvas.style.width = `${displayWidth}px`;
+		canvas.style.height = `${displayHeight}px`;
+	}
+
+	public refreshBounds() {
+		this.updateCanvasBounds();
+	}
+
+	private assignInitialStyleFrom(value: string|null|undefined, prop: string) {
+		if (!value || this.initialStyle[prop]) {
+			return;
+		}
+		const trimmed = value.trim();
+		if (trimmed) {
+			this.initialStyle[prop] = trimmed;
+		}
 	}
 
 	private createFpsLabel(canvas: HTMLCanvasElement): HTMLElement {
@@ -756,12 +943,18 @@ export class ViewPort {
 			if ((e instanceof MouseEvent && mHandle.isRightClick(e)) || long_touch) {
 				if (entity != stendhal.zone.ground) {
 					const append: any[] = [];
-					/*
 					if (long_touch) {
-						// TODO: add option for "hold" to allow splitting item stacks
+					const viewport = stendhal.ui.gamewindow as ViewPort;
+					if (viewport.canHoldEntityForTouch(entity)) {
+						append.push({
+							title: "Przytrzymaj (podziel stos)",
+							action: () => {
+								viewport.tryHoldEntityForTouch(entity, pos.pageX, pos.pageY);
+							}
+						});
 					}
-					*/
-					stendhal.ui.actionContextMenu.set(ui.createSingletonFloatingWindow("Czynności",
+				}
+				stendhal.ui.actionContextMenu.set(ui.createSingletonFloatingWindow("Czynności",
 						new ActionContextMenu(entity, append), pos.pageX - 50, pos.pageY - 5));
 				}
 			} else {
@@ -891,6 +1084,39 @@ export class ViewPort {
 		}
 	}
 
+	private canHoldEntityForTouch(entity: any): boolean {
+		if (!entity || entity.type !== "item") {
+			return false;
+		}
+		const quantity = entity.hasOwnProperty("quantity") ? Number(entity["quantity"]) : 1;
+		if (!quantity || quantity <= 1) {
+			return false;
+		}
+		return !!(entity.sprite && entity.sprite.filename);
+	}
+
+	private tryHoldEntityForTouch(entity: any, pageX: number, pageY: number): boolean {
+		if (!this.canHoldEntityForTouch(entity)) {
+			return false;
+		}
+		const spriteFilename = entity.sprite.filename;
+		const sprite = stendhal.data.sprites.getAreaOf(stendhal.data.sprites.get(spriteFilename), 32, 32);
+		if (!sprite) {
+			return false;
+		}
+		const position = new Point(pageX, pageY);
+		const quantity = entity.hasOwnProperty("quantity") ? Number(entity["quantity"]) : 1;
+		const held: HeldObject = {
+			path: entity.getIdPath(),
+			zone: marauroa.currentZoneName,
+			quantity,
+			origin: position
+		};
+		singletons.getHeldObjectManager().set(held, sprite, position);
+		stendhal.ui.touch.setHolding(true);
+		return true;
+	}
+
 	/**
 	 * Displays a corpse or item sprite while dragging.
 	 */
@@ -989,5 +1215,6 @@ export class ViewPort {
 				element.style.setProperty(prop, this.initialStyle[prop]);
 			}
 		}
+		this.updateCanvasBounds();
 	}
 }
