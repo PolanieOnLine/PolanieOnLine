@@ -37,6 +37,12 @@ export function drawLayerByName(
 	return true;
 }
 
+const TileLayerPainter = {
+	drawLayerByName
+};
+
+export default TileLayerPainter;
+
 function drawLayerTiles(
 	ctx: CanvasRenderingContext2D,
 	layer: number[],

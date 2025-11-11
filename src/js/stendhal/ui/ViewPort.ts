@@ -669,10 +669,6 @@ export class ViewPort {
 		if (colorOperation) {
 			return colorOperation;
 		}
-		const blendOperation = this.normalizeBlendComposite(this.blendMethod);
-		if (blendOperation) {
-			return blendOperation;
-		}
 		return this.ctx.globalCompositeOperation;
 	}
 
