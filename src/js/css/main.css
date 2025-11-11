@@ -836,9 +836,10 @@ span.lognick {
 
 #middleColumn {
 	float: none;
-	flex: 1 1 640px;
-	width: 640px;
-	max-width: min(640px, calc(100vw - var(--left-panel-width) - var(--right-panel-width)));
+	flex: 1 1 0%;
+	width: auto;
+	min-width: 0;
+	max-width: max(0px, calc(100vw - var(--left-panel-width) - var(--right-panel-width)));
 	background-color: #000;
 	position: relative;
 }
@@ -1037,8 +1038,10 @@ div#menupanel #soundbutton {
 	display: block;
 	--viewport-max-height: calc(100dvh - 5em);
 	--viewport-max-width: calc((100dvh - 5em) * 640 / 480);
+	--viewport-min-render-width: 1080px;
 	max-height: var(--viewport-max-height);
 	max-width: var(--viewport-max-width);
+	image-rendering: pixelated;
 }
 
 #bottomPanel {

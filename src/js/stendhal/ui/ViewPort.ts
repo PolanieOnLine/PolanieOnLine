@@ -82,9 +82,11 @@ export class ViewPort {
 
 	/** Styles to be applied when chat panel is not floating. */
 	private readonly initialStyle: {[prop: string]: string};
+	private readonly baseRenderWidth: number;
+	private readonly baseRenderHeight: number;
 	private readonly baseAspectRatio: number;
-	private readonly minCanvasWidth = 1080;
-	private readonly minCanvasHeight = 500;
+	private readonly minCanvasWidth: number;
+	private readonly minCanvasHeight: number;
 	private parentResizeObserver?: ResizeObserver;
 	private readonly handleWindowResize: () => void;
 
@@ -136,10 +138,18 @@ export class ViewPort {
 	private constructor() {
 		const element = this.getElement() as HTMLCanvasElement;
 		this.ctx = element.getContext("2d")!;
+		this.baseRenderWidth = element.width || 640;
+		this.baseRenderHeight = element.height || 480;
+		this.baseAspectRatio = this.baseRenderWidth && this.baseRenderHeight
+			? this.baseRenderWidth / this.baseRenderHeight
+			: (4 / 3);
 
 		this.initialStyle = {};
-		this.captureInitialStyles(element);
-		this.baseAspectRatio = element.width / element.height;
+		const styles = getComputedStyle(element);
+		this.captureInitialStyles(element, styles);
+		const minSize = this.computeMinimumCanvasSize(styles);
+		this.minCanvasWidth = minSize.x;
+		this.minCanvasHeight = minSize.y;
 		this.handleWindowResize = () => this.updateCanvasBounds();
 		this.observeParent(element);
 		this.updateCanvasBounds();
@@ -156,10 +166,9 @@ export class ViewPort {
 	 */
 	public getElement(): HTMLElement {
 		return document.getElementById("viewport")!;
-}
+	}
 
-	private captureInitialStyles(element: HTMLElement) {
-		const styles = getComputedStyle(element);
+	private captureInitialStyles(element: HTMLElement, styles: CSSStyleDeclaration) {
 		this.assignInitialStyleFrom(styles.getPropertyValue("--viewport-max-width"), "max-width");
 		this.assignInitialStyleFrom(styles.getPropertyValue("--viewport-max-height"), "max-height");
 		this.assignInitialStyleFrom(element.style.getPropertyValue("max-width"), "max-width");
@@ -170,6 +179,44 @@ export class ViewPort {
 		if (!this.initialStyle["max-height"]) {
 			this.initialStyle["max-height"] = "calc(100dvh - 5em)";
 		}
+	}
+
+	private computeMinimumCanvasSize(styles: CSSStyleDeclaration): Vector2 {
+		let minWidth = Math.max(1, Math.round(this.baseRenderWidth));
+		let minHeight = Math.max(1, Math.round(this.baseRenderHeight));
+		const minWidthSetting = this.parseCssLength(styles.getPropertyValue("--viewport-min-render-width"));
+		const minHeightSetting = this.parseCssLength(styles.getPropertyValue("--viewport-min-render-height"));
+		if (minWidthSetting && minWidthSetting > 0) {
+			minWidth = Math.max(minWidth, Math.round(minWidthSetting));
+		}
+		if (minHeightSetting && minHeightSetting > 0) {
+			minHeight = Math.max(minHeight, Math.round(minHeightSetting));
+		}
+		const aspect = this.baseAspectRatio || (4 / 3);
+		const widthFromHeight = Math.max(1, Math.round(minHeight * aspect));
+		const heightFromWidth = Math.max(1, Math.round(minWidth / aspect));
+		if (widthFromHeight > minWidth) {
+			minWidth = widthFromHeight;
+		}
+		if (heightFromWidth > minHeight) {
+			minHeight = heightFromWidth;
+		}
+		return {x: minWidth, y: minHeight};
+	}
+
+	private parseCssLength(value: string|null|undefined): number|null {
+		if (!value) {
+			return null;
+		}
+		const trimmed = value.trim();
+		if (!trimmed) {
+			return null;
+		}
+		const parsed = parseFloat(trimmed);
+		if (!Number.isFinite(parsed)) {
+			return null;
+		}
+		return parsed;
 	}
 
 	private observeParent(canvas: HTMLCanvasElement) {
