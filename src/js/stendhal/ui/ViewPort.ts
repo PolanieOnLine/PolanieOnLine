@@ -138,8 +138,8 @@ export class ViewPort {
 	private constructor() {
 		const element = this.getElement() as HTMLCanvasElement;
 		this.ctx = element.getContext("2d")!;
-		this.baseRenderWidth = element.width || 640;
-		this.baseRenderHeight = element.height || 480;
+		this.baseRenderWidth = element.width || 1024;
+		this.baseRenderHeight = element.height || 768;
 		this.baseAspectRatio = this.baseRenderWidth && this.baseRenderHeight
 			? this.baseRenderWidth / this.baseRenderHeight
 			: (4 / 3);
@@ -174,7 +174,7 @@ export class ViewPort {
 		this.assignInitialStyleFrom(element.style.getPropertyValue("max-width"), "max-width");
 		this.assignInitialStyleFrom(element.style.getPropertyValue("max-height"), "max-height");
 		if (!this.initialStyle["max-width"]) {
-			this.initialStyle["max-width"] = "calc((100dvh - 5em) * 640 / 480)";
+			this.initialStyle["max-width"] = "calc((100dvh - 5em) * 1024 / 768)";
 		}
 		if (!this.initialStyle["max-height"]) {
 			this.initialStyle["max-height"] = "calc(100dvh - 5em)";
