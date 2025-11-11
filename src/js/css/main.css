@@ -1039,10 +1039,7 @@ div#menupanel #soundbutton {
 	--viewport-max-width: calc((100dvh - 5em) * 640 / 480);
 	max-height: var(--viewport-max-height);
 	max-width: var(--viewport-max-width);
-	min-width: 1080px;
-	min-height: 500px;
 }
-
 
 #bottomPanel {
 	flex: 1;

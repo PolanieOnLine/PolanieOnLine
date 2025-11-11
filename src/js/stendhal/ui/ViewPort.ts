@@ -229,45 +229,50 @@ export class ViewPort {
 			return;
 		}
 
-		let targetWidth = Math.floor(availableWidth);
-		let targetHeight = Math.floor(targetWidth / this.baseAspectRatio);
-		if (!Number.isFinite(targetHeight) || targetHeight <= 0) {
+		let displayWidth = Math.floor(availableWidth);
+		let displayHeight = Math.floor(displayWidth / this.baseAspectRatio);
+		if (!Number.isFinite(displayHeight) || displayHeight <= 0) {
 			return;
 		}
-		targetWidth = Math.max(this.minCanvasWidth, targetWidth);
-		targetHeight = Math.floor(targetWidth / this.baseAspectRatio);
-		if (targetHeight < this.minCanvasHeight) {
-			targetHeight = this.minCanvasHeight;
-			targetWidth = Math.floor(targetHeight * this.baseAspectRatio);
+		if (displayHeight > usableHeight) {
+			displayHeight = Math.max(1, usableHeight);
+			displayWidth = Math.floor(displayHeight * this.baseAspectRatio);
 		}
-		if (targetHeight > usableHeight) {
-			if (usableHeight < this.minCanvasHeight) {
-				targetHeight = Math.max(1, usableHeight);
-				targetWidth = Math.floor(targetHeight * this.baseAspectRatio);
-				targetWidth = Math.max(this.minCanvasWidth, targetWidth);
-				targetHeight = Math.floor(targetWidth / this.baseAspectRatio);
-			} else {
-				targetHeight = Math.max(this.minCanvasHeight, usableHeight);
-				targetWidth = Math.floor(targetHeight * this.baseAspectRatio);
-				if (targetWidth < this.minCanvasWidth) {
-					targetWidth = this.minCanvasWidth;
-					targetHeight = Math.floor(targetWidth / this.baseAspectRatio);
-				}
+		if (displayWidth > availableWidth) {
+			displayWidth = Math.floor(availableWidth);
+			displayHeight = Math.floor(displayWidth / this.baseAspectRatio);
+			if (displayHeight > usableHeight) {
+				displayHeight = Math.max(1, usableHeight);
+				displayWidth = Math.floor(displayHeight * this.baseAspectRatio);
 			}
 		}
 
-		targetWidth = Math.max(1, targetWidth);
-		targetHeight = Math.max(1, targetHeight);
+		displayWidth = Math.max(1, displayWidth);
+		displayHeight = Math.max(1, displayHeight);
 
-		if (canvas.width === targetWidth && canvas.height === targetHeight
-				&& canvas.style.width === `${targetWidth}px` && canvas.style.height === `${targetHeight}px`) {
+		let renderWidth = Math.max(this.minCanvasWidth, displayWidth);
+		let renderHeight = Math.floor(renderWidth / this.baseAspectRatio);
+		if (renderHeight < this.minCanvasHeight) {
+			renderHeight = this.minCanvasHeight;
+			renderWidth = Math.floor(renderHeight * this.baseAspectRatio);
+			if (renderWidth < this.minCanvasWidth) {
+				renderWidth = this.minCanvasWidth;
+				renderHeight = Math.floor(renderWidth / this.baseAspectRatio);
+			}
+		}
+
+		renderWidth = Math.max(1, renderWidth);
+		renderHeight = Math.max(1, renderHeight);
+
+		if (canvas.width === renderWidth && canvas.height === renderHeight
+				&& canvas.style.width === `${displayWidth}px` && canvas.style.height === `${displayHeight}px`) {
 			return;
 		}
 
-		canvas.width = targetWidth;
-		canvas.height = targetHeight;
-		canvas.style.width = `${targetWidth}px`;
-		canvas.style.height = `${targetHeight}px`;
+		canvas.width = renderWidth;
+		canvas.height = renderHeight;
+		canvas.style.width = `${displayWidth}px`;
+		canvas.style.height = `${displayHeight}px`;
 	}
 
 	private assignInitialStyleFrom(value: string|null|undefined, prop: string) {
