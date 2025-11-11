@@ -948,7 +948,7 @@ export class ViewPort {
 			// if ctrl is pressed or holding stackable item from touch event, we ask for the quantity
 			// NOTE: don't create selector if touch source is ground
 			if (e.ctrlKey || (touch_held && sourceSlot !== targetSlot)) {
-				ui.createSingletonFloatingWindow("Quantity", new DropQuantitySelectorDialog(action, touch_held), pos.pageX - 50, pos.pageY - 25);
+				ui.createSingletonFloatingWindow("Ilość", new DropQuantitySelectorDialog(action, touch_held), pos.pageX - 50, pos.pageY - 25);
 			} else {
 				singletons.getHeldObjectManager().onRelease();
 				marauroa.clientFramework.sendAction(action);
