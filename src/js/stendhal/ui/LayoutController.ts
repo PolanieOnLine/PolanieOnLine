@@ -1,6 +1,8 @@
 /**
  * Controls responsive side panel layout for the web client.
  */
+import { singletons } from "../SingletonRepo";
+
 export class LayoutController {
 
 	private static instance?: LayoutController;
@@ -20,6 +22,11 @@ export class LayoutController {
 	private readonly minimapOverlay?: HTMLElement;
 	private readonly minimapOriginalParent?: HTMLElement;
 	private readonly minimapNextSibling?: Node | null;
+
+	private requestViewportResize() {
+		const viewport = singletons.getViewPort();
+		viewport.refreshBounds();
+	}
 
 	private constructor() {
 		this.mediaQuery = window.matchMedia("(max-width: 1024px)");
@@ -57,6 +64,7 @@ export class LayoutController {
 				collapsedIcon: "▶"
 			});
 			this.updateMinimapPosition();
+			this.requestViewportResize();
 		});
 
 		this.rightToggle?.addEventListener("click", () => {
@@ -69,6 +77,7 @@ export class LayoutController {
 				expandedIcon: "▶",
 				collapsedIcon: "◀"
 			});
+			this.requestViewportResize();
 		});
 
 		if (typeof this.mediaQuery.addEventListener === "function") {
@@ -99,6 +108,7 @@ export class LayoutController {
 			this.resetToggle(this.leftToggle, "◀", "Schowaj lewy panel");
 			this.resetToggle(this.rightToggle, "▶", "Schowaj prawy panel");
 			this.restoreMinimap();
+			this.requestViewportResize();
 			return;
 		}
 
@@ -115,6 +125,7 @@ export class LayoutController {
 			collapsedIcon: "◀"
 		});
 		this.updateMinimapPosition();
+		this.requestViewportResize();
 	}
 
 	private resetToggle(toggle: HTMLButtonElement | undefined, icon: string, label: string) {

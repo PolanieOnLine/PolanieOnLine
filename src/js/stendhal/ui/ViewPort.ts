@@ -247,6 +247,19 @@ export class ViewPort {
 		const paddingBottom = parseFloat(parentStyle.paddingBottom) || 0;
 		let availableWidth = Math.floor(parent.clientWidth - paddingLeft - paddingRight);
 		let availableHeight = Math.floor(parent.clientHeight - paddingTop - paddingBottom);
+		const parentRect = parent.getBoundingClientRect();
+		if (parentRect && Number.isFinite(parentRect.width)) {
+			const rectWidth = Math.floor(parentRect.width - paddingLeft - paddingRight);
+			if (rectWidth > 0) {
+				availableWidth = rectWidth;
+			}
+		}
+		if (parentRect && Number.isFinite(parentRect.height)) {
+			const rectHeight = Math.floor(parentRect.height - paddingTop - paddingBottom);
+			if (rectHeight > 0) {
+				availableHeight = rectHeight;
+			}
+		}
 		if (!Number.isFinite(availableWidth) || !Number.isFinite(availableHeight)) {
 			return;
 		}
@@ -320,6 +333,10 @@ export class ViewPort {
 		canvas.height = renderHeight;
 		canvas.style.width = `${displayWidth}px`;
 		canvas.style.height = `${displayHeight}px`;
+	}
+
+	public refreshBounds() {
+		this.updateCanvasBounds();
 	}
 
 	private assignInitialStyleFrom(value: string|null|undefined, prop: string) {
