@@ -14,11 +14,8 @@ declare var stendhal: any;
 import { LandscapeRenderingStrategy } from "./LandscapeRenderingStrategy";
 import { ImagePreloader } from "../data/ImagePreloader";
 import { Chat } from "../util/Chat";
+import { drawLayerByName } from "./TileLayerPainter";
 
-
-// Trim a fraction of a texel from each side so bilinear filtering never pulls
-// colour from neighbouring tiles when the canvas is translated sub-pixel.
-const TILE_EDGE_TRIM = 0.02;
 
 export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrategy {
 
@@ -52,94 +49,27 @@ export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrate
 		this.targetTileWidth = targetTileWidth;
 		this.targetTileHeight = targetTileHeight;
 
-		for (var drawingLayer=0; drawingLayer < stendhal.data.map.layers.length; drawingLayer++) {
-			var name = stendhal.data.map.layerNames[drawingLayer];
-			if (name !== "protection" && name !== "collision" && name !== "objects"
-				&& name !== "blend_ground" && name !== "blend_roof") {
-				this.paintLayer(canvas, drawingLayer, tileOffsetX, tileOffsetY);
-			}
+		const ctx = canvas.getContext("2d")!;
+		const groundLayers = ["0_floor", "1_terrain", "2_object"];
+		for (const name of groundLayers) {
+			drawLayerByName(ctx, name, tileOffsetX, tileOffsetY, this.targetTileWidth, this.targetTileHeight);
 			if (name === "2_object") {
 				gamewindow.drawEntities(alpha);
 			}
 		}
-	}
 
-	private paintLayer(canvas: HTMLCanvasElement, drawingLayer: number,
-		tileOffsetX: number, tileOffsetY: number) {
-		const layer = stendhal.data.map.layers[drawingLayer];
-		const yMax = Math.min(tileOffsetY + canvas.height / this.targetTileHeight + 1, stendhal.data.map.zoneSizeY);
-		const xMax = Math.min(tileOffsetX + canvas.width / this.targetTileWidth + 1, stendhal.data.map.zoneSizeX);
-		let ctx = canvas.getContext("2d")!;
+		const composite = typeof(gamewindow.getBlendCompositeOperation) === "function"
+				? gamewindow.getBlendCompositeOperation()
+				: undefined;
+		const blendOptions = composite ? {composite} : undefined;
+		drawLayerByName(ctx, "blend_ground", tileOffsetX, tileOffsetY, this.targetTileWidth, this.targetTileHeight, blendOptions);
 
-		for (let y = tileOffsetY; y < yMax; y++) {
-			for (let x = tileOffsetX; x < xMax; x++) {
-				let gid = layer[y * stendhal.data.map.zoneSizeX + x];
-				const flip = gid & 0xE0000000;
-				gid &= 0x1FFFFFFF;
-
-				if (gid > 0) {
-					const tileset = stendhal.data.map.getTilesetForGid(gid);
-					const base = stendhal.data.map.firstgids[tileset];
-					const idx = gid - base;
-
-					try {
-						if (stendhal.data.map.aImages[tileset].height > 0) {
-							const screenX = x * this.targetTileWidth;
-							const screenY = y * this.targetTileHeight;
-							this.drawTile(ctx, stendhal.data.map.aImages[tileset], idx, screenX, screenY, flip);
-						}
-					} catch (e) {
-						console.error(e);
-					}
-				}
-			}
+		const roofLayers = ["3_roof", "4_roof_add"];
+		for (const name of roofLayers) {
+			drawLayerByName(ctx, name, tileOffsetX, tileOffsetY, this.targetTileWidth, this.targetTileHeight);
 		}
+
+		drawLayerByName(ctx, "blend_roof", tileOffsetX, tileOffsetY, this.targetTileWidth, this.targetTileHeight, blendOptions);
 	}
 
-	private drawTile(ctx: CanvasRenderingContext2D, tileset: HTMLImageElement, idx: number,
-		screenX: number, screenY: number, flip = 0) {
-		const tilesetWidth = tileset.width;
-		const tilesPerRow = Math.floor(tilesetWidth / stendhal.data.map.tileWidth);
-		const destX = screenX;
-		const destY = screenY;
-		const destWidth = this.targetTileWidth;
-		const destHeight = this.targetTileHeight;
-		const sourceX = (idx % tilesPerRow) * stendhal.data.map.tileWidth + TILE_EDGE_TRIM;
-		const sourceY = Math.floor(idx / tilesPerRow) * stendhal.data.map.tileHeight + TILE_EDGE_TRIM;
-		const sourceWidth = stendhal.data.map.tileWidth - TILE_EDGE_TRIM * 2;
-		const sourceHeight = stendhal.data.map.tileHeight - TILE_EDGE_TRIM * 2;
-
-		if (flip === 0) {
-			ctx.drawImage(tileset,
-					sourceX,
-					sourceY,
-					sourceWidth, sourceHeight,
-					destX, destY,
-					destWidth, destHeight);
-		} else {
-			ctx.save();
-			ctx.translate(screenX, screenY);
-
-			if ((flip & 0x80000000) !== 0) {
-				ctx.scale(-1, 1);
-				ctx.translate(-this.targetTileWidth, 0);
-			}
-			if ((flip & 0x40000000) !== 0) {
-				ctx.scale(1, -1);
-				ctx.translate(0, -this.targetTileHeight);
-			}
-			if ((flip & 0x20000000) !== 0) {
-				ctx.transform(0, 1, 1, 0, 0, 0);
-			}
-
-			ctx.drawImage(tileset,
-					sourceX,
-					sourceY,
-					sourceWidth, sourceHeight,
-					0, 0,
-					destWidth, destHeight);
-
-			ctx.restore();
-		}
-	}
 }

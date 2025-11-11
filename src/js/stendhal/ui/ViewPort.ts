@@ -813,6 +813,10 @@ export class ViewPort {
 		this.blendMethod = normalized;
 	}
 
+	public getBlendCompositeOperation(): GlobalCompositeOperation|undefined {
+		return this.normalizeBlendComposite(this.blendMethod);
+	}
+
 	/**
 	 * Draws overall entity sprites.
 	 */

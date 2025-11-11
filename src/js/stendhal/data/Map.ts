@@ -122,8 +122,10 @@ export class Map {
 		this.decodeMapLayer(content, "0_floor");
 		this.decodeMapLayer(content, "1_terrain");
 		this.decodeMapLayer(content, "2_object");
+		this.decodeMapLayer(content, "blend_ground");
 		this.decodeMapLayer(content, "3_roof");
 		this.decodeMapLayer(content, "4_roof_add");
+		this.decodeMapLayer(content, "blend_roof");
 		this.protection = this.decodeMapLayer(content, "protection");
 		this.collisionData = this.decodeMapLayer(content, "collision");
 		this.layerGroupIndexes = this.mapLayerGroup();

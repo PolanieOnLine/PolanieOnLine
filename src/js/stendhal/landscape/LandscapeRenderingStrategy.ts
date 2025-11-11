@@ -11,6 +11,7 @@
 
 import { CombinedTilesetFactory } from "./CombinedTilesetFactory";
 import { LandscapeRenderer } from "./LandscapeRenderer";
+import { drawLayerByName } from "./TileLayerPainter";
 
 
 declare var stendhal: any;
@@ -46,11 +47,19 @@ export class CombinedTilesetRenderingStrategy extends LandscapeRenderingStrategy
 			alpha: number): void {
 
 		let landscapeRenderder = new LandscapeRenderer();
+		const ctx = canvas.getContext("2d")!;
+		const composite = typeof(gamewindow.getBlendCompositeOperation) === "function"
+				? gamewindow.getBlendCompositeOperation()
+				: undefined;
+		const blendOptions = composite ? {composite} : undefined;
+
 		landscapeRenderder.drawLayer(
 			canvas,
 			stendhal.data.map.combinedTileset,
 			0,
 			tileOffsetX, tileOffsetY, targetTileWidth, targetTileHeight);
+
+		drawLayerByName(ctx, "blend_ground", tileOffsetX, tileOffsetY, targetTileWidth, targetTileHeight, blendOptions);
 
 		gamewindow.drawEntities(alpha);
 
@@ -59,6 +68,8 @@ export class CombinedTilesetRenderingStrategy extends LandscapeRenderingStrategy
 			stendhal.data.map.combinedTileset,
 			1,
 			tileOffsetX, tileOffsetY, targetTileWidth, targetTileHeight);
+
+		drawLayerByName(ctx, "blend_roof", tileOffsetX, tileOffsetY, targetTileWidth, targetTileHeight, blendOptions);
 	}
 
 }
