@@ -13,7 +13,8 @@ package games.stendhal.server.entity.mapstuff.portal;
 
 import static games.stendhal.common.constants.Actions.MOVE_CONTINUOUS;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import games.stendhal.common.MathHelper;
@@ -338,6 +339,20 @@ public class HousePortal extends AccessCheckingPortal {
 	 * Gets other zones that should hear knocking on door.
 	 */
 	public List<String> getAssociatedZonesList() {
-		return Arrays.asList(getAssociatedZones().split(","));
+		final String zones = getAssociatedZones();
+		if ((zones == null) || zones.isEmpty()) {
+			return Collections.emptyList();
+		}
+
+		final String[] rawNames = zones.split(",");
+		final List<String> parsedNames = new ArrayList<>(rawNames.length);
+		for (final String zoneName : rawNames) {
+			final String trimmedName = zoneName.trim();
+			if (!trimmedName.isEmpty()) {
+				parsedNames.add(trimmedName);
+			}
+		}
+
+		return parsedNames;
 	}
 }

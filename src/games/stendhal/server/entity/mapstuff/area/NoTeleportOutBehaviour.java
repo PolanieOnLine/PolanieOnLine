@@ -12,6 +12,8 @@
 package games.stendhal.server.entity.mapstuff.area;
 
 
+import games.stendhal.server.core.engine.StendhalRPZone;
+
 /**
  * prevents teleporting out of the specified area
  *
@@ -19,13 +21,23 @@ package games.stendhal.server.entity.mapstuff.area;
  */
 public class NoTeleportOutBehaviour implements AreaBehaviour {
 
+	private AreaEntity area;
+
 	@Override
 	public void addToWorld(AreaEntity area) {
+		this.area = area;
 		area.getZone().disallowOut(area.getX(), area.getY(), (int) area.getWidth(), (int) area.getHeight());
 	}
 
 	@Override
 	public void removeFromWorld() {
-		// TODO: implement me
+		if (area == null) {
+			return;
+		}
+		StendhalRPZone zone = area.getZone();
+		if (zone != null) {
+			zone.allowOut(area.getX(), area.getY(), (int) area.getWidth(), (int) area.getHeight());
+		}
+		area = null;
 	}
 }

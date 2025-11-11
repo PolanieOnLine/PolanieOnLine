@@ -105,10 +105,8 @@ public abstract class SlotActivatedItem extends Item {
 
 		/* Attempt to activate item's attributes if being transitioned to an
 		 * active slot from a non-active one.
-		 *
-		 * FIXME: Should also check !this.activated.
 		 */
-		if (this.isActiveSlot(slot)) {
+		if (this.isActiveSlot(slot) && !this.activated) {
 			/* Check and activate item's attribute's for containing slot owner.
 			 * this.onActivate() should return <b>true</b>.
 			 */
@@ -139,19 +137,12 @@ public abstract class SlotActivatedItem extends Item {
 
 			/* Attempt to deactivate item's attributes if being transitioned from
 			 * an active slot to a non-active one.
-			 *
-			 * FIXME: Should also check this.activated.
 			 */
-			if (this.isActiveSlot(this.transitionSlot)) {
+			if (this.isActiveSlot(this.transitionSlot) && this.activated) {
 				/* Check and deactivate item's attribute's for containing slot
 				 * owner. this.onDeactivate() should return <b>false</b>.
 				 */
 				this.activated = this.onDeactivate();
-
-				/* We need to clear transitionSlot in case the item is placed
-				 * on the ground.
-				 */
-				this.transitionSlot = null;
 
 				/* Check if the item is still activated. */
 				if (this.activated) {
@@ -159,6 +150,10 @@ public abstract class SlotActivatedItem extends Item {
 							+ transitionSlot + "\"");
 				}
 			}
+			/* We need to clear transitionSlot in case the item is placed
+			 * on the ground or otherwise unequipped.
+			 */
+			this.transitionSlot = null;
 		} else {
 			/* Item was picked up from ground or other unknown source. */
 			if (logger.isDebugEnabled() || Testing.DEBUG) {

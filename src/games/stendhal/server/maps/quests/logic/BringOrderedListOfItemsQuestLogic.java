@@ -61,19 +61,7 @@ public class BringOrderedListOfItemsQuestLogic {
 
 	private String itemsStillNeeded(final Player player, boolean withHash) {
 		List<String> neededItemsWithAmounts = neededItemsWithAmounts(player, withHash);
-
-		// TODO try Grammar.enumerateCollection
-		StringBuilder all = new StringBuilder();
-		for (int i = 0; i < neededItemsWithAmounts.size(); i++) {
-			if (i != 0 && i == neededItemsWithAmounts.size() - 1) {
-				all.append(" i ");
-			}
-			all.append(neededItemsWithAmounts.get(i));
-			if (i < neededItemsWithAmounts.size() - 2) {
-				all.append(", ");
-			}
-		}
-		return all.toString();
+		return Grammar.enumerateCollection(neededItemsWithAmounts, "i");
 	}
 
 	/**

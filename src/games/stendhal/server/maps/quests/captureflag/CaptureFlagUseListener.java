@@ -105,14 +105,12 @@ public class CaptureFlagUseListener implements UseListener {
 			return "not-in-range";
 		}
 
-		// get the type of the equipped arrows, return first word
-		String[] parts = projectiles.get("name").split(" ");
-		String   type  = parts[0];
+		String type = CaptureFlagSupport.resolveProjectileEffect(projectiles);
 
-		// TODO: confirm that is is one of the special types
-		// TODO: if type not one of the special types, return null
+		if (type == null) {
+			return null;
+		}
 
-		// take away one arrow
 		projectiles.sub(1);
 
 		return type;

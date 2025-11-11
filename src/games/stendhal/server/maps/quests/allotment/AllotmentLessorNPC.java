@@ -24,12 +24,18 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 /**
  * Builds an allotment lessor NPC for Semos.
  *
  * @author kymara, filipe
  */
 public class AllotmentLessorNPC implements ZoneConfigurator {
+	private static final Logger logger = Logger.getLogger(AllotmentLessorNPC.class);
+	private static final String RENT_COST_ATTRIBUTE = "rent_cost";
+	private int rentalCost;
+
 	private static String QUEST_SLOT = AllotmentUtilities.QUEST_SLOT;
 	private AllotmentUtilities rentHelper;
 
@@ -42,7 +48,33 @@ public class AllotmentLessorNPC implements ZoneConfigurator {
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
 		rentHelper = AllotmentUtilities.get();
+		rentalCost = parseRentCost(attributes);
 		buildNPC(zone);
+	}
+
+	private int parseRentCost(final Map<String, String> attributes) {
+		if ((attributes == null) || !attributes.containsKey(RENT_COST_ATTRIBUTE)) {
+			return 0;
+		}
+		String value = attributes.get(RENT_COST_ATTRIBUTE);
+		try {
+			return Integer.parseInt(value);
+		} catch (NumberFormatException ex) {
+			logger.warn("Nieprawidłowa wartość opłaty za działkę: " + value, ex);
+			return 0;
+		}
+	}
+
+	private boolean collectRent(final Player player, final EventRaiser npc) {
+		if (rentalCost <= 0) {
+			return true;
+		}
+		if (!player.isEquipped("money", rentalCost)) {
+			npc.say("Wynajem działki kosztuje " + rentalCost + " money. Wróć, gdy będziesz " + player.getGenderVerb("miał") + " tyle przy sobie.");
+			return false;
+		}
+		player.drop("money", rentalCost);
+		return true;
 	}
 
 	/**
@@ -95,15 +127,13 @@ public class AllotmentLessorNPC implements ZoneConfigurator {
 
 			@Override
 			protected void createDialog() {
-				// TODO: this was copy pasted change as needed
-				addGreeting("Cześć!");
-				addJob("Hm, nie mam pojęcia o czym mówisz. Czekam na moją mamę, aż wróci ze #sklepu.");
-				addHelp("Posiadam #informacje o tym bazarze tu obok.");
-				addOffer("Niczego nie sprzedaję. Czekam na moją mamę. Ale mogę ci zdradzić #informacje, jeżeli jesteś ciekawy.");
-				// quest: FindJefsMom , quest sentence given there
-				addReply("informacje", "Doszły mnie słuchy, iż nie długo będzie więcej sprzedawców. Wtedy bazar ożyje, jak na razie jest tam pusto i nie ma ruchu.");
-				addReply("sklepu", "Musiała iść po za miasto. Na tym bazarze obok, jedynym sprzedawcą jest kwiaciarka.Krążą #informacje, że na bazar ma...");
-				addGoodbye("Do zobaczenia.");
+				addGreeting("Cześć! Szukasz kawałka ziemi pod własne plony?");
+				addJob("Opiekuję się semoskimi działkami i pilnuję, by wszystkie umowy były aktualne.");
+				addHelp("Mogę powiedzieć, jak wynająć działkę, odnowić #klucz albo sprawdzić, ile #czasu zostało do końca umowy.");
+				addOffer("Nie prowadzę sprzedaży, ale chętnie podzielę się #informacjami o wolnych działkach i zasadach korzystania.");
+				addReply("informacje", "Wolne działki czekają na kolejnych ogrodników. Mogę też przygotować zapasowy #klucz albo przypomnieć warunki najmu.");
+				addReply("sklepu", "Najlepsze zbiory to te z własnej ziemi. Jeśli potrzebujesz nasion lub narzędzi, znajdziesz je w Semos, a działkę doglądaj tutaj.");
+				addGoodbye("Powodzenia z uprawami.");
 
 				// if player already has one rented ask how may help
 				add(ConversationStates.ATTENDING,
@@ -161,8 +191,9 @@ public class AllotmentLessorNPC implements ZoneConfigurator {
 							List<String> allotments = rentHelper.getAvailableAllotments(zone.getName());
 							String reply = Grammar.enumerateCollection(allotments);
 
+							String priceHint = (rentalCost > 0) ? " Całkowity koszt wynosi " + rentalCost + " money." : "";
 							npc.say("Którą chcesz? Popatrzmy... " + Grammar.plnoun(allotments.size(), "działkę") + " "
-									+ reply + " są dostępne, chyba, że #nie chesz tej działki.");
+									+ reply + " są dostępne, chyba, że #nie chcesz tej działki." + priceHint);
 						}
 					});
 
@@ -187,12 +218,16 @@ public class AllotmentLessorNPC implements ZoneConfigurator {
 							final int number = sentence.getNumeral().getAmount();
 							final String allotmentNumber = Integer.toString(number);
 
-							//TODO: get payment
 							if (!rentHelper.isValidAllotment(zone.getName(), allotmentNumber)) {
 								npc.say("Obawiam się, że działka nie istnieje.");
 							} else {
 								if (rentHelper.getAvailableAllotments(zone.getName()).contains(allotmentNumber)) {
-									if(rentHelper.setExpirationTime(zone.getName(), allotmentNumber, player.getName())) {
+									if (rentHelper.setExpirationTime(zone.getName(), allotmentNumber, player.getName())) {
+										if (!collectRent(player, npc)) {
+											rentHelper.clearRental(zone.getName(), allotmentNumber);
+											return;
+										}
+
 										npc.say("Oto klucz do działki " + allotmentNumber + ". Otrzymałeś pozwolenie na używanie działki na czas "
 												+ TimeUtil.approxTimeUntil((int) (AllotmentUtilities.RENTAL_TIME / 1000L)) + ".");
 
@@ -253,11 +288,10 @@ public class AllotmentLessorNPC implements ZoneConfigurator {
 			}
 		};
 
-		//TODO: also copy-pasted change as needed
-		npc.setEntityClass("kid6npc");
+		npc.setEntityClass("gardenernpc");
 		npc.setPosition(85, 11);
 		npc.initHP(100);
-		npc.setDescription("Oto klon Jefa. Wygląda jakby na kogoś czekał.");
+		npc.setDescription("Opiekun semoskich działek nadzoruje wynajem i pielęgnację ogródków.");
 		zone.add(npc);
 	}
 }

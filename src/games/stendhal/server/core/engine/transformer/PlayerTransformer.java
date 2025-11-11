@@ -79,7 +79,7 @@ public class PlayerTransformer implements Transformer {
 
 		loadItemsIntoSlots(player);
 		loadSpellsIntoSlots(player);
-		player.cancelTradeInternally(null);
+		player.restoreTradeSlotOnLogin();
 
 		// buddy handling with maps
 		if(player.hasBuddies()) {

@@ -93,16 +93,16 @@ public class AutoWalkAction implements ActionListener {
 				player.setDirection(Direction.DOWN);
 			}
 
-			/* Check if player is has a debilitating status effect */
-			// FIXME: How to stop player when poised while using auto walk?
-			if (player.hasStatus(StatusType.POISONED)
-					|| player.hasStatus(StatusType.CONFUSED)) {
-				player.sendPrivateText("Jesteś zdezorientowany i nie jesteś w stanie normalnie się poruszać. Wygląda na to, że możesz tylko poruszać się do tyłu i nie możesz zaplanować drogi.");
-				if (player.has(AUTOWALK)) {
-					player.remove(AUTOWALK);
-				}
-				return;
+		/* Check if player is has a debilitating status effect */
+		if (player.hasStatus(StatusType.POISONED)
+				|| player.hasStatus(StatusType.CONFUSED)) {
+			player.sendPrivateText("Jesteś zdezorientowany i nie jesteś w stanie normalnie się poruszać. Wygląda na to, że możesz tylko poruszać się do tyłu i nie możesz zaplanować drogi.");
+			if (player.has(AUTOWALK)) {
+				player.remove(AUTOWALK);
 			}
+			player.stop();
+			return;
+		}
 
 			/* Begin walking using the entity's base speed. */
 			if (newSpeed != currentSpeed) {

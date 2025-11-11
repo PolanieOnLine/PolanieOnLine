@@ -111,33 +111,18 @@ public class CaptureFlagQuest extends AbstractQuest {
 						"Musisz #zagrać, aby otrzymać testową flagę.",
 						null);
 
-				// TODO: just use a compound action for all types of ammo
 				add(ConversationStates.ATTENDING,
 					Arrays.asList("snowballs", "śnieżki"),
 					new PlayingCTFCondition(),
 					ConversationStates.ATTENDING,
-					"Oto ona.  Teraz wszystkie strzały wyglądają tak samo.  Musisz teraz na nie spojrzeć, aby zobaczyć jakich używasz.",
-					new EquipItemAction("fumble arrow", 100));
-				add(ConversationStates.ATTENDING,
-						Arrays.asList("snowballs", "śnieżki"),
-						new NotCondition(new PlayingCTFCondition()),
-						ConversationStates.ATTENDING,
-						"Musisz #zagrać, aby zdobyć więcej strzał.",
-						null);
-
-				// TODO: just use a compound action for all types of ammo
+					"Oto zapas strzał i śnieżek testowych. Wszystkie wyglądają tak samo, więc sprawdź, których używasz.",
+					CaptureFlagSupport.supplyAmmoAction("śnieżka pogrzebania", "śnieżka spowolnienia", "śnieżka przyspieszenia"));
 				add(ConversationStates.ATTENDING,
 					Arrays.asList("snowballs", "śnieżki"),
-					new PlayingCTFCondition(),
+					new NotCondition(new PlayingCTFCondition()),
 					ConversationStates.ATTENDING,
-					"Oto ona.  Wszystkie śnieżki wyglądają tak samo.  usisz teraz na nie spojrzeć, aby zobaczyć jakich używasz.",
-					new EquipItemAction("śnieżka pogrzebania", 100));
-				add(ConversationStates.ATTENDING,
-						Arrays.asList("snowballs", "śnieżki"),
-						new NotCondition(new PlayingCTFCondition()),
-						ConversationStates.ATTENDING,
-						"Musisz #zagrać, aby zdobyć więcej strzał.",
-						null);
+					"Musisz #zagrać, aby zdobyć więcej strzał.",
+					null);
 
 				// TODO: remove from game, remove all ctf gear, ...
 				// TODO: the cleanup needs to happen even if player logs out, or walks away (different code path)
@@ -148,7 +133,7 @@ public class CaptureFlagQuest extends AbstractQuest {
 		npc.setEntityClass("oldheronpc");
 		npc.setPosition(100, 119);
 		npc.initHP(100);
-		npc.setDescription("Oto Thumb"); // TODO: Describe NPC
+			npc.setDescription("Thumb nadzoruje testowe mecze Capture the Flag i wyposaża graczy w sprzęt.");
 		zone.add(npc);
 	}
 

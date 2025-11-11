@@ -75,7 +75,7 @@ public final class LogoutNotifier {
 	}
 
 	/**
-	 * This method is invoked by TODO
+	 * This method is invoked by StendhalRPRuleProcessor when a player session ends.
 	 *
 	 * @param player
 	 *            the player who logged out

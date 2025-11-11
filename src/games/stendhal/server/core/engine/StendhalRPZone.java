@@ -20,6 +20,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -113,7 +114,7 @@ public class StendhalRPZone extends MarauroaRPZone {
 
 	private static final Pattern ZONE_NAME_PATTERN = Pattern.compile("^(-?[\\d]|alt_-?[\\d]|int)_(.+)$");
 
-	TeleportationRules teleRules = new TeleportationRules();
+	private final TeleportationRules teleportationRules = new TeleportationRules();
 
 	/** the logger instance. */
 	private static final Logger logger = Logger.getLogger(StendhalRPZone.class);
@@ -190,6 +191,7 @@ public class StendhalRPZone extends MarauroaRPZone {
 
 	/** Zones that some event types propagate to from this one. */
 	private String associatedZones;
+	private transient List<String> associatedZoneNames;
 
 	public StendhalRPZone(final String name) {
 		super(name);
@@ -1802,6 +1804,14 @@ public class StendhalRPZone extends MarauroaRPZone {
 	}
 
 	/**
+	 * Allow teleporting with scrolls for the entire zone.
+	 */
+	public void allowTeleport() {
+		allowIn();
+		allowOut();
+	}
+
+	/**
 	 * Disallow teleporting to and from a specified area.
 	 *
 	 * @param x left x coordinate
@@ -1815,6 +1825,19 @@ public class StendhalRPZone extends MarauroaRPZone {
 	}
 
 	/**
+	 * Allow teleporting to and from a specified area.
+	 *
+	 * @param x left x coordinate
+	 * @param y top y coordinate
+	 * @param width width of the area
+	 * @param height height of the area
+	 */
+	public void allowTeleport(int x, int y, int width, int height) {
+		allowIn(x, y, width, height);
+		allowOut(x, y, width, height);
+	}
+
+	/**
 	 * Check if teleporting with a scroll to a location is allowed.
 	 *
 	 * @param x x coordinate
@@ -1822,7 +1845,7 @@ public class StendhalRPZone extends MarauroaRPZone {
 	 * @return <code>true</code> iff teleporting is allowed
 	 */
 	public boolean isTeleportInAllowed(int x, int y) {
-		return teleRules.isInAllowed(x, y);
+		return teleportationRules.isInAllowed(x, y);
 	}
 
 	/**
@@ -1833,14 +1856,14 @@ public class StendhalRPZone extends MarauroaRPZone {
 	 * @return <code>true</code> iff teleporting is allowed
 	 */
 	public boolean isTeleportOutAllowed(int x, int y) {
-		return teleRules.isOutAllowed(x, y);
+		return teleportationRules.isOutAllowed(x, y);
 	}
 
 	/**
 	 * Forbid teleporting to the entire zone using a scroll.
 	 */
 	public void disallowIn() {
-		teleRules.disallowIn();
+		teleportationRules.disallowIn();
 	}
 
 	/**
@@ -1852,14 +1875,33 @@ public class StendhalRPZone extends MarauroaRPZone {
 	 * @param height height of the area
 	 */
 	public void disallowIn(int x, int y, int width, int height) {
-		teleRules.disallowIn(x, y, width, height);
+		teleportationRules.disallowIn(x, y, width, height);
+	}
+
+	/**
+	 * Allow teleporting to specified area.
+	 *
+	 * @param x left x coordinate
+	 * @param y top y coordinate
+	 * @param width width of the area
+	 * @param height height of the area
+	 */
+	public void allowIn(int x, int y, int width, int height) {
+		teleportationRules.allowIn(x, y, width, height);
+	}
+
+	/**
+	 * Allow teleporting to the entire zone using a scroll.
+	 */
+	public void allowIn() {
+		teleportationRules.allowIn();
 	}
 
 	/**
 	 * Forbid teleporting from the entire zone using a scroll.
 	 */
 	public void disallowOut() {
-		teleRules.disallowOut();
+		teleportationRules.disallowOut();
 	}
 
 	/**
@@ -1871,7 +1913,26 @@ public class StendhalRPZone extends MarauroaRPZone {
 	 * @param height height of the area
 	 */
 	public void disallowOut(int x, int y, int width, int height) {
-		teleRules.disallowOut(x, y, width, height);
+		teleportationRules.disallowOut(x, y, width, height);
+	}
+
+	/**
+	 * Allow teleporting from specified area.
+	 *
+	 * @param x left x coordinate
+	 * @param y top y coordinate
+	 * @param width width of the area
+	 * @param height height of the area
+	 */
+	public void allowOut(int x, int y, int width, int height) {
+		teleportationRules.allowOut(x, y, width, height);
+	}
+
+	/**
+	 * Allow teleporting from the entire zone using a scroll.
+	 */
+	public void allowOut() {
+		teleportationRules.allowOut();
 	}
 
 	public void onRemoved() {
@@ -2115,6 +2176,7 @@ public class StendhalRPZone extends MarauroaRPZone {
 	 */
 	public void setAssociatedZones(final String zones) {
 		associatedZones = zones;
+		associatedZoneNames = null;
 	}
 
 	/**
@@ -2128,11 +2190,32 @@ public class StendhalRPZone extends MarauroaRPZone {
 	 * Gets other zones that should receive certain events such as knocking on door.
 	 */
 	public List<String> getAssociatedZonesList() {
-		if (associatedZones == null) {
-			return new ArrayList<>();
+		final List<String> cachedZones = associatedZoneNames;
+		if (cachedZones != null) {
+			return cachedZones;
 		}
 
-		return Arrays.asList(getAssociatedZones().split(","));
+		if ((associatedZones == null) || associatedZones.isEmpty()) {
+			associatedZoneNames = Collections.emptyList();
+			return associatedZoneNames;
+		}
+
+		final String[] rawNames = associatedZones.split(",");
+		final List<String> parsedNames = new ArrayList<>(rawNames.length);
+		for (final String zoneName : rawNames) {
+			final String trimmedName = zoneName.trim();
+			if (!trimmedName.isEmpty()) {
+				parsedNames.add(trimmedName);
+			}
+		}
+
+		if (parsedNames.isEmpty()) {
+			associatedZoneNames = Collections.emptyList();
+		} else {
+			associatedZoneNames = Collections.unmodifiableList(parsedNames);
+		}
+
+		return associatedZoneNames;
 	}
 
 	/**

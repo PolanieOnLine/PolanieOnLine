@@ -17,7 +17,6 @@ import games.stendhal.server.actions.admin.AdministrationAction;
 import games.stendhal.server.core.engine.GameEvent;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.core.rp.StendhalRPAction;
 import games.stendhal.server.entity.player.Player;
 import marauroa.common.game.RPAction;
 
@@ -174,13 +173,9 @@ public class SpouseExtension extends StendhalServerExtension implements
 			final int x = teleported.getX();
 			final int y = teleported.getY();
 
-			// TODO: use Player.teleport()
-
-			if (StendhalRPAction.placeat(zone, player, x, y)) {
+			if (player.teleport(zone, x, y, teleported.getDirection(), null)) {
 				new GameEvent(player.getName(), "teleportto", teleported.getName() + "(spouse)").raise();
 			}
-
-			player.notifyWorldAboutChanges();
 		}
 	}
 
