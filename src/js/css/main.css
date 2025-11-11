@@ -1035,12 +1035,10 @@ div#menupanel #soundbutton {
 
 #viewport {
 	display: block;
-/*
-	max-height: calc(100vh - 5em);
-	max-width: calc((100vh - 5em) * 640 / 480);
-	max-height: calc(100dvh - 5em);
-	max-width: calc((100dvh - 5em) * 640 / 480);
-*/
+	--viewport-max-height: calc(100dvh - 5em);
+	--viewport-max-width: calc((100dvh - 5em) * 640 / 480);
+	max-height: var(--viewport-max-height);
+	max-width: var(--viewport-max-width);
 }
 
 

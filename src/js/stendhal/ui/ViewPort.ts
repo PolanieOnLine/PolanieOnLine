@@ -57,11 +57,6 @@ export class ViewPort {
 	private readonly entityStates = new WeakMap<any, {prevX: number; prevY: number; currX: number; currY: number}>();
 	private fpsLabel?: HTMLElement;
 
-	// dimensions
-	// TODO: remove & use CSS style instead
-	private readonly width: number;
-	private readonly height: number;
-
 	/** Drawing context. */
 	private ctx: CanvasRenderingContext2D;
 	/** Map tile pixel width. */
@@ -82,14 +77,42 @@ export class ViewPort {
 	private filter?: string; // deprecated, use `HSLFilter`
 	/** Coloring filter of current zone. */
 	private HSLFilter?: string;
-	private colorMethod = "";
-	private blendMethod = ""; // FIXME: unused
+	private colorMethod: GlobalCompositeOperation|"" = "";
+	private blendMethod = "";
 
 	/** Styles to be applied when chat panel is not floating. */
 	private readonly initialStyle: {[prop: string]: string};
 
 	/** Singleton instance. */
 	private static instance: ViewPort;
+	private static readonly COMPOSITE_OPERATIONS = new Set<GlobalCompositeOperation>([
+		"source-over",
+		"source-in",
+		"source-out",
+		"source-atop",
+		"destination-over",
+		"destination-in",
+		"destination-out",
+		"destination-atop",
+		"lighter",
+		"copy",
+		"xor",
+		"multiply",
+		"screen",
+		"overlay",
+		"darken",
+		"lighten",
+		"color-dodge",
+		"color-burn",
+		"hard-light",
+		"soft-light",
+		"difference",
+		"exclusion",
+		"hue",
+		"saturation",
+		"color",
+		"luminosity"
+	]);
 
 
 	/**
@@ -108,17 +131,9 @@ export class ViewPort {
 	private constructor() {
 		const element = this.getElement() as HTMLCanvasElement;
 		this.ctx = element.getContext("2d")!;
-		this.width = element.width;
-		this.height = element.height;
 
 		this.initialStyle = {};
-		//~ const stylesheet = getComputedStyle(element);
-		// FIXME: how to get literal "calc()" instead of value of calc()?
-		//~ this.initialStyle["max-width"] = stylesheet.getPropertyValue("max-width");
-		//~ this.initialStyle["max-height"] = stylesheet.getPropertyValue("max-height");
-		// NOTE: this doesn't work if properties set in css
-		this.initialStyle["max-width"] = "calc((100dvh - 5em) * 640 / 480)";
-		this.initialStyle["max-height"] = "calc(100dvh - 5em)";
+		this.captureInitialStyles(element);
 
 		this.fpsLabel = this.createFpsLabel(element);
 	}
@@ -131,6 +146,30 @@ export class ViewPort {
 	 */
 	public getElement(): HTMLElement {
 		return document.getElementById("viewport")!;
+}
+
+	private captureInitialStyles(element: HTMLElement) {
+		const styles = getComputedStyle(element);
+		this.assignInitialStyleFrom(styles.getPropertyValue("--viewport-max-width"), "max-width");
+		this.assignInitialStyleFrom(styles.getPropertyValue("--viewport-max-height"), "max-height");
+		this.assignInitialStyleFrom(element.style.getPropertyValue("max-width"), "max-width");
+		this.assignInitialStyleFrom(element.style.getPropertyValue("max-height"), "max-height");
+		if (!this.initialStyle["max-width"]) {
+			this.initialStyle["max-width"] = "calc((100dvh - 5em) * 640 / 480)";
+		}
+		if (!this.initialStyle["max-height"]) {
+			this.initialStyle["max-height"] = "calc(100dvh - 5em)";
+		}
+	}
+
+	private assignInitialStyleFrom(value: string|null|undefined, prop: string) {
+		if (!value || this.initialStyle[prop]) {
+			return;
+		}
+		const trimmed = value.trim();
+		if (trimmed) {
+			this.initialStyle[prop] = trimmed;
+		}
 	}
 
 	private createFpsLabel(canvas: HTMLCanvasElement): HTMLElement {
@@ -199,6 +238,7 @@ export class ViewPort {
 		this.ctx.globalAlpha = 1.0;
 		this.ctx.setTransform(1, 0, 0, 1, 0, 0);
 		this.ctx.imageSmoothingEnabled = false;
+		this.applyFilter();
 
 		const interpolated = this.cameraSpring.getInterpolated(alpha);
 		this.renderOffset.x = interpolated.x;
@@ -235,6 +275,7 @@ export class ViewPort {
 		this.drawEmojiSprites();
 		this.drawTextSprites();
 		this.drawTextSprites(this.notifSprites);
+		this.removeFilter();
 
 		stendhal.ui.equip.update();
 		(ui.get(UIComponentEnum.PlayerEquipment) as PlayerEquipmentComponent).update();
@@ -377,16 +418,16 @@ export class ViewPort {
 	/**
 	 * Adds map's coloring filter to viewport.
 	 *
-	 * FIXME:
-	 * - colors are wrong
-	 * - doesn't support "blend" layers
-	 * - very slow
+	 * The legacy filter string is applied through `CanvasRenderingContext2D.filter`
+	 * so the browser can transform the colors directly.
 	 *
 	 * @deprecated
 	 */
 	applyFilter() {
 		if (this.filter && stendhal.config.getBoolean("effect.lighting")) {
 			this.ctx.filter = this.filter;
+		} else {
+			this.ctx.filter = "none";
 		}
 	}
 
@@ -403,17 +444,178 @@ export class ViewPort {
 	 * Add coloring filter to viewport.
 	 */
 	private applyHSLFilter() {
-		if (!this.HSLFilter) {
+		const overlay = this.resolveOverlayOptions();
+		if (!overlay) {
 			return;
 		}
 		this.ctx.save();
-		// FIXME: is this the appropriate alpha level to use? "color_method" value from server doesn't
-		//	appear to include alpha information
-		this.ctx.globalAlpha = 0.75;
-		this.ctx.globalCompositeOperation = (this.colorMethod || this.ctx.globalCompositeOperation) as GlobalCompositeOperation;
-		this.ctx.fillStyle = this.HSLFilter;
+		this.ctx.globalAlpha = overlay.alpha;
+		this.ctx.globalCompositeOperation = overlay.operation;
+		this.ctx.fillStyle = overlay.fillStyle;
 		this.ctx.fillRect(this.offsetX, this.offsetY, this.ctx.canvas.width, this.ctx.canvas.height);
 		this.ctx.restore();
+	}
+
+	private resolveOverlayOptions(): {alpha: number; operation: GlobalCompositeOperation; fillStyle: string}|undefined {
+	const fillStyle = this.determineOverlayFillStyle();
+	if (!fillStyle) {
+	return;
+	}
+	const alpha = this.determineOverlayAlpha();
+	if (alpha <= 0) {
+	return;
+	}
+	return {
+	alpha,
+	operation: this.determineOverlayOperation(),
+	fillStyle
+	};
+	}
+
+	private determineOverlayFillStyle(): string|undefined {
+	const filter = this.HSLFilter ? this.HSLFilter.trim() : "";
+	if (filter) {
+	return filter;
+	}
+	switch (this.blendMethod) {
+	case "bleach":
+	case "generic_light":
+	case "truecolor":
+	return "rgba(255, 255, 255, 1)";
+	}
+	return undefined;
+	}
+
+	private determineOverlayAlpha(): number {
+	const fallback = 0.75;
+	const configured = stendhal.config.getFloat("effect.lighting.overlay.alpha", fallback);
+	let alpha = typeof(configured) === "number" && !Number.isNaN(configured) ? configured : fallback;
+	switch (this.blendMethod) {
+	case "bleach":
+	alpha = this.clampAlpha(alpha + 0.15);
+	break;
+	case "generic_light":
+	alpha = this.clampAlpha(alpha * 0.6);
+	break;
+	default:
+	alpha = this.clampAlpha(alpha);
+	}
+	return alpha;
+	}
+
+	private determineOverlayOperation(): GlobalCompositeOperation {
+	const blendOperation = this.normalizeBlendComposite(this.blendMethod);
+	if (blendOperation) {
+	return blendOperation;
+	}
+	const colorOperation = this.normalizeCompositeOperation(this.colorMethod);
+	if (colorOperation) {
+	return colorOperation;
+	}
+	return this.ctx.globalCompositeOperation;
+	}
+
+	private normalizeBlendComposite(method?: string): GlobalCompositeOperation|undefined {
+	if (!method) {
+	return undefined;
+	}
+	switch (method) {
+	case "bleach":
+	return "screen";
+	case "generic_light":
+	return "lighter";
+	case "truecolor":
+	return "color";
+	}
+	return this.normalizeCompositeOperation(method);
+	}
+
+	private normalizeCompositeOperation(value?: string|GlobalCompositeOperation|""): GlobalCompositeOperation|undefined {
+	if (!value) {
+	return undefined;
+	}
+	let normalized = ("" + value).toLowerCase().trim();
+	if (!normalized) {
+	return undefined;
+	}
+	normalized = normalized.replace(/_/g, "-");
+	switch (normalized) {
+	case "softlight":
+	normalized = "soft-light";
+	break;
+	case "hardlight":
+	normalized = "hard-light";
+	break;
+	case "colordodge":
+	normalized = "color-dodge";
+	break;
+	case "colorburn":
+	normalized = "color-burn";
+	break;
+	case "destinationover":
+	normalized = "destination-over";
+	break;
+	case "destinationin":
+	normalized = "destination-in";
+	break;
+	case "destinationout":
+	normalized = "destination-out";
+	break;
+	case "destinationatop":
+	normalized = "destination-atop";
+	break;
+	case "sourceover":
+	normalized = "source-over";
+	break;
+	case "sourcein":
+	normalized = "source-in";
+	break;
+	case "sourceout":
+	normalized = "source-out";
+	break;
+	case "sourceatop":
+	normalized = "source-atop";
+	break;
+	}
+	if (ViewPort.COMPOSITE_OPERATIONS.has(normalized as GlobalCompositeOperation)) {
+	return normalized as GlobalCompositeOperation;
+	}
+	return undefined;
+	}
+
+	private normalizeBlendMethod(method?: string): string|undefined {
+	if (!method) {
+	return "";
+	}
+	const trimmed = method.trim();
+	if (!trimmed) {
+	return "";
+	}
+	const lower = trimmed.toLowerCase();
+	if (lower === "bleach" || lower === "truecolor") {
+	return lower;
+	}
+	if (lower === "generic_light" || lower === "generic-light") {
+	return "generic_light";
+	}
+	const composite = this.normalizeCompositeOperation(lower);
+	if (composite) {
+	return composite;
+	}
+	return undefined;
+	}
+
+	private clampAlpha(value: number): number {
+	if (!Number.isFinite(value)) {
+	return 0;
+	}
+	if (value < 0) {
+	return 0;
+	}
+	if (value > 1) {
+	return 1;
+	}
+	return value;
 	}
 
 	/**
@@ -423,38 +625,16 @@ export class ViewPort {
 	 *   Color method.
 	 */
 	setColorMethod(method: string) {
-		switch(method) {
-			case "softlight":
-				method = "soft-light";
-				break;
+		if (!method) {
+			this.colorMethod = "";
+			return;
 		}
-		const known = [
-			"source-over", "source-in", "source-out", "source-atop",
-			"destination-over", "destination-in", "destination-out", "destination-atop",
-			"lighter",
-			"copy",
-			"xor",
-			"multiply",
-			"screen",
-			"overlay",
-			"darken",
-			"lighten",
-			"color-dodge",
-			"color-burn",
-			"hard-light",
-			"soft-light",
-			"difference",
-			"exclusion",
-			"hue",
-			"saturation",
-			"color",
-			"luminosity"
-		];
-		if (known.indexOf(method) < 0) {
+		const normalized = this.normalizeCompositeOperation(method);
+		if (!normalized) {
 			console.warn("Unknown color method:", method);
 			return;
 		}
-		this.colorMethod = method;
+		this.colorMethod = normalized;
 	}
 
 	/**
@@ -464,7 +644,12 @@ export class ViewPort {
 	 *   Blend method.
 	 */
 	setBlendMethod(method: string) {
-		this.blendMethod = method;
+		const normalized = this.normalizeBlendMethod(method);
+		if (typeof(normalized) === "undefined") {
+			console.warn("Unknown blend method:", method);
+			return;
+		}
+		this.blendMethod = normalized;
 	}
 
 	/**
@@ -756,12 +941,18 @@ export class ViewPort {
 			if ((e instanceof MouseEvent && mHandle.isRightClick(e)) || long_touch) {
 				if (entity != stendhal.zone.ground) {
 					const append: any[] = [];
-					/*
-					if (long_touch) {
-						// TODO: add option for "hold" to allow splitting item stacks
+				if (long_touch) {
+					const viewport = stendhal.ui.gamewindow as ViewPort;
+					if (viewport.canHoldEntityForTouch(entity)) {
+						append.push({
+							title: "Przytrzymaj (podziel stos)",
+							action: () => {
+								viewport.tryHoldEntityForTouch(entity, pos.pageX, pos.pageY);
+							}
+						});
 					}
-					*/
-					stendhal.ui.actionContextMenu.set(ui.createSingletonFloatingWindow("Czynności",
+				}
+				stendhal.ui.actionContextMenu.set(ui.createSingletonFloatingWindow("Czynności",
 						new ActionContextMenu(entity, append), pos.pageX - 50, pos.pageY - 5));
 				}
 			} else {
@@ -889,6 +1080,39 @@ export class ViewPort {
 			window.event = e; // required by setDragImage polyfil
 			e.dataTransfer.setDragImage(img, 0, 0);
 		}
+	}
+
+	private canHoldEntityForTouch(entity: any): boolean {
+		if (!entity || entity.type !== "item") {
+			return false;
+		}
+		const quantity = entity.hasOwnProperty("quantity") ? Number(entity["quantity"]) : 1;
+		if (!quantity || quantity <= 1) {
+			return false;
+		}
+		return !!(entity.sprite && entity.sprite.filename);
+	}
+
+	private tryHoldEntityForTouch(entity: any, pageX: number, pageY: number): boolean {
+		if (!this.canHoldEntityForTouch(entity)) {
+			return false;
+		}
+		const spriteFilename = entity.sprite.filename;
+		const sprite = stendhal.data.sprites.getAreaOf(stendhal.data.sprites.get(spriteFilename), 32, 32);
+		if (!sprite) {
+			return false;
+		}
+		const position = new Point(pageX, pageY);
+		const quantity = entity.hasOwnProperty("quantity") ? Number(entity["quantity"]) : 1;
+		const held: HeldObject = {
+			path: entity.getIdPath(),
+			zone: marauroa.currentZoneName,
+			quantity,
+			origin: position
+		};
+		singletons.getHeldObjectManager().set(held, sprite, position);
+		stendhal.ui.touch.setHolding(true);
+		return true;
 	}
 
 	/**

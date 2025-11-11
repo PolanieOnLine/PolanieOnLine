@@ -44,6 +44,7 @@ export class ConfigManager {
 		"effect.blood": "true",
 		"effect.entity-overlay": "true",
 		"effect.lighting": "true",
+		"effect.lighting.overlay.alpha": "0.75",
 		"effect.weather": "true",
 		"effect.no-nude": "true",
 		"effect.parallax": "true",

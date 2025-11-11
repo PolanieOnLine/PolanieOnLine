@@ -494,7 +494,10 @@ export class Client {
 			}
 			if (zoneinfo["blend_method"]) {
 				stendhal.ui.gamewindow.setBlendMethod(zoneinfo["blend_method"]);
+			} else {
+				stendhal.ui.gamewindow.setBlendMethod("");
 			}
+
 			const hsl = Color.numToHSL(Number(zoneinfo["color"]));
 			stendhal.ui.gamewindow.HSLFilter = hsl.toString();
 			// deprecated
