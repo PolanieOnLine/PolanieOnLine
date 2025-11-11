@@ -817,10 +817,6 @@ span.lognick {
 	--right-panel-width: 248px;
 }
 
-#client.left-panel-collapsed {
-	--left-panel-width: 0px;
-}
-
 #client.right-panel-collapsed {
 	--right-panel-width: 0px;
 }
@@ -922,12 +918,6 @@ span.lognick {
 	#client.right-panel-collapsed #rightColumn {
 		opacity: 0;
 		pointer-events: none;
-	}
-
-	#client.left-panel-collapsed #leftColumn {
-		flex: 0 0 0;
-		width: 0;
-		min-width: 0;
 	}
 
 	#client.right-panel-collapsed #rightColumn {
