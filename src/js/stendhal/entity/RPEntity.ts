@@ -55,7 +55,8 @@ export class RPEntity extends ActiveEntity {
 	// canvas for merging outfit layers to be drawn
 	private octx?: CanvasRenderingContext2D;
 
-	private attackers: {[key: string]: any} = { size: 0 };
+        private attackers = new Map<string, Entity>();
+        private deathAnnounced = false;
 
 	/**
 	 * Animation drawn over entity sprite.
@@ -73,11 +74,18 @@ export class RPEntity extends ActiveEntity {
 		super.set(key, value);
 		if (key == "text") {
 			this.say(value);
-		} else if (["hp", "base_hp"].indexOf(key) !== -1) {
-			this[key] = parseInt(value, 10);
-			if (key === "hp" && oldValue != undefined) {
-				this.onHPChanged(this[key] - oldValue);
-			}
+                } else if (["hp", "base_hp"].indexOf(key) !== -1) {
+                        this[key] = parseInt(value, 10);
+                        if (key === "hp" && oldValue != undefined) {
+                                const newHp = this[key];
+                                this.onHPChanged(newHp - oldValue);
+                                if (newHp > 0) {
+                                        this.deathAnnounced = false;
+                                } else if (!this.deathAnnounced && oldValue > 0) {
+                                        this.onDeath();
+                                        this.deathAnnounced = true;
+                                }
+                        }
 		} else if (key === "id" && !oldValue && this._target) {
 			// update list of attackers since id was not set when entity was targeted
 			this._target.onTargeted(this);
@@ -751,18 +759,49 @@ export class RPEntity extends ActiveEntity {
 		this.attackResult = this.createResultIcon(stendhal.paths.sprites + "/combat/missed.png");
 	}
 
-	protected onHPChanged(change: number) {
-		if (change > 0) {
-			this.addFloater("+" + change, "#00ff00");
-		} else if (change < 0) {
-			this.addFloater(change.toString(), "#ff0000");
-		}
-	}
+        protected onHPChanged(change: number) {
+                if (change > 0) {
+                        this.addFloater("+" + change, "#00ff00");
+                } else if (change < 0) {
+                        this.addFloater(change.toString(), "#ff0000");
+                }
+        }
 
-	protected onXPChanged(change: number) {
-		if (change === 0) return;
+        protected onDeath() {
+                if (this.attackers.size === 0) {
+                        return;
+                }
 
-		const qty = this.polishQuantity(Math.abs(change), "punkt");
+                const attackerNames = this.collectAttackerNames();
+                if (!attackerNames.length) {
+                        return;
+                }
+
+                const victimName = this.getTitle();
+                if (!victimName) {
+                        return;
+                }
+
+                const gender = this.getGender();
+                if (!gender) {
+                        return;
+                }
+
+                const deathText = `${victimName} ${this.genderize(gender, "został", "została", "zostało")} `
+                                + `${this.genderize(gender, "zabity", "zabita", "zabite")} przez ${this.enumerateList(attackerNames)}`;
+                Chat.log("significant_negative", deathText);
+
+                if (stendhal?.sound && typeof(stendhal.sound.playLocalizedEffect) === "function") {
+                        const tileX = this.getRenderTileX();
+                        const tileY = this.getRenderTileY();
+                        stendhal.sound.playLocalizedEffect(tileX, tileY, 20, 3, "death", 1);
+                }
+        }
+
+        protected onXPChanged(change: number) {
+                if (change === 0) return;
+
+                const qty = this.polishQuantity(Math.abs(change), "punkt");
 
 		if (change > 0) {
 			this.addFloater("+" + change, "#4169e1");
@@ -775,9 +814,9 @@ export class RPEntity extends ActiveEntity {
 		}
 	}
 
-	protected onLevelChanged(stat: string, newlevel: number, oldlevel: number): void {
-		if (newlevel === oldlevel) return;
-		if (!marauroa?.me || !marauroa.me.isInHearingRange(this)) return;
+        protected onLevelChanged(stat: string, newlevel: number, oldlevel: number): void {
+                if (newlevel === oldlevel) return;
+                if (!marauroa?.me || !marauroa.me.isInHearingRange(this)) return;
 
 		stat = stat.replace("def", "obrony");
 		stat = stat.replace("ratk", "strzelnictwa");
@@ -801,12 +840,78 @@ export class RPEntity extends ActiveEntity {
 			msg += `${newlevel}${poziom} ${stat}`;
 		}
 
-		Chat.logH(msgtype, msg);
-	}
+                Chat.logH(msgtype, msg);
+        }
 
-	addFloater(message: string, color: string) {
-		this.floaters.push(new Floater(message, color));
-	}
+        protected getGender(): string|undefined {
+                const gender = this["gender"];
+                if (typeof(gender) !== "string" || gender.length === 0) {
+                        return undefined;
+                }
+                return gender.toLowerCase();
+        }
+
+        private collectAttackerNames(): string[] {
+                const names: string[] = [];
+                const seen = new Set<string>();
+                for (const attacker of this.attackers.values()) {
+                        const name = this.resolveEntityName(attacker);
+                        if (!name || seen.has(name)) {
+                                continue;
+                        }
+                        seen.add(name);
+                        names.push(name);
+                }
+                return names;
+        }
+
+        private resolveEntityName(entity: Entity): string|undefined {
+                if (!entity) {
+                        return undefined;
+                }
+                if (typeof((entity as any).getTitle) === "function") {
+                        const title = (entity as any).getTitle();
+                        if (typeof(title) === "string" && title.length > 0) {
+                                return title;
+                        }
+                }
+                const title = entity["title"] || entity["name"];
+                if (typeof(title) === "string" && title.length > 0) {
+                        return title;
+                }
+                return undefined;
+        }
+
+        private enumerateList(items: string[]): string {
+                if (items.length === 1) {
+                        return items[0];
+                }
+                if (items.length === 2) {
+                        return `${items[0]} i ${items[1]}`;
+                }
+                const last = items[items.length - 1];
+                return `${items.slice(0, -1).join(", ")} i ${last}`;
+        }
+
+        private genderize(gender: string, male: string, female: string, neutral: string): string {
+                switch (gender) {
+                        case "female":
+                        case "f":
+                        case "kobieta":
+                                return female;
+                        case "neutral":
+                        case "n":
+                        case "neuter":
+                        case "bezpłciowy":
+                                return neutral;
+                        default:
+                                return male;
+                }
+        }
+
+        addFloater(message: string, color: string) {
+                this.floaters.push(new Floater(message, color));
+        }
 
 	/**
 	 * Create a closure for drawing attack result icons. The resulting object
@@ -816,22 +921,30 @@ export class RPEntity extends ActiveEntity {
 	 * @param imagePath path to the result icon
 	 * @return object for drawing the icon
 	 */
-	createResultIcon(imagePath: string) {
-		return {
-			initTime: Date.now(),
-			image: stendhal.data.sprites.get(imagePath),
-			draw: function(ctx: CanvasRenderingContext2D, x: number, y: number) {
-				ctx.drawImage(this.image, x, y);
-				return (Date.now() - this.initTime > 1200);
-			}
-		};
-	}
+        createResultIcon(imagePath: string) {
+                return {
+                        initTime: Date.now(),
+                        image: stendhal.data.sprites.get(imagePath),
+                        draw: function(ctx: CanvasRenderingContext2D, x: number, y: number) {
+                                ctx.drawImage(this.image, x, y);
+                                return (Date.now() - this.initTime > 1200);
+                        }
+                };
+        }
 
-	onAttackPerformed(nature: number, ranged: boolean, weapon?: string) {
-		if (!ranged && weapon === "ranged") {
-			// draw default melee sprite when next to target
-			weapon = undefined;
-		}
+        private normalizeEntityId(value: any): string|undefined {
+                if (value === null || typeof(value) === "undefined") {
+                        return undefined;
+                }
+                const id = String(value);
+                return id.length > 0 ? id : undefined;
+        }
+
+        onAttackPerformed(nature: number, ranged: boolean, weapon?: string) {
+                if (!ranged && weapon === "ranged") {
+                        // draw default melee sprite when next to target
+                        weapon = undefined;
+                }
 
 		if (ranged) {
 			this.attackSprite = new RangedAttackSprite(this, this.getAttackTarget()!,
@@ -864,12 +977,13 @@ export class RPEntity extends ActiveEntity {
 	 *
 	 * @param attacked The entity that selected this as the target
 	 */
-	onTargeted(attacker: Entity) {
-		if (!(attacker["id"] in this.attackers)) {
-			this.attackers[attacker["id"]] = true;
-			this.attackers.size += 1;
-		}
-	}
+        onTargeted(attacker: Entity) {
+                const attackerId = this.normalizeEntityId(attacker["id"]);
+                if (!attackerId || this.attackers.has(attackerId)) {
+                        return;
+                }
+                this.attackers.set(attackerId, attacker);
+        }
 
 	/**
 	 * Called when an entity deselects this as its attack target.
@@ -877,18 +991,20 @@ export class RPEntity extends ActiveEntity {
 	 * @param attacker The entity that had this as the attack target, but
 	 * 	stopped attacking
 	 */
-	onAttackStopped(attacker: Entity) {
-		if (attacker["id"] in this.attackers) {
-			delete this.attackers[attacker["id"]];
-			this.attackers.size -= 1;
-		}
-	}
+        onAttackStopped(attacker: Entity) {
+                const attackerId = this.normalizeEntityId(attacker["id"]);
+                if (!attackerId) {
+                        return;
+                }
+                this.attackers.delete(attackerId);
+        }
 
-	override destroy(_obj: Entity) {
-		if (this._target) {
-			this._target.onAttackStopped(this);
-		}
-	}
+        override destroy(_obj: Entity) {
+                if (this._target) {
+                        this._target.onAttackStopped(this);
+                }
+                this.attackers.clear();
+        }
 
 	/**
 	 * Called when entity's subclass is changed.
@@ -897,11 +1013,11 @@ export class RPEntity extends ActiveEntity {
 	 */
 	protected onTransformed() {
 		// do nothing
-	}
+        }
 
-	protected polishQuantity(n: number, word: string): string {
-		const abs = Math.abs(n);
-		const mod10 = abs % 10;
+        protected polishQuantity(n: number, word: string): string {
+                const abs = Math.abs(n);
+                const mod10 = abs % 10;
 		const mod100 = abs % 100;
 		let form: string;
 
