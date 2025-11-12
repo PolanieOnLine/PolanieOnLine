@@ -19,18 +19,20 @@ export class Door extends Portal {
 
 	override zIndex = 5000;
 
-	override draw(ctx: CanvasRenderingContext2D) {
-		let imagePath = stendhal.paths.sprites + "/doors/" + this["class"] + ".png";
-		let image = stendhal.data.sprites.get(imagePath);
-		if (image.height) {
-			let height = image.height / 2;
-			let x = (this["x"] * 32) - ((image.width - 32) / 2);
-			let y = (this["y"] * 32) - ((height - 32) / 2);
+        override draw(ctx: CanvasRenderingContext2D, _tileXOverride?: number, _tileYOverride?: number) {
+                let imagePath = stendhal.paths.sprites + "/doors/" + this["class"] + ".png";
+                let image = stendhal.data.sprites.get(imagePath);
+                if (image.height) {
+                        let height = image.height / 2;
+                        const tileX = this.getRenderTileX();
+                        const tileY = this.getRenderTileY();
+                        let x = (tileX * 32) - ((image.width - 32) / 2);
+                        let y = (tileY * 32) - ((height - 32) / 2);
 
-			var offsetY = height;
-			if (this["open"] === "") {
-				offsetY = 0;
-			}
+                        var offsetY = height;
+                        if (this["open"] === "") {
+                                offsetY = 0;
+                        }
 			ctx.drawImage(image, 0, offsetY, image.width, height, x, y, image.width, height);
 		}
 	}

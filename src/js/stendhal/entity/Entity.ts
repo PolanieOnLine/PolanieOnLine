@@ -22,9 +22,15 @@ declare var stendhal: any;
 
 export class Entity extends RPObject {
 
-	minimapShow = false;
-	minimapStyle = "rgb(200,255,200)";
-	zIndex = 10000;
+        minimapShow = false;
+        minimapStyle = "rgb(200,255,200)";
+        zIndex = 10000;
+
+        private renderOverrideX = Number.NaN;
+        private renderOverrideY = Number.NaN;
+        private renderOverrideDepth = 0;
+        private renderOverrideSavedX = Number.NaN;
+        private renderOverrideSavedY = Number.NaN;
 
 	override set(key: string, value: any) {
 		super.set(key, value);
@@ -204,18 +210,73 @@ export class Entity extends RPObject {
 		this["_x"] = this["x"];
 	}
 
-	draw(ctx: CanvasRenderingContext2D) {
-		if (this.sprite) {
-			this.drawSprite(ctx);
-		}
-	}
+        draw(ctx: CanvasRenderingContext2D, _tileXOverride?: number, _tileYOverride?: number) {
+                if (this.sprite) {
+                        this.drawSprite(ctx);
+                }
+        }
 
-	/**
-	 * draws a standard sprite
-	 */
-	drawSprite(ctx: CanvasRenderingContext2D) {
-		this.drawSpriteAt(ctx, this["x"] * 32, this["y"] * 32);
-	}
+        /**
+         * draws a standard sprite
+         */
+        drawSprite(ctx: CanvasRenderingContext2D) {
+                const tileX = this.getRenderTileX();
+                const tileY = this.getRenderTileY();
+                this.drawSpriteAt(ctx, tileX * 32, tileY * 32);
+        }
+
+        pushRenderOverride(tileX: number, tileY: number) {
+                if (this.renderOverrideDepth === 0) {
+                        this.renderOverrideSavedX = this.renderOverrideX;
+                        this.renderOverrideSavedY = this.renderOverrideY;
+                }
+                this.renderOverrideDepth++;
+                this.renderOverrideX = tileX;
+                this.renderOverrideY = tileY;
+        }
+
+        popRenderOverride() {
+                if (this.renderOverrideDepth === 0) {
+                        return;
+                }
+                this.renderOverrideDepth--;
+                if (this.renderOverrideDepth === 0) {
+                        this.renderOverrideX = this.renderOverrideSavedX;
+                        this.renderOverrideY = this.renderOverrideSavedY;
+                        this.renderOverrideSavedX = Number.NaN;
+                        this.renderOverrideSavedY = Number.NaN;
+                }
+        }
+
+        protected getRenderTileX(): number {
+                if (Number.isFinite(this.renderOverrideX)) {
+                        return this.renderOverrideX;
+                }
+                const override = this["_x"];
+                if (typeof override === "number" && Number.isFinite(override)) {
+                        return override;
+                }
+                const base = this["x"];
+                if (typeof base === "number" && Number.isFinite(base)) {
+                        return base;
+                }
+                return 0;
+        }
+
+        protected getRenderTileY(): number {
+                if (Number.isFinite(this.renderOverrideY)) {
+                        return this.renderOverrideY;
+                }
+                const override = this["_y"];
+                if (typeof override === "number" && Number.isFinite(override)) {
+                        return override;
+                }
+                const base = this["y"];
+                if (typeof base === "number" && Number.isFinite(base)) {
+                        return base;
+                }
+                return 0;
+        }
 
 	drawSpriteAt(ctx: CanvasRenderingContext2D, x: number, y: number) {
 		var image = stendhal.data.sprites.get(this.sprite.filename);
@@ -233,11 +294,11 @@ export class Entity extends RPObject {
 		}
 	}
 
-	/**
-	 * gets the container path identifying the item
-	 *
-	 * @returns
-	 */
+        /**
+         * gets the container path identifying the item
+         *
+         * @returns
+         */
 	getIdPath() {
 		var object = this;
 		var res = "";

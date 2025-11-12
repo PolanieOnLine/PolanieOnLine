@@ -51,9 +51,11 @@ export class GrowingEntitySpawner extends Entity {
 	/**
 	 * draw RPEntities
 	 */
-	override draw(ctx: CanvasRenderingContext2D) {
-		var localX = this["x"] * 32;
-		var localY = this["y"] * 32;
+        override draw(ctx: CanvasRenderingContext2D, _tileXOverride?: number, _tileYOverride?: number) {
+                const tileX = this.getRenderTileX();
+                const tileY = this.getRenderTileY();
+                var localX = tileX * 32;
+                var localY = tileY * 32;
 
 		// FIXME:
 		//   temporary fix, problem lies higher up
@@ -69,10 +71,10 @@ export class GrowingEntitySpawner extends Entity {
 			var count = parseInt(this["max_ripeness"], 10) + 1;
 			var drawHeight = image.height / count;
 			var yRow = this["ripeness"];
-			ctx.drawImage(image, 0, yRow * drawHeight, image.width, drawHeight,
-					localX, localY - drawHeight + 32, image.width, drawHeight);
-		}
-	}
+                        ctx.drawImage(image, 0, yRow * drawHeight, image.width, drawHeight,
+                                        localX, localY - drawHeight + 32, image.width, drawHeight);
+                }
+        }
 
 	override getCursor(_x: number, _y: number) {
 		return "url(" + stendhal.paths.sprites + "/cursor/harvest.png) 1 3, auto";

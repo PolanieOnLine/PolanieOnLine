@@ -80,12 +80,14 @@ export class Item extends Entity {
 		}
 	}
 
-	override draw(ctx: CanvasRenderingContext2D) {
-		this.sprite.offsetY = (this["state"] || 0) * 32
-		this.stepAnimation();
+        override draw(ctx: CanvasRenderingContext2D, _tileXOverride?: number, _tileYOverride?: number) {
+                this.sprite.offsetY = (this["state"] || 0) * 32
+                this.stepAnimation();
 
-		this.drawAt(ctx, this["x"] * 32, this["y"] * 32);
-	}
+                const tileX = this.getRenderTileX();
+                const tileY = this.getRenderTileY();
+                this.drawAt(ctx, tileX * 32, tileY * 32);
+        }
 
 	drawAt(ctx: CanvasRenderingContext2D, x: number, y: number) {
 		if (this.sprite) {

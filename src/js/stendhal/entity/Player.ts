@@ -169,13 +169,13 @@ export class Player extends RPEntity {
 		}
 	}
 
-	override draw(ctx: CanvasRenderingContext2D) {
-		if (this.isIgnored()) {
-			return;
-		}
-		// TODO: grey out instead of hiding completely because they still cause a collision
-		super.draw(ctx);
-	}
+        override draw(ctx: CanvasRenderingContext2D, tileXOverride?: number, tileYOverride?: number) {
+                if (this.isIgnored()) {
+                        return;
+                }
+                // TODO: grey out instead of hiding completely because they still cause a collision
+                super.draw(ctx, tileXOverride, tileYOverride);
+        }
 
 	override getResistance() {
 		if (typeof(this["ghostmode"]) !== "undefined") {

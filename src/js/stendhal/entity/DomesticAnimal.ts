@@ -30,8 +30,10 @@ export class DomesticAnimal extends RPEntity {
 			this.imagePath = stendhal.paths.sprites + "/" + this["_rpclass"] + ".png";
 		}
 
-		var localX = this["_x"] * 32;
-		var localY = this["_y"] * 32;
+                const tileX = this.getRenderTileX();
+                const tileY = this.getRenderTileY();
+                var localX = tileX * 32;
+                var localY = tileY * 32;
 		var image = stendhal.data.sprites.get(this.imagePath);
 		if (image.height) {
 			var nFrames = 3;

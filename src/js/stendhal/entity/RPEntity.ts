@@ -330,9 +330,10 @@ export class RPEntity extends ActiveEntity {
 	 * Sets the offset to keep text & health bar on screen when sprite
 	 * extends past top edge.
 	 */
-	public setStatusBarOffset() {
-		const screenOffsetY = stendhal.ui.gamewindow.offsetY;
-		const entityBottom = (this["_y"] * 32) + (this["height"] * 32);
+        public setStatusBarOffset() {
+                const screenOffsetY = stendhal.ui.gamewindow.offsetY;
+                const renderTileY = this.getRenderTileY();
+                const entityBottom = (renderTileY * 32) + (this["height"] * 32);
 		// FIXME: how to get text height dynamically?
 		const entityTop = entityBottom - this["drawHeight"]
 				- HEALTH_BAR_HEIGHT - 26;
@@ -347,10 +348,10 @@ export class RPEntity extends ActiveEntity {
 	/**
 	 * draw RPEntities
 	 */
-	override draw(ctx: CanvasRenderingContext2D) {
-		if (typeof(this["ghostmode"]) != "undefined" && marauroa.me && !marauroa.me.isAdmin()) {
-			return;
-		}
+        override draw(ctx: CanvasRenderingContext2D, _tileX?: number, _tileY?: number) {
+                if (typeof(this["ghostmode"]) != "undefined" && marauroa.me && !marauroa.me.isAdmin()) {
+                        return;
+                }
 		this.drawCombat(ctx);
 		this.drawMain(ctx);
 		this.drawAttack(ctx);
@@ -416,8 +417,10 @@ export class RPEntity extends ActiveEntity {
 			_drawAnimatedIcon(icon, delay, nFrames, xdim, ydim, x, y);
 		}
 
-		var x = this["_x"] * 32 - 10;
-		var y = (this["_y"] + 1) * 32;
+                const tileX = this.getRenderTileX();
+                const tileY = this.getRenderTileY();
+                var x = tileX * 32 - 10;
+                var y = (tileY + 1) * 32;
 		if (this.hasOwnProperty("choking")) {
 			ctx.drawImage(stendhal.data.sprites.get(stendhal.paths.sprites + "/ideas/choking.png"), x, y - 10);
 		} else if (this.hasOwnProperty("eating")) {
@@ -478,8 +481,11 @@ export class RPEntity extends ActiveEntity {
 	 * ellipses) when the entity is being attacked, or is attacking the user.
 	 */
 	drawCombat(ctx: CanvasRenderingContext2D) {
-		if (this.attackers.size > 0) {
-			ctx.lineWidth = 1;
+                const tileX = this.getRenderTileX();
+                const tileY = this.getRenderTileY();
+
+                if (this.attackers.size > 0) {
+                        ctx.lineWidth = 1;
 			/*
 			 * As of 2015-9-15 CanvasRenderingContext2D.ellipse() is not
 			 * supported in most browsers. Fall back to rectangles on these.
@@ -493,8 +499,8 @@ export class RPEntity extends ActiveEntity {
 			if (ctx.ellipse instanceof Function) {
 				var xRad = this["width"] * 16;
 				var yRad = this["height"] * 16 / Math.SQRT2;
-				var centerX = this["_x"] * 32 + xRad;
-				var centerY = (this["_y"] + this["height"]) * 32 - yRad;
+                                var centerX = tileX * 32 + xRad;
+                                var centerY = (tileY + this["height"]) * 32 - yRad;
 				ctx.strokeStyle = "#4a0000";
 				ctx.beginPath();
 				ctx.ellipse(centerX, centerY, xRad, yRad, 0, 0, Math.PI, false);
@@ -505,7 +511,7 @@ export class RPEntity extends ActiveEntity {
 				ctx.stroke();
 			} else {
 				ctx.strokeStyle = "#e60a0a";
-				ctx.strokeRect(32 * this["_x"], 32 * this["_y"], 32 * this["width"], 32 * this["height"]);
+                                ctx.strokeRect(32 * tileX, 32 * tileY, 32 * this["width"], 32 * this["height"]);
 			}
 		}
 		if (this.getAttackTarget() === marauroa.me) {
@@ -514,8 +520,8 @@ export class RPEntity extends ActiveEntity {
 			if (ctx.ellipse instanceof Function) {
 				var xRad = this["width"] * 16 - 1;
 				var yRad = this["height"] * 16 / Math.SQRT2 - 1;
-				var centerX = this["_x"] * 32 + xRad + 1;
-				var centerY = (this["_y"] + this["height"]) * 32 - yRad - 1;
+                                var centerX = tileX * 32 + xRad + 1;
+                                var centerY = (tileY + this["height"]) * 32 - yRad - 1;
 				ctx.strokeStyle = "#ffc800";
 				ctx.beginPath();
 				ctx.ellipse(centerX, centerY, xRad, yRad, 0, 0, Math.PI, false);
@@ -526,11 +532,11 @@ export class RPEntity extends ActiveEntity {
 				ctx.stroke();
 			} else {
 				ctx.strokeStyle = "#ffdd0a";
-				ctx.strokeRect(32 * this["_x"] + 1, 32 * this["_y"] + 1, 32 * this["width"] - 2, 32 * this["height"] - 2);
+                                ctx.strokeRect(32 * tileX + 1, 32 * tileY + 1, 32 * this["width"] - 2, 32 * this["height"] - 2);
 			}
 		}
 		if (this.attackResult) {
-			if (this.attackResult.draw(ctx, (this["_x"] + this["width"]) * 32 - 10, (this["_y"] + this["height"]) * 32 - 10)) {
+                        if (this.attackResult.draw(ctx, (tileX + this["width"]) * 32 - 10, (tileY + this["height"]) * 32 - 10)) {
 				this.attackResult = undefined;
 			}
 		}
@@ -543,8 +549,10 @@ export class RPEntity extends ActiveEntity {
 	 * when the floater should be removed.
 	 */
 	drawFloaters(ctx: CanvasRenderingContext2D) {
-		var centerX = (this["_x"] + this["width"] / 2) * 32;
-		var topY = (this["_y"] + 1) * 32 - this["drawHeight"];
+                const tileX = this.getRenderTileX();
+                const tileY = this.getRenderTileY();
+                var centerX = (tileX + this["width"] / 2) * 32;
+                var topY = (tileY + 1) * 32 - this["drawHeight"];
 		// Grab an unchanging copy
 		var currentFloaters = this.floaters;
 		for (var i = 0; i < currentFloaters.length; i++) {
@@ -561,9 +569,11 @@ export class RPEntity extends ActiveEntity {
 	 * @param {CanvasRenderingContext2D} ctx
 	 * @param {Image} image
 	 */
-	drawSpriteImage(ctx: CanvasRenderingContext2D, image: CanvasImageSource & ImageWithDimensions) {
-		var localX = this["_x"] * 32;
-		var localY = this["_y"] * 32;
+        drawSpriteImage(ctx: CanvasRenderingContext2D, image: CanvasImageSource & ImageWithDimensions) {
+                const tileX = this.getRenderTileX();
+                const tileY = this.getRenderTileY();
+                var localX = tileX * 32;
+                var localY = tileY * 32;
 		if (image.height) { // image.complete is true on missing image files
 			var nFrames = 3;
 			var nDirections = 4;
@@ -603,7 +613,7 @@ export class RPEntity extends ActiveEntity {
 
 			// store offset for use by other drawing methods
 			this["drawOffsetX"] = localX + drawX;
-			this["drawOffsetY"] = localY + drawY;
+                        this["drawOffsetY"] = localY + drawY;
 
 			ctx.drawImage(image, frame * this["drawWidth"], yRow * this["drawHeight"], this["drawWidth"],
 					this["drawHeight"], this["drawOffsetX"], this["drawOffsetY"], this["drawWidth"],
@@ -613,10 +623,12 @@ export class RPEntity extends ActiveEntity {
 		}
 	}
 
-	drawTop(ctx: CanvasRenderingContext2D) {
-		var localX = this["_x"] * 32;
-		var localY = this["_y"] * 32;
-		this.drawFloaters(ctx);
+        drawTop(ctx: CanvasRenderingContext2D, _tileX?: number, _tileY?: number) {
+                const tileX = this.getRenderTileX();
+                const tileY = this.getRenderTileY();
+                var localX = tileX * 32;
+                var localY = tileY * 32;
+                this.drawFloaters(ctx);
 		this.drawHealthBar(ctx, localX, localY + this.statusBarYOffset);
 		this.drawTitle(ctx, localX, localY + this.statusBarYOffset);
 	}
@@ -677,12 +689,14 @@ export class RPEntity extends ActiveEntity {
 			this.attackSprite = undefined;
 			return;
 		}
-		var localX = this["_x"] * 32;
-		var localY = this["_y"] * 32;
-		var localW = this["width"] * stendhal.ui.gamewindow.targetTileWidth;
-		var localH = this["height"] * stendhal.ui.gamewindow.targetTileHeight;
-		this.attackSprite.draw(ctx, localX, localY, localW, localH);
-	}
+                const tileX = this.getRenderTileX();
+                const tileY = this.getRenderTileY();
+                var localX = tileX * 32;
+                var localY = tileY * 32;
+                var localW = this["width"] * stendhal.ui.gamewindow.targetTileWidth;
+                var localH = this["height"] * stendhal.ui.gamewindow.targetTileHeight;
+                this.attackSprite.draw(ctx, localX, localY, localW, localH);
+        }
 
 	/**
 	 * Draws an animation over entity sprite.
@@ -720,15 +734,19 @@ export class RPEntity extends ActiveEntity {
 				"pol-attack-slash", "pol-attack-crash", "pol-attack-sword",
 				"pol-attack-swing", "pol-attack-kling"];
 		var index = Math.floor(Math.random() * Math.floor(sounds.length));
-		stendhal.sound.playLocalizedEffect(this["_x"], this["_y"], 20, 3, sounds[index], 1);
-	}
+                const tileX = this.getRenderTileX();
+                const tileY = this.getRenderTileY();
+                stendhal.sound.playLocalizedEffect(tileX, tileY, 20, 3, sounds[index], 1);
+        }
 
-	onBlocked(_source: Entity) {
-		this.attackResult = this.createResultIcon(stendhal.paths.sprites + "/combat/blocked.png");
-		var sounds = ["clang-metallic-1", "clang-dull-1"];
-		var index = Math.floor(Math.random() * Math.floor(sounds.length));
-		stendhal.sound.playLocalizedEffect(this["_x"], this["_y"], 20, 3, sounds[index], 1);
-	}
+        onBlocked(_source: Entity) {
+                this.attackResult = this.createResultIcon(stendhal.paths.sprites + "/combat/blocked.png");
+                var sounds = ["clang-metallic-1", "clang-dull-1"];
+                var index = Math.floor(Math.random() * Math.floor(sounds.length));
+                const tileX = this.getRenderTileX();
+                const tileY = this.getRenderTileY();
+                stendhal.sound.playLocalizedEffect(tileX, tileY, 20, 3, sounds[index], 1);
+        }
 
 	onMissed(_source: Entity) {
 		this.attackResult = this.createResultIcon(stendhal.paths.sprites + "/combat/missed.png");

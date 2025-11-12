@@ -50,16 +50,16 @@ export class Corpse extends PopupInventory {
 		}
 	}
 
-	override draw(ctx: CanvasRenderingContext2D) {
-		if (!this.sprite) {
-			return;
-		}
-		super.draw(ctx);
+        override draw(ctx: CanvasRenderingContext2D, tileXOverride?: number, tileYOverride?: number) {
+                if (!this.sprite) {
+                        return;
+                }
+                super.draw(ctx, tileXOverride, tileYOverride);
 
-		if (this.indicator && !this.isEmpty()) {
-			const tileW = stendhal.ui.gamewindow.targetTileWidth;
-			const tileH = stendhal.ui.gamewindow.targetTileHeight;
-			if (this.sprite.width == undefined || this.sprite.height == undefined) {
+                if (this.indicator && !this.isEmpty()) {
+                        const tileW = stendhal.ui.gamewindow.targetTileWidth;
+                        const tileH = stendhal.ui.gamewindow.targetTileHeight;
+                        if (this.sprite.width == undefined || this.sprite.height == undefined) {
 				const image = stendhal.data.sprites.get(this.sprite.filename);
 				if (image.complete) {
 					this.sprite.width = image.width < tileW ? tileW : image.width;
@@ -68,14 +68,16 @@ export class Corpse extends PopupInventory {
 				return;
 			}
 
-			const offsetX = Math.floor((this["width"] * tileW - this.sprite.width) / 2);
-			const offsetY = Math.floor((this["height"] * tileH - this.sprite.height) / 2);
-			const dx = this["x"] * tileW + offsetX;
-			const dy = this["y"] * tileH + offsetY;
+                        const tileX = this.getRenderTileX();
+                        const tileY = this.getRenderTileY();
+                        const offsetX = Math.floor((this["width"] * tileW - this.sprite.width) / 2);
+                        const offsetY = Math.floor((this["height"] * tileH - this.sprite.height) / 2);
+                        const dx = tileX * tileW + offsetX;
+                        const dy = tileY * tileH + offsetY;
 
-			this.indicator.draw(ctx, dx, dy, this.sprite.width);
-		}
-	}
+                        this.indicator.draw(ctx, dx, dy, this.sprite.width);
+                }
+        }
 
 	override createSlot(name: string) {
 		var slot = marauroa.util.fromProto(marauroa.rpslotFactory["_default"], {

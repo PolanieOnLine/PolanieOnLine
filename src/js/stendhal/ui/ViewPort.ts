@@ -30,6 +30,7 @@ import { EmojiSprite } from "../sprite/EmojiSprite";
 import { NotificationBubble } from "../sprite/NotificationBubble";
 import { SpeechBubble } from "../sprite/SpeechBubble";
 import { TextBubble } from "../sprite/TextBubble";
+import { Entity } from "../entity/Entity";
 
 import { Point } from "../util/Point";
 import { GameLoop } from "../util/GameLoop";
@@ -56,7 +57,13 @@ export class ViewPort {
 	private cameraInitialized = false;
 	private readonly renderOffset: Vector2 = {x: 0, y: 0};
 	private readonly lastWorldSize: Vector2 = {x: 0, y: 0};
-	private readonly entityStates = new WeakMap<any, {prevX: number; prevY: number; currX: number; currY: number}>();
+        private entityRefs: Entity[] = [];
+        private entityCount = 0;
+        private entityPrevPositions = new Float32Array(0);
+        private entityCurrPositions = new Float32Array(0);
+        private entityLastPositions = new Float32Array(0);
+        private entityLastCount = 0;
+        private entityIndexLookup: WeakMap<Entity, number> = new WeakMap();
 	private fpsLabel?: HTMLElement;
 
 	/** Drawing context. */
@@ -507,10 +514,10 @@ export class ViewPort {
 		this.cameraTarget = target;
 	}
 
-	private computeCameraTarget(canvas: HTMLCanvasElement): Vector2 {
-		if (this.freeze) {
-			return this.cameraSpring.getPosition();
-		}
+        private computeCameraTarget(canvas: HTMLCanvasElement): Vector2 {
+                if (this.freeze) {
+                        return this.cameraSpring.getPosition();
+                }
 
 		const playerX = (typeof(marauroa.me["_x"]) === "number") ? marauroa.me["_x"] : marauroa.me["x"];
 		const playerY = (typeof(marauroa.me["_y"]) === "number") ? marauroa.me["_y"] : marauroa.me["y"];
@@ -527,39 +534,140 @@ export class ViewPort {
 		centerY = Math.min(centerY, worldHeight - canvas.height);
 		centerY = Math.max(centerY, 0);
 
-		return {x: centerX, y: centerY};
-	}
+                return {x: centerX, y: centerY};
+        }
 
-	private updateEntities(dtMs: number) {
-		for (const key in stendhal.zone.entities) {
-			const entity = stendhal.zone.entities[key];
-			if (!entity) {
-				continue;
-			}
+        private ensureEntityCapacity(expectedEntities: number) {
+                const required = Math.max(expectedEntities, this.entityCount, this.entityLastCount) * 2;
+                if (required <= this.entityPrevPositions.length) {
+                        return;
+                }
+                let newSize = this.entityPrevPositions.length;
+                if (newSize === 0) {
+                        newSize = 32;
+                }
+                while (newSize < required) {
+                        newSize *= 2;
+                }
+                const newPrev = new Float32Array(newSize);
+                if (this.entityCount > 0) {
+                        newPrev.set(this.entityPrevPositions.subarray(0, this.entityCount * 2));
+                }
+                const newCurr = new Float32Array(newSize);
+                if (this.entityCount > 0) {
+                        newCurr.set(this.entityCurrPositions.subarray(0, this.entityCount * 2));
+                }
+                const newLast = new Float32Array(newSize);
+                if (this.entityLastCount > 0) {
+                        newLast.set(this.entityLastPositions.subarray(0, this.entityLastCount * 2));
+                }
+                this.entityPrevPositions = newPrev;
+                this.entityCurrPositions = newCurr;
+                this.entityLastPositions = newLast;
+        }
 
-			let state = this.entityStates.get(entity);
-			if (!state) {
-				const pos = this.getEntityPosition(entity);
-				state = {prevX: pos.x, prevY: pos.y, currX: pos.x, currY: pos.y};
-			}
+        private swapEntityHistoryBuffers() {
+                const temp = this.entityLastPositions;
+                this.entityLastPositions = this.entityCurrPositions;
+                this.entityCurrPositions = temp;
+                this.entityLastCount = this.entityCount;
+        }
 
-			state.prevX = state.currX;
-			state.prevY = state.currY;
+        private resolveEntityTileX(entity: any): number {
+                const override = entity["_x"];
+                if (typeof override === "number" && Number.isFinite(override)) {
+                        return override;
+                }
+                const base = entity["x"];
+                if (typeof base === "number" && Number.isFinite(base)) {
+                        return base;
+                }
+                return 0;
+        }
 
-			entity.updatePosition(dtMs);
+        private resolveEntityTileY(entity: any): number {
+                const override = entity["_y"];
+                if (typeof override === "number" && Number.isFinite(override)) {
+                        return override;
+                }
+                const base = entity["y"];
+                if (typeof base === "number" && Number.isFinite(base)) {
+                        return base;
+                }
+                return 0;
+        }
 
-			const currentPos = this.getEntityPosition(entity);
-			state.currX = currentPos.x;
-			state.currY = currentPos.y;
-			this.entityStates.set(entity, state);
-		}
-	}
+        private withEntityRenderPosition(entity: any, tileX: number, tileY: number, drawFn: () => void) {
+                if (typeof entity.pushRenderOverride === "function" && typeof entity.popRenderOverride === "function") {
+                        entity.pushRenderOverride(tileX, tileY);
+                        try {
+                                drawFn();
+                        } finally {
+                                entity.popRenderOverride();
+                        }
+                } else {
+                        drawFn();
+                }
+        }
 
-	private getEntityPosition(entity: any): Vector2 {
-		const x = (typeof(entity["_x"]) === "number") ? entity["_x"] : entity["x"];
-		const y = (typeof(entity["_y"]) === "number") ? entity["_y"] : entity["y"];
-		return {x: x || 0, y: y || 0};
-	}
+        private updateEntities(dtMs: number) {
+                const zone = stendhal.zone;
+                const entities: Entity[] = (zone && Array.isArray(zone.entities)) ? zone.entities as Entity[] : [];
+
+                if (!entities.length) {
+                        this.entityCount = 0;
+                        this.entityRefs.length = 0;
+                        this.entityIndexLookup = new WeakMap();
+                        this.entityLastCount = 0;
+                        return;
+                }
+
+                this.ensureEntityCapacity(entities.length);
+                this.swapEntityHistoryBuffers();
+
+                const lastPositions = this.entityLastPositions;
+                const currPositions = this.entityCurrPositions;
+                const prevPositions = this.entityPrevPositions;
+                const previousIndexLookup = this.entityIndexLookup;
+                const nextIndexLookup = new WeakMap<Entity, number>();
+
+                let count = 0;
+                for (let i = 0; i < entities.length; i++) {
+                        const entity = entities[i];
+                        if (!entity) {
+                                continue;
+                        }
+                        const base = count * 2;
+                        let prevX: number;
+                        let prevY: number;
+                        const prevIndex = previousIndexLookup.get(entity);
+                        if (typeof prevIndex === "number" && prevIndex >= 0 && prevIndex < this.entityLastCount) {
+                                const prevBase = prevIndex * 2;
+                                prevX = lastPositions[prevBase];
+                                prevY = lastPositions[prevBase + 1];
+                        } else {
+                                prevX = this.resolveEntityTileX(entity);
+                                prevY = this.resolveEntityTileY(entity);
+                        }
+
+                        entity.updatePosition(dtMs);
+
+                        const currX = this.resolveEntityTileX(entity);
+                        const currY = this.resolveEntityTileY(entity);
+
+                        prevPositions[base] = prevX;
+                        prevPositions[base + 1] = prevY;
+                        currPositions[base] = currX;
+                        currPositions[base + 1] = currY;
+                        this.entityRefs[count] = entity;
+                        nextIndexLookup.set(entity, count);
+                        count++;
+                }
+
+                this.entityCount = count;
+                this.entityRefs.length = count;
+                this.entityIndexLookup = nextIndexLookup;
+        }
 
 	private advanceMiniMap(dtMs: number) {
 		const minimap = ui.get(UIComponentEnum.MiniMap) as MiniMapComponent | undefined;
@@ -713,71 +821,64 @@ export class ViewPort {
                 return this.blendMethod as GlobalCompositeOperation;
         }
 
-	/**
-	 * Draws overall entity sprites.
-	 */
-	drawEntities(alpha: number) {
-		for (const key in stendhal.zone.entities) {
-			const entity = stendhal.zone.entities[key];
-			if (!entity || typeof(entity.draw) === "undefined") {
-				continue;
-			}
-			this.drawEntityInterpolated(entity, alpha, () => entity.draw(this.ctx));
-		}
-	}
+        /**
+         * Draws overall entity sprites.
+         */
+        drawEntities(alpha: number) {
+                const count = this.entityCount;
+                if (count === 0) {
+                        return;
+                }
+                const prevPositions = this.entityPrevPositions;
+                const currPositions = this.entityCurrPositions;
+                for (let index = 0; index < count; index++) {
+                        const entity = this.entityRefs[index];
+                        if (!entity || typeof entity.draw !== "function") {
+                                continue;
+                        }
+                        const base = index * 2;
+                        const prevX = prevPositions[base];
+                        const prevY = prevPositions[base + 1];
+                        const currX = currPositions[base];
+                        const currY = currPositions[base + 1];
+                        const renderX = prevX + (currX - prevX) * alpha;
+                        const renderY = prevY + (currY - prevY) * alpha;
+                        this.withEntityRenderPosition(entity, renderX, renderY, () => entity.draw(this.ctx, renderX, renderY));
+                }
+        }
 
-	/**
-	 * Draws titles & HP bars associated with entities.
-	 */
-	drawEntitiesTop(alpha: number) {
-		for (const key in stendhal.zone.entities) {
-			const entity = stendhal.zone.entities[key];
-			if (!entity) {
-				continue;
-			}
-			this.drawEntityInterpolated(entity, alpha, () => {
-				if (typeof(entity.setStatusBarOffset) !== "undefined") {
-					entity.setStatusBarOffset();
-				}
-				if (typeof(entity.drawTop) !== "undefined") {
-					entity.drawTop(this.ctx);
-				}
-			});
-		}
-	}
-
-	private drawEntityInterpolated(entity: any, alpha: number, drawFn: () => void) {
-		const state = this.entityStates.get(entity);
-		if (!state) {
-			drawFn();
-			return;
-		}
-
-		const renderX = state.prevX + (state.currX - state.prevX) * alpha;
-		const renderY = state.prevY + (state.currY - state.prevY) * alpha;
-
-		const hadX = typeof(entity["_x"]) !== "undefined";
-		const hadY = typeof(entity["_y"]) !== "undefined";
-		const originalX = entity["_x"]; // may be undefined
-		const originalY = entity["_y"];
-
-		entity["_x"] = renderX;
-		entity["_y"] = renderY;
-		try {
-			drawFn();
-		} finally {
-			if (hadX) {
-				entity["_x"] = originalX;
-			} else {
-				delete entity["_x"];
-			}
-			if (hadY) {
-				entity["_y"] = originalY;
-			} else {
-				delete entity["_y"];
-			}
-		}
-	}
+        /**
+         * Draws titles & HP bars associated with entities.
+         */
+        drawEntitiesTop(alpha: number) {
+                const count = this.entityCount;
+                if (count === 0) {
+                        return;
+                }
+                const prevPositions = this.entityPrevPositions;
+                const currPositions = this.entityCurrPositions;
+                for (let index = 0; index < count; index++) {
+                        const entity = this.entityRefs[index];
+                        if (!entity) {
+                                continue;
+                        }
+                        const base = index * 2;
+                        const prevX = prevPositions[base];
+                        const prevY = prevPositions[base + 1];
+                        const currX = currPositions[base];
+                        const currY = currPositions[base + 1];
+                        const renderX = prevX + (currX - prevX) * alpha;
+                        const renderY = prevY + (currY - prevY) * alpha;
+                        this.withEntityRenderPosition(entity, renderX, renderY, () => {
+                                if (typeof entity.setStatusBarOffset === "function") {
+                                        entity.setStatusBarOffset();
+                                }
+                                if (typeof entity.drawTop === "function") {
+                                        entity.drawTop(this.ctx, renderX, renderY);
+                                }
+                        });
+                }
+        }
 
 	/**
 	 * Draws active notifications or speech bubbles associated with characters, NPCs, & creatures.
