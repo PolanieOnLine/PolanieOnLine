@@ -12,6 +12,13 @@
 
 import { BinaryAssetCache } from "../../util/BinaryAssetCache";
 
+export interface SoundCreateOptions {
+        /**
+         * Skip cached blob loading and stream audio directly from the source URL.
+         */
+        preferStreaming?: boolean;
+}
+
 /**
  * A playable sound.
  */
@@ -49,55 +56,61 @@ export class SoundFactory {
 	 * @param src {string}
 	 *   Sound filename path (default: `undefined`).
 	 */
-	static create(src?: string): SoundObject {
-		const sound = new Audio() as SoundObject;
-		sound.basevolume = sound.volume;
-		sound.preload = "auto";
-                if (src) {
-                        const absolute = SoundFactory.toAbsoluteUrl(src);
-                        const fallbackSrc = absolute;
-                        let resolvedSrc = fallbackSrc;
-
-                        sound.src = fallbackSrc;
-                        sound.load();
-
-                        const ready = SoundFactory.getObjectUrl(absolute).then((objectUrl) => {
-                                resolvedSrc = objectUrl;
-                                if (sound.paused && sound.currentSrc !== objectUrl) {
-                                        sound.src = objectUrl;
-                                        sound.load();
-                                }
-                                return objectUrl;
-                        }).catch((error) => {
-                                console.warn("Falling back to direct audio src", absolute, error);
-                                resolvedSrc = fallbackSrc;
-                                return fallbackSrc;
-                        });
-
-                        const originalClone = sound.cloneNode.bind(sound);
-                        sound.cloneNode = ((deep?: boolean) => {
-                                const clone = originalClone(deep) as SoundObject;
-                                clone.basevolume = sound.basevolume;
-                                clone.preload = sound.preload;
-                                clone.src = resolvedSrc;
-                                if (clone.preload !== "none") {
-                                        clone.load();
-                                }
-                                if (resolvedSrc === fallbackSrc) {
-                                        ready.then((finalSrc) => {
-                                                if (finalSrc !== clone.currentSrc && clone.paused) {
-                                                        clone.src = finalSrc;
-                                                        if (clone.preload !== "none") {
-                                                                clone.load();
-                                                        }
-                                                }
-                                        }).catch(() => {
-                                                // ignore, clone already has fallback src
-                                        });
-                                }
-                                return clone;
-                        }) as typeof sound.cloneNode;
+        static create(src?: string, options: SoundCreateOptions = {}): SoundObject {
+                const sound = new Audio() as SoundObject;
+                sound.basevolume = sound.volume;
+                sound.preload = "auto";
+                if (!src) {
+                        return sound;
                 }
+
+                const absolute = SoundFactory.toAbsoluteUrl(src);
+                const fallbackSrc = absolute;
+
+                sound.src = fallbackSrc;
+                sound.load();
+
+                if (options.preferStreaming) {
+                        return sound;
+                }
+
+                let resolvedSrc = fallbackSrc;
+                const ready = SoundFactory.getObjectUrl(absolute).then((objectUrl) => {
+                        resolvedSrc = objectUrl;
+                        if (sound.paused && sound.currentSrc !== objectUrl) {
+                                sound.src = objectUrl;
+                                sound.load();
+                        }
+                        return objectUrl;
+                }).catch((error) => {
+                        console.warn("Falling back to direct audio src", absolute, error);
+                        resolvedSrc = fallbackSrc;
+                        return fallbackSrc;
+                });
+
+                const originalClone = sound.cloneNode.bind(sound);
+                sound.cloneNode = ((deep?: boolean) => {
+                        const clone = originalClone(deep) as SoundObject;
+                        clone.basevolume = sound.basevolume;
+                        clone.preload = sound.preload;
+                        clone.src = resolvedSrc;
+                        if (clone.preload !== "none") {
+                                clone.load();
+                        }
+                        if (resolvedSrc === fallbackSrc) {
+                                ready.then((finalSrc) => {
+                                        if (finalSrc !== clone.currentSrc && clone.paused) {
+                                                clone.src = finalSrc;
+                                                if (clone.preload !== "none") {
+                                                        clone.load();
+                                                }
+                                        }
+                                }).catch(() => {
+                                        // ignore, clone already has fallback src
+                                });
+                        }
+                        return clone;
+                }) as typeof sound.cloneNode;
                 return sound;
         }
 
