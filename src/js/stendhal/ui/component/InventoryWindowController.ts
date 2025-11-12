@@ -1,3 +1,5 @@
+declare const stendhal: any;
+
 import { Component } from "../toolkit/Component";
 import { InventoryWindowOrderManager } from "./InventoryWindowOrderManager";
 
@@ -10,7 +12,10 @@ interface InventoryWindowElements {
 
 export class InventoryWindowController {
 
-	private static windows: Map<string, InventoryWindowElements> = new Map();
+        private static readonly OPEN_SOUND = "ui/window_fold";
+        private static readonly MINIMIZE_SOUND = "ui/window_fold";
+
+        private static windows: Map<string, InventoryWindowElements> = new Map();
 
 	public static register(id: string, options?: { title?: string; collapsed?: boolean }) {
 		const root = document.getElementById(id);
@@ -90,24 +95,38 @@ export class InventoryWindowController {
 		elements.root.setAttribute("aria-hidden", (!visible).toString());
 	}
 
-	private static toggle(id: string) {
-		const elements = this.windows.get(id);
-		if (!elements) {
-			return;
-		}
-		const collapsed = !elements.root.classList.contains("inventory-window--collapsed");
-		this.applyCollapsed(elements, collapsed);
-	}
+        private static toggle(id: string) {
+                const elements = this.windows.get(id);
+                if (!elements) {
+                        return;
+                }
+                const collapsed = !elements.root.classList.contains("inventory-window--collapsed");
+                this.applyCollapsed(elements, collapsed);
+                this.playToggleSound(collapsed);
+        }
 
-	private static applyCollapsed(elements: InventoryWindowElements, collapsed: boolean) {
-		elements.root.classList.toggle("inventory-window--collapsed", collapsed);
-		if (elements.body) {
+        private static applyCollapsed(elements: InventoryWindowElements, collapsed: boolean) {
+                elements.root.classList.toggle("inventory-window--collapsed", collapsed);
+                if (elements.body) {
 			elements.body.setAttribute("aria-hidden", collapsed.toString());
 		}
-		if (elements.toggle) {
-			elements.toggle.setAttribute("aria-expanded", (!collapsed).toString());
-			elements.toggle.textContent = collapsed ? "+" : "−";
-			elements.toggle.setAttribute("aria-label", collapsed ? "Rozwiń okno" : "Zwiń okno");
-		}
-	}
+                if (elements.toggle) {
+                        elements.toggle.setAttribute("aria-expanded", (!collapsed).toString());
+                        elements.toggle.textContent = collapsed ? "+" : "−";
+                        elements.toggle.setAttribute("aria-label", collapsed ? "Rozwiń okno" : "Zwiń okno");
+                }
+        }
+
+        private static playToggleSound(collapsed: boolean) {
+                const play = stendhal?.sound?.playGlobalizedEffect;
+                if (typeof play !== "function") {
+                        return;
+                }
+                const sound = collapsed ? this.MINIMIZE_SOUND : this.OPEN_SOUND;
+                try {
+                        play.call(stendhal.sound, sound);
+                } catch (err) {
+                        console.warn("Unable to play window toggle sound", err);
+                }
+        }
 }
