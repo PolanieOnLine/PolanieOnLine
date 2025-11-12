@@ -37,6 +37,9 @@ interface BatteryManager extends EventTarget {
 export class GameLoop {
 
         private static readonly MAX_FRAME_TIME = 250; // ms
+        private static readonly MAX_FRAME_DELTA = GameLoop.MAX_FRAME_TIME;
+        private static readonly MAX_CATCH_UP_STEPS = 5;
+        private static readonly MIN_PARTIAL_UPDATE_MS = 1;
         private static readonly FIXED_UPDATE_HZ = 144;
         private static readonly BACKGROUND_THROTTLE_MS = 1000;
         private static readonly FPS_WINDOW_MS = 750;
@@ -60,6 +63,9 @@ export class GameLoop {
         private readonly fpsTimestamps = new Float64Array(GameLoop.FPS_HISTORY_SIZE);
         private fpsHead = 0;
         private fpsCount = 0;
+
+        private readonly onceTasks: Array<() => void> = [];
+        private readonly cleanupTasks: Array<() => void> = [];
 
         private readonly visibilityListener: () => void;
 
@@ -114,6 +120,7 @@ export class GameLoop {
                         clearTimeout(this.slowTimerHandle);
                         this.slowTimerHandle = null;
                 }
+                this.flushCleanupTasks();
         }
 
         setFpsLimit(limit?: number) {
@@ -125,26 +132,54 @@ export class GameLoop {
                 this.updateTargetFrameTime();
         }
 
+        runOnce(task: () => void) {
+                if (typeof task === "function") {
+                        this.onceTasks.push(task);
+                }
+        }
+
+        onStop(task: () => void) {
+                if (typeof task === "function") {
+                        this.cleanupTasks.push(task);
+                }
+        }
+
         private tick(now: number) {
                 if (!this.running) {
                         return;
                 }
 
                 let frameTime = now - this.lastNow;
+                if (!Number.isFinite(frameTime) || frameTime < 0) {
+                        frameTime = 0;
+                }
                 this.lastNow = now;
 
-                if (frameTime > GameLoop.MAX_FRAME_TIME) {
-                        frameTime = GameLoop.MAX_FRAME_TIME;
+                frameTime = Math.min(frameTime, GameLoop.MAX_FRAME_DELTA);
+
+                this.accumulator = Math.min(this.accumulator + frameTime, GameLoop.MAX_FRAME_DELTA);
+
+                const step = this.fixedDt;
+                let updates = 0;
+                while ((this.accumulator >= step) && (updates < GameLoop.MAX_CATCH_UP_STEPS)) {
+                        this.updateCb(step);
+                        this.accumulator -= step;
+                        updates++;
                 }
 
-                this.accumulator += frameTime;
-
-                while (this.accumulator >= this.fixedDt) {
-                        this.updateCb(this.fixedDt);
-                        this.accumulator -= this.fixedDt;
+                if (updates >= GameLoop.MAX_CATCH_UP_STEPS) {
+                        this.accumulator = Math.min(this.accumulator, step);
                 }
 
-                const alpha = this.fixedDt > 0 ? (this.accumulator / this.fixedDt) : 0;
+                if (updates === 0 && this.accumulator >= GameLoop.MIN_PARTIAL_UPDATE_MS) {
+                        const slice = Math.min(this.accumulator, step);
+                        this.updateCb(slice);
+                        this.accumulator -= slice;
+                }
+
+                this.flushOnceTasks();
+
+                const alpha = step > 0 ? Math.min(1, this.accumulator / step) : 0;
 
                 const shouldRender = this.shouldRenderFrame(now);
                 if (shouldRender) {
@@ -177,6 +212,38 @@ export class GameLoop {
                 }
 
                 return true;
+        }
+
+        private flushOnceTasks() {
+                if (this.onceTasks.length === 0) {
+                        return;
+                }
+                const tasks = this.onceTasks.splice(0, this.onceTasks.length);
+                for (const task of tasks) {
+                        try {
+                                task();
+                        } catch (error) {
+                                if (typeof console !== "undefined" && console.error) {
+                                        console.error("GameLoop runOnce task failed", error);
+                                }
+                        }
+                }
+        }
+
+        private flushCleanupTasks() {
+                if (this.cleanupTasks.length === 0) {
+                        return;
+                }
+                const tasks = this.cleanupTasks.splice(0, this.cleanupTasks.length);
+                for (const task of tasks) {
+                        try {
+                                task();
+                        } catch (error) {
+                                if (typeof console !== "undefined" && console.error) {
+                                        console.error("GameLoop onStop task failed", error);
+                                }
+                        }
+                }
         }
 
         private scheduleNextTick() {
