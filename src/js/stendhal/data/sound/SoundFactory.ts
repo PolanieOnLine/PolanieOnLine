@@ -10,6 +10,7 @@
  *                                                                         *
  ***************************************************************************/
 
+import { BinaryAssetCache } from "../../util/BinaryAssetCache";
 
 /**
  * A playable sound.
@@ -32,6 +33,9 @@ export interface SoundObject extends HTMLAudioElement {
  */
 export class SoundFactory {
 
+	private static readonly binaryCache = BinaryAssetCache.get();
+	private static readonly objectUrlCache = new Map<string, Promise<string>>();
+
 	/**
 	 * Hidden constructor (use `SoundFactory.create`).
 	 */
@@ -46,8 +50,47 @@ export class SoundFactory {
 	 *   Sound filename path (default: `undefined`).
 	 */
 	static create(src?: string): SoundObject {
-		const sound = new Audio(src) as SoundObject;
+		const sound = new Audio() as SoundObject;
 		sound.basevolume = sound.volume;
+		sound.preload = "auto";
+		if (src) {
+			const absolute = SoundFactory.toAbsoluteUrl(src);
+			const ready = SoundFactory.getObjectUrl(absolute).then((objectUrl) => {
+				sound.src = objectUrl;
+				sound.load();
+			}).catch((error) => {
+				console.warn("Falling back to direct audio src", absolute, error);
+				sound.src = absolute;
+				sound.load();
+			});
+			const originalPlay = sound.play.bind(sound);
+			sound.play = () => ready.then(() => originalPlay());
+		}
 		return sound;
+	}
+
+	private static getObjectUrl(src: string): Promise<string> {
+		let existing = SoundFactory.objectUrlCache.get(src);
+		if (!existing) {
+			existing = SoundFactory.binaryCache.load(src).then((blob) => {
+				return URL.createObjectURL(blob);
+			});
+			SoundFactory.objectUrlCache.set(src, existing.then((url) => {
+				SoundFactory.objectUrlCache.set(src, Promise.resolve(url));
+				return url;
+			}).catch((error) => {
+				SoundFactory.objectUrlCache.delete(src);
+				throw error;
+			}));
+		}
+		return existing;
+	}
+
+	private static toAbsoluteUrl(src: string): string {
+		try {
+			return new URL(src, window.location.href).toString();
+		} catch (error) {
+			return src;
+		}
 	}
 }

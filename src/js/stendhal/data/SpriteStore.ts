@@ -11,18 +11,24 @@
 
 declare var stendhal: any;
 
+import { BinaryAssetCache } from "../util/BinaryAssetCache";
 import { Paths } from "./Paths";
 
 
 class SpriteImage extends Image {
 	// number of times the image has been accessed after initial creation
 	counter = 0;
+	assetUrl?: string;
+	loadPromise?: Promise<SpriteImage>;
+	objectUrl?: string;
 }
 
 export class SpriteStore {
 
 	private knownBrokenUrls: {[url: string]: boolean} = {};
 	private images: {[filename: string]: SpriteImage} = {};
+	private readonly binaryCache = BinaryAssetCache.get();
+	private readonly failsafePath = Paths.sprites + "/failsafe.png";
 
 	private knownShadows: {[key: string]: boolean} = {
 		"24x32": true,
@@ -73,6 +79,108 @@ export class SpriteStore {
 		// do nothing
 	}
 
+	private createSpriteImage(filename: string): SpriteImage {
+		const image = new Image() as SpriteImage;
+		image.counter = 0;
+		image.assetUrl = this.toAbsoluteUrl(filename);
+		if ("decoding" in image) {
+			(image as any).decoding = "async";
+		}
+		if ("loading" in image) {
+			(image as any).loading = "lazy";
+		}
+		image.onerror = (event: Event | string | undefined) => {
+			this.markBroken(filename, event);
+			this.useFailsafe(image);
+		};
+		return image;
+	}
+
+	private ensureImagePromise(filename: string, image: SpriteImage): Promise<SpriteImage> {
+		if (image.complete && image.naturalWidth > 0) {
+			return Promise.resolve(image);
+		}
+		if (image.loadPromise) {
+			return image.loadPromise;
+		}
+		const promise = this.binaryCache.load(filename).then((blob) => {
+			return this.assignBlobToImage(filename, image, blob);
+		}).catch((error) => {
+			this.markBroken(filename, error);
+			this.useFailsafe(image);
+			return image;
+		});
+		image.loadPromise = promise;
+		promise.then(() => {
+			image.loadPromise = undefined;
+		}, () => {
+			image.loadPromise = undefined;
+		});
+		return promise;
+	}
+
+	private assignBlobToImage(filename: string, image: SpriteImage, blob: Blob): Promise<SpriteImage> {
+		return new Promise((resolve) => {
+			if (image.objectUrl) {
+				URL.revokeObjectURL(image.objectUrl);
+			}
+			const objectUrl = URL.createObjectURL(blob);
+			image.objectUrl = objectUrl;
+			const onLoad = () => {
+				image.removeEventListener("load", onLoad);
+				image.removeEventListener("error", onError);
+				resolve(image);
+			};
+			const onError = (event: Event) => {
+				image.removeEventListener("load", onLoad);
+				image.removeEventListener("error", onError);
+				this.markBroken(filename, event);
+				this.useFailsafe(image);
+				resolve(image);
+			};
+			image.addEventListener("load", onLoad);
+			image.addEventListener("error", onError);
+			image.src = objectUrl;
+		});
+	}
+
+	private useFailsafe(target: SpriteImage): void {
+		const failsafe = this.getFailsafe() as SpriteImage;
+		if (target === failsafe || target.assetUrl === failsafe.assetUrl) {
+			return;
+		}
+		const assign = () => {
+			if (failsafe.src && target.src !== failsafe.src) {
+				target.src = failsafe.src;
+			}
+		};
+		if (failsafe.complete && failsafe.naturalWidth > 0) {
+			assign();
+		} else {
+			this.ensureImagePromise(this.failsafePath, failsafe).then(assign).catch(assign);
+		}
+	}
+
+	private markBroken(filename: string, reason: any): void {
+		const absolute = this.toAbsoluteUrl(filename);
+		const key = absolute || filename;
+		if (!this.knownBrokenUrls[key]) {
+			const detail = reason instanceof ErrorEvent ? reason.error : reason;
+			const error = detail instanceof Error ? detail : new Error(detail ? String(detail) : "");
+			console.log("Broken image path:", absolute, error);
+		}
+		this.knownBrokenUrls[key] = true;
+		this.knownBrokenUrls[filename] = true;
+	}
+
+	private toAbsoluteUrl(filename: string): string {
+		try {
+			return new URL(filename, window.location.href).toString();
+		} catch (error) {
+			return filename;
+		}
+	}
+
 	get(filename: string): any {
 		if (!filename) {
 			return {};
@@ -84,46 +192,23 @@ export class SpriteStore {
 			this.knownBrokenUrls[filename] = true;
 			return {};
 		}
-		if (this.images[filename]) {
-			this.images[filename].counter++;
-			return this.images[filename];
+		let image = this.images[filename];
+		if (!image) {
+			image = this.createSpriteImage(filename);
+			this.images[filename] = image;
+		} else {
+			image.counter++;
 		}
-		var temp = new Image() as SpriteImage;
-		// TypeError: Image constructor: 'new' is required
-		//~ var temp = new SpriteImage();
-		temp.counter = 0;
-		temp.onerror = (function(t: SpriteImage, store: SpriteStore) {
-			return function() {
-				if (t.src && !store.knownBrokenUrls[t.src]) {
-					console.log("Broken image path:", t.src, new Error());
-					store.knownBrokenUrls[t.src] = true;
-				}
-				const failsafe = store.getFailsafe();
-				if (failsafe.src && t.src !== failsafe.src) {
-					t.src = failsafe.src;
-				}
-			};
-		})(temp, this);
-		temp.src = filename;
-		this.images[filename] = temp;
-		return temp;
+		void this.ensureImagePromise(filename, image);
+		return image;
 	}
 
 	getWithPromise(filename: string): any {
-		return new Promise((resolve) => {
-			if (typeof(this.images[filename]) != "undefined") {
-				this.images[filename].counter++;
-				resolve(this.images[filename]);
-			}
-
-			const image = new Image() as SpriteImage;
-			// TypeError: Image constructor: 'new' is required
-			//~ const image = new SpriteImage();
-			image.counter = 0;
-			this.images[filename] = image;
-			image.onload = () => resolve(image);
-			image.src = filename;
-		});
+		const image = this.get(filename);
+		if (!(image instanceof Image)) {
+			return Promise.resolve(image);
+		}
+		return this.ensureImagePromise(filename, image as SpriteImage);
 	}
 
 	/**
@@ -199,6 +284,7 @@ export class SpriteStore {
 	 */
 	cache(id: string, image: SpriteImage) {
 		image.counter = 0;
+		image.assetUrl = this.toAbsoluteUrl(id);
 		this.images[id] = image;
 	}
 
@@ -221,17 +307,13 @@ export class SpriteStore {
 	 *     HTMLImageElement with failsafe image data.
 	 */
 	getFailsafe(): HTMLImageElement {
-		const filename = Paths.sprites + "/failsafe.png";
-		let failsafe = this.images[filename];
-		if (failsafe) {
-			failsafe.counter++;
+		let failsafe = this.images[this.failsafePath];
+		if (!failsafe) {
+			failsafe = this.createSpriteImage(this.failsafePath);
+			this.images[this.failsafePath] = failsafe;
+			void this.ensureImagePromise(this.failsafePath, failsafe);
 		} else {
-			failsafe = new Image() as SpriteImage;
-			// TypeError: Image constructor: 'new' is required
-			//~ failsafe = new SpriteImage();
-			failsafe.counter = 0;
-			failsafe.src = filename;
-			this.images[filename] = failsafe;
+			failsafe.counter++;
 		}
 		return failsafe;
 	}
