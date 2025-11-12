@@ -19,17 +19,22 @@ import { Point } from "../../util/Point";
 
 export class FloatingWindow extends Component {
 
-	private readonly closeSound = "click-1";
-	private opened = true;
+        private readonly closeSound = "click-1";
+        private readonly toggleSound = "ui/window_fold";
+        private opened = true;
 
-	private onMouseMovedDuringDragListener: EventListener;
-	private onMouseUpDuringDragListener: EventListener;
-	private offsetX = 0;
-	private offsetY = 0;
+        private onMouseMovedDuringDragListener: EventListener;
+        private onMouseUpDuringDragListener: EventListener;
+        private offsetX = 0;
+        private offsetY = 0;
 
-	private content: Component;
+        private content: Component;
+        private contentWrapper!: HTMLElement;
+        private minimizeButton: HTMLButtonElement | null = null;
+        private minimizeEnabled = false;
+        private minimized = false;
 
-	private windowId?: string;
+        private windowId?: string;
 
 
 	constructor(title: string, protected contentComponent: Component, x: number, y: number) {
@@ -47,32 +52,43 @@ export class FloatingWindow extends Component {
 		// apply theme
 		stendhal.config.applyTheme(titleBar);
 
-		if (title) {
-			this.child(".windowtitle")!.textContent = title;
-		} else {
-			titleBar.classList.add("hidden");
-		}
-		this.child(".windowcontent")!.append(contentComponent.componentElement);
+                if (title) {
+                        this.child(".windowtitle")!.textContent = title;
+                } else {
+                        titleBar.classList.add("hidden");
+                }
+                this.contentWrapper = this.child(".windowcontent")! as HTMLElement;
+                this.contentWrapper.append(contentComponent.componentElement);
 
-		// register and prepare event listeners
-		titleBar.addEventListener("mousedown", (event) => {
-			this.onMouseDown(event as MouseEvent)
-		});
+                // register and prepare event listeners
+                titleBar.addEventListener("mousedown", (event) => {
+                        this.onMouseDown(event as MouseEvent)
+                });
 		titleBar.addEventListener("touchstart", (event) => {
 			this.onTouchStart(event as TouchEvent)
 		});
-		const closeButton = this.child(".windowtitleclose")!;
-		closeButton.addEventListener("click", (event) => {
-			this.onClose(event);
-			stendhal.sound.playGlobalizedEffect(this.closeSound);
-		});
-		closeButton.addEventListener("touchend", (event) => {
-			this.onClose(event);
-			stendhal.sound.playGlobalizedEffect(this.closeSound);
-		});
-		this.onMouseMovedDuringDragListener = (event: Event) => {
-			if (event.type === "mousemove") {
-				this.onMouseMovedDuringDrag(event as MouseEvent);
+                const closeButton = this.child(".windowtitleclose")!;
+                closeButton.addEventListener("click", (event) => {
+                        this.onClose(event);
+                        stendhal.sound.playGlobalizedEffect(this.closeSound);
+                });
+                closeButton.addEventListener("touchend", (event) => {
+                        this.onClose(event);
+                        stendhal.sound.playGlobalizedEffect(this.closeSound);
+                });
+                this.minimizeButton = this.child(".windowtitleminimize") as HTMLButtonElement | null;
+                if (this.minimizeButton) {
+                        this.minimizeButton.style.display = "none";
+                        this.minimizeButton.setAttribute("aria-hidden", "true");
+                        this.minimizeButton.tabIndex = -1;
+                        this.minimizeButton.addEventListener("click", (event) => {
+                                event.preventDefault();
+                                this.toggleMinimized();
+                        });
+                }
+                this.onMouseMovedDuringDragListener = (event: Event) => {
+                        if (event.type === "mousemove") {
+                                this.onMouseMovedDuringDrag(event as MouseEvent);
 			} else {
 				this.onTouchMovedDuringDrag(event as TouchEvent);
 			}
@@ -103,9 +119,13 @@ export class FloatingWindow extends Component {
 		event.preventDefault();
 	}
 
-	public isOpen() {
-		return this.opened;
-	}
+        public isOpen() {
+                return this.opened;
+        }
+
+        public isMinimized() {
+                return this.minimized;
+        }
 
 	/**
 	 * start draging of popup window
@@ -212,19 +232,86 @@ export class FloatingWindow extends Component {
 		}
 	}
 
-	public setId(id: string|undefined) {
-		this.windowId = id;
-	}
+        public setId(id: string|undefined) {
+                this.windowId = id;
+        }
 
-	/**
-	 * Sets visibility of close button.
-	 *
-	 * Default is shown.
-	 *
-	 * @param {boolean} enable
-	 *   Set to `false` to hide.
-	 */
-	enableCloseButton(enable: boolean) {
-		this.child(".windowtitleclose")!.style.display = enable ? "" : "none";
-	}
+        /**
+         * Sets visibility of close button.
+         *
+         * Default is shown.
+         *
+         * @param {boolean} enable
+         *   Set to `false` to hide.
+         */
+        enableCloseButton(enable: boolean) {
+                this.child(".windowtitleclose")!.style.display = enable ? "" : "none";
+        }
+
+        public enableMinimizeButton(enable: boolean) {
+                if (!this.minimizeButton) {
+                        return;
+                }
+
+                this.minimizeEnabled = enable;
+                if (enable) {
+                        this.minimizeButton.style.display = "";
+                        this.minimizeButton.setAttribute("aria-hidden", "false");
+                        this.minimizeButton.tabIndex = 0;
+                        this.updateMinimizeButtonState();
+                } else {
+                        this.setMinimized(false);
+                        this.minimizeButton.style.display = "none";
+                        this.minimizeButton.setAttribute("aria-hidden", "true");
+                        this.minimizeButton.tabIndex = -1;
+                }
+        }
+
+        public setMinimized(minimized: boolean) {
+                const nextState = minimized && this.minimizeEnabled;
+                if (this.minimized === nextState) {
+                        return;
+                }
+
+                this.minimized = nextState;
+                if (this.contentWrapper) {
+                        this.contentWrapper.style.display = this.minimized ? "none" : "";
+                }
+                this.componentElement.classList.toggle("windowdiv--minimized", this.minimized);
+                this.updateMinimizeButtonState();
+                this.playToggleSound();
+        }
+
+        private toggleMinimized() {
+                this.setMinimized(!this.minimized);
+        }
+
+        private updateMinimizeButtonState() {
+                if (!this.minimizeButton) {
+                        return;
+                }
+
+                const label = this.minimized ? "Przywróć okno" : "Zminimalizuj okno";
+                this.minimizeButton.textContent = this.minimized ? "▢" : "_";
+                this.minimizeButton.setAttribute("aria-expanded", (!this.minimized).toString());
+                this.minimizeButton.setAttribute("aria-label", label);
+        }
+
+        private playToggleSound() {
+                if (!this.minimizeEnabled) {
+                        return;
+                }
+
+                const soundService = stendhal?.sound;
+                const play = soundService?.playGlobalizedEffect;
+                if (typeof play !== "function") {
+                        return;
+                }
+
+                try {
+                        play.call(soundService, this.toggleSound);
+                } catch (err) {
+                        console.warn("Unable to play window toggle sound", err);
+                }
+        }
 }

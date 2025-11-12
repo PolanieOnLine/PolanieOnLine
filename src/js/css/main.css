@@ -1090,25 +1090,26 @@ div#menupanel #soundbutton {
 	margin: 3px;
 }
 
-.popuptitleclose, .windowtitleclose {
-	float: right;
-	min-width: 1.5em;
-	border: none;
-	background: rgba(34, 20, 11, 0.9);
-	color: #f9e7c5;
-	cursor: pointer;
-	font-weight: bold;
-	font-size: 0.95rem;
-	padding: 0 4px;
-	border-top: 1px solid var(--border-top-color);
-	border-left: 1px solid var(--border-top-color);
-	border-right: 1px solid var(--border-bottom-color);
-	border-bottom: 1px solid var(--border-bottom-color);
+.popuptitleclose, .windowtitleclose, .windowtitleminimize {
+        float: right;
+        min-width: 1.5em;
+        border: none;
+        background: rgba(34, 20, 11, 0.9);
+        color: #f9e7c5;
+        cursor: pointer;
+        font-weight: bold;
+        font-size: 0.95rem;
+        padding: 0 4px;
+        border-top: 1px solid var(--border-top-color);
+        border-left: 1px solid var(--border-top-color);
+        border-right: 1px solid var(--border-bottom-color);
+        border-bottom: 1px solid var(--border-bottom-color);
 }
 
-.windowtitleclose:hover {
-	background: rgba(52, 30, 14, 0.95);
-	outline: none;
+.windowtitleclose:hover,
+.windowtitleminimize:hover {
+        background: rgba(52, 30, 14, 0.95);
+        outline: none;
 }
 
 .popuptitleclose {

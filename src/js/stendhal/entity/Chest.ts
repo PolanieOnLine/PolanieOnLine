@@ -220,18 +220,21 @@ export class Chest extends PopupInventory {
 	}
 
 	openInventoryWindow() {
-		if (!this.inventory || !this.inventory.isOpen()) {
-			const invComponent = new ItemInventoryComponent(this,
-					"content", 6, 6, stendhal.config.getBoolean("inventory.quick-pickup"), undefined);
-			// TODO: remove, deprecated
-			invComponent.setConfigId("chest");
+                if (!this.inventory || !this.inventory.isOpen()) {
+                        const invComponent = new ItemInventoryComponent(this,
+                                        "content", 6, 6, stendhal.config.getBoolean("inventory.quick-pickup"), undefined);
+                        // TODO: remove, deprecated
+                        invComponent.setConfigId("chest");
 
-			const dstate = stendhal.config.getWindowState("chest");
-			this.inventory = new FloatingWindow("Skrzynia", invComponent,
-					dstate.x, dstate.y);
-			this.inventory.setId("chest");
-		}
-	}
+                        const dstate = stendhal.config.getWindowState("chest");
+                        const windowInstance = new FloatingWindow("Skrzynia", invComponent,
+                                        dstate.x, dstate.y);
+                        windowInstance.setId("chest");
+                        windowInstance.enableMinimizeButton(true);
+                        this.inventory = windowInstance;
+                }
+                (this.inventory as FloatingWindow).setMinimized(false);
+        }
 
 	/**
 	 * Opens inventory window if player is within range.
