@@ -73,13 +73,32 @@ export class MiniMapComponent extends Component {
 		canvas.style.height = cssHeight + "px";
 		canvas.width = Math.round(cssWidth * this.pixelRatio);
 		canvas.height = Math.round(cssHeight * this.pixelRatio);
-		this.componentElement.addEventListener("click", (event) => {
-			this.onClick(event);
-		});
-		this.componentElement.addEventListener("dblclick", (event) => {
-			this.onClick(event);
-		});
-	}
+                this.componentElement.addEventListener("click", (event) => {
+                        this.onClick(event);
+                });
+                this.componentElement.addEventListener("dblclick", (event) => {
+                        this.onClick(event);
+                });
+                this.componentElement.addEventListener("touchstart", (event: TouchEvent) => {
+                        const pos = stendhal.ui.html.extractPosition(event);
+                        stendhal.ui.touch.onTouchStart(pos.pageX, pos.pageY);
+                });
+                this.componentElement.addEventListener("touchend", (event: TouchEvent) => {
+                        const pos = stendhal.ui.html.extractPosition(event);
+                        stendhal.ui.touch.onTouchEnd(event);
+                        if (stendhal.ui.touch.isLongTouch(event)) {
+                                return;
+                        }
+                        const isDoubleTap = stendhal.ui.touch.registerTap(pos.pageX, pos.pageY, pos.target);
+                        if (!isDoubleTap) {
+                                return;
+                        }
+                        event.preventDefault();
+                        event.stopPropagation();
+                        const doubleEvent = Object.assign({}, pos, {type: "dblclick"}) as MouseEvent;
+                        this.onClick(doubleEvent);
+                });
+        }
 
 	private zoneChange() {
 		this.mapWidth = stendhal.data.map.zoneSizeX;

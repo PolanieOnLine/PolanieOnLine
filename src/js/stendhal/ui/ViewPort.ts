@@ -1170,13 +1170,25 @@ export class ViewPort {
                         const is_touch = stendhal.ui.touch.isTouchEvent(e);
                         const viewport = stendhal.ui.gamewindow as ViewPort;
                         if (is_touch) {
-                                stendhal.ui.touch.onTouchEnd(e);
+                                stendhal.ui.touch.onTouchEnd(e as TouchEvent);
                         }
                         var pos = stendhal.ui.html.extractPosition(e);
                         const long_touch = is_touch && stendhal.ui.touch.isLongTouch(e);
                         let isDoubleTap = false;
+                        let handledTeleclick = false;
                         if (is_touch && !long_touch) {
-                                isDoubleTap = stendhal.ui.touch.registerTap(pos.pageX, pos.pageY);
+                                isDoubleTap = stendhal.ui.touch.registerTap(pos.pageX, pos.pageY, pos.target);
+                                if (isDoubleTap) {
+                                        handledTeleclick = viewport.handleTeleclickDoubleTap(pos);
+                                }
+                        }
+                        if (handledTeleclick) {
+                                mHandle.cleanUp(pos);
+                                if (pos.target instanceof HTMLElement) {
+                                        pos.target.focus();
+                                }
+                                e.preventDefault();
+                                return;
                         }
                         if ((e instanceof MouseEvent && mHandle.isRightClick(e)) || long_touch) {
                                 if (entity != stendhal.zone.ground) {
@@ -1333,6 +1345,36 @@ export class ViewPort {
                         return false;
                 }
                 return Object.prototype.hasOwnProperty.call(player, "teleclickmode");
+        }
+
+        private handleTeleclickDoubleTap(pos: any): boolean {
+                if (!this.isTeleclickEnabled()) {
+                        return false;
+                }
+                const target = pos && pos.target;
+                const viewportElement = this.getElement();
+                let isViewportTarget = false;
+                if (target instanceof HTMLElement) {
+                        if (target === viewportElement) {
+                                isViewportTarget = true;
+                        } else if (typeof target.closest === "function") {
+                                isViewportTarget = !!target.closest("#viewport");
+                        }
+                }
+                if (!isViewportTarget) {
+                        return false;
+                }
+
+                const ground = stendhal.zone && stendhal.zone.ground;
+                if (!ground || typeof ground.onclick !== "function") {
+                        return false;
+                }
+
+                const localX = typeof pos.canvasRelativeX === "number" ? pos.canvasRelativeX : 0;
+                const localY = typeof pos.canvasRelativeY === "number" ? pos.canvasRelativeY : 0;
+
+                ground.onclick(localX, localY, true);
+                return true;
         }
 
         private canHoldEntityForTouch(entity: any): boolean {
