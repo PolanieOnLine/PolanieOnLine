@@ -53,6 +53,7 @@ export class Client {
 	private initialized = false;
 	private errorCounter = 0;
 	private unloading = false;
+	private worldLoaded = false;
 	/** User's character name.
 	 *
 	 * NOTE: can we replace references to this with value now stored in `util.SessionManager`?
@@ -255,6 +256,27 @@ export class Client {
 			// ignore
 		}
 		return true;
+}
+
+	/**
+	 * Registers Marauroa event handlers.
+	 */
+	private queueNetworkWork(task: () => void) {
+		if (typeof task !== "function") {
+			return;
+		}
+		try {
+			const viewport = stendhal && stendhal.ui ? stendhal.ui.viewport : undefined;
+			if (viewport && typeof viewport.queueNetworkTask === "function") {
+				viewport.queueNetworkTask(task);
+				return;
+			}
+			task();
+		} catch (error) {
+			if (typeof console !== "undefined" && console.error) {
+				console.error("Failed to queue network work", error);
+			}
+		}
 	}
 
 	/**
@@ -335,49 +357,67 @@ export class Client {
 			}
 		};
 
-		marauroa.clientFramework.onTransfer = function(items: any) {
-			var data = {} as any;
-			var zoneName = ""
-			for (var i in items) {
-				var name = items[i]["name"];
-				zoneName = name.substring(0, name.indexOf("."));
-				name = name.substring(name.indexOf(".") + 1);
-				data[name] = items[i]["data"];
-				if (name === "data_map") {
-					this.onDataMap(items[i]["data"]);
+		marauroa.clientFramework.onTransfer = (items: any) => {
+			this.queueNetworkWork(() => {
+				const data: Record<string, any> = {};
+				let zoneName = "";
+				for (const key in items) {
+					const entry = items[key];
+					if (!entry) {
+						continue;
+					}
+					let name = entry["name"];
+					if (typeof name !== "string") {
+						continue;
+					}
+					const dotIndex = name.indexOf(".");
+					if (dotIndex === -1) {
+						continue;
+					}
+					zoneName = name.substring(0, dotIndex);
+					name = name.substring(dotIndex + 1);
+					data[name] = entry["data"];
+					if (name === "data_map") {
+						this.onDataMap(entry["data"]);
+					}
 				}
-			}
-			stendhal.data.map.onTransfer(zoneName, data);
+				stendhal.data.map.onTransfer(zoneName, data);
+			});
 		};
 
 		// update user interface on perceptions
 		if (document.getElementById("viewport")) {
 			// override perception listener
 			marauroa.perceptionListener = new PerceptionListener(marauroa.perceptionListener);
-			marauroa.perceptionListener.onPerceptionEnd = function(_type: Int8Array, _timestamp: number) {
-				stendhal.zone.sortEntities();
-				(ui.get(UIComponentEnum.MiniMap) as MiniMapComponent).draw();
-				(ui.get(UIComponentEnum.BuddyList) as BuddyListComponent).update();
-				stendhal.ui.equip.update();
-				(ui.get(UIComponentEnum.PlayerEquipment) as PlayerEquipmentComponent).update();
-				if (!this.loaded) {
-					this.loaded = true;
-					// delay visibile change of client a little to allow for initialisation in the background for a smoother experience
-					window.setTimeout(function() {
-						let body = document.getElementById("body")!;
-						body.style.cursor = "auto";
-						document.getElementById("client")!.style.display = "flex";
-						document.getElementById("loginpopup")!.style.display = "none";
+			marauroa.perceptionListener.onPerceptionEnd = (_type: Int8Array, _timestamp: number) => {
+				this.queueNetworkWork(() => {
+					stendhal.zone.sortEntities();
+					(ui.get(UIComponentEnum.MiniMap) as MiniMapComponent).draw();
+					(ui.get(UIComponentEnum.BuddyList) as BuddyListComponent).update();
+					stendhal.ui.equip.update();
+					(ui.get(UIComponentEnum.PlayerEquipment) as PlayerEquipmentComponent).update();
+					if (!this.worldLoaded) {
+						this.worldLoaded = true;
+						// delay visible change of client a little to allow for initialization in the background for a smoother experience
+						window.setTimeout(() => {
+							const body = document.getElementById("body")!;
+							body.style.cursor = "auto";
+							document.getElementById("client")!.style.display = "flex";
+							document.getElementById("loginpopup")!.style.display = "none";
 
-						// initialize observer after UI is ready
-						singletons.getUIUpdateObserver().init();
-						ui.onDisplayReady();
-					}, 300);
-				}
-			}
+							// initialize observer after UI is ready
+							singletons.getUIUpdateObserver().init();
+							ui.onDisplayReady();
+						}, 300);
+					}
+				});
+			};
 		}
 	}
 
+	/**
+	 * Registers global browser event handlers.
+	 */
 	/**
 	 * Creates a character selection dialog window.
 	 */
@@ -397,9 +437,6 @@ export class Client {
 		Client.instance.unloading = true;
 	}
 
-	/**
-	 * Registers global browser event handlers.
-	 */
 	registerBrowserEventHandlers() {
 		const keyHandler = singletons.getKeyHandler();
 		document.addEventListener("keydown", keyHandler.onKeyDown);

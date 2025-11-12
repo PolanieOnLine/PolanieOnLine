@@ -14,8 +14,10 @@ export type RenderCallback = (alpha: number) => void;
 export type FpsSampleCallback = (fps: number) => void;
 
 export interface GameLoopOptions {
-        fpsLimit?: number;
-        onFpsSample?: FpsSampleCallback;
+fpsLimit?: number;
+onFpsSample?: FpsSampleCallback;
+networkTaskBudget?: number;
+networkTimeBudgetMs?: number;
 }
 
 interface NavigatorWithBattery extends Navigator {
@@ -37,68 +39,97 @@ interface BatteryManager extends EventTarget {
 export class GameLoop {
 
         private static readonly MAX_FRAME_TIME = 250; // ms
-        private static readonly MAX_FRAME_DELTA = GameLoop.MAX_FRAME_TIME;
-        private static readonly MAX_CATCH_UP_STEPS = 5;
-        private static readonly MIN_PARTIAL_UPDATE_MS = 1;
-        private static readonly FIXED_UPDATE_HZ = 144;
-        private static readonly BACKGROUND_THROTTLE_MS = 1000;
-        private static readonly FPS_WINDOW_MS = 750;
-        private static readonly FPS_HISTORY_SIZE = 240;
+private static readonly MAX_FRAME_DELTA = GameLoop.MAX_FRAME_TIME;
+private static readonly MAX_CATCH_UP_STEPS = 5;
+private static readonly MIN_PARTIAL_UPDATE_MS = 1;
+private static readonly FIXED_UPDATE_HZ = 144;
+private static readonly BACKGROUND_THROTTLE_MS = 1000;
+private static readonly FPS_WINDOW_MS = 750;
+private static readonly FPS_HISTORY_SIZE = 240;
+private static readonly NETWORK_TASKS_PER_TICK = 8;
+private static readonly NETWORK_TIME_BUDGET_MS = 4;
+private static readonly MAX_DYNAMIC_DT = 1000 / 60;
+private static readonly MIN_DYNAMIC_DT = 1000 / GameLoop.FIXED_UPDATE_HZ;
+private static readonly ADAPTATION_TRIGGER = 3;
+private static readonly ADAPTATION_PRESSURE_DECAY = 0.25;
+private static readonly ADAPTATION_GROWTH = 1.15;
+private static readonly ADAPTATION_RECOVERY = 0.98;
+private static readonly ADAPTATION_PRESSURE_CAP = 24;
 
-        private readonly fixedDt: number = 1000 / GameLoop.FIXED_UPDATE_HZ;
+private readonly fixedDt: number = 1000 / GameLoop.FIXED_UPDATE_HZ;
+private dynamicDt = this.fixedDt;
+private catchUpPressure = 0;
 
-        private accumulator = 0;
-        private lastNow = 0;
-        private lastRenderNow = 0;
-        private rafHandle = 0;
-        private slowTimerHandle: number | null = null;
-        private running = false;
+private accumulator = 0;
+private lastNow = 0;
+private lastRenderNow = 0;
+private rafHandle = 0;
+private slowTimerHandle: number | null = null;
+private running = false;
 
-        private targetFrameTime = 0;
-        private userFrameTime = 0;
-        private saveDataFrameTime = 0;
-        private batteryFrameTime = 0;
-        private nextFrameDeadline = 0;
+private targetFrameTime = 0;
+private userFrameTime = 0;
+private saveDataFrameTime = 0;
+private batteryFrameTime = 0;
+private nextFrameDeadline = 0;
 
-        private readonly fpsTimestamps = new Float64Array(GameLoop.FPS_HISTORY_SIZE);
-        private fpsHead = 0;
-        private fpsCount = 0;
+private readonly fpsTimestamps = new Float64Array(GameLoop.FPS_HISTORY_SIZE);
+private fpsHead = 0;
+private fpsCount = 0;
 
-        private readonly onceTasks: Array<() => void> = [];
-        private readonly cleanupTasks: Array<() => void> = [];
+private readonly onceTasks: Array<() => void> = [];
+private readonly cleanupTasks: Array<() => void> = [];
+private readonly networkQueue: Array<() => void> = [];
+private readonly networkTasksPerTick: number;
+private readonly networkTimeBudgetMs: number;
 
-        private readonly visibilityListener: () => void;
+private readonly visibilityListener: () => void;
 
-        constructor(
-                private readonly updateCb: UpdateCallback,
-                private readonly renderCb: RenderCallback,
-                private readonly options: GameLoopOptions = {}
-        ) {
-                this.visibilityListener = () => this.onVisibilityChanged();
+constructor(
+private readonly updateCb: UpdateCallback,
+private readonly renderCb: RenderCallback,
+private readonly options: GameLoopOptions = {}
+) {
+this.visibilityListener = () => this.onVisibilityChanged();
 
-                if (typeof document !== "undefined") {
-                        document.addEventListener("visibilitychange", this.visibilityListener, {passive: true});
-                }
+if (typeof document !== "undefined") {
+document.addEventListener("visibilitychange", this.visibilityListener, {passive: true});
+}
 
-                this.setupSaveDataCap();
-                this.setupBatteryCap();
+this.setupSaveDataCap();
+this.setupBatteryCap();
 
-                this.setFpsLimit(options.fpsLimit);
-        }
+const taskBudget = options.networkTaskBudget;
+if (typeof taskBudget === "number" && Number.isFinite(taskBudget) && taskBudget >= 0) {
+this.networkTasksPerTick = Math.floor(taskBudget);
+} else {
+this.networkTasksPerTick = GameLoop.NETWORK_TASKS_PER_TICK;
+}
+const timeBudget = options.networkTimeBudgetMs;
+if (typeof timeBudget === "number" && Number.isFinite(timeBudget) && timeBudget >= 0) {
+this.networkTimeBudgetMs = timeBudget;
+} else {
+this.networkTimeBudgetMs = GameLoop.NETWORK_TIME_BUDGET_MS;
+}
+
+this.setFpsLimit(options.fpsLimit);
+}
 
         /**
          * Starts the loop if it is not running already.
          */
-        start() {
-                if (this.running) {
-                        return;
-                }
-                this.running = true;
-                this.accumulator = 0;
-                this.nextFrameDeadline = 0;
-                this.fpsHead = 0;
-                this.fpsCount = 0;
-                this.lastRenderNow = 0;
+start() {
+if (this.running) {
+return;
+}
+this.running = true;
+this.accumulator = 0;
+this.dynamicDt = this.fixedDt;
+this.catchUpPressure = 0;
+this.nextFrameDeadline = 0;
+this.fpsHead = 0;
+this.fpsCount = 0;
+this.lastRenderNow = 0;
                 if (this.slowTimerHandle !== null) {
                         clearTimeout(this.slowTimerHandle);
                         this.slowTimerHandle = null;
@@ -110,18 +141,19 @@ export class GameLoop {
         /**
          * Stops the loop.
          */
-        stop() {
-                if (!this.running) {
-                        return;
-                }
-                this.running = false;
-                cancelAnimationFrame(this.rafHandle);
-                if (this.slowTimerHandle !== null) {
-                        clearTimeout(this.slowTimerHandle);
-                        this.slowTimerHandle = null;
-                }
-                this.flushCleanupTasks();
-        }
+stop() {
+if (!this.running) {
+return;
+}
+this.running = false;
+cancelAnimationFrame(this.rafHandle);
+if (this.slowTimerHandle !== null) {
+clearTimeout(this.slowTimerHandle);
+this.slowTimerHandle = null;
+}
+this.networkQueue.length = 0;
+this.flushCleanupTasks();
+}
 
         setFpsLimit(limit?: number) {
                 if (typeof(limit) === "number" && Number.isFinite(limit) && limit > 0) {
@@ -132,22 +164,33 @@ export class GameLoop {
                 this.updateTargetFrameTime();
         }
 
-        runOnce(task: () => void) {
-                if (typeof task === "function") {
-                        this.onceTasks.push(task);
-                }
-        }
+runOnce(task: () => void) {
+if (typeof task === "function") {
+this.onceTasks.push(task);
+}
+}
 
-        onStop(task: () => void) {
-                if (typeof task === "function") {
-                        this.cleanupTasks.push(task);
-                }
-        }
+onStop(task: () => void) {
+if (typeof task === "function") {
+this.cleanupTasks.push(task);
+}
+}
 
-        private tick(now: number) {
-                if (!this.running) {
-                        return;
-                }
+isRunning(): boolean {
+return this.running;
+}
+
+enqueueNetworkTask(task: () => void) {
+if (typeof task !== "function") {
+return;
+}
+this.networkQueue.push(task);
+}
+
+private tick(now: number) {
+if (!this.running) {
+return;
+}
 
                 let frameTime = now - this.lastNow;
                 if (!Number.isFinite(frameTime) || frameTime < 0) {
@@ -155,40 +198,44 @@ export class GameLoop {
                 }
                 this.lastNow = now;
 
-                frameTime = Math.min(frameTime, GameLoop.MAX_FRAME_DELTA);
+frameTime = Math.min(frameTime, GameLoop.MAX_FRAME_DELTA);
 
-                this.accumulator = Math.min(this.accumulator + frameTime, GameLoop.MAX_FRAME_DELTA);
+this.accumulator = Math.min(this.accumulator + frameTime, GameLoop.MAX_FRAME_DELTA);
 
-                const step = this.fixedDt;
-                let updates = 0;
-                while ((this.accumulator >= step) && (updates < GameLoop.MAX_CATCH_UP_STEPS)) {
-                        this.updateCb(step);
-                        this.accumulator -= step;
-                        updates++;
+this.drainNetworkQueue();
+
+const step = this.dynamicDt;
+let updates = 0;
+while ((this.accumulator >= step) && (updates < GameLoop.MAX_CATCH_UP_STEPS)) {
+this.updateCb(step);
+this.accumulator -= step;
+updates++;
                 }
 
                 if (updates >= GameLoop.MAX_CATCH_UP_STEPS) {
                         this.accumulator = Math.min(this.accumulator, step);
                 }
 
-                if (updates === 0 && this.accumulator >= GameLoop.MIN_PARTIAL_UPDATE_MS) {
-                        const slice = Math.min(this.accumulator, step);
-                        this.updateCb(slice);
-                        this.accumulator -= slice;
-                }
+if (updates === 0 && this.accumulator >= GameLoop.MIN_PARTIAL_UPDATE_MS) {
+const slice = Math.min(this.accumulator, step);
+this.updateCb(slice);
+this.accumulator -= slice;
+}
 
-                this.flushOnceTasks();
+this.flushOnceTasks();
 
-                const alpha = step > 0 ? Math.min(1, this.accumulator / step) : 0;
+const alpha = step > 0 ? Math.min(1, this.accumulator / step) : 0;
 
-                const shouldRender = this.shouldRenderFrame(now);
-                if (shouldRender) {
-                        this.renderCb(alpha);
-                        this.trackFps(now);
-                }
+const shouldRender = this.shouldRenderFrame(now);
+if (shouldRender) {
+this.renderCb(alpha);
+this.trackFps(now);
+}
 
-                this.scheduleNextTick();
-        }
+this.adjustDynamicStep(updates);
+
+this.scheduleNextTick();
+}
 
         private shouldRenderFrame(now: number): boolean {
                 if (this.targetFrameTime <= 0) {
@@ -230,21 +277,73 @@ export class GameLoop {
                 }
         }
 
-        private flushCleanupTasks() {
-                if (this.cleanupTasks.length === 0) {
-                        return;
-                }
-                const tasks = this.cleanupTasks.splice(0, this.cleanupTasks.length);
-                for (const task of tasks) {
-                        try {
-                                task();
-                        } catch (error) {
-                                if (typeof console !== "undefined" && console.error) {
-                                        console.error("GameLoop onStop task failed", error);
-                                }
-                        }
-                }
-        }
+	private flushCleanupTasks() {
+		if (this.cleanupTasks.length === 0) {
+			return;
+		}
+		const tasks = this.cleanupTasks.splice(0, this.cleanupTasks.length);
+		for (const task of tasks) {
+			try {
+				task();
+			} catch (error) {
+				if (typeof console !== "undefined" && console.error) {
+					console.error("GameLoop onStop task failed", error);
+				}
+			}
+		}
+	}
+
+	private drainNetworkQueue() {
+		if (this.networkQueue.length === 0) {
+			return;
+		}
+
+		const maxTasks = (this.networkTasksPerTick <= 0) ? Number.POSITIVE_INFINITY : this.networkTasksPerTick;
+		const timeBudget = this.networkTimeBudgetMs;
+		const hasTimeBudget = timeBudget > 0 && Number.isFinite(timeBudget);
+		const start = hasTimeBudget ? performance.now() : 0;
+		let processed = 0;
+
+		while (this.networkQueue.length > 0 && processed < maxTasks) {
+			const task = this.networkQueue.shift();
+			if (!task) {
+				break;
+			}
+			try {
+				task();
+			} catch (error) {
+				if (typeof console !== "undefined" && console.error) {
+					console.error("GameLoop network task failed", error);
+				}
+			}
+			processed++;
+			if (hasTimeBudget && (performance.now() - start) >= timeBudget) {
+				break;
+			}
+		}
+	}
+
+	private adjustDynamicStep(updates: number) {
+		if (updates >= GameLoop.MAX_CATCH_UP_STEPS) {
+			this.catchUpPressure = Math.min(GameLoop.ADAPTATION_PRESSURE_CAP, this.catchUpPressure + 1);
+		} else {
+			this.catchUpPressure = Math.max(0, this.catchUpPressure - GameLoop.ADAPTATION_PRESSURE_DECAY);
+		}
+
+		if (this.catchUpPressure >= GameLoop.ADAPTATION_TRIGGER && this.dynamicDt < GameLoop.MAX_DYNAMIC_DT) {
+			const nextDt = Math.min(GameLoop.MAX_DYNAMIC_DT, this.dynamicDt * GameLoop.ADAPTATION_GROWTH);
+			if (nextDt !== this.dynamicDt) {
+				this.dynamicDt = nextDt;
+			}
+			this.catchUpPressure = 0;
+			return;
+		}
+
+		if (updates === 0 && this.dynamicDt > GameLoop.MIN_DYNAMIC_DT && this.accumulator < this.dynamicDt * 0.25) {
+			const nextDt = Math.max(GameLoop.MIN_DYNAMIC_DT, this.dynamicDt * GameLoop.ADAPTATION_RECOVERY);
+			this.dynamicDt = nextDt;
+		}
+	}
 
         private scheduleNextTick() {
                 if (!this.running) {

@@ -352,20 +352,39 @@ export class ViewPort {
 	 * Starts the render loop if it is not already active.
 	 */
 	draw() {
-                if (!this.loop) {
-                        const configuredLimit = stendhal.config.getFloat("loop.fps.limit");
-                        const initialLimit = this.requestedFpsLimit ?? this.normalizeFpsLimit(configuredLimit);
-                        this.loop = new GameLoop(
-                                (dt) => this.update(dt),
-                                (alpha) => this.render(alpha),
-                                {
-                                        fpsLimit: initialLimit,
-                                        onFpsSample: (fps) => this.updateFpsCounter(fps)
-                                }
-                        );
-                        this.requestedFpsLimit = initialLimit;
-                }
-                this.loop.start();
+		if (!this.loop) {
+			const configuredLimit = stendhal.config.getFloat("loop.fps.limit");
+			const initialLimit = this.requestedFpsLimit ?? this.normalizeFpsLimit(configuredLimit);
+			this.loop = new GameLoop(
+				(dt) => this.update(dt),
+				(alpha) => this.render(alpha),
+				{
+					fpsLimit: initialLimit,
+					onFpsSample: (fps) => this.updateFpsCounter(fps),
+					networkTaskBudget: 6,
+					networkTimeBudgetMs: 5
+				}
+			);
+			this.requestedFpsLimit = initialLimit;
+		}
+		this.loop.start();
+	}
+
+	queueNetworkTask(task: () => void) {
+		if (typeof task !== "function") {
+			return;
+		}
+		try {
+			if (this.loop && this.loop.isRunning()) {
+				this.loop.enqueueNetworkTask(task);
+				return;
+			}
+			task();
+		} catch (error) {
+			if (typeof console !== "undefined" && console.error) {
+				console.error("ViewPort network task failed", error);
+			}
+		}
 	}
 
 	private update(dtMs: number) {
