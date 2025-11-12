@@ -223,6 +223,9 @@ function createWorker(): Worker | undefined {
         const url = URL.createObjectURL(blob);
         try {
                 return new Worker(url);
+        } catch (error) {
+                console.info("Tilemap renderer worker disabled", error);
+                return undefined;
         } finally {
                 URL.revokeObjectURL(url);
         }
