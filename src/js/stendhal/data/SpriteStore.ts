@@ -96,28 +96,60 @@ export class SpriteStore {
 		return image;
 	}
 
-	private ensureImagePromise(filename: string, image: SpriteImage): Promise<SpriteImage> {
-		if (image.complete && image.naturalWidth > 0) {
-			return Promise.resolve(image);
-		}
-		if (image.loadPromise) {
-			return image.loadPromise;
-		}
-		const promise = this.binaryCache.load(filename).then((blob) => {
-			return this.assignBlobToImage(filename, image, blob);
-		}).catch((error) => {
-			this.markBroken(filename, error);
-			this.useFailsafe(image);
-			return image;
-		});
-		image.loadPromise = promise;
-		promise.then(() => {
-			image.loadPromise = undefined;
-		}, () => {
-			image.loadPromise = undefined;
-		});
-		return promise;
-	}
+        private ensureImagePromise(filename: string, image: SpriteImage): Promise<SpriteImage> {
+                if (image.complete && image.naturalWidth > 0) {
+                        return Promise.resolve(image);
+                }
+                if (image.loadPromise) {
+                        return image.loadPromise;
+                }
+                if (this.shouldBypassBinaryCache(filename)) {
+                        const promise = new Promise<SpriteImage>((resolve) => {
+                                const onLoad = () => {
+                                        image.removeEventListener("load", onLoad);
+                                        image.removeEventListener("error", onError);
+                                        resolve(image);
+                                };
+                                const onError = (event: Event) => {
+                                        image.removeEventListener("load", onLoad);
+                                        image.removeEventListener("error", onError);
+                                        this.markBroken(filename, event);
+                                        this.useFailsafe(image);
+                                        resolve(image);
+                                };
+                                image.addEventListener("load", onLoad);
+                                image.addEventListener("error", onError);
+                                if (!image.src) {
+                                        image.src = image.assetUrl || filename;
+                                }
+                        });
+                        image.loadPromise = promise;
+                        promise.then(() => {
+                                image.loadPromise = undefined;
+                        }, () => {
+                                image.loadPromise = undefined;
+                        });
+                        return promise;
+                }
+                const promise = this.binaryCache.load(filename).then((blob) => {
+                        return this.assignBlobToImage(filename, image, blob);
+                }).catch((error) => {
+                        this.markBroken(filename, error);
+                        this.useFailsafe(image);
+                        return image;
+                });
+                image.loadPromise = promise;
+                promise.then(() => {
+                        image.loadPromise = undefined;
+                }, () => {
+                        image.loadPromise = undefined;
+                });
+                return promise;
+        }
+
+        private shouldBypassBinaryCache(filename: string): boolean {
+                return filename.indexOf("/emoji/") !== -1;
+        }
 
 	private assignBlobToImage(filename: string, image: SpriteImage, blob: Blob): Promise<SpriteImage> {
 		return new Promise((resolve) => {
@@ -199,9 +231,9 @@ export class SpriteStore {
 		} else {
 			image.counter++;
 		}
-		void this.ensureImagePromise(filename, image);
-		return image;
-	}
+                void this.ensureImagePromise(filename, image);
+                return image;
+        }
 
 	getWithPromise(filename: string): any {
 		const image = this.get(filename);
