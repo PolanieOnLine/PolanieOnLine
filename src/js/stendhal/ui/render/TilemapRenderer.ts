@@ -215,19 +215,83 @@ self.onmessage = (event) => {
 };
 `;
 
+let cspBlocksBlobWorker: boolean | undefined;
+let workerSupportLogged = false;
+
+function directiveAllowsBlob(source: string | undefined): boolean {
+        if (!source) {
+                return false;
+        }
+        return /(^|\s)blob:/.test(source);
+}
+
+function detectCspBlobRestriction(): boolean {
+        if (cspBlocksBlobWorker !== undefined) {
+                return cspBlocksBlobWorker;
+        }
+        if (typeof document === "undefined") {
+                cspBlocksBlobWorker = false;
+                return cspBlocksBlobWorker;
+        }
+        const policies = Array.from(document.querySelectorAll('meta[http-equiv="Content-Security-Policy"]'));
+        for (const policy of policies) {
+                const content = policy.getAttribute("content") || "";
+                if (!content) {
+                        continue;
+                }
+                const directives = content.split(";");
+                let workerSrc: string | undefined;
+                let scriptSrc: string | undefined;
+                for (const directive of directives) {
+                        const trimmed = directive.trim();
+                        if (!trimmed) {
+                                continue;
+                        }
+                        if (trimmed.startsWith("worker-src")) {
+                                workerSrc = trimmed;
+                        } else if (trimmed.startsWith("script-src")) {
+                                scriptSrc = trimmed;
+                        }
+                }
+                if (workerSrc && !directiveAllowsBlob(workerSrc)) {
+                        cspBlocksBlobWorker = true;
+                        return cspBlocksBlobWorker;
+                }
+                if (!workerSrc && scriptSrc && !directiveAllowsBlob(scriptSrc)) {
+                        cspBlocksBlobWorker = true;
+                        return cspBlocksBlobWorker;
+                }
+        }
+        cspBlocksBlobWorker = false;
+        return cspBlocksBlobWorker;
+}
+
 function createWorker(): Worker | undefined {
         if (typeof Worker === "undefined" || typeof OffscreenCanvas === "undefined") {
+                cspBlocksBlobWorker = true;
                 return undefined;
         }
-        const blob = new Blob([workerSource], {type: "application/javascript"});
-        const url = URL.createObjectURL(blob);
+        if (detectCspBlobRestriction()) {
+                return undefined;
+        }
+        let url: string | undefined;
         try {
-                return new Worker(url);
+                const blob = new Blob([workerSource], {type: "application/javascript"});
+                url = URL.createObjectURL(blob);
+                const worker = new Worker(url);
+                cspBlocksBlobWorker = false;
+                return worker;
         } catch (error) {
-                console.info("Tilemap renderer worker disabled", error);
+                if (!workerSupportLogged) {
+                        console.info("Tilemap renderer worker disabled", error);
+                        workerSupportLogged = true;
+                }
+                cspBlocksBlobWorker = true;
                 return undefined;
         } finally {
-                URL.revokeObjectURL(url);
+                if (url) {
+                        URL.revokeObjectURL(url);
+                }
         }
 }
 
