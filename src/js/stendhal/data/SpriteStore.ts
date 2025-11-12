@@ -529,14 +529,14 @@ export class SpriteStore {
 	 * @return
 	 *     Image sprite or <code>undefined</code>.
 	 */
-	getShadow(shadowStyle: string): any {
-		if (this.knownShadows[shadowStyle]) {
-			const img = new Image();
-			img.src = Paths.sprites + "/shadow/" + shadowStyle + ".png";
-			return img;
-		}
-		return undefined;
-	}
+        getShadow(shadowStyle: string): any {
+                if (!this.knownShadows[shadowStyle]) {
+                        return undefined;
+                }
+
+                const filename = Paths.sprites + "/shadow/" + shadowStyle + ".png";
+                return this.get(filename);
+        }
 
 	/**
 	 * Checks if there is a "safe" image available for sprite.
