@@ -19,7 +19,7 @@ export class ParallaxBackground {
 	public static readonly SCROLL = 0.25;
 
 	/** Tiled image to be drawn. */
-	private image?: HTMLImageElement;
+        private image?: HTMLImageElement;
 
 	/** Singleton instance. */
 	private static instance: ParallaxBackground;
@@ -71,14 +71,18 @@ export class ParallaxBackground {
 	/**
 	 * Unsets parallax background image.
 	 */
-	reset() {
-		this.image = undefined;
-	}
+        reset() {
+                this.image = undefined;
+        }
+
+        getImageElement(): HTMLImageElement|undefined {
+                return this.image;
+        }
 
 	draw(ctx: CanvasRenderingContext2D, offsetX: number, offsetY: number) {
-		if (!this.image || !this.image.height) {
-			return;
-		}
+                if (!this.image || !this.image.height) {
+                        return;
+                }
 
 		// FIXME: seams are visible when walking
 		let dy = offsetY - ((offsetY / 4) % this.image.height);

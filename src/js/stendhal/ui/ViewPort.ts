@@ -34,6 +34,7 @@ import { TextBubble } from "../sprite/TextBubble";
 import { Point } from "../util/Point";
 import { GameLoop } from "../util/GameLoop";
 import { SpringVector, Vector2 } from "../util/SpringVector";
+import { TilemapRenderer } from "./render/TilemapRenderer";
 
 
 /**
@@ -72,8 +73,10 @@ export class ViewPort {
 	private notifSprites: TextBubble[] = [];
 	/** Active emoji sprites to draw. */
 	private emojiSprites: EmojiSprite[] = [];
-	/** Handles drawing weather in viewport. */
-	private weatherRenderer = singletons.getWeatherRenderer();
+        /** Handles drawing weather in viewport. */
+        private readonly weatherRenderer = singletons.getWeatherRenderer();
+        /** Batched tilemap renderer. */
+        private readonly tileRenderer = new TilemapRenderer();
 	/** Coloring method of current zone. */
 	private filter?: string; // deprecated, use `HSLFilter`
 	/** Coloring filter of current zone. */
@@ -420,21 +423,37 @@ export class ViewPort {
 		this.ctx.fillStyle = "black";
 		this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 
-		this.ctx.translate(-snappedX, -snappedY);
+                this.ctx.translate(-snappedX, -snappedY);
 
-		const tileOffsetX = Math.floor(snappedX / this.targetTileWidth);
-		const tileOffsetY = Math.floor(snappedY / this.targetTileHeight);
+                const tileOffsetX = Math.floor(snappedX / this.targetTileWidth);
+                const tileOffsetY = Math.floor(snappedY / this.targetTileHeight);
 
-		stendhal.data.map.parallax.draw(this.ctx, this.offsetX, this.offsetY);
-		stendhal.data.map.strategy.render(
-			this.ctx.canvas,
-			this,
-			tileOffsetX,
-			tileOffsetY,
-			this.targetTileWidth,
-			this.targetTileHeight,
-			alpha
-		);
+                this.tileRenderer.configure(stendhal.data.map, this.targetTileWidth, this.targetTileHeight);
+                const parallaxImage = stendhal.data.map.parallax.getImageElement();
+                this.tileRenderer.updateParallax(parallaxImage);
+                this.tileRenderer.prepareFrame(snappedX, snappedY, this.ctx.canvas.width, this.ctx.canvas.height);
+
+                this.tileRenderer.drawBaseLayer(this.ctx, snappedX, snappedY, this.ctx.canvas.width, this.ctx.canvas.height);
+
+                const blendComposite = this.getBlendCompositeOperation();
+                this.tileRenderer.drawBlendLayer(
+                        "blend_ground",
+                        this.ctx,
+                        tileOffsetX,
+                        tileOffsetY,
+                        blendComposite ? {composite: blendComposite} : undefined
+                );
+
+                this.drawEntities(alpha);
+
+                this.tileRenderer.drawRoofLayer(this.ctx, snappedX, snappedY, this.ctx.canvas.width, this.ctx.canvas.height);
+                this.tileRenderer.drawBlendLayer(
+                        "blend_roof",
+                        this.ctx,
+                        tileOffsetX,
+                        tileOffsetY,
+                        blendComposite ? {composite: blendComposite} : undefined
+                );
 
 		this.weatherRenderer.draw(this.ctx);
 		this.applyHSLFilter();
@@ -683,9 +702,16 @@ export class ViewPort {
 	 * @param method {string}
 	 *   Blend method.
 	 */
-	setBlendMethod(method: string) {
-		this.blendMethod = method;
-	}
+        setBlendMethod(method: string) {
+                this.blendMethod = method;
+        }
+
+        getBlendCompositeOperation(): GlobalCompositeOperation|undefined {
+                if (!this.blendMethod) {
+                        return undefined;
+                }
+                return this.blendMethod as GlobalCompositeOperation;
+        }
 
 	/**
 	 * Draws overall entity sprites.
