@@ -249,7 +249,11 @@ export class GameLoop {
 
         private updateTargetFrameTime() {
                 let frameTime = this.userFrameTime;
-                frameTime = this.applyFrameCap(frameTime, this.saveDataFrameTime);
+                const userHasExplicitLimit = frameTime > 0;
+
+                if (!userHasExplicitLimit) {
+                        frameTime = this.applyFrameCap(frameTime, this.saveDataFrameTime);
+                }
                 frameTime = this.applyFrameCap(frameTime, this.batteryFrameTime);
                 this.targetFrameTime = frameTime;
                 this.nextFrameDeadline = 0;

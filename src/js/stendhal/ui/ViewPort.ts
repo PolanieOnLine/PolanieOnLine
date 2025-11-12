@@ -539,8 +539,8 @@ export class ViewPort {
 
         private updateFpsCounter(fps: number) {
                 if (this.fpsLabel) {
-                        const precision = fps >= 100 ? 0 : 1;
-                        this.fpsLabel.textContent = fps.toFixed(precision) + " fps";
+                        const rounded = Math.max(0, Math.round(fps));
+                        this.fpsLabel.textContent = (rounded > 0 ? rounded.toString() : "--") + " fps";
                 }
         }
 
