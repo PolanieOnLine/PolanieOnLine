@@ -1166,37 +1166,47 @@ export class ViewPort {
 			}
 		}
 
-		mHandle.onMouseUp = function(e: MouseEvent|TouchEvent) {
-			const is_touch = stendhal.ui.touch.isTouchEvent(e);
-			if (is_touch) {
-				stendhal.ui.touch.onTouchEnd(e);
-			}
-			var pos = stendhal.ui.html.extractPosition(e);
-			const long_touch = is_touch && stendhal.ui.touch.isLongTouch(e);
-			if ((e instanceof MouseEvent && mHandle.isRightClick(e)) || long_touch) {
-				if (entity != stendhal.zone.ground) {
-					const append: any[] = [];
-					if (long_touch) {
-					const viewport = stendhal.ui.gamewindow as ViewPort;
-					if (viewport.canHoldEntityForTouch(entity)) {
-						append.push({
-							title: "Przytrzymaj (podziel stos)",
-							action: () => {
-								viewport.tryHoldEntityForTouch(entity, pos.pageX, pos.pageY);
-							}
-						});
-					}
-				}
-				stendhal.ui.actionContextMenu.set(ui.createSingletonFloatingWindow("Czynności",
-						new ActionContextMenu(entity, append), pos.pageX - 50, pos.pageY - 5));
-				}
-			} else {
-				entity.onclick(pos.canvasRelativeX, pos.canvasRelativeY);
-			}
-			mHandle.cleanUp(pos);
-			pos.target.focus();
-			e.preventDefault();
-		}
+                mHandle.onMouseUp = function(e: MouseEvent|TouchEvent) {
+                        const is_touch = stendhal.ui.touch.isTouchEvent(e);
+                        const viewport = stendhal.ui.gamewindow as ViewPort;
+                        if (is_touch) {
+                                stendhal.ui.touch.onTouchEnd(e);
+                        }
+                        var pos = stendhal.ui.html.extractPosition(e);
+                        const long_touch = is_touch && stendhal.ui.touch.isLongTouch(e);
+                        let isDoubleTap = false;
+                        if (is_touch && !long_touch) {
+                                isDoubleTap = stendhal.ui.touch.registerTap(pos.pageX, pos.pageY);
+                        }
+                        if ((e instanceof MouseEvent && mHandle.isRightClick(e)) || long_touch) {
+                                if (entity != stendhal.zone.ground) {
+                                        const append: any[] = [];
+                                        if (long_touch) {
+                                        if (viewport.canHoldEntityForTouch(entity)) {
+                                                append.push({
+                                                        title: "Przytrzymaj (podziel stos)",
+                                                        action: () => {
+                                                                viewport.tryHoldEntityForTouch(entity, pos.pageX, pos.pageY);
+                                                        }
+                                                });
+                                        }
+                                }
+                                stendhal.ui.actionContextMenu.set(ui.createSingletonFloatingWindow("Czynności",
+                                                new ActionContextMenu(entity, append), pos.pageX - 50, pos.pageY - 5));
+                                }
+                        } else {
+                                const sendDoubleClick = isDoubleTap && entity === stendhal.zone.ground
+                                                && viewport.isTeleclickEnabled();
+                                if (sendDoubleClick) {
+                                        entity.onclick(pos.canvasRelativeX, pos.canvasRelativeY, true);
+                                } else {
+                                        entity.onclick(pos.canvasRelativeX, pos.canvasRelativeY);
+                                }
+                        }
+                        mHandle.cleanUp(pos);
+                        pos.target.focus();
+                        e.preventDefault();
+                }
 
 		mHandle.onDrag = function(e: MouseEvent) {
 			if (stendhal.ui.touch.isTouchEvent(e)) {
@@ -1317,12 +1327,20 @@ export class ViewPort {
 		}
 	}
 
-	private canHoldEntityForTouch(entity: any): boolean {
-		if (!entity || entity.type !== "item") {
-			return false;
-		}
-		const quantity = entity.hasOwnProperty("quantity") ? Number(entity["quantity"]) : 1;
-		if (!quantity || quantity <= 1) {
+        private isTeleclickEnabled(): boolean {
+                const player = marauroa && marauroa.me;
+                if (!player) {
+                        return false;
+                }
+                return Object.prototype.hasOwnProperty.call(player, "teleclickmode");
+        }
+
+        private canHoldEntityForTouch(entity: any): boolean {
+                if (!entity || entity.type !== "item") {
+                        return false;
+                }
+                const quantity = entity.hasOwnProperty("quantity") ? Number(entity["quantity"]) : 1;
+                if (!quantity || quantity <= 1) {
 			return false;
 		}
 		return !!(entity.sprite && entity.sprite.filename);

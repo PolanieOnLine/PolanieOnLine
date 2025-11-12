@@ -28,13 +28,19 @@ export class TouchHandler {
 	private timestampTouchStart = 0;
 	/** Time at which touch was released. */
 	private timestampTouchEnd = 0;
-	/** Property denoting an object is being "held". */
-	private held = false;
+        /** Property denoting an object is being "held". */
+        private held = false;
 
-	/** Position on page when touch event began. */
-	private origin?: Point;
-	/** Number of pixels touch can move before being vetoed as a long touch or double tap. */
-	private readonly moveThreshold = 16;
+        /** Position on page when touch event began. */
+        private origin?: Point;
+        /** Last tap position registered for double tap detection. */
+        private lastTapPoint?: Point;
+        /** Number of pixels touch can move before being vetoed as a long touch or double tap. */
+        private readonly moveThreshold = 16;
+        /** Maximum time between taps before they stop counting as a double tap. */
+        private readonly doubleTapThreshold = 300;
+        /** Timestamp when the last tap was recorded. */
+        private lastTapTime = 0;
 
 	/** Singleton instance. */
 	private static instance: TouchHandler;
@@ -87,10 +93,44 @@ export class TouchHandler {
 	/**
 	 * Sets timestamp when touch released.
 	 */
-	onTouchEnd() {
-		this.timestampTouchEnd = +new Date();
-		this.touchEngaged = false;
-	}
+        onTouchEnd() {
+                this.timestampTouchEnd = +new Date();
+                this.touchEngaged = false;
+        }
+
+        /**
+         * Register a tap and determine if it should be interpreted as a double tap.
+         *
+         * @param x {number}
+         *   Tap position relative to page on X axis.
+         * @param y {number}
+         *   Tap position relative to page on Y axis.
+         * @return {boolean}
+         *   `true` if the tap completed a double tap gesture.
+         */
+        registerTap(x: number, y: number): boolean {
+                const now = +new Date();
+                let isDoubleTap = false;
+
+                if (this.lastTapTime) {
+                        const timeDelta = now - this.lastTapTime;
+                        if (timeDelta <= this.doubleTapThreshold && this.lastTapPoint) {
+                                const withinX = Math.abs(this.lastTapPoint.x - x) <= this.moveThreshold;
+                                const withinY = Math.abs(this.lastTapPoint.y - y) <= this.moveThreshold;
+                                isDoubleTap = withinX && withinY;
+                        }
+                }
+
+                if (isDoubleTap) {
+                        this.lastTapTime = 0;
+                        this.lastTapPoint = undefined;
+                } else {
+                        this.lastTapTime = now;
+                        this.lastTapPoint = new Point(x, y);
+                }
+
+                return isDoubleTap;
+        }
 
 	/**
 	 * Can be used to detect if a mouse event was triggered by touch.
