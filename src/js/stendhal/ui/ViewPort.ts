@@ -1177,7 +1177,7 @@ export class ViewPort {
                         let isDoubleTap = false;
                         let handledTeleclick = false;
                         if (is_touch && !long_touch) {
-                                isDoubleTap = stendhal.ui.touch.registerTap(pos.pageX, pos.pageY, pos.target);
+                                isDoubleTap = stendhal.ui.touch.registerTap(pos.pageX, pos.pageY, pos.target, viewport.getElement());
                                 if (isDoubleTap) {
                                         handledTeleclick = viewport.handleTeleclickDoubleTap(pos);
                                 }

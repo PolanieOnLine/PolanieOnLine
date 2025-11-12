@@ -89,7 +89,7 @@ export class MiniMapComponent extends Component {
                         if (stendhal.ui.touch.isLongTouch(event)) {
                                 return;
                         }
-                        const isDoubleTap = stendhal.ui.touch.registerTap(pos.pageX, pos.pageY, pos.target);
+                        const isDoubleTap = stendhal.ui.touch.registerTap(pos.pageX, pos.pageY, pos.target, this.componentElement);
                         if (!isDoubleTap) {
                                 return;
                         }

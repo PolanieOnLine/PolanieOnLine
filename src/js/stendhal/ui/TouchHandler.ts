@@ -41,8 +41,8 @@ export class TouchHandler {
         private readonly doubleTapThreshold = 375;
         /** Timestamp when the last tap was recorded. */
         private lastTapTime = 0;
-        /** Target element that received the previous tap. */
-        private lastTapTarget: EventTarget|null = null;
+        /** Normalized key representing the element scope of the previous tap. */
+        private lastTapKey: EventTarget|null = null;
 
 	/** Singleton instance. */
 	private static instance: TouchHandler;
@@ -110,14 +110,16 @@ export class TouchHandler {
          * @return {boolean}
          *   `true` if the tap completed a double tap gesture.
          */
-        registerTap(x: number, y: number, target?: EventTarget): boolean {
+        registerTap(x: number, y: number, target?: EventTarget, scope?: EventTarget): boolean {
                 const now = +new Date();
                 let isDoubleTap = false;
 
+                const key = scope || target || null;
+
                 if (this.lastTapTime) {
                         const timeDelta = now - this.lastTapTime;
-                        const sameTarget = !target || !this.lastTapTarget || this.lastTapTarget === target;
-                        if (sameTarget && timeDelta <= this.doubleTapThreshold && this.lastTapPoint) {
+                        const sameKey = !key || !this.lastTapKey || this.lastTapKey === key;
+                        if (sameKey && timeDelta <= this.doubleTapThreshold && this.lastTapPoint) {
                                 const withinX = Math.abs(this.lastTapPoint.x - x) <= this.moveThreshold;
                                 const withinY = Math.abs(this.lastTapPoint.y - y) <= this.moveThreshold;
                                 isDoubleTap = withinX && withinY;
@@ -127,11 +129,11 @@ export class TouchHandler {
                 if (isDoubleTap) {
                         this.lastTapTime = 0;
                         this.lastTapPoint = undefined;
-                        this.lastTapTarget = null;
+                        this.lastTapKey = null;
                 } else {
                         this.lastTapTime = now;
                         this.lastTapPoint = new Point(x, y);
-                        this.lastTapTarget = target || null;
+                        this.lastTapKey = key;
                 }
 
                 return isDoubleTap;
