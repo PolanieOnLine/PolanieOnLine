@@ -48,7 +48,8 @@ export class ViewPort {
 	/** Prevents adjusting offset based on player position. */
 	private freeze = false;
 
-	private loop?: GameLoop;
+        private loop?: GameLoop;
+        private requestedFpsLimit?: number;
 	private readonly cameraSpring = new SpringVector();
 	private cameraTarget: Vector2 = {x: 0, y: 0};
 	private cameraInitialized = false;
@@ -90,8 +91,9 @@ export class ViewPort {
 	private parentResizeObserver?: ResizeObserver;
 	private readonly handleWindowResize: () => void;
 
-	/** Singleton instance. */
-	private static instance: ViewPort;
+        /** Singleton instance. */
+        private static instance: ViewPort;
+        private static readonly FPS_LIMITS = [60, 90, 120, 144];
 
 	/**
 	 * Retrieves singleton instance.
@@ -350,21 +352,20 @@ export class ViewPort {
 	 * Starts the render loop if it is not already active.
 	 */
 	draw() {
-		if (!this.loop) {
-			const prefer144 = stendhal.config.getBoolean("loop.prefer144hz");
-			const configuredLimit = stendhal.config.getFloat("loop.fps.limit");
-			const fpsLimit = this.normalizeFpsLimit(configuredLimit);
-			this.loop = new GameLoop(
-				(dt) => this.update(dt),
-				(alpha) => this.render(alpha),
-				{
-					prefer144hz: prefer144,
-					fpsLimit,
-					onFpsSample: (fps) => this.updateFpsCounter(fps)
-				}
-			);
-		}
-		this.loop.start();
+                if (!this.loop) {
+                        const configuredLimit = stendhal.config.getFloat("loop.fps.limit");
+                        const initialLimit = this.requestedFpsLimit ?? this.normalizeFpsLimit(configuredLimit);
+                        this.loop = new GameLoop(
+                                (dt) => this.update(dt),
+                                (alpha) => this.render(alpha),
+                                {
+                                        fpsLimit: initialLimit,
+                                        onFpsSample: (fps) => this.updateFpsCounter(fps)
+                                }
+                        );
+                        this.requestedFpsLimit = initialLimit;
+                }
+                this.loop.start();
 	}
 
 	private update(dtMs: number) {
@@ -536,30 +537,43 @@ export class ViewPort {
 		}
 	}
 
-	private updateFpsCounter(fps: number) {
-		if (this.fpsLabel) {
-			this.fpsLabel.textContent = fps.toFixed(0) + " fps";
-		}
-	}
+        private updateFpsCounter(fps: number) {
+                if (this.fpsLabel) {
+                        const precision = fps >= 100 ? 0 : 1;
+                        this.fpsLabel.textContent = fps.toFixed(precision) + " fps";
+                }
+        }
 
 	private snapToDevicePixel(value: number): number {
 		const ratio = window.devicePixelRatio || 1;
 		return Math.round(value * ratio) / ratio;
 	}
 
-	public setFpsLimit(limit?: number) {
-		const normalized = this.normalizeFpsLimit(limit);
-		if (this.loop) {
-			this.loop.setFpsLimit(normalized);
-		}
-	}
+        public setFpsLimit(limit?: number) {
+                const normalized = this.normalizeFpsLimit(limit);
+                this.requestedFpsLimit = normalized;
+                if (this.loop) {
+                        this.loop.setFpsLimit(normalized);
+                }
+        }
 
-	private normalizeFpsLimit(limit?: number): number|undefined {
-		if (typeof(limit) === "number" && Number.isFinite(limit) && limit > 0) {
-			return limit;
-		}
-		return undefined;
-	}
+        private normalizeFpsLimit(limit?: number): number|undefined {
+                if (typeof(limit) !== "number" || !Number.isFinite(limit) || limit <= 0) {
+                        return undefined;
+                }
+                const rounded = Math.round(limit);
+                let closest = ViewPort.FPS_LIMITS[0];
+                let bestDelta = Math.abs(rounded - closest);
+                for (let i = 1; i < ViewPort.FPS_LIMITS.length; i++) {
+                        const candidate = ViewPort.FPS_LIMITS[i];
+                        const delta = Math.abs(rounded - candidate);
+                        if (delta < bestDelta) {
+                                bestDelta = delta;
+                                closest = candidate;
+                        }
+                }
+                return closest;
+        }
 
 	/**
 	 * Adds map's coloring filter to viewport.

@@ -14,9 +14,19 @@ export type RenderCallback = (alpha: number) => void;
 export type FpsSampleCallback = (fps: number) => void;
 
 export interface GameLoopOptions {
-	prefer144hz?: boolean;
-	fpsLimit?: number;
-	onFpsSample?: FpsSampleCallback;
+        fpsLimit?: number;
+        onFpsSample?: FpsSampleCallback;
+}
+
+interface NavigatorWithBattery extends Navigator {
+        getBattery?: () => Promise<BatteryManager>;
+}
+
+interface BatteryManager extends EventTarget {
+        charging: boolean;
+        level: number;
+        addEventListener(type: "chargingchange" | "levelchange", listener: EventListener): void;
+        removeEventListener(type: "chargingchange" | "levelchange", listener: EventListener): void;
 }
 
 /**
@@ -26,117 +36,300 @@ export interface GameLoopOptions {
  */
 export class GameLoop {
 
-	private static readonly MAX_FRAME_TIME = 250; // ms
+        private static readonly MAX_FRAME_TIME = 250; // ms
+        private static readonly FIXED_UPDATE_HZ = 144;
+        private static readonly BACKGROUND_THROTTLE_MS = 1000;
+        private static readonly FPS_WINDOW_MS = 750;
+        private static readonly FPS_HISTORY_SIZE = 240;
 
-	private readonly fixedDt: number;
-	private minFrameInterval?: number;
+        private readonly fixedDt: number = 1000 / GameLoop.FIXED_UPDATE_HZ;
 
-	private accumulator = 0;
-	private limiterAccumulator = 0;
-	private lastNow = 0;
-	private rafHandle = 0;
-	private running = false;
+        private accumulator = 0;
+        private lastNow = 0;
+        private lastRenderNow = 0;
+        private rafHandle = 0;
+        private slowTimerHandle: number | null = null;
+        private running = false;
 
-	private frameCounter = 0;
-	private frameCounterElapsed = 0;
+        private targetFrameTime = 0;
+        private userFrameTime = 0;
+        private saveDataFrameTime = 0;
+        private batteryFrameTime = 0;
+        private nextFrameDeadline = 0;
 
-	constructor(
-		private readonly updateCb: UpdateCallback,
-		private readonly renderCb: RenderCallback,
-		private readonly options: GameLoopOptions = {}
-	) {
-		const baseHz = options.prefer144hz ? 144 : 120;
-		this.fixedDt = 1000 / baseHz;
+        private readonly fpsTimestamps = new Float64Array(GameLoop.FPS_HISTORY_SIZE);
+        private fpsHead = 0;
+        private fpsCount = 0;
 
-		this.setFpsLimit(options.fpsLimit);
-	}
+        private readonly visibilityListener: () => void;
 
-	/**
-	 * Starts the loop if it is not running already.
-	 */
-	start() {
-		if (this.running) {
-			return;
-		}
-		this.running = true;
-		this.accumulator = 0;
-		this.limiterAccumulator = 0;
-		this.lastNow = performance.now();
-		this.rafHandle = requestAnimationFrame((now) => this.tick(now));
-	}
+        constructor(
+                private readonly updateCb: UpdateCallback,
+                private readonly renderCb: RenderCallback,
+                private readonly options: GameLoopOptions = {}
+        ) {
+                this.visibilityListener = () => this.onVisibilityChanged();
 
-	/**
-	 * Stops the loop.
-	 */
-	stop() {
-		if (!this.running) {
-			return;
-		}
-		cancelAnimationFrame(this.rafHandle);
-		this.running = false;
-	}
+                if (typeof document !== "undefined") {
+                        document.addEventListener("visibilitychange", this.visibilityListener, {passive: true});
+                }
 
-	private tick(now: number) {
-		if (!this.running) {
-			return;
-		}
+                this.setupSaveDataCap();
+                this.setupBatteryCap();
 
-		let frameTime = now - this.lastNow;
-		this.lastNow = now;
+                this.setFpsLimit(options.fpsLimit);
+        }
 
-		if (frameTime > GameLoop.MAX_FRAME_TIME) {
-			frameTime = GameLoop.MAX_FRAME_TIME;
-		}
+        /**
+         * Starts the loop if it is not running already.
+         */
+        start() {
+                if (this.running) {
+                        return;
+                }
+                this.running = true;
+                this.accumulator = 0;
+                this.nextFrameDeadline = 0;
+                this.fpsHead = 0;
+                this.fpsCount = 0;
+                this.lastRenderNow = 0;
+                if (this.slowTimerHandle !== null) {
+                        clearTimeout(this.slowTimerHandle);
+                        this.slowTimerHandle = null;
+                }
+                this.lastNow = performance.now();
+                this.rafHandle = requestAnimationFrame((now) => this.tick(now));
+        }
 
-		this.accumulator += frameTime;
+        /**
+         * Stops the loop.
+         */
+        stop() {
+                if (!this.running) {
+                        return;
+                }
+                this.running = false;
+                cancelAnimationFrame(this.rafHandle);
+                if (this.slowTimerHandle !== null) {
+                        clearTimeout(this.slowTimerHandle);
+                        this.slowTimerHandle = null;
+                }
+        }
 
-		while (this.accumulator >= this.fixedDt) {
-			this.updateCb(this.fixedDt);
-			this.accumulator -= this.fixedDt;
-		}
+        setFpsLimit(limit?: number) {
+                if (typeof(limit) === "number" && Number.isFinite(limit) && limit > 0) {
+                        this.userFrameTime = 1000 / limit;
+                } else {
+                        this.userFrameTime = 0;
+                }
+                this.updateTargetFrameTime();
+        }
 
-		const alpha = this.accumulator / this.fixedDt;
+        private tick(now: number) {
+                if (!this.running) {
+                        return;
+                }
 
-		let shouldRender = true;
-		if (this.minFrameInterval) {
-			this.limiterAccumulator += frameTime;
-			if (this.limiterAccumulator < this.minFrameInterval) {
-				shouldRender = false;
-			} else {
-				this.limiterAccumulator %= this.minFrameInterval;
-			}
-		}
+                let frameTime = now - this.lastNow;
+                this.lastNow = now;
 
-		if (shouldRender) {
-			this.renderCb(alpha);
-			this.trackFps(frameTime);
-		}
+                if (frameTime > GameLoop.MAX_FRAME_TIME) {
+                        frameTime = GameLoop.MAX_FRAME_TIME;
+                }
 
-		this.rafHandle = requestAnimationFrame((nextNow) => this.tick(nextNow));
-	}
+                this.accumulator += frameTime;
 
-	setFpsLimit(limit?: number) {
-		if (typeof(limit) === "number" && Number.isFinite(limit) && limit > 0) {
-			this.minFrameInterval = 1000 / limit;
-		} else {
-			this.minFrameInterval = undefined;
-		}
-		this.limiterAccumulator = 0;
-	}
+                while (this.accumulator >= this.fixedDt) {
+                        this.updateCb(this.fixedDt);
+                        this.accumulator -= this.fixedDt;
+                }
 
-	private trackFps(frameTime: number) {
-		this.frameCounter++;
-		this.frameCounterElapsed += frameTime;
-		if (this.frameCounterElapsed < 1000) {
-			return;
-		}
+                const alpha = this.fixedDt > 0 ? (this.accumulator / this.fixedDt) : 0;
 
-		const elapsedSeconds = this.frameCounterElapsed / 1000;
-		const fps = this.frameCounter / elapsedSeconds;
-		if (this.options.onFpsSample) {
-			this.options.onFpsSample(fps);
-		}
-		this.frameCounter = 0;
-		this.frameCounterElapsed = 0;
-	}
+                const shouldRender = this.shouldRenderFrame(now);
+                if (shouldRender) {
+                        this.renderCb(alpha);
+                        this.trackFps(now);
+                }
+
+                this.scheduleNextTick();
+        }
+
+        private shouldRenderFrame(now: number): boolean {
+                if (this.targetFrameTime <= 0) {
+                        return true;
+                }
+
+                if (this.nextFrameDeadline <= 0) {
+                        this.nextFrameDeadline = now;
+                }
+
+                if (now < this.nextFrameDeadline) {
+                        return false;
+                }
+
+                const behind = now - this.nextFrameDeadline;
+                if (behind >= this.targetFrameTime) {
+                        const intervalsMissed = Math.floor(behind / this.targetFrameTime) + 1;
+                        this.nextFrameDeadline += intervalsMissed * this.targetFrameTime;
+                } else {
+                        this.nextFrameDeadline += this.targetFrameTime;
+                }
+
+                return true;
+        }
+
+        private scheduleNextTick() {
+                if (!this.running) {
+                        return;
+                }
+
+                if (typeof document !== "undefined" && document.visibilityState === "hidden") {
+                        if (this.slowTimerHandle !== null) {
+                                return;
+                        }
+                        this.slowTimerHandle = window.setTimeout(() => {
+                                if (!this.running) {
+                                        return;
+                                }
+                                this.slowTimerHandle = null;
+                                this.lastNow = performance.now();
+                                this.rafHandle = requestAnimationFrame((nextNow) => this.tick(nextNow));
+                        }, GameLoop.BACKGROUND_THROTTLE_MS);
+                        return;
+                }
+
+                if (this.slowTimerHandle !== null) {
+                        clearTimeout(this.slowTimerHandle);
+                        this.slowTimerHandle = null;
+                }
+
+                this.rafHandle = requestAnimationFrame((nextNow) => this.tick(nextNow));
+        }
+
+        private trackFps(now: number) {
+                if (this.lastRenderNow === 0) {
+                        this.lastRenderNow = now;
+                }
+
+                const delta = now - this.lastRenderNow;
+                this.lastRenderNow = now;
+
+                const idx = this.fpsHead;
+                this.fpsTimestamps[idx] = now;
+                this.fpsHead = (idx + 1) % this.fpsTimestamps.length;
+                if (this.fpsCount < this.fpsTimestamps.length) {
+                        this.fpsCount++;
+                }
+
+                const cutoff = now - GameLoop.FPS_WINDOW_MS;
+                while (this.fpsCount > 1) {
+                        const tailIndex = (this.fpsHead - this.fpsCount + this.fpsTimestamps.length) % this.fpsTimestamps.length;
+                        if (this.fpsTimestamps[tailIndex] >= cutoff) {
+                                break;
+                        }
+                        this.fpsCount--;
+                }
+
+                let fps = 0;
+                if (this.fpsCount > 1) {
+                        const tailIndex = (this.fpsHead - this.fpsCount + this.fpsTimestamps.length) % this.fpsTimestamps.length;
+                        const elapsed = now - this.fpsTimestamps[tailIndex];
+                        if (elapsed > 0) {
+                                fps = (this.fpsCount - 1) / (elapsed / 1000);
+                        }
+                } else if (delta > 0) {
+                        fps = 1000 / delta;
+                }
+
+                if (fps > 0 && this.options.onFpsSample) {
+                        this.options.onFpsSample(fps);
+                }
+        }
+
+        private updateTargetFrameTime() {
+                let frameTime = this.userFrameTime;
+                frameTime = this.applyFrameCap(frameTime, this.saveDataFrameTime);
+                frameTime = this.applyFrameCap(frameTime, this.batteryFrameTime);
+                this.targetFrameTime = frameTime;
+                this.nextFrameDeadline = 0;
+        }
+
+        private applyFrameCap(baseFrameTime: number, capFrameTime: number): number {
+                if (capFrameTime <= 0) {
+                        return baseFrameTime;
+                }
+                if (baseFrameTime <= 0) {
+                        return capFrameTime;
+                }
+                return Math.max(baseFrameTime, capFrameTime);
+        }
+
+        private setupSaveDataCap() {
+                if (typeof navigator === "undefined") {
+                        return;
+                }
+                const navAny = navigator as Navigator & {connection?: any};
+                const connection = navAny.connection;
+                if (!connection) {
+                        return;
+                }
+                const apply = () => {
+                        const enabled = Boolean(connection.saveData);
+                        this.saveDataFrameTime = enabled ? (1000 / 30) : 0;
+                        this.updateTargetFrameTime();
+                };
+                apply();
+                if (typeof connection.addEventListener === "function") {
+                        connection.addEventListener("change", apply);
+                } else if ("onchange" in connection) {
+                        connection.onchange = apply;
+                }
+        }
+
+        private setupBatteryCap() {
+                if (typeof navigator === "undefined") {
+                        return;
+                }
+
+                const navWithBattery = navigator as NavigatorWithBattery;
+                if (typeof navWithBattery.getBattery !== "function") {
+                        return;
+                }
+
+                navWithBattery.getBattery().then((battery) => {
+                        const apply = () => {
+                                const shouldCap = !battery.charging && battery.level <= 0.2;
+                                this.batteryFrameTime = shouldCap ? (1000 / 30) : 0;
+                                this.updateTargetFrameTime();
+                        };
+                        apply();
+                        battery.addEventListener("chargingchange", apply);
+                        battery.addEventListener("levelchange", apply);
+                }).catch(() => {
+                        // ignore lack of support
+                });
+        }
+
+        private onVisibilityChanged() {
+                if (!this.running) {
+                        return;
+                }
+
+                if (typeof document === "undefined") {
+                        return;
+                }
+
+                if (document.visibilityState === "visible") {
+                        if (this.slowTimerHandle !== null) {
+                                clearTimeout(this.slowTimerHandle);
+                                this.slowTimerHandle = null;
+                        }
+                        this.nextFrameDeadline = 0;
+                        this.lastNow = performance.now();
+                        this.rafHandle = requestAnimationFrame((now) => this.tick(now));
+                } else {
+                        this.nextFrameDeadline = 0;
+                }
+        }
 }
