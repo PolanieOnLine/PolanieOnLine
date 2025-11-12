@@ -31,6 +31,7 @@ import { NotificationBubble } from "../sprite/NotificationBubble";
 import { SpeechBubble } from "../sprite/SpeechBubble";
 import { TextBubble } from "../sprite/TextBubble";
 import { Entity } from "../entity/Entity";
+import { RPEntity } from "../entity/RPEntity";
 
 import { Point } from "../util/Point";
 import { GameLoop } from "../util/GameLoop";
@@ -74,12 +75,18 @@ export class ViewPort {
 	private readonly targetTileHeight = 32;
 	private drawingError = false;
 
-	/** Active speech bubbles to draw. */
-	private textSprites: SpeechBubble[] = [];
-	/** Active notification bubbles/achievement banners to draw. */
-	private notifSprites: TextBubble[] = [];
-	/** Active emoji sprites to draw. */
-	private emojiSprites: EmojiSprite[] = [];
+        /** Active speech bubbles to draw. */
+        private textSprites: (SpeechBubble | null)[] = [];
+        private textSpriteFree: number[] = [];
+        private speechBubblePool: SpeechBubble[] = [];
+        private readonly speechScratch: SpeechBubble[] = [];
+        /** Active notification bubbles/achievement banners to draw. */
+        private notifSprites: (TextBubble | null)[] = [];
+        private notifSpriteFree: number[] = [];
+        private notifBubblePool: NotificationBubble[] = [];
+        private achievementPool: AchievementBanner[] = [];
+        /** Active emoji sprites to draw. */
+        private emojiSprites: EmojiSprite[] = [];
         /** Handles drawing weather in viewport. */
         private readonly weatherRenderer = singletons.getWeatherRenderer();
         /** Batched tilemap renderer. */
@@ -465,12 +472,12 @@ export class ViewPort {
 		this.weatherRenderer.draw(this.ctx);
 		this.applyHSLFilter();
 		this.drawEntitiesTop(alpha);
-		this.drawEmojiSprites();
-		this.drawTextSprites();
-		this.drawTextSprites(this.notifSprites);
+                this.drawEmojiSprites();
+                this.drawSpeechBubbles();
+                this.drawNotificationSprites();
 
-		stendhal.ui.equip.update();
-		(ui.get(UIComponentEnum.PlayerEquipment) as PlayerEquipmentComponent).update();
+                stendhal.ui.equip.update();
+                (ui.get(UIComponentEnum.PlayerEquipment) as PlayerEquipmentComponent).update();
 
 		this.renderMiniMap(alpha);
 	}
@@ -880,23 +887,41 @@ export class ViewPort {
                 }
         }
 
-	/**
-	 * Draws active notifications or speech bubbles associated with characters, NPCs, & creatures.
-	 *
-	 * @param sgroup {sprite.TextBubble[]}
-	 *   Sprite group to drawn, either speech bubbles or notifications/achievements (default: speech bubbles).
-	 */
-	drawTextSprites(sgroup: TextBubble[]=this.textSprites) {
-		for (var i = 0; i < sgroup.length; i++) {
-			var sprite = sgroup[i];
-			var remove = sprite.draw(this.ctx);
-			if (remove) {
-				sgroup.splice(i, 1);
-				sprite.onRemoved();
-				i--;
-			}
-		}
-	}
+        private drawSpeechBubbles() {
+                for (let index = 0; index < this.textSprites.length; index++) {
+                        const bubble = this.textSprites[index];
+                        if (!bubble) {
+                                continue;
+                        }
+                        const remove = bubble.draw(this.ctx);
+                        if (remove) {
+                                bubble.onRemoved();
+                                this.textSprites[index] = null;
+                                this.textSpriteFree.push(index);
+                                this.speechBubblePool.push(bubble);
+                        }
+                }
+        }
+
+        private drawNotificationSprites() {
+                for (let index = 0; index < this.notifSprites.length; index++) {
+                        const sprite = this.notifSprites[index];
+                        if (!sprite) {
+                                continue;
+                        }
+                        const remove = sprite.draw(this.ctx);
+                        if (remove) {
+                                sprite.onRemoved();
+                                this.notifSprites[index] = null;
+                                this.notifSpriteFree.push(index);
+                                if (sprite instanceof NotificationBubble) {
+                                        this.notifBubblePool.push(sprite);
+                                } else if (sprite instanceof AchievementBanner) {
+                                        this.achievementPool.push(sprite);
+                                }
+                        }
+                }
+        }
 
 	/**
 	 * Adds an emoji sprite to viewport.
@@ -922,48 +947,77 @@ export class ViewPort {
 		}
 	}
 
-	/**
-	 * Adds a speech bubble to viewport.
-	 *
-	 * @param sprite {sprite.SpeechBubble}
-	 *   Sprite definition.
-	 */
-	addTextSprite(sprite: SpeechBubble) {
-		this.textSprites.push(sprite);
-		sprite.onAdded(this.ctx);
-	}
+        private acquireSpeechBubble(): SpeechBubble {
+                return this.speechBubblePool.pop() || new SpeechBubble();
+        }
 
-	/**
-	 * Adds a notification bubble to viewport.
-	 *
-	 * @param mtype {string}
-	 *   Message type.
-	 * @param text {string}
-	 *   Text contents.
-	 * @param profile {string}
-	 *   Optional entity image filename to show as the speaker.
-	 */
-	addNotifSprite(mtype: string, text: string, profile?: string) {
-		const bubble = new NotificationBubble(mtype, text, profile);
-		this.notifSprites.push(bubble);
-		bubble.onAdded(this.ctx);
-	}
+        private activateSpeechBubble(bubble: SpeechBubble) {
+                const index = this.textSpriteFree.length > 0 ? this.textSpriteFree.pop()! : this.textSprites.length;
+                if (index === this.textSprites.length) {
+                        this.textSprites.push(bubble);
+                } else {
+                        this.textSprites[index] = bubble;
+                }
+                bubble.onAdded(this.ctx);
+        }
 
-	/**
-	 * Adds an achievement banner to viewport.
-	 *
-	 * @param cat {string}
-	 *   Achievement categroy.
-	 * @param title {string}
-	 *   Achievement title.
-	 * @param desc {string}
-	 *   Achievement description.
-	 */
-	addAchievementNotif(cat: string, title: string, desc: string) {
-		const banner = new AchievementBanner(cat, title, desc);
-		this.notifSprites.push(banner);
-		banner.onAdded(this.ctx);
-	}
+        private collectActiveSpeechBubbles(): SpeechBubble[] {
+                const scratch = this.speechScratch;
+                scratch.length = 0;
+                for (const bubble of this.textSprites) {
+                        if (bubble) {
+                                scratch.push(bubble);
+                        }
+                }
+                return scratch;
+        }
+
+        /**
+         * Adds a speech bubble to viewport.
+         */
+        showSpeechBubble(text: string, entity: RPEntity) {
+                const bubble = this.acquireSpeechBubble();
+                const siblings = this.collectActiveSpeechBubbles();
+                bubble.configure(text, entity, siblings);
+                this.speechScratch.length = 0;
+                this.activateSpeechBubble(bubble);
+        }
+
+        private acquireNotificationBubble(): NotificationBubble {
+                return this.notifBubblePool.pop() || new NotificationBubble();
+        }
+
+        private acquireAchievementBanner(): AchievementBanner {
+                return this.achievementPool.pop() || new AchievementBanner();
+        }
+
+        private activateNotificationSprite(sprite: TextBubble) {
+                const index = this.notifSpriteFree.length > 0 ? this.notifSpriteFree.pop()! : this.notifSprites.length;
+                if (index === this.notifSprites.length) {
+                        this.notifSprites.push(sprite);
+                } else {
+                        this.notifSprites[index] = sprite;
+                }
+                sprite.onAdded(this.ctx);
+        }
+
+        /**
+         * Adds a notification bubble to viewport.
+         */
+        addNotifSprite(mtype: string, text: string, profile?: string) {
+                const bubble = this.acquireNotificationBubble();
+                bubble.configure(mtype, text, profile);
+                this.activateNotificationSprite(bubble);
+        }
+
+        /**
+         * Adds an achievement banner to viewport.
+         */
+        addAchievementNotif(cat: string, title: string, desc: string) {
+                const banner = this.acquireAchievementBanner();
+                banner.configure(cat, title, desc);
+                this.activateNotificationSprite(banner);
+        }
 
 	/**
 	 * Removes a speech bubble. Looks for topmost sprite at "x","y". Otherwise removes "sprite".
@@ -975,25 +1029,39 @@ export class ViewPort {
 	 * @param y {number}
 	 *   Y coordinate to check for overlapping sprite.
 	 */
-	removeTextBubble(sprite: TextBubble, x: number, y: number) {
-		for (let idx = this.notifSprites.length-1; idx >= 0; idx--) {
-			const topSprite = this.notifSprites[idx];
-			if (topSprite == sprite || topSprite.clipsPoint(x, y)) {
-				this.notifSprites.splice(idx, 1);
-				topSprite.onRemoved();
-				return;
-			}
-		}
+        removeTextBubble(sprite: TextBubble, x: number, y: number) {
+                for (let idx = this.notifSprites.length - 1; idx >= 0; idx--) {
+                        const topSprite = this.notifSprites[idx];
+                        if (!topSprite) {
+                                continue;
+                        }
+                        if (topSprite === sprite || topSprite.clipsPoint(x, y)) {
+                                topSprite.onRemoved();
+                                this.notifSprites[idx] = null;
+                                this.notifSpriteFree.push(idx);
+                                if (topSprite instanceof NotificationBubble) {
+                                        this.notifBubblePool.push(topSprite);
+                                } else if (topSprite instanceof AchievementBanner) {
+                                        this.achievementPool.push(topSprite);
+                                }
+                                return;
+                        }
+                }
 
-		for (let idx = this.textSprites.length-1; idx >= 0; idx--) {
-			const topSprite = this.textSprites[idx];
-			if (topSprite == sprite || topSprite.clipsPoint(x, y)) {
-				this.textSprites.splice(idx, 1);
-				topSprite.onRemoved();
-				return;
-			}
-		}
-	}
+                for (let idx = this.textSprites.length - 1; idx >= 0; idx--) {
+                        const bubble = this.textSprites[idx];
+                        if (!bubble) {
+                                continue;
+                        }
+                        if (bubble === sprite || bubble.clipsPoint(x, y)) {
+                                bubble.onRemoved();
+                                this.textSprites[idx] = null;
+                                this.textSpriteFree.push(idx);
+                                this.speechBubblePool.push(bubble);
+                                return;
+                        }
+                }
+        }
 
 	/**
 	 * Checks for an active speech bubble.
@@ -1005,35 +1073,40 @@ export class ViewPort {
 	 * @return {boolean}
 	 *   `true` if there is a text bubble at position.
 	 */
-	textBubbleAt(x: number, y: number): boolean {
-		for (const sprite of this.notifSprites) {
-			if (sprite.clipsPoint(x, y)) {
-				return true;
-			}
-		}
-		for (const sprite of this.textSprites) {
-			if (sprite.clipsPoint(x, y)) {
-				return true;
-			}
-		}
-		return false;
-	}
+        textBubbleAt(x: number, y: number): boolean {
+                for (const sprite of this.notifSprites) {
+                        if (sprite && sprite.clipsPoint(x, y)) {
+                                return true;
+                        }
+                }
+                for (const sprite of this.textSprites) {
+                        if (sprite && sprite.clipsPoint(x, y)) {
+                                return true;
+                        }
+                }
+                return false;
+        }
 
 	/**
 	 * Called when `entity.User` instance exits a zone.
 	 */
-	onExitZone() {
-		// clear speech bubbles & emojis so they don't appear on the new map
-		for (const sgroup of [this.textSprites, this.emojiSprites]) {
-			for (let idx = sgroup.length-1; idx >= 0; idx--) {
-				const sprite = sgroup[idx];
-				sgroup.splice(idx, 1);
-				if (sprite instanceof SpeechBubble) {
-					sprite.onRemoved();
-				}
-			}
-		}
-	}
+        onExitZone() {
+                // clear speech bubbles & emojis so they don't appear on the new map
+                for (let idx = 0; idx < this.textSprites.length; idx++) {
+                        const bubble = this.textSprites[idx];
+                        if (!bubble) {
+                                continue;
+                        }
+                        bubble.onRemoved();
+                        this.textSprites[idx] = null;
+                        this.textSpriteFree.push(idx);
+                        this.speechBubblePool.push(bubble);
+                }
+
+                for (let idx = this.emojiSprites.length - 1; idx >= 0; idx--) {
+                        this.emojiSprites.splice(idx, 1);
+                }
+        }
 
 	/**
 	 *  Mouse click handling.

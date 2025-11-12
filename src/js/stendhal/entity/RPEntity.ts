@@ -25,7 +25,6 @@ import { Nature } from "../util/Nature";
 import { Floater } from "../sprite/Floater";
 import { EmojiSprite } from "../sprite/EmojiSprite";
 import { OverlaySpriteImpl } from "../sprite/OverlaySpriteImpl";
-import { SpeechBubble } from "../sprite/SpeechBubble";
 import { TextSprite } from "../sprite/TextSprite";
 
 import { BarehandAttackSprite } from "../sprite/action/BarehandAttackSprite";
@@ -203,9 +202,9 @@ export class RPEntity extends ActiveEntity {
 	 * @param text
 	 *				 Text to display.
 	 */
-	addSpeechBubble(text: string) {
-		stendhal.ui.gamewindow.addTextSprite(new SpeechBubble(text, this));
-	}
+        addSpeechBubble(text: string) {
+                stendhal.ui.gamewindow.showSpeechBubble(text, this);
+        }
 
 	addEmoji(emoji: HTMLImageElement) {
 		stendhal.ui.gamewindow.addEmojiSprite(new EmojiSprite(emoji, this));

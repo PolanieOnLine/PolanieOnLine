@@ -29,11 +29,12 @@ export class PlayerEquipmentComponent extends Component {
 
 	private pouchVisible = false;
 	private swapButton?: HTMLButtonElement;
-	private reserveToggle?: HTMLButtonElement;
-	private reserveWindow?: HTMLElement;
-	private reserveVisible = false;
-	private currentTitle = "";
-	private readonly handleLayoutChange = () => this.refreshReserveWindowPosition();
+        private reserveToggle?: HTMLButtonElement;
+        private reserveWindow?: HTMLElement;
+        private reserveVisible = false;
+        private currentTitle = "";
+        private readonly handleLayoutChange = () => this.refreshReserveWindowPosition();
+        private pendingRefresh = true;
 
 	constructor() {
 		super("equipment");
@@ -80,32 +81,45 @@ export class PlayerEquipmentComponent extends Component {
 		this.showPouch(false);
 	}
 
-	public update() {
-		for (var i in this.inventory) {
-			this.inventory[i].update();
-		}
+        public update() {
+                if (!this.isVisible()) {
+                        this.pendingRefresh = true;
+                        return;
+                }
 
-		this.updateWindowTitle();
+                if (this.pendingRefresh) {
+                        for (const inv of this.inventory) {
+                                inv.markDirty();
+                        }
+                        this.pendingRefresh = false;
+                }
 
-		if (!this.pouchVisible) {
-			var features = null
-			if (marauroa.me != null) {
-				features = marauroa.me["features"];
-			}
+                for (const inv of this.inventory) {
+                        inv.update();
+                }
 
-			if (features != null) {
-				if (features["pouch"] != null) {
-					this.showPouch(true);
-				}
-			}
-		}
-	}
+                this.updateWindowTitle();
 
-	public markDirty() {
-		for (const inv of this.inventory) {
-			inv.markDirty();
-		}
-	}
+                if (!this.pouchVisible) {
+                        var features = null
+                        if (marauroa.me != null) {
+                                features = marauroa.me["features"];
+                        }
+
+                        if (features != null) {
+                                if (features["pouch"] != null) {
+                                        this.showPouch(true);
+                                }
+                        }
+                }
+        }
+
+        public markDirty() {
+                this.pendingRefresh = true;
+                for (const inv of this.inventory) {
+                        inv.markDirty();
+                }
+        }
 
 	private showSlot(id: string, show: boolean) {
 		var slot = document.getElementById(id)!;

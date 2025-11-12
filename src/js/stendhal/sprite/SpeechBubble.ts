@@ -17,38 +17,49 @@ import { Color } from "../data/color/Color";
 
 import { RPEntity } from "../entity/RPEntity";
 
-import { Pair } from "../util/Pair";
 import { Speech } from "../util/Speech";
 
 
 export class SpeechBubble extends TextBubble {
-	private entity: RPEntity;
-	private offsetY: number;
+        private entity!: RPEntity;
+        private offsetY: number;
 
-	/** Formatted sections. */
-	private parts: TextSegment[];
+        /** Formatted sections. */
+        private parts: TextSegment[];
 
-	constructor(text: string, entity: RPEntity) {
-		text = text.replace(/\\\\/g, "\\");
-		super((text.length > 30) ? (text.substring(0, 30) + "...") : text);
-		this.entity = entity;
+        constructor() {
+                super("");
+                this.parts = [];
+                this.offsetY = 0;
+        }
 
-		this.parts = [];
-		this.segregate(this.parts);
+        configure(text: string, entity: RPEntity, siblings: readonly SpeechBubble[]) {
+                const sanitized = text.replace(/\\\\/g, "\\");
+                const display = (sanitized.length > 30) ? (sanitized.substring(0, 30) + "...") : sanitized;
+                this.resetBubble(display);
+                this.entity = entity;
 
-		this.offsetY = 0;
-		// find free text bubble position
-		const x = this.getX(), y = this.getY();
-		for (const bubble of stendhal.ui.gamewindow.textSprites) {
-			if (x == bubble.getX() && y + this.offsetY == bubble.getY()) {
-				this.offsetY += stendhal.ui.gamewindow.targetTileHeight / 2;
-			}
-		}
+                this.parts.length = 0;
+                this.segregate(this.parts);
 
-		this.duration = Math.max(
-				TextBubble.STANDARD_DUR,
-				this.text.length * TextBubble.STANDARD_DUR / 50);
-	}
+                this.offsetY = 0;
+                const viewport = stendhal?.ui?.gamewindow;
+                const tileHeight = viewport ? viewport.targetTileHeight : 32;
+                const x = this.getX();
+                const y = this.getY();
+                for (const bubble of siblings) {
+                        if (!bubble) {
+                                continue;
+                        }
+                        if (x === bubble.getX() && y + this.offsetY === bubble.getY()) {
+                                this.offsetY += tileHeight / 2;
+                        }
+                }
+
+                this.duration = Math.max(
+                                TextBubble.STANDARD_DUR,
+                                this.text.length * TextBubble.STANDARD_DUR / 50);
+        }
 
 	override draw(ctx: CanvasRenderingContext2D): boolean {
 		const baseFont = "14px Arial";

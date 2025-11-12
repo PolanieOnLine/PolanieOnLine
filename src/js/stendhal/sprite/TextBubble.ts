@@ -36,10 +36,27 @@ export abstract class TextBubble {
 	protected onRemovedAction?: Function;
 
 
-	constructor(text: string) {
-		this.text = text;
-		this.timeStamp = Date.now();
-	}
+        constructor(text: string) {
+                this.text = text;
+                this.timeStamp = Date.now();
+        }
+
+        /**
+         * Reinitialises the bubble's timing and layout metrics so an instance
+         * can be reused without allocating a new object.
+         *
+         * @param text
+         *   Text to display.
+         * @param duration
+         *   Optional duration override.
+         */
+        protected resetBubble(text: string, duration = TextBubble.STANDARD_DUR) {
+                this.text = text;
+                this.timeStamp = Date.now();
+                this.width = -1;
+                this.height = -1;
+                this.duration = duration;
+        }
 
 	/**
 	 * Handles drawing the sprite on the screen.
@@ -155,11 +172,12 @@ export abstract class TextBubble {
 	 *
 	 * Removes the listener added with TextBubble.onAdded.
 	 */
-	onRemoved() {
-		if (typeof(this.onRemovedAction) !== "undefined") {
-			this.onRemovedAction();
-		}
-	}
+        onRemoved() {
+                if (typeof(this.onRemovedAction) !== "undefined") {
+                        this.onRemovedAction();
+                        this.onRemovedAction = undefined;
+                }
+        }
 
 	/**
 	 * Sets the duration that the sprite should be displayed on the
