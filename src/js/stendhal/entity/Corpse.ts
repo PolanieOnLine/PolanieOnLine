@@ -129,11 +129,13 @@ export class Corpse extends PopupInventory {
 			invComponent.setConfigId("corpse");
 
 			const dstate = stendhal.config.getWindowState("corpse");
-			this.inventory = new FloatingWindow("Zwłoki", invComponent,
-					dstate.x, dstate.y);
-			this.inventory.setId("corpse");
-		}
-	}
+                        const windowInstance = new FloatingWindow("Zwłoki", invComponent,
+                                        dstate.x, dstate.y);
+                        windowInstance.setId("corpse");
+                        windowInstance.setFixedWidth(78);
+                        this.inventory = windowInstance;
+                }
+        }
 
 	/**
 	 * Opens inventory window if player is within range.
