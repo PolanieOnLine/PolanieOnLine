@@ -21,7 +21,7 @@ declare var marauroa: any;
 export class PlayerEquipmentComponent extends Component {
 
 	private slotNames = ["neck", "head", "cloak", "lhand", "armor", "rhand", "finger", "pas", "legs", "glove", "fingerb", "feet", "pouch"];
-	private slotSizes = [  1,      1,       1,      1,       1,	       1,       1,       1,      1,      1,       1,	    1,       1];
+	private slotSizes = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
 	private slotImages = ["slot-neck.png", "slot-helmet.png", "slot-cloak.png", "slot-shield.png", "slot-armor.png", "slot-weapon.png",
 		"slot-ring.png", "slot-belt.png", "slot-legs.png", "slot-gloves.png", "slot-ringb.png", "slot-boots.png", "slot-pouch.png"];
 	private readonly secondarySlotNames = this.slotNames.map((name) => name + "_set");
@@ -34,6 +34,7 @@ export class PlayerEquipmentComponent extends Component {
 	private reserveVisible = false;
 	private currentTitle = "";
 	private readonly handleLayoutChange = () => this.refreshReserveWindowPosition();
+	private pendingRefresh = true;
 
 	constructor() {
 		super("equipment");
@@ -81,8 +82,20 @@ export class PlayerEquipmentComponent extends Component {
 	}
 
 	public update() {
-		for (var i in this.inventory) {
-			this.inventory[i].update();
+		if (!this.isVisible()) {
+			this.pendingRefresh = true;
+			return;
+		}
+
+		if (this.pendingRefresh) {
+			for (const inv of this.inventory) {
+				inv.markDirty();
+			}
+			this.pendingRefresh = false;
+		}
+
+		for (const inv of this.inventory) {
+			inv.update();
 		}
 
 		this.updateWindowTitle();
@@ -102,6 +115,7 @@ export class PlayerEquipmentComponent extends Component {
 	}
 
 	public markDirty() {
+		this.pendingRefresh = true;
 		for (const inv of this.inventory) {
 			inv.markDirty();
 		}
@@ -163,7 +177,7 @@ export class PlayerEquipmentComponent extends Component {
 			this.reserveToggle.setAttribute("aria-label", show ? "Ukryj schowek" : "Pokaż schowek");
 		}
 	}
-	
+
 	private refreshReserveWindowPosition() {
 		if (!this.reserveWindow) {
 			return;

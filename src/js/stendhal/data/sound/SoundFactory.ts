@@ -10,6 +10,14 @@
  *                                                                         *
  ***************************************************************************/
 
+import { BinaryAssetCache } from "../../util/BinaryAssetCache";
+
+export interface SoundCreateOptions {
+	/**
+	 * Skip cached blob loading and stream audio directly from the source URL.
+	 */
+	preferStreaming?: boolean;
+}
 
 /**
  * A playable sound.
@@ -32,6 +40,9 @@ export interface SoundObject extends HTMLAudioElement {
  */
 export class SoundFactory {
 
+	private static readonly binaryCache = BinaryAssetCache.get();
+	private static readonly objectUrlCache = new Map<string, Promise<string>>();
+
 	/**
 	 * Hidden constructor (use `SoundFactory.create`).
 	 */
@@ -45,9 +56,86 @@ export class SoundFactory {
 	 * @param src {string}
 	 *   Sound filename path (default: `undefined`).
 	 */
-	static create(src?: string): SoundObject {
-		const sound = new Audio(src) as SoundObject;
+	static create(src?: string, options: SoundCreateOptions = {}): SoundObject {
+		const sound = new Audio() as SoundObject;
 		sound.basevolume = sound.volume;
+		sound.preload = "auto";
+		if (!src) {
+			return sound;
+		}
+
+		const absolute = SoundFactory.toAbsoluteUrl(src);
+		const fallbackSrc = absolute;
+
+		sound.src = fallbackSrc;
+		sound.load();
+
+		if (options.preferStreaming) {
+			return sound;
+		}
+
+		let resolvedSrc = fallbackSrc;
+		const ready = SoundFactory.getObjectUrl(absolute).then((objectUrl) => {
+			resolvedSrc = objectUrl;
+			if (sound.paused && sound.currentSrc !== objectUrl) {
+				sound.src = objectUrl;
+				sound.load();
+			}
+			return objectUrl;
+		}).catch((error) => {
+			console.warn("Falling back to direct audio src", absolute, error);
+			resolvedSrc = fallbackSrc;
+			return fallbackSrc;
+		});
+
+		const originalClone = sound.cloneNode.bind(sound);
+		sound.cloneNode = ((deep?: boolean) => {
+			const clone = originalClone(deep) as SoundObject;
+			clone.basevolume = sound.basevolume;
+			clone.preload = sound.preload;
+			clone.src = resolvedSrc;
+			if (clone.preload !== "none") {
+				clone.load();
+			}
+			if (resolvedSrc === fallbackSrc) {
+				ready.then((finalSrc) => {
+					if (finalSrc !== clone.currentSrc && clone.paused) {
+						clone.src = finalSrc;
+						if (clone.preload !== "none") {
+							clone.load();
+						}
+					}
+				}).catch(() => {
+					// ignore, clone already has fallback src
+				});
+			}
+			return clone;
+		}) as typeof sound.cloneNode;
 		return sound;
+	}
+
+	private static getObjectUrl(src: string): Promise<string> {
+		let existing = SoundFactory.objectUrlCache.get(src);
+		if (!existing) {
+			existing = SoundFactory.binaryCache.load(src).then((blob) => {
+				return URL.createObjectURL(blob);
+			});
+			SoundFactory.objectUrlCache.set(src, existing.then((url) => {
+				SoundFactory.objectUrlCache.set(src, Promise.resolve(url));
+				return url;
+			}).catch((error) => {
+				SoundFactory.objectUrlCache.delete(src);
+				throw error;
+			}));
+		}
+		return existing;
+	}
+
+	private static toAbsoluteUrl(src: string): string {
+		try {
+			return new URL(src, window.location.href).toString();
+		} catch (error) {
+			return src;
+		}
 	}
 }

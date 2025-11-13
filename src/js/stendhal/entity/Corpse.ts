@@ -50,11 +50,11 @@ export class Corpse extends PopupInventory {
 		}
 	}
 
-	override draw(ctx: CanvasRenderingContext2D) {
+	override draw(ctx: CanvasRenderingContext2D, tileXOverride?: number, tileYOverride?: number) {
 		if (!this.sprite) {
 			return;
 		}
-		super.draw(ctx);
+		super.draw(ctx, tileXOverride, tileYOverride);
 
 		if (this.indicator && !this.isEmpty()) {
 			const tileW = stendhal.ui.gamewindow.targetTileWidth;
@@ -68,10 +68,12 @@ export class Corpse extends PopupInventory {
 				return;
 			}
 
+			const tileX = this.getRenderTileX();
+			const tileY = this.getRenderTileY();
 			const offsetX = Math.floor((this["width"] * tileW - this.sprite.width) / 2);
 			const offsetY = Math.floor((this["height"] * tileH - this.sprite.height) / 2);
-			const dx = this["x"] * tileW + offsetX;
-			const dy = this["y"] * tileH + offsetY;
+			const dx = tileX * tileW + offsetX;
+			const dy = tileY * tileH + offsetY;
 
 			this.indicator.draw(ctx, dx, dy, this.sprite.width);
 		}
@@ -121,15 +123,17 @@ export class Corpse extends PopupInventory {
 			}
 
 			const invComponent = new ItemInventoryComponent(this,
-					"content", content_row, content_col,
-					stendhal.config.getBoolean("inventory.quick-pickup"), undefined);
+				"content", content_row, content_col,
+				stendhal.config.getBoolean("inventory.quick-pickup"), undefined);
 			// TODO: remove, deprecated
 			invComponent.setConfigId("corpse");
 
 			const dstate = stendhal.config.getWindowState("corpse");
-			this.inventory = new FloatingWindow("Zwłoki", invComponent,
-					dstate.x, dstate.y);
-			this.inventory.setId("corpse");
+			const windowInstance = new FloatingWindow("Zwłoki", invComponent,
+				dstate.x, dstate.y);
+			windowInstance.setId("corpse");
+			windowInstance.setFixedWidth(78);
+			this.inventory = windowInstance;
 		}
 	}
 

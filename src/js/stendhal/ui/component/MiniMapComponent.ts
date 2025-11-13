@@ -25,7 +25,7 @@ import { WalkBlocker } from "../../entity/WalkBlocker";
 import { Color } from "../../data/color/Color";
 import { SpringVector, Vector2 } from "../../util/SpringVector";
 
-type EntityState = {prevX: number; prevY: number; currX: number; currY: number};
+type EntityState = { prevX: number; prevY: number; currX: number; currY: number };
 
 /**
  * mini map
@@ -39,14 +39,14 @@ export class MiniMapComponent extends Component {
 	private mapWidth = 1;
 	private mapHeight = 1;
 	private scale = 1;
-	private bgImage?: HTMLCanvasElement|OffscreenCanvas;
+	private bgImage?: HTMLCanvasElement | OffscreenCanvas;
 	private lastZone?: number[];
 	private pixelRatio = 1;
 	private marginX = 0;
 	private marginY = 0;
 
 	private readonly cameraSpring = new SpringVector(600);
-	private cameraTarget: Vector2 = {x: 0, y: 0};
+	private cameraTarget: Vector2 = { x: 0, y: 0 };
 	private cameraInitialized = false;
 	private needsBackgroundRefresh = true;
 	private entityStates = new WeakMap<any, EntityState>();
@@ -78,6 +78,25 @@ export class MiniMapComponent extends Component {
 		});
 		this.componentElement.addEventListener("dblclick", (event) => {
 			this.onClick(event);
+		});
+		this.componentElement.addEventListener("touchstart", (event: TouchEvent) => {
+			const pos = stendhal.ui.html.extractPosition(event);
+			stendhal.ui.touch.onTouchStart(pos.pageX, pos.pageY);
+		});
+		this.componentElement.addEventListener("touchend", (event: TouchEvent) => {
+			const pos = stendhal.ui.html.extractPosition(event);
+			stendhal.ui.touch.onTouchEnd(event);
+			if (stendhal.ui.touch.isLongTouch(event)) {
+				return;
+			}
+			const isDoubleTap = stendhal.ui.touch.registerTap(pos.pageX, pos.pageY, pos.target, this.componentElement);
+			if (!isDoubleTap) {
+				return;
+			}
+			event.preventDefault();
+			event.stopPropagation();
+			const doubleEvent = Object.assign({}, pos, { type: "dblclick" }) as MouseEvent;
+			this.onClick(doubleEvent);
 		});
 	}
 
@@ -172,10 +191,10 @@ export class MiniMapComponent extends Component {
 	private computePlayerTarget(): Vector2 {
 		const imageWidth = this.mapWidth * this.scale;
 		const imageHeight = this.mapHeight * this.scale;
-		const playerX = (typeof(marauroa.me["_x"]) === "number") ? marauroa.me["_x"] : marauroa.me["x"];
-		const playerY = (typeof(marauroa.me["_y"]) === "number") ? marauroa.me["_y"] : marauroa.me["y"];
-		const playerWidth = typeof(marauroa.me["width"]) === "number" ? marauroa.me["width"] : 1;
-		const playerHeight = typeof(marauroa.me["height"]) === "number" ? marauroa.me["height"] : 1;
+		const playerX = (typeof (marauroa.me["_x"]) === "number") ? marauroa.me["_x"] : marauroa.me["x"];
+		const playerY = (typeof (marauroa.me["_y"]) === "number") ? marauroa.me["_y"] : marauroa.me["y"];
+		const playerWidth = typeof (marauroa.me["width"]) === "number" ? marauroa.me["width"] : 1;
+		const playerHeight = typeof (marauroa.me["height"]) === "number" ? marauroa.me["height"] : 1;
 
 		const halfViewportWidth = this.width / 2;
 		const halfViewportHeight = this.height / 2;
@@ -205,7 +224,7 @@ export class MiniMapComponent extends Component {
 			targetY = maxY;
 		}
 
-		return {x: targetX, y: targetY};
+		return { x: targetX, y: targetY };
 	}
 
 	private updateMargins() {
@@ -238,7 +257,7 @@ export class MiniMapComponent extends Component {
 		}
 
 		this.lastZone = stendhal.data.map.collisionData;
-		let buffer: HTMLCanvasElement|OffscreenCanvas;
+		let buffer: HTMLCanvasElement | OffscreenCanvas;
 		if (typeof OffscreenCanvas !== "undefined") {
 			buffer = new OffscreenCanvas(width, height);
 		} else {
@@ -308,7 +327,7 @@ export class MiniMapComponent extends Component {
 				const centerY = Math.round((pos.y + height / 2) * this.scale);
 				const armLength = Math.max(3, Math.round(Math.max(scaledWidth, scaledHeight) / 2));
 				const crossSpan = armLength * 2 + 1;
-				const originalFill: CanvasGradient|CanvasPattern|string = ctx.fillStyle;
+				const originalFill: CanvasGradient | CanvasPattern | string = ctx.fillStyle;
 				ctx.fillStyle = ctx.strokeStyle as typeof ctx.fillStyle;
 				ctx.fillRect(centerX, centerY - armLength, 1, crossSpan);
 				ctx.fillRect(centerX - armLength, centerY, crossSpan, 1);
@@ -319,7 +338,7 @@ export class MiniMapComponent extends Component {
 				const rectWidth = Math.max(0, scaledWidth - 1);
 				const rectHeight = Math.max(0, scaledHeight - 1);
 				if (rectWidth === 0 && rectHeight === 0) {
-					const originalFill: CanvasGradient|CanvasPattern|string = ctx.fillStyle;
+					const originalFill: CanvasGradient | CanvasPattern | string = ctx.fillStyle;
 					ctx.fillStyle = ctx.strokeStyle as typeof ctx.fillStyle;
 					ctx.fillRect(drawX, drawY, 1, 1);
 					ctx.fillStyle = originalFill;
@@ -341,7 +360,7 @@ export class MiniMapComponent extends Component {
 			const pos = this.getEntityPosition(obj);
 			let state = this.entityStates.get(obj);
 			if (!state) {
-				state = {prevX: pos.x, prevY: pos.y, currX: pos.x, currY: pos.y};
+				state = { prevX: pos.x, prevY: pos.y, currX: pos.x, currY: pos.y };
 			} else {
 				state.prevX = state.currX;
 				state.prevY = state.currY;
@@ -390,15 +409,15 @@ export class MiniMapComponent extends Component {
 		if (!obj) {
 			return false;
 		}
-		const hasX = typeof(obj["x"]) !== "undefined" || typeof(obj["_x"]) === "number";
-		const hasY = typeof(obj["y"]) !== "undefined" || typeof(obj["_y"]) === "number";
+		const hasX = typeof (obj["x"]) !== "undefined" || typeof (obj["_x"]) === "number";
+		const hasY = typeof (obj["y"]) !== "undefined" || typeof (obj["_y"]) === "number";
 		return hasX && hasY;
 	}
 
 	private getEntityPosition(obj: any): Vector2 {
-		const x = (typeof(obj["_x"]) === "number") ? obj["_x"] : obj["x"];
-		const y = (typeof(obj["_y"]) === "number") ? obj["_y"] : obj["y"];
-		return {x: x || 0, y: y || 0};
+		const x = (typeof (obj["_x"]) === "number") ? obj["_x"] : obj["x"];
+		const y = (typeof (obj["_y"]) === "number") ? obj["_y"] : obj["y"];
+		return { x: x || 0, y: y || 0 };
 	}
 
 	private getEntityInterpolatedPosition(obj: any, alpha: number): Vector2 {
@@ -415,7 +434,7 @@ export class MiniMapComponent extends Component {
 	}
 
 	private getEntityDimension(obj: any, key: "width" | "height"): number {
-		const value = typeof(obj[key]) === "number" ? obj[key] : 1;
+		const value = typeof (obj[key]) === "number" ? obj[key] : 1;
 		return value || 1;
 	}
 

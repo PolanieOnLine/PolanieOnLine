@@ -26,10 +26,16 @@ export class Entity extends RPObject {
 	minimapStyle = "rgb(200,255,200)";
 	zIndex = 10000;
 
+	private renderOverrideX = Number.NaN;
+	private renderOverrideY = Number.NaN;
+	private renderOverrideDepth = 0;
+	private renderOverrideSavedX = Number.NaN;
+	private renderOverrideSavedY = Number.NaN;
+
 	override set(key: string, value: any) {
 		super.set(key, value);
 		if (key === 'name') {
-			if (typeof(this['title']) === "undefined") {
+			if (typeof (this['title']) === "undefined") {
 				this['title'] = value;
 			}
 			this["_name"] = value;
@@ -51,7 +57,7 @@ export class Entity extends RPObject {
 		}
 
 		var nextX = ((this["x"] + this["width"] >= other["x"]) && this["x"] <= other["x"])
-				|| ((other["x"] + other["width"] >= this["x"]) && other["x"] <= this["x"]);
+			|| ((other["x"] + other["width"] >= this["x"]) && other["x"] <= this["x"]);
 		if (!nextX) {
 			return false;
 		}
@@ -97,7 +103,7 @@ export class Entity extends RPObject {
 	private getYDistanceTo(other: RPObject): number {
 		if (other && this["y"] && other["y"]) {
 			const ty_bottom = this["y"] + (this["height"] || 1) - 1;
-			const oy_bottom = other["y"] + (other["height"] || 1) -1;
+			const oy_bottom = other["y"] + (other["height"] || 1) - 1;
 
 			if (this["y"] > oy_bottom) {
 				return Math.abs(this["y"] - oy_bottom);
@@ -145,18 +151,18 @@ export class Entity extends RPObject {
 	}
 
 	/**
- 	 * Map descriptive command names to the real commands
+	   * Map descriptive command names to the real commands
 	 */
 	actionAliasToAction(actionAlias: string) {
 		var actionAliases: {
 			[key: string]: any;
-		}  = {
-			"look_closely" : "use",
-			"read" : "look"
+		} = {
+			"look_closely": "use",
+			"read": "look"
 		};
 
 		var actionCommand = "look";
-		if (typeof(actionAlias) === "string") {
+		if (typeof (actionAlias) === "string") {
 			if (actionAliases.hasOwnProperty(actionAlias)) {
 				actionCommand = actionAliases[actionAlias];
 			} else {
@@ -204,7 +210,7 @@ export class Entity extends RPObject {
 		this["_x"] = this["x"];
 	}
 
-	draw(ctx: CanvasRenderingContext2D) {
+	draw(ctx: CanvasRenderingContext2D, _tileXOverride?: number, _tileYOverride?: number) {
 		if (this.sprite) {
 			this.drawSprite(ctx);
 		}
@@ -214,7 +220,62 @@ export class Entity extends RPObject {
 	 * draws a standard sprite
 	 */
 	drawSprite(ctx: CanvasRenderingContext2D) {
-		this.drawSpriteAt(ctx, this["x"] * 32, this["y"] * 32);
+		const tileX = this.getRenderTileX();
+		const tileY = this.getRenderTileY();
+		this.drawSpriteAt(ctx, tileX * 32, tileY * 32);
+	}
+
+	pushRenderOverride(tileX: number, tileY: number) {
+		if (this.renderOverrideDepth === 0) {
+			this.renderOverrideSavedX = this.renderOverrideX;
+			this.renderOverrideSavedY = this.renderOverrideY;
+		}
+		this.renderOverrideDepth++;
+		this.renderOverrideX = tileX;
+		this.renderOverrideY = tileY;
+	}
+
+	popRenderOverride() {
+		if (this.renderOverrideDepth === 0) {
+			return;
+		}
+		this.renderOverrideDepth--;
+		if (this.renderOverrideDepth === 0) {
+			this.renderOverrideX = this.renderOverrideSavedX;
+			this.renderOverrideY = this.renderOverrideSavedY;
+			this.renderOverrideSavedX = Number.NaN;
+			this.renderOverrideSavedY = Number.NaN;
+		}
+	}
+
+	protected getRenderTileX(): number {
+		if (Number.isFinite(this.renderOverrideX)) {
+			return this.renderOverrideX;
+		}
+		const override = this["_x"];
+		if (typeof override === "number" && Number.isFinite(override)) {
+			return override;
+		}
+		const base = this["x"];
+		if (typeof base === "number" && Number.isFinite(base)) {
+			return base;
+		}
+		return 0;
+	}
+
+	protected getRenderTileY(): number {
+		if (Number.isFinite(this.renderOverrideY)) {
+			return this.renderOverrideY;
+		}
+		const override = this["_y"];
+		if (typeof override === "number" && Number.isFinite(override)) {
+			return override;
+		}
+		const base = this["y"];
+		if (typeof base === "number" && Number.isFinite(base)) {
+			return base;
+		}
+		return 0;
 	}
 
 	drawSpriteAt(ctx: CanvasRenderingContext2D, x: number, y: number) {
@@ -327,9 +388,9 @@ export class Entity extends RPObject {
 		view_rect.bottom = view_rect.top + stendhal.ui.gamewindow.height;
 
 		const pixelX = this["x"] * stendhal.ui.gamewindow.targetTileWidth
-				+ Math.floor(stendhal.ui.gamewindow.targetTileWidth / 2);
+			+ Math.floor(stendhal.ui.gamewindow.targetTileWidth / 2);
 		const pixelY = this["y"] * stendhal.ui.gamewindow.targetTileHeight
-				+ Math.floor(stendhal.ui.gamewindow.targetTileHeight / 2);
+			+ Math.floor(stendhal.ui.gamewindow.targetTileHeight / 2);
 
 		const ent_rect: any = {};
 		// horizontal orientation is centered
@@ -340,6 +401,6 @@ export class Entity extends RPObject {
 		ent_rect.top = ent_rect.bottom - this["drawHeight"];
 
 		return ent_rect.right > view_rect.left && ent_rect.left < view_rect.right
-				&& ent_rect.bottom > view_rect.top && ent_rect.top < view_rect.bottom
+			&& ent_rect.bottom > view_rect.top && ent_rect.top < view_rect.bottom
 	}
 }

@@ -75,6 +75,10 @@ export class ParallaxBackground {
 		this.image = undefined;
 	}
 
+	getImageElement(): HTMLImageElement | undefined {
+		return this.image;
+	}
+
 	draw(ctx: CanvasRenderingContext2D, offsetX: number, offsetY: number) {
 		if (!this.image || !this.image.height) {
 			return;

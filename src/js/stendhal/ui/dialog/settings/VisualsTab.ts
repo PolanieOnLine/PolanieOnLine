@@ -108,13 +108,13 @@ export class VisualsTab extends AbstractSettingsTab {
 		const currentLimit = Math.trunc(config.getFloat("loop.fps.limit", 0));
 		let selectedIndex = fpsOptions.findIndex((opt) => opt.value === currentLimit);
 		if (selectedIndex < 0) {
-			selectedIndex = 0;
+			selectedIndex = fpsOptions.length - 1;
 		}
 		fpsSelect.setValue(selectedIndex);
 		fpsSelect.setTooltip("Ogranicz renderowanie do określonego limitu klatek na sekundę", "Renderuj z pełną częstotliwością odświeżania");
 		fpsSelect.addListener(() => {
 			const idx = fpsSelect.getValue() as number;
-			const choice = fpsOptions[idx] || fpsOptions[0];
+			const choice = fpsOptions[idx] || fpsOptions[fpsOptions.length - 1];
 			config.set("loop.fps.limit", choice.value.toString());
 			ViewPort.get().setFpsLimit(choice.value);
 			parent.refresh();

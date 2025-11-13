@@ -1,3 +1,5 @@
+declare const stendhal: any;
+
 import { Component } from "../toolkit/Component";
 import { InventoryWindowOrderManager } from "./InventoryWindowOrderManager";
 
@@ -9,6 +11,9 @@ interface InventoryWindowElements {
 }
 
 export class InventoryWindowController {
+
+	private static readonly OPEN_SOUND = "ui/window_fold";
+	private static readonly MINIMIZE_SOUND = "ui/window_fold";
 
 	private static windows: Map<string, InventoryWindowElements> = new Map();
 
@@ -44,8 +49,8 @@ export class InventoryWindowController {
 		this.applyCollapsed(elements, !!options?.collapsed);
 
 		const initiallyHidden = root.classList.contains("inventory-window--hidden")
-				|| root.hasAttribute("hidden")
-				|| getComputedStyle(root).display === "none";
+			|| root.hasAttribute("hidden")
+			|| getComputedStyle(root).display === "none";
 		this.setWindowVisibility(id, !initiallyHidden);
 	}
 
@@ -60,7 +65,7 @@ export class InventoryWindowController {
 		}
 
 		const originalSetVisible = component.setVisible.bind(component);
-		(component as any).setVisible = (visible=true) => {
+		(component as any).setVisible = (visible = true) => {
 			originalSetVisible(visible);
 			InventoryWindowController.setWindowVisibility(id, visible);
 		};
@@ -97,6 +102,7 @@ export class InventoryWindowController {
 		}
 		const collapsed = !elements.root.classList.contains("inventory-window--collapsed");
 		this.applyCollapsed(elements, collapsed);
+		this.playToggleSound(collapsed);
 	}
 
 	private static applyCollapsed(elements: InventoryWindowElements, collapsed: boolean) {
@@ -108,6 +114,19 @@ export class InventoryWindowController {
 			elements.toggle.setAttribute("aria-expanded", (!collapsed).toString());
 			elements.toggle.textContent = collapsed ? "+" : "−";
 			elements.toggle.setAttribute("aria-label", collapsed ? "Rozwiń okno" : "Zwiń okno");
+		}
+	}
+
+	private static playToggleSound(collapsed: boolean) {
+		const play = stendhal?.sound?.playGlobalizedEffect;
+		if (typeof play !== "function") {
+			return;
+		}
+		const sound = collapsed ? this.MINIMIZE_SOUND : this.OPEN_SOUND;
+		try {
+			play.call(stendhal.sound, sound);
+		} catch (err) {
+			console.warn("Unable to play window toggle sound", err);
 		}
 	}
 }

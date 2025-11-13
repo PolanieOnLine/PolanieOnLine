@@ -36,11 +36,11 @@ export class SoundManager {
 	/** Layer names & ordering. */
 	readonly layers: string[];
 	/** Session cache. */
-	private cacheGlobal: {[source: string]: SoundObject};
+	private cacheGlobal: { [source: string]: SoundObject };
 	/** Cache for current map. */
-	private cache: {[source: string]: SoundObject};
+	private cache: { [source: string]: SoundObject };
 	/** Actively playing sounds. */
-	private active: {[layer: string]: SoundObject[]};
+	private active: { [layer: string]: SoundObject[] };
 
 	/** Music instance played globally. */
 	private globalMusic?: SoundObject;
@@ -80,7 +80,7 @@ export class SoundManager {
 	 * @return {data.SoundFactory.SoundObject[]}
 	 *   Array of active sounds.
 	 */
-	getActive(includeGui=false): SoundObject[] {
+	getActive(includeGui = false): SoundObject[] {
 		const active: SoundObject[] = [];
 		for (const layerName of this.layers) {
 			if (layerName === "gui" && !includeGui) {
@@ -103,7 +103,7 @@ export class SoundManager {
 	 * @return {data.SoundFactory.SoundObject}
 	 *   Active sound instance or `undefined`.
 	 */
-	getActiveByName(soundName: string, includeGui=false): SoundObject|undefined {
+	getActiveByName(soundName: string, includeGui = false): SoundObject | undefined {
 		for (const sound of this.getActive(includeGui)) {
 			if (soundName === sound.basename) {
 				return sound;
@@ -123,8 +123,8 @@ export class SoundManager {
 	 * @return {data.SoundFactory.SoundObject}
 	 *   New audio object.
 	 */
-	private load(id: string, filename: string, global=false): SoundObject {
-		const snd = SoundFactory.create(filename);
+	private load(id: string, filename: string, global = false, preferStreaming = false): SoundObject {
+		const snd = SoundFactory.create(filename, { preferStreaming });
 		snd.autoplay = false;
 		// load into cache
 		if (global) {
@@ -156,7 +156,7 @@ export class SoundManager {
 	 */
 	checkLayer(layer: any): string {
 		let layerIndex = -1;
-		const ltype = typeof(layer);
+		const ltype = typeof (layer);
 		if (ltype === "number") {
 			layerIndex = layer;
 		} else if (ltype === "string") {
@@ -228,7 +228,7 @@ export class SoundManager {
 	 * @return {data.SoundFactory.SoundObject}
 	 *   The new sound instance or `undefined`.
 	 */
-	private playEffect(soundName: string, layerName: string, volume=1.0, loop=false): SoundObject|undefined {
+	private playEffect(soundName: string, layerName: string, volume = 1.0, loop = false): SoundObject | undefined {
 		const muted = !stendhal.config.getBoolean("sound");
 		if (muted && !loop) {
 			// don't add non-looping sounds when muted
@@ -244,7 +244,7 @@ export class SoundManager {
 		let snd = this.cache[soundName] || this.cacheGlobal[soundName];
 		if (!snd) {
 			// add new sound to cache
-			snd = this.load(soundName, stendhal.paths.sounds + "/" + soundName + ".ogg");
+			snd = this.load(soundName, stendhal.paths.sounds + "/" + soundName + ".ogg", false, loop);
 		}
 
 		if (!this.cache[soundName]) {
@@ -292,8 +292,8 @@ export class SoundManager {
 	 * @return {data.SoundFactory.SoundObject}
 	 *   The new sound instance or `undefined`.
 	 */
-	playLocalizedEffect(x: number, y: number, radius: number, layer: string|number, soundName: string,
-			volume=1.0, loop=false): SoundObject|undefined {
+	playLocalizedEffect(x: number, y: number, radius: number, layer: string | number, soundName: string,
+		volume = 1.0, loop = false): SoundObject | undefined {
 		const layerName = this.checkLayer(layer);
 		if (!layerName) {
 			return;
@@ -333,7 +333,7 @@ export class SoundManager {
 	 * @return {data.SoundFactory.SoundObject}
 	 *   The new sound instance or `undefined`.
 	 */
-	playGlobalizedEffect(soundName: string, layer: string|number="gui", volume=1.0, loop=false): SoundObject|undefined {
+	playGlobalizedEffect(soundName: string, layer: string | number = "gui", volume = 1.0, loop = false): SoundObject | undefined {
 		const layerName = this.checkLayer(layer);
 		if (!layerName) {
 			return;
@@ -361,8 +361,8 @@ export class SoundManager {
 	 * @return {data.SoundFactory.SoundObject}
 	 *   The new sound instance or `undefind`.
 	 */
-	playLocalizedLoop(x: number, y: number, radius: number, layer: string|number, soundName: string,
-			volume=1.0): SoundObject|undefined {
+	playLocalizedLoop(x: number, y: number, radius: number, layer: string | number, soundName: string,
+		volume = 1.0): SoundObject | undefined {
 		return this.playLocalizedEffect(x, y, radius, layer, soundName, volume, true);
 	}
 
@@ -378,7 +378,7 @@ export class SoundManager {
 	 * @return {data.SoundFactory.SoundObject}
 	 *   The new sound instance or `undefined`.
 	 */
-	playGlobalizedLoop(soundName: string, layer?: string|number, volume=1.0): SoundObject|undefined {
+	playGlobalizedLoop(soundName: string, layer?: string | number, volume = 1.0): SoundObject | undefined {
 		return this.playGlobalizedEffect(soundName, layer, volume, true);
 	}
 
@@ -402,11 +402,11 @@ export class SoundManager {
 	 * @return {data.SoundFactory.SoundObject}
 	 *   The new sound instance or `undefined`.
 	 */
-	playLocalizedMusic(x: number, y: number, radius: number, layer: string|number, musicName: string,
-			volume=1.0): SoundObject|undefined {
+	playLocalizedMusic(x: number, y: number, radius: number, layer: string | number, musicName: string,
+		volume = 1.0): SoundObject | undefined {
 		// load into cache so playEffect doesn't look in "data/sounds"
 		if (!this.cache[musicName]) {
-			this.load(musicName, stendhal.paths.music + "/" + musicName + ".ogg");
+			this.load(musicName, stendhal.paths.music + "/" + musicName + ".ogg", false, true);
 		}
 		return this.playLocalizedLoop(x, y, radius, layer, musicName, volume);
 	}
@@ -421,10 +421,10 @@ export class SoundManager {
 	 * @return {data.SoundFactory.SoundObject}
 	 *   The new sound instance or `undefined`.
 	 */
-	playGlobalizedMusic(musicName: string, volume=1.0): SoundObject|undefined {
+	playGlobalizedMusic(musicName: string, volume = 1.0): SoundObject | undefined {
 		// load into cache so playEffect doesn't look in "data/sounds"
 		if (!this.cache[musicName]) {
-			this.load(musicName, stendhal.paths.music + "/" + musicName + ".ogg");
+			this.load(musicName, stendhal.paths.music + "/" + musicName + ".ogg", false, true);
 		}
 		return this.playGlobalizedLoop(musicName, "music", volume);
 	}
@@ -440,7 +440,7 @@ export class SoundManager {
 	 * @param volume {number}
 	 *   Volume level between 0.0 and 1.0.
 	 */
-	playSingleGlobalizedMusic(musicName: string, volume=1.0) {
+	playSingleGlobalizedMusic(musicName: string, volume = 1.0) {
 		if (this.globalMusic && musicName === this.globalMusic.basename) {
 			// continue playing when changing maps if music is the same
 			return;
@@ -482,17 +482,17 @@ export class SoundManager {
 	 * @return {boolean}
 	 *   `true` if succeeded.
 	 */
-	stop(layer: string|number, sound: string|SoundObject): boolean {
+	stop(layer: string | number, sound: string | SoundObject): boolean {
 		const layerName = this.checkLayer(layer);
 		if (this.getLayerIndex(layerName) < 0) {
 			return false;
 		}
-		const isString = typeof(sound) === "string";
+		const isString = typeof (sound) === "string";
 		// use this value to avoid error "Argument of type 'string | SoundObject' is not assignable to parameter of type 'SoundObject'"
 		const sSound = !isString ? sound as SoundObject : this.getActiveByName(sound as string);
 		if (!sSound) {
 			console.error("cannot stop unknown sound:",
-					isString ? sound as string : (sound as SoundObject).basename, new Error());
+				isString ? sound as string : (sound as SoundObject).basename, new Error());
 			return false;
 		}
 		if (this.active[layerName].indexOf(sSound) > -1 || sSound == this.globalMusic) {
@@ -515,7 +515,7 @@ export class SoundManager {
 	 * @return {boolean}
 	 *   `true` if all sounds were aborted or paused.
 	 */
-	stopAll(includeGui=false): boolean {
+	stopAll(includeGui = false): boolean {
 		let stopped = true;
 		for (const layerName of this.layers) {
 			if (layerName === "gui" && !includeGui) {
@@ -597,7 +597,7 @@ export class SoundManager {
 	 *   Y coordinate of listening entity.
 	 */
 	adjustForDistance(layerName: string, snd: SoundObject, radius: number, sx: number, sy: number,
-			ex: number, ey: number) {
+		ex: number, ey: number) {
 		const xdist = ex - sx;
 		const ydist = ey - sy;
 		const dist2 = xdist * xdist + ydist * ydist;
@@ -641,14 +641,14 @@ export class SoundManager {
 	 */
 	private getAdjustedVolume(layerName: string, volBase: number): number {
 		let volActual = stendhal.config.getInt("sound.master.volume");
-		if (typeof(volActual) === "number") {
+		if (typeof (volActual) === "number") {
 			// convert to float in range between 0-1
 			volActual /= 100;
 		} else {
 			volActual = 1;
 		}
 		let lvol = stendhal.config.getInt("sound." + layerName + ".volume");
-		if (typeof(lvol) === "number") {
+		if (typeof (lvol) === "number") {
 			// convert to float in range between 0-1
 			lvol /= 100;
 		} else {
@@ -684,7 +684,7 @@ export class SoundManager {
 	 */
 	setVolume(layerName: string, vol: number): boolean {
 		let volOld = stendhal.config.getInt("sound." + layerName + ".volume");
-		if (typeof(volOld) === "number") {
+		if (typeof (volOld) === "number") {
 			// convert to float in range between 0-1
 			volOld /= 100;
 		} else {
@@ -696,15 +696,15 @@ export class SoundManager {
 		const layerSet = layerName === "master" ? this.layers : [layerName];
 		for (const l of layerSet) {
 			const layerSounds = this.active[l];
-			if (typeof(layerSounds) === "undefined") {
+			if (typeof (layerSounds) === "undefined") {
 				continue;
 			}
 			for (const snd of layerSounds) {
-				if (typeof(snd.radius) === "number"
-						&& typeof(snd.x) === "number"
-						&& typeof(snd.y) === "number") {
+				if (typeof (snd.radius) === "number"
+					&& typeof (snd.x) === "number"
+					&& typeof (snd.y) === "number") {
 					this.adjustForDistance(layerName, snd, snd.radius,
-							snd.x, snd.y, marauroa.me["_x"], marauroa.me["_y"]);
+						snd.x, snd.y, marauroa.me["_x"], marauroa.me["_y"]);
 				} else {
 					this.applyAdjustedVolume(layerName, snd);
 				}
@@ -725,10 +725,10 @@ export class SoundManager {
 	 * @return {number}
 	 *   Current volume level of layer (returns 1 on error).
 	 */
-	getVolume(layerName="master"): number {
+	getVolume(layerName = "master"): number {
 		// NOTE: config value is integer in range between 0-100
 		let vol = stendhal.config.getInt("sound." + layerName + ".volume");
-		if (typeof(vol) === "undefined" || isNaN(vol) || !isFinite(vol)) {
+		if (typeof (vol) === "undefined" || isNaN(vol) || !isFinite(vol)) {
 			console.warn("could not get volume for channel \"" + layerName + "\"");
 			return 1;
 		}
@@ -778,7 +778,7 @@ export class SoundManager {
 	onConfigUpdate() {
 		for (const layerName of ["master", ...this.layers]) {
 			let vol = stendhal.config.getInt("sound." + layerName + ".volume");
-			if (typeof(vol) === "number") {
+			if (typeof (vol) === "number") {
 				// convert to float in range between 0-1
 				vol /= 100;
 			} else {
@@ -796,6 +796,6 @@ export class SoundManager {
 	startupCache() {
 		// login sound
 		this.load("ui/login",
-				stendhal.paths.sounds + "/ui/login.ogg", true);
+			stendhal.paths.sounds + "/ui/login.ogg", true, false);
 	}
 }

@@ -11,20 +11,26 @@
 
 declare var stendhal: any;
 
+import { BinaryAssetCache } from "../util/BinaryAssetCache";
 import { Paths } from "./Paths";
 
 
 class SpriteImage extends Image {
 	// number of times the image has been accessed after initial creation
 	counter = 0;
+	assetUrl?: string;
+	loadPromise?: Promise<SpriteImage>;
+	objectUrl?: string;
 }
 
 export class SpriteStore {
 
-	private knownBrokenUrls: {[url: string]: boolean} = {};
-	private images: {[filename: string]: SpriteImage} = {};
+	private knownBrokenUrls: { [url: string]: boolean } = {};
+	private images: { [filename: string]: SpriteImage } = {};
+	private readonly binaryCache = BinaryAssetCache.get();
+	private readonly failsafePath = Paths.sprites + "/failsafe.png";
 
-	private knownShadows: {[key: string]: boolean} = {
+	private knownShadows: { [key: string]: boolean } = {
 		"24x32": true,
 		"32x32": true,
 		"32x48": true,
@@ -51,7 +57,7 @@ export class SpriteStore {
 	};
 
 	// alternatives for known images that may be considered violent or mature
-	private knownSafeSprites: {[filename: string]: boolean} = {
+	private knownSafeSprites: { [filename: string]: boolean } = {
 		[Paths.sprites + "/monsters/huge_animal/thing"]: true,
 		[Paths.sprites + "/monsters/mutant/imperial_mutant"]: true,
 		[Paths.sprites + "/monsters/undead/bloody_zombie"]: true,
@@ -59,9 +65,9 @@ export class SpriteStore {
 	};
 
 	// TODO: move to animation.json
-	private animations: {[key: string]: any} = {
+	private animations: { [key: string]: any } = {
 		idea: {
-			"love": {delay: 100, offsetX: 24, offsetY: -8}
+			"love": { delay: 100, offsetX: 24, offsetY: -8 }
 		}
 	};
 
@@ -71,6 +77,140 @@ export class SpriteStore {
 	 */
 	protected constructor() {
 		// do nothing
+	}
+
+	private createSpriteImage(filename: string): SpriteImage {
+		const image = new Image() as SpriteImage;
+		image.counter = 0;
+		image.assetUrl = this.toAbsoluteUrl(filename);
+		if ("decoding" in image) {
+			(image as any).decoding = "async";
+		}
+		if ("loading" in image) {
+			(image as any).loading = "lazy";
+		}
+		image.onerror = (event: Event | string | undefined) => {
+			this.markBroken(filename, event);
+			this.useFailsafe(image);
+		};
+		return image;
+	}
+
+	private ensureImagePromise(filename: string, image: SpriteImage): Promise<SpriteImage> {
+		if (image.complete && image.naturalWidth > 0) {
+			return Promise.resolve(image);
+		}
+		if (image.loadPromise) {
+			return image.loadPromise;
+		}
+		if (this.shouldBypassBinaryCache(filename)) {
+			const promise = new Promise<SpriteImage>((resolve) => {
+				const onLoad = () => {
+					image.removeEventListener("load", onLoad);
+					image.removeEventListener("error", onError);
+					resolve(image);
+				};
+				const onError = (event: Event) => {
+					image.removeEventListener("load", onLoad);
+					image.removeEventListener("error", onError);
+					this.markBroken(filename, event);
+					this.useFailsafe(image);
+					resolve(image);
+				};
+				image.addEventListener("load", onLoad);
+				image.addEventListener("error", onError);
+				if (!image.src) {
+					image.src = image.assetUrl || filename;
+				}
+			});
+			image.loadPromise = promise;
+			promise.then(() => {
+				image.loadPromise = undefined;
+			}, () => {
+				image.loadPromise = undefined;
+			});
+			return promise;
+		}
+		const promise = this.binaryCache.load(filename).then((blob) => {
+			return this.assignBlobToImage(filename, image, blob);
+		}).catch((error) => {
+			this.markBroken(filename, error);
+			this.useFailsafe(image);
+			return image;
+		});
+		image.loadPromise = promise;
+		promise.then(() => {
+			image.loadPromise = undefined;
+		}, () => {
+			image.loadPromise = undefined;
+		});
+		return promise;
+	}
+
+	private shouldBypassBinaryCache(filename: string): boolean {
+		return filename.indexOf("/emoji/") !== -1;
+	}
+
+	private assignBlobToImage(filename: string, image: SpriteImage, blob: Blob): Promise<SpriteImage> {
+		return new Promise((resolve) => {
+			if (image.objectUrl) {
+				URL.revokeObjectURL(image.objectUrl);
+			}
+			const objectUrl = URL.createObjectURL(blob);
+			image.objectUrl = objectUrl;
+			const onLoad = () => {
+				image.removeEventListener("load", onLoad);
+				image.removeEventListener("error", onError);
+				resolve(image);
+			};
+			const onError = (event: Event) => {
+				image.removeEventListener("load", onLoad);
+				image.removeEventListener("error", onError);
+				this.markBroken(filename, event);
+				this.useFailsafe(image);
+				resolve(image);
+			};
+			image.addEventListener("load", onLoad);
+			image.addEventListener("error", onError);
+			image.src = objectUrl;
+		});
+	}
+
+	private useFailsafe(target: SpriteImage): void {
+		const failsafe = this.getFailsafe() as SpriteImage;
+		if (target === failsafe || target.assetUrl === failsafe.assetUrl) {
+			return;
+		}
+		const assign = () => {
+			if (failsafe.src && target.src !== failsafe.src) {
+				target.src = failsafe.src;
+			}
+		};
+		if (failsafe.complete && failsafe.naturalWidth > 0) {
+			assign();
+		} else {
+			this.ensureImagePromise(this.failsafePath, failsafe).then(assign).catch(assign);
+		}
+	}
+
+	private markBroken(filename: string, reason: any): void {
+		const absolute = this.toAbsoluteUrl(filename);
+		const key = absolute || filename;
+		if (!this.knownBrokenUrls[key]) {
+			const detail = reason instanceof ErrorEvent ? reason.error : reason;
+			const error = detail instanceof Error ? detail : new Error(detail ? String(detail) : "");
+			console.log("Broken image path:", absolute, error);
+		}
+		this.knownBrokenUrls[key] = true;
+		this.knownBrokenUrls[filename] = true;
+	}
+
+	private toAbsoluteUrl(filename: string): string {
+		try {
+			return new URL(filename, window.location.href).toString();
+		} catch (error) {
+			return filename;
+		}
 	}
 
 	get(filename: string): any {
@@ -84,46 +224,23 @@ export class SpriteStore {
 			this.knownBrokenUrls[filename] = true;
 			return {};
 		}
-		if (this.images[filename]) {
-			this.images[filename].counter++;
-			return this.images[filename];
+		let image = this.images[filename];
+		if (!image) {
+			image = this.createSpriteImage(filename);
+			this.images[filename] = image;
+		} else {
+			image.counter++;
 		}
-		var temp = new Image() as SpriteImage;
-		// TypeError: Image constructor: 'new' is required
-		//~ var temp = new SpriteImage();
-		temp.counter = 0;
-		temp.onerror = (function(t: SpriteImage, store: SpriteStore) {
-			return function() {
-				if (t.src && !store.knownBrokenUrls[t.src]) {
-					console.log("Broken image path:", t.src, new Error());
-					store.knownBrokenUrls[t.src] = true;
-				}
-				const failsafe = store.getFailsafe();
-				if (failsafe.src && t.src !== failsafe.src) {
-					t.src = failsafe.src;
-				}
-			};
-		})(temp, this);
-		temp.src = filename;
-		this.images[filename] = temp;
-		return temp;
+		void this.ensureImagePromise(filename, image);
+		return image;
 	}
 
 	getWithPromise(filename: string): any {
-		return new Promise((resolve) => {
-			if (typeof(this.images[filename]) != "undefined") {
-				this.images[filename].counter++;
-				resolve(this.images[filename]);
-			}
-
-			const image = new Image() as SpriteImage;
-			// TypeError: Image constructor: 'new' is required
-			//~ const image = new SpriteImage();
-			image.counter = 0;
-			this.images[filename] = image;
-			image.onload = () => resolve(image);
-			image.src = filename;
-		});
+		const image = this.get(filename);
+		if (!(image instanceof Image)) {
+			return Promise.resolve(image);
+		}
+		return this.ensureImagePromise(filename, image as SpriteImage);
 	}
 
 	/**
@@ -135,7 +252,7 @@ export class SpriteStore {
 	 *   Angle of rotation.
 	 */
 	private rotate(img: HTMLImageElement, angle: number) {
-		const canvas = <HTMLCanvasElement> document.getElementById("drawing-stage")!;
+		const canvas = <HTMLCanvasElement>document.getElementById("drawing-stage")!;
 		const ctx = canvas.getContext("2d")!;
 		// make sure working with blank canvas
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -199,6 +316,7 @@ export class SpriteStore {
 	 */
 	cache(id: string, image: SpriteImage) {
 		image.counter = 0;
+		image.assetUrl = this.toAbsoluteUrl(id);
 		this.images[id] = image;
 	}
 
@@ -221,17 +339,13 @@ export class SpriteStore {
 	 *     HTMLImageElement with failsafe image data.
 	 */
 	getFailsafe(): HTMLImageElement {
-		const filename = Paths.sprites + "/failsafe.png";
-		let failsafe = this.images[filename];
-		if (failsafe) {
-			failsafe.counter++;
+		let failsafe = this.images[this.failsafePath];
+		if (!failsafe) {
+			failsafe = this.createSpriteImage(this.failsafePath);
+			this.images[this.failsafePath] = failsafe;
+			void this.ensureImagePromise(this.failsafePath, failsafe);
 		} else {
-			failsafe = new Image() as SpriteImage;
-			// TypeError: Image constructor: 'new' is required
-			//~ failsafe = new SpriteImage();
-			failsafe.counter = 0;
-			failsafe.src = filename;
-			this.images[filename] = failsafe;
+			failsafe.counter++;
 		}
 		return failsafe;
 	}
@@ -252,12 +366,12 @@ export class SpriteStore {
 	// TODO: call clean on map change
 	clean() {
 		for (var i in this.images) {
-			console.log(typeof(this.images[i]));
+			console.log(typeof (this.images[i]));
 			if (this.images[i] instanceof SpriteImage) {
 				if (this.images[i].counter > 0) {
 					this.images[i].counter--;
 				} else {
-					delete(this.images[i]);
+					delete (this.images[i]);
 				}
 			}
 		}
@@ -276,16 +390,16 @@ export class SpriteStore {
 	 * @param {number=} offsetY optional. top y coordinate of the area
 	 */
 	getAreaOf(image: HTMLImageElement, width: number, height: number,
-			offsetX?: number, offsetY?: number): any {
+		offsetX?: number, offsetY?: number): any {
 		try {
 			offsetX = offsetX || 0;
 			offsetY = offsetY || 0;
 			if ((image.width === width) && (image.height === height)
-					&& (offsetX === 0) && (offsetY === 0)) {
+				&& (offsetX === 0) && (offsetY === 0)) {
 				return image;
 			}
 			var canvas = document.createElement("canvas") as HTMLCanvasElement;
-			canvas.width  = width;
+			canvas.width = width;
 			canvas.height = height;
 			var ctx = canvas.getContext("2d")!;
 			ctx.drawImage(image, offsetX, offsetY, width, height, 0, 0, width, height);
@@ -314,16 +428,16 @@ export class SpriteStore {
 	getFiltered(fileName: string, filter: string, param?: number) {
 		const img = this.get(fileName);
 		let filterFn;
-		if (typeof(filter) === "undefined"
+		if (typeof (filter) === "undefined"
 			|| !(filterFn = this.filter[filter])
 			|| !img.complete || img.width === 0 || img.height === 0) {
 			return img;
 		}
 		const filteredName = fileName + " " + filter + " " + param;
 		let filtered: SpriteImage = this.images[filteredName];
-		if (typeof(filtered) === "undefined") {
+		if (typeof (filtered) === "undefined") {
 			const canvas = document.createElement("canvas") as any;
-			canvas.width  = img.width;
+			canvas.width = img.width;
 			canvas.height = img.height;
 			const ctx = canvas.getContext("2d")!;
 			ctx.drawImage(img, 0, 0);
@@ -345,18 +459,18 @@ export class SpriteStore {
 	 */
 	getFilteredWithPromise(fileName: string, filter: string, param?: number) {
 		const imgPromise = this.getWithPromise(fileName);
-		return imgPromise.then(function (img: HTMLImageElement) {
+		return imgPromise.then(function(img: HTMLImageElement) {
 			let filterFn: Function;
-			if (typeof(filter) === "undefined"
+			if (typeof (filter) === "undefined"
 				|| !(filterFn = stendhal.data.sprites.filter[filter])
 				|| !img.complete || img.width === 0 || img.height === 0) {
 				return img;
 			}
 			const filteredName = fileName + " " + filter + " " + param;
 			let filtered: SpriteImage = stendhal.data.sprites.images[filteredName];
-			if (typeof(filtered) === "undefined") {
+			if (typeof (filtered) === "undefined") {
 				const canvas = document.createElement("canvas") as any;
-				canvas.width  = img.width;
+				canvas.width = img.width;
 				canvas.height = img.height;
 				const ctx = canvas.getContext("2d")!;
 				ctx.drawImage(img, 0, 0);
@@ -374,7 +488,7 @@ export class SpriteStore {
 
 
 	/** Image filters */
-	filter: {[key: string]: Function} = {
+	filter: { [key: string]: Function } = {
 		// Helper functions
 		/**
 		 * @param {Number} rgb
@@ -475,9 +589,9 @@ export class SpriteStore {
 				}
 				tmp2 = 2 * l - tmp1;
 
-				var rf = stendhal.data.sprites.filter.hue2rgb(this.limitHue(h + 1/3), tmp2, tmp1);
+				var rf = stendhal.data.sprites.filter.hue2rgb(this.limitHue(h + 1 / 3), tmp2, tmp1);
 				var gf = stendhal.data.sprites.filter.hue2rgb(this.limitHue(h), tmp2, tmp1);
-				var bf = stendhal.data.sprites.filter.hue2rgb(this.limitHue(h - 1/3), tmp2, tmp1);
+				var bf = stendhal.data.sprites.filter.hue2rgb(this.limitHue(h - 1 / 3), tmp2, tmp1);
 
 				r = Math.floor(255 * rf) & 0xff;
 				g = Math.floor(255 * gf) & 0xff;
@@ -499,7 +613,7 @@ export class SpriteStore {
 			} else if (2 * hue < 1) {
 				res = val2;
 			} else if (3 * hue < 2) {
-				res = val1 + (val2 - val1) * (2/3 - hue) * 6;
+				res = val1 + (val2 - val1) * (2 / 3 - hue) * 6;
 			} else {
 				res = val1;
 			}
@@ -530,12 +644,12 @@ export class SpriteStore {
 	 *     Image sprite or <code>undefined</code>.
 	 */
 	getShadow(shadowStyle: string): any {
-		if (this.knownShadows[shadowStyle]) {
-			const img = new Image();
-			img.src = Paths.sprites + "/shadow/" + shadowStyle + ".png";
-			return img;
+		if (!this.knownShadows[shadowStyle]) {
+			return undefined;
 		}
-		return undefined;
+
+		const filename = Paths.sprites + "/shadow/" + shadowStyle + ".png";
+		return this.get(filename);
 	}
 
 	/**
@@ -561,15 +675,15 @@ export class SpriteStore {
 		// achievement assets
 		this.get(Paths.gui + "/banner_background.png");
 		for (const cat of ["commerce", "deathmatch", "experience", "fighting", "friend",
-				"interior_zone", "item", "obtain", "outside_zone", "production", "quest",
-				"quest_ados_items", "quest_kill_blordroughs", "quest_kirdneh_item",
-				"quest_mithrilbourgh_enemy_army", "quest_semos_monster", "special",
-				"underground_zone"]) {
+			"interior_zone", "item", "obtain", "outside_zone", "production", "quest",
+			"quest_ados_items", "quest_kill_blordroughs", "quest_kirdneh_item",
+			"quest_mithrilbourgh_enemy_army", "quest_semos_monster", "special",
+			"underground_zone"]) {
 			this.get(Paths.achievements + "/" + cat + ".png");
 		}
 		// weather
 		for (const weather of ["clouds", "fog", "fog_heavy", "rain", "rain_heavy",
-				"rain_light", "snow", "snow_heavy", "snow_light", "wave"]) {
+			"rain_light", "snow", "snow_heavy", "snow_light", "wave"]) {
 			this.get(Paths.weather + "/" + weather + ".png");
 		}
 	}
@@ -612,7 +726,7 @@ store.filter['trueColor'] = function(data: any, color: number) {
 		var resultHsl = [hslColor[0], hslColor[1], l];
 		var resultRgb = stendhal.data.sprites.filter.hsl2rgb(resultHsl);
 		data[i] = resultRgb[0];
-		data[i+1] = resultRgb[1];
-		data[i+2] = resultRgb[2];
+		data[i + 1] = resultRgb[1];
+		data[i + 2] = resultRgb[2];
 	}
 };

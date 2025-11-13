@@ -53,6 +53,7 @@ export class Client {
 	private initialized = false;
 	private errorCounter = 0;
 	private unloading = false;
+	private worldLoaded = false;
 	/** User's character name.
 	 *
 	 * NOTE: can we replace references to this with value now stored in `util.SessionManager`?
@@ -60,7 +61,7 @@ export class Client {
 	public username?: string;
 
 	/** ID for vetoing click indicator timeout (experimental setting not enabled/visible by default). */
-	private static click_indicator_id: number|undefined = undefined;
+	private static click_indicator_id: number | undefined = undefined;
 
 	/** Singleton instance. */
 	private static instance: Client;
@@ -198,7 +199,7 @@ export class Client {
 			ws = ws.replace(/t/, "s");
 			// disclaimer for using the test client on the main server
 			Chat.log("warning", "OSTRZEŻENIE: Łączysz się z serwerem przy użyciu deweloperskiej wersji testowego"
-					+ " klienta, która może zawierać błędy lub nie działać zgodnie z przeznaczeniem. Postępuj ostrożnie.");
+				+ " klienta, która może zawierać błędy lub nie działać zgodnie z przeznaczeniem. Postępuj ostrożnie.");
 		}
 		marauroa.clientFramework.connect(null, null, ws);
 
@@ -223,13 +224,13 @@ export class Client {
 		console.log("Jeśli jesteś deweloperem i ciekawi cię PolanieOnLine, zajrzyj na https://s1.polanieonline.eu/dla-projektantow.html, aby pobrać kod źródłowy. Może nawet dodasz nową funkcję lub naprawisz błąd! ");
 		console.log(" ");
 		console.log(" ");
-		window["eval"] = function() {};
+		window["eval"] = function() { };
 	}
 
 	/**
 	 * Reports errors emitted by web client to server.
 	 */
-	onError(error: ErrorEvent): boolean|undefined {
+	onError(error: ErrorEvent): boolean | undefined {
 		this.errorCounter++;
 		if (this.errorCounter > 5) {
 			console.log("Zbyt wiele błędów, raportowanie zatrzymane.");
@@ -255,6 +256,27 @@ export class Client {
 			// ignore
 		}
 		return true;
+	}
+
+	/**
+	 * Registers Marauroa event handlers.
+	 */
+	private queueNetworkWork(task: () => void) {
+		if (typeof task !== "function") {
+			return;
+		}
+		try {
+			const viewport = stendhal && stendhal.ui ? stendhal.ui.viewport : undefined;
+			if (viewport && typeof viewport.queueNetworkTask === "function") {
+				viewport.queueNetworkTask(task);
+				return;
+			}
+			task();
+		} catch (error) {
+			if (typeof console !== "undefined" && console.error) {
+				console.error("Failed to queue network work", error);
+			}
+		}
 	}
 
 	/**
@@ -301,7 +323,7 @@ export class Client {
 			window.location.reload();
 		};
 
-		marauroa.clientFramework.onAvailableCharacterDetails = function(characters: {[key: string]: RPObject}) {
+		marauroa.clientFramework.onAvailableCharacterDetails = function(characters: { [key: string]: RPObject }) {
 			SingletonFloatingWindow.closeAll();
 			if (!Object.keys(characters).length && this.username) {
 				marauroa.clientFramework.createCharacter(this.username, {});
@@ -328,53 +350,68 @@ export class Client {
 
 		marauroa.clientFramework.onTransferREQ = function(items: any) {
 			for (var i in items) {
-				if (typeof(items[i]["name"]) == "undefined") {
+				if (typeof (items[i]["name"]) == "undefined") {
 					continue;
 				}
 				items[i]["ack"] = true;
 			}
 		};
 
-		marauroa.clientFramework.onTransfer = function(items: any) {
-			var data = {} as any;
-			var zoneName = ""
-			for (var i in items) {
-				var name = items[i]["name"];
-				zoneName = name.substring(0, name.indexOf("."));
-				name = name.substring(name.indexOf(".") + 1);
-				data[name] = items[i]["data"];
-				if (name === "data_map") {
-					this.onDataMap(items[i]["data"]);
+		marauroa.clientFramework.onTransfer = (items: any) => {
+			this.queueNetworkWork(() => {
+				const data: Record<string, any> = {};
+				let zoneName = "";
+				for (const key in items) {
+					const entry = items[key];
+					if (!entry) {
+						continue;
+					}
+					let name = entry["name"];
+					if (typeof name !== "string") {
+						continue;
+					}
+					const dotIndex = name.indexOf(".");
+					if (dotIndex === -1) {
+						continue;
+					}
+					zoneName = name.substring(0, dotIndex);
+					name = name.substring(dotIndex + 1);
+					data[name] = entry["data"];
+					if (name === "data_map") {
+						this.onDataMap(entry["data"]);
+					}
 				}
-			}
-			stendhal.data.map.onTransfer(zoneName, data);
+				stendhal.data.map.onTransfer(zoneName, data);
+			});
 		};
 
 		// update user interface on perceptions
 		if (document.getElementById("viewport")) {
 			// override perception listener
 			marauroa.perceptionListener = new PerceptionListener(marauroa.perceptionListener);
-			marauroa.perceptionListener.onPerceptionEnd = function(_type: Int8Array, _timestamp: number) {
-				stendhal.zone.sortEntities();
-				(ui.get(UIComponentEnum.MiniMap) as MiniMapComponent).draw();
-				(ui.get(UIComponentEnum.BuddyList) as BuddyListComponent).update();
-				stendhal.ui.equip.update();
-				(ui.get(UIComponentEnum.PlayerEquipment) as PlayerEquipmentComponent).update();
-				if (!this.loaded) {
-					this.loaded = true;
-					// delay visibile change of client a little to allow for initialisation in the background for a smoother experience
-					window.setTimeout(function() {
-						let body = document.getElementById("body")!;
-						body.style.cursor = "auto";
-						document.getElementById("client")!.style.display = "flex";
-						document.getElementById("loginpopup")!.style.display = "none";
+			marauroa.perceptionListener.onPerceptionEnd = (_type: Int8Array, _timestamp: number) => {
+				this.queueNetworkWork(() => {
+					stendhal.zone.sortEntities();
+					(ui.get(UIComponentEnum.MiniMap) as MiniMapComponent).draw();
+					(ui.get(UIComponentEnum.BuddyList) as BuddyListComponent).update();
+					stendhal.ui.equip.update();
+					(ui.get(UIComponentEnum.PlayerEquipment) as PlayerEquipmentComponent).update();
+					if (!this.worldLoaded) {
+						this.worldLoaded = true;
+						// delay visible change of client a little to allow for initialization in the background for a smoother experience
+						window.setTimeout(() => {
+							const body = document.getElementById("body")!;
+							body.style.cursor = "auto";
+							document.getElementById("client")!.style.display = "flex";
+							document.getElementById("loginpopup")!.style.display = "none";
 
-						// initialize observer after UI is ready
-						singletons.getUIUpdateObserver().init();
-						ui.onDisplayReady();
-					}, 300);
-				}
-			}
+							// initialize observer after UI is ready
+							singletons.getUIUpdateObserver().init();
+							ui.onDisplayReady();
+						}, 300);
+					}
+				});
+			};
 		}
 	}
 
@@ -471,7 +508,7 @@ export class Client {
 	 *   Information about map.
 	 */
 	onDataMap(data: any) {
-		var zoneinfo = {} as {[key: string]: string};
+		var zoneinfo = {} as { [key: string]: string };
 		var deserializer = marauroa.Deserializer.fromBase64(data);
 		deserializer.readAttributes(zoneinfo);
 		(ui.get(UIComponentEnum.ZoneInfo) as ZoneInfoComponent).zoneChange(zoneinfo);
@@ -479,7 +516,7 @@ export class Client {
 		// global zone music
 		const musicVolume = parseFloat(zoneinfo["music_volume"]);
 		stendhal.sound.playSingleGlobalizedMusic(zoneinfo["music"],
-				!Number.isNaN(musicVolume) ? musicVolume : 1.0);
+			!Number.isNaN(musicVolume) ? musicVolume : 1.0);
 
 		// parallax background
 		if (stendhal.config.getBoolean("effect.parallax")) {
@@ -500,7 +537,7 @@ export class Client {
 			stendhal.ui.gamewindow.HSLFilter = hsl.toString();
 			// deprecated
 			stendhal.ui.gamewindow.filter = "hue-rotate(" + hsl.H + "deg) saturate(" + hsl.S
-					+ ") brightness(" + hsl.L + ")";
+				+ ") brightness(" + hsl.L + ")";
 		} else {
 			stendhal.ui.gamewindow.HSLFilter = undefined;
 			stendhal.ui.gamewindow.filter = undefined;

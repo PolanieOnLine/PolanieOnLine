@@ -43,13 +43,15 @@ export class NPC extends RPEntity {
 		}
 	}
 
-	override drawTop(ctx: CanvasRenderingContext2D) {
-		var localX = this["_x"] * 32;
-		var localY = this["_y"] * 32;
-		if (typeof(this["no_hpbar"]) == "undefined") {
+	override drawTop(ctx: CanvasRenderingContext2D, _tileX?: number, _tileY?: number) {
+		const tileX = this.getRenderTileX();
+		const tileY = this.getRenderTileY();
+		var localX = tileX * 32;
+		var localY = tileY * 32;
+		if (typeof (this["no_hpbar"]) == "undefined") {
 			this.drawHealthBar(ctx, localX, localY + this.statusBarYOffset);
 		}
-		if (typeof(this["unnamed"]) == "undefined") {
+		if (typeof (this["unnamed"]) == "undefined") {
 			this.drawTitle(ctx, localX, localY + this.statusBarYOffset);
 		}
 	}

@@ -27,9 +27,9 @@ export class Item extends Entity {
 
 	// animation
 	private frameTimeStamp = 0;
-	private animated: boolean|null = null;
-	private xFrames: number|null = null;
-	private yFrames: number|null = null;
+	private animated: boolean | null = null;
+	private xFrames: number | null = null;
+	private yFrames: number | null = null;
 
 	constructor() {
 		super();
@@ -48,7 +48,7 @@ export class Item extends Entity {
 		super.buildActions(list);
 
 		for (const mi of ItemMap.getActions(this)) {
-			if (typeof(mi.index) === "number") {
+			if (typeof (mi.index) === "number") {
 				list.splice(mi.index, 0, mi);
 			} else {
 				list.push(mi);
@@ -80,11 +80,13 @@ export class Item extends Entity {
 		}
 	}
 
-	override draw(ctx: CanvasRenderingContext2D) {
+	override draw(ctx: CanvasRenderingContext2D, _tileXOverride?: number, _tileYOverride?: number) {
 		this.sprite.offsetY = (this["state"] || 0) * 32
 		this.stepAnimation();
 
-		this.drawAt(ctx, this["x"] * 32, this["y"] * 32);
+		const tileX = this.getRenderTileX();
+		const tileY = this.getRenderTileY();
+		this.drawAt(ctx, tileX * 32, tileY * 32);
 	}
 
 	drawAt(ctx: CanvasRenderingContext2D, x: number, y: number) {

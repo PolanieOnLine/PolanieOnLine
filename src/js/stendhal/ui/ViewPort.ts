@@ -30,10 +30,13 @@ import { EmojiSprite } from "../sprite/EmojiSprite";
 import { NotificationBubble } from "../sprite/NotificationBubble";
 import { SpeechBubble } from "../sprite/SpeechBubble";
 import { TextBubble } from "../sprite/TextBubble";
+import { Entity } from "../entity/Entity";
+import { RPEntity } from "../entity/RPEntity";
 
 import { Point } from "../util/Point";
 import { GameLoop } from "../util/GameLoop";
 import { SpringVector, Vector2 } from "../util/SpringVector";
+import { TilemapRenderer } from "./render/TilemapRenderer";
 
 
 /**
@@ -49,12 +52,19 @@ export class ViewPort {
 	private freeze = false;
 
 	private loop?: GameLoop;
+	private requestedFpsLimit?: number;
 	private readonly cameraSpring = new SpringVector();
-	private cameraTarget: Vector2 = {x: 0, y: 0};
+	private cameraTarget: Vector2 = { x: 0, y: 0 };
 	private cameraInitialized = false;
-	private readonly renderOffset: Vector2 = {x: 0, y: 0};
-	private readonly lastWorldSize: Vector2 = {x: 0, y: 0};
-	private readonly entityStates = new WeakMap<any, {prevX: number; prevY: number; currX: number; currY: number}>();
+	private readonly renderOffset: Vector2 = { x: 0, y: 0 };
+	private readonly lastWorldSize: Vector2 = { x: 0, y: 0 };
+	private entityRefs: Entity[] = [];
+	private entityCount = 0;
+	private entityPrevPositions = new Float32Array(0);
+	private entityCurrPositions = new Float32Array(0);
+	private entityLastPositions = new Float32Array(0);
+	private entityLastCount = 0;
+	private entityIndexLookup: WeakMap<Entity, number> = new WeakMap();
 	private fpsLabel?: HTMLElement;
 
 	/** Drawing context. */
@@ -66,13 +76,21 @@ export class ViewPort {
 	private drawingError = false;
 
 	/** Active speech bubbles to draw. */
-	private textSprites: SpeechBubble[] = [];
+	private textSprites: (SpeechBubble | null)[] = [];
+	private textSpriteFree: number[] = [];
+	private speechBubblePool: SpeechBubble[] = [];
+	private readonly speechScratch: SpeechBubble[] = [];
 	/** Active notification bubbles/achievement banners to draw. */
-	private notifSprites: TextBubble[] = [];
+	private notifSprites: (TextBubble | null)[] = [];
+	private notifSpriteFree: number[] = [];
+	private notifBubblePool: NotificationBubble[] = [];
+	private achievementPool: AchievementBanner[] = [];
 	/** Active emoji sprites to draw. */
 	private emojiSprites: EmojiSprite[] = [];
 	/** Handles drawing weather in viewport. */
-	private weatherRenderer = singletons.getWeatherRenderer();
+	private readonly weatherRenderer = singletons.getWeatherRenderer();
+	/** Batched tilemap renderer. */
+	private readonly tileRenderer = new TilemapRenderer();
 	/** Coloring method of current zone. */
 	private filter?: string; // deprecated, use `HSLFilter`
 	/** Coloring filter of current zone. */
@@ -81,7 +99,7 @@ export class ViewPort {
 	private blendMethod = ""; // FIXME: unused
 
 	/** Styles to be applied when chat panel is not floating. */
-	private readonly initialStyle: {[prop: string]: string};
+	private readonly initialStyle: { [prop: string]: string };
 	private readonly baseRenderWidth: number;
 	private readonly baseRenderHeight: number;
 	private readonly baseAspectRatio: number;
@@ -92,6 +110,7 @@ export class ViewPort {
 
 	/** Singleton instance. */
 	private static instance: ViewPort;
+	private static readonly FPS_LIMITS = [60, 90, 120, 144];
 
 	/**
 	 * Retrieves singleton instance.
@@ -124,7 +143,7 @@ export class ViewPort {
 		this.handleWindowResize = () => this.updateCanvasBounds();
 		this.observeParent(element);
 		this.updateCanvasBounds();
-		window.addEventListener("resize", this.handleWindowResize, {passive: true});
+		window.addEventListener("resize", this.handleWindowResize, { passive: true });
 
 		this.fpsLabel = this.createFpsLabel(element);
 	}
@@ -172,10 +191,10 @@ export class ViewPort {
 		if (heightFromWidth > minHeight) {
 			minHeight = heightFromWidth;
 		}
-		return {x: minWidth, y: minHeight};
+		return { x: minWidth, y: minHeight };
 	}
 
-	private parseCssLength(value: string|null|undefined): number|null {
+	private parseCssLength(value: string | null | undefined): number | null {
 		if (!value) {
 			return null;
 		}
@@ -296,7 +315,7 @@ export class ViewPort {
 		renderHeight = Math.max(1, renderHeight);
 
 		if (canvas.width === renderWidth && canvas.height === renderHeight
-				&& canvas.style.width === `${displayWidth}px` && canvas.style.height === `${displayHeight}px`) {
+			&& canvas.style.width === `${displayWidth}px` && canvas.style.height === `${displayHeight}px`) {
 			return;
 		}
 
@@ -310,7 +329,7 @@ export class ViewPort {
 		this.updateCanvasBounds();
 	}
 
-	private assignInitialStyleFrom(value: string|null|undefined, prop: string) {
+	private assignInitialStyleFrom(value: string | null | undefined, prop: string) {
 		if (!value || this.initialStyle[prop]) {
 			return;
 		}
@@ -351,20 +370,38 @@ export class ViewPort {
 	 */
 	draw() {
 		if (!this.loop) {
-			const prefer144 = stendhal.config.getBoolean("loop.prefer144hz");
 			const configuredLimit = stendhal.config.getFloat("loop.fps.limit");
-			const fpsLimit = this.normalizeFpsLimit(configuredLimit);
+			const initialLimit = this.requestedFpsLimit ?? this.normalizeFpsLimit(configuredLimit);
 			this.loop = new GameLoop(
 				(dt) => this.update(dt),
 				(alpha) => this.render(alpha),
 				{
-					prefer144hz: prefer144,
-					fpsLimit,
-					onFpsSample: (fps) => this.updateFpsCounter(fps)
+					fpsLimit: initialLimit,
+					onFpsSample: (fps) => this.updateFpsCounter(fps),
+					networkTaskBudget: 6,
+					networkTimeBudgetMs: 5
 				}
 			);
+			this.requestedFpsLimit = initialLimit;
 		}
 		this.loop.start();
+	}
+
+	queueNetworkTask(task: () => void) {
+		if (typeof task !== "function") {
+			return;
+		}
+		try {
+			if (this.loop && this.loop.isRunning()) {
+				this.loop.enqueueNetworkTask(task);
+				return;
+			}
+			task();
+		} catch (error) {
+			if (typeof console !== "undefined" && console.error) {
+				console.error("ViewPort network task failed", error);
+			}
+		}
 	}
 
 	private update(dtMs: number) {
@@ -405,23 +442,39 @@ export class ViewPort {
 		const tileOffsetX = Math.floor(snappedX / this.targetTileWidth);
 		const tileOffsetY = Math.floor(snappedY / this.targetTileHeight);
 
-		stendhal.data.map.parallax.draw(this.ctx, this.offsetX, this.offsetY);
-		stendhal.data.map.strategy.render(
-			this.ctx.canvas,
-			this,
+		this.tileRenderer.configure(stendhal.data.map, this.targetTileWidth, this.targetTileHeight);
+		const parallaxImage = stendhal.data.map.parallax.getImageElement();
+		this.tileRenderer.updateParallax(parallaxImage);
+		this.tileRenderer.prepareFrame(snappedX, snappedY, this.ctx.canvas.width, this.ctx.canvas.height);
+
+		this.tileRenderer.drawBaseLayer(this.ctx, snappedX, snappedY, this.ctx.canvas.width, this.ctx.canvas.height);
+
+		const blendComposite = this.getBlendCompositeOperation();
+		this.tileRenderer.drawBlendLayer(
+			"blend_ground",
+			this.ctx,
 			tileOffsetX,
 			tileOffsetY,
-			this.targetTileWidth,
-			this.targetTileHeight,
-			alpha
+			blendComposite ? { composite: blendComposite } : undefined
+		);
+
+		this.drawEntities(alpha);
+
+		this.tileRenderer.drawRoofLayer(this.ctx, snappedX, snappedY, this.ctx.canvas.width, this.ctx.canvas.height);
+		this.tileRenderer.drawBlendLayer(
+			"blend_roof",
+			this.ctx,
+			tileOffsetX,
+			tileOffsetY,
+			blendComposite ? { composite: blendComposite } : undefined
 		);
 
 		this.weatherRenderer.draw(this.ctx);
 		this.applyHSLFilter();
 		this.drawEntitiesTop(alpha);
 		this.drawEmojiSprites();
-		this.drawTextSprites();
-		this.drawTextSprites(this.notifSprites);
+		this.drawSpeechBubbles();
+		this.drawNotificationSprites();
 
 		stendhal.ui.equip.update();
 		(ui.get(UIComponentEnum.PlayerEquipment) as PlayerEquipmentComponent).update();
@@ -434,9 +487,9 @@ export class ViewPort {
 			return false;
 		}
 		if (marauroa.currentZoneName !== stendhal.data.map.currentZoneName
-				&& stendhal.data.map.currentZoneName !== "int_vault"
-				&& stendhal.data.map.currentZoneName !== "int_adventure_island"
-				&& stendhal.data.map.currentZoneName !== "tutorial_island") {
+			&& stendhal.data.map.currentZoneName !== "int_vault"
+			&& stendhal.data.map.currentZoneName !== "int_adventure_island"
+			&& stendhal.data.map.currentZoneName !== "tutorial_island") {
 			return false;
 		}
 		return true;
@@ -473,8 +526,8 @@ export class ViewPort {
 			return this.cameraSpring.getPosition();
 		}
 
-		const playerX = (typeof(marauroa.me["_x"]) === "number") ? marauroa.me["_x"] : marauroa.me["x"];
-		const playerY = (typeof(marauroa.me["_y"]) === "number") ? marauroa.me["_y"] : marauroa.me["y"];
+		const playerX = (typeof (marauroa.me["_x"]) === "number") ? marauroa.me["_x"] : marauroa.me["x"];
+		const playerY = (typeof (marauroa.me["_y"]) === "number") ? marauroa.me["_y"] : marauroa.me["y"];
 
 		let centerX = playerX * this.targetTileWidth + this.targetTileWidth / 2 - canvas.width / 2;
 		let centerY = playerY * this.targetTileHeight + this.targetTileHeight / 2 - canvas.height / 2;
@@ -488,57 +541,159 @@ export class ViewPort {
 		centerY = Math.min(centerY, worldHeight - canvas.height);
 		centerY = Math.max(centerY, 0);
 
-		return {x: centerX, y: centerY};
+		return { x: centerX, y: centerY };
 	}
 
-	private updateEntities(dtMs: number) {
-		for (const key in stendhal.zone.entities) {
-			const entity = stendhal.zone.entities[key];
-			if (!entity) {
-				continue;
+	private ensureEntityCapacity(expectedEntities: number) {
+		const required = Math.max(expectedEntities, this.entityCount, this.entityLastCount) * 2;
+		if (required <= this.entityPrevPositions.length) {
+			return;
+		}
+		let newSize = this.entityPrevPositions.length;
+		if (newSize === 0) {
+			newSize = 32;
+		}
+		while (newSize < required) {
+			newSize *= 2;
+		}
+		const newPrev = new Float32Array(newSize);
+		if (this.entityCount > 0) {
+			newPrev.set(this.entityPrevPositions.subarray(0, this.entityCount * 2));
+		}
+		const newCurr = new Float32Array(newSize);
+		if (this.entityCount > 0) {
+			newCurr.set(this.entityCurrPositions.subarray(0, this.entityCount * 2));
+		}
+		const newLast = new Float32Array(newSize);
+		if (this.entityLastCount > 0) {
+			newLast.set(this.entityLastPositions.subarray(0, this.entityLastCount * 2));
+		}
+		this.entityPrevPositions = newPrev;
+		this.entityCurrPositions = newCurr;
+		this.entityLastPositions = newLast;
+	}
+
+	private swapEntityHistoryBuffers() {
+		const temp = this.entityLastPositions;
+		this.entityLastPositions = this.entityCurrPositions;
+		this.entityCurrPositions = temp;
+		this.entityLastCount = this.entityCount;
+	}
+
+	private resolveEntityTileX(entity: any): number {
+		const override = entity["_x"];
+		if (typeof override === "number" && Number.isFinite(override)) {
+			return override;
+		}
+		const base = entity["x"];
+		if (typeof base === "number" && Number.isFinite(base)) {
+			return base;
+		}
+		return 0;
+	}
+
+	private resolveEntityTileY(entity: any): number {
+		const override = entity["_y"];
+		if (typeof override === "number" && Number.isFinite(override)) {
+			return override;
+		}
+		const base = entity["y"];
+		if (typeof base === "number" && Number.isFinite(base)) {
+			return base;
+		}
+		return 0;
+	}
+
+	private withEntityRenderPosition(entity: any, tileX: number, tileY: number, drawFn: () => void) {
+		if (typeof entity.pushRenderOverride === "function" && typeof entity.popRenderOverride === "function") {
+			entity.pushRenderOverride(tileX, tileY);
+			try {
+				drawFn();
+			} finally {
+				entity.popRenderOverride();
 			}
-
-			let state = this.entityStates.get(entity);
-			if (!state) {
-				const pos = this.getEntityPosition(entity);
-				state = {prevX: pos.x, prevY: pos.y, currX: pos.x, currY: pos.y};
-			}
-
-			state.prevX = state.currX;
-			state.prevY = state.currY;
-
-			entity.updatePosition(dtMs);
-
-			const currentPos = this.getEntityPosition(entity);
-			state.currX = currentPos.x;
-			state.currY = currentPos.y;
-			this.entityStates.set(entity, state);
+		} else {
+			drawFn();
 		}
 	}
 
-	private getEntityPosition(entity: any): Vector2 {
-		const x = (typeof(entity["_x"]) === "number") ? entity["_x"] : entity["x"];
-		const y = (typeof(entity["_y"]) === "number") ? entity["_y"] : entity["y"];
-		return {x: x || 0, y: y || 0};
+	private updateEntities(dtMs: number) {
+		const zone = stendhal.zone;
+		const entities: Entity[] = (zone && Array.isArray(zone.entities)) ? zone.entities as Entity[] : [];
+
+		if (!entities.length) {
+			this.entityCount = 0;
+			this.entityRefs.length = 0;
+			this.entityIndexLookup = new WeakMap();
+			this.entityLastCount = 0;
+			return;
+		}
+
+		this.ensureEntityCapacity(entities.length);
+		this.swapEntityHistoryBuffers();
+
+		const lastPositions = this.entityLastPositions;
+		const currPositions = this.entityCurrPositions;
+		const prevPositions = this.entityPrevPositions;
+		const previousIndexLookup = this.entityIndexLookup;
+		const nextIndexLookup = new WeakMap<Entity, number>();
+
+		let count = 0;
+		for (let i = 0; i < entities.length; i++) {
+			const entity = entities[i];
+			if (!entity) {
+				continue;
+			}
+			const base = count * 2;
+			let prevX: number;
+			let prevY: number;
+			const prevIndex = previousIndexLookup.get(entity);
+			if (typeof prevIndex === "number" && prevIndex >= 0 && prevIndex < this.entityLastCount) {
+				const prevBase = prevIndex * 2;
+				prevX = lastPositions[prevBase];
+				prevY = lastPositions[prevBase + 1];
+			} else {
+				prevX = this.resolveEntityTileX(entity);
+				prevY = this.resolveEntityTileY(entity);
+			}
+
+			entity.updatePosition(dtMs);
+
+			const currX = this.resolveEntityTileX(entity);
+			const currY = this.resolveEntityTileY(entity);
+
+			prevPositions[base] = prevX;
+			prevPositions[base + 1] = prevY;
+			currPositions[base] = currX;
+			currPositions[base + 1] = currY;
+			this.entityRefs[count] = entity;
+			nextIndexLookup.set(entity, count);
+			count++;
+		}
+
+		this.entityCount = count;
+		this.entityRefs.length = count;
+		this.entityIndexLookup = nextIndexLookup;
 	}
 
 	private advanceMiniMap(dtMs: number) {
 		const minimap = ui.get(UIComponentEnum.MiniMap) as MiniMapComponent | undefined;
-		if (minimap && typeof(minimap.advance) === "function") {
+		if (minimap && typeof (minimap.advance) === "function") {
 			minimap.advance(dtMs, this.cameraSpring.getPosition(), this.cameraTarget);
 		}
 	}
 
 	private renderMiniMap(alpha: number) {
 		const minimap = ui.get(UIComponentEnum.MiniMap) as MiniMapComponent | undefined;
-		if (minimap && typeof(minimap.renderFrame) === "function") {
+		if (minimap && typeof (minimap.renderFrame) === "function") {
 			minimap.renderFrame(alpha);
 		}
 	}
 
 	private updateFpsCounter(fps: number) {
 		if (this.fpsLabel) {
-			this.fpsLabel.textContent = fps.toFixed(0) + " fps";
+			const rounded = Math.max(0, Math.round(fps));
+			this.fpsLabel.textContent = (rounded > 0 ? rounded.toString() : "--") + " fps";
 		}
 	}
 
@@ -549,16 +704,28 @@ export class ViewPort {
 
 	public setFpsLimit(limit?: number) {
 		const normalized = this.normalizeFpsLimit(limit);
+		this.requestedFpsLimit = normalized;
 		if (this.loop) {
 			this.loop.setFpsLimit(normalized);
 		}
 	}
 
-	private normalizeFpsLimit(limit?: number): number|undefined {
-		if (typeof(limit) === "number" && Number.isFinite(limit) && limit > 0) {
-			return limit;
+	private normalizeFpsLimit(limit?: number): number | undefined {
+		if (typeof (limit) !== "number" || !Number.isFinite(limit) || limit <= 0) {
+			return undefined;
 		}
-		return undefined;
+		const rounded = Math.round(limit);
+		let closest = ViewPort.FPS_LIMITS[0];
+		let bestDelta = Math.abs(rounded - closest);
+		for (let i = 1; i < ViewPort.FPS_LIMITS.length; i++) {
+			const candidate = ViewPort.FPS_LIMITS[i];
+			const delta = Math.abs(rounded - candidate);
+			if (delta < bestDelta) {
+				bestDelta = delta;
+				closest = candidate;
+			}
+		}
+		return closest;
 	}
 
 	/**
@@ -610,7 +777,7 @@ export class ViewPort {
 	 *   Color method.
 	 */
 	setColorMethod(method: string) {
-		switch(method) {
+		switch (method) {
 			case "softlight":
 				method = "soft-light";
 				break;
@@ -654,16 +821,36 @@ export class ViewPort {
 		this.blendMethod = method;
 	}
 
+	getBlendCompositeOperation(): GlobalCompositeOperation | undefined {
+		if (!this.blendMethod) {
+			return undefined;
+		}
+		return this.blendMethod as GlobalCompositeOperation;
+	}
+
 	/**
 	 * Draws overall entity sprites.
 	 */
 	drawEntities(alpha: number) {
-		for (const key in stendhal.zone.entities) {
-			const entity = stendhal.zone.entities[key];
-			if (!entity || typeof(entity.draw) === "undefined") {
+		const count = this.entityCount;
+		if (count === 0) {
+			return;
+		}
+		const prevPositions = this.entityPrevPositions;
+		const currPositions = this.entityCurrPositions;
+		for (let index = 0; index < count; index++) {
+			const entity = this.entityRefs[index];
+			if (!entity || typeof entity.draw !== "function") {
 				continue;
 			}
-			this.drawEntityInterpolated(entity, alpha, () => entity.draw(this.ctx));
+			const base = index * 2;
+			const prevX = prevPositions[base];
+			const prevY = prevPositions[base + 1];
+			const currX = currPositions[base];
+			const currY = currPositions[base + 1];
+			const renderX = prevX + (currX - prevX) * alpha;
+			const renderY = prevY + (currY - prevY) * alpha;
+			this.withEntityRenderPosition(entity, renderX, renderY, () => entity.draw(this.ctx, renderX, renderY));
 		}
 	}
 
@@ -671,69 +858,67 @@ export class ViewPort {
 	 * Draws titles & HP bars associated with entities.
 	 */
 	drawEntitiesTop(alpha: number) {
-		for (const key in stendhal.zone.entities) {
-			const entity = stendhal.zone.entities[key];
+		const count = this.entityCount;
+		if (count === 0) {
+			return;
+		}
+		const prevPositions = this.entityPrevPositions;
+		const currPositions = this.entityCurrPositions;
+		for (let index = 0; index < count; index++) {
+			const entity = this.entityRefs[index];
 			if (!entity) {
 				continue;
 			}
-			this.drawEntityInterpolated(entity, alpha, () => {
-				if (typeof(entity.setStatusBarOffset) !== "undefined") {
+			const base = index * 2;
+			const prevX = prevPositions[base];
+			const prevY = prevPositions[base + 1];
+			const currX = currPositions[base];
+			const currY = currPositions[base + 1];
+			const renderX = prevX + (currX - prevX) * alpha;
+			const renderY = prevY + (currY - prevY) * alpha;
+			this.withEntityRenderPosition(entity, renderX, renderY, () => {
+				if (typeof entity.setStatusBarOffset === "function") {
 					entity.setStatusBarOffset();
 				}
-				if (typeof(entity.drawTop) !== "undefined") {
-					entity.drawTop(this.ctx);
+				if (typeof entity.drawTop === "function") {
+					entity.drawTop(this.ctx, renderX, renderY);
 				}
 			});
 		}
 	}
 
-	private drawEntityInterpolated(entity: any, alpha: number, drawFn: () => void) {
-		const state = this.entityStates.get(entity);
-		if (!state) {
-			drawFn();
-			return;
-		}
-
-		const renderX = state.prevX + (state.currX - state.prevX) * alpha;
-		const renderY = state.prevY + (state.currY - state.prevY) * alpha;
-
-		const hadX = typeof(entity["_x"]) !== "undefined";
-		const hadY = typeof(entity["_y"]) !== "undefined";
-		const originalX = entity["_x"]; // may be undefined
-		const originalY = entity["_y"];
-
-		entity["_x"] = renderX;
-		entity["_y"] = renderY;
-		try {
-			drawFn();
-		} finally {
-			if (hadX) {
-				entity["_x"] = originalX;
-			} else {
-				delete entity["_x"];
+	private drawSpeechBubbles() {
+		for (let index = 0; index < this.textSprites.length; index++) {
+			const bubble = this.textSprites[index];
+			if (!bubble) {
+				continue;
 			}
-			if (hadY) {
-				entity["_y"] = originalY;
-			} else {
-				delete entity["_y"];
+			const remove = bubble.draw(this.ctx);
+			if (remove) {
+				bubble.onRemoved();
+				this.textSprites[index] = null;
+				this.textSpriteFree.push(index);
+				this.speechBubblePool.push(bubble);
 			}
 		}
 	}
 
-	/**
-	 * Draws active notifications or speech bubbles associated with characters, NPCs, & creatures.
-	 *
-	 * @param sgroup {sprite.TextBubble[]}
-	 *   Sprite group to drawn, either speech bubbles or notifications/achievements (default: speech bubbles).
-	 */
-	drawTextSprites(sgroup: TextBubble[]=this.textSprites) {
-		for (var i = 0; i < sgroup.length; i++) {
-			var sprite = sgroup[i];
-			var remove = sprite.draw(this.ctx);
+	private drawNotificationSprites() {
+		for (let index = 0; index < this.notifSprites.length; index++) {
+			const sprite = this.notifSprites[index];
+			if (!sprite) {
+				continue;
+			}
+			const remove = sprite.draw(this.ctx);
 			if (remove) {
-				sgroup.splice(i, 1);
 				sprite.onRemoved();
-				i--;
+				this.notifSprites[index] = null;
+				this.notifSpriteFree.push(index);
+				if (sprite instanceof NotificationBubble) {
+					this.notifBubblePool.push(sprite);
+				} else if (sprite instanceof AchievementBanner) {
+					this.achievementPool.push(sprite);
+				}
 			}
 		}
 	}
@@ -762,47 +947,76 @@ export class ViewPort {
 		}
 	}
 
+	private acquireSpeechBubble(): SpeechBubble {
+		return this.speechBubblePool.pop() || new SpeechBubble();
+	}
+
+	private activateSpeechBubble(bubble: SpeechBubble) {
+		const index = this.textSpriteFree.length > 0 ? this.textSpriteFree.pop()! : this.textSprites.length;
+		if (index === this.textSprites.length) {
+			this.textSprites.push(bubble);
+		} else {
+			this.textSprites[index] = bubble;
+		}
+		bubble.onAdded(this.ctx);
+	}
+
+	private collectActiveSpeechBubbles(): SpeechBubble[] {
+		const scratch = this.speechScratch;
+		scratch.length = 0;
+		for (const bubble of this.textSprites) {
+			if (bubble) {
+				scratch.push(bubble);
+			}
+		}
+		return scratch;
+	}
+
 	/**
 	 * Adds a speech bubble to viewport.
-	 *
-	 * @param sprite {sprite.SpeechBubble}
-	 *   Sprite definition.
 	 */
-	addTextSprite(sprite: SpeechBubble) {
-		this.textSprites.push(sprite);
+	showSpeechBubble(text: string, entity: RPEntity) {
+		const bubble = this.acquireSpeechBubble();
+		const siblings = this.collectActiveSpeechBubbles();
+		bubble.configure(text, entity, siblings);
+		this.speechScratch.length = 0;
+		this.activateSpeechBubble(bubble);
+	}
+
+	private acquireNotificationBubble(): NotificationBubble {
+		return this.notifBubblePool.pop() || new NotificationBubble();
+	}
+
+	private acquireAchievementBanner(): AchievementBanner {
+		return this.achievementPool.pop() || new AchievementBanner();
+	}
+
+	private activateNotificationSprite(sprite: TextBubble) {
+		const index = this.notifSpriteFree.length > 0 ? this.notifSpriteFree.pop()! : this.notifSprites.length;
+		if (index === this.notifSprites.length) {
+			this.notifSprites.push(sprite);
+		} else {
+			this.notifSprites[index] = sprite;
+		}
 		sprite.onAdded(this.ctx);
 	}
 
 	/**
 	 * Adds a notification bubble to viewport.
-	 *
-	 * @param mtype {string}
-	 *   Message type.
-	 * @param text {string}
-	 *   Text contents.
-	 * @param profile {string}
-	 *   Optional entity image filename to show as the speaker.
 	 */
 	addNotifSprite(mtype: string, text: string, profile?: string) {
-		const bubble = new NotificationBubble(mtype, text, profile);
-		this.notifSprites.push(bubble);
-		bubble.onAdded(this.ctx);
+		const bubble = this.acquireNotificationBubble();
+		bubble.configure(mtype, text, profile);
+		this.activateNotificationSprite(bubble);
 	}
 
 	/**
 	 * Adds an achievement banner to viewport.
-	 *
-	 * @param cat {string}
-	 *   Achievement categroy.
-	 * @param title {string}
-	 *   Achievement title.
-	 * @param desc {string}
-	 *   Achievement description.
 	 */
 	addAchievementNotif(cat: string, title: string, desc: string) {
-		const banner = new AchievementBanner(cat, title, desc);
-		this.notifSprites.push(banner);
-		banner.onAdded(this.ctx);
+		const banner = this.acquireAchievementBanner();
+		banner.configure(cat, title, desc);
+		this.activateNotificationSprite(banner);
 	}
 
 	/**
@@ -816,20 +1030,34 @@ export class ViewPort {
 	 *   Y coordinate to check for overlapping sprite.
 	 */
 	removeTextBubble(sprite: TextBubble, x: number, y: number) {
-		for (let idx = this.notifSprites.length-1; idx >= 0; idx--) {
+		for (let idx = this.notifSprites.length - 1; idx >= 0; idx--) {
 			const topSprite = this.notifSprites[idx];
-			if (topSprite == sprite || topSprite.clipsPoint(x, y)) {
-				this.notifSprites.splice(idx, 1);
+			if (!topSprite) {
+				continue;
+			}
+			if (topSprite === sprite || topSprite.clipsPoint(x, y)) {
 				topSprite.onRemoved();
+				this.notifSprites[idx] = null;
+				this.notifSpriteFree.push(idx);
+				if (topSprite instanceof NotificationBubble) {
+					this.notifBubblePool.push(topSprite);
+				} else if (topSprite instanceof AchievementBanner) {
+					this.achievementPool.push(topSprite);
+				}
 				return;
 			}
 		}
 
-		for (let idx = this.textSprites.length-1; idx >= 0; idx--) {
-			const topSprite = this.textSprites[idx];
-			if (topSprite == sprite || topSprite.clipsPoint(x, y)) {
-				this.textSprites.splice(idx, 1);
-				topSprite.onRemoved();
+		for (let idx = this.textSprites.length - 1; idx >= 0; idx--) {
+			const bubble = this.textSprites[idx];
+			if (!bubble) {
+				continue;
+			}
+			if (bubble === sprite || bubble.clipsPoint(x, y)) {
+				bubble.onRemoved();
+				this.textSprites[idx] = null;
+				this.textSpriteFree.push(idx);
+				this.speechBubblePool.push(bubble);
 				return;
 			}
 		}
@@ -847,12 +1075,12 @@ export class ViewPort {
 	 */
 	textBubbleAt(x: number, y: number): boolean {
 		for (const sprite of this.notifSprites) {
-			if (sprite.clipsPoint(x, y)) {
+			if (sprite && sprite.clipsPoint(x, y)) {
 				return true;
 			}
 		}
 		for (const sprite of this.textSprites) {
-			if (sprite.clipsPoint(x, y)) {
+			if (sprite && sprite.clipsPoint(x, y)) {
 				return true;
 			}
 		}
@@ -864,14 +1092,19 @@ export class ViewPort {
 	 */
 	onExitZone() {
 		// clear speech bubbles & emojis so they don't appear on the new map
-		for (const sgroup of [this.textSprites, this.emojiSprites]) {
-			for (let idx = sgroup.length-1; idx >= 0; idx--) {
-				const sprite = sgroup[idx];
-				sgroup.splice(idx, 1);
-				if (sprite instanceof SpeechBubble) {
-					sprite.onRemoved();
-				}
+		for (let idx = 0; idx < this.textSprites.length; idx++) {
+			const bubble = this.textSprites[idx];
+			if (!bubble) {
+				continue;
 			}
+			bubble.onRemoved();
+			this.textSprites[idx] = null;
+			this.textSpriteFree.push(idx);
+			this.speechBubblePool.push(bubble);
+		}
+
+		for (let idx = this.emojiSprites.length - 1; idx >= 0; idx--) {
+			this.emojiSprites.splice(idx, 1);
 		}
 	}
 
@@ -885,7 +1118,7 @@ export class ViewPort {
 
 		const mHandle: any = {};
 
-		mHandle._onMouseDown = function(e: MouseEvent|TouchEvent) {
+		mHandle._onMouseDown = function(e: MouseEvent | TouchEvent) {
 			var pos = stendhal.ui.html.extractPosition(e);
 			if (stendhal.ui.touch.isTouchEvent(e)) {
 				if (stendhal.ui.touch.holding()) {
@@ -905,7 +1138,7 @@ export class ViewPort {
 			var y = pos.canvasRelativeY + stendhal.ui.gamewindow.offsetY;
 
 			// override ground/entity action if there is a text bubble
-			if (stendhal.ui.gamewindow.textBubbleAt(x, y+15)) {
+			if (stendhal.ui.gamewindow.textBubbleAt(x, y + 15)) {
 				return;
 			}
 
@@ -933,32 +1166,54 @@ export class ViewPort {
 			}
 		}
 
-		mHandle.onMouseUp = function(e: MouseEvent|TouchEvent) {
+		mHandle.onMouseUp = function(e: MouseEvent | TouchEvent) {
 			const is_touch = stendhal.ui.touch.isTouchEvent(e);
+			const viewport = stendhal.ui.gamewindow as ViewPort;
 			if (is_touch) {
-				stendhal.ui.touch.onTouchEnd(e);
+				stendhal.ui.touch.onTouchEnd(e as TouchEvent);
 			}
 			var pos = stendhal.ui.html.extractPosition(e);
 			const long_touch = is_touch && stendhal.ui.touch.isLongTouch(e);
+			let isDoubleTap = false;
+			let handledTeleclick = false;
+			if (is_touch && !long_touch) {
+				isDoubleTap = stendhal.ui.touch.registerTap(pos.pageX, pos.pageY, pos.target, viewport.getElement());
+				if (isDoubleTap) {
+					handledTeleclick = viewport.handleTeleclickDoubleTap(pos);
+				}
+			}
+			if (handledTeleclick) {
+				mHandle.cleanUp(pos);
+				if (pos.target instanceof HTMLElement) {
+					pos.target.focus();
+				}
+				e.preventDefault();
+				return;
+			}
 			if ((e instanceof MouseEvent && mHandle.isRightClick(e)) || long_touch) {
 				if (entity != stendhal.zone.ground) {
 					const append: any[] = [];
 					if (long_touch) {
-					const viewport = stendhal.ui.gamewindow as ViewPort;
-					if (viewport.canHoldEntityForTouch(entity)) {
-						append.push({
-							title: "Przytrzymaj (podziel stos)",
-							action: () => {
-								viewport.tryHoldEntityForTouch(entity, pos.pageX, pos.pageY);
-							}
-						});
+						if (viewport.canHoldEntityForTouch(entity)) {
+							append.push({
+								title: "Przytrzymaj (podziel stos)",
+								action: () => {
+									viewport.tryHoldEntityForTouch(entity, pos.pageX, pos.pageY);
+								}
+							});
+						}
 					}
-				}
-				stendhal.ui.actionContextMenu.set(ui.createSingletonFloatingWindow("Czynności",
+					stendhal.ui.actionContextMenu.set(ui.createSingletonFloatingWindow("Czynności",
 						new ActionContextMenu(entity, append), pos.pageX - 50, pos.pageY - 5));
 				}
 			} else {
-				entity.onclick(pos.canvasRelativeX, pos.canvasRelativeY);
+				const sendDoubleClick = isDoubleTap && entity === stendhal.zone.ground
+					&& viewport.isTeleclickEnabled();
+				if (sendDoubleClick) {
+					entity.onclick(pos.canvasRelativeX, pos.canvasRelativeY, true);
+				} else {
+					entity.onclick(pos.canvasRelativeX, pos.canvasRelativeY);
+				}
 			}
 			mHandle.cleanUp(pos);
 			pos.target.focus();
@@ -1015,7 +1270,7 @@ export class ViewPort {
 			const currentDir = parseInt(marauroa.me["dir"], 10);
 			let newDir = null;
 
-			if (typeof(currentDir) === "number") {
+			if (typeof (currentDir) === "number") {
 				if (e.deltaY >= 100) {
 					// clockwise
 					newDir = currentDir + 1;
@@ -1032,7 +1287,7 @@ export class ViewPort {
 			}
 
 			if (newDir != null) {
-				marauroa.clientFramework.sendAction({"type": "face", "dir": ""+newDir});
+				marauroa.clientFramework.sendAction({ "type": "face", "dir": "" + newDir });
 			}
 		}
 	}
@@ -1044,7 +1299,7 @@ export class ViewPort {
 		var pos = stendhal.ui.html.extractPosition(e);
 		let draggedEntity;
 		for (const obj of stendhal.zone.getEntitiesAt(pos.canvasRelativeX + stendhal.ui.gamewindow.offsetX,
-				pos.canvasRelativeY + stendhal.ui.gamewindow.offsetY)) {
+			pos.canvasRelativeY + stendhal.ui.gamewindow.offsetY)) {
 			if (obj.isDraggable()) {
 				draggedEntity = obj;
 			}
@@ -1082,6 +1337,44 @@ export class ViewPort {
 			window.event = e; // required by setDragImage polyfil
 			e.dataTransfer.setDragImage(img, 0, 0);
 		}
+	}
+
+	private isTeleclickEnabled(): boolean {
+		const player = marauroa && marauroa.me;
+		if (!player) {
+			return false;
+		}
+		return Object.prototype.hasOwnProperty.call(player, "teleclickmode");
+	}
+
+	private handleTeleclickDoubleTap(pos: any): boolean {
+		if (!this.isTeleclickEnabled()) {
+			return false;
+		}
+		const target = pos && pos.target;
+		const viewportElement = this.getElement();
+		let isViewportTarget = false;
+		if (target instanceof HTMLElement) {
+			if (target === viewportElement) {
+				isViewportTarget = true;
+			} else if (typeof target.closest === "function") {
+				isViewportTarget = !!target.closest("#viewport");
+			}
+		}
+		if (!isViewportTarget) {
+			return false;
+		}
+
+		const ground = stendhal.zone && stendhal.zone.ground;
+		if (!ground || typeof ground.onclick !== "function") {
+			return false;
+		}
+
+		const localX = typeof pos.canvasRelativeX === "number" ? pos.canvasRelativeX : 0;
+		const localY = typeof pos.canvasRelativeY === "number" ? pos.canvasRelativeY : 0;
+
+		ground.onclick(localX, localY, true);
+		return true;
 	}
 
 	private canHoldEntityForTouch(entity: any): boolean {

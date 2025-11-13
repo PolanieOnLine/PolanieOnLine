@@ -32,14 +32,16 @@ export class Sign extends Entity {
 		}
 	}
 
-	override draw(ctx: CanvasRenderingContext2D) {
+	override draw(ctx: CanvasRenderingContext2D, _tileXOverride?: number, _tileYOverride?: number) {
 		if (!this.imagePath) {
 			this.imagePath = stendhal.paths.sprites + "/signs/" + this["class"] + ".png";
 		}
 		var image = stendhal.data.sprites.get(this.imagePath);
 		if (image.height) {
-			var localX = this["x"] * 32;
-			var localY = this["y"] * 32;
+			const tileX = this.getRenderTileX();
+			const tileY = this.getRenderTileY();
+			var localX = tileX * 32;
+			var localY = tileY * 32;
 			ctx.drawImage(image, localX, localY);
 			if (this.indicator) {
 				this.indicator.draw(ctx, localX, localY, image.width);

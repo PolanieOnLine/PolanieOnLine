@@ -13,17 +13,19 @@
  ***************************************************************************/
 -->
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>PolanieOnLine</title>
-	<link rel="stylesheet" type="text/css" href="css/main.css">
-	<link rel="stylesheet" type="text/css" href="css/font.css">
-	<link rel="stylesheet" type="text/css" href="css/res.css">
-	<meta name="viewport" content="interactive-widget=resizes-content">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>PolanieOnLine</title>
+<link rel="stylesheet" type="text/css" href="css/main.css">
+<link rel="stylesheet" type="text/css" href="css/font.css">
+<link rel="stylesheet" type="text/css" href="css/res.css">
+<meta name="viewport" content="interactive-widget=resizes-content">
 </head>
 
 <body id="body" class="background">
 	<div id="client">
-		<button id="left-panel-toggle" class="panel-toggle panel-toggle--left" type="button" aria-controls="leftColumn" aria-expanded="true" aria-label="Schowaj lewy panel">◀</button>
+		<button id="left-panel-toggle" class="panel-toggle panel-toggle--left"
+			type="button" aria-controls="leftColumn" aria-expanded="true"
+			aria-label="Schowaj lewy panel">◀</button>
 		<div id="leftColumn" class="unselectable mainColumn">
 			<div id="minimap-frame">
 				<canvas id="minimap" width="128" height="128"></canvas>
@@ -49,16 +51,23 @@
 					<div class="group-invites"></div>
 				</div>
 				<div class="group-group hidden">
-					<div>Zbieractwo: <button class="group-lootmode"></div>
-					Lider: <span class="group-leader"></span>
-					Członkowie:
-					<div class="group-members">
+					<div>
+						Zbieractwo:
+						<button class="group-lootmode">
 					</div>
+					Lider: <span class="group-leader"></span> Członkowie:
+					<div class="group-members"></div>
 				</div>
 				<div class="group-buttons">
-					<button class="group-chat"><img src="/data/gui/chat.png"></button>
-					<button class="group-invite"><img src="/data/gui/buddy_online.png"></button>
-					<button class="group-part"><img src="/data/gui/buddy_offline.png"></button>
+					<button class="group-chat">
+						<img src="/data/gui/chat.png">
+					</button>
+					<button class="group-invite">
+						<img src="/data/gui/buddy_online.png">
+					</button>
+					<button class="group-part">
+						<img src="/data/gui/buddy_offline.png">
+					</button>
 				</div>
 			</div>
 		</div>
@@ -68,10 +77,12 @@
 			<div id="topPanel"></div>
 			<!-- FIXME: "viewport" and "chat" elements don't use fonts defined in "emoji-text" attribute, probably because
 					font is overridden in class definitions -->
-			<canvas id="viewport" class="emoji-text" width="800" height="600" tabindex="-1">Przepraszamy, ta strona działa tylko w nowszych przeglądarkach.</canvas>
+			<canvas id="viewport" class="emoji-text" width="800" height="600"
+				tabindex="-1">Przepraszamy, ta strona działa tylko w nowszych przeglądarkach.</canvas>
 			<div id="bottomPanel" class="mainColumn">
 				<div class="horizontalgroup">
-					<input id="chatinput" class="emoji-text" type="text" name="chatinput" autocomplete="off" autofocus>
+					<input id="chatinput" class="emoji-text" type="text"
+						name="chatinput" autocomplete="off" autofocus>
 					<button id="send-button">wyślij</button>
 					<button id="keywords-button">Hi!</button>
 					<button id="emojis-button" class="emoji-text">emoji</button>
@@ -80,17 +91,14 @@
 			</div>
 
 			<!-- quick menu -->
-			<img class="qm-button" id="qm-main">
-			<img class="qm-button" id="qm-menu">
-			<img class="qm-button" id="qm-settings">
-			<img class="qm-button" id="qm-chat">
-			<img class="qm-button" id="qm-log">
-			<img class="qm-button" id="qm-sound">
-			<img class="qm-button" id="qm-joystick">
-			<img class="qm-button" id="qm-chatopts">
-			<img class="qm-button" id="qm-rotate-l">
-			<img class="qm-button" id="qm-rotate-r">
-			<img class="qm-button" id="qm-pathfinding">
+			<img class="qm-button" id="qm-main"> <img class="qm-button"
+				id="qm-menu"> <img class="qm-button" id="qm-settings"> <img
+				class="qm-button" id="qm-chat"> <img class="qm-button"
+				id="qm-log"> <img class="qm-button" id="qm-sound"> <img
+				class="qm-button" id="qm-joystick"> <img class="qm-button"
+				id="qm-chatopts"> <img class="qm-button" id="qm-rotate-l">
+			<img class="qm-button" id="qm-rotate-r"> <img class="qm-button"
+				id="qm-pathfinding">
 		</div>
 
 		<div id="rightColumn" class="mainColumn">
@@ -99,14 +107,21 @@
 				<button id="soundbutton">🔇</button>
 			</div>
 
-			<div id="equipmentborder" class="inventory-window" data-inventory-window>
+			<div id="equipmentborder" class="inventory-window"
+				data-inventory-window>
 				<div class="inventory-window__titlebar">
-					<span id="equipment-title" class="inventory-window__title" data-window-title>Ekwipunek</span>
-					<button id="equipment-toggle" class="inventory-window__toggle" type="button" data-window-toggle aria-expanded="true" aria-controls="equipment-body">−</button>
+					<span id="equipment-title" class="inventory-window__title"
+						data-window-title>Ekwipunek</span>
+					<button id="equipment-toggle" class="inventory-window__toggle"
+						type="button" data-window-toggle aria-expanded="true"
+						aria-controls="equipment-body">▁</button>
 				</div>
-				<div id="equipment-body" class="inventory-window__body" data-window-body>
+				<div id="equipment-body" class="inventory-window__body"
+					data-window-body>
 					<div class="equipment-window">
-						<button id="reserve-toggle" class="reserve-toggle" type="button" aria-expanded="false" aria-controls="reserve-window" aria-label="Pokaż schowek">&lt;</button>
+						<button id="reserve-toggle" class="reserve-toggle" type="button"
+							aria-expanded="false" aria-controls="reserve-window"
+							aria-label="Pokaż schowek">&lt;</button>
 						<div class="equipment-window__main">
 							<div class="equipment-panel">
 								<div id="equipment" class="equipment-grid">
@@ -144,7 +159,8 @@
 									<div id="feet_set0" class="itemSlot"></div>
 									<div id="pouch_set0" class="itemSlot"></div>
 								</div>
-								<button id="equipment-swap" class="reserve-window__swap" type="button">Zamień zestawy</button>
+								<button id="equipment-swap" class="reserve-window__swap"
+									type="button">Zamień zestawy</button>
 							</div>
 						</div>
 					</div>
@@ -154,28 +170,43 @@
 			<div id="bag-window" class="inventory-window" data-inventory-window>
 				<div class="inventory-window__titlebar">
 					<span class="inventory-window__title" data-window-title>Plecak</span>
-					<button class="inventory-window__toggle" type="button" data-window-toggle aria-expanded="true" aria-controls="bag-window-body">−</button>
+					<button class="inventory-window__toggle" type="button"
+						data-window-toggle aria-expanded="true"
+						aria-controls="bag-window-body">▁</button>
 				</div>
-				<div id="bag-window-body" class="inventory-window__body" data-window-body></div>
+				<div id="bag-window-body" class="inventory-window__body"
+					data-window-body></div>
 			</div>
 
-			<div id="keyring-window" class="inventory-window" data-inventory-window>
+			<div id="keyring-window" class="inventory-window"
+				data-inventory-window>
 				<div class="inventory-window__titlebar">
 					<span class="inventory-window__title" data-window-title>Rzemyk</span>
-					<button class="inventory-window__toggle" type="button" data-window-toggle aria-expanded="true" aria-controls="keyring-window-body">−</button>
+					<button class="inventory-window__toggle" type="button"
+						data-window-toggle aria-expanded="true"
+						aria-controls="keyring-window-body">▁</button>
 				</div>
-				<div id="keyring-window-body" class="inventory-window__body" data-window-body></div>
+				<div id="keyring-window-body" class="inventory-window__body"
+					data-window-body></div>
 			</div>
 
-			<div id="magicbag-window" class="inventory-window" data-inventory-window>
+			<div id="magicbag-window" class="inventory-window"
+				data-inventory-window>
 				<div class="inventory-window__titlebar">
-					<span class="inventory-window__title" data-window-title>Magiczna torba</span>
-					<button class="inventory-window__toggle" type="button" data-window-toggle aria-expanded="true" aria-controls="magicbag-window-body">−</button>
+					<span class="inventory-window__title" data-window-title>Magiczna
+						torba</span>
+					<button class="inventory-window__toggle" type="button"
+						data-window-toggle aria-expanded="true"
+						aria-controls="magicbag-window-body">▁</button>
 				</div>
-				<div id="magicbag-window-body" class="inventory-window__body" data-window-body></div>
+				<div id="magicbag-window-body" class="inventory-window__body"
+					data-window-body></div>
 			</div>
 		</div>
-		<button id="right-panel-toggle" class="panel-toggle panel-toggle--right" type="button" aria-controls="rightColumn" aria-expanded="true" aria-label="Schowaj prawy panel">▶</button>
+		<button id="right-panel-toggle"
+			class="panel-toggle panel-toggle--right" type="button"
+			aria-controls="rightColumn" aria-expanded="true"
+			aria-label="Schowaj prawy panel">▶</button>
 	</div>
 
 	<div id="joystick-container"></div>
@@ -184,11 +215,12 @@
 
 	<div id="loginpopup" class="popupdiv">
 		Rozpoczęto teleport między światami. Proszę trzymać się mocno.
-		<div class="progressbar"><div class="progressbarvalue">&nbsp;</div></div>
+		<div class="progressbar">
+			<div class="progressbarvalue">&nbsp;</div>
+		</div>
 	</div>
 
-	<template id="empty-template">
-	</template>
+	<template id="empty-template"></template>
 
 	<template id="empty-div-template">
 		<div></div>
@@ -197,8 +229,15 @@
 	<template id="aboutdialog-template">
 		<div class="verticalgroup">
 			<div id="aboutdialog-content">
-				<p>Stendhal to projekt open source, napisany i wydany na <a href="https://www.gnu.org/licenses/agpl-3.0.html">licencji GNU AGPL</a> przez <a href="https://arianne-project.org">projekt Arianne</a>.
-				<p>Czy chcesz wnieść swój wkład? Zajrzyj do <a href="/development/introduction.html">sekcji Rozwój</a>, aby dołączyć do listy autorów.
+				<p>
+					Stendhal to projekt open source, napisany i wydany na <a
+						href="https://www.gnu.org/licenses/agpl-3.0.html">licencji GNU
+						AGPL</a> przez <a href="https://arianne-project.org">projekt
+						Arianne</a>.
+				<p>
+					Czy chcesz wnieść swój wkład? Zajrzyj do <a
+						href="/development/introduction.html">sekcji Rozwój</a>, aby
+					dołączyć do listy autorów.
 				<div id="license" class="limitedsize"></div>
 				<div id="contributors" class="limitedsize"></div>
 			</div>
@@ -209,11 +248,16 @@
 	<template id="createaccountdialog-template">
 		<div>
 			<form class="credential-dialog">
-			<label for="username">Nazwa użytkownika*:</label> <input id="username" minlength="6" maxlength="20" required><br>
-			<label for="password">Hasło*:</label> <input id="password" type="password" minlength="6" maxlength="50" required><br>
-			<label for="passwordrepeat">Powtórz hasło*:</label> <input id="passwordrepeat" type="password" minlength="6" maxlength="50" required><br>
-			<label for="password">Email:</label> <input id="email" type="email"><br>
-			<input type="submit" id="loginbutton" value="Utwórz konto"> <a id="loginlink" href="#login">Zaloguj się na istniejące konto...</a>
+				<label for="username">Nazwa użytkownika*:</label> <input
+					id="username" minlength="6" maxlength="20" required><br>
+				<label for="password">Hasło*:</label> <input id="password"
+					type="password" minlength="6" maxlength="50" required><br>
+				<label for="passwordrepeat">Powtórz hasło*:</label> <input
+					id="passwordrepeat" type="password" minlength="6" maxlength="50"
+					required><br> <label for="password">Email:</label> <input
+					id="email" type="email"><br> <input type="submit"
+					id="loginbutton" value="Utwórz konto"> <a id="loginlink"
+					href="#login">Zaloguj się na istniejące konto...</a>
 			</form>
 		</div>
 	</template>
@@ -221,9 +265,11 @@
 	<template id="logindialog-template">
 		<div>
 			<form class="credential-dialog">
-			<label for="username">Nazwa użytkownika*:</label> <input id="username" required><br>
-			<label for="password">Hasło*:</label> <input id="password" type="password" required><br>
-			<button id="loginbutton">Zaloguj</button> <a id="createlink" href="#create">Utwórz nowe konto...</a>
+				<label for="username">Nazwa użytkownika*:</label> <input
+					id="username" required><br> <label for="password">Hasło*:</label>
+				<input id="password" type="password" required><br>
+				<button id="loginbutton">Zaloguj</button>
+				<a id="createlink" href="#create">Utwórz nowe konto...</a>
 			</form>
 		</div>
 	</template>
@@ -257,26 +303,26 @@
 	<template id="window-template">
 		<div class="windowdiv">
 			<div class='windowtitlebar background'>
-				<button class="windowtitleclose">X</button>
 				<span class="windowtitle unclickable"></span>
+				<div class="windowtitlebuttons">
+					<button class="windowtitleminimize" type="button" aria-expanded="true" aria-label="Zminimalizuj okno">▁</button>
+					<button class="windowtitleclose">✖</button>
+				</div>
 			</div>
 			<div class="windowcontent"></div>
 		</div>
 	</template>
 
 	<template id="iteminventory-template">
-		<div class="inventorypopup">
-		</div>
+		<div class="inventorypopup"></div>
 	</template>
 
 	<template id="applicationmenudialog-template">
-		<div class="actionmenu">
-		</div>
+		<div class="actionmenu"></div>
 	</template>
 
 	<template id="contextmenu-template">
-		<div class="contextmenu actionmenu">
-		</div>
+		<div class="contextmenu actionmenu"></div>
 	</template>
 
 	<template id="dropquantityselectordialog-template">
@@ -333,99 +379,124 @@
 	<template id="settingsdialog-template">
 		<div class="verticalgroup">
 
-		<div class="verticalgroup" id="settings-tabs">
+			<div class="verticalgroup" id="settings-tabs">
 
-		<!-- TODO: create dynamically with ui/toolkit/SettingsComponent class -->
+				<!-- TODO: create dynamically with ui/toolkit/SettingsComponent class -->
 
-		<div class="horizontalgroup pad-contents" id="settings-general">
-			<div class="settings-general__toggle-columns">
-				<div id="settings_panel1" class="verticalgroup vgroupcol">
-					<label class="checksetting"><span class="settings-toggle" data-toggle-id="chk_speechcr"></span>Dymki z mową stworów</label>
-					<label class="checksetting"><span class="settings-toggle" data-toggle-id="chk_charname"></span>Nazwa postaci w panelu statystyk</label>
-					<label class="checksetting"><span class="settings-toggle" data-toggle-id="chk_hpbar"></span>Pasek zdrowia w panelu statystyk</label>
-					<label class="checksetting"><span class="settings-toggle" data-toggle-id="chk_floatchat"></span>Pływający panel czatu</label>
-					<label class="checksetting"><span class="settings-toggle experimental" data-toggle-id="chk_hidechat"></span>Automatyczne ukrywanie panelu czatu</label>
-					<label class="checksetting"><span class="settings-toggle" data-toggle-id="chk_zoom"></span>Zoomowanie dotykiem</label>
-					<label class="checksetting"><span class="settings-toggle" data-toggle-id="chk_dblclick"></span>Klikanie dwukrotne przedmiotów</label>
-					<label class="checksetting"><span class="settings-toggle" data-toggle-id="chk_chestqp"></span>Szybkie podnoszenie ze skrzyń i zwłok</label>
-					<label class="checksetting"><span class="settings-toggle" data-toggle-id="chk_movecont"></span>Ciągły ruch</label>
-					<label class="checksetting"><span class="settings-toggle" data-toggle-id="chk_pvtsnd"></span>Powiadomienia o wiadomościach prywatnych</label>
-					<label class="checksetting"><span class="settings-toggle experimental" data-toggle-id="chk_nativeemojis"></span>Natywne emotikony</label>
+				<div class="horizontalgroup pad-contents" id="settings-general">
+					<div class="settings-general__toggle-columns">
+						<div id="settings_panel1" class="verticalgroup vgroupcol">
+							<label class="checksetting"><span class="settings-toggle"
+								data-toggle-id="chk_speechcr"></span>Dymki z mową stworów</label> <label
+								class="checksetting"><span class="settings-toggle"
+								data-toggle-id="chk_charname"></span>Nazwa postaci w panelu
+								statystyk</label> <label class="checksetting"><span
+								class="settings-toggle" data-toggle-id="chk_hpbar"></span>Pasek
+								zdrowia w panelu statystyk</label> <label class="checksetting"><span
+								class="settings-toggle" data-toggle-id="chk_floatchat"></span>Pływający
+								panel czatu</label> <label class="checksetting"><span
+								class="settings-toggle experimental"
+								data-toggle-id="chk_hidechat"></span>Automatyczne ukrywanie
+								panelu czatu</label> <label class="checksetting"><span
+								class="settings-toggle" data-toggle-id="chk_zoom"></span>Zoomowanie
+								dotykiem</label> <label class="checksetting"><span
+								class="settings-toggle" data-toggle-id="chk_dblclick"></span>Klikanie
+								dwukrotne przedmiotów</label> <label class="checksetting"><span
+								class="settings-toggle" data-toggle-id="chk_chestqp"></span>Szybkie
+								podnoszenie ze skrzyń i zwłok</label> <label class="checksetting"><span
+								class="settings-toggle" data-toggle-id="chk_movecont"></span>Ciągły
+								ruch</label> <label class="checksetting"><span
+								class="settings-toggle" data-toggle-id="chk_pvtsnd"></span>Powiadomienia
+								o wiadomościach prywatnych</label> <label class="checksetting"><span
+								class="settings-toggle experimental"
+								data-toggle-id="chk_nativeemojis"></span>Natywne emotikony</label>
+						</div>
+						<div id="settings_panel2" class="verticalgroup vgroupcol">
+							<label class="checksetting"><span class="settings-toggle"
+								data-toggle-id="chk_rightpanel_personalize"></span>Personalizuj
+								prawy panel</label>
+							<button id="btn_rightpanel_reset" type="button">Resetuj
+								układ</button>
+						</div>
+					</div>
+					<div id="settings_panel3" class="verticalgroup vgroupcolr">
+						<div>
+							<label for="selecttheme">Tło:</label> <select id="selecttheme"></select>
+						</div>
+						<div>
+							<label for="selfontbody">Główna czcionka:</label> <select
+								id="selfontbody"></select>
+						</div>
+						<div>
+							<label for="selfontchat">Czcionka dziennika czatu:</label> <select
+								id="selfontchat"></select>
+						</div>
+						<div>
+							<label for="selfonttlog">Czcionka dziennika zadań:</label> <select
+								id="selfonttlog"></select>
+						</div>
+						<div>
+							<label for="selmenustyle">Styl menu:</label> <select
+								id="selmenustyle"></select>
+						</div>
+						<div></div>
+						<div>
+							<label for="txtchatopts">Niestandardowe słowa czatu:</label> <input
+								type="text" id="txtchatopts">
+						</div>
+					</div>
 				</div>
-				<div id="settings_panel2" class="verticalgroup vgroupcol">
-					<label class="checksetting"><span class="settings-toggle" data-toggle-id="chk_rightpanel_personalize"></span>Personalizuj prawy panel</label>
-					<button id="btn_rightpanel_reset" type="button">Resetuj układ</button>
+				<div class="horizontalgroup pad-contents" id="settings-visuals">
+					<div class="verticalgroup vgroupcol" id="col1">
+						<label class="checksetting"><span class="settings-toggle"
+							data-toggle-id="chk_light"></span>Efekty świetlne</label> <label
+							class="checksetting"><span class="settings-toggle"
+							data-toggle-id="chk_weather"></span>Pogoda</label> <label
+							class="checksetting"><span class="settings-toggle"
+							data-toggle-id="chk_blood"></span>Krew</label> <label
+							class="checksetting"><span class="settings-toggle"
+							data-toggle-id="chk_nonude"></span>Zakrycie nagich istot</label> <label
+							class="checksetting"><span class="settings-toggle"
+							data-toggle-id="chk_shadows"></span>Cienie</label> <label
+							class="checksetting"><span class="settings-toggle"
+							data-toggle-id="chk_clickindicator"></span>Wyświetlanie
+							kliknięcia/dotknięcia</label>
+					</div>
 				</div>
+
+				<div class="horizontalgroup pad-contents" id="settings-sound">
+					<div class="verticalgroup vgroupcol" id="col1"></div>
+				</div>
+
+				<div class="horizontalgroup pad-contents" id="settings-input">
+					<div class="verticalgroup vgroupcol">
+						<label class="checksetting"><span class="settings-toggle"
+							data-toggle-id="chk_pathfinding"></span>Wyznaczanie ścieżki przez
+							ziemię</label> <label class="checksetting"><span
+							class="settings-toggle" data-toggle-id="chk_pathfindingmm"></span>Wyznaczanie
+							ścieżki przez minimapę</label>
+					</div>
+					<div class="verticalgroup vgroupcolr">
+						<div>
+							<label class="checksetting"><span class="settings-toggle"
+								data-toggle-id="chk_joystick"></span>Joystick ekranowy:</label> <select
+								id="seljoystick"></select>
+						</div>
+						<div>
+							<label for="txtjoystickx">Środek joysticka X:</label> <input
+								type="number" id="txtjoystickx">
+						</div>
+						<div>
+							<label for="txtjoysticky">Środek joysticka Y:</label> <input
+								type="number" id="txtjoysticky">
+						</div>
+					</div>
+				</div>
+
 			</div>
-			<div id="settings_panel3" class="verticalgroup vgroupcolr">
-				<div>
-					<label for="selecttheme">Tło:</label>
-					<select id="selecttheme"></select>
-				</div>
-				<div>
-					<label for="selfontbody">Główna czcionka:</label>
-					<select id="selfontbody"></select>
-				</div>
-				<div>
-					<label for="selfontchat">Czcionka dziennika czatu:</label>
-					<select id="selfontchat"></select>
-				</div>
-				<div>
-					<label for="selfonttlog">Czcionka dziennika zadań:</label>
-					<select id="selfonttlog"></select>
-				</div>
-				<div>
-					<label for="selmenustyle">Styl menu:</label>
-					<select id="selmenustyle"></select>
-				</div>
-				<div>
-					
-				</div>
-				<div>
-					<label for="txtchatopts">Niestandardowe słowa czatu:</label>
-					<input type="text" id="txtchatopts">
-				</div>
-			</div>
-		</div>
-		<div class="horizontalgroup pad-contents" id="settings-visuals">
-			<div class="verticalgroup vgroupcol" id="col1">
-				<label class="checksetting"><span class="settings-toggle" data-toggle-id="chk_light"></span>Efekty świetlne</label>
-				<label class="checksetting"><span class="settings-toggle" data-toggle-id="chk_weather"></span>Pogoda</label>
-				<label class="checksetting"><span class="settings-toggle" data-toggle-id="chk_blood"></span>Krew</label>
-				<label class="checksetting"><span class="settings-toggle" data-toggle-id="chk_nonude"></span>Zakrycie nagich istot</label>
-				<label class="checksetting"><span class="settings-toggle" data-toggle-id="chk_shadows"></span>Cienie</label>
-				<label class="checksetting"><span class="settings-toggle" data-toggle-id="chk_clickindicator"></span>Wyświetlanie kliknięcia/dotknięcia</label>
-			</div>
-		</div>
+			<!-- #settings-tabs -->
 
-		<div class="horizontalgroup pad-contents" id="settings-sound">
-			<div class="verticalgroup vgroupcol" id="col1"></div>
-		</div>
-
-		<div class="horizontalgroup pad-contents" id="settings-input">
-			<div class="verticalgroup vgroupcol">
-				<label class="checksetting"><span class="settings-toggle" data-toggle-id="chk_pathfinding"></span>Wyznaczanie ścieżki przez ziemię</label>
-				<label class="checksetting"><span class="settings-toggle" data-toggle-id="chk_pathfindingmm"></span>Wyznaczanie ścieżki przez minimapę</label>
-			</div>
-			<div class="verticalgroup vgroupcolr">
-				<div>
-					<label class="checksetting"><span class="settings-toggle" data-toggle-id="chk_joystick"></span>Joystick ekranowy:</label>
-					<select id="seljoystick"></select>
-				</div>
-				<div>
-					<label for="txtjoystickx">Środek joysticka X:</label>
-					<input type="number" id="txtjoystickx">
-				</div>
-				<div>
-					<label for="txtjoysticky">Środek joysticka Y:</label>
-					<input type="number" id="txtjoysticky">
-				</div>
-			</div>
-		</div>
-
-		</div> <!-- #settings-tabs -->
-
-		<div class="horizontalgroup dialogbuttons"></div>
+			<div class="horizontalgroup dialogbuttons"></div>
 
 		</div>
 	</template>
@@ -436,116 +507,123 @@
 
 	<template id="outfitdialog-template">
 		<div class="background">
-		<div class="horizontalgroup">
-
-			<!-- part selectors -->
-			<div class="verticalgroup">
 			<div class="horizontalgroup">
-			<button type="button" id="setoutfitprevhair">&lt;</button>
-			<canvas id="setoutfithaircanvas" width="48" height="64"></canvas>
-			<button type="button" id="setoutfitnexthair">&gt;</button>
-			</div>
 
-			<div class="horizontalgroup">
-			<button type="button" id="setoutfitpreveyes">&lt;</button>
-			<canvas id="setoutfiteyescanvas" width="48" height="64"></canvas>
-			<button type="button" id="setoutfitnexteyes">&gt;</button><br>
-			</div>
+				<!-- part selectors -->
+				<div class="verticalgroup">
+					<div class="horizontalgroup">
+						<button type="button" id="setoutfitprevhair">&lt;</button>
+						<canvas id="setoutfithaircanvas" width="48" height="64"></canvas>
+						<button type="button" id="setoutfitnexthair">&gt;</button>
+					</div>
 
-			<div class="horizontalgroup">
-			<button type="button" id="setoutfitprevmouth">&lt;</button>
-			<canvas id="setoutfitmouthcanvas" width="48" height="64"></canvas>
-			<button type="button" id="setoutfitnextmouth">&gt;</button><br>
-			</div>
+					<div class="horizontalgroup">
+						<button type="button" id="setoutfitpreveyes">&lt;</button>
+						<canvas id="setoutfiteyescanvas" width="48" height="64"></canvas>
+						<button type="button" id="setoutfitnexteyes">&gt;</button>
+						<br>
+					</div>
 
-			<div class="horizontalgroup">
-			<button type="button" id="setoutfitprevhead">&lt;</button>
-			<canvas id="setoutfitheadcanvas" width="48" height="64"></canvas>
-			<button type="button" id="setoutfitnexthead">&gt;</button><br>
-			</div>
+					<div class="horizontalgroup">
+						<button type="button" id="setoutfitprevmouth">&lt;</button>
+						<canvas id="setoutfitmouthcanvas" width="48" height="64"></canvas>
+						<button type="button" id="setoutfitnextmouth">&gt;</button>
+						<br>
+					</div>
 
-			<div class="horizontalgroup">
-			<button type="button" id="setoutfitprevbody">&lt;</button>
-			<canvas id="setoutfitbodycanvas" width="48" height="64"></canvas>
-			<button type="button" id="setoutfitnextbody">&gt;</button><br>
-			</div>
+					<div class="horizontalgroup">
+						<button type="button" id="setoutfitprevhead">&lt;</button>
+						<canvas id="setoutfitheadcanvas" width="48" height="64"></canvas>
+						<button type="button" id="setoutfitnexthead">&gt;</button>
+						<br>
+					</div>
 
-			<div class="horizontalgroup">
-			<button type="button" id="setoutfitprevdress">&lt;</button>
-			<canvas id="setoutfitdresscanvas" width="48" height="64"></canvas>
-			<button type="button" id="setoutfitnextdress">&gt;</button>
-			</div>
-			</div>
+					<div class="horizontalgroup">
+						<button type="button" id="setoutfitprevbody">&lt;</button>
+						<canvas id="setoutfitbodycanvas" width="48" height="64"></canvas>
+						<button type="button" id="setoutfitnextbody">&gt;</button>
+						<br>
+					</div>
 
-			<!-- color selectors -->
-			<div class="verticalgroup">
-			<div class="verticalgroup">
-			<div class="horizontalgroup">
-			<input type="checkbox" id="setoutfithaircolortoggle">
-			<label for="setoutfithaircolortoggle">Kolor włosów</label>
-			</div>
-			<canvas id="setoutfithaircolorcanvas" width="80" height="52"></canvas>
-			<canvas id="setoutfithaircolorgradient" width="80" height="10"></canvas>
-			</div>
+					<div class="horizontalgroup">
+						<button type="button" id="setoutfitprevdress">&lt;</button>
+						<canvas id="setoutfitdresscanvas" width="48" height="64"></canvas>
+						<button type="button" id="setoutfitnextdress">&gt;</button>
+					</div>
+				</div>
 
-			<div class="verticalgroup">
-			<div class="horizontalgroup">
-			<input type="checkbox" id="setoutfiteyescolortoggle">
-			<label for="setoutfiteyescolortoggle">Kolor oczu</label>
-			</div>
-			<canvas id="setoutfiteyescolorcanvas" width="80" height="52"></canvas>
-			<canvas id="setoutfiteyescolorgradient" width="80" height="10"></canvas>
-			</div>
+				<!-- color selectors -->
+				<div class="verticalgroup">
+					<div class="verticalgroup">
+						<div class="horizontalgroup">
+							<input type="checkbox" id="setoutfithaircolortoggle"> <label
+								for="setoutfithaircolortoggle">Kolor włosów</label>
+						</div>
+						<canvas id="setoutfithaircolorcanvas" width="80" height="52"></canvas>
+						<canvas id="setoutfithaircolorgradient" width="80" height="10"></canvas>
+					</div>
 
-			<div class="verticalgroup">
-			<div class="horizontalgroup">
-			<input type="checkbox" id="setoutfitskincolortoggle">
-			<label for="setoutfitskincolortoggle">Kolor skóry</label>
-			</div>
-			<canvas id="setoutfitskincolorcanvas" width="80" height="52"></canvas>
-			<canvas id="setoutfitskincolorgradient" width="80" height="10"></canvas>
-			</div>
+					<div class="verticalgroup">
+						<div class="horizontalgroup">
+							<input type="checkbox" id="setoutfiteyescolortoggle"> <label
+								for="setoutfiteyescolortoggle">Kolor oczu</label>
+						</div>
+						<canvas id="setoutfiteyescolorcanvas" width="80" height="52"></canvas>
+						<canvas id="setoutfiteyescolorgradient" width="80" height="10"></canvas>
+					</div>
 
-			<div class="verticalgroup">
-			<div class="horizontalgroup">
-			<input type="checkbox" id="setoutfitdresscolortoggle">
-			<label for="setoutfitdresscolortoggle">Kolor ubrań</label>
-			</div>
-			<canvas id="setoutfitdresscolorcanvas" width="80" height="52"></canvas>
-			<canvas id="setoutfitdresscolorgradient" width="80" height="10"></canvas>
-			</div>
-			</div>
+					<div class="verticalgroup">
+						<div class="horizontalgroup">
+							<input type="checkbox" id="setoutfitskincolortoggle"> <label
+								for="setoutfitskincolortoggle">Kolor skóry</label>
+						</div>
+						<canvas id="setoutfitskincolorcanvas" width="80" height="52"></canvas>
+						<canvas id="setoutfitskincolorgradient" width="80" height="10"></canvas>
+					</div>
 
-			<!-- hat & mask part selectors -->
-			<div class="verticalgroup">
+					<div class="verticalgroup">
+						<div class="horizontalgroup">
+							<input type="checkbox" id="setoutfitdresscolortoggle"> <label
+								for="setoutfitdresscolortoggle">Kolor ubrań</label>
+						</div>
+						<canvas id="setoutfitdresscolorcanvas" width="80" height="52"></canvas>
+						<canvas id="setoutfitdresscolorgradient" width="80" height="10"></canvas>
+					</div>
+				</div>
 
-			<div class="horizontalgroup">
-			<button type="button" id="setoutfitprevhat">&lt;</button>
-			<canvas id="setoutfithatcanvas" width="48" height="64"></canvas>
-			<button type="button" id="setoutfitnexthat">&gt;</button>
-			</div>
+				<!-- hat & mask part selectors -->
+				<div class="verticalgroup">
 
-			<div class="horizontalgroup">
-			<button type="button" id="setoutfitprevmask">&lt;</button>
-			<canvas id="setoutfitmaskcanvas" width="48" height="64"></canvas>
-			<button type="button" id="setoutfitnextmask">&gt;</button>
-			</div>
+					<div class="horizontalgroup">
+						<button type="button" id="setoutfitprevhat">&lt;</button>
+						<canvas id="setoutfithatcanvas" width="48" height="64"></canvas>
+						<button type="button" id="setoutfitnexthat">&gt;</button>
+					</div>
 
-			</div>
+					<div class="horizontalgroup">
+						<button type="button" id="setoutfitprevmask">&lt;</button>
+						<canvas id="setoutfitmaskcanvas" width="48" height="64"></canvas>
+						<button type="button" id="setoutfitnextmask">&gt;</button>
+					</div>
 
-			<!-- full composite preview -->
-			<div id="outfit-preview" class="verticalgroup">
-				<div id="outfit-preview-composite"></div>
-				<div class="horizontalgroup">
-					<button type="button" id="rotate-c">&#8635;</button>
-					<button type="button" id="rotate-cc">&#8634;</button>
+				</div>
+
+				<!-- full composite preview -->
+				<div id="outfit-preview" class="verticalgroup">
+					<div id="outfit-preview-composite"></div>
+					<div class="horizontalgroup">
+						<button type="button" id="rotate-c">&#8635;</button>
+						<button type="button" id="rotate-cc">&#8634;</button>
+					</div>
 				</div>
 			</div>
+			<div align="right">
+				<button type="button" id="setoutfitcancel">Zamknij</button>
+				<button type="button" id="setoutfitapply">Zmień wygląd</button>
+			</div>
 		</div>
-		<div align="right"><button type="button" id="setoutfitcancel">Zamknij</button>
-		<button type="button" id="setoutfitapply">Zmień wygląd</button></div>
-		</div>
-	</template> <!-- outfitdialog-template -->
+	</template>
+	<!-- outfitdialog-template -->
 
 	<template id="keywordmap-template">
 		<div class="shortcuts-dialog"></div>
@@ -555,7 +633,8 @@
 		<div class="shortcuts-dialog"></div>
 	</template>
 
-	<img id="held-object" class="hidden unselectable notarget" draggable="false">
+	<img id="held-object" class="hidden unselectable notarget"
+		draggable="false">
 
 	<!-- place at end of document so drawn above all other elements -->
 	<img id="click-indicator" class="unclickable notarget">

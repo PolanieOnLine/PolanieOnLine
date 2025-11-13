@@ -35,8 +35,8 @@ interface FormattedLine {
 }
 
 export class NotificationBubble extends TextBubble {
-	private readonly bubbleTextColor: string;
-	private readonly borderColor: string;
+	private bubbleTextColor: string;
+	private borderColor: string;
 	private segments: TextSegment[];
 	private lines: FormattedLine[];
 	private profile?: HTMLImageElement;
@@ -44,14 +44,22 @@ export class NotificationBubble extends TextBubble {
 	private lmargin = 4;
 	private readonly fontsize = 14;
 	private readonly lineHeight = this.fontsize + 6;
-	private readonly baseFont: string;
-	private readonly italicFont: string;
+	private baseFont: string;
+	private italicFont: string;
 	private static readonly BACKGROUND = "rgb(60, 30, 0)";
 
-	constructor(mtype: string, text: string, profile?: string) {
-		super(text);
-		this.profileName = profile
+	constructor() {
+		super("");
+		this.bubbleTextColor = Color.BLACK;
+		this.borderColor = Color.BLACK;
+		this.segments = [];
+		this.lines = [];
+		this.baseFont = this.fontsize + "px sans-serif";
+		this.italicFont = "italic " + this.fontsize + "px sans-serif";
+	}
 
+	configure(mtype: string, text: string, profile?: string) {
+		this.resetBubble(text);
 		this.duration = Math.max(
 			TextBubble.STANDARD_DUR,
 			this.text.length * TextBubble.STANDARD_DUR / 50);
@@ -60,17 +68,20 @@ export class NotificationBubble extends TextBubble {
 		this.borderColor = mtype === "privmsg"
 			? Color.CHAT_PRIVATE
 			: this.bubbleTextColor;
-		this.segments = [];
-		this.segregate(this.segments, this.bubbleTextColor);
-		this.lines = [];
+
 		this.baseFont = this.fontsize + "px sans-serif";
 		this.italicFont = "italic " + this.fontsize + "px sans-serif";
 
+		this.segments.length = 0;
+		this.segregate(this.segments, this.bubbleTextColor);
+		this.lines.length = 0;
+
+		this.profileName = profile;
 		if (profile) {
-			// FIXME: first drawing of profile may still be delayed on slower systems
-			// cache profile image at construction
-			this.profile = new Image();
+			this.profile = undefined;
 			this.loadProfileSprite();
+		} else {
+			this.profile = undefined;
 		}
 	}
 
@@ -93,6 +104,11 @@ export class NotificationBubble extends TextBubble {
 		// Note: border is 1 pixel
 		this.y = screenBottom - this.height + TextBubble.adjustY - 1;
 
+		if (this.profileName) {
+			if (!this.profile) {
+				this.loadProfileSprite();
+			}
+		}
 		if (this.profile) {
 			if (!this.profile.complete || !this.profile.height) {
 				this.loadProfileSprite();
@@ -101,10 +117,10 @@ export class NotificationBubble extends TextBubble {
 				ctx.drawImage(this.profile, this.x - 48, this.y - 16);
 			}
 			Speech.drawBubbleRounded(ctx, this.x, this.y - 15,
-					this.width, this.height);
+				this.width, this.height);
 		} else {
 			Speech.drawBubble(ctx, this.x, this.y, this.width,
-					this.height);
+				this.height);
 		}
 
 		ctx.save();
@@ -251,7 +267,7 @@ export class NotificationBubble extends TextBubble {
 			}
 
 			if (!segment.isWhitespace && currentSegments.length > 0
-					&& currentWidth + segment.width > maxLineWidth) {
+				&& currentWidth + segment.width > maxLineWidth) {
 				flushLine();
 			}
 
@@ -288,7 +304,7 @@ export class NotificationBubble extends TextBubble {
 	 */
 	private loadProfileSprite() {
 		const img = stendhal.data.sprites.get(stendhal.paths.sprites
-				+ "/npc/" + this.profileName + ".png");
+			+ "/npc/" + this.profileName + ".png");
 		if (img.complete && img.height) {
 			this.profile = stendhal.data.sprites.getAreaOf(img, 48, 48, 48, 128);
 		}

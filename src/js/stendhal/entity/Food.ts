@@ -27,11 +27,13 @@ export class Food extends Entity {
 		// TODO: play sound effect
 	}
 
-	override draw(ctx: CanvasRenderingContext2D) {
+	override draw(ctx: CanvasRenderingContext2D, _tileXOverride?: number, _tileYOverride?: number) {
 		var image = stendhal.data.sprites.get(stendhal.paths.sprites + "/food.png");
 		if (image.height) {
-			var localX = this["x"] * 32;
-			var localY = this["y"] * 32;
+			const tileX = this.getRenderTileX();
+			const tileY = this.getRenderTileY();
+			var localX = tileX * 32;
+			var localY = tileY * 32;
 			var offset = this._amount * 32;
 			ctx.drawImage(image, 0, offset, 32, 32, localX, localY, 32, 32);
 		}
@@ -39,9 +41,9 @@ export class Food extends Entity {
 
 	override onclick(_x: number, _y: number) {
 		var action = {
-				"type": "look",
-				"target": "#" + this["id"]
-			};
+			"type": "look",
+			"target": "#" + this["id"]
+		};
 		marauroa.clientFramework.sendAction(action);
 	}
 

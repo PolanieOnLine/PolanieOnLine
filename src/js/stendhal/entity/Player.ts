@@ -74,7 +74,7 @@ export class Player extends RPEntity {
 	 * Is this player an admin?
 	 */
 	isAdmin() {
-		return (typeof(this["adminlevel"]) !== "undefined" && this["adminlevel"] > 600);
+		return (typeof (this["adminlevel"]) !== "undefined" && this["adminlevel"] > 600);
 	}
 
 	override buildActions(list: MenuItem[]) {
@@ -124,15 +124,15 @@ export class Player extends RPEntity {
 		if (marauroa.me !== this) {
 			list.push({
 				title: "Handluj",
-					action: function(_entity: any) {
-						var action = {
-							"type": "trade",
-							"action": "offer_trade",
-							"zone": marauroa.currentZoneName,
-							"target": playerName
-						};
-						marauroa.clientFramework.sendAction(action);
-					}
+				action: function(_entity: any) {
+					var action = {
+						"type": "trade",
+						"action": "offer_trade",
+						"zone": marauroa.currentZoneName,
+						"target": playerName
+					};
+					marauroa.clientFramework.sendAction(action);
+				}
 			});
 			if (marauroa.me.canInviteToGroup()) {
 				list.push({
@@ -169,16 +169,16 @@ export class Player extends RPEntity {
 		}
 	}
 
-	override draw(ctx: CanvasRenderingContext2D) {
+	override draw(ctx: CanvasRenderingContext2D, tileXOverride?: number, tileYOverride?: number) {
 		if (this.isIgnored()) {
 			return;
 		}
 		// TODO: grey out instead of hiding completely because they still cause a collision
-		super.draw(ctx);
+		super.draw(ctx, tileXOverride, tileYOverride);
 	}
 
 	override getResistance() {
-		if (typeof(this["ghostmode"]) !== "undefined") {
+		if (typeof (this["ghostmode"]) !== "undefined") {
 			return 0;
 		}
 		return this["resistance"];

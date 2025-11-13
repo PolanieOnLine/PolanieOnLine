@@ -33,8 +33,16 @@ export class TouchHandler {
 
 	/** Position on page when touch event began. */
 	private origin?: Point;
+	/** Last tap position registered for double tap detection. */
+	private lastTapPoint?: Point;
 	/** Number of pixels touch can move before being vetoed as a long touch or double tap. */
-	private readonly moveThreshold = 16;
+	private readonly moveThreshold = 32;
+	/** Maximum time between taps before they stop counting as a double tap. */
+	private readonly doubleTapThreshold = 375;
+	/** Timestamp when the last tap was recorded. */
+	private lastTapTime = 0;
+	/** Normalized key representing the element scope of the previous tap. */
+	private lastTapKey: EventTarget | null = null;
 
 	/** Singleton instance. */
 	private static instance: TouchHandler;
@@ -87,9 +95,48 @@ export class TouchHandler {
 	/**
 	 * Sets timestamp when touch released.
 	 */
-	onTouchEnd() {
+	onTouchEnd(_evt?: TouchEvent) {
 		this.timestampTouchEnd = +new Date();
 		this.touchEngaged = false;
+	}
+
+	/**
+	 * Register a tap and determine if it should be interpreted as a double tap.
+	 *
+	 * @param x {number}
+	 *   Tap position relative to page on X axis.
+	 * @param y {number}
+	 *   Tap position relative to page on Y axis.
+	 * @return {boolean}
+	 *   `true` if the tap completed a double tap gesture.
+	 */
+	registerTap(x: number, y: number, target?: EventTarget, scope?: EventTarget): boolean {
+		const now = +new Date();
+		let isDoubleTap = false;
+
+		const key = scope || target || null;
+
+		if (this.lastTapTime) {
+			const timeDelta = now - this.lastTapTime;
+			const sameKey = !key || !this.lastTapKey || this.lastTapKey === key;
+			if (sameKey && timeDelta <= this.doubleTapThreshold && this.lastTapPoint) {
+				const withinX = Math.abs(this.lastTapPoint.x - x) <= this.moveThreshold;
+				const withinY = Math.abs(this.lastTapPoint.y - y) <= this.moveThreshold;
+				isDoubleTap = withinX && withinY;
+			}
+		}
+
+		if (isDoubleTap) {
+			this.lastTapTime = 0;
+			this.lastTapPoint = undefined;
+			this.lastTapKey = null;
+		} else {
+			this.lastTapTime = now;
+			this.lastTapPoint = new Point(x, y);
+			this.lastTapKey = key;
+		}
+
+		return isDoubleTap;
 	}
 
 	/**
@@ -120,7 +167,7 @@ export class TouchHandler {
 			const pos = stendhal.ui.html.extractPosition(evt);
 			// if position has moved too much it's not a long touch
 			positionMatch = (Math.abs(pos.pageX - this.origin.x) <= this.moveThreshold)
-					&& (Math.abs(pos.pageY - this.origin.y) <= this.moveThreshold);
+				&& (Math.abs(pos.pageY - this.origin.y) <= this.moveThreshold);
 		}
 		return durationMatch && positionMatch;
 	}

@@ -42,6 +42,23 @@ export abstract class TextBubble {
 	}
 
 	/**
+	 * Reinitialises the bubble's timing and layout metrics so an instance
+	 * can be reused without allocating a new object.
+	 *
+	 * @param text
+	 *   Text to display.
+	 * @param duration
+	 *   Optional duration override.
+	 */
+	protected resetBubble(text: string, duration = TextBubble.STANDARD_DUR) {
+		this.text = text;
+		this.timeStamp = Date.now();
+		this.width = -1;
+		this.height = -1;
+		this.duration = duration;
+	}
+
+	/**
 	 * Handles drawing the sprite on the screen.
 	 *
 	 * @param ctx
@@ -113,7 +130,7 @@ export abstract class TextBubble {
 	 * @param evt
 	 *   Mouse or touch event executed on canvas context.
 	 */
-	onClick(evt: MouseEvent|TouchEvent) {
+	onClick(evt: MouseEvent | TouchEvent) {
 		const pos = stendhal.ui.html.extractPosition(evt);
 		const screenRect = document.getElementById("viewport")!.getBoundingClientRect();
 		const pointX = pos.clientX - screenRect.x + stendhal.ui.gamewindow.offsetX;
@@ -135,9 +152,9 @@ export abstract class TextBubble {
 	 */
 	onAdded(ctx: CanvasRenderingContext2D) {
 		// prevent multiple listeners from being added
-		if (typeof(this.onRemovedAction) === "undefined") {
+		if (typeof (this.onRemovedAction) === "undefined") {
 			// add click listener to remove chat bubble
-			const listener = (e: MouseEvent|TouchEvent) => {
+			const listener = (e: MouseEvent | TouchEvent) => {
 				// FIXME: should only execute if click/touch hasn't moved too far
 				this.onClick(e);
 			};
@@ -156,8 +173,9 @@ export abstract class TextBubble {
 	 * Removes the listener added with TextBubble.onAdded.
 	 */
 	onRemoved() {
-		if (typeof(this.onRemovedAction) !== "undefined") {
+		if (typeof (this.onRemovedAction) !== "undefined") {
 			this.onRemovedAction();
+			this.onRemovedAction = undefined;
 		}
 	}
 
@@ -195,7 +213,7 @@ export abstract class TextBubble {
 	 * @param defaultColor {string}
 	 *   Unformatted text color (default: `util.Color.Color.CHAT_NORMALBLACK`).
 	 */
-	protected segregate(parts: TextSegment[], defaultColor=Color.CHAT_NORMALBLACK) {
+	protected segregate(parts: TextSegment[], defaultColor = Color.CHAT_NORMALBLACK) {
 		const delims = [" ", ",", ".", "!", "?", ":", ";"];
 		let highlight = false;
 		let underline = false;

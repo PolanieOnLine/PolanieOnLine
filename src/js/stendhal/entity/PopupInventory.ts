@@ -20,8 +20,8 @@ export class PopupInventory extends Entity {
 	protected maxDistToView = 4;
 
 
-	override draw(ctx: CanvasRenderingContext2D) {
-		super.draw(ctx);
+	override draw(ctx: CanvasRenderingContext2D, tileXOverride?: number, tileYOverride?: number) {
+		super.draw(ctx, tileXOverride, tileYOverride);
 		if (this.inventory && this.inventory.isOpen() && !this.canViewContents()) {
 			// player has moved too far away
 			this.closeInventoryWindow();

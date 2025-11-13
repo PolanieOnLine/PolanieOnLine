@@ -194,7 +194,8 @@ div#equipmentborder { width: 147px; }
 	box-shadow: none;
 }
 
-.inventory-window__titlebar {
+.inventory-window__titlebar,
+.windowtitlebar, .popuptitle {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
@@ -207,6 +208,9 @@ div#equipmentborder { width: 147px; }
 	border-left: 1px solid var(--border-top-color);
 	border-right: 1px solid var(--border-bottom-color);
 	border-bottom: 3px solid var(--border-bottom-color);
+}
+.windowtitlebar, .popuptitle {
+	gap: 0;
 }
 
 .inventory-window__titlebar:focus-visible {
@@ -221,24 +225,24 @@ div#equipmentborder { width: 147px; }
 	flex: 1;
 }
 
-.inventory-window__toggle {
-	min-width: 1.5em;
+.inventory-window__toggle,
+.popuptitleclose, .windowtitleclose, .windowtitleminimize {
+	width: 16px;
+	height: 16px;
 	border: none;
-	background: rgba(34, 20, 11, 0.9);
-	color: #f9e7c5;
+	background: var(--border-top-color);
 	cursor: pointer;
 	font-weight: bold;
 	font-size: 0.95rem;
 	padding: 0 4px;
-	border-top: 1px solid var(--border-top-color);
-	border-left: 1px solid var(--border-top-color);
-	border-right: 1px solid var(--border-bottom-color);
-	border-bottom: 1px solid var(--border-bottom-color);
 }
 
 .inventory-window__toggle:hover,
-.inventory-window__toggle:focus {
+.inventory-window__toggle:focus,
+.windowtitleclose:hover,
+.windowtitleminimize:hover {
 	background: rgba(52, 30, 14, 0.95);
+	color: #FFF;
 	outline: none;
 }
 
@@ -814,7 +818,7 @@ span.lognick {
 	align-items: flex-start;
 	position: relative;
 	--left-panel-width: 170px;
-	--right-panel-width: 277px;
+	--right-panel-width: 258px;
 }
 
 #client.right-panel-collapsed {
@@ -837,7 +841,7 @@ span.lognick {
 
 #rightColumn {
 	float: none;
-	flex: 0 0 277px;
+	flex: 0 0 258px;
 	transition: width 0.3s ease, min-width 0.3s ease, flex-basis 0.3s ease, opacity 0.3s ease;
 	overflow-y: auto;
 	overflow-x: hidden;
@@ -898,6 +902,10 @@ span.lognick {
 }
 
 @media screen and (max-width: 1024px) {
+	#chat {
+		font-size: .8em;
+	}
+
 	.panel-toggle {
 		display: inline-flex;
 	}
@@ -930,6 +938,7 @@ span.lognick {
 
 	.panel-toggle--left {
 		left: calc(var(--left-panel-width));
+		display: none;
 	}
 
 	.panel-toggle--right {
@@ -1082,6 +1091,7 @@ div#menupanel #soundbutton {
 }
 
 .popuptitle, .windowtitlebar {
+	height: 18px;
 	overflow: hidden;
 	border-top: 1px solid var(--border-top-color);
 	border-bottom: 2px solid var(--border-bottom-color);
@@ -1090,25 +1100,19 @@ div#menupanel #soundbutton {
 	margin: 3px;
 }
 
-.popuptitleclose, .windowtitleclose {
-	float: right;
-	min-width: 1.5em;
-	border: none;
-	background: rgba(34, 20, 11, 0.9);
-	color: #f9e7c5;
-	cursor: pointer;
-	font-weight: bold;
-	font-size: 0.95rem;
-	padding: 0 4px;
-	border-top: 1px solid var(--border-top-color);
-	border-left: 1px solid var(--border-top-color);
-	border-right: 1px solid var(--border-bottom-color);
-	border-bottom: 1px solid var(--border-bottom-color);
+.windowtitlebuttons {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
 }
-
-.windowtitleclose:hover {
-	background: rgba(52, 30, 14, 0.95);
-	outline: none;
+.windowtitlebuttons button {
+	display: flex;
+	margin: 0 2px;
+	align-items: center;
+	justify-content: center;
+}
+button.windowtitleminimize:first-child {
+    padding-bottom: 5px;
 }
 
 .popuptitleclose {

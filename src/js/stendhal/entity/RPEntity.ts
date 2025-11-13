@@ -25,7 +25,6 @@ import { Nature } from "../util/Nature";
 import { Floater } from "../sprite/Floater";
 import { EmojiSprite } from "../sprite/EmojiSprite";
 import { OverlaySpriteImpl } from "../sprite/OverlaySpriteImpl";
-import { SpeechBubble } from "../sprite/SpeechBubble";
 import { TextSprite } from "../sprite/TextSprite";
 
 import { BarehandAttackSprite } from "../sprite/action/BarehandAttackSprite";
@@ -56,7 +55,8 @@ export class RPEntity extends ActiveEntity {
 	// canvas for merging outfit layers to be drawn
 	private octx?: CanvasRenderingContext2D;
 
-	private attackers: {[key: string]: any} = { size: 0 };
+	private attackers = new Map<string, Entity>();
+	private deathAnnounced = false;
 
 	/**
 	 * Animation drawn over entity sprite.
@@ -77,7 +77,14 @@ export class RPEntity extends ActiveEntity {
 		} else if (["hp", "base_hp"].indexOf(key) !== -1) {
 			this[key] = parseInt(value, 10);
 			if (key === "hp" && oldValue != undefined) {
-				this.onHPChanged(this[key] - oldValue);
+				const newHp = this[key];
+				this.onHPChanged(newHp - oldValue);
+				if (newHp > 0) {
+					this.deathAnnounced = false;
+				} else if (!this.deathAnnounced && oldValue > 0) {
+					this.onDeath();
+					this.deathAnnounced = true;
+				}
 			}
 		} else if (key === "id" && !oldValue && this._target) {
 			// update list of attackers since id was not set when entity was targeted
@@ -94,15 +101,15 @@ export class RPEntity extends ActiveEntity {
 			this.addFloater("Zajęty", "#ffff00");
 		} else if (key === "grumpy") {
 			this.addFloater("Niedostępny", "#ffff00");
-		} else if (key === "xp" && typeof(oldValue) !== "undefined") {
+		} else if (key === "xp" && typeof (oldValue) !== "undefined") {
 			this.onXPChanged(this[key] - oldValue);
 		} else if (["level", "atk", "ratk", "def"].indexOf(key) > -1
-				&& typeof(oldValue) !== "undefined") {
+			&& typeof (oldValue) !== "undefined") {
 			// FIXME: xp change should be printed before level
 			this.onLevelChanged(key, value, oldValue);
-		} else if (["title", "name", "class", "type"].indexOf(key) >-1) {
+		} else if (["title", "name", "class", "type"].indexOf(key) > -1) {
 			this.createTitleTextSprite();
-		} else if (key === "subclass" && typeof(oldValue) !== "undefined" && value !== oldValue) {
+		} else if (key === "subclass" && typeof (oldValue) !== "undefined" && value !== oldValue) {
 			this.onTransformed();
 		}
 	}
@@ -120,7 +127,7 @@ export class RPEntity extends ActiveEntity {
 	}
 
 	override isVisibleToAction(_filter: boolean) {
-		return typeof(this["ghostmode"]) == "undefined" || marauroa.me && marauroa.me.isAdmin();
+		return typeof (this["ghostmode"]) == "undefined" || marauroa.me && marauroa.me.isAdmin();
 	}
 
 	override buildActions(list: MenuItem[]) {
@@ -204,7 +211,7 @@ export class RPEntity extends ActiveEntity {
 	 *				 Text to display.
 	 */
 	addSpeechBubble(text: string) {
-		stendhal.ui.gamewindow.addTextSprite(new SpeechBubble(text, this));
+		stendhal.ui.gamewindow.showSpeechBubble(text, this);
 	}
 
 	addEmoji(emoji: HTMLImageElement) {
@@ -215,7 +222,7 @@ export class RPEntity extends ActiveEntity {
 	 * Checks if the entity should cast a shadow.
 	 */
 	public castsShadow(): boolean {
-		return typeof(this["no_shadow"]) === "undefined";
+		return typeof (this["no_shadow"]) === "undefined";
 	}
 
 	drawMultipartOutfit(ctx: CanvasRenderingContext2D) {
@@ -223,7 +230,7 @@ export class RPEntity extends ActiveEntity {
 		// layers in draw order
 		var layers = store.getLayerNames();
 
-		var outfit: {[key: string]: number} = {};
+		var outfit: { [key: string]: number } = {};
 		if ("outfit_ext" in this) {
 			for (const part of this["outfit_ext"].split(",")) {
 				if (part.includes("=")) {
@@ -235,10 +242,10 @@ export class RPEntity extends ActiveEntity {
 			layers = store.getLayerNames(true);
 
 			outfit["body"] = this["outfit"] % 100;
-			outfit["dress"] = Math.floor(this["outfit"]/100) % 100;
-			outfit["head"] = Math.floor(this["outfit"]/10000) % 100;
-			outfit["hair"] = Math.floor(this["outfit"]/1000000) % 100;
-			outfit["detail"] = Math.floor(this["outfit"]/100000000) % 100;
+			outfit["dress"] = Math.floor(this["outfit"] / 100) % 100;
+			outfit["head"] = Math.floor(this["outfit"] / 10000) % 100;
+			outfit["hair"] = Math.floor(this["outfit"] / 1000000) % 100;
+			outfit["detail"] = Math.floor(this["outfit"] / 100000000) % 100;
 		}
 
 		if (stendhal.config.getBoolean("effect.shadows") && this.castsShadow()) {
@@ -291,14 +298,14 @@ export class RPEntity extends ActiveEntity {
 	 * @param {number} body
 	 */
 	getOutfitPart(part: string, index: number, body: number) {
-		if (typeof(index) === "undefined" || index < 0) {
+		if (typeof (index) === "undefined" || index < 0) {
 			return null;
 		}
 
 		let n = "" + index;
 		if (index < 10) {
 			n = "00" + index;
-		} else if(index < 100) {
+		} else if (index < 100) {
 			n = "0" + index;
 		}
 
@@ -319,7 +326,7 @@ export class RPEntity extends ActiveEntity {
 		} else {
 			colorname = part;
 		}
-		if (typeof(colors) !== "undefined" && (typeof(colors[colorname]) !== "undefined")) {
+		if (typeof (colors) !== "undefined" && (typeof (colors[colorname]) !== "undefined")) {
 			return stendhal.data.sprites.getFiltered(filename, "trueColor", colors[colorname]);
 		} else {
 			return stendhal.data.sprites.get(filename);
@@ -332,10 +339,11 @@ export class RPEntity extends ActiveEntity {
 	 */
 	public setStatusBarOffset() {
 		const screenOffsetY = stendhal.ui.gamewindow.offsetY;
-		const entityBottom = (this["_y"] * 32) + (this["height"] * 32);
+		const renderTileY = this.getRenderTileY();
+		const entityBottom = (renderTileY * 32) + (this["height"] * 32);
 		// FIXME: how to get text height dynamically?
 		const entityTop = entityBottom - this["drawHeight"]
-				- HEALTH_BAR_HEIGHT - 26;
+			- HEALTH_BAR_HEIGHT - 26;
 
 		if (screenOffsetY > entityTop && screenOffsetY < entityBottom) {
 			this.statusBarYOffset = screenOffsetY - entityTop;
@@ -347,8 +355,8 @@ export class RPEntity extends ActiveEntity {
 	/**
 	 * draw RPEntities
 	 */
-	override draw(ctx: CanvasRenderingContext2D) {
-		if (typeof(this["ghostmode"]) != "undefined" && marauroa.me && !marauroa.me.isAdmin()) {
+	override draw(ctx: CanvasRenderingContext2D, _tileX?: number, _tileY?: number) {
+		if (typeof (this["ghostmode"]) != "undefined" && marauroa.me && !marauroa.me.isAdmin()) {
 			return;
 		}
 		this.drawCombat(ctx);
@@ -358,11 +366,11 @@ export class RPEntity extends ActiveEntity {
 	}
 
 	drawMain(ctx: CanvasRenderingContext2D) {
-		if (typeof(this["outfit"]) != "undefined" || typeof(this["outfit_ext"]) != "undefined") {
+		if (typeof (this["outfit"]) != "undefined" || typeof (this["outfit_ext"]) != "undefined") {
 			this.drawMultipartOutfit(ctx);
 		} else {
 			let filename = stendhal.paths.sprites + "/" + this.spritePath + "/" + this["class"];
-			if (typeof(this["subclass"]) != "undefined") {
+			if (typeof (this["subclass"]) != "undefined") {
 				filename = filename + "/" + this["subclass"];
 			}
 
@@ -378,7 +386,7 @@ export class RPEntity extends ActiveEntity {
 			if (stendhal.config.getBoolean("effect.shadows") && this.castsShadow()) {
 				// check for configured shadow style
 				let shadow_style = this["shadow_style"];
-				if (typeof(shadow_style) === "undefined") {
+				if (typeof (shadow_style) === "undefined") {
 					// default to sprite dimensions
 					shadow_style = (image.width / 3) + "x" + (image.height / 4);
 				}
@@ -386,7 +394,7 @@ export class RPEntity extends ActiveEntity {
 				const shadow = stendhal.data.sprites.getShadow(shadow_style);
 
 				// draw shadow first
-				if (typeof(shadow) !== "undefined") {
+				if (typeof (shadow) !== "undefined") {
 					this.drawSpriteImage(ctx, shadow);
 				}
 			}
@@ -405,7 +413,7 @@ export class RPEntity extends ActiveEntity {
 		function drawAnimatedIcon(iconPath: string, delay: number, x: number, y: number, fWidth?: number) {
 			var icon = stendhal.data.sprites.get(iconPath);
 			var dimH = icon.height;
-			var dimW = typeof(fWidth) !== "undefined" ? fWidth : dimH;
+			var dimW = typeof (fWidth) !== "undefined" ? fWidth : dimH;
 			var nFrames = icon.width / dimW;
 			_drawAnimatedIcon(icon, delay, nFrames, dimW, dimH, x, y);
 		}
@@ -416,8 +424,10 @@ export class RPEntity extends ActiveEntity {
 			_drawAnimatedIcon(icon, delay, nFrames, xdim, ydim, x, y);
 		}
 
-		var x = this["_x"] * 32 - 10;
-		var y = (this["_y"] + 1) * 32;
+		const tileX = this.getRenderTileX();
+		const tileY = this.getRenderTileY();
+		var x = tileX * 32 - 10;
+		var y = (tileY + 1) * 32;
 		if (this.hasOwnProperty("choking")) {
 			ctx.drawImage(stendhal.data.sprites.get(stendhal.paths.sprites + "/ideas/choking.png"), x, y - 10);
 		} else if (this.hasOwnProperty("eating")) {
@@ -429,10 +439,10 @@ export class RPEntity extends ActiveEntity {
 			const ani = stendhal.data.sprites.animations.idea[this["idea"]];
 			if (ani) {
 				drawAnimatedIcon(idea, ani.delay, x + ani.offsetX * this["width"],
-						y - this["drawHeight"] + ani.offsetY);
+					y - this["drawHeight"] + ani.offsetY);
 			} else {
 				ctx.drawImage(stendhal.data.sprites.get(idea), x + 32 * this["width"],
-						y - this["drawHeight"]);
+					y - this["drawHeight"]);
 			}
 		}
 		if (this.hasOwnProperty("away")) {
@@ -478,6 +488,9 @@ export class RPEntity extends ActiveEntity {
 	 * ellipses) when the entity is being attacked, or is attacking the user.
 	 */
 	drawCombat(ctx: CanvasRenderingContext2D) {
+		const tileX = this.getRenderTileX();
+		const tileY = this.getRenderTileY();
+
 		if (this.attackers.size > 0) {
 			ctx.lineWidth = 1;
 			/*
@@ -493,8 +506,8 @@ export class RPEntity extends ActiveEntity {
 			if (ctx.ellipse instanceof Function) {
 				var xRad = this["width"] * 16;
 				var yRad = this["height"] * 16 / Math.SQRT2;
-				var centerX = this["_x"] * 32 + xRad;
-				var centerY = (this["_y"] + this["height"]) * 32 - yRad;
+				var centerX = tileX * 32 + xRad;
+				var centerY = (tileY + this["height"]) * 32 - yRad;
 				ctx.strokeStyle = "#4a0000";
 				ctx.beginPath();
 				ctx.ellipse(centerX, centerY, xRad, yRad, 0, 0, Math.PI, false);
@@ -505,7 +518,7 @@ export class RPEntity extends ActiveEntity {
 				ctx.stroke();
 			} else {
 				ctx.strokeStyle = "#e60a0a";
-				ctx.strokeRect(32 * this["_x"], 32 * this["_y"], 32 * this["width"], 32 * this["height"]);
+				ctx.strokeRect(32 * tileX, 32 * tileY, 32 * this["width"], 32 * this["height"]);
 			}
 		}
 		if (this.getAttackTarget() === marauroa.me) {
@@ -514,8 +527,8 @@ export class RPEntity extends ActiveEntity {
 			if (ctx.ellipse instanceof Function) {
 				var xRad = this["width"] * 16 - 1;
 				var yRad = this["height"] * 16 / Math.SQRT2 - 1;
-				var centerX = this["_x"] * 32 + xRad + 1;
-				var centerY = (this["_y"] + this["height"]) * 32 - yRad - 1;
+				var centerX = tileX * 32 + xRad + 1;
+				var centerY = (tileY + this["height"]) * 32 - yRad - 1;
 				ctx.strokeStyle = "#ffc800";
 				ctx.beginPath();
 				ctx.ellipse(centerX, centerY, xRad, yRad, 0, 0, Math.PI, false);
@@ -526,11 +539,11 @@ export class RPEntity extends ActiveEntity {
 				ctx.stroke();
 			} else {
 				ctx.strokeStyle = "#ffdd0a";
-				ctx.strokeRect(32 * this["_x"] + 1, 32 * this["_y"] + 1, 32 * this["width"] - 2, 32 * this["height"] - 2);
+				ctx.strokeRect(32 * tileX + 1, 32 * tileY + 1, 32 * this["width"] - 2, 32 * this["height"] - 2);
 			}
 		}
 		if (this.attackResult) {
-			if (this.attackResult.draw(ctx, (this["_x"] + this["width"]) * 32 - 10, (this["_y"] + this["height"]) * 32 - 10)) {
+			if (this.attackResult.draw(ctx, (tileX + this["width"]) * 32 - 10, (tileY + this["height"]) * 32 - 10)) {
 				this.attackResult = undefined;
 			}
 		}
@@ -543,8 +556,10 @@ export class RPEntity extends ActiveEntity {
 	 * when the floater should be removed.
 	 */
 	drawFloaters(ctx: CanvasRenderingContext2D) {
-		var centerX = (this["_x"] + this["width"] / 2) * 32;
-		var topY = (this["_y"] + 1) * 32 - this["drawHeight"];
+		const tileX = this.getRenderTileX();
+		const tileY = this.getRenderTileY();
+		var centerX = (tileX + this["width"] / 2) * 32;
+		var topY = (tileY + 1) * 32 - this["drawHeight"];
 		// Grab an unchanging copy
 		var currentFloaters = this.floaters;
 		for (var i = 0; i < currentFloaters.length; i++) {
@@ -562,8 +577,10 @@ export class RPEntity extends ActiveEntity {
 	 * @param {Image} image
 	 */
 	drawSpriteImage(ctx: CanvasRenderingContext2D, image: CanvasImageSource & ImageWithDimensions) {
-		var localX = this["_x"] * 32;
-		var localY = this["_y"] * 32;
+		const tileX = this.getRenderTileX();
+		const tileY = this.getRenderTileY();
+		var localX = tileX * 32;
+		var localY = tileY * 32;
 		if (image.height) { // image.complete is true on missing image files
 			var nFrames = 3;
 			var nDirections = 4;
@@ -606,16 +623,18 @@ export class RPEntity extends ActiveEntity {
 			this["drawOffsetY"] = localY + drawY;
 
 			ctx.drawImage(image, frame * this["drawWidth"], yRow * this["drawHeight"], this["drawWidth"],
-					this["drawHeight"], this["drawOffsetX"], this["drawOffsetY"], this["drawWidth"],
-					this["drawHeight"]);
+				this["drawHeight"], this["drawOffsetX"], this["drawOffsetY"], this["drawWidth"],
+				this["drawHeight"]);
 			// restore opacity
 			ctx.globalAlpha = opacity_orig;
 		}
 	}
 
-	drawTop(ctx: CanvasRenderingContext2D) {
-		var localX = this["_x"] * 32;
-		var localY = this["_y"] * 32;
+	drawTop(ctx: CanvasRenderingContext2D, _tileX?: number, _tileY?: number) {
+		const tileX = this.getRenderTileX();
+		const tileY = this.getRenderTileY();
+		var localX = tileX * 32;
+		var localY = tileY * 32;
 		this.drawFloaters(ctx);
 		this.drawHealthBar(ctx, localX, localY + this.statusBarYOffset);
 		this.drawTitle(ctx, localX, localY + this.statusBarYOffset);
@@ -624,7 +643,7 @@ export class RPEntity extends ActiveEntity {
 	drawHealthBar(ctx: CanvasRenderingContext2D, x: number, y: number) {
 		var drawX = x + ((this["width"] * 32) - this["drawWidth"]) / 2;
 		var drawY = y + (this["height"] * 32) - this["drawHeight"]
-				- HEALTH_BAR_HEIGHT + this.titleDrawYOffset;
+			- HEALTH_BAR_HEIGHT + this.titleDrawYOffset;
 
 		ctx.strokeStyle = "#000000";
 		ctx.lineWidth = 2;
@@ -662,7 +681,7 @@ export class RPEntity extends ActiveEntity {
 		if (this.titleTextSprite) {
 			let textMetrics = this.titleTextSprite.getTextMetrics(ctx);
 			var drawY = y + (this["height"] * 32) - this["drawHeight"]
-					- HEALTH_BAR_HEIGHT + this.titleDrawYOffset;
+				- HEALTH_BAR_HEIGHT + this.titleDrawYOffset;
 			this.titleTextSprite.draw(ctx, x + (this["width"] * 32 - textMetrics.width) / 2, drawY - 5 - HEALTH_BAR_HEIGHT);
 		}
 	}
@@ -677,8 +696,10 @@ export class RPEntity extends ActiveEntity {
 			this.attackSprite = undefined;
 			return;
 		}
-		var localX = this["_x"] * 32;
-		var localY = this["_y"] * 32;
+		const tileX = this.getRenderTileX();
+		const tileY = this.getRenderTileY();
+		var localX = tileX * 32;
+		var localY = tileY * 32;
 		var localW = this["width"] * stendhal.ui.gamewindow.targetTileWidth;
 		var localH = this["height"] * stendhal.ui.gamewindow.targetTileHeight;
 		this.attackSprite.draw(ctx, localX, localY, localW, localH);
@@ -692,7 +713,7 @@ export class RPEntity extends ActiveEntity {
 	 */
 	private drawOverlayAnimation(ctx: CanvasRenderingContext2D) {
 		if (this.overlay && this.overlay.draw(ctx, this["drawOffsetX"], this["drawOffsetY"],
-				this["drawWidth"], this["drawHeight"])) {
+			this["drawWidth"], this["drawHeight"])) {
 			// overlay sprite expired
 			this.overlay = undefined;
 		}
@@ -714,20 +735,24 @@ export class RPEntity extends ActiveEntity {
 
 	onDamaged(_source: Entity, damage: number) {
 		this.attackResult = this.createResultIcon(stendhal.paths.sprites + "/combat/hitted.png");
-		var sounds = ["attack-melee-01", "attack-melee-02",	"attack-melee-03",
-				"attack-melee-04", "attack-melee-05", "attack-melee-06",
-				"attack-range-01", "attack-swing-01", "attack-slap-01",
-				"pol-attack-slash", "pol-attack-crash", "pol-attack-sword",
-				"pol-attack-swing", "pol-attack-kling"];
+		var sounds = ["attack-melee-01", "attack-melee-02", "attack-melee-03",
+			"attack-melee-04", "attack-melee-05", "attack-melee-06",
+			"attack-range-01", "attack-swing-01", "attack-slap-01",
+			"pol-attack-slash", "pol-attack-crash", "pol-attack-sword",
+			"pol-attack-swing", "pol-attack-kling"];
 		var index = Math.floor(Math.random() * Math.floor(sounds.length));
-		stendhal.sound.playLocalizedEffect(this["_x"], this["_y"], 20, 3, sounds[index], 1);
+		const tileX = this.getRenderTileX();
+		const tileY = this.getRenderTileY();
+		stendhal.sound.playLocalizedEffect(tileX, tileY, 20, 3, sounds[index], 1);
 	}
 
 	onBlocked(_source: Entity) {
 		this.attackResult = this.createResultIcon(stendhal.paths.sprites + "/combat/blocked.png");
 		var sounds = ["clang-metallic-1", "clang-dull-1"];
 		var index = Math.floor(Math.random() * Math.floor(sounds.length));
-		stendhal.sound.playLocalizedEffect(this["_x"], this["_y"], 20, 3, sounds[index], 1);
+		const tileX = this.getRenderTileX();
+		const tileY = this.getRenderTileY();
+		stendhal.sound.playLocalizedEffect(tileX, tileY, 20, 3, sounds[index], 1);
 	}
 
 	onMissed(_source: Entity) {
@@ -740,6 +765,31 @@ export class RPEntity extends ActiveEntity {
 		} else if (change < 0) {
 			this.addFloater(change.toString(), "#ff0000");
 		}
+	}
+
+	protected onDeath() {
+		if (this.attackers.size === 0) {
+			return;
+		}
+
+		const attackerNames = this.collectAttackerNames();
+		if (!attackerNames.length) {
+			return;
+		}
+
+		const victimName = this.getTitle();
+		if (!victimName) {
+			return;
+		}
+
+		const gender = this.getGender();
+		if (!gender) {
+			return;
+		}
+
+		const deathText = `${victimName} ${this.genderize(gender, "został", "została", "zostało")} `
+			+ `${this.genderize(gender, "zabity", "zabita", "zabite")} przez ${this.enumerateList(attackerNames)}`;
+		Chat.log("significant_negative", deathText);
 	}
 
 	protected onXPChanged(change: number) {
@@ -787,6 +837,72 @@ export class RPEntity extends ActiveEntity {
 		Chat.logH(msgtype, msg);
 	}
 
+	protected getGender(): string | undefined {
+		const gender = this["gender"];
+		if (typeof (gender) !== "string" || gender.length === 0) {
+			return undefined;
+		}
+		return gender.toLowerCase();
+	}
+
+	private collectAttackerNames(): string[] {
+		const names: string[] = [];
+		const seen = new Set<string>();
+		for (const attacker of this.attackers.values()) {
+			const name = this.resolveEntityName(attacker);
+			if (!name || seen.has(name)) {
+				continue;
+			}
+			seen.add(name);
+			names.push(name);
+		}
+		return names;
+	}
+
+	private resolveEntityName(entity: Entity): string | undefined {
+		if (!entity) {
+			return undefined;
+		}
+		if (typeof ((entity as any).getTitle) === "function") {
+			const title = (entity as any).getTitle();
+			if (typeof (title) === "string" && title.length > 0) {
+				return title;
+			}
+		}
+		const title = entity["title"] || entity["name"];
+		if (typeof (title) === "string" && title.length > 0) {
+			return title;
+		}
+		return undefined;
+	}
+
+	private enumerateList(items: string[]): string {
+		if (items.length === 1) {
+			return items[0];
+		}
+		if (items.length === 2) {
+			return `${items[0]} i ${items[1]}`;
+		}
+		const last = items[items.length - 1];
+		return `${items.slice(0, -1).join(", ")} i ${last}`;
+	}
+
+	private genderize(gender: string, male: string, female: string, neutral: string): string {
+		switch (gender) {
+			case "female":
+			case "f":
+			case "kobieta":
+				return female;
+			case "neutral":
+			case "n":
+			case "neuter":
+			case "bezpłciowy":
+				return neutral;
+			default:
+				return male;
+		}
+	}
+
 	addFloater(message: string, color: string) {
 		this.floaters.push(new Floater(message, color));
 	}
@@ -810,6 +926,14 @@ export class RPEntity extends ActiveEntity {
 		};
 	}
 
+	private normalizeEntityId(value: any): string | undefined {
+		if (value === null || typeof (value) === "undefined") {
+			return undefined;
+		}
+		const id = String(value);
+		return id.length > 0 ? id : undefined;
+	}
+
 	onAttackPerformed(nature: number, ranged: boolean, weapon?: string) {
 		if (!ranged && weapon === "ranged") {
 			// draw default melee sprite when next to target
@@ -818,7 +942,7 @@ export class RPEntity extends ActiveEntity {
 
 		if (ranged) {
 			this.attackSprite = new RangedAttackSprite(this, this.getAttackTarget()!,
-					Nature.VALUES[nature].color, weapon);
+				Nature.VALUES[nature].color, weapon);
 		} else {
 			/* use generic "blade_strike" sprite until weapon sprite frames ready
 			if (typeof(weapon) === "undefined") {
@@ -848,10 +972,11 @@ export class RPEntity extends ActiveEntity {
 	 * @param attacked The entity that selected this as the target
 	 */
 	onTargeted(attacker: Entity) {
-		if (!(attacker["id"] in this.attackers)) {
-			this.attackers[attacker["id"]] = true;
-			this.attackers.size += 1;
+		const attackerId = this.normalizeEntityId(attacker["id"]);
+		if (!attackerId || this.attackers.has(attackerId)) {
+			return;
 		}
+		this.attackers.set(attackerId, attacker);
 	}
 
 	/**
@@ -861,16 +986,18 @@ export class RPEntity extends ActiveEntity {
 	 * 	stopped attacking
 	 */
 	onAttackStopped(attacker: Entity) {
-		if (attacker["id"] in this.attackers) {
-			delete this.attackers[attacker["id"]];
-			this.attackers.size -= 1;
+		const attackerId = this.normalizeEntityId(attacker["id"]);
+		if (!attackerId) {
+			return;
 		}
+		this.attackers.delete(attackerId);
 	}
 
 	override destroy(_obj: Entity) {
 		if (this._target) {
 			this._target.onAttackStopped(this);
 		}
+		this.attackers.clear();
 	}
 
 	/**
