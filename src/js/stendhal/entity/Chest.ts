@@ -231,6 +231,7 @@ export class Chest extends PopupInventory {
                                         dstate.x, dstate.y);
                         windowInstance.setId("chest");
                         windowInstance.enableMinimizeButton(true);
+                        windowInstance.setFixedWidth(232);
                         this.inventory = windowInstance;
                 }
                 (this.inventory as FloatingWindow).setMinimized(false);

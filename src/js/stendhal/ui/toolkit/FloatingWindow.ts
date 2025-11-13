@@ -34,6 +34,7 @@ export class FloatingWindow extends Component {
         private minimizeEnabled = false;
         private minimized = false;
         private preferredWidth?: number;
+        private fixedWidth?: number;
 
         private windowId?: string;
 
@@ -107,7 +108,7 @@ export class FloatingWindow extends Component {
                 popupcontainer.appendChild(this.componentElement);
 
                 this.deferPreferredWidthCapture();
-	}
+        }
 
 
 	public close() {
@@ -286,7 +287,7 @@ export class FloatingWindow extends Component {
                 this.updateMinimizeButtonState();
                 this.playToggleSound();
 
-                if (!this.minimized) {
+                if (!this.minimized && this.fixedWidth === undefined) {
                         requestAnimationFrame(() => this.capturePreferredWidth());
                 }
         }
@@ -325,6 +326,11 @@ export class FloatingWindow extends Component {
         }
 
         private deferPreferredWidthCapture() {
+                if (this.fixedWidth !== undefined) {
+                        this.applyPreferredWidth();
+                        return;
+                }
+
                 if (typeof queueMicrotask === "function") {
                         queueMicrotask(() => this.capturePreferredWidth());
                         return;
@@ -334,6 +340,12 @@ export class FloatingWindow extends Component {
         }
 
         private ensurePreferredWidth() {
+                if (this.fixedWidth !== undefined) {
+                        this.preferredWidth = this.fixedWidth;
+                        this.applyPreferredWidth();
+                        return;
+                }
+
                 if (this.preferredWidth !== undefined) {
                         this.applyPreferredWidth();
                         return;
@@ -343,6 +355,12 @@ export class FloatingWindow extends Component {
         }
 
         private capturePreferredWidth() {
+                if (this.fixedWidth !== undefined) {
+                        this.preferredWidth = this.fixedWidth;
+                        this.applyPreferredWidth();
+                        return;
+                }
+
                 if (!this.componentElement.isConnected) {
                         return;
                 }
@@ -364,10 +382,22 @@ export class FloatingWindow extends Component {
 
                 const widthValue = `${this.preferredWidth}px`;
                 this.componentElement.style.minWidth = widthValue;
-                if (this.minimized) {
+
+                if (this.fixedWidth !== undefined || this.minimized) {
                         this.componentElement.style.width = widthValue;
                 } else {
                         this.componentElement.style.removeProperty("width");
                 }
+        }
+
+        public setFixedWidth(width: number) {
+                if (!Number.isFinite(width)) {
+                        return;
+                }
+
+                const sanitized = Math.max(1, Math.round(width));
+                this.fixedWidth = sanitized;
+                this.preferredWidth = sanitized;
+                this.applyPreferredWidth();
         }
 }
