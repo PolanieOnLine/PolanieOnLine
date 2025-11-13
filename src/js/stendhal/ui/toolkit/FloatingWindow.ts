@@ -33,6 +33,7 @@ export class FloatingWindow extends Component {
         private minimizeButton: HTMLButtonElement | null = null;
         private minimizeEnabled = false;
         private minimized = false;
+        private preferredWidth?: number;
 
         private windowId?: string;
 
@@ -102,8 +103,10 @@ export class FloatingWindow extends Component {
 		this.contentComponent.parentComponent = this;
 
 		// add window to DOM
-		let popupcontainer = document.getElementById("popupcontainer")!;
-		popupcontainer.appendChild(this.componentElement);
+                let popupcontainer = document.getElementById("popupcontainer")!;
+                popupcontainer.appendChild(this.componentElement);
+
+                this.deferPreferredWidthCapture();
 	}
 
 
@@ -273,6 +276,8 @@ export class FloatingWindow extends Component {
                         return;
                 }
 
+                this.ensurePreferredWidth();
+
                 this.minimized = nextState;
                 if (this.contentWrapper) {
                         this.contentWrapper.style.display = this.minimized ? "none" : "";
@@ -280,6 +285,10 @@ export class FloatingWindow extends Component {
                 this.componentElement.classList.toggle("windowdiv--minimized", this.minimized);
                 this.updateMinimizeButtonState();
                 this.playToggleSound();
+
+                if (!this.minimized) {
+                        requestAnimationFrame(() => this.capturePreferredWidth());
+                }
         }
 
         private toggleMinimized() {
@@ -312,6 +321,53 @@ export class FloatingWindow extends Component {
                         play.call(soundService, this.toggleSound);
                 } catch (err) {
                         console.warn("Unable to play window toggle sound", err);
+                }
+        }
+
+        private deferPreferredWidthCapture() {
+                if (typeof queueMicrotask === "function") {
+                        queueMicrotask(() => this.capturePreferredWidth());
+                        return;
+                }
+
+                setTimeout(() => this.capturePreferredWidth(), 0);
+        }
+
+        private ensurePreferredWidth() {
+                if (this.preferredWidth !== undefined) {
+                        this.applyPreferredWidth();
+                        return;
+                }
+
+                this.capturePreferredWidth();
+        }
+
+        private capturePreferredWidth() {
+                if (!this.componentElement.isConnected) {
+                        return;
+                }
+
+                const rect = this.componentElement.getBoundingClientRect();
+                const width = Math.ceil(rect.width);
+                if (!width) {
+                        return;
+                }
+
+                this.preferredWidth = width;
+                this.applyPreferredWidth();
+        }
+
+        private applyPreferredWidth() {
+                if (this.preferredWidth === undefined) {
+                        return;
+                }
+
+                const widthValue = `${this.preferredWidth}px`;
+                this.componentElement.style.minWidth = widthValue;
+                if (this.minimized) {
+                        this.componentElement.style.width = widthValue;
+                } else {
+                        this.componentElement.style.removeProperty("width");
                 }
         }
 }
