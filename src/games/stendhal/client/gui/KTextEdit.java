@@ -28,13 +28,12 @@ import java.io.Writer;
 import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 import javax.swing.DefaultBoundedRangeModel;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JComponent;
+import javax.swing.JEditorPane;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollBar;
@@ -72,14 +71,13 @@ import games.stendhal.client.gui.chatlog.HeaderLessEventLine;
 import games.stendhal.client.gui.textformat.StringFormatter;
 import games.stendhal.client.gui.textformat.StyleSet;
 import games.stendhal.client.sprite.EmojiStore;
-import games.stendhal.client.sprite.ImageSprite;
 import games.stendhal.common.MathHelper;
 import games.stendhal.common.NotificationType;
 
 /**
  * Appendable text component to be used as the chat log.
  */
-class KTextEdit extends JComponent {
+class KTextEdit extends JComponent implements ChatLogView {
 	/** Color of the time stamp written before the lines. */
 	protected static final Color HEADER_COLOR = new Color(210, 210, 210);
 
@@ -188,6 +186,7 @@ class KTextEdit extends JComponent {
 				}
 			}
 		};
+		textPane.putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, Boolean.TRUE);
 		textPane.setEditorKit(new WrapEditorKit());
 		textPane.setEditable(false);
 		textPane.setAutoscrolls(true);
@@ -284,11 +283,11 @@ class KTextEdit extends JComponent {
 		s = textPane.getStyle("emoji");
 		if (s == null) {
 			s = textPane.addStyle("emoji", regular);
-			StyleConstants.setFontFamily(s, "Noto Emoji");
-			StyleConstants.setBold(s, true);
 		}
+		StyleConstants.setFontFamily(s, EmojiStore.getFontFamily());
+		StyleConstants.setBold(s, false);
+		StyleConstants.setItalic(s, false);
 		StyleConstants.setFontSize(s, mainTextSize + 2);
-
 		//****** Styles used by the string formatter ******
 		StyleSet defaultAttributes = new StyleSet(StyleContext.getDefaultStyleContext(), regular);
 
@@ -369,29 +368,64 @@ class KTextEdit extends JComponent {
 	 * @param type type for formatting
 	 */
 	protected void insertText(String text, final NotificationType type) {
-		ChatTextSink dest = new ChatTextSink(textPane.getDocument());
-		final Color c = type.getColor();
-		Style s = getStyle(c, type.getStyleDescription());
+		final ChatTextSink dest = new ChatTextSink(textPane.getDocument(), textPane.getStyle("emoji"));
+		final Color color = type.getColor();
+		Style baseStyle = getStyle(color, type.getStyleDescription());
 
 		if (type.equals(NotificationType.EMOJI)) {
-			// get file path basename
-			text = new File(text).getName().replaceFirst("[.][^.]+$", "");
-			final Map<String, String> chatLogChars = EmojiStore.chatLogChars;
-			if (chatLogChars.containsKey(text)) {
-				text = chatLogChars.get(text);
-			} else {
-				s = getStyle(c, NotificationType.NORMALSTYLE);
-				text = ":" + text + ":";
-				final ImageSprite emoji = (ImageSprite) EmojiStore.get().create(text);
-				// FIXME: should icons get cached?
-				textPane.insertIcon(new ImageIcon(emoji.getImage()));
-				return;
+			text = normalizeEmojiText(text);
+			final Style emojiStyle = textPane.getStyle("emoji");
+			if (emojiStyle != null) {
+				baseStyle = emojiStyle;
 			}
 		}
-		final StyleSet set = new StyleSet(StyleContext.getDefaultStyleContext(), s);
-		set.setAttribute(StyleConstants.Foreground, c);
+
+		final StyleSet set = new StyleSet(StyleContext.getDefaultStyleContext(), baseStyle);
+		set.setAttribute(StyleConstants.Foreground, color);
 
 		formatter.format(text, set, dest);
+	}
+
+	private String normalizeEmojiText(final String text) {
+		if (text == null) {
+			return null;
+		}
+		final String trimmed = text.trim();
+		if (trimmed.isEmpty()) {
+			return trimmed;
+		}
+
+		final EmojiStore store = EmojiStore.get();
+		if (store.check(trimmed) != null) {
+			return trimmed;
+		}
+
+		String normalized = trimmed.replace('\\', '/');
+		final int slash = normalized.lastIndexOf('/');
+		if (slash != -1) {
+			normalized = normalized.substring(slash + 1);
+		}
+		final int dot = normalized.lastIndexOf('.');
+		if (dot != -1) {
+			normalized = normalized.substring(0, dot);
+		}
+
+		if (normalized.isEmpty()) {
+			return trimmed;
+		}
+
+		if (!normalized.startsWith(":")) {
+			normalized = ":" + normalized;
+		}
+		if (!normalized.endsWith(":")) {
+			normalized = normalized + ":";
+		}
+
+		if ((store.check(normalized) != null) || store.isAvailable(normalized)) {
+			return normalized;
+		}
+
+		return trimmed;
 	}
 
 	/**
@@ -475,35 +509,44 @@ class KTextEdit extends JComponent {
 	 *
 	 * @param line event line
 	 */
-	void addLine(final EventLine line) {
-		this.addLine(line.getHeader(), line.getText(), line.getType());
-	}
+        @Override
+        public void addLine(final EventLine line) {
+                this.addLine(line.getHeader(), line.getText(), line.getType());
+        }
 
-	/**
-	 * Clear the context.
-	 */
-	void clear() {
-		textPane.setText("");
-	}
+        /**
+         * Clear the context.
+         */
+        @Override
+        public void clear() {
+                textPane.setText("");
+        }
 
-	/**
-	 * Set the background color to be used normally, when not highlighting
-	 * unread messages.
-	 *
-	 * @param color background color
-	 */
-	void setDefaultBackground(Color color) {
-		defaultBackground = color;
-	}
+        /**
+         * Set the background color to be used normally, when not highlighting
+         * unread messages.
+         *
+         * @param color background color
+         */
+        @Override
+        public void setDefaultBackground(Color color) {
+                defaultBackground = color;
+        }
 
-	/**
-	 * Set the name of the logged channel.
-	 *
-	 * @param name channel name
-	 */
-	void setChannelName(String name) {
-		this.name = name;
-	}
+        /**
+         * Set the name of the logged channel.
+         *
+         * @param name channel name
+         */
+        @Override
+        public void setChannelName(String name) {
+                this.name = name;
+        }
+
+        @Override
+        public JComponent getComponent() {
+                return this;
+        }
 
 	/**
 	 * Set a clear warning for the user that there are new, unread lines.
