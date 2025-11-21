@@ -13,11 +13,17 @@ package games.stendhal.server.core.rule.defaultruleset;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.EnumMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.common.constants.Nature;
 import games.stendhal.server.core.rule.defaultruleset.creator.AbstractCreator;
 import games.stendhal.server.core.rule.defaultruleset.creator.AttributesItemCreator;
@@ -25,6 +31,7 @@ import games.stendhal.server.core.rule.defaultruleset.creator.DefaultItemCreator
 import games.stendhal.server.core.rule.defaultruleset.creator.FullItemCreator;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.behavior.UseBehavior;
+import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.status.PoisonAttackerFactory;
 import games.stendhal.server.entity.status.StatusAttacker;
 import games.stendhal.server.entity.status.StatusAttackerFactory;
@@ -37,6 +44,37 @@ import games.stendhal.server.entity.status.StatusType;
  * @author Matthias Totz, chad3f
  */
 public class DefaultItem {
+
+	/** Classes that should never receive rarity modifiers or badges. */
+	private static final Set<String> RARITY_EXCLUDED_CLASSES = Collections.unmodifiableSet(
+			new HashSet<String>(Arrays.asList(
+				"food",
+				"drink",
+				"ammunition",
+				"book",
+				"box",
+				"container",
+				"crystal",
+				"documents",
+				"flower",
+				"furniture",
+				"glyph",
+				"grower",
+				"herb",
+				"holiday",
+				"jewellery",
+				"key",
+				"magia",
+				"misc",
+				"missile",
+				"money",
+				"relic",
+				"resource",
+				"scent",
+				"scroll",
+				"special",
+				"token",
+				"tool")));
 
 	/** Implementation creator. */
 	private AbstractCreator<Item> creator;
@@ -106,6 +144,41 @@ public class DefaultItem {
 
 	public Map<String, String> getAttributes() {
 		return attributes;
+	}
+
+	/**
+	 * Returns a shallow copy of the configured attribute map. This allows callers to
+	 * adjust values without mutating the baseline configured in XML.
+	 *
+	 * @return copy of the attributes or {@code null}
+	 */
+	public Map<String, String> copyAttributes() {
+		if (attributes == null) {
+			return null;
+		}
+
+		return new LinkedHashMap<String, String>(attributes);
+	}
+
+	public boolean isRarityEligible() {
+		return isRarityEligible(slots, clazz);
+	}
+
+	private boolean isRarityEligible(List<String> equipSlots, String itemClass) {
+		if ((itemClass != null) && RARITY_EXCLUDED_CLASSES.contains(itemClass)) {
+			return false;
+		}
+		if ((itemClass != null) && RPEntity.getWeaponClasses().contains(itemClass)) {
+			return true;
+		}
+		if ((equipSlots != null) && !equipSlots.isEmpty()) {
+			for (String slot : equipSlots) {
+				if (RPEntity.getEquipmentSlotNames().contains(slot)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	public void setAttributes(final Map<String, String> attributes) {
@@ -263,8 +336,11 @@ public class DefaultItem {
 	 *
 	 * @return An item, or <code>null</code> on error.
 	 */
-	public Item getItem() {
+	public Item createItem() {
+		return createItem(null);
+	}
 
+	public Item createItem(ItemRarity forcedRarity) {
 		/*
 		 * Just in case - Really should generate fatal error up front (in
 		 * ItemXMLLoader).
@@ -309,6 +385,16 @@ public class DefaultItem {
 			}
 
 			item.setUseBehavior(useBehavior);
+
+			Map<String, String> baseAttributes = copyAttributes();
+			boolean rarityEligible = isRarityEligible(slots, clazz);
+			boolean applyRarity = rarityEligible && (forcedRarity != null);
+			if (applyRarity) {
+				item.applyRarity(forcedRarity, baseAttributes, value);
+			} else {
+				item.applyRarity(ItemRarity.COMMON, baseAttributes, value, false);
+			}
+			item.setRarityBadgeVisible(applyRarity);
 		}
 
 		return item;

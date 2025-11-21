@@ -25,6 +25,7 @@ import org.apache.log4j.Logger;
 
 import games.stendhal.common.Level;
 import games.stendhal.common.Rand;
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.common.constants.Nature;
 import games.stendhal.common.constants.Occasion;
 import games.stendhal.common.constants.SoundLayer;
@@ -899,34 +900,46 @@ public class Creature extends NPC {
 		final List<Item> list = new LinkedList<Item>();
 
 		for (final DropItem dropped : dropsItems) {
-			final double probability = Rand.rand(1000000) / 10000.0;
+			final double roll = Rand.rand(1000000) / 10000.0;
+			final double baseProbability = dropped.probability / SERVER_DROP_GENEROSITY;
+			final boolean rarityEligible = defaultEntityManager.isItemRarityEligible(dropped.name);
+			ItemRarity chosenRarity = ItemRarity.COMMON;
+			double effectiveProbability = Math.min(100.0, baseProbability);
 
-			if (probability <= (dropped.probability / SERVER_DROP_GENEROSITY)) {
-				final Item item = defaultEntityManager.getItem(dropped.name);
-				if (item == null) {
-					LOGGER.error("Unable to create item: " + dropped.name);
-					continue;
-				}
+			if (rarityEligible) {
+				chosenRarity = ItemRarity.rollRandom();
+				effectiveProbability = Math.min(100.0,
+						baseProbability * chosenRarity.getDropRateModifier());
+			}
 
-				final int quantity;
-				if (dropped.min == dropped.max) {
-					quantity = dropped.min;
-				} else {
-					quantity = Rand.randUniform(dropped.max, dropped.min);
-				}
+			if (roll > effectiveProbability) {
+				continue;
+			}
 
-				if (item instanceof StackableItem) {
-					final StackableItem stackItem = (StackableItem) item;
-					stackItem.setQuantity(quantity);
-					list.add(stackItem);
-				} else {
-					for (int count = 0; count < quantity; count++) {
-						if (count == 0) {
-							list.add(item);
-						} else {
-							// additional items must be new instances
-							list.add(new Item(item));
-						}
+			final Item item = defaultEntityManager.getItem(dropped.name, chosenRarity);
+			if (item == null) {
+				LOGGER.error("Unable to create item: " + dropped.name);
+				continue;
+			}
+
+			final int quantity;
+			if (dropped.min == dropped.max) {
+				quantity = dropped.min;
+			} else {
+				quantity = Rand.randUniform(dropped.max, dropped.min);
+			}
+
+			if (item instanceof StackableItem) {
+				final StackableItem stackItem = (StackableItem) item;
+				stackItem.setQuantity(quantity);
+				list.add(stackItem);
+			} else {
+				for (int count = 0; count < quantity; count++) {
+					if (count == 0) {
+						list.add(item);
+					} else {
+						// additional items must be new instances
+						list.add(new Item(item));
 					}
 				}
 			}
