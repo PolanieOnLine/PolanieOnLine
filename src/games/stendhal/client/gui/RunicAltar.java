@@ -22,6 +22,7 @@ import javax.swing.JComponent;
 import org.apache.log4j.Logger;
 
 import games.stendhal.client.GameObjects;
+import games.stendhal.client.UserContext;
 import games.stendhal.client.entity.ContentChangeListener;
 import games.stendhal.client.entity.IEntity;
 import games.stendhal.client.entity.User;
@@ -95,7 +96,18 @@ class RunicAltar implements ContentChangeListener {
 		right.add(createItemPanel(itemClass, store, "healing_rune", "data/gui/rune-healing.png"));
 		right.add(createItemPanel(itemClass, store, "resistance_rune", "data/gui/rune-resistance.png"));
 
-		InternalManagedWindow window = new InternalManagedWindow("runicaltar", "Ołtarz Runiczny");
+                InternalManagedWindow window = new InternalManagedWindow("runicaltar", "Ołtarz Runiczny") {
+                        private static final long serialVersionUID = 1L;
+
+                        @Override
+                        public void setVisible(boolean visible) {
+                                boolean allow = visible;
+                                if (visible && !UserContext.get().hasFeature("runicaltar")) {
+                                        allow = false;
+                                }
+                                super.setVisible(allow);
+                        }
+                };
 		window.setContent(content);
 		window.setHideOnClose(true);
 		window.setMinimizable(true);

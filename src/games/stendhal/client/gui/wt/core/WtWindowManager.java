@@ -273,11 +273,23 @@ public final class WtWindowManager {
 	 * @param state new minimization state. <code>true</code> if minimized,
 	 * 	<code>false</code> otherwise
 	 */
-	public void setMinimized(final ManagedWindow window, final boolean state) {
-		final WindowConfiguration config = getConfig(window);
+        public void setMinimized(final ManagedWindow window, final boolean state) {
+                final WindowConfiguration config = getConfig(window);
 
-		config.minimized = state;
-	}
+                config.minimized = state;
+        }
+
+        /**
+         * Notify a window's visibility has changed.
+         *
+         * @param window changed window
+         * @param state <code>true</code> if the window is visible,
+         *      <code>false</code> otherwise
+         */
+        public void setVisible(final ManagedWindow window, final boolean state) {
+                final WindowConfiguration config = getConfig(window);
+                config.visible = state;
+        }
 
 	/** encapsulates the configuration of a window. */
 	private static final class WindowConfiguration {
