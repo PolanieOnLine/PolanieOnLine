@@ -22,7 +22,8 @@ public class Player extends RPEntity {
 	// Grumpy property.
 	public static final Property PROP_GRUMPY = new Property();
 	// Player killer property.
-	public static final Property PROP_PLAYER_KILLER = new Property();
+        public static final Property PROP_PLAYER_KILLER = new Property();
+        public static final Property PROP_SKILL_TREE = new Property();
 
 	private static final String LAST_PLAYER_KILL_TIME = "last_player_kill_time";
 
@@ -146,15 +147,19 @@ public class Player extends RPEntity {
 			onAway(changes.get("away"));
 		}
 
-		if (changes.has("grumpy")) {
-			onGrumpy(changes.get("grumpy"));
-		}
+                if (changes.has("grumpy")) {
+                        onGrumpy(changes.get("grumpy"));
+                }
 
-		if (changes.has(LAST_PLAYER_KILL_TIME)) {
-			badboy = true;
-			fireChange(PROP_PLAYER_KILLER);
-		}
-	}
+                if (changes.has(LAST_PLAYER_KILL_TIME)) {
+                        badboy = true;
+                        fireChange(PROP_PLAYER_KILLER);
+                }
+
+                if (changes.has("skill_points_available") || changes.has("skilltree_firemage")) {
+                        fireChange(PROP_SKILL_TREE);
+                }
+        }
 
 	/**
 	 * The object removed attribute(s).
@@ -174,9 +179,13 @@ public class Player extends RPEntity {
 		if (changes.has("grumpy")) {
 			onGrumpy(null);
 		}
-		if (changes.has(LAST_PLAYER_KILL_TIME)) {
-			badboy = false;
-			fireChange(PROP_PLAYER_KILLER);
-		}
-	}
+                if (changes.has(LAST_PLAYER_KILL_TIME)) {
+                        badboy = false;
+                        fireChange(PROP_PLAYER_KILLER);
+                }
+
+                if (changes.has("skill_points_available") || changes.has("skilltree_firemage")) {
+                        fireChange(PROP_SKILL_TREE);
+                }
+        }
 }

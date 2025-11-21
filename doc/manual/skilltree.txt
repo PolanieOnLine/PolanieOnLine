@@ -1,0 +1,63 @@
+[Skill Tree Interface]
+	- Wpisz /skilltree, aby otworzyć okno maga ognia.
+	- Użyj /skilltree unlock <kod>, by wydać 1 punkt i odblokować wskazany węzeł.
+	- W legendzie okna: [✔] odblokowane, [☆] gotowe do zakupu, [✖] brak wymagań, [⛔] brak punktów.
+	- Stan drzewka jest zapisywany w atrybutach postaci i synchronizowany z serwerem.
+
+[Punkty Umiejętności]
+	- Nowi magowie ognia startują z 2 punktami umiejętności.
+	- Każdy węzeł kosztuje 1 punkt. Kolejne źródła punktów (zadania, rytuały) zostaną dodane później.
+	- Po odblokowaniu węzła punkty są odejmowane natychmiast i okno aktualizuje się automatycznie.
+
+[Gałęzie Maga Ognia]
+	Fire Dart (podstawa, dostępny od startu)
+		Skupienie (FOC)
+			FOC_1	+10% mocy zaklęć ognia.
+			FOC_2	+15% obrażeń; odblokowuje Fire Bolt.
+			FOC_3	Wymagany do Fire Dart Rain.
+			FOC_4	Dodatkowy wzrost mocy pojedynczego pocisku.
+			FOC_5	Maksymalna forma Fire Dart.
+		Rozszerzenie (EXT)
+			EXT_1	Dwa pociski w jednej salwie.
+			EXT_2	Trzy pociski, przygotowanie pod salwę.
+			EXT_3	Warunek Fire Dart Rain.
+			EXT_4	Wzorzec salwy obszarowej.
+			EXT_5	Pełne przygotowanie Fire Dart Rain.
+
+	Fire Bolt (wymaga FOC_2)
+		Skupienie
+			FIRE_BOLT_FOC_1	Dodatkowe obrażenia pojedynczego trafienia.
+			FIRE_BOLT_FOC_2	Większa penetracja odporności.
+			FIRE_BOLT_FOC_3	Otwarcie Fire Dart Rain.
+		Rozszerzenie
+			FIRE_BOLT_EXT_1..4	Seria ulepszeń zwiększających siłę trafienia jednego celu.
+
+	Burn
+		BURN_FOC_1	Silniejszy status podpalenia.
+		BURN_FOC_2	Status trwa o 1 s dłużej.
+		BURN_FOC_3	Maksymalna moc podpalenia.
+
+	Fire Dart Rain (wymaga EXT_5 i FOC_3)
+		FIRE_DART_RAIN_FOC_1	+10% obrażeń obszarowych.
+		FIRE_DART_RAIN_FOC_2	Większy promień rażenia.
+		FIRE_DART_RAIN_FOC_3	Maksymalne obrażenia na obszarze.
+
+	Burning Fire Dart (wymaga Fire Dart i Burn)
+		Płonące skupienie (BFOC)
+			BFOC_1	Wzmocnione obrażenia DoT.
+			BFOC_2	DoT trwa dłużej o 1 s.
+			BFOC_3	Potrójne obrażenia DoT.
+		Skupienie pocisku (DFOC)
+			DFOC_1..3	Zwiększają obrażenia w chwili trafienia.
+		Rozszerzenie pocisku (DEXT)
+			DEXT_1..3	Dodają kolejne trafienia pocisku przy uderzeniu.
+
+[Powiązania]
+	- Fire Bolt wymaga odblokowania FOC_2 z gałęzi Fire Dart.
+	- Fire Dart Rain wymaga EXT_5 i FOC_3 z Fire Dart.
+	- Burning Fire Dart wymaga ukończenia Burn oraz bazowego Fire Dart.
+
+[Efekty w rozgrywce]
+	- Premie do obrażeń zaklęć ognia wynikają z sumy bonusów FOC/DFOC i wpływają bezpośrednio na kalkulację obrażeń.
+	- Wzmocnienia podpalenia (BURN_FOC, BFOC) zwiększają mnożnik obrażeń ciągłych oraz długość statusu.
+	- Jeśli zabraknie punktów lub wymagań, węzeł zostaje oznaczony odpowiednim symbolem w oknie.

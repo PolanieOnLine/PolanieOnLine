@@ -74,6 +74,7 @@ import games.stendhal.server.entity.slot.Slots;
 import games.stendhal.server.entity.status.StatusType;
 import games.stendhal.server.events.PrivateTextEvent;
 import games.stendhal.server.events.SoundEvent;
+import games.stendhal.server.skilltree.SkillTreeService;
 import marauroa.common.game.RPEvent;
 import marauroa.common.game.RPObject;
 import marauroa.common.game.RPSlot;
@@ -3472,11 +3473,12 @@ public class Player extends DressedEntity implements UseListener {
 	 * This is overridden to reduce damage done by players to creatures
 	 * to make up for the increased hit chance.
 	 */
-	@Override
-	public int damageDone(final RPEntity defender, double attackingWeaponsValue, final Nature damageType) {
-		// compensate for player hit chance handicap
-		return (int) Math.round(super.damageDone(defender, attackingWeaponsValue, damageType) / 1.35);
-	}
+        @Override
+        public int damageDone(final RPEntity defender, double attackingWeaponsValue, final Nature damageType) {
+                double baseDamage = super.damageDone(defender, attackingWeaponsValue, damageType) / 1.35;
+                double modifier = SkillTreeService.getDamageModifier(this, damageType);
+                return (int) Math.round(baseDamage * modifier);
+        }
 
 	/**
 	 * Gets an item that is carried by the RPEntity. If the item is stackable, gets all that are on
