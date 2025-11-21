@@ -42,6 +42,7 @@ import games.stendhal.server.entity.npc.condition.TransitionMayBeExecutedConditi
 import games.stendhal.server.entity.npc.fsm.Engine;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.events.ChatOptionsEvent;
+import games.stendhal.server.events.ProducerWindowEvent;
 
 public class ProducerAdder {
 	private static final Logger logger = Logger.getLogger(ProducerAdder.class);
@@ -140,10 +141,22 @@ public class ProducerAdder {
 		}
 
 		engine.add(ConversationStates.ATTENDING,
-			behaviour.getProductionActivity(),
-			new AndCondition(new SentenceHasErrorCondition(), setQuestCondition(questComplete)),
-			false, ConversationStates.ATTENDING,
-			null, new ComplainAboutSentenceErrorAction());
+				behaviour.getProductionActivity(),
+				new AndCondition(new SentenceHasErrorCondition(), setQuestCondition(questComplete)),
+				false, ConversationStates.ATTENDING,
+				null, new ComplainAboutSentenceErrorAction());
+
+		engine.add(ConversationStates.ATTENDING,
+				ConversationPhrases.PRODUCTION_MESSAGES,
+				null,
+				true, ConversationStates.ATTENDING,
+				null, new ChatAction() {
+					@Override
+					public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
+						player.addEvent(new ProducerWindowEvent(npc.getName(), npc.getTitle()));
+						player.notifyWorldAboutChanges();
+					}
+				});
 
 		/**
 		 * In the behaviour a production activity is defined, e.g. 'cast' or 'mill'
@@ -151,15 +164,22 @@ public class ProducerAdder {
 		 * currently producing for player (not started, is rejected, or is complete).
 		 */
 		engine.add(ConversationStates.ATTENDING,
-			behaviour.getProductionActivity(),
-			new AndCondition(
-				new NotCondition(new SentenceHasErrorCondition()),
-				new QuestNotActiveCondition(QUEST_SLOT),
-				setQuestCondition(questComplete)),
-			false, ConversationStates.ATTENDING,
-			null, new ProducerBehaviourAction(behaviour) {
-				@Override
-				public void fireRequestOK(final ItemParserResult res, final Player player, final Sentence sentence, final EventRaiser npc) {
+				behaviour.getProductionActivity(),
+				new AndCondition(
+					new NotCondition(new SentenceHasErrorCondition()),
+					new QuestNotActiveCondition(QUEST_SLOT),
+					setQuestCondition(questComplete)),
+				false, ConversationStates.ATTENDING,
+				null, new ProducerBehaviourAction(behaviour) {
+					@Override
+                                       public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
+                                               player.addEvent(new ProducerWindowEvent(npc.getName(), npc.getTitle()));
+                                               player.notifyWorldAboutChanges();
+                                               super.fire(player, sentence, npc);
+                                       }
+
+					@Override
+					public void fireRequestOK(final ItemParserResult res, final Player player, final Sentence sentence, final EventRaiser npc) {
 					// Find out how much items we shall produce.
 					if (res.getAmount() > 1000) {
 						logger.warn("Decreasing very large amount of "
