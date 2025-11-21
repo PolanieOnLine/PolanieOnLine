@@ -107,6 +107,7 @@ public class PlayerTransformer implements Transformer {
 		}
 
 		UpdateConverter.updateMoneyPouch(player);
+		UpdateConverter.updateBaseHP(player);
 
 		// update player with 'outfit_ext' attribute
 		if (!player.has("outfit_ext")) {

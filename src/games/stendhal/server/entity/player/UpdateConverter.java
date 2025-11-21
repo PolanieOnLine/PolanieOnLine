@@ -21,6 +21,7 @@ import org.apache.log4j.Logger;
 
 import games.stendhal.common.ItemTools;
 import games.stendhal.common.KeyedSlotUtil;
+import games.stendhal.common.MathHelper;
 import games.stendhal.common.constants.Testing;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.events.LoginListener;
@@ -838,6 +839,92 @@ public abstract class UpdateConverter {
 			oldSlot.clear();
 			player.removeSlot(oldSlot.getName());
 		}
+	}
+
+	public static void updateBaseHP(final Player player) {
+		if (player.getAdminLevel() > 0) {
+			return;
+		}
+
+		final int expectedBaseHP = calculateBaseHP(player);
+
+		if (player.getBaseHP() != expectedBaseHP) {
+			player.setBaseHP(expectedBaseHP);
+			if (player.getHP() > expectedBaseHP) {
+				player.setHP(expectedBaseHP);
+			}
+		}
+	}
+
+	private static int calculateBaseHP(final Player player) {
+		int baseHP = 100 + (player.getLevel() * 10);
+
+		baseHP += getRebornBonus(player);
+		baseHP += getQuestHealthBonus(player);
+		return baseHP;
+	}
+
+	private static int getRebornBonus(final Player player) {
+		if (!player.hasQuest("reset_level")) {
+			return 0;
+		}
+
+		final String rebornState = player.getQuest("reset_level");
+		int rebornCount = 0;
+
+		for (final String part : rebornState.split(";")) {
+			if (part.startsWith("reborn_")) {
+				rebornCount = Math.max(rebornCount,
+					MathHelper.parseIntDefault(part.substring("reborn_".length()), rebornCount));
+			} else {
+				final int parsedValue = MathHelper.parseIntDefault(part, rebornCount);
+				rebornCount = Math.max(rebornCount, parsedValue);
+				if ("done_reborn".equals(part)) {
+					rebornCount = Math.max(rebornCount, 1);
+				}
+			}
+		}
+
+		rebornCount = Math.min(rebornCount, 5);
+
+		int bonus = Math.min(rebornCount, 4) * 1000;
+		if (rebornCount >= 5) {
+			bonus += 2000;
+		}
+
+		return bonus;
+	}
+
+	private static int getQuestHealthBonus(final Player player) {
+		int bonus = 0;
+
+		if (player.isQuestInState("kill_herszt_basehp", "done")) {
+			bonus += 20;
+		}
+		if (player.isQuestInState("help_wielkolud_basehp", "done")) {
+			bonus += 10;
+		}
+		if (player.isQuestInState("kill_dragons", "done")) {
+			bonus += 150;
+		}
+		if (player.isQuestInState("prosby_wiedzmy", "done")) {
+			bonus += 20;
+		}
+		if (player.hasQuest("lucky_four_leaf_clover")
+				&& (MathHelper.parseIntDefault(player.getQuest("lucky_four_leaf_clover", 1), 0) > 0)) {
+			bonus += 150;
+		}
+		if (player.isQuestInState("find_ghosts", "done")) {
+			bonus += 100;
+		}
+		if (player.isQuestInState("ratownik", "done")) {
+			bonus += 10;
+		}
+		if (player.isQuestInState("krasnolud", "done")) {
+			bonus += 50;
+		}
+
+		return bonus;
 	}
 
 	private static void fixBaseHPAfterRebornQuest(Player player) {
