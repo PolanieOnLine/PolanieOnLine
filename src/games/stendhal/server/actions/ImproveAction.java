@@ -81,7 +81,7 @@ public class ImproveAction implements ActionListener {
 		return entity != null && entity.getName() != null && entity.getName().contains(BLACKSMITH_KEYWORD);
 	}
 
-	private void handleList(final Player player, final SpeakerNPC npc) {
+		private void handleList(final Player player, final SpeakerNPC npc) {
 		final ImproverAdder improverAdder = new ImproverAdder();
 		final StringBuilder builder = new StringBuilder();
 		boolean firstItem = true;
@@ -108,8 +108,9 @@ public class ImproveAction implements ActionListener {
 			builder.append("{");
 			builder.append("\"id\":").append(item.getID().getObjectID()).append(",");
 			builder.append("\"name\":\"").append(escape(item.getName())).append("\",");
-			if (item.getEntityClass() != null) {
-				builder.append("\"icon\":\"").append(escape(item.getEntityClass())).append("\",");
+			final String icon = extractIcon(item);
+			if (icon != null) {
+				builder.append("\"icon\":\"").append(escape(icon)).append("\",");
 			}
 			builder.append("\"improve\":").append(item.getImprove()).append(",");
 			builder.append("\"max\":").append(item.getMaxImproves()).append(",");
@@ -124,7 +125,7 @@ public class ImproveAction implements ActionListener {
 		player.notifyWorldAboutChanges();
 	}
 
-	private void handleUpgrade(final Player player, final RPAction action, final SpeakerNPC npc) {
+		private void handleUpgrade(final Player player, final RPAction action, final SpeakerNPC npc) {
 		if (!action.has(ITEM_ID)) {
 			player.sendPrivateText(NotificationType.ERROR, "Nie wybrano przedmiotu do ulepszenia.");
 			return;
@@ -139,24 +140,24 @@ public class ImproveAction implements ActionListener {
 
 		final ImproverAdder improverAdder = new ImproverAdder();
 		if (!improverAdder.canImproveItem(item)) {
-			sendResult(player, npc, false, "Tego przedmiotu nie da się ulepszyć.", itemId, item.getName(), item.getEntityClass());
+			sendResult(player, npc, false, "Tego przedmiotu nie da się ulepszyć.", itemId, item.getName(), extractIcon(item));
 			return;
 		}
 
 		final Map<String, Integer> requirements = improverAdder.getUpgradeRequirements(item);
 		if (requirements == null) {
-			sendResult(player, npc, false, "Brak danych o wymaganych surowcach.", itemId, item.getName(), item.getEntityClass());
+			sendResult(player, npc, false, "Brak danych o wymaganych surowcach.", itemId, item.getName(), extractIcon(item));
 			return;
 		}
 
 		final int fee = improverAdder.computeUpgradeFee(player, item);
 		if (!MoneyUtils.hasEnoughMoney(player, fee)) {
-			sendResult(player, npc, false, "Nie masz wystarczająco pieniędzy.", itemId, item.getName(), item.getEntityClass());
+			sendResult(player, npc, false, "Nie masz wystarczająco pieniędzy.", itemId, item.getName(), extractIcon(item));
 			return;
 		}
 
 		if (!improverAdder.hasRequiredResources(player, item)) {
-			sendResult(player, npc, false, "Brakuje wymaganych surowców.", itemId, item.getName(), item.getEntityClass());
+			sendResult(player, npc, false, "Brakuje wymaganych surowców.", itemId, item.getName(), extractIcon(item));
 			return;
 		}
 
@@ -176,14 +177,30 @@ public class ImproveAction implements ActionListener {
 			message = "Ulepszenie nie powiodło się. Zwracam część kosztów.";
 		}
 
-		sendResult(player, npc, success, message, itemId, item.getName(), item.getEntityClass());
+		sendResult(player, npc, success, message, itemId, item.getName(), extractIcon(item));
 		player.notifyWorldAboutChanges();
 	}
 
-	private void sendResult(final Player player, final SpeakerNPC npc, final boolean success, final String message,
-	final int itemId, final String itemName, final String icon) {
-		player.addEvent(new ImproveResultEvent(npc.getName(), success, message, itemId, itemName, icon));
-	}
+		private String extractIcon(final Item item) {
+			if (item == null) {
+				return null;
+			}
+
+			if (item.has("subclass")) {
+				return item.get("subclass");
+			}
+
+			if (item.has("class")) {
+				return item.get("class");
+			}
+
+			return null;
+		}
+
+		private void sendResult(final Player player, final SpeakerNPC npc, final boolean success, final String message,
+				final int itemId, final String itemName, final String icon) {
+			player.addEvent(new ImproveResultEvent(npc.getName(), success, message, itemId, itemName, icon));
+		}
 
 	private Item findItem(final Player player, final int itemId) {
 		for (final Item item : player.getAllCarriedItems()) {
