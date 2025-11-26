@@ -50,7 +50,11 @@ public class ImproveResultEvent extends RPEvent {
 		super(IMPROVE_RESULT);
 
 		put(NPC, npc);
-		put(SUCCESS, success);
+		/*
+		 * Flags expect string values; store explicit boolean text so the client
+		 * always receives the success attribute.
+		 */
+		put(SUCCESS, Boolean.toString(success));
 		put(MESSAGE, message);
 		put(ITEM_ID, itemId);
 		put(ITEM_NAME, itemName);
