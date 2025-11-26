@@ -15,6 +15,7 @@ import static games.stendhal.common.constants.Actions.IMPROVE_DO;
 import static games.stendhal.common.constants.Actions.IMPROVE_LIST;
 import static games.stendhal.common.constants.Actions.ITEM_ID;
 import static games.stendhal.common.constants.Actions.NPC;
+import static games.stendhal.common.constants.Actions.TARGET;
 
 import java.util.Locale;
 import java.util.Map;
@@ -62,13 +63,21 @@ public class ImproveAction implements ActionListener {
 	}
 
 	private SpeakerNPC requireBlacksmith(final Player player, final RPAction action) {
-		final String npcName = action.get(NPC);
-		if (npcName == null) {
-			player.sendPrivateText(NotificationType.ERROR, "Brakuje informacji o kowalu.");
-			return null;
+		String npcName = action.get(NPC);
+		Entity target = null;
+
+		if (npcName != null) {
+			target = EntityHelper.entityFromTargetName(npcName, player);
 		}
 
-		final Entity target = EntityHelper.entityFromTargetName(npcName, player);
+		// Fallback for clients that only send a target reference instead of the NPC name
+		if (target == null && action.has(TARGET)) {
+			target = EntityHelper.entityFromTargetName(action.get(TARGET), player);
+			if (target != null) {
+				npcName = target.getName();
+			}
+		}
+
 		if (!(target instanceof SpeakerNPC) || !isTworzymir(target)) {
 			player.sendPrivateText(NotificationType.ERROR, "Musisz być przy kowalu Tworzymirze, aby ulepszać przedmioty.");
 			return null;
