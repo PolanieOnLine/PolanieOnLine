@@ -24,15 +24,17 @@ import games.stendhal.common.NotificationType;
 import games.stendhal.server.actions.ActionListener;
 import games.stendhal.server.actions.CommandCenter;
 import games.stendhal.server.entity.Entity;
+import games.stendhal.server.core.engine.GameEvent;
+import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.money.MoneyUtils;
+import games.stendhal.server.entity.npc.NPC;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.ImproverAdder;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.events.ImproveListEvent;
 import games.stendhal.server.events.ImproveResultEvent;
 import games.stendhal.server.util.EntityHelper;
-import games.stendhal.server.core.engine.GameEvent;
 import marauroa.common.game.RPAction;
 
 public class ImproveAction implements ActionListener {
@@ -78,6 +80,22 @@ public class ImproveAction implements ActionListener {
 			}
 		}
 
+		// Last resort: find Tworzymir in the current zone if the client provided no
+		// usable reference. This keeps upgrades working when only the context menu
+		// click is known server-side.
+		if (target == null) {
+			final StendhalRPZone zone = player.getZone();
+			if (zone != null) {
+				for (final NPC candidate : zone.getNPCList()) {
+					if ((candidate instanceof SpeakerNPC) && isTworzymir(candidate) && player.isInSight(candidate)) {
+						target = candidate;
+						npcName = candidate.getName();
+						break;
+					}
+				}
+			}
+		}
+
 		if (!(target instanceof SpeakerNPC) || !isTworzymir(target)) {
 			player.sendPrivateText(NotificationType.ERROR, "Musisz być przy kowalu Tworzymirze, aby ulepszać przedmioty.");
 			return null;
@@ -90,7 +108,7 @@ public class ImproveAction implements ActionListener {
 		return entity != null && entity.getName() != null && entity.getName().contains(BLACKSMITH_KEYWORD);
 	}
 
-		private void handleList(final Player player, final SpeakerNPC npc) {
+	private void handleList(final Player player, final SpeakerNPC npc) {
 		final ImproverAdder improverAdder = new ImproverAdder();
 		final StringBuilder builder = new StringBuilder();
 		boolean firstItem = true;
