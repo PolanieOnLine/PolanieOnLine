@@ -31,9 +31,10 @@ export class ItemImprovementController {
 		* Requests the improvement list for the given NPC.
 		*/
 	static requestList(npc: string) {
+		const target = npc || "Tworzymir";
 		marauroa.clientFramework.sendAction({
 			type: "improve_list",
-			npc: npc,
+			npc: target,
 			zone: marauroa.currentZoneName
 		});
 	}
@@ -42,9 +43,10 @@ export class ItemImprovementController {
 		* Sends the improve request for the selected entry.
 		*/
 	static requestUpgrade(npc: string, entry: ItemImprovementEntry) {
+		const target = npc || "Tworzymir";
 		marauroa.clientFramework.sendAction({
 			type: "improve_do",
-			npc: npc,
+			npc: target,
 			itemid: entry.id,
 			zone: marauroa.currentZoneName
 		});
