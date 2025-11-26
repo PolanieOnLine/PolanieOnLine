@@ -30,7 +30,6 @@ import org.json.simple.JSONValue;
 import games.stendhal.client.ClientSingletonRepository;
 import games.stendhal.client.StendhalClient;
 import games.stendhal.client.gui.chatlog.EventLine;
-import games.stendhal.client.gui.chatlog.StandardHeaderedEventLine;
 import games.stendhal.client.sprite.Sprite;
 import games.stendhal.client.sprite.SpriteStore;
 import games.stendhal.common.NotificationType;
@@ -67,8 +66,8 @@ public final class ItemImprovementController {
 
 		final List<ItemImprovementEntry> entries = parseItems(itemsJson);
 		if (entries.isEmpty()) {
-			addMessage(new StandardHeaderedEventLine(npcName,
-			"Nie masz przy sobie przedmiotów do ulepszania.", NotificationType.INFORMATION));
+			addMessage(new EventLine(npcName,
+				"Nie masz przy sobie przedmiotów do ulepszania.", NotificationType.INFORMATION));
 			return;
 		}
 
@@ -86,7 +85,7 @@ public final class ItemImprovementController {
 		}
 
 		final NotificationType type = success ? NotificationType.POSITIVE : NotificationType.NEGATIVE;
-		addMessage(new StandardHeaderedEventLine(npcName, message, type));
+		addMessage(new EventLine(npcName, message, type));
 
 		if (dialog != null && dialog.isForNpc(npcName)) {
 			requestList(npcName);
@@ -146,7 +145,7 @@ public final class ItemImprovementController {
 		for (final Map.Entry<String, Number> entry : requirements.entrySet()) {
 			parts.add(entry.getKey() + " " + entry.getValue());
 		}
-		return Grammar.enumerateCollection(parts, ", ", " i ");
+		return Grammar.enumerateCollection(parts, "i");
 	}
 
 	private static Sprite loadIcon(final String iconName) {
