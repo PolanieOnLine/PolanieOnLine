@@ -14,6 +14,8 @@ import { RPEntity } from "./RPEntity";
 import { EntityOverlayRegistry } from "../data/EntityOverlayRegistry";
 
 import { Color } from "../data/color/Color";
+import { MenuItem } from "../ui/toolkit/Menu";
+import { ItemImprovementController } from "../ui/dialog/ItemImprovementController";
 
 declare var stendhal: any;
 
@@ -53,6 +55,18 @@ export class NPC extends RPEntity {
 		}
 		if (typeof (this["unnamed"]) == "undefined") {
 			this.drawTitle(ctx, localX, localY + this.statusBarYOffset);
+		}
+	}
+
+	override buildActions(list: MenuItem[]) {
+		super.buildActions(list);
+		if (this["name"] && this["name"].indexOf("Tworzymir") >= 0) {
+			list.push({
+				title: "Ulepszanie",
+				action: () => {
+					ItemImprovementController.requestList(this["name"] || "Tworzymir");
+				}
+			});
 		}
 	}
 

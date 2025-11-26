@@ -2422,7 +2422,16 @@ public abstract class RPEntity extends CombatEntity {
 	}
 
 	protected List<Item> getAllEquipped(Predicate<Item> condition) {
-		return equippedStream().filter(condition).collect(Collectors.toList());
+	return equippedStream().filter(condition).collect(Collectors.toList());
+	}
+
+	/**
+	 * Retrieves all carried items, including items inside containers.
+	 *
+	 * @return list of items carried by the entity
+	 */
+	public List<Item> getAllCarriedItems() {
+	return equippedStream().collect(Collectors.toList());
 	}
 
 	/**

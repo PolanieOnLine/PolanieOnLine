@@ -46,6 +46,12 @@ public final class Actions {
 	//list producers
 	public static final String LISTPRODUCERS = "listproducers";
 
+	// item improve
+	public static final String IMPROVE_LIST = "improve_list";
+	public static final String IMPROVE_DO = "improve_do";
+	public static final String NPC = "npc";
+	public static final String ITEM_ID = "itemid";
+
 	// equipment set swapping
 	public static final String SET_CHANGE = "setchange";
 

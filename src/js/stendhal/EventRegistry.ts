@@ -27,6 +27,8 @@ import { RPEvent } from "./event/RPEvent";
 import { SoundEvent } from "./event/SoundEvent";
 import { TradeEvent } from "./event/TradeEvent";
 import { ViewChangeEvent } from "./event/ViewChangeEvent";
+import { ImproveListEvent } from "./event/ImproveListEvent";
+import { ImproveResultEvent } from "./event/ImproveResultEvent";
 
 import { ui } from "./ui/UI";
 
@@ -76,6 +78,8 @@ export class EventRegistry {
 		this.register("group_invite_event", new GroupInviteEvent());
 		this.register("progress_status_event", new ProgressStatusEvent());
 		this.register("trade_state_change_event", new TradeEvent());
+		this.register("improve_list", new ImproveListEvent());
+		this.register("improve_result", new ImproveResultEvent());
 
 		this.register("attack", {
 			execute: function(entity: RPEntity) {
