@@ -193,21 +193,21 @@ return;
 		MoneyUtils.removeMoney(player, fee);
 		improverAdder.dropNeededResources(player, item);
 
-		final boolean success = improverAdder.isSuccessful(player, item);
+				final boolean success = improverAdder.isSuccessful(player, item);
 		String message;
 		if (success) {
 			item.upgradeItem();
 			player.incImprovedForItem(player.getName(), 1);
 			player.incImprovedForItem(item.getName(), 1);
 			new GameEvent(player.getName(), "upgraded-item", item.getName(), "+" + Integer.toString(item.getImprove())).raise();
-			message = "Przedmiot został ulepszony.";
+			message = "Ulepszono " + item.getName() + " do poziomu " + item.getImprove() + \"/\" + item.getMaxImproves() + ".";
 		} else {
 			MoneyUtils.giveMoney(player, (int) (fee * 0.4));
-			message = "Ulepszenie nie powiodło się. Zwracam część kosztów.";
+			message = "Ulepszenie " + item.getName() + " nie powiodło się. Zwracam część kosztów.";
 		}
 
-sendResult(player, npc, success, message, itemId, item.getName(), getClassName(item), getSubclassName(item));
-player.notifyWorldAboutChanges();
+		sendResult(player, npc, success, message, itemId, item.getName(), getClassName(item), getSubclassName(item));
+		player.notifyWorldAboutChanges();
 }
 
 private String getClassName(final Item item) {

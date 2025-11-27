@@ -292,12 +292,18 @@ public class ItemImprovementWindow extends InternalManagedWindow {
 		@Override
 		public void actionPerformed(final ActionEvent e) {
 			fireEditingStopped();
-			if (entry != null) {
+			ItemImprovementEntry target = entry;
+			final int editingRow = table.getEditingRow();
+			if (editingRow >= 0) {
+				target = model.getRow(table.convertRowIndexToModel(editingRow));
+			}
+
+			if (target != null) {
 				SwingUtilities.invokeLater(new Runnable() {
-				@Override
-				public void run() {
-				openConfirm(entry);
-				}
+					@Override
+					public void run() {
+						openConfirm(target);
+					}
 				});
 			}
 		}
