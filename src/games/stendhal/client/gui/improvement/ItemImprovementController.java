@@ -31,8 +31,8 @@ import org.json.simple.JSONValue;
 
 import games.stendhal.client.ClientSingletonRepository;
 import games.stendhal.client.StendhalClient;
-import games.stendhal.client.gui.CloseListener;
 import games.stendhal.client.gui.InternalWindow;
+import games.stendhal.client.gui.InternalWindow.CloseListener;
 import games.stendhal.client.gui.chatlog.EventLine;
 import games.stendhal.client.gui.j2DClient;
 import games.stendhal.client.sprite.Sprite;
