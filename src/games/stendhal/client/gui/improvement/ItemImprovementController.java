@@ -22,6 +22,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.SwingUtilities;
+
 import org.apache.log4j.Logger;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -29,7 +31,10 @@ import org.json.simple.JSONValue;
 
 import games.stendhal.client.ClientSingletonRepository;
 import games.stendhal.client.StendhalClient;
+import games.stendhal.client.gui.CloseListener;
+import games.stendhal.client.gui.InternalWindow;
 import games.stendhal.client.gui.chatlog.EventLine;
+import games.stendhal.client.gui.j2DClient;
 import games.stendhal.client.sprite.Sprite;
 import games.stendhal.client.sprite.SpriteStore;
 import games.stendhal.common.NotificationType;
@@ -37,12 +42,12 @@ import games.stendhal.common.grammar.Grammar;
 import marauroa.common.game.RPAction;
 
 /**
- * Coordinates item improvement list/results with the UI dialog.
+ * Coordinates item improvement list/results with the internal improvement window.
  */
 public final class ItemImprovementController {
 	private static final Logger logger = Logger.getLogger(ItemImprovementController.class);
 	private static final String BLACKSMITH = "Tworzymir";
-	private static ItemImprovementDialog dialog;
+	private static ItemImprovementWindow window;
 
 	private ItemImprovementController() {
 		// utility
@@ -71,12 +76,26 @@ public final class ItemImprovementController {
 			return;
 		}
 
-		if (dialog == null || !dialog.isForNpc(npcName)) {
-			dialog = new ItemImprovementDialog(npcName);
-		}
-		dialog.updateItems(entries);
-		dialog.setVisible(true);
-		dialog.toFront();
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				if (window == null || !window.isForNpc(npcName)) {
+					final ItemImprovementWindow newWindow = new ItemImprovementWindow(npcName);
+					newWindow.addCloseListener(new CloseListener() {
+						@Override
+						public void windowClosed(final InternalWindow closed) {
+							window = null;
+						}
+					});
+					j2DClient.get().addWindow(newWindow);
+					window = newWindow;
+				}
+
+				window.updateItems(entries);
+				window.setVisible(true);
+				window.raise();
+			}
+		});
 	}
 
 	public static void handleResult(final String npcName, final boolean success, final String message) {
@@ -87,7 +106,7 @@ public final class ItemImprovementController {
 		final NotificationType type = success ? NotificationType.POSITIVE : NotificationType.NEGATIVE;
 		addMessage(new EventLine(npcName, message, type));
 
-		if (dialog != null && dialog.isForNpc(npcName)) {
+		if (window != null && window.isForNpc(npcName)) {
 			requestList(npcName);
 		}
 	}
@@ -105,7 +124,7 @@ public final class ItemImprovementController {
 	}
 
 	private static List<ItemImprovementEntry> parseItems(final String itemsJson) {
-		final List<ItemImprovementEntry> entries = new ArrayList<>();
+		final List<ItemImprovementEntry> entries = new ArrayList<ItemImprovementEntry>();
 		try {
 			final JSONArray array = (JSONArray) JSONValue.parse(itemsJson);
 			if (array == null) {
@@ -123,16 +142,17 @@ public final class ItemImprovementController {
 				final Number max = (Number) item.get("max");
 				final Number cost = (Number) item.get("cost");
 				final Object chanceObj = item.get("chance");
+				@SuppressWarnings("unchecked")
 				final Map<String, Number> requirements = (Map<String, Number>) item.get("requirements");
 
 				if (id == null || name == null || improve == null || max == null || cost == null
-				|| requirements == null || chanceObj == null) {
+					|| requirements == null || chanceObj == null) {
 					continue;
 				}
 
 				final double chance = Double.parseDouble(chanceObj.toString());
 				entries.add(new ItemImprovementEntry(id.intValue(), name, icon, improve.intValue(), max.intValue(),
-				cost.intValue(), chance, buildRequirements(requirements), loadIcon(icon)));
+					cost.intValue(), chance, buildRequirements(requirements), loadIcon(icon)));
 			}
 		} catch (final Exception e) {
 			logger.warn("Failed to parse improvement list", e);
@@ -141,7 +161,7 @@ public final class ItemImprovementController {
 	}
 
 	private static String buildRequirements(final Map<String, Number> requirements) {
-		final List<String> parts = new ArrayList<>();
+		final List<String> parts = new ArrayList<String>();
 		for (final Map.Entry<String, Number> entry : requirements.entrySet()) {
 			parts.add(entry.getKey() + " " + entry.getValue());
 		}
