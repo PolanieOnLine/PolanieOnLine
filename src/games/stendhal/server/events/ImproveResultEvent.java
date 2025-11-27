@@ -28,26 +28,28 @@ public class ImproveResultEvent extends RPEvent {
 	private static final String SUCCESS = "success";
 	private static final String MESSAGE = "message";
 	private static final String ITEM_ID = "itemid";
-	private static final String ITEM_NAME = "itemname";
-	private static final String ICON = "icon";
+private static final String ITEM_NAME = "itemname";
+private static final String ITEM_CLASS = "itemclass";
+private static final String ITEM_SUBCLASS = "itemsubclass";
 
 	public static void generateRPClass() {
 		try {
-			final RPClass rpclass = new RPClass(IMPROVE_RESULT);
-			rpclass.addAttribute(NPC, Type.STRING, Definition.PRIVATE);
-			rpclass.addAttribute(SUCCESS, Type.FLAG, Definition.PRIVATE);
-			rpclass.addAttribute(MESSAGE, Type.LONG_STRING, Definition.PRIVATE);
-			rpclass.addAttribute(ITEM_ID, Type.INT, Definition.PRIVATE);
-			rpclass.addAttribute(ITEM_NAME, Type.STRING, Definition.PRIVATE);
-			rpclass.addAttribute(ICON, Type.STRING, Definition.PRIVATE);
+final RPClass rpclass = new RPClass(IMPROVE_RESULT);
+rpclass.addAttribute(NPC, Type.STRING, Definition.PRIVATE);
+rpclass.addAttribute(SUCCESS, Type.FLAG, Definition.PRIVATE);
+rpclass.addAttribute(MESSAGE, Type.LONG_STRING, Definition.PRIVATE);
+rpclass.addAttribute(ITEM_ID, Type.INT, Definition.PRIVATE);
+rpclass.addAttribute(ITEM_NAME, Type.STRING, Definition.PRIVATE);
+rpclass.addAttribute(ITEM_CLASS, Type.STRING, Definition.PRIVATE);
+rpclass.addAttribute(ITEM_SUBCLASS, Type.STRING, Definition.PRIVATE);
 		} catch (final SyntaxException e) {
 			logger.error("cannot generateRPClass", e);
 		}
 	}
 
-	public ImproveResultEvent(final String npc, final boolean success, final String message,
-	final int itemId, final String itemName, final String icon) {
-		super(IMPROVE_RESULT);
+public ImproveResultEvent(final String npc, final boolean success, final String message,
+final int itemId, final String itemName, final String itemClass, final String itemSubclass) {
+super(IMPROVE_RESULT);
 
 		put(NPC, npc);
 		/*
@@ -56,10 +58,13 @@ public class ImproveResultEvent extends RPEvent {
 		 */
 		put(SUCCESS, Boolean.toString(success));
 		put(MESSAGE, message);
-		put(ITEM_ID, itemId);
-		put(ITEM_NAME, itemName);
-		if (icon != null) {
-			put(ICON, icon);
-		}
-	}
+put(ITEM_ID, itemId);
+put(ITEM_NAME, itemName);
+if (itemClass != null) {
+put(ITEM_CLASS, itemClass);
+}
+if (itemSubclass != null) {
+put(ITEM_SUBCLASS, itemSubclass);
+}
+}
 }

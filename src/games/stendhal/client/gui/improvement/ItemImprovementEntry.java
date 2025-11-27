@@ -19,7 +19,8 @@ import games.stendhal.client.sprite.Sprite;
 public class ItemImprovementEntry {
 	private final int id;
 	private final String name;
-	private final String iconName;
+	private final String itemClass;
+	private final String itemSubclass;
 	private final int improve;
 	private final int maxImprove;
 	private final int cost;
@@ -27,11 +28,13 @@ public class ItemImprovementEntry {
 	private final String requirements;
 	private final Sprite icon;
 
-	ItemImprovementEntry(final int id, final String name, final String iconName, final int improve,
-	final int maxImprove, final int cost, final double chance, final String requirements, final Sprite icon) {
+	ItemImprovementEntry(final int id, final String name, final String itemClass, final String itemSubclass,
+				final int improve, final int maxImprove, final int cost, final double chance, final String requirements,
+				final Sprite icon) {
 		this.id = id;
 		this.name = name;
-		this.iconName = iconName;
+		this.itemClass = itemClass;
+		this.itemSubclass = itemSubclass;
 		this.improve = improve;
 		this.maxImprove = maxImprove;
 		this.cost = cost;
@@ -48,8 +51,12 @@ public class ItemImprovementEntry {
 		return name;
 	}
 
-	public String getIconName() {
-		return iconName;
+	public String getItemClass() {
+		return itemClass;
+	}
+
+	public String getItemSubclass() {
+		return itemSubclass;
 	}
 
 	public int getImprove() {

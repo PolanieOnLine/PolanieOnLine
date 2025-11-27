@@ -35,8 +35,8 @@ import games.stendhal.client.gui.InternalWindow;
 import games.stendhal.client.gui.InternalWindow.CloseListener;
 import games.stendhal.client.gui.chatlog.EventLine;
 import games.stendhal.client.gui.j2DClient;
+import games.stendhal.client.sprite.ItemIconUtil;
 import games.stendhal.client.sprite.Sprite;
-import games.stendhal.client.sprite.SpriteStore;
 import games.stendhal.common.NotificationType;
 import games.stendhal.common.grammar.Grammar;
 import marauroa.common.game.RPAction;
@@ -137,7 +137,8 @@ public final class ItemImprovementController {
 				final JSONObject item = (JSONObject) obj;
 				final Number id = (Number) item.get("id");
 				final String name = (String) item.get("name");
-				final String icon = (String) item.get("icon");
+				final String itemClass = (String) item.get("clazz");
+				final String itemSubclass = (String) item.get("subclass");
 				final Number improve = (Number) item.get("improve");
 				final Number max = (Number) item.get("max");
 				final Number cost = (Number) item.get("cost");
@@ -146,13 +147,14 @@ public final class ItemImprovementController {
 				final Map<String, Number> requirements = (Map<String, Number>) item.get("requirements");
 
 				if (id == null || name == null || improve == null || max == null || cost == null
-					|| requirements == null || chanceObj == null) {
+						|| requirements == null || chanceObj == null) {
 					continue;
 				}
 
 				final double chance = Double.parseDouble(chanceObj.toString());
-				entries.add(new ItemImprovementEntry(id.intValue(), name, icon, improve.intValue(), max.intValue(),
-					cost.intValue(), chance, buildRequirements(requirements), loadIcon(icon)));
+				entries.add(new ItemImprovementEntry(id.intValue(), name, itemClass, itemSubclass,
+					improve.intValue(), max.intValue(), cost.intValue(), chance, buildRequirements(requirements),
+					loadIcon(itemClass, itemSubclass)));
 			}
 		} catch (final Exception e) {
 			logger.warn("Failed to parse improvement list", e);
@@ -168,21 +170,8 @@ public final class ItemImprovementController {
 		return Grammar.enumerateCollection(parts, "i");
 	}
 
-	private static Sprite loadIcon(final String iconName) {
-		if (iconName == null || iconName.isEmpty()) {
-			return SpriteStore.get().getColoredSprite("/data/gui/bag.png", Color.LIGHT_GRAY);
-		}
-		try {
-			final SpriteStore store = SpriteStore.get();
-			final String path = "/data/sprites/items/" + iconName + ".png";
-			Sprite sprite = store.getSprite(path);
-			if (sprite.getWidth() > sprite.getHeight()) {
-				sprite = store.getAnimatedSprite(sprite, 100);
-			}
-			return sprite;
-		} catch (final Exception e) {
-			return SpriteStore.get().getColoredSprite("/data/gui/bag.png", Color.LIGHT_GRAY);
-		}
+	private static Sprite loadIcon(final String itemClass, final String itemSubclass) {
+		return ItemIconUtil.getItemSprite(itemClass, itemSubclass);
 	}
 
 	private static void addMessage(final EventLine line) {
