@@ -174,6 +174,6 @@ public final class ItemImprovementController {
 	}
 
 	private static void addMessage(final EventLine line) {
-tests/ClientSingletonRepository.getUserInterface().addEventLine(line);
+		ClientSingletonRepository.getUserInterface().addEventLine(line);
 	}
 }
