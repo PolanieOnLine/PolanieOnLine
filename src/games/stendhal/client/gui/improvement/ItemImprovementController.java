@@ -1,3 +1,4 @@
+
 /***************************************************************************
  *                      (C) Copyright 2024 - PolanieOnLine                 *
  ***************************************************************************/
@@ -17,7 +18,6 @@ import static games.stendhal.common.constants.Actions.ITEM_ID;
 import static games.stendhal.common.constants.Actions.NPC;
 import static games.stendhal.common.constants.Actions.TYPE;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -73,28 +73,27 @@ public final class ItemImprovementController {
 		if (entries.isEmpty()) {
 			addMessage(new EventLine(npcName,
 				"Nie masz przy sobie przedmiotów do ulepszania.", NotificationType.INFORMATION));
-			return;
 		}
 
 		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				if (window == null || !window.isForNpc(npcName)) {
-					final ItemImprovementWindow newWindow = new ItemImprovementWindow(npcName);
-					newWindow.addCloseListener(new CloseListener() {
-						@Override
-						public void windowClosed(final InternalWindow closed) {
-							window = null;
-						}
-					});
-					j2DClient.get().addWindow(newWindow);
-					window = newWindow;
-				}
+		@Override
+		public void run() {
+		if (window == null || !window.isForNpc(npcName)) {
+		final ItemImprovementWindow newWindow = new ItemImprovementWindow(npcName);
+		newWindow.addCloseListener(new CloseListener() {
+		@Override
+		public void windowClosed(final InternalWindow closed) {
+		window = null;
+		}
+		});
+		j2DClient.get().addWindow(newWindow);
+		window = newWindow;
+		}
 
-				window.updateItems(entries);
-				window.setVisible(true);
-				window.raise();
-			}
+		window.updateItems(entries);
+		window.setVisible(true);
+		window.raise();
+		}
 		});
 	}
 
@@ -128,33 +127,33 @@ public final class ItemImprovementController {
 		try {
 			final JSONArray array = (JSONArray) JSONValue.parse(itemsJson);
 			if (array == null) {
-				return entries;
+			return entries;
 			}
 			for (final Object obj : array) {
-				if (!(obj instanceof JSONObject)) {
-					continue;
-				}
-				final JSONObject item = (JSONObject) obj;
-				final Number id = (Number) item.get("id");
-				final String name = (String) item.get("name");
-				final String itemClass = (String) item.get("clazz");
-				final String itemSubclass = (String) item.get("subclass");
-				final Number improve = (Number) item.get("improve");
-				final Number max = (Number) item.get("max");
-				final Number cost = (Number) item.get("cost");
-				final Object chanceObj = item.get("chance");
-				@SuppressWarnings("unchecked")
-				final Map<String, Number> requirements = (Map<String, Number>) item.get("requirements");
+			if (!(obj instanceof JSONObject)) {
+			continue;
+			}
+			final JSONObject item = (JSONObject) obj;
+			final Number id = (Number) item.get("id");
+			final String name = (String) item.get("name");
+			final String itemClass = (String) item.get("clazz");
+			final String itemSubclass = (String) item.get("subclass");
+			final Number improve = (Number) item.get("improve");
+			final Number max = (Number) item.get("max");
+			final Number cost = (Number) item.get("cost");
+			final Object chanceObj = item.get("chance");
+			@SuppressWarnings("unchecked")
+			final Map<String, Number> requirements = (Map<String, Number>) item.get("requirements");
 
-				if (id == null || name == null || improve == null || max == null || cost == null
-						|| requirements == null || chanceObj == null) {
-					continue;
-				}
+			if (id == null || name == null || improve == null || max == null || cost == null
+			|| requirements == null || chanceObj == null) {
+			continue;
+			}
 
-				final double chance = Double.parseDouble(chanceObj.toString());
-				entries.add(new ItemImprovementEntry(id.intValue(), name, itemClass, itemSubclass,
-					improve.intValue(), max.intValue(), cost.intValue(), chance, buildRequirements(requirements),
-					loadIcon(itemClass, itemSubclass)));
+			final double chance = Double.parseDouble(chanceObj.toString());
+			entries.add(new ItemImprovementEntry(id.intValue(), name, itemClass, itemSubclass,
+			improve.intValue(), max.intValue(), cost.intValue(), chance, buildRequirements(requirements),
+			loadIcon(itemClass, itemSubclass)));
 			}
 		} catch (final Exception e) {
 			logger.warn("Failed to parse improvement list", e);
@@ -175,6 +174,6 @@ public final class ItemImprovementController {
 	}
 
 	private static void addMessage(final EventLine line) {
-		ClientSingletonRepository.getUserInterface().addEventLine(line);
+tests/ClientSingletonRepository.getUserInterface().addEventLine(line);
 	}
 }
