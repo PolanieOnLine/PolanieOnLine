@@ -47,8 +47,8 @@ import games.stendhal.client.entity.RPEntity;
 import games.stendhal.client.gui.imageviewer.ImageViewWindow;
 import games.stendhal.client.gui.imageviewer.ItemListImageViewerEvent.HeaderRenderer;
 import games.stendhal.client.gui.imageviewer.ViewPanel;
+import games.stendhal.client.sprite.ItemIconUtil;
 import games.stendhal.client.sprite.Sprite;
-import games.stendhal.client.sprite.SpriteStore;
 import games.stendhal.client.update.ClientGameConfiguration;
 import games.stendhal.common.grammar.Grammar;
 
@@ -327,21 +327,13 @@ public class ItemLogEvent extends Event<RPEntity> {
 			 * 		Drop status.
 			 * @return the sprite.
 			 */
-			private Sprite getItemImage(String clazz, String subclazz, boolean dropped) {
-				String imagePath = "/data/sprites/items/" + clazz + "/" + subclazz + ".png";
+                       private Sprite getItemImage(String clazz, String subclazz, boolean dropped) {
+                               if (!dropped) {
+                                       return ItemIconUtil.getPlaceholderSprite();
+                               }
 
-				Sprite sprite;
-				sprite = SpriteStore.get().getColoredSprite("/data/gui/bag.png", Color.LIGHT_GRAY);
-				if (dropped) {
-					sprite = SpriteStore.get().getSprite(imagePath);
-				}
-
-				if (sprite.getWidth() > sprite.getHeight()) {
-					sprite = SpriteStore.get().getAnimatedSprite(sprite, 100);
-				}
-
-				return sprite;
-			}
+                               return ItemIconUtil.getItemSprite(clazz, subclazz);
+                       }
 
 			/**
 			 * Adjust the column widths of a table based on the table contents.

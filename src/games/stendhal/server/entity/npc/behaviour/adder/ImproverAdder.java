@@ -261,52 +261,133 @@ public class ImproverAdder {
 	}
 
 	private void calculateFee(final Player player, final Item item) {
-		int improves = item.getImprove();
-		int atk = item.getAttack();
-		int def = item.getDefense();
+	currentUpgradeFee = computeUpgradeFee(player, item);
+	}
 
-		int feePerLevel = item.getMaxImproves() <= 3 ? 3000 : 5000;
-		currentUpgradeFee = (improves + 1) * ((atk + def) * feePerLevel);
+	/**
+	 * Exposes the current fee logic without mutating the internal state.
+	 *
+	 * @param player
+	 * @param item
+	 * @return calculated upgrade fee for the item
+	 */
+	public int computeUpgradeFee(final Player player, final Item item) {
+	int improves = item.getImprove();
+	int atk = item.getAttack();
+	int def = item.getDefense();
 
-		if ((item.getName().equals("sztylecik z mithrilu") && item.getMaxImproves() <= 2) || item.getMaxImproves() == 1) {
-			currentUpgradeFee = (improves + 1) * ((atk + def) * 17400);
-		}
+	int feePerLevel = item.getMaxImproves() <= 3 ? 3000 : 5000;
+	int upgradeFee = (improves + 1) * ((atk + def) * feePerLevel);
 
-		if (item.getName().endsWith(" z mithrilu") && item.getMaxImproves() == 1) {
-			currentUpgradeFee = 5000000;
-		}
+	if ((item.getName().equals("sztylecik z mithrilu") && item.getMaxImproves() <= 2) || item.getMaxImproves() == 1) {
+	upgradeFee = (improves + 1) * ((atk + def) * 17400);
+	}
 
-		double discount = player.isQuestCompleted("ciupaga_trzy_wasy") ? 0.7 : 1.0;
-		currentUpgradeFee = (int) Math.round(currentUpgradeFee * discount);
+	if (item.getName().endsWith(" z mithrilu") && item.getMaxImproves() == 1) {
+	upgradeFee = 5000000;
+	}
 
-		if (improves > item.getMaxImproves()) {
-			currentUpgradeFee = 0;
-		}
+	double discount = player.isQuestCompleted("ciupaga_trzy_wasy") ? 0.7 : 1.0;
+	upgradeFee = (int) Math.round(upgradeFee * discount);
+
+	if (improves > item.getMaxImproves()) {
+	upgradeFee = 0;
+	}
+
+	return upgradeFee;
 	}
 
 	private boolean playerHaveResources(final Player player, int level) {
-		Map<String, Integer> requirements = upgradeRequirements.get(level);
-		if (requirements == null) {
-			return false;
-		}
+	Map<String, Integer> requirements = upgradeRequirements.get(level);
+	if (requirements == null) {
+	return false;
+	}
 
-		for (Map.Entry<String, Integer> entry : requirements.entrySet()) {
-			String resourceName = entry.getKey();
-			int requiredAmount = entry.getValue();
-			if (!player.isEquipped(resourceName, requiredAmount)) {
-				return false;
-			}
-		}
-		return true;
+	for (Map.Entry<String, Integer> entry : requirements.entrySet()) {
+	String resourceName = entry.getKey();
+	int requiredAmount = entry.getValue();
+	if (!player.isEquipped(resourceName, requiredAmount)) {
+	return false;
+	}
+	}
+	return true;
 	}
 
 	private void dropNeededResources(final Player player) {
-		Item targetItem = foundItem(player);
-		Map<String, Integer> requirements = upgradeRequirements.get(targetItem.getImprove() + 1);
+	Item targetItem = foundItem(player);
+	Map<String, Integer> requirements = upgradeRequirements.get(targetItem.getImprove() + 1);
 
-		for (Map.Entry<String, Integer> entry : requirements.entrySet()) {
-			player.drop(entry.getKey(), entry.getValue());
-		}
+	for (Map.Entry<String, Integer> entry : requirements.entrySet()) {
+	player.drop(entry.getKey(), entry.getValue());
+	}
+	}
+
+	/**
+	 * Drops required resources for the specified item without relying on the current target state.
+	 *
+	 * @param player owner of the resources
+	 * @param item item being upgraded
+	 */
+	public void dropNeededResources(final Player player, final Item item) {
+	Map<String, Integer> requirements = upgradeRequirements.get(item.getImprove() + 1);
+	if (requirements == null) {
+	return;
+	}
+
+	for (Map.Entry<String, Integer> entry : requirements.entrySet()) {
+	player.drop(entry.getKey(), entry.getValue());
+	}
+	}
+
+	/**
+	 * Returns upgrade requirements for the given level.
+	 *
+	 * @param level level to upgrade to
+	 * @return copy of requirements map or null if none
+	 */
+	public Map<String, Integer> getUpgradeRequirements(final int level) {
+	Map<String, Integer> requirements = upgradeRequirements.get(level);
+	if (requirements == null) {
+	return null;
+	}
+
+	return new HashMap<String, Integer>(requirements);
+	}
+
+	/**
+	 * Returns upgrade requirements for the next level of the given item.
+	 *
+	 * @param item item to upgrade
+ * @return copy of requirements map or null if none
+ */
+public Map<String, Integer> getUpgradeRequirements(final Item item) {
+return getUpgradeRequirements(item.getImprove() + 1);
+}
+
+	/**
+	 * Determines whether the item can still be improved.
+	 *
+	 * @param item item to validate
+	 * @return true if the item is improvable
+	 */
+	public boolean canImproveItem(final Item item) {
+	if (item == null) {
+	return false;
+	}
+
+	return item.hasMaxImproves() && !item.isMaxImproved()
+	&& upgradeRequirements.containsKey(item.getImprove() + 1);
+	}
+
+	/**
+	 * Checks if the player has the resources required for the next improve level of the item.
+	 *
+	 * @param player owner of the resources
+	 * @param item item to check
+	 * @return true if requirements are satisfied
+	 */
+	public boolean hasRequiredResources(final Player player, final Item item) {
+	return playerHaveResources(player, item.getImprove() + 1);
 	}
 
 	private String getNeedResourcesNames(final Player player) {
@@ -415,14 +496,14 @@ public class ImproverAdder {
 		};
 	}
 
-	protected boolean isSuccessful(final Player player , final Item item) {
-		final int random = Rand.roll1D100();
-		return (random <= (getSuccessProbability(player, item) * 100));
+	public boolean isSuccessful(final Player player , final Item item) {
+	final int random = Rand.roll1D100();
+	return (random <= (getSuccessProbability(player, item) * 100));
 	}
 
-	private double getSuccessProbability(final Player player, final Item item) {
-		int improveLevel = item.getImprove();
-		double probability = 1.0 - (0.1 * improveLevel);
+	public double getSuccessProbability(final Player player, final Item item) {
+	int improveLevel = item.getImprove();
+	double probability = 1.0 - (0.1 * improveLevel);
 		
 		if (improveLevel > 4) {
 			probability = Math.max(probability, 0.2);

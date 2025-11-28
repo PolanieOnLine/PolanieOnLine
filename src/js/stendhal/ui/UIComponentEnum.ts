@@ -43,6 +43,7 @@ export class UIComponentEnum {
 	public static readonly TradeDialog = 201;
 	public static readonly TravelLogDialog = 202;
 	public static readonly OutfitDialog = 203;
+	public static readonly ItemImprovementDialog = 204;
 
 	// Quick menu
 	public static readonly QMChat = 301;

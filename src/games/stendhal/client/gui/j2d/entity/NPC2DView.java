@@ -24,6 +24,7 @@ import games.stendhal.client.entity.NPC;
 import games.stendhal.client.entity.RPEntity;
 import games.stendhal.client.entity.User;
 import games.stendhal.client.gui.OutfitColor;
+import games.stendhal.client.gui.improvement.ItemImprovementController;
 import games.stendhal.client.gui.j2d.entity.helpers.HorizontalAlignment;
 import games.stendhal.client.gui.j2d.entity.helpers.VerticalAlignment;
 import games.stendhal.client.gui.styled.cursor.StendhalCursor;
@@ -129,6 +130,9 @@ class NPC2DView<T extends NPC> extends RPEntity2DView<T> {
 		super.buildActions(list);
 		// NPC can't be pushed
 		list.remove(ActionType.PUSH.getRepresentation());
+		if (isTworzymir()) {
+			list.add(ActionType.IMPROVE.getRepresentation());
+		}
 		if (User.isAdmin()) {
 			list.add(ActionType.ADMIN_VIEW_NPC_TRANSITIONS.getRepresentation());
 		}
@@ -175,6 +179,9 @@ class NPC2DView<T extends NPC> extends RPEntity2DView<T> {
 	@Override
 	public void onAction(final ActionType at) {
 		switch (at) {
+		case IMPROVE:
+			ItemImprovementController.requestList(entity.getName());
+			break;
 		case ADMIN_VIEW_NPC_TRANSITIONS:
 			final RPAction action = new RPAction();
 			action.put("type", "script");
@@ -197,4 +204,9 @@ class NPC2DView<T extends NPC> extends RPEntity2DView<T> {
 	public StendhalCursor getCursor() {
 		return StendhalCursor.LOOK;
 	}
-}
+
+	private boolean isTworzymir() {
+		return entity != null && entity.getName() != null && entity.getName().contains("Tworzymir");
+	}
+	}
+

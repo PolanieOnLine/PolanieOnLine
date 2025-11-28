@@ -89,6 +89,8 @@ import games.stendhal.server.events.PlayerLoggedOutEvent;
 import games.stendhal.server.events.PrivateTextEvent;
 import games.stendhal.server.events.ProgressStatusEvent;
 import games.stendhal.server.events.ReachedAchievementEvent;
+import games.stendhal.server.events.ImproveListEvent;
+import games.stendhal.server.events.ImproveResultEvent;
 import games.stendhal.server.events.ShowItemListEvent;
 import games.stendhal.server.events.ShowOutfitListEvent;
 import games.stendhal.server.events.SoundEvent;
@@ -374,6 +376,14 @@ public class RPClassGenerator {
 
 		if (!RPClass.hasRPClass(Events.OUTFIT_LIST)) {
 			ShowOutfitListEvent.generateRPClass();
+		}
+
+		if (!RPClass.hasRPClass(Events.IMPROVE_LIST)) {
+			ImproveListEvent.generateRPClass();
+		}
+
+		if (!RPClass.hasRPClass(Events.IMPROVE_RESULT)) {
+			ImproveResultEvent.generateRPClass();
 		}
 
 		if (!RPClass.hasRPClass(Events.ACHIEVEMENT_LOG)) {

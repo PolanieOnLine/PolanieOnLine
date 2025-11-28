@@ -1544,3 +1544,41 @@ img#click-indicator {
 .pad-contents {
 	padding: 0.5em;
 }
+
+.improve-panel {
+	display: flex;
+	flex-direction: column;
+}
+
+.improve-row {
+	display: flex;
+	align-items: center;
+	border-bottom: 1px solid var(--border-bottom-color);
+	padding: 2px 4px;
+}
+
+.improve-header {
+	font-weight: bold;
+}
+
+.improve-cell {
+	flex: 1;
+	padding: 2px 4px;
+}
+
+.improve-icon {
+	flex: 0 0 40px;
+}
+
+.improve-cost {
+	text-align: right;
+}
+
+.improve-scroll {
+	max-height: 320px;
+	overflow-y: auto;
+}
+
+.improve-confirm {
+	margin-bottom: 8px;
+}
