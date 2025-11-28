@@ -22,39 +22,41 @@ declare var marauroa: any;
 declare var stendhal: any;
 
 /**
-	* Controller wiring NPC menu actions, server messages, and the improvement UI.
-	*/
+ * Controller wiring NPC menu actions, server messages, and the improvement UI.
+ */
 export class ItemImprovementController {
 	private static windowId = "item-improvement";
 
 	/**
-		* Requests the improvement list for the given NPC.
-		*/
+	 * Requests the improvement list for the given NPC.
+	 */
 	static requestList(npc: string) {
-		const target = npc || "Tworzymir";
+		const target = npc || "Kowal Tworzymir";
 		marauroa.clientFramework.sendAction({
 			type: "improve_list",
 			npc: target,
+			target: target,
 			zone: marauroa.currentZoneName
 		});
 	}
 
 	/**
-		* Sends the improve request for the selected entry.
-		*/
+	 * Sends the improve request for the selected entry.
+	 */
 	static requestUpgrade(npc: string, entry: ItemImprovementEntry) {
-		const target = npc || "Tworzymir";
+		const target = npc || "Kowal Tworzymir";
 		marauroa.clientFramework.sendAction({
 			type: "improve_do",
 			npc: target,
+			target: target,
 			itemid: entry.id,
 			zone: marauroa.currentZoneName
 		});
 	}
 
 	/**
-		* Opens or updates the improvement panel with data from the server.
-		*/
+	 * Opens or updates the improvement panel with data from the server.
+	 */
 	static showList(npc: string, entries: ItemImprovementEntry[]) {
 		let dialog = ui.get(UIComponentEnum.ItemImprovementDialog) as ItemImprovementPanel;
 		if (!dialog) {
@@ -70,8 +72,8 @@ export class ItemImprovementController {
 	}
 
 	/**
-		* Handles result notifications and refreshes the list if the panel is open.
-		*/
+	 * Handles result notifications and refreshes the list if the panel is open.
+	 */
 	static handleResult(npc: string, success: boolean, message: string) {
 		const type = success ? "server" : "error";
 		Chat.log(type, message, npc);

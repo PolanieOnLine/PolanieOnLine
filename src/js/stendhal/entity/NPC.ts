@@ -58,17 +58,20 @@ export class NPC extends RPEntity {
 		}
 	}
 
-	override buildActions(list: MenuItem[]) {
-		super.buildActions(list);
-		if (this["name"] && this["name"].indexOf("Tworzymir") >= 0) {
-			list.push({
-				title: "Ulepszanie",
-				action: () => {
-					ItemImprovementController.requestList(this["name"] || "Tworzymir");
-				}
-			});
+		override buildActions(list: MenuItem[]) {
+			super.buildActions(list);
+			const rawName = (this["name"] || this["title"] || this["type"] || "").toString();
+			const nameLower = rawName.toLowerCase();
+			if (nameLower.indexOf("tworzymir") >= 0) {
+				const npcName = rawName || "Kowal Tworzymir";
+				list.push({
+					title: "Ulepszanie",
+					action: () => {
+						ItemImprovementController.requestList(npcName);
+					}
+				});
+			}
 		}
-	}
 
 	override getCursor(_x: number, _y: number) {
 		return "url(" + stendhal.paths.sprites + "/cursor/look.png) 1 3, auto";
