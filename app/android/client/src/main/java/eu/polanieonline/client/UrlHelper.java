@@ -16,7 +16,7 @@ import android.net.Uri;
 
 class UrlHelper {
 
-	private static final String defaultServer = "https://polanieonline.eu/";
+	private static final String defaultServer = "https://s1.polanieonline.eu/";
 
 
 	private UrlHelper() {
@@ -174,7 +174,7 @@ class UrlHelper {
 		if (!custom_client.equals("")) {
 			return custom_client;
 		}
-		return UrlHelper.defaultServer + "client/stendhal.html";
+		return UrlHelper.defaultServer + "client/polanieonline.html";
 	}
 
 	/**
@@ -190,7 +190,7 @@ class UrlHelper {
 		if (!custom_client.equals("")) {
 			return custom_client;
 		}
-		return UrlHelper.defaultServer + "account/mycharacters.html";
+		return UrlHelper.getClientUrl();
 	}
 
 	/**
