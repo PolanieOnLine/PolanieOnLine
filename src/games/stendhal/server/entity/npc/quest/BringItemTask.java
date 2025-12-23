@@ -19,6 +19,7 @@ import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.action.DropFirstOwnedItemAction;
 import games.stendhal.server.entity.npc.condition.OrCondition;
 import games.stendhal.server.entity.npc.condition.PlayerHasItemWithHimCondition;
+import games.stendhal.server.entity.player.Player;
 import marauroa.common.Pair;
 
 /**
@@ -87,4 +88,28 @@ public class BringItemTask extends QuestTaskBuilder {
 		return new DropFirstOwnedItemAction(temp);
 	}
 
+	@Override
+	List<String> calculateHistoryProgress(QuestHistoryBuilder history, Player player, String questSlot) {
+		if (isCompleted(player, questSlot)) {
+			return null;
+		}
+
+		List<String> res = new LinkedList<>();
+		List<String> requirements = new LinkedList<>();
+
+		int current = Math.min(player.getNumberOfSubmittableEquipped(requestItem.first()), requestItem.second());
+		requirements.add(requestItem.first() + ": " + current + "/" + requestItem.second());
+
+		for (Pair<String, Integer> item : alternativeItems) {
+			int alternativeCurrent = Math.min(player.getNumberOfSubmittableEquipped(item.first()), item.second());
+			requirements.add(item.first() + " (alternatywa): " + alternativeCurrent + "/" + item.second());
+		}
+
+		String block = buildRequirementsBlock(requirements);
+		if (block != null) {
+			res.add(block);
+		}
+
+		return res;
+	}
 }

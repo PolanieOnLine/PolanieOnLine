@@ -20,6 +20,7 @@ import games.stendhal.server.entity.npc.action.DropItemAction;
 import games.stendhal.server.entity.npc.action.MultipleActions;
 import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.PlayerHasItemWithHimCondition;
+import games.stendhal.server.entity.player.Player;
 import marauroa.common.Pair;
 
 public class BringMultiItemsTask extends QuestTaskBuilder {
@@ -58,6 +59,27 @@ public class BringMultiItemsTask extends QuestTaskBuilder {
 			dropItem.add(new DropItemAction(item.first(), item.second()));
 		}
 		return new MultipleActions(dropItem);
+	}
+
+	@Override
+	List<String> calculateHistoryProgress(QuestHistoryBuilder history, Player player, String questSlot) {
+		if (isCompleted(player, questSlot)) {
+			return null;
+		}
+
+		List<String> res = new LinkedList<>();
+		List<String> requirements = new LinkedList<>();
+		for (Pair<String, Integer> item : requestItem) {
+			int current = Math.min(player.getNumberOfSubmittableEquipped(item.first()), item.second());
+			requirements.add(item.first() + ": " + current + "/" + item.second());
+		}
+
+		String block = buildRequirementsBlock(requirements);
+		if (block != null) {
+			res.add(block);
+		}
+
+		return res;
 	}
 
 	@Override

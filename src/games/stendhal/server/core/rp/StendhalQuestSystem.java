@@ -463,7 +463,11 @@ public class StendhalQuestSystem {
 
 		final List<String> history = quest.getHistory(player);
 		for (final String entry : history) {
-			sb.append("\t * " + entry + "\r\n");
+			if (entry.startsWith("<requirements>")) {
+				sb.append("\r\n" + entry.substring("<requirements>".length()) + "\r\n");
+			} else {
+				sb.append("\t * " + entry + "\r\n");
+			}
 		}
 
 		final List<String> hints = quest.getHint(player);

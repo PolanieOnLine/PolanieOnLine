@@ -267,6 +267,35 @@ public class CraftItemTask extends QuestTaskBuilder {
 		CraftItemQuestHistoryBuilder history = (CraftItemQuestHistoryBuilder) historyBuilder;
 		List<String> res = new LinkedList<>();
 		final String questState = player.getQuest(questSlot, 0);
+		List<String> requirements = new LinkedList<>();
+
+		if (playerMinLevel > -1) {
+			int current = Math.min(player.getLevel(), playerMinLevel);
+			requirements.add("Poziom: " + current + "/" + playerMinLevel);
+		}
+		if (playerMinKarma > -1) {
+			int current = (int) Math.min(player.getKarma(), playerMinKarma);
+			requirements.add("Karma: " + current + "/" + playerMinKarma);
+		}
+		if (getQuestName() != null) {
+			boolean completed = player.isQuestCompleted(getQuestName());
+			requirements.add("Ukończ zadanie: " + getQuestName() + " (" + (completed ? "tak" : "nie") + ")");
+		}
+		if (getMonsterName() != null) {
+			int totalKills = player.getSoloKill(getMonsterName()) + player.getSharedKill(getMonsterName());
+			int current = Math.min(totalKills, 1);
+			requirements.add("Pokonaj: " + getMonsterName() + " (" + current + "/1)");
+		}
+		for (Pair<String, Integer> item : requiredItem) {
+			int current = Math.min(player.getNumberOfSubmittableEquipped(item.first()), item.second());
+			requirements.add(item.first() + ": " + current + "/" + item.second());
+		}
+
+		String block = buildRequirementsBlock(requirements);
+		if (block != null) {
+			res.add(block);
+		}
+
 		if (questState.startsWith("forging")) {
 			if (new TimePassedCondition(questSlot, 1, getProductionTime()).fire(player, null, null)) {
 				res.add(history.whenTimeWasPassed());
