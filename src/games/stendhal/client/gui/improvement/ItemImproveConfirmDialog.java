@@ -19,7 +19,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JDialog.ModalityType;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
@@ -27,8 +26,8 @@ import javax.swing.SwingConstants;
 import games.stendhal.client.gui.WindowUtils;
 
 /**
-* Confirmation dialog for a single improvement attempt.
-*/
+ * Confirmation dialog for a single improvement attempt.
+ */
 public class ItemImproveConfirmDialog extends JDialog {
 	private static final long serialVersionUID = 1L;
 
@@ -36,10 +35,10 @@ public class ItemImproveConfirmDialog extends JDialog {
 		super(owner, "Potwierdzenie", ModalityType.APPLICATION_MODAL);
 		setLayout(new BorderLayout(10, 10));
 
-		final JLabel message = new JLabel(
-		"Czy na pewno chcesz ulepszyć " + entry.getName() + "?", SwingConstants.CENTER);
-		final JLabel chance = new JLabel(
-		"Szansa powodzenia: " + String.format("%.2f%%", entry.getChance()), SwingConstants.CENTER);
+		final JLabel message = new JLabel("Czy na pewno chcesz ulepszyć " + entry.getName() + "?",
+				SwingConstants.CENTER);
+		final JLabel chance = new JLabel("Szansa powodzenia: " + String.format("%.2f%%", entry.getChance()),
+				SwingConstants.CENTER);
 
 		add(message, BorderLayout.NORTH);
 		add(chance, BorderLayout.CENTER);
@@ -50,28 +49,28 @@ public class ItemImproveConfirmDialog extends JDialog {
 		WindowUtils.closeOnEscape(this);
 	}
 
-private JPanel createButtons(final String npcName, final ItemImprovementEntry entry) {
-	final JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
-	final JButton yes = new JButton("Tak");
-	final JButton no = new JButton("Nie");
+	private JPanel createButtons(final String npcName, final ItemImprovementEntry entry) {
+		final JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+		final JButton yes = new JButton("Tak");
+		final JButton no = new JButton("Nie");
 
-	yes.addActionListener(new ActionListener() {
-		@Override
-		public void actionPerformed(final ActionEvent e) {
-			ItemImprovementController.performUpgrade(npcName, entry);
-			dispose();
-		}
-});
+		yes.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				ItemImprovementController.performUpgrade(npcName, entry);
+				dispose();
+			}
+		});
 
-no.addActionListener(new ActionListener() {
-	@Override
-	public void actionPerformed(final ActionEvent e) {
-		dispose();
+		no.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				dispose();
+			}
+		});
+
+		panel.add(yes);
+		panel.add(no);
+		return panel;
 	}
-});
-
-panel.add(yes);
-panel.add(no);
-return panel;
-}
 }
