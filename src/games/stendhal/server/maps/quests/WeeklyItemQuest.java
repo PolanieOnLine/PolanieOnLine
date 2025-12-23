@@ -124,7 +124,7 @@ public class WeeklyItemQuest extends AbstractQuest {
 	}
 
 	private static void buildItemsMap() {
-		/* Comments depict drop scoring (See: https://stendhalgame.org/wiki/StendhalItemsDropScoring)
+		/* Comments depict drop scoring (See: https://polanieonline.eu/wiki/StendhalItemsDropScoring)
 		 * followed by lowest level creature that drops.
 		 *
 		 * Nothing below a certain score that is not obtainable by purchase

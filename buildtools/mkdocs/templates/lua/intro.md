@@ -477,7 +477,7 @@ frank:add(ConversationStates.IDLE,
 ```
 
 In this scenario, the NPC will only respond if the player is carrying
-[money](https://stendhalgame.org/item/money/money.html).
+[money](https://polanieonline.eu/item/money/money.html).
 
 A [NotCondition] instance can be created with the [actions:notCondition] method:
 

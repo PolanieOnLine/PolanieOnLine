@@ -42,7 +42,7 @@ Documentation currently unavailable.
 
 # Links
 
-- [Stendhal homepage](https://stendhalgame.org/)
+- [Stendhal homepage](https://polanieonline.eu/)
 - [Arianne homepage](https://arianne-project.org/)
 - [GitHub project](https://github.com/arianne/)
 - [SourceForge project](https://sourceforge.net/p/arianne/)

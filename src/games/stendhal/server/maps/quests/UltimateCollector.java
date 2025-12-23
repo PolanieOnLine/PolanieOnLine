@@ -185,7 +185,7 @@ public class UltimateCollector extends AbstractQuest {
 		 * Rarity calculations (lower means more rare):
 		 *   (spawn count * drop rate * (1 / respawn)) * 1000 + (spawn count * drop rate * (1 / respawn)) * 1000 ...
 		 *
-		 * See: https://stendhalgame.org/wiki/StendhalItemsDropScoring
+		 * See: https://polanieonline.eu/wiki/StendhalItemsDropScoring
 		 *   Current most rare: 0.09 (black scythe)
 		 *   Current least rare: 2.0 (chaos dagger)
 		 *
