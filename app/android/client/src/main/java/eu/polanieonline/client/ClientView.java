@@ -24,6 +24,8 @@ import android.net.Uri;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.DownloadListener;
@@ -32,6 +34,9 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.EditText;
+
+import org.json.JSONObject;
 
 
 /**
@@ -54,6 +59,9 @@ public class ClientView extends WebView {
 
 	private String stateId = "";
 	private String seed = "";
+	private String loginUser = "";
+	private String loginPass = "";
+	private boolean autoLoginAttempted = false;
 
 
 	/**
@@ -233,11 +241,12 @@ public class ClientView extends WebView {
 				} else {
 					setPage(PageId.OTHER);
 				}
+				attemptAutoLogin(view, url);
 				Menu.get().updateButtons();
 				Logger.debug("page id: " + currentPage);
 			}
-		});
-	}
+			});
+		}
 
 	/**
 	 * deprecated?
@@ -369,6 +378,9 @@ public class ClientView extends WebView {
 		clientUrlSuffix = "client";
 		stateId = "";
 		seed = "";
+		loginUser = "";
+		loginPass = "";
+		autoLoginAttempted = false;
 	}
 
 	/**
@@ -435,12 +447,7 @@ public class ClientView extends WebView {
 	 * FIXME: rename as it may cause confusion in regards to loading page "account/login.html"
 	 */
 	public void loadLogin() {
-		if (debugEnabled() && PreferencesActivity.getString("client_url").trim().equals("")) {
-			// debug builds support choosing between main & test client/server
-			selectClient();
-		} else {
-			onSelectServer();
-		}
+		promptNativeLogin();
 	}
 
 	/**
@@ -509,6 +516,7 @@ public class ClientView extends WebView {
 		// create a unique state
 		stateId = generateRandomString();
 		seed = generateRandomString();
+		autoLoginAttempted = false;
 		// hide splash image
 		SplashUtil.get().setVisible(false);
 
@@ -576,6 +584,11 @@ public class ClientView extends WebView {
 		if (previousPage == null) {
 			previousPage = currentPage;
 		}
+		if (newPage == PageId.WEBCLIENT) {
+			loginUser = "";
+			loginPass = "";
+			autoLoginAttempted = false;
+		}
 	}
 
 	/**
@@ -594,5 +607,78 @@ public class ClientView extends WebView {
 			debugging = false;
 		}
 		return debugging;
+	}
+
+	/**
+	 * Opens a dialog to collect login credentials for native submission.
+	 */
+	private void promptNativeLogin() {
+		final View layout = LayoutInflater.from(getContext()).inflate(R.layout.dialog_login, null);
+		final EditText username = layout.findViewById(R.id.loginUsername);
+		final EditText password = layout.findViewById(R.id.loginPassword);
+
+		final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+		builder.setTitle("Login to Stendhal");
+		builder.setView(layout);
+		builder.setCancelable(false);
+		builder.setPositiveButton("Login", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(final DialogInterface dialog, final int which) {
+				loginUser = username.getText().toString().trim();
+				loginPass = password.getText().toString();
+				autoLoginAttempted = false;
+				startLoginFlow();
+			}
+		});
+		builder.setNegativeButton("Skip", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(final DialogInterface dialog, final int which) {
+				loginUser = "";
+				loginPass = "";
+				autoLoginAttempted = false;
+				startLoginFlow();
+			}
+		});
+		builder.show();
+	}
+
+	/**
+	 * Begins login flow after credentials are collected.
+	 */
+	private void startLoginFlow() {
+		if (debugEnabled() && PreferencesActivity.getString("client_url").trim().equals("")) {
+			// debug builds support choosing between main & test client/server
+			selectClient();
+			return;
+		}
+		onSelectServer();
+	}
+
+	/**
+	 * Fills and submits login form when displayed inside WebView.
+	 *
+	 * @param view
+	 *   WebView instance displaying login page.
+	 * @param url
+	 *   URL that finished loading.
+	 */
+	private void attemptAutoLogin(final WebView view, final String url) {
+		if (autoLoginAttempted) {
+			return;
+		}
+		if (loginUser == null || loginPass == null || loginUser.trim().equals("") || loginPass.equals("")) {
+			return;
+		}
+		final Uri uri = UrlHelper.toUri(url);
+		if (!UrlHelper.isLoginUri(uri)) {
+			return;
+		}
+		autoLoginAttempted = true;
+		final String js = "javascript:(function(){try{var u=document.querySelector('input[type=email],input[name=username],input[name=login],input[type=text]');var p=document.querySelector('input[type=password]');if(u){u.value="
+				+ JSONObject.quote(loginUser)
+				+ ";}if(p){p.value="
+				+ JSONObject.quote(loginPass)
+				+ ";}var f=null;if(p&&p.form){f=p.form;}else if(u&&u.form){f=u.form;}else{f=document.querySelector('form');}if(f){f.submit();}}catch(e){console.log(e);}})();";
+		view.evaluateJavascript(js, null);
 	}
 }

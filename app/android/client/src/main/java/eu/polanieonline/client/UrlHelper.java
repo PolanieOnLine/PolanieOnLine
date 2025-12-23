@@ -202,10 +202,6 @@ class UrlHelper {
 	 *   `true` if URI is under default domain (polanieonline.eu) or localhost.
 	 */
 	public static boolean isInternalUri(final Uri uri) {
-		if (UrlHelper.isLoginUri(uri)) {
-			// open login page in external browser
-			return false;
-		}
 		final String defaultHost = UrlHelper.stripHost(UrlHelper.getDefaultHost());
 		final String host = UrlHelper.stripHost(uri.getHost());
 		if (defaultHost.equals(host)) {
