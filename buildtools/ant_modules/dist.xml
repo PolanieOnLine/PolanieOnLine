@@ -41,7 +41,7 @@
 	<target name="dist" depends="clean,dist_binary,dist_source,signupdates" description="Create all packages for PolanieOnLine release."/>
 
 
-	<target name="dist_binary" depends="clean,dist_server_binary,dist_client_binary,dist_client_starter"
+	<target name="dist_binary" depends="clean,dist_server_binary,dist_client_binary,dist_client_starter,dist_webclient_binary"
 			description="Create all binary packages for PolanieOnLine release."/> <!-- FIXME: dist_webclient_binary reporting node.js error -->
 
 
@@ -695,7 +695,7 @@
 
 
 	<target name="js-prepare-node">
-		<exec executable="npm${executable.suffix}" failonerror="true">
+		<exec executable="${executable.npm}" failonerror="true">
 			<arg value="install"/>
 			<arg value="--no-save"/>
 		</exec>
@@ -703,7 +703,7 @@
 
 
 	<target name="js-prepare-contribs" depends="js-prepare-node">
-		<exec executable="npx${executable.suffix}" failonerror="true">
+		<exec executable="${executable.npx}" failonerror="true">
 			<arg value="showdown"/>
 			<arg value="makehtml"/>
 			<arg value="--input"/>
@@ -716,7 +716,7 @@
 
 	<!-- TODO: Do not write stendhal-compiled.js to the source directory tree but directly to the compiled directory tree -->
 	<target name="js-invoke-compiler">
-		<exec executable="npx${executable.suffix}" dir="${srcjs}/stendhal" failonerror="true">
+		<exec executable="${executable.npx}" dir="${srcjs}/stendhal" failonerror="true">
 			<arg value="tsc"/>
 		</exec>
 

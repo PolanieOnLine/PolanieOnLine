@@ -5,24 +5,6 @@
 		Sets a property (by name and value), or set of properties (from file or resource) in the project. Properties are case sensitive.
 		Properties are immutable: whoever sets a property first freezes it for the rest of the build; they are most definitely not variables.
 	-->
-	<property environment="env"/>
-
-	<condition property="os.win">
-		<os family="windows"/>
-	</condition>
-
-	<condition property="exe.ext" value=".exe" else="">
-		<equals arg1="${os.win}" arg2="true"/>
-	</condition>
-	<condition property="executable.npm" value="npm.cmd" else="npm">
-		<equals arg1="${os.win}" arg2="true"/>
-	</condition>
-
-	<!-- Windows fails to execute "ng" unless it is invoked as "ng.cmd" -->
-	<condition property="executable.suffix" value=".cmd">
-		<os family="windows"/>
-	</condition>
-	<property name="executable.suffix" value=""/>
 
 	<property file="build.ant-private.properties"/>
 	<property file="build.ant.properties"/>
@@ -89,15 +71,11 @@
 	</tstamp>
 	<property name="datetime" value="${date} ${time}"/>
 
-	<!-- check for some executables -->
-	<available property="python.present" file="python${exe.ext}" filepath="${env.PATH}"/>
-	<available property="python3.present" file="python3${exe.ext}" filepath="${env.PATH}"/>
-
-
 	<!-- Ant sub-modules -->
 
 	<import file="build-private.xml" optional="true"/>
 
+	<import file="${ant_modules}/system.xml"/>
 	<import file="${ant_modules}/apps.xml"/>
 	<import file="${ant_modules}/main.xml"/>
 	<import file="${ant_modules}/clean.xml"/>
