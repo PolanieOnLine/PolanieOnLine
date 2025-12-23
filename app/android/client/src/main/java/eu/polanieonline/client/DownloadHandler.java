@@ -9,7 +9,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-package org.stendhalgame.client;
+package eu.polanieonline.client;
 
 import java.io.File;
 import java.io.FileOutputStream;

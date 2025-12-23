@@ -1,6 +1,6 @@
 {
   "$schema": "https://raw.githubusercontent.com/neutralinojs/neutralinojs/main/schemas/neutralino.config.schema.json",
-  "applicationId": "org.stendhalgame.client",
+  "applicationId": "eu.polanieonline.client",
   "version": "1.41",
   "defaultMode": "window",
   "port": 0,

@@ -9,24 +9,33 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-package org.stendhalgame.client;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
+package eu.polanieonline.client;
 
-public class OpenAppByUrl extends Activity {
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		Intent intent = getIntent();
-		// String action = intent.getAction();
-		Uri data = intent.getData();
-		Logger.debug("URL: " + data);
-		MainActivity.get().getActiveClientView().checkLoginIntent(intent);
-		finish();
-	 }
+/**
+ * App configuration information.
+ */
+class AppInfo {
 
+	/**
+	 * Retrieves configured build type string.
+	 */
+	public static String getBuildType() {
+		return MainActivity.get().getResources().getString(R.string.build_type);
+	}
+
+	/**
+	 * Retrieves configured build version string.
+	 */
+	public static String getBuildVersion() {
+		return MainActivity.get().getResources().getString(R.string.build_version);
+	}
+
+	/**
+	 * Retrieves configured intent URL scheme string.
+	 */
+	public static String getIntentUrlScheme() {
+		return MainActivity.get().getResources().getString(R.string.intent_url_scheme);
+	}
 }

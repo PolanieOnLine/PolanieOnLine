@@ -7,7 +7,7 @@
 	android:id="@+id/preferences"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	tools:context="org.stendhalgame.client.PreferencesActivity">
+	tools:context="eu.polanieonline.client.PreferencesActivity">
 
 	<FrameLayout
 		android:id="@+id/preferencesFrame"

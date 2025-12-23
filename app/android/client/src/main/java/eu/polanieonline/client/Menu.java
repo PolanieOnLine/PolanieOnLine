@@ -9,7 +9,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-package org.stendhalgame.client;
+package eu.polanieonline.client;
 
 import android.view.View;
 import android.view.ViewTreeObserver;

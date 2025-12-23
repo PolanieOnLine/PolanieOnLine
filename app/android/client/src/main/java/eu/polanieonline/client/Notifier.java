@@ -9,7 +9,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-package org.stendhalgame.client;
+package eu.polanieonline.client;
 
 import android.app.AlertDialog;
 import android.content.Context;

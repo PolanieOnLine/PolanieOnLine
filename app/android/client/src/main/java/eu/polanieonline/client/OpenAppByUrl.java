@@ -1,5 +1,5 @@
 /***************************************************************************
- *                 Copyright © 2022-2024 - Faiumoni e. V.                  *
+ *                    Copyright © 2024 - Faiumoni e. V.                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -9,11 +9,24 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-package org.stendhalgame.client;
+package eu.polanieonline.client;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
 
-public enum PageId {
-	TITLE,
-	WEBCLIENT,
-	OTHER;
+public class OpenAppByUrl extends Activity {
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		Intent intent = getIntent();
+		// String action = intent.getAction();
+		Uri data = intent.getData();
+		Logger.debug("URL: " + data);
+		MainActivity.get().getActiveClientView().checkLoginIntent(intent);
+		finish();
+	 }
+
 }
