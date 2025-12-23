@@ -29,6 +29,7 @@ import games.stendhal.server.actions.chat.AwayAction;
 import games.stendhal.server.actions.chat.ChatAction;
 import games.stendhal.server.actions.chat.StoreMessageAction;
 import games.stendhal.server.actions.GoldenCauldronAction;
+import games.stendhal.server.actions.ImproveAction;
 import games.stendhal.server.actions.equip.DisplaceAction;
 import games.stendhal.server.actions.equip.DropAction;
 import games.stendhal.server.actions.equip.EquipAction;
@@ -114,7 +115,8 @@ public class CommandCenter {
 		ForsakeAction.register();
 		GroupManagementAction.register();
                 KnockAction.register();
-                GoldenCauldronAction.register();
+		GoldenCauldronAction.register();
+		ImproveAction.register();
 		LanguageAction.register();
 		ListProducersAction.register();
 		LookAction.register();

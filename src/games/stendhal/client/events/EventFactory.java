@@ -86,6 +86,10 @@ class EventFactory {
 			event = new ItemLogEvent();
 		} else if (name.equals(Events.ACHIEVEMENT_LOG)) {
 			event = new AchievementLogEvent();
+		} else if (name.equals(Events.IMPROVE_LIST)) {
+			event = new ImproveListEvent();
+		} else if (name.equals(Events.IMPROVE_RESULT)) {
+			event = new ImproveResultEvent();
 		}
 
 		if (event != null) {
@@ -127,7 +131,7 @@ class EventFactory {
 			event = new EntityMessageEvent();
 		}  else if (name.equals(Events.GLOBAL_VISUAL)) {
 			event = new GlobalVisualEffectEvent();
-		}
+				}
 
 		if (event != null) {
 			event.init(entity, rpevent);
