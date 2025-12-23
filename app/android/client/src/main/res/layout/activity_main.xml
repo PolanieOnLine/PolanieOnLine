@@ -28,73 +28,80 @@
 		app:layout_constraintTop_toTopOf="parent">
 	</androidx.constraintlayout.widget.ConstraintLayout>
 
-	<Toolbar
-		android:id="@+id/menu_main"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:background="#80ffffff"
-		android:logo="@mipmap/ic_launcher_round"
-		android:title="Menu"
-		app:layout_constraintLeft_toLeftOf="parent"
-		app:layout_constraintBottom_toBottomOf="parent">
-
-		<LinearLayout
-			android:layout_width="match_parent"
+		<Toolbar
+			android:id="@+id/menu_main"
+			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:gravity="right">
+			android:background="#66000000"
+			android:padding="8dp"
+			app:layout_constraintBottom_toBottomOf="parent"
+			app:layout_constraintEnd_toEndOf="parent">
 
-			<Button
-				android:id="@+id/btn_connect"
+			<LinearLayout
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:text="Connect"
-				android:background="#00000000"
-			/>
+				android:gravity="end"
+				android:orientation="vertical"
+				android:padding="4dp"
+				android:layout_marginEnd="12dp">
 
-			<Button
-				android:id="@+id/btn_title"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="Title"
-				android:background="#00000000"
-			/>
+				<Button
+					android:id="@+id/btn_connect"
+					android:layout_width="160dp"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="8dp"
+					android:background="@drawable/btn_wood"
+					android:padding="10dp"
+					android:text="Connect"
+					android:textColor="#f2e2c4"
+					android:textStyle="bold" />
 
-			<Button
-				android:id="@+id/btn_reload"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="Reload"
-				android:background="#00000000"
-			/>
+				<Button
+					android:id="@+id/btn_title"
+					android:layout_width="160dp"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="8dp"
+					android:background="@drawable/btn_wood"
+					android:padding="10dp"
+					android:text="Title"
+					android:textColor="#f2e2c4"
+					android:textStyle="bold" />
 
-			<Button
-				android:id="@+id/btn_settings"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="Settings"
-				android:background="#00000000"
-			/>
+				<Button
+					android:id="@+id/btn_reload"
+					android:layout_width="160dp"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="8dp"
+					android:background="@drawable/btn_wood"
+					android:padding="10dp"
+					android:text="Reload"
+					android:textColor="#f2e2c4"
+					android:textStyle="bold" />
 
-			<!--
-			<Button
-				android:id="@+id/btn_about"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="About"
-				android:background="#00000000"
-			/>
-			-->
+				<Button
+					android:id="@+id/btn_settings"
+					android:layout_width="160dp"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="8dp"
+					android:background="@drawable/btn_wood"
+					android:padding="10dp"
+					android:text="Settings"
+					android:textColor="#f2e2c4"
+					android:textStyle="bold" />
 
-			<Button
-				android:id="@+id/btn_quit"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:text="Quit"
-				android:background="#00000000"
-			/>
+				<Button
+					android:id="@+id/btn_quit"
+					android:layout_width="160dp"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="8dp"
+					android:background="@drawable/btn_wood"
+					android:padding="10dp"
+					android:text="Quit"
+					android:textColor="#f2e2c4"
+					android:textStyle="bold" />
 
-		</LinearLayout>
+			</LinearLayout>
 
-	</Toolbar>
+		</Toolbar>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+	</androidx.constraintlayout.widget.ConstraintLayout>
