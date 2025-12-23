@@ -16,18 +16,18 @@
 		-->
 
 	<shop name="deniran_accessories" type="outfit">
-		<outfit name="biały balonik" layers="detail=2" price="50000"/>
-		<outfit name="czarny balonik" layers="detail=3" price="50000"/>
-		<outfit name="kość" layers="detail=4" price="100000"/>
-		<outfit name="parasol" layers="detail=7" price="50000"/>
-		<outfit name="miecz" layers="detail=8" price="250000"/>
-		<outfit name="nożyk" layers="detail=9" price="125000"/>
-		<outfit name="włócznia" layers="detail=10" price="150000"/>
-		<outfit name="łuk" layers="detail=11" price="175000"/>
-		<outfit name="topór1" layers="detail=12" price="250000"/>
-		<outfit name="topór2" layers="detail=13" price="250000"/>
-		<outfit name="tarcza normandzka" layers="detail=14" price="225000"/>
-		<outfit name="tarcza" layers="detail=15" price="225000"/>
+		<outfit name="biały balonik" layers="detail=2" price="25000"/>
+		<outfit name="czarny balonik" layers="detail=3" price="25000"/>
+		<outfit name="kość" layers="detail=4" price="50000"/>
+		<outfit name="parasol" layers="detail=7" price="24000"/>
+		<outfit name="miecz" layers="detail=8" price="125000"/>
+		<outfit name="nożyk" layers="detail=9" price="62500"/>
+		<outfit name="włócznia" layers="detail=10" price="75000"/>
+		<outfit name="łuk" layers="detail=11" price="87500"/>
+		<outfit name="topór1" layers="detail=12" price="125000"/>
+		<outfit name="topór2" layers="detail=13" price="125000"/>
+		<outfit name="tarcza normandzka" layers="detail=14" price="112500"/>
+		<outfit name="tarcza" layers="detail=15" price="112500"/>
 
 		<merchant name="Gwen" action="rent,wypożycz,wypożyczyć,buy,kupię,kup"
 			flags="configure,noOffer,removeDetailColor,confirmTemp,confirmBalloon,resetBeforeChange"

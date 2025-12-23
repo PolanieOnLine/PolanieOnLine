@@ -99,4 +99,187 @@ export class Chat {
 			Chat.log("client", message);
 		}
 	}
+
+	/**
+	 * Formats displayed text.
+	 *
+	 * @param message {string}
+	 *   Text to parse for special characters.
+	 * @return {string}
+	 *   Text formatted with keywords & item names highlighted.
+	 */
+	public static formatLogEntry(message: string): string {
+		if (!message) {
+			return "";
+		}
+		let res = "";
+		let delims = [" ", ",", ".", "!", "?", ":", ";"];
+		let length = message.length;
+		let inHighlight = false, inUnderline = false, inUnderlineColor = false, inAdmin = false,
+			inHighlightQuote = false, inUnderlineQuote = false, inUnderlineColorQuote = false, inAdminQuote = false;
+		for (let i = 0; i < length; i++) {
+			let c = message[i];
+
+			if (c === "\\") {
+				let n = message[i + 1];
+				res += n;
+				i++;
+
+			// Highlight Start?
+			} else if (c === "#") {
+				if (inHighlight) {
+					res += c;
+					continue;
+				}
+				let n = message[i + 1];
+				if (n === "#") {
+					res += c;
+					i++;
+					continue;
+				}
+				if (n === "'") {
+					inHighlightQuote = true;
+					i++;
+				}
+				inHighlight = true;
+				res += "<span class=\"logh\">";
+
+			// Underline start?
+			} else if (c === "§") {
+				if (inUnderline) {
+					res += c;
+					continue;
+				}
+				let n = message[i + 1];
+				if (n === "§") {
+					res += c;
+					i++;
+					continue;
+				}
+				if (n === "'") {
+					inUnderlineQuote = true;
+					i++;
+				}
+				inUnderline = true;
+				res += "<span class=\"logi\">";
+
+			// Underline with color start?
+			} else if (c === "~") {
+				if (inUnderlineColor) {
+					res += c;
+					continue;
+				}
+				let n = message[i + 1];
+				if (n === "~") {
+					res += c;
+					i++;
+					continue;
+				}
+				if (n === "'") {
+					inUnderlineColorQuote = true;
+					i++;
+				}
+				inUnderlineColor = true;
+				res += "<span class=\"logu\">";
+
+			// Admin highlight start?
+			} else if (c === "¡") {
+				if (inAdmin) {
+					res += c;
+					continue;
+				}
+				let n = message[i + 1];
+				if (n === "¡") {
+					res += c;
+					i++;
+					continue;
+				}
+				if (n === "'") {
+					inAdminQuote = true;
+					i++;
+				}
+				inAdmin = true;
+				res += "<span class=\"logadmin\">";
+
+			// End Highlight and Underline?
+			} else if (c === "'") {
+				if (inAdminQuote) {
+					inAdmin = false;
+					inAdminQuote = false;
+					res += "</span>";
+					continue;
+				}
+				if (inUnderlineColorQuote) {
+					inUnderlineColor = false;
+					inUnderlineColorQuote = false;
+					res += "</span>";
+					continue;
+				}
+				if (inUnderlineQuote) {
+					inUnderline = false;
+					inUnderlineQuote = false;
+					res += "</span>";
+					continue;
+				}
+				if (inHighlightQuote) {
+					inHighlight = false;
+					inHighlightQuote = false;
+					res += "</span>";
+					continue;
+				}
+				res += c;
+
+			// HTML escape
+			} else if (c === "<") {
+				res += "&lt;";
+
+			// End of word
+			} else if (delims.indexOf(c) > -1) {
+				let n = message[i + 1];
+				if (c === " " || n === " " || n == undefined) {
+					if (inAdmin && !inAdminQuote && !inHighlightQuote && !inUnderlineQuote && !inUnderlineColorQuote) {
+						inAdmin = false;
+						res += "</span>" + c;
+						continue;
+					}
+					if (inUnderlineColor && !inUnderlineColorQuote && !inHighlightQuote && !inUnderlineQuote && !inAdminQuote) {
+						inUnderlineColor = false;
+						res += "</span>" + c;
+						continue;
+					}
+					if (inUnderline && !inUnderlineQuote && !inHighlightQuote) {
+						inUnderline = false;
+						res += "</span>" + c;
+						continue;
+					}
+					if (inHighlight && !inUnderlineQuote && !inHighlightQuote && !inUnderlineColorQuote && !inAdminQuote) {
+						inHighlight = false;
+						res += "</span>" + c;
+						continue;
+					}
+				}
+				res += c;
+
+			// Normal characters
+			} else {
+				res += c;
+			}
+		}
+
+		// Close opened formattings
+		if (inUnderline) {
+			res += "</span>";
+		}
+		if (inUnderlineColor) {
+			res += "</span>";
+		}
+		if (inHighlight) {
+			res += "</span>";
+		}
+		if (inAdmin) {
+			res += "</span>";
+		}
+
+		return res;
+	}
 }

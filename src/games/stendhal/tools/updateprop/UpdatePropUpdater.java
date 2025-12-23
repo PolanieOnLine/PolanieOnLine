@@ -1,6 +1,5 @@
-/* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2011 - Stendhal                    *
+ *                   (C) Copyright 2003-2025 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -18,7 +17,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -50,7 +50,8 @@ public class UpdatePropUpdater {
 	 * @param files      list of files
 	 * @throws Exception
 	 */
-	public UpdatePropUpdater(final String oldFile, final String newFile, final String oldVersion, final String newVersion, String folder, List<String> files) throws Exception {
+	public UpdatePropUpdater(final String oldFile, final String newFile, final String oldVersion,
+			final String newVersion, String folder, List<String> files) throws Exception {
 		this.newFile = newFile;
 		this.newVersion = newVersion;
 		this.oldFile = oldFile;
@@ -59,8 +60,6 @@ public class UpdatePropUpdater {
 		this.files = new ArrayList<String>(files);
 		signer = new UpdateSigner();
 	}
-
-
 
 	/**
 	 * Updates the update.properties file.
@@ -79,14 +78,15 @@ public class UpdatePropUpdater {
 	/**
 	 * loads the current version of the update.properties
 	 *
-	 * @throws IOException in case of an input/output error
+	 * @throws IOException        in case of an input/output error
+	 * @throws URISyntaxException
 	 */
-	private void loadOldUpdateProperties() throws IOException {
+	private void loadOldUpdateProperties() throws IOException, URISyntaxException {
 		prop = new Properties();
 		InputStream is;
 		if (oldFile.indexOf(":") > 2) {
-			URL url = new URL(oldFile);
-			is = url.openStream();
+			URI uri = new URI(oldFile);
+			is = uri.toURL().openStream();
 		} else {
 			is = new FileInputStream(oldFile);
 		}
@@ -143,8 +143,6 @@ public class UpdatePropUpdater {
 		}
 	}
 
-
-
 	/**
 	 * writes the new version of the update.properties
 	 *
@@ -165,7 +163,8 @@ public class UpdatePropUpdater {
 	 */
 	public static void main(final String[] args) throws Exception {
 		if ((args.length < 4)) {
-			System.err.println("java " + UpdatePropUpdater.class.getName() + " oldFile newFile oldVersion newVersion folder files");
+			System.err.println("java " + UpdatePropUpdater.class.getName()
+					+ " oldFile newFile oldVersion newVersion folder files");
 			System.exit(1);
 		}
 		List<String> files = new LinkedList<String>();

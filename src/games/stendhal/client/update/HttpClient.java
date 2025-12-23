@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2016 - Stendhal                    *
+ *                   (C) Copyright 2003-2025 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -20,6 +20,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
+import java.net.URI;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.Properties;
@@ -109,13 +110,15 @@ public class HttpClient {
 		// sometimes problems with the webservers being slow or not responding
 		// at all.
 		try {
-			final URL url = new URL(urlString);
+			final URL url = new URI(urlString).toURL();
 			int retryCount = 0;
 			int myTimeout = timeout;
 			while (is == null) {
 				retryCount++;
 				try {
 					connection = (HttpURLConnection) url.openConnection();
+					// Wikipedia API now requires User-Agent string
+					connection.setRequestProperty("User-Agent", "PolanieOnLineClient/1.41 (https://s1.polanieonline.eu/kontakt.html)");
 					connection.setConnectTimeout(myTimeout);
 					connection.setInstanceFollowRedirects(true);
 					connection.setUseCaches(false);
@@ -134,7 +137,7 @@ public class HttpClient {
 								if(!passedRedirects.contains(newUrl)) {
 									// open the new connnection again
 									passedRedirects.add(newUrl);
-									connection = (HttpURLConnection) new URL(newUrl).openConnection();
+									connection = (HttpURLConnection) new URI(newUrl).toURL().openConnection();
 									redirect = isRedirect(connection.getResponseCode());
 								} else {
 									System.err.println(String.format("The URL '%s' leads into a circular redirect.", url));

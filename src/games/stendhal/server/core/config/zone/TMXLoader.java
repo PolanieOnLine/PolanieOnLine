@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2024 - Stendhal                    *
+ *                   (C) Copyright 2003-2025 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -15,7 +15,7 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.InputStream;
 import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
 import java.util.List;
 import java.util.Properties;
 import java.util.zip.GZIPInputStream;
@@ -110,23 +110,19 @@ public class TMXLoader {
 	}
 
 	/**
-	 * Reads properties from amongst the given children. When a "properties"
-	 * element is encountered, it recursively calls itself with the children of
-	 * this node. This function ensures backward compatibility with tmx version
-	 * 0.99a.
+	 * Reads properties from amongst the given children. When a "properties" element
+	 * is encountered, it recursively calls itself with the children of this node.
+	 * This function ensures backward compatibility with tmx version 0.99a.
 	 *
-	 * @param children
-	 *            the children amongst which to find properties
-	 * @param props
-	 *            the properties object to set the properties of
+	 * @param children the children amongst which to find properties
+	 * @param props    the properties object to set the properties of
 	 */
 	@SuppressWarnings("unused")
 	private static void readProperties(final NodeList children, final Properties props) {
 		for (int i = 0; i < children.getLength(); i++) {
 			final Node child = children.item(i);
 			if ("property".equalsIgnoreCase(child.getNodeName())) {
-				props.setProperty(getAttributeValue(child, "name"),
-						getAttributeValue(child, "value"));
+				props.setProperty(getAttributeValue(child, "name"), getAttributeValue(child, "value"));
 			} else if ("properties".equals(child.getNodeName())) {
 				readProperties(child.getChildNodes(), props);
 			}
@@ -135,6 +131,7 @@ public class TMXLoader {
 
 	/**
 	 * Loads a map layer from a layer node.
+	 * 
 	 * @param t
 	 * @return the layer definition for the node
 	 * @throws Exception
@@ -163,8 +160,7 @@ public class TMXLoader {
 					if (cdata != null) {
 						final char[] enc = cdata.getNodeValue().trim().toCharArray();
 						final byte[] dec = Base64.decode(enc);
-						final ByteArrayInputStream bais = new ByteArrayInputStream(
-								dec);
+						final ByteArrayInputStream bais = new ByteArrayInputStream(dec);
 						InputStream is;
 
 						final String comp = getAttributeValue(child, "compression");
@@ -198,10 +194,9 @@ public class TMXLoader {
 	 *
 	 * Default is {@code true} if attribute is not set.
 	 *
-	 * @param attributes
-	 *   Layer's attributes.
-	 * @return
-	 *   {@code true} if "visible" attribute is NOT set or its value is not "0".
+	 * @param attributes Layer's attributes.
+	 * @return {@code true} if "visible" attribute is NOT set or its value is not
+	 *         "0".
 	 */
 	private boolean layerVisible(final NamedNodeMap attributes) {
 		final Node attrVisible = attributes.getNamedItem("visible");
@@ -216,10 +211,8 @@ public class TMXLoader {
 	 *
 	 * Default is {@code false} if attribute not set.
 	 *
-	 * @param attributes
-	 *   Layer's attributes.
-	 * @return
-	 *   {@code true} if "locked" attribute IS set and its value is not "0".
+	 * @param attributes Layer's attributes.
+	 * @return {@code true} if "locked" attribute IS set and its value is not "0".
 	 */
 	private boolean layerLocked(final NamedNodeMap attributes) {
 		final Node attrLocked = attributes.getNamedItem("locked");
@@ -291,18 +284,16 @@ public class TMXLoader {
 	}
 
 	public StendhalMapStructure readMap(final String filename) throws Exception {
-		xmlPath = filename.substring(0,
-				filename.lastIndexOf(File.separatorChar) + 1);
+		xmlPath = filename.substring(0, filename.lastIndexOf(File.separatorChar) + 1);
 
-		InputStream is = getClass().getClassLoader().getResourceAsStream(
-				filename);
+		InputStream is = getClass().getClassLoader().getResourceAsStream(filename);
 
 		if (is == null) {
 			final String xmlFile = makeUrl(filename);
 			// xmlPath = makeUrl(xmlPath);
 
-			final URL url = new URL(xmlFile);
-			is = url.openStream();
+			final URI uri = new URI(xmlFile);
+			is = uri.toURL().openStream();
 		}
 
 		// Wrap with GZIP decoder for .tmx.gz files
@@ -318,23 +309,22 @@ public class TMXLoader {
 
 		StendhalMapStructure map = null;
 		/*
-		 * long start=System.currentTimeMillis(); for(int i=0;i<90;i++) {
-		 * map=new TMXLoader().readMap("tiled/interiors/abstract/afterlife.tmx");
-		 * map=new TMXLoader().readMap("tiled/Level 0/ados/city_n.tmx");
-		 * map=new TMXLoader().readMap("tiled/Level 0/semos/city.tmx");
-		 * map=new TMXLoader().readMap("tiled/Level 0/nalwor/city.tmx");
-		 * map=new TMXLoader().readMap("tiled/Level 0/orril/castle.tmx");
-		 * }
+		 * long start=System.currentTimeMillis(); for(int i=0;i<90;i++) { map=new
+		 * TMXLoader().readMap("tiled/interiors/abstract/afterlife.tmx"); map=new
+		 * TMXLoader().readMap("tiled/Level 0/ados/city_n.tmx"); map=new
+		 * TMXLoader().readMap("tiled/Level 0/semos/city.tmx"); map=new
+		 * TMXLoader().readMap("tiled/Level 0/nalwor/city.tmx"); map=new
+		 * TMXLoader().readMap("tiled/Level 0/orril/castle.tmx"); }
 		 *
-		 * System.out.println("Time ellapsed (ms): " + (System.currentTimeMillis()-start)); /
+		 * System.out.println("Time ellapsed (ms): " +
+		 * (System.currentTimeMillis()-start)); /
 		 */
 		map = new TMXLoader().readMap("tiled/Level 0/semos/village_w.tmx");
 		map.build();
 		System.out.printf("MAP W: %d H:%d\n", map.getWidth(), map.getHeight());
 		final List<TileSetDefinition> tilesets = map.getTilesets();
 		for (final TileSetDefinition set : tilesets) {
-			System.out.printf("TILESET firstGID: '%d' name: '%s'\n",
-					set.getFirstGid(), set.getSource());
+			System.out.printf("TILESET firstGID: '%d' name: '%s'\n", set.getFirstGid(), set.getSource());
 		}
 
 		final List<LayerDefinition> layers = map.getLayers();
