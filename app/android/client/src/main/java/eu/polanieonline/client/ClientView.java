@@ -674,11 +674,15 @@ public class ClientView extends WebView {
 			return;
 		}
 		autoLoginAttempted = true;
-		final String js = "javascript:(function(){try{var u=document.querySelector('input[type=email],input[name=username],input[name=login],input[type=text]');var p=document.querySelector('input[type=password]');if(u){u.value="
-				+ JSONObject.quote(loginUser)
-				+ ";}if(p){p.value="
-				+ JSONObject.quote(loginPass)
-				+ ";}var f=null;if(p&&p.form){f=p.form;}else if(u&&u.form){f=u.form;}else{f=document.querySelector('form');}if(f){f.submit();}}catch(e){console.log(e);}})();";
+		final String js = "javascript:(function(){try{"
+				+ "var u=document.querySelector('#username')||document.querySelector('input[type=email],input[name=username],input[name=login],input[type=text]');"
+				+ "var p=document.querySelector('#password')||document.querySelector('input[type=password]');"
+				+ "var b=document.querySelector('#loginbutton')||document.querySelector('button[type=submit],input[type=submit]');"
+				+ "if(u){u.value=" + JSONObject.quote(loginUser) + ";}"
+				+ "if(p){p.value=" + JSONObject.quote(loginPass) + ";}"
+				+ "if(b){b.click();}"
+				+ "else{var f=null;if(p&&p.form){f=p.form;}else if(u&&u.form){f=u.form;}else{f=document.querySelector('form');}if(f){f.submit();}}"
+				+ "}catch(e){console.log(e);}})();";
 		view.evaluateJavascript(js, null);
 	}
 }
