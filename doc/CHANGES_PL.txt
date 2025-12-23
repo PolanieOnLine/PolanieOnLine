@@ -3,32 +3,43 @@ Changelog
 1.41
 *klient*
 - Dodano i odświeżono grafiki nominałów monet
-- Ulepszono panel gracza, wyświetlając liczbę monet każdego nominału oraz ich sumę w najmniejszym nominale (eksperymentalne - wyłączone na głównym serwerze)
+- Rozszerzono panel gracza o wyświetlanie liczby monet każdego nominału oraz ich sumy w najmniejszym nominale (eksperymentalne, wyłączone na głównym serwerze)
 - Dodano interfejs schowka na dodatkowy ekwipunek
-- Wprowadzono lupę w panelu listy znajomych, aby szybko przefiltrować znajomych po wpisanej nazwie
-- Dodano eksperymentalne przełączenie sterowania postacią z klawiszy strzałek na WASD wraz z przełączaniem fokusu czatu klawiszem TAB
-- Dodano wybór rozdzielczości gry w ustawieniach
-- Dodano możliwość włączenia licznika aktualnych klatek na sekundę (FPS)
-- Dodano w ustawieniach listę wyboru docelowej liczby FPS
-- Po najechaniu kursorem na minimapę pojawia się dymek z dokładną, dynamicznie aktualizowaną pozycją gracza
-- Poprawiono płynność poruszania kamery i działania całego klienta Java
+- Dodano pole wyszukiwania do listy znajomych
+- Dodano eksperymentalne sterowanie WASD oraz przełączanie fokusu czatu klawiszem TAB
+- Dodano możliwość wyboru rozdzielczości gry w ustawieniach
+- Dodano opcjonalny licznik FPS
+- Dodano możliwość ustawienia docelowego limitu FPS
+- Dodano dymek nad minimapą z dokładną, dynamicznie aktualizowaną pozycją gracza
+- Poprawiono płynność kamery oraz ogólną wydajność klienta Java
 - Dodano nową animację pracy kotła Draconii oraz nowy interfejs obsługi kotła
+- Rozszerzono Dziennik Zadań dla wybranych zadań opartych o QuestManuscript o osobną sekcję „Wymagania”
+
+*web-klient*
+- Uruchomiono pierwszą wersję web-klienta gry pod adresem https://s1.polanieonline.eu/client/polanieonline.html
+
+*android*
+- Przeniesiono planowaną premierę klienta Android na I kwartał 2026 roku
 
 *świat*
-- Dodano nowy kocioł Draconii i NPC Draconię stojącą w pobliżu Józka na pustyni
-- Wprowadzono przedmiot "wywar wąsatych smoków", możliwy do uwarzenia w kotle Draconii z odpowiednich składników
-- Zmieniono listę wymaganych przedmiotów na złotą ciupagę z trzema wąsami, rozszerzając ją o nowy wywar wąsatych smoków
+- Dodano nowy kocioł Draconii oraz NPC Draconię w pobliżu Józka na pustyni
+- Dodano nowy przedmiot „Wywar Wąsatych Smoków”, możliwy do uwarzenia w kotle Draconii
+- Zmieniono wymagania do wykonania „Złotej Ciupagi z Trzema Wąsami”, dodając Wywar Wąsatych Smoków
+- Obniżono ceny strojów w sklepie Gwen
 
 *kod*
-- Zaimplementowano szybkie podmienianie przedmiotów między głównym ekwipunkiem gracza a schowkiem
-- Wprowadzono nowy system walutowy z miedziakami, talarami i dukatami zamiast pojedynczego zasobu "money" (eksperymentalne - wyłączone na głównym serwerze)
-- Dodano skrypty administracyjne `RaidPlague` oraz `MassHeal`
+- Zaimplementowano szybkie przenoszenie przedmiotów między głównym ekwipunkiem a schowkiem
+- Wprowadzono nowy system walutowy oparty o miedziaki, talary i dukaty zamiast pojedynczego zasobu „money” (eksperymentalne, wyłączone na głównym serwerze)
+- Dodano skrypty administracyjne RaidPlague oraz MassHeal
 
 *naprawiono błędy*
+- Naprawiono osiągnięcie Smakosz
 - Naprawiono portal na mapie int_warszawa_armory
-- Naprawiono nalewanie wody do butelki u Nosiwody Jakuba
+- Naprawiono interakcję nalewania wody do butelki u NPC Nosiwoda Jakub
+- Naprawiono błąd umożliwiający nieskończone zwiększanie bazowego zdrowia poprzez przenoszenie glifów
 - Poprawiono automatyczną odmianę rzeczowników i prefiksów w dialogach NPC
-- Uaktualniono tekst powitalny u czeladnika Jaromira, aby poprawnie wskazywał na oszlifowanie klejnotu
+- Zaktualizowano tekst powitalny u czeladnika Jaromira, aby poprawnie wskazywał na oszlifowanie klejnotu
+- Zoptymalizowano pliki muzyczne, zmniejszając ich rozmiar do 2 MB lub mniej
 
 
 1.40.3
