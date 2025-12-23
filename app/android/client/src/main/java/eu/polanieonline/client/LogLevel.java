@@ -9,33 +9,31 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-
-package org.stendhalgame.client;
+package eu.polanieonline.client;
 
 
 /**
- * App configuration information.
+ * Logger verbosity levels.
  */
-class AppInfo {
+public enum LogLevel {
+
+	// available verbosity levels
+	INFO("INFO"),
+	WARN("WARN"),
+	ERROR("ERROR"),
+	DEBUG("DEBUG");
+
+	/** String identifier. */
+	public final String label;
+
 
 	/**
-	 * Retrieves configured build type string.
+	 * Creates a new logging verbosity level.
+	 *
+	 * @param label
+	 *   String identifier.
 	 */
-	public static String getBuildType() {
-		return MainActivity.get().getResources().getString(R.string.build_type);
-	}
-
-	/**
-	 * Retrieves configured build version string.
-	 */
-	public static String getBuildVersion() {
-		return MainActivity.get().getResources().getString(R.string.build_version);
-	}
-
-	/**
-	 * Retrieves configured intent URL scheme string.
-	 */
-	public static String getIntentUrlScheme() {
-		return MainActivity.get().getResources().getString(R.string.intent_url_scheme);
+	private LogLevel(final String label) {
+		this.label = label;
 	}
 }

@@ -1,4 +1,4 @@
-const SERVER_ORIGIN = "https://stendhalgame.org";
+const SERVER_ORIGIN = "https://polanieonline.eu";
 // const SERVER_ORIGIN = "http://localhost";
 const SERVER_PATH = "/account/login.html";
 

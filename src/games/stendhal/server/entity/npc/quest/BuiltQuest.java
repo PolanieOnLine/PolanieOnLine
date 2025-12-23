@@ -59,7 +59,15 @@ public class BuiltQuest extends AbstractQuest {
 		res.add(history.getWhenQuestWasAccepted());
 		List<String> progress = questBuilder.task().calculateHistoryProgress(history, player, questSlot);
 		if (progress != null) {
-			res.addAll(progress);
+			if ("done".equals(questState)) {
+				for (String entry : progress) {
+					if (!entry.startsWith(QuestTaskBuilder.REQUIREMENTS_MARKER)) {
+						res.add(entry);
+					}
+				}
+			} else {
+				res.addAll(progress);
+			}
 		}
 		if ("done".equals(questState) || questBuilder.task().isCompleted(player, questSlot)) {
 			if (history.getWhenTaskWasCompleted() != null) {
@@ -69,21 +77,19 @@ public class BuiltQuest extends AbstractQuest {
 		if ("done".equals(questState)) {
 			res.add(history.getWhenQuestWasCompleted());
 		}
-		if (isRepeatable(player)){
+		if (isRepeatable(player)) {
 			res.add(history.getWhenQuestCanBeRepeated());
 		}
 
 		// completions
 		int count = MathHelper.parseIntDefault(player.getQuest(questSlot, 2), 0);
-		final String completionsShown = formatCompletionsString(history.getWhenCompletionsShown(),
-					count);
+		final String completionsShown = formatCompletionsString(history.getWhenCompletionsShown(), count);
 		if (completionsShown != null) {
 			res.add(completionsShown);
 		}
 		// early completions
 		count = MathHelper.parseIntDefault(player.getQuest(questSlot, 3), 0);
-		final String earlyCompletionsShown = formatCompletionsString(
-				history.getWhenEarlyCompletionsShown(), count);
+		final String earlyCompletionsShown = formatCompletionsString(history.getWhenEarlyCompletionsShown(), count);
 		if (earlyCompletionsShown != null) {
 			res.add(earlyCompletionsShown);
 		}
@@ -98,8 +104,8 @@ public class BuiltQuest extends AbstractQuest {
 		st = st.replace("[count]", String.valueOf(count));
 		final int idx1 = st.indexOf("[");
 		final int idx2 = st.indexOf("]");
-		if (idx1 > -1 && idx2 > idx1+1) {
-			final String ctype = st.substring(idx1+1, idx2);
+		if (idx1 > -1 && idx2 > idx1 + 1) {
+			final String ctype = st.substring(idx1 + 1, idx2);
 			st = st.replace("[" + ctype + "]", Grammar.plnoun(count, ctype));
 		}
 		return st;
@@ -107,9 +113,7 @@ public class BuiltQuest extends AbstractQuest {
 
 	@Override
 	public void addToWorld() {
-		fillQuestInfo(
-				questBuilder.info().getName(),
-				questBuilder.info().getDescription(),
+		fillQuestInfo(questBuilder.info().getName(), questBuilder.info().getDescription(),
 				questBuilder.info().getRepeatableAfterMinutes() > 0,
 				// all quest manuscript instances should be using index 2 for completions count
 				2);
@@ -118,7 +122,8 @@ public class BuiltQuest extends AbstractQuest {
 		ChatAction questCompleteAction = questBuilder.task().buildQuestCompleteAction(questSlot);
 
 		final SpeakerNPC npc = npcs.get(questBuilder.info().getQuestGiverNpc());
-		questBuilder.offer().build(npc, questSlot, questBuilder.task(), questCompletedCondition, questBuilder.info().getRepeatableAfterMinutes());
+		questBuilder.offer().build(npc, questSlot, questBuilder.task(), questCompletedCondition,
+				questBuilder.info().getRepeatableAfterMinutes());
 		questBuilder.complete().build(npc, questSlot, questCompletedCondition, questCompleteAction);
 	}
 
@@ -147,11 +152,10 @@ public class BuiltQuest extends AbstractQuest {
 		return questSlot;
 	}
 
-
 	@Override
 	public boolean isRepeatable(final Player player) {
-		return questBuilder.info().getRepeatableAfterMinutes() > -1
-				&& isCompleted(player)
-				&& new TimePassedCondition(questSlot, 1, questBuilder.info().getRepeatableAfterMinutes()).fire(player,null, null);
+		return questBuilder.info().getRepeatableAfterMinutes() > -1 && isCompleted(player)
+				&& new TimePassedCondition(questSlot, 1, questBuilder.info().getRepeatableAfterMinutes()).fire(player,
+						null, null);
 	}
 }

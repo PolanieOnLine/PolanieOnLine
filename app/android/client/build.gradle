@@ -3,7 +3,7 @@ plugins {
 }
 
 android {
-	namespace "org.stendhalgame.client"
+	namespace "eu.polanieonline.client"
 	compileSdk 32
 
 	defaultConfig {

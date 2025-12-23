@@ -45,7 +45,7 @@ import games.stendhal.common.MathHelper;
  */
 public class WindowUtils {
 	/** A key that should not get mixed with anything else. */
-	private static final String WINDOW_CLOSE = "org.stendhalgame:window_closing";
+	private static final String WINDOW_CLOSE = "eu.polanieonline:window_closing";
 	/** Font size property name. */
 	private static final String FONT_SIZE_PROPERTY = "ui.font_size";
 	/** Default font point size. */

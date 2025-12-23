@@ -9,7 +9,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-package org.stendhalgame.client;
+package eu.polanieonline.client;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
 			Logger.error("// -- //");
 			Notifier.showPrompt(
 				"An unhandled exception has occurred: \"" + e.getMessage() + "\""
-				+ "\n\nYou can report this error at: https://stendhalgame.org/development/bug.html"
+				+ "\n\nYou can report this error at: https://s1.polanieonline.eu/development/bug.html"
 				+ "\n\nStack trace:\n" + sb.toString(),
 				new Notifier.Action() {
 					@Override

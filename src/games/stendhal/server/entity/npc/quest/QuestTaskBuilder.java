@@ -24,6 +24,7 @@ import games.stendhal.server.entity.player.Player;
  * @author hendrik
  */
 public abstract class QuestTaskBuilder {
+	static final String REQUIREMENTS_MARKER = "<requirements>";
 
 	// hide constructor
 	QuestTaskBuilder() {
@@ -50,11 +51,21 @@ public abstract class QuestTaskBuilder {
 		return buildQuestCompletedCondition(questSlot).fire(player, null, null);
 	}
 
-	List<String> calculateHistoryProgress(
-			@SuppressWarnings("unused") QuestHistoryBuilder history,
-			@SuppressWarnings("unused") Player player,
-			@SuppressWarnings("unused") String questSlot) {
+	List<String> calculateHistoryProgress(@SuppressWarnings("unused") QuestHistoryBuilder history,
+			@SuppressWarnings("unused") Player player, @SuppressWarnings("unused") String questSlot) {
 		return null;
 	}
 
+	String buildRequirementsBlock(List<String> requirements) {
+		if (requirements == null || requirements.isEmpty()) {
+			return null;
+		}
+
+		StringBuilder block = new StringBuilder(REQUIREMENTS_MARKER);
+		block.append("<br><br><big><b>Wymagania:</b></big>");
+		for (String requirement : requirements) {
+			block.append("<br>• ").append(requirement);
+		}
+		return block.toString();
+	}
 }

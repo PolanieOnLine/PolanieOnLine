@@ -9,14 +9,14 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-package org.stendhalgame.client;
+package eu.polanieonline.client;
 
 import android.net.Uri;
 
 
 class UrlHelper {
 
-	private static final String defaultServer = "https://stendhalgame.org/";
+	private static final String defaultServer = "https://polanieonline.eu/";
 
 
 	private UrlHelper() {
@@ -38,7 +38,7 @@ class UrlHelper {
 	}
 
 	/**
-	 * Retrieves the HTTP URL of the default server (stendhalgame.org).
+	 * Retrieves the HTTP URL of the default server (polanieonline.eu).
 	 *
 	 * @return
 	 *   String URL.
@@ -48,7 +48,7 @@ class UrlHelper {
 	}
 
 	/**
-	 * Retrieves the URI of the default server (stendhalgame.org).
+	 * Retrieves the URI of the default server (polanieonline.eu).
 	 *
 	 * @return
 	 *   `android.net.Uri` of default server.
@@ -199,7 +199,7 @@ class UrlHelper {
 	 * @param uri
 	 *   `android.net.Uri` to be checked.
 	 * @return
-	 *   `true` if URI is under default domain (stendhalgame.org) or localhost.
+	 *   `true` if URI is under default domain (polanieonline.eu) or localhost.
 	 */
 	public static boolean isInternalUri(final Uri uri) {
 		if (UrlHelper.isLoginUri(uri)) {
@@ -209,7 +209,7 @@ class UrlHelper {
 		final String defaultHost = UrlHelper.stripHost(UrlHelper.getDefaultHost());
 		final String host = UrlHelper.stripHost(uri.getHost());
 		if (defaultHost.equals(host)) {
-			// allow pages from stendhalgame.org
+			// allow pages from polanieonline.eu
 			return true;
 		}
 		final String cs = MainActivity.get().getActiveClientView().checkCustomServer();
@@ -225,7 +225,7 @@ class UrlHelper {
 	 * @param url
 	 *   HTTP URL string to be checked.
 	 * @return
-	 *   `true` if URL is under default domain (stendhalgame.org) or localhost.
+	 *   `true` if URL is under default domain (polanieonline.eu) or localhost.
 	 */
 	public static boolean isInternal(final String url) {
 		return UrlHelper.isInternalUri(UrlHelper.toUri(url));

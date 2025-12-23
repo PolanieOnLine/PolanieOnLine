@@ -1,5 +1,5 @@
 /***************************************************************************
- *                    Copyright © 2024 - Faiumoni e. V.                    *
+ *                 Copyright © 2022-2024 - Faiumoni e. V.                  *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -9,31 +9,11 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-package org.stendhalgame.client;
+package eu.polanieonline.client;
 
 
-/**
- * Logger verbosity levels.
- */
-public enum LogLevel {
-
-	// available verbosity levels
-	INFO("INFO"),
-	WARN("WARN"),
-	ERROR("ERROR"),
-	DEBUG("DEBUG");
-
-	/** String identifier. */
-	public final String label;
-
-
-	/**
-	 * Creates a new logging verbosity level.
-	 *
-	 * @param label
-	 *   String identifier.
-	 */
-	private LogLevel(final String label) {
-		this.label = label;
-	}
+public enum PageId {
+	TITLE,
+	WEBCLIENT,
+	OTHER;
 }
