@@ -45,6 +45,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebStorage;
 import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -67,6 +68,7 @@ public class ClientView extends WebView {
 
 	/** Client URL path. */
 	private String clientUrlSuffix = "client";
+	private ServerProfile currentProfile = ServerProfile.PROD;
 
 	/** Determines type of client to connect to. */
 	private boolean testClient = false;
@@ -142,6 +144,7 @@ public class ClientView extends WebView {
 	private void onInit() {
 		setActive(false); // main activity manages initial visibility
 		setBackgroundColor(Color.TRANSPARENT);
+		UrlHelper.setServerBase(currentProfile.getServerBase());
 
 		// expand to size of parent constraints
 		setLayoutParams(
@@ -552,6 +555,15 @@ public class ClientView extends WebView {
 	}
 
 	/**
+	 * Retrieves currently selected server profile.
+	 *
+	 * @return Server profile currently applied to the client view.
+	 */
+	public ServerProfile getCurrentProfile() {
+		return currentProfile;
+	}
+
+	/**
 	 * Retrieves a string representing the selected client.
 	 *
 	 * @return One of "main", "test", or "none".
@@ -579,9 +591,6 @@ public class ClientView extends WebView {
 	 * Resets selected client & server values to default.
 	 */
 	private void reset() {
-		testClient = false;
-		testServer = false;
-		clientUrlSuffix = "client";
 		stateId = "";
 		seed = "";
 		loginUser = "";
@@ -656,6 +665,80 @@ public class ClientView extends WebView {
 	}
 
 	/**
+	 * Opens native login dialog with provided credentials and optionally submits
+	 * automatically.
+	 *
+	 * @param credentials Credentials to prefill.
+	 * @param autoSubmit  If {@code true}, dialog will auto-submit after showing.
+	 */
+	public void showLoginDialogWithCredentials(final CredentialsStore.Credentials credentials,
+			final boolean autoSubmit) {
+		promptNativeLogin(credentials, autoSubmit);
+	}
+
+	/**
+	 * Applies given profile, clears current session data and reloads initial page.
+	 *
+	 * @param profile Server profile to apply.
+	 */
+	public void applyServerProfile(final ServerProfile profile) {
+		if (profile == null) {
+			return;
+		}
+		applyProfile(profile);
+		reset();
+		clearWebSession();
+		startSessionForCurrentProfile();
+	}
+
+	private void applyProfile(final ServerProfile profile) {
+		currentProfile = profile;
+		clientUrlSuffix = profile.getClientSuffix();
+		testClient = profile.isTestClient();
+		testServer = profile.isTestServer();
+		UrlHelper.setServerBase(profile.getServerBase());
+		UrlHelper.setClientUrlOverride(profile.getServerBase() + profile.getClientSuffix() + "/polanieonline.html");
+	}
+
+	private void startSessionForCurrentProfile() {
+		// create a unique state
+		stateId = generateRandomString();
+		seed = generateRandomString();
+		autoLoginAttempted = false;
+		// hide splash image
+		SplashUtil.get().setVisible(false);
+
+		final String initialPage = UrlHelper.getInitialPageUrl(clientUrlSuffix);
+		Logger.debug("Loading initial page: " + initialPage);
+		loadUrl(initialPage);
+		setPage(PageId.OTHER);
+		// hide menu after exiting title screen
+		Menu.get().hide();
+	}
+
+	private void clearWebSession() {
+		try {
+			clearCache(true);
+			clearFormData();
+			clearHistory();
+			clearSslPreferences();
+		} catch (final Exception e) {
+			Logger.error("Failed to clear WebView session: " + e.getMessage());
+		}
+		try {
+			WebStorage.getInstance().deleteAllData();
+		} catch (final Exception e) {
+			Logger.error("Failed to clear WebStorage: " + e.getMessage());
+		}
+		try {
+			final CookieManager cookieManager = CookieManager.getInstance();
+			cookieManager.removeAllCookies(value -> cookieManager.flush());
+		} catch (final Exception e) {
+			Logger.error("Failed to clear cookies: " + e.getMessage());
+		}
+	}
+
+	/**
 	 * Opens a message dialog for user to choose between main & test clients.
 	 */
 	private void selectClient() {
@@ -718,19 +801,7 @@ public class ClientView extends WebView {
 	 * Connects to server & loads initial page.
 	 */
 	private void onSelectServer() {
-		// create a unique state
-		stateId = generateRandomString();
-		seed = generateRandomString();
-		autoLoginAttempted = false;
-		// hide splash image
-		SplashUtil.get().setVisible(false);
-
-		final String initialPage = UrlHelper.getInitialPageUrl();
-		Logger.debug("Loading initial page: " + initialPage);
-		loadUrl(initialPage);
-		setPage(PageId.OTHER);
-		// hide menu after exiting title screen
-		Menu.get().hide();
+		startSessionForCurrentProfile();
 	}
 
 	/**
@@ -810,12 +881,22 @@ public class ClientView extends WebView {
 	 * Opens a dialog to collect login credentials for native submission.
 	 */
 	private void promptNativeLogin() {
+		promptNativeLogin(null, false);
+	}
+
+	private void promptNativeLogin(final CredentialsStore.Credentials defaultCredentials, final boolean autoSubmit) {
 		final View layout = LayoutInflater.from(getContext()).inflate(R.layout.dialog_login, null);
 		final AutoCompleteTextView username = layout.findViewById(R.id.loginUsername);
 		final EditText password = layout.findViewById(R.id.loginPassword);
 		final CheckBox remember = layout.findViewById(R.id.loginRemember);
 		final List<CredentialsStore.Credentials> savedCredentials = CredentialsStore.loadAll(getContext());
 		fillSavedCredentials(username, password, remember, savedCredentials);
+		if (defaultCredentials != null) {
+			username.setText(defaultCredentials.getUsername());
+			username.setSelection(defaultCredentials.getUsername().length());
+			password.setText(defaultCredentials.getPassword());
+			remember.setChecked(true);
+		}
 
 		final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 		builder.setTitle("Logowanie");
@@ -848,6 +929,15 @@ public class ClientView extends WebView {
 		});
 		final AlertDialog dialog = builder.create();
 		setupUsernameDropdown(username, password, remember, savedCredentials, loginAction, dialog);
+		dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+			@Override
+			public void onShow(final DialogInterface d) {
+				if (autoSubmit) {
+					loginAction.run();
+					dialog.dismiss();
+				}
+			}
+		});
 		dialog.show();
 	}
 
@@ -855,7 +945,8 @@ public class ClientView extends WebView {
 	 * Begins login flow after credentials are collected.
 	 */
 	private void startLoginFlow() {
-		if (debugEnabled() && PreferencesActivity.getString("client_url").trim().equals("")) {
+		if (debugEnabled() && PreferencesActivity.getString("client_url").trim().equals("")
+				&& !UrlHelper.hasClientUrlOverride()) {
 			// debug builds support choosing between main & test client/server
 			selectClient();
 			return;
@@ -1032,7 +1123,7 @@ public class ClientView extends WebView {
 	}
 
 	private void showOfflinePage(final WebView view) {
-		final String retryUrl = UrlHelper.getInitialPageUrl();
+		final String retryUrl = UrlHelper.getInitialPageUrl(clientUrlSuffix);
 		final String offlineUrl = OFFLINE_PAGE_URL + "?retry=" + Uri.encode(retryUrl);
 		view.post(() -> view.loadUrl(offlineUrl));
 	}

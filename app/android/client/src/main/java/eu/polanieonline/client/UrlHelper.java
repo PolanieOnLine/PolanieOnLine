@@ -13,11 +13,10 @@ package eu.polanieonline.client;
 
 import android.net.Uri;
 
-
 class UrlHelper {
-
 	private static final String defaultServer = "https://s1.polanieonline.eu/";
-
+	private static String serverBase = UrlHelper.defaultServer;
+	private static String clientUrlOverride = null;
 
 	private UrlHelper() {
 		// static methods only
@@ -26,8 +25,7 @@ class UrlHelper {
 	/**
 	 * Creates a URI from a string HTTP URL.
 	 *
-	 * @return
-	 *   `android.net.Uri`.
+	 * @return `android.net.Uri`.
 	 */
 	public static Uri toUri(String url) {
 		if (!url.startsWith("https://") && !url.startsWith("http://") && !url.startsWith("about:")
@@ -41,31 +39,62 @@ class UrlHelper {
 	/**
 	 * Retrieves the HTTP URL of the default server (polanieonline.eu).
 	 *
-	 * @return
-	 *   String URL.
+	 * @return String URL.
 	 */
 	public static String getDefaultServer() {
-		return UrlHelper.defaultServer;
+		return UrlHelper.serverBase;
 	}
 
 	/**
 	 * Retrieves the URI of the default server (polanieonline.eu).
 	 *
-	 * @return
-	 *   `android.net.Uri` of default server.
+	 * @return `android.net.Uri` of default server.
 	 */
 	public static Uri getDefaultServerUri() {
-		return UrlHelper.toUri(UrlHelper.defaultServer);
+		return UrlHelper.toUri(UrlHelper.serverBase);
 	}
 
 	/**
 	 * Retrieves the default host.
 	 *
-	 * @return
-	 *   Host portion of the default URI.
+	 * @return Host portion of the default URI.
 	 */
 	public static String getDefaultHost() {
 		return UrlHelper.getDefaultServerUri().getHost();
+	}
+
+	/**
+	 * Overrides default server base URL used by helper utilities.
+	 *
+	 * @param baseUrl Base URL to use.
+	 */
+	public static void setServerBase(final String baseUrl) {
+		if (baseUrl == null || baseUrl.trim().equals("")) {
+			return;
+		}
+		if (baseUrl.endsWith("/")) {
+			UrlHelper.serverBase = baseUrl;
+		} else {
+			UrlHelper.serverBase = baseUrl + "/";
+		}
+	}
+
+	/**
+	 * Sets explicit client URL override (used by quick profile selector).
+	 *
+	 * @param clientUrl Client URL to use or `null` to disable override.
+	 */
+	public static void setClientUrlOverride(final String clientUrl) {
+		UrlHelper.clientUrlOverride = clientUrl;
+	}
+
+	/**
+	 * Indicates if client URL override is set.
+	 *
+	 * @return `true` when override is active.
+	 */
+	public static boolean hasClientUrlOverride() {
+		return clientUrlOverride != null && !clientUrlOverride.trim().equals("");
 	}
 
 	/**
@@ -73,32 +102,29 @@ class UrlHelper {
 	 *
 	 * FIXME: rename to "trimProtocol"
 	 *
-	 * @return
-	 *   Trimmed URL string.
+	 * @return Trimmed URL string.
 	 */
 	public static String stripHost(final String url) {
 		if (url == null) {
 			return "";
 		}
-		return url.replaceAll("^https://", "").replaceAll("^http://", "")
-			.replaceAll("^www\\.", "");
+		return url.replaceAll("^https://", "").replaceAll("^http://", "").replaceAll("^www\\.", "");
 	}
 
 	/**
-	 * Extracts character name from URL fragment identifier & converts to query string.
+	 * Extracts character name from URL fragment identifier & converts to query
+	 * string.
 	 *
 	 * Deprecated. Should use `UrlHelper.formatCharName(Uri, Uri.Builder).
 	 *
-	 * @param url
-	 *   HTTP string to be formatted.
-	 * @return
-	 *   Formatted URL.
+	 * @param url HTTP string to be formatted.
+	 * @return Formatted URL.
 	 */
 	@Deprecated
 	public static String formatCharName(String url) {
 		final int idx = url.indexOf("#");
 		if (idx > -1) {
-			url = url.substring(0, idx) + "?char=" + url.substring(idx+1);
+			url = url.substring(0, idx) + "?char=" + url.substring(idx + 1);
 		}
 		return url;
 	}
@@ -106,10 +132,8 @@ class UrlHelper {
 	/**
 	 * Converts URL fragment identifier to character name query string parameter.
 	 *
-	 * @param uri
-	 *   URI being checked for fragment identifier.
-	 * @param builder
-	 *   URI builder to update.
+	 * @param uri     URI being checked for fragment identifier.
+	 * @param builder URI builder to update.
 	 */
 	public static void formatCharName(final Uri uri, final Uri.Builder builder) {
 		final String name = uri.getFragment();
@@ -121,10 +145,8 @@ class UrlHelper {
 	/**
 	 * Formats client URL for currently selected server.
 	 *
-	 * @param url
-	 *   URL to be checked.
-	 * @return
-	 *   URL to be loaded.
+	 * @param url URL to be checked.
+	 * @return URL to be loaded.
 	 */
 	public static String checkClientUrl(String url) {
 		final Uri uri = UrlHelper.toUri(url);
@@ -150,10 +172,8 @@ class UrlHelper {
 	/**
 	 * Checks if a URL is a link to one of the web clients.
 	 *
-	 * @param url
-	 *   HTTP URL to be checked.
-	 * @return
-	 *   `true` if `url` links to "client" or "testclient".
+	 * @param url HTTP URL to be checked.
+	 * @return `true` if `url` links to "client" or "testclient".
 	 */
 	public static boolean isClientUrl(final String url) {
 		final String custom_client = PreferencesActivity.getString("client_url").trim();
@@ -167,15 +187,28 @@ class UrlHelper {
 	/**
 	 * Retrieves client URL.
 	 *
-	 * @return
-	 *   Client URL string.
+	 * @return Client URL string.
 	 */
 	public static String getClientUrl() {
+		return getClientUrl("client");
+	}
+
+	/**
+	 * Retrieves client URL with specified suffix.
+	 *
+	 * @param clientSuffix Client suffix to use.
+	 * @return Client URL string.
+	 */
+	public static String getClientUrl(final String clientSuffix) {
+		if (clientUrlOverride != null && !clientUrlOverride.trim().equals("")) {
+			return clientUrlOverride;
+		}
 		final String custom_client = PreferencesActivity.getString("client_url").trim();
 		if (!custom_client.equals("")) {
 			return custom_client;
 		}
-		return UrlHelper.defaultServer + "client/polanieonline.html";
+		final String suffix = clientSuffix == null || clientSuffix.trim().equals("") ? "client" : clientSuffix.trim();
+		return UrlHelper.serverBase + suffix + "/polanieonline.html";
 	}
 
 	/**
@@ -183,24 +216,28 @@ class UrlHelper {
 	 *
 	 * If custom client URL is used then client URL is returned.
 	 *
-	 * @return
-	 *   HTTP URL string.
+	 * @return HTTP URL string.
 	 */
 	public static String getInitialPageUrl() {
-		final String custom_client = PreferencesActivity.getString("client_url").trim();
-		if (!custom_client.equals("")) {
-			return custom_client;
-		}
-		return UrlHelper.getClientUrl();
+		return UrlHelper.getInitialPageUrl("client");
+	}
+
+	/**
+	 * Retrieves URL string for initial page to be loaded from server.
+	 *
+	 * @param clientSuffix Client suffix to use.
+	 * @return HTTP URL string.
+	 */
+	public static String getInitialPageUrl(final String clientSuffix) {
+		return UrlHelper.getClientUrl(clientSuffix);
 	}
 
 	/**
 	 * Checks if requested URL is whitelisted to be opened within WebView client.
 	 *
-	 * @param uri
-	 *   `android.net.Uri` to be checked.
-	 * @return
-	 *   `true` if URI is under default domain (polanieonline.eu) or localhost.
+	 * @param uri `android.net.Uri` to be checked.
+	 * @return `true` if URI is under default domain (polanieonline.eu) or
+	 *         localhost.
 	 */
 	public static boolean isInternalUri(final Uri uri) {
 		if ("file".equals(uri.getScheme())) {
@@ -223,10 +260,9 @@ class UrlHelper {
 	/**
 	 * Checks if requested URL is whitelisted to be opened within WebView client.
 	 *
-	 * @param url
-	 *   HTTP URL string to be checked.
-	 * @return
-	 *   `true` if URL is under default domain (polanieonline.eu) or localhost.
+	 * @param url HTTP URL string to be checked.
+	 * @return `true` if URL is under default domain (polanieonline.eu) or
+	 *         localhost.
 	 */
 	public static boolean isInternal(final String url) {
 		return UrlHelper.isInternalUri(UrlHelper.toUri(url));
@@ -235,10 +271,8 @@ class UrlHelper {
 	/**
 	 * Checks if a URI matches the intent URL scheme.
 	 *
-	 * @param uri
-	 *   URI to be check.
-	 * @return
-	 *   `true` if URI's host is the intent scheme.
+	 * @param uri URI to be check.
+	 * @return `true` if URI's host is the intent scheme.
 	 */
 	public static boolean isIntentUri(final Uri uri) {
 		return AppInfo.getIntentUrlScheme().equals(UrlHelper.stripHost(uri.getHost()));
@@ -247,10 +281,8 @@ class UrlHelper {
 	/**
 	 * Checks if a URL matches the intent URL scheme.
 	 *
-	 * @param url
-	 *   HTTP URL string to be check.
-	 * @return
-	 *   `true` if URI's host is the intent scheme.
+	 * @param url HTTP URL string to be check.
+	 * @return `true` if URI's host is the intent scheme.
 	 */
 	public static boolean isIntentUrl(final String url) {
 		return UrlHelper.isIntentUri(UrlHelper.toUri(url));
@@ -259,11 +291,9 @@ class UrlHelper {
 	/**
 	 * Checks if a URI represents a login page.
 	 *
-	 * @param uri
-	 *   Page URI to check.
-	 * @return
-	 *   `true` if URI path equals "/account/login.html" or `id` parameter of query string equals
-	 *   "content/account/login".
+	 * @param uri Page URI to check.
+	 * @return `true` if URI path equals "/account/login.html" or `id` parameter of
+	 *         query string equals "content/account/login".
 	 */
 	public static boolean isLoginUri(final Uri uri) {
 		if ("/account/login.html".equals(uri.getPath())) {

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content" android:orientation="vertical"
+	android:background="#CC000000" android:padding="12dp">
+
+	<TextView android:id="@+id/quick_actions_title"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:text="Szybkie akcje"
+		android:textColor="#fdf8e3" android:textStyle="bold"
+		android:textSize="16sp" android:layout_marginBottom="8dp" />
+
+	<TextView android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:text="Profil serwera"
+		android:textColor="#fdf8e3" android:textStyle="bold"
+		android:layout_marginBottom="6dp" />
+
+	<RadioGroup android:id="@+id/quick_profile_group"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content" android:orientation="horizontal">
+
+		<RadioButton android:id="@+id/profile_prod"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:text="Prod"
+			android:textColor="#fdf8e3" />
+
+		<RadioButton android:id="@+id/profile_stage"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:text="Stage"
+			android:textColor="#fdf8e3" android:layout_marginStart="8dp" />
+
+		<RadioButton android:id="@+id/profile_test"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:text="Test"
+			android:textColor="#fdf8e3" android:layout_marginStart="8dp" />
+	</RadioGroup>
+
+	<View android:layout_width="match_parent"
+		android:layout_height="1dp" android:layout_marginTop="8dp"
+		android:layout_marginBottom="8dp" android:background="#55ffffff" />
+
+	<TextView android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:text="Zapisane loginy"
+		android:textColor="#fdf8e3" android:textStyle="bold"
+		android:layout_marginBottom="6dp" />
+
+	<AutoCompleteTextView
+		android:id="@+id/quick_login_input" android:layout_width="220dp"
+		android:layout_height="wrap_content" android:hint="Wybierz login"
+		android:textColor="#fdf8e3" android:dropDownWidth="240dp"
+		android:completionThreshold="0" android:inputType="textPersonName" />
+
+	<TextView android:id="@+id/quick_login_hint"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="Wybierz login, aby wypełnić dialog i zalogować."
+		android:textColor="#fdf8e3" android:textSize="12sp"
+		android:layout_marginTop="4dp" />
+
+	<Button android:id="@+id/quick_close_button"
+		android:layout_width="wrap_content" android:layout_height="32dp"
+		android:layout_marginTop="10dp"
+		android:background="@drawable/btn_wood" android:text="Zamknij"
+		android:textColor="#fdf8e3" android:textStyle="bold"
+		android:textAllCaps="false" />
+
+</LinearLayout>

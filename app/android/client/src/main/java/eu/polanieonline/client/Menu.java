@@ -28,6 +28,8 @@ public class Menu {
 	private Button btn_connect;
 	private Button btn_title;
 	private Button btn_reload;
+	private Button btn_quick_actions;
+	private QuickActionsPopup quickActionsPopup;
 
 	/** Singleton instance. */
 	private static Menu instance;
@@ -127,6 +129,15 @@ public class Menu {
 	 */
 	private void initButtonHandlers() {
 		final MainActivity activity = MainActivity.get();
+		quickActionsPopup = new QuickActionsPopup(activity);
+
+		btn_quick_actions = (Button) activity.findViewById(R.id.btn_quick_actions);
+		btn_quick_actions.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(final View v) {
+				quickActionsPopup.show(v);
+			}
+		});
 
 		btn_connect = (Button) activity.findViewById(R.id.btn_connect);
 		btn_connect.setOnClickListener(new View.OnClickListener() {
