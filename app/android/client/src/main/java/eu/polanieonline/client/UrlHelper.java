@@ -30,7 +30,8 @@ class UrlHelper {
 	 *   `android.net.Uri`.
 	 */
 	public static Uri toUri(String url) {
-		if (!url.startsWith("https://") && !url.startsWith("http://") && !url.startsWith("about:")) {
+		if (!url.startsWith("https://") && !url.startsWith("http://") && !url.startsWith("about:")
+				&& !url.startsWith("file://")) {
 			// Uri.getHost returns `null` if localhost not prefixed with protocol
 			url = "http://" + url;
 		}
@@ -202,6 +203,10 @@ class UrlHelper {
 	 *   `true` if URI is under default domain (polanieonline.eu) or localhost.
 	 */
 	public static boolean isInternalUri(final Uri uri) {
+		if ("file".equals(uri.getScheme())) {
+			// allow local assets (e.g. offline fallback page)
+			return true;
+		}
 		final String defaultHost = UrlHelper.stripHost(UrlHelper.getDefaultHost());
 		final String host = UrlHelper.stripHost(uri.getHost());
 		if (defaultHost.equals(host)) {

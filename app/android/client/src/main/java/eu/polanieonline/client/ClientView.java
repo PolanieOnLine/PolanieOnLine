@@ -75,6 +75,7 @@ public class ClientView extends WebView {
 	private ConnectivityStatus connectivityStatus = ConnectivityStatus.CONNECTING;
 	private ConnectivityManager.NetworkCallback networkCallback;
 	private View connectivityStatusIcon;
+	private static final String OFFLINE_PAGE_URL = "file:///android_asset/server_unavailable.html";
 	private TextView connectivityStatusLabel;
 	private final Handler connectivityHandler = new Handler(Looper.getMainLooper());
 	private final Runnable connectivityRunnable = new Runnable() {
@@ -419,6 +420,26 @@ public class ClientView extends WebView {
 				attemptAutoLogin(view, url);
 				Menu.get().updateButtons();
 				Logger.debug("page id: " + currentPage);
+			}
+
+			@Override
+			public void onReceivedError(final WebView view, final WebResourceRequest request,
+					final android.webkit.WebResourceError error) {
+				super.onReceivedError(view, request, error);
+				if (request != null && !request.isForMainFrame()) {
+					return;
+				}
+				final String failingUrl = request != null && request.getUrl() != null ? request.getUrl().toString()
+						: view.getUrl();
+				handleLoadError(view, failingUrl);
+			}
+
+			@Override
+			@SuppressWarnings("deprecation")
+			public void onReceivedError(final WebView view, final int errorCode, final String description,
+					final String failingUrl) {
+				super.onReceivedError(view, errorCode, description, failingUrl);
+				handleLoadError(view, failingUrl);
 			}
 		});
 	}
@@ -925,5 +946,20 @@ public class ClientView extends WebView {
 			return;
 		}
 		CredentialsStore.save(getContext(), username, password);
+	}
+
+	private void handleLoadError(final WebView view, final String failingUrl) {
+		final String url = failingUrl != null ? failingUrl : "";
+		if (url.startsWith(OFFLINE_PAGE_URL)) {
+			return;
+		}
+		Logger.error("Page load error for URL: " + url);
+		showOfflinePage(view);
+	}
+
+	private void showOfflinePage(final WebView view) {
+		final String retryUrl = UrlHelper.getInitialPageUrl();
+		final String offlineUrl = OFFLINE_PAGE_URL + "?retry=" + Uri.encode(retryUrl);
+		view.post(() -> view.loadUrl(offlineUrl));
 	}
 }
