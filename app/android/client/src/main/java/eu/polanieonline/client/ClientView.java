@@ -13,6 +13,8 @@ package eu.polanieonline.client;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import android.app.AlertDialog;
@@ -44,6 +46,9 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -806,23 +811,30 @@ public class ClientView extends WebView {
 	 */
 	private void promptNativeLogin() {
 		final View layout = LayoutInflater.from(getContext()).inflate(R.layout.dialog_login, null);
-		final EditText username = layout.findViewById(R.id.loginUsername);
+		final AutoCompleteTextView username = layout.findViewById(R.id.loginUsername);
 		final EditText password = layout.findViewById(R.id.loginPassword);
 		final CheckBox remember = layout.findViewById(R.id.loginRemember);
-		fillSavedCredentials(username, password, remember);
+		final List<CredentialsStore.Credentials> savedCredentials = CredentialsStore.loadAll(getContext());
+		fillSavedCredentials(username, password, remember, savedCredentials);
 
 		final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 		builder.setTitle("Logowanie");
 		builder.setView(layout);
 		builder.setCancelable(false);
-		builder.setPositiveButton("Zaloguj", new DialogInterface.OnClickListener() {
+		final Runnable loginAction = new Runnable() {
 			@Override
-			public void onClick(final DialogInterface dialog, final int which) {
+			public void run() {
 				loginUser = username.getText().toString().trim();
 				loginPass = password.getText().toString();
 				persistCredentials(loginUser, loginPass, remember.isChecked());
 				autoLoginAttempted = false;
 				startLoginFlow();
+			}
+		};
+		builder.setPositiveButton("Zaloguj", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(final DialogInterface dialog, final int which) {
+				loginAction.run();
 			}
 		});
 		builder.setNegativeButton("Pomiń", new DialogInterface.OnClickListener() {
@@ -834,7 +846,9 @@ public class ClientView extends WebView {
 				startLoginFlow();
 			}
 		});
-		builder.show();
+		final AlertDialog dialog = builder.create();
+		setupUsernameDropdown(username, password, remember, savedCredentials, loginAction, dialog);
+		dialog.show();
 	}
 
 	/**
@@ -934,18 +948,62 @@ public class ClientView extends WebView {
 		});
 	}
 
-	private void fillSavedCredentials(final EditText username, final EditText password, final CheckBox remember) {
+	private void fillSavedCredentials(final AutoCompleteTextView username, final EditText password,
+			final CheckBox remember, final List<CredentialsStore.Credentials> savedCredentials) {
 		final boolean saveCredentials = PreferencesActivity.getBoolean("save_credentials", false);
 		remember.setChecked(saveCredentials);
 		if (!saveCredentials) {
 			return;
 		}
-		final CredentialsStore.Credentials saved = CredentialsStore.load(getContext());
+		final CredentialsStore.Credentials saved;
+		if (savedCredentials.isEmpty()) {
+			saved = null;
+		} else {
+			saved = savedCredentials.get(0);
+		}
 		if (saved == null) {
 			return;
 		}
 		username.setText(saved.getUsername());
+		username.setSelection(saved.getUsername().length());
 		password.setText(saved.getPassword());
+	}
+
+	private void setupUsernameDropdown(final AutoCompleteTextView username, final EditText password,
+			final CheckBox remember, final List<CredentialsStore.Credentials> savedCredentials,
+			final Runnable loginAction, final AlertDialog dialog) {
+		final List<String> usernames = new ArrayList<>();
+		for (final CredentialsStore.Credentials credentials : savedCredentials) {
+			usernames.add(credentials.getUsername());
+		}
+		final ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),
+				android.R.layout.simple_dropdown_item_1line, usernames);
+		username.setAdapter(adapter);
+		username.setThreshold(1);
+		username.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
+				final String selectedUsername = adapter.getItem(position);
+				if (selectedUsername == null) {
+					return;
+				}
+				final CredentialsStore.Credentials credentials = CredentialsStore.findByUsername(savedCredentials,
+						selectedUsername);
+				if (credentials == null) {
+					return;
+				}
+				username.setText(credentials.getUsername());
+				username.setSelection(credentials.getUsername().length());
+				password.setText(credentials.getPassword());
+				remember.setChecked(true);
+				if (loginAction != null) {
+					loginAction.run();
+				}
+				if (dialog != null) {
+					dialog.dismiss();
+				}
+			}
+		});
 	}
 
 	private void persistCredentials(final String username, final String password, final boolean remember) {
