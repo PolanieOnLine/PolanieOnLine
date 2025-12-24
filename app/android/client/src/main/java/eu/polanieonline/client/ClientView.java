@@ -18,6 +18,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.net.Uri;
@@ -35,6 +36,7 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
 import org.json.JSONObject;
@@ -585,7 +587,8 @@ public class ClientView extends WebView {
 		final View layout = LayoutInflater.from(getContext()).inflate(R.layout.dialog_login, null);
 		final EditText username = layout.findViewById(R.id.loginUsername);
 		final EditText password = layout.findViewById(R.id.loginPassword);
-		fillSavedCredentials(username, password);
+		final CheckBox remember = layout.findViewById(R.id.loginRemember);
+		fillSavedCredentials(username, password, remember);
 
 		final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 		builder.setTitle("Logowanie");
@@ -596,7 +599,7 @@ public class ClientView extends WebView {
 			public void onClick(final DialogInterface dialog, final int which) {
 				loginUser = username.getText().toString().trim();
 				loginPass = password.getText().toString();
-				persistCredentials(loginUser, loginPass);
+				persistCredentials(loginUser, loginPass, remember.isChecked());
 				autoLoginAttempted = false;
 				startLoginFlow();
 			}
@@ -707,8 +710,10 @@ public class ClientView extends WebView {
 		});
 	}
 
-	private void fillSavedCredentials(final EditText username, final EditText password) {
-		if (!PreferencesActivity.getBoolean("save_credentials", false)) {
+	private void fillSavedCredentials(final EditText username, final EditText password, final CheckBox remember) {
+		final boolean saveCredentials = PreferencesActivity.getBoolean("save_credentials", false);
+		remember.setChecked(saveCredentials);
+		if (!saveCredentials) {
 			return;
 		}
 		final CredentialsStore.Credentials saved = CredentialsStore.load(getContext());
@@ -719,8 +724,12 @@ public class ClientView extends WebView {
 		password.setText(saved.getPassword());
 	}
 
-	private void persistCredentials(final String username, final String password) {
-		if (!PreferencesActivity.getBoolean("save_credentials", false)) {
+	private void persistCredentials(final String username, final String password, final boolean remember) {
+		final SharedPreferences.Editor editor = PreferencesActivity.getSharedPreferences().edit();
+		editor.putBoolean("save_credentials", remember);
+		editor.apply();
+
+		if (!remember) {
 			CredentialsStore.clear(getContext());
 			return;
 		}
