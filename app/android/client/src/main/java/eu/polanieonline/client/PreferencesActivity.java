@@ -278,6 +278,7 @@ public class PreferencesActivity extends AppCompatActivity {
 			final SharedPreferences.Editor editor = prefs.edit();
 			editor.clear();
 			editor.commit();
+			CredentialsStore.clear(getActivity());
 			pm.setDefaultValues(getActivity(), R.xml.preferences, true);
 			getPreferenceScreen().removeAll();
 			onCreate(null);
@@ -288,6 +289,11 @@ public class PreferencesActivity extends AppCompatActivity {
 			if ("orientation".equals(key)) {
 				Logger.debug("orientation set to \"" + PreferencesActivity.getString(key) + "\"");
 				MainActivity.get().updateOrientation();
+			} else if ("save_credentials".equals(key)) {
+				if (!PreferencesActivity.getBoolean(key, false)) {
+					Logger.debug("Credential saving disabled; clearing stored credentials.");
+					CredentialsStore.clear(getActivity());
+				}
 			}
 		}
 

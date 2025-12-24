@@ -23,6 +23,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.util.AttributeSet;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -584,6 +585,7 @@ public class ClientView extends WebView {
 		final View layout = LayoutInflater.from(getContext()).inflate(R.layout.dialog_login, null);
 		final EditText username = layout.findViewById(R.id.loginUsername);
 		final EditText password = layout.findViewById(R.id.loginPassword);
+		fillSavedCredentials(username, password);
 
 		final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 		builder.setTitle("Logowanie");
@@ -594,6 +596,7 @@ public class ClientView extends WebView {
 			public void onClick(final DialogInterface dialog, final int which) {
 				loginUser = username.getText().toString().trim();
 				loginPass = password.getText().toString();
+				persistCredentials(loginUser, loginPass);
 				autoLoginAttempted = false;
 				startLoginFlow();
 			}
@@ -702,5 +705,29 @@ public class ClientView extends WebView {
 				Logger.error("Failed to parse auto-login result: " + e.getMessage());
 			}
 		});
+	}
+
+	private void fillSavedCredentials(final EditText username, final EditText password) {
+		if (!PreferencesActivity.getBoolean("save_credentials", false)) {
+			return;
+		}
+		final CredentialsStore.Credentials saved = CredentialsStore.load(getContext());
+		if (saved == null) {
+			return;
+		}
+		username.setText(saved.getUsername());
+		password.setText(saved.getPassword());
+	}
+
+	private void persistCredentials(final String username, final String password) {
+		if (!PreferencesActivity.getBoolean("save_credentials", false)) {
+			CredentialsStore.clear(getContext());
+			return;
+		}
+		if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
+			CredentialsStore.clear(getContext());
+			return;
+		}
+		CredentialsStore.save(getContext(), username, password);
 	}
 }

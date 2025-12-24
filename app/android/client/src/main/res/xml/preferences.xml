@@ -11,6 +11,11 @@
 			android:summary="Własny adres URL wskazujący na klienta webowego."
 			android:selectAllOnFocus="true" />
 
+		<CheckBoxPreference android:key="save_credentials"
+			android:defaultValue="false"
+			android:title="Zapamiętaj poświadczenia"
+			android:summary="Zapisz zaszyfrowane dane logowania i wypełniaj nimi formularz logowania." />
+
 	</PreferenceCategory>
 
 	<PreferenceCategory
