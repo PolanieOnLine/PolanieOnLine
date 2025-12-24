@@ -23,7 +23,6 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.core.Appender;
 import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.appender.ConsoleAppender;
-import org.apache.logging.log4j.core.appender.ConsoleAppender.Target;
 import org.apache.logging.log4j.core.appender.RollingFileAppender;
 import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.config.LoggerConfig;
@@ -181,23 +180,23 @@ public final class LogConfigurator {
 
 		final SizeBasedTriggeringPolicy policy = SizeBasedTriggeringPolicy.createPolicy(ROLLOVER_SIZE);
 		final DefaultRolloverStrategy strategy = DefaultRolloverStrategy.createStrategy(
-			String.valueOf(MAX_ROLLED_FILES), null, null, null, null, true, config);
+			String.valueOf(MAX_ROLLED_FILES), null, null, null, config);
 
 		final RollingFileAppender rollingFileAppender = RollingFileAppender.createAppender(
-			fileName, filePattern, "true", "RollingFile", "true", "8192", policy, strategy,
-			layout, null, "false", "false", null, config);
+			fileName, filePattern, "true", "RollingFile", "true", "8192", "true", policy, strategy,
+			layout, null, "false", null, config);
 		rollingFileAppender.start();
 		config.addAppender(rollingFileAppender);
 
 		Appender consoleAppender = null;
 		if (BuildConfig.DEBUG) {
 			consoleAppender = ConsoleAppender.createAppender(
-				layout, null, Target.SYSTEM_OUT, "Console", "true", "false");
+				layout, null, "SYSTEM_OUT", "Console", "true", "false");
 			consoleAppender.start();
 			config.addAppender(consoleAppender);
 		}
 
-		final LoggerConfig rootLogger = config.getRootLogger();
+		final LoggerConfig rootLogger = config.getLoggerConfig(LogManager.ROOT_LOGGER_NAME);
 		rootLogger.addAppender(rollingFileAppender, BuildConfig.DEBUG ? Level.DEBUG : Level.INFO, null);
 		if (consoleAppender != null) {
 			rootLogger.addAppender(consoleAppender, Level.DEBUG, null);
