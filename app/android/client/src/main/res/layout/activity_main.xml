@@ -18,7 +18,7 @@
 		app:layout_constraintBottom_toBottomOf="parent" />
 
 	<View android:id="@+id/splash_dim" android:layout_width="0dp"
-		android:layout_height="0dp" android:background="#66000000"
+		android:layout_height="0dp" android:background="#88000000"
 		app:layout_constraintTop_toTopOf="parent"
 		app:layout_constraintStart_toStartOf="parent"
 		app:layout_constraintEnd_toEndOf="parent"
@@ -43,21 +43,24 @@
 
 	<Toolbar android:id="@+id/menu_main"
 		android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:background="#66000000"
-		android:padding="8dp" app:layout_constraintBottom_toBottomOf="parent"
-		app:layout_constraintEnd_toEndOf="parent">
+		android:layout_height="wrap_content"
+		android:background="@drawable/toolbar_gradient" android:padding="8dp"
+		app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toEndOf="parent"
+		app:layout_constraintTop_toTopOf="parent"
+		app:layout_constraintVertical_bias="0.5">
 
 		<LinearLayout android:layout_width="wrap_content"
 			android:layout_height="wrap_content" android:gravity="end"
 			android:orientation="vertical" android:padding="4dp"
-			android:layout_marginEnd="12dp">
+			android:layout_marginEnd="6dp">
 
 			<LinearLayout
 				android:id="@+id/connectivity_status_container"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:gravity="center_vertical" android:orientation="horizontal"
-				android:paddingVertical="4dp" android:paddingHorizontal="6dp"
+				android:paddingVertical="4dp" android:paddingHorizontal="10dp"
 				android:layout_marginTop="4dp">
 
 				<View android:id="@+id/connectivity_status_icon"
@@ -76,55 +79,55 @@
 
 			<Button android:id="@+id/btn_connect"
 				android:layout_width="134dp" android:layout_height="32dp"
-				android:layout_marginTop="8dp"
+				android:layout_marginTop="6dp"
 				android:background="@drawable/btn_wood"
 				android:paddingHorizontal="12dp" android:paddingVertical="8dp"
-				android:text="Połącz" android:textColor="#fdf8e3"
+				android:text="Połącz" android:textColor="#fffaf0"
 				android:textStyle="bold" android:textAllCaps="false" />
 
 			<Button android:id="@+id/btn_reload"
 				android:layout_width="134dp" android:layout_height="32dp"
-				android:layout_marginTop="8dp"
+				android:layout_marginTop="6dp"
 				android:background="@drawable/btn_wood"
 				android:paddingHorizontal="12dp" android:paddingVertical="8dp"
-				android:text="Odśwież" android:textColor="#fdf8e3"
+				android:text="Odśwież" android:textColor="#fffaf0"
 				android:textStyle="bold" android:textAllCaps="false" />
 
 			<Button android:id="@+id/btn_title"
 				android:layout_width="134dp" android:layout_height="32dp"
-				android:layout_marginTop="8dp"
+				android:layout_marginTop="6dp"
 				android:background="@drawable/btn_wood"
 				android:paddingHorizontal="12dp" android:paddingVertical="8dp"
-				android:text="Ekran tytułowy" android:textColor="#fdf8e3"
+				android:text="Ekran tytułowy" android:textColor="#fffaf0"
 				android:textStyle="bold" android:textAllCaps="false" />
 
 			<View android:id="@+id/btn_group_divider"
 				android:layout_width="match_parent" android:layout_height="1dp"
-				android:layout_marginTop="8dp" android:background="#33ffffff" />
+				android:layout_marginTop="6dp" android:background="#33ffffff" />
 
 			<Button android:id="@+id/btn_quick_actions"
 				android:layout_width="134dp" android:layout_height="32dp"
-				android:layout_marginTop="8dp"
+				android:layout_marginTop="6dp"
 				android:background="@drawable/btn_wood"
 				android:paddingHorizontal="12dp" android:paddingVertical="8dp"
-				android:text="Profile/Login" android:textColor="#fdf8e3"
-				android:textStyle="bold" android:textAllCaps="false" />
+				android:text="Profile/Login" android:textColor="#fffaf0"
+				android:textStyle="normal" android:textAllCaps="false" />
 
 			<Button android:id="@+id/btn_settings"
 				android:layout_width="134dp" android:layout_height="32dp"
-				android:layout_marginTop="8dp"
+				android:layout_marginTop="6dp"
 				android:background="@drawable/btn_wood"
 				android:paddingHorizontal="12dp" android:paddingVertical="8dp"
-				android:text="Ustawienia" android:textColor="#fdf8e3"
-				android:textStyle="bold" android:textAllCaps="false" />
+				android:text="Ustawienia" android:textColor="#fffaf0"
+				android:textStyle="normal" android:textAllCaps="false" />
 
 			<Button android:id="@+id/btn_quit"
 				android:layout_width="134dp" android:layout_height="32dp"
-				android:layout_marginTop="8dp"
+				android:layout_marginTop="6dp"
 				android:background="@drawable/btn_wood"
 				android:paddingHorizontal="12dp" android:paddingVertical="8dp"
-				android:text="Wyjście" android:textColor="#fdf8e3"
-				android:textStyle="bold" android:textAllCaps="false" />
+				android:text="Wyjście" android:textColor="#fffaf0"
+				android:textStyle="normal" android:textAllCaps="false" />
 
 		</LinearLayout>
 
