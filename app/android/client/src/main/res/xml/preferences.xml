@@ -12,8 +12,7 @@
 			android:selectAllOnFocus="true" />
 
 		<CheckBoxPreference android:key="save_credentials"
-			android:defaultValue="false"
-			android:title="Zapamiętaj poświadczenia"
+			android:defaultValue="false" android:title="Zapamiętaj poświadczenia"
 			android:summary="Zapisz zaszyfrowane dane logowania i wypełniaj nimi formularz logowania." />
 
 	</PreferenceCategory>
@@ -43,6 +42,11 @@
 	</PreferenceCategory>
 
 	<PreferenceCategory android:title="Różne">
+
+		<CheckBoxPreference
+			android:key="clear_cookies_on_start" android:defaultValue="false"
+			android:title="Wyczyść cookies przy starcie"
+			android:summary="Usuń zapisane pliki cookies podczas uruchamiania aplikacji." />
 
 		<Preference android:key="clear_cache"
 			android:title="Wyczyść pamięć podręczną"

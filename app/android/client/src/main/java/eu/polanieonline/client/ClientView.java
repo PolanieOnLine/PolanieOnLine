@@ -37,6 +37,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.CookieManager;
 import android.webkit.DownloadListener;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceRequest;
@@ -162,12 +163,24 @@ public class ClientView extends WebView {
 			setWebContentsDebuggingEnabled(true);
 		}
 
+		handleCookiesOnStartup();
+
 		initConnectivityUi();
 
 		initWebViewClient();
 		initDownloadHandler();
 		observeConnectivity();
 		startConnectivityPolling();
+	}
+
+	private void handleCookiesOnStartup() {
+		if (!PreferencesActivity.getBoolean("clear_cookies_on_start", false)) {
+			return;
+		}
+		post(() -> {
+			final CookieManager cookieManager = CookieManager.getInstance();
+			cookieManager.removeAllCookies(value -> cookieManager.flush());
+		});
 	}
 
 	@Override
@@ -911,6 +924,9 @@ public class ClientView extends WebView {
 						+ message + "\"");
 				if ("error".equals(status) || "timeout".equals(status) || "maxAttempts".equals(status)) {
 					Logger.error("Auto-login failed with status=" + status + " message=\"" + message + "\"");
+				}
+				if ("submitted".equals(status)) {
+					post(() -> CookieManager.getInstance().flush());
 				}
 			} catch (Exception e) {
 				Logger.error("Failed to parse auto-login result: " + e.getMessage());
