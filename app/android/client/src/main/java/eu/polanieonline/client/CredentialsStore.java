@@ -18,6 +18,8 @@ import android.text.TextUtils;
 import androidx.annotation.Nullable;
 import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKey;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -37,6 +39,8 @@ public final class CredentialsStore {
 	private static final String KEY_PASSWORD_LEGACY = "password";
 	private static final int MAX_ENTRIES = 5;
 
+	private static final Logger LOG = LogManager.getLogger(CredentialsStore.class);
+
 	private CredentialsStore() {
 	}
 
@@ -50,11 +54,11 @@ public final class CredentialsStore {
 	public static void save(final Context context, final String username, final String password) {
 		final SharedPreferences prefs = getPreferences(context);
 		if (prefs == null) {
-			Logger.warn("Encrypted preferences unavailable; skipping credential save.");
+			LOG.warn("Encrypted preferences unavailable; skipping credential save.");
 			return;
 		}
 		if (TextUtils.isEmpty(username) || TextUtils.isEmpty(password)) {
-			Logger.warn("Credentials missing username or password; skipping save.");
+			LOG.warn("Credentials missing username or password; skipping save.");
 			return;
 		}
 		final List<Credentials> credentials = loadAll(prefs);
@@ -81,7 +85,7 @@ public final class CredentialsStore {
 	public static void clear(final Context context) {
 		final SharedPreferences prefs = getPreferences(context);
 		if (prefs == null) {
-			Logger.warn("Encrypted preferences unavailable; skipping credential clear.");
+			LOG.warn("Encrypted preferences unavailable; skipping credential clear.");
 			return;
 		}
 		prefs.edit().remove(KEY_CREDENTIALS).remove(KEY_USERNAME_LEGACY).remove(KEY_PASSWORD_LEGACY).apply();
@@ -111,7 +115,7 @@ public final class CredentialsStore {
 	public static List<Credentials> loadAll(final Context context) {
 		final SharedPreferences prefs = getPreferences(context);
 		if (prefs == null) {
-			Logger.warn("Encrypted preferences unavailable; skipping credential load.");
+			LOG.warn("Encrypted preferences unavailable; skipping credential load.");
 			return Collections.emptyList();
 		}
 		return loadAll(prefs);
@@ -147,7 +151,7 @@ public final class CredentialsStore {
 	private static SharedPreferences getPreferences(final Context context) {
 		try {
 			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-				Logger.warn("EncryptedSharedPreferences requires Android M or above.");
+				LOG.warn("EncryptedSharedPreferences requires Android M or above.");
 				return null;
 			}
 			final MasterKey masterKey = new MasterKey.Builder(context).setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
@@ -156,7 +160,7 @@ public final class CredentialsStore {
 					EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
 					EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM);
 		} catch (final Exception e) {
-			Logger.error("Unable to initialize encrypted preferences: " + e.getMessage());
+			LOG.error("Unable to initialize encrypted preferences: {}", e.getMessage(), e);
 			return null;
 		}
 	}
@@ -199,7 +203,7 @@ public final class CredentialsStore {
 			});
 			return credentials;
 		} catch (final Exception e) {
-			Logger.error("Unable to load encrypted credentials: " + e.getMessage());
+			LOG.error("Unable to load encrypted credentials: {}", e.getMessage(), e);
 			return new ArrayList<>();
 		}
 	}
@@ -216,7 +220,7 @@ public final class CredentialsStore {
 			}
 			return array.toString();
 		} catch (final Exception e) {
-			Logger.error("Unable to serialize encrypted credentials: " + e.getMessage());
+			LOG.error("Unable to serialize encrypted credentials: {}", e.getMessage(), e);
 			return "[]";
 		}
 	}

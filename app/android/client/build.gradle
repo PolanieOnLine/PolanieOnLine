@@ -126,6 +126,12 @@ android {
 	compileSdkVersion 32
 	buildToolsVersion '32.0.0'
 
+	packagingOptions {
+		resources {
+			excludes += ["META-INF/DEPENDENCIES", "META-INF/LICENSE", "META-INF/LICENSE.txt", "META-INF/NOTICE", "META-INF/NOTICE.txt"]
+		}
+	}
+
 	lintOptions {
 		abortOnError false
 	}
@@ -144,6 +150,8 @@ dependencies {
 	implementation "com.google.android.material:material:1.4.0"
 	implementation "androidx.preference:preference-ktx:1.2.0"
 	implementation "androidx.security:security-crypto:1.1.0-alpha03"
+	implementation "org.apache.logging.log4j:log4j-api:2.22.1"
+	implementation "org.apache.logging.log4j:log4j-core:2.22.1"
 	//testImplementation 'junit:junit:4.+'
 	//androidTestImplementation 'androidx.test.ext:junit:1.1.2'
 	//androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'

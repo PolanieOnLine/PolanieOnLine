@@ -23,11 +23,18 @@ import android.os.Bundle;
 import android.view.ViewGroup;
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 
 /**
  * Main app activity.
  */
 public class MainActivity extends AppCompatActivity {
+
+	/** Class logger. */
+	private static final Logger LOG = LogManager.getLogger(MainActivity.class);
 
 	/** Menu instance. */
 	private Menu menu;
@@ -57,8 +64,7 @@ public class MainActivity extends AppCompatActivity {
 			// FIXME: may be considered unsafe as this is not technically a singleton
 			MainActivity.instance = this;
 
-			// initialize debug logging mechanism
-			Logger.init(getExternalFilesDir(null));
+			LogConfigurator.configure(this);
 
 			setContentView(R.layout.activity_main);
 			clientList = findViewById(R.id.clientList);
@@ -69,8 +75,8 @@ public class MainActivity extends AppCompatActivity {
 		} catch (final Exception e) {
 			// TODO: add option to save to file or copy to clipboard the error
 			e.printStackTrace();
-			Logger.error(e.toString());
-			Logger.error("// -- //");
+			LOG.error(e.toString());
+			LOG.error("// -- //");
 			final StringBuilder sb = new StringBuilder();
 			for (final StackTraceElement ste: e.getStackTrace()) {
 				final String traceLine = ste.toString();
@@ -78,9 +84,9 @@ public class MainActivity extends AppCompatActivity {
 					sb.append("\n");
 				}
 				sb.append(traceLine);
-				Logger.error(traceLine);
+				LOG.error(traceLine);
 			}
-			Logger.error("// -- //");
+			LOG.error("// -- //");
 			Notifier.showPrompt(
 				"An unhandled exception has occurred: \"" + e.getMessage() + "\""
 				+ "\n\nYou can report this error at: https://s1.polanieonline.eu/development/bug.html"
@@ -135,7 +141,8 @@ public class MainActivity extends AppCompatActivity {
 	 */
 	private void setActiveClientView(final int clientIndex) {
 		if (clientIndex < 0 || clientIndex >= clientList.getChildCount()) {
-			Logger.error(true, "Tried to access invalid client index: " + clientIndex);
+			LOG.error("Tried to access invalid client index: {}", clientIndex);
+			LogConfigurator.notifyUser(Level.ERROR, "Tried to access invalid client index: " + clientIndex);
 			return;
 		}
 		setActiveClientView((ClientView) clientList.getChildAt(clientIndex));
@@ -260,7 +267,7 @@ public class MainActivity extends AppCompatActivity {
 	 */
 	@Override
 	public void finish() {
-		Logger.debug(MainActivity.class.getName() + ".finish() called");
+		LOG.debug("{}.finish() called", MainActivity.class.getName());
 		super.finish();
 	}
 
@@ -269,7 +276,7 @@ public class MainActivity extends AppCompatActivity {
 	 */
 	@Override
 	protected void onDestroy() {
-		Logger.debug(MainActivity.class.getName() + ".onDestroy() called");
+		LOG.debug("{}.onDestroy() called", MainActivity.class.getName());
 		super.onDestroy();
 	}
 

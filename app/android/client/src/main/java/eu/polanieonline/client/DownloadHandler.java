@@ -22,12 +22,17 @@ import android.net.Uri;
 import android.os.Environment;
 import android.util.Base64;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 
 /**
  * The main purpose of this class is to handle downloading screenshots
  * created by the web client page.
  */
 public class DownloadHandler {
+
+	private static final Logger LOG = LogManager.getLogger(DownloadHandler.class);
 
 	private static enum DownloadType {
 		IMAGE_PNG("image/png"),
@@ -101,7 +106,7 @@ public class DownloadHandler {
 		}
 
 		if (stacktrace != null) {
-			Logger.error(stacktrace.toString());
+			LOG.error(stacktrace);
 		}
 	}
 
@@ -140,8 +145,7 @@ public class DownloadHandler {
 						+ ".png";
 			}
 
-			Logger.debug("Saving screenshot: " + targetDir.getPath()
-					+ "/" + targetName + " (" + mimetype + ")");
+			LOG.debug("Saving screenshot: {}/{} ({})", targetDir.getPath(), targetName, mimetype);
 
 			final byte[] data = Base64.decode(url.split("base64,")[1], Base64.DEFAULT);
 			downloadInternal(targetDir, targetName, data);
@@ -158,8 +162,7 @@ public class DownloadHandler {
 						+ ".txt";
 			}
 
-			Logger.debug("Saving file: " + targetDir.getPath()
-			+ "/" + targetName + " (" + mimetype + ")");
+			LOG.debug("Saving file: {}/{} ({})", targetDir.getPath(), targetName, mimetype);
 
 			final String[] parts = url.split(",");
 			byte[] data;
@@ -171,7 +174,7 @@ public class DownloadHandler {
 							.getBytes(StandardCharsets.UTF_8);
 				} catch (final java.io.UnsupportedEncodingException e) {
 					this.message = "an error occurred while attempting to decode data URL (see debug log for more info)";
-					Logger.error(stackTraceToString(e));
+					LOG.error(stackTraceToString(e));
 					return;
 				}
 			}

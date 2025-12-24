@@ -56,6 +56,9 @@ import android.widget.TextView;
 
 import androidx.appcompat.widget.TooltipCompat;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import org.json.JSONObject;
 
 /**
@@ -65,6 +68,8 @@ public class ClientView extends WebView {
 	private enum ConnectivityStatus {
 		CONNECTING, ONLINE, ERROR
 	}
+
+	private static final Logger LOG = LogManager.getLogger(ClientView.class);
 
 	/** Client URL path. */
 	private String clientUrlSuffix = "client";
@@ -202,7 +207,7 @@ public class ClientView extends WebView {
 				try {
 					cm.unregisterNetworkCallback(networkCallback);
 				} catch (final Exception e) {
-					Logger.error("Failed to unregister network callback: " + e.getMessage());
+					LOG.error("Failed to unregister network callback", e);
 				}
 			}
 		}
@@ -440,7 +445,7 @@ public class ClientView extends WebView {
 				}
 				attemptAutoLogin(view, url);
 				Menu.get().updateButtons();
-				Logger.debug("page id: " + currentPage);
+				LOG.debug("page id: {}", currentPage);
 			}
 
 			@Override
@@ -504,11 +509,11 @@ public class ClientView extends WebView {
 				handler.download(url, mimetype);
 				if (handler.getResult()) {
 					final String msg = "Downloaded file: " + handler.getMessage();
-					Logger.debug(msg);
+					LOG.debug(msg);
 					Notifier.toast(msg);
 				} else {
 					final String msg = handler.getMessage();
-					Logger.error(msg);
+					LOG.error(msg);
 					Notifier.toast("ERROR: " + msg);
 				}
 			}
@@ -528,7 +533,7 @@ public class ClientView extends WebView {
 		if (stateId == null || intentStateId == null || url == null || "".equals(stateId)
 				|| !stateId.equals(intentStateId)) {
 			final String err = "There was an error verifying login";
-			Logger.error(err + " (\"" + stateId + "\" == \"" + intentStateId + "\")");
+			LOG.error("{} (\"{}\" == \"{}\")", err, stateId, intentStateId);
 			Notifier.showMessage(err);
 			if (currentPage == null || PageId.TITLE.equals(previousPage)) {
 				// reload title
@@ -639,7 +644,7 @@ public class ClientView extends WebView {
 	 */
 	@Override
 	public void loadUrl(final String url) {
-		Logger.debug("Loading URL: " + url);
+		LOG.debug("Loading URL: {}", url);
 		super.loadUrl(url);
 	}
 
@@ -709,7 +714,7 @@ public class ClientView extends WebView {
 		SplashUtil.get().setVisible(false);
 
 		final String initialPage = UrlHelper.getInitialPageUrl(clientUrlSuffix);
-		Logger.debug("Loading initial page: " + initialPage);
+		LOG.debug("Loading initial page: {}", initialPage);
 		loadUrl(initialPage);
 		setPage(PageId.OTHER);
 		// hide menu after exiting title screen
@@ -723,18 +728,18 @@ public class ClientView extends WebView {
 			clearHistory();
 			clearSslPreferences();
 		} catch (final Exception e) {
-			Logger.error("Failed to clear WebView session: " + e.getMessage());
+			LOG.error("Failed to clear WebView session", e);
 		}
 		try {
 			WebStorage.getInstance().deleteAllData();
 		} catch (final Exception e) {
-			Logger.error("Failed to clear WebStorage: " + e.getMessage());
+			LOG.error("Failed to clear WebStorage", e);
 		}
 		try {
 			final CookieManager cookieManager = CookieManager.getInstance();
 			cookieManager.removeAllCookies(value -> cookieManager.flush());
 		} catch (final Exception e) {
-			Logger.error("Failed to clear cookies: " + e.getMessage());
+			LOG.error("Failed to clear cookies", e);
 		}
 	}
 
@@ -962,24 +967,24 @@ public class ClientView extends WebView {
 	 */
 	private void attemptAutoLogin(final WebView view, final String url) {
 		if (autoLoginAttempted) {
-			Logger.debug("Auto-login skipped: already attempted.");
+			LOG.debug("Auto-login skipped: already attempted.");
 			return;
 		}
 		if (loginUser == null || loginPass == null || loginUser.trim().equals("") || loginPass.equals("")) {
-			Logger.debug("Auto-login skipped: missing credentials.");
+			LOG.debug("Auto-login skipped: missing credentials.");
 			return;
 		}
 		final Uri uri = UrlHelper.toUri(url);
 		if (!UrlHelper.isInternalUri(uri)) {
-			Logger.debug("Auto-login skipped: external URL " + url);
+			LOG.debug("Auto-login skipped: external URL {}", url);
 			return;
 		}
 		if (!UrlHelper.isLoginUri(uri) && !UrlHelper.isClientUrl(url)) {
-			Logger.debug("Auto-login skipped: not a login/client URL " + url);
+			LOG.debug("Auto-login skipped: not a login/client URL {}", url);
 			return;
 		}
 		autoLoginAttempted = true;
-		Logger.debug("Attempting auto-login for URL " + url);
+		LOG.debug("Attempting auto-login for URL {}", url);
 		final String js = "javascript:(function(){"
 				+ "var result={attempted:false,finalStatus:'pending',message:'',attempts:0,"
 				+ "fields:{username:false,password:false,submit:false,form:false},observerActive:false,error:false};"
@@ -1014,7 +1019,7 @@ public class ClientView extends WebView {
 				+ "})();";
 		view.evaluateJavascript(js, value -> {
 			if (value == null || "null".equals(value)) {
-				Logger.error("Auto-login returned null result for URL " + url);
+				LOG.error("Auto-login returned null result for URL {}", url);
 				return;
 			}
 			try {
@@ -1024,17 +1029,16 @@ public class ClientView extends WebView {
 				final String message = result.optString("message", "");
 				final JSONObject fields = result.optJSONObject("fields");
 				final boolean observerActive = result.optBoolean("observerActive", false);
-				Logger.debug("Auto-login result: status=" + status + ", attempts=" + attempts + ", observerActive="
-						+ observerActive + ", fields=" + (fields != null ? fields.toString() : "{}") + ", message=\""
-						+ message + "\"");
+				LOG.debug("Auto-login result: status={}, attempts={}, observerActive={}, fields={}, message=\"{}\"",
+						status, attempts, observerActive, (fields != null ? fields.toString() : "{}"), message);
 				if ("error".equals(status) || "timeout".equals(status) || "maxAttempts".equals(status)) {
-					Logger.error("Auto-login failed with status=" + status + " message=\"" + message + "\"");
+					LOG.error("Auto-login failed with status={} message=\"{}\"", status, message);
 				}
 				if ("submitted".equals(status)) {
 					post(() -> CookieManager.getInstance().flush());
 				}
 			} catch (Exception e) {
-				Logger.error("Failed to parse auto-login result: " + e.getMessage());
+				LOG.error("Failed to parse auto-login result", e);
 			}
 		});
 	}
@@ -1118,7 +1122,7 @@ public class ClientView extends WebView {
 		if (url.startsWith(OFFLINE_PAGE_URL)) {
 			return;
 		}
-		Logger.error("Page load error for URL: " + url);
+		LOG.error("Page load error for URL: {}", url);
 		showOfflinePage(view);
 	}
 

@@ -20,12 +20,16 @@ import androidx.preference.ListPreference;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.PreferenceManager;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 
 /**
  * Interface for configuring app preferences.
  */
 public class PreferencesActivity extends AppCompatActivity {
+
+	private static final Logger LOG = LogManager.getLogger(PreferencesActivity.class);
 
 	/** Preferences activity instance. */
 	private static PreferencesActivity instance;
@@ -128,16 +132,16 @@ public class PreferencesActivity extends AppCompatActivity {
 			// SharedPreferences.getInt is returning string
 			final Object obj = getSharedPreferences().getString(key, String.valueOf(defVal));
 			if (obj instanceof String) {
-				Logger.debug("PreferencesActivity.getInt: casting string return value to integer");
+				LOG.debug("PreferencesActivity.getInt: casting string return value to integer");
 				return Integer.parseInt((String) obj);
 			} else {
-				Logger.debug("PreferencesActivity.getInt return value is integer");
+				LOG.debug("PreferencesActivity.getInt return value is integer");
 				return (Integer) obj;
 			}
 		} catch (final NumberFormatException e) {
 			final String errMsg = "An error occurred: " + e.getMessage();
-			Logger.error(errMsg + "\n" + e.getStackTrace());
-			Notifier.showError(errMsg + "\n\nSee " + Logger.getLogsDir()
+			LOG.error(errMsg, e);
+			Notifier.showError(errMsg + "\n\nSee " + LogConfigurator.getLogDirectoryPath()
 				+ " for more information.");
 		}
 		return null;
@@ -145,13 +149,13 @@ public class PreferencesActivity extends AppCompatActivity {
 
 	@Override
 	public void finish() {
-		Logger.debug(PreferencesActivity.class.getName() + ".finish() called");
+		LOG.debug("{}.finish() called", PreferencesActivity.class.getName());
 		super.finish();
 	}
 
 	@Override
 	protected void onDestroy() {
-		Logger.debug(PreferencesActivity.class.getName() + ".onDestroy() called");
+		LOG.debug("{}.onDestroy() called", PreferencesActivity.class.getName());
 		super.onDestroy();
 	}
 
@@ -178,7 +182,7 @@ public class PreferencesActivity extends AppCompatActivity {
 							new Notifier.Action() {
 								@Override
 								protected void onCall() {
-									Logger.debug("restoring preferences default values");
+									LOG.debug("restoring preferences default values");
 									restoreDefaults();
 								}
 							},
@@ -193,7 +197,7 @@ public class PreferencesActivity extends AppCompatActivity {
 					}
 				});
 			} else {
-				Logger.warn("preference \"reset\" not found");
+				LOG.warn("preference \"reset\" not found");
 			}
 
 			final CheckBoxPreference title_music = (CheckBoxPreference) pm.findPreference("title_music");
@@ -230,7 +234,7 @@ public class PreferencesActivity extends AppCompatActivity {
 					public boolean onPreferenceChange(final Preference pref, final Object obj) {
 						// set music state as soon as preference is changed
 						if (MainActivity.get().getActiveClientView().onTitleScreen()) {
-							Logger.debug("changing title music preference: " + (String) obj);
+							LOG.debug("changing title music preference: {}", (String) obj);
 
 							if (title_music.isChecked()) {
 								MusicPlayer.playTitleMusic((String) obj);
@@ -251,7 +255,7 @@ public class PreferencesActivity extends AppCompatActivity {
 							new Notifier.Action() {
 								@Override
 								protected void onCall() {
-									Logger.debug("clearing cache");
+									LOG.debug("clearing cache");
 									for (final ClientView clientView: MainActivity.get().getClientViewList()) {
 										clientView.clearCache(true);
 									}
@@ -268,7 +272,7 @@ public class PreferencesActivity extends AppCompatActivity {
 					}
 				});
 			} else {
-				Logger.warn("preference \"clear_cache\" not found");
+				LOG.warn("preference \"clear_cache\" not found");
 			}
 		}
 
@@ -287,11 +291,11 @@ public class PreferencesActivity extends AppCompatActivity {
 		@Override
 		public void onSharedPreferenceChanged(final SharedPreferences sp, final String key) {
 			if ("orientation".equals(key)) {
-				Logger.debug("orientation set to \"" + PreferencesActivity.getString(key) + "\"");
+				LOG.debug("orientation set to \"{}\"", PreferencesActivity.getString(key));
 				MainActivity.get().updateOrientation();
 			} else if ("save_credentials".equals(key)) {
 				if (!PreferencesActivity.getBoolean(key, false)) {
-					Logger.debug("Credential saving disabled; clearing stored credentials.");
+					LOG.debug("Credential saving disabled; clearing stored credentials.");
 					CredentialsStore.clear(getActivity());
 				}
 			}

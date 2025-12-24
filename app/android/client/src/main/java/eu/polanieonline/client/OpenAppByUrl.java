@@ -16,7 +16,12 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 public class OpenAppByUrl extends Activity {
+
+	private static final Logger LOG = LogManager.getLogger(OpenAppByUrl.class);
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -24,7 +29,7 @@ public class OpenAppByUrl extends Activity {
 		Intent intent = getIntent();
 		// String action = intent.getAction();
 		Uri data = intent.getData();
-		Logger.debug("URL: " + data);
+		LOG.debug("URL: {}", data);
 		MainActivity.get().getActiveClientView().checkLoginIntent(intent);
 		finish();
 	 }

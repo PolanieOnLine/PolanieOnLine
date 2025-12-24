@@ -16,11 +16,16 @@ import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.Toolbar;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 
 /**
  * Main menu for navigation & configuration.
  */
 public class Menu {
+
+	private static final Logger LOG = LogManager.getLogger(Menu.class);
 
 	/** Toolbar representing menu. */
 	private final Toolbar nav;
@@ -61,7 +66,7 @@ public class Menu {
 			}
 		});
 		initButtonHandlers();
-		Logger.debug("menu initialized");
+		LOG.debug("menu initialized");
 	}
 
 	/**
@@ -220,7 +225,7 @@ public class Menu {
 				if (client.debugEnabled()) {
 					msg += "\nClient type: " + client.getSelectedClient()
 							+ "\nServer type: " + client.getSelectedServer()
-							+ "\nLogs directory: " + Logger.getLogsDir();
+							+ "\nLogs directory: " + LogConfigurator.getLogDirectoryPath();
 				}
 				msg += "\n\nTitle Music:"
 						+ "\n\n- Treasure Hunter"

@@ -9,3 +9,6 @@ minimalnym oraz przyjaznym również interfejsem gracza. Wszelkie wykorzystywane
 
 ## Instalacja
 Aby móc zainstalować naszą grę wystarczy pobrać odpowiedni plik instalacyjny z naszej witryny https://s1.polanieonline.eu/ lub z naszego sourceforge'a https://sourceforge.net/projects/game-polanieonline/
+
+## Logi klienta Android
+Klient Android wykorzystuje Log4j 2 do zapisywania logów uruchomienia i błędów. Domyślnie pliki trafiają do `~/PolanieOnline/logs/client.log` z rotacją do pięciu plików `.gz` po 5 MB każdy (wzorzec `%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level %logger{36} - %msg`). Jeśli zapis w katalogu domowym jest niemożliwy, aplikacja używa katalogów `getFilesDir()/logs` lub `getExternalFilesDir(null)/logs`, dzięki czemu nie są wymagane dodatkowe uprawnienia do pamięci zewnętrznej (scoped storage). W wersjach debug logi są dodatkowo kierowane na konsolę/logcat.

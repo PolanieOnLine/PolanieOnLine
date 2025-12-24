@@ -17,25 +17,30 @@ import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 
 public class MusicPlayer {
+
+	private static final Logger LOG = LogManager.getLogger(MusicPlayer.class);
 
 	private static MediaPlayer mplayer = null;
 
 
 	public static void playMusic(final Context ctx, final int id, final boolean loop) {
 		if (isPlaying()) {
-			Logger.debug("freeing up MusicPlayer instance to play new song");
+			LOG.debug("freeing up MusicPlayer instance to play new song");
 			stopMusic();
 		}
 
-		Logger.debug("starting music (loop: " + loop + ")");
+		LOG.debug("starting music (loop: {})", loop);
 
 		mplayer = new MediaPlayer();
 		mplayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
 			@Override
 			public void onPrepared(final MediaPlayer mp) {
-				Logger.debug("starting music");
+				LOG.debug("starting music");
 				// FIXME: not working
 				//mplayer.setLooping(loop);
 				mplayer.start();
@@ -58,7 +63,7 @@ public class MusicPlayer {
 			mplayer.setDataSource(ctx, parseResourceUri(id));
 			mplayer.prepareAsync();
 		} catch (final IOException e) {
-			Logger.error("failed to load resource " + id + ":\n" + e.getStackTrace());
+			LOG.error("failed to load resource {}", id, e);
 		}
 	}
 
@@ -91,7 +96,7 @@ public class MusicPlayer {
 				id = R.raw.title_05;
 				break;
 		}
-		Logger.debug("playing music: " + musicId);
+		LOG.debug("playing music: {}", musicId);
 		MusicPlayer.playMusic(id, true);
 	}
 
@@ -105,7 +110,7 @@ public class MusicPlayer {
 	public static void stopMusic() {
 		if (mplayer != null) {
 			if (mplayer.isPlaying()) {
-				Logger.debug("stopping music");
+				LOG.debug("stopping music");
 				mplayer.stop();
 			}
 			mplayer.release();
