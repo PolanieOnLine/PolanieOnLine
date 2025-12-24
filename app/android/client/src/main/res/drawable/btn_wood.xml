@@ -4,36 +4,116 @@
 	android:color="#22ffffff">
 
 	<item>
-		<layer-list>
+		<selector>
+
+			<item android:state_pressed="true">
+				<layer-list>
+					<item>
+						<shape android:shape="rectangle">
+							<corners android:radius="6dp" />
+							<stroke
+								android:width="2dp"
+								android:color="#261307" />
+							<solid android:color="#321807" />
+						</shape>
+					</item>
+
+					<item android:insetLeft="2dp" android:insetTop="2dp" android:insetRight="2dp" android:insetBottom="2dp">
+						<bitmap
+							android:src="@drawable/panel_wood"
+							android:tileMode="repeat"
+							android:tileModeX="repeat"
+							android:tileModeY="repeat"
+							android:gravity="fill" />
+					</item>
+
+					<item android:insetLeft="1dp" android:insetTop="1dp" android:insetRight="1dp" android:insetBottom="1dp">
+						<shape android:shape="rectangle">
+							<corners android:radius="4dp" />
+							<stroke
+								android:width="1dp"
+								android:color="#f6d9a9" />
+							<solid android:color="#11000000" />
+						</shape>
+					</item>
+
+					<item android:insetLeft="2dp" android:insetTop="2dp" android:insetRight="2dp" android:insetBottom="2dp">
+						<shape android:shape="rectangle">
+							<corners android:radius="4dp" />
+							<solid android:color="#22000000" />
+						</shape>
+					</item>
+				</layer-list>
+			</item>
+
+			<item android:state_focused="true">
+				<layer-list>
+					<item>
+						<shape android:shape="rectangle">
+							<corners android:radius="6dp" />
+							<stroke
+								android:width="2dp"
+								android:color="#2a1608" />
+							<solid android:color="#341b08" />
+						</shape>
+					</item>
+
+					<item android:insetLeft="2dp" android:insetTop="2dp" android:insetRight="2dp" android:insetBottom="2dp">
+						<bitmap
+							android:src="@drawable/panel_wood"
+							android:tileMode="repeat"
+							android:tileModeX="repeat"
+							android:tileModeY="repeat"
+							android:gravity="fill" />
+					</item>
+
+					<item android:insetLeft="1dp" android:insetTop="1dp" android:insetRight="1dp" android:insetBottom="1dp">
+						<shape android:shape="rectangle">
+							<corners android:radius="4dp" />
+							<stroke
+								android:width="1dp"
+								android:color="#f6d9a9" />
+							<solid android:color="#0d000000" />
+						</shape>
+					</item>
+				</layer-list>
+			</item>
 
 			<item>
-				<shape android:shape="rectangle">
-					<corners android:radius="6dp" />
-					<stroke
-						android:width="2dp"
-						android:color="#2a1608" />
-					<solid android:color="#3a1f0a" />
-				</shape>
+				<layer-list>
+					<item>
+						<shape android:shape="rectangle">
+							<corners android:radius="6dp" />
+							<stroke
+								android:width="2dp"
+								android:color="#2a1608" />
+							<solid android:color="#3a1f0a" />
+						</shape>
+					</item>
+
+					<item android:insetLeft="2dp" android:insetTop="2dp" android:insetRight="2dp" android:insetBottom="2dp">
+						<bitmap
+							android:src="@drawable/panel_wood"
+							android:tileMode="repeat"
+							android:tileModeX="repeat"
+							android:tileModeY="repeat"
+							android:gravity="fill" />
+					</item>
+
+					<item android:insetLeft="1dp" android:insetTop="1dp" android:insetRight="1dp" android:insetBottom="1dp">
+						<shape android:shape="rectangle">
+							<corners android:radius="4dp" />
+							<stroke
+								android:width="1dp"
+								android:color="#eac08a" />
+							<solid android:color="#00ffffff" />
+						</shape>
+					</item>
+
+				</layer-list>
 			</item>
 
-			<item android:insetLeft="2dp" android:insetTop="2dp" android:insetRight="2dp" android:insetBottom="2dp">
-				<bitmap
-					android:src="@drawable/panel_wood"
-					android:gravity="fill"
-					android:tileMode="repeat" />
-			</item>
-
-			<item android:insetLeft="1dp" android:insetTop="1dp" android:insetRight="1dp" android:insetBottom="1dp">
-				<shape android:shape="rectangle">
-					<corners android:radius="4dp" />
-					<stroke
-						android:width="1dp"
-						android:color="#eac08a" />
-					<solid android:color="#00ffffff" />
-				</shape>
-			</item>
-
-		</layer-list>
+		</selector>
 	</item>
 
 </ripple>

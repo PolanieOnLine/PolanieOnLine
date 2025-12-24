@@ -6,11 +6,13 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:id="@+id/content" android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	tools:context="eu.polanieonline.client.MainActivity">
+	tools:context="eu.polanieonline.client.MainActivity"
+	tools:showIn="@layout/activity_main">
 
 	<ImageView android:id="@+id/splash"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent" android:scaleType="fitCenter"
+		tools:src="@drawable/splash_portrait"
 		app:layout_constraintTop_toTopOf="parent"
 		app:layout_constraintStart_toStartOf="parent" />
 
