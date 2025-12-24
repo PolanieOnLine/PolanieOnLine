@@ -184,7 +184,7 @@ public final class LogConfigurator {
 
 		final RollingFileAppender rollingFileAppender = RollingFileAppender.createAppender(
 			fileName, filePattern, "true", "RollingFile", "true", "8192", "true", policy, strategy,
-			layout, null, "false", null, config);
+			layout, null, "false", "false", null, config);
 		rollingFileAppender.start();
 		config.addAppender(rollingFileAppender);
 
