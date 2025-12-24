@@ -12,13 +12,20 @@
 package eu.polanieonline.client;
 
 import android.content.res.Configuration;
+import android.graphics.RenderEffect;
+import android.graphics.Shader;
+import android.os.Build;
+import android.view.View;
 import android.widget.ImageView;
-
 
 public class SplashUtil {
 
 	/** Image used as title page background. */
-	private final ImageView splash;
+	private final ImageView splashForeground;
+	/** Image used as title page background. */
+	private final ImageView splashBackground;
+	/** Overlay view to dim the background. */
+	private final View splashDim;
 
 	/** Singleton instance. */
 	private static SplashUtil instance;
@@ -38,7 +45,10 @@ public class SplashUtil {
 	 * Hidden singleton constructor.
 	 */
 	private SplashUtil() {
-		splash = (ImageView) MainActivity.get().findViewById(R.id.splash);
+		final MainActivity activity = MainActivity.get();
+		splashForeground = (ImageView) activity.findViewById(R.id.splash_foreground);
+		splashBackground = (ImageView) activity.findViewById(R.id.splash_background);
+		splashDim = activity.findViewById(R.id.splash_dim);
 		setVisible(false);
 	}
 
@@ -47,12 +57,13 @@ public class SplashUtil {
 	 *
 	 * @param resId
 	 *   Resource ID.
-	 * @param bgColor
-	 *   Coloring to fill behind splash image.
 	 */
-	private void setImage(final int resId, final int bgColor) {
-		splash.setBackgroundColor(bgColor);
-		splash.setImageResource(resId);
+	private void setImage(final int resId) {
+		splashForeground.setImageResource(resId);
+		splashBackground.setImageResource(resId);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+			splashBackground.setRenderEffect(RenderEffect.createBlurEffect(24.0f, 24.0f, Shader.TileMode.CLAMP));
+		}
 	}
 
 	/**
@@ -66,8 +77,7 @@ public class SplashUtil {
 		if (MainActivity.get().getOrientation() == Configuration.ORIENTATION_PORTRAIT) {
 			resId = R.drawable.splash_portrait;
 		}
-		// light blue background color
-		setImage(resId, 0xff6c9ed1);
+		setImage(resId);
 	}
 
 	/**
@@ -77,7 +87,10 @@ public class SplashUtil {
 	 *   `true` if image should visible, `false` if not.
 	 */
 	public void setVisible(final boolean visible) {
-		splash.setVisibility(visible ? ImageView.VISIBLE : ImageView.GONE);
+		final int visibility = visible ? ImageView.VISIBLE : ImageView.GONE;
+		splashForeground.setVisibility(visibility);
+		splashBackground.setVisibility(visibility);
+		splashDim.setVisibility(visibility);
 		update();
 	}
 
@@ -85,6 +98,6 @@ public class SplashUtil {
 	 * Checks if splash is visible.
 	 */
 	public boolean isVisible() {
-		return ImageView.VISIBLE == splash.getVisibility();
+		return ImageView.VISIBLE == splashForeground.getVisibility();
 	}
 }
