@@ -6,5 +6,9 @@
 	<string name="intent_url_scheme">polanieonlineprod8gps5y99pu</string>
 	<string name="build_type">prod</string>
 	<string name="build_version">1.41</string>
+	<string name="connectivity_status_online">Online</string>
+	<string name="connectivity_status_connecting">Łączenie…</string>
+	<string name="connectivity_status_error">Błąd połączenia</string>
+	<string name="connectivity_status_offline">Offline</string>
 
 </resources>

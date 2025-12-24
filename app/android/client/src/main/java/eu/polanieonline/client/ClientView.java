@@ -11,6 +11,8 @@
  ***************************************************************************/
 package eu.polanieonline.client;
 
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Random;
 
 import android.app.AlertDialog;
@@ -21,8 +23,13 @@ import android.content.pm.ApplicationInfo;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
+import android.net.ConnectivityManager;
+import android.net.Network;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.AttributeSet;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -38,6 +45,9 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
+
+import androidx.appcompat.widget.TooltipCompat;
 
 import org.json.JSONObject;
 
@@ -45,6 +55,9 @@ import org.json.JSONObject;
  * Interface to handle web content.
  */
 public class ClientView extends WebView {
+	private enum ConnectivityStatus {
+		CONNECTING, ONLINE, ERROR
+	}
 
 	/** Client URL path. */
 	private String clientUrlSuffix = "client";
@@ -58,6 +71,20 @@ public class ClientView extends WebView {
 	private PageId currentPage;
 	/** ID of page previously loaded. */
 	private PageId previousPage;
+
+	private ConnectivityStatus connectivityStatus = ConnectivityStatus.CONNECTING;
+	private ConnectivityManager.NetworkCallback networkCallback;
+	private View connectivityStatusIcon;
+	private TextView connectivityStatusLabel;
+	private final Handler connectivityHandler = new Handler(Looper.getMainLooper());
+	private final Runnable connectivityRunnable = new Runnable() {
+		@Override
+		public void run() {
+			checkServerReachabilityAsync();
+		}
+	};
+	private boolean connectivityPollingEnabled = false;
+	private static final long CONNECTIVITY_POLL_INTERVAL_MS = 3000L;
 
 	private String stateId = "";
 	private String seed = "";
@@ -134,8 +161,29 @@ public class ClientView extends WebView {
 			setWebContentsDebuggingEnabled(true);
 		}
 
+		initConnectivityUi();
+
 		initWebViewClient();
 		initDownloadHandler();
+		observeConnectivity();
+		startConnectivityPolling();
+	}
+
+	@Override
+	protected void onDetachedFromWindow() {
+		super.onDetachedFromWindow();
+		stopConnectivityPolling();
+		if (networkCallback != null) {
+			final ConnectivityManager cm = (ConnectivityManager) getContext()
+					.getSystemService(Context.CONNECTIVITY_SERVICE);
+			if (cm != null) {
+				try {
+					cm.unregisterNetworkCallback(networkCallback);
+				} catch (final Exception e) {
+					Logger.error("Failed to unregister network callback: " + e.getMessage());
+				}
+			}
+		}
 	}
 
 	/**
@@ -158,6 +206,145 @@ public class ClientView extends WebView {
 	 */
 	public boolean isActive() {
 		return getVisibility() == ClientView.VISIBLE;
+	}
+
+	private void initConnectivityUi() {
+		final View toolbar = MainActivity.get().findViewById(R.id.menu_main);
+		if (toolbar == null) {
+			return;
+		}
+		connectivityStatusIcon = toolbar.findViewById(R.id.connectivity_status_icon);
+		connectivityStatusLabel = toolbar.findViewById(R.id.connectivity_status_label);
+		updateConnectivityBadge(ConnectivityStatus.CONNECTING);
+	}
+
+	private void observeConnectivity() {
+		final ConnectivityManager cm = (ConnectivityManager) getContext()
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		if (cm == null) {
+			updateConnectivityBadge(ConnectivityStatus.ERROR, "Brak ConnectivityManager");
+			return;
+		}
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+			networkCallback = new ConnectivityManager.NetworkCallback() {
+				@Override
+				public void onAvailable(final Network network) {
+					super.onAvailable(network);
+					checkServerReachabilityAsync();
+				}
+
+				@Override
+				public void onLost(final Network network) {
+					super.onLost(network);
+					updateConnectivityBadge(ConnectivityStatus.ERROR, "Brak połączenia");
+				}
+			};
+			cm.registerDefaultNetworkCallback(networkCallback);
+		} else {
+			checkServerReachabilityAsync();
+		}
+	}
+
+	private void checkServerReachabilityAsync() {
+		new Thread(() -> {
+			updateConnectivityBadge(ConnectivityStatus.CONNECTING);
+			final String host = UrlHelper.getDefaultServer();
+			HttpURLConnection connection = null;
+			try {
+				final URL url = new URL(host);
+				connection = (HttpURLConnection) url.openConnection();
+				connection.setConnectTimeout(3000);
+				connection.setReadTimeout(3000);
+				connection.setRequestMethod("HEAD");
+				final long start = System.currentTimeMillis();
+				connection.connect();
+				final long pingMs = System.currentTimeMillis() - start;
+				final int code = connection.getResponseCode();
+				if (code >= 200 && code < 400) {
+					updateConnectivityBadge(ConnectivityStatus.ONLINE, null, pingMs + " ms");
+					return;
+				}
+				updateConnectivityBadge(ConnectivityStatus.ERROR, "Problem z serwerem (kod " + code + ")",
+						getContext().getString(R.string.connectivity_status_offline));
+			} catch (Exception e) {
+				updateConnectivityBadge(ConnectivityStatus.ERROR, "Błąd połączenia: " + e.getMessage(),
+						getContext().getString(R.string.connectivity_status_offline));
+			} finally {
+				if (connection != null) {
+					connection.disconnect();
+				}
+			}
+			scheduleNextConnectivityCheck();
+		}).start();
+	}
+
+	private void updateConnectivityBadge(final ConnectivityStatus status) {
+		updateConnectivityBadge(status, null, null);
+	}
+
+	private void updateConnectivityBadge(final ConnectivityStatus status, final String message) {
+		updateConnectivityBadge(status, message, null);
+	}
+
+	private void updateConnectivityBadge(final ConnectivityStatus status, final String message,
+			final String customLabel) {
+		connectivityStatus = status;
+		if (connectivityStatusIcon == null || connectivityStatusLabel == null) {
+			return;
+		}
+		int color = Color.YELLOW;
+		int textRes = R.string.connectivity_status_connecting;
+		switch (status) {
+		case ONLINE:
+			color = Color.GREEN;
+			textRes = R.string.connectivity_status_online;
+			break;
+		case ERROR:
+			color = Color.RED;
+			textRes = R.string.connectivity_status_offline;
+			break;
+		default:
+			break;
+		}
+		final String label = customLabel != null ? customLabel : getContext().getString(textRes);
+		final int badgeColor = color;
+		final String tooltip = message != null ? message : label;
+		connectivityStatusIcon.post(() -> {
+			final GradientDrawable bg = (GradientDrawable) connectivityStatusIcon.getBackground();
+			if (bg != null) {
+				bg.setColor(badgeColor);
+			}
+			connectivityStatusLabel.setText(label);
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+				connectivityStatusLabel.setTooltipText(tooltip);
+			} else {
+				TooltipCompat.setTooltipText(connectivityStatusLabel, tooltip);
+			}
+		});
+		if (message != null) {
+			connectivityStatusLabel.post(() -> Notifier.toast(message));
+		}
+	}
+
+	private void startConnectivityPolling() {
+		if (connectivityPollingEnabled) {
+			return;
+		}
+		connectivityPollingEnabled = true;
+		scheduleNextConnectivityCheck();
+	}
+
+	private void stopConnectivityPolling() {
+		connectivityPollingEnabled = false;
+		connectivityHandler.removeCallbacks(connectivityRunnable);
+	}
+
+	private void scheduleNextConnectivityCheck() {
+		if (!connectivityPollingEnabled) {
+			return;
+		}
+		connectivityHandler.removeCallbacks(connectivityRunnable);
+		connectivityHandler.postDelayed(connectivityRunnable, CONNECTIVITY_POLL_INTERVAL_MS);
 	}
 
 	/**
