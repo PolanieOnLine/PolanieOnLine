@@ -38,7 +38,6 @@ import android.widget.EditText;
 
 import org.json.JSONObject;
 
-
 /**
  * Interface to handle web content.
  */
@@ -63,12 +62,10 @@ public class ClientView extends WebView {
 	private String loginPass = "";
 	private boolean autoLoginAttempted = false;
 
-
 	/**
 	 * Creates a new view.
 	 *
-	 * @param ctx
-	 *   Activity Context to access application assets.
+	 * @param ctx Activity Context to access application assets.
 	 */
 	public ClientView(final Context ctx) {
 		super(ctx);
@@ -78,10 +75,8 @@ public class ClientView extends WebView {
 	/**
 	 * Creates a new view.
 	 *
-	 * @param ctx
-	 *   Activity Context to access application assets.
-	 * @param attrs
-	 *   AttributeSet passed to parent (may be `null`).
+	 * @param ctx   Activity Context to access application assets.
+	 * @param attrs AttributeSet passed to parent (may be `null`).
 	 */
 	public ClientView(final Context ctx, final AttributeSet attrs) {
 		super(ctx, attrs);
@@ -91,13 +86,11 @@ public class ClientView extends WebView {
 	/**
 	 * Creates a new view.
 	 *
-	 * @param ctx
-	 *   Activity Context to access application assets.
-	 * @param attrs
-	 *   AttributeSet passed to parent (may be `null`).
-	 * @param style
-	 *   Attribute in the current theme that contains a reference to a style resource that supplies
-	 *   default values for the view (can be 0 to not look for defaults).
+	 * @param ctx   Activity Context to access application assets.
+	 * @param attrs AttributeSet passed to parent (may be `null`).
+	 * @param style Attribute in the current theme that contains a reference to a
+	 *              style resource that supplies default values for the view (can be
+	 *              0 to not look for defaults).
 	 */
 	public ClientView(final Context ctx, final AttributeSet attrs, final int style) {
 		super(ctx, attrs, style);
@@ -112,8 +105,8 @@ public class ClientView extends WebView {
 		setBackgroundColor(Color.TRANSPARENT);
 
 		// expand to size of parent constraints
-		setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-				ViewGroup.LayoutParams.MATCH_PARENT));
+		setLayoutParams(
+				new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 
 		final WebSettings viewSettings = getSettings();
 		viewSettings.setJavaScriptEnabled(true);
@@ -143,8 +136,7 @@ public class ClientView extends WebView {
 	/**
 	 * Sets active state of this client view.
 	 *
-	 * @param active
-	 *   If `true` shows this client view, otherwise hides it.
+	 * @param active If `true` shows this client view, otherwise hides it.
 	 */
 	public void setActive(final boolean active) {
 		if (active) {
@@ -157,8 +149,7 @@ public class ClientView extends WebView {
 	/**
 	 * Checks active state of client view.
 	 *
-	 * @return
-	 *   `true` is this view is visible.
+	 * @return `true` is this view is visible.
 	 */
 	public boolean isActive() {
 		return getVisibility() == ClientView.VISIBLE;
@@ -169,19 +160,16 @@ public class ClientView extends WebView {
 	 */
 	private void initWebViewClient() {
 		// XXX: not sure setting WebChromClient is doing anything, was recommended to
-		//      fix touchmove events not registering
+		// fix touchmove events not registering
 		setWebChromeClient(new WebChromeClient());
 
 		setWebViewClient(new WebViewClient() {
 			/**
 			 * Handles pages loaded indirectly.
 			 *
-			 * @param view
-			 *   The default WebView instance handling the request.
-			 * @param request
-			 *   Web request including the URL to be loaded.
-			 * @return
-			 *   `true` to abort default loading.
+			 * @param view    The default WebView instance handling the request.
+			 * @param request Web request including the URL to be loaded.
+			 * @return `true` to abort default loading.
 			 */
 			@Override
 			public boolean shouldOverrideUrlLoading(final WebView view, final WebResourceRequest request) {
@@ -207,12 +195,9 @@ public class ClientView extends WebView {
 			/**
 			 * Called before a URL is loaded.
 			 *
-			 * @param view
-			 *   WebView instance handling page contents.
-			 * @param url
-			 *   HTTP string of target page.
-			 * @param favicon
-			 *   Favicon bitmap image.
+			 * @param view    WebView instance handling page contents.
+			 * @param url     HTTP string of target page.
+			 * @param favicon Favicon bitmap image.
 			 */
 			@Override
 			public void onPageStarted(final WebView view, final String url, final Bitmap favicon) {
@@ -223,10 +208,8 @@ public class ClientView extends WebView {
 			/**
 			 * Called after a URL is loaded.
 			 *
-			 * @param view
-			 *   WebView instance handling page contents.
-			 * @param url
-			 *   HTTP string of target page.
+			 * @param view WebView instance handling page contents.
+			 * @param url  HTTP string of target page.
 			 */
 			@Override
 			public void onPageFinished(final WebView view, final String url) {
@@ -245,8 +228,8 @@ public class ClientView extends WebView {
 				Menu.get().updateButtons();
 				Logger.debug("page id: " + currentPage);
 			}
-			});
-		}
+		});
+	}
 
 	/**
 	 * deprecated?
@@ -255,11 +238,9 @@ public class ClientView extends WebView {
 	public boolean dispatchKeyEvent(final KeyEvent event) {
 		final boolean ret = super.dispatchKeyEvent(event);
 		// hide keyboard when "enter" pressed
-		if (isGameActive() && event.getAction() == KeyEvent.ACTION_UP
-				&& event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
-			((InputMethodManager) MainActivity.get()
-				.getSystemService(Context.INPUT_METHOD_SERVICE))
-				.hideSoftInputFromWindow(this.getWindowToken(), 0);
+		if (isGameActive() && event.getAction() == KeyEvent.ACTION_UP && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+			((InputMethodManager) MainActivity.get().getSystemService(Context.INPUT_METHOD_SERVICE))
+					.hideSoftInputFromWindow(this.getWindowToken(), 0);
 		}
 		return ret;
 	}
@@ -272,23 +253,19 @@ public class ClientView extends WebView {
 			/**
 			 * Handles downloading screenshot created by web client.
 			 *
-			 * TODO: get filename to pass to `DownloadHandler.download` from "download" property of
-			 *       anchor
+			 * TODO: get filename to pass to `DownloadHandler.download` from "download"
+			 * property of anchor
 			 *
-			 * @param url
-			 *   Content URL to the screenshot image.
-			 * @param userAgent
-			 *   User agent used for download.
-			 * @param contentDisposition
-			 *   Content-disposition HTTP header, if present.
-			 * @param mimetype
-			 *   Content type reported by server (web client creates PNG image).
-			 * @param contentLength
-			 *   File size reported by server.
+			 * @param url                Content URL to the screenshot image.
+			 * @param userAgent          User agent used for download.
+			 * @param contentDisposition Content-disposition HTTP header, if present.
+			 * @param mimetype           Content type reported by server (web client creates
+			 *                           PNG image).
+			 * @param contentLength      File size reported by server.
 			 */
 			@Override
-			public void onDownloadStart(final String url, final String userAgent,
-					final String contentDisposition, final String mimetype, final long contentLength) {
+			public void onDownloadStart(final String url, final String userAgent, final String contentDisposition,
+					final String mimetype, final long contentLength) {
 				final DownloadHandler handler = new DownloadHandler();
 				handler.download(url, mimetype);
 				if (handler.getResult()) {
@@ -307,15 +284,15 @@ public class ClientView extends WebView {
 	/**
 	 * Verifies intent state & parses & loads target URL.
 	 *
-	 * @param intent
-	 *   Called login intent with state verification.
+	 * @param intent Called login intent with state verification.
 	 */
 	public void checkLoginIntent(final Intent intent) {
 		final Uri intentUri = intent.getData();
 		final String url = intentUri.getQueryParameter("url");
 		final String loginseed = intentUri.getQueryParameter("loginseed");
 		final String intentStateId = intentUri.getQueryParameter("state");
-		if (stateId == null || intentStateId == null || url == null || "".equals(stateId) || !stateId.equals(intentStateId)) {
+		if (stateId == null || intentStateId == null || url == null || "".equals(stateId)
+				|| !stateId.equals(intentStateId)) {
 			final String err = "There was an error verifying login";
 			Logger.error(err + " (\"" + stateId + "\" == \"" + intentStateId + "\")");
 			Notifier.showMessage(err);
@@ -346,8 +323,7 @@ public class ClientView extends WebView {
 	/**
 	 * Retrieves a string representing the selected client.
 	 *
-	 * @return
-	 *   One of "main", "test", or "none".
+	 * @return One of "main", "test", or "none".
 	 */
 	public String getSelectedClient() {
 		if (onTitleScreen()) {
@@ -359,8 +335,7 @@ public class ClientView extends WebView {
 	/**
 	 * Retrieves a string representing the selected server.
 	 *
-	 * @return
-	 *   One of "main", "test", or "none".
+	 * @return One of "main", "test", or "none".
 	 */
 	public String getSelectedServer() {
 		if (onTitleScreen()) {
@@ -386,8 +361,7 @@ public class ClientView extends WebView {
 	/**
 	 * Retrieves client type string.
 	 *
-	 * @return
-	 *   Either "client" or "testclient".
+	 * @return Either "client" or "testclient".
 	 */
 	public String getClientUrlSuffix() {
 		return clientUrlSuffix;
@@ -412,7 +386,7 @@ public class ClientView extends WebView {
 		// generate random state
 		final Random rand = new Random();
 		final int ccount = charList.length();
-		for (int idx = 0; idx <= 20 ; idx++) {
+		for (int idx = 0; idx <= 20; idx++) {
 			result += charList.charAt(rand.nextInt(ccount));
 		}
 		return result;
@@ -421,8 +395,7 @@ public class ClientView extends WebView {
 	/**
 	 * Opens location in client WebView.
 	 *
-	 * @param url
-	 *   URL to load.
+	 * @param url URL to load.
 	 */
 	@Override
 	public void loadUrl(final String url) {
@@ -444,7 +417,8 @@ public class ClientView extends WebView {
 	/**
 	 * Attempts to connect to client host.
 	 *
-	 * FIXME: rename as it may cause confusion in regards to loading page "account/login.html"
+	 * FIXME: rename as it may cause confusion in regards to loading page
+	 * "account/login.html"
 	 */
 	public void loadLogin() {
 		promptNativeLogin();
@@ -455,9 +429,9 @@ public class ClientView extends WebView {
 	 */
 	private void selectClient() {
 		final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-		builder.setMessage("Select client");
+		builder.setMessage("Wybierz klienta");
 
-		builder.setPositiveButton("Main", new DialogInterface.OnClickListener() {
+		builder.setPositiveButton("Główny", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(final DialogInterface dialog, final int id) {
 				testClient = false;
@@ -468,7 +442,7 @@ public class ClientView extends WebView {
 			}
 		});
 
-		builder.setNegativeButton("Test", new DialogInterface.OnClickListener() {
+		builder.setNegativeButton("Testowy", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(final DialogInterface dialog, final int id) {
 				testClient = true;
@@ -486,9 +460,9 @@ public class ClientView extends WebView {
 	 */
 	private void selectServer() {
 		final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-		builder.setMessage("Select server");
+		builder.setMessage("Wybierz serwer");
 
-		builder.setPositiveButton("Main", new DialogInterface.OnClickListener() {
+		builder.setPositiveButton("Główny", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(final DialogInterface dialog, final int id) {
 				testServer = false;
@@ -497,7 +471,7 @@ public class ClientView extends WebView {
 			}
 		});
 
-		builder.setNegativeButton("Test", new DialogInterface.OnClickListener() {
+		builder.setNegativeButton("Testowy", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(final DialogInterface dialog, final int id) {
 				testServer = true;
@@ -531,8 +505,7 @@ public class ClientView extends WebView {
 	/**
 	 * Checks if user has specified a URL pointing to a custom server/client.
 	 *
-	 * @return
-	 *   Server address specified in preferences or `null`.
+	 * @return Server address specified in preferences or `null`.
 	 */
 	public String checkCustomServer() {
 		final String cs = PreferencesActivity.getString("client_url", "").trim();
@@ -545,8 +518,7 @@ public class ClientView extends WebView {
 	/**
 	 * Checks if title page is currently loaded.
 	 *
-	 * @return
-	 *   `true` if current page matches `PageId.TITLE`.
+	 * @return `true` if current page matches `PageId.TITLE`.
 	 */
 	public boolean onTitleScreen() {
 		return currentPage == PageId.TITLE;
@@ -555,8 +527,7 @@ public class ClientView extends WebView {
 	/**
 	 * Checks if web client page is currently loaded.
 	 *
-	 * @return
-	 *   `true` if current page matches `PageId.WEBCLIENT`.
+	 * @return `true` if current page matches `PageId.WEBCLIENT`.
 	 */
 	public boolean isGameActive() {
 		return currentPage == PageId.WEBCLIENT;
@@ -565,8 +536,7 @@ public class ClientView extends WebView {
 	/**
 	 * Retrieves ID of current page.
 	 *
-	 * @return
-	 *   Current `PageId`.
+	 * @return Current `PageId`.
 	 */
 	public PageId getCurrentPageId() {
 		return currentPage;
@@ -575,8 +545,7 @@ public class ClientView extends WebView {
 	/**
 	 * Sets current page ID.
 	 *
-	 * @param newPage
-	 *   Page ID to be used.
+	 * @param newPage Page ID to be used.
 	 */
 	private void setPage(final PageId newPage) {
 		previousPage = currentPage;
@@ -585,8 +554,6 @@ public class ClientView extends WebView {
 			previousPage = currentPage;
 		}
 		if (newPage == PageId.WEBCLIENT) {
-			loginUser = "";
-			loginPass = "";
 			autoLoginAttempted = false;
 		}
 	}
@@ -594,8 +561,7 @@ public class ClientView extends WebView {
 	/**
 	 * Checks if this is a debug build.
 	 *
-	 * @return
-	 *   `true` if debug flag set.
+	 * @return `true` if debug flag set.
 	 */
 	public boolean debugEnabled() {
 		if (debugging != null) {
@@ -618,10 +584,10 @@ public class ClientView extends WebView {
 		final EditText password = layout.findViewById(R.id.loginPassword);
 
 		final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-		builder.setTitle("Login to Stendhal");
+		builder.setTitle("Logowanie");
 		builder.setView(layout);
 		builder.setCancelable(false);
-		builder.setPositiveButton("Login", new DialogInterface.OnClickListener() {
+		builder.setPositiveButton("Zaloguj", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(final DialogInterface dialog, final int which) {
 				loginUser = username.getText().toString().trim();
@@ -630,7 +596,7 @@ public class ClientView extends WebView {
 				startLoginFlow();
 			}
 		});
-		builder.setNegativeButton("Skip", new DialogInterface.OnClickListener() {
+		builder.setNegativeButton("Pomiń", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(final DialogInterface dialog, final int which) {
 				loginUser = "";
@@ -657,10 +623,8 @@ public class ClientView extends WebView {
 	/**
 	 * Fills and submits login form when displayed inside WebView.
 	 *
-	 * @param view
-	 *   WebView instance displaying login page.
-	 * @param url
-	 *   URL that finished loading.
+	 * @param view WebView instance displaying login page.
+	 * @param url  URL that finished loading.
 	 */
 	private void attemptAutoLogin(final WebView view, final String url) {
 		if (autoLoginAttempted) {
@@ -670,19 +634,27 @@ public class ClientView extends WebView {
 			return;
 		}
 		final Uri uri = UrlHelper.toUri(url);
-		if (!UrlHelper.isLoginUri(uri)) {
+		if (!UrlHelper.isInternalUri(uri)) {
+			return;
+		}
+		if (!UrlHelper.isLoginUri(uri) && !UrlHelper.isClientUrl(url)) {
 			return;
 		}
 		autoLoginAttempted = true;
 		final String js = "javascript:(function(){try{"
+				+ "if(window.__po_autoLoginActive){return;}window.__po_autoLoginActive=true;" + "var uval="
+				+ JSONObject.quote(loginUser) + ";" + "var pval=" + JSONObject.quote(loginPass) + ";"
+				+ "var filled=false;" + "var submit=function(){"
 				+ "var u=document.querySelector('#username')||document.querySelector('input[type=email],input[name=username],input[name=login],input[type=text]');"
 				+ "var p=document.querySelector('#password')||document.querySelector('input[type=password]');"
 				+ "var b=document.querySelector('#loginbutton')||document.querySelector('button[type=submit],input[type=submit]');"
-				+ "if(u){u.value=" + JSONObject.quote(loginUser) + ";}"
-				+ "if(p){p.value=" + JSONObject.quote(loginPass) + ";}"
-				+ "if(b){b.click();}"
-				+ "else{var f=null;if(p&&p.form){f=p.form;}else if(u&&u.form){f=u.form;}else{f=document.querySelector('form');}if(f){f.submit();}}"
-				+ "}catch(e){console.log(e);}})();";
+				+ "if(u){u.value=uval;}" + "if(p){p.value=pval;}" + "if(b){b.click();filled=true;return true;}"
+				+ "var f=null;if(p&&p.form){f=p.form;}else if(u&&u.form){f=u.form;}else{f=document.querySelector('form.credential-dialog')||document.querySelector('form');}"
+				+ "if(f){f.submit();filled=true;return true;}" + "return false;" + "};"
+				+ "var obs=new MutationObserver(function(){if(filled){return;}submit();});"
+				+ "setTimeout(function(){try{obs.disconnect();}catch(e){}window.__po_autoLoginActive=false;},20000);"
+				+ "if(!submit()){obs.observe(document.documentElement||document.body,{childList:true,subtree:true});}"
+				+ "}catch(e){console.log(e);window.__po_autoLoginActive=false;}})();";
 		view.evaluateJavascript(js, null);
 	}
 }

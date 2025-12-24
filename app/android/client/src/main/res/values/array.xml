@@ -3,9 +3,9 @@
 <resources>
 
 	<string-array name="orientation">
-		<item>Use current user\'s setting</item>
-		<item>Landscape</item>
-		<item>Portrait</item>
+		<item>Użyj ustawień bieżącego użytkownika</item>
+		<item>Poziomo</item>
+		<item>Pionowo</item>
 	</string-array>
 
 	<string-array name="orientationId">
@@ -15,11 +15,13 @@
 	</string-array>
 
 	<string-array name="titleMusic">
-		<item>Treasure Hunter</item>
-		<item>Woodland Fantasy</item>
-		<item>Land of Fearless</item>
-		<item>Rejoicing</item>
-		<item>The Old Tower Inn</item>
+		<item>Góralska Ścieżka</item>
+		<item>Pieśń Barda</item>
+		<item>Łowca Skarbów</item>
+		<item>Leśna Fantazja</item>
+		<item>Ziemia Nieulękłych</item>
+		<item>Radość</item>
+		<item>Gospoda Starej Wieży</item>
 	</string-array>
 
 	<string-array name="titleMusicId">
@@ -28,6 +30,8 @@
 		<item>title_03</item>
 		<item>title_04</item>
 		<item>title_05</item>
+		<item>title_06</item>
+		<item>title_07</item>
 	</string-array>
 
 </resources>

@@ -3,64 +3,49 @@
 <PreferenceScreen
 	xmlns:android="http://schemas.android.com/apk/res/android">
 
-	<PreferenceCategory android:title="General">
+	<PreferenceCategory android:title="Ogólne">
 
-		<EditTextPreference
-			android:key="client_url"
-			android:inputType="text"
-			android:maxLines="1"
-			android:title="Client URL"
-			android:summary="Custom URL pointing to web client."
-			android:selectAllOnFocus="true"
-		/>
+		<EditTextPreference android:key="client_url"
+			android:inputType="text" android:maxLines="1"
+			android:title="Adres URL klienta"
+			android:summary="Własny adres URL wskazujący na klienta webowego."
+			android:selectAllOnFocus="true" />
 
 	</PreferenceCategory>
 
-	<PreferenceCategory android:title="User Interface">
+	<PreferenceCategory
+		android:title="Interfejs użytkownika">
 
-		<ListPreference
-			android:key="orientation"
-			android:defaultValue="user"
-			android:title="Orientation"
+		<ListPreference android:key="orientation"
+			android:defaultValue="user" android:title="Orientacja"
 			android:entries="@array/orientation"
 			android:entryValues="@array/orientationId"
-			android:summary="Set screen orientation"
-		/>
+			android:summary="Ustaw orientację ekranu" />
 
 	</PreferenceCategory>
 
-	<PreferenceCategory android:title="Audio">
+	<PreferenceCategory android:title="Dźwięk">
 
-		<CheckBoxPreference
-			android:key="title_music"
-			android:defaultValue="true"
-			android:title="Title Music"
-			android:summary="Play title screen music."
-		/>
+		<CheckBoxPreference android:key="title_music"
+			android:defaultValue="true" android:title="Muzyka tytułowa"
+			android:summary="Odtwarzaj muzykę na ekranie tytułowym." />
 
-		<ListPreference
-			android:key="song_list"
-			android:dependency="title_music"
-			android:title="Songs"
+		<ListPreference android:key="song_list"
+			android:dependency="title_music" android:title="Utwory"
 			android:entries="@array/titleMusic"
-			android:entryValues="@array/titleMusicId"
-		/>
+			android:entryValues="@array/titleMusicId" />
 
 	</PreferenceCategory>
 
-	<PreferenceCategory android:title="Misc">
+	<PreferenceCategory android:title="Różne">
 
-		<Preference
-			android:key="clear_cache"
-			android:title="Clear Cache"
-			android:summary="Delete cached data."
-		/>
+		<Preference android:key="clear_cache"
+			android:title="Wyczyść pamięć podręczną"
+			android:summary="Usuń dane zapisane w pamięci podręcznej." />
 
-		<Preference
-			android:key="reset"
-			android:title="Restore Defaults"
-			android:summary="Restore all preferences default values."
-		/>
+		<Preference android:key="reset"
+			android:title="Przywróć ustawienia domyślne"
+			android:summary="Przywróć wszystkie ustawienia do wartości domyślnych." />
 
 	</PreferenceCategory>
 

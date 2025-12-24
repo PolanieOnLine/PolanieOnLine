@@ -11,7 +11,7 @@
 		android:id="@+id/loginUsername"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:hint="Username"
+		android:hint="Nazwa użytkownika"
 		android:inputType="textPersonName"
 		android:maxLines="1"
 		android:singleLine="true" />
@@ -20,7 +20,7 @@
 		android:id="@+id/loginPassword"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:hint="Password"
+		android:hint="Hasło"
 		android:inputType="textPassword"
 		android:maxLines="1"
 		android:singleLine="true" />

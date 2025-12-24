@@ -2,8 +2,8 @@
 
 <resources>
 
-	<string name="app_name">Stendhal</string>
-	<string name="intent_url_scheme">stendhalprod8gps5y99pu</string>
+	<string name="app_name">PolanieOnLine</string>
+	<string name="intent_url_scheme">polanieonlineprod8gps5y99pu</string>
 	<string name="build_type">prod</string>
 	<string name="build_version">1.41</string>
 

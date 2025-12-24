@@ -4,23 +4,18 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
-	android:id="@+id/content"
-	android:layout_width="match_parent"
+	android:id="@+id/content" android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	tools:context="eu.polanieonline.client.MainActivity">
 
-	<ImageView
-		android:id="@+id/splash"
+	<ImageView android:id="@+id/splash"
 		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:scaleType="fitCenter"
+		android:layout_height="match_parent" android:scaleType="fitCenter"
 		app:layout_constraintTop_toTopOf="parent"
-		app:layout_constraintStart_toStartOf="parent"
-	/>
+		app:layout_constraintStart_toStartOf="parent" />
 
 	<androidx.constraintlayout.widget.ConstraintLayout
-		android:id="@+id/clientList"
-		android:layout_width="match_parent"
+		android:id="@+id/clientList" android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		app:layout_constraintBottom_toBottomOf="parent"
 		app:layout_constraintLeft_toLeftOf="parent"
@@ -28,85 +23,59 @@
 		app:layout_constraintTop_toTopOf="parent">
 	</androidx.constraintlayout.widget.ConstraintLayout>
 
-		<Toolbar
-			android:id="@+id/menu_main"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:background="#66000000"
-			android:padding="8dp"
-			app:layout_constraintBottom_toBottomOf="parent"
-			app:layout_constraintEnd_toEndOf="parent">
+	<Toolbar android:id="@+id/menu_main"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:background="#66000000"
+		android:padding="8dp" app:layout_constraintBottom_toBottomOf="parent"
+		app:layout_constraintEnd_toEndOf="parent">
 
-				<LinearLayout
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:gravity="end"
-					android:orientation="vertical"
-					android:padding="4dp"
-					android:layout_marginEnd="12dp">
+		<LinearLayout android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:gravity="end"
+			android:orientation="vertical" android:padding="4dp"
+			android:layout_marginEnd="12dp">
 
-				<Button
-					android:id="@+id/btn_connect"
-					android:layout_width="160dp"
-					android:layout_height="wrap_content"
-					android:layout_marginTop="8dp"
-					android:background="@drawable/btn_wood"
-					android:padding="10dp"
-					android:text="Connect"
-					android:textColor="#fdf8e3"
-					android:textStyle="bold"
-					android:textAllCaps="false" />
+			<Button android:id="@+id/btn_connect"
+				android:layout_width="134dp" android:layout_height="32dp"
+				android:layout_marginTop="8dp"
+				android:background="@drawable/btn_wood"
+				android:paddingHorizontal="12dp" android:paddingVertical="6dp"
+				android:text="Połącz" android:textColor="#fdf8e3"
+				android:textStyle="bold" android:textAllCaps="false" />
 
-				<Button
-					android:id="@+id/btn_title"
-					android:layout_width="160dp"
-					android:layout_height="wrap_content"
-					android:layout_marginTop="8dp"
-					android:background="@drawable/btn_wood"
-					android:padding="10dp"
-					android:text="Title"
-					android:textColor="#fdf8e3"
-					android:textStyle="bold"
-					android:textAllCaps="false" />
+			<Button android:id="@+id/btn_title"
+				android:layout_width="134dp" android:layout_height="32dp"
+				android:layout_marginTop="8dp"
+				android:background="@drawable/btn_wood"
+				android:paddingHorizontal="12dp" android:paddingVertical="6dp"
+				android:text="Ekran tytułowy" android:textColor="#fdf8e3"
+				android:textStyle="bold" android:textAllCaps="false" />
 
-				<Button
-					android:id="@+id/btn_reload"
-					android:layout_width="160dp"
-					android:layout_height="wrap_content"
-					android:layout_marginTop="8dp"
-					android:background="@drawable/btn_wood"
-					android:padding="10dp"
-					android:text="Reload"
-					android:textColor="#fdf8e3"
-					android:textStyle="bold"
-					android:textAllCaps="false" />
+			<Button android:id="@+id/btn_reload"
+				android:layout_width="134dp" android:layout_height="32dp"
+				android:layout_marginTop="8dp"
+				android:background="@drawable/btn_wood"
+				android:paddingHorizontal="12dp" android:paddingVertical="6dp"
+				android:text="Odśwież" android:textColor="#fdf8e3"
+				android:textStyle="bold" android:textAllCaps="false" />
 
-				<Button
-					android:id="@+id/btn_settings"
-					android:layout_width="160dp"
-					android:layout_height="wrap_content"
-					android:layout_marginTop="8dp"
-					android:background="@drawable/btn_wood"
-					android:padding="10dp"
-					android:text="Settings"
-					android:textColor="#fdf8e3"
-					android:textStyle="bold"
-					android:textAllCaps="false" />
+			<Button android:id="@+id/btn_settings"
+				android:layout_width="134dp" android:layout_height="32dp"
+				android:layout_marginTop="8dp"
+				android:background="@drawable/btn_wood"
+				android:paddingHorizontal="12dp" android:paddingVertical="6dp"
+				android:text="Ustawienia" android:textColor="#fdf8e3"
+				android:textStyle="bold" android:textAllCaps="false" />
 
-				<Button
-					android:id="@+id/btn_quit"
-					android:layout_width="160dp"
-					android:layout_height="wrap_content"
-					android:layout_marginTop="8dp"
-					android:background="@drawable/btn_wood"
-					android:padding="10dp"
-					android:text="Quit"
-					android:textColor="#fdf8e3"
-					android:textStyle="bold"
-					android:textAllCaps="false" />
+			<Button android:id="@+id/btn_quit"
+				android:layout_width="134dp" android:layout_height="32dp"
+				android:layout_marginTop="8dp"
+				android:background="@drawable/btn_wood"
+				android:paddingHorizontal="12dp" android:paddingVertical="6dp"
+				android:text="Wyjście" android:textColor="#fdf8e3"
+				android:textStyle="bold" android:textAllCaps="false" />
 
-			</LinearLayout>
+		</LinearLayout>
 
-		</Toolbar>
+	</Toolbar>
 
-	</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
