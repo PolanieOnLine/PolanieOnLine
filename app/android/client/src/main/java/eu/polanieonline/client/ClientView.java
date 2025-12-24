@@ -61,6 +61,8 @@ public class ClientView extends WebView {
 	private String loginUser = "";
 	private String loginPass = "";
 	private boolean autoLoginAttempted = false;
+	private static final int AUTO_LOGIN_TIMEOUT_MS = 20000;
+	private static final int AUTO_LOGIN_MAX_ATTEMPTS = 5;
 
 	/**
 	 * Creates a new view.
@@ -628,33 +630,77 @@ public class ClientView extends WebView {
 	 */
 	private void attemptAutoLogin(final WebView view, final String url) {
 		if (autoLoginAttempted) {
+			Logger.debug("Auto-login skipped: already attempted.");
 			return;
 		}
 		if (loginUser == null || loginPass == null || loginUser.trim().equals("") || loginPass.equals("")) {
+			Logger.debug("Auto-login skipped: missing credentials.");
 			return;
 		}
 		final Uri uri = UrlHelper.toUri(url);
 		if (!UrlHelper.isInternalUri(uri)) {
+			Logger.debug("Auto-login skipped: external URL " + url);
 			return;
 		}
 		if (!UrlHelper.isLoginUri(uri) && !UrlHelper.isClientUrl(url)) {
+			Logger.debug("Auto-login skipped: not a login/client URL " + url);
 			return;
 		}
 		autoLoginAttempted = true;
-		final String js = "javascript:(function(){try{"
-				+ "if(window.__po_autoLoginActive){return;}window.__po_autoLoginActive=true;" + "var uval="
-				+ JSONObject.quote(loginUser) + ";" + "var pval=" + JSONObject.quote(loginPass) + ";"
-				+ "var filled=false;" + "var submit=function(){"
+		Logger.debug("Attempting auto-login for URL " + url);
+		final String js = "javascript:(function(){"
+				+ "var result={attempted:false,finalStatus:'pending',message:'',attempts:0,"
+				+ "fields:{username:false,password:false,submit:false,form:false},observerActive:false,error:false};"
+				+ "try{"
+				+ "if(window.__po_autoLoginActive){result.finalStatus='alreadyActive';result.message='Auto-login already running';return result;}"
+				+ "window.__po_autoLoginActive=true;" + "var maxAttempts=" + AUTO_LOGIN_MAX_ATTEMPTS + ";"
+				+ "var timeoutMs=" + AUTO_LOGIN_TIMEOUT_MS + ";" + "var attempts=0;" + "var observer=null;"
+				+ "var finalized=false;" + "var uval=" + JSONObject.quote(loginUser) + ";" + "var pval="
+				+ JSONObject.quote(loginPass) + ";" + "var finalize=function(status,msg){" + "if(finalized){return;}"
+				+ "finalized=true;" + "result.finalStatus=status;" + "result.message=msg||result.message;"
+				+ "result.attempts=attempts;" + "result.observerActive=!!observer;"
+				+ "try{if(observer){observer.disconnect();}}catch(e){}" + "window.__po_autoLoginActive=false;" + "};"
+				+ "var submit=function(){" + "if(finalized){return true;}"
+				+ "if(attempts>=maxAttempts){finalize('maxAttempts','Reached max auto-login attempts');return false;}"
+				+ "attempts++;result.attempted=true;"
 				+ "var u=document.querySelector('#username')||document.querySelector('input[type=email],input[name=username],input[name=login],input[type=text]');"
 				+ "var p=document.querySelector('#password')||document.querySelector('input[type=password]');"
 				+ "var b=document.querySelector('#loginbutton')||document.querySelector('button[type=submit],input[type=submit]');"
-				+ "if(u){u.value=uval;}" + "if(p){p.value=pval;}" + "if(b){b.click();filled=true;return true;}"
 				+ "var f=null;if(p&&p.form){f=p.form;}else if(u&&u.form){f=u.form;}else{f=document.querySelector('form.credential-dialog')||document.querySelector('form');}"
-				+ "if(f){f.submit();filled=true;return true;}" + "return false;" + "};"
-				+ "var obs=new MutationObserver(function(){if(filled){return;}submit();});"
-				+ "setTimeout(function(){try{obs.disconnect();}catch(e){}window.__po_autoLoginActive=false;},20000);"
-				+ "if(!submit()){obs.observe(document.documentElement||document.body,{childList:true,subtree:true});}"
-				+ "}catch(e){console.log(e);window.__po_autoLoginActive=false;}})();";
-		view.evaluateJavascript(js, null);
+				+ "result.fields.username=!!u;result.fields.password=!!p;result.fields.submit=!!b;result.fields.form=!!f;"
+				+ "if(u){u.value=uval;}" + "if(p){p.value=pval;}"
+				+ "if(b){b.click();finalize('submitted','Submitted via button');return true;}"
+				+ "if(f){f.submit();finalize('submitted','Submitted via form');return true;}"
+				+ "if(attempts>=maxAttempts){finalize('maxAttempts','Reached max auto-login attempts');}"
+				+ "return false;" + "};" + "var initialSuccess=submit();" + "if(!finalized){"
+				+ "observer=new MutationObserver(function(){if(finalized){return;}if(submit()){return;}});"
+				+ "result.observerActive=true;"
+				+ "observer.observe(document.documentElement||document.body,{childList:true,subtree:true});"
+				+ "setTimeout(function(){finalize('timeout','Auto-login timed out');},timeoutMs);" + "}"
+				+ "return result;"
+				+ "}catch(e){result.finalStatus='error';result.message=e&&e.message?e.message:String(e);result.error=true;result.attempts=attempts;window.__po_autoLoginActive=false;return result;}"
+				+ "})();";
+		view.evaluateJavascript(js, value -> {
+			if (value == null || "null".equals(value)) {
+				Logger.error("Auto-login returned null result for URL " + url);
+				return;
+			}
+			try {
+				final JSONObject result = new JSONObject(value);
+				final String status = result.optString("finalStatus", "unknown");
+				final int attempts = result.optInt("attempts", 0);
+				final String message = result.optString("message", "");
+				final JSONObject fields = result.optJSONObject("fields");
+				final boolean observerActive = result.optBoolean("observerActive", false);
+				Logger.debug("Auto-login result: status=" + status + ", attempts=" + attempts + ", observerActive="
+						+ observerActive + ", fields=" + (fields != null ? fields.toString() : "{}") + ", message=\""
+						+ message + "\"");
+				if ("error".equals(status) || "timeout".equals(status) || "maxAttempts".equals(status)) {
+					Logger.error("Auto-login failed with status=" + status + " message=\"" + message + "\"");
+				}
+			} catch (Exception e) {
+				Logger.error("Failed to parse auto-login result: " + e.getMessage());
+			}
+		});
 	}
 }
