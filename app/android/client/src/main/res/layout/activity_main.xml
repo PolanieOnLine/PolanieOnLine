@@ -74,43 +74,47 @@
 
 			</LinearLayout>
 
-			<Button android:id="@+id/btn_quick_actions"
-				android:layout_width="134dp" android:layout_height="32dp"
-				android:layout_marginTop="8dp"
-				android:background="@drawable/btn_wood"
-				android:paddingHorizontal="12dp" android:paddingVertical="6dp"
-				android:text="Profile/Login" android:textColor="#fdf8e3"
-				android:textStyle="bold" android:textAllCaps="false" />
-
 			<Button android:id="@+id/btn_connect"
 				android:layout_width="134dp" android:layout_height="32dp"
 				android:layout_marginTop="8dp"
 				android:background="@drawable/btn_wood"
-				android:paddingHorizontal="12dp" android:paddingVertical="6dp"
+				android:paddingHorizontal="12dp" android:paddingVertical="8dp"
 				android:text="Połącz" android:textColor="#fdf8e3"
-				android:textStyle="bold" android:textAllCaps="false" />
-
-			<Button android:id="@+id/btn_title"
-				android:layout_width="134dp" android:layout_height="32dp"
-				android:layout_marginTop="8dp"
-				android:background="@drawable/btn_wood"
-				android:paddingHorizontal="12dp" android:paddingVertical="6dp"
-				android:text="Ekran tytułowy" android:textColor="#fdf8e3"
 				android:textStyle="bold" android:textAllCaps="false" />
 
 			<Button android:id="@+id/btn_reload"
 				android:layout_width="134dp" android:layout_height="32dp"
 				android:layout_marginTop="8dp"
 				android:background="@drawable/btn_wood"
-				android:paddingHorizontal="12dp" android:paddingVertical="6dp"
+				android:paddingHorizontal="12dp" android:paddingVertical="8dp"
 				android:text="Odśwież" android:textColor="#fdf8e3"
+				android:textStyle="bold" android:textAllCaps="false" />
+
+			<Button android:id="@+id/btn_title"
+				android:layout_width="134dp" android:layout_height="32dp"
+				android:layout_marginTop="8dp"
+				android:background="@drawable/btn_wood"
+				android:paddingHorizontal="12dp" android:paddingVertical="8dp"
+				android:text="Ekran tytułowy" android:textColor="#fdf8e3"
+				android:textStyle="bold" android:textAllCaps="false" />
+
+			<View android:id="@+id/btn_group_divider"
+				android:layout_width="match_parent" android:layout_height="1dp"
+				android:layout_marginTop="8dp" android:background="#33ffffff" />
+
+			<Button android:id="@+id/btn_quick_actions"
+				android:layout_width="134dp" android:layout_height="32dp"
+				android:layout_marginTop="8dp"
+				android:background="@drawable/btn_wood"
+				android:paddingHorizontal="12dp" android:paddingVertical="8dp"
+				android:text="Profile/Login" android:textColor="#fdf8e3"
 				android:textStyle="bold" android:textAllCaps="false" />
 
 			<Button android:id="@+id/btn_settings"
 				android:layout_width="134dp" android:layout_height="32dp"
 				android:layout_marginTop="8dp"
 				android:background="@drawable/btn_wood"
-				android:paddingHorizontal="12dp" android:paddingVertical="6dp"
+				android:paddingHorizontal="12dp" android:paddingVertical="8dp"
 				android:text="Ustawienia" android:textColor="#fdf8e3"
 				android:textStyle="bold" android:textAllCaps="false" />
 
@@ -118,7 +122,7 @@
 				android:layout_width="134dp" android:layout_height="32dp"
 				android:layout_marginTop="8dp"
 				android:background="@drawable/btn_wood"
-				android:paddingHorizontal="12dp" android:paddingVertical="6dp"
+				android:paddingHorizontal="12dp" android:paddingVertical="8dp"
 				android:text="Wyjście" android:textColor="#fdf8e3"
 				android:textStyle="bold" android:textAllCaps="false" />
 
