@@ -18,16 +18,18 @@ import java.util.List;
 import android.content.Context;
 import android.util.Log;
 
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.core.Appender;
+import org.apache.logging.log4j.core.LoggerContext;
 import org.apache.logging.log4j.core.appender.ConsoleAppender;
-import org.apache.logging.log4j.core.config.Configurator;
-import org.apache.logging.log4j.core.config.builder.api.AppenderComponentBuilder;
-import org.apache.logging.log4j.core.config.builder.api.ComponentBuilder;
-import org.apache.logging.log4j.core.config.builder.api.ConfigurationBuilder;
-import org.apache.logging.log4j.core.config.builder.api.LayoutComponentBuilder;
-import org.apache.logging.log4j.core.config.builder.api.RootLoggerComponentBuilder;
-import org.apache.logging.log4j.core.config.builder.impl.BuiltConfiguration;
-import org.apache.logging.log4j.core.config.builder.impl.DefaultConfigurationBuilder;
+import org.apache.logging.log4j.core.appender.ConsoleAppender.Target;
+import org.apache.logging.log4j.core.appender.RollingFileAppender;
+import org.apache.logging.log4j.core.config.Configuration;
+import org.apache.logging.log4j.core.config.LoggerConfig;
+import org.apache.logging.log4j.core.layout.PatternLayout;
+import org.apache.logging.log4j.core.appender.rolling.DefaultRolloverStrategy;
+import org.apache.logging.log4j.core.appender.rolling.SizeBasedTriggeringPolicy;
 
 
 /**
@@ -168,45 +170,40 @@ public final class LogConfigurator {
 	}
 
 	private static void applyConfiguration(final File targetDir) {
-		final ConfigurationBuilder<BuiltConfiguration> builder = new DefaultConfigurationBuilder<>();
-		builder.setStatusLevel(Level.WARN);
-		builder.setConfigurationName("PolanieOnlineLogConfig");
+		final LoggerContext context = (LoggerContext) LogManager.getContext(false);
+		final Configuration config = context.getConfiguration();
 
-		final LayoutComponentBuilder layout = builder.newLayout("PatternLayout")
-			.addAttribute("pattern", LOG_PATTERN);
+		final PatternLayout layout = PatternLayout.createLayout(
+			LOG_PATTERN, config, null, null, true, false, null, null);
 
 		final String fileName = new File(targetDir, "client.log").getAbsolutePath();
 		final String filePattern = new File(targetDir, "client-%d{yyyy-MM-dd}-%i.log.gz").getAbsolutePath();
 
-		final ComponentBuilder<?> policies = builder.newComponent("Policies")
-			.addComponent(builder.newComponent("SizeBasedTriggeringPolicy").addAttribute("size", ROLLOVER_SIZE));
+		final SizeBasedTriggeringPolicy policy = SizeBasedTriggeringPolicy.createPolicy(ROLLOVER_SIZE);
+		final DefaultRolloverStrategy strategy = DefaultRolloverStrategy.createStrategy(
+			String.valueOf(MAX_ROLLED_FILES), null, null, null, null, true, config);
 
-		final ComponentBuilder<?> strategy = builder.newComponent("DefaultRolloverStrategy")
-			.addAttribute("max", MAX_ROLLED_FILES);
+		final RollingFileAppender rollingFileAppender = RollingFileAppender.createAppender(
+			fileName, filePattern, "true", "RollingFile", "true", "8192", policy, strategy,
+			layout, null, "false", "false", null, config);
+		rollingFileAppender.start();
+		config.addAppender(rollingFileAppender);
 
-		final AppenderComponentBuilder rollingFile = builder.newAppender("RollingFile", "RollingFile")
-			.addAttribute("fileName", fileName)
-			.addAttribute("filePattern", filePattern)
-			.add(layout)
-			.addComponent(policies)
-			.addComponent(strategy);
-		builder.add(rollingFile);
-
+		Appender consoleAppender = null;
 		if (BuildConfig.DEBUG) {
-			final AppenderComponentBuilder console = builder.newAppender("Console", "Console")
-				.addAttribute("target", ConsoleAppender.Target.SYSTEM_OUT)
-				.add(layout);
-			builder.add(console);
+			consoleAppender = ConsoleAppender.createAppender(
+				layout, null, Target.SYSTEM_OUT, "Console", "true", "false");
+			consoleAppender.start();
+			config.addAppender(consoleAppender);
 		}
 
-		final RootLoggerComponentBuilder rootLogger = builder.newRootLogger(
-			BuildConfig.DEBUG ? Level.DEBUG : Level.INFO);
-		rootLogger.add(builder.newAppenderRef("RollingFile"));
-		if (BuildConfig.DEBUG) {
-			rootLogger.add(builder.newAppenderRef("Console"));
+		final LoggerConfig rootLogger = config.getRootLogger();
+		rootLogger.addAppender(rollingFileAppender, BuildConfig.DEBUG ? Level.DEBUG : Level.INFO, null);
+		if (consoleAppender != null) {
+			rootLogger.addAppender(consoleAppender, Level.DEBUG, null);
 		}
-		builder.add(rootLogger);
+		rootLogger.setLevel(BuildConfig.DEBUG ? Level.DEBUG : Level.INFO);
 
-		Configurator.initialize(builder.build());
+		context.updateLoggers();
 	}
 }
