@@ -23,11 +23,23 @@ import { singletons } from "../../SingletonRepo";
 import { Point } from "../../util/Point";
 
 
+interface SlotRenderState {
+	itemId?: string;
+	spritePath?: string;
+	offsetX?: number;
+	offsetY?: number;
+	quantity?: string;
+	cursor?: string;
+	title?: string;
+}
+
 /**
  * a container for items like a bag or corpse
  */
 export class ItemContainerImplementation {
 
+	private static readonly MIN_RENDER_INTERVAL_MS = 75;
+	private static readonly ANIMATION_FRAME_MS = 120;
 	private rightClickDuration = 300;
 	private timestampMouseDown = 0;
 	private timestampMouseDownPrev = 0;
@@ -35,6 +47,10 @@ export class ItemContainerImplementation {
 
 	// marked for updating certain attributes
 	private dirty = false;
+	private slotStates: SlotRenderState[] = [];
+	private lastRenderTimestamp = 0;
+	private hasAnimatedItems = false;
+	private defaultBackgroundImage?: string;
 
 
 	// TODO: replace usage of global document.getElementById()
@@ -44,12 +60,17 @@ export class ItemContainerImplementation {
 	 * which changes on zone change.
 	 */
 	constructor(private parentElement: Document|HTMLElement, private slot: string, private size: number, public object: any, private suffix: string, private quickPickup: boolean, private defaultImage?: string) {
+		if (this.defaultImage) {
+			this.defaultBackgroundImage = "url(" + stendhal.paths.gui + "/" + this.defaultImage + ")";
+		}
 		this.init(size);
 	}
 
 	public init(size: number) {
 		this.size = size;
+		this.slotStates = [];
 		for (let i = 0; i < size; i++) {
+			this.slotStates.push({});
 			let e = this.parentElement.querySelector("#" + this.slot + this.suffix + i) as HTMLElement;
 			e.setAttribute("draggable", "true");
 			e.addEventListener("dragstart", (event: DragEvent) => {
@@ -86,6 +107,7 @@ export class ItemContainerImplementation {
 				this.onMouseLeave(event);
 			});
 		}
+		this.dirty = true;
 		this.update();
 	}
 
@@ -107,10 +129,18 @@ export class ItemContainerImplementation {
 	}
 
 	public update() {
-		this.render();
+		const now = this.getTimestamp();
+		if (!this.dirty && !this.hasAnimatedItems
+				&& (now - this.lastRenderTimestamp) < ItemContainerImplementation.MIN_RENDER_INTERVAL_MS) {
+			return;
+		}
+		this.render(now);
 	}
 
-	public render() {
+	public render(timestamp?: number) {
+		const renderTime = typeof(timestamp) === "number" ? timestamp : this.getTimestamp();
+		const advanceAnimation = (renderTime - this.lastRenderTimestamp) >= ItemContainerImplementation.ANIMATION_FRAME_MS;
+		this.hasAnimatedItems = false;
 		let myobject = this.object || marauroa.me;
 		let cnt = 0;
 		if (myobject && myobject[this.slot]) {
@@ -123,22 +153,42 @@ export class ItemContainerImplementation {
 
 				this.dirty = this.dirty || o !== (e as any).dataItem;
 				const item = <Item> o;
+				const slotState = this.slotStates[cnt] || (this.slotStates[cnt] = {});
 				let xOffset = 0;
 				let yOffset = (item["state"] || 0) * -32;
 				if (item.isAnimated()) {
-					item.stepAnimation();
+					this.hasAnimatedItems = true;
+					if (advanceAnimation) {
+						item.stepAnimation();
+					}
 					xOffset = -(item.getXFrameIndex() * 32);
 				}
 
-				e.style.backgroundImage = "url("
-						+ stendhal.data.sprites.checkPath(stendhal.paths.sprites
-								+ "/items/" + o["class"] + "/" + o["subclass"] + ".png")
-						+ ")";
-				e.style.backgroundPosition = (xOffset+1) + "px " + (yOffset+1) + "px";
-				e.textContent = o.formatQuantity();
-				if (this.dirty) {
-					this.updateCursor(e, item);
-					this.updateToolTip(e, item);
+				const spritePath = "url(" + stendhal.data.sprites.checkPath(stendhal.paths.sprites
+						+ "/items/" + o["class"] + "/" + o["subclass"] + ".png") + ")";
+				if (slotState.spritePath !== spritePath || slotState.offsetX !== (xOffset + 1)
+						|| slotState.offsetY !== (yOffset + 1)) {
+					e.style.backgroundImage = spritePath;
+					e.style.backgroundPosition = (xOffset + 1) + "px " + (yOffset + 1) + "px";
+					slotState.spritePath = spritePath;
+					slotState.offsetX = xOffset + 1;
+					slotState.offsetY = yOffset + 1;
+				}
+
+				const quantityText = o.formatQuantity();
+				if (slotState.quantity !== quantityText) {
+					e.textContent = quantityText;
+					slotState.quantity = quantityText;
+				}
+				const cursor = this.getCursorStyle(item);
+				if (this.dirty || slotState.cursor !== cursor) {
+					e.style.cursor = cursor;
+					slotState.cursor = cursor;
+				}
+				const tooltip = this.getToolTipText(item);
+				if (this.dirty || slotState.title !== tooltip) {
+					e.title = tooltip;
+					slotState.title = tooltip;
 				}
 				(e as any).dataItem = o;
 				cnt++;
@@ -146,20 +196,35 @@ export class ItemContainerImplementation {
 		}
 
 		for (let i = cnt; i < this.size; i++) {
-			let e = this.parentElement.querySelector("#" + this.slot +this. suffix + i) as HTMLElement;
-			if (this.defaultImage) {
-				e.style.backgroundImage = "url(" + stendhal.paths.gui + "/" + this.defaultImage + ")";
-			} else {
-				e.style.backgroundImage = "none";
+			const slotState = this.slotStates[i] || (this.slotStates[i] = {});
+			let e = this.parentElement.querySelector("#" + this.slot + this.suffix + i) as HTMLElement;
+			const background = this.defaultBackgroundImage || "none";
+			if (slotState.spritePath !== background) {
+				e.style.backgroundImage = background;
+				e.style.backgroundPosition = "0px 0px";
+				slotState.spritePath = background;
+				slotState.offsetX = 0;
+				slotState.offsetY = 0;
 			}
-			e.textContent = "";
-			if (this.dirty) {
-				this.updateCursor(e);
-				this.updateToolTip(e);
+			if (slotState.quantity !== "") {
+				e.textContent = "";
+				slotState.quantity = "";
+			}
+			const cursor = this.getCursorStyle();
+			if (this.dirty || slotState.cursor !== cursor) {
+				e.style.cursor = cursor;
+				slotState.cursor = cursor;
+			}
+			const tooltip = this.getToolTipText();
+			if (this.dirty || slotState.title !== tooltip) {
+				e.title = tooltip;
+				slotState.title = tooltip;
 			}
 			(e as any).dataItem = undefined;
+			slotState.itemId = undefined;
 		}
 
+		this.lastRenderTimestamp = renderTime;
 		this.dirty = false;
 	}
 
@@ -425,17 +490,7 @@ export class ItemContainerImplementation {
 	 *     Object containing item information.
 	 */
 	private updateCursor(target: HTMLElement, item?: Item) {
-		if (item) {
-			if (this.slot === "content" && stendhal.config.getBoolean("inventory.quick-pickup")) {
-				target.style.cursor = "url(" + stendhal.paths.sprites
-						+ "/cursor/itempickupfromslot.png) 1 3, auto";
-				return;
-			}
-			target.style.cursor = item.getCursor(0, 0);
-			return;
-		}
-		target.style.cursor = "url(" + stendhal.paths.sprites
-				+ "/cursor/normal.png) 1 3, auto";
+		target.style.cursor = this.getCursorStyle(item);
 	}
 
 	/**
@@ -447,6 +502,29 @@ export class ItemContainerImplementation {
 	 *     Object containing item information.
 	 */
 	private updateToolTip(target: HTMLElement, item?: Item) {
-		target.title = typeof(item) !== "undefined" ? item.getToolTip() : "";
+		target.title = this.getToolTipText(item);
+	}
+
+	private getCursorStyle(item?: Item): string {
+		if (item) {
+			if (this.slot === "content" && stendhal.config.getBoolean("inventory.quick-pickup")) {
+				return "url(" + stendhal.paths.sprites
+						+ "/cursor/itempickupfromslot.png) 1 3, auto";
+			}
+			return item.getCursor(0, 0);
+		}
+		return "url(" + stendhal.paths.sprites
+				+ "/cursor/normal.png) 1 3, auto";
+	}
+
+	private getToolTipText(item?: Item): string {
+		return typeof(item) !== "undefined" ? item.getToolTip() : "";
+	}
+
+	private getTimestamp(): number {
+		if (typeof(performance) !== "undefined" && typeof(performance.now) === "function") {
+			return performance.now();
+		}
+		return +new Date();
 	}
 }

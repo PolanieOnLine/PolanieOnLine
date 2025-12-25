@@ -314,6 +314,7 @@ export class TilemapRenderer {
 	private parallaxImage?: HTMLImageElement;
 	private lastTilesetToken?: unknown;
 	private atlasCanvas?: HTMLCanvasElement;
+	private lastFrameRequest?: { x: number; y: number; width: number; height: number };
 
 	configure(map: any, targetTileWidth: number, targetTileHeight: number) {
 		if (!map || !map.combinedTileset) {
@@ -347,6 +348,7 @@ export class TilemapRenderer {
 			this.pixelY[i] = i * this.targetTileHeight;
 		}
 		this.resetDisplayBuffers();
+		this.lastFrameRequest = undefined;
 		this.setupWorker(tileset);
 	}
 
@@ -391,6 +393,10 @@ export class TilemapRenderer {
 		if (!this.workerInstance.atlasReady || !this.workerInstance.configured) {
 			return;
 		}
+		if (this.lastFrameRequest && this.lastFrameRequest.x === offsetX && this.lastFrameRequest.y === offsetY
+				&& this.lastFrameRequest.width === width && this.lastFrameRequest.height === height) {
+			return;
+		}
 		this.workerInstance.awaitingFrame = true;
 		this.workerInstance.worker.postMessage({
 			type: "frame",
@@ -399,6 +405,7 @@ export class TilemapRenderer {
 			width,
 			height
 		});
+		this.lastFrameRequest = { x: offsetX, y: offsetY, width, height };
 	}
 
 	drawBaseLayer(ctx: CanvasRenderingContext2D, offsetX: number, offsetY: number, width: number, height: number) {
@@ -432,6 +439,7 @@ export class TilemapRenderer {
 			this.displayRoof.close();
 			this.displayRoof = undefined;
 		}
+		this.lastFrameRequest = undefined;
 	}
 
 	private setupWorker(tileset: any) {
