@@ -95,6 +95,12 @@ public class MusicPlayer {
 			case "title_05":
 				id = R.raw.title_05;
 				break;
+			case "title_06":
+				id = R.raw.title_06;
+				break;
+			case "title_07":
+				id = R.raw.title_07;
+				break;
 		}
 		LOG.debug("playing music: {}", musicId);
 		MusicPlayer.playMusic(id, true);

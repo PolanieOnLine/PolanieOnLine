@@ -86,7 +86,7 @@ public class Notifier {
 		}
 		if (labelY == null) {
 			if (actions.length > 1) {
-				labelY = "Yes";
+				labelY = "Tak";
 			} else {
 				labelY = "Ok";
 			}
@@ -109,7 +109,7 @@ public class Notifier {
 				labelN = actions[1].getLabel();
 			}
 			if (labelN == null) {
-				labelN = "No";
+				labelN = "Nie";
 			}
 
 			builder.setNegativeButton(labelN, new DialogInterface.OnClickListener() {
@@ -130,7 +130,7 @@ public class Notifier {
 				labelO = actions[2].getLabel();
 			}
 			if (labelO == null) {
-				labelO = "Other";
+				labelO = "Inne";
 			}
 
 			builder.setNeutralButton(labelO, new DialogInterface.OnClickListener() {

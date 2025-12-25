@@ -178,7 +178,7 @@ public class PreferencesActivity extends AppCompatActivity {
 				reset.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 					@Override
 					public boolean onPreferenceClick(final Preference pref) {
-						Notifier.showPrompt(getActivity(), "Restore prefrences defaults?",
+						Notifier.showPrompt(getActivity(), "Przywrócić ustawienia domyślne?",
 							new Notifier.Action() {
 								@Override
 								protected void onCall() {
@@ -251,7 +251,7 @@ public class PreferencesActivity extends AppCompatActivity {
 				clear_cache.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
 					@Override
 					public boolean onPreferenceClick(final Preference pref) {
-						Notifier.showPrompt(getActivity(), "Delete cached data?",
+						Notifier.showPrompt(getActivity(), "Usunąć dane z pamięci podręcznej?",
 							new Notifier.Action() {
 								@Override
 								protected void onCall() {

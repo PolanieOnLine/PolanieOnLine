@@ -88,9 +88,9 @@ public class MainActivity extends AppCompatActivity {
 			}
 			LOG.error("// -- //");
 			Notifier.showPrompt(
-				"An unhandled exception has occurred: \"" + e.getMessage() + "\""
-				+ "\n\nYou can report this error at: https://s1.polanieonline.eu/development/bug.html"
-				+ "\n\nStack trace:\n" + sb.toString(),
+				"Wystąpił nieobsłużony wyjątek: \"" + e.getMessage() + "\""
+				+ "\n\nMożesz zgłosić ten błąd tutaj: https://s1.polanieonline.eu/development/bug.html"
+				+ "\n\nŚlad stosu:\n" + sb.toString(),
 				new Notifier.Action() {
 					@Override
 					protected void onCall() {
@@ -224,9 +224,9 @@ public class MainActivity extends AppCompatActivity {
 	 */
 	public void onRequestQuit() {
 		final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setMessage("Quit Stendhal?");
+		builder.setMessage("Wyjdź");
 
-		builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+		builder.setPositiveButton("Tak", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(final DialogInterface dialog, final int id) {
 				finish();
@@ -234,7 +234,7 @@ public class MainActivity extends AppCompatActivity {
 			}
 		});
 
-		builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+		builder.setNegativeButton("Nie", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(final DialogInterface dialog, final int id) {
 				dialog.cancel();

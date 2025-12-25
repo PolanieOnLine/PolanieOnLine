@@ -158,7 +158,7 @@ public class Menu {
 			public void onClick(final View v) {
 				nav.setVisibility(View.GONE);
 
-				Notifier.showPrompt("Return to title screen?",
+				Notifier.showPrompt("Wrócić do ekranu tytułowego?",
 					new Notifier.Action() {
 						@Override
 						protected void onCall() {
@@ -180,7 +180,7 @@ public class Menu {
 			public void onClick(final View v) {
 				nav.setVisibility(View.GONE);
 
-				Notifier.showPrompt("Reload page?",
+				Notifier.showPrompt("Załadować ponownie stronę?",
 					new Notifier.Action() {
 						@Override
 						protected void onCall() {

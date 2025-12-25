@@ -306,6 +306,6 @@ class UrlHelper {
 		if (id == null) {
 			return false;
 		}
-		return "content/account/login".equals(id);
+		return "php/account/login".equals(id);
 	}
 }

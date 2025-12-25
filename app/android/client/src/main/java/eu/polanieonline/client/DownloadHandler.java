@@ -98,10 +98,10 @@ public class DownloadHandler {
 			fos.close();
 			this.result = true;
 		} catch (final java.lang.NoClassDefFoundError e) {
-			this.message = "an error occurred while decoding data (see debug log for more info)";
+			this.message = "wystąpił błąd podczas dekodowania danych (więcej informacji znajdziesz w dzienniku debugowania)";
 			stacktrace = stackTraceToString(e);
 		} catch (java.io.IOException e) {
-			this.message = "an error occurred while attempting to write file (see debug log for more info)";
+			this.message = "wystąpił błąd podczas próby zapisu pliku (więcej informacji znajdziesz w dzienniku debugowania)";
 			stacktrace = stackTraceToString(e);
 		}
 
@@ -128,20 +128,20 @@ public class DownloadHandler {
 		final DownloadType dtype = checkMimeType(url, mimetype);
 
 		if (!MainActivity.get().getActiveClientView().isGameActive()) {
-			this.message = "downloading from this page not supported";
+			this.message = "pobieranie z tej strony nie jest obsługiwane";
 		} else if (!"data".equals(scheme)) {
 			// only data URL supported
-			this.message = "download type \"" + scheme + "\" not supported";
+			this.message = "typ pobierania \"" + scheme + "\" nie jest obsługiwany";
 		} else if (DownloadType.UNSUPPORTED.equals(dtype)) {
-			this.message = "mimetype not supported: " + mimetype;
+			this.message = "typ MIME nie jest obsługiwany: " + mimetype;
 		} else if (!Environment.MEDIA_MOUNTED.equals(storageState)) {
-			this.message = "storage not available for writing (state: " + storageState + ")";
+			this.message = "pamięć niedostępna do zapisu (stan: " + storageState + ")";
 		} else if (DownloadType.IMAGE_PNG.equals(dtype)) {
 			final File targetDir = new File(Environment.getExternalStorageDirectory()
 					+ "/Pictures/Screenshots");
 			if (targetName == null) {
 				// default filename
-				targetName = "stendhal_" + new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss").format(new Date())
+				targetName = "polanieonline_" + new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss").format(new Date())
 						+ ".png";
 			}
 
@@ -150,7 +150,7 @@ public class DownloadHandler {
 			final byte[] data = Base64.decode(url.split("base64,")[1], Base64.DEFAULT);
 			downloadInternal(targetDir, targetName, data);
 			if (this.result) {
-				this.message = "saved screenshot to " + targetDir.getPath() + "/" + targetName;
+				this.message = "zapisano zrzut ekranu do " + targetDir.getPath() + "/" + targetName;
 			}
 		} else if (DownloadType.TEXT_PLAIN.equals(dtype)) {
 			// `Environment.DIRECTORY_DOWNLOADS` fails on newer Android versions
@@ -158,7 +158,7 @@ public class DownloadHandler {
 			final File targetDir = new File(Environment.getExternalStorageDirectory() + "/Download");
 			if (targetName == null) {
 				// default filename
-				targetName = "stendhal_" + new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss").format(new Date())
+				targetName = "polanieonline_" + new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss").format(new Date())
 						+ ".txt";
 			}
 
@@ -173,7 +173,7 @@ public class DownloadHandler {
 					data = URLDecoder.decode(parts[1], StandardCharsets.UTF_8.name())
 							.getBytes(StandardCharsets.UTF_8);
 				} catch (final java.io.UnsupportedEncodingException e) {
-					this.message = "an error occurred while attempting to decode data URL (see debug log for more info)";
+					this.message = "Wystąpił błąd podczas próby dekodowania adresu URL danych (więcej informacji znajdziesz w dzienniku debugowania)";
 					LOG.error(stackTraceToString(e));
 					return;
 				}
@@ -181,10 +181,10 @@ public class DownloadHandler {
 
 			downloadInternal(targetDir, targetName, data);
 			if (this.result) {
-				this.message = "file saved to " + targetDir.getPath() + "/" + targetName;
+				this.message = "plik zapisany w " + targetDir.getPath() + "/" + targetName;
 			}
 		} else {
-			this.message = "an unknown error occurred";
+			this.message = "wystąpił nieznany błąd";
 		}
 	}
 

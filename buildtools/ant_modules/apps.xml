@@ -130,7 +130,7 @@
 			unless:set="exclude.webview"
 			message="Gradle command: ${gradlew.exec} ${gradlew.script}"/>
 
-		<property name="android.build" value="assembleDebug"/>
+		<property name="android.build" value="assembleRelease"/>
 
 		<condition property="android.build_wout_rev">
 			<and>

@@ -508,7 +508,7 @@ public class ClientView extends WebView {
 				final DownloadHandler handler = new DownloadHandler();
 				handler.download(url, mimetype);
 				if (handler.getResult()) {
-					final String msg = "Downloaded file: " + handler.getMessage();
+					final String msg = "Pobrany plik: " + handler.getMessage();
 					LOG.debug(msg);
 					Notifier.toast(msg);
 				} else {
@@ -532,7 +532,7 @@ public class ClientView extends WebView {
 		final String intentStateId = intentUri.getQueryParameter("state");
 		if (stateId == null || intentStateId == null || url == null || "".equals(stateId)
 				|| !stateId.equals(intentStateId)) {
-			final String err = "There was an error verifying login";
+			final String err = "Wystąpił błąd podczas weryfikacji logowania";
 			LOG.error("{} (\"{}\" == \"{}\")", err, stateId, intentStateId);
 			Notifier.showMessage(err);
 			if (currentPage == null || PageId.TITLE.equals(previousPage)) {
