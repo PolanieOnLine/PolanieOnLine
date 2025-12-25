@@ -106,18 +106,24 @@ class VisualSettings {
 	VisualSettings() {
 		int pad = SBoxLayout.COMMON_PADDING;
 		page = SBoxLayout.createContainer(SBoxLayout.VERTICAL, pad);
-
 		page.setBorder(BorderFactory.createEmptyBorder(pad, pad, pad, pad));
 
-		page.add(createStyleTypeSelector(), SLayout.EXPAND_X);
-		page.add(createRenderingSelector(), SLayout.EXPAND_X);
-		page.add(createTransparencySelector(), SLayout.EXPAND_X);
-		page.add(createDisplaySizeSelector(), SLayout.EXPAND_X);
-		page.add(createFpsSelector(), SLayout.EXPAND_X);
+		JComponent columns = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, pad);
+		JComponent leftColumn = SBoxLayout.createContainer(SBoxLayout.VERTICAL, pad);
+		JComponent rightColumn = SBoxLayout.createContainer(SBoxLayout.VERTICAL, pad);
+		columns.add(leftColumn, SLayout.EXPAND_X);
+		columns.add(rightColumn, SLayout.EXPAND_X);
+		page.add(columns, SLayout.EXPAND_X);
+
+		leftColumn.add(createStyleTypeSelector(), SLayout.EXPAND_X);
+		leftColumn.add(createRenderingSelector(), SLayout.EXPAND_X);
+		leftColumn.add(createTransparencySelector(), SLayout.EXPAND_X);
+		leftColumn.add(createDisplaySizeSelector(), SLayout.EXPAND_X);
+		leftColumn.add(createFpsSelector(), SLayout.EXPAND_X);
 
 		final JCheckBox fpsCounterToggle = SettingsComponentFactory.createSettingsToggle(FPS_COUNTER_PROPERTY, false,
 				"Pokaż licznik FPS", "Wyświetla aktualny licznik klatek na sekundę na ekranie gry.");
-		page.add(fpsCounterToggle);
+		leftColumn.add(fpsCounterToggle);
 
 		// Disable widgets not in use
 		toggleComponents(page);
@@ -125,7 +131,7 @@ class VisualSettings {
 		// Lighting effects
 		JCheckBox mapColoring = SettingsComponentFactory.createSettingsToggle(MAP_COLOR_PROPERTY, true,
 				"Efekty świetlne", "Pokaż nocne światła i inne kolorowe efekty");
-		page.add(mapColoring);
+		leftColumn.add(mapColoring);
 		// Coloring setting needs a map change to take an effect, so we need to
 		// inform the player about the delayed effect.
 		mapColoring.addItemListener(new ItemListener() {
@@ -142,7 +148,7 @@ class VisualSettings {
 
 		JCheckBox weather = SettingsComponentFactory.createSettingsToggle("ui.draw_weather", true, "Pokaż pogodę",
 				"Pokazuje efekty pogodowe.");
-		page.add(weather);
+		leftColumn.add(weather);
 		weather.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
@@ -157,7 +163,7 @@ class VisualSettings {
 		// shadows
 		JCheckBox shadows = SettingsComponentFactory.createSettingsToggle("gamescreen.shadows", true, "Pokaż cienie",
 				"Pokazuje cienie pod różnymi obiektami.");
-		page.add(shadows);
+		leftColumn.add(shadows);
 		shadows.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
@@ -173,7 +179,7 @@ class VisualSettings {
 		// blood
 		JCheckBox showBloodToggle = SettingsComponentFactory.createSettingsToggle(GAMESCREEN_BLOOD, true,
 				"Pokaż krew i zwłoki", "Pokazuje plamy krwi podczas uderzenia w walce i zwłoki.");
-		page.add(showBloodToggle);
+		rightColumn.add(showBloodToggle);
 		// Inform players that some images won-t update until after client is restarted.
 		// FIXME: Can't images be updated via map change?
 		showBloodToggle.addItemListener(new ItemListener() {
@@ -191,7 +197,7 @@ class VisualSettings {
 		// no nude
 		JCheckBox noNudeToggle = SettingsComponentFactory.createSettingsToggle(GAMESCREEN_NONUDE, true,
 				"Pokaż bieliznę", "\"Nagie\" postacie zostaną pokryte bielizną.");
-		page.add(noNudeToggle);
+		rightColumn.add(noNudeToggle);
 		noNudeToggle.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
@@ -207,7 +213,7 @@ class VisualSettings {
 		// classic cursor
 		JCheckBox cursorClassicToggle = SettingsComponentFactory.createSettingsToggle(GAMESCREEN_CURSORCLASSIC, false,
 				"Pokaż klasyczny kursor", "Klasyczny wygląd kursora.");
-		page.add(cursorClassicToggle);
+		rightColumn.add(cursorClassicToggle);
 		cursorClassicToggle.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
@@ -223,7 +229,7 @@ class VisualSettings {
 		// show creature speech bubbles
 		JCheckBox showCreatureSpeechToggle = SettingsComponentFactory.createSettingsToggle(GAMESCREEN_CREATURESPEECH,
 				true, "Pokaż dymki potworów", "Pokazuje dymki z tekstem potworów w ekranie klienta");
-		page.add(showCreatureSpeechToggle);
+		rightColumn.add(showCreatureSpeechToggle);
 		showCreatureSpeechToggle.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
@@ -238,7 +244,7 @@ class VisualSettings {
 		final JCheckBox scaleScreenToggle = SettingsComponentFactory.createSettingsToggle(SCALE_SCREEN_PROPERTY, false,
 				"Skaluj widok, aby pasował do okna",
 				"<html>Jeśli znaznaczony to widok gry będzie zeskalowany, aby pasował do dostępnego miejsca,<br>w przeciwnym wypadku będzie domyślny rozmiar grafiki.</html>");
-		page.add(scaleScreenToggle);
+		rightColumn.add(scaleScreenToggle);
 		scaleScreenToggle.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
@@ -259,7 +265,7 @@ class VisualSettings {
 				StatsPanelController.get().toggleHPBar(e.getStateChange() == ItemEvent.SELECTED);
 			}
 		});
-		page.add(showHPBarToggle);
+		rightColumn.add(showHPBarToggle);
 
 		// system font antialiasing
 		final JCheckBox overrideSystemFontAA = SettingsComponentFactory.createSettingsToggle(OVERRIDE_AA, false,
@@ -272,7 +278,7 @@ class VisualSettings {
 						"Zmiany zaczną działać po ponownym uruchomieniu klienta.", NotificationType.CLIENT));
 			}
 		});
-		page.add(overrideSystemFontAA);
+		rightColumn.add(overrideSystemFontAA);
 
 		final JCheckBox chatBubblesToggle = SettingsComponentFactory.createSettingsToggle(BUBBLES_PROPERTY, true,
 				"Ruchome dymki chatu", "Dymki chatu podążają za graczem i innymi obiektami.");
@@ -286,13 +292,11 @@ class VisualSettings {
 						.addEventLine(new EventLine("", msg, NotificationType.CLIENT));
 			}
 		});
-		page.add(chatBubblesToggle);
-
-		page.add(Box.createHorizontalStrut(SBoxLayout.COMMON_PADDING));
+		rightColumn.add(chatBubblesToggle);
 
 		// Font stuff
-		page.add(createFontSizeSelector());
-		page.add(createFontSelector(), SLayout.EXPAND_X);
+		rightColumn.add(createFontSizeSelector());
+		rightColumn.add(createFontSelector(), SLayout.EXPAND_X);
 	}
 
 	/**

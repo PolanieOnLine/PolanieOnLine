@@ -69,6 +69,13 @@ class GeneralSettings {
 		page = SBoxLayout.createContainer(SBoxLayout.VERTICAL, pad);
 		page.setBorder(BorderFactory.createEmptyBorder(pad, pad, pad, pad));
 
+		JComponent columns = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, pad);
+		JComponent leftColumn = SBoxLayout.createContainer(SBoxLayout.VERTICAL, pad);
+		JComponent rightColumn = SBoxLayout.createContainer(SBoxLayout.VERTICAL, pad);
+		columns.add(leftColumn, SLayout.EXPAND_X);
+		columns.add(rightColumn, SLayout.EXPAND_X);
+		page.add(columns, SLayout.EXPAND_X);
+
 		final WtWindowManager windowManager = WtWindowManager.getInstance();
 		JComponent movementSchemeBox = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, pad);
 		JLabel movementSchemeLabel = new JLabel("Sterowanie ruchem (eksperymentalne):");
@@ -96,13 +103,13 @@ class GeneralSettings {
 		movementSchemeBox.add(movementSchemeLabel);
 		movementSchemeBox.add(Box.createHorizontalStrut(pad));
 		movementSchemeBox.add(movementSchemeSelector);
-		page.add(movementSchemeBox, SLayout.EXPAND_X);
+		leftColumn.add(movementSchemeBox, SLayout.EXPAND_X);
 
 		// click mode
 		JCheckBox clickModeToggle = SettingsComponentFactory.createSettingsToggle(DOUBLE_CLICK_PROPERTY, false,
 				"Tryb podwójnego klikania",
 				"Poruszanie i atak za pomocą podwójnego kliknięcia. Jeżeli nie zaznaczony to domyślnym jest pojedyńcze kliknięcie.");
-		page.add(clickModeToggle);
+		leftColumn.add(clickModeToggle);
 		clickModeToggle.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
@@ -113,7 +120,7 @@ class GeneralSettings {
 		// raising corpses
 		JCheckBox autoRaiseToggle = SettingsComponentFactory.createSettingsToggle(GAMESCREEN_AUTORAISECORPSE, true,
 				"Auto sprawdzanie zwłok", "Automatycznie otwiera okno zwłok potwora, z którego możesz wziąć swój łup");
-		page.add(autoRaiseToggle);
+		leftColumn.add(autoRaiseToggle);
 		autoRaiseToggle.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
@@ -124,7 +131,7 @@ class GeneralSettings {
 		// show healing messages
 		JCheckBox showHealingToggle = SettingsComponentFactory.createSettingsToggle(HEALING_MESSAGE_PROPERTY, false,
 				"Pokaż wiadomości o leczeniu", "Pokazuje wiadomości o leczeniu w oknie rozmowy");
-		page.add(showHealingToggle);
+		leftColumn.add(showHealingToggle);
 		showHealingToggle.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
@@ -135,7 +142,7 @@ class GeneralSettings {
 		// show poison messages
 		JCheckBox showPoisonToggle = SettingsComponentFactory.createSettingsToggle(POISON_MESSAGE_PROPERTY, false,
 				"Pokaż wiadomości o zatruciu", "Pokazuje wiadomości o zatruciu w oknie rozmowy");
-		page.add(showPoisonToggle);
+		leftColumn.add(showPoisonToggle);
 		showPoisonToggle.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
@@ -147,7 +154,7 @@ class GeneralSettings {
 		JCheckBox doubleTapAutowalkToggle = SettingsComponentFactory.createSettingsToggle(DOUBLE_TAP_AUTOWALK_PROPERTY,
 				false, "Automatyczne chodzenie (zbugowane)",
 				"Włącza automatyczne chodzenie, gdy klawisz kierunkowy został podwójnie kliknięty");
-		page.add(doubleTapAutowalkToggle);
+		leftColumn.add(doubleTapAutowalkToggle);
 		doubleTapAutowalkToggle.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
@@ -171,17 +178,17 @@ class GeneralSettings {
 						moveContinuousToggle.setSelected(Boolean.parseBoolean(newValue));
 					}
 				});
-		page.add(moveContinuousToggle);
+		rightColumn.add(moveContinuousToggle);
 
 		final JCheckBox msgBlinkToggle = SettingsComponentFactory.createSettingsToggle(MSG_BLINK, true,
 				"Migaj przy wiadomości na kanale prywatnym",
 				"Karta kanału czatu miga w wiadomości, gdy nie jest skoncentrowana");
-		page.add(msgBlinkToggle);
+		rightColumn.add(msgBlinkToggle);
 
 		final JCheckBox msgSoundToggle = SettingsComponentFactory.createSettingsToggle(MSG_SOUND, true,
 				"Powiadomienie dźwiękowe o prywatnej wiadomości",
 				"Odtwarzaj dźwięk dla kanału wiadomości osobistych, gdy nie jest skoncentrowany");
-		page.add(msgSoundToggle);
+		rightColumn.add(msgSoundToggle);
 
 		// Client dimensions
 		JComponent clientSizeBox = SBoxLayout.createContainer(SBoxLayout.VERTICAL, pad);
@@ -215,7 +222,7 @@ class GeneralSettings {
 		resetDimensions.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		clientSizeBox.add(resetDimensions);
 
-		page.add(clientSizeBox, SLayout.EXPAND_X);
+		rightColumn.add(clientSizeBox, SLayout.EXPAND_X);
 	}
 
 	/**

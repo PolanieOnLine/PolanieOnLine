@@ -67,11 +67,18 @@ class SoundSettings {
 		page = SBoxLayout.createContainer(SBoxLayout.VERTICAL, pad);
 		page.setBorder(BorderFactory.createEmptyBorder(pad, pad, pad, pad));
 
+		JComponent columns = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, pad);
+		JComponent leftColumn = SBoxLayout.createContainer(SBoxLayout.VERTICAL, pad);
+		JComponent rightColumn = SBoxLayout.createContainer(SBoxLayout.VERTICAL, pad);
+		columns.add(leftColumn, SLayout.EXPAND_X);
+		columns.add(rightColumn, SLayout.EXPAND_X);
+		page.add(columns, SLayout.EXPAND_X);
+
 		JCheckBox muteToggle = new JCheckBox("Odtwórz dźwięki");
 		boolean soundOn = WtWindowManager.getInstance().getPropertyBoolean(SOUND_PROPERTY, true);
 		muteToggle.setSelected(soundOn);
 		muteToggle.addItemListener(new MuteListener());
-		page.add(muteToggle);
+		leftColumn.add(muteToggle);
 
 		// Device selector
 		JComponent hbox = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, pad);
@@ -84,11 +91,11 @@ class SoundSettings {
 				+ " zadowalającego dźwięku</html>");
 		sliderComponents.add(selectorLabel);
 		sliderComponents.add(selector);
-		page.add(hbox);
+		leftColumn.add(hbox);
 
 		// Sliders for the sound channels
 		JComponent row = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, pad);
-		page.add(row, SLayout.EXPAND_X);
+		leftColumn.add(row, SLayout.EXPAND_X);
 		JLabel label = new JLabel("Główny");
 		row.add(label);
 		SBoxLayout.addSpring(row);
@@ -99,7 +106,7 @@ class SoundSettings {
 		sliderComponents.add(masterVolume);
 
 		row = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, pad);
-		page.add(row, SLayout.EXPAND_X);
+		leftColumn.add(row, SLayout.EXPAND_X);
 		label = new JLabel("GUI");
 		row.add(label);
 		SBoxLayout.addSpring(row);
@@ -110,7 +117,7 @@ class SoundSettings {
 		sliderComponents.add(guiVolume);
 
 		row = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, pad);
-		page.add(row, SLayout.EXPAND_X);
+		leftColumn.add(row, SLayout.EXPAND_X);
 		label = new JLabel("Efekty");
 		row.add(label);
 		SBoxLayout.addSpring(row);
@@ -121,7 +128,7 @@ class SoundSettings {
 		sliderComponents.add(effectsVolume);
 
 		row = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, pad);
-		page.add(row, SLayout.EXPAND_X);
+		leftColumn.add(row, SLayout.EXPAND_X);
 		label = new JLabel("Potwory");
 		row.add(label);
 		SBoxLayout.addSpring(row);
@@ -132,7 +139,7 @@ class SoundSettings {
 		sliderComponents.add(creaturesVolume);
 
 		row = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, pad);
-		page.add(row, SLayout.EXPAND_X);
+		leftColumn.add(row, SLayout.EXPAND_X);
 		label = new JLabel("Otoczenie");
 		row.add(label);
 		SBoxLayout.addSpring(row);
@@ -142,7 +149,7 @@ class SoundSettings {
 		sliderComponents.add(ambientVolume);
 
 		row = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, pad);
-		page.add(row, SLayout.EXPAND_X);
+		leftColumn.add(row, SLayout.EXPAND_X);
 		label = new JLabel("Muzyka");
 		row.add(label);
 		SBoxLayout.addSpring(row);
