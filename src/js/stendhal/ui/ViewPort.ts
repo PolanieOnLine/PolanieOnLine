@@ -113,7 +113,7 @@ export class ViewPort {
 	private readonly targetDesktopFallbackResolution: Vector2;
 	private readonly targetMobileResolution: Vector2;
 	private readonly desktopBreakpointPx = 900;
-	private readonly povScaleFactor = 0.9;
+	private readonly povScaleFactor = 0.8;
 	private readonly desktopPovReference: Vector2;
 	private readonly minCanvasWidth: number;
 	private readonly minCanvasHeight: number;
