@@ -114,6 +114,7 @@ export class ViewPort {
 	private readonly targetMobileResolution: Vector2;
 	private readonly desktopBreakpointPx = 900;
 	private readonly povScaleFactor = 0.9;
+	private readonly desktopPovReference: Vector2;
 	private readonly minCanvasWidth: number;
 	private readonly minCanvasHeight: number;
 	private parentResizeObserver?: ResizeObserver;
@@ -147,6 +148,7 @@ export class ViewPort {
 		this.targetDesktopResolution = { x: 1280, y: 720 };
 		this.targetDesktopFallbackResolution = { x: 1024, y: 768 };
 		this.targetMobileResolution = { x: 844, y: 633 };
+		this.desktopPovReference = this.targetDesktopResolution;
 
 		this.initialStyle = {};
 		const styles = getComputedStyle(element);
@@ -301,9 +303,10 @@ export class ViewPort {
 
 		const displaySize = this.getContainedSize(availableWidth, usableHeight, targetRatio);
 		const deviceScale = this.getDevicePixelRatio();
+		const referenceResolution = this.getDesktopReferenceResolution();
 		const maxScaleFromResolution = Math.min(
-			targetResolution.x > 0 ? targetResolution.x / displaySize.x : Number.POSITIVE_INFINITY,
-			targetResolution.y > 0 ? targetResolution.y / displaySize.y : Number.POSITIVE_INFINITY
+			this.scaleLimitFromResolution(targetResolution, displaySize),
+			this.scaleLimitFromResolution(referenceResolution, displaySize)
 		);
 		const cappedScale = Math.min(deviceScale, maxScaleFromResolution);
 		const minScale = Math.max(
@@ -355,6 +358,21 @@ export class ViewPort {
 			return useClassic ? this.targetDesktopFallbackResolution : this.targetDesktopResolution;
 		}
 		return this.targetMobileResolution;
+	}
+
+	private getDesktopReferenceResolution(): Vector2 {
+		const wideRatio = this.safeAspect(this.targetDesktopResolution.x, this.targetDesktopResolution.y);
+		const classicRatio = this.safeAspect(this.targetDesktopFallbackResolution.x, this.targetDesktopFallbackResolution.y);
+		const viewportRatio = this.safeAspect(window.innerWidth || this.desktopPovReference.x, window.innerHeight || this.desktopPovReference.y);
+		const useClassic = Math.abs(viewportRatio - classicRatio) < Math.abs(viewportRatio - wideRatio);
+		return useClassic ? this.targetDesktopFallbackResolution : this.desktopPovReference;
+	}
+
+	private scaleLimitFromResolution(resolution: Vector2, displaySize: Vector2): number {
+		if (resolution.x <= 0 || resolution.y <= 0) {
+			return Number.POSITIVE_INFINITY;
+		}
+		return Math.min(resolution.x / displaySize.x, resolution.y / displaySize.y);
 	}
 
 	private matchesDesktopBreakpoint(containerWidth: number): boolean {
