@@ -413,9 +413,6 @@ export class Entity extends RPObject {
 	}
 
 	protected shouldCacheSprite(_image: CanvasImageSource): boolean {
-		if (this.sprite && typeof this.sprite.filename === "string") {
-			return this.sprite.filename.indexOf("/items/") >= 0;
-		}
 		return false;
 	}
 
