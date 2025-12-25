@@ -70,7 +70,8 @@ class GeneralSettings {
 
 		// click mode
 		JCheckBox clickModeToggle = SettingsComponentFactory.createSettingsToggle(DOUBLE_CLICK_PROPERTY, false,
-				"Tryb podwójnego klikania", "Poruszanie i atak za pomocą podwójnego kliknięcia. Jeżeli nie zaznaczony to domyślnym jest pojedyńcze kliknięcie.");
+				"Tryb podwójnego klikania",
+				"Poruszanie i atak za pomocą podwójnego kliknięcia. Jeżeli nie zaznaczony to domyślnym jest pojedyńcze kliknięcie.");
 		page.add(clickModeToggle);
 		clickModeToggle.addItemListener(new ItemListener() {
 			@Override
@@ -113,8 +114,9 @@ class GeneralSettings {
 		});
 
 		// Double-tap direction for auto-walk
-		JCheckBox doubleTapAutowalkToggle = SettingsComponentFactory.createSettingsToggle(DOUBLE_TAP_AUTOWALK_PROPERTY, false,
-				"Automatyczne chodzenie (zbugowane)", "Włącza automatyczne chodzenie, gdy klawisz kierunkowy został podwójnie kliknięty");
+		JCheckBox doubleTapAutowalkToggle = SettingsComponentFactory.createSettingsToggle(DOUBLE_TAP_AUTOWALK_PROPERTY,
+				false, "Automatyczne chodzenie (zbugowane)",
+				"Włącza automatyczne chodzenie, gdy klawisz kierunkowy został podwójnie kliknięty");
 		page.add(doubleTapAutowalkToggle);
 		doubleTapAutowalkToggle.addItemListener(new ItemListener() {
 			@Override
@@ -122,10 +124,10 @@ class GeneralSettings {
 				getState(e, "Automatyczne chodzenie zostało ");
 			}
 		});
-		
+
 		// Continuous movement
-		final JCheckBox moveContinuousToggle = SettingsComponentFactory.createSettingsToggle(MOVE_CONTINUOUS_PROPERTY, false,
-				"Ciągły ruch", "Zmieniaj mapy i przechodź przez portale bez zatrzymywania się");
+		final JCheckBox moveContinuousToggle = SettingsComponentFactory.createSettingsToggle(MOVE_CONTINUOUS_PROPERTY,
+				false, "Ciągły ruch", "Zmieniaj mapy i przechodź przez portale bez zatrzymywania się");
 		moveContinuousToggle.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
@@ -134,20 +136,20 @@ class GeneralSettings {
 		});
 		WtWindowManager.getInstance().registerSettingChangeListener(MOVE_CONTINUOUS_PROPERTY,
 				new SettingChangeListener() {
-			@Override
-			public void changed(String newValue) {
-				moveContinuousToggle.setSelected(Boolean.parseBoolean(newValue));
-			}
-		});
+					@Override
+					public void changed(String newValue) {
+						moveContinuousToggle.setSelected(Boolean.parseBoolean(newValue));
+					}
+				});
 		page.add(moveContinuousToggle);
 
 		final WtWindowManager windowManager = WtWindowManager.getInstance();
-		final JComboBox<MovementKeyOption> movementSchemeSelector = new JComboBox<MovementKeyOption>(MovementKeyOption.values());
+		final JComboBox<MovementKeyOption> movementSchemeSelector = new JComboBox<MovementKeyOption>(
+				MovementKeyOption.values());
 		movementSchemeSelector.setToolTipText(
-			"Wybierz, czy poruszasz się strzałkami, czy klawiszami WASD. WASD wyłącza automatyczne ustawianie fokusu na czacie.");
-		final MovementKeyOption selectedScheme = MovementKeyOption.fromProperty(
-			windowManager.getProperty(SettingsProperties.MOVE_KEY_SCHEME_PROPERTY,
-					SettingsProperties.MOVE_KEY_SCHEME_ARROWS));
+				"Wybierz, czy poruszasz się strzałkami, czy klawiszami WASD. WASD wyłącza automatyczne ustawianie fokusu na czacie.");
+		final MovementKeyOption selectedScheme = MovementKeyOption.fromProperty(windowManager
+				.getProperty(SettingsProperties.MOVE_KEY_SCHEME_PROPERTY, SettingsProperties.MOVE_KEY_SCHEME_ARROWS));
 		movementSchemeSelector.setSelectedItem(selectedScheme);
 		movementSchemeSelector.addActionListener(new ActionListener() {
 			@Override
@@ -164,18 +166,19 @@ class GeneralSettings {
 		});
 		page.add(movementSchemeSelector);
 
-		final JCheckBox msgBlinkToggle = SettingsComponentFactory.createSettingsToggle(
-				MSG_BLINK, true, "Migaj przy wiadomości na kanale prywatnym", "Karta kanału czatu miga w wiadomości, gdy nie jest skoncentrowana");
+		final JCheckBox msgBlinkToggle = SettingsComponentFactory.createSettingsToggle(MSG_BLINK, true,
+				"Migaj przy wiadomości na kanale prywatnym",
+				"Karta kanału czatu miga w wiadomości, gdy nie jest skoncentrowana");
 		page.add(msgBlinkToggle);
 
-		final JCheckBox msgSoundToggle = SettingsComponentFactory.createSettingsToggle(
-				MSG_SOUND, true, "Powiadomienie dźwiękowe o prywatnej wiadomości", "Odtwarzaj dźwięk dla kanału wiadomości osobistych, gdy nie jest skoncentrowany");
+		final JCheckBox msgSoundToggle = SettingsComponentFactory.createSettingsToggle(MSG_SOUND, true,
+				"Powiadomienie dźwiękowe o prywatnej wiadomości",
+				"Odtwarzaj dźwięk dla kanału wiadomości osobistych, gdy nie jest skoncentrowany");
 		page.add(msgSoundToggle);
 
 		// Client dimensions
 		JComponent clientSizeBox = SBoxLayout.createContainer(SBoxLayout.VERTICAL, pad);
-		TitledBorder titleB = BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(),
-				"Rozmiar Klienta");
+		TitledBorder titleB = BorderFactory.createTitledBorder(BorderFactory.createEtchedBorder(), "Rozmiar Klienta");
 
 		// There seems to be no good way to change the default background color
 		// of all components. The color is needed for making the etched border.
@@ -184,20 +187,17 @@ class GeneralSettings {
 			clientSizeBox.setBackground(style.getPlainColor());
 			titleB.setTitleColor(style.getForeground());
 		}
-		clientSizeBox.setBorder(BorderFactory.createCompoundBorder(titleB,
-				BorderFactory.createEmptyBorder(pad, pad, pad, pad)));
+		clientSizeBox.setBorder(
+				BorderFactory.createCompoundBorder(titleB, BorderFactory.createEmptyBorder(pad, pad, pad, pad)));
 
 		// Save client dimensions
-		JCheckBox saveDimensionsToggle =
-				SettingsComponentFactory.createSettingsToggle(
-						DIMENSIONS_PROPERTY, true, "Zapisz rozmiar",
-						"Przywróć szerokość, wysokość i maksymalizuj klienta podczas przyszłych sesji");
+		JCheckBox saveDimensionsToggle = SettingsComponentFactory.createSettingsToggle(DIMENSIONS_PROPERTY, true,
+				"Zapisz rozmiar", "Przywróć szerokość, wysokość i maksymalizuj klienta podczas przyszłych sesji");
 		clientSizeBox.add(saveDimensionsToggle);
 
 		// Reset client window to default dimensions
 		JButton resetDimensions = new JButton("Zresetuj");
-		resetDimensions.setToolTipText(
-				"Zresetuj szerokość i wysokość klienta do domyślnych wymiarów");
+		resetDimensions.setToolTipText("Zresetuj szerokość i wysokość klienta do domyślnych wymiarów");
 		resetDimensions.setActionCommand("reset_dimensions");
 		resetDimensions.addActionListener(new ActionListener() {
 			@Override

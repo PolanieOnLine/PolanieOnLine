@@ -54,8 +54,8 @@ class SoundSettings {
 	private final JComponent page;
 
 	/**
-	 * Container for the volume sliders. Exist to help turning them all,
-	 * and their labels easily on or off.
+	 * Container for the volume sliders. Exist to help turning them all, and their
+	 * labels easily on or off.
 	 */
 	private List<JComponent> sliderComponents = new ArrayList<JComponent>(14);
 
@@ -122,7 +122,7 @@ class SoundSettings {
 
 		row = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, pad);
 		page.add(row, SLayout.EXPAND_X);
-		label =new JLabel("Potwory");
+		label = new JLabel("Potwory");
 		row.add(label);
 		SBoxLayout.addSpring(row);
 		JSlider creaturesVolume = createVolumeSlider("creature");
@@ -193,7 +193,8 @@ class SoundSettings {
 				wm.save();
 				// Warn the user about the delayed effect
 				String msg = "Zmiana urządzenia dźwięku zadziała dopiero przy kolejnym włączeniu gry.";
-				ClientSingletonRepository.getUserInterface().addEventLine(new EventLine("", msg, NotificationType.CLIENT));
+				ClientSingletonRepository.getUserInterface()
+						.addEventLine(new EventLine("", msg, NotificationType.CLIENT));
 			}
 		});
 
@@ -231,8 +232,8 @@ class SoundSettings {
 	}
 
 	/**
-	 * Listener for toggling the sound on or off. Disables and enables the
-	 * volume sliders as needed.
+	 * Listener for toggling the sound on or off. Disables and enables the volume
+	 * sliders as needed.
 	 */
 	private class MuteListener implements ItemListener {
 		@Override
@@ -260,8 +261,8 @@ class SoundSettings {
 	}
 
 	/**
-	 * Listener for adjusting the sound channel sliders. Adjusts the volume of
-	 * the sound group corresponding to the slider appropriately.
+	 * Listener for adjusting the sound channel sliders. Adjusts the volume of the
+	 * sound group corresponding to the slider appropriately.
 	 */
 	private static class ChannelChangeListener implements ChangeListener {
 		private final SoundGroup group;
@@ -271,7 +272,7 @@ class SoundSettings {
 		 * Create a ChannelChangeListener for a sound group.
 		 *
 		 * @param groupName name of the sound group
-		 * @param group group
+		 * @param group     group
 		 */
 		public ChannelChangeListener(String groupName, SoundGroup group) {
 			this.group = group;

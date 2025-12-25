@@ -28,6 +28,7 @@ import games.stendhal.client.gui.layout.SBoxLayout;
  */
 @SuppressWarnings("serial")
 public class SettingsDialog extends JDialog {
+
 	/**
 	 * Create a new SettingsDialog.
 	 *

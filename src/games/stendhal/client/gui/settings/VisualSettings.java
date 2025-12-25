@@ -64,14 +64,16 @@ class VisualSettings {
 	private static final String DEFAULT_STYLE = "Wood (domyślny)";
 	private static final String TRANSPARENCY_PROPERTY = "ui.transparency";
 
-	private static final int[] FPS_OPTIONS = new int[] {30, 60, 90, 120, 144, 165, 240};
+	private static final int[] FPS_OPTIONS = new int[] { 30, 60, 90, 120, 144, 165, 240 };
 
 	/** Containers that have components to be toggled */
-	//private JPanel colorsPanel;
+	// private JPanel colorsPanel;
 
 	/** Buttons for selecting either defined styles or custom styles */
-	/*private JRadioButton definedStyleSelector;
-	private JRadioButton customStyleSelector;*/
+	/*
+	 * private JRadioButton definedStyleSelector; private JRadioButton
+	 * customStyleSelector;
+	 */
 
 	/** Default decorative font. */
 	private static final String DEFAULT_FONT = "AntykwaTorunska";
@@ -109,9 +111,9 @@ class VisualSettings {
 
 		page.add(createStyleTypeSelector(), SLayout.EXPAND_X);
 		page.add(createRenderingSelector(), SLayout.EXPAND_X);
-                page.add(createTransparencySelector(), SLayout.EXPAND_X);
-                page.add(createDisplaySizeSelector(), SLayout.EXPAND_X);
-                page.add(createFpsSelector(), SLayout.EXPAND_X);
+		page.add(createTransparencySelector(), SLayout.EXPAND_X);
+		page.add(createDisplaySizeSelector(), SLayout.EXPAND_X);
+		page.add(createFpsSelector(), SLayout.EXPAND_X);
 
 		final JCheckBox fpsCounterToggle = SettingsComponentFactory.createSettingsToggle(FPS_COUNTER_PROPERTY, false,
 				"Pokaż licznik FPS", "Wyświetla aktualny licznik klatek na sekundę na ekranie gry.");
@@ -133,12 +135,13 @@ class VisualSettings {
 				String tmp = enabled ? "włączone" : "wyłączone";
 				String msg = "Efekty świetlne są teraz " + tmp
 						+ ". Możesz zmienić mapę lub przelogować się, aby zmiana zadziałała.";
-				ClientSingletonRepository.getUserInterface().addEventLine(new EventLine("", msg, NotificationType.CLIENT));
+				ClientSingletonRepository.getUserInterface()
+						.addEventLine(new EventLine("", msg, NotificationType.CLIENT));
 			}
 		});
 
-		JCheckBox weather = SettingsComponentFactory.createSettingsToggle("ui.draw_weather", true,
-				"Pokaż pogodę", "Pokazuje efekty pogodowe.");
+		JCheckBox weather = SettingsComponentFactory.createSettingsToggle("ui.draw_weather", true, "Pokaż pogodę",
+				"Pokazuje efekty pogodowe.");
 		page.add(weather);
 		weather.addItemListener(new ItemListener() {
 			@Override
@@ -146,13 +149,14 @@ class VisualSettings {
 				boolean enabled = (e.getStateChange() == ItemEvent.SELECTED);
 				String tmp = enabled ? "włączone" : "wyłączone";
 				String msg = "Efekty pogodowe zostały " + tmp + ".";
-				ClientSingletonRepository.getUserInterface().addEventLine(new EventLine("", msg, NotificationType.CLIENT));
+				ClientSingletonRepository.getUserInterface()
+						.addEventLine(new EventLine("", msg, NotificationType.CLIENT));
 			}
 		});
 
 		// shadows
-		JCheckBox shadows = SettingsComponentFactory.createSettingsToggle("gamescreen.shadows", true,
-				"Pokaż cienie", "Pokazuje cienie pod różnymi obiektami.");
+		JCheckBox shadows = SettingsComponentFactory.createSettingsToggle("gamescreen.shadows", true, "Pokaż cienie",
+				"Pokazuje cienie pod różnymi obiektami.");
 		page.add(shadows);
 		shadows.addItemListener(new ItemListener() {
 			@Override
@@ -161,7 +165,8 @@ class VisualSettings {
 				String tmp = enabled ? "włączone" : "wyłączone";
 				String msg = "Cienie zostały " + tmp
 						+ ". Niektóre zmiany zaczną działać dopiero po zmianie mapy lub przelogowaniu się.";
-				ClientSingletonRepository.getUserInterface().addEventLine(new EventLine("", msg, NotificationType.CLIENT));
+				ClientSingletonRepository.getUserInterface()
+						.addEventLine(new EventLine("", msg, NotificationType.CLIENT));
 			}
 		});
 
@@ -178,7 +183,8 @@ class VisualSettings {
 				String tmp = enabled ? "włączone" : "wyłączone";
 				String msg = "Krew i zwłoki zostały " + tmp
 						+ ". Niektóre zmiany zaczną działać dopiero po ponownym uruchomieniu klienta.";
-				ClientSingletonRepository.getUserInterface().addEventLine(new EventLine("", msg, NotificationType.CLIENT));
+				ClientSingletonRepository.getUserInterface()
+						.addEventLine(new EventLine("", msg, NotificationType.CLIENT));
 			}
 		});
 
@@ -193,7 +199,8 @@ class VisualSettings {
 				String tmp = enabled ? "włączona" : "wyłączona";
 				String msg = "Bielizna została " + tmp
 						+ ". Niektóre zmiany zaczną działać dopiero po zmianie mapy lub przelogowaniu się.";
-				ClientSingletonRepository.getUserInterface().addEventLine(new EventLine("", msg, NotificationType.CLIENT));
+				ClientSingletonRepository.getUserInterface()
+						.addEventLine(new EventLine("", msg, NotificationType.CLIENT));
 			}
 		});
 
@@ -208,13 +215,14 @@ class VisualSettings {
 				String tmp = enabled ? "włączony" : "wyłączony";
 				String msg = "Klasyczny kursor został " + tmp
 						+ ". Zmiana wyglądu kursora zacznie działać dopiero po przelogowaniu się.";
-				ClientSingletonRepository.getUserInterface().addEventLine(new EventLine("", msg, NotificationType.CLIENT));
+				ClientSingletonRepository.getUserInterface()
+						.addEventLine(new EventLine("", msg, NotificationType.CLIENT));
 			}
 		});
 
 		// show creature speech bubbles
-		JCheckBox showCreatureSpeechToggle = SettingsComponentFactory.createSettingsToggle(GAMESCREEN_CREATURESPEECH, true,
-				"Pokaż dymki potworów", "Pokazuje dymki z tekstem potworów w ekranie klienta");
+		JCheckBox showCreatureSpeechToggle = SettingsComponentFactory.createSettingsToggle(GAMESCREEN_CREATURESPEECH,
+				true, "Pokaż dymki potworów", "Pokazuje dymki z tekstem potworów w ekranie klienta");
 		page.add(showCreatureSpeechToggle);
 		showCreatureSpeechToggle.addItemListener(new ItemListener() {
 			@Override
@@ -222,12 +230,14 @@ class VisualSettings {
 				boolean enabled = (e.getStateChange() == ItemEvent.SELECTED);
 				String tmp = enabled ? "włączone" : "wyłączone";
 				String msg = "Dymki potworów zostały " + tmp + ".";
-				ClientSingletonRepository.getUserInterface().addEventLine(new EventLine("", msg, NotificationType.CLIENT));
+				ClientSingletonRepository.getUserInterface()
+						.addEventLine(new EventLine("", msg, NotificationType.CLIENT));
 			}
 		});
 
 		final JCheckBox scaleScreenToggle = SettingsComponentFactory.createSettingsToggle(SCALE_SCREEN_PROPERTY, false,
-				"Skaluj widok, aby pasował do okna", "<html>Jeśli znaznaczony to widok gry będzie zeskalowany, aby pasował do dostępnego miejsca,<br>w przeciwnym wypadku będzie domyślny rozmiar grafiki.</html>");
+				"Skaluj widok, aby pasował do okna",
+				"<html>Jeśli znaznaczony to widok gry będzie zeskalowany, aby pasował do dostępnego miejsca,<br>w przeciwnym wypadku będzie domyślny rozmiar grafiki.</html>");
 		page.add(scaleScreenToggle);
 		scaleScreenToggle.addItemListener(new ItemListener() {
 			@Override
@@ -235,7 +245,8 @@ class VisualSettings {
 				boolean enabled = (e.getStateChange() == ItemEvent.SELECTED);
 				String tmp = enabled ? "włączone" : "wyłączone";
 				String msg = "Skalowanie widoku gry zostało " + tmp + ".";
-				ClientSingletonRepository.getUserInterface().addEventLine(new EventLine("", msg, NotificationType.CLIENT));
+				ClientSingletonRepository.getUserInterface()
+						.addEventLine(new EventLine("", msg, NotificationType.CLIENT));
 			}
 		});
 
@@ -251,15 +262,14 @@ class VisualSettings {
 		page.add(showHPBarToggle);
 
 		// system font antialiasing
-		final JCheckBox overrideSystemFontAA = SettingsComponentFactory.createSettingsToggle(
-				OVERRIDE_AA, false, "Wymuś wygładzanie czcionki",
+		final JCheckBox overrideSystemFontAA = SettingsComponentFactory.createSettingsToggle(OVERRIDE_AA, false,
+				"Wymuś wygładzanie czcionki",
 				"Włącz tę opcję, jeśli klient nie rozpoznaje konfiguracji antyaliasingu czcionek na pulpicie.");
 		overrideSystemFontAA.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(final ItemEvent e) {
 				ClientSingletonRepository.getUserInterface().addEventLine(new EventLine("",
-					"Zmiany zaczną działać po ponownym uruchomieniu klienta.",
-					NotificationType.CLIENT));
+						"Zmiany zaczną działać po ponownym uruchomieniu klienta.", NotificationType.CLIENT));
 			}
 		});
 		page.add(overrideSystemFontAA);
@@ -272,7 +282,8 @@ class VisualSettings {
 				boolean enabled = (e.getStateChange() == ItemEvent.SELECTED);
 				String tmp = enabled ? "włączone" : "wyłączone";
 				String msg = "Ruchome dymki chatu zostały " + tmp + ".";
-				ClientSingletonRepository.getUserInterface().addEventLine(new EventLine("", msg, NotificationType.CLIENT));
+				ClientSingletonRepository.getUserInterface()
+						.addEventLine(new EventLine("", msg, NotificationType.CLIENT));
 			}
 		});
 		page.add(chatBubblesToggle);
@@ -315,9 +326,10 @@ class VisualSettings {
 			public void actionPerformed(ActionEvent e) {
 				Object selected = selector.getSelectedItem();
 				wm.setProperty(STYLE_PROPERTY, selected.toString());
-				ClientSingletonRepository.getUserInterface().addEventLine(new EventLine("",
-						"Nowy styl będzie wykorzystywany przy kolejnym uruchomieniu klienta gry.",
-						NotificationType.CLIENT));
+				ClientSingletonRepository.getUserInterface()
+						.addEventLine(new EventLine("",
+								"Nowy styl będzie wykorzystywany przy kolejnym uruchomieniu klienta gry.",
+								NotificationType.CLIENT));
 			}
 		});
 
@@ -335,10 +347,12 @@ class VisualSettings {
 		row.add(label);
 		final JComboBox<String> selector = new JComboBox<>();
 		final String[][] data = {
-				{"Automatyczny (domyślny)", "auto", "Odpowiedni tryb jest wybierany automatycznie w zależności od szybkości systemu."},
-				{"Pełna przezroczystość", "translucent", "Będzie używał półprzezroczystych obrazów o ile to możliwe. Może to spowolnić system."},
-				{"Prosta przezroczystość", "bitmask", "Użyje prostej przezroczystości tam gdzie obraz jest w pełni przezroczysty lub całkowicie nieprzezroczysty. <P>Użyj tego ustawienia na starszych komputerach jeśli gra nie odpowiada."}
-		};
+				{ "Automatyczny (domyślny)", "auto",
+						"Odpowiedni tryb jest wybierany automatycznie w zależności od szybkości systemu." },
+				{ "Pełna przezroczystość", "translucent",
+						"Będzie używał półprzezroczystych obrazów o ile to możliwe. Może to spowolnić system." },
+				{ "Prosta przezroczystość", "bitmask",
+						"Użyje prostej przezroczystości tam gdzie obraz jest w pełni przezroczysty lub całkowicie nieprzezroczysty. <P>Użyj tego ustawienia na starszych komputerach jeśli gra nie odpowiada." } };
 
 		// Convenience mapping for getting the data rows from either short or
 		// long names
@@ -370,9 +384,10 @@ class VisualSettings {
 				Object selected = selector.getSelectedItem();
 				String[] selectedData = desc2data.get(selected);
 				wm.setProperty(TRANSPARENCY_PROPERTY, selectedData[1]);
-				ClientSingletonRepository.getUserInterface().addEventLine(new EventLine("",
-						"Nowy tryb przeźroczystości będzie działał przy następnym uruchomieniu klienta gry.",
-						NotificationType.CLIENT));
+				ClientSingletonRepository.getUserInterface()
+						.addEventLine(new EventLine("",
+								"Nowy tryb przeźroczystości będzie działał przy następnym uruchomieniu klienta gry.",
+								NotificationType.CLIENT));
 			}
 		});
 		row.add(selector);
@@ -400,24 +415,16 @@ class VisualSettings {
 	 */
 	private void toggleComponents(Container container) {
 		/*
-		boolean custom = false;
-		if (this.customStyleSelector.isSelected()) {
-			custom = true;
-		}
-
-		Component[] components = container.getComponents();
-
-		for (Component c : components) {
-			if (c.getName() == "defined") {
-				c.setEnabled(!custom);
-			}
-			else if (c.getName() == "custom") {
-				c.setEnabled(custom);
-			}
-			if (c instanceof Container) {
-				toggleComponents((Container) c);
-			}
-		}*/
+		 * boolean custom = false; if (this.customStyleSelector.isSelected()) { custom =
+		 * true; }
+		 * 
+		 * Component[] components = container.getComponents();
+		 * 
+		 * for (Component c : components) { if (c.getName() == "defined") {
+		 * c.setEnabled(!custom); } else if (c.getName() == "custom") {
+		 * c.setEnabled(custom); } if (c instanceof Container) {
+		 * toggleComponents((Container) c); } }
+		 */
 	}
 
 	/**
@@ -432,8 +439,8 @@ class VisualSettings {
 		final List<Dimension> sizes = stendhal.getAvailableDisplaySizes();
 		int maxIndex = Math.max(0, sizes.size() - 1);
 		int currentIndex = MathHelper.clamp(
-				WtWindowManager.getInstance().getPropertyInt(DISPLAY_SIZE_PROPERTY, stendhal.getDisplaySizeIndex()),
-				0, maxIndex);
+				WtWindowManager.getInstance().getPropertyInt(DISPLAY_SIZE_PROPERTY, stendhal.getDisplaySizeIndex()), 0,
+				maxIndex);
 		for (int i = 0; i < sizes.size(); i++) {
 			combo.addItem(new DisplaySizeOption(i, sizes.get(i)));
 		}
@@ -446,7 +453,7 @@ class VisualSettings {
 				DisplaySizeOption selected = (DisplaySizeOption) combo.getSelectedItem();
 				if (selected != null) {
 					WtWindowManager.getInstance().setProperty(DISPLAY_SIZE_PROPERTY,
-						Integer.toString(selected.getIndex()));
+							Integer.toString(selected.getIndex()));
 				}
 			}
 		});
@@ -474,11 +481,13 @@ class VisualSettings {
 			return size.width + " × " + size.height;
 		}
 	}
-private JComponent createFpsSelector() {
+
+	private JComponent createFpsSelector() {
 		JComponent container = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, SBoxLayout.COMMON_PADDING);
 		JLabel label = new JLabel("Limit liczby klatek na sekundę:");
 		final JComboBox<Integer> combo = new JComboBox<Integer>();
-		int configured = Math.max(1, WtWindowManager.getInstance().getPropertyInt(FPS_LIMIT_PROPERTY, stendhal.getFpsLimit()));
+		int configured = Math.max(1,
+				WtWindowManager.getInstance().getPropertyInt(FPS_LIMIT_PROPERTY, stendhal.getFpsLimit()));
 		boolean match = false;
 		for (int option : FPS_OPTIONS) {
 			combo.addItem(Integer.valueOf(option));
@@ -496,7 +505,8 @@ private JComponent createFpsSelector() {
 			public void actionPerformed(ActionEvent e) {
 				Integer selected = (Integer) combo.getSelectedItem();
 				if (selected != null) {
-					WtWindowManager.getInstance().setProperty(FPS_LIMIT_PROPERTY, Integer.toString(selected.intValue()));
+					WtWindowManager.getInstance().setProperty(FPS_LIMIT_PROPERTY,
+							Integer.toString(selected.intValue()));
 				}
 			}
 		});
@@ -512,16 +522,15 @@ private JComponent createFpsSelector() {
 		// Styles
 		JComponent styleBox = SBoxLayout.createContainer(SBoxLayout.VERTICAL, pad);
 		/*
-		styleBox.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEtchedBorder(),
-				BorderFactory.createEmptyBorder(pad, pad, pad, pad)));
-		// Button group for selecting between defined and custom styles
-		definedStyleSelector = new JRadioButton("Use a pre-defined style", true);
-		customStyleSelector = new JRadioButton("Use a custom style");
-		ButtonGroup styleTypeSelection = new ButtonGroup();
-
-		// Defined style selector
-		styleTypeSelection.add(definedStyleSelector);
-		*/
+		 * styleBox.setBorder(BorderFactory.createCompoundBorder(BorderFactory.
+		 * createEtchedBorder(), BorderFactory.createEmptyBorder(pad, pad, pad, pad)));
+		 * // Button group for selecting between defined and custom styles
+		 * definedStyleSelector = new JRadioButton("Use a pre-defined style", true);
+		 * customStyleSelector = new JRadioButton("Use a custom style"); ButtonGroup
+		 * styleTypeSelection = new ButtonGroup();
+		 * 
+		 * // Defined style selector styleTypeSelection.add(definedStyleSelector);
+		 */
 		JComponent definedStylesHBox = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, pad);
 		JLabel selectorLabel = new JLabel("Styl klienta:");
 		selectorLabel.setName("defined");
@@ -532,76 +541,49 @@ private JComponent createFpsSelector() {
 		definedStylesHBox.setToolTipText("<html>Styl użyty do narysowania kontrolek w kliencie gry."
 				+ "<p>Wpływa to tylko na wygląd i nie zmienia zachowania gry.</html>");
 		/*
-		styleBox.add(definedStyleSelector);*/
+		 * styleBox.add(definedStyleSelector);
+		 */
 		styleBox.add(definedStylesHBox);
 		/*
-		// Custom style options
-		styleTypeSelection.add(customStyleSelector);
-		styleBox.add(customStyleSelector);
-
-		// Text and border colors
-		final JPanel colorsPanel = new JPanel();
-		colorsPanel.setName("custom");
-		colorsPanel.setLayout(new GridLayout(2, 1));
-		List<JLabel> colorLabels = Arrays.asList(
-				new JLabel("Text"), new JLabel("Hightlight"), new JLabel("Shadow"),
-				new JLabel("Border Color 1"), new JLabel("Border Color 2"),
-				new JLabel("Border Color 3"), new JLabel("Border Color 4")
-				);
-		int ccount;
-		List<ColorSelector> colorButtons = Arrays.asList(
-				new ColorSelector(), new ColorSelector(), new ColorSelector(),
-				new ColorSelector(), new ColorSelector(), new ColorSelector(),
-				new ColorSelector()
-				);
-		for (ccount = 0; ccount < colorLabels.size(); ccount++) {
-			colorsPanel.add(colorLabels.get(ccount));
-		}
-		for (ccount = 0; ccount < colorButtons.size(); ccount++) {
-			colorsPanel.add(colorButtons.get(ccount));
-		}
-
-		styleBox.add(colorsPanel);
-
-		// Background image
-		JLabel bgSelectorText = new JLabel("Background image");
-		bgSelectorText.setName("custom");
-		JButton bgSelectorButton = new JButton("...");
-		bgSelectorButton.setName("custom");
-		JTextField bgSelectorInput = new JTextField();
-		bgSelectorInput.setName("custom");
-		JComponent bgSelectorHBox = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, pad);
-		bgSelectorHBox.add(bgSelectorButton);
-		bgSelectorHBox.add(bgSelectorInput);
-
-		styleBox.add(bgSelectorText);
-		styleBox.add(bgSelectorHBox);
-
-		bgSelectorButton.addActionListener(
-				new ActionListener() {
-					public void actionPerformed(ActionEvent event) {
-						selectBGImage();
-					}
-				});
-
-		styleBox.add(Box.createHorizontalStrut(SBoxLayout.COMMON_PADDING));
-
-		// Add event handlers for the style selector radio buttons
-		definedStyleSelector.addActionListener(
-				new ActionListener() {
-					public void actionPerformed(ActionEvent event) {
-						toggleComponents(page);
-						toggleComponents(colorsPanel);
-					}
-				});
-		customStyleSelector.addActionListener(
-				new ActionListener() {
-					public void actionPerformed(ActionEvent event) {
-						toggleComponents(page);
-						toggleComponents(colorsPanel);
-					}
-				});
-		*/
+		 * // Custom style options styleTypeSelection.add(customStyleSelector);
+		 * styleBox.add(customStyleSelector);
+		 * 
+		 * // Text and border colors final JPanel colorsPanel = new JPanel();
+		 * colorsPanel.setName("custom"); colorsPanel.setLayout(new GridLayout(2, 1));
+		 * List<JLabel> colorLabels = Arrays.asList( new JLabel("Text"), new
+		 * JLabel("Hightlight"), new JLabel("Shadow"), new JLabel("Border Color 1"), new
+		 * JLabel("Border Color 2"), new JLabel("Border Color 3"), new
+		 * JLabel("Border Color 4") ); int ccount; List<ColorSelector> colorButtons =
+		 * Arrays.asList( new ColorSelector(), new ColorSelector(), new ColorSelector(),
+		 * new ColorSelector(), new ColorSelector(), new ColorSelector(), new
+		 * ColorSelector() ); for (ccount = 0; ccount < colorLabels.size(); ccount++) {
+		 * colorsPanel.add(colorLabels.get(ccount)); } for (ccount = 0; ccount <
+		 * colorButtons.size(); ccount++) { colorsPanel.add(colorButtons.get(ccount)); }
+		 * 
+		 * styleBox.add(colorsPanel);
+		 * 
+		 * // Background image JLabel bgSelectorText = new JLabel("Background image");
+		 * bgSelectorText.setName("custom"); JButton bgSelectorButton = new
+		 * JButton("..."); bgSelectorButton.setName("custom"); JTextField
+		 * bgSelectorInput = new JTextField(); bgSelectorInput.setName("custom");
+		 * JComponent bgSelectorHBox = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL,
+		 * pad); bgSelectorHBox.add(bgSelectorButton);
+		 * bgSelectorHBox.add(bgSelectorInput);
+		 * 
+		 * styleBox.add(bgSelectorText); styleBox.add(bgSelectorHBox);
+		 * 
+		 * bgSelectorButton.addActionListener( new ActionListener() { public void
+		 * actionPerformed(ActionEvent event) { selectBGImage(); } });
+		 * 
+		 * styleBox.add(Box.createHorizontalStrut(SBoxLayout.COMMON_PADDING));
+		 * 
+		 * // Add event handlers for the style selector radio buttons
+		 * definedStyleSelector.addActionListener( new ActionListener() { public void
+		 * actionPerformed(ActionEvent event) { toggleComponents(page);
+		 * toggleComponents(colorsPanel); } }); customStyleSelector.addActionListener(
+		 * new ActionListener() { public void actionPerformed(ActionEvent event) {
+		 * toggleComponents(page); toggleComponents(colorsPanel); } });
+		 */
 		return styleBox;
 	}
 
@@ -616,8 +598,8 @@ private JComponent createFpsSelector() {
 			@Override
 			public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
 					boolean cellHasFocus) {
-				return super.getListCellRendererComponent(list, ((RenderingMethod) value).name, index,
-						isSelected, cellHasFocus);
+				return super.getListCellRendererComponent(list, ((RenderingMethod) value).name, index, isSelected,
+						cellHasFocus);
 			}
 		});
 
@@ -814,8 +796,8 @@ private JComponent createFpsSelector() {
 	/**
 	 * Check if a custom font is in use.
 	 *
-	 * @return <code>true</code> if the user has changed the font from the
-	 * 	default, <code>false</code> otherwise
+	 * @return <code>true</code> if the user has changed the font from the default,
+	 *         <code>false</code> otherwise
 	 */
 	private boolean fontChanged() {
 		String currentSetting = WtWindowManager.getInstance().getProperty(FONT_PROPERTY, DEFAULT_FONT);
@@ -823,22 +805,20 @@ private JComponent createFpsSelector() {
 	}
 
 	/*
-	private String selectBGImage() {
-		JFileChooser bgSelector = new JFileChooser();
-		bgSelector.setDialogType(JFileChooser.OPEN_DIALOG | JFileChooser.FILES_ONLY);
-		bgSelector.setDialogTitle("Select an image to use for the client background");
-		//bgSelector.createDialog(this.page);
-
-		// Returning null until I figure out how to use JFileChooser
-		return null;
-	}
-	*/
+	 * private String selectBGImage() { JFileChooser bgSelector = new
+	 * JFileChooser(); bgSelector.setDialogType(JFileChooser.OPEN_DIALOG |
+	 * JFileChooser.FILES_ONLY);
+	 * bgSelector.setDialogTitle("Select an image to use for the client background"
+	 * ); //bgSelector.createDialog(this.page);
+	 * 
+	 * // Returning null until I figure out how to use JFileChooser return null; }
+	 */
 
 	/**
 	 * A cell renderer for combo boxes that can show different tooltips for the
-	 * options. The implementation is currently dependent on the data being in
-	 * the format used in {@link #createTransparencySelector()}, so if this is
-	 * needed elsewhere it needs to be generalized first.
+	 * options. The implementation is currently dependent on the data being in the
+	 * format used in {@link #createTransparencySelector()}, so if this is needed
+	 * elsewhere it needs to be generalized first.
 	 */
 	private static class TooltippedRenderer extends DefaultListCellRenderer {
 		private final String[][] data;
@@ -848,11 +828,11 @@ private JComponent createFpsSelector() {
 		}
 
 		@Override
-		public Component getListCellRendererComponent(JList<?> list, Object value,
-				int index, boolean isSelected, boolean cellHasFocus) {
+		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
+				boolean cellHasFocus) {
 
-			JComponent comp = (JComponent) super.getListCellRendererComponent(list,
-					value, index, isSelected, cellHasFocus);
+			JComponent comp = (JComponent) super.getListCellRendererComponent(list, value, index, isSelected,
+					cellHasFocus);
 
 			if ((index > -1) && (value != null)) {
 				list.setToolTipText("<html>" + data[index][2] + "</html>");

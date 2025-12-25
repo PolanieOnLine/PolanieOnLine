@@ -26,7 +26,7 @@ class SettingsComponentFactory {
 		selected = WtWindowManager.getInstance().getPropertyBoolean(parameter, defaultValue);
 		toggle.setSelected(selected);
 
-		toggle.addItemListener(new ItemListener(){
+		toggle.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				boolean enabled = (e.getStateChange() == ItemEvent.SELECTED);

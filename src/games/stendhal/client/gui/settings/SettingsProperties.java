@@ -22,7 +22,7 @@ public class SettingsProperties {
 	public static final String MOVE_CONTINUOUS_PROPERTY = "move.continuous";
 
 	/** Property for display HP bar. */
-	public static final String HP_BAR_PROPERTY =  "ui.hp_bar";
+	public static final String HP_BAR_PROPERTY = "ui.hp_bar";
 
 	/** Property for selecting the movement key scheme. */
 	public static final String MOVE_KEY_SCHEME_PROPERTY = "move.keys";
@@ -39,7 +39,7 @@ public class SettingsProperties {
 
 	public static final String OVERRIDE_AA = "ui.font.overrideaa";
 
-	public static final String BUBBLES_PROPERTY =  "ui.chat_bubbles";
+	public static final String BUBBLES_PROPERTY = "ui.chat_bubbles";
 
 	public static final String FPS_LIMIT_PROPERTY = "ui.fps_limit";
 

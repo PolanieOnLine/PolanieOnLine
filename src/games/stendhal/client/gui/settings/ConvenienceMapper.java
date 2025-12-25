@@ -20,7 +20,8 @@ public class ConvenienceMapper {
 	static Map<String, String[]> key2data = new HashMap<String, String[]>();
 
 	/**
-	 * Convenience mapping for getting the data rows from either short or long names.
+	 * Convenience mapping for getting the data rows from either short or long
+	 * names.
 	 *
 	 * @param component
 	 * @param data
