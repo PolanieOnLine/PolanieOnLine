@@ -37,7 +37,7 @@ import { Point } from "../util/Point";
 import { GameLoop } from "../util/GameLoop";
 import { SpringVector, Vector2 } from "../util/SpringVector";
 import { TilemapRenderer } from "./render/TilemapRenderer";
-import { computeGameScreenSize } from "./GameScreenSizing";
+import * as GameScreenSizing from "./GameScreenSizing";
 
 
 /**
@@ -303,7 +303,7 @@ export class ViewPort {
 
 		const mobileMinWidth = Math.max(320, Math.min(availableWidth, Math.round(this.minCanvasWidth * 0.75)));
 		const mobileMinHeight = Math.max(240, Math.round(mobileMinWidth / this.baseAspectRatio));
-		const sizing = computeGameScreenSize({
+		const sizing = GameScreenSizing.computeGameScreenSize({
 			availableWidth,
 			availableHeight: usableHeight,
 			aspectRatio: this.baseAspectRatio,

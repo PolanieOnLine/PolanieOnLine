@@ -146,3 +146,5 @@ export function computeGameScreenSize(params: GameScreenSizeParams): GameScreenS
 		isMobile
 	};
 }
+
+export default computeGameScreenSize;
