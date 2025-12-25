@@ -37,7 +37,7 @@ export class ItemContainerImplementation {
 	private allowAnimation = false;
 
 	// marked for updating certain attributes
-	private dirty = false;
+	private dirty = true;
 
 
 	// TODO: replace usage of global document.getElementById()
@@ -107,13 +107,13 @@ export class ItemContainerImplementation {
 	 */
 	public markDirty() {
 		this.dirty = true;
+		stendhal.ui.equip.markDirty();
 	}
 
 	public update() {
 		const now = Date.now();
 		const allowAnimation = now >= ItemContainerImplementation.nextAnimationUpdate;
-		const hidden = !(this.getParentElement()?.offsetParent);
-		if (!this.dirty && (!allowAnimation || hidden)) {
+		if (!this.dirty && !allowAnimation) {
 			return;
 		}
 		if (allowAnimation) {
@@ -122,6 +122,9 @@ export class ItemContainerImplementation {
 		this.allowAnimation = allowAnimation;
 		this.render();
 		this.allowAnimation = false;
+		if (!this.allowAnimation) {
+			this.dirty = false;
+		}
 	}
 
 	public render() {
