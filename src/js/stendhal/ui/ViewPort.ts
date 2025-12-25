@@ -279,43 +279,35 @@ export class ViewPort {
 			return;
 		}
 
+		const renderPreset = this.getRenderPreset();
+		const aspect = renderPreset.renderW > 0 && renderPreset.renderH > 0
+			? renderPreset.renderW / renderPreset.renderH
+			: this.baseAspectRatio;
+
+		// Match Java GameScreen behavior: fixed render resolution scaled to fit container (contain), without forcing square canvas.
 		let displayWidth = Math.floor(availableWidth);
-		let displayHeight = Math.floor(displayWidth / this.baseAspectRatio);
+		let displayHeight = Math.floor(displayWidth / aspect);
 		if (!Number.isFinite(displayHeight) || displayHeight <= 0) {
 			return;
 		}
 		if (displayHeight > usableHeight) {
 			displayHeight = Math.max(1, usableHeight);
-			displayWidth = Math.floor(displayHeight * this.baseAspectRatio);
-		}
-		if (displayWidth > availableWidth) {
-			displayWidth = Math.floor(availableWidth);
-			displayHeight = Math.floor(displayWidth / this.baseAspectRatio);
-			if (displayHeight > usableHeight) {
-				displayHeight = Math.max(1, usableHeight);
-				displayWidth = Math.floor(displayHeight * this.baseAspectRatio);
-			}
+			displayWidth = Math.floor(displayHeight * aspect);
 		}
 
 		displayWidth = Math.max(1, displayWidth);
 		displayHeight = Math.max(1, displayHeight);
 
-		let renderWidth = Math.max(this.minCanvasWidth, displayWidth);
-		let renderHeight = Math.floor(renderWidth / this.baseAspectRatio);
-		if (renderHeight < this.minCanvasHeight) {
-			renderHeight = this.minCanvasHeight;
-			renderWidth = Math.floor(renderHeight * this.baseAspectRatio);
-			if (renderWidth < this.minCanvasWidth) {
-				renderWidth = this.minCanvasWidth;
-				renderHeight = Math.floor(renderWidth / this.baseAspectRatio);
-			}
-		}
+		const renderScale = Math.max(
+			1,
+			this.minCanvasWidth > 0 ? (this.minCanvasWidth / renderPreset.renderW) : 0,
+			this.minCanvasHeight > 0 ? (this.minCanvasHeight / renderPreset.renderH) : 0
+		);
+		const renderWidth = Math.max(1, Math.round(renderPreset.renderW * renderScale));
+		const renderHeight = Math.max(1, Math.round(renderPreset.renderH * renderScale));
 
-		renderWidth = Math.max(1, renderWidth);
-		renderHeight = Math.max(1, renderHeight);
-
-		if (canvas.width === renderWidth && canvas.height === renderHeight
-			&& canvas.style.width === `${displayWidth}px` && canvas.style.height === `${displayHeight}px`) {
+		if (canvas.width === renderWidth && canvas.height === renderHeight &&
+			canvas.style.width === `${displayWidth}px` && canvas.style.height === `${displayHeight}px`) {
 			return;
 		}
 
@@ -323,6 +315,17 @@ export class ViewPort {
 		canvas.height = renderHeight;
 		canvas.style.width = `${displayWidth}px`;
 		canvas.style.height = `${displayHeight}px`;
+	}
+
+	private getRenderPreset(): { renderW: number; renderH: number } {
+		const hasMatchMedia = typeof matchMedia === "function";
+		const coarse = hasMatchMedia ? matchMedia("(pointer: coarse)") : null;
+		const narrow = hasMatchMedia ? matchMedia("(max-width: 900px)") : null;
+		const isMobile = Boolean((coarse && coarse.matches) || (narrow && narrow.matches));
+		if (isMobile) {
+			return { renderW: 960, renderH: 540 };
+		}
+		return { renderW: 1280, renderH: 720 };
 	}
 
 	public refreshBounds() {
