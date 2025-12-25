@@ -113,6 +113,7 @@ export class ViewPort {
 	private readonly targetDesktopFallbackResolution: Vector2;
 	private readonly targetMobileResolution: Vector2;
 	private readonly desktopBreakpointPx = 900;
+	private readonly povScaleFactor = 0.9;
 	private readonly minCanvasWidth: number;
 	private readonly minCanvasHeight: number;
 	private parentResizeObserver?: ResizeObserver;
@@ -310,7 +311,9 @@ export class ViewPort {
 			this.minCanvasWidth / displaySize.x,
 			this.minCanvasHeight / displaySize.y
 		);
-		const renderScale = Math.max(cappedScale, minScale);
+		const povScale = Math.max(0.5, this.povScaleFactor);
+		const limitedScale = Math.max(1, cappedScale * povScale);
+		const renderScale = Math.max(limitedScale, minScale);
 		const displayWidth = Math.max(1, Math.floor(displaySize.x));
 		const displayHeight = Math.max(1, Math.floor(displaySize.y));
 		const renderWidth = Math.max(1, Math.round(displayWidth * renderScale));
