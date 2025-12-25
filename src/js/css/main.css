@@ -1033,12 +1033,13 @@ div#menupanel #soundbutton {
 
 #viewport {
 	display: block;
-	--viewport-max-height: calc(100dvh - 5em);
-	--viewport-max-width: calc((100dvh - 5em) * 800 / 600);
-	--viewport-min-render-width: 800px;
-	--viewport-min-render-height: 600px;
+	--viewport-max-height: calc(100dvh - 4.5em);
+	--viewport-max-width: min(100vw, calc(var(--viewport-max-height) * 4 / 3));
+	--viewport-min-render-width: clamp(360px, 70vw, 960px);
+	--viewport-min-render-height: calc(var(--viewport-min-render-width) * 0.75);
 	max-height: var(--viewport-max-height);
 	max-width: var(--viewport-max-width);
+	width: 100%;
 	image-rendering: pixelated;
 }
 

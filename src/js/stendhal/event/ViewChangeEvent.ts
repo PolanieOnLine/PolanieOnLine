@@ -25,13 +25,13 @@ export class ViewChangeEvent extends RPEvent {
 
 
 	execute(entity: any) {
-		const canvas = stendhal.ui.viewport.getElement() as HTMLCanvasElement;
+		const viewportSize = stendhal.ui.viewport.getViewportSize();
 		queueMicrotask(() => {
 			stendhal.ui.viewport.freeze = true;
 			stendhal.ui.viewport.offsetX = this.x * stendhal.ui.viewport.targetTileWidth
-					- Math.round(canvas.width / 2);
+					- Math.round(viewportSize.x / 2);
 			stendhal.ui.viewport.offsetY = this.y * stendhal.ui.viewport.targetTileHeight
-					- Math.round(canvas.height / 2);
+					- Math.round(viewportSize.y / 2);
 		});
 	}
 }

@@ -144,8 +144,11 @@ export class WeatherRenderer {
 			}
 
 			const canvas = document.getElementById("viewport") as HTMLCanvasElement;
-			this.tilesX = Math.ceil(canvas.width / spriteH) + 1;
-			this.tilesY = Math.ceil(canvas.height / spriteH) + 1;
+			const viewportSize = stendhal.ui?.viewport?.getViewportSize ? stendhal.ui.viewport.getViewportSize() : undefined;
+			const viewWidth = viewportSize ? viewportSize.x : canvas.width;
+			const viewHeight = viewportSize ? viewportSize.y : canvas.height;
+			this.tilesX = Math.ceil(viewWidth / spriteH) + 1;
+			this.tilesY = Math.ceil(viewHeight / spriteH) + 1;
 
 			if (weatherLoops[weather]) {
 				this.audio = stendhal.sound.playGlobalizedLoop("weather/" + weather, this.soundLayer);

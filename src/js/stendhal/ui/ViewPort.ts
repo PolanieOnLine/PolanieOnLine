@@ -37,6 +37,7 @@ import { Point } from "../util/Point";
 import { GameLoop } from "../util/GameLoop";
 import { SpringVector, Vector2 } from "../util/SpringVector";
 import { TilemapRenderer } from "./render/TilemapRenderer";
+import { computeGameScreenSize } from "./GameScreenSizing";
 
 
 /**
@@ -105,6 +106,10 @@ export class ViewPort {
 	private readonly baseAspectRatio: number;
 	private readonly minCanvasWidth: number;
 	private readonly minCanvasHeight: number;
+	private displayWidth: number;
+	private displayHeight: number;
+	private deviceScale = 1;
+	private resizeTimeout?: number;
 	private parentResizeObserver?: ResizeObserver;
 	private readonly handleWindowResize: () => void;
 
@@ -128,22 +133,29 @@ export class ViewPort {
 	private constructor() {
 		const element = this.getElement() as HTMLCanvasElement;
 		this.ctx = element.getContext("2d")!;
-		this.baseRenderWidth = element.width || 800;
-		this.baseRenderHeight = element.height || 600;
+		const styles = getComputedStyle(element);
+		const fallbackWidth = Math.max(800, Math.round(this.parseCssLength(styles.getPropertyValue("--viewport-min-render-width")) || 0));
+		const fallbackHeight = Math.max(600, Math.round(this.parseCssLength(styles.getPropertyValue("--viewport-min-render-height")) || 0));
+		const providedWidth = element.width;
+		const providedHeight = element.height;
+		this.baseRenderWidth = (providedWidth && providedWidth !== 300) ? providedWidth : fallbackWidth;
+		this.baseRenderHeight = (providedHeight && providedHeight !== 150) ? providedHeight : fallbackHeight;
 		this.baseAspectRatio = this.baseRenderWidth && this.baseRenderHeight
 			? this.baseRenderWidth / this.baseRenderHeight
 			: (4 / 3);
 
 		this.initialStyle = {};
-		const styles = getComputedStyle(element);
 		this.captureInitialStyles(element, styles);
 		const minSize = this.computeMinimumCanvasSize(styles);
 		this.minCanvasWidth = minSize.x;
 		this.minCanvasHeight = minSize.y;
-		this.handleWindowResize = () => this.updateCanvasBounds();
+		this.displayWidth = this.baseRenderWidth;
+		this.displayHeight = this.baseRenderHeight;
+		this.handleWindowResize = () => this.scheduleCanvasBoundsUpdate();
 		this.observeParent(element);
 		this.updateCanvasBounds();
 		window.addEventListener("resize", this.handleWindowResize, { passive: true });
+		window.addEventListener("orientationchange", this.handleWindowResize);
 
 		this.fpsLabel = this.createFpsLabel(element);
 	}
@@ -164,10 +176,10 @@ export class ViewPort {
 		this.assignInitialStyleFrom(element.style.getPropertyValue("max-width"), "max-width");
 		this.assignInitialStyleFrom(element.style.getPropertyValue("max-height"), "max-height");
 		if (!this.initialStyle["max-width"]) {
-			this.initialStyle["max-width"] = "calc((100dvh - 5em) * 800 / 600)";
+			this.initialStyle["max-width"] = "calc((100dvh - 4.5em) * 4 / 3)";
 		}
 		if (!this.initialStyle["max-height"]) {
-			this.initialStyle["max-height"] = "calc(100dvh - 5em)";
+			this.initialStyle["max-height"] = "calc(100dvh - 4.5em)";
 		}
 	}
 
@@ -215,9 +227,19 @@ export class ViewPort {
 			return;
 		}
 		this.parentResizeObserver = new ResizeObserver(() => {
-			this.updateCanvasBounds();
+			this.scheduleCanvasBoundsUpdate();
 		});
 		this.parentResizeObserver.observe(parent);
+	}
+
+	private scheduleCanvasBoundsUpdate() {
+		if (this.resizeTimeout) {
+			window.clearTimeout(this.resizeTimeout);
+		}
+		this.resizeTimeout = window.setTimeout(() => {
+			this.resizeTimeout = undefined;
+			this.updateCanvasBounds();
+		}, 120);
 	}
 
 	private updateCanvasBounds() {
@@ -279,50 +301,36 @@ export class ViewPort {
 			return;
 		}
 
-		let displayWidth = Math.floor(availableWidth);
-		let displayHeight = Math.floor(displayWidth / this.baseAspectRatio);
-		if (!Number.isFinite(displayHeight) || displayHeight <= 0) {
-			return;
-		}
-		if (displayHeight > usableHeight) {
-			displayHeight = Math.max(1, usableHeight);
-			displayWidth = Math.floor(displayHeight * this.baseAspectRatio);
-		}
-		if (displayWidth > availableWidth) {
-			displayWidth = Math.floor(availableWidth);
-			displayHeight = Math.floor(displayWidth / this.baseAspectRatio);
-			if (displayHeight > usableHeight) {
-				displayHeight = Math.max(1, usableHeight);
-				displayWidth = Math.floor(displayHeight * this.baseAspectRatio);
-			}
-		}
+		const mobileMinWidth = Math.max(320, Math.min(availableWidth, Math.round(this.minCanvasWidth * 0.75)));
+		const mobileMinHeight = Math.max(240, Math.round(mobileMinWidth / this.baseAspectRatio));
+		const sizing = computeGameScreenSize({
+			availableWidth,
+			availableHeight: usableHeight,
+			aspectRatio: this.baseAspectRatio,
+			minWidth: this.minCanvasWidth,
+			minHeight: this.minCanvasHeight,
+			mobileMinWidth,
+			mobileMinHeight,
+			baseWidth: this.baseRenderWidth,
+			baseHeight: this.baseRenderHeight,
+			config: singletons.getConfigManager()
+		});
 
-		displayWidth = Math.max(1, displayWidth);
-		displayHeight = Math.max(1, displayHeight);
+		const unchanged = canvas.width === sizing.renderWidth && canvas.height === sizing.renderHeight
+			&& canvas.style.width === `${sizing.width}px` && canvas.style.height === `${sizing.height}px`;
 
-		let renderWidth = Math.max(this.minCanvasWidth, displayWidth);
-		let renderHeight = Math.floor(renderWidth / this.baseAspectRatio);
-		if (renderHeight < this.minCanvasHeight) {
-			renderHeight = this.minCanvasHeight;
-			renderWidth = Math.floor(renderHeight * this.baseAspectRatio);
-			if (renderWidth < this.minCanvasWidth) {
-				renderWidth = this.minCanvasWidth;
-				renderHeight = Math.floor(renderWidth / this.baseAspectRatio);
-			}
-		}
+		this.displayWidth = sizing.width;
+		this.displayHeight = sizing.height;
+		this.deviceScale = sizing.pixelRatio;
 
-		renderWidth = Math.max(1, renderWidth);
-		renderHeight = Math.max(1, renderHeight);
-
-		if (canvas.width === renderWidth && canvas.height === renderHeight
-			&& canvas.style.width === `${displayWidth}px` && canvas.style.height === `${displayHeight}px`) {
+		if (unchanged) {
 			return;
 		}
 
-		canvas.width = renderWidth;
-		canvas.height = renderHeight;
-		canvas.style.width = `${displayWidth}px`;
-		canvas.style.height = `${displayHeight}px`;
+		canvas.width = sizing.renderWidth;
+		canvas.height = sizing.renderHeight;
+		canvas.style.width = `${sizing.width}px`;
+		canvas.style.height = `${sizing.height}px`;
 	}
 
 	public refreshBounds() {
@@ -363,6 +371,26 @@ export class ViewPort {
 		}
 
 		return label;
+	}
+
+	private getDisplayWidth(): number {
+		const scale = this.deviceScale || 1;
+		if (this.displayWidth && this.displayWidth > 0) {
+			return this.displayWidth;
+		}
+		return Math.max(1, Math.round((this.ctx?.canvas?.width || this.baseRenderWidth) / scale));
+	}
+
+	private getDisplayHeight(): number {
+		const scale = this.deviceScale || 1;
+		if (this.displayHeight && this.displayHeight > 0) {
+			return this.displayHeight;
+		}
+		return Math.max(1, Math.round((this.ctx?.canvas?.height || this.baseRenderHeight) / scale));
+	}
+
+	public getViewportSize(): Vector2 {
+		return { x: this.getDisplayWidth(), y: this.getDisplayHeight() };
 	}
 
 	/**
@@ -420,8 +448,11 @@ export class ViewPort {
 			return;
 		}
 
+		const logicalWidth = this.getDisplayWidth();
+		const logicalHeight = this.getDisplayHeight();
+
 		this.ctx.globalAlpha = 1.0;
-		this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+		this.ctx.setTransform(this.deviceScale, 0, 0, this.deviceScale, 0, 0);
 		this.ctx.imageSmoothingEnabled = false;
 
 		const interpolated = this.cameraSpring.getInterpolated(alpha);
@@ -435,7 +466,7 @@ export class ViewPort {
 		this.offsetY = snappedY;
 
 		this.ctx.fillStyle = "black";
-		this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+		this.ctx.fillRect(0, 0, logicalWidth, logicalHeight);
 
 		this.ctx.translate(-snappedX, -snappedY);
 
@@ -445,9 +476,9 @@ export class ViewPort {
 		this.tileRenderer.configure(stendhal.data.map, this.targetTileWidth, this.targetTileHeight);
 		const parallaxImage = stendhal.data.map.parallax.getImageElement();
 		this.tileRenderer.updateParallax(parallaxImage);
-		this.tileRenderer.prepareFrame(snappedX, snappedY, this.ctx.canvas.width, this.ctx.canvas.height);
+		this.tileRenderer.prepareFrame(snappedX, snappedY, logicalWidth, logicalHeight);
 
-		this.tileRenderer.drawBaseLayer(this.ctx, snappedX, snappedY, this.ctx.canvas.width, this.ctx.canvas.height);
+		this.tileRenderer.drawBaseLayer(this.ctx, snappedX, snappedY, logicalWidth, logicalHeight);
 
 		const blendComposite = this.getBlendCompositeOperation();
 		this.tileRenderer.drawBlendLayer(
@@ -460,7 +491,7 @@ export class ViewPort {
 
 		this.drawEntities(alpha);
 
-		this.tileRenderer.drawRoofLayer(this.ctx, snappedX, snappedY, this.ctx.canvas.width, this.ctx.canvas.height);
+		this.tileRenderer.drawRoofLayer(this.ctx, snappedX, snappedY, logicalWidth, logicalHeight);
 		this.tileRenderer.drawBlendLayer(
 			"blend_roof",
 			this.ctx,
@@ -496,8 +527,9 @@ export class ViewPort {
 	}
 
 	private updateCamera(dtMs: number) {
-		const canvas = this.ctx.canvas;
-		const target = this.computeCameraTarget(canvas);
+		const viewWidth = this.getDisplayWidth();
+		const viewHeight = this.getDisplayHeight();
+		const target = this.computeCameraTarget();
 
 		const worldWidth = stendhal.data.map.zoneSizeX * this.targetTileWidth;
 		const worldHeight = stendhal.data.map.zoneSizeY * this.targetTileHeight;
@@ -515,30 +547,32 @@ export class ViewPort {
 			this.cameraSpring.step(target, dtMs);
 		}
 
-		const maxX = Math.max(0, worldWidth - canvas.width);
-		const maxY = Math.max(0, worldHeight - canvas.height);
+		const maxX = Math.max(0, worldWidth - viewWidth);
+		const maxY = Math.max(0, worldHeight - viewHeight);
 		this.cameraSpring.clamp(0, maxX, 0, maxY);
 		this.cameraTarget = target;
 	}
 
-	private computeCameraTarget(canvas: HTMLCanvasElement): Vector2 {
+	private computeCameraTarget(): Vector2 {
 		if (this.freeze) {
 			return this.cameraSpring.getPosition();
 		}
 
+		const viewWidth = this.getDisplayWidth();
+		const viewHeight = this.getDisplayHeight();
 		const playerX = (typeof (marauroa.me["_x"]) === "number") ? marauroa.me["_x"] : marauroa.me["x"];
 		const playerY = (typeof (marauroa.me["_y"]) === "number") ? marauroa.me["_y"] : marauroa.me["y"];
 
-		let centerX = playerX * this.targetTileWidth + this.targetTileWidth / 2 - canvas.width / 2;
-		let centerY = playerY * this.targetTileHeight + this.targetTileHeight / 2 - canvas.height / 2;
+		let centerX = playerX * this.targetTileWidth + this.targetTileWidth / 2 - viewWidth / 2;
+		let centerY = playerY * this.targetTileHeight + this.targetTileHeight / 2 - viewHeight / 2;
 
 		const worldWidth = stendhal.data.map.zoneSizeX * this.targetTileWidth;
 		const worldHeight = stendhal.data.map.zoneSizeY * this.targetTileHeight;
 
-		centerX = Math.min(centerX, worldWidth - canvas.width);
+		centerX = Math.min(centerX, worldWidth - viewWidth);
 		centerX = Math.max(centerX, 0);
 
-		centerY = Math.min(centerY, worldHeight - canvas.height);
+		centerY = Math.min(centerY, worldHeight - viewHeight);
 		centerY = Math.max(centerY, 0);
 
 		return { x: centerX, y: centerY };
@@ -698,7 +732,7 @@ export class ViewPort {
 	}
 
 	private snapToDevicePixel(value: number): number {
-		const ratio = window.devicePixelRatio || 1;
+		const ratio = this.deviceScale || window.devicePixelRatio || 1;
 		return Math.round(value * ratio) / ratio;
 	}
 
@@ -766,7 +800,7 @@ export class ViewPort {
 		this.ctx.globalAlpha = 0.75;
 		this.ctx.globalCompositeOperation = (this.colorMethod || this.ctx.globalCompositeOperation) as GlobalCompositeOperation;
 		this.ctx.fillStyle = this.HSLFilter;
-		this.ctx.fillRect(this.offsetX, this.offsetY, this.ctx.canvas.width, this.ctx.canvas.height);
+		this.ctx.fillRect(this.offsetX, this.offsetY, this.getDisplayWidth(), this.getDisplayHeight());
 		this.ctx.restore();
 	}
 

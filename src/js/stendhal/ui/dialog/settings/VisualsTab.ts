@@ -94,6 +94,33 @@ export class VisualsTab extends AbstractSettingsTab {
 		});
 		chkEntityOverlay.addTo(col1);
 
+		const resolutionOptions = [
+			{label: "Automatyczna (dopasowanie do okna)", value: "auto"},
+			{label: "1024 x 768 (4:3)", value: "1024x768"},
+			{label: "1280 x 960 (4:3)", value: "1280x960"},
+			{label: "1600 x 1200 (4:3)", value: "1600x1200"},
+			{label: "1920 x 1080 (16:9)", value: "1920x1080"}
+		];
+		const resolutionSelect = new SettingsComponent("sel_desktop_resolution", "Preferowana rozdzielczość (PC)", WidgetType.SELECT);
+		for (const option of resolutionOptions) {
+			resolutionSelect.addOption(option.label, option.value);
+		}
+		const preferredResolution = (config.get("display.resolution.desktop") || "auto").toLowerCase();
+		let selectedResolutionIndex = resolutionOptions.findIndex((opt) => opt.value === preferredResolution);
+		if (selectedResolutionIndex < 0) {
+			selectedResolutionIndex = 0;
+		}
+		resolutionSelect.setValue(selectedResolutionIndex);
+		resolutionSelect.setTooltip("Ustaw preferowaną rozdzielczość dla trybu desktop (domyślnie automatyczne dopasowanie)", "Automatycznie dopasuj do rozmiaru okna");
+		resolutionSelect.addListener(() => {
+			const idx = resolutionSelect.getValue() as number;
+			const choice = resolutionOptions[idx] || resolutionOptions[0];
+			config.set("display.resolution.desktop", choice.value);
+			ViewPort.get().refreshBounds();
+			parent.refresh();
+		});
+		resolutionSelect.addTo(col1);
+
 		const fpsOptions = [
 			{label: "Nieograniczone", value: 0},
 			{label: "60 FPS", value: 60},
