@@ -32,6 +32,9 @@ export class ItemContainerImplementation {
 	private timestampMouseDown = 0;
 	private timestampMouseDownPrev = 0;
 	private lastClickedId = "";
+	private static nextAnimationUpdate = 0;
+	private static readonly animationIntervalMs = 100;
+	private allowAnimation = false;
 
 	// marked for updating certain attributes
 	private dirty = false;
@@ -107,7 +110,18 @@ export class ItemContainerImplementation {
 	}
 
 	public update() {
+		const now = Date.now();
+		const allowAnimation = now >= ItemContainerImplementation.nextAnimationUpdate;
+		const hidden = !(this.getParentElement()?.offsetParent);
+		if (!this.dirty && (!allowAnimation || hidden)) {
+			return;
+		}
+		if (allowAnimation) {
+			ItemContainerImplementation.nextAnimationUpdate = now + ItemContainerImplementation.animationIntervalMs;
+		}
+		this.allowAnimation = allowAnimation;
 		this.render();
+		this.allowAnimation = false;
 	}
 
 	public render() {
@@ -125,7 +139,7 @@ export class ItemContainerImplementation {
 				const item = <Item> o;
 				let xOffset = 0;
 				let yOffset = (item["state"] || 0) * -32;
-				if (item.isAnimated()) {
+				if (item.isAnimated() && this.allowAnimation) {
 					item.stepAnimation();
 					xOffset = -(item.getXFrameIndex() * 32);
 				}
