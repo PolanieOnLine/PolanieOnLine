@@ -70,13 +70,26 @@ export class SpriteStore {
 			"love": { delay: 100, offsetX: 24, offsetY: -8 }
 		}
 	};
-
+	private animationEpoch = 0;
+	private animationFrame = 0;
+	private readonly animationIntervalMs = 100;
 
 	/**
 	 * Hidden singleton constructor.
 	 */
 	protected constructor() {
 		// do nothing
+	}
+
+	setAnimationTime(now: number) {
+		if (now - this.animationEpoch >= this.animationIntervalMs) {
+			this.animationFrame = (this.animationFrame + 1) % 6;
+			this.animationEpoch = now;
+		}
+	}
+
+	getAnimationFrame(): number {
+		return this.animationFrame;
 	}
 
 	private createSpriteImage(filename: string): SpriteImage {

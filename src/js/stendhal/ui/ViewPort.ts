@@ -495,6 +495,7 @@ export class ViewPort {
 			return;
 		}
 
+		stendhal.data.sprites.setAnimationTime(Date.now());
 		this.drawingError = false;
 		this.updateCamera(dtMs);
 		this.updateEntities(dtMs);
