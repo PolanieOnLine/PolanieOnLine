@@ -292,19 +292,25 @@ export class ViewPort {
 			return;
 		}
 
-		const targetRatio = this.getTargetAspectRatio(availableWidth, usableHeight);
+		const targetResolution = this.getTargetResolution(availableWidth, usableHeight);
+		const targetRatio = this.safeAspect(targetResolution.x, targetResolution.y);
 		if (!Number.isFinite(targetRatio) || targetRatio <= 0) {
 			return;
 		}
 
 		const displaySize = this.getContainedSize(availableWidth, usableHeight, targetRatio);
 		const deviceScale = this.getDevicePixelRatio();
+		const maxScaleFromResolution = Math.min(
+			targetResolution.x > 0 ? targetResolution.x / displaySize.x : Number.POSITIVE_INFINITY,
+			targetResolution.y > 0 ? targetResolution.y / displaySize.y : Number.POSITIVE_INFINITY
+		);
+		const cappedScale = Math.min(deviceScale, maxScaleFromResolution);
 		const minScale = Math.max(
 			1,
 			this.minCanvasWidth / displaySize.x,
 			this.minCanvasHeight / displaySize.y
 		);
-		const renderScale = Math.max(deviceScale, minScale);
+		const renderScale = Math.max(cappedScale, minScale);
 		const displayWidth = Math.max(1, Math.floor(displaySize.x));
 		const displayHeight = Math.max(1, Math.floor(displaySize.y));
 		const renderWidth = Math.max(1, Math.round(displayWidth * renderScale));
