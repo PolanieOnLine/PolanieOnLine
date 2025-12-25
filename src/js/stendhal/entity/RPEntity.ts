@@ -626,7 +626,8 @@ export class RPEntity extends ActiveEntity {
 
 			const sourceX = frame * this["drawWidth"];
 			const sourceY = yRow * this["drawHeight"];
-			const useCache = (this["drawWidth"] > 32 || this["drawHeight"] > 32);
+				const useCache = this.shouldCacheSprite(image)
+					&& (this["drawWidth"] > 32 || this["drawHeight"] > 32);
 			if (useCache) {
 				const cache = SpriteFrameCache.get();
 				const spriteId = this.resolveSpriteCacheId(image);

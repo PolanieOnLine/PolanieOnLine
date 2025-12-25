@@ -305,7 +305,8 @@ export class Entity extends RPObject {
 			const spriteId = this.resolveSpriteCacheId(image);
 			const frameIndex = Math.floor(offsetX / 32);
 			const orientation = Math.floor(offsetY / 32);
-			const useCache = (width > 32 || height > 32 || offsetX !== 0 || offsetY !== 0);
+			const useCache = this.shouldCacheSprite(image)
+				&& (width > 32 || height > 32 || offsetX !== 0 || offsetY !== 0);
 			if (useCache) {
 				if (this.renderCacheKey === "" || this.renderCacheFrame !== frameIndex
 						|| this.renderCacheOrientation !== orientation || this.renderCacheWidth !== width
@@ -409,6 +410,13 @@ export class Entity extends RPObject {
 		this.renderCacheId = id;
 		this.renderCacheImage = image;
 		return id;
+	}
+
+	protected shouldCacheSprite(_image: CanvasImageSource): boolean {
+		if (this.sprite && typeof this.sprite.filename === "string") {
+			return this.sprite.filename.indexOf("/items/") >= 0;
+		}
+		return false;
 	}
 
 	onclick(x: number, y: number) {
