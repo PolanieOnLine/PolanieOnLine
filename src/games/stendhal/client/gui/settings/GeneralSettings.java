@@ -23,10 +23,12 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.border.TitledBorder;
 
 import games.stendhal.client.ClientSingletonRepository;
@@ -65,8 +67,36 @@ class GeneralSettings {
 	GeneralSettings() {
 		int pad = SBoxLayout.COMMON_PADDING;
 		page = SBoxLayout.createContainer(SBoxLayout.VERTICAL, pad);
-
 		page.setBorder(BorderFactory.createEmptyBorder(pad, pad, pad, pad));
+
+		final WtWindowManager windowManager = WtWindowManager.getInstance();
+		JComponent movementSchemeBox = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, pad);
+		JLabel movementSchemeLabel = new JLabel("Sterowanie ruchem (eksperymentalne):");
+		final JComboBox<MovementKeyOption> movementSchemeSelector = new JComboBox<MovementKeyOption>(
+				MovementKeyOption.values());
+		movementSchemeSelector.setToolTipText(
+				"Wybierz, czy poruszasz się strzałkami, czy klawiszami WASD (eksperymentalne). WASD wyłącza automatyczne ustawianie fokusu na czacie.");
+		movementSchemeLabel.setToolTipText(movementSchemeSelector.getToolTipText());
+		final MovementKeyOption selectedScheme = MovementKeyOption.fromProperty(windowManager
+				.getProperty(SettingsProperties.MOVE_KEY_SCHEME_PROPERTY, SettingsProperties.MOVE_KEY_SCHEME_ARROWS));
+		movementSchemeSelector.setSelectedItem(selectedScheme);
+		movementSchemeSelector.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				Object choice = movementSchemeSelector.getSelectedItem();
+				if (choice instanceof MovementKeyOption) {
+					MovementKeyOption option = (MovementKeyOption) choice;
+					windowManager.setProperty(SettingsProperties.MOVE_KEY_SCHEME_PROPERTY, option.getPropertyValue());
+					String msg = "Sterowanie ruchem ustawione na " + option.getLabel() + ".";
+					ClientSingletonRepository.getUserInterface()
+							.addEventLine(new EventLine("", msg, NotificationType.CLIENT));
+				}
+			}
+		});
+		movementSchemeBox.add(movementSchemeLabel);
+		movementSchemeBox.add(Box.createHorizontalStrut(pad));
+		movementSchemeBox.add(movementSchemeSelector);
+		page.add(movementSchemeBox, SLayout.EXPAND_X);
 
 		// click mode
 		JCheckBox clickModeToggle = SettingsComponentFactory.createSettingsToggle(DOUBLE_CLICK_PROPERTY, false,
@@ -142,29 +172,6 @@ class GeneralSettings {
 					}
 				});
 		page.add(moveContinuousToggle);
-
-		final WtWindowManager windowManager = WtWindowManager.getInstance();
-		final JComboBox<MovementKeyOption> movementSchemeSelector = new JComboBox<MovementKeyOption>(
-				MovementKeyOption.values());
-		movementSchemeSelector.setToolTipText(
-				"Wybierz, czy poruszasz się strzałkami, czy klawiszami WASD. WASD wyłącza automatyczne ustawianie fokusu na czacie.");
-		final MovementKeyOption selectedScheme = MovementKeyOption.fromProperty(windowManager
-				.getProperty(SettingsProperties.MOVE_KEY_SCHEME_PROPERTY, SettingsProperties.MOVE_KEY_SCHEME_ARROWS));
-		movementSchemeSelector.setSelectedItem(selectedScheme);
-		movementSchemeSelector.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(final ActionEvent e) {
-				Object choice = movementSchemeSelector.getSelectedItem();
-				if (choice instanceof MovementKeyOption) {
-					MovementKeyOption option = (MovementKeyOption) choice;
-					windowManager.setProperty(SettingsProperties.MOVE_KEY_SCHEME_PROPERTY, option.getPropertyValue());
-					String msg = "Sterowanie ruchem ustawione na " + option.getLabel() + ".";
-					ClientSingletonRepository.getUserInterface()
-							.addEventLine(new EventLine("", msg, NotificationType.CLIENT));
-				}
-			}
-		});
-		page.add(movementSchemeSelector);
 
 		final JCheckBox msgBlinkToggle = SettingsComponentFactory.createSettingsToggle(MSG_BLINK, true,
 				"Migaj przy wiadomości na kanale prywatnym",
