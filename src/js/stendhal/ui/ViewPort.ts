@@ -102,7 +102,17 @@ export class ViewPort {
 	private readonly initialStyle: { [prop: string]: string };
 	private readonly baseRenderWidth: number;
 	private readonly baseRenderHeight: number;
-	private readonly baseAspectRatio: number;
+	private readonly fallbackAspectRatio: number;
+	/**
+	 * Default resolutions used to derive targetRatio:
+	 * - desktop: wide (16:9) or classic (4:3)
+	 * - mobile: compact 4:3
+	 * Adjust these values to change the default rendering resolution.
+	 */
+	private readonly targetDesktopResolution: Vector2;
+	private readonly targetDesktopFallbackResolution: Vector2;
+	private readonly targetMobileResolution: Vector2;
+	private readonly desktopBreakpointPx = 900;
 	private readonly minCanvasWidth: number;
 	private readonly minCanvasHeight: number;
 	private parentResizeObserver?: ResizeObserver;
@@ -130,9 +140,12 @@ export class ViewPort {
 		this.ctx = element.getContext("2d")!;
 		this.baseRenderWidth = element.width || 800;
 		this.baseRenderHeight = element.height || 600;
-		this.baseAspectRatio = this.baseRenderWidth && this.baseRenderHeight
+		this.fallbackAspectRatio = this.baseRenderWidth && this.baseRenderHeight
 			? this.baseRenderWidth / this.baseRenderHeight
 			: (4 / 3);
+		this.targetDesktopResolution = { x: 1280, y: 720 };
+		this.targetDesktopFallbackResolution = { x: 1024, y: 768 };
+		this.targetMobileResolution = { x: 844, y: 633 };
 
 		this.initialStyle = {};
 		const styles = getComputedStyle(element);
@@ -182,7 +195,7 @@ export class ViewPort {
 		if (minHeightSetting && minHeightSetting > 0) {
 			minHeight = Math.max(minHeight, Math.round(minHeightSetting));
 		}
-		const aspect = this.baseAspectRatio || (4 / 3);
+		const aspect = this.getTargetAspectRatio(window.innerWidth || minWidth, window.innerHeight || minHeight);
 		const widthFromHeight = Math.max(1, Math.round(minHeight * aspect));
 		const heightFromWidth = Math.max(1, Math.round(minWidth / aspect));
 		if (widthFromHeight > minWidth) {
@@ -279,40 +292,23 @@ export class ViewPort {
 			return;
 		}
 
-		let displayWidth = Math.floor(availableWidth);
-		let displayHeight = Math.floor(displayWidth / this.baseAspectRatio);
-		if (!Number.isFinite(displayHeight) || displayHeight <= 0) {
+		const targetRatio = this.getTargetAspectRatio(availableWidth, usableHeight);
+		if (!Number.isFinite(targetRatio) || targetRatio <= 0) {
 			return;
 		}
-		if (displayHeight > usableHeight) {
-			displayHeight = Math.max(1, usableHeight);
-			displayWidth = Math.floor(displayHeight * this.baseAspectRatio);
-		}
-		if (displayWidth > availableWidth) {
-			displayWidth = Math.floor(availableWidth);
-			displayHeight = Math.floor(displayWidth / this.baseAspectRatio);
-			if (displayHeight > usableHeight) {
-				displayHeight = Math.max(1, usableHeight);
-				displayWidth = Math.floor(displayHeight * this.baseAspectRatio);
-			}
-		}
 
-		displayWidth = Math.max(1, displayWidth);
-		displayHeight = Math.max(1, displayHeight);
-
-		let renderWidth = Math.max(this.minCanvasWidth, displayWidth);
-		let renderHeight = Math.floor(renderWidth / this.baseAspectRatio);
-		if (renderHeight < this.minCanvasHeight) {
-			renderHeight = this.minCanvasHeight;
-			renderWidth = Math.floor(renderHeight * this.baseAspectRatio);
-			if (renderWidth < this.minCanvasWidth) {
-				renderWidth = this.minCanvasWidth;
-				renderHeight = Math.floor(renderWidth / this.baseAspectRatio);
-			}
-		}
-
-		renderWidth = Math.max(1, renderWidth);
-		renderHeight = Math.max(1, renderHeight);
+		const displaySize = this.getContainedSize(availableWidth, usableHeight, targetRatio);
+		const deviceScale = this.getDevicePixelRatio();
+		const minScale = Math.max(
+			1,
+			this.minCanvasWidth / displaySize.x,
+			this.minCanvasHeight / displaySize.y
+		);
+		const renderScale = Math.max(deviceScale, minScale);
+		const displayWidth = Math.max(1, Math.floor(displaySize.x));
+		const displayHeight = Math.max(1, Math.floor(displaySize.y));
+		const renderWidth = Math.max(1, Math.round(displayWidth * renderScale));
+		const renderHeight = Math.max(1, Math.round(displayHeight * renderScale));
 
 		if (canvas.width === renderWidth && canvas.height === renderHeight
 			&& canvas.style.width === `${displayWidth}px` && canvas.style.height === `${displayHeight}px`) {
@@ -327,6 +323,63 @@ export class ViewPort {
 
 	public refreshBounds() {
 		this.updateCanvasBounds();
+	}
+
+	private getTargetAspectRatio(containerWidth: number, containerHeight: number): number {
+		const targetResolution = this.getTargetResolution(containerWidth, containerHeight);
+		if (targetResolution.x > 0 && targetResolution.y > 0) {
+			return targetResolution.x / targetResolution.y;
+		}
+		return this.fallbackAspectRatio || (4 / 3);
+	}
+
+	private getTargetResolution(containerWidth: number, containerHeight: number): Vector2 {
+		const isDesktop = this.matchesDesktopBreakpoint(containerWidth);
+		if (isDesktop) {
+			const availableRatio = this.safeAspect(containerWidth, containerHeight);
+			const wideRatio = this.safeAspect(this.targetDesktopResolution.x, this.targetDesktopResolution.y);
+			const classicRatio = this.safeAspect(
+				this.targetDesktopFallbackResolution.x,
+				this.targetDesktopFallbackResolution.y
+			);
+			const useClassic = Math.abs(availableRatio - classicRatio) < Math.abs(availableRatio - wideRatio);
+			return useClassic ? this.targetDesktopFallbackResolution : this.targetDesktopResolution;
+		}
+		return this.targetMobileResolution;
+	}
+
+	private matchesDesktopBreakpoint(containerWidth: number): boolean {
+		if (typeof matchMedia === "function") {
+			const media = matchMedia(`(min-width: ${this.desktopBreakpointPx}px)`);
+			if (typeof media.matches === "boolean") {
+				return media.matches;
+			}
+		}
+		return containerWidth >= this.desktopBreakpointPx;
+	}
+
+	private safeAspect(width: number, height: number): number {
+		if (!Number.isFinite(width) || !Number.isFinite(height) || height <= 0) {
+			return 1;
+		}
+		return width / height;
+	}
+
+	private getContainedSize(maxWidth: number, maxHeight: number, aspect: number): Vector2 {
+		let width = Math.floor(maxWidth);
+		let height = Math.floor(width / aspect);
+		if (height > maxHeight) {
+			height = Math.floor(maxHeight);
+			width = Math.floor(height * aspect);
+		}
+		return { x: Math.max(1, width), y: Math.max(1, height) };
+	}
+
+	private getDevicePixelRatio(): number {
+		const dpr = typeof window !== "undefined" && Number.isFinite(window.devicePixelRatio)
+			? window.devicePixelRatio
+			: 1;
+		return Math.max(1, dpr);
 	}
 
 	private assignInitialStyleFrom(value: string | null | undefined, prop: string) {
