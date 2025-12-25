@@ -40,6 +40,7 @@ export class ItemContainerImplementation {
 
 	private static readonly MIN_RENDER_INTERVAL_MS = 75;
 	private static readonly ANIMATION_FRAME_MS = 120;
+	private static readonly ITEM_RENDER_PADDING = 3;
 	private rightClickDuration = 300;
 	private timestampMouseDown = 0;
 	private timestampMouseDownPrev = 0;
@@ -73,6 +74,7 @@ export class ItemContainerImplementation {
 			this.slotStates.push({});
 			let e = this.parentElement.querySelector("#" + this.slot + this.suffix + i) as HTMLElement;
 			e.setAttribute("draggable", "true");
+			e.style.backgroundRepeat = "no-repeat";
 			e.addEventListener("dragstart", (event: DragEvent) => {
 				this.onDragStart(event)
 			});
@@ -169,10 +171,12 @@ export class ItemContainerImplementation {
 				if (slotState.spritePath !== spritePath || slotState.offsetX !== (xOffset + 1)
 						|| slotState.offsetY !== (yOffset + 1)) {
 					e.style.backgroundImage = spritePath;
-					e.style.backgroundPosition = (xOffset + 1) + "px " + (yOffset + 1) + "px";
+					const posX = xOffset + 1 + ItemContainerImplementation.ITEM_RENDER_PADDING;
+					const posY = yOffset + 1 + ItemContainerImplementation.ITEM_RENDER_PADDING;
+					e.style.backgroundPosition = posX + "px " + posY + "px";
 					slotState.spritePath = spritePath;
-					slotState.offsetX = xOffset + 1;
-					slotState.offsetY = yOffset + 1;
+					slotState.offsetX = posX;
+					slotState.offsetY = posY;
 				}
 
 				const quantityText = o.formatQuantity();
