@@ -11,6 +11,8 @@
 
 import { MenuItem } from "../action/MenuItem";
 import { Chat } from "../util/Chat";
+import { RenderDebug } from "../util/RenderDebug";
+import { SpriteFrameCache } from "../util/SpriteFrameCache";
 import { RPObject } from "./RPObject";
 
 declare var marauroa: any;
@@ -31,6 +33,15 @@ export class Entity extends RPObject {
 	private renderOverrideDepth = 0;
 	private renderOverrideSavedX = Number.NaN;
 	private renderOverrideSavedY = Number.NaN;
+	protected renderCacheKey = "";
+	protected renderCacheFrame = -1;
+	protected renderCacheOrientation = -1;
+	protected renderCacheWidth = 0;
+	protected renderCacheHeight = 0;
+	protected renderCacheSourceX = 0;
+	protected renderCacheSourceY = 0;
+	protected renderCacheId = "";
+	protected renderCacheImage?: CanvasImageSource;
 
 	override set(key: string, value: any) {
 		super.set(key, value);
@@ -290,7 +301,31 @@ export class Entity extends RPObject {
 			x += Math.floor((this.getWidth() * 32 - width) / 2);
 			y += Math.floor((this.getHeight() * 32 - height) / 2);
 
-			ctx.drawImage(image, offsetX, offsetY, width, height, x, y, width, height);
+			const cache = SpriteFrameCache.get();
+			const spriteId = this.resolveSpriteCacheId(image);
+			const frameIndex = Math.floor(offsetX / 32);
+			const orientation = Math.floor(offsetY / 32);
+			const useCache = (width > 32 || height > 32 || offsetX !== 0 || offsetY !== 0);
+			if (useCache) {
+				if (this.renderCacheKey === "" || this.renderCacheFrame !== frameIndex
+						|| this.renderCacheOrientation !== orientation || this.renderCacheWidth !== width
+						|| this.renderCacheHeight !== height || this.renderCacheSourceX !== offsetX
+						|| this.renderCacheSourceY !== offsetY || this.renderCacheId !== spriteId) {
+					this.renderCacheKey = cache.buildKey(spriteId, frameIndex, orientation, width, height, 1, offsetX, offsetY);
+					this.renderCacheFrame = frameIndex;
+					this.renderCacheOrientation = orientation;
+					this.renderCacheWidth = width;
+					this.renderCacheHeight = height;
+					this.renderCacheSourceX = offsetX;
+					this.renderCacheSourceY = offsetY;
+					this.renderCacheId = spriteId;
+				}
+				const cachedFrame = cache.getFrame(this.renderCacheKey, image, offsetX, offsetY, width, height);
+				ctx.drawImage(cachedFrame.image, x, y, cachedFrame.width, cachedFrame.height);
+			} else {
+				ctx.drawImage(image, offsetX, offsetY, width, height, x, y, width, height);
+			}
+			RenderDebug.get().recordDraw();
 		}
 	}
 
@@ -357,6 +392,23 @@ export class Entity extends RPObject {
 	isObstacle(entity: Entity) {
 		return ((entity != this)
 			&& (this.getResistance() * (entity.getResistance() / 100) > 95));
+	}
+
+	protected resolveSpriteCacheId(image: CanvasImageSource & { src?: string; assetUrl?: string }): string {
+		if (this.renderCacheImage === image && this.renderCacheId) {
+			return this.renderCacheId;
+		}
+		let id = "";
+		if (this.sprite && typeof this.sprite.filename === "string") {
+			id = this.sprite.filename;
+		} else if (typeof image.assetUrl === "string") {
+			id = image.assetUrl;
+		} else if (typeof image.src === "string") {
+			id = image.src;
+		}
+		this.renderCacheId = id;
+		this.renderCacheImage = image;
+		return id;
 	}
 
 	onclick(x: number, y: number) {

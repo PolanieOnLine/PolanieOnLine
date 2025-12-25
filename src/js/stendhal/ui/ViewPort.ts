@@ -35,6 +35,7 @@ import { RPEntity } from "../entity/RPEntity";
 
 import { Point } from "../util/Point";
 import { GameLoop } from "../util/GameLoop";
+import { RenderDebug } from "../util/RenderDebug";
 import { SpringVector, Vector2 } from "../util/SpringVector";
 import { TilemapRenderer } from "./render/TilemapRenderer";
 
@@ -65,6 +66,10 @@ export class ViewPort {
 	private entityLastPositions = new Float32Array(0);
 	private entityLastCount = 0;
 	private entityIndexLookup: WeakMap<Entity, number> = new WeakMap();
+	private entityVisibility = new Uint8Array(0);
+	private readonly viewBounds = { left: 0, top: 0, right: 0, bottom: 0 };
+	private lastFpsSample = 0;
+	private readonly renderDebug = RenderDebug.get();
 	private fpsLabel?: HTMLElement;
 
 	/** Drawing context. */
@@ -162,6 +167,7 @@ export class ViewPort {
 		window.addEventListener("resize", this.handleWindowResize, { passive: true });
 
 		this.fpsLabel = this.createFpsLabel(element);
+		this.renderDebug.init(stendhal.config, element.parentElement || element);
 	}
 
 	/**
@@ -500,6 +506,11 @@ export class ViewPort {
 			return;
 		}
 
+		const frameStart = (typeof performance !== "undefined" && typeof performance.now === "function")
+			? performance.now()
+			: Date.now();
+		this.renderDebug.beginFrame();
+
 		this.ctx.globalAlpha = 1.0;
 		this.ctx.setTransform(1, 0, 0, 1, 0, 0);
 		this.ctx.imageSmoothingEnabled = false;
@@ -513,6 +524,10 @@ export class ViewPort {
 
 		this.offsetX = snappedX;
 		this.offsetY = snappedY;
+		this.viewBounds.left = snappedX;
+		this.viewBounds.top = snappedY;
+		this.viewBounds.right = snappedX + this.ctx.canvas.width;
+		this.viewBounds.bottom = snappedY + this.ctx.canvas.height;
 
 		this.ctx.fillStyle = "black";
 		this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
@@ -558,6 +573,11 @@ export class ViewPort {
 
 		stendhal.ui.equip.update();
 		(ui.get(UIComponentEnum.PlayerEquipment) as PlayerEquipmentComponent).update();
+
+		const frameEnd = (typeof performance !== "undefined" && typeof performance.now === "function")
+			? performance.now()
+			: Date.now();
+		this.renderDebug.endFrame(frameEnd - frameStart);
 
 		this.renderMiniMap(alpha);
 	}
@@ -625,9 +645,12 @@ export class ViewPort {
 	}
 
 	private ensureEntityCapacity(expectedEntities: number) {
-		const required = Math.max(expectedEntities, this.entityCount, this.entityLastCount) * 2;
+		const requiredEntities = Math.max(expectedEntities, this.entityCount, this.entityLastCount);
+		const required = requiredEntities * 2;
 		if (required <= this.entityPrevPositions.length) {
-			return;
+			if (requiredEntities <= this.entityVisibility.length) {
+				return;
+			}
 		}
 		let newSize = this.entityPrevPositions.length;
 		if (newSize === 0) {
@@ -651,6 +674,21 @@ export class ViewPort {
 		this.entityPrevPositions = newPrev;
 		this.entityCurrPositions = newCurr;
 		this.entityLastPositions = newLast;
+
+		let visSize = this.entityVisibility.length;
+		if (visSize === 0) {
+			visSize = 32;
+		}
+		while (visSize < requiredEntities) {
+			visSize *= 2;
+		}
+		if (visSize !== this.entityVisibility.length) {
+			const newVisibility = new Uint8Array(visSize);
+			if (this.entityCount > 0) {
+				newVisibility.set(this.entityVisibility.subarray(0, this.entityCount));
+			}
+			this.entityVisibility = newVisibility;
+		}
 	}
 
 	private swapEntityHistoryBuffers() {
@@ -697,6 +735,31 @@ export class ViewPort {
 		}
 	}
 
+	private isEntityVisible(entity: any, renderTileX: number, renderTileY: number): boolean {
+		const bounds = this.viewBounds;
+		const pixelWidth = (entity["width"] || 1) * this.targetTileWidth;
+		const pixelHeight = (entity["height"] || 1) * this.targetTileHeight;
+		let drawWidth = typeof entity["drawWidth"] === "number" ? entity["drawWidth"] : pixelWidth;
+		let drawHeight = typeof entity["drawHeight"] === "number" ? entity["drawHeight"] : pixelHeight;
+		if (!Number.isFinite(drawWidth) || drawWidth <= 0) {
+			drawWidth = pixelWidth;
+		}
+		if (!Number.isFinite(drawHeight) || drawHeight <= 0) {
+			drawHeight = pixelHeight;
+		}
+		const baseX = renderTileX * this.targetTileWidth;
+		const baseY = renderTileY * this.targetTileHeight;
+		const drawX = Math.floor((pixelWidth - drawWidth) / 2);
+		const drawY = Math.floor(pixelHeight - drawHeight);
+		const left = baseX + drawX;
+		const top = baseY + drawY;
+		const right = left + drawWidth;
+		const bottom = top + drawHeight;
+		const margin = 8;
+		return right >= bounds.left - margin && left <= bounds.right + margin
+			&& bottom >= bounds.top - margin && top <= bounds.bottom + margin;
+	}
+
 	private updateEntities(dtMs: number) {
 		const zone = stendhal.zone;
 		const entities: Entity[] = (zone && Array.isArray(zone.entities)) ? zone.entities as Entity[] : [];
@@ -711,6 +774,7 @@ export class ViewPort {
 
 		this.ensureEntityCapacity(entities.length);
 		this.swapEntityHistoryBuffers();
+		this.entityVisibility.fill(0, 0, entities.length);
 
 		const lastPositions = this.entityLastPositions;
 		const currPositions = this.entityCurrPositions;
@@ -771,8 +835,10 @@ export class ViewPort {
 	}
 
 	private updateFpsCounter(fps: number) {
+		const rounded = Math.max(0, Math.round(fps));
+		this.lastFpsSample = rounded;
+		this.renderDebug.setFpsSample(rounded);
 		if (this.fpsLabel) {
-			const rounded = Math.max(0, Math.round(fps));
 			this.fpsLabel.textContent = (rounded > 0 ? rounded.toString() : "--") + " fps";
 		}
 	}
@@ -918,9 +984,13 @@ export class ViewPort {
 		}
 		const prevPositions = this.entityPrevPositions;
 		const currPositions = this.entityCurrPositions;
+		const visibility = this.entityVisibility;
 		for (let index = 0; index < count; index++) {
 			const entity = this.entityRefs[index];
 			if (!entity || typeof entity.draw !== "function") {
+				if (index < visibility.length) {
+					visibility[index] = 0;
+				}
 				continue;
 			}
 			const base = index * 2;
@@ -930,6 +1000,13 @@ export class ViewPort {
 			const currY = currPositions[base + 1];
 			const renderX = prevX + (currX - prevX) * alpha;
 			const renderY = prevY + (currY - prevY) * alpha;
+			const visible = this.isEntityVisible(entity, renderX, renderY);
+			if (index < visibility.length) {
+				visibility[index] = visible ? 1 : 0;
+			}
+			if (!visible) {
+				continue;
+			}
 			this.withEntityRenderPosition(entity, renderX, renderY, () => entity.draw(this.ctx, renderX, renderY));
 		}
 	}
@@ -944,9 +1021,13 @@ export class ViewPort {
 		}
 		const prevPositions = this.entityPrevPositions;
 		const currPositions = this.entityCurrPositions;
+		const visibility = this.entityVisibility;
 		for (let index = 0; index < count; index++) {
 			const entity = this.entityRefs[index];
 			if (!entity) {
+				continue;
+			}
+			if (visibility.length && !visibility[index]) {
 				continue;
 			}
 			const base = index * 2;

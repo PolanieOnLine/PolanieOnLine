@@ -21,6 +21,8 @@ import { Color } from "../data/color/Color";
 
 import { Chat } from "../util/Chat";
 import { Nature } from "../util/Nature";
+import { RenderDebug } from "../util/RenderDebug";
+import { SpriteFrameCache } from "../util/SpriteFrameCache";
 
 import { Floater } from "../sprite/Floater";
 import { EmojiSprite } from "../sprite/EmojiSprite";
@@ -622,9 +624,33 @@ export class RPEntity extends ActiveEntity {
 			this["drawOffsetX"] = localX + drawX;
 			this["drawOffsetY"] = localY + drawY;
 
-			ctx.drawImage(image, frame * this["drawWidth"], yRow * this["drawHeight"], this["drawWidth"],
-				this["drawHeight"], this["drawOffsetX"], this["drawOffsetY"], this["drawWidth"],
-				this["drawHeight"]);
+			const sourceX = frame * this["drawWidth"];
+			const sourceY = yRow * this["drawHeight"];
+			const useCache = (this["drawWidth"] > 32 || this["drawHeight"] > 32);
+			if (useCache) {
+				const cache = SpriteFrameCache.get();
+				const spriteId = this.resolveSpriteCacheId(image);
+				if (this.renderCacheKey === "" || this.renderCacheFrame !== frame
+						|| this.renderCacheOrientation !== yRow || this.renderCacheWidth !== this["drawWidth"]
+						|| this.renderCacheHeight !== this["drawHeight"] || this.renderCacheSourceX !== sourceX
+						|| this.renderCacheSourceY !== sourceY || this.renderCacheId !== spriteId) {
+					this.renderCacheKey = cache.buildKey(spriteId, frame, yRow, this["drawWidth"], this["drawHeight"], 1, sourceX, sourceY);
+					this.renderCacheFrame = frame;
+					this.renderCacheOrientation = yRow;
+					this.renderCacheWidth = this["drawWidth"];
+					this.renderCacheHeight = this["drawHeight"];
+					this.renderCacheSourceX = sourceX;
+					this.renderCacheSourceY = sourceY;
+					this.renderCacheId = spriteId;
+				}
+				const cachedFrame = cache.getFrame(this.renderCacheKey, image, sourceX, sourceY, this["drawWidth"], this["drawHeight"]);
+				ctx.drawImage(cachedFrame.image, this["drawOffsetX"], this["drawOffsetY"], cachedFrame.width, cachedFrame.height);
+			} else {
+				ctx.drawImage(image, sourceX, sourceY, this["drawWidth"],
+					this["drawHeight"], this["drawOffsetX"], this["drawOffsetY"], this["drawWidth"],
+					this["drawHeight"]);
+			}
+			RenderDebug.get().recordDraw();
 			// restore opacity
 			ctx.globalAlpha = opacity_orig;
 		}
