@@ -742,10 +742,10 @@ export class ViewPort {
 		let drawWidth = typeof entity["drawWidth"] === "number" ? entity["drawWidth"] : pixelWidth;
 		let drawHeight = typeof entity["drawHeight"] === "number" ? entity["drawHeight"] : pixelHeight;
 		if (!Number.isFinite(drawWidth) || drawWidth <= 0) {
-			drawWidth = pixelWidth;
+			return true;
 		}
 		if (!Number.isFinite(drawHeight) || drawHeight <= 0) {
-			drawHeight = pixelHeight;
+			return true;
 		}
 		const baseX = renderTileX * this.targetTileWidth;
 		const baseY = renderTileY * this.targetTileHeight;
@@ -755,7 +755,7 @@ export class ViewPort {
 		const top = baseY + drawY;
 		const right = left + drawWidth;
 		const bottom = top + drawHeight;
-		const margin = 8;
+		const margin = Math.max(this.targetTileWidth, this.targetTileHeight) + 8;
 		return right >= bounds.left - margin && left <= bounds.right + margin
 			&& bottom >= bounds.top - margin && top <= bounds.bottom + margin;
 	}

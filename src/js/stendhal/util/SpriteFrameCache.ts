@@ -77,7 +77,12 @@ export class SpriteFrameCache {
 		height: number,
 		scale = 1
 	): CachedFrame {
-		if (!width || !height) {
+		const htmlImage: any = image as any;
+		const complete = typeof htmlImage.complete === "boolean" ? htmlImage.complete : true;
+		const naturalReady = (typeof htmlImage.naturalWidth !== "undefined")
+			? (htmlImage.naturalWidth > 0 && htmlImage.naturalHeight > 0)
+			: true;
+		if (!complete || !naturalReady || !width || !height) {
 			return { image, width, height };
 		}
 		const now = Date.now();
