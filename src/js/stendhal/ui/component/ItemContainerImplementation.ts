@@ -31,6 +31,8 @@ interface SlotRenderState {
 	quantity?: string;
 	cursor?: string;
 	title?: string;
+	paddingX?: number;
+	paddingY?: number;
 }
 
 /**
@@ -40,7 +42,7 @@ export class ItemContainerImplementation {
 
 	private static readonly MIN_RENDER_INTERVAL_MS = 75;
 	private static readonly ANIMATION_FRAME_MS = 120;
-	private static readonly ITEM_RENDER_PADDING = 3;
+	private static readonly ITEM_SIZE = 32;
 	private rightClickDuration = 300;
 	private timestampMouseDown = 0;
 	private timestampMouseDownPrev = 0;
@@ -75,6 +77,8 @@ export class ItemContainerImplementation {
 			let e = this.parentElement.querySelector("#" + this.slot + this.suffix + i) as HTMLElement;
 			e.setAttribute("draggable", "true");
 			e.style.backgroundRepeat = "no-repeat";
+			e.style.backgroundOrigin = "content-box";
+			e.style.backgroundClip = "content-box";
 			e.addEventListener("dragstart", (event: DragEvent) => {
 				this.onDragStart(event)
 			});
@@ -156,6 +160,7 @@ export class ItemContainerImplementation {
 				this.dirty = this.dirty || o !== (e as any).dataItem;
 				const item = <Item> o;
 				const slotState = this.slotStates[cnt] || (this.slotStates[cnt] = {});
+				const baseOffsets = this.computeContentOffsets(e, slotState);
 				let xOffset = 0;
 				let yOffset = (item["state"] || 0) * -32;
 				if (item.isAnimated()) {
@@ -171,8 +176,8 @@ export class ItemContainerImplementation {
 				if (slotState.spritePath !== spritePath || slotState.offsetX !== (xOffset + 1)
 						|| slotState.offsetY !== (yOffset + 1)) {
 					e.style.backgroundImage = spritePath;
-					const posX = xOffset + 1 + ItemContainerImplementation.ITEM_RENDER_PADDING;
-					const posY = yOffset + 1 + ItemContainerImplementation.ITEM_RENDER_PADDING;
+					const posX = baseOffsets.x + xOffset;
+					const posY = baseOffsets.y + yOffset;
 					e.style.backgroundPosition = posX + "px " + posY + "px";
 					slotState.spritePath = spritePath;
 					slotState.offsetX = posX;
@@ -205,7 +210,8 @@ export class ItemContainerImplementation {
 			const background = this.defaultBackgroundImage || "none";
 			if (slotState.spritePath !== background) {
 				e.style.backgroundImage = background;
-				e.style.backgroundPosition = "0px 0px";
+				const baseOffsets = this.computeContentOffsets(e, slotState);
+				e.style.backgroundPosition = baseOffsets.x + "px " + baseOffsets.y + "px";
 				slotState.spritePath = background;
 				slotState.offsetX = 0;
 				slotState.offsetY = 0;
@@ -530,5 +536,22 @@ export class ItemContainerImplementation {
 			return performance.now();
 		}
 		return +new Date();
+	}
+
+	private computeContentOffsets(element: HTMLElement, slotState: SlotRenderState) {
+		if (slotState.paddingX === undefined || slotState.paddingY === undefined) {
+			const style = getComputedStyle(element);
+			const paddingLeft = parseFloat(style.paddingLeft || "0");
+			const paddingRight = parseFloat(style.paddingRight || "0");
+			const paddingTop = parseFloat(style.paddingTop || "0");
+			const paddingBottom = parseFloat(style.paddingBottom || "0");
+			slotState.paddingX = paddingLeft + paddingRight;
+			slotState.paddingY = paddingTop + paddingBottom;
+		}
+		const contentWidth = Math.max(0, element.clientWidth - (slotState.paddingX || 0));
+		const contentHeight = Math.max(0, element.clientHeight - (slotState.paddingY || 0));
+		const baseX = Math.floor((contentWidth - ItemContainerImplementation.ITEM_SIZE) / 2);
+		const baseY = Math.floor((contentHeight - ItemContainerImplementation.ITEM_SIZE) / 2);
+		return { x: baseX, y: baseY };
 	}
 }
