@@ -179,6 +179,7 @@ div.itemSlot {
 	background-color: rgba(72, 43, 23, 0.85);
 	text-shadow: -1px 0 #000, 0 1px #000, 1px 0 #000, 0 -1px #000;
 	mask-image: radial-gradient(circle, white 90%, transparent 100%);
+	background-repeat: no-repeat !important;
 }
 
 div#equipmentborder { width: 147px; }
