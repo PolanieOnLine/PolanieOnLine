@@ -38,4 +38,4 @@ export function sliceIntoTiles(sprite: Sprite, tileWidth: number, tileHeight: nu
 	return tiles;
 }
 
-export default sliceIntoTiles;
+export default { sliceIntoTiles };
