@@ -54,6 +54,18 @@ export class VisualsTab extends AbstractSettingsTab {
 		parent.createCheckBox("chk_clickindicator", "click-indicator",
 				"Wyświetlanie kliknięć", "Brak wyświetlania kliknięć");
 
+		parent.createCheckBox("chk_low_effects", "effect.low",
+				"Tryb oszczędny efektów jest włączony", "Tryb oszczędny efektów jest wyłączony", () => {
+					ViewPort.get().refreshPerformanceCaps();
+					StandardMessages.changeNeedsRefresh();
+				});
+
+		parent.createCheckBox("chk_reduced_motion", "effect.reduced-motion",
+				"Tryb ograniczonej animacji jest włączony", "Tryb ograniczonej animacji jest wyłączony", () => {
+					ViewPort.get().refreshPerformanceCaps();
+					StandardMessages.changeNeedsRefresh();
+				});
+
 		const chkAnimate = new SettingsComponent("chk_animate", "Animacja wskaźnika aktywności");
 		chkAnimate.setConfigId("activity-indicator.animate");
 		chkAnimate.setEnabled(config.getBoolean("activity-indicator"));

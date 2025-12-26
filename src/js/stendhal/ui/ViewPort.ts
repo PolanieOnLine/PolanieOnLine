@@ -407,7 +407,7 @@ export class ViewPort {
 		const dpr = typeof window !== "undefined" && Number.isFinite(window.devicePixelRatio)
 			? window.devicePixelRatio
 			: 1;
-		return Math.max(1, dpr);
+		return Math.max(1, dpr * this.resolveRenderScale());
 	}
 
 	private assignInitialStyleFrom(value: string | null | undefined, prop: string) {
@@ -449,10 +449,10 @@ export class ViewPort {
 	/**
 	 * Starts the render loop if it is not already active.
 	 */
-	draw() {
+		draw() {
 		if (!this.loop) {
 			const configuredLimit = stendhal.config.getFloat("loop.fps.limit");
-			const initialLimit = this.requestedFpsLimit ?? this.normalizeFpsLimit(configuredLimit);
+			const initialLimit = this.requestedFpsLimit ?? this.resolveRenderFpsLimit(this.normalizeFpsLimit(configuredLimit));
 			this.loop = new GameLoop(
 				(dt) => this.update(dt),
 				(alpha) => this.render(alpha),
@@ -780,7 +780,19 @@ export class ViewPort {
 		}
 	}
 
+	public refreshPerformanceCaps() {
+		this.applyRenderFpsCap();
+		FrameAnimator.setGlobalFpsCap(this.resolveAnimationFpsCap());
+	}
+
 	private resolveAnimationFpsCap(): number | undefined {
+		const configReduced = typeof stendhal.config?.getBoolean === "function"
+			? stendhal.config.getBoolean("effect.reduced-motion")
+			: false;
+		if (configReduced) {
+			const configured = this.normalizeFpsLimit(stendhal.config.getFloat("animation.fps.cap", 20));
+			return configured ?? 20;
+		}
 		const configured = stendhal.config && typeof stendhal.config.getFloat === "function"
 			? stendhal.config.getFloat("animation.fps.cap")
 			: undefined;
@@ -819,9 +831,7 @@ export class ViewPort {
 	public setFpsLimit(limit?: number) {
 		const normalized = this.normalizeFpsLimit(limit);
 		this.requestedFpsLimit = normalized;
-		if (this.loop) {
-			this.loop.setFpsLimit(normalized);
-		}
+		this.applyRenderFpsCap();
 	}
 
 	private normalizeFpsLimit(limit?: number): number | undefined {
@@ -840,6 +850,55 @@ export class ViewPort {
 			}
 		}
 		return closest;
+	}
+
+	private resolveRenderFpsLimit(base?: number): number | undefined {
+		const config = stendhal.config;
+		const mobileLimit = this.normalizeFpsLimit(config?.getFloat?.("loop.fps.limit.mobile", 45));
+		const reducedLimit = this.normalizeFpsLimit(config?.getFloat?.("loop.fps.limit.reduced", 30));
+		const lowEffects = config?.getBoolean?.("effect.low");
+		const reducedMotion = config?.getBoolean?.("effect.reduced-motion");
+
+		let candidate = base;
+		if (this.isLikelyMobileDevice()) {
+			candidate = this.takeLowerFps(candidate, mobileLimit);
+		}
+		if (lowEffects) {
+			candidate = this.takeLowerFps(candidate, mobileLimit);
+		}
+		if (reducedMotion) {
+			candidate = this.takeLowerFps(candidate, reducedLimit);
+		}
+		return candidate;
+	}
+
+	private takeLowerFps(current?: number, candidate?: number): number | undefined {
+		if (!candidate) {
+			return current;
+		}
+		if (!current || current <= 0) {
+			return candidate;
+		}
+		return Math.min(current, candidate);
+	}
+
+	private applyRenderFpsCap() {
+		const cap = this.resolveRenderFpsLimit(this.requestedFpsLimit);
+		if (this.loop) {
+			this.loop.setFpsLimit(cap);
+		}
+	}
+
+	private resolveRenderScale(): number {
+		const configScale = typeof stendhal.config?.getFloat === "function"
+			? stendhal.config.getFloat("render.scale.mobile")
+			: NaN;
+		const fallbackScale = this.isLikelyMobileDevice() ? 0.75 : 1;
+		const lowEffectsScale = stendhal.config?.getBoolean?.("effect.low") ? 0.85 : 1;
+		const scale = Number.isFinite(configScale) && configScale > 0 && configScale <= 1
+			? configScale
+			: fallbackScale;
+		return Math.min(1, scale * lowEffectsScale);
 	}
 
 	/**

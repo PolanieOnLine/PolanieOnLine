@@ -391,7 +391,7 @@ export class RPEntity extends ActiveEntity {
 
 			let image = stendhal.data.sprites.get(filename);
 
-			if (stendhal.config.getBoolean("effect.shadows") && this.castsShadow()) {
+			if (stendhal.config.getBoolean("effect.shadows") && !stendhal.config.getBoolean("effect.low") && this.castsShadow()) {
 				// check for configured shadow style
 				let shadow_style = this["shadow_style"];
 				if (typeof (shadow_style) === "undefined") {
@@ -418,6 +418,8 @@ export class RPEntity extends ActiveEntity {
 		const tileY = this.getRenderTileY();
 		var x = tileX * 32 - 10;
 		var y = (tileY + 1) * 32;
+		const lowEffects = stendhal.config.getBoolean("effect.low");
+		const reducedMotion = stendhal.config.getBoolean("effect.reduced-motion");
 		if (this.hasOwnProperty("choking")) {
 			ctx.drawImage(stendhal.data.sprites.get(stendhal.paths.sprites + "/ideas/choking.png"), x, y - 10);
 		} else if (this.hasOwnProperty("eating")) {
@@ -432,6 +434,7 @@ export class RPEntity extends ActiveEntity {
 				path: idea,
 				delay: ani ? ani.delay : undefined,
 				fWidth: undefined,
+				frameCount: (lowEffects || reducedMotion) ? 1 : undefined,
 				offsetX: ani ? ani.offsetX * this["width"] : 32 * this["width"],
 				offsetY: ani ? ani.offsetY - this["drawHeight"] : -this["drawHeight"],
 			});
@@ -441,6 +444,7 @@ export class RPEntity extends ActiveEntity {
 				key: "away",
 				path: stendhal.paths.sprites + "/ideas/away.png",
 				delay: 1500,
+				frameCount: (lowEffects || reducedMotion) ? 1 : undefined,
 				offsetX: 32 * this["width"],
 				offsetY: -this["drawHeight"],
 			});
@@ -450,6 +454,7 @@ export class RPEntity extends ActiveEntity {
 				key: "grumpy",
 				path: stendhal.paths.sprites + "/ideas/grumpy.png",
 				delay: 1000,
+				frameCount: (lowEffects || reducedMotion) ? 1 : undefined,
 				offsetX: 5,
 				offsetY: -this["drawHeight"],
 			});
@@ -459,7 +464,7 @@ export class RPEntity extends ActiveEntity {
 				key: "pk",
 				path: stendhal.paths.sprites + "/ideas/pk.png",
 				delay: 300,
-				frameCount: 12,
+				frameCount: (lowEffects || reducedMotion) ? 1 : 12,
 				offsetX: 0,
 				offsetY: -this["drawHeight"],
 			});
@@ -470,6 +475,7 @@ export class RPEntity extends ActiveEntity {
 				key: "poisoned",
 				path: stendhal.paths.sprites + "/status/poison.png",
 				delay: 100,
+				frameCount: (lowEffects || reducedMotion) ? 1 : undefined,
 				offsetX: 32 * this["width"] - 10,
 				offsetY: -this["drawHeight"],
 			});
@@ -479,6 +485,7 @@ export class RPEntity extends ActiveEntity {
 				key: "status_confuse",
 				path: stendhal.paths.sprites + "/status/confuse.png",
 				delay: 200,
+				frameCount: (lowEffects || reducedMotion) ? 1 : undefined,
 				offsetX: 32 * this["width"] - 14,
 				offsetY: -this["drawHeight"] + 16,
 			});
@@ -488,6 +495,7 @@ export class RPEntity extends ActiveEntity {
 				key: "status_shock",
 				path: stendhal.paths.sprites + "/status/shock.png",
 				delay: 200,
+				frameCount: (lowEffects || reducedMotion) ? 1 : undefined,
 				offsetX: 32 * this["width"] - 25,
 				offsetY: -32,
 				fWidth: 38
@@ -498,6 +506,7 @@ export class RPEntity extends ActiveEntity {
 				key: "bleeding",
 				path: stendhal.paths.sprites + "/status/bleeding.png",
 				delay: 100,
+				frameCount: (lowEffects || reducedMotion) ? 1 : undefined,
 				offsetX: 32 * this["width"] - 10,
 				offsetY: -this["drawHeight"],
 			});
@@ -743,6 +752,9 @@ export class RPEntity extends ActiveEntity {
 	 *		 Canvas context to draw on.
 	 */
 	private drawOverlayAnimation(ctx: CanvasRenderingContext2D) {
+		if (stendhal.config.getBoolean("effect.low") || stendhal.config.getBoolean("effect.reduced-motion")) {
+			return;
+		}
 		if (this.overlay && this.overlay.draw(ctx, this["drawOffsetX"], this["drawOffsetY"],
 			this["drawWidth"], this["drawHeight"])) {
 			// overlay sprite expired
