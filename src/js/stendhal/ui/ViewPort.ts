@@ -738,6 +738,7 @@ export class ViewPort {
 			}
 
 			entity.updatePosition(dtMs);
+			entity.advanceAnimation(dtMs);
 
 			const currX = this.resolveEntityTileX(entity);
 			const currY = this.resolveEntityTileY(entity);

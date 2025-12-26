@@ -210,6 +210,17 @@ export class Entity extends RPObject {
 		this["_x"] = this["x"];
 	}
 
+	/**
+	 * Advances any entity-local animation state.
+	 *
+	 * @param deltaMs
+	 *     Time elapsed since the previous update.
+	 */
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	advanceAnimation(_deltaMs: number) {
+		// default: no animations
+	}
+
 	draw(ctx: CanvasRenderingContext2D, _tileXOverride?: number, _tileYOverride?: number) {
 		if (this.sprite) {
 			this.drawSprite(ctx);

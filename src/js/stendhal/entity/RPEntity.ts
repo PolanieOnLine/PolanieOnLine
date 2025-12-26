@@ -32,6 +32,7 @@ import { BarehandAttackSprite } from "../sprite/action/BarehandAttackSprite";
 import { RangedAttackSprite } from "../sprite/action/RangedAttackSprite";
 
 import { ImageWithDimensions } from "data/ImageWithDimensions";
+import { FrameAnimator } from "../sprite/FrameAnimator";
 
 var HEALTH_BAR_HEIGHT = 6;
 
@@ -54,6 +55,8 @@ export class RPEntity extends ActiveEntity {
 	protected titleDrawYOffset: number = 0;
 	// canvas for merging outfit layers to be drawn
 	private octx?: CanvasRenderingContext2D;
+	private movementAnimator?: FrameAnimator;
+	private readonly statusAnimators = new Map<string, FrameAnimator>();
 
 	private attackers = new Map<string, Entity>();
 	private deathAnnounced = false;
@@ -124,6 +127,11 @@ export class RPEntity extends ActiveEntity {
 			this.addFloater("Dostępny", "#ffff00");
 		}
 		super.unset(key);
+	}
+
+	override advanceAnimation(deltaMs: number) {
+		this.advanceMovementAnimation(deltaMs);
+		this.advanceStatusAnimations(deltaMs);
 	}
 
 	override isVisibleToAction(_filter: boolean) {
@@ -406,24 +414,6 @@ export class RPEntity extends ActiveEntity {
 
 	drawStatusIcons(ctx: CanvasRenderingContext2D) {
 
-		function _drawAnimatedIcon(icon: CanvasImageSource, delay: number, nFrames: number, xdim: number, ydim: number, x: number, y: number) {
-			var frame = Math.floor(Date.now() / delay) % nFrames;
-			ctx.drawImage(icon, frame * xdim, 0, xdim, ydim, x, y, xdim, ydim);
-		}
-		function drawAnimatedIcon(iconPath: string, delay: number, x: number, y: number, fWidth?: number) {
-			var icon = stendhal.data.sprites.get(iconPath);
-			var dimH = icon.height;
-			var dimW = typeof (fWidth) !== "undefined" ? fWidth : dimH;
-			var nFrames = icon.width / dimW;
-			_drawAnimatedIcon(icon, delay, nFrames, dimW, dimH, x, y);
-		}
-		function drawAnimatedIconWithFrames(iconPath: string, nFrames: number, delay: number, x: number, y: number) {
-			var icon = stendhal.data.sprites.get(iconPath);
-			var ydim = icon.height;
-			var xdim = icon.width / nFrames;
-			_drawAnimatedIcon(icon, delay, nFrames, xdim, ydim, x, y);
-		}
-
 		const tileX = this.getRenderTileX();
 		const tileY = this.getRenderTileY();
 		var x = tileX * 32 - 10;
@@ -437,35 +427,80 @@ export class RPEntity extends ActiveEntity {
 		if (this.hasOwnProperty("idea")) {
 			const idea = stendhal.paths.sprites + "/ideas/" + this["idea"] + ".png";
 			const ani = stendhal.data.sprites.animations.idea[this["idea"]];
-			if (ani) {
-				drawAnimatedIcon(idea, ani.delay, x + ani.offsetX * this["width"],
-					y - this["drawHeight"] + ani.offsetY);
-			} else {
-				ctx.drawImage(stendhal.data.sprites.get(idea), x + 32 * this["width"],
-					y - this["drawHeight"]);
-			}
+			this.drawStatusIcon(ctx, {
+				key: "idea:" + this["idea"],
+				path: idea,
+				delay: ani ? ani.delay : undefined,
+				fWidth: undefined,
+				offsetX: ani ? ani.offsetX * this["width"] : 32 * this["width"],
+				offsetY: ani ? ani.offsetY - this["drawHeight"] : -this["drawHeight"],
+			});
 		}
 		if (this.hasOwnProperty("away")) {
-			drawAnimatedIcon(stendhal.paths.sprites + "/ideas/away.png", 1500, x + 32 * this["width"], y - this["drawHeight"]);
+			this.drawStatusIcon(ctx, {
+				key: "away",
+				path: stendhal.paths.sprites + "/ideas/away.png",
+				delay: 1500,
+				offsetX: 32 * this["width"],
+				offsetY: -this["drawHeight"],
+			});
 		}
 		if (this.hasOwnProperty("grumpy")) {
-			drawAnimatedIcon(stendhal.paths.sprites + "/ideas/grumpy.png", 1000, x + 5, y - this["drawHeight"]);
+			this.drawStatusIcon(ctx, {
+				key: "grumpy",
+				path: stendhal.paths.sprites + "/ideas/grumpy.png",
+				delay: 1000,
+				offsetX: 5,
+				offsetY: -this["drawHeight"],
+			});
 		}
 		if (this.hasOwnProperty("last_player_kill_time")) {
-			drawAnimatedIconWithFrames(stendhal.paths.sprites + "/ideas/pk.png", 12, 300, x, y - this["drawHeight"]);
+			this.drawStatusIcon(ctx, {
+				key: "pk",
+				path: stendhal.paths.sprites + "/ideas/pk.png",
+				delay: 300,
+				frameCount: 12,
+				offsetX: 0,
+				offsetY: -this["drawHeight"],
+			});
 		}
 		// status affects
 		if (this.hasOwnProperty("poisoned")) {
-			drawAnimatedIcon(stendhal.paths.sprites + "/status/poison.png", 100, x + 32 * this["width"] - 10, y - this["drawHeight"]);
+			this.drawStatusIcon(ctx, {
+				key: "poisoned",
+				path: stendhal.paths.sprites + "/status/poison.png",
+				delay: 100,
+				offsetX: 32 * this["width"] - 10,
+				offsetY: -this["drawHeight"],
+			});
 		}
 		if (this.hasOwnProperty("status_confuse")) {
-			drawAnimatedIcon(stendhal.paths.sprites + "/status/confuse.png", 200, x + 32 * this["width"] - 14, y - this["drawHeight"] + 16);
+			this.drawStatusIcon(ctx, {
+				key: "status_confuse",
+				path: stendhal.paths.sprites + "/status/confuse.png",
+				delay: 200,
+				offsetX: 32 * this["width"] - 14,
+				offsetY: -this["drawHeight"] + 16,
+			});
 		}
 		if (this.hasOwnProperty("status_shock")) {
-			drawAnimatedIcon(stendhal.paths.sprites + "/status/shock.png", 200, x + 32 * this["width"] - 25, y - 32, 38);
+			this.drawStatusIcon(ctx, {
+				key: "status_shock",
+				path: stendhal.paths.sprites + "/status/shock.png",
+				delay: 200,
+				offsetX: 32 * this["width"] - 25,
+				offsetY: -32,
+				fWidth: 38
+			});
 		}
 		if (this.hasOwnProperty("bleeding")) {
-			drawAnimatedIcon(stendhal.paths.sprites + "/status/bleeding.png", 100, x + 32 * this["width"] - 10, y - this["drawHeight"]);
+			this.drawStatusIcon(ctx, {
+				key: "bleeding",
+				path: stendhal.paths.sprites + "/status/bleeding.png",
+				delay: 100,
+				offsetX: 32 * this["width"] - 10,
+				offsetY: -this["drawHeight"],
+			});
 		}
 		// NPC job icons
 		let nextX = x;
@@ -586,26 +621,20 @@ export class RPEntity extends ActiveEntity {
 			var nDirections = 4;
 			const facing = this.getFaceDirection().val;
 			var yRow = facing - 1;
-			var frame = 1; // draw center column when idle
+			const idleFrame = 1; // draw center column when idle
 			// Ents are a hack in Java client too
 			if (this["class"] == "ent") {
 				nFrames = 1;
 				nDirections = 2;
 				yRow = Math.floor((facing - 1) / 2);
-				frame = 0;
+				const entIdle = 0;
+				this.ensureMovementAnimator(nFrames, entIdle, true);
+			} else {
+				this.ensureMovementAnimator(nFrames, idleFrame, true);
 			}
 			this["drawHeight"] = image.height as number / nDirections;
 			this["drawWidth"] = image.width as number / nFrames;
 			var drawX = ((this["width"] * 32) - this["drawWidth"]) / 2;
-			if ((this["speed"] > 0 || this.hasOwnProperty("active_idle")) && nFrames != 1) {
-				var animLength = nFrames * 2 - 2;
-				// % Works normally with *floats* (just whose bright idea was
-				// that?), so use floor() as a workaround
-				frame = Math.floor(Date.now() / 100) % animLength;
-				if (frame >= nFrames) {
-					frame = animLength - frame;
-				}
-			}
 			var drawY = (this["height"] * 32) - this["drawHeight"];
 
 			let opacity = parseInt(this["visibility"], 10);
@@ -621,6 +650,8 @@ export class RPEntity extends ActiveEntity {
 			// store offset for use by other drawing methods
 			this["drawOffsetX"] = localX + drawX;
 			this["drawOffsetY"] = localY + drawY;
+
+			const frame = this.movementAnimator ? this.movementAnimator.getFrame() : idleFrame;
 
 			ctx.drawImage(image, frame * this["drawWidth"], yRow * this["drawHeight"], this["drawWidth"],
 				this["drawHeight"], this["drawOffsetX"], this["drawOffsetY"], this["drawWidth"],
@@ -717,6 +748,167 @@ export class RPEntity extends ActiveEntity {
 			// overlay sprite expired
 			this.overlay = undefined;
 		}
+	}
+
+	private ensureMovementAnimator(frameCount: number, idleFrame: number, pingPong: boolean) {
+		const shouldAnimate = (this["speed"] > 0 || this.hasOwnProperty("active_idle")) && frameCount > 1;
+		if (!this.movementAnimator || this.movementAnimator.getFrameCount() !== frameCount
+			|| this.movementAnimator.getIdleFrame() !== idleFrame) {
+			this.movementAnimator = new FrameAnimator(frameCount, 100, idleFrame, true, pingPong, shouldAnimate);
+		}
+		this.movementAnimator.setAnimating(shouldAnimate);
+	}
+
+	private advanceMovementAnimation(deltaMs: number) {
+		if (this.movementAnimator) {
+			this.movementAnimator.advance(deltaMs);
+		}
+	}
+
+	private advanceStatusAnimations(deltaMs: number) {
+		const animations = this.getActiveStatusAnimations();
+		for (const anim of animations) {
+			const image = stendhal.data.sprites.get(anim.path);
+			const frameGeometry = this.computeIconFrames(image, anim.frameCount, anim.fWidth);
+			const key = anim.key;
+			const frameCount = frameGeometry.frames;
+			const delay = anim.delay ?? 100;
+			let animator = this.statusAnimators.get(key);
+			const delaySignature = Array(frameCount).fill(delay).join(",");
+			if (!animator || animator.getFrameCount() !== frameCount || animator.getDelaySignature() !== delaySignature) {
+				animator = new FrameAnimator(frameCount, delay, 0, true, false, true);
+				this.statusAnimators.set(key, animator);
+			}
+			animator.setAnimating(frameCount > 1);
+			animator.advance(deltaMs);
+		}
+		// cleanup unused animators
+		const activeKeys = new Set(animations.map((a) => a.key));
+		for (const key of Array.from(this.statusAnimators.keys())) {
+			if (!activeKeys.has(key)) {
+				this.statusAnimators.delete(key);
+			}
+		}
+	}
+
+	private drawStatusIcon(ctx: CanvasRenderingContext2D, anim: {
+		key: string,
+		path: string,
+		delay?: number,
+		frameCount?: number,
+		fWidth?: number,
+		offsetX: number,
+		offsetY: number,
+	}) {
+		const image = stendhal.data.sprites.get(anim.path);
+		const geometry = this.computeIconFrames(image, anim.frameCount, anim.fWidth);
+		if (geometry.frames <= 0 || geometry.frameHeight <= 0 || geometry.frameWidth <= 0) {
+			return;
+		}
+		const animator = this.statusAnimators.get(anim.key);
+		const frame = animator ? animator.getFrame() % geometry.frames : 0;
+		const tileX = this.getRenderTileX();
+		const tileY = this.getRenderTileY();
+		const x = tileX * 32 + anim.offsetX;
+		const y = (tileY + 1) * 32 + anim.offsetY;
+		ctx.drawImage(image, frame * geometry.frameWidth, 0, geometry.frameWidth, geometry.frameHeight,
+			x, y, geometry.frameWidth, geometry.frameHeight);
+	}
+
+	private computeIconFrames(icon: CanvasImageSource & ImageWithDimensions, frameCount?: number, explicitWidth?: number) {
+		const frameHeight = icon.height || 0;
+		const frameWidth = explicitWidth ?? frameHeight;
+		const frames = frameCount ?? (frameWidth > 0 ? Math.max(1, Math.floor((icon.width || 0) / frameWidth)) : 1);
+		return { frames, frameWidth, frameHeight };
+	}
+
+	private getActiveStatusAnimations() {
+		const entries: Array<{
+			key: string,
+			path: string,
+			delay?: number,
+			frameCount?: number,
+			fWidth?: number,
+			offsetX: number,
+			offsetY: number,
+		}> = [];
+		if (this.hasOwnProperty("idea")) {
+			const idea = stendhal.paths.sprites + "/ideas/" + this["idea"] + ".png";
+			const ani = stendhal.data.sprites.animations.idea[this["idea"]];
+			entries.push({
+				key: "idea:" + this["idea"],
+				path: idea,
+				delay: ani ? ani.delay : undefined,
+				offsetX: ani ? ani.offsetX * this["width"] : 32 * this["width"],
+				offsetY: ani ? ani.offsetY - this["drawHeight"] : -this["drawHeight"],
+			});
+		}
+		if (this.hasOwnProperty("away")) {
+			entries.push({
+				key: "away",
+				path: stendhal.paths.sprites + "/ideas/away.png",
+				delay: 1500,
+				offsetX: 32 * this["width"],
+				offsetY: -this["drawHeight"],
+			});
+		}
+		if (this.hasOwnProperty("grumpy")) {
+			entries.push({
+				key: "grumpy",
+				path: stendhal.paths.sprites + "/ideas/grumpy.png",
+				delay: 1000,
+				offsetX: 5,
+				offsetY: -this["drawHeight"],
+			});
+		}
+		if (this.hasOwnProperty("last_player_kill_time")) {
+			entries.push({
+				key: "pk",
+				path: stendhal.paths.sprites + "/ideas/pk.png",
+				delay: 300,
+				frameCount: 12,
+				offsetX: 0,
+				offsetY: -this["drawHeight"],
+			});
+		}
+		if (this.hasOwnProperty("poisoned")) {
+			entries.push({
+				key: "poisoned",
+				path: stendhal.paths.sprites + "/status/poison.png",
+				delay: 100,
+				offsetX: 32 * this["width"] - 10,
+				offsetY: -this["drawHeight"],
+			});
+		}
+		if (this.hasOwnProperty("status_confuse")) {
+			entries.push({
+				key: "status_confuse",
+				path: stendhal.paths.sprites + "/status/confuse.png",
+				delay: 200,
+				offsetX: 32 * this["width"] - 14,
+				offsetY: -this["drawHeight"] + 16,
+			});
+		}
+		if (this.hasOwnProperty("status_shock")) {
+			entries.push({
+				key: "status_shock",
+				path: stendhal.paths.sprites + "/status/shock.png",
+				delay: 200,
+				offsetX: 32 * this["width"] - 25,
+				offsetY: -32,
+				fWidth: 38
+			});
+		}
+		if (this.hasOwnProperty("bleeding")) {
+			entries.push({
+				key: "bleeding",
+				path: stendhal.paths.sprites + "/status/bleeding.png",
+				delay: 100,
+				offsetX: 32 * this["width"] - 10,
+				offsetY: -this["drawHeight"],
+			});
+		}
+		return entries;
 	}
 
 	// attack handling
