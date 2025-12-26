@@ -24,6 +24,7 @@ import { sliceIntoTiles } from "../../sprite/TileSlicer";
 import { ImageSprite } from "../../sprite/ImageSprite";
 
 import { Point } from "../../util/Point";
+import { ImageWithDimensions } from "../../data/ImageWithDimensions";
 
 
 /**
@@ -199,10 +200,10 @@ export class ItemContainerImplementation {
 			return;
 		}
 		const image = stendhal.data.sprites.get(item.sprite.filename) as CanvasImageSource;
-		if (!image || !(image as any).height) {
+		if (!image || !(image as any).height || !this.isImageWithDimensions(image)) {
 			return;
 		}
-		const sprite = new ImageSprite(image as CanvasImageSource, { src: item.sprite.filename });
+		const sprite = new ImageSprite(image as CanvasImageSource & ImageWithDimensions, { src: item.sprite.filename });
 		const slices = sliceIntoTiles(sprite, 32, 32);
 		const urls = slices.map((row) => row.map((tile) => {
 			const canvas = document.createElement("canvas");
@@ -228,6 +229,11 @@ export class ItemContainerImplementation {
 			return;
 		}
 		return row[frameX] || row[0];
+	}
+
+	private isImageWithDimensions(image: CanvasImageSource): image is CanvasImageSource & ImageWithDimensions {
+		return typeof (image as ImageWithDimensions).width === "number"
+			&& typeof (image as ImageWithDimensions).height === "number";
 	}
 
 	private onDragStart(event: DragEvent|TouchEvent) {
