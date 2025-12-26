@@ -34,6 +34,7 @@ interface SlotRenderState {
 	paddingX?: number;
 	paddingY?: number;
 	frameKey?: string;
+	backgroundSizeSet?: boolean;
 }
 
 /**
@@ -80,7 +81,6 @@ export class ItemContainerImplementation {
 			e.style.backgroundRepeat = "no-repeat";
 			e.style.backgroundOrigin = "content-box";
 			e.style.backgroundClip = "content-box";
-			e.style.backgroundSize = ItemContainerImplementation.ITEM_SIZE + "px " + ItemContainerImplementation.ITEM_SIZE + "px";
 			e.addEventListener("dragstart", (event: DragEvent) => {
 				this.onDragStart(event)
 			});
@@ -186,6 +186,8 @@ export class ItemContainerImplementation {
 								item.getXFrameIndex() * ItemContainerImplementation.ITEM_SIZE,
 								(item["state"] || 0) * ItemContainerImplementation.ITEM_SIZE);
 						e.style.backgroundImage = "url(" + frameImage.src + ")";
+						e.style.backgroundSize = ItemContainerImplementation.ITEM_SIZE + "px " + ItemContainerImplementation.ITEM_SIZE + "px";
+						slotState.backgroundSizeSet = true;
 						slotState.frameKey = frameKey;
 					}
 					const posX = baseOffsets.x;
@@ -222,12 +224,13 @@ export class ItemContainerImplementation {
 			const background = this.defaultBackgroundImage || "none";
 			if (slotState.spritePath !== background) {
 				e.style.backgroundImage = background;
-				const baseOffsets = this.computeContentOffsets(e, slotState);
-				e.style.backgroundPosition = baseOffsets.x + "px " + baseOffsets.y + "px";
+				e.style.backgroundPosition = "center center";
+				e.style.backgroundSize = "";
 				slotState.spritePath = background;
 				slotState.offsetX = 0;
 				slotState.offsetY = 0;
 				slotState.frameKey = undefined;
+				slotState.backgroundSizeSet = false;
 			}
 			if (slotState.quantity !== "") {
 				e.textContent = "";
