@@ -28,6 +28,8 @@ export class FrameAnimator {
 	private index: number;
 	private direction = 1;
 	private cycleTime = 0;
+	private carryOver = 0;
+	private static globalFpsCap?: number;
 
 	/**
 	 * @param frameCount
@@ -63,6 +65,11 @@ export class FrameAnimator {
 
 	advance(deltaMs: number): void {
 		if (!Number.isFinite(deltaMs) || deltaMs <= 0) {
+			return;
+		}
+
+		deltaMs = this.applyGlobalFpsCap(deltaMs);
+		if (deltaMs <= 0) {
 			return;
 		}
 
@@ -114,6 +121,14 @@ export class FrameAnimator {
 		return this.idleFrame;
 	}
 
+	static setGlobalFpsCap(fps?: number): void {
+		if (typeof fps === "number" && Number.isFinite(fps) && fps > 0) {
+			FrameAnimator.globalFpsCap = fps;
+		} else {
+			FrameAnimator.globalFpsCap = undefined;
+		}
+	}
+
 	private getCurrentDelay(): number {
 		if (this.index < 0 || this.index >= this.delays.length) {
 			return 0;
@@ -148,6 +163,25 @@ export class FrameAnimator {
 			}
 		}
 
-		return true;
+			return true;
+		}
+
+	/**
+	 * Applies the global FPS cap (if configured) by accumulating elapsed time
+	 * and only advancing when the minimum step duration is reached.
+	 */
+	private applyGlobalFpsCap(deltaMs: number): number {
+		if (!FrameAnimator.globalFpsCap) {
+			return deltaMs;
+		}
+
+		const minStep = 1000 / FrameAnimator.globalFpsCap;
+		this.carryOver += deltaMs;
+		if (this.carryOver < minStep) {
+			return 0;
+		}
+		const effectiveDelta = this.carryOver;
+		this.carryOver = 0;
+		return effectiveDelta;
 	}
 }

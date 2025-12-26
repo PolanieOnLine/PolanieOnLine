@@ -27,6 +27,7 @@ import { singletons } from "../SingletonRepo";
 
 import { AchievementBanner } from "../sprite/AchievementBanner";
 import { EmojiSprite } from "../sprite/EmojiSprite";
+import { FrameAnimator } from "../sprite/FrameAnimator";
 import { NotificationBubble } from "../sprite/NotificationBubble";
 import { SpeechBubble } from "../sprite/SpeechBubble";
 import { TextBubble } from "../sprite/TextBubble";
@@ -463,6 +464,7 @@ export class ViewPort {
 				}
 			);
 			this.requestedFpsLimit = initialLimit;
+			FrameAnimator.setGlobalFpsCap(this.resolveAnimationFpsCap());
 		}
 		this.loop.start();
 	}
@@ -776,6 +778,37 @@ export class ViewPort {
 			const rounded = Math.max(0, Math.round(fps));
 			this.fpsLabel.textContent = (rounded > 0 ? rounded.toString() : "--") + " fps";
 		}
+	}
+
+	private resolveAnimationFpsCap(): number | undefined {
+		const configured = stendhal.config && typeof stendhal.config.getFloat === "function"
+			? stendhal.config.getFloat("animation.fps.cap")
+			: undefined;
+		if (typeof configured === "number" && Number.isFinite(configured) && configured > 0) {
+			return configured;
+		}
+		if (this.prefersReducedMotion()) {
+			return 20;
+		}
+		if (this.isLikelyMobileDevice()) {
+			return 30;
+		}
+		return undefined;
+	}
+
+	private prefersReducedMotion(): boolean {
+		if (typeof window === "undefined" || typeof window.matchMedia !== "function") {
+			return false;
+		}
+		return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+	}
+
+	private isLikelyMobileDevice(): boolean {
+		if (typeof navigator === "undefined") {
+			return false;
+		}
+		const ua = navigator.userAgent || "";
+		return /Android|iPhone|iPad|iPod|Mobile|Windows Phone/i.test(ua);
 	}
 
 	private snapToDevicePixel(value: number): number {
