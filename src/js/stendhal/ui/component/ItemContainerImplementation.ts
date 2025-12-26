@@ -33,6 +33,7 @@ interface SlotRenderState {
 	title?: string;
 	paddingX?: number;
 	paddingY?: number;
+	frameKey?: string;
 }
 
 /**
@@ -79,6 +80,7 @@ export class ItemContainerImplementation {
 			e.style.backgroundRepeat = "no-repeat";
 			e.style.backgroundOrigin = "content-box";
 			e.style.backgroundClip = "content-box";
+			e.style.backgroundSize = ItemContainerImplementation.ITEM_SIZE + "px " + ItemContainerImplementation.ITEM_SIZE + "px";
 			e.addEventListener("dragstart", (event: DragEvent) => {
 				this.onDragStart(event)
 			});
@@ -175,9 +177,19 @@ export class ItemContainerImplementation {
 						+ "/items/" + o["class"] + "/" + o["subclass"] + ".png") + ")";
 				if (slotState.spritePath !== spritePath || slotState.offsetX !== (xOffset + 1)
 						|| slotState.offsetY !== (yOffset + 1)) {
-					e.style.backgroundImage = spritePath;
-					const posX = baseOffsets.x + xOffset;
-					const posY = baseOffsets.y + yOffset;
+					const frameKey = spritePath + ":" + item.getXFrameIndex() + ":" + (item["state"] || 0);
+					if (slotState.frameKey !== frameKey) {
+						const baseImage = stendhal.data.sprites.get(item.sprite.filename);
+						const frameImage = stendhal.data.sprites.getAreaOf(baseImage,
+								ItemContainerImplementation.ITEM_SIZE,
+								ItemContainerImplementation.ITEM_SIZE,
+								item.getXFrameIndex() * ItemContainerImplementation.ITEM_SIZE,
+								(item["state"] || 0) * ItemContainerImplementation.ITEM_SIZE);
+						e.style.backgroundImage = "url(" + frameImage.src + ")";
+						slotState.frameKey = frameKey;
+					}
+					const posX = baseOffsets.x;
+					const posY = baseOffsets.y;
 					e.style.backgroundPosition = posX + "px " + posY + "px";
 					slotState.spritePath = spritePath;
 					slotState.offsetX = posX;
@@ -215,6 +227,7 @@ export class ItemContainerImplementation {
 				slotState.spritePath = background;
 				slotState.offsetX = 0;
 				slotState.offsetY = 0;
+				slotState.frameKey = undefined;
 			}
 			if (slotState.quantity !== "") {
 				e.textContent = "";
