@@ -20,6 +20,9 @@ import { Item } from "../../entity/Item";
 
 import { singletons } from "../../SingletonRepo";
 
+import { sliceIntoTiles } from "../../sprite/TileSlicer";
+import { ImageSprite } from "../../sprite/ImageSprite";
+
 import { Point } from "../../util/Point";
 
 
@@ -35,6 +38,9 @@ export class ItemContainerImplementation {
 
 	// marked for updating certain attributes
 	private dirty = false;
+
+	private readonly tileCache = new WeakMap<Item, string[][]>();
+	private tilesReady = false;
 
 
 	// TODO: replace usage of global document.getElementById()
@@ -86,6 +92,7 @@ export class ItemContainerImplementation {
 				this.onMouseLeave(event);
 			});
 		}
+		this.prepareTiles();
 		this.update();
 	}
 
@@ -107,6 +114,9 @@ export class ItemContainerImplementation {
 	}
 
 	public update() {
+		if (!this.tilesReady) {
+			this.prepareTiles();
+		}
 		this.render();
 	}
 
@@ -130,11 +140,17 @@ export class ItemContainerImplementation {
 					xOffset = -(item.getXFrameIndex() * 32);
 				}
 
-				e.style.backgroundImage = "url("
+				const tileUrl = this.getTileForFrame(item, -xOffset / 32, -yOffset / 32);
+				if (tileUrl) {
+					e.style.backgroundImage = `url(${tileUrl})`;
+					e.style.backgroundPosition = "1px 1px";
+				} else {
+					e.style.backgroundImage = "url("
 						+ stendhal.data.sprites.checkPath(stendhal.paths.sprites
 								+ "/items/" + o["class"] + "/" + o["subclass"] + ".png")
 						+ ")";
-				e.style.backgroundPosition = (xOffset+1) + "px " + (yOffset+1) + "px";
+					e.style.backgroundPosition = (xOffset+1) + "px " + (yOffset+1) + "px";
+				}
 				e.textContent = o.formatQuantity();
 				if (this.dirty) {
 					this.updateCursor(e, item);
@@ -161,6 +177,57 @@ export class ItemContainerImplementation {
 		}
 
 		this.dirty = false;
+	}
+
+	private prepareTiles() {
+		this.tilesReady = true;
+		const myobject = this.object || marauroa.me;
+		if (!myobject || !myobject[this.slot]) {
+			return;
+		}
+		for (let i = 0; i < myobject[this.slot].count(); i++) {
+			const obj = myobject[this.slot].getByIndex(i);
+			if (!obj || !(obj instanceof Item)) {
+				continue;
+			}
+			this.ensureTiles(obj);
+		}
+	}
+
+	private ensureTiles(item: Item) {
+		if (this.tileCache.has(item)) {
+			return;
+		}
+		const image = stendhal.data.sprites.get(item.sprite.filename) as CanvasImageSource;
+		if (!image || !(image as any).height) {
+			return;
+		}
+		const sprite = new ImageSprite(image as CanvasImageSource, { src: item.sprite.filename });
+		const slices = sliceIntoTiles(sprite, 32, 32);
+		const urls = slices.map((row) => row.map((tile) => {
+			const canvas = document.createElement("canvas");
+			canvas.width = tile.getWidth();
+			canvas.height = tile.getHeight();
+			const ctx = canvas.getContext("2d");
+			if (ctx) {
+				tile.draw(ctx, 0, 0);
+			}
+			return canvas.toDataURL("image/png");
+		}));
+		this.tileCache.set(item, urls);
+	}
+
+	private getTileForFrame(item: Item, frameX: number, frameY: number): string | undefined {
+		this.ensureTiles(item);
+		const tiles = this.tileCache.get(item);
+		if (!tiles) {
+			return;
+		}
+		const row = tiles[frameY] || tiles[0];
+		if (!row) {
+			return;
+		}
+		return row[frameX] || row[0];
 	}
 
 	private onDragStart(event: DragEvent|TouchEvent) {
