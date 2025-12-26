@@ -10,10 +10,12 @@
  *                                                                         *
  ***************************************************************************/
 
-import { OverlaySpriteImpl } from "../OverlaySpriteImpl";
+import { ImageWithDimensions } from "../../data/ImageWithDimensions";
 
 import { singletons } from "../../SingletonRepo";
-
+import { OverlaySpriteImpl } from "../OverlaySpriteImpl";
+import { ImageSprite } from "../ImageSprite";
+import { drawTiledRegion } from "../SpriteTileCache";
 
 /**
  * Represents an entity animation overlay.
@@ -30,7 +32,8 @@ export class SkillEffect implements OverlaySpriteImpl {
 	private cycleTime: number;
 	/** Timestamp of most recent draw. */
 	private drawTime: number;
-
+	/** Sprite wrapper for tile slicing. */
+	private sprite?: ImageSprite;
 
 	/**
 	 * Creates a new skill effect sprite.
@@ -71,8 +74,7 @@ export class SkillEffect implements OverlaySpriteImpl {
 	 */
 	protected drawInternal(ctx: CanvasRenderingContext2D, colIdx: number, x: number, y: number,
 			drawWidth: number, drawHeight: number) {
-		ctx.drawImage(this.image, colIdx*drawWidth, 0, drawWidth, drawHeight, x, y, drawWidth,
-				drawHeight);
+		this.drawTiled(ctx, colIdx*drawWidth, 0, drawWidth, drawHeight, x, y);
 	}
 
 	draw(ctx: CanvasRenderingContext2D, x=0, y=0, drawWidth=48, drawHeight=64): boolean {
@@ -96,5 +98,31 @@ export class SkillEffect implements OverlaySpriteImpl {
 
 	expired(): boolean {
 		return this.expires > 0 && this.drawTime > this.expires;
+	}
+
+	/**
+	 * Retrieves or initializes the sprite wrapper for tiling.
+	 */
+	protected getSprite(): ImageSprite | undefined {
+		if (!this.image.height) {
+			return undefined;
+		}
+		if (!this.sprite) {
+			this.sprite = new ImageSprite(this.image as CanvasImageSource & ImageWithDimensions,
+					this.image.src);
+		}
+		return this.sprite;
+	}
+
+	/**
+	 * Draws a frame using cached 32x32 tiles.
+	 */
+	protected drawTiled(ctx: CanvasRenderingContext2D, srcX: number, srcY: number, width: number,
+			height: number, destX: number, destY: number) {
+		const sprite = this.getSprite();
+		if (!sprite) {
+			return;
+		}
+		drawTiledRegion(ctx, sprite, srcX, srcY, width, height, destX, destY);
 	}
 }
