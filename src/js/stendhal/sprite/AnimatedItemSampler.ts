@@ -46,7 +46,7 @@ export class AnimatedItemSampler {
 
 		const canvas = this.createCanvas(width, height);
 		const ctx = canvas.getContext("2d");
-		if (!ctx) {
+		if (!this.is2DContext(ctx)) {
 			return undefined;
 		}
 		ctx.clearRect(0, 0, width, height);
@@ -104,6 +104,10 @@ export class AnimatedItemSampler {
 			clearInterval(this.cleanupHandle);
 			this.cleanupHandle = undefined;
 		}
+	}
+
+	private is2DContext(ctx: RenderingContext | OffscreenCanvasRenderingContext2D | null): ctx is CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D {
+		return !!ctx && typeof (ctx as CanvasRenderingContext2D).drawImage === "function";
 	}
 }
 

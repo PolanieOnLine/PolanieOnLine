@@ -266,7 +266,10 @@ export class MiniMapComponent extends Component {
 		buffer.width = width;
 		buffer.height = height;
 
-		const ctx = buffer.getContext("2d")!;
+		const ctx = buffer.getContext("2d");
+		if (!ctx || !("createImageData" in ctx)) {
+			return false;
+		}
 		const imgData = ctx.createImageData(width, height);
 
 		for (let y = 0; y < height; y++) {
