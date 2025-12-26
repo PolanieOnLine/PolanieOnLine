@@ -79,6 +79,10 @@ export class PlayerEquipmentComponent extends Component {
 
 		// hide pouch by default
 		this.showPouch(false);
+
+		for (const inv of this.inventory) {
+			inv.setInventoryVisible(this.isVisible());
+		}
 	}
 
 	public update() {
@@ -118,6 +122,13 @@ export class PlayerEquipmentComponent extends Component {
 		this.pendingRefresh = true;
 		for (const inv of this.inventory) {
 			inv.markDirty();
+		}
+	}
+
+	public override setVisible(visible = true) {
+		super.setVisible(visible);
+		for (const inv of this.inventory) {
+			inv.setInventoryVisible(visible);
 		}
 	}
 

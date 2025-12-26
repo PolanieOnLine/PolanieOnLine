@@ -40,6 +40,7 @@ export class ItemInventoryComponent extends Component {
 		this.itemContainerImplementation = new ItemContainerImplementation(
 			this.componentElement, slot, sizeX * sizeY, object, this.suffix, quickPickup, defaultImage);
 		stendhal.ui.equip.add(this.itemContainerImplementation);
+		this.itemContainerImplementation.setInventoryVisible(this.isVisible());
 	}
 
 	setObject(object: any) {
@@ -64,6 +65,11 @@ export class ItemInventoryComponent extends Component {
 
 	public markDirty() {
 		this.itemContainerImplementation.markDirty();
+	}
+
+	public override setVisible(visible = true) {
+		super.setVisible(visible);
+		this.itemContainerImplementation.setInventoryVisible(visible);
 	}
 
 	public override onParentClose() {
