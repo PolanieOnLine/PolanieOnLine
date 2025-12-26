@@ -178,12 +178,24 @@ export class ItemContainerImplementation {
 				const frameKey = item.getXFrameIndex() + ":" + (item["state"] || 0);
 				if (slotState.spritePath !== spritePath || slotState.frameKey !== frameKey) {
 					const frameImage = this.getCachedFrame(item);
-					e.style.backgroundImage = "url(" + frameImage.src + ")";
-					e.style.backgroundSize = ItemContainerImplementation.ITEM_SIZE + "px " + ItemContainerImplementation.ITEM_SIZE + "px";
-					e.style.backgroundPosition = baseOffsets.x + "px " + baseOffsets.y + "px";
+					if (frameImage) {
+						e.style.backgroundImage = "url(" + frameImage.src + ")";
+						e.style.backgroundSize = ItemContainerImplementation.ITEM_SIZE + "px " + ItemContainerImplementation.ITEM_SIZE + "px";
+						e.style.backgroundPosition = baseOffsets.x + "px " + baseOffsets.y + "px";
+						slotState.offsetX = baseOffsets.x;
+						slotState.offsetY = baseOffsets.y;
+					} else {
+						const frameOffsetX = item.getXFrameIndex() * ItemContainerImplementation.ITEM_SIZE;
+						const frameOffsetY = (item["state"] || 0) * ItemContainerImplementation.ITEM_SIZE;
+						e.style.backgroundImage = spritePath;
+						e.style.backgroundSize = "";
+						const posX = baseOffsets.x - frameOffsetX;
+						const posY = baseOffsets.y - frameOffsetY;
+						e.style.backgroundPosition = posX + "px " + posY + "px";
+						slotState.offsetX = baseOffsets.x;
+						slotState.offsetY = baseOffsets.y;
+					}
 					slotState.spritePath = spritePath;
-					slotState.offsetX = baseOffsets.x;
-					slotState.offsetY = baseOffsets.y;
 					slotState.frameKey = frameKey;
 				}
 
@@ -559,13 +571,13 @@ export class ItemContainerImplementation {
 		return { x: baseX, y: baseY };
 	}
 
-	private getCachedFrame(item: Item): HTMLImageElement {
+	private getCachedFrame(item: Item): HTMLImageElement | undefined {
 		const key = item.sprite.filename + ":" + item.getXFrameIndex() + ":" + (item["state"] || 0);
 		let frame = ItemContainerImplementation.frameCache.get(key);
 		if (!frame) {
 			let baseImage = stendhal.data.sprites.get(item.sprite.filename) as HTMLImageElement;
-			if (!(baseImage instanceof Image) || !baseImage.src) {
-				baseImage = stendhal.data.sprites.getFailsafe() as HTMLImageElement;
+			if (!(baseImage instanceof Image) || !baseImage.complete || baseImage.naturalWidth < ItemContainerImplementation.ITEM_SIZE) {
+				return;
 			}
 			const extracted = stendhal.data.sprites.getAreaOf(
 					baseImage,
@@ -575,10 +587,8 @@ export class ItemContainerImplementation {
 					(item["state"] || 0) * ItemContainerImplementation.ITEM_SIZE);
 			if (extracted instanceof Image) {
 				frame = extracted;
-			} else {
-				frame = stendhal.data.sprites.getFailsafe() as HTMLImageElement;
+				ItemContainerImplementation.frameCache.set(key, frame);
 			}
-			ItemContainerImplementation.frameCache.set(key, frame);
 		}
 		return frame;
 	}
