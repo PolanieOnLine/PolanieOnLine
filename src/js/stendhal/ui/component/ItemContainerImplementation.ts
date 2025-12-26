@@ -34,7 +34,6 @@ interface SlotRenderState {
 	paddingX?: number;
 	paddingY?: number;
 	frameKey?: string;
-	backgroundSizeSet?: boolean;
 }
 
 /**
@@ -175,27 +174,20 @@ export class ItemContainerImplementation {
 
 				const spritePath = "url(" + stendhal.data.sprites.checkPath(stendhal.paths.sprites
 						+ "/items/" + o["class"] + "/" + o["subclass"] + ".png") + ")";
-				if (slotState.spritePath !== spritePath || slotState.offsetX !== (xOffset + 1)
-						|| slotState.offsetY !== (yOffset + 1)) {
-					const frameKey = spritePath + ":" + item.getXFrameIndex() + ":" + (item["state"] || 0);
-					if (slotState.frameKey !== frameKey) {
-						const baseImage = stendhal.data.sprites.get(item.sprite.filename);
-						const frameImage = stendhal.data.sprites.getAreaOf(baseImage,
-								ItemContainerImplementation.ITEM_SIZE,
-								ItemContainerImplementation.ITEM_SIZE,
-								item.getXFrameIndex() * ItemContainerImplementation.ITEM_SIZE,
-								(item["state"] || 0) * ItemContainerImplementation.ITEM_SIZE);
-						e.style.backgroundImage = "url(" + frameImage.src + ")";
-						e.style.backgroundSize = ItemContainerImplementation.ITEM_SIZE + "px " + ItemContainerImplementation.ITEM_SIZE + "px";
-						slotState.backgroundSizeSet = true;
-						slotState.frameKey = frameKey;
-					}
-					const posX = baseOffsets.x;
-					const posY = baseOffsets.y;
+				if (slotState.spritePath !== spritePath || slotState.frameKey !== (item.getXFrameIndex() + ":" + (item["state"] || 0))
+						|| slotState.offsetX !== baseOffsets.x || slotState.offsetY !== baseOffsets.y) {
+					const frameKey = item.getXFrameIndex() + ":" + (item["state"] || 0);
+					const frameOffsetX = item.getXFrameIndex() * ItemContainerImplementation.ITEM_SIZE;
+					const frameOffsetY = (item["state"] || 0) * ItemContainerImplementation.ITEM_SIZE;
+					e.style.backgroundImage = spritePath;
+					e.style.backgroundSize = "";
+					const posX = baseOffsets.x - frameOffsetX;
+					const posY = baseOffsets.y - frameOffsetY;
 					e.style.backgroundPosition = posX + "px " + posY + "px";
 					slotState.spritePath = spritePath;
-					slotState.offsetX = posX;
-					slotState.offsetY = posY;
+					slotState.offsetX = baseOffsets.x;
+					slotState.offsetY = baseOffsets.y;
+					slotState.frameKey = frameKey;
 				}
 
 				const quantityText = o.formatQuantity();
@@ -230,7 +222,6 @@ export class ItemContainerImplementation {
 				slotState.offsetX = 0;
 				slotState.offsetY = 0;
 				slotState.frameKey = undefined;
-				slotState.backgroundSizeSet = false;
 			}
 			if (slotState.quantity !== "") {
 				e.textContent = "";
