@@ -146,8 +146,8 @@ export class ViewPort {
 		this.fallbackAspectRatio = this.baseRenderWidth && this.baseRenderHeight
 			? this.baseRenderWidth / this.baseRenderHeight
 			: (4 / 3);
-		this.targetDesktopResolution = { x: 1280, y: 720 };
-		this.targetDesktopFallbackResolution = { x: 1024, y: 768 };
+		this.targetDesktopResolution = { x: 844, y: 633 };
+		this.targetDesktopFallbackResolution = { x: 844, y: 633 };
 		this.targetMobileResolution = { x: 844, y: 633 };
 		this.desktopPovReference = this.targetDesktopResolution;
 
@@ -181,10 +181,10 @@ export class ViewPort {
 		this.assignInitialStyleFrom(element.style.getPropertyValue("max-width"), "max-width");
 		this.assignInitialStyleFrom(element.style.getPropertyValue("max-height"), "max-height");
 		if (!this.initialStyle["max-width"]) {
-			this.initialStyle["max-width"] = "calc((100dvh - 5em) * 800 / 600)";
+			this.initialStyle["max-width"] = "844px";
 		}
 		if (!this.initialStyle["max-height"]) {
-			this.initialStyle["max-height"] = "calc(100dvh - 5em)";
+			this.initialStyle["max-height"] = "633px";
 		}
 	}
 
