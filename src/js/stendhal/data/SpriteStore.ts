@@ -94,6 +94,9 @@ export class SpriteStore {
 			this.markBroken(filename, event);
 			this.useFailsafe(image);
 		};
+		if (image.assetUrl) {
+			image.src = image.assetUrl;
+		}
 		return image;
 	}
 
@@ -104,41 +107,36 @@ export class SpriteStore {
 		if (image.loadPromise) {
 			return image.loadPromise;
 		}
-		if (this.shouldBypassBinaryCache(filename)) {
-			const promise = new Promise<SpriteImage>((resolve) => {
-				const onLoad = () => {
-					image.removeEventListener("load", onLoad);
-					image.removeEventListener("error", onError);
-					resolve(image);
-				};
-				const onError = (event: Event) => {
-					image.removeEventListener("load", onLoad);
-					image.removeEventListener("error", onError);
-					this.markBroken(filename, event);
-					this.useFailsafe(image);
-					resolve(image);
-				};
-				image.addEventListener("load", onLoad);
-				image.addEventListener("error", onError);
-				if (!image.src) {
-					image.src = image.assetUrl || filename;
+		const promise = new Promise<SpriteImage>((resolve) => {
+			const onLoad = () => {
+				image.removeEventListener("load", onLoad);
+				image.removeEventListener("error", onError);
+				resolve(image);
+			};
+			const onError = (event: Event) => {
+				image.removeEventListener("load", onLoad);
+				image.removeEventListener("error", onError);
+				if (!this.shouldBypassBinaryCache(filename)) {
+					this.binaryCache.load(filename).then((blob) => {
+						return this.assignBlobToImage(filename, image, blob);
+					}).then(() => resolve(image)).catch((error) => {
+						this.markBroken(filename, error || event);
+						this.useFailsafe(image);
+						resolve(image);
+					});
+					return;
 				}
-			});
-			image.loadPromise = promise;
-			promise.then(() => {
-				image.loadPromise = undefined;
-			}, () => {
-				image.loadPromise = undefined;
-			});
-			return promise;
-		}
-		const promise = this.binaryCache.load(filename).then((blob) => {
-			return this.assignBlobToImage(filename, image, blob);
-		}).catch((error) => {
-			this.markBroken(filename, error);
-			this.useFailsafe(image);
-			return image;
+				this.markBroken(filename, event);
+				this.useFailsafe(image);
+				resolve(image);
+			};
+			image.addEventListener("load", onLoad);
+			image.addEventListener("error", onError);
+			if (!image.src) {
+				image.src = image.assetUrl || filename;
+			}
 		});
+
 		image.loadPromise = promise;
 		promise.then(() => {
 			image.loadPromise = undefined;
