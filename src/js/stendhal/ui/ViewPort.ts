@@ -805,7 +805,8 @@ export class ViewPort {
 		if (this.isLikelyMobileDevice()) {
 			return 30;
 		}
-		return undefined;
+		// default hard cap to keep item/idle animations lightweight
+		return 1;
 	}
 
 	private prefersReducedMotion(): boolean {

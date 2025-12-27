@@ -87,7 +87,8 @@ export class SpriteStore {
 			(image as any).decoding = "async";
 		}
 		if ("loading" in image) {
-			(image as any).loading = "lazy";
+			// eager loading reduces cases where sprites stay invisible until much later
+			(image as any).loading = "eager";
 		}
 		image.onerror = (event: Event | string | undefined) => {
 			this.markBroken(filename, event);
