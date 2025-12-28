@@ -31,6 +31,13 @@ export class Item extends Entity {
 	private animated: boolean | null = null;
 	private xFrames: number | null = null;
 	private yFrames: number | null = null;
+	private readonly isMobileLikely: boolean = (() => {
+		if (typeof navigator === "undefined") {
+			return false;
+		}
+		const ua = navigator.userAgent || "";
+		return /Android|iPhone|iPad|iPod|Mobile|Windows Phone/i.test(ua);
+	})();
 
 	constructor() {
 		super();
@@ -130,6 +137,12 @@ export class Item extends Entity {
 	}
 
 	public stepAnimation() {
+		if (!this.canAnimateFrames()) {
+			this.sprite.offsetX = 0;
+			this.sprite.offsetY = 0;
+			this.animated = false;
+			return;
+		}
 		const currentTimeStamp = +new Date();
 		if (this.frameTimeStamp == 0) {
 			this.frameTimeStamp = currentTimeStamp;
@@ -181,10 +194,22 @@ export class Item extends Entity {
 		}
 		if (this.animated == null) {
 			// store animation state
-			this.animated = (stendhal.data.sprites.get(this.sprite.filename).width / 32) > 1;
+			this.animated = this.canAnimateFrames() && (stendhal.data.sprites.get(this.sprite.filename).width / 32) > 1;
 		}
 
 		return this.animated;
+	}
+
+	private canAnimateFrames(): boolean {
+		const cfg = stendhal.config;
+		const lowEffects = cfg && typeof cfg.getBoolean === "function" ? cfg.getBoolean("effect.low") : false;
+		const reducedMotion = cfg && typeof cfg.getBoolean === "function" ? cfg.getBoolean("effect.reduced-motion") : false;
+		if (lowEffects || reducedMotion || this.isMobileLikely) {
+			return false;
+		}
+		const img = stendhal.data.sprites.get(this.sprite.filename);
+		const frameWidth = (img && img.width) ? img.width : 32;
+		return frameWidth <= 128; // avoid animating very wide item sheets on low-end devices
 	}
 
 	private setXFrameIndex(idx: number) {
