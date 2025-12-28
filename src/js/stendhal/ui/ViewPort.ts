@@ -119,6 +119,8 @@ export class ViewPort {
 	private readonly minCanvasHeight: number;
 	private parentResizeObserver?: ResizeObserver;
 	private readonly handleWindowResize: () => void;
+	private lastUiRefresh = 0;
+	private readonly uiRefreshIntervalMs = 120;
 
 	/** Singleton instance. */
 	private static instance: ViewPort;
@@ -556,8 +558,12 @@ export class ViewPort {
 		this.drawSpeechBubbles();
 		this.drawNotificationSprites();
 
-		stendhal.ui.equip.update();
-		(ui.get(UIComponentEnum.PlayerEquipment) as PlayerEquipmentComponent).update();
+		const uiTimestamp = this.getTimestamp();
+		if (!this.lastUiRefresh || (uiTimestamp - this.lastUiRefresh) >= this.uiRefreshIntervalMs) {
+			stendhal.ui.equip.update();
+			(ui.get(UIComponentEnum.PlayerEquipment) as PlayerEquipmentComponent).update();
+			this.lastUiRefresh = uiTimestamp;
+		}
 
 		this.renderMiniMap(alpha);
 	}
@@ -906,6 +912,13 @@ export class ViewPort {
 			return undefined;
 		}
 		return this.blendMethod as GlobalCompositeOperation;
+	}
+
+	private getTimestamp(): number {
+		if (typeof(performance) !== "undefined" && typeof(performance.now) === "function") {
+			return performance.now();
+		}
+		return +new Date();
 	}
 
 	/**
