@@ -15,13 +15,10 @@ import { AbstractSettingsTab } from "./AbstractSettingsTab";
 import { SettingsDialog } from "../SettingsDialog";
 
 import { SettingsComponent } from "../../toolkit/SettingsComponent";
-import { WidgetType } from "../../../data/enum/WidgetType";
 
 import { singletons } from "../../../SingletonRepo";
 
 import { StandardMessages } from "../../../util/StandardMessages";
-
-import { ViewPort } from "../../ViewPort";
 
 
 export class VisualsTab extends AbstractSettingsTab {
@@ -93,32 +90,5 @@ export class VisualsTab extends AbstractSettingsTab {
 			parent.refresh();
 		});
 		chkEntityOverlay.addTo(col1);
-
-		const fpsOptions = [
-			{label: "Nieograniczone", value: 0},
-			{label: "60 FPS", value: 60},
-			{label: "90 FPS", value: 90},
-			{label: "120 FPS", value: 120},
-			{label: "144 FPS", value: 144}
-		];
-		const fpsSelect = new SettingsComponent("sel_fps_limit", "Liczba klatek na sekundę", WidgetType.SELECT);
-		for (const option of fpsOptions) {
-			fpsSelect.addOption(option.label, option.value.toString());
-		}
-		const currentLimit = Math.trunc(config.getFloat("loop.fps.limit", 0));
-		let selectedIndex = fpsOptions.findIndex((opt) => opt.value === currentLimit);
-		if (selectedIndex < 0) {
-			selectedIndex = fpsOptions.length - 1;
-		}
-		fpsSelect.setValue(selectedIndex);
-		fpsSelect.setTooltip("Ogranicz renderowanie do określonego limitu klatek na sekundę", "Renderuj z pełną częstotliwością odświeżania");
-		fpsSelect.addListener(() => {
-			const idx = fpsSelect.getValue() as number;
-			const choice = fpsOptions[idx] || fpsOptions[fpsOptions.length - 1];
-			config.set("loop.fps.limit", choice.value.toString());
-			ViewPort.get().setFpsLimit(choice.value);
-			parent.refresh();
-		});
-		fpsSelect.addTo(col1);
 	}
 }
