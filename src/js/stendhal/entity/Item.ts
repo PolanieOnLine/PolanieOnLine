@@ -13,7 +13,6 @@ import { ItemMap } from "./ItemMap";
 import { MenuItem } from "../action/MenuItem";
 import { Entity } from "./Entity";
 import { TextSprite } from "../sprite/TextSprite";
-import { animatedItemSampler } from "../sprite/AnimatedItemSampler";
 
 declare var marauroa: any;
 declare var stendhal: any;
@@ -96,37 +95,6 @@ export class Item extends Entity {
 			let textMetrics = this.quantityTextSprite.getTextMetrics(ctx);
 			this.quantityTextSprite.draw(ctx, x + (32 - textMetrics.width), y + 6);
 		}
-	}
-
-	override drawSpriteAt(ctx: CanvasRenderingContext2D, x: number, y: number) {
-		if (this.drawSampledFrame(ctx, x, y)) {
-			return;
-		}
-		super.drawSpriteAt(ctx, x, y);
-	}
-
-	private drawSampledFrame(ctx: CanvasRenderingContext2D, x: number, y: number): boolean {
-		if (!this.isAnimated()) {
-			return false;
-		}
-		const image = stendhal.data.sprites.get(this.sprite.filename) as CanvasImageSource;
-		if (!image || !(image as any).height) {
-			return false;
-		}
-		const width = this.sprite.width || (image as any).width || 32;
-		const height = this.sprite.height || (image as any).height || 32;
-		const offsetX = this.sprite.offsetX || 0;
-		const offsetY = this.sprite.offsetY || 0;
-
-		const preSampled = animatedItemSampler.getFrame(image, offsetX, offsetY, width, height);
-		if (!preSampled) {
-			return false;
-		}
-
-		const destX = x + Math.floor((this.getWidth() * 32 - width) / 2);
-		const destY = y + Math.floor((this.getHeight() * 32 - height) / 2);
-		ctx.drawImage(preSampled, destX, destY, width, height);
-		return true;
 	}
 
 	public stepAnimation() {
