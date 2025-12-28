@@ -47,9 +47,9 @@ export class SkillEffect implements OverlaySpriteImpl {
 	 *   Time, in milliseconds, sprite drawing should persist. Any value less than 1 signifies that
 	 *   sprite should not expire.
 	 */
-	constructor(name: string, delay = 100, duration = 0) {
+	constructor(name: string, delay=100, duration=0) {
 		this.image = singletons.getSpriteStore().get(singletons.getPaths().sprites + "/entity/overlay/"
-			+ name + ".png");
+				+ name + ".png");
 		this.cycleTime = Date.now();
 		this.drawTime = 0;
 		this.delay = delay > 0 ? delay : 100;
@@ -73,11 +73,11 @@ export class SkillEffect implements OverlaySpriteImpl {
 	 *   Height of each frame to draw.
 	 */
 	protected drawInternal(ctx: CanvasRenderingContext2D, colIdx: number, x: number, y: number,
-		drawWidth: number, drawHeight: number) {
-		this.drawTiled(ctx, colIdx * drawWidth, 0, drawWidth, drawHeight, x, y);
+			drawWidth: number, drawHeight: number) {
+		this.drawTiled(ctx, colIdx*drawWidth, 0, drawWidth, drawHeight, x, y);
 	}
 
-	draw(ctx: CanvasRenderingContext2D, x = 0, y = 0, drawWidth = 48, drawHeight = 64): boolean {
+	draw(ctx: CanvasRenderingContext2D, x=0, y=0, drawWidth=48, drawHeight=64): boolean {
 		this.drawTime = Date.now();
 		if (!this.image.height) {
 			return this.expired();
@@ -109,7 +109,7 @@ export class SkillEffect implements OverlaySpriteImpl {
 		}
 		if (!this.sprite) {
 			this.sprite = new ImageSprite(this.image as CanvasImageSource & ImageWithDimensions,
-				{ src: this.image.src });
+					this.image.src);
 		}
 		return this.sprite;
 	}
@@ -118,7 +118,7 @@ export class SkillEffect implements OverlaySpriteImpl {
 	 * Draws a frame using cached 32x32 tiles.
 	 */
 	protected drawTiled(ctx: CanvasRenderingContext2D, srcX: number, srcY: number, width: number,
-		height: number, destX: number, destY: number) {
+			height: number, destX: number, destY: number) {
 		const sprite = this.getSprite();
 		if (!sprite) {
 			return;
