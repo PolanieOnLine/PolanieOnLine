@@ -33,14 +33,6 @@ export class ItemContainerImplementation {
 	private timestampMouseDownPrev = 0;
 	private lastClickedId = "";
 
-	private readonly animationIntervalMs = 150;
-	private animationTimerId: number | null = null;
-	private animationFramePending = false;
-	private slotElements: (HTMLElement | undefined)[] = [];
-	private slotItems: (Item | undefined)[] = [];
-	private dirtySlots: Set<number> = new Set();
-	private tooltipDirty = true;
-
 	// marked for updating certain attributes
 	private dirty = false;
 	private inventoryVisible = true;
@@ -59,12 +51,8 @@ export class ItemContainerImplementation {
 
 	public init(size: number) {
 		this.size = size;
-		this.slotElements = new Array(size);
-		this.slotItems = new Array(size);
-		this.markAllSlotsDirty();
 		for (let i = 0; i < size; i++) {
 			let e = this.parentElement.querySelector("#" + this.slot + this.suffix + i) as HTMLElement;
-			this.slotElements[i] = e;
 			e.setAttribute("draggable", "true");
 			e.addEventListener("dragstart", (event: DragEvent) => {
 				this.onDragStart(event)
@@ -100,7 +88,6 @@ export class ItemContainerImplementation {
 				this.onMouseLeave(event);
 			});
 		}
-		this.startAnimationTimer();
 		this.update();
 	}
 
@@ -118,21 +105,71 @@ export class ItemContainerImplementation {
 	 * Marks items to update cursors & tooltips.
 	 */
 	public markDirty() {
-		this.tooltipDirty = true;
-		this.markAllSlotsDirty();
 		this.dirty = true;
 	}
 
 	public update() {
+		this.render();
+	}
+
+	public render() {
 		if (!this.inventoryVisible) {
 			return;
 		}
-		this.detectSlotChanges();
-		const rendered = this.renderDirtySlots();
-		if (rendered) {
-			this.tooltipDirty = false;
+
+		const renderStaticFrame = this.renderStaticFrame;
+		let myobject = this.object || marauroa.me;
+		let cnt = 0;
+		if (myobject && myobject[this.slot]) {
+			for (let i = 0; i < myobject[this.slot].count(); i++) {
+				let o = myobject[this.slot].getByIndex(i);
+				let e = this.parentElement.querySelector("#" + this.slot + this.suffix + cnt) as HTMLElement;
+				if (!e) {
+					continue;
+				}
+
+				this.dirty = this.dirty || o !== (e as any).dataItem;
+				const item = <Item>o;
+				let xOffset = 0;
+				let yOffset = (item["state"] || 0) * -32;
+				if (item.isAnimated()) {
+					if (!renderStaticFrame) {
+						item.stepAnimation();
+						xOffset = -(item.getXFrameIndex() * 32);
+					}
+				}
+
+				e.style.backgroundImage = "url("
+					+ stendhal.data.sprites.checkPath(stendhal.paths.sprites
+						+ "/items/" + o["class"] + "/" + o["subclass"] + ".png")
+					+ ")";
+				e.style.backgroundPosition = (xOffset + 1) + "px " + (yOffset + 1) + "px";
+				e.textContent = o.formatQuantity();
+				if (this.dirty) {
+					this.updateCursor(e, item);
+					this.updateToolTip(e, item);
+				}
+				(e as any).dataItem = o;
+				cnt++;
+			}
 		}
-		this.animationFramePending = false;
+
+		for (let i = cnt; i < this.size; i++) {
+			let e = this.parentElement.querySelector("#" + this.slot + this.suffix + i) as HTMLElement;
+			if (this.defaultImage) {
+				e.style.backgroundImage = "url(" + stendhal.paths.gui + "/" + this.defaultImage + ")";
+			} else {
+				e.style.backgroundImage = "none";
+			}
+			e.textContent = "";
+			if (this.dirty) {
+				this.updateCursor(e);
+				this.updateToolTip(e);
+			}
+			(e as any).dataItem = undefined;
+		}
+
+		this.dirty = false;
 	}
 
 	public setInventoryVisible(visible: boolean) {
@@ -143,7 +180,6 @@ export class ItemContainerImplementation {
 		this.inventoryVisible = visible;
 
 		if (!visible) {
-			this.stopAnimationTimer();
 			if (this.animationResumeHandle !== null) {
 				cancelAnimationFrame(this.animationResumeHandle);
 				this.animationResumeHandle = null;
@@ -152,126 +188,14 @@ export class ItemContainerImplementation {
 			return;
 		}
 
-		this.markAllSlotsDirty();
-		this.tooltipDirty = true;
-		this.startAnimationTimer();
 		this.renderStaticFrame = true;
-		this.detectSlotChanges();
-		this.renderDirtySlots();
+
+		this.render();
 
 		this.animationResumeHandle = requestAnimationFrame(() => {
 			this.renderStaticFrame = false;
 			this.animationResumeHandle = null;
 		});
-	}
-
-	private detectSlotChanges() {
-		const myobject = this.object || marauroa.me;
-		const container = myobject ? myobject[this.slot] : undefined;
-		const count = typeof container?.count === "function" ? container.count() : 0;
-		const shouldAnimate = this.animationFramePending && !this.renderStaticFrame;
-		for (let i = 0; i < this.size; i++) {
-			const item = i < count ? container.getByIndex(i) as Item : undefined;
-			const previous = this.slotItems[i];
-			if (item !== previous) {
-				this.slotItems[i] = item;
-				this.dirtySlots.add(i);
-			} else if (shouldAnimate && item?.isAnimated()) {
-				this.dirtySlots.add(i);
-			}
-		}
-	}
-
-	private renderDirtySlots(): boolean {
-		if (this.dirtySlots.size === 0) {
-			this.dirty = false;
-			return false;
-		}
-
-		const renderStaticFrame = this.renderStaticFrame;
-		const animatedFrame = this.animationFramePending && !renderStaticFrame;
-		for (const idx of this.dirtySlots) {
-			let element = this.slotElements[idx];
-			if (!element) {
-				element = this.parentElement.querySelector("#" + this.slot + this.suffix + idx) as HTMLElement;
-				this.slotElements[idx] = element;
-			}
-			if (!element) {
-				continue;
-			}
-			const item = this.slotItems[idx];
-			const previous = (element as any).dataItem;
-
-			if (item) {
-				let xOffset = 0;
-				let yOffset = (item["state"] || 0) * -32;
-				if (item.isAnimated() && animatedFrame) {
-					item.stepAnimation();
-					xOffset = -(item.getXFrameIndex() * 32);
-				}
-
-				element.style.backgroundImage = "url("
-					+ stendhal.data.sprites.checkPath(stendhal.paths.sprites
-						+ "/items/" + item["class"] + "/" + item["subclass"] + ".png")
-					+ ")";
-				element.style.backgroundPosition = (xOffset + 1) + "px " + (yOffset + 1) + "px";
-				element.textContent = item.formatQuantity();
-				if (this.dirty || this.tooltipDirty || previous !== item) {
-					this.updateCursor(element, item);
-					this.updateToolTip(element, item);
-				}
-			} else {
-				if (this.defaultImage) {
-					element.style.backgroundImage = "url(" + stendhal.paths.gui + "/" + this.defaultImage + ")";
-				} else {
-					element.style.backgroundImage = "none";
-				}
-				element.textContent = "";
-				if (this.dirty || this.tooltipDirty || previous) {
-					this.updateCursor(element);
-					this.updateToolTip(element);
-				}
-			}
-			(element as any).dataItem = item;
-		}
-
-		this.dirtySlots.clear();
-		this.dirty = false;
-		return true;
-	}
-
-	private markAllSlotsDirty() {
-		for (let i = 0; i < this.size; i++) {
-			this.dirtySlots.add(i);
-		}
-	}
-
-	private markAnimatedSlotsDirty() {
-		for (let i = 0; i < this.slotItems.length; i++) {
-			if (this.slotItems[i]?.isAnimated()) {
-				this.dirtySlots.add(i);
-			}
-		}
-	}
-
-	private startAnimationTimer() {
-		if (this.animationTimerId !== null) {
-			return;
-		}
-		this.animationTimerId = window.setInterval(() => {
-			if (!this.inventoryVisible) {
-				return;
-			}
-			this.animationFramePending = true;
-			this.markAnimatedSlotsDirty();
-		}, this.animationIntervalMs);
-	}
-
-	private stopAnimationTimer() {
-		if (this.animationTimerId !== null) {
-			window.clearInterval(this.animationTimerId);
-			this.animationTimerId = null;
-		}
 	}
 
 	private onDragStart(event: DragEvent | TouchEvent) {
