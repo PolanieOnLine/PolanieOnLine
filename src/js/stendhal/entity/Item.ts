@@ -14,6 +14,7 @@ import { MenuItem } from "../action/MenuItem";
 import { Entity } from "./Entity";
 import { TextSprite } from "../sprite/TextSprite";
 import { animatedItemSampler } from "../sprite/AnimatedItemSampler";
+import { FrameAnimator } from "../sprite/FrameAnimator";
 
 declare var marauroa: any;
 declare var stendhal: any;
@@ -31,6 +32,7 @@ export class Item extends Entity {
 	private animated: boolean | null = null;
 	private xFrames: number | null = null;
 	private yFrames: number | null = null;
+	private animator?: FrameAnimator;
 	private readonly isMobileLikely: boolean = (() => {
 		if (typeof navigator === "undefined") {
 			return false;
@@ -89,8 +91,7 @@ export class Item extends Entity {
 	}
 
 	override draw(ctx: CanvasRenderingContext2D, _tileXOverride?: number, _tileYOverride?: number) {
-		this.sprite.offsetY = (this["state"] || 0) * 32
-		this.stepAnimation();
+		this.sprite.offsetY = (this["state"] || 0) * 32;
 
 		const tileX = this.getRenderTileX();
 		const tileY = this.getRenderTileY();
@@ -137,22 +138,14 @@ export class Item extends Entity {
 	}
 
 	public stepAnimation() {
-		if (!this.canAnimateFrames()) {
-			this.sprite.offsetX = 0;
-			this.sprite.offsetY = 0;
-			this.animated = false;
-			return;
-		}
 		const currentTimeStamp = +new Date();
 		if (this.frameTimeStamp == 0) {
 			this.frameTimeStamp = currentTimeStamp;
-			this.sprite.offsetX = 0;
-			this.sprite.offsetY = 0;
-		} else if (currentTimeStamp - this.frameTimeStamp >= 100) {
-			// FIXME: need proper FPS limit
-			this.setXFrameIndex(this.getXFrameIndex() + 1);
-			this.frameTimeStamp = currentTimeStamp;
+			return;
 		}
+		const delta = currentTimeStamp - this.frameTimeStamp;
+		this.frameTimeStamp = currentTimeStamp;
+		this.advanceItemAnimation(delta);
 	}
 
 	formatQuantity() {
@@ -189,15 +182,49 @@ export class Item extends Entity {
 	}
 
 	public isAnimated(): boolean {
-		if (!stendhal.data.sprites.get(this.sprite.filename).height) {
+		const img = stendhal.data.sprites.get(this.sprite.filename);
+		if (!img || !img.height) {
 			return false;
 		}
 		if (this.animated == null) {
 			// store animation state
-			this.animated = this.canAnimateFrames() && (stendhal.data.sprites.get(this.sprite.filename).width / 32) > 1;
+			const frameWidth = this.sprite.width || 32;
+			const frameCount = img.width ? Math.max(1, Math.floor(img.width / frameWidth)) : 1;
+			this.animated = this.canAnimateFrames() && frameCount > 1;
 		}
 
 		return this.animated;
+	}
+
+	override advanceAnimation(deltaMs: number) {
+		this.advanceItemAnimation(deltaMs);
+	}
+
+	private advanceItemAnimation(deltaMs: number) {
+		if (!this.canAnimateFrames() || !Number.isFinite(deltaMs) || deltaMs <= 0) {
+			this.sprite.offsetX = 0;
+			this.sprite.offsetY = (this["state"] || 0) * 32;
+			this.animator = undefined;
+			this.animated = false;
+			return;
+		}
+
+		const img = stendhal.data.sprites.get(this.sprite.filename);
+		if (!img || !img.width || !img.height) {
+			return;
+		}
+		const frameWidth = this.sprite.width || 32;
+		const frameCount = Math.max(1, Math.floor(img.width / frameWidth));
+
+		if (!this.animator || this.animator.getFrameCount() !== frameCount) {
+			this.animator = new FrameAnimator(frameCount, 100, 0, true, false, frameCount > 1);
+		}
+		this.animator.setAnimating(frameCount > 1);
+		this.animator.advance(deltaMs);
+
+		const frame = this.animator.getFrame();
+		this.sprite.offsetX = frame * frameWidth;
+		this.animated = frameCount > 1;
 	}
 
 	private canAnimateFrames(): boolean {
@@ -208,8 +235,9 @@ export class Item extends Entity {
 			return false;
 		}
 		const img = stendhal.data.sprites.get(this.sprite.filename);
-		const frameWidth = (img && img.width) ? img.width : 32;
-		return frameWidth <= 128; // avoid animating very wide item sheets on low-end devices
+		const frameWidth = this.sprite.width || 32;
+		const frames = (img && img.width) ? Math.floor(img.width / frameWidth) : 1;
+		return frames > 1;
 	}
 
 	private setXFrameIndex(idx: number) {
