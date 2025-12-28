@@ -11,33 +11,36 @@
 
 import { Canvas, RenderingContext2D } from "util/Types";
 import { TileMap } from "../data/TileMap";
-import { TileStore } from "../data/TileStore";
 import { MapOfSets } from "../util/MapOfSets";
 import { CombinedTileset } from "./CombinedTileset";
+import { Debug } from "../util/Debug";
 
 declare var stendhal: any;
 
 export class CombinedTilesetImageLoader {
 
 	private tileUsedAtIndex!: MapOfSets<number, number>
-	private tilesetImages: HTMLImageElement[] = [];
-	private animations: any = {};
-	private landscapeAnimationMap: any;
+	private tilesetImages: ImageBitmap[] = [];
 	private drawCanvas: Canvas;
 	private drawCtx: RenderingContext2D;
 	private blendCanvas: Canvas;
 	private blendCtx: RenderingContext2D;
+	private blendFixCanvas: Canvas;
+	private blendFixCtx: RenderingContext2D;
+	private loadedTilesetCount = 0;
+	private usedTilesetCount = 0;
 
 	constructor(
 		private map: TileMap,
 		private indexToCombinedTiles: Map<number, number[]>,
 		private combinedTileset: CombinedTileset) {
-		this.landscapeAnimationMap = TileStore.get().getLandscapeMap();
 
 		this.drawCanvas = new OffscreenCanvas(this.map.tileWidth, this.map.tileHeight);
 		this.blendCanvas = new OffscreenCanvas(this.map.tileWidth, this.map.tileHeight);
+		this.blendFixCanvas = new OffscreenCanvas(this.map.tileWidth, this.map.tileHeight);
 		this.drawCtx = this.drawCanvas.getContext("2d")!;
 		this.blendCtx = this.blendCanvas.getContext("2d")!;
+		this.blendFixCtx = this.blendFixCanvas.getContext("2d")!;
 	}
 
 
@@ -61,26 +64,30 @@ export class CombinedTilesetImageLoader {
 	}
 
 
-	private loadTileset(tileset: number) {
-		let img = document.createElement("img");
-		img.onload = () => {
-			this.drawTileset(tileset);
-		}
-
+	private async loadTileset(tileset: number) {
 		const tsname = this.map.tilesetFilenames[tileset];
 		if (!tsname) {
 			return;
 		}
-		img.src = tsname + "?v=" + stendhal.data.build.version;
-
-		if (this.landscapeAnimationMap) {
-			const animation = this.landscapeAnimationMap[tsname];
-			if (animation) {
-				this.animations[tileset] = animation;
-			}
+		let url = tsname + "?v=" + stendhal.data.build.version;
+		let response = await fetch(url);
+		if (!response.ok) {
+			return;
 		}
+		let blob = await response.blob();
+		let bitmap = await createImageBitmap(blob);
+		this.tilesetImages[tileset] = bitmap;
+		this.loadedTilesetCount++;
+		this.drawTileset(tileset);
+		if (this.loadedTilesetCount >= this.usedTilesetCount) {
+			this.finish();
+		}
+	}
 
-		this.tilesetImages[tileset] = img;
+	private finish() {
+		for (let bitmap of this.tilesetImages) {
+			bitmap.close();
+		}
 	}
 
 
@@ -110,12 +117,11 @@ export class CombinedTilesetImageLoader {
 		const pixelX = x * this.map.tileWidth;
 		const pixelY = y * this.map.tileHeight;
 
-		if (false && stendhal.ui.gamewindow.HSLFilter) {
+		if (Debug.isActive("light") && stendhal.ui.gamewindow.HSLFilter) {
 			this.drawCombinedTileWithBlend(tiles, pixelX, pixelY);
 		} else {
 			this.drawCombinedTileWithoutBlend(this.combinedTileset.ctx, tiles, pixelX, pixelY);
 		}
-		document.getElementsByTagName("body")[0].append(this.combinedTileset.canvas as HTMLCanvasElement);
 	}
 
 	private drawCombinedTileWithoutBlend(ctx: RenderingContext2D, tiles: number[], pixelX: number, pixelY: number) {
@@ -132,6 +138,7 @@ export class CombinedTilesetImageLoader {
 
 		this.drawCombinedTileWithoutBlend(this.drawCtx, tiles, 0, 0);
 
+		// copy the image to the blend canvas
 		this.blendCtx.globalCompositeOperation = "source-over";
 		this.blendCtx.clearRect(0, 0, this.map.tileWidth, this.map.tileHeight);
 		this.blendCtx.drawImage(this.drawCanvas, 0, 0);
@@ -143,7 +150,13 @@ export class CombinedTilesetImageLoader {
 		let tile = tiles[0];
 		this.blendCtx.globalCompositeOperation = "soft-light";
 		if (tile > 0) {
-			this.drawTile(this.blendCtx, tile, 0, 0);
+			// turn transparency into black for the blend layer
+			this.blendFixCtx.fillStyle = "black";
+			this.blendFixCtx.fillRect(0, 0, this.map.tileWidth, this.map.tileHeight);
+			this.drawTile(this.blendFixCtx, tile, 0, 0);
+
+			// draw the blend layer onto the blend canvas
+			this.blendCtx.drawImage(this.blendFixCanvas, 0, 0);
 		} else {
 			this.blendCtx.fillStyle = "black";
 			this.blendCtx.fillRect(0, 0, this.map.tileWidth, this.map.tileHeight);
@@ -153,6 +166,7 @@ export class CombinedTilesetImageLoader {
 		this.blendCtx.globalCompositeOperation = "destination-in";
 		this.blendCtx.drawImage(this.drawCanvas, 0, 0);
 
+		// draw the blend canvas at the correct position onto the combined tileset
 		this.combinedTileset.ctx.clearRect(pixelX, pixelY, this.map.tileWidth, this.map.tileHeight);
 		this.combinedTileset.ctx.drawImage(this.blendCanvas, pixelX, pixelY);
 	}
@@ -171,7 +185,7 @@ export class CombinedTilesetImageLoader {
 		this.drawImageTile(ctx, pixelX, pixelY, image, tileIndexInTileset, flip);
 	}
 
-	private drawImageTile(ctx: RenderingContext2D, pixelX: number, pixelY: number, tilesetImage: HTMLImageElement, tileIndexInTileset: number, flip: number) {
+	private drawImageTile(ctx: RenderingContext2D, pixelX: number, pixelY: number, tilesetImage: ImageBitmap, tileIndexInTileset: number, flip: number) {
 		const tilesetWidth = tilesetImage.width;
 		const tilesPerRow = Math.floor(tilesetWidth / this.map.tileWidth);
 
@@ -229,9 +243,9 @@ export class CombinedTilesetImageLoader {
 		console.log("CombinedTilesetImageLoader.load()");
 		this.calculateTileUsedAtIndex();
 		let usedTilesets = this.calculateUsedTilesets(this.tileUsedAtIndex.keys());
+		this.usedTilesetCount = usedTilesets.size;
 		for (let tileset of usedTilesets) {
 			this.loadTileset(tileset);
 		}
-
 	}
 }
