@@ -81,12 +81,15 @@ export class FrameAnimator {
 
 		this.cycleTime += deltaMs;
 		let currentDelay = this.getCurrentDelay();
-		while (currentDelay > 0 && this.cycleTime >= currentDelay) {
+		const maxSteps = FrameAnimator.globalFpsCap ? 1 : Number.POSITIVE_INFINITY;
+		let steps = 0;
+		while (currentDelay > 0 && this.cycleTime >= currentDelay && steps < maxSteps) {
 			this.cycleTime -= currentDelay;
 			if (!this.stepFrame()) {
 				break;
 			}
 			currentDelay = this.getCurrentDelay();
+			steps++;
 		}
 	}
 
@@ -180,8 +183,7 @@ export class FrameAnimator {
 		if (this.carryOver < minStep) {
 			return 0;
 		}
-		const effectiveDelta = this.carryOver;
-		this.carryOver = 0;
-		return effectiveDelta;
+		this.carryOver -= minStep;
+		return minStep;
 	}
 }
