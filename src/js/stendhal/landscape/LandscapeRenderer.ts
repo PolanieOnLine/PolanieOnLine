@@ -9,24 +9,21 @@
  *                                                                         *
  ***************************************************************************/
 
+import { Canvas, RenderingContext2D } from "util/Types";
 import { CombinedTileset } from "./CombinedTileset";
 
 declare var stendhal: any;
 
-// Trim a fraction of a texel from each side so bilinear filtering never pulls
-// colour from neighbouring tiles when the canvas is translated sub-pixel.
-const TILE_EDGE_TRIM = 0.02;
-
 export class LandscapeRenderer {
 
 	drawLayer(
-			canvas: HTMLCanvasElement,
-			combinedTileset: CombinedTileset, layerNo: number,
-			tileOffsetX: number, tileOffsetY: number, targetTileWidth: number, targetTileHeight: number): void {
+		canvas: Canvas,
+		combinedTileset: CombinedTileset, layerNo: number,
+		tileOffsetX: number, tileOffsetY: number, targetTileWidth: number, targetTileHeight: number): void {
 		if (!combinedTileset) {
 			return;
 		}
-		let ctx = canvas.getContext("2d")!;
+		let ctx = canvas.getContext("2d")! as RenderingContext2D;
 
 		const layer = combinedTileset.combinedLayers[layerNo];
 		const yMax = Math.min(tileOffsetY + canvas.height / targetTileHeight + 1, stendhal.data.map.zoneSizeY);
@@ -40,17 +37,13 @@ export class LandscapeRenderer {
 					try {
 						const pixelX = x * targetTileWidth;
 						const pixelY = y * targetTileHeight;
-						const tilesPerRow = combinedTileset.tilesPerRow;
-						const sourceX = (index % tilesPerRow) * stendhal.data.map.tileWidth + TILE_EDGE_TRIM;
-						const sourceY = Math.floor(index / tilesPerRow) * stendhal.data.map.tileHeight + TILE_EDGE_TRIM;
-						const sourceWidth = stendhal.data.map.tileWidth - TILE_EDGE_TRIM * 2;
-						const sourceHeight = stendhal.data.map.tileHeight - TILE_EDGE_TRIM * 2;
 
 						ctx.drawImage(combinedTileset.canvas,
 
-							sourceX,
-							sourceY,
-							sourceWidth, sourceHeight,
+							(index % combinedTileset.tilesPerRow) * stendhal.data.map.tileWidth,
+							Math.floor(index / combinedTileset.tilesPerRow) * stendhal.data.map.tileHeight,
+
+							stendhal.data.map.tileWidth, stendhal.data.map.tileHeight,
 							pixelX, pixelY,
 							targetTileWidth, targetTileHeight);
 					} catch (e) {
@@ -60,4 +53,5 @@ export class LandscapeRenderer {
 			}
 		}
 	}
+
 }

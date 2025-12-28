@@ -32,6 +32,7 @@ import { BarehandAttackSprite } from "../sprite/action/BarehandAttackSprite";
 import { RangedAttackSprite } from "../sprite/action/RangedAttackSprite";
 
 import { ImageWithDimensions } from "data/ImageWithDimensions";
+import { RenderingContext2D } from "util/Types";
 
 var HEALTH_BAR_HEIGHT = 6;
 
@@ -53,7 +54,7 @@ export class RPEntity extends ActiveEntity {
 	// for adjusting entity hp bar & title vertical position
 	protected titleDrawYOffset: number = 0;
 	// canvas for merging outfit layers to be drawn
-	private octx?: CanvasRenderingContext2D;
+	private octx?: RenderingContext2D;
 
 	private attackers = new Map<string, Entity>();
 	private deathAnnounced = false;
@@ -225,7 +226,7 @@ export class RPEntity extends ActiveEntity {
 		return typeof (this["no_shadow"]) === "undefined";
 	}
 
-	drawMultipartOutfit(ctx: CanvasRenderingContext2D) {
+	drawMultipartOutfit(ctx: RenderingContext2D) {
 		const store = singletons.getOutfitStore();
 		// layers in draw order
 		var layers = store.getLayerNames();
@@ -355,7 +356,7 @@ export class RPEntity extends ActiveEntity {
 	/**
 	 * draw RPEntities
 	 */
-	override draw(ctx: CanvasRenderingContext2D, _tileX?: number, _tileY?: number) {
+	override draw(ctx: RenderingContext2D) {
 		if (typeof (this["ghostmode"]) != "undefined" && marauroa.me && !marauroa.me.isAdmin()) {
 			return;
 		}
@@ -365,7 +366,7 @@ export class RPEntity extends ActiveEntity {
 		this.drawStatusIcons(ctx);
 	}
 
-	drawMain(ctx: CanvasRenderingContext2D) {
+	drawMain(ctx: RenderingContext2D) {
 		if (typeof (this["outfit"]) != "undefined" || typeof (this["outfit_ext"]) != "undefined") {
 			this.drawMultipartOutfit(ctx);
 		} else {
@@ -404,7 +405,7 @@ export class RPEntity extends ActiveEntity {
 		}
 	}
 
-	drawStatusIcons(ctx: CanvasRenderingContext2D) {
+	drawStatusIcons(ctx: RenderingContext2D) {
 
 		function _drawAnimatedIcon(icon: CanvasImageSource, delay: number, nFrames: number, xdim: number, ydim: number, x: number, y: number) {
 			var frame = Math.floor(Date.now() / delay) % nFrames;
@@ -487,7 +488,7 @@ export class RPEntity extends ActiveEntity {
 	 * Draw colored ellipses (or rectangles on browsers that do not support
 	 * ellipses) when the entity is being attacked, or is attacking the user.
 	 */
-	drawCombat(ctx: CanvasRenderingContext2D) {
+	drawCombat(ctx: RenderingContext2D) {
 		const tileX = this.getRenderTileX();
 		const tileY = this.getRenderTileY();
 
@@ -543,7 +544,7 @@ export class RPEntity extends ActiveEntity {
 			}
 		}
 		if (this.attackResult) {
-			if (this.attackResult.draw(ctx, (tileX + this["width"]) * 32 - 10, (tileY + this["height"]) * 32 - 10)) {
+			if (this.attackResult.draw(ctx, (this["_x"] + this["width"]) * 32 - 10, (this["_y"] + this["height"]) * 32 - 10)) {
 				this.attackResult = undefined;
 			}
 		}
@@ -555,11 +556,9 @@ export class RPEntity extends ActiveEntity {
 	 * the coordinates where to start floating. The method should return true
 	 * when the floater should be removed.
 	 */
-	drawFloaters(ctx: CanvasRenderingContext2D) {
-		const tileX = this.getRenderTileX();
-		const tileY = this.getRenderTileY();
-		var centerX = (tileX + this["width"] / 2) * 32;
-		var topY = (tileY + 1) * 32 - this["drawHeight"];
+	drawFloaters(ctx: RenderingContext2D) {
+		var centerX = (this["_x"] + this["width"] / 2) * 32;
+		var topY = (this["_y"] + 1) * 32 - this["drawHeight"];
 		// Grab an unchanging copy
 		var currentFloaters = this.floaters;
 		for (var i = 0; i < currentFloaters.length; i++) {
@@ -576,7 +575,7 @@ export class RPEntity extends ActiveEntity {
 	 * @param {CanvasRenderingContext2D} ctx
 	 * @param {Image} image
 	 */
-	drawSpriteImage(ctx: CanvasRenderingContext2D, image: CanvasImageSource & ImageWithDimensions) {
+	drawSpriteImage(ctx: RenderingContext2D, image: CanvasImageSource & ImageWithDimensions) {
 		const tileX = this.getRenderTileX();
 		const tileY = this.getRenderTileY();
 		var localX = tileX * 32;
@@ -630,17 +629,15 @@ export class RPEntity extends ActiveEntity {
 		}
 	}
 
-	drawTop(ctx: CanvasRenderingContext2D, _tileX?: number, _tileY?: number) {
-		const tileX = this.getRenderTileX();
-		const tileY = this.getRenderTileY();
-		var localX = tileX * 32;
-		var localY = tileY * 32;
+	drawTop(ctx: RenderingContext2D) {
+		var localX = this["_x"] * 32;
+		var localY = this["_y"] * 32;
 		this.drawFloaters(ctx);
 		this.drawHealthBar(ctx, localX, localY + this.statusBarYOffset);
 		this.drawTitle(ctx, localX, localY + this.statusBarYOffset);
 	}
 
-	drawHealthBar(ctx: CanvasRenderingContext2D, x: number, y: number) {
+	drawHealthBar(ctx: RenderingContext2D, x: number, y: number) {
 		var drawX = x + ((this["width"] * 32) - this["drawWidth"]) / 2;
 		var drawY = y + (this["height"] * 32) - this["drawHeight"]
 			- HEALTH_BAR_HEIGHT + this.titleDrawYOffset;
@@ -677,16 +674,19 @@ export class RPEntity extends ActiveEntity {
 		}
 	}
 
-	drawTitle(ctx: CanvasRenderingContext2D, x: number, y: number) {
+	drawTitle(ctx: RenderingContext2D, x: number, y: number) {
 		if (this.titleTextSprite) {
 			let textMetrics = this.titleTextSprite.getTextMetrics(ctx);
+			if (!textMetrics) {
+				throw new Error("textMetrics is undefined");
+			}
 			var drawY = y + (this["height"] * 32) - this["drawHeight"]
 				- HEALTH_BAR_HEIGHT + this.titleDrawYOffset;
 			this.titleTextSprite.draw(ctx, x + (this["width"] * 32 - textMetrics.width) / 2, drawY - 5 - HEALTH_BAR_HEIGHT);
 		}
 	}
 
-	drawAttack(ctx: CanvasRenderingContext2D) {
+	drawAttack(ctx: RenderingContext2D) {
 		if (!this.attackSprite) {
 			return;
 		}
@@ -708,12 +708,12 @@ export class RPEntity extends ActiveEntity {
 	/**
 	 * Draws an animation over entity sprite.
 	 *
-	 * @param {CanvasRenderingContext2D} ctx
+	 * @param {RenderingContext2D} ctx
 	 *		 Canvas context to draw on.
 	 */
-	private drawOverlayAnimation(ctx: CanvasRenderingContext2D) {
+	private drawOverlayAnimation(ctx: RenderingContext2D) {
 		if (this.overlay && this.overlay.draw(ctx, this["drawOffsetX"], this["drawOffsetY"],
-			this["drawWidth"], this["drawHeight"])) {
+				this["drawWidth"], this["drawHeight"])) {
 			// overlay sprite expired
 			this.overlay = undefined;
 		}
@@ -919,7 +919,7 @@ export class RPEntity extends ActiveEntity {
 		return {
 			initTime: Date.now(),
 			image: stendhal.data.sprites.get(imagePath),
-			draw: function(ctx: CanvasRenderingContext2D, x: number, y: number) {
+			draw: function(ctx: RenderingContext2D, x: number, y: number) {
 				ctx.drawImage(this.image, x, y);
 				return (Date.now() - this.initTime > 1200);
 			}

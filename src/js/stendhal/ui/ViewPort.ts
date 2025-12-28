@@ -1,3 +1,4 @@
+
 /***************************************************************************
  *                   (C) Copyright 2003-2025 - Stendhal                    *
  ***************************************************************************
@@ -17,7 +18,6 @@ import { ui } from "./UI";
 import { UIComponentEnum } from "./UIComponentEnum";
 
 import { PlayerEquipmentComponent } from "./component/PlayerEquipmentComponent";
-import { MiniMapComponent } from "./component/MiniMapComponent";
 
 import { ActionContextMenu } from "./dialog/ActionContextMenu";
 import { DropQuantitySelectorDialog } from "./dialog/DropQuantitySelectorDialog";
@@ -30,13 +30,9 @@ import { EmojiSprite } from "../sprite/EmojiSprite";
 import { NotificationBubble } from "../sprite/NotificationBubble";
 import { SpeechBubble } from "../sprite/SpeechBubble";
 import { TextBubble } from "../sprite/TextBubble";
-import { Entity } from "../entity/Entity";
-import { RPEntity } from "../entity/RPEntity";
 
 import { Point } from "../util/Point";
-import { GameLoop } from "../util/GameLoop";
-import { SpringVector, Vector2 } from "../util/SpringVector";
-import { TilemapRenderer } from "./render/TilemapRenderer";
+import { Canvas, RenderingContext2D } from "util/Types";
 
 
 /**
@@ -50,25 +46,16 @@ export class ViewPort {
 	private offsetY = 0;
 	/** Prevents adjusting offset based on player position. */
 	private freeze = false;
+	/** Time of most recent redraw. */
+	private timeStamp = Date.now();
 
-	private loop?: GameLoop;
-	private requestedFpsLimit?: number;
-	private readonly cameraSpring = new SpringVector();
-	private cameraTarget: Vector2 = { x: 0, y: 0 };
-	private cameraInitialized = false;
-	private readonly renderOffset: Vector2 = { x: 0, y: 0 };
-	private readonly lastWorldSize: Vector2 = { x: 0, y: 0 };
-	private entityRefs: Entity[] = [];
-	private entityCount = 0;
-	private entityPrevPositions = new Float32Array(0);
-	private entityCurrPositions = new Float32Array(0);
-	private entityLastPositions = new Float32Array(0);
-	private entityLastCount = 0;
-	private entityIndexLookup: WeakMap<Entity, number> = new WeakMap();
-	private fpsLabel?: HTMLElement;
+	// dimensions
+	// TODO: remove & use CSS style instead
+	private readonly width: number;
+	private readonly height: number;
 
 	/** Drawing context. */
-	private ctx: CanvasRenderingContext2D;
+	private ctx: RenderingContext2D;
 	/** Map tile pixel width. */
 	private readonly targetTileWidth = 32;
 	/** Map tile pixel height. */
@@ -76,21 +63,13 @@ export class ViewPort {
 	private drawingError = false;
 
 	/** Active speech bubbles to draw. */
-	private textSprites: (SpeechBubble | null)[] = [];
-	private textSpriteFree: number[] = [];
-	private speechBubblePool: SpeechBubble[] = [];
-	private readonly speechScratch: SpeechBubble[] = [];
+	private textSprites: SpeechBubble[] = [];
 	/** Active notification bubbles/achievement banners to draw. */
-	private notifSprites: (TextBubble | null)[] = [];
-	private notifSpriteFree: number[] = [];
-	private notifBubblePool: NotificationBubble[] = [];
-	private achievementPool: AchievementBanner[] = [];
+	private notifSprites: TextBubble[] = [];
 	/** Active emoji sprites to draw. */
 	private emojiSprites: EmojiSprite[] = [];
 	/** Handles drawing weather in viewport. */
-	private readonly weatherRenderer = singletons.getWeatherRenderer();
-	/** Batched tilemap renderer. */
-	private readonly tileRenderer = new TilemapRenderer();
+	private weatherRenderer = singletons.getWeatherRenderer();
 	/** Coloring method of current zone. */
 	private filter?: string; // deprecated, use `HSLFilter`
 	/** Coloring filter of current zone. */
@@ -100,29 +79,10 @@ export class ViewPort {
 
 	/** Styles to be applied when chat panel is not floating. */
 	private readonly initialStyle: { [prop: string]: string };
-	private readonly baseRenderWidth: number;
-	private readonly baseRenderHeight: number;
-	private readonly fallbackAspectRatio: number;
-	/**
-	 * Default resolutions used to derive targetRatio:
-	 * - desktop: wide (16:9) or classic (4:3)
-	 * - mobile: compact 4:3
-	 * Adjust these values to change the default rendering resolution.
-	 */
-	private readonly targetDesktopResolution: Vector2;
-	private readonly targetDesktopFallbackResolution: Vector2;
-	private readonly targetMobileResolution: Vector2;
-	private readonly desktopBreakpointPx = 900;
-	private readonly povScaleFactor = 0.8;
-	private readonly desktopPovReference: Vector2;
-	private readonly minCanvasWidth: number;
-	private readonly minCanvasHeight: number;
-	private parentResizeObserver?: ResizeObserver;
-	private readonly handleWindowResize: () => void;
 
 	/** Singleton instance. */
 	private static instance: ViewPort;
-	private static readonly FPS_LIMITS = [60, 90, 120, 144];
+
 
 	/**
 	 * Retrieves singleton instance.
@@ -140,28 +100,17 @@ export class ViewPort {
 	private constructor() {
 		const element = this.getElement() as HTMLCanvasElement;
 		this.ctx = element.getContext("2d")!;
-		this.baseRenderWidth = element.width || 800;
-		this.baseRenderHeight = element.height || 600;
-		this.fallbackAspectRatio = this.baseRenderWidth && this.baseRenderHeight
-			? this.baseRenderWidth / this.baseRenderHeight
-			: (4 / 3);
-		this.targetDesktopResolution = { x: 1280, y: 720 };
-		this.targetDesktopFallbackResolution = { x: 1024, y: 768 };
-		this.targetMobileResolution = { x: 844, y: 633 };
-		this.desktopPovReference = this.targetDesktopResolution;
+		this.width = element.width;
+		this.height = element.height;
 
 		this.initialStyle = {};
-		const styles = getComputedStyle(element);
-		this.captureInitialStyles(element, styles);
-		const minSize = this.computeMinimumCanvasSize(styles);
-		this.minCanvasWidth = minSize.x;
-		this.minCanvasHeight = minSize.y;
-		this.handleWindowResize = () => this.updateCanvasBounds();
-		this.observeParent(element);
-		this.updateCanvasBounds();
-		window.addEventListener("resize", this.handleWindowResize, { passive: true });
-
-		this.fpsLabel = this.createFpsLabel(element);
+		//~ const stylesheet = getComputedStyle(element);
+		// FIXME: how to get literal "calc()" instead of value of calc()?
+		//~ this.initialStyle["max-width"] = stylesheet.getPropertyValue("max-width");
+		//~ this.initialStyle["max-height"] = stylesheet.getPropertyValue("max-height");
+		// NOTE: this doesn't work if properties set in css
+		this.initialStyle["max-width"] = "calc((100dvh - 5em) * 640 / 480)";
+		this.initialStyle["max-height"] = "calc(100dvh - 5em)";
 	}
 
 	/**
@@ -174,638 +123,48 @@ export class ViewPort {
 		return document.getElementById("viewport")!;
 	}
 
-	private captureInitialStyles(element: HTMLElement, styles: CSSStyleDeclaration) {
-		this.assignInitialStyleFrom(styles.getPropertyValue("--viewport-max-width"), "max-width");
-		this.assignInitialStyleFrom(styles.getPropertyValue("--viewport-max-height"), "max-height");
-		this.assignInitialStyleFrom(element.style.getPropertyValue("max-width"), "max-width");
-		this.assignInitialStyleFrom(element.style.getPropertyValue("max-height"), "max-height");
-		if (!this.initialStyle["max-width"]) {
-			this.initialStyle["max-width"] = "calc((100dvh - 5em) * 800 / 600)";
-		}
-		if (!this.initialStyle["max-height"]) {
-			this.initialStyle["max-height"] = "calc(100dvh - 5em)";
-		}
-	}
-
-	private computeMinimumCanvasSize(styles: CSSStyleDeclaration): Vector2 {
-		let minWidth = Math.max(1, Math.round(this.baseRenderWidth));
-		let minHeight = Math.max(1, Math.round(this.baseRenderHeight));
-		const minWidthSetting = this.parseCssLength(styles.getPropertyValue("--viewport-min-render-width"));
-		const minHeightSetting = this.parseCssLength(styles.getPropertyValue("--viewport-min-render-height"));
-		if (minWidthSetting && minWidthSetting > 0) {
-			minWidth = Math.max(minWidth, Math.round(minWidthSetting));
-		}
-		if (minHeightSetting && minHeightSetting > 0) {
-			minHeight = Math.max(minHeight, Math.round(minHeightSetting));
-		}
-		const aspect = this.getTargetAspectRatio(window.innerWidth || minWidth, window.innerHeight || minHeight);
-		const widthFromHeight = Math.max(1, Math.round(minHeight * aspect));
-		const heightFromWidth = Math.max(1, Math.round(minWidth / aspect));
-		if (widthFromHeight > minWidth) {
-			minWidth = widthFromHeight;
-		}
-		if (heightFromWidth > minHeight) {
-			minHeight = heightFromWidth;
-		}
-		return { x: minWidth, y: minHeight };
-	}
-
-	private parseCssLength(value: string | null | undefined): number | null {
-		if (!value) {
-			return null;
-		}
-		const trimmed = value.trim();
-		if (!trimmed) {
-			return null;
-		}
-		const parsed = parseFloat(trimmed);
-		if (!Number.isFinite(parsed)) {
-			return null;
-		}
-		return parsed;
-	}
-
-	private observeParent(canvas: HTMLCanvasElement) {
-		const parent = canvas.parentElement as HTMLElement | null;
-		if (!parent || typeof ResizeObserver !== "function") {
-			return;
-		}
-		this.parentResizeObserver = new ResizeObserver(() => {
-			this.updateCanvasBounds();
-		});
-		this.parentResizeObserver.observe(parent);
-	}
-
-	private updateCanvasBounds() {
-		const canvas = this.ctx?.canvas as HTMLCanvasElement | undefined;
-		if (!canvas || !canvas.isConnected) {
-			return;
-		}
-		const parent = canvas.parentElement as HTMLElement | null;
-		if (!parent) {
-			return;
-		}
-
-		const parentStyle = getComputedStyle(parent);
-		const paddingLeft = parseFloat(parentStyle.paddingLeft) || 0;
-		const paddingRight = parseFloat(parentStyle.paddingRight) || 0;
-		const paddingTop = parseFloat(parentStyle.paddingTop) || 0;
-		const paddingBottom = parseFloat(parentStyle.paddingBottom) || 0;
-		let availableWidth = Math.floor(parent.clientWidth - paddingLeft - paddingRight);
-		let availableHeight = Math.floor(parent.clientHeight - paddingTop - paddingBottom);
-		const parentRect = parent.getBoundingClientRect();
-		if (parentRect && Number.isFinite(parentRect.width)) {
-			const rectWidth = Math.floor(parentRect.width - paddingLeft - paddingRight);
-			if (rectWidth > 0) {
-				availableWidth = rectWidth;
-			}
-		}
-		if (parentRect && Number.isFinite(parentRect.height)) {
-			const rectHeight = Math.floor(parentRect.height - paddingTop - paddingBottom);
-			if (rectHeight > 0) {
-				availableHeight = rectHeight;
-			}
-		}
-		if (!Number.isFinite(availableWidth) || !Number.isFinite(availableHeight)) {
-			return;
-		}
-		if (availableWidth <= 0 || availableHeight <= 0) {
-			return;
-		}
-
-		let reservedHeight = 0;
-		for (const child of Array.from(parent.children)) {
-			if (!(child instanceof HTMLElement) || child === canvas) {
-				continue;
-			}
-			const childStyle = getComputedStyle(child);
-			if (childStyle.display === "none" || childStyle.position === "absolute" || childStyle.position === "fixed") {
-				continue;
-			}
-			const flexGrow = parseFloat(childStyle.flexGrow || "0");
-			if (flexGrow > 0) {
-				continue;
-			}
-			reservedHeight += child.getBoundingClientRect().height;
-			reservedHeight += (parseFloat(childStyle.marginTop) || 0) + (parseFloat(childStyle.marginBottom) || 0);
-		}
-
-		const usableHeight = Math.floor(Math.max(1, availableHeight - reservedHeight));
-		if (!Number.isFinite(usableHeight) || usableHeight <= 0) {
-			return;
-		}
-
-		const targetResolution = this.getTargetResolution(availableWidth, usableHeight);
-		const targetRatio = this.safeAspect(targetResolution.x, targetResolution.y);
-		if (!Number.isFinite(targetRatio) || targetRatio <= 0) {
-			return;
-		}
-
-		const displaySize = this.getContainedSize(availableWidth, usableHeight, targetRatio);
-		const deviceScale = this.getDevicePixelRatio();
-		const referenceResolution = this.getDesktopReferenceResolution();
-		const maxScaleFromResolution = Math.min(
-			this.scaleLimitFromResolution(targetResolution, displaySize),
-			this.scaleLimitFromResolution(referenceResolution, displaySize)
-		);
-		const cappedScale = Math.min(deviceScale, maxScaleFromResolution);
-		const minScale = Math.max(
-			1,
-			this.minCanvasWidth / displaySize.x,
-			this.minCanvasHeight / displaySize.y
-		);
-		const povScale = Math.max(0.5, this.povScaleFactor);
-		const limitedScale = Math.max(1, cappedScale * povScale);
-		const renderScale = Math.max(limitedScale, minScale);
-		const displayWidth = Math.max(1, Math.floor(displaySize.x));
-		const displayHeight = Math.max(1, Math.floor(displaySize.y));
-		const renderWidth = Math.max(1, Math.round(displayWidth * renderScale));
-		const renderHeight = Math.max(1, Math.round(displayHeight * renderScale));
-
-		if (canvas.width === renderWidth && canvas.height === renderHeight
-			&& canvas.style.width === `${displayWidth}px` && canvas.style.height === `${displayHeight}px`) {
-			return;
-		}
-
-		canvas.width = renderWidth;
-		canvas.height = renderHeight;
-		canvas.style.width = `${displayWidth}px`;
-		canvas.style.height = `${displayHeight}px`;
-	}
-
-	public refreshBounds() {
-		this.updateCanvasBounds();
-	}
-
-	private getTargetAspectRatio(containerWidth: number, containerHeight: number): number {
-		const targetResolution = this.getTargetResolution(containerWidth, containerHeight);
-		if (targetResolution.x > 0 && targetResolution.y > 0) {
-			return targetResolution.x / targetResolution.y;
-		}
-		return this.fallbackAspectRatio || (4 / 3);
-	}
-
-	private getTargetResolution(containerWidth: number, containerHeight: number): Vector2 {
-		const isDesktop = this.matchesDesktopBreakpoint(containerWidth);
-		if (isDesktop) {
-			const availableRatio = this.safeAspect(containerWidth, containerHeight);
-			const wideRatio = this.safeAspect(this.targetDesktopResolution.x, this.targetDesktopResolution.y);
-			const classicRatio = this.safeAspect(
-				this.targetDesktopFallbackResolution.x,
-				this.targetDesktopFallbackResolution.y
-			);
-			const useClassic = Math.abs(availableRatio - classicRatio) < Math.abs(availableRatio - wideRatio);
-			return useClassic ? this.targetDesktopFallbackResolution : this.targetDesktopResolution;
-		}
-		return this.targetMobileResolution;
-	}
-
-	private getDesktopReferenceResolution(): Vector2 {
-		const wideRatio = this.safeAspect(this.targetDesktopResolution.x, this.targetDesktopResolution.y);
-		const classicRatio = this.safeAspect(this.targetDesktopFallbackResolution.x, this.targetDesktopFallbackResolution.y);
-		const viewportRatio = this.safeAspect(window.innerWidth || this.desktopPovReference.x, window.innerHeight || this.desktopPovReference.y);
-		const useClassic = Math.abs(viewportRatio - classicRatio) < Math.abs(viewportRatio - wideRatio);
-		return useClassic ? this.targetDesktopFallbackResolution : this.desktopPovReference;
-	}
-
-	private scaleLimitFromResolution(resolution: Vector2, displaySize: Vector2): number {
-		if (resolution.x <= 0 || resolution.y <= 0) {
-			return Number.POSITIVE_INFINITY;
-		}
-		return Math.min(resolution.x / displaySize.x, resolution.y / displaySize.y);
-	}
-
-	private matchesDesktopBreakpoint(containerWidth: number): boolean {
-		if (typeof matchMedia === "function") {
-			const media = matchMedia(`(min-width: ${this.desktopBreakpointPx}px)`);
-			if (typeof media.matches === "boolean") {
-				return media.matches;
-			}
-		}
-		return containerWidth >= this.desktopBreakpointPx;
-	}
-
-	private safeAspect(width: number, height: number): number {
-		if (!Number.isFinite(width) || !Number.isFinite(height) || height <= 0) {
-			return 1;
-		}
-		return width / height;
-	}
-
-	private getContainedSize(maxWidth: number, maxHeight: number, aspect: number): Vector2 {
-		let width = Math.floor(maxWidth);
-		let height = Math.floor(width / aspect);
-		if (height > maxHeight) {
-			height = Math.floor(maxHeight);
-			width = Math.floor(height * aspect);
-		}
-		return { x: Math.max(1, width), y: Math.max(1, height) };
-	}
-
-	private getDevicePixelRatio(): number {
-		const dpr = typeof window !== "undefined" && Number.isFinite(window.devicePixelRatio)
-			? window.devicePixelRatio
-			: 1;
-		return Math.max(1, dpr);
-	}
-
-	private assignInitialStyleFrom(value: string | null | undefined, prop: string) {
-		if (!value || this.initialStyle[prop]) {
-			return;
-		}
-		const trimmed = value.trim();
-		if (trimmed) {
-			this.initialStyle[prop] = trimmed;
-		}
-	}
-
-	private createFpsLabel(canvas: HTMLCanvasElement): HTMLElement {
-		const label = document.createElement("div");
-		label.className = "fps-counter";
-		label.style.position = "absolute";
-		label.style.top = "0";
-		label.style.left = "0";
-		label.style.padding = "2px 4px";
-		label.style.background = "rgba(0, 0, 0, 0.35)";
-		label.style.color = "#fff";
-		label.style.fontFamily = "monospace";
-		label.style.fontSize = "10px";
-		label.style.pointerEvents = "none";
-		label.style.userSelect = "none";
-		label.textContent = "-- fps";
-
-		const parent = canvas.parentElement;
-		if (parent) {
-			if (!parent.style.position) {
-				parent.style.position = "relative";
-			}
-			parent.appendChild(label);
-		}
-
-		return label;
-	}
-
 	/**
-	 * Starts the render loop if it is not already active.
+	 * Draws terrain tiles & entity sprites in the viewport.
 	 */
 	draw() {
-		if (!this.loop) {
-			const configuredLimit = stendhal.config.getFloat("loop.fps.limit");
-			const initialLimit = this.requestedFpsLimit ?? this.normalizeFpsLimit(configuredLimit);
-			this.loop = new GameLoop(
-				(dt) => this.update(dt),
-				(alpha) => this.render(alpha),
-				{
-					fpsLimit: initialLimit,
-					onFpsSample: (fps) => this.updateFpsCounter(fps),
-					networkTaskBudget: 6,
-					networkTimeBudgetMs: 5
-				}
-			);
-			this.requestedFpsLimit = initialLimit;
-		}
-		this.loop.start();
-	}
+		var startTime = new Date().getTime();
 
-	queueNetworkTask(task: () => void) {
-		if (typeof task !== "function") {
-			return;
-		}
-		try {
-			if (this.loop && this.loop.isRunning()) {
-				this.loop.enqueueNetworkTask(task);
-				return;
-			}
-			task();
-		} catch (error) {
-			if (typeof console !== "undefined" && console.error) {
-				console.error("ViewPort network task failed", error);
-			}
-		}
-	}
+		if (marauroa.me && document.visibilityState === "visible") {
+			if (marauroa.currentZoneName === stendhal.data.map.currentZoneName
+				|| stendhal.data.map.currentZoneName === "int_vault"
+				|| stendhal.data.map.currentZoneName === "int_adventure_island"
+				|| stendhal.data.map.currentZoneName === "tutorial_island") {
+				this.drawingError = false;
 
-	private update(dtMs: number) {
-		if (!this.shouldRenderFrame()) {
-			return;
-		}
+				this.ctx.globalAlpha = 1.0;
+				this.adjustView(this.ctx.canvas);
+				this.ctx.fillStyle = "black";
+				this.ctx.fillRect(0, 0, 10000, 10000);
 
-		this.drawingError = false;
-		this.updateCamera(dtMs);
-		this.updateEntities(dtMs);
-		this.advanceMiniMap(dtMs);
-	}
+				var tileOffsetX = Math.floor(this.offsetX / this.targetTileWidth);
+				var tileOffsetY = Math.floor(this.offsetY / this.targetTileHeight);
 
-	private render(alpha: number) {
-		if (!this.shouldRenderFrame()) {
-			return;
-		}
+				// FIXME: filter should not be applied to "blend" layers
+				//this.applyFilter();
+				stendhal.data.map.parallax.draw(this.ctx, this.offsetX, this.offsetY);
+				stendhal.data.map.strategy.render(this.ctx.canvas, this, tileOffsetX, tileOffsetY, this.targetTileWidth, this.targetTileHeight);
 
-		this.ctx.globalAlpha = 1.0;
-		this.ctx.setTransform(1, 0, 0, 1, 0, 0);
-		this.ctx.imageSmoothingEnabled = false;
+				this.weatherRenderer.draw(this.ctx);
+				//this.removeFilter();
+				this.applyHSLFilter();
+				this.drawEntitiesTop();
+				this.drawEmojiSprites();
+				this.drawTextSprites();
+				this.drawTextSprites(this.notifSprites);
 
-		const interpolated = this.cameraSpring.getInterpolated(alpha);
-		this.renderOffset.x = interpolated.x;
-		this.renderOffset.y = interpolated.y;
-
-		const snappedX = this.snapToDevicePixel(interpolated.x);
-		const snappedY = this.snapToDevicePixel(interpolated.y);
-
-		this.offsetX = snappedX;
-		this.offsetY = snappedY;
-
-		this.ctx.fillStyle = "black";
-		this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-
-		this.ctx.translate(-snappedX, -snappedY);
-
-		const tileOffsetX = Math.floor(snappedX / this.targetTileWidth);
-		const tileOffsetY = Math.floor(snappedY / this.targetTileHeight);
-
-		this.tileRenderer.configure(stendhal.data.map, this.targetTileWidth, this.targetTileHeight);
-		const parallaxImage = stendhal.data.map.parallax.getImageElement();
-		this.tileRenderer.updateParallax(parallaxImage);
-		this.tileRenderer.prepareFrame(snappedX, snappedY, this.ctx.canvas.width, this.ctx.canvas.height);
-
-		this.tileRenderer.drawBaseLayer(this.ctx, snappedX, snappedY, this.ctx.canvas.width, this.ctx.canvas.height);
-
-		const blendComposite = this.getBlendCompositeOperation();
-		this.tileRenderer.drawBlendLayer(
-			"blend_ground",
-			this.ctx,
-			tileOffsetX,
-			tileOffsetY,
-			blendComposite ? { composite: blendComposite } : undefined
-		);
-
-		this.drawEntities(alpha);
-
-		this.tileRenderer.drawRoofLayer(this.ctx, snappedX, snappedY, this.ctx.canvas.width, this.ctx.canvas.height);
-		this.tileRenderer.drawBlendLayer(
-			"blend_roof",
-			this.ctx,
-			tileOffsetX,
-			tileOffsetY,
-			blendComposite ? { composite: blendComposite } : undefined
-		);
-
-		this.weatherRenderer.draw(this.ctx);
-		this.applyHSLFilter();
-		this.drawEntitiesTop(alpha);
-		this.drawEmojiSprites();
-		this.drawSpeechBubbles();
-		this.drawNotificationSprites();
-
-		stendhal.ui.equip.update();
-		(ui.get(UIComponentEnum.PlayerEquipment) as PlayerEquipmentComponent).update();
-
-		this.renderMiniMap(alpha);
-	}
-
-	private shouldRenderFrame(): boolean {
-		if (!marauroa.me || document.visibilityState !== "visible") {
-			return false;
-		}
-		if (marauroa.currentZoneName !== stendhal.data.map.currentZoneName
-			&& stendhal.data.map.currentZoneName !== "int_vault"
-			&& stendhal.data.map.currentZoneName !== "int_adventure_island"
-			&& stendhal.data.map.currentZoneName !== "tutorial_island") {
-			return false;
-		}
-		return true;
-	}
-
-	private updateCamera(dtMs: number) {
-		const canvas = this.ctx.canvas;
-		const target = this.computeCameraTarget(canvas);
-
-		const worldWidth = stendhal.data.map.zoneSizeX * this.targetTileWidth;
-		const worldHeight = stendhal.data.map.zoneSizeY * this.targetTileHeight;
-
-		if (this.lastWorldSize.x !== worldWidth || this.lastWorldSize.y !== worldHeight) {
-			this.lastWorldSize.x = worldWidth;
-			this.lastWorldSize.y = worldHeight;
-			this.cameraInitialized = false;
-		}
-
-		if (!this.cameraInitialized) {
-			this.cameraSpring.snap(target);
-			this.cameraInitialized = true;
-		} else {
-			this.cameraSpring.step(target, dtMs);
-		}
-
-		const maxX = Math.max(0, worldWidth - canvas.width);
-		const maxY = Math.max(0, worldHeight - canvas.height);
-		this.cameraSpring.clamp(0, maxX, 0, maxY);
-		this.cameraTarget = target;
-	}
-
-	private computeCameraTarget(canvas: HTMLCanvasElement): Vector2 {
-		if (this.freeze) {
-			return this.cameraSpring.getPosition();
-		}
-
-		const playerX = (typeof (marauroa.me["_x"]) === "number") ? marauroa.me["_x"] : marauroa.me["x"];
-		const playerY = (typeof (marauroa.me["_y"]) === "number") ? marauroa.me["_y"] : marauroa.me["y"];
-
-		let centerX = playerX * this.targetTileWidth + this.targetTileWidth / 2 - canvas.width / 2;
-		let centerY = playerY * this.targetTileHeight + this.targetTileHeight / 2 - canvas.height / 2;
-
-		const worldWidth = stendhal.data.map.zoneSizeX * this.targetTileWidth;
-		const worldHeight = stendhal.data.map.zoneSizeY * this.targetTileHeight;
-
-		centerX = Math.min(centerX, worldWidth - canvas.width);
-		centerX = Math.max(centerX, 0);
-
-		centerY = Math.min(centerY, worldHeight - canvas.height);
-		centerY = Math.max(centerY, 0);
-
-		return { x: centerX, y: centerY };
-	}
-
-	private ensureEntityCapacity(expectedEntities: number) {
-		const required = Math.max(expectedEntities, this.entityCount, this.entityLastCount) * 2;
-		if (required <= this.entityPrevPositions.length) {
-			return;
-		}
-		let newSize = this.entityPrevPositions.length;
-		if (newSize === 0) {
-			newSize = 32;
-		}
-		while (newSize < required) {
-			newSize *= 2;
-		}
-		const newPrev = new Float32Array(newSize);
-		if (this.entityCount > 0) {
-			newPrev.set(this.entityPrevPositions.subarray(0, this.entityCount * 2));
-		}
-		const newCurr = new Float32Array(newSize);
-		if (this.entityCount > 0) {
-			newCurr.set(this.entityCurrPositions.subarray(0, this.entityCount * 2));
-		}
-		const newLast = new Float32Array(newSize);
-		if (this.entityLastCount > 0) {
-			newLast.set(this.entityLastPositions.subarray(0, this.entityLastCount * 2));
-		}
-		this.entityPrevPositions = newPrev;
-		this.entityCurrPositions = newCurr;
-		this.entityLastPositions = newLast;
-	}
-
-	private swapEntityHistoryBuffers() {
-		const temp = this.entityLastPositions;
-		this.entityLastPositions = this.entityCurrPositions;
-		this.entityCurrPositions = temp;
-		this.entityLastCount = this.entityCount;
-	}
-
-	private resolveEntityTileX(entity: any): number {
-		const override = entity["_x"];
-		if (typeof override === "number" && Number.isFinite(override)) {
-			return override;
-		}
-		const base = entity["x"];
-		if (typeof base === "number" && Number.isFinite(base)) {
-			return base;
-		}
-		return 0;
-	}
-
-	private resolveEntityTileY(entity: any): number {
-		const override = entity["_y"];
-		if (typeof override === "number" && Number.isFinite(override)) {
-			return override;
-		}
-		const base = entity["y"];
-		if (typeof base === "number" && Number.isFinite(base)) {
-			return base;
-		}
-		return 0;
-	}
-
-	private withEntityRenderPosition(entity: any, tileX: number, tileY: number, drawFn: () => void) {
-		if (typeof entity.pushRenderOverride === "function" && typeof entity.popRenderOverride === "function") {
-			entity.pushRenderOverride(tileX, tileY);
-			try {
-				drawFn();
-			} finally {
-				entity.popRenderOverride();
-			}
-		} else {
-			drawFn();
-		}
-	}
-
-	private updateEntities(dtMs: number) {
-		const zone = stendhal.zone;
-		const entities: Entity[] = (zone && Array.isArray(zone.entities)) ? zone.entities as Entity[] : [];
-
-		if (!entities.length) {
-			this.entityCount = 0;
-			this.entityRefs.length = 0;
-			this.entityIndexLookup = new WeakMap();
-			this.entityLastCount = 0;
-			return;
-		}
-
-		this.ensureEntityCapacity(entities.length);
-		this.swapEntityHistoryBuffers();
-
-		const lastPositions = this.entityLastPositions;
-		const currPositions = this.entityCurrPositions;
-		const prevPositions = this.entityPrevPositions;
-		const previousIndexLookup = this.entityIndexLookup;
-		const nextIndexLookup = new WeakMap<Entity, number>();
-
-		let count = 0;
-		for (let i = 0; i < entities.length; i++) {
-			const entity = entities[i];
-			if (!entity) {
-				continue;
-			}
-			const base = count * 2;
-			let prevX: number;
-			let prevY: number;
-			const prevIndex = previousIndexLookup.get(entity);
-			if (typeof prevIndex === "number" && prevIndex >= 0 && prevIndex < this.entityLastCount) {
-				const prevBase = prevIndex * 2;
-				prevX = lastPositions[prevBase];
-				prevY = lastPositions[prevBase + 1];
-			} else {
-				prevX = this.resolveEntityTileX(entity);
-				prevY = this.resolveEntityTileY(entity);
-			}
-
-			entity.updatePosition(dtMs);
-
-			const currX = this.resolveEntityTileX(entity);
-			const currY = this.resolveEntityTileY(entity);
-
-			prevPositions[base] = prevX;
-			prevPositions[base + 1] = prevY;
-			currPositions[base] = currX;
-			currPositions[base + 1] = currY;
-			this.entityRefs[count] = entity;
-			nextIndexLookup.set(entity, count);
-			count++;
-		}
-
-		this.entityCount = count;
-		this.entityRefs.length = count;
-		this.entityIndexLookup = nextIndexLookup;
-	}
-
-	private advanceMiniMap(dtMs: number) {
-		const minimap = ui.get(UIComponentEnum.MiniMap) as MiniMapComponent | undefined;
-		if (minimap && typeof (minimap.advance) === "function") {
-			minimap.advance(dtMs, this.cameraSpring.getPosition(), this.cameraTarget);
-		}
-	}
-
-	private renderMiniMap(alpha: number) {
-		const minimap = ui.get(UIComponentEnum.MiniMap) as MiniMapComponent | undefined;
-		if (minimap && typeof (minimap.renderFrame) === "function") {
-			minimap.renderFrame(alpha);
-		}
-	}
-
-	private updateFpsCounter(fps: number) {
-		if (this.fpsLabel) {
-			const rounded = Math.max(0, Math.round(fps));
-			this.fpsLabel.textContent = (rounded > 0 ? rounded.toString() : "--") + " fps";
-		}
-	}
-
-	private snapToDevicePixel(value: number): number {
-		const ratio = window.devicePixelRatio || 1;
-		return Math.round(value * ratio) / ratio;
-	}
-
-	public setFpsLimit(limit?: number) {
-		const normalized = this.normalizeFpsLimit(limit);
-		this.requestedFpsLimit = normalized;
-		if (this.loop) {
-			this.loop.setFpsLimit(normalized);
-		}
-	}
-
-	private normalizeFpsLimit(limit?: number): number | undefined {
-		if (typeof (limit) !== "number" || !Number.isFinite(limit) || limit <= 0) {
-			return undefined;
-		}
-		const rounded = Math.round(limit);
-		let closest = ViewPort.FPS_LIMITS[0];
-		let bestDelta = Math.abs(rounded - closest);
-		for (let i = 1; i < ViewPort.FPS_LIMITS.length; i++) {
-			const candidate = ViewPort.FPS_LIMITS[i];
-			const delta = Math.abs(rounded - candidate);
-			if (delta < bestDelta) {
-				bestDelta = delta;
-				closest = candidate;
+				// redraw inventory sprites
+				stendhal.ui.equip.update();
+				(ui.get(UIComponentEnum.PlayerEquipment) as PlayerEquipmentComponent).update();
 			}
 		}
-		return closest;
+		window.setTimeout(function() {
+			stendhal.ui.gamewindow.draw.apply(stendhal.ui.gamewindow, arguments);
+		}, Math.max((1000 / 20) - (new Date().getTime() - startTime), 1));
 	}
 
 	/**
@@ -841,9 +200,6 @@ export class ViewPort {
 			return;
 		}
 		this.ctx.save();
-		// FIXME: is this the appropriate alpha level to use? "color_method" value from server doesn't
-		//	appear to include alpha information
-		this.ctx.globalAlpha = 0.75;
 		this.ctx.globalCompositeOperation = (this.colorMethod || this.ctx.globalCompositeOperation) as GlobalCompositeOperation;
 		this.ctx.fillStyle = this.HSLFilter;
 		this.ctx.fillRect(this.offsetX, this.offsetY, this.ctx.canvas.width, this.ctx.canvas.height);
@@ -901,104 +257,52 @@ export class ViewPort {
 		this.blendMethod = method;
 	}
 
-	getBlendCompositeOperation(): GlobalCompositeOperation | undefined {
-		if (!this.blendMethod) {
-			return undefined;
-		}
-		return this.blendMethod as GlobalCompositeOperation;
-	}
-
 	/**
 	 * Draws overall entity sprites.
 	 */
-	drawEntities(alpha: number) {
-		const count = this.entityCount;
-		if (count === 0) {
-			return;
-		}
-		const prevPositions = this.entityPrevPositions;
-		const currPositions = this.entityCurrPositions;
-		for (let index = 0; index < count; index++) {
-			const entity = this.entityRefs[index];
-			if (!entity || typeof entity.draw !== "function") {
-				continue;
+	drawEntities() {
+		var currentTime = new Date().getTime();
+		var time = currentTime - this.timeStamp;
+		this.timeStamp = currentTime;
+		for (var i in stendhal.zone.entities) {
+			var entity = stendhal.zone.entities[i];
+			if (typeof (entity.draw) != "undefined") {
+				entity.updatePosition(time);
+				entity.draw(this.ctx);
 			}
-			const base = index * 2;
-			const prevX = prevPositions[base];
-			const prevY = prevPositions[base + 1];
-			const currX = currPositions[base];
-			const currY = currPositions[base + 1];
-			const renderX = prevX + (currX - prevX) * alpha;
-			const renderY = prevY + (currY - prevY) * alpha;
-			this.withEntityRenderPosition(entity, renderX, renderY, () => entity.draw(this.ctx, renderX, renderY));
 		}
 	}
 
 	/**
 	 * Draws titles & HP bars associated with entities.
 	 */
-	drawEntitiesTop(alpha: number) {
-		const count = this.entityCount;
-		if (count === 0) {
-			return;
-		}
-		const prevPositions = this.entityPrevPositions;
-		const currPositions = this.entityCurrPositions;
-		for (let index = 0; index < count; index++) {
-			const entity = this.entityRefs[index];
-			if (!entity) {
-				continue;
+	drawEntitiesTop() {
+		var i;
+		for (i in stendhal.zone.entities) {
+			const entity = stendhal.zone.entities[i];
+			if (typeof (entity.setStatusBarOffset) !== "undefined") {
+				entity.setStatusBarOffset();
 			}
-			const base = index * 2;
-			const prevX = prevPositions[base];
-			const prevY = prevPositions[base + 1];
-			const currX = currPositions[base];
-			const currY = currPositions[base + 1];
-			const renderX = prevX + (currX - prevX) * alpha;
-			const renderY = prevY + (currY - prevY) * alpha;
-			this.withEntityRenderPosition(entity, renderX, renderY, () => {
-				if (typeof entity.setStatusBarOffset === "function") {
-					entity.setStatusBarOffset();
-				}
-				if (typeof entity.drawTop === "function") {
-					entity.drawTop(this.ctx, renderX, renderY);
-				}
-			});
-		}
-	}
-
-	private drawSpeechBubbles() {
-		for (let index = 0; index < this.textSprites.length; index++) {
-			const bubble = this.textSprites[index];
-			if (!bubble) {
-				continue;
-			}
-			const remove = bubble.draw(this.ctx);
-			if (remove) {
-				bubble.onRemoved();
-				this.textSprites[index] = null;
-				this.textSpriteFree.push(index);
-				this.speechBubblePool.push(bubble);
+			if (typeof (entity.drawTop) != "undefined") {
+				entity.drawTop(this.ctx);
 			}
 		}
 	}
 
-	private drawNotificationSprites() {
-		for (let index = 0; index < this.notifSprites.length; index++) {
-			const sprite = this.notifSprites[index];
-			if (!sprite) {
-				continue;
-			}
-			const remove = sprite.draw(this.ctx);
+	/**
+	 * Draws active notifications or speech bubbles associated with characters, NPCs, & creatures.
+	 *
+	 * @param sgroup {sprite.TextBubble[]}
+	 *   Sprite group to drawn, either speech bubbles or notifications/achievements (default: speech bubbles).
+	 */
+	drawTextSprites(sgroup: TextBubble[] = this.textSprites) {
+		for (var i = 0; i < sgroup.length; i++) {
+			var sprite = sgroup[i];
+			var remove = sprite.draw(this.ctx);
 			if (remove) {
+				sgroup.splice(i, 1);
 				sprite.onRemoved();
-				this.notifSprites[index] = null;
-				this.notifSpriteFree.push(index);
-				if (sprite instanceof NotificationBubble) {
-					this.notifBubblePool.push(sprite);
-				} else if (sprite instanceof AchievementBanner) {
-					this.achievementPool.push(sprite);
-				}
+				i--;
 			}
 		}
 	}
@@ -1027,76 +331,83 @@ export class ViewPort {
 		}
 	}
 
-	private acquireSpeechBubble(): SpeechBubble {
-		return this.speechBubblePool.pop() || new SpeechBubble();
-	}
+	/**
+	 * Updates viewport drawing position of map based on player position.
+	 *
+	 * @param canvas {Canvas}
+	 *   Viewport canvas element.
+	 */
+	adjustView(canvas: Canvas) {
+		// IE does not support ctx.resetTransform(), so use the following workaround:
+		this.ctx.setTransform(1, 0, 0, 1, 0, 0);
 
-	private activateSpeechBubble(bubble: SpeechBubble) {
-		const index = this.textSpriteFree.length > 0 ? this.textSpriteFree.pop()! : this.textSprites.length;
-		if (index === this.textSprites.length) {
-			this.textSprites.push(bubble);
+		// Coordinates for a screen centered on player
+		let centerX: number, centerY: number;
+		if (this.freeze) {
+			centerX = this.offsetX + this.targetTileWidth / 2;
+			centerY = this.offsetY + this.targetTileHeight / 2;
 		} else {
-			this.textSprites[index] = bubble;
+			centerX = marauroa.me["_x"] * this.targetTileWidth + this.targetTileWidth / 2 - canvas.width / 2;
+			centerY = marauroa.me["_y"] * this.targetTileHeight + this.targetTileHeight / 2 - canvas.height / 2;
 		}
-		bubble.onAdded(this.ctx);
-	}
 
-	private collectActiveSpeechBubbles(): SpeechBubble[] {
-		const scratch = this.speechScratch;
-		scratch.length = 0;
-		for (const bubble of this.textSprites) {
-			if (bubble) {
-				scratch.push(bubble);
-			}
+		// Keep the world within the screen view
+		centerX = Math.min(centerX, stendhal.data.map.zoneSizeX * this.targetTileWidth - canvas.width);
+		centerX = Math.max(centerX, 0);
+
+		centerY = Math.min(centerY, stendhal.data.map.zoneSizeY * this.targetTileHeight - canvas.height);
+		centerY = Math.max(centerY, 0);
+
+		if (this.freeze) {
+			this.ctx.translate(-Math.round(centerX), -Math.round(centerY));
+			return;
 		}
-		return scratch;
+		this.offsetX = Math.round(centerX);
+		this.offsetY = Math.round(centerY);
+		this.ctx.translate(-this.offsetX, -this.offsetY);
 	}
 
 	/**
 	 * Adds a speech bubble to viewport.
+	 *
+	 * @param sprite {sprite.SpeechBubble}
+	 *   Sprite definition.
 	 */
-	showSpeechBubble(text: string, entity: RPEntity) {
-		const bubble = this.acquireSpeechBubble();
-		const siblings = this.collectActiveSpeechBubbles();
-		bubble.configure(text, entity, siblings);
-		this.speechScratch.length = 0;
-		this.activateSpeechBubble(bubble);
-	}
-
-	private acquireNotificationBubble(): NotificationBubble {
-		return this.notifBubblePool.pop() || new NotificationBubble();
-	}
-
-	private acquireAchievementBanner(): AchievementBanner {
-		return this.achievementPool.pop() || new AchievementBanner();
-	}
-
-	private activateNotificationSprite(sprite: TextBubble) {
-		const index = this.notifSpriteFree.length > 0 ? this.notifSpriteFree.pop()! : this.notifSprites.length;
-		if (index === this.notifSprites.length) {
-			this.notifSprites.push(sprite);
-		} else {
-			this.notifSprites[index] = sprite;
-		}
+	addTextSprite(sprite: SpeechBubble) {
+		this.textSprites.push(sprite);
 		sprite.onAdded(this.ctx);
 	}
 
 	/**
 	 * Adds a notification bubble to viewport.
+	 *
+	 * @param mtype {string}
+	 *   Message type.
+	 * @param text {string}
+	 *   Text contents.
+	 * @param profile {string}
+	 *   Optional entity image filename to show as the speaker.
 	 */
 	addNotifSprite(mtype: string, text: string, profile?: string) {
-		const bubble = this.acquireNotificationBubble();
-		bubble.configure(mtype, text, profile);
-		this.activateNotificationSprite(bubble);
+		const bubble = new NotificationBubble(mtype, text, profile);
+		this.notifSprites.push(bubble);
+		bubble.onAdded(this.ctx);
 	}
 
 	/**
 	 * Adds an achievement banner to viewport.
+	 *
+	 * @param cat {string}
+	 *   Achievement categroy.
+	 * @param title {string}
+	 *   Achievement title.
+	 * @param desc {string}
+	 *   Achievement description.
 	 */
 	addAchievementNotif(cat: string, title: string, desc: string) {
-		const banner = this.acquireAchievementBanner();
-		banner.configure(cat, title, desc);
-		this.activateNotificationSprite(banner);
+		const banner = new AchievementBanner(cat, title, desc);
+		this.notifSprites.push(banner);
+		banner.onAdded(this.ctx);
 	}
 
 	/**
@@ -1112,32 +423,18 @@ export class ViewPort {
 	removeTextBubble(sprite: TextBubble, x: number, y: number) {
 		for (let idx = this.notifSprites.length - 1; idx >= 0; idx--) {
 			const topSprite = this.notifSprites[idx];
-			if (!topSprite) {
-				continue;
-			}
-			if (topSprite === sprite || topSprite.clipsPoint(x, y)) {
+			if (topSprite == sprite || topSprite.clipsPoint(x, y)) {
+				this.notifSprites.splice(idx, 1);
 				topSprite.onRemoved();
-				this.notifSprites[idx] = null;
-				this.notifSpriteFree.push(idx);
-				if (topSprite instanceof NotificationBubble) {
-					this.notifBubblePool.push(topSprite);
-				} else if (topSprite instanceof AchievementBanner) {
-					this.achievementPool.push(topSprite);
-				}
 				return;
 			}
 		}
 
 		for (let idx = this.textSprites.length - 1; idx >= 0; idx--) {
-			const bubble = this.textSprites[idx];
-			if (!bubble) {
-				continue;
-			}
-			if (bubble === sprite || bubble.clipsPoint(x, y)) {
-				bubble.onRemoved();
-				this.textSprites[idx] = null;
-				this.textSpriteFree.push(idx);
-				this.speechBubblePool.push(bubble);
+			const topSprite = this.textSprites[idx];
+			if (topSprite == sprite || topSprite.clipsPoint(x, y)) {
+				this.textSprites.splice(idx, 1);
+				topSprite.onRemoved();
 				return;
 			}
 		}
@@ -1155,12 +452,12 @@ export class ViewPort {
 	 */
 	textBubbleAt(x: number, y: number): boolean {
 		for (const sprite of this.notifSprites) {
-			if (sprite && sprite.clipsPoint(x, y)) {
+			if (sprite.clipsPoint(x, y)) {
 				return true;
 			}
 		}
 		for (const sprite of this.textSprites) {
-			if (sprite && sprite.clipsPoint(x, y)) {
+			if (sprite.clipsPoint(x, y)) {
 				return true;
 			}
 		}
@@ -1172,19 +469,14 @@ export class ViewPort {
 	 */
 	onExitZone() {
 		// clear speech bubbles & emojis so they don't appear on the new map
-		for (let idx = 0; idx < this.textSprites.length; idx++) {
-			const bubble = this.textSprites[idx];
-			if (!bubble) {
-				continue;
+		for (const sgroup of [this.textSprites, this.emojiSprites]) {
+			for (let idx = sgroup.length - 1; idx >= 0; idx--) {
+				const sprite = sgroup[idx];
+				sgroup.splice(idx, 1);
+				if (sprite instanceof SpeechBubble) {
+					sprite.onRemoved();
+				}
 			}
-			bubble.onRemoved();
-			this.textSprites[idx] = null;
-			this.textSpriteFree.push(idx);
-			this.speechBubblePool.push(bubble);
-		}
-
-		for (let idx = this.emojiSprites.length - 1; idx >= 0; idx--) {
-			this.emojiSprites.splice(idx, 1);
 		}
 	}
 
@@ -1226,9 +518,9 @@ export class ViewPort {
 			stendhal.ui.timestampMouseDown = +new Date();
 
 			if (e.type !== "dblclick" && e.target) {
-				e.target.addEventListener("mousemove", mHandle.onDrag);
+				e.target.addEventListener("mousemove", mHandle.onDrag, { passive: true });
 				e.target.addEventListener("mouseup", mHandle.onMouseUp);
-				e.target.addEventListener("touchmove", mHandle.onDrag);
+				e.target.addEventListener("touchmove", mHandle.onDrag, { passive: true });
 				e.target.addEventListener("touchend", mHandle.onMouseUp);
 			} else if (entity == stendhal.zone.ground) {
 				entity.onclick(pos.canvasRelativeX, pos.canvasRelativeY, true);
@@ -1248,52 +540,24 @@ export class ViewPort {
 
 		mHandle.onMouseUp = function(e: MouseEvent | TouchEvent) {
 			const is_touch = stendhal.ui.touch.isTouchEvent(e);
-			const viewport = stendhal.ui.gamewindow as ViewPort;
 			if (is_touch) {
-				stendhal.ui.touch.onTouchEnd(e as TouchEvent);
+				stendhal.ui.touch.onTouchEnd(e);
 			}
 			var pos = stendhal.ui.html.extractPosition(e);
 			const long_touch = is_touch && stendhal.ui.touch.isLongTouch(e);
-			let isDoubleTap = false;
-			let handledTeleclick = false;
-			if (is_touch && !long_touch) {
-				isDoubleTap = stendhal.ui.touch.registerTap(pos.pageX, pos.pageY, pos.target, viewport.getElement());
-				if (isDoubleTap) {
-					handledTeleclick = viewport.handleTeleclickDoubleTap(pos);
-				}
-			}
-			if (handledTeleclick) {
-				mHandle.cleanUp(pos);
-				if (pos.target instanceof HTMLElement) {
-					pos.target.focus();
-				}
-				e.preventDefault();
-				return;
-			}
 			if ((e instanceof MouseEvent && mHandle.isRightClick(e)) || long_touch) {
 				if (entity != stendhal.zone.ground) {
 					const append: any[] = [];
+					/*
 					if (long_touch) {
-						if (viewport.canHoldEntityForTouch(entity)) {
-							append.push({
-								title: "Przytrzymaj (podziel stos)",
-								action: () => {
-									viewport.tryHoldEntityForTouch(entity, pos.pageX, pos.pageY);
-								}
-							});
-						}
+						// TODO: add option for "hold" to allow splitting item stacks
 					}
-					stendhal.ui.actionContextMenu.set(ui.createSingletonFloatingWindow("Czynności",
+					*/
+					stendhal.ui.actionContextMenu.set(ui.createSingletonFloatingWindow("Action",
 						new ActionContextMenu(entity, append), pos.pageX - 50, pos.pageY - 5));
 				}
 			} else {
-				const sendDoubleClick = isDoubleTap && entity === stendhal.zone.ground
-					&& viewport.isTeleclickEnabled();
-				if (sendDoubleClick) {
-					entity.onclick(pos.canvasRelativeX, pos.canvasRelativeY, true);
-				} else {
-					entity.onclick(pos.canvasRelativeX, pos.canvasRelativeY);
-				}
+				entity.onclick(pos.canvasRelativeX, pos.canvasRelativeY);
 			}
 			mHandle.cleanUp(pos);
 			pos.target.focus();
@@ -1419,77 +683,6 @@ export class ViewPort {
 		}
 	}
 
-	private isTeleclickEnabled(): boolean {
-		const player = marauroa && marauroa.me;
-		if (!player) {
-			return false;
-		}
-		return Object.prototype.hasOwnProperty.call(player, "teleclickmode");
-	}
-
-	private handleTeleclickDoubleTap(pos: any): boolean {
-		if (!this.isTeleclickEnabled()) {
-			return false;
-		}
-		const target = pos && pos.target;
-		const viewportElement = this.getElement();
-		let isViewportTarget = false;
-		if (target instanceof HTMLElement) {
-			if (target === viewportElement) {
-				isViewportTarget = true;
-			} else if (typeof target.closest === "function") {
-				isViewportTarget = !!target.closest("#viewport");
-			}
-		}
-		if (!isViewportTarget) {
-			return false;
-		}
-
-		const ground = stendhal.zone && stendhal.zone.ground;
-		if (!ground || typeof ground.onclick !== "function") {
-			return false;
-		}
-
-		const localX = typeof pos.canvasRelativeX === "number" ? pos.canvasRelativeX : 0;
-		const localY = typeof pos.canvasRelativeY === "number" ? pos.canvasRelativeY : 0;
-
-		ground.onclick(localX, localY, true);
-		return true;
-	}
-
-	private canHoldEntityForTouch(entity: any): boolean {
-		if (!entity || entity.type !== "item") {
-			return false;
-		}
-		const quantity = entity.hasOwnProperty("quantity") ? Number(entity["quantity"]) : 1;
-		if (!quantity || quantity <= 1) {
-			return false;
-		}
-		return !!(entity.sprite && entity.sprite.filename);
-	}
-
-	private tryHoldEntityForTouch(entity: any, pageX: number, pageY: number): boolean {
-		if (!this.canHoldEntityForTouch(entity)) {
-			return false;
-		}
-		const spriteFilename = entity.sprite.filename;
-		const sprite = stendhal.data.sprites.getAreaOf(stendhal.data.sprites.get(spriteFilename), 32, 32);
-		if (!sprite) {
-			return false;
-		}
-		const position = new Point(pageX, pageY);
-		const quantity = entity.hasOwnProperty("quantity") ? Number(entity["quantity"]) : 1;
-		const held: HeldObject = {
-			path: entity.getIdPath(),
-			zone: marauroa.currentZoneName,
-			quantity,
-			origin: position
-		};
-		singletons.getHeldObjectManager().set(held, sprite, position);
-		stendhal.ui.touch.setHolding(true);
-		return true;
-	}
-
 	/**
 	 * Displays a corpse or item sprite while dragging.
 	 */
@@ -1547,7 +740,7 @@ export class ViewPort {
 			// if ctrl is pressed or holding stackable item from touch event, we ask for the quantity
 			// NOTE: don't create selector if touch source is ground
 			if (e.ctrlKey || (touch_held && sourceSlot !== targetSlot)) {
-				ui.createSingletonFloatingWindow("Ilość", new DropQuantitySelectorDialog(action, touch_held), pos.pageX - 50, pos.pageY - 25);
+				ui.createSingletonFloatingWindow("Quantity", new DropQuantitySelectorDialog(action, touch_held), pos.pageX - 50, pos.pageY - 25);
 			} else {
 				singletons.getHeldObjectManager().onRelease();
 				marauroa.clientFramework.sendAction(action);
@@ -1588,6 +781,5 @@ export class ViewPort {
 				element.style.setProperty(prop, this.initialStyle[prop]);
 			}
 		}
-		this.updateCanvasBounds();
 	}
 }

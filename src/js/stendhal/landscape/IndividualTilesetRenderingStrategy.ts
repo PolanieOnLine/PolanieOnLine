@@ -14,7 +14,9 @@ declare var stendhal: any;
 import { LandscapeRenderingStrategy } from "./LandscapeRenderingStrategy";
 import { ImagePreloader } from "../data/ImagePreloader";
 import { Chat } from "../util/Chat";
-import { drawLayerByName } from "./TileLayerPainter";
+import { TileMap } from "../data/TileMap";
+import { Canvas, RenderingContext2D } from "util/Types";
+
 
 export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrategy {
 
@@ -28,7 +30,7 @@ export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrate
 		}, 1000);
 	}
 
-	public onMapLoaded(_map: any): void {
+	public onMapLoaded(_map: TileMap): void {
 		// do nothing
 		console.log("Using IndividualTilesetRenderingStrategy.")
 	}
@@ -41,33 +43,101 @@ export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrate
 	}
 
 	public render(
-		canvas: HTMLCanvasElement, gamewindow: any,
-		tileOffsetX: number, tileOffsetY: number, targetTileWidth: number, targetTileHeight: number,
-		alpha: number): void {
+		canvas: Canvas, gamewindow: any,
+		tileOffsetX: number, tileOffsetY: number, targetTileWidth: number, targetTileHeight: number): void {
 
 		this.targetTileWidth = targetTileWidth;
 		this.targetTileHeight = targetTileHeight;
 
-		const ctx = canvas.getContext("2d")!;
-		const groundLayers = ["0_floor", "1_terrain", "2_object"];
-		for (const name of groundLayers) {
-			drawLayerByName(ctx, name, tileOffsetX, tileOffsetY, this.targetTileWidth, this.targetTileHeight);
+		for (var drawingLayer = 0; drawingLayer < stendhal.data.map.layers.length; drawingLayer++) {
+			var name = stendhal.data.map.layerNames[drawingLayer];
+			if (name !== "protection" && name !== "collision" && name !== "objects"
+				&& name !== "blend_ground" && name !== "blend_roof") {
+				this.paintLayer(canvas, drawingLayer, tileOffsetX, tileOffsetY);
+			}
 			if (name === "2_object") {
-				gamewindow.drawEntities(alpha);
+				gamewindow.drawEntities();
 			}
 		}
+	}
 
-		const composite = typeof(gamewindow.getBlendCompositeOperation) === "function"
-				? gamewindow.getBlendCompositeOperation()
-				: undefined;
-		const blendOptions = composite ? {composite} : undefined;
-		drawLayerByName(ctx, "blend_ground", tileOffsetX, tileOffsetY, this.targetTileWidth, this.targetTileHeight, blendOptions);
+	private paintLayer(canvas: Canvas, drawingLayer: number,
+		tileOffsetX: number, tileOffsetY: number) {
+		const layer = stendhal.data.map.layers[drawingLayer];
+		const yMax = Math.min(tileOffsetY + canvas.height / this.targetTileHeight + 1, stendhal.data.map.zoneSizeY);
+		const xMax = Math.min(tileOffsetX + canvas.width / this.targetTileWidth + 1, stendhal.data.map.zoneSizeX);
+		let ctx = canvas.getContext("2d")! as RenderingContext2D;
 
-		const roofLayers = ["3_roof", "4_roof_add"];
-		for (const name of roofLayers) {
-			drawLayerByName(ctx, name, tileOffsetX, tileOffsetY, this.targetTileWidth, this.targetTileHeight);
+		for (let y = tileOffsetY; y < yMax; y++) {
+			for (let x = tileOffsetX; x < xMax; x++) {
+				let gid = layer[y * stendhal.data.map.zoneSizeX + x];
+				const flip = gid & 0xE0000000;
+				gid &= 0x1FFFFFFF;
+
+				if (gid > 0) {
+					const tileset = stendhal.data.map.getTilesetForGid(gid);
+					const base = stendhal.data.map.firstgids[tileset];
+					const idx = gid - base;
+
+					try {
+						if (stendhal.data.map.aImages[tileset].height > 0) {
+							this.drawTile(ctx, stendhal.data.map.aImages[tileset], idx, x, y, flip);
+						}
+					} catch (e) {
+						console.error(e);
+					}
+				}
+			}
 		}
-		drawLayerByName(ctx, "blend_roof", tileOffsetX, tileOffsetY, this.targetTileWidth, this.targetTileHeight, blendOptions);
+	}
+
+	private drawTile(ctx: RenderingContext2D, tileset: HTMLImageElement, idx: number, x: number, y: number, flip = 0) {
+		const tilesetWidth = tileset.width;
+		const tilesPerRow = Math.floor(tilesetWidth / stendhal.data.map.tileWidth);
+		const pixelX = x * this.targetTileWidth;
+		const pixelY = y * this.targetTileHeight;
+
+		if (flip === 0) {
+			ctx.drawImage(tileset,
+				(idx % tilesPerRow) * stendhal.data.map.tileWidth,
+				Math.floor(idx / tilesPerRow) * stendhal.data.map.tileHeight,
+				stendhal.data.map.tileWidth, stendhal.data.map.tileHeight,
+				pixelX, pixelY,
+				this.targetTileWidth, this.targetTileHeight);
+		} else {
+			ctx.translate(pixelX, pixelY);
+			// an ugly hack to restore the previous transformation matrix
+			const restore = [[1, 0, 0, 1, -pixelX, -pixelY]];
+
+			if ((flip & 0x80000000) !== 0) {
+				// flip horizontally
+				ctx.transform(-1, 0, 0, 1, 0, 0);
+				ctx.translate(-this.targetTileWidth, 0);
+
+				restore.push([-1, 0, 0, 1, 0, 0]);
+				restore.push([1, 0, 0, 1, this.targetTileWidth, 0]);
+			}
+			if ((flip & 0x40000000) !== 0) {
+				// flip vertically
+				ctx.transform(1, 0, 0, -1, 0, 0);
+				ctx.translate(0, -this.targetTileWidth);
+
+				restore.push([1, 0, 0, -1, 0, 0]);
+				restore.push([1, 0, 0, 1, 0, this.targetTileHeight]);
+			}
+			if ((flip & 0x20000000) !== 0) {
+				// Coordinate swap
+				ctx.transform(0, 1, 1, 0, 0, 0);
+				restore.push([0, 1, 1, 0, 0, 0]);
+			}
+
+			this.drawTile(ctx, tileset, idx, 0, 0);
+
+			restore.reverse();
+			for (const args of restore) {
+				ctx.transform(args[0], args[1], args[2], args[3], args[4], args[5]);
+			}
+		}
 	}
 
 }

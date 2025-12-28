@@ -9,28 +9,29 @@
  *                                                                         *
  ***************************************************************************/
 
+import { Canvas } from "util/Types";
+import { TileMap } from "../data/TileMap";
 import { CombinedTilesetFactory } from "./CombinedTilesetFactory";
 import { LandscapeRenderer } from "./LandscapeRenderer";
-import { drawLayerByName } from "./TileLayerPainter";
+
 
 declare var stendhal: any;
 
 export abstract class LandscapeRenderingStrategy {
 
-	public abstract onMapLoaded(map: any): void;
+	public abstract onMapLoaded(map: TileMap): void;
 
 	public abstract onTilesetLoaded(): void;
 
 	public abstract render(
-		canvas: HTMLCanvasElement, gamewindow: any,
-		tileOffsetX: number, tileOffsetY: number, targetTileWidth: number, targetTileHeight: number,
-		alpha: number): void;
+		canvas: Canvas, gamewindow: any,
+		tileOffsetX: number, tileOffsetY: number, targetTileWidth: number, targetTileHeight: number): void;
 
 }
 
 export class CombinedTilesetRenderingStrategy extends LandscapeRenderingStrategy {
 
-	public onMapLoaded(map: any): void {
+	public onMapLoaded(map: TileMap): void {
 		let combinedTilesetFactory = new CombinedTilesetFactory(map);
 		stendhal.data.map.combinedTileset = combinedTilesetFactory.combine();
 	}
@@ -41,34 +42,23 @@ export class CombinedTilesetRenderingStrategy extends LandscapeRenderingStrategy
 	}
 
 	public render(
-			canvas: HTMLCanvasElement, gamewindow: any,
-			tileOffsetX: number, tileOffsetY: number, targetTileWidth: number, targetTileHeight: number,
-			alpha: number): void {
+		canvas: Canvas, gamewindow: any,
+		tileOffsetX: number, tileOffsetY: number, targetTileWidth: number, targetTileHeight: number): void {
 
 		let landscapeRenderder = new LandscapeRenderer();
-		const ctx = canvas.getContext("2d")!;
-		const composite = typeof(gamewindow.getBlendCompositeOperation) === "function"
-				? gamewindow.getBlendCompositeOperation()
-				: undefined;
-		const blendOptions = composite ? {composite} : undefined;
-
 		landscapeRenderder.drawLayer(
 			canvas,
 			stendhal.data.map.combinedTileset,
 			0,
 			tileOffsetX, tileOffsetY, targetTileWidth, targetTileHeight);
 
-		drawLayerByName(ctx, "blend_ground", tileOffsetX, tileOffsetY, targetTileWidth, targetTileHeight, blendOptions);
-
-		gamewindow.drawEntities(alpha);
+		gamewindow.drawEntities();
 
 		landscapeRenderder.drawLayer(
 			canvas,
 			stendhal.data.map.combinedTileset,
 			1,
 			tileOffsetX, tileOffsetY, targetTileWidth, targetTileHeight);
-
-		drawLayerByName(ctx, "blend_roof", tileOffsetX, tileOffsetY, targetTileWidth, targetTileHeight, blendOptions);
 	}
 
 }

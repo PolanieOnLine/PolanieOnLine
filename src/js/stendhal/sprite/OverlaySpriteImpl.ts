@@ -10,13 +10,15 @@
  *                                                                         *
  ***************************************************************************/
 
+import { RenderingContext2D } from "util/Types";
+
 
 export interface OverlaySpriteImpl {
 
 	/**
 	 * Instructions when sprite should be drawn on viewport.
 	 *
-	 * @param {CanvasRenderingContext2D} ctx
+	 * @param {RenderingContext2D} ctx
 	 *   The viewport canvas drawing context.
 	 * @param {number} x
 	 *   Horizonal pixel position of where to draw on canvas.
@@ -29,8 +31,8 @@ export interface OverlaySpriteImpl {
 	 * @returns {boolean}
 	 *   `true` to denote sprite is expired & should be removed.
 	 */
-	draw(ctx: CanvasRenderingContext2D, x: number, y: number, drawWidth: number, drawHeight: number)
-			: boolean;
+	draw(ctx: RenderingContext2D, x: number, y: number, drawWidth: number, drawHeight: number)
+		: boolean;
 
 	/**
 	 * Checks if sprite is expired.

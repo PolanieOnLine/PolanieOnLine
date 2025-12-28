@@ -64,7 +64,7 @@ export class DownloadUtil {
 	 *
 	 * @param filename {string}
 	 *   Default filename.
-	 * @param canvas {HTMLCanvasElement}
+	 * @param canvas {Canvas}
 	 *   Canvas containing data to convert to image.
 	 * @return {util.DownloadObject.DownloadObject}
 	 *   Object to be handled by browser for image download.
@@ -90,7 +90,7 @@ export class DownloadUtil {
 	/**
 	 * Creates an image download from a canvas element.
 	 *
-	 * @param canvas {HTMLCanvasElement}
+	 * @param canvas {Canvas}
 	 *   Canvas containing data to convert to image.
 	 * @return {util.DownloadObject.DownloadObject}
 	 *   Object to be handled by browser for image download.
@@ -98,7 +98,7 @@ export class DownloadUtil {
 	static buildScreenshot(): DownloadObject {
 		Chat.log("client", "Creating screenshot download ...");
 		return DownloadUtil.buildImage("stendhal_" + DownloadUtil.timestamp() + ".png",
-				ViewPort.get().getElement() as HTMLCanvasElement);
+			ViewPort.get().getElement() as HTMLCanvasElement);
 	}
 
 	/**
@@ -113,6 +113,6 @@ export class DownloadUtil {
 		Chat.log("client", "Creating chat log download ...");
 		const name = SessionManager.get().getCharName();
 		return DownloadUtil.buildText("stendhal_chat_" + (!name ? "" : name + "_")
-				+ DownloadUtil.timestamp() + ".txt", text);
+			+ DownloadUtil.timestamp() + ".txt", text);
 	}
 }

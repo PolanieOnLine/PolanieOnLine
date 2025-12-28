@@ -9,6 +9,7 @@
  *                                                                         *
  ***************************************************************************/
 
+import { RenderingContext2D } from "util/Types";
 import { Entity } from "./Entity";
 
 declare var marauroa: any;
@@ -27,13 +28,11 @@ export class Food extends Entity {
 		// TODO: play sound effect
 	}
 
-	override draw(ctx: CanvasRenderingContext2D, _tileXOverride?: number, _tileYOverride?: number) {
+	override draw(ctx: RenderingContext2D) {
 		var image = stendhal.data.sprites.get(stendhal.paths.sprites + "/food.png");
 		if (image.height) {
-			const tileX = this.getRenderTileX();
-			const tileY = this.getRenderTileY();
-			var localX = tileX * 32;
-			var localY = tileY * 32;
+			var localX = this["x"] * 32;
+			var localY = this["y"] * 32;
 			var offset = this._amount * 32;
 			ctx.drawImage(image, 0, offset, 32, 32, localX, localY, 32, 32);
 		}

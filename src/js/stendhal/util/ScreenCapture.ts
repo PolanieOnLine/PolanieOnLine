@@ -56,7 +56,7 @@ export class ScreenCapture {
 	/**
 	 * Begins recording.
 	 *
-	 * @param {HTMLCanvasElement} canvas
+	 * @param {Canvas} canvas
 	 *   Canvas element to record.
 	 * @param {AudioContext=} audio
 	 *   Sound manager from which to record audio.
@@ -79,10 +79,10 @@ export class ScreenCapture {
 		Chat.log("client", "&nbsp;&nbsp;framerate: " + this.def.framerate.toFixed(2) + " frames/sec");
 		if (this.def.codec) {
 			Chat.log("client", "&nbsp;&nbsp;video encoder: " + this.def.codec + " (" + this.def.bitrate
-					+ " bits/sec)");
+				+ " bits/sec)");
 			if (this.def.acodec) {
 				Chat.log("client", "&nbsp;&nbsp;audio encoder: " + this.def.acodec + " ("
-						+ this.def.abitrate + " bits/sec)");
+					+ this.def.abitrate + " bits/sec)");
 			}
 		}
 
@@ -121,7 +121,7 @@ export class ScreenCapture {
 	 * @returns {VideoDefinition|undefined}
 	 *   Supported video definiton or `undefined`.
 	 */
-	private getDefinition(): VideoDefinition|undefined {
+	private getDefinition(): VideoDefinition | undefined {
 		const containers = ["mp4", "webm", "ogg"];
 		const codecs = ["avc1", "h264", "av1", "vp9", "vp8"];
 		const acodecs = ["aac", "vorbis", "mpeg"];
@@ -222,7 +222,7 @@ export class ScreenCapture {
 	private toDataURL(): string {
 		let blob: Blob;
 		if (this.def) {
-			blob = new Blob(this.chunks, {type: this.def.mime});
+			blob = new Blob(this.chunks, { type: this.def.mime });
 		} else {
 			blob = new Blob(this.chunks);
 		}

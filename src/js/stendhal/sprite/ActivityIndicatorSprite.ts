@@ -9,6 +9,7 @@
  *                                                                         *
  ***************************************************************************/
 
+import { RenderingContext2D } from "util/Types";
 import { Paths } from "../data/Paths";
 
 declare var stendhal: any;
@@ -42,7 +43,7 @@ export class ActivityIndicatorSprite {
 	 * @param width
 	 *   Pixel width of parent object.
 	 */
-	public draw(ctx: CanvasRenderingContext2D, dx: number, dy: number, width: number) {
+	public draw(ctx: RenderingContext2D, dx: number, dy: number, width: number) {
 		if (!ActivityIndicatorSprite.img.complete) {
 			return;
 		}
@@ -66,6 +67,6 @@ export class ActivityIndicatorSprite {
 		}
 
 		// draw in upper-right of target area
-		ctx.drawImage(ActivityIndicatorSprite.img, dim * this.frameIdx, 0, dim, dim, dx+width-dim, dy, dim, dim);
+		ctx.drawImage(ActivityIndicatorSprite.img, dim * this.frameIdx, 0, dim, dim, dx + width - dim, dy, dim, dim);
 	}
 }

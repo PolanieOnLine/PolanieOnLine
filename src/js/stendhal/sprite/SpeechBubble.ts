@@ -11,48 +11,40 @@
 
 declare var stendhal: any;
 
-import { TextBubble, TextSegment } from "./TextBubble";
+import { TextBubble } from "./TextBubble";
 
 import { Color } from "../data/color/Color";
 
 import { RPEntity } from "../entity/RPEntity";
 
+import { Pair } from "../util/Pair";
 import { Speech } from "../util/Speech";
+import { RenderingContext2D } from "util/Types";
 
 
 export class SpeechBubble extends TextBubble {
-	private entity!: RPEntity;
+
+	private entity: RPEntity;
 	private offsetY: number;
 
 	/** Formatted sections. */
-	private parts: TextSegment[];
+	private parts: Pair<string, string>[];
 
-	constructor() {
-		super("");
-		this.parts = [];
-		this.offsetY = 0;
-	}
 
-	configure(text: string, entity: RPEntity, siblings: readonly SpeechBubble[]) {
-		const sanitized = text.replace(/\\\\/g, "\\");
-		const display = (sanitized.length > 30) ? (sanitized.substring(0, 30) + "...") : sanitized;
-		this.resetBubble(display);
+	constructor(text: string, entity: RPEntity) {
+		text = text.replace(/\\\\/g, "\\");
+		super((text.length > 30) ? (text.substring(0, 30) + "...") : text);
 		this.entity = entity;
 
-		this.parts.length = 0;
+		this.parts = [];
 		this.segregate(this.parts);
 
 		this.offsetY = 0;
-		const viewport = stendhal?.ui?.gamewindow;
-		const tileHeight = viewport ? viewport.targetTileHeight : 32;
-		const x = this.getX();
-		const y = this.getY();
-		for (const bubble of siblings) {
-			if (!bubble) {
-				continue;
-			}
-			if (x === bubble.getX() && y + this.offsetY === bubble.getY()) {
-				this.offsetY += tileHeight / 2;
+		// find free text bubble position
+		const x = this.getX(), y = this.getY();
+		for (const bubble of stendhal.ui.gamewindow.textSprites) {
+			if (x == bubble.getX() && y + this.offsetY == bubble.getY()) {
+				this.offsetY += stendhal.ui.gamewindow.targetTileHeight / 2;
 			}
 		}
 
@@ -61,11 +53,9 @@ export class SpeechBubble extends TextBubble {
 			this.text.length * TextBubble.STANDARD_DUR / 50);
 	}
 
-	override draw(ctx: CanvasRenderingContext2D): boolean {
-		const baseFont = "14px Arial";
-		const italicFont = "italic 14px Arial";
+	override draw(ctx: RenderingContext2D): boolean {
 		ctx.lineWidth = 2;
-		ctx.font = baseFont;
+		ctx.font = "14px Arial";
 		ctx.fillStyle = Color.WHITE;
 		ctx.strokeStyle = Color.BLACK;
 
@@ -80,22 +70,10 @@ export class SpeechBubble extends TextBubble {
 
 		x += 4;
 		ctx.save();
-		for (const segment of this.parts) {
-			ctx.font = segment.italic ? italicFont : baseFont;
-			ctx.fillStyle = segment.color;
-			ctx.fillText(segment.text, x, y + TextBubble.adjustY);
-			const width = ctx.measureText(segment.text).width;
-			if (segment.underline && width > 0) {
-				ctx.save();
-				ctx.strokeStyle = segment.color;
-				ctx.lineWidth = 1;
-				ctx.beginPath();
-				ctx.moveTo(x, y + TextBubble.adjustY + 1);
-				ctx.lineTo(x + width, y + TextBubble.adjustY + 1);
-				ctx.stroke();
-				ctx.restore();
-			}
-			x += width;
+		for (const p of this.parts) {
+			ctx.fillStyle = p.first;
+			ctx.fillText(p.second, x, y + TextBubble.adjustY);
+			x += ctx.measureText(p.second).width;
 		}
 		ctx.restore();
 

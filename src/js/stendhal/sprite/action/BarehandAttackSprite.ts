@@ -12,6 +12,7 @@
 
 import { AttackSprite } from "./AttackSprite";
 import { RPEntity } from "../../entity/RPEntity";
+import { RenderingContext2D } from "util/Types";
 
 declare var stendhal: any;
 
@@ -28,8 +29,8 @@ export class BarehandAttackSprite extends AttackSprite {
 		this.image = image;
 	}
 
-	override draw(ctx: CanvasRenderingContext2D, x: number, y: number, entityWidth: number,
-			entityHeight: number): boolean {
+	override draw(ctx: RenderingContext2D, x: number, y: number, entityWidth: number,
+		entityHeight: number): boolean {
 		if (!this.image || !this.image.height) {
 			return this.expired();
 		}
@@ -43,7 +44,7 @@ export class BarehandAttackSprite extends AttackSprite {
 
 		// offset sprite for facing direction
 		let sx, sy;
-		switch (this.dir+"") {
+		switch (this.dir + "") {
 			case "1": // UP
 				sx = centerX + (stendhal.ui.gamewindow.targetTileWidth / 2);
 				sy = y - (stendhal.ui.gamewindow.targetTileHeight * 1.5);
@@ -66,7 +67,7 @@ export class BarehandAttackSprite extends AttackSprite {
 		}
 
 		ctx.drawImage(this.image, frameIndex * drawWidth, (this.dir - 1) * drawHeight,
-				drawWidth, drawHeight, sx, sy, drawWidth, drawHeight);
+			drawWidth, drawHeight, sx, sy, drawWidth, drawHeight);
 		return this.expired();
 	}
 }

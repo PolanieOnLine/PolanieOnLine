@@ -9,6 +9,7 @@
  *                                                                         *
  ***************************************************************************/
 
+import { RenderingContext2D } from "util/Types";
 import { ActivityIndicatorSprite } from "../sprite/ActivityIndicatorSprite";
 
 import { ItemInventoryComponent } from "../ui/component/ItemInventoryComponent";
@@ -50,11 +51,11 @@ export class Corpse extends PopupInventory {
 		}
 	}
 
-	override draw(ctx: CanvasRenderingContext2D, tileXOverride?: number, tileYOverride?: number) {
+	override draw(ctx: RenderingContext2D) {
 		if (!this.sprite) {
 			return;
 		}
-		super.draw(ctx, tileXOverride, tileYOverride);
+		super.draw(ctx);
 
 		if (this.indicator && !this.isEmpty()) {
 			const tileW = stendhal.ui.gamewindow.targetTileWidth;
@@ -68,12 +69,10 @@ export class Corpse extends PopupInventory {
 				return;
 			}
 
-			const tileX = this.getRenderTileX();
-			const tileY = this.getRenderTileY();
 			const offsetX = Math.floor((this["width"] * tileW - this.sprite.width) / 2);
 			const offsetY = Math.floor((this["height"] * tileH - this.sprite.height) / 2);
-			const dx = tileX * tileW + offsetX;
-			const dy = tileY * tileH + offsetY;
+			const dx = this["x"] * tileW + offsetX;
+			const dy = this["y"] * tileH + offsetY;
 
 			this.indicator.draw(ctx, dx, dy, this.sprite.width);
 		}
@@ -123,17 +122,15 @@ export class Corpse extends PopupInventory {
 			}
 
 			const invComponent = new ItemInventoryComponent(this,
-				"content", content_row, content_col,
-				stendhal.config.getBoolean("inventory.quick-pickup"), undefined);
+					"content", content_row, content_col,
+					stendhal.config.getBoolean("inventory.quick-pickup"), undefined);
 			// TODO: remove, deprecated
 			invComponent.setConfigId("corpse");
 
 			const dstate = stendhal.config.getWindowState("corpse");
-			const windowInstance = new FloatingWindow("Zwłoki", invComponent,
-				dstate.x, dstate.y);
-			windowInstance.setId("corpse");
-			windowInstance.setFixedWidth(78);
-			this.inventory = windowInstance;
+			this.inventory = new FloatingWindow("Zwłoki", invComponent,
+					dstate.x, dstate.y);
+			this.inventory.setId("corpse");
 		}
 	}
 
