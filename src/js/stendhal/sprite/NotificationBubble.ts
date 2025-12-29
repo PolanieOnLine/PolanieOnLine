@@ -103,7 +103,10 @@ export class NotificationBubble extends TextBubble {
 			for (const piece of chars) {
 				const last = collapsed[collapsed.length - 1];
 				if (last && last.first === piece.color) {
-					last.second += piece.char;
+					collapsed[collapsed.length - 1] = new Pair(
+						last.first,
+						last.second + piece.char
+					);
 				} else {
 					collapsed.push(new Pair(piece.color, piece.char));
 				}
