@@ -23,6 +23,10 @@ import { RenderingContext2D } from "util/Types";
 
 
 export class NotificationBubble extends TextBubble {
+	private static readonly FONT_SIZE = 14;
+	private static readonly LINE_HEIGHT = NotificationBubble.FONT_SIZE + 6;
+	private static readonly FONT = NotificationBubble.FONT_SIZE + "px sans-serif";
+	private static readonly MAX_TEXT_WIDTH = 340;
 
 	private mtype: string;
 	private lines: string[];
@@ -31,7 +35,6 @@ export class NotificationBubble extends TextBubble {
 	private profile?: HTMLImageElement;
 	private profileName?: string;
 	private lmargin = 4;
-
 
 	constructor(mtype: string, text: string, profile?: string) {
 		super(text);
@@ -43,19 +46,25 @@ export class NotificationBubble extends TextBubble {
 			TextBubble.STANDARD_DUR,
 			this.text.length * TextBubble.STANDARD_DUR / 50);
 
-		const linewrap = 30;
-		const wordbreak = 60;
 		this.lines = [];
 		this.partsByLine = [];
 
 		const formatted = TextBubble.buildFormattedParts(text, this.textColor);
 		this.text = formatted.plainText;
 
+		const measurementCtx = NotificationBubble.createMeasurementContext();
+		measurementCtx.font = NotificationBubble.FONT;
+
 		const words = this.text.split("\t").join(" ").split(" ");
 		let nextlineParts: Pair<string, string>[] = [];
 		let partIdx = 0;
 		let partOffset = 0;
 		let lastColor = this.textColor;
+		let longestWidth = 0;
+
+		const measurePartsWidth = (parts: Pair<string, string>[]) =>
+			measurementCtx.measureText(parts.map((p) => p.second).join(""))
+				.width;
 
 		const consume = (count: number) => {
 			const consumed: Pair<string, string>[] = [];
@@ -67,7 +76,7 @@ export class NotificationBubble extends TextBubble {
 				const segment = part.second.substr(partOffset, take);
 				if (segment.length > 0) {
 					consumed.push(new Pair(part.first, segment));
-					lastColor = part.first;
+					lastColor = part.first || lastColor;
 				}
 				remaining -= take;
 				partOffset += take;
@@ -79,56 +88,92 @@ export class NotificationBubble extends TextBubble {
 			return consumed;
 		};
 
-		const totalLength = (parts: Pair<string, string>[]) => {
-			return parts.reduce((len, p) => len + p.second.length, 0);
+		const collectLine = (parts: Pair<string, string>[]) => {
+			this.partsByLine.push(parts);
+			const textLine = parts.map((p) => p.second).join("");
+			this.lines.push(textLine);
+			const lineWidth = measurePartsWidth(parts);
+			if (lineWidth > longestWidth) {
+				longestWidth = lineWidth;
+			}
 		};
 
-		const splitParts = (parts: Pair<string, string>[], count: number)
-				: { head: Pair<string, string>[]; tail: Pair<string, string>[] } => {
-			const head: Pair<string, string>[] = [];
-			const tail: Pair<string, string>[] = [];
-			let remaining = count;
-			for (const p of parts) {
-				if (remaining <= 0) {
-					tail.push(p);
-					continue;
-				}
-				if (p.second.length <= remaining) {
-					head.push(p);
-					remaining -= p.second.length;
+		const collapseCharsToParts = (chars: { color: string; char: string }[]) => {
+			const collapsed: Pair<string, string>[] = [];
+			for (const piece of chars) {
+				const last = collapsed[collapsed.length - 1];
+				if (last && last.first === piece.color) {
+					last.second += piece.char;
 				} else {
-					head.push(new Pair(p.first, p.second.substr(0, remaining)));
-					tail.push(new Pair(p.first, p.second.substr(remaining)));
-					remaining = 0;
+					collapsed.push(new Pair(piece.color, piece.char));
 				}
 			}
+			return collapsed;
+		};
+
+		const splitLongWord = (parts: Pair<string, string>[]) => {
+			const chars: { color: string; char: string }[] = [];
+			for (const p of parts) {
+				for (const char of p.second) {
+					chars.push({ color: p.first || this.textColor, char });
+				}
+				}
+			let splitIndex = 1;
+			for (let idx = 1; idx <= chars.length; idx++) {
+				const preview = chars.slice(0, idx).map((c) => c.char).join("") + "-";
+				if (measurementCtx.measureText(preview).width <= NotificationBubble.MAX_TEXT_WIDTH) {
+					splitIndex = idx;
+				} else {
+					break;
+				}
+			}
+			const headChars = chars.slice(0, splitIndex);
+			const tailChars = chars.slice(splitIndex);
+			const hyphenColor = headChars.length
+				? headChars[headChars.length - 1].color
+				: (parts[parts.length - 1]?.first || this.textColor);
+			const head = collapseCharsToParts(headChars);
+			head.push(new Pair(hyphenColor, "-"));
+			const tail = collapseCharsToParts(tailChars);
+			tail.unshift(new Pair(hyphenColor, "-"));
 			return { head, tail };
 		};
 
 		for (const w of words) {
-			if (nextlineParts.length > 0) {
-				nextlineParts.push(...consume(1));
-			}
-			nextlineParts.push(...consume(w.length));
+			const lineHasContent = nextlineParts.length > 0;
+			const prefixParts = lineHasContent ? consume(1) : [];
+			const wordParts = consume(w.length);
+			const candidateParts = nextlineParts.concat(prefixParts, wordParts);
+			const candidateWidth = measurePartsWidth(candidateParts);
 
-			const currentLength = totalLength(nextlineParts);
-			if (currentLength > wordbreak) {
-				const { head, tail } = splitParts(nextlineParts, wordbreak);
-				const color = head.length ? head[head.length - 1].first : lastColor;
-				const headWithHyphen = [...head, new Pair(color, "-")];
-				this.partsByLine.push(headWithHyphen);
-				this.lines.push(headWithHyphen.map((p) => p.second).join(""));
-				nextlineParts = [new Pair(color, "-")].concat(tail);
-			} else if (currentLength >= linewrap) {
-				this.partsByLine.push(nextlineParts);
-				this.lines.push(nextlineParts.map((p) => p.second).join(""));
-				nextlineParts = [];
+			if (candidateWidth <= NotificationBubble.MAX_TEXT_WIDTH) {
+				nextlineParts = candidateParts;
+				continue;
 			}
+			if (nextlineParts.length > 0) {
+				collectLine(nextlineParts);
+				nextlineParts = [];
+				if (measurePartsWidth(wordParts) <= NotificationBubble.MAX_TEXT_WIDTH) {
+					nextlineParts = wordParts;
+					continue;
+				}
+			}
+
+			let remainingParts = wordParts;
+			while (measurePartsWidth(remainingParts) > NotificationBubble.MAX_TEXT_WIDTH) {
+				const { head, tail } = splitLongWord(remainingParts);
+				collectLine(head);
+				remainingParts = tail;
+			}
+
+			nextlineParts = remainingParts;
 		}
 		if (nextlineParts.length > 0) {
-			this.partsByLine.push(nextlineParts);
-			this.lines.push(nextlineParts.map((p) => p.second).join(""));
+			collectLine(nextlineParts);
 		}
+
+		this.width = longestWidth + (this.lmargin * 2);
+		this.height = this.lines.length * NotificationBubble.LINE_HEIGHT;
 
 		if (profile) {
 			// FIXME: first drawing of profile may still be delayed on slower systems
@@ -138,18 +183,28 @@ export class NotificationBubble extends TextBubble {
 		}
 	}
 
+	private static createMeasurementContext(): CanvasRenderingContext2D {
+		const canvas = (typeof OffscreenCanvas !== "undefined")
+			? new OffscreenCanvas(1, 1)
+			: document.createElement("canvas");
+		const ctx = canvas.getContext("2d") as CanvasRenderingContext2D | null;
+		if (!ctx) {
+			throw new Error("Unable to create measurement context for NotificationBubble");
+		}
+		return ctx;
+	}
+
 	override draw(ctx: RenderingContext2D): boolean {
 		const screenTop = stendhal.ui.gamewindow.offsetY;
 		const screenBottom = screenTop + ctx.canvas.height;
 		const screenLeft = stendhal.ui.gamewindow.offsetX;
 		const screenCenterX = screenLeft + (ctx.canvas.width / 2);
 
-
 		// get width & height of text
-		const fontsize = 14;
-		const lheight = fontsize + 6;
+		const fontsize = NotificationBubble.FONT_SIZE;
+		const lheight = NotificationBubble.LINE_HEIGHT;
 		ctx.lineWidth = 2;
-		ctx.font = fontsize + "px sans-serif";
+		ctx.font = NotificationBubble.FONT;
 		ctx.fillStyle = "rgb(60, 30, 0)";
 		ctx.strokeStyle = this.textColor;
 
@@ -169,7 +224,6 @@ export class NotificationBubble extends TextBubble {
 		this.x = screenCenterX - (this.width / 2);
 		// Note: border is 1 pixel
 		this.y = screenBottom - this.height + TextBubble.adjustY - 1;
-
 
 		if (this.profile) {
 			if (!this.profile.complete || !this.profile.height) {
