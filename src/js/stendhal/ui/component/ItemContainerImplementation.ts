@@ -44,7 +44,7 @@ export class ItemContainerImplementation {
 	 * slot name, slot size, object (a corpse or chest) or null for marauroa.me,
 	 * which changes on zone change.
 	 */
-	constructor(private parentElement: Document|HTMLElement, private slot: string, private size: number, public object: any, private suffix: string, private quickPickup: boolean, private defaultImage?: string) {
+	constructor(private parentElement: Document | HTMLElement, private slot: string, private size: number, public object: any, private suffix: string, private quickPickup: boolean, private defaultImage?: string) {
 		this.init(size);
 	}
 
@@ -61,7 +61,7 @@ export class ItemContainerImplementation {
 			});
 			e.addEventListener("touchmove", (event: TouchEvent) => {
 				this.onTouchMove(event);
-			}, {passive: true});
+			}, { passive: true });
 			e.addEventListener("drop", (event: DragEvent) => {
 				this.onDrop(event)
 			});
@@ -73,7 +73,7 @@ export class ItemContainerImplementation {
 			});
 			e.addEventListener("touchstart", (event: TouchEvent) => {
 				this.onTouchStart(event)
-			}, {passive: true});
+			}, { passive: true });
 			e.addEventListener("touchend", (event: TouchEvent) => {
 				this.onTouchEnd(event)
 			});
@@ -123,7 +123,7 @@ export class ItemContainerImplementation {
 				}
 
 				this.dirty = this.dirty || o !== (e as any).dataItem;
-				const item = <Item> o;
+				const item = <Item>o;
 				if (item.isAnimated()) {
 					item.stepAnimation();
 				}
@@ -145,7 +145,7 @@ export class ItemContainerImplementation {
 		}
 
 		for (let i = cnt; i < this.size; i++) {
-			let e = this.parentElement.querySelector("#" + this.slot +this. suffix + i) as HTMLElement;
+			let e = this.parentElement.querySelector("#" + this.slot + this.suffix + i) as HTMLElement;
 			if (this.defaultImage) {
 				e.style.backgroundImage = "url(" + stendhal.paths.gui + "/" + this.defaultImage + ")";
 			} else {
@@ -163,7 +163,7 @@ export class ItemContainerImplementation {
 		this.dirty = false;
 	}
 
-	private onDragStart(event: DragEvent|TouchEvent) {
+	private onDragStart(event: DragEvent | TouchEvent) {
 		let myobject = this.object || marauroa.me;
 		// some mobile browsers such as Chrome call "dragstart" via long touch
 		if (!myobject[this.slot] || (event.type === "dragstart" && stendhal.ui.touch.isTouchEngaged())) {
@@ -215,7 +215,7 @@ export class ItemContainerImplementation {
 		this.onDragStart(event);
 	}
 
-	private onDragOver(event: DragEvent|TouchEvent) {
+	private onDragOver(event: DragEvent | TouchEvent) {
 		event.preventDefault();
 		if (event instanceof DragEvent && event.dataTransfer) {
 			event.dataTransfer.dropEffect = "move";
@@ -226,7 +226,7 @@ export class ItemContainerImplementation {
 	/**
 	 * Extracts slot index from element ID.
 	 */
-	private parseIndex(id: string): string|undefined {
+	private parseIndex(id: string): string | undefined {
 		// NOTE: element ID is formatted as "<name>-<id>-<index>"
 		//       - name:  inventory name (e.g. "bag")
 		//       - id:    inventory ID number
@@ -241,7 +241,7 @@ export class ItemContainerImplementation {
 		}
 	}
 
-	private onDrop(event: DragEvent|TouchEvent) {
+	private onDrop(event: DragEvent | TouchEvent) {
 		const myobject = this.object || marauroa.me;
 		if (stendhal.ui.heldObject) {
 			const pos = stendhal.ui.html.extractPosition(event);
@@ -324,12 +324,12 @@ export class ItemContainerImplementation {
 		return false;
 	}
 
-	onMouseDown(evt: MouseEvent|TouchEvent) {
+	onMouseDown(evt: MouseEvent | TouchEvent) {
 		this.timestampMouseDownPrev = this.timestampMouseDown;
 		this.timestampMouseDown = +new Date();
 	}
 
-	onMouseUp(evt: MouseEvent|TouchEvent) {
+	onMouseUp(evt: MouseEvent | TouchEvent) {
 		if (evt instanceof MouseEvent) {
 			evt.preventDefault();
 		}
@@ -413,8 +413,12 @@ export class ItemContainerImplementation {
 
 		let frame = frameCache.get(frameIndex);
 		if (!frame) {
-			const baseImage = stendhal.data.sprites.get(item.sprite.filename);
-			frame = stendhal.data.sprites.getAreaOf(baseImage, 32, 32, frameIndex * 32, state * 32);
+			const baseImage = stendhal.data.sprites.get(item.sprite.filename) as HTMLImageElement;
+			const source = (baseImage && baseImage.width) ? baseImage : (stendhal.data.sprites.getFailsafe() as HTMLImageElement);
+			frame = stendhal.data.sprites.getAreaOf(source, 32, 32, frameIndex * 32, state * 32) as HTMLImageElement;
+			if (!frame) {
+				frame = stendhal.data.sprites.getFailsafe() as HTMLImageElement;
+			}
 			frameCache.set(frameIndex, frame);
 		}
 
@@ -452,14 +456,14 @@ export class ItemContainerImplementation {
 		if (item) {
 			if (this.slot === "content" && stendhal.config.getBoolean("inventory.quick-pickup")) {
 				target.style.cursor = "url(" + stendhal.paths.sprites
-						+ "/cursor/itempickupfromslot.png) 1 3, auto";
+					+ "/cursor/itempickupfromslot.png) 1 3, auto";
 				return;
 			}
 			target.style.cursor = item.getCursor(0, 0);
 			return;
 		}
 		target.style.cursor = "url(" + stendhal.paths.sprites
-				+ "/cursor/normal.png) 1 3, auto";
+			+ "/cursor/normal.png) 1 3, auto";
 	}
 
 	/**
@@ -471,6 +475,6 @@ export class ItemContainerImplementation {
 	 *     Object containing item information.
 	 */
 	private updateToolTip(target: HTMLElement, item?: Item) {
-		target.title = typeof(item) !== "undefined" ? item.getToolTip() : "";
+		target.title = typeof (item) !== "undefined" ? item.getToolTip() : "";
 	}
 }
