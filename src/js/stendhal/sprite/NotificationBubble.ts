@@ -185,7 +185,7 @@ export class NotificationBubble extends TextBubble {
 				this.height);
 		}
 
-		ctx.fillStyle = textColor;
+		ctx.fillStyle = this.textColor;
 
 		let sy = this.y;
 		for (let li = 0; li < lcount; li++) {
