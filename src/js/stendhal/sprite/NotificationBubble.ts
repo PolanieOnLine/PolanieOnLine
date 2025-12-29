@@ -83,8 +83,9 @@ export class NotificationBubble extends TextBubble {
 		const lheight = fontsize + 6;
 		ctx.lineWidth = 2;
 		ctx.font = fontsize + "px sans-serif";
-		ctx.fillStyle = "#ffffff";
-		ctx.strokeStyle = "#000000";
+		const textColor = NotificationType[this.mtype] || Color.BLACK;
+		ctx.fillStyle = "rgb(60, 30, 0)";
+		ctx.strokeStyle = textColor;
 
 		const lcount = this.lines.length;
 		if (this.width < 0 || this.height < 0) {
@@ -118,7 +119,7 @@ export class NotificationBubble extends TextBubble {
 				this.height);
 		}
 
-		ctx.fillStyle = NotificationType[this.mtype] || Color.BLACK;
+		ctx.fillStyle = textColor;
 
 		let sy = this.y;
 		for (let li = 0; li < lcount; li++) {
