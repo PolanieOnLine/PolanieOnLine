@@ -45,6 +45,10 @@ export class ViewPort {
 	private offsetX = 0;
 	/** Vertical screen offset in pixels. */
 	private offsetY = 0;
+	/** Smoothed horizontal camera position in pixels. */
+	private cameraX = this.offsetX;
+	/** Smoothed vertical camera position in pixels. */
+	private cameraY = this.offsetY;
 	/** Prevents adjusting offset based on player position. */
 	private freeze = false;
 	/** Time of most recent frame, in milliseconds. */
@@ -353,28 +357,37 @@ export class ViewPort {
 		this.ctx.setTransform(1, 0, 0, 1, 0, 0);
 
 		// Coordinates for a screen centered on player
-		let centerX: number, centerY: number;
+		let targetX: number, targetY: number;
 		if (this.freeze) {
-			centerX = this.offsetX + this.targetTileWidth / 2;
-			centerY = this.offsetY + this.targetTileHeight / 2;
+			targetX = this.offsetX + this.targetTileWidth / 2;
+			targetY = this.offsetY + this.targetTileHeight / 2;
 		} else {
-			centerX = marauroa.me["_x"] * this.targetTileWidth + this.targetTileWidth / 2 - canvas.width / 2;
-			centerY = marauroa.me["_y"] * this.targetTileHeight + this.targetTileHeight / 2 - canvas.height / 2;
+			targetX = marauroa.me["_x"] * this.targetTileWidth + this.targetTileWidth / 2 - canvas.width / 2;
+			targetY = marauroa.me["_y"] * this.targetTileHeight + this.targetTileHeight / 2 - canvas.height / 2;
 		}
 
 		// Keep the world within the screen view
-		centerX = Math.min(centerX, stendhal.data.map.zoneSizeX * this.targetTileWidth - canvas.width);
-		centerX = Math.max(centerX, 0);
+		targetX = Math.min(targetX, stendhal.data.map.zoneSizeX * this.targetTileWidth - canvas.width);
+		targetX = Math.max(targetX, 0);
 
-		centerY = Math.min(centerY, stendhal.data.map.zoneSizeY * this.targetTileHeight - canvas.height);
-		centerY = Math.max(centerY, 0);
+		targetY = Math.min(targetY, stendhal.data.map.zoneSizeY * this.targetTileHeight - canvas.height);
+		targetY = Math.max(targetY, 0);
 
 		if (this.freeze) {
-			this.ctx.translate(-Math.round(centerX), -Math.round(centerY));
+			this.cameraX = targetX;
+			this.cameraY = targetY;
+			this.offsetX = Math.round(this.cameraX);
+			this.offsetY = Math.round(this.cameraY);
+			this.ctx.translate(-this.cameraX, -this.cameraY);
 			return;
 		}
-		this.offsetX = Math.round(centerX);
-		this.offsetY = Math.round(centerY);
+
+		const smoothingFactor = Math.min(1, (this.lastDeltaMs / 1000) * 10);
+		this.cameraX += (targetX - this.cameraX) * smoothingFactor;
+		this.cameraY += (targetY - this.cameraY) * smoothingFactor;
+
+		this.offsetX = Math.round(this.cameraX);
+		this.offsetY = Math.round(this.cameraY);
 		this.ctx.translate(-this.offsetX, -this.offsetY);
 	}
 
