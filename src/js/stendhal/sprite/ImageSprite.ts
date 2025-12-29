@@ -134,7 +134,7 @@ export class ImageSprite implements Sprite {
 	public draw(g: RenderingContext2D, destx: number, desty: number, x: number, y: number, w: number, h: number): void;
 	public draw(g: RenderingContext2D, destx: number, desty: number, x?: number, y?: number, w?: number, h?: number): void {
 		if (arguments.length === 7) {
-			g.drawImage(this.image, destx, desty, destx + w!, desty + h!, x!, y!, x! + w!, y! + h!);
+			g.drawImage(this.image, x!, y!, w!, h!, destx, desty, w!, h!);
 		} else {
 			g.drawImage(this.image, destx, desty);
 		}
