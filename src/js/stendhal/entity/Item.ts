@@ -13,13 +13,25 @@ import { ItemMap } from "./ItemMap";
 import { MenuItem } from "../action/MenuItem";
 import { Entity } from "./Entity";
 import { TextSprite } from "../sprite/TextSprite";
-import { RenderingContext2D } from "util/Types";
+import { Canvas, RenderingContext2D } from "util/Types";
 
 declare var marauroa: any;
 declare var stendhal: any;
 
+type FrameBuffer = ImageBitmap | Canvas;
+
+interface CachedFrames {
+	frames: FrameBuffer[];
+	columns: number;
+	rows: number;
+	width: number;
+	height: number;
+}
 
 export class Item extends Entity {
+	private static readonly FRAME_SIZE = 32;
+	private static readonly frameCache: Map<string, CachedFrames> = new Map();
+	private static readonly offscreenSupported = (typeof OffscreenCanvas !== "undefined");
 
 	override minimapShow = false;
 	override minimapStyle = "rgb(0,255,0)";
@@ -92,7 +104,13 @@ export class Item extends Entity {
 
 	drawAt(ctx: RenderingContext2D, x: number, y: number) {
 		if (this.sprite) {
-			this.drawSpriteAt(ctx, x, y);
+			const cachedFrames = this.ensureFrameBuffers();
+			const frameBuffer = this.getCachedFrame(cachedFrames);
+			if (frameBuffer && cachedFrames) {
+				this.drawCachedFrame(ctx, frameBuffer, cachedFrames, x, y);
+			} else {
+				this.drawSpriteAt(ctx, x, y);
+			}
 			let textMetrics = this.quantityTextSprite.getTextMetrics(ctx);
 			if (!textMetrics) {
 				throw new Error("textMetrics is undefined");
@@ -156,8 +174,9 @@ export class Item extends Entity {
 			return false;
 		}
 		if (this.animated == null) {
+			const frames = this.getFrameCounts();
 			// store animation state
-			this.animated = (stendhal.data.sprites.get(this.sprite.filename).width / 32) > 1;
+			this.animated = frames.columns > 1;
 		}
 
 		return this.animated;
@@ -165,8 +184,7 @@ export class Item extends Entity {
 
 	private setXFrameIndex(idx: number) {
 		if (this.xFrames == null) {
-			const img = stendhal.data.sprites.get(this.sprite.filename);
-			this.xFrames = img.width / 32;
+			this.xFrames = this.getFrameCounts().columns;
 		}
 
 		if (idx >= this.xFrames) {
@@ -174,13 +192,12 @@ export class Item extends Entity {
 			idx = 0;
 		}
 
-		this.sprite.offsetX = idx * 32;
+		this.sprite.offsetX = idx * Item.FRAME_SIZE;
 	}
 
 	private setYFrameIndex(idx: number) {
 		if (this.yFrames == null) {
-			const img = stendhal.data.sprites.get(this.sprite.filename);
-			this.yFrames = img.height / 32;
+			this.yFrames = this.getFrameCounts().rows;
 		}
 
 		if (idx >= this.yFrames) {
@@ -188,7 +205,7 @@ export class Item extends Entity {
 			idx = 0;
 		}
 
-		this.sprite.offsetY = idx * 32;
+		this.sprite.offsetY = idx * Item.FRAME_SIZE;
 	}
 
 	public getXFrameIndex(): number {
@@ -201,5 +218,120 @@ export class Item extends Entity {
 
 	public override isDraggable(): boolean {
 		return true;
+	}
+
+	private static createFrameCanvas(width: number, height: number): Canvas {
+		if (Item.offscreenSupported) {
+			return new OffscreenCanvas(width, height);
+		}
+
+		const canvas = document.createElement("canvas");
+		canvas.width = width;
+		canvas.height = height;
+		return canvas;
+	}
+
+	private static getFrameContext(canvas: Canvas): RenderingContext2D | null {
+		return canvas.getContext("2d") as RenderingContext2D | null;
+	}
+
+	private static finalizeFrameBuffer(canvas: Canvas): FrameBuffer {
+		if (Item.offscreenSupported && canvas instanceof OffscreenCanvas && typeof canvas.transferToImageBitmap === "function") {
+			try {
+				return canvas.transferToImageBitmap();
+			} catch (e) {
+				// fall through to canvas usage
+			}
+		}
+
+		return canvas;
+	}
+
+	private ensureFrameBuffers(): CachedFrames | null {
+		const filename = this.sprite.filename;
+		if (!filename) {
+			return null;
+		}
+
+		const cached = Item.frameCache.get(filename);
+		if (cached) {
+			this.xFrames = cached.columns;
+			this.yFrames = cached.rows;
+			return cached;
+		}
+
+		const image = stendhal.data.sprites.get(filename);
+		if (!image || !image.height || image.width <= Item.FRAME_SIZE) {
+			return null;
+		}
+
+		const frameWidth = Item.FRAME_SIZE;
+		const frameHeight = this.sprite.height || Item.FRAME_SIZE;
+		const columns = Math.max(1, Math.floor(image.width / frameWidth));
+		const rows = Math.max(1, Math.floor(image.height / frameHeight));
+		if (columns <= 1) {
+			this.xFrames = columns;
+			this.yFrames = rows;
+			return null;
+		}
+
+		const frames: FrameBuffer[] = [];
+		for (let y = 0; y < rows; y++) {
+			for (let x = 0; x < columns; x++) {
+				const canvas = Item.createFrameCanvas(frameWidth, frameHeight);
+				const frameCtx = Item.getFrameContext(canvas);
+				if (!frameCtx) {
+					continue;
+				}
+				frameCtx.clearRect(0, 0, frameWidth, frameHeight);
+				frameCtx.drawImage(image, x * frameWidth, y * frameHeight, frameWidth, frameHeight,
+					0, 0, frameWidth, frameHeight);
+				frames.push(Item.finalizeFrameBuffer(canvas));
+			}
+		}
+
+		const generated = { frames, columns, rows, width: frameWidth, height: frameHeight };
+		Item.frameCache.set(filename, generated);
+		this.xFrames = columns;
+		this.yFrames = rows;
+		return generated;
+	}
+
+	private getCachedFrame(cachedFrames: CachedFrames | null): FrameBuffer | undefined {
+		if (!cachedFrames || !cachedFrames.frames.length) {
+			return undefined;
+		}
+
+		const xIndex = this.getXFrameIndex();
+		const yIndex = this.getYFrameIndex();
+		if (xIndex >= cachedFrames.columns || yIndex >= cachedFrames.rows) {
+			return undefined;
+		}
+
+		return cachedFrames.frames[yIndex * cachedFrames.columns + xIndex];
+	}
+
+	private drawCachedFrame(ctx: RenderingContext2D, frame: FrameBuffer, cachedFrames: CachedFrames, x: number, y: number) {
+		const width = this.sprite.width || cachedFrames.width;
+		const height = this.sprite.height || cachedFrames.height;
+		const offsetX = Math.floor((this.getWidth() * Item.FRAME_SIZE - width) / 2);
+		const offsetY = Math.floor((this.getHeight() * Item.FRAME_SIZE - height) / 2);
+		ctx.drawImage(frame, 0, 0, cachedFrames.width, cachedFrames.height,
+			x + offsetX, y + offsetY, width, height);
+	}
+
+	private getFrameCounts() {
+		const cached = this.ensureFrameBuffers();
+		if (cached) {
+			return { columns: cached.columns, rows: cached.rows };
+		}
+
+		const img = stendhal.data.sprites.get(this.sprite.filename);
+		const width = img && img.width ? img.width : Item.FRAME_SIZE;
+		const height = img && img.height ? img.height : Item.FRAME_SIZE;
+		return {
+			columns: Math.max(1, Math.floor(width / Item.FRAME_SIZE)),
+			rows: Math.max(1, Math.floor(height / Item.FRAME_SIZE)),
+		};
 	}
 }
