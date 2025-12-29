@@ -83,7 +83,9 @@ export class Item extends Entity {
 
 	override draw(ctx: RenderingContext2D) {
 		this.sprite.offsetY = (this["state"] || 0) * 32
-		this.stepAnimation();
+		if (this.isAnimated()) {
+			this.stepAnimation();
+		}
 
 		this.drawAt(ctx, this["x"] * 32, this["y"] * 32);
 	}
@@ -100,6 +102,10 @@ export class Item extends Entity {
 	}
 
 	public stepAnimation() {
+		if (!this.isAnimated()) {
+			return;
+		}
+
 		const currentTimeStamp = +new Date();
 		if (this.frameTimeStamp == 0) {
 			this.frameTimeStamp = currentTimeStamp;
