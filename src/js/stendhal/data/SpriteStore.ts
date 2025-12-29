@@ -18,6 +18,9 @@ import { Paths } from "./Paths";
 class SpriteImage extends Image {
 	// number of times the image has been accessed after initial creation
 	counter = 0;
+	bitmap?: ImageBitmap;
+	bitmapWidth?: number;
+	bitmapHeight?: number;
 }
 
 export class SpriteStore {
@@ -74,6 +77,86 @@ export class SpriteStore {
 		// do nothing
 	}
 
+	private supportsImageBitmap(): boolean {
+		return typeof createImageBitmap === "function";
+	}
+
+	private createImage(filename?: string): SpriteImage {
+		const temp = new Image() as SpriteImage;
+		temp.counter = 0;
+		temp.onerror = ((t: SpriteImage, store: SpriteStore) => {
+			return () => {
+				if (t.src && !store.knownBrokenUrls[t.src]) {
+					console.log("Broken image path:", t.src, new Error());
+					store.knownBrokenUrls[t.src] = true;
+				}
+				const failsafe = store.getFailsafeImage();
+				if (failsafe.src && t.src !== failsafe.src) {
+					t.src = failsafe.src;
+				}
+			};
+		})(temp, this);
+		if (filename) {
+			temp.src = filename;
+		}
+		if (this.supportsImageBitmap()) {
+			temp.addEventListener("load", () => this.ensureBitmap(temp), { once: true });
+		}
+		return temp;
+	}
+
+	private ensureBitmap(image: SpriteImage): Promise<void> {
+		if (image.bitmap || !this.supportsImageBitmap()) {
+			if (!image.bitmapWidth && image.complete) {
+				image.bitmapWidth = image.width;
+				image.bitmapHeight = image.height;
+			}
+			return Promise.resolve();
+		}
+		if (!image.complete) {
+			return Promise.resolve();
+		}
+		return createImageBitmap(image).then((bmp) => {
+			image.bitmap = bmp;
+			image.bitmapWidth = bmp.width;
+			image.bitmapHeight = bmp.height;
+		}).catch(() => {
+			if (image.complete) {
+				image.bitmapWidth = image.width;
+				image.bitmapHeight = image.height;
+			}
+		});
+	}
+
+	private getBestSource(image: SpriteImage): SpriteImage {
+		if (image.bitmap) {
+			if (!image.bitmapWidth) {
+				image.bitmapWidth = image.bitmap.width;
+				image.bitmapHeight = image.bitmap.height;
+			}
+			if (image.bitmapWidth) {
+				image.width = image.bitmapWidth;
+				image.height = image.bitmapHeight || image.height;
+			}
+		} else if (!image.bitmapWidth && image.complete) {
+			image.bitmapWidth = image.width;
+			image.bitmapHeight = image.height;
+		}
+		return image;
+	}
+
+	private getFailsafeImage(): SpriteImage {
+		const filename = Paths.sprites + "/failsafe.png";
+		let failsafe = this.images[filename];
+		if (failsafe) {
+			failsafe.counter++;
+		} else {
+			failsafe = this.createImage(filename);
+			this.images[filename] = failsafe;
+		}
+		return failsafe;
+	}
+
 	get(filename: string): any {
 		if (!filename) {
 			return {};
@@ -87,43 +170,36 @@ export class SpriteStore {
 		}
 		if (this.images[filename]) {
 			this.images[filename].counter++;
-			return this.images[filename];
+			const cached = this.images[filename];
+			if (cached.complete && !cached.bitmap) {
+				this.ensureBitmap(cached);
+			}
+			return this.getBestSource(cached);
 		}
-		var temp = new Image() as SpriteImage;
-		// TypeError: Image constructor: 'new' is required
-		//~ var temp = new SpriteImage();
-		temp.counter = 0;
-		temp.onerror = (function(t: SpriteImage, store: SpriteStore) {
-			return function() {
-				if (t.src && !store.knownBrokenUrls[t.src]) {
-					console.log("Broken image path:", t.src, new Error());
-					store.knownBrokenUrls[t.src] = true;
-				}
-				const failsafe = store.getFailsafe();
-				if (failsafe.src && t.src !== failsafe.src) {
-					t.src = failsafe.src;
-				}
-			};
-		})(temp, this);
-		temp.src = filename;
+		const temp = this.createImage(filename);
 		this.images[filename] = temp;
-		return temp;
+		return this.getBestSource(temp);
 	}
 
 	getWithPromise(filename: string): any {
 		return new Promise((resolve) => {
 			if (typeof (this.images[filename]) != "undefined") {
-				this.images[filename].counter++;
-				resolve(this.images[filename]);
+				const cached = this.images[filename];
+				cached.counter++;
+				const resolver = () => this.ensureBitmap(cached)
+					.finally(() => resolve(this.getBestSource(cached)));
+				if (cached.complete || cached.bitmap) {
+					resolver();
+				} else {
+					cached.addEventListener("load", resolver, { once: true });
+				}
+				return;
 			}
 
-			const image = new Image() as SpriteImage;
-			// TypeError: Image constructor: 'new' is required
-			//~ const image = new SpriteImage();
-			image.counter = 0;
+			const image = this.createImage(filename);
 			this.images[filename] = image;
-			image.onload = () => resolve(image);
-			image.src = filename;
+			image.onload = () => this.ensureBitmap(image)
+				.finally(() => resolve(this.getBestSource(image)));
 		});
 	}
 
@@ -171,23 +247,25 @@ export class SpriteStore {
 		}
 		// NOTE: cannot use HTMLImageElement.cloneNode here, must get base image then transfer
 		//       `src` property when ready
-		const img = new Image() as SpriteImage;
-		img.counter = 0;
+		const img = this.createImage();
 		img.onload = () => {
 			img.onload = null;
 			this.rotate(img, angle);
+			this.ensureBitmap(img);
 		}
-		const baseImg = this.get(filename);
-		if (baseImg.complete) {
-			img.src = baseImg.src;
-		} else {
-			baseImg.onload = () => {
-				baseImg.onload = null;
+		this.get(filename);
+		const baseImg = this.images[filename];
+		if (baseImg) {
+			if (baseImg.complete) {
 				img.src = baseImg.src;
+			} else {
+				baseImg.addEventListener("load", () => {
+					img.src = baseImg.src;
+				}, { once: true });
 			}
 		}
 		this.images[id] = img;
-		return img;
+		return this.getBestSource(img);
 	}
 
 	/**
@@ -222,19 +300,8 @@ export class SpriteStore {
 	 *     HTMLImageElement with failsafe image data.
 	 */
 	getFailsafe(): HTMLImageElement {
-		const filename = Paths.sprites + "/failsafe.png";
-		let failsafe = this.images[filename];
-		if (failsafe) {
-			failsafe.counter++;
-		} else {
-			failsafe = new Image() as SpriteImage;
-			// TypeError: Image constructor: 'new' is required
-			//~ failsafe = new SpriteImage();
-			failsafe.counter = 0;
-			failsafe.src = filename;
-			this.images[filename] = failsafe;
-		}
-		return failsafe;
+		const failsafe = this.getFailsafeImage();
+		return this.getBestSource(failsafe);
 	}
 
 	/**
@@ -246,7 +313,9 @@ export class SpriteStore {
 	 *     Path to image or failsafe image file.
 	 */
 	checkPath(filename: string): string {
-		return this.get(filename).src;
+		this.get(filename);
+		const cached = this.images[filename];
+		return cached ? cached.src : "";
 	}
 
 	/** deletes all objects that have not been accessed since this method was called last time */
