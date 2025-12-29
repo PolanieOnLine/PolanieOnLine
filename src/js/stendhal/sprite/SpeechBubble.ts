@@ -33,11 +33,11 @@ export class SpeechBubble extends TextBubble {
 
 	constructor(text: string, entity: RPEntity) {
 		text = text.replace(/\\\\/g, "\\");
-		super((text.length > 30) ? (text.substring(0, 30) + "...") : text);
+		super((text.length > 60) ? (text.substring(0, 60) + "...") : text);
 		this.entity = entity;
 
 		this.parts = [];
-		this.segregate(this.parts);
+		this.segregate(this.parts, Color.CHAT_NORMALBLACK);
 
 		this.offsetY = 0;
 		// find free text bubble position

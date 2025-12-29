@@ -195,9 +195,9 @@ export abstract class TextBubble {
 	 * @param parts {util.Pair.Pair[]}
 	 *   Array to be populated.
 	 * @param defaultColor {string}
-	 *   Unformatted text color (default: `util.Color.Color.CHAT_NORMAL`).
+	 *   Unformatted text color (default: `util.Color.Color.CHAT_NORMALBLACK`).
 	 */
-	protected segregate(parts: Pair<string, string>[], defaultColor = Color.CHAT_NORMAL) {
+	protected segregate(parts: Pair<string, string>[], defaultColor = Color.CHAT_NORMALBLACK) {
 		const formatted = TextBubble.buildFormattedParts(this.text, defaultColor);
 		for (const part of formatted.parts) {
 			parts.push(part);
@@ -205,7 +205,7 @@ export abstract class TextBubble {
 		this.text = formatted.plainText;
 	}
 
-	protected static buildFormattedParts(text: string, defaultColor = Color.CHAT_NORMAL)
+	protected static buildFormattedParts(text: string, defaultColor = Color.CHAT_NORMALBLACK)
 			: { plainText: string; parts: Pair<string, string>[] } {
 		const styleColors: Record<string, string|undefined> = {
 			"#": Color.CHAT_HIGHLIGHT,
