@@ -15,11 +15,55 @@ import { Entity } from "./Entity";
 import { TextSprite } from "../sprite/TextSprite";
 import { RenderingContext2D } from "util/Types";
 
+type FrameCounts = {
+	columns: number;
+	rows: number;
+};
+
+export class ItemAnimationClock {
+	private static readonly FRAME_DELAY = 100;
+	private static frameCounts = new Map<string, number>();
+	private static frameIndexCache = new Map<string, number>();
+	private static elapsed = 0;
+	private static lastTick = performance.now();
+
+	static update(delta?: number) {
+		const now = performance.now();
+		const step = (typeof delta === "number" && Number.isFinite(delta))
+			? Math.max(0, delta)
+			: Math.max(0, now - this.lastTick);
+		this.lastTick = (typeof delta === "number" && Number.isFinite(delta)) ? this.lastTick + step : now;
+		if (step === 0) {
+			return;
+		}
+
+		this.elapsed += step;
+
+		for (const [key, columns] of this.frameCounts) {
+			const frameIndex = columns > 0 ? Math.floor((this.elapsed / ItemAnimationClock.FRAME_DELAY) % columns) : 0;
+			this.frameIndexCache.set(key, frameIndex);
+		}
+	}
+
+	static setFrameCount(key: string, columns: number) {
+		const safeColumns = Math.max(1, columns);
+		this.frameCounts.set(key, safeColumns);
+		const currentIndex = Math.floor((this.elapsed / ItemAnimationClock.FRAME_DELAY) % safeColumns);
+		this.frameIndexCache.set(key, currentIndex);
+	}
+
+	static getFrameIndex(key: string, columns: number): number {
+		this.setFrameCount(key, columns);
+		return this.frameIndexCache.get(key) || 0;
+	}
+}
+
 declare var marauroa: any;
 declare var stendhal: any;
 
 export class Item extends Entity {
 	private static readonly FRAME_SIZE = 32;
+	private static readonly frameCountsCache = new Map<string, FrameCounts>();
 
 	override minimapShow = false;
 	override minimapStyle = "rgb(0,255,0)";
@@ -27,7 +71,6 @@ export class Item extends Entity {
 	private quantityTextSprite: TextSprite;
 
 	// animation
-	private frameTimeStamp = 0;
 	private animated: boolean | null = null;
 	private xFrames: number | null = null;
 	private yFrames: number | null = null;
@@ -129,14 +172,7 @@ export class Item extends Entity {
 			return;
 		}
 
-		const frameCounts = this.getFrameCounts();
-		const frameDelay = 100;
-		const now = Date.now();
-		if (this.frameTimeStamp === 0) {
-			this.frameTimeStamp = now;
-		}
-		const elapsed = now - this.frameTimeStamp;
-		const frameIndex = Math.floor((elapsed / frameDelay) % frameCounts.columns);
+		const frameIndex = this.getAnimationFrameIndex();
 		this.setXFrameIndex(frameIndex);
 	}
 
@@ -178,7 +214,7 @@ export class Item extends Entity {
 			return false;
 		}
 		if (this.animated == null) {
-			const frames = this.getFrameCounts();
+			const frames = this.ensureFrameCounts();
 			// store animation state
 			this.animated = frames.columns > 1;
 		}
@@ -187,12 +223,10 @@ export class Item extends Entity {
 	}
 
 	private setXFrameIndex(idx: number) {
-		const frameWidth = this.sprite.width || Item.FRAME_SIZE;
-		if (this.xFrames == null) {
-			this.xFrames = this.getFrameCounts().columns;
-		}
+		const frameWidth = this.getFrameWidth();
+		const frameCount = this.xFrames ?? this.ensureFrameCounts().columns;
 
-		if (idx >= (this.xFrames || 1)) {
+		if (idx >= frameCount) {
 			// restart
 			idx = 0;
 		}
@@ -201,12 +235,10 @@ export class Item extends Entity {
 	}
 
 	private setYFrameIndex(idx: number) {
-		const frameHeight = this.sprite.height || Item.FRAME_SIZE;
-		if (this.yFrames == null) {
-			this.yFrames = this.getFrameCounts().rows;
-		}
+		const frameHeight = this.getFrameHeight();
+		const frameCount = this.yFrames ?? this.ensureFrameCounts().rows;
 
-		if (idx >= (this.yFrames || 1)) {
+		if (idx >= frameCount) {
 			// restart
 			idx = 0;
 		}
@@ -228,16 +260,61 @@ export class Item extends Entity {
 		return true;
 	}
 
+	public getAnimationFrameIndex(): number {
+		const frameCounts = this.ensureFrameCounts();
+
+		if (this.animated == null) {
+			this.animated = frameCounts.columns > 1;
+		}
+
+		if (!this.animated) {
+			return 0;
+		}
+
+		return ItemAnimationClock.getFrameIndex(this.getAnimationKey(), frameCounts.columns);
+	}
+
 	private getFrameCounts() {
 		const img = stendhal.data.sprites.get(this.sprite.filename);
-		const frameWidth = this.sprite.width || Item.FRAME_SIZE;
-		const frameHeight = this.sprite.height || Item.FRAME_SIZE;
+		const frameWidth = this.getFrameWidth();
+		const frameHeight = this.getFrameHeight();
 		const width = img && img.width ? img.width : frameWidth;
 		const height = img && img.height ? img.height : frameHeight;
 		const columns = Math.max(1, Math.floor(width / frameWidth));
 		const rows = Math.max(1, Math.floor(height / frameHeight));
 		this.xFrames = columns;
 		this.yFrames = rows;
+		const key = this.getAnimationKey();
+		ItemAnimationClock.setFrameCount(key, columns);
+		Item.frameCountsCache.set(key, { columns, rows });
 		return { columns, rows };
+	}
+
+	private ensureFrameCounts(): FrameCounts {
+		if (this.xFrames != null && this.yFrames != null) {
+			return { columns: this.xFrames, rows: this.yFrames };
+		}
+
+		const key = this.getAnimationKey();
+		const cached = Item.frameCountsCache.get(key);
+		if (cached) {
+			this.xFrames = cached.columns;
+			this.yFrames = cached.rows;
+			return cached;
+		}
+
+		return this.getFrameCounts();
+	}
+
+	private getAnimationKey(): string {
+		return `${this.sprite.filename}:${this.getFrameWidth()}x${this.getFrameHeight()}`;
+	}
+
+	private getFrameWidth() {
+		return this.sprite.width || Item.FRAME_SIZE;
+	}
+
+	private getFrameHeight() {
+		return this.sprite.height || Item.FRAME_SIZE;
 	}
 }
