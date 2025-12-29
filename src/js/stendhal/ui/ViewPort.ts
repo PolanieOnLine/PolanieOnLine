@@ -47,8 +47,12 @@ export class ViewPort {
 	private offsetY = 0;
 	/** Prevents adjusting offset based on player position. */
 	private freeze = false;
-	/** Time of most recent redraw. */
-	private timeStamp = Date.now();
+	/** Time of most recent frame, in milliseconds. */
+	private lastFrameTime?: number;
+	/** Most recent frame delta, clamped, in milliseconds. */
+	private lastDeltaMs = 0;
+	/** Maximal delta time passed to updates to avoid huge jumps. */
+	private readonly maxDeltaMs = 250;
 
 	// dimensions
 	// TODO: remove & use CSS style instead
@@ -128,7 +132,13 @@ export class ViewPort {
 	 * Draws terrain tiles & entity sprites in the viewport.
 	 */
 	draw() {
-		var startTime = new Date().getTime();
+		const now = performance.now();
+		if (this.lastFrameTime === undefined) {
+			this.lastFrameTime = now;
+		}
+		const rawDelta = now - this.lastFrameTime;
+		this.lastDeltaMs = Math.min(Math.max(rawDelta, 0), this.maxDeltaMs);
+		this.lastFrameTime = now;
 
 		if (marauroa.me && document.visibilityState === "visible") {
 			if (marauroa.currentZoneName === stendhal.data.map.currentZoneName
@@ -165,9 +175,9 @@ export class ViewPort {
 				(ui.get(UIComponentEnum.PlayerEquipment) as PlayerEquipmentComponent).update();
 			}
 		}
-		window.setTimeout(function() {
-			stendhal.ui.gamewindow.draw.apply(stendhal.ui.gamewindow, arguments);
-		}, Math.max((1000 / 20) - (new Date().getTime() - startTime), 1));
+		requestAnimationFrame(() => {
+			stendhal.ui.gamewindow.draw();
+		});
 	}
 
 	/**
@@ -263,10 +273,8 @@ export class ViewPort {
 	/**
 	 * Draws overall entity sprites.
 	 */
-	drawEntities() {
-		var currentTime = new Date().getTime();
-		var time = currentTime - this.timeStamp;
-		this.timeStamp = currentTime;
+	drawEntities(deltaMs: number = this.lastDeltaMs) {
+		const time = Math.min(Math.max(deltaMs, 0), this.maxDeltaMs);
 		for (var i in stendhal.zone.entities) {
 			var entity = stendhal.zone.entities[i];
 			if (typeof (entity.draw) != "undefined") {
