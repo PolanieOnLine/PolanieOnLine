@@ -187,7 +187,8 @@ export class SpriteStore {
 				const cached = this.images[filename];
 				cached.counter++;
 				const resolver = () => this.ensureBitmap(cached)
-					.finally(() => resolve(this.getBestSource(cached)));
+					.then(() => resolve(this.getBestSource(cached)))
+					.catch(() => resolve(this.getBestSource(cached)));
 				if (cached.complete || cached.bitmap) {
 					resolver();
 				} else {
@@ -199,7 +200,8 @@ export class SpriteStore {
 			const image = this.createImage(filename);
 			this.images[filename] = image;
 			image.onload = () => this.ensureBitmap(image)
-				.finally(() => resolve(this.getBestSource(image)));
+				.then(() => resolve(this.getBestSource(image)))
+				.catch(() => resolve(this.getBestSource(image)));
 		});
 	}
 
