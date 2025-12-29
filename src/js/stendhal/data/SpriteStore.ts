@@ -604,9 +604,15 @@ export class SpriteStore {
 	 */
 	getShadow(shadowStyle: string): any {
 		if (this.knownShadows[shadowStyle]) {
-			const img = new Image();
-			img.src = Paths.sprites + "/shadow/" + shadowStyle + ".png";
-			return img;
+			const filename = Paths.sprites + "/shadow/" + shadowStyle + ".png";
+			let img = this.images[filename];
+			if (!img) {
+				img = this.createImage(filename);
+				this.images[filename] = img;
+			} else {
+				img.counter++;
+			}
+			return this.getBestSource(img);
 		}
 		return undefined;
 	}
