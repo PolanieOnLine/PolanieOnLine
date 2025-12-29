@@ -32,7 +32,6 @@ export class ItemContainerImplementation {
 	private timestampMouseDown = 0;
 	private timestampMouseDownPrev = 0;
 	private lastClickedId = "";
-	private frameCache: Map<string, Map<number, Map<number, HTMLImageElement>>> = new Map();
 
 	// marked for updating certain attributes
 	private dirty = false;
@@ -124,16 +123,18 @@ export class ItemContainerImplementation {
 
 				this.dirty = this.dirty || o !== (e as any).dataItem;
 				const item = <Item> o;
+				let xOffset = 0;
+				let yOffset = (item["state"] || 0) * -32;
 				if (item.isAnimated()) {
 					item.stepAnimation();
+					xOffset = -(item.getXFrameIndex() * 32);
 				}
 
-				const state = (item["state"] || 0);
-				const frameIndex = item.getXFrameIndex();
-				const frameImage = this.getFrameFromCache(item, frameIndex, state);
-
-				e.style.backgroundImage = "url(" + frameImage.src + ")";
-				e.style.backgroundPosition = "0px 0px";
+				e.style.backgroundImage = "url("
+						+ stendhal.data.sprites.checkPath(stendhal.paths.sprites
+								+ "/items/" + o["class"] + "/" + o["subclass"] + ".png")
+						+ ")";
+				e.style.backgroundPosition = (xOffset+1) + "px " + (yOffset+1) + "px";
 				e.textContent = o.formatQuantity();
 				if (this.dirty) {
 					this.updateCursor(e, item);
@@ -151,7 +152,6 @@ export class ItemContainerImplementation {
 			} else {
 				e.style.backgroundImage = "none";
 			}
-			e.style.backgroundPosition = "0px 0px";
 			e.textContent = "";
 			if (this.dirty) {
 				this.updateCursor(e);
@@ -395,30 +395,6 @@ export class ItemContainerImplementation {
 
 	private onMouseLeave(evt: MouseEvent) {
 		// nothing
-	}
-
-	private getFrameFromCache(item: Item, frameIndex: number, state: number): HTMLImageElement {
-		const filename = item.sprite.filename;
-		let stateCache = this.frameCache.get(filename);
-		if (!stateCache) {
-			stateCache = new Map();
-			this.frameCache.set(filename, stateCache);
-		}
-
-		let frameCache = stateCache.get(state);
-		if (!frameCache) {
-			frameCache = new Map();
-			stateCache.set(state, frameCache);
-		}
-
-		let frame = frameCache.get(frameIndex);
-		if (!frame) {
-			const baseImage = stendhal.data.sprites.get(item.sprite.filename);
-			frame = stendhal.data.sprites.getAreaOf(baseImage, 32, 32, frameIndex * 32, state * 32);
-			frameCache.set(frameIndex, frame);
-		}
-
-		return frame;
 	}
 
 	private onTouchStart(evt: TouchEvent) {
