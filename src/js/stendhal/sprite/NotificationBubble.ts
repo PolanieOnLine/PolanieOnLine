@@ -17,6 +17,7 @@ import { TextBubble } from "./TextBubble";
 import { Color } from "../data/color/Color";
 
 import { NotificationType } from "../util/NotificationType";
+import { Pair } from "../util/Pair";
 import { Speech } from "../util/Speech";
 import { RenderingContext2D } from "util/Types";
 
@@ -25,6 +26,8 @@ export class NotificationBubble extends TextBubble {
 
 	private mtype: string;
 	private lines: string[];
+	private partsByLine: Pair<string, string>[][];
+	private readonly textColor: string;
 	private profile?: HTMLImageElement;
 	private profileName?: string;
 	private lmargin = 4;
@@ -34,6 +37,7 @@ export class NotificationBubble extends TextBubble {
 		super(text);
 		this.mtype = mtype;
 		this.profileName = profile;
+		this.textColor = NotificationType[this.mtype] || Color.BLACK;
 
 		this.duration = Math.max(
 			TextBubble.STANDARD_DUR,
@@ -42,25 +46,88 @@ export class NotificationBubble extends TextBubble {
 		const linewrap = 30;
 		const wordbreak = 60;
 		this.lines = [];
+		this.partsByLine = [];
 
-		let words = text.split("\t").join(" ").split(" ");
-		let nextline = "";
-		for (const w of words) {
-			if (nextline) {
-				nextline += " ";
+		const formatted = TextBubble.buildFormattedParts(text, this.textColor);
+		this.text = formatted.plainText;
+
+		const words = this.text.split("\t").join(" ").split(" ");
+		let nextlineParts: Pair<string, string>[] = [];
+		let partIdx = 0;
+		let partOffset = 0;
+		let lastColor = this.textColor;
+
+		const consume = (count: number) => {
+			const consumed: Pair<string, string>[] = [];
+			let remaining = count;
+			while (remaining > 0 && partIdx < formatted.parts.length) {
+				const part = formatted.parts[partIdx];
+				const available = part.second.length - partOffset;
+				const take = Math.min(remaining, available);
+				const segment = part.second.substr(partOffset, take);
+				if (segment.length > 0) {
+					consumed.push(new Pair(part.first, segment));
+					lastColor = part.first;
+				}
+				remaining -= take;
+				partOffset += take;
+				if (partOffset >= part.second.length) {
+					partIdx++;
+					partOffset = 0;
+				}
 			}
-			nextline += w;
+			return consumed;
+		};
 
-			if (nextline.length > wordbreak) {
-				this.lines.push(nextline.substr(0, wordbreak) + "-");
-				nextline = "-" + nextline.substr(wordbreak);
-			} else if (nextline.length >= linewrap) {
-				this.lines.push(nextline);
-				nextline = "";
+		const totalLength = (parts: Pair<string, string>[]) => {
+			return parts.reduce((len, p) => len + p.second.length, 0);
+		};
+
+		const splitParts = (parts: Pair<string, string>[], count: number)
+				: { head: Pair<string, string>[]; tail: Pair<string, string>[] } => {
+			const head: Pair<string, string>[] = [];
+			const tail: Pair<string, string>[] = [];
+			let remaining = count;
+			for (const p of parts) {
+				if (remaining <= 0) {
+					tail.push(p);
+					continue;
+				}
+				if (p.second.length <= remaining) {
+					head.push(p);
+					remaining -= p.second.length;
+				} else {
+					head.push(new Pair(p.first, p.second.substr(0, remaining)));
+					tail.push(new Pair(p.first, p.second.substr(remaining)));
+					remaining = 0;
+				}
+			}
+			return { head, tail };
+		};
+
+		for (const w of words) {
+			if (nextlineParts.length > 0) {
+				nextlineParts.push(...consume(1));
+			}
+			nextlineParts.push(...consume(w.length));
+
+			const currentLength = totalLength(nextlineParts);
+			if (currentLength > wordbreak) {
+				const { head, tail } = splitParts(nextlineParts, wordbreak);
+				const color = head.length ? head[head.length - 1].first : lastColor;
+				const headWithHyphen = [...head, new Pair(color, "-")];
+				this.partsByLine.push(headWithHyphen);
+				this.lines.push(headWithHyphen.map((p) => p.second).join(""));
+				nextlineParts = [new Pair(color, "-")].concat(tail);
+			} else if (currentLength >= linewrap) {
+				this.partsByLine.push(nextlineParts);
+				this.lines.push(nextlineParts.map((p) => p.second).join(""));
+				nextlineParts = [];
 			}
 		}
-		if (nextline) {
-			this.lines.push(nextline);
+		if (nextlineParts.length > 0) {
+			this.partsByLine.push(nextlineParts);
+			this.lines.push(nextlineParts.map((p) => p.second).join(""));
 		}
 
 		if (profile) {
@@ -83,9 +150,8 @@ export class NotificationBubble extends TextBubble {
 		const lheight = fontsize + 6;
 		ctx.lineWidth = 2;
 		ctx.font = fontsize + "px sans-serif";
-		const textColor = NotificationType[this.mtype] || Color.BLACK;
 		ctx.fillStyle = "rgb(60, 30, 0)";
-		ctx.strokeStyle = textColor;
+		ctx.strokeStyle = this.textColor;
 
 		const lcount = this.lines.length;
 		if (this.width < 0 || this.height < 0) {
@@ -123,7 +189,13 @@ export class NotificationBubble extends TextBubble {
 
 		let sy = this.y;
 		for (let li = 0; li < lcount; li++) {
-			ctx.fillText(this.lines[li], this.x + this.lmargin, sy);
+			let sx = this.x + this.lmargin;
+			const parts = this.partsByLine[li];
+			for (const part of parts) {
+				ctx.fillStyle = part.first || this.textColor;
+				ctx.fillText(part.second, sx, sy);
+				sx += ctx.measureText(part.second).width;
+			}
 			sy += lheight;
 		}
 
