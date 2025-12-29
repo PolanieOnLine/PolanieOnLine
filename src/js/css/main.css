@@ -835,6 +835,7 @@ span.lognick {
 }
 
 #middleColumn {
+	max-width: 800px;
 	float: none;
 	background-color: #000;
 	position: relative;
