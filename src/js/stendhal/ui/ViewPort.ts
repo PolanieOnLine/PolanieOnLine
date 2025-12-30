@@ -31,7 +31,7 @@ import { NotificationBubble } from "../sprite/NotificationBubble";
 import { SpeechBubble } from "../sprite/SpeechBubble";
 import { TextBubble } from "../sprite/TextBubble";
 
-import { ItemAnimationClock } from "../entity/Item";
+import { ItemAnimationClock } from "../entity/ItemAnimationClock";
 
 import { Point } from "../util/Point";
 import { Canvas, RenderingContext2D } from "util/Types";
@@ -158,7 +158,7 @@ export class ViewPort {
 				this.ctx.globalAlpha = 1.0;
 				this.adjustView(this.ctx.canvas);
 				this.ctx.fillStyle = "black";
-				this.ctx.fillRect(0, 0, 10000, 10000);
+				this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 
 				var tileOffsetX = Math.floor(this.offsetX / this.targetTileWidth);
 				var tileOffsetY = Math.floor(this.offsetY / this.targetTileHeight);
