@@ -37,6 +37,7 @@ export class Item extends Entity {
 	private animated: boolean | null = null;
 	private xFrames: number | null = null;
 	private yFrames: number | null = null;
+	private spriteLoadPromise?: Promise<void>;
 
 	constructor() {
 		super();
@@ -44,6 +45,8 @@ export class Item extends Entity {
 			height: 32,
 			width: 32
 		};
+		this["drawWidth"] = Item.FRAME_SIZE;
+		this["drawHeight"] = Item.FRAME_SIZE;
 		this.quantityTextSprite = new TextSprite("", "white", "10px sans-serif");
 	}
 
@@ -88,6 +91,7 @@ export class Item extends Entity {
 	}
 
 	override draw(ctx: RenderingContext2D) {
+		this.ensureSpriteReady();
 		if (!this.inView()) {
 			return;
 		}
@@ -105,17 +109,17 @@ export class Item extends Entity {
 			return;
 		}
 
-		const image = stendhal.data.sprites.get(this.sprite.filename);
+		const image = this.ensureSpriteReady();
 		if (!image || !image.height) {
 			return;
 		}
 
 		const tileX = x;
 		const tileY = y;
-		const frameWidth = this.sprite.width || Item.FRAME_SIZE;
-		const frameHeight = this.sprite.height || Item.FRAME_SIZE;
-		const width = frameWidth;
-		const height = frameHeight;
+		const frameWidth = this["drawWidth"] || this.getFrameWidth();
+		const frameHeight = this["drawHeight"] || this.getFrameHeight();
+		const width = frameWidth || Item.FRAME_SIZE;
+		const height = frameHeight || Item.FRAME_SIZE;
 		const offsetX = this.sprite.offsetX || 0;
 		const offsetY = this.sprite.offsetY || 0;
 
@@ -279,5 +283,63 @@ export class Item extends Entity {
 
 	private getFrameHeight() {
 		return this.sprite.height || Item.FRAME_SIZE;
+	}
+
+	private ensureSpriteReady(): HTMLImageElement | undefined {
+		const image = stendhal.data.sprites.get(this.sprite.filename);
+		if (this.applySpriteDimensions(image)) {
+			return image;
+		}
+
+		if (!this.spriteLoadPromise) {
+			this.spriteLoadPromise = stendhal.data.sprites.getWithPromise(this.sprite.filename)
+				.then((img: HTMLImageElement) => {
+					this.applySpriteDimensions(img);
+					if (stendhal?.ui?.gamewindow?.draw) {
+						stendhal.ui.gamewindow.draw();
+					}
+				})
+				.catch(() => undefined)
+				.finally(() => {
+					this.spriteLoadPromise = undefined;
+				});
+		}
+		return image;
+	}
+
+	private applySpriteDimensions(image?: HTMLImageElement | undefined) {
+		if (!this["drawWidth"] || isNaN(this["drawWidth"])) {
+			this["drawWidth"] = Item.FRAME_SIZE;
+		}
+		if (!this["drawHeight"] || isNaN(this["drawHeight"])) {
+			this["drawHeight"] = Item.FRAME_SIZE;
+		}
+
+		if (!image || !image.height) {
+			return false;
+		}
+
+		const key = this.getAnimationKey();
+		Item.frameCountsCache.delete(key);
+		this.xFrames = null;
+		this.yFrames = null;
+		this.animated = null;
+		const frameCounts = this.getFrameCounts();
+		const frameWidth = this.sprite.width || Math.floor(image.width / Math.max(1, frameCounts.columns)) || Item.FRAME_SIZE;
+		const frameHeight = this.sprite.height || Math.floor(image.height / Math.max(1, frameCounts.rows)) || Item.FRAME_SIZE;
+
+		this.sprite.width = frameWidth;
+		this.sprite.height = frameHeight;
+		this["drawWidth"] = frameWidth;
+		this["drawHeight"] = frameHeight;
+
+		console.debug("Item sprite ready", {
+			id: this["id"],
+			filename: this.sprite.filename,
+			drawWidth: this["drawWidth"],
+			drawHeight: this["drawHeight"]
+		});
+
+		return true;
 	}
 }
