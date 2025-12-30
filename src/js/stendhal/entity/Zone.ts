@@ -14,7 +14,7 @@ declare var stendhal: any;
 
 import { Entity } from "./Entity";
 import { Player } from "./Player";
-import { Item } from "./Item";
+
 
 /**
  * stendhal zone
@@ -23,8 +23,6 @@ export class Zone {
 
 	/** Entities found in this zone. */
 	private entities: Entity[] = [];
-	private loggedItemIds = new Set<number>();
-	private loggedZoneName?: string;
 
 	/** Singleton instance. */
 	private static instance: Zone;
@@ -100,25 +98,10 @@ export class Zone {
 	}
 
 	sortEntities() {
-		if (this.loggedZoneName !== marauroa.currentZoneName) {
-			this.loggedItemIds.clear();
-			this.loggedZoneName = marauroa.currentZoneName;
-		}
-
 		this.entities = [];
 		for (var i in marauroa.currentZone) {
 			if (marauroa.currentZone.hasOwnProperty(i) && typeof(marauroa.currentZone[i]) != "function") {
-				const entity = marauroa.currentZone[i];
-				this.entities.push(entity);
-				if (entity instanceof Item && !this.loggedItemIds.has(entity["id"])) {
-					this.loggedItemIds.add(entity["id"]);
-					console.debug("Zone entity update (drop trace)", {
-						id: entity["id"],
-						filename: entity["sprite"]?.filename,
-						drawWidth: entity["drawWidth"],
-						drawHeight: entity["drawHeight"]
-					});
-				}
+				this.entities.push(marauroa.currentZone[i]);
 			}
 		}
 
