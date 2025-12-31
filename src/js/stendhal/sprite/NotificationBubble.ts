@@ -138,7 +138,6 @@ export class NotificationBubble extends TextBubble {
 			const head = collapseCharsToParts(headChars);
 			head.push(new Pair(hyphenColor, "-"));
 			const tail = collapseCharsToParts(tailChars);
-			tail.unshift(new Pair(hyphenColor, "-"));
 			return { head, tail };
 		};
 
