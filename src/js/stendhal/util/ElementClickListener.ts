@@ -39,7 +39,7 @@ export class ElementClickListener {
 		element.addEventListener("touchstart", (evt: TouchEvent) => {
 			evt.preventDefault();
 			this.touchEngaged = evt.changedTouches.length;
-		}, {passive: true});
+		}, {passive: false});
 		element.addEventListener("mouseup", (evt: MouseEvent) => {
 			evt.preventDefault();
 			if (this.clickEngaged && evt.button == 0 && this.onClick) {
