@@ -333,13 +333,6 @@ export class Item extends Entity {
 		this["drawWidth"] = frameWidth;
 		this["drawHeight"] = frameHeight;
 
-		console.debug("Item sprite ready", {
-			id: this["id"],
-			filename: this.sprite.filename,
-			drawWidth: this["drawWidth"],
-			drawHeight: this["drawHeight"]
-		});
-
 		return true;
 	}
 }
