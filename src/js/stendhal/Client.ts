@@ -332,16 +332,24 @@ export class Client {
 			}
 		};
 
-		marauroa.clientFramework.onTransfer = function(items: any) {
-			var data = {} as any;
-			var zoneName = ""
-			for (var i in items) {
-				var name = items[i]["name"];
-				zoneName = name.substring(0, name.indexOf("."));
-				name = name.substring(name.indexOf(".") + 1);
-				data[name] = items[i]["data"];
+		marauroa.clientFramework.onTransfer = (items: any) => {
+			const data: Record<string, any> = {};
+			let zoneName = "";
+			for (const key in items) {
+				const entry = items[key];
+				if (!entry || typeof entry.name !== "string") {
+					continue;
+				}
+				let name = entry.name;
+				const dotIndex = name.indexOf(".");
+				if (dotIndex === -1) {
+					continue;
+				}
+				zoneName = name.substring(0, dotIndex);
+				name = name.substring(dotIndex + 1);
+				data[name] = entry.data;
 				if (name === "data_map") {
-					this.onDataMap(items[i]["data"]);
+					this.onDataMap(entry.data);
 				}
 			}
 			stendhal.data.map.onTransfer(zoneName, data);
