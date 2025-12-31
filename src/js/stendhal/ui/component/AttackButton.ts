@@ -17,6 +17,7 @@ import { Component } from "../toolkit/Component";
 import { Entity } from "../../entity/Entity";
 import { RPEntity } from "../../entity/RPEntity";
 
+import { Point } from "../../util/Point";
 import { ElementClickListener } from "../../util/ElementClickListener";
 
 
@@ -27,11 +28,14 @@ export class AttackButton extends Component {
 
 	private readonly cooldownDuration = 800;
 	private cooldownId?: number;
+	private readonly boundUpdate: () => void;
+	private radius = 0;
+	private center: Point;
 
 	constructor() {
 		const element = document.createElement("button");
 		element.id = "attack-button";
-		element.classList.add("attack-button", "joystick-button", "hidden");
+		element.classList.add("attack-button", "unclickable", "hidden");
 		element.setAttribute("aria-label", "Atakuj najbliższy cel");
 		element.title = "Atakuj najbliższy cel";
 
@@ -41,32 +45,40 @@ export class AttackButton extends Component {
 		listener.onClick = (evt: Event) => {
 			this.onActivate(evt);
 		};
+
+		this.boundUpdate = this.update.bind(this);
+		this.center = new Point(0, 0);
 	}
 
 	/**
 	 * Adds the attack button to the DOM.
 	 */
 	public mount() {
-		const container = document.getElementById("attack-button-container");
-		if (!container) {
-			return;
-		}
+		// Append to the body to break out of the right-column layout constraints,
+		// allowing for positioning relative to the viewport.
+		const container = document.body;
 		if (!container.contains(this.componentElement)) {
 			container.appendChild(this.componentElement);
 		}
+
+		// Set radius based on element size, assuming it's a square.
+		this.radius = Math.floor(this.componentElement.offsetWidth / 2);
+
 		this.componentElement.classList.remove("hidden");
+		this.update();
+		window.addEventListener("resize", this.boundUpdate);
 	}
 
 	/**
 	 * Removes the attack button from DOM.
 	 */
 	public unmount() {
-		const container = document.getElementById("attack-button-container");
-		if (container && container.contains(this.componentElement)) {
-			container.removeChild(this.componentElement);
+		if (this.componentElement.parentElement) {
+			this.componentElement.remove();
 		}
 		this.componentElement.classList.add("hidden");
 		this.setBusy(false);
+		window.removeEventListener("resize", this.boundUpdate);
 	}
 
 	/**
@@ -119,6 +131,51 @@ export class AttackButton extends Component {
 			this.setBusy(false);
 			this.cooldownId = undefined;
 		}, this.cooldownDuration);
+	}
+
+	/**
+	 * Updates button positioning based on its center coordinates.
+	 * This is similar to how the joystick is positioned, ensuring that
+	 * the button stays in a fixed position relative to the canvas,
+	 * even when the window is resized or scrolled.
+	 */
+	public update(): void {
+		const center = this.updateCenter();
+		const centerX = center.x;
+		const centerY = center.y;
+
+		// Use fixed positioning to place the button relative to the viewport,
+		// making it independent of its original container's layout.
+		this.componentElement.style.position = "fixed";
+		this.componentElement.style.left = ((centerX - this.radius) - 50) + "px";
+		this.componentElement.style.top = ((centerY - this.radius) - 100) + "px";
+	}
+
+	/**
+	 * Updates cached center position.
+	 */
+	private updateCenter(): Point {
+		const resolved = this.resolveCenter();
+		this.center = resolved;
+		return resolved;
+	}
+
+	/**
+	 * Determines the center position, placing it on the bottom-right of the canvas.
+	 */
+	private resolveCenter(): Point {
+		const viewport = document.getElementById("viewport"); // canvas is the viewport
+		if (viewport) {
+			const rect = viewport.getBoundingClientRect();
+			const margin = 20;
+
+			const x = rect.right - this.radius - margin;
+			const y = rect.bottom - this.radius - margin;
+			return new Point(x, y);
+		}
+
+		// Fallback if canvas is not found
+		return new Point(0, 0);
 	}
 
 	/**

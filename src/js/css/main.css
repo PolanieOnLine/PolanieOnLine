@@ -1143,20 +1143,10 @@ button.windowtitleminimize:first-child {
 	pointer-events: none;
 }
 
-#attack-button-container {
-	position: absolute;
-	left: 0;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	pointer-events: none;
-	z-index: 5;
-}
-
 #attack-button {
-	position: absolute;
+/* 	position: absolute;
 	right: 32px;
-	bottom: 140px;
+	bottom: 140px; */
 	width: 64px;
 	height: 64px;
 	background: transparent url(/data/gui/panel/attack_btn.png) center center / contain no-repeat;
