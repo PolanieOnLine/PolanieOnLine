@@ -51,6 +51,7 @@ export class Client {
 	private initialized = false;
 	private errorCounter = 0;
 	private unloading = false;
+	private worldLoaded = false;
 	/** User's character name.
 	 *
 	 * NOTE: can we replace references to this with value now stored in `util.SessionManager`?
@@ -359,17 +360,17 @@ export class Client {
 		if (document.getElementById("viewport")) {
 			// override perception listener
 			marauroa.perceptionListener = new PerceptionListener(marauroa.perceptionListener);
-			marauroa.perceptionListener.onPerceptionEnd = function(_type: Int8Array, _timestamp: number) {
+			marauroa.perceptionListener.onPerceptionEnd = (_type: Int8Array, _timestamp: number) => {
 				stendhal.zone.sortEntities();
 				(ui.get(UIComponentEnum.MiniMap) as MiniMapComponent).draw();
 				(ui.get(UIComponentEnum.BuddyList) as BuddyListComponent).update();
 				stendhal.ui.equip.update();
 				(ui.get(UIComponentEnum.PlayerEquipment) as PlayerEquipmentComponent).update();
-				if (!this.loaded) {
-					this.loaded = true;
+				if (!this.worldLoaded) {
+					this.worldLoaded = true;
 					// delay visibile change of client a little to allow for initialisation in the background for a smoother experience
-					window.setTimeout(function() {
-						let body = document.getElementById("body")!;
+					window.setTimeout(() => {
+						const body = document.getElementById("body")!;
 						body.style.cursor = "auto";
 						document.getElementById("client")!.style.display = "flex";
 						document.getElementById("loginpopup")!.style.display = "none";
@@ -379,7 +380,7 @@ export class Client {
 						ui.onDisplayReady();
 					}, 300);
 				}
-			}
+			};
 		}
 	}
 
