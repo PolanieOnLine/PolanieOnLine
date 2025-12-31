@@ -40,6 +40,7 @@ export class ConfigManager {
 		"chat.private.sound": "ui/notify_up",
 		"chat.visible": "false",
 		"chat-opts.custom": "",
+		"attack.button": "false",
 		"click-indicator": "false",
 		"effect.blood": "true",
 		"effect.entity-overlay": "true",

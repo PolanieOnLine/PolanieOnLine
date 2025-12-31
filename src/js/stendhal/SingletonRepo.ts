@@ -26,6 +26,7 @@ import { WeatherRenderer } from "./util/WeatherRenderer";
 import { CStatus } from "./data/CStatus";
 import { CacheManager } from "./data/CacheManager";
 import { EmojiStore } from "./data/EmojiStore";
+import { AttackButtonController } from "./ui/AttackButtonController";
 import { GroupManager } from "./data/GroupManager";
 import { TileMap } from "./data/TileMap";
 import { OutfitStore } from "./data/OutfitStore";
@@ -61,6 +62,10 @@ export class SingletonRepo {
 
 	static getChatInput(): ChatInputComponent {
 		return ui.get(UIComponentEnum.ChatInput) as ChatInputComponent;
+	}
+
+	static getAttackButtonController(): AttackButtonController {
+		return AttackButtonController.get();
 	}
 
 	static getClient(): Client {
