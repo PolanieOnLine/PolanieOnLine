@@ -128,15 +128,16 @@ export class AttackButton extends Component {
 	 *   Target entity or `undefined` if none found.
 	 */
 	private findNearestTarget(): RPEntity | undefined {
-		if (!marauroa.me || !stendhal.zone) {
+		if (!marauroa.me) {
 			return;
 		}
 
-		const entities: Entity[] = (stendhal.zone as any)["entities"] || [];
+		const entities = marauroa.currentZone;
 		let nearest: RPEntity | undefined;
 		let nearestDist = Number.MAX_SAFE_INTEGER;
 
-		for (const ent of entities) {
+		for (const key in entities) {
+			const ent = entities[key];
 			if (!this.isAttackable(ent)) {
 				continue;
 			}
@@ -161,17 +162,21 @@ export class AttackButton extends Component {
 	 * @return {boolean}
 	 *   `true` if target considered attackable.
 	 */
-	private isAttackable(ent: Entity): ent is RPEntity {
-		if (!(ent instanceof RPEntity)) {
+	private isAttackable(ent: any): ent is RPEntity {
+		if (!ent) {
 			return false;
 		}
 		if (ent === marauroa.me) {
 			return false;
 		}
-		// Entities with custom menu entries are typically not attackable (see RPEntity.buildActions)
-		if ((ent as any)["menu"]) {
+		// Check for HP to ensure it's a living entity (Creature or Player)
+		if (!ent["hp"] || ent["hp"] <= 0) {
 			return false;
 		}
-		return ent.isVisibleToAction(false);
+		// Entities with custom menu entries are typically not attackable (see RPEntity.buildActions)
+		if (ent["menu"]) {
+			return false;
+		}
+		return typeof ent.isVisibleToAction === 'function' ? ent.isVisibleToAction(false) : true;
 	}
 }
