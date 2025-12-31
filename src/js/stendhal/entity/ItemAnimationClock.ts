@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2025 - Stendhal                    *
+ *                     Copyright © 2025 - PolanieOnLine                    *
  ***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
