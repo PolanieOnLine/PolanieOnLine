@@ -14,6 +14,7 @@ import { UIComponentEnum } from "./UIComponentEnum";
 import { ChatLogComponent } from "./component/ChatLogComponent";
 import { QuickMenu } from "./quickmenu/QuickMenu";
 import { QuickMenuButton } from "./quickmenu/QuickMenuButton";
+import { UiStateStore } from "./mobile/UiStateStore";
 import { Panel } from "./toolkit/Panel";
 import { singletons } from "../SingletonRepo";
 
@@ -24,10 +25,19 @@ import { singletons } from "../SingletonRepo";
  * TODO: move to ui/component directory
  */
 export class ChatPanel extends Panel {
+	private readonly unsubscribeState: () => void;
 
 	constructor() {
 		super("bottomPanel");
 		this.setFloating(singletons.getConfigManager().getBoolean("chat.float"));
+		const store = UiStateStore.get();
+		this.unsubscribeState = store.subscribe(({ chatExpanded }) => {
+			if (this.isVisible() === chatExpanded) {
+				return;
+			}
+			// avoid notifying store again when the update originated from it
+			this.applyVisibility(chatExpanded, true);
+		});
 	}
 
 	/**
@@ -114,20 +124,36 @@ export class ChatPanel extends Panel {
 	}
 
 	public override setVisible(visible=true) {
+		this.applyVisibility(visible);
+	}
+
+	/**
+	 * Updates internal visibility while keeping store/config in sync.
+	 *
+	 * @param visible
+	 *   Target visibility state.
+	 * @param fromStore
+	 *   `true` when the change originated from `UiStateStore` to avoid notifying it again.
+	 */
+	private applyVisibility(visible: boolean, fromStore=false) {
 		// FIXME: there may be a problem if panel is not floating & not visible when client starts
 		const stateChanged = visible != this.isVisible();
 		super.setVisible(visible);
-		// update config
-		singletons.getConfigManager().set("chat.visible", visible);
-		// update quick menu button
-		const chatButton = ui.get(UIComponentEnum.QMChat) as QuickMenuButton;
-		if (chatButton) {
-			chatButton.update();
+		if (stateChanged) {
+			singletons.getConfigManager().set("chat.visible", visible);
+			// update quick menu button
+			const chatButton = ui.get(UIComponentEnum.QMChat) as QuickMenuButton;
+			if (chatButton) {
+				chatButton.update();
+			}
+			// update chat log
+			const chatLog = (ui.get(UIComponentEnum.ChatLog) as ChatLogComponent);
+			if (chatLog) {
+				visible ? chatLog.onUnhide() : chatLog.onHide();
+			}
 		}
-		// update chat log
-		const chatLog = (ui.get(UIComponentEnum.ChatLog) as ChatLogComponent);
-		if (stateChanged && chatLog) {
-			this.isVisible() ? chatLog.onUnhide() : chatLog.onHide();
+		if (!fromStore) {
+			UiStateStore.get().setChatExpanded(visible);
 		}
 	}
 }

@@ -35,6 +35,9 @@ import { LoginDialog } from "./ui/dialog/LoginDialog";
 
 import { DesktopUserInterfaceFactory } from "./ui/factory/DesktopUserInterfaceFactory";
 
+import { PanelDock } from "./ui/mobile/PanelDock";
+import { UiStateStore } from "./ui/mobile/UiStateStore";
+
 import { SingletonFloatingWindow } from "./ui/toolkit/SingletonFloatingWindow";
 
 import { Chat } from "./util/Chat";
@@ -60,6 +63,7 @@ export class Client {
 
 	/** ID for vetoing click indicator timeout (experimental setting not enabled/visible by default). */
 	private static click_indicator_id: number | undefined = undefined;
+	private panelDock?: PanelDock;
 
 	/** Singleton instance. */
 	private static instance: Client;
@@ -169,6 +173,7 @@ export class Client {
 		const sparams = new URL(document.URL).searchParams;
 		stendhal.config.init(sparams);
 		stendhal.session.init(sparams);
+		UiStateStore.get().initFromConfig();
 
 		// update user interface after config is loaded
 		stendhal.config.refreshTheme();
@@ -185,6 +190,7 @@ export class Client {
 		stendhal.data.outfit.init();
 
 		new DesktopUserInterfaceFactory().create();
+		this.panelDock = new PanelDock();
 
 		Chat.log("client", "Klient załadowany. Łączenie...");
 
