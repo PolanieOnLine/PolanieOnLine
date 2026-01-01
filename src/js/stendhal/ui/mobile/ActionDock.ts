@@ -10,9 +10,11 @@
  ***************************************************************************/
 
 declare var marauroa: any;
+declare var stendhal: any;
 
 import { TargetingController } from "../../game/TargetingController";
 import { Entity } from "../../entity/Entity";
+import { Item } from "../../entity/Item";
 import { NPC } from "../../entity/NPC";
 import { Player } from "../../entity/Player";
 import { PopupInventory } from "../../entity/PopupInventory";
@@ -40,12 +42,11 @@ export class ActionDock {
 	private readonly config = ConfigManager.get();
 
 	private readonly root = document.createElement("div");
-	private readonly primary = document.createElement("div");
-	private readonly quickslotRow = document.createElement("div");
+	private readonly cluster = document.createElement("div");
 
 	private readonly attackButton = new AttackDockButton();
-	private readonly interactButton = new InteractDockButton();
-	private readonly pickupButton = new PickupDockButton();
+	private readonly interactButton = new InteractDockButton(() => this.greetNearestNpc());
+	private readonly pickupButton = new PickupDockButton(() => this.pickupNearest());
 	private readonly quickslotButtons: QuickslotButton[] = [];
 
 	private mounted = false;
@@ -55,6 +56,7 @@ export class ActionDock {
 	private unsubscribeQuickslots?: () => void;
 	private lastState?: UiState;
 	private readonly debouncedPosition: () => void;
+	private readonly debouncedLayout: () => void;
 
 
 	static get(): ActionDock {
@@ -69,26 +71,29 @@ export class ActionDock {
 	}
 
 	private constructor() {
-		this.root.className = "action-dock action-dock--hidden action-dock--right";
+		this.root.className = "action-dock action-dock--hidden";
 		this.root.setAttribute("aria-label", "Akcje mobilne");
 
-		this.primary.className = "action-dock__primary";
-		this.quickslotRow.className = "action-dock__quickslots";
+		this.cluster.className = "action-dock__cluster";
 
-		this.root.appendChild(this.primary);
-		this.root.appendChild(this.quickslotRow);
+		this.root.appendChild(this.cluster);
 
-		this.primary.appendChild(this.attackButton.element);
-		this.primary.appendChild(this.interactButton.element);
-		this.primary.appendChild(this.pickupButton.element);
-
-		for (let slot = 1; slot <= 3; slot++) {
-			const btn = new QuickslotButton(slot, this.quickslots);
-			this.quickslotButtons.push(btn);
-			this.quickslotRow.appendChild(btn.element);
-		}
+		this.cluster.appendChild(this.attackButton.element);
+		this.cluster.appendChild(this.interactButton.element);
+		this.cluster.appendChild(this.pickupButton.element);
 
 		this.debouncedPosition = this.debounce(() => this.updatePosition(), 120);
+		this.debouncedLayout = this.debounce(() => this.layoutButtons(), 60);
+
+		for (let slot = 1; slot <= 3; slot++) {
+			const btn = new QuickslotButton(slot, this.quickslots, () => this.layoutButtons());
+			this.quickslotButtons.push(btn);
+			this.cluster.appendChild(btn.element);
+		}
+
+		this.attackButton.setOnSizeChange(() => this.debouncedLayout());
+		this.interactButton.setOnSizeChange(() => this.debouncedLayout());
+		this.pickupButton.setOnSizeChange(() => this.debouncedLayout());
 	}
 
 	refresh() {
@@ -122,6 +127,7 @@ export class ActionDock {
 		this.subscribe();
 		this.onQuickslotUpdate(this.quickslots.getEntries());
 		this.refreshAvailability();
+		this.layoutButtons();
 		this.updatePosition();
 		this.bindListeners();
 	}
@@ -147,8 +153,6 @@ export class ActionDock {
 
 	private applyState(state: UiState) {
 		this.lastState = state;
-		this.root.classList.toggle("action-dock--left", state.handedness === UiHandedness.LEFT);
-		this.root.classList.toggle("action-dock--right", state.handedness !== UiHandedness.LEFT);
 		const faded = state.mode === UiMode.PANELS;
 		this.root.classList.toggle("action-dock--faded", faded);
 		this.root.classList.toggle("action-dock--hidden", faded);
@@ -165,12 +169,14 @@ export class ActionDock {
 	private bindListeners() {
 		window.addEventListener("resize", this.debouncedPosition);
 		window.addEventListener("touchmove", this.debouncedPosition, { passive: true });
+		window.addEventListener("resize", this.debouncedLayout);
 		this.startAvailabilityLoop();
 	}
 
 	private unbindListeners() {
 		window.removeEventListener("resize", this.debouncedPosition);
 		window.removeEventListener("touchmove", this.debouncedPosition);
+		window.removeEventListener("resize", this.debouncedLayout);
 	}
 
 	private startAvailabilityLoop() {
@@ -191,16 +197,14 @@ export class ActionDock {
 		}
 		const viewport = document.getElementById("viewport");
 		const rect = viewport?.getBoundingClientRect();
-		const width = this.root.offsetWidth || 220;
-		const height = this.root.offsetHeight || 160;
+		const width = this.root.offsetWidth || 240;
+		const height = this.root.offsetHeight || 240;
 
 		let left = window.innerWidth - width - DOCK_MARGIN;
 		let top = window.innerHeight - height - DOCK_MARGIN;
 
 		if (rect) {
-			const targetLeft = rect.left + DOCK_MARGIN;
-			const targetRight = rect.right - width - DOCK_MARGIN;
-			left = (this.lastState?.handedness === UiHandedness.LEFT) ? targetLeft : targetRight;
+			left = rect.right - width - DOCK_MARGIN;
 			top = rect.bottom - height - DOCK_MARGIN;
 		}
 
@@ -233,15 +237,12 @@ export class ActionDock {
 		return TargetingController.get().getNearest({
 			requireHealth: false,
 			respectPreferences: false,
-			predicate: (entity: Entity) => typeof (entity as any)["hp"] !== "number" && this.isWithinRange(entity)
+			predicate: (entity: Entity) => entity instanceof Item && this.isWithinRange(entity)
 		});
 	}
 
 	private isInteractionCandidate(entity: Entity): boolean {
-		return entity instanceof NPC
-			|| entity instanceof Player
-			|| entity instanceof UseableEntity
-			|| entity instanceof PopupInventory;
+		return entity instanceof NPC;
 	}
 
 	private isWithinRange(entity: Entity): boolean {
@@ -260,21 +261,103 @@ export class ActionDock {
 			this.debounceId = window.setTimeout(fn, wait);
 		};
 	}
+
+	private greetNearestNpc() {
+		const target = this.findInteractTarget();
+		if (!target) {
+			return;
+		}
+		TargetingController.get().setCurrent(target);
+		if (typeof stendhal !== "undefined" && stendhal.actions) {
+			stendhal.actions.execute("Cześć");
+		}
+	}
+
+	private pickupNearest() {
+		const target = this.findPickupTarget();
+		if (!target) {
+			return;
+		}
+		const action = typeof (target as any).getDefaultAction === "function"
+			? (target as any).getDefaultAction()
+			: {
+				type: "equip",
+				"source_path": target.getIdPath(),
+				"target_path": "[" + marauroa.me["id"] + "\tbag]",
+				"zone": marauroa.currentZoneName
+			};
+		marauroa.clientFramework.sendAction(action);
+	}
+
+	private layoutButtons() {
+		const clusterSize = this.getClusterSize();
+		this.root.style.width = clusterSize.width + "px";
+		this.root.style.height = clusterSize.height + "px";
+		this.cluster.style.width = clusterSize.width + "px";
+		this.cluster.style.height = clusterSize.height + "px";
+
+		const mainSize = this.attackButton.getSize();
+		const base = Math.max(mainSize.width || 64, mainSize.height || 64);
+		const radius = base * 1.35;
+
+		const centerX = clusterSize.width - base * 0.6;
+		const centerY = clusterSize.height - base * 0.6;
+
+		this.attackButton.setPosition(centerX, centerY);
+
+		this.positionAround(this.interactButton, centerX, centerY, radius * 1.05, -55);
+		this.positionAround(this.pickupButton, centerX, centerY, radius * 1.15, -120);
+
+		const quickAngles = [-25, -75, -150];
+		for (let i = 0; i < this.quickslotButtons.length; i++) {
+			this.positionAround(this.quickslotButtons[i], centerX, centerY, radius * 1.3, quickAngles[i]);
+		}
+	}
+
+	private getClusterSize(): {width: number; height: number} {
+		const mainSize = this.attackButton.getSize();
+		const base = Math.max(mainSize.width || 64, mainSize.height || 64);
+		const width = base * 3.2;
+		const height = base * 3.2;
+		return { width, height };
+	}
+
+	private positionAround(button: DockButton, centerX: number, centerY: number, radius: number, angleDeg: number) {
+		const angle = angleDeg * Math.PI / 180;
+		const x = centerX + radius * Math.cos(angle);
+		const y = centerY + radius * Math.sin(angle);
+		button.setPosition(x, y);
+	}
 }
 
 
 abstract class DockButton {
 
 	public readonly element: HTMLButtonElement;
+	private readonly icon: HTMLImageElement;
+	private onSizeChange?: () => void;
 
 
-	constructor(type: string, label: string, title: string) {
+	constructor(type: string, label: string, title: string, onActivate?: () => void) {
 		this.element = document.createElement("button");
 		this.element.type = "button";
 		this.element.className = `action-dock__button action-dock__button--${type}`;
 		this.element.title = title;
 		this.element.setAttribute("aria-label", title);
-		this.element.textContent = label;
+		this.icon = document.createElement("img");
+		this.icon.className = "action-dock__icon";
+		this.icon.alt = label || title;
+		this.icon.draggable = false;
+		this.element.appendChild(this.icon);
+
+		if (onActivate) {
+			this.element.addEventListener("click", (evt) => {
+				evt.preventDefault();
+				onActivate();
+			});
+		}
+
+		this.icon.addEventListener("load", () => this.onSizeChange?.());
 	}
 
 	setEnabled(enabled: boolean) {
@@ -284,6 +367,32 @@ abstract class DockButton {
 
 	setVisible(visible: boolean) {
 		this.element.classList.toggle("action-dock__button--hidden", !visible);
+	}
+
+	setPosition(x: number, y: number) {
+		const size = this.getSize();
+		const left = x - size.width / 2;
+		const top = y - size.height / 2;
+		this.element.style.left = `${left}px`;
+		this.element.style.top = `${top}px`;
+	}
+
+	setIcon(src: string) {
+		if (src) {
+			this.icon.src = src;
+		}
+	}
+
+	getSize(): {width: number; height: number} {
+		const rect = this.icon.getBoundingClientRect();
+		if (rect.width && rect.height) {
+			return { width: rect.width, height: rect.height };
+		}
+		return { width: 64, height: 64 };
+	}
+
+	setOnSizeChange(handler: () => void) {
+		this.onSizeChange = handler;
 	}
 }
 
@@ -302,6 +411,7 @@ class AttackDockButton extends DockButton {
 
 	constructor() {
 		super("attack", "", "Atakuj najbliższy cel");
+		this.setIcon("/data/gui/panel/attack_btn.png");
 		this.element.addEventListener("click", (evt) => {
 			this.onActivate(evt);
 		});
@@ -386,18 +496,18 @@ class AttackDockButton extends DockButton {
 
 class InteractDockButton extends DockButton {
 
-	constructor() {
-		super("interact", "", "Interakcja z najbliższym NPC lub obiektem");
-		this.element.addEventListener("click", () => TargetingController.get().interactNearest());
+	constructor(onActivate: () => void) {
+		super("interact", "", "Interakcja z najbliższym NPC", onActivate);
+		this.setIcon("/data/gui/panel/talk_btn.png");
 	}
 }
 
 
 class PickupDockButton extends DockButton {
 
-	constructor() {
-		super("pickup", "", "Podnieś najbliższy przedmiot");
-		this.element.addEventListener("click", () => TargetingController.get().pickupNearest());
+	constructor(onActivate: () => void) {
+		super("pickup", "", "Podnieś najbliższy przedmiot", onActivate);
+		this.setIcon("/data/gui/panel/pickup_btn.png");
 	}
 
 	setAvailable(available: boolean) {
@@ -412,7 +522,7 @@ class QuickslotButton extends DockButton {
 	private pressTimeoutId?: number;
 	private currentEntry?: QuickslotEntry;
 
-	constructor(public readonly slot: number, private readonly store: QuickslotStore) {
+	constructor(public readonly slot: number, private readonly store: QuickslotStore, private readonly requestLayout: () => void) {
 		super("quickslot", `Q${slot}`, `Quickslot ${slot}`);
 		this.element.dataset.slot = String(slot);
 		this.element.addEventListener("click", (evt) => {
@@ -423,6 +533,7 @@ class QuickslotButton extends DockButton {
 		this.element.addEventListener("pointerup", () => this.onPressEnd(false));
 		this.element.addEventListener("pointerleave", () => this.onPressEnd(true));
 		this.element.addEventListener("pointercancel", () => this.onPressEnd(true));
+		this.setOnSizeChange(() => this.requestLayout());
 	}
 
 	update(entry?: QuickslotEntry) {
@@ -431,15 +542,15 @@ class QuickslotButton extends DockButton {
 		const shortLabel = label.length > 10 ? label.slice(0, 9) + "…" : label;
 		this.element.setAttribute("aria-label", label);
 		this.element.title = label;
-		this.element.textContent = shortLabel;
 		if (entry?.icon) {
-			this.element.style.setProperty("--action-dock-quickslot-icon", `url(${entry.icon})`);
+			this.setIcon(entry.icon);
 		} else {
-			this.element.style.removeProperty("--action-dock-quickslot-icon");
+			this.setIcon("/data/gui/panel/empty_btn.png");
 		}
 		const hasEntry = !!entry;
 		this.element.classList.toggle("action-dock__button--empty", !hasEntry);
 		this.setEnabled(hasEntry);
+		this.requestLayout();
 	}
 
 	private onActivate() {

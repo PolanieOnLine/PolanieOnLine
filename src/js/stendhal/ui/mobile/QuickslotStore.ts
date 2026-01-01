@@ -34,6 +34,7 @@ export class QuickslotStore {
 	private readonly config = ConfigManager.get();
 	private readonly entries: Map<number, QuickslotEntry> = new Map();
 	private readonly subscribers: Set<QuickslotSubscriber> = new Set();
+	private readonly allowedClasses = new Set(["drink", "food", "scroll", "potion"]);
 
 
 	static get(): QuickslotStore {
@@ -55,6 +56,9 @@ export class QuickslotStore {
 
 	assign(slot: number, entity: any) {
 		if (!entity || typeof entity.getIdPath !== "function") {
+			return;
+		}
+		if (entity["class"] && !this.allowedClasses.has(entity["class"])) {
 			return;
 		}
 

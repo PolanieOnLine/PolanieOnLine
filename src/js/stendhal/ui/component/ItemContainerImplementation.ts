@@ -354,8 +354,8 @@ export class ItemContainerImplementation {
 				return;
 			}
 
-			if (this.isRightClick(event) || long_touch) {
-				const append = [];
+				if (this.isRightClick(event) || long_touch) {
+					const append: any[] = [];
 				this.appendQuickslotActions(append, (event.target as any).dataItem);
 				if (long_touch) {
 					// XXX: better way to pass instance to action function?

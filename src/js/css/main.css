@@ -1165,42 +1165,15 @@ button.windowtitleminimize:first-child {
 	left: 0;
 	top: 0;
 	z-index: 9600;
-	display: flex;
-	flex-direction: column;
-	align-items: flex-end;
-	gap: 6px;
 	transform: translate(0, 0);
 	transition: opacity 0.2s ease, transform 0.2s ease;
 	pointer-events: auto;
 }
 
-.action-dock__primary,
-.action-dock__quickslots {
-	display: flex;
-	gap: 6px;
-	justify-content: flex-end;
-	width: 100%;
-}
-
-.action-dock__primary {
-	flex-direction: column;
-	align-items: flex-end;
-}
-
-.action-dock__quickslots {
-	align-items: center;
-}
-
-.action-dock--left {
-	align-items: flex-start;
-}
-
-.action-dock--left .action-dock__primary {
-	align-items: flex-start;
-}
-
-.action-dock--left .action-dock__quickslots {
-	justify-content: flex-start;
+.action-dock__cluster {
+	position: relative;
+	width: 240px;
+	height: 240px;
 }
 
 .action-dock--faded,
@@ -1210,23 +1183,11 @@ button.windowtitleminimize:first-child {
 }
 
 .action-dock__button {
-	width: 64px;
-	height: 64px;
+	position: absolute;
 	border: none;
-	border-radius: 8px;
-	background-color: rgba(0, 0, 0, 0.35);
-	background-repeat: no-repeat;
-	background-position: center center;
-	background-size: contain;
-	color: #fff;
-	text-shadow: 1px 1px 1px #000;
-	font-size: 12px;
-	font-weight: bold;
-	display: flex;
-	align-items: center;
-	justify-content: center;
+	padding: 0;
+	background: none;
 	pointer-events: auto;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.35);
 }
 
 .action-dock__button:disabled,
@@ -1239,25 +1200,20 @@ button.windowtitleminimize:first-child {
 	display: none;
 }
 
-.action-dock__button--attack {
-	background-image: url(/data/gui/panel/attack_btn.png);
-}
-
-.action-dock__button--interact {
-	background-image: url(/data/gui/panel/talk_btn.png);
-}
-
-.action-dock__button--pickup {
-	background-image: url(/data/gui/panel/pickup_btn.png);
+.action-dock__icon {
+	display: block;
+	width: auto;
+	height: auto;
+	image-rendering: auto;
 }
 
 .action-dock__button--quickslot {
-	background-image: var(--action-dock-quickslot-icon, url(/data/gui/panel/empty_btn.png));
-	background-color: rgba(0, 0, 0, 0.45);
+	background: none;
 }
 
-.action-dock__button--empty {
+.action-dock__button--empty .action-dock__icon {
 	opacity: 0.8;
+	filter: grayscale(0.8);
 }
 
 .background, .background a {
