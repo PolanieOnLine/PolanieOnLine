@@ -212,8 +212,8 @@ export class AttackButton extends Component {
 		// Use fixed positioning to place the button relative to the viewport,
 		// making it independent of its original container's layout.
 		this.componentElement.style.position = "fixed";
-		this.componentElement.style.left = ((centerX - this.radius) - 50) + "px";
-		this.componentElement.style.top = ((centerY - this.radius) - 100) + "px";
+		this.componentElement.style.left = (centerX - this.radius) + "px";
+		this.componentElement.style.top = (centerY - this.radius) + "px";
 	}
 
 	/**
