@@ -134,12 +134,7 @@ export class TargetingController {
 			types: ["creature", "player"]
 		};
 
-		let target = this.current instanceof RPEntity && this.isCandidate(this.current, filter)
-			? this.current as RPEntity : undefined;
-
-		if (!target) {
-			target = this.getNearest(filter) as RPEntity;
-		}
+		const target = this.getNearest(filter) as RPEntity;
 
 		if (!this.isAttackable(target)) {
 			this.current = undefined;
