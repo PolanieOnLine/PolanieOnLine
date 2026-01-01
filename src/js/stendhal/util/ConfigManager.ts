@@ -40,6 +40,8 @@ export class ConfigManager {
 		"chat.private.sound": "ui/notify_up",
 		"chat.visible": "false",
 		"chat-opts.custom": "",
+		"attack.target.npc": "false",
+		"attack.target.players": "false",
 		"attack.button": "false",
 		"click-indicator": "false",
 		"effect.blood": "true",

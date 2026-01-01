@@ -14,8 +14,7 @@ declare var stendhal: any;
 
 import { Component } from "../toolkit/Component";
 
-import { Entity } from "../../entity/Entity";
-import { RPEntity } from "../../entity/RPEntity";
+import { TargetingController } from "../../game/TargetingController";
 
 import { Point } from "../../util/Point";
 import { ElementClickListener } from "../../util/ElementClickListener";
@@ -99,17 +98,11 @@ export class AttackButton extends Component {
 			return;
 		}
 
-		const target = this.findNearestTarget();
+		const target = TargetingController.get().attackCurrentOrNearest();
 		if (!target) {
 			this.flashDisabled();
 			return;
 		}
-
-		marauroa.clientFramework.sendAction({
-			type: "attack",
-			target: "#" + target["id"],
-			zone: marauroa.currentZoneName
-		});
 
 		this.startCooldown();
 	}
@@ -176,64 +169,5 @@ export class AttackButton extends Component {
 
 		// Fallback if canvas is not found
 		return new Point(0, 0);
-	}
-
-	/**
-	 * Finds the nearest attackable entity around the player.
-	 *
-	 * @return {RPEntity|undefined}
-	 *   Target entity or `undefined` if none found.
-	 */
-	private findNearestTarget(): RPEntity | undefined {
-		if (!marauroa.me) {
-			return;
-		}
-
-		const entities = marauroa.currentZone;
-		let nearest: RPEntity | undefined;
-		let nearestDist = Number.MAX_SAFE_INTEGER;
-
-		for (const key in entities) {
-			const ent = entities[key];
-			if (!this.isAttackable(ent)) {
-				continue;
-			}
-			const dist = marauroa.me.getDistanceTo(ent);
-			if (dist < 0) {
-				continue;
-			}
-			if (dist < nearestDist) {
-				nearest = ent as RPEntity;
-				nearestDist = dist;
-			}
-		}
-
-		return nearest;
-	}
-
-	/**
-	 * Determines if entity can be targeted by an attack.
-	 *
-	 * @param ent {Entity}
-	 *   Entity to check.
-	 * @return {boolean}
-	 *   `true` if target considered attackable.
-	 */
-	private isAttackable(ent: any): ent is RPEntity {
-		if (!ent) {
-			return false;
-		}
-		if (ent === marauroa.me) {
-			return false;
-		}
-		// Check for HP to ensure it's a living entity (Creature or Player)
-		if (!ent["hp"] || ent["hp"] <= 0) {
-			return false;
-		}
-		// Entities with custom menu entries are typically not attackable (see RPEntity.buildActions)
-		if (ent["menu"]) {
-			return false;
-		}
-		return typeof ent.isVisibleToAction === 'function' ? ent.isVisibleToAction(false) : true;
 	}
 }

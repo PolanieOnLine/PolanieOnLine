@@ -48,7 +48,7 @@ import { UIUpdateObserver } from "./ui/UIUpdateObserver";
 import { ViewPort } from "./ui/ViewPort";
 
 import { ChatInputComponent } from "./ui/component/ChatInputComponent";
-
+import { TargetingController } from "./game/TargetingController";
 
 export class SingletonRepo {
 
@@ -106,6 +106,10 @@ export class SingletonRepo {
 
 	static getHTMLManager(): HTMLManager {
 		return HTMLManager.get();
+	}
+
+	static getTargetingController(): TargetingController {
+		return TargetingController.get();
 	}
 
 	static getInventory(): Inventory {

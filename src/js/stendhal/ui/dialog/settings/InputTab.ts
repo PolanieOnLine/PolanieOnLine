@@ -69,6 +69,10 @@ export class InputTab extends AbstractSettingsTab {
 			chk_attack_button.checked = singletons.getSessionManager().attackButtonEnabled();
 		}
 
+		parent.createCheckBox("chk_attack_players", "attack.target.players",
+			"Zezwól na wybór graczy jako celów przy automatycznym ataku",
+			"Wyklucz graczy z automatycznego wyboru celu");
+
 		// joystck positioning
 		const joystickInputs: HTMLInputElement[] = [];
 		for (const o of ["x", "y"]) {
