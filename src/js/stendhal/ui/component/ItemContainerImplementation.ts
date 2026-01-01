@@ -124,10 +124,12 @@ export class ItemContainerImplementation {
 
 				this.dirty = this.dirty || o !== (e as any).dataItem;
 				const item = <Item> o;
+				const frameWidth = item["drawWidth"] || (item as any).sprite?.width || 32;
+				const frameHeight = item["drawHeight"] || (item as any).sprite?.height || 32;
 				let xOffset = 0;
-				let yOffset = (item["state"] || 0) * -32;
+				let yOffset = (item["state"] || 0) * -frameHeight;
 				const animationFrame = item.getAnimationFrameIndex();
-				xOffset = -(animationFrame * 32);
+				xOffset = -(animationFrame * frameWidth);
 
 				e.style.backgroundImage = "url("
 						+ stendhal.data.sprites.checkPath(stendhal.paths.sprites
@@ -356,10 +358,10 @@ export class ItemContainerImplementation {
 
 				if (this.isRightClick(event) || long_touch) {
 					const append: any[] = [];
-				this.appendQuickslotActions(append, (event.target as any).dataItem);
-				if (long_touch) {
-					// XXX: better way to pass instance to action function?
-					const tmp = this;
+					this.appendQuickslotActions(append, (event.target as any).dataItem);
+					if (long_touch) {
+						// XXX: better way to pass instance to action function?
+						const tmp = this;
 					// action to "hold" item for moving or dropping using touch
 					// XXX: temporary workaround, should use drag-and-drop instead
 					append.push({
@@ -441,17 +443,17 @@ export class ItemContainerImplementation {
 	 */
 	private updateCursor(target: HTMLElement, item?: Item) {
 		if (item) {
-			if (this.slot === "content" && stendhal.config.getBoolean("inventory.quick-pickup")) {
-				target.style.cursor = "url(" + stendhal.paths.sprites
-						+ "/cursor/itempickupfromslot.png) 1 3, auto";
+				if (this.slot === "content" && stendhal.config.getBoolean("inventory.quick-pickup")) {
+					target.style.cursor = "url(" + stendhal.paths.sprites
+							+ "/cursor/itempickupfromslot.png) 1 3, auto";
+					return;
+				}
+				target.style.cursor = item.getCursor(0, 0);
 				return;
 			}
-			target.style.cursor = item.getCursor(0, 0);
-			return;
+			target.style.cursor = "url(" + stendhal.paths.sprites
+					+ "/cursor/normal.png) 1 3, auto";
 		}
-		target.style.cursor = "url(" + stendhal.paths.sprites
-				+ "/cursor/normal.png) 1 3, auto";
-	}
 
 	/**
 	 * Sets tooltip to be shown for item.

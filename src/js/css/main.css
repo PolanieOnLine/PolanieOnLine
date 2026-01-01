@@ -1187,6 +1187,8 @@ button.windowtitleminimize:first-child {
 	border: none;
 	padding: 0;
 	background: none;
+	min-width: 48px;
+	min-height: 48px;
 	pointer-events: auto;
 }
 
@@ -1202,9 +1204,24 @@ button.windowtitleminimize:first-child {
 
 .action-dock__icon {
 	display: block;
+	min-width: 48px;
+	min-height: 48px;
+	max-width: 96px;
+	max-height: 96px;
 	width: auto;
 	height: auto;
 	image-rendering: auto;
+}
+
+.action-dock__label {
+	position: absolute;
+	bottom: -4px;
+	left: 50%;
+	transform: translateX(-50%);
+	font-size: 11px;
+	color: #fff;
+	text-shadow: 1px 1px 2px #000;
+	pointer-events: none;
 }
 
 .action-dock__button--quickslot {

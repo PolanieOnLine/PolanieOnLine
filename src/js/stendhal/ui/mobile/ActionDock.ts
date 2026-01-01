@@ -40,12 +40,15 @@ export class ActionDock {
 	private readonly quickslots = QuickslotStore.get();
 	private readonly session = SessionManager.get();
 	private readonly config = ConfigManager.get();
+	private activeNpcId?: number;
+	private lastNpcInteraction = 0;
+	private readonly conversationTimeoutMs = 15000;
 
 	private readonly root = document.createElement("div");
 	private readonly cluster = document.createElement("div");
 
 	private readonly attackButton = new AttackDockButton();
-	private readonly interactButton = new InteractDockButton(() => this.greetNearestNpc());
+		private readonly interactButton = new InteractDockButton(() => this.onInteract());
 	private readonly pickupButton = new PickupDockButton(() => this.pickupNearest());
 	private readonly quickslotButtons: QuickslotButton[] = [];
 
@@ -262,15 +265,22 @@ export class ActionDock {
 		};
 	}
 
-	private greetNearestNpc() {
+	private onInteract() {
 		const target = this.findInteractTarget();
 		if (!target) {
 			return;
 		}
-		TargetingController.get().setCurrent(target);
+		const now = Date.now();
+		const npcId = (target as any)["id"];
+		const inConversation = this.activeNpcId === npcId && (now - this.lastNpcInteraction) < this.conversationTimeoutMs;
+
+		this.sendTalkAction(target);
 		if (typeof stendhal !== "undefined" && stendhal.actions) {
-			stendhal.actions.execute("Cześć");
+			stendhal.actions.execute(inConversation ? "Do widzenia" : "Cześć");
 		}
+
+		this.lastNpcInteraction = now;
+		this.activeNpcId = inConversation ? undefined : npcId;
 	}
 
 	private pickupNearest() {
@@ -285,8 +295,19 @@ export class ActionDock {
 				"source_path": target.getIdPath(),
 				"target_path": "[" + marauroa.me["id"] + "\tbag]",
 				"zone": marauroa.currentZoneName
-			};
+		};
 		marauroa.clientFramework.sendAction(action);
+	}
+
+	private sendTalkAction(target: Entity) {
+		if (!target || typeof (target as any)["id"] === "undefined") {
+			return;
+		}
+		marauroa.clientFramework.sendAction({
+			type: "talk",
+			target: "#" + (target as any)["id"],
+			zone: marauroa.currentZoneName
+		});
 	}
 
 	private layoutButtons() {
@@ -335,6 +356,7 @@ abstract class DockButton {
 
 	public readonly element: HTMLButtonElement;
 	private readonly icon: HTMLImageElement;
+	private readonly label: HTMLSpanElement;
 	private onSizeChange?: () => void;
 
 
@@ -349,6 +371,10 @@ abstract class DockButton {
 		this.icon.alt = label || title;
 		this.icon.draggable = false;
 		this.element.appendChild(this.icon);
+		this.label = document.createElement("span");
+		this.label.className = "action-dock__label";
+		this.label.textContent = label;
+		this.element.appendChild(this.label);
 
 		if (onActivate) {
 			this.element.addEventListener("click", (evt) => {
@@ -379,8 +405,19 @@ abstract class DockButton {
 
 	setIcon(src: string) {
 		if (src) {
-			this.icon.src = src;
+			this.icon.src = this.resolveIconPath(src);
 		}
+	}
+
+	setLabel(text: string) {
+		this.label.textContent = text;
+	}
+
+	private resolveIconPath(src: string): string {
+		if (stendhal?.data?.sprites?.checkPath) {
+			return stendhal.data.sprites.checkPath(src);
+		}
+		return src;
 	}
 
 	getSize(): {width: number; height: number} {
@@ -542,6 +579,7 @@ class QuickslotButton extends DockButton {
 		const shortLabel = label.length > 10 ? label.slice(0, 9) + "…" : label;
 		this.element.setAttribute("aria-label", label);
 		this.element.title = label;
+		this.setLabel(shortLabel);
 		if (entry?.icon) {
 			this.setIcon(entry.icon);
 		} else {
