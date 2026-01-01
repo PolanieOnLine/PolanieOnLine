@@ -19,6 +19,9 @@ export interface QuickslotEntry {
 	targetPath: string;
 	label: string;
 	icon?: string;
+	itemClass?: string;
+	itemSubclass?: string;
+	state?: number;
 }
 
 type QuickslotSubscriber = (entries: QuickslotEntry[]) => void;
@@ -65,8 +68,11 @@ export class QuickslotStore {
 		const targetPath = entity.getIdPath();
 		const label = entity["name"] || entity["_name"] || `Slot ${slot}`;
 		const icon = entity.sprite?.filename;
+		const itemClass = entity["class"];
+		const itemSubclass = entity["subclass"];
+		const state = entity["state"];
 
-		const entry: QuickslotEntry = { slot, targetPath, label, icon };
+		const entry: QuickslotEntry = { slot, targetPath, label, icon, itemClass, itemSubclass, state };
 		this.entries.set(slot, entry);
 		this.saveEntry(entry);
 		this.notify();
@@ -119,14 +125,17 @@ export class QuickslotStore {
 			}
 			try {
 				const parsed = JSON.parse(raw);
-				if (parsed && parsed.targetPath) {
-					this.entries.set(slot, {
-						slot,
-						targetPath: parsed.targetPath,
-						label: parsed.label || `Slot ${slot}`,
-						icon: parsed.icon
-					});
-				}
+					if (parsed && parsed.targetPath) {
+						this.entries.set(slot, {
+							slot,
+							targetPath: parsed.targetPath,
+							label: parsed.label || `Slot ${slot}`,
+							icon: parsed.icon,
+							itemClass: parsed.itemClass,
+							itemSubclass: parsed.itemSubclass,
+							state: parsed.state
+						});
+					}
 			} catch (e) {
 				// ignore malformed entries
 				console.warn("Unable to parse quickslot entry", e);
@@ -138,7 +147,10 @@ export class QuickslotStore {
 		this.config.set(this.getKey(entry.slot), JSON.stringify({
 			targetPath: entry.targetPath,
 			label: entry.label,
-			icon: entry.icon
+			icon: entry.icon,
+			itemClass: entry.itemClass,
+			itemSubclass: entry.itemSubclass,
+			state: entry.state
 		}));
 	}
 

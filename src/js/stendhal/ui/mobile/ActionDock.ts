@@ -405,7 +405,15 @@ abstract class DockButton {
 
 	setIcon(src: string) {
 		if (src) {
-			this.icon.src = this.resolveIconPath(src);
+			const resolved = this.resolveIconPath(src);
+			this.icon.onload = () => {
+				const width = Math.max(48, this.icon.naturalWidth || 0);
+				const height = Math.max(48, this.icon.naturalHeight || 0);
+				this.element.style.width = width + "px";
+				this.element.style.height = height + "px";
+				this.onSizeChange?.();
+			};
+			this.icon.src = resolved;
 		}
 	}
 
@@ -413,7 +421,7 @@ abstract class DockButton {
 		this.label.textContent = text;
 	}
 
-	private resolveIconPath(src: string): string {
+	protected resolveIconPath(src: string): string {
 		if (stendhal?.data?.sprites?.checkPath) {
 			return stendhal.data.sprites.checkPath(src);
 		}
@@ -582,8 +590,10 @@ class QuickslotButton extends DockButton {
 		this.setLabel(shortLabel);
 		if (entry?.icon) {
 			this.setIcon(entry.icon);
+			this.applySpriteBackground(entry);
 		} else {
-			this.setIcon("/data/gui/panel/empty_btn.png");
+			this.setIcon(stendhal.paths.gui + "/panel/empty_btn.png");
+			this.clearSpriteBackground();
 		}
 		const hasEntry = !!entry;
 		this.element.classList.toggle("action-dock__button--empty", !hasEntry);
@@ -618,5 +628,35 @@ class QuickslotButton extends DockButton {
 			window.clearTimeout(this.pressTimeoutId);
 			this.pressTimeoutId = undefined;
 		}
+	}
+
+	private applySpriteBackground(entry: QuickslotEntry) {
+		if (!entry.icon) {
+			return;
+		}
+		const baseUrl = this.resolveSprite(entry.icon, entry.itemClass, entry.itemSubclass);
+		this.element.style.backgroundImage = `url(${baseUrl})`;
+		const frame = 32;
+		const stateOffset = entry.state ? -(entry.state * frame) : 0;
+		this.element.style.backgroundPosition = `1px ${stateOffset + 1}px`;
+		this.element.style.backgroundRepeat = "no-repeat";
+		this.element.style.backgroundSize = "auto";
+	}
+
+	private resolveSprite(icon: string, itemClass?: string, itemSubclass?: string): string {
+		if (icon) {
+			return this.resolveIconPath(icon);
+		}
+		if (itemClass && itemSubclass) {
+			return this.resolveIconPath(stendhal.paths.sprites + "/items/" + itemClass + "/" + itemSubclass + ".png");
+		}
+		return this.resolveIconPath(stendhal.paths.gui + "/panel/empty_btn.png");
+	}
+
+	private clearSpriteBackground() {
+		this.element.style.backgroundImage = "";
+		this.element.style.backgroundRepeat = "";
+		this.element.style.backgroundPosition = "";
+		this.element.style.backgroundSize = "";
 	}
 }
