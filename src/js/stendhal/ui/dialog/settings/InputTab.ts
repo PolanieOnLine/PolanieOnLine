@@ -18,6 +18,7 @@ import { ui } from "../../UI";
 import { UIComponentEnum } from "../../UIComponentEnum";
 
 import { QuickMenuButton } from "../../quickmenu/QuickMenuButton";
+import { ActionDock } from "../../mobile/ActionDock";
 
 import { singletons } from "../../../SingletonRepo";
 
@@ -62,6 +63,7 @@ export class InputTab extends AbstractSettingsTab {
 				"Pokazuj przycisk ataku",
 				"Ukryj przycisk ataku",
 				function(_e: Event) {
+					ActionDock.get().refresh();
 					singletons.getAttackButtonController().update();
 				});
 		if (chk_attack_button) {

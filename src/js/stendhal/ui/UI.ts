@@ -20,6 +20,7 @@ import { QuickMenu } from "./quickmenu/QuickMenu";
 import { QuickMenuButton } from "./quickmenu/QuickMenuButton";
 import { Component } from "./toolkit/Component";
 import { SingletonFloatingWindow } from "./toolkit/SingletonFloatingWindow";
+import { ActionDock } from "./mobile/ActionDock";
 
 
 class UI {
@@ -135,6 +136,7 @@ class UI {
 		chatPanel.setVisible(stendhal.config.getBoolean("chat.visible"));
 		// initialize on-screen joystick
 		SoftwareJoystickController.get().update();
+		ActionDock.get().refresh();
 		// initialize attack button
 		singletons.getAttackButtonController().update();
 		QuickMenu.init();

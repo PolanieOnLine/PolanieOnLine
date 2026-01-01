@@ -21,6 +21,7 @@ import { Item } from "../../entity/Item";
 import { singletons } from "../../SingletonRepo";
 
 import { Point } from "../../util/Point";
+import { QuickslotStore } from "../mobile/QuickslotStore";
 
 
 /**
@@ -355,6 +356,7 @@ export class ItemContainerImplementation {
 
 			if (this.isRightClick(event) || long_touch) {
 				const append = [];
+				this.appendQuickslotActions(append, (event.target as any).dataItem);
 				if (long_touch) {
 					// XXX: better way to pass instance to action function?
 					const tmp = this;
@@ -412,6 +414,21 @@ export class ItemContainerImplementation {
 		}
 		// clean up touch handler
 		stendhal.ui.touch.unsetOrigin();
+	}
+
+	private appendQuickslotActions(actions: any[], entity: any) {
+		if (!entity || typeof entity.getIdPath !== "function") {
+			return;
+		}
+		const store = QuickslotStore.get();
+		for (let slot = 1; slot <= 3; slot++) {
+			actions.push({
+				title: "Przypisz do Quickslot " + slot,
+				action: function(target: any) {
+					store.assign(slot, target);
+				}
+			});
+		}
 	}
 
 	/**

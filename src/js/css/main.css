@@ -1160,6 +1160,106 @@ button.windowtitleminimize:first-child {
 	filter: grayscale(1);
 }
 
+.action-dock {
+	position: fixed;
+	left: 0;
+	top: 0;
+	z-index: 9600;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-end;
+	gap: 6px;
+	transform: translate(0, 0);
+	transition: opacity 0.2s ease, transform 0.2s ease;
+	pointer-events: auto;
+}
+
+.action-dock__primary,
+.action-dock__quickslots {
+	display: flex;
+	gap: 6px;
+	justify-content: flex-end;
+	width: 100%;
+}
+
+.action-dock__primary {
+	flex-direction: column;
+	align-items: flex-end;
+}
+
+.action-dock__quickslots {
+	align-items: center;
+}
+
+.action-dock--left {
+	align-items: flex-start;
+}
+
+.action-dock--left .action-dock__primary {
+	align-items: flex-start;
+}
+
+.action-dock--left .action-dock__quickslots {
+	justify-content: flex-start;
+}
+
+.action-dock--faded,
+.action-dock--hidden {
+	opacity: 0.35;
+	pointer-events: none;
+}
+
+.action-dock__button {
+	width: 64px;
+	height: 64px;
+	border: none;
+	border-radius: 8px;
+	background-color: rgba(0, 0, 0, 0.35);
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: contain;
+	color: #fff;
+	text-shadow: 1px 1px 1px #000;
+	font-size: 12px;
+	font-weight: bold;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	pointer-events: auto;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.35);
+}
+
+.action-dock__button:disabled,
+.action-dock__button--disabled {
+	filter: grayscale(1);
+	opacity: 0.6;
+}
+
+.action-dock__button--hidden {
+	display: none;
+}
+
+.action-dock__button--attack {
+	background-image: url(/data/gui/panel/attack_btn.png);
+}
+
+.action-dock__button--interact {
+	background-image: url(/data/gui/panel/talk_btn.png);
+}
+
+.action-dock__button--pickup {
+	background-image: url(/data/gui/panel/pickup_btn.png);
+}
+
+.action-dock__button--quickslot {
+	background-image: var(--action-dock-quickslot-icon, url(/data/gui/panel/empty_btn.png));
+	background-color: rgba(0, 0, 0, 0.45);
+}
+
+.action-dock__button--empty {
+	opacity: 0.8;
+}
+
 .background, .background a {
 	background: var(--background-url);
 	color: var(--text-color);
