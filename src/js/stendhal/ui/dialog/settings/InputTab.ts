@@ -21,7 +21,6 @@ import { QuickMenuButton } from "../../quickmenu/QuickMenuButton";
 
 import { singletons } from "../../../SingletonRepo";
 
-
 export class InputTab extends AbstractSettingsTab {
 
 	constructor(parent: SettingsDialog, element: HTMLElement) {

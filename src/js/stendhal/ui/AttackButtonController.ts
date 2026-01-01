@@ -13,7 +13,7 @@ import { AttackButton } from "./component/AttackButton";
 
 import { ConfigManager } from "../util/ConfigManager";
 import { SessionManager } from "../util/SessionManager";
-
+import { UiStateStore } from "./mobile/UiStateStore";
 
 /**
  * Manages lifecycle of the attack button overlay.
@@ -22,7 +22,7 @@ export class AttackButtonController {
 
 	private static instance: AttackButtonController;
 	private component?: AttackButton;
-
+	private unsubscribeHandedness?: () => void;
 
 	/**
 	 * Retrieves singleton instance.
@@ -51,6 +51,7 @@ export class AttackButtonController {
 		}
 		if (!this.component) {
 			this.component = new AttackButton();
+			this.subscribeHandedness();
 		}
 		this.component.mount();
 	}
@@ -63,6 +64,8 @@ export class AttackButtonController {
 			this.component.unmount();
 		}
 		this.component = undefined;
+		this.unsubscribeHandedness?.();
+		this.unsubscribeHandedness = undefined;
 	}
 
 	/**
@@ -71,5 +74,17 @@ export class AttackButtonController {
 	public toggleSetting(nextState: boolean) {
 		ConfigManager.get().set("attack.button", nextState);
 		this.update();
+	}
+
+	private subscribeHandedness() {
+		if (!this.component || this.unsubscribeHandedness) {
+			return;
+		}
+
+		const store = UiStateStore.get();
+		this.unsubscribeHandedness = store.subscribe((state) => {
+			this.component?.setHandedness(state.handedness);
+		});
+		this.component.setHandedness(store.getState().handedness);
 	}
 }

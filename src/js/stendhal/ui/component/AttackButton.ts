@@ -15,8 +15,8 @@ declare var stendhal: any;
 import { Component } from "../toolkit/Component";
 
 import { TargetingController } from "../../game/TargetingController";
+import { UiHandedness } from "../mobile/UiStateStore";
 
-import { Point } from "../../util/Point";
 import { ElementClickListener } from "../../util/ElementClickListener";
 
 
@@ -26,10 +26,14 @@ import { ElementClickListener } from "../../util/ElementClickListener";
 export class AttackButton extends Component {
 
 	private readonly cooldownDuration = 800;
+	private readonly longPressDelay = 450;
+	private readonly repeatInterval = 900;
 	private cooldownId?: number;
+	private repeatId?: number;
+	private pressTimeoutId?: number;
+	private longPressTriggered = false;
 	private readonly boundUpdate: () => void;
-	private radius = 0;
-	private center: Point;
+	private handedness: UiHandedness = UiHandedness.RIGHT;
 
 	constructor() {
 		const element = document.createElement("button");
@@ -45,8 +49,12 @@ export class AttackButton extends Component {
 			this.onActivate(evt);
 		};
 
+		this.componentElement.addEventListener("pointerdown", (evt) => this.onPressStart(evt));
+		this.componentElement.addEventListener("pointerup", () => this.onPressEnd());
+		this.componentElement.addEventListener("pointerleave", () => this.onPressEnd());
+		this.componentElement.addEventListener("pointercancel", () => this.onPressEnd());
+
 		this.boundUpdate = this.update.bind(this);
-		this.center = new Point(0, 0);
 	}
 
 	/**
@@ -55,15 +63,13 @@ export class AttackButton extends Component {
 	public mount() {
 		// Append to the body to break out of the right-column layout constraints,
 		// allowing for positioning relative to the viewport.
-		const container = document.body;
+		const container = document.getElementById("attack-button-container") || document.body;
 		if (!container.contains(this.componentElement)) {
 			container.appendChild(this.componentElement);
 		}
 
-		// Set radius based on element size, assuming it's a square.
-		this.radius = Math.floor(this.componentElement.offsetWidth / 2);
-
 		this.componentElement.classList.remove("hidden");
+
 		this.update();
 		window.addEventListener("resize", this.boundUpdate);
 	}
@@ -78,6 +84,7 @@ export class AttackButton extends Component {
 		this.componentElement.classList.add("hidden");
 		this.setBusy(false);
 		window.removeEventListener("resize", this.boundUpdate);
+		this.clearRepeat();
 	}
 
 	/**
@@ -94,23 +101,73 @@ export class AttackButton extends Component {
 	 * Called when the button is activated via click or touch.
 	 */
 	private onActivate(_evt: Event) {
-		if (this.cooldownId) {
+		if (this.longPressTriggered) {
 			return;
+		}
+		this.tryAttack();
+	}
+
+	private tryAttack(): boolean {
+		if (this.cooldownId) {
+			return true;
 		}
 
 		const target = TargetingController.get().attackCurrentOrNearest();
 		if (!target) {
 			this.flashDisabled();
-			return;
+			return false;
 		}
 
 		this.startCooldown();
+		return true;
+	}
+
+	private tryCycleAttack(): boolean {
+		if (this.cooldownId) {
+			return true;
+		}
+
+		const target = TargetingController.get().cycleAndAttack();
+		if (!target) {
+			this.flashDisabled();
+			return false;
+		}
+
+		this.startCooldown();
+		return true;
+	}
+
+	private onPressStart(_evt: PointerEvent|TouchEvent|MouseEvent) {
+		this.clearRepeat();
+		this.pressTimeoutId = window.setTimeout(() => {
+			this.longPressTriggered = true;
+			if (!this.tryCycleAttack()) {
+				return;
+			}
+			this.repeatId = window.setInterval(() => this.tryCycleAttack(), this.repeatInterval);
+		}, this.longPressDelay);
+	}
+
+	private onPressEnd() {
+		this.clearRepeat();
+	}
+
+	private clearRepeat() {
+		if (this.pressTimeoutId) {
+			window.clearTimeout(this.pressTimeoutId);
+			this.pressTimeoutId = undefined;
+		}
+		if (this.repeatId) {
+			window.clearInterval(this.repeatId);
+			this.repeatId = undefined;
+		}
+		this.longPressTriggered = false;
 	}
 
 	/**
 	 * Temporarily highlight disabled state when no target found.
 	 */
-	private flashDisabled() {
+	public flashDisabled() {
 		this.setBusy(true);
 		window.setTimeout(() => this.setBusy(false), 400);
 	}
@@ -126,6 +183,14 @@ export class AttackButton extends Component {
 		}, this.cooldownDuration);
 	}
 
+	public setHandedness(handedness: UiHandedness) {
+		if (this.handedness === handedness) {
+			return;
+		}
+		this.handedness = handedness;
+		this.update();
+	}
+
 	/**
 	 * Updates button positioning based on its center coordinates.
 	 * This is similar to how the joystick is positioned, ensuring that
@@ -133,41 +198,24 @@ export class AttackButton extends Component {
 	 * even when the window is resized or scrolled.
 	 */
 	public update(): void {
-		const center = this.updateCenter();
-		const centerX = center.x;
-		const centerY = center.y;
+		const viewport = document.getElementById("viewport");
+		const margin = 20;
+		const width = this.componentElement.offsetWidth || 64;
+		const height = this.componentElement.offsetHeight || 64;
+
+		let left = margin;
+		let top = margin;
+
+		if (viewport) {
+			const rect = viewport.getBoundingClientRect();
+			left = rect.right - width - margin;
+			top = rect.bottom - height - margin;
+		}
 
 		// Use fixed positioning to place the button relative to the viewport,
 		// making it independent of its original container's layout.
 		this.componentElement.style.position = "fixed";
-		this.componentElement.style.left = ((centerX - this.radius) - 50) + "px";
-		this.componentElement.style.top = ((centerY - this.radius) - 100) + "px";
-	}
-
-	/**
-	 * Updates cached center position.
-	 */
-	private updateCenter(): Point {
-		const resolved = this.resolveCenter();
-		this.center = resolved;
-		return resolved;
-	}
-
-	/**
-	 * Determines the center position, placing it on the bottom-right of the canvas.
-	 */
-	private resolveCenter(): Point {
-		const viewport = document.getElementById("viewport"); // canvas is the viewport
-		if (viewport) {
-			const rect = viewport.getBoundingClientRect();
-			const margin = 20;
-
-			const x = rect.right - this.radius - margin;
-			const y = rect.bottom - this.radius - margin;
-			return new Point(x, y);
-		}
-
-		// Fallback if canvas is not found
-		return new Point(0, 0);
+		this.componentElement.style.left = left + "px";
+		this.componentElement.style.top = top + "px";
 	}
 }
