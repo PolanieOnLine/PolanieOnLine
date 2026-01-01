@@ -17,7 +17,6 @@ import { Component } from "../toolkit/Component";
 import { TargetingController } from "../../game/TargetingController";
 import { UiHandedness } from "../mobile/UiStateStore";
 
-import { Point } from "../../util/Point";
 import { ElementClickListener } from "../../util/ElementClickListener";
 
 
@@ -34,8 +33,6 @@ export class AttackButton extends Component {
 	private pressTimeoutId?: number;
 	private longPressTriggered = false;
 	private readonly boundUpdate: () => void;
-	private radius = 0;
-	private center: Point;
 	private handedness: UiHandedness = UiHandedness.RIGHT;
 
 	constructor() {
@@ -58,7 +55,6 @@ export class AttackButton extends Component {
 		this.componentElement.addEventListener("pointercancel", () => this.onPressEnd());
 
 		this.boundUpdate = this.update.bind(this);
-		this.center = new Point(0, 0);
 	}
 
 	/**
@@ -73,9 +69,6 @@ export class AttackButton extends Component {
 		}
 
 		this.componentElement.classList.remove("hidden");
-
-		// Set radius based on element size, assuming it's a square.
-		this.radius = Math.floor(this.componentElement.offsetWidth / 2);
 
 		this.update();
 		window.addEventListener("resize", this.boundUpdate);
@@ -205,43 +198,24 @@ export class AttackButton extends Component {
 	 * even when the window is resized or scrolled.
 	 */
 	public update(): void {
-		const center = this.updateCenter();
-		const centerX = center.x;
-		const centerY = center.y;
+		const viewport = document.getElementById("viewport");
+		const margin = 20;
+		const width = this.componentElement.offsetWidth || 64;
+		const height = this.componentElement.offsetHeight || 64;
+
+		let left = margin;
+		let top = margin;
+
+		if (viewport) {
+			const rect = viewport.getBoundingClientRect();
+			left = rect.right - width - margin;
+			top = rect.bottom - height - margin;
+		}
 
 		// Use fixed positioning to place the button relative to the viewport,
 		// making it independent of its original container's layout.
 		this.componentElement.style.position = "fixed";
-		this.componentElement.style.left = (centerX - this.radius) + "px";
-		this.componentElement.style.top = (centerY - this.radius) + "px";
-	}
-
-	/**
-	 * Updates cached center position.
-	 */
-	private updateCenter(): Point {
-		const resolved = this.resolveCenter();
-		this.center = resolved;
-		return resolved;
-	}
-
-	/**
-	 * Determines the center position, placing it on the bottom-right of the canvas.
-	 */
-	private resolveCenter(): Point {
-		const viewport = document.getElementById("viewport"); // canvas is the viewport
-		if (viewport) {
-			const rect = viewport.getBoundingClientRect();
-			const margin = 20;
-
-			const x = this.handedness === UiHandedness.LEFT
-				? rect.left + this.radius + margin
-				: rect.right - this.radius - margin;
-			const y = rect.bottom - this.radius - margin;
-			return new Point(x, y);
-		}
-
-		// Fallback if canvas is not found
-		return new Point(0, 0);
+		this.componentElement.style.left = left + "px";
+		this.componentElement.style.top = top + "px";
 	}
 }
