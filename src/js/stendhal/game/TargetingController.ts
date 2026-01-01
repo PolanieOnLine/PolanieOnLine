@@ -154,6 +154,34 @@ export class TargetingController {
 	}
 
 	/**
+	 * Attacks the current target if valid; otherwise falls back to nearest.
+	 */
+	public attackCurrentWithFallback(): RPEntity|undefined {
+		const filter = this.buildAttackFilter();
+		if (this.isAttackable(this.current, filter)) {
+			const current = this.current as RPEntity;
+			this.sendAction("attack", current);
+			return current;
+		}
+		return this.attackCurrentOrNearest();
+	}
+
+	/**
+	 * Cycles through attackable targets using the active filters and attacks the result.
+	 */
+	public cycleAndAttack(): Entity|undefined {
+		const filter = this.buildAttackFilter();
+		const target = this.cycle([filter]);
+		if (!target || !this.isAttackable(target, filter)) {
+			this.current = undefined;
+			return;
+		}
+		this.current = target;
+		this.sendAction("attack", target);
+		return target;
+	}
+
+	/**
 	 * Interacts with the nearest visible entity, preferring NPCs for talking.
 	 */
 	public interactNearest(): Entity|undefined {
@@ -343,9 +371,6 @@ export class TargetingController {
 		if (type === "player") {
 			return this.config.getBoolean("attack.target.players");
 		}
-		if (type === "npc") {
-			return this.config.getBoolean("attack.target.npc");
-		}
 
 		return true;
 	}
@@ -366,9 +391,6 @@ export class TargetingController {
 
 		if (this.config.getBoolean("attack.target.players")) {
 			types.push("player");
-		}
-		if (this.config.getBoolean("attack.target.npc")) {
-			types.push("npc");
 		}
 
 		return types;

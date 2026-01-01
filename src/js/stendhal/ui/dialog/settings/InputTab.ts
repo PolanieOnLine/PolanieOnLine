@@ -73,9 +73,6 @@ export class InputTab extends AbstractSettingsTab {
 		parent.createCheckBox("chk_attack_players", "attack.target.players",
 			"Zezwól na wybór graczy jako celów przy automatycznym ataku",
 			"Wyklucz graczy z automatycznego wyboru celu");
-		parent.createCheckBox("chk_attack_npc", "attack.target.npc",
-			"Włącz atak na NPC w automatycznym wyborze",
-			"Wyklucz NPC z automatycznego wyboru celu");
 
 		const dockHandOpts: {[key: string]: string} = {};
 		dockHandOpts[UiHandedness.RIGHT] = "Prawa ręka";

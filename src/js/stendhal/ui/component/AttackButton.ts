@@ -32,11 +32,11 @@ export class AttackButton extends Component {
 	private cooldownId?: number;
 	private repeatId?: number;
 	private pressTimeoutId?: number;
+	private longPressTriggered = false;
 	private readonly boundUpdate: () => void;
 	private radius = 0;
 	private center: Point;
 	private handedness: UiHandedness = UiHandedness.RIGHT;
-	public onPositionUpdate?: (rect: DOMRect) => void;
 
 	constructor() {
 		const element = document.createElement("button");
@@ -108,6 +108,9 @@ export class AttackButton extends Component {
 	 * Called when the button is activated via click or touch.
 	 */
 	private onActivate(_evt: Event) {
+		if (this.longPressTriggered) {
+			return;
+		}
 		this.tryAttack();
 	}
 
@@ -126,13 +129,29 @@ export class AttackButton extends Component {
 		return true;
 	}
 
+	private tryCycleAttack(): boolean {
+		if (this.cooldownId) {
+			return true;
+		}
+
+		const target = TargetingController.get().cycleAndAttack();
+		if (!target) {
+			this.flashDisabled();
+			return false;
+		}
+
+		this.startCooldown();
+		return true;
+	}
+
 	private onPressStart(_evt: PointerEvent|TouchEvent|MouseEvent) {
 		this.clearRepeat();
 		this.pressTimeoutId = window.setTimeout(() => {
-			if (!this.tryAttack()) {
+			this.longPressTriggered = true;
+			if (!this.tryCycleAttack()) {
 				return;
 			}
-			this.repeatId = window.setInterval(() => this.tryAttack(), this.repeatInterval);
+			this.repeatId = window.setInterval(() => this.tryCycleAttack(), this.repeatInterval);
 		}, this.longPressDelay);
 	}
 
@@ -149,6 +168,7 @@ export class AttackButton extends Component {
 			window.clearInterval(this.repeatId);
 			this.repeatId = undefined;
 		}
+		this.longPressTriggered = false;
 	}
 
 	/**
@@ -194,17 +214,6 @@ export class AttackButton extends Component {
 		this.componentElement.style.position = "fixed";
 		this.componentElement.style.left = ((centerX - this.radius) - 50) + "px";
 		this.componentElement.style.top = ((centerY - this.radius) - 100) + "px";
-
-		if (this.onPositionUpdate) {
-			this.onPositionUpdate(this.componentElement.getBoundingClientRect());
-		}
-	}
-
-	public getBoundingRect(): DOMRect | undefined {
-		if (!this.componentElement.isConnected) {
-			return;
-		}
-		return this.componentElement.getBoundingClientRect();
 	}
 
 	/**
