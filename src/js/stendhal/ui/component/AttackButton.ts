@@ -17,6 +17,8 @@ import { Component } from "../toolkit/Component";
 import { TargetingController } from "../../game/TargetingController";
 import { UiHandedness } from "../mobile/UiStateStore";
 
+import { Entity } from "../../entity/Entity";
+
 import { ElementClickListener } from "../../util/ElementClickListener";
 
 
@@ -107,12 +109,12 @@ export class AttackButton extends Component {
 		this.tryAttack();
 	}
 
-	private tryAttack(): boolean {
+	private performAttack(attackFn: () => Entity | undefined): boolean {
 		if (this.cooldownId) {
 			return true;
 		}
 
-		const target = TargetingController.get().attackCurrentOrNearest();
+		const target = attackFn();
 		if (!target) {
 			this.flashDisabled();
 			return false;
@@ -122,19 +124,12 @@ export class AttackButton extends Component {
 		return true;
 	}
 
+	private tryAttack(): boolean {
+		return this.performAttack(() => TargetingController.get().attackCurrentOrNearest());
+	}
+
 	private tryCycleAttack(): boolean {
-		if (this.cooldownId) {
-			return true;
-		}
-
-		const target = TargetingController.get().cycleAndAttack();
-		if (!target) {
-			this.flashDisabled();
-			return false;
-		}
-
-		this.startCooldown();
-		return true;
+		return this.performAttack(() => TargetingController.get().cycleAndAttack());
 	}
 
 	private onPressStart(_evt: PointerEvent|TouchEvent|MouseEvent) {
