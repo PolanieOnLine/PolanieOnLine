@@ -20,6 +20,7 @@ import { UIComponentEnum } from "../../UIComponentEnum";
 import { QuickMenuButton } from "../../quickmenu/QuickMenuButton";
 
 import { singletons } from "../../../SingletonRepo";
+import { UiHandedness, UiStateStore } from "../../mobile/UiStateStore";
 
 
 export class InputTab extends AbstractSettingsTab {
@@ -72,6 +73,23 @@ export class InputTab extends AbstractSettingsTab {
 		parent.createCheckBox("chk_attack_players", "attack.target.players",
 			"Zezwól na wybór graczy jako celów przy automatycznym ataku",
 			"Wyklucz graczy z automatycznego wyboru celu");
+		parent.createCheckBox("chk_attack_npc", "attack.target.npc",
+			"Włącz atak na NPC w automatycznym wyborze",
+			"Wyklucz NPC z automatycznego wyboru celu");
+
+		const dockHandOpts: {[key: string]: string} = {};
+		dockHandOpts[UiHandedness.RIGHT] = "Prawa ręka";
+		dockHandOpts[UiHandedness.LEFT] = "Lewa ręka";
+		parent.createSelect("seldockhand", dockHandOpts,
+			UiStateStore.get().getState().handedness === UiHandedness.RIGHT ? 0 : 1,
+			"Preferowana ręka dla przycisków doków", (e: Event) => {
+				if (!e.target) {
+					return;
+				}
+				const select = e.target as HTMLSelectElement;
+				const key = Object.keys(dockHandOpts)[select.selectedIndex] as UiHandedness;
+				UiStateStore.get().setHandedness(key);
+			});
 
 		// joystck positioning
 		const joystickInputs: HTMLInputElement[] = [];

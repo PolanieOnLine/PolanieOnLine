@@ -1155,6 +1155,25 @@ button.windowtitleminimize:first-child {
 	pointer-events: auto;
 }
 
+.action-dock__button {
+	min-width: 64px;
+	height: 40px;
+	position: fixed;
+	background: var(--background-url);
+	border: 2px solid var(--border-bottom-color);
+	color: #fff;
+	padding: 6px 10px;
+	border-radius: 6px;
+	cursor: pointer;
+	pointer-events: auto;
+	box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+	z-index: 20;
+}
+
+.action-dock__button:hover {
+	filter: brightness(1.1);
+}
+
 .attack-button--disabled {
 	opacity: 0.6;
 	filter: grayscale(1);

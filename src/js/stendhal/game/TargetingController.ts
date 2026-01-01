@@ -36,6 +36,7 @@ export class TargetingController {
 
 	private static instance: TargetingController;
 	private current?: Entity;
+	private readonly config = ConfigManager.get();
 
 
 	/**
@@ -128,21 +129,27 @@ export class TargetingController {
 	 * Attacks the current target if still valid, otherwise the nearest one.
 	 */
 	public attackCurrentOrNearest(): RPEntity|undefined {
-		const filter: TargetFilter = {
-			requireHealth: true,
-			respectPreferences: true,
-			types: ["creature", "player"]
-		};
-
+		const filter = this.buildAttackFilter();
 		const target = this.getNearest(filter) as RPEntity;
 
-		if (!this.isAttackable(target)) {
+		if (!this.isAttackable(target, filter)) {
 			this.current = undefined;
 			return;
 		}
 
 		this.current = target;
 		this.sendAction("attack", target);
+		return target;
+	}
+
+	/**
+	 * Cycles through attackable targets using the active filters.
+	 */
+	public cycleAttackTargets(): Entity|undefined {
+		const target = this.cycle([this.buildAttackFilter()]);
+		if (!target) {
+			return;
+		}
 		return target;
 	}
 
@@ -276,22 +283,15 @@ export class TargetingController {
 	/**
 	 * Confirms if an entity can be targeted for attacks.
 	 */
-	private isAttackable(entity: any): entity is RPEntity {
+	private isAttackable(entity: any, filter: TargetFilter): entity is RPEntity {
 		if (!(entity instanceof RPEntity)) {
-			return false;
-		}
-		if (this.getTargetType(entity) === "npc") {
 			return false;
 		}
 		if (entity["menu"]) {
 			return false;
 		}
 
-		return this.isCandidate(entity, {
-			requireHealth: true,
-			respectPreferences: true,
-			types: ["creature", "player", "npc"]
-		});
+		return this.isCandidate(entity, filter);
 	}
 
 	/**
@@ -338,14 +338,40 @@ export class TargetingController {
 			return true;
 		}
 
-		const config = ConfigManager.get();
 		const type = this.getTargetType(entity);
 
 		if (type === "player") {
-			return config.getBoolean("attack.target.players");
+			return this.config.getBoolean("attack.target.players");
+		}
+		if (type === "npc") {
+			return this.config.getBoolean("attack.target.npc");
 		}
 
 		return true;
+	}
+
+	/**
+	 * Builds filter definition for attack-focused targeting.
+	 */
+	private buildAttackFilter(): TargetFilter {
+		return {
+			requireHealth: true,
+			respectPreferences: true,
+			types: this.getAttackableTypes()
+		};
+	}
+
+	private getAttackableTypes(): TargetType[] {
+		const types: TargetType[] = ["creature"];
+
+		if (this.config.getBoolean("attack.target.players")) {
+			types.push("player");
+		}
+		if (this.config.getBoolean("attack.target.npc")) {
+			types.push("npc");
+		}
+
+		return types;
 	}
 
 	/**
