@@ -1160,6 +1160,51 @@ button.windowtitleminimize:first-child {
 	filter: grayscale(1);
 }
 
+.action-dock {
+	position: fixed;
+	left: 0;
+	top: 0;
+	transform: translate3d(0, 0, 0);
+	pointer-events: none;
+	z-index: 6000;
+	transition: opacity 150ms ease;
+}
+
+.action-dock--panels {
+	opacity: 0.45;
+}
+
+.action-dock--game {
+	opacity: 1;
+}
+
+.action-dock__button {
+	position: absolute;
+	border: none;
+	padding: 0;
+	background-color: transparent;
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: contain;
+	pointer-events: auto;
+	border-radius: 100%;
+	transition: transform 120ms ease, opacity 120ms ease;
+}
+
+.action-dock__button--attack {
+	filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.9));
+}
+
+.action-dock__button--interact.action-dock__button--hidden {
+	opacity: 0;
+	pointer-events: none;
+}
+
+.action-dock__button--disabled {
+	opacity: 0.55;
+	filter: grayscale(1);
+}
+
 .background, .background a {
 	background: var(--background-url);
 	color: var(--text-color);

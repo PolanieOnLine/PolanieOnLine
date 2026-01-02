@@ -83,6 +83,7 @@ export class ConfigManager {
 		"ui.chat.expanded": "false",
 		"ui.handedness": "right",
 		"ui.mode": "panels",
+		"ui.quickslots": "{}",
 		"window.about": "50,20",
 		"window.chest": "160,370",
 		"window.corpse": "160,370",

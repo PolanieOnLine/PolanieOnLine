@@ -201,6 +201,24 @@ export class TargetingController {
 	}
 
 	/**
+	 * Retrieves nearest interactable entity without sending an action.
+	 */
+	public getNearestInteractable(): Entity|undefined {
+		return this.getNearest({
+			requireHealth: true,
+			respectPreferences: false,
+			types: ["npc", "player", "creature"]
+		});
+	}
+
+	/**
+	 * Checks if an interactable entity is within range.
+	 */
+	public hasInteractTarget(): boolean {
+		return !!this.getNearestInteractable();
+	}
+
+	/**
 	 * Sends a pickup action to the nearest visible item.
 	 */
 	public pickupNearest(): Entity|undefined {
@@ -216,6 +234,18 @@ export class TargetingController {
 
 		this.sendAction("take", target);
 		return target;
+	}
+
+	/**
+	 * Checks if a pickup target is available nearby.
+	 */
+	public hasPickupTarget(): boolean {
+		const target = this.getNearest({
+			requireHealth: false,
+			respectPreferences: false,
+			predicate: (entity: Entity) => typeof entity["hp"] !== "number" && !!entity["id"]
+		});
+		return !!target;
 	}
 
 	/**

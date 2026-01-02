@@ -20,6 +20,8 @@ import { QuickMenu } from "./quickmenu/QuickMenu";
 import { QuickMenuButton } from "./quickmenu/QuickMenuButton";
 import { Component } from "./toolkit/Component";
 import { SingletonFloatingWindow } from "./toolkit/SingletonFloatingWindow";
+import { ActionDock } from "./mobile/ActionDock";
+import { SessionManager } from "../util/SessionManager";
 
 
 class UI {
@@ -31,6 +33,7 @@ class UI {
 
 	/** List of registered components. */
 	private wellKnownComponents: Map<UIComponentEnum, Component> = new Map();
+	private actionDock?: ActionDock;
 
 
 	/**
@@ -135,8 +138,13 @@ class UI {
 		chatPanel.setVisible(stendhal.config.getBoolean("chat.visible"));
 		// initialize on-screen joystick
 		SoftwareJoystickController.get().update();
-		// initialize attack button
-		singletons.getAttackButtonController().update();
+		// initialize action dock or legacy attack button
+		if (SessionManager.get().attackButtonEnabled()) {
+			singletons.getAttackButtonController().remove();
+			this.actionDock = new ActionDock();
+		} else {
+			singletons.getAttackButtonController().update();
+		}
 		QuickMenu.init();
 
 		// update menu buttons
@@ -154,6 +162,7 @@ class UI {
 		}
 		this.get(UIComponentEnum.BottomPanel)!.refresh();
 		QuickMenu.refresh();
+		this.actionDock?.updatePosition();
 	}
 
 	/**
