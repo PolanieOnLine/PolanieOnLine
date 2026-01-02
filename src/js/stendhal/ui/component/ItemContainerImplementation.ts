@@ -21,7 +21,7 @@ import { Item } from "../../entity/Item";
 import { singletons } from "../../SingletonRepo";
 
 import { Point } from "../../util/Point";
-
+import { QuickSlotStore } from "../mobile/QuickSlotStore";
 
 /**
  * a container for items like a bag or corpse
@@ -45,6 +45,14 @@ export class ItemContainerImplementation {
 	 */
 	constructor(private parentElement: Document|HTMLElement, private slot: string, private size: number, public object: any, private suffix: string, private quickPickup: boolean, private defaultImage?: string) {
 		this.init(size);
+	}
+
+	public getSlotName(): string {
+		return this.slot;
+	}
+
+	public getSuffix(): string {
+		return this.suffix;
 	}
 
 	public init(size: number) {
@@ -355,6 +363,10 @@ export class ItemContainerImplementation {
 
 			if (this.isRightClick(event) || long_touch) {
 				const append = [];
+				const quickSlotActions = this.buildQuickSlotActions((event.target as any).dataItem);
+				for (const qa of quickSlotActions) {
+					append.push(qa);
+				}
 				if (long_touch) {
 					// XXX: better way to pass instance to action function?
 					const tmp = this;
@@ -372,11 +384,7 @@ export class ItemContainerImplementation {
 					event.pageX - 50, event.pageY - 5));
 			} else if (!stendhal.ui.heldObject) {
 				if (!stendhal.config.getBoolean("inventory.double-click") || this.isDoubleClick(event)) {
-					marauroa.clientFramework.sendAction({
-						type: "use",
-						"target_path": (event.target as any).dataItem.getIdPath(),
-						"zone": marauroa.currentZoneName
-					});
+					this.sendUseAction((event.target as any).dataItem);
 				}
 			}
 		}
@@ -385,6 +393,41 @@ export class ItemContainerImplementation {
 		stendhal.ui.touch.setHolding(false);
 
 		document.getElementById("viewport")!.focus();
+	}
+
+	public findItemIndexById(itemId: number|string): number {
+		const myobject = this.object || marauroa.me;
+		const container = myobject ? myobject[this.slot] : undefined;
+		if (!container || typeof container.count !== "function") {
+			return -1;
+		}
+		for (let i = 0; i < container.count(); i++) {
+			const item = container.getByIndex(i);
+			if (item && item["id"] === itemId) {
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	public getItemAt(index: number): Item|undefined {
+		const myobject = this.object || marauroa.me;
+		const container = myobject ? myobject[this.slot] : undefined;
+		if (container && typeof container.getByIndex === "function") {
+			return container.getByIndex(index);
+		}
+	}
+
+	public getElementForIndex(index: number): HTMLElement|null {
+		return this.parentElement.querySelector("#" + this.slot + this.suffix + index) as HTMLElement || null;
+	}
+
+	public useItem(item: Item) {
+		this.sendUseAction(item);
+	}
+
+	public isOwnedByPlayer(): boolean {
+		return !this.object || this.object === marauroa.me;
 	}
 
 	private onMouseEnter(evt: MouseEvent) {
@@ -446,5 +489,29 @@ export class ItemContainerImplementation {
 	 */
 	private updateToolTip(target: HTMLElement, item?: Item) {
 		target.title = typeof(item) !== "undefined" ? item.getToolTip() : "";
+	}
+
+	private sendUseAction(item: Item) {
+		marauroa.clientFramework.sendAction({
+			type: "use",
+			"target_path": item.getIdPath(),
+			"zone": marauroa.currentZoneName
+		});
+	}
+
+	private buildQuickSlotActions(item: Item): any[] {
+		if (!QuickSlotStore.isAllowedItem(item) || !this.isOwnedByPlayer()) {
+			return [];
+		}
+		const actions = [];
+		const store = QuickSlotStore.get();
+		for (let i = 0; i < QuickSlotStore.SLOT_COUNT; i++) {
+			const idx = i;
+			actions.push({
+				title: "Przypisz do szybkiego slotu " + (i + 1),
+				action: () => store.assign(idx, item, this)
+			});
+		}
+		return actions;
 	}
 }

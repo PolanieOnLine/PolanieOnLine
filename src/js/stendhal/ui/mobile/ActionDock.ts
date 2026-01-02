@@ -14,17 +14,10 @@ declare var stendhal: any;
 
 
 import { TargetFilter, TargetingController } from "../../game/TargetingController";
-import { Item } from "../../entity/Item";
 import { NPC } from "../../entity/NPC";
 import { SessionManager } from "../../util/SessionManager";
 import { UiHandedness, UiMode, UiState, UiStateStore } from "./UiStateStore";
-
-
-type QuickSlotBinding = {
-	item: Item;
-	element?: HTMLElement|null;
-};
-
+import { QuickSlotStore } from "./QuickSlotStore";
 
 /**
  * Floating radial dock for common mobile actions (attack, interact, pickup & quickslots).
@@ -194,7 +187,7 @@ export class ActionDock {
 	}
 
 	private updateQuickSlots() {
-		const bindings = this.buildQuickSlotBindings();
+		const bindings = QuickSlotStore.get().resolveBindings();
 
 		for (let i = 0; i < this.quickSlotButtons.length; i++) {
 			const btn = this.quickSlotButtons[i];
@@ -286,7 +279,7 @@ export class ActionDock {
 	}
 
 	private onQuickSlot(idx: number) {
-		const bindings = this.buildQuickSlotBindings();
+		const bindings = QuickSlotStore.get().resolveBindings();
 		const binding = bindings[idx];
 		if (!binding) {
 			this.flashDisabled(this.quickSlotButtons[idx]);
@@ -299,11 +292,7 @@ export class ActionDock {
 			return;
 		}
 
-		marauroa.clientFramework.sendAction({
-			type: "use",
-			"target_path": binding.item.getIdPath(),
-			"zone": marauroa.currentZoneName
-		});
+		binding.container.useItem(binding.item);
 	}
 
 	private flashDisabled(btn: HTMLButtonElement) {
@@ -343,50 +332,6 @@ export class ActionDock {
 		const nearest = controller.getNearest(filter);
 		controller.setCurrent(prev);
 		return nearest;
-	}
-
-	private buildQuickSlotBindings(): QuickSlotBinding[] {
-		const bindings: QuickSlotBinding[] = [];
-		const bagContainer = this.findBagContainer();
-		const slotName = (bagContainer as any)?.slot || "bag";
-		const suffix = (bagContainer as any)?.suffix || "";
-		const bagHolder = (bagContainer as any)?.object || marauroa.me;
-		const bag = bagHolder ? bagHolder[slotName] : undefined;
-
-		if (!bag || typeof bag.count !== "function") {
-			return bindings;
-		}
-
-		for (let i = 0; i < bag.count(); i++) {
-			const item = bag.getByIndex(i) as Item;
-			if (!item || !this.isQuickItemAllowed(item)) {
-				continue;
-			}
-			const elementId = slotName + suffix + i;
-			const element = document.getElementById(elementId);
-			bindings.push({ item, element });
-			if (bindings.length >= this.quickSlotButtons.length) {
-				break;
-			}
-		}
-
-		return bindings;
-	}
-
-	private isQuickItemAllowed(item: Item): boolean {
-		const cls = (item["class"] || "").toLowerCase();
-		return cls === "potion" || cls === "food" || cls === "drink" || cls === "scroll";
-	}
-
-	private findBagContainer() {
-		if (!stendhal.ui?.equip?.getInventory) {
-			return;
-		}
-		for (const container of stendhal.ui.equip.getInventory()) {
-			if ((container as any).slot === "bag") {
-				return container;
-			}
-		}
 	}
 
 	private scheduleReposition() {
