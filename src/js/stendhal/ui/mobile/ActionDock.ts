@@ -638,9 +638,10 @@ class QuickslotButton extends DockButton {
 		this.element.style.backgroundImage = `url(${baseUrl})`;
 		const frame = 32;
 		const stateOffset = entry.state ? -(entry.state * frame) : 0;
-		this.element.style.backgroundPosition = `1px ${stateOffset + 1}px`;
+		this.element.style.backgroundPosition = `center ${stateOffset + 1}px`;
 		this.element.style.backgroundRepeat = "no-repeat";
-		this.element.style.backgroundSize = "auto";
+		this.element.style.backgroundSize = "contain";
+		this.element.style.backgroundColor = "transparent";
 	}
 
 	private resolveSprite(icon: string, itemClass?: string, itemSubclass?: string): string {
@@ -658,5 +659,6 @@ class QuickslotButton extends DockButton {
 		this.element.style.backgroundRepeat = "";
 		this.element.style.backgroundPosition = "";
 		this.element.style.backgroundSize = "";
+		this.element.style.backgroundColor = "";
 	}
 }
