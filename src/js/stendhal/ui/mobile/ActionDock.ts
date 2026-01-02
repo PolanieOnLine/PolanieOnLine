@@ -187,7 +187,7 @@ export class ActionDock {
 	private updatePickupButton() {
 		const hasTarget = this.peekPickupTarget();
 		const corpseWindow = document.getElementById("corpse");
-		const available = hasTarget || !!corpseWindow;
+		const available = !!hasTarget || !!corpseWindow;
 
 		this.toggleAvailability(this.pickupButton, available);
 		this.pickupButton.classList.toggle("action-dock__button--ready", available);
