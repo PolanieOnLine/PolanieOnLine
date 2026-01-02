@@ -20,6 +20,8 @@ import { QuickMenu } from "./quickmenu/QuickMenu";
 import { QuickMenuButton } from "./quickmenu/QuickMenuButton";
 import { Component } from "./toolkit/Component";
 import { SingletonFloatingWindow } from "./toolkit/SingletonFloatingWindow";
+import { ActionDock } from "./mobile/ActionDock";
+import { SessionManager } from "../util/SessionManager";
 
 
 class UI {
@@ -135,8 +137,12 @@ class UI {
 		chatPanel.setVisible(stendhal.config.getBoolean("chat.visible"));
 		// initialize on-screen joystick
 		SoftwareJoystickController.get().update();
-		// initialize attack button
-		singletons.getAttackButtonController().update();
+		// initialize attack button or action dock
+		if (SessionManager.get().touchOnly()) {
+			ActionDock.get().mount();
+		} else {
+			singletons.getAttackButtonController().update();
+		}
 		QuickMenu.init();
 
 		// update menu buttons

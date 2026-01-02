@@ -1160,6 +1160,112 @@ button.windowtitleminimize:first-child {
 	filter: grayscale(1);
 }
 
+.action-dock {
+	position: fixed;
+	left: 0;
+	top: 0;
+	width: 220px;
+	height: 220px;
+	transform: translate(0, 0);
+	pointer-events: none;
+	z-index: 6500;
+	transition: opacity 0.25s ease, transform 0.25s ease;
+	--dock-radius: 86px;
+	--dock-radius-wide: 118px;
+	--dock-direction: 1;
+}
+
+.action-dock--left {
+	--dock-direction: -1;
+}
+
+.action-dock--panels {
+	opacity: 0.45;
+}
+
+.action-dock--panels .action-dock__button {
+	pointer-events: none;
+}
+
+.action-dock__button {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	width: 64px;
+	height: 64px;
+	border-radius: 50%;
+	background-color: rgba(0, 0, 0, 0.35);
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: contain;
+	border: 1px solid #333;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+	pointer-events: auto;
+	transition: transform 0.2s ease, opacity 0.2s ease;
+	backdrop-filter: blur(2px);
+}
+
+.action-dock__button--attack {
+	transform: translate(-50%, -50%);
+	background-image: url(/data/gui/panel/attack_btn.png);
+}
+
+.action-dock__button--interact {
+	transform: translate(-50%, -50%) rotate(calc(-90deg * var(--dock-direction))) translate(var(--dock-radius)) rotate(calc(90deg * var(--dock-direction)));
+	background-image: url(/data/gui/panel/talk_btn.png);
+}
+
+.action-dock__button--pickup {
+	transform: translate(-50%, -50%) rotate(calc(210deg * var(--dock-direction))) translate(var(--dock-radius)) rotate(calc(-210deg * var(--dock-direction)));
+	background-image: url(/data/gui/panel/pickup_btn.png);
+}
+
+.action-dock__button--quick {
+	width: 56px;
+	height: 56px;
+}
+
+.action-dock__button--quick::after {
+	content: attr(data-slot);
+	position: absolute;
+	right: 6px;
+	bottom: 6px;
+	font-size: 12px;
+	font-weight: bold;
+	color: #fff;
+	text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+.action-dock__button--quick-1 {
+	transform: translate(-50%, -50%) rotate(calc(20deg * var(--dock-direction))) translate(var(--dock-radius-wide)) rotate(calc(-20deg * var(--dock-direction)));
+}
+
+.action-dock__button--quick-2 {
+	transform: translate(-50%, -50%) rotate(calc(70deg * var(--dock-direction))) translate(var(--dock-radius-wide)) rotate(calc(-70deg * var(--dock-direction)));
+}
+
+.action-dock__button--quick-3 {
+	transform: translate(-50%, -50%) rotate(calc(120deg * var(--dock-direction))) translate(var(--dock-radius-wide)) rotate(calc(-120deg * var(--dock-direction)));
+}
+
+.action-dock__button--hidden {
+	opacity: 0;
+	pointer-events: none;
+}
+
+.action-dock__button--ready {
+	box-shadow: 0 0 0 3px rgba(255, 215, 79, 0.8), 0 6px 14px rgba(0, 0, 0, 0.35);
+}
+
+.action-dock__button--disabled {
+	opacity: 0.55;
+	filter: grayscale(0.6);
+}
+
+.action-dock__button--engaged {
+	transform: translate(-50%, -50%) scale(1.02);
+}
+
 .background, .background a {
 	background: var(--background-url);
 	color: var(--text-color);
