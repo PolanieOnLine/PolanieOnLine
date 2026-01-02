@@ -16,6 +16,7 @@ import { TargetingController } from "../../game/TargetingController";
 import { Entity } from "../../entity/Entity";
 import { Item } from "../../entity/Item";
 import { NPC } from "../../entity/NPC";
+import { Corpse } from "../../entity/Corpse";
 import { Player } from "../../entity/Player";
 import { PopupInventory } from "../../entity/PopupInventory";
 import { UseableEntity } from "../../entity/UseableEntity";
@@ -284,6 +285,9 @@ export class ActionDock {
 	}
 
 	private pickupNearest() {
+		if (this.collectFromOpenCorpses()) {
+			return;
+		}
 		const target = this.findPickupTarget();
 		if (!target) {
 			return;
@@ -308,6 +312,39 @@ export class ActionDock {
 			target: "#" + (target as any)["id"],
 			zone: marauroa.currentZoneName
 		});
+	}
+
+	private collectFromOpenCorpses(): boolean {
+		if (!marauroa?.currentZone) {
+			return false;
+		}
+		let collected = false;
+		for (const key in marauroa.currentZone) {
+			if (!marauroa.currentZone.hasOwnProperty(key)) {
+				continue;
+			}
+			const entity = marauroa.currentZone[key];
+			if (!(entity instanceof Corpse)) {
+				continue;
+			}
+			if (!entity.inventory || !entity.inventory.isOpen() || !entity["content"]) {
+				continue;
+			}
+			const content = entity["content"];
+			if (!content._objects || !content._objects.length) {
+				continue;
+			}
+			for (const item of content._objects) {
+				marauroa.clientFramework.sendAction({
+					type: "equip",
+					"source_path": item.getIdPath(),
+					"target_path": "[" + marauroa.me["id"] + "\tbag]",
+					"zone": marauroa.currentZoneName
+				});
+				collected = true;
+			}
+		}
+		return collected;
 	}
 
 	private layoutButtons() {

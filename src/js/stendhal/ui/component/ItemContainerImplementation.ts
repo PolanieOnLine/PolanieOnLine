@@ -423,6 +423,9 @@ export class ItemContainerImplementation {
 			return;
 		}
 		const store = QuickslotStore.get();
+		if (!store.isAllowedClass(entity["class"])) {
+			return;
+		}
 		for (let slot = 1; slot <= 3; slot++) {
 			actions.push({
 				title: "Przypisz do Quickslot " + slot,

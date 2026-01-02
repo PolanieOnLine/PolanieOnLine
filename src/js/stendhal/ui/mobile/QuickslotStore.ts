@@ -26,6 +26,8 @@ export interface QuickslotEntry {
 
 type QuickslotSubscriber = (entries: QuickslotEntry[]) => void;
 
+export const QUICKslot_ALLOWED_CLASSES = new Set(["drink", "food", "scroll", "potion"]);
+
 
 /**
  * Stores quickslot assignments and notifies listeners when they change.
@@ -37,7 +39,6 @@ export class QuickslotStore {
 	private readonly config = ConfigManager.get();
 	private readonly entries: Map<number, QuickslotEntry> = new Map();
 	private readonly subscribers: Set<QuickslotSubscriber> = new Set();
-	private readonly allowedClasses = new Set(["drink", "food", "scroll", "potion"]);
 
 
 	static get(): QuickslotStore {
@@ -61,7 +62,7 @@ export class QuickslotStore {
 		if (!entity || typeof entity.getIdPath !== "function") {
 			return;
 		}
-		if (entity["class"] && !this.allowedClasses.has(entity["class"])) {
+		if (!this.isAllowedClass(entity["class"])) {
 			return;
 		}
 
@@ -104,6 +105,13 @@ export class QuickslotStore {
 
 	getEntries(): QuickslotEntry[] {
 		return Array.from(this.entries.values()).sort((a, b) => a.slot - b.slot);
+	}
+
+	isAllowedClass(cls: string|undefined): boolean {
+		if (!cls) {
+			return false;
+		}
+		return QUICKslot_ALLOWED_CLASSES.has(cls);
 	}
 
 	private notify() {
