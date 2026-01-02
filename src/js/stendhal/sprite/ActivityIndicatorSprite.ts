@@ -20,7 +20,7 @@ declare var stendhal: any;
  */
 export class ActivityIndicatorSprite {
 
-	private static readonly img = stendhal.data.sprites.get(Paths.sprites + "/ideas/activity.png");
+	private static img?: HTMLImageElement;
 	private frameIdx = 0;
 	private lastFrameUpdate = 0;
 
@@ -44,12 +44,13 @@ export class ActivityIndicatorSprite {
 	 *   Pixel width of parent object.
 	 */
 	public draw(ctx: RenderingContext2D, dx: number, dy: number, width: number) {
-		if (!ActivityIndicatorSprite.img.complete) {
+		const img = ActivityIndicatorSprite.getImage();
+		if (!img || !img.complete) {
 			return;
 		}
 
 		// NOTE: indicator image should be square
-		const dim = ActivityIndicatorSprite.img.height;
+		const dim = img.height;
 
 		if (this.animate) {
 			const cycleStart = Date.now();
@@ -59,7 +60,7 @@ export class ActivityIndicatorSprite {
 
 			if (cycleStart - this.lastFrameUpdate > 150) {
 				this.frameIdx++;
-				if ((this.frameIdx + 1) * dim >= ActivityIndicatorSprite.img.width) {
+				if ((this.frameIdx + 1) * dim >= img.width) {
 					this.frameIdx = 0;
 				}
 				this.lastFrameUpdate = cycleStart;
@@ -67,6 +68,17 @@ export class ActivityIndicatorSprite {
 		}
 
 		// draw in upper-right of target area
-		ctx.drawImage(ActivityIndicatorSprite.img, dim * this.frameIdx, 0, dim, dim, dx + width - dim, dy, dim, dim);
+		ctx.drawImage(img, dim * this.frameIdx, 0, dim, dim, dx + width - dim, dy, dim, dim);
+	}
+
+	private static getImage(): HTMLImageElement|undefined {
+		if (ActivityIndicatorSprite.img) {
+			return ActivityIndicatorSprite.img;
+		}
+		if (!stendhal?.data?.sprites) {
+			return;
+		}
+		ActivityIndicatorSprite.img = stendhal.data.sprites.get(Paths.sprites + "/ideas/activity.png");
+		return ActivityIndicatorSprite.img;
 	}
 }
