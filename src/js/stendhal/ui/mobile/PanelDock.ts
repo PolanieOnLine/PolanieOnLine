@@ -18,7 +18,9 @@ function togglePanelForHandedness(handedness: UiHandedness): boolean {
 	const rightPanelVisibility = RightPanelVisibilityManager.get();
 
 	if (handedness === UiHandedness.RIGHT && rightPanelVisibility.managesFloatingLayout()) {
-		const nextVisible = rightPanelVisibility.toggleVisibility();
+		const nextVisible = rightPanelVisibility.isVisible()
+			? rightPanelVisibility.toggleVisibility()
+			: rightPanelVisibility.setVisible(true);
 		store.setHandedness(UiHandedness.RIGHT);
 		if (nextVisible) {
 			store.setMode(UiMode.PANELS);
