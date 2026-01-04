@@ -1189,10 +1189,17 @@ button.windowtitleminimize:first-child {
 	border: none;
 	padding: 0;
 	pointer-events: auto;
+	cursor: pointer;
+	transition: transform 0.1s ease, filter 0.1s ease;
 }
 
 .inventory-button--active {
 	box-shadow: 0 0 0 2px var(--border-top-color);
+}
+
+.inventory-button--pressed {
+	transform: scale(0.96);
+	filter: brightness(1.1);
 }
 
 .background, .background a {

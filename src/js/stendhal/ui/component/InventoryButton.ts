@@ -33,6 +33,9 @@ export class InventoryButton extends Component {
 		super(element);
 
 		this.componentElement.addEventListener("click", (evt: Event) => this.onActivate(evt));
+		this.componentElement.addEventListener("pointerdown", () => this.onPress(true));
+		this.componentElement.addEventListener("pointerup", () => this.onPress(false));
+		this.componentElement.addEventListener("pointercancel", () => this.onPress(false));
 
 		this.boundUpdate = this.update.bind(this);
 	}
@@ -109,5 +112,9 @@ export class InventoryButton extends Component {
 		this.componentElement.style.position = "fixed";
 		this.componentElement.style.left = left + "px";
 		this.componentElement.style.top = top + "px";
+	}
+
+	private onPress(pressed: boolean) {
+		this.componentElement.classList.toggle("inventory-button--pressed", pressed);
 	}
 }
