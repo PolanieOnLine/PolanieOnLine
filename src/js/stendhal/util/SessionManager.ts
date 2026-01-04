@@ -240,6 +240,19 @@ export class SessionManager {
 	}
 
 	/**
+	 * Checks if loot button overlay should be visible.
+	 *
+	 * @return {boolean}
+	 *   `true` if explicitly enabled or if not configured and device is touch-only.
+	 */
+	lootButtonEnabled(): boolean {
+		if (!stendhal.config.isSet("loot.button") && this.touchOnly()) {
+			return true;
+		}
+		return stendhal.config.getBoolean("loot.button");
+	}
+
+	/**
 	 * Detectes if system is touch enabled without fine pointing device (mouse).
 	 *
 	 * @return {boolean}

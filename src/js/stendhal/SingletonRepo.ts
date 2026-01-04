@@ -40,6 +40,7 @@ import { SoundManager } from "./data/sound/SoundManager";
 import { ui } from "./ui/UI";
 import { UIComponentEnum } from "./ui/UIComponentEnum";
 import { HeldObjectManager } from "./ui/HeldObject";
+import { LootButtonController } from "./ui/LootButtonController";
 import { HTMLManager } from "./ui/HTMLManager";
 import { Inventory } from "./ui/Inventory";
 import { SoftwareJoystickController } from "./ui/SoftwareJoystickController";
@@ -78,6 +79,10 @@ export class SingletonRepo {
 
 	static getDownloadUtil(): typeof DownloadUtil {
 		return DownloadUtil;
+	}
+
+	static getLootButtonController(): LootButtonController {
+		return LootButtonController.get();
 	}
 
 	static getDrawingStage(): DrawingStage {

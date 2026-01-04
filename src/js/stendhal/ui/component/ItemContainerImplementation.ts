@@ -47,6 +47,14 @@ export class ItemContainerImplementation {
 		this.init(size);
 	}
 
+	public getSlot(): string {
+		return this.slot;
+	}
+
+	public getObject(): any {
+		return this.object;
+	}
+
 	public init(size: number) {
 		this.size = size;
 		for (let i = 0; i < size; i++) {

@@ -68,6 +68,17 @@ export class InputTab extends AbstractSettingsTab {
 			chk_attack_button.checked = singletons.getSessionManager().attackButtonEnabled();
 		}
 
+		// loot button overlay
+		const chk_loot_button = parent.createCheckBox("chk_loot_button", "loot.button",
+				"Pokazuj przycisk łupów",
+				"Ukryj przycisk łupów",
+				function(_e: Event) {
+					singletons.getLootButtonController().update();
+				});
+		if (chk_loot_button) {
+			chk_loot_button.checked = singletons.getSessionManager().lootButtonEnabled();
+		}
+
 		parent.createCheckBox("chk_attack_players", "attack.target.players",
 			"Zezwól na wybór graczy jako celów przy automatycznym ataku",
 			"Wyklucz graczy z automatycznego wyboru celu");

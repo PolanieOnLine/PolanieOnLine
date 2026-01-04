@@ -43,6 +43,7 @@ export class ConfigManager {
 		"attack.target.npc": "false",
 		"attack.target.players": "false",
 		"attack.button": "false",
+		"loot.button": "false",
 		"click-indicator": "false",
 		"effect.blood": "true",
 		"effect.entity-overlay": "true",

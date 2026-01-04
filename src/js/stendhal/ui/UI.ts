@@ -137,6 +137,8 @@ class UI {
 		SoftwareJoystickController.get().update();
 		// initialize attack button
 		singletons.getAttackButtonController().update();
+		// initialize loot button
+		singletons.getLootButtonController().update();
 		QuickMenu.init();
 
 		// update menu buttons
