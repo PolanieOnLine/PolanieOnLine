@@ -362,7 +362,7 @@ export class ActionDock {
 		}
 	}
 
-	private static getInstance(): ActionDock|undefined {
+	public static getInstance(): ActionDock|undefined {
 		return ActionDock.instance;
 	}
 
