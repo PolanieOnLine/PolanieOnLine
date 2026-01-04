@@ -158,6 +158,7 @@ export class RightPanelVisibilityManager {
 	private hideRightPanel() {
 		if (this.root) {
 			this.root.classList.add("floating-right-panel-hidden");
+			this.root.classList.add("right-panel-collapsed");
 		}
 		if (this.rightColumn) {
 			this.rightColumn.setAttribute("aria-hidden", "true");
@@ -171,6 +172,7 @@ export class RightPanelVisibilityManager {
 	private showRightPanel() {
 		if (this.root) {
 			this.root.classList.remove("floating-right-panel-hidden");
+			this.root.classList.remove("right-panel-collapsed");
 		}
 		if (this.rightColumn) {
 			this.rightColumn.removeAttribute("aria-hidden");
