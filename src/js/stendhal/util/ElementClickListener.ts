@@ -16,16 +16,21 @@ declare var stendhal: any;
 /**
  * Adds event listeners to handle clicks & multiple touches.
  *
- * TODO: add support long & double click/touch
+ * TODO: add support long click/touch
  */
 export class ElementClickListener {
 
 	/** Function executed when click is detected. */
 	public onClick?: Function;
+	/** Function executed when double click is detected. */
+	public onDoubleClick?: Function;
 	/** Property denoting button was pressed with mouse click. */
 	private clickEngaged = false;
 	/** Property denoting button was pressed with tap/touch. */
 	private touchEngaged = 0;
+	private lastActivationTimestamp = 0;
+	private singleClickTimeoutId?: number;
+	private readonly doubleClickThreshold = 300;
 
 
 	constructor(element: HTMLElement) {
@@ -44,7 +49,7 @@ export class ElementClickListener {
 			evt.preventDefault();
 			if (this.clickEngaged && evt.button == 0 && this.onClick) {
 				// FIXME: should veto if moved too much before release
-				this.onClick(evt);
+				this.handleActivation(evt);
 			}
 			this.clickEngaged = false;
 		});
@@ -53,9 +58,35 @@ export class ElementClickListener {
 			const target = stendhal.ui.html.extractTarget(evt);
 			if (this.touchEngaged == evt.changedTouches.length && target == element && this.onClick) {
 				// FIXME: should veto if moved too much before release
-				this.onClick(evt);
+				this.handleActivation(evt);
 			}
 			this.touchEngaged = 0;
 		});
+	}
+
+	private handleActivation(evt: Event) {
+		if (!this.onDoubleClick) {
+			this.onClick?.(evt);
+			return;
+		}
+
+		if (this.singleClickTimeoutId) {
+			window.clearTimeout(this.singleClickTimeoutId);
+			this.singleClickTimeoutId = undefined;
+		}
+
+		const now = Date.now();
+		if (now - this.lastActivationTimestamp <= this.doubleClickThreshold) {
+			this.lastActivationTimestamp = 0;
+			this.onDoubleClick?.(evt);
+			return;
+		}
+
+		this.lastActivationTimestamp = now;
+		this.singleClickTimeoutId = window.setTimeout(() => {
+			this.singleClickTimeoutId = undefined;
+			this.lastActivationTimestamp = 0;
+			this.onClick?.(evt);
+		}, this.doubleClickThreshold);
 	}
 }

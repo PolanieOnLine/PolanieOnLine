@@ -50,6 +50,9 @@ export class AttackButton extends Component {
 		listener.onClick = (evt: Event) => {
 			this.onActivate(evt);
 		};
+		listener.onDoubleClick = (evt: Event) => {
+			this.onDoubleActivate(evt);
+		};
 
 		this.componentElement.addEventListener("pointerdown", (evt) => this.onPressStart(evt));
 		this.componentElement.addEventListener("pointerup", () => this.onPressEnd());
@@ -107,6 +110,11 @@ export class AttackButton extends Component {
 			return;
 		}
 		this.tryAttack();
+	}
+
+	private onDoubleActivate(_evt: Event) {
+		this.clearRepeat();
+		this.tryCycleAttack();
 	}
 
 	private performAttack(attackFn: () => Entity | undefined): boolean {
