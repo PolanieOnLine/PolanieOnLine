@@ -9,11 +9,22 @@
  *                                                                         *
  ***************************************************************************/
 
+import { RightPanelVisibilityManager } from "../RightPanelVisibilityManager";
 import { UiHandedness, UiMode, UiState, UiStateStore } from "./UiStateStore";
 
 function togglePanelForHandedness(handedness: UiHandedness): boolean {
 	const store = UiStateStore.get();
 	const state = store.getState();
+	const rightPanelVisibility = RightPanelVisibilityManager.get();
+
+	if (handedness === UiHandedness.RIGHT && rightPanelVisibility.managesFloatingLayout()) {
+		const nextVisible = rightPanelVisibility.toggleVisibility();
+		store.setHandedness(UiHandedness.RIGHT);
+		if (nextVisible) {
+			store.setMode(UiMode.PANELS);
+		}
+		return nextVisible;
+	}
 
 	if (state.mode === UiMode.PANELS && state.handedness === handedness) {
 		store.setMode(UiMode.GAME);
@@ -36,17 +47,23 @@ export class PanelDock {
 
 	private readonly store = UiStateStore.get();
 
+	private currentState: UiState;
 	private root: HTMLElement | null;
 	private readonly leftToggle: HTMLButtonElement | null;
 	private readonly rightToggle: HTMLButtonElement | null;
+	private readonly rightPanelVisibility = RightPanelVisibilityManager.get();
 	private unsubscribe?: () => void;
+	private unsubscribeRightPanel?: () => void;
 
 
 	constructor() {
+		this.rightPanelVisibility.init();
+		this.currentState = this.store.getState();
 		this.root = document.getElementById("client");
 		this.leftToggle = document.getElementById("left-panel-toggle") as HTMLButtonElement | null;
 		this.rightToggle = document.getElementById("right-panel-toggle") as HTMLButtonElement | null;
 		this.unsubscribe = this.store.subscribe((state) => this.applyState(state));
+		this.unsubscribeRightPanel = this.rightPanelVisibility.subscribe(() => this.applyState(this.currentState));
 
 		this.leftToggle?.addEventListener("click", () => this.onToggle(UiHandedness.LEFT));
 		this.rightToggle?.addEventListener("click", () => this.onToggle(UiHandedness.RIGHT));
@@ -55,6 +72,8 @@ export class PanelDock {
 	destroy() {
 		this.unsubscribe?.();
 		this.unsubscribe = undefined;
+		this.unsubscribeRightPanel?.();
+		this.unsubscribeRightPanel = undefined;
 	}
 
 	private onToggle(targetHandedness: UiHandedness) {
@@ -69,9 +88,10 @@ export class PanelDock {
 			return;
 		}
 
+		this.currentState = state;
 		const showPanels = state.mode === UiMode.PANELS;
 		const showLeft = showPanels && state.handedness === UiHandedness.LEFT;
-		const showRight = showPanels && state.handedness === UiHandedness.RIGHT;
+		const showRight = showPanels && state.handedness === UiHandedness.RIGHT && this.rightPanelVisibility.isVisible();
 
 		this.root.classList.toggle("left-panel-collapsed", !showLeft);
 		this.root.classList.toggle("right-panel-collapsed", !showRight);
