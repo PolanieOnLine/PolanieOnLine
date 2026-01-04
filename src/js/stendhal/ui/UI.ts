@@ -22,6 +22,7 @@ import { Component } from "./toolkit/Component";
 import { SingletonFloatingWindow } from "./toolkit/SingletonFloatingWindow";
 import { ActionDock } from "./mobile/ActionDock";
 import { SessionManager } from "../util/SessionManager";
+import { AttackButtonController } from "./AttackButtonController";
 
 
 class UI {
@@ -139,12 +140,7 @@ class UI {
 		// initialize on-screen joystick
 		SoftwareJoystickController.get().update();
 		// initialize action dock or legacy attack button
-		if (SessionManager.get().attackButtonEnabled()) {
-			singletons.getAttackButtonController().remove();
-			this.actionDock = new ActionDock();
-		} else {
-			singletons.getAttackButtonController().update();
-		}
+		this.updateActionControls();
 		QuickMenu.init();
 
 		// update menu buttons
@@ -162,7 +158,7 @@ class UI {
 		}
 		this.get(UIComponentEnum.BottomPanel)!.refresh();
 		QuickMenu.refresh();
-		this.actionDock?.updatePosition();
+		ActionDock.getInstance()?.updatePosition();
 	}
 
 	/**
@@ -172,6 +168,19 @@ class UI {
 		(this.get(UIComponentEnum.QMSound)! as QuickMenuButton).update();
 		document.getElementById("soundbutton")!.textContent = stendhal.config.getBoolean("sound")
 				? "🔊" : "🔇";
+	}
+
+	/**
+	 * Ensures correct action control (dock vs legacy attack button) is displayed.
+	 */
+	public updateActionControls() {
+		if (SessionManager.get().attackButtonEnabled()) {
+			singletons.getAttackButtonController().remove();
+			ActionDock.ensure();
+		} else {
+			ActionDock.destroyInstance();
+			AttackButtonController.get().update();
+		}
 	}
 
 	/**

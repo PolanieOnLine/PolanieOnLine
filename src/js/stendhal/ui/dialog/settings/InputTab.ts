@@ -62,7 +62,7 @@ export class InputTab extends AbstractSettingsTab {
 				"Pokazuj przycisk ataku",
 				"Ukryj przycisk ataku",
 				function(_e: Event) {
-					singletons.getAttackButtonController().update();
+					ui.updateActionControls();
 				});
 		if (chk_attack_button) {
 			chk_attack_button.checked = singletons.getSessionManager().attackButtonEnabled();

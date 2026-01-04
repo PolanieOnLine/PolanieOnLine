@@ -16,6 +16,8 @@ import { Entity } from "../entity/Entity";
 import { NPC } from "../entity/NPC";
 import { Player } from "../entity/Player";
 import { RPEntity } from "../entity/RPEntity";
+import { Item } from "../entity/Item";
+import { Inventory } from "../ui/Inventory";
 import { ConfigManager } from "../util/ConfigManager";
 
 
@@ -26,6 +28,7 @@ export interface TargetFilter {
 	predicate?: (entity: Entity) => boolean;
 	requireHealth?: boolean;
 	respectPreferences?: boolean;
+	maxDistance?: number;
 }
 
 
@@ -35,6 +38,8 @@ export interface TargetFilter {
 export class TargetingController {
 
 	private static instance: TargetingController;
+	private static readonly INTERACT_RANGE = 2;
+	private static readonly PICKUP_RANGE = 2;
 	private current?: Entity;
 	private readonly config = ConfigManager.get();
 
@@ -182,20 +187,13 @@ export class TargetingController {
 	 * Interacts with the nearest visible entity, preferring NPCs for talking.
 	 */
 	public interactNearest(): Entity|undefined {
-		const target = this.getNearest({
-			requireHealth: true,
-			respectPreferences: false,
-			types: ["npc", "player", "creature"]
-		});
+		const target = this.getNearestNpcInteractable();
 
-		if (!target || !this.isCandidate(target, {requireHealth: false, respectPreferences: false})) {
+		if (!target) {
 			return;
 		}
 
 		this.current = target;
-		const type = this.getTargetType(target);
-		const actionType = type === "npc" || type === "player" ? "talk" : "use";
-		this.sendAction(actionType, target);
 
 		return target;
 	}
@@ -204,48 +202,40 @@ export class TargetingController {
 	 * Retrieves nearest interactable entity without sending an action.
 	 */
 	public getNearestInteractable(): Entity|undefined {
-		return this.getNearest({
-			requireHealth: true,
-			respectPreferences: false,
-			types: ["npc", "player", "creature"]
-		});
+		return this.getNearestNpcInteractable();
 	}
 
 	/**
 	 * Checks if an interactable entity is within range.
 	 */
 	public hasInteractTarget(): boolean {
-		return !!this.getNearestInteractable();
+		return !!this.getNearestNpcInteractable();
 	}
 
 	/**
 	 * Sends a pickup action to the nearest visible item.
 	 */
 	public pickupNearest(): Entity|undefined {
-		const target = this.getNearest({
-			requireHealth: false,
-			respectPreferences: false,
-			predicate: (entity: Entity) => typeof entity["hp"] !== "number" && !!entity["id"]
-		});
-
-		if (!target || !this.isCandidate(target, {requireHealth: false, respectPreferences: false})) {
-			return;
+		const containerLoot = this.getNearestContainerLoot();
+		if (containerLoot) {
+			this.sendEquipToBag(containerLoot);
+			return containerLoot;
 		}
 
-		this.sendAction("take", target);
-		return target;
+		const groundItem = this.getNearestGroundItem();
+		if (groundItem) {
+			this.sendEquipToBag(groundItem);
+			return groundItem;
+		}
+
+		return;
 	}
 
 	/**
 	 * Checks if a pickup target is available nearby.
 	 */
 	public hasPickupTarget(): boolean {
-		const target = this.getNearest({
-			requireHealth: false,
-			respectPreferences: false,
-			predicate: (entity: Entity) => typeof entity["hp"] !== "number" && !!entity["id"]
-		});
-		return !!target;
+		return !!this.getNearestContainerLoot() || !!this.getNearestGroundItem();
 	}
 
 	/**
@@ -260,6 +250,19 @@ export class TargetingController {
 			type: type,
 			target: "#" + target["id"],
 			zone: marauroa.currentZoneName
+		});
+	}
+
+	private sendEquipToBag(item: Item) {
+		if (!item || typeof item.getIdPath !== "function" || !marauroa?.me) {
+			return;
+		}
+		marauroa.clientFramework.sendAction({
+			type: "equip",
+			"source_path": item.getIdPath(),
+			"target_path": "[" + marauroa.me["id"] + "\tbag]",
+			"clicked": "",
+			"zone": marauroa.currentZoneName
 		});
 	}
 
@@ -283,8 +286,8 @@ export class TargetingController {
 		}
 
 		targets.sort((a, b) => {
-			const distA = marauroa.me.getDistanceTo(a);
-			const distB = marauroa.me.getDistanceTo(b);
+			const distA = this.getDistanceTo(a);
+			const distB = this.getDistanceTo(b);
 
 			if (distA === distB) {
 				return (a["id"] || 0) - (b["id"] || 0);
@@ -293,6 +296,34 @@ export class TargetingController {
 		});
 
 		return targets;
+	}
+
+	private getNearestContainerLoot(): Item|undefined {
+		const containers = Inventory.get().getInventory();
+		for (const container of containers) {
+			if (container.getSlotName() !== "content") {
+				continue;
+			}
+			const boundObject = container.getBoundObject();
+			if (boundObject && !this.isWithinRange(boundObject, TargetingController.PICKUP_RANGE)) {
+				continue;
+			}
+			const items = container.getItems();
+			const loot = items.find((item) => typeof (item as any)["id"] !== "undefined");
+			if (loot) {
+				return loot;
+			}
+		}
+	}
+
+	private getNearestGroundItem(): Item|undefined {
+		const candidates = this.getTargets({
+			requireHealth: false,
+			respectPreferences: false,
+			predicate: (entity: Entity) => (entity instanceof Item) && typeof (entity as any)["id"] !== "undefined",
+			maxDistance: TargetingController.PICKUP_RANGE
+		}) as Item[];
+		return candidates.length ? candidates[0] : undefined;
 	}
 
 	/**
@@ -309,6 +340,9 @@ export class TargetingController {
 			return false;
 		}
 		if (!this.isDistanceValid(entity)) {
+			return false;
+		}
+		if (filter.maxDistance !== undefined && !this.isWithinRange(entity, filter.maxDistance)) {
 			return false;
 		}
 
@@ -359,6 +393,19 @@ export class TargetingController {
 
 		const distance = marauroa.me.getDistanceTo(entity);
 		return distance >= 0 && Number.isFinite(distance);
+	}
+
+	private isWithinRange(entity: Entity, maxDistance: number): boolean {
+		const distance = this.getDistanceTo(entity);
+		return distance <= maxDistance;
+	}
+
+	private getDistanceTo(entity: Entity): number {
+		if (!marauroa?.me || typeof marauroa.me.getDistanceTo !== "function") {
+			return Infinity;
+		}
+		const distance = marauroa.me.getDistanceTo(entity);
+		return Number.isFinite(distance) ? distance : Infinity;
 	}
 
 	/**
@@ -433,5 +480,20 @@ export class TargetingController {
 		};
 
 		return Object.assign({}, defaults, filter);
+	}
+
+	private getNearestNpcInteractable(): Entity|undefined {
+		const target = this.getNearest({
+			requireHealth: true,
+			respectPreferences: false,
+			types: ["npc"],
+			maxDistance: TargetingController.INTERACT_RANGE
+		});
+
+		if (!target || !this.isCandidate(target, {requireHealth: false, respectPreferences: false, types: ["npc"], maxDistance: TargetingController.INTERACT_RANGE})) {
+			return;
+		}
+
+		return target;
 	}
 }

@@ -246,6 +246,19 @@ export class SessionManager {
 	 *   `true` if fine pointing device not detected.
 	 */
 	touchOnly(): boolean {
-		return !window.matchMedia("(pointer: fine)").matches;
+		const fine = window.matchMedia("(pointer: fine)").matches;
+		const coarse = window.matchMedia("(pointer: coarse)").matches;
+		const none = window.matchMedia("(pointer: none)").matches;
+		const maxTouchPoints = (navigator.maxTouchPoints || (navigator as any).msMaxTouchPoints || 0);
+		const hasTouch = ("ontouchstart" in window) || maxTouchPoints > 0;
+		const narrowScreen = Math.min(window.innerWidth, window.innerHeight) <= 980;
+		const uaMobile = /Mobi|Android|iPhone|iPad|iPod/i.test((navigator.userAgent || "").toString());
+		if (coarse && !fine) {
+			return true;
+		}
+		if (hasTouch && !fine) {
+			return true;
+		}
+		return uaMobile || (narrowScreen && (hasTouch || coarse || !none));
 	}
 }

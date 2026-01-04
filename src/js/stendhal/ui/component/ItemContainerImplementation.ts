@@ -17,6 +17,7 @@ import { ui } from "../UI";
 import { ActionContextMenu } from "../dialog/ActionContextMenu";
 import { DropQuantitySelectorDialog } from "../dialog/DropQuantitySelectorDialog";
 import { Item } from "../../entity/Item";
+import { ActionDock } from "../mobile/ActionDock";
 
 import { singletons } from "../../SingletonRepo";
 
@@ -97,6 +98,30 @@ export class ItemContainerImplementation {
 	 */
 	public getParentElement(): HTMLElement {
 		return this.parentElement as HTMLElement;
+	}
+
+	public getSlotName(): string {
+		return this.slot;
+	}
+
+	public getBoundObject(): any {
+		return this.object;
+	}
+
+	public getItems(): Item[] {
+		const items: Item[] = [];
+		const myobject = this.object || marauroa.me;
+		if (myobject && myobject[this.slot]
+				&& typeof myobject[this.slot].count === "function"
+				&& typeof myobject[this.slot].getByIndex === "function") {
+			for (let i = 0; i < myobject[this.slot].count(); i++) {
+				const item = myobject[this.slot].getByIndex(i);
+				if (item instanceof Item) {
+					items.push(item);
+				}
+			}
+		}
+		return items;
 	}
 
 	/**
@@ -355,6 +380,7 @@ export class ItemContainerImplementation {
 
 			if (this.isRightClick(event) || long_touch) {
 				const append = [];
+				append.push(...this.buildQuickslotActions((event.target as any).dataItem as Item));
 				if (long_touch) {
 					// XXX: better way to pass instance to action function?
 					const tmp = this;
@@ -405,13 +431,29 @@ export class ItemContainerImplementation {
 		if (stendhal.ui.touch.isLongTouch(evt) && !stendhal.ui.touch.holding()) {
 			this.onMouseUp(evt);
 		} else if (stendhal.ui.touch.holding()) {
-			evt.preventDefault();
+			if (evt.cancelable) {
+				evt.preventDefault();
+			}
 
 			this.onDrop(evt);
 			stendhal.ui.touch.setHolding(false);
 		}
 		// clean up touch handler
 		stendhal.ui.touch.unsetOrigin();
+	}
+
+	private buildQuickslotActions(item: Item): any[] {
+		if (!(item instanceof Item) || !ActionDock.canAssignItem(item)) {
+			return [];
+		}
+		const actions = [];
+		for (let idx = 1; idx <= ActionDock.QUICK_SLOT_COUNT; idx++) {
+			actions.push({
+				title: "Przypisz do quickslotu " + idx,
+				action: () => ActionDock.assignFromContext(item, idx)
+			});
+		}
+		return actions;
 	}
 
 	/**

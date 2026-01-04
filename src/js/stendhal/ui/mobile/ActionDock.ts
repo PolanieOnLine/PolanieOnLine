@@ -35,9 +35,11 @@ export class ActionDock {
 	private static readonly SIZE = 220;
 	private static readonly MARGIN = 18;
 	private static readonly PRIMARY_SIZE = 96;
-	private static readonly SECONDARY_SIZE = 68;
+	private static readonly SECONDARY_SIZE = 32;
 	private static readonly REPEAT_DELAY = 450;
 	private static readonly REPEAT_INTERVAL = 900;
+	public static readonly QUICK_SLOT_COUNT = 3;
+	private static instance?: ActionDock;
 
 	private readonly store = UiStateStore.get();
 	private readonly targeting = TargetingController.get();
@@ -65,6 +67,7 @@ export class ActionDock {
 		this.host = this.resolveHost();
 		this.root = document.createElement("div");
 		this.root.className = "action-dock action-dock--panels";
+		this.root.style.position = "absolute";
 		this.root.style.width = ActionDock.SIZE + "px";
 		this.root.style.height = ActionDock.SIZE + "px";
 
@@ -72,7 +75,7 @@ export class ActionDock {
 		this.interactButton = this.createButton("action-dock__button action-dock__button--interact", "/data/gui/panel/talk_btn.png", "Interakcja");
 		this.pickupButton = this.createButton("action-dock__button action-dock__button--pickup", "/data/gui/panel/pickup_btn.png", "Podnieś");
 
-		for (let idx = 1; idx <= 3; idx++) {
+		for (let idx = 1; idx <= ActionDock.QUICK_SLOT_COUNT; idx++) {
 			const btn = this.createButton("action-dock__button action-dock__button--quickslot", "/data/gui/panel/empty_btn.png", "Szybki slot " + idx);
 			btn.dataset.index = "" + idx;
 			this.quickslotButtons.push(btn);
@@ -92,12 +95,17 @@ export class ActionDock {
 		this.applyHandedness(this.store.getState().handedness);
 		this.applyMode(this.store.getState().mode);
 		this.refreshAvailability();
+		ActionDock.instance = this;
 	}
 
 	private resolveHost(): HTMLElement {
 		const viewport = document.getElementById("viewport");
-		if (viewport && viewport.parentElement) {
-			return viewport.parentElement;
+		if (viewport) {
+			const style = window.getComputedStyle(viewport);
+			if (style.position === "static") {
+				viewport.style.position = "relative";
+			}
+			return viewport;
 		}
 		return document.body;
 	}
@@ -117,7 +125,11 @@ export class ActionDock {
 			btn.addEventListener("contextmenu", (e) => this.onQuickslotAssign(e));
 			btn.addEventListener("dragover", (e) => this.onQuickslotDragOver(e));
 			btn.addEventListener("drop", (e) => this.onQuickslotDrop(e));
+			this.attachPressEffects(btn);
 		}
+		this.attachPressEffects(this.attackButton);
+		this.attachPressEffects(this.interactButton);
+		this.attachPressEffects(this.pickupButton);
 
 		this.unsubscribe = this.store.subscribe((state) => this.onStoreUpdate(state));
 
@@ -149,17 +161,22 @@ export class ActionDock {
 		window.removeEventListener("resize", this.debouncedUpdate);
 		window.removeEventListener("orientationchange", this.debouncedUpdate);
 		window.removeEventListener("touchmove", this.debouncedUpdate);
+		if (ActionDock.instance === this) {
+			ActionDock.instance = undefined;
+		}
 	}
 
 	public updatePosition() {
-		const viewport = document.getElementById("viewport");
-		const rect = viewport ? viewport.getBoundingClientRect() : document.body.getBoundingClientRect();
+		const rect = this.host.getBoundingClientRect();
+		const width = rect.width;
+		const height = rect.height;
 		const half = ActionDock.SIZE / 2;
 		const offsetX = this.handedness === UiHandedness.RIGHT
-			? rect.right - ActionDock.MARGIN - half
-			: rect.left + ActionDock.MARGIN + half;
-		const offsetY = rect.bottom - ActionDock.MARGIN - half;
-		this.root.style.transform = "translate3d(" + (offsetX - half) + "px, " + (offsetY - half) + "px, 0)";
+			? width - ActionDock.MARGIN - half
+			: ActionDock.MARGIN + half;
+		const offsetY = height - ActionDock.MARGIN - half;
+		this.root.style.left = Math.max(0, offsetX - half) + "px";
+		this.root.style.top = Math.max(0, offsetY - half) + "px";
 		this.layoutButtons();
 	}
 
@@ -194,7 +211,7 @@ export class ActionDock {
 
 	private getRadialLayout() {
 		const center = ActionDock.SIZE / 2;
-		const radius = 94;
+		const radius = 76;
 		const baseAngles = {
 			interact: -60,
 			pickup: -120,
@@ -247,8 +264,7 @@ export class ActionDock {
 		evt.preventDefault();
 		const target = this.targeting.getNearestInteractable();
 		if (!target) {
-			this.interactButton.classList.add("action-dock__button--disabled");
-			window.setTimeout(() => this.interactButton.classList.remove("action-dock__button--disabled"), 320);
+			this.flashDisabled(this.interactButton);
 			return;
 		}
 		const attending = Chat.attending;
@@ -274,8 +290,7 @@ export class ActionDock {
 		const idx = btn.dataset.index!;
 		const data = this.quickslots[idx];
 		if (!data) {
-			btn.classList.add("action-dock__button--disabled");
-			window.setTimeout(() => btn.classList.remove("action-dock__button--disabled"), 320);
+			this.flashDisabled(btn);
 			return;
 		}
 		marauroa.clientFramework.sendAction({
@@ -302,22 +317,114 @@ export class ActionDock {
 	}
 
 	private tryAssignQuickslot(idx: string) {
+		const button = this.quickslotButtons[parseInt(idx, 10) - 1];
+		if (!button) {
+			return;
+		}
 		const held = stendhal.ui.heldObject;
 		if (!held || !held.path) {
+			this.flashDisabled(button);
 			return;
 		}
-		const entity = this.resolveEntity(held.path);
-		if (!(entity instanceof Item)) {
+		const entity = this.resolveEntity(held.path) || this.resolveHeldFromInventories(held.path, held.slot);
+		if (entity && !this.isAllowedQuickslotItem(entity)) {
+			this.flashDisabled(button);
 			return;
 		}
+		if (!entity) {
+			const mock = { "class": (held as any)["class"], "type": (held as any)["type"] };
+			if (!this.isAllowedQuickslotItem(mock)) {
+				this.flashDisabled(button);
+				return;
+			}
+		}
+		if (!(entity instanceof Item) && !entity) {
+			this.flashDisabled(button);
+			return;
+		}
+		this.assignQuickslot(idx, held.path, entity as Item|undefined);
+	}
+
+	private resolveHeldFromInventories(path: string, slot?: string): Item|undefined {
+		const containers = stendhal.ui.equip?.getInventory ? stendhal.ui.equip.getInventory() : [];
+		for (const container of containers) {
+			if (slot && container.getSlotName && container.getSlotName() !== slot) {
+				continue;
+			}
+			if (!container.getItems || typeof container.getItems !== "function") {
+				continue;
+			}
+			for (const item of container.getItems()) {
+				if (typeof item.getIdPath === "function" && item.getIdPath() === path) {
+					return item;
+				}
+			}
+		}
+	}
+
+	private static getInstance(): ActionDock|undefined {
+		return ActionDock.instance;
+	}
+
+	public static isAvailable(): boolean {
+		return !!ActionDock.instance;
+	}
+
+	public static ensure(): ActionDock {
+		if (!ActionDock.instance) {
+			ActionDock.instance = new ActionDock();
+		}
+		return ActionDock.instance;
+	}
+
+	public static destroyInstance() {
+		ActionDock.instance?.destroy();
+	}
+
+	public static canAssignItem(item: Item): boolean {
+		const instance = ActionDock.getInstance();
+		return !!instance && instance.isAllowedQuickslotItem(item);
+	}
+
+	public static assignFromContext(item: Item, idx: number) {
+		const instance = ActionDock.ensure();
+		const button = instance?.quickslotButtons[idx - 1];
+		if (!instance) {
+			return;
+		}
+		if (!button) {
+			return;
+		}
+		if (!instance.isAllowedQuickslotItem(item)) {
+			instance.flashDisabled(button);
+			return;
+		}
+		instance.assignQuickslot("" + idx, item.getIdPath(), item);
+	}
+
+	private assignQuickslot(idx: string, path: string, entity?: any) {
 		const icon = this.getIconForEntity(entity);
-		this.quickslots[idx] = { path: held.path, icon };
+		this.quickslots[idx] = { path, icon };
 		this.persistQuickslots();
 		this.applyQuickslotVisual(idx);
 	}
 
+	private isAllowedQuickslotItem(item: any): boolean {
+		const allowedClasses = ["food", "drink", "scroll", "potion"];
+		const normalized = (value: any) => typeof value === "string" ? value.toLowerCase() : "";
+		const className = normalized((item as any)["class"]);
+		const typeName = normalized((item as any)["type"]);
+		if (className && allowedClasses.indexOf(className) > -1) {
+			return true;
+		}
+		if (typeName && allowedClasses.indexOf(typeName) > -1) {
+			return true;
+		}
+		return false;
+	}
+
 	private getIconForEntity(entity?: any): string|undefined {
-		if (!entity || !(entity instanceof Item) || !entity.sprite || !entity.sprite.filename) {
+		if (!entity || !entity.sprite || !entity.sprite.filename) {
 			return;
 		}
 		return entity.sprite.filename;
@@ -332,11 +439,30 @@ export class ActionDock {
 
 	private loadQuickslots() {
 		const stored = this.config.getObject("ui.quickslots");
-		if (stored) {
+		if (stored && typeof stored === "object") {
 			this.quickslots = stored;
+		} else {
+			this.quickslots = {};
 		}
+		let updated = false;
 		for (const idx of Object.keys(this.quickslots)) {
+			const slot = this.quickslots[idx];
+			if (!slot || !slot.path) {
+				delete this.quickslots[idx];
+				updated = true;
+				continue;
+			}
+			const path = slot.path;
+			const entity = this.resolveEntity(path);
+			if (entity instanceof Item && !this.isAllowedQuickslotItem(entity)) {
+				delete this.quickslots[idx];
+				updated = true;
+				continue;
+			}
 			this.applyQuickslotVisual(idx);
+		}
+		if (updated) {
+			this.persistQuickslots();
 		}
 	}
 
@@ -362,7 +488,9 @@ export class ActionDock {
 		const canPickup = this.targeting.hasPickupTarget();
 
 		this.interactButton.classList.toggle("action-dock__button--hidden", !canInteract);
+		this.interactButton.classList.toggle("action-dock__button--available", canInteract);
 		this.pickupButton.disabled = !canPickup;
+		this.pickupButton.classList.toggle("action-dock__button--available", canPickup);
 	}
 
 	private onStoreUpdate(state: UiState) {
@@ -397,5 +525,17 @@ export class ActionDock {
 				fn();
 			}, delay);
 		};
+	}
+
+	private flashDisabled(btn: HTMLButtonElement) {
+		btn.classList.add("action-dock__button--disabled");
+		window.setTimeout(() => btn.classList.remove("action-dock__button--disabled"), 320);
+	}
+
+	private attachPressEffects(btn: HTMLButtonElement) {
+		btn.addEventListener("pointerdown", () => btn.classList.add("action-dock__button--active"));
+		for (const ev of ["pointerup", "pointerleave", "pointercancel"]) {
+			btn.addEventListener(ev, () => btn.classList.remove("action-dock__button--active"));
+		}
 	}
 }
