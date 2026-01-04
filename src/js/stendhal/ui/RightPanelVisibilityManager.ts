@@ -25,8 +25,8 @@ export class RightPanelVisibilityManager {
 	private static instance?: RightPanelVisibilityManager;
 
 	private readonly store = UiStateStore.get();
-	private readonly root = document.getElementById("client");
-	private readonly rightColumn = document.getElementById("rightColumn");
+	private root?: HTMLElement|null;
+	private rightColumn?: HTMLElement|null;
 
 	private readonly listeners: Set<VisibilityListener> = new Set();
 	private readonly windowIds = ["equipmentborder", "bag-window", "keyring-window", "magicbag-window"];
@@ -43,6 +43,7 @@ export class RightPanelVisibilityManager {
 		const state = this.store.getState();
 		this.uiMode = state.mode;
 		this.preferredVisible = this.resolveInitialPreference();
+		this.captureElements();
 	}
 
 	static get(): RightPanelVisibilityManager {
@@ -114,7 +115,7 @@ export class RightPanelVisibilityManager {
 	}
 
 	private shouldManageVisibility(): boolean {
-		return this.floatingMenuEnabled || this.uiMode === UiMode.GAME;
+		return stendhal.session.touchOnly() && (this.floatingMenuEnabled || this.uiMode === UiMode.GAME);
 	}
 
 	private onUiStateChange(state: UiState) {
@@ -133,6 +134,7 @@ export class RightPanelVisibilityManager {
 	}
 
 	private applyVisibility() {
+		this.captureElements();
 		const shouldHide = this.shouldManageVisibility() && !this.computeEffectiveVisibility();
 		this.effectiveVisible = !shouldHide;
 
@@ -199,6 +201,15 @@ export class RightPanelVisibilityManager {
 	private notify() {
 		for (const listener of this.listeners) {
 			listener(this.effectiveVisible);
+		}
+	}
+
+	private captureElements() {
+		if (!this.root) {
+			this.root = document.getElementById("client");
+		}
+		if (!this.rightColumn) {
+			this.rightColumn = document.getElementById("rightColumn");
 		}
 	}
 }
