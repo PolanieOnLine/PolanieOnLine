@@ -1160,6 +1160,79 @@ button.windowtitleminimize:first-child {
 	filter: grayscale(1);
 }
 
+.action-dock {
+	position: fixed;
+	left: 0;
+	top: 0;
+	z-index: 9600;
+	transform: translate(0, 0);
+	transition: opacity 0.2s ease, transform 0.2s ease;
+	pointer-events: auto;
+}
+
+.action-dock__cluster {
+	position: relative;
+	width: 240px;
+	height: 240px;
+}
+
+.action-dock--faded,
+.action-dock--hidden {
+	opacity: 0.35;
+	pointer-events: none;
+}
+
+.action-dock__button {
+	position: absolute;
+	border: none;
+	padding: 0;
+	background: none;
+	min-width: 48px;
+	min-height: 48px;
+	pointer-events: auto;
+}
+
+.action-dock__button:disabled,
+.action-dock__button--disabled {
+	filter: grayscale(1);
+	opacity: 0.6;
+}
+
+.action-dock__button--hidden {
+	display: none;
+}
+
+.action-dock__icon {
+	display: block;
+	min-width: 48px;
+	min-height: 48px;
+	max-width: 96px;
+	max-height: 96px;
+	width: auto;
+	height: auto;
+	image-rendering: auto;
+}
+
+.action-dock__label {
+	position: absolute;
+	bottom: -4px;
+	left: 50%;
+	transform: translateX(-50%);
+	font-size: 11px;
+	color: #fff;
+	text-shadow: 1px 1px 2px #000;
+	pointer-events: none;
+}
+
+.action-dock__button--quickslot {
+	background: none;
+}
+
+.action-dock__button--empty .action-dock__icon {
+	opacity: 0.8;
+	filter: grayscale(0.8);
+}
+
 .background, .background a {
 	background: var(--background-url);
 	color: var(--text-color);

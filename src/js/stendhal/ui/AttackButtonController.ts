@@ -14,6 +14,7 @@ import { AttackButton } from "./component/AttackButton";
 import { ConfigManager } from "../util/ConfigManager";
 import { SessionManager } from "../util/SessionManager";
 import { UiStateStore } from "./mobile/UiStateStore";
+import { ActionDock } from "./mobile/ActionDock";
 
 /**
  * Manages lifecycle of the attack button overlay.
@@ -45,6 +46,10 @@ export class AttackButtonController {
 	 * Refreshes attack button state based on configuration and device.
 	 */
 	public update() {
+		if (ActionDock.isMounted()) {
+			this.remove();
+			return;
+		}
 		if (!SessionManager.get().attackButtonEnabled()) {
 			this.remove();
 			return;
