@@ -68,6 +68,17 @@ export class InputTab extends AbstractSettingsTab {
 			chk_attack_button.checked = singletons.getSessionManager().attackButtonEnabled();
 		}
 
+		// inventory button overlay
+		const chk_inventory_button = parent.createCheckBox("chk_inventory_button", "inventory.button",
+				"Pokazuj przycisk ekwipunku",
+				"Ukryj przycisk ekwipunku",
+				function(_e: Event) {
+					singletons.getInventoryButtonController().update();
+				});
+		if (chk_inventory_button) {
+			chk_inventory_button.checked = singletons.getSessionManager().inventoryButtonEnabled();
+		}
+
 		// loot button overlay
 		const chk_loot_button = parent.createCheckBox("chk_loot_button", "loot.button",
 				"Pokazuj przycisk łupów",

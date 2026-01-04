@@ -253,6 +253,19 @@ export class SessionManager {
 	}
 
 	/**
+	 * Checks if inventory button overlay should be visible.
+	 *
+	 * @return {boolean}
+	 *   `true` if explicitly enabled or if not configured and device is touch-only.
+	 */
+	inventoryButtonEnabled(): boolean {
+		if (!stendhal.config.isSet("inventory.button") && this.touchOnly()) {
+			return true;
+		}
+		return stendhal.config.getBoolean("inventory.button");
+	}
+
+	/**
 	 * Detectes if system is touch enabled without fine pointing device (mouse).
 	 *
 	 * @return {boolean}

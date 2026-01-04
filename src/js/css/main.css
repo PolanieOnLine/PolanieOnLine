@@ -1174,6 +1174,19 @@ button.windowtitleminimize:first-child {
 	filter: grayscale(1);
 }
 
+#inventory-button {
+	width: 48px;
+	height: 48px;
+	background: transparent url(/data/gui/panel/bag_btn.png) center center / contain no-repeat;
+	border: none;
+	padding: 0;
+	pointer-events: auto;
+}
+
+.inventory-button--active {
+	box-shadow: 0 0 0 2px var(--border-top-color);
+}
+
 .background, .background a {
 	background: var(--background-url);
 	color: var(--text-color);

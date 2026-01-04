@@ -11,6 +11,23 @@
 
 import { UiHandedness, UiMode, UiState, UiStateStore } from "./UiStateStore";
 
+function togglePanelForHandedness(handedness: UiHandedness): boolean {
+	const store = UiStateStore.get();
+	const state = store.getState();
+
+	if (state.mode === UiMode.PANELS && state.handedness === handedness) {
+		store.setMode(UiMode.GAME);
+		return false;
+	}
+
+	store.setHandedness(handedness);
+	store.setMode(UiMode.PANELS);
+	return true;
+}
+
+export function toggleRightPanel(): boolean {
+	return togglePanelForHandedness(UiHandedness.RIGHT);
+}
 
 /**
  * Handles collapsing and expanding panel docks for narrow viewports.
@@ -38,13 +55,7 @@ export class PanelDock {
 	}
 
 	private onToggle(targetHandedness: UiHandedness) {
-		const state = this.store.getState();
-		if (state.mode === UiMode.PANELS && state.handedness === targetHandedness) {
-			this.store.setMode(UiMode.GAME);
-			return;
-		}
-		this.store.setHandedness(targetHandedness);
-		this.store.setMode(UiMode.PANELS);
+		togglePanelForHandedness(targetHandedness);
 	}
 
 	private applyState(state: UiState) {
