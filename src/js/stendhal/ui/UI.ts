@@ -20,7 +20,6 @@ import { QuickMenu } from "./quickmenu/QuickMenu";
 import { QuickMenuButton } from "./quickmenu/QuickMenuButton";
 import { Component } from "./toolkit/Component";
 import { SingletonFloatingWindow } from "./toolkit/SingletonFloatingWindow";
-import { RightPanelVisibilityManager } from "./RightPanelVisibilityManager";
 
 
 class UI {
@@ -142,7 +141,6 @@ class UI {
 		singletons.getInventoryButtonController().update();
 		// initialize loot button
 		singletons.getLootButtonController().update();
-		RightPanelVisibilityManager.get().init();
 		QuickMenu.init();
 
 		// update menu buttons
@@ -179,12 +177,10 @@ class UI {
 			case "traditional":
 				document.getElementById("menupanel")!.style["display"] = "";
 				QuickMenu.setVisible(false);
-				RightPanelVisibilityManager.get().setFloatingMenuEnabled(false);
 				break;
 			case "floating":
 				document.getElementById("menupanel")!.style["display"] = "none";
 				QuickMenu.setVisible(true);
-				RightPanelVisibilityManager.get().setFloatingMenuEnabled(true);
 				break;
 		}
 	}

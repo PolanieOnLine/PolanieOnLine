@@ -13,7 +13,6 @@ import { InventoryButton } from "./component/InventoryButton";
 
 import { ConfigManager } from "../util/ConfigManager";
 import { SessionManager } from "../util/SessionManager";
-import { RightPanelVisibilityManager } from "./RightPanelVisibilityManager";
 import { UiHandedness, UiMode, UiStateStore } from "./mobile/UiStateStore";
 
 /**
@@ -24,8 +23,6 @@ export class InventoryButtonController {
 	private static instance: InventoryButtonController;
 	private component?: InventoryButton;
 	private unsubscribeHandedness?: () => void;
-	private unsubscribePanelVisibility?: () => void;
-	private readonly rightPanelVisibility = RightPanelVisibilityManager.get();
 
 	public static get(): InventoryButtonController {
 		if (!InventoryButtonController.instance) {
@@ -57,8 +54,6 @@ export class InventoryButtonController {
 		this.component = undefined;
 		this.unsubscribeHandedness?.();
 		this.unsubscribeHandedness = undefined;
-		this.unsubscribePanelVisibility?.();
-		this.unsubscribePanelVisibility = undefined;
 	}
 
 	public toggleSetting(nextState: boolean) {
@@ -74,33 +69,15 @@ export class InventoryButtonController {
 		const store = UiStateStore.get();
 		this.unsubscribeHandedness = store.subscribe((state) => {
 			this.component?.setHandedness(state.handedness);
-			this.component?.setPanelVisibility(this.resolvePanelVisibility(state.mode, state.handedness));
+			this.component?.setPanelVisibility(this.isRightPanelVisible(state.mode, state.handedness));
 		});
 
 		const state = store.getState();
 		this.component.setHandedness(state.handedness);
-		this.component.setPanelVisibility(this.resolvePanelVisibility(state.mode, state.handedness));
-		this.subscribePanelVisibility();
+		this.component.setPanelVisibility(this.isRightPanelVisible(state.mode, state.handedness));
 	}
 
 	private isRightPanelVisible(mode: UiMode, handedness: UiHandedness): boolean {
 		return mode === UiMode.PANELS && handedness === UiHandedness.RIGHT;
-	}
-
-	private resolvePanelVisibility(mode: UiMode, handedness: UiHandedness): boolean {
-		if (this.rightPanelVisibility.managesFloatingLayout()) {
-			return mode === UiMode.PANELS && handedness === UiHandedness.RIGHT && this.rightPanelVisibility.isVisible();
-		}
-		return this.isRightPanelVisible(mode, handedness);
-	}
-
-	private subscribePanelVisibility() {
-		if (!this.component || this.unsubscribePanelVisibility) {
-			return;
-		}
-		this.unsubscribePanelVisibility = this.rightPanelVisibility.subscribe(() => {
-			const state = UiStateStore.get().getState();
-			this.component?.setPanelVisibility(this.resolvePanelVisibility(state.mode, state.handedness));
-		});
 	}
 }

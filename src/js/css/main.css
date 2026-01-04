@@ -822,10 +822,6 @@ span.lognick {
 	--right-panel-width: 258px;
 }
 
-#client.floating-right-panel-hidden {
-	--right-panel-width: 0px;
-}
-
 #client.right-panel-collapsed {
 	--right-panel-width: 0px;
 }
@@ -852,10 +848,6 @@ span.lognick {
 	overflow-y: auto;
 	overflow-x: hidden;
 	opacity: 1;
-}
-
-#client.floating-right-panel-hidden #rightColumn {
-	display: none;
 }
 
 .panel-toggle {
