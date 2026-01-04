@@ -139,6 +139,7 @@ export class RightPanelVisibilityManager {
 			this.preferredVisible = true;
 			this.effectiveVisible = true;
 			this.showRightPanel();
+			this.showAllWindows();
 			this.notify();
 			return;
 		}
@@ -193,6 +194,7 @@ export class RightPanelVisibilityManager {
 
 	private restoreWindowVisibility() {
 		if (this.savedWindowVisibility.size === 0) {
+			this.showAllWindows();
 			return;
 		}
 		for (const id of this.windowIds) {
@@ -203,6 +205,12 @@ export class RightPanelVisibilityManager {
 			InventoryWindowController.setWindowVisibility(id, visible);
 		}
 		this.savedWindowVisibility.clear();
+	}
+
+	private showAllWindows() {
+		for (const id of this.windowIds) {
+			InventoryWindowController.setWindowVisibility(id, true);
+		}
 	}
 
 	private notify() {
