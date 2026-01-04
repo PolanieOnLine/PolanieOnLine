@@ -72,6 +72,9 @@ export class UiStateStore {
 		const chatExpanded = this.resolveChatExpanded();
 
 		this.state = { mode, handedness, chatExpanded };
+		if (!stendhal.session.touchOnly()) {
+			this.state.mode = UiMode.PANELS;
+		}
 	}
 
 	getState(): UiState {

@@ -26,7 +26,7 @@ export class InventoryButton extends Component {
 	constructor() {
 		const element = document.createElement("button");
 		element.id = "inventory-button";
-		element.classList.add("inventory-button", "unclickable", "hidden");
+		element.classList.add("inventory-button", "hidden");
 		element.setAttribute("aria-label", "Pokaż prawy panel");
 		element.title = "Pokaż prawy panel";
 		element.setAttribute("aria-pressed", "false");
