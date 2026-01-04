@@ -30,6 +30,7 @@ export class AttackButton extends Component {
 	private readonly cooldownDuration = 800;
 	private readonly longPressDelay = 450;
 	private readonly repeatInterval = 900;
+	private readonly doubleCycleLimit = 5;
 	private cooldownId?: number;
 	private repeatId?: number;
 	private pressTimeoutId?: number;
@@ -136,18 +137,18 @@ export class AttackButton extends Component {
 		return this.performAttack(() => TargetingController.get().attackCurrentOrNearest());
 	}
 
-	private tryCycleAttack(): boolean {
-		return this.performAttack(() => TargetingController.get().cycleAndAttack());
+	private tryCycleAttack(maxCandidates?: number): boolean {
+		return this.performAttack(() => TargetingController.get().cycleAndAttack(maxCandidates));
 	}
 
 	private onPressStart(_evt: PointerEvent|TouchEvent|MouseEvent) {
 		this.clearRepeat();
 		this.pressTimeoutId = window.setTimeout(() => {
 			this.longPressTriggered = true;
-			if (!this.tryCycleAttack()) {
+			if (!this.tryCycleAttack(this.doubleCycleLimit)) {
 				return;
 			}
-			this.repeatId = window.setInterval(() => this.tryCycleAttack(), this.repeatInterval);
+			this.repeatId = window.setInterval(() => this.tryCycleAttack(this.doubleCycleLimit), this.repeatInterval);
 		}, this.longPressDelay);
 	}
 

@@ -97,14 +97,23 @@ export class TargetingController {
 	 * @return {Entity|undefined}
 	 *   Newly selected entity or `undefined` if none available.
 	 */
-	public cycle(filterSet?: TargetFilter[]): Entity|undefined {
+	public cycle(filterSet?: TargetFilter[], maxCandidates?: number): Entity|undefined {
 		const filters = filterSet && filterSet.length ? filterSet : [{}];
 		const candidates: Entity[] = [];
 		for (const filter of filters) {
-			for (const target of this.getTargets(this.resolveFilter(filter))) {
+			const targets = this.getTargets(this.resolveFilter(filter));
+			for (const target of targets) {
 				if (candidates.indexOf(target) === -1) {
 					candidates.push(target);
 				}
+
+				if (typeof maxCandidates === "number" && candidates.length >= maxCandidates) {
+					break;
+				}
+			}
+
+			if (typeof maxCandidates === "number" && candidates.length >= maxCandidates) {
+				break;
 			}
 		}
 
@@ -166,9 +175,9 @@ export class TargetingController {
 	/**
 	 * Cycles through attackable targets using the active filters and attacks the result.
 	 */
-	public cycleAndAttack(): Entity|undefined {
+	public cycleAndAttack(maxCandidates?: number): Entity|undefined {
 		const filter = this.buildAttackFilter();
-		const target = this.cycle([filter]);
+		const target = this.cycle([filter], maxCandidates);
 		if (!target || !this.isAttackable(target, filter)) {
 			this.current = undefined;
 			return;
