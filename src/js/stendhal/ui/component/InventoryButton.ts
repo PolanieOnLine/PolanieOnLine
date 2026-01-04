@@ -12,7 +12,6 @@
 import { Component } from "../toolkit/Component";
 import { toggleRightPanel } from "../mobile/PanelDock";
 import { UiHandedness } from "../mobile/UiStateStore";
-import { ElementClickListener } from "../../util/ElementClickListener";
 
 
 /**
@@ -33,8 +32,7 @@ export class InventoryButton extends Component {
 
 		super(element);
 
-		const listener = new ElementClickListener(this.componentElement);
-		listener.onClick = (evt: Event) => this.onActivate(evt);
+		this.componentElement.addEventListener("click", (evt: Event) => this.onActivate(evt));
 
 		this.boundUpdate = this.update.bind(this);
 	}

@@ -135,6 +135,13 @@ export class RightPanelVisibilityManager {
 
 	private applyVisibility() {
 		this.captureElements();
+		if (!stendhal.session.touchOnly()) {
+			this.preferredVisible = true;
+			this.effectiveVisible = true;
+			this.showRightPanel();
+			this.notify();
+			return;
+		}
 		const shouldHide = this.shouldManageVisibility() && !this.computeEffectiveVisibility();
 		this.effectiveVisible = !shouldHide;
 
