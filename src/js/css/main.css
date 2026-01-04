@@ -1161,8 +1161,8 @@ button.windowtitleminimize:first-child {
 }
 
 #loot-button {
-	width: 64px;
-	height: 64px;
+	width: 32px;
+	height: 32px;
 	background: transparent url(/data/gui/panel/pickup_btn.png) center center / contain no-repeat;
 	border: none;
 	padding: 0;

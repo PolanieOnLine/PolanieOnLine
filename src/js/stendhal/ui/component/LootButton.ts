@@ -182,21 +182,23 @@ export class LootButton extends Component {
 	 */
 	public update(): void {
 		const viewport = document.getElementById("viewport");
+		const attackButton = document.getElementById("attack-button");
 		const margin = 20;
-		const width = this.componentElement.offsetWidth || 64;
-		const height = this.componentElement.offsetHeight || 64;
+		const width = this.componentElement.offsetWidth || 32;
+		const height = this.componentElement.offsetHeight || 32;
 
 		let left = margin;
 		let top = margin;
 
 		if (viewport) {
 			const rect = viewport.getBoundingClientRect();
-			if (this.handedness === UiHandedness.LEFT) {
-				left = rect.left + margin;
-				top = rect.bottom - height - margin;
+			if (attackButton) {
+				const attackRect = attackButton.getBoundingClientRect();
+				left = attackRect.left - width - margin;
+				top = attackRect.top;
 			} else {
-				left = rect.right - width - margin;
-				top = rect.bottom - height * 2 - margin * 2;
+				left = rect.right - width * 2 - margin * 2;
+				top = rect.bottom - height - margin;
 			}
 		}
 

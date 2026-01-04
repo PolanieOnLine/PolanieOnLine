@@ -214,8 +214,21 @@ export class TargetingController {
 			return;
 		}
 
-		this.sendAction("take", target);
+		this.sendEquip(target);
 		return target;
+	}
+
+	private sendEquip(target: Entity) {
+		if (!target || typeof (target as any).getIdPath !== "function" || !marauroa?.me) {
+			return;
+		}
+		marauroa.clientFramework.sendAction({
+			type: "equip",
+			"source_path": (target as any).getIdPath(),
+			"target_path": "[" + marauroa.me["id"] + "\tbag]",
+			"clicked": "",
+			"zone": marauroa.currentZoneName
+		});
 	}
 
 	/**
