@@ -36,13 +36,16 @@ export class PanelDock {
 
 	private readonly store = UiStateStore.get();
 
-	private readonly root = document.getElementById("client")!;
-	private readonly leftToggle = document.getElementById("left-panel-toggle") as HTMLButtonElement|null;
-	private readonly rightToggle = document.getElementById("right-panel-toggle") as HTMLButtonElement|null;
+	private root: HTMLElement | null;
+	private readonly leftToggle: HTMLButtonElement | null;
+	private readonly rightToggle: HTMLButtonElement | null;
 	private unsubscribe?: () => void;
 
 
 	constructor() {
+		this.root = document.getElementById("client");
+		this.leftToggle = document.getElementById("left-panel-toggle") as HTMLButtonElement | null;
+		this.rightToggle = document.getElementById("right-panel-toggle") as HTMLButtonElement | null;
 		this.unsubscribe = this.store.subscribe((state) => this.applyState(state));
 
 		this.leftToggle?.addEventListener("click", () => this.onToggle(UiHandedness.LEFT));
@@ -59,6 +62,13 @@ export class PanelDock {
 	}
 
 	private applyState(state: UiState) {
+		if (!this.root) {
+			this.root = document.getElementById("client");
+		}
+		if (!this.root) {
+			return;
+		}
+
 		const showPanels = state.mode === UiMode.PANELS;
 		const showLeft = showPanels && state.handedness === UiHandedness.LEFT;
 		const showRight = showPanels && state.handedness === UiHandedness.RIGHT;
