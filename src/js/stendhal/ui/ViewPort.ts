@@ -36,7 +36,7 @@ import { ItemAnimationClock } from "../entity/ItemAnimationClock";
 import { Point } from "../util/Point";
 import { Canvas, RenderingContext2D } from "util/Types";
 import { Debug } from "../util/Debug";
-
+import { UiStateStore } from "./mobile/UiStateStore";
 
 /**
  * game window aka world view
@@ -100,6 +100,11 @@ export class ViewPort {
 	/** Styles to be applied when chat panel is not floating. */
 	private readonly initialStyle: { [prop: string]: string };
 
+	private preserveHeightForNextResize = false;
+	private resizeScheduled = false;
+	private lastCssHeight?: number;
+	private unsubscribeUiState?: () => void;
+
 	/** Singleton instance. */
 	private static instance: ViewPort;
 
@@ -130,6 +135,7 @@ export class ViewPort {
 		this.initialStyle["max-width"] = "calc((100dvh - 5em) * 640 / 480)";
 		this.initialStyle["max-height"] = "calc(100dvh - 5em)";
 
+		this.subscribeToUiState();
 		this.updateCanvasSize();
 	}
 
@@ -218,7 +224,14 @@ export class ViewPort {
 	/**
 	 * Syncs canvas backing dimensions with its rendered size to avoid scaling artifacts.
 	 */
-	public updateCanvasSize() {
+	public updateCanvasSize(options?: { preserveHeight?: boolean }) {
+		const preserveHeight = options?.preserveHeight ?? this.preserveHeightForNextResize;
+		if (options?.preserveHeight !== undefined) {
+			this.preserveHeightForNextResize = false;
+		}
+
+		this.applyResponsiveCanvasSize(preserveHeight);
+
 		const canvas = this.getElement() as HTMLCanvasElement;
 		const rect = canvas.getBoundingClientRect();
 		if (rect.width === 0 || rect.height === 0) {
@@ -233,6 +246,84 @@ export class ViewPort {
 		canvas.width = targetWidth;
 		canvas.height = targetHeight;
 		this.ctx = canvas.getContext("2d")!;
+	}
+
+	public scheduleResize(preserveHeight = false) {
+		this.preserveHeightForNextResize = preserveHeight;
+		if (this.resizeScheduled) {
+			return;
+		}
+		this.resizeScheduled = true;
+		requestAnimationFrame(() => {
+			this.resizeScheduled = false;
+			this.updateCanvasSize({ preserveHeight });
+		});
+	}
+
+	private subscribeToUiState() {
+		if (this.unsubscribeUiState) {
+			return;
+		}
+		this.unsubscribeUiState = UiStateStore.get().subscribe(({ rightPanelExpanded }) => {
+			if (rightPanelExpanded !== undefined) {
+				this.scheduleResize(true);
+			}
+		});
+	}
+
+	private applyResponsiveCanvasSize(preserveHeight: boolean) {
+		const clientRoot = document.getElementById("client");
+		if (!clientRoot || !clientRoot.classList.contains("mobile-floating-ui")) {
+			this.captureCurrentHeight();
+			return;
+		}
+
+		const middleColumn = document.getElementById("middleColumn");
+		if (!middleColumn) {
+			return;
+		}
+
+		const canvas = this.getElement() as HTMLCanvasElement;
+		const middleRect = middleColumn.getBoundingClientRect();
+		const middleStyles = getComputedStyle(middleColumn);
+		const paddingX = this.parseCssPixels(middleStyles.paddingLeft) + this.parseCssPixels(middleStyles.paddingRight);
+		const marginX = this.parseCssPixels(middleStyles.marginLeft) + this.parseCssPixels(middleStyles.marginRight);
+
+		const availableWidth = Math.max(0, middleRect.width - paddingX);
+		const viewportWidth = Math.max(0, (document.documentElement?.clientWidth || window.innerWidth || availableWidth) - marginX - paddingX);
+		const targetWidth = Math.min(availableWidth, viewportWidth);
+		if (targetWidth > 0) {
+			canvas.style.width = `${targetWidth}px`;
+		}
+
+		if (preserveHeight) {
+			this.captureCurrentHeight();
+			return;
+		}
+
+		const canvasStyles = getComputedStyle(canvas);
+		const maxHeight = this.parseCssPixels(canvasStyles.maxHeight);
+		const currentHeight = canvas.getBoundingClientRect().height || this.lastCssHeight || this.parseCssPixels(canvasStyles.height);
+		const targetHeight = Math.max(0, maxHeight > 0 ? Math.min(currentHeight, maxHeight) : currentHeight);
+		if (targetHeight > 0) {
+			canvas.style.height = `${targetHeight}px`;
+			this.lastCssHeight = targetHeight;
+		}
+	}
+
+	private captureCurrentHeight() {
+		if (this.lastCssHeight) {
+			return;
+		}
+		const height = this.getElement().getBoundingClientRect().height;
+		if (height > 0) {
+			this.lastCssHeight = height;
+		}
+	}
+
+	private parseCssPixels(value: string): number {
+		const parsed = parseFloat(value);
+		return Number.isNaN(parsed) ? 0 : parsed;
 	}
 
 	/**
