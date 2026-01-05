@@ -62,7 +62,9 @@ export class UIUpdateObserver {
 
 		// listen for changes to screen orientation
 		screen.orientation.addEventListener("change", (e) => {
+			singletons.getViewPort().logViewportSize("orientation change", "before");
 			this.onOrientationUpdate();
+			requestAnimationFrame(() => singletons.getViewPort().logViewportSize("orientation change", "after"));
 		});
 	}
 

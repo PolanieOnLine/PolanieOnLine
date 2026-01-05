@@ -266,7 +266,9 @@ export class ViewPort {
 		}
 		this.unsubscribeUiState = UiStateStore.get().subscribe(({ rightPanelExpanded }) => {
 			if (rightPanelExpanded !== undefined) {
+				this.logViewportSize(`right panel ${rightPanelExpanded ? "expanded" : "collapsed"}`, "before");
 				this.scheduleResize(true);
+				requestAnimationFrame(() => this.logViewportSize(`right panel ${rightPanelExpanded ? "expanded" : "collapsed"}`, "after"));
 			}
 		});
 	}
@@ -324,6 +326,17 @@ export class ViewPort {
 	private parseCssPixels(value: string): number {
 		const parsed = parseFloat(value);
 		return Number.isNaN(parsed) ? 0 : parsed;
+	}
+
+	public logViewportSize(reason: string, phase: "before" | "after" | "during" = "during") {
+		const canvas = this.getElement() as HTMLCanvasElement;
+		const rect = canvas.getBoundingClientRect();
+		if (!rect.width || !rect.height) {
+			return;
+		}
+		console.info(
+			`[viewport] ${reason} (${phase}) -> css ${Math.round(rect.width)}x${Math.round(rect.height)}, buffer ${canvas.width}x${canvas.height}`,
+		);
 	}
 
 	/**
