@@ -79,7 +79,7 @@ export class RightPanelVisibilityManager {
 			this.preferredVisible = visible;
 			stendhal.config.set("ui.rightpanel.visible", visible);
 		}
-		if (visible && this.uiMode === UiMode.GAME) {
+		if (visible) {
 			this.store.setMode(UiMode.PANELS);
 			this.store.setHandedness(this.store.getState().handedness);
 		}
