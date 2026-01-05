@@ -9,6 +9,8 @@
  *                                                                         *
  ***************************************************************************/
 
+declare const stendhal: any;
+
 import { InventoryButton } from "./component/InventoryButton";
 
 import { ConfigManager } from "../util/ConfigManager";
@@ -52,6 +54,7 @@ export class InventoryButtonController {
 			this.subscribeHandedness();
 		}
 		this.component.mount();
+		this.subscribePanelVisibility();
 	}
 
 	public remove() {
@@ -88,13 +91,17 @@ export class InventoryButtonController {
 	}
 
 	private isRightPanelVisible(mode: UiMode, handedness: UiHandedness): boolean {
-		return mode === UiMode.PANELS && handedness === UiHandedness.RIGHT;
+		const rightVisible = this.rightPanelVisibility.isVisible();
+		const managesFloatingLayout = this.rightPanelVisibility.managesFloatingLayout();
+
+		if (!stendhal.session.touchOnly() && !managesFloatingLayout) {
+			return rightVisible;
+		}
+
+		return mode === UiMode.PANELS && handedness === UiHandedness.RIGHT && rightVisible;
 	}
 
 	private resolvePanelVisibility(mode: UiMode, handedness: UiHandedness): boolean {
-		if (this.rightPanelVisibility.managesFloatingLayout()) {
-			return mode === UiMode.PANELS && handedness === UiHandedness.RIGHT && this.rightPanelVisibility.isVisible();
-		}
 		return this.isRightPanelVisible(mode, handedness);
 	}
 

@@ -9,6 +9,8 @@
  *                                                                         *
  ***************************************************************************/
 
+declare const stendhal: any;
+
 import { RightPanelVisibilityManager } from "../RightPanelVisibilityManager";
 import { UiHandedness, UiMode, UiState, UiStateStore } from "./UiStateStore";
 
@@ -52,12 +54,14 @@ export class PanelDock {
 	private currentState: UiState;
 	private readonly root = document.getElementById("client")!;
 	private readonly rightPanelVisibility = RightPanelVisibilityManager.get();
+	private rightColumn?: HTMLElement|null;
 	private unsubscribe?: () => void;
 	private unsubscribeRightPanel?: () => void;
 
 
 	constructor() {
 		this.rightPanelVisibility.init();
+		this.rightColumn = document.getElementById("rightColumn");
 		this.currentState = this.store.getState();
 		this.unsubscribe = this.store.subscribe((state) => this.applyState(state));
 		this.unsubscribeRightPanel = this.rightPanelVisibility.subscribe(() => this.applyState(this.currentState));
@@ -74,9 +78,39 @@ export class PanelDock {
 		this.currentState = state;
 		const showPanels = state.mode === UiMode.PANELS;
 		const showLeft = showPanels && state.handedness === UiHandedness.LEFT;
-		const showRight = showPanels && state.handedness === UiHandedness.RIGHT && this.rightPanelVisibility.isVisible();
+		const touchOnly = stendhal.session.touchOnly();
+		const managesFloatingLayout = this.rightPanelVisibility.managesFloatingLayout();
+		const rightVisible = this.rightPanelVisibility.isVisible();
+		const showRight = showPanels && state.handedness === UiHandedness.RIGHT && rightVisible;
 
 		this.root.classList.toggle("left-panel-collapsed", !showLeft);
+
+		if (!touchOnly && !managesFloatingLayout) {
+			this.root.classList.toggle("right-panel-collapsed", !rightVisible);
+			this.updateRightColumnDisplay(rightVisible);
+			return;
+		}
+
 		this.root.classList.toggle("right-panel-collapsed", !showRight);
+
+		if (touchOnly && !managesFloatingLayout) {
+			this.updateRightColumnDisplay(showRight);
+		}
+	}
+
+	private updateRightColumnDisplay(visible: boolean) {
+		if (!this.rightColumn || !document.body.contains(this.rightColumn)) {
+			this.rightColumn = document.getElementById("rightColumn");
+		}
+		if (!this.rightColumn) {
+			return;
+		}
+		if (visible) {
+			this.rightColumn.style.removeProperty("display");
+			this.rightColumn.removeAttribute("aria-hidden");
+		} else {
+			this.rightColumn.style.display = "none";
+			this.rightColumn.setAttribute("aria-hidden", "true");
+		}
 	}
 }
