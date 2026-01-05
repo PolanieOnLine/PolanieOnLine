@@ -282,8 +282,11 @@ export class ViewPort {
 		this.unsubscribeUiState = UiStateStore.get().subscribe(({ rightPanelExpanded }) => {
 			if (rightPanelExpanded !== undefined) {
 				this.logViewportSize(`right panel ${rightPanelExpanded ? "expanded" : "collapsed"}`, "before");
-				this.scheduleResize(true);
-				requestAnimationFrame(() => this.logViewportSize(`right panel ${rightPanelExpanded ? "expanded" : "collapsed"}`, "after"));
+				requestAnimationFrame(() => {
+					this.scheduleResize(true);
+					this.logViewportSize(`right panel ${rightPanelExpanded ? "expanded" : "collapsed"}`, "during");
+					requestAnimationFrame(() => this.logViewportSize(`right panel ${rightPanelExpanded ? "expanded" : "collapsed"}`, "after"));
+				});
 			}
 		});
 	}
@@ -291,6 +294,7 @@ export class ViewPort {
 	private applyResponsiveCanvasSize(preserveHeight: boolean) {
 		const clientRoot = document.getElementById("client");
 		const viewport = this.getViewportDimensions();
+		const canvas = this.getElement() as HTMLCanvasElement;
 		if (!clientRoot || !clientRoot.classList.contains("mobile-floating-ui")) {
 			this.captureCurrentHeight();
 			this.lastViewportClientWidth = viewport.width;
@@ -305,10 +309,11 @@ export class ViewPort {
 			return;
 		}
 
-		const canvas = this.getElement() as HTMLCanvasElement;
 		this.applyResponsiveWidth(canvas, middleColumn, viewport.width);
 
-		if (this.shouldRecalculateHeight(preserveHeight, viewport)) {
+		if (preserveHeight) {
+			this.reapplyCachedHeight(canvas);
+		} else if (this.shouldRecalculateHeight(preserveHeight, viewport)) {
 			this.applyResponsiveHeight(canvas);
 		} else {
 			this.captureCurrentHeight();
@@ -329,12 +334,10 @@ export class ViewPort {
 		const middleStyles = getComputedStyle(middleColumn);
 		const paddingX = this.parseCssPixels(middleStyles.paddingLeft) + this.parseCssPixels(middleStyles.paddingRight);
 		const marginX = this.parseCssPixels(middleStyles.marginLeft) + this.parseCssPixels(middleStyles.marginRight);
-		const contentWidth = this.parseCssPixels(middleStyles.width) || Math.max(0, middleRect.width - paddingX);
-		const maxViewportWidth = Math.max(0, viewportWidth - marginX - paddingX);
-		const preferredWidth = contentWidth > 0 ? contentWidth : maxViewportWidth;
-		const targetWidth = Math.max(0, Math.min(preferredWidth, maxViewportWidth || preferredWidth));
-		if (targetWidth > 0) {
-			canvas.style.width = `${targetWidth}px`;
+		const contentBoxWidth = Math.max(0, middleRect.width - paddingX - marginX);
+		const clampedWidth = Math.max(0, Math.min(contentBoxWidth, viewportWidth - marginX));
+		if (clampedWidth > 0) {
+			canvas.style.width = `${clampedWidth}px`;
 		}
 	}
 
@@ -358,6 +361,15 @@ export class ViewPort {
 			canvas.style.height = `${targetHeight}px`;
 			this.lastCssHeight = targetHeight;
 			this.heightNeedsMeasurement = false;
+		}
+	}
+
+	private reapplyCachedHeight(canvas: HTMLCanvasElement) {
+		if (!this.lastCssHeight) {
+			this.captureCurrentHeight();
+		}
+		if (this.lastCssHeight && this.lastCssHeight > 0) {
+			canvas.style.height = `${this.lastCssHeight}px`;
 		}
 	}
 
