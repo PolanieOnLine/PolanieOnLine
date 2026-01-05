@@ -835,7 +835,7 @@ span.lognick {
 }
 
 #middleColumn {
-	max-width: 800px;
+	max-width: 1100px;
 	float: none;
 	background-color: #000;
 	position: relative;
@@ -851,11 +851,28 @@ span.lognick {
 }
 
 #client.mobile-floating-ui #rightColumn {
+	position: relative;
 	transform: translateX(0);
 	transition: transform 0.3s ease, opacity 0.3s ease, width 0.3s ease, min-width 0.3s ease, flex-basis 0.3s ease;
 }
 
+#client.right-panel-collapsed #middleColumn {
+	flex: 1 1 auto;
+	max-width: none;
+}
+
+#client:not(.mobile-floating-ui).right-panel-collapsed #rightColumn {
+	flex: 0 0 0;
+	width: 0;
+	min-width: 0;
+	overflow: hidden;
+}
+
 #client.mobile-floating-ui.right-panel-collapsed #rightColumn {
+	position: absolute;
+	right: 0;
+	top: 0;
+	height: 100%;
 	transform: translateX(100%);
 	opacity: 0;
 	pointer-events: none;
@@ -989,7 +1006,7 @@ div#menupanel #soundbutton {
 	display: block;
 	--viewport-max-height: calc(100dvh - 5em);
 	--viewport-max-width: 100%;
-	--viewport-min-render-width: 800px;
+	--viewport-min-render-width: 960px;
 	--viewport-min-render-height: 600px;
 	max-height: var(--viewport-max-height);
 	max-width: var(--viewport-max-width);
@@ -1113,8 +1130,8 @@ button.windowtitleminimize:first-child {
 
 #right-panel-toggle {
 	display: none;
-	width: 64px;
-	height: 64px;
+	width: 48px;
+	height: 48px;
 	background: transparent url(/data/gui/panel/bag_btn.png) center center / contain no-repeat;
 	border: none;
 	padding: 0;

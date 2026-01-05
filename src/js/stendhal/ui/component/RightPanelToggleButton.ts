@@ -76,8 +76,8 @@ export class RightPanelToggleButton extends Component {
 		const attackButton = document.getElementById("attack-button");
 		const margin = 16;
 		const separation = 8;
-		const width = this.componentElement.offsetWidth || 64;
-		const height = this.componentElement.offsetHeight || 64;
+		const width = this.componentElement.offsetWidth || 48;
+		const height = this.componentElement.offsetHeight || 48;
 
 		let left = margin;
 		let top = margin;

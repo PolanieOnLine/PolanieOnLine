@@ -41,12 +41,7 @@ export class UiStateStore {
 
 	private readonly callbacks: Set<UiStateCallback> = new Set();
 	private initialized = false;
-	private state: UiState = {
-		mode: UiMode.PANELS,
-		handedness: UiHandedness.RIGHT,
-		chatExpanded: false,
-		rightPanelExpanded: true
-	};
+	private state: UiState = this.createDefaultState();
 
 
 	static get(): UiStateStore {
@@ -159,10 +154,26 @@ export class UiStateStore {
 		if (stendhal.config.isSet("ui.rightpanel.visible")) {
 			return stendhal.config.getBoolean("ui.rightpanel.visible");
 		}
+		return this.resolveDefaultRightPanelExpanded();
+	}
+
+	private resolveDefaultRightPanelExpanded(): boolean {
 		const touchOnly = SessionManager.get().touchOnly();
-		if (touchOnly && stendhal.ui.getMenuStyle() === "floating") {
+		const menuStyle = stendhal && stendhal.ui && typeof stendhal.ui.getMenuStyle === "function"
+			? stendhal.ui.getMenuStyle()
+			: undefined;
+		if (touchOnly && menuStyle === "floating") {
 			return false;
 		}
 		return true;
+	}
+
+	private createDefaultState(): UiState {
+		return {
+			mode: UiMode.PANELS,
+			handedness: UiHandedness.RIGHT,
+			chatExpanded: false,
+			rightPanelExpanded: this.resolveDefaultRightPanelExpanded()
+		};
 	}
 }
