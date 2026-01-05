@@ -43,6 +43,7 @@ import { HeldObjectManager } from "./ui/HeldObject";
 import { LootButtonController } from "./ui/LootButtonController";
 import { HTMLManager } from "./ui/HTMLManager";
 import { Inventory } from "./ui/Inventory";
+import { RightPanelToggleController } from "./ui/RightPanelToggleController";
 import { SoftwareJoystickController } from "./ui/SoftwareJoystickController";
 import { TouchHandler } from "./ui/TouchHandler";
 import { UIUpdateObserver } from "./ui/UIUpdateObserver";
@@ -83,6 +84,10 @@ export class SingletonRepo {
 
 	static getLootButtonController(): LootButtonController {
 		return LootButtonController.get();
+	}
+
+	static getRightPanelToggleController(): RightPanelToggleController {
+		return RightPanelToggleController.get();
 	}
 
 	static getDrawingStage(): DrawingStage {

@@ -174,6 +174,7 @@ export class Client {
 		stendhal.config.init(sparams);
 		stendhal.session.init(sparams);
 		UiStateStore.get().initFromConfig();
+		this.applyMobileUiClasses();
 
 		// update user interface after config is loaded
 		stendhal.config.refreshTheme();
@@ -518,6 +519,18 @@ export class Client {
 		}
 
 		singletons.getWeatherRenderer().update(zoneinfo["weather"]);
+	}
+
+	private applyMobileUiClasses() {
+		const clientRoot = document.getElementById("client");
+		if (!clientRoot) {
+			return;
+		}
+		const mobileFloating = singletons.getSessionManager().touchOnly()
+				&& stendhal.ui.getMenuStyle() === "floating";
+		document.body.classList.toggle("mobile-floating-ui", mobileFloating);
+		clientRoot.classList.toggle("mobile-floating-ui", mobileFloating);
+		clientRoot.classList.toggle("right-panel-collapsed", !UiStateStore.get().getState().rightPanelExpanded);
 	}
 
 	/**

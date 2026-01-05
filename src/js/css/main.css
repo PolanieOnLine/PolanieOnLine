@@ -822,7 +822,7 @@ span.lognick {
 	--right-panel-width: 258px;
 }
 
-#client.right-panel-collapsed {
+#client:not(.mobile-floating-ui).right-panel-collapsed {
 	--right-panel-width: 0px;
 }
 
@@ -848,6 +848,20 @@ span.lognick {
 	overflow-y: auto;
 	overflow-x: hidden;
 	opacity: 1;
+}
+
+#client.mobile-floating-ui #rightColumn {
+	transform: translateX(0);
+	transition: transform 0.3s ease, opacity 0.3s ease, width 0.3s ease, min-width 0.3s ease, flex-basis 0.3s ease;
+}
+
+#client.mobile-floating-ui.right-panel-collapsed #rightColumn {
+	transform: translateX(100%);
+	opacity: 0;
+	pointer-events: none;
+	min-width: var(--right-panel-width);
+	width: var(--right-panel-width);
+	flex: 0 0 var(--right-panel-width);
 }
 
 #minimap-overlay {
@@ -1091,6 +1105,26 @@ button.windowtitleminimize:first-child {
 	border: none;
 	padding: 0;
 	pointer-events: auto;
+}
+
+.right-panel-toggle--active {
+	filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.5));
+}
+
+#right-panel-toggle {
+	display: none;
+	width: 64px;
+	height: 64px;
+	background: transparent url(/data/gui/panel/bag_btn.png) center center / contain no-repeat;
+	border: none;
+	padding: 0;
+	pointer-events: auto;
+	z-index: 105;
+}
+
+body.mobile-floating-ui #right-panel-toggle,
+#client.mobile-floating-ui #right-panel-toggle {
+	display: block;
 }
 
 .attack-button--disabled {

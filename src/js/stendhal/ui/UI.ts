@@ -20,7 +20,7 @@ import { QuickMenu } from "./quickmenu/QuickMenu";
 import { QuickMenuButton } from "./quickmenu/QuickMenuButton";
 import { Component } from "./toolkit/Component";
 import { SingletonFloatingWindow } from "./toolkit/SingletonFloatingWindow";
-
+import { UiStateStore } from "./mobile/UiStateStore";
 
 class UI {
 
@@ -139,6 +139,8 @@ class UI {
 		singletons.getAttackButtonController().update();
 		// initialize loot button
 		singletons.getLootButtonController().update();
+		// initialize right panel toggle
+		singletons.getRightPanelToggleController().update();
 		QuickMenu.init();
 
 		// update menu buttons
@@ -181,6 +183,8 @@ class UI {
 				QuickMenu.setVisible(true);
 				break;
 		}
+		this.updateMobileUiClass();
+		singletons.getRightPanelToggleController().update();
 	}
 
 	/**
@@ -199,6 +203,20 @@ class UI {
 				"type": "move.continuous",
 				"move.continuous": ""
 			});
+		}
+	}
+
+	private updateMobileUiClass() {
+		const clientRoot = document.getElementById("client");
+		if (!clientRoot) {
+			return;
+		}
+		const mobileFloating = singletons.getSessionManager().touchOnly()
+				&& stendhal.ui.getMenuStyle() === "floating";
+		document.body.classList.toggle("mobile-floating-ui", mobileFloating);
+		clientRoot.classList.toggle("mobile-floating-ui", mobileFloating);
+		if (mobileFloating) {
+			clientRoot.classList.toggle("right-panel-collapsed", !UiStateStore.get().getState().rightPanelExpanded);
 		}
 	}
 }

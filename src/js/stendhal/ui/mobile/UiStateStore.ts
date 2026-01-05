@@ -11,6 +11,7 @@
 
 declare var stendhal: any;
 
+import { SessionManager } from "../../util/SessionManager";
 
 export enum UiMode {
 	GAME = "game",
@@ -26,6 +27,7 @@ export interface UiState {
 	mode: UiMode;
 	handedness: UiHandedness;
 	chatExpanded: boolean;
+	rightPanelExpanded: boolean;
 }
 
 type UiStateCallback = (state: UiState) => void;
@@ -42,7 +44,8 @@ export class UiStateStore {
 	private state: UiState = {
 		mode: UiMode.PANELS,
 		handedness: UiHandedness.RIGHT,
-		chatExpanded: false
+		chatExpanded: false,
+		rightPanelExpanded: true
 	};
 
 
@@ -70,8 +73,9 @@ export class UiStateStore {
 		const mode = this.parseMode(config.get("ui.mode"));
 		const handedness = this.parseHandedness(config.get("ui.handedness"));
 		const chatExpanded = this.resolveChatExpanded();
+		const rightPanelExpanded = this.resolveRightPanelExpanded();
 
-		this.state = { mode, handedness, chatExpanded };
+		this.state = { mode, handedness, chatExpanded, rightPanelExpanded };
 	}
 
 	getState(): UiState {
@@ -111,6 +115,19 @@ export class UiStateStore {
 		this.notify();
 	}
 
+	setRightPanelExpanded(expanded: boolean) {
+		if (this.state.rightPanelExpanded === expanded) {
+			return;
+		}
+		this.state = { ...this.state, rightPanelExpanded: expanded };
+		stendhal.config.set("ui.rightpanel.visible", expanded);
+		this.notify();
+	}
+
+	toggleRightPanel() {
+		this.setRightPanelExpanded(!this.state.rightPanelExpanded);
+	}
+
 	private notify() {
 		for (const cb of this.callbacks) {
 			cb(this.getState());
@@ -136,5 +153,16 @@ export class UiStateStore {
 			return stendhal.config.getBoolean("ui.chat.expanded");
 		}
 		return stendhal.config.getBoolean("chat.visible");
+	}
+
+	private resolveRightPanelExpanded(): boolean {
+		if (stendhal.config.isSet("ui.rightpanel.visible")) {
+			return stendhal.config.getBoolean("ui.rightpanel.visible");
+		}
+		const touchOnly = SessionManager.get().touchOnly();
+		if (touchOnly && stendhal.ui.getMenuStyle() === "floating") {
+			return false;
+		}
+		return true;
 	}
 }
