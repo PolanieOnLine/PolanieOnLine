@@ -9,6 +9,7 @@
  *                                                                         *
  ***************************************************************************/
 
+import { singletons } from "../SingletonRepo";
 import { ui } from "./UI";
 
 
@@ -97,6 +98,7 @@ export class UIUpdateObserver {
 	 * Called when an attribute of the viewport has changed.
 	 */
 	private onViewPortUpdate() {
+		singletons.getViewPort().updateCanvasSize();
 		ui.onDisplayUpdate();
 	}
 
@@ -104,6 +106,7 @@ export class UIUpdateObserver {
 	 * Called when screen orientation changes.
 	 */
 	private onOrientationUpdate() {
+		singletons.getViewPort().updateCanvasSize();
 		ui.onDisplayUpdate();
 	}
 }

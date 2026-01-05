@@ -60,10 +60,19 @@ export class ViewPort {
 	/** Maximal delta time passed to updates to avoid huge jumps. */
 	private readonly maxDeltaMs = 250;
 
-	// dimensions
-	// TODO: remove & use CSS style instead
-	private readonly width: number;
-	private readonly height: number;
+	/**
+	 * Current canvas buffer width.
+	 */
+	get width(): number {
+		return this.ctx.canvas.width;
+	}
+
+	/**
+	 * Current canvas buffer height.
+	 */
+	get height(): number {
+		return this.ctx.canvas.height;
+	}
 
 	/** Drawing context. */
 	private ctx: RenderingContext2D;
@@ -111,8 +120,6 @@ export class ViewPort {
 	private constructor() {
 		const element = this.getElement() as HTMLCanvasElement;
 		this.ctx = element.getContext("2d")!;
-		this.width = element.width;
-		this.height = element.height;
 
 		this.initialStyle = {};
 		//~ const stylesheet = getComputedStyle(element);
@@ -122,6 +129,8 @@ export class ViewPort {
 		// NOTE: this doesn't work if properties set in css
 		this.initialStyle["max-width"] = "calc((100dvh - 5em) * 640 / 480)";
 		this.initialStyle["max-height"] = "calc(100dvh - 5em)";
+
+		this.updateCanvasSize();
 	}
 
 	/**
@@ -138,6 +147,8 @@ export class ViewPort {
 	 * Draws terrain tiles & entity sprites in the viewport.
 	 */
 	draw() {
+		this.updateCanvasSize();
+
 		const now = performance.now();
 		if (this.lastFrameTime === undefined) {
 			this.lastFrameTime = now;
@@ -202,6 +213,26 @@ export class ViewPort {
 		if (this.filter && stendhal.config.getBoolean("effect.lighting")) {
 			this.ctx.filter = this.filter;
 		}
+	}
+
+	/**
+	 * Syncs canvas backing dimensions with its rendered size to avoid scaling artifacts.
+	 */
+	public updateCanvasSize() {
+		const canvas = this.getElement() as HTMLCanvasElement;
+		const rect = canvas.getBoundingClientRect();
+		if (rect.width === 0 || rect.height === 0) {
+			return;
+		}
+		const pixelRatio = window.devicePixelRatio || 1;
+		const targetWidth = Math.round(rect.width * pixelRatio);
+		const targetHeight = Math.round(rect.height * pixelRatio);
+		if (canvas.width === targetWidth && canvas.height === targetHeight) {
+			return;
+		}
+		canvas.width = targetWidth;
+		canvas.height = targetHeight;
+		this.ctx = canvas.getContext("2d")!;
 	}
 
 	/**
