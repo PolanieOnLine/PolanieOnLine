@@ -161,6 +161,7 @@ export class RightPanelVisibilityManager {
 			this.root.classList.add("right-panel-collapsed");
 		}
 		if (this.rightColumn) {
+			this.rightColumn.style.display = "none";
 			this.rightColumn.setAttribute("aria-hidden", "true");
 		}
 		this.captureWindowVisibility();
@@ -175,6 +176,7 @@ export class RightPanelVisibilityManager {
 			this.root.classList.remove("right-panel-collapsed");
 		}
 		if (this.rightColumn) {
+			this.rightColumn.style.removeProperty("display");
 			this.rightColumn.removeAttribute("aria-hidden");
 		}
 		this.restoreWindowVisibility();
