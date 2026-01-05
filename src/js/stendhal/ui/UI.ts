@@ -215,7 +215,11 @@ class UI {
 				&& stendhal.ui.getMenuStyle() === "floating";
 		document.body.classList.toggle("mobile-floating-ui", mobileFloating);
 		clientRoot.classList.toggle("mobile-floating-ui", mobileFloating);
-		clientRoot.classList.toggle("right-panel-collapsed", !UiStateStore.get().getState().rightPanelExpanded);
+		if (mobileFloating) {
+			clientRoot.classList.toggle("right-panel-collapsed", !UiStateStore.get().getState().rightPanelExpanded);
+		} else {
+			clientRoot.classList.remove("right-panel-collapsed");
+		}
 	}
 }
 
