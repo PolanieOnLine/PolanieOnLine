@@ -25,7 +25,7 @@ export class InventoryButton extends Component {
 	constructor() {
 		const element = document.createElement("button");
 		element.id = "inventory-button";
-		element.classList.add("inventory-button", "hidden");
+		element.classList.add("inventory-button");
 		element.setAttribute("aria-label", "Pokaż prawy panel");
 		element.title = "Pokaż prawy panel";
 		element.setAttribute("aria-pressed", "false");
@@ -56,7 +56,6 @@ export class InventoryButton extends Component {
 		if (this.componentElement.parentElement) {
 			this.componentElement.remove();
 		}
-		this.componentElement.classList.add("hidden");
 		window.removeEventListener("resize", this.boundUpdate);
 	}
 

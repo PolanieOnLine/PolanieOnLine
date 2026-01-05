@@ -39,7 +39,11 @@ export class InventoryButtonController {
 	}
 
 	public update() {
-		if (!SessionManager.get().inventoryButtonEnabled()) {
+		const session = SessionManager.get();
+		if (!session.inventoryButtonEnabled()) {
+			if (session.touchOnly()) {
+				console.warn("Inventory button disabled on a touch-only device. Enable client.inventory.button if this is unintended.");
+			}
 			this.remove();
 			return;
 		}
