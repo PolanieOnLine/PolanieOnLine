@@ -27,7 +27,6 @@ import { CStatus } from "./data/CStatus";
 import { CacheManager } from "./data/CacheManager";
 import { EmojiStore } from "./data/EmojiStore";
 import { AttackButtonController } from "./ui/AttackButtonController";
-import { InventoryButtonController } from "./ui/InventoryButtonController";
 import { GroupManager } from "./data/GroupManager";
 import { TileMap } from "./data/TileMap";
 import { OutfitStore } from "./data/OutfitStore";
@@ -68,10 +67,6 @@ export class SingletonRepo {
 
 	static getAttackButtonController(): AttackButtonController {
 		return AttackButtonController.get();
-	}
-
-	static getInventoryButtonController(): InventoryButtonController {
-		return InventoryButtonController.get();
 	}
 
 	static getClient(): Client {
