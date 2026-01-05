@@ -329,7 +329,7 @@ export class ViewPort {
 		const middleStyles = getComputedStyle(middleColumn);
 		const paddingX = this.parseCssPixels(middleStyles.paddingLeft) + this.parseCssPixels(middleStyles.paddingRight);
 		const marginX = this.parseCssPixels(middleStyles.marginLeft) + this.parseCssPixels(middleStyles.marginRight);
-
+		const contentWidth = this.parseCssPixels(middleStyles.width) || Math.max(0, middleRect.width - paddingX);
 		const maxViewportWidth = Math.max(0, viewportWidth - marginX - paddingX);
 		const preferredWidth = contentWidth > 0 ? contentWidth : maxViewportWidth;
 		const targetWidth = Math.max(0, Math.min(preferredWidth, maxViewportWidth || preferredWidth));

@@ -108,7 +108,9 @@ export class UIUpdateObserver {
 	 * Called when screen orientation changes.
 	 */
 	private onOrientationUpdate() {
-		singletons.getViewPort().scheduleResize();
-		requestAnimationFrame(() => ui.onDisplayUpdate());
+		requestAnimationFrame(() => {
+			singletons.getViewPort().scheduleResize();
+			requestAnimationFrame(() => ui.onDisplayUpdate());
+		});
 	}
 }
