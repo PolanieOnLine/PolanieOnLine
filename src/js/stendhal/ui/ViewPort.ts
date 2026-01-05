@@ -103,6 +103,9 @@ export class ViewPort {
 	private preserveHeightForNextResize = false;
 	private resizeScheduled = false;
 	private lastCssHeight?: number;
+	private lastViewportClientWidth?: number;
+	private lastViewportClientHeight?: number;
+	private heightNeedsMeasurement = true;
 	private unsubscribeUiState?: () => void;
 
 	/** Singleton instance. */
@@ -250,6 +253,9 @@ export class ViewPort {
 
 	public scheduleResize(preserveHeight = false) {
 		this.preserveHeightForNextResize = preserveHeight;
+		if (!preserveHeight) {
+			this.heightNeedsMeasurement = true;
+		}
 		if (this.resizeScheduled) {
 			return;
 		}
@@ -275,42 +281,105 @@ export class ViewPort {
 
 	private applyResponsiveCanvasSize(preserveHeight: boolean) {
 		const clientRoot = document.getElementById("client");
+		const viewport = this.getViewportDimensions();
 		if (!clientRoot || !clientRoot.classList.contains("mobile-floating-ui")) {
 			this.captureCurrentHeight();
+			this.lastViewportClientWidth = viewport.width;
+			this.lastViewportClientHeight = viewport.height;
 			return;
 		}
 
 		const middleColumn = document.getElementById("middleColumn");
 		if (!middleColumn) {
+			this.lastViewportClientWidth = viewport.width;
+			this.lastViewportClientHeight = viewport.height;
 			return;
 		}
 
 		const canvas = this.getElement() as HTMLCanvasElement;
+		this.applyResponsiveWidth(canvas, middleColumn, viewport.width);
+
+		if (this.shouldRecalculateHeight(preserveHeight, viewport)) {
+			this.applyResponsiveHeight(canvas);
+		} else {
+			this.captureCurrentHeight();
+		}
+
+		this.lastViewportClientWidth = viewport.width;
+		this.lastViewportClientHeight = viewport.height;
+	}
+
+	private getViewportDimensions(): { width: number; height: number } {
+		const width = Math.max(0, document.documentElement?.clientWidth || window.innerWidth || 0);
+		const height = Math.max(0, document.documentElement?.clientHeight || window.innerHeight || 0);
+		return { width, height };
+	}
+
+	private applyResponsiveWidth(canvas: HTMLCanvasElement, middleColumn: HTMLElement, viewportWidth: number) {
 		const middleRect = middleColumn.getBoundingClientRect();
 		const middleStyles = getComputedStyle(middleColumn);
 		const paddingX = this.parseCssPixels(middleStyles.paddingLeft) + this.parseCssPixels(middleStyles.paddingRight);
 		const marginX = this.parseCssPixels(middleStyles.marginLeft) + this.parseCssPixels(middleStyles.marginRight);
 
-		const availableWidth = Math.max(0, middleRect.width - paddingX);
-		const viewportWidth = Math.max(0, (document.documentElement?.clientWidth || window.innerWidth || availableWidth) - marginX - paddingX);
-		const targetWidth = Math.min(availableWidth, viewportWidth);
+		const maxViewportWidth = Math.max(0, viewportWidth - marginX - paddingX);
+		const preferredWidth = contentWidth > 0 ? contentWidth : maxViewportWidth;
+		const targetWidth = Math.max(0, Math.min(preferredWidth, maxViewportWidth || preferredWidth));
 		if (targetWidth > 0) {
 			canvas.style.width = `${targetWidth}px`;
 		}
+	}
 
+	private shouldRecalculateHeight(preserveHeight: boolean, viewport: { width: number; height: number }): boolean {
 		if (preserveHeight) {
-			this.captureCurrentHeight();
-			return;
+			return false;
 		}
+		if (this.heightNeedsMeasurement) {
+			return true;
+		}
+		return viewport.width !== this.lastViewportClientWidth || viewport.height !== this.lastViewportClientHeight;
+	}
 
+	private applyResponsiveHeight(canvas: HTMLCanvasElement) {
 		const canvasStyles = getComputedStyle(canvas);
-		const maxHeight = this.parseCssPixels(canvasStyles.maxHeight);
-		const currentHeight = canvas.getBoundingClientRect().height || this.lastCssHeight || this.parseCssPixels(canvasStyles.height);
-		const targetHeight = Math.max(0, maxHeight > 0 ? Math.min(currentHeight, maxHeight) : currentHeight);
+		const maxHeight = this.resolveMaxHeight(canvasStyles);
+		const cssHeight = this.resolveCssHeight(canvasStyles, maxHeight);
+		const measuredHeight = cssHeight ?? this.lastCssHeight ?? canvas.getBoundingClientRect().height;
+		const targetHeight = this.clampHeight(measuredHeight, maxHeight);
 		if (targetHeight > 0) {
 			canvas.style.height = `${targetHeight}px`;
 			this.lastCssHeight = targetHeight;
+			this.heightNeedsMeasurement = false;
 		}
+	}
+
+	private resolveCssHeight(styles: CSSStyleDeclaration, maxHeight: number): number | undefined {
+		const cssHeight = this.parseCssPixels(styles.height);
+		if (cssHeight > 0) {
+			return this.clampHeight(cssHeight, maxHeight);
+		}
+		if (maxHeight > 0) {
+			return maxHeight;
+		}
+		return undefined;
+	}
+
+	private resolveMaxHeight(styles: CSSStyleDeclaration): number {
+		const maxHeight = this.parseCssPixels(styles.maxHeight);
+		if (maxHeight > 0) {
+			return maxHeight;
+		}
+		const viewportMaxHeight = this.parseCssPixels(styles.getPropertyValue("--viewport-max-height"));
+		return Math.max(0, viewportMaxHeight);
+	}
+
+	private clampHeight(height: number | undefined, maxHeight: number): number {
+		if (!height || height <= 0) {
+			return 0;
+		}
+		if (maxHeight > 0) {
+			return Math.min(height, maxHeight);
+		}
+		return height;
 	}
 
 	private captureCurrentHeight() {
