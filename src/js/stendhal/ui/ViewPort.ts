@@ -99,6 +99,7 @@ export class ViewPort {
 
 	/** Styles to be applied when chat panel is not floating. */
 	private readonly initialStyle: { [prop: string]: string };
+	private readonly initialMaxHeight?: number;
 
 	private preserveHeightForNextResize = false;
 	private resizeScheduled = false;
@@ -129,14 +130,9 @@ export class ViewPort {
 		const element = this.getElement() as HTMLCanvasElement;
 		this.ctx = element.getContext("2d")!;
 
-		this.initialStyle = {};
-		//~ const stylesheet = getComputedStyle(element);
-		// FIXME: how to get literal "calc()" instead of value of calc()?
-		//~ this.initialStyle["max-width"] = stylesheet.getPropertyValue("max-width");
-		//~ this.initialStyle["max-height"] = stylesheet.getPropertyValue("max-height");
-		// NOTE: this doesn't work if properties set in css
-		this.initialStyle["max-width"] = "calc((100dvh - 5em) * 640 / 480)";
-		this.initialStyle["max-height"] = "calc(100dvh - 5em)";
+		const { styles, maxHeight } = this.resolveInitialStyles(element);
+		this.initialStyle = styles;
+		this.initialMaxHeight = maxHeight;
 
 		this.subscribeToUiState();
 		this.updateCanvasSize();
@@ -323,6 +319,54 @@ export class ViewPort {
 		this.lastViewportClientHeight = viewport.height;
 	}
 
+	private resolveInitialStyles(element: HTMLElement): { styles: { [prop: string]: string }; maxHeight?: number } {
+		const resolved: { [prop: string]: string } = {};
+		const stylesheet = getComputedStyle(element);
+
+		const resolvedMaxWidth = this.resolveStyleValue(
+			stylesheet,
+			"max-width",
+			"--viewport-max-width",
+			"calc((100dvh - 5em) * 640 / 480)",
+		);
+		resolved["max-width"] = resolvedMaxWidth;
+
+		const resolvedMaxHeight = this.resolveStyleValue(stylesheet, "max-height", "--viewport-max-height", "calc(100dvh - 5em)");
+		resolved["max-height"] = resolvedMaxHeight;
+
+		const numericMaxHeight = this.resolveInitialMaxHeight(stylesheet);
+		return { styles: resolved, maxHeight: numericMaxHeight };
+	}
+
+	private resolveStyleValue(
+		stylesheet: CSSStyleDeclaration,
+		property: string,
+		variable: string,
+		defaultValue: string,
+	): string {
+		const propertyValue = this.normalizeCssValue(stylesheet.getPropertyValue(property));
+		if (propertyValue) {
+			return propertyValue;
+		}
+		const variableValue = this.normalizeCssValue(stylesheet.getPropertyValue(variable));
+		if (variableValue) {
+			return variableValue;
+		}
+		return defaultValue;
+	}
+
+	private resolveInitialMaxHeight(stylesheet: CSSStyleDeclaration): number | undefined {
+		const computedMaxHeight = this.parseCssPixels(stylesheet.getPropertyValue("max-height"));
+		if (computedMaxHeight > 0) {
+			return computedMaxHeight;
+		}
+		const variableMaxHeight = this.parseCssPixels(stylesheet.getPropertyValue("--viewport-max-height"));
+		if (variableMaxHeight > 0) {
+			return variableMaxHeight;
+		}
+		return undefined;
+	}
+
 	private getViewportDimensions(): { width: number; height: number } {
 		const width = Math.max(0, document.documentElement?.clientWidth || window.innerWidth || 0);
 		const height = Math.max(0, document.documentElement?.clientHeight || window.innerHeight || 0);
@@ -390,7 +434,10 @@ export class ViewPort {
 			return maxHeight;
 		}
 		const viewportMaxHeight = this.parseCssPixels(styles.getPropertyValue("--viewport-max-height"));
-		return Math.max(0, viewportMaxHeight);
+		if (viewportMaxHeight > 0) {
+			return viewportMaxHeight;
+		}
+		return Math.max(0, this.initialMaxHeight ?? 0);
 	}
 
 	private clampHeight(height: number | undefined, maxHeight: number): number {
@@ -411,6 +458,14 @@ export class ViewPort {
 		if (height > 0) {
 			this.lastCssHeight = height;
 		}
+	}
+
+	private normalizeCssValue(value: string): string | undefined {
+		const trimmed = value?.trim();
+		if (!trimmed || trimmed === "none") {
+			return undefined;
+		}
+		return trimmed;
 	}
 
 	private parseCssPixels(value: string): number {
