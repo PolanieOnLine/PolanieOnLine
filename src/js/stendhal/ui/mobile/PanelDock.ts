@@ -51,8 +51,6 @@ export class PanelDock {
 
 	private currentState: UiState;
 	private readonly root = document.getElementById("client")!;
-	private readonly leftToggle = document.getElementById("left-panel-toggle") as HTMLButtonElement|null;
-	private readonly rightToggle = document.getElementById("right-panel-toggle") as HTMLButtonElement|null;
 	private readonly rightPanelVisibility = RightPanelVisibilityManager.get();
 	private unsubscribe?: () => void;
 	private unsubscribeRightPanel?: () => void;
@@ -63,9 +61,6 @@ export class PanelDock {
 		this.currentState = this.store.getState();
 		this.unsubscribe = this.store.subscribe((state) => this.applyState(state));
 		this.unsubscribeRightPanel = this.rightPanelVisibility.subscribe(() => this.applyState(this.currentState));
-
-		this.leftToggle?.addEventListener("click", () => this.onToggle(UiHandedness.LEFT));
-		this.rightToggle?.addEventListener("click", () => this.onToggle(UiHandedness.RIGHT));
 	}
 
 	destroy() {
@@ -73,10 +68,6 @@ export class PanelDock {
 		this.unsubscribe = undefined;
 		this.unsubscribeRightPanel?.();
 		this.unsubscribeRightPanel = undefined;
-	}
-
-	private onToggle(targetHandedness: UiHandedness) {
-		togglePanelForHandedness(targetHandedness);
 	}
 
 	private applyState(state: UiState) {
@@ -87,12 +78,5 @@ export class PanelDock {
 
 		this.root.classList.toggle("left-panel-collapsed", !showLeft);
 		this.root.classList.toggle("right-panel-collapsed", !showRight);
-
-		if (this.leftToggle) {
-			this.leftToggle.setAttribute("aria-expanded", showLeft ? "true" : "false");
-		}
-		if (this.rightToggle) {
-			this.rightToggle.setAttribute("aria-expanded", showRight ? "true" : "false");
-		}
 	}
 }
