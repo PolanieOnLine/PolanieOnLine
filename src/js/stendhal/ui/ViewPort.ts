@@ -156,7 +156,15 @@ export class ViewPort {
 	 * Draws terrain tiles & entity sprites in the viewport.
 	 */
 	draw() {
-		this.updateCanvasSize();
+		const resized = this.updateCanvasSize();
+		if (resized) {
+			this.lastFrameTime = undefined;
+			this.lastDeltaMs = 0;
+			requestAnimationFrame(() => {
+				stendhal.ui.gamewindow.draw();
+			});
+			return;
+		}
 
 		const now = performance.now();
 		if (this.lastFrameTime === undefined) {
@@ -227,7 +235,7 @@ export class ViewPort {
 	/**
 	 * Syncs canvas backing dimensions with its rendered size to avoid scaling artifacts.
 	 */
-	public updateCanvasSize(options?: { preserveHeight?: boolean }) {
+	public updateCanvasSize(options?: { preserveHeight?: boolean }): boolean {
 		const preserveHeight = options?.preserveHeight ?? this.preserveHeightForNextResize;
 		if (options?.preserveHeight !== undefined) {
 			this.preserveHeightForNextResize = false;
@@ -238,17 +246,18 @@ export class ViewPort {
 		const canvas = this.getElement() as HTMLCanvasElement;
 		const rect = canvas.getBoundingClientRect();
 		if (rect.width === 0 || rect.height === 0) {
-			return;
+			return false;
 		}
 		const pixelRatio = window.devicePixelRatio || 1;
 		const targetWidth = Math.round(rect.width * pixelRatio);
 		const targetHeight = Math.round(rect.height * pixelRatio);
 		if (canvas.width === targetWidth && canvas.height === targetHeight) {
-			return;
+			return false;
 		}
 		canvas.width = targetWidth;
 		canvas.height = targetHeight;
 		this.ctx = canvas.getContext("2d")!;
+		return true;
 	}
 
 	public scheduleResize(preserveHeight = false) {
@@ -564,29 +573,10 @@ export class ViewPort {
 		// IE does not support ctx.resetTransform(), so use the following workaround:
 		this.ctx.setTransform(1, 0, 0, 1, 0, 0);
 
-		// Coordinates for a screen centered on player
-		let targetX: number, targetY: number;
-		if (this.freeze) {
-			targetX = this.offsetX + this.targetTileWidth / 2;
-			targetY = this.offsetY + this.targetTileHeight / 2;
-		} else {
-			targetX = marauroa.me["_x"] * this.targetTileWidth + this.targetTileWidth / 2 - canvas.width / 2;
-			targetY = marauroa.me["_y"] * this.targetTileHeight + this.targetTileHeight / 2 - canvas.height / 2;
-		}
-
-		// Keep the world within the screen view
-		targetX = Math.min(targetX, stendhal.data.map.zoneSizeX * this.targetTileWidth - canvas.width);
-		targetX = Math.max(targetX, 0);
-
-		targetY = Math.min(targetY, stendhal.data.map.zoneSizeY * this.targetTileHeight - canvas.height);
-		targetY = Math.max(targetY, 0);
+		const { targetX, targetY } = this.computeCameraTargets(canvas);
 
 		if (this.freeze) {
-			this.cameraX = targetX;
-			this.cameraY = targetY;
-			this.offsetX = Math.round(this.cameraX);
-			this.offsetY = Math.round(this.cameraY);
-			this.ctx.translate(-this.cameraX, -this.cameraY);
+			this.applyCameraPosition(targetX, targetY);
 			return;
 		}
 
@@ -594,6 +584,29 @@ export class ViewPort {
 		this.cameraX += (targetX - this.cameraX) * smoothingFactor;
 		this.cameraY += (targetY - this.cameraY) * smoothingFactor;
 
+		this.applyCameraPosition(this.cameraX, this.cameraY);
+	}
+
+	private computeCameraTargets(canvas: Canvas): { targetX: number; targetY: number } {
+		const halfTileWidth = this.targetTileWidth / 2;
+		const halfTileHeight = this.targetTileHeight / 2;
+		const mapWidth = stendhal.data.map.zoneSizeX * this.targetTileWidth;
+		const mapHeight = stendhal.data.map.zoneSizeY * this.targetTileHeight;
+		const playerX = marauroa.me["_x"] * this.targetTileWidth + halfTileWidth;
+		const playerY = marauroa.me["_y"] * this.targetTileHeight + halfTileHeight;
+
+		const targetX = this.freeze ? this.offsetX : playerX - canvas.width / 2;
+		const targetY = this.freeze ? this.offsetY : playerY - canvas.height / 2;
+
+		const clampedX = Math.min(Math.max(targetX, 0), Math.max(0, mapWidth - canvas.width));
+		const clampedY = Math.min(Math.max(targetY, 0), Math.max(0, mapHeight - canvas.height));
+
+		return { targetX: clampedX, targetY: clampedY };
+	}
+
+	private applyCameraPosition(targetX: number, targetY: number) {
+		this.cameraX = targetX;
+		this.cameraY = targetY;
 		this.offsetX = Math.round(this.cameraX);
 		this.offsetY = Math.round(this.cameraY);
 		this.ctx.translate(-this.offsetX, -this.offsetY);
