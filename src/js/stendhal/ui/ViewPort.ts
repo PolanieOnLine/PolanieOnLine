@@ -291,7 +291,8 @@ export class ViewPort {
 		const clientRoot = document.getElementById("client");
 		const viewport = this.getViewportDimensions();
 		const canvas = this.getElement() as HTMLCanvasElement;
-		if (!clientRoot || !clientRoot.classList.contains("mobile-floating-ui")) {
+		const mobileFloating = this.isMobileFloatingUi();
+		if (!clientRoot || !mobileFloating) {
 			this.captureCurrentHeight();
 			this.lastViewportClientWidth = viewport.width;
 			this.lastViewportClientHeight = viewport.height;
@@ -322,16 +323,17 @@ export class ViewPort {
 	private resolveInitialStyles(element: HTMLElement): { styles: { [prop: string]: string }; maxHeight?: number } {
 		const resolved: { [prop: string]: string } = {};
 		const stylesheet = getComputedStyle(element);
+		const defaults = this.getViewportStyleDefaults();
 
 		const resolvedMaxWidth = this.resolveStyleValue(
 			stylesheet,
 			"max-width",
 			"--viewport-max-width",
-			"calc((100dvh - 5em) * 640 / 480)",
+			defaults.maxWidth,
 		);
 		resolved["max-width"] = resolvedMaxWidth;
 
-		const resolvedMaxHeight = this.resolveStyleValue(stylesheet, "max-height", "--viewport-max-height", "calc(100dvh - 5em)");
+		const resolvedMaxHeight = this.resolveStyleValue(stylesheet, "max-height", "--viewport-max-height", defaults.maxHeight);
 		resolved["max-height"] = resolvedMaxHeight;
 
 		const numericMaxHeight = this.resolveInitialMaxHeight(stylesheet);
@@ -363,6 +365,10 @@ export class ViewPort {
 		const variableMaxHeight = this.parseCssPixels(stylesheet.getPropertyValue("--viewport-max-height"));
 		if (variableMaxHeight > 0) {
 			return variableMaxHeight;
+		}
+		const fallbackMaxHeight = this.getViewportMaxHeightFallback();
+		if (fallbackMaxHeight > 0) {
+			return fallbackMaxHeight;
 		}
 		return undefined;
 	}
@@ -437,6 +443,10 @@ export class ViewPort {
 		if (viewportMaxHeight > 0) {
 			return viewportMaxHeight;
 		}
+		const fallbackMaxHeight = this.getViewportMaxHeightFallback();
+		if (fallbackMaxHeight > 0) {
+			return fallbackMaxHeight;
+		}
 		return Math.max(0, this.initialMaxHeight ?? 0);
 	}
 
@@ -471,6 +481,44 @@ export class ViewPort {
 	private parseCssPixels(value: string): number {
 		const parsed = parseFloat(value);
 		return Number.isNaN(parsed) ? 0 : parsed;
+	}
+
+	private getViewportStyleDefaults(): { maxHeight: string; maxWidth: string } {
+		if (this.isMobileFloatingUi()) {
+			return {
+				maxHeight: "calc(100dvh - 2em)",
+				maxWidth: "min(100vw, calc((100dvh - 2em) * 640 / 480))",
+			};
+		}
+		return {
+			maxHeight: "calc(100dvh - 5em)",
+			maxWidth: "calc((100dvh - 5em) * 640 / 480)",
+		};
+	}
+
+	private getViewportMaxHeightFallback(): number {
+		const viewport = this.getViewportDimensions();
+		if (viewport.height <= 0) {
+			return 0;
+		}
+		const fontSize = this.parseCssPixels(getComputedStyle(document.documentElement).fontSize);
+		if (fontSize <= 0) {
+			return Math.max(0, this.initialMaxHeight ?? 0);
+		}
+		const marginEm = this.isMobileFloatingUi() ? 2 : 5;
+		const marginPx = marginEm * fontSize;
+		if (marginPx <= 0) {
+			return Math.max(0, this.initialMaxHeight ?? 0);
+		}
+		return Math.max(0, viewport.height - marginPx);
+	}
+
+	private isMobileFloatingUi(): boolean {
+		const clientRoot = document.getElementById("client");
+		return Boolean(
+			clientRoot?.classList.contains("mobile-floating-ui")
+				|| document.body?.classList.contains("mobile-floating-ui"),
+		);
 	}
 
 	public logViewportSize(reason: string, phase: "before" | "after" | "during" = "during") {

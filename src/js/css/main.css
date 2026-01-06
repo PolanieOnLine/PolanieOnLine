@@ -835,7 +835,7 @@ span.lognick {
 }
 
 #middleColumn {
-	max-width: 1100px;
+	max-width: 800px;
 	float: none;
 	background-color: #000;
 	position: relative;
@@ -1011,6 +1011,19 @@ div#menupanel #soundbutton {
 	max-height: var(--viewport-max-height);
 	max-width: var(--viewport-max-width);
 	image-rendering: pixelated;
+}
+
+body.mobile-floating-ui #viewport,
+#client.mobile-floating-ui #viewport {
+	--viewport-max-height: calc(100dvh - 2em);
+	--viewport-max-width: min(100vw, calc((100dvh - 2em) * 640 / 480));
+}
+
+#client.mobile-floating-ui #middleColumn {
+	padding-left: 0.25em;
+	padding-right: 0.25em;
+	margin-left: 0;
+	margin-right: 0;
 }
 
 #bottomPanel {
