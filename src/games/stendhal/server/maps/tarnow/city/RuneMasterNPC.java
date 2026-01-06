@@ -13,6 +13,7 @@ package games.stendhal.server.maps.tarnow.city;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -49,92 +50,101 @@ public class RuneMasterNPC implements ZoneConfigurator {
 	private GlyphManager glyphManager;
 
 	private void initializeGlyphs() {
-		Map<String, Map<String, Integer>> glyphConfig = Map.ofEntries(
-			Map.entry("glif daru Mokoszy", Map.of(
-				"serce olbrzyma", 100,
-				"smocza krew", 40,
-				"fragment glifu", 4
-			)),
-			Map.entry("glif siły", Map.of(
-				"miecz", 1,
-				"kieł smoka", 20,
-				"kość dla psa", 50,
-				"fragment glifu", 2
-			)),
-			Map.entry("glif Peruna", Map.of(
-				"glif siły", 1,
-				"rubin", 18,
-				"pióro azazela", 12,
-				"pióro lilith", 4,
-				"fragment glifu", 5
-			)),
-			Map.entry("glif czaszy", Map.of(
-				"kieł złotej kostuchy", 1,
-				"pióro archanioła", 22,
-				"ruda srebra", 40,
-				"fragment glifu", 3
-			)),
-			Map.entry("glif tarczy", Map.of(
-				"bryłka mithrilu", 30,
-				"lodowa tarcza", 1,
-				"ruda żelaza", 100,
-				"fragment glifu", 2
-			)),
-			Map.entry("glif Swaroga", Map.of(
-				"glif tarczy", 1,
-				"szafir", 22,
-				"pióro serafina", 16,
-				"pióro cherubina", 4,
-				"fragment glifu", 5
-			)),
-			Map.entry("glif Tytana", Map.of(
-				"glif tarczy", 1,
-				"glif siły", 1,
-				"serce olbrzyma", 50,
-				"cudowna krew", 4,
-				"kolorowe kulki", 30,
-				"fragment glifu", 3
-			)),
-			Map.entry("glif Strzyboga", Map.of(
-				"piórko", 100,
-				"pióro anioła", 40,
-				"cudowna krew", 3,
-				"bursztyn", 20,
-				"ametyst", 32,
-				"fragment glifu", 4
-			)),
-			Map.entry("glif Jarowita", Map.of(
-				"magia ziemi", 1000,
-				"magia płomieni", 800,
-				"magia deszczu", 800,
-				"magia mrozu", 600,
-				"magia wiatru", 400,
-				"magia mroku", 400,
-				"magia światła", 300,
-				"kryształ obsydianu", 11,
-				"fragment glifu", 3
-			)),
-			Map.entry("glif kryzysu", Map.of(
-				"kości do gry", 1,
-				"diament", 14,
-				"ząb potwora", 3,
-				"sztabka platyny", 40,
-				"sztabka miedzi", 32,
-				"fragment glifu", 2
-			)),
-			Map.entry("glif krwi", Map.of(
-				"wampirza krew", 36,
-				"truchło nietoperza", 14,
-				"truchło wampira", 22,
-				"obsydian", 22,
-				"fragment glifu", 3
-			))
-		);
+		Map<String, Map<String, Integer>> glyphConfig = new LinkedHashMap<String, Map<String, Integer>>();
+		glyphConfig.put("glif daru Mokoszy", createResourceMap(
+			"serce olbrzyma", 100,
+			"smocza krew", 40,
+			"fragment glifu", 4
+		));
+		glyphConfig.put("glif siły", createResourceMap(
+			"miecz", 1,
+			"kieł smoka", 20,
+			"kość dla psa", 50,
+			"fragment glifu", 2
+		));
+		glyphConfig.put("glif Peruna", createResourceMap(
+			"glif siły", 1,
+			"rubin", 18,
+			"pióro azazela", 12,
+			"pióro lilith", 4,
+			"fragment glifu", 5
+		));
+		glyphConfig.put("glif czaszy", createResourceMap(
+			"kieł złotej kostuchy", 1,
+			"pióro archanioła", 22,
+			"ruda srebra", 40,
+			"fragment glifu", 3
+		));
+		glyphConfig.put("glif tarczy", createResourceMap(
+			"bryłka mithrilu", 30,
+			"lodowa tarcza", 1,
+			"ruda żelaza", 100,
+			"fragment glifu", 2
+		));
+		glyphConfig.put("glif Swaroga", createResourceMap(
+			"glif tarczy", 1,
+			"szafir", 22,
+			"pióro serafina", 16,
+			"pióro cherubina", 4,
+			"fragment glifu", 5
+		));
+		glyphConfig.put("glif Tytana", createResourceMap(
+			"glif tarczy", 1,
+			"glif siły", 1,
+			"serce olbrzyma", 50,
+			"cudowna krew", 4,
+			"kolorowe kulki", 30,
+			"fragment glifu", 3
+		));
+		glyphConfig.put("glif Strzyboga", createResourceMap(
+			"piórko", 100,
+			"pióro anioła", 40,
+			"cudowna krew", 3,
+			"bursztyn", 20,
+			"ametyst", 32,
+			"fragment glifu", 4
+		));
+		glyphConfig.put("glif Jarowita", createResourceMap(
+			"magia ziemi", 1000,
+			"magia płomieni", 800,
+			"magia deszczu", 800,
+			"magia mrozu", 600,
+			"magia wiatru", 400,
+			"magia mroku", 400,
+			"magia światła", 300,
+			"kryształ obsydianu", 11,
+			"fragment glifu", 3
+		));
+		glyphConfig.put("glif kryzysu", createResourceMap(
+			"kości do gry", 1,
+			"diament", 14,
+			"ząb potwora", 3,
+			"sztabka platyny", 40,
+			"sztabka miedzi", 32,
+			"fragment glifu", 2
+		));
+		glyphConfig.put("glif krwi", createResourceMap(
+			"wampirza krew", 36,
+			"truchło nietoperza", 14,
+			"truchło wampira", 22,
+			"obsydian", 22,
+			"fragment glifu", 3
+		));
 
 		glyphConfig.forEach((glyphName, resources) -> {
 			Glyph glyph = glyphManager.createGlyph(glyphName);
 			resources.forEach(glyph::addResource);
 		});
+	}
+
+	private Map<String, Integer> createResourceMap(final Object... keyValuePairs) {
+		Map<String, Integer> resources = new LinkedHashMap<String, Integer>();
+		for (int i = 0; i < keyValuePairs.length; i += 2) {
+			String key = (String) keyValuePairs[i];
+			Integer value = (Integer) keyValuePairs[i + 1];
+			resources.put(key, value);
+		}
+		return resources;
 	}
 
 	/**
