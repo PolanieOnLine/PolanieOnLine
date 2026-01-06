@@ -13,7 +13,6 @@ package games.stendhal.server.entity.item;
 
 import java.util.Map;
 
-import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.TurnNotifier;
 import games.stendhal.server.entity.Entity;
@@ -23,9 +22,8 @@ import games.stendhal.server.entity.mapstuff.spawner.FlowerGrower;
 import games.stendhal.server.entity.player.Player;
 
 /**
- * A seed can be planted.
- * The plant action defines the behaviour (e.g. only plantable on fertile ground).
- * The itemdata stores what it will grow.
+ * A seed can be planted. The plant action defines the behaviour (e.g. only
+ * plantable on fertile ground). The itemdata stores what it will grow.
  */
 public class Seed extends StackableItem {
 	public Seed(final Seed item) {
@@ -66,24 +64,21 @@ public class Seed extends StackableItem {
 	/**
 	 * Plants a seed in ground.
 	 *
-	 * @param sower
-	 *   Entity that is sowing seed.
-	 * @param x
-	 *   Map position on X axis where seed is to be sown.
-	 * @param y
-	 *   Map position on Y axis where seed is to be sown.
-	 * @return
-	 *   `true` if seed was sown.
+	 * @param sower Entity that is sowing seed.
+	 * @param x     Map position on X axis where seed is to be sown.
+	 * @param y     Map position on Y axis where seed is to be sown.
+	 * @return `true` if seed was sown.
 	 */
 	private boolean sow(final RPEntity sower, final int x, final int y) {
 		final StendhalRPZone zone = sower.getZone();
 		boolean fertile = false;
-		for (final Entity ent: zone.getEntitiesAt(x, y)) {
+		for (final Entity ent : zone.getEntitiesAt(x, y)) {
 			if (ent instanceof FertileGround) {
 				// check for fertile ground
 				fertile = true;
 			} else if (ent instanceof FlowerGrower) {
-				// check if we are overwriting another flower grower so seeds are not wasted & don't
+				// check if we are overwriting another flower grower so seeds are not wasted &
+				// don't
 				// allow infinite sowing in one spot
 				sower.sendPrivateText("Tutaj już coś rośnie.");
 				return false;
@@ -122,13 +117,16 @@ public class Seed extends StackableItem {
 		String seed_desc = getDescription();
 		final String flower_name = getItemData();
 		if (flower_name != null) {
-			seed_desc = seed_desc.replaceFirst(flower_name, Grammar.variation(flower_name));
+			final String seed_type = getName();
+			final String seed_name = seed_type + " " + flower_name;
+			seed_desc = seed_desc.replaceFirst(seed_type, seed_name);
 		}
 		return seed_desc;
 	}
 
 	/**
-	 * This is overridden so that sprite image can be updated whenever "itemdata" attribute is set.
+	 * This is overridden so that sprite image can be updated whenever "itemdata"
+	 * attribute is set.
 	 */
 	@Override
 	public void put(final String attribute, final String value) {
@@ -149,8 +147,8 @@ public class Seed extends StackableItem {
 		} else {
 			// daisies image is default for seed
 			if (!"stokrotki".equals(value)) {
-				final String daisies = value.replaceFirst("stokrotki", "daisies");
-				super.put("subclass", "seed_" + daisies.replace(" ", "_"));
+				final String flower = value.replaceFirst("bratek", "pansy");
+				super.put("subclass", "seed_" + flower.replace(" ", "_"));
 			}
 		}
 	}

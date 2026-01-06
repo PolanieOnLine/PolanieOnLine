@@ -44,8 +44,8 @@ public class SeedSellerBehaviour extends SellerBehaviour {
 	@Override
 	public Item getAskedItem(final String askedItem, final Player player) {
 		final String[] tokens = askedItem.split(" ");
-		final StackableItem item = (StackableItem) SingletonRepository.getEntityManager().getItem(tokens[1]);
-		item.setItemData(tokens[0]);
+		final StackableItem item = (StackableItem) SingletonRepository.getEntityManager().getItem(tokens[0]);
+		item.setItemData(tokens[1]);
 		return item;
 	}
 }
