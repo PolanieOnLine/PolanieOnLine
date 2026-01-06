@@ -1126,9 +1126,6 @@ button.windowtitleminimize:first-child {
 }
 
 #attack-button {
-/* 	position: absolute;
-	right: 32px;
-	bottom: 140px; */
 	width: 64px;
 	height: 64px;
 	background: transparent url(/data/gui/panel/attack_btn.png) center center / contain no-repeat;
@@ -1150,6 +1147,16 @@ button.windowtitleminimize:first-child {
 	padding: 0;
 	pointer-events: auto;
 	z-index: 105;
+}
+
+#attack-button-container {
+	position: absolute;
+	inset: 0;
+	pointer-events: none;
+}
+
+#attack-button-container > button {
+	pointer-events: auto;
 }
 
 body.mobile-floating-ui #right-panel-toggle,

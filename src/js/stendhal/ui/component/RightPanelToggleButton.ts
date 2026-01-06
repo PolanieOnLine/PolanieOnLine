@@ -50,6 +50,7 @@ export class RightPanelToggleButton extends Component {
 
 		this.update();
 		window.addEventListener("resize", this.boundUpdate);
+		window.addEventListener("scroll", this.boundUpdate);
 	}
 
 	/**
@@ -61,6 +62,7 @@ export class RightPanelToggleButton extends Component {
 		}
 		this.componentElement.classList.add("hidden");
 		window.removeEventListener("resize", this.boundUpdate);
+		window.removeEventListener("scroll", this.boundUpdate);
 	}
 
 	public setExpanded(expanded: boolean) {
@@ -75,29 +77,36 @@ export class RightPanelToggleButton extends Component {
 		const viewport = document.getElementById("viewport");
 		const attackButton = document.getElementById("attack-button");
 		const margin = 16;
-		const separation = 8;
+		const separation = 12;
 		const width = this.componentElement.offsetWidth || 48;
 		const height = this.componentElement.offsetHeight || 48;
+		const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
+		const scrollTop = window.scrollY || document.documentElement.scrollTop;
 
-		let left = margin;
-		let top = margin;
+		let left = margin + scrollLeft;
+		let top = margin + scrollTop;
 
-		if (attackButton) {
-			const rect = attackButton.getBoundingClientRect();
-			left = rect.left;
-			top = rect.top - height - separation;
-			if (top < margin && viewport) {
-				const vpRect = viewport.getBoundingClientRect();
-				left = vpRect.right - width - margin;
-				top = vpRect.top + margin;
-			}
-		} else if (viewport) {
+		if (viewport) {
 			const rect = viewport.getBoundingClientRect();
-			left = rect.right - width - margin;
-			top = rect.bottom - height * 2 - separation;
+			const safeLeft = rect.right + scrollLeft - width - margin;
+			const safeTop = rect.bottom + scrollTop - height - separation;
+
+			if (attackButton) {
+				const attackRect = attackButton.getBoundingClientRect();
+				left = attackRect.left + scrollLeft;
+				top = attackRect.top + scrollTop - height - separation;
+
+				const minTop = rect.top + scrollTop + margin;
+				if (top < minTop) {
+					top = safeTop;
+				}
+			} else {
+				left = safeLeft;
+				top = safeTop;
+			}
 		}
 
-		this.componentElement.style.position = "fixed";
+		this.componentElement.style.position = "absolute";
 		this.componentElement.style.left = left + "px";
 		this.componentElement.style.top = top + "px";
 	}

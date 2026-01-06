@@ -57,6 +57,7 @@ export class LootButton extends Component {
 
 		this.update();
 		window.addEventListener("resize", this.boundUpdate);
+		window.addEventListener("scroll", this.boundUpdate);
 	}
 
 	public unmount() {
@@ -66,6 +67,7 @@ export class LootButton extends Component {
 		this.componentElement.classList.add("hidden");
 		this.setBusy(false);
 		window.removeEventListener("resize", this.boundUpdate);
+		window.removeEventListener("scroll", this.boundUpdate);
 		this.clearCooldown();
 	}
 
@@ -186,23 +188,25 @@ export class LootButton extends Component {
 		const margin = 20;
 		const width = this.componentElement.offsetWidth || 32;
 		const height = this.componentElement.offsetHeight || 32;
+		const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
+		const scrollTop = window.scrollY || document.documentElement.scrollTop;
 
-		let left = margin;
-		let top = margin;
+		let left = margin + scrollLeft;
+		let top = margin + scrollTop;
 
 		if (viewport) {
 			const rect = viewport.getBoundingClientRect();
 			if (attackButton) {
 				const attackRect = attackButton.getBoundingClientRect();
-				left = attackRect.left - width - margin;
-				top = attackRect.top;
+				left = attackRect.left + scrollLeft - width - margin;
+				top = attackRect.top + scrollTop;
 			} else {
-				left = rect.right - width * 2 - margin * 2;
-				top = rect.bottom - height - margin;
+				left = rect.right + scrollLeft - width * 2 - margin * 2;
+				top = rect.bottom + scrollTop - height - margin;
 			}
 		}
 
-		this.componentElement.style.position = "fixed";
+		this.componentElement.style.position = "absolute";
 		this.componentElement.style.left = left + "px";
 		this.componentElement.style.top = top + "px";
 	}

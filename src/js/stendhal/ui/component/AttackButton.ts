@@ -78,6 +78,7 @@ export class AttackButton extends Component {
 
 		this.update();
 		window.addEventListener("resize", this.boundUpdate);
+		window.addEventListener("scroll", this.boundUpdate);
 	}
 
 	/**
@@ -90,6 +91,7 @@ export class AttackButton extends Component {
 		this.componentElement.classList.add("hidden");
 		this.setBusy(false);
 		window.removeEventListener("resize", this.boundUpdate);
+		window.removeEventListener("scroll", this.boundUpdate);
 		this.clearRepeat();
 	}
 
@@ -206,19 +208,19 @@ export class AttackButton extends Component {
 		const margin = 20;
 		const width = this.componentElement.offsetWidth || 64;
 		const height = this.componentElement.offsetHeight || 64;
+		const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
+		const scrollTop = window.scrollY || document.documentElement.scrollTop;
 
-		let left = margin;
-		let top = margin;
+		let left = margin + scrollLeft;
+		let top = margin + scrollTop;
 
 		if (viewport) {
 			const rect = viewport.getBoundingClientRect();
-			left = rect.right - width - margin;
-			top = rect.bottom - height - margin;
+			left = rect.right + scrollLeft - width - margin;
+			top = rect.bottom + scrollTop - height - margin;
 		}
 
-		// Use fixed positioning to place the button relative to the viewport,
-		// making it independent of its original container's layout.
-		this.componentElement.style.position = "fixed";
+		this.componentElement.style.position = "absolute";
 		this.componentElement.style.left = left + "px";
 		this.componentElement.style.top = top + "px";
 	}
