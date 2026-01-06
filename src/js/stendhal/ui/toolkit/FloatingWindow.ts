@@ -199,30 +199,27 @@ export class FloatingWindow extends Component {
 
 		const dialogArea = this.componentElement.getBoundingClientRect();
 		const clientArea = document.documentElement.getBoundingClientRect();
+		const viewportWidth = window.visualViewport?.width || window.innerWidth || clientArea.width;
 
 		// clientArea.height is 0, if there are now child elements (e. g. on login / choose character dialogs)
 		let clientAreaHeight = clientArea.height;
 		if (clientAreaHeight == 0) {
-			clientAreaHeight = window.visualViewport?.height || 200;
+			clientAreaHeight = window.visualViewport?.height || window.innerHeight || 200;
 		}
+		const viewportHeight = clientAreaHeight;
 
 		const offset = stendhal.ui.getPageOffset();
 
-		let newX = dialogArea.x;
-		let newY = dialogArea.y;
+		const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
+		const maxX = Math.max(0, viewportWidth - dialogArea.width);
+		const maxY = Math.max(0, viewportHeight - dialogArea.height);
+		const newX = clamp(dialogArea.x, 0, maxX);
+		const newY = clamp(dialogArea.y, 0, maxY);
 
-		if (newX < 0) {
-			newX = 0;
-			this.componentElement.style.left = (offset.x + newX) + "px";
-		} else if (dialogArea.x + dialogArea.width > clientArea.right + offset.x) {
-			newX = clientArea.right - dialogArea.width;
+		if (newX !== dialogArea.x) {
 			this.componentElement.style.left = (offset.x + newX) + "px";
 		}
-		if (newY < 0) {
-			newY = 0;
-			this.componentElement.style.top = (offset.y + newY) + "px";
-		} else if (dialogArea.y + dialogArea.height > clientAreaHeight) {
-			newY = clientAreaHeight - dialogArea.height;
+		if (newY !== dialogArea.y) {
 			this.componentElement.style.top = (offset.y + newY) + "px";
 		}
 
