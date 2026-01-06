@@ -3,6 +3,7 @@ manifest.mf
 nbbuild.xml
 nbproject
 
+/.vs
 /.settings
 build_client
 build_client_sound_data
