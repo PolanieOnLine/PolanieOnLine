@@ -10,10 +10,9 @@
  ***************************************************************************/
 
 import { Entity } from "./Entity";
-import { singletons } from "../SingletonRepo";
 import { MenuItem } from "../action/MenuItem";
 
-const config = singletons.getConfigManager();
+import { singletons } from "../SingletonRepo";
 
 declare var marauroa: any;
 
@@ -142,8 +141,11 @@ export const ItemMap: {[index: string]: any} = {
 				cursor = imap.cursor;
 			}
 		}
-		if (cursor === "itemuse" && !config.getBoolean("inventory.double-click")) {
-			cursor = "activity";
+		if (cursor === "itemuse") {
+			const config = singletons.getConfigManager();
+			if (!config.getBoolean("inventory.double-click")) {
+				cursor = "activity";
+			}
 		}
 		return cursor;
 	},
