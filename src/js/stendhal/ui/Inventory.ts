@@ -17,6 +17,7 @@ import { ItemContainerImplementation } from "./component/ItemContainerImplementa
 export class Inventory {
 
 	private inventory: ItemContainerImplementation[] = [];
+	private dirty = true;
 
 	/** Singleton instance. */
 	private static instance: Inventory;
@@ -40,9 +41,17 @@ export class Inventory {
 	}
 
 	update() {
+		if (!this.dirty) {
+			return;
+		}
+		this.dirty = false;
 		for (var i in this.inventory) {
 			this.inventory[i].update();
 		}
+	}
+
+	markDirty() {
+		this.dirty = true;
 	}
 
 	getInventory(): ItemContainerImplementation[] {
@@ -67,12 +76,14 @@ export class Inventory {
 
 	add(comp: ItemContainerImplementation) {
 		this.inventory.push(comp);
+		this.dirty = true;
 	}
 
 	remove(comp: ItemContainerImplementation) {
 		const idx = this.inventory.indexOf(comp);
 		if (idx > -1) {
 			this.inventory.splice(idx, 1);
+			this.dirty = true;
 		}
 	}
 

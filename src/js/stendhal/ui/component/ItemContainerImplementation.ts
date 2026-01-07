@@ -32,9 +32,12 @@ export class ItemContainerImplementation {
 	private timestampMouseDown = 0;
 	private timestampMouseDownPrev = 0;
 	private lastClickedId = "";
+	private static nextAnimationUpdate = 0;
+	private static readonly animationIntervalMs = 100;
+	private allowAnimation = false;
 
 	// marked for updating certain attributes
-	private dirty = false;
+	private dirty = true;
 
 
 	// TODO: replace usage of global document.getElementById()
@@ -104,10 +107,24 @@ export class ItemContainerImplementation {
 	 */
 	public markDirty() {
 		this.dirty = true;
+		stendhal.ui.equip.markDirty();
 	}
 
 	public update() {
+		const now = Date.now();
+		const allowAnimation = now >= ItemContainerImplementation.nextAnimationUpdate;
+		if (!this.dirty && !allowAnimation) {
+			return;
+		}
+		if (allowAnimation) {
+			ItemContainerImplementation.nextAnimationUpdate = now + ItemContainerImplementation.animationIntervalMs;
+		}
+		this.allowAnimation = allowAnimation;
 		this.render();
+		this.allowAnimation = false;
+		if (!this.allowAnimation) {
+			this.dirty = false;
+		}
 	}
 
 	public render() {
@@ -125,7 +142,7 @@ export class ItemContainerImplementation {
 				const item = <Item> o;
 				let xOffset = 0;
 				let yOffset = (item["state"] || 0) * -32;
-				if (item.isAnimated()) {
+				if (item.isAnimated() && this.allowAnimation) {
 					item.stepAnimation();
 					xOffset = -(item.getXFrameIndex() * 32);
 				}
