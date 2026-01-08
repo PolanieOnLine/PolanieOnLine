@@ -21,6 +21,8 @@ export class RightPanelToggleButton extends Component {
 
 	private readonly boundUpdate: () => void;
 	private resizeObserver?: ResizeObserver;
+	private mutationObserver?: MutationObserver;
+	private readonly boundTransitionEnd: (evt: TransitionEvent) => void;
 
 	constructor() {
 		const element = document.createElement("button");
@@ -36,6 +38,11 @@ export class RightPanelToggleButton extends Component {
 		listener.onClick = () => UiStateStore.get().toggleRightPanel();
 
 		this.boundUpdate = this.update.bind(this);
+		this.boundTransitionEnd = (evt: TransitionEvent) => {
+			if (evt.propertyName === "width" || evt.propertyName === "flex-basis" || evt.propertyName === "transform") {
+				this.update();
+			}
+		};
 	}
 
 	/**
@@ -67,6 +74,10 @@ export class RightPanelToggleButton extends Component {
 		window.removeEventListener("scroll", this.boundUpdate);
 		this.resizeObserver?.disconnect();
 		this.resizeObserver = undefined;
+		this.mutationObserver?.disconnect();
+		this.mutationObserver = undefined;
+		const rightColumn = document.getElementById("rightColumn");
+		rightColumn?.removeEventListener("transitionend", this.boundTransitionEnd);
 	}
 
 	public setExpanded(expanded: boolean) {
@@ -80,6 +91,7 @@ export class RightPanelToggleButton extends Component {
 		}
 		const viewport = document.getElementById("viewport");
 		const rightColumn = document.getElementById("rightColumn");
+		const clientRoot = document.getElementById("client");
 		if (!viewport && !rightColumn) {
 			return;
 		}
@@ -89,6 +101,11 @@ export class RightPanelToggleButton extends Component {
 		}
 		if (rightColumn) {
 			this.resizeObserver.observe(rightColumn);
+			rightColumn.addEventListener("transitionend", this.boundTransitionEnd);
+		}
+		if (clientRoot) {
+			this.mutationObserver = new MutationObserver(() => this.update());
+			this.mutationObserver.observe(clientRoot, { attributes: true, attributeFilter: ["class"] });
 		}
 	}
 

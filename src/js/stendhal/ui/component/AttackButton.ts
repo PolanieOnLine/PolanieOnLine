@@ -37,6 +37,8 @@ export class AttackButton extends Component {
 	private longPressTriggered = false;
 	private readonly boundUpdate: () => void;
 	private resizeObserver?: ResizeObserver;
+	private mutationObserver?: MutationObserver;
+	private readonly boundTransitionEnd: (evt: TransitionEvent) => void;
 	private handedness: UiHandedness = UiHandedness.RIGHT;
 
 	constructor() {
@@ -62,6 +64,11 @@ export class AttackButton extends Component {
 		this.componentElement.addEventListener("pointercancel", () => this.onPressEnd());
 
 		this.boundUpdate = this.update.bind(this);
+		this.boundTransitionEnd = (evt: TransitionEvent) => {
+			if (evt.propertyName === "width" || evt.propertyName === "flex-basis" || evt.propertyName === "transform") {
+				this.update();
+			}
+		};
 	}
 
 	/**
@@ -96,7 +103,11 @@ export class AttackButton extends Component {
 		window.removeEventListener("scroll", this.boundUpdate);
 		this.resizeObserver?.disconnect();
 		this.resizeObserver = undefined;
+		this.mutationObserver?.disconnect();
+		this.mutationObserver = undefined;
 		this.clearRepeat();
+		const rightColumn = document.getElementById("rightColumn");
+		rightColumn?.removeEventListener("transitionend", this.boundTransitionEnd);
 	}
 
 	/**
@@ -180,6 +191,7 @@ export class AttackButton extends Component {
 		}
 		const viewport = document.getElementById("viewport");
 		const rightColumn = document.getElementById("rightColumn");
+		const clientRoot = document.getElementById("client");
 		if (!viewport && !rightColumn) {
 			return;
 		}
@@ -189,6 +201,11 @@ export class AttackButton extends Component {
 		}
 		if (rightColumn) {
 			this.resizeObserver.observe(rightColumn);
+			rightColumn.addEventListener("transitionend", this.boundTransitionEnd);
+		}
+		if (clientRoot) {
+			this.mutationObserver = new MutationObserver(() => this.update());
+			this.mutationObserver.observe(clientRoot, { attributes: true, attributeFilter: ["class"] });
 		}
 	}
 
