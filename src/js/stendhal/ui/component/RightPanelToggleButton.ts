@@ -12,6 +12,7 @@
 import { Component } from "../toolkit/Component";
 import { UiStateStore } from "../mobile/UiStateStore";
 import { ElementClickListener } from "../../util/ElementClickListener";
+import { getViewportOverlayPosition } from "../overlay/ViewportOverlayPosition";
 
 
 /**
@@ -100,53 +101,43 @@ export class RightPanelToggleButton extends Component {
 	 * Positions the toggle near the attack button when possible.
 	 */
 	public update(): void {
-		const viewport = document.getElementById("viewport");
 		const attackButton = document.getElementById("attack-button");
 		const margin = 16;
 		const separation = 12;
 		const width = this.componentElement.offsetWidth || 48;
 		const height = this.componentElement.offsetHeight || 48;
-		const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
-		const scrollTop = window.scrollY || document.documentElement.scrollTop;
-
-		let left = margin + scrollLeft;
-		let top = margin + scrollTop;
-		let safeLeft = left;
-		let safeTop = top;
-		let safeRight = scrollLeft + document.documentElement.clientWidth - width - margin;
-		let safeBottom = scrollTop + document.documentElement.clientHeight - height - margin;
-
-		if (viewport) {
-			const rect = viewport.getBoundingClientRect();
-			const fallbackLeft = rect.right + scrollLeft - width - margin;
-			const fallbackTop = rect.bottom + scrollTop - height - separation;
-			const safeBoundsLeft = rect.left + scrollLeft + margin;
-			const safeBoundsTop = rect.top + scrollTop + margin;
-			const safeBoundsRight = rect.right + scrollLeft - width - margin;
-			const safeBoundsBottom = rect.bottom + scrollTop - height - margin;
-
-			if (attackButton) {
-				const attackRect = attackButton.getBoundingClientRect();
-				left = attackRect.left + scrollLeft;
-				top = attackRect.top + scrollTop - height - separation;
-
-				const minTop = rect.top + scrollTop + margin;
-				if (top < minTop) {
-					top = fallbackTop;
-				}
-			} else {
-				left = fallbackLeft;
-				top = fallbackTop;
-			}
-
-			safeLeft = safeBoundsLeft;
-			safeTop = safeBoundsTop;
-			safeRight = safeBoundsRight;
-			safeBottom = safeBoundsBottom;
+		const bounds = getViewportOverlayPosition({
+			margin,
+			elementWidth: width,
+			elementHeight: height,
+			offsetBottom: separation - margin
+		});
+		if (!bounds) {
+			return;
 		}
 
-		const clampedLeft = Math.min(Math.max(left, safeLeft), safeRight < safeLeft ? safeLeft : safeRight);
-		const clampedTop = Math.min(Math.max(top, safeTop), safeBottom < safeTop ? safeTop : safeBottom);
+		let left = bounds.baseRight;
+		let top = bounds.baseBottom;
+
+		if (attackButton) {
+			const attackRect = attackButton.getBoundingClientRect();
+			left = attackRect.left + bounds.scrollLeft;
+			top = attackRect.top + bounds.scrollTop - height - separation;
+
+			const minTop = bounds.rect.top + bounds.scrollTop + margin;
+			if (top < minTop) {
+				top = bounds.baseBottom;
+			}
+		}
+
+		const clampedLeft = Math.min(
+			Math.max(left, bounds.safeLeft),
+			bounds.safeRight < bounds.safeLeft ? bounds.safeLeft : bounds.safeRight
+		);
+		const clampedTop = Math.min(
+			Math.max(top, bounds.safeTop),
+			bounds.safeBottom < bounds.safeTop ? bounds.safeTop : bounds.safeBottom
+		);
 
 		this.componentElement.style.position = "absolute";
 		this.componentElement.style.left = clampedLeft + "px";
