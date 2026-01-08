@@ -270,6 +270,9 @@ export class Client {
 		marauroa.clientFramework.onDisconnect = function(_reason: string, _error: string) {
 			if (!Client.instance.unloading) {
 				Chat.logH("error", "Odłączono od serwera.");
+				if (window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1" && window.location.hostname !== "::1") {
+					window.location.href = "/account/mycharacters.html";
+				}
 			}
 		}.bind(this);
 
