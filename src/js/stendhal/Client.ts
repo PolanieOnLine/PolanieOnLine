@@ -1,5 +1,5 @@
 /***************************************************************************
- *                 Copyright © 2023-2024 - Faiumoni e. V.                  *
+ *                 Copyright © 2023-2026 - Faiumoni e. V.                  *
  ***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -19,6 +19,7 @@ import { Paths } from "./data/Paths";
 
 import { Color } from "./data/color/Color";
 
+import { EntityRegistry } from "./entity/EntityRegistry";
 import { Ground } from "./entity/Ground";
 import { RPObject } from "./entity/RPObject";
 
@@ -100,10 +101,10 @@ export class Client {
 		document.documentElement.setAttribute("data-build-version", stendhal.data.build.version);
 		document.documentElement.setAttribute("data-build-build", stendhal.data.build.build);
 
-		stendhal.paths = singletons.getPaths();
 		stendhal.config = singletons.getConfigManager();
 		stendhal.session = singletons.getSessionManager();
 		stendhal.actions = singletons.getSlashActionRepo();
+		new EntityRegistry().init();
 
 		this.initData();
 		this.initSound();
@@ -270,7 +271,7 @@ export class Client {
 			if (!Client.instance.unloading) {
 				Chat.logH("error", "Odłączono od serwera.");
 			}
-		};
+		}.bind(this);
 
 		marauroa.clientFramework.onLoginRequired = function(config: Record<string, string>) {
 			if (config["client_login_url"]) {
@@ -288,25 +289,25 @@ export class Client {
 				"Logowanie",
 				new LoginDialog(),
 				100, 50).enableCloseButton(false);
-		};
+		}.bind(this);
 
 		marauroa.clientFramework.onCreateAccountAck = function(username: string) {
 			// TODO: We should login automatically
 			alert("Konto zostało pomyślnie utworzone, proszę się zalogować.");
 			window.location.reload();
-		};
+		}.bind(this);
 
 		marauroa.clientFramework.onCreateCharacterAck = function(charname: string, _template: any) {
 			// Client.get().chooseCharacter(charname);
-		};
+		}.bind(this);
 
 		marauroa.clientFramework.onLoginFailed = function(_reason: string, _text: string) {
 			alert("Logowanie nie powiodło się. " + _text);
 			// TODO: Server closes the connection, so we need to open a new one
 			window.location.reload();
-		};
+		}.bind(this);
 
-		marauroa.clientFramework.onAvailableCharacterDetails = function(characters: { [key: string]: RPObject }) {
+		marauroa.clientFramework.onAvailableCharacterDetails = (characters: {[key: string]: RPObject}) => {
 			SingletonFloatingWindow.closeAll();
 			if (!Object.keys(characters).length && this.username) {
 				marauroa.clientFramework.createCharacter(this.username, {});
@@ -338,7 +339,7 @@ export class Client {
 				}
 				items[i]["ack"] = true;
 			}
-		};
+		}.bind(this);
 
 		marauroa.clientFramework.onTransfer = (items: any) => {
 			const data: Record<string, any> = {};
