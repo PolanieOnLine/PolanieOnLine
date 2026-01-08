@@ -15,6 +15,7 @@ import { Entity } from "./Entity";
 import { TextSprite } from "../sprite/TextSprite";
 import { RenderingContext2D } from "util/Types";
 import { Paths } from "../data/Paths";
+import { singletons } from "../SingletonRepo";
 import { ItemAnimationClock } from "./ItemAnimationClock";
 
 type FrameCounts = {
@@ -24,8 +25,6 @@ type FrameCounts = {
 
 declare var marauroa: any;
 declare var stendhal: any;
-
-import { Paths } from "../data/Paths";
 
 export class Item extends Entity {
 	private static readonly FRAME_SIZE = 32;
@@ -180,7 +179,7 @@ export class Item extends Entity {
 	}
 
 	public isAnimated(): boolean {
-		if (!stendhal.data.sprites.get(this.sprite.filename).height) {
+		if (!singletons.getSpriteStore().get(this.sprite.filename).height) {
 			return false;
 		}
 		if (this.animated == null) {
@@ -245,7 +244,7 @@ export class Item extends Entity {
 	}
 
 	private getFrameCounts() {
-		const img = stendhal.data.sprites.get(this.sprite.filename);
+		const img = singletons.getSpriteStore().get(this.sprite.filename);
 		const frameWidth = this.getFrameWidth();
 		const frameHeight = this.getFrameHeight();
 		const width = img && img.width ? img.width : frameWidth;
@@ -289,13 +288,13 @@ export class Item extends Entity {
 	}
 
 	private ensureSpriteReady(): HTMLImageElement | undefined {
-		const image = stendhal.data.sprites.get(this.sprite.filename);
+		const image = singletons.getSpriteStore().get(this.sprite.filename);
 		if (this.applySpriteDimensions(image)) {
 			return image;
 		}
 
 		if (!this.spriteLoadPromise) {
-			this.spriteLoadPromise = stendhal.data.sprites.getWithPromise(this.sprite.filename)
+			this.spriteLoadPromise = singletons.getSpriteStore().getWithPromise(this.sprite.filename)
 				.then((img: HTMLImageElement) => {
 					this.applySpriteDimensions(img);
 					if (stendhal?.ui?.gamewindow?.draw) {
