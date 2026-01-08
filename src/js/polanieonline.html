@@ -379,65 +379,66 @@
 				<!-- TODO: create dynamically with ui/toolkit/SettingsComponent class -->
 
 				<div class="horizontalgroup pad-contents" id="settings-general">
-					<div class="settings-general__toggle-columns">
-						<div id="settings_panel1" class="verticalgroup vgroupcol">
-							<label class="checksetting"><span class="settings-toggle"
-								data-toggle-id="chk_speechcr"></span>Dymki z mową stworów</label> <label
-								class="checksetting"><span class="settings-toggle"
-								data-toggle-id="chk_charname"></span>Nazwa postaci w panelu
-								statystyk</label> <label class="checksetting"><span
-								class="settings-toggle" data-toggle-id="chk_hpbar"></span>Pasek
-								zdrowia w panelu statystyk</label> <label class="checksetting"><span
-								class="settings-toggle" data-toggle-id="chk_floatchat"></span>Pływający
-								panel czatu</label> <label class="checksetting"><span
-								class="settings-toggle experimental"
-								data-toggle-id="chk_hidechat"></span>Automatyczne ukrywanie
-								panelu czatu</label> <label class="checksetting"><span
-								class="settings-toggle" data-toggle-id="chk_zoom"></span>Zoomowanie
-								dotykiem</label> <label class="checksetting"><span
-								class="settings-toggle" data-toggle-id="chk_dblclick"></span>Klikanie
-								dwukrotne przedmiotów</label> <label class="checksetting"><span
-								class="settings-toggle" data-toggle-id="chk_chestqp"></span>Szybkie
-								podnoszenie ze skrzyń i zwłok</label> <label class="checksetting"><span
-								class="settings-toggle" data-toggle-id="chk_movecont"></span>Ciągły
-								ruch</label> <label class="checksetting"><span
-								class="settings-toggle" data-toggle-id="chk_pvtsnd"></span>Powiadomienia
-								o wiadomościach prywatnych</label> <label class="checksetting"><span
-								class="settings-toggle experimental"
-								data-toggle-id="chk_nativeemojis"></span>Natywne emotikony</label>
+					<div class="settings-general__layout">
+						<div class="settings-general__toggle-columns">
+							<div id="settings_panel1" class="verticalgroup vgroupcol">
+								<label class="checksetting"><span class="settings-toggle"
+									data-toggle-id="chk_speechcr"></span>Dymki z mową stworów</label> <label
+									class="checksetting"><span class="settings-toggle"
+									data-toggle-id="chk_charname"></span>Nazwa postaci w panelu
+									statystyk</label> <label class="checksetting"><span
+									class="settings-toggle" data-toggle-id="chk_hpbar"></span>Pasek
+									zdrowia w panelu statystyk</label> <label class="checksetting"><span
+									class="settings-toggle" data-toggle-id="chk_floatchat"></span>Pływający
+									panel czatu</label> <label class="checksetting"><span
+									class="settings-toggle experimental"
+									data-toggle-id="chk_hidechat"></span>Automatyczne ukrywanie
+									panelu czatu</label> <label class="checksetting"><span
+									class="settings-toggle" data-toggle-id="chk_zoom"></span>Zoomowanie
+									dotykiem</label> <label class="checksetting"><span
+									class="settings-toggle" data-toggle-id="chk_dblclick"></span>Klikanie
+									dwukrotne przedmiotów</label> <label class="checksetting"><span
+									class="settings-toggle" data-toggle-id="chk_chestqp"></span>Szybkie
+									podnoszenie ze skrzyń i zwłok</label> <label class="checksetting"><span
+									class="settings-toggle" data-toggle-id="chk_movecont"></span>Ciągły
+									ruch</label> <label class="checksetting"><span
+									class="settings-toggle" data-toggle-id="chk_pvtsnd"></span>Powiadomienia
+									o wiadomościach prywatnych</label> <label class="checksetting"><span
+									class="settings-toggle experimental"
+									data-toggle-id="chk_nativeemojis"></span>Natywne emotikony</label>
+							</div>
+							<div id="settings_panel2" class="verticalgroup vgroupcol">
+								<label class="checksetting"><span class="settings-toggle"
+									data-toggle-id="chk_rightpanel_personalize"></span>Personalizuj
+									prawy panel</label>
+								<button id="btn_rightpanel_reset" type="button">Resetuj
+									układ</button>
+							</div>
 						</div>
-						<div id="settings_panel2" class="verticalgroup vgroupcol">
-							<label class="checksetting"><span class="settings-toggle"
-								data-toggle-id="chk_rightpanel_personalize"></span>Personalizuj
-								prawy panel</label>
-							<button id="btn_rightpanel_reset" type="button">Resetuj
-								układ</button>
-						</div>
-					</div>
-					<div id="settings_panel3" class="verticalgroup vgroupcolr">
-						<div>
-							<label for="selecttheme">Tło:</label> <select id="selecttheme"></select>
-						</div>
-						<div>
-							<label for="selfontbody">Główna czcionka:</label> <select
-								id="selfontbody"></select>
-						</div>
-						<div>
-							<label for="selfontchat">Czcionka dziennika czatu:</label> <select
-								id="selfontchat"></select>
-						</div>
-						<div>
-							<label for="selfonttlog">Czcionka dziennika zadań:</label> <select
-								id="selfonttlog"></select>
-						</div>
-						<div>
-							<label for="selmenustyle">Styl menu:</label> <select
-								id="selmenustyle"></select>
-						</div>
-						<div></div>
-						<div>
-							<label for="txtchatopts">Niestandardowe słowa czatu:</label> <input
-								type="text" id="txtchatopts">
+						<div id="settings_panel3" class="verticalgroup vgroupcolr">
+							<div>
+								<label for="selecttheme">Tło:</label> <select id="selecttheme"></select>
+							</div>
+							<div>
+								<label for="selfontbody">Główna czcionka:</label> <select
+									id="selfontbody"></select>
+							</div>
+							<div>
+								<label for="selfontchat">Czcionka dziennika czatu:</label> <select
+									id="selfontchat"></select>
+							</div>
+							<div>
+								<label for="selfonttlog">Czcionka dziennika zadań:</label> <select
+									id="selfonttlog"></select>
+							</div>
+							<div>
+								<label for="selmenustyle">Styl menu:</label> <select
+									id="selmenustyle"></select>
+							</div>
+							<div>
+								<label for="txtchatopts">Niestandardowe słowa czatu:</label> <input
+									type="text" id="txtchatopts">
+							</div>
 						</div>
 					</div>
 				</div>
@@ -464,35 +465,37 @@
 				</div>
 
 				<div class="horizontalgroup pad-contents" id="settings-input">
-					<div class="verticalgroup vgroupcol">
-						<label class="checksetting"><span class="settings-toggle"
-							data-toggle-id="chk_pathfinding"></span>Wyznaczanie ścieżki przez
-							ziemię</label> <label class="checksetting"><span
-							class="settings-toggle" data-toggle-id="chk_pathfindingmm"></span>Wyznaczanie
-							ścieżki przez minimapę</label>
-					</div>
-					<div class="verticalgroup vgroupcolr">
-						<div>
+					<div class="settings-input__layout">
+						<div class="verticalgroup vgroupcol">
 							<label class="checksetting"><span class="settings-toggle"
-								data-toggle-id="chk_attack_button"></span>Przycisk ataku</label>
+								data-toggle-id="chk_pathfinding"></span>Wyznaczanie ścieżki przez
+								ziemię</label> <label class="checksetting"><span
+								class="settings-toggle" data-toggle-id="chk_pathfindingmm"></span>Wyznaczanie
+								ścieżki przez minimapę</label>
 						</div>
-						<div>
-							<label class="checksetting"><span class="settings-toggle"
-								data-toggle-id="chk_attack_players"></span>Uwzględniaj graczy przy wyborze
-								celu</label>
-						</div>
-						<div>
-							<label class="checksetting"><span class="settings-toggle"
-								data-toggle-id="chk_joystick"></span>Joystick ekranowy:</label> <select
-								id="seljoystick"></select>
-						</div>
-						<div>
-							<label for="txtjoystickx">Środek joysticka X:</label> <input
-								type="number" id="txtjoystickx">
-						</div>
-						<div>
-							<label for="txtjoysticky">Środek joysticka Y:</label> <input
-								type="number" id="txtjoysticky">
+						<div class="verticalgroup vgroupcolr">
+							<div>
+								<label class="checksetting"><span class="settings-toggle"
+									data-toggle-id="chk_attack_button"></span>Przycisk ataku</label>
+							</div>
+							<div>
+								<label class="checksetting"><span class="settings-toggle"
+									data-toggle-id="chk_attack_players"></span>Uwzględniaj graczy przy wyborze
+									celu</label>
+							</div>
+							<div>
+								<label class="checksetting"><span class="settings-toggle"
+									data-toggle-id="chk_joystick"></span>Joystick ekranowy:</label> <select
+									id="seljoystick"></select>
+							</div>
+							<div>
+								<label for="txtjoystickx">Środek joysticka X:</label> <input
+									type="number" id="txtjoystickx">
+							</div>
+							<div>
+								<label for="txtjoysticky">Środek joysticka Y:</label> <input
+									type="number" id="txtjoysticky">
+							</div>
 						</div>
 					</div>
 				</div>
