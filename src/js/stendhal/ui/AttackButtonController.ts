@@ -84,8 +84,10 @@ export class AttackButtonController {
 		const store = UiStateStore.get();
 		this.unsubscribeHandedness = store.subscribe((state) => {
 			this.component?.setHandedness(state.handedness);
+			this.component?.update();
 		});
 		this.component.setHandedness(store.getState().handedness);
+		this.component.update();
 	}
 }
 

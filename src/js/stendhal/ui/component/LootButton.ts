@@ -185,6 +185,7 @@ export class LootButton extends Component {
 	public update(): void {
 		const viewport = document.getElementById("viewport");
 		const attackButton = document.getElementById("attack-button");
+		const rightColumn = document.getElementById("rightColumn");
 		const margin = 20;
 		const width = this.componentElement.offsetWidth || 32;
 		const height = this.componentElement.offsetHeight || 32;
@@ -212,6 +213,12 @@ export class LootButton extends Component {
 				left = rect.right + scrollLeft - width * 2 - margin * 2;
 				top = rect.bottom + scrollTop - height - margin;
 			}
+		}
+
+		if (rightColumn) {
+			const rightRect = rightColumn.getBoundingClientRect();
+			const rightBoundary = rightRect.left + scrollLeft - width - margin;
+			safeRight = Math.min(safeRight, rightBoundary);
 		}
 
 		const clampedLeft = Math.min(Math.max(left, safeLeft), safeRight < safeLeft ? safeLeft : safeRight);

@@ -76,6 +76,7 @@ export class RightPanelToggleButton extends Component {
 	public update(): void {
 		const viewport = document.getElementById("viewport");
 		const attackButton = document.getElementById("attack-button");
+		const rightColumn = document.getElementById("rightColumn");
 		const margin = 16;
 		const separation = 12;
 		const width = this.componentElement.offsetWidth || 48;
@@ -117,6 +118,12 @@ export class RightPanelToggleButton extends Component {
 			safeTop = safeBoundsTop;
 			safeRight = safeBoundsRight;
 			safeBottom = safeBoundsBottom;
+		}
+
+		if (rightColumn) {
+			const rightRect = rightColumn.getBoundingClientRect();
+			const rightBoundary = rightRect.left + scrollLeft - width - margin;
+			safeRight = Math.min(safeRight, rightBoundary);
 		}
 
 		const clampedLeft = Math.min(Math.max(left, safeLeft), safeRight < safeLeft ? safeLeft : safeRight);

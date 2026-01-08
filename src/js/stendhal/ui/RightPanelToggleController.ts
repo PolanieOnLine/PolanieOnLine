@@ -73,6 +73,7 @@ export class RightPanelToggleController {
 		const store = UiStateStore.get();
 		this.unsubscribeState = store.subscribe(({ rightPanelExpanded }) => {
 			this.component?.setExpanded(rightPanelExpanded);
+			this.component?.update();
 		});
 	}
 }
