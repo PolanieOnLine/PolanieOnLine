@@ -33,7 +33,6 @@ export class LootButton extends Component {
 	private readonly boundUpdate: () => void;
 	private resizeObserver?: ResizeObserver;
 	private mutationObserver?: MutationObserver;
-	private readonly boundTransitionEnd: (evt: TransitionEvent) => void;
 
 	constructor() {
 		const element = document.createElement("button");
@@ -48,11 +47,6 @@ export class LootButton extends Component {
 		listener.onClick = (evt: Event) => this.onActivate(evt);
 
 		this.boundUpdate = this.update.bind(this);
-		this.boundTransitionEnd = (evt: TransitionEvent) => {
-			if (evt.propertyName === "width" || evt.propertyName === "flex-basis" || evt.propertyName === "transform") {
-				this.update();
-			}
-		};
 	}
 
 	public mount() {
@@ -82,8 +76,6 @@ export class LootButton extends Component {
 		this.mutationObserver?.disconnect();
 		this.mutationObserver = undefined;
 		this.clearCooldown();
-		const rightColumn = document.getElementById("rightColumn");
-		rightColumn?.removeEventListener("transitionend", this.boundTransitionEnd);
 	}
 
 	public setBusy(busy: boolean) {
@@ -199,18 +191,13 @@ export class LootButton extends Component {
 			return;
 		}
 		const viewport = document.getElementById("viewport");
-		const rightColumn = document.getElementById("rightColumn");
 		const clientRoot = document.getElementById("client");
-		if (!viewport && !rightColumn) {
+		if (!viewport && !clientRoot) {
 			return;
 		}
-		this.resizeObserver = new ResizeObserver(() => this.update());
 		if (viewport) {
+			this.resizeObserver = new ResizeObserver(() => this.update());
 			this.resizeObserver.observe(viewport);
-		}
-		if (rightColumn) {
-			this.resizeObserver.observe(rightColumn);
-			rightColumn.addEventListener("transitionend", this.boundTransitionEnd);
 		}
 		if (clientRoot) {
 			this.mutationObserver = new MutationObserver(() => this.update());
@@ -224,7 +211,6 @@ export class LootButton extends Component {
 	public update(): void {
 		const viewport = document.getElementById("viewport");
 		const attackButton = document.getElementById("attack-button");
-		const rightColumn = document.getElementById("rightColumn");
 		const margin = 20;
 		const width = this.componentElement.offsetWidth || 32;
 		const height = this.componentElement.offsetHeight || 32;
@@ -252,12 +238,6 @@ export class LootButton extends Component {
 				left = rect.right + scrollLeft - width * 2 - margin * 2;
 				top = rect.bottom + scrollTop - height - margin;
 			}
-		}
-
-		if (rightColumn) {
-			const rightRect = rightColumn.getBoundingClientRect();
-			const rightBoundary = rightRect.left + scrollLeft - width - margin;
-			safeRight = Math.min(safeRight, rightBoundary);
 		}
 
 		const clampedLeft = Math.min(Math.max(left, safeLeft), safeRight < safeLeft ? safeLeft : safeRight);

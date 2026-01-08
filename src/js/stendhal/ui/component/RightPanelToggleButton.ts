@@ -22,7 +22,6 @@ export class RightPanelToggleButton extends Component {
 	private readonly boundUpdate: () => void;
 	private resizeObserver?: ResizeObserver;
 	private mutationObserver?: MutationObserver;
-	private readonly boundTransitionEnd: (evt: TransitionEvent) => void;
 
 	constructor() {
 		const element = document.createElement("button");
@@ -38,11 +37,6 @@ export class RightPanelToggleButton extends Component {
 		listener.onClick = () => UiStateStore.get().toggleRightPanel();
 
 		this.boundUpdate = this.update.bind(this);
-		this.boundTransitionEnd = (evt: TransitionEvent) => {
-			if (evt.propertyName === "width" || evt.propertyName === "flex-basis" || evt.propertyName === "transform") {
-				this.update();
-			}
-		};
 	}
 
 	/**
@@ -76,8 +70,6 @@ export class RightPanelToggleButton extends Component {
 		this.resizeObserver = undefined;
 		this.mutationObserver?.disconnect();
 		this.mutationObserver = undefined;
-		const rightColumn = document.getElementById("rightColumn");
-		rightColumn?.removeEventListener("transitionend", this.boundTransitionEnd);
 	}
 
 	public setExpanded(expanded: boolean) {
@@ -90,18 +82,13 @@ export class RightPanelToggleButton extends Component {
 			return;
 		}
 		const viewport = document.getElementById("viewport");
-		const rightColumn = document.getElementById("rightColumn");
 		const clientRoot = document.getElementById("client");
-		if (!viewport && !rightColumn) {
+		if (!viewport && !clientRoot) {
 			return;
 		}
-		this.resizeObserver = new ResizeObserver(() => this.update());
 		if (viewport) {
+			this.resizeObserver = new ResizeObserver(() => this.update());
 			this.resizeObserver.observe(viewport);
-		}
-		if (rightColumn) {
-			this.resizeObserver.observe(rightColumn);
-			rightColumn.addEventListener("transitionend", this.boundTransitionEnd);
 		}
 		if (clientRoot) {
 			this.mutationObserver = new MutationObserver(() => this.update());
@@ -115,7 +102,6 @@ export class RightPanelToggleButton extends Component {
 	public update(): void {
 		const viewport = document.getElementById("viewport");
 		const attackButton = document.getElementById("attack-button");
-		const rightColumn = document.getElementById("rightColumn");
 		const margin = 16;
 		const separation = 12;
 		const width = this.componentElement.offsetWidth || 48;
@@ -157,12 +143,6 @@ export class RightPanelToggleButton extends Component {
 			safeTop = safeBoundsTop;
 			safeRight = safeBoundsRight;
 			safeBottom = safeBoundsBottom;
-		}
-
-		if (rightColumn) {
-			const rightRect = rightColumn.getBoundingClientRect();
-			const rightBoundary = rightRect.left + scrollLeft - width - margin;
-			safeRight = Math.min(safeRight, rightBoundary);
 		}
 
 		const clampedLeft = Math.min(Math.max(left, safeLeft), safeRight < safeLeft ? safeLeft : safeRight);

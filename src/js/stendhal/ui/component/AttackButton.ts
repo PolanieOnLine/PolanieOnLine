@@ -38,7 +38,6 @@ export class AttackButton extends Component {
 	private readonly boundUpdate: () => void;
 	private resizeObserver?: ResizeObserver;
 	private mutationObserver?: MutationObserver;
-	private readonly boundTransitionEnd: (evt: TransitionEvent) => void;
 	private handedness: UiHandedness = UiHandedness.RIGHT;
 
 	constructor() {
@@ -64,11 +63,6 @@ export class AttackButton extends Component {
 		this.componentElement.addEventListener("pointercancel", () => this.onPressEnd());
 
 		this.boundUpdate = this.update.bind(this);
-		this.boundTransitionEnd = (evt: TransitionEvent) => {
-			if (evt.propertyName === "width" || evt.propertyName === "flex-basis" || evt.propertyName === "transform") {
-				this.update();
-			}
-		};
 	}
 
 	/**
@@ -106,8 +100,6 @@ export class AttackButton extends Component {
 		this.mutationObserver?.disconnect();
 		this.mutationObserver = undefined;
 		this.clearRepeat();
-		const rightColumn = document.getElementById("rightColumn");
-		rightColumn?.removeEventListener("transitionend", this.boundTransitionEnd);
 	}
 
 	/**
@@ -190,18 +182,13 @@ export class AttackButton extends Component {
 			return;
 		}
 		const viewport = document.getElementById("viewport");
-		const rightColumn = document.getElementById("rightColumn");
 		const clientRoot = document.getElementById("client");
-		if (!viewport && !rightColumn) {
+		if (!viewport && !clientRoot) {
 			return;
 		}
-		this.resizeObserver = new ResizeObserver(() => this.update());
 		if (viewport) {
+			this.resizeObserver = new ResizeObserver(() => this.update());
 			this.resizeObserver.observe(viewport);
-		}
-		if (rightColumn) {
-			this.resizeObserver.observe(rightColumn);
-			rightColumn.addEventListener("transitionend", this.boundTransitionEnd);
 		}
 		if (clientRoot) {
 			this.mutationObserver = new MutationObserver(() => this.update());
@@ -244,7 +231,6 @@ export class AttackButton extends Component {
 	 */
 	public update(): void {
 		const viewport = document.getElementById("viewport");
-		const rightColumn = document.getElementById("rightColumn");
 		const margin = 20;
 		const width = this.componentElement.offsetWidth || 64;
 		const height = this.componentElement.offsetHeight || 64;
@@ -266,12 +252,6 @@ export class AttackButton extends Component {
 			safeTop = rect.top + scrollTop + margin;
 			safeRight = rect.right + scrollLeft - width - margin;
 			safeBottom = rect.bottom + scrollTop - height - margin;
-		}
-
-		if (rightColumn) {
-			const rightRect = rightColumn.getBoundingClientRect();
-			const rightBoundary = rightRect.left + scrollLeft - width - margin;
-			safeRight = Math.min(safeRight, rightBoundary);
 		}
 
 		const clampedLeft = Math.min(Math.max(left, safeLeft), safeRight < safeLeft ? safeLeft : safeRight);
