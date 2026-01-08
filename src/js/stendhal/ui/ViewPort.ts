@@ -59,6 +59,12 @@ export class ViewPort {
 	private lastDeltaMs = 0;
 	/** Maximal delta time passed to updates to avoid huge jumps. */
 	private readonly maxDeltaMs = 250;
+	/** Current device pixel ratio. */
+	private devicePixelRatio = 1;
+	/** Logical viewport width in CSS pixels. */
+	private logicalWidth = 0;
+	/** Logical viewport height in CSS pixels. */
+	private logicalHeight = 0;
 
 	/**
 	 * Current canvas buffer width.
@@ -244,9 +250,11 @@ export class ViewPort {
 		if (rect.width === 0 || rect.height === 0) {
 			return false;
 		}
-		const pixelRatio = window.devicePixelRatio || 1;
-		const targetWidth = Math.round(rect.width * pixelRatio);
-		const targetHeight = Math.round(rect.height * pixelRatio);
+		this.devicePixelRatio = window.devicePixelRatio || 1;
+		this.logicalWidth = rect.width;
+		this.logicalHeight = rect.height;
+		const targetWidth = Math.round(rect.width * this.devicePixelRatio);
+		const targetHeight = Math.round(rect.height * this.devicePixelRatio);
 		if (canvas.width === targetWidth && canvas.height === targetHeight) {
 			return false;
 		}
@@ -685,9 +693,6 @@ export class ViewPort {
 	 *   Viewport canvas element.
 	 */
 	adjustView(canvas: Canvas) {
-		// IE does not support ctx.resetTransform(), so use the following workaround:
-		this.ctx.setTransform(1, 0, 0, 1, 0, 0);
-
 		const { targetX, targetY } = this.computeCameraTargets(canvas);
 
 		if (this.freeze) {
@@ -710,11 +715,13 @@ export class ViewPort {
 		const playerX = marauroa.me["_x"] * this.targetTileWidth + halfTileWidth;
 		const playerY = marauroa.me["_y"] * this.targetTileHeight + halfTileHeight;
 
-		const targetX = this.freeze ? this.offsetX : playerX - canvas.width / 2;
-		const targetY = this.freeze ? this.offsetY : playerY - canvas.height / 2;
+		const viewportWidth = this.logicalWidth || canvas.width / this.devicePixelRatio;
+		const viewportHeight = this.logicalHeight || canvas.height / this.devicePixelRatio;
+		const targetX = this.freeze ? this.offsetX : playerX - viewportWidth / 2;
+		const targetY = this.freeze ? this.offsetY : playerY - viewportHeight / 2;
 
-		const clampedX = Math.min(Math.max(targetX, 0), Math.max(0, mapWidth - canvas.width));
-		const clampedY = Math.min(Math.max(targetY, 0), Math.max(0, mapHeight - canvas.height));
+		const clampedX = Math.min(Math.max(targetX, 0), Math.max(0, mapWidth - viewportWidth));
+		const clampedY = Math.min(Math.max(targetY, 0), Math.max(0, mapHeight - viewportHeight));
 
 		return { targetX: clampedX, targetY: clampedY };
 	}
@@ -724,7 +731,14 @@ export class ViewPort {
 		this.cameraY = targetY;
 		this.offsetX = Math.round(this.cameraX);
 		this.offsetY = Math.round(this.cameraY);
-		this.ctx.translate(-this.offsetX, -this.offsetY);
+		this.ctx.setTransform(
+			this.devicePixelRatio,
+			0,
+			0,
+			this.devicePixelRatio,
+			-this.offsetX * this.devicePixelRatio,
+			-this.offsetY * this.devicePixelRatio,
+		);
 	}
 
 	/**

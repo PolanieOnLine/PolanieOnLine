@@ -1011,8 +1011,6 @@ body.mobile-floating-ui #viewport,
 }
 
 #client.mobile-floating-ui #middleColumn {
-	padding-left: 0.25em;
-	padding-right: 0.25em;
 	margin-left: 0;
 	margin-right: 0;
 }
