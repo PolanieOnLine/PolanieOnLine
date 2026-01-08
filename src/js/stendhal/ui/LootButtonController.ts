@@ -72,4 +72,3 @@ export class LootButtonController {
 		this.component.update();
 	}
 }
-

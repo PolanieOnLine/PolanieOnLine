@@ -90,4 +90,3 @@ export class AttackButtonController {
 		this.component.update();
 	}
 }
-

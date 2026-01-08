@@ -20,6 +20,7 @@ import { ElementClickListener } from "../../util/ElementClickListener";
 export class RightPanelToggleButton extends Component {
 
 	private readonly boundUpdate: () => void;
+	private resizeObserver?: ResizeObserver;
 
 	constructor() {
 		const element = document.createElement("button");
@@ -51,6 +52,7 @@ export class RightPanelToggleButton extends Component {
 		this.update();
 		window.addEventListener("resize", this.boundUpdate);
 		window.addEventListener("scroll", this.boundUpdate);
+		this.observeLayoutChanges();
 	}
 
 	/**
@@ -63,11 +65,31 @@ export class RightPanelToggleButton extends Component {
 		this.componentElement.classList.add("hidden");
 		window.removeEventListener("resize", this.boundUpdate);
 		window.removeEventListener("scroll", this.boundUpdate);
+		this.resizeObserver?.disconnect();
+		this.resizeObserver = undefined;
 	}
 
 	public setExpanded(expanded: boolean) {
 		this.componentElement.classList.toggle("right-panel-toggle--active", expanded);
 		this.componentElement.setAttribute("aria-pressed", expanded.toString());
+	}
+
+	private observeLayoutChanges() {
+		if (this.resizeObserver || typeof ResizeObserver === "undefined") {
+			return;
+		}
+		const viewport = document.getElementById("viewport");
+		const rightColumn = document.getElementById("rightColumn");
+		if (!viewport && !rightColumn) {
+			return;
+		}
+		this.resizeObserver = new ResizeObserver(() => this.update());
+		if (viewport) {
+			this.resizeObserver.observe(viewport);
+		}
+		if (rightColumn) {
+			this.resizeObserver.observe(rightColumn);
+		}
 	}
 
 	/**
@@ -134,4 +156,3 @@ export class RightPanelToggleButton extends Component {
 		this.componentElement.style.top = clampedTop + "px";
 	}
 }
-

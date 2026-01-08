@@ -31,6 +31,7 @@ export class LootButton extends Component {
 	private cooldownId?: number;
 	private handedness: UiHandedness = UiHandedness.RIGHT;
 	private readonly boundUpdate: () => void;
+	private resizeObserver?: ResizeObserver;
 
 	constructor() {
 		const element = document.createElement("button");
@@ -58,6 +59,7 @@ export class LootButton extends Component {
 		this.update();
 		window.addEventListener("resize", this.boundUpdate);
 		window.addEventListener("scroll", this.boundUpdate);
+		this.observeLayoutChanges();
 	}
 
 	public unmount() {
@@ -68,6 +70,8 @@ export class LootButton extends Component {
 		this.setBusy(false);
 		window.removeEventListener("resize", this.boundUpdate);
 		window.removeEventListener("scroll", this.boundUpdate);
+		this.resizeObserver?.disconnect();
+		this.resizeObserver = undefined;
 		this.clearCooldown();
 	}
 
@@ -179,6 +183,24 @@ export class LootButton extends Component {
 		}
 	}
 
+	private observeLayoutChanges() {
+		if (this.resizeObserver || typeof ResizeObserver === "undefined") {
+			return;
+		}
+		const viewport = document.getElementById("viewport");
+		const rightColumn = document.getElementById("rightColumn");
+		if (!viewport && !rightColumn) {
+			return;
+		}
+		this.resizeObserver = new ResizeObserver(() => this.update());
+		if (viewport) {
+			this.resizeObserver.observe(viewport);
+		}
+		if (rightColumn) {
+			this.resizeObserver.observe(rightColumn);
+		}
+	}
+
 	/**
 	 * Positions loot button adjacent to attack button placement.
 	 */
@@ -229,4 +251,3 @@ export class LootButton extends Component {
 		this.componentElement.style.top = clampedTop + "px";
 	}
 }
-

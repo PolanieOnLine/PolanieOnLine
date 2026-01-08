@@ -36,6 +36,7 @@ export class AttackButton extends Component {
 	private pressTimeoutId?: number;
 	private longPressTriggered = false;
 	private readonly boundUpdate: () => void;
+	private resizeObserver?: ResizeObserver;
 	private handedness: UiHandedness = UiHandedness.RIGHT;
 
 	constructor() {
@@ -79,6 +80,7 @@ export class AttackButton extends Component {
 		this.update();
 		window.addEventListener("resize", this.boundUpdate);
 		window.addEventListener("scroll", this.boundUpdate);
+		this.observeLayoutChanges();
 	}
 
 	/**
@@ -92,6 +94,8 @@ export class AttackButton extends Component {
 		this.setBusy(false);
 		window.removeEventListener("resize", this.boundUpdate);
 		window.removeEventListener("scroll", this.boundUpdate);
+		this.resizeObserver?.disconnect();
+		this.resizeObserver = undefined;
 		this.clearRepeat();
 	}
 
@@ -170,6 +174,24 @@ export class AttackButton extends Component {
 		this.longPressTriggered = false;
 	}
 
+	private observeLayoutChanges() {
+		if (this.resizeObserver || typeof ResizeObserver === "undefined") {
+			return;
+		}
+		const viewport = document.getElementById("viewport");
+		const rightColumn = document.getElementById("rightColumn");
+		if (!viewport && !rightColumn) {
+			return;
+		}
+		this.resizeObserver = new ResizeObserver(() => this.update());
+		if (viewport) {
+			this.resizeObserver.observe(viewport);
+		}
+		if (rightColumn) {
+			this.resizeObserver.observe(rightColumn);
+		}
+	}
+
 	/**
 	 * Temporarily highlight disabled state when no target found.
 	 */
@@ -243,4 +265,3 @@ export class AttackButton extends Component {
 		this.componentElement.style.top = clampedTop + "px";
 	}
 }
-
