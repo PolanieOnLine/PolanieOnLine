@@ -906,7 +906,7 @@ public class ClientView extends WebView {
 		final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
 		builder.setTitle("Logowanie");
 		builder.setView(layout);
-		builder.setCancelable(false);
+		builder.setCancelable(true);
 		final Runnable loginAction = new Runnable() {
 			@Override
 			public void run() {
@@ -930,6 +930,12 @@ public class ClientView extends WebView {
 				loginPass = "";
 				autoLoginAttempted = false;
 				startLoginFlow();
+			}
+		});
+		builder.setNeutralButton("Zamknij", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(final DialogInterface dialog, final int which) {
+				dialog.dismiss();
 			}
 		});
 		final AlertDialog dialog = builder.create();
