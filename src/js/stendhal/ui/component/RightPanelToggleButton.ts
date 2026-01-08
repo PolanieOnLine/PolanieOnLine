@@ -85,11 +85,19 @@ export class RightPanelToggleButton extends Component {
 
 		let left = margin + scrollLeft;
 		let top = margin + scrollTop;
+		let safeLeft = left;
+		let safeTop = top;
+		let safeRight = scrollLeft + document.documentElement.clientWidth - width - margin;
+		let safeBottom = scrollTop + document.documentElement.clientHeight - height - margin;
 
 		if (viewport) {
 			const rect = viewport.getBoundingClientRect();
-			const safeLeft = rect.right + scrollLeft - width - margin;
-			const safeTop = rect.bottom + scrollTop - height - separation;
+			const fallbackLeft = rect.right + scrollLeft - width - margin;
+			const fallbackTop = rect.bottom + scrollTop - height - separation;
+			const safeBoundsLeft = rect.left + scrollLeft + margin;
+			const safeBoundsTop = rect.top + scrollTop + margin;
+			const safeBoundsRight = rect.right + scrollLeft - width - margin;
+			const safeBoundsBottom = rect.bottom + scrollTop - height - margin;
 
 			if (attackButton) {
 				const attackRect = attackButton.getBoundingClientRect();
@@ -98,17 +106,25 @@ export class RightPanelToggleButton extends Component {
 
 				const minTop = rect.top + scrollTop + margin;
 				if (top < minTop) {
-					top = safeTop;
+					top = fallbackTop;
 				}
 			} else {
-				left = safeLeft;
-				top = safeTop;
+				left = fallbackLeft;
+				top = fallbackTop;
 			}
+
+			safeLeft = safeBoundsLeft;
+			safeTop = safeBoundsTop;
+			safeRight = safeBoundsRight;
+			safeBottom = safeBoundsBottom;
 		}
 
+		const clampedLeft = Math.min(Math.max(left, safeLeft), safeRight < safeLeft ? safeLeft : safeRight);
+		const clampedTop = Math.min(Math.max(top, safeTop), safeBottom < safeTop ? safeTop : safeBottom);
+
 		this.componentElement.style.position = "absolute";
-		this.componentElement.style.left = left + "px";
-		this.componentElement.style.top = top + "px";
+		this.componentElement.style.left = clampedLeft + "px";
+		this.componentElement.style.top = clampedTop + "px";
 	}
 }
 

@@ -193,9 +193,17 @@ export class LootButton extends Component {
 
 		let left = margin + scrollLeft;
 		let top = margin + scrollTop;
+		let safeLeft = left;
+		let safeTop = top;
+		let safeRight = scrollLeft + document.documentElement.clientWidth - width - margin;
+		let safeBottom = scrollTop + document.documentElement.clientHeight - height - margin;
 
 		if (viewport) {
 			const rect = viewport.getBoundingClientRect();
+			safeLeft = rect.left + scrollLeft + margin;
+			safeTop = rect.top + scrollTop + margin;
+			safeRight = rect.right + scrollLeft - width - margin;
+			safeBottom = rect.bottom + scrollTop - height - margin;
 			if (attackButton) {
 				const attackRect = attackButton.getBoundingClientRect();
 				left = attackRect.left + scrollLeft - width - margin;
@@ -206,9 +214,12 @@ export class LootButton extends Component {
 			}
 		}
 
+		const clampedLeft = Math.min(Math.max(left, safeLeft), safeRight < safeLeft ? safeLeft : safeRight);
+		const clampedTop = Math.min(Math.max(top, safeTop), safeBottom < safeTop ? safeTop : safeBottom);
+
 		this.componentElement.style.position = "absolute";
-		this.componentElement.style.left = left + "px";
-		this.componentElement.style.top = top + "px";
+		this.componentElement.style.left = clampedLeft + "px";
+		this.componentElement.style.top = clampedTop + "px";
 	}
 }
 
