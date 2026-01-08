@@ -1006,7 +1006,7 @@ div#menupanel #soundbutton {
 	display: block;
 	--viewport-max-height: calc(100dvh - 5em);
 	--viewport-max-width: 100%;
-	--viewport-min-render-width: 960px;
+	--viewport-min-render-width: 800px;
 	--viewport-min-render-height: 600px;
 	max-height: var(--viewport-max-height);
 	max-width: var(--viewport-max-width);
