@@ -39,7 +39,7 @@ export class ConfigManager {
 		"chat.history": "[]",
 		"chat.history.index": "0",
 		"chat.private.sound": "ui/notify_up",
-		"chat.visible": "false",
+		"chat.visible": "true",
 		"chat-opts.custom": "",
 		"attack.target.npc": "false",
 		"attack.target.players": "false",

@@ -147,6 +147,9 @@ export class UiStateStore {
 		if (stendhal.config.isSet("ui.chat.expanded")) {
 			return stendhal.config.getBoolean("ui.chat.expanded");
 		}
+		if (!stendhal.config.getBoolean("chat.float")) {
+			return true;
+		}
 		return stendhal.config.getBoolean("chat.visible");
 	}
 
@@ -172,7 +175,7 @@ export class UiStateStore {
 		return {
 			mode: UiMode.PANELS,
 			handedness: UiHandedness.RIGHT,
-			chatExpanded: false,
+			chatExpanded: this.resolveChatExpanded(),
 			rightPanelExpanded: this.resolveDefaultRightPanelExpanded()
 		};
 	}

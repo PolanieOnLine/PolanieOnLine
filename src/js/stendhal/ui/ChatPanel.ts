@@ -38,6 +38,7 @@ export class ChatPanel extends Panel {
 			// avoid notifying store again when the update originated from it
 			this.applyVisibility(chatExpanded, true);
 		});
+		this.ensureVisibleWhenDocked();
 	}
 
 	/**
@@ -77,6 +78,7 @@ export class ChatPanel extends Panel {
 	 */
 	public override refresh() {
 		const floating = this.isFloating();
+		this.ensureVisibleWhenDocked();
 		if (floating) {
 			const viewportRect = singletons.getViewPort().getElement().getBoundingClientRect();
 			const offsetParent = this.componentElement.offsetParent as HTMLElement | null;
@@ -154,6 +156,12 @@ export class ChatPanel extends Panel {
 		}
 		if (!fromStore) {
 			UiStateStore.get().setChatExpanded(visible);
+		}
+	}
+
+	private ensureVisibleWhenDocked() {
+		if (!this.isFloating() && !this.isVisible()) {
+			this.applyVisibility(true);
 		}
 	}
 }
