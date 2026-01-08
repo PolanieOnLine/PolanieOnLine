@@ -16,6 +16,8 @@ import { ui } from "../UI";
 import { SoftwareJoystickController } from "../SoftwareJoystickController";
 import { Direction } from "../../util/Direction";
 import { Point } from "../../util/Point";
+import { Paths } from "../../data/Paths";
+
 
 /**
  * On-screen movement control implementation.
@@ -64,7 +66,7 @@ export abstract class JoystickImpl {
 	 *   Path to image.
 	 */
 	public static getResource(basename: string): string {
-		return stendhal.paths.gui + "/joystick/" + basename + ".png";
+		return Paths.gui + "/joystick/" + basename + ".png";
 	}
 
 	/**
@@ -299,3 +301,4 @@ export abstract class JoystickImpl {
 		}, 300);
 	}
 }
+

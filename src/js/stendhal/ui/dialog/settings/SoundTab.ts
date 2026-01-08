@@ -77,3 +77,4 @@ export class SoundTab extends AbstractSettingsTab {
 		}
 	}
 }
+

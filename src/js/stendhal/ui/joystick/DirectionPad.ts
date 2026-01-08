@@ -162,3 +162,4 @@ export class DirectionPad extends JoystickImpl {
 		}
 	}
 }
+

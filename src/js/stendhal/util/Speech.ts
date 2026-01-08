@@ -85,3 +85,4 @@ export class Speech {
 		ctx.fill();
 	}
 }
+

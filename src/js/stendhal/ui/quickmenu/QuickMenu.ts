@@ -226,3 +226,4 @@ export class QuickMenu {
 		return document.getElementById("qm-main")! as HTMLImageElement;
 	}
 }
+

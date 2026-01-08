@@ -168,3 +168,4 @@ export abstract class WidgetComponent extends ComponentBase {
 		});
 	}
 }
+

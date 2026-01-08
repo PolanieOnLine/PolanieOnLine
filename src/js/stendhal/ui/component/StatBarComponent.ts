@@ -46,3 +46,4 @@ export class StatBarComponent extends Component {
 	}
 
 }
+

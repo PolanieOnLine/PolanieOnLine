@@ -192,3 +192,4 @@ export class SingletonRepo {
 }
 
 export const singletons = SingletonRepo;
+

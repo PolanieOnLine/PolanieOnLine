@@ -140,3 +140,4 @@ export class OutfitStore {
 		return this.detailRearLayers.indexOf(detail) > -1;
 	}
 }
+

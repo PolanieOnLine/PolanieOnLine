@@ -14,6 +14,7 @@ import { MenuItem } from "../action/MenuItem";
 import { Entity } from "./Entity";
 import { TextSprite } from "../sprite/TextSprite";
 import { RenderingContext2D } from "util/Types";
+import { Paths } from "../data/Paths";
 import { ItemAnimationClock } from "./ItemAnimationClock";
 
 type FrameCounts = {
@@ -23,6 +24,8 @@ type FrameCounts = {
 
 declare var marauroa: any;
 declare var stendhal: any;
+
+import { Paths } from "../data/Paths";
 
 export class Item extends Entity {
 	private static readonly FRAME_SIZE = 32;
@@ -82,7 +85,7 @@ export class Item extends Entity {
 	override set(key: string, value: any) {
 		super.set(key, value);
 		if (key === "class" || key === "subclass") {
-			this.sprite.filename = stendhal.paths.sprites + "/items/"
+			this.sprite.filename = Paths.sprites + "/items/"
 				+ this["class"] + "/" + this["subclass"] + ".png";
 		}
 		if (key === "quantity") {
@@ -163,7 +166,7 @@ export class Item extends Entity {
 		} else {
 			cursor = ItemMap.getCursor(this["class"], this["name"]);
 		}
-		return "url(" + stendhal.paths.sprites + "/cursor/" + cursor + ".png) 1 3, auto";
+		return "url(" + Paths.sprites + "/cursor/" + cursor + ".png) 1 3, auto";
 	}
 
 	public getToolTip(): string {
@@ -336,3 +339,4 @@ export class Item extends Entity {
 		return true;
 	}
 }
+

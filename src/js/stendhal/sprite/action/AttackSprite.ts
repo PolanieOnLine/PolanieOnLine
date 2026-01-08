@@ -33,3 +33,4 @@ export abstract class AttackSprite implements OverlaySpriteImpl {
 		return Date.now() - this.initTime > 180;
 	}
 }
+

@@ -12,11 +12,11 @@
 declare var marauroa: any;
 declare var stendhal: any;
 
+import { Paths } from "../Paths";
+
 import { SoundFactory } from "./SoundFactory";
 import { SoundObject } from "./SoundFactory";
 import { SoundLayer } from "./SoundLayer";
-
-import { singletons } from "../../SingletonRepo";
 
 import { ui } from "../../ui/UI";
 
@@ -244,7 +244,7 @@ export class SoundManager {
 		let snd = this.cache[soundName] || this.cacheGlobal[soundName];
 		if (!snd) {
 			// add new sound to cache
-			snd = this.load(soundName, stendhal.paths.sounds + "/" + soundName + ".ogg", false, loop);
+			snd = this.load(soundName, Paths.sounds + "/" + soundName + ".ogg", false, loop);
 		}
 
 		if (!this.cache[soundName]) {
@@ -406,7 +406,7 @@ export class SoundManager {
 		volume = 1.0): SoundObject | undefined {
 		// load into cache so playEffect doesn't look in "data/sounds"
 		if (!this.cache[musicName]) {
-			this.load(musicName, stendhal.paths.music + "/" + musicName + ".ogg", false, true);
+			this.load(musicName, Paths.music + "/" + musicName + ".ogg", false, true);
 		}
 		return this.playLocalizedLoop(x, y, radius, layer, musicName, volume);
 	}
@@ -424,7 +424,7 @@ export class SoundManager {
 	playGlobalizedMusic(musicName: string, volume = 1.0): SoundObject | undefined {
 		// load into cache so playEffect doesn't look in "data/sounds"
 		if (!this.cache[musicName]) {
-			this.load(musicName, stendhal.paths.music + "/" + musicName + ".ogg", false, true);
+			this.load(musicName, Paths.music + "/" + musicName + ".ogg", false, true);
 		}
 		return this.playGlobalizedLoop(musicName, "music", volume);
 	}
@@ -796,6 +796,7 @@ export class SoundManager {
 	startupCache() {
 		// login sound
 		this.load("ui/login",
-			stendhal.paths.sounds + "/ui/login.ogg", true, false);
+			Paths.sounds + "/ui/login.ogg", true, false);
 	}
 }
+

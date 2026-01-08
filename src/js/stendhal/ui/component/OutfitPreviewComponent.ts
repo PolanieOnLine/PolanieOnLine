@@ -140,3 +140,4 @@ export class OutfitPreviewComponent extends Component {
 		ctx.drawImage(this.image, this.index * w, (this.dir.val - 1) * h, w, h, 0, 0, w, h);
 	}
 }
+

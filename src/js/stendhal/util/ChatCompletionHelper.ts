@@ -230,3 +230,4 @@ export class ChatCompletionHelper {
 		this.playerIndex = -1;
 	}
 }
+

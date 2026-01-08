@@ -141,3 +141,4 @@ export class MathUtil {
 		return slice ? h.slice(-6) : h;
 	}
 }
+

@@ -26,3 +26,4 @@ export class ImageViewerDialog extends Component {
 	}
 
 }
+

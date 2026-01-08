@@ -172,3 +172,4 @@ export class ImagePreloader extends Function {
 		console.error("Loading " + this.src + " was aborted");
 	}
 }
+

@@ -47,3 +47,4 @@ export class MagicBagComponent extends ItemInventoryComponent {
 		this.itemContainerImplementation.init(sizeX * sizeY);
 	}
 }
+

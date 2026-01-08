@@ -87,3 +87,4 @@ export namespace EntityOverlayRegistry {
 		return new SkillEffect(aniDef[0], aniDef[1]);
 	}
 }
+

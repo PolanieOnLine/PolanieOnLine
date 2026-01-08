@@ -49,3 +49,4 @@ export class ItemAnimationClock {
 		return this.frameIndexCache.get(key) || 0;
 	}
 }
+

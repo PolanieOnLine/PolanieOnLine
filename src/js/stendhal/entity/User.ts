@@ -296,3 +296,4 @@ export class User extends Player {
 		marauroa.clientFramework.sendAction(action);
 	}
 }
+

@@ -198,3 +198,4 @@ export class HTMLManager {
 		return id.replace(/[0-9]$/, "");
 	}
 }
+

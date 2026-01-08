@@ -42,3 +42,4 @@ export class PathFindingButton extends QuickMenuButton {
 		this.update();
 	}
 }
+

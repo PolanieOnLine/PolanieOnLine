@@ -19,3 +19,4 @@ export abstract class AbstractSettingsTab extends Component {
 		super(element, true);
 	}
 }
+

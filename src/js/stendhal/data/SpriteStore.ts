@@ -688,3 +688,4 @@ store.filter['trueColor'] = function(data: any, color: number) {
 		data[i + 2] = resultRgb[2];
 	}
 };
+

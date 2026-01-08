@@ -68,3 +68,4 @@ export namespace StringUtil {
 		return "data:" + mime + ";charset=" + charset + "," + window.encodeURIComponent(text);
 	};
 }
+

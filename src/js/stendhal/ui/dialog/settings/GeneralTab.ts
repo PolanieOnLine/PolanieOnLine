@@ -214,3 +214,4 @@ export class GeneralTab extends AbstractSettingsTab {
 		});
 	}
 }
+

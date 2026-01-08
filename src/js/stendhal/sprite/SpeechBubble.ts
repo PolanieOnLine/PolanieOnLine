@@ -99,3 +99,4 @@ export class SpeechBubble extends TextBubble {
 		return y;
 	}
 }
+

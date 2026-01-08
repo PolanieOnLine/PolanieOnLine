@@ -161,3 +161,4 @@ export class HeldObjectManager {
 		document.body.removeEventListener("touchend", hom.onReleaseWhileHeld);
 	}
 }
+

@@ -397,3 +397,4 @@ export class FloatingWindow extends Component {
 		this.applyPreferredWidth();
 	}
 }
+

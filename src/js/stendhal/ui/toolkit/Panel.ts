@@ -71,3 +71,4 @@ export class Panel extends Component {
 		this.containerElement.innerHTML = "";
 	}
 }
+

@@ -249,3 +249,4 @@ export class ScreenCapture {
 		return ScreenCapture.active;
 	}
 }
+

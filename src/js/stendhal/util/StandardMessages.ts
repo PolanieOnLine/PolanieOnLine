@@ -31,3 +31,4 @@ export class StandardMessages {
 		Chat.log("client", "Changes will take effect after changing maps or reloading page.");
 	}
 }
+

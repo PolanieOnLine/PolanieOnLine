@@ -88,3 +88,4 @@ export class AttackButtonController {
 		this.component.setHandedness(store.getState().handedness);
 	}
 }
+

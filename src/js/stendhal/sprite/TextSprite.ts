@@ -45,3 +45,4 @@ export class TextSprite {
 		return this.textMetrics;
 	}
 }
+

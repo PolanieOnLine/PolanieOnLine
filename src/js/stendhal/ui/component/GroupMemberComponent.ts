@@ -139,3 +139,4 @@ export class GroupMemberComponent extends Component {
 		this.hpBar.drawBase();
 	}
 }
+

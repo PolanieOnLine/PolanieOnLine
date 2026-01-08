@@ -21,6 +21,7 @@ import { Item } from "../../entity/Item";
 import { singletons } from "../../SingletonRepo";
 
 import { Point } from "../../util/Point";
+import { Paths } from "../../data/Paths";
 
 
 /**
@@ -137,7 +138,7 @@ export class ItemContainerImplementation {
 				xOffset = -(animationFrame * 32);
 
 				e.style.backgroundImage = "url("
-						+ stendhal.data.sprites.checkPath(stendhal.paths.sprites
+						+ stendhal.data.sprites.checkPath(Paths.sprites
 								+ "/items/" + o["class"] + "/" + o["subclass"] + ".png")
 						+ ")";
 				e.style.backgroundPosition = (xOffset+1) + "px " + (yOffset+1) + "px";
@@ -154,7 +155,7 @@ export class ItemContainerImplementation {
 		for (let i = cnt; i < this.size; i++) {
 			let e = this.parentElement.querySelector("#" + this.slot +this. suffix + i) as HTMLElement;
 			if (this.defaultImage) {
-				e.style.backgroundImage = "url(" + stendhal.paths.gui + "/" + this.defaultImage + ")";
+				e.style.backgroundImage = "url(" + Paths.gui + "/" + this.defaultImage + ")";
 			} else {
 				e.style.backgroundImage = "none";
 			}
@@ -433,14 +434,14 @@ export class ItemContainerImplementation {
 	private updateCursor(target: HTMLElement, item?: Item) {
 		if (item) {
 			if (this.slot === "content" && stendhal.config.getBoolean("inventory.quick-pickup")) {
-				target.style.cursor = "url(" + stendhal.paths.sprites
+				target.style.cursor = "url(" + Paths.sprites
 						+ "/cursor/itempickupfromslot.png) 1 3, auto";
 				return;
 			}
 			target.style.cursor = item.getCursor(0, 0);
 			return;
 		}
-		target.style.cursor = "url(" + stendhal.paths.sprites
+		target.style.cursor = "url(" + Paths.sprites
 				+ "/cursor/normal.png) 1 3, auto";
 	}
 
@@ -456,3 +457,4 @@ export class ItemContainerImplementation {
 		target.title = typeof(item) !== "undefined" ? item.getToolTip() : "";
 	}
 }
+

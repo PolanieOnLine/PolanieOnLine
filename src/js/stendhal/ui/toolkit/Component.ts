@@ -136,3 +136,4 @@ export abstract class Component extends ComponentBase {
 		this.setVisible(!this.isVisible());
 	}
 }
+

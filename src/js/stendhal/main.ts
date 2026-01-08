@@ -33,3 +33,4 @@ function initGlobals() {
 	document.addEventListener('DOMContentLoaded', stendhal.main.startup);
 	window.addEventListener('error', stendhal.main.onerror);
 })();
+

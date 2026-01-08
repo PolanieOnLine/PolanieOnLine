@@ -47,3 +47,4 @@ export class KeyCode {
 		return e.keyCode;
 	}
 }
+

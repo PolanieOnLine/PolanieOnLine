@@ -70,3 +70,4 @@ export class LootButtonController {
 		this.component.setHandedness(store.getState().handedness);
 	}
 }
+

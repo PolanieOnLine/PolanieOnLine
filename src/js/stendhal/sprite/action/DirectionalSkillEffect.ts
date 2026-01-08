@@ -56,3 +56,4 @@ export class DirectionalSkillEffect extends SkillEffect {
 			drawWidth, drawHeight);
 	}
 }
+

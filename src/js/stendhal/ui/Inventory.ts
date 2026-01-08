@@ -86,3 +86,4 @@ export class Inventory {
 		return this.inventory.indexOf(comp);
 	}
 }
+

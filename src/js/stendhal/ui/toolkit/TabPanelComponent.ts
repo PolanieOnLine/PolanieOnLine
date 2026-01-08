@@ -133,3 +133,4 @@ export class TabPanelComponent extends Panel {
 		this.setCurrentTab(Number.parseInt((event.target as HTMLElement).dataset.index!, 10));
 	}
 }
+

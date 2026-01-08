@@ -117,3 +117,4 @@ export class DesktopUserInterfaceFactory {
 		ui.registerComponent(uiComponentEnum, component);
 	}
 }
+

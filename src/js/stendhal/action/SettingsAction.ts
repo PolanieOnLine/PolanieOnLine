@@ -39,3 +39,4 @@ export class SettingsAction extends SlashAction {
 		return true;
 	}
 }
+

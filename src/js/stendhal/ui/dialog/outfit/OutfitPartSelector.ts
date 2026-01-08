@@ -9,9 +9,11 @@
  *                                                                         *
  ***************************************************************************/
 
+import { Paths } from "../../../data/Paths";
 import { RenderingContext2D } from "util/Types";
 
 declare var stendhal: any;
+
 
 export class OutfitPartSelector {
 	private _part: string;
@@ -106,10 +108,11 @@ export class OutfitPartSelector {
 
 		// FIXME: need to draw "busty" dress variants for body index 1
 
-		const fname = stendhal.paths.sprites + "/outfit/" + part + "/" + this.indexString(index) + suffix;
+		const fname = Paths.sprites + "/outfit/" + part + "/" + this.indexString(index) + suffix;
 		if (color != null) {
 			return stendhal.data.sprites.getFilteredWithPromise(fname, "trueColor", color);
 		}
 		return stendhal.data.sprites.getWithPromise(fname);
 	}
 }
+

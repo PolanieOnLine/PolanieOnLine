@@ -121,3 +121,4 @@ export class DrawingStage {
 		this.ctx.drawImage(image, 0, 0);
 	}
 }
+

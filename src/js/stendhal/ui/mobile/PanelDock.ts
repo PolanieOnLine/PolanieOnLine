@@ -51,3 +51,4 @@ export class PanelDock {
 		this.root.classList.toggle("right-panel-collapsed", !showRight);
 	}
 }
+

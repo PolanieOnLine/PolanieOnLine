@@ -103,3 +103,4 @@ export abstract class Sprite {
 	 */
 	abstract isConstant(): boolean;
 }
+

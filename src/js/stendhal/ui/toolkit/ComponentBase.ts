@@ -98,3 +98,4 @@ export abstract class ComponentBase {
 		}
 	}
 }
+

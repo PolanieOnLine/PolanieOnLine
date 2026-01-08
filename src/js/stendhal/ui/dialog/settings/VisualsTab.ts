@@ -92,3 +92,4 @@ export class VisualsTab extends AbstractSettingsTab {
 		chkEntityOverlay.addTo(col1);
 	}
 }
+

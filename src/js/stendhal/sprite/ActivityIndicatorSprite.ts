@@ -70,3 +70,4 @@ export class ActivityIndicatorSprite {
 		ctx.drawImage(ActivityIndicatorSprite.img, dim * this.frameIdx, 0, dim, dim, dx + width - dim, dy, dim, dim);
 	}
 }
+

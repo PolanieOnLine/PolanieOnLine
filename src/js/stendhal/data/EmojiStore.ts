@@ -134,3 +134,4 @@ export class EmojiStore {
 		return [...this.emojilist];
 	}
 }
+

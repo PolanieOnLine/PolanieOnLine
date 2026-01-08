@@ -54,3 +54,4 @@ export class PerceptionListener {
 		return this._super.onAdded(obj);
 	}
 }
+

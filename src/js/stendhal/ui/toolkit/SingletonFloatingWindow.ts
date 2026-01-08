@@ -48,3 +48,4 @@ export class SingletonFloatingWindow extends FloatingWindow {
 		}
 	}
 }
+

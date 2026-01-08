@@ -259,3 +259,4 @@ export class PlayerStatsComponent extends Component {
 		return false;
 	}
 }
+

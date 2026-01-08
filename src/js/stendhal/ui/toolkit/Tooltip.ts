@@ -73,3 +73,4 @@ export class Tooltip extends Pair<string, string|undefined> {
 		this.setState(this.element.title !== this.first);
 	}
 }
+

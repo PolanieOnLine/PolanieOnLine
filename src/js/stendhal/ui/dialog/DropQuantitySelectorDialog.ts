@@ -70,3 +70,4 @@ export class DropQuantitySelectorDialog extends Component {
 		event.preventDefault();
 	}
 }
+

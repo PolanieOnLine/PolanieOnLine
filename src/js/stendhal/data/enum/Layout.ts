@@ -20,3 +20,4 @@ export const enum Layout {
 	LEFT,
 	RIGHT
 }
+

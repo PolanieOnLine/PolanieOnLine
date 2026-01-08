@@ -71,3 +71,4 @@ export class BarehandAttackSprite extends AttackSprite {
 		return this.expired();
 	}
 }
+

@@ -25,6 +25,8 @@ import { Debug } from "../util/Debug";
 declare var marauroa: any;
 declare var stendhal: any;
 
+import { Paths } from "../data/Paths";
+
 /**
  * performances debugging actions
  */
@@ -139,7 +141,7 @@ export class DebugAction extends SlashAction {
 
 		if (weather) {
 			weather = weather.replace(/ /g, "_");
-			const wfilename = stendhal.paths.weather + "/" + weather + ".png";
+			const wfilename = Paths.weather + "/" + weather + ".png";
 			if (!stendhal.data.sprites.getCached(wfilename)) {
 				Chat.logH("error", "nieznana pogoda: " + wfilename);
 				return;
@@ -150,3 +152,4 @@ export class DebugAction extends SlashAction {
 	}
 
 };
+

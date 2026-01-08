@@ -503,3 +503,4 @@ export class GameLoop {
 		}
 	}
 }
+

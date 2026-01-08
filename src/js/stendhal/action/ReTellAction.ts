@@ -34,3 +34,4 @@ export class ReTellAction extends TellAction {
 		return ["<wiadomość>", "Wyślij prywatną wiadomość do ostatniego gracza, z którym wcześniej pisałeś."];
 	}
 }
+

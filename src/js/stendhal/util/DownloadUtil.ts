@@ -116,3 +116,4 @@ export class DownloadUtil {
 			+ DownloadUtil.timestamp() + ".txt", text);
 	}
 }
+

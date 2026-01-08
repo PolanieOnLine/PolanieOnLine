@@ -132,3 +132,4 @@ export class MeleeAttackSprite extends AttackSprite {
 		return this.expired();
 	}
 }
+

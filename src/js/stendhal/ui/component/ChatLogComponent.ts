@@ -428,3 +428,4 @@ class LogContextMenu extends Component {
 		}
 	}
 }
+

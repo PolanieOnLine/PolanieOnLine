@@ -17,3 +17,4 @@
 export class OptionsEnum {
 	[label: string]: string;
 }
+

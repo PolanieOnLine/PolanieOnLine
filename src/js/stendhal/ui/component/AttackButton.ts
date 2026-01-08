@@ -225,3 +225,4 @@ export class AttackButton extends Component {
 		this.componentElement.style.top = top + "px";
 	}
 }
+

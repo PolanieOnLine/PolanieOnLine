@@ -474,7 +474,7 @@ export class Client {
 			document.addEventListener("click", Client.handleClickIndicator);
 			document.addEventListener("touchend", Client.handleClickIndicator);
 		};
-		click_indicator.src = stendhal.paths.gui + "/click_indicator.png";
+		click_indicator.src = Paths.gui + "/click_indicator.png";
 	}
 
 	/**
@@ -545,7 +545,7 @@ export class Client {
 	 */
 	onMouseEnter(e: MouseEvent) {
 		// use Stendhal's built-in cursor for entire page
-		(e.target as HTMLElement).style.cursor = "url(" + stendhal.paths.sprites + "/cursor/normal.png) 1 3, auto";
+		(e.target as HTMLElement).style.cursor = "url(" + Paths.sprites + "/cursor/normal.png) 1 3, auto";
 	}
 
 	/**
@@ -571,3 +571,4 @@ export class Client {
 		}, 300);
 	}
 }
+

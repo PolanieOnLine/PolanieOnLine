@@ -38,3 +38,4 @@ export class SoundButton extends QuickMenuButton {
 		stendhal.sound.toggleSound();
 	}
 }
+

@@ -127,3 +127,4 @@ export class FacingHandler {
 		this.faceTo(this.getNextDir(Rotation.COUNTERCLOCKWISE));
 	}
 }
+

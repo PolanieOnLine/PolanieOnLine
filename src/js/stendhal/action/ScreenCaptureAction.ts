@@ -40,3 +40,4 @@ export class ScreenCaptureAction extends SlashAction {
 		return true;
 	}
 }
+

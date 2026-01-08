@@ -73,3 +73,4 @@ marauroa.rpobjectFactory["visible_entity"] = VisibleEntity;
 marauroa.rpobjectFactory["walkblocker"] = WalkBlocker;
 marauroa.rpobjectFactory["wall"] = InvisibleEntity;
 marauroa.rpobjectFactory["weather_entity"] = InvisibleEntity;
+

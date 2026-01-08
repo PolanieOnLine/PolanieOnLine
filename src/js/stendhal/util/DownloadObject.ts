@@ -47,3 +47,4 @@ export class DownloadObject {
 		return true;
 	}
 }
+

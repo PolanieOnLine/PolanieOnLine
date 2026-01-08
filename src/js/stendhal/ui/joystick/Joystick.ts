@@ -346,3 +346,4 @@ export class Joystick extends JoystickImpl {
 		return Math.pow(Math.abs(relX), 2) + Math.pow(Math.abs(relY), 2) >= Math.pow(this.radius, 2);
 	}
 }
+

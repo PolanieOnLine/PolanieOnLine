@@ -70,3 +70,4 @@ export class ProgressStatusAction extends SlashAction {
 		return ["", "Otwórz okno dialogowe dziennika podróży."];
 	}
 }
+

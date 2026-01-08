@@ -9,7 +9,7 @@
  *                                                                         *
  ***************************************************************************/
 
-declare var stendhal: any;
+import { Paths } from "../data/Paths";
 
 
 /**
@@ -51,7 +51,7 @@ export class Nature {
 	 *     Sprite path.
 	 */
 	getWeaponPath(weapon: string): string {
-		let path = stendhal.paths.sprites + "/combat/" + weapon;
+		let path = Paths.sprites + "/combat/" + weapon;
 		if (typeof(this.elem) !== "undefined") {
 			path += "_" + this.elem;
 		}
@@ -59,3 +59,4 @@ export class Nature {
 		return path + ".png";
 	}
 }
+

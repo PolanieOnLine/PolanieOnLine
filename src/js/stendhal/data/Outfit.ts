@@ -16,6 +16,8 @@ import { StringUtil } from "../util/StringUtil";
 
 declare var stendhal: any;
 
+import { Paths } from "./Paths";
+
 
 /**
  * Represents an entity's sprite layers.
@@ -235,7 +237,7 @@ export class Outfit {
 				layerName = layerName.replace(/-rear$/, "");
 			}
 			const layerIndex = l.second;
-			let layerPath = stendhal.paths.sprites + "/outfit/" + layerName + "/"
+			let layerPath = Paths.sprites + "/outfit/" + layerName + "/"
 					+ StringUtil.padLeft(""+layerIndex, "0", 3) + suffix;
 			if (layerName === "body" && stendhal.config.getBoolean("effect.no-nude")) {
 				// FIXME: some non-player pickable bodies don't have "no-nude" variant
@@ -290,3 +292,4 @@ export class Outfit {
 		}
 	}
 }
+

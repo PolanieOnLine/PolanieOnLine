@@ -27,3 +27,4 @@ export class LoopedSoundSource extends InvisibleEntity {
 		return typeof(LoopedSoundSourceManager.get().getSources()[this["id"]]) !== "undefined";
 	}
 }
+

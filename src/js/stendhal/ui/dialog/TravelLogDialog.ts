@@ -9,12 +9,14 @@
  *                                                                         *
  ***************************************************************************/
 
+import { Paths } from "../../data/Paths";
 import { DialogContentComponent } from "../toolkit/DialogContentComponent";
 import { ui } from "../UI";
 import { UIComponentEnum } from "../UIComponentEnum";
 
 declare var marauroa: any;
 declare var stendhal: any;
+
 
 /**
  * a dialog to display images
@@ -167,7 +169,7 @@ export class TravelLogDialog extends DialogContentComponent {
 		detailsSpan.innerHTML = "<h3>" + stendhal.ui.html.esc(selectedItem) + "</h3>";
 		if (this.repeatable[selectedItem]) {
 			detailsSpan.innerHTML += "<p id=\"travellogrepeatable\">"
-				+ "<img src=\"" + stendhal.paths.gui + "/rp.png\" /> <em>Mogę wykonać to zadanie jeszcze raz.</em></p>";
+				+ "<img src=\"" + Paths.gui + "/rp.png\" /> <em>Mogę wykonać to zadanie jeszcze raz.</em></p>";
 		}
 
 		detailsSpan.innerHTML += "<p id=\"travellogdescription\">"
@@ -225,3 +227,4 @@ export class TravelLogDialog extends DialogContentComponent {
 		this.repeatable = repeatable;
 	}
 }
+

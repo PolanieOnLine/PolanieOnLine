@@ -57,3 +57,4 @@ export class KeyringComponent extends ItemInventoryComponent {
 		this.itemContainerImplementation.init(sizeX * sizeY);
 	}
 }
+

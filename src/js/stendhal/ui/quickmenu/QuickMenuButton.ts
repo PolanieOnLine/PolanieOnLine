@@ -95,3 +95,4 @@ export abstract class QuickMenuButton extends Component {
 		// implementing classes can override
 	}
 }
+

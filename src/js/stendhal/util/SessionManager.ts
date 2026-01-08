@@ -9,6 +9,8 @@
  *                                                                         *
  ***************************************************************************/
 
+import { Paths } from "../data/Paths";
+
 declare var stendhal: any;
 
 
@@ -197,7 +199,7 @@ export class SessionManager {
 	 *   `true` if data path root is set to "/testdata".
 	 */
 	isTestClient(): boolean {
-		return stendhal.paths.data === "/testdata";
+		return Paths.data === "/testdata";
 	}
 
 	/**
@@ -262,3 +264,4 @@ export class SessionManager {
 		return !window.matchMedia("(pointer: fine)").matches;
 	}
 }
+

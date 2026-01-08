@@ -272,3 +272,4 @@ export class SettingsComponent extends WidgetComponent {
 		}
 	}
 }
+

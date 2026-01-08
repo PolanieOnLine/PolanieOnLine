@@ -94,3 +94,4 @@ export class RPObject {
 		return <RPObject> this._parent;
 	}
 }
+

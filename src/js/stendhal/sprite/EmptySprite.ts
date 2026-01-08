@@ -112,3 +112,4 @@ export class EmptySprite {
 		return true;
 	}
 }
+

@@ -13,6 +13,7 @@ import { RenderingContext2D } from "util/Types";
 import { MenuItem } from "../action/MenuItem";
 import { Chat } from "../util/Chat";
 import { RPObject } from "./RPObject";
+import { Paths } from "../data/Paths";
 
 declare var marauroa: any;
 declare var stendhal: any;
@@ -275,7 +276,7 @@ export class Entity extends RPObject {
 			cursor = this["cursor"];
 		}
 
-		return "url(" + stendhal.paths.sprites + "/cursor/" + cursor.toLowerCase().replace("_", "") + ".png) 1 3, auto";
+		return "url(" + Paths.sprites + "/cursor/" + cursor.toLowerCase().replace("_", "") + ".png) 1 3, auto";
 	}
 
 	/**
@@ -344,3 +345,4 @@ export class Entity extends RPObject {
 			&& ent_rect.bottom > view_rect.top && ent_rect.top < view_rect.bottom
 	}
 }
+

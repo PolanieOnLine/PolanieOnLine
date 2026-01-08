@@ -36,3 +36,4 @@ export class GroupInviteEvent extends RPEvent {
 		}
 	}
 }
+

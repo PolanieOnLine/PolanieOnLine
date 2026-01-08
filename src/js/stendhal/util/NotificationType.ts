@@ -41,3 +41,4 @@ export const NotificationType = {
 
 // immutable
 Object.freeze(NotificationType);
+

@@ -433,3 +433,4 @@ export abstract class TextBubble {
 		};
 	}
 }
+

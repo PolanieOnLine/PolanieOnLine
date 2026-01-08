@@ -111,3 +111,4 @@ export class RightPanelToggleButton extends Component {
 		this.componentElement.style.top = top + "px";
 	}
 }
+

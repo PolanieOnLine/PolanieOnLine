@@ -193,3 +193,4 @@ export class ImageSprite implements Sprite {
 		return this.createRegion(x, y, w, h, undefined);
 	}
 }
+

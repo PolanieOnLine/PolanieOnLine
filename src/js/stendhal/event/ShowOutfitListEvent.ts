@@ -143,3 +143,4 @@ export class ShowOutfitListEvent extends RPEvent {
 		return url;
 	}
 }
+

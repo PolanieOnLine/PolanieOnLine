@@ -55,3 +55,4 @@ export class TabDialogContentComponent extends DialogContentComponent {
 		this.tabs.addTab(label, content);
 	}
 }
+

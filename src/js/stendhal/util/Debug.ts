@@ -61,3 +61,4 @@ export class Debug {
 		return Debug.isActive(prop);
 	}
 }
+

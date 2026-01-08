@@ -43,3 +43,4 @@ export class EmojiSprite {
 		return Date.now() > this.timeStamp + 5000;
 	}
 }
+

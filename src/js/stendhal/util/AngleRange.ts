@@ -65,3 +65,4 @@ export class AngleRange {
 		return this.max - this.min;
 	}
 }
+

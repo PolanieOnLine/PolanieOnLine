@@ -82,3 +82,4 @@ export class GroupManager {
 		SlashActionRepo.get().execute("/group status");
 	}
 }
+

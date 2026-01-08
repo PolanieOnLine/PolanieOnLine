@@ -90,3 +90,4 @@ export class ElementClickListener {
 		}, this.doubleClickThreshold);
 	}
 }
+

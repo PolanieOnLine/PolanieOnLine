@@ -19,6 +19,7 @@ import { FloatingWindow } from "../ui/toolkit/FloatingWindow";
 import { ItemInventoryComponent } from "../ui/component/ItemInventoryComponent";
 
 import { Chat } from "../util/Chat";
+import { Paths } from "../data/Paths";
 
 declare var marauroa: any;
 declare var stendhal: any;
@@ -57,7 +58,7 @@ type ChestSpritePair = {
 const SPRITE_CACHE: { [key: string]: ChestSpritePair } = {};
 
 function translateSprite(name: string) {
-	return stendhal.paths.sprites + "/" + name + SPRITE_EXTENSION;
+	return Paths.sprites + "/" + name + SPRITE_EXTENSION;
 }
 
 function getSpritePair(name: string): ChestSpritePair {
@@ -256,7 +257,8 @@ export class Chest extends PopupInventory {
 	}
 
 	override getCursor(_x: number, _y: number) {
-		return "url(" + stendhal.paths.sprites + "/cursor/bag.png) 1 3, auto";
+		return "url(" + Paths.sprites + "/cursor/bag.png) 1 3, auto";
 	}
 
 }
+

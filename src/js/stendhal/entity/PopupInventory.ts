@@ -48,3 +48,4 @@ export class PopupInventory extends Entity {
 		return this.getDistanceTo(marauroa.me) <= this.maxDistToView;
 	}
 }
+

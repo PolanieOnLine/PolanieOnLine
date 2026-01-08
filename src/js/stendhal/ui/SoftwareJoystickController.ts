@@ -151,3 +151,4 @@ export class SoftwareJoystickController {
 		return this.joystick;
 	}
 }
+

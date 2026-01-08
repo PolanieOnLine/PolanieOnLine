@@ -36,3 +36,4 @@ export class ViewChangeEvent extends RPEvent {
 		});
 	}
 }
+

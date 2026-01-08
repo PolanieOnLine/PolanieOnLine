@@ -99,3 +99,4 @@ export class SkillEffect implements OverlaySpriteImpl {
 		return this.expires > 0 && this.drawTime > this.expires;
 	}
 }
+

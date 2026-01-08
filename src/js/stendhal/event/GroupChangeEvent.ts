@@ -34,3 +34,4 @@ export class GroupChangeEvent extends RPEvent {
 	}
 
 }
+

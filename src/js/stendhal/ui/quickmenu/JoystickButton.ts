@@ -41,3 +41,4 @@ export class JoystickButton extends QuickMenuButton {
 		SoftwareJoystickController.get().update();
 	}
 }
+
