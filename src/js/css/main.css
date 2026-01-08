@@ -869,16 +869,7 @@ span.lognick {
 }
 
 #client.mobile-floating-ui.right-panel-collapsed #rightColumn {
-	position: absolute;
-	right: 0;
-	top: 0;
-	height: 100%;
-	transform: translateX(100%);
-	opacity: 0;
-	pointer-events: none;
-	min-width: var(--right-panel-width);
-	width: var(--right-panel-width);
-	flex: 0 0 var(--right-panel-width);
+	display: none;
 }
 
 #minimap-overlay {
