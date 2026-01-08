@@ -104,7 +104,13 @@ public class ClientView extends WebView {
 	private String seed = "";
 	private String loginUser = "";
 	private String loginPass = "";
+	private String registerUser = "";
+	private String registerPass = "";
+	private String registerPassRepeat = "";
+	private String registerEmail = "";
+	private boolean registerMode = false;
 	private boolean autoLoginAttempted = false;
+	private boolean autoRegisterAttempted = false;
 	private static final int AUTO_LOGIN_TIMEOUT_MS = 20000;
 	private static final int AUTO_LOGIN_MAX_ATTEMPTS = 5;
 
@@ -443,6 +449,11 @@ public class ClientView extends WebView {
 				} else {
 					setPage(PageId.OTHER);
 				}
+				if (registerMode) {
+					attemptAutoRegister(view, url);
+				} else {
+					attemptAutoLogin(view, url);
+				}
 				attemptAutoLogin(view, url);
 				Menu.get().updateButtons();
 				LOG.debug("page id: {}", currentPage);
@@ -601,6 +612,7 @@ public class ClientView extends WebView {
 		loginUser = "";
 		loginPass = "";
 		autoLoginAttempted = false;
+		clearRegisterState();
 	}
 
 	/**
@@ -932,10 +944,11 @@ public class ClientView extends WebView {
 				startLoginFlow();
 			}
 		});
-		builder.setNeutralButton("Zamknij", new DialogInterface.OnClickListener() {
+		builder.setNeutralButton("Utwórz konto...", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(final DialogInterface dialog, final int which) {
 				dialog.dismiss();
+				promptNativeRegister();
 			}
 		});
 		final AlertDialog dialog = builder.create();
@@ -950,6 +963,39 @@ public class ClientView extends WebView {
 			}
 		});
 		dialog.show();
+	}
+
+	private void promptNativeRegister() {
+		final View layout = LayoutInflater.from(getContext()).inflate(R.layout.dialog_register, null);
+		final EditText username = layout.findViewById(R.id.registerUsername);
+		final EditText password = layout.findViewById(R.id.registerPassword);
+		final EditText passwordRepeat = layout.findViewById(R.id.registerPasswordRepeat);
+		final EditText email = layout.findViewById(R.id.registerEmail);
+
+		final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+		builder.setTitle("Rejestracja");
+		builder.setView(layout);
+		builder.setCancelable(true);
+		builder.setPositiveButton("Utwórz konto", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(final DialogInterface dialog, final int which) {
+				registerUser = username.getText().toString().trim();
+				registerPass = password.getText().toString();
+				registerPassRepeat = passwordRepeat.getText().toString();
+				registerEmail = email.getText().toString().trim();
+				registerMode = true;
+				autoRegisterAttempted = false;
+				autoLoginAttempted = false;
+				startLoginFlow();
+			}
+		});
+		builder.setNegativeButton("Zamknij", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(final DialogInterface dialog, final int which) {
+				dialog.dismiss();
+			}
+		});
+		builder.create().show();
 	}
 
 	/**
@@ -1048,6 +1094,102 @@ public class ClientView extends WebView {
 		});
 	}
 
+	private void attemptAutoRegister(final WebView view, final String url) {
+		if (autoRegisterAttempted) {
+			LOG.debug("Auto-register skipped: already attempted.");
+			return;
+		}
+		if (registerUser == null || registerPass == null || registerPassRepeat == null || registerEmail == null
+				|| registerUser.trim().equals("") || registerPass.equals("") || registerPassRepeat.equals("")) {
+			LOG.debug("Auto-register skipped: missing registration data.");
+			return;
+		}
+		final Uri uri = UrlHelper.toUri(url);
+		if (!UrlHelper.isInternalUri(uri)) {
+			LOG.debug("Auto-register skipped: external URL {}", url);
+			return;
+		}
+		if (!UrlHelper.isLoginUri(uri) && !UrlHelper.isClientUrl(url)) {
+			LOG.debug("Auto-register skipped: not a login/client URL {}", url);
+			return;
+		}
+		autoRegisterAttempted = true;
+		LOG.debug("Attempting auto-register for URL {}", url);
+		final String js = "javascript:(function(){"
+				+ "var result={attempted:false,finalStatus:'pending',message:'',attempts:0,"
+				+ "fields:{username:false,password:false,passwordrepeat:false,email:false,submit:false,form:false},"
+				+ "observerActive:false,error:false,createMode:false};"
+				+ "try{"
+				+ "if(window.__po_autoRegisterActive){result.finalStatus='alreadyActive';result.message='Auto-register already running';return result;}"
+				+ "window.__po_autoRegisterActive=true;" + "var maxAttempts=" + AUTO_LOGIN_MAX_ATTEMPTS + ";"
+				+ "var timeoutMs=" + AUTO_LOGIN_TIMEOUT_MS + ";" + "var attempts=0;" + "var observer=null;"
+				+ "var finalized=false;" + "var uval=" + JSONObject.quote(registerUser) + ";"
+				+ "var pval=" + JSONObject.quote(registerPass) + ";"
+				+ "var prval=" + JSONObject.quote(registerPassRepeat) + ";"
+				+ "var eval=" + JSONObject.quote(registerEmail) + ";"
+				+ "var finalize=function(status,msg){" + "if(finalized){return;}" + "finalized=true;"
+				+ "result.finalStatus=status;" + "result.message=msg||result.message;" + "result.attempts=attempts;"
+				+ "result.observerActive=!!observer;" + "try{if(observer){observer.disconnect();}}catch(e){}"
+				+ "window.__po_autoRegisterActive=false;" + "};"
+				+ "var submit=function(){"
+				+ "if(finalized){return true;}"
+				+ "if(attempts>=maxAttempts){finalize('maxAttempts','Reached max auto-register attempts');return false;}"
+				+ "attempts++;result.attempted=true;"
+				+ "var f=document.querySelector('form.credential-dialog');"
+				+ "if(!f){finalize('missingForm','Credential form not found');return false;}"
+				+ "var u=f.querySelector('#username');"
+				+ "var p=f.querySelector('#password');"
+				+ "var pr=f.querySelector('#passwordrepeat');"
+				+ "var em=f.querySelector('#email');"
+				+ "var b=f.querySelector('#loginbutton');"
+				+ "var isCreate=(window.location && window.location.hash && window.location.hash.indexOf('create') !== -1) || !!pr;"
+				+ "result.createMode=!!isCreate;"
+				+ "if(!isCreate){finalize('notCreate','Not in create account mode');return false;}"
+				+ "result.fields.username=!!u;result.fields.password=!!p;result.fields.passwordrepeat=!!pr;"
+				+ "result.fields.email=!!em;result.fields.submit=!!b;result.fields.form=!!f;"
+				+ "if(!u||!p||!pr||!b){finalize('missingFields','Registration fields not found');return false;}"
+				+ "u.value=uval;" + "p.value=pval;" + "pr.value=prval;" + "if(em){em.value=eval;}"
+				+ "b.click();finalize('submitted','Submitted via button');return true;"
+				+ "if(attempts>=maxAttempts){finalize('maxAttempts','Reached max auto-register attempts');}"
+				+ "return false;" + "};"
+				+ "var initialSuccess=submit();" + "if(!finalized){"
+				+ "observer=new MutationObserver(function(){if(finalized){return;}if(submit()){return;}});"
+				+ "result.observerActive=true;"
+				+ "observer.observe(document.documentElement||document.body,{childList:true,subtree:true});"
+				+ "setTimeout(function(){finalize('timeout','Auto-register timed out');},timeoutMs);" + "}"
+				+ "return result;"
+				+ "}catch(e){result.finalStatus='error';result.message=e&&e.message?e.message:String(e);result.error=true;result.attempts=attempts;window.__po_autoRegisterActive=false;return result;}"
+				+ "})();";
+		view.evaluateJavascript(js, value -> {
+			if (value == null || "null".equals(value)) {
+				LOG.error("Auto-register returned null result for URL {}", url);
+				return;
+			}
+			try {
+				final JSONObject result = new JSONObject(value);
+				final String status = result.optString("finalStatus", "unknown");
+				final int attempts = result.optInt("attempts", 0);
+				final String message = result.optString("message", "");
+				final JSONObject fields = result.optJSONObject("fields");
+				final boolean observerActive = result.optBoolean("observerActive", false);
+				LOG.debug("Auto-register result: status={}, attempts={}, observerActive={}, fields={}, message=\"{}\"",
+						status, attempts, observerActive, (fields != null ? fields.toString() : "{}"), message);
+				if ("error".equals(status) || "timeout".equals(status) || "maxAttempts".equals(status)) {
+					LOG.error("Auto-register failed with status={} message=\"{}\"", status, message);
+				}
+				if ("notCreate".equals(status) || "missingForm".equals(status)) {
+					autoRegisterAttempted = false;
+				}
+				if ("submitted".equals(status)) {
+					clearRegisterState();
+					post(() -> CookieManager.getInstance().flush());
+				}
+			} catch (Exception e) {
+				LOG.error("Failed to parse auto-register result", e);
+			}
+		});
+	}
+
 	private void fillSavedCredentials(final AutoCompleteTextView username, final EditText password,
 			final CheckBox remember, final List<CredentialsStore.Credentials> savedCredentials) {
 		final boolean saveCredentials = PreferencesActivity.getBoolean("save_credentials", false);
@@ -1120,6 +1262,15 @@ public class ClientView extends WebView {
 			return;
 		}
 		CredentialsStore.save(getContext(), username, password);
+	}
+
+	private void clearRegisterState() {
+		registerUser = "";
+		registerPass = "";
+		registerPassRepeat = "";
+		registerEmail = "";
+		registerMode = false;
+		autoRegisterAttempted = false;
 	}
 
 	private void handleLoadError(final WebView view, final String failingUrl) {
