@@ -968,7 +968,7 @@ div#menupanel button#menubutton:before {
 
 div#menupanel button#menubutton:hover,
 div#menupanel #soundbutton:hover,
-.shortcut-button:hover, #send-button:hover, #keywords-button:hover, #emojis-button:hover, #chatlog-toggle:hover {
+.shortcut-button:hover, #send-button:hover, #keywords-button:hover, #emojis-button:hover {
 	box-shadow: inset 0 0 0 1px var(--border-top-color);
 }
 
@@ -1010,12 +1010,6 @@ body.mobile-floating-ui #viewport,
 	--viewport-max-width: min(100vw, calc((100dvh - 2em) * 640 / 480));
 }
 
-body.mobile-floating-ui.chatlog-collapsed #viewport,
-#client.mobile-floating-ui.chatlog-collapsed #viewport {
-	--viewport-max-height: calc(100dvh - 1em);
-	--viewport-max-width: min(100vw, calc((100dvh - 1em) * 640 / 480));
-}
-
 #client.mobile-floating-ui #middleColumn {
 	margin-left: 0;
 	margin-right: 0;
@@ -1028,29 +1022,6 @@ body.mobile-floating-ui.chatlog-collapsed #viewport,
 	border-left: 1px solid var(--border-top-color);
 	border-right: 1px solid var(--border-bottom-color);
 	border-bottom: 1px solid var(--border-bottom-color);
-}
-
-body.chatlog-collapsed #bottomPanel,
-#client.chatlog-collapsed #bottomPanel {
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-end;
-}
-
-body.chatlog-collapsed #bottomPanel .horizontalgroup,
-#client.chatlog-collapsed #bottomPanel .horizontalgroup {
-	margin-top: auto;
-}
-
-body.mobile-floating-ui.chatlog-collapsed #bottomPanel,
-#client.mobile-floating-ui.chatlog-collapsed #bottomPanel {
-	flex: 0 0 auto;
-	height: auto;
-}
-
-body.mobile-floating-ui.chatlog-collapsed #bottomPanel.mainColumn,
-#client.mobile-floating-ui.chatlog-collapsed #bottomPanel.mainColumn {
-	height: auto;
 }
 
 #equipmentborder {
@@ -1580,7 +1551,7 @@ body.mobile-floating-ui #right-panel-toggle,
 	font-family: Tally;
 }
 
-#send-button, #keywords-button, #emojis-button, #chatlog-toggle {
+#send-button, #keywords-button, #emojis-button {
 	margin-left: 2px;
 	background: var(--background-url);
 	border-top: 2px solid var(--border-top-color);
@@ -1593,15 +1564,6 @@ body.mobile-floating-ui #right-panel-toggle,
 	align-items: center;
 	cursor: pointer;
 	padding: 3px 5px;
-}
-
-#chatlog-toggle {
-	display: none;
-}
-
-body.mobile-floating-ui #chatlog-toggle,
-#client.mobile-floating-ui #chatlog-toggle {
-	display: flex;
 }
 
 .shortcut-button {

@@ -26,7 +26,7 @@ export enum UiHandedness {
 export interface UiState {
 	mode: UiMode;
 	handedness: UiHandedness;
-	chatLogExpanded: boolean;
+	chatExpanded: boolean;
 	rightPanelExpanded: boolean;
 }
 
@@ -67,10 +67,10 @@ export class UiStateStore {
 		const config = stendhal.config;
 		const mode = this.parseMode(config.get("ui.mode"));
 		const handedness = this.parseHandedness(config.get("ui.handedness"));
-		const chatLogExpanded = this.resolveChatLogExpanded();
+		const chatExpanded = this.resolveChatExpanded();
 		const rightPanelExpanded = this.resolveRightPanelExpanded();
 
-		this.state = { mode, handedness, chatLogExpanded, rightPanelExpanded };
+		this.state = { mode, handedness, chatExpanded, rightPanelExpanded };
 	}
 
 	getState(): UiState {
@@ -101,12 +101,12 @@ export class UiStateStore {
 		this.notify();
 	}
 
-	setChatLogExpanded(expanded: boolean) {
-		if (this.state.chatLogExpanded === expanded) {
+	setChatExpanded(expanded: boolean) {
+		if (this.state.chatExpanded === expanded) {
 			return;
 		}
-		this.state = { ...this.state, chatLogExpanded: expanded };
-		stendhal.config.set("ui.chat.log.visible", expanded);
+		this.state = { ...this.state, chatExpanded: expanded };
+		stendhal.config.set("ui.chat.expanded", expanded);
 		this.notify();
 	}
 
@@ -143,14 +143,14 @@ export class UiStateStore {
 		return UiHandedness.RIGHT;
 	}
 
-	private resolveChatLogExpanded(): boolean {
-		if (stendhal.config.isSet("ui.chat.log.visible")) {
-			return stendhal.config.getBoolean("ui.chat.log.visible");
-		}
+	private resolveChatExpanded(): boolean {
 		if (stendhal.config.isSet("ui.chat.expanded")) {
 			return stendhal.config.getBoolean("ui.chat.expanded");
 		}
-		return false;
+		if (!stendhal.config.getBoolean("chat.float")) {
+			return true;
+		}
+		return stendhal.config.getBoolean("chat.visible");
 	}
 
 	private resolveRightPanelExpanded(): boolean {
@@ -175,8 +175,9 @@ export class UiStateStore {
 		return {
 			mode: UiMode.PANELS,
 			handedness: UiHandedness.RIGHT,
-			chatLogExpanded: this.resolveChatLogExpanded(),
+			chatExpanded: this.resolveChatExpanded(),
 			rightPanelExpanded: this.resolveDefaultRightPanelExpanded()
 		};
 	}
 }
+
