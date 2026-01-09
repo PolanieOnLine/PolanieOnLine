@@ -1030,6 +1030,18 @@ body.mobile-floating-ui.chatlog-collapsed #viewport,
 	border-bottom: 1px solid var(--border-bottom-color);
 }
 
+body.chatlog-collapsed #bottomPanel,
+#client.chatlog-collapsed #bottomPanel {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+}
+
+body.chatlog-collapsed #bottomPanel .horizontalgroup,
+#client.chatlog-collapsed #bottomPanel .horizontalgroup {
+	margin-top: auto;
+}
+
 body.mobile-floating-ui.chatlog-collapsed #bottomPanel,
 #client.mobile-floating-ui.chatlog-collapsed #bottomPanel {
 	flex: 0 0 auto;
