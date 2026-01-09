@@ -82,6 +82,7 @@ export class ConfigManager {
 		"sound.sfx.volume": "100",
 		"speech.creature": "true",
 		"theme": "wood",
+		"ui.chat.log.visible": "false",
 		"ui.chat.expanded": "false",
 		"ui.handedness": "right",
 		"ui.mode": "panels",
@@ -618,4 +619,3 @@ export class ConfigManager {
 		return this.fonts;
 	}
 }
-

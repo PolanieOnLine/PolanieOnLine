@@ -15,6 +15,7 @@ import { ChatLogComponent } from "./component/ChatLogComponent";
 import { QuickMenu } from "./quickmenu/QuickMenu";
 import { QuickMenuButton } from "./quickmenu/QuickMenuButton";
 import { UiStateStore } from "./mobile/UiStateStore";
+import { Component } from "./toolkit/Component";
 import { Panel } from "./toolkit/Panel";
 import { singletons } from "../SingletonRepo";
 
@@ -26,17 +27,23 @@ import { singletons } from "../SingletonRepo";
  */
 export class ChatPanel extends Panel {
 	private readonly unsubscribeState: () => void;
+	private chatLogExpanded = true;
+	private readonly chatLogToggleButton: HTMLButtonElement | null;
 
 	constructor() {
 		super("bottomPanel");
 		this.setFloating(singletons.getConfigManager().getBoolean("chat.float"));
 		const store = UiStateStore.get();
-		this.unsubscribeState = store.subscribe(({ chatExpanded }) => {
-			if (this.isVisible() === chatExpanded) {
-				return;
-			}
+		this.chatLogToggleButton = document.getElementById("chatlog-toggle") as HTMLButtonElement | null;
+		if (this.chatLogToggleButton) {
+			this.chatLogToggleButton.addEventListener("click", () => {
+				this.applyChatLogVisibility(!this.chatLogExpanded);
+			});
+		}
+		this.unsubscribeState = store.subscribe(({ chatLogExpanded }) => {
+			this.chatLogExpanded = chatLogExpanded;
 			// avoid notifying store again when the update originated from it
-			this.applyVisibility(chatExpanded, true);
+			this.applyChatLogVisibility(chatLogExpanded, true);
 		});
 		this.ensureVisibleWhenDocked();
 	}
@@ -112,7 +119,7 @@ export class ChatPanel extends Panel {
 	 */
 	public onEnterPressed() {
 		if (this.isFloating()) {
-			this.setVisible(!this.isVisible());
+			this.applyChatLogVisibility(!this.chatLogExpanded);
 		}
 	}
 
@@ -120,8 +127,8 @@ export class ChatPanel extends Panel {
 	 * Hides chat panel after sending message if auto-hiding enabled.
 	 */
 	public onMessageSent() {
-		if (this.isFloating() && this.isVisible() && singletons.getConfigManager().getBoolean("chat.autohide")) {
-			this.setVisible(false);
+		if (this.isFloating() && this.chatLogExpanded && singletons.getConfigManager().getBoolean("chat.autohide")) {
+			this.applyChatLogVisibility(false);
 		}
 	}
 
@@ -151,17 +158,57 @@ export class ChatPanel extends Panel {
 			// update chat log
 			const chatLog = (ui.get(UIComponentEnum.ChatLog) as ChatLogComponent);
 			if (chatLog) {
-				visible ? chatLog.onUnhide() : chatLog.onHide();
+				if (!visible) {
+					chatLog.onHide();
+				} else if (this.chatLogExpanded) {
+					chatLog.onUnhide();
+				}
+			}
+		}
+	}
+
+	private applyChatLogVisibility(expanded: boolean, fromStore=false, providedChatLog?: ChatLogComponent) {
+		this.updateChatLogToggleButton(expanded);
+		const chatLog = providedChatLog || (ui.get(UIComponentEnum.ChatLog) as ChatLogComponent);
+		if (!chatLog) {
+			if (!fromStore) {
+				UiStateStore.get().setChatLogExpanded(expanded);
+			}
+			return;
+		}
+		const stateChanged = expanded !== chatLog.isVisible();
+		chatLog.setVisible(expanded);
+		if (stateChanged) {
+			if (expanded && this.isVisible()) {
+				chatLog.onUnhide();
+			} else {
+				chatLog.onHide();
 			}
 		}
 		if (!fromStore) {
-			UiStateStore.get().setChatExpanded(visible);
+			UiStateStore.get().setChatLogExpanded(expanded);
 		}
+	}
+
+	private updateChatLogToggleButton(expanded: boolean) {
+		if (!this.chatLogToggleButton) {
+			return;
+		}
+		this.chatLogToggleButton.textContent = expanded ? "▾" : "▴";
+		this.chatLogToggleButton.setAttribute("aria-pressed", expanded.toString());
+		this.chatLogToggleButton.title = expanded ? "Ukryj log czatu" : "Pokaż log czatu";
 	}
 
 	private ensureVisibleWhenDocked() {
 		if (!this.isFloating() && !this.isVisible()) {
 			this.applyVisibility(true);
+		}
+	}
+
+	public override add(child: Component) {
+		super.add(child);
+		if (child instanceof ChatLogComponent) {
+			this.applyChatLogVisibility(this.chatLogExpanded, true, child);
 		}
 	}
 }

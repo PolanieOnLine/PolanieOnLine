@@ -968,7 +968,7 @@ div#menupanel button#menubutton:before {
 
 div#menupanel button#menubutton:hover,
 div#menupanel #soundbutton:hover,
-.shortcut-button:hover, #send-button:hover, #keywords-button:hover, #emojis-button:hover {
+.shortcut-button:hover, #send-button:hover, #keywords-button:hover, #emojis-button:hover, #chatlog-toggle:hover {
 	box-shadow: inset 0 0 0 1px var(--border-top-color);
 }
 
@@ -1551,7 +1551,7 @@ body.mobile-floating-ui #right-panel-toggle,
 	font-family: Tally;
 }
 
-#send-button, #keywords-button, #emojis-button {
+#send-button, #keywords-button, #emojis-button, #chatlog-toggle {
 	margin-left: 2px;
 	background: var(--background-url);
 	border-top: 2px solid var(--border-top-color);
