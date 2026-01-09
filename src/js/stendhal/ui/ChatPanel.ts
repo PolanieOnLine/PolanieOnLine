@@ -169,6 +169,7 @@ export class ChatPanel extends Panel {
 
 	private applyChatLogVisibility(expanded: boolean, fromStore=false, providedChatLog?: ChatLogComponent) {
 		this.updateChatLogToggleButton(expanded);
+		this.updateChatLogCollapsedClass(expanded);
 		const chatLog = providedChatLog || (ui.get(UIComponentEnum.ChatLog) as ChatLogComponent);
 		if (!chatLog) {
 			if (!fromStore) {
@@ -188,6 +189,13 @@ export class ChatPanel extends Panel {
 		if (!fromStore) {
 			UiStateStore.get().setChatLogExpanded(expanded);
 		}
+	}
+
+	private updateChatLogCollapsedClass(expanded: boolean) {
+		const collapsed = !expanded;
+		document.body.classList.toggle("chatlog-collapsed", collapsed);
+		const clientRoot = document.getElementById("client");
+		clientRoot?.classList.toggle("chatlog-collapsed", collapsed);
 	}
 
 	private updateChatLogToggleButton(expanded: boolean) {
