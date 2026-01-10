@@ -12,6 +12,14 @@
 import { Component } from "../toolkit/Component";
 
 
+export interface InteractionButtonOptions {
+	id: string;
+	classes?: string[];
+	ariaLabel: string;
+	title: string;
+	ariaPressed?: string;
+}
+
 export abstract class InteractionButtonBase extends Component {
 
 	protected readonly boundUpdate: () => void;
@@ -25,13 +33,7 @@ export abstract class InteractionButtonBase extends Component {
 		this.boundUpdate = this.update.bind(this);
 	}
 
-	protected static createButton(options: {
-		id: string;
-		classes?: string[];
-		ariaLabel: string;
-		title: string;
-		ariaPressed?: string;
-	}): HTMLButtonElement {
+	protected static createButton(options: InteractionButtonOptions): HTMLButtonElement {
 		const element = document.createElement("button");
 		element.id = options.id;
 		element.classList.add("unclickable", "hidden");
