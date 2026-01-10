@@ -44,6 +44,15 @@ export class PanelDock {
 	}
 
 	private applyState(state: UiState) {
+		const mobileFloating = this.root.classList.contains("mobile-floating-ui");
+		if (!mobileFloating) {
+			this.root.classList.remove("left-panel-collapsed");
+			this.root.classList.remove("right-panel-collapsed");
+			this.updateMinimapDock(true);
+			SoftwareJoystickController.get().update();
+			return;
+		}
+
 		const showPanels = state.mode === UiMode.PANELS;
 		const showLeft = showPanels && state.handedness === UiHandedness.LEFT && state.leftPanelExpanded;
 		const showRight = showPanels && state.handedness === UiHandedness.RIGHT && state.rightPanelExpanded;

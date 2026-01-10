@@ -534,8 +534,15 @@ export class Client {
 				&& stendhal.ui.getMenuStyle() === "floating";
 		document.body.classList.toggle("mobile-floating-ui", mobileFloating);
 		clientRoot.classList.toggle("mobile-floating-ui", mobileFloating);
-		clientRoot.classList.toggle("left-panel-collapsed", !UiStateStore.get().getState().leftPanelExpanded);
-		clientRoot.classList.toggle("right-panel-collapsed", !UiStateStore.get().getState().rightPanelExpanded);
+		if (mobileFloating) {
+			clientRoot.classList.toggle("left-panel-collapsed", !UiStateStore.get().getState().leftPanelExpanded);
+			clientRoot.classList.toggle("right-panel-collapsed", !UiStateStore.get().getState().rightPanelExpanded);
+		} else {
+			clientRoot.classList.remove("left-panel-collapsed");
+			clientRoot.classList.remove("right-panel-collapsed");
+			UiStateStore.get().resetLeftPanelExpandedForDesktop();
+			UiStateStore.get().refreshLayout();
+		}
 	}
 
 	/**

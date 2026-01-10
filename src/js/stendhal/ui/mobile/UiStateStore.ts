@@ -121,6 +121,19 @@ export class UiStateStore {
 		this.notify();
 	}
 
+	resetLeftPanelExpandedForDesktop() {
+		if (this.state.leftPanelExpanded) {
+			return;
+		}
+		this.state = { ...this.state, leftPanelExpanded: true };
+		stendhal.config.set("ui.leftpanel.visible", true);
+		this.notify();
+	}
+
+	refreshLayout() {
+		this.notify();
+	}
+
 	setRightPanelExpanded(expanded: boolean) {
 		if (this.state.rightPanelExpanded === expanded) {
 			return;

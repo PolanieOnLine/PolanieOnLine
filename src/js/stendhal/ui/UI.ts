@@ -224,6 +224,8 @@ class UI {
 		} else {
 			clientRoot.classList.remove("left-panel-collapsed");
 			clientRoot.classList.remove("right-panel-collapsed");
+			UiStateStore.get().resetLeftPanelExpandedForDesktop();
+			UiStateStore.get().refreshLayout();
 		}
 	}
 }
