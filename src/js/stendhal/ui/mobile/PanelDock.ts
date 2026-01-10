@@ -9,6 +9,7 @@
  *                                                                         *
  ***************************************************************************/
 
+import { SoftwareJoystickController } from "../SoftwareJoystickController";
 import { UiHandedness, UiMode, UiState, UiStateStore } from "./UiStateStore";
 
 
@@ -50,6 +51,7 @@ export class PanelDock {
 		this.root.classList.toggle("left-panel-collapsed", !showLeft);
 		this.root.classList.toggle("right-panel-collapsed", !showRight);
 		this.updateMinimapDock(showLeft);
+		SoftwareJoystickController.get().update();
 	}
 
 	private updateMinimapDock(showLeft: boolean) {

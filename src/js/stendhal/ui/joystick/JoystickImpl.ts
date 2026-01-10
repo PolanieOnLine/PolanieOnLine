@@ -97,6 +97,9 @@ export abstract class JoystickImpl {
 				const horizontalMax = rect.right - this.radius;
 				const verticalMin = rect.top + this.radius;
 				const verticalMax = rect.bottom - this.radius;
+				const client = document.getElementById("client");
+				const isLeftPanelCollapsed = client?.classList.contains("left-panel-collapsed")
+					&& client?.classList.contains("mobile-floating-ui");
 				const leftColumn = document.getElementById("leftColumn");
 				if (leftColumn) {
 					const leftRect = leftColumn.getBoundingClientRect();
@@ -104,6 +107,9 @@ export abstract class JoystickImpl {
 						const overlayEdge = Math.min(leftRect.right, rect.right);
 						horizontalMin = Math.max(horizontalMin, overlayEdge + this.radius);
 					}
+				}
+				if (isLeftPanelCollapsed) {
+					horizontalMin += 36;
 				}
 				const x = Math.round(horizontalMin <= horizontalMax ? horizontalMin : rect.left + (rect.width / 2));
 				const y = Math.round(verticalMin <= verticalMax ? verticalMax : rect.top + (rect.height / 2));
