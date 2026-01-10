@@ -93,10 +93,18 @@ export abstract class JoystickImpl {
 			const viewport = document.getElementById("viewport");
 			if (viewport) {
 				const rect = viewport.getBoundingClientRect();
-				const horizontalMin = rect.left + this.radius;
+				let horizontalMin = rect.left + this.radius;
 				const horizontalMax = rect.right - this.radius;
 				const verticalMin = rect.top + this.radius;
 				const verticalMax = rect.bottom - this.radius;
+				const leftColumn = document.getElementById("leftColumn");
+				if (leftColumn) {
+					const leftRect = leftColumn.getBoundingClientRect();
+					if (leftRect.right > rect.left) {
+						const overlayEdge = Math.min(leftRect.right, rect.right);
+						horizontalMin = Math.max(horizontalMin, overlayEdge + this.radius);
+					}
+				}
 				const x = Math.round(horizontalMin <= horizontalMax ? horizontalMin : rect.left + (rect.width / 2));
 				const y = Math.round(verticalMin <= verticalMax ? verticalMax : rect.top + (rect.height / 2));
 				return new Point(x, y);
@@ -301,4 +309,3 @@ export abstract class JoystickImpl {
 		}, 300);
 	}
 }
-

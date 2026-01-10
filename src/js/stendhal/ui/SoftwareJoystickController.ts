@@ -21,6 +21,7 @@ import { QuickMenuButton } from "./quickmenu/QuickMenuButton";
 
 import { ConfigManager } from "../util/ConfigManager";
 import { SessionManager } from "../util/SessionManager";
+import { UiStateStore } from "./mobile/UiStateStore";
 
 
 /**
@@ -36,6 +37,8 @@ export class SoftwareJoystickController {
 
 	/** Singleton instance. */
 	private static instance: SoftwareJoystickController;
+	private unsubscribeUiState?: () => void;
+	private leftPanelExpanded?: boolean;
 
 
 	/**
@@ -57,6 +60,7 @@ export class SoftwareJoystickController {
 				this.joystick.update();
 			}
 		});
+		this.subscribeToUiState();
 	}
 
 	/**
@@ -121,6 +125,20 @@ export class SoftwareJoystickController {
 		}
 	}
 
+	private subscribeToUiState() {
+		if (this.unsubscribeUiState) {
+			return;
+		}
+		const store = UiStateStore.get();
+		this.unsubscribeUiState = store.subscribe(({ leftPanelExpanded }) => {
+			if (this.leftPanelExpanded === leftPanelExpanded) {
+				return;
+			}
+			this.leftPanelExpanded = leftPanelExpanded;
+			this.update();
+		});
+	}
+
 	/**
 	 * Removes joystick elements from DOM and unsets `joystick` property.
 	 */
@@ -151,4 +169,3 @@ export class SoftwareJoystickController {
 		return this.joystick;
 	}
 }
-
