@@ -9,6 +9,7 @@
  *                                                                         *
  ***************************************************************************/
 
+import { RenderingContext2D } from "util/Types";
 import { Entity } from "./Entity";
 import { RPObject } from "./RPObject";
 
@@ -20,8 +21,8 @@ export class PopupInventory extends Entity {
 	protected maxDistToView = 4;
 
 
-	override draw(ctx: CanvasRenderingContext2D, tileXOverride?: number, tileYOverride?: number) {
-		super.draw(ctx, tileXOverride, tileYOverride);
+	override draw(ctx: RenderingContext2D) {
+		super.draw(ctx);
 		if (this.inventory && this.inventory.isOpen() && !this.canViewContents()) {
 			// player has moved too far away
 			this.closeInventoryWindow();

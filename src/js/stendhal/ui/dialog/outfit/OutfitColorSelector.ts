@@ -9,12 +9,14 @@
  *                                                                         *
  ***************************************************************************/
 
+import { Canvas, RenderingContext2D } from "util/Types";
+
 declare var stendhal: any;
 
 export class OutfitColorSelector {
-	protected ctx: CanvasRenderingContext2D;
-	private gradCtx: CanvasRenderingContext2D;
-	protected baseImage: HTMLCanvasElement;
+	protected ctx: RenderingContext2D;
+	private gradCtx: RenderingContext2D;
+	protected baseImage: Canvas;
 	private onColorChanged: Function;
 	private _enabled: boolean;
 	protected _x: number;
@@ -51,7 +53,7 @@ export class OutfitColorSelector {
 	get color() {
 		if (this.enabled) {
 			const hsl = [this._x / this.baseImage.width, 1 - this._y / this.baseImage.height,
-				this.hX / this.baseImage.width];
+			this.hX / this.baseImage.width];
 			const rgbArray = stendhal.data.sprites.filter.hsl2rgb(hsl);
 			return stendhal.data.sprites.filter.mergergb(rgbArray);
 		}
@@ -72,7 +74,7 @@ export class OutfitColorSelector {
 
 	_createBaseImage(width: number, height: number) {
 		const img = document.createElement("canvas");
-		img.width  = width;
+		img.width = width;
 		img.height = height;
 		const ctx = img.getContext("2d")!;
 		for (let x = 0; x < width; x++) {

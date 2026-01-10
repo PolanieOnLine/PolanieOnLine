@@ -15,6 +15,7 @@ declare var stendhal: any;
 import { UIComponentEnum } from "./UIComponentEnum";
 import { SoftwareJoystickController } from "./SoftwareJoystickController";
 import { ApplicationMenuDialog } from "./dialog/ApplicationMenuDialog";
+import { singletons } from "../SingletonRepo";
 import { QuickMenu } from "./quickmenu/QuickMenu";
 import { QuickMenuButton } from "./quickmenu/QuickMenuButton";
 import { Component } from "./toolkit/Component";
@@ -134,6 +135,8 @@ class UI {
 		chatPanel.setVisible(stendhal.config.getBoolean("chat.visible"));
 		// initialize on-screen joystick
 		SoftwareJoystickController.get().update();
+		// initialize attack button
+		singletons.getAttackButtonController().update();
 		QuickMenu.init();
 
 		// update menu buttons

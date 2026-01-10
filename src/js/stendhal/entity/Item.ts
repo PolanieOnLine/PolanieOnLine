@@ -13,12 +13,20 @@ import { ItemMap } from "./ItemMap";
 import { MenuItem } from "../action/MenuItem";
 import { Entity } from "./Entity";
 import { TextSprite } from "../sprite/TextSprite";
+import { RenderingContext2D } from "util/Types";
+import { ItemAnimationClock } from "./ItemAnimationClock";
+
+type FrameCounts = {
+	columns: number;
+	rows: number;
+};
 
 declare var marauroa: any;
 declare var stendhal: any;
 
-
 export class Item extends Entity {
+	private static readonly FRAME_SIZE = 32;
+	private static readonly frameCountsCache = new Map<string, FrameCounts>();
 
 	override minimapShow = false;
 	override minimapStyle = "rgb(0,255,0)";
@@ -26,10 +34,10 @@ export class Item extends Entity {
 	private quantityTextSprite: TextSprite;
 
 	// animation
-	private frameTimeStamp = 0;
 	private animated: boolean | null = null;
 	private xFrames: number | null = null;
 	private yFrames: number | null = null;
+	private spriteLoadPromise?: Promise<void>;
 
 	constructor() {
 		super();
@@ -37,6 +45,8 @@ export class Item extends Entity {
 			height: 32,
 			width: 32
 		};
+		this["drawWidth"] = Item.FRAME_SIZE;
+		this["drawHeight"] = Item.FRAME_SIZE;
 		this.quantityTextSprite = new TextSprite("", "white", "10px sans-serif");
 	}
 
@@ -80,34 +90,57 @@ export class Item extends Entity {
 		}
 	}
 
-	override draw(ctx: CanvasRenderingContext2D, _tileXOverride?: number, _tileYOverride?: number) {
-		this.sprite.offsetY = (this["state"] || 0) * 32
-		this.stepAnimation();
+	override draw(ctx: RenderingContext2D) {
+		this.ensureSpriteReady();
+		if (!this.inView()) {
+			return;
+		}
 
-		const tileX = this.getRenderTileX();
-		const tileY = this.getRenderTileY();
-		this.drawAt(ctx, tileX * 32, tileY * 32);
+		this.sprite.offsetY = (this["state"] || 0) * 32
+		if (this.isAnimated()) {
+			this.stepAnimation();
+		}
+
+		this.drawAt(ctx, this["x"] * 32, this["y"] * 32);
 	}
 
-	drawAt(ctx: CanvasRenderingContext2D, x: number, y: number) {
-		if (this.sprite) {
-			this.drawSpriteAt(ctx, x, y);
-			let textMetrics = this.quantityTextSprite.getTextMetrics(ctx);
-			this.quantityTextSprite.draw(ctx, x + (32 - textMetrics.width), y + 6);
+	drawAt(ctx: RenderingContext2D, x: number, y: number) {
+		if (!this.sprite || !this.inView()) {
+			return;
 		}
+
+		const image = this.ensureSpriteReady();
+		if (!image || !image.height) {
+			return;
+		}
+
+		const tileX = x;
+		const tileY = y;
+		const frameWidth = this["drawWidth"] || this.getFrameWidth();
+		const frameHeight = this["drawHeight"] || this.getFrameHeight();
+		const width = frameWidth || Item.FRAME_SIZE;
+		const height = frameHeight || Item.FRAME_SIZE;
+		const offsetX = this.sprite.offsetX || 0;
+		const offsetY = this.sprite.offsetY || 0;
+
+		x += Math.floor((this.getWidth() * Item.FRAME_SIZE - width) / 2);
+		y += Math.floor((this.getHeight() * Item.FRAME_SIZE - height) / 2);
+
+		ctx.drawImage(image, offsetX, offsetY, frameWidth, frameHeight, x, y, width, height);
+		let textMetrics = this.quantityTextSprite.getTextMetrics(ctx);
+		if (!textMetrics) {
+			throw new Error("textMetrics is undefined");
+		}
+		this.quantityTextSprite.draw(ctx, tileX + (32 - textMetrics.width), tileY + 6);
 	}
 
 	public stepAnimation() {
-		const currentTimeStamp = +new Date();
-		if (this.frameTimeStamp == 0) {
-			this.frameTimeStamp = currentTimeStamp;
-			this.sprite.offsetX = 0;
-			this.sprite.offsetY = 0;
-		} else if (currentTimeStamp - this.frameTimeStamp >= 100) {
-			// FIXME: need proper FPS limit
-			this.setXFrameIndex(this.getXFrameIndex() + 1);
-			this.frameTimeStamp = currentTimeStamp;
+		if (!this.isAnimated()) {
+			return;
 		}
+
+		const frameIndex = this.getAnimationFrameIndex();
+		this.setXFrameIndex(frameIndex);
 	}
 
 	formatQuantity() {
@@ -148,50 +181,158 @@ export class Item extends Entity {
 			return false;
 		}
 		if (this.animated == null) {
+			const frames = this.ensureFrameCounts();
 			// store animation state
-			this.animated = (stendhal.data.sprites.get(this.sprite.filename).width / 32) > 1;
+			this.animated = frames.columns > 1;
 		}
 
 		return this.animated;
 	}
 
 	private setXFrameIndex(idx: number) {
-		if (this.xFrames == null) {
-			const img = stendhal.data.sprites.get(this.sprite.filename);
-			this.xFrames = img.width / 32;
-		}
+		const frameWidth = this.getFrameWidth();
+		const frameCount = this.xFrames ?? this.ensureFrameCounts().columns;
 
-		if (idx >= this.xFrames) {
+		if (idx >= frameCount) {
 			// restart
 			idx = 0;
 		}
 
-		this.sprite.offsetX = idx * 32;
+		this.sprite.offsetX = idx * frameWidth;
 	}
 
 	private setYFrameIndex(idx: number) {
-		if (this.yFrames == null) {
-			const img = stendhal.data.sprites.get(this.sprite.filename);
-			this.yFrames = img.height / 32;
-		}
+		const frameHeight = this.getFrameHeight();
+		const frameCount = this.yFrames ?? this.ensureFrameCounts().rows;
 
-		if (idx >= this.yFrames) {
+		if (idx >= frameCount) {
 			// restart
 			idx = 0;
 		}
 
-		this.sprite.offsetY = idx * 32;
+		this.sprite.offsetY = idx * frameHeight;
 	}
 
 	public getXFrameIndex(): number {
-		return (this.sprite.offsetX || 0) / 32;
+		const frameWidth = this.sprite.width || Item.FRAME_SIZE;
+		return (this.sprite.offsetX || 0) / frameWidth;
 	}
 
 	public getYFrameIndex(): number {
-		return (this.sprite.offsetY || 0) / 32;
+		const frameHeight = this.sprite.height || Item.FRAME_SIZE;
+		return (this.sprite.offsetY || 0) / frameHeight;
 	}
 
 	public override isDraggable(): boolean {
+		return true;
+	}
+
+	public getAnimationFrameIndex(): number {
+		const frameCounts = this.ensureFrameCounts();
+
+		if (this.animated == null) {
+			this.animated = frameCounts.columns > 1;
+		}
+
+		if (!this.animated) {
+			return 0;
+		}
+
+		return ItemAnimationClock.getFrameIndex(this.getAnimationKey(), frameCounts.columns);
+	}
+
+	private getFrameCounts() {
+		const img = stendhal.data.sprites.get(this.sprite.filename);
+		const frameWidth = this.getFrameWidth();
+		const frameHeight = this.getFrameHeight();
+		const width = img && img.width ? img.width : frameWidth;
+		const height = img && img.height ? img.height : frameHeight;
+		const columns = Math.max(1, Math.floor(width / frameWidth));
+		const rows = Math.max(1, Math.floor(height / frameHeight));
+		this.xFrames = columns;
+		this.yFrames = rows;
+		const key = this.getAnimationKey();
+		ItemAnimationClock.setFrameCount(key, columns);
+		Item.frameCountsCache.set(key, { columns, rows });
+		return { columns, rows };
+	}
+
+	private ensureFrameCounts(): FrameCounts {
+		if (this.xFrames != null && this.yFrames != null) {
+			return { columns: this.xFrames, rows: this.yFrames };
+		}
+
+		const key = this.getAnimationKey();
+		const cached = Item.frameCountsCache.get(key);
+		if (cached) {
+			this.xFrames = cached.columns;
+			this.yFrames = cached.rows;
+			return cached;
+		}
+
+		return this.getFrameCounts();
+	}
+
+	private getAnimationKey(): string {
+		return `${this.sprite.filename}:${this.getFrameWidth()}x${this.getFrameHeight()}`;
+	}
+
+	private getFrameWidth() {
+		return this.sprite.width || Item.FRAME_SIZE;
+	}
+
+	private getFrameHeight() {
+		return this.sprite.height || Item.FRAME_SIZE;
+	}
+
+	private ensureSpriteReady(): HTMLImageElement | undefined {
+		const image = stendhal.data.sprites.get(this.sprite.filename);
+		if (this.applySpriteDimensions(image)) {
+			return image;
+		}
+
+		if (!this.spriteLoadPromise) {
+			this.spriteLoadPromise = stendhal.data.sprites.getWithPromise(this.sprite.filename)
+				.then((img: HTMLImageElement) => {
+					this.applySpriteDimensions(img);
+					if (stendhal?.ui?.gamewindow?.draw) {
+						stendhal.ui.gamewindow.draw();
+					}
+				})
+				.catch(() => undefined)
+				.finally(() => {
+					this.spriteLoadPromise = undefined;
+				});
+		}
+		return image;
+	}
+
+	private applySpriteDimensions(image?: HTMLImageElement | undefined) {
+		if (!this["drawWidth"] || isNaN(this["drawWidth"])) {
+			this["drawWidth"] = Item.FRAME_SIZE;
+		}
+		if (!this["drawHeight"] || isNaN(this["drawHeight"])) {
+			this["drawHeight"] = Item.FRAME_SIZE;
+		}
+
+		if (!image || !image.height) {
+			return false;
+		}
+
+		const key = this.getAnimationKey();
+		Item.frameCountsCache.delete(key);
+		this.xFrames = null;
+		this.yFrames = null;
+		this.animated = null;
+		const frameCounts = this.getFrameCounts();
+		const frameWidth = this.sprite.width || Math.floor(image.width / Math.max(1, frameCounts.columns)) || Item.FRAME_SIZE;
+		const frameHeight = this.sprite.height || Math.floor(image.height / Math.max(1, frameCounts.rows)) || Item.FRAME_SIZE;
+
+		this.sprite.width = frameWidth;
+		this.sprite.height = frameHeight;
+		this["drawWidth"] = frameWidth;
+		this["drawHeight"] = frameHeight;
+
 		return true;
 	}
 }

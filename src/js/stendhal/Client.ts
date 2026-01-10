@@ -35,8 +35,6 @@ import { LoginDialog } from "./ui/dialog/LoginDialog";
 
 import { DesktopUserInterfaceFactory } from "./ui/factory/DesktopUserInterfaceFactory";
 
-import { LayoutController } from "./ui/LayoutController";
-
 import { SingletonFloatingWindow } from "./ui/toolkit/SingletonFloatingWindow";
 
 import { Chat } from "./util/Chat";
@@ -122,7 +120,7 @@ export class Client {
 		stendhal.data.group = singletons.getGroupManager();
 		stendhal.data.outfit = singletons.getOutfitStore();
 		stendhal.data.sprites = singletons.getSpriteStore();
-		stendhal.data.map = singletons.getMap();
+		stendhal.data.map = singletons.getTileMap();
 		// online players
 		stendhal.players = [];
 	}
@@ -187,7 +185,6 @@ export class Client {
 		stendhal.data.outfit.init();
 
 		new DesktopUserInterfaceFactory().create();
-		LayoutController.get().init();
 
 		Chat.log("client", "Klient załadowany. Łączenie...");
 
@@ -233,7 +230,7 @@ export class Client {
 	onError(error: ErrorEvent): boolean | undefined {
 		this.errorCounter++;
 		if (this.errorCounter > 5) {
-			console.log("Zbyt wiele błędów, raportowanie zatrzymane.");
+			console.log("Too many errors, stopped reporting");
 			return;
 		}
 		var text = error.message + "\r\n";
@@ -256,27 +253,6 @@ export class Client {
 			// ignore
 		}
 		return true;
-	}
-
-	/**
-	 * Registers Marauroa event handlers.
-	 */
-	private queueNetworkWork(task: () => void) {
-		if (typeof task !== "function") {
-			return;
-		}
-		try {
-			const viewport = stendhal && stendhal.ui ? stendhal.ui.viewport : undefined;
-			if (viewport && typeof viewport.queueNetworkTask === "function") {
-				viewport.queueNetworkTask(task);
-				return;
-			}
-			task();
-		} catch (error) {
-			if (typeof console !== "undefined" && console.error) {
-				console.error("Failed to queue network work", error);
-			}
-		}
 	}
 
 	/**
@@ -343,7 +319,7 @@ export class Client {
 			body.style.cursor = "auto";
 			document.getElementById("loginpopup")!.style.display = "none";
 			ui.createSingletonFloatingWindow(
-				"Wybierz postać.",
+				"Wybierz postać",
 				new ChooseCharacterDialog(characters),
 				100, 50).enableCloseButton(false);
 		};
@@ -358,31 +334,26 @@ export class Client {
 		};
 
 		marauroa.clientFramework.onTransfer = (items: any) => {
-			this.queueNetworkWork(() => {
-				const data: Record<string, any> = {};
-				let zoneName = "";
-				for (const key in items) {
-					const entry = items[key];
-					if (!entry) {
-						continue;
-					}
-					let name = entry["name"];
-					if (typeof name !== "string") {
-						continue;
-					}
-					const dotIndex = name.indexOf(".");
-					if (dotIndex === -1) {
-						continue;
-					}
-					zoneName = name.substring(0, dotIndex);
-					name = name.substring(dotIndex + 1);
-					data[name] = entry["data"];
-					if (name === "data_map") {
-						this.onDataMap(entry["data"]);
-					}
+			const data: Record<string, any> = {};
+			let zoneName = "";
+			for (const key in items) {
+				const entry = items[key];
+				if (!entry || typeof entry.name !== "string") {
+					continue;
 				}
-				stendhal.data.map.onTransfer(zoneName, data);
-			});
+				let name = entry.name;
+				const dotIndex = name.indexOf(".");
+				if (dotIndex === -1) {
+					continue;
+				}
+				zoneName = name.substring(0, dotIndex);
+				name = name.substring(dotIndex + 1);
+				data[name] = entry.data;
+				if (name === "data_map") {
+					this.onDataMap(entry.data);
+				}
+			}
+			stendhal.data.map.onTransfer(zoneName, data);
 		};
 
 		// update user interface on perceptions
@@ -390,27 +361,25 @@ export class Client {
 			// override perception listener
 			marauroa.perceptionListener = new PerceptionListener(marauroa.perceptionListener);
 			marauroa.perceptionListener.onPerceptionEnd = (_type: Int8Array, _timestamp: number) => {
-				this.queueNetworkWork(() => {
-					stendhal.zone.sortEntities();
-					(ui.get(UIComponentEnum.MiniMap) as MiniMapComponent).draw();
-					(ui.get(UIComponentEnum.BuddyList) as BuddyListComponent).update();
-					stendhal.ui.equip.update();
-					(ui.get(UIComponentEnum.PlayerEquipment) as PlayerEquipmentComponent).update();
-					if (!this.worldLoaded) {
-						this.worldLoaded = true;
-						// delay visible change of client a little to allow for initialization in the background for a smoother experience
-						window.setTimeout(() => {
-							const body = document.getElementById("body")!;
-							body.style.cursor = "auto";
-							document.getElementById("client")!.style.display = "flex";
-							document.getElementById("loginpopup")!.style.display = "none";
+				stendhal.zone.sortEntities();
+				(ui.get(UIComponentEnum.MiniMap) as MiniMapComponent).draw();
+				(ui.get(UIComponentEnum.BuddyList) as BuddyListComponent).update();
+				stendhal.ui.equip.update();
+				(ui.get(UIComponentEnum.PlayerEquipment) as PlayerEquipmentComponent).update();
+				if (!this.worldLoaded) {
+					this.worldLoaded = true;
+					// delay visibile change of client a little to allow for initialisation in the background for a smoother experience
+					window.setTimeout(() => {
+						const body = document.getElementById("body")!;
+						body.style.cursor = "auto";
+						document.getElementById("client")!.style.display = "flex";
+						document.getElementById("loginpopup")!.style.display = "none";
 
-							// initialize observer after UI is ready
-							singletons.getUIUpdateObserver().init();
-							ui.onDisplayReady();
-						}, 300);
-					}
-				});
+						// initialize observer after UI is ready
+						singletons.getUIUpdateObserver().init();
+						ui.onDisplayReady();
+					}, 300);
+				}
 			};
 		}
 	}
@@ -465,12 +434,12 @@ export class Client {
 		gamewindow.addEventListener("dblclick", stendhal.ui.gamewindow.onMouseDown);
 		gamewindow.addEventListener("dragstart", stendhal.ui.gamewindow.onDragStart);
 		gamewindow.addEventListener("mousemove", stendhal.ui.gamewindow.onMouseMove);
-		gamewindow.addEventListener("touchstart", stendhal.ui.gamewindow.onMouseDown);
+		gamewindow.addEventListener("touchstart", stendhal.ui.gamewindow.onMouseDown, { passive: true });
 		gamewindow.addEventListener("touchend", stendhal.ui.gamewindow.onTouchEnd);
 		gamewindow.addEventListener("dragover", stendhal.ui.gamewindow.onDragOver);
 		gamewindow.addEventListener("drop", stendhal.ui.gamewindow.onDrop);
 		gamewindow.addEventListener("contextmenu", stendhal.ui.gamewindow.onContentMenu);
-		gamewindow.addEventListener("wheel", stendhal.ui.gamewindow.onMouseWheel);
+		gamewindow.addEventListener("wheel", stendhal.ui.gamewindow.onMouseWheel, { passive: true });
 
 		singletons.getJoystickController().registerGlobalEventHandlers();
 
@@ -532,7 +501,6 @@ export class Client {
 			if (zoneinfo["blend_method"]) {
 				stendhal.ui.gamewindow.setBlendMethod(zoneinfo["blend_method"]);
 			}
-
 			const hsl = Color.numToHSL(Number(zoneinfo["color"]));
 			stendhal.ui.gamewindow.HSLFilter = hsl.toString();
 			// deprecated

@@ -9,12 +9,14 @@
  *                                                                         *
  ***************************************************************************/
 
+import { RenderingContext2D } from "./Types";
+
 
 export class BackgroundPainter {
 
 	private bg: HTMLImageElement;
 	// each slice represents a portion of the image with the upper-left corner at offset x,y
-	private slices: {x: number; y: number;}[][] = [];
+	private slices: { x: number; y: number; }[][] = [];
 	private tileW: number;
 	private tileH: number;
 	private warned = false;
@@ -28,7 +30,7 @@ export class BackgroundPainter {
 		for (let y = 0; y < this.bg.height; y += this.tileH) {
 			const row = [];
 			for (let x = 0; x < this.bg.width; x += this.tileW) {
-				row.push({x: x, y: y});
+				row.push({ x: x, y: y });
 			}
 			this.slices.push(row);
 		}
@@ -54,8 +56,8 @@ export class BackgroundPainter {
 	 * @param height
 	 *     Number of vertical tiles to draw.
 	 */
-	paint(ctx: CanvasRenderingContext2D, x: number, y: number,
-			width: number, height: number) {
+	paint(ctx: RenderingContext2D, x: number, y: number,
+		width: number, height: number) {
 		// FIXME: if image parts were not cached, tile width & height may be 0
 		if (!this.tileW || !this.tileH) {
 			if (!this.warned) {
@@ -76,7 +78,7 @@ export class BackgroundPainter {
 			while (drawX < width) {
 				const slice = this.slices[ir][ic];
 				ctx.drawImage(this.bg, slice.x, slice.y, this.tileW, this.tileH,
-						x+drawX, y+drawY, this.tileW, this.tileH);
+					x + drawX, y + drawY, this.tileW, this.tileH);
 				drawX += this.tileW;
 				// offset last column to fit inside width
 				drawX = drawX <= width ? drawX : drawX + (width - drawX);

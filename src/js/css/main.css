@@ -835,6 +835,7 @@ span.lognick {
 }
 
 #middleColumn {
+	max-width: 800px;
 	float: none;
 	background-color: #000;
 	position: relative;
@@ -1140,6 +1141,23 @@ button.windowtitleminimize:first-child {
 
 .unclickable {
 	pointer-events: none;
+}
+
+#attack-button {
+/* 	position: absolute;
+	right: 32px;
+	bottom: 140px; */
+	width: 64px;
+	height: 64px;
+	background: transparent url(/data/gui/panel/attack_btn.png) center center / contain no-repeat;
+	border: none;
+	padding: 0;
+	pointer-events: auto;
+}
+
+.attack-button--disabled {
+	opacity: 0.6;
+	filter: grayscale(1);
 }
 
 .background, .background a {

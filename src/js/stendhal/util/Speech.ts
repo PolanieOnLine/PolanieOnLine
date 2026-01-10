@@ -9,6 +9,8 @@
  *                                                                         *
  ***************************************************************************/
 
+import { RenderingContext2D } from "./Types";
+
 declare var stendhal: any
 
 
@@ -27,8 +29,8 @@ export class Speech {
 	 * @param width
 	 * @param height
 	 */
-	static drawBubble(ctx: CanvasRenderingContext2D, x: number, y: number,
-			width: number, height: number, tail: boolean=false) {
+	static drawBubble(ctx: RenderingContext2D, x: number, y: number,
+		width: number, height: number, tail: boolean = false) {
 		ctx.strokeRect(x, y - 15, width, height);
 		ctx.fillRect(x, y - 15, width, height);
 
@@ -57,8 +59,8 @@ export class Speech {
 	 * @param width
 	 * @param height
 	 */
-	static drawBubbleRounded(ctx: CanvasRenderingContext2D, x: number,
-			y: number, width: number, height: number) {
+	static drawBubbleRounded(ctx: RenderingContext2D, x: number,
+		y: number, width: number, height: number) {
 		//const arc = this.arc_diameter;
 		const arc = 3;
 

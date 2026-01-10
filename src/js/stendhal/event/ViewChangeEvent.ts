@@ -12,6 +12,7 @@
 
 declare var stendhal: any;
 
+import { Canvas } from "util/Types";
 import { RPEvent } from "./RPEvent";
 
 
@@ -24,14 +25,14 @@ export class ViewChangeEvent extends RPEvent {
 	public y!: number;
 
 
-	execute(entity: any) {
-		const canvas = stendhal.ui.viewport.getElement() as HTMLCanvasElement;
+	execute(_entity: any) {
+		const canvas = stendhal.ui.viewport.getElement() as Canvas;
 		queueMicrotask(() => {
 			stendhal.ui.viewport.freeze = true;
 			stendhal.ui.viewport.offsetX = this.x * stendhal.ui.viewport.targetTileWidth
-					- Math.round(canvas.width / 2);
+				- Math.round(canvas.width / 2);
 			stendhal.ui.viewport.offsetY = this.y * stendhal.ui.viewport.targetTileHeight
-					- Math.round(canvas.height / 2);
+				- Math.round(canvas.height / 2);
 		});
 	}
 }

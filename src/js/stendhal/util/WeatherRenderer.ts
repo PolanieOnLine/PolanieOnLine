@@ -12,6 +12,7 @@
 import { TileStore } from "../data/TileStore";
 
 import { SoundObject } from "../data/sound/SoundFactory";
+import { Canvas, RenderingContext2D } from "./Types";
 
 declare var stendhal: any;
 
@@ -20,7 +21,7 @@ const weatherLoops = {
 	"rain": true,
 	"rain_heavy": true,
 	"rain_light": true
-} as {[key: string]: boolean};
+} as { [key: string]: boolean };
 
 interface WeatherSprite extends HTMLImageElement {
 	frames: number[];
@@ -30,7 +31,7 @@ interface WeatherSprite extends HTMLImageElement {
 export class WeatherRenderer {
 
 	private enabled = true;
-	private warned: {[key: string]: boolean} = {};
+	private warned: { [key: string]: boolean } = {};
 	private sprite?: WeatherSprite;
 	private frameIdx = 0;
 	private lastUpdate = 0;
@@ -108,7 +109,7 @@ export class WeatherRenderer {
 			this.sprite = undefined;
 		} else {
 			const img = stendhal.paths.weather + "/" + weather + ".png";
-			this.sprite = <WeatherSprite> stendhal.data.sprites.get(img);
+			this.sprite = <WeatherSprite>stendhal.data.sprites.get(img);
 			/* FIXME:
 			 *   "TypeError: $stendhal$$.data.$tileset$.$weatherAnimationMap$
 			 *   is undefined". TileStore.weatherMap is not always loaded
@@ -121,8 +122,8 @@ export class WeatherRenderer {
 				return;
 			}
 			//~ if (!animationMap) {
-				//~ console.error("weather animation map for '" + weather + "' not loaded");
-				//~ return;
+			//~ console.error("weather animation map for '" + weather + "' not loaded");
+			//~ return;
 			if (animationMap && Object.keys(animationMap).length == 0) {
 				console.error("weather animation map for '" + weather + "' is empty");
 				return;
@@ -143,7 +144,7 @@ export class WeatherRenderer {
 				console.log("using failsafe sprite height: " + spriteH);
 			}
 
-			const canvas = document.getElementById("viewport") as HTMLCanvasElement;
+			const canvas = document.getElementById("viewport") as Canvas;
 			this.tilesX = Math.ceil(canvas.width / spriteH) + 1;
 			this.tilesY = Math.ceil(canvas.height / spriteH) + 1;
 
@@ -159,7 +160,7 @@ export class WeatherRenderer {
 	 * @param ctx
 	 *    Drawing target element.
 	 */
-	draw(ctx: CanvasRenderingContext2D) {
+	draw(ctx: RenderingContext2D) {
 		if (this.enabled && this.sprite && this.sprite.frames) {
 			if (!this.tilesX || !this.tilesY) {
 				if (!this.warned.tiling) {
@@ -191,14 +192,14 @@ export class WeatherRenderer {
 	/**
 	 * Draws clouds animation.
 	 *
-	 * @param {CanvasRenderingContext2D) ctx
+	 * @param {RenderingContext2D) ctx
 	 * @param {number} offsetX
 	 * @param {number} offsetY
 	 */
-	private drawClouds(ctx: CanvasRenderingContext2D, offsetX: number, offsetY: number) {
+	private drawClouds(ctx: RenderingContext2D, offsetX: number, offsetY: number) {
 		const drawStart = Date.now();
 		const timeDiff = drawStart - this.lastUpdate;
-		const dim = {width: this.sprite!.width, height: this.sprite!.height};
+		const dim = { width: this.sprite!.width, height: this.sprite!.height };
 
 		// horizontal drift rate for wind effect (1 pixel per 100 milliseconds)
 		let wind = Math.floor(timeDiff / 100);
@@ -217,8 +218,8 @@ export class WeatherRenderer {
 		for (let dy = -clipTop; dy < offsetY + ctx.canvas.height; dy += dim.height) {
 			for (let dx = -clipLeft; dx < offsetX + ctx.canvas.width; dx += dim.width) {
 				ctx.drawImage(this.sprite!,
-						0, 0, dim.width, dim.height,
-						dx, dy, dim.width, dim.height);
+					0, 0, dim.width, dim.height,
+					dx, dy, dim.width, dim.height);
 			}
 		}
 	}
@@ -226,11 +227,11 @@ export class WeatherRenderer {
 	/**
 	 * Draws fog animation.
 	 *
-	 * @param {CanvasRenderingContext2D) ctx
+	 * @param {RenderingContext2D) ctx
 	 * @param {number} offsetX
 	 * @param {number} offsetY
 	 */
-	private drawFog(ctx: CanvasRenderingContext2D, offsetX: number, offsetY: number) {
+	private drawFog(ctx: RenderingContext2D, offsetX: number, offsetY: number) {
 		ctx.save();
 		if (!this.heavyFog) {
 			// reduce opacity for light fog
@@ -243,11 +244,11 @@ export class WeatherRenderer {
 	/**
 	 * Draws types of weather other than fog.
 	 *
-	 * @param {CanvasRenderingContext2D) ctx
+	 * @param {RenderingContext2D) ctx
 	 * @param {number} offsetX
 	 * @param {number} offsetY
 	 */
-	private drawOther(ctx: CanvasRenderingContext2D, offsetX: number, offsetY: number) {
+	private drawOther(ctx: RenderingContext2D, offsetX: number, offsetY: number) {
 		// width & height dimensions should be the same
 		const dim = this.sprite!.height;
 		const clipLeft = offsetX % dim;
@@ -255,12 +256,12 @@ export class WeatherRenderer {
 		for (let ix = 0; ix < this.tilesX; ix++) {
 			for (let iy = 0; iy < this.tilesY; iy++) {
 				ctx.drawImage(this.sprite!,
-						this.sprite!.frames[this.frameIdx]*dim,
-						0,
-						dim, dim,
-						(ix*dim)+offsetX-clipLeft,
-						(iy*dim)+offsetY-clipTop,
-						dim, dim);
+					this.sprite!.frames[this.frameIdx] * dim,
+					0,
+					dim, dim,
+					(ix * dim) + offsetX - clipLeft,
+					(iy * dim) + offsetY - clipTop,
+					dim, dim);
 			}
 		}
 

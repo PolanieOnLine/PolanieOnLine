@@ -9,6 +9,7 @@
  *                                                                         *
  ***************************************************************************/
 
+import { RenderingContext2D } from "util/Types";
 import { MenuItem } from "../action/MenuItem";
 import { Entity } from "./Entity";
 
@@ -44,19 +45,17 @@ export class Gate extends Entity {
 		});
 	}
 
-	override draw(ctx: CanvasRenderingContext2D, _tileXOverride?: number, _tileYOverride?: number) {
+	override draw(ctx: RenderingContext2D) {
 		if (this._image == undefined) {
 			var filename = stendhal.paths.sprites + "/doors/" + this["image"] + "_" + this["orientation"] + ".png";
 			this._image = stendhal.data.sprites.get(filename);
 		}
 		if (this._image.height) {
-			const tileX = this.getRenderTileX();
-			const tileY = this.getRenderTileY();
 			var xOffset = -32 * Math.floor(this._image.width / 32 / 2);
 			var height = this._image.height / 2;
 			var yOffset = -32 * Math.floor(height / 32 / 2);
-			var localX = tileX * 32 + xOffset;
-			var localY = tileY * 32 + yOffset;
+			var localX = this["_x"] * 32 + xOffset;
+			var localY = this["_y"] * 32 + yOffset;
 			var yStart = (this["locked"]) ? height : 0;
 			ctx.drawImage(this._image, 0, yStart, this._image.width, height, localX, localY, this._image.width, height);
 		}

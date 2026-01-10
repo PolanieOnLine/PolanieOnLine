@@ -55,6 +55,8 @@ export class DebugAction extends SlashAction {
 			Debug.setActive("screencap", !Debug.isActive("screencap"));
 			Chat.log("client", "Debugowanie przechwytywania ekranu " + (Debug.isActive("screencap") ? "włączone"
 					: "wyłączone"));
+		} else if(params[0] === "light") {
+			Debug.toggle("light");
 		}
 		return true;
 	}
@@ -66,7 +68,8 @@ export class DebugAction extends SlashAction {
 			"  /debug ui [pop]",
 			"  /debug weather [<nazwa>]",
 			"  /debug settings",
-			"  /debug touch"
+			"  /debug touch",
+			"  /debug light"
 		];
 		Chat.log("client", usage);
 	}

@@ -58,6 +58,17 @@ export class InputTab extends AbstractSettingsTab {
 		chk_joystick.checked = singletons.getSessionManager().joystickEnabled();
 		sel_joystick.disabled = !chk_joystick.checked;
 
+		// attack button overlay
+		const chk_attack_button = parent.createCheckBox("chk_attack_button", "attack.button",
+				"Pokazuj przycisk ataku",
+				"Ukryj przycisk ataku",
+				function(_e: Event) {
+					singletons.getAttackButtonController().update();
+				});
+		if (chk_attack_button) {
+			chk_attack_button.checked = singletons.getSessionManager().attackButtonEnabled();
+		}
+
 		// joystck positioning
 		const joystickInputs: HTMLInputElement[] = [];
 		for (const o of ["x", "y"]) {

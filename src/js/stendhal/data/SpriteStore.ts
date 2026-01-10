@@ -11,24 +11,22 @@
 
 declare var stendhal: any;
 
-import { BinaryAssetCache } from "../util/BinaryAssetCache";
+import { Canvas } from "util/Types";
 import { Paths } from "./Paths";
 
 
 class SpriteImage extends Image {
 	// number of times the image has been accessed after initial creation
 	counter = 0;
-	assetUrl?: string;
-	loadPromise?: Promise<SpriteImage>;
-	objectUrl?: string;
+	bitmap?: ImageBitmap;
+	bitmapWidth?: number;
+	bitmapHeight?: number;
 }
 
 export class SpriteStore {
 
 	private knownBrokenUrls: { [url: string]: boolean } = {};
 	private images: { [filename: string]: SpriteImage } = {};
-	private readonly binaryCache = BinaryAssetCache.get();
-	private readonly failsafePath = Paths.sprites + "/failsafe.png";
 
 	private knownShadows: { [key: string]: boolean } = {
 		"24x32": true,
@@ -79,138 +77,84 @@ export class SpriteStore {
 		// do nothing
 	}
 
-	private createSpriteImage(filename: string): SpriteImage {
-		const image = new Image() as SpriteImage;
-		image.counter = 0;
-		image.assetUrl = this.toAbsoluteUrl(filename);
-		if ("decoding" in image) {
-			(image as any).decoding = "async";
+	private supportsImageBitmap(): boolean {
+		return typeof createImageBitmap === "function";
+	}
+
+	private createImage(filename?: string): SpriteImage {
+		const temp = new Image() as SpriteImage;
+		temp.counter = 0;
+		temp.onerror = ((t: SpriteImage, store: SpriteStore) => {
+			return () => {
+				if (t.src && !store.knownBrokenUrls[t.src]) {
+					console.log("Broken image path:", t.src, new Error());
+					store.knownBrokenUrls[t.src] = true;
+				}
+				const failsafe = store.getFailsafeImage();
+				if (failsafe.src && t.src !== failsafe.src) {
+					t.src = failsafe.src;
+				}
+			};
+		})(temp, this);
+		if (filename) {
+			temp.src = filename;
 		}
-		if ("loading" in image) {
-			(image as any).loading = "lazy";
+		if (this.supportsImageBitmap()) {
+			temp.addEventListener("load", () => this.ensureBitmap(temp), { once: true });
 		}
-		image.onerror = (event: Event | string | undefined) => {
-			this.markBroken(filename, event);
-			this.useFailsafe(image);
-		};
+		return temp;
+	}
+
+	private ensureBitmap(image: SpriteImage): Promise<void> {
+		if (image.bitmap || !this.supportsImageBitmap()) {
+			if (!image.bitmapWidth && image.complete) {
+				image.bitmapWidth = image.width;
+				image.bitmapHeight = image.height;
+			}
+			return Promise.resolve();
+		}
+		if (!image.complete) {
+			return Promise.resolve();
+		}
+		return createImageBitmap(image).then((bmp) => {
+			image.bitmap = bmp;
+			image.bitmapWidth = bmp.width;
+			image.bitmapHeight = bmp.height;
+		}).catch(() => {
+			if (image.complete) {
+				image.bitmapWidth = image.width;
+				image.bitmapHeight = image.height;
+			}
+		});
+	}
+
+	private getBestSource(image: SpriteImage): SpriteImage {
+		if (image.bitmap) {
+			if (!image.bitmapWidth) {
+				image.bitmapWidth = image.bitmap.width;
+				image.bitmapHeight = image.bitmap.height;
+			}
+			if (image.bitmapWidth) {
+				image.width = image.bitmapWidth;
+				image.height = image.bitmapHeight || image.height;
+			}
+		} else if (!image.bitmapWidth && image.complete) {
+			image.bitmapWidth = image.width;
+			image.bitmapHeight = image.height;
+		}
 		return image;
 	}
 
-	private ensureImagePromise(filename: string, image: SpriteImage): Promise<SpriteImage> {
-		if (image.complete && image.naturalWidth > 0) {
-			return Promise.resolve(image);
-		}
-		if (image.loadPromise) {
-			return image.loadPromise;
-		}
-		if (this.shouldBypassBinaryCache(filename)) {
-			const promise = new Promise<SpriteImage>((resolve) => {
-				const onLoad = () => {
-					image.removeEventListener("load", onLoad);
-					image.removeEventListener("error", onError);
-					resolve(image);
-				};
-				const onError = (event: Event) => {
-					image.removeEventListener("load", onLoad);
-					image.removeEventListener("error", onError);
-					this.markBroken(filename, event);
-					this.useFailsafe(image);
-					resolve(image);
-				};
-				image.addEventListener("load", onLoad);
-				image.addEventListener("error", onError);
-				if (!image.src) {
-					image.src = image.assetUrl || filename;
-				}
-			});
-			image.loadPromise = promise;
-			promise.then(() => {
-				image.loadPromise = undefined;
-			}, () => {
-				image.loadPromise = undefined;
-			});
-			return promise;
-		}
-		const promise = this.binaryCache.load(filename).then((blob) => {
-			return this.assignBlobToImage(filename, image, blob);
-		}).catch((error) => {
-			this.markBroken(filename, error);
-			this.useFailsafe(image);
-			return image;
-		});
-		image.loadPromise = promise;
-		promise.then(() => {
-			image.loadPromise = undefined;
-		}, () => {
-			image.loadPromise = undefined;
-		});
-		return promise;
-	}
-
-	private shouldBypassBinaryCache(filename: string): boolean {
-		return filename.indexOf("/emoji/") !== -1;
-	}
-
-	private assignBlobToImage(filename: string, image: SpriteImage, blob: Blob): Promise<SpriteImage> {
-		return new Promise((resolve) => {
-			if (image.objectUrl) {
-				URL.revokeObjectURL(image.objectUrl);
-			}
-			const objectUrl = URL.createObjectURL(blob);
-			image.objectUrl = objectUrl;
-			const onLoad = () => {
-				image.removeEventListener("load", onLoad);
-				image.removeEventListener("error", onError);
-				resolve(image);
-			};
-			const onError = (event: Event) => {
-				image.removeEventListener("load", onLoad);
-				image.removeEventListener("error", onError);
-				this.markBroken(filename, event);
-				this.useFailsafe(image);
-				resolve(image);
-			};
-			image.addEventListener("load", onLoad);
-			image.addEventListener("error", onError);
-			image.src = objectUrl;
-		});
-	}
-
-	private useFailsafe(target: SpriteImage): void {
-		const failsafe = this.getFailsafe() as SpriteImage;
-		if (target === failsafe || target.assetUrl === failsafe.assetUrl) {
-			return;
-		}
-		const assign = () => {
-			if (failsafe.src && target.src !== failsafe.src) {
-				target.src = failsafe.src;
-			}
-		};
-		if (failsafe.complete && failsafe.naturalWidth > 0) {
-			assign();
+	private getFailsafeImage(): SpriteImage {
+		const filename = Paths.sprites + "/failsafe.png";
+		let failsafe = this.images[filename];
+		if (failsafe) {
+			failsafe.counter++;
 		} else {
-			this.ensureImagePromise(this.failsafePath, failsafe).then(assign).catch(assign);
+			failsafe = this.createImage(filename);
+			this.images[filename] = failsafe;
 		}
-	}
-
-	private markBroken(filename: string, reason: any): void {
-		const absolute = this.toAbsoluteUrl(filename);
-		const key = absolute || filename;
-		if (!this.knownBrokenUrls[key]) {
-			const detail = reason instanceof ErrorEvent ? reason.error : reason;
-			const error = detail instanceof Error ? detail : new Error(detail ? String(detail) : "");
-			console.log("Broken image path:", absolute, error);
-		}
-		this.knownBrokenUrls[key] = true;
-		this.knownBrokenUrls[filename] = true;
-	}
-
-	private toAbsoluteUrl(filename: string): string {
-		try {
-			return new URL(filename, window.location.href).toString();
-		} catch (error) {
-			return filename;
-		}
+		return failsafe;
 	}
 
 	get(filename: string): any {
@@ -224,23 +168,41 @@ export class SpriteStore {
 			this.knownBrokenUrls[filename] = true;
 			return {};
 		}
-		let image = this.images[filename];
-		if (!image) {
-			image = this.createSpriteImage(filename);
-			this.images[filename] = image;
-		} else {
-			image.counter++;
+		if (this.images[filename]) {
+			this.images[filename].counter++;
+			const cached = this.images[filename];
+			if (cached.complete && !cached.bitmap) {
+				this.ensureBitmap(cached);
+			}
+			return this.getBestSource(cached);
 		}
-		void this.ensureImagePromise(filename, image);
-		return image;
+		const temp = this.createImage(filename);
+		this.images[filename] = temp;
+		return this.getBestSource(temp);
 	}
 
 	getWithPromise(filename: string): any {
-		const image = this.get(filename);
-		if (!(image instanceof Image)) {
-			return Promise.resolve(image);
-		}
-		return this.ensureImagePromise(filename, image as SpriteImage);
+		return new Promise((resolve) => {
+			if (typeof (this.images[filename]) != "undefined") {
+				const cached = this.images[filename];
+				cached.counter++;
+				const resolver = () => this.ensureBitmap(cached)
+					.then(() => resolve(this.getBestSource(cached)))
+					.catch(() => resolve(this.getBestSource(cached)));
+				if (cached.complete || cached.bitmap) {
+					resolver();
+				} else {
+					cached.addEventListener("load", resolver, { once: true });
+				}
+				return;
+			}
+
+			const image = this.createImage(filename);
+			this.images[filename] = image;
+			image.onload = () => this.ensureBitmap(image)
+				.then(() => resolve(this.getBestSource(image)))
+				.catch(() => resolve(this.getBestSource(image)));
+		});
 	}
 
 	/**
@@ -252,7 +214,7 @@ export class SpriteStore {
 	 *   Angle of rotation.
 	 */
 	private rotate(img: HTMLImageElement, angle: number) {
-		const canvas = <HTMLCanvasElement>document.getElementById("drawing-stage")!;
+		const canvas = document.getElementById("drawing-stage")! as HTMLCanvasElement;
 		const ctx = canvas.getContext("2d")!;
 		// make sure working with blank canvas
 		ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -287,23 +249,25 @@ export class SpriteStore {
 		}
 		// NOTE: cannot use HTMLImageElement.cloneNode here, must get base image then transfer
 		//       `src` property when ready
-		const img = new Image() as SpriteImage;
-		img.counter = 0;
+		const img = this.createImage();
 		img.onload = () => {
 			img.onload = null;
 			this.rotate(img, angle);
+			this.ensureBitmap(img);
 		}
-		const baseImg = this.get(filename);
-		if (baseImg.complete) {
-			img.src = baseImg.src;
-		} else {
-			baseImg.onload = () => {
-				baseImg.onload = null;
+		this.get(filename);
+		const baseImg = this.images[filename];
+		if (baseImg) {
+			if (baseImg.complete) {
 				img.src = baseImg.src;
+			} else {
+				baseImg.addEventListener("load", () => {
+					img.src = baseImg.src;
+				}, { once: true });
 			}
 		}
 		this.images[id] = img;
-		return img;
+		return this.getBestSource(img);
 	}
 
 	/**
@@ -316,7 +280,6 @@ export class SpriteStore {
 	 */
 	cache(id: string, image: SpriteImage) {
 		image.counter = 0;
-		image.assetUrl = this.toAbsoluteUrl(id);
 		this.images[id] = image;
 	}
 
@@ -339,15 +302,8 @@ export class SpriteStore {
 	 *     HTMLImageElement with failsafe image data.
 	 */
 	getFailsafe(): HTMLImageElement {
-		let failsafe = this.images[this.failsafePath];
-		if (!failsafe) {
-			failsafe = this.createSpriteImage(this.failsafePath);
-			this.images[this.failsafePath] = failsafe;
-			void this.ensureImagePromise(this.failsafePath, failsafe);
-		} else {
-			failsafe.counter++;
-		}
-		return failsafe;
+		const failsafe = this.getFailsafeImage();
+		return this.getBestSource(failsafe);
 	}
 
 	/**
@@ -359,7 +315,9 @@ export class SpriteStore {
 	 *     Path to image or failsafe image file.
 	 */
 	checkPath(filename: string): string {
-		return this.get(filename).src;
+		this.get(filename);
+		const cached = this.images[filename];
+		return cached ? cached.src : "";
 	}
 
 	/** deletes all objects that have not been accessed since this method was called last time */
@@ -405,6 +363,7 @@ export class SpriteStore {
 			ctx.drawImage(image, offsetX, offsetY, width, height, 0, 0, width, height);
 			// Firefox would be able to use the canvas directly as a drag image, but
 			// Chrome does not. This should work in any standards compliant browser.
+			// TODO: Check if that is still true
 			var newImage = new Image();
 			newImage.src = canvas.toDataURL("image/png");
 			return newImage;
@@ -644,12 +603,11 @@ export class SpriteStore {
 	 *     Image sprite or <code>undefined</code>.
 	 */
 	getShadow(shadowStyle: string): any {
-		if (!this.knownShadows[shadowStyle]) {
-			return undefined;
+		if (this.knownShadows[shadowStyle]) {
+			const filename = Paths.sprites + "/shadow/" + shadowStyle + ".png";
+			return this.get(filename);
 		}
-
-		const filename = Paths.sprites + "/shadow/" + shadowStyle + ".png";
-		return this.get(filename);
+		return undefined;
 	}
 
 	/**

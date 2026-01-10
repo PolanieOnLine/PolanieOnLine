@@ -70,6 +70,7 @@ public class VeterinarianNPC implements ZoneConfigurator {
 			protected void createDialog() {
 				//Behaviours.addHelp(this,
 				//				   "...");
+				addGreeting();
 				add(ConversationStates.ATTENDING, Arrays.asList("heal", "ulecz"), null, ConversationStates.ATTENDING, null, new HealPetsAction());
 				addJob("Jestem weterynarzem.");
 

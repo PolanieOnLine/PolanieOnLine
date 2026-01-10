@@ -9,18 +9,20 @@
  *                                                                         *
  ***************************************************************************/
 
+import { RenderingContext2D } from "util/Types";
+
 declare var stendhal: any;
 
 export class OutfitPartSelector {
-		private _part: string;
-		private _onPartChanged: Function;
-		private _index: number;
-		private _maxindex: number;
-		private _ctx: CanvasRenderingContext2D;
-		private _width: number;
-		private _height: number;
-		private _color?: any;
-		private _image?: Promise<CanvasImageSource>;
+	private _part: string;
+	private _onPartChanged: Function;
+	private _index: number;
+	private _maxindex: number;
+	private _ctx: RenderingContext2D;
+	private _width: number;
+	private _height: number;
+	private _color?: any;
+	private _image?: Promise<CanvasImageSource>;
 
 	constructor(part: string, initialIndex: any, maxindex: number, onPartChanged: Function) {
 		this._part = part;

@@ -16,8 +16,7 @@ import { Outfit } from "../../data/Outfit";
 
 import { Direction } from "../../util/Direction";
 import { StringUtil } from "../../util/StringUtil";
-
-declare var stendhal: any;
+import { Canvas } from "util/Types";
 
 
 /**
@@ -74,7 +73,7 @@ export class OutfitPreviewComponent extends Component {
 	 */
 	nextDirection() {
 		let dir = Direction.VALUES[this.dir.val + 1];
-		if (typeof(dir) === "undefined") {
+		if (typeof (dir) === "undefined") {
 			dir = Direction.VALUES[1];
 		}
 		this.setDirection(dir);
@@ -85,7 +84,7 @@ export class OutfitPreviewComponent extends Component {
 	 */
 	prevDirection() {
 		let dir = Direction.VALUES[this.dir.val - 1];
-		if (typeof(dir) === "undefined" || dir.val === 0) {
+		if (typeof (dir) === "undefined" || dir.val === 0) {
 			dir = Direction.VALUES[4];
 		}
 		this.setDirection(dir);
@@ -110,7 +109,7 @@ export class OutfitPreviewComponent extends Component {
 	 * @param {string|undefined|null} color
 	 *   Background color or `undefined|null` or empty string to unset.
 	 */
-	setBGColor(color: string|undefined|null) {
+	setBGColor(color: string | undefined | null) {
 		if (!color || StringUtil.isEmpty(color)) {
 			color = undefined;
 		}
@@ -130,7 +129,7 @@ export class OutfitPreviewComponent extends Component {
 		const ctx = (this.componentElement as HTMLCanvasElement).getContext("2d")!;
 		if (w !== ctx.canvas.width || h !== ctx.canvas.height) {
 			console.warn("Image dimensions do not match preview canvas: " + w + "x" + h + " != "
-					+ ctx.canvas.width + "x" + ctx.canvas.height);
+				+ ctx.canvas.width + "x" + ctx.canvas.height);
 		}
 		if (this.bgColor) {
 			ctx.fillStyle = this.bgColor;

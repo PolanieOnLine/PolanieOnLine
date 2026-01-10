@@ -60,7 +60,7 @@ export class ItemContainerImplementation {
 			});
 			e.addEventListener("touchmove", (event: TouchEvent) => {
 				this.onTouchMove(event);
-			});
+			}, {passive: true});
 			e.addEventListener("drop", (event: DragEvent) => {
 				this.onDrop(event)
 			});
@@ -72,7 +72,7 @@ export class ItemContainerImplementation {
 			});
 			e.addEventListener("touchstart", (event: TouchEvent) => {
 				this.onTouchStart(event)
-			});
+			}, {passive: true});
 			e.addEventListener("touchend", (event: TouchEvent) => {
 				this.onTouchEnd(event)
 			});
@@ -125,10 +125,8 @@ export class ItemContainerImplementation {
 				const item = <Item> o;
 				let xOffset = 0;
 				let yOffset = (item["state"] || 0) * -32;
-				if (item.isAnimated()) {
-					item.stepAnimation();
-					xOffset = -(item.getXFrameIndex() * 32);
-				}
+				const animationFrame = item.getAnimationFrameIndex();
+				xOffset = -(animationFrame * 32);
 
 				e.style.backgroundImage = "url("
 						+ stendhal.data.sprites.checkPath(stendhal.paths.sprites

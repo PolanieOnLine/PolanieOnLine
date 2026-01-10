@@ -9,6 +9,7 @@
  *                                                                         *
  ***************************************************************************/
 
+import { RenderingContext2D } from "util/Types";
 import { MenuItem } from "../action/MenuItem";
 import { Entity } from "./Entity";
 
@@ -51,11 +52,9 @@ export class GrowingEntitySpawner extends Entity {
 	/**
 	 * draw RPEntities
 	 */
-	override draw(ctx: CanvasRenderingContext2D, _tileXOverride?: number, _tileYOverride?: number) {
-		const tileX = this.getRenderTileX();
-		const tileY = this.getRenderTileY();
-		var localX = tileX * 32;
-		var localY = tileY * 32;
+	override draw(ctx: RenderingContext2D) {
+		var localX = this["x"] * 32;
+		var localY = this["y"] * 32;
 
 		// FIXME:
 		//   temporary fix, problem lies higher up

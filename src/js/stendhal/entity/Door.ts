@@ -9,25 +9,23 @@
  *                                                                         *
  ***************************************************************************/
 
+import { RenderingContext2D } from "util/Types";
 import { MenuItem } from "../action/MenuItem";
 import { Portal } from "./Portal";
 
-declare var marauroa: any;
 declare var stendhal: any;
 
 export class Door extends Portal {
 
 	override zIndex = 5000;
 
-	override draw(ctx: CanvasRenderingContext2D, _tileXOverride?: number, _tileYOverride?: number) {
+	override draw(ctx: RenderingContext2D) {
 		let imagePath = stendhal.paths.sprites + "/doors/" + this["class"] + ".png";
 		let image = stendhal.data.sprites.get(imagePath);
 		if (image.height) {
 			let height = image.height / 2;
-			const tileX = this.getRenderTileX();
-			const tileY = this.getRenderTileY();
-			let x = (tileX * 32) - ((image.width - 32) / 2);
-			let y = (tileY * 32) - ((height - 32) / 2);
+			let x = (this["x"] * 32) - ((image.width - 32) / 2);
+			let y = (this["y"] * 32) - ((height - 32) / 2);
 
 			var offsetY = height;
 			if (this["open"] === "") {

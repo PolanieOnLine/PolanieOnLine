@@ -10,6 +10,7 @@
  *                                                                         *
  ***************************************************************************/
 
+import { RenderingContext2D } from "util/Types";
 import { singletons } from "../SingletonRepo";
 
 
@@ -75,11 +76,7 @@ export class ParallaxBackground {
 		this.image = undefined;
 	}
 
-	getImageElement(): HTMLImageElement | undefined {
-		return this.image;
-	}
-
-	draw(ctx: CanvasRenderingContext2D, offsetX: number, offsetY: number) {
+	draw(ctx: RenderingContext2D, offsetX: number, offsetY: number) {
 		if (!this.image || !this.image.height) {
 			return;
 		}

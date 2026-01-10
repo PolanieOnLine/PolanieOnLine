@@ -25,6 +25,7 @@ import { Nature } from "../util/Nature";
 import { Floater } from "../sprite/Floater";
 import { EmojiSprite } from "../sprite/EmojiSprite";
 import { OverlaySpriteImpl } from "../sprite/OverlaySpriteImpl";
+import { SpeechBubble } from "../sprite/SpeechBubble";
 import { TextSprite } from "../sprite/TextSprite";
 
 import { BarehandAttackSprite } from "../sprite/action/BarehandAttackSprite";
@@ -32,6 +33,7 @@ import { BarehandAttackSprite } from "../sprite/action/BarehandAttackSprite";
 import { RangedAttackSprite } from "../sprite/action/RangedAttackSprite";
 
 import { ImageWithDimensions } from "data/ImageWithDimensions";
+import { RenderingContext2D } from "util/Types";
 
 var HEALTH_BAR_HEIGHT = 6;
 
@@ -53,7 +55,7 @@ export class RPEntity extends ActiveEntity {
 	// for adjusting entity hp bar & title vertical position
 	protected titleDrawYOffset: number = 0;
 	// canvas for merging outfit layers to be drawn
-	private octx?: CanvasRenderingContext2D;
+	private octx?: RenderingContext2D;
 
 	private attackers = new Map<string, Entity>();
 	private deathAnnounced = false;
@@ -179,10 +181,10 @@ export class RPEntity extends ActiveEntity {
 	 * says a text
 	 *
 	 * @param text
-	 *				 Message contents.
+	 *     Message contents.
 	 * @param rangeSquared
-	 *				 Distance at which message can be heard (-1 represents
-	 *				 entire map).
+	 *     Distance at which message can be heard (-1 represents
+	 *     entire map).
 	 */
 	override say(text: string, rangeSquared?: number) {
 		if (!marauroa.me) {
@@ -208,10 +210,10 @@ export class RPEntity extends ActiveEntity {
 	 * Displays a speech bubble attached to an entity.
 	 *
 	 * @param text
-	 *				 Text to display.
+	 *     Text to display.
 	 */
 	addSpeechBubble(text: string) {
-		stendhal.ui.gamewindow.showSpeechBubble(text, this);
+		stendhal.ui.gamewindow.addTextSprite(new SpeechBubble(text, this));
 	}
 
 	addEmoji(emoji: HTMLImageElement) {
@@ -225,7 +227,7 @@ export class RPEntity extends ActiveEntity {
 		return typeof (this["no_shadow"]) === "undefined";
 	}
 
-	drawMultipartOutfit(ctx: CanvasRenderingContext2D) {
+	drawMultipartOutfit(ctx: RenderingContext2D) {
 		const store = singletons.getOutfitStore();
 		// layers in draw order
 		var layers = store.getLayerNames();
@@ -293,7 +295,7 @@ export class RPEntity extends ActiveEntity {
 	/**
 	 * Get an outfit part (Image or a Promise)
 	 *
-	 * @param {string}		part
+	 * @param {string}  part
 	 * @param {number} index
 	 * @param {number} body
 	 */
@@ -339,8 +341,7 @@ export class RPEntity extends ActiveEntity {
 	 */
 	public setStatusBarOffset() {
 		const screenOffsetY = stendhal.ui.gamewindow.offsetY;
-		const renderTileY = this.getRenderTileY();
-		const entityBottom = (renderTileY * 32) + (this["height"] * 32);
+		const entityBottom = (this["_y"] * 32) + (this["height"] * 32);
 		// FIXME: how to get text height dynamically?
 		const entityTop = entityBottom - this["drawHeight"]
 			- HEALTH_BAR_HEIGHT - 26;
@@ -355,7 +356,7 @@ export class RPEntity extends ActiveEntity {
 	/**
 	 * draw RPEntities
 	 */
-	override draw(ctx: CanvasRenderingContext2D, _tileX?: number, _tileY?: number) {
+	override draw(ctx: RenderingContext2D) {
 		if (typeof (this["ghostmode"]) != "undefined" && marauroa.me && !marauroa.me.isAdmin()) {
 			return;
 		}
@@ -365,7 +366,7 @@ export class RPEntity extends ActiveEntity {
 		this.drawStatusIcons(ctx);
 	}
 
-	drawMain(ctx: CanvasRenderingContext2D) {
+	drawMain(ctx: RenderingContext2D) {
 		if (typeof (this["outfit"]) != "undefined" || typeof (this["outfit_ext"]) != "undefined") {
 			this.drawMultipartOutfit(ctx);
 		} else {
@@ -404,7 +405,7 @@ export class RPEntity extends ActiveEntity {
 		}
 	}
 
-	drawStatusIcons(ctx: CanvasRenderingContext2D) {
+	drawStatusIcons(ctx: RenderingContext2D) {
 
 		function _drawAnimatedIcon(icon: CanvasImageSource, delay: number, nFrames: number, xdim: number, ydim: number, x: number, y: number) {
 			var frame = Math.floor(Date.now() / delay) % nFrames;
@@ -424,10 +425,8 @@ export class RPEntity extends ActiveEntity {
 			_drawAnimatedIcon(icon, delay, nFrames, xdim, ydim, x, y);
 		}
 
-		const tileX = this.getRenderTileX();
-		const tileY = this.getRenderTileY();
-		var x = tileX * 32 - 10;
-		var y = (tileY + 1) * 32;
+		var x = this["_x"] * 32 - 10;
+		var y = (this["_y"] + 1) * 32;
 		if (this.hasOwnProperty("choking")) {
 			ctx.drawImage(stendhal.data.sprites.get(stendhal.paths.sprites + "/ideas/choking.png"), x, y - 10);
 		} else if (this.hasOwnProperty("eating")) {
@@ -487,14 +486,11 @@ export class RPEntity extends ActiveEntity {
 	 * Draw colored ellipses (or rectangles on browsers that do not support
 	 * ellipses) when the entity is being attacked, or is attacking the user.
 	 */
-	drawCombat(ctx: CanvasRenderingContext2D) {
-		const tileX = this.getRenderTileX();
-		const tileY = this.getRenderTileY();
-
+	drawCombat(ctx: RenderingContext2D) {
 		if (this.attackers.size > 0) {
 			ctx.lineWidth = 1;
 			/*
-			 * As of 2015-9-15 CanvasRenderingContext2D.ellipse() is not
+			 * As of 2015-9-15 RenderingContext2D.ellipse() is not
 			 * supported in most browsers. Fall back to rectangles on these.
 			 * Also on Chrome 45.0.2454.85 ellipse() does not seem to support
 			 * the begin angle parameter correctly, nor does the stroke
@@ -506,8 +502,8 @@ export class RPEntity extends ActiveEntity {
 			if (ctx.ellipse instanceof Function) {
 				var xRad = this["width"] * 16;
 				var yRad = this["height"] * 16 / Math.SQRT2;
-				var centerX = tileX * 32 + xRad;
-				var centerY = (tileY + this["height"]) * 32 - yRad;
+				var centerX = this["_x"] * 32 + xRad;
+				var centerY = (this["_y"] + this["height"]) * 32 - yRad;
 				ctx.strokeStyle = "#4a0000";
 				ctx.beginPath();
 				ctx.ellipse(centerX, centerY, xRad, yRad, 0, 0, Math.PI, false);
@@ -518,7 +514,7 @@ export class RPEntity extends ActiveEntity {
 				ctx.stroke();
 			} else {
 				ctx.strokeStyle = "#e60a0a";
-				ctx.strokeRect(32 * tileX, 32 * tileY, 32 * this["width"], 32 * this["height"]);
+				ctx.strokeRect(32 * this["_x"], 32 * this["_y"], 32 * this["width"], 32 * this["height"]);
 			}
 		}
 		if (this.getAttackTarget() === marauroa.me) {
@@ -527,8 +523,8 @@ export class RPEntity extends ActiveEntity {
 			if (ctx.ellipse instanceof Function) {
 				var xRad = this["width"] * 16 - 1;
 				var yRad = this["height"] * 16 / Math.SQRT2 - 1;
-				var centerX = tileX * 32 + xRad + 1;
-				var centerY = (tileY + this["height"]) * 32 - yRad - 1;
+				var centerX = this["_x"] * 32 + xRad + 1;
+				var centerY = (this["_y"] + this["height"]) * 32 - yRad - 1;
 				ctx.strokeStyle = "#ffc800";
 				ctx.beginPath();
 				ctx.ellipse(centerX, centerY, xRad, yRad, 0, 0, Math.PI, false);
@@ -539,11 +535,11 @@ export class RPEntity extends ActiveEntity {
 				ctx.stroke();
 			} else {
 				ctx.strokeStyle = "#ffdd0a";
-				ctx.strokeRect(32 * tileX + 1, 32 * tileY + 1, 32 * this["width"] - 2, 32 * this["height"] - 2);
+				ctx.strokeRect(32 * this["_x"] + 1, 32 * this["_y"] + 1, 32 * this["width"] - 2, 32 * this["height"] - 2);
 			}
 		}
 		if (this.attackResult) {
-			if (this.attackResult.draw(ctx, (tileX + this["width"]) * 32 - 10, (tileY + this["height"]) * 32 - 10)) {
+			if (this.attackResult.draw(ctx, (this["_x"] + this["width"]) * 32 - 10, (this["_y"] + this["height"]) * 32 - 10)) {
 				this.attackResult = undefined;
 			}
 		}
@@ -555,11 +551,9 @@ export class RPEntity extends ActiveEntity {
 	 * the coordinates where to start floating. The method should return true
 	 * when the floater should be removed.
 	 */
-	drawFloaters(ctx: CanvasRenderingContext2D) {
-		const tileX = this.getRenderTileX();
-		const tileY = this.getRenderTileY();
-		var centerX = (tileX + this["width"] / 2) * 32;
-		var topY = (tileY + 1) * 32 - this["drawHeight"];
+	drawFloaters(ctx: RenderingContext2D) {
+		var centerX = (this["_x"] + this["width"] / 2) * 32;
+		var topY = (this["_y"] + 1) * 32 - this["drawHeight"];
 		// Grab an unchanging copy
 		var currentFloaters = this.floaters;
 		for (var i = 0; i < currentFloaters.length; i++) {
@@ -573,14 +567,12 @@ export class RPEntity extends ActiveEntity {
 	}
 
 	/**
-	 * @param {CanvasRenderingContext2D} ctx
+	 * @param {RenderingContext2D} ctx
 	 * @param {Image} image
 	 */
-	drawSpriteImage(ctx: CanvasRenderingContext2D, image: CanvasImageSource & ImageWithDimensions) {
-		const tileX = this.getRenderTileX();
-		const tileY = this.getRenderTileY();
-		var localX = tileX * 32;
-		var localY = tileY * 32;
+	drawSpriteImage(ctx: RenderingContext2D, image: CanvasImageSource & ImageWithDimensions) {
+		var localX = this["_x"] * 32;
+		var localY = this["_y"] * 32;
 		if (image.height) { // image.complete is true on missing image files
 			var nFrames = 3;
 			var nDirections = 4;
@@ -630,17 +622,15 @@ export class RPEntity extends ActiveEntity {
 		}
 	}
 
-	drawTop(ctx: CanvasRenderingContext2D, _tileX?: number, _tileY?: number) {
-		const tileX = this.getRenderTileX();
-		const tileY = this.getRenderTileY();
-		var localX = tileX * 32;
-		var localY = tileY * 32;
+	drawTop(ctx: RenderingContext2D) {
+		var localX = this["_x"] * 32;
+		var localY = this["_y"] * 32;
 		this.drawFloaters(ctx);
 		this.drawHealthBar(ctx, localX, localY + this.statusBarYOffset);
 		this.drawTitle(ctx, localX, localY + this.statusBarYOffset);
 	}
 
-	drawHealthBar(ctx: CanvasRenderingContext2D, x: number, y: number) {
+	drawHealthBar(ctx: RenderingContext2D, x: number, y: number) {
 		var drawX = x + ((this["width"] * 32) - this["drawWidth"]) / 2;
 		var drawY = y + (this["height"] * 32) - this["drawHeight"]
 			- HEALTH_BAR_HEIGHT + this.titleDrawYOffset;
@@ -677,16 +667,19 @@ export class RPEntity extends ActiveEntity {
 		}
 	}
 
-	drawTitle(ctx: CanvasRenderingContext2D, x: number, y: number) {
+	drawTitle(ctx: RenderingContext2D, x: number, y: number) {
 		if (this.titleTextSprite) {
 			let textMetrics = this.titleTextSprite.getTextMetrics(ctx);
+			if (!textMetrics) {
+				throw new Error("textMetrics is undefined");
+			}
 			var drawY = y + (this["height"] * 32) - this["drawHeight"]
 				- HEALTH_BAR_HEIGHT + this.titleDrawYOffset;
 			this.titleTextSprite.draw(ctx, x + (this["width"] * 32 - textMetrics.width) / 2, drawY - 5 - HEALTH_BAR_HEIGHT);
 		}
 	}
 
-	drawAttack(ctx: CanvasRenderingContext2D) {
+	drawAttack(ctx: RenderingContext2D) {
 		if (!this.attackSprite) {
 			return;
 		}
@@ -696,10 +689,8 @@ export class RPEntity extends ActiveEntity {
 			this.attackSprite = undefined;
 			return;
 		}
-		const tileX = this.getRenderTileX();
-		const tileY = this.getRenderTileY();
-		var localX = tileX * 32;
-		var localY = tileY * 32;
+		var localX = this["_x"] * 32;
+		var localY = this["_y"] * 32;
 		var localW = this["width"] * stendhal.ui.gamewindow.targetTileWidth;
 		var localH = this["height"] * stendhal.ui.gamewindow.targetTileHeight;
 		this.attackSprite.draw(ctx, localX, localY, localW, localH);
@@ -708,10 +699,10 @@ export class RPEntity extends ActiveEntity {
 	/**
 	 * Draws an animation over entity sprite.
 	 *
-	 * @param {CanvasRenderingContext2D} ctx
-	 *		 Canvas context to draw on.
+	 * @param {RenderingContext2D} ctx
+	 *   Canvas context to draw on.
 	 */
-	private drawOverlayAnimation(ctx: CanvasRenderingContext2D) {
+	private drawOverlayAnimation(ctx: RenderingContext2D) {
 		if (this.overlay && this.overlay.draw(ctx, this["drawOffsetX"], this["drawOffsetY"],
 			this["drawWidth"], this["drawHeight"])) {
 			// overlay sprite expired
@@ -741,18 +732,14 @@ export class RPEntity extends ActiveEntity {
 			"pol-attack-slash", "pol-attack-crash", "pol-attack-sword",
 			"pol-attack-swing", "pol-attack-kling"];
 		var index = Math.floor(Math.random() * Math.floor(sounds.length));
-		const tileX = this.getRenderTileX();
-		const tileY = this.getRenderTileY();
-		stendhal.sound.playLocalizedEffect(tileX, tileY, 20, 3, sounds[index], 1);
+		stendhal.sound.playLocalizedEffect(this["_x"], this["_y"], 20, 3, sounds[index], 1);
 	}
 
 	onBlocked(_source: Entity) {
 		this.attackResult = this.createResultIcon(stendhal.paths.sprites + "/combat/blocked.png");
 		var sounds = ["clang-metallic-1", "clang-dull-1"];
 		var index = Math.floor(Math.random() * Math.floor(sounds.length));
-		const tileX = this.getRenderTileX();
-		const tileY = this.getRenderTileY();
-		stendhal.sound.playLocalizedEffect(tileX, tileY, 20, 3, sounds[index], 1);
+		stendhal.sound.playLocalizedEffect(this["_x"], this["_y"], 20, 3, sounds[index], 1);
 	}
 
 	onMissed(_source: Entity) {
@@ -919,7 +906,7 @@ export class RPEntity extends ActiveEntity {
 		return {
 			initTime: Date.now(),
 			image: stendhal.data.sprites.get(imagePath),
-			draw: function(ctx: CanvasRenderingContext2D, x: number, y: number) {
+			draw: function(ctx: RenderingContext2D, x: number, y: number) {
 				ctx.drawImage(this.image, x, y);
 				return (Date.now() - this.initTime > 1200);
 			}

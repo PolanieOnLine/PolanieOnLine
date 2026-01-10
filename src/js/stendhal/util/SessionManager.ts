@@ -25,7 +25,7 @@ export class SessionManager {
 	private server_default = true;
 
 	/** Session configuration values. */
-	private states: {[id: string]: string} = {};
+	private states: { [id: string]: string } = {};
 
 	/** Singleton instance. */
 	private static instance: SessionManager;
@@ -91,7 +91,7 @@ export class SessionManager {
 	 * @fixme
 	 *   Should be allowed to return `null`.
 	 */
-	get(key: string): string|null|undefined {
+	get(key: string): string | null | undefined {
 		return this.states[key];
 	}
 
@@ -138,11 +138,11 @@ export class SessionManager {
 	 * @return {string|undefined}
 	 *   String representation of "value".
 	 */
-	private toString(value: any): string|undefined {
+	private toString(value: any): string | undefined {
 		if (value == null) {
 			return "null";
 		}
-		const vtype = typeof(value);
+		const vtype = typeof (value);
 		if (vtype === "undefined") {
 			return undefined;
 		} else if (vtype === "string") {
@@ -150,7 +150,7 @@ export class SessionManager {
 		} else if (vtype === "object") {
 			return JSON.stringify(value);
 		}
-		return ""+value;
+		return "" + value;
 	}
 
 	/**
@@ -224,6 +224,19 @@ export class SessionManager {
 			return true;
 		}
 		return stendhal.config.getBoolean("joystick");
+	}
+
+	/**
+	 * Checks if attack button overlay should be visible.
+	 *
+	 * @return {boolean}
+	 *   `true` if explicitly enabled or if not configured and device is touch-only.
+	 */
+	attackButtonEnabled(): boolean {
+		if (!stendhal.config.isSet("attack.button") && this.touchOnly()) {
+			return true;
+		}
+		return stendhal.config.getBoolean("attack.button");
 	}
 
 	/**
