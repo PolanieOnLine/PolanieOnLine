@@ -143,7 +143,9 @@ export class HTMLManager {
 		const canvas = element instanceof HTMLCanvasElement ? element : null;
 		if (canvas && rect.width && rect.height) {
 			const gamewindow = (globalThis as any)?.stendhal?.ui?.gamewindow;
-			const inputScale = gamewindow?.getInputScale?.();
+			const viewportCanvas = gamewindow?.getElement?.();
+			const isViewportCanvas = Boolean(viewportCanvas && canvas === viewportCanvas);
+			const inputScale = isViewportCanvas ? gamewindow?.getInputScale?.() : undefined;
 			const rectWidth = typeof inputScale?.rectWidth === "number" && inputScale.rectWidth > 0
 				? inputScale.rectWidth
 				: rect.width;
@@ -152,9 +154,11 @@ export class HTMLManager {
 				: rect.height;
 			const scaleX = canvas.width / rectWidth;
 			const scaleY = canvas.height / rectHeight;
-			const devicePixelRatio = typeof inputScale?.devicePixelRatio === "number" && inputScale.devicePixelRatio > 0
-				? inputScale.devicePixelRatio
-				: window.devicePixelRatio || 1;
+			const devicePixelRatio = isViewportCanvas
+				? (typeof inputScale?.devicePixelRatio === "number" && inputScale.devicePixelRatio > 0
+					? inputScale.devicePixelRatio
+					: window.devicePixelRatio || 1)
+				: 1;
 			pos.canvasRelativeX = Math.round(pos.offsetX * (scaleX / devicePixelRatio));
 			pos.canvasRelativeY = Math.round(pos.offsetY * (scaleY / devicePixelRatio));
 		} else {

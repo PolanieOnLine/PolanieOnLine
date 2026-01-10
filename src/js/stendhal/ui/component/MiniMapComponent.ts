@@ -217,6 +217,7 @@ export class MiniMapComponent extends Component {
 			return;
 		}
 		let pos = stendhal.ui.html.extractPosition(event);
+		// canvasRelativeX/Y are CSS pixels; offsets and scale are in the same logical units.
 		let x = Math.floor((pos.canvasRelativeX + this.xOffset) / this.scale);
 		let y = Math.floor((pos.canvasRelativeY + this.yOffset) / this.scale);
 		if (!stendhal.data.map.collision(x, y)) {
@@ -235,4 +236,3 @@ export class MiniMapComponent extends Component {
 	}
 
 }
-
