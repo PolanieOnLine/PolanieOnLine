@@ -924,9 +924,8 @@ span.lognick {
 
 	#client.left-panel-collapsed #minimap-overlay {
 		display: flex;
-		left: calc(12px - var(--left-panel-width));
-		width: var(--left-panel-width);
-		justify-content: center;
+		left: 12px;
+		opacity: 0.95;
 	}
 }
 

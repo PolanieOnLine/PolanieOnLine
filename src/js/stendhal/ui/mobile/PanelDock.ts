@@ -49,5 +49,28 @@ export class PanelDock {
 
 		this.root.classList.toggle("left-panel-collapsed", !showLeft);
 		this.root.classList.toggle("right-panel-collapsed", !showRight);
+		this.updateMinimapDock(showLeft);
+	}
+
+	private updateMinimapDock(showLeft: boolean) {
+		const minimapFrame = document.getElementById("minimap-frame");
+		const minimapOverlay = document.getElementById("minimap-overlay");
+		const leftColumn = document.getElementById("leftColumn");
+		if (!minimapFrame || !minimapOverlay || !leftColumn) {
+			return;
+		}
+
+		if (showLeft) {
+			if (minimapFrame.parentElement !== leftColumn) {
+				leftColumn.insertBefore(minimapFrame, leftColumn.firstChild);
+			}
+			minimapOverlay.hidden = true;
+			return;
+		}
+
+		if (minimapFrame.parentElement !== minimapOverlay) {
+			minimapOverlay.append(minimapFrame);
+		}
+		minimapOverlay.hidden = false;
 	}
 }
