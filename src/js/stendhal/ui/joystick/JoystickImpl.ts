@@ -109,7 +109,7 @@ export abstract class JoystickImpl {
 					}
 				}
 				if (isLeftPanelCollapsed) {
-					horizontalMin += 36;
+					horizontalMin += 64;
 				}
 				const x = Math.round(horizontalMin <= horizontalMax ? horizontalMin : rect.left + (rect.width / 2));
 				const y = Math.round(verticalMin <= verticalMax ? verticalMax : rect.top + (rect.height / 2));
