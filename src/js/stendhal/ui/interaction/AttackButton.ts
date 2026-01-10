@@ -60,7 +60,7 @@ export class AttackButton extends InteractionButtonBase {
 
 	}
 
-	public unmount() {
+	public override unmount() {
 		super.unmount();
 		this.setBusy(false);
 		this.clearRepeat();
