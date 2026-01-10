@@ -141,9 +141,15 @@ export class HTMLManager {
 			}
 		}
 		const canvas = element instanceof HTMLCanvasElement ? element : null;
-		if (canvas && canvas.clientWidth && canvas.clientHeight) {
-			pos.canvasRelativeX = Math.round(pos.offsetX * canvas.width / canvas.clientWidth);
-			pos.canvasRelativeY = Math.round(pos.offsetY * canvas.height / canvas.clientHeight);
+		if (canvas && rect.width && rect.height) {
+			const scaleX = canvas.width / rect.width;
+			const scaleY = canvas.height / rect.height;
+			const stendhalDpr = (globalThis as any)?.stendhal?.ui?.gamewindow?.devicePixelRatio;
+			const devicePixelRatio = typeof stendhalDpr === "number" && stendhalDpr > 0
+				? stendhalDpr
+				: window.devicePixelRatio || 1;
+			pos.canvasRelativeX = Math.round(pos.offsetX * (scaleX / devicePixelRatio));
+			pos.canvasRelativeY = Math.round(pos.offsetY * (scaleY / devicePixelRatio));
 		} else {
 			pos.canvasRelativeX = Math.round(pos.offsetX);
 			pos.canvasRelativeY = Math.round(pos.offsetY);
