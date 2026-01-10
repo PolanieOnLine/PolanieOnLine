@@ -907,8 +907,8 @@ export class ViewPort {
 			if (e.type !== "dblclick" && e.target) {
 				e.target.addEventListener("mousemove", mHandle.onDrag, { passive: true });
 				e.target.addEventListener("mouseup", mHandle.onMouseUp);
-				e.target.addEventListener("touchmove", mHandle.onDrag, { passive: true });
-				e.target.addEventListener("touchend", mHandle.onMouseUp);
+				e.target.addEventListener("touchmove", mHandle.onDrag, { passive: false });
+				e.target.addEventListener("touchend", mHandle.onMouseUp, { passive: false });
 			} else if (entity == stendhal.zone.ground) {
 				entity.onclick(pos.canvasRelativeX, pos.canvasRelativeY, true);
 			}
@@ -944,7 +944,18 @@ export class ViewPort {
 						new ActionContextMenu(entity, append), pos.pageX - 50, pos.pageY - 5));
 				}
 			} else {
-				entity.onclick(pos.canvasRelativeX, pos.canvasRelativeY);
+				const isDoubleTap = is_touch
+					&& stendhal.ui.touch.registerTap(
+						pos.pageX,
+						pos.pageY,
+						e.target,
+						stendhal.ui.gamewindow.getElement()
+					);
+				if (isDoubleTap) {
+					entity.onclick(pos.canvasRelativeX, pos.canvasRelativeY, true);
+				} else {
+					entity.onclick(pos.canvasRelativeX, pos.canvasRelativeY);
+				}
 			}
 			mHandle.cleanUp(pos);
 			pos.target.focus();

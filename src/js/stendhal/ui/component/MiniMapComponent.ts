@@ -50,6 +50,12 @@ export class MiniMapComponent extends Component {
 		this.componentElement.addEventListener("dblclick", (event) => {
 			this.onClick(event);
 		});
+		this.componentElement.addEventListener("touchstart", (event) => {
+			this.onTouchStart(event);
+		}, { passive: false });
+		this.componentElement.addEventListener("touchend", (event) => {
+			this.onTouchEnd(event);
+		}, { passive: false });
 	}
 
 
@@ -228,6 +234,39 @@ export class MiniMapComponent extends Component {
 			};
 
 			if ("type" in event && event["type"] === "dblclick") {
+				action["double_click"] = "";
+			}
+
+			marauroa.me.moveTo(action);
+		}
+	}
+
+	private onTouchStart(event: TouchEvent) {
+		event.preventDefault();
+	}
+
+	private onTouchEnd(event: TouchEvent) {
+		if (!stendhal.config.getBoolean("pathfinding.minimap")) {
+			return;
+		}
+		event.preventDefault();
+		const pos = stendhal.ui.html.extractPosition(event);
+		const x = Math.floor((pos.canvasRelativeX + this.xOffset) / this.scale);
+		const y = Math.floor((pos.canvasRelativeY + this.yOffset) / this.scale);
+		if (!stendhal.data.map.collision(x, y)) {
+			const action: any = {
+				type: "moveto",
+				x: x.toString(),
+				y: y.toString()
+			};
+
+			const isDoubleTap = stendhal.ui.touch.registerTap(
+				pos.pageX,
+				pos.pageY,
+				event.target,
+				this.componentElement
+			);
+			if (isDoubleTap) {
 				action["double_click"] = "";
 			}
 
