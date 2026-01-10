@@ -9,7 +9,7 @@
  *                                                                         *
  ***************************************************************************/
 
-import { Component } from "../toolkit/Component";
+import { InteractionButtonBase } from "./InteractionButtonBase";
 
 import { TargetingController } from "../../game/TargetingController";
 import { UiHandedness } from "../mobile/UiStateStore";
@@ -23,7 +23,7 @@ import { getMobileRightPanelCollapsedInset, getViewportOverlayPosition } from ".
 /**
  * Overlay attack button for quickly targeting the nearest enemy.
  */
-export class AttackButton extends Component {
+export class AttackButton extends InteractionButtonBase {
 
 	private readonly cooldownDuration = 800;
 	private readonly longPressDelay = 450;
@@ -33,17 +33,15 @@ export class AttackButton extends Component {
 	private repeatId?: number;
 	private pressTimeoutId?: number;
 	private longPressTriggered = false;
-	private readonly boundUpdate: () => void;
-	private resizeObserver?: ResizeObserver;
-	private mutationObserver?: MutationObserver;
 	private handedness: UiHandedness = UiHandedness.RIGHT;
 
 	constructor() {
-		const element = document.createElement("button");
-		element.id = "attack-button";
-		element.classList.add("attack-button", "unclickable", "hidden");
-		element.setAttribute("aria-label", "Atakuj najbliższy cel");
-		element.title = "Atakuj najbliższy cel";
+		const element = InteractionButtonBase.createButton({
+			id: "attack-button",
+			classes: ["attack-button"],
+			ariaLabel: "Atakuj najbliższy cel",
+			title: "Atakuj najbliższy cel"
+		});
 
 		super(element);
 
@@ -60,43 +58,11 @@ export class AttackButton extends Component {
 		this.componentElement.addEventListener("pointerleave", () => this.onPressEnd());
 		this.componentElement.addEventListener("pointercancel", () => this.onPressEnd());
 
-		this.boundUpdate = this.update.bind(this);
 	}
 
-	/**
-	 * Adds the attack button to the DOM.
-	 */
-	public mount() {
-		// Append to the body to break out of the right-column layout constraints,
-		// allowing for positioning relative to the viewport.
-		const container = document.getElementById("attack-button-container") || document.body;
-		if (!container.contains(this.componentElement)) {
-			container.appendChild(this.componentElement);
-		}
-
-		this.componentElement.classList.remove("hidden");
-
-		this.update();
-		window.addEventListener("resize", this.boundUpdate);
-		window.addEventListener("scroll", this.boundUpdate);
-		this.observeLayoutChanges();
-	}
-
-	/**
-	 * Removes the attack button from DOM.
-	 */
 	public unmount() {
-		if (this.componentElement.parentElement) {
-			this.componentElement.remove();
-		}
-		this.componentElement.classList.add("hidden");
+		super.unmount();
 		this.setBusy(false);
-		window.removeEventListener("resize", this.boundUpdate);
-		window.removeEventListener("scroll", this.boundUpdate);
-		this.resizeObserver?.disconnect();
-		this.resizeObserver = undefined;
-		this.mutationObserver?.disconnect();
-		this.mutationObserver = undefined;
 		this.clearRepeat();
 	}
 
@@ -173,25 +139,6 @@ export class AttackButton extends Component {
 			this.repeatId = undefined;
 		}
 		this.longPressTriggered = false;
-	}
-
-	private observeLayoutChanges() {
-		if (this.resizeObserver || typeof ResizeObserver === "undefined") {
-			return;
-		}
-		const viewport = document.getElementById("viewport");
-		const clientRoot = document.getElementById("client");
-		if (!viewport && !clientRoot) {
-			return;
-		}
-		if (viewport) {
-			this.resizeObserver = new ResizeObserver(() => this.update());
-			this.resizeObserver.observe(viewport);
-		}
-		if (clientRoot) {
-			this.mutationObserver = new MutationObserver(() => this.update());
-			this.mutationObserver.observe(clientRoot, { attributes: true, attributeFilter: ["class"] });
-		}
 	}
 
 	/**

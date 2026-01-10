@@ -9,7 +9,7 @@
  *                                                                         *
  ***************************************************************************/
 
-import { Component } from "../toolkit/Component";
+import { InteractionButtonBase } from "./InteractionButtonBase";
 import { UiStateStore } from "../mobile/UiStateStore";
 import { ElementClickListener } from "../../util/ElementClickListener";
 import { getMobileRightPanelCollapsedInset, getViewportOverlayPosition } from "../overlay/ViewportOverlayPosition";
@@ -18,83 +18,26 @@ import { getMobileRightPanelCollapsedInset, getViewportOverlayPosition } from ".
 /**
  * Toggle button for collapsing or expanding the right panel on touch devices.
  */
-export class RightPanelToggleButton extends Component {
-
-	private readonly boundUpdate: () => void;
-	private resizeObserver?: ResizeObserver;
-	private mutationObserver?: MutationObserver;
+export class RightPanelToggleButton extends InteractionButtonBase {
 
 	constructor() {
-		const element = document.createElement("button");
-		element.id = "right-panel-toggle";
-		element.classList.add("unclickable", "hidden");
-		element.setAttribute("aria-label", "Przełącz prawy panel");
-		element.title = "Przełącz prawy panel";
-		element.setAttribute("aria-pressed", "false");
+		const element = InteractionButtonBase.createButton({
+			id: "right-panel-toggle",
+			ariaLabel: "Przełącz prawy panel",
+			title: "Przełącz prawy panel",
+			ariaPressed: "false"
+		});
 
 		super(element);
 
 		const listener = new ElementClickListener(this.componentElement);
 		listener.onClick = () => UiStateStore.get().toggleRightPanel();
 
-		this.boundUpdate = this.update.bind(this);
-	}
-
-	/**
-	 * Adds the toggle button to the DOM.
-	 */
-	public mount() {
-		const container = document.getElementById("attack-button-container") || document.body;
-		if (!container.contains(this.componentElement)) {
-			container.appendChild(this.componentElement);
-		}
-
-		this.componentElement.classList.remove("hidden");
-
-		this.update();
-		window.addEventListener("resize", this.boundUpdate);
-		window.addEventListener("scroll", this.boundUpdate);
-		this.observeLayoutChanges();
-	}
-
-	/**
-	 * Removes the toggle button from DOM.
-	 */
-	public unmount() {
-		if (this.componentElement.parentElement) {
-			this.componentElement.remove();
-		}
-		this.componentElement.classList.add("hidden");
-		window.removeEventListener("resize", this.boundUpdate);
-		window.removeEventListener("scroll", this.boundUpdate);
-		this.resizeObserver?.disconnect();
-		this.resizeObserver = undefined;
-		this.mutationObserver?.disconnect();
-		this.mutationObserver = undefined;
 	}
 
 	public setExpanded(expanded: boolean) {
 		this.componentElement.classList.toggle("right-panel-toggle--active", expanded);
 		this.componentElement.setAttribute("aria-pressed", expanded.toString());
-	}
-
-	private observeLayoutChanges() {
-		if (this.resizeObserver || typeof ResizeObserver === "undefined") {
-			return;
-		}
-		const viewport = document.getElementById("viewport");
-		const clientRoot = document.getElementById("client");
-		if (!viewport && !clientRoot) {
-			return;
-		}
-		if (viewport) {
-			this.resizeObserver = new ResizeObserver(() => this.update());
-			this.resizeObserver.observe(viewport);
-		}
-		if (clientRoot) {
-			this.mutationObserver = new MutationObserver(() => this.update());
-			this.mutationObserver.observe(clientRoot, { attributes: true, attributeFilter: ["class"] });
-		}
 	}
 
 	/**
