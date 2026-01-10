@@ -534,6 +534,7 @@ export class Client {
 				&& stendhal.ui.getMenuStyle() === "floating";
 		document.body.classList.toggle("mobile-floating-ui", mobileFloating);
 		clientRoot.classList.toggle("mobile-floating-ui", mobileFloating);
+		clientRoot.classList.toggle("left-panel-collapsed", !UiStateStore.get().getState().leftPanelExpanded);
 		clientRoot.classList.toggle("right-panel-collapsed", !UiStateStore.get().getState().rightPanelExpanded);
 	}
 
@@ -575,4 +576,3 @@ export class Client {
 		}, 300);
 	}
 }
-

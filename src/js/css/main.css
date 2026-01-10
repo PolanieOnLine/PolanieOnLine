@@ -822,6 +822,10 @@ span.lognick {
 	--right-panel-width: 258px;
 }
 
+#client:not(.mobile-floating-ui).left-panel-collapsed {
+	--left-panel-width: 0px;
+}
+
 #client:not(.mobile-floating-ui).right-panel-collapsed {
 	--right-panel-width: 0px;
 }
@@ -861,11 +865,22 @@ span.lognick {
 	max-width: none;
 }
 
+#client:not(.mobile-floating-ui).left-panel-collapsed #leftColumn {
+	flex: 0 0 0;
+	width: 0;
+	min-width: 0;
+	overflow: hidden;
+}
+
 #client:not(.mobile-floating-ui).right-panel-collapsed #rightColumn {
 	flex: 0 0 0;
 	width: 0;
 	min-width: 0;
 	overflow: hidden;
+}
+
+#client.mobile-floating-ui.left-panel-collapsed #leftColumn {
+	display: none;
 }
 
 #client.mobile-floating-ui.right-panel-collapsed #rightColumn {
@@ -1127,6 +1142,20 @@ button.windowtitleminimize:first-child {
 	filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.5));
 }
 
+.left-panel-toggle--active {
+	filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.5));
+}
+
+#left-panel-toggle {
+	display: none;
+	width: 48px;
+	height: 48px;
+	background: transparent url(/data/gui/panel/friends_btn.png) center center / contain no-repeat;
+	border: none;
+	padding: 0;
+	pointer-events: auto;
+}
+
 #right-panel-toggle {
 	display: none;
 	width: 48px;
@@ -1135,7 +1164,6 @@ button.windowtitleminimize:first-child {
 	border: none;
 	padding: 0;
 	pointer-events: auto;
-	z-index: 105;
 }
 
 #attack-button-container {
@@ -1150,6 +1178,11 @@ button.windowtitleminimize:first-child {
 
 body.mobile-floating-ui #right-panel-toggle,
 #client.mobile-floating-ui #right-panel-toggle {
+	display: block;
+}
+
+body.mobile-floating-ui #left-panel-toggle,
+#client.mobile-floating-ui #left-panel-toggle {
 	display: block;
 }
 

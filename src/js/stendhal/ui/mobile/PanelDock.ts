@@ -44,11 +44,10 @@ export class PanelDock {
 
 	private applyState(state: UiState) {
 		const showPanels = state.mode === UiMode.PANELS;
-		const showLeft = showPanels && state.handedness === UiHandedness.LEFT;
+		const showLeft = showPanels && state.handedness === UiHandedness.LEFT && state.leftPanelExpanded;
 		const showRight = showPanels && state.handedness === UiHandedness.RIGHT && state.rightPanelExpanded;
 
 		this.root.classList.toggle("left-panel-collapsed", !showLeft);
 		this.root.classList.toggle("right-panel-collapsed", !showRight);
 	}
 }
-

@@ -41,6 +41,7 @@ import { ui } from "./ui/UI";
 import { UIComponentEnum } from "./ui/UIComponentEnum";
 import { HeldObjectManager } from "./ui/HeldObject";
 import { LootButtonController } from "./ui/LootButtonController";
+import { LeftPanelToggleController } from "./ui/LeftPanelToggleController";
 import { HTMLManager } from "./ui/HTMLManager";
 import { Inventory } from "./ui/Inventory";
 import { RightPanelToggleController } from "./ui/RightPanelToggleController";
@@ -84,6 +85,10 @@ export class SingletonRepo {
 
 	static getLootButtonController(): LootButtonController {
 		return LootButtonController.get();
+	}
+
+	static getLeftPanelToggleController(): LeftPanelToggleController {
+		return LeftPanelToggleController.get();
 	}
 
 	static getRightPanelToggleController(): RightPanelToggleController {

@@ -139,6 +139,8 @@ class UI {
 		singletons.getAttackButtonController().update();
 		// initialize loot button
 		singletons.getLootButtonController().update();
+		// initialize left panel toggle
+		singletons.getLeftPanelToggleController().update();
 		// initialize right panel toggle
 		singletons.getRightPanelToggleController().update();
 		QuickMenu.init();
@@ -184,6 +186,7 @@ class UI {
 				break;
 		}
 		this.updateMobileUiClass();
+		singletons.getLeftPanelToggleController().update();
 		singletons.getRightPanelToggleController().update();
 	}
 
@@ -216,12 +219,13 @@ class UI {
 		document.body.classList.toggle("mobile-floating-ui", mobileFloating);
 		clientRoot.classList.toggle("mobile-floating-ui", mobileFloating);
 		if (mobileFloating) {
+			clientRoot.classList.toggle("left-panel-collapsed", !UiStateStore.get().getState().leftPanelExpanded);
 			clientRoot.classList.toggle("right-panel-collapsed", !UiStateStore.get().getState().rightPanelExpanded);
 		} else {
+			clientRoot.classList.remove("left-panel-collapsed");
 			clientRoot.classList.remove("right-panel-collapsed");
 		}
 	}
 }
 
 export let ui = new UI();
-

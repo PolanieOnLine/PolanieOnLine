@@ -27,6 +27,7 @@ export interface UiState {
 	mode: UiMode;
 	handedness: UiHandedness;
 	chatExpanded: boolean;
+	leftPanelExpanded: boolean;
 	rightPanelExpanded: boolean;
 }
 
@@ -68,9 +69,10 @@ export class UiStateStore {
 		const mode = this.parseMode(config.get("ui.mode"));
 		const handedness = this.parseHandedness(config.get("ui.handedness"));
 		const chatExpanded = this.resolveChatExpanded();
+		const leftPanelExpanded = this.resolveLeftPanelExpanded();
 		const rightPanelExpanded = this.resolveRightPanelExpanded();
 
-		this.state = { mode, handedness, chatExpanded, rightPanelExpanded };
+		this.state = { mode, handedness, chatExpanded, leftPanelExpanded, rightPanelExpanded };
 	}
 
 	getState(): UiState {
@@ -110,6 +112,15 @@ export class UiStateStore {
 		this.notify();
 	}
 
+	setLeftPanelExpanded(expanded: boolean) {
+		if (this.state.leftPanelExpanded === expanded) {
+			return;
+		}
+		this.state = { ...this.state, leftPanelExpanded: expanded };
+		stendhal.config.set("ui.leftpanel.visible", expanded);
+		this.notify();
+	}
+
 	setRightPanelExpanded(expanded: boolean) {
 		if (this.state.rightPanelExpanded === expanded) {
 			return;
@@ -121,6 +132,10 @@ export class UiStateStore {
 
 	toggleRightPanel() {
 		this.setRightPanelExpanded(!this.state.rightPanelExpanded);
+	}
+
+	toggleLeftPanel() {
+		this.setLeftPanelExpanded(!this.state.leftPanelExpanded);
 	}
 
 	private notify() {
@@ -160,7 +175,25 @@ export class UiStateStore {
 		return this.resolveDefaultRightPanelExpanded();
 	}
 
+	private resolveLeftPanelExpanded(): boolean {
+		if (stendhal.config.isSet("ui.leftpanel.visible")) {
+			return stendhal.config.getBoolean("ui.leftpanel.visible");
+		}
+		return this.resolveDefaultLeftPanelExpanded();
+	}
+
 	private resolveDefaultRightPanelExpanded(): boolean {
+		const touchOnly = SessionManager.get().touchOnly();
+		const menuStyle = stendhal && stendhal.ui && typeof stendhal.ui.getMenuStyle === "function"
+			? stendhal.ui.getMenuStyle()
+			: undefined;
+		if (touchOnly && menuStyle === "floating") {
+			return false;
+		}
+		return true;
+	}
+
+	private resolveDefaultLeftPanelExpanded(): boolean {
 		const touchOnly = SessionManager.get().touchOnly();
 		const menuStyle = stendhal && stendhal.ui && typeof stendhal.ui.getMenuStyle === "function"
 			? stendhal.ui.getMenuStyle()
@@ -176,8 +209,8 @@ export class UiStateStore {
 			mode: UiMode.PANELS,
 			handedness: UiHandedness.RIGHT,
 			chatExpanded: this.resolveChatExpanded(),
+			leftPanelExpanded: this.resolveDefaultLeftPanelExpanded(),
 			rightPanelExpanded: this.resolveDefaultRightPanelExpanded()
 		};
 	}
 }
-
