@@ -9,7 +9,7 @@
  *                                                                         *
  ***************************************************************************/
 
-import { AttackButton } from "./component/AttackButton";
+import { AttackButton } from "./interaction/AttackButton";
 
 import { ConfigManager } from "../util/ConfigManager";
 import { SessionManager } from "../util/SessionManager";

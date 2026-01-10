@@ -9,7 +9,7 @@
  *                                                                         *
  ***************************************************************************/
 
-import { LootButton } from "./component/LootButton";
+import { LootButton } from "./interaction/LootButton";
 
 import { ConfigManager } from "../util/ConfigManager";
 import { SessionManager } from "../util/SessionManager";

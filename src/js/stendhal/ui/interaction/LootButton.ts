@@ -12,11 +12,11 @@
 declare var marauroa: any;
 declare var stendhal: any;
 
-import { Component } from "../toolkit/Component";
+import { InteractionButtonBase } from "./InteractionButtonBase";
 
 import { TargetingController } from "../../game/TargetingController";
 import { UiHandedness } from "../mobile/UiStateStore";
-import { ItemContainerImplementation } from "./ItemContainerImplementation";
+import { ItemContainerImplementation } from "../component/ItemContainerImplementation";
 import { Item } from "../../entity/Item";
 
 import { ElementClickListener } from "../../util/ElementClickListener";
@@ -26,56 +26,30 @@ import { getMobileRightPanelCollapsedInset, getViewportOverlayPosition } from ".
 /**
  * Overlay loot button for quick pickup of nearby or open container items.
  */
-export class LootButton extends Component {
+export class LootButton extends InteractionButtonBase {
 
 	private readonly cooldownDuration = 600;
 	private cooldownId?: number;
 	private handedness: UiHandedness = UiHandedness.RIGHT;
-	private readonly boundUpdate: () => void;
-	private resizeObserver?: ResizeObserver;
-	private mutationObserver?: MutationObserver;
 
 	constructor() {
-		const element = document.createElement("button");
-		element.id = "loot-button";
-		element.classList.add("loot-button", "unclickable", "hidden");
-		element.setAttribute("aria-label", "Podnieś łup");
-		element.title = "Podnieś łup";
+		const element = InteractionButtonBase.createButton({
+			id: "loot-button",
+			classes: ["loot-button"],
+			ariaLabel: "Podnieś łup",
+			title: "Podnieś łup"
+		});
 
 		super(element);
 
 		const listener = new ElementClickListener(this.componentElement);
 		listener.onClick = (evt: Event) => this.onActivate(evt);
 
-		this.boundUpdate = this.update.bind(this);
-	}
-
-	public mount() {
-		const container = document.getElementById("attack-button-container") || document.body;
-		if (!container.contains(this.componentElement)) {
-			container.appendChild(this.componentElement);
-		}
-
-		this.componentElement.classList.remove("hidden");
-
-		this.update();
-		window.addEventListener("resize", this.boundUpdate);
-		window.addEventListener("scroll", this.boundUpdate);
-		this.observeLayoutChanges();
 	}
 
 	public unmount() {
-		if (this.componentElement.parentElement) {
-			this.componentElement.remove();
-		}
-		this.componentElement.classList.add("hidden");
+		super.unmount();
 		this.setBusy(false);
-		window.removeEventListener("resize", this.boundUpdate);
-		window.removeEventListener("scroll", this.boundUpdate);
-		this.resizeObserver?.disconnect();
-		this.resizeObserver = undefined;
-		this.mutationObserver?.disconnect();
-		this.mutationObserver = undefined;
 		this.clearCooldown();
 	}
 
@@ -184,25 +158,6 @@ export class LootButton extends Component {
 		if (this.cooldownId) {
 			window.clearTimeout(this.cooldownId);
 			this.cooldownId = undefined;
-		}
-	}
-
-	private observeLayoutChanges() {
-		if (this.resizeObserver || typeof ResizeObserver === "undefined") {
-			return;
-		}
-		const viewport = document.getElementById("viewport");
-		const clientRoot = document.getElementById("client");
-		if (!viewport && !clientRoot) {
-			return;
-		}
-		if (viewport) {
-			this.resizeObserver = new ResizeObserver(() => this.update());
-			this.resizeObserver.observe(viewport);
-		}
-		if (clientRoot) {
-			this.mutationObserver = new MutationObserver(() => this.update());
-			this.mutationObserver.observe(clientRoot, { attributes: true, attributeFilter: ["class"] });
 		}
 	}
 

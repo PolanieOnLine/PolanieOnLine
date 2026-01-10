@@ -11,7 +11,7 @@
 
 declare var stendhal: any;
 
-import { LeftPanelToggleButton } from "./component/LeftPanelToggleButton";
+import { LeftPanelToggleButton } from "./interaction/LeftPanelToggleButton";
 
 import { SessionManager } from "../util/SessionManager";
 import { UiStateStore } from "./mobile/UiStateStore";
