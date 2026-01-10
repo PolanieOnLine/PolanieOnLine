@@ -142,11 +142,18 @@ export class HTMLManager {
 		}
 		const canvas = element instanceof HTMLCanvasElement ? element : null;
 		if (canvas && rect.width && rect.height) {
-			const scaleX = canvas.width / rect.width;
-			const scaleY = canvas.height / rect.height;
-			const stendhalDpr = (globalThis as any)?.stendhal?.ui?.gamewindow?.devicePixelRatio;
-			const devicePixelRatio = typeof stendhalDpr === "number" && stendhalDpr > 0
-				? stendhalDpr
+			const gamewindow = (globalThis as any)?.stendhal?.ui?.gamewindow;
+			const inputScale = gamewindow?.getInputScale?.();
+			const rectWidth = typeof inputScale?.rectWidth === "number" && inputScale.rectWidth > 0
+				? inputScale.rectWidth
+				: rect.width;
+			const rectHeight = typeof inputScale?.rectHeight === "number" && inputScale.rectHeight > 0
+				? inputScale.rectHeight
+				: rect.height;
+			const scaleX = canvas.width / rectWidth;
+			const scaleY = canvas.height / rectHeight;
+			const devicePixelRatio = typeof inputScale?.devicePixelRatio === "number" && inputScale.devicePixelRatio > 0
+				? inputScale.devicePixelRatio
 				: window.devicePixelRatio || 1;
 			pos.canvasRelativeX = Math.round(pos.offsetX * (scaleX / devicePixelRatio));
 			pos.canvasRelativeY = Math.round(pos.offsetY * (scaleY / devicePixelRatio));
@@ -204,4 +211,3 @@ export class HTMLManager {
 		return id.replace(/[0-9]$/, "");
 	}
 }
-

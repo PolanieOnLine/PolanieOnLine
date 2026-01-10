@@ -80,6 +80,19 @@ export class ViewPort {
 		return this.ctx.canvas.height;
 	}
 
+	/**
+	 * Provides logical input scale based on viewport size and device pixel ratio.
+	 */
+	public getInputScale(): { devicePixelRatio: number; rectWidth: number; rectHeight: number } {
+		const canvas = this.getElement() as HTMLCanvasElement;
+		const rect = canvas.getBoundingClientRect();
+		return {
+			devicePixelRatio: this.devicePixelRatio || window.devicePixelRatio || 1,
+			rectWidth: rect.width,
+			rectHeight: rect.height,
+		};
+	}
+
 	/** Drawing context. */
 	private ctx: RenderingContext2D;
 	/** Map tile pixel width. */
@@ -927,7 +940,7 @@ export class ViewPort {
 						// TODO: add option for "hold" to allow splitting item stacks
 					}
 					*/
-					stendhal.ui.actionContextMenu.set(ui.createSingletonFloatingWindow("Action",
+					stendhal.ui.actionContextMenu.set(ui.createSingletonFloatingWindow("Czynności",
 						new ActionContextMenu(entity, append), pos.pageX - 50, pos.pageY - 5));
 				}
 			} else {
@@ -944,8 +957,8 @@ export class ViewPort {
 			}
 
 			var pos = stendhal.ui.html.extractPosition(e);
-			var xDiff = startX - pos.offsetX;
-			var yDiff = startY - pos.offsetY;
+			var xDiff = startX - pos.canvasRelativeX;
+			var yDiff = startY - pos.canvasRelativeY;
 			// It's not really a click if the mouse has moved too much.
 			if (xDiff * xDiff + yDiff * yDiff > 5) {
 				mHandle.cleanUp(e);

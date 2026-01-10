@@ -370,7 +370,7 @@ export class ItemContainerImplementation {
 					// action to "hold" item for moving or dropping using touch
 					// XXX: temporary workaround, should use drag-and-drop instead
 					append.push({
-						title: "Hold",
+						title: "Przytrzymaj",
 						action: function(entity: any) {
 							tmp.onDragStart(evt as TouchEvent);
 						}
