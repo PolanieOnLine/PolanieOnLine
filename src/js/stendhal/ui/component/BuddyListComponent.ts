@@ -161,6 +161,17 @@ export class BuddyListComponent extends Component {
 				}
 			});
 			// Invite
+			if (marauroa.me["adminlevel"] && marauroa.me["adminlevel"] >= 600) {
+				actions.push({
+					title: "(*) Teleportuj do",
+					admin: true,
+					action: function(buddyListComponent: BuddyListComponent) {
+						let buddyName = buddyListComponent.current!.textContent!.trim();
+						(ui.get(UIComponentEnum.ChatInput) as ChatInputComponent).setText("/teleportto \""
+								+ buddyName + "\" ");
+					}
+				});
+			}
 		} else {
 			actions.push({
 				title: "Zostaw wiadomość",
