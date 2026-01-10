@@ -1162,13 +1162,13 @@ button.windowtitleminimize:first-child {
 	pointer-events: auto;
 }
 
-#attack-button-container {
+#interaction-button-container {
 	position: absolute;
 	inset: 0;
 	pointer-events: none;
 }
 
-#attack-button-container > button {
+#interaction-button-container > button {
 	pointer-events: auto;
 }
 

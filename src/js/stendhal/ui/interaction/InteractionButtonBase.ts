@@ -27,7 +27,7 @@ export abstract class InteractionButtonBase extends Component {
 	protected mutationObserver?: MutationObserver;
 	private readonly containerId: string;
 
-	constructor(element: HTMLButtonElement, containerId = "attack-button-container") {
+	constructor(element: HTMLButtonElement, containerId = "interaction-button-container") {
 		super(element);
 		this.containerId = containerId;
 		this.boundUpdate = this.update.bind(this);
