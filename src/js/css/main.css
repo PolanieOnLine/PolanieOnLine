@@ -833,7 +833,6 @@ span.lognick {
 #leftColumn {
 	float: none;
 	flex: 0 0 207px;
-	transition: width 0.3s ease, flex-basis 0.3s ease, opacity 0.3s ease;
 	overflow: hidden;
 	opacity: 1;
 }
@@ -848,7 +847,6 @@ span.lognick {
 #rightColumn {
 	float: none;
 	flex: 0 0 258px;
-	transition: width 0.3s ease, min-width 0.3s ease, flex-basis 0.3s ease, opacity 0.3s ease;
 	overflow-y: auto;
 	overflow-x: hidden;
 	opacity: 1;
