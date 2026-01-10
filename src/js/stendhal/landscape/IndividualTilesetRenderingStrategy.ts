@@ -105,38 +105,27 @@ export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrate
 				pixelX, pixelY,
 				this.targetTileWidth, this.targetTileHeight);
 		} else {
+			ctx.save();
 			ctx.translate(pixelX, pixelY);
-			// an ugly hack to restore the previous transformation matrix
-			const restore = [[1, 0, 0, 1, -pixelX, -pixelY]];
 
 			if ((flip & 0x80000000) !== 0) {
-				// flip horizontally
-				ctx.transform(-1, 0, 0, 1, 0, 0);
-				ctx.translate(-this.targetTileWidth, 0);
-
-				restore.push([-1, 0, 0, 1, 0, 0]);
-				restore.push([1, 0, 0, 1, this.targetTileWidth, 0]);
+			    // flip horizontally
+			    ctx.transform(-1, 0, 0, 1, 0, 0);
+			    ctx.translate(-this.targetTileWidth, 0);
 			}
 			if ((flip & 0x40000000) !== 0) {
-				// flip vertically
-				ctx.transform(1, 0, 0, -1, 0, 0);
-				ctx.translate(0, -this.targetTileWidth);
-
-				restore.push([1, 0, 0, -1, 0, 0]);
-				restore.push([1, 0, 0, 1, 0, this.targetTileHeight]);
+			    // flip vertically
+			    ctx.transform(1, 0, 0, -1, 0, 0);
+			    ctx.translate(0, -this.targetTileWidth);
 			}
 			if ((flip & 0x20000000) !== 0) {
-				// Coordinate swap
-				ctx.transform(0, 1, 1, 0, 0, 0);
-				restore.push([0, 1, 1, 0, 0, 0]);
+			    // Coordinate swap
+			    ctx.transform(0, 1, 1, 0, 0, 0);
 			}
 
-			this.drawTile(ctx, tileset, idx, 0, 0);
+			this.drawTile(ctx, tileset, idx, 0, 0, 0);
 
-			restore.reverse();
-			for (const args of restore) {
-				ctx.transform(args[0], args[1], args[2], args[3], args[4], args[5]);
-			}
+			ctx.restore();
 		}
 	}
 
