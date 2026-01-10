@@ -1182,9 +1182,10 @@ body.mobile-floating-ui #left-panel-toggle,
 	display: block;
 }
 
-.attack-button--disabled {
-	opacity: 0.6;
-	filter: grayscale(1);
+.attack-button--disabled,
+.loot-button--disabled {
+    opacity: 0.6;
+    filter: grayscale(1);
 }
 
 #loot-button {
@@ -1194,11 +1195,6 @@ body.mobile-floating-ui #left-panel-toggle,
 	border: none;
 	padding: 0;
 	pointer-events: auto;
-}
-
-.loot-button--disabled {
-	opacity: 0.6;
-	filter: grayscale(1);
 }
 
 .background, .background a {
