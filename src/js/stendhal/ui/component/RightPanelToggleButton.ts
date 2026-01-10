@@ -121,7 +121,7 @@ export class RightPanelToggleButton extends Component {
 
 		if (attackButton) {
 			const attackRect = attackButton.getBoundingClientRect();
-			left = attackRect.left + bounds.scrollLeft;
+			left = Math.max(attackRect.left + bounds.scrollLeft, bounds.baseRight);
 			top = attackRect.top + bounds.scrollTop - height - separation;
 
 			const minTop = bounds.rect.top + bounds.scrollTop + margin;

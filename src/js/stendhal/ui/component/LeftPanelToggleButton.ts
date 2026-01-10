@@ -102,6 +102,7 @@ export class LeftPanelToggleButton extends Component {
 	 */
 	public update(): void {
 		const attackButton = document.getElementById("attack-button");
+		const rightPanelToggle = document.getElementById("right-panel-toggle");
 		const margin = 16;
 		const separation = 12;
 		const width = this.componentElement.offsetWidth || 48;
@@ -119,7 +120,11 @@ export class LeftPanelToggleButton extends Component {
 		let left = bounds.baseLeft;
 		let top = bounds.baseBottom;
 
-		if (attackButton) {
+		if (rightPanelToggle) {
+			const toggleRect = rightPanelToggle.getBoundingClientRect();
+			left = toggleRect.left + bounds.scrollLeft - width - separation;
+			top = toggleRect.top + bounds.scrollTop;
+		} else if (attackButton) {
 			const attackRect = attackButton.getBoundingClientRect();
 			left = attackRect.right + bounds.scrollLeft + separation;
 			top = attackRect.top + bounds.scrollTop - height - separation;
