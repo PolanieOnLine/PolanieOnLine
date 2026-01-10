@@ -887,7 +887,7 @@ span.lognick {
 
 #minimap-overlay {
 	position: absolute;
-	top: 12px;
+	top: 4px;
 	left: 12px;
 	z-index: 20;
 	display: none;
@@ -924,7 +924,6 @@ span.lognick {
 
 	#client.left-panel-collapsed #minimap-overlay {
 		display: flex;
-		left: 12px;
 		opacity: 0.95;
 	}
 }
