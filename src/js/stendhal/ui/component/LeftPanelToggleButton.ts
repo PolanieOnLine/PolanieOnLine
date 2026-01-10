@@ -12,7 +12,7 @@
 import { Component } from "../toolkit/Component";
 import { UiStateStore } from "../mobile/UiStateStore";
 import { ElementClickListener } from "../../util/ElementClickListener";
-import { getViewportOverlayPosition } from "../overlay/ViewportOverlayPosition";
+import { getMobileRightPanelCollapsedInset, getViewportOverlayPosition } from "../overlay/ViewportOverlayPosition";
 
 
 /**
@@ -110,7 +110,8 @@ export class LeftPanelToggleButton extends Component {
 			margin,
 			elementWidth: width,
 			elementHeight: height,
-			offsetBottom: separation - margin
+			offsetBottom: separation - margin,
+			offsetRight: getMobileRightPanelCollapsedInset()
 		});
 		if (!bounds) {
 			return;

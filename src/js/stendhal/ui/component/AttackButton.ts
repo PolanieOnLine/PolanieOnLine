@@ -17,7 +17,7 @@ import { UiHandedness } from "../mobile/UiStateStore";
 import { Entity } from "../../entity/Entity";
 
 import { ElementClickListener } from "../../util/ElementClickListener";
-import { getViewportOverlayPosition } from "../overlay/ViewportOverlayPosition";
+import { getMobileRightPanelCollapsedInset, getViewportOverlayPosition } from "../overlay/ViewportOverlayPosition";
 
 
 /**
@@ -231,7 +231,12 @@ export class AttackButton extends Component {
 		const margin = 20;
 		const width = this.componentElement.offsetWidth || 64;
 		const height = this.componentElement.offsetHeight || 64;
-		const bounds = getViewportOverlayPosition({ margin, elementWidth: width, elementHeight: height });
+		const bounds = getViewportOverlayPosition({
+			margin,
+			elementWidth: width,
+			elementHeight: height,
+			offsetRight: getMobileRightPanelCollapsedInset()
+		});
 		if (!bounds) {
 			return;
 		}

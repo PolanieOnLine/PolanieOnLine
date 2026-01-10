@@ -20,7 +20,7 @@ import { ItemContainerImplementation } from "./ItemContainerImplementation";
 import { Item } from "../../entity/Item";
 
 import { ElementClickListener } from "../../util/ElementClickListener";
-import { getViewportOverlayPosition } from "../overlay/ViewportOverlayPosition";
+import { getMobileRightPanelCollapsedInset, getViewportOverlayPosition } from "../overlay/ViewportOverlayPosition";
 
 
 /**
@@ -219,7 +219,8 @@ export class LootButton extends Component {
 			margin,
 			elementWidth: width,
 			elementHeight: height,
-			offsetBottom: separation - margin
+			offsetBottom: separation - margin,
+			offsetRight: getMobileRightPanelCollapsedInset()
 		});
 		if (!bounds) {
 			return;

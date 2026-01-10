@@ -33,6 +33,22 @@ export interface ViewportOverlayPosition {
 	baseBottom: number;
 }
 
+const MOBILE_RIGHT_PANEL_COLLAPSED_INSET = 64;
+
+export function getMobileRightPanelCollapsedInset(): number {
+	const clientRoot = document.getElementById("client");
+	if (!clientRoot) {
+		return 0;
+	}
+	if (
+		clientRoot.classList.contains("right-panel-collapsed")
+		&& clientRoot.classList.contains("mobile-floating-ui")
+	) {
+		return MOBILE_RIGHT_PANEL_COLLAPSED_INSET;
+	}
+	return 0;
+}
+
 export function getViewportOverlayPosition(
 	options: ViewportOverlayPositionOptions = {}
 ): ViewportOverlayPosition | null {
