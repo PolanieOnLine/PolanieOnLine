@@ -102,7 +102,6 @@ export class LeftPanelToggleButton extends Component {
 	 */
 	public update(): void {
 		const attackButton = document.getElementById("attack-button");
-		const rightPanelToggle = document.getElementById("right-panel-toggle");
 		const margin = 16;
 		const separation = 12;
 		const width = this.componentElement.offsetWidth || 48;
@@ -117,23 +116,22 @@ export class LeftPanelToggleButton extends Component {
 			return;
 		}
 
-		let left = bounds.baseLeft;
-		let top = bounds.baseBottom;
+		let anchorLeft = bounds.baseRight;
+		let anchorTop = bounds.baseBottom;
 
-		if (rightPanelToggle) {
-			const toggleRect = rightPanelToggle.getBoundingClientRect();
-			left = toggleRect.left + bounds.scrollLeft - width - separation;
-			top = toggleRect.top + bounds.scrollTop;
-		} else if (attackButton) {
+		if (attackButton) {
 			const attackRect = attackButton.getBoundingClientRect();
-			left = attackRect.right + bounds.scrollLeft + separation;
-			top = attackRect.top + bounds.scrollTop - height - separation;
+			anchorLeft = Math.max(attackRect.left + bounds.scrollLeft, bounds.baseRight);
+			anchorTop = attackRect.top + bounds.scrollTop - height - separation;
 
 			const minTop = bounds.rect.top + bounds.scrollTop + margin;
-			if (top < minTop) {
-				top = bounds.baseBottom;
+			if (anchorTop < minTop) {
+				anchorTop = bounds.baseBottom;
 			}
 		}
+
+		const left = anchorLeft - width - separation;
+		const top = anchorTop;
 
 		const clampedLeft = Math.min(
 			Math.max(left, bounds.safeLeft),

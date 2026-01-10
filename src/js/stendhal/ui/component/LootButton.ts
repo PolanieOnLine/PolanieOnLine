@@ -211,10 +211,16 @@ export class LootButton extends Component {
 	 */
 	public update(): void {
 		const attackButton = document.getElementById("attack-button");
-		const margin = 20;
+		const margin = 16;
+		const separation = 12;
 		const width = this.componentElement.offsetWidth || 32;
 		const height = this.componentElement.offsetHeight || 32;
-		const bounds = getViewportOverlayPosition({ margin, elementWidth: width, elementHeight: height });
+		const bounds = getViewportOverlayPosition({
+			margin,
+			elementWidth: width,
+			elementHeight: height,
+			offsetBottom: separation - margin
+		});
 		if (!bounds) {
 			return;
 		}
