@@ -24,7 +24,9 @@ export class LandscapeRenderer {
 			return;
 		}
 		let ctx = canvas.getContext("2d")! as RenderingContext2D;
-		const renderScale = typeof gamewindow?.getTileScale === "function" ? gamewindow.getTileScale() : 1;
+		const renderScale = typeof (stendhal.ui?.gamewindow?.getTileScale) === "function"
+			? stendhal.ui.gamewindow.getTileScale()
+			: 1;
 		const clampedScale = renderScale > 0 ? renderScale : 1;
 
 		const layer = combinedTileset.combinedLayers[layerNo];
