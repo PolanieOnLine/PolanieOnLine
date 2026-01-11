@@ -71,7 +71,7 @@ export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrate
 		const clampedScale = renderScale > 0 ? renderScale : 1;
 		const viewportHeight = canvas.height / clampedScale;
 		const viewportWidth = canvas.width / clampedScale;
-		this.tileOverlap = clampedScale < 1 ? Math.ceil(1 / clampedScale) : 0;
+		this.tileOverlap = clampedScale < 1 ? Math.ceil(2 / clampedScale) : 0;
 		const yMax = Math.min(tileOffsetY + viewportHeight / this.targetTileHeight + 1, stendhal.data.map.zoneSizeY);
 		const xMax = Math.min(tileOffsetX + viewportWidth / this.targetTileWidth + 1, stendhal.data.map.zoneSizeX);
 		let ctx = canvas.getContext("2d")! as RenderingContext2D;
@@ -102,8 +102,9 @@ export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrate
 	private drawTile(ctx: RenderingContext2D, tileset: HTMLImageElement, idx: number, x: number, y: number, flip = 0) {
 		const tilesetWidth = tileset.width;
 		const tilesPerRow = Math.floor(tilesetWidth / stendhal.data.map.tileWidth);
-		const pixelX = x * this.targetTileWidth;
-		const pixelY = y * this.targetTileHeight;
+		const overlapOffset = this.tileOverlap ? Math.floor(this.tileOverlap / 2) : 0;
+		const pixelX = x * this.targetTileWidth - overlapOffset;
+		const pixelY = y * this.targetTileHeight - overlapOffset;
 
 		const drawTileWidth = this.targetTileWidth + this.tileOverlap;
 		const drawTileHeight = this.targetTileHeight + this.tileOverlap;

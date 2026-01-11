@@ -34,9 +34,10 @@ export class LandscapeRenderer {
 		const viewportWidth = canvas.width / clampedScale;
 		const yMax = Math.min(tileOffsetY + viewportHeight / targetTileHeight + 1, stendhal.data.map.zoneSizeY);
 		const xMax = Math.min(tileOffsetX + viewportWidth / targetTileWidth + 1, stendhal.data.map.zoneSizeX);
-		const tileOverlap = clampedScale < 1 ? Math.ceil(1 / clampedScale) : 0;
+		const tileOverlap = clampedScale < 1 ? Math.ceil(2 / clampedScale) : 0;
 		const drawTileWidth = targetTileWidth + tileOverlap;
 		const drawTileHeight = targetTileHeight + tileOverlap;
+		const overlapOffset = tileOverlap ? Math.floor(tileOverlap / 2) : 0;
 
 		for (let y = tileOffsetY; y < yMax; y++) {
 			for (let x = tileOffsetX; x < xMax; x++) {
@@ -44,8 +45,8 @@ export class LandscapeRenderer {
 				if (index > -1) {
 
 					try {
-						const pixelX = x * targetTileWidth;
-						const pixelY = y * targetTileHeight;
+						const pixelX = x * targetTileWidth - overlapOffset;
+						const pixelY = y * targetTileHeight - overlapOffset;
 
 							ctx.drawImage(combinedTileset.canvas,
 
