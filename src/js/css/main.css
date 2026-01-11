@@ -1054,7 +1054,9 @@ body.mobile-floating-ui #viewport,
 }
 
 .inventorypopup_2 {
-	width: 78px;
+	max-width: 82px;
+	width: 100%;
+	gap: 3px;
 }
 
 .inventorypopup_6 {
