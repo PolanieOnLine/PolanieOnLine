@@ -65,6 +65,8 @@ export class ViewPort {
 	private logicalWidth = 0;
 	/** Logical viewport height in CSS pixels. */
 	private logicalHeight = 0;
+	/** Scale factor applied to tiles (mobile only). */
+	private tileScale = 1;
 
 	/**
 	 * Current canvas buffer width.
@@ -87,7 +89,7 @@ export class ViewPort {
 		const canvas = this.getElement() as HTMLCanvasElement;
 		const rect = canvas.getBoundingClientRect();
 		return {
-			devicePixelRatio: this.devicePixelRatio || window.devicePixelRatio || 1,
+			devicePixelRatio: (this.devicePixelRatio || window.devicePixelRatio || 1) * this.tileScale,
 			rectWidth: rect.width,
 			rectHeight: rect.height,
 		};
@@ -199,9 +201,8 @@ export class ViewPort {
 				this.drawingError = false;
 
 				this.ctx.globalAlpha = 1.0;
+				this.clearViewportCanvas();
 				this.adjustView(this.ctx.canvas);
-				this.ctx.fillStyle = "black";
-				this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 
 				var tileOffsetX = Math.floor(this.offsetX / this.targetTileWidth);
 				var tileOffsetY = Math.floor(this.offsetY / this.targetTileHeight);
@@ -256,6 +257,7 @@ export class ViewPort {
 			this.preserveHeightForNextResize = false;
 		}
 
+		this.tileScale = this.resolveTileScale();
 		this.applyResponsiveCanvasSize(preserveHeight);
 
 		const canvas = this.getElement() as HTMLCanvasElement;
@@ -400,6 +402,21 @@ export class ViewPort {
 		return { width, height };
 	}
 
+	private resolveTileScale(): number {
+		if (!this.isMobileFloatingUi()) {
+			return 1;
+		}
+		const rawValue = singletons.getConfigManager().get("viewport.tileScale.mobile");
+		if (!rawValue) {
+			return 1;
+		}
+		const parsed = parseFloat(rawValue);
+		if (!Number.isFinite(parsed) || parsed <= 0) {
+			return 1;
+		}
+		return parsed;
+	}
+
 	private applyResponsiveWidth(canvas: HTMLCanvasElement, middleColumn: HTMLElement, viewportWidth: number) {
 		const middleRect = middleColumn.getBoundingClientRect();
 		const middleStyles = getComputedStyle(middleColumn);
@@ -497,6 +514,12 @@ export class ViewPort {
 			return undefined;
 		}
 		return trimmed;
+	}
+
+	private clearViewportCanvas() {
+		this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+		this.ctx.fillStyle = "black";
+		this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 	}
 
 	private parseCssPixels(value: string): number {
@@ -728,8 +751,8 @@ export class ViewPort {
 		const playerX = marauroa.me["_x"] * this.targetTileWidth + halfTileWidth;
 		const playerY = marauroa.me["_y"] * this.targetTileHeight + halfTileHeight;
 
-		const viewportWidth = this.logicalWidth || canvas.width / this.devicePixelRatio;
-		const viewportHeight = this.logicalHeight || canvas.height / this.devicePixelRatio;
+		const viewportWidth = (this.logicalWidth || canvas.width / this.devicePixelRatio) / this.tileScale;
+		const viewportHeight = (this.logicalHeight || canvas.height / this.devicePixelRatio) / this.tileScale;
 		const targetX = this.freeze ? this.offsetX : playerX - viewportWidth / 2;
 		const targetY = this.freeze ? this.offsetY : playerY - viewportHeight / 2;
 
@@ -744,13 +767,14 @@ export class ViewPort {
 		this.cameraY = targetY;
 		this.offsetX = Math.round(this.cameraX);
 		this.offsetY = Math.round(this.cameraY);
+		const scaledPixelRatio = this.devicePixelRatio * this.tileScale;
 		this.ctx.setTransform(
-			this.devicePixelRatio,
+			scaledPixelRatio,
 			0,
 			0,
-			this.devicePixelRatio,
-			-this.offsetX * this.devicePixelRatio,
-			-this.offsetY * this.devicePixelRatio,
+			scaledPixelRatio,
+			-this.offsetX * scaledPixelRatio,
+			-this.offsetY * scaledPixelRatio,
 		);
 	}
 

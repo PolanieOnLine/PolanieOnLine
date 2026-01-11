@@ -85,6 +85,7 @@ export class ConfigManager {
 		"ui.chat.expanded": "false",
 		"ui.handedness": "right",
 		"ui.mode": "panels",
+		"viewport.tileScale.mobile": "0.9",
 		"window.about": "50,20",
 		"window.chest": "160,370",
 		"window.corpse": "160,370",
@@ -618,4 +619,3 @@ export class ConfigManager {
 		return this.fonts;
 	}
 }
-
