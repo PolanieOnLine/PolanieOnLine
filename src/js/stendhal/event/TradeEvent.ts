@@ -44,3 +44,4 @@ export class TradeEvent extends RPEvent {
 	}
 
 };
+

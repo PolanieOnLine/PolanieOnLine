@@ -29,3 +29,4 @@ export class SettingsButton extends QuickMenuButton {
 		singletons.getSlashActionRepo().execute("/settings");
 	}
 }
+

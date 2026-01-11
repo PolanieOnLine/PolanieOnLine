@@ -10,9 +10,12 @@
  *                                                                         *
  ***************************************************************************/
 
+import { singletons } from "../SingletonRepo";
 import { DrawingStage } from "../util/DrawingStage";
 import { Pair } from "../util/Pair";
 import { StringUtil } from "../util/StringUtil";
+import { Paths } from "./Paths";
+import { SpriteImage } from "../data/SpriteStore";
 
 declare var stendhal: any;
 
@@ -200,7 +203,7 @@ export class Outfit {
 	toImage(callback: Function) {
 		const sig = this.getSignature();
 		// get directly from cache since we don't want to return failsafe image
-		let image: HTMLImageElement = stendhal.data.sprites.getCached(sig);
+		let image: SpriteImage = singletons.getSpriteStore().getCached(sig);
 
 		const onReady = function(e?: Event) {
 			image.removeEventListener("load", onReady);
@@ -235,7 +238,7 @@ export class Outfit {
 				layerName = layerName.replace(/-rear$/, "");
 			}
 			const layerIndex = l.second;
-			let layerPath = stendhal.paths.sprites + "/outfit/" + layerName + "/"
+			let layerPath = Paths.sprites + "/outfit/" + layerName + "/"
 					+ StringUtil.padLeft(""+layerIndex, "0", 3) + suffix;
 			if (layerName === "body" && stendhal.config.getBoolean("effect.no-nude")) {
 				// FIXME: some non-player pickable bodies don't have "no-nude" variant
@@ -244,14 +247,14 @@ export class Outfit {
 			layerPath += ".png";
 			const coloring = this.getLayerColor(layerName);
 			if (typeof(coloring) === "undefined") {
-				layers.push(stendhal.data.sprites.get(layerPath));
+				layers.push(singletons.getSpriteStore().get(layerPath));
 			} else {
-				layers.push(stendhal.data.sprites.getFiltered(layerPath, "trueColor", coloring));
+				layers.push(singletons.getSpriteStore().getFiltered(layerPath, "trueColor", coloring));
 			}
 		}
 
 		if (layers.length == 0) {
-			image = stendhal.data.sprites.getFailsafe();
+			image = singletons.getSpriteStore().getFailsafe() as SpriteImage;
 			callback(image);
 			return;
 		}
@@ -271,9 +274,10 @@ export class Outfit {
 				layer.removeEventListener("load", onLayerReady);
 				stage.drawImage(layer);
 			}
-			image = stage.toImage();
+			image = stage.toImage() as SpriteImage;
 			stage.reset();
-			stendhal.data.sprites.cache(sig, image);
+			image.counter = 1;
+			singletons.getSpriteStore().cache(sig, image);
 			if (image.height > 0) {
 				onReady();
 			} else {
@@ -290,3 +294,4 @@ export class Outfit {
 		}
 	}
 }
+

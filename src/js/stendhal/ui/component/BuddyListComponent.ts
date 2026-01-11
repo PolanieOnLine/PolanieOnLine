@@ -16,7 +16,8 @@ import { Component } from "../toolkit/Component";
 
 import { ActionContextMenu } from "../dialog/ActionContextMenu";
 import { ChatInputComponent } from "./ChatInputComponent";
-
+import { Paths } from "../../data/Paths";
+import { StringUtil } from "../../util/StringUtil";
 
 declare let marauroa: any;
 declare let stendhal: any;
@@ -66,9 +67,9 @@ export class BuddyListComponent extends Component {
 		for (let i = 0; i < buddies.length; i++) {
 			html += "<li class=" + buddies[i].status + "><img src=\"";
 			if (buddies[i].status == "online") {
-				html += stendhal.paths.gui + "/buddy_online.png";
+				html += Paths.gui + "/buddy_online.png";
 			} else {
-				html += stendhal.paths.gui + "/buddy_offline.png";
+				html += Paths.gui + "/buddy_offline.png";
 			}
 			html += "\"> " + stendhal.ui.html.esc(buddies[i].name) + "</li>";
 		}
@@ -144,8 +145,9 @@ export class BuddyListComponent extends Component {
 			actions.push({
 				title: "Porozmawiaj",
 				action: function(buddyListComponent: BuddyListComponent) {
+					const buddyName = StringUtil.quoteIfNeeded(buddyListComponent.current!.textContent!.trim());
 					(ui.get(UIComponentEnum.ChatInput) as ChatInputComponent).setText("/msg "
-							+ buddyListComponent.current!.textContent!.trim()
+							+ buddyName
 							+ " ");
 				}
 			});
@@ -161,12 +163,27 @@ export class BuddyListComponent extends Component {
 				}
 			});
 			// Invite
+			if (marauroa.me["adminlevel"] && marauroa.me["adminlevel"] >= 8) {
+				actions.push({
+					title: "(*) Teleportuj do",
+					admin: true,
+					action: function(buddyListComponent: BuddyListComponent) {
+						let buddyName = buddyListComponent.current!.textContent!.trim();
+						let action = {
+							"type": "teleportto",
+							"target": buddyName,
+						};
+						marauroa.clientFramework.sendAction(action);
+					}
+				});
+			}
 		} else {
 			actions.push({
 				title: "Zostaw wiadomość",
 				action: function(buddyListComponent: BuddyListComponent) {
+					const buddyName = StringUtil.quoteIfNeeded(buddyListComponent.current!.textContent!.trim());
 					(ui.get(UIComponentEnum.ChatInput) as ChatInputComponent).setText("/storemessage "
-							+ buddyListComponent.current!.textContent!.trim()
+							+ buddyName
 							+ " ");
 				}
 			});

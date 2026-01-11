@@ -9,25 +9,23 @@
  *                                                                         *
  ***************************************************************************/
 
+import { RenderingContext2D } from "util/Types";
 import { MenuItem } from "../action/MenuItem";
 import { Portal } from "./Portal";
-
-declare var marauroa: any;
-declare var stendhal: any;
+import { Paths } from "../data/Paths";
+import { singletons } from "../SingletonRepo";
 
 export class Door extends Portal {
 
 	override zIndex = 5000;
 
-	override draw(ctx: CanvasRenderingContext2D, _tileXOverride?: number, _tileYOverride?: number) {
-		let imagePath = stendhal.paths.sprites + "/doors/" + this["class"] + ".png";
-		let image = stendhal.data.sprites.get(imagePath);
+	override draw(ctx: RenderingContext2D) {
+		let imagePath = Paths.sprites + "/doors/" + this["class"] + ".png";
+		let image = singletons.getSpriteStore().get(imagePath);
 		if (image.height) {
 			let height = image.height / 2;
-			const tileX = this.getRenderTileX();
-			const tileY = this.getRenderTileY();
-			let x = (tileX * 32) - ((image.width - 32) / 2);
-			let y = (tileY * 32) - ((height - 32) / 2);
+			let x = (this["x"] * 32) - ((image.width - 32) / 2);
+			let y = (this["y"] * 32) - ((height - 32) / 2);
 
 			var offsetY = height;
 			if (this["open"] === "") {
@@ -53,7 +51,8 @@ export class Door extends Portal {
 	}
 
 	override getCursor(_x: number, _y: number) {
-		return "url(" + stendhal.paths.sprites + "/cursor/portal.png) 1 3, auto";
+		return "url(" + Paths.sprites + "/cursor/portal.png) 1 3, auto";
 	}
 
 }
+

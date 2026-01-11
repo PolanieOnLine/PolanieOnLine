@@ -52,3 +52,4 @@ export class BagComponent extends ItemInventoryComponent {
 		this.itemContainerImplementation.init(sizeX * sizeY);
 	}
 }
+

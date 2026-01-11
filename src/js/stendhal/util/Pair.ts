@@ -17,3 +17,4 @@
 export class Pair<T1, T2> {
 	constructor(readonly first: T1, readonly second: T2) {}
 }
+

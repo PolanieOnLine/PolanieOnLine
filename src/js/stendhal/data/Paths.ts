@@ -50,3 +50,4 @@ export class Paths {
 		// do nothing
 	}
 }
+

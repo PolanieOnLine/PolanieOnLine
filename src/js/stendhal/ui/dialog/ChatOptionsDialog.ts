@@ -173,3 +173,4 @@ export class ChatOptionsDialog extends DialogContentComponent {
 		}
 	}
 }
+

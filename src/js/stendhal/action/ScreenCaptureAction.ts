@@ -13,6 +13,7 @@
 import { SlashAction } from "./SlashAction";
 
 import { ScreenCapture } from "../util/ScreenCapture";
+import { Canvas } from "util/Types";
 
 declare var stendhal: any;
 
@@ -39,3 +40,4 @@ export class ScreenCaptureAction extends SlashAction {
 		return true;
 	}
 }
+

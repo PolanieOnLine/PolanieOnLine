@@ -413,3 +413,4 @@ export class SettingsDialog extends TabDialogContentComponent {
 		return input;
 	}
 }
+

@@ -17,3 +17,4 @@ export abstract class RPEvent {
 	abstract execute(entity: any): void;
 
 };
+

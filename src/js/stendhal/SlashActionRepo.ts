@@ -1459,7 +1459,8 @@ export class SlashActionRepo {
 				return true;
 			}
 
-			url += name + ".html";
+			const encodedName = encodeURIComponent(name).replace(/%20/g, "_");
+			url += encodedName + ".html";
 			Chat.log("info", "Próba otwarcia #" + url + " w przeglądarce.");
 			window.location.href = url;
 			return true;
@@ -1534,13 +1535,16 @@ export class SlashActionRepo {
 			line = "// " + line.substring(2);
 		}
 
-		var array = line.split(" ");
-
-		// clean whitespace
-		for (var el in array) {
-			array[el] = array[el].trim();
-		}
-		array = array.filter(Boolean);
+		const array = (line.match(/(?:[^\s"']+|"[^"]*"|'[^']*')+/g) || [])
+			.map((entry) => entry.trim())
+			.filter(Boolean)
+			.map((entry) => {
+				const quote = entry[0];
+				if ((quote === "\"" || quote === "'") && entry.endsWith(quote)) {
+					return entry.slice(1, -1);
+				}
+				return entry;
+			});
 		if (array.length == 0) {
 			return false;
 		}

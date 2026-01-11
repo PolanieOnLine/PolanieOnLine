@@ -43,3 +43,4 @@ export class AboutAction extends SlashAction {
 		return ["", "Pokaż okno dialogowe z informacjami o projekcie."];
 	}
 }
+

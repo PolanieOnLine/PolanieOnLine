@@ -104,3 +104,4 @@ export abstract class SlashAction extends SlashActionImpl {
 		marauroa.clientFramework.sendAction(action);
 	}
 };
+

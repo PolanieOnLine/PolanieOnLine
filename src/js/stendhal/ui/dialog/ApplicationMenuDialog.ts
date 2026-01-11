@@ -166,3 +166,4 @@ export class ApplicationMenuDialog extends DialogContentComponent {
 
 	}
 }
+

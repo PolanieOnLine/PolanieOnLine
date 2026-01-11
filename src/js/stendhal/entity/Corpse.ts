@@ -9,6 +9,7 @@
  *                                                                         *
  ***************************************************************************/
 
+import { RenderingContext2D } from "util/Types";
 import { ActivityIndicatorSprite } from "../sprite/ActivityIndicatorSprite";
 
 import { ItemInventoryComponent } from "../ui/component/ItemInventoryComponent";
@@ -17,6 +18,8 @@ import { FloatingWindow } from "../ui/toolkit/FloatingWindow";
 import { Chat } from "../util/Chat";
 
 import { PopupInventory } from "./PopupInventory";
+import { Paths } from "../data/Paths";
+import { singletons } from "../SingletonRepo";
 
 declare var marauroa: any;
 declare var stendhal: any;
@@ -44,23 +47,23 @@ export class Corpse extends PopupInventory {
 		const bloodEnabled = stendhal.config.getBoolean("effect.blood");
 
 		if (bloodEnabled && (key === "image")) {
-			this.sprite.filename = stendhal.paths.sprites + "/corpse/" + value + ".png";
+			this.sprite.filename = Paths.sprites + "/corpse/" + value + ".png";
 		} else if (!bloodEnabled && (key === "harmless_image")) {
-			this.sprite.filename = stendhal.paths.sprites + "/corpse/" + value + ".png";
+			this.sprite.filename = Paths.sprites + "/corpse/" + value + ".png";
 		}
 	}
 
-	override draw(ctx: CanvasRenderingContext2D, tileXOverride?: number, tileYOverride?: number) {
+	override draw(ctx: RenderingContext2D) {
 		if (!this.sprite) {
 			return;
 		}
-		super.draw(ctx, tileXOverride, tileYOverride);
+		super.draw(ctx);
 
 		if (this.indicator && !this.isEmpty()) {
 			const tileW = stendhal.ui.gamewindow.targetTileWidth;
 			const tileH = stendhal.ui.gamewindow.targetTileHeight;
 			if (this.sprite.width == undefined || this.sprite.height == undefined) {
-				const image = stendhal.data.sprites.get(this.sprite.filename);
+				const image = singletons.getSpriteStore().get(this.sprite.filename);
 				if (image.complete) {
 					this.sprite.width = image.width < tileW ? tileW : image.width;
 					this.sprite.height = image.height < tileH ? tileH : image.height;
@@ -68,12 +71,10 @@ export class Corpse extends PopupInventory {
 				return;
 			}
 
-			const tileX = this.getRenderTileX();
-			const tileY = this.getRenderTileY();
 			const offsetX = Math.floor((this["width"] * tileW - this.sprite.width) / 2);
 			const offsetY = Math.floor((this["height"] * tileH - this.sprite.height) / 2);
-			const dx = tileX * tileW + offsetX;
-			const dy = tileY * tileH + offsetY;
+			const dx = this["x"] * tileW + offsetX;
+			const dy = this["y"] * tileH + offsetY;
 
 			this.indicator.draw(ctx, dx, dy, this.sprite.width);
 		}
@@ -123,17 +124,15 @@ export class Corpse extends PopupInventory {
 			}
 
 			const invComponent = new ItemInventoryComponent(this,
-				"content", content_row, content_col,
-				stendhal.config.getBoolean("inventory.quick-pickup"), undefined);
+					"content", content_row, content_col,
+					stendhal.config.getBoolean("inventory.quick-pickup"), undefined);
 			// TODO: remove, deprecated
 			invComponent.setConfigId("corpse");
 
 			const dstate = stendhal.config.getWindowState("corpse");
-			const windowInstance = new FloatingWindow("Zwłoki", invComponent,
-				dstate.x, dstate.y);
-			windowInstance.setId("corpse");
-			windowInstance.setFixedWidth(78);
-			this.inventory = windowInstance;
+			this.inventory = new FloatingWindow("Zwłoki", invComponent,
+					dstate.x, dstate.y);
+			this.inventory.setId("corpse");
 		}
 	}
 
@@ -172,18 +171,18 @@ export class Corpse extends PopupInventory {
 
 	override getCursor(_x: number, _y: number) {
 		if (this.isEmpty()) {
-			return "url(" + stendhal.paths.sprites + "/cursor/emptybag.png) 1 3, auto";
+			return "url(" + Paths.sprites + "/cursor/emptybag.png) 1 3, auto";
 		}
 
 		// owner
 		if (!this["corpse_owner"] || (this["corpse_owner"] == marauroa.me["_name"])) {
-			return "url(" + stendhal.paths.sprites + "/cursor/bag.png) 1 3, auto";
+			return "url(" + Paths.sprites + "/cursor/bag.png) 1 3, auto";
 		}
 
 		if ((stendhal.data.group.lootmode === "shared") && (stendhal.data.group.members[this["corpse_owner"]])) {
-			return "url(" + stendhal.paths.sprites + "/cursor/bag.png) 1 3, auto";
+			return "url(" + Paths.sprites + "/cursor/bag.png) 1 3, auto";
 		}
-		return "url(" + stendhal.paths.sprites + "/cursor/lockedbag.png) 1 3, auto";
+		return "url(" + Paths.sprites + "/cursor/lockedbag.png) 1 3, auto";
 	}
 
 	public override isDraggable(): boolean {
@@ -194,3 +193,4 @@ export class Corpse extends PopupInventory {
 		return !this["content"] || this["content"]._objects.length === 0;
 	}
 }
+

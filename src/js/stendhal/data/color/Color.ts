@@ -365,3 +365,4 @@ export class Color {
 		return new HSLColor(h, s, l);
 	}
 }
+

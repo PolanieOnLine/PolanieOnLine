@@ -26,8 +26,9 @@ import { WeatherRenderer } from "./util/WeatherRenderer";
 import { CStatus } from "./data/CStatus";
 import { CacheManager } from "./data/CacheManager";
 import { EmojiStore } from "./data/EmojiStore";
+import { AttackButtonController } from "./ui/AttackButtonController";
 import { GroupManager } from "./data/GroupManager";
-import { Map } from "./data/Map";
+import { TileMap } from "./data/TileMap";
 import { OutfitStore } from "./data/OutfitStore";
 import { Paths } from "./data/Paths";
 import { SpriteStore, store } from "./data/SpriteStore";
@@ -39,15 +40,18 @@ import { SoundManager } from "./data/sound/SoundManager";
 import { ui } from "./ui/UI";
 import { UIComponentEnum } from "./ui/UIComponentEnum";
 import { HeldObjectManager } from "./ui/HeldObject";
+import { LootButtonController } from "./ui/LootButtonController";
+import { LeftPanelToggleController } from "./ui/LeftPanelToggleController";
 import { HTMLManager } from "./ui/HTMLManager";
 import { Inventory } from "./ui/Inventory";
+import { RightPanelToggleController } from "./ui/RightPanelToggleController";
 import { SoftwareJoystickController } from "./ui/SoftwareJoystickController";
 import { TouchHandler } from "./ui/TouchHandler";
 import { UIUpdateObserver } from "./ui/UIUpdateObserver";
 import { ViewPort } from "./ui/ViewPort";
 
 import { ChatInputComponent } from "./ui/component/ChatInputComponent";
-
+import { TargetingController } from "./game/TargetingController";
 
 export class SingletonRepo {
 
@@ -63,6 +67,10 @@ export class SingletonRepo {
 		return ui.get(UIComponentEnum.ChatInput) as ChatInputComponent;
 	}
 
+	static getAttackButtonController(): AttackButtonController {
+		return AttackButtonController.get();
+	}
+
 	static getClient(): Client {
 		return Client.get();
 	}
@@ -73,6 +81,18 @@ export class SingletonRepo {
 
 	static getDownloadUtil(): typeof DownloadUtil {
 		return DownloadUtil;
+	}
+
+	static getLootButtonController(): LootButtonController {
+		return LootButtonController.get();
+	}
+
+	static getLeftPanelToggleController(): LeftPanelToggleController {
+		return LeftPanelToggleController.get();
+	}
+
+	static getRightPanelToggleController(): RightPanelToggleController {
+		return RightPanelToggleController.get();
 	}
 
 	static getDrawingStage(): DrawingStage {
@@ -103,6 +123,10 @@ export class SingletonRepo {
 		return HTMLManager.get();
 	}
 
+	static getTargetingController(): TargetingController {
+		return TargetingController.get();
+	}
+
 	static getInventory(): Inventory {
 		return Inventory.get();
 	}
@@ -119,8 +143,8 @@ export class SingletonRepo {
 		return LoopedSoundSourceManager.get();
 	}
 
-	static getMap(): Map {
-		return Map.get();
+	static getTileMap(): TileMap {
+		return TileMap.get();
 	}
 
 	static getOutfitStore(): OutfitStore {
@@ -173,3 +197,4 @@ export class SingletonRepo {
 }
 
 export const singletons = SingletonRepo;
+

@@ -31,3 +31,4 @@ export class MenuButton extends QuickMenuButton {
 		ui.showApplicationMenu();
 	}
 }
+

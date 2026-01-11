@@ -29,3 +29,4 @@ export class RotateRButton extends QuickMenuButton {
 		FacingHandler.get().turnClockwise();
 	}
 }
+

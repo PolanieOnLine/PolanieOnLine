@@ -10,11 +10,11 @@
  *                                                                         *
  ***************************************************************************/
 
-declare var stendhal: any;
-
 import { AttackSprite } from "./AttackSprite";
 import { RPEntity } from "../../entity/RPEntity";
 import { Direction } from "../../util/Direction";
+import { RenderingContext2D } from "util/Types";
+import { singletons } from "../../SingletonRepo";
 
 
 export class MeleeAttackSprite extends AttackSprite {
@@ -45,10 +45,10 @@ export class MeleeAttackSprite extends AttackSprite {
 		const rot = 90 * (this.dir.val - 1);
 		imagePath = imagePath.replace(/\.png$/, "");
 		this.frames = [
-			//~ stendhal.data.sprites.getRotated(imagePath + "_rot45.png", rot-90),
+			//~ singletons.getSpriteStore().getRotated(imagePath + "_rot45.png", rot-90),
 			undefined,
-			stendhal.data.sprites.getRotated(imagePath + ".png", rot),
-			//~ stendhal.data.sprites.getRotated(imagePath + "_rot45.png", rot)
+			singletons.getSpriteStore().getRotated(imagePath + ".png", rot),
+			//~ singletons.getSpriteStore().getRotated(imagePath + "_rot45.png", rot)
 			undefined
 		];
 		if (this.frames[1].complete) {
@@ -108,8 +108,8 @@ export class MeleeAttackSprite extends AttackSprite {
 		}
 	}
 
-	override draw(ctx: CanvasRenderingContext2D, x: number, y: number, entityWidth: number,
-			entityHeight: number): boolean {
+	override draw(ctx: RenderingContext2D, x: number, y: number, entityWidth: number,
+		entityHeight: number): boolean {
 		const dtime = Date.now() - this.initTime;
 		const frameIndex = Math.floor(Math.min(dtime / 60, 2));
 		// TODO: add rotated images for each attack type
@@ -131,3 +131,4 @@ export class MeleeAttackSprite extends AttackSprite {
 		return this.expired();
 	}
 }
+

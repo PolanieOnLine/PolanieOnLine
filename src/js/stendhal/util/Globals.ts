@@ -30,3 +30,4 @@ export namespace Globals {
 				: config.get("menu.style") || "traditional";
 	};
 }
+

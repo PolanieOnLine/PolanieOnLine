@@ -69,3 +69,4 @@ export class SoundLayer extends AbstractEnum<string> {
 		return undefined;
 	}
 }
+

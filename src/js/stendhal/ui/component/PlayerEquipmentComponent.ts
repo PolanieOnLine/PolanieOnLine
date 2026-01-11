@@ -213,3 +213,4 @@ export class PlayerEquipmentComponent extends Component {
 		}
 	}
 }
+

@@ -9,11 +9,13 @@
  *                                                                         *
  ***************************************************************************/
 
+import { RenderingContext2D } from "util/Types";
 import { MenuItem } from "../action/MenuItem";
 import { Entity } from "./Entity";
+import { Paths } from "../data/Paths";
+import { singletons } from "../SingletonRepo";
 
 declare var marauroa: any;
-declare var stendhal: any;
 
 
 export class GrowingEntitySpawner extends Entity {
@@ -51,11 +53,9 @@ export class GrowingEntitySpawner extends Entity {
 	/**
 	 * draw RPEntities
 	 */
-	override draw(ctx: CanvasRenderingContext2D, _tileXOverride?: number, _tileYOverride?: number) {
-		const tileX = this.getRenderTileX();
-		const tileY = this.getRenderTileY();
-		var localX = tileX * 32;
-		var localY = tileY * 32;
+	override draw(ctx: RenderingContext2D) {
+		var localX = this["x"] * 32;
+		var localY = this["y"] * 32;
 
 		// FIXME:
 		//   temporary fix, problem lies higher up
@@ -66,7 +66,7 @@ export class GrowingEntitySpawner extends Entity {
 			class_name = class_name.replace(" ", "_");
 		}
 
-		var image = stendhal.data.sprites.get(stendhal.paths.sprites + "/" + class_name + ".png");
+		var image = singletons.getSpriteStore().get(Paths.sprites + "/" + class_name + ".png");
 		if (image.height) { // image.complete is true on missing image files
 			var count = parseInt(this["max_ripeness"], 10) + 1;
 			var drawHeight = image.height / count;
@@ -77,7 +77,8 @@ export class GrowingEntitySpawner extends Entity {
 	}
 
 	override getCursor(_x: number, _y: number) {
-		return "url(" + stendhal.paths.sprites + "/cursor/harvest.png) 1 3, auto";
+		return "url(" + Paths.sprites + "/cursor/harvest.png) 1 3, auto";
 	}
 
 }
+

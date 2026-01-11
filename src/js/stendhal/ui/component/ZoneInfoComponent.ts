@@ -48,3 +48,4 @@ export class ZoneInfoComponent extends Component {
 	};
 
 }
+

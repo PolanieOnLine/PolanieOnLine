@@ -24,3 +24,4 @@ export class PlayerLoggedOutEvent extends RPEvent {
 		stendhal.players.splice(stendhal.players.indexOf(this.name), 1);
 	}
 }
+

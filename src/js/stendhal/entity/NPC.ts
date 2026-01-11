@@ -14,6 +14,8 @@ import { RPEntity } from "./RPEntity";
 import { EntityOverlayRegistry } from "../data/EntityOverlayRegistry";
 
 import { Color } from "../data/color/Color";
+import { RenderingContext2D } from "util/Types";
+import { Paths } from "../data/Paths";
 
 declare var stendhal: any;
 
@@ -43,11 +45,9 @@ export class NPC extends RPEntity {
 		}
 	}
 
-	override drawTop(ctx: CanvasRenderingContext2D, _tileX?: number, _tileY?: number) {
-		const tileX = this.getRenderTileX();
-		const tileY = this.getRenderTileY();
-		var localX = tileX * 32;
-		var localY = tileY * 32;
+	override drawTop(ctx: RenderingContext2D) {
+		var localX = this["_x"] * 32;
+		var localY = this["_y"] * 32;
 		if (typeof (this["no_hpbar"]) == "undefined") {
 			this.drawHealthBar(ctx, localX, localY + this.statusBarYOffset);
 		}
@@ -57,7 +57,8 @@ export class NPC extends RPEntity {
 	}
 
 	override getCursor(_x: number, _y: number) {
-		return "url(" + stendhal.paths.sprites + "/cursor/look.png) 1 3, auto";
+		return "url(" + Paths.sprites + "/cursor/look.png) 1 3, auto";
 	}
 
 }
+

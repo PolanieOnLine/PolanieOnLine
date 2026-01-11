@@ -21,3 +21,4 @@ export class MenuItem  {
 		this.action = action;
 	}
 }
+

@@ -17,6 +17,7 @@ import { ui } from "../ui/UI";
 import { UIComponentEnum } from "../ui/UIComponentEnum";
 
 import { BuddyListComponent } from "../ui/component/BuddyListComponent";
+import { Paths } from "../data/Paths";
 
 
 /**
@@ -38,8 +39,12 @@ export class ConfigManager {
 		"chat.history": "[]",
 		"chat.history.index": "0",
 		"chat.private.sound": "ui/notify_up",
-		"chat.visible": "false",
+		"chat.visible": "true",
 		"chat-opts.custom": "",
+		"attack.target.npc": "false",
+		"attack.target.players": "false",
+		"attack.button": "false",
+		"loot.button": "false",
 		"click-indicator": "false",
 		"effect.blood": "true",
 		"effect.entity-overlay": "true",
@@ -77,6 +82,9 @@ export class ConfigManager {
 		"sound.sfx.volume": "100",
 		"speech.creature": "true",
 		"theme": "wood",
+		"ui.chat.expanded": "false",
+		"ui.handedness": "right",
+		"ui.mode": "panels",
 		"window.about": "50,20",
 		"window.chest": "160,370",
 		"window.corpse": "160,370",
@@ -528,7 +536,7 @@ export class ConfigManager {
 	applyTheme(element: HTMLElement, children=false, recurse=false, updateBG=false) {
 		const current = this.getTheme();
 		element.style.setProperty("background",
-				"url(" + stendhal.paths.gui + "/" + this.themes.map[current] + ")");
+				"url(" + Paths.gui + "/" + this.themes.map[current] + ")");
 
 		// make texts readable with dark & light themes
 		let color = "#000000";
@@ -567,7 +575,7 @@ export class ConfigManager {
 
 		let rootStyle = document.documentElement.style;
 		rootStyle.setProperty("--background-url",
-			"url(" + stendhal.paths.gui + "/" + this.themes.map[current] + ")");
+			"url(" + Paths.gui + "/" + this.themes.map[current] + ")");
 		if (this.usingDarkTheme()) {
 			rootStyle.setProperty("--text-color", "#fff");
 			rootStyle.setProperty("--text-color-inactive", "#aaa");
@@ -610,3 +618,4 @@ export class ConfigManager {
 		return this.fonts;
 	}
 }
+

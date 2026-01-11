@@ -15,11 +15,12 @@ declare var stendhal: any;
 import { UIComponentEnum } from "./UIComponentEnum";
 import { SoftwareJoystickController } from "./SoftwareJoystickController";
 import { ApplicationMenuDialog } from "./dialog/ApplicationMenuDialog";
+import { singletons } from "../SingletonRepo";
 import { QuickMenu } from "./quickmenu/QuickMenu";
 import { QuickMenuButton } from "./quickmenu/QuickMenuButton";
 import { Component } from "./toolkit/Component";
 import { SingletonFloatingWindow } from "./toolkit/SingletonFloatingWindow";
-
+import { UiStateStore } from "./mobile/UiStateStore";
 
 class UI {
 
@@ -134,6 +135,14 @@ class UI {
 		chatPanel.setVisible(stendhal.config.getBoolean("chat.visible"));
 		// initialize on-screen joystick
 		SoftwareJoystickController.get().update();
+		// initialize attack button
+		singletons.getAttackButtonController().update();
+		// initialize loot button
+		singletons.getLootButtonController().update();
+		// initialize left panel toggle
+		singletons.getLeftPanelToggleController().update();
+		// initialize right panel toggle
+		singletons.getRightPanelToggleController().update();
 		QuickMenu.init();
 
 		// update menu buttons
@@ -176,6 +185,9 @@ class UI {
 				QuickMenu.setVisible(true);
 				break;
 		}
+		this.updateMobileUiClass();
+		singletons.getLeftPanelToggleController().update();
+		singletons.getRightPanelToggleController().update();
 	}
 
 	/**
@@ -194,6 +206,26 @@ class UI {
 				"type": "move.continuous",
 				"move.continuous": ""
 			});
+		}
+	}
+
+	private updateMobileUiClass() {
+		const clientRoot = document.getElementById("client");
+		if (!clientRoot) {
+			return;
+		}
+		const mobileFloating = singletons.getSessionManager().touchOnly()
+				&& stendhal.ui.getMenuStyle() === "floating";
+		document.body.classList.toggle("mobile-floating-ui", mobileFloating);
+		clientRoot.classList.toggle("mobile-floating-ui", mobileFloating);
+		if (mobileFloating) {
+			clientRoot.classList.toggle("left-panel-collapsed", !UiStateStore.get().getState().leftPanelExpanded);
+			clientRoot.classList.toggle("right-panel-collapsed", !UiStateStore.get().getState().rightPanelExpanded);
+		} else {
+			clientRoot.classList.remove("left-panel-collapsed");
+			clientRoot.classList.remove("right-panel-collapsed");
+			UiStateStore.get().resetLeftPanelExpandedForDesktop();
+			UiStateStore.get().refreshLayout();
 		}
 	}
 }

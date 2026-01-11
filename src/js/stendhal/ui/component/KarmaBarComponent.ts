@@ -94,3 +94,4 @@ export class KarmaBarComponent extends StatBarComponent {
 		this.repValue = this.canvas.width * Math.max(Math.min(normalized, 1), 0);
 	}
 }
+

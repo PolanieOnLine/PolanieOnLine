@@ -119,3 +119,4 @@ export class BestiaryEvent extends RPEvent {
 				content, 20, 20));
 	}
 }
+

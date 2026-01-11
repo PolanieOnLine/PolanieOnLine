@@ -77,3 +77,4 @@ export class CStatus {
 		marauroa.clientFramework.sendAction(action);
 	}
 }
+

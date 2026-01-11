@@ -67,3 +67,4 @@ export class TellAction extends SlashAction {
 		return TellAction.lastPlayerTell;
 	}
 }
+

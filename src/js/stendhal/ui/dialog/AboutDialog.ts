@@ -49,3 +49,4 @@ export class AboutDialog extends TabDialogContentComponent {
 		return "about";
 	}
 }
+

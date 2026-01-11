@@ -250,3 +250,4 @@ export class OutfitDialog extends DialogContentComponent {
 	}
 
 }
+

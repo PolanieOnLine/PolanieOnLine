@@ -1,5 +1,5 @@
 /***************************************************************************
- *                 Copyright © 2023-2024 - Faiumoni e. V.                  *
+ *                 Copyright © 2023-2026 - Faiumoni e. V.                  *
  ***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -19,6 +19,7 @@ import { Paths } from "./data/Paths";
 
 import { Color } from "./data/color/Color";
 
+import { EntityRegistry } from "./entity/EntityRegistry";
 import { Ground } from "./entity/Ground";
 import { RPObject } from "./entity/RPObject";
 
@@ -35,7 +36,8 @@ import { LoginDialog } from "./ui/dialog/LoginDialog";
 
 import { DesktopUserInterfaceFactory } from "./ui/factory/DesktopUserInterfaceFactory";
 
-import { LayoutController } from "./ui/LayoutController";
+import { PanelDock } from "./ui/mobile/PanelDock";
+import { UiStateStore } from "./ui/mobile/UiStateStore";
 
 import { SingletonFloatingWindow } from "./ui/toolkit/SingletonFloatingWindow";
 
@@ -62,6 +64,7 @@ export class Client {
 
 	/** ID for vetoing click indicator timeout (experimental setting not enabled/visible by default). */
 	private static click_indicator_id: number | undefined = undefined;
+	private panelDock?: PanelDock;
 
 	/** Singleton instance. */
 	private static instance: Client;
@@ -98,10 +101,10 @@ export class Client {
 		document.documentElement.setAttribute("data-build-version", stendhal.data.build.version);
 		document.documentElement.setAttribute("data-build-build", stendhal.data.build.build);
 
-		stendhal.paths = singletons.getPaths();
 		stendhal.config = singletons.getConfigManager();
 		stendhal.session = singletons.getSessionManager();
 		stendhal.actions = singletons.getSlashActionRepo();
+		new EntityRegistry().init();
 
 		this.initData();
 		this.initSound();
@@ -122,7 +125,7 @@ export class Client {
 		stendhal.data.group = singletons.getGroupManager();
 		stendhal.data.outfit = singletons.getOutfitStore();
 		stendhal.data.sprites = singletons.getSpriteStore();
-		stendhal.data.map = singletons.getMap();
+		stendhal.data.map = singletons.getTileMap();
 		// online players
 		stendhal.players = [];
 	}
@@ -171,6 +174,8 @@ export class Client {
 		const sparams = new URL(document.URL).searchParams;
 		stendhal.config.init(sparams);
 		stendhal.session.init(sparams);
+		UiStateStore.get().initFromConfig();
+		this.applyMobileUiClasses();
 
 		// update user interface after config is loaded
 		stendhal.config.refreshTheme();
@@ -187,7 +192,7 @@ export class Client {
 		stendhal.data.outfit.init();
 
 		new DesktopUserInterfaceFactory().create();
-		LayoutController.get().init();
+		this.panelDock = new PanelDock();
 
 		Chat.log("client", "Klient załadowany. Łączenie...");
 
@@ -233,7 +238,7 @@ export class Client {
 	onError(error: ErrorEvent): boolean | undefined {
 		this.errorCounter++;
 		if (this.errorCounter > 5) {
-			console.log("Zbyt wiele błędów, raportowanie zatrzymane.");
+			console.log("Too many errors, stopped reporting");
 			return;
 		}
 		var text = error.message + "\r\n";
@@ -261,33 +266,15 @@ export class Client {
 	/**
 	 * Registers Marauroa event handlers.
 	 */
-	private queueNetworkWork(task: () => void) {
-		if (typeof task !== "function") {
-			return;
-		}
-		try {
-			const viewport = stendhal && stendhal.ui ? stendhal.ui.viewport : undefined;
-			if (viewport && typeof viewport.queueNetworkTask === "function") {
-				viewport.queueNetworkTask(task);
-				return;
-			}
-			task();
-		} catch (error) {
-			if (typeof console !== "undefined" && console.error) {
-				console.error("Failed to queue network work", error);
-			}
-		}
-	}
-
-	/**
-	 * Registers Marauroa event handlers.
-	 */
 	registerMarauroaEventHandlers() {
 		marauroa.clientFramework.onDisconnect = function(_reason: string, _error: string) {
 			if (!Client.instance.unloading) {
 				Chat.logH("error", "Odłączono od serwera.");
+				if (window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1" && window.location.hostname !== "::1") {
+					window.location.href = "/account/mycharacters.html";
+				}
 			}
-		};
+		}.bind(this);
 
 		marauroa.clientFramework.onLoginRequired = function(config: Record<string, string>) {
 			if (config["client_login_url"]) {
@@ -305,32 +292,48 @@ export class Client {
 				"Logowanie",
 				new LoginDialog(),
 				100, 50).enableCloseButton(false);
-		};
+		}.bind(this);
 
 		marauroa.clientFramework.onCreateAccountAck = function(username: string) {
 			// TODO: We should login automatically
 			alert("Konto zostało pomyślnie utworzone, proszę się zalogować.");
 			window.location.reload();
-		};
+		}.bind(this);
 
 		marauroa.clientFramework.onCreateCharacterAck = function(charname: string, _template: any) {
 			// Client.get().chooseCharacter(charname);
-		};
+		}.bind(this);
 
 		marauroa.clientFramework.onLoginFailed = function(_reason: string, _text: string) {
 			alert("Logowanie nie powiodło się. " + _text);
 			// TODO: Server closes the connection, so we need to open a new one
 			window.location.reload();
-		};
+		}.bind(this);
 
-		marauroa.clientFramework.onAvailableCharacterDetails = function(characters: { [key: string]: RPObject }) {
+		marauroa.clientFramework.onAvailableCharacterDetails = (characters: {[key: string]: RPObject}) => {
 			SingletonFloatingWindow.closeAll();
 			if (!Object.keys(characters).length && this.username) {
 				marauroa.clientFramework.createCharacter(this.username, {});
 				return;
 			}
 			if (window.location.hash) {
-				let name = window.location.hash.substring(1);
+				const availableNames = new Set<string>(
+					Object.values(characters)
+						.map((character) => character?.["a"]?.["name"])
+						.filter((name): name is string => typeof name === "string")
+				);
+				const rawHash = window.location.hash.substring(1);
+				let decodedName = rawHash;
+				try {
+					decodedName = decodeURIComponent(rawHash);
+				} catch (error) {
+					console.warn("Failed to decode character name from URL hash.", error);
+				}
+				const candidateName = decodedName.includes("_") ? decodedName.replace(/_/g, " ") : decodedName;
+				const useCandidate = candidateName !== decodedName
+					&& availableNames.has(candidateName)
+					&& !availableNames.has(decodedName);
+				const name = useCandidate ? candidateName : decodedName;
 				stendhal.session.setCharName(name);
 			}
 
@@ -343,7 +346,7 @@ export class Client {
 			body.style.cursor = "auto";
 			document.getElementById("loginpopup")!.style.display = "none";
 			ui.createSingletonFloatingWindow(
-				"Wybierz postać.",
+				"Wybierz postać",
 				new ChooseCharacterDialog(characters),
 				100, 50).enableCloseButton(false);
 		};
@@ -355,34 +358,29 @@ export class Client {
 				}
 				items[i]["ack"] = true;
 			}
-		};
+		}.bind(this);
 
 		marauroa.clientFramework.onTransfer = (items: any) => {
-			this.queueNetworkWork(() => {
-				const data: Record<string, any> = {};
-				let zoneName = "";
-				for (const key in items) {
-					const entry = items[key];
-					if (!entry) {
-						continue;
-					}
-					let name = entry["name"];
-					if (typeof name !== "string") {
-						continue;
-					}
-					const dotIndex = name.indexOf(".");
-					if (dotIndex === -1) {
-						continue;
-					}
-					zoneName = name.substring(0, dotIndex);
-					name = name.substring(dotIndex + 1);
-					data[name] = entry["data"];
-					if (name === "data_map") {
-						this.onDataMap(entry["data"]);
-					}
+			const data: Record<string, any> = {};
+			let zoneName = "";
+			for (const key in items) {
+				const entry = items[key];
+				if (!entry || typeof entry.name !== "string") {
+					continue;
 				}
-				stendhal.data.map.onTransfer(zoneName, data);
-			});
+				let name = entry.name;
+				const dotIndex = name.indexOf(".");
+				if (dotIndex === -1) {
+					continue;
+				}
+				zoneName = name.substring(0, dotIndex);
+				name = name.substring(dotIndex + 1);
+				data[name] = entry.data;
+				if (name === "data_map") {
+					this.onDataMap(entry.data);
+				}
+			}
+			stendhal.data.map.onTransfer(zoneName, data);
 		};
 
 		// update user interface on perceptions
@@ -390,27 +388,25 @@ export class Client {
 			// override perception listener
 			marauroa.perceptionListener = new PerceptionListener(marauroa.perceptionListener);
 			marauroa.perceptionListener.onPerceptionEnd = (_type: Int8Array, _timestamp: number) => {
-				this.queueNetworkWork(() => {
-					stendhal.zone.sortEntities();
-					(ui.get(UIComponentEnum.MiniMap) as MiniMapComponent).draw();
-					(ui.get(UIComponentEnum.BuddyList) as BuddyListComponent).update();
-					stendhal.ui.equip.update();
-					(ui.get(UIComponentEnum.PlayerEquipment) as PlayerEquipmentComponent).update();
-					if (!this.worldLoaded) {
-						this.worldLoaded = true;
-						// delay visible change of client a little to allow for initialization in the background for a smoother experience
-						window.setTimeout(() => {
-							const body = document.getElementById("body")!;
-							body.style.cursor = "auto";
-							document.getElementById("client")!.style.display = "flex";
-							document.getElementById("loginpopup")!.style.display = "none";
+				stendhal.zone.sortEntities();
+				(ui.get(UIComponentEnum.MiniMap) as MiniMapComponent).draw();
+				(ui.get(UIComponentEnum.BuddyList) as BuddyListComponent).update();
+				stendhal.ui.equip.update();
+				(ui.get(UIComponentEnum.PlayerEquipment) as PlayerEquipmentComponent).update();
+				if (!this.worldLoaded) {
+					this.worldLoaded = true;
+					// delay visibile change of client a little to allow for initialisation in the background for a smoother experience
+					window.setTimeout(() => {
+						const body = document.getElementById("body")!;
+						body.style.cursor = "auto";
+						document.getElementById("client")!.style.display = "flex";
+						document.getElementById("loginpopup")!.style.display = "none";
 
-							// initialize observer after UI is ready
-							singletons.getUIUpdateObserver().init();
-							ui.onDisplayReady();
-						}, 300);
-					}
-				});
+						// initialize observer after UI is ready
+						singletons.getUIUpdateObserver().init();
+						ui.onDisplayReady();
+					}, 300);
+				}
 			};
 		}
 	}
@@ -465,12 +461,12 @@ export class Client {
 		gamewindow.addEventListener("dblclick", stendhal.ui.gamewindow.onMouseDown);
 		gamewindow.addEventListener("dragstart", stendhal.ui.gamewindow.onDragStart);
 		gamewindow.addEventListener("mousemove", stendhal.ui.gamewindow.onMouseMove);
-		gamewindow.addEventListener("touchstart", stendhal.ui.gamewindow.onMouseDown);
+		gamewindow.addEventListener("touchstart", stendhal.ui.gamewindow.onMouseDown, { passive: true });
 		gamewindow.addEventListener("touchend", stendhal.ui.gamewindow.onTouchEnd);
 		gamewindow.addEventListener("dragover", stendhal.ui.gamewindow.onDragOver);
 		gamewindow.addEventListener("drop", stendhal.ui.gamewindow.onDrop);
 		gamewindow.addEventListener("contextmenu", stendhal.ui.gamewindow.onContentMenu);
-		gamewindow.addEventListener("wheel", stendhal.ui.gamewindow.onMouseWheel);
+		gamewindow.addEventListener("wheel", stendhal.ui.gamewindow.onMouseWheel, { passive: true });
 
 		singletons.getJoystickController().registerGlobalEventHandlers();
 
@@ -498,7 +494,7 @@ export class Client {
 			document.addEventListener("click", Client.handleClickIndicator);
 			document.addEventListener("touchend", Client.handleClickIndicator);
 		};
-		click_indicator.src = stendhal.paths.gui + "/click_indicator.png";
+		click_indicator.src = Paths.gui + "/click_indicator.png";
 	}
 
 	/**
@@ -532,7 +528,6 @@ export class Client {
 			if (zoneinfo["blend_method"]) {
 				stendhal.ui.gamewindow.setBlendMethod(zoneinfo["blend_method"]);
 			}
-
 			const hsl = Color.numToHSL(Number(zoneinfo["color"]));
 			stendhal.ui.gamewindow.HSLFilter = hsl.toString();
 			// deprecated
@@ -544,6 +539,26 @@ export class Client {
 		}
 
 		singletons.getWeatherRenderer().update(zoneinfo["weather"]);
+	}
+
+	private applyMobileUiClasses() {
+		const clientRoot = document.getElementById("client");
+		if (!clientRoot) {
+			return;
+		}
+		const mobileFloating = singletons.getSessionManager().touchOnly()
+				&& stendhal.ui.getMenuStyle() === "floating";
+		document.body.classList.toggle("mobile-floating-ui", mobileFloating);
+		clientRoot.classList.toggle("mobile-floating-ui", mobileFloating);
+		if (mobileFloating) {
+			clientRoot.classList.toggle("left-panel-collapsed", !UiStateStore.get().getState().leftPanelExpanded);
+			clientRoot.classList.toggle("right-panel-collapsed", !UiStateStore.get().getState().rightPanelExpanded);
+		} else {
+			clientRoot.classList.remove("left-panel-collapsed");
+			clientRoot.classList.remove("right-panel-collapsed");
+			UiStateStore.get().resetLeftPanelExpandedForDesktop();
+			UiStateStore.get().refreshLayout();
+		}
 	}
 
 	/**
@@ -558,7 +573,7 @@ export class Client {
 	 */
 	onMouseEnter(e: MouseEvent) {
 		// use Stendhal's built-in cursor for entire page
-		(e.target as HTMLElement).style.cursor = "url(" + stendhal.paths.sprites + "/cursor/normal.png) 1 3, auto";
+		(e.target as HTMLElement).style.cursor = "url(" + Paths.sprites + "/cursor/normal.png) 1 3, auto";
 	}
 
 	/**

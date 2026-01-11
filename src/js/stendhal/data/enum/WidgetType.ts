@@ -26,3 +26,4 @@ export const enum WidgetType {
 	/** Type for slider with numeric range. */
 	SLIDER = "range"
 }
+

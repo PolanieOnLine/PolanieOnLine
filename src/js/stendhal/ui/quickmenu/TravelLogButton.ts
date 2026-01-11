@@ -30,3 +30,4 @@ export class TravelLogButton extends QuickMenuButton {
 		SlashActionRepo.get().execute("/progressstatus");
 	}
 }
+

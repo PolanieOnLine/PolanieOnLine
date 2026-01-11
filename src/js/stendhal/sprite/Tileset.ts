@@ -35,3 +35,4 @@ export interface Tileset {
      */
     getSprite(index: number): Sprite;
 }
+

@@ -87,3 +87,4 @@ export class SliderComponent extends WidgetComponent {
 		this.setConfigListener(cid);
 	}
 }
+

@@ -9,9 +9,6 @@
  *                                                                         *
  ***************************************************************************/
 
-declare var stendhal: any;
-
-
 /**
  * HTML code manipulation.
  */
@@ -144,9 +141,26 @@ export class HTMLManager {
 			}
 		}
 		const canvas = element instanceof HTMLCanvasElement ? element : null;
-		if (canvas && canvas.clientWidth && canvas.clientHeight) {
-			pos.canvasRelativeX = Math.round(pos.offsetX * canvas.width / canvas.clientWidth);
-			pos.canvasRelativeY = Math.round(pos.offsetY * canvas.height / canvas.clientHeight);
+		if (canvas && rect.width && rect.height) {
+			const gamewindow = (globalThis as any)?.stendhal?.ui?.gamewindow;
+			const viewportCanvas = gamewindow?.getElement?.();
+			const isViewportCanvas = Boolean(viewportCanvas && canvas === viewportCanvas);
+			const inputScale = isViewportCanvas ? gamewindow?.getInputScale?.() : undefined;
+			const rectWidth = typeof inputScale?.rectWidth === "number" && inputScale.rectWidth > 0
+				? inputScale.rectWidth
+				: rect.width;
+			const rectHeight = typeof inputScale?.rectHeight === "number" && inputScale.rectHeight > 0
+				? inputScale.rectHeight
+				: rect.height;
+			const scaleX = canvas.width / rectWidth;
+			const scaleY = canvas.height / rectHeight;
+			const devicePixelRatio = isViewportCanvas
+				? (typeof inputScale?.devicePixelRatio === "number" && inputScale.devicePixelRatio > 0
+					? inputScale.devicePixelRatio
+					: window.devicePixelRatio || 1)
+				: 1;
+			pos.canvasRelativeX = Math.round(pos.offsetX * (scaleX / devicePixelRatio));
+			pos.canvasRelativeY = Math.round(pos.offsetY * (scaleY / devicePixelRatio));
 		} else {
 			pos.canvasRelativeX = Math.round(pos.offsetX);
 			pos.canvasRelativeY = Math.round(pos.offsetY);

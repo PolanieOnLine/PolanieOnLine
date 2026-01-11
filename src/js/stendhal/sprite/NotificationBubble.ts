@@ -12,103 +12,223 @@
 
 declare var stendhal: any;
 
-import { TextBubble, TextSegment } from "./TextBubble";
+import { TextBubble } from "./TextBubble";
 
 import { Color } from "../data/color/Color";
 
 import { NotificationType } from "../util/NotificationType";
+import { Pair } from "../util/Pair";
 import { Speech } from "../util/Speech";
+import { RenderingContext2D } from "util/Types";
+import { Paths } from "../data/Paths";
+import { singletons } from "../SingletonRepo";
 
-interface LayoutSegment {
-	text: string;
-	color: string;
-	underline: boolean;
-	italic: boolean;
-	width: number;
-	isWhitespace: boolean;
-	forceBreak?: boolean;
-}
-
-interface FormattedLine {
-	segments: LayoutSegment[];
-	width: number;
-}
 
 export class NotificationBubble extends TextBubble {
-	private bubbleTextColor: string;
-	private borderColor: string;
-	private segments: TextSegment[];
-	private lines: FormattedLine[];
+	private static readonly FONT_SIZE = 14;
+	private static readonly LINE_HEIGHT = NotificationBubble.FONT_SIZE + 6;
+	private static readonly FONT = NotificationBubble.FONT_SIZE + "px sans-serif";
+	private static readonly MAX_TEXT_WIDTH = 340;
+
+	private mtype: string;
+	private lines: string[];
+	private partsByLine: Pair<string, string>[][];
+	private readonly textColor: string;
 	private profile?: HTMLImageElement;
 	private profileName?: string;
 	private lmargin = 4;
-	private readonly fontsize = 14;
-	private readonly lineHeight = this.fontsize + 6;
-	private baseFont: string;
-	private italicFont: string;
-	private static readonly BACKGROUND = "rgb(60, 30, 0)";
 
-	constructor() {
-		super("");
-		this.bubbleTextColor = Color.BLACK;
-		this.borderColor = Color.BLACK;
-		this.segments = [];
-		this.lines = [];
-		this.baseFont = this.fontsize + "px sans-serif";
-		this.italicFont = "italic " + this.fontsize + "px sans-serif";
-	}
+	constructor(mtype: string, text: string, profile?: string) {
+		super(text);
+		this.mtype = mtype;
+		this.profileName = profile;
+		this.textColor = NotificationType[this.mtype] || Color.BLACK;
 
-	configure(mtype: string, text: string, profile?: string) {
-		this.resetBubble(text);
 		this.duration = Math.max(
 			TextBubble.STANDARD_DUR,
 			this.text.length * TextBubble.STANDARD_DUR / 50);
 
-		this.bubbleTextColor = NotificationType[mtype] || Color.BLACK;
-		this.borderColor = mtype === "privmsg"
-			? Color.CHAT_PRIVATE
-			: this.bubbleTextColor;
+		this.lines = [];
+		this.partsByLine = [];
 
-		this.baseFont = this.fontsize + "px sans-serif";
-		this.italicFont = "italic " + this.fontsize + "px sans-serif";
+		const formatted = TextBubble.buildFormattedParts(text, this.textColor);
+		this.text = formatted.plainText;
 
-		this.segments.length = 0;
-		this.segregate(this.segments, this.bubbleTextColor);
-		this.lines.length = 0;
+		const measurementCtx = NotificationBubble.createMeasurementContext();
+		measurementCtx.font = NotificationBubble.FONT;
 
-		this.profileName = profile;
+		const words = this.text.split("\t").join(" ").split(" ");
+		let nextlineParts: Pair<string, string>[] = [];
+		let partIdx = 0;
+		let partOffset = 0;
+		let lastColor = this.textColor;
+		let longestWidth = 0;
+
+		const measurePartsWidth = (parts: Pair<string, string>[]) =>
+			measurementCtx.measureText(parts.map((p) => p.second).join(""))
+				.width;
+
+		const consume = (count: number) => {
+			const consumed: Pair<string, string>[] = [];
+			let remaining = count;
+			while (remaining > 0 && partIdx < formatted.parts.length) {
+				const part = formatted.parts[partIdx];
+				const available = part.second.length - partOffset;
+				const take = Math.min(remaining, available);
+				const segment = part.second.substr(partOffset, take);
+				if (segment.length > 0) {
+					consumed.push(new Pair(part.first, segment));
+					lastColor = part.first || lastColor;
+				}
+				remaining -= take;
+				partOffset += take;
+				if (partOffset >= part.second.length) {
+					partIdx++;
+					partOffset = 0;
+				}
+			}
+			return consumed;
+		};
+
+		const collectLine = (parts: Pair<string, string>[]) => {
+			this.partsByLine.push(parts);
+			const textLine = parts.map((p) => p.second).join("");
+			this.lines.push(textLine);
+			const lineWidth = measurePartsWidth(parts);
+			if (lineWidth > longestWidth) {
+				longestWidth = lineWidth;
+			}
+		};
+
+		const collapseCharsToParts = (chars: { color: string; char: string }[]) => {
+			const collapsed: Pair<string, string>[] = [];
+			for (const piece of chars) {
+				const last = collapsed[collapsed.length - 1];
+				if (last && last.first === piece.color) {
+					collapsed[collapsed.length - 1] = new Pair(
+						last.first,
+						last.second + piece.char
+					);
+				} else {
+					collapsed.push(new Pair(piece.color, piece.char));
+				}
+			}
+			return collapsed;
+		};
+
+		const splitLongWord = (parts: Pair<string, string>[]) => {
+			const chars: { color: string; char: string }[] = [];
+			for (const p of parts) {
+				for (const char of p.second) {
+					chars.push({ color: p.first || this.textColor, char });
+				}
+				}
+			let splitIndex = 1;
+			for (let idx = 1; idx <= chars.length; idx++) {
+				const preview = chars.slice(0, idx).map((c) => c.char).join("") + "-";
+				if (measurementCtx.measureText(preview).width <= NotificationBubble.MAX_TEXT_WIDTH) {
+					splitIndex = idx;
+				} else {
+					break;
+				}
+			}
+			const headChars = chars.slice(0, splitIndex);
+			const tailChars = chars.slice(splitIndex);
+			const hyphenColor = headChars.length
+				? headChars[headChars.length - 1].color
+				: (parts[parts.length - 1]?.first || this.textColor);
+			const head = collapseCharsToParts(headChars);
+			head.push(new Pair(hyphenColor, "-"));
+			const tail = collapseCharsToParts(tailChars);
+			return { head, tail };
+		};
+
+		for (const w of words) {
+			const lineHasContent = nextlineParts.length > 0;
+			const prefixParts = lineHasContent ? consume(1) : [];
+			const wordParts = consume(w.length);
+			const candidateParts = nextlineParts.concat(prefixParts, wordParts);
+			const candidateWidth = measurePartsWidth(candidateParts);
+
+			if (candidateWidth <= NotificationBubble.MAX_TEXT_WIDTH) {
+				nextlineParts = candidateParts;
+				continue;
+			}
+			if (nextlineParts.length > 0) {
+				collectLine(nextlineParts);
+				nextlineParts = [];
+				if (measurePartsWidth(wordParts) <= NotificationBubble.MAX_TEXT_WIDTH) {
+					nextlineParts = wordParts;
+					continue;
+				}
+			}
+
+			let remainingParts = wordParts;
+			while (measurePartsWidth(remainingParts) > NotificationBubble.MAX_TEXT_WIDTH) {
+				const { head, tail } = splitLongWord(remainingParts);
+				collectLine(head);
+				remainingParts = tail;
+			}
+
+			nextlineParts = remainingParts;
+		}
+		if (nextlineParts.length > 0) {
+			collectLine(nextlineParts);
+		}
+
+		this.width = longestWidth + (this.lmargin * 2);
+		this.height = this.lines.length * NotificationBubble.LINE_HEIGHT;
+
 		if (profile) {
-			this.profile = undefined;
+			// FIXME: first drawing of profile may still be delayed on slower systems
+			// cache profile image at construction
+			this.profile = new Image();
 			this.loadProfileSprite();
-		} else {
-			this.profile = undefined;
 		}
 	}
 
-	override draw(ctx: CanvasRenderingContext2D): boolean {
+	private static createMeasurementContext(): CanvasRenderingContext2D {
+		const canvas = (typeof OffscreenCanvas !== "undefined")
+			? new OffscreenCanvas(1, 1)
+			: document.createElement("canvas");
+		const ctx = canvas.getContext("2d") as CanvasRenderingContext2D | null;
+		if (!ctx) {
+			throw new Error("Unable to create measurement context for NotificationBubble");
+		}
+		return ctx;
+	}
+
+	override draw(ctx: RenderingContext2D): boolean {
 		const screenTop = stendhal.ui.gamewindow.offsetY;
 		const screenBottom = screenTop + ctx.canvas.height;
 		const screenLeft = stendhal.ui.gamewindow.offsetX;
 		const screenCenterX = screenLeft + (ctx.canvas.width / 2);
 
 		// get width & height of text
+		const fontsize = NotificationBubble.FONT_SIZE;
+		const lheight = NotificationBubble.LINE_HEIGHT;
 		ctx.lineWidth = 2;
-		ctx.font = this.baseFont;
-		ctx.fillStyle = NotificationBubble.BACKGROUND;
-		ctx.strokeStyle = this.borderColor;
+		ctx.font = NotificationBubble.FONT;
+		ctx.fillStyle = "rgb(60, 30, 0)";
+		ctx.strokeStyle = this.textColor;
 
-		if ((this.width < 0 || this.height < 0) || this.lines.length === 0) {
-			this.layout(ctx);
+		const lcount = this.lines.length;
+		if (this.width < 0 || this.height < 0) {
+			let longest = 0;
+			for (let li = 0; li < lcount; li++) {
+				let measurement = ctx.measureText(this.lines[li]);
+				if (measurement.width > longest) {
+					longest = measurement.width;
+				}
+			}
+
+			this.width = longest + (this.lmargin * 2);
+			this.height = lcount * lheight;
 		}
 		this.x = screenCenterX - (this.width / 2);
 		// Note: border is 1 pixel
 		this.y = screenBottom - this.height + TextBubble.adjustY - 1;
 
-		if (this.profileName) {
-			if (!this.profile) {
-				this.loadProfileSprite();
-			}
-		}
 		if (this.profile) {
 			if (!this.profile.complete || !this.profile.height) {
 				this.loadProfileSprite();
@@ -123,190 +243,32 @@ export class NotificationBubble extends TextBubble {
 				this.height);
 		}
 
-		ctx.save();
+		ctx.fillStyle = this.textColor;
+
 		let sy = this.y;
-		for (const line of this.lines) {
+		for (let li = 0; li < lcount; li++) {
 			let sx = this.x + this.lmargin;
-			for (const segment of line.segments) {
-				ctx.font = segment.italic ? this.italicFont : this.baseFont;
-				ctx.fillStyle = segment.color;
-				ctx.fillText(segment.text, sx, sy);
-				if (segment.underline && segment.width > 0) {
-					ctx.save();
-					ctx.strokeStyle = segment.color;
-					ctx.lineWidth = 1;
-					ctx.beginPath();
-					ctx.moveTo(sx, sy + 1);
-					ctx.lineTo(sx + segment.width, sy + 1);
-					ctx.stroke();
-					ctx.restore();
-				}
-				sx += segment.width;
+			const parts = this.partsByLine[li];
+			for (const part of parts) {
+				ctx.fillStyle = part.first || this.textColor;
+				ctx.fillText(part.second, sx, sy);
+				sx += ctx.measureText(part.second).width;
 			}
-			sy += this.lineHeight;
+			sy += lheight;
 		}
-		ctx.restore();
 
 		return this.expired();
-	}
-
-	private layout(ctx: CanvasRenderingContext2D) {
-		const previousFont = ctx.font;
-		ctx.font = this.baseFont;
-		const maxLineWidth = ctx.measureText("M".repeat(30)).width;
-		ctx.font = this.baseFont;
-		const maxWordWidth = ctx.measureText("M".repeat(60)).width;
-
-		const measure = (text: string, italic: boolean) => {
-			ctx.font = italic ? this.italicFont : this.baseFont;
-			return ctx.measureText(text).width;
-		};
-
-		const hyphenWidthCache = new Map<boolean, number>();
-		const hyphenWidth = (italic: boolean) => {
-			if (!hyphenWidthCache.has(italic)) {
-				hyphenWidthCache.set(italic, measure("-", italic));
-			}
-			return hyphenWidthCache.get(italic)!;
-		};
-
-		const splitLongSegment = (segment: LayoutSegment): LayoutSegment[] => {
-			const chars = Array.from(segment.text);
-			const result: LayoutSegment[] = [];
-			let chunk = "";
-			let width = 0;
-			const hyWidth = hyphenWidth(segment.italic);
-			for (const ch of chars) {
-				const charWidth = measure(ch, segment.italic);
-				if (chunk && width + charWidth > maxWordWidth) {
-					result.push({
-						text: chunk + "-",
-						color: segment.color,
-						underline: segment.underline,
-						italic: segment.italic,
-						width: width + hyWidth,
-						isWhitespace: false,
-						forceBreak: true
-					});
-					chunk = "-" + ch;
-					width = hyWidth + charWidth;
-				} else {
-					chunk += ch;
-					width += charWidth;
-				}
-			}
-			if (chunk) {
-				result.push({
-					text: chunk,
-					color: segment.color,
-					underline: segment.underline,
-					italic: segment.italic,
-					width,
-					isWhitespace: false
-				});
-			}
-			return result;
-		};
-
-		const rawSegments: LayoutSegment[] = [];
-		for (const part of this.segments) {
-			const replaced = part.text.replace(/\t/g, " ");
-			const pieces = replaced.split(/(\s+)/);
-			for (const piece of pieces) {
-				if (!piece) {
-					continue;
-				}
-				rawSegments.push({
-					text: piece,
-					color: part.color,
-					underline: !!part.underline,
-					italic: !!part.italic,
-					width: 0,
-					isWhitespace: /^\s+$/.test(piece)
-				});
-			}
-		}
-
-		const lines: FormattedLine[] = [];
-		let currentSegments: LayoutSegment[] = [];
-		let currentWidth = 0;
-
-		const flushLine = () => {
-			if (currentSegments.length === 0) {
-				lines.push({ segments: [], width: 0 });
-				return;
-			}
-			let trimmedWidth = currentWidth;
-			const trimmedSegments = currentSegments.slice();
-			while (trimmedSegments.length > 0 && trimmedSegments[trimmedSegments.length - 1].isWhitespace) {
-				trimmedWidth -= trimmedSegments[trimmedSegments.length - 1].width;
-				trimmedSegments.pop();
-			}
-			lines.push({ segments: trimmedSegments, width: trimmedWidth });
-			currentSegments = [];
-			currentWidth = 0;
-		};
-
-		const appendSegment = (segment: LayoutSegment) => {
-			if (segment.isWhitespace && currentSegments.length === 0) {
-				return;
-			}
-			if (segment.width === 0) {
-				segment.width = measure(segment.text, segment.italic);
-			}
-
-			if (!segment.isWhitespace && segment.width > maxWordWidth) {
-				const split = splitLongSegment(segment);
-				for (const part of split) {
-					appendSegment(part);
-					if (part.forceBreak) {
-						flushLine();
-					}
-				}
-				return;
-			}
-
-			if (!segment.isWhitespace && currentSegments.length > 0
-				&& currentWidth + segment.width > maxLineWidth) {
-				flushLine();
-			}
-
-			currentSegments.push({ ...segment });
-			currentWidth += segment.width;
-
-			if (!segment.isWhitespace && currentWidth >= maxLineWidth && !segment.forceBreak) {
-				flushLine();
-			}
-		};
-
-		for (const segment of rawSegments) {
-			appendSegment(segment);
-		}
-
-		if (currentSegments.length > 0) {
-			flushLine();
-		}
-
-		if (lines.length === 0) {
-			lines.push({ segments: [], width: 0 });
-		}
-
-		this.lines = lines;
-		const maxWidth = Math.max(...lines.map((line) => line.width));
-		this.width = Math.max(maxWidth, 0) + (this.lmargin * 2);
-		this.height = lines.length * this.lineHeight;
-
-		ctx.font = previousFont;
 	}
 
 	/**
 	 * Loads a profile image to be drawn with text.
 	 */
 	private loadProfileSprite() {
-		const img = stendhal.data.sprites.get(stendhal.paths.sprites
+		const img = singletons.getSpriteStore().get(Paths.sprites
 			+ "/npc/" + this.profileName + ".png");
 		if (img.complete && img.height) {
-			this.profile = stendhal.data.sprites.getAreaOf(img, 48, 48, 48, 128);
+			this.profile = singletons.getSpriteStore().getAreaOf(img, 48, 48, 48, 128);
 		}
 	}
 }
+

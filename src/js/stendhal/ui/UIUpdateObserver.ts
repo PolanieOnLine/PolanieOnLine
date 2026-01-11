@@ -9,6 +9,7 @@
  *                                                                         *
  ***************************************************************************/
 
+import { singletons } from "../SingletonRepo";
 import { ui } from "./UI";
 
 
@@ -61,7 +62,9 @@ export class UIUpdateObserver {
 
 		// listen for changes to screen orientation
 		screen.orientation.addEventListener("change", (e) => {
+			singletons.getViewPort().logViewportSize("orientation change", "before");
 			this.onOrientationUpdate();
+			requestAnimationFrame(() => singletons.getViewPort().logViewportSize("orientation change", "after"));
 		});
 	}
 
@@ -97,6 +100,7 @@ export class UIUpdateObserver {
 	 * Called when an attribute of the viewport has changed.
 	 */
 	private onViewPortUpdate() {
+		singletons.getViewPort().updateCanvasSize();
 		ui.onDisplayUpdate();
 	}
 
@@ -104,6 +108,10 @@ export class UIUpdateObserver {
 	 * Called when screen orientation changes.
 	 */
 	private onOrientationUpdate() {
-		ui.onDisplayUpdate();
+		requestAnimationFrame(() => {
+			singletons.getViewPort().scheduleResize();
+			requestAnimationFrame(() => ui.onDisplayUpdate());
+		});
 	}
 }
+

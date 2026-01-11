@@ -130,3 +130,4 @@ export class TradeDialog extends DialogContentComponent {
 	}
 
 }
+

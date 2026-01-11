@@ -9,18 +9,23 @@
  *                                                                         *
  ***************************************************************************/
 
+import { singletons } from "../../../SingletonRepo";
+import { Paths } from "../../../data/Paths";
+import { RenderingContext2D } from "util/Types";
+
 declare var stendhal: any;
 
+
 export class OutfitPartSelector {
-		private _part: string;
-		private _onPartChanged: Function;
-		private _index: number;
-		private _maxindex: number;
-		private _ctx: CanvasRenderingContext2D;
-		private _width: number;
-		private _height: number;
-		private _color?: any;
-		private _image?: Promise<CanvasImageSource>;
+	private _part: string;
+	private _onPartChanged: Function;
+	private _index: number;
+	private _maxindex: number;
+	private _ctx: RenderingContext2D;
+	private _width: number;
+	private _height: number;
+	private _color?: any;
+	private _image?: Promise<CanvasImageSource>;
 
 	constructor(part: string, initialIndex: any, maxindex: number, onPartChanged: Function) {
 		this._part = part;
@@ -104,10 +109,11 @@ export class OutfitPartSelector {
 
 		// FIXME: need to draw "busty" dress variants for body index 1
 
-		const fname = stendhal.paths.sprites + "/outfit/" + part + "/" + this.indexString(index) + suffix;
+		const fname = Paths.sprites + "/outfit/" + part + "/" + this.indexString(index) + suffix;
 		if (color != null) {
-			return stendhal.data.sprites.getFilteredWithPromise(fname, "trueColor", color);
+			return singletons.getSpriteStore().getFilteredWithPromise(fname, "trueColor", color);
 		}
-		return stendhal.data.sprites.getWithPromise(fname);
+		return singletons.getSpriteStore().getWithPromise(fname);
 	}
 }
+

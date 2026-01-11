@@ -311,3 +311,4 @@ export class ActiveEntity extends Entity {
 		return dir;
 	}
 }
+

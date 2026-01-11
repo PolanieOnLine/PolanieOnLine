@@ -21,6 +21,7 @@ import { Item } from "../../entity/Item";
 import { singletons } from "../../SingletonRepo";
 
 import { Point } from "../../util/Point";
+import { Paths } from "../../data/Paths";
 
 
 /**
@@ -47,6 +48,14 @@ export class ItemContainerImplementation {
 		this.init(size);
 	}
 
+	public getSlot(): string {
+		return this.slot;
+	}
+
+	public getObject(): any {
+		return this.object;
+	}
+
 	public init(size: number) {
 		this.size = size;
 		for (let i = 0; i < size; i++) {
@@ -60,7 +69,7 @@ export class ItemContainerImplementation {
 			});
 			e.addEventListener("touchmove", (event: TouchEvent) => {
 				this.onTouchMove(event);
-			});
+			}, {passive: true});
 			e.addEventListener("drop", (event: DragEvent) => {
 				this.onDrop(event)
 			});
@@ -72,7 +81,7 @@ export class ItemContainerImplementation {
 			});
 			e.addEventListener("touchstart", (event: TouchEvent) => {
 				this.onTouchStart(event)
-			});
+			}, {passive: true});
 			e.addEventListener("touchend", (event: TouchEvent) => {
 				this.onTouchEnd(event)
 			});
@@ -125,13 +134,11 @@ export class ItemContainerImplementation {
 				const item = <Item> o;
 				let xOffset = 0;
 				let yOffset = (item["state"] || 0) * -32;
-				if (item.isAnimated()) {
-					item.stepAnimation();
-					xOffset = -(item.getXFrameIndex() * 32);
-				}
+				const animationFrame = item.getAnimationFrameIndex();
+				xOffset = -(animationFrame * 32);
 
 				e.style.backgroundImage = "url("
-						+ stendhal.data.sprites.checkPath(stendhal.paths.sprites
+						+ singletons.getSpriteStore().checkPath(Paths.sprites
 								+ "/items/" + o["class"] + "/" + o["subclass"] + ".png")
 						+ ")";
 				e.style.backgroundPosition = (xOffset+1) + "px " + (yOffset+1) + "px";
@@ -148,7 +155,7 @@ export class ItemContainerImplementation {
 		for (let i = cnt; i < this.size; i++) {
 			let e = this.parentElement.querySelector("#" + this.slot +this. suffix + i) as HTMLElement;
 			if (this.defaultImage) {
-				e.style.backgroundImage = "url(" + stendhal.paths.gui + "/" + this.defaultImage + ")";
+				e.style.backgroundImage = "url(" + Paths.gui + "/" + this.defaultImage + ")";
 			} else {
 				e.style.backgroundImage = "none";
 			}
@@ -190,7 +197,7 @@ export class ItemContainerImplementation {
 				quantity: item.hasOwnProperty("quantity") ? item["quantity"] : 1
 			};
 
-			const img = stendhal.data.sprites.getAreaOf(stendhal.data.sprites.get(item.sprite.filename), 32, 32);
+			const img = singletons.getSpriteStore().getAreaOf(singletons.getSpriteStore().get(item.sprite.filename), 32, 32);
 			if (event instanceof DragEvent && event.dataTransfer) {
 				stendhal.ui.heldObject = heldObject;
 				event.dataTransfer.setDragImage(img, 0, 0);
@@ -363,7 +370,7 @@ export class ItemContainerImplementation {
 					// action to "hold" item for moving or dropping using touch
 					// XXX: temporary workaround, should use drag-and-drop instead
 					append.push({
-						title: "Hold",
+						title: "Przytrzymaj",
 						action: function(entity: any) {
 							tmp.onDragStart(evt as TouchEvent);
 						}
@@ -427,14 +434,14 @@ export class ItemContainerImplementation {
 	private updateCursor(target: HTMLElement, item?: Item) {
 		if (item) {
 			if (this.slot === "content" && stendhal.config.getBoolean("inventory.quick-pickup")) {
-				target.style.cursor = "url(" + stendhal.paths.sprites
+				target.style.cursor = "url(" + Paths.sprites
 						+ "/cursor/itempickupfromslot.png) 1 3, auto";
 				return;
 			}
 			target.style.cursor = item.getCursor(0, 0);
 			return;
 		}
-		target.style.cursor = "url(" + stendhal.paths.sprites
+		target.style.cursor = "url(" + Paths.sprites
 				+ "/cursor/normal.png) 1 3, auto";
 	}
 
@@ -450,3 +457,4 @@ export class ItemContainerImplementation {
 		target.title = typeof(item) !== "undefined" ? item.getToolTip() : "";
 	}
 }
+

@@ -52,3 +52,4 @@ export class LoginDialog extends DialogContentComponent {
 	}
 
 }
+

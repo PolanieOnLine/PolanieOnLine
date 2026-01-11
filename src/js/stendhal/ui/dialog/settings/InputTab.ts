@@ -21,7 +21,6 @@ import { QuickMenuButton } from "../../quickmenu/QuickMenuButton";
 
 import { singletons } from "../../../SingletonRepo";
 
-
 export class InputTab extends AbstractSettingsTab {
 
 	constructor(parent: SettingsDialog, element: HTMLElement) {
@@ -58,6 +57,32 @@ export class InputTab extends AbstractSettingsTab {
 		chk_joystick.checked = singletons.getSessionManager().joystickEnabled();
 		sel_joystick.disabled = !chk_joystick.checked;
 
+		// attack button overlay
+		const chk_attack_button = parent.createCheckBox("chk_attack_button", "attack.button",
+				"Pokazuj przycisk ataku",
+				"Ukryj przycisk ataku",
+				function(_e: Event) {
+					singletons.getAttackButtonController().update();
+				});
+		if (chk_attack_button) {
+			chk_attack_button.checked = singletons.getSessionManager().attackButtonEnabled();
+		}
+
+		// loot button overlay
+		const chk_loot_button = parent.createCheckBox("chk_loot_button", "loot.button",
+				"Pokazuj przycisk łupów",
+				"Ukryj przycisk łupów",
+				function(_e: Event) {
+					singletons.getLootButtonController().update();
+				});
+		if (chk_loot_button) {
+			chk_loot_button.checked = singletons.getSessionManager().lootButtonEnabled();
+		}
+
+		parent.createCheckBox("chk_attack_players", "attack.target.players",
+			"Zezwól na wybór graczy jako celów przy automatycznym ataku",
+			"Wyklucz graczy z automatycznego wyboru celu");
+
 		// joystck positioning
 		const joystickInputs: HTMLInputElement[] = [];
 		for (const o of ["x", "y"]) {
@@ -89,3 +114,4 @@ export class InputTab extends AbstractSettingsTab {
 		}
 	}
 }
+

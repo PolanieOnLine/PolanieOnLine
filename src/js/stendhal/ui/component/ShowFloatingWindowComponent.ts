@@ -41,3 +41,4 @@ export class ShowFloatingWindowComponent extends Component {
 
 	}
 }
+

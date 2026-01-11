@@ -39,3 +39,4 @@ export abstract class AbstractEnum<T> {
 		return this.value === obj.value;
 	}
 }
+

@@ -12,8 +12,8 @@
 import { Component } from "../toolkit/Component";
 
 import { User } from "../../entity/User";
-
-declare var stendhal: any;
+import { Paths } from "../../data/Paths";
+import { singletons } from "../../SingletonRepo";
 
 
 export class StatusesListComponent extends Component {
@@ -65,11 +65,11 @@ export class StatusesListComponent extends Component {
 			}
 			let iconPath: string;
 			if (Object.keys(StatusesListComponent.iconPaths).indexOf(id) !== -1) {
-				iconPath = stendhal.paths.sprites + StatusesListComponent.iconPaths[id];
+				iconPath = Paths.sprites + StatusesListComponent.iconPaths[id];
 			} else {
-				iconPath = stendhal.paths.sprites + "/status/panel/" + id + ".png";
+				iconPath = Paths.sprites + "/status/panel/" + id + ".png";
 			}
-			const icon = stendhal.data.sprites.get(iconPath);
+			const icon = singletons.getSpriteStore().get(iconPath);
 			icon.className = "status-icon";
 			this.componentElement.appendChild(icon);
 		}
@@ -87,3 +87,4 @@ export class StatusesListComponent extends Component {
 		return false;
 	}
 }
+

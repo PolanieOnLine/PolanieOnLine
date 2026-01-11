@@ -9,12 +9,13 @@
  *                                                                         *
  ***************************************************************************/
 
-declare var stendhal: any;
+import { singletons } from "../../../SingletonRepo";
+import { Canvas, RenderingContext2D } from "util/Types";
 
 export class OutfitColorSelector {
-	protected ctx: CanvasRenderingContext2D;
-	private gradCtx: CanvasRenderingContext2D;
-	protected baseImage: HTMLCanvasElement;
+	protected ctx: RenderingContext2D;
+	private gradCtx: RenderingContext2D;
+	protected baseImage: Canvas;
 	private onColorChanged: Function;
 	private _enabled: boolean;
 	protected _x: number;
@@ -51,16 +52,16 @@ export class OutfitColorSelector {
 	get color() {
 		if (this.enabled) {
 			const hsl = [this._x / this.baseImage.width, 1 - this._y / this.baseImage.height,
-				this.hX / this.baseImage.width];
-			const rgbArray = stendhal.data.sprites.filter.hsl2rgb(hsl);
-			return stendhal.data.sprites.filter.mergergb(rgbArray);
+			this.hX / this.baseImage.width];
+			const rgbArray = singletons.getSpriteStore().filter.hsl2rgb(hsl);
+			return singletons.getSpriteStore().filter.mergergb(rgbArray);
 		}
 		return null;
 	}
 
 	set color(rgb) {
 		if (rgb != null) {
-			const hsl = stendhal.data.sprites.filter.rgb2hsl(stendhal.data.sprites.filter.splitrgb(rgb));
+			const hsl = singletons.getSpriteStore().filter.rgb2hsl(singletons.getSpriteStore().filter.splitrgb(rgb));
 			this._x = hsl[0] * this.baseImage.width;
 			this._y = (1 - hsl[1]) * this.baseImage.height;
 			this.hX = hsl[2] * this.baseImage.width;
@@ -72,13 +73,13 @@ export class OutfitColorSelector {
 
 	_createBaseImage(width: number, height: number) {
 		const img = document.createElement("canvas");
-		img.width  = width;
+		img.width = width;
 		img.height = height;
 		const ctx = img.getContext("2d")!;
 		for (let x = 0; x < width; x++) {
 			for (let y = 0; y < height; y++) {
 				const hsl = [x / width, 1 - y / height, 0.5];
-				const rgb = stendhal.data.sprites.filter.hsl2rgb(hsl);
+				const rgb = singletons.getSpriteStore().filter.hsl2rgb(hsl);
 				ctx.fillStyle = this._rgbToCssString(rgb);
 				ctx.fillRect(x, y, 1, 1);
 			}
@@ -140,9 +141,9 @@ export class OutfitColorSelector {
 		const hslLeft = [this._x / width, 1 - this._y / height, 0.08];
 		const hslMiddle = [this._x / width, 1 - this._y / height, 0.5];
 		const hslRight = [this._x / width, 1 - this._y / height, 0.92];
-		const rgbLeft = stendhal.data.sprites.filter.hsl2rgb(hslLeft);
-		const rgbMiddle = stendhal.data.sprites.filter.hsl2rgb(hslMiddle);
-		const rgbRight = stendhal.data.sprites.filter.hsl2rgb(hslRight);
+		const rgbLeft = singletons.getSpriteStore().filter.hsl2rgb(hslLeft);
+		const rgbMiddle = singletons.getSpriteStore().filter.hsl2rgb(hslMiddle);
+		const rgbRight = singletons.getSpriteStore().filter.hsl2rgb(hslRight);
 
 		return [rgbLeft, rgbMiddle, rgbRight];
 	}
@@ -178,3 +179,4 @@ export class OutfitColorSelector {
 		}
 	}
 }
+

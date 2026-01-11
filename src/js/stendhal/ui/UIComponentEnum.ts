@@ -50,3 +50,4 @@ export class UIComponentEnum {
 	public static readonly QMPathFinding = 303;
 	public static readonly QMSound = 304;
 }
+

@@ -98,3 +98,4 @@ export abstract class DialogContentComponent extends Component {
 		}, id ? id : "button-close");
 	}
 }
+

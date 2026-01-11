@@ -115,3 +115,4 @@ export class ToggleSwitch {
 		this.el.dispatchEvent(new Event("change", {bubbles: true}));
 	}
 }
+

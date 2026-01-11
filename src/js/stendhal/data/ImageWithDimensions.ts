@@ -13,3 +13,4 @@ export interface ImageWithDimensions {
 	height: number;
 	width: number
 }
+
