@@ -24,6 +24,7 @@ import { StatBarComponent } from "../component/StatBarComponent";
 import { ActionContextMenu } from "../dialog/ActionContextMenu";
 
 import { singletons } from "../../SingletonRepo";
+import { StringUtil } from "../../util/StringUtil";
 
 
 /**
@@ -73,7 +74,7 @@ export class GroupMemberComponent extends Component {
 			title: "Porozmawiaj",
 			action: function(_groupMemberComponent: GroupMemberComponent) {
 				(ui.get(UIComponentEnum.ChatInput) as ChatInputComponent).setText("/msg "
-						+ playerName
+						+ StringUtil.quoteIfNeeded(playerName)
 						+ " ");
 			}
 		});
@@ -93,25 +94,25 @@ export class GroupMemberComponent extends Component {
 				title: "Wyrzuć",
 				action: function(_groupMemberComponent: GroupMemberComponent) {
 					let action = {
-						"type": "group_management",
-						"action": "kick",
-						"params": playerName,
-						"zone": marauroa.currentZoneName
-					};
-					marauroa.clientFramework.sendAction(action);
-				}
+					"type": "group_management",
+					"action": "kick",
+					"params": playerName,
+					"zone": marauroa.currentZoneName
+				};
+				marauroa.clientFramework.sendAction(action);
+			}
 			});
 			actions.push({
 				title: "Powołaj lidera",
 				action: function(_groupMemberComponent: GroupMemberComponent) {
 					let action = {
-						"type": "group_management",
-						"action": "leader",
-						"params": playerName,
-						"zone": marauroa.currentZoneName
-					};
-					marauroa.clientFramework.sendAction(action);
-				}
+					"type": "group_management",
+					"action": "leader",
+					"params": playerName,
+					"zone": marauroa.currentZoneName
+				};
+				marauroa.clientFramework.sendAction(action);
+			}
 			});
 		}
 
@@ -139,4 +140,3 @@ export class GroupMemberComponent extends Component {
 		this.hpBar.drawBase();
 	}
 }
-

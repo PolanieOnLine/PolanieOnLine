@@ -317,7 +317,23 @@ export class Client {
 				return;
 			}
 			if (window.location.hash) {
-				let name = window.location.hash.substring(1);
+				const availableNames = new Set<string>(
+					Object.values(characters)
+						.map((character) => character?.["a"]?.["name"])
+						.filter((name): name is string => typeof name === "string")
+				);
+				const rawHash = window.location.hash.substring(1);
+				let decodedName = rawHash;
+				try {
+					decodedName = decodeURIComponent(rawHash);
+				} catch (error) {
+					console.warn("Failed to decode character name from URL hash.", error);
+				}
+				const candidateName = decodedName.includes("_") ? decodedName.replace(/_/g, " ") : decodedName;
+				const useCandidate = candidateName !== decodedName
+					&& availableNames.has(candidateName)
+					&& !availableNames.has(decodedName);
+				const name = useCandidate ? candidateName : decodedName;
 				stendhal.session.setCharName(name);
 			}
 

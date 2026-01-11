@@ -17,6 +17,7 @@ import { Component } from "../toolkit/Component";
 import { ActionContextMenu } from "../dialog/ActionContextMenu";
 import { ChatInputComponent } from "./ChatInputComponent";
 import { Paths } from "../../data/Paths";
+import { StringUtil } from "../../util/StringUtil";
 
 declare let marauroa: any;
 declare let stendhal: any;
@@ -144,8 +145,9 @@ export class BuddyListComponent extends Component {
 			actions.push({
 				title: "Porozmawiaj",
 				action: function(buddyListComponent: BuddyListComponent) {
+					const buddyName = StringUtil.quoteIfNeeded(buddyListComponent.current!.textContent!.trim());
 					(ui.get(UIComponentEnum.ChatInput) as ChatInputComponent).setText("/msg "
-							+ buddyListComponent.current!.textContent!.trim()
+							+ buddyName
 							+ " ");
 				}
 			});
@@ -179,8 +181,9 @@ export class BuddyListComponent extends Component {
 			actions.push({
 				title: "Zostaw wiadomość",
 				action: function(buddyListComponent: BuddyListComponent) {
+					const buddyName = StringUtil.quoteIfNeeded(buddyListComponent.current!.textContent!.trim());
 					(ui.get(UIComponentEnum.ChatInput) as ChatInputComponent).setText("/storemessage "
-							+ buddyListComponent.current!.textContent!.trim()
+							+ buddyName
 							+ " ");
 				}
 			});
