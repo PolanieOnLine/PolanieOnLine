@@ -259,14 +259,14 @@ public class ObsidianKnife extends AbstractQuest {
 		final SpeakerNPC npc = npcs.get("Ceryl");
 
 		npc.add(ConversationStates.ATTENDING,
-				Arrays.asList("książkę o kamieniach", "książka o kamieniach"),
+				Arrays.asList("book", "książka"),
 				new AndCondition(new QuestInStateCondition(QUEST_SLOT, "seeking_book"), new QuestCompletedCondition("ceryl_book")),
 				ConversationStates.ATTENDING,
 				"Obecnie #'książka o kamieniach' jest dość popularna ...",
 				null);
 
 		npc.add(ConversationStates.ATTENDING,
-				Arrays.asList("książkę o kamieniach", "książka o kamieniach"),
+				Arrays.asList("gem book", "książkę o kamieniach", "książka o kamieniach"),
 				new QuestInStateCondition(QUEST_SLOT, "seeking_book"),
 				ConversationStates.QUESTION_1,
 				"Masz szczęście! Ognir przyniósł ją w tamtym tygodniu. Dla kogo ma być?",
