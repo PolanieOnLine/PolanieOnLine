@@ -179,9 +179,12 @@ export class GeneralTab extends AbstractSettingsTab {
 		const tileScaleDefault = "0.9";
 		const tileScaleSelected = config.get("viewport.tileScale.mobile") ?? tileScaleDefault;
 		const rng_tileScaleMobile = this.child("#rngviewporttilescalemobile")! as HTMLInputElement;
+		const rng_tileScaleMobileValue = this.child("#rngviewporttilescalemobile-value")! as HTMLSpanElement;
 		rng_tileScaleMobile.value = tileScaleSelected;
+		rng_tileScaleMobileValue.textContent = tileScaleSelected;
 		const updateTileScale = () => {
 			config.set("viewport.tileScale.mobile", rng_tileScaleMobile.value);
+			rng_tileScaleMobileValue.textContent = rng_tileScaleMobile.value;
 			singletons.getViewPort().scheduleResize();
 		};
 		rng_tileScaleMobile.addEventListener("input", updateTileScale);

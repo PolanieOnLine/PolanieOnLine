@@ -22,6 +22,7 @@ export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrate
 
 	private targetTileWidth = 32;
 	private targetTileHeight = 32;
+	private tileOverlap = 0;
 
 	constructor() {
 		super();
@@ -70,6 +71,7 @@ export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrate
 		const clampedScale = renderScale > 0 ? renderScale : 1;
 		const viewportHeight = canvas.height / clampedScale;
 		const viewportWidth = canvas.width / clampedScale;
+		this.tileOverlap = clampedScale < 1 ? 1 : 0;
 		const yMax = Math.min(tileOffsetY + viewportHeight / this.targetTileHeight + 1, stendhal.data.map.zoneSizeY);
 		const xMax = Math.min(tileOffsetX + viewportWidth / this.targetTileWidth + 1, stendhal.data.map.zoneSizeX);
 		let ctx = canvas.getContext("2d")! as RenderingContext2D;
@@ -103,13 +105,15 @@ export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrate
 		const pixelX = x * this.targetTileWidth;
 		const pixelY = y * this.targetTileHeight;
 
+		const drawTileWidth = this.targetTileWidth + this.tileOverlap;
+		const drawTileHeight = this.targetTileHeight + this.tileOverlap;
 		if (flip === 0) {
 			ctx.drawImage(tileset,
 				(idx % tilesPerRow) * stendhal.data.map.tileWidth,
 				Math.floor(idx / tilesPerRow) * stendhal.data.map.tileHeight,
 				stendhal.data.map.tileWidth, stendhal.data.map.tileHeight,
 				pixelX, pixelY,
-				this.targetTileWidth, this.targetTileHeight);
+				drawTileWidth, drawTileHeight);
 		} else {
 			ctx.save();
 			ctx.translate(pixelX, pixelY);
