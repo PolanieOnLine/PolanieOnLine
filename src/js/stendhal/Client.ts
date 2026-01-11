@@ -317,16 +317,11 @@ export class Client {
 				return;
 			}
 			if (window.location.hash) {
-				const availableNames = new Set<string>();
-				for (const key in characters) {
-					if (!Object.prototype.hasOwnProperty.call(characters, key)) {
-						continue;
-					}
-					const characterName = characters[key]?.["a"]?.["name"];
-					if (typeof characterName === "string") {
-						availableNames.add(characterName);
-					}
-				}
+				const availableNames = new Set<string>(
+					Object.values(characters)
+						.map((character) => character?.["a"]?.["name"])
+						.filter((name): name is string => typeof name === "string")
+				);
 				const rawHash = window.location.hash.substring(1);
 				let decodedName = rawHash;
 				try {
