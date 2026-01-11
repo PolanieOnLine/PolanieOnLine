@@ -110,6 +110,11 @@ export class SoftwareJoystickController {
 			menuButton.update();
 		}
 
+		if (!ui.isDisplayReady()) {
+			this.remove();
+			return;
+		}
+
 		if (!SessionManager.get().joystickEnabled()) {
 			this.remove();
 			return;
