@@ -24,6 +24,8 @@ export class LandscapeRenderer {
 			return;
 		}
 		let ctx = canvas.getContext("2d")! as RenderingContext2D;
+		ctx.imageSmoothingEnabled = false;
+		ctx.imageSmoothingQuality = "low";
 		const renderScale = typeof (stendhal.ui?.gamewindow?.getTileScale) === "function"
 			? stendhal.ui.gamewindow.getTileScale()
 			: 1;

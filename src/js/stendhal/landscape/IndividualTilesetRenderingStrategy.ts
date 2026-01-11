@@ -75,6 +75,8 @@ export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrate
 		const yMax = Math.min(tileOffsetY + viewportHeight / this.targetTileHeight + 1, stendhal.data.map.zoneSizeY);
 		const xMax = Math.min(tileOffsetX + viewportWidth / this.targetTileWidth + 1, stendhal.data.map.zoneSizeX);
 		let ctx = canvas.getContext("2d")! as RenderingContext2D;
+		ctx.imageSmoothingEnabled = false;
+		ctx.imageSmoothingQuality = "low";
 
 		for (let y = tileOffsetY; y < yMax; y++) {
 			for (let x = tileOffsetX; x < xMax; x++) {
