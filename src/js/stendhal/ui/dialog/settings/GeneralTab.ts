@@ -176,24 +176,16 @@ export class GeneralTab extends AbstractSettingsTab {
 		const menuStyleElement = this.child("#selmenustyle")! as HTMLSelectElement;
 		menuStyleElement.selectedIndex = Globals.getMenuStyle() === "traditional" ? 0 : 1;
 
-		const tileScaleOptions = {
-			"0.8": "0.8x",
-			"0.9": "0.9x",
-			"1.0": "1.0x"
-		};
-		const tileScaleValues = Object.keys(tileScaleOptions);
 		const tileScaleDefault = "0.9";
 		const tileScaleSelected = config.get("viewport.tileScale.mobile") ?? tileScaleDefault;
-		const tileScaleIndex = tileScaleValues.indexOf(tileScaleSelected);
-		const sel_tileScaleMobile = parent.createSelect(
-			"selviewporttilescalemobile",
-			tileScaleOptions,
-			tileScaleIndex >= 0 ? tileScaleIndex : tileScaleValues.indexOf(tileScaleDefault),
-		);
-		sel_tileScaleMobile.addEventListener("change", () => {
-			config.set("viewport.tileScale.mobile", tileScaleValues[sel_tileScaleMobile.selectedIndex]);
+		const rng_tileScaleMobile = this.child("#rngviewporttilescalemobile")! as HTMLInputElement;
+		rng_tileScaleMobile.value = tileScaleSelected;
+		const updateTileScale = () => {
+			config.set("viewport.tileScale.mobile", rng_tileScaleMobile.value);
 			singletons.getViewPort().scheduleResize();
-		});
+		};
+		rng_tileScaleMobile.addEventListener("input", updateTileScale);
+		rng_tileScaleMobile.addEventListener("change", updateTileScale);
 
 		let orderManager: InventoryWindowOrderManager|undefined;
 		try {

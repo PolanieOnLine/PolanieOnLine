@@ -774,13 +774,15 @@ export class ViewPort {
 		this.offsetX = Math.round(this.cameraX);
 		this.offsetY = Math.round(this.cameraY);
 		const scaledPixelRatio = this.devicePixelRatio * this.tileScale;
+		const translateX = Math.round(this.offsetX * scaledPixelRatio);
+		const translateY = Math.round(this.offsetY * scaledPixelRatio);
 		this.ctx.setTransform(
 			scaledPixelRatio,
 			0,
 			0,
 			scaledPixelRatio,
-			-this.offsetX * scaledPixelRatio,
-			-this.offsetY * scaledPixelRatio,
+			-translateX,
+			-translateY,
 		);
 	}
 
