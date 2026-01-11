@@ -1017,8 +1017,8 @@ div#menupanel #soundbutton {
 
 body.mobile-floating-ui #viewport,
 #client.mobile-floating-ui #viewport {
-	--viewport-max-height: calc(100dvh - 2em);
-	--viewport-max-width: min(100vw, calc((100dvh - 2em) * 640 / 480));
+	--viewport-max-height: calc(100dvh - 1em);
+	--viewport-max-width: min(100vw, calc((100dvh - 1em) * 640 / 480));
 }
 
 #client.mobile-floating-ui #middleColumn {

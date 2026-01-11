@@ -507,8 +507,8 @@ export class ViewPort {
 	private getViewportStyleDefaults(): { maxHeight: string; maxWidth: string } {
 		if (this.isMobileFloatingUi()) {
 			return {
-				maxHeight: "calc(100dvh - 2em)",
-				maxWidth: "min(100vw, calc((100dvh - 2em) * 640 / 480))",
+				maxHeight: "calc(100dvh - 1em)",
+				maxWidth: "min(100vw, calc((100dvh - 1em) * 640 / 480))",
 			};
 		}
 		return {
@@ -526,7 +526,7 @@ export class ViewPort {
 		if (fontSize <= 0) {
 			return Math.max(0, this.initialMaxHeight ?? 0);
 		}
-		const marginEm = this.isMobileFloatingUi() ? 2 : 5;
+		const marginEm = this.isMobileFloatingUi() ? 1 : 5;
 		const marginPx = marginEm * fontSize;
 		if (marginPx <= 0) {
 			return Math.max(0, this.initialMaxHeight ?? 0);
