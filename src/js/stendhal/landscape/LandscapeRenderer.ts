@@ -24,10 +24,14 @@ export class LandscapeRenderer {
 			return;
 		}
 		let ctx = canvas.getContext("2d")! as RenderingContext2D;
+		const renderScale = typeof gamewindow?.getTileScale === "function" ? gamewindow.getTileScale() : 1;
+		const clampedScale = renderScale > 0 ? renderScale : 1;
 
 		const layer = combinedTileset.combinedLayers[layerNo];
-		const yMax = Math.min(tileOffsetY + canvas.height / targetTileHeight + 1, stendhal.data.map.zoneSizeY);
-		const xMax = Math.min(tileOffsetX + canvas.width / targetTileWidth + 1, stendhal.data.map.zoneSizeX);
+		const viewportHeight = canvas.height / clampedScale;
+		const viewportWidth = canvas.width / clampedScale;
+		const yMax = Math.min(tileOffsetY + viewportHeight / targetTileHeight + 1, stendhal.data.map.zoneSizeY);
+		const xMax = Math.min(tileOffsetX + viewportWidth / targetTileWidth + 1, stendhal.data.map.zoneSizeX);
 
 		for (let y = tileOffsetY; y < yMax; y++) {
 			for (let x = tileOffsetX; x < xMax; x++) {
@@ -55,4 +59,3 @@ export class LandscapeRenderer {
 	}
 
 }
-

@@ -95,6 +95,10 @@ export class ViewPort {
 		};
 	}
 
+	public getTileScale(): number {
+		return this.tileScale;
+	}
+
 	/** Drawing context. */
 	private ctx: RenderingContext2D;
 	/** Map tile pixel width. */
@@ -276,6 +280,7 @@ export class ViewPort {
 		canvas.width = targetWidth;
 		canvas.height = targetHeight;
 		this.ctx = canvas.getContext("2d")!;
+		this.ctx.imageSmoothingEnabled = false;
 		return true;
 	}
 
@@ -518,6 +523,7 @@ export class ViewPort {
 
 	private clearViewportCanvas() {
 		this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+		this.ctx.imageSmoothingEnabled = false;
 		this.ctx.fillStyle = "black";
 		this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
 	}

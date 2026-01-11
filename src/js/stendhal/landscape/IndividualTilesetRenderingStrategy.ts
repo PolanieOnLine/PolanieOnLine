@@ -64,8 +64,14 @@ export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrate
 	private paintLayer(canvas: Canvas, drawingLayer: number,
 		tileOffsetX: number, tileOffsetY: number) {
 		const layer = stendhal.data.map.layers[drawingLayer];
-		const yMax = Math.min(tileOffsetY + canvas.height / this.targetTileHeight + 1, stendhal.data.map.zoneSizeY);
-		const xMax = Math.min(tileOffsetX + canvas.width / this.targetTileWidth + 1, stendhal.data.map.zoneSizeX);
+		const renderScale = typeof (stendhal.ui?.gamewindow?.getTileScale) === "function"
+			? stendhal.ui.gamewindow.getTileScale()
+			: 1;
+		const clampedScale = renderScale > 0 ? renderScale : 1;
+		const viewportHeight = canvas.height / clampedScale;
+		const viewportWidth = canvas.width / clampedScale;
+		const yMax = Math.min(tileOffsetY + viewportHeight / this.targetTileHeight + 1, stendhal.data.map.zoneSizeY);
+		const xMax = Math.min(tileOffsetX + viewportWidth / this.targetTileWidth + 1, stendhal.data.map.zoneSizeX);
 		let ctx = canvas.getContext("2d")! as RenderingContext2D;
 
 		for (let y = tileOffsetY; y < yMax; y++) {
@@ -130,4 +136,3 @@ export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrate
 	}
 
 }
-
