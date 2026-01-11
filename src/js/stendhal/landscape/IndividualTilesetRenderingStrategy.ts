@@ -71,7 +71,7 @@ export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrate
 		const clampedScale = renderScale > 0 ? renderScale : 1;
 		const viewportHeight = canvas.height / clampedScale;
 		const viewportWidth = canvas.width / clampedScale;
-		this.tileOverlap = clampedScale < 1 ? 1 : 0;
+		this.tileOverlap = clampedScale < 1 ? Math.ceil(1 / clampedScale) : 0;
 		const yMax = Math.min(tileOffsetY + viewportHeight / this.targetTileHeight + 1, stendhal.data.map.zoneSizeY);
 		const xMax = Math.min(tileOffsetX + viewportWidth / this.targetTileWidth + 1, stendhal.data.map.zoneSizeX);
 		let ctx = canvas.getContext("2d")! as RenderingContext2D;

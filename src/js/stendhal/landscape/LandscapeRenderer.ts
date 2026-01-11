@@ -34,7 +34,7 @@ export class LandscapeRenderer {
 		const viewportWidth = canvas.width / clampedScale;
 		const yMax = Math.min(tileOffsetY + viewportHeight / targetTileHeight + 1, stendhal.data.map.zoneSizeY);
 		const xMax = Math.min(tileOffsetX + viewportWidth / targetTileWidth + 1, stendhal.data.map.zoneSizeX);
-		const tileOverlap = clampedScale < 1 ? 1 : 0;
+		const tileOverlap = clampedScale < 1 ? Math.ceil(1 / clampedScale) : 0;
 		const drawTileWidth = targetTileWidth + tileOverlap;
 		const drawTileHeight = targetTileHeight + tileOverlap;
 
