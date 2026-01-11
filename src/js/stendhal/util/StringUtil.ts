@@ -67,5 +67,20 @@ export namespace StringUtil {
 	export function toDataURL(text: string, mime: string="text/plain", charset: string="utf-8"): string {
 		return "data:" + mime + ";charset=" + charset + "," + window.encodeURIComponent(text);
 	};
-}
 
+	/**
+	 * Wraps text in apostrophes when it includes whitespace.
+	 *
+	 * @param text {string}
+	 *   Text to wrap.
+	 * @return {string}
+	 *   Wrapped string if needed.
+	 */
+	export function quoteIfNeeded(text: string): string {
+		const trimmed = text.trim();
+		if (/\s/.test(trimmed) && !(trimmed.startsWith("'") && trimmed.endsWith("'"))) {
+			return `'${trimmed}'`;
+		}
+		return trimmed;
+	};
+}

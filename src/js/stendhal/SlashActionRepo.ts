@@ -1459,7 +1459,8 @@ export class SlashActionRepo {
 				return true;
 			}
 
-			url += name + ".html";
+			const encodedName = encodeURIComponent(name).replace(/%20/g, "_");
+			url += encodedName + ".html";
 			Chat.log("info", "Próba otwarcia #" + url + " w przeglądarce.");
 			window.location.href = url;
 			return true;
@@ -1606,4 +1607,3 @@ export class SlashActionRepo {
 		return p;
 	}
 }
-
