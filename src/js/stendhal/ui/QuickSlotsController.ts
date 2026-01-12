@@ -11,6 +11,7 @@
 
 import { QuickSlots } from "./interaction/QuickSlots";
 import { SessionManager } from "../util/SessionManager";
+import { UiStateStore } from "./mobile/UiStateStore";
 
 /**
  * Controls visibility and lifecycle of quick slots overlay.
@@ -19,6 +20,7 @@ export class QuickSlotsController {
 
 	private static instance: QuickSlotsController;
 	private component?: QuickSlots;
+	private unsubscribeState?: () => void;
 
 	public static get(): QuickSlotsController {
 		if (!QuickSlotsController.instance) {
@@ -39,6 +41,7 @@ export class QuickSlotsController {
 
 		if (!this.component) {
 			this.component = new QuickSlots();
+			this.subscribeState();
 		}
 
 		this.component.mount();
@@ -49,9 +52,21 @@ export class QuickSlotsController {
 			this.component.unmount();
 		}
 		this.component = undefined;
+		this.unsubscribeState?.();
+		this.unsubscribeState = undefined;
 	}
 
 	private shouldShow(): boolean {
 		return SessionManager.get().touchOnly();
+	}
+
+	private subscribeState() {
+		if (!this.component || this.unsubscribeState) {
+			return;
+		}
+
+		this.unsubscribeState = UiStateStore.get().subscribe(() => {
+			this.component?.update();
+		});
 	}
 }

@@ -128,11 +128,13 @@ export class QuickSlots extends Component {
 			anchorY = rect.top + bounds.scrollTop + rect.height / 2;
 		}
 
-		const radius = Math.max(width, height) + 12;
-		const startAngle = -115;
-		const angleStep = 20;
+		const baseRadius = Math.max(width, height) + 10;
+		const radiusStep = 6;
+		const startAngle = -140;
+		const angleStep = 24;
 
 		this.slots.forEach((slot, index) => {
+			const radius = baseRadius + radiusStep * index;
 			const angle = (startAngle + angleStep * index) * (Math.PI / 180);
 			const left = anchorX + Math.cos(angle) * radius - width / 2;
 			const top = anchorY + Math.sin(angle) * radius - height / 2;
