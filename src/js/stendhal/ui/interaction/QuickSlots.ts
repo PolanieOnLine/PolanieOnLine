@@ -21,6 +21,7 @@ export class QuickSlots extends Component {
 	private readonly boundUpdate: () => void;
 	private resizeObserver?: ResizeObserver;
 	private mutationObserver?: MutationObserver;
+	private viewportObserver?: MutationObserver;
 	private readonly slots: HTMLButtonElement[] = [];
 	private readonly containerId: string;
 
@@ -60,6 +61,8 @@ export class QuickSlots extends Component {
 		this.resizeObserver = undefined;
 		this.mutationObserver?.disconnect();
 		this.mutationObserver = undefined;
+		this.viewportObserver?.disconnect();
+		this.viewportObserver = undefined;
 	}
 
 	private buildSlots() {
@@ -96,6 +99,13 @@ export class QuickSlots extends Component {
 			this.mutationObserver = new MutationObserver(() => this.update());
 			this.mutationObserver.observe(clientRoot, { attributes: true, attributeFilter: ["class"] });
 		}
+		if (viewport && !this.viewportObserver) {
+			this.viewportObserver = new MutationObserver(() => this.update());
+			this.viewportObserver.observe(viewport, {
+				attributes: true,
+				attributeFilter: ["left", "right", "top", "bottom", "width", "height"]
+			});
+		}
 	}
 
 	public update(): void {
@@ -129,10 +139,10 @@ export class QuickSlots extends Component {
 			anchorY = rect.top + bounds.scrollTop + rect.height / 2;
 		}
 
-		const baseRadius = Math.max(width, height) + 10;
-		const radiusStep = 6;
-		const startAngle = -140;
-		const angleStep = 24;
+		const baseRadius = Math.max(width, height) + 28;
+		const radiusStep = 8;
+		const startAngle = -150;
+		const angleStep = 30;
 
 		this.slots.forEach((slot, index) => {
 			const radius = baseRadius + radiusStep * index;
