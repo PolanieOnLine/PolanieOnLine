@@ -9,8 +9,24 @@
  *                                                                         *
  ***************************************************************************/
 
+declare var marauroa: any;
+declare var stendhal: any;
+
 import { Component } from "../toolkit/Component";
 import { getMobileRightPanelCollapsedInset, getViewportOverlayPosition } from "../overlay/ViewportOverlayPosition";
+import { ActionContextMenu } from "../dialog/ActionContextMenu";
+import { ui } from "../UI";
+import { Item } from "../../entity/Item";
+import { ItemContainerImplementation } from "../component/ItemContainerImplementation";
+import { singletons } from "../../SingletonRepo";
+import { Paths } from "../../data/Paths";
+import { Chat } from "../../util/Chat";
+
+type QuickSlotData = {
+	targetPath: string;
+	zone: string;
+	item: Item;
+};
 
 
 /**
@@ -23,7 +39,10 @@ export class QuickSlots extends Component {
 	private mutationObserver?: MutationObserver;
 	private viewportObserver?: MutationObserver;
 	private readonly slots: HTMLButtonElement[] = [];
+	private readonly slotData = new Map<HTMLButtonElement, QuickSlotData>();
+	private readonly slotCounts = new Map<HTMLButtonElement, HTMLElement>();
 	private readonly containerId: string;
+	private readonly allowedClasses = new Set(["potion", "drink", "food", "scroll"]);
 
 	constructor(containerId = "interaction-button-container") {
 		const element = document.createElement("div");
@@ -72,10 +91,29 @@ export class QuickSlots extends Component {
 			slot.classList.add("quick-slot");
 			slot.setAttribute("aria-label", `Szybki slot ${i + 1}`);
 			slot.title = `Szybki slot ${i + 1}`;
+			slot.addEventListener("dragover", (event: DragEvent) => {
+				this.onDragOver(event);
+			});
+			slot.addEventListener("drop", (event: DragEvent) => {
+				this.onDrop(event, slot);
+			});
+			slot.addEventListener("contextmenu", (event: MouseEvent) => {
+				this.onContextMenu(event, slot);
+			});
+			slot.addEventListener("mouseup", (event: MouseEvent) => {
+				this.onMouseUp(event, slot);
+			});
+			slot.addEventListener("touchstart", (event: TouchEvent) => {
+				this.onTouchStart(event);
+			}, { passive: true });
+			slot.addEventListener("touchend", (event: TouchEvent) => {
+				this.onTouchEnd(event, slot);
+			});
 
 			const count = document.createElement("span");
 			count.classList.add("quick-slot__count");
 			slot.appendChild(count);
+			this.slotCounts.set(slot, count);
 
 			this.componentElement.appendChild(slot);
 			this.slots.push(slot);
@@ -165,5 +203,158 @@ export class QuickSlots extends Component {
 			slot.style.left = clampedLeft + "px";
 			slot.style.top = clampedTop + "px";
 		});
+	}
+
+	private onDragOver(event: DragEvent) {
+		if (!stendhal.ui.heldObject) {
+			return;
+		}
+		event.preventDefault();
+		if (event.dataTransfer) {
+			event.dataTransfer.dropEffect = "copy";
+		}
+	}
+
+	private onDrop(event: DragEvent|TouchEvent, slot: HTMLButtonElement) {
+		if (!stendhal.ui.heldObject) {
+			return;
+		}
+		event.preventDefault();
+		event.stopPropagation();
+
+		const heldObject = stendhal.ui.heldObject;
+		const item = this.findInventoryItem(heldObject.path);
+		stendhal.ui.heldObject = undefined;
+		singletons.getHeldObjectManager().onRelease();
+
+		if (!item) {
+			Chat.log("warning", "Nie udało się znaleźć przedmiotu w ekwipunku.");
+			return;
+		}
+
+		const itemClass = String(item["class"] || "").toLowerCase();
+		if (!this.allowedClasses.has(itemClass)) {
+			Chat.log("warning", "Ten przedmiot nie może trafić do szybkiego slotu.");
+			return;
+		}
+
+		this.setSlotItem(slot, item, heldObject.path, heldObject.zone);
+	}
+
+	private onMouseUp(event: MouseEvent, slot: HTMLButtonElement) {
+		if (event.button !== 0) {
+			return;
+		}
+		event.preventDefault();
+		this.activateSlot(slot);
+	}
+
+	private onTouchStart(event: TouchEvent) {
+		const pos = stendhal.ui.html.extractPosition(event);
+		stendhal.ui.touch.onTouchStart(pos.pageX, pos.pageY);
+	}
+
+	private onTouchEnd(event: TouchEvent, slot: HTMLButtonElement) {
+		stendhal.ui.touch.onTouchEnd(event);
+		if (stendhal.ui.touch.isLongTouch(event) && !stendhal.ui.touch.holding()) {
+			this.openContextMenu(slot, event);
+		} else if (stendhal.ui.touch.holding()) {
+			event.preventDefault();
+			this.onDrop(event, slot);
+			stendhal.ui.touch.setHolding(false);
+		} else {
+			this.activateSlot(slot);
+		}
+		stendhal.ui.touch.unsetOrigin();
+	}
+
+	private onContextMenu(event: MouseEvent, slot: HTMLButtonElement) {
+		event.preventDefault();
+		this.openContextMenu(slot, event);
+	}
+
+	private openContextMenu(slot: HTMLButtonElement, event: Event) {
+		const data = this.slotData.get(slot);
+		if (!data) {
+			return;
+		}
+		const pos = stendhal.ui.html.extractPosition(event);
+		const append = [{
+			title: "Wyczyść slot",
+			action: () => {
+				this.clearSlot(slot);
+			}
+		}];
+		stendhal.ui.actionContextMenu.set(ui.createSingletonFloatingWindow("Czynności",
+			new ActionContextMenu(data.item, append),
+			pos.pageX - 50, pos.pageY - 5));
+	}
+
+	private activateSlot(slot: HTMLButtonElement) {
+		const data = this.slotData.get(slot);
+		if (!data) {
+			return;
+		}
+
+		marauroa.clientFramework.sendAction({
+			type: "use",
+			"target_path": data.targetPath,
+			"zone": marauroa.currentZoneName || data.zone
+		});
+	}
+
+	private setSlotItem(slot: HTMLButtonElement, item: Item, targetPath: string, zone: string) {
+		this.slotData.set(slot, { targetPath, zone, item });
+		this.updateSlotVisual(slot, item);
+	}
+
+	private clearSlot(slot: HTMLButtonElement) {
+		this.slotData.delete(slot);
+		slot.style.removeProperty("background-image");
+		slot.style.removeProperty("background-position");
+		slot.style.removeProperty("background-repeat");
+		slot.style.removeProperty("background-size");
+		const count = this.slotCounts.get(slot);
+		if (count) {
+			count.textContent = "";
+		}
+	}
+
+	private updateSlotVisual(slot: HTMLButtonElement, item: Item) {
+		const count = this.slotCounts.get(slot);
+		if (count) {
+			count.textContent = typeof item.formatQuantity === "function" ? item.formatQuantity() : "";
+		}
+
+		const animationFrame = typeof item.getAnimationFrameIndex === "function"
+			? item.getAnimationFrameIndex()
+			: 0;
+		const xOffset = -(animationFrame * 32);
+		const yOffset = (item["state"] || 0) * -32;
+		const spritePath = singletons.getSpriteStore().checkPath(Paths.sprites
+			+ "/items/" + item["class"] + "/" + item["subclass"] + ".png");
+		slot.style.backgroundImage = `url(${spritePath}), url(${Paths.gui}/panel/empty_btn.png)`;
+		slot.style.backgroundPosition = `${xOffset + 1}px ${yOffset + 1}px, center center`;
+		slot.style.backgroundRepeat = "no-repeat, no-repeat";
+		slot.style.backgroundSize = "32px 32px, contain";
+	}
+
+	private findInventoryItem(path: string): Item|undefined {
+		const containers = stendhal.ui.equip.getInventory() as ItemContainerImplementation[];
+		for (const container of containers) {
+			const object = container.getObject() || marauroa.me;
+			const slot = container.getSlot();
+			const items = object?.[slot];
+			if (!items || typeof items.count !== "function" || typeof items.getByIndex !== "function") {
+				continue;
+			}
+			for (let i = 0; i < items.count(); i++) {
+				const item = items.getByIndex(i) as Item;
+				if (item && typeof item.getIdPath === "function" && item.getIdPath() === path) {
+					return item;
+				}
+			}
+		}
+		return undefined;
 	}
 }
