@@ -43,6 +43,7 @@ export class QuickSlots extends Component {
 	private readonly slotCounts = new Map<HTMLButtonElement, HTMLElement>();
 	private readonly containerId: string;
 	private readonly allowedClasses = new Set(["potion", "drink", "food", "scroll"]);
+	private lastActivation = 0;
 
 	constructor(containerId = "interaction-button-container") {
 		const element = document.createElement("div");
@@ -245,9 +246,6 @@ export class QuickSlots extends Component {
 		if (stendhal.ui.touch.isTouchEngaged()) {
 			return;
 		}
-		if (Date.now() - this.lastTouchActivation < 500) {
-			return;
-		}
 		if (event.button !== 0) {
 			return;
 		}
@@ -269,7 +267,6 @@ export class QuickSlots extends Component {
 			this.onDrop(event, slot);
 			stendhal.ui.touch.setHolding(false);
 		} else {
-			this.lastTouchActivation = Date.now();
 			this.activateSlot(slot);
 		}
 		stendhal.ui.touch.unsetOrigin();
@@ -302,6 +299,11 @@ export class QuickSlots extends Component {
 		if (!data) {
 			return;
 		}
+		const now = Date.now();
+		if (now - this.lastActivation < 250) {
+			return;
+		}
+		this.lastActivation = now;
 
 		marauroa.clientFramework.sendAction({
 			type: "use",
