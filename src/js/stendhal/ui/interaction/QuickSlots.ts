@@ -245,6 +245,9 @@ export class QuickSlots extends Component {
 		if (stendhal.ui.touch.isTouchEngaged()) {
 			return;
 		}
+		if (Date.now() - this.lastTouchActivation < 500) {
+			return;
+		}
 		if (event.button !== 0) {
 			return;
 		}
@@ -266,6 +269,7 @@ export class QuickSlots extends Component {
 			this.onDrop(event, slot);
 			stendhal.ui.touch.setHolding(false);
 		} else {
+			this.lastTouchActivation = Date.now();
 			this.activateSlot(slot);
 		}
 		stendhal.ui.touch.unsetOrigin();
