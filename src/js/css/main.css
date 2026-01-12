@@ -889,7 +889,6 @@ span.lognick {
 	position: absolute;
 	top: 4px;
 	left: 12px;
-	z-index: 20;
 	display: none;
 	align-items: flex-start;
 }
