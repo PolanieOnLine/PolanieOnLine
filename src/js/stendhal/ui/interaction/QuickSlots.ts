@@ -139,6 +139,9 @@ export class QuickSlots extends Component {
 			anchorY = rect.top + bounds.scrollTop + rect.height / 2;
 		}
 
+		const verticalOffset = height + 12;
+		anchorY -= verticalOffset;
+
 		const baseRadius = Math.max(width, height) + 28;
 		const radiusStep = 8;
 		const startAngle = -150;
