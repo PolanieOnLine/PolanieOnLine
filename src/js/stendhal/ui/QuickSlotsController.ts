@@ -42,9 +42,11 @@ export class QuickSlotsController {
 		if (!this.component) {
 			this.component = new QuickSlots();
 			this.subscribeState();
+			this.component.mount();
+			return;
 		}
 
-		this.component.mount();
+		this.component.update();
 	}
 
 	public remove() {
