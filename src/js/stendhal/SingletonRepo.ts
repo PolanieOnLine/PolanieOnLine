@@ -44,6 +44,7 @@ import { LootButtonController } from "./ui/LootButtonController";
 import { LeftPanelToggleController } from "./ui/LeftPanelToggleController";
 import { HTMLManager } from "./ui/HTMLManager";
 import { Inventory } from "./ui/Inventory";
+import { QuickSlotsController } from "./ui/QuickSlotsController";
 import { RightPanelToggleController } from "./ui/RightPanelToggleController";
 import { SoftwareJoystickController } from "./ui/SoftwareJoystickController";
 import { TouchHandler } from "./ui/TouchHandler";
@@ -93,6 +94,10 @@ export class SingletonRepo {
 
 	static getRightPanelToggleController(): RightPanelToggleController {
 		return RightPanelToggleController.get();
+	}
+
+	static getQuickSlotsController(): QuickSlotsController {
+		return QuickSlotsController.get();
 	}
 
 	static getDrawingStage(): DrawingStage {
@@ -197,4 +202,3 @@ export class SingletonRepo {
 }
 
 export const singletons = SingletonRepo;
-
