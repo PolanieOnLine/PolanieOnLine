@@ -392,6 +392,7 @@ export class Client {
 				(ui.get(UIComponentEnum.MiniMap) as MiniMapComponent).draw();
 				(ui.get(UIComponentEnum.BuddyList) as BuddyListComponent).update();
 				stendhal.ui.equip.update();
+				singletons.getQuickSlotsController().update();
 				(ui.get(UIComponentEnum.PlayerEquipment) as PlayerEquipmentComponent).update();
 				if (!this.worldLoaded) {
 					this.worldLoaded = true;

@@ -152,6 +152,8 @@ export class QuickSlots extends Component {
 			return;
 		}
 
+		this.refreshSlots();
+
 		const reference = document.getElementById("attack-button")
 			|| document.getElementById("right-panel-toggle")
 			|| document.getElementById("loot-button");
@@ -224,7 +226,7 @@ export class QuickSlots extends Component {
 		event.stopPropagation();
 
 		const heldObject = stendhal.ui.heldObject;
-		const item = this.findInventoryItem(heldObject.path);
+		const item = this.findItemByTargetPath(heldObject.path);
 		stendhal.ui.heldObject = undefined;
 		singletons.getHeldObjectManager().onRelease();
 
@@ -319,14 +321,7 @@ export class QuickSlots extends Component {
 
 	private clearSlot(slot: HTMLButtonElement) {
 		this.slotData.delete(slot);
-		slot.style.removeProperty("background-image");
-		slot.style.removeProperty("background-position");
-		slot.style.removeProperty("background-repeat");
-		slot.style.removeProperty("background-size");
-		const count = this.slotCounts.get(slot);
-		if (count) {
-			count.textContent = "";
-		}
+		this.setEmptySlotVisual(slot);
 	}
 
 	private updateSlotVisual(slot: HTMLButtonElement, item: Item) {
@@ -346,22 +341,46 @@ export class QuickSlots extends Component {
 		slot.style.backgroundPosition = `${xOffset + 1}px ${yOffset + 1}px, center center`;
 		slot.style.backgroundRepeat = "no-repeat, no-repeat";
 		slot.style.backgroundSize = "32px 32px, contain";
+		ItemContainerImplementation.updateCursorFor(slot, item);
+		ItemContainerImplementation.updateToolTipFor(slot, item);
 	}
 
-	private findInventoryItem(path: string): Item|undefined {
-		const containers = stendhal.ui.equip.getInventory() as ItemContainerImplementation[];
-		for (const container of containers) {
-			const object = container.getObject() || marauroa.me;
-			const slot = container.getSlot();
-			const items = object?.[slot];
-			if (!items || typeof items.count !== "function" || typeof items.getByIndex !== "function") {
+	private setEmptySlotVisual(slot: HTMLButtonElement) {
+		slot.style.backgroundImage = `url(${Paths.gui}/panel/empty_btn.png)`;
+		slot.style.backgroundPosition = "center center";
+		slot.style.backgroundRepeat = "no-repeat";
+		slot.style.backgroundSize = "contain";
+		const count = this.slotCounts.get(slot);
+		if (count) {
+			count.textContent = "";
+		}
+		ItemContainerImplementation.updateCursorFor(slot);
+		ItemContainerImplementation.updateToolTipFor(slot);
+	}
+
+	private refreshSlots() {
+		for (const slot of this.slots) {
+			const data = this.slotData.get(slot);
+			if (!data) {
+				this.setEmptySlotVisual(slot);
 				continue;
 			}
-			for (let i = 0; i < items.count(); i++) {
-				const item = items.getByIndex(i) as Item;
-				if (item && typeof item.getIdPath === "function" && item.getIdPath() === path) {
-					return item;
-				}
+			const item = this.findItemByTargetPath(data.targetPath);
+			if (!item) {
+				this.clearSlot(slot);
+				continue;
+			}
+			this.slotData.set(slot, { ...data, item });
+			this.updateSlotVisual(slot, item);
+		}
+	}
+
+	private findItemByTargetPath(path: string): Item|undefined {
+		const containers = stendhal.ui.equip.getInventory() as ItemContainerImplementation[];
+		for (const container of containers) {
+			const item = container.findItemByTargetPath(path);
+			if (item) {
+				return item;
 			}
 		}
 		return undefined;

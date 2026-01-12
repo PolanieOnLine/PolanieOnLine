@@ -119,6 +119,21 @@ export class ItemContainerImplementation {
 		this.render();
 	}
 
+	public findItemByTargetPath(targetPath: string): Item|undefined {
+		const myobject = this.object || marauroa.me;
+		const items = myobject?.[this.slot];
+		if (!items || typeof items.count !== "function" || typeof items.getByIndex !== "function") {
+			return undefined;
+		}
+		for (let i = 0; i < items.count(); i++) {
+			const item = items.getByIndex(i) as Item;
+			if (item && typeof item.getIdPath === "function" && item.getIdPath() === targetPath) {
+				return item;
+			}
+		}
+		return undefined;
+	}
+
 	public render() {
 		let myobject = this.object || marauroa.me;
 		let cnt = 0;
@@ -432,17 +447,7 @@ export class ItemContainerImplementation {
 	 *     Object containing item information.
 	 */
 	private updateCursor(target: HTMLElement, item?: Item) {
-		if (item) {
-			if (this.slot === "content" && stendhal.config.getBoolean("inventory.quick-pickup")) {
-				target.style.cursor = "url(" + Paths.sprites
-						+ "/cursor/itempickupfromslot.png) 1 3, auto";
-				return;
-			}
-			target.style.cursor = item.getCursor(0, 0);
-			return;
-		}
-		target.style.cursor = "url(" + Paths.sprites
-				+ "/cursor/normal.png) 1 3, auto";
+		ItemContainerImplementation.updateCursorFor(target, item, this.slot);
 	}
 
 	/**
@@ -454,7 +459,24 @@ export class ItemContainerImplementation {
 	 *     Object containing item information.
 	 */
 	private updateToolTip(target: HTMLElement, item?: Item) {
+		ItemContainerImplementation.updateToolTipFor(target, item);
+	}
+
+	public static updateCursorFor(target: HTMLElement, item?: Item, slot?: string) {
+		if (item) {
+			if (slot === "content" && stendhal.config.getBoolean("inventory.quick-pickup")) {
+				target.style.cursor = "url(" + Paths.sprites
+						+ "/cursor/itempickupfromslot.png) 1 3, auto";
+				return;
+			}
+			target.style.cursor = item.getCursor(0, 0);
+			return;
+		}
+		target.style.cursor = "url(" + Paths.sprites
+				+ "/cursor/normal.png) 1 3, auto";
+	}
+
+	public static updateToolTipFor(target: HTMLElement, item?: Item) {
 		target.title = typeof(item) !== "undefined" ? item.getToolTip() : "";
 	}
 }
-
