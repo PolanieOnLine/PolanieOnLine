@@ -103,7 +103,8 @@ export class QuickSlots extends Component {
 			return;
 		}
 
-		const reference = document.getElementById("right-panel-toggle")
+		const reference = document.getElementById("attack-button")
+			|| document.getElementById("right-panel-toggle")
 			|| document.getElementById("loot-button");
 		const firstSlot = this.slots[0];
 		const width = firstSlot.offsetWidth || 32;
