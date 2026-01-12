@@ -411,11 +411,16 @@ export class QuickSlots extends Component {
 
 	private loadAssignments() {
 		const config = ConfigManager.get();
-		const raw = config.get(QUICK_SLOT_CONFIG_KEY) as string;
+		const raw = config.get(QUICK_SLOT_CONFIG_KEY);
 		const parsed = this.parseAssignments(raw);
-		this.assignments = parsed ?? [null, null, null];
 		if (!parsed) {
+			this.assignments = [null, null, null];
 			config.set(QUICK_SLOT_CONFIG_KEY, JSON.stringify(this.assignments));
+		} else {
+			this.assignments = parsed.assignments;
+			if (parsed.sanitized) {
+				config.set(QUICK_SLOT_CONFIG_KEY, JSON.stringify(this.assignments));
+			}
 		}
 		this.assignments.forEach((assignment, index) => {
 			const slot = this.slots[index];
@@ -427,26 +432,33 @@ export class QuickSlots extends Component {
 		this.refreshSlots();
 	}
 
-	private parseAssignments(raw: string): Array<QuickSlotAssignment | null> | null {
+	private parseAssignments(raw: unknown): { assignments: Array<QuickSlotAssignment | null>; sanitized: boolean } | null {
+		if (typeof raw !== "string") {
+			return null;
+		}
 		try {
 			const parsed = JSON.parse(raw);
 			if (!Array.isArray(parsed) || parsed.length !== this.slots.length) {
 				return null;
 			}
-			return parsed.map((entry) => {
+			let sanitized = false;
+			const assignments = parsed.map((entry) => {
 				if (entry === null) {
 					return null;
 				}
 				if (typeof entry !== "object" || entry === null) {
+					sanitized = true;
 					return null;
 				}
 				const targetPath = (entry as QuickSlotAssignment).targetPath;
 				const zone = (entry as QuickSlotAssignment).zone;
 				if (typeof targetPath !== "string" || typeof zone !== "string") {
+					sanitized = true;
 					return null;
 				}
 				return { targetPath, zone };
 			});
+			return { assignments, sanitized };
 		} catch (error) {
 			return null;
 		}
