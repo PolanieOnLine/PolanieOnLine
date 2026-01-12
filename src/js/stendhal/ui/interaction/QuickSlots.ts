@@ -21,12 +21,20 @@ import { ItemContainerImplementation } from "../component/ItemContainerImplement
 import { singletons } from "../../SingletonRepo";
 import { Paths } from "../../data/Paths";
 import { Chat } from "../../util/Chat";
+import { ConfigManager } from "../../util/ConfigManager";
 
 type QuickSlotData = {
 	targetPath: string;
 	zone: string;
-	item: Item;
+	item?: Item;
 };
+
+type QuickSlotAssignment = {
+	targetPath: string;
+	zone: string;
+};
+
+const QUICK_SLOT_CONFIG_KEY = "quickslots.assignments";
 
 
 /**
@@ -41,6 +49,7 @@ export class QuickSlots extends Component {
 	private readonly slots: HTMLButtonElement[] = [];
 	private readonly slotData = new Map<HTMLButtonElement, QuickSlotData>();
 	private readonly slotCounts = new Map<HTMLButtonElement, HTMLElement>();
+	private assignments: Array<QuickSlotAssignment | null> = [];
 	private readonly containerId: string;
 	private readonly allowedClasses = new Set(["potion", "drink", "food", "scroll"]);
 	private lastActivation = 0;
@@ -54,6 +63,7 @@ export class QuickSlots extends Component {
 		this.containerId = containerId;
 		this.boundUpdate = this.update.bind(this);
 		this.buildSlots();
+		this.loadAssignments();
 	}
 
 	public mount() {
@@ -301,6 +311,14 @@ export class QuickSlots extends Component {
 		if (!data) {
 			return;
 		}
+		if (!data.item) {
+			const item = this.findItemByTargetPath(data.targetPath);
+			if (!item) {
+				this.clearSlot(slot);
+				return;
+			}
+			this.slotData.set(slot, { ...data, item });
+		}
 		const now = Date.now();
 		if (now - this.lastActivation < 250) {
 			return;
@@ -316,11 +334,15 @@ export class QuickSlots extends Component {
 
 	private setSlotItem(slot: HTMLButtonElement, item: Item, targetPath: string, zone: string) {
 		this.slotData.set(slot, { targetPath, zone, item });
+		this.setAssignmentForSlot(slot, { targetPath, zone });
+		this.persistAssignments();
 		this.updateSlotVisual(slot, item);
 	}
 
 	private clearSlot(slot: HTMLButtonElement) {
 		this.slotData.delete(slot);
+		this.setAssignmentForSlot(slot, null);
+		this.persistAssignments();
 		this.setEmptySlotVisual(slot);
 	}
 
@@ -367,7 +389,8 @@ export class QuickSlots extends Component {
 			}
 			const item = this.findItemByTargetPath(data.targetPath);
 			if (!item) {
-				this.clearSlot(slot);
+				this.slotData.set(slot, { ...data, item: undefined });
+				this.setEmptySlotVisual(slot);
 				continue;
 			}
 			this.slotData.set(slot, { ...data, item });
@@ -384,5 +407,66 @@ export class QuickSlots extends Component {
 			}
 		}
 		return undefined;
+	}
+
+	private loadAssignments() {
+		const config = ConfigManager.get();
+		const raw = config.get(QUICK_SLOT_CONFIG_KEY) as string;
+		const parsed = this.parseAssignments(raw);
+		this.assignments = parsed ?? [null, null, null];
+		if (!parsed) {
+			config.set(QUICK_SLOT_CONFIG_KEY, JSON.stringify(this.assignments));
+		}
+		this.assignments.forEach((assignment, index) => {
+			const slot = this.slots[index];
+			if (!slot || !assignment) {
+				return;
+			}
+			this.slotData.set(slot, { ...assignment });
+		});
+		this.refreshSlots();
+	}
+
+	private parseAssignments(raw: string): Array<QuickSlotAssignment | null> | null {
+		try {
+			const parsed = JSON.parse(raw);
+			if (!Array.isArray(parsed) || parsed.length !== this.slots.length) {
+				return null;
+			}
+			return parsed.map((entry) => {
+				if (entry === null) {
+					return null;
+				}
+				if (typeof entry !== "object" || entry === null) {
+					return null;
+				}
+				const targetPath = (entry as QuickSlotAssignment).targetPath;
+				const zone = (entry as QuickSlotAssignment).zone;
+				if (typeof targetPath !== "string" || typeof zone !== "string") {
+					return null;
+				}
+				return { targetPath, zone };
+			});
+		} catch (error) {
+			return null;
+		}
+	}
+
+	private setAssignmentForSlot(slot: HTMLButtonElement, assignment: QuickSlotAssignment | null) {
+		const index = this.slots.indexOf(slot);
+		if (index === -1) {
+			return;
+		}
+		if (!this.assignments.length) {
+			this.assignments = Array.from({ length: this.slots.length }, () => null);
+		}
+		this.assignments[index] = assignment;
+	}
+
+	private persistAssignments() {
+		if (!this.assignments.length) {
+			this.assignments = Array.from({ length: this.slots.length }, () => null);
+		}
+		ConfigManager.get().set(QUICK_SLOT_CONFIG_KEY, JSON.stringify(this.assignments));
 	}
 }
