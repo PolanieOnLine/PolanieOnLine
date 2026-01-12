@@ -73,6 +73,7 @@ export class ConfigManager {
 		"panel.stats.hpbar": "true",
 		"pathfinding": "true",
 		"pathfinding.minimap": "true",
+		"quickslots.assignments": "[null, null, null]",
 		"sound": "false",
 		"sound.master.volume": "50",
 		"sound.ambient.volume": "100",
