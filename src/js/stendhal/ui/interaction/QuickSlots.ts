@@ -242,6 +242,9 @@ export class QuickSlots extends Component {
 	}
 
 	private onMouseUp(event: MouseEvent, slot: HTMLButtonElement) {
+		if (stendhal.ui.touch.isTouchEngaged()) {
+			return;
+		}
 		if (event.button !== 0) {
 			return;
 		}
