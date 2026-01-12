@@ -134,6 +134,21 @@ export class ItemContainerImplementation {
 		return undefined;
 	}
 
+	public findItemById(itemId: string | number): Item|undefined {
+		const myobject = this.object || marauroa.me;
+		const items = myobject?.[this.slot];
+		if (!items || typeof items.count !== "function" || typeof items.getByIndex !== "function") {
+			return undefined;
+		}
+		for (let i = 0; i < items.count(); i++) {
+			const item = items.getByIndex(i) as Item;
+			if (item && item["id"] === itemId) {
+				return item;
+			}
+		}
+		return undefined;
+	}
+
 	public render() {
 		let myobject = this.object || marauroa.me;
 		let cnt = 0;

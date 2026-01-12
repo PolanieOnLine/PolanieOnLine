@@ -27,11 +27,13 @@ type QuickSlotData = {
 	targetPath: string;
 	zone: string;
 	item?: Item;
+	itemId?: string | number;
 };
 
 type QuickSlotAssignment = {
 	targetPath: string;
 	zone: string;
+	itemId?: string | number;
 };
 
 const QUICK_SLOT_CONFIG_KEY = "quickslots.assignments";
@@ -312,12 +314,18 @@ export class QuickSlots extends Component {
 			return;
 		}
 		if (!data.item) {
-			const item = this.findItemByTargetPath(data.targetPath);
+			const item = this.findItemByAssignment(data);
 			if (!item) {
 				this.clearSlot(slot);
 				return;
 			}
-			this.slotData.set(slot, { ...data, item });
+			const latestPath = typeof item.getIdPath === "function" ? item.getIdPath() : data.targetPath;
+			const itemId = item["id"];
+			this.slotData.set(slot, { ...data, item, targetPath: latestPath, itemId });
+			if (latestPath !== data.targetPath || itemId !== data.itemId) {
+				this.setAssignmentForSlot(slot, { targetPath: latestPath, zone: data.zone, itemId });
+				this.persistAssignments();
+			}
 		}
 		const now = Date.now();
 		if (now - this.lastActivation < 250) {
@@ -327,14 +335,15 @@ export class QuickSlots extends Component {
 
 		marauroa.clientFramework.sendAction({
 			type: "use",
-			"target_path": data.targetPath,
+			"target_path": this.slotData.get(slot)?.targetPath ?? data.targetPath,
 			"zone": marauroa.currentZoneName || data.zone
 		});
 	}
 
 	private setSlotItem(slot: HTMLButtonElement, item: Item, targetPath: string, zone: string) {
-		this.slotData.set(slot, { targetPath, zone, item });
-		this.setAssignmentForSlot(slot, { targetPath, zone });
+		const itemId = item["id"];
+		this.slotData.set(slot, { targetPath, zone, item, itemId });
+		this.setAssignmentForSlot(slot, { targetPath, zone, itemId });
 		this.persistAssignments();
 		this.updateSlotVisual(slot, item);
 	}
@@ -381,20 +390,30 @@ export class QuickSlots extends Component {
 	}
 
 	private refreshSlots() {
+		let assignmentsUpdated = false;
 		for (const slot of this.slots) {
 			const data = this.slotData.get(slot);
 			if (!data) {
 				this.setEmptySlotVisual(slot);
 				continue;
 			}
-			const item = this.findItemByTargetPath(data.targetPath);
+			const item = this.findItemByAssignment(data);
 			if (!item) {
 				this.slotData.set(slot, { ...data, item: undefined });
 				this.setEmptySlotVisual(slot);
 				continue;
 			}
-			this.slotData.set(slot, { ...data, item });
+			const latestPath = typeof item.getIdPath === "function" ? item.getIdPath() : data.targetPath;
+			const itemId = item["id"];
+			this.slotData.set(slot, { ...data, item, targetPath: latestPath, itemId });
+			if (latestPath !== data.targetPath || itemId !== data.itemId) {
+				this.setAssignmentForSlot(slot, { targetPath: latestPath, zone: data.zone, itemId });
+				assignmentsUpdated = true;
+			}
 			this.updateSlotVisual(slot, item);
+		}
+		if (assignmentsUpdated) {
+			this.persistAssignments();
 		}
 	}
 
@@ -402,6 +421,27 @@ export class QuickSlots extends Component {
 		const containers = stendhal.ui.equip.getInventory() as ItemContainerImplementation[];
 		for (const container of containers) {
 			const item = container.findItemByTargetPath(path);
+			if (item) {
+				return item;
+			}
+		}
+		return undefined;
+	}
+
+	private findItemByAssignment(data: QuickSlotAssignment): Item|undefined {
+		if (data.itemId !== undefined) {
+			const itemById = this.findItemById(data.itemId);
+			if (itemById) {
+				return itemById;
+			}
+		}
+		return this.findItemByTargetPath(data.targetPath);
+	}
+
+	private findItemById(itemId: string | number): Item|undefined {
+		const containers = stendhal.ui.equip.getInventory() as ItemContainerImplementation[];
+		for (const container of containers) {
+			const item = container.findItemById(itemId);
 			if (item) {
 				return item;
 			}
@@ -452,11 +492,16 @@ export class QuickSlots extends Component {
 				}
 				const targetPath = (entry as QuickSlotAssignment).targetPath;
 				const zone = (entry as QuickSlotAssignment).zone;
+				const itemId = (entry as QuickSlotAssignment).itemId;
 				if (typeof targetPath !== "string" || typeof zone !== "string") {
 					sanitized = true;
 					return null;
 				}
-				return { targetPath, zone };
+				if (itemId !== undefined && typeof itemId !== "string" && typeof itemId !== "number") {
+					sanitized = true;
+					return { targetPath, zone };
+				}
+				return itemId === undefined ? { targetPath, zone } : { targetPath, zone, itemId };
 			});
 			return { assignments, sanitized };
 		} catch (error) {
