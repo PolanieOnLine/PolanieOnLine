@@ -22,6 +22,7 @@ export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrate
 
 	private targetTileWidth = 32;
 	private targetTileHeight = 32;
+	private tileOverlap = 0;
 
 	constructor() {
 		super();
@@ -64,9 +65,18 @@ export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrate
 	private paintLayer(canvas: Canvas, drawingLayer: number,
 		tileOffsetX: number, tileOffsetY: number) {
 		const layer = stendhal.data.map.layers[drawingLayer];
-		const yMax = Math.min(tileOffsetY + canvas.height / this.targetTileHeight + 1, stendhal.data.map.zoneSizeY);
-		const xMax = Math.min(tileOffsetX + canvas.width / this.targetTileWidth + 1, stendhal.data.map.zoneSizeX);
+		const renderScale = typeof (stendhal.ui?.gamewindow?.getTileScale) === "function"
+			? stendhal.ui.gamewindow.getTileScale()
+			: 1;
+		const clampedScale = renderScale > 0 ? renderScale : 1;
+		const viewportHeight = canvas.height / clampedScale;
+		const viewportWidth = canvas.width / clampedScale;
+		this.tileOverlap = clampedScale < 1 ? Math.ceil(2 / clampedScale) : 0;
+		const yMax = Math.min(tileOffsetY + viewportHeight / this.targetTileHeight + 1, stendhal.data.map.zoneSizeY);
+		const xMax = Math.min(tileOffsetX + viewportWidth / this.targetTileWidth + 1, stendhal.data.map.zoneSizeX);
 		let ctx = canvas.getContext("2d")! as RenderingContext2D;
+		ctx.imageSmoothingEnabled = false;
+		ctx.imageSmoothingQuality = "low";
 
 		for (let y = tileOffsetY; y < yMax; y++) {
 			for (let x = tileOffsetX; x < xMax; x++) {
@@ -94,16 +104,19 @@ export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrate
 	private drawTile(ctx: RenderingContext2D, tileset: HTMLImageElement, idx: number, x: number, y: number, flip = 0) {
 		const tilesetWidth = tileset.width;
 		const tilesPerRow = Math.floor(tilesetWidth / stendhal.data.map.tileWidth);
-		const pixelX = x * this.targetTileWidth;
-		const pixelY = y * this.targetTileHeight;
+		const overlapOffset = this.tileOverlap ? Math.floor(this.tileOverlap / 2) : 0;
+		const pixelX = x * this.targetTileWidth - overlapOffset;
+		const pixelY = y * this.targetTileHeight - overlapOffset;
 
+		const drawTileWidth = this.targetTileWidth + this.tileOverlap;
+		const drawTileHeight = this.targetTileHeight + this.tileOverlap;
 		if (flip === 0) {
 			ctx.drawImage(tileset,
 				(idx % tilesPerRow) * stendhal.data.map.tileWidth,
 				Math.floor(idx / tilesPerRow) * stendhal.data.map.tileHeight,
 				stendhal.data.map.tileWidth, stendhal.data.map.tileHeight,
 				pixelX, pixelY,
-				this.targetTileWidth, this.targetTileHeight);
+				drawTileWidth, drawTileHeight);
 		} else {
 			ctx.save();
 			ctx.translate(pixelX, pixelY);
@@ -130,4 +143,3 @@ export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrate
 	}
 
 }
-

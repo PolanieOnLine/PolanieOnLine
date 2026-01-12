@@ -1555,6 +1555,21 @@ body.mobile-floating-ui #left-panel-toggle,
 	max-width: 100%;
 }
 
+#settings_panel3 .settings-range {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+#settings_panel3 .settings-range input[type="range"] {
+	max-width: 118px;
+}
+
+#settings_panel3 .settings-range__value {
+	min-width: 3ch;
+	text-align: right;
+}
+
 #settings_panel3 label {
 	width: auto;
 }
