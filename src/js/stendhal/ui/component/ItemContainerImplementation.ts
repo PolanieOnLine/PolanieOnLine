@@ -119,7 +119,7 @@ export class ItemContainerImplementation {
 		this.render();
 	}
 
-	public findItemByTargetPath(targetPath: string): Item|undefined {
+	private findItem(predicate: (item: Item) => boolean): Item | undefined {
 		const myobject = this.object || marauroa.me;
 		const items = myobject?.[this.slot];
 		if (!items || typeof items.count !== "function" || typeof items.getByIndex !== "function") {
@@ -127,26 +127,19 @@ export class ItemContainerImplementation {
 		}
 		for (let i = 0; i < items.count(); i++) {
 			const item = items.getByIndex(i) as Item;
-			if (item && typeof item.getIdPath === "function" && item.getIdPath() === targetPath) {
+			if (item && predicate(item)) {
 				return item;
 			}
 		}
 		return undefined;
 	}
 
+	public findItemByTargetPath(targetPath: string): Item|undefined {
+		return this.findItem(item => typeof item.getIdPath === "function" && item.getIdPath() === targetPath);
+	}
+
 	public findItemById(itemId: string | number): Item|undefined {
-		const myobject = this.object || marauroa.me;
-		const items = myobject?.[this.slot];
-		if (!items || typeof items.count !== "function" || typeof items.getByIndex !== "function") {
-			return undefined;
-		}
-		for (let i = 0; i < items.count(); i++) {
-			const item = items.getByIndex(i) as Item;
-			if (item && item["id"] === itemId) {
-				return item;
-			}
-		}
-		return undefined;
+		return this.findItem(item => item["id"] === itemId);
 	}
 
 	public render() {
