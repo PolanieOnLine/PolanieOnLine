@@ -139,6 +139,8 @@ class UI {
 		singletons.getAttackButtonController().update();
 		// initialize loot button
 		singletons.getLootButtonController().update();
+		// initialize quick slots
+		singletons.getQuickSlotsController().update();
 		// initialize left panel toggle
 		singletons.getLeftPanelToggleController().update();
 		// initialize right panel toggle
