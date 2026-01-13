@@ -581,7 +581,8 @@ export class RPEntity extends ActiveEntity {
 			var yRow = facing - 1;
 			var frame = 1; // draw center column when idle
 			// Ents are a hack in Java client too
-			if (this["class"] == "ent") {
+			const isTreeShepherd = this["subclass"] === "pasterz_drzew" || this["name"] === "pasterz drzew";
+			if (this["class"] == "ent" && !isTreeShepherd) {
 				nFrames = 1;
 				nDirections = 2;
 				yRow = Math.floor((facing - 1) / 2);
@@ -1032,4 +1033,3 @@ export class RPEntity extends ActiveEntity {
 		return `${abs} ${form}`;
 	}
 }
-
