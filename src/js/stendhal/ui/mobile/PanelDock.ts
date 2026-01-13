@@ -10,6 +10,7 @@
  ***************************************************************************/
 
 import { SoftwareJoystickController } from "../SoftwareJoystickController";
+import { singletons } from "../../SingletonRepo";
 import { UiHandedness, UiMode, UiState, UiStateStore } from "./UiStateStore";
 
 
@@ -59,6 +60,7 @@ export class PanelDock {
 
 		this.root.classList.toggle("left-panel-collapsed", !showLeft);
 		this.root.classList.toggle("right-panel-collapsed", !showRight);
+		requestAnimationFrame(() => singletons.getQuickSlotsController().update());
 		this.updateMinimapDock(showLeft);
 		SoftwareJoystickController.get().update();
 	}
