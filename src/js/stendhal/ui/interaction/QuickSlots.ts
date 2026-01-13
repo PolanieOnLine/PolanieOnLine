@@ -393,6 +393,45 @@ export class QuickSlots extends Component {
 	}
 
 	private refreshSlots() {
+		const containers = stendhal.ui.equip.getInventory() as ItemContainerImplementation[];
+		const itemById = new Map<string | number, Item>();
+		const itemByTargetPath = new Map<string, Item>();
+
+		for (const container of containers) {
+			const containerObject = container.getObject() || marauroa.me;
+			const slot = container.getSlot();
+			const items = containerObject?.[slot];
+			if (!items || typeof items.count !== "function" || typeof items.getByIndex !== "function") {
+				continue;
+			}
+			for (let i = 0; i < items.count(); i++) {
+				const item = items.getByIndex(i) as Item;
+				if (!item) {
+					continue;
+				}
+				const itemId = item["id"];
+				if (itemId !== undefined) {
+					itemById.set(itemId, item);
+				}
+				if (typeof item.getIdPath === "function") {
+					const targetPath = item.getIdPath();
+					if (targetPath) {
+						itemByTargetPath.set(targetPath, item);
+					}
+				}
+			}
+		}
+
+		const resolveItem = (data: QuickSlotAssignment): Item | undefined => {
+			if (data.itemId !== undefined) {
+				const item = itemById.get(data.itemId);
+				if (item) {
+					return item;
+				}
+			}
+			return itemByTargetPath.get(data.targetPath);
+		};
+
 		let assignmentsUpdated = false;
 		for (const slot of this.slots) {
 			const data = this.slotData.get(slot);
@@ -400,7 +439,7 @@ export class QuickSlots extends Component {
 				this.setEmptySlotVisual(slot);
 				continue;
 			}
-			const item = this.findItemByAssignment(data);
+			const item = resolveItem(data);
 			if (!item) {
 				this.slotData.set(slot, { ...data, item: undefined });
 				this.setEmptySlotVisual(slot);
