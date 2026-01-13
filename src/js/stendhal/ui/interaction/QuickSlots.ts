@@ -192,6 +192,9 @@ export class QuickSlots extends Component {
 			anchorY = rect.top + bounds.scrollTop + rect.height / 2;
 		}
 
+		const horizontalOffset = -6;
+		anchorX += horizontalOffset;
+
 		const verticalOffset = height + 12;
 		anchorY -= verticalOffset;
 
