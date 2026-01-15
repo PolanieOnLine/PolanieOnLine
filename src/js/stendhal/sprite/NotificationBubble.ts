@@ -200,12 +200,9 @@ export class NotificationBubble extends TextBubble {
 
 	override draw(ctx: RenderingContext2D): boolean {
 		const scale = stendhal.ui.gamewindow.getInputScale?.();
-		const viewportWidth = scale
-			? ctx.canvas.width / scale.devicePixelRatio
-			: ctx.canvas.width;
-		const viewportHeight = scale
-			? ctx.canvas.height / scale.devicePixelRatio
-			: ctx.canvas.height;
+		const devicePixelRatio = scale?.devicePixelRatio ?? window.devicePixelRatio ?? 1;
+		const viewportWidth = ctx.canvas.width / devicePixelRatio;
+		const viewportHeight = ctx.canvas.height / devicePixelRatio;
 		const screenTop = stendhal.ui.gamewindow.offsetY;
 		const screenBottom = screenTop + viewportHeight;
 		const screenLeft = stendhal.ui.gamewindow.offsetX;
