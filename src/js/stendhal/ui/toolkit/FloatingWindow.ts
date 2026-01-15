@@ -106,6 +106,7 @@ export class FloatingWindow extends Component {
 		// add window to DOM
 		let popupcontainer = document.getElementById("popupcontainer")!;
 		popupcontainer.appendChild(this.componentElement);
+		requestAnimationFrame(() => this.checkPos());
 
 		this.deferPreferredWidthCapture();
 	}
