@@ -146,6 +146,34 @@ export class ItemContainerImplementation {
 		let myobject = this.object || marauroa.me;
 		let cnt = 0;
 		if (myobject && myobject[this.slot]) {
+			const tileSize = 32;
+			const atlasRequests: Array<{
+				id: string;
+				filename: string;
+				sourceX: number;
+				sourceY: number;
+				sourceWidth: number;
+				sourceHeight: number;
+			}> = [];
+			for (let i = 0; i < myobject[this.slot].count(); i++) {
+				const o = myobject[this.slot].getByIndex(i);
+				if (!o) {
+					continue;
+				}
+				const item = <Item> o;
+				if (!item || typeof item.isAnimated !== "function" || item.isAnimated()) {
+					continue;
+				}
+				atlasRequests.push({
+					id: `${item["class"]}/${item["subclass"]}/${item["state"] || 0}`,
+					filename: item.sprite.filename,
+					sourceX: 0,
+					sourceY: (item["state"] || 0) * tileSize,
+					sourceWidth: tileSize,
+					sourceHeight: tileSize
+				});
+			}
+			const atlas = singletons.getSpriteStore().getItemIconAtlas(atlasRequests, tileSize);
 			for (let i = 0; i < myobject[this.slot].count(); i++) {
 				let o = myobject[this.slot].getByIndex(i);
 				let e = this.parentElement.querySelector("#" + this.slot + this.suffix + cnt) as HTMLElement;
@@ -160,11 +188,18 @@ export class ItemContainerImplementation {
 				const animationFrame = item.getAnimationFrameIndex();
 				xOffset = -(animationFrame * 32);
 
-				e.style.backgroundImage = "url("
-						+ singletons.getSpriteStore().checkPath(Paths.sprites
-								+ "/items/" + o["class"] + "/" + o["subclass"] + ".png")
-						+ ")";
-				e.style.backgroundPosition = (xOffset+1) + "px " + (yOffset+1) + "px";
+				const atlasKey = `${item["class"]}/${item["subclass"]}/${item["state"] || 0}`;
+				const atlasPosition = atlas?.positions.get(atlasKey);
+				if (atlas && atlasPosition) {
+					e.style.backgroundImage = `url(${atlas.dataUrl})`;
+					e.style.backgroundPosition = `${-(atlasPosition.x) + 1}px ${-(atlasPosition.y) + 1}px`;
+				} else {
+					e.style.backgroundImage = "url("
+							+ singletons.getSpriteStore().checkPath(Paths.sprites
+									+ "/items/" + o["class"] + "/" + o["subclass"] + ".png")
+							+ ")";
+					e.style.backgroundPosition = (xOffset+1) + "px " + (yOffset+1) + "px";
+				}
 				e.textContent = o.formatQuantity();
 				if (this.dirty) {
 					this.updateCursor(e, item);

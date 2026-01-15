@@ -22,10 +22,27 @@ export class SpriteImage extends Image {
 	bitmapHeight?: number;
 }
 
+type IconAtlasRequest = {
+	id: string;
+	filename: string;
+	sourceX: number;
+	sourceY: number;
+	sourceWidth: number;
+	sourceHeight: number;
+};
+
+type IconAtlas = {
+	key: string;
+	dataUrl?: string;
+	positions: Map<string, { x: number; y: number }>;
+	ready: boolean;
+};
+
 export class SpriteStore {
 
 	private knownBrokenUrls: { [url: string]: boolean } = {};
 	private images: { [filename: string]: SpriteImage } = {};
+	private itemIconAtlas: IconAtlas | undefined;
 
 	private knownShadows: { [key: string]: boolean } = {
 		"24x32": true,
@@ -305,6 +322,29 @@ export class SpriteStore {
 		return this.getBestSource(failsafe);
 	}
 
+	getItemIconAtlas(requests: IconAtlasRequest[], tileSize: number): { dataUrl: string; positions: Map<string, { x: number; y: number }> } | undefined {
+		const uniqueRequests = this.getUniqueAtlasRequests(requests);
+		if (uniqueRequests.length === 0) {
+			return undefined;
+		}
+		const key = this.buildAtlasKey(uniqueRequests, tileSize);
+		if (!this.itemIconAtlas || this.itemIconAtlas.key !== key) {
+			this.itemIconAtlas = {
+				key,
+				positions: new Map(),
+				ready: false
+			};
+			this.buildItemIconAtlas(this.itemIconAtlas, uniqueRequests, tileSize);
+		}
+		if (!this.itemIconAtlas.ready || !this.itemIconAtlas.dataUrl) {
+			return undefined;
+		}
+		return {
+			dataUrl: this.itemIconAtlas.dataUrl,
+			positions: this.itemIconAtlas.positions
+		};
+	}
+
 	/**
 	 * Checks cached images for a valid filename.
 	 *
@@ -317,6 +357,63 @@ export class SpriteStore {
 		this.get(filename);
 		const cached = this.images[filename];
 		return cached ? cached.src : "";
+	}
+
+	private getUniqueAtlasRequests(requests: IconAtlasRequest[]): IconAtlasRequest[] {
+		const unique = new Map<string, IconAtlasRequest>();
+		for (const request of requests) {
+			unique.set(request.id, request);
+		}
+		return Array.from(unique.values()).sort((a, b) => a.id.localeCompare(b.id));
+	}
+
+	private buildAtlasKey(requests: IconAtlasRequest[], tileSize: number): string {
+		return `${tileSize}:${requests.map((request) => request.id).join("|")}`;
+	}
+
+	private buildItemIconAtlas(atlas: IconAtlas, requests: IconAtlasRequest[], tileSize: number) {
+		const key = atlas.key;
+		const loadPromise = Promise.all(requests.map((request) => this.getWithPromise(request.filename)))
+			.then((images) => {
+				if (!this.itemIconAtlas || this.itemIconAtlas.key !== key) {
+					return;
+				}
+				const count = requests.length;
+				const columns = Math.ceil(Math.sqrt(count));
+				const rows = Math.ceil(count / columns);
+				const canvas = document.createElement("canvas") as HTMLCanvasElement;
+				canvas.width = columns * tileSize;
+				canvas.height = rows * tileSize;
+				const ctx = canvas.getContext("2d")!;
+				atlas.positions.clear();
+				for (let i = 0; i < requests.length; i++) {
+					const request = requests[i];
+					const image = images[i] as SpriteImage;
+					const source = image.bitmap ?? image;
+					const x = (i % columns) * tileSize;
+					const y = Math.floor(i / columns) * tileSize;
+					ctx.drawImage(
+						source,
+						request.sourceX,
+						request.sourceY,
+						request.sourceWidth,
+						request.sourceHeight,
+						x,
+						y,
+						tileSize,
+						tileSize
+					);
+					atlas.positions.set(request.id, { x, y });
+				}
+				atlas.dataUrl = canvas.toDataURL("image/png");
+				atlas.ready = true;
+			})
+			.catch(() => {
+				if (this.itemIconAtlas && this.itemIconAtlas.key === key) {
+					this.itemIconAtlas.ready = false;
+				}
+			});
+		void loadPromise;
 	}
 
 	/** deletes all objects that have not been accessed since this method was called last time */
@@ -687,4 +784,3 @@ store.filter['trueColor'] = function(data: any, color: number) {
 		data[i + 2] = resultRgb[2];
 	}
 };
-
