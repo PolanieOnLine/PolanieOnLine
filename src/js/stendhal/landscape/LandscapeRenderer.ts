@@ -11,6 +11,7 @@
 
 import { Canvas, RenderingContext2D } from "util/Types";
 import { CombinedTileset } from "./CombinedTileset";
+import { getTileOverlapMetrics, resolveTileScale } from "./TileOverlap";
 
 declare var stendhal: any;
 
@@ -29,17 +30,16 @@ export class LandscapeRenderer {
 		const renderScale = typeof (stendhal.ui?.gamewindow?.getTileScale) === "function"
 			? stendhal.ui.gamewindow.getTileScale()
 			: 1;
-		const clampedScale = renderScale > 0 ? renderScale : 1;
+		const clampedScale = resolveTileScale(renderScale);
 
 		const layer = combinedTileset.combinedLayers[layerNo];
 		const viewportHeight = canvas.height / clampedScale;
 		const viewportWidth = canvas.width / clampedScale;
 		const yMax = Math.min(tileOffsetY + viewportHeight / targetTileHeight + 1, stendhal.data.map.zoneSizeY);
 		const xMax = Math.min(tileOffsetX + viewportWidth / targetTileWidth + 1, stendhal.data.map.zoneSizeX);
-		const tileOverlap = clampedScale < 1 ? Math.ceil(2 / clampedScale) : 0;
+		const { tileOverlap, overlapOffset } = getTileOverlapMetrics(clampedScale);
 		const drawTileWidth = targetTileWidth + tileOverlap;
 		const drawTileHeight = targetTileHeight + tileOverlap;
-		const overlapOffset = tileOverlap ? Math.floor(tileOverlap / 2) : 0;
 
 		for (let y = tileOffsetY; y < yMax; y++) {
 			for (let x = tileOffsetX; x < xMax; x++) {

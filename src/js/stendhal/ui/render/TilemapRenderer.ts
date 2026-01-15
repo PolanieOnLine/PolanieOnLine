@@ -1,6 +1,7 @@
 import { drawLayerByName, TileLayerOptions } from "../../landscape/TileLayerPainter";
+import { BASE_TILE_EDGE_TRIM, getTileOverlapMetrics, resolveTileScale } from "../../landscape/TileOverlap";
 
-const TILE_EDGE_TRIM = 0.02;
+const TILE_EDGE_TRIM = BASE_TILE_EDGE_TRIM;
 const PARALLAX_SCROLL = 0.25;
 
 interface WorkerFrameMessage {
@@ -38,6 +39,22 @@ let baseCanvas = null;
 let roofCanvas = null;
 let baseCtx = null;
 let roofCtx = null;
+
+function clampTileScale(tileScale) {
+        return tileScale > 0 ? tileScale : 1;
+}
+
+function resolveTileScale() {
+        return tileWidth ? targetTileWidth / tileWidth : 1;
+}
+
+function getTileMetrics() {
+        const scale = clampTileScale(resolveTileScale());
+        const tileOverlap = scale < 1 ? Math.max(1, Math.ceil(2 / scale)) : 0;
+        const overlapOffset = tileOverlap ? Math.floor(tileOverlap / 2) : 0;
+        const edgeTrim = scale < 1 ? Math.max(TILE_EDGE_TRIM, TILE_EDGE_TRIM / scale) : TILE_EDGE_TRIM;
+        return { tileOverlap, overlapOffset, edgeTrim };
+}
 
 function ensureCaches() {
         if (!zoneWidth || !zoneHeight) {
@@ -95,26 +112,29 @@ function drawLayer(ctx, layer, offsetX, offsetY, width, height) {
         if (!ctx || !layer || !atlas || !pixelX || !pixelY || !tilesPerRow) {
                 return;
         }
+        const metrics = getTileMetrics();
         const startX = Math.max(0, Math.floor(offsetX / targetTileWidth));
         const startY = Math.max(0, Math.floor(offsetY / targetTileHeight));
         const cols = Math.ceil((width + targetTileWidth) / targetTileWidth) + 1;
         const rows = Math.ceil((height + targetTileHeight) / targetTileHeight) + 1;
         const endX = Math.min(zoneWidth, startX + cols);
         const endY = Math.min(zoneHeight, startY + rows);
-        const sourceWidth = tileWidth - TILE_EDGE_TRIM * 2;
-        const sourceHeight = tileHeight - TILE_EDGE_TRIM * 2;
+        const sourceWidth = tileWidth - metrics.edgeTrim * 2;
+        const sourceHeight = tileHeight - metrics.edgeTrim * 2;
+        const drawTileWidth = targetTileWidth + metrics.tileOverlap;
+        const drawTileHeight = targetTileHeight + metrics.tileOverlap;
         for (let y = startY; y < endY; y++) {
-                const destY = pixelY[y];
+                const destY = pixelY[y] - metrics.overlapOffset;
                 const rowIndex = y * zoneWidth;
                 for (let x = startX; x < endX; x++) {
                         const index = layer[rowIndex + x];
                         if (index < 0) {
                                 continue;
                         }
-                        const srcX = (index % tilesPerRow) * tileWidth + TILE_EDGE_TRIM;
-                        const srcY = Math.floor(index / tilesPerRow) * tileHeight + TILE_EDGE_TRIM;
-                        ctx.drawImage(atlas, srcX, srcY, sourceWidth, sourceHeight, pixelX[x], destY,
-                                targetTileWidth, targetTileHeight);
+                        const srcX = (index % tilesPerRow) * tileWidth + metrics.edgeTrim;
+                        const srcY = Math.floor(index / tilesPerRow) * tileHeight + metrics.edgeTrim;
+                        ctx.drawImage(atlas, srcX, srcY, sourceWidth, sourceHeight, pixelX[x] - metrics.overlapOffset, destY,
+                                drawTileWidth, drawTileHeight);
                 }
         }
 }
@@ -314,6 +334,13 @@ export class TilemapRenderer {
 	private parallaxImage?: HTMLImageElement;
 	private lastTilesetToken?: unknown;
 	private atlasCanvas?: HTMLCanvasElement;
+
+	private resolveTileScale(): number {
+		if (!this.tileWidth) {
+			return 1;
+		}
+		return resolveTileScale(this.targetTileWidth / this.tileWidth);
+	}
 
 	configure(map: any, targetTileWidth: number, targetTileHeight: number) {
 		if (!map || !map.combinedTileset) {
@@ -547,30 +574,34 @@ export class TilemapRenderer {
 		if (!layer || !this.pixelX || !this.pixelY || !this.tilesPerRow) {
 			return;
 		}
+		const tileScale = this.resolveTileScale();
+		const { tileOverlap, overlapOffset, edgeTrim } = getTileOverlapMetrics(tileScale, TILE_EDGE_TRIM);
+		const drawTileWidth = this.targetTileWidth + tileOverlap;
+		const drawTileHeight = this.targetTileHeight + tileOverlap;
 		const startX = Math.max(0, Math.floor(offsetX / this.targetTileWidth));
 		const startY = Math.max(0, Math.floor(offsetY / this.targetTileHeight));
 		const cols = Math.ceil((width + this.targetTileWidth) / this.targetTileWidth) + 1;
 		const rows = Math.ceil((height + this.targetTileHeight) / this.targetTileHeight) + 1;
 		const endX = Math.min(this.zoneWidth, startX + cols);
 		const endY = Math.min(this.zoneHeight, startY + rows);
-		const sourceWidth = this.tileWidth - TILE_EDGE_TRIM * 2;
-		const sourceHeight = this.tileHeight - TILE_EDGE_TRIM * 2;
+		const sourceWidth = this.tileWidth - edgeTrim * 2;
+		const sourceHeight = this.tileHeight - edgeTrim * 2;
 		const atlasCanvas = this.atlasCanvas;
 		if (!atlasCanvas) {
 			return;
 		}
 		for (let y = startY; y < endY; y++) {
-			const destY = this.pixelY[y];
+			const destY = this.pixelY[y] - overlapOffset;
 			const rowIndex = y * this.zoneWidth;
 			for (let x = startX; x < endX; x++) {
 				const index = layer[rowIndex + x];
 				if (index < 0) {
 					continue;
 				}
-				const srcX = (index % this.tilesPerRow) * this.tileWidth + TILE_EDGE_TRIM;
-				const srcY = Math.floor(index / this.tilesPerRow) * this.tileHeight + TILE_EDGE_TRIM;
+				const srcX = (index % this.tilesPerRow) * this.tileWidth + edgeTrim;
+				const srcY = Math.floor(index / this.tilesPerRow) * this.tileHeight + edgeTrim;
 				ctx.drawImage(atlasCanvas, srcX, srcY, sourceWidth, sourceHeight,
-					this.pixelX[x], destY, this.targetTileWidth, this.targetTileHeight);
+					this.pixelX[x] - overlapOffset, destY, drawTileWidth, drawTileHeight);
 			}
 		}
 	}

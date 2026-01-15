@@ -1,6 +1,6 @@
-declare var stendhal: any;
+import { BASE_TILE_EDGE_TRIM, getTileOverlapMetrics } from "./TileOverlap";
 
-const TILE_EDGE_TRIM = 0.02;
+declare var stendhal: any;
 
 export interface TileLayerOptions {
 	composite?: GlobalCompositeOperation;
@@ -32,6 +32,12 @@ export default class TileLayerPainter {
 			tileOffsetY: number, targetTileWidth: number, targetTileHeight: number): void {
 		const map = stendhal.data.map;
 		const canvas = ctx.canvas;
+		const tileScale = typeof (stendhal.ui?.gamewindow?.getTileScale) === "function"
+			? stendhal.ui.gamewindow.getTileScale()
+			: (map.tileWidth ? targetTileWidth / map.tileWidth : 1);
+		const { tileOverlap, overlapOffset, edgeTrim } = getTileOverlapMetrics(tileScale, BASE_TILE_EDGE_TRIM);
+		const drawTileWidth = targetTileWidth + tileOverlap;
+		const drawTileHeight = targetTileHeight + tileOverlap;
 		const yMax = Math.min(tileOffsetY + canvas.height / targetTileHeight + 1, map.zoneSizeY);
 		const xMax = Math.min(tileOffsetX + canvas.width / targetTileWidth + 1, map.zoneSizeX);
 
@@ -51,27 +57,28 @@ export default class TileLayerPainter {
 				const base = map.firstgids[tilesetIndex];
 				const idx = gid - base;
 				TileLayerPainter.drawTile(
-				ctx,
-				tileset,
-				idx,
-				x * targetTileWidth,
-				y * targetTileHeight,
-				targetTileWidth,
-				targetTileHeight,
-				flip
+					ctx,
+					tileset,
+					idx,
+					x * targetTileWidth - overlapOffset,
+					y * targetTileHeight - overlapOffset,
+					drawTileWidth,
+					drawTileHeight,
+					flip,
+					edgeTrim
 				);
 			}
 		}
 	}
 
 	private static drawTile(ctx: CanvasRenderingContext2D, tileset: HTMLImageElement, idx: number, screenX: number, screenY: number,
-			destWidth: number, destHeight: number, flip: number): void {
+			destWidth: number, destHeight: number, flip: number, edgeTrim: number): void {
 		const tilesetWidth = tileset.width;
 		const tilesPerRow = Math.floor(tilesetWidth / stendhal.data.map.tileWidth);
-		const sourceX = (idx % tilesPerRow) * stendhal.data.map.tileWidth + TILE_EDGE_TRIM;
-		const sourceY = Math.floor(idx / tilesPerRow) * stendhal.data.map.tileHeight + TILE_EDGE_TRIM;
-		const sourceWidth = stendhal.data.map.tileWidth - TILE_EDGE_TRIM * 2;
-		const sourceHeight = stendhal.data.map.tileHeight - TILE_EDGE_TRIM * 2;
+		const sourceX = (idx % tilesPerRow) * stendhal.data.map.tileWidth + edgeTrim;
+		const sourceY = Math.floor(idx / tilesPerRow) * stendhal.data.map.tileHeight + edgeTrim;
+		const sourceWidth = stendhal.data.map.tileWidth - edgeTrim * 2;
+		const sourceHeight = stendhal.data.map.tileHeight - edgeTrim * 2;
 
 		if (flip === 0) {
 			ctx.drawImage(tileset, sourceX, sourceY, sourceWidth, sourceHeight, screenX, screenY, destWidth, destHeight);
