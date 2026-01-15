@@ -199,10 +199,17 @@ export class NotificationBubble extends TextBubble {
 	}
 
 	override draw(ctx: RenderingContext2D): boolean {
+		const scale = stendhal.ui.gamewindow.getInputScale?.();
+		const viewportWidth = scale
+			? ctx.canvas.width / scale.devicePixelRatio
+			: ctx.canvas.width;
+		const viewportHeight = scale
+			? ctx.canvas.height / scale.devicePixelRatio
+			: ctx.canvas.height;
 		const screenTop = stendhal.ui.gamewindow.offsetY;
-		const screenBottom = screenTop + ctx.canvas.height;
+		const screenBottom = screenTop + viewportHeight;
 		const screenLeft = stendhal.ui.gamewindow.offsetX;
-		const screenCenterX = screenLeft + (ctx.canvas.width / 2);
+		const screenCenterX = screenLeft + (viewportWidth / 2);
 
 		// get width & height of text
 		const fontsize = NotificationBubble.FONT_SIZE;
@@ -271,4 +278,3 @@ export class NotificationBubble extends TextBubble {
 		}
 	}
 }
-
