@@ -1,6 +1,8 @@
 import { drawLayerByName, TileLayerOptions } from "../../landscape/TileLayerPainter";
 import { BASE_TILE_EDGE_TRIM, getTileOverlapMetrics, resolveTileScale } from "../../landscape/TileOverlap";
 
+declare var stendhal: any;
+
 const TILE_EDGE_TRIM = BASE_TILE_EDGE_TRIM;
 const PARALLAX_SCROLL = 0.25;
 
@@ -342,6 +344,13 @@ export class TilemapRenderer {
 		return resolveTileScale(this.targetTileWidth / this.tileWidth);
 	}
 
+	private resolveViewportSize(width: number, height: number): { width: number; height: number } {
+		if (typeof (stendhal?.ui?.gamewindow?.getWorldViewportSize) === "function") {
+			return stendhal.ui.gamewindow.getWorldViewportSize();
+		}
+		return { width, height };
+	}
+
 	configure(map: any, targetTileWidth: number, targetTileHeight: number) {
 		if (!map || !map.combinedTileset) {
 			return;
@@ -418,13 +427,14 @@ export class TilemapRenderer {
 		if (!this.workerInstance.atlasReady || !this.workerInstance.configured) {
 			return;
 		}
+		const viewportSize = this.resolveViewportSize(width, height);
 		this.workerInstance.awaitingFrame = true;
 		this.workerInstance.worker.postMessage({
 			type: "frame",
 			offsetX,
 			offsetY,
-			width,
-			height
+			width: viewportSize.width,
+			height: viewportSize.height
 		});
 	}
 
@@ -433,8 +443,9 @@ export class TilemapRenderer {
 		if (drewWorkerFrame) {
 			return;
 		}
-		this.drawParallax(ctx, offsetX, offsetY, width, height);
-		this.drawLayerDirect(ctx, this.baseLayer, offsetX, offsetY, width, height);
+		const viewportSize = this.resolveViewportSize(width, height);
+		this.drawParallax(ctx, offsetX, offsetY, viewportSize.width, viewportSize.height);
+		this.drawLayerDirect(ctx, this.baseLayer, offsetX, offsetY, viewportSize.width, viewportSize.height);
 	}
 
 	drawRoofLayer(ctx: CanvasRenderingContext2D, offsetX: number, offsetY: number, width: number, height: number) {
@@ -442,7 +453,8 @@ export class TilemapRenderer {
 		if (drewWorkerFrame) {
 			return;
 		}
-		this.drawLayerDirect(ctx, this.roofLayer, offsetX, offsetY, width, height);
+		const viewportSize = this.resolveViewportSize(width, height);
+		this.drawLayerDirect(ctx, this.roofLayer, offsetX, offsetY, viewportSize.width, viewportSize.height);
 	}
 
 	drawBlendLayer(name: string, ctx: CanvasRenderingContext2D, tileOffsetX: number, tileOffsetY: number,

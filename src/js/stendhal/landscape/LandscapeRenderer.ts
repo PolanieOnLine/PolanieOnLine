@@ -31,12 +31,16 @@ export class LandscapeRenderer {
 			? stendhal.ui.gamewindow.getTileScale()
 			: 1;
 		const clampedScale = resolveTileScale(renderScale);
+		const viewportSize = typeof (stendhal.ui?.gamewindow?.getWorldViewportSize) === "function"
+			? stendhal.ui.gamewindow.getWorldViewportSize()
+			: {
+				width: canvas.width / clampedScale,
+				height: canvas.height / clampedScale,
+			};
 
 		const layer = combinedTileset.combinedLayers[layerNo];
-		const viewportHeight = canvas.height / clampedScale;
-		const viewportWidth = canvas.width / clampedScale;
-		const yMax = Math.min(tileOffsetY + viewportHeight / targetTileHeight + 1, stendhal.data.map.zoneSizeY);
-		const xMax = Math.min(tileOffsetX + viewportWidth / targetTileWidth + 1, stendhal.data.map.zoneSizeX);
+		const yMax = Math.min(tileOffsetY + viewportSize.height / targetTileHeight + 1, stendhal.data.map.zoneSizeY);
+		const xMax = Math.min(tileOffsetX + viewportSize.width / targetTileWidth + 1, stendhal.data.map.zoneSizeX);
 		const { tileOverlap, overlapOffset } = getTileOverlapMetrics(clampedScale);
 		const drawTileWidth = targetTileWidth + tileOverlap;
 		const drawTileHeight = targetTileHeight + tileOverlap;

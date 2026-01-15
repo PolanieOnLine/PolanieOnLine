@@ -69,11 +69,15 @@ export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrate
 			? stendhal.ui.gamewindow.getTileScale()
 			: 1;
 		const clampedScale = renderScale > 0 ? renderScale : 1;
-		const viewportHeight = canvas.height / clampedScale;
-		const viewportWidth = canvas.width / clampedScale;
+		const viewportSize = typeof (stendhal.ui?.gamewindow?.getWorldViewportSize) === "function"
+			? stendhal.ui.gamewindow.getWorldViewportSize()
+			: {
+				width: canvas.width / clampedScale,
+				height: canvas.height / clampedScale,
+			};
 		this.tileOverlap = clampedScale < 1 ? Math.ceil(2 / clampedScale) : 0;
-		const yMax = Math.min(tileOffsetY + viewportHeight / this.targetTileHeight + 1, stendhal.data.map.zoneSizeY);
-		const xMax = Math.min(tileOffsetX + viewportWidth / this.targetTileWidth + 1, stendhal.data.map.zoneSizeX);
+		const yMax = Math.min(tileOffsetY + viewportSize.height / this.targetTileHeight + 1, stendhal.data.map.zoneSizeY);
+		const xMax = Math.min(tileOffsetX + viewportSize.width / this.targetTileWidth + 1, stendhal.data.map.zoneSizeX);
 		let ctx = canvas.getContext("2d")! as RenderingContext2D;
 		ctx.imageSmoothingEnabled = false;
 		ctx.imageSmoothingQuality = "low";

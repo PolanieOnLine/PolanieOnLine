@@ -99,6 +99,16 @@ export class ViewPort {
 		return this.tileScale;
 	}
 
+	public getWorldViewportSize(): { width: number; height: number } {
+		const canvas = this.getElement() as HTMLCanvasElement;
+		const devicePixelRatio = this.devicePixelRatio || window.devicePixelRatio || 1;
+		const scale = devicePixelRatio * this.tileScale;
+		return {
+			width: canvas.width / scale,
+			height: canvas.height / scale,
+		};
+	}
+
 	/** Drawing context. */
 	private ctx: RenderingContext2D;
 	/** Map tile pixel width. */

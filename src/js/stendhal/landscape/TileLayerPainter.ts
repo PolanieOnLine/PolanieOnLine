@@ -35,11 +35,17 @@ export default class TileLayerPainter {
 		const tileScale = typeof (stendhal.ui?.gamewindow?.getTileScale) === "function"
 			? stendhal.ui.gamewindow.getTileScale()
 			: (map.tileWidth ? targetTileWidth / map.tileWidth : 1);
+		const viewportSize = typeof (stendhal.ui?.gamewindow?.getWorldViewportSize) === "function"
+			? stendhal.ui.gamewindow.getWorldViewportSize()
+			: {
+				width: canvas.width,
+				height: canvas.height,
+			};
 		const { tileOverlap, overlapOffset, edgeTrim } = getTileOverlapMetrics(tileScale, BASE_TILE_EDGE_TRIM);
 		const drawTileWidth = targetTileWidth + tileOverlap;
 		const drawTileHeight = targetTileHeight + tileOverlap;
-		const yMax = Math.min(tileOffsetY + canvas.height / targetTileHeight + 1, map.zoneSizeY);
-		const xMax = Math.min(tileOffsetX + canvas.width / targetTileWidth + 1, map.zoneSizeX);
+		const yMax = Math.min(tileOffsetY + viewportSize.height / targetTileHeight + 1, map.zoneSizeY);
+		const xMax = Math.min(tileOffsetX + viewportSize.width / targetTileWidth + 1, map.zoneSizeX);
 
 		for (let y = tileOffsetY; y < yMax; y++) {
 			for (let x = tileOffsetX; x < xMax; x++) {
