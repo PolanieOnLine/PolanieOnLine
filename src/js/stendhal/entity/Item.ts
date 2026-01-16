@@ -16,7 +16,7 @@ import { TextSprite } from "../sprite/TextSprite";
 import { RenderingContext2D } from "util/Types";
 import { Paths } from "../data/Paths";
 import { singletons } from "../SingletonRepo";
-import { ItemAnimationClock } from "./ItemAnimationClock";
+import { ItemAnimationClock, ItemAnimationPriority } from "./ItemAnimationClock";
 
 type FrameCounts = {
 	columns: number;
@@ -100,7 +100,7 @@ export class Item extends Entity {
 
 		this.sprite.offsetY = (this["state"] || 0) * 32
 		if (this.isAnimated()) {
-			this.stepAnimation();
+			this.stepAnimation(ItemAnimationPriority.Visible);
 		}
 
 		this.drawAt(ctx, this["x"] * 32, this["y"] * 32);
@@ -136,12 +136,12 @@ export class Item extends Entity {
 		this.quantityTextSprite.draw(ctx, tileX + (32 - textMetrics.width), tileY + 6);
 	}
 
-	public stepAnimation() {
+	public stepAnimation(priority: ItemAnimationPriority = ItemAnimationPriority.Visible) {
 		if (!this.isAnimated()) {
 			return;
 		}
 
-		const frameIndex = this.getAnimationFrameIndex();
+		const frameIndex = this.getAnimationFrameIndex(priority);
 		this.setXFrameIndex(frameIndex);
 	}
 
@@ -229,7 +229,7 @@ export class Item extends Entity {
 		return true;
 	}
 
-	public getAnimationFrameIndex(): number {
+	public getAnimationFrameIndex(priority: ItemAnimationPriority = ItemAnimationPriority.Offscreen): number {
 		const frameCounts = this.ensureFrameCounts();
 
 		if (this.animated == null) {
@@ -240,7 +240,7 @@ export class Item extends Entity {
 			return 0;
 		}
 
-		return ItemAnimationClock.getFrameIndex(this.getAnimationKey(), frameCounts.columns);
+		return ItemAnimationClock.getFrameIndex(this.getAnimationKey(), frameCounts.columns, priority);
 	}
 
 	private getFrameCounts() {
@@ -338,4 +338,3 @@ export class Item extends Entity {
 		return true;
 	}
 }
-

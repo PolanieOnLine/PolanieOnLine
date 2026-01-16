@@ -17,6 +17,7 @@ import { ui } from "../UI";
 import { ActionContextMenu } from "../dialog/ActionContextMenu";
 import { DropQuantitySelectorDialog } from "../dialog/DropQuantitySelectorDialog";
 import { Item } from "../../entity/Item";
+import { ItemAnimationPriority } from "../../entity/ItemAnimationClock";
 
 import { singletons } from "../../SingletonRepo";
 
@@ -185,7 +186,7 @@ export class ItemContainerImplementation {
 				const item = <Item> o;
 				let xOffset = 0;
 				let yOffset = (item["state"] || 0) * -32;
-				const animationFrame = item.getAnimationFrameIndex();
+				const animationFrame = item.getAnimationFrameIndex(ItemAnimationPriority.Ui);
 				xOffset = -(animationFrame * 32);
 
 				const atlasKey = `${item["class"]}/${item["subclass"]}/${item["state"] || 0}`;

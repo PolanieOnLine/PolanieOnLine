@@ -14,10 +14,15 @@
  */
 export class ItemAnimationClock {
 	private static readonly FRAME_DELAY = 100;
+	private static readonly MAX_ANIMATIONS_PER_FRAME = 200;
 	private static frameCounts = new Map<string, number>();
 	private static frameIndexCache = new Map<string, number>();
 	private static elapsed = 0;
 	private static lastTick = performance.now();
+	private static frameBudget = ItemAnimationClock.MAX_ANIMATIONS_PER_FRAME;
+	private static usedVisible = 0;
+	private static usedUi = 0;
+	private static usedOffscreen = 0;
 
 	static update(delta?: number) {
 		const now = performance.now();
@@ -25,6 +30,7 @@ export class ItemAnimationClock {
 			? Math.max(0, delta)
 			: Math.max(0, now - this.lastTick);
 		this.lastTick = (typeof delta === "number" && Number.isFinite(delta)) ? this.lastTick + step : now;
+		this.resetFrameBudget();
 		if (step === 0) {
 			return;
 		}
@@ -44,9 +50,46 @@ export class ItemAnimationClock {
 		this.frameIndexCache.set(key, currentIndex);
 	}
 
-	static getFrameIndex(key: string, columns: number): number {
+	static getFrameIndex(key: string, columns: number, priority: ItemAnimationPriority = ItemAnimationPriority.Offscreen): number {
 		this.setFrameCount(key, columns);
+		if (!this.consumeBudget(priority)) {
+			return Math.max(0, columns - 1);
+		}
 		return this.frameIndexCache.get(key) || 0;
+	}
+
+	private static resetFrameBudget() {
+		this.frameBudget = ItemAnimationClock.MAX_ANIMATIONS_PER_FRAME;
+		this.usedVisible = 0;
+		this.usedUi = 0;
+		this.usedOffscreen = 0;
+	}
+
+	private static consumeBudget(priority: ItemAnimationPriority): boolean {
+		if (this.frameBudget <= 0) {
+			return false;
+		}
+
+		switch (priority) {
+			case ItemAnimationPriority.Visible:
+				this.usedVisible += 1;
+				break;
+			case ItemAnimationPriority.Ui:
+				this.usedUi += 1;
+				break;
+			case ItemAnimationPriority.Offscreen:
+			default:
+				this.usedOffscreen += 1;
+				break;
+		}
+
+		this.frameBudget -= 1;
+		return true;
 	}
 }
 
+export enum ItemAnimationPriority {
+	Visible = "visible",
+	Ui = "ui",
+	Offscreen = "offscreen",
+}

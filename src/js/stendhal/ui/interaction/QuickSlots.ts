@@ -18,6 +18,7 @@ import { ActionContextMenu } from "../dialog/ActionContextMenu";
 import { ui } from "../UI";
 import { Item } from "../../entity/Item";
 import { ItemContainerImplementation } from "../component/ItemContainerImplementation";
+import { ItemAnimationPriority } from "../../entity/ItemAnimationClock";
 import { singletons } from "../../SingletonRepo";
 import { Paths } from "../../data/Paths";
 import { Chat } from "../../util/Chat";
@@ -390,7 +391,7 @@ export class QuickSlots extends Component {
 		}
 
 		const animationFrame = typeof item.getAnimationFrameIndex === "function"
-			? item.getAnimationFrameIndex()
+			? item.getAnimationFrameIndex(ItemAnimationPriority.Ui)
 			: 0;
 		const xOffset = -(animationFrame * tileSize);
 		const yOffset = (item["state"] || 0) * -tileSize;
