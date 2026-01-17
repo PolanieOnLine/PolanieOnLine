@@ -323,6 +323,7 @@ public class StendhalQuestSystem {
 		loadQuest(new MeetGuslarz());
 		loadQuest(new FindDragons());
 		loadQuest(new KolekcjonerPasow());
+		loadLevelRewardQuests();
 
 		if (Occasion.MINETOWN) {
 			loadQuest(new PaperChase()); // needs to be loaded before SemosMineTownRevivalWeeks
@@ -334,6 +335,12 @@ public class StendhalQuestSystem {
 		}
 
 		TurnNotifier.get().notifyInTurns(10, new DumpGameInformationForWebsite());
+	}
+
+	private void loadLevelRewardQuests() {
+		for (final LevelRewardQuest quest : LevelRewardQuest.getMilestoneQuests()) {
+			loadQuest(quest);
+		}
 	}
 
 	/**
