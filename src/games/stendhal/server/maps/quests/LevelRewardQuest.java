@@ -13,12 +13,53 @@ package games.stendhal.server.maps.quests;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.Region;
 
 public class LevelRewardQuest extends AbstractQuest {
+	private static final class LevelRewardMilestone {
+		private final int levelThreshold;
+		private final String npcName;
+		private final String region;
+		private final String location;
+		private final String rewardSlot;
+		private final String slotName;
+		private final String questName;
+		private final String serverZoneName;
+		private final String clientMapId;
+
+		private LevelRewardMilestone(final int levelThreshold, final String npcName, final String region,
+				final String location, final String rewardSlot, final String slotName, final String questName,
+				final String serverZoneName, final String clientMapId) {
+			this.levelThreshold = levelThreshold;
+			this.npcName = npcName;
+			this.region = region;
+			this.location = location;
+			this.rewardSlot = rewardSlot;
+			this.slotName = slotName;
+			this.questName = questName;
+			this.serverZoneName = serverZoneName;
+			this.clientMapId = clientMapId;
+		}
+	}
+
+	private static final List<LevelRewardMilestone> MILESTONES = Collections.unmodifiableList(Arrays.asList(
+			new LevelRewardMilestone(50, "Choros", Region.KOSCIELISKO, "jaskini Kościeliskiej", "ChorosReward",
+					"level_reward_50", "Nagroda za poziom 50", "-3_koscielisko_cave", "sub_3_koscielisko_cave"),
+			new LevelRewardMilestone(100, "Altharis", Region.ATHOR_ISLAND, "jaskini na Wyspie Athor",
+					"AltharisReward", "level_reward_100", "Nagroda za poziom 100", "-1_athor_island",
+					"sub_1_athor_island"),
+			new LevelRewardMilestone(150, "Aenihata", Region.SEMOS_MINES, "kopalniach Semos", "AenihataReward",
+					"level_reward_150", "Nagroda za poziom 150", "-2_semos_mine_w2", "sub_2_semos_mine_w2"),
+			new LevelRewardMilestone(350, "Festris", Region.KIKAREUKIN, "jaskini Kikareukin", "FestrisReward",
+					"level_reward_350", "Nagroda za poziom 350", "4_kikareukin_cave", "4_kikareukin_cave"),
+			new LevelRewardMilestone(550, "Deviotis", Region.WIELICZKA, "kopalniach Wieliczki", "DeviotisReward",
+					"level_reward_550", "Nagroda za poziom 550", "-1_wieliczka_salt_mines_e2",
+					"sub_1_wieliczka_salt_mines_e2")));
+
 	private final int levelThreshold;
 	private final String npcName;
 	private final String region;
@@ -26,36 +67,35 @@ public class LevelRewardQuest extends AbstractQuest {
 	private final String rewardSlot;
 	private final String slotName;
 	private final String questName;
+	private final String serverZoneName;
+	private final String clientMapId;
 
 	public static List<LevelRewardQuest> getMilestoneQuests() {
-		return Arrays.asList(
-				new LevelRewardQuest(50, "Choros", Region.KOSCIELISKO, "jaskini Kościeliskiej", "ChorosReward",
-						"level_reward_50", "Nagroda za poziom 50"),
-				new LevelRewardQuest(100, "Altharis", Region.ATHOR_ISLAND, "jaskini na Wyspie Athor", "AltharisReward",
-						"level_reward_100", "Nagroda za poziom 100"),
-				new LevelRewardQuest(150, "Aenihata", Region.SEMOS_MINES, "kopalniach Semos", "AenihataReward",
-						"level_reward_150", "Nagroda za poziom 150"),
-				new LevelRewardQuest(350, "Festris", Region.SEMOS_SURROUNDS, "jaskini Kikareukin", "FestrisReward",
-						"level_reward_350", "Nagroda za poziom 350"),
-				new LevelRewardQuest(550, "Deviotis", Region.WIELICZKA, "kopalniach Wieliczki", "DeviotisReward",
-						"level_reward_550", "Nagroda za poziom 550"));
+		final List<LevelRewardQuest> quests = new ArrayList<>();
+		for (final LevelRewardMilestone milestone : MILESTONES) {
+			quests.add(new LevelRewardQuest(milestone));
+		}
+		return quests;
 	}
 
-	public LevelRewardQuest(final int levelThreshold, final String npcName, final String region, final String location,
-			final String rewardSlot, final String slotName, final String questName) {
-		this.levelThreshold = levelThreshold;
-		this.npcName = npcName;
-		this.region = region;
-		this.location = location;
-		this.rewardSlot = rewardSlot;
-		this.slotName = slotName;
-		this.questName = questName;
+	public LevelRewardQuest(final LevelRewardMilestone milestone) {
+		this.levelThreshold = milestone.levelThreshold;
+		this.npcName = milestone.npcName;
+		this.region = milestone.region;
+		this.location = milestone.location;
+		this.rewardSlot = milestone.rewardSlot;
+		this.slotName = milestone.slotName;
+		this.questName = milestone.questName;
+		this.serverZoneName = milestone.serverZoneName;
+		this.clientMapId = milestone.clientMapId;
 	}
 
 	@Override
 	public void addToWorld() {
-		fillQuestInfo(questName, "Po osiągnięciu poziomu " + levelThreshold + " odbierz nagrodę od " + npcName + " w "
-				+ location + " (" + region + ").", false);
+		fillQuestInfo(questName,
+				"Po osiągnięciu poziomu " + levelThreshold + " odbierz nagrodę od " + npcName + " w " + location
+						+ " (" + region + "). Mapa serwera: " + serverZoneName + ", mapa klienta: " + clientMapId + ".",
+				false);
 	}
 
 	@Override
