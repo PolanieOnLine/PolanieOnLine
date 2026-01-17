@@ -390,7 +390,7 @@ export class QuickSlots extends Component {
 			}
 		}
 
-		const animationFrame = typeof item.getAnimationFrameIndex === "function"
+		const animationFrame = isAnimated && typeof item.getAnimationFrameIndex === "function"
 			? item.getAnimationFrameIndex(ItemAnimationPriority.Ui)
 			: 0;
 		const xOffset = -(animationFrame * tileSize);

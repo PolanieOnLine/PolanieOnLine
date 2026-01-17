@@ -186,7 +186,10 @@ export class ItemContainerImplementation {
 				const item = <Item> o;
 				let xOffset = 0;
 				let yOffset = (item["state"] || 0) * -32;
-				const animationFrame = item.getAnimationFrameIndex(ItemAnimationPriority.Ui);
+				const isAnimated = typeof item.isAnimated === "function" && item.isAnimated();
+				const animationFrame = isAnimated && typeof item.getAnimationFrameIndex === "function"
+					? item.getAnimationFrameIndex(ItemAnimationPriority.Ui)
+					: 0;
 				xOffset = -(animationFrame * 32);
 
 				const atlasKey = `${item["class"]}/${item["subclass"]}/${item["state"] || 0}`;
