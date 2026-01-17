@@ -554,7 +554,9 @@ export class RPEntity extends ActiveEntity {
 	 */
 	drawFloaters(ctx: RenderingContext2D) {
 		var centerX = (this["_x"] + this["width"] / 2) * 32;
-		var topY = (this["_y"] + 1) * 32 - this["drawHeight"];
+		const localY = this["_y"] * 32 + this.statusBarYOffset;
+		var topY = localY + (this["height"] * 32) - this["drawHeight"]
+			- HEALTH_BAR_HEIGHT + this.titleDrawYOffset;
 		// Grab an unchanging copy
 		var currentFloaters = this.floaters;
 		for (var i = 0; i < currentFloaters.length; i++) {
