@@ -190,13 +190,10 @@ export class MiniMapComponent extends Component {
 				const baseY = Math.floor(py * this.scale);
 
 				// this.ctx.fillText(o.id, o.x * this.scale, o.y * this.scale);
-				if (o.minimapStyle) {
-					ctx.strokeStyle = o.minimapStyle;
-				} else {
-					ctx.strokeStyle = Color.GRAY;
-				}
+				ctx.fillStyle = o.minimapStyle ?? Color.GRAY;
 
 				if (o instanceof Player) {
+					ctx.strokeStyle = ctx.fillStyle;
 					let adj_scale = this.scale;
 					if (adj_scale < 6) {
 						// + is hard to see in wider views
@@ -218,7 +215,7 @@ export class MiniMapComponent extends Component {
 				} else {
 					const rectWidth = Math.round(o["width"] * this.scale);
 					const rectHeight = Math.round(o["height"] * this.scale);
-					ctx.strokeRect(baseX, baseY, rectWidth, rectHeight);
+					ctx.fillRect(baseX, baseY, rectWidth, rectHeight);
 				}
 			}
 		}
