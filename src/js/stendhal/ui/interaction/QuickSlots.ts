@@ -389,17 +389,18 @@ export class QuickSlots extends Component {
 			}
 		}
 
-		const animationFrame = isAnimated && typeof item.getAnimationFrameIndex === "function"
-			? item.getAnimationFrameIndex(ItemAnimationPriority.Ui)
-			: 0;
-		const xOffset = -(animationFrame * tileSize);
+		let xOffset = 0;
+		if (isAnimated) {
+			item.stepAnimation();
+			xOffset = -(item.getXFrameIndex() * tileSize);
+		}
 		const yOffset = (item["state"] || 0) * -tileSize;
 		const spritePath = singletons.getSpriteStore().checkPath(Paths.sprites
 			+ "/items/" + item["class"] + "/" + item["subclass"] + ".png");
 		slot.style.backgroundImage = `url(${spritePath}), url(${Paths.gui}/panel/empty_btn.png)`;
 		slot.style.backgroundPosition = `${xOffset + 1}px ${yOffset + 1}px, center center`;
 		slot.style.backgroundRepeat = "no-repeat, no-repeat";
-		slot.style.backgroundSize = "32px 32px, contain";
+		slot.style.backgroundSize = `${tileSize}px ${tileSize}px, contain`;
 		ItemContainerImplementation.updateCursorFor(slot, item);
 		ItemContainerImplementation.updateToolTipFor(slot, item);
 	}
