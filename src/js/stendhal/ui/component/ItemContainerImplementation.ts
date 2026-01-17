@@ -17,7 +17,6 @@ import { ui } from "../UI";
 import { ActionContextMenu } from "../dialog/ActionContextMenu";
 import { DropQuantitySelectorDialog } from "../dialog/DropQuantitySelectorDialog";
 import { Item } from "../../entity/Item";
-import { ItemAnimationPriority } from "../../entity/ItemAnimationClock";
 
 import { singletons } from "../../SingletonRepo";
 
@@ -147,34 +146,6 @@ export class ItemContainerImplementation {
 		let myobject = this.object || marauroa.me;
 		let cnt = 0;
 		if (myobject && myobject[this.slot]) {
-			const tileSize = 32;
-			const atlasRequests: Array<{
-				id: string;
-				filename: string;
-				sourceX: number;
-				sourceY: number;
-				sourceWidth: number;
-				sourceHeight: number;
-			}> = [];
-			for (let i = 0; i < myobject[this.slot].count(); i++) {
-				const o = myobject[this.slot].getByIndex(i);
-				if (!o) {
-					continue;
-				}
-				const item = <Item> o;
-				if (!item || typeof item.isAnimated !== "function" || item.isAnimated()) {
-					continue;
-				}
-				atlasRequests.push({
-					id: `${item["class"]}/${item["subclass"]}/${item["state"] || 0}`,
-					filename: item.sprite.filename,
-					sourceX: 0,
-					sourceY: (item["state"] || 0) * tileSize,
-					sourceWidth: tileSize,
-					sourceHeight: tileSize
-				});
-			}
-			const atlas = singletons.getSpriteStore().getItemIconAtlas(atlasRequests, tileSize);
 			for (let i = 0; i < myobject[this.slot].count(); i++) {
 				let o = myobject[this.slot].getByIndex(i);
 				let e = this.parentElement.querySelector("#" + this.slot + this.suffix + cnt) as HTMLElement;
@@ -186,24 +157,16 @@ export class ItemContainerImplementation {
 				const item = <Item> o;
 				let xOffset = 0;
 				let yOffset = (item["state"] || 0) * -32;
-				const isAnimated = typeof item.isAnimated === "function" && item.isAnimated();
-				const animationFrame = isAnimated && typeof item.getAnimationFrameIndex === "function"
-					? item.getAnimationFrameIndex(ItemAnimationPriority.Ui)
-					: 0;
-				xOffset = -(animationFrame * 32);
-
-				const atlasKey = `${item["class"]}/${item["subclass"]}/${item["state"] || 0}`;
-				const atlasPosition = atlas?.positions.get(atlasKey);
-				if (atlas && atlasPosition) {
-					e.style.backgroundImage = `url(${atlas.dataUrl})`;
-					e.style.backgroundPosition = `${-(atlasPosition.x) + 1}px ${-(atlasPosition.y) + 1}px`;
-				} else {
-					e.style.backgroundImage = "url("
-							+ singletons.getSpriteStore().checkPath(Paths.sprites
-									+ "/items/" + o["class"] + "/" + o["subclass"] + ".png")
-							+ ")";
-					e.style.backgroundPosition = (xOffset+1) + "px " + (yOffset+1) + "px";
+				if (item.isAnimated()) {
+					item.stepAnimation();
+					xOffset = -(item.getXFrameIndex() * 32);
 				}
+
+				e.style.backgroundImage = "url("
+						+ singletons.getSpriteStore().checkPath(Paths.sprites
+								+ "/items/" + o["class"] + "/" + o["subclass"] + ".png")
+						+ ")";
+				e.style.backgroundPosition = (xOffset+1) + "px " + (yOffset+1) + "px";
 				e.textContent = o.formatQuantity();
 				if (this.dirty) {
 					this.updateCursor(e, item);

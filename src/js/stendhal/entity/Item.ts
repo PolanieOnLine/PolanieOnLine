@@ -16,19 +16,11 @@ import { TextSprite } from "../sprite/TextSprite";
 import { RenderingContext2D } from "util/Types";
 import { Paths } from "../data/Paths";
 import { singletons } from "../SingletonRepo";
-import { ItemAnimationClock, ItemAnimationPriority } from "./ItemAnimationClock";
-
-type FrameCounts = {
-	columns: number;
-	rows: number;
-};
 
 declare var marauroa: any;
-declare var stendhal: any;
+
 
 export class Item extends Entity {
-	private static readonly FRAME_SIZE = 32;
-	private static readonly frameCountsCache = new Map<string, FrameCounts>();
 
 	override minimapShow = false;
 	override minimapStyle = "rgb(0,255,0)";
@@ -36,10 +28,10 @@ export class Item extends Entity {
 	private quantityTextSprite: TextSprite;
 
 	// animation
-	private animated: boolean | null = null;
-	private xFrames: number | null = null;
-	private yFrames: number | null = null;
-	private spriteLoadPromise?: Promise<void>;
+	private frameTimeStamp = 0;
+	private animated: boolean|null = null;
+	private xFrames: number|null = null;
+	private yFrames: number|null = null;
 
 	constructor() {
 		super();
@@ -47,8 +39,6 @@ export class Item extends Entity {
 			height: 32,
 			width: 32
 		};
-		this["drawWidth"] = Item.FRAME_SIZE;
-		this["drawHeight"] = Item.FRAME_SIZE;
 		this.quantityTextSprite = new TextSprite("", "white", "10px sans-serif");
 	}
 
@@ -60,7 +50,7 @@ export class Item extends Entity {
 		super.buildActions(list);
 
 		for (const mi of ItemMap.getActions(this)) {
-			if (typeof (mi.index) === "number") {
+			if (typeof(mi.index) === "number") {
 				list.splice(mi.index, 0, mi);
 			} else {
 				list.push(mi);
@@ -93,56 +83,34 @@ export class Item extends Entity {
 	}
 
 	override draw(ctx: RenderingContext2D) {
-		this.ensureSpriteReady();
-		if (!this.inView()) {
-			return;
-		}
-
 		this.sprite.offsetY = (this["state"] || 0) * 32
-		if (this.isAnimated()) {
-			this.stepAnimation(ItemAnimationPriority.Visible);
-		}
+		this.stepAnimation();
 
 		this.drawAt(ctx, this["x"] * 32, this["y"] * 32);
 	}
 
 	drawAt(ctx: RenderingContext2D, x: number, y: number) {
-		if (!this.sprite || !this.inView()) {
-			return;
+		if (this.sprite) {
+			this.drawSpriteAt(ctx, x, y);
+			let textMetrics = this.quantityTextSprite.getTextMetrics(ctx);
+			if (!textMetrics) {
+				throw new Error("textMetrics is undefined");
+			}
+			this.quantityTextSprite.draw(ctx, x + (32 - textMetrics.width), y + 6);
 		}
-
-		const image = this.ensureSpriteReady();
-		if (!image || !image.height) {
-			return;
-		}
-
-		const tileX = x;
-		const tileY = y;
-		const frameWidth = this["drawWidth"] || this.getFrameWidth();
-		const frameHeight = this["drawHeight"] || this.getFrameHeight();
-		const width = frameWidth || Item.FRAME_SIZE;
-		const height = frameHeight || Item.FRAME_SIZE;
-		const offsetX = this.sprite.offsetX || 0;
-		const offsetY = this.sprite.offsetY || 0;
-
-		x += Math.floor((this.getWidth() * Item.FRAME_SIZE - width) / 2);
-		y += Math.floor((this.getHeight() * Item.FRAME_SIZE - height) / 2);
-
-		ctx.drawImage(image, offsetX, offsetY, frameWidth, frameHeight, x, y, width, height);
-		let textMetrics = this.quantityTextSprite.getTextMetrics(ctx);
-		if (!textMetrics) {
-			throw new Error("textMetrics is undefined");
-		}
-		this.quantityTextSprite.draw(ctx, tileX + (32 - textMetrics.width), tileY + 6);
 	}
 
-	public stepAnimation(priority: ItemAnimationPriority = ItemAnimationPriority.Visible) {
-		if (!this.isAnimated()) {
-			return;
+	public stepAnimation() {
+		const currentTimeStamp = +new Date();
+		if (this.frameTimeStamp == 0) {
+			this.frameTimeStamp = currentTimeStamp;
+			this.sprite.offsetX = 0;
+			this.sprite.offsetY = 0;
+		} else if (currentTimeStamp - this.frameTimeStamp >= 100) {
+			// FIXME: need proper FPS limit
+			this.setXFrameIndex(this.getXFrameIndex() + 1);
+			this.frameTimeStamp = currentTimeStamp;
 		}
-
-		const frameIndex = this.getAnimationFrameIndex(priority);
-		this.setXFrameIndex(frameIndex);
 	}
 
 	formatQuantity() {
@@ -150,10 +118,10 @@ export class Item extends Entity {
 			return "";
 		}
 		if (this["quantity"] > 10000000) {
-			return Math.floor(this["quantity"] / 1000000) + "m";
+			return Math.floor(this["quantity"] / 1000000) + "M";
 		}
 		if (this["quantity"] > 10000) {
-			return Math.floor(this["quantity"] / 1000) + "k";
+			return Math.floor(this["quantity"] / 1000) + "K";
 		}
 		return this["quantity"];
 	}
@@ -183,158 +151,50 @@ export class Item extends Entity {
 			return false;
 		}
 		if (this.animated == null) {
-			const frames = this.ensureFrameCounts();
 			// store animation state
-			this.animated = frames.columns > 1;
+			this.animated = (singletons.getSpriteStore().get(this.sprite.filename).width / 32) > 1;
 		}
 
 		return this.animated;
 	}
 
 	private setXFrameIndex(idx: number) {
-		const frameWidth = this.getFrameWidth();
-		const frameCount = this.xFrames ?? this.ensureFrameCounts().columns;
+		if (this.xFrames == null) {
+			const img = singletons.getSpriteStore().get(this.sprite.filename);
+			this.xFrames = img.width / 32;
+		}
 
-		if (idx >= frameCount) {
+		if (idx >= this.xFrames) {
 			// restart
 			idx = 0;
 		}
 
-		this.sprite.offsetX = idx * frameWidth;
+		this.sprite.offsetX = idx * 32;
 	}
 
 	private setYFrameIndex(idx: number) {
-		const frameHeight = this.getFrameHeight();
-		const frameCount = this.yFrames ?? this.ensureFrameCounts().rows;
+		if (this.yFrames == null) {
+			const img = singletons.getSpriteStore().get(this.sprite.filename);
+			this.yFrames = img.height / 32;
+		}
 
-		if (idx >= frameCount) {
+		if (idx >= this.yFrames) {
 			// restart
 			idx = 0;
 		}
 
-		this.sprite.offsetY = idx * frameHeight;
+		this.sprite.offsetY = idx * 32;
 	}
 
 	public getXFrameIndex(): number {
-		const frameWidth = this.sprite.width || Item.FRAME_SIZE;
-		return (this.sprite.offsetX || 0) / frameWidth;
+		return (this.sprite.offsetX || 0) / 32;
 	}
 
 	public getYFrameIndex(): number {
-		const frameHeight = this.sprite.height || Item.FRAME_SIZE;
-		return (this.sprite.offsetY || 0) / frameHeight;
+		return (this.sprite.offsetY || 0) / 32;
 	}
 
 	public override isDraggable(): boolean {
-		return true;
-	}
-
-	public getAnimationFrameIndex(priority: ItemAnimationPriority = ItemAnimationPriority.Offscreen): number {
-		const frameCounts = this.ensureFrameCounts();
-
-		if (this.animated == null) {
-			this.animated = frameCounts.columns > 1;
-		}
-
-		if (!this.animated) {
-			return 0;
-		}
-
-		return ItemAnimationClock.getFrameIndex(this.getAnimationKey(), frameCounts.columns, priority);
-	}
-
-	private getFrameCounts() {
-		const img = singletons.getSpriteStore().get(this.sprite.filename);
-		const frameWidth = this.getFrameWidth();
-		const frameHeight = this.getFrameHeight();
-		const width = img && img.width ? img.width : frameWidth;
-		const height = img && img.height ? img.height : frameHeight;
-		const columns = Math.max(1, Math.floor(width / frameWidth));
-		const rows = Math.max(1, Math.floor(height / frameHeight));
-		this.xFrames = columns;
-		this.yFrames = rows;
-		const key = this.getAnimationKey();
-		ItemAnimationClock.setFrameCount(key, columns);
-		Item.frameCountsCache.set(key, { columns, rows });
-		return { columns, rows };
-	}
-
-	private ensureFrameCounts(): FrameCounts {
-		if (this.xFrames != null && this.yFrames != null) {
-			return { columns: this.xFrames, rows: this.yFrames };
-		}
-
-		const key = this.getAnimationKey();
-		const cached = Item.frameCountsCache.get(key);
-		if (cached) {
-			this.xFrames = cached.columns;
-			this.yFrames = cached.rows;
-			return cached;
-		}
-
-		return this.getFrameCounts();
-	}
-
-	private getAnimationKey(): string {
-		return `${this.sprite.filename}:${this.getFrameWidth()}x${this.getFrameHeight()}`;
-	}
-
-	private getFrameWidth() {
-		return this.sprite.width || Item.FRAME_SIZE;
-	}
-
-	private getFrameHeight() {
-		return this.sprite.height || Item.FRAME_SIZE;
-	}
-
-	private ensureSpriteReady(): HTMLImageElement | undefined {
-		const image = singletons.getSpriteStore().get(this.sprite.filename);
-		if (this.applySpriteDimensions(image)) {
-			return image;
-		}
-
-		if (!this.spriteLoadPromise) {
-			this.spriteLoadPromise = singletons.getSpriteStore().getWithPromise(this.sprite.filename)
-				.then((img: HTMLImageElement) => {
-					this.applySpriteDimensions(img);
-					if (stendhal?.ui?.gamewindow?.draw) {
-						stendhal.ui.gamewindow.draw();
-					}
-				})
-				.catch(() => undefined)
-				.finally(() => {
-					this.spriteLoadPromise = undefined;
-				});
-		}
-		return image;
-	}
-
-	private applySpriteDimensions(image?: HTMLImageElement | undefined) {
-		if (!this["drawWidth"] || isNaN(this["drawWidth"])) {
-			this["drawWidth"] = Item.FRAME_SIZE;
-		}
-		if (!this["drawHeight"] || isNaN(this["drawHeight"])) {
-			this["drawHeight"] = Item.FRAME_SIZE;
-		}
-
-		if (!image || !image.height) {
-			return false;
-		}
-
-		const key = this.getAnimationKey();
-		Item.frameCountsCache.delete(key);
-		this.xFrames = null;
-		this.yFrames = null;
-		this.animated = null;
-		const frameCounts = this.getFrameCounts();
-		const frameWidth = this.sprite.width || Math.floor(image.width / Math.max(1, frameCounts.columns)) || Item.FRAME_SIZE;
-		const frameHeight = this.sprite.height || Math.floor(image.height / Math.max(1, frameCounts.rows)) || Item.FRAME_SIZE;
-
-		this.sprite.width = frameWidth;
-		this.sprite.height = frameHeight;
-		this["drawWidth"] = frameWidth;
-		this["drawHeight"] = frameHeight;
-
 		return true;
 	}
 }

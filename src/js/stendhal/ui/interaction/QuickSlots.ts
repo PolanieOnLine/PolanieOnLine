@@ -18,7 +18,6 @@ import { ActionContextMenu } from "../dialog/ActionContextMenu";
 import { ui } from "../UI";
 import { Item } from "../../entity/Item";
 import { ItemContainerImplementation } from "../component/ItemContainerImplementation";
-import { ItemAnimationPriority } from "../../entity/ItemAnimationClock";
 import { singletons } from "../../SingletonRepo";
 import { Paths } from "../../data/Paths";
 import { Chat } from "../../util/Chat";

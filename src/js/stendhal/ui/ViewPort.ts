@@ -31,8 +31,6 @@ import { NotificationBubble } from "../sprite/NotificationBubble";
 import { SpeechBubble } from "../sprite/SpeechBubble";
 import { TextBubble } from "../sprite/TextBubble";
 
-import { ItemAnimationClock } from "../entity/ItemAnimationClock";
-
 import { Point } from "../util/Point";
 import { Canvas, RenderingContext2D } from "util/Types";
 import { Debug } from "../util/Debug";
@@ -204,8 +202,6 @@ export class ViewPort {
 		const rawDelta = now - this.lastFrameTime;
 		this.lastDeltaMs = Math.min(Math.max(rawDelta, 0), this.maxDeltaMs);
 		this.lastFrameTime = now;
-
-		ItemAnimationClock.update(this.lastDeltaMs);
 
 		if (marauroa.me && document.visibilityState === "visible") {
 			if (marauroa.currentZoneName === stendhal.data.map.currentZoneName
