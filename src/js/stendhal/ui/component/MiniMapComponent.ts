@@ -184,6 +184,10 @@ export class MiniMapComponent extends Component {
 			let o = marauroa.currentZone[i];
 			if (typeof (o["x"]) != "undefined" && typeof (o["y"]) != "undefined" && (o.minimapShow || isAdmin)) {
 				o.onMiniMapDraw();
+				const px = (o["_x"] ?? o["x"]);
+				const py = (o["_y"] ?? o["y"]);
+				const baseX = Math.floor(px * this.scale);
+				const baseY = Math.floor(py * this.scale);
 
 				// this.ctx.fillText(o.id, o.x * this.scale, o.y * this.scale);
 				if (o.minimapStyle) {
@@ -199,10 +203,10 @@ export class MiniMapComponent extends Component {
 						adj_scale = 6;
 					}
 
-					let ho = (o["width"] * adj_scale) / 2;
-					let vo = (o["height"] * adj_scale) / 2;
-					const hc = o["x"] * this.scale + ho;
-					const vc = o["y"] * this.scale + vo;
+					const ho = Math.floor((o["width"] * adj_scale) / 2);
+					const vo = Math.floor((o["height"] * adj_scale) / 2);
+					const hc = baseX + Math.floor(this.scale / 2);
+					const vc = baseY + Math.floor(this.scale / 2);
 
 					ctx.beginPath();
 					ctx.moveTo(hc - ho, vc);
@@ -212,7 +216,9 @@ export class MiniMapComponent extends Component {
 					ctx.stroke();
 					ctx.closePath();
 				} else {
-					ctx.strokeRect(o["x"] * this.scale, o["y"] * this.scale, o["width"] * this.scale, o["height"] * this.scale);
+					const rectWidth = Math.round(o["width"] * this.scale);
+					const rectHeight = Math.round(o["height"] * this.scale);
+					ctx.strokeRect(baseX, baseY, rectWidth, rectHeight);
 				}
 			}
 		}
