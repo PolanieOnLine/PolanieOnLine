@@ -27,6 +27,7 @@ import games.stendhal.server.core.config.ZoneGroupsXMLLoader;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination;
 import games.stendhal.server.entity.mapstuff.portal.Portal;
+import games.stendhal.server.entity.player.PlayerLevelRewardOnLogin;
 import marauroa.common.game.IRPZone;
 import marauroa.common.game.IRPZone.ID;
 import marauroa.server.game.rp.RPWorld;
@@ -149,6 +150,7 @@ public class StendhalRPWorld extends RPWorld {
 
 			validatePortals();
 			SingletonRepository.getAchievementNotifier().initialize();
+			SingletonRepository.getLoginNotifier().addListener(new PlayerLevelRewardOnLogin());
 			SingletonRepository.getGagManager();
 			SingletonRepository.getJail();
 		} catch (final Exception e) {

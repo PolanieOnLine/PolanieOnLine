@@ -74,6 +74,7 @@ import games.stendhal.server.entity.slot.Slots;
 import games.stendhal.server.entity.status.StatusType;
 import games.stendhal.server.events.PrivateTextEvent;
 import games.stendhal.server.events.SoundEvent;
+import games.stendhal.server.util.LevelRewardRegistry;
 import marauroa.common.game.RPEvent;
 import marauroa.common.game.RPObject;
 import marauroa.common.game.RPSlot;
@@ -2663,6 +2664,7 @@ public class Player extends DressedEntity implements UseListener {
 		// reward players on level up
 		if (oldLevel < level) {
 			AchievementNotifier.get().onLevelChange(this);
+			LevelRewardRegistry.checkAndInitiate(this);
 			this.addEvent(new SoundEvent(SoundID.LEVEL_UP, SoundLayer.USER_INTERFACE));
 			this.notifyWorldAboutChanges();
 		}
