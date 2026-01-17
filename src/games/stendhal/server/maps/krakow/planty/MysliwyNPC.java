@@ -62,7 +62,6 @@ public class MysliwyNPC implements ZoneConfigurator {
 				addGreeting("Witaj nieznajomy.");
 				addJob("Tak, mam. Przynieś mi uzębienie wszelkich zwierząt. Możesz coś #zaoferować.");
 				addHelp("Skupuję kły, zęby itp, jeżeli coś masz to #zaoferuj mi to.");
-				addOffer("Skupuję kieł wilczy 10, kieł niedźwiedzi 15, dziób ptaka 30, ząb potwora 200, kieł smoka 500, kieł złotej kostuchy 1000.");
 				addQuest("Nie teraz, jestem zajęty. Właśnie znalazłem trop.");
 				addGoodbye("Do widzenia.");
 			}

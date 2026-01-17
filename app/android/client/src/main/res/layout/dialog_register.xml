@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:orientation="vertical"
+	android:padding="24dp">
+
+	<EditText
+		android:id="@+id/registerUsername"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:hint="Nazwa użytkownika"
+		android:inputType="textPersonName"
+		android:maxLength="20"
+		android:maxLines="1"
+		android:singleLine="true" />
+
+	<EditText
+		android:id="@+id/registerPassword"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:hint="Hasło"
+		android:inputType="textPassword"
+		android:maxLength="50"
+		android:maxLines="1"
+		android:singleLine="true" />
+
+	<EditText
+		android:id="@+id/registerPasswordRepeat"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:hint="Powtórz hasło"
+		android:inputType="textPassword"
+		android:maxLength="50"
+		android:maxLines="1"
+		android:singleLine="true" />
+
+	<EditText
+		android:id="@+id/registerEmail"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:hint="Email"
+		android:inputType="textEmailAddress"
+		android:maxLines="1"
+		android:singleLine="true" />
+
+</LinearLayout>

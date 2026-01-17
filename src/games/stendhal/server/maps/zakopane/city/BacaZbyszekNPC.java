@@ -111,7 +111,7 @@ public class BacaZbyszekNPC implements ZoneConfigurator {
 				addReply(Arrays.asList("own", "przygarnąć"),
 						"Jeżeli znajdziesz dziką lub porzuconą owcę to aby ją przygarnąć możesz kliknąć na nią prawym przyciskiem i wybrać 'Przygarnij'. Później musisz zobaczyć na owcę!");
 				addReply(Arrays.asList("Dobromir", "Dobromira", "dobromir", "dobromira"),
-						"Dobromir znajduje się na zachód stąd.");
+						"Dobromir znajduje się na wschód stąd.");
 			}
 		};
 

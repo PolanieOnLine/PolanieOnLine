@@ -721,7 +721,7 @@
 		<item name="kieł smoka" price="500" />
 		<item name="kieł złotej kostuchy" price="5000" />
 
-		<merchant name="Myśliwy" flags="configure,noOffer"/>
+		<merchant name="Myśliwy" flags="configure"/>
 	</shop>
 
 	<!-- Rybak / Rybak Miłorad kupuje: -->
