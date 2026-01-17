@@ -71,14 +71,17 @@ export class MiniMapComponent extends Component {
 			return;
 		}
 
+		const baseX = marauroa.me["_x"] ?? marauroa.me["x"];
+		const baseY = marauroa.me["_y"] ?? marauroa.me["y"];
+
 		this.xOffset = 0;
 		this.yOffset = 0;
 
 		let imageWidth = this.mapWidth * this.scale;
 		let imageHeight = this.mapHeight * this.scale;
 
-		let xpos = Math.round((marauroa.me["x"] * this.scale) + 0.5) - this.width / 2;
-		let ypos = Math.round((marauroa.me["y"] * this.scale) + 0.5) - this.width / 2;
+		let xpos = Math.round((baseX * this.scale) + 0.5) - this.width / 2;
+		let ypos = Math.round((baseY * this.scale) + 0.5) - this.width / 2;
 
 		if (imageWidth > this.width) {
 			// need to pan width

@@ -18,6 +18,7 @@ import { ui } from "./UI";
 import { UIComponentEnum } from "./UIComponentEnum";
 
 import { PlayerEquipmentComponent } from "./component/PlayerEquipmentComponent";
+import { MiniMapComponent } from "./component/MiniMapComponent";
 
 import { ActionContextMenu } from "./dialog/ActionContextMenu";
 import { DropQuantitySelectorDialog } from "./dialog/DropQuantitySelectorDialog";
@@ -228,6 +229,7 @@ export class ViewPort {
 					this.applyHSLFilter();
 				}
 				this.drawEntitiesTop();
+				(ui.get(UIComponentEnum.MiniMap) as MiniMapComponent).draw();
 				this.drawEmojiSprites();
 				this.drawTextSprites();
 				this.drawTextSprites(this.notifSprites);
