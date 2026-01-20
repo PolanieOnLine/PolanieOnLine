@@ -1298,6 +1298,32 @@ body.mobile-floating-ui #left-panel-toggle,
 	gap: 2px;
 }
 
+.outfit-dialog {
+	max-height: 85vh;
+	overflow-y: auto;
+}
+
+.outfit-dialog__layout {
+	gap: 10px;
+	align-items: flex-start;
+}
+
+.outfit-dialog__column {
+	gap: 6px;
+}
+
+.outfit-dialog__part-row {
+	gap: 4px;
+}
+
+.outfit-dialog__color-group {
+	gap: 4px;
+}
+
+.outfit-dialog__actions {
+	padding-top: 6px;
+}
+
 .stretchgroup {
 	align-items: stretch;
 }
@@ -1369,6 +1395,51 @@ body.mobile-floating-ui #left-panel-toggle,
 }
 
 @media (max-width: 540px) {
+	.outfit-dialog {
+		max-height: 85vh;
+		overflow-y: auto;
+	}
+
+	.outfit-dialog__layout {
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+
+	.outfit-dialog__column,
+	.outfit-dialog__preview {
+		flex: 1 1 160px;
+		max-width: 100%;
+	}
+
+	.outfit-dialog__part-row {
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+
+	.outfit-dialog__color-toggle {
+		flex-wrap: wrap;
+		justify-content: center;
+		text-align: center;
+	}
+
+	.outfit-dialog button {
+		min-width: 28px;
+		padding: 2px 6px;
+	}
+
+	.outfit-dialog canvas {
+		width: 40px;
+		height: auto;
+	}
+
+	.outfit-dialog__color-canvas {
+		width: 64px;
+	}
+
+	.outfit-dialog__color-gradient {
+		width: 64px;
+	}
+
 	.travellogdialog .tlog_hlayout {
 		display: flex;
 		flex-direction: column;

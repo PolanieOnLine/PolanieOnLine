@@ -524,46 +524,46 @@
 	</template>
 
 	<template id="outfitdialog-template">
-		<div class="background">
-			<div class="horizontalgroup">
+		<div class="background outfit-dialog">
+			<div class="horizontalgroup outfit-dialog__layout">
 
 				<!-- part selectors -->
-				<div class="verticalgroup">
-					<div class="horizontalgroup">
+				<div class="verticalgroup outfit-dialog__column">
+					<div class="horizontalgroup outfit-dialog__part-row">
 						<button type="button" id="setoutfitprevhair">&lt;</button>
 						<canvas id="setoutfithaircanvas" width="48" height="64"></canvas>
 						<button type="button" id="setoutfitnexthair">&gt;</button>
 					</div>
 
-					<div class="horizontalgroup">
+					<div class="horizontalgroup outfit-dialog__part-row">
 						<button type="button" id="setoutfitpreveyes">&lt;</button>
 						<canvas id="setoutfiteyescanvas" width="48" height="64"></canvas>
 						<button type="button" id="setoutfitnexteyes">&gt;</button>
 						<br>
 					</div>
 
-					<div class="horizontalgroup">
+					<div class="horizontalgroup outfit-dialog__part-row">
 						<button type="button" id="setoutfitprevmouth">&lt;</button>
 						<canvas id="setoutfitmouthcanvas" width="48" height="64"></canvas>
 						<button type="button" id="setoutfitnextmouth">&gt;</button>
 						<br>
 					</div>
 
-					<div class="horizontalgroup">
+					<div class="horizontalgroup outfit-dialog__part-row">
 						<button type="button" id="setoutfitprevhead">&lt;</button>
 						<canvas id="setoutfitheadcanvas" width="48" height="64"></canvas>
 						<button type="button" id="setoutfitnexthead">&gt;</button>
 						<br>
 					</div>
 
-					<div class="horizontalgroup">
+					<div class="horizontalgroup outfit-dialog__part-row">
 						<button type="button" id="setoutfitprevbody">&lt;</button>
 						<canvas id="setoutfitbodycanvas" width="48" height="64"></canvas>
 						<button type="button" id="setoutfitnextbody">&gt;</button>
 						<br>
 					</div>
 
-					<div class="horizontalgroup">
+					<div class="horizontalgroup outfit-dialog__part-row">
 						<button type="button" id="setoutfitprevdress">&lt;</button>
 						<canvas id="setoutfitdresscanvas" width="48" height="64"></canvas>
 						<button type="button" id="setoutfitnextdress">&gt;</button>
@@ -571,54 +571,54 @@
 				</div>
 
 				<!-- color selectors -->
-				<div class="verticalgroup">
-					<div class="verticalgroup">
-						<div class="horizontalgroup">
+				<div class="verticalgroup outfit-dialog__column">
+					<div class="verticalgroup outfit-dialog__color-group">
+						<div class="horizontalgroup outfit-dialog__color-toggle">
 							<input type="checkbox" id="setoutfithaircolortoggle"> <label
 								for="setoutfithaircolortoggle">Kolor włosów</label>
 						</div>
-						<canvas id="setoutfithaircolorcanvas" width="80" height="52"></canvas>
-						<canvas id="setoutfithaircolorgradient" width="80" height="10"></canvas>
+						<canvas id="setoutfithaircolorcanvas" class="outfit-dialog__color-canvas" width="80" height="52"></canvas>
+						<canvas id="setoutfithaircolorgradient" class="outfit-dialog__color-gradient" width="80" height="10"></canvas>
 					</div>
 
-					<div class="verticalgroup">
-						<div class="horizontalgroup">
+					<div class="verticalgroup outfit-dialog__color-group">
+						<div class="horizontalgroup outfit-dialog__color-toggle">
 							<input type="checkbox" id="setoutfiteyescolortoggle"> <label
 								for="setoutfiteyescolortoggle">Kolor oczu</label>
 						</div>
-						<canvas id="setoutfiteyescolorcanvas" width="80" height="52"></canvas>
-						<canvas id="setoutfiteyescolorgradient" width="80" height="10"></canvas>
+						<canvas id="setoutfiteyescolorcanvas" class="outfit-dialog__color-canvas" width="80" height="52"></canvas>
+						<canvas id="setoutfiteyescolorgradient" class="outfit-dialog__color-gradient" width="80" height="10"></canvas>
 					</div>
 
-					<div class="verticalgroup">
-						<div class="horizontalgroup">
+					<div class="verticalgroup outfit-dialog__color-group">
+						<div class="horizontalgroup outfit-dialog__color-toggle">
 							<input type="checkbox" id="setoutfitskincolortoggle"> <label
 								for="setoutfitskincolortoggle">Kolor skóry</label>
 						</div>
-						<canvas id="setoutfitskincolorcanvas" width="80" height="52"></canvas>
-						<canvas id="setoutfitskincolorgradient" width="80" height="10"></canvas>
+						<canvas id="setoutfitskincolorcanvas" class="outfit-dialog__color-canvas" width="80" height="52"></canvas>
+						<canvas id="setoutfitskincolorgradient" class="outfit-dialog__color-gradient" width="80" height="10"></canvas>
 					</div>
 
-					<div class="verticalgroup">
-						<div class="horizontalgroup">
+					<div class="verticalgroup outfit-dialog__color-group">
+						<div class="horizontalgroup outfit-dialog__color-toggle">
 							<input type="checkbox" id="setoutfitdresscolortoggle"> <label
 								for="setoutfitdresscolortoggle">Kolor ubrań</label>
 						</div>
-						<canvas id="setoutfitdresscolorcanvas" width="80" height="52"></canvas>
-						<canvas id="setoutfitdresscolorgradient" width="80" height="10"></canvas>
+						<canvas id="setoutfitdresscolorcanvas" class="outfit-dialog__color-canvas" width="80" height="52"></canvas>
+						<canvas id="setoutfitdresscolorgradient" class="outfit-dialog__color-gradient" width="80" height="10"></canvas>
 					</div>
 				</div>
 
 				<!-- hat & mask part selectors -->
-				<div class="verticalgroup">
+				<div class="verticalgroup outfit-dialog__column">
 
-					<div class="horizontalgroup">
+					<div class="horizontalgroup outfit-dialog__part-row">
 						<button type="button" id="setoutfitprevhat">&lt;</button>
 						<canvas id="setoutfithatcanvas" width="48" height="64"></canvas>
 						<button type="button" id="setoutfitnexthat">&gt;</button>
 					</div>
 
-					<div class="horizontalgroup">
+					<div class="horizontalgroup outfit-dialog__part-row">
 						<button type="button" id="setoutfitprevmask">&lt;</button>
 						<canvas id="setoutfitmaskcanvas" width="48" height="64"></canvas>
 						<button type="button" id="setoutfitnextmask">&gt;</button>
@@ -627,15 +627,15 @@
 				</div>
 
 				<!-- full composite preview -->
-				<div id="outfit-preview" class="verticalgroup">
+				<div id="outfit-preview" class="verticalgroup outfit-dialog__preview">
 					<div id="outfit-preview-composite"></div>
-					<div class="horizontalgroup">
+					<div class="horizontalgroup outfit-dialog__part-row">
 						<button type="button" id="rotate-c">&#8635;</button>
 						<button type="button" id="rotate-cc">&#8634;</button>
 					</div>
 				</div>
 			</div>
-			<div align="right">
+			<div align="right" class="outfit-dialog__actions">
 				<button type="button" id="setoutfitcancel">Zamknij</button>
 				<button type="button" id="setoutfitapply">Zmień wygląd</button>
 			</div>
