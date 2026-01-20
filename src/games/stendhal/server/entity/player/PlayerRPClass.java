@@ -172,7 +172,10 @@ public class PlayerRPClass {
 		player.addAttribute("menu", Type.STRING, Definition.VOLATILE);
 
 		// commerce
-		player.addAttribute("npc_purchases", Type.MAP, Definition.PRIVATE);
-		player.addAttribute("npc_sales", Type.MAP, Definition.PRIVATE);
-	}
+                player.addAttribute("npc_purchases", Type.MAP, Definition.PRIVATE);
+                player.addAttribute("npc_sales", Type.MAP, Definition.PRIVATE);
+
+                player.addAttribute("skill_points_available", Type.INT, Definition.PRIVATE);
+                player.addAttribute("skilltree_firemage", Type.STRING, Definition.PRIVATE);
+        }
 }
