@@ -22,11 +22,15 @@ export class PanelDock {
 	private readonly store = UiStateStore.get();
 
 	private readonly root = document.getElementById("client")!;
+	private minimapOverlay: HTMLElement | null = null;
+	private minimapToggle: HTMLButtonElement | null = null;
+	private minimapToggleBound = false;
 	private unsubscribe?: () => void;
 
 
 	constructor() {
 		this.unsubscribe = this.store.subscribe((state) => this.applyState(state));
+		this.bindMinimapToggle();
 	}
 
 	destroy() {
@@ -45,10 +49,16 @@ export class PanelDock {
 	}
 
 	private applyState(state: UiState) {
+		this.bindMinimapToggle();
+		this.ensureMinimapOverlay();
 		const mobileFloating = this.root.classList.contains("mobile-floating-ui");
 		if (!mobileFloating) {
 			this.root.classList.remove("left-panel-collapsed");
 			this.root.classList.remove("right-panel-collapsed");
+			if (state.minimapMinimized) {
+				this.store.setMinimapMinimized(false);
+			}
+			this.minimapOverlay?.classList.remove("minimap-minimized");
 			this.updateMinimapDock(true);
 			SoftwareJoystickController.get().update();
 			return;
@@ -60,6 +70,14 @@ export class PanelDock {
 
 		this.root.classList.toggle("left-panel-collapsed", !showLeft);
 		this.root.classList.toggle("right-panel-collapsed", !showRight);
+		if (showLeft && state.minimapMinimized) {
+			this.store.setMinimapMinimized(false);
+		}
+		const allowMinimapMinimized = !showLeft;
+		this.minimapOverlay?.classList.toggle(
+			"minimap-minimized",
+			allowMinimapMinimized && state.minimapMinimized
+		);
 		requestAnimationFrame(() => singletons.getQuickSlotsController().update());
 		this.updateMinimapDock(showLeft);
 		SoftwareJoystickController.get().update();
@@ -85,5 +103,35 @@ export class PanelDock {
 			minimapOverlay.append(minimapFrame);
 		}
 		minimapOverlay.hidden = false;
+	}
+
+	private ensureMinimapOverlay() {
+		if (!this.minimapOverlay) {
+			this.minimapOverlay = document.getElementById("minimap-overlay");
+		}
+	}
+
+	private bindMinimapToggle() {
+		if (this.minimapToggleBound) {
+			return;
+		}
+		if (!this.minimapToggle) {
+			this.minimapToggle = document.getElementById("minimap-toggle") as HTMLButtonElement | null;
+		}
+		if (!this.minimapToggle) {
+			return;
+		}
+		this.minimapToggle.addEventListener("click", (event) => {
+			event.preventDefault();
+			event.stopPropagation();
+			this.store.toggleMinimapMinimized();
+		});
+		this.minimapToggle.addEventListener("pointerdown", (event) => {
+			event.stopPropagation();
+		});
+		this.minimapToggle.addEventListener("pointerup", (event) => {
+			event.stopPropagation();
+		});
+		this.minimapToggleBound = true;
 	}
 }

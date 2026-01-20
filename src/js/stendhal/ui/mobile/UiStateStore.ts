@@ -29,6 +29,7 @@ export interface UiState {
 	chatExpanded: boolean;
 	leftPanelExpanded: boolean;
 	rightPanelExpanded: boolean;
+	minimapMinimized: boolean;
 }
 
 type UiStateCallback = (state: UiState) => void;
@@ -71,8 +72,16 @@ export class UiStateStore {
 		const chatExpanded = this.resolveChatExpanded();
 		const leftPanelExpanded = this.resolveLeftPanelExpanded();
 		const rightPanelExpanded = this.resolveRightPanelExpanded();
+		const minimapMinimized = this.resolveMinimapMinimized();
 
-		this.state = { mode, handedness, chatExpanded, leftPanelExpanded, rightPanelExpanded };
+		this.state = {
+			mode,
+			handedness,
+			chatExpanded,
+			leftPanelExpanded,
+			rightPanelExpanded,
+			minimapMinimized
+		};
 	}
 
 	getState(): UiState {
@@ -151,6 +160,19 @@ export class UiStateStore {
 		this.setLeftPanelExpanded(!this.state.leftPanelExpanded);
 	}
 
+	setMinimapMinimized(minimized: boolean) {
+		if (this.state.minimapMinimized === minimized) {
+			return;
+		}
+		this.state = { ...this.state, minimapMinimized: minimized };
+		stendhal.config.set("ui.minimap.minimized", minimized);
+		this.notify();
+	}
+
+	toggleMinimapMinimized() {
+		this.setMinimapMinimized(!this.state.minimapMinimized);
+	}
+
 	private notify() {
 		for (const cb of this.callbacks) {
 			cb(this.getState());
@@ -217,13 +239,21 @@ export class UiStateStore {
 		return true;
 	}
 
+	private resolveMinimapMinimized(): boolean {
+		if (stendhal.config.isSet("ui.minimap.minimized")) {
+			return stendhal.config.getBoolean("ui.minimap.minimized");
+		}
+		return false;
+	}
+
 	private createDefaultState(): UiState {
 		return {
 			mode: UiMode.PANELS,
 			handedness: UiHandedness.RIGHT,
 			chatExpanded: this.resolveChatExpanded(),
 			leftPanelExpanded: this.resolveDefaultLeftPanelExpanded(),
-			rightPanelExpanded: this.resolveDefaultRightPanelExpanded()
+			rightPanelExpanded: this.resolveDefaultRightPanelExpanded(),
+			minimapMinimized: false
 		};
 	}
 }
