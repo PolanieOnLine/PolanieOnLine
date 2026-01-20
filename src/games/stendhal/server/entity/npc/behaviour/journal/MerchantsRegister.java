@@ -110,4 +110,26 @@ public class MerchantsRegister {
 
 		return names;
 	}
+
+	public BuyerBehaviour getBuyer(final String npcName) {
+		for (final Pair<String, BuyerBehaviour> entry : buyers) {
+			if (entry.first().equals(npcName)) {
+				return entry.second();
+			}
+		}
+		return null;
+	}
+
+	public SellerBehaviour getSeller(final String npcName) {
+		for (final Pair<String, SellerBehaviour> entry : sellers) {
+			if (entry.first().equals(npcName)) {
+				return entry.second();
+			}
+		}
+		return null;
+	}
+
+	public boolean isMerchant(final String npcName) {
+		return getSeller(npcName) != null || getBuyer(npcName) != null;
+	}
 }
