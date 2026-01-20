@@ -902,6 +902,10 @@ span.lognick {
 	display: none;
 }
 
+#minimap-frame.minimap-minimized-frame {
+	display: none;
+}
+
 #minimap-toggle {
 	width: 26px;
 	height: 26px;

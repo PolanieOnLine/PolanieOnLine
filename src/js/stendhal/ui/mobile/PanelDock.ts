@@ -51,6 +51,7 @@ export class PanelDock {
 	private applyState(state: UiState) {
 		this.bindMinimapToggle();
 		this.ensureMinimapOverlay();
+		const minimapFrame = document.getElementById("minimap-frame");
 		const mobileFloating = this.root.classList.contains("mobile-floating-ui");
 		if (!mobileFloating) {
 			this.root.classList.remove("left-panel-collapsed");
@@ -59,6 +60,7 @@ export class PanelDock {
 				this.store.setMinimapMinimized(false);
 			}
 			this.minimapOverlay?.classList.remove("minimap-minimized");
+			minimapFrame?.classList.remove("minimap-minimized-frame");
 			this.updateMinimapDock(true);
 			SoftwareJoystickController.get().update();
 			return;
@@ -76,6 +78,10 @@ export class PanelDock {
 		const allowMinimapMinimized = !showLeft;
 		this.minimapOverlay?.classList.toggle(
 			"minimap-minimized",
+			allowMinimapMinimized && state.minimapMinimized
+		);
+		minimapFrame?.classList.toggle(
+			"minimap-minimized-frame",
 			allowMinimapMinimized && state.minimapMinimized
 		);
 		requestAnimationFrame(() => singletons.getQuickSlotsController().update());
