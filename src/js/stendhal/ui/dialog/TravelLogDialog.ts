@@ -119,6 +119,10 @@ export class TravelLogDialog extends DialogContentComponent {
 				this.renderQuestList();
 			});
 		}
+
+		this.componentElement.addEventListener("keydown", (event) => {
+			this.onDialogKeyDown(event as KeyboardEvent);
+		});
 	}
 
 	public updateTabs() {
@@ -400,6 +404,40 @@ export class TravelLogDialog extends DialogContentComponent {
 			const isSelected = (option as HTMLOptionElement).value === selectedId;
 			option.setAttribute("aria-selected", isSelected ? "true" : "false");
 		});
+	}
+
+	private onDialogKeyDown(event: KeyboardEvent) {
+		if (event.key === "Escape") {
+			event.preventDefault();
+			this.close();
+			return;
+		}
+
+		if (event.key !== "ArrowUp" && event.key !== "ArrowDown" && event.key !== "Enter") {
+			return;
+		}
+
+		const target = event.target as HTMLElement | null;
+		if (target instanceof HTMLInputElement || target instanceof HTMLTextAreaElement || target?.isContentEditable) {
+			return;
+		}
+
+		const itemList = this.child(".travellogitems") as HTMLSelectElement | null;
+		if (!itemList || itemList.options.length === 0) {
+			return;
+		}
+
+		event.preventDefault();
+
+		let nextIndex = itemList.selectedIndex >= 0 ? itemList.selectedIndex : 0;
+		if (event.key === "ArrowUp") {
+			nextIndex = Math.max(0, nextIndex - 1);
+		} else if (event.key === "ArrowDown") {
+			nextIndex = Math.min(itemList.options.length - 1, nextIndex + 1);
+		}
+
+		itemList.selectedIndex = nextIndex;
+		itemList.dispatchEvent(new Event("change"));
 	}
 }
 
