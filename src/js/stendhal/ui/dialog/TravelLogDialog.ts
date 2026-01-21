@@ -24,6 +24,14 @@ declare var stendhal: any;
 export class TravelLogDialog extends DialogContentComponent {
 	private currentProgressType = "";
 	private repeatable: {[key: string]: boolean;} = {};
+	private activeTab = "";
+	private query = "";
+	private activeFilters = new Set<string>();
+	private sortMode = "recent";
+	private selectedQuestId = "";
+	private mobileView = false;
+	private questsByTab: {[key: string]: QuestEntry[]} = {};
+	private searchDebounceHandle?: number;
 
 	constructor(dataItems?: string[]) {
 		super("travellogdialog-template");
@@ -31,6 +39,7 @@ export class TravelLogDialog extends DialogContentComponent {
 		this.refresh();
 
 		this.child(".travellogitems")!.innerHTML = "<option value=\"\">(ładowanie)</option>";
+		this.mobileView = stendhal.session.touchOnly();
 		if (dataItems) {
 			this.setDataItems(dataItems);
 		}
@@ -38,9 +47,10 @@ export class TravelLogDialog extends DialogContentComponent {
 
 	public setDataItems(dataItems: string[]) {
 		this.createHtml(dataItems);
+		this.activeTab = dataItems[0] ?? "";
 
 		// trigger loading of content for first entry
-		this.currentProgressType = dataItems[0];
+		this.currentProgressType = this.activeTab;
 		var action = {
 			"type":           "progressstatus",
 			"progress_type":  this.currentProgressType
@@ -50,6 +60,7 @@ export class TravelLogDialog extends DialogContentComponent {
 
 	public override refresh() {
 		this.componentElement.style.setProperty("font-family", stendhal.config.get("font.travel-log"));
+		this.mobileView = stendhal.session.touchOnly();
 	}
 
 	public override getConfigId(): string {
@@ -74,6 +85,38 @@ export class TravelLogDialog extends DialogContentComponent {
 		this.child(".travellogitems")!.addEventListener("change", (event) => {
 			this.onTravelLogItemsChange(event);
 		});
+
+		const searchInput = this.child(".travellogdialog__search-input") as HTMLInputElement | null;
+		if (searchInput) {
+			searchInput.addEventListener("input", () => {
+				this.queueSearchUpdate(searchInput.value);
+			});
+		}
+
+		this.componentElement.querySelectorAll(".travellogdialog__chip").forEach((chip) => {
+			chip.addEventListener("click", () => {
+				const label = chip.textContent?.trim();
+				if (!label) {
+					return;
+				}
+				if (this.activeFilters.has(label)) {
+					this.activeFilters.delete(label);
+					chip.classList.remove("active");
+				} else {
+					this.activeFilters.add(label);
+					chip.classList.add("active");
+				}
+				this.renderQuestList();
+			});
+		});
+
+		const sortSelect = this.child("#travellog-sort") as HTMLSelectElement | null;
+		if (sortSelect) {
+			sortSelect.addEventListener("change", () => {
+				this.sortMode = sortSelect.value;
+				this.renderQuestList();
+			});
+		}
 	}
 
 	public updateTabs() {
@@ -93,12 +136,14 @@ export class TravelLogDialog extends DialogContentComponent {
 		this.refreshDetails();
 
 		this.currentProgressType = (event.target as HTMLElement).id;
+		this.activeTab = this.currentProgressType;
 		this.updateTabs();
 		var action = {
 			"type":           "progressstatus",
 			"progress_type":  this.currentProgressType
 		};
 		marauroa.clientFramework.sendAction(action);
+		this.renderQuestList();
 
 		// request repeatable quests
 		if (this.currentProgressType === "Ukończone zadania") {
@@ -115,6 +160,7 @@ export class TravelLogDialog extends DialogContentComponent {
 			// ignore options without value
 			return;
 		}
+		this.selectedQuestId = value;
 		var action = {
 			"type":           "progressstatus",
 			"progress_type":  this.currentProgressType,
@@ -134,28 +180,9 @@ export class TravelLogDialog extends DialogContentComponent {
 		}
 		// sort items alphabetically
 		dataItems.sort();
-		var html = "";
-		for (var i = 0; i < dataItems.length; i++) {
-			const currentItem = dataItems[i];
-			html += "<option value=\"" + stendhal.ui.html.esc(currentItem) + "\">"
-				+ stendhal.ui.html.esc(currentItem);
-			if (this.repeatable[currentItem]) {
-				html += " (R)";
-			}
-			html += "</option>";
-		}
-		const itemList = this.child(".travellogitems")! as HTMLSelectElement;
-		itemList.innerHTML = html;
-
-		if (dataItems.length > 0) {
-			// trigger loading of content for first entry
-			itemList.selectedIndex = 0;
-			itemList.dispatchEvent(new Event("change"));
-		} else if (stendhal.session.touchOnly()) {
-			// show a "none" option for touch enabled devices
-			itemList.innerHTML = "<option value=\"\">(nic)</option>";
-			itemList.selectedIndex = 0;
-		}
+		this.questsByTab[progressType] = dataItems.map((item, index) =>
+			this.parseQuestEntry(item, index, progressType));
+		this.renderQuestList();
 	}
 
 
@@ -163,6 +190,7 @@ export class TravelLogDialog extends DialogContentComponent {
 		if (progressType !== this.currentProgressType) {
 			return;
 		}
+		this.selectedQuestId = selectedItem;
 
 		const detailsSpan = document.createElement("span");
 
@@ -225,6 +253,139 @@ export class TravelLogDialog extends DialogContentComponent {
 		}
 
 		this.repeatable = repeatable;
+		this.renderQuestList();
+	}
+
+	private queueSearchUpdate(value: string) {
+		if (this.searchDebounceHandle) {
+			window.clearTimeout(this.searchDebounceHandle);
+		}
+		this.searchDebounceHandle = window.setTimeout(() => {
+			this.query = value.trim();
+			this.renderQuestList();
+		}, 200);
+	}
+
+	private renderQuestList() {
+		const quests = this.sortQuests(this.filterQuests(this.getQuestsByTab(this.activeTab)));
+		const itemList = this.child(".travellogitems")! as HTMLSelectElement;
+		let html = "";
+		for (const quest of quests) {
+			const label = this.formatQuestOption(quest);
+			const badges = this.deriveBadges(quest);
+			const badgeSuffix = badges.length > 0 ? ` (${badges.join(", ")})` : "";
+			html += "<option value=\"" + stendhal.ui.html.esc(quest.id) + "\">"
+				+ stendhal.ui.html.esc(label + badgeSuffix) + "</option>";
+		}
+		itemList.innerHTML = html;
+
+		if (quests.length > 0) {
+			const selectedIndex = quests.findIndex((quest) => quest.id === this.selectedQuestId);
+			itemList.selectedIndex = selectedIndex >= 0 ? selectedIndex : 0;
+			if (selectedIndex < 0 || !this.selectedQuestId) {
+				this.selectedQuestId = quests[itemList.selectedIndex].id;
+				itemList.dispatchEvent(new Event("change"));
+			}
+		} else if (this.mobileView) {
+			itemList.innerHTML = "<option value=\"\">(nic)</option>";
+			itemList.selectedIndex = 0;
+		}
+	}
+
+	private formatQuestOption(quest: QuestEntry): string {
+		const npc = quest.npc || "brak NPC";
+		const location = quest.location || "brak lokacji";
+		const progress = quest.progress || "brak postępu";
+		return `${quest.name} • ${npc} • ${location} • ${progress}`;
+	}
+
+	private parseQuestEntry(raw: string, index: number, progressType: string): QuestEntry {
+		const trimmed = raw.trim();
+		let name = trimmed || `Zadanie ${index + 1}`;
+		let npc = "";
+		let location = "";
+		let progress = "";
+		let metadata: string[] = [];
+		if (trimmed.includes("|")) {
+			metadata = trimmed.split("|").map((part) => part.trim());
+		} else if (trimmed.includes(" - ")) {
+			metadata = trimmed.split(" - ").map((part) => part.trim());
+		}
+		if (metadata.length > 0) {
+			name = metadata[0] || name;
+			npc = metadata[1] || "";
+			location = metadata[2] || "";
+			progress = metadata[3] || "";
+		}
+		const status = this.deriveStatus(progressType);
+		const id = trimmed || name || `${progressType}-${index}`;
+		return { id, name, npc, location, progress, status, order: index, raw: trimmed };
+	}
+
+	private deriveStatus(progressType: string): string {
+		const normalized = progressType.toLowerCase();
+		if (normalized.includes("ukończ")) {
+			return "Ukończone";
+		}
+		if (normalized.includes("ukry")) {
+			return "Ukryte";
+		}
+		return "Aktywne";
+	}
+
+	private getQuestsByTab(tab: string): QuestEntry[] {
+		return this.questsByTab[tab] ?? [];
+	}
+
+	private filterQuests(quests: QuestEntry[]): QuestEntry[] {
+		let filtered = quests;
+		if (this.query) {
+			const needle = this.query.toLowerCase();
+			filtered = filtered.filter((quest) =>
+				[quest.name, quest.npc, quest.location, quest.progress, quest.raw]
+					.filter(Boolean)
+					.some((field) => field!.toLowerCase().includes(needle))
+			);
+		}
+		if (this.activeFilters.size > 0) {
+			filtered = filtered.filter((quest) => this.activeFilters.has(quest.status));
+		}
+		return filtered;
+	}
+
+	private sortQuests(quests: QuestEntry[]): QuestEntry[] {
+		const sorted = [...quests];
+		if (this.sortMode === "name") {
+			sorted.sort((a, b) => a.name.localeCompare(b.name));
+			return sorted;
+		}
+		if (this.sortMode === "region") {
+			sorted.sort((a, b) => a.location.localeCompare(b.location));
+			return sorted;
+		}
+		sorted.sort((a, b) => a.order - b.order);
+		return sorted;
+	}
+
+	private deriveBadges(quest: QuestEntry): string[] {
+		const badges: string[] = [];
+		if (quest.status && quest.status !== "Aktywne") {
+			badges.push(quest.status);
+		}
+		if (this.repeatable[quest.id]) {
+			badges.push("R");
+		}
+		return badges;
 	}
 }
 
+type QuestEntry = {
+	id: string;
+	name: string;
+	npc: string;
+	location: string;
+	progress: string;
+	status: string;
+	order: number;
+	raw: string;
+};
