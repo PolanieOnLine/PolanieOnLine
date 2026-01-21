@@ -117,6 +117,9 @@ public class BuiltQuest extends AbstractQuest {
 				questBuilder.info().getRepeatableAfterMinutes() > 0,
 				// all quest manuscript instances should be using index 2 for completions count
 				2);
+		questInfo.setRewards(questBuilder.info().getRewards());
+		questInfo.setRequirements(questBuilder.info().getRequirements());
+		questInfo.setCosts(questBuilder.info().getCosts());
 
 		ChatCondition questCompletedCondition = questBuilder.task().buildQuestCompletedCondition(questSlot);
 		ChatAction questCompleteAction = questBuilder.task().buildQuestCompleteAction(questSlot);

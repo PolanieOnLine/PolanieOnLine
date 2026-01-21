@@ -751,6 +751,46 @@ public class StendhalQuestSystem {
 	}
 
 	/**
+	 * gets detailed information about a quest, including goal, rewards, and requirements.
+	 *
+	 * @param player player to get the details for
+	 * @param questName name of quest
+	 * @return details
+	 */
+	public List<String> getQuestDetailSections(final Player player, final String questName) {
+		List<String> res = new LinkedList<String>();
+		for (final IQuest quest : quests) {
+			final QuestInfo questInfo = quest.getQuestInfo(player);
+			if (questInfo.getName().equals(questName)) {
+				if (!questInfo.getDescription().isEmpty()) {
+					res.add("Cel: " + questInfo.getDescription());
+				}
+				addLabeledEntries(res, "Nagroda", questInfo.getRewards());
+				addLabeledEntries(res, "Wymagania", questInfo.getRequirements());
+				addLabeledEntries(res, "Koszt", questInfo.getCosts());
+				final List<String> history = quest.getFormattedHistory(player);
+				for (final String entry : history) {
+					if (entry != null && !entry.trim().isEmpty()) {
+						res.add(entry);
+					}
+				}
+			}
+		}
+		return res;
+	}
+
+	private void addLabeledEntries(final List<String> res, final String label, final List<String> entries) {
+		if (entries == null) {
+			return;
+		}
+		for (final String entry : entries) {
+			if (entry != null && !entry.trim().isEmpty()) {
+				res.add(label + ": " + entry);
+			}
+		}
+	}
+
+	/**
 	 * gets details on the progress of the quest
 	 *
 	 * @param player player to get the details for

@@ -11,7 +11,9 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import marauroa.common.Pair;
@@ -31,6 +33,10 @@ public class QuestInfo {
 
 	private Map<String, String> history = new HashMap<String, String>();
 	private Map<String, String> hints = new HashMap<String, String>();
+
+	private List<String> rewards = new ArrayList<String>();
+	private List<String> requirements = new ArrayList<String>();
+	private List<String> costs = new ArrayList<String>();
 
 	private int suggestedMinLevel;
 
@@ -79,6 +85,42 @@ public class QuestInfo {
 
 	public void setHistory(final Map<String, String> history) {
 		this.history = history;
+	}
+
+	public List<String> getRewards() {
+		return rewards;
+	}
+
+	public void setRewards(final List<String> rewards) {
+		if (rewards == null) {
+			this.rewards = new ArrayList<String>();
+		} else {
+			this.rewards = new ArrayList<String>(rewards);
+		}
+	}
+
+	public List<String> getRequirements() {
+		return requirements;
+	}
+
+	public void setRequirements(final List<String> requirements) {
+		if (requirements == null) {
+			this.requirements = new ArrayList<String>();
+		} else {
+			this.requirements = new ArrayList<String>(requirements);
+		}
+	}
+
+	public List<String> getCosts() {
+		return costs;
+	}
+
+	public void setCosts(final List<String> costs) {
+		if (costs == null) {
+			this.costs = new ArrayList<String>();
+		} else {
+			this.costs = new ArrayList<String>(costs);
+		}
 	}
 
 	public String getName() {

@@ -107,7 +107,7 @@ public class ProgressStatusQueryAction implements ActionListener {
 			player.addEvent(new ProgressStatusEvent(progressType, item,
 					questSystem.getQuestDescription(player, questName),
 					questSystem.getQuestLevelWarning(player, questName),
-					questSystem.getQuestProgressDetails(player, questName)));
+					questSystem.getQuestDetailSections(player, questName)));
 		} else if (progressType.equals("Produkcja")) {
 			player.addEvent(new ProgressStatusEvent(progressType, item,
 					SingletonRepository.getProducerRegister().getProductionDescription(player, item),

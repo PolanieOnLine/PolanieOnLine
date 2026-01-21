@@ -238,6 +238,11 @@ public class BalloonForBobby extends AbstractQuest {
 				"Balonik Bobbiego",
 				"Młody chłopiec Bobby w Fado wpatruje się w niebo, szukając balonów. On je kocha i chce mieć jednego dla siebie.",
 				true, null, 1);
+		questInfo.setRewards(Arrays.asList(
+				"200 PD",
+				"50 punktów karmy"));
+		questInfo.setRequirements(Arrays.asList(
+				"Oddaj Bobbiemu balonik."));
 		prepareRequestQuestStep();
 		prepareGreetWithBalloonStep();
 		prepareAttendingWithBalloonStep();
