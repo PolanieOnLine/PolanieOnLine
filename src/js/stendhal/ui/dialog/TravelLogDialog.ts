@@ -9,7 +9,6 @@
  *                                                                         *
  ***************************************************************************/
 
-import { Paths } from "../../data/Paths";
 import { DialogContentComponent } from "../toolkit/DialogContentComponent";
 import { ui } from "../UI";
 import { UIComponentEnum } from "../UIComponentEnum";
@@ -228,54 +227,67 @@ export class TravelLogDialog extends DialogContentComponent {
 		}
 		this.selectedQuestId = selectedItem;
 
-		const detailsSpan = document.createElement("span");
+		const details = this.child(".travellogdetails")!;
+		this.refreshDetails();
+		const quest = this.findQuestById(selectedItem);
+		const badges = quest ? this.deriveBadges(quest) : [];
+		const miniProgress = quest ? this.extractMiniProgress(quest.progress) : null;
 
-		detailsSpan.innerHTML = "<h3>" + stendhal.ui.html.esc(selectedItem) + "</h3>";
-		if (this.repeatable[selectedItem]) {
-			detailsSpan.innerHTML += "<p id=\"travellogrepeatable\">"
-				+ "<img src=\"" + Paths.gui + "/rp.png\" /> <em>Mogę wykonać to zadanie jeszcze raz.</em></p>";
+		const header = document.createElement("div");
+		header.className = "travellogdialog__quest-header";
+
+		const title = document.createElement("div");
+		title.className = "travellogdialog__quest-title";
+		title.textContent = selectedItem;
+		header.appendChild(title);
+
+		const meta = document.createElement("div");
+		meta.className = "travellogdialog__quest-meta";
+
+		if (badges.length > 0) {
+			const badgeRow = document.createElement("div");
+			badgeRow.className = "travellogdialog__quest-badges";
+			for (const badge of badges) {
+				const badgeEl = document.createElement("span");
+				badgeEl.className = `quest-badge quest-badge--${badge.tone}`;
+				badgeEl.textContent = badge.label;
+				badgeRow.appendChild(badgeEl);
+			}
+			meta.appendChild(badgeRow);
 		}
 
-		detailsSpan.innerHTML += "<p id=\"travellogdescription\">"
-				+ stendhal.ui.html.esc(description) + "</p>";
-
-		const ul = document.createElement("ul");
-		ul.className = "uniform";
-
-		for (var i = 0; i < dataItems.length; i++) {
-			let content = []
-			let html = stendhal.ui.html.esc(dataItems[i], ["em", "tally"]);
-			if (html.includes("<tally>") && html.includes("</tally>")) {
-				content = stendhal.ui.html.formatTallyMarks(html);
-			} else {
-				content.push(html);
-			}
-
-			const li = document.createElement("li");
-			li.className = "uniform";
-			li.innerHTML = content[0];
-			if (content[1]) {
-				li.appendChild(content[1]);
-
-				if (content[2]) {
-					li.innerHTML += content[2];
-				}
-			}
-
-			ul.appendChild(li);
+		if (miniProgress) {
+			const progressEl = document.createElement("span");
+			progressEl.className = "quest-mini-progress";
+			progressEl.textContent = miniProgress;
+			meta.appendChild(progressEl);
 		}
 
-		detailsSpan.appendChild(ul);
-		this.refreshDetails("", detailsSpan);
+		if (meta.childElementCount > 0) {
+			header.appendChild(meta);
+		}
+
+		details.prepend(header);
+
+		const sectionData = this.parseDetailSections(dataItems);
+		const descriptionBody = details.querySelector(".travellogdialog__section--description .travellogdialog__section-body") as HTMLElement | null;
+		const goalsBody = details.querySelector(".travellogdialog__section--goals .travellogdialog__section-body") as HTMLElement | null;
+		const rewardsBody = details.querySelector(".travellogdialog__section--rewards .travellogdialog__section-body") as HTMLElement | null;
+		const requirementsBody = details.querySelector(".travellogdialog__section--requirements .travellogdialog__section-body") as HTMLElement | null;
+
+		this.fillTextSection(descriptionBody, description, "Brak opisu.");
+		this.fillListSection(goalsBody, sectionData.goals, "Brak celów.");
+		this.fillListSection(rewardsBody, sectionData.rewards, "Brak nagród.");
+		this.fillListSection(requirementsBody, sectionData.requirements, "Brak wymagań lub kosztów.");
 	}
 
-	private refreshDetails(html: string="", newDetails?: HTMLElement) {
+	private refreshDetails() {
 		const details = this.child(".travellogdetails")!;
-		details.innerHTML = html;
-
-		if (newDetails) {
-			details.appendChild(newDetails);
-		}
+		details.querySelectorAll(".travellogdialog__section-body").forEach((section) => {
+			section.innerHTML = "";
+			section.classList.remove("travellogdialog__section-body--empty");
+		});
+		details.querySelector(".travellogdialog__quest-header")?.remove();
 	}
 
 	public override onParentClose() {
@@ -309,7 +321,7 @@ export class TravelLogDialog extends DialogContentComponent {
 		for (const quest of quests) {
 			const label = this.formatQuestOption(quest);
 			const badges = this.deriveBadges(quest);
-			const badgeSuffix = badges.length > 0 ? ` (${badges.join(", ")})` : "";
+			const badgeSuffix = badges.length > 0 ? ` (${badges.map((badge) => badge.label).join(", ")})` : "";
 			const isSelected = quest.id === this.selectedQuestId;
 			html += "<option value=\"" + stendhal.ui.html.esc(quest.id)
 				+ "\" role=\"option\" aria-selected=\"" + (isSelected ? "true" : "false") + "\">"
@@ -359,7 +371,7 @@ export class TravelLogDialog extends DialogContentComponent {
 		}
 		const status = this.deriveStatus(progressType);
 		const id = trimmed || name || `${progressType}-${index}`;
-		return { id, name, npc, location, progress, status, order: index, raw: trimmed };
+		return { id, name, npc, location, progress, status, order: index, raw: trimmed, progressType };
 	}
 
 	private deriveStatus(progressType: string): string {
@@ -407,15 +419,110 @@ export class TravelLogDialog extends DialogContentComponent {
 		return sorted;
 	}
 
-	private deriveBadges(quest: QuestEntry): string[] {
-		const badges: string[] = [];
-		if (quest.status && quest.status !== "Aktywne") {
-			badges.push(quest.status);
+	private deriveBadges(quest: QuestEntry): QuestBadge[] {
+		const badges: QuestBadge[] = [];
+		const normalized = quest.progressType.toLowerCase();
+		if (normalized.includes("nowe")) {
+			badges.push({ label: "NOWE", tone: "new" });
+		} else if (normalized.includes("ukończ")) {
+			badges.push({ label: "GOTOWE", tone: "done" });
+		} else if (normalized.includes("ukry") || normalized.includes("anul")) {
+			badges.push({ label: "ANULOWALNE", tone: "cancel" });
+		} else if (normalized.includes("w trakcie") || normalized.includes("akty")) {
+			badges.push({ label: "W TRAKCIE", tone: "progress" });
 		}
 		if (this.repeatable[quest.id]) {
-			badges.push("R");
+			badges.push({ label: "POWTARZALNE", tone: "repeatable" });
 		}
 		return badges;
+	}
+
+	private extractMiniProgress(progress: string): string | null {
+		const match = progress.match(/(\d+)\s*\/\s*(\d+)/);
+		if (!match) {
+			return null;
+		}
+		return `${match[1]}/${match[2]}`;
+	}
+
+	private findQuestById(id: string): QuestEntry | undefined {
+		return this.getQuestsByTab(this.activeTab).find((quest) => quest.id === id);
+	}
+
+	private parseDetailSections(dataItems: string[]): QuestDetailSections {
+		const sections: QuestDetailSections = { goals: [], rewards: [], requirements: [] };
+		for (const item of dataItems) {
+			const trimmed = item.trim();
+			if (!trimmed) {
+				continue;
+			}
+			const labelMatch = trimmed.match(/^([^:]+):\s*(.*)$/);
+			const label = labelMatch ? labelMatch[1].trim().toLowerCase() : "";
+			const remainder = labelMatch ? labelMatch[2].trim() : "";
+			const payload = remainder || trimmed;
+			if (label.startsWith("cel")) {
+				sections.goals.push(payload);
+			} else if (label.startsWith("nagrod")) {
+				sections.rewards.push(payload);
+			} else if (label.startsWith("wymagan") || label.startsWith("koszt")) {
+				sections.requirements.push(payload);
+			} else {
+				sections.goals.push(trimmed);
+			}
+		}
+		return sections;
+	}
+
+	private fillTextSection(section: HTMLElement | null, text: string, fallback: string) {
+		if (!section) {
+			return;
+		}
+		section.innerHTML = "";
+		const trimmed = text.trim();
+		if (!trimmed) {
+			section.textContent = fallback;
+			section.classList.add("travellogdialog__section-body--empty");
+			return;
+		}
+		section.innerHTML = stendhal.ui.html.esc(trimmed);
+	}
+
+	private fillListSection(section: HTMLElement | null, items: string[], fallback: string) {
+		if (!section) {
+			return;
+		}
+		section.innerHTML = "";
+		if (items.length === 0) {
+			section.textContent = fallback;
+			section.classList.add("travellogdialog__section-body--empty");
+			return;
+		}
+		const ul = document.createElement("ul");
+		ul.className = "uniform travellogdialog__list";
+		for (const item of items) {
+			ul.appendChild(this.buildDetailListItem(item));
+		}
+		section.appendChild(ul);
+	}
+
+	private buildDetailListItem(item: string): HTMLLIElement {
+		const li = document.createElement("li");
+		li.className = "uniform";
+		let content: Array<string | HTMLElement> = [];
+		const html = stendhal.ui.html.esc(item, ["em", "tally"]);
+		if (html.includes("<tally>") && html.includes("</tally>")) {
+			content = stendhal.ui.html.formatTallyMarks(html);
+		} else {
+			content = [html];
+		}
+		li.innerHTML = content[0] as string;
+		if (content[1]) {
+			li.appendChild(content[1] as HTMLElement);
+			if (content[2]) {
+				li.innerHTML += content[2] as string;
+			}
+		}
+		return li;
 	}
 
 	private updateListboxSelection(selectedId: string) {
@@ -475,4 +582,16 @@ type QuestEntry = {
 	status: string;
 	order: number;
 	raw: string;
+	progressType: string;
+};
+
+type QuestBadge = {
+	label: string;
+	tone: "new" | "progress" | "done" | "cancel" | "repeatable";
+};
+
+type QuestDetailSections = {
+	goals: string[];
+	rewards: string[];
+	requirements: string[];
 };
