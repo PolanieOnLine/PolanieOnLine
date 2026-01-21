@@ -126,7 +126,7 @@ export class TravelLogDialog extends DialogContentComponent {
 	}
 
 	public updateTabs() {
-		let activeTabElement: HTMLElement | null = null;
+		let activeTabId = "";
 		document.querySelectorAll(".progressTypeButton").forEach((tab) => {
 			const element = document.getElementById(tab.id)! as HTMLElement;
 			if (element.id == this.currentProgressType) {
@@ -134,7 +134,7 @@ export class TravelLogDialog extends DialogContentComponent {
 				element.classList.add("active");
 				element.setAttribute("aria-selected", "true");
 				element.setAttribute("tabindex", "0");
-				activeTabElement = element;
+				activeTabId = element.id;
 			} else {
 				element.classList.remove("active");
 				element.setAttribute("aria-selected", "false");
@@ -142,8 +142,8 @@ export class TravelLogDialog extends DialogContentComponent {
 			}
 		});
 		const tabpanel = this.child("#travellog-tabpanel");
-		if (tabpanel && activeTabElement) {
-			tabpanel.setAttribute("aria-labelledby", activeTabElement.id);
+		if (tabpanel && activeTabId) {
+			tabpanel.setAttribute("aria-labelledby", activeTabId);
 		}
 	}
 
