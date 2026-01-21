@@ -359,7 +359,7 @@ export class TravelLogDialog extends DialogContentComponent {
 		let progress = "";
 		let metadata: string[] = [];
 		if (trimmed.includes("|")) {
-			metadata = trimmed.split("|").map((part) => part.trim());
+			metadata = trimmed.split("|", 4).map((part) => part.trim());
 		} else if (trimmed.includes(" - ")) {
 			metadata = trimmed.split(" - ").map((part) => part.trim());
 		}

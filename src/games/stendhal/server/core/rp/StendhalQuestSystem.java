@@ -570,7 +570,7 @@ public class StendhalQuestSystem {
 		List<String> res = new LinkedList<String>();
 		for (final IQuest quest : quests) {
 			if (quest.isStarted(player) && !quest.isCompleted(player) && quest.isVisibleOnQuestStatus(player)) {
-				res.add(quest.getQuestInfo(player).getName());
+				res.add(buildQuestEntry(quest, player));
 			}
 		}
 		return res;
@@ -589,7 +589,7 @@ public class StendhalQuestSystem {
 		List<String> res = new ArrayList<String>(tmp.size());
 		for (IQuest quest : tmp) {
 			if (quest.isVisibleOnQuestStatus(player)) {
-				res.add(quest.getQuestInfo(player).getName());
+				res.add(buildQuestEntry(quest, player));
 			}
 		}
 		return res;
@@ -616,10 +616,68 @@ public class StendhalQuestSystem {
 		List<String> res = new ArrayList<String>();
 		for (IQuest quest : tmp) {
 			if (quest.isVisibleOnQuestStatus(player) && quest.isRepeatable(player)) {
-				res.add(quest.getQuestInfo(player).getName());
+				res.add(buildQuestEntry(quest, player));
 			}
 		}
 		return res;
+	}
+
+	/**
+	 * Builds a stable quest entry for UI lists in the format:
+	 * Name | NPC | Region | Progress
+	 *
+	 * @param quest quest to format
+	 * @param player player for context
+	 * @return formatted quest entry
+	 */
+	private String buildQuestEntry(final IQuest quest, final Player player) {
+		final String name = quest.getQuestInfo(player).getName();
+		final String npc = quest.getNPCName() == null ? "" : quest.getNPCName();
+		final String region = quest.getRegion() == null ? "" : quest.getRegion();
+		final String progress = buildQuestProgressSummary(quest, player);
+		return name + " | " + npc + " | " + region + " | " + progress;
+	}
+
+	/**
+	 * Extracts the quest name from a formatted quest entry.
+	 *
+	 * @param entry formatted quest entry
+	 * @return quest name
+	 */
+	public static String extractQuestNameFromEntry(final String entry) {
+		if (entry == null) {
+			return "";
+		}
+		final String trimmed = entry.trim();
+		if (trimmed.contains("|")) {
+			final String[] parts = trimmed.split("\\|", 2);
+			return parts.length > 0 ? parts[0].trim() : trimmed;
+		}
+		if (trimmed.contains(" - ")) {
+			final String[] parts = trimmed.split(" - ", 2);
+			return parts.length > 0 ? parts[0].trim() : trimmed;
+		}
+		return trimmed;
+	}
+
+	private String buildQuestProgressSummary(final IQuest quest, final Player player) {
+		String progress = player.getQuest(quest.getSlotName());
+		if (progress != null) {
+			progress = progress.replace('\n', ' ').replace('\r', ' ').trim();
+		}
+		if (progress == null || progress.isEmpty()) {
+			if (quest.isCompleted(player)) {
+				return "ukończone";
+			}
+			if (quest.isStarted(player)) {
+				return "w toku";
+			}
+			return "nierozpoczęte";
+		}
+		if (progress.length() > 60) {
+			return progress.substring(0, 57) + "...";
+		}
+		return progress;
 	}
 
 	/**
