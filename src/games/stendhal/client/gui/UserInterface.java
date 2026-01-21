@@ -89,4 +89,14 @@ public interface UserInterface {
 	 * toggle debug messages
 	 */
 	public void toggleDebugEnabled();
+
+	/**
+	 * Requests the producer window to open for a specific NPC.
+	 *
+	 * @param npcName
+	 *	    internal NPC name.
+	 * @param npcTitle
+	 *	    display title of the NPC.
+	 */
+	public void showProducerWindow(String npcName, String npcTitle);
 }
