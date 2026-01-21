@@ -51,6 +51,7 @@ export class TravelLogDialog extends DialogContentComponent {
 
 		// trigger loading of content for first entry
 		this.currentProgressType = this.activeTab;
+		this.updateTabs();
 		var action = {
 			"type":           "progressstatus",
 			"progress_type":  this.currentProgressType
@@ -71,7 +72,8 @@ export class TravelLogDialog extends DialogContentComponent {
 		let buttons = "";
 		for (var i = 0; i < dataItems.length; i++) {
 			buttons = buttons + "<button id=\"" + stendhal.ui.html.esc(dataItems[i])
-				+ "\" class=\"progressTypeButton\">"
+				+ "\" class=\"progressTypeButton\" role=\"tab\" aria-selected=\"false\""
+				+ " aria-controls=\"travellog-tabpanel\" tabindex=\"-1\">"
 				+ stendhal.ui.html.esc(dataItems[i]) + "</button>";
 		}
 		this.child(".tavellogtabpanel")!.innerHTML = buttons;
@@ -120,15 +122,25 @@ export class TravelLogDialog extends DialogContentComponent {
 	}
 
 	public updateTabs() {
+		let activeTabElement: HTMLElement | null = null;
 		document.querySelectorAll(".progressTypeButton").forEach((tab) => {
 			const element = document.getElementById(tab.id)! as HTMLElement;
 			if (element.id == this.currentProgressType) {
 				// highlight selected tab
 				element.classList.add("active");
+				element.setAttribute("aria-selected", "true");
+				element.setAttribute("tabindex", "0");
+				activeTabElement = element;
 			} else {
 				element.classList.remove("active");
+				element.setAttribute("aria-selected", "false");
+				element.setAttribute("tabindex", "-1");
 			}
 		});
+		const tabpanel = this.child("#travellog-tabpanel");
+		if (tabpanel && activeTabElement) {
+			tabpanel.setAttribute("aria-labelledby", activeTabElement.id);
+		}
 	}
 
 	private onProgressTypeButtonClick(event: Event) {
@@ -167,6 +179,7 @@ export class TravelLogDialog extends DialogContentComponent {
 			"item":           value
 		};
 		marauroa.clientFramework.sendAction(action);
+		this.updateListboxSelection(value);
 	}
 
 
@@ -274,7 +287,9 @@ export class TravelLogDialog extends DialogContentComponent {
 			const label = this.formatQuestOption(quest);
 			const badges = this.deriveBadges(quest);
 			const badgeSuffix = badges.length > 0 ? ` (${badges.join(", ")})` : "";
-			html += "<option value=\"" + stendhal.ui.html.esc(quest.id) + "\">"
+			const isSelected = quest.id === this.selectedQuestId;
+			html += "<option value=\"" + stendhal.ui.html.esc(quest.id)
+				+ "\" role=\"option\" aria-selected=\"" + (isSelected ? "true" : "false") + "\">"
 				+ stendhal.ui.html.esc(label + badgeSuffix) + "</option>";
 		}
 		itemList.innerHTML = html;
@@ -285,9 +300,11 @@ export class TravelLogDialog extends DialogContentComponent {
 			if (selectedIndex < 0 || !this.selectedQuestId) {
 				this.selectedQuestId = quests[itemList.selectedIndex].id;
 				itemList.dispatchEvent(new Event("change"));
+			} else {
+				this.updateListboxSelection(this.selectedQuestId);
 			}
 		} else if (this.mobileView) {
-			itemList.innerHTML = "<option value=\"\">(nic)</option>";
+			itemList.innerHTML = "<option value=\"\" role=\"option\" aria-selected=\"true\">(nic)</option>";
 			itemList.selectedIndex = 0;
 		}
 	}
@@ -376,6 +393,13 @@ export class TravelLogDialog extends DialogContentComponent {
 			badges.push("R");
 		}
 		return badges;
+	}
+
+	private updateListboxSelection(selectedId: string) {
+		this.componentElement.querySelectorAll(".travellogitems option").forEach((option) => {
+			const isSelected = (option as HTMLOptionElement).value === selectedId;
+			option.setAttribute("aria-selected", isSelected ? "true" : "false");
+		});
 	}
 }
 

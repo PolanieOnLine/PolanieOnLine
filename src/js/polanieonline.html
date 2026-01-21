@@ -364,7 +364,7 @@
 					<div class="travellogdialog__header">
 						<div class="travellogdialog__title">Dziennik zadań</div>
 					</div>
-					<div class="tavellogtabpanel tabpanel-tabs tabpanel-tabs-top"></div>
+					<div class="tavellogtabpanel tabpanel-tabs tabpanel-tabs-top" role="tablist" aria-label="Kategorie zadań"></div>
 					<div class="travellogdialog__search">
 						<input class="travellogdialog__search-input" type="text" placeholder="Szukaj zadania">
 					</div>
@@ -382,10 +382,10 @@
 						</select>
 					</div>
 					<div class="travellogdialog__listbox">
-						<select class="travellogitems" size="20" aria-label="Lista zadań"></select>
+						<select id="travellog-items" class="travellogitems" size="20" role="listbox" aria-label="Lista zadań"></select>
 					</div>
 				</div>
-				<div class="travellogdialog__panel travellogdialog__panel--right view-details">
+				<div class="travellogdialog__panel travellogdialog__panel--right view-details" id="travellog-tabpanel" role="tabpanel">
 					<div class="tlog_rpane">
 						<div class="travellogdialog__details-header">Szczegóły zadania</div>
 						<div class="travellogdetails travellogdialog__details-body">

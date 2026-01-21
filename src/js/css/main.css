@@ -27,6 +27,13 @@ input {
 	touch-action: pan-x pan-y;
 }
 
+.focus-visible,
+:focus-visible {
+	outline: 2px solid #f9e7c5;
+	outline-offset: 2px;
+	box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.7);
+}
+
 .emoji-text {
 /* a better solution might be to create our own emoji font
 	font-family:
