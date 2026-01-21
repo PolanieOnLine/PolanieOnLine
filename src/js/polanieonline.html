@@ -360,7 +360,7 @@
 	<template id="travellogdialog-template">
 		<div class="tavellogpopup travellogdialog">
 			<div class="travellogdialog__layout">
-				<div class="travellogdialog__panel travellogdialog__panel--left">
+				<div class="travellogdialog__panel travellogdialog__panel--left list-panel">
 					<div class="travellogdialog__header">
 						<div class="travellogdialog__title">Dziennik zadań</div>
 					</div>
@@ -385,9 +385,12 @@
 						<select id="travellog-items" class="travellogitems" size="20" role="listbox" aria-label="Lista zadań"></select>
 					</div>
 				</div>
-				<div class="travellogdialog__panel travellogdialog__panel--right view-details" id="travellog-tabpanel" role="tabpanel">
+				<div class="travellogdialog__panel travellogdialog__panel--right view-details details-panel" id="travellog-tabpanel" role="tabpanel">
 					<div class="tlog_rpane">
-						<div class="travellogdialog__details-header">Szczegóły zadania</div>
+						<div class="travellogdialog__details-header">
+							<button class="travellogdialog__back-button" type="button">← Wróć</button>
+							<span>Szczegóły zadania</span>
+						</div>
 						<div class="travellogdetails travellogdialog__details-body">
 							<section class="travellogdialog__section">
 								<h3 class="travellogdialog__section-title">Opis</h3>

@@ -1401,6 +1401,66 @@ body.mobile-floating-ui #left-panel-toggle,
 	font-style: italic;
 }
 
+.travellogdialog__layout {
+	display: flex;
+	gap: 12px;
+	min-width: 0;
+}
+
+.travellogdialog__panel {
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+}
+
+.travellogdialog__listbox {
+	flex: 1 1 auto;
+	min-height: 0;
+}
+
+.travellogdialog__listbox .travellogitems {
+	height: 100%;
+	overflow-y: auto;
+}
+
+.travellogdialog .tlog_rpane {
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 auto;
+	min-height: 0;
+	float: none;
+	margin-left: 0;
+	overflow: hidden;
+}
+
+.travellogdialog__details-header {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.travellogdialog__details-body {
+	flex: 1 1 auto;
+	min-height: 0;
+	overflow-y: auto;
+}
+
+.travellogdialog__back-button {
+	display: none;
+}
+
+.travellogdialog.is-mobile .travellogdialog__back-button {
+	display: inline-flex;
+}
+
+.travellogdialog.is-mobile.view-details .list-panel {
+	display: none;
+}
+
+.travellogdialog.is-mobile.view-list .details-panel {
+	display: none;
+}
+
 @media (hover: none) and (pointer: coarse) {
 	.outfit-dialog {
 		max-height: 85vh;
@@ -1468,7 +1528,7 @@ body.mobile-floating-ui #left-panel-toggle,
 		margin-left: 0;
 		height: auto;
 		max-height: 70vh;
-		overflow-y: auto;
+		overflow: hidden;
 	}
 
 	.travellogdialog .travellogdetails {

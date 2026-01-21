@@ -29,6 +29,7 @@ export class TravelLogDialog extends DialogContentComponent {
 	private activeFilters = new Set<string>();
 	private sortMode = "recent";
 	private selectedQuestId = "";
+	private isMobile = false;
 	private mobileView = false;
 	private questsByTab: {[key: string]: QuestEntry[]} = {};
 	private searchDebounceHandle?: number;
@@ -39,6 +40,9 @@ export class TravelLogDialog extends DialogContentComponent {
 		this.refresh();
 
 		this.child(".travellogitems")!.innerHTML = "<option value=\"\">(ładowanie)</option>";
+		this.isMobile = stendhal.session.touchOnly();
+		this.mobileView = false;
+		this.updateViewClasses();
 		this.mobileView = stendhal.session.touchOnly();
 		if (dataItems) {
 			this.setDataItems(dataItems);
@@ -61,7 +65,8 @@ export class TravelLogDialog extends DialogContentComponent {
 
 	public override refresh() {
 		this.componentElement.style.setProperty("font-family", stendhal.config.get("font.travel-log"));
-		this.mobileView = stendhal.session.touchOnly();
+		this.isMobile = stendhal.session.touchOnly();
+		this.updateViewClasses();
 	}
 
 	public override getConfigId(): string {
@@ -120,6 +125,14 @@ export class TravelLogDialog extends DialogContentComponent {
 			});
 		}
 
+		const backButton = this.child(".travellogdialog__back-button") as HTMLButtonElement | null;
+		if (backButton) {
+			backButton.addEventListener("click", () => {
+				this.mobileView = false;
+				this.updateViewClasses();
+			});
+		}
+
 		this.componentElement.addEventListener("keydown", (event) => {
 			this.onDialogKeyDown(event as KeyboardEvent);
 		});
@@ -150,6 +163,8 @@ export class TravelLogDialog extends DialogContentComponent {
 	private onProgressTypeButtonClick(event: Event) {
 		// clear details when changing category
 		this.refreshDetails();
+		this.mobileView = false;
+		this.updateViewClasses();
 
 		this.currentProgressType = (event.target as HTMLElement).id;
 		this.activeTab = this.currentProgressType;
@@ -177,6 +192,10 @@ export class TravelLogDialog extends DialogContentComponent {
 			return;
 		}
 		this.selectedQuestId = value;
+		if (this.isMobile) {
+			this.mobileView = true;
+			this.updateViewClasses();
+		}
 		var action = {
 			"type":           "progressstatus",
 			"progress_type":  this.currentProgressType,
@@ -307,7 +326,7 @@ export class TravelLogDialog extends DialogContentComponent {
 			} else {
 				this.updateListboxSelection(this.selectedQuestId);
 			}
-		} else if (this.mobileView) {
+		} else if (this.isMobile) {
 			itemList.innerHTML = "<option value=\"\" role=\"option\" aria-selected=\"true\">(nic)</option>";
 			itemList.selectedIndex = 0;
 		}
@@ -404,6 +423,12 @@ export class TravelLogDialog extends DialogContentComponent {
 			const isSelected = (option as HTMLOptionElement).value === selectedId;
 			option.setAttribute("aria-selected", isSelected ? "true" : "false");
 		});
+	}
+
+	private updateViewClasses() {
+		this.componentElement.classList.toggle("is-mobile", this.isMobile);
+		this.componentElement.classList.toggle("view-details", this.isMobile && this.mobileView);
+		this.componentElement.classList.toggle("view-list", this.isMobile && !this.mobileView);
 	}
 
 	private onDialogKeyDown(event: KeyboardEvent) {
