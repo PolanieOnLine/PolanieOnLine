@@ -1239,7 +1239,7 @@ button.windowtitleminimize:first-child {
 	pointer-events: none;
 }
 
-@media (max-width: 540px) {
+@media (hover: none) and (pointer: coarse) {
 	.quick-slot {
 		width: 28px;
 		height: 28px;
@@ -1394,7 +1394,7 @@ body.mobile-floating-ui #left-panel-toggle,
 	font-style: italic;
 }
 
-@media (max-width: 540px) {
+@media (hover: none) and (pointer: coarse) {
 	.outfit-dialog {
 		max-height: 85vh;
 		overflow-y: auto;
@@ -1689,7 +1689,7 @@ body.mobile-floating-ui #left-panel-toggle,
 	margin: 0 auto;
 }
 
-@media (max-width: 540px) {
+@media (hover: none) and (pointer: coarse) {
 	.settings-general__layout,
 	.settings-input__layout {
 		grid-template-columns: 1fr;
