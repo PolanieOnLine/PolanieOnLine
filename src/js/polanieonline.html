@@ -359,13 +359,54 @@
 
 	<template id="travellogdialog-template">
 		<div class="tavellogpopup travellogdialog">
-			<div class="tavellogtabpanel tabpanel-tabs tabpanel-tabs-top">
-
-			</div>
-			<div class="tlog_hlayout">
-				<select class="travellogitems" size="20"></select>
-				<div class="tlog_rpane">
-					<div class="travellogdetails"></div>
+			<div class="travellogdialog__layout">
+				<div class="travellogdialog__panel travellogdialog__panel--left">
+					<div class="travellogdialog__header">
+						<div class="travellogdialog__title">Dziennik zadań</div>
+					</div>
+					<div class="tavellogtabpanel tabpanel-tabs tabpanel-tabs-top"></div>
+					<div class="travellogdialog__search">
+						<input class="travellogdialog__search-input" type="text" placeholder="Szukaj zadania">
+					</div>
+					<div class="travellogdialog__chips">
+						<button class="travellogdialog__chip" type="button">Aktywne</button>
+						<button class="travellogdialog__chip" type="button">Ukończone</button>
+						<button class="travellogdialog__chip" type="button">Ukryte</button>
+					</div>
+					<div class="travellogdialog__sort">
+						<label class="travellogdialog__sort-label" for="travellog-sort">Sortuj:</label>
+						<select id="travellog-sort" class="travellogdialog__sort-select">
+							<option value="recent">Ostatnie</option>
+							<option value="name">Nazwa</option>
+							<option value="region">Region</option>
+						</select>
+					</div>
+					<div class="travellogdialog__listbox">
+						<select class="travellogitems" size="20" aria-label="Lista zadań"></select>
+					</div>
+				</div>
+				<div class="travellogdialog__panel travellogdialog__panel--right view-details">
+					<div class="tlog_rpane">
+						<div class="travellogdialog__details-header">Szczegóły zadania</div>
+						<div class="travellogdetails travellogdialog__details-body">
+							<section class="travellogdialog__section">
+								<h3 class="travellogdialog__section-title">Opis</h3>
+								<div class="travellogdialog__section-body"></div>
+							</section>
+							<section class="travellogdialog__section">
+								<h3 class="travellogdialog__section-title">Cele</h3>
+								<div class="travellogdialog__section-body"></div>
+							</section>
+							<section class="travellogdialog__section">
+								<h3 class="travellogdialog__section-title">Nagrody</h3>
+								<div class="travellogdialog__section-body"></div>
+							</section>
+							<section class="travellogdialog__section">
+								<h3 class="travellogdialog__section-title">Wymagania</h3>
+								<div class="travellogdialog__section-body"></div>
+							</section>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
