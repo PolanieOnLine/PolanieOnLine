@@ -1446,6 +1446,7 @@ body.mobile-floating-ui #left-panel-toggle,
 	flex: 1 1 auto;
 	min-height: 0;
 	overflow-y: auto;
+	line-height: 1.4;
 }
 
 .travellogdialog__quest-header {
@@ -1533,6 +1534,24 @@ body.mobile-floating-ui #left-panel-toggle,
 .travellogdialog__section-body--empty {
 	color: #aaa;
 	font-style: italic;
+}
+
+.travellogdialog__section {
+	margin: 0 0 8px;
+}
+
+.travellogdialog__section-title {
+	margin: 0 0 4px;
+	font-size: 15px;
+	font-weight: 600;
+}
+
+.travellogdialog__section-body {
+	line-height: 1.4;
+}
+
+.travellogdialog__section:last-child {
+	margin-bottom: 0;
 }
 
 .travellogdialog__list {
