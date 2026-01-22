@@ -11,6 +11,7 @@
  ***************************************************************************/
 package games.stendhal.server.entity.npc;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 
 import org.apache.log4j.Logger;
 
@@ -93,7 +95,7 @@ import games.stendhal.server.entity.player.Player;
  *        String item = text.substring(i + 1);
  *        if (item.equals("sword")) {
  *            npc.say(item + "costs 10 coins. Do you want to buy?");
- *        } else {
+ *        											} else {
  *            npc.say("Sorry, I don't sell " + item + ".");
  *            npc.setActualState(ConversationStates.ATTENDING);
  *        }
@@ -149,6 +151,8 @@ public class SpeakerNPC extends PassiveNPC {
 
 	// Default bye message when NPC stops chatting with the player
 	private String goodbyeMessage;
+
+	private final List<Consumer<RPEntity>> goodbyeListeners = new LinkedList<>();
 
 	private ChatCondition initChatCondition;
 
@@ -240,9 +244,28 @@ public class SpeakerNPC extends PassiveNPC {
 		// sub classes can implement this method
 	}
 
-	private void createDefaultReplies() {
-		addWaitMessage();
-	}
+private void createDefaultReplies() {
+addWaitMessage();
+}
+
+public void addGoodbyeListener(final Consumer<RPEntity> listener) {
+if (listener != null) {
+goodbyeListeners.add(listener);
+}
+}
+
+	private void notifyGoodbyeListeners(final RPEntity entity) {
+		if (goodbyeListeners.isEmpty()) {
+			return;
+}
+		for (final Consumer<RPEntity> listener : new ArrayList<>(goodbyeListeners)) {
+			try {
+				listener.accept(entity);
+			} catch (final RuntimeException e) {
+				logger.warn("Failed to notify goodbye listener for NPC " + getName(), e);
+}
+}
+}
 
 	/**
 	 * Is called when the NPC stops chatting with a player. Override it if
@@ -440,7 +463,7 @@ public class SpeakerNPC extends PassiveNPC {
 		if (!isTalking()) {
 			// TODO: Reset this on FSM engine state change
 			if (getAttending() != null) {
-				setAttending(null);
+						setAttending(null);
 			}
 			if (idler != null) {
 				idler.perform(this);
@@ -487,13 +510,15 @@ public class SpeakerNPC extends PassiveNPC {
 	}
 
 	public void endConversation() {
+		final RPEntity goodbyeTarget = attending;
 		if (goodbyeMessage != null) {
 			say(goodbyeMessage);
-		}
-		onGoodbye(attending);
+}
+		onGoodbye(goodbyeTarget);
+		notifyGoodbyeListeners(goodbyeTarget);
 		engine.setCurrentState(ConversationStates.IDLE);
 		setAttending(null);
-	}
+}
 
 	public boolean inConversationRange() {
 		if (attending == null) {
