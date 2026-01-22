@@ -573,10 +573,6 @@ public class Grammar {
 			return enoun;
 		}
 
-		if (enoun.equals("money")) {
-			return "moneta" + postfix;
-		}
-
 		if (enoun.equals("mnich")) {
 			return "mnicha" + postfix;
 		}
@@ -1512,23 +1508,10 @@ public class Grammar {
 	}
 
 	public static String worthForm(String itemName, int quantity) {
-		String name = itemName.toLowerCase();
-
-		// liczba mnoga — "są warte"
-		if (quantity > 1 || name.endsWith("y") || name.endsWith("e") || name.endsWith("nie") || name.endsWith("i") || name.endsWith("o") || name.endsWith("um") || name.endsWith("ło")) {
+		if (quantity > 1) {
 			return "warte";
 		}
 
-		// rodzaju żeńskiego — "warta"
-		if (name.startsWith("para ") || name.endsWith("a") || name.endsWith("ja") || name.endsWith("ra") || name.endsWith("ża") || name.endsWith("na")) {
-			return "warta";
-		}
-
-		if (name.endsWith("m") || name.endsWith("s") || name.endsWith("cz") || name.endsWith("rz") || name.endsWith("ż") || name.endsWith("ń")) {
-			return "warty";
-		}
-
-		// rodzaju męskiego — "warty"
 		return "warty";
 	}
 }
