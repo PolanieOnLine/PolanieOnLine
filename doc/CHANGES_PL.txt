@@ -19,7 +19,7 @@ Changelog
 - Uruchomiono pierwszą wersję web-klienta gry pod adresem https://s1.polanieonline.eu/client/polanieonline.html
 
 *android*
-- Przeniesiono planowaną premierę klienta Android na I kwartał 2026 roku
+- Udostępniono pierwszą wersję (mogą występować błędy!!)
 
 *świat*
 - Dodano nowy kocioł Draconii oraz NPC Draconię w pobliżu Józka na pustyni
@@ -38,6 +38,7 @@ Changelog
 - Naprawiono portal na mapie int_warszawa_armory
 - Naprawiono interakcję nalewania wody do butelki u NPC Nosiwoda Jakub
 - Naprawiono błąd umożliwiający nieskończone zwiększanie bazowego zdrowia poprzez przenoszenie glifów
+- Naprawiono NPC zadające zagadkę w hell_pit umożliwiając opuszczenie pułapki
 - Poprawiono automatyczną odmianę rzeczowników i prefiksów w dialogach NPC
 - Poprawiono dialogi w zadaniu "Lekarstwo dla Celiny"
 - Poprawiono opis oferty u Myśliwego
