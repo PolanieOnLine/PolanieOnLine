@@ -514,7 +514,6 @@ export class TravelLogDialog extends DialogContentComponent {
 		const html = stendhal.ui.html.esc(cleanedItem, ["em", "tally"]);
 		const splitColumns = options.isRewards && !html.includes("<tally>") && this.parseRewardColumns(cleanedItem);
 		let content: Array<string | HTMLElement> = [];
-		const html = stendhal.ui.html.esc(item, ["em", "tally"]);
 		if (html.includes("<tally>") && html.includes("</tally>")) {
 			content = stendhal.ui.html.formatTallyMarks(html);
 		} else {

@@ -1374,6 +1374,13 @@ body.mobile-floating-ui #left-panel-toggle,
 .tavellogtabpanel {
 }
 
+.progressTypeButton.active {
+	background: #a86a2e;
+	border: 1px solid #f1d092;
+	box-shadow: 0 0 0 1px rgba(43, 24, 9, 0.6), 0 2px 4px rgba(0, 0, 0, 0.6),
+		inset 0 1px 0 rgba(255, 236, 190, 0.5);
+}
+
 .tlog_hlayout {
 	width: 40em;
 	height: 25em;
@@ -1602,9 +1609,10 @@ body.mobile-floating-ui #left-panel-toggle,
 	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
 }
 
+.travellogitems option[aria-selected="true"],
 .travellogitems option:checked {
-	background: #6b4726;
-	color: #f9e7c5;
+	background: #8a5524;
+	color: #fff2d2;
 	text-shadow: 0 1px 1px #000;
 }
 
