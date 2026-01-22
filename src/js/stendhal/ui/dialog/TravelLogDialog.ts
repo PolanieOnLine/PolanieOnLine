@@ -324,7 +324,8 @@ export class TravelLogDialog extends DialogContentComponent {
 			const badgeSuffix = badges.length > 0 ? ` (${badges.map((badge) => badge.label).join(", ")})` : "";
 			const isSelected = quest.id === this.selectedQuestId;
 			html += "<option value=\"" + stendhal.ui.html.esc(quest.id)
-				+ "\" role=\"option\" aria-selected=\"" + (isSelected ? "true" : "false") + "\">"
+				+ "\" role=\"option\" aria-selected=\"" + (isSelected ? "true" : "false")
+				+ "\" title=\"" + stendhal.ui.html.esc(label) + "\">"
 				+ stendhal.ui.html.esc(label + badgeSuffix) + "</option>";
 		}
 		itemList.innerHTML = html;

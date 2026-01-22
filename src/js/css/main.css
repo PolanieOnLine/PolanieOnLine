@@ -1390,6 +1390,9 @@ body.mobile-floating-ui #left-panel-toggle,
 	float: left;
 	width: 15em;
 	margin-top: 1em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .travellogdetails {
@@ -1535,6 +1538,15 @@ body.mobile-floating-ui #left-panel-toggle,
 .travellogdialog__list {
 	margin: 0;
 	padding-left: 18px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.travellogitems option:checked {
+	background: #6b4726;
+	color: #f9e7c5;
+	text-shadow: 0 1px 1px #000;
 }
 
 .travellogdialog__back-button {
