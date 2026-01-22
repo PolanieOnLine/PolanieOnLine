@@ -170,8 +170,8 @@ public class Level {
 	 *         <code>1.0</code> (exclusive).
 	 */
 	public static double getWisdom(final int level) {
-		if (level >= LEVELS) {
-			return wisdom[LEVELS - 1];
+		if ((level < 0) || (level >= wisdom.length)) {
+			throw new ArrayIndexOutOfBoundsException(level);
 		}
 
 		return wisdom[level];
