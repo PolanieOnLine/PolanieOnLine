@@ -277,7 +277,7 @@ export class TravelLogDialog extends DialogContentComponent {
 
 		this.fillTextSection(descriptionBody, description, "Brak opisu.");
 		this.fillListSection(goalsBody, sectionData.goals, "Brak celów.");
-		this.fillListSection(rewardsBody, sectionData.rewards, "Brak nagród.");
+		this.fillListSection(rewardsBody, sectionData.rewards, "Brak nagród.", { isRewards: true });
 		this.fillListSection(requirementsBody, sectionData.requirements, "Brak wymagań lub kosztów.");
 	}
 
@@ -488,7 +488,7 @@ export class TravelLogDialog extends DialogContentComponent {
 		section.innerHTML = stendhal.ui.html.esc(trimmed);
 	}
 
-	private fillListSection(section: HTMLElement | null, items: string[], fallback: string) {
+	private fillListSection(section: HTMLElement | null, items: string[], fallback: string, options: { isRewards?: boolean } = {}) {
 		if (!section) {
 			return;
 		}
@@ -501,14 +501,18 @@ export class TravelLogDialog extends DialogContentComponent {
 		const ul = document.createElement("ul");
 		ul.className = "uniform travellogdialog__list";
 		for (const item of items) {
-			ul.appendChild(this.buildDetailListItem(item));
+			ul.appendChild(this.buildDetailListItem(item, options));
 		}
 		section.appendChild(ul);
 	}
 
-	private buildDetailListItem(item: string): HTMLLIElement {
+	private buildDetailListItem(item: string, options: { isRewards?: boolean } = {}): HTMLLIElement {
 		const li = document.createElement("li");
 		li.className = "uniform";
+		const badgeLabel = this.extractRewardBadge(item);
+		const cleanedItem = badgeLabel ? this.stripRewardBadge(item) : item;
+		const html = stendhal.ui.html.esc(cleanedItem, ["em", "tally"]);
+		const splitColumns = options.isRewards && !html.includes("<tally>") && this.parseRewardColumns(cleanedItem);
 		let content: Array<string | HTMLElement> = [];
 		const html = stendhal.ui.html.esc(item, ["em", "tally"]);
 		if (html.includes("<tally>") && html.includes("</tally>")) {
@@ -516,14 +520,77 @@ export class TravelLogDialog extends DialogContentComponent {
 		} else {
 			content = [html];
 		}
-		li.innerHTML = content[0] as string;
-		if (content[1]) {
-			li.appendChild(content[1] as HTMLElement);
-			if (content[2]) {
-				li.innerHTML += content[2] as string;
+		if (splitColumns) {
+			const { label, value } = splitColumns;
+			li.classList.add("travellogdialog__list-item", "travellogdialog__list-item--split");
+			const labelSpan = document.createElement("span");
+			labelSpan.className = "travellogdialog__list-label";
+			labelSpan.textContent = label;
+			const valueSpan = document.createElement("span");
+			valueSpan.className = "travellogdialog__list-value";
+			valueSpan.textContent = value;
+			li.appendChild(labelSpan);
+			li.appendChild(valueSpan);
+		} else {
+			li.classList.add("travellogdialog__list-item");
+			li.innerHTML = content[0] as string;
+			if (content[1]) {
+				li.appendChild(content[1] as HTMLElement);
+				if (content[2]) {
+					li.innerHTML += content[2] as string;
+				}
 			}
 		}
+
+		if (badgeLabel) {
+			const badge = document.createElement("span");
+			badge.className = "quest-reward-badge";
+			badge.textContent = badgeLabel;
+			li.appendChild(badge);
+		}
 		return li;
+	}
+
+	private extractRewardBadge(item: string): string | null {
+		const match = item.match(/\bpierwsze\s+uko[nń]czenie\b/i);
+		if (!match) {
+			return null;
+		}
+		return "Pierwsze ukończenie";
+	}
+
+	private stripRewardBadge(item: string): string {
+		const cleaned = item
+			.replace(/\bpierwsze\s+uko[nń]czenie\b/gi, "")
+			.replace(/\(\s*\)/g, "")
+			.replace(/\s*[,;:-]\s*$/, "")
+			.replace(/\s{2,}/g, " ")
+			.trim();
+		return cleaned || item;
+	}
+
+	private parseRewardColumns(item: string): { label: string; value: string } | null {
+		const normalized = item.replace(/\s+/g, " ").trim();
+		if (!normalized || !/\d/.test(normalized)) {
+			return null;
+		}
+		const colonIndex = normalized.indexOf(":");
+		if (colonIndex > -1) {
+			const label = normalized.slice(0, colonIndex).trim();
+			const value = normalized.slice(colonIndex + 1).trim();
+			if (label && value && /\d/.test(value)) {
+				return { label, value };
+			}
+		}
+		const dashMatch = normalized.match(/^(.+?)\s*[-–]\s*(.+)$/);
+		if (dashMatch && /\d/.test(dashMatch[2])) {
+			return { label: dashMatch[1].trim(), value: dashMatch[2].trim() };
+		}
+		const tailMatch = normalized.match(/^(.+?)\s+([+-]?\d[\d\s.,]*\S*)$/);
+		if (tailMatch) {
+			return { label: tailMatch[1].trim(), value: tailMatch[2].trim() };
+		}
+		return null;
 	}
 
 	private updateListboxSelection(selectedId: string) {
