@@ -1,43 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE map SYSTEM "http://mapeditor.org/dtd/1.0/map.dtd">
-<map version="1.0" orientation="orthogonal" width="10" height="10" tilewidth="32" tileheight="32">
- <tileset firstgid="1" name="kolizja" tilewidth="32" tileheight="32">
-  <image source="../../tileset/logic/collision.png"/>
+<map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="14" height="14" tilewidth="32" tileheight="32" infinite="0" nextlayerid="10" nextobjectid="1">
+ <tileset firstgid="1" name="kolizja" tilewidth="32" tileheight="32" tilecount="1" columns="1">
+  <image source="../../tileset/logic/collision.png" width="32" height="32"/>
  </tileset>
- <tileset firstgid="2" name="podloga" tilewidth="32" tileheight="32">
-  <image source="../../tileset/ground/sand2.png"/>
+ <tileset firstgid="2" name="podloga" tilewidth="32" tileheight="32" tilecount="1" columns="1">
+  <image source="../../tileset/ground/sand2.png" width="32" height="32"/>
  </tileset>
- <tileset firstgid="3" name="pol_niesmiertelne" tilewidth="32" tileheight="32">
-  <image source="../../tileset/logic/creature/pol_niesmiertelne.png"/>
+ <tileset firstgid="3" name="pol_niesmiertelne" tilewidth="32" tileheight="32" tilecount="4" columns="4">
+  <image source="../../tileset/logic/creature/pol_niesmiertelne.png" width="128" height="32"/>
  </tileset>
- <layer name="0_floor" width="10" height="10">
+ <tileset firstgid="7" name="earth_dark" tilewidth="32" tileheight="32" tilecount="96" columns="12">
+  <image source="../../tileset/ground/ridge/earth_dark.png" width="384" height="256"/>
+ </tileset>
+ <tileset firstgid="103" name="ground_2" tilewidth="32" tileheight="32" tilecount="4" columns="4">
+  <image source="../../tileset/ground/ground_2.png" width="128" height="32"/>
+ </tileset>
+ <tileset firstgid="107" name="protection" tilewidth="32" tileheight="32" tilecount="2" columns="2">
+  <image source="../../tileset/logic/protection.png" width="64" height="32"/>
+ </tileset>
+ <layer id="1" name="0_floor" width="14" height="14">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNiYGBgGsWDBgMASwo5tJABAAA=
+   H4sIAAAAAAAACstiYGDIGgDMRCQmR89Q0sc0zPVRI97piQGoKSh6EAMAAA==
   </data>
  </layer>
- <layer name="1_terrain" width="10" height="10">
+ <layer id="2" name="1_terrain" width="14" height="14">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgGAWDCQAADA0iRpABAAA=
+   H4sIAAAAAAAACmNgYGBwBmJdINYDYg0cWAeI3RkQwBmq3hKI46A0NhyDphekxxAqZwXErjiwBRD7I+n1hOoDybkx4AYuUL3RQKwAxMFAbItHPTLQhtqpALVLmQR90VC3kmKfOdQ+fxL1gYA81E566xNjgMSFFxBzEdAjDMS+QCwCxAFQveFI+r2xYB8kPUFQc0B6RZH048LIetBBMh6MDABBgOHCEAMAAA==
   </data>
  </layer>
- <layer name="2_object" width="10" height="10">
+ <layer id="3" name="2_object" width="14" height="14">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgGAWDCQAADA0iRpABAAA=
+   H4sIAAAAAAAACmNgGAWjYBTAAAATmsT7EAMAAA==
   </data>
  </layer>
- <layer name="objects" width="10" height="10">
+ <layer id="9" name="3_roof" width="14" height="14">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgoA1gIVJssAN6+wMA3FjZ1ZABAAA=
+   H4sIAAAAAAAACmNgGAWjYBTAAAATmsT7EAMAAA==
   </data>
  </layer>
- <layer name="collision" width="10" height="10">
+ <layer id="7" name="blend_ground" width="14" height="14">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNkYGBgJBITAqPq8KsjBgMAISw5G5ABAAA=
+   H4sIAAAAAAAACmNgGAWjYBTAAAATmsT7EAMAAA==
   </data>
  </layer>
- <layer name="protection" width="10" height="10">
+ <layer id="8" name="blend_roof" width="14" height="14">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNgGAWDCQAADA0iRpABAAA=
+   H4sIAAAAAAAACmNgGAWjYBTAAAATmsT7EAMAAA==
+  </data>
+ </layer>
+ <layer id="4" name="objects" width="14" height="14">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACmNgGFmAhUixkQZGwwUCAA3ylFIQAwAA
+  </data>
+ </layer>
+ <layer id="5" name="collision" width="14" height="14" visible="0" opacity="0.2">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACmNkYGBgHGKYECBHz0Dow6Z3qOgjNx4GOwYAcSaC1hADAAA=
+  </data>
+ </layer>
+ <layer id="6" name="protection" width="14" height="14" visible="0" opacity="0.2">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAACstmYGDIHsWjeBSDMQASocTEEAMAAA==
   </data>
  </layer>
 </map>

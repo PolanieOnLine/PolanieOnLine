@@ -1995,7 +1995,7 @@ Uciekaj!</attribute>
 			<attribute name="name">Trucizna</attribute>
 		</entity>
 
-		<portal x="4" y="4" ref="poison_pit_exit">
+		<portal x="7" y="7" ref="poison_pit_exit">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.portal.OneWayPortalDestination" />
 		</portal>
 	</zone>
