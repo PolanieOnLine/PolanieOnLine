@@ -10,6 +10,10 @@ public class SilverCoin extends AbstractCoin {
 		setQuantity(amount);
 	}
 
+	public SilverCoin(SilverCoin item) {
+		super(item);
+	}
+
 	@Override
 	protected boolean canConvert() {
 		return true; // srebrniki można zamieniać dalej

@@ -249,8 +249,6 @@ public class Grammar {
 			str = addPrefixIfNotAlreadyThere(lowString, "suit of ", "suits of ");
 		} else if (str.startsWith("rękawic") || str.startsWith("spodni")) {
 			str = addPrefixIfNotAlreadyThere(lowString, "para ", "pary ");
-		} else if (str.startsWith("szynka") || str.startsWith("mięso")) {
-			str = addPrefixIfNotAlreadyThere(lowString, "kawałek ", "kawałków ");
 		} else {
 			str = replaceInternalByDisplayNames(PrefixManager.s_instance.fullForm(str, lowString));
 		}
@@ -575,6 +573,14 @@ public class Grammar {
 			return enoun;
 		}
 
+		if (enoun.equals("money")) {
+			return "moneta" + postfix;
+		}
+
+		if (enoun.equals("mnich")) {
+			return "mnicha" + postfix;
+		}
+
 		if (enoun.indexOf(of) > -1) {
 			return singular(enoun.substring(0, enoun.indexOf(of)))
 					+ enoun.substring(enoun.indexOf(of)) + postfix;
@@ -687,6 +693,10 @@ public class Grammar {
 			}
 		}
 
+		if (enoun.equals("money")) {
+			return polishQuantity(enoun, quantity) + postfix;
+		}
+
 		String[] noun = enoun.split(" ");
 		if (noun.length == 2) {
 			if (quantity > 4) {
@@ -739,7 +749,7 @@ public class Grammar {
 			if (quantity > 1 || quantity == 0) {
 				return enoun + "ów" + postfix;
 			} else {
-				return enoun;
+				return "mnicha" + postfix;
 			}
 		} else if (enoun.equals("strzała") || enoun.equals("trucizna")) {
 			if (quantity > 4) {
@@ -1488,6 +1498,10 @@ public class Grammar {
 				if (quantity == 1) return "miedziak";
 				if (few) return "miedziaki";
 				return "miedziaków";
+			case "money":
+				if (quantity == 1) return "moneta";
+				if (few) return "monety";
+				return "monet";
 			case "punkt":
 				if (quantity == 1) return "punkt";
 				if (few) return "punkty";

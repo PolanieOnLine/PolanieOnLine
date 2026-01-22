@@ -198,9 +198,11 @@ public class EntityViewFactoryTest {
 		checkImplementation("flyover", null, null, FlyOverArea2DView.class);
 		checkImplementation("food", null, null, GoatFood2DView.class);
 		checkImplementation("game_board", null, null, GameBoard2DView.class);
+		checkImplementation("golden_cauldron", null, null, GoldenCauldron2DView.class);
 		checkImplementation("player", null, null, Player2DView.class);
 		checkImplementation("spell", null, null, Spell2DView.class);
 		checkImplementation("useable_entity", null, null, UseableEntity2DView.class);
+		checkImplementation("useable_entity", "golden_cauldron", null, GoldenCauldron2DView.class);
 		checkImplementation("walkblocker", null, null, WalkBlocker2DView.class);
 		checkImplementation("wall", null, null, Wall2DView.class);
 

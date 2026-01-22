@@ -10,6 +10,10 @@ public class CopperCoin extends AbstractCoin {
 		setQuantity(amount);
 	}
 
+	public CopperCoin(CopperCoin item) {
+		super(item);
+	}
+
 	@Override
 	protected boolean canConvert() {
 		return true; // miedziaki można zamieniać

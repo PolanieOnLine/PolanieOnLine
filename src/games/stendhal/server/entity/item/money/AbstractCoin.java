@@ -18,6 +18,11 @@ public abstract class AbstractCoin extends StackableItem {
 		setQuantity(quantity);
 	}
 
+	protected AbstractCoin(AbstractCoin item) {
+		super(item);
+		this.conversionRate = item.conversionRate;
+	}
+
 	/**
 	 * Override add() żeby automatycznie konwertować monety przy łączeniu stacków.
 	 */

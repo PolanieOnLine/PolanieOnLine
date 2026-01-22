@@ -116,7 +116,8 @@ class BuddyListModel extends AbstractListModel<Buddy> {
 	}
 
 	private void rebuildVisibleList() {
-		int oldSize = visibleBuddies.size();
+		List<Buddy> previousVisible = new ArrayList<Buddy>(visibleBuddies);
+		int oldSize = previousVisible.size();
 		visibleBuddies.clear();
 		for (Buddy buddy : buddyList) {
 			if (matchesFilter(buddy)) {
@@ -125,15 +126,41 @@ class BuddyListModel extends AbstractListModel<Buddy> {
 		}
 		int newSize = visibleBuddies.size();
 		if (newSize > oldSize) {
-			fireIntervalAdded(this, oldSize, newSize - 1);
+			int start = findFirstDifference(previousVisible, visibleBuddies);
+			int end = start + (newSize - oldSize) - 1;
+			fireIntervalAdded(this, start, end);
 		} else if (newSize < oldSize) {
-			fireIntervalRemoved(this, newSize, oldSize - 1);
+			int start = findFirstDifference(previousVisible, visibleBuddies);
+			int end = start + (oldSize - newSize) - 1;
+			fireIntervalRemoved(this, start, end);
+		} else if (!previousVisible.equals(visibleBuddies) && newSize > 0) {
+			int start = findFirstDifference(previousVisible, visibleBuddies);
+			int end = findLastDifference(previousVisible, visibleBuddies);
+			fireContentsChanged(this, start, end);
 		}
-		if (newSize > 0) {
-			fireContentsChanged(this, 0, newSize - 1);
-		} else if (oldSize > 0) {
-			fireContentsChanged(this, 0, 0);
+	}
+
+	private int findFirstDifference(List<Buddy> previous, List<Buddy> current) {
+		int limit = Math.min(previous.size(), current.size());
+		for (int i = 0; i < limit; i++) {
+			if (previous.get(i) != current.get(i)) {
+				return i;
+			}
 		}
+		return limit;
+	}
+
+	private int findLastDifference(List<Buddy> previous, List<Buddy> current) {
+		int previousIndex = previous.size() - 1;
+		int currentIndex = current.size() - 1;
+		int end = Math.min(previousIndex, currentIndex);
+		while (end >= 0) {
+			if (previous.get(end) != current.get(end)) {
+				return end;
+			}
+			end--;
+		}
+		return Math.min(previousIndex, currentIndex);
 	}
 
 	private boolean matchesFilter(Buddy buddy) {

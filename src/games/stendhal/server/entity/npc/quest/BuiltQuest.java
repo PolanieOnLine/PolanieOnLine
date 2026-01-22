@@ -59,14 +59,10 @@ public class BuiltQuest extends AbstractQuest {
 		res.add(history.getWhenQuestWasAccepted());
 		List<String> progress = questBuilder.task().calculateHistoryProgress(history, player, questSlot);
 		if (progress != null) {
-			if ("done".equals(questState)) {
-				for (String entry : progress) {
-					if (!entry.startsWith(QuestTaskBuilder.REQUIREMENTS_MARKER)) {
-						res.add(entry);
-					}
+			for (String entry : progress) {
+				if (!entry.startsWith(QuestTaskBuilder.REQUIREMENTS_MARKER)) {
+					res.add(entry);
 				}
-			} else {
-				res.addAll(progress);
 			}
 		}
 		if ("done".equals(questState) || questBuilder.task().isCompleted(player, questSlot)) {

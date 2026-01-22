@@ -10,6 +10,10 @@ public class GoldCoin extends AbstractCoin {
 		setQuantity(amount);
 	}
 
+	public GoldCoin(GoldCoin item) {
+		super(item);
+	}
+
 	@Override
 	protected boolean canConvert() {
 		return false;
