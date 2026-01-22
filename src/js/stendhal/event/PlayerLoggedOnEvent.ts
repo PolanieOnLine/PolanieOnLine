@@ -10,9 +10,11 @@
  *                                                                         *
  ***************************************************************************/
 
+declare var marauroa: any;
 declare var stendhal: any;
 
 import { RPEvent } from "./RPEvent";
+import { Chat } from "../util/Chat";
 
 
 /**
@@ -28,10 +30,15 @@ export class PlayerLoggedOnEvent extends RPEvent {
 
 
 	override execute(entity: any) {
-		if (stendhal.players.indexOf(this.name) < 0) {
+		const playerName = this.name;
+		if (stendhal.players.indexOf(playerName) < 0) {
 			// remember logged on players
-			stendhal.players.push(this.name);
+			stendhal.players.push(playerName);
 			stendhal.players = stendhal.players.sort();
+		}
+
+		if (!marauroa?.me || marauroa.me["_name"] !== playerName) {
+			Chat.log("information", `${playerName} zawitał do PolanieOnLine.`);
 		}
 	}
 }
