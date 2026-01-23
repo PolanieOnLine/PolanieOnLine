@@ -48,7 +48,7 @@ public class UserTest {
 	@After
 	public void cleanUp() {
 		User.setNull();
-		User.updateGroupStatus(null, null);
+		User.updateGroupStatus(null, null, null);
 	}
 
 	@Before
@@ -175,16 +175,16 @@ public class UserTest {
 	@Test
 	public void testIsGroupSharingLoot() {
 		assertFalse(User.isGroupSharingLoot());
-		User.updateGroupStatus(Arrays.asList("Carmen"), "false");
+		User.updateGroupStatus(Arrays.asList("Carmen"), "false", null);
 		assertFalse(User.isGroupSharingLoot());
-		User.updateGroupStatus(Arrays.asList("Carmen"), "shared");
+		User.updateGroupStatus(Arrays.asList("Carmen"), "shared", "standard");
 		assertTrue(User.isGroupSharingLoot());
 	}
 
 	@Test
 	public void testIsPlayerInGroup() {
 		assertFalse(User.isPlayerInGroup(CARMEN));
-		User.updateGroupStatus(Arrays.asList(CARMEN), "shared");
+		User.updateGroupStatus(Arrays.asList(CARMEN), "shared", "standard");
 		assertTrue(User.isPlayerInGroup(CARMEN));
 	}
 
