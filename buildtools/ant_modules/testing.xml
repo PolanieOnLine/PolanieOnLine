@@ -129,7 +129,7 @@ d = 9017093486007323270605414717455737376618092805104733236083857811315606869372
 					<executiondata>
 							<file file="${build_tests_report}/jacoco.exec"/>
 					</executiondata>
-					<structure name="stendhal">
+					<structure name="polanieonline">
 							<classfiles>
 								<fileset dir="${build_client}"/>
 					<fileset dir="${build_server}"/>
