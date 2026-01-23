@@ -189,7 +189,6 @@ public class GoldenCauldronEntity extends UseableEntity {
 			setStatus(STATUS_IDLE);
 		}
 		notifyWorldAboutChanges();
-		player.sendPrivateText("Otwierasz kocioł Draconii.");
 	}
 
 	private void close() {
