@@ -262,23 +262,14 @@ public class Group {
 	 */
 	public Player getLowestLevelMember(Player reference) {
 		StendhalRPRuleProcessor ruleProcessor = SingletonRepository.getRuleProcessor();
-		Player lowest = null;
-		for (String playerName : membersAndLastSeen.keySet()) {
-			Player player = ruleProcessor.getPlayer(playerName);
-			if (player == null) {
-				continue;
-			}
-			if ((reference != null) && (reference.getZone() != null)
-					&& (player.getZone() != reference.getZone())) {
-				continue;
-			}
-			if ((lowest == null) || (player.getLevel() < lowest.getLevel())
-					|| ((player.getLevel() == lowest.getLevel())
-							&& player.getName().compareTo(lowest.getName()) < 0)) {
-				lowest = player;
-			}
-		}
-		return lowest;
+		return membersAndLastSeen.keySet().stream()
+			.map(ruleProcessor::getPlayer)
+			.filter(Objects::nonNull)
+			.filter(p -> (reference == null) || (reference.getZone() == null)
+					|| (p.getZone() == reference.getZone()))
+			.min(Comparator.comparingInt(Player::getLevel)
+				.thenComparing(Player::getName))
+			.orElse(null);
 	}
 
 	/**
