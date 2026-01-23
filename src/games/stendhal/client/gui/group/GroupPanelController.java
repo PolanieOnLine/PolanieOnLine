@@ -90,13 +90,11 @@ public class GroupPanelController implements GameObjects.GameObjectListener {
 					if (lootMode.equals("shared")) {
 						loot = "wspólne";
 					}
-					String exp = expMode;
-					if ((expMode == null) || expMode.isEmpty()) {
-						exp = "standardowe";
-					} else if ("standard".equals(expMode)) {
-						exp = "standardowe";
-					} else if ("lowest".equals(expMode)) {
+					String exp;
+					if ("lowest".equals(expMode)) {
 						exp = "najniższy poziom";
+					} else {
+						exp = "standardowe";
 					}
 
 					panel.showHeader("<html>Zbieranie: " + loot + " | EXP: " + exp + "</html>");
