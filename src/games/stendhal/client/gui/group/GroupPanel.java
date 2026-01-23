@@ -406,6 +406,28 @@ class GroupPanel {
 		}
 	}
 
+	/**
+	 * Listener for changing the exp mode.
+	 */
+	private static class ExpmodeActionListener implements ActionListener {
+		private final String mode;
+
+		/**
+		 * Create a ExpmodeActionListener for changing to a specified mode.
+		 *
+		 * @param mode new exp mode
+		 */
+		ExpmodeActionListener(String mode) {
+			this.mode = mode;
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			String[] args = { "expmode" };
+			SlashActionRepository.get("group").execute(args, mode);
+		}
+	}
+
 	private class HeaderMouseListener extends MousePopupAdapter {
 		@Override
 		protected void showPopup(MouseEvent e) {
@@ -415,12 +437,21 @@ class GroupPanel {
 				return;
 			}
 			JPopupMenu popup = new JPopupMenu();
-			JMenuItem item = new JMenuItem("Wspólne");
+			JMenuItem item = new JMenuItem("Zbieranie: wspólne");
 			item.addActionListener(new LootmodeActionListener("shared"));
 			popup.add(item);
 
-			item = new JMenuItem("Samodzielne");
+			item = new JMenuItem("Zbieranie: samodzielne");
 			item.addActionListener(new LootmodeActionListener("single"));
+			popup.add(item);
+
+			popup.addSeparator();
+			item = new JMenuItem("EXP: standardowe");
+			item.addActionListener(new ExpmodeActionListener("standard"));
+			popup.add(item);
+
+			item = new JMenuItem("EXP: najniższy poziom");
+			item.addActionListener(new ExpmodeActionListener("lowest"));
 			popup.add(item);
 
 			popup.show(header, e.getX() - POPUP_OFFSET, e.getY() - POPUP_OFFSET);

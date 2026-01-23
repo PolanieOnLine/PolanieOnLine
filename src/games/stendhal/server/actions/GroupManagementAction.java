@@ -60,7 +60,7 @@ public class GroupManagementAction implements ActionListener {
 
 		// get target player
 		Player targetPlayer = null;
-		if (!actionStr.equals("lootmode") && !actionStr.equals("part") && !actionStr.equals("status") && !actionStr.equals("kick")) {
+		if (!actionStr.equals("lootmode") && !actionStr.equals("expmode") && !actionStr.equals("part") && !actionStr.equals("status") && !actionStr.equals("kick")) {
 			targetPlayer = SingletonRepository.getRuleProcessor().getPlayer(params);
 			if (targetPlayer == null) {
 				if (params.trim().equals("")) {
@@ -81,6 +81,8 @@ public class GroupManagementAction implements ActionListener {
 			leader(player, targetPlayer);
 		} else if (actionStr.equals("lootmode")) {
 			lootmode(player, params);
+		} else if (actionStr.equals("expmode")) {
+			expmode(player, params);
 		} else if (actionStr.equals("kick")) {
 			kick(player, params);
 		} else if (actionStr.equals("part")) {
@@ -90,6 +92,37 @@ public class GroupManagementAction implements ActionListener {
 		} else {
 			unknown(player, actionStr, params);
 		}
+	}
+
+	/**
+	 * changes the expmode
+	 *
+	 * @param player leader
+	 * @param expmode new expmode
+	 */
+	private void expmode(Player player, String expmode) {
+		// check if the player is already in a group
+		Group group = SingletonRepository.getGroupManager().getGroup(player.getName());
+		if (group == null) {
+			player.sendPrivateText(NotificationType.ERROR, "Nie jesteś członkiem grupy.");
+			return;
+		}
+
+		// check leader
+		group = SingletonRepository.getGroupManager().getGroup(player.getName());
+		if (!group.hasLeader(player.getName())) {
+			player.sendPrivateText(NotificationType.ERROR, "Tylko lider grupy może zmienić tryb dzielenia doświadczenia.");
+			return;
+		}
+
+		// check if the exp mode is valid
+		if ((expmode == null) || (!expmode.equals("standard") && !expmode.equals("lowest"))) {
+			player.sendPrivateText(NotificationType.ERROR, "Poprawny tryb dzielenia doświadczenia to \"standard\" lub \"lowest\".");
+			return;
+		}
+
+		// set exp mode
+		group.setExpmode(expmode);
 	}
 
 	/**

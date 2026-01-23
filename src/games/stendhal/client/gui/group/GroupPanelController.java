@@ -66,8 +66,9 @@ public class GroupPanelController implements GameObjects.GameObjectListener {
 	 * 	<code>null</code> if the player does not belong to any group
 	 * @param leader name of the leader of the group
 	 * @param lootMode looting mode of the group
+	 * @param expMode experience mode of the group
 	 */
-	public void update(final List<String> members, final String leader, final String lootMode) {
+	public void update(final List<String> members, final String leader, final String lootMode, final String expMode) {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -89,8 +90,16 @@ public class GroupPanelController implements GameObjects.GameObjectListener {
 					if (lootMode.equals("shared")) {
 						loot = "wspólne";
 					}
+					String exp = expMode;
+					if ((expMode == null) || expMode.isEmpty()) {
+						exp = "standardowe";
+					} else if ("standard".equals(expMode)) {
+						exp = "standardowe";
+					} else if ("lowest".equals(expMode)) {
+						exp = "najniższy poziom";
+					}
 
-					panel.showHeader("<html>Zbieranie: " + loot + "</html>");
+					panel.showHeader("<html>Zbieranie: " + loot + " | EXP: " + exp + "</html>");
 					panel.setMembers(members);
 					panel.setLeader(leader);
 					if (!grouped) {

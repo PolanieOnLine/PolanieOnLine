@@ -40,6 +40,7 @@ public class User extends Player {
 	private static final String IGNORE_SLOT = "!ignore";
 
 	private static String groupLootmode;
+	private static String groupExpmode;
 	private static Set<String> groupMembers = Collections.emptySet();
 	private static StaticUserProxy userProxy = NO_USER;
 
@@ -163,8 +164,9 @@ public class User extends Player {
 	 *
 	 * @param members members
 	 * @param lootmode lootmode
+	 * @param expmode expmode
 	 */
-	public static void updateGroupStatus(Collection<String> members, String lootmode) {
+	public static void updateGroupStatus(Collection<String> members, String lootmode, String expmode) {
 		Set<String> oldGroupMembers = groupMembers;
 
 		if (members == null) {
@@ -173,6 +175,7 @@ public class User extends Player {
 			groupMembers = new HashSet<>(members);
 		}
 		groupLootmode = lootmode;
+		groupExpmode = expmode;
 
 		// fire change event to color of player object on minimap
 		for (IEntity entity : GameObjects.getInstance()) {

@@ -35,6 +35,7 @@ public class GroupChangeEvent extends RPEvent {
 		rpclass.add(DefinitionClass.ATTRIBUTE, "leader", Type.STRING);
 		rpclass.add(DefinitionClass.ATTRIBUTE, "members", Type.STRING);
 		rpclass.add(DefinitionClass.ATTRIBUTE, "lootmode", Type.STRING);
+		rpclass.add(DefinitionClass.ATTRIBUTE, "expmode", Type.STRING);
 	}
 
 	/**
@@ -50,12 +51,14 @@ public class GroupChangeEvent extends RPEvent {
 	 * @param leader leader of the group
 	 * @param members list of members
 	 * @param lootmode lootmode "single" or "shared"
+	 * @param expmode expmode "standard" or "lowest"
 	 */
-	public GroupChangeEvent(String leader, List<String> members, String lootmode) {
+	public GroupChangeEvent(String leader, List<String> members, String lootmode, String expmode) {
 		super(Events.GROUP_CHANGE);
 		put("leader", leader);
 		put("members", members);
 		put("lootmode", lootmode);
+		put("expmode", expmode);
 	}
 
 }
