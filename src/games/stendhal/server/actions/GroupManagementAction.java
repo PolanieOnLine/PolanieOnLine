@@ -108,8 +108,6 @@ public class GroupManagementAction implements ActionListener {
 			return;
 		}
 
-		// check leader
-		group = SingletonRepository.getGroupManager().getGroup(player.getName());
 		if (!group.hasLeader(player.getName())) {
 			player.sendPrivateText(NotificationType.ERROR, "Tylko lider grupy może zmienić tryb dzielenia doświadczenia.");
 			return;
