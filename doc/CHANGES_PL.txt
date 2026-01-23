@@ -14,6 +14,7 @@ Changelog
 - Poprawiono płynność kamery oraz ogólną wydajność klienta Java
 - Dodano nową animację pracy kotła Draconii oraz nowy interfejs obsługi kotła
 - Rozszerzono Dziennik Zadań dla wybranych zadań opartych o QuestManuscript o osobną sekcję „Wymagania”
+- Wycentrowano renderowanie mniejszych map względem wolnej przestrzeni okna gry
 
 *web-klient*
 - Uruchomiono pierwszą wersję web-klienta gry pod adresem https://s1.polanieonline.eu/client/polanieonline.html
