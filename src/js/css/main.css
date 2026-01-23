@@ -1014,7 +1014,7 @@ span.lognick {
 
 	#client.left-panel-collapsed #minimap-overlay {
 		display: flex;
-		opacity: 0.95;
+		opacity: 0.8;
 	}
 }
 
