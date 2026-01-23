@@ -208,8 +208,9 @@ export class MiniMapComponent extends Component {
 						adj_scale = 6;
 					}
 
-					const ho = Math.floor((o["width"] * adj_scale) / 2);
-					const vo = Math.floor((o["height"] * adj_scale) / 2);
+					const crossArmExtension = Math.min(2, Math.max(1, Math.round(adj_scale / 10)));
+					const ho = Math.floor((o["width"] * adj_scale) / 2) + crossArmExtension;
+					const vo = Math.floor((o["height"] * adj_scale) / 2) + crossArmExtension;
 					const hc = baseX + Math.floor(this.scale / 2);
 					const vc = baseY + Math.floor(this.scale / 2);
 
