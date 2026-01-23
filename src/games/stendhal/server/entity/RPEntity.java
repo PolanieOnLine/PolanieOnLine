@@ -41,6 +41,7 @@ import games.stendhal.server.core.engine.GameEvent;
 import games.stendhal.server.core.engine.ItemLogger;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.core.rp.group.Group;
 import games.stendhal.server.core.engine.db.StendhalKillLogDAO;
 import games.stendhal.server.core.engine.dbcommand.LogKillEventCommand;
 import games.stendhal.server.core.events.TurnListener;
@@ -1645,7 +1646,19 @@ public abstract class RPEntity extends CombatEntity {
 				reward = 1;
 			}
 
-			killer.addXP(reward);
+			Player expRecipient = killer;
+			Group group = SingletonRepository.getGroupManager().getGroup(killer.getName());
+			if ((group != null) && "lowest".equals(group.getExpmode())) {
+				Player lowestMember = group.getLowestLevelMember();
+				if (lowestMember != null) {
+					expRecipient = lowestMember;
+				}
+			}
+
+			expRecipient.addXP(reward);
+			if (expRecipient != killer) {
+				expRecipient.notifyWorldAboutChanges();
+			}
 
 			// For some quests etc., it is required that the player kills a
 			// certain creature without the help of others.

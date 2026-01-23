@@ -42,6 +42,9 @@ export class GroupPanelComponent extends Panel {
 		this.child(".group-lootmode")!.addEventListener("click", () => {
 			this.onLootmodeClick();
 		});
+		this.child(".group-expmode")!.addEventListener("click", () => {
+			this.onExpmodeClick();
+		});
 		this.child(".group-chat")!.addEventListener("click", () => {
 			this.onGroupChatButtonClick();
 		});
@@ -107,6 +110,7 @@ export class GroupPanelComponent extends Panel {
 		this.child(".group-group")!.classList.remove("hidden");
 
 		this.child(".group-lootmode")!.innerText = stendhal.data.group.lootmode;
+		this.child(".group-expmode")!.innerText = stendhal.data.group.expmode;
 		this.child(".group-leader")!.innerText = stendhal.data.group.leader;
 		this.renderGroupMembers();
 	}
@@ -141,6 +145,20 @@ export class GroupPanelComponent extends Panel {
 		let action = {
 			"type": "group_management",
 			"action": "lootmode",
+			"params": newMode,
+			"zone": marauroa.currentZoneName
+		};
+		marauroa.clientFramework.sendAction(action);
+	}
+
+	onExpmodeClick() {
+		let newMode = "standard";
+		if (stendhal.data.group.expmode === "standard") {
+			newMode = "lowest";
+		}
+		let action = {
+			"type": "group_management",
+			"action": "expmode",
 			"params": newMode,
 			"zone": marauroa.currentZoneName
 		};
@@ -198,4 +216,3 @@ export class GroupPanelComponent extends Panel {
 		}
 	}
 }
-

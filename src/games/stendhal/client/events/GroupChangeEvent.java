@@ -28,11 +28,11 @@ class GroupChangeEvent extends Event<RPEntity> {
 	@Override
 	public void execute() {
 		if (event.has("members")) {
-			User.updateGroupStatus(event.getList("members"), event.get("lootmode"));
-			GroupPanelController.get().update(event.getList("members"), event.get("leader"), event.get("lootmode"));
+			User.updateGroupStatus(event.getList("members"), event.get("lootmode"), event.get("expmode"));
+			GroupPanelController.get().update(event.getList("members"), event.get("leader"), event.get("lootmode"), event.get("expmode"));
 		} else {
-			User.updateGroupStatus(null, null);
-			GroupPanelController.get().update(null, null, null);
+			User.updateGroupStatus(null, null, null);
+			GroupPanelController.get().update(null, null, null, null);
 		}
 	}
 }

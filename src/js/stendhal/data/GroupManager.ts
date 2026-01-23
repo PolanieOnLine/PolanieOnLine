@@ -18,6 +18,7 @@ export class GroupManager {
 
 	private members: string[] = [];
 	private lootmode = "";
+	private expmode = "";
 	private leader = "";
 	private count = 0;
 
@@ -42,7 +43,7 @@ export class GroupManager {
 		// do nothing
 	}
 
-	updateGroupStatus(members?: string, leader?: string, lootmode?: string) {
+	updateGroupStatus(members?: string, leader?: string, lootmode?: string, expmode?: string) {
 		this.count = 0;
 		if (members) {
 			var memberArray = members.substring(1, members.length - 1).split("\t");
@@ -53,10 +54,12 @@ export class GroupManager {
 			}
 			stendhal.data.group.leader = leader;
 			stendhal.data.group.lootmode = lootmode;
+			stendhal.data.group.expmode = expmode || "standard";
 		} else {
 			stendhal.data.group.members = []; // XXX: should this be an object instead of an array?
 			stendhal.data.group.leader = "";
 			stendhal.data.group.lootmode = "";
+			stendhal.data.group.expmode = "";
 		}
 	}
 
@@ -82,4 +85,3 @@ export class GroupManager {
 		SlashActionRepo.get().execute("/group status");
 	}
 }
-

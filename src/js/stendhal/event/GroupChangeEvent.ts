@@ -24,14 +24,14 @@ export class GroupChangeEvent extends RPEvent {
 	public members!: string[];
 	public leader!: string;
 	public lootmode!: string;
+	public expmode!: string;
 
 	public execute(entity: any): void {
 		if (entity !== marauroa.me) {
 			return;
 		}
-		stendhal.data.group.updateGroupStatus(this["members"], this["leader"], this["lootmode"]);
+		stendhal.data.group.updateGroupStatus(this["members"], this["leader"], this["lootmode"], this["expmode"]);
 		(ui.get(UIComponentEnum.GroupPanel) as GroupPanelComponent).updateGroupStatus();
 	}
 
 }
-

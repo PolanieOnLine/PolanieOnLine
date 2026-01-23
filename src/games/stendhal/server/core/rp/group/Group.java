@@ -43,6 +43,7 @@ public class Group {
 	private final HashMap<String, Long> openInvites = new HashMap<String, Long>();
 	private String leader = null;
 	private String lootmode = "shared";
+	private String expmode = "standard";
 
 	/**
 	 * adds a member to the group
@@ -223,6 +224,15 @@ public class Group {
 	}
 
 	/**
+	 * gets the exp mode
+	 *
+	 * @return exp mode
+	 */
+	public String getExpmode() {
+		return expmode;
+	}
+
+	/**
 	 * sets the loot mode
 	 *
 	 * @param mode "single" or "shared"
@@ -230,6 +240,38 @@ public class Group {
 	public void setLootmode(String mode) {
 		this.lootmode = mode;
 		sendGroupChangeEvent();
+	}
+
+	/**
+	 * sets the exp mode
+	 *
+	 * @param mode "standard" or "lowest"
+	 */
+	public void setExpmode(String mode) {
+		this.expmode = mode;
+		sendGroupChangeEvent();
+	}
+
+	/**
+	 * finds the lowest level online member in the group
+	 *
+	 * @return lowest level player or <code>null</code>
+	 */
+	public Player getLowestLevelMember() {
+		StendhalRPRuleProcessor ruleProcessor = SingletonRepository.getRuleProcessor();
+		Player lowest = null;
+		for (String playerName : membersAndLastSeen.keySet()) {
+			Player player = ruleProcessor.getPlayer(playerName);
+			if (player == null) {
+				continue;
+			}
+			if ((lowest == null) || (player.getLevel() < lowest.getLevel())
+					|| ((player.getLevel() == lowest.getLevel())
+							&& player.getName().compareTo(lowest.getName()) < 0)) {
+				lowest = player;
+			}
+		}
+		return lowest;
 	}
 
 	/**
@@ -281,7 +323,7 @@ public class Group {
 	private void sendGroupChangeEvent() {
 		StendhalRPRuleProcessor ruleProcessor = SingletonRepository.getRuleProcessor();
 		List<String> members = new LinkedList<String>(membersAndLastSeen.keySet());
-		RPEvent event = new GroupChangeEvent(leader, members, lootmode);
+		RPEvent event = new GroupChangeEvent(leader, members, lootmode, expmode);
 		for (String playerName : membersAndLastSeen.keySet()) {
 			Player player = ruleProcessor.getPlayer(playerName);
 			if (player != null) {
@@ -298,7 +340,7 @@ public class Group {
 	 */
 	public void sendGroupChangeEvent(Player player) {
 		List<String> members = new LinkedList<String>(membersAndLastSeen.keySet());
-		RPEvent event = new GroupChangeEvent(leader, members, lootmode);
+		RPEvent event = new GroupChangeEvent(leader, members, lootmode, expmode);
 		player.addEvent(event);
 		player.notifyWorldAboutChanges();
 	}
