@@ -1649,7 +1649,7 @@ public abstract class RPEntity extends CombatEntity {
 			Player expRecipient = killer;
 			Group group = SingletonRepository.getGroupManager().getGroup(killer.getName());
 			if ((group != null) && "lowest".equals(group.getExpmode())) {
-				Player lowestMember = group.getLowestLevelMember();
+				Player lowestMember = group.getLowestLevelMember(killer);
 				if (lowestMember != null) {
 					expRecipient = lowestMember;
 				}

@@ -255,18 +255,30 @@ public class Group {
 	}
 
 	/**
-	 * finds the lowest level online member in the group
+	 * finds the lowest level online member in the group on the same zone
 	 *
+	 * @param reference player whose zone should match
 	 * @return lowest level player or <code>null</code>
 	 */
-	public Player getLowestLevelMember() {
+	public Player getLowestLevelMember(Player reference) {
 		StendhalRPRuleProcessor ruleProcessor = SingletonRepository.getRuleProcessor();
-		return membersAndLastSeen.keySet().stream()
-				.map(ruleProcessor::getPlayer)
-				.filter(Objects::nonNull)
-				.min(Comparator.comparingInt(Player::getLevel)
-						.thenComparing(Player::getName))
-				.orElse(null);
+		Player lowest = null;
+		for (String playerName : membersAndLastSeen.keySet()) {
+			Player player = ruleProcessor.getPlayer(playerName);
+			if (player == null) {
+				continue;
+			}
+			if ((reference != null) && (reference.getZone() != null)
+					&& (player.getZone() != reference.getZone())) {
+				continue;
+			}
+			if ((lowest == null) || (player.getLevel() < lowest.getLevel())
+					|| ((player.getLevel() == lowest.getLevel())
+							&& player.getName().compareTo(lowest.getName()) < 0)) {
+				lowest = player;
+			}
+		}
+		return lowest;
 	}
 
 	/**
