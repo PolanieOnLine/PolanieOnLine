@@ -770,8 +770,10 @@ export class ViewPort {
 		const targetX = this.freeze ? this.offsetX : playerX - viewportWidth / 2;
 		const targetY = this.freeze ? this.offsetY : playerY - viewportHeight / 2;
 
-		const clampedX = Math.min(Math.max(targetX, 0), Math.max(0, mapWidth - viewportWidth));
-		const clampedY = Math.min(Math.max(targetY, 0), Math.max(0, mapHeight - viewportHeight));
+		const maxX = mapWidth - viewportWidth;
+		const maxY = mapHeight - viewportHeight;
+		const clampedX = maxX < 0 ? maxX / 2 : Math.min(Math.max(targetX, 0), maxX);
+		const clampedY = maxY < 0 ? maxY / 2 : Math.min(Math.max(targetY, 0), maxY);
 
 		return { targetX: clampedX, targetY: clampedY };
 	}
