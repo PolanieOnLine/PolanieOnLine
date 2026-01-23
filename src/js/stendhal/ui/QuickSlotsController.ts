@@ -9,6 +9,8 @@
  *                                                                         *
  ***************************************************************************/
 
+declare var stendhal: any;
+
 import { QuickSlots } from "./interaction/QuickSlots";
 import { SessionManager } from "../util/SessionManager";
 import { UiStateStore } from "./mobile/UiStateStore";
@@ -59,7 +61,7 @@ export class QuickSlotsController {
 	}
 
 	private shouldShow(): boolean {
-		return SessionManager.get().touchOnly();
+		return SessionManager.get().touchOnly() && stendhal.playerInGame === true;
 	}
 
 	private subscribeState() {

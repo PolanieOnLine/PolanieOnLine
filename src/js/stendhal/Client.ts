@@ -270,6 +270,7 @@ export class Client {
 	registerMarauroaEventHandlers() {
 		marauroa.clientFramework.onDisconnect = function(_reason: string, _error: string) {
 			stendhal.playerInGame = false;
+			singletons.getQuickSlotsController().update();
 			if (!Client.instance.unloading) {
 				Chat.logH("error", "Odłączono od serwera.");
 				if (window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1" && window.location.hostname !== "::1") {
@@ -279,6 +280,8 @@ export class Client {
 		}.bind(this);
 
 		marauroa.clientFramework.onLoginRequired = function(config: Record<string, string>) {
+			stendhal.playerInGame = false;
+			singletons.getQuickSlotsController().update();
 			if (config["client_login_url"]) {
 				Client.instance.unloading = true;
 				let currentUrl = encodeURI(window.location.pathname + window.location.hash);
@@ -399,6 +402,7 @@ export class Client {
 				if (!this.worldLoaded) {
 					this.worldLoaded = true;
 					stendhal.playerInGame = true;
+					singletons.getQuickSlotsController().update();
 					// delay visibile change of client a little to allow for initialisation in the background for a smoother experience
 					window.setTimeout(() => {
 						const body = document.getElementById("body")!;
