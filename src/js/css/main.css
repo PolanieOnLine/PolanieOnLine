@@ -228,6 +228,7 @@ div#equipmentborder { width: 147px; }
 
 .inventory-window__toggle,
 .popuptitleclose, .windowtitleclose, .windowtitleminimize {
+	display: flex;
 	width: 16px;
 	height: 16px;
 	border: none;
@@ -236,6 +237,7 @@ div#equipmentborder { width: 147px; }
 	font-weight: bold;
 	font-size: 0.95rem;
 	padding: 0 4px;
+	justify-content: center;
 }
 
 .inventory-window__toggle:hover,

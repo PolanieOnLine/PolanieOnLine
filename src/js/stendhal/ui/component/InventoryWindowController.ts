@@ -7,6 +7,7 @@ interface InventoryWindowElements {
 	root: HTMLElement;
 	body?: HTMLElement;
 	toggle?: HTMLButtonElement;
+	close?: HTMLButtonElement;
 	title?: HTMLElement;
 }
 
@@ -27,6 +28,7 @@ export class InventoryWindowController {
 			root,
 			body: root.querySelector<HTMLElement>("[data-window-body]") || undefined,
 			toggle: root.querySelector<HTMLButtonElement>("[data-window-toggle]") || undefined,
+			close: root.querySelector<HTMLButtonElement>("[data-window-close]") || undefined,
 			title: root.querySelector<HTMLElement>("[data-window-title]") || undefined
 		};
 
@@ -75,6 +77,12 @@ export class InventoryWindowController {
 			originalToggle();
 			InventoryWindowController.setWindowVisibility(id, component.isVisible());
 		};
+
+		if (elements.close) {
+			elements.close.addEventListener("click", () => {
+				component.setVisible(false);
+			});
+		}
 
 		this.setWindowVisibility(id, component.isVisible());
 	}

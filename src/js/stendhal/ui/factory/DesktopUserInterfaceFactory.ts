@@ -109,6 +109,8 @@ export class DesktopUserInterfaceFactory {
 
 		const runicAltarComponent = new RunicAltarComponent();
 		InventoryWindowController.attachComponent("runicaltar-window", runicAltarComponent);
+		// hide runic altar by default
+		runicAltarComponent.setVisible(false);
 		ui.registerComponent(UIComponentEnum.RunicAltar, runicAltarComponent);
 
 		// hide pouch by default
