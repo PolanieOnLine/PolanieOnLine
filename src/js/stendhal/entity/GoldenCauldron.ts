@@ -156,6 +156,10 @@ export class GoldenCauldron extends PopupInventory {
 		}
 	}
 
+	override isVisibleToAction(_filter: boolean) {
+		return true;
+	}
+
 	private onUsed() {
 		const action: { [key: string]: any } = {
 			type: "use",
