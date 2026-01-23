@@ -88,6 +88,10 @@ export class ApplicationMenuDialog extends DialogContentComponent {
 					{
 						title: "Dziennik zadań",
 						action: "progressstatus",
+					},
+					{
+						title: "Ołtarz Runiczny",
+						action: "runicaltar",
 					}
 				] as MenuAction[]
 			},
@@ -166,4 +170,3 @@ export class ApplicationMenuDialog extends DialogContentComponent {
 
 	}
 }
-

@@ -19,6 +19,7 @@ import { DebugAction } from "./action/DebugAction";
 import { OpenWebsiteAction } from "./action/OpenWebsiteAction";
 import { ProgressStatusAction } from "./action/ProgressStatusAction";
 import { ReTellAction } from "./action/ReTellAction";
+import { RunicAltarAction } from "./action/RunicAltarAction";
 import { ScreenCaptureAction } from "./action/ScreenCaptureAction";
 import { SettingsAction } from "./action/SettingsAction";
 import { SlashActionImpl } from "./action/SlashAction";
@@ -133,6 +134,7 @@ export class SlashActionRepo {
 			],
 			"TOOLS": [
 				"progressstatus",
+				"runicaltar",
 				"screenshot",
 				//"screencap",
 				"atlas",
@@ -1158,6 +1160,7 @@ export class SlashActionRepo {
 	};
 
 	"settings" = new SettingsAction();
+	"runicaltar" = new RunicAltarAction();
 
 	"stopwalk": SlashActionImpl = {
 		execute: (type: string, params: string[], remainder: string): boolean => {
