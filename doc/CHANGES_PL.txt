@@ -27,6 +27,7 @@ Changelog
 - Dodano nowy przedmiot „Wywar Wąsatych Smoków”, możliwy do uwarzenia w kotle Draconii
 - Zmieniono wymagania do wykonania „Złotej Ciupagi z Trzema Wąsami”, dodając Wywar Wąsatych Smoków
 - Obniżono ceny strojów w sklepie Gwen
+- Odświeżono mapę - trującą pułapkę - które znajdują się w smoczych jaskiniach
 
 *kod*
 - Zaimplementowano szybkie przenoszenie przedmiotów między głównym ekwipunkiem a schowkiem
