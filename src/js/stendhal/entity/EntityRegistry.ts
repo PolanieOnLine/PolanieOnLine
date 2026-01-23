@@ -19,6 +19,7 @@ import { DomesticAnimal } from "./DomesticAnimal";
 import { Door } from "./Door";
 import { Food } from "./Food";
 import { GameBoard } from "./GameBoard";
+import { GoldenCauldron } from "./GoldenCauldron";
 import { Gate } from "./Gate";
 import { GrowingEntitySpawner } from "./GrowingEntitySpawner";
 import { InvisibleEntity } from "./InvisibleEntity";
@@ -54,6 +55,7 @@ export class EntityRegistry {
 		marauroa.rpobjectFactory["flyover"] = InvisibleEntity;
 		marauroa.rpobjectFactory["food"] = Food;
 		marauroa.rpobjectFactory["game_board"] = GameBoard;
+		marauroa.rpobjectFactory["golden_cauldron"] = GoldenCauldron;
 		marauroa.rpobjectFactory["gate"] = Gate
 		marauroa.rpobjectFactory["growing_entity_spawner"] = GrowingEntitySpawner;
 		marauroa.rpobjectFactory["house_portal"] = Portal;
