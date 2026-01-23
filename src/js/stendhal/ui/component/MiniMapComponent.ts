@@ -79,6 +79,10 @@ export class MiniMapComponent extends Component {
 
 		let imageWidth = this.mapWidth * this.scale;
 		let imageHeight = this.mapHeight * this.scale;
+		const centerOffsetX = imageWidth < this.width ? Math.round((this.width - imageWidth) / 2) : 0;
+		const centerOffsetY = imageHeight < this.height ? Math.round((this.height - imageHeight) / 2) : 0;
+		this.xOffset = -centerOffsetX;
+		this.yOffset = -centerOffsetY;
 
 		let xpos = Math.round((baseX * this.scale) + 0.5) - this.width / 2;
 		let ypos = Math.round((baseY * this.scale) + 0.5) - this.width / 2;
@@ -121,7 +125,7 @@ export class MiniMapComponent extends Component {
 			ctx.setTransform(1, 0, 0, 1, 0, 0);
 
 			// The area outside of the map
-			ctx.fillStyle = Color.DARK_GRAY;
+			ctx.fillStyle = Color.BLACK;
 			ctx.fillRect(0, 0, this.width, this.height);
 
 			ctx.translate(Math.round(-this.xOffset), Math.round(-this.yOffset));
