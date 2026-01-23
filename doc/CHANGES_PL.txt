@@ -22,6 +22,7 @@ Changelog
 - Udostępniono pierwszą wersję (mogą występować błędy!!)
 
 *świat*
+- Dodano nową funkcję dzielenia się doświadczeniem dla grup (standardowy exp to obecny stan, najniższy poziom to całe doświadczenie zdobywa gracz z najniższym poziomem w grupie - TYLKO NA TEJ SAMEJ MAPIE)
 - Dodano nowy kocioł Draconii oraz NPC Draconię w pobliżu Józka na pustyni
 - Dodano nowy przedmiot „Wywar Wąsatych Smoków”, możliwy do uwarzenia w kotle Draconii
 - Zmieniono wymagania do wykonania „Złotej Ciupagi z Trzema Wąsami”, dodając Wywar Wąsatych Smoków
