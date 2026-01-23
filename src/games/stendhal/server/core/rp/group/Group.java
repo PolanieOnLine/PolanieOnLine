@@ -12,6 +12,7 @@
  ***************************************************************************/
 package games.stendhal.server.core.rp.group;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -19,6 +20,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 import games.stendhal.common.NotificationType;
@@ -259,19 +261,12 @@ public class Group {
 	 */
 	public Player getLowestLevelMember() {
 		StendhalRPRuleProcessor ruleProcessor = SingletonRepository.getRuleProcessor();
-		Player lowest = null;
-		for (String playerName : membersAndLastSeen.keySet()) {
-			Player player = ruleProcessor.getPlayer(playerName);
-			if (player == null) {
-				continue;
-			}
-			if ((lowest == null) || (player.getLevel() < lowest.getLevel())
-					|| ((player.getLevel() == lowest.getLevel())
-							&& player.getName().compareTo(lowest.getName()) < 0)) {
-				lowest = player;
-			}
-		}
-		return lowest;
+		return membersAndLastSeen.keySet().stream()
+				.map(ruleProcessor::getPlayer)
+				.filter(Objects::nonNull)
+				.min(Comparator.comparingInt(Player::getLevel)
+						.thenComparing(Player::getName))
+				.orElse(null);
 	}
 
 	/**
