@@ -27,6 +27,13 @@ input {
 	touch-action: pan-x pan-y;
 }
 
+.focus-visible,
+:focus-visible {
+	outline: 2px solid #f9e7c5;
+	outline-offset: 2px;
+	box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.7);
+}
+
 .emoji-text {
 /* a better solution might be to create our own emoji font
 	font-family:
@@ -1436,6 +1443,13 @@ body.mobile-floating-ui #left-panel-toggle,
 .tavellogtabpanel {
 }
 
+.progressTypeButton.active {
+	background: #a86a2e;
+	border: 1px solid #f1d092;
+	box-shadow: 0 0 0 1px rgba(43, 24, 9, 0.6), 0 2px 4px rgba(0, 0, 0, 0.6),
+		inset 0 1px 0 rgba(255, 236, 190, 0.5);
+}
+
 .tlog_hlayout {
 	width: 40em;
 	height: 25em;
@@ -1452,6 +1466,9 @@ body.mobile-floating-ui #left-panel-toggle,
 	float: left;
 	width: 15em;
 	margin-top: 1em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .travellogdetails {
@@ -1461,6 +1478,227 @@ body.mobile-floating-ui #left-panel-toggle,
 
 .travellogdescription {
 	font-style: italic;
+}
+
+.travellogdialog__layout {
+	display: flex;
+	gap: 12px;
+	min-width: 0;
+}
+
+.travellogdialog__panel {
+	display: flex;
+	flex-direction: column;
+	min-width: 0;
+}
+
+.travellogdialog__listbox {
+	flex: 1 1 auto;
+	min-height: 0;
+}
+
+.travellogdialog__listbox .travellogitems {
+	height: 100%;
+	overflow-y: auto;
+}
+
+.travellogdialog .tlog_rpane {
+	display: flex;
+	flex-direction: column;
+	flex: 1 1 auto;
+	min-height: 0;
+	float: none;
+	margin-left: 0;
+	overflow: hidden;
+}
+
+.travellogdialog__details-header {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.travellogdialog__details-body {
+	flex: 1 1 auto;
+	min-height: 0;
+	overflow-y: auto;
+	line-height: 1.4;
+}
+
+.travellogdialog__quest-header {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	margin-bottom: 8px;
+}
+
+.travellogdialog__quest-title {
+	font-weight: bold;
+	font-size: 15px;
+	color: #f9e7c5;
+	text-shadow: 1px 1px 2px #000;
+}
+
+.travellogdialog__quest-meta {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 6px;
+}
+
+.travellogdialog__quest-badges {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+}
+
+.quest-badge {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 2px 8px;
+	border-radius: 999px;
+	font-size: 10px;
+	font-weight: bold;
+	letter-spacing: 0.05em;
+	text-transform: uppercase;
+	color: #f9e7c5;
+	border: 1px solid var(--border-top-color);
+	background: rgba(0, 0, 0, 0.35);
+	text-shadow: 1px 1px 2px #000;
+}
+
+.quest-badge--new {
+	background: rgba(43, 86, 123, 0.9);
+	border-color: #8fb5de;
+}
+
+.quest-badge--progress {
+	background: rgba(107, 74, 31, 0.9);
+	border-color: #c79b5a;
+}
+
+.quest-badge--done {
+	background: rgba(47, 107, 47, 0.9);
+	border-color: #7fc27f;
+}
+
+.quest-badge--cancel {
+	background: rgba(107, 47, 47, 0.9);
+	border-color: #d28a8a;
+}
+
+.quest-badge--repeatable {
+	background: rgba(75, 59, 107, 0.9);
+	border-color: #b3a1e6;
+}
+
+.quest-mini-progress {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 2px 8px;
+	border-radius: 6px;
+	font-size: 11px;
+	font-weight: bold;
+	color: #f9e7c5;
+	border: 1px solid var(--border-top-color);
+	background: rgba(0, 0, 0, 0.35);
+	text-shadow: 1px 1px 2px #000;
+}
+
+.travellogdialog__section-body--empty {
+	color: #aaa;
+	font-style: italic;
+}
+
+.travellogdialog__section {
+	margin: 0 0 8px;
+}
+
+.travellogdialog__section-title {
+	margin: 0 0 4px;
+	font-size: 15px;
+	font-weight: 600;
+}
+
+.travellogdialog__section-body {
+	line-height: 1.4;
+}
+
+.travellogdialog__section:last-child {
+	margin-bottom: 0;
+}
+
+.travellogdialog__list {
+	margin: 0;
+	padding-left: 20px;
+	list-style-type: disc;
+	list-style-position: outside;
+	color: #f0e4cf;
+}
+
+.travellogdialog__list-item {
+	display: flex;
+	align-items: baseline;
+	gap: 8px;
+	padding: 2px 0;
+	line-height: 1.4;
+}
+
+.travellogdialog__list-item--split {
+	justify-content: space-between;
+}
+
+.travellogdialog__list-label {
+	flex: 1 1 auto;
+}
+
+.travellogdialog__list-value {
+	flex: 0 0 auto;
+	font-weight: 600;
+	color: #f9e7c5;
+	text-shadow: 0 1px 1px #000;
+}
+
+.quest-reward-badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	padding: 2px 6px;
+	margin-left: 4px;
+	border-radius: 10px;
+	font-size: 10px;
+	font-weight: 700;
+	letter-spacing: 0.02em;
+	text-transform: uppercase;
+	color: #21160c;
+	background: #f2d38a;
+	border: 1px solid #e0b464;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.35);
+}
+
+.travellogitems option[aria-selected="true"],
+.travellogitems option:checked {
+	background: #8a5524;
+	color: #fff2d2;
+	text-shadow: 0 1px 1px #000;
+}
+
+.travellogdialog__back-button {
+	display: none;
+}
+
+.travellogdialog.is-mobile .travellogdialog__back-button {
+	display: inline-flex;
+}
+
+.travellogdialog.is-mobile.view-details .list-panel {
+	display: none;
+}
+
+.travellogdialog.is-mobile.view-list .details-panel {
+	display: none;
 }
 
 @media (hover: none) and (pointer: coarse) {
@@ -1530,7 +1768,7 @@ body.mobile-floating-ui #left-panel-toggle,
 		margin-left: 0;
 		height: auto;
 		max-height: 70vh;
-		overflow-y: auto;
+		overflow: hidden;
 	}
 
 	.travellogdialog .travellogdetails {

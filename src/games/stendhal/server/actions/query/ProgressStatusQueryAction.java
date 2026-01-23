@@ -103,10 +103,11 @@ public class ProgressStatusQueryAction implements ActionListener {
 	private void sendDetails(Player player, String progressType, String item) {
 		StendhalQuestSystem questSystem = SingletonRepository.getStendhalQuestSystem();
 		if (progressType.equals("Otwarte zadania") || progressType.equals("Ukończone zadania")) {
+			final String questName = StendhalQuestSystem.extractQuestNameFromEntry(item);
 			player.addEvent(new ProgressStatusEvent(progressType, item,
-					questSystem.getQuestDescription(player, item),
-					questSystem.getQuestLevelWarning(player, item),
-					questSystem.getQuestProgressDetails(player, item)));
+					questSystem.getQuestDescription(player, questName),
+					questSystem.getQuestLevelWarning(player, questName),
+					questSystem.getQuestDetailSections(player, questName)));
 		} else if (progressType.equals("Produkcja")) {
 			player.addEvent(new ProgressStatusEvent(progressType, item,
 					SingletonRepository.getProducerRegister().getProductionDescription(player, item),

@@ -11,6 +11,10 @@
  ***************************************************************************/
 package games.stendhal.server.entity.npc.quest;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * defines general information about this quest
  *
@@ -24,6 +28,9 @@ public class QuestInfoBuilder {
 	private int minLevel = 0;
 	private String region = "somewhere";
 	private String questGiverNpc = null;
+	private final List<String> rewards = new ArrayList<String>();
+	private final List<String> requirements = new ArrayList<String>();
+	private final List<String> costs = new ArrayList<String>();
 
 	// hide constructor
 	QuestInfoBuilder() {
@@ -70,6 +77,42 @@ public class QuestInfoBuilder {
 		return this;
 	}
 
+	public QuestInfoBuilder rewards(String... rewards) {
+		return rewards(Arrays.asList(rewards));
+	}
+
+	public QuestInfoBuilder rewards(List<String> rewards) {
+		this.rewards.clear();
+		if (rewards != null) {
+			this.rewards.addAll(rewards);
+		}
+		return this;
+	}
+
+	public QuestInfoBuilder requirements(String... requirements) {
+		return requirements(Arrays.asList(requirements));
+	}
+
+	public QuestInfoBuilder requirements(List<String> requirements) {
+		this.requirements.clear();
+		if (requirements != null) {
+			this.requirements.addAll(requirements);
+		}
+		return this;
+	}
+
+	public QuestInfoBuilder costs(String... costs) {
+		return costs(Arrays.asList(costs));
+	}
+
+	public QuestInfoBuilder costs(List<String> costs) {
+		this.costs.clear();
+		if (costs != null) {
+			this.costs.addAll(costs);
+		}
+		return this;
+	}
+
 	String getQuestGiverNpc() {
 		return questGiverNpc;
 	}
@@ -104,5 +147,17 @@ public class QuestInfoBuilder {
 
 	String getRegion() {
 		return region;
+	}
+
+	List<String> getRewards() {
+		return rewards;
+	}
+
+	List<String> getRequirements() {
+		return requirements;
+	}
+
+	List<String> getCosts() {
+		return costs;
 	}
 }

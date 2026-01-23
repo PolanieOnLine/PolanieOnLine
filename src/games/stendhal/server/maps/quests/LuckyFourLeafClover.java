@@ -11,6 +11,7 @@
  ***************************************************************************/
 package games.stendhal.server.maps.quests;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -110,6 +111,15 @@ public class LuckyFourLeafClover extends AbstractQuest {
 	@Override
 	public void addToWorld() {
 		fillQuestInfo(getName(), getNPCName() + " poszukuje bardzo rzadkiej czterolistnej koniczynki", true, 1);
+		questInfo.setRewards(Arrays.asList(
+				"20 większych mikstur",
+				"1 000 PD",
+				"karma",
+				"10 000 PD ataku (pierwsze ukończenie)",
+				"10 000 PD obrony (pierwsze ukończenie)",
+				"+150 maksymalnego zdrowia (pierwsze ukończenie)"));
+		questInfo.setRequirements(Arrays.asList(
+				"Przynieś czterolistną koniczynę Maple."));
 		requestStep();
 		bringStep();
 	}
