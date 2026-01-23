@@ -299,7 +299,7 @@ public class GameLoop {
 		}
 		while ((remaining = target - System.nanoTime()) > 0L) {
 			if (remaining > 1_000L) {
-				Thread.onSpinWait();
+				Thread.yield();
 			}
 		}
 		long actual = System.nanoTime() - start;
