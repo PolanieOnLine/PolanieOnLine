@@ -45,10 +45,9 @@ export class CreateAccountDialog extends DialogContentComponent {
 			ui.createSingletonFloatingWindow(
 				"Logowanie",
 				new LoginDialog(),
-				100, 50);
+				100, 50).enableCloseButton(false);
 		});
 	}
 
 
 }
-
