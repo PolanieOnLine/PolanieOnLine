@@ -1128,7 +1128,7 @@ public class ClientView extends WebView {
 		final String js = "javascript:(function(){"
 				+ "var result={attempted:false,finalStatus:'pending',message:'',attempts:0,"
 				+ "fields:{username:false,password:false,passwordrepeat:false,email:false,submit:false,form:false},"
-				+ "observerActive:false,error:false,createMode:false};"
+				+ "observerActive:false,error:false,createMode:false,lastStatus:'',createLinkClicked:false};"
 				+ "try{"
 				+ "if(window.__po_autoRegisterActive){result.finalStatus='alreadyActive';result.message='Auto-register already running';return result;}"
 				+ "window.__po_autoRegisterActive=true;" + "var maxAttempts=" + AUTO_LOGIN_MAX_ATTEMPTS + ";"
@@ -1137,8 +1137,9 @@ public class ClientView extends WebView {
 				+ "var pval=" + JSONObject.quote(registerPass) + ";"
 				+ "var prval=" + JSONObject.quote(registerPassRepeat) + ";"
 				+ "var eval=" + JSONObject.quote(registerEmail) + ";"
+				+ "var setStatus=function(status,msg){result.lastStatus=status;result.message=msg||result.message;};"
 				+ "var finalize=function(status,msg){" + "if(finalized){return;}" + "finalized=true;"
-				+ "result.finalStatus=status;" + "result.message=msg||result.message;" + "result.attempts=attempts;"
+				+ "result.finalStatus=status;" + "setStatus(status,msg);" + "result.attempts=attempts;"
 				+ "result.observerActive=!!observer;" + "try{if(observer){observer.disconnect();}}catch(e){}"
 				+ "window.__po_autoRegisterActive=false;" + "};"
 				+ "var submit=function(){"
@@ -1152,9 +1153,13 @@ public class ClientView extends WebView {
 				+ "var pr=f.querySelector('#passwordrepeat');"
 				+ "var em=f.querySelector('#email');"
 				+ "var b=f.querySelector('#loginbutton');"
-				+ "var isCreate=(window.location && window.location.hash && window.location.hash.indexOf('create') !== -1) || !!pr;"
+				+ "var hashCreate=(window.location && window.location.hash && window.location.hash.indexOf('create') !== -1);"
+				+ "var isCreate=hashCreate || !!pr;"
 				+ "result.createMode=!!isCreate;"
-				+ "if(!isCreate){finalize('notCreate','Not in create account mode');return false;}"
+				+ "if(!isCreate){"
+				+ "var createLink=document.querySelector('#createlink') || document.querySelector('a[href=\"#create\"]');"
+				+ "if(createLink){createLink.click();result.createLinkClicked=true;setStatus('createLinkClicked','Clicked create account link');return false;}"
+				+ "finalize('missingCreateLink','Create link not found');return false;}"
 				+ "result.fields.username=!!u;result.fields.password=!!p;result.fields.passwordrepeat=!!pr;"
 				+ "result.fields.email=!!em;result.fields.submit=!!b;result.fields.form=!!f;"
 				+ "if(!u||!p||!pr||!b){finalize('missingFields','Registration fields not found');return false;}"
@@ -1187,7 +1192,7 @@ public class ClientView extends WebView {
 				if ("error".equals(status) || "timeout".equals(status) || "maxAttempts".equals(status)) {
 					LOG.error("Auto-register failed with status={} message=\"{}\"", status, message);
 				}
-				if ("notCreate".equals(status) || "missingForm".equals(status)) {
+				if ("notCreate".equals(status) || "missingForm".equals(status) || "missingCreateLink".equals(status)) {
 					autoRegisterAttempted = false;
 				}
 				if ("submitted".equals(status)) {
