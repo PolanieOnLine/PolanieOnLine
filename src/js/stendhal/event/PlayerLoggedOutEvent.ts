@@ -24,9 +24,6 @@ export class PlayerLoggedOutEvent extends RPEvent {
 
 	override execute(entity: any) {
 		const playerName = this.name;
-		if (!stendhal.ui.buddyList.hasBuddy(playerName)) {
-			return;
-		}
 		const index = stendhal.players.indexOf(playerName);
 		if (index >= 0) {
 			stendhal.players.splice(index, 1);

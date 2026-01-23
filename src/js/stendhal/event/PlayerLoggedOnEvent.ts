@@ -31,9 +31,6 @@ export class PlayerLoggedOnEvent extends RPEvent {
 
 	override execute(entity: any) {
 		const playerName = this.name;
-		if (!stendhal.ui.buddyList.hasBuddy(playerName)) {
-			return;
-		}
 		if (stendhal.players.indexOf(playerName) < 0) {
 			// remember logged on players
 			stendhal.players.push(playerName);
