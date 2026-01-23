@@ -32,10 +32,9 @@ export class PlayerLoggedOutEvent extends RPEvent {
 			stendhal.players.splice(index, 1);
 		}
 
-		const localName = marauroa?.me?.["_name"] ?? marauroa?.me?.["name"];
-		const isLocalPlayer = typeof localName === "string" && localName === playerName;
-		if (stendhal.playerInGame && !isLocalPlayer) {
+		if (!marauroa?.me || marauroa.me["_name"] !== playerName) {
 			Chat.log("information", `${playerName} opuścił PolanieOnLine.`);
 		}
 	}
 }
+
