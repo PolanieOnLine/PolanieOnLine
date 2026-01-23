@@ -134,6 +134,7 @@ export class ViewPort {
 	/** Styles to be applied when chat panel is not floating. */
 	private readonly initialStyle: { [prop: string]: string };
 	private readonly initialMaxHeight?: number;
+	private chatFloating = false;
 
 	private preserveHeightForNextResize = false;
 	private resizeScheduled = false;
@@ -432,6 +433,11 @@ export class ViewPort {
 	}
 
 	private applyResponsiveWidth(canvas: HTMLCanvasElement, middleColumn: HTMLElement, viewportWidth: number) {
+		if (this.chatFloating) {
+			canvas.style.width = `${viewportWidth}px`;
+			return;
+		}
+
 		const middleRect = middleColumn.getBoundingClientRect();
 		const middleStyles = getComputedStyle(middleColumn);
 		const paddingX = this.parseCssPixels(middleStyles.paddingLeft) + this.parseCssPixels(middleStyles.paddingRight);
@@ -1215,17 +1221,17 @@ export class ViewPort {
 	 */
 	public onChatPanelRefresh(floating: boolean) {
 		const element = this.getElement();
-		const preservedProps = new Set(["max-height", "max-width"]);
+		this.chatFloating = floating;
+		if (floating) {
+			element.style.setProperty("max-width", "100%");
+			element.style.setProperty("width", "100%");
+			element.style.removeProperty("max-height");
+			return;
+		}
+
+		element.style.removeProperty("width");
 		for (const prop of Object.keys(this.initialStyle)) {
-			if (floating) {
-				if (preservedProps.has(prop)) {
-					element.style.setProperty(prop, this.initialStyle[prop]);
-				} else {
-					element.style.removeProperty(prop);
-				}
-			} else {
-				element.style.setProperty(prop, this.initialStyle[prop]);
-			}
+			element.style.setProperty(prop, this.initialStyle[prop]);
 		}
 	}
 }
