@@ -437,20 +437,20 @@ class GroupPanel {
 				return;
 			}
 			JPopupMenu popup = new JPopupMenu();
-			JMenuItem item = new JMenuItem("Zbieranie: wspólne");
+			JMenuItem item = new JMenuItem("wspólne");
 			item.addActionListener(new LootmodeActionListener("shared"));
 			popup.add(item);
 
-			item = new JMenuItem("Zbieranie: samodzielne");
+			item = new JMenuItem("samodzielne");
 			item.addActionListener(new LootmodeActionListener("single"));
 			popup.add(item);
 
 			popup.addSeparator();
-			item = new JMenuItem("EXP: standardowe");
+			item = new JMenuItem("standardowe");
 			item.addActionListener(new ExpmodeActionListener("standard"));
 			popup.add(item);
 
-			item = new JMenuItem("EXP: najniższy poziom");
+			item = new JMenuItem("najniższy poziom");
 			item.addActionListener(new ExpmodeActionListener("lowest"));
 			popup.add(item);
 
