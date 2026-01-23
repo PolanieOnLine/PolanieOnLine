@@ -30,6 +30,7 @@ import { MiniMapComponent } from "../component/MiniMapComponent";
 import { ZoneInfoComponent } from "../component/ZoneInfoComponent";
 import { PlayerEquipmentComponent } from "../component/PlayerEquipmentComponent";
 import { PlayerStatsComponent } from "../component/PlayerStatsComponent";
+import { RunicAltarComponent } from "../component/RunicAltarComponent";
 import { InventoryWindowController } from "../component/InventoryWindowController";
 
 import { Layout } from "../../data/enum/Layout";
@@ -84,6 +85,7 @@ export class DesktopUserInterfaceFactory {
 		InventoryWindowController.register("bag-window", { title: "Plecak" });
 		InventoryWindowController.register("keyring-window", { title: "Rzemyk" });
 		InventoryWindowController.register("magicbag-window", { title: "Magiczna torba" });
+		InventoryWindowController.register("runicaltar-window", { title: "Ołtarz Runiczny" });
 
 		const equipmentComponent = new PlayerEquipmentComponent();
 		InventoryWindowController.attachComponent("equipmentborder", equipmentComponent);
@@ -105,6 +107,10 @@ export class DesktopUserInterfaceFactory {
 		magicbag.setVisible(false);
 		ui.registerComponent(UIComponentEnum.MagicBag, magicbag);
 
+		const runicAltarComponent = new RunicAltarComponent();
+		InventoryWindowController.attachComponent("runicaltar-window", runicAltarComponent);
+		ui.registerComponent(UIComponentEnum.RunicAltar, runicAltarComponent);
+
 		// hide pouch by default
 
 		const bottomPanel = new ChatPanel();
@@ -119,4 +125,3 @@ export class DesktopUserInterfaceFactory {
 		ui.registerComponent(uiComponentEnum, component);
 	}
 }
-

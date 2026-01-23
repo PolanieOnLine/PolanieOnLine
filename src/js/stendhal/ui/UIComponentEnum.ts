@@ -38,6 +38,7 @@ export class UIComponentEnum {
 	public static readonly PlayerStats = 111;
 	public static readonly SocialPanel = 112;
 	public static readonly StatusesList = 113;
+	public static readonly RunicAltar = 114;
 
 	// Dialog
 	public static readonly TradeDialog = 201;
@@ -50,4 +51,3 @@ export class UIComponentEnum {
 	public static readonly QMPathFinding = 303;
 	public static readonly QMSound = 304;
 }
-

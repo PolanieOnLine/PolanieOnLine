@@ -26,6 +26,7 @@ import { UIComponentEnum } from "../ui/UIComponentEnum";
 
 import { ItemInventoryComponent } from "../ui/component/ItemInventoryComponent";
 import { PlayerStatsComponent } from "../ui/component/PlayerStatsComponent";
+import { RunicAltarComponent } from "../ui/component/RunicAltarComponent";
 import { StatusesListComponent } from "../ui/component/StatusesListComponent";
 
 import { OutfitDialog } from "../ui/dialog/outfit/OutfitDialog";
@@ -63,6 +64,7 @@ export class User extends Player {
 			(ui.get(UIComponentEnum.Bag) as ItemInventoryComponent).update();
 			(ui.get(UIComponentEnum.Keyring) as ItemInventoryComponent).update();
 			(ui.get(UIComponentEnum.MagicBag) as ItemInventoryComponent).update();
+			(ui.get(UIComponentEnum.RunicAltar) as RunicAltarComponent).update();
 			(ui.get(UIComponentEnum.StatusesList) as StatusesListComponent).update(this);
 		});
 	}
@@ -296,4 +298,3 @@ export class User extends Player {
 		marauroa.clientFramework.sendAction(action);
 	}
 }
-
