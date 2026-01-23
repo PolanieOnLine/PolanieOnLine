@@ -300,6 +300,11 @@ div#equipmentborder { width: 147px; }
 	border-bottom: 2px solid var(--border-bottom-color);
 }
 
+#runicaltar-window .inventory-window__body {
+	align-items: center;
+	padding: 4px 0 6px;
+}
+
 .inventory-window--collapsed .inventory-window__body {
 	display: none;
 }
@@ -393,6 +398,13 @@ div.quickPickup div.itemSlot {
 	width: 122px;
 }
 
+.runic-altar-grid {
+	position: relative;
+	width: 122px;
+	height: 150px;
+	margin: 4px auto;
+}
+
 .reserve-window__title {
 	width: 100%;
 	text-align: center;
@@ -439,6 +451,15 @@ div.quickPickup div.itemSlot {
 #lhand0 {position:absolute; top:60px; left:80px}
 #glove0 {position:absolute; top:100px; left:80px}
 #pouch0 {position:absolute; top:140px; left:80px}
+
+/* Runic altar slots (2-3-2 layout) */
+#control_rune0 {position:absolute; top:24px; left:0px}
+#utility_rune0 {position:absolute; top:84px; left:0px}
+#offensive_rune0 {position:absolute; top:6px; left:40px}
+#special_rune0 {position:absolute; top:54px; left:40px}
+#defensive_rune0 {position:absolute; top:102px; left:40px}
+#healing_rune0 {position:absolute; top:24px; left:80px}
+#resistance_rune0 {position:absolute; top:84px; left:80px}
 
 /* Secondary equipment panel */
 #neck_set0 {position:absolute; top:20px; left:0px}
