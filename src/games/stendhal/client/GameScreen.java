@@ -604,10 +604,18 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 		 * Keep the world within the screen view
 		 */
 		final int maxX = (int) (GameScreenSpriteHelper.getWorldWidth() * SIZE_UNIT_PIXELS - sw / scale);
-		cvx = MathHelper.clamp(cvx, 0, maxX);
+		if (maxX < 0) {
+			cvx = maxX / 2;
+		} else {
+			cvx = MathHelper.clamp(cvx, 0, maxX);
+		}
 
 		final int maxY = (int) (GameScreenSpriteHelper.getWorldHeight() * SIZE_UNIT_PIXELS - sh / scale);
-		cvy = MathHelper.clamp(cvy, 0, maxY);
+		if (maxY < 0) {
+			cvy = maxY / 2;
+		} else {
+			cvy = MathHelper.clamp(cvy, 0, maxY);
+		}
 
 		// Differences from center
 		dvx = cvx - GameScreenSpriteHelper.getScreenViewX();
