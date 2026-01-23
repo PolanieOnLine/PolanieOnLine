@@ -1215,9 +1215,14 @@ export class ViewPort {
 	 */
 	public onChatPanelRefresh(floating: boolean) {
 		const element = this.getElement();
+		const preservedProps = new Set(["max-height", "max-width"]);
 		for (const prop of Object.keys(this.initialStyle)) {
 			if (floating) {
-				element.style.removeProperty(prop);
+				if (preservedProps.has(prop)) {
+					element.style.setProperty(prop, this.initialStyle[prop]);
+				} else {
+					element.style.removeProperty(prop);
+				}
 			} else {
 				element.style.setProperty(prop, this.initialStyle[prop]);
 			}
