@@ -1590,14 +1590,14 @@ public abstract class RPEntity extends AudibleEntity {
 					addTextIndicator("+" + amount, NotificationType.SIGNIFICANT_POSITIVE);
 					ClientSingletonRepository.getUserInterface().addEventLine(new HeaderLessEventLine(
 							getTitle()
-							+ " " + Grammar.genderVerb(getGender(), "dostał") + " "
+							+ " " + Grammar.genderVerb(getGender(), "dostał") + " " + amount + " "
 							+ Grammar.polishQuantity("punkt", amount) + " doświadczenia.",
 							NotificationType.SIGNIFICANT_POSITIVE));
 				} else if (amount < 0) {
 					addTextIndicator("" + amount, NotificationType.SIGNIFICANT_NEGATIVE);
 					ClientSingletonRepository.getUserInterface().addEventLine(new HeaderLessEventLine(
 							getTitle()
-							+ " traci "
+							+ " traci " + (-amount) + " "
 							+ Grammar.polishQuantity("punkt", -amount) + " doświadczenia.",
 							NotificationType.SIGNIFICANT_NEGATIVE));
 				}
