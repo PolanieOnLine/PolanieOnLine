@@ -6,6 +6,20 @@ export interface TileLayerOptions {
 	composite?: GlobalCompositeOperation;
 }
 
+function resolvePixelRatio(): number {
+	if (typeof window !== "undefined" && typeof window.devicePixelRatio === "number") {
+		return window.devicePixelRatio || 1;
+	}
+	return 1;
+}
+
+function snapToPixel(value: number, effectiveScale: number): number {
+	if (!effectiveScale) {
+		return value;
+	}
+	return Math.round(value * effectiveScale) / effectiveScale;
+}
+
 export default class TileLayerPainter {
 
 	public static drawLayerByName(ctx: CanvasRenderingContext2D, name: string, tileOffsetX: number,
@@ -41,9 +55,16 @@ export default class TileLayerPainter {
 				width: canvas.width,
 				height: canvas.height,
 			};
-		const { tileOverlap, overlapOffset, edgeTrim } = getTileOverlapMetrics(tileScale, BASE_TILE_EDGE_TRIM);
-		const drawTileWidth = targetTileWidth + tileOverlap;
-		const drawTileHeight = targetTileHeight + tileOverlap;
+		const pixelRatio = resolvePixelRatio();
+		const { tileOverlap, overlapOffset, edgeTrim } = getTileOverlapMetrics(
+			tileScale,
+			BASE_TILE_EDGE_TRIM,
+			pixelRatio,
+			map.tileWidth
+		);
+		const effectiveScale = tileScale * pixelRatio;
+		const drawTileWidth = snapToPixel(targetTileWidth + tileOverlap, effectiveScale);
+		const drawTileHeight = snapToPixel(targetTileHeight + tileOverlap, effectiveScale);
 		const yMax = Math.min(tileOffsetY + viewportSize.height / targetTileHeight + 1, map.zoneSizeY);
 		const xMax = Math.min(tileOffsetX + viewportSize.width / targetTileWidth + 1, map.zoneSizeX);
 
@@ -66,8 +87,8 @@ export default class TileLayerPainter {
 					ctx,
 					tileset,
 					idx,
-					x * targetTileWidth - overlapOffset,
-					y * targetTileHeight - overlapOffset,
+					snapToPixel(x * targetTileWidth - overlapOffset, effectiveScale),
+					snapToPixel(y * targetTileHeight - overlapOffset, effectiveScale),
 					drawTileWidth,
 					drawTileHeight,
 					flip,

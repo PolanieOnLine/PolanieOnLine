@@ -11,9 +11,23 @@
 
 import { Canvas, RenderingContext2D } from "util/Types";
 import { CombinedTileset } from "./CombinedTileset";
-import { getTileOverlapMetrics, resolveTileScale } from "./TileOverlap";
+import { BASE_TILE_EDGE_TRIM, getTileOverlapMetrics, resolveTileScale } from "./TileOverlap";
 
 declare var stendhal: any;
+
+function resolvePixelRatio(): number {
+	if (typeof window !== "undefined" && typeof window.devicePixelRatio === "number") {
+		return window.devicePixelRatio || 1;
+	}
+	return 1;
+}
+
+function snapToPixel(value: number, effectiveScale: number): number {
+	if (!effectiveScale) {
+		return value;
+	}
+	return Math.round(value * effectiveScale) / effectiveScale;
+}
 
 export class LandscapeRenderer {
 
@@ -41,9 +55,16 @@ export class LandscapeRenderer {
 		const layer = combinedTileset.combinedLayers[layerNo];
 		const yMax = Math.min(tileOffsetY + viewportSize.height / targetTileHeight + 1, stendhal.data.map.zoneSizeY);
 		const xMax = Math.min(tileOffsetX + viewportSize.width / targetTileWidth + 1, stendhal.data.map.zoneSizeX);
-		const { tileOverlap, overlapOffset } = getTileOverlapMetrics(clampedScale);
-		const drawTileWidth = targetTileWidth + tileOverlap;
-		const drawTileHeight = targetTileHeight + tileOverlap;
+		const pixelRatio = resolvePixelRatio();
+		const { tileOverlap, overlapOffset } = getTileOverlapMetrics(
+			clampedScale,
+			BASE_TILE_EDGE_TRIM,
+			pixelRatio,
+			stendhal.data.map.tileWidth
+		);
+		const effectiveScale = clampedScale * pixelRatio;
+		const drawTileWidth = snapToPixel(targetTileWidth + tileOverlap, effectiveScale);
+		const drawTileHeight = snapToPixel(targetTileHeight + tileOverlap, effectiveScale);
 
 		for (let y = tileOffsetY; y < yMax; y++) {
 			for (let x = tileOffsetX; x < xMax; x++) {
@@ -51,8 +72,8 @@ export class LandscapeRenderer {
 				if (index > -1) {
 
 					try {
-						const pixelX = x * targetTileWidth - overlapOffset;
-						const pixelY = y * targetTileHeight - overlapOffset;
+						const pixelX = snapToPixel(x * targetTileWidth - overlapOffset, effectiveScale);
+						const pixelY = snapToPixel(y * targetTileHeight - overlapOffset, effectiveScale);
 
 						ctx.drawImage(combinedTileset.canvas,
 

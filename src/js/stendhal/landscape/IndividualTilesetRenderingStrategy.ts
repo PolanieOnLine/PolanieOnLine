@@ -16,6 +16,7 @@ import { ImagePreloader } from "../data/ImagePreloader";
 import { Chat } from "../util/Chat";
 import { TileMap } from "../data/TileMap";
 import { Canvas, RenderingContext2D } from "util/Types";
+import { BASE_TILE_EDGE_TRIM, getTileOverlapMetrics } from "./TileOverlap";
 
 
 export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrategy {
@@ -23,6 +24,8 @@ export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrate
 	private targetTileWidth = 32;
 	private targetTileHeight = 32;
 	private tileOverlap = 0;
+	private overlapOffset = 0;
+	private effectiveScale = 1;
 
 	constructor() {
 		super();
@@ -69,13 +72,24 @@ export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrate
 			? stendhal.ui.gamewindow.getTileScale()
 			: 1;
 		const clampedScale = renderScale > 0 ? renderScale : 1;
+		const pixelRatio = typeof window !== "undefined" && typeof window.devicePixelRatio === "number"
+			? window.devicePixelRatio || 1
+			: 1;
 		const viewportSize = typeof (stendhal.ui?.gamewindow?.getWorldViewportSize) === "function"
 			? stendhal.ui.gamewindow.getWorldViewportSize()
 			: {
 				width: canvas.width / clampedScale,
 				height: canvas.height / clampedScale,
 			};
-		this.tileOverlap = clampedScale < 1 ? Math.ceil(2 / clampedScale) : 0;
+		const { tileOverlap, overlapOffset } = getTileOverlapMetrics(
+			clampedScale,
+			BASE_TILE_EDGE_TRIM,
+			pixelRatio,
+			stendhal.data.map.tileWidth
+		);
+		this.tileOverlap = tileOverlap;
+		this.overlapOffset = overlapOffset;
+		this.effectiveScale = clampedScale * pixelRatio;
 		const yMax = Math.min(tileOffsetY + viewportSize.height / this.targetTileHeight + 1, stendhal.data.map.zoneSizeY);
 		const xMax = Math.min(tileOffsetX + viewportSize.width / this.targetTileWidth + 1, stendhal.data.map.zoneSizeX);
 		let ctx = canvas.getContext("2d")! as RenderingContext2D;
@@ -108,12 +122,11 @@ export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrate
 	private drawTile(ctx: RenderingContext2D, tileset: HTMLImageElement, idx: number, x: number, y: number, flip = 0) {
 		const tilesetWidth = tileset.width;
 		const tilesPerRow = Math.floor(tilesetWidth / stendhal.data.map.tileWidth);
-		const overlapOffset = this.tileOverlap ? Math.floor(this.tileOverlap / 2) : 0;
-		const pixelX = x * this.targetTileWidth - overlapOffset;
-		const pixelY = y * this.targetTileHeight - overlapOffset;
+		const pixelX = this.snapToPixel(x * this.targetTileWidth - this.overlapOffset);
+		const pixelY = this.snapToPixel(y * this.targetTileHeight - this.overlapOffset);
 
-		const drawTileWidth = this.targetTileWidth + this.tileOverlap;
-		const drawTileHeight = this.targetTileHeight + this.tileOverlap;
+		const drawTileWidth = this.snapToPixel(this.targetTileWidth + this.tileOverlap);
+		const drawTileHeight = this.snapToPixel(this.targetTileHeight + this.tileOverlap);
 		if (flip === 0) {
 			ctx.drawImage(tileset,
 				(idx % tilesPerRow) * stendhal.data.map.tileWidth,
@@ -146,4 +159,10 @@ export class IndividualTilesetRenderingStrategy extends LandscapeRenderingStrate
 		}
 	}
 
+	private snapToPixel(value: number): number {
+		if (!this.effectiveScale) {
+			return value;
+		}
+		return Math.round(value * this.effectiveScale) / this.effectiveScale;
+	}
 }

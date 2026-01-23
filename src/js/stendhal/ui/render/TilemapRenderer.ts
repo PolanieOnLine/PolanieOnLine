@@ -6,6 +6,20 @@ declare var stendhal: any;
 const TILE_EDGE_TRIM = BASE_TILE_EDGE_TRIM;
 const PARALLAX_SCROLL = 0.25;
 
+function resolvePixelRatio(): number {
+	if (typeof window !== "undefined" && typeof window.devicePixelRatio === "number") {
+		return window.devicePixelRatio || 1;
+	}
+	return 1;
+}
+
+function snapToPixel(value: number, effectiveScale: number): number {
+	if (!effectiveScale) {
+		return value;
+	}
+	return Math.round(value * effectiveScale) / effectiveScale;
+}
+
 interface WorkerFrameMessage {
 	base?: ImageBitmap;
 	roof?: ImageBitmap;
@@ -37,6 +51,7 @@ let parallaxWidth = 0;
 let parallaxHeight = 0;
 let pixelX = null;
 let pixelY = null;
+let pixelRatio = 1;
 let baseCanvas = null;
 let roofCanvas = null;
 let baseCtx = null;
@@ -50,12 +65,24 @@ function resolveTileScale() {
         return tileWidth ? targetTileWidth / tileWidth : 1;
 }
 
+function snapToPixel(value, effectiveScale) {
+        if (!effectiveScale) {
+                return value;
+        }
+        return Math.round(value * effectiveScale) / effectiveScale;
+}
+
 function getTileMetrics() {
         const scale = clampTileScale(resolveTileScale());
-        const tileOverlap = scale < 1 ? Math.max(1, Math.ceil(2 / scale)) : 0;
+        const safePixelRatio = pixelRatio > 0 ? pixelRatio : 1;
+        const effectivePixelRatio = safePixelRatio * scale;
+        const scaledTilePixels = tileWidth * effectivePixelRatio;
+        const alignmentPadding = scale < 1 && Math.abs(scaledTilePixels - Math.round(scaledTilePixels)) > 0.001 ? 1 : 0;
+        const minOverlap = scale < 1 ? Math.max(1, Math.ceil(2 / Math.max(1, effectivePixelRatio))) : 0;
+        const tileOverlap = scale < 1 ? Math.max(minOverlap, Math.ceil(2 / scale)) + alignmentPadding : 0;
         const overlapOffset = tileOverlap ? Math.floor(tileOverlap / 2) : 0;
         const edgeTrim = scale < 1 ? Math.max(TILE_EDGE_TRIM, TILE_EDGE_TRIM / scale) : TILE_EDGE_TRIM;
-        return { tileOverlap, overlapOffset, edgeTrim };
+        return { tileOverlap, overlapOffset, edgeTrim, effectiveScale: effectivePixelRatio };
 }
 
 function ensureCaches() {
@@ -115,6 +142,7 @@ function drawLayer(ctx, layer, offsetX, offsetY, width, height) {
                 return;
         }
         const metrics = getTileMetrics();
+        const effectiveScale = metrics.effectiveScale;
         const startX = Math.max(0, Math.floor(offsetX / targetTileWidth));
         const startY = Math.max(0, Math.floor(offsetY / targetTileHeight));
         const cols = Math.ceil((width + targetTileWidth) / targetTileWidth) + 1;
@@ -123,10 +151,10 @@ function drawLayer(ctx, layer, offsetX, offsetY, width, height) {
         const endY = Math.min(zoneHeight, startY + rows);
         const sourceWidth = tileWidth - metrics.edgeTrim * 2;
         const sourceHeight = tileHeight - metrics.edgeTrim * 2;
-        const drawTileWidth = targetTileWidth + metrics.tileOverlap;
-        const drawTileHeight = targetTileHeight + metrics.tileOverlap;
+        const drawTileWidth = snapToPixel(targetTileWidth + metrics.tileOverlap, effectiveScale);
+        const drawTileHeight = snapToPixel(targetTileHeight + metrics.tileOverlap, effectiveScale);
         for (let y = startY; y < endY; y++) {
-                const destY = pixelY[y] - metrics.overlapOffset;
+                const destY = snapToPixel(pixelY[y] - metrics.overlapOffset, effectiveScale);
                 const rowIndex = y * zoneWidth;
                 for (let x = startX; x < endX; x++) {
                         const index = layer[rowIndex + x];
@@ -135,8 +163,8 @@ function drawLayer(ctx, layer, offsetX, offsetY, width, height) {
                         }
                         const srcX = (index % tilesPerRow) * tileWidth + metrics.edgeTrim;
                         const srcY = Math.floor(index / tilesPerRow) * tileHeight + metrics.edgeTrim;
-                        ctx.drawImage(atlas, srcX, srcY, sourceWidth, sourceHeight, pixelX[x] - metrics.overlapOffset, destY,
-                                drawTileWidth, drawTileHeight);
+                        const destX = snapToPixel(pixelX[x] - metrics.overlapOffset, effectiveScale);
+                        ctx.drawImage(atlas, srcX, srcY, sourceWidth, sourceHeight, destX, destY, drawTileWidth, drawTileHeight);
                 }
         }
 }
@@ -151,6 +179,7 @@ self.onmessage = (event) => {
                         tileHeight = data.tileHeight;
                         targetTileWidth = data.targetTileWidth;
                         targetTileHeight = data.targetTileHeight;
+                        pixelRatio = data.pixelRatio || 1;
                         tilesPerRow = data.tilesPerRow | 0;
                         ensureCaches();
                         break;
@@ -344,6 +373,10 @@ export class TilemapRenderer {
 		return resolveTileScale(this.targetTileWidth / this.tileWidth);
 	}
 
+	private resolvePixelRatio(): number {
+		return resolvePixelRatio();
+	}
+
 	private resolveViewportSize(width: number, height: number): { width: number; height: number } {
 		if (typeof (stendhal?.ui?.gamewindow?.getWorldViewportSize) === "function") {
 			return stendhal.ui.gamewindow.getWorldViewportSize();
@@ -522,7 +555,8 @@ export class TilemapRenderer {
 			tileHeight: this.tileHeight,
 			targetTileWidth: this.targetTileWidth,
 			targetTileHeight: this.targetTileHeight,
-			tilesPerRow: this.tilesPerRow
+			tilesPerRow: this.tilesPerRow,
+			pixelRatio: this.resolvePixelRatio()
 		};
 		worker.postMessage(configureMessage);
 		const baseCopy = this.baseLayer ? this.baseLayer.slice() : undefined;
@@ -587,9 +621,16 @@ export class TilemapRenderer {
 			return;
 		}
 		const tileScale = this.resolveTileScale();
-		const { tileOverlap, overlapOffset, edgeTrim } = getTileOverlapMetrics(tileScale, TILE_EDGE_TRIM);
-		const drawTileWidth = this.targetTileWidth + tileOverlap;
-		const drawTileHeight = this.targetTileHeight + tileOverlap;
+		const pixelRatio = this.resolvePixelRatio();
+		const { tileOverlap, overlapOffset, edgeTrim } = getTileOverlapMetrics(
+			tileScale,
+			TILE_EDGE_TRIM,
+			pixelRatio,
+			this.tileWidth
+		);
+		const effectiveScale = tileScale * pixelRatio;
+		const drawTileWidth = snapToPixel(this.targetTileWidth + tileOverlap, effectiveScale);
+		const drawTileHeight = snapToPixel(this.targetTileHeight + tileOverlap, effectiveScale);
 		const startX = Math.max(0, Math.floor(offsetX / this.targetTileWidth));
 		const startY = Math.max(0, Math.floor(offsetY / this.targetTileHeight));
 		const cols = Math.ceil((width + this.targetTileWidth) / this.targetTileWidth) + 1;
@@ -603,7 +644,7 @@ export class TilemapRenderer {
 			return;
 		}
 		for (let y = startY; y < endY; y++) {
-			const destY = this.pixelY[y] - overlapOffset;
+			const destY = snapToPixel(this.pixelY[y] - overlapOffset, effectiveScale);
 			const rowIndex = y * this.zoneWidth;
 			for (let x = startX; x < endX; x++) {
 				const index = layer[rowIndex + x];
@@ -612,8 +653,9 @@ export class TilemapRenderer {
 				}
 				const srcX = (index % this.tilesPerRow) * this.tileWidth + edgeTrim;
 				const srcY = Math.floor(index / this.tilesPerRow) * this.tileHeight + edgeTrim;
+				const destX = snapToPixel(this.pixelX[x] - overlapOffset, effectiveScale);
 				ctx.drawImage(atlasCanvas, srcX, srcY, sourceWidth, sourceHeight,
-					this.pixelX[x] - overlapOffset, destY, drawTileWidth, drawTileHeight);
+					destX, destY, drawTileWidth, drawTileHeight);
 			}
 		}
 	}
