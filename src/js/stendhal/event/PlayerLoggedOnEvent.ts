@@ -37,9 +37,10 @@ export class PlayerLoggedOnEvent extends RPEvent {
 			stendhal.players = stendhal.players.sort();
 		}
 
-		if (!marauroa?.me || marauroa.me["_name"] !== playerName) {
+		const localName = marauroa?.me?.["_name"] ?? marauroa?.me?.["name"];
+		const isLocalPlayer = typeof localName === "string" && localName === playerName;
+		if (stendhal.playerInGame && !isLocalPlayer) {
 			Chat.log("information", `${playerName} zawitał do PolanieOnLine.`);
 		}
 	}
 }
-
