@@ -454,7 +454,6 @@ public class ClientView extends WebView {
 				} else {
 					attemptAutoLogin(view, url);
 				}
-				attemptAutoLogin(view, url);
 				Menu.get().updateButtons();
 				LOG.debug("page id: {}", currentPage);
 			}
@@ -1039,7 +1038,8 @@ public class ClientView extends WebView {
 		LOG.debug("Attempting auto-login for URL {}", url);
 		final String js = "javascript:(function(){"
 				+ "var result={attempted:false,finalStatus:'pending',message:'',attempts:0,"
-				+ "fields:{username:false,password:false,submit:false,form:false},observerActive:false,error:false};"
+				+ "fields:{username:false,password:false,submit:false,form:false},"
+				+ "observerActive:false,error:false,lastStatus:''};"
 				+ "try{"
 				+ "if(window.__po_autoLoginActive){result.finalStatus='alreadyActive';result.message='Auto-login already running';return result;}"
 				+ "window.__po_autoLoginActive=true;" + "var maxAttempts=" + AUTO_LOGIN_MAX_ATTEMPTS + ";"
@@ -1049,14 +1049,19 @@ public class ClientView extends WebView {
 				+ "finalized=true;" + "result.finalStatus=status;" + "result.message=msg||result.message;"
 				+ "result.attempts=attempts;" + "result.observerActive=!!observer;"
 				+ "try{if(observer){observer.disconnect();}}catch(e){}" + "window.__po_autoLoginActive=false;" + "};"
+				+ "var pickFirst=function(root,selectors){"
+				+ "for(var i=0;i<selectors.length;i++){var el=root.querySelector(selectors[i]);if(el){return el;}}"
+				+ "return null;};"
 				+ "var submit=function(){" + "if(finalized){return true;}"
 				+ "if(attempts>=maxAttempts){finalize('maxAttempts','Reached max auto-login attempts');return false;}"
-				+ "attempts++;result.attempted=true;" + "var f=document.querySelector('form.credential-dialog');"
-				+ "if(!f){finalize('missingForm','Credential form not found');return false;}"
-				+ "var u=f.querySelector('#username');" + "var p=f.querySelector('#password');"
-				+ "var b=f.querySelector('#loginbutton');"
+				+ "var f=document.querySelector('form.credential-dialog,form#credential-dialog,form[name=\"credential-dialog\"],form.login');"
+				+ "if(!f){result.lastStatus='missingForm';result.message='Credential form not found';return false;}"
+				+ "var u=pickFirst(f,['#username','input[name=\"username\"]','input[name=\"user\"]','input[name=\"login\"]','input[type=\"text\"]']);"
+				+ "var p=pickFirst(f,['#password','input[name=\"password\"]','input[type=\"password\"]']);"
+				+ "var b=pickFirst(f,['#loginbutton','button[type=\"submit\"]','input[type=\"submit\"]','button[name=\"login\"]']);"
 				+ "result.fields.username=!!u;result.fields.password=!!p;result.fields.submit=!!b;result.fields.form=!!f;"
-				+ "if(!u||!p||!b){finalize('missingFields','Credential fields not found');return false;}"
+				+ "if(!u||!p||!b){result.lastStatus='missingFields';result.message='Credential fields not found';return false;}"
+				+ "attempts++;result.attempted=true;"
 				+ "u.value=uval;" + "p.value=pval;"
 				+ "b.click();finalize('submitted','Submitted via button');return true;"
 				+ "if(attempts>=maxAttempts){finalize('maxAttempts','Reached max auto-login attempts');}"
@@ -1080,8 +1085,13 @@ public class ClientView extends WebView {
 				final String message = result.optString("message", "");
 				final JSONObject fields = result.optJSONObject("fields");
 				final boolean observerActive = result.optBoolean("observerActive", false);
+				final String lastStatus = result.optString("lastStatus", "");
 				LOG.debug("Auto-login result: status={}, attempts={}, observerActive={}, fields={}, message=\"{}\"",
 						status, attempts, observerActive, (fields != null ? fields.toString() : "{}"), message);
+				if ("missingForm".equals(status) || "missingFields".equals(status) || "missingForm".equals(lastStatus)
+						|| "missingFields".equals(lastStatus)) {
+					autoLoginAttempted = false;
+				}
 				if ("error".equals(status) || "timeout".equals(status) || "maxAttempts".equals(status)) {
 					LOG.error("Auto-login failed with status={} message=\"{}\"", status, message);
 				}
