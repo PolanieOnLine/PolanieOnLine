@@ -62,14 +62,14 @@ export class GroupPanelComponent extends Panel {
 		}
 
 		let button = document.createElement("button");
-		button.innerText = "Join " + leader;
-		button.title = "Join the group led by " + leader;
+		button.innerText = "Dołącz do " + leader;
+		button.title = "Dołącz do grupy prowadzoną przez " + leader;
 		button.addEventListener("click", () => {
 			this.onJoinClicked(leader);
 		});
 		this.invites[leader] = button;
 		this.child(".group-invites")!.append(button);
-		Chat.log("client", "You received an invite to join a group. Please use the group panel to accept the invite.");
+		Chat.log("client", "Otrzymałeś zaproszenie dołączenia do grupy. Skorzystaj z panelu grupy, aby zaakceptować zaproszenie.");
 		// show group panel
 		// FIXME: should get tab index dynamically
 		(ui.get(UIComponentEnum.SocialPanel) as TabPanelComponent).setCurrentTab(1);
@@ -167,7 +167,7 @@ export class GroupPanelComponent extends Panel {
 
 	onGroupChatButtonClick() {
 		if (!this.isInGroup()) {
-			Chat.log("error", "Please invite someone into a group before trying to send group messages.");
+			Chat.log("error", "Zanim spróbujesz wysłać wiadomość grupową, zaproś kogoś do grupy.");
 			return;
 		}
 		(ui.get(UIComponentEnum.ChatInput) as ChatInputComponent).setText("/p ");
@@ -175,17 +175,17 @@ export class GroupPanelComponent extends Panel {
 
 	onGroupInviteButtonClick() {
 		if (this.isInGroup() && (stendhal.data.group.leader !== marauroa.me["_name"])) {
-			Chat.log("error", "Only the leader may invite people into the group.");
+			Chat.log("error", "Tylko lider może zapraszać ludzi do grupy.");
 			return;
 		}
-		Chat.log("client", "Please Fill in the name of the player you want to invite");
+		Chat.log("client", "Proszę wpisać imię gracza, którego chcesz zaprosić.");
 
 		(ui.get(UIComponentEnum.ChatInput) as ChatInputComponent).setText("/group invite ");
 	}
 
 	onGroupPartButtonClick() {
 		if (!this.isInGroup()) {
-			Chat.log("error", "You cannot leave a group because your are not a member of a group");
+			Chat.log("error", "Nie możesz opuścić grupy, ponieważ nie jesteś jej członkiem.");
 			return;
 		}
 		const action = {
