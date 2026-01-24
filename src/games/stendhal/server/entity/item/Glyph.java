@@ -4,7 +4,9 @@ import java.util.Map;
 
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.entity.slot.Slots;
 import marauroa.common.game.RPObject;
+import marauroa.common.game.RPSlot;
 
 public class Glyph extends Item {
 	public Glyph(final String name, final String clazz, final String subclass, final Map<String, String> attributes) {
@@ -25,7 +27,7 @@ public class Glyph extends Item {
 
 	@Override
 	public boolean onEquipped(final RPEntity entity, final String slot) {
-		if (entity instanceof Player) {
+		if (entity instanceof Player && isGlyphSlot(slot)) {
 			entity.setAtk(entity.getAtk() + getAttackBonus(this));
 			entity.setBaseHP(entity.getBaseHP() + getHealthBonus(this));
 		}
@@ -36,12 +38,21 @@ public class Glyph extends Item {
 	@Override
 	public boolean onUnequipped() {
 		RPObject entity = this.getBaseContainer();
-		if (entity instanceof Player) {
+		if (entity instanceof Player && isInGlyphSlot()) {
 			Player player = (Player) entity;
 			reduceAtk(player);
 			reduceHP(player);
 		}
 		return super.onUnequipped();
+	}
+
+	private boolean isGlyphSlot(String slot) {
+		return slot != null && Slots.GLYPHS.getNames().contains(slot);
+	}
+
+	private boolean isInGlyphSlot() {
+		RPSlot slot = getContainerSlot();
+		return slot != null && isGlyphSlot(slot.getName());
 	}
 
 	private void reduceHP(Player player) {

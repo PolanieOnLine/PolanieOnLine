@@ -846,7 +846,7 @@ public abstract class UpdateConverter {
 			return;
 		}
 
-		final int expectedBaseHP = calculateBaseHP(player);
+		final int expectedBaseHP = calculateBaseHP(player) + calculateGlyphHealthBonus(player);
 
 		if (player.getBaseHP() != expectedBaseHP) {
 			player.setBaseHP(expectedBaseHP);
@@ -854,6 +854,16 @@ public abstract class UpdateConverter {
 				player.setHP(expectedBaseHP);
 			}
 		}
+	}
+
+	private static int calculateGlyphHealthBonus(final Player player) {
+		int bonus = 0;
+		for (final Item glyph : player.getAllEquippedGlyphs()) {
+			if (glyph.has("health")) {
+				bonus += glyph.getInt("health");
+			}
+		}
+		return bonus;
 	}
 
 	private static int calculateBaseHP(final Player player) {
