@@ -331,6 +331,26 @@ public class j2DClient implements UserInterface {
 	}
 
 	@Override
+	public void showChatOptionsDialog() {
+		gui.showChatOptionsDialog();
+	}
+
+	@Override
+	public void refreshChatOptionsDialog() {
+		gui.refreshChatOptionsDialog();
+	}
+
+	@Override
+	public void closeChatOptionsDialog() {
+		gui.closeChatOptionsDialog();
+	}
+
+	@Override
+	public boolean isChatOptionsDialogVisible() {
+		return gui.isChatOptionsDialogVisible();
+	}
+
+	@Override
 	public void addEventLine(final EventLine line) {
 		channelManager.addEventLine(line);
 	}

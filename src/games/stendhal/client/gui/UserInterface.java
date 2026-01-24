@@ -70,6 +70,10 @@ public interface UserInterface {
 	 * @param category the category of the achievement
 	 */
 	public void addAchievementBox(final String title, final String description, final String category);
+	public void showChatOptionsDialog();
+	public void refreshChatOptionsDialog();
+	public void closeChatOptionsDialog();
+	public boolean isChatOptionsDialogVisible();
 
 	/**
 	 * gets the sound system
