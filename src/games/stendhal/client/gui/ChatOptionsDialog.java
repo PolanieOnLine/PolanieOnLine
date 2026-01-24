@@ -12,6 +12,7 @@
 package games.stendhal.client.gui;
 
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,13 +30,14 @@ import games.stendhal.client.gui.layout.SBoxLayout;
 class ChatOptionsDialog {
 	private static final int PADDING = 2;
 	private static final Insets BUTTON_MARGIN = new Insets(1, 4, 1, 4);
+	private static final Dimension MIN_SIZE = new Dimension(180, 40);
 
 	private final InternalManagedWindow dialog;
 	private final JComponent buttonContainer;
 
 	ChatOptionsDialog() {
 		dialog = buildDialog();
-		buttonContainer = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
+		buttonContainer = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, PADDING);
 		dialog.setContent(buildContent());
 		dialog.setVisible(false);
 	}
@@ -45,6 +47,9 @@ class ChatOptionsDialog {
 	}
 
 	void showDialog() {
+		if (ChatOptions.getOptions().isEmpty()) {
+			return;
+		}
 		refreshOptions();
 		dialog.center();
 		dialog.setVisible(true);
@@ -61,6 +66,10 @@ class ChatOptionsDialog {
 	void refreshOptions() {
 		buttonContainer.removeAll();
 		List<Option> options = ChatOptions.getOptions();
+		if (options.isEmpty()) {
+			dialog.setVisible(false);
+			return;
+		}
 		for (Option option : options) {
 			buttonContainer.add(createButton(option));
 		}
@@ -70,7 +79,7 @@ class ChatOptionsDialog {
 	}
 
 	private JComponent buildContent() {
-		JComponent content = SBoxLayout.createContainer(SBoxLayout.VERTICAL, PADDING);
+		JComponent content = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, PADDING);
 		content.setBorder(BorderFactory.createEmptyBorder(PADDING, PADDING, PADDING, PADDING));
 		content.add(buttonContainer);
 		return content;
@@ -118,6 +127,7 @@ class ChatOptionsDialog {
 		window.setHideOnClose(true);
 		window.setMinimizable(true);
 		window.setMovable(true);
+		window.setMinimumSize(MIN_SIZE);
 		return window;
 	}
 }

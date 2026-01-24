@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-import games.stendhal.client.gui.chattext.ChatTextController;
 import marauroa.common.game.RPAction;
 
 /**
@@ -98,6 +97,5 @@ public final class ChatOptions {
 		chat.put("type", "chat");
 		chat.put("text", keyword);
 		ClientSingletonRepository.getClientFramework().send(chat);
-		ChatTextController.get().setChatLine(keyword);
 	}
 }

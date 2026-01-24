@@ -65,8 +65,17 @@ class ChatOptionsEvent extends Event<RPEntity> {
 			return;
 		}
 
+		if (parsedOptions.isEmpty()) {
+			if (ClientSingletonRepository.getUserInterface().isChatOptionsDialogVisible()) {
+				ClientSingletonRepository.getUserInterface().closeChatOptionsDialog();
+			}
+			return;
+		}
+
 		if (ClientSingletonRepository.getUserInterface().isChatOptionsDialogVisible()) {
 			ClientSingletonRepository.getUserInterface().refreshChatOptionsDialog();
+		} else {
+			ClientSingletonRepository.getUserInterface().showChatOptionsDialog();
 		}
 	}
 

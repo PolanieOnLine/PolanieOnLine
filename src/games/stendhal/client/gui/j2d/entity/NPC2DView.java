@@ -179,13 +179,12 @@ class NPC2DView<T extends NPC> extends RPEntity2DView<T> {
 	public void onAction(final ActionType at) {
 		switch (at) {
 		case TALK:
-			j2DClient.get().showChatOptionsDialog();
 			String npcName = getEntity().getName();
 			String npcTitle = getEntity().getTitle();
 			boolean attending = ChatOptions.isAttending(npcName)
 					|| ChatOptions.isAttending(npcTitle);
-			if (attending) {
-				j2DClient.get().refreshChatOptionsDialog();
+			if (attending && !ChatOptions.getOptions().isEmpty()) {
+				j2DClient.get().showChatOptionsDialog();
 			} else {
 				ChatOptions.sendKeyword("hello");
 			}
