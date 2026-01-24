@@ -955,6 +955,10 @@ public class ClientView extends WebView {
 		dialog.setOnShowListener(new DialogInterface.OnShowListener() {
 			@Override
 			public void onShow(final DialogInterface d) {
+				if (!autoSubmit && !savedCredentials.isEmpty()) {
+					username.requestFocus();
+					username.showDropDown();
+				}
 				if (autoSubmit) {
 					loginAction.run();
 					dialog.dismiss();
@@ -1237,7 +1241,17 @@ public class ClientView extends WebView {
 		final ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(),
 				android.R.layout.simple_dropdown_item_1line, usernames);
 		username.setAdapter(adapter);
-		username.setThreshold(1);
+		username.setThreshold(0);
+
+		if (!usernames.isEmpty()) {
+			username.setOnFocusChangeListener((view, hasFocus) -> {
+				if (hasFocus) {
+					username.showDropDown();
+				}
+			});
+			username.setOnClickListener(view -> username.showDropDown());
+		}
+
 		username.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(final AdapterView<?> parent, final View view, final int position, final long id) {
