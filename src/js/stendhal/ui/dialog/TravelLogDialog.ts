@@ -71,7 +71,15 @@ export class TravelLogDialog extends DialogContentComponent {
 			});
 		});
 
-		this.child(".travellogitems")!.addEventListener("change", (event) => {
+		const itemList = this.child(".travellogitems")! as HTMLSelectElement;
+		if (stendhal.session.touchOnly()) {
+			itemList.size = 1;
+			itemList.removeAttribute("size");
+		} else {
+			itemList.size = 20;
+		}
+
+		itemList.addEventListener("change", (event) => {
 			this.onTravelLogItemsChange(event);
 		});
 	}
@@ -227,4 +235,3 @@ export class TravelLogDialog extends DialogContentComponent {
 		this.repeatable = repeatable;
 	}
 }
-
