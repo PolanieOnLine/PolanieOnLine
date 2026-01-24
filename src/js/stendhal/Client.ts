@@ -334,11 +334,14 @@ export class Client {
 				} catch (error) {
 					console.warn("Failed to decode character name from URL hash.", error);
 				}
-				const candidateName = decodedName.includes("_") ? decodedName.replace(/_/g, " ") : decodedName;
-				const useCandidate = candidateName !== decodedName
-					&& availableNames.has(candidateName)
-					&& !availableNames.has(decodedName);
-				const name = useCandidate ? candidateName : decodedName;
+				let name = decodedName;
+				if (decodedName.includes("_")) {
+					const candidateName = decodedName.replace(/_/g, " ");
+					// Prefer name with spaces if it exists and the underscore version doesn't.
+					if (availableNames.has(candidateName) && !availableNames.has(decodedName)) {
+						name = candidateName;
+					}
+				}
 				stendhal.session.setCharName(name);
 			}
 
