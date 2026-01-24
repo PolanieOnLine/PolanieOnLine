@@ -11,6 +11,7 @@
  ***************************************************************************/
 package games.stendhal.client;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
@@ -38,7 +39,7 @@ public class GameLoop {
 	private final Thread logicThread;
 	/** Dedicated rendering loop thread. */
 	private final Thread renderThread;
-	/** Main game loop content. Run at every cycle.*/
+	/** Main game loop content. Run at every cycle. */
 	private PersistentTask persistentTask;
 	/** Render task executed at the rendering rate. */
 	private Runnable renderTask;
@@ -47,8 +48,8 @@ public class GameLoop {
 	/** Tasks to be run when the game loop exits. */
 	private final List<Runnable> cleanupTasks = new ArrayList<Runnable>();
 	/**
-	 * <code>true</code> when the game loop should keep looping,
-	 * <code>false</code>, when it should continue to the cleanup tasks.
+	 * <code>true</code> when the game loop should keep looping, <code>false</code>,
+	 * when it should continue to the cleanup tasks.
 	 */
 	private volatile boolean running;
 	private volatile boolean renderRunning;
@@ -59,6 +60,9 @@ public class GameLoop {
 	private static final int MAX_CATCH_UP_STEPS = 5;
 	private static final long SPIN_THRESHOLD_NANOS = 200_000L;
 	private static final long PARK_MARGIN_NANOS = 100_000L;
+	private static final long PARK_SKIP_THRESHOLD_NANOS = 5_000_000L;
+	private static final long PARK_FRAME_LENGTH_THRESHOLD_NANOS = 8_000_000L;
+	private static final Method ON_SPIN_WAIT_METHOD = resolveOnSpinWait();
 
 	private volatile int currentFps;
 
@@ -78,11 +82,11 @@ public class GameLoop {
 				updateFrameLength(limit);
 			}
 		};
-		int configuredLimit = WtWindowManager.getInstance().getPropertyInt(
-				SettingsProperties.FPS_LIMIT_PROPERTY, stendhal.getFpsLimit());
+		int configuredLimit = WtWindowManager.getInstance().getPropertyInt(SettingsProperties.FPS_LIMIT_PROPERTY,
+				stendhal.getFpsLimit());
 		updateFrameLength(configuredLimit);
-		WtWindowManager.getInstance().registerSettingChangeListener(
-				SettingsProperties.FPS_LIMIT_PROPERTY, fpsLimitListener);
+		WtWindowManager.getInstance().registerSettingChangeListener(SettingsProperties.FPS_LIMIT_PROPERTY,
+				fpsLimitListener);
 		logicThread = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -111,7 +115,6 @@ public class GameLoop {
 		currentFps = sanitized;
 	}
 
-
 	/**
 	 * Get the GameLoop instance.
 	 *
@@ -125,7 +128,7 @@ public class GameLoop {
 	 * Check if the code is running in the game loop.
 	 *
 	 * @return <code>true</code> if the called from the game loop thread,
-	 * 	<code>false</code> otherwise.
+	 *         <code>false</code> otherwise.
 	 */
 	public static boolean isGameLoop() {
 		return Thread.currentThread() == get().logicThread;
@@ -142,8 +145,7 @@ public class GameLoop {
 	}
 
 	/**
-	 * Call at client quit. Tells the game loop to continue to the cleanup
-	 * tasks.
+	 * Call at client quit. Tells the game loop to continue to the cleanup tasks.
 	 */
 	public void stop() {
 		running = false;
@@ -151,8 +153,8 @@ public class GameLoop {
 	}
 
 	/**
-	 * Set the task that should be run at every loop iteration. This <b>must
-	 * not</b> be called after the GameLoop has been started.
+	 * Set the task that should be run at every loop iteration. This <b>must not</b>
+	 * be called after the GameLoop has been started.
 	 *
 	 * @param task
 	 */
@@ -171,8 +173,8 @@ public class GameLoop {
 	}
 
 	/**
-	 * Add a task that should be run when the client quits. This <b>must
-	 * not</b> be called after the GameLoop has been started.
+	 * Add a task that should be run when the client quits. This <b>must not</b> be
+	 * called after the GameLoop has been started.
 	 *
 	 * @param task
 	 */
@@ -291,7 +293,11 @@ public class GameLoop {
 		long start = System.nanoTime();
 		long target = start + nanos;
 		long remaining = nanos;
-		if (remaining > SPIN_THRESHOLD_NANOS + PARK_MARGIN_NANOS) {
+		// Prefer spinning for high FPS limits (>120 FPS) to avoid low-resolution timers
+		// that cap around ~130 FPS when parking for short sleeps.
+		boolean shouldPark = remaining >= PARK_SKIP_THRESHOLD_NANOS
+				&& frameLengthNanos >= PARK_FRAME_LENGTH_THRESHOLD_NANOS;
+		if (shouldPark && remaining > SPIN_THRESHOLD_NANOS + PARK_MARGIN_NANOS) {
 			long parkNanos = remaining - SPIN_THRESHOLD_NANOS;
 			if (parkNanos > 0L) {
 				LockSupport.parkNanos(parkNanos);
@@ -299,13 +305,32 @@ public class GameLoop {
 		}
 		while ((remaining = target - System.nanoTime()) > 0L) {
 			if (remaining > 1_000L) {
-				Thread.yield();
+				spinWait();
 			}
 		}
 		long actual = System.nanoTime() - start;
 		return nanos - actual;
 	}
 
+	private static Method resolveOnSpinWait() {
+		try {
+			return Thread.class.getMethod("onSpinWait");
+		} catch (NoSuchMethodException e) {
+			return null;
+		}
+	}
+
+	private static void spinWait() {
+		if (ON_SPIN_WAIT_METHOD != null) {
+			try {
+				ON_SPIN_WAIT_METHOD.invoke(null);
+				return;
+			} catch (Exception e) {
+				// fall back to Thread.yield()
+			}
+		}
+		Thread.yield();
+	}
 
 	/**
 	 * Write debugging data about the client memory usage and running speed.
@@ -319,10 +344,8 @@ public class GameLoop {
 		final long freeMemory = Runtime.getRuntime().freeMemory() / 1024;
 		final long totalMemory = Runtime.getRuntime().totalMemory() / 1024;
 
-		logger.debug("Total/Used memory: " + totalMemory + "/"
-				+ (totalMemory - freeMemory));
+		logger.debug("Total/Used memory: " + totalMemory + "/" + (totalMemory - freeMemory));
 	}
-
 
 	public int getCurrentFps() {
 		return currentFps;
