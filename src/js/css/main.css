@@ -1527,7 +1527,7 @@ body.mobile-floating-ui #left-panel-toggle,
 		flex-direction: column;
 		gap: 8px;
 		width: 100%;
-		max-width: 90vw;
+		max-width: min(90vw, 400px);
 		height: auto;
 	}
 
@@ -1543,14 +1543,24 @@ body.mobile-floating-ui #left-panel-toggle,
 		float: none;
 		margin-left: 0;
 		height: auto;
-		max-height: 70vh;
-		overflow-y: auto;
+		max-height: none;
+		overflow: visible;
 	}
 
 	.travellogdialog .travellogdetails {
 		float: none;
 		margin-top: 0;
 		width: 100%;
+		max-height: 50vh;
+		overflow-y: auto;
+		overflow-wrap: anywhere;
+		word-break: break-word;
+		-webkit-overflow-scrolling: touch;
+	}
+
+	.travellogdialog #travellogdescription {
+		overflow-wrap: anywhere;
+		word-break: break-word;
 	}
 
 	.settings-dialog {
