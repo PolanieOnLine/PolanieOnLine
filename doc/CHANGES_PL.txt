@@ -2,19 +2,20 @@ Changelog
 ---------
 1.41
 *klient*
-- Dodano i odświeżono grafiki nominałów monet
-- Rozszerzono panel gracza o wyświetlanie liczby monet każdego nominału oraz ich sumy w najmniejszym nominale (eksperymentalne, wyłączone na głównym serwerze)
+- Dodano i odświeżono grafiki nominałów monet (dukat, talar, miedziak (eksperymentalne, wyłączone na głównym serwerze))
 - Dodano interfejs schowka na dodatkowy ekwipunek
 - Dodano pole wyszukiwania do listy znajomych
 - Dodano eksperymentalne sterowanie WASD oraz przełączanie fokusu czatu klawiszem TAB
 - Dodano możliwość wyboru rozdzielczości gry w ustawieniach
 - Dodano opcjonalny licznik FPS
 - Dodano możliwość ustawienia docelowego limitu FPS
-- Dodano dymek nad minimapą z dokładną, dynamicznie aktualizowaną pozycją gracza
-- Poprawiono płynność kamery oraz ogólną wydajność klienta Java
+- Dodano dymek pojawiającą się w miejscu kursora na minimapie z dokładną, dynamicznie aktualizowaną pozycją gracza
 - Dodano nową animację pracy kotła Draconii oraz nowy interfejs obsługi kotła
-- Rozszerzono Dziennik Zadań dla wybranych zadań opartych o QuestManuscript o osobną sekcję „Wymagania”
+- Odświeżono wygląd okna dialogowego ustawień gry
+- Poprawiono płynność kamery oraz ogólną wydajność klienta Java
 - Wycentrowano renderowanie mniejszych map względem wolnej przestrzeni okna gry
+- Rozszerzono Dziennik Zadań dla wybranych zadań opartych o QuestManuscript o osobną sekcję „Wymagania”
+- Rozszerzono panel gracza o wyświetlanie liczby monet każdego nominału oraz ich sumy w najmniejszym nominale (eksperymentalne, wyłączone na głównym serwerze)
 
 *web-klient*
 - Uruchomiono pierwszą wersję web-klienta gry pod adresem https://s1.polanieonline.eu/client/polanieonline.html
@@ -31,9 +32,9 @@ Changelog
 - Odświeżono mapę - trującą pułapkę - które znajdują się w smoczych jaskiniach
 
 *kod*
+- Dodano skrypty administracyjne RaidPlague oraz MassHeal
 - Zaimplementowano szybkie przenoszenie przedmiotów między głównym ekwipunkiem a schowkiem
 - Wprowadzono nowy system walutowy oparty o miedziaki, talary i dukaty zamiast pojedynczego zasobu „money” (eksperymentalne, wyłączone na głównym serwerze)
-- Dodano skrypty administracyjne RaidPlague oraz MassHeal
 
 *naprawiono błędy*
 - Naprawiono kupno docelowych nasion u Jenny
