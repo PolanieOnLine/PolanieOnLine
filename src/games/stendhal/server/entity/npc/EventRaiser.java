@@ -80,6 +80,18 @@ public class EventRaiser {
 	}
 
 	/**
+	 * gets the title of the entity
+	 *
+	 * @return title or <code>null</code>
+	 */
+	public String getTitle() {
+		if (entity instanceof RPEntity) {
+			return ((RPEntity) entity).getTitle();
+		}
+		return entity.getTitle();
+	}
+
+	/**
 	 * Gets gender of the entity.
 	 *
 	 * @return gender

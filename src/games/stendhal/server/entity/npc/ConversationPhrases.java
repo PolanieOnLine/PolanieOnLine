@@ -80,6 +80,16 @@ public class ConversationPhrases {
 			"oferta", "transakcja", "interes", "handel");
 	public static final List<String> OFFER_MESSAGES = combine(EN_OFFER, PL_OFFER);
 
+	private static final List<String> EN_PRODUCTION = Arrays.asList(
+			"produce", "production", "craft", "crafting");
+	private static final List<String> PL_PRODUCTION = Arrays.asList(
+			"produkcja", "produkcję", "produkcji", "produkcje",
+			"produkować", "produkowac", "produkowanie",
+			"wytwórz", "wytworz", "wytwarzanie",
+			"produkt", "produkty", "wyprodukuj", "wyprodukowac", "wyprodukować",
+			"zrób", "zrob", "zrobić", "zrobic", "zrobienie", "zróbmy", "zrobmy");
+	public static final List<String> PRODUCTION_MESSAGES = combine(EN_PRODUCTION, PL_PRODUCTION);
+
 	public static final List<String> YES_MESSAGES = Arrays.asList("yes", "ok", "yep", "sure",
 			"tak", "dobrze", "oczywiście", "oczywiscie", "👍");
 

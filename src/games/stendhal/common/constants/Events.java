@@ -68,4 +68,6 @@ public final class Events {
 	public static final String DROPPEDLIST = Actions.DROPPEDLIST;
 
 	public static final String ACHIEVEMENT_LOG = Actions.ACHIEVEMENTLOG;
+
+	public static final String PRODUCER_WINDOW = "producer_window";
 }
