@@ -277,6 +277,9 @@ class GameKeyHandler implements KeyListener {
 	 */
 	private boolean acceptsMovementKey(final int keyCode) {
 		if (isWasdKey(keyCode)) {
+			if (wasdMovementEnabled && isChatInputFocused()) {
+				return false;
+			}
 			return wasdMovementEnabled;
 		}
 
@@ -314,6 +317,14 @@ class GameKeyHandler implements KeyListener {
 		default:
 			return false;
 		}
+	}
+
+	private boolean isChatInputFocused() {
+		final KeyboardFocusManager focusManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+		final Component focusOwner = focusManager.getFocusOwner();
+		final Component chatField = ChatTextController.get().getPlayerChatText();
+
+		return focusOwner == chatField;
 	}
 
 	/**
