@@ -1,6 +1,6 @@
 @echo off
 
-set POL_VERSION=1.41
+set POL_VERSION=1.41.5
 set SERVER_JAR=polanieonline-server-%POL_VERSION%.jar
 
 :: change to server directory

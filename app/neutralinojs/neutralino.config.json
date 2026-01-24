@@ -1,7 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/neutralinojs/neutralinojs/main/schemas/neutralino.config.schema.json",
   "applicationId": "eu.polanieonline.client",
-  "version": "1.41",
+  "version": "1.41.5",
   "defaultMode": "window",
   "port": 0,
   "documentRoot": "/resources/",
