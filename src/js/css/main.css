@@ -1443,6 +1443,7 @@ body.mobile-floating-ui #left-panel-toggle,
 
 .tlog_hlayout {
 	width: 40em;
+	max-width: 90vw;
 	height: 25em;
 }
 
@@ -1462,10 +1463,17 @@ body.mobile-floating-ui #left-panel-toggle,
 .travellogdetails {
 	float: left;
 	margin-top: 1em;
+	overflow-wrap: anywhere;
+	word-break: break-word;
 }
 
 .travellogdescription {
 	font-style: italic;
+}
+
+#travellogdescription {
+	overflow-wrap: anywhere;
+	word-break: break-word;
 }
 
 @media (hover: none) and (pointer: coarse) {
@@ -1519,6 +1527,7 @@ body.mobile-floating-ui #left-panel-toggle,
 		flex-direction: column;
 		gap: 8px;
 		width: 100%;
+		max-width: 90vw;
 		height: auto;
 	}
 
