@@ -64,7 +64,7 @@ export namespace StringUtil {
 	 * @return {string}
 	 *   Data URL encoded string.
 	 */
-	export function toDataURL(text: string, mime: string="text/plain", charset: string="utf-8"): string {
+	export function toDataURL(text: string, mime: string = "text/plain", charset: string = "utf-8"): string {
 		return "data:" + mime + ";charset=" + charset + "," + window.encodeURIComponent(text);
 	};
 
@@ -78,7 +78,8 @@ export namespace StringUtil {
 	 */
 	export function quoteIfNeeded(text: string): string {
 		const trimmed = text.trim();
-		if (/\s/.test(trimmed) && !(trimmed.startsWith("'") && trimmed.endsWith("'"))) {
+		const alreadyQuoted = (trimmed.startsWith("'") && trimmed.endsWith("'")) || (trimmed.startsWith('"') && trimmed.endsWith('"'));
+		if (/\s/.test(trimmed) && !alreadyQuoted) {
 			return `'${trimmed}'`;
 		}
 		return trimmed;

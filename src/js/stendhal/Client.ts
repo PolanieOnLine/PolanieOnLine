@@ -315,7 +315,7 @@ export class Client {
 			window.location.reload();
 		}.bind(this);
 
-		marauroa.clientFramework.onAvailableCharacterDetails = (characters: {[key: string]: RPObject}) => {
+		marauroa.clientFramework.onAvailableCharacterDetails = (characters: { [key: string]: RPObject }) => {
 			SingletonFloatingWindow.closeAll();
 			if (!Object.keys(characters).length && this.username) {
 				marauroa.clientFramework.createCharacter(this.username, {});
@@ -558,7 +558,7 @@ export class Client {
 			return;
 		}
 		const mobileFloating = singletons.getSessionManager().touchOnly()
-				&& stendhal.ui.getMenuStyle() === "floating";
+			&& stendhal.ui.getMenuStyle() === "floating";
 		document.body.classList.toggle("mobile-floating-ui", mobileFloating);
 		clientRoot.classList.toggle("mobile-floating-ui", mobileFloating);
 		if (mobileFloating) {
