@@ -1552,6 +1552,12 @@ body.mobile-floating-ui #left-panel-toggle,
 		margin-top: 0;
 		width: 100%;
 	}
+
+	.settings-dialog {
+		max-height: calc(100dvh - 48px);
+		overflow-y: auto;
+		-webkit-overflow-scrolling: touch;
+	}
 }
 
 .imageviewer h3 {

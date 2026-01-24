@@ -100,6 +100,7 @@ export class SettingsDialog extends TabDialogContentComponent {
 
 	constructor() {
 		super("settingsdialog-template", Layout.TOP, "#settings-tabs");
+		this.componentElement.classList.add("settings-dialog");
 
 		// TODO: add option to reset defaults
 
