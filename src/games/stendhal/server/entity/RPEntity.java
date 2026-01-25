@@ -684,8 +684,9 @@ public abstract class RPEntity extends CombatEntity {
 	}
 
 	protected void setAtkInternal(final int atk, boolean notify) {
-		this.atk = atk;
-		put("atk", atk); // visible atk
+		final int safeAtk = clampShort("atk", atk);
+		this.atk = safeAtk;
+		put("atk", safeAtk); // visible atk
 		if (notify) {
 			this.updateModifiedAttributes();
 		}
@@ -752,8 +753,9 @@ public abstract class RPEntity extends CombatEntity {
 	}
 
 	protected void setDefInternal(final int def, boolean notify) {
-		this.def = def;
-		put("def", def); // visible def
+		final int safeDef = clampShort("def", def);
+		this.def = safeDef;
+		put("def", safeDef); // visible def
 		if (notify) {
 			this.updateModifiedAttributes();
 		}
@@ -833,11 +835,24 @@ public abstract class RPEntity extends CombatEntity {
 	 * @param notify Update stat in real-time
 	 */
 	protected void setRatkInternal(final int ratk, boolean notify) {
-		this.ratk = ratk;
-		put("ratk", ratk); // visible ratk
+		final int safeRatk = clampShort("ratk", ratk);
+		this.ratk = safeRatk;
+		put("ratk", safeRatk); // visible ratk
 		if (notify) {
 			this.updateModifiedAttributes();
 		}
+	}
+
+	private int clampShort(String attribute, int value) {
+		if (value > Short.MAX_VALUE) {
+			logger.warn(String.format("Clamping %s from %d to %d for %s.", attribute, value, (int) Short.MAX_VALUE, getName()));
+			return Short.MAX_VALUE;
+		}
+		if (value < Short.MIN_VALUE) {
+			logger.warn(String.format("Clamping %s from %d to %d for %s.", attribute, value, (int) Short.MIN_VALUE, getName()));
+			return Short.MIN_VALUE;
+		}
+		return value;
 	}
 
 	/**
