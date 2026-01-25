@@ -41,6 +41,7 @@ import games.stendhal.server.core.engine.GameEvent;
 import games.stendhal.server.core.engine.ItemLogger;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.core.rp.DragonMistEventManager;
 import games.stendhal.server.core.rp.group.Group;
 import games.stendhal.server.core.engine.db.StendhalKillLogDAO;
 import games.stendhal.server.core.engine.dbcommand.LogKillEventCommand;
@@ -1795,6 +1796,7 @@ public abstract class RPEntity extends CombatEntity {
 		}
 
 		DBCommandQueue.get().enqueue(new LogKillEventCommand(this, killer), DBCommandPriority.LOW);
+		DragonMistEventManager.get().recordDragonDeath(this);
 
 		die(killer, remove);
 	}
