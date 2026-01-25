@@ -151,6 +151,7 @@ public class StendhalRPWorld extends RPWorld {
 			SingletonRepository.getAchievementNotifier().initialize();
 			SingletonRepository.getGagManager();
 			SingletonRepository.getJail();
+			SingletonRepository.getDragonMistEventManager();
 		} catch (final Exception e) {
 			logger.error("Error on Init the server.", e);
 		}
