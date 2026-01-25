@@ -124,6 +124,8 @@ export class ViewPort {
 	private emojiSprites: EmojiSprite[] = [];
 	/** Handles drawing weather in viewport. */
 	private weatherRenderer = singletons.getWeatherRenderer();
+	/** Handles drawing full-screen visual effects. */
+	private globalVisualEffectRenderer = singletons.getGlobalVisualEffectRenderer();
 	/** Coloring method of current zone. */
 	private filter?: string; // deprecated, use `HSLFilter`
 	/** Coloring filter of current zone. */
@@ -235,6 +237,7 @@ export class ViewPort {
 				this.drawEmojiSprites();
 				this.drawTextSprites();
 				this.drawTextSprites(this.notifSprites);
+				this.globalVisualEffectRenderer.draw(this.ctx, this.ctx.canvas.width, this.ctx.canvas.height);
 
 				// redraw inventory sprites
 				stendhal.ui.equip.update();

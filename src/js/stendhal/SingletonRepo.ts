@@ -50,6 +50,7 @@ import { SoftwareJoystickController } from "./ui/SoftwareJoystickController";
 import { TouchHandler } from "./ui/TouchHandler";
 import { UIUpdateObserver } from "./ui/UIUpdateObserver";
 import { ViewPort } from "./ui/ViewPort";
+import { GlobalVisualEffectRenderer } from "./ui/render/GlobalVisualEffectRenderer";
 
 import { ChatInputComponent } from "./ui/component/ChatInputComponent";
 import { TargetingController } from "./game/TargetingController";
@@ -190,6 +191,10 @@ export class SingletonRepo {
 
 	static getViewPort(): ViewPort {
 		return ViewPort.get();
+	}
+
+	static getGlobalVisualEffectRenderer(): GlobalVisualEffectRenderer {
+		return GlobalVisualEffectRenderer.get();
 	}
 
 	static getWeatherRenderer(): WeatherRenderer {

@@ -18,6 +18,7 @@ import { RPObject } from "./entity/RPObject";
 import { BestiaryEvent } from "./event/BestiaryEvent";
 import { ChatOptionsEvent } from "./event/ChatOptionsEvent";
 import { ExamineEvent } from "./event/ExamineEvent";
+import { GlobalVisualEffectEvent } from "./event/GlobalVisualEffectEvent";
 import { GroupChangeEvent } from "./event/GroupChangeEvent";
 import { GroupInviteEvent } from "./event/GroupInviteEvent";
 import { PlayerLoggedOnEvent } from "./event/PlayerLoggedOnEvent";
@@ -97,11 +98,7 @@ export class EventRegistry {
 
 		this.register("bestiary", new BestiaryEvent());
 
-		this.register("global_visual_effect", {
-			execute: function(rpobject: RPObject) {
-				// TODO: new GlobalVisualEffectEvent();
-			}
-		}); // global_visual_effect
+		this.register("global_visual_effect", new GlobalVisualEffectEvent());
 
 		this.register("image_event", {
 			execute: function(rpobject: RPObject) {
@@ -194,4 +191,3 @@ export class EventRegistry {
 		}
 	}
 }
-
