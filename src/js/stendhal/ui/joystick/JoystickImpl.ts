@@ -89,34 +89,49 @@ export abstract class JoystickImpl {
 	 * Determines the center position considering auto-position settings.
 	 */
 	private resolveCenter(): Point {
-		if (stendhal.config.getBoolean("joystick.autoposition")) {
-			const viewport = document.getElementById("viewport");
-			if (viewport) {
-				const rect = viewport.getBoundingClientRect();
-				let horizontalMin = rect.left + this.radius;
-				const horizontalMax = rect.right - this.radius;
-				const verticalMin = rect.top + this.radius;
-				const verticalMax = rect.bottom - this.radius;
-				const client = document.getElementById("client");
-				const isLeftPanelCollapsed = client?.classList.contains("left-panel-collapsed")
-					&& client?.classList.contains("mobile-floating-ui");
-				const leftColumn = document.getElementById("leftColumn");
-				if (leftColumn) {
-					const leftRect = leftColumn.getBoundingClientRect();
-					if (leftRect.right > rect.left) {
-						const overlayEdge = Math.min(leftRect.right, rect.right);
-						horizontalMin = Math.max(horizontalMin, overlayEdge + this.radius);
-					}
-				}
-				if (isLeftPanelCollapsed) {
-					horizontalMin += 64;
-				}
-				const x = Math.round(horizontalMin <= horizontalMax ? horizontalMin : rect.left + (rect.width / 2));
-				const y = Math.round(verticalMin <= verticalMax ? verticalMax : rect.top + (rect.height / 2));
-				return new Point(x, y);
-			}
+		const viewport = document.getElementById("viewport");
+		if (!viewport) {
+			return new Point(JoystickImpl.getCenterX(), JoystickImpl.getCenterY());
 		}
-		return new Point(JoystickImpl.getCenterX(), JoystickImpl.getCenterY());
+
+		const rect = viewport.getBoundingClientRect();
+		const scrollLeft = window.scrollX || document.documentElement.scrollLeft;
+		const scrollTop = window.scrollY || document.documentElement.scrollTop;
+		const viewportLeft = rect.left + scrollLeft;
+		const viewportRight = rect.right + scrollLeft;
+		const viewportTop = rect.top + scrollTop;
+		const viewportBottom = rect.bottom + scrollTop;
+
+		if (stendhal.config.getBoolean("joystick.autoposition")) {
+			let horizontalMin = viewportLeft + this.radius;
+			const horizontalMax = viewportRight - this.radius;
+			const verticalMin = viewportTop + this.radius;
+			const verticalMax = viewportBottom - this.radius;
+			const client = document.getElementById("client");
+			const isLeftPanelCollapsed = client?.classList.contains("left-panel-collapsed")
+				&& client?.classList.contains("mobile-floating-ui");
+			const leftColumn = document.getElementById("leftColumn");
+			if (leftColumn) {
+				const leftRect = leftColumn.getBoundingClientRect();
+				const leftRectRight = leftRect.right + scrollLeft;
+				if (leftRectRight > viewportLeft) {
+					const overlayEdge = Math.min(leftRectRight, viewportRight);
+					horizontalMin = Math.max(horizontalMin, overlayEdge + this.radius);
+				}
+			}
+			if (isLeftPanelCollapsed) {
+				horizontalMin += 64;
+			}
+			const x = Math.round(
+				horizontalMin <= horizontalMax ? horizontalMin : viewportLeft + (rect.width / 2)
+			);
+			const y = Math.round(
+				verticalMin <= verticalMax ? verticalMax : viewportTop + (rect.height / 2)
+			);
+			return new Point(x, y);
+		}
+
+		return new Point(viewportLeft + JoystickImpl.getCenterX(), viewportTop + JoystickImpl.getCenterY());
 	}
 
 	/**

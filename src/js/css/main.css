@@ -1289,8 +1289,8 @@ button.windowtitleminimize:first-child {
 
 .quick-slot {
 	position: absolute;
-	width: 32px;
-	height: 32px;
+	width: 40px;
+	height: 40px;
 	background: transparent url(/data/gui/panel/empty_btn.png) center center / contain no-repeat;
 	border: none;
 	padding: 0;
@@ -1304,10 +1304,10 @@ button.windowtitleminimize:first-child {
 
 .quick-slot__count {
 	position: absolute;
-	right: 2px;
-	bottom: 1px;
+	right: 3px;
+	bottom: 2px;
 	color: #fff;
-	font-size: 11px;
+	font-size: 12px;
 	font-weight: bold;
 	text-shadow: 0 0 2px #000;
 	pointer-events: none;
@@ -1315,12 +1315,12 @@ button.windowtitleminimize:first-child {
 
 @media (hover: none) and (pointer: coarse) {
 	.quick-slot {
-		width: 28px;
-		height: 28px;
+		width: 36px;
+		height: 36px;
 	}
 
 	.quick-slot__count {
-		font-size: 10px;
+		font-size: 11px;
 	}
 }
 

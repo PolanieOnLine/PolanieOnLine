@@ -192,22 +192,20 @@ export class QuickSlots extends Component {
 			anchorY = rect.top + bounds.scrollTop + rect.height / 2;
 		}
 
-		const horizontalOffset = -6;
+		const horizontalOffset = -12;
 		anchorX += horizontalOffset;
 
-		const verticalOffset = height + 12;
+		const verticalOffset = height + 2;
 		anchorY -= verticalOffset;
 
-		const baseRadius = Math.max(width, height) + 28;
-		const radiusStep = 8;
-		const startAngle = -150;
+		const baseRadius = Math.max(width, height) + 44;
+		const startAngle = -135;
 		const angleStep = 30;
 
 		this.slots.forEach((slot, index) => {
-			const radius = baseRadius + radiusStep * index;
 			const angle = (startAngle + angleStep * index) * (Math.PI / 180);
-			const left = anchorX + Math.cos(angle) * radius - width / 2;
-			const top = anchorY + Math.sin(angle) * radius - height / 2;
+			const left = anchorX + Math.cos(angle) * baseRadius - width / 2;
+			const top = anchorY + Math.sin(angle) * baseRadius - height / 2;
 
 			const clampedLeft = Math.min(
 				Math.max(left, bounds.safeLeft),
