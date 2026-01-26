@@ -356,6 +356,7 @@ public class ImproverAdder {
 
 				if (isSuccessful(player, toImprove)) {
 					toImprove.upgradeItem();
+					toImprove.setPersistent(true);
 					player.incImprovedForItem(player.getName(), 1);
 					player.incImprovedForItem(toImprove.getName(), 1);
 
