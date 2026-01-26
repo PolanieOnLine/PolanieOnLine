@@ -286,7 +286,7 @@ public class WeatherUpdater implements TurnListener {
 	 */
 	public void updateAndNotify(final StendhalRPZone zone, final Pair<String, Boolean> weather) {
 		final ZoneData zoneData = new ZoneData(zone.getAttributes(),
-				Modifiers.getModifiers(weather.first()), zone.getWeatherEntity());
+				Modifiers.none(), zone.getWeatherEntity());
 		updateAndNotify(zoneData, weather);
 	}
 
@@ -375,6 +375,15 @@ public class WeatherUpdater implements TurnListener {
 				}
 			}
 			// No params, use the default
+			return NO_MODS;
+		}
+
+		/**
+		 * Get a modifier set with no adjustments.
+		 *
+		 * @return no-op modifiers
+		 */
+		static Modifiers none() {
 			return NO_MODS;
 		}
 
