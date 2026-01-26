@@ -17,7 +17,6 @@ import games.stendhal.client.GameScreen;
 import games.stendhal.client.entity.Entity;
 import games.stendhal.client.gui.BlackenScreenEffect;
 import games.stendhal.client.gui.EffectLayer;
-import games.stendhal.client.gui.FogScreenEffect;
 import games.stendhal.client.gui.LightningEffect;
 
 /**
@@ -38,9 +37,6 @@ class GlobalVisualEffectEvent extends Event<Entity> {
 			break;
 		case "lightning":
 			effect = new LightningEffect(duration, event.getInt("strength"));
-			break;
-		case "fog":
-			effect = new FogScreenEffect(duration, event.getInt("strength"));
 			break;
 		default:
 			LOGGER.error("Unknown effect name: " + name);
