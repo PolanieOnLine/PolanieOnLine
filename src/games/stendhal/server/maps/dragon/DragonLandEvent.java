@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -58,7 +59,27 @@ public class DragonLandEvent {
 			"latający złoty smok",
 			"Smok Wawelski"
 	);
-	private static final Set<String> DRAGON_ZONES = Set.of("0_dragon_land_n", "0_dragon_land_s");
+	private static final Set<String> DRAGON_ZONES = new HashSet<>(Arrays.asList(
+			"0_dragon_land_n",
+			"0_dragon_land_s",
+			"int_dragon_house_1",
+			"int_dragon_house_2",
+			"int_dragon_house_3",
+			"int_dragon_house_4",
+			"int_dragon_house_5",
+			"int_dragon_house_6",
+			"int_dragon_workshop",
+			"int_dragon_castle",
+			"int_dragon_castle_room_1",
+			"int_dragon_castle_room_2",
+			"int_dragon_castle_room_3",
+			"int_dragon_castle_room_4",
+			"int_dragon_castle_room_5",
+			"int_dragon_castle_room_6",
+			"int_dragon_castle_dragon_npc",
+			"int_dragon_castle_dragon",
+			"-1_dragon_cave"
+	));
 	private static final DragonDeathObserver DRAGON_DEATH_OBSERVER = new DragonDeathObserver();
 
 	private static volatile LocalTime scheduledTime;
