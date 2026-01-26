@@ -18,6 +18,7 @@ import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsEnvironment;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.util.EnumMap;
 import java.util.Locale;
@@ -477,7 +478,30 @@ public final class AttackPainter {
 			sy = y + ((height - spriteHeight) / 2);
 		}
 
-		sprite.draw(g, sx, sy);
+		if (!reverseSlash || !(g instanceof Graphics2D)) {
+			sprite.draw(g, sx, sy);
+			return;
+		}
+
+		Graphics2D g2d = (Graphics2D) g;
+		AffineTransform oldTransform = g2d.getTransform();
+		switch (direction) {
+		case LEFT:
+		case RIGHT:
+			g2d.translate(sx + spriteWidth, sy);
+			g2d.scale(-1, 1);
+			sprite.draw(g2d, 0, 0);
+			break;
+		case UP:
+		case DOWN:
+			g2d.translate(sx, sy + spriteHeight);
+			g2d.scale(1, -1);
+			sprite.draw(g2d, 0, 0);
+			break;
+		default:
+			sprite.draw(g2d, sx, sy);
+		}
+		g2d.setTransform(oldTransform);
 	}
 
 	/**
