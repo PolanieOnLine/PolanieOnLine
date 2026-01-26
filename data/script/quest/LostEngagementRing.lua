@@ -402,6 +402,140 @@ local collateral = {
 	--"tarcza xenocyjska",
 }
 
+local safeCall = function(target, method, ...)
+	if target == nil then
+		return nil
+	end
+
+	local func = target[method]
+	if func == nil then
+		return nil
+	end
+
+	local ok, result = pcall(func, target, ...)
+	if ok then
+		return result
+	end
+
+	return nil
+end
+
+local safeGet = function(target, method, default)
+	local value = safeCall(target, method)
+	if value == nil then
+		return default
+	end
+
+	return value
+end
+
+local safeSet = function(target, method, ...)
+	if target == nil then
+		return false
+	end
+
+	local func = target[method]
+	if func == nil then
+		return false
+	end
+
+	local ok = pcall(func, target, ...)
+	return ok
+end
+
+local serializeDetectorAttributes = function(item)
+	local improve = safeGet(item, "getImprove", 0)
+	local max_improves = safeGet(item, "getMaxImproves", 0)
+	local durability = safeGet(item, "getDurability", 0)
+	local uses = safeGet(item, "getUses", 0)
+	local deterioration = safeGet(item, "getDeterioration", 0)
+	local persistent = safeGet(item, "isPersistent", false)
+	local slot_size = safeGet(item, "getSlotSize", 0)
+	local slot_name = safeGet(item, "getSlotName", "")
+
+	return table.concat({
+		"improve=" .. tostring(improve or 0),
+		"max_improves=" .. tostring(max_improves or 0),
+		"durability=" .. tostring(durability or 0),
+		"uses=" .. tostring(uses or 0),
+		"deterioration=" .. tostring(deterioration or 0),
+		"persistent=" .. (persistent and "1" or "0"),
+		"slot_size=" .. tostring(slot_size or 0),
+		"slot_name=" .. tostring(slot_name or ""),
+	}, "|")
+end
+
+local parseDetectorAttributes = function(attr_s)
+	local attrs = {}
+	if attr_s == nil or attr_s == "" then
+		return attrs
+	end
+
+	for entry in string.gmatch(attr_s, "([^|]+)") do
+		local key, value = entry:match("([^=]+)=(.*)")
+		if key ~= nil then
+			attrs[key] = value
+		end
+	end
+
+	return attrs
+end
+
+local applyDetectorAttributes = function(item, attr_s)
+	local attrs = parseDetectorAttributes(attr_s)
+
+	local improve = tonumber(attrs.improve)
+	if improve == nil then
+		improve = safeGet(item, "getImprove", 0)
+	end
+
+	local max_improves = tonumber(attrs.max_improves)
+	if max_improves == nil then
+		max_improves = safeGet(item, "getMaxImproves", 0)
+	end
+
+	local durability = tonumber(attrs.durability)
+	if durability == nil then
+		durability = safeGet(item, "getDurability", 0)
+	end
+
+	local uses = tonumber(attrs.uses)
+	if uses == nil then
+		uses = safeGet(item, "getUses", 0)
+	end
+
+	local deterioration = tonumber(attrs.deterioration)
+	if deterioration == nil then
+		deterioration = safeGet(item, "getDeterioration", 0)
+	end
+
+	local persistent = attrs.persistent
+	if persistent == nil then
+		persistent = safeGet(item, "isPersistent", false)
+	else
+		persistent = (persistent == "1" or persistent == "true")
+	end
+
+	local slot_size = tonumber(attrs.slot_size)
+	if slot_size == nil then
+		slot_size = safeGet(item, "getSlotSize", 0)
+	end
+
+	local slot_name = attrs.slot_name
+	if slot_name == nil then
+		slot_name = safeGet(item, "getSlotName", "")
+	end
+
+	safeSet(item, "setImprove", improve)
+	safeSet(item, "put", "max_improves", max_improves)
+	safeSet(item, "put", "durability", durability)
+	safeSet(item, "put", "uses", uses)
+	safeSet(item, "put", "deterioration", deterioration)
+	safeSet(item, "setPersistent", persistent)
+	safeSet(item, "put", "slot_size", slot_size)
+	safeSet(item, "put", "slot_name", slot_name)
+end
+
 local loanMetalDetector = function(player, lender, detector, offer, bound_to, info_s)
 	-- player walked away before receiving metal detector
 	if lender:getAttending() == nil then
@@ -430,8 +564,9 @@ local loanMetalDetector = function(player, lender, detector, offer, bound_to, in
 	-- handle items with itemdata & bound items
 	local bound_to = traded:getBoundTo() or ""
 	local info_s = traded:getItemData() or ""
+	local attr_s = serializeDetectorAttributes(traded)
 
-	local slot_state = offer .. ";" .. bound_to .. ";" .. info_s
+	local slot_state = offer .. ";" .. bound_to .. ";" .. info_s .. ";" .. attr_s
 
 	detector:setItemData("Sawyer;" .. slot_state)
 	detector:setBoundTo(player:getName())
@@ -537,6 +672,7 @@ local handleReturnRequest = function(player, sentence, lender)
 	local item_name = detector_info[2]
 	local bound_to = detector_info[3]
 	local info_s = detector_info[4]
+	local attr_s = detector_info[5] or ""
 
 	local item = entities:getItem(item_name)
 
@@ -555,6 +691,8 @@ local handleReturnRequest = function(player, sentence, lender)
 	if info_s ~= "" then
 		item:setItemData(info_s)
 	end
+
+	applyDetectorAttributes(item, attr_s)
 
 	player:drop(detector)
 	player:equipOrPutOnGround(item)
