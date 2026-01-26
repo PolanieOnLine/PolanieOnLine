@@ -47,6 +47,7 @@ public class PlayerRPClass {
 		player.addRPEvent(Events.REACHED_ACHIEVEMENT, Definition.PRIVATE);
 		player.addRPEvent(Events.BESTIARY, Definition.PRIVATE);
 		player.addRPEvent(Events.DROPPEDLIST, Definition.PRIVATE);
+		player.addRPEvent(Events.IMPROVER_OFFER, Definition.PRIVATE);
 
 		player.addRPEvent(Events.ACHIEVEMENT_LOG, Definition.PRIVATE);
 
