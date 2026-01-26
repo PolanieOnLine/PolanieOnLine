@@ -189,10 +189,6 @@ public class ImproverAdder {
 		return currentUpgradingItem;
 	}
 
-	private boolean isEquippedTargetItem(final Player player) {
-		return player.isEquipped(getTargetItemName());
-	}
-
 	private List<Item> getAllEquippedTargetItems(final Player player) {
 		return player.getAllEquipped(getTargetItemName());
 	}
@@ -351,6 +347,10 @@ public class ImproverAdder {
 			@Override
 			public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
 				Item toImprove = foundItem(player);
+				if (toImprove == null) {
+					npc.say("Wybacz. Nie posiadasz przedmiotu #'" + getTargetItemName() + "' możliwego do ulepszenia.");
+					return;
+				}
 				MoneyUtils.removeMoney(player, currentUpgradeFee);
 				dropNeededResources(player);
 
@@ -401,7 +401,7 @@ public class ImproverAdder {
 		return new ChatCondition() {
 			@Override
 			public boolean fire(final Player player, final Sentence sentence, Entity improver) {
-				return isEquippedTargetItem(player);
+				return foundItem(player) != null;
 			}
 		};
 	}
@@ -411,6 +411,12 @@ public class ImproverAdder {
 			@Override
 			public boolean fire(final Player player, final Sentence sentence, Entity improver) {
 				Item targetItem = foundItem(player);
+				if (targetItem == null) {
+					if (improver instanceof SpeakerNPC) {
+						((SpeakerNPC) improver).say("Wybacz. Nie posiadasz przedmiotu #'" + getTargetItemName() + "' możliwego do ulepszenia.");
+					}
+					return false;
+				}
 				return playerHaveResources(player, targetItem.getImprove() + 1);
 			}
 		};
