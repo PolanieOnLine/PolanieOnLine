@@ -16,8 +16,10 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -28,10 +30,14 @@ import org.apache.log4j.Logger;
 import games.stendhal.common.NotificationType;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.core.engine.ZoneAttributes;
+import games.stendhal.server.core.rp.WeatherUpdater;
 import games.stendhal.server.entity.creature.CircumstancesOfDeath;
+import games.stendhal.server.entity.mapstuff.WeatherEntity;
 import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
 import games.stendhal.server.util.Observable;
 import games.stendhal.server.util.Observer;
+import marauroa.common.Pair;
 
 public class DragonLandEvent {
 	private static final Logger LOGGER = Logger.getLogger(DragonLandEvent.class);
@@ -80,7 +86,12 @@ public class DragonLandEvent {
 			"int_dragon_castle_dragon",
 			"-1_dragon_cave"
 	));
+	private static final List<String> DRAGON_LAND_ZONES = Arrays.asList(
+			"0_dragon_land_n",
+			"0_dragon_land_s"
+	);
 	private static final DragonDeathObserver DRAGON_DEATH_OBSERVER = new DragonDeathObserver();
+	private static final Map<String, Pair<String, Boolean>> STORED_WEATHER = new HashMap<>();
 
 	private static volatile LocalTime scheduledTime;
 
@@ -129,6 +140,7 @@ public class DragonLandEvent {
 				NotificationType.PRIVMSG,
 				"Smocza kraina budzi się do życia! Rozpoczyna się wydarzenie."
 		);
+		forceFoggyWeather();
 		int seconds = (int) EVENT_DURATION.getSeconds();
 		SingletonRepository.getTurnNotifier().notifyInSeconds(seconds, currentTurn -> endEvent());
 	}
@@ -143,6 +155,7 @@ public class DragonLandEvent {
 				NotificationType.PRIVMSG,
 				"Smocza kraina uspokaja się. Wydarzenie dobiegło końca."
 		);
+		restoreWeather();
 		scheduleNextRun(scheduledTime);
 	}
 
@@ -167,6 +180,48 @@ public class DragonLandEvent {
 			LOGGER.info("Dragon Land kill threshold reached: " + current + ".");
 			startEvent();
 		}
+	}
+
+	private static void forceFoggyWeather() {
+		STORED_WEATHER.clear();
+		final WeatherUpdater updater = WeatherUpdater.get();
+		for (final String zoneName : DRAGON_LAND_ZONES) {
+			final StendhalRPZone zone = SingletonRepository.getRPWorld().getZone(zoneName);
+			if (zone == null) {
+				LOGGER.warn("Dragon Land zone not found for weather update: " + zoneName + ".");
+				continue;
+			}
+			final ZoneAttributes attributes = zone.getAttributes();
+			final WeatherEntity weatherEntity = zone.getWeatherEntity();
+			if (attributes == null || weatherEntity == null) {
+				LOGGER.warn("Dragon Land zone lacks weather support: " + zoneName + ".");
+				continue;
+			}
+			final String currentWeather = attributes.get("weather");
+			STORED_WEATHER.put(zoneName, Pair.of(currentWeather, weatherEntity.isThundering()));
+			updater.updateAndNotify(zone, Pair.of("fog", Boolean.FALSE));
+		}
+	}
+
+	private static void restoreWeather() {
+		if (STORED_WEATHER.isEmpty()) {
+			return;
+		}
+		final WeatherUpdater updater = WeatherUpdater.get();
+		for (final Map.Entry<String, Pair<String, Boolean>> entry : STORED_WEATHER.entrySet()) {
+			final String zoneName = entry.getKey();
+			final StendhalRPZone zone = SingletonRepository.getRPWorld().getZone(zoneName);
+			if (zone == null) {
+				LOGGER.warn("Dragon Land zone not found for weather restore: " + zoneName + ".");
+				continue;
+			}
+			if (zone.getWeatherEntity() == null) {
+				LOGGER.warn("Dragon Land zone lacks weather support: " + zoneName + ".");
+				continue;
+			}
+			updater.updateAndNotify(zone, entry.getValue());
+		}
+		STORED_WEATHER.clear();
 	}
 
 	private static class DragonDeathObserver implements Observer {
