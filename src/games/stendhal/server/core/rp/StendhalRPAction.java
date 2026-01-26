@@ -17,6 +17,7 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -395,23 +396,27 @@ public class StendhalRPAction {
 			}
 		}
 
-		// Weapon for the purpose of attack image
-		final Item attackWeapon = player.getWeapon();
-		String weaponClass = null;
-		if (attackWeapon != null) {
-			weaponClass = attackWeapon.getWeaponType();
+		final List<Item> weapons = player.getWeapons();
+		final boolean dualWieldAttack = player.isDualWieldAttack(weapons);
+		final List<Item> attackWeapons = new ArrayList<>();
+		if (dualWieldAttack) {
+			attackWeapons.addAll(weapons);
+		} else if (!weapons.isEmpty()) {
+			attackWeapons.add(weapons.get(0));
+		} else {
+			attackWeapons.add(null);
 		}
-		final WeaponImpl weaponImpl = (WeaponImpl) attackWeapon;
+		final int totalHits = attackWeapons.size();
+		final Item attackWeapon = attackWeapons.get(0);
 		// player may be using a melee weapon with longer reach
 		isRanged = isRanged && attackWeapon.isNonMeleeWeapon();
 
-		boolean beaten;
 		final boolean usesTrainingDummy = defender instanceof TrainingDummy;
 		if (usesTrainingDummy) {
 			/* training dummies can always be hit except in cases of using a
 			 * ranged weapon against a melee-only dummy
 			 */
-			beaten = ((TrainingDummy) defender).canBeAttacked(player);
+			boolean beaten = ((TrainingDummy) defender).canBeAttacked(player);
 
 			if (!beaten) {
 				player.sendPrivateText("Nie możesz tego atakować bronią zasięgową.");
@@ -419,127 +424,131 @@ public class StendhalRPAction {
 
 				return false;
 			}
-		} else {
-			// Throw dices to determine if the attacker has missed the defender
-			beaten = player.canHit(defender);
 		}
 
 		// equipment that are broken are added to this list
 		final List<BreakableWeapon> broken = new ArrayList<>();
+int lastDamage = -1;
 
-		boolean getsDefXp = false;
-		boolean getsAtkXp = player.recentlyDamagedBy(defender);
-		if (defender instanceof Creature) {
-			// Checks if defender is an immortal creature so player can't hurt him
-			// but give atk xp even if attack was missed
-			beaten = !((Creature) defender).isImmortal();
-			getsAtkXp = player.getsAtkXpFrom(defender);
-		}
+		for (final Item weapon : attackWeapons) {
+			boolean getsDefXp = false;
+			boolean getsAtkXp = player.recentlyDamagedBy(defender);
 
-		int damage = -1;
-		if (beaten) {
-			final List<Item> weapons = player.getWeapons();
-			final float itemAtk;
-
-			if (Testing.COMBAT && isRanged) {
-				itemAtk = player.getItemRatk();
-			} else {
-				itemAtk = player.getItemAtk();
-			}
-
-			damage = player.damageDone(defender, itemAtk, player.getDamageType());
-			final boolean didDamage = damage > 0;
-
-			// Handle critical hit logic
-			Object[] criticalResult = handleCritical(player, damage);
-			boolean critical = (boolean) criticalResult[1];
-			defender.hitCritical(critical);
-			damage = (int) criticalResult[0];
-
-			// give xp even if attack was blocked
-			getsDefXp = defender.getsDefXpFrom(player, didDamage);
-			if (!getsAtkXp) {
+			boolean beaten = usesTrainingDummy || player.canHit(defender);
+			if (defender instanceof Creature) {
+				// Checks if defender is an immortal creature so player can't hurt him
+				// but give atk xp even if attack was missed
+				beaten = !((Creature) defender).isImmortal();
 				getsAtkXp = player.getsAtkXpFrom(defender);
 			}
 
-			if (didDamage && !usesTrainingDummy) {
-				final boolean victimIsPlayer = defender instanceof Player;
-				if (victimIsPlayer && player.isBadBoy()) {
-					player.onDamaged(player, damage);
+			int damage = -1;
+			if (beaten) {
+				final float itemAtk = (Testing.COMBAT && isRanged)
+						? player.getItemRatk()
+						: player.getItemAtkForWeapon(weapon, totalHits);
+
+				damage = player.damageDone(defender, itemAtk, player.getDamageType());
+				final boolean didDamage = damage > 0;
+
+				// Handle critical hit logic
+				Object[] criticalResult = handleCritical(player, damage);
+				boolean critical = (boolean) criticalResult[1];
+				defender.hitCritical(critical);
+				damage = (int) criticalResult[0];
+
+				// give xp even if attack was blocked
+				getsDefXp = defender.getsDefXpFrom(player, didDamage);
+				if (!getsAtkXp) {
+					getsAtkXp = player.getsAtkXpFrom(defender);
 				}
 
-				// limit damage to target HP
-				damage = Math.min(damage, defender.getHP());
-				player.handleLifesteal(player, weapons, damage);
+				if (didDamage && !usesTrainingDummy) {
+					final boolean victimIsPlayer = defender instanceof Player;
+					if (victimIsPlayer && player.isBadBoy()) {
+						player.onDamaged(player, damage);
+					}
 
-				defender.onDamaged(player, damage);
-				logger.debug("attack from " + player.getID() + " to "
-						+ defender.getID() + ": Damage: " + damage);
+					// limit damage to target HP
+					damage = Math.min(damage, defender.getHP());
+					final List<Item> lifestealWeapons = weapon == null
+							? Collections.emptyList()
+							: Collections.singletonList(weapon);
+					player.handleLifesteal(player, lifestealWeapons, damage);
 
-				result = true;
-			} else {
-				// The attack was too weak, it was blocked
-				logger.debug("attack from " + player.getID() + " to "
-						+ defender.getID() + ": Damage: " + 0);
-			}
+					defender.onDamaged(player, damage);
+					logger.debug("attack from " + player.getID() + " to "
+							+ defender.getID() + ": Damage: " + damage);
 
-			// deteriorate weapons of attacker
-			// TODO: handle in WeaponImpl.onAttackSuccess
-			for (final Item weapon: weapons) {
-				weapon.deteriorate(player);
+					result = true;
+				} else {
+					// The attack was too weak, it was blocked
+					logger.debug("attack from " + player.getID() + " to "
+							+ defender.getID() + ": Damage: " + 0);
+				}
 
-				if (weapon instanceof BreakableWeapon) {
-					final BreakableWeapon breakable = (BreakableWeapon) weapon;
-					if (breakable.isBroken()) {
-						broken.add(breakable);
+				// deteriorate weapons of attacker
+				// TODO: handle in WeaponImpl.onAttackSuccess
+				if (weapon != null) {
+					weapon.deteriorate(player);
+
+					if (weapon instanceof BreakableWeapon) {
+						final BreakableWeapon breakable = (BreakableWeapon) weapon;
+						if (breakable.isBroken()) {
+							broken.add(breakable);
+						}
 					}
 				}
-			}
 
-			// handle actions for successful attacks (note: projectiles should handle actions for ranged weapons)
-			if (!isRanged && weaponImpl != null) {
-				weaponImpl.onAttackSuccess(defender, player, damage);
-			}
+				// handle actions for successful attacks (note: projectiles should handle actions for ranged weapons)
+				if (!isRanged && weapon instanceof WeaponImpl) {
+					((WeaponImpl) weapon).onAttackSuccess(defender, player, damage);
+				}
 
-			// randomly choose one defensive item to deteriorate
-			final List<Item> defenseItems = defender.getDefenseItems();
-			if(!defenseItems.isEmpty()) {
-				final Item equip = Rand.rand(defenseItems);
-				equip.deteriorate(defender);
+				// randomly choose one defensive item to deteriorate
+				final List<Item> defenseItems = defender.getDefenseItems();
+				if (!defenseItems.isEmpty()) {
+					final Item equip = Rand.rand(defenseItems);
+					equip.deteriorate(defender);
 
-				if (equip instanceof BreakableWeapon) {
-					final BreakableWeapon breakable = (BreakableWeapon) equip;
-					if (breakable.isBroken()) {
-						broken.add(breakable);
+					if (equip instanceof BreakableWeapon) {
+						final BreakableWeapon breakable = (BreakableWeapon) equip;
+						if (breakable.isBroken()) {
+							broken.add(breakable);
+						}
 					}
 				}
+
+				player.addEvent(new AttackEvent(true, damage, player.getDamageType(),
+						player.getAttackEventWeaponName(weapon), isRanged));
+				player.notifyWorldAboutChanges();
+				lastDamage = damage;
+			} else {
+				// Missed
+				logger.debug("attack from " + player.getID() + " to "
+						+ defender.getID() + ": Missed");
+				player.addEvent(new AttackEvent(false, 0, player.getDamageType(),
+						player.getAttackEventWeaponName(weapon), isRanged));
+				player.notifyWorldAboutChanges();
+				lastDamage = -1;
 			}
 
-			player.addEvent(new AttackEvent(true, damage, player.getDamageType(), weaponClass, isRanged));
-			player.notifyWorldAboutChanges();
-		} else {
-			// Missed
-			logger.debug("attack from " + player.getID() + " to "
-					+ defender.getID() + ": Missed");
-			player.addEvent(new AttackEvent(false, 0, player.getDamageType(), weaponClass, isRanged));
-			player.notifyWorldAboutChanges();
-		}
-
-		if (getsDefXp) {
-			defender.incDefXP();
-		}
-		if (getsAtkXp) {
-			if (Testing.COMBAT && isRanged) {
-				player.incRatkXP();
-			} else {
-				player.incAtkXP();
+			if (getsDefXp) {
+				defender.incDefXP();
+			}
+			if (getsAtkXp) {
+				if (Testing.COMBAT && isRanged) {
+					player.incRatkXP();
+				} else {
+					player.incAtkXP();
+				}
 			}
 		}
 
 		if (isRanged) {
 			// Removing the missile is deferred here so that the weapon
 			// information is available when calculating the damage.
-			useMissile(player, defender, damage);
+			useMissile(player, defender, lastDamage);
 		}
 
 		player.notifyWorldAboutChanges();
