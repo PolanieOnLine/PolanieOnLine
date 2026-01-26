@@ -351,14 +351,8 @@ public class DragonLandEvent {
 			LOGGER.warn("Dragon Land zones list is empty; cannot spawn " + creatureName + ".");
 			return;
 		}
-		final int basePerZone = count / zoneCount;
-		final int remainder = count % zoneCount;
 		for (int zoneIndex = 0; zoneIndex < zoneCount; zoneIndex++) {
-			final int zoneSpawnCount = basePerZone + (zoneIndex < remainder ? 1 : 0);
-			if (zoneSpawnCount == 0) {
-				continue;
-			}
-			summonCreaturesInZone(DRAGON_LAND_ZONES.get(zoneIndex), creatureName, zoneSpawnCount);
+			summonCreaturesInZone(DRAGON_LAND_ZONES.get(zoneIndex), creatureName, count);
 		}
 	}
 
