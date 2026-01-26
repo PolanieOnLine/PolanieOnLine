@@ -120,14 +120,6 @@ public class DragonMistEventManager implements TurnListener {
 		}
 	}
 
-	public void forceEvent() {
-		synchronized (lock) {
-			lastEventTurn = TurnNotifier.get().getCurrentTurnForDebugging();
-			dragonDeathCount = 0;
-		}
-		triggerEvent();
-	}
-
 	@Override
 	public void onTurnReached(final int currentTurn) {
 		boolean shouldTrigger = false;
