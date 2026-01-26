@@ -20,6 +20,7 @@ import { ChatOptionsEvent } from "./event/ChatOptionsEvent";
 import { ExamineEvent } from "./event/ExamineEvent";
 import { GroupChangeEvent } from "./event/GroupChangeEvent";
 import { GroupInviteEvent } from "./event/GroupInviteEvent";
+import { ImproverOfferEvent } from "./event/ImproverOfferEvent";
 import { PlayerLoggedOnEvent } from "./event/PlayerLoggedOnEvent";
 import { PlayerLoggedOutEvent } from "./event/PlayerLoggedOutEvent";
 import { ProgressStatusEvent } from "./event/ProgressStatusEvent";
@@ -72,6 +73,7 @@ export class EventRegistry {
 		this.register("examine", new ExamineEvent());
 		this.register("group_change_event", new GroupChangeEvent());
 		this.register("group_invite_event", new GroupInviteEvent());
+		this.register("improver_offer", new ImproverOfferEvent());
 		this.register("progress_status_event", new ProgressStatusEvent());
 		this.register("trade_state_change_event", new TradeEvent());
 
@@ -194,4 +196,3 @@ export class EventRegistry {
 		}
 	}
 }
-

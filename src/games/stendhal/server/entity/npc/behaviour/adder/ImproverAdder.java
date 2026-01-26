@@ -28,6 +28,7 @@ import games.stendhal.server.entity.npc.condition.AndCondition;
 import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.npc.condition.OrCondition;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.events.ImproverOfferEvent;
 import games.stendhal.server.events.SoundEvent;
 
 /**
@@ -256,6 +257,7 @@ public class ImproverAdder {
 		}
 
 		improver.say(offerUpgrade + youWant);
+		sendImproverOffer(player, toImprove);
 	}
 
 	private Item foundItem(final Player player) {
@@ -348,6 +350,80 @@ public class ImproverAdder {
 		sb.setLength(sb.length() - 2);
 
 		return "Będę potrzebował również nieprzypadkowe surowce do podniesienia jakości, takie jak " + sb.toString() + ".";
+	}
+
+	private void sendImproverOffer(final Player player, final Item toImprove) {
+		Map<String, Integer> requirements = upgradeRequirements.get(toImprove.getImprove() + 1);
+		if (requirements == null) {
+			logger.warn("Missing upgrade requirements for level " + (toImprove.getImprove() + 1));
+			return;
+		}
+
+		String payload = buildOfferPayload(player, toImprove, requirements);
+		player.addEvent(new ImproverOfferEvent(payload));
+	}
+
+	private String buildOfferPayload(final Player player, final Item toImprove, final Map<String, Integer> requirements) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("{\"action\":\"offer\",");
+		sb.append("\"item\":\"").append(jsonEscape(toImprove.getName())).append("\",");
+		sb.append("\"level\":").append(toImprove.getImprove() + 1).append(",");
+		sb.append("\"chance\":").append((int) Math.round(getSuccessProbability(player, toImprove) * 100)).append(",");
+		sb.append("\"cost\":").append(currentUpgradeFee).append(",");
+		sb.append("\"costText\":\"").append(jsonEscape(MoneyUtils.formatPrice(currentUpgradeFee))).append("\",");
+		sb.append("\"resources\":[");
+		boolean first = true;
+		for (Map.Entry<String, Integer> entry : requirements.entrySet()) {
+			if (!first) {
+				sb.append(",");
+			}
+			int owned = player.getNumberOfSubmittableEquipped(entry.getKey());
+			sb.append("{\"name\":\"").append(jsonEscape(entry.getKey())).append("\",");
+			sb.append("\"required\":").append(entry.getValue()).append(",");
+			sb.append("\"owned\":").append(owned).append("}");
+			first = false;
+		}
+		sb.append("]}");
+		return sb.toString();
+	}
+
+	private String buildClosePayload() {
+		return "{\"action\":\"close\"}";
+	}
+
+	private String jsonEscape(final String value) {
+		if (value == null) {
+			return "";
+		}
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < value.length(); i++) {
+			char c = value.charAt(i);
+			switch (c) {
+			case '\\':
+				sb.append("\\\\");
+				break;
+			case '"':
+				sb.append("\\\"");
+				break;
+			case '\n':
+				sb.append("\\n");
+				break;
+			case '\r':
+				sb.append("\\r");
+				break;
+			case '\t':
+				sb.append("\\t");
+				break;
+			default:
+				if (c < 0x20) {
+					sb.append(String.format("\\u%04x", (int) c));
+				} else {
+					sb.append(c);
+				}
+				break;
+			}
+		}
+		return sb.toString();
 	}
 
 	private int getMaxDefinedImproveLevel() {
@@ -537,6 +613,9 @@ public class ImproverAdder {
 		public void onGoodbye(final RPEntity attending) {
 			// reset item name, count, & fee to null
 			reset();
+			if (attending instanceof Player) {
+				((Player) attending).addEvent(new ImproverOfferEvent(buildClosePayload()));
+			}
 		}
 	}
 }

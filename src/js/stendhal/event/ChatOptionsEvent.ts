@@ -11,6 +11,7 @@
 
 import { Chat } from "../util/Chat";
 import { ChatOptionsDialog } from "../ui/dialog/ChatOptionsDialog";
+import { ImproverDialog } from "../ui/dialog/ImproverDialog";
 import { RPEvent } from "./RPEvent";
 
 declare var marauroa: any
@@ -43,6 +44,7 @@ export class ChatOptionsEvent extends RPEvent {
 		if (Chat.options.length == 1 && Chat.options[0].toLowerCase() === "hello") {
 			// NPC is no longer attending to player
 			Chat.attending = undefined;
+			ImproverDialog.closeActiveInstance();
 		}
 
 		let m = "Chat options for " + this['npc'] + ": " + message.join(", ");
@@ -60,4 +62,3 @@ export class ChatOptionsEvent extends RPEvent {
 	}
 
 };
-

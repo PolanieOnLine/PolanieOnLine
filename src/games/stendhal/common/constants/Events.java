@@ -65,6 +65,9 @@ public final class Events {
 
 	public static final String CHAT_OPTIONS = "chat_options";
 
+	/** improver offer data */
+	public static final String IMPROVER_OFFER = "improver_offer";
+
 	public static final String DROPPEDLIST = Actions.DROPPEDLIST;
 
 	public static final String ACHIEVEMENT_LOG = Actions.ACHIEVEMENTLOG;
