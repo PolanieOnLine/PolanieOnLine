@@ -107,34 +107,39 @@ public class DragonLandEvent {
 	private static final List<DragonWave> DRAGON_WAVES = Arrays.asList(
 			new DragonWave(30, Arrays.asList(
 					new DragonSpawn("zgniły szkielet smoka", 6),
-					new DragonSpawn("pustynny smok", 4)
+					new DragonSpawn("pustynny smok", 4),
+					new DragonSpawn("zielony smok", 4),
+					new DragonSpawn("czerwony smok", 2),
+					new DragonSpawn("błękitny smok", 4)
 			)),
 			new DragonWave(45, Arrays.asList(
 					new DragonSpawn("lodowy smok", 4),
-					new DragonSpawn("smok arktyczny", 3)
+					new DragonSpawn("smok arktyczny", 5),
+					new DragonSpawn("dwugłowy zielony smok", 3)
 			)),
 			new DragonWave(60, Arrays.asList(
-					new DragonSpawn("zielone smoczysko", 3),
-					new DragonSpawn("niebieskie smoczysko", 3)
-			)),
-			new DragonWave(75, Arrays.asList(
-					new DragonSpawn("czerwone smoczysko", 3),
-					new DragonSpawn("czarne smoczysko", 2)
+					new DragonSpawn("dwugłowy złoty smok", 2),
+					new DragonSpawn("dwugłowy zielony smok", 6),
+					new DragonSpawn("dwugłowy czerwony smok", 4)
 			)),
 			new DragonWave(90, Arrays.asList(
 					new DragonSpawn("dwugłowy złoty smok", 2),
-					new DragonSpawn("dwugłowy zielony smok", 2),
-					new DragonSpawn("dwugłowy lodowy smok", 2)
+					new DragonSpawn("zielone smoczysko", 3),
+					new DragonSpawn("niebieskie smoczysko", 3)
 			)),
 			new DragonWave(120, Arrays.asList(
 					new DragonSpawn("dwugłowy czarny smok", 2),
-					new DragonSpawn("dwugłowy czerwony smok", 2)
+					new DragonSpawn("dwugłowy lodowy smok", 4)
 			)),
-			new DragonWave(135, Arrays.asList(
+			new DragonWave(150, Arrays.asList(
+					new DragonSpawn("czerwone smoczysko", 3),
+					new DragonSpawn("czarne smoczysko", 2)
+			)),
+			new DragonWave(180, Arrays.asList(
 					new DragonSpawn("latający czarny smok", 1),
 					new DragonSpawn("latający złoty smok", 1)
 			)),
-			new DragonWave(150, Arrays.asList(
+			new DragonWave(240, Arrays.asList(
 					new DragonSpawn("Smok Wawelski", 1)
 			))
 	);
