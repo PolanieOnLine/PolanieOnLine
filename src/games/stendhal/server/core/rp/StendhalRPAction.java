@@ -520,7 +520,7 @@ int lastDamage = -1;
 				}
 
 				player.addEvent(new AttackEvent(true, damage, player.getDamageType(),
-						player.getAttackEventWeaponName(weapon), isRanged));
+						player.getAttackEventWeaponName(weapon), isRanged, false));
 				player.notifyWorldAboutChanges();
 				lastDamage = damage;
 			} else {
@@ -528,7 +528,7 @@ int lastDamage = -1;
 				logger.debug("attack from " + player.getID() + " to "
 						+ defender.getID() + ": Missed");
 				player.addEvent(new AttackEvent(false, 0, player.getDamageType(),
-						player.getAttackEventWeaponName(weapon), isRanged));
+						player.getAttackEventWeaponName(weapon), isRanged, false));
 				player.notifyWorldAboutChanges();
 				lastDamage = -1;
 			}

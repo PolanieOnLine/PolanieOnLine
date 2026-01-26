@@ -3471,7 +3471,9 @@ public abstract class RPEntity extends CombatEntity {
 
 		// Try to inflict a status effect
 		final List<StatusAttacker> allStatusAttackers = getAllStatusAttackers();
+		int hitIndex = 0;
 		for (final Item attackWeapon : attackWeapons) {
+			final boolean isOffhandHit = dualWieldAttack && hitIndex > 0;
 			final String weaponName = getAttackEventWeaponName(attackWeapon);
 			final float attackValue = (Testing.COMBAT && isRanged)
 					? getItemRatk()
@@ -3517,7 +3519,7 @@ public abstract class RPEntity extends CombatEntity {
 						logger.debug("attack from " + this.getID() + " to " + defender.getID() + ": Damage: " + 0);
 					}
 				}
-				this.addEvent(new AttackEvent(true, damage, nature, weaponName, isRanged));
+				this.addEvent(new AttackEvent(true, damage, nature, weaponName, isRanged, isOffhandHit));
 
 				// Try to inflict a status effect
 				for (StatusAttacker statusAttacker : allStatusAttackers) {
@@ -3530,8 +3532,9 @@ public abstract class RPEntity extends CombatEntity {
 					logger.debug("attack from " + this.getID() + " to " + defender.getID() + ": Missed");
 				}
 
-				this.addEvent(new AttackEvent(false, 0, nature, weaponName, isRanged));
+				this.addEvent(new AttackEvent(false, 0, nature, weaponName, isRanged, isOffhandHit));
 			}
+			hitIndex++;
 		}
 
 		this.notifyWorldAboutChanges();

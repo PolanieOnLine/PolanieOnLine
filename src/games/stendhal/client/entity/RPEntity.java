@@ -183,6 +183,11 @@ public abstract class RPEntity extends AudibleEntity {
 	 */
 	private boolean isDoingRangedAttack;
 	/**
+	 * <code>true</code> if the previously done attack event was an offhand hit,
+	 * 	otherwise <code>false</code>.
+	 */
+	private boolean isDoingOffhandAttack;
+	/**
 	 * Flag for checking attack targets that were added in the zone later than
 	 * this entity.
 	 */
@@ -695,6 +700,16 @@ public abstract class RPEntity extends AudibleEntity {
 	}
 
 	/**
+	 * Check if the currently performed attack is an offhand hit.
+	 *
+	 * @return <code>true</code> if the attack is an offhand hit,
+	 * 	<code>false</code> otherwise
+	 */
+	public boolean isDoingOffhandAttack() {
+		return isDoingOffhandAttack;
+	}
+
+	/**
 	 * Check if the entity is defending against an attack right now. The entity
 	 * is defending if the last attack happened within 1.2s.
 	 *
@@ -794,9 +809,10 @@ public abstract class RPEntity extends AudibleEntity {
 	 * @param weapon Weapon used in the attack, or <code>null</code> if not
 	 * 	specified
 	 */
-	public void onAttackPerformed(final Nature type, boolean ranged, String weapon) {
+	public void onAttackPerformed(final Nature type, boolean ranged, String weapon, boolean offhand) {
 		attackNature = type;
 		isDoingRangedAttack = ranged;
+		isDoingOffhandAttack = offhand;
 		this.weapon = weapon;
 		fireChange(PROP_ATTACK);
 	}
