@@ -348,7 +348,25 @@ public class DragonLandEvent {
 
 	private static int summonCreatures(final String creatureName, final int count, final int startZoneIndex) {
 		final int zoneCount = DRAGON_LAND_ZONES.size();
-		int zoneIndex = startZoneIndex;
+		if (zoneCount == 0) {
+			LOGGER.warn("Dragon Land zones list is empty; cannot spawn " + creatureName + ".");
+			return startZoneIndex;
+		}
+		final int[] zoneCounts = new int[zoneCount];
+		for (int i = 0; i < count; i++) {
+			zoneCounts[(startZoneIndex + i) % zoneCount]++;
+		}
+		for (int zoneIndex = 0; zoneIndex < zoneCount; zoneIndex++) {
+			final int zoneSpawnCount = zoneCounts[zoneIndex];
+			if (zoneSpawnCount == 0) {
+				continue;
+			}
+			summonCreaturesInZone(DRAGON_LAND_ZONES.get(zoneIndex), creatureName, zoneSpawnCount);
+		}
+		return startZoneIndex + count;
+	}
+
+	private static void summonCreaturesInZone(final String zoneName, final String creatureName, final int count) {
 		for (int i = 0; i < count; i++) {
 			final Creature template = SingletonRepository.getEntityManager().getCreature(creatureName);
 			if (template == null) {
@@ -357,54 +375,39 @@ public class DragonLandEvent {
 			}
 			final Creature creature = new Creature(template.getNewInstance());
 			creature.registerObjectsForNotification(EVENT_DRAGON_OBSERVER);
-			final int preferredZoneIndex = zoneCount == 0 ? 0 : (zoneIndex % zoneCount);
-			if (placeCreatureInRandomSafeSpot(creature, preferredZoneIndex)) {
+			if (placeCreatureInRandomSafeSpot(creature, zoneName)) {
 				EVENT_DRAGONS.add(creature);
 			}
-			zoneIndex++;
 		}
-		return zoneIndex;
 	}
 
-	private static boolean placeCreatureInRandomSafeSpot(final Creature creature, final int startZoneIndex) {
-		final int zoneCount = DRAGON_LAND_ZONES.size();
-		if (zoneCount == 0) {
-			LOGGER.warn("Dragon Land zones list is empty; cannot spawn " + creature.getName() + ".");
+	private static boolean placeCreatureInRandomSafeSpot(final Creature creature, final String zoneName) {
+		final StendhalRPZone zone = SingletonRepository.getRPWorld().getZone(zoneName);
+		if (zone == null) {
+			LOGGER.warn("Dragon Land zone not found for spawn: " + zoneName + ".");
 			return false;
 		}
-		int attemptsRemaining = SPAWN_ATTEMPTS_PER_CREATURE;
-		final int attemptsPerZone = Math.max(1, attemptsRemaining / zoneCount);
-		for (int zoneOffset = 0; zoneOffset < zoneCount; zoneOffset++) {
-			final int zoneAttempts = zoneOffset == zoneCount - 1 ? attemptsRemaining : attemptsPerZone;
-			attemptsRemaining -= zoneAttempts;
-			final String zoneName = DRAGON_LAND_ZONES.get((startZoneIndex + zoneOffset) % zoneCount);
-			final StendhalRPZone zone = SingletonRepository.getRPWorld().getZone(zoneName);
-			if (zone == null) {
-				LOGGER.warn("Dragon Land zone not found for spawn: " + zoneName + ".");
+		for (int attempt = 0; attempt < SPAWN_ATTEMPTS_PER_CREATURE; attempt++) {
+			final int x = Rand.rand(zone.getWidth());
+			final int y = Rand.rand(zone.getHeight());
+			if (zone.collides(creature, x, y)) {
 				continue;
 			}
-			for (int attempt = 0; attempt < zoneAttempts; attempt++) {
-				final int x = Rand.rand(zone.getWidth());
-				final int y = Rand.rand(zone.getHeight());
-				if (zone.collides(creature, x, y)) {
+			if (zone.getName().startsWith("0")) {
+				final List<Node> path = Path.searchPath(
+						zone,
+						x,
+						y,
+						zone.getWidth() / 2,
+						zone.getHeight() / 2,
+						(64 + 64) * 2
+				);
+				if (path == null || path.isEmpty()) {
 					continue;
 				}
-				if (zone.getName().startsWith("0")) {
-					final List<Node> path = Path.searchPath(
-							zone,
-							x,
-							y,
-							zone.getWidth() / 2,
-							zone.getHeight() / 2,
-							(64 + 64) * 2
-					);
-					if (path == null || path.isEmpty()) {
-						continue;
-					}
-				}
-				if (StendhalRPAction.placeat(zone, creature, x, y)) {
-					return true;
-				}
+			}
+			if (StendhalRPAction.placeat(zone, creature, x, y)) {
+				return true;
 			}
 		}
 		LOGGER.debug("Dragon Land spawn failed after attempts for " + creature.getName() + ".");
