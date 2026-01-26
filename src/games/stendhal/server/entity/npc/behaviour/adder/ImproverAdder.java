@@ -1,6 +1,7 @@
 package games.stendhal.server.entity.npc.behaviour.adder;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -215,6 +216,20 @@ public class ImproverAdder {
 			return;
 		}
 
+		int maxDefinedLevel = getMaxDefinedImproveLevel();
+		if (toImprove.getMaxImproves() > maxDefinedLevel) {
+			improver.say("Wybacz. Brakuje danych o wymaganiach dla wyższych poziomów ulepszeń tego przedmiotu.");
+			improver.setCurrentState(ConversationStates.ATTENDING);
+			logger.warn("max_improves exceeds defined upgrade requirements for item " + toImprove.getName());
+			return;
+		}
+		if (upgradeRequirements.get(toImprove.getImprove() + 1) == null) {
+			improver.say("Wybacz. Brakuje danych o wymaganych surowcach do tego poziomu ulepszenia.");
+			improver.setCurrentState(ConversationStates.ATTENDING);
+			logger.warn("Missing upgrade requirements for level " + (toImprove.getImprove() + 1));
+			return;
+		}
+
 		countImproveItems(player);
 		if (!hasItemToImprove()) {
 			improver.say("Wybacz. Przedmiot #'" + getTargetItemName() + "' jest niemożliwy do udoskonalenia."
@@ -296,18 +311,35 @@ public class ImproverAdder {
 		return true;
 	}
 
-	private void dropNeededResources(final Player player) {
+	private boolean dropNeededResources(final Player player) {
 		Item targetItem = foundItem(player);
+		if (targetItem == null) {
+			player.sendPrivateText("Nie posiadasz przedmiotu możliwego do ulepszenia.");
+			return false;
+		}
 		Map<String, Integer> requirements = upgradeRequirements.get(targetItem.getImprove() + 1);
+		if (requirements == null) {
+			player.sendPrivateText("Brakuje danych o wymaganych surowcach. Ulepszenie zostało wstrzymane.");
+			logger.warn("Missing upgrade requirements for level " + (targetItem.getImprove() + 1));
+			return false;
+		}
 
 		for (Map.Entry<String, Integer> entry : requirements.entrySet()) {
 			player.drop(entry.getKey(), entry.getValue());
 		}
+		return true;
 	}
 
 	private String getNeedResourcesNames(final Player player) {
 		Item targetItem = foundItem(player);
+		if (targetItem == null) {
+			return "Nie mogę ustalić wymaganych surowców bez przedmiotu do ulepszenia.";
+		}
 		Map<String, Integer> requirements = upgradeRequirements.get(targetItem.getImprove() + 1);
+		if (requirements == null) {
+			logger.warn("Missing upgrade requirements for level " + (targetItem.getImprove() + 1));
+			return "Brakuje danych o wymaganych surowcach, więc nie mogę kontynuować ulepszenia.";
+		}
 
 		StringBuilder sb = new StringBuilder();
 		for (Map.Entry<String, Integer> entry : requirements.entrySet()) {
@@ -316,6 +348,10 @@ public class ImproverAdder {
 		sb.setLength(sb.length() - 2);
 
 		return "Będę potrzebował również nieprzypadkowe surowce do podniesienia jakości, takie jak " + sb.toString() + ".";
+	}
+
+	private int getMaxDefinedImproveLevel() {
+		return Collections.max(upgradeRequirements.keySet());
 	}
 
 	private ChatAction requestImproveAction(final ImproverNPC improver) {
@@ -352,7 +388,10 @@ public class ImproverAdder {
 					return;
 				}
 				MoneyUtils.removeMoney(player, currentUpgradeFee);
-				dropNeededResources(player);
+				if (!dropNeededResources(player)) {
+					npc.say("Wybacz. Brakuje wymaganych surowców, więc nie mogę przeprowadzić ulepszenia.");
+					return;
+				}
 
 				if (isSuccessful(player, toImprove)) {
 					toImprove.upgradeItem();
@@ -414,6 +453,14 @@ public class ImproverAdder {
 				if (targetItem == null) {
 					if (improver instanceof SpeakerNPC) {
 						((SpeakerNPC) improver).say("Wybacz. Nie posiadasz przedmiotu #'" + getTargetItemName() + "' możliwego do ulepszenia.");
+					}
+					return false;
+				}
+				Map<String, Integer> requirements = upgradeRequirements.get(targetItem.getImprove() + 1);
+				if (requirements == null) {
+					logger.warn("Missing upgrade requirements for level " + (targetItem.getImprove() + 1));
+					if (improver instanceof SpeakerNPC) {
+						((SpeakerNPC) improver).say("Wybacz. Brakuje wymaganych surowców, więc nie mogę ulepszyć tego przedmiotu.");
 					}
 					return false;
 				}
