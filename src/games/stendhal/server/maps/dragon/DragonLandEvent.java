@@ -119,10 +119,6 @@ public class DragonLandEvent {
 					new DragonSpawn("czerwone smoczysko", 3),
 					new DragonSpawn("czarne smoczysko", 2)
 			)),
-			new DragonWave(90, Arrays.asList(
-					new DragonSpawn("latający czarny smok", 2),
-					new DragonSpawn("latający złoty smok", 2)
-			)),
 			new DragonWave(105, Arrays.asList(
 					new DragonSpawn("dwugłowy czarny smok", 2),
 					new DragonSpawn("dwugłowy czerwony smok", 2)
@@ -131,6 +127,10 @@ public class DragonLandEvent {
 					new DragonSpawn("dwugłowy złoty smok", 2),
 					new DragonSpawn("dwugłowy zielony smok", 2),
 					new DragonSpawn("dwugłowy lodowy smok", 2)
+			)),
+			new DragonWave(135, Arrays.asList(
+					new DragonSpawn("latający czarny smok", 1),
+					new DragonSpawn("latający złoty smok", 1)
 			)),
 			new DragonWave(150, Arrays.asList(
 					new DragonSpawn("Smok Wawelski", 1)
@@ -178,6 +178,19 @@ public class DragonLandEvent {
 			LOGGER.warn("Dragon Land event already active; skipping duplicate start.");
 			return;
 		}
+		startEventInternal();
+	}
+
+	public static boolean forceStart() {
+		if (!EVENT_ACTIVE.compareAndSet(false, true)) {
+			LOGGER.warn("Dragon Land event already active; refusing forced start.");
+			return false;
+		}
+		startEventInternal();
+		return true;
+	}
+
+	private static void startEventInternal() {
 		resetKillCounter("event started");
 		LOGGER.info("Dragon Land event started.");
 		SingletonRepository.getRuleProcessor().tellAllPlayers(
