@@ -13,6 +13,7 @@ package games.stendhal.server.entity;
 
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
@@ -2791,19 +2792,24 @@ public abstract class RPEntity extends CombatEntity {
 	}
 
 	private float getWeaponsAtk() {
+		return getWeaponsAtk(getWeapons());
+	}
+
+	private float getWeaponsAtk(final List<Item> weapons) {
 		float weapon = 0;
 
-		final List<Item> weapons = getWeapons();
-		for (final Item weaponItem : weapons) {
-			weapon += weaponItem.getAttack();
+		if (weapons != null) {
+			for (final Item weaponItem : weapons) {
+				weapon += weaponItem.getAttack();
+			}
 		}
 
 		// calculate ammo when not using RATK stat
-		if (!Testing.COMBAT && weapons.size() > 0) {
-			if (getWeapons().get(0).isOfClass("ranged")) {
+		if (!Testing.COMBAT && weapons != null && weapons.size() > 0) {
+			if (weapons.get(0).isOfClass("ranged")) {
 				weapon += getAmmoAtk("ammunition");
 			}
-			if (getWeapons().get(0).isOfClass("wand")) {
+			if (weapons.get(0).isOfClass("wand")) {
 				float magic = getAmmoAtk("magia");
 				if (magic != 0) {
 					weapon += magic;
@@ -2821,6 +2827,27 @@ public abstract class RPEntity extends CombatEntity {
 	 * Retrieves total ATK value of held weapons.
 	 */
 	public float getItemAtk() {
+		return getItemAtkForWeapons(getWeapons());
+	}
+
+	public float getItemAtkForWeapon(final Item weapon, final int totalHits) {
+		final float baseAttack = getItemAtkForWeapons(Collections.emptyList());
+		float weaponAttack = 0;
+
+		if (weapon != null) {
+			final List<Item> weaponList = new ArrayList<>();
+			weaponList.add(weapon);
+			weaponAttack = getItemAtkForWeapons(weaponList) - baseAttack;
+		}
+
+		if (totalHits > 1) {
+			return (baseAttack / totalHits) + weaponAttack;
+		}
+
+		return baseAttack + weaponAttack;
+	}
+
+	private float getItemAtkForWeapons(final List<Item> weapons) {
 		double atkBonus = 0;
 
 		// Obliczanie łącznego bonusu z glifów
@@ -2831,7 +2858,7 @@ public abstract class RPEntity extends CombatEntity {
 		}
 
 		// Inicjalizacja ataku z różnych przedmiotów
-		float totalAttack = getWeaponsAtk();
+		float totalAttack = getWeaponsAtk(weapons);
 
 		if (hasGloves()) {
 			totalAttack += getGloves().getAttack();
@@ -2884,6 +2911,61 @@ public abstract class RPEntity extends CombatEntity {
 		totalAttack += totalAttack * atkBonus;
 
 		return (int) Math.round(totalAttack);
+	}
+
+	public boolean isDualWieldAttack(final List<Item> weapons) {
+		if (weapons == null || weapons.size() != 2) {
+			return false;
+		}
+
+		final Item first = weapons.get(0);
+		final Item second = weapons.get(1);
+		final String weaponClass = first.getItemClass();
+		if (!weaponClass.equals(second.getItemClass())) {
+			return false;
+		}
+		if (!("sword".equals(weaponClass) || "dagger".equals(weaponClass))) {
+			return false;
+		}
+
+		return (isLeftHandWeapon(first) && isRightHandWeapon(second))
+				|| (isLeftHandWeapon(second) && isRightHandWeapon(first));
+	}
+
+	public String getAttackEventWeaponName(final Item weapon) {
+		if (weapon == null) {
+			return null;
+		}
+		if ((isLeftHandWeapon(weapon) || isRightHandWeapon(weapon)) && weapon.has("subclass")) {
+			return weapon.get("subclass");
+		}
+		return weapon.getWeaponType();
+	}
+
+	private boolean isLeftHandWeapon(final Item weapon) {
+		if (weapon == null) {
+			return false;
+		}
+		if (weapon.has("subclass")) {
+			final String subclass = weapon.get("subclass");
+			if (subclass != null && subclass.startsWith("l_hand_")) {
+				return true;
+			}
+		}
+		return weapon.getName() != null && weapon.getName().endsWith(" leworęczny");
+	}
+
+	private boolean isRightHandWeapon(final Item weapon) {
+		if (weapon == null) {
+			return false;
+		}
+		if (weapon.has("subclass")) {
+			final String subclass = weapon.get("subclass");
+			if (subclass != null && subclass.startsWith("r_hand_")) {
+				return true;
+			}
+		}
+		return weapon.getName() != null && weapon.getName().endsWith(" praworęczny");
 	}
 
 	/**
@@ -3353,12 +3435,17 @@ public abstract class RPEntity extends CombatEntity {
 
 		defender.rememberAttacker(this);
 
-		// Weapon for the use in the attack event
-		Item attackWeapon = getWeapon();
-		String weaponName = null;
-		if (attackWeapon != null) {
-			weaponName = attackWeapon.getWeaponType();
+		final List<Item> weapons = getWeapons();
+		final boolean dualWieldAttack = isDualWieldAttack(weapons);
+		final List<Item> attackWeapons = new ArrayList<>();
+		if (dualWieldAttack) {
+			attackWeapons.addAll(weapons);
+		} else if (!weapons.isEmpty()) {
+			attackWeapons.add(weapons.get(0));
+		} else {
+			attackWeapons.add(null);
 		}
+		final int totalHits = attackWeapons.size();
 
 		/*
 		 * Checks whether the attacker's weapon is a non-melee weapon. If the object is
@@ -3367,7 +3454,7 @@ public abstract class RPEntity extends CombatEntity {
 		 */
 		boolean checkWeapon = true;
 		if (this instanceof Player) {
-			checkWeapon = attackWeapon.isNonMeleeWeapon();
+			checkWeapon = attackWeapons.get(0) != null && attackWeapons.get(0).isNonMeleeWeapon();
 		}
 
 		final int maxRange = getMaxRangeForArcher();
@@ -3380,69 +3467,71 @@ public abstract class RPEntity extends CombatEntity {
 		boolean isRanged = ((maxRange > 0) && canDoRangeAttack(defender, maxRange))
 				&& (((getDamageType() == getRangedDamageType()) || squaredDistance(defender) > 0)) && checkWeapon;
 
-		Nature nature;
-		final float itemAtk;
-		if (Testing.COMBAT && isRanged) {
-			nature = getRangedDamageType();
-			itemAtk = getItemRatk();
-		} else {
-			nature = getDamageType();
-			itemAtk = getItemAtk();
-		}
+		final Nature nature = (Testing.COMBAT && isRanged) ? getRangedDamageType() : getDamageType();
 
 		// Try to inflict a status effect
 		final List<StatusAttacker> allStatusAttackers = getAllStatusAttackers();
-		for (StatusAttacker statusAttacker : allStatusAttackers) {
-			statusAttacker.onAttackAttempt(defender, this);
-		}
+		for (final Item attackWeapon : attackWeapons) {
+			final String weaponName = getAttackEventWeaponName(attackWeapon);
+			final float attackValue = (Testing.COMBAT && isRanged)
+					? getItemRatk()
+					: getItemAtkForWeapon(attackWeapon, totalHits);
 
-		if (this.canHit(defender)) {
-			int damage = damageDone(defender, itemAtk, nature, isRanged, maxRange);
-			final boolean didDamage = damage > 0;
-
-			if (defender.getsDefXpFrom(this, didDamage)) {
-				defender.incDefXP();
-			}
-
-			// Roll a critical hit chance for a creature to player (default: 2%).
-			final boolean critical = Rand.roll1D100() <= 2;
-			// Calculate the total damage for a critical hit
-			if (critical) {
-				damage *= 2;
-			}
-
-			if (didDamage) {
-				// limit damage to target HP
-				damage = Math.min(damage, defender.getHP());
-				this.handleLifesteal(this, this.getWeapons(), damage);
-
-				defender.onDamaged(this, damage);
-
-				if (logger.isDebugEnabled() || Testing.DEBUG) {
-					logger.debug("attack from " + this.getID() + " to " + defender.getID() + ": Damage: " + damage);
-				}
-
-				result = true;
-			} else {
-				// The attack was too weak, it was blocked
-				if (logger.isDebugEnabled() || Testing.DEBUG) {
-					logger.debug("attack from " + this.getID() + " to " + defender.getID() + ": Damage: " + 0);
-				}
-			}
-			this.addEvent(new AttackEvent(true, damage, nature, weaponName, isRanged));
-
-			// Try to inflict a status effect
 			for (StatusAttacker statusAttacker : allStatusAttackers) {
-				statusAttacker.onHit(defender, this, damage);
+				statusAttacker.onAttackAttempt(defender, this);
 			}
 
-		} else {
-			// Missed
-			if (logger.isDebugEnabled() || Testing.DEBUG) {
-				logger.debug("attack from " + this.getID() + " to " + defender.getID() + ": Missed");
-			}
+			if (this.canHit(defender)) {
+				int damage = damageDone(defender, attackValue, nature, isRanged, maxRange);
+				final boolean didDamage = damage > 0;
 
-			this.addEvent(new AttackEvent(false, 0, nature, weaponName, isRanged));
+				if (defender.getsDefXpFrom(this, didDamage)) {
+					defender.incDefXP();
+				}
+
+				// Roll a critical hit chance for a creature to player (default: 2%).
+				final boolean critical = Rand.roll1D100() <= 2;
+				// Calculate the total damage for a critical hit
+				if (critical) {
+					damage *= 2;
+				}
+
+				if (didDamage) {
+					// limit damage to target HP
+					damage = Math.min(damage, defender.getHP());
+					final List<Item> lifestealWeapons = attackWeapon == null
+							? Collections.emptyList()
+							: Collections.singletonList(attackWeapon);
+					this.handleLifesteal(this, lifestealWeapons, damage);
+
+					defender.onDamaged(this, damage);
+
+					if (logger.isDebugEnabled() || Testing.DEBUG) {
+						logger.debug("attack from " + this.getID() + " to " + defender.getID() + ": Damage: " + damage);
+					}
+
+					result = true;
+				} else {
+					// The attack was too weak, it was blocked
+					if (logger.isDebugEnabled() || Testing.DEBUG) {
+						logger.debug("attack from " + this.getID() + " to " + defender.getID() + ": Damage: " + 0);
+					}
+				}
+				this.addEvent(new AttackEvent(true, damage, nature, weaponName, isRanged));
+
+				// Try to inflict a status effect
+				for (StatusAttacker statusAttacker : allStatusAttackers) {
+					statusAttacker.onHit(defender, this, damage);
+				}
+
+			} else {
+				// Missed
+				if (logger.isDebugEnabled() || Testing.DEBUG) {
+					logger.debug("attack from " + this.getID() + " to " + defender.getID() + ": Missed");
+				}
+
+				this.addEvent(new AttackEvent(false, 0, nature, weaponName, isRanged));
+			}
 		}
 
 		this.notifyWorldAboutChanges();
