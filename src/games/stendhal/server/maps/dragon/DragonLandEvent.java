@@ -114,13 +114,13 @@ public class DragonLandEvent {
 			)),
 			new DragonWave(45, Arrays.asList(
 					new DragonSpawn("lodowy smok", 4),
-					new DragonSpawn("smok arktyczny", 5),
-					new DragonSpawn("dwugłowy zielony smok", 3)
+					new DragonSpawn("smok arktyczny", 3),
+					new DragonSpawn("dwugłowy zielony smok", 6)
 			)),
 			new DragonWave(60, Arrays.asList(
-					new DragonSpawn("dwugłowy złoty smok", 2),
-					new DragonSpawn("dwugłowy zielony smok", 6),
-					new DragonSpawn("dwugłowy czerwony smok", 4)
+					new DragonSpawn("dwugłowy złoty smok", 4),
+					new DragonSpawn("dwugłowy zielony smok", 8),
+					new DragonSpawn("dwugłowy czerwony smok", 6)
 			)),
 			new DragonWave(90, Arrays.asList(
 					new DragonSpawn("dwugłowy złoty smok", 2),
@@ -128,8 +128,8 @@ public class DragonLandEvent {
 					new DragonSpawn("niebieskie smoczysko", 3)
 			)),
 			new DragonWave(120, Arrays.asList(
-					new DragonSpawn("dwugłowy czarny smok", 2),
-					new DragonSpawn("dwugłowy lodowy smok", 4)
+					new DragonSpawn("dwugłowy czarny smok", 4),
+					new DragonSpawn("dwugłowy lodowy smok", 8)
 			)),
 			new DragonWave(150, Arrays.asList(
 					new DragonSpawn("czerwone smoczysko", 3),
@@ -340,30 +340,26 @@ public class DragonLandEvent {
 		if (!EVENT_ACTIVE.get()) {
 			return;
 		}
-		int zoneIndex = 0;
 		for (DragonSpawn spawn : wave.spawns) {
-			zoneIndex = summonCreatures(spawn.creatureName, spawn.count, zoneIndex);
+			summonCreatures(spawn.creatureName, spawn.count);
 		}
 	}
 
-	private static int summonCreatures(final String creatureName, final int count, final int startZoneIndex) {
+	private static void summonCreatures(final String creatureName, final int count) {
 		final int zoneCount = DRAGON_LAND_ZONES.size();
 		if (zoneCount == 0) {
 			LOGGER.warn("Dragon Land zones list is empty; cannot spawn " + creatureName + ".");
-			return startZoneIndex;
+			return;
 		}
-		final int[] zoneCounts = new int[zoneCount];
-		for (int i = 0; i < count; i++) {
-			zoneCounts[(startZoneIndex + i) % zoneCount]++;
-		}
+		final int basePerZone = count / zoneCount;
+		final int remainder = count % zoneCount;
 		for (int zoneIndex = 0; zoneIndex < zoneCount; zoneIndex++) {
-			final int zoneSpawnCount = zoneCounts[zoneIndex];
+			final int zoneSpawnCount = basePerZone + (zoneIndex < remainder ? 1 : 0);
 			if (zoneSpawnCount == 0) {
 				continue;
 			}
 			summonCreaturesInZone(DRAGON_LAND_ZONES.get(zoneIndex), creatureName, zoneSpawnCount);
 		}
-		return startZoneIndex + count;
 	}
 
 	private static void summonCreaturesInZone(final String zoneName, final String creatureName, final int count) {
@@ -377,6 +373,7 @@ public class DragonLandEvent {
 			creature.registerObjectsForNotification(EVENT_DRAGON_OBSERVER);
 			if (placeCreatureInRandomSafeSpot(creature, zoneName)) {
 				EVENT_DRAGONS.add(creature);
+				LOGGER.debug("Dragon Land spawned " + creature.getName() + " in zone " + zoneName + ".");
 			}
 		}
 	}
