@@ -15,10 +15,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -28,7 +26,6 @@ import games.stendhal.common.Rand;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPWorld;
 import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.core.engine.ZoneAttributes;
 import games.stendhal.server.core.events.TurnListener;
 import games.stendhal.server.core.events.TurnNotifier;
 import games.stendhal.server.core.rule.EntityManager;
@@ -49,11 +46,6 @@ public class DragonMistEventManager implements TurnListener {
 	private static final int COOLDOWN_SECONDS = 1800;
 	private static final int ELITE_SPAWN_COUNT = 3;
 	private static final int BOSS_SPAWN_COUNT = 1;
-	private static final int MIST_DURATION_SECONDS = 600;
-
-	private static final List<String> MIST_WEATHER_TYPES = Collections.unmodifiableList(Arrays.asList(
-			"fog",
-			"fog_heavy"));
 
 	private static final List<String> DRAGON_LAND_ZONES = Collections.unmodifiableList(Arrays.asList(
 			"0_dragon_land_n",
@@ -91,8 +83,6 @@ public class DragonMistEventManager implements TurnListener {
 	private final int cooldownTurns;
 	private int dragonDeathCount;
 	private int lastEventTurn = Integer.MIN_VALUE;
-	private boolean mistActive;
-	private final Map<String, String> previousZoneWeather = new HashMap<>();
 
 	public static DragonMistEventManager create() {
 		DragonMistEventManager manager = new DragonMistEventManager();
@@ -171,7 +161,6 @@ public class DragonMistEventManager implements TurnListener {
 	}
 
 	private void triggerEvent() {
-		applyMistWeather();
 		broadcastGlobalMessage(GLOBAL_MESSAGE);
 		spawnCreatures(ELITE_CREATURES, ELITE_SPAWN_COUNT);
 		spawnCreatures(BOSS_CREATURES, BOSS_SPAWN_COUNT);
@@ -214,65 +203,6 @@ public class DragonMistEventManager implements TurnListener {
 
 			creature.setPosition(position.x, position.y);
 			zone.add(creature);
-		}
-	}
-
-	private void applyMistWeather() {
-		synchronized (lock) {
-			if (mistActive) {
-				return;
-			}
-			mistActive = true;
-			previousZoneWeather.clear();
-		}
-
-		for (final String zoneName : DRAGON_LAND_ZONES) {
-			final StendhalRPZone zone = SingletonRepository.getRPWorld().getZone(zoneName);
-			if (zone == null) {
-				logger.warn("Dragon Mist weather skipped, zone not found: " + zoneName);
-				continue;
-			}
-
-			final ZoneAttributes attr = zone.getAttributes();
-			final String previousWeather = attr.get("weather");
-			synchronized (lock) {
-				previousZoneWeather.put(zoneName, previousWeather);
-			}
-			final String mistWeather = Rand.rand(MIST_WEATHER_TYPES);
-			attr.put("weather", mistWeather);
-			zone.notifyOnlinePlayers();
-		}
-
-		TurnNotifier.get().notifyInSeconds(MIST_DURATION_SECONDS, currentTurn -> restoreWeather());
-	}
-
-	private void restoreWeather() {
-		final Map<String, String> weatherToRestore;
-		synchronized (lock) {
-			if (!mistActive) {
-				return;
-			}
-			mistActive = false;
-			weatherToRestore = new HashMap<>(previousZoneWeather);
-			previousZoneWeather.clear();
-		}
-
-		for (final Map.Entry<String, String> entry : weatherToRestore.entrySet()) {
-			final String zoneName = entry.getKey();
-			final StendhalRPZone zone = SingletonRepository.getRPWorld().getZone(zoneName);
-			if (zone == null) {
-				logger.warn("Dragon Mist restore skipped, zone not found: " + zoneName);
-				continue;
-			}
-
-			final ZoneAttributes attr = zone.getAttributes();
-			final String previousWeather = entry.getValue();
-			if (previousWeather == null) {
-				attr.remove("weather");
-			} else {
-				attr.put("weather", previousWeather);
-			}
-			zone.notifyOnlinePlayers();
 		}
 	}
 }
