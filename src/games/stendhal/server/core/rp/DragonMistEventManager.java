@@ -49,8 +49,7 @@ public class DragonMistEventManager implements TurnListener {
 	private static final int COOLDOWN_SECONDS = 1800;
 	private static final int ELITE_SPAWN_COUNT = 3;
 	private static final int BOSS_SPAWN_COUNT = 1;
-	private static final int MIST_DURATION_SECONDS = 3600;
-	private static final int MIST_SPAWN_INTERVAL_SECONDS = 600;
+	private static final int MIST_DURATION_SECONDS = 600;
 
 	private static final List<String> MIST_WEATHER_TYPES = Collections.unmodifiableList(Arrays.asList(
 			"fog",
@@ -172,13 +171,10 @@ public class DragonMistEventManager implements TurnListener {
 	}
 
 	private void triggerEvent() {
-		final boolean mistStarted = applyMistWeather();
+		applyMistWeather();
 		broadcastGlobalMessage(GLOBAL_MESSAGE);
 		spawnCreatures(ELITE_CREATURES, ELITE_SPAWN_COUNT);
 		spawnCreatures(BOSS_CREATURES, BOSS_SPAWN_COUNT);
-		if (mistStarted) {
-			scheduleMistSpawnWave();
-		}
 	}
 
 	private void broadcastGlobalMessage(final String message) {
@@ -221,10 +217,10 @@ public class DragonMistEventManager implements TurnListener {
 		}
 	}
 
-	private boolean applyMistWeather() {
+	private void applyMistWeather() {
 		synchronized (lock) {
 			if (mistActive) {
-				return false;
+				return;
 			}
 			mistActive = true;
 			previousZoneWeather.clear();
@@ -248,24 +244,6 @@ public class DragonMistEventManager implements TurnListener {
 		}
 
 		TurnNotifier.get().notifyInSeconds(MIST_DURATION_SECONDS, currentTurn -> restoreWeather());
-		return true;
-	}
-
-	private void scheduleMistSpawnWave() {
-		TurnNotifier.get().notifyInSeconds(MIST_SPAWN_INTERVAL_SECONDS, currentTurn -> {
-			if (!isMistActive()) {
-				return;
-			}
-			spawnCreatures(ELITE_CREATURES, ELITE_SPAWN_COUNT);
-			spawnCreatures(BOSS_CREATURES, BOSS_SPAWN_COUNT);
-			scheduleMistSpawnWave();
-		});
-	}
-
-	private boolean isMistActive() {
-		synchronized (lock) {
-			return mistActive;
-		}
 	}
 
 	private void restoreWeather() {
