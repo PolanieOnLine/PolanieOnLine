@@ -16,7 +16,6 @@ import games.stendhal.server.core.events.LogoutNotifier;
 import games.stendhal.server.core.events.TurnNotifier;
 import games.stendhal.server.core.rp.StendhalQuestSystem;
 import games.stendhal.server.core.rp.achievement.AchievementNotifier;
-import games.stendhal.server.core.rp.DragonMistEventManager;
 import games.stendhal.server.core.rp.group.GroupManager;
 import games.stendhal.server.core.rp.pvp.PlayerVsPlayerChallengeManager;
 import games.stendhal.server.core.rule.EntityManager;
@@ -55,7 +54,6 @@ public class SingletonRepository {
 	private static Jail jailInstance;
 	private static GroupManager groupManager;
 	private static PlayerVsPlayerChallengeManager challengeManager;
-	private static DragonMistEventManager dragonMistEventManager;
 
 	/**
 	 * Singleton access method.
@@ -260,16 +258,6 @@ public class SingletonRepository {
 	}
 
 	/**
-	 * @return the DragonMistEventManager instance
-	 */
-	public static DragonMistEventManager getDragonMistEventManager() {
-		if (dragonMistEventManager == null) {
-			dragonMistEventManager = DragonMistEventManager.get();
-		}
-		return dragonMistEventManager;
-	}
-
-	/**
 	 * Sets a new EntityManager
 	 * @param entityManager
 	 */
@@ -297,3 +285,4 @@ public class SingletonRepository {
 		return CloneManager.get();
 	}
 }
+
