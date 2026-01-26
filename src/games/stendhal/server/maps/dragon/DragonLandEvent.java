@@ -22,17 +22,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.common.Rand;
 import games.stendhal.common.NotificationType;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.engine.ZoneAttributes;
+import games.stendhal.server.core.pathfinder.Node;
+import games.stendhal.server.core.pathfinder.Path;
+import games.stendhal.server.core.rp.StendhalRPAction;
 import games.stendhal.server.core.rp.WeatherUpdater;
 import games.stendhal.server.entity.creature.CircumstancesOfDeath;
+import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.mapstuff.WeatherEntity;
 import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
 import games.stendhal.server.util.Observable;
@@ -91,7 +98,44 @@ public class DragonLandEvent {
 			"0_dragon_land_s"
 	);
 	private static final DragonDeathObserver DRAGON_DEATH_OBSERVER = new DragonDeathObserver();
+	private static final EventDragonObserver EVENT_DRAGON_OBSERVER = new EventDragonObserver();
+	private static final List<Creature> EVENT_DRAGONS = Collections.synchronizedList(new ArrayList<>());
 	private static final Map<String, Pair<String, Boolean>> STORED_WEATHER = new HashMap<>();
+	private static final int SPAWN_ATTEMPTS_PER_CREATURE = 20;
+	private static final List<DragonWave> DRAGON_WAVES = Arrays.asList(
+			new DragonWave(30, Arrays.asList(
+					new DragonSpawn("zgniły szkielet smoka", 6),
+					new DragonSpawn("pustynny smok", 4)
+			)),
+			new DragonWave(45, Arrays.asList(
+					new DragonSpawn("lodowy smok", 4),
+					new DragonSpawn("smok arktyczny", 3)
+			)),
+			new DragonWave(60, Arrays.asList(
+					new DragonSpawn("zielone smoczysko", 3),
+					new DragonSpawn("niebieskie smoczysko", 3)
+			)),
+			new DragonWave(75, Arrays.asList(
+					new DragonSpawn("czerwone smoczysko", 3),
+					new DragonSpawn("czarne smoczysko", 2)
+			)),
+			new DragonWave(90, Arrays.asList(
+					new DragonSpawn("latający czarny smok", 2),
+					new DragonSpawn("latający złoty smok", 2)
+			)),
+			new DragonWave(105, Arrays.asList(
+					new DragonSpawn("dwugłowy czarny smok", 2),
+					new DragonSpawn("dwugłowy czerwony smok", 2)
+			)),
+			new DragonWave(120, Arrays.asList(
+					new DragonSpawn("dwugłowy złoty smok", 2),
+					new DragonSpawn("dwugłowy zielony smok", 2),
+					new DragonSpawn("dwugłowy lodowy smok", 2)
+			)),
+			new DragonWave(150, Arrays.asList(
+					new DragonSpawn("Smok Wawelski", 1)
+			))
+	);
 
 	private static volatile LocalTime scheduledTime;
 
@@ -141,6 +185,7 @@ public class DragonLandEvent {
 				"Smocza kraina budzi się do życia! Rozpoczyna się wydarzenie."
 		);
 		forceFoggyWeather();
+		scheduleWaves();
 		int seconds = (int) EVENT_DURATION.getSeconds();
 		SingletonRepository.getTurnNotifier().notifyInSeconds(seconds, currentTurn -> endEvent());
 	}
@@ -151,6 +196,7 @@ public class DragonLandEvent {
 		}
 		resetKillCounter("event ended");
 		LOGGER.info("Dragon Land event ended.");
+		removeEventDragons();
 		SingletonRepository.getRuleProcessor().tellAllPlayers(
 				NotificationType.PRIVMSG,
 				"Smocza kraina uspokaja się. Wydarzenie dobiegło końca."
@@ -198,8 +244,8 @@ public class DragonLandEvent {
 				continue;
 			}
 			final String currentWeather = attributes.get("weather");
-			STORED_WEATHER.put(zoneName, Pair.of(currentWeather, weatherEntity.isThundering()));
-			updater.updateAndNotify(zone, Pair.of("fog", Boolean.FALSE));
+			STORED_WEATHER.put(zoneName, new Pair<>(currentWeather, weatherEntity.isThundering()));
+			updater.updateAndNotify(zone, new Pair<>("fog", Boolean.FALSE));
 		}
 	}
 
@@ -224,12 +270,127 @@ public class DragonLandEvent {
 		STORED_WEATHER.clear();
 	}
 
+	private static void scheduleWaves() {
+		int delaySeconds = 0;
+		for (DragonWave wave : DRAGON_WAVES) {
+			delaySeconds += wave.intervalSeconds;
+			final int scheduledDelay = delaySeconds;
+			SingletonRepository.getTurnNotifier().notifyInSeconds(
+					scheduledDelay,
+					currentTurn -> summonWave(wave)
+			);
+		}
+	}
+
+	private static void summonWave(final DragonWave wave) {
+		if (!EVENT_ACTIVE.get()) {
+			return;
+		}
+		for (DragonSpawn spawn : wave.spawns) {
+			summonCreatures(spawn.creatureName, spawn.count);
+		}
+	}
+
+	private static void summonCreatures(final String creatureName, final int count) {
+		for (int i = 0; i < count; i++) {
+			final Creature template = SingletonRepository.getEntityManager().getCreature(creatureName);
+			if (template == null) {
+				LOGGER.warn("Dragon Land event missing creature template: " + creatureName + ".");
+				continue;
+			}
+			final Creature creature = new Creature(template.getNewInstance());
+			creature.registerObjectsForNotification(EVENT_DRAGON_OBSERVER);
+			if (placeCreatureInRandomSafeSpot(creature)) {
+				EVENT_DRAGONS.add(creature);
+			}
+		}
+	}
+
+	private static boolean placeCreatureInRandomSafeSpot(final Creature creature) {
+		for (int attempt = 0; attempt < SPAWN_ATTEMPTS_PER_CREATURE; attempt++) {
+			final String zoneName = DRAGON_LAND_ZONES.get(Rand.rand(DRAGON_LAND_ZONES.size()));
+			final StendhalRPZone zone = SingletonRepository.getRPWorld().getZone(zoneName);
+			if (zone == null) {
+				LOGGER.warn("Dragon Land zone not found for spawn: " + zoneName + ".");
+				continue;
+			}
+			final int x = Rand.rand(zone.getWidth());
+			final int y = Rand.rand(zone.getHeight());
+			if (zone.collides(creature, x, y)) {
+				continue;
+			}
+			if (zone.getName().startsWith("0")) {
+				final List<Node> path = Path.searchPath(
+						zone,
+						x,
+						y,
+						zone.getWidth() / 2,
+						zone.getHeight() / 2,
+						(64 + 64) * 2
+				);
+				if (path == null || path.isEmpty()) {
+					continue;
+				}
+			}
+			if (StendhalRPAction.placeat(zone, creature, x, y)) {
+				return true;
+			}
+		}
+		LOGGER.debug("Dragon Land spawn failed after attempts for " + creature.getName() + ".");
+		return false;
+	}
+
+	private static void removeEventDragons() {
+		synchronized (EVENT_DRAGONS) {
+			for (Creature creature : EVENT_DRAGONS) {
+				if (creature == null || creature.getZone() == null) {
+					continue;
+				}
+				creature.stopAttack();
+				creature.clearDropItemList();
+				creature.getZone().remove(creature);
+			}
+			EVENT_DRAGONS.clear();
+		}
+	}
+
 	private static class DragonDeathObserver implements Observer {
 		@Override
 		public void update(Observable obj, Object arg) {
 			if (arg instanceof CircumstancesOfDeath) {
 				recordDragonDeath((CircumstancesOfDeath) arg);
 			}
+		}
+	}
+
+	private static class EventDragonObserver implements Observer {
+		@Override
+		public void update(Observable obj, Object arg) {
+			if (!(arg instanceof CircumstancesOfDeath)) {
+				return;
+			}
+			final CircumstancesOfDeath circs = (CircumstancesOfDeath) arg;
+			EVENT_DRAGONS.remove(circs.getVictim());
+		}
+	}
+
+	private static class DragonSpawn {
+		private final String creatureName;
+		private final int count;
+
+		private DragonSpawn(final String creatureName, final int count) {
+			this.creatureName = creatureName;
+			this.count = count;
+		}
+	}
+
+	private static class DragonWave {
+		private final int intervalSeconds;
+		private final List<DragonSpawn> spawns;
+
+		private DragonWave(final int intervalSeconds, final List<DragonSpawn> spawns) {
+			this.intervalSeconds = intervalSeconds;
+			this.spawns = spawns;
 		}
 	}
 }
