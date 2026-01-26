@@ -102,8 +102,6 @@ public final class AttackPainter {
 
 	/** Frame counter for the attack. */
 	private int frame;
-	/** Flag for reversing the slash animation. */
-	private boolean reverseSlash;
 
 	/** Nature of the attack. */
 	private final Nature nature;
@@ -438,8 +436,7 @@ public final class AttackPainter {
 		if (spriteSet == null) {
 			return;
 		}
-		int spriteIndex = reverseSlash ? NUM_ATTACK_FRAMES - 1 - frame : frame;
-		Sprite sprite = spriteSet[spriteIndex];
+		Sprite sprite = spriteSet[frame];
 		int spriteWidth = sprite.getWidth();
 		int spriteHeight = sprite.getHeight();
 		int sx;
@@ -568,16 +565,6 @@ public final class AttackPainter {
 		}
 
 		frame = 0;
-	}
-
-	/**
-	 * Set whether to reverse the slash animation.
-	 *
-	 * @param reverse <code>true</code> to reverse the slash animation,
-	 * 	<code>false</code> for normal
-	 */
-	public void setReverseSlash(boolean reverse) {
-		this.reverseSlash = reverse;
 	}
 
 	/**
