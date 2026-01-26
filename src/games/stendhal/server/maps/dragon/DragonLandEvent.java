@@ -119,14 +119,14 @@ public class DragonLandEvent {
 					new DragonSpawn("czerwone smoczysko", 3),
 					new DragonSpawn("czarne smoczysko", 2)
 			)),
-			new DragonWave(105, Arrays.asList(
-					new DragonSpawn("dwugłowy czarny smok", 2),
-					new DragonSpawn("dwugłowy czerwony smok", 2)
-			)),
-			new DragonWave(120, Arrays.asList(
+			new DragonWave(90, Arrays.asList(
 					new DragonSpawn("dwugłowy złoty smok", 2),
 					new DragonSpawn("dwugłowy zielony smok", 2),
 					new DragonSpawn("dwugłowy lodowy smok", 2)
+			)),
+			new DragonWave(120, Arrays.asList(
+					new DragonSpawn("dwugłowy czarny smok", 2),
+					new DragonSpawn("dwugłowy czerwony smok", 2)
 			)),
 			new DragonWave(135, Arrays.asList(
 					new DragonSpawn("latający czarny smok", 1),
@@ -299,12 +299,15 @@ public class DragonLandEvent {
 		if (!EVENT_ACTIVE.get()) {
 			return;
 		}
+		int zoneIndex = 0;
 		for (DragonSpawn spawn : wave.spawns) {
-			summonCreatures(spawn.creatureName, spawn.count);
+			zoneIndex = summonCreatures(spawn.creatureName, spawn.count, zoneIndex);
 		}
 	}
 
-	private static void summonCreatures(final String creatureName, final int count) {
+	private static int summonCreatures(final String creatureName, final int count, final int startZoneIndex) {
+		final int zoneCount = DRAGON_LAND_ZONES.size();
+		int zoneIndex = startZoneIndex;
 		for (int i = 0; i < count; i++) {
 			final Creature template = SingletonRepository.getEntityManager().getCreature(creatureName);
 			if (template == null) {
@@ -313,40 +316,54 @@ public class DragonLandEvent {
 			}
 			final Creature creature = new Creature(template.getNewInstance());
 			creature.registerObjectsForNotification(EVENT_DRAGON_OBSERVER);
-			if (placeCreatureInRandomSafeSpot(creature)) {
+			final int preferredZoneIndex = zoneCount == 0 ? 0 : (zoneIndex % zoneCount);
+			if (placeCreatureInRandomSafeSpot(creature, preferredZoneIndex)) {
 				EVENT_DRAGONS.add(creature);
 			}
+			zoneIndex++;
 		}
+		return zoneIndex;
 	}
 
-	private static boolean placeCreatureInRandomSafeSpot(final Creature creature) {
-		for (int attempt = 0; attempt < SPAWN_ATTEMPTS_PER_CREATURE; attempt++) {
-			final String zoneName = DRAGON_LAND_ZONES.get(Rand.rand(DRAGON_LAND_ZONES.size()));
+	private static boolean placeCreatureInRandomSafeSpot(final Creature creature, final int startZoneIndex) {
+		final int zoneCount = DRAGON_LAND_ZONES.size();
+		if (zoneCount == 0) {
+			LOGGER.warn("Dragon Land zones list is empty; cannot spawn " + creature.getName() + ".");
+			return false;
+		}
+		int attemptsRemaining = SPAWN_ATTEMPTS_PER_CREATURE;
+		final int attemptsPerZone = Math.max(1, attemptsRemaining / zoneCount);
+		for (int zoneOffset = 0; zoneOffset < zoneCount; zoneOffset++) {
+			final int zoneAttempts = zoneOffset == zoneCount - 1 ? attemptsRemaining : attemptsPerZone;
+			attemptsRemaining -= zoneAttempts;
+			final String zoneName = DRAGON_LAND_ZONES.get((startZoneIndex + zoneOffset) % zoneCount);
 			final StendhalRPZone zone = SingletonRepository.getRPWorld().getZone(zoneName);
 			if (zone == null) {
 				LOGGER.warn("Dragon Land zone not found for spawn: " + zoneName + ".");
 				continue;
 			}
-			final int x = Rand.rand(zone.getWidth());
-			final int y = Rand.rand(zone.getHeight());
-			if (zone.collides(creature, x, y)) {
-				continue;
-			}
-			if (zone.getName().startsWith("0")) {
-				final List<Node> path = Path.searchPath(
-						zone,
-						x,
-						y,
-						zone.getWidth() / 2,
-						zone.getHeight() / 2,
-						(64 + 64) * 2
-				);
-				if (path == null || path.isEmpty()) {
+			for (int attempt = 0; attempt < zoneAttempts; attempt++) {
+				final int x = Rand.rand(zone.getWidth());
+				final int y = Rand.rand(zone.getHeight());
+				if (zone.collides(creature, x, y)) {
 					continue;
 				}
-			}
-			if (StendhalRPAction.placeat(zone, creature, x, y)) {
-				return true;
+				if (zone.getName().startsWith("0")) {
+					final List<Node> path = Path.searchPath(
+							zone,
+							x,
+							y,
+							zone.getWidth() / 2,
+							zone.getHeight() / 2,
+							(64 + 64) * 2
+					);
+					if (path == null || path.isEmpty()) {
+						continue;
+					}
+				}
+				if (StendhalRPAction.placeat(zone, creature, x, y)) {
+					return true;
+				}
 			}
 		}
 		LOGGER.debug("Dragon Land spawn failed after attempts for " + creature.getName() + ".");
