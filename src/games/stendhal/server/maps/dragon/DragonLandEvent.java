@@ -1,5 +1,5 @@
 /***************************************************************************
- *                    Copyright © 2024 - PolanieOnLine                    *
+ *                    Copyright © 2026 - PolanieOnLine                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -15,6 +15,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -50,6 +51,7 @@ public class DragonLandEvent {
 	private static final Logger LOGGER = Logger.getLogger(DragonLandEvent.class);
 
 	private static final Duration EVENT_DURATION = Duration.ofMinutes(45);
+	private static final int GUARANTEED_EVENT_INTERVAL_DAYS = 2;
 	private static final AtomicBoolean SCHEDULED = new AtomicBoolean(false);
 	private static final AtomicBoolean EVENT_ACTIVE = new AtomicBoolean(false);
 	private static final AtomicInteger DRAGON_KILL_COUNT = new AtomicInteger(0);
@@ -144,6 +146,7 @@ public class DragonLandEvent {
 	);
 
 	private static volatile LocalTime scheduledTime;
+	private static volatile LocalDate lastGuaranteedStartDate;
 
 	public static void registerZoneObserver(final StendhalRPZone zone) {
 		Objects.requireNonNull(zone, "zone");
@@ -158,25 +161,49 @@ public class DragonLandEvent {
 		}
 	}
 
-	public static void scheduleDailyAt(LocalTime time) {
+	public static void scheduleEveryTwoDaysAt(LocalTime time) {
 		Objects.requireNonNull(time, "time");
 		if (!SCHEDULED.compareAndSet(false, true)) {
 			LOGGER.debug("Dragon Land event already scheduled; skipping duplicate schedule.");
 			return;
 		}
 		scheduledTime = time;
-		scheduleNextRun(time);
+		scheduleNextGuaranteedCheck();
 	}
 
-	private static void scheduleNextRun(LocalTime time) {
+	private static void scheduleNextGuaranteedCheck() {
 		LocalDateTime now = LocalDateTime.now();
-		LocalDateTime startTime = LocalDate.now().atTime(time);
-		if (startTime.isBefore(now)) {
-			startTime = startTime.plusDays(1);
+		LocalDateTime nextCheckTime = nextOccurrence(scheduledTime, now);
+		int waitSec = (int) Duration.between(now, nextCheckTime).getSeconds();
+		LOGGER.info("Dragon Land guaranteed event check scheduled in " + waitSec + " seconds at " + nextCheckTime + ".");
+		SingletonRepository.getTurnNotifier().notifyInSeconds(waitSec, currentTurn -> attemptGuaranteedStart());
+	}
+
+	private static LocalDateTime nextOccurrence(final LocalTime time, final LocalDateTime reference) {
+		LocalDateTime occurrence = reference.toLocalDate().atTime(time);
+		if (occurrence.isBefore(reference)) {
+			occurrence = occurrence.plusDays(1);
 		}
-		int waitSec = (int) Duration.between(now, startTime).getSeconds();
-		LOGGER.info("Dragon Land event scheduled in " + waitSec + " seconds at " + startTime + ".");
-		SingletonRepository.getTurnNotifier().notifyInSeconds(waitSec, currentTurn -> startEvent());
+		return occurrence;
+	}
+
+	private static void attemptGuaranteedStart() {
+		if (EVENT_ACTIVE.get()) {
+			LOGGER.info("Dragon Land guaranteed event skipped; event already active.");
+			scheduleNextGuaranteedCheck();
+			return;
+		}
+		LocalDate today = LocalDate.now();
+		if (lastGuaranteedStartDate != null) {
+			long daysSince = ChronoUnit.DAYS.between(lastGuaranteedStartDate, today);
+			if (daysSince < GUARANTEED_EVENT_INTERVAL_DAYS) {
+				LOGGER.info("Dragon Land guaranteed event deferred; last start was " + lastGuaranteedStartDate + ".");
+				scheduleNextGuaranteedCheck();
+				return;
+			}
+		}
+		LOGGER.info("Dragon Land guaranteed event starting at " + LocalDateTime.now() + ".");
+		startGuaranteedEvent();
 	}
 
 	private static void startEvent() {
@@ -184,6 +211,17 @@ public class DragonLandEvent {
 			LOGGER.warn("Dragon Land event already active; skipping duplicate start.");
 			return;
 		}
+		startEventInternal();
+	}
+
+	private static void startGuaranteedEvent() {
+		if (!EVENT_ACTIVE.compareAndSet(false, true)) {
+			LOGGER.warn("Dragon Land guaranteed event already active; skipping guaranteed start.");
+			scheduleNextGuaranteedCheck();
+			return;
+		}
+		lastGuaranteedStartDate = LocalDate.now();
+		LOGGER.info("Dragon Land guaranteed event start recorded for " + lastGuaranteedStartDate + ".");
 		startEventInternal();
 	}
 
@@ -221,7 +259,7 @@ public class DragonLandEvent {
 				"Smocza kraina uspokaja się. Wydarzenie dobiegło końca."
 		);
 		restoreWeather();
-		scheduleNextRun(scheduledTime);
+		scheduleNextGuaranteedCheck();
 	}
 
 	private static void resetKillCounter(final String reason) {

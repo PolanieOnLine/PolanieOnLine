@@ -1,5 +1,5 @@
 /***************************************************************************
- *                    Copyright © 2024 - PolanieOnLine                    *
+ *                    Copyright © 2026 - PolanieOnLine                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -22,7 +22,7 @@ public class DragonLandEventScheduler implements ZoneConfigurator {
 
 	@Override
 	public void configureZone(StendhalRPZone zone, Map<String, String> attributes) {
-		DragonLandEvent.scheduleDailyAt(EVENT_START_TIME);
+		DragonLandEvent.scheduleEveryTwoDaysAt(EVENT_START_TIME);
 		DragonLandEvent.registerZoneObserver(zone);
 	}
 }
