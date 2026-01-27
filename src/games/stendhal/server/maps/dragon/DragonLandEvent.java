@@ -35,6 +35,7 @@ import games.stendhal.common.NotificationType;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.engine.ZoneAttributes;
+import games.stendhal.server.core.events.TurnListener;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.core.pathfinder.Path;
 import games.stendhal.server.core.rp.StendhalRPAction;
@@ -54,8 +55,10 @@ public class DragonLandEvent {
 	private static final int GUARANTEED_EVENT_INTERVAL_DAYS = 2;
 	private static final AtomicBoolean SCHEDULED = new AtomicBoolean(false);
 	private static final AtomicBoolean EVENT_ACTIVE = new AtomicBoolean(false);
+	private static final AtomicBoolean WAWEL_ANNOUNCED = new AtomicBoolean(false);
 	private static final AtomicInteger DRAGON_KILL_COUNT = new AtomicInteger(0);
-	private static final int DRAGON_KILL_THRESHOLD = 25;
+	private static final int DRAGON_KILL_THRESHOLD = 500;
+	private static final int AMBIENT_ANNOUNCEMENT_INTERVAL_SECONDS = 600;
 	private static final List<String> DRAGON_TYPES = Arrays.asList(
 			"dwugłowy czarny smok",
 			"dwugłowy lodowy smok",
@@ -104,6 +107,18 @@ public class DragonLandEvent {
 	private static final List<Creature> EVENT_DRAGONS = Collections.synchronizedList(new ArrayList<>());
 	private static final Map<String, Pair<String, Boolean>> STORED_WEATHER = new HashMap<>();
 	private static final Map<String, String> STORED_WEATHER_LOCK = new HashMap<>();
+	private static final List<String> AMBIENT_ANNOUNCEMENTS = Arrays.asList(
+			"Niebo przeszywa skrzek smoków - smocze stado krąży nad krainą.",
+			"Z oddali dobiega trzepot skrzydeł i syk ognia - smoki nie odpuszczają.",
+			"Smocza kraina drży pod ciężarem bestii, które krążą nad ziemią."
+	);
+	private static final TurnListener AMBIENT_ANNOUNCER = new TurnListener() {
+		@Override
+		public void onTurnReached(final int currentTurn) {
+			sendAmbientAnnouncement();
+			scheduleAmbientAnnouncement();
+		}
+	};
 	private static final int SPAWN_ATTEMPTS_PER_CREATURE = 20;
 	private static final List<DragonWave> DRAGON_WAVES = Arrays.asList(
 			new DragonWave(30, Arrays.asList(
@@ -235,6 +250,7 @@ public class DragonLandEvent {
 	}
 
 	private static void startEventInternal() {
+		WAWEL_ANNOUNCED.set(false);
 		resetKillCounter("event started");
 		LOGGER.info("Dragon Land event started.");
 		SingletonRepository.getRuleProcessor().tellAllPlayers(
@@ -242,6 +258,7 @@ public class DragonLandEvent {
 				"Smocza kraina budzi się do życia! Rozpoczyna się wydarzenie."
 		);
 		forceFoggyWeather();
+		scheduleAmbientAnnouncement();
 		scheduleWaves();
 		int seconds = (int) EVENT_DURATION.getSeconds();
 		SingletonRepository.getTurnNotifier().notifyInSeconds(seconds, currentTurn -> endEvent());
@@ -254,6 +271,7 @@ public class DragonLandEvent {
 		resetKillCounter("event ended");
 		LOGGER.info("Dragon Land event ended.");
 		removeEventDragons();
+		SingletonRepository.getTurnNotifier().dontNotify(AMBIENT_ANNOUNCER);
 		SingletonRepository.getRuleProcessor().tellAllPlayers(
 				NotificationType.PRIVMSG,
 				"Smocza kraina uspokaja się. Wydarzenie dobiegło końca."
@@ -368,6 +386,9 @@ public class DragonLandEvent {
 			return;
 		}
 		for (DragonSpawn spawn : wave.spawns) {
+			if ("Smok Wawelski".equals(spawn.creatureName)) {
+				announceWawelSpawn();
+			}
 			summonCreatures(spawn.creatureName, spawn.count);
 		}
 	}
@@ -429,6 +450,37 @@ public class DragonLandEvent {
 		}
 		LOGGER.debug("Dragon Land spawn failed after attempts for " + creature.getName() + ".");
 		return false;
+	}
+
+	private static void scheduleAmbientAnnouncement() {
+		if (!EVENT_ACTIVE.get()) {
+			return;
+		}
+		SingletonRepository.getTurnNotifier().notifyInSeconds(
+				AMBIENT_ANNOUNCEMENT_INTERVAL_SECONDS,
+				AMBIENT_ANNOUNCER
+		);
+	}
+
+	private static void sendAmbientAnnouncement() {
+		if (!EVENT_ACTIVE.get()) {
+			return;
+		}
+		final String message = AMBIENT_ANNOUNCEMENTS.get(Rand.rand(AMBIENT_ANNOUNCEMENTS.size()));
+		SingletonRepository.getRuleProcessor().tellAllPlayers(NotificationType.PRIVMSG, message);
+	}
+
+	private static void announceWawelSpawn() {
+		if (!EVENT_ACTIVE.get()) {
+			return;
+		}
+		if (!WAWEL_ANNOUNCED.compareAndSet(false, true)) {
+			return;
+		}
+		SingletonRepository.getRuleProcessor().tellAllPlayers(
+				NotificationType.PRIVMSG,
+				"W oddali słychać ryk… Smok Wawelski pojawił się w Smoczej Krainie!"
+		);
 	}
 
 	private static int[] findNearestPassableCenter(final StendhalRPZone zone, final Creature creature) {
