@@ -101,8 +101,7 @@ public class DragonLandEvent {
 	private static final EventDragonObserver EVENT_DRAGON_OBSERVER = new EventDragonObserver();
 	private static final List<Creature> EVENT_DRAGONS = Collections.synchronizedList(new ArrayList<>());
 	private static final Map<String, Pair<String, Boolean>> STORED_WEATHER = new HashMap<>();
-	private static final int FOG_REFRESH_INTERVAL_SECONDS = 60;
-	private static final AtomicInteger FOG_REFRESH_TOKEN = new AtomicInteger(0);
+	private static final Map<String, String> STORED_WEATHER_LOCK = new HashMap<>();
 	private static final int SPAWN_ATTEMPTS_PER_CREATURE = 20;
 	private static final List<DragonWave> DRAGON_WAVES = Arrays.asList(
 			new DragonWave(30, Arrays.asList(
@@ -214,7 +213,6 @@ public class DragonLandEvent {
 		if (!EVENT_ACTIVE.compareAndSet(true, false)) {
 			return;
 		}
-		stopFogRefresh();
 		resetKillCounter("event ended");
 		LOGGER.info("Dragon Land event ended.");
 		removeEventDragons();
@@ -251,8 +249,7 @@ public class DragonLandEvent {
 
 	private static void forceFoggyWeather() {
 		STORED_WEATHER.clear();
-		final WeatherUpdater updater = WeatherUpdater.get();
-		final int refreshToken = FOG_REFRESH_TOKEN.incrementAndGet();
+		STORED_WEATHER_LOCK.clear();
 		for (final String zoneName : DRAGON_LAND_ZONES) {
 			final StendhalRPZone zone = SingletonRepository.getRPWorld().getZone(zoneName);
 			if (zone == null) {
@@ -267,16 +264,16 @@ public class DragonLandEvent {
 			}
 			final String currentWeather = attributes.get("weather");
 			STORED_WEATHER.put(zoneName, new Pair<>(currentWeather, weatherEntity.isThundering()));
-			updater.updateAndNotify(zone, new Pair<>("fog", Boolean.FALSE));
+			STORED_WEATHER_LOCK.put(zoneName, attributes.get(WeatherUpdater.WEATHER_LOCK_ATTRIBUTE));
+			attributes.put(WeatherUpdater.WEATHER_LOCK_ATTRIBUTE, "true");
+			applyWeather(zone, attributes, weatherEntity, "fog", false);
 		}
-		scheduleFogRefresh(refreshToken);
 	}
 
 	private static void restoreWeather() {
 		if (STORED_WEATHER.isEmpty()) {
 			return;
 		}
-		final WeatherUpdater updater = WeatherUpdater.get();
 		for (final Map.Entry<String, Pair<String, Boolean>> entry : STORED_WEATHER.entrySet()) {
 			final String zoneName = entry.getKey();
 			final StendhalRPZone zone = SingletonRepository.getRPWorld().getZone(zoneName);
@@ -284,44 +281,36 @@ public class DragonLandEvent {
 				LOGGER.warn("Dragon Land zone not found for weather restore: " + zoneName + ".");
 				continue;
 			}
-			if (zone.getWeatherEntity() == null) {
+			final ZoneAttributes attributes = zone.getAttributes();
+			final WeatherEntity weatherEntity = zone.getWeatherEntity();
+			if (attributes == null || weatherEntity == null) {
 				LOGGER.warn("Dragon Land zone lacks weather support: " + zoneName + ".");
 				continue;
 			}
-			updater.updateAndNotify(zone, entry.getValue());
+			final String storedLock = STORED_WEATHER_LOCK.get(zoneName);
+			if (storedLock == null) {
+				attributes.remove(WeatherUpdater.WEATHER_LOCK_ATTRIBUTE);
+			} else {
+				attributes.put(WeatherUpdater.WEATHER_LOCK_ATTRIBUTE, storedLock);
+			}
+			applyWeather(zone, attributes, weatherEntity, entry.getValue().first(), entry.getValue().second());
 		}
 		STORED_WEATHER.clear();
+		STORED_WEATHER_LOCK.clear();
 	}
 
-	private static void scheduleFogRefresh(final int refreshToken) {
-		SingletonRepository.getTurnNotifier().notifyInSeconds(
-				FOG_REFRESH_INTERVAL_SECONDS,
-				currentTurn -> refreshFoggyWeather(refreshToken)
-		);
-	}
-
-	private static void refreshFoggyWeather(final int refreshToken) {
-		if (!EVENT_ACTIVE.get() || refreshToken != FOG_REFRESH_TOKEN.get()) {
-			return;
-		}
-		final WeatherUpdater updater = WeatherUpdater.get();
-		for (final String zoneName : DRAGON_LAND_ZONES) {
-			final StendhalRPZone zone = SingletonRepository.getRPWorld().getZone(zoneName);
-			if (zone == null) {
-				LOGGER.warn("Dragon Land zone not found for fog refresh: " + zoneName + ".");
-				continue;
+	private static void applyWeather(final StendhalRPZone zone, final ZoneAttributes attributes,
+			final WeatherEntity weatherEntity, final String weather, final boolean thundering) {
+		weatherEntity.setThunder(thundering);
+		final String oldWeather = attributes.get("weather");
+		if (!Objects.equals(weather, oldWeather)) {
+			if (weather != null) {
+				attributes.put("weather", weather);
+			} else {
+				attributes.remove("weather");
 			}
-			if (zone.getWeatherEntity() == null) {
-				LOGGER.warn("Dragon Land zone lacks weather support for fog refresh: " + zoneName + ".");
-				continue;
-			}
-			updater.updateAndNotify(zone, new Pair<>("fog", Boolean.FALSE));
+			zone.notifyOnlinePlayers();
 		}
-		scheduleFogRefresh(refreshToken);
-	}
-
-	private static void stopFogRefresh() {
-		FOG_REFRESH_TOKEN.incrementAndGet();
 	}
 
 	private static void scheduleWaves() {
