@@ -378,21 +378,20 @@ public class DragonLandEvent {
 			LOGGER.warn("Dragon Land zone not found for spawn: " + zoneName + ".");
 			return false;
 		}
+		final int[] centerAnchor = zone.getName().startsWith("0")
+				? findNearestPassableCenter(zone, creature)
+				: null;
+		if (zone.getName().startsWith("0") && centerAnchor == null) {
+			LOGGER.warn("Dragon Land spawn path anchor not found; skipping path validation for " + zoneName + ".");
+		}
 		for (int attempt = 0; attempt < SPAWN_ATTEMPTS_PER_CREATURE; attempt++) {
 			final int x = Rand.rand(zone.getWidth());
 			final int y = Rand.rand(zone.getHeight());
 			if (zone.collides(creature, x, y)) {
 				continue;
 			}
-			if (zone.getName().startsWith("0")) {
-				final List<Node> path = Path.searchPath(
-						zone,
-						x,
-						y,
-						zone.getWidth() / 2,
-						zone.getHeight() / 2,
-						(64 + 64) * 2
-				);
+			if (centerAnchor != null) {
+				final List<Node> path = Path.searchPath(zone, x, y, centerAnchor[0], centerAnchor[1], (64 + 64) * 2);
 				if (path == null || path.isEmpty()) {
 					continue;
 				}
@@ -403,6 +402,47 @@ public class DragonLandEvent {
 		}
 		LOGGER.debug("Dragon Land spawn failed after attempts for " + creature.getName() + ".");
 		return false;
+	}
+
+	private static int[] findNearestPassableCenter(final StendhalRPZone zone, final Creature creature) {
+		final int centerX = zone.getWidth() / 2;
+		final int centerY = zone.getHeight() / 2;
+		if (!zone.collides(creature, centerX, centerY)) {
+			return new int[] { centerX, centerY };
+		}
+		final int maxRadius = Math.max(zone.getWidth(), zone.getHeight());
+		for (int radius = 1; radius <= maxRadius; radius++) {
+			for (int dx = -radius; dx <= radius; dx++) {
+				int x = centerX + dx;
+				int y = centerY - radius;
+				if (isPassableAt(zone, creature, x, y)) {
+					return new int[] { x, y };
+				}
+				y = centerY + radius;
+				if (isPassableAt(zone, creature, x, y)) {
+					return new int[] { x, y };
+				}
+			}
+			for (int dy = -radius + 1; dy <= radius - 1; dy++) {
+				int y = centerY + dy;
+				int x = centerX - radius;
+				if (isPassableAt(zone, creature, x, y)) {
+					return new int[] { x, y };
+				}
+				x = centerX + radius;
+				if (isPassableAt(zone, creature, x, y)) {
+					return new int[] { x, y };
+				}
+			}
+		}
+		return null;
+	}
+
+	private static boolean isPassableAt(final StendhalRPZone zone, final Creature creature, final int x, final int y) {
+		if (x < 0 || y < 0 || x >= zone.getWidth() || y >= zone.getHeight()) {
+			return false;
+		}
+		return !zone.collides(creature, x, y);
 	}
 
 	private static void removeEventDragons() {
