@@ -18,12 +18,14 @@ import org.apache.log4j.Logger;
 
 import games.stendhal.client.OutfitStore;
 import games.stendhal.client.ZoneInfo;
+import games.stendhal.client.ChatOptions;
 import games.stendhal.client.entity.ActionType;
 import games.stendhal.client.entity.IEntity;
 import games.stendhal.client.entity.NPC;
 import games.stendhal.client.entity.RPEntity;
 import games.stendhal.client.entity.User;
 import games.stendhal.client.gui.OutfitColor;
+import games.stendhal.client.gui.j2DClient;
 import games.stendhal.client.gui.j2d.entity.helpers.HorizontalAlignment;
 import games.stendhal.client.gui.j2d.entity.helpers.VerticalAlignment;
 import games.stendhal.client.gui.styled.cursor.StendhalCursor;
@@ -127,6 +129,7 @@ class NPC2DView<T extends NPC> extends RPEntity2DView<T> {
 	@Override
 	protected void buildActions(final List<String> list) {
 		super.buildActions(list);
+		list.add(0, ActionType.TALK.getRepresentation());
 		// NPC can't be pushed
 		list.remove(ActionType.PUSH.getRepresentation());
 		if (User.isAdmin()) {
@@ -175,6 +178,17 @@ class NPC2DView<T extends NPC> extends RPEntity2DView<T> {
 	@Override
 	public void onAction(final ActionType at) {
 		switch (at) {
+		case TALK:
+			String npcName = getEntity().getName();
+			String npcTitle = getEntity().getTitle();
+			boolean attending = ChatOptions.isAttending(npcName)
+					|| ChatOptions.isAttending(npcTitle);
+			if (attending && !ChatOptions.getOptions().isEmpty()) {
+				j2DClient.get().showChatOptionsDialog();
+			} else {
+				ChatOptions.sendKeyword("hello");
+			}
+			break;
 		case ADMIN_VIEW_NPC_TRANSITIONS:
 			final RPAction action = new RPAction();
 			action.put("type", "script");

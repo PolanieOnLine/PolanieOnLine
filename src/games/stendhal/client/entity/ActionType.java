@@ -32,6 +32,7 @@ public enum ActionType {
 			return fillTargetPath(super.fillTargetInfo(entity), entity);
 		}
 	},
+	TALK("talk", "Porozmawiaj"),
 	READ("look", "Przeczytaj"),
 	LOOK_CLOSELY("use", "Przyjrzyj się dokładnie"),
 	INSPECT("inspect", "Przeszukaj") {
