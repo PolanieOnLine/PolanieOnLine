@@ -1406,6 +1406,80 @@ body.mobile-floating-ui #left-panel-toggle,
 	width: 210px;
 }
 
+.improver-dialog {
+	min-width: 220px;
+	max-width: 360px;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.improver-dialog__header {
+	display: flex;
+	justify-content: space-between;
+	gap: 10px;
+	font-weight: 600;
+}
+
+.improver-dialog__item-level {
+	color: #9fd18b;
+	white-space: nowrap;
+}
+
+.improver-dialog__meta {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.improver-dialog__meta-row {
+	display: flex;
+	justify-content: space-between;
+	gap: 10px;
+}
+
+.improver-dialog__label {
+	opacity: 0.85;
+}
+
+.improver-dialog__resources {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+.improver-dialog__section-title {
+	font-weight: 600;
+}
+
+.improver-dialog__resources-list {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+}
+
+.improver-dialog__resource-row {
+	display: flex;
+	justify-content: space-between;
+	gap: 10px;
+}
+
+.improver-dialog__resource-name {
+	font-weight: 500;
+}
+
+.improver-dialog__resource-amount {
+	font-variant-numeric: tabular-nums;
+}
+
+.improver-dialog__resource--missing {
+	color: #f2a3a3;
+}
+
+.improver-dialog__resource--ok {
+	color: #b8f1b8;
+}
+
 #trade-partner-column {
 	float: left;
 	margin-right: 20px;

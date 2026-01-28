@@ -86,6 +86,8 @@ class EventFactory {
 			event = new ItemLogEvent();
 		} else if (name.equals(Events.ACHIEVEMENT_LOG)) {
 			event = new AchievementLogEvent();
+		} else if (name.equals(Events.IMPROVER_OFFER)) {
+			event = new ImproverOfferEvent();
 		}
 
 		if (event != null) {

@@ -83,6 +83,7 @@ import games.stendhal.server.events.GroupChangeEvent;
 import games.stendhal.server.events.GroupInviteEvent;
 import games.stendhal.server.events.HealedEvent;
 import games.stendhal.server.events.ImageEffectEvent;
+import games.stendhal.server.events.ImproverOfferEvent;
 import games.stendhal.server.events.ItemLogEvent;
 import games.stendhal.server.events.PlayerLoggedOnEvent;
 import games.stendhal.server.events.PlayerLoggedOutEvent;
@@ -324,6 +325,9 @@ public class RPClassGenerator {
 		}
 		if (!RPClass.hasRPClass("show_item_list")) {
 			ShowItemListEvent.generateRPClass();
+		}
+		if (!RPClass.hasRPClass(Events.IMPROVER_OFFER)) {
+			ImproverOfferEvent.generateRPClass();
 		}
 		if (!RPClass.hasRPClass(Events.SOUND)) {
 			SoundEvent.generateRPClass();
