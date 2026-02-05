@@ -692,9 +692,12 @@
 
 			//CI
 		</echo>
-		<property name="ci.build.info" value=""/>
-		<loadfile property="cibuildinfo" srcFile="${ci.build.info}"/>
-		<replace file="node_modules/marauroa/build.js" token="//CI" value="${cibuildinfo}" failonerror="false" quiet="true" />
+		<antcall target="js-prepare-build-ci" />
+	</target>
+
+	<target name="js-prepare-build-ci" if="ci.build.info">
+		<loadfile property="cibuildinfo" srcFile="${ci.build.info}" failonerror="false" quiet="true"/>
+		<replace file="node_modules/marauroa/build.js" token="//CI" value="${cibuildinfo}" />
 	</target>
 
 
