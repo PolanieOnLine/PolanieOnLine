@@ -4,7 +4,7 @@
 
 	<import file="dist.xml" />
 
-	<target name="compile_polanieonlinetools" description="Compile PolanieOnLine build tools.">
+	<target name="compile_tools" description="Compile PolanieOnLine build tools.">
 		<mkdir dir="${build_polanieonlinetools}"/>
 
 		<javac srcdir="${src}" destdir="${build_polanieonlinetools}" source="1.8" target="1.8" debug="${javac.debug}" debuglevel="${javac.debuglevel}" deprecation="${javac.deprecation}" includeantruntime="true">
@@ -27,6 +27,9 @@
 			</classpath>
 		</javac>
 	</target> <!-- compile_polanieonlinetools -->
+
+	<!-- Alias of `compile_tools`. -->
+	<target name="compile_polanieonlinetools" depends="compile_tools" />
 
 	<target name="clean_whitespace" description="Clean whitespace in source and other specified file types." depends="compile_polanieonlinetools">
 		<!-- process main Java source, config, & scripting files -->
