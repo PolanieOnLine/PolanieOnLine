@@ -27,7 +27,6 @@ import { CacheManager } from "./data/CacheManager";
 import { EmojiStore } from "./data/EmojiStore";
 import { AttackButtonController } from "./ui/AttackButtonController";
 import { GroupManager } from "./data/GroupManager";
-import { TileMap } from "./data/TileMap";
 import { OutfitStore } from "./data/OutfitStore";
 import { Paths } from "./data/Paths";
 import { SpriteStore, store } from "./data/SpriteStore";
@@ -144,10 +143,6 @@ export class SingletonRepo {
 
 	static getLoopedSoundSourceManager(): LoopedSoundSourceManager {
 		return LoopedSoundSourceManager.get();
-	}
-
-	static getTileMap(): TileMap {
-		return TileMap.get();
 	}
 
 	static getOutfitStore(): OutfitStore {

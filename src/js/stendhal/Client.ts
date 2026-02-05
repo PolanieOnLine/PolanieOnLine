@@ -40,6 +40,7 @@ import { SingletonFloatingWindow } from "./ui/toolkit/SingletonFloatingWindow";
 import { Chat } from "./util/Chat";
 import { DialogHandler } from "./util/DialogHandler";
 import { Globals } from "./util/Globals";
+import { TileMap } from "data/TileMap";
 
 
 /**
@@ -122,7 +123,6 @@ export class Client {
 		stendhal.data.group = singletons.getGroupManager();
 		stendhal.data.outfit = singletons.getOutfitStore();
 		stendhal.data.sprites = singletons.getSpriteStore();
-		stendhal.data.map = singletons.getTileMap();
 		// online players
 		stendhal.players = [];
 		stendhal.playerInGame = false;
@@ -385,7 +385,7 @@ export class Client {
 					this.onDataMap(entry.data);
 				}
 			}
-			stendhal.data.map.onTransfer(zoneName, data);
+			TileMap.get().onTransfer(zoneName, data);
 		};
 
 		// update user interface on perceptions
@@ -488,6 +488,7 @@ export class Client {
 	 *   Information about map.
 	 */
 	onDataMap(data: any) {
+		let map = TileMap.get();
 		var zoneinfo = {} as { [key: string]: string };
 		var deserializer = Deserializer.fromBase64(data);
 		deserializer.readAttributes(zoneinfo);
@@ -500,8 +501,8 @@ export class Client {
 
 		// parallax background
 		if (stendhal.config.getBoolean("effect.parallax")) {
-			stendhal.data.map.setParallax(zoneinfo["parallax"]);
-			stendhal.data.map.setIgnoredTiles(zoneinfo["parallax_ignore_tiles"]);
+			map.setParallax(zoneinfo["parallax"]);
+			map.setIgnoredTiles(zoneinfo["parallax_ignore_tiles"]);
 		}
 
 		// coloring information

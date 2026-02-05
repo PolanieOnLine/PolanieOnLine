@@ -35,6 +35,7 @@ import { TextBubble } from "../sprite/TextBubble";
 import { Point } from "../util/Point";
 import { Canvas, RenderingContext2D } from "util/Types";
 import { Debug } from "../util/Debug";
+import { TileMap } from "data/TileMap";
 import { UiStateStore } from "./mobile/UiStateStore";
 
 /**
@@ -130,6 +131,7 @@ export class ViewPort {
 	private HSLFilter?: string;
 	private colorMethod = "";
 	private blendMethod = ""; // FIXME: unused
+	private map: TileMap;
 
 	/** Styles to be applied when chat panel is not floating. */
 	private readonly initialStyle: { [prop: string]: string };
@@ -147,7 +149,6 @@ export class ViewPort {
 	/** Singleton instance. */
 	private static instance: ViewPort;
 
-
 	/**
 	 * Retrieves singleton instance.
 	 */
@@ -162,6 +163,7 @@ export class ViewPort {
 	 * Hidden singleton constructor.
 	 */
 	private constructor() {
+		this.map = TileMap.get();
 		const element = this.getElement() as HTMLCanvasElement;
 		this.ctx = element.getContext("2d")!;
 
@@ -206,11 +208,11 @@ export class ViewPort {
 		this.lastFrameTime = now;
 
 		if (marauroa.me && document.visibilityState === "visible") {
-			if (marauroa.currentZoneName === stendhal.data.map.currentZoneName
-				|| stendhal.data.map.currentZoneName === "int_vault"
-				|| stendhal.data.map.currentZoneName === "int_adventure_island"
-				|| stendhal.data.map.currentZoneName === "int_adventure_cave"
-				|| stendhal.data.map.currentZoneName === "tutorial_island") {
+			if (marauroa.currentZoneName === this.map.currentZoneName
+				|| this.map.currentZoneName === "int_vault"
+				|| this.map.currentZoneName === "int_adventure_island"
+				|| this.map.currentZoneName === "int_adventure_cave"
+				|| this.map.currentZoneName === "tutorial_island") {
 				this.drawingError = false;
 
 				this.ctx.globalAlpha = 1.0;
@@ -222,8 +224,8 @@ export class ViewPort {
 
 				// FIXME: filter should not be applied to "blend" layers
 				//this.applyFilter();
-				stendhal.data.map.parallax.draw(this.ctx, this.offsetX, this.offsetY);
-				stendhal.data.map.strategy.render(this.ctx.canvas, this, tileOffsetX, tileOffsetY, this.targetTileWidth, this.targetTileHeight);
+				this.map.parallax.draw(this.ctx, this.offsetX, this.offsetY);
+				this.map.strategy.render(this.ctx.canvas, this, tileOffsetX, tileOffsetY, this.targetTileWidth, this.targetTileHeight);
 
 				this.weatherRenderer.draw(this.ctx);
 				//this.removeFilter();
@@ -767,8 +769,8 @@ export class ViewPort {
 	private computeCameraTargets(canvas: Canvas): { targetX: number; targetY: number } {
 		const halfTileWidth = this.targetTileWidth / 2;
 		const halfTileHeight = this.targetTileHeight / 2;
-		const mapWidth = stendhal.data.map.zoneSizeX * this.targetTileWidth;
-		const mapHeight = stendhal.data.map.zoneSizeY * this.targetTileHeight;
+		const mapWidth = this.map.zoneSizeX * this.targetTileWidth;
+		const mapHeight = this.map.zoneSizeY * this.targetTileHeight;
 		const playerX = marauroa.me["_x"] * this.targetTileWidth + halfTileWidth;
 		const playerY = marauroa.me["_y"] * this.targetTileHeight + halfTileHeight;
 
