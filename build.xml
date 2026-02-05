@@ -1,6 +1,6 @@
 <?xml version='1.0'?>
 
-<project name="polanieonline" default="compile" basedir=".">
+<project name="polanieonline" default="help" basedir=".">
 	<description>
 Project:
     Name: .......... ${game_name}
