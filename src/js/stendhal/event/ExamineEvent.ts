@@ -11,9 +11,9 @@
 
 import { ImageViewerDialog } from "../ui/dialog/ImageViewerDialog";
 import { ui } from "../ui/UI";
-import { RPEvent } from "./RPEvent";
+import { RPEvent } from "marauroa"
 
-declare var marauroa: any
+import { marauroa } from "marauroa"
 
 /**
  * shows an image for a detail view

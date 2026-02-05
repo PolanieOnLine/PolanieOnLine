@@ -13,7 +13,7 @@
 import { marauroa } from "marauroa"
 import { stendhal } from "../stendhal";
 
-import { RPEvent } from "./RPEvent";
+import { RPEvent } from "marauroa"
 import { Chat } from "../util/Chat";
 
 
