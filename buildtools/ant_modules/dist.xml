@@ -808,10 +808,6 @@
 	</target> <!-- webclient_build -->
 
 
-	<!-- Alias of `webclient_build`. -->
-	<target name="build_webclient" depends="webclient_build" />
-
-
 	<!-- Create web client package for release and distribution. -->
 	<target name="dist_webclient_binary" depends="webclient_build">
 		<zip destfile="${buildroot}/polanieonline-webclient-${version}.zip">
