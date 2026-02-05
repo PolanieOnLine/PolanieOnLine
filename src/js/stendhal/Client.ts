@@ -12,7 +12,7 @@
 import { marauroa, Deserializer, RPObject } from "marauroa"
 import { stendhal } from "./stendhal";
 
-import { PerceptionListener } from "./PerceptionListener";
+import { StendhalPerceptionListener } from "./PerceptionListener";
 import { singletons } from "./SingletonRepo";
 
 import { Paths } from "./data/Paths";
@@ -25,9 +25,6 @@ import { Ground } from "./entity/Ground";
 import { ui } from "./ui/UI";
 import { UIComponentEnum } from "./ui/UIComponentEnum";
 
-import { BuddyListComponent } from "./ui/component/BuddyListComponent";
-import { MiniMapComponent } from "./ui/component/MiniMapComponent";
-import { PlayerEquipmentComponent } from "./ui/component/PlayerEquipmentComponent";
 import { ZoneInfoComponent } from "./ui/component/ZoneInfoComponent";
 
 import { ChooseCharacterDialog } from "./ui/dialog/ChooseCharacterDialog";
@@ -67,6 +64,7 @@ export class Client {
 
 	/** Singleton instance. */
 	private static instance: Client;
+	public loaded = false;
 
 
 	/**
@@ -393,31 +391,7 @@ export class Client {
 		// update user interface on perceptions
 		if (document.getElementById("viewport")) {
 			// override perception listener
-			marauroa.perceptionListener = new PerceptionListener(marauroa.perceptionListener);
-			marauroa.perceptionListener.onPerceptionEnd = (_type: Int8Array, _timestamp: number) => {
-				stendhal.zone.sortEntities();
-				(ui.get(UIComponentEnum.MiniMap) as MiniMapComponent).draw();
-				(ui.get(UIComponentEnum.BuddyList) as BuddyListComponent).update();
-				stendhal.ui.equip.update();
-				singletons.getQuickSlotsController().update();
-				(ui.get(UIComponentEnum.PlayerEquipment) as PlayerEquipmentComponent).update();
-				if (!this.worldLoaded) {
-					this.worldLoaded = true;
-					stendhal.playerInGame = true;
-					singletons.getQuickSlotsController().update();
-					// delay visibile change of client a little to allow for initialisation in the background for a smoother experience
-					window.setTimeout(() => {
-						const body = document.getElementById("body")!;
-						body.style.cursor = "auto";
-						document.getElementById("client")!.style.display = "flex";
-						document.getElementById("loginpopup")!.style.display = "none";
-
-						// initialize observer after UI is ready
-						singletons.getUIUpdateObserver().init();
-						ui.onDisplayReady();
-					}, 300);
-				}
-			};
+			marauroa.perceptionListener = new StendhalPerceptionListener();
 		}
 	}
 
