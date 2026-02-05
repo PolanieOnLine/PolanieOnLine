@@ -540,7 +540,7 @@
 	</target> <!-- client_build -->
 
 
-	<target name="compile_polanieonlinetextclient" description="Compile text client.">
+	<target name="compile_textclient" description="Compile text client.">
 		<mkdir dir="${build_polanieonlinetextclient}"/>
 
 		<javac srcdir="${src}" destdir="${build_polanieonlinetextclient}" source="1.8" target="1.8" debug="${javac.debug}" debuglevel="${javac.debuglevel}" deprecation="${javac.deprecation}" includeantruntime="false">
@@ -561,6 +561,8 @@
 		</javac>
 	</target> <!-- compile_polanieonlinetextclient -->
 
+	<!-- Alias of `compile_textclient`. -->
+	<target name="compile_polanieonlinetextclient" depends="compile_textclient" />
 
 	<target name="dist_client_binary" depends="clean_client_data,client_build" description="Create Java client package for release and distribution.">
 		<mkdir dir="${buildroot}/polanieonline-${version}"/>
