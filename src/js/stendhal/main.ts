@@ -23,7 +23,7 @@ require("marauroa/deserializer");
 require("marauroa/build");
 require("./data/sha3");
 
-declare var stendhal: any;
+import { stendhal } from "./stendhal";
 
 
 /**

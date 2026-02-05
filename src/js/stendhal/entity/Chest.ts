@@ -22,7 +22,7 @@ import { Chat } from "../util/Chat";
 import { Paths } from "../data/Paths";
 
 declare var marauroa: any;
-declare var stendhal: any;
+import { stendhal } from "../stendhal";
 const DEFAULT_CHEST_SPRITE = "chest";
 const BANK_SLOT_ATTRIBUTE = "bank_slot";
 const SPRITE_EXTENSION = ".png";

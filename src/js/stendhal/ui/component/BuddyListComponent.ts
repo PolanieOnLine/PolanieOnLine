@@ -18,9 +18,10 @@ import { ActionContextMenu } from "../dialog/ActionContextMenu";
 import { ChatInputComponent } from "./ChatInputComponent";
 import { Paths } from "../../data/Paths";
 import { StringUtil } from "../../util/StringUtil";
+import { stendhal } from "stendhal";
 
 declare let marauroa: any;
-declare let stendhal: any;
+
 
 /**
  * displays the player stats

@@ -9,7 +9,7 @@
  *                                                                         *
  ***************************************************************************/
 
-declare var stendhal: any;
+import { stendhal } from "../stendhal";
 
 import { QuickSlots } from "./interaction/QuickSlots";
 import { SessionManager } from "../util/SessionManager";
