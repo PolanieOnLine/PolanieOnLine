@@ -1,6 +1,6 @@
 import { BASE_TILE_EDGE_TRIM, getTileOverlapMetrics } from "./TileOverlap";
 
-declare var stendhal: any;
+import { stendhal } from "../stendhal";
 
 export interface TileLayerOptions {
 	composite?: GlobalCompositeOperation;

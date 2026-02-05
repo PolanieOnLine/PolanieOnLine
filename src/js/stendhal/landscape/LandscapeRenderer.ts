@@ -13,7 +13,7 @@ import { Canvas, RenderingContext2D } from "util/Types";
 import { CombinedTileset } from "./CombinedTileset";
 import { BASE_TILE_EDGE_TRIM, getTileOverlapMetrics, resolveTileScale } from "./TileOverlap";
 
-declare var stendhal: any;
+import { stendhal } from "../stendhal";
 
 function resolvePixelRatio(): number {
 	if (typeof window !== "undefined" && typeof window.devicePixelRatio === "number") {
