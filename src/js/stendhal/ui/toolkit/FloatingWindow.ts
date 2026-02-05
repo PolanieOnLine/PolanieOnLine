@@ -10,9 +10,8 @@
  ***************************************************************************/
 
 import { stendhal } from "../../stendhal";
-
 import { Component } from "./Component";
-
+import { ui } from "../UI";
 import { Point } from "../../util/Point";
 
 
@@ -208,7 +207,7 @@ export class FloatingWindow extends Component {
 		}
 		const viewportHeight = clientAreaHeight;
 
-		const offset = stendhal.ui.getPageOffset();
+		const offset = ui.getPageOffset();
 
 		const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), max);
 		const maxX = Math.max(0, viewportWidth - dialogArea.width);
@@ -397,4 +396,3 @@ export class FloatingWindow extends Component {
 		this.applyPreferredWidth();
 	}
 }
-
