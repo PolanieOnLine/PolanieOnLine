@@ -13,7 +13,7 @@ import { Entity } from "./Entity";
 import { MenuItem } from "../action/MenuItem";
 import { singletons } from "../SingletonRepo";
 
-var marauroa = (window as any).marauroa = (window as any).marauroa || {};
+import { marauroa } from "marauroa"
 
 const defaultUse = {
 	title: "Użyj",
