@@ -12,6 +12,7 @@
 import { singletons } from "../../../SingletonRepo";
 import { OutfitColorSelector } from "./OutfitColorSelector";
 
+
 export class OutfitPaletteColorSelector extends OutfitColorSelector {
 	private _blockWidth: number;
 	private _blockHeight: number;
