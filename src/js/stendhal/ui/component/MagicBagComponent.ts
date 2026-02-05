@@ -1,6 +1,6 @@
 import { ItemInventoryComponent } from "./ItemInventoryComponent";
 
-declare var marauroa: any;
+var marauroa = (window as any).marauroa = (window as any).marauroa || {};
 
 
 export class MagicBagComponent extends ItemInventoryComponent {
