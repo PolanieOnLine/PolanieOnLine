@@ -22,6 +22,8 @@ import javax.swing.event.PopupMenuListener;
 import games.stendhal.client.StaticGameLayers;
 import games.stendhal.client.entity.ActionType;
 import games.stendhal.client.entity.IEntity;
+import games.stendhal.client.entity.NPC;
+import games.stendhal.client.gui.npc.NPCInteractionMenu;
 import games.stendhal.client.gui.DragLayer;
 import games.stendhal.client.gui.GroundContainer;
 import games.stendhal.client.gui.j2d.RemovableSprite;
@@ -107,45 +109,50 @@ public class DefaultGroundContainerMouseState extends GroundContainerMouseState 
 		final EntityView<?> view = ground.getScreen().getEntityViewAt(location.getX(), location.getY());
 
 		if (view != null) {
-			// ... show context menu (aka command list)
-			final String[] actions = view.getActions();
+			final IEntity entity = view.getEntity();
+			final Point popupPoint = new Point(point.x - MENU_OFFSET, point.y - MENU_OFFSET);
+			if (entity instanceof NPC) {
+				final String[] actions = view.getActions();
+				JPopupMenu menu = new NPCInteractionMenu((NPC) entity, view, actions, ground.getCanvas(), popupPoint);
+				showContextMenu(menu, popupPoint);
+			} else {
+				final String[] actions = view.getActions();
+				if (actions.length > 0) {
+					JPopupMenu menu = new EntityViewCommandList(entity.getType(), actions, view);
+					showContextMenu(menu, popupPoint);
+				}
+			}
+		}
+	}
 
-			if (actions.length > 0) {
-				final IEntity entity = view.getEntity();
+	private void showContextMenu(final JPopupMenu menu, final Point popupPoint) {
+		menu.show(ground.getCanvas(), popupPoint.x, popupPoint.y);
+		contextMenuFlag = true;
+		menu.addPopupMenuListener(new PopupMenuListener() {
+			@Override
+			public void popupMenuCanceled(PopupMenuEvent e) {
+				//ignore
+			}
 
-				JPopupMenu menu = new EntityViewCommandList(entity.getType(), actions, view);
-				menu.show(ground.getCanvas(), point.x - MENU_OFFSET, point.y - MENU_OFFSET);
-				contextMenuFlag = true;
+			@Override
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent arg0) {
 				/*
-				 * Tricky way to detect recent popup menues. We need the
-				 * information to prevent walking when hiding the menu.
+				 *  Hidden. inform onMouseClick; unfortunately this gets
+				 *  called before onMousePressed, so we need to push it back to the event queue
 				 */
-				menu.addPopupMenuListener(new PopupMenuListener() {
+				SwingUtilities.invokeLater(new Runnable() {
 					@Override
-					public void popupMenuCanceled(PopupMenuEvent e) {
-						//ignore
-					}
-					@Override
-					public void popupMenuWillBecomeInvisible(PopupMenuEvent arg0) {
-						/*
-						 *  Hidden. inform onMouseClick; unfortunately this gets
-						 *  called before onMousePressed, so we need to push it
-						 *  pack to the event queue
-						 */
-						SwingUtilities.invokeLater(new Runnable() {
-							@Override
-							public void run() {
-								contextMenuFlag = false;
-							}
-						});
-					}
-					@Override
-					public void popupMenuWillBecomeVisible(PopupMenuEvent arg0) {
-						// ignore
+					public void run() {
+						contextMenuFlag = false;
 					}
 				});
 			}
-		}
+
+			@Override
+			public void popupMenuWillBecomeVisible(PopupMenuEvent arg0) {
+				// ignore
+			}
+		});
 	}
 
 	@Override
