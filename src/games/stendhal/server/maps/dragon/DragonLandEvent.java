@@ -15,7 +15,6 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.log4j.Logger;
 
@@ -26,14 +25,11 @@ import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.core.pathfinder.Path;
 import games.stendhal.server.core.rp.StendhalRPAction;
-import games.stendhal.server.entity.creature.CircumstancesOfDeath;
 import games.stendhal.server.entity.creature.Creature;
-import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
 import games.stendhal.server.maps.event.BaseMapEvent;
+import games.stendhal.server.maps.event.KillThresholdTrigger;
 import games.stendhal.server.maps.event.MapEventConfig;
 import games.stendhal.server.maps.event.MapEventConfigLoader;
-import games.stendhal.server.util.Observable;
-import games.stendhal.server.util.Observer;
 
 public class DragonLandEvent extends BaseMapEvent {
 	private static final Logger LOGGER = Logger.getLogger(DragonLandEvent.class);
@@ -41,12 +37,16 @@ public class DragonLandEvent extends BaseMapEvent {
 	private static final DragonLandEvent INSTANCE = new DragonLandEvent();
 
 	private final AtomicBoolean wawelAnnounced = new AtomicBoolean(false);
-	private final AtomicInteger dragonKillCount = new AtomicInteger(0);
-	private static final DragonDeathObserver DRAGON_DEATH_OBSERVER = new DragonDeathObserver();
+	private final KillThresholdTrigger killThresholdTrigger;
 	private static final int SPAWN_ATTEMPTS_PER_CREATURE = 20;
 
 	private DragonLandEvent() {
 		super(LOGGER, EVENT_CONFIG);
+		killThresholdTrigger = new KillThresholdTrigger(
+				getObserverZones(),
+				circs -> !isEventActive() && getCreatureFilter().contains(circs.getVictim().getName()),
+				getConfig().getTriggerThreshold(),
+				this::startEventFromKills);
 	}
 
 	public static void registerZoneObserver(final StendhalRPZone zone) {
@@ -66,16 +66,7 @@ public class DragonLandEvent extends BaseMapEvent {
 	}
 
 	private void registerZoneObserverInternal(final StendhalRPZone zone) {
-		Objects.requireNonNull(zone, "zone");
-		if (!getObserverZones().contains(zone.getName())) {
-			return;
-		}
-		for (CreatureRespawnPoint respawnPoint : zone.getRespawnPointList()) {
-			if (respawnPoint != null
-					&& getCreatureFilter().contains(respawnPoint.getPrototypeCreature().getName())) {
-				respawnPoint.addObserver(DRAGON_DEATH_OBSERVER);
-			}
-		}
+		killThresholdTrigger.registerZoneObserver(Objects.requireNonNull(zone, "zone"));
 	}
 
 	private boolean forceStartInternal() {
@@ -89,29 +80,6 @@ public class DragonLandEvent extends BaseMapEvent {
 	private void startEventFromKills() {
 		if (!startEvent()) {
 			LOGGER.warn("Dragon Land event already active; skipping duplicate start.");
-		}
-	}
-
-	private void resetKillCounter(final String reason) {
-		int previous = dragonKillCount.getAndSet(0);
-		LOGGER.debug("Dragon Land kill counter reset (" + reason + ") from " + previous + ".");
-	}
-
-	private void recordDragonDeath(final CircumstancesOfDeath circs) {
-		if (isEventActive()) {
-			return;
-		}
-		if (!getObserverZones().contains(circs.getZone().getName())) {
-			return;
-		}
-		final String victimName = circs.getVictim().getName();
-		if (!getCreatureFilter().contains(victimName)) {
-			return;
-		}
-		int current = dragonKillCount.incrementAndGet();
-		if (current >= getConfig().getTriggerThreshold()) {
-			LOGGER.info("Dragon Land kill threshold reached: " + current + ".");
-			startEventFromKills();
 		}
 	}
 
@@ -227,20 +195,10 @@ public class DragonLandEvent extends BaseMapEvent {
 		return !zone.collides(creature, x, y);
 	}
 
-	private static class DragonDeathObserver implements Observer {
-		@Override
-		public void update(Observable obj, Object arg) {
-			if (arg instanceof CircumstancesOfDeath) {
-				INSTANCE.recordDragonDeath((CircumstancesOfDeath) arg);
-			}
-		}
-	}
-
-
 	@Override
 	protected void onStart() {
 		wawelAnnounced.set(false);
-		resetKillCounter("event started");
+		killThresholdTrigger.resetCounter("event started");
 		LOGGER.info("Dragon Land event started.");
 		SingletonRepository.getRuleProcessor().tellAllPlayers(
 				NotificationType.PRIVMSG,
@@ -250,7 +208,7 @@ public class DragonLandEvent extends BaseMapEvent {
 
 	@Override
 	protected void onStop() {
-		resetKillCounter("event ended");
+		killThresholdTrigger.resetCounter("event ended");
 		LOGGER.info("Dragon Land event ended.");
 		removeEventCreatures();
 		stopAnnouncements();
