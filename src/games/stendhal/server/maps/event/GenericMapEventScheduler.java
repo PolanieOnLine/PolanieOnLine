@@ -52,11 +52,22 @@ public class GenericMapEventScheduler implements ZoneConfigurator {
 		}
 
 		if (triggerType.includesGuaranteedSchedule()) {
-			final LocalTime startTime = parseStartTime(attributes.get(START_TIME_PARAMETER), zone, eventId);
+			final LocalTime configStartTime = event.getConfig().getDefaultStartTime();
+			final Integer configIntervalDays = Integer.valueOf(event.getConfig().getDefaultIntervalDays());
+
+			final LocalTime startTime = parseStartTime(
+					attributes.get(START_TIME_PARAMETER),
+					configStartTime,
+					zone,
+					eventId);
 			if (startTime == null) {
 				return;
 			}
-			final Integer intervalDays = parseIntervalDays(attributes.get(INTERVAL_DAYS_PARAMETER), zone, eventId);
+			final Integer intervalDays = parseIntervalDays(
+					attributes.get(INTERVAL_DAYS_PARAMETER),
+					configIntervalDays,
+					zone,
+					eventId);
 			if (intervalDays == null) {
 				return;
 			}
@@ -76,14 +87,25 @@ public class GenericMapEventScheduler implements ZoneConfigurator {
 		return value.trim();
 	}
 
-	private LocalTime parseStartTime(final String value, final StendhalRPZone zone, final String eventId) {
+	private LocalTime parseStartTime(final String value, final LocalTime configuredDefault, final StendhalRPZone zone,
+			final String eventId) {
 		if (value == null || value.trim().isEmpty()) {
+			if (configuredDefault != null) {
+				return configuredDefault;
+			}
 			LOGGER.error("Cannot configure map event scheduler for zone " + zone.getName()
-					+ " and eventId='" + eventId + "': missing required parameter '" + START_TIME_PARAMETER + "'.");
+					+ " and eventId='" + eventId + "': missing parameter '" + START_TIME_PARAMETER
+					+ "' and no default found in MapEventConfig.");
 			return null;
 		}
 		try {
-			return LocalTime.parse(value.trim());
+			final LocalTime xmlValue = LocalTime.parse(value.trim());
+			if (configuredDefault != null && !configuredDefault.equals(xmlValue)) {
+				LOGGER.warn("Map event scheduler for zone " + zone.getName() + " and eventId='" + eventId
+						+ "' uses XML parameter '" + START_TIME_PARAMETER + "=" + xmlValue
+						+ "' instead of MapEventConfig default '" + configuredDefault + "'.");
+			}
+			return xmlValue;
 		} catch (DateTimeParseException e) {
 			LOGGER.error("Cannot configure map event scheduler for zone " + zone.getName()
 					+ " and eventId='" + eventId + "': invalid '" + START_TIME_PARAMETER + "' value '"
@@ -92,11 +114,15 @@ public class GenericMapEventScheduler implements ZoneConfigurator {
 		}
 	}
 
-	private Integer parseIntervalDays(final String value, final StendhalRPZone zone, final String eventId) {
+	private Integer parseIntervalDays(final String value, final Integer configuredDefault, final StendhalRPZone zone,
+			final String eventId) {
 		if (value == null || value.trim().isEmpty()) {
+			if (configuredDefault != null) {
+				return configuredDefault;
+			}
 			LOGGER.error("Cannot configure map event scheduler for zone " + zone.getName()
-					+ " and eventId='" + eventId + "': missing required parameter '" + INTERVAL_DAYS_PARAMETER
-					+ "'.");
+					+ " and eventId='" + eventId + "': missing parameter '" + INTERVAL_DAYS_PARAMETER
+					+ "' and no default found in MapEventConfig.");
 			return null;
 		}
 		try {
@@ -106,6 +132,11 @@ public class GenericMapEventScheduler implements ZoneConfigurator {
 						+ " and eventId='" + eventId + "': '" + INTERVAL_DAYS_PARAMETER
 						+ "' must be greater than zero, got " + parsed + ".");
 				return null;
+			}
+			if (configuredDefault != null && configuredDefault.intValue() != parsed) {
+				LOGGER.warn("Map event scheduler for zone " + zone.getName() + " and eventId='" + eventId
+						+ "' uses XML parameter '" + INTERVAL_DAYS_PARAMETER + "=" + parsed
+						+ "' instead of MapEventConfig default '" + configuredDefault + "'.");
 			}
 			return Integer.valueOf(parsed);
 		} catch (NumberFormatException e) {
