@@ -146,6 +146,8 @@ public final class MapEventConfigLoader {
 						"Z oddali dobiega trzepot skrzydeł i syk ognia - smoki nie odpuszczają.",
 						"Smocza kraina drży pod ciężarem bestii, które krążą nad ziemią."
 				))
+				.startAnnouncement("Smocza kraina budzi się do życia! Rozpoczyna się wydarzenie.")
+				.stopAnnouncement("Smocza kraina uspokaja się. Wydarzenie dobiegło końca.")
 				.announcementIntervalSeconds(600)
 				.weatherLock(new MapEventConfig.WeatherLockConfig("fog", false))
 				.triggerThreshold(500)
@@ -206,6 +208,8 @@ public final class MapEventConfigLoader {
 						"Chmury gęstnieją od blasku archaniołów, a wyspy proszą o wsparcie.",
 						"Szlak między wyspami i chmurami płonie od starcia - nie oddawajcie terenu."
 				))
+				.startAnnouncement("Nad Kikareukin pękły chmury - anielskie zastępy schodzą na wyspy!")
+				.stopAnnouncement("Nad Kikareukin zapadła cisza; chmury i wyspy są na chwilę bezpieczne.")
 				.announcementIntervalSeconds(300)
 				.weatherLock(new MapEventConfig.WeatherLockConfig("fog", false))
 				.triggerThreshold(120)

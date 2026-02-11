@@ -27,6 +27,8 @@ public final class MapEventConfig {
 	private final Set<String> creatureFilter;
 	private final List<BaseMapEvent.EventWave> waves;
 	private final List<String> announcements;
+	private final String startAnnouncement;
+	private final String stopAnnouncement;
 	private final int announcementIntervalSeconds;
 	private final WeatherLockConfig weatherLock;
 	private final int triggerThreshold;
@@ -40,6 +42,8 @@ public final class MapEventConfig {
 		creatureFilter = Collections.unmodifiableSet(new LinkedHashSet<>(builder.creatureFilter));
 		waves = Collections.unmodifiableList(new ArrayList<>(builder.waves));
 		announcements = Collections.unmodifiableList(new ArrayList<>(builder.announcements));
+		startAnnouncement = builder.startAnnouncement;
+		stopAnnouncement = builder.stopAnnouncement;
 		announcementIntervalSeconds = builder.announcementIntervalSeconds;
 		weatherLock = builder.weatherLock;
 		triggerThreshold = builder.triggerThreshold;
@@ -74,6 +78,14 @@ public final class MapEventConfig {
 		return announcements;
 	}
 
+	public String getStartAnnouncement() {
+		return startAnnouncement;
+	}
+
+	public String getStopAnnouncement() {
+		return stopAnnouncement;
+	}
+
 	public int getAnnouncementIntervalSeconds() {
 		return announcementIntervalSeconds;
 	}
@@ -102,6 +114,8 @@ public final class MapEventConfig {
 		private Set<String> creatureFilter = Collections.emptySet();
 		private List<BaseMapEvent.EventWave> waves = Collections.emptyList();
 		private List<String> announcements = Collections.emptyList();
+		private String startAnnouncement;
+		private String stopAnnouncement;
 		private int announcementIntervalSeconds = 600;
 		private WeatherLockConfig weatherLock;
 		private int triggerThreshold;
@@ -141,6 +155,16 @@ public final class MapEventConfig {
 			return this;
 		}
 
+		public Builder startAnnouncement(final String startAnnouncement) {
+			this.startAnnouncement = startAnnouncement;
+			return this;
+		}
+
+		public Builder stopAnnouncement(final String stopAnnouncement) {
+			this.stopAnnouncement = stopAnnouncement;
+			return this;
+		}
+
 		public Builder announcementIntervalSeconds(final int announcementIntervalSeconds) {
 			this.announcementIntervalSeconds = announcementIntervalSeconds;
 			return this;
@@ -167,6 +191,12 @@ public final class MapEventConfig {
 			}
 			if (announcementIntervalSeconds < 0) {
 				throw new IllegalArgumentException("announcementIntervalSeconds must be >= 0");
+			}
+			if (startAnnouncement != null && startAnnouncement.isBlank()) {
+				throw new IllegalArgumentException("startAnnouncement must not be blank");
+			}
+			if (stopAnnouncement != null && stopAnnouncement.isBlank()) {
+				throw new IllegalArgumentException("stopAnnouncement must not be blank");
 			}
 			if (triggerThreshold < 0) {
 				throw new IllegalArgumentException("triggerThreshold must be >= 0");

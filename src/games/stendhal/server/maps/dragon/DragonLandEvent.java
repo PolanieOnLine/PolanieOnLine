@@ -56,16 +56,6 @@ public class DragonLandEvent extends ConfiguredMapEvent {
 	}
 
 	@Override
-	protected String getStartAnnouncementMessage() {
-		return "Smocza kraina budzi się do życia! Rozpoczyna się wydarzenie.";
-	}
-
-	@Override
-	protected String getStopAnnouncementMessage() {
-		return "Smocza kraina uspokaja się. Wydarzenie dobiegło końca.";
-	}
-
-	@Override
 	protected void onStart() {
 		wawelAnnounced.set(false);
 		super.onStart();
