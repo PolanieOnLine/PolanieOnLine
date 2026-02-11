@@ -13,8 +13,6 @@ package games.stendhal.server.maps.event;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
@@ -22,7 +20,6 @@ import org.apache.log4j.Logger;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.maps.dragon.DragonLandEvent;
 
 public class GenericMapEventScheduler implements ZoneConfigurator {
 	private static final Logger LOGGER = Logger.getLogger(GenericMapEventScheduler.class);
@@ -31,8 +28,6 @@ public class GenericMapEventScheduler implements ZoneConfigurator {
 	private static final String START_TIME_PARAMETER = "startTime";
 	private static final String INTERVAL_DAYS_PARAMETER = "intervalDays";
 	private static final String TRIGGER_TYPE_PARAMETER = "triggerType";
-
-	private static final Map<String, MapEventBinding> EVENT_BINDINGS = createEventBindings();
 
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
@@ -43,11 +38,11 @@ public class GenericMapEventScheduler implements ZoneConfigurator {
 			return;
 		}
 
-		final MapEventBinding binding = EVENT_BINDINGS.get(eventId.toLowerCase(Locale.ROOT));
-		if (binding == null) {
+		final ConfiguredMapEvent event = MapEventRegistry.getEvent(eventId);
+		if (event == null) {
 			LOGGER.error("Cannot configure map event scheduler for zone " + zone.getName()
 					+ ": unknown eventId='" + eventId + "'. Available eventIds: "
-					+ EVENT_BINDINGS.keySet() + ".");
+					+ MapEventRegistry.knownEventIds() + ".");
 			return;
 		}
 
@@ -65,31 +60,12 @@ public class GenericMapEventScheduler implements ZoneConfigurator {
 			if (intervalDays == null) {
 				return;
 			}
-			binding.scheduleEveryDaysAt(startTime, intervalDays.intValue());
+			event.scheduleGuaranteedStart(startTime, intervalDays.intValue());
 		}
 
 		if (triggerType.includesObserverTrigger()) {
-			binding.registerZoneObserver(zone);
+			event.registerObserverZone(zone);
 		}
-	}
-
-	private static Map<String, MapEventBinding> createEventBindings() {
-		final Map<String, MapEventBinding> bindings = new HashMap<>();
-		final MapEventBinding dragonBinding = new MapEventBinding() {
-			@Override
-			public void scheduleEveryDaysAt(final LocalTime time, final int intervalDays) {
-				DragonLandEvent.scheduleGuaranteedEveryDaysAt(time, intervalDays);
-			}
-
-			@Override
-			public void registerZoneObserver(final StendhalRPZone zone) {
-				DragonLandEvent.registerZoneObserver(zone);
-			}
-		};
-
-		bindings.put("dragon_land", dragonBinding);
-		bindings.put(MapEventConfigLoader.DRAGON_LAND_DEFAULT, dragonBinding);
-		return Collections.unmodifiableMap(bindings);
 	}
 
 	private static String getRequiredAttribute(final Map<String, String> attributes, final String key) {
@@ -152,12 +128,6 @@ public class GenericMapEventScheduler implements ZoneConfigurator {
 					+ value + "'. Allowed values: guaranteed, observer, both.");
 			return null;
 		}
-	}
-
-	private interface MapEventBinding {
-		void scheduleEveryDaysAt(LocalTime time, int intervalDays);
-
-		void registerZoneObserver(StendhalRPZone zone);
 	}
 
 	private enum TriggerType {
