@@ -10,8 +10,6 @@
 			file="Level 7/kikareukin/clouds.tmx">
 		<configurator class-name="games.stendhal.server.maps.event.GenericMapEventScheduler">
 			<parameter name="eventId">kikareukin_angel_preview</parameter>
-			<parameter name="startTime">20:00</parameter>
-			<parameter name="intervalDays">3</parameter>
 			<parameter name="triggerType">both</parameter>
 		</configurator>
 
@@ -59,8 +57,6 @@
 			file="Level 6/kikareukin/islands.tmx">
 		<configurator class-name="games.stendhal.server.maps.event.GenericMapEventScheduler">
 			<parameter name="eventId">kikareukin_angel_preview</parameter>
-			<parameter name="startTime">20:00</parameter>
-			<parameter name="intervalDays">3</parameter>
 			<parameter name="triggerType">both</parameter>
 		</configurator>
 
