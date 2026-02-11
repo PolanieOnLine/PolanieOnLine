@@ -87,6 +87,10 @@ public final class MapEventRegistry {
 		specializedEvents.put("kikareukin", kikareukinEvent);
 		specializedEvents.put(MapEventConfigLoader.KIKAREUKIN_ANGEL_PREVIEW, kikareukinEvent);
 
+		final ConfiguredMapEvent koscieliskoEvent = new KoscieliskoGiantEscortEvent();
+		specializedEvents.put("koscielisko_giant_escort", koscieliskoEvent);
+		specializedEvents.put(MapEventConfigLoader.KOSCIELISKO_GIANT_ESCORT, koscieliskoEvent);
+
 		return specializedEvents;
 	}
 }

@@ -22,6 +22,7 @@ import java.util.Set;
 public final class MapEventConfigLoader {
 	public static final String DRAGON_LAND_DEFAULT = "dragon_land_default";
 	public static final String KIKAREUKIN_ANGEL_PREVIEW = "kikareukin_angel_preview";
+	public static final String KOSCIELISKO_GIANT_ESCORT = "koscielisko_giant_escort";
 
 	private static final Map<String, MapEventConfig> CONFIGS = createConfigs();
 
@@ -53,7 +54,21 @@ public final class MapEventConfigLoader {
 		final Map<String, MapEventConfig> configs = new LinkedHashMap<>();
 		configs.put(DRAGON_LAND_DEFAULT, createDragonLandDefaultConfig());
 		configs.put(KIKAREUKIN_ANGEL_PREVIEW, createKikareukinPreviewConfig());
+		configs.put(KOSCIELISKO_GIANT_ESCORT, createKoscieliskoGiantEscortConfig());
 		return configs;
+	}
+
+	private static MapEventConfig createKoscieliskoGiantEscortConfig() {
+		return MapEventConfig.builder("Eskorta Wielkoluda")
+				.duration(Duration.ofMinutes(20))
+				.zones(Arrays.asList("0_koscielisko_ne"))
+				.observerZones(Arrays.asList("0_koscielisko_ne"))
+				.startAnnouncement("Rozpoczyna się eskorta Wielkoluda - brońcie go za wszelką cenę!")
+				.stopAnnouncement("Eskorta Wielkoluda została zakończona.")
+				.announcementIntervalSeconds(300)
+				.defaultStartTime("20:00")
+				.defaultIntervalDays(2)
+				.build();
 	}
 
 	private static MapEventConfig createDragonLandDefaultConfig() {
