@@ -193,9 +193,10 @@ public final class MapEventConfigLoader {
 						))
 				))
 				.announcements(Arrays.asList(
-						"Na Kikareukin pojawiły się zastępy aniołów - brońcie wysp i chmur!",
-						"Na 7. poziomie Kikareukin widziano archanioła i archanioła ciemności.",
-						"Na 6. poziomie Kikareukin krążą aniołki, wróżki, anioły i anioły ciemności."
+						"Nad chmurami Kikareukin krążą ciemne skrzydła - trzymajcie linię.",
+						"Na wyspach słychać hymn i szczęk stali; anielskie zastępy schodzą coraz niżej.",
+						"Chmury gęstnieją od blasku archaniołów, a wyspy proszą o wsparcie.",
+						"Szlak między wyspami i chmurami płonie od starcia - nie oddawajcie terenu."
 				))
 				.announcementIntervalSeconds(300)
 				.weatherLock(new MapEventConfig.WeatherLockConfig("fog", false))
