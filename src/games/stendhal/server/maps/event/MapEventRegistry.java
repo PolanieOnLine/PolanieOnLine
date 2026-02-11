@@ -17,8 +17,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.log4j.Logger;
-
 import games.stendhal.server.maps.dragon.DragonLandEvent;
 
 public final class MapEventRegistry {
@@ -46,9 +44,7 @@ public final class MapEventRegistry {
 		events.put("dragon_land", dragonEvent);
 		events.put(MapEventConfigLoader.DRAGON_LAND_DEFAULT, dragonEvent);
 
-		final ConfiguredMapEvent kikareukinEvent = new ConfiguredMapEvent(
-				Logger.getLogger("games.stendhal.server.maps.event.KikareukinMapEvent"),
-				MapEventConfigLoader.load(MapEventConfigLoader.KIKAREUKIN_ANGEL_PREVIEW));
+		final ConfiguredMapEvent kikareukinEvent = new KikareukinAngelEvent();
 		events.put("kikareukin", kikareukinEvent);
 		events.put(MapEventConfigLoader.KIKAREUKIN_ANGEL_PREVIEW, kikareukinEvent);
 
