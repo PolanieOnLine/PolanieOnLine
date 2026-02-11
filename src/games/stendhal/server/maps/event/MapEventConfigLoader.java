@@ -30,11 +30,19 @@ public final class MapEventConfigLoader {
 	}
 
 	public static MapEventConfig load(final String configId) {
+		if (configId == null) {
+			throw new IllegalArgumentException("Map event config id cannot be null.");
+		}
 		final MapEventConfig config = CONFIGS.get(configId);
 		if (config == null) {
-			throw new IllegalArgumentException("Unknown map event config: " + configId);
+			throw new IllegalArgumentException("Unknown map event config: " + configId
+					+ ". Available configIds: " + availableConfigIds() + ".");
 		}
 		return config;
+	}
+
+	public static boolean hasConfigId(final String configId) {
+		return configId != null && CONFIGS.containsKey(configId);
 	}
 
 	public static Set<String> availableConfigIds() {
