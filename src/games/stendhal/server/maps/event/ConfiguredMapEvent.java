@@ -58,10 +58,18 @@ public class ConfiguredMapEvent extends BaseMapEvent {
 	}
 
 	protected String getStartAnnouncementMessage() {
+		final String configuredMessage = getConfig().getStartAnnouncement();
+		if (configuredMessage != null) {
+			return configuredMessage;
+		}
 		return "Rozpoczyna się wydarzenie: " + getEventName() + ".";
 	}
 
 	protected String getStopAnnouncementMessage() {
+		final String configuredMessage = getConfig().getStopAnnouncement();
+		if (configuredMessage != null) {
+			return configuredMessage;
+		}
 		return "Wydarzenie " + getEventName() + " dobiegło końca.";
 	}
 

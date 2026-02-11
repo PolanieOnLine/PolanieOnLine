@@ -19,14 +19,4 @@ public final class KikareukinAngelEvent extends ConfiguredMapEvent {
 	public KikareukinAngelEvent() {
 		super(LOGGER, MapEventConfigLoader.load(MapEventConfigLoader.KIKAREUKIN_ANGEL_PREVIEW));
 	}
-
-	@Override
-	protected String getStartAnnouncementMessage() {
-		return "Nad Kikareukin pękły chmury - anielskie zastępy schodzą na wyspy!";
-	}
-
-	@Override
-	protected String getStopAnnouncementMessage() {
-		return "Nad Kikareukin zapadła cisza; chmury i wyspy są na chwilę bezpieczne.";
-	}
 }
