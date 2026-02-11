@@ -12,6 +12,8 @@
 package games.stendhal.server.maps.event;
 
 import java.time.Duration;
+import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -32,7 +34,8 @@ public final class MapEventConfig {
 	private final int announcementIntervalSeconds;
 	private final WeatherLockConfig weatherLock;
 	private final int triggerThreshold;
-	private final int guaranteedIntervalDays;
+	private final LocalTime defaultStartTime;
+	private final int defaultIntervalDays;
 
 	private MapEventConfig(final Builder builder) {
 		eventName = builder.eventName;
@@ -47,7 +50,8 @@ public final class MapEventConfig {
 		announcementIntervalSeconds = builder.announcementIntervalSeconds;
 		weatherLock = builder.weatherLock;
 		triggerThreshold = builder.triggerThreshold;
-		guaranteedIntervalDays = builder.guaranteedIntervalDays;
+		defaultStartTime = builder.defaultStartTime;
+		defaultIntervalDays = builder.defaultIntervalDays;
 	}
 
 	public String getEventName() {
@@ -98,8 +102,12 @@ public final class MapEventConfig {
 		return triggerThreshold;
 	}
 
-	public int getGuaranteedIntervalDays() {
-		return guaranteedIntervalDays;
+	public LocalTime getDefaultStartTime() {
+		return defaultStartTime;
+	}
+
+	public int getDefaultIntervalDays() {
+		return defaultIntervalDays;
 	}
 
 	public static Builder builder(final String eventName) {
@@ -119,7 +127,8 @@ public final class MapEventConfig {
 		private int announcementIntervalSeconds = 600;
 		private WeatherLockConfig weatherLock;
 		private int triggerThreshold;
-		private int guaranteedIntervalDays = 1;
+		private LocalTime defaultStartTime;
+		private int defaultIntervalDays = 1;
 
 		private Builder(final String eventName) {
 			this.eventName = Objects.requireNonNull(eventName, "eventName");
@@ -180,8 +189,26 @@ public final class MapEventConfig {
 			return this;
 		}
 
-		public Builder guaranteedIntervalDays(final int guaranteedIntervalDays) {
-			this.guaranteedIntervalDays = guaranteedIntervalDays;
+		public Builder defaultStartTime(final LocalTime defaultStartTime) {
+			this.defaultStartTime = Objects.requireNonNull(defaultStartTime, "defaultStartTime");
+			return this;
+		}
+
+		public Builder defaultStartTime(final String defaultStartTime) {
+			Objects.requireNonNull(defaultStartTime, "defaultStartTime");
+			try {
+				this.defaultStartTime = LocalTime.parse(defaultStartTime.trim());
+			} catch (DateTimeParseException e) {
+				throw new IllegalArgumentException(
+						"defaultStartTime must be a valid ISO local time (e.g. 20:00), got '"
+								+ defaultStartTime + "'.",
+						e);
+			}
+			return this;
+		}
+
+		public Builder defaultIntervalDays(final int defaultIntervalDays) {
+			this.defaultIntervalDays = defaultIntervalDays;
 			return this;
 		}
 
@@ -201,8 +228,8 @@ public final class MapEventConfig {
 			if (triggerThreshold < 0) {
 				throw new IllegalArgumentException("triggerThreshold must be >= 0");
 			}
-			if (guaranteedIntervalDays <= 0) {
-				throw new IllegalArgumentException("guaranteedIntervalDays must be > 0");
+			if (defaultIntervalDays <= 0) {
+				throw new IllegalArgumentException("defaultIntervalDays must be > 0");
 			}
 			return new MapEventConfig(this);
 		}

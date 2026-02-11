@@ -151,7 +151,8 @@ public final class MapEventConfigLoader {
 				.announcementIntervalSeconds(600)
 				.weatherLock(new MapEventConfig.WeatherLockConfig("fog", false))
 				.triggerThreshold(500)
-				.guaranteedIntervalDays(2)
+				.defaultStartTime("20:00")
+				.defaultIntervalDays(2)
 				.build();
 	}
 
@@ -213,7 +214,8 @@ public final class MapEventConfigLoader {
 				.announcementIntervalSeconds(300)
 				.weatherLock(new MapEventConfig.WeatherLockConfig("fog", false))
 				.triggerThreshold(120)
-				.guaranteedIntervalDays(3)
+				.defaultStartTime("20:00")
+				.defaultIntervalDays(3)
 				.build();
 	}
 }

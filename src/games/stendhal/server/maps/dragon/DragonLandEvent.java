@@ -44,7 +44,7 @@ public class DragonLandEvent extends ConfiguredMapEvent {
 	}
 
 	public static void scheduleEveryTwoDaysAt(final LocalTime time) {
-		INSTANCE.scheduleGuaranteedStart(time, EVENT_CONFIG.getGuaranteedIntervalDays());
+		INSTANCE.scheduleGuaranteedStart(time, EVENT_CONFIG.getDefaultIntervalDays());
 	}
 
 	public static void scheduleGuaranteedEveryDaysAt(final LocalTime time, final int intervalDays) {
