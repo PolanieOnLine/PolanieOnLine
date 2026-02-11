@@ -12,6 +12,7 @@
 package games.stendhal.server.maps.event;
 
 import java.time.LocalTime;
+import java.util.Collections;
 import java.util.Objects;
 
 import org.apache.log4j.Logger;
@@ -95,7 +96,31 @@ public class ConfiguredMapEvent extends BaseMapEvent {
 
 	@Override
 	protected void spawnCreatures(final String creatureName, final int count) {
-		spawnStrategy.spawnCreatures(getEventName(), getZones(), creatureName, count, this::registerEventCreature);
+		for (final String zoneName : getZones()) {
+			final int requestedCount = count;
+			final double spawnMultiplier = getConfig().getZoneSpawnMultiplier(zoneName);
+			final int multipliedCount = (int) Math.round(requestedCount * spawnMultiplier);
+			final Integer zoneSpawnCap = getConfig().getZoneSpawnCap(zoneName);
+			final int finalSpawnCount = zoneSpawnCap == null ? multipliedCount : Math.min(multipliedCount, zoneSpawnCap);
+
+			logger.debug(getEventName() + " spawn request for zone " + zoneName + ": requested=" + requestedCount
+					+ ", multiplier=" + spawnMultiplier + ", multiplied=" + multipliedCount
+					+ (zoneSpawnCap == null ? "" : ", cap=" + zoneSpawnCap)
+					+ ", final=" + finalSpawnCount + ".");
+
+			if (finalSpawnCount <= 0) {
+				logger.debug(getEventName() + " spawn skipped in zone " + zoneName
+						+ "; final spawn count is 0 after multiplier/cap.");
+				continue;
+			}
+
+			spawnStrategy.spawnCreatures(
+					getEventName(),
+					Collections.singletonList(zoneName),
+					creatureName,
+					finalSpawnCount,
+					this::registerEventCreature);
+		}
 	}
 
 	private void startEventFromKills() {

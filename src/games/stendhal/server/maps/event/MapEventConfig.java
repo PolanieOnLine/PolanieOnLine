@@ -16,8 +16,10 @@ import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 
@@ -33,6 +35,8 @@ public final class MapEventConfig {
 	private final String stopAnnouncement;
 	private final int announcementIntervalSeconds;
 	private final WeatherLockConfig weatherLock;
+	private final Map<String, Double> zoneSpawnMultipliers;
+	private final Map<String, Integer> zoneSpawnCaps;
 	private final int triggerThreshold;
 	private final LocalTime defaultStartTime;
 	private final int defaultIntervalDays;
@@ -49,6 +53,8 @@ public final class MapEventConfig {
 		stopAnnouncement = builder.stopAnnouncement;
 		announcementIntervalSeconds = builder.announcementIntervalSeconds;
 		weatherLock = builder.weatherLock;
+		zoneSpawnMultipliers = Collections.unmodifiableMap(new LinkedHashMap<>(builder.zoneSpawnMultipliers));
+		zoneSpawnCaps = Collections.unmodifiableMap(new LinkedHashMap<>(builder.zoneSpawnCaps));
 		triggerThreshold = builder.triggerThreshold;
 		defaultStartTime = builder.defaultStartTime;
 		defaultIntervalDays = builder.defaultIntervalDays;
@@ -98,6 +104,22 @@ public final class MapEventConfig {
 		return weatherLock;
 	}
 
+	public Map<String, Double> getZoneSpawnMultipliers() {
+		return zoneSpawnMultipliers;
+	}
+
+	public double getZoneSpawnMultiplier(final String zoneName) {
+		return zoneSpawnMultipliers.getOrDefault(zoneName, 1.0d);
+	}
+
+	public Map<String, Integer> getZoneSpawnCaps() {
+		return zoneSpawnCaps;
+	}
+
+	public Integer getZoneSpawnCap(final String zoneName) {
+		return zoneSpawnCaps.get(zoneName);
+	}
+
 	public int getTriggerThreshold() {
 		return triggerThreshold;
 	}
@@ -126,6 +148,8 @@ public final class MapEventConfig {
 		private String stopAnnouncement;
 		private int announcementIntervalSeconds = 600;
 		private WeatherLockConfig weatherLock;
+		private Map<String, Double> zoneSpawnMultipliers = Collections.emptyMap();
+		private Map<String, Integer> zoneSpawnCaps = Collections.emptyMap();
 		private int triggerThreshold;
 		private LocalTime defaultStartTime;
 		private int defaultIntervalDays = 1;
@@ -184,6 +208,17 @@ public final class MapEventConfig {
 			return this;
 		}
 
+		public Builder zoneSpawnMultipliers(final Map<String, Double> zoneSpawnMultipliers) {
+			this.zoneSpawnMultipliers = new LinkedHashMap<>(Objects.requireNonNull(zoneSpawnMultipliers,
+					"zoneSpawnMultipliers"));
+			return this;
+		}
+
+		public Builder zoneSpawnCaps(final Map<String, Integer> zoneSpawnCaps) {
+			this.zoneSpawnCaps = new LinkedHashMap<>(Objects.requireNonNull(zoneSpawnCaps, "zoneSpawnCaps"));
+			return this;
+		}
+
 		public Builder triggerThreshold(final int triggerThreshold) {
 			this.triggerThreshold = triggerThreshold;
 			return this;
@@ -227,6 +262,24 @@ public final class MapEventConfig {
 			}
 			if (triggerThreshold < 0) {
 				throw new IllegalArgumentException("triggerThreshold must be >= 0");
+			}
+			for (final Map.Entry<String, Double> multiplierEntry : zoneSpawnMultipliers.entrySet()) {
+				if (multiplierEntry.getKey() == null || multiplierEntry.getKey().isBlank()) {
+					throw new IllegalArgumentException("zoneSpawnMultipliers contains blank zone name");
+				}
+				final Double multiplier = multiplierEntry.getValue();
+				if (multiplier == null || multiplier < 0d) {
+					throw new IllegalArgumentException("zoneSpawnMultipliers must be >= 0");
+				}
+			}
+			for (final Map.Entry<String, Integer> capEntry : zoneSpawnCaps.entrySet()) {
+				if (capEntry.getKey() == null || capEntry.getKey().isBlank()) {
+					throw new IllegalArgumentException("zoneSpawnCaps contains blank zone name");
+				}
+				final Integer cap = capEntry.getValue();
+				if (cap == null || cap < 0) {
+					throw new IllegalArgumentException("zoneSpawnCaps must be >= 0");
+				}
 			}
 			if (defaultIntervalDays <= 0) {
 				throw new IllegalArgumentException("defaultIntervalDays must be > 0");

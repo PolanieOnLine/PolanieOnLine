@@ -157,6 +157,10 @@ public final class MapEventConfigLoader {
 	}
 
 	private static MapEventConfig createKikareukinPreviewConfig() {
+		final Map<String, Double> zoneSpawnMultipliers = new LinkedHashMap<>();
+		zoneSpawnMultipliers.put("6_kikareukin_islands", 1.0d);
+		zoneSpawnMultipliers.put("7_kikareukin_clouds", 0.4d);
+
 		return MapEventConfig.builder("Kikareukin Angel Incursion")
 				.duration(Duration.ofMinutes(45))
 				.zones(Arrays.asList(
@@ -213,6 +217,7 @@ public final class MapEventConfigLoader {
 				.stopAnnouncement("Nad Kikareukin zapadła cisza; chmury i wyspy są na chwilę bezpieczne.")
 				.announcementIntervalSeconds(300)
 				.weatherLock(new MapEventConfig.WeatherLockConfig("fog", false))
+				.zoneSpawnMultipliers(zoneSpawnMultipliers)
 				.triggerThreshold(120)
 				.defaultStartTime("20:00")
 				.defaultIntervalDays(3)
