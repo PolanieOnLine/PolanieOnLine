@@ -17,9 +17,12 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+
 import games.stendhal.server.maps.dragon.DragonLandEvent;
 
 public final class MapEventRegistry {
+	private static final Logger LOGGER = Logger.getLogger(MapEventRegistry.class);
 	private static final Map<String, ConfiguredMapEvent> EVENT_INSTANCES = createRegistry();
 
 	private MapEventRegistry() {
@@ -28,9 +31,26 @@ public final class MapEventRegistry {
 
 	public static ConfiguredMapEvent getEvent(final String eventId) {
 		if (eventId == null) {
+			LOGGER.warn("Map event lookup failed: eventId is null.");
 			return null;
 		}
-		return EVENT_INSTANCES.get(eventId.toLowerCase(Locale.ROOT));
+
+		final String normalizedEventId = eventId.trim().toLowerCase(Locale.ROOT);
+		if (normalizedEventId.isEmpty()) {
+			LOGGER.warn("Map event lookup failed: eventId is blank.");
+			return null;
+		}
+
+		final ConfiguredMapEvent event = EVENT_INSTANCES.get(normalizedEventId);
+		if (event == null) {
+			final String lookupScope = MapEventConfigLoader.hasConfigId(normalizedEventId)
+					? "configured but not registered"
+					: "unknown";
+			LOGGER.warn("Map event lookup failed for eventId='" + eventId + "' (normalized='"
+					+ normalizedEventId + "', scope=" + lookupScope + "). Available eventIds: "
+					+ knownEventIds() + ".");
+		}
+		return event;
 	}
 
 	public static Set<String> knownEventIds() {
@@ -39,15 +59,34 @@ public final class MapEventRegistry {
 
 	private static Map<String, ConfiguredMapEvent> createRegistry() {
 		final Map<String, ConfiguredMapEvent> events = new LinkedHashMap<>();
+		for (String configId : MapEventConfigLoader.availableConfigIds()) {
+			try {
+				events.put(configId, new ConfiguredMapEvent(LOGGER, MapEventConfigLoader.load(configId)));
+			} catch (IllegalArgumentException e) {
+				LOGGER.error("Failed to build default configured event for configId='" + configId + "'.", e);
+			}
+		}
 
-		final DragonLandEvent dragonEvent = DragonLandEvent.getInstance();
-		events.put("dragon_land", dragonEvent);
-		events.put(MapEventConfigLoader.DRAGON_LAND_DEFAULT, dragonEvent);
+		events.putAll(createSpecializedEvents());
 
-		final ConfiguredMapEvent kikareukinEvent = new KikareukinAngelEvent();
-		events.put("kikareukin", kikareukinEvent);
-		events.put(MapEventConfigLoader.KIKAREUKIN_ANGEL_PREVIEW, kikareukinEvent);
+		if (events.isEmpty()) {
+			LOGGER.warn("Map event registry initialized without any events.");
+		}
 
 		return Collections.unmodifiableMap(events);
+	}
+
+	private static Map<String, ConfiguredMapEvent> createSpecializedEvents() {
+		final Map<String, ConfiguredMapEvent> specializedEvents = new LinkedHashMap<>();
+
+		final DragonLandEvent dragonEvent = DragonLandEvent.getInstance();
+		specializedEvents.put("dragon_land", dragonEvent);
+		specializedEvents.put(MapEventConfigLoader.DRAGON_LAND_DEFAULT, dragonEvent);
+
+		final ConfiguredMapEvent kikareukinEvent = new KikareukinAngelEvent();
+		specializedEvents.put("kikareukin", kikareukinEvent);
+		specializedEvents.put(MapEventConfigLoader.KIKAREUKIN_ANGEL_PREVIEW, kikareukinEvent);
+
+		return specializedEvents;
 	}
 }
