@@ -57,6 +57,10 @@ public class DragonLandEvent extends BaseMapEvent {
 		INSTANCE.scheduleEveryDaysAt(time, EVENT_CONFIG.getGuaranteedIntervalDays());
 	}
 
+	public static void scheduleGuaranteedEveryDaysAt(final LocalTime time, final int intervalDays) {
+		INSTANCE.scheduleEveryDaysAt(time, intervalDays);
+	}
+
 	public static boolean forceStart() {
 		return INSTANCE.forceStartInternal();
 	}
