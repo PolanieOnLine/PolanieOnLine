@@ -50,7 +50,7 @@ public final class MapEventConfigLoader {
 
 	private static MapEventConfig createDragonLandDefaultConfig() {
 		return MapEventConfig.builder("Dragon Land")
-				.duration(Duration.ofMinutes(45))
+				.duration(Duration.ofMinutes(60))
 				.zones(Arrays.asList(
 						"0_dragon_land_n",
 						"0_dragon_land_s"
@@ -147,7 +147,7 @@ public final class MapEventConfigLoader {
 
 	private static MapEventConfig createKikareukinPreviewConfig() {
 		return MapEventConfig.builder("Kikareukin Angel Incursion")
-				.duration(Duration.ofMinutes(20))
+				.duration(Duration.ofMinutes(45))
 				.zones(Arrays.asList(
 						"6_kikareukin_islands",
 						"7_kikareukin_clouds"
@@ -158,26 +158,38 @@ public final class MapEventConfigLoader {
 				))
 				.creatureFilter(new LinkedHashSet<>(Arrays.asList(
 						"aniołek",
-						"mała wróżka",
 						"anioł",
+						"upadły anioł",
 						"anioł ciemności",
 						"archanioł",
 						"archanioł ciemności"
 				)))
 				.waves(Arrays.asList(
-						new BaseMapEvent.EventWave(45, Arrays.asList(
-								new BaseMapEvent.EventSpawn("aniołek", 8),
-								new BaseMapEvent.EventSpawn("mała wróżka", 4),
-								new BaseMapEvent.EventSpawn("anioł", 3)
+						new BaseMapEvent.EventWave(35, Arrays.asList(
+								new BaseMapEvent.EventSpawn("aniołek", 12),
+								new BaseMapEvent.EventSpawn("anioł", 4)
 						)),
-						new BaseMapEvent.EventWave(75, Arrays.asList(
-								new BaseMapEvent.EventSpawn("anioł ciemności", 2),
-								new BaseMapEvent.EventSpawn("aniołek", 6)
+						new BaseMapEvent.EventWave(60, Arrays.asList(
+								new BaseMapEvent.EventSpawn("aniołek", 10),
+								new BaseMapEvent.EventSpawn("anioł", 6),
+								new BaseMapEvent.EventSpawn("upadły anioł", 4)
+						)),
+						new BaseMapEvent.EventWave(90, Arrays.asList(
+								new BaseMapEvent.EventSpawn("anioł", 8),
+								new BaseMapEvent.EventSpawn("upadły anioł", 6),
+								new BaseMapEvent.EventSpawn("anioł ciemności", 3)
 						)),
 						new BaseMapEvent.EventWave(120, Arrays.asList(
-								new BaseMapEvent.EventSpawn("archanioł", 1),
+								new BaseMapEvent.EventSpawn("upadły anioł", 8),
+								new BaseMapEvent.EventSpawn("anioł ciemności", 4),
+								new BaseMapEvent.EventSpawn("archanioł", 1)
+						)),
+						new BaseMapEvent.EventWave(160, Arrays.asList(
+								new BaseMapEvent.EventSpawn("upadły anioł", 10),
+								new BaseMapEvent.EventSpawn("anioł ciemności", 5),
+								new BaseMapEvent.EventSpawn("archanioł", 2),
 								new BaseMapEvent.EventSpawn("archanioł ciemności", 1),
-								new BaseMapEvent.EventSpawn("aniołek", 4)
+								new BaseMapEvent.EventSpawn("anioł", 4)
 						))
 				))
 				.announcements(Arrays.asList(
