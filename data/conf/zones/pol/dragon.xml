@@ -26,8 +26,6 @@
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
 		<configurator class-name="games.stendhal.server.maps.event.GenericMapEventScheduler">
 			<parameter name="eventId">dragon_land</parameter>
-			<parameter name="startTime">20:00</parameter>
-			<parameter name="intervalDays">2</parameter>
 			<parameter name="triggerType">both</parameter>
 		</configurator>
 
@@ -103,8 +101,6 @@
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
 		<configurator class-name="games.stendhal.server.maps.event.GenericMapEventScheduler">
 			<parameter name="eventId">dragon_land</parameter>
-			<parameter name="startTime">20:00</parameter>
-			<parameter name="intervalDays">2</parameter>
 			<parameter name="triggerType">both</parameter>
 		</configurator>
 
