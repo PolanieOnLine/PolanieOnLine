@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.log4j.Logger;
@@ -42,6 +43,7 @@ import marauroa.common.Pair;
 
 public abstract class BaseMapEvent {
 	private final Logger logger;
+	private final MapEventConfig config;
 	private final AtomicBoolean scheduled = new AtomicBoolean(false);
 	private final AtomicBoolean eventActive = new AtomicBoolean(false);
 	private final Map<String, Pair<String, Boolean>> storedWeather = new HashMap<>();
@@ -59,19 +61,38 @@ public abstract class BaseMapEvent {
 	private volatile LocalDate lastGuaranteedStartDate;
 	private volatile int guaranteedIntervalDays;
 
-	protected BaseMapEvent(final Logger logger) {
+	protected BaseMapEvent(final Logger logger, final MapEventConfig config) {
 		this.logger = Objects.requireNonNull(logger, "logger");
+		this.config = Objects.requireNonNull(config, "config");
 	}
 
-	protected abstract String getEventName();
+	protected String getEventName() {
+		return config.getEventName();
+	}
 
-	protected abstract Duration getEventDuration();
+	protected Duration getEventDuration() {
+		return config.getDuration();
+	}
 
-	protected abstract List<String> getZones();
+	protected List<String> getZones() {
+		return config.getZones();
+	}
 
-	protected abstract List<EventWave> getWaves();
+	protected List<String> getObserverZones() {
+		return config.getObserverZones();
+	}
 
-	protected abstract List<String> getAnnouncements();
+	protected Set<String> getCreatureFilter() {
+		return config.getCreatureFilter();
+	}
+
+	protected List<EventWave> getWaves() {
+		return config.getWaves();
+	}
+
+	protected List<String> getAnnouncements() {
+		return config.getAnnouncements();
+	}
 
 	protected abstract void onStart();
 
@@ -83,8 +104,12 @@ public abstract class BaseMapEvent {
 		// default no-op
 	}
 
+	protected final MapEventConfig getConfig() {
+		return config;
+	}
+
 	protected int getAnnouncementIntervalSeconds() {
-		return 600;
+		return config.getAnnouncementIntervalSeconds();
 	}
 
 	protected final boolean isEventActive() {
@@ -114,6 +139,7 @@ public abstract class BaseMapEvent {
 			return;
 		}
 		onStop();
+		restoreWeatherFromConfig();
 		if (scheduledTime != null) {
 			scheduleNextGuaranteedCheck();
 		}
@@ -218,6 +244,7 @@ public abstract class BaseMapEvent {
 	}
 
 	private void startEventInternal() {
+		lockWeatherFromConfig();
 		onStart();
 		scheduleAnnouncement();
 		scheduleWaves();
@@ -254,10 +281,29 @@ public abstract class BaseMapEvent {
 		if (getAnnouncements().isEmpty()) {
 			return;
 		}
+		final int intervalSeconds = getAnnouncementIntervalSeconds();
+		if (intervalSeconds <= 0) {
+			return;
+		}
 		SingletonRepository.getTurnNotifier().notifyInSeconds(
-				getAnnouncementIntervalSeconds(),
+				intervalSeconds,
 				announcer
 		);
+	}
+
+	private void lockWeatherFromConfig() {
+		final MapEventConfig.WeatherLockConfig weatherLock = config.getWeatherLock();
+		if (weatherLock == null) {
+			return;
+		}
+		lockWeather(weatherLock.getWeather(), weatherLock.isThundering());
+	}
+
+	private void restoreWeatherFromConfig() {
+		if (config.getWeatherLock() == null) {
+			return;
+		}
+		restoreWeather();
 	}
 
 	private void sendAnnouncement() {

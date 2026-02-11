@@ -1,0 +1,194 @@
+/***************************************************************************
+ *                    Copyright © 2026 - PolanieOnLine                    *
+ ***************************************************************************
+ ***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+package games.stendhal.server.maps.event;
+
+import java.time.Duration;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
+
+public final class MapEventConfigLoader {
+	public static final String DRAGON_LAND_DEFAULT = "dragon_land_default";
+	public static final String KIKAREUKIN_ANGEL_PREVIEW = "kikareukin_angel_preview";
+
+	private static final Map<String, MapEventConfig> CONFIGS = createConfigs();
+
+	private MapEventConfigLoader() {
+		// utility class
+	}
+
+	public static MapEventConfig load(final String configId) {
+		final MapEventConfig config = CONFIGS.get(configId);
+		if (config == null) {
+			throw new IllegalArgumentException("Unknown map event config: " + configId);
+		}
+		return config;
+	}
+
+	public static Set<String> availableConfigIds() {
+		return Collections.unmodifiableSet(CONFIGS.keySet());
+	}
+
+	private static Map<String, MapEventConfig> createConfigs() {
+		final Map<String, MapEventConfig> configs = new LinkedHashMap<>();
+		configs.put(DRAGON_LAND_DEFAULT, createDragonLandDefaultConfig());
+		configs.put(KIKAREUKIN_ANGEL_PREVIEW, createKikareukinPreviewConfig());
+		return configs;
+	}
+
+	private static MapEventConfig createDragonLandDefaultConfig() {
+		return MapEventConfig.builder("Dragon Land")
+				.duration(Duration.ofMinutes(45))
+				.zones(Arrays.asList(
+						"0_dragon_land_n",
+						"0_dragon_land_s"
+				))
+				.observerZones(Arrays.asList(
+						"0_dragon_land_n",
+						"0_dragon_land_s",
+						"int_dragon_house_1",
+						"int_dragon_house_2",
+						"int_dragon_house_3",
+						"int_dragon_house_4",
+						"int_dragon_house_5",
+						"int_dragon_house_6",
+						"int_dragon_workshop",
+						"int_dragon_castle",
+						"int_dragon_castle_room_1",
+						"int_dragon_castle_room_2",
+						"int_dragon_castle_room_3",
+						"int_dragon_castle_room_4",
+						"int_dragon_castle_room_5",
+						"int_dragon_castle_room_6",
+						"int_dragon_castle_dragon_npc",
+						"int_dragon_castle_dragon",
+						"-1_dragon_cave"
+				))
+				.creatureFilter(new LinkedHashSet<>(Arrays.asList(
+						"dwugłowy czarny smok",
+						"dwugłowy lodowy smok",
+						"dwugłowy czerwony smok",
+						"dwugłowy złoty smok",
+						"dwugłowy zielony smok",
+						"lodowy smok",
+						"pustynny smok",
+						"zgniły szkielet smoka",
+						"smok arktyczny",
+						"zielone smoczysko",
+						"niebieskie smoczysko",
+						"czerwone smoczysko",
+						"czarne smoczysko",
+						"latający czarny smok",
+						"latający złoty smok",
+						"Smok Wawelski"
+				)))
+				.waves(Arrays.asList(
+						new BaseMapEvent.EventWave(30, Arrays.asList(
+								new BaseMapEvent.EventSpawn("zgniły szkielet smoka", 6),
+								new BaseMapEvent.EventSpawn("pustynny smok", 4),
+								new BaseMapEvent.EventSpawn("zielony smok", 4),
+								new BaseMapEvent.EventSpawn("czerwony smok", 2),
+								new BaseMapEvent.EventSpawn("błękitny smok", 4)
+						)),
+						new BaseMapEvent.EventWave(45, Arrays.asList(
+								new BaseMapEvent.EventSpawn("lodowy smok", 4),
+								new BaseMapEvent.EventSpawn("smok arktyczny", 3),
+								new BaseMapEvent.EventSpawn("dwugłowy zielony smok", 6)
+						)),
+						new BaseMapEvent.EventWave(60, Arrays.asList(
+								new BaseMapEvent.EventSpawn("dwugłowy złoty smok", 4),
+								new BaseMapEvent.EventSpawn("dwugłowy zielony smok", 8),
+								new BaseMapEvent.EventSpawn("dwugłowy czerwony smok", 6)
+						)),
+						new BaseMapEvent.EventWave(90, Arrays.asList(
+								new BaseMapEvent.EventSpawn("dwugłowy złoty smok", 2),
+								new BaseMapEvent.EventSpawn("zielone smoczysko", 3),
+								new BaseMapEvent.EventSpawn("niebieskie smoczysko", 3)
+						)),
+						new BaseMapEvent.EventWave(120, Arrays.asList(
+								new BaseMapEvent.EventSpawn("dwugłowy czarny smok", 4),
+								new BaseMapEvent.EventSpawn("dwugłowy lodowy smok", 8)
+						)),
+						new BaseMapEvent.EventWave(150, Arrays.asList(
+								new BaseMapEvent.EventSpawn("czerwone smoczysko", 3),
+								new BaseMapEvent.EventSpawn("czarne smoczysko", 2)
+						)),
+						new BaseMapEvent.EventWave(180, Arrays.asList(
+								new BaseMapEvent.EventSpawn("latający czarny smok", 1),
+								new BaseMapEvent.EventSpawn("latający złoty smok", 1)
+						)),
+						new BaseMapEvent.EventWave(240, Arrays.asList(
+								new BaseMapEvent.EventSpawn("Smok Wawelski", 1)
+						))
+				))
+				.announcements(Arrays.asList(
+						"Niebo przeszywa skrzek smoków - smocze stado krąży nad krainą.",
+						"Z oddali dobiega trzepot skrzydeł i syk ognia - smoki nie odpuszczają.",
+						"Smocza kraina drży pod ciężarem bestii, które krążą nad ziemią."
+				))
+				.announcementIntervalSeconds(600)
+				.weatherLock(new MapEventConfig.WeatherLockConfig("fog", false))
+				.triggerThreshold(500)
+				.guaranteedIntervalDays(2)
+				.build();
+	}
+
+	private static MapEventConfig createKikareukinPreviewConfig() {
+		return MapEventConfig.builder("Kikareukin Angel Incursion")
+				.duration(Duration.ofMinutes(20))
+				.zones(Arrays.asList(
+						"6_kikareukin_islands",
+						"7_kikareukin_clouds"
+				))
+				.observerZones(Arrays.asList(
+						"6_kikareukin_islands",
+						"7_kikareukin_clouds"
+				))
+				.creatureFilter(new LinkedHashSet<>(Arrays.asList(
+						"aniołek",
+						"mała wróżka",
+						"anioł",
+						"anioł ciemności",
+						"archanioł",
+						"archanioł ciemności"
+				)))
+				.waves(Arrays.asList(
+						new BaseMapEvent.EventWave(45, Arrays.asList(
+								new BaseMapEvent.EventSpawn("aniołek", 8),
+								new BaseMapEvent.EventSpawn("mała wróżka", 4),
+								new BaseMapEvent.EventSpawn("anioł", 3)
+						)),
+						new BaseMapEvent.EventWave(75, Arrays.asList(
+								new BaseMapEvent.EventSpawn("anioł ciemności", 2),
+								new BaseMapEvent.EventSpawn("aniołek", 6)
+						)),
+						new BaseMapEvent.EventWave(120, Arrays.asList(
+								new BaseMapEvent.EventSpawn("archanioł", 1),
+								new BaseMapEvent.EventSpawn("archanioł ciemności", 1),
+								new BaseMapEvent.EventSpawn("aniołek", 4)
+						))
+				))
+				.announcements(Arrays.asList(
+						"Na Kikareukin pojawiły się zastępy aniołów - brońcie wysp i chmur!",
+						"Na 7. poziomie Kikareukin widziano archanioła i archanioła ciemności.",
+						"Na 6. poziomie Kikareukin krążą aniołki, wróżki, anioły i anioły ciemności."
+				))
+				.announcementIntervalSeconds(300)
+				.weatherLock(new MapEventConfig.WeatherLockConfig("fog", false))
+				.triggerThreshold(120)
+				.guaranteedIntervalDays(3)
+				.build();
+	}
+}
