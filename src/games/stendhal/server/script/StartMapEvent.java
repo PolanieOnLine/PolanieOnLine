@@ -11,7 +11,12 @@
  ***************************************************************************/
 package games.stendhal.server.script;
 
+import java.util.Collections;
+import java.util.IdentityHashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
 
@@ -39,6 +44,15 @@ public class StartMapEvent extends ScriptImpl {
 		}
 
 		final String eventId = args.get(0);
+		if (isListRequest(eventId)) {
+			if (args.size() > 1) {
+				usage(admin);
+				return;
+			}
+			listEvents(admin);
+			return;
+		}
+
 		final String mode = args.size() == 2 ? args.get(1) : "safe";
 		final boolean force;
 		if ("force".equalsIgnoreCase(mode)) {
@@ -68,7 +82,44 @@ public class StartMapEvent extends ScriptImpl {
 		sandbox.privateText(admin, "Event '" + eventId + "' jest już aktywny.");
 	}
 
+	private boolean isListRequest(final String arg) {
+		if (arg == null) {
+			return false;
+		}
+		final String normalized = arg.trim().toLowerCase(Locale.ROOT);
+		return "-list".equals(normalized) || "list".equals(normalized);
+	}
+
+	private void listEvents(final Player admin) {
+		final Set<String> knownEventIds = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
+		knownEventIds.addAll(MapEventRegistry.knownEventIds());
+
+		if (knownEventIds.isEmpty()) {
+			sandbox.privateText(admin, "Brak zarejestrowanych eventów mapowych.");
+			return;
+		}
+
+		final Set<ConfiguredMapEvent> listedEvents = Collections.newSetFromMap(new IdentityHashMap<>());
+		sandbox.privateText(admin, "Dostępne eventy mapowe:");
+		for (String eventId : knownEventIds) {
+			final ConfiguredMapEvent event = MapEventRegistry.getEvent(eventId);
+			if (event == null || listedEvents.contains(event)) {
+				continue;
+			}
+			listedEvents.add(event);
+
+			final String eventName = event.getEventDisplayName();
+			final String eventType = event.getClass().getSimpleName();
+			sandbox.privateText(admin, "- " + eventId + " | name=\"" + eventName + "\" | type=" + eventType);
+		}
+
+		if (listedEvents.isEmpty()) {
+			sandbox.privateText(admin, "Nie udało się załadować eventów z rejestru.");
+		}
+	}
+
 	private void usage(final Player admin) {
+		sandbox.privateText(admin, "Użycie: /script StartMapEvent.class -list");
 		sandbox.privateText(admin, "Użycie: /script StartMapEvent.class <eventId> [force|safe]");
 	}
 }

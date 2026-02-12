@@ -55,6 +55,10 @@ public class ConfiguredMapEvent extends BaseMapEvent {
 		return startFromScript(true);
 	}
 
+	public final String getEventDisplayName() {
+		return getEventName();
+	}
+
 	public final boolean startFromScript(final boolean force) {
 		scriptForceStartRequested = force;
 		try {
