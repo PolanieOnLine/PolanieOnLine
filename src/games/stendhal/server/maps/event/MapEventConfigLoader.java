@@ -12,10 +12,12 @@
 package games.stendhal.server.maps.event;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -59,8 +61,9 @@ public final class MapEventConfigLoader {
 	}
 
 	private static MapEventConfig createKoscieliskoGiantEscortConfig() {
+		final Duration duration = Duration.ofMinutes(20);
 		return MapEventConfig.builder("Eskorta Wielkoluda")
-				.duration(Duration.ofMinutes(20))
+				.duration(duration)
 				.zones(Arrays.asList("0_koscielisko_ne"))
 				.observerZones(Arrays.asList("0_koscielisko_ne"))
 				.creatureFilter(new LinkedHashSet<>(Arrays.asList(
@@ -72,36 +75,7 @@ public final class MapEventConfigLoader {
 						"pokutnik wieczorny",
 						"lawina"
 				)))
-				.waves(Arrays.asList(
-						new BaseMapEvent.EventWave(40, Arrays.asList(
-								new BaseMapEvent.EventSpawn("elf górski maskotka", 6),
-								new BaseMapEvent.EventSpawn("elf górski służka", 4),
-								new BaseMapEvent.EventSpawn("elf górski dama", 2)
-						)),
-						new BaseMapEvent.EventWave(60, Arrays.asList(
-								new BaseMapEvent.EventSpawn("elf górski maskotka", 5),
-								new BaseMapEvent.EventSpawn("elf górski służka", 4),
-								new BaseMapEvent.EventSpawn("elf górski dama", 3)
-						)),
-						new BaseMapEvent.EventWave(75, Arrays.asList(
-								new BaseMapEvent.EventSpawn("elf górski służka", 4),
-								new BaseMapEvent.EventSpawn("elf górski dama", 4),
-								new BaseMapEvent.EventSpawn("pokutnik z gór", 3),
-								new BaseMapEvent.EventSpawn("pokutnik nocny", 2)
-						)),
-						new BaseMapEvent.EventWave(95, Arrays.asList(
-								new BaseMapEvent.EventSpawn("pokutnik z gór", 5),
-								new BaseMapEvent.EventSpawn("pokutnik nocny", 4),
-								new BaseMapEvent.EventSpawn("pokutnik wieczorny", 2),
-								new BaseMapEvent.EventSpawn("lawina", 2)
-						)),
-						new BaseMapEvent.EventWave(110, Arrays.asList(
-								new BaseMapEvent.EventSpawn("pokutnik z gór", 6),
-								new BaseMapEvent.EventSpawn("pokutnik nocny", 5),
-								new BaseMapEvent.EventSpawn("pokutnik wieczorny", 4),
-								new BaseMapEvent.EventSpawn("lawina", 4)
-						))
-				))
+				.waves(buildKoscieliskoEscortWaves(duration))
 				.startAnnouncement("Halny niesie zgrzyt stali - Wielkolud rusza przez Kościelisko. Trzymajcie szlak.")
 				.stopAnnouncement("Szlak cichnie. Los Wielkoluda został przesądzony.")
 				.announcementIntervalSeconds(180)
@@ -111,6 +85,49 @@ public final class MapEventConfigLoader {
 				.defaultStartTime("20:00")
 				.defaultIntervalDays(2)
 				.build();
+	}
+
+	private static List<BaseMapEvent.EventWave> buildKoscieliskoEscortWaves(final Duration eventDuration) {
+		final int intervalSeconds = 20;
+		final long durationSeconds = eventDuration.getSeconds();
+		final int waveCount = (int) ((durationSeconds - 1L) / intervalSeconds);
+		final List<BaseMapEvent.EventWave> waves = new ArrayList<>(waveCount);
+
+		for (int waveNumber = 1; waveNumber <= waveCount; waveNumber++) {
+			final int elapsedSeconds = waveNumber * intervalSeconds;
+			final List<BaseMapEvent.EventSpawn> spawns;
+			if (elapsedSeconds <= 300) {
+				spawns = Arrays.asList(
+						new BaseMapEvent.EventSpawn("elf górski maskotka", 6),
+						new BaseMapEvent.EventSpawn("elf górski służka", 4),
+						new BaseMapEvent.EventSpawn("elf górski dama", 2)
+				);
+			} else if (elapsedSeconds <= 600) {
+				spawns = Arrays.asList(
+						new BaseMapEvent.EventSpawn("elf górski maskotka", 4),
+						new BaseMapEvent.EventSpawn("elf górski służka", 5),
+						new BaseMapEvent.EventSpawn("elf górski dama", 4),
+						new BaseMapEvent.EventSpawn("pokutnik z gór", 2)
+				);
+			} else if (elapsedSeconds <= 900) {
+				spawns = Arrays.asList(
+						new BaseMapEvent.EventSpawn("elf górski służka", 3),
+						new BaseMapEvent.EventSpawn("elf górski dama", 4),
+						new BaseMapEvent.EventSpawn("pokutnik z gór", 5),
+						new BaseMapEvent.EventSpawn("pokutnik nocny", 3)
+				);
+			} else {
+				spawns = Arrays.asList(
+						new BaseMapEvent.EventSpawn("pokutnik z gór", 6),
+						new BaseMapEvent.EventSpawn("pokutnik nocny", 5),
+						new BaseMapEvent.EventSpawn("pokutnik wieczorny", 4),
+						new BaseMapEvent.EventSpawn("lawina", 3)
+				);
+			}
+			waves.add(new BaseMapEvent.EventWave(intervalSeconds, spawns));
+		}
+
+		return waves;
 	}
 
 	private static MapEventConfig createDragonLandDefaultConfig() {
