@@ -48,13 +48,20 @@ public final class MapEventRegistry {
 					: "unknown";
 			LOGGER.warn("Map event lookup failed for eventId='" + eventId + "' (normalized='"
 					+ normalizedEventId + "', scope=" + lookupScope + "). Available eventIds: "
-					+ knownEventIds() + ".");
+					+ listAvailableEventIds() + ".");
 		}
 		return event;
 	}
 
-	public static Set<String> knownEventIds() {
+	public static Set<String> listAvailableEventIds() {
 		return Collections.unmodifiableSet(EVENT_INSTANCES.keySet());
+	}
+
+	/**
+	 * Backward-compatible alias for callers that still use the old method name.
+	 */
+	public static Set<String> knownEventIds() {
+		return listAvailableEventIds();
 	}
 
 	private static Map<String, ConfiguredMapEvent> createRegistry() {

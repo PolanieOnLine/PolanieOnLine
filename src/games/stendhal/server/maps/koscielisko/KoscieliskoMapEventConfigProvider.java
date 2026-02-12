@@ -23,6 +23,7 @@ import java.util.Map;
 import games.stendhal.server.maps.event.BaseMapEvent;
 import games.stendhal.server.maps.event.MapEventConfig;
 import games.stendhal.server.maps.event.MapEventConfigProvider;
+import games.stendhal.server.maps.event.MapEventConfigSupport;
 
 public class KoscieliskoMapEventConfigProvider implements MapEventConfigProvider {
 	public static final String KOSCIELISKO_GIANT_ESCORT = "koscielisko_giant_escort";
@@ -35,8 +36,14 @@ public class KoscieliskoMapEventConfigProvider implements MapEventConfigProvider
 	}
 
 	private MapEventConfig createKoscieliskoGiantEscortConfig() {
+		// Balance domain note: Kościelisko escort should keep steady lane pressure so teams
+		// can rotate around the giant, with a harsher final stretch near event timeout.
 		final Duration duration = Duration.ofMinutes(20);
+		final String defaultStartTime = MapEventConfigSupport.validatedDefaultStartTime("20:00", KOSCIELISKO_GIANT_ESCORT);
+		final int defaultIntervalDays = MapEventConfigSupport.validatedDefaultIntervalDays(2, KOSCIELISKO_GIANT_ESCORT);
+
 		return MapEventConfig.builder("Eskorta Wielkoluda")
+				// Core config
 				.duration(duration)
 				.zones(Arrays.asList("0_koscielisko_ne"))
 				.observerZones(Arrays.asList("0_koscielisko_ne"))
@@ -49,10 +56,13 @@ public class KoscieliskoMapEventConfigProvider implements MapEventConfigProvider
 						"pokutnik wieczorny",
 						"lawina"
 				)))
-				.waves(buildKoscieliskoEscortWaves(duration))
+				// Messages
 				.startAnnouncement("Halny niesie zgrzyt stali - Wielkolud rusza przez Kościelisko. Trzymajcie szlak.")
 				.stopAnnouncement("Szlak cichnie. Los Wielkoluda został przesądzony.")
 				.announcementIntervalSeconds(180)
+				// Waves
+				.waves(buildKoscieliskoEscortWaves(duration))
+				// Triggers / scheduler
 				.escortSettings(MapEventConfig.EscortSettings.builder()
 						.giantHp(32000)
 						.giantDefBonus(220)
@@ -65,8 +75,8 @@ public class KoscieliskoMapEventConfigProvider implements MapEventConfigProvider
 				.giantOnlyAggro(true)
 				// This escort event starts from scheduler/script only, so kill-trigger stays disabled.
 				.triggerThreshold(0)
-				.defaultStartTime("20:00")
-				.defaultIntervalDays(2)
+				.defaultStartTime(defaultStartTime)
+				.defaultIntervalDays(defaultIntervalDays)
 				.build();
 	}
 
@@ -89,13 +99,13 @@ public class KoscieliskoMapEventConfigProvider implements MapEventConfigProvider
 				final int lider = 1 + (escalationLevel / 4);
 				final int czarownica = 1 + (escalationLevel / 5);
 				spawns = Arrays.asList(
-						new BaseMapEvent.EventSpawn("elf górski maskotka", maskotka),
-						new BaseMapEvent.EventSpawn("elf górski służka", sluzka),
-						new BaseMapEvent.EventSpawn("elf górski dama", dama),
-						new BaseMapEvent.EventSpawn("elf górski strażniczka", strazniczka),
-						new BaseMapEvent.EventSpawn("elf górski wojownik", wojownik),
-						new BaseMapEvent.EventSpawn("elf górski lider", lider),
-						new BaseMapEvent.EventSpawn("elf górski czarownica", czarownica)
+						MapEventConfigSupport.spawn("elf górski maskotka", maskotka),
+						MapEventConfigSupport.spawn("elf górski służka", sluzka),
+						MapEventConfigSupport.spawn("elf górski dama", dama),
+						MapEventConfigSupport.spawn("elf górski strażniczka", strazniczka),
+						MapEventConfigSupport.spawn("elf górski wojownik", wojownik),
+						MapEventConfigSupport.spawn("elf górski lider", lider),
+						MapEventConfigSupport.spawn("elf górski czarownica", czarownica)
 				);
 			} else if (progress <= 0.70d) {
 				final int sluzka = Math.max(1, 3 - (escalationLevel / 5));
@@ -111,18 +121,18 @@ public class KoscieliskoMapEventConfigProvider implements MapEventConfigProvider
 				final int pokutnikLaki = 1 + (escalationLevel / 3);
 				final int pokutnikPoranny = 1 + (escalationLevel / 4);
 				spawns = Arrays.asList(
-						new BaseMapEvent.EventSpawn("elf górski służka", sluzka),
-						new BaseMapEvent.EventSpawn("elf górski dama", dama),
-						new BaseMapEvent.EventSpawn("elf górski strażniczka", strazniczka),
-						new BaseMapEvent.EventSpawn("elf górski wojownik", wojownik),
-						new BaseMapEvent.EventSpawn("elf górski lider", lider),
-						new BaseMapEvent.EventSpawn("elf górski kapłan", kaplan),
-						new BaseMapEvent.EventSpawn("elf górski czarownica", czarownica),
-						new BaseMapEvent.EventSpawn("elf górski czarnoksiężnik", czarnoksieznik),
-						new BaseMapEvent.EventSpawn("pokutnik z bagien", pokutnikBagna),
-						new BaseMapEvent.EventSpawn("pokutnik z wrzosowisk", pokutnikWrzosy),
-						new BaseMapEvent.EventSpawn("pokutnik z łąk", pokutnikLaki),
-						new BaseMapEvent.EventSpawn("pokutnik poranny", pokutnikPoranny)
+						MapEventConfigSupport.spawn("elf górski służka", sluzka),
+						MapEventConfigSupport.spawn("elf górski dama", dama),
+						MapEventConfigSupport.spawn("elf górski strażniczka", strazniczka),
+						MapEventConfigSupport.spawn("elf górski wojownik", wojownik),
+						MapEventConfigSupport.spawn("elf górski lider", lider),
+						MapEventConfigSupport.spawn("elf górski kapłan", kaplan),
+						MapEventConfigSupport.spawn("elf górski czarownica", czarownica),
+						MapEventConfigSupport.spawn("elf górski czarnoksiężnik", czarnoksieznik),
+						MapEventConfigSupport.spawn("pokutnik z bagien", pokutnikBagna),
+						MapEventConfigSupport.spawn("pokutnik z wrzosowisk", pokutnikWrzosy),
+						MapEventConfigSupport.spawn("pokutnik z łąk", pokutnikLaki),
+						MapEventConfigSupport.spawn("pokutnik poranny", pokutnikPoranny)
 				);
 			} else {
 				final int pokutnikBagna = 3 + (escalationLevel / 3);
@@ -136,19 +146,19 @@ public class KoscieliskoMapEventConfigProvider implements MapEventConfigProvider
 				final int jozinBazin = Math.min(2, 1 + (escalationLevel / 9));
 				final int lawina = Math.min(2, 1 + (escalationLevel / 8));
 				spawns = Arrays.asList(
-						new BaseMapEvent.EventSpawn("pokutnik z bagien", pokutnikBagna),
-						new BaseMapEvent.EventSpawn("pokutnik z wrzosowisk", pokutnikWrzosy),
-						new BaseMapEvent.EventSpawn("pokutnik z łąk", pokutnikLaki),
-						new BaseMapEvent.EventSpawn("pokutnik poranny", pokutnikPoranny),
-						new BaseMapEvent.EventSpawn("pokutnik z gór", pokutnikZGor),
-						new BaseMapEvent.EventSpawn("pokutnik nocny", pokutnikNocny),
-						new BaseMapEvent.EventSpawn("pokutnik wieczorny", pokutnikWieczorny),
-						new BaseMapEvent.EventSpawn("Jožin z lesa", jozinLesa),
-						new BaseMapEvent.EventSpawn("Jožin z bažin", jozinBazin),
-						new BaseMapEvent.EventSpawn("lawina", lawina)
+						MapEventConfigSupport.spawn("pokutnik z bagien", pokutnikBagna),
+						MapEventConfigSupport.spawn("pokutnik z wrzosowisk", pokutnikWrzosy),
+						MapEventConfigSupport.spawn("pokutnik z łąk", pokutnikLaki),
+						MapEventConfigSupport.spawn("pokutnik poranny", pokutnikPoranny),
+						MapEventConfigSupport.spawn("pokutnik z gór", pokutnikZGor),
+						MapEventConfigSupport.spawn("pokutnik nocny", pokutnikNocny),
+						MapEventConfigSupport.spawn("pokutnik wieczorny", pokutnikWieczorny),
+						MapEventConfigSupport.spawn("Jožin z lesa", jozinLesa),
+						MapEventConfigSupport.spawn("Jožin z bažin", jozinBazin),
+						MapEventConfigSupport.spawn("lawina", lawina)
 				);
 			}
-			waves.add(new BaseMapEvent.EventWave(intervalSeconds, spawns));
+			waves.add(MapEventConfigSupport.wave(intervalSeconds, spawns.toArray(new BaseMapEvent.EventSpawn[0])));
 		}
 
 		return waves;

@@ -42,7 +42,7 @@ public class GenericMapEventScheduler implements ZoneConfigurator {
 		if (event == null) {
 			LOGGER.error("Cannot configure map event scheduler for zone " + zone.getName()
 					+ ": unknown eventId='" + eventId + "'. Available eventIds: "
-					+ MapEventRegistry.knownEventIds() + ".");
+					+ MapEventRegistry.listAvailableEventIds() + ".");
 			return;
 		}
 
