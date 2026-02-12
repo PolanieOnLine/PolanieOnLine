@@ -122,7 +122,7 @@ class SwingClientGUI implements J2DClientGUI {
 	private KeyRing keyring;
 	private MagicBag magicbag;
 	private RunicAltar runicAltar;
-	//private Portfolio portfolio;
+	// private Portfolio portfolio;
 	private Spells spells;
 	private boolean offline;
 	private int paintCounter;
@@ -133,13 +133,13 @@ class SwingClientGUI implements J2DClientGUI {
 	private boolean chatFocusRedirectInstalled;
 	private volatile String currentZoneName;
 
-	public SwingClientGUI(StendhalClient client, UserContext context,
-			NotificationChannelManager channelManager, JFrame splash) {
+	public SwingClientGUI(StendhalClient client, UserContext context, NotificationChannelManager channelManager,
+			JFrame splash) {
 		this.userContext = context;
 		setupInternalWindowProperties();
 		/*
-		 * Add a layered pane for the game area, so that we can have
-		 * windows on top of it
+		 * Add a layered pane for the game area, so that we can have windows on top of
+		 * it
 		 */
 		pane = new JLayeredPane();
 		pane.setLayout(new FreePlacementLayout());
@@ -195,9 +195,8 @@ class SwingClientGUI implements J2DClientGUI {
 		repositionEventProgressOverlay();
 
 		/*
-		 * Used by settings dialog to restore the client's dimensions back to
-		 * the original width and height. Needs to be called after
-		 * frame.setSize().
+		 * Used by settings dialog to restore the client's dimensions back to the
+		 * original width and height. Needs to be called after frame.setSize().
 		 */
 		frameDefaultSize = frame.getSize();
 		frame.addWindowListener(new WindowAdapter() {
@@ -220,8 +219,7 @@ class SwingClientGUI implements J2DClientGUI {
 	}
 
 	private void setupChatEntry() {
-		final KeyListener tabcompletion = new ChatCompletionHelper(chatText,
-				World.get().getPlayerList().getNamesList(),
+		final KeyListener tabcompletion = new ChatCompletionHelper(chatText, World.get().getPlayerList().getNamesList(),
 				SlashActionRepository.getCommandNames());
 		chatText.addKeyListener(tabcompletion);
 
@@ -234,14 +232,14 @@ class SwingClientGUI implements J2DClientGUI {
 
 		final WtWindowManager windowManager = WtWindowManager.getInstance();
 		updateChatFocusRedirector(windowManager.getProperty(SettingsProperties.MOVE_KEY_SCHEME_PROPERTY,
-					SettingsProperties.MOVE_KEY_SCHEME_ARROWS));
+				SettingsProperties.MOVE_KEY_SCHEME_ARROWS));
 		windowManager.registerSettingChangeListener(SettingsProperties.MOVE_KEY_SCHEME_PROPERTY,
 				new SettingChangeListener() {
-			@Override
-			public void changed(String newValue) {
-				updateChatFocusRedirector(newValue);
-			}
-		});
+					@Override
+					public void changed(String newValue) {
+						updateChatFocusRedirector(newValue);
+					}
+				});
 	}
 
 	private void updateChatFocusRedirector(final String propertyValue) {
@@ -313,21 +311,21 @@ class SwingClientGUI implements J2DClientGUI {
 		userContext.addFeatureChangeListener(magicbag);
 
 		/*
-		portfolio = new Portfolio();
-		portfolio.setAcceptedTypes(EntityMap.getClass("item", null, null));
-		containerPanel.addRepaintable(portfolio);
-		userContext.addFeatureChangeListener(portfolio);
-		*/
+		 * portfolio = new Portfolio();
+		 * portfolio.setAcceptedTypes(EntityMap.getClass("item", null, null));
+		 * containerPanel.addRepaintable(portfolio);
+		 * userContext.addFeatureChangeListener(portfolio);
+		 */
 
 		spells = new Spells();
 		spells.setAcceptedTypes(EntityMap.getClass("spell", null, null));
 		containerPanel.addRepaintable(spells);
 		userContext.addFeatureChangeListener(spells);
 
-		for (final FeatureChangeListener listener: character.getFeatureChangeListeners()) {
+		for (final FeatureChangeListener listener : character.getFeatureChangeListeners()) {
 			userContext.addFeatureChangeListener(listener);
 		}
-		for (final ComponentListener listener: character.getComponentListeners()) {
+		for (final ComponentListener listener : character.getComponentListeners()) {
 			containerPanel.addComponentListener(listener);
 		}
 
@@ -412,14 +410,15 @@ class SwingClientGUI implements J2DClientGUI {
 	}
 
 	/**
-	 * Requests repaint at the window areas that are painted according to the
-	 * game loop frame rate.
+	 * Requests repaint at the window areas that are painted according to the game
+	 * loop frame rate.
 	 */
 	@Override
 	public void triggerPainting() {
 		if (frame.getState() != Frame.ICONIFIED) {
 			paintCounter++;
-			if (frame.isActive() || "false".equals(System.getProperty("stendhal.skip.inactive", "false")) || paintCounter >= 20) {
+			if (frame.isActive() || "false".equals(System.getProperty("stendhal.skip.inactive", "false"))
+					|| paintCounter >= 20) {
 				paintCounter = 0;
 				logger.debug("Draw screen");
 				minimap.refresh();
@@ -427,29 +426,26 @@ class SwingClientGUI implements J2DClientGUI {
 				screen.repaint();
 			}
 		}
-    }
+	}
 
 	private void locationHacksAndBugWorkaround() {
 		/*
-		 * On some systems the window may end up occasionally unresponsive
-		 * to keyboard use unless these are delayed.
+		 * On some systems the window may end up occasionally unresponsive to keyboard
+		 * use unless these are delayed.
 		 */
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
 				/*
-				 * A massive kludge to ensure that the window position is
-				 * treated properly. Without this popup menus can be misplaced
-				 * and unusable until the user moves the game window. This
-				 * can happen with certain window managers if the window manager
-				 * moves the window as a result of resizing the window.
-				 * "ui.dimensions"
-				 * Description of the bug:
-				 * 	https://bugzilla.redhat.com/show_bug.cgi?id=698295
+				 * A massive kludge to ensure that the window position is treated properly.
+				 * Without this popup menus can be misplaced and unusable until the user moves
+				 * the game window. This can happen with certain window managers if the window
+				 * manager moves the window as a result of resizing the window. "ui.dimensions"
+				 * Description of the bug: https://bugzilla.redhat.com/show_bug.cgi?id=698295
 				 *
-				 * As of 2013-09-07 it is reproducible at least when using
-				 * Mate desktop's marco window manager. Metacity and mutter
-				 * have a workaround for the same issue in AWT.
+				 * As of 2013-09-07 it is reproducible at least when using Mate desktop's marco
+				 * window manager. Metacity and mutter have a workaround for the same issue in
+				 * AWT.
 				 */
 				Point location = frame.getLocation();
 				frame.setLocation(location.x + 1, location.y);
@@ -463,47 +459,44 @@ class SwingClientGUI implements J2DClientGUI {
 	}
 
 	/**
-	 * For small screens. Setting the maximum window size does
-	 * not help - pack() happily ignores it.
+	 * For small screens. Setting the maximum window size does not help - pack()
+	 * happily ignores it.
 	 */
 	private void smallScreenHacks() {
 		Rectangle maxBounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
 		Dimension current = frame.getSize();
-		frame.setSize(Math.min(current.width, maxBounds.width),
-				Math.min(current.height, maxBounds.height));
+		frame.setSize(Math.min(current.width, maxBounds.width), Math.min(current.height, maxBounds.height));
 		/*
-		 * Needed for small screens; Sometimes the divider is placed
-		 * incorrectly unless we explicitly set it. Try to fit it on the
-		 * screen and show a bit of the chat.
+		 * Needed for small screens; Sometimes the divider is placed incorrectly unless
+		 * we explicitly set it. Try to fit it on the screen and show a bit of the chat.
 		 */
-		verticalSplit.setDividerLocation(Math.min(stendhal.getDisplaySize().height,
-				maxBounds.height - 80));
+		verticalSplit.setDividerLocation(Math.min(stendhal.getDisplaySize().height, maxBounds.height - 80));
 	}
 
 	/**
 	 * Modify the states of the on screen windows. The window manager normally
-	 * restores the state of the window as it was on the previous session. For
-	 * some windows this is not desirable.
+	 * restores the state of the window as it was on the previous session. For some
+	 * windows this is not desirable.
 	 * <p>
 	 * <em>Note:</em> This need to be called from the event dispatch thread.
 	 */
 	private void setInitialWindowStates() {
 		/*
-		 * Window manager may try to restore the visibility of the dialog when
-		 * it's added to the pane.
+		 * Window manager may try to restore the visibility of the dialog when it's
+		 * added to the pane.
 		 */
 		quitDialog.getQuitDialog().setVisible(false);
 		// Windows may have been closed in old clients
 		character.setVisible(true);
 		inventory.setVisible(true);
 		/*
-		 * Keyring and spells, on the other hand, *should* be hidden until
-		 * revealed by feature change
+		 * Keyring and spells, on the other hand, *should* be hidden until revealed by
+		 * feature change
 		 */
 		keyring.setVisible(false);
 		magicbag.setVisible(false);
 		runicAltar.getRunicAltar().setVisible(false);
-		//portfolio.setVisible(false);
+		// portfolio.setVisible(false);
 		spells.setVisible(false);
 	}
 
@@ -527,11 +520,11 @@ class SwingClientGUI implements J2DClientGUI {
 		frame.addWindowFocusListener(new WindowAdapter() {
 			@Override
 			public void windowLostFocus(WindowEvent e) {
-				/* Stops player movement via keypress when focus is lost.
+				/*
+				 * Stops player movement via keypress when focus is lost.
 				 *
-				 * FIXME: When focus is regained, direction key must be
-				 *        pressed twice to resume walking. Key states
-				 *        not flushed correctly?
+				 * FIXME: When focus is regained, direction key must be pressed twice to resume
+				 * walking. Key states not flushed correctly?
 				 */
 				if (StendhalClient.serverVersionAtLeast("0.02")) {
 					final RPAction stop = new RPAction();
@@ -639,17 +632,21 @@ class SwingClientGUI implements J2DClientGUI {
 		if (!pane.isShowing()) {
 			return;
 		}
-		final ActiveMapEventStatus visibleStatus = MapEventStatusStore.get().getVisibleStatusForZone(resolveCurrentZoneName());
+		final ActiveMapEventStatus visibleStatus = MapEventStatusStore.get()
+				.getVisibleStatusForZone(resolveCurrentZoneName());
 		if (visibleStatus == null) {
 			eventProgressOverlay.hideOverlay();
 			return;
 		}
 
-		final String value = formatRemaining(visibleStatus.getRemainingSeconds()) + " • " + visibleStatus.getProgressPercent() + "%";
+		final String value = formatRemaining(visibleStatus.getRemainingSeconds()) + " • "
+				+ visibleStatus.getProgressPercent() + "%";
 		if (eventProgressOverlay.isShowingEvent(visibleStatus.getEventId())) {
-			eventProgressOverlay.updateOverlay(visibleStatus.getEventId(), visibleStatus.getEventName(), visibleStatus.getProgressPercent(), value);
+			eventProgressOverlay.updateOverlay(visibleStatus.getEventId(), visibleStatus.getEventName(),
+					visibleStatus.getProgressPercent(), value);
 		} else {
-			eventProgressOverlay.showOverlay(visibleStatus.getEventId(), visibleStatus.getEventName(), visibleStatus.getProgressPercent(), value);
+			eventProgressOverlay.showOverlay(visibleStatus.getEventId(), visibleStatus.getEventName(),
+					visibleStatus.getProgressPercent(), value);
 		}
 		repositionEventProgressOverlay();
 	}
@@ -686,7 +683,7 @@ class SwingClientGUI implements J2DClientGUI {
 		character.setPlayer(user);
 		keyring.setSlot(user, "keyring");
 		magicbag.setSlot(user, "magicbag");
-		//portfolio.setSlot(user, "portfolio");
+		// portfolio.setSlot(user, "portfolio");
 		spells.setSlot(user, "spells");
 		inventory.setSlot(user, "bag");
 		runicAltar.setPlayer(user);
@@ -702,8 +699,8 @@ class SwingClientGUI implements J2DClientGUI {
 		int frameState = frame.getExtendedState();
 
 		/*
-		 *  Do not attempt to reset client dimensions if window is maximized.
-		 *  Prevents resizing errors for child components.
+		 * Do not attempt to reset client dimensions if window is maximized. Prevents
+		 * resizing errors for child components.
 		 */
 		if (frameState != Frame.MAXIMIZED_BOTH) {
 			frame.setSize(frameDefaultSize);
@@ -741,22 +738,20 @@ class SwingClientGUI implements J2DClientGUI {
 	}
 
 	@Override
-	public void addAchievementBox(String title, String description,
-			String category) {
+	public void addAchievementBox(String title, String description, String category) {
 		screen.addAchievementBox(title, description, category);
 	}
 
 	@Deprecated
 	@Override
-	public void addGameScreenText(double x, double y, String text,
-			NotificationType type, boolean isTalking) {
+	public void addGameScreenText(double x, double y, String text, NotificationType type, boolean isTalking) {
 		screenController.addText(x, y, text, type, isTalking);
 	}
 
 	@Deprecated
 	@Override
-	public void addGameScreenText(final Entity entity, final String text,
-			final NotificationType type, final boolean isTalking) {
+	public void addGameScreenText(final Entity entity, final String text, final NotificationType type,
+			final boolean isTalking) {
 		screenController.addText(entity, text, type, isTalking);
 	}
 
@@ -794,11 +789,13 @@ class SwingClientGUI implements J2DClientGUI {
 			if (outfitDialog == null) {
 				// Here we actually want to call new OutfitColor(). Modifying
 				// OutfitColor.PLAIN would be a bad thing.
-				outfitDialog = new OutfitDialog(frame, "PolanieOnLine - Zmień wygląd postaci", sb.toString(), new OutfitColor(player));
+				outfitDialog = new OutfitDialog(frame, "PolanieOnLine - Zmień wygląd postaci", sb.toString(),
+						new OutfitColor(player));
 
 				outfitDialog.setVisible(true);
 			} else {
-				// XXX: (AntumDeluge) why does this use "OutfitColor.get" but above uses "new OutfitColor"???
+				// XXX: (AntumDeluge) why does this use "OutfitColor.get" but above uses "new
+				// OutfitColor"???
 				outfitDialog.setState(sb.toString(), OutfitColor.get(player));
 
 				outfitDialog.setVisible(true);
@@ -816,7 +813,8 @@ class SwingClientGUI implements J2DClientGUI {
 			if (outfitDialog == null) {
 				// Here we actually want to call new OutfitColor(). Modifying
 				// OutfitColor.PLAIN would be a bad thing.
-				outfitDialog = new OutfitDialog(frame, "PolanieOnLine - Zmień wygląd postaci", stroutfit, new OutfitColor(player));
+				outfitDialog = new OutfitDialog(frame, "PolanieOnLine - Zmień wygląd postaci", stroutfit,
+						new OutfitColor(player));
 				outfitDialog.setVisible(true);
 			} else {
 				outfitDialog.setState(stroutfit, OutfitColor.get(player));
@@ -842,13 +840,11 @@ class SwingClientGUI implements J2DClientGUI {
 			Dimension displaySize = stendhal.getDisplaySize();
 			if (screen.isScaled()) {
 				/*
-				 * Default behavior is otherwise reasonable, except the
-				 * user will likely want to use the vertical space for the
-				 * game screen.
+				 * Default behavior is otherwise reasonable, except the user will likely want to
+				 * use the vertical space for the game screen.
 				 *
-				 * Try to keep the aspect ratio near the optimum; the sizes
-				 * have not changed when this gets called, so push it to the
-				 * EDT.
+				 * Try to keep the aspect ratio near the optimum; the sizes have not changed
+				 * when this gets called, so push it to the EDT.
 				 */
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override
@@ -861,10 +857,10 @@ class SwingClientGUI implements J2DClientGUI {
 			} else {
 				int position = split.getDividerLocation();
 				/*
-				 * The trouble: the size of the game screen is likely the one
-				 * that the player wants to preserve when making the window
-				 * smaller. Swing provides no default way to the old component
-				 * size, so we stash the interesting dimension in oldWidth.
+				 * The trouble: the size of the game screen is likely the one that the player
+				 * wants to preserve when making the window smaller. Swing provides no default
+				 * way to the old component size, so we stash the interesting dimension in
+				 * oldWidth.
 				 */
 				int width = split.getWidth();
 				int oldRightDiff = oldWidth - position;
@@ -872,14 +868,12 @@ class SwingClientGUI implements J2DClientGUI {
 				int underflow = widthChange + position;
 				if (underflow < 0) {
 					/*
-					 * Extreme size reduction. The divider location would have
-					 * changed as the result. Use the previous location instead
-					 * of the current.
+					 * Extreme size reduction. The divider location would have changed as the
+					 * result. Use the previous location instead of the current.
 					 */
 					oldRightDiff = oldWidth - split.getLastDividerLocation();
 				}
-				position = MathHelper.clamp(width - oldRightDiff,
-						split.getMinimumDividerLocation(),
+				position = MathHelper.clamp(width - oldRightDiff, split.getMinimumDividerLocation(),
 						split.getMaximumDividerLocation());
 
 				split.setDividerLocation(position);
@@ -912,7 +906,8 @@ class SwingClientGUI implements J2DClientGUI {
 				pane.setMaximumSize(displaySize);
 				// The user may have resized the screen outside allowed
 				// parameters
-				int overflow = horizontalSplit.getWidth() - horizontalSplit.getDividerLocation() - displaySize.width - divWidth;
+				int overflow = horizontalSplit.getWidth() - horizontalSplit.getDividerLocation() - displaySize.width
+						- divWidth;
 				if (overflow > 0) {
 					horizontalSplit.setDividerLocation(horizontalSplit.getDividerLocation() + overflow);
 				}
@@ -977,8 +972,8 @@ class SwingClientGUI implements J2DClientGUI {
 	}
 
 	/**
-	 * The layered pane where the game screen is does not automatically resize
-	 * the game screen. This handler is needed to do that work.
+	 * The layered pane where the game screen is does not automatically resize the
+	 * game screen. This handler is needed to do that work.
 	 */
 	private static class GameScreenResizer extends ComponentAdapter {
 		private final Component child;

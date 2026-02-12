@@ -41,7 +41,7 @@ import games.stendhal.client.gui.layout.SLayout;
 import games.stendhal.client.listener.PositionChangeListener;
 import games.stendhal.common.CollisionDetection;
 
-	/**
+/**
  * Controller object for the map panel.
  */
 public class MapPanelController implements GameObjects.GameObjectListener, PositionChangeListener, ZoneChangeListener {
@@ -54,9 +54,9 @@ public class MapPanelController implements GameObjects.GameObjectListener, Posit
 	private double x, y;
 
 	/**
- * <code>true</code> if the map should be repainted, <code>false</code>
- * otherwise.
- */
+	 * <code>true</code> if the map should be repainted, <code>false</code>
+	 * otherwise.
+	 */
 	private volatile boolean needsRefresh;
 	/** Force rebuilding the minimap background on the next update. */
 	private volatile boolean forceBackgroundRefresh = true;
@@ -99,8 +99,8 @@ public class MapPanelController implements GameObjects.GameObjectListener, Posit
 	}
 
 	/**
-	 * Add an entity to the map, if it should be displayed to the user. This
-	 * method is thread safe.
+	 * Add an entity to the map, if it should be displayed to the user. This method
+	 * is thread safe.
 	 *
 	 * @param entity the added entity
 	 */
@@ -127,7 +127,8 @@ public class MapPanelController implements GameObjects.GameObjectListener, Posit
 		} else if (entity instanceof Wall) {
 			object = new WallMapObject(entity);
 		} else if (entity instanceof DomesticAnimal) {
-			// Only own pets and sheep are drawn but this is checked in the map object so the user status is always up to date
+			// Only own pets and sheep are drawn but this is checked in the map object so
+			// the user status is always up to date
 			object = new DomesticAnimalMapObject((DomesticAnimal) entity);
 		} else if (entity instanceof Chest) {
 			object = new RPEntityMapObject(entity) {
@@ -149,8 +150,7 @@ public class MapPanelController implements GameObjects.GameObjectListener, Posit
 				entity.addChangeListener(new EntityChangeListener<IEntity>() {
 					@Override
 					public void entityChanged(final IEntity entity, final Object property) {
-						if ((property == IEntity.PROP_POSITION)
-								|| (property == RPEntity.PROP_GHOSTMODE)
+						if ((property == IEntity.PROP_POSITION) || (property == RPEntity.PROP_GHOSTMODE)
 								|| (property == RPEntity.PROP_GROUP_MEMBERSHIP)) {
 							needsRefresh = true;
 						}
@@ -160,7 +160,6 @@ public class MapPanelController implements GameObjects.GameObjectListener, Posit
 			needsRefresh = true;
 		}
 	}
-
 
 	/**
 	 * Remove an entity from the map entity list.
@@ -186,12 +185,9 @@ public class MapPanelController implements GameObjects.GameObjectListener, Posit
 	/**
 	 * Update the map with new data.
 	 *
-	 * @param cd
-	 *            The collision map.
-	 * @param pd
-	 *      	  The protection map.
-	 * @param zone
-	 *            The zone name.
+	 * @param cd          The collision map.
+	 * @param pd          The protection map.
+	 * @param zone        The zone name.
 	 * @param dangerLevel zone danger level
 	 */
 	private void update(final CollisionDetection cd, final CollisionDetection pd, final CollisionDetection sd,
@@ -212,16 +208,14 @@ public class MapPanelController implements GameObjects.GameObjectListener, Posit
 	/**
 	 * The player's position changed.
 	 *
-	 * @param x
-	 *            The X coordinate (in world units).
-	 * @param y
-	 *            The Y coordinate (in world units).
+	 * @param x The X coordinate (in world units).
+	 * @param y The Y coordinate (in world units).
 	 */
 	@Override
 	public void positionChanged(final double x, final double y) {
 		/*
-		 * The client gets occasionally spurious events.
-		 * Suppress repainting unless the position actually changed
+		 * The client gets occasionally spurious events. Suppress repainting unless the
+		 * position actually changed
 		 */
 		if ((this.x != x) || (this.y != y)) {
 			this.x = x;
@@ -231,11 +225,10 @@ public class MapPanelController implements GameObjects.GameObjectListener, Posit
 				public void run() {
 					panel.positionChanged(x, y);
 					/*
-					 * Set the refresh flag after the map offset has been
-					 * actually updated. The position listener for moving map
-					 * objects sets it, but it happens in the game loop thread
-					 * and may be unset before the map panel has actually got
-					 * the correct map offset.
+					 * Set the refresh flag after the map offset has been actually updated. The
+					 * position listener for moving map objects sets it, but it happens in the game
+					 * loop thread and may be unset before the map panel has actually got the
+					 * correct map offset.
 					 */
 					setNeedsRefresh(true);
 				}
@@ -250,12 +243,14 @@ public class MapPanelController implements GameObjects.GameObjectListener, Posit
 
 	@Override
 	public void onZoneChangeCompleted(Zone zone) {
-		update(zone.getCollision(), zone.getProtection(), zone.getSecret(), zone.getReadableName(), zone.getDangerLevel());
+		update(zone.getCollision(), zone.getProtection(), zone.getSecret(), zone.getReadableName(),
+				zone.getDangerLevel());
 	}
 
 	@Override
 	public void onZoneUpdate(Zone zone) {
-		update(zone.getCollision(), zone.getProtection(), zone.getSecret(), zone.getReadableName(), zone.getDangerLevel());
+		update(zone.getCollision(), zone.getProtection(), zone.getSecret(), zone.getReadableName(),
+				zone.getDangerLevel());
 	}
 
 	/**
