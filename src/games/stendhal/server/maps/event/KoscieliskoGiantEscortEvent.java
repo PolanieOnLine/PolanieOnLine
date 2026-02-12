@@ -36,6 +36,7 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 	private static final String GIANT_NPC_NAME = "Wielkolud";
 	private static final int GIANT_EVENT_HP = 50000;
 	private static final int GIANT_EVENT_DEF_BONUS = 220;
+	private static final int GIANT_EVENT_RESISTANCE = 40;
 	private static final int GIANT_FAIL_HP_THRESHOLD = 100;
 	private static final int GIANT_CRITICAL_HP_THRESHOLD = 10000;
 	private static final int GIANT_HEAL_CAP_PER_SECOND = 0;
@@ -144,8 +145,11 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 		}
 
 		snapshot = GiantSnapshot.capture(giantNpc);
+		LOGGER.info(getEventName() + " escort start: giant resistance before buff=" + snapshot.resistance
+				+ ", event resistance=" + GIANT_EVENT_RESISTANCE + ".");
 		giantNpc.setBaseHP(GIANT_EVENT_HP);
 		giantNpc.setHP(GIANT_EVENT_HP);
+		giantNpc.setResistance(GIANT_EVENT_RESISTANCE);
 		applyEscortSurvivabilityBuff(giantNpc, snapshot);
 		eventStartedAtMillis = System.currentTimeMillis();
 		giantHpBeforeTick = GIANT_EVENT_HP;
@@ -161,34 +165,43 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 		SingletonRepository.getTurnNotifier().dontNotify(escortAggroController);
 		SingletonRepository.getTurnNotifier().dontNotify(activityTracker);
 
-		final SpeakerNPC currentGiant = giantNpc;
-		escortSuccess = !failedByGiantHealth
-				&& !failedByLowActivity
-				&& currentGiant != null
-				&& currentGiant.getHP() > GIANT_FAIL_HP_THRESHOLD;
+		final SpeakerNPC currentGiant = giantNpc != null ? giantNpc : SingletonRepository.getNPCList().get(GIANT_NPC_NAME);
+		try {
+			escortSuccess = !failedByGiantHealth
+					&& !failedByLowActivity
+					&& currentGiant != null
+					&& currentGiant.getHP() > GIANT_FAIL_HP_THRESHOLD;
 
-		if (currentGiant != null) {
-			finalHealthRatio = Math.max(0.0d, Math.min(1.0d, (double) currentGiant.getHP() / GIANT_EVENT_HP));
+			if (currentGiant != null) {
+				finalHealthRatio = Math.max(0.0d, Math.min(1.0d, (double) currentGiant.getHP() / GIANT_EVENT_HP));
+			}
+
+			if (escortSuccess) {
+				rewardParticipants();
+			}
+		} finally {
+			if (snapshot != null && currentGiant != null) {
+				final int resistanceBeforeRestore = currentGiant.getResistance();
+				snapshot.restore(currentGiant);
+				LOGGER.info(getEventName() + " escort stop: giant resistance before restore=" + resistanceBeforeRestore
+						+ ", restored resistance=" + currentGiant.getResistance() + ".");
+			} else {
+				LOGGER.info(getEventName() + " escort stop: snapshot restore skipped (giantFound="
+						+ (currentGiant != null) + ", snapshotPresent=" + (snapshot != null) + ").");
+			}
+
+			snapshot = null;
+			giantNpc = null;
+			creatureAnchors.clear();
+			firstTargetLogged.clear();
+			playerSnapshots.clear();
+			playerActivityTicks.clear();
+			rewardEligiblePlayers.clear();
+			announcedWaveOffsets.clear();
+			lastEventFinishedAtMillis = System.currentTimeMillis();
+
+			super.onStop();
 		}
-
-		if (escortSuccess) {
-			rewardParticipants();
-		}
-
-		if (currentGiant != null && snapshot != null) {
-			snapshot.restore(currentGiant);
-		}
-		snapshot = null;
-		giantNpc = null;
-		creatureAnchors.clear();
-		firstTargetLogged.clear();
-		playerSnapshots.clear();
-		playerActivityTicks.clear();
-		rewardEligiblePlayers.clear();
-		announcedWaveOffsets.clear();
-		lastEventFinishedAtMillis = System.currentTimeMillis();
-
-		super.onStop();
 	}
 
 	@Override
@@ -521,23 +534,32 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 		private final int atk;
 		private final int ratk;
 		private final int def;
+		private final int resistance;
 
-		private GiantSnapshot(final int hp, final int baseHp, final int atk, final int ratk, final int def) {
+		private GiantSnapshot(final int hp, final int baseHp, final int atk, final int ratk, final int def, final int resistance) {
 			this.hp = hp;
 			this.baseHp = baseHp;
 			this.atk = atk;
 			this.ratk = ratk;
 			this.def = def;
+			this.resistance = resistance;
 		}
 
 		private static GiantSnapshot capture(final SpeakerNPC giant) {
-			return new GiantSnapshot(giant.getHP(), giant.getBaseHP(), giant.getAtk(), giant.getRatk(), giant.getDef());
+			return new GiantSnapshot(
+					giant.getHP(),
+					giant.getBaseHP(),
+					giant.getAtk(),
+					giant.getRatk(),
+					giant.getDef(),
+					giant.getResistance());
 		}
 
 		private void restore(final SpeakerNPC giant) {
 			giant.setAtk(atk);
 			giant.setRatk(ratk);
 			giant.setDef(def);
+			giant.setResistance(resistance);
 			giant.setBaseHP(baseHp);
 			giant.setHP(Math.min(hp, baseHp));
 		}
