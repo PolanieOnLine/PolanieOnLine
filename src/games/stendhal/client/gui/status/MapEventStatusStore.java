@@ -63,7 +63,7 @@ public final class MapEventStatusStore {
 			if (!cached.isActive()) {
 				continue;
 			}
-			final ActiveMapEventStatus status = cached.getStatus();
+			final ActiveMapEventStatus status = cached.getStatusAt(nowMillis);
 			if (!status.getZones().contains(zoneName)) {
 				continue;
 			}
@@ -139,6 +139,20 @@ public final class MapEventStatusStore {
 
 		ActiveMapEventStatus getStatus() {
 			return status;
+		}
+
+		ActiveMapEventStatus getStatusAt(final long nowMillis) {
+			if (!isActive()) {
+				return status;
+			}
+			final long elapsedMillis = Math.max(0L, nowMillis - receivedAtMillis);
+			final int elapsedSeconds = (int) (elapsedMillis / 1000L);
+			final int projectedRemaining = Math.max(0, status.getRemainingSeconds() - elapsedSeconds);
+			if (projectedRemaining == status.getRemainingSeconds()) {
+				return status;
+			}
+			return new ActiveMapEventStatus(status.getEventId(), status.getEventName(), projectedRemaining,
+					status.getTotalSeconds(), status.getZones());
 		}
 
 		long getReceivedAtMillis() {

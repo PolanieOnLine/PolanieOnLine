@@ -93,6 +93,10 @@ class SwingClientGUI implements J2DClientGUI {
 	/** Scrolling speed when using the mouse wheel. */
 	private static final int SCROLLING_SPEED = 8;
 	private static final int EVENT_OVERLAY_TOP_MARGIN = 12;
+	private static final int EVENT_REFRESH_INTERVAL_MILLIS = 100;
+	private static final int EVENT_OVERLAY_DEBOUNCE_MILLIS = 300;
+	private static final int EVENT_OVERLAY_FADE_DURATION_MILLIS = 220;
+	private static final int EVENT_END_STATE_DURATION_MILLIS = 1200;
 	/** Property name used to determine if scaling is wanted. */
 	private static final String SCALE_PREFERENCE_PROPERTY = "ui.scale_screen";
 	private static final Logger logger = Logger.getLogger(SwingClientGUI.class);
@@ -101,6 +105,12 @@ class SwingClientGUI implements J2DClientGUI {
 	private final GameScreen screen;
 	private final EventProgressBarOverlay eventProgressOverlay;
 	private final Timer eventProgressRefreshTimer;
+	private final Timer eventOverlayDebounceTimer;
+	private final Timer eventOverlayFadeTimer;
+	private final Timer eventOverlayEndStateTimer;
+	private ActiveMapEventStatus lastShownEventStatus;
+	private long fadeStartMillis;
+	private long overlayRefreshSuppressedUntilMillis;
 	private final ScreenController screenController;
 	private final ContainerPanel containerPanel;
 	private final QuitDialog quitDialog;
@@ -160,13 +170,36 @@ class SwingClientGUI implements J2DClientGUI {
 		pane.add(screen, Component.LEFT_ALIGNMENT, JLayeredPane.DEFAULT_LAYER);
 		eventProgressOverlay = new EventProgressBarOverlay();
 		pane.add(eventProgressOverlay, JLayeredPane.PALETTE_LAYER);
-		eventProgressRefreshTimer = new Timer(1000, new AbstractAction() {
+		eventProgressRefreshTimer = new Timer(EVENT_REFRESH_INTERVAL_MILLIS, new AbstractAction() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
 				refreshEventProgressOverlay();
 			}
 		});
 		eventProgressRefreshTimer.start();
+
+		eventOverlayDebounceTimer = new Timer(EVENT_OVERLAY_DEBOUNCE_MILLIS, new AbstractAction() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				refreshEventProgressOverlay();
+			}
+		});
+		eventOverlayDebounceTimer.setRepeats(false);
+
+		eventOverlayFadeTimer = new Timer(40, new AbstractAction() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				updateOverlayFade();
+			}
+		});
+
+		eventOverlayEndStateTimer = new Timer(EVENT_END_STATE_DURATION_MILLIS, new AbstractAction() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				startOverlayFadeOut();
+			}
+		});
+		eventOverlayEndStateTimer.setRepeats(false);
 
 		runicAltar = new RunicAltar();
 		pane.add(runicAltar.getRunicAltar(), JLayeredPane.MODAL_LAYER);
@@ -595,19 +628,20 @@ class SwingClientGUI implements J2DClientGUI {
 			@Override
 			public void onZoneUpdate(final Zone zone) {
 				currentZoneName = User.isNull() ? null : User.get().getZoneName();
-				refreshEventProgressOverlay();
+				scheduleOverlayRefreshDebounced();
 			}
 
 			@Override
 			public void onZoneChangeCompleted(final Zone zone) {
 				currentZoneName = User.isNull() ? null : User.get().getZoneName();
 				repositionEventProgressOverlay();
-				refreshEventProgressOverlay();
+				MapEventStatusStore.get().requestSnapshotRefresh();
+				scheduleOverlayRefreshDebounced();
 			}
 
 			@Override
 			public void onZoneChange(final Zone zone) {
-				eventProgressOverlay.hideOverlay();
+				scheduleOverlayRefreshDebounced();
 			}
 		});
 		// Disable side panel animation while changing zone
@@ -632,12 +666,23 @@ class SwingClientGUI implements J2DClientGUI {
 		if (!pane.isShowing()) {
 			return;
 		}
+		if (System.currentTimeMillis() < overlayRefreshSuppressedUntilMillis) {
+			return;
+		}
 		final ActiveMapEventStatus visibleStatus = MapEventStatusStore.get()
 				.getVisibleStatusForZone(resolveCurrentZoneName());
 		if (visibleStatus == null) {
-			eventProgressOverlay.hideOverlay();
+			if ((lastShownEventStatus != null) && (lastShownEventStatus.getRemainingSeconds() <= 0)) {
+				showEventEndedState(lastShownEventStatus);
+				return;
+			}
+			startOverlayFadeOut();
 			return;
 		}
+
+		lastShownEventStatus = visibleStatus;
+		stopOverlayFade();
+		eventOverlayEndStateTimer.stop();
 
 		final String value = formatRemaining(visibleStatus.getRemainingSeconds()) + " • "
 				+ visibleStatus.getProgressPercent() + "%";
@@ -649,6 +694,45 @@ class SwingClientGUI implements J2DClientGUI {
 					visibleStatus.getProgressPercent(), value);
 		}
 		repositionEventProgressOverlay();
+	}
+
+	private void scheduleOverlayRefreshDebounced() {
+		overlayRefreshSuppressedUntilMillis = System.currentTimeMillis() + EVENT_OVERLAY_DEBOUNCE_MILLIS;
+		eventOverlayDebounceTimer.restart();
+	}
+
+	private void showEventEndedState(final ActiveMapEventStatus endedStatus) {
+		if (eventOverlayEndStateTimer.isRunning()) {
+			return;
+		}
+		stopOverlayFade();
+		eventProgressOverlay.showTerminalState(endedStatus.getEventName(), "Zdarzenie zakończone");
+		eventOverlayEndStateTimer.restart();
+		lastShownEventStatus = null;
+	}
+
+	private void startOverlayFadeOut() {
+		if (!eventProgressOverlay.isVisible() || eventOverlayFadeTimer.isRunning()) {
+			return;
+		}
+		eventOverlayEndStateTimer.stop();
+		fadeStartMillis = System.currentTimeMillis();
+		eventOverlayFadeTimer.start();
+	}
+
+	private void stopOverlayFade() {
+		eventOverlayFadeTimer.stop();
+		eventProgressOverlay.setOverlayAlpha(1.0f);
+	}
+
+	private void updateOverlayFade() {
+		final long elapsed = Math.max(0L, System.currentTimeMillis() - fadeStartMillis);
+		final float alpha = Math.max(0.0f, 1.0f - ((float) elapsed / (float) EVENT_OVERLAY_FADE_DURATION_MILLIS));
+		eventProgressOverlay.setOverlayAlpha(alpha);
+		if (alpha <= 0.0f) {
+			eventOverlayFadeTimer.stop();
+			eventProgressOverlay.hideOverlay();
+		}
 	}
 
 	private String resolveCurrentZoneName() {
