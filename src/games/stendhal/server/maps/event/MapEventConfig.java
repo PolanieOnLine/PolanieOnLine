@@ -40,6 +40,7 @@ public final class MapEventConfig {
 	private final int triggerThreshold;
 	private final LocalTime defaultStartTime;
 	private final int defaultIntervalDays;
+	private final boolean giantOnlyAggro;
 
 	private MapEventConfig(final Builder builder) {
 		eventName = builder.eventName;
@@ -58,6 +59,7 @@ public final class MapEventConfig {
 		triggerThreshold = builder.triggerThreshold;
 		defaultStartTime = builder.defaultStartTime;
 		defaultIntervalDays = builder.defaultIntervalDays;
+		giantOnlyAggro = builder.giantOnlyAggro;
 	}
 
 	public String getEventName() {
@@ -132,6 +134,10 @@ public final class MapEventConfig {
 		return defaultIntervalDays;
 	}
 
+	public boolean isGiantOnlyAggro() {
+		return giantOnlyAggro;
+	}
+
 	public static Builder builder(final String eventName) {
 		return new Builder(eventName);
 	}
@@ -153,6 +159,7 @@ public final class MapEventConfig {
 		private int triggerThreshold;
 		private LocalTime defaultStartTime;
 		private int defaultIntervalDays = 1;
+		private boolean giantOnlyAggro;
 
 		private Builder(final String eventName) {
 			this.eventName = Objects.requireNonNull(eventName, "eventName");
@@ -244,6 +251,11 @@ public final class MapEventConfig {
 
 		public Builder defaultIntervalDays(final int defaultIntervalDays) {
 			this.defaultIntervalDays = defaultIntervalDays;
+			return this;
+		}
+
+		public Builder giantOnlyAggro(final boolean giantOnlyAggro) {
+			this.giantOnlyAggro = giantOnlyAggro;
 			return this;
 		}
 
