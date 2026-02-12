@@ -37,7 +37,8 @@ import games.stendhal.server.entity.player.Player;
 public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 	private static final Logger LOGGER = Logger.getLogger(KoscieliskoGiantEscortEvent.class);
 	private static final String GIANT_NPC_NAME = "Wielkolud";
-	private static final int GIANT_EVENT_HP = 50000;
+	private static final int MAX_ENTITY_HP_SHORT = 32767;
+	private static final int GIANT_EVENT_HP = 32000;
 	private static final int GIANT_EVENT_DEF_BONUS = 220;
 	private static final int GIANT_EVENT_RESISTANCE = 40;
 	private static final int GIANT_FAIL_HP_THRESHOLD = 100;
@@ -89,6 +90,7 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 	private volatile boolean halfProgressAnnounced;
 	private volatile boolean escortSuccess;
 	private volatile long eventStartedAtMillis;
+	private volatile int giantEventHp;
 	private volatile int giantHpBeforeTick;
 	private volatile int lowActivityTicks;
 	private volatile double finalHealthRatio;
@@ -115,7 +117,8 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 		finalHealthRatio = 0.0d;
 		snapshot = null;
 		eventStartedAtMillis = 0L;
-		giantHpBeforeTick = GIANT_EVENT_HP;
+		giantEventHp = GIANT_EVENT_HP;
+		giantHpBeforeTick = giantEventHp;
 		lowActivityTicks = 0;
 		creatureAnchors.clear();
 		firstTargetLogged.clear();
@@ -140,14 +143,15 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 		}
 
 		snapshot = GiantSnapshot.capture(giantNpc);
+		giantEventHp = clampEntityHpToShort(GIANT_EVENT_HP, "GIANT_EVENT_HP");
 		LOGGER.info(getEventName() + " escort start: giant resistance before buff=" + snapshot.resistance
 				+ ", event resistance=" + GIANT_EVENT_RESISTANCE + ".");
-		giantNpc.setBaseHP(GIANT_EVENT_HP);
-		giantNpc.setHP(GIANT_EVENT_HP);
+		giantNpc.setBaseHP(giantEventHp);
+		giantNpc.setHP(giantEventHp);
 		giantNpc.setResistance(GIANT_EVENT_RESISTANCE);
 		applyEscortSurvivabilityBuff(giantNpc, snapshot);
 		eventStartedAtMillis = System.currentTimeMillis();
-		giantHpBeforeTick = GIANT_EVENT_HP;
+		giantHpBeforeTick = giantEventHp;
 		announceProgressStatus("START", 0);
 		scheduleHealthMonitor();
 		scheduleAggroController();
@@ -168,7 +172,7 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 					&& currentGiant.getHP() > GIANT_FAIL_HP_THRESHOLD;
 
 			if (currentGiant != null) {
-				finalHealthRatio = Math.max(0.0d, Math.min(1.0d, (double) currentGiant.getHP() / GIANT_EVENT_HP));
+				finalHealthRatio = Math.max(0.0d, Math.min(1.0d, (double) currentGiant.getHP() / giantEventHp));
 			}
 
 			if (escortSuccess) {
@@ -512,7 +516,7 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 
 		if (!criticalHealthAnnounced && currentGiant.getHP() <= GIANT_CRITICAL_HP_THRESHOLD) {
 			criticalHealthAnnounced = true;
-			final int hpPercent = Math.max(0, Math.round((currentGiant.getHP() * 100.0f) / GIANT_EVENT_HP));
+			final int hpPercent = Math.max(0, Math.round((currentGiant.getHP() * 100.0f) / giantEventHp));
 			SingletonRepository.getRuleProcessor().tellAllPlayers(
 					NotificationType.PRIVMSG,
 					"[Eskorta Wielkoluda] Krytyczne HP! Wielkolud ma tylko " + hpPercent + "% życia.");
@@ -529,7 +533,7 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 
 	private void announceProgressStatus(final String stage, final int progressPercent) {
 		final SpeakerNPC currentGiant = giantNpc;
-		final int hpPercent = currentGiant == null ? 0 : Math.max(0, Math.round((currentGiant.getHP() * 100.0f) / GIANT_EVENT_HP));
+		final int hpPercent = currentGiant == null ? 0 : Math.max(0, Math.round((currentGiant.getHP() * 100.0f) / giantEventHp));
 		SingletonRepository.getRuleProcessor().tellAllPlayers(
 				NotificationType.PRIVMSG,
 				"[Eskorta Wielkoluda] Etap: " + stage + " | Postęp: " + progressPercent + "% | HP Wielkoluda: " + hpPercent + "%.");
@@ -645,6 +649,15 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 		final int dx = creature.getX() - anchor.x;
 		final int dy = creature.getY() - anchor.y;
 		return dx * dx + dy * dy > LEASH_RANGE * LEASH_RANGE;
+	}
+
+	private int clampEntityHpToShort(final int configuredHp, final String sourceName) {
+		if (configuredHp > MAX_ENTITY_HP_SHORT) {
+			LOGGER.warn(getEventName() + " received out-of-range HP from " + sourceName + "=" + configuredHp
+					+ "; clamping to " + MAX_ENTITY_HP_SHORT + " (SHORT max).");
+			return MAX_ENTITY_HP_SHORT;
+		}
+		return configuredHp;
 	}
 
 	private static final class GiantSnapshot {
