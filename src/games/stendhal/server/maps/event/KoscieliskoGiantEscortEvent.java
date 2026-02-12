@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.function.IntPredicate;
 
 import org.apache.log4j.Logger;
 
@@ -38,16 +39,12 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 	private static final Logger LOGGER = Logger.getLogger(KoscieliskoGiantEscortEvent.class);
 	private static final String GIANT_NPC_NAME = "Wielkolud";
 	private static final int MAX_ENTITY_HP_SHORT = 32767;
-	private static final int GIANT_EVENT_HP = 32000;
-	private static final int GIANT_EVENT_DEF_BONUS = 220;
-	private static final int GIANT_EVENT_RESISTANCE = 40;
 	private static final int GIANT_FAIL_HP_THRESHOLD = 100;
 	private static final int GIANT_CRITICAL_HP_THRESHOLD = 10000;
 	private static final int GIANT_HEAL_CAP_PER_SECOND = 0;
 	private static final int HEALTH_CHECK_INTERVAL_SECONDS = 1;
 	private static final int AGGRO_TICK_INTERVAL_SECONDS = 1;
 	private static final int ACTIVITY_SAMPLE_INTERVAL_SECONDS = 10;
-	private static final int EVENT_COOLDOWN_MINUTES = 45;
 	private static final int MIN_PLAYERS_TO_START = 3;
 	private static final int MIN_ACTIVITY_TICKS_FOR_REWARD = 6;
 	private static final int MAX_LOW_ACTIVITY_TICKS = 12;
@@ -59,10 +56,6 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 	private static final int ESCORT_RING_MIN_RADIUS = 4;
 	private static final int ESCORT_RING_MAX_RADIUS = 10;
 	private static final int ESCORT_SPAWN_ATTEMPTS = 30;
-	private static final int EVENT_ACTIVE_CREATURE_HARD_CAP = 34;
-	private static final int WAVE_BUDGET_BASE = 10;
-	private static final int WAVE_BUDGET_PER_STAGE = 4;
-	private static final int WAVE_BUDGET_MAX = 24;
 	private static final int LOW_PRESSURE_ACTIVE_CREATURE_THRESHOLD = 7;
 	private static volatile long lastEventFinishedAtMillis;
 
@@ -86,6 +79,14 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 			samplePlayerActivity();
 		}
 	};
+
+	private final MapEventConfig.EscortSettings escortSettings;
+	private final int giantDefBonus;
+	private final int giantResistance;
+	private final int eventCooldownMinutes;
+	private final int eventActiveCreatureHardCap;
+	private final int waveBudgetBase;
+	private final int waveBudgetPerStage;
 
 	private volatile SpeakerNPC giantNpc;
 	private volatile GiantSnapshot snapshot;
@@ -112,7 +113,36 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 	private volatile int currentWaveBudget = 0;
 
 	public KoscieliskoGiantEscortEvent() {
-		super(LOGGER, MapEventConfigLoader.load(MapEventConfigLoader.KOSCIELISKO_GIANT_ESCORT));
+		this(MapEventConfigLoader.load(MapEventConfigLoader.KOSCIELISKO_GIANT_ESCORT));
+	}
+
+	private KoscieliskoGiantEscortEvent(final MapEventConfig config) {
+		super(LOGGER, config);
+		escortSettings = config.getEscortSettings();
+		giantDefBonus = resolveConfiguredInt(
+			escortSettings != null ? escortSettings.getGiantDefBonus() : null,
+			220,
+			value -> value >= 0);
+		giantResistance = resolveConfiguredInt(
+			escortSettings != null ? escortSettings.getResistance() : null,
+			40,
+			value -> value >= 0);
+		eventCooldownMinutes = resolveConfiguredInt(
+			escortSettings != null ? escortSettings.getCooldownMinutes() : null,
+			45,
+			value -> value >= 0);
+		eventActiveCreatureHardCap = resolveConfiguredInt(
+			escortSettings != null ? escortSettings.getHardCap() : null,
+			34,
+			value -> value > 0);
+		waveBudgetBase = resolveConfiguredInt(
+			escortSettings != null ? escortSettings.getWaveBudgetBase() : null,
+			10,
+			value -> value >= 0);
+		waveBudgetPerStage = resolveConfiguredInt(
+			escortSettings != null ? escortSettings.getWaveBudgetPerStage() : null,
+			4,
+			value -> value >= 0);
 	}
 
 	@Override
@@ -126,7 +156,7 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 		finalHealthRatio = 0.0d;
 		snapshot = null;
 		eventStartedAtMillis = 0L;
-		giantEventHp = GIANT_EVENT_HP;
+		giantEventHp = resolveGiantEventHp();
 		giantHpBeforeTick = giantEventHp;
 		lowActivityTicks = 0;
 		creatureAnchors.clear();
@@ -155,12 +185,12 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 		}
 
 		snapshot = GiantSnapshot.capture(giantNpc);
-		giantEventHp = clampEntityHpToShort(GIANT_EVENT_HP, "GIANT_EVENT_HP");
+		giantEventHp = resolveGiantEventHp();
 		LOGGER.info(getEventName() + " escort start: giant resistance before buff=" + snapshot.resistance
-				+ ", event resistance=" + GIANT_EVENT_RESISTANCE + ".");
+				+ ", event resistance=" + giantResistance + ".");
 		giantNpc.setBaseHP(giantEventHp);
 		giantNpc.setHP(giantEventHp);
-		giantNpc.setResistance(GIANT_EVENT_RESISTANCE);
+		giantNpc.setResistance(giantResistance);
 		applyEscortSurvivabilityBuff(giantNpc, snapshot);
 		eventStartedAtMillis = System.currentTimeMillis();
 		giantHpBeforeTick = giantEventHp;
@@ -272,7 +302,7 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 				continue;
 			}
 
-			final int hardCapSlots = Math.max(0, EVENT_ACTIVE_CREATURE_HARD_CAP - activeCreatures);
+			final int hardCapSlots = Math.max(0, eventActiveCreatureHardCap - activeCreatures);
 			int budgetSlots = getCurrentWaveBudget();
 			if (activeCreatures < LOW_PRESSURE_ACTIVE_CREATURE_THRESHOLD && hardCapSlots > 0 && budgetSlots <= 0) {
 				budgetSlots = 1;
@@ -321,11 +351,11 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 		}
 		currentWaveOffsetSeconds = waveOffset;
 		final int stage = resolveDifficultyStage(waveOffset);
-		currentWaveBudget = Math.min(WAVE_BUDGET_MAX, WAVE_BUDGET_BASE + ((stage - 1) * WAVE_BUDGET_PER_STAGE));
+		currentWaveBudget = Math.min(eventActiveCreatureHardCap, waveBudgetBase + ((stage - 1) * waveBudgetPerStage));
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug(getEventName() + " wave budget initialized: waveOffset=" + waveOffset + "s, stage=" + stage
 					+ ", budget=" + currentWaveBudget + ", active=" + countActiveEventCreatures() + ", hardCap="
-					+ EVENT_ACTIVE_CREATURE_HARD_CAP + ".");
+					+ eventActiveCreatureHardCap + ".");
 		}
 	}
 
@@ -353,6 +383,28 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 			return;
 		}
 		currentWaveBudget = Math.max(0, currentWaveBudget - spawned);
+	}
+
+	private int resolveGiantEventHp() {
+		final int configuredHp = resolveConfiguredInt(
+			escortSettings != null ? escortSettings.getGiantHp() : null,
+			32000,
+			value -> value > 0);
+		return clampEntityHpToShort(configuredHp, "escortSettings.giantHp");
+	}
+
+	private int resolveConfiguredInt(final Integer configuredValue,
+			final int fallbackValue,
+			final IntPredicate validator) {
+		if (configuredValue == null) {
+			return fallbackValue;
+		}
+		if (!validator.test(configuredValue)) {
+			LOGGER.warn(getEventName() + " invalid escort setting value=" + configuredValue
+					+ "; falling back to " + fallbackValue + ".");
+			return fallbackValue;
+		}
+		return configuredValue;
 	}
 
 	private int countActiveEventCreatures() {
@@ -676,7 +728,7 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 			return;
 		}
 
-		giant.setDef(baseline.def + GIANT_EVENT_DEF_BONUS);
+		giant.setDef(baseline.def + giantDefBonus);
 	}
 
 	private void announceProgressStatus(final String stage, final int progressPercent) {
@@ -706,7 +758,7 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 		if (lastEventFinishedAtMillis <= 0L) {
 			return true;
 		}
-		final long cooldownMillis = TimeUnit.MINUTES.toMillis(EVENT_COOLDOWN_MINUTES);
+		final long cooldownMillis = TimeUnit.MINUTES.toMillis(eventCooldownMinutes);
 		final long readyAt = lastEventFinishedAtMillis + cooldownMillis;
 		if (System.currentTimeMillis() >= readyAt) {
 			return true;

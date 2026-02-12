@@ -41,6 +41,7 @@ public final class MapEventConfig {
 	private final LocalTime defaultStartTime;
 	private final int defaultIntervalDays;
 	private final boolean giantOnlyAggro;
+	private final EscortSettings escortSettings;
 
 	private MapEventConfig(final Builder builder) {
 		eventName = builder.eventName;
@@ -60,6 +61,7 @@ public final class MapEventConfig {
 		defaultStartTime = builder.defaultStartTime;
 		defaultIntervalDays = builder.defaultIntervalDays;
 		giantOnlyAggro = builder.giantOnlyAggro;
+		escortSettings = builder.escortSettings;
 	}
 
 	public String getEventName() {
@@ -138,6 +140,10 @@ public final class MapEventConfig {
 		return giantOnlyAggro;
 	}
 
+	public EscortSettings getEscortSettings() {
+		return escortSettings;
+	}
+
 	public static Builder builder(final String eventName) {
 		return new Builder(eventName);
 	}
@@ -160,6 +166,7 @@ public final class MapEventConfig {
 		private LocalTime defaultStartTime;
 		private int defaultIntervalDays = 1;
 		private boolean giantOnlyAggro;
+		private EscortSettings escortSettings;
 
 		private Builder(final String eventName) {
 			this.eventName = Objects.requireNonNull(eventName, "eventName");
@@ -259,6 +266,11 @@ public final class MapEventConfig {
 			return this;
 		}
 
+		public Builder escortSettings(final EscortSettings escortSettings) {
+			this.escortSettings = escortSettings;
+			return this;
+		}
+
 		public MapEventConfig build() {
 			if (duration.isNegative() || duration.isZero()) {
 				throw new IllegalArgumentException("duration must be positive");
@@ -296,7 +308,136 @@ public final class MapEventConfig {
 			if (defaultIntervalDays <= 0) {
 				throw new IllegalArgumentException("defaultIntervalDays must be > 0");
 			}
+			if (escortSettings != null) {
+				escortSettings.validate();
+			}
 			return new MapEventConfig(this);
+		}
+	}
+
+	public static final class EscortSettings {
+		private static final int MAX_ENTITY_HP_SHORT = 32767;
+
+		private final int giantHp;
+		private final int giantDefBonus;
+		private final int resistance;
+		private final int hardCap;
+		private final int waveBudgetBase;
+		private final int waveBudgetPerStage;
+		private final int cooldownMinutes;
+
+		private EscortSettings(final Builder builder) {
+			giantHp = builder.giantHp;
+			giantDefBonus = builder.giantDefBonus;
+			resistance = builder.resistance;
+			hardCap = builder.hardCap;
+			waveBudgetBase = builder.waveBudgetBase;
+			waveBudgetPerStage = builder.waveBudgetPerStage;
+			cooldownMinutes = builder.cooldownMinutes;
+		}
+
+		public int getGiantHp() {
+			return giantHp;
+		}
+
+		public int getGiantDefBonus() {
+			return giantDefBonus;
+		}
+
+		public int getResistance() {
+			return resistance;
+		}
+
+		public int getHardCap() {
+			return hardCap;
+		}
+
+		public int getWaveBudgetBase() {
+			return waveBudgetBase;
+		}
+
+		public int getWaveBudgetPerStage() {
+			return waveBudgetPerStage;
+		}
+
+		public int getCooldownMinutes() {
+			return cooldownMinutes;
+		}
+
+		private void validate() {
+			if (giantHp <= 0 || giantHp > MAX_ENTITY_HP_SHORT) {
+				throw new IllegalArgumentException("escortSettings.giantHp must be in range 1-" + MAX_ENTITY_HP_SHORT);
+			}
+			if (hardCap <= 0) {
+				throw new IllegalArgumentException("escortSettings.hardCap must be > 0");
+			}
+			if (waveBudgetBase < 0) {
+				throw new IllegalArgumentException("escortSettings.waveBudgetBase must be >= 0");
+			}
+			if (waveBudgetPerStage < 0) {
+				throw new IllegalArgumentException("escortSettings.waveBudgetPerStage must be >= 0");
+			}
+			if (cooldownMinutes < 0) {
+				throw new IllegalArgumentException("escortSettings.cooldownMinutes must be >= 0");
+			}
+		}
+
+		public static Builder builder() {
+			return new Builder();
+		}
+
+		public static final class Builder {
+			private int giantHp;
+			private int giantDefBonus;
+			private int resistance;
+			private int hardCap;
+			private int waveBudgetBase;
+			private int waveBudgetPerStage;
+			private int cooldownMinutes;
+
+			private Builder() {
+			}
+
+			public Builder giantHp(final int giantHp) {
+				this.giantHp = giantHp;
+				return this;
+			}
+
+			public Builder giantDefBonus(final int giantDefBonus) {
+				this.giantDefBonus = giantDefBonus;
+				return this;
+			}
+
+			public Builder resistance(final int resistance) {
+				this.resistance = resistance;
+				return this;
+			}
+
+			public Builder hardCap(final int hardCap) {
+				this.hardCap = hardCap;
+				return this;
+			}
+
+			public Builder waveBudgetBase(final int waveBudgetBase) {
+				this.waveBudgetBase = waveBudgetBase;
+				return this;
+			}
+
+			public Builder waveBudgetPerStage(final int waveBudgetPerStage) {
+				this.waveBudgetPerStage = waveBudgetPerStage;
+				return this;
+			}
+
+			public Builder cooldownMinutes(final int cooldownMinutes) {
+				this.cooldownMinutes = cooldownMinutes;
+				return this;
+			}
+
+			public EscortSettings build() {
+				final EscortSettings settings = new EscortSettings(this);
+				settings.validate();
+				return settings;
+			}
 		}
 	}
 
