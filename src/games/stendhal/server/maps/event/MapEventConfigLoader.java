@@ -17,11 +17,25 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+
 import games.stendhal.server.maps.dragon.DragonMapEventConfigProvider;
 import games.stendhal.server.maps.kikareukin.KikareukinMapEventConfigProvider;
 import games.stendhal.server.maps.koscielisko.KoscieliskoMapEventConfigProvider;
 
 public final class MapEventConfigLoader {
+	private static final Logger LOGGER = Logger.getLogger(MapEventConfigLoader.class);
+
+	/**
+	 * Naming convention for globally unique event IDs:
+	 * <ul>
+	 * <li>{@code dragon_*} for Dragon Land events</li>
+	 * <li>{@code koscielisko_*} for Kościelisko events</li>
+	 * <li>{@code kikareukin_*} for Kikareukin events</li>
+	 * </ul>
+	 *
+	 * Prefixing IDs by domain helps avoid collisions between independent providers.
+	 */
 	public static final String DRAGON_LAND_DEFAULT = DragonMapEventConfigProvider.DRAGON_LAND_DEFAULT;
 	public static final String KIKAREUKIN_ANGEL_PREVIEW = KikareukinMapEventConfigProvider.KIKAREUKIN_ANGEL_PREVIEW;
 	public static final String KOSCIELISKO_GIANT_ESCORT = KoscieliskoMapEventConfigProvider.KOSCIELISKO_GIANT_ESCORT;
@@ -53,18 +67,37 @@ public final class MapEventConfigLoader {
 	}
 
 	private static Map<String, MapEventConfig> createConfigs() {
-		final Map<String, MapEventConfig> configs = new LinkedHashMap<>();
-		for (MapEventConfigProvider provider : Arrays.asList(
+		return createConfigs(Arrays.asList(
 				new DragonMapEventConfigProvider(),
 				new KoscieliskoMapEventConfigProvider(),
-				new KikareukinMapEventConfigProvider())) {
+				new KikareukinMapEventConfigProvider()));
+	}
+
+	static Map<String, MapEventConfig> createConfigs(final Iterable<MapEventConfigProvider> providers) {
+		final Map<String, MapEventConfig> configs = new LinkedHashMap<>();
+		final Map<String, String> ownerProvidersByEventId = new LinkedHashMap<>();
+
+		for (MapEventConfigProvider provider : providers) {
+			final String providerName = providerName(provider);
 			for (Map.Entry<String, MapEventConfig> entry : provider.loadConfigs().entrySet()) {
-				if (configs.put(entry.getKey(), entry.getValue()) != null) {
-					throw new IllegalStateException("Duplicate map event config id: " + entry.getKey() + ".");
+				final String eventId = entry.getKey();
+				final String previousOwner = ownerProvidersByEventId.putIfAbsent(eventId, providerName);
+				if (previousOwner != null) {
+					final String errorMessage = "Duplicate map event eventId='" + eventId
+							+ "' declared by providers '" + previousOwner + "' and '" + providerName
+							+ "'. Event registry initialization aborted.";
+					LOGGER.error(errorMessage);
+					throw new IllegalStateException(errorMessage);
 				}
+				configs.put(eventId, entry.getValue());
 			}
 		}
 
 		return Collections.unmodifiableMap(configs);
+	}
+
+	private static String providerName(final MapEventConfigProvider provider) {
+		final String simpleName = provider.getClass().getSimpleName();
+		return simpleName.isEmpty() ? provider.getClass().getName() : simpleName;
 	}
 }
