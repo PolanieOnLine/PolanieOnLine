@@ -9,9 +9,12 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-package games.stendhal.server.maps.event;
+package games.stendhal.server.maps.kikareukin;
 
 import org.apache.log4j.Logger;
+
+import games.stendhal.server.maps.event.ConfiguredMapEvent;
+import games.stendhal.server.maps.event.MapEventConfigLoader;
 
 public final class KikareukinAngelEvent extends ConfiguredMapEvent {
 	private static final Logger LOGGER = Logger.getLogger(KikareukinAngelEvent.class);

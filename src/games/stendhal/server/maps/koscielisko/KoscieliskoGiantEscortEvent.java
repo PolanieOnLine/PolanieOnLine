@@ -9,7 +9,7 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
-package games.stendhal.server.maps.event;
+package games.stendhal.server.maps.koscielisko;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -34,6 +34,10 @@ import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.maps.event.ConfiguredMapEvent;
+import games.stendhal.server.maps.event.MapEventConfig;
+import games.stendhal.server.maps.event.MapEventConfigLoader;
+import games.stendhal.server.maps.event.RandomSafeSpotSpawnStrategy;
 
 public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 	private static final Logger LOGGER = Logger.getLogger(KoscieliskoGiantEscortEvent.class);

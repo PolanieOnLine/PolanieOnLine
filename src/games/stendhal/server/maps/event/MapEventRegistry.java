@@ -20,6 +20,8 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 
 import games.stendhal.server.maps.dragon.DragonLandEvent;
+import games.stendhal.server.maps.kikareukin.KikareukinAngelEvent;
+import games.stendhal.server.maps.koscielisko.KoscieliskoGiantEscortEvent;
 
 public final class MapEventRegistry {
 	private static final Logger LOGGER = Logger.getLogger(MapEventRegistry.class);
