@@ -210,16 +210,15 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 	@Override
 	protected String getStopAnnouncementMessage() {
 		if (escortSuccess) {
-			return "Eskorta zakończona sukcesem! Wielkolud przetrwał napór wrogów (HP: "
-					+ Math.round(finalHealthRatio * 100.0d) + "%).";
+			return "Wielkolud ocalał. Szlak utrzymany (siły: " + Math.round(finalHealthRatio * 100.0d) + "%).";
 		}
 		if (blockedByCooldown) {
-			return "Eskorta Wielkoluda nie wystartowała - wydarzenie jest jeszcze na cooldownie.";
+			return "Szlak jeszcze zamknięty. Dajcie ludziom odetchnąć przed kolejną eskortą.";
 		}
 		if (failedByLowActivity) {
-			return "Eskorta zakończona porażką - zbyt niska aktywność graczy.";
+			return "Eskorta padła. Za mało obrońców na szlaku.";
 		}
-		return "Eskorta zakończona porażką - Wielkolud został ciężko ranny.";
+		return "Eskorta padła. Wielkolud nie utrzymał marszu.";
 	}
 
 	@Override
@@ -573,7 +572,7 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 			final int hpPercent = Math.max(0, Math.round((currentGiant.getHP() * 100.0f) / giantEventHp));
 			SingletonRepository.getRuleProcessor().tellAllPlayers(
 					NotificationType.PRIVMSG,
-					"[Eskorta Wielkoluda] Krytyczne HP! Wielkolud ma tylko " + hpPercent + "% życia.");
+					"[Kościelisko] Wielkolud słabnie! Zostało mu " + hpPercent + "% sił.");
 		}
 	}
 
@@ -588,9 +587,24 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 	private void announceProgressStatus(final String stage, final int progressPercent) {
 		final SpeakerNPC currentGiant = giantNpc;
 		final int hpPercent = currentGiant == null ? 0 : Math.max(0, Math.round((currentGiant.getHP() * 100.0f) / giantEventHp));
+		final String message;
+		switch (stage) {
+			case "START":
+				message = "[Kościelisko] Wielkolud ruszył. Pilnujcie szlaku (siły: " + hpPercent + "%).";
+				break;
+			case "50%":
+				message = "[Kościelisko] Pół drogi za nami. Trzymajcie szyk (siły: " + hpPercent + "%).";
+				break;
+			case "FALA":
+				message = "[Kościelisko] Zejście napiera od stoków. Odepchnijcie ich (siły: " + hpPercent + "%).";
+				break;
+			default:
+				message = "[Kościelisko] Marsz trwa (" + progressPercent + "%, siły: " + hpPercent + "%).";
+				break;
+		}
 		SingletonRepository.getRuleProcessor().tellAllPlayers(
 				NotificationType.PRIVMSG,
-				"[Eskorta Wielkoluda] Etap: " + stage + " | Postęp: " + progressPercent + "% | HP Wielkoluda: " + hpPercent + "%.");
+				message);
 	}
 
 	private boolean isCooldownReady() {
@@ -605,7 +619,7 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 		final long remainingMinutes = Math.max(1L, TimeUnit.MILLISECONDS.toMinutes(readyAt - System.currentTimeMillis()));
 		SingletonRepository.getRuleProcessor().tellAllPlayers(
 				NotificationType.PRIVMSG,
-				"Eskorta Wielkoluda jest na cooldownie. Kolejny start za około " + remainingMinutes + " min.");
+				"Szlak po ostatniej walce jeszcze niegotów. Następna eskorta za około " + remainingMinutes + " min.");
 		return false;
 	}
 
@@ -623,8 +637,7 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 		if (countPlayersInObserverZones() < MIN_PLAYERS_TO_START) {
 			SingletonRepository.getRuleProcessor().tellAllPlayers(
 					NotificationType.PRIVMSG,
-					"Eskorta Wielkoluda nie wystartowała: potrzeba co najmniej " + MIN_PLAYERS_TO_START
-							+ " aktywnych graczy w regionie.");
+					"Za mało ludzi na szlaku. Do eskorty potrzeba co najmniej " + MIN_PLAYERS_TO_START + " obrońców.");
 			failedByLowActivity = true;
 			return false;
 		}
@@ -680,15 +693,15 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 			}
 			player.addXP(tier.xpReward);
 			player.addKarma(tier.karmaReward);
-			player.sendPrivateText("[Eskorta Wielkoluda] Nagroda za aktywną obronę: +" + tier.xpReward
-					+ " XP, +" + tier.karmaReward + " karmy. (Stan HP: " + Math.round(finalHealthRatio * 100.0d) + "%)");
+			player.sendPrivateText("[Kościelisko] Za obronę szlaku: +" + tier.xpReward + " XP, +" + tier.karmaReward
+					+ " karmy (siły Wielkoluda: " + Math.round(finalHealthRatio * 100.0d) + "%).");
 			rewardedPlayers++;
 		}
 
 		if (rewardedPlayers == 0) {
 			SingletonRepository.getRuleProcessor().tellAllPlayers(
 					NotificationType.PRIVMSG,
-					"Eskorta zakończona, ale brak aktywnych uczestników spełniających próg nagrody.");
+					"Szlak obroniony, ale nikt nie utrzymał tempa do nagrody.");
 		}
 	}
 
