@@ -68,7 +68,7 @@ public class StartMapEvent extends ScriptImpl {
 		final ConfiguredMapEvent event = MapEventRegistry.getEvent(eventId);
 		if (event == null) {
 			sandbox.privateText(admin,
-					"Nieznany eventId: '" + eventId + "'. Dostępne eventy: " + MapEventRegistry.knownEventIds() + ".");
+					"Nieznany eventId: '" + eventId + "'. Dostępne eventy: " + MapEventRegistry.listAvailableEventIds() + ".");
 			return;
 		}
 
@@ -92,7 +92,7 @@ public class StartMapEvent extends ScriptImpl {
 
 	private void listEvents(final Player admin) {
 		final Set<String> knownEventIds = new TreeSet<>(String.CASE_INSENSITIVE_ORDER);
-		knownEventIds.addAll(MapEventRegistry.knownEventIds());
+		knownEventIds.addAll(MapEventRegistry.listAvailableEventIds());
 
 		if (knownEventIds.isEmpty()) {
 			sandbox.privateText(admin, "Brak zarejestrowanych eventów mapowych.");

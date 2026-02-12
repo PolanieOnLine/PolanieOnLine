@@ -18,9 +18,9 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 
-import games.stendhal.server.maps.event.BaseMapEvent;
 import games.stendhal.server.maps.event.MapEventConfig;
 import games.stendhal.server.maps.event.MapEventConfigProvider;
+import games.stendhal.server.maps.event.MapEventConfigSupport;
 
 public class DragonMapEventConfigProvider implements MapEventConfigProvider {
 	public static final String DRAGON_LAND_DEFAULT = "dragon_land_default";
@@ -33,7 +33,13 @@ public class DragonMapEventConfigProvider implements MapEventConfigProvider {
 	}
 
 	private MapEventConfig createDragonLandDefaultConfig() {
+		// Balance domain note: Dragon Land should ramp from broad pressure to elite dragons,
+		// then finish with short boss windows to preserve raid pacing and map identity.
+		final String defaultStartTime = MapEventConfigSupport.validatedDefaultStartTime("20:00", DRAGON_LAND_DEFAULT);
+		final int defaultIntervalDays = MapEventConfigSupport.validatedDefaultIntervalDays(2, DRAGON_LAND_DEFAULT);
+
 		return MapEventConfig.builder("Dragon Land")
+				// Core config
 				.duration(Duration.ofMinutes(60))
 				.zones(Arrays.asList(
 						"0_dragon_land_n",
@@ -78,45 +84,7 @@ public class DragonMapEventConfigProvider implements MapEventConfigProvider {
 						"latający złoty smok",
 						"Smok Wawelski"
 				)))
-				.waves(Arrays.asList(
-						new BaseMapEvent.EventWave(30, Arrays.asList(
-								new BaseMapEvent.EventSpawn("zgniły szkielet smoka", 6),
-								new BaseMapEvent.EventSpawn("pustynny smok", 4),
-								new BaseMapEvent.EventSpawn("zielony smok", 4),
-								new BaseMapEvent.EventSpawn("czerwony smok", 2),
-								new BaseMapEvent.EventSpawn("błękitny smok", 4)
-						)),
-						new BaseMapEvent.EventWave(45, Arrays.asList(
-								new BaseMapEvent.EventSpawn("lodowy smok", 4),
-								new BaseMapEvent.EventSpawn("smok arktyczny", 3),
-								new BaseMapEvent.EventSpawn("dwugłowy zielony smok", 6)
-						)),
-						new BaseMapEvent.EventWave(60, Arrays.asList(
-								new BaseMapEvent.EventSpawn("dwugłowy złoty smok", 4),
-								new BaseMapEvent.EventSpawn("dwugłowy zielony smok", 8),
-								new BaseMapEvent.EventSpawn("dwugłowy czerwony smok", 6)
-						)),
-						new BaseMapEvent.EventWave(90, Arrays.asList(
-								new BaseMapEvent.EventSpawn("dwugłowy złoty smok", 2),
-								new BaseMapEvent.EventSpawn("zielone smoczysko", 3),
-								new BaseMapEvent.EventSpawn("niebieskie smoczysko", 3)
-						)),
-						new BaseMapEvent.EventWave(120, Arrays.asList(
-								new BaseMapEvent.EventSpawn("dwugłowy czarny smok", 4),
-								new BaseMapEvent.EventSpawn("dwugłowy lodowy smok", 8)
-						)),
-						new BaseMapEvent.EventWave(150, Arrays.asList(
-								new BaseMapEvent.EventSpawn("czerwone smoczysko", 3),
-								new BaseMapEvent.EventSpawn("czarne smoczysko", 2)
-						)),
-						new BaseMapEvent.EventWave(180, Arrays.asList(
-								new BaseMapEvent.EventSpawn("latający czarny smok", 1),
-								new BaseMapEvent.EventSpawn("latający złoty smok", 1)
-						)),
-						new BaseMapEvent.EventWave(240, Arrays.asList(
-								new BaseMapEvent.EventSpawn("Smok Wawelski", 1)
-						))
-				))
+				// Messages
 				.announcements(Arrays.asList(
 						"Niebo przeszywa skrzek smoków - smocze stado krąży nad krainą.",
 						"Z oddali dobiega trzepot skrzydeł i syk ognia - smoki nie odpuszczają.",
@@ -125,10 +93,42 @@ public class DragonMapEventConfigProvider implements MapEventConfigProvider {
 				.startAnnouncement("Smocza kraina budzi się do życia! Rozpoczyna się wydarzenie.")
 				.stopAnnouncement("Smocza kraina uspokaja się. Wydarzenie dobiegło końca.")
 				.announcementIntervalSeconds(600)
+				// Waves
+				.waves(MapEventConfigSupport.waves(
+						MapEventConfigSupport.wave(30,
+								MapEventConfigSupport.spawn("zgniły szkielet smoka", 6),
+								MapEventConfigSupport.spawn("pustynny smok", 4),
+								MapEventConfigSupport.spawn("zielony smok", 4),
+								MapEventConfigSupport.spawn("czerwony smok", 2),
+								MapEventConfigSupport.spawn("błękitny smok", 4)),
+						MapEventConfigSupport.wave(45,
+								MapEventConfigSupport.spawn("lodowy smok", 4),
+								MapEventConfigSupport.spawn("smok arktyczny", 3),
+								MapEventConfigSupport.spawn("dwugłowy zielony smok", 6)),
+						MapEventConfigSupport.wave(60,
+								MapEventConfigSupport.spawn("dwugłowy złoty smok", 4),
+								MapEventConfigSupport.spawn("dwugłowy zielony smok", 8),
+								MapEventConfigSupport.spawn("dwugłowy czerwony smok", 6)),
+						MapEventConfigSupport.wave(90,
+								MapEventConfigSupport.spawn("dwugłowy złoty smok", 2),
+								MapEventConfigSupport.spawn("zielone smoczysko", 3),
+								MapEventConfigSupport.spawn("niebieskie smoczysko", 3)),
+						MapEventConfigSupport.wave(120,
+								MapEventConfigSupport.spawn("dwugłowy czarny smok", 4),
+								MapEventConfigSupport.spawn("dwugłowy lodowy smok", 8)),
+						MapEventConfigSupport.wave(150,
+								MapEventConfigSupport.spawn("czerwone smoczysko", 3),
+								MapEventConfigSupport.spawn("czarne smoczysko", 2)),
+						MapEventConfigSupport.wave(180,
+								MapEventConfigSupport.spawn("latający czarny smok", 1),
+								MapEventConfigSupport.spawn("latający złoty smok", 1)),
+						MapEventConfigSupport.wave(240,
+								MapEventConfigSupport.spawn("Smok Wawelski", 1))))
+				// Triggers / scheduler
 				.weatherLock(new MapEventConfig.WeatherLockConfig("fog", false))
 				.triggerThreshold(500)
-				.defaultStartTime("20:00")
-				.defaultIntervalDays(2)
+				.defaultStartTime(defaultStartTime)
+				.defaultIntervalDays(defaultIntervalDays)
 				.build();
 	}
 }
