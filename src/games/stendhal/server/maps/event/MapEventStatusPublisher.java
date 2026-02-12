@@ -85,34 +85,23 @@ public final class MapEventStatusPublisher {
 	private static MapEventStatusEvent createActiveSnapshot(final BaseMapEvent event, final List<String> allowedZones) {
 		final int totalDurationSeconds = event.getTotalDurationSeconds();
 		final int remainingSeconds = event.getRemainingSeconds();
-		final int progressPercent = calculateProgressPercent(totalDurationSeconds, remainingSeconds);
 		return new MapEventStatusEvent(
 				event.getEventId(),
 				event.getEventNamePublic(),
 				true,
 				Integer.valueOf(remainingSeconds),
 				Integer.valueOf(totalDurationSeconds),
-				Integer.valueOf(progressPercent),
 				allowedZones);
 	}
 
 	private static MapEventStatusEvent createInactiveSnapshot(final BaseMapEvent event) {
 		return new MapEventStatusEvent(event.getEventId(), event.getEventNamePublic(), false,
-				null, null, null, Collections.<String>emptyList());
+				null, null, Collections.<String>emptyList());
 	}
 
 	private static MapEventStatusEvent createGlobalFallbackSnapshot() {
 		return new MapEventStatusEvent(FALLBACK_EVENT_ID, FALLBACK_EVENT_NAME, false,
-				null, null, null, Collections.<String>emptyList());
-	}
-
-	private static int calculateProgressPercent(final int totalDurationSeconds, final int remainingSeconds) {
-		if (totalDurationSeconds <= 0) {
-			return 0;
-		}
-		final int elapsedSeconds = Math.max(0, totalDurationSeconds - Math.max(0, remainingSeconds));
-		final double ratio = (double) elapsedSeconds / (double) totalDurationSeconds;
-		return (int) Math.min(100, Math.round(ratio * 100.0d));
+				null, null, Collections.<String>emptyList());
 	}
 
 	private static boolean shouldReceive(final Player player, final List<String> allowedZones) {

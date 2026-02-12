@@ -30,14 +30,13 @@ public class MapEventStatusEvent extends RPEvent {
 		rpclass.add(DefinitionClass.ATTRIBUTE, "eventName", Type.STRING);
 		rpclass.add(DefinitionClass.ATTRIBUTE, "isActive", Type.STRING);
 		rpclass.add(DefinitionClass.ATTRIBUTE, "remainingSeconds", Type.INT);
-		rpclass.add(DefinitionClass.ATTRIBUTE, "totalDurationSeconds", Type.INT);
-		rpclass.add(DefinitionClass.ATTRIBUTE, "progressPercent", Type.INT);
-		rpclass.add(DefinitionClass.ATTRIBUTE, "allowedZones", Type.VERY_LONG_STRING);
+		rpclass.add(DefinitionClass.ATTRIBUTE, "totalSeconds", Type.INT);
+		rpclass.add(DefinitionClass.ATTRIBUTE, "zones", Type.VERY_LONG_STRING);
 	}
 
 	public MapEventStatusEvent(final String eventId, final String eventName, final boolean isActive,
-			final Integer remainingSeconds, final Integer totalDurationSeconds, final Integer progressPercent,
-			final List<String> allowedZones) {
+			final Integer remainingSeconds, final Integer totalSeconds,
+			final List<String> zones) {
 		super(Events.MAP_EVENT_STATUS);
 		put("eventId", eventId);
 		put("eventName", eventName);
@@ -45,14 +44,11 @@ public class MapEventStatusEvent extends RPEvent {
 		if (remainingSeconds != null) {
 			put("remainingSeconds", remainingSeconds.intValue());
 		}
-		if (totalDurationSeconds != null) {
-			put("totalDurationSeconds", totalDurationSeconds.intValue());
+		if (totalSeconds != null) {
+			put("totalSeconds", totalSeconds.intValue());
 		}
-		if (progressPercent != null) {
-			put("progressPercent", progressPercent.intValue());
-		}
-		if (allowedZones != null) {
-			put("allowedZones", allowedZones);
+		if (zones != null) {
+			put("zones", zones);
 		}
 	}
 }
