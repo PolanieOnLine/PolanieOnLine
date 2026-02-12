@@ -35,6 +35,7 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 	private static final Logger LOGGER = Logger.getLogger(KoscieliskoGiantEscortEvent.class);
 	private static final String GIANT_NPC_NAME = "Wielkolud";
 	private static final int GIANT_EVENT_HP = 50000;
+	private static final int GIANT_EVENT_DEF_BONUS = 220;
 	private static final int GIANT_FAIL_HP_THRESHOLD = 100;
 	private static final int GIANT_CRITICAL_HP_THRESHOLD = 10000;
 	private static final int GIANT_HEAL_CAP_PER_SECOND = 0;
@@ -145,6 +146,7 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 		snapshot = GiantSnapshot.capture(giantNpc);
 		giantNpc.setBaseHP(GIANT_EVENT_HP);
 		giantNpc.setHP(GIANT_EVENT_HP);
+		applyEscortSurvivabilityBuff(giantNpc, snapshot);
 		eventStartedAtMillis = System.currentTimeMillis();
 		giantHpBeforeTick = GIANT_EVENT_HP;
 		announceProgressStatus("START", 0);
@@ -406,6 +408,14 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 					NotificationType.PRIVMSG,
 					"[Eskorta Wielkoluda] Krytyczne HP! Wielkolud ma tylko " + hpPercent + "% życia.");
 		}
+	}
+
+	private void applyEscortSurvivabilityBuff(final SpeakerNPC giant, final GiantSnapshot baseline) {
+		if (giant == null || baseline == null) {
+			return;
+		}
+
+		giant.setDef(baseline.def + GIANT_EVENT_DEF_BONUS);
 	}
 
 	private void announceProgressStatus(final String stage, final int progressPercent) {
