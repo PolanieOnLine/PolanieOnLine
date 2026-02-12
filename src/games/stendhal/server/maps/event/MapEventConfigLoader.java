@@ -92,6 +92,7 @@ public final class MapEventConfigLoader {
 				.startAnnouncement("Rozpoczyna się eskorta Wielkoluda - brońcie go za wszelką cenę!")
 				.stopAnnouncement("Eskorta Wielkoluda została zakończona.")
 				.announcementIntervalSeconds(180)
+				.giantOnlyAggro(true)
 				.defaultStartTime("20:00")
 				.defaultIntervalDays(2)
 				.build();

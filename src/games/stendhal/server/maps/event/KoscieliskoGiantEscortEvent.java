@@ -281,6 +281,11 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 				creature.stopAttack();
 			}
 
+			if (getConfig().isGiantOnlyAggro()) {
+				resetCreatureTarget(creature);
+				continue;
+			}
+
 			final RPEntity fallbackTarget = creature.getNearestEnemy(PLAYER_FALLBACK_RANGE);
 			if (fallbackTarget != null) {
 				applyTargetIfNeeded(creature, fallbackTarget, "player_fallback");
