@@ -11,39 +11,31 @@
  ***************************************************************************/
 package games.stendhal.server.script;
 
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 
-import games.stendhal.server.core.scripting.AbstractAdminScript;
-import games.stendhal.server.maps.dragon.DragonLandEvent;
+import games.stendhal.server.core.scripting.ScriptImpl;
+import games.stendhal.server.entity.player.Player;
 
 /**
- * Forces the Dragon Land event to start.
+ * Backward-compatible alias for starting Dragon Land via StartMapEvent.
  *
  * Usage: /script ForceDragonLandEvent.class
+ * Preferred: /script StartMapEvent.class dragon_land [force|safe]
  */
-public class ForceDragonLandEvent extends AbstractAdminScript {
+public class ForceDragonLandEvent extends ScriptImpl {
+	private final StartMapEvent delegate = new StartMapEvent();
+
 	@Override
-	protected void run(final List<String> args) {
-		if (DragonLandEvent.forceStart()) {
-			sendText("Wydarzenie Smocza Kraina zostało uruchomione.");
-		} else {
-			sendWarning("Wydarzenie Smocza Kraina już trwa.");
+	public void execute(final Player admin, final List<String> args) {
+		if (args != null && !args.isEmpty()) {
+			admin.sendPrivateText("Użycie: /script ForceDragonLandEvent.class");
+			admin.sendPrivateText("Preferowane: /script StartMapEvent.class dragon_land [force|safe]");
+			return;
 		}
-	}
 
-	@Override
-	protected int getMinParams() {
-		return 0;
-	}
-
-	@Override
-	protected int getMaxParams() {
-		return 0;
-	}
-
-	@Override
-	protected List<String> getParamStrings() {
-		return Collections.emptyList();
+		admin.sendPrivateText(
+				"Alias kompatybilności: uruchamianie wydarzenia przez /script StartMapEvent.class dragon_land force");
+		delegate.execute(admin, Arrays.asList("dragon_land", "force"));
 	}
 }
