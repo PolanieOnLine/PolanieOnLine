@@ -59,6 +59,11 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 	private static final int ESCORT_RING_MIN_RADIUS = 4;
 	private static final int ESCORT_RING_MAX_RADIUS = 10;
 	private static final int ESCORT_SPAWN_ATTEMPTS = 30;
+	private static final int EVENT_ACTIVE_CREATURE_HARD_CAP = 34;
+	private static final int WAVE_BUDGET_BASE = 10;
+	private static final int WAVE_BUDGET_PER_STAGE = 4;
+	private static final int WAVE_BUDGET_MAX = 24;
+	private static final int LOW_PRESSURE_ACTIVE_CREATURE_THRESHOLD = 7;
 	private static volatile long lastEventFinishedAtMillis;
 
 	private final TurnListener giantHealthMonitor = new TurnListener() {
@@ -103,6 +108,8 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 	private final Set<String> rewardEligiblePlayers = new HashSet<>();
 	private final Set<Integer> announcedWaveOffsets = new HashSet<>();
 	private final RandomSafeSpotSpawnStrategy fallbackSpawnStrategy = new RandomSafeSpotSpawnStrategy(LOGGER);
+	private volatile int currentWaveOffsetSeconds = -1;
+	private volatile int currentWaveBudget = 0;
 
 	public KoscieliskoGiantEscortEvent() {
 		super(LOGGER, MapEventConfigLoader.load(MapEventConfigLoader.KOSCIELISKO_GIANT_ESCORT));
@@ -129,6 +136,8 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 		playerActivityTicks.clear();
 		rewardEligiblePlayers.clear();
 		announcedWaveOffsets.clear();
+		currentWaveOffsetSeconds = -1;
+		currentWaveBudget = 0;
 
 		if (shouldValidateStartGates() && !validateStartGates()) {
 			endEvent();
@@ -201,6 +210,8 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 			playerActivityTicks.clear();
 			rewardEligiblePlayers.clear();
 			announcedWaveOffsets.clear();
+			currentWaveOffsetSeconds = -1;
+			currentWaveBudget = 0;
 			lastEventFinishedAtMillis = System.currentTimeMillis();
 
 			super.onStop();
@@ -224,7 +235,13 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 	@Override
 	protected void onWaveSpawn(final EventSpawn spawn) {
 		final Integer waveOffset = findWaveOffset(spawn);
-		if (waveOffset == null || !announcedWaveOffsets.add(waveOffset)) {
+		if (waveOffset == null) {
+			return;
+		}
+
+		initializeWaveBudgetIfNeeded(waveOffset);
+
+		if (!announcedWaveOffsets.add(waveOffset)) {
 			return;
 		}
 		final int durationSeconds = (int) getEventDuration().getSeconds();
@@ -239,6 +256,9 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 
 		int nearGiantSpawns = 0;
 		int fallbackSpawns = 0;
+		int plannedSpawn = 0;
+		int cappedByLimit = 0;
+		int activeCreatures = countActiveEventCreatures();
 
 		for (final String zoneName : getZones()) {
 			final int requestedCount = count;
@@ -246,28 +266,103 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 			final int multipliedCount = (int) Math.round(requestedCount * spawnMultiplier);
 			final Integer zoneSpawnCap = getConfig().getZoneSpawnCap(zoneName);
 			final int finalSpawnCount = zoneSpawnCap == null ? multipliedCount : Math.min(multipliedCount, zoneSpawnCap);
+			plannedSpawn += Math.max(0, finalSpawnCount);
 
 			if (finalSpawnCount <= 0) {
 				continue;
 			}
 
+			final int hardCapSlots = Math.max(0, EVENT_ACTIVE_CREATURE_HARD_CAP - activeCreatures);
+			int budgetSlots = getCurrentWaveBudget();
+			if (activeCreatures < LOW_PRESSURE_ACTIVE_CREATURE_THRESHOLD && hardCapSlots > 0 && budgetSlots <= 0) {
+				budgetSlots = 1;
+			}
+
+			final int allowedByLimits = Math.min(finalSpawnCount, Math.min(hardCapSlots, budgetSlots));
+			if (allowedByLimits <= 0) {
+				cappedByLimit += finalSpawnCount;
+				continue;
+			}
+
+			cappedByLimit += Math.max(0, finalSpawnCount - allowedByLimits);
+
 			if (currentGiant != null && currentGiant.getZone() != null
 					&& currentGiant.getZone().getName().equals(zoneName)) {
-				final SpawnStats stats = spawnAroundGiantInZone(currentGiant, creatureName, finalSpawnCount);
+				final SpawnStats stats = spawnAroundGiantInZone(currentGiant, creatureName, allowedByLimits);
 				nearGiantSpawns += stats.nearGiant;
 				fallbackSpawns += stats.fallback;
+				final int spawnedNow = stats.nearGiant + stats.fallback;
+				consumeWaveBudget(spawnedNow);
+				activeCreatures += spawnedNow;
 				continue;
 			}
 
 			LOGGER.warn(getEventName() + " cannot resolve giant NPC in zone " + zoneName
 					+ "; falling back to RandomSafeSpotSpawnStrategy for " + creatureName + ".");
-			fallbackSpawns += spawnWithFallback(zoneName, creatureName, finalSpawnCount);
+			final int fallbackSpawned = spawnWithFallback(zoneName, creatureName, allowedByLimits);
+			fallbackSpawns += fallbackSpawned;
+			consumeWaveBudget(fallbackSpawned);
+			activeCreatures += fallbackSpawned;
 		}
 
 		if (LOGGER.isDebugEnabled()) {
+			final int spawned = nearGiantSpawns + fallbackSpawns;
+			LOGGER.debug(getEventName() + " spawn budget for '" + creatureName + "': plannedSpawn=" + plannedSpawn
+					+ ", spawned=" + spawned + ", cappedByLimit=" + cappedByLimit + ", active="
+					+ countActiveEventCreatures() + ", remainingWaveBudget=" + getCurrentWaveBudget() + ".");
 			LOGGER.debug(getEventName() + " spawn summary for '" + creatureName + "': near giant=" + nearGiantSpawns
 					+ ", fallback=" + fallbackSpawns + ".");
 		}
+	}
+	
+	private synchronized void initializeWaveBudgetIfNeeded(final int waveOffset) {
+		if (waveOffset == currentWaveOffsetSeconds) {
+			return;
+		}
+		currentWaveOffsetSeconds = waveOffset;
+		final int stage = resolveDifficultyStage(waveOffset);
+		currentWaveBudget = Math.min(WAVE_BUDGET_MAX, WAVE_BUDGET_BASE + ((stage - 1) * WAVE_BUDGET_PER_STAGE));
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug(getEventName() + " wave budget initialized: waveOffset=" + waveOffset + "s, stage=" + stage
+					+ ", budget=" + currentWaveBudget + ", active=" + countActiveEventCreatures() + ", hardCap="
+					+ EVENT_ACTIVE_CREATURE_HARD_CAP + ".");
+		}
+	}
+
+	private int resolveDifficultyStage(final int waveOffsetSeconds) {
+		final int durationSeconds = (int) Math.max(1, getEventDuration().getSeconds());
+		final double progress = Math.max(0.0d, Math.min(1.0d, waveOffsetSeconds / (double) durationSeconds));
+		if (progress <= 0.25d) {
+			return 1;
+		}
+		if (progress <= 0.50d) {
+			return 2;
+		}
+		if (progress <= 0.75d) {
+			return 3;
+		}
+		return 4;
+	}
+
+	private synchronized int getCurrentWaveBudget() {
+		return currentWaveBudget;
+	}
+
+	private synchronized void consumeWaveBudget(final int spawned) {
+		if (spawned <= 0) {
+			return;
+		}
+		currentWaveBudget = Math.max(0, currentWaveBudget - spawned);
+	}
+
+	private int countActiveEventCreatures() {
+		int active = 0;
+		for (final Creature creature : getEventCreaturesSnapshot()) {
+			if (creature != null && creature.getZone() != null && creature.getHP() > 0) {
+				active++;
+			}
+		}
+		return active;
 	}
 
 	private SpawnStats spawnAroundGiantInZone(final SpeakerNPC currentGiant, final String creatureName, final int count) {
