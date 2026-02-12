@@ -17,6 +17,10 @@
 		</attributes>
 
 		<configurator class-name="games.stendhal.server.maps.koscielisko.plains.WielkoludNPC"/>
+		<configurator class-name="games.stendhal.server.maps.event.GenericMapEventScheduler">
+			<parameter name="eventId">koscielisko_giant_escort</parameter>
+			<parameter name="triggerType">guaranteed</parameter>
+		</configurator>
 
 		<entity x="45" y="45">
 			<implementation class-name="games.stendhal.server.entity.mapstuff.sound.PeriodicAmbientSoundSource">
