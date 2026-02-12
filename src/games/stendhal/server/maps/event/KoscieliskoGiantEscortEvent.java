@@ -12,6 +12,7 @@
 package games.stendhal.server.maps.event;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -22,10 +23,12 @@ import java.util.concurrent.TimeUnit;
 import org.apache.log4j.Logger;
 
 import games.stendhal.common.NotificationType;
+import games.stendhal.common.Rand;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.TurnListener;
 import games.stendhal.server.core.pathfinder.Path;
+import games.stendhal.server.core.rp.StendhalRPAction;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.npc.SpeakerNPC;
@@ -51,6 +54,9 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 	private static final int PLAYER_FALLBACK_RANGE = 14;
 	private static final int LEASH_RANGE = 24;
 	private static final int MAX_GIANT_PATH_LENGTH = 96;
+	private static final int ESCORT_RING_MIN_RADIUS = 4;
+	private static final int ESCORT_RING_MAX_RADIUS = 10;
+	private static final int ESCORT_SPAWN_ATTEMPTS = 30;
 	private static volatile long lastEventFinishedAtMillis;
 
 	private final TurnListener giantHealthMonitor = new TurnListener() {
@@ -92,6 +98,7 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 	private final Map<String, Integer> playerActivityTicks = new HashMap<>();
 	private final Set<String> rewardEligiblePlayers = new HashSet<>();
 	private final Set<Integer> announcedWaveOffsets = new HashSet<>();
+	private final RandomSafeSpotSpawnStrategy fallbackSpawnStrategy = new RandomSafeSpotSpawnStrategy(LOGGER);
 
 	public KoscieliskoGiantEscortEvent() {
 		super(LOGGER, MapEventConfigLoader.load(MapEventConfigLoader.KOSCIELISKO_GIANT_ESCORT));
@@ -216,6 +223,107 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 		final int durationSeconds = (int) getEventDuration().getSeconds();
 		final int progress = durationSeconds <= 0 ? 0 : (int) Math.round((waveOffset * 100.0d) / durationSeconds);
 		announceProgressStatus("FALA", Math.min(progress, 100));
+	}
+
+	@Override
+	protected void spawnCreatures(final String creatureName, final int count) {
+		final SpeakerNPC currentGiant = giantNpc != null ? giantNpc : SingletonRepository.getNPCList().get(GIANT_NPC_NAME);
+		giantNpc = currentGiant;
+
+		int nearGiantSpawns = 0;
+		int fallbackSpawns = 0;
+
+		for (final String zoneName : getZones()) {
+			final int requestedCount = count;
+			final double spawnMultiplier = getConfig().getZoneSpawnMultiplier(zoneName);
+			final int multipliedCount = (int) Math.round(requestedCount * spawnMultiplier);
+			final Integer zoneSpawnCap = getConfig().getZoneSpawnCap(zoneName);
+			final int finalSpawnCount = zoneSpawnCap == null ? multipliedCount : Math.min(multipliedCount, zoneSpawnCap);
+
+			if (finalSpawnCount <= 0) {
+				continue;
+			}
+
+			if (currentGiant != null && currentGiant.getZone() != null
+					&& currentGiant.getZone().getName().equals(zoneName)) {
+				final SpawnStats stats = spawnAroundGiantInZone(currentGiant, creatureName, finalSpawnCount);
+				nearGiantSpawns += stats.nearGiant;
+				fallbackSpawns += stats.fallback;
+				continue;
+			}
+
+			LOGGER.warn(getEventName() + " cannot resolve giant NPC in zone " + zoneName
+					+ "; falling back to RandomSafeSpotSpawnStrategy for " + creatureName + ".");
+			fallbackSpawns += spawnWithFallback(zoneName, creatureName, finalSpawnCount);
+		}
+
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug(getEventName() + " spawn summary for '" + creatureName + "': near giant=" + nearGiantSpawns
+					+ ", fallback=" + fallbackSpawns + ".");
+		}
+	}
+
+	private SpawnStats spawnAroundGiantInZone(final SpeakerNPC currentGiant, final String creatureName, final int count) {
+		int successfulSpawns = 0;
+		int fallbackSpawns = 0;
+		for (int i = 0; i < count; i++) {
+			final Creature template = SingletonRepository.getEntityManager().getCreature(creatureName);
+			if (template == null) {
+				LOGGER.warn(getEventName() + " missing creature template: " + creatureName + ".");
+				break;
+			}
+
+			final Creature creature = new Creature(template.getNewInstance());
+			if (placeCreatureNearGiant(currentGiant, creature)) {
+				registerEventCreature(creature);
+				successfulSpawns++;
+				continue;
+			}
+
+			fallbackSpawns += spawnWithFallback(currentGiant.getZone().getName(), creatureName, 1);
+		}
+		return new SpawnStats(successfulSpawns, fallbackSpawns);
+	}
+
+	private int spawnWithFallback(final String zoneName, final String creatureName, final int count) {
+		final int before = getEventCreaturesSnapshot().size();
+		fallbackSpawnStrategy.spawnCreatures(
+				getEventName(),
+				Collections.singletonList(zoneName),
+				creatureName,
+				count,
+				this::registerEventCreature);
+		return Math.max(0, getEventCreaturesSnapshot().size() - before);
+	}
+
+	private boolean placeCreatureNearGiant(final SpeakerNPC currentGiant, final Creature creature) {
+		final StendhalRPZone zone = currentGiant.getZone();
+		if (zone == null) {
+			return false;
+		}
+
+		for (int attempt = 0; attempt < ESCORT_SPAWN_ATTEMPTS; attempt++) {
+			final int radius = ESCORT_RING_MIN_RADIUS + Rand.rand(ESCORT_RING_MAX_RADIUS - ESCORT_RING_MIN_RADIUS + 1);
+			final double angle = Rand.rand(3600) / 10.0d;
+			final int x = currentGiant.getX() + (int) Math.round(radius * Math.cos(Math.toRadians(angle)));
+			final int y = currentGiant.getY() + (int) Math.round(radius * Math.sin(Math.toRadians(angle)));
+
+			if (!isPassableAt(zone, creature, x, y)) {
+				continue;
+			}
+			if (StendhalRPAction.placeat(zone, creature, x, y)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	private static boolean isPassableAt(final StendhalRPZone zone, final Creature creature, final int x, final int y) {
+		if (x < 0 || y < 0 || x >= zone.getWidth() || y >= zone.getHeight()) {
+			return false;
+		}
+		return !zone.collides(creature, x, y);
 	}
 
 	private void monitorGiantHealth() {
@@ -585,6 +693,16 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 			this.zoneName = zoneName;
 			this.x = x;
 			this.y = y;
+		}
+	}
+
+	private static final class SpawnStats {
+		private final int nearGiant;
+		private final int fallback;
+
+		private SpawnStats(final int nearGiant, final int fallback) {
+			this.nearGiant = nearGiant;
+			this.fallback = fallback;
 		}
 	}
 
