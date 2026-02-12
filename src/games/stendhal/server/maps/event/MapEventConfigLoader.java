@@ -102,8 +102,8 @@ public final class MapEventConfigLoader {
 								new BaseMapEvent.EventSpawn("lawina", 4)
 						))
 				))
-				.startAnnouncement("Rozpoczyna się eskorta Wielkoluda - brońcie go za wszelką cenę!")
-				.stopAnnouncement("Eskorta Wielkoluda została zakończona.")
+				.startAnnouncement("Halny niesie zgrzyt stali - Wielkolud rusza przez Kościelisko. Trzymajcie szlak.")
+				.stopAnnouncement("Szlak cichnie. Los Wielkoluda został przesądzony.")
 				.announcementIntervalSeconds(180)
 				.giantOnlyAggro(true)
 				// This escort event starts from scheduler/script only, so kill-trigger stays disabled.
