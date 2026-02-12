@@ -50,6 +50,9 @@ public final class Events {
 	/** progress log */
 	public static final String PROGRESS_STATUS_CHANGE = "progress_status_event";
 
+	/** map event status snapshot */
+	public static final String MAP_EVENT_STATUS = "map_event_status_event";
+
 	/** achievement notiviation */
 	public static final String REACHED_ACHIEVEMENT = "reached_achievement";
 

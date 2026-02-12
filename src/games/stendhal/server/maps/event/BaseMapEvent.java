@@ -12,6 +12,7 @@
 package games.stendhal.server.maps.event;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -57,9 +58,17 @@ public abstract class BaseMapEvent {
 			scheduleAnnouncement();
 		}
 	};
+	private final TurnListener statusBroadcaster = new TurnListener() {
+		@Override
+		public void onTurnReached(final int currentTurn) {
+			broadcastStatusTick();
+		}
+	};
 	private volatile LocalTime scheduledTime;
 	private volatile LocalDate lastGuaranteedStartDate;
 	private volatile int guaranteedIntervalDays;
+	private volatile long scheduledEndEpochSeconds;
+	private volatile String eventId;
 
 	protected BaseMapEvent(final Logger logger, final MapEventConfig config) {
 		this.logger = Objects.requireNonNull(logger, "logger");
@@ -70,12 +79,20 @@ public abstract class BaseMapEvent {
 		return config.getEventName();
 	}
 
+	final String getEventNamePublic() {
+		return getEventName();
+	}
+
 	protected Duration getEventDuration() {
 		return config.getDuration();
 	}
 
 	protected List<String> getZones() {
 		return config.getZones();
+	}
+
+	final List<String> getZonesPublic() {
+		return getZones();
 	}
 
 	protected List<String> getObserverZones() {
@@ -116,6 +133,33 @@ public abstract class BaseMapEvent {
 		return eventActive.get();
 	}
 
+	final boolean isEventActivePublic() {
+		return isEventActive();
+	}
+
+	final int getTotalDurationSeconds() {
+		return (int) getEventDuration().getSeconds();
+	}
+
+	final int getRemainingSeconds() {
+		if (!isEventActive()) {
+			return 0;
+		}
+		final long now = Instant.now().getEpochSecond();
+		return (int) Math.max(0, scheduledEndEpochSeconds - now);
+	}
+
+	final void setEventIdIfMissing(final String candidateEventId) {
+		if (candidateEventId == null || candidateEventId.isBlank() || eventId != null) {
+			return;
+		}
+		eventId = candidateEventId;
+	}
+
+	final String getEventId() {
+		return eventId == null ? getEventName().toLowerCase().replace(' ', '_') : eventId;
+	}
+
 	protected final boolean startEvent() {
 		if (!eventActive.compareAndSet(false, true)) {
 			return false;
@@ -138,7 +182,9 @@ public abstract class BaseMapEvent {
 		if (!eventActive.compareAndSet(true, false)) {
 			return;
 		}
+		scheduledEndEpochSeconds = 0L;
 		onStop();
+		MapEventStatusPublisher.broadcastInactiveEventStatus(this);
 		restoreWeatherFromConfig();
 		if (scheduledTime != null) {
 			scheduleNextGuaranteedCheck();
@@ -250,8 +296,12 @@ public abstract class BaseMapEvent {
 	}
 
 	private void startEventInternal() {
+		final long startedEpochSeconds = Instant.now().getEpochSecond();
+		scheduledEndEpochSeconds = startedEpochSeconds + getEventDuration().getSeconds();
 		lockWeatherFromConfig();
 		onStart();
+		broadcastStatusTick();
+		scheduleStatusBroadcast();
 		scheduleAnnouncement();
 		scheduleWaves();
 		int seconds = (int) getEventDuration().getSeconds();
@@ -295,6 +345,21 @@ public abstract class BaseMapEvent {
 				intervalSeconds,
 				announcer
 		);
+	}
+
+	private void scheduleStatusBroadcast() {
+		if (!eventActive.get()) {
+			return;
+		}
+		SingletonRepository.getTurnNotifier().notifyInSeconds(1, statusBroadcaster);
+	}
+
+	private void broadcastStatusTick() {
+		if (!eventActive.get()) {
+			return;
+		}
+		MapEventStatusPublisher.broadcastActiveEventStatus(this);
+		scheduleStatusBroadcast();
 	}
 
 	private void lockWeatherFromConfig() {

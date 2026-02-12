@@ -11,8 +11,10 @@
  ***************************************************************************/
 package games.stendhal.server.maps.event;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
@@ -59,6 +61,10 @@ public final class MapEventRegistry {
 		return Collections.unmodifiableSet(EVENT_INSTANCES.keySet());
 	}
 
+	public static Collection<ConfiguredMapEvent> listEvents() {
+		return Collections.unmodifiableSet(new LinkedHashSet<>(EVENT_INSTANCES.values()));
+	}
+
 	/**
 	 * Backward-compatible alias for callers that still use the old method name.
 	 */
@@ -70,7 +76,7 @@ public final class MapEventRegistry {
 		final Map<String, ConfiguredMapEvent> events = new LinkedHashMap<>();
 		for (String configId : MapEventConfigLoader.availableConfigIds()) {
 			try {
-				events.put(configId, new ConfiguredMapEvent(LOGGER, MapEventConfigLoader.load(configId)));
+				registerEvent(events, configId, new ConfiguredMapEvent(LOGGER, MapEventConfigLoader.load(configId)));
 			} catch (IllegalArgumentException e) {
 				LOGGER.error("Failed to build default configured event for configId='" + configId + "'.", e);
 			}
@@ -89,17 +95,23 @@ public final class MapEventRegistry {
 		final Map<String, ConfiguredMapEvent> specializedEvents = new LinkedHashMap<>();
 
 		final DragonLandEvent dragonEvent = DragonLandEvent.getInstance();
-		specializedEvents.put("dragon_land", dragonEvent);
-		specializedEvents.put(MapEventConfigLoader.DRAGON_LAND_DEFAULT, dragonEvent);
+		registerEvent(specializedEvents, "dragon_land", dragonEvent);
+		registerEvent(specializedEvents, MapEventConfigLoader.DRAGON_LAND_DEFAULT, dragonEvent);
 
 		final ConfiguredMapEvent kikareukinEvent = new KikareukinAngelEvent();
-		specializedEvents.put("kikareukin", kikareukinEvent);
-		specializedEvents.put(MapEventConfigLoader.KIKAREUKIN_ANGEL_PREVIEW, kikareukinEvent);
+		registerEvent(specializedEvents, "kikareukin", kikareukinEvent);
+		registerEvent(specializedEvents, MapEventConfigLoader.KIKAREUKIN_ANGEL_PREVIEW, kikareukinEvent);
 
 		final ConfiguredMapEvent koscieliskoEvent = new KoscieliskoGiantEscortEvent();
-		specializedEvents.put("koscielisko_giant_escort", koscieliskoEvent);
-		specializedEvents.put(MapEventConfigLoader.KOSCIELISKO_GIANT_ESCORT, koscieliskoEvent);
+		registerEvent(specializedEvents, "koscielisko_giant_escort", koscieliskoEvent);
+		registerEvent(specializedEvents, MapEventConfigLoader.KOSCIELISKO_GIANT_ESCORT, koscieliskoEvent);
 
 		return specializedEvents;
+	}
+
+	private static void registerEvent(final Map<String, ConfiguredMapEvent> events, final String eventId,
+			final ConfiguredMapEvent event) {
+		event.setEventIdIfMissing(eventId);
+		events.put(eventId, event);
 	}
 }
