@@ -51,8 +51,13 @@ public class ConfiguredMapEvent extends BaseMapEvent {
 	}
 
 	public final boolean forceStartEvent() {
+		return startFromScript(true);
+	}
+
+	public final boolean startFromScript(final boolean force) {
 		if (!startEvent()) {
-			logger.warn(getEventName() + " event already active; refusing forced start.");
+			logger.warn(getEventName() + " event already active; refusing "
+					+ (force ? "forced" : "safe") + " script start.");
 			return false;
 		}
 		return true;
