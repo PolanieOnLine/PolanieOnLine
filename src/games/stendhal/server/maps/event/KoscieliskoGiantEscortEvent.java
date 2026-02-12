@@ -55,6 +55,7 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 	private static final int PLAYER_FALLBACK_RANGE = 14;
 	private static final int LEASH_RANGE = 24;
 	private static final int MAX_GIANT_PATH_LENGTH = 96;
+	private static final int GIANT_CHASE_GRACE_TICKS = 4;
 	private static final int ESCORT_RING_MIN_RADIUS = 4;
 	private static final int ESCORT_RING_MAX_RADIUS = 10;
 	private static final int ESCORT_SPAWN_ATTEMPTS = 30;
@@ -95,6 +96,7 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 	private volatile int lowActivityTicks;
 	private volatile double finalHealthRatio;
 	private final Map<Integer, SpawnAnchor> creatureAnchors = new HashMap<>();
+	private final Map<Integer, Integer> lostGiantSightTicks = new HashMap<>();
 	private final Set<Integer> firstTargetLogged = new HashSet<>();
 	private final Map<String, PlayerSnapshot> playerSnapshots = new HashMap<>();
 	private final Map<String, Integer> playerActivityTicks = new HashMap<>();
@@ -121,6 +123,7 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 		giantHpBeforeTick = giantEventHp;
 		lowActivityTicks = 0;
 		creatureAnchors.clear();
+		lostGiantSightTicks.clear();
 		firstTargetLogged.clear();
 		playerSnapshots.clear();
 		playerActivityTicks.clear();
@@ -192,6 +195,7 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 			snapshot = null;
 			giantNpc = null;
 			creatureAnchors.clear();
+			lostGiantSightTicks.clear();
 			firstTargetLogged.clear();
 			playerSnapshots.clear();
 			playerActivityTicks.clear();
@@ -378,26 +382,50 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 			creatureAnchors.computeIfAbsent(creatureId, ignored -> new SpawnAnchor(creature.getZone().getName(), creature.getX(), creature.getY()));
 
 			if (isOutsideEscortZone(creature, creatureAnchors.get(creatureId))) {
-				resetCreatureTarget(creature);
+				resetCreatureTarget(creature, "outside_escort_zone", true);
 				continue;
 			}
 
 			if (isBeyondLeashRange(creature, creatureAnchors.get(creatureId))) {
-				resetCreatureTarget(creature);
+				resetCreatureTarget(creature, "beyond_leash_range", true);
 				continue;
 			}
 
-			if (canPrioritizeGiant(creature, currentGiant)) {
+			final GiantAggroState giantAggroState = evaluateGiantAggroState(creature, currentGiant);
+			if (giantAggroState == GiantAggroState.READY_TO_ATTACK) {
+				lostGiantSightTicks.remove(creatureId);
 				applyTargetIfNeeded(creature, currentGiant, "giant_priority");
 				continue;
 			}
+
+			if (giantAggroState == GiantAggroState.CRITICAL_GIANT_UNAVAILABLE) {
+				resetCreatureTarget(creature, "giant_unavailable", true);
+				continue;
+			}
+
+			if (giantAggroState == GiantAggroState.TEMPORARY_ATTACK_BLOCKED && getConfig().isGiantOnlyAggro()
+					&& creature.getAttackTarget() == currentGiant) {
+				final int lostTicks = lostGiantSightTicks.getOrDefault(creatureId, 0) + 1;
+				lostGiantSightTicks.put(creatureId, lostTicks);
+				if (lostTicks <= GIANT_CHASE_GRACE_TICKS) {
+					if (LOGGER.isDebugEnabled()) {
+						LOGGER.debug(getEventName() + " preserving giant chase for '" + creature.getName() + "' (id="
+								+ creatureId + ") tick=" + lostTicks + "/" + GIANT_CHASE_GRACE_TICKS + ".");
+					}
+					continue;
+				}
+				resetCreatureTarget(creature, "giant_chase_grace_expired", false);
+				continue;
+			}
+
+			lostGiantSightTicks.remove(creatureId);
 
 			if (creature.getAttackTarget() == currentGiant) {
 				creature.stopAttack();
 			}
 
 			if (getConfig().isGiantOnlyAggro()) {
-				resetCreatureTarget(creature);
+				resetCreatureTarget(creature, "giant_only_aggro_no_valid_target", false);
 				continue;
 			}
 
@@ -410,29 +438,32 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 		scheduleAggroController();
 	}
 
-	private boolean canPrioritizeGiant(final Creature creature, final SpeakerNPC giant) {
+	private GiantAggroState evaluateGiantAggroState(final Creature creature, final SpeakerNPC giant) {
 		if (giant == null || giant.getZone() == null || giant.getHP() <= 0) {
-			return false;
+			return GiantAggroState.CRITICAL_GIANT_UNAVAILABLE;
 		}
 		if (creature.getZone() != giant.getZone()) {
-			return false;
+			return GiantAggroState.NOT_LOGICALLY_VALID;
 		}
 		if (creature.squaredDistance(giant) > GIANT_TARGET_RANGE * GIANT_TARGET_RANGE) {
-			return false;
+			return GiantAggroState.NOT_LOGICALLY_VALID;
 		}
 		if (creature.getX() == giant.getX() && creature.getY() == giant.getY()) {
-			return true;
+			return GiantAggroState.READY_TO_ATTACK;
 		}
 		if (!creature.hasLineOfSight(giant)) {
-			return false;
+			return GiantAggroState.TEMPORARY_ATTACK_BLOCKED;
 		}
-		return Path.searchPath(
+		if (Path.searchPath(
 				creature.getZone(),
 				creature.getX(),
 				creature.getY(),
 				giant.getX(),
 				giant.getY(),
-				MAX_GIANT_PATH_LENGTH) != null;
+				MAX_GIANT_PATH_LENGTH) != null) {
+			return GiantAggroState.READY_TO_ATTACK;
+		}
+		return GiantAggroState.TEMPORARY_ATTACK_BLOCKED;
 	}
 
 	private void applyTargetIfNeeded(final Creature creature, final RPEntity target, final String source) {
@@ -440,18 +471,38 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 			return;
 		}
 		if (creature.getAttackTarget() != target) {
+			if (LOGGER.isDebugEnabled()) {
+				final RPEntity previousTarget = creature.getAttackTarget();
+				LOGGER.debug(getEventName() + " target change for event creature '" + creature.getName() + "' (id="
+						+ creature.getID().getObjectID() + "): "
+						+ (previousTarget == null ? "none" : previousTarget.getName()) + " -> " + target.getName()
+						+ " via " + source + ".");
+			}
 			creature.setTarget(target);
 		}
+		lostGiantSightTicks.remove(creature.getID().getObjectID());
 		if (firstTargetLogged.add(creature.getID().getObjectID()) && LOGGER.isDebugEnabled()) {
 			LOGGER.debug(getEventName() + " first target for event creature '" + creature.getName() + "' (id="
 					+ creature.getID().getObjectID() + ") => " + target.getName() + " via " + source + ".");
 		}
 	}
 
-	private void resetCreatureTarget(final Creature creature) {
+	private void resetCreatureTarget(final Creature creature, final String reason, final boolean forced) {
+		lostGiantSightTicks.remove(creature.getID().getObjectID());
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug(getEventName() + " resetting target for event creature '" + creature.getName() + "' (id="
+					+ creature.getID().getObjectID() + "), reason=" + reason + ", forced=" + forced + ".");
+		}
 		creature.stopAttack();
 		creature.clearPath();
 		creature.stop();
+	}
+
+	private enum GiantAggroState {
+		READY_TO_ATTACK,
+		TEMPORARY_ATTACK_BLOCKED,
+		NOT_LOGICALLY_VALID,
+		CRITICAL_GIANT_UNAVAILABLE
 	}
 
 	private void samplePlayerActivity() {
