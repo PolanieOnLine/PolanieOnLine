@@ -46,6 +46,9 @@ public final class Actions {
 	//list producers
 	public static final String LISTPRODUCERS = "listproducers";
 
+	// refresh map event status snapshot
+	public static final String MAP_EVENT_STATUS_SNAPSHOT = "map_event_status_snapshot";
+
 	// equipment set swapping
 	public static final String SET_CHANGE = "setchange";
 

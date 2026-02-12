@@ -53,6 +53,7 @@ import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.events.PlayerLoggedOnEvent;
 import games.stendhal.server.events.PlayerLoggedOutEvent;
 import games.stendhal.server.extension.StendhalServerExtension;
+import games.stendhal.server.maps.event.MapEventStatusPublisher;
 import marauroa.common.Configuration;
 import marauroa.common.Pair;
 import marauroa.common.game.AccountResult;
@@ -481,6 +482,7 @@ public class StendhalRPRuleProcessor implements IRPRuleProcessor {
 				PlayerTransformer.placeSheepAndPetIntoWorld(player);
 				player.notifyWorldAboutChanges();
 				StendhalRPAction.transferContent(player);
+				MapEventStatusPublisher.sendImmediateSnapshot(player);
 
 				getOnlinePlayers().add(player);
 
