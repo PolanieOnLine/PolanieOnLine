@@ -13,6 +13,9 @@ package games.stendhal.server.script;
 
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
+import games.stendhal.common.NotificationType;
 import games.stendhal.server.core.scripting.ScriptImpl;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.event.ConfiguredMapEvent;
@@ -22,8 +25,14 @@ import games.stendhal.server.maps.event.MapEventRegistry;
  * Starts a configured map event by id.
  */
 public class StartMapEvent extends ScriptImpl {
+	private static final Logger LOGGER = Logger.getLogger(StartMapEvent.class);
+
 	@Override
 	public void execute(final Player admin, final List<String> args) {
+		if (admin.getAdminLevel() <= 0) {
+			admin.sendPrivateText(NotificationType.ERROR, "Brak uprawnień. Skrypt mogą uruchamiać tylko GM/administratorzy.");
+			return;
+		}
 		if (args == null || args.isEmpty() || args.size() > 2) {
 			usage(admin);
 			return;
@@ -50,6 +59,8 @@ public class StartMapEvent extends ScriptImpl {
 		}
 
 		if (event.startFromScript(force)) {
+			LOGGER.info("Map event start requested by '" + admin.getName() + "': eventId='" + eventId
+					+ "', mode='" + mode.toLowerCase() + "'.");
 			sandbox.privateText(admin, "Start eventu '" + eventId + "' zakończony sukcesem (mode=" + mode.toLowerCase() + ").");
 			return;
 		}
