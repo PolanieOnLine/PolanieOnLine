@@ -394,6 +394,14 @@ public abstract class BaseMapEvent {
 			this.intervalSeconds = intervalSeconds;
 			this.spawns = spawns;
 		}
+
+		public int getIntervalSeconds() {
+			return intervalSeconds;
+		}
+
+		public List<EventSpawn> getSpawns() {
+			return spawns;
+		}
 	}
 
 	private class EventCreatureObserver implements Observer {
