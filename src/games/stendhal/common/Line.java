@@ -87,6 +87,11 @@ public class Line {
 	}
 
 	private static void renderLine(int x1, int y1, State state, Action action) {
+		if (state.steps == 0) {
+			action.fire(x1, y1);
+			return;
+		}
+
 		int x = x1;
 		int y = y1;
 

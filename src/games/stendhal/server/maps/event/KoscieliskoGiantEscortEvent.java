@@ -420,6 +420,9 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 		if (creature.squaredDistance(giant) > GIANT_TARGET_RANGE * GIANT_TARGET_RANGE) {
 			return false;
 		}
+		if (creature.getX() == giant.getX() && creature.getY() == giant.getY()) {
+			return true;
+		}
 		if (!creature.hasLineOfSight(giant)) {
 			return false;
 		}
