@@ -239,6 +239,12 @@ public abstract class BaseMapEvent {
 		}
 	}
 
+	protected final List<Creature> getEventCreaturesSnapshot() {
+		synchronized (eventCreatures) {
+			return new ArrayList<>(eventCreatures);
+		}
+	}
+
 	protected final void stopAnnouncements() {
 		SingletonRepository.getTurnNotifier().dontNotify(announcer);
 	}
