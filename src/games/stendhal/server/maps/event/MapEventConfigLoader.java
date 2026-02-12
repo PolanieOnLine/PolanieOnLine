@@ -94,34 +94,75 @@ public final class MapEventConfigLoader {
 		final List<BaseMapEvent.EventWave> waves = new ArrayList<>(waveCount);
 
 		for (int waveNumber = 1; waveNumber <= waveCount; waveNumber++) {
-			final int elapsedSeconds = waveNumber * intervalSeconds;
+			final double progress = (double) waveNumber / waveCount;
+			final int escalationLevel = (waveNumber - 1) / 4;
 			final List<BaseMapEvent.EventSpawn> spawns;
-			if (elapsedSeconds <= 300) {
+			if (progress <= 0.35d) {
+				final int maskotka = Math.max(2, 6 - (escalationLevel / 2));
+				final int sluzka = Math.max(2, 4 - (escalationLevel / 3));
+				final int dama = 2 + (escalationLevel / 4);
+				final int strazniczka = 1 + (escalationLevel / 3);
+				final int wojownik = 1 + (escalationLevel / 3);
+				final int lider = 1 + (escalationLevel / 4);
+				final int czarownica = 1 + (escalationLevel / 5);
 				spawns = Arrays.asList(
-						new BaseMapEvent.EventSpawn("elf górski maskotka", 6),
-						new BaseMapEvent.EventSpawn("elf górski służka", 4),
-						new BaseMapEvent.EventSpawn("elf górski dama", 2)
+						new BaseMapEvent.EventSpawn("elf górski maskotka", maskotka),
+						new BaseMapEvent.EventSpawn("elf górski służka", sluzka),
+						new BaseMapEvent.EventSpawn("elf górski dama", dama),
+						new BaseMapEvent.EventSpawn("elf górski strażniczka", strazniczka),
+						new BaseMapEvent.EventSpawn("elf górski wojownik", wojownik),
+						new BaseMapEvent.EventSpawn("elf górski lider", lider),
+						new BaseMapEvent.EventSpawn("elf górski czarownica", czarownica)
 				);
-			} else if (elapsedSeconds <= 600) {
+			} else if (progress <= 0.70d) {
+				final int sluzka = Math.max(1, 3 - (escalationLevel / 5));
+				final int dama = 2 + (escalationLevel / 4);
+				final int strazniczka = 2 + (escalationLevel / 4);
+				final int wojownik = 2 + (escalationLevel / 3);
+				final int lider = 1 + (escalationLevel / 4);
+				final int kaplan = 1 + (escalationLevel / 5);
+				final int czarownica = 1 + (escalationLevel / 5);
+				final int czarnoksieznik = 1 + (escalationLevel / 6);
+				final int pokutnikBagna = 2 + (escalationLevel / 2);
+				final int pokutnikWrzosy = 2 + (escalationLevel / 2);
+				final int pokutnikLaki = 1 + (escalationLevel / 3);
+				final int pokutnikPoranny = 1 + (escalationLevel / 4);
 				spawns = Arrays.asList(
-						new BaseMapEvent.EventSpawn("elf górski maskotka", 4),
-						new BaseMapEvent.EventSpawn("elf górski służka", 5),
-						new BaseMapEvent.EventSpawn("elf górski dama", 4),
-						new BaseMapEvent.EventSpawn("pokutnik z gór", 2)
-				);
-			} else if (elapsedSeconds <= 900) {
-				spawns = Arrays.asList(
-						new BaseMapEvent.EventSpawn("elf górski służka", 3),
-						new BaseMapEvent.EventSpawn("elf górski dama", 4),
-						new BaseMapEvent.EventSpawn("pokutnik z gór", 5),
-						new BaseMapEvent.EventSpawn("pokutnik nocny", 3)
+						new BaseMapEvent.EventSpawn("elf górski służka", sluzka),
+						new BaseMapEvent.EventSpawn("elf górski dama", dama),
+						new BaseMapEvent.EventSpawn("elf górski strażniczka", strazniczka),
+						new BaseMapEvent.EventSpawn("elf górski wojownik", wojownik),
+						new BaseMapEvent.EventSpawn("elf górski lider", lider),
+						new BaseMapEvent.EventSpawn("elf górski kapłan", kaplan),
+						new BaseMapEvent.EventSpawn("elf górski czarownica", czarownica),
+						new BaseMapEvent.EventSpawn("elf górski czarnoksiężnik", czarnoksieznik),
+						new BaseMapEvent.EventSpawn("pokutnik z bagien", pokutnikBagna),
+						new BaseMapEvent.EventSpawn("pokutnik z wrzosowisk", pokutnikWrzosy),
+						new BaseMapEvent.EventSpawn("pokutnik z łąk", pokutnikLaki),
+						new BaseMapEvent.EventSpawn("pokutnik poranny", pokutnikPoranny)
 				);
 			} else {
+				final int pokutnikBagna = 3 + (escalationLevel / 3);
+				final int pokutnikWrzosy = 3 + (escalationLevel / 3);
+				final int pokutnikLaki = 3 + (escalationLevel / 3);
+				final int pokutnikPoranny = 2 + (escalationLevel / 4);
+				final int pokutnikZGor = 4 + (escalationLevel / 3);
+				final int pokutnikNocny = 3 + (escalationLevel / 4);
+				final int pokutnikWieczorny = 3 + (escalationLevel / 4);
+				final int jozinLesa = 1 + (escalationLevel / 6);
+				final int jozinBazin = Math.min(2, 1 + (escalationLevel / 9));
+				final int lawina = Math.min(2, 1 + (escalationLevel / 8));
 				spawns = Arrays.asList(
-						new BaseMapEvent.EventSpawn("pokutnik z gór", 6),
-						new BaseMapEvent.EventSpawn("pokutnik nocny", 5),
-						new BaseMapEvent.EventSpawn("pokutnik wieczorny", 4),
-						new BaseMapEvent.EventSpawn("lawina", 3)
+						new BaseMapEvent.EventSpawn("pokutnik z bagien", pokutnikBagna),
+						new BaseMapEvent.EventSpawn("pokutnik z wrzosowisk", pokutnikWrzosy),
+						new BaseMapEvent.EventSpawn("pokutnik z łąk", pokutnikLaki),
+						new BaseMapEvent.EventSpawn("pokutnik poranny", pokutnikPoranny),
+						new BaseMapEvent.EventSpawn("pokutnik z gór", pokutnikZGor),
+						new BaseMapEvent.EventSpawn("pokutnik nocny", pokutnikNocny),
+						new BaseMapEvent.EventSpawn("pokutnik wieczorny", pokutnikWieczorny),
+						new BaseMapEvent.EventSpawn("Jožin z lesa", jozinLesa),
+						new BaseMapEvent.EventSpawn("Jožin z bažin", jozinBazin),
+						new BaseMapEvent.EventSpawn("lawina", lawina)
 				);
 			}
 			waves.add(new BaseMapEvent.EventWave(intervalSeconds, spawns));
