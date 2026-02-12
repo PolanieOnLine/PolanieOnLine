@@ -25,6 +25,7 @@ public class ConfiguredMapEvent extends BaseMapEvent {
 	private final Logger logger;
 	private final MapEventSpawnStrategy spawnStrategy;
 	private final KillThresholdTrigger killThresholdTrigger;
+	private volatile boolean scriptForceStartRequested;
 
 	public ConfiguredMapEvent(final Logger logger, final MapEventConfig config) {
 		this(logger, config, new RandomSafeSpotSpawnStrategy(logger));
@@ -55,12 +56,21 @@ public class ConfiguredMapEvent extends BaseMapEvent {
 	}
 
 	public final boolean startFromScript(final boolean force) {
-		if (!startEvent()) {
-			logger.warn(getEventName() + " event already active; refusing "
-					+ (force ? "forced" : "safe") + " script start.");
-			return false;
+		scriptForceStartRequested = force;
+		try {
+			if (!startEvent()) {
+				logger.warn(getEventName() + " event already active; refusing "
+						+ (force ? "forced" : "safe") + " script start.");
+				return false;
+			}
+			return true;
+		} finally {
+			scriptForceStartRequested = false;
 		}
-		return true;
+	}
+
+	protected final boolean isScriptForceStartRequested() {
+		return scriptForceStartRequested;
 	}
 
 	protected String getStartAnnouncementMessage() {

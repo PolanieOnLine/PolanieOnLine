@@ -117,19 +117,7 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 		rewardEligiblePlayers.clear();
 		announcedWaveOffsets.clear();
 
-		if (!isCooldownReady()) {
-			failedByGiantHealth = true;
-			blockedByCooldown = true;
-			endEvent();
-			return;
-		}
-
-		if (countPlayersInObserverZones() < MIN_PLAYERS_TO_START) {
-			SingletonRepository.getRuleProcessor().tellAllPlayers(
-					NotificationType.PRIVMSG,
-					"Eskorta Wielkoluda nie wystartowała: potrzeba co najmniej " + MIN_PLAYERS_TO_START
-							+ " aktywnych graczy w regionie.");
-			failedByLowActivity = true;
+		if (shouldValidateStartGates() && !validateStartGates()) {
 			endEvent();
 			return;
 		}
@@ -453,6 +441,29 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 				NotificationType.PRIVMSG,
 				"Eskorta Wielkoluda jest na cooldownie. Kolejny start za około " + remainingMinutes + " min.");
 		return false;
+	}
+
+	private boolean shouldValidateStartGates() {
+		return !isScriptForceStartRequested();
+	}
+
+	private boolean validateStartGates() {
+		if (!isCooldownReady()) {
+			failedByGiantHealth = true;
+			blockedByCooldown = true;
+			return false;
+		}
+
+		if (countPlayersInObserverZones() < MIN_PLAYERS_TO_START) {
+			SingletonRepository.getRuleProcessor().tellAllPlayers(
+					NotificationType.PRIVMSG,
+					"Eskorta Wielkoluda nie wystartowała: potrzeba co najmniej " + MIN_PLAYERS_TO_START
+							+ " aktywnych graczy w regionie.");
+			failedByLowActivity = true;
+			return false;
+		}
+
+		return true;
 	}
 
 	private int countPlayersInObserverZones() {
