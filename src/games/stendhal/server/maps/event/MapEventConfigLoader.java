@@ -64,28 +64,41 @@ public final class MapEventConfigLoader {
 				.zones(Arrays.asList("0_koscielisko_ne"))
 				.observerZones(Arrays.asList("0_koscielisko_ne"))
 				.creatureFilter(new LinkedHashSet<>(Arrays.asList(
-						"duch",
+						"elf górski maskotka",
+						"elf górski służka",
+						"elf górski dama",
+						"pokutnik z gór",
+						"pokutnik nocny",
+						"pokutnik wieczorny",
 						"lawina"
 				)))
 				.waves(Arrays.asList(
 						new BaseMapEvent.EventWave(40, Arrays.asList(
-								new BaseMapEvent.EventSpawn("duch", 4),
-								new BaseMapEvent.EventSpawn("lawina", 2)
+								new BaseMapEvent.EventSpawn("elf górski maskotka", 6),
+								new BaseMapEvent.EventSpawn("elf górski służka", 4),
+								new BaseMapEvent.EventSpawn("elf górski dama", 2)
 						)),
 						new BaseMapEvent.EventWave(60, Arrays.asList(
-								new BaseMapEvent.EventSpawn("duch", 5),
-								new BaseMapEvent.EventSpawn("lawina", 3)
+								new BaseMapEvent.EventSpawn("elf górski maskotka", 5),
+								new BaseMapEvent.EventSpawn("elf górski służka", 4),
+								new BaseMapEvent.EventSpawn("elf górski dama", 3)
 						)),
 						new BaseMapEvent.EventWave(75, Arrays.asList(
-								new BaseMapEvent.EventSpawn("duch", 6),
-								new BaseMapEvent.EventSpawn("lawina", 3)
+								new BaseMapEvent.EventSpawn("elf górski służka", 4),
+								new BaseMapEvent.EventSpawn("elf górski dama", 4),
+								new BaseMapEvent.EventSpawn("pokutnik z gór", 3),
+								new BaseMapEvent.EventSpawn("pokutnik nocny", 2)
 						)),
 						new BaseMapEvent.EventWave(95, Arrays.asList(
-								new BaseMapEvent.EventSpawn("duch", 8),
-								new BaseMapEvent.EventSpawn("lawina", 4)
+								new BaseMapEvent.EventSpawn("pokutnik z gór", 5),
+								new BaseMapEvent.EventSpawn("pokutnik nocny", 4),
+								new BaseMapEvent.EventSpawn("pokutnik wieczorny", 2),
+								new BaseMapEvent.EventSpawn("lawina", 2)
 						)),
 						new BaseMapEvent.EventWave(110, Arrays.asList(
-								new BaseMapEvent.EventSpawn("duch", 10),
+								new BaseMapEvent.EventSpawn("pokutnik z gór", 6),
+								new BaseMapEvent.EventSpawn("pokutnik nocny", 5),
+								new BaseMapEvent.EventSpawn("pokutnik wieczorny", 4),
 								new BaseMapEvent.EventSpawn("lawina", 4)
 						))
 				))
