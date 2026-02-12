@@ -1,7 +1,7 @@
 /***************************************************************************
  *                 (C) Copyright 2019-2021 - PolanieOnLine                 *
- ***************************************************************************
- ***************************************************************************
+ ***************************************************************************/
+/***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -10,9 +10,6 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.entity.status;
-
-import java.util.LinkedList;
-import java.util.List;
 
 import games.stendhal.server.core.events.TurnListener;
 import games.stendhal.server.core.events.TurnNotifier;
@@ -33,36 +30,44 @@ public class BleedingStatusTurnListener implements TurnListener {
 			return;
 		}
 
-		List<BleedingStatus> toConsume = statusList.getAllStatusByClass(BleedingStatus.class);
-		if (toConsume.isEmpty()) {
-			if (entity.has(ATTRIBUTE_NAME)) {
-				entity.remove(ATTRIBUTE_NAME);
+		BleedingStatus bleeding = statusList.getFirstStatusByClass(BleedingStatus.class);
+		if ((bleeding == null) || !bleeding.isActive()) {
+			if (clearAttribute(entity)) {
 				entity.notifyWorldAboutChanges();
 			}
 			return;
 		}
 
-		List<ConsumableStatus> toRemove = new LinkedList<ConsumableStatus>();
-		int sum = 0;
-		int amount = 0;
-		for (final BleedingStatus bleeding : toConsume) {
-			if (turn % bleeding.getFrecuency() == 0) {
-				if (bleeding.consumed()) {
-					toRemove.add(bleeding);
-				} else {
-					amount = bleeding.consume();
-					entity.damage(-amount, bleeding);
-					sum += amount;
-					entity.put(ATTRIBUTE_NAME, sum);
-				}
-				entity.notifyWorldAboutChanges();
-			}
+		int damage = bleeding.processTurn();
+		boolean dirty = false;
+
+		if (damage > 0) {
+			entity.damage(damage, bleeding);
+			entity.put(ATTRIBUTE_NAME, bleeding.getClientIntensity());
+			dirty = true;
 		}
 
-		for (final ConsumableStatus consumable : toRemove) {
-			statusList.remove(consumable);
+		if (!bleeding.isActive()) {
+			statusList.remove(bleeding);
+			dirty |= clearAttribute(entity);
+		} else if (damage > 0) {
+			// ensure client gets updated intensity after severity changes
+			dirty = true;
 		}
+
+		if (dirty) {
+			entity.notifyWorldAboutChanges();
+		}
+
 		TurnNotifier.get().notifyInTurns(0, this);
+	}
+
+	private boolean clearAttribute(RPEntity entity) {
+		if (entity.has(ATTRIBUTE_NAME)) {
+			entity.remove(ATTRIBUTE_NAME);
+			return true;
+		}
+		return false;
 	}
 
 	@Override
