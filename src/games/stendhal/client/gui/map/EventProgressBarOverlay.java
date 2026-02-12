@@ -11,6 +11,7 @@
  ***************************************************************************/
 package games.stendhal.client.gui.map;
 
+import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -41,6 +42,7 @@ public class EventProgressBarOverlay extends JPanel {
 	private final JLabel eventTitle;
 	private final JProgressBar progressBar;
 	private String eventId;
+	private float overlayAlpha = 1.0f;
 
 	public EventProgressBarOverlay() {
 		setOpaque(false);
@@ -74,8 +76,10 @@ public class EventProgressBarOverlay extends JPanel {
 	public void showOverlay(final String newEventId, final String title, final int progressPercent,
 			final String value) {
 		eventId = newEventId;
+		overlayAlpha = 1.0f;
 		applyValues(title, progressPercent, value);
 		setVisible(true);
+		repaint();
 	}
 
 	public void updateOverlay(final String newEventId, final String title, final int progressPercent,
@@ -85,6 +89,20 @@ public class EventProgressBarOverlay extends JPanel {
 		if (!isVisible()) {
 			setVisible(true);
 		}
+		repaint();
+	}
+
+	public void showTerminalState(final String title, final String value) {
+		eventId = null;
+		overlayAlpha = 1.0f;
+		applyValues(title, 100, value);
+		setVisible(true);
+		repaint();
+	}
+
+	public void setOverlayAlpha(final float alpha) {
+		overlayAlpha = Math.max(0.0f, Math.min(1.0f, alpha));
+		repaint();
 	}
 
 	public void hideOverlay() {
@@ -94,6 +112,20 @@ public class EventProgressBarOverlay extends JPanel {
 
 	public boolean isShowingEvent(final String checkedEventId) {
 		return (eventId != null) && eventId.equals(checkedEventId);
+	}
+
+	@Override
+	protected void paintComponent(final Graphics g) {
+		if (overlayAlpha <= 0.0f) {
+			return;
+		}
+		final Graphics2D g2d = (Graphics2D) g.create();
+		try {
+			g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, overlayAlpha));
+			super.paintComponent(g2d);
+		} finally {
+			g2d.dispose();
+		}
 	}
 
 	private void applyValues(final String title, final int progressPercent, final String value) {
