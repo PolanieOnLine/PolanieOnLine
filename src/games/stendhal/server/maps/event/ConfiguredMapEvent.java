@@ -36,14 +36,23 @@ public class ConfiguredMapEvent extends BaseMapEvent {
 		super(logger, config);
 		this.logger = Objects.requireNonNull(logger, "logger");
 		this.spawnStrategy = Objects.requireNonNull(spawnStrategy, "spawnStrategy");
-		killThresholdTrigger = new KillThresholdTrigger(
-				getObserverZones(),
-				circs -> !isEventActive() && getCreatureFilter().contains(circs.getVictim().getName()),
-				getConfig().getTriggerThreshold(),
-				this::startEventFromKills);
+		if (getConfig().getTriggerThreshold() > 0) {
+			killThresholdTrigger = new KillThresholdTrigger(
+					getObserverZones(),
+					circs -> !isEventActive() && getCreatureFilter().contains(circs.getVictim().getName()),
+					getConfig().getTriggerThreshold(),
+					this::startEventFromKills);
+		} else {
+			killThresholdTrigger = null;
+			logger.info(getEventName() + " event configured without kill-trigger (triggerThreshold="
+					+ getConfig().getTriggerThreshold() + ").");
+		}
 	}
 
 	public final void registerObserverZone(final StendhalRPZone zone) {
+		if (killThresholdTrigger == null) {
+			return;
+		}
 		killThresholdTrigger.registerZoneObserver(Objects.requireNonNull(zone, "zone"));
 	}
 
@@ -95,7 +104,9 @@ public class ConfiguredMapEvent extends BaseMapEvent {
 
 	@Override
 	protected void onStart() {
-		killThresholdTrigger.resetCounter("event started");
+		if (killThresholdTrigger != null) {
+			killThresholdTrigger.resetCounter("event started");
+		}
 		logger.info(getEventName() + " event started.");
 		SingletonRepository.getRuleProcessor().tellAllPlayers(
 				NotificationType.PRIVMSG,
@@ -104,7 +115,9 @@ public class ConfiguredMapEvent extends BaseMapEvent {
 
 	@Override
 	protected void onStop() {
-		killThresholdTrigger.resetCounter("event ended");
+		if (killThresholdTrigger != null) {
+			killThresholdTrigger.resetCounter("event ended");
+		}
 		logger.info(getEventName() + " event ended.");
 		removeEventCreatures();
 		stopAnnouncements();

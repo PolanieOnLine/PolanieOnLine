@@ -106,6 +106,8 @@ public final class MapEventConfigLoader {
 				.stopAnnouncement("Eskorta Wielkoluda została zakończona.")
 				.announcementIntervalSeconds(180)
 				.giantOnlyAggro(true)
+				// This escort event starts from scheduler/script only, so kill-trigger stays disabled.
+				.triggerThreshold(0)
 				.defaultStartTime("20:00")
 				.defaultIntervalDays(2)
 				.build();
