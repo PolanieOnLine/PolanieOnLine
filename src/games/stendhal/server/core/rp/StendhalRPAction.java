@@ -50,6 +50,7 @@ import games.stendhal.server.entity.item.WeaponImpl;
 import games.stendhal.server.entity.npc.TrainingDummy;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.events.AttackEvent;
+import games.stendhal.server.maps.event.MapEventStatusPublisher;
 import marauroa.common.game.RPObject;
 import marauroa.common.net.message.TransferContent;
 import marauroa.server.game.db.DAORegister;
@@ -860,6 +861,7 @@ public class StendhalRPAction {
 			if (zoneChanged) {
 				// Zone change notifications/updates
 				transferContent(player);
+				MapEventStatusPublisher.sendImmediateSnapshot(player);
 
 				if (oldZone != null) {
 					final String source = oldZone.getName();
