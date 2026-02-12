@@ -110,6 +110,9 @@ public class SellerBehaviour extends MerchantBehaviour {
 				MoneyUtils.removeMoney(player, price);
 				updatePlayerTransactions(player, seller.getName(), res);
 				seller.say("Gratulacje! Oto twój " + chosenItemName + "!");
+				if ((amount >= 10) || (price >= MoneyUtils.SILVER_VALUE * 5)) {
+					seller.say("Oho! Dobry interes dziś mamy!");
+				}
 				return true;
 			} else {
 				seller.say("Przepraszam, ale nie możesz wziąć " + chosenItemName + ".");

@@ -10,6 +10,10 @@
  *                                                                         *
  ***************************************************************************/
 package games.stendhal.server.entity.npc.behaviour.adder;
+import java.util.Collections;
+import java.util.Set;
+import java.util.WeakHashMap;
+import java.util.function.Consumer;
 
 import org.apache.log4j.Logger;
 
@@ -22,6 +26,7 @@ import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.item.money.MoneyUtils;
+import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ChatCondition;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -37,6 +42,7 @@ import games.stendhal.server.entity.npc.condition.NotCondition;
 import games.stendhal.server.entity.npc.condition.SentenceHasErrorCondition;
 import games.stendhal.server.entity.npc.fsm.Engine;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.events.NpcShopWindowEvent;
 import games.stendhal.server.events.SoundEvent;
 
 public class SellerAdder {
@@ -78,12 +84,20 @@ public class SellerAdder {
 		merchantsRegister.add(npc, sellerBehaviour);
 		npc.put("job_merchant", "");
 
+		final ShopWindowSupport shopSupport = new ShopWindowSupport(npc, sellerBehaviour);
+
 		if (offer) {
 			engine.add(
 				ConversationStates.ATTENDING,
 				ConversationPhrases.OFFER_MESSAGES,
 				null, false, ConversationStates.ATTENDING,
-				"Sprzedaję " + Grammar.enumerateCollection(sellerBehaviour.dealtItems()) + ".", null);
+				null, new ChatAction() {
+				@Override
+				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
+					raiser.say("Sprzedaję " + Grammar.enumerateCollection(sellerBehaviour.dealtItems()) + ".");
+					shopSupport.openShopWindow(player);
+				}
+			});
 		}
 
 		engine.add(ConversationStates.ATTENDING,
@@ -193,4 +207,43 @@ public class SellerAdder {
 				false, ConversationStates.ATTENDING,
 				"Dobrze w czym jeszcze mogę pomóc?", null);
 	}
+
+	private static final class ShopWindowSupport {
+		private static final Set<SpeakerNPC> REGISTERED = Collections.newSetFromMap(new WeakHashMap<SpeakerNPC, Boolean>());
+
+		private final SpeakerNPC npc;
+		private final SellerBehaviour behaviour;
+
+		ShopWindowSupport(final SpeakerNPC npc, final SellerBehaviour behaviour) {
+			this.npc = npc;
+			this.behaviour = behaviour;
+		}
+
+		void openShopWindow(final Player player) {
+			if (player == null) {
+				return;
+			}
+			player.addEvent(NpcShopWindowEvent.open(npc, behaviour, player));
+			player.notifyWorldAboutChanges();
+			registerListener();
+		}
+
+		private void registerListener() {
+			synchronized (REGISTERED) {
+				if (REGISTERED.add(npc)) {
+					npc.addGoodbyeListener(new Consumer<RPEntity>() {
+						@Override
+						public void accept(final RPEntity entity) {
+							if (entity instanceof Player) {
+								final Player player = (Player) entity;
+								player.addEvent(NpcShopWindowEvent.close(npc));
+								player.notifyWorldAboutChanges();
+							}
+						}
+					});
+				}
+			}
+		}
+	}
+
 }

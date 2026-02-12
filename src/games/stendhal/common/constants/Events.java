@@ -68,4 +68,7 @@ public final class Events {
 	public static final String DROPPEDLIST = Actions.DROPPEDLIST;
 
 	public static final String ACHIEVEMENT_LOG = Actions.ACHIEVEMENTLOG;
+
+	/** graphical npc shop window event */
+	public static final String NPC_SHOP = "npc_shop_window";
 }

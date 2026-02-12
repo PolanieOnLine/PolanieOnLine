@@ -49,6 +49,7 @@ public class PlayerRPClass {
 		player.addRPEvent(Events.DROPPEDLIST, Definition.PRIVATE);
 
 		player.addRPEvent(Events.ACHIEVEMENT_LOG, Definition.PRIVATE);
+		player.addRPEvent(Events.NPC_SHOP, Definition.PRIVATE);
 
 		player.addAttribute("dead", Type.FLAG, Definition.PRIVATE);
 
