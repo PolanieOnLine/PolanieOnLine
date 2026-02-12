@@ -63,9 +63,35 @@ public final class MapEventConfigLoader {
 				.duration(Duration.ofMinutes(20))
 				.zones(Arrays.asList("0_koscielisko_ne"))
 				.observerZones(Arrays.asList("0_koscielisko_ne"))
+				.creatureFilter(new LinkedHashSet<>(Arrays.asList(
+						"duch",
+						"lawina"
+				)))
+				.waves(Arrays.asList(
+						new BaseMapEvent.EventWave(40, Arrays.asList(
+								new BaseMapEvent.EventSpawn("duch", 4),
+								new BaseMapEvent.EventSpawn("lawina", 2)
+						)),
+						new BaseMapEvent.EventWave(60, Arrays.asList(
+								new BaseMapEvent.EventSpawn("duch", 5),
+								new BaseMapEvent.EventSpawn("lawina", 3)
+						)),
+						new BaseMapEvent.EventWave(75, Arrays.asList(
+								new BaseMapEvent.EventSpawn("duch", 6),
+								new BaseMapEvent.EventSpawn("lawina", 3)
+						)),
+						new BaseMapEvent.EventWave(95, Arrays.asList(
+								new BaseMapEvent.EventSpawn("duch", 8),
+								new BaseMapEvent.EventSpawn("lawina", 4)
+						)),
+						new BaseMapEvent.EventWave(110, Arrays.asList(
+								new BaseMapEvent.EventSpawn("duch", 10),
+								new BaseMapEvent.EventSpawn("lawina", 4)
+						))
+				))
 				.startAnnouncement("Rozpoczyna się eskorta Wielkoluda - brońcie go za wszelką cenę!")
 				.stopAnnouncement("Eskorta Wielkoluda została zakończona.")
-				.announcementIntervalSeconds(300)
+				.announcementIntervalSeconds(180)
 				.defaultStartTime("20:00")
 				.defaultIntervalDays(2)
 				.build();
