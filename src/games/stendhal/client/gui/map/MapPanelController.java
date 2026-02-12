@@ -46,6 +46,7 @@ import games.stendhal.common.CollisionDetection;
  */
 public class MapPanelController implements GameObjects.GameObjectListener, PositionChangeListener, ZoneChangeListener {
 	private static final boolean supermanMode = (System.getProperty("stendhal.superman") != null);
+
 	private final JComponent container;
 	private final MapPanel panel;
 	private final InformationPanel infoPanel;

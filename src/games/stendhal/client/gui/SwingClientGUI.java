@@ -22,6 +22,7 @@ import java.awt.Frame;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -33,6 +34,7 @@ import java.awt.event.WindowEvent;
 import java.util.Arrays;
 import java.util.Collection;
 
+import javax.swing.AbstractAction;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -43,6 +45,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.plaf.TabbedPaneUI;
 
 import org.apache.log4j.Logger;
@@ -69,10 +72,13 @@ import games.stendhal.client.gui.group.GroupPanelController;
 import games.stendhal.client.gui.layout.FreePlacementLayout;
 import games.stendhal.client.gui.layout.SBoxLayout;
 import games.stendhal.client.gui.layout.SLayout;
+import games.stendhal.client.gui.map.EventProgressBarOverlay;
 import games.stendhal.client.gui.map.MapPanelController;
+import games.stendhal.client.gui.settings.SettingsProperties;
 import games.stendhal.client.gui.spells.Spells;
 import games.stendhal.client.gui.stats.StatsPanelController;
-import games.stendhal.client.gui.settings.SettingsProperties;
+import games.stendhal.client.gui.status.ActiveMapEventStatus;
+import games.stendhal.client.gui.status.MapEventStatusStore;
 import games.stendhal.client.gui.styled.StyledTabbedPaneUI;
 import games.stendhal.client.gui.wt.core.SettingChangeListener;
 import games.stendhal.client.gui.wt.core.WtWindowManager;
@@ -86,12 +92,15 @@ import marauroa.common.game.RPObject;
 class SwingClientGUI implements J2DClientGUI {
 	/** Scrolling speed when using the mouse wheel. */
 	private static final int SCROLLING_SPEED = 8;
+	private static final int EVENT_OVERLAY_TOP_MARGIN = 12;
 	/** Property name used to determine if scaling is wanted. */
 	private static final String SCALE_PREFERENCE_PROPERTY = "ui.scale_screen";
 	private static final Logger logger = Logger.getLogger(SwingClientGUI.class);
 
 	private final JLayeredPane pane;
 	private final GameScreen screen;
+	private final EventProgressBarOverlay eventProgressOverlay;
+	private final Timer eventProgressRefreshTimer;
 	private final ScreenController screenController;
 	private final ContainerPanel containerPanel;
 	private final QuitDialog quitDialog;
@@ -122,6 +131,7 @@ class SwingClientGUI implements J2DClientGUI {
 	private OutfitDialog outfitDialog;
 	private FocusAdapter chatFocusRedirector;
 	private boolean chatFocusRedirectInstalled;
+	private volatile String currentZoneName;
 
 	public SwingClientGUI(StendhalClient client, UserContext context,
 			NotificationChannelManager channelManager, JFrame splash) {
@@ -140,8 +150,23 @@ class SwingClientGUI implements J2DClientGUI {
 		// initialize the screen controller
 		screenController = ScreenController.get(screen);
 		pane.addComponentListener(new GameScreenResizer(screen));
+		pane.addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentResized(final ComponentEvent e) {
+				repositionEventProgressOverlay();
+			}
+		});
 		// ... and put it on the ground layer of the pane
 		pane.add(screen, Component.LEFT_ALIGNMENT, JLayeredPane.DEFAULT_LAYER);
+		eventProgressOverlay = new EventProgressBarOverlay();
+		pane.add(eventProgressOverlay, JLayeredPane.PALETTE_LAYER);
+		eventProgressRefreshTimer = new Timer(1000, new AbstractAction() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				refreshEventProgressOverlay();
+			}
+		});
+		eventProgressRefreshTimer.start();
 
 		runicAltar = new RunicAltar();
 		pane.add(runicAltar.getRunicAltar(), JLayeredPane.MODAL_LAYER);
@@ -167,6 +192,7 @@ class SwingClientGUI implements J2DClientGUI {
 
 		setInitialWindowStates();
 		frame.setVisible(true);
+		repositionEventProgressOverlay();
 
 		/*
 		 * Used by settings dialog to restore the client's dimensions back to
@@ -572,6 +598,25 @@ class SwingClientGUI implements J2DClientGUI {
 		client.addZoneChangeListener(screen);
 		client.addZoneChangeListener(minimap);
 		client.addZoneChangeListener(new WeatherSoundManager());
+		client.addZoneChangeListener(new ZoneChangeListener() {
+			@Override
+			public void onZoneUpdate(final Zone zone) {
+				currentZoneName = User.isNull() ? null : User.get().getZoneName();
+				refreshEventProgressOverlay();
+			}
+
+			@Override
+			public void onZoneChangeCompleted(final Zone zone) {
+				currentZoneName = User.isNull() ? null : User.get().getZoneName();
+				repositionEventProgressOverlay();
+				refreshEventProgressOverlay();
+			}
+
+			@Override
+			public void onZoneChange(final Zone zone) {
+				eventProgressOverlay.hideOverlay();
+			}
+		});
 		// Disable side panel animation while changing zone
 		client.addZoneChangeListener(new ZoneChangeListener() {
 			@Override
@@ -588,6 +633,51 @@ class SwingClientGUI implements J2DClientGUI {
 				containerPanel.setAnimated(false);
 			}
 		});
+	}
+
+	private void refreshEventProgressOverlay() {
+		if (!pane.isShowing()) {
+			return;
+		}
+		final ActiveMapEventStatus visibleStatus = MapEventStatusStore.get().getVisibleStatusForZone(resolveCurrentZoneName());
+		if (visibleStatus == null) {
+			eventProgressOverlay.hideOverlay();
+			return;
+		}
+
+		final String value = formatRemaining(visibleStatus.getRemainingSeconds()) + " • " + visibleStatus.getProgressPercent() + "%";
+		if (eventProgressOverlay.isShowingEvent(visibleStatus.getEventId())) {
+			eventProgressOverlay.updateOverlay(visibleStatus.getEventId(), visibleStatus.getEventName(), visibleStatus.getProgressPercent(), value);
+		} else {
+			eventProgressOverlay.showOverlay(visibleStatus.getEventId(), visibleStatus.getEventName(), visibleStatus.getProgressPercent(), value);
+		}
+		repositionEventProgressOverlay();
+	}
+
+	private String resolveCurrentZoneName() {
+		if (!User.isNull()) {
+			final String zoneName = User.get().getZoneName();
+			if ((zoneName != null) && !zoneName.isEmpty()) {
+				currentZoneName = zoneName;
+			}
+		}
+		return currentZoneName;
+	}
+
+	private String formatRemaining(final int secondsTotal) {
+		final int bounded = Math.max(0, secondsTotal);
+		final int minutes = bounded / 60;
+		final int seconds = bounded % 60;
+		return minutes + ":" + ((seconds < 10) ? "0" + seconds : String.valueOf(seconds));
+	}
+
+	private void repositionEventProgressOverlay() {
+		final Dimension screenSize = screen.getSize();
+		final Dimension preferred = eventProgressOverlay.getPreferredSize();
+		final int width = preferred.width;
+		final int height = preferred.height;
+		final int x = Math.max(0, (screenSize.width - width) / 2);
+		eventProgressOverlay.setBounds(x, EVENT_OVERLAY_TOP_MARGIN, width, height);
 	}
 
 	@Override
