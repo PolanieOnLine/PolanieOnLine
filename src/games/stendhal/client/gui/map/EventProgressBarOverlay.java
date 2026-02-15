@@ -12,6 +12,7 @@
 package games.stendhal.client.gui.map;
 
 import java.awt.AlphaComposite;
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -20,8 +21,10 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.RenderingHints;
+import java.awt.Stroke;
 
 import javax.swing.BorderFactory;
+import javax.swing.Box;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -36,8 +39,11 @@ import games.stendhal.client.gui.layout.SLayout;
  */
 public class EventProgressBarOverlay extends JPanel {
 	private static final int BAR_WIDTH = 260;
-	private static final int BAR_HEIGHT = 12;
+	private static final int BAR_HEIGHT = 10;
 	private static final int BAR_RADIUS = 8;
+	private static final int PANEL_RADIUS = 9;
+	private static final Color PANEL_BACKGROUND = new Color(22, 14, 10, 102);
+	private static final Color PANEL_BORDER = new Color(168, 130, 92, 130);
 
 	private final JLabel eventTitle;
 	private final JProgressBar progressBar;
@@ -46,7 +52,7 @@ public class EventProgressBarOverlay extends JPanel {
 
 	public EventProgressBarOverlay() {
 		setOpaque(false);
-		setBorder(BorderFactory.createEmptyBorder(2, 8, 3, 8));
+		setBorder(BorderFactory.createEmptyBorder(6, 10, 8, 10));
 		setAlignmentX(JComponent.CENTER_ALIGNMENT);
 		setAlignmentY(JComponent.TOP_ALIGNMENT);
 		setLayout(new SBoxLayout(SBoxLayout.VERTICAL));
@@ -57,6 +63,7 @@ public class EventProgressBarOverlay extends JPanel {
 		eventTitle.setHorizontalAlignment(JLabel.CENTER);
 		eventTitle.setAlignmentX(CENTER_ALIGNMENT);
 		add(eventTitle, SLayout.EXPAND_X);
+		add(Box.createVerticalStrut(5), SLayout.EXPAND_X);
 
 		progressBar = new JProgressBar(0, 100);
 		progressBar.setPreferredSize(new Dimension(BAR_WIDTH, BAR_HEIGHT));
@@ -122,6 +129,19 @@ public class EventProgressBarOverlay extends JPanel {
 		final Graphics2D g2d = (Graphics2D) g.create();
 		try {
 			g2d.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, overlayAlpha));
+			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			final int width = getWidth();
+			final int height = getHeight();
+			if ((width > 1) && (height > 1)) {
+				final int arc = PANEL_RADIUS * 2;
+				g2d.setColor(PANEL_BACKGROUND);
+				g2d.fillRoundRect(0, 0, width - 1, height - 1, arc, arc);
+				final Stroke originalStroke = g2d.getStroke();
+				g2d.setStroke(new BasicStroke(0.8f));
+				g2d.setColor(PANEL_BORDER);
+				g2d.drawRoundRect(0, 0, width - 1, height - 1, arc, arc);
+				g2d.setStroke(originalStroke);
+			}
 			super.paintComponent(g2d);
 		} finally {
 			g2d.dispose();
@@ -138,18 +158,18 @@ public class EventProgressBarOverlay extends JPanel {
 	}
 
 	private static final class RoundedProgressBarUI extends BasicProgressBarUI {
-		private static final Color BACKGROUND_SHADOW = new Color(30, 18, 10, 90);
-		private static final Color BACKGROUND_TOP = new Color(92, 66, 42, 205);
-		private static final Color BACKGROUND_BOTTOM = new Color(51, 33, 20, 220);
-		private static final Color BACKGROUND_GRAIN_TOP = new Color(126, 95, 64, 50);
-		private static final Color BACKGROUND_GRAIN_BOTTOM = new Color(73, 48, 29, 30);
+		private static final Color BACKGROUND_SHADOW = new Color(30, 18, 10, 58);
+		private static final Color BACKGROUND_TOP = new Color(92, 66, 42, 98);
+		private static final Color BACKGROUND_BOTTOM = new Color(51, 33, 20, 108);
+		private static final Color BACKGROUND_GRAIN_TOP = new Color(126, 95, 64, 30);
+		private static final Color BACKGROUND_GRAIN_BOTTOM = new Color(73, 48, 29, 18);
 
 		private static final Color STANDARD_FILL_TOP = new Color(216, 157, 79);
 		private static final Color STANDARD_FILL_BOTTOM = new Color(142, 85, 49);
 		private static final Color FINAL_PHASE_FILL_TOP = new Color(188, 98, 56);
 		private static final Color FINAL_PHASE_FILL_BOTTOM = new Color(120, 56, 35);
 
-		private static final Color BAR_BORDER = new Color(129, 93, 60, 190);
+		private static final Color BAR_BORDER = new Color(129, 93, 60, 150);
 		private static final Color TEXT_SHADOW = new Color(18, 11, 6, 190);
 		private static final Color TEXT_COLOR = new Color(250, 241, 222);
 

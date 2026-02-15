@@ -92,7 +92,8 @@ import marauroa.common.game.RPObject;
 class SwingClientGUI implements J2DClientGUI {
 	/** Scrolling speed when using the mouse wheel. */
 	private static final int SCROLLING_SPEED = 8;
-	private static final int EVENT_OVERLAY_TOP_MARGIN = 12;
+	private static final int EVENT_OVERLAY_TOP_MARGIN = 18;
+	private static final int EVENT_OVERLAY_SAFE_GAP = 8;
 	private static final int EVENT_REFRESH_INTERVAL_MILLIS = 100;
 	private static final int EVENT_OVERLAY_DEBOUNCE_MILLIS = 300;
 	private static final int EVENT_OVERLAY_FADE_DURATION_MILLIS = 220;
@@ -758,7 +759,19 @@ class SwingClientGUI implements J2DClientGUI {
 		final int width = preferred.width;
 		final int height = preferred.height;
 		final int x = Math.max(0, (screenSize.width - width) / 2);
-		eventProgressOverlay.setBounds(x, EVENT_OVERLAY_TOP_MARGIN, width, height);
+
+		int y = EVENT_OVERLAY_TOP_MARGIN;
+		final JComponent minimapComponent = (minimap == null) ? null : minimap.getComponent();
+		if ((minimapComponent != null) && minimapComponent.isShowing()) {
+			final Rectangle minimapBounds = SwingUtilities.convertRectangle(
+					minimapComponent.getParent(), minimapComponent.getBounds(), pane);
+			final Rectangle overlayBounds = new Rectangle(x, y, width, height);
+			if (overlayBounds.intersects(minimapBounds)) {
+				y = minimapBounds.y + minimapBounds.height + EVENT_OVERLAY_SAFE_GAP;
+			}
+		}
+
+		eventProgressOverlay.setBounds(x, y, width, height);
 	}
 
 	@Override
