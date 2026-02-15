@@ -201,9 +201,9 @@ public class EventProgressBarOverlay extends JPanel {
 	}
 
 	private static final class EventProgressBar extends JComponent {
-		private static final Color BACKGROUND_SHADOW = new Color(30, 18, 10, 58);
-		private static final Color BACKGROUND_TOP = new Color(92, 66, 42, 98);
-		private static final Color BACKGROUND_BOTTOM = new Color(51, 33, 20, 108);
+		private static final Color BACKGROUND_SHADOW = new Color(30, 18, 10, 88);
+		private static final Color BACKGROUND_TOP = new Color(92, 66, 42, 138);
+		private static final Color BACKGROUND_BOTTOM = new Color(51, 33, 20, 146);
 		private static final Color BACKGROUND_GRAIN_TOP = new Color(126, 95, 64, 30);
 		private static final Color BACKGROUND_GRAIN_BOTTOM = new Color(73, 48, 29, 18);
 
@@ -212,7 +212,7 @@ public class EventProgressBarOverlay extends JPanel {
 		private static final Color FINAL_PHASE_FILL_TOP = new Color(188, 98, 56);
 		private static final Color FINAL_PHASE_FILL_BOTTOM = new Color(120, 56, 35);
 
-		private static final Color BAR_BORDER = new Color(129, 93, 60, 150);
+		private static final Color BAR_BORDER = new Color(129, 93, 60, 190);
 		private static final Color TEXT_SHADOW = new Color(18, 11, 6, 190);
 		private static final Color TEXT_COLOR = new Color(250, 241, 222);
 		private int value;

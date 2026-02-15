@@ -75,9 +75,9 @@ class VisualSettings {
 
 	private static final int[] FPS_OPTIONS = new int[] { 30, 60, 90, 120, 144, 165, 240 };
 
-	private static final int EVENT_HUD_OPACITY_MIN = 20;
-	private static final int EVENT_HUD_OPACITY_MAX = 60;
-	private static final int EVENT_HUD_OPACITY_DEFAULT = 35;
+	private static final int EVENT_HUD_OPACITY_MIN = 40;
+	private static final int EVENT_HUD_OPACITY_MAX = 90;
+	private static final int EVENT_HUD_OPACITY_DEFAULT = 70;
 
 	/** Containers that have components to be toggled */
 	// private JPanel colorsPanel;
@@ -484,7 +484,7 @@ class VisualSettings {
 
 	private JComponent createEventHudModeSelector() {
 		JComponent container = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, SBoxLayout.COMMON_PADDING);
-		final JLabel label = new JLabel("Event HUD:");
+		final JLabel label = new JLabel("HUD wydarzeń losowych:");
 		final JComboBox<String> combo = new JComboBox<String>();
 
 		final String[][] options = {
@@ -505,7 +505,7 @@ class VisualSettings {
 		}
 
 		combo.setSelectedItem(selectedLabel);
-		combo.setToolTipText("Ustawia sposób wyświetlania paska wydarzenia na mapie.");
+		combo.setToolTipText("Ustawia sposób wyświetlania paska wydarzenia na ekranie.");
 		label.setToolTipText(combo.getToolTipText());
 
 		combo.addActionListener(new ActionListener() {
@@ -532,14 +532,14 @@ class VisualSettings {
 				.getPropertyInt(getUserScopedKey(EVENT_HUD_OPACITY_PROPERTY), EVENT_HUD_OPACITY_DEFAULT),
 				EVENT_HUD_OPACITY_MIN, EVENT_HUD_OPACITY_MAX);
 
-		final JLabel label = new JLabel("Przezroczystość Event HUD:");
+		final JLabel label = new JLabel("Przezroczystość HUD wydarzenia:");
 		final JLabel valueLabel = new JLabel(Integer.toString(configured) + "%");
 		final JSlider slider = new JSlider(EVENT_HUD_OPACITY_MIN, EVENT_HUD_OPACITY_MAX, configured);
 		slider.setOpaque(false);
 		slider.setMajorTickSpacing(10);
 		slider.setMinorTickSpacing(5);
 		slider.setPaintTicks(true);
-		slider.setToolTipText("Niższa wartość oznacza bardziej przezroczysty overlay wydarzenia.");
+		slider.setToolTipText("Niższa wartość oznacza bardziej przezroczysta nakładka wydarzenia.");
 		label.setToolTipText(slider.getToolTipText());
 
 		slider.addChangeListener(new ChangeListener() {
