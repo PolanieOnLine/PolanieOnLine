@@ -16,10 +16,10 @@ import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Insets;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
 
@@ -28,8 +28,6 @@ import javax.swing.Box;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.plaf.basic.BasicProgressBarUI;
 
 import games.stendhal.client.gui.layout.SBoxLayout;
 import games.stendhal.client.gui.layout.SLayout;
@@ -46,7 +44,7 @@ public class EventProgressBarOverlay extends JPanel {
 	private static final Color PANEL_BORDER = new Color(168, 130, 92, 130);
 
 	private final JLabel eventTitle;
-	private final JProgressBar progressBar;
+	private final EventProgressBar progressBar;
 	private String eventId;
 	private float overlayAlpha = 1.0f;
 
@@ -58,23 +56,23 @@ public class EventProgressBarOverlay extends JPanel {
 		setLayout(new SBoxLayout(SBoxLayout.VERTICAL));
 
 		eventTitle = new JLabel();
+		eventTitle.setOpaque(false);
+		eventTitle.setBorder(BorderFactory.createEmptyBorder());
 		eventTitle.setForeground(Color.WHITE);
-		eventTitle.setFont(eventTitle.getFont().deriveFont(Font.BOLD));
+		eventTitle.setFont(new Font(Font.DIALOG, Font.BOLD, 12));
 		eventTitle.setHorizontalAlignment(JLabel.CENTER);
 		eventTitle.setAlignmentX(CENTER_ALIGNMENT);
 		add(eventTitle, SLayout.EXPAND_X);
 		add(Box.createVerticalStrut(5), SLayout.EXPAND_X);
 
-		progressBar = new JProgressBar(0, 100);
+		progressBar = new EventProgressBar();
 		progressBar.setPreferredSize(new Dimension(BAR_WIDTH, BAR_HEIGHT));
 		progressBar.setMinimumSize(new Dimension(BAR_WIDTH, BAR_HEIGHT));
 		progressBar.setMaximumSize(new Dimension(BAR_WIDTH, BAR_HEIGHT));
 		progressBar.setValue(0);
-		progressBar.setStringPainted(true);
-		progressBar.setFont(progressBar.getFont().deriveFont(Font.BOLD, 10f));
+		progressBar.setFont(new Font(Font.DIALOG, Font.BOLD, 10));
 		progressBar.setOpaque(false);
 		progressBar.setBorder(BorderFactory.createEmptyBorder());
-		progressBar.setUI(new RoundedProgressBarUI());
 		add(progressBar, SLayout.EXPAND_X);
 
 		setVisible(false);
@@ -154,10 +152,10 @@ public class EventProgressBarOverlay extends JPanel {
 		progressBar.setValue(clampedPercent);
 
 		final String suffix = (value == null || value.trim().isEmpty()) ? "" : " • " + value;
-		progressBar.putClientProperty("displayText", clampedPercent + "%" + suffix);
+		progressBar.setDisplayText(clampedPercent + "%" + suffix);
 	}
 
-	private static final class RoundedProgressBarUI extends BasicProgressBarUI {
+	private static final class EventProgressBar extends JComponent {
 		private static final Color BACKGROUND_SHADOW = new Color(30, 18, 10, 58);
 		private static final Color BACKGROUND_TOP = new Color(92, 66, 42, 98);
 		private static final Color BACKGROUND_BOTTOM = new Color(51, 33, 20, 108);
@@ -172,28 +170,35 @@ public class EventProgressBarOverlay extends JPanel {
 		private static final Color BAR_BORDER = new Color(129, 93, 60, 150);
 		private static final Color TEXT_SHADOW = new Color(18, 11, 6, 190);
 		private static final Color TEXT_COLOR = new Color(250, 241, 222);
+		private int value;
+		private String displayText = "";
+
+		private void setValue(final int newValue) {
+			value = Math.max(0, Math.min(100, newValue));
+			repaint();
+		}
+
+		private void setDisplayText(final String newDisplayText) {
+			displayText = (newDisplayText == null) ? "" : newDisplayText;
+			repaint();
+		}
 
 		@Override
-		protected void paintDeterminate(final Graphics g, final JComponent c) {
+		protected void paintComponent(final Graphics g) {
 			final Graphics2D g2d = (Graphics2D) g.create();
 			try {
 				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-				final Insets insets = progressBar.getInsets();
-				final int width = progressBar.getWidth() - (insets.right + insets.left);
-				final int height = progressBar.getHeight() - (insets.top + insets.bottom);
+				final int width = getWidth();
+				final int height = getHeight();
 				if ((width <= 0) || (height <= 0)) {
 					return;
 				}
 
-				final int x = insets.left;
-				final int y = insets.top;
+				final int x = 0;
+				final int y = 0;
 				final int arc = Math.min(BAR_RADIUS * 2, height);
-				final int clampedValue = Math.max(progressBar.getMinimum(),
-						Math.min(progressBar.getMaximum(), progressBar.getValue()));
-				final int range = Math.max(1, progressBar.getMaximum() - progressBar.getMinimum());
-				final double fraction = (double) (clampedValue - progressBar.getMinimum()) / range;
-				final int fillWidth = (int) Math.round(width * fraction);
+				final int fillWidth = (int) Math.round(width * (value / 100.0d));
 
 				g2d.setColor(BACKGROUND_SHADOW);
 				g2d.fillRoundRect(x, y + 1, width, height, arc, arc);
@@ -204,8 +209,7 @@ public class EventProgressBarOverlay extends JPanel {
 				g2d.fillRoundRect(x, y, width, height, arc, arc);
 
 				if (fillWidth > 0) {
-					final int warningThreshold = progressBar.getMinimum() + (int) Math.round(range * 0.25d);
-					final boolean warning = clampedValue <= warningThreshold;
+					final boolean warning = value <= 25;
 					final Color startColor = warning ? FINAL_PHASE_FILL_TOP : STANDARD_FILL_TOP;
 					final Color endColor = warning ? FINAL_PHASE_FILL_BOTTOM : STANDARD_FILL_BOTTOM;
 
@@ -222,33 +226,21 @@ public class EventProgressBarOverlay extends JPanel {
 				g2d.setColor(BAR_BORDER);
 				g2d.drawRoundRect(x, y, width - 1, height - 1, arc, arc);
 
-				final Object textValue = progressBar.getClientProperty("displayText");
-				final String text = (textValue instanceof String) ? (String) textValue : "";
-				if (!text.isEmpty()) {
-					g2d.setFont(progressBar.getFont());
-					final int textX = x + (width - g2d.getFontMetrics().stringWidth(text)) / 2;
-					final int textY = y + ((height - g2d.getFontMetrics().getHeight()) / 2)
-							+ g2d.getFontMetrics().getAscent();
+				if (!displayText.isEmpty()) {
+					g2d.setFont(getFont());
+					final FontMetrics metrics = g2d.getFontMetrics();
+					final int textX = x + (width - metrics.stringWidth(displayText)) / 2;
+					final int textY = y + ((height - metrics.getHeight()) / 2) + metrics.getAscent();
 
 					g2d.setColor(TEXT_SHADOW);
-					g2d.drawString(text, textX + 1, textY + 1);
-					g2d.drawString(text, textX - 1, textY + 1);
+					g2d.drawString(displayText, textX + 1, textY + 1);
+					g2d.drawString(displayText, textX - 1, textY + 1);
 					g2d.setColor(TEXT_COLOR);
-					g2d.drawString(text, textX, textY);
+					g2d.drawString(displayText, textX, textY);
 				}
 			} finally {
 				g2d.dispose();
 			}
-		}
-
-		@Override
-		protected Color getSelectionForeground() {
-			return new Color(245, 250, 255);
-		}
-
-		@Override
-		protected Color getSelectionBackground() {
-			return new Color(18, 22, 30);
 		}
 	}
 }
