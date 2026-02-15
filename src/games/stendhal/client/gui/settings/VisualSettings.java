@@ -13,6 +13,11 @@ package games.stendhal.client.gui.settings;
 
 import static games.stendhal.client.gui.settings.SettingsProperties.BUBBLES_PROPERTY;
 import static games.stendhal.client.gui.settings.SettingsProperties.DISPLAY_SIZE_PROPERTY;
+import static games.stendhal.client.gui.settings.SettingsProperties.EVENT_HUD_MODE_COMPACT;
+import static games.stendhal.client.gui.settings.SettingsProperties.EVENT_HUD_MODE_FULL;
+import static games.stendhal.client.gui.settings.SettingsProperties.EVENT_HUD_MODE_HIDDEN;
+import static games.stendhal.client.gui.settings.SettingsProperties.EVENT_HUD_MODE_PROPERTY;
+import static games.stendhal.client.gui.settings.SettingsProperties.EVENT_HUD_OPACITY_PROPERTY;
 import static games.stendhal.client.gui.settings.SettingsProperties.HP_BAR_PROPERTY;
 import static games.stendhal.client.gui.settings.SettingsProperties.OVERRIDE_AA;
 import static games.stendhal.client.gui.settings.SettingsProperties.FPS_COUNTER_PROPERTY;
@@ -38,12 +43,16 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JSlider;
 import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 import games.stendhal.client.ClientSingletonRepository;
 import games.stendhal.client.stendhal;
 import games.stendhal.client.UiRenderingMethod;
+import games.stendhal.client.UserContext;
 import games.stendhal.client.gui.chatlog.EventLine;
 import games.stendhal.client.gui.layout.SBoxLayout;
 import games.stendhal.client.gui.layout.SLayout;
@@ -65,6 +74,10 @@ class VisualSettings {
 	private static final String TRANSPARENCY_PROPERTY = "ui.transparency";
 
 	private static final int[] FPS_OPTIONS = new int[] { 30, 60, 90, 120, 144, 165, 240 };
+
+	private static final int EVENT_HUD_OPACITY_MIN = 20;
+	private static final int EVENT_HUD_OPACITY_MAX = 60;
+	private static final int EVENT_HUD_OPACITY_DEFAULT = 35;
 
 	/** Containers that have components to be toggled */
 	// private JPanel colorsPanel;
@@ -120,6 +133,8 @@ class VisualSettings {
 		leftColumn.add(createTransparencySelector(), SLayout.EXPAND_X);
 		leftColumn.add(createDisplaySizeSelector(), SLayout.EXPAND_X);
 		leftColumn.add(createFpsSelector(), SLayout.EXPAND_X);
+		leftColumn.add(createEventHudModeSelector(), SLayout.EXPAND_X);
+		leftColumn.add(createEventHudOpacitySelector(), SLayout.EXPAND_X);
 
 		final JCheckBox fpsCounterToggle = SettingsComponentFactory.createSettingsToggle(FPS_COUNTER_PROPERTY, false,
 				"Pokaż licznik FPS", "Wyświetla aktualny licznik klatek na sekundę na ekranie gry.");
@@ -465,6 +480,92 @@ class VisualSettings {
 		container.add(Box.createHorizontalStrut(SBoxLayout.COMMON_PADDING));
 		container.add(combo);
 		return container;
+	}
+
+	private JComponent createEventHudModeSelector() {
+		JComponent container = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, SBoxLayout.COMMON_PADDING);
+		final JLabel label = new JLabel("Event HUD:");
+		final JComboBox<String> combo = new JComboBox<String>();
+
+		final String[][] options = {
+				{ "Pełny", EVENT_HUD_MODE_FULL },
+				{ "Kompaktowy", EVENT_HUD_MODE_COMPACT },
+				{ "Ukryty", EVENT_HUD_MODE_HIDDEN } };
+		final Map<String, String> modeByLabel = new HashMap<String, String>();
+		String selectedLabel = options[0][0];
+		final String currentMode = WtWindowManager.getInstance().getProperty(getUserScopedKey(EVENT_HUD_MODE_PROPERTY),
+				EVENT_HUD_MODE_FULL);
+
+		for (String[] option : options) {
+			combo.addItem(option[0]);
+			modeByLabel.put(option[0], option[1]);
+			if (option[1].equals(currentMode)) {
+				selectedLabel = option[0];
+			}
+		}
+
+		combo.setSelectedItem(selectedLabel);
+		combo.setToolTipText("Ustawia sposób wyświetlania paska wydarzenia na mapie.");
+		label.setToolTipText(combo.getToolTipText());
+
+		combo.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String selectedLabel = (String) combo.getSelectedItem();
+				String mode = modeByLabel.get(selectedLabel);
+				if (mode != null) {
+					WtWindowManager.getInstance().setProperty(getUserScopedKey(EVENT_HUD_MODE_PROPERTY), mode);
+				}
+			}
+		});
+
+		container.add(label);
+		container.add(Box.createHorizontalStrut(SBoxLayout.COMMON_PADDING));
+		container.add(combo);
+		return container;
+	}
+
+	private JComponent createEventHudOpacitySelector() {
+		JComponent container = SBoxLayout.createContainer(SBoxLayout.VERTICAL, SBoxLayout.COMMON_PADDING / 2);
+		JComponent row = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, SBoxLayout.COMMON_PADDING);
+		final int configured = MathHelper.clamp(WtWindowManager.getInstance()
+				.getPropertyInt(getUserScopedKey(EVENT_HUD_OPACITY_PROPERTY), EVENT_HUD_OPACITY_DEFAULT),
+				EVENT_HUD_OPACITY_MIN, EVENT_HUD_OPACITY_MAX);
+
+		final JLabel label = new JLabel("Przezroczystość Event HUD:");
+		final JLabel valueLabel = new JLabel(Integer.toString(configured) + "%");
+		final JSlider slider = new JSlider(EVENT_HUD_OPACITY_MIN, EVENT_HUD_OPACITY_MAX, configured);
+		slider.setOpaque(false);
+		slider.setMajorTickSpacing(10);
+		slider.setMinorTickSpacing(5);
+		slider.setPaintTicks(true);
+		slider.setToolTipText("Niższa wartość oznacza bardziej przezroczysty overlay wydarzenia.");
+		label.setToolTipText(slider.getToolTipText());
+
+		slider.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				final int value = slider.getValue();
+				valueLabel.setText(Integer.toString(value) + "%");
+				WtWindowManager.getInstance().setProperty(getUserScopedKey(EVENT_HUD_OPACITY_PROPERTY),
+						Integer.toString(value));
+			}
+		});
+
+		row.add(label);
+		row.add(Box.createHorizontalStrut(SBoxLayout.COMMON_PADDING));
+		row.add(valueLabel);
+		container.add(row);
+		container.add(slider, SLayout.EXPAND_X);
+		return container;
+	}
+
+	private String getUserScopedKey(final String key) {
+		final String userName = UserContext.get().getName();
+		if ((userName == null) || userName.trim().isEmpty()) {
+			return key;
+		}
+		return key + "." + userName.toLowerCase().replaceAll("[^a-z0-9._-]", "_");
 	}
 
 	private static final class DisplaySizeOption {

@@ -48,4 +48,14 @@ public class SettingsProperties {
 	public static final String UI_RENDERING = "ui.rendering";
 
 	public static final String DISPLAY_SIZE_PROPERTY = "ui.display_size";
+
+	public static final String EVENT_HUD_MODE_PROPERTY = "ui.event_hud_mode";
+
+	public static final String EVENT_HUD_OPACITY_PROPERTY = "ui.event_hud_opacity";
+
+	public static final String EVENT_HUD_MODE_FULL = "full";
+
+	public static final String EVENT_HUD_MODE_COMPACT = "compact";
+
+	public static final String EVENT_HUD_MODE_HIDDEN = "hidden";
 }

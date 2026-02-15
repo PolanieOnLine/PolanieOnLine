@@ -12,6 +12,11 @@
 package games.stendhal.client.gui;
 
 import static games.stendhal.client.gui.settings.SettingsProperties.DISPLAY_SIZE_PROPERTY;
+import static games.stendhal.client.gui.settings.SettingsProperties.EVENT_HUD_MODE_COMPACT;
+import static games.stendhal.client.gui.settings.SettingsProperties.EVENT_HUD_MODE_FULL;
+import static games.stendhal.client.gui.settings.SettingsProperties.EVENT_HUD_MODE_HIDDEN;
+import static games.stendhal.client.gui.settings.SettingsProperties.EVENT_HUD_MODE_PROPERTY;
+import static games.stendhal.client.gui.settings.SettingsProperties.EVENT_HUD_OPACITY_PROPERTY;
 import static games.stendhal.common.constants.Actions.COND_STOP;
 import static games.stendhal.common.constants.Actions.TYPE;
 
@@ -98,6 +103,9 @@ class SwingClientGUI implements J2DClientGUI {
 	private static final int EVENT_OVERLAY_DEBOUNCE_MILLIS = 300;
 	private static final int EVENT_OVERLAY_FADE_DURATION_MILLIS = 220;
 	private static final int EVENT_END_STATE_DURATION_MILLIS = 1200;
+	private static final int EVENT_HUD_OPACITY_MIN = 20;
+	private static final int EVENT_HUD_OPACITY_MAX = 60;
+	private static final int EVENT_HUD_OPACITY_DEFAULT = 35;
 	/** Property name used to determine if scaling is wanted. */
 	private static final String SCALE_PREFERENCE_PROPERTY = "ui.scale_screen";
 	private static final Logger logger = Logger.getLogger(SwingClientGUI.class);
@@ -112,6 +120,10 @@ class SwingClientGUI implements J2DClientGUI {
 	private ActiveMapEventStatus lastShownEventStatus;
 	private long fadeStartMillis;
 	private long overlayRefreshSuppressedUntilMillis;
+	private String eventHudMode = EVENT_HUD_MODE_FULL;
+	private float eventHudOpacity = EVENT_HUD_OPACITY_DEFAULT / 100.0f;
+	private String eventHudModePropertyKey;
+	private String eventHudOpacityPropertyKey;
 	private final ScreenController screenController;
 	private final ContainerPanel containerPanel;
 	private final QuitDialog quitDialog;
@@ -171,6 +183,7 @@ class SwingClientGUI implements J2DClientGUI {
 		pane.add(screen, Component.LEFT_ALIGNMENT, JLayeredPane.DEFAULT_LAYER);
 		eventProgressOverlay = new EventProgressBarOverlay();
 		pane.add(eventProgressOverlay, JLayeredPane.PALETTE_LAYER);
+		initEventHudSettings();
 		eventProgressRefreshTimer = new Timer(EVENT_REFRESH_INTERVAL_MILLIS, new AbstractAction() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
@@ -663,11 +676,71 @@ class SwingClientGUI implements J2DClientGUI {
 		});
 	}
 
+	private void initEventHudSettings() {
+		eventHudModePropertyKey = toUserScopedSettingsKey(EVENT_HUD_MODE_PROPERTY);
+		eventHudOpacityPropertyKey = toUserScopedSettingsKey(EVENT_HUD_OPACITY_PROPERTY);
+
+		final WtWindowManager wm = WtWindowManager.getInstance();
+		applyEventHudMode(wm.getProperty(eventHudModePropertyKey, EVENT_HUD_MODE_FULL));
+		applyEventHudOpacity(wm.getPropertyInt(eventHudOpacityPropertyKey, EVENT_HUD_OPACITY_DEFAULT));
+
+		wm.registerSettingChangeListener(eventHudModePropertyKey, new SettingChangeListener() {
+			@Override
+			public void changed(final String newValue) {
+				applyEventHudMode(newValue);
+				repositionEventProgressOverlay();
+				scheduleOverlayRefreshDebounced();
+			}
+		});
+		wm.registerSettingChangeListener(eventHudOpacityPropertyKey, new SettingChangeListener() {
+			@Override
+			public void changed(final String newValue) {
+				applyEventHudOpacity(MathHelper.parseIntDefault(newValue, EVENT_HUD_OPACITY_DEFAULT));
+			}
+		});
+	}
+
+	private String toUserScopedSettingsKey(final String baseKey) {
+		final String userName = userContext.getName();
+		if ((userName == null) || userName.trim().isEmpty()) {
+			return baseKey;
+		}
+		return baseKey + "." + userName.toLowerCase().replaceAll("[^a-z0-9._-]", "_");
+	}
+
+	private void applyEventHudMode(final String mode) {
+		if (EVENT_HUD_MODE_COMPACT.equals(mode)) {
+			eventHudMode = EVENT_HUD_MODE_COMPACT;
+			eventProgressOverlay.setCompactMode(true);
+			return;
+		}
+		if (EVENT_HUD_MODE_HIDDEN.equals(mode)) {
+			eventHudMode = EVENT_HUD_MODE_HIDDEN;
+			eventProgressOverlay.setCompactMode(false);
+			eventProgressOverlay.hideOverlay();
+			return;
+		}
+		eventHudMode = EVENT_HUD_MODE_FULL;
+		eventProgressOverlay.setCompactMode(false);
+	}
+
+	private void applyEventHudOpacity(final int percent) {
+		final int clamped = MathHelper.clamp(percent, EVENT_HUD_OPACITY_MIN, EVENT_HUD_OPACITY_MAX);
+		eventHudOpacity = clamped / 100.0f;
+		if (eventProgressOverlay.isVisible()) {
+			eventProgressOverlay.repaint();
+		}
+	}
+
 	private void refreshEventProgressOverlay() {
 		if (!pane.isShowing()) {
 			return;
 		}
 		if (System.currentTimeMillis() < overlayRefreshSuppressedUntilMillis) {
+			return;
+		}
+		if (EVENT_HUD_MODE_HIDDEN.equals(eventHudMode)) {
+			eventProgressOverlay.hideOverlay();
 			return;
 		}
 		final ActiveMapEventStatus visibleStatus = MapEventStatusStore.get()
@@ -685,8 +758,10 @@ class SwingClientGUI implements J2DClientGUI {
 		stopOverlayFade();
 		eventOverlayEndStateTimer.stop();
 
-		final String value = formatRemaining(visibleStatus.getRemainingSeconds()) + " • "
-				+ visibleStatus.getProgressPercent() + "%";
+		final String remaining = formatRemaining(visibleStatus.getRemainingSeconds());
+		final String value = EVENT_HUD_MODE_COMPACT.equals(eventHudMode)
+				? remaining
+				: remaining + " • " + visibleStatus.getProgressPercent() + "%";
 		if (eventProgressOverlay.isShowingEvent(visibleStatus.getEventId())) {
 			eventProgressOverlay.updateOverlay(visibleStatus.getEventId(), visibleStatus.getEventName(),
 					visibleStatus.getProgressPercent(), value);
@@ -694,6 +769,7 @@ class SwingClientGUI implements J2DClientGUI {
 			eventProgressOverlay.showOverlay(visibleStatus.getEventId(), visibleStatus.getEventName(),
 					visibleStatus.getProgressPercent(), value);
 		}
+		eventProgressOverlay.setOverlayAlpha(eventHudOpacity);
 		repositionEventProgressOverlay();
 	}
 
@@ -708,6 +784,7 @@ class SwingClientGUI implements J2DClientGUI {
 		}
 		stopOverlayFade();
 		eventProgressOverlay.showTerminalState(endedStatus.getEventName(), "Zdarzenie zakończone");
+		eventProgressOverlay.setOverlayAlpha(eventHudOpacity);
 		eventOverlayEndStateTimer.restart();
 		lastShownEventStatus = null;
 	}
@@ -723,13 +800,14 @@ class SwingClientGUI implements J2DClientGUI {
 
 	private void stopOverlayFade() {
 		eventOverlayFadeTimer.stop();
-		eventProgressOverlay.setOverlayAlpha(1.0f);
+		eventProgressOverlay.setOverlayAlpha(eventHudOpacity);
 	}
 
 	private void updateOverlayFade() {
 		final long elapsed = Math.max(0L, System.currentTimeMillis() - fadeStartMillis);
-		final float alpha = Math.max(0.0f, 1.0f - ((float) elapsed / (float) EVENT_OVERLAY_FADE_DURATION_MILLIS));
-		eventProgressOverlay.setOverlayAlpha(alpha);
+		final float fadeAlpha = Math.max(0.0f, 1.0f - ((float) elapsed / (float) EVENT_OVERLAY_FADE_DURATION_MILLIS));
+		eventProgressOverlay.setOverlayAlpha(fadeAlpha * eventHudOpacity);
+		final float alpha = fadeAlpha;
 		if (alpha <= 0.0f) {
 			eventOverlayFadeTimer.stop();
 			eventProgressOverlay.hideOverlay();
