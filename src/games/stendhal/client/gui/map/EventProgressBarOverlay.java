@@ -14,6 +14,7 @@ package games.stendhal.client.gui.map;
 import java.awt.AlphaComposite;
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
@@ -46,10 +47,11 @@ public class EventProgressBarOverlay extends JPanel {
 	private static final Color PANEL_BORDER = new Color(168, 130, 92, 130);
 
 	private final JLabel eventTitle;
+	private final Component titleSpacer;
 	private final EventProgressBar progressBar;
 	private String eventId;
 	private float overlayAlpha = 1.0f;
-
+	private boolean compactMode;
 
 	@Override
 	public void updateUI() {
@@ -79,7 +81,8 @@ public class EventProgressBarOverlay extends JPanel {
 		eventTitle.setHorizontalAlignment(JLabel.CENTER);
 		eventTitle.setAlignmentX(CENTER_ALIGNMENT);
 		add(eventTitle, SLayout.EXPAND_X);
-		add(Box.createVerticalStrut(5), SLayout.EXPAND_X);
+		titleSpacer = Box.createVerticalStrut(5);
+		add(titleSpacer, SLayout.EXPAND_X);
 
 		progressBar = new EventProgressBar();
 		progressBar.setPreferredSize(new Dimension(BAR_WIDTH, BAR_HEIGHT));
@@ -92,6 +95,30 @@ public class EventProgressBarOverlay extends JPanel {
 		add(progressBar, SLayout.EXPAND_X);
 
 		setVisible(false);
+	}
+
+	public void setCompactMode(final boolean enabled) {
+		if (compactMode == enabled) {
+			return;
+		}
+		compactMode = enabled;
+		eventTitle.setVisible(!enabled);
+		titleSpacer.setVisible(!enabled);
+		if (enabled) {
+			progressBar.setPreferredSize(new Dimension(BAR_WIDTH, 6));
+			progressBar.setMinimumSize(new Dimension(BAR_WIDTH, 6));
+			progressBar.setMaximumSize(new Dimension(BAR_WIDTH, 6));
+			progressBar.setFont(new Font(Font.DIALOG, Font.BOLD, 9));
+			setBorder(BorderFactory.createEmptyBorder(4, 8, 5, 8));
+		} else {
+			progressBar.setPreferredSize(new Dimension(BAR_WIDTH, BAR_HEIGHT));
+			progressBar.setMinimumSize(new Dimension(BAR_WIDTH, BAR_HEIGHT));
+			progressBar.setMaximumSize(new Dimension(BAR_WIDTH, BAR_HEIGHT));
+			progressBar.setFont(new Font(Font.DIALOG, Font.BOLD, 10));
+			setBorder(BorderFactory.createEmptyBorder(6, 10, 8, 10));
+		}
+		revalidate();
+		repaint();
 	}
 
 	public void showOverlay(final String newEventId, final String title, final int progressPercent,
@@ -167,8 +194,10 @@ public class EventProgressBarOverlay extends JPanel {
 		eventTitle.setText((title == null || title.trim().isEmpty()) ? "Wydarzenie" : title);
 		progressBar.setValue(clampedPercent);
 
-		final String suffix = (value == null || value.trim().isEmpty()) ? "" : " • " + value;
-		progressBar.setDisplayText(clampedPercent + "%" + suffix);
+		final String displayText = (value == null || value.trim().isEmpty())
+				? (clampedPercent + "%")
+				: value;
+		progressBar.setDisplayText(displayText);
 	}
 
 	private static final class EventProgressBar extends JComponent {
