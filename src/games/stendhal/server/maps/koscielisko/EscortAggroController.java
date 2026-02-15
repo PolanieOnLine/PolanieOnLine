@@ -14,6 +14,8 @@ import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 
 final class EscortAggroController {
+	private static final int DEFAULT_PATH_RECHECK_COOLDOWN_TICKS = 3;
+
 	private final Logger logger;
 	private final String eventName;
 	private final int giantTargetRange;
@@ -21,9 +23,13 @@ final class EscortAggroController {
 	private final int leashRange;
 	private final int maxGiantPathLength;
 	private final int giantChaseGraceTicks;
+	private final int pathRecheckCooldownTicks;
+	private final PathReachabilityResolver reachabilityResolver;
 	private final Map<Integer, SpawnAnchor> creatureAnchors = new HashMap<>();
 	private final Map<Integer, Integer> lostGiantSightTicks = new HashMap<>();
 	private final Set<Integer> firstTargetLogged = new HashSet<>();
+	private final Map<Integer, PathSearchCacheEntry> pathSearchCache = new HashMap<>();
+	private int aggroTick;
 
 	EscortAggroController(final Logger logger,
 			final String eventName,
@@ -32,6 +38,33 @@ final class EscortAggroController {
 			final int leashRange,
 			final int maxGiantPathLength,
 			final int giantChaseGraceTicks) {
+		this(
+				logger,
+				eventName,
+				giantTargetRange,
+				playerFallbackRange,
+				leashRange,
+				maxGiantPathLength,
+				giantChaseGraceTicks,
+				DEFAULT_PATH_RECHECK_COOLDOWN_TICKS,
+				(creature, giant, pathLength) -> Path.searchPath(
+						creature.getZone(),
+						creature.getX(),
+						creature.getY(),
+						giant.getX(),
+						giant.getY(),
+						pathLength) != null);
+	}
+
+	EscortAggroController(final Logger logger,
+			final String eventName,
+			final int giantTargetRange,
+			final int playerFallbackRange,
+			final int leashRange,
+			final int maxGiantPathLength,
+			final int giantChaseGraceTicks,
+			final int pathRecheckCooldownTicks,
+			final PathReachabilityResolver reachabilityResolver) {
 		this.logger = logger;
 		this.eventName = eventName;
 		this.giantTargetRange = giantTargetRange;
@@ -39,15 +72,20 @@ final class EscortAggroController {
 		this.leashRange = leashRange;
 		this.maxGiantPathLength = maxGiantPathLength;
 		this.giantChaseGraceTicks = giantChaseGraceTicks;
+		this.pathRecheckCooldownTicks = Math.max(1, pathRecheckCooldownTicks);
+		this.reachabilityResolver = reachabilityResolver;
 	}
 
 	void reset() {
 		creatureAnchors.clear();
 		lostGiantSightTicks.clear();
 		firstTargetLogged.clear();
+		pathSearchCache.clear();
+		aggroTick = 0;
 	}
 
 	void apply(final List<Creature> creatures, final SpeakerNPC giant, final boolean giantOnlyAggro) {
+		aggroTick++;
 		for (final Creature creature : creatures) {
 			if (creature == null || creature.getZone() == null) {
 				continue;
@@ -58,17 +96,19 @@ final class EscortAggroController {
 
 			if (isOutsideEscortZone(creature, creatureAnchors.get(creatureId))
 					|| isBeyondLeashRange(creature, creatureAnchors.get(creatureId))) {
+				pathSearchCache.remove(creatureId);
 				resetCreatureTarget(creature, "leash_or_zone", true);
 				continue;
 			}
 
-			final GiantAggroState giantAggroState = evaluateGiantAggroState(creature, giant);
+			final GiantAggroState giantAggroState = evaluateGiantAggroState(creatureId, creature, giant);
 			if (giantAggroState == GiantAggroState.READY_TO_ATTACK) {
 				lostGiantSightTicks.remove(creatureId);
 				applyTargetIfNeeded(creature, giant, "giant_priority");
 				continue;
 			}
 			if (giantAggroState == GiantAggroState.CRITICAL_GIANT_UNAVAILABLE) {
+				pathSearchCache.remove(creatureId);
 				resetCreatureTarget(creature, "giant_unavailable", true);
 				continue;
 			}
@@ -98,7 +138,7 @@ final class EscortAggroController {
 		}
 	}
 
-	private GiantAggroState evaluateGiantAggroState(final Creature creature, final SpeakerNPC giant) {
+	private GiantAggroState evaluateGiantAggroState(final int creatureId, final Creature creature, final SpeakerNPC giant) {
 		if (giant == null || giant.getZone() == null || giant.getHP() <= 0) {
 			return GiantAggroState.CRITICAL_GIANT_UNAVAILABLE;
 		}
@@ -114,8 +154,31 @@ final class EscortAggroController {
 		if (!creature.hasLineOfSight(giant)) {
 			return GiantAggroState.TEMPORARY_ATTACK_BLOCKED;
 		}
-		return Path.searchPath(creature.getZone(), creature.getX(), creature.getY(), giant.getX(), giant.getY(), maxGiantPathLength) != null
-				? GiantAggroState.READY_TO_ATTACK : GiantAggroState.TEMPORARY_ATTACK_BLOCKED;
+		return isPathReachable(creatureId, creature, giant)
+				? GiantAggroState.READY_TO_ATTACK
+				: GiantAggroState.TEMPORARY_ATTACK_BLOCKED;
+	}
+
+	private boolean isPathReachable(final int creatureId, final Creature creature, final SpeakerNPC giant) {
+		final PathSearchCacheEntry cached = pathSearchCache.get(creatureId);
+		if (cached != null && cached.canReuse(
+				aggroTick,
+				creature.getX(),
+				creature.getY(),
+				giant.getX(),
+				giant.getY(),
+				pathRecheckCooldownTicks)) {
+			return cached.reachable;
+		}
+		final boolean reachable = reachabilityResolver.isReachable(creature, giant, maxGiantPathLength);
+		pathSearchCache.put(creatureId, new PathSearchCacheEntry(
+				aggroTick,
+				creature.getX(),
+				creature.getY(),
+				giant.getX(),
+				giant.getY(),
+				reachable));
+		return reachable;
 	}
 
 	private void applyTargetIfNeeded(final Creature creature, final RPEntity target, final String source) {
@@ -161,6 +224,47 @@ final class EscortAggroController {
 		TEMPORARY_ATTACK_BLOCKED,
 		NOT_LOGICALLY_VALID,
 		CRITICAL_GIANT_UNAVAILABLE
+	}
+
+	@FunctionalInterface
+	interface PathReachabilityResolver {
+		boolean isReachable(Creature creature, SpeakerNPC giant, int maxPathLength);
+	}
+
+	static final class PathSearchCacheEntry {
+		private final int evaluatedAtTick;
+		private final int creatureX;
+		private final int creatureY;
+		private final int giantX;
+		private final int giantY;
+		private final boolean reachable;
+
+		PathSearchCacheEntry(final int evaluatedAtTick,
+				final int creatureX,
+				final int creatureY,
+				final int giantX,
+				final int giantY,
+				final boolean reachable) {
+			this.evaluatedAtTick = evaluatedAtTick;
+			this.creatureX = creatureX;
+			this.creatureY = creatureY;
+			this.giantX = giantX;
+			this.giantY = giantY;
+			this.reachable = reachable;
+		}
+
+		boolean canReuse(final int tick,
+				final int currentCreatureX,
+				final int currentCreatureY,
+				final int currentGiantX,
+				final int currentGiantY,
+				final int cooldownTicks) {
+			return creatureX == currentCreatureX
+					&& creatureY == currentCreatureY
+					&& giantX == currentGiantX
+					&& giantY == currentGiantY
+					&& (tick - evaluatedAtTick) < cooldownTicks;
+		}
 	}
 
 	static final class SpawnAnchor {
