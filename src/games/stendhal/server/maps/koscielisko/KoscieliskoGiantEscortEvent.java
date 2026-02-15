@@ -403,4 +403,28 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 			giant.setHP(Math.min(hp, baseHp));
 		}
 	}
+
+
+	public static final class BroadcastRateLimiter {
+		private final long minIntervalMillis;
+		private final java.util.Map<String, Long> lastBroadcastAtMillis = new java.util.HashMap<>();
+
+		public BroadcastRateLimiter(final long minIntervalMillis) {
+			this.minIntervalMillis = Math.max(0L, minIntervalMillis);
+		}
+
+		public synchronized boolean tryAcquire(final String key, final long nowMillis) {
+			final Long previous = lastBroadcastAtMillis.get(key);
+			if (previous != null && (nowMillis - previous) < minIntervalMillis) {
+				return false;
+			}
+			lastBroadcastAtMillis.put(key, nowMillis);
+			return true;
+		}
+
+		public synchronized void clear() {
+			lastBroadcastAtMillis.clear();
+		}
+	}
+
 }
