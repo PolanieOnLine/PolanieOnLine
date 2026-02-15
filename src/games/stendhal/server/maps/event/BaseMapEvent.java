@@ -140,7 +140,7 @@ public abstract class BaseMapEvent {
 	}
 
 	final void setEventIdIfMissing(final String candidateEventId) {
-		if (candidateEventId == null || candidateEventId.isBlank() || eventId != null) {
+		if (candidateEventId == null || candidateEventId.trim().isEmpty() || eventId != null) {
 			return;
 		}
 		eventId = candidateEventId;

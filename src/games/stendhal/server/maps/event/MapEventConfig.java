@@ -278,17 +278,17 @@ public final class MapEventConfig {
 			if (announcementIntervalSeconds < 0) {
 				throw new IllegalArgumentException("announcementIntervalSeconds must be >= 0");
 			}
-			if (startAnnouncement != null && startAnnouncement.isBlank()) {
+			if (startAnnouncement != null && startAnnouncement.trim().isEmpty()) {
 				throw new IllegalArgumentException("startAnnouncement must not be blank");
 			}
-			if (stopAnnouncement != null && stopAnnouncement.isBlank()) {
+			if (stopAnnouncement != null && stopAnnouncement.trim().isEmpty()) {
 				throw new IllegalArgumentException("stopAnnouncement must not be blank");
 			}
 			if (triggerThreshold < 0) {
 				throw new IllegalArgumentException("triggerThreshold must be >= 0");
 			}
 			for (final Map.Entry<String, Double> multiplierEntry : zoneSpawnMultipliers.entrySet()) {
-				if (multiplierEntry.getKey() == null || multiplierEntry.getKey().isBlank()) {
+				if (multiplierEntry.getKey() == null || multiplierEntry.getKey().trim().isEmpty()) {
 					throw new IllegalArgumentException("zoneSpawnMultipliers contains blank zone name");
 				}
 				final Double multiplier = multiplierEntry.getValue();
@@ -297,7 +297,7 @@ public final class MapEventConfig {
 				}
 			}
 			for (final Map.Entry<String, Integer> capEntry : zoneSpawnCaps.entrySet()) {
-				if (capEntry.getKey() == null || capEntry.getKey().isBlank()) {
+				if (capEntry.getKey() == null || capEntry.getKey().trim().isEmpty()) {
 					throw new IllegalArgumentException("zoneSpawnCaps contains blank zone name");
 				}
 				final Integer cap = capEntry.getValue();
