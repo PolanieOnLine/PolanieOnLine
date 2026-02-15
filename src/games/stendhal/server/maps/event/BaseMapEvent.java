@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.log4j.Logger;
 
@@ -47,23 +48,12 @@ public abstract class BaseMapEvent {
 	private final MapEventConfig config;
 	private final AtomicBoolean scheduled = new AtomicBoolean(false);
 	private final AtomicBoolean eventActive = new AtomicBoolean(false);
+	private final AtomicLong eventRunId = new AtomicLong(0L);
 	private final Map<String, Pair<String, Boolean>> storedWeather = new HashMap<>();
 	private final Map<String, String> storedWeatherLock = new HashMap<>();
 	private final List<Creature> eventCreatures = Collections.synchronizedList(new ArrayList<>());
 	private final Observer eventCreatureObserver = new EventCreatureObserver();
-	private final TurnListener announcer = new TurnListener() {
-		@Override
-		public void onTurnReached(final int currentTurn) {
-			sendAnnouncement();
-			scheduleAnnouncement();
-		}
-	};
-	private final TurnListener statusBroadcaster = new TurnListener() {
-		@Override
-		public void onTurnReached(final int currentTurn) {
-			broadcastStatusTick();
-		}
-	};
+	private volatile TurnListener activeAnnouncer;
 	private volatile LocalTime scheduledTime;
 	private volatile LocalDate lastGuaranteedStartDate;
 	private volatile int guaranteedIntervalDays;
@@ -179,9 +169,17 @@ public abstract class BaseMapEvent {
 	}
 
 	protected final void endEvent() {
+		endEvent(eventRunId.get());
+	}
+
+	private void endEvent(final long runId) {
+		if (!isCurrentRunActive(runId)) {
+			return;
+		}
 		if (!eventActive.compareAndSet(true, false)) {
 			return;
 		}
+		activeAnnouncer = null;
 		scheduledEndEpochSeconds = 0L;
 		onStop();
 		MapEventStatusPublisher.broadcastInactiveEventStatus(this);
@@ -292,36 +290,39 @@ public abstract class BaseMapEvent {
 	}
 
 	protected final void stopAnnouncements() {
-		SingletonRepository.getTurnNotifier().dontNotify(announcer);
+		final TurnListener announcerToStop = activeAnnouncer;
+		if (announcerToStop != null) {
+			SingletonRepository.getTurnNotifier().dontNotify(announcerToStop);
+		}
 	}
 
 	private void startEventInternal() {
+		final long runId = eventRunId.incrementAndGet();
 		final long startedEpochSeconds = Instant.now().getEpochSecond();
 		scheduledEndEpochSeconds = startedEpochSeconds + getEventDuration().getSeconds();
 		lockWeatherFromConfig();
 		onStart();
-		broadcastStatusTick();
-		scheduleStatusBroadcast();
-		scheduleAnnouncement();
-		scheduleWaves();
+		broadcastStatusTick(runId);
+		scheduleAnnouncement(runId);
+		scheduleWaves(runId);
 		int seconds = (int) getEventDuration().getSeconds();
-		SingletonRepository.getTurnNotifier().notifyInSeconds(seconds, currentTurn -> endEvent());
+		SingletonRepository.getTurnNotifier().notifyInSeconds(seconds, currentTurn -> endEvent(runId));
 	}
 
-	private void scheduleWaves() {
+	private void scheduleWaves(final long runId) {
 		int delaySeconds = 0;
 		for (EventWave wave : getWaves()) {
 			delaySeconds += wave.intervalSeconds;
 			final int scheduledDelay = delaySeconds;
 			SingletonRepository.getTurnNotifier().notifyInSeconds(
 					scheduledDelay,
-					currentTurn -> handleWave(wave)
+					currentTurn -> handleWave(wave, runId)
 			);
 		}
 	}
 
-	private void handleWave(final EventWave wave) {
-		if (!eventActive.get()) {
+	private void handleWave(final EventWave wave, final long runId) {
+		if (!isCurrentRunActive(runId)) {
 			return;
 		}
 		for (EventSpawn spawn : wave.spawns) {
@@ -330,8 +331,8 @@ public abstract class BaseMapEvent {
 		}
 	}
 
-	private void scheduleAnnouncement() {
-		if (!eventActive.get()) {
+	private void scheduleAnnouncement(final long runId) {
+		if (!isCurrentRunActive(runId)) {
 			return;
 		}
 		if (getAnnouncements().isEmpty()) {
@@ -341,25 +342,33 @@ public abstract class BaseMapEvent {
 		if (intervalSeconds <= 0) {
 			return;
 		}
+		final TurnListener announcer = new TurnListener() {
+			@Override
+			public void onTurnReached(final int currentTurn) {
+				sendAnnouncement(runId);
+				scheduleAnnouncement(runId);
+			}
+		};
+		activeAnnouncer = announcer;
 		SingletonRepository.getTurnNotifier().notifyInSeconds(
 				intervalSeconds,
 				announcer
 		);
 	}
 
-	private void scheduleStatusBroadcast() {
-		if (!eventActive.get()) {
+	private void scheduleStatusBroadcast(final long runId) {
+		if (!isCurrentRunActive(runId)) {
 			return;
 		}
-		SingletonRepository.getTurnNotifier().notifyInSeconds(1, statusBroadcaster);
+		SingletonRepository.getTurnNotifier().notifyInSeconds(1, currentTurn -> broadcastStatusTick(runId));
 	}
 
-	private void broadcastStatusTick() {
-		if (!eventActive.get()) {
+	private void broadcastStatusTick(final long runId) {
+		if (!isCurrentRunActive(runId)) {
 			return;
 		}
 		MapEventStatusPublisher.broadcastActiveEventStatus(this);
-		scheduleStatusBroadcast();
+		scheduleStatusBroadcast(runId);
 	}
 
 	private void lockWeatherFromConfig() {
@@ -377,8 +386,8 @@ public abstract class BaseMapEvent {
 		restoreWeather();
 	}
 
-	private void sendAnnouncement() {
-		if (!eventActive.get()) {
+	private void sendAnnouncement(final long runId) {
+		if (!isCurrentRunActive(runId)) {
 			return;
 		}
 		final List<String> announcements = getAnnouncements();
@@ -387,6 +396,10 @@ public abstract class BaseMapEvent {
 		}
 		final String message = announcements.get(Rand.rand(announcements.size()));
 		SingletonRepository.getRuleProcessor().tellAllPlayers(NotificationType.PRIVMSG, message);
+	}
+
+	private boolean isCurrentRunActive(final long runId) {
+		return eventActive.get() && eventRunId.get() == runId;
 	}
 
 	private void attemptGuaranteedStart() {
