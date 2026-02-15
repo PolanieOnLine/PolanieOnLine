@@ -103,9 +103,9 @@ class SwingClientGUI implements J2DClientGUI {
 	private static final int EVENT_OVERLAY_DEBOUNCE_MILLIS = 300;
 	private static final int EVENT_OVERLAY_FADE_DURATION_MILLIS = 220;
 	private static final int EVENT_END_STATE_DURATION_MILLIS = 1200;
-	private static final int EVENT_HUD_OPACITY_MIN = 20;
-	private static final int EVENT_HUD_OPACITY_MAX = 60;
-	private static final int EVENT_HUD_OPACITY_DEFAULT = 35;
+	private static final int EVENT_HUD_OPACITY_MIN = 40;
+	private static final int EVENT_HUD_OPACITY_MAX = 90;
+	private static final int EVENT_HUD_OPACITY_DEFAULT = 70;
 	/** Property name used to determine if scaling is wanted. */
 	private static final String SCALE_PREFERENCE_PROPERTY = "ui.scale_screen";
 	private static final Logger logger = Logger.getLogger(SwingClientGUI.class);
