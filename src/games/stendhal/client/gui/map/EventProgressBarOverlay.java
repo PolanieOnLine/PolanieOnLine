@@ -138,6 +138,21 @@ public class EventProgressBarOverlay extends JPanel {
 	}
 
 	private static final class RoundedProgressBarUI extends BasicProgressBarUI {
+		private static final Color BACKGROUND_SHADOW = new Color(30, 18, 10, 90);
+		private static final Color BACKGROUND_TOP = new Color(92, 66, 42, 205);
+		private static final Color BACKGROUND_BOTTOM = new Color(51, 33, 20, 220);
+		private static final Color BACKGROUND_GRAIN_TOP = new Color(126, 95, 64, 50);
+		private static final Color BACKGROUND_GRAIN_BOTTOM = new Color(73, 48, 29, 30);
+
+		private static final Color STANDARD_FILL_TOP = new Color(216, 157, 79);
+		private static final Color STANDARD_FILL_BOTTOM = new Color(142, 85, 49);
+		private static final Color FINAL_PHASE_FILL_TOP = new Color(188, 98, 56);
+		private static final Color FINAL_PHASE_FILL_BOTTOM = new Color(120, 56, 35);
+
+		private static final Color BAR_BORDER = new Color(129, 93, 60, 190);
+		private static final Color TEXT_SHADOW = new Color(18, 11, 6, 190);
+		private static final Color TEXT_COLOR = new Color(250, 241, 222);
+
 		@Override
 		protected void paintDeterminate(final Graphics g, final JComponent c) {
 			final Graphics2D g2d = (Graphics2D) g.create();
@@ -160,29 +175,31 @@ public class EventProgressBarOverlay extends JPanel {
 				final double fraction = (double) (clampedValue - progressBar.getMinimum()) / range;
 				final int fillWidth = (int) Math.round(width * fraction);
 
-				g2d.setColor(new Color(0, 0, 0, 70));
+				g2d.setColor(BACKGROUND_SHADOW);
 				g2d.fillRoundRect(x, y + 1, width, height, arc, arc);
 
-				g2d.setColor(new Color(10, 12, 16, 170));
+				g2d.setPaint(new GradientPaint(x, y, BACKGROUND_TOP, x, y + height, BACKGROUND_BOTTOM));
+				g2d.fillRoundRect(x, y, width, height, arc, arc);
+				g2d.setPaint(new GradientPaint(x, y, BACKGROUND_GRAIN_TOP, x + width, y + height, BACKGROUND_GRAIN_BOTTOM));
 				g2d.fillRoundRect(x, y, width, height, arc, arc);
 
 				if (fillWidth > 0) {
 					final int warningThreshold = progressBar.getMinimum() + (int) Math.round(range * 0.25d);
 					final boolean warning = clampedValue <= warningThreshold;
-					final Color startColor = warning ? new Color(255, 186, 94) : new Color(125, 225, 255);
-					final Color endColor = warning ? new Color(235, 88, 52) : new Color(28, 145, 255);
+					final Color startColor = warning ? FINAL_PHASE_FILL_TOP : STANDARD_FILL_TOP;
+					final Color endColor = warning ? FINAL_PHASE_FILL_BOTTOM : STANDARD_FILL_BOTTOM;
 
 					g2d.setPaint(new GradientPaint(x, y, startColor, x, y + height, endColor));
 					if (fillWidth >= arc) {
 						g2d.fillRoundRect(x, y, fillWidth, height, arc, arc);
 					} else {
 						g2d.fillRoundRect(x, y, arc, height, arc, arc);
-						g2d.setColor(new Color(10, 12, 16, 170));
+						g2d.setPaint(new GradientPaint(x, y, BACKGROUND_TOP, x, y + height, BACKGROUND_BOTTOM));
 						g2d.fillRect(x + fillWidth, y, Math.max(0, arc - fillWidth), height);
 					}
 				}
 
-				g2d.setColor(new Color(236, 244, 255, 155));
+				g2d.setColor(BAR_BORDER);
 				g2d.drawRoundRect(x, y, width - 1, height - 1, arc, arc);
 
 				final Object textValue = progressBar.getClientProperty("displayText");
@@ -193,9 +210,10 @@ public class EventProgressBarOverlay extends JPanel {
 					final int textY = y + ((height - g2d.getFontMetrics().getHeight()) / 2)
 							+ g2d.getFontMetrics().getAscent();
 
-					g2d.setColor(new Color(0, 0, 0, 160));
+					g2d.setColor(TEXT_SHADOW);
 					g2d.drawString(text, textX + 1, textY + 1);
-					g2d.setColor(new Color(250, 252, 255));
+					g2d.drawString(text, textX - 1, textY + 1);
+					g2d.setColor(TEXT_COLOR);
 					g2d.drawString(text, textX, textY);
 				}
 			} finally {
