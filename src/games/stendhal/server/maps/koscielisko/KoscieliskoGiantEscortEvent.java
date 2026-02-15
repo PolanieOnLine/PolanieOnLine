@@ -27,6 +27,7 @@ import games.stendhal.common.NotificationType;
 import games.stendhal.common.Rand;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.core.engine.Task;
 import games.stendhal.server.core.events.TurnListener;
 import games.stendhal.server.core.pathfinder.Path;
 import games.stendhal.server.core.rp.StendhalRPAction;
@@ -61,6 +62,10 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 	private static final int ESCORT_RING_MAX_RADIUS = 10;
 	private static final int ESCORT_SPAWN_ATTEMPTS = 30;
 	private static final int LOW_PRESSURE_ACTIVE_CREATURE_THRESHOLD = 7;
+	private static final int WAVE_STATUS_MIN_INTERVAL_SECONDS = 50;
+	private static final int CRITICAL_STATUS_MIN_INTERVAL_SECONDS = 15;
+	private static final int HP_STATUS_DELTA_PERCENT_THRESHOLD = 5;
+	private static final int[] WAVE_PROGRESS_MILESTONES = { 25, 50, 75, 90 };
 	private static volatile long lastEventFinishedAtMillis;
 
 	private final TurnListener giantHealthMonitor = new TurnListener() {
@@ -105,6 +110,7 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 	private volatile int giantHpBeforeTick;
 	private volatile int lowActivityTicks;
 	private volatile double finalHealthRatio;
+	private volatile int lastAnnouncedHpPercent;
 	private final Map<Integer, SpawnAnchor> creatureAnchors = new HashMap<>();
 	private final Map<Integer, Integer> lostGiantSightTicks = new HashMap<>();
 	private final Set<Integer> firstTargetLogged = new HashSet<>();
@@ -112,7 +118,12 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 	private final Map<String, Integer> playerActivityTicks = new HashMap<>();
 	private final Set<String> rewardEligiblePlayers = new HashSet<>();
 	private final Set<Integer> announcedWaveOffsets = new HashSet<>();
+	private final Set<Integer> announcedWaveMilestones = new HashSet<>();
 	private final RandomSafeSpotSpawnStrategy fallbackSpawnStrategy = new RandomSafeSpotSpawnStrategy(LOGGER);
+	private final BroadcastRateLimiter operationalBroadcastLimiter = new BroadcastRateLimiter(
+			TimeUnit.SECONDS.toMillis(WAVE_STATUS_MIN_INTERVAL_SECONDS));
+	private final BroadcastRateLimiter criticalBroadcastLimiter = new BroadcastRateLimiter(
+			TimeUnit.SECONDS.toMillis(CRITICAL_STATUS_MIN_INTERVAL_SECONDS));
 	private volatile int currentWaveOffsetSeconds = -1;
 	private volatile int currentWaveBudget = 0;
 
@@ -158,6 +169,7 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 		halfProgressAnnounced = false;
 		escortSuccess = false;
 		finalHealthRatio = 0.0d;
+		lastAnnouncedHpPercent = -1;
 		snapshot = null;
 		eventStartedAtMillis = 0L;
 		giantEventHp = resolveGiantEventHp();
@@ -170,6 +182,9 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 		playerActivityTicks.clear();
 		rewardEligiblePlayers.clear();
 		announcedWaveOffsets.clear();
+		announcedWaveMilestones.clear();
+		operationalBroadcastLimiter.clear();
+		criticalBroadcastLimiter.clear();
 		currentWaveOffsetSeconds = -1;
 		currentWaveBudget = 0;
 
@@ -244,6 +259,9 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 			playerActivityTicks.clear();
 			rewardEligiblePlayers.clear();
 			announcedWaveOffsets.clear();
+			announcedWaveMilestones.clear();
+			operationalBroadcastLimiter.clear();
+			criticalBroadcastLimiter.clear();
 			currentWaveOffsetSeconds = -1;
 			currentWaveBudget = 0;
 			lastEventFinishedAtMillis = System.currentTimeMillis();
@@ -280,7 +298,28 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 		}
 		final int durationSeconds = (int) getEventDuration().getSeconds();
 		final int progress = durationSeconds <= 0 ? 0 : (int) Math.round((waveOffset * 100.0d) / durationSeconds);
-		announceProgressStatus("FALA", Math.min(progress, 100));
+		final int progressPercent = Math.min(progress, 100);
+		final Integer milestone = findWaveMilestone(progressPercent);
+		if (milestone == null || !announcedWaveMilestones.add(milestone)) {
+			return;
+		}
+		if (!operationalBroadcastLimiter.tryAcquire("FALA_" + milestone, System.currentTimeMillis())) {
+			if (LOGGER.isDebugEnabled()) {
+				LOGGER.debug(getEventName() + " wave status skipped by limiter at " + progressPercent
+						+ "% progress (milestone=" + milestone + "%).");
+			}
+			return;
+		}
+		announceProgressStatus("FALA_" + milestone, milestone);
+	}
+
+	private Integer findWaveMilestone(final int progressPercent) {
+		for (final int milestone : WAVE_PROGRESS_MILESTONES) {
+			if (progressPercent >= milestone) {
+				return milestone;
+			}
+		}
+		return null;
 	}
 
 	@Override
@@ -719,11 +758,13 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 		}
 
 		if (!criticalHealthAnnounced && currentGiant.getHP() <= GIANT_CRITICAL_HP_THRESHOLD) {
-			criticalHealthAnnounced = true;
 			final int hpPercent = Math.max(0, Math.round((currentGiant.getHP() * 100.0f) / giantEventHp));
-			SingletonRepository.getRuleProcessor().tellAllPlayers(
-					NotificationType.PRIVMSG,
-					"[Kościelisko] Wielkolud słabnie! Zostało mu " + hpPercent + "% sił.");
+			if (criticalBroadcastLimiter.tryAcquire("GIANT_CRITICAL_HP", System.currentTimeMillis())) {
+				criticalHealthAnnounced = true;
+				SingletonRepository.getRuleProcessor().tellAllPlayers(
+						NotificationType.PRIVMSG,
+						"[Kościelisko] Wielkolud słabnie! Zostało mu " + hpPercent + "% sił.");
+			}
 		}
 	}
 
@@ -738,24 +779,90 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 	private void announceProgressStatus(final String stage, final int progressPercent) {
 		final SpeakerNPC currentGiant = giantNpc;
 		final int hpPercent = currentGiant == null ? 0 : Math.max(0, Math.round((currentGiant.getHP() * 100.0f) / giantEventHp));
+		final boolean includeHp = shouldAttachHp(stage, hpPercent);
+		final String hpSuffix = includeHp ? " (siły: " + hpPercent + "%)." : ".";
 		final String message;
 		switch (stage) {
 			case "START":
-				message = "[Kościelisko] Wielkolud ruszył. Pilnujcie szlaku (siły: " + hpPercent + "%).";
+				message = "[Kościelisko] Wielkolud ruszył. Pilnujcie szlaku" + hpSuffix;
 				break;
 			case "50%":
-				message = "[Kościelisko] Pół drogi za nami. Trzymajcie szyk (siły: " + hpPercent + "%).";
+				message = "[Kościelisko] Pół drogi za nami. Trzymajcie szyk" + hpSuffix;
 				break;
-			case "FALA":
-				message = "[Kościelisko] Zejście napiera od stoków. Odepchnijcie ich (siły: " + hpPercent + "%).";
+			case "FALA_25":
+				message = "[Kościelisko] Pierwsza linia pęka. Odepchnijcie zejście" + hpSuffix;
+				break;
+			case "FALA_50":
+				message = "[Kościelisko] Presja rośnie. Trzymajcie środek szlaku" + hpSuffix;
+				break;
+			case "FALA_75":
+				message = "[Kościelisko] Szturm się zagęszcza. Osłońcie Wielkoluda" + hpSuffix;
+				break;
+			case "FALA_90":
+				message = "[Kościelisko] Ostatni napór! Utrzymajcie marsz do końca" + hpSuffix;
 				break;
 			default:
-				message = "[Kościelisko] Marsz trwa (" + progressPercent + "%, siły: " + hpPercent + "%).";
+				message = "[Kościelisko] Marsz trwa (" + progressPercent + "%)" + hpSuffix;
 				break;
 		}
 		SingletonRepository.getRuleProcessor().tellAllPlayers(
 				NotificationType.PRIVMSG,
 				message);
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug(getEventName() + " operational broadcast sent: stage=" + stage + ", progress="
+					+ progressPercent + "%, hp=" + hpPercent + "%, includeHp=" + includeHp + ".");
+		}
+		notifyAdminsDebug("[Kościelisko][admin] status=" + stage + ", progress=" + progressPercent
+				+ "%, hp=" + hpPercent + "%, includeHp=" + includeHp + ".");
+	}
+
+	private synchronized boolean shouldAttachHp(final String stage, final int hpPercent) {
+		if ("START".equals(stage)) {
+			lastAnnouncedHpPercent = hpPercent;
+			return true;
+		}
+		if (lastAnnouncedHpPercent < 0) {
+			lastAnnouncedHpPercent = hpPercent;
+			return true;
+		}
+		if ((lastAnnouncedHpPercent - hpPercent) >= HP_STATUS_DELTA_PERCENT_THRESHOLD) {
+			lastAnnouncedHpPercent = hpPercent;
+			return true;
+		}
+		return false;
+	}
+
+	private void notifyAdminsDebug(final String message) {
+		SingletonRepository.getRuleProcessor().getOnlinePlayers().forAllPlayersExecute(new Task<Player>() {
+			@Override
+			public void execute(final Player player) {
+				if (player.getAdminLevel() > 0) {
+					player.sendPrivateText(NotificationType.SUPPORT, message);
+				}
+			}
+		});
+	}
+
+	static final class BroadcastRateLimiter {
+		private final long minIntervalMillis;
+		private final Map<String, Long> lastBroadcastAtMillis = new HashMap<>();
+
+		BroadcastRateLimiter(final long minIntervalMillis) {
+			this.minIntervalMillis = Math.max(0L, minIntervalMillis);
+		}
+
+		synchronized boolean tryAcquire(final String key, final long nowMillis) {
+			final Long previous = lastBroadcastAtMillis.get(key);
+			if (previous != null && (nowMillis - previous) < minIntervalMillis) {
+				return false;
+			}
+			lastBroadcastAtMillis.put(key, nowMillis);
+			return true;
+		}
+
+		synchronized void clear() {
+			lastBroadcastAtMillis.clear();
+		}
 	}
 
 	private boolean isCooldownReady() {
