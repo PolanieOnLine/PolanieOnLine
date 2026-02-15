@@ -28,6 +28,8 @@ import javax.swing.Box;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.plaf.basic.BasicLabelUI;
+import javax.swing.plaf.basic.BasicPanelUI;
 
 import games.stendhal.client.gui.layout.SBoxLayout;
 import games.stendhal.client.gui.layout.SLayout;
@@ -48,7 +50,20 @@ public class EventProgressBarOverlay extends JPanel {
 	private String eventId;
 	private float overlayAlpha = 1.0f;
 
+
+	@Override
+	public void updateUI() {
+		setUI(new BasicPanelUI());
+		if (eventTitle != null) {
+			eventTitle.setUI(new BasicLabelUI());
+		}
+		if (progressBar != null) {
+			progressBar.repaint();
+		}
+	}
+
 	public EventProgressBarOverlay() {
+		setUI(new BasicPanelUI());
 		setOpaque(false);
 		setBorder(BorderFactory.createEmptyBorder(6, 10, 8, 10));
 		setAlignmentX(JComponent.CENTER_ALIGNMENT);
@@ -56,6 +71,7 @@ public class EventProgressBarOverlay extends JPanel {
 		setLayout(new SBoxLayout(SBoxLayout.VERTICAL));
 
 		eventTitle = new JLabel();
+		eventTitle.setUI(new BasicLabelUI());
 		eventTitle.setOpaque(false);
 		eventTitle.setBorder(BorderFactory.createEmptyBorder());
 		eventTitle.setForeground(Color.WHITE);
