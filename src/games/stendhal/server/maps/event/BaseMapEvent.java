@@ -107,6 +107,11 @@ public abstract class BaseMapEvent {
 
 	protected abstract void spawnCreatures(String creatureName, int count);
 
+	protected void spawnCreaturesForWave(final EventSpawn spawn) {
+		onWaveSpawn(spawn);
+		spawnCreatures(spawn.creatureName, spawn.count);
+	}
+
 	protected void onWaveSpawn(final EventSpawn spawn) {
 		// default no-op
 	}
@@ -330,8 +335,7 @@ public abstract class BaseMapEvent {
 			return;
 		}
 		for (EventSpawn spawn : wave.spawns) {
-			onWaveSpawn(spawn);
-			spawnCreatures(spawn.creatureName, spawn.count);
+			spawnCreaturesForWave(spawn);
 		}
 	}
 
