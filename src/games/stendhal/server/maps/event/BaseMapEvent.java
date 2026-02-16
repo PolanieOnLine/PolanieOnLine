@@ -442,6 +442,14 @@ public abstract class BaseMapEvent {
 		return eventActive.get() && eventRunId.get() == runId;
 	}
 
+	protected final long getCurrentEventRunId() {
+		return eventRunId.get();
+	}
+
+	protected final boolean isRunActive(final long runId) {
+		return isCurrentRunActive(runId);
+	}
+
 	private void attemptGuaranteedStart() {
 		if (eventActive.get()) {
 			logger.info(getEventName() + " guaranteed event skipped; event already active.");
