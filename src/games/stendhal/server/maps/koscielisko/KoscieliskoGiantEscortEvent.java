@@ -43,6 +43,7 @@ import games.stendhal.server.maps.event.MapEventConfig;
 import games.stendhal.server.maps.event.MapEventConfigLoader;
 import games.stendhal.server.maps.event.MapEventContributionTracker;
 import games.stendhal.server.maps.event.MapEventRewardPolicy;
+import games.stendhal.server.maps.event.RandomEventRewardService;
 import games.stendhal.server.maps.event.RandomSafeSpotSpawnStrategy;
 
 public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
@@ -122,6 +123,7 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 	private final Map<String, Integer> playerActivityTicks = new HashMap<>();
 	private final MapEventContributionTracker contributionTracker = new MapEventContributionTracker();
 	private final MapEventRewardPolicy rewardPolicy = MapEventRewardPolicy.defaultEscortPolicy();
+	private final RandomEventRewardService randomEventRewardService = new RandomEventRewardService();
 	private final Set<Integer> announcedWaveOffsets = new HashSet<>();
 	private final Set<Integer> announcedWaveMilestones = new HashSet<>();
 	private final RandomSafeSpotSpawnStrategy fallbackSpawnStrategy = new RandomSafeSpotSpawnStrategy(LOGGER);
@@ -996,8 +998,7 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 	}
 
 	private void rewardParticipants() {
-		final RewardTier tier = RewardTier.fromHealthRatio(finalHealthRatio);
-		if (tier == RewardTier.NONE) {
+		if (finalHealthRatio < 0.2d) {
 			return;
 		}
 
@@ -1034,15 +1035,15 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 				continue;
 			}
 
-			final int xpReward = Math.max(1, (int) Math.round(tier.xpReward * decision.getMultiplier()));
-			final double karmaReward = tier.karmaReward * decision.getMultiplier();
-			player.addXP(xpReward);
-			player.addKarma(karmaReward);
-			player.sendPrivateText("[Kościelisko] Za obronę szlaku: +" + xpReward + " XP, +"
-					+ Math.round(karmaReward * 100.0d) / 100.0d
-					+ " karmy (wkład: " + Math.round(decision.getTotalScore() * 10.0d) / 10.0d
-					+ ", mnożnik serii: " + Math.round(decision.getMultiplier() * 100.0d) + "%, siły Wielkoluda: "
-					+ Math.round(finalHealthRatio * 100.0d) + "%).");
+			final RandomEventRewardService.Reward reward = randomEventRewardService.grantRandomEventRewards(
+					player,
+					RandomEventRewardService.RandomEventType.GIANT_ESCORT,
+					finalHealthRatio,
+					decision.getMultiplier());
+			final int xpReward = reward.getXp();
+			final double karmaReward = reward.getKarma();
+			player.sendPrivateText("Za obronę szlaku otrzymujesz +" + xpReward + " PD oraz +"
+					+ Math.round(karmaReward * 100.0d) / 100.0d + " karmy.");
 			rewardedPlayers++;
 		}
 
@@ -1147,36 +1148,6 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 
 		private boolean hasMovedTo(final PlayerSnapshot other) {
 			return other != null && (x != other.x || y != other.y) && other.recordedAt > recordedAt;
-		}
-	}
-
-	private enum RewardTier {
-		HIGH(0.8d, 220000, 20.0d),
-		MEDIUM(0.5d, 140000, 12.0d),
-		LOW(0.2d, 80000, 7.0d),
-		NONE(0.0d, 0, 0.0d);
-
-		private final double threshold;
-		private final int xpReward;
-		private final double karmaReward;
-
-		RewardTier(final double threshold, final int xpReward, final double karmaReward) {
-			this.threshold = threshold;
-			this.xpReward = xpReward;
-			this.karmaReward = karmaReward;
-		}
-
-		private static RewardTier fromHealthRatio(final double healthRatio) {
-			if (healthRatio >= HIGH.threshold) {
-				return HIGH;
-			}
-			if (healthRatio >= MEDIUM.threshold) {
-				return MEDIUM;
-			}
-			if (healthRatio >= LOW.threshold) {
-				return LOW;
-			}
-			return NONE;
 		}
 	}
 }
