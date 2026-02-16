@@ -15,6 +15,7 @@ import java.time.LocalTime;
 import java.util.Collections;
 import java.util.IdentityHashMap;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -47,7 +48,10 @@ public class DragonLandEvent extends ConfiguredMapEvent {
 	private final AtomicInteger totalSpawnedWithoutWawelski = new AtomicInteger(0);
 	private final AtomicInteger defeatedWithoutWawelski = new AtomicInteger(0);
 	private final Set<EventSpawn> lastWaveSpawns;
+	private final List<String> wawelskiSpawnZones;
 	private volatile SpawnReason spawnReason = SpawnReason.NONE;
+	private volatile String wawelskiSpawnZone;
+	private volatile String zoneOverride;
 	private volatile int currentCycle = 1;
 
 	private enum SpawnReason {
@@ -58,6 +62,7 @@ public class DragonLandEvent extends ConfiguredMapEvent {
 	private DragonLandEvent() {
 		super(LOGGER, EVENT_CONFIG);
 		lastWaveSpawns = resolveLastWaveSpawns();
+		wawelskiSpawnZones = DragonMapEventConfigProvider.getWawelskiSpawnZones();
 	}
 
 	public static DragonLandEvent getInstance() {
@@ -90,6 +95,8 @@ public class DragonLandEvent extends ConfiguredMapEvent {
 		defeatedWithoutWawelski.set(0);
 		spawnReason = SpawnReason.NONE;
 		currentCycle = 1;
+		wawelskiSpawnZone = null;
+		zoneOverride = null;
 		super.onStart();
 	}
 
@@ -102,7 +109,17 @@ public class DragonLandEvent extends ConfiguredMapEvent {
 		totalSpawnedWithoutWawelski.set(0);
 		defeatedWithoutWawelski.set(0);
 		currentCycle = 1;
+		wawelskiSpawnZone = null;
+		zoneOverride = null;
 		super.onStop();
+	}
+
+	@Override
+	protected List<String> getZones() {
+		if (zoneOverride != null) {
+			return Collections.singletonList(zoneOverride);
+		}
+		return super.getZones();
 	}
 
 	@Override
@@ -143,8 +160,53 @@ public class DragonLandEvent extends ConfiguredMapEvent {
 			return;
 		}
 
+		wawelskiSpawnZone = pickWawelskiSpawnZone();
+		if (wawelskiSpawnZone == null) {
+			LOGGER.warn(getEventName() + " no valid Wawelski spawn zone found. Falling back to default event zones.");
+		}
+
 		spawnReason = SpawnReason.LAST_WAVE_80_PERCENT;
-		spawnCreaturesForWave(WAWELSKI_LAST_WAVE_SPAWN);
+		zoneOverride = wawelskiSpawnZone;
+		try {
+			spawnCreaturesForWave(WAWELSKI_LAST_WAVE_SPAWN);
+		} finally {
+			zoneOverride = null;
+		}
+	}
+
+	private String pickWawelskiSpawnZone() {
+		if (wawelskiSpawnZones == null || wawelskiSpawnZones.isEmpty()) {
+			LOGGER.warn(getEventName() + " Wawelski spawn zones list is empty.");
+			return null;
+		}
+
+		final long seed = System.nanoTime() ^ getCurrentEventRunId() ^ defeatedWithoutWawelski.get();
+		final Random random = new Random(seed);
+		final int roll = random.nextInt(wawelskiSpawnZones.size());
+		LOGGER.debug(getEventName() + " Wawelski zone roll: seed=" + seed + ", roll=" + roll
+				+ ", candidates=" + wawelskiSpawnZones + ".");
+
+		for (int offset = 0; offset < wawelskiSpawnZones.size(); offset++) {
+			final int candidateIndex = (roll + offset) % wawelskiSpawnZones.size();
+			final String candidateZone = wawelskiSpawnZones.get(candidateIndex);
+			if (isZoneAvailable(candidateZone)) {
+				if (offset > 0) {
+					LOGGER.debug(getEventName() + " Wawelski spawn fallback used: selected unavailable zone index="
+							+ roll + ", chosen=" + candidateZone + ".");
+				}
+				LOGGER.debug(getEventName() + " Wawelski spawn zone chosen=" + candidateZone + ".");
+				return candidateZone;
+			}
+			LOGGER.debug(getEventName() + " Wawelski spawn zone unavailable=" + candidateZone + ".");
+		}
+
+		return null;
+	}
+
+	private boolean isZoneAvailable(final String zoneName) {
+		return zoneName != null
+				&& !zoneName.trim().isEmpty()
+				&& SingletonRepository.getRPWorld().getZone(zoneName) != null;
 	}
 
 	private void tryTriggerWaveRestart() {
