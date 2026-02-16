@@ -121,9 +121,7 @@ public class DragonMapEventConfigProvider implements MapEventConfigProvider {
 								MapEventConfigSupport.spawn("czarne smoczysko", 2)),
 						MapEventConfigSupport.wave(180,
 								MapEventConfigSupport.spawn("latający czarny smok", 1),
-								MapEventConfigSupport.spawn("latający złoty smok", 1)),
-						MapEventConfigSupport.wave(240,
-								MapEventConfigSupport.spawn("Smok Wawelski", 1))))
+								MapEventConfigSupport.spawn("latający złoty smok", 1))))
 				// Triggers / scheduler
 				.weatherLock(new MapEventConfig.WeatherLockConfig("fog", false))
 				.triggerThreshold(500)

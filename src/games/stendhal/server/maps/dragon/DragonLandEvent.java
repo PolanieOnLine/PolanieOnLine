@@ -17,6 +17,7 @@ import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.log4j.Logger;
 
@@ -30,17 +31,29 @@ import games.stendhal.server.maps.event.MapEventConfigLoader;
 
 public class DragonLandEvent extends ConfiguredMapEvent {
 	private static final Logger LOGGER = Logger.getLogger(DragonLandEvent.class);
+	private static final String WAWELSKI_DRAGON_NAME = "Smok Wawelski";
 	private static final MapEventConfig EVENT_CONFIG = MapEventConfigLoader
 			.load(MapEventConfigLoader.DRAGON_LAND_DEFAULT);
 	private static final DragonLandEvent INSTANCE = new DragonLandEvent();
 	private static final int MAX_WAVE_CYCLES = 2;
 	private static final int RESTART_DEFEAT_PERCENT_THRESHOLD = 60;
+	private static final int WAWELSKI_SPAWN_DEFEAT_PERCENT_THRESHOLD = 80;
+	private static final EventSpawn WAWELSKI_LAST_WAVE_SPAWN = new EventSpawn(WAWELSKI_DRAGON_NAME, 1);
 
 	private final AtomicBoolean wawelAnnounced = new AtomicBoolean(false);
 	private final AtomicBoolean wavesRestartTriggered = new AtomicBoolean(false);
 	private final AtomicBoolean isLastWaveActive = new AtomicBoolean(false);
+	private final AtomicBoolean wawelskiSpawned = new AtomicBoolean(false);
+	private final AtomicInteger totalSpawnedWithoutWawelski = new AtomicInteger(0);
+	private final AtomicInteger defeatedWithoutWawelski = new AtomicInteger(0);
 	private final Set<EventSpawn> lastWaveSpawns;
+	private volatile SpawnReason spawnReason = SpawnReason.NONE;
 	private volatile int currentCycle = 1;
+
+	private enum SpawnReason {
+		NONE,
+		LAST_WAVE_80_PERCENT
+	}
 
 	private DragonLandEvent() {
 		super(LOGGER, EVENT_CONFIG);
@@ -72,6 +85,10 @@ public class DragonLandEvent extends ConfiguredMapEvent {
 		wawelAnnounced.set(false);
 		wavesRestartTriggered.set(false);
 		isLastWaveActive.set(false);
+		wawelskiSpawned.set(false);
+		totalSpawnedWithoutWawelski.set(0);
+		defeatedWithoutWawelski.set(0);
+		spawnReason = SpawnReason.NONE;
 		currentCycle = 1;
 		super.onStart();
 	}
@@ -80,6 +97,10 @@ public class DragonLandEvent extends ConfiguredMapEvent {
 	protected void onStop() {
 		wavesRestartTriggered.set(false);
 		isLastWaveActive.set(false);
+		wawelskiSpawned.set(false);
+		spawnReason = SpawnReason.NONE;
+		totalSpawnedWithoutWawelski.set(0);
+		defeatedWithoutWawelski.set(0);
 		currentCycle = 1;
 		super.onStop();
 	}
@@ -90,7 +111,8 @@ public class DragonLandEvent extends ConfiguredMapEvent {
 			isLastWaveActive.set(true);
 		}
 
-		if (!"Smok Wawelski".equals(spawn.getCreatureName())) {
+		if (!WAWELSKI_DRAGON_NAME.equals(spawn.getCreatureName())) {
+			totalSpawnedWithoutWawelski.addAndGet(Math.max(0, spawn.getCount()));
 			return;
 		}
 		if (!wawelAnnounced.compareAndSet(false, true) || !isEventActive()) {
@@ -103,14 +125,36 @@ public class DragonLandEvent extends ConfiguredMapEvent {
 	@Override
 	protected void onEventCreatureDeath(final CircumstancesOfDeath circs) {
 		super.onEventCreatureDeath(circs);
+		if (circs.getVictim() != null && !WAWELSKI_DRAGON_NAME.equals(circs.getVictim().getName())) {
+			defeatedWithoutWawelski.incrementAndGet();
+		}
+		tryTriggerWawelskiSpawn();
 		tryTriggerWaveRestart();
+	}
+
+	private void tryTriggerWawelskiSpawn() {
+		if (!isEventActive() || currentCycle != 1 || !isLastWaveActive.get()) {
+			return;
+		}
+		if (getDefeatPercentWithoutWawelski() < WAWELSKI_SPAWN_DEFEAT_PERCENT_THRESHOLD) {
+			return;
+		}
+		if (!wawelskiSpawned.compareAndSet(false, true)) {
+			return;
+		}
+
+		spawnReason = SpawnReason.LAST_WAVE_80_PERCENT;
+		spawnCreaturesForWave(WAWELSKI_LAST_WAVE_SPAWN);
 	}
 
 	private void tryTriggerWaveRestart() {
 		if (!isEventActive() || currentCycle >= MAX_WAVE_CYCLES) {
 			return;
 		}
-		if (!isLastWaveActive.get() || getEventDefeatPercent() < RESTART_DEFEAT_PERCENT_THRESHOLD) {
+		if (!isLastWaveActive.get() || getDefeatPercentWithoutWawelski() < RESTART_DEFEAT_PERCENT_THRESHOLD) {
+			return;
+		}
+		if (currentCycle == 1 && !wawelskiSpawned.get()) {
 			return;
 		}
 		if (!wavesRestartTriggered.compareAndSet(false, true)) {
@@ -121,7 +165,7 @@ public class DragonLandEvent extends ConfiguredMapEvent {
 		isLastWaveActive.set(false);
 		scheduleWaveCycleRestart(currentCycle, getCurrentEventRunId());
 		SingletonRepository.getRuleProcessor().tellAllPlayers(NotificationType.PRIVMSG,
-				"Smocza Kraina: rozpoczyna się kolejna faza obrony! Nadciąga druga sekwencja fal.");
+				"Obrońcy, przygotujcie się! Nadciąga kolejna fala bestii!");
 	}
 
 	private void scheduleWaveCycleRestart(final int cycle, final long runId) {
@@ -140,6 +184,15 @@ public class DragonLandEvent extends ConfiguredMapEvent {
 				}
 			});
 		}
+	}
+
+	private int getDefeatPercentWithoutWawelski() {
+		final int total = Math.max(0, totalSpawnedWithoutWawelski.get());
+		if (total <= 0) {
+			return 0;
+		}
+		final int defeated = Math.min(total, Math.max(0, defeatedWithoutWawelski.get()));
+		return Math.max(0, Math.min(100, (int) Math.round((defeated * 100.0d) / total)));
 	}
 
 	private Set<EventSpawn> resolveLastWaveSpawns() {
