@@ -74,7 +74,15 @@ public final class MapEventRegistry {
 
 	private static Map<String, ConfiguredMapEvent> createRegistry() {
 		final Map<String, ConfiguredMapEvent> events = new LinkedHashMap<>();
+		final Set<String> invalidConfigIds = MapEventConfigLoader
+				.validateLoadedConfigs(MapEventConfigLoader.configuredValidationMode());
+
 		for (String configId : MapEventConfigLoader.availableConfigIds()) {
+			if (invalidConfigIds.contains(configId)) {
+				LOGGER.warn("Skipping map event configId='" + configId
+						+ "' because validation in permissive mode marked it as non-activatable.");
+				continue;
+			}
 			try {
 				registerEvent(events, configId, new ConfiguredMapEvent(LOGGER, MapEventConfigLoader.load(configId)));
 			} catch (IllegalArgumentException e) {
