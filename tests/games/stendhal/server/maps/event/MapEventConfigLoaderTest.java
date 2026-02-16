@@ -13,7 +13,6 @@ package games.stendhal.server.maps.event;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 
@@ -31,10 +30,7 @@ public class MapEventConfigLoaderTest {
 		final MapEventConfigProvider secondProvider = new StubProvider("dragon_conflict");
 
 		try {
-			MapEventConfigLoader.createConfigs(
-					Arrays.asList(firstProvider, secondProvider),
-					MapEventConfigLoader.ValidationMode.STRICT,
-					new StubValidationContext(true, true));
+			MapEventConfigLoader.createConfigs(Arrays.asList(firstProvider, secondProvider));
 			fail("Expected IllegalStateException for duplicate eventId.");
 		} catch (IllegalStateException e) {
 			assertThat(e.getMessage(), containsString("dragon_conflict"));
@@ -51,13 +47,10 @@ public class MapEventConfigLoaderTest {
 		final MapEventConfigProvider kikareukinProvider = new NamedStubProvider(Collections.singletonMap(
 				"kikareukin_unique", minimalConfig("Kikareukin Event")));
 
-		final Map<String, MapEventConfig> mergedConfigs = MapEventConfigLoader.createConfigs(
-				Arrays.asList(
-						dragonProvider,
-						koscieliskoProvider,
-						kikareukinProvider),
-				MapEventConfigLoader.ValidationMode.STRICT,
-				new StubValidationContext(true, true));
+		final Map<String, MapEventConfig> mergedConfigs = MapEventConfigLoader.createConfigs(Arrays.asList(
+				dragonProvider,
+				koscieliskoProvider,
+				kikareukinProvider));
 
 		assertThat(mergedConfigs.keySet().size(), is(3));
 		assertThat(mergedConfigs.containsKey("dragon_unique"), is(true));
@@ -66,68 +59,7 @@ public class MapEventConfigLoaderTest {
 	}
 
 	private static MapEventConfig minimalConfig(final String name) {
-		return MapEventConfig.builder(name)
-				.zones(Collections.singletonList("known_zone"))
-				.waves(Collections.singletonList(wave("known_creature")))
-				.build();
-	}
-
-	@Test
-	public void shouldFailInStrictModeWhenZoneDoesNotExist() {
-		final MapEventConfig config = MapEventConfig.builder("Invalid Zone Event")
-				.zones(Collections.singletonList("missing_zone"))
-				.waves(Collections.singletonList(wave("szczur")))
-				.build();
-
-		try {
-			MapEventConfigLoader.createConfigs(
-					Collections.singletonList(new NamedStubProvider(Collections.singletonMap("dragon_invalid_zone", config))),
-					MapEventConfigLoader.ValidationMode.STRICT,
-					new StubValidationContext(false, true));
-			fail("Expected IllegalStateException for missing zone in strict mode.");
-		} catch (IllegalStateException e) {
-			assertThat(e.getMessage(), containsString("dragon_invalid_zone"));
-			assertThat(e.getMessage(), containsString("missing zone"));
-		}
-	}
-
-	@Test
-	public void shouldDisableEventInPermissiveModeWhenCreatureTemplateDoesNotExist() {
-		final MapEventConfig invalidConfig = MapEventConfig.builder("Invalid Creature Event")
-				.zones(Collections.singletonList("known_zone"))
-				.waves(Collections.singletonList(wave("missing_creature")))
-				.build();
-
-		final Map<String, MapEventConfig> configs = MapEventConfigLoader.createConfigs(
-				Collections.singletonList(new NamedStubProvider(Collections.singletonMap("dragon_invalid_creature", invalidConfig))),
-				MapEventConfigLoader.ValidationMode.PERMISSIVE,
-				new StubValidationContext(true, false));
-
-		assertFalse(configs.containsKey("dragon_invalid_creature"));
-	}
-
-	@Test
-	public void shouldTreatEmptyWavesAsValidationError() {
-		final MapEventConfig emptyWavesConfig = MapEventConfig.builder("Empty Waves Event")
-				.zones(Collections.singletonList("known_zone"))
-				.build();
-
-		try {
-			MapEventConfigLoader.createConfigs(
-					Collections.singletonList(new NamedStubProvider(Collections.singletonMap("kikareukin_empty_waves", emptyWavesConfig))),
-					MapEventConfigLoader.ValidationMode.STRICT,
-					new StubValidationContext(true, true));
-			fail("Expected IllegalStateException for empty waves.");
-		} catch (IllegalStateException e) {
-			assertThat(e.getMessage(), containsString("kikareukin_empty_waves"));
-			assertThat(e.getMessage(), containsString("no waves defined"));
-		}
-	}
-
-	private static BaseMapEvent.EventWave wave(final String creatureName) {
-		return new BaseMapEvent.EventWave(
-				10,
-				Collections.singletonList(new BaseMapEvent.EventSpawn(creatureName, 1)));
+		return MapEventConfig.builder(name).build();
 	}
 
 	private static class StubProvider implements MapEventConfigProvider {
@@ -155,26 +87,6 @@ public class MapEventConfigLoaderTest {
 		@Override
 		public Map<String, MapEventConfig> loadConfigs() {
 			return configs;
-		}
-	}
-
-	private static class StubValidationContext implements MapEventConfigLoader.ValidationContext {
-		private final boolean zoneExists;
-		private final boolean creatureTemplateExists;
-
-		private StubValidationContext(final boolean zoneExists, final boolean creatureTemplateExists) {
-			this.zoneExists = zoneExists;
-			this.creatureTemplateExists = creatureTemplateExists;
-		}
-
-		@Override
-		public boolean zoneExists(final String zoneName) {
-			return zoneExists;
-		}
-
-		@Override
-		public boolean creatureTemplateExists(final String creatureName) {
-			return creatureTemplateExists;
 		}
 	}
 }
