@@ -39,6 +39,7 @@ import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.event.ConfiguredMapEvent;
+import games.stendhal.server.maps.event.EventActivityChestRewardService;
 import games.stendhal.server.maps.event.MapEventConfig;
 import games.stendhal.server.maps.event.MapEventConfigLoader;
 import games.stendhal.server.maps.event.MapEventContributionTracker;
@@ -1004,7 +1005,7 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 
 		final long now = System.currentTimeMillis();
 		final Map<String, MapEventContributionTracker.ContributionSnapshot> contributions = contributionTracker.snapshotAll();
-		int rewardedPlayers = 0;
+		final List<EventActivityChestRewardService.QualifiedParticipant> qualifiedParticipants = new ArrayList<>();
 		for (Entry<String, MapEventContributionTracker.ContributionSnapshot> entry : contributions.entrySet()) {
 			final String playerName = entry.getKey();
 			final Player player = SingletonRepository.getRuleProcessor().getPlayer(playerName);
@@ -1012,16 +1013,17 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 				continue;
 			}
 
+			final MapEventContributionTracker.ContributionSnapshot contribution = entry.getValue();
 			final MapEventRewardPolicy.RewardDecision decision = rewardPolicy.evaluate(
 					getEventId(),
 					playerName,
-					entry.getValue(),
+					contribution,
 					now);
 			final String audit = getEventName() + " reward audit: player=" + playerName
-					+ ", dmg=" + entry.getValue().getDamage()
-					+ ", assists=" + entry.getValue().getKillAssists()
-					+ ", obj=" + entry.getValue().getObjectiveActions()
-					+ ", zoneSec=" + entry.getValue().getTimeInZoneSeconds()
+					+ ", dmg=" + contribution.getDamage()
+					+ ", assists=" + contribution.getKillAssists()
+					+ ", obj=" + contribution.getObjectiveActions()
+					+ ", zoneSec=" + contribution.getTimeInZoneSeconds()
 					+ ", score=" + Math.round(decision.getTotalScore() * 100.0d) / 100.0d
 					+ ", score/window=" + Math.round(decision.getScorePerWindow() * 100.0d) / 100.0d
 					+ ", antiAfk=" + decision.isAntiAfkPassed()
@@ -1044,14 +1046,14 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 			final double karmaReward = reward.getKarma();
 			player.sendPrivateText("Za obronę szlaku otrzymujesz +" + xpReward + " PD oraz +"
 					+ Math.round(karmaReward * 100.0d) / 100.0d + " karmy.");
-			rewardedPlayers++;
+			qualifiedParticipants.add(new EventActivityChestRewardService.QualifiedParticipant(
+					player,
+					decision.getTotalScore(),
+					contribution.getDamage(),
+					contribution.getKillAssists()));
 		}
 
-		if (rewardedPlayers == 0) {
-			SingletonRepository.getRuleProcessor().tellAllPlayers(
-					NotificationType.PRIVMSG,
-					"Szlak obroniony, ale nikt nie utrzymał tempa do nagrody.");
-		}
+		EventActivityChestRewardService.awardTopActivityChests("Eskorta Wielkoluda", qualifiedParticipants);
 	}
 
 	private static boolean isOutsideEscortZone(final Creature creature, final SpawnAnchor anchor) {

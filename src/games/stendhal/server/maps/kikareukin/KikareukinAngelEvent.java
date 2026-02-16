@@ -11,6 +11,8 @@
  ***************************************************************************/
 package games.stendhal.server.maps.kikareukin;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -21,6 +23,7 @@ import games.stendhal.server.core.events.TurnListener;
 import games.stendhal.server.entity.creature.CircumstancesOfDeath;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.event.ConfiguredMapEvent;
+import games.stendhal.server.maps.event.EventActivityChestRewardService;
 import games.stendhal.server.maps.event.MapEventConfigLoader;
 import games.stendhal.server.maps.event.MapEventContributionTracker;
 import games.stendhal.server.maps.event.MapEventRewardPolicy;
@@ -99,15 +102,17 @@ public final class KikareukinAngelEvent extends ConfiguredMapEvent {
 	private void rewardParticipants(final int defeatPercent) {
 		final long now = System.currentTimeMillis();
 		final double difficultyModifier = 0.85d + (Math.max(0, Math.min(100, defeatPercent)) / 100.0d * 0.25d);
+		final List<EventActivityChestRewardService.QualifiedParticipant> qualifiedParticipants = new ArrayList<>();
 		for (Map.Entry<String, MapEventContributionTracker.ContributionSnapshot> entry : contributionTracker.snapshotAll().entrySet()) {
 			final Player player = SingletonRepository.getRuleProcessor().getPlayer(entry.getKey());
 			if (player == null) {
 				continue;
 			}
+			final MapEventContributionTracker.ContributionSnapshot contribution = entry.getValue();
 			final MapEventRewardPolicy.RewardDecision decision = rewardPolicy.evaluate(
 					getEventId(),
 					entry.getKey(),
-					entry.getValue(),
+					contribution,
 					now);
 			if (!decision.isQualified()) {
 				continue;
@@ -122,6 +127,12 @@ public final class KikareukinAngelEvent extends ConfiguredMapEvent {
 					difficultyModifier * decision.getMultiplier());
 			player.sendPrivateText("Za odparcie aniołów otrzymujesz +" + reward.getXp() + " PD oraz +"
 					+ Math.round(reward.getKarma() * 100.0d) / 100.0d + " karmy.");
+			qualifiedParticipants.add(new EventActivityChestRewardService.QualifiedParticipant(
+					player,
+					decision.getTotalScore(),
+					contribution.getDamage(),
+					contribution.getKillAssists()));
 		}
+		EventActivityChestRewardService.awardTopActivityChests("Kikareukin", qualifiedParticipants);
 	}
 }
