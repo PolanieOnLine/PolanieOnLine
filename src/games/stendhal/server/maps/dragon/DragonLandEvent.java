@@ -216,7 +216,7 @@ public class DragonLandEvent extends ConfiguredMapEvent {
 		if (!isLastWaveActive.get() || getDefeatPercentWithoutWawelski() < RESTART_DEFEAT_PERCENT_THRESHOLD) {
 			return;
 		}
-		if (currentCycle == 1 && !wawelskiSpawned.get()) {
+		if (currentCycle == 1 && !isWawelskiSpawnedFromLastWave80Percent()) {
 			return;
 		}
 		if (!wavesRestartTriggered.compareAndSet(false, true)) {
@@ -228,6 +228,10 @@ public class DragonLandEvent extends ConfiguredMapEvent {
 		scheduleWaveCycleRestart(currentCycle, getCurrentEventRunId());
 		SingletonRepository.getRuleProcessor().tellAllPlayers(NotificationType.PRIVMSG,
 				"Obrońcy, przygotujcie się! Nadciąga kolejna fala bestii!");
+	}
+
+	private boolean isWawelskiSpawnedFromLastWave80Percent() {
+		return wawelskiSpawned.get() && spawnReason == SpawnReason.LAST_WAVE_80_PERCENT;
 	}
 
 	private void scheduleWaveCycleRestart(final int cycle, final long runId) {
