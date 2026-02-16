@@ -91,17 +91,20 @@ public final class MapEventStatusPublisher {
 				true,
 				Integer.valueOf(remainingSeconds),
 				Integer.valueOf(totalDurationSeconds),
+				Integer.valueOf(event.getEventTotalSpawnedCreatures()),
+				Integer.valueOf(event.getEventDefeatedCreatures()),
+				Integer.valueOf(event.getEventDefeatPercent()),
 				allowedZones);
 	}
 
 	private static MapEventStatusEvent createInactiveSnapshot(final BaseMapEvent event) {
 		return new MapEventStatusEvent(event.getEventId(), event.getEventNamePublic(), false,
-				null, null, Collections.<String>emptyList());
+				null, null, Integer.valueOf(0), Integer.valueOf(0), Integer.valueOf(0), Collections.<String>emptyList());
 	}
 
 	private static MapEventStatusEvent createGlobalFallbackSnapshot() {
 		return new MapEventStatusEvent(FALLBACK_EVENT_ID, FALLBACK_EVENT_NAME, false,
-				null, null, Collections.<String>emptyList());
+				null, null, Integer.valueOf(0), Integer.valueOf(0), Integer.valueOf(0), Collections.<String>emptyList());
 	}
 
 	private static boolean shouldReceive(final Player player, final List<String> allowedZones) {

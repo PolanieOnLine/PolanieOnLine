@@ -23,14 +23,22 @@ public final class ActiveMapEventStatus {
 	private final String eventName;
 	private final int remainingSeconds;
 	private final int totalSeconds;
+	private final int eventTotalSpawnedCreatures;
+	private final int eventDefeatedCreatures;
+	private final int eventDefeatPercent;
 	private final List<String> zones;
 
 	public ActiveMapEventStatus(final String eventId, final String eventName,
-			final int remainingSeconds, final int totalSeconds, final List<String> zones) {
+			final int remainingSeconds, final int totalSeconds,
+			final int eventTotalSpawnedCreatures, final int eventDefeatedCreatures,
+			final int eventDefeatPercent, final List<String> zones) {
 		this.eventId = eventId;
 		this.eventName = eventName;
 		this.remainingSeconds = remainingSeconds;
 		this.totalSeconds = totalSeconds;
+		this.eventTotalSpawnedCreatures = Math.max(0, eventTotalSpawnedCreatures);
+		this.eventDefeatedCreatures = Math.max(0, eventDefeatedCreatures);
+		this.eventDefeatPercent = Math.max(0, Math.min(100, eventDefeatPercent));
 		this.zones = Collections.unmodifiableList(new ArrayList<String>(zones));
 	}
 
@@ -48,6 +56,18 @@ public final class ActiveMapEventStatus {
 
 	public int getTotalSeconds() {
 		return totalSeconds;
+	}
+
+	public int getEventTotalSpawnedCreatures() {
+		return eventTotalSpawnedCreatures;
+	}
+
+	public int getEventDefeatedCreatures() {
+		return eventDefeatedCreatures;
+	}
+
+	public int getEventDefeatPercent() {
+		return eventDefeatPercent;
 	}
 
 	public List<String> getZones() {

@@ -31,11 +31,16 @@ public class MapEventStatusEvent extends RPEvent {
 		rpclass.add(DefinitionClass.ATTRIBUTE, "isActive", Type.STRING);
 		rpclass.add(DefinitionClass.ATTRIBUTE, "remainingSeconds", Type.INT);
 		rpclass.add(DefinitionClass.ATTRIBUTE, "totalSeconds", Type.INT);
+		rpclass.add(DefinitionClass.ATTRIBUTE, "eventTotalSpawnedCreatures", Type.INT);
+		rpclass.add(DefinitionClass.ATTRIBUTE, "eventDefeatedCreatures", Type.INT);
+		rpclass.add(DefinitionClass.ATTRIBUTE, "eventDefeatPercent", Type.INT);
 		rpclass.add(DefinitionClass.ATTRIBUTE, "zones", Type.VERY_LONG_STRING);
 	}
 
 	public MapEventStatusEvent(final String eventId, final String eventName, final boolean isActive,
 			final Integer remainingSeconds, final Integer totalSeconds,
+			final Integer eventTotalSpawnedCreatures, final Integer eventDefeatedCreatures,
+			final Integer eventDefeatPercent,
 			final List<String> zones) {
 		super(Events.MAP_EVENT_STATUS);
 		put("eventId", eventId);
@@ -46,6 +51,15 @@ public class MapEventStatusEvent extends RPEvent {
 		}
 		if (totalSeconds != null) {
 			put("totalSeconds", totalSeconds.intValue());
+		}
+		if (eventTotalSpawnedCreatures != null) {
+			put("eventTotalSpawnedCreatures", eventTotalSpawnedCreatures.intValue());
+		}
+		if (eventDefeatedCreatures != null) {
+			put("eventDefeatedCreatures", eventDefeatedCreatures.intValue());
+		}
+		if (eventDefeatPercent != null) {
+			put("eventDefeatPercent", eventDefeatPercent.intValue());
 		}
 		if (zones != null) {
 			put("zones", zones);
