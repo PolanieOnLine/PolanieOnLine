@@ -11,14 +11,18 @@
  ***************************************************************************/
 package games.stendhal.server.maps.event;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.maps.dragon.DragonMapEventConfigProvider;
 import games.stendhal.server.maps.kikareukin.KikareukinMapEventConfigProvider;
 import games.stendhal.server.maps.koscielisko.KoscieliskoMapEventConfigProvider;
@@ -39,6 +43,7 @@ public final class MapEventConfigLoader {
 	public static final String DRAGON_LAND_DEFAULT = DragonMapEventConfigProvider.DRAGON_LAND_DEFAULT;
 	public static final String KIKAREUKIN_ANGEL_PREVIEW = KikareukinMapEventConfigProvider.KIKAREUKIN_ANGEL_PREVIEW;
 	public static final String KOSCIELISKO_GIANT_ESCORT = KoscieliskoMapEventConfigProvider.KOSCIELISKO_GIANT_ESCORT;
+	private static final String VALIDATION_MODE_PROPERTY = "mapevent.validation.mode";
 
 	private static final Map<String, MapEventConfig> CONFIGS = createConfigs();
 
@@ -70,10 +75,21 @@ public final class MapEventConfigLoader {
 		return createConfigs(Arrays.asList(
 				new DragonMapEventConfigProvider(),
 				new KoscieliskoMapEventConfigProvider(),
-				new KikareukinMapEventConfigProvider()));
+				new KikareukinMapEventConfigProvider()),
+				ValidationMode.fromSystemProperty(System.getProperty(VALIDATION_MODE_PROPERTY)),
+				SingletonValidationContext.INSTANCE);
 	}
 
 	static Map<String, MapEventConfig> createConfigs(final Iterable<MapEventConfigProvider> providers) {
+		return createConfigs(
+				providers,
+				ValidationMode.fromSystemProperty(System.getProperty(VALIDATION_MODE_PROPERTY)),
+				SingletonValidationContext.INSTANCE);
+	}
+
+	static Map<String, MapEventConfig> createConfigs(final Iterable<MapEventConfigProvider> providers,
+			final ValidationMode validationMode,
+			final ValidationContext validationContext) {
 		final Map<String, MapEventConfig> configs = new LinkedHashMap<>();
 		final Map<String, String> ownerProvidersByEventId = new LinkedHashMap<>();
 
@@ -93,11 +109,121 @@ public final class MapEventConfigLoader {
 			}
 		}
 
+		final ValidationResult validationResult = validateConfigs(configs, validationContext);
+		if (validationResult.hasErrors()) {
+			if (validationMode == ValidationMode.STRICT) {
+				throw new IllegalStateException("Map event config validation failed:" + validationResult.toMultilineMessage());
+			}
+
+			LOGGER.error("Map event config validation failed in permissive mode. Invalid events were disabled:"
+					+ validationResult.toMultilineMessage());
+			for (String invalidEventId : validationResult.getInvalidEventIds()) {
+				configs.remove(invalidEventId);
+			}
+		}
+
 		return Collections.unmodifiableMap(configs);
+	}
+
+	private static ValidationResult validateConfigs(final Map<String, MapEventConfig> configs,
+			final ValidationContext validationContext) {
+		final ValidationResult result = new ValidationResult();
+		for (Map.Entry<String, MapEventConfig> entry : configs.entrySet()) {
+			final String eventId = entry.getKey();
+			final MapEventConfig config = entry.getValue();
+
+			for (String zoneName : config.getZones()) {
+				if (!validationContext.zoneExists(zoneName)) {
+					result.add(eventId, "missing zone in getZones(): '" + zoneName + "'");
+				}
+			}
+			for (String observerZoneName : config.getObserverZones()) {
+				if (!validationContext.zoneExists(observerZoneName)) {
+					result.add(eventId, "missing zone in getObserverZones(): '" + observerZoneName + "'");
+				}
+			}
+
+			if (config.getWaves().isEmpty()) {
+				result.add(eventId, "no waves defined");
+			}
+
+			for (BaseMapEvent.EventWave wave : config.getWaves()) {
+				for (BaseMapEvent.EventSpawn spawn : wave.getSpawns()) {
+					final String creatureName = spawn.getCreatureName();
+					if (!validationContext.creatureTemplateExists(creatureName)) {
+						result.add(eventId, "missing creature template in wave spawn: '" + creatureName + "'");
+					}
+				}
+			}
+		}
+
+		return result;
 	}
 
 	private static String providerName(final MapEventConfigProvider provider) {
 		final String simpleName = provider.getClass().getSimpleName();
 		return simpleName.isEmpty() ? provider.getClass().getName() : simpleName;
+	}
+
+	enum ValidationMode {
+		STRICT,
+		PERMISSIVE;
+
+		static ValidationMode fromSystemProperty(final String rawMode) {
+			if (rawMode == null) {
+				return STRICT;
+			}
+			if ("permissive".equalsIgnoreCase(rawMode.trim())) {
+				return PERMISSIVE;
+			}
+			return STRICT;
+		}
+	}
+
+	interface ValidationContext {
+		boolean zoneExists(String zoneName);
+
+		boolean creatureTemplateExists(String creatureName);
+	}
+
+	private enum SingletonValidationContext implements ValidationContext {
+		INSTANCE;
+
+		@Override
+		public boolean zoneExists(final String zoneName) {
+			return SingletonRepository.getRPWorld().getZone(zoneName) != null;
+		}
+
+		@Override
+		public boolean creatureTemplateExists(final String creatureName) {
+			return SingletonRepository.getEntityManager().getCreature(creatureName) != null;
+		}
+	}
+
+	private static final class ValidationResult {
+		private final Map<String, List<String>> errorsByEventId = new LinkedHashMap<>();
+
+		void add(final String eventId, final String error) {
+			errorsByEventId.computeIfAbsent(eventId, ignored -> new ArrayList<>()).add(error);
+		}
+
+		boolean hasErrors() {
+			return !errorsByEventId.isEmpty();
+		}
+
+		Set<String> getInvalidEventIds() {
+			return new LinkedHashSet<>(errorsByEventId.keySet());
+		}
+
+		String toMultilineMessage() {
+			final StringBuilder messageBuilder = new StringBuilder();
+			for (Map.Entry<String, List<String>> entry : errorsByEventId.entrySet()) {
+				messageBuilder.append("\n - eventId='").append(entry.getKey()).append("':");
+				for (String error : entry.getValue()) {
+					messageBuilder.append("\n   * ").append(error);
+				}
+			}
+			return messageBuilder.toString();
+		}
 	}
 }
