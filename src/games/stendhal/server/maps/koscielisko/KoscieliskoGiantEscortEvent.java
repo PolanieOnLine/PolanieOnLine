@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import java.util.function.IntPredicate;
@@ -31,13 +32,17 @@ import games.stendhal.server.core.engine.Task;
 import games.stendhal.server.core.events.TurnListener;
 import games.stendhal.server.core.pathfinder.Path;
 import games.stendhal.server.core.rp.StendhalRPAction;
+import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.RPEntity;
+import games.stendhal.server.entity.creature.CircumstancesOfDeath;
 import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.event.ConfiguredMapEvent;
 import games.stendhal.server.maps.event.MapEventConfig;
 import games.stendhal.server.maps.event.MapEventConfigLoader;
+import games.stendhal.server.maps.event.MapEventContributionTracker;
+import games.stendhal.server.maps.event.MapEventRewardPolicy;
 import games.stendhal.server.maps.event.RandomSafeSpotSpawnStrategy;
 
 public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
@@ -51,7 +56,6 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 	private static final int AGGRO_TICK_INTERVAL_SECONDS = 1;
 	private static final int ACTIVITY_SAMPLE_INTERVAL_SECONDS = 10;
 	private static final int MIN_PLAYERS_TO_START = 3;
-	private static final int MIN_ACTIVITY_TICKS_FOR_REWARD = 6;
 	private static final int MAX_LOW_ACTIVITY_TICKS = 12;
 	private static final int GIANT_TARGET_RANGE = 18;
 	private static final int PLAYER_FALLBACK_RANGE = 14;
@@ -116,7 +120,8 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 	private final Set<Integer> firstTargetLogged = new HashSet<>();
 	private final Map<String, PlayerSnapshot> playerSnapshots = new HashMap<>();
 	private final Map<String, Integer> playerActivityTicks = new HashMap<>();
-	private final Set<String> rewardEligiblePlayers = new HashSet<>();
+	private final MapEventContributionTracker contributionTracker = new MapEventContributionTracker();
+	private final MapEventRewardPolicy rewardPolicy = MapEventRewardPolicy.defaultEscortPolicy();
 	private final Set<Integer> announcedWaveOffsets = new HashSet<>();
 	private final Set<Integer> announcedWaveMilestones = new HashSet<>();
 	private final RandomSafeSpotSpawnStrategy fallbackSpawnStrategy = new RandomSafeSpotSpawnStrategy(LOGGER);
@@ -180,7 +185,7 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 		firstTargetLogged.clear();
 		playerSnapshots.clear();
 		playerActivityTicks.clear();
-		rewardEligiblePlayers.clear();
+		contributionTracker.clear();
 		announcedWaveOffsets.clear();
 		announcedWaveMilestones.clear();
 		operationalBroadcastLimiter.clear();
@@ -257,7 +262,7 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 			firstTargetLogged.clear();
 			playerSnapshots.clear();
 			playerActivityTicks.clear();
-			rewardEligiblePlayers.clear();
+			contributionTracker.clear();
 			announcedWaveOffsets.clear();
 			announcedWaveMilestones.clear();
 			operationalBroadcastLimiter.clear();
@@ -711,18 +716,21 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 			if (player == null || player.getZone() == null || player.getZone() != currentGiant.getZone()) {
 				continue;
 			}
+			contributionTracker.recordTimeInZone(player.getName(), ACTIVITY_SAMPLE_INTERVAL_SECONDS);
 
 			final PlayerSnapshot previous = playerSnapshots.get(player.getName());
 			final PlayerSnapshot current = new PlayerSnapshot(player.getX(), player.getY(), System.currentTimeMillis());
 			playerSnapshots.put(player.getName(), current);
 
+			if (isNearObjective(currentGiant, player)) {
+				contributionTracker.recordObjectiveAction(player.getName(), 1);
+			}
+
 			if (previous != null && previous.hasMovedTo(current)) {
 				movedPlayers++;
 				final int ticks = playerActivityTicks.getOrDefault(player.getName(), 0) + 1;
 				playerActivityTicks.put(player.getName(), ticks);
-				if (ticks >= MIN_ACTIVITY_TICKS_FOR_REWARD) {
-					rewardEligiblePlayers.add(player.getName());
-				}
+				contributionTracker.recordObjectiveAction(player.getName(), 1);
 			}
 		}
 
@@ -738,6 +746,44 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 		}
 
 		scheduleActivityTracker();
+	}
+
+	private boolean isNearObjective(final SpeakerNPC currentGiant, final Player player) {
+		if (currentGiant == null || player == null || currentGiant.getZone() == null || player.getZone() == null
+				|| currentGiant.getZone() != player.getZone()) {
+			return false;
+		}
+		final int dx = currentGiant.getX() - player.getX();
+		final int dy = currentGiant.getY() - player.getY();
+		return (dx * dx + dy * dy) <= (PLAYER_FALLBACK_RANGE * PLAYER_FALLBACK_RANGE);
+	}
+
+	@Override
+	protected void onEventCreatureDeath(final CircumstancesOfDeath circs) {
+		if (circs == null || !(circs.getVictim() instanceof RPEntity)) {
+			return;
+		}
+
+		final RPEntity victim = (RPEntity) circs.getVictim();
+		for (Entry<Entity, Integer> entry : victim.getDamageReceivedSnapshot().entrySet()) {
+			final Player player = asOnlinePlayer(entry.getKey());
+			if (player == null) {
+				continue;
+			}
+			contributionTracker.recordDamage(player.getName(), entry.getValue());
+		}
+
+		final Player killer = circs.getKiller() instanceof Entity
+				? asOnlinePlayer((Entity) circs.getKiller())
+				: null;
+		final String killerName = killer == null ? null : killer.getName();
+		for (Entry<Entity, Integer> entry : victim.getDamageReceivedSnapshot().entrySet()) {
+			final Player player = asOnlinePlayer(entry.getKey());
+			if (player == null || player.getName().equals(killerName) || entry.getValue() <= 0) {
+				continue;
+			}
+			contributionTracker.recordKillAssist(player.getName(), 1);
+		}
 	}
 
 	private void limitHealingPerTick(final SpeakerNPC currentGiant) {
@@ -938,21 +984,65 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 		return null;
 	}
 
+	private Player asOnlinePlayer(final Entity entity) {
+		if (!(entity instanceof Player)) {
+			return null;
+		}
+		Player player = (Player) entity;
+		if (player.isDisconnected()) {
+			player = SingletonRepository.getRuleProcessor().getPlayer(player.getName());
+		}
+		return player;
+	}
+
 	private void rewardParticipants() {
 		final RewardTier tier = RewardTier.fromHealthRatio(finalHealthRatio);
 		if (tier == RewardTier.NONE) {
 			return;
 		}
 
+		final long now = System.currentTimeMillis();
+		final Map<String, MapEventContributionTracker.ContributionSnapshot> contributions = contributionTracker.snapshotAll();
 		int rewardedPlayers = 0;
-		for (final Player player : playersInObserverZones()) {
-			if (player == null || !rewardEligiblePlayers.contains(player.getName())) {
+		for (Entry<String, MapEventContributionTracker.ContributionSnapshot> entry : contributions.entrySet()) {
+			final String playerName = entry.getKey();
+			final Player player = SingletonRepository.getRuleProcessor().getPlayer(playerName);
+			if (player == null) {
 				continue;
 			}
-			player.addXP(tier.xpReward);
-			player.addKarma(tier.karmaReward);
-			player.sendPrivateText("[Kościelisko] Za obronę szlaku: +" + tier.xpReward + " XP, +" + tier.karmaReward
-					+ " karmy (siły Wielkoluda: " + Math.round(finalHealthRatio * 100.0d) + "%).");
+
+			final MapEventRewardPolicy.RewardDecision decision = rewardPolicy.evaluate(
+					getEventId(),
+					playerName,
+					entry.getValue(),
+					now);
+			final String audit = getEventName() + " reward audit: player=" + playerName
+					+ ", dmg=" + entry.getValue().getDamage()
+					+ ", assists=" + entry.getValue().getKillAssists()
+					+ ", obj=" + entry.getValue().getObjectiveActions()
+					+ ", zoneSec=" + entry.getValue().getTimeInZoneSeconds()
+					+ ", score=" + Math.round(decision.getTotalScore() * 100.0d) / 100.0d
+					+ ", score/window=" + Math.round(decision.getScorePerWindow() * 100.0d) / 100.0d
+					+ ", antiAfk=" + decision.isAntiAfkPassed()
+					+ ", qualified=" + decision.isQualified()
+					+ ", recentRuns=" + decision.getRecentRuns()
+					+ ", multiplier=" + Math.round(decision.getMultiplier() * 100.0d) / 100.0d + ".";
+			LOGGER.info(audit);
+			notifyAdminsDebug("[Kościelisko][audit] " + audit);
+
+			if (!decision.isQualified()) {
+				continue;
+			}
+
+			final int xpReward = Math.max(1, (int) Math.round(tier.xpReward * decision.getMultiplier()));
+			final double karmaReward = tier.karmaReward * decision.getMultiplier();
+			player.addXP(xpReward);
+			player.addKarma(karmaReward);
+			player.sendPrivateText("[Kościelisko] Za obronę szlaku: +" + xpReward + " XP, +"
+					+ Math.round(karmaReward * 100.0d) / 100.0d
+					+ " karmy (wkład: " + Math.round(decision.getTotalScore() * 10.0d) / 10.0d
+					+ ", mnożnik serii: " + Math.round(decision.getMultiplier() * 100.0d) + "%, siły Wielkoluda: "
+					+ Math.round(finalHealthRatio * 100.0d) + "%).");
 			rewardedPlayers++;
 		}
 

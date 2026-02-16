@@ -146,7 +146,7 @@ public abstract class BaseMapEvent {
 		eventId = candidateEventId;
 	}
 
-	final String getEventId() {
+	protected final String getEventId() {
 		return eventId == null ? getEventName().toLowerCase().replace(' ', '_') : eventId;
 	}
 
@@ -267,6 +267,10 @@ public abstract class BaseMapEvent {
 		}
 		creature.registerObjectsForNotification(eventCreatureObserver);
 		eventCreatures.add(creature);
+	}
+
+	protected void onEventCreatureDeath(final CircumstancesOfDeath circs) {
+		// default no-op
 	}
 
 	protected final void removeEventCreatures() {
@@ -490,6 +494,7 @@ public abstract class BaseMapEvent {
 			}
 			final CircumstancesOfDeath circs = (CircumstancesOfDeath) arg;
 			eventCreatures.remove(circs.getVictim());
+			onEventCreatureDeath(circs);
 		}
 	}
 }

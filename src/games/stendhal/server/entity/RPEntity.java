@@ -13,8 +13,11 @@ package games.stendhal.server.entity;
 
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.function.Predicate;
@@ -1612,6 +1615,19 @@ public abstract class RPEntity extends CombatEntity {
 		 * SingletonRepository.getRuleProcessor().getPlayer(killer.getName()); }
 		 */
 		return killerPet;
+	}
+
+	/**
+	 * Returns a snapshot of accumulated damage taken by this entity.
+	 *
+	 * @return immutable map of attackers and their damage contribution.
+	 */
+	public Map<Entity, Integer> getDamageReceivedSnapshot() {
+		final Map<Entity, Integer> snapshot = new LinkedHashMap<>();
+		for (Entry<Entity, Integer> entry : damageReceived.entrySet()) {
+			snapshot.put(entry.getKey(), entry.getValue());
+		}
+		return Collections.unmodifiableMap(snapshot);
 	}
 
 	/**
