@@ -11,7 +11,7 @@ import games.stendhal.server.entity.player.Player;
 /**
  * Zlota skrzynia.
  */
-public class ZlotaSkrzynia extends Box {
+public class ZlotaSkrzynia extends StackableBox {
 
 	static final ChestRewardProfile PROFILE = new ChestRewardProfile("gold", new ChestRewardProfile.RewardEntry[] {
 			ChestRewardProfile.reward("money", 10, 600, 1200, false, 1),

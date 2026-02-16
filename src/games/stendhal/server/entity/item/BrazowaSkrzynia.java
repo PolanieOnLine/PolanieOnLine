@@ -11,7 +11,7 @@ import games.stendhal.server.entity.player.Player;
 /**
  * Brazowa skrzynia.
  */
-public class BrazowaSkrzynia extends Box {
+public class BrazowaSkrzynia extends StackableBox {
 
 	static final ChestRewardProfile PROFILE = new ChestRewardProfile("bronze", new ChestRewardProfile.RewardEntry[] {
 			ChestRewardProfile.reward("money", 30, 80, 180, false, 1),
