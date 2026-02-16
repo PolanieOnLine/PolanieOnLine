@@ -16,6 +16,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map;
 
 import games.stendhal.server.maps.event.MapEventConfig;
@@ -24,6 +25,13 @@ import games.stendhal.server.maps.event.MapEventConfigSupport;
 
 public class DragonMapEventConfigProvider implements MapEventConfigProvider {
 	public static final String DRAGON_LAND_DEFAULT = "dragon_land_default";
+	private static final List<String> WAWELSKI_SPAWN_ZONES = Collections.unmodifiableList(Arrays.asList(
+			"0_dragon_land_n",
+			"0_dragon_land_s"));
+
+	public static List<String> getWawelskiSpawnZones() {
+		return WAWELSKI_SPAWN_ZONES;
+	}
 
 	@Override
 	public Map<String, MapEventConfig> loadConfigs() {
