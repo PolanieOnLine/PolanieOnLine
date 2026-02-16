@@ -14,8 +14,8 @@ package games.stendhal.server.maps.event;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.LinkedHashSet;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -71,18 +71,25 @@ public final class MapEventConfigLoader {
 		return Collections.unmodifiableSet(CONFIGS.keySet());
 	}
 
-	static ValidationMode configuredValidationMode() {
-		return ValidationMode.fromSystemProperty(System.getProperty(VALIDATION_MODE_PROPERTY));
-	}
-
 	private static Map<String, MapEventConfig> createConfigs() {
 		return createConfigs(Arrays.asList(
 				new DragonMapEventConfigProvider(),
 				new KoscieliskoMapEventConfigProvider(),
-				new KikareukinMapEventConfigProvider()));
+				new KikareukinMapEventConfigProvider()),
+				ValidationMode.fromSystemProperty(System.getProperty(VALIDATION_MODE_PROPERTY)),
+				SingletonValidationContext.INSTANCE);
 	}
 
 	static Map<String, MapEventConfig> createConfigs(final Iterable<MapEventConfigProvider> providers) {
+		return createConfigs(
+				providers,
+				ValidationMode.fromSystemProperty(System.getProperty(VALIDATION_MODE_PROPERTY)),
+				SingletonValidationContext.INSTANCE);
+	}
+
+	static Map<String, MapEventConfig> createConfigs(final Iterable<MapEventConfigProvider> providers,
+			final ValidationMode validationMode,
+			final ValidationContext validationContext) {
 		final Map<String, MapEventConfig> configs = new LinkedHashMap<>();
 		final Map<String, String> ownerProvidersByEventId = new LinkedHashMap<>();
 
@@ -102,38 +109,20 @@ public final class MapEventConfigLoader {
 			}
 		}
 
+		final ValidationResult validationResult = validateConfigs(configs, validationContext);
+		if (validationResult.hasErrors()) {
+			if (validationMode == ValidationMode.STRICT) {
+				throw new IllegalStateException("Map event config validation failed:" + validationResult.toMultilineMessage());
+			}
+
+			LOGGER.error("Map event config validation failed in permissive mode. Invalid events were disabled:"
+					+ validationResult.toMultilineMessage());
+			for (String invalidEventId : validationResult.getInvalidEventIds()) {
+				configs.remove(invalidEventId);
+			}
+		}
+
 		return Collections.unmodifiableMap(configs);
-	}
-
-	static Map<String, MapEventConfig> createConfigs(final Iterable<MapEventConfigProvider> providers,
-			final ValidationMode validationMode,
-			final ValidationContext validationContext) {
-		final Map<String, MapEventConfig> configs = new LinkedHashMap<>(createConfigs(providers));
-		final Set<String> invalidConfigIds = applyValidationResult(validateConfigs(configs, validationContext), validationMode);
-		for (String invalidConfigId : invalidConfigIds) {
-			configs.remove(invalidConfigId);
-		}
-		return Collections.unmodifiableMap(configs);
-	}
-
-	static Set<String> validateLoadedConfigs(final ValidationMode validationMode) {
-		final ValidationResult validationResult = validateConfigs(CONFIGS, SingletonValidationContext.INSTANCE);
-		return applyValidationResult(validationResult, validationMode);
-	}
-
-	private static Set<String> applyValidationResult(final ValidationResult validationResult,
-			final ValidationMode validationMode) {
-		if (!validationResult.hasErrors()) {
-			return Collections.emptySet();
-		}
-
-		if (validationMode == ValidationMode.STRICT) {
-			throw new IllegalStateException("Map event config validation failed:" + validationResult.toMultilineMessage());
-		}
-
-		LOGGER.error("Map event config validation failed in permissive mode. Invalid events were disabled:"
-				+ validationResult.toMultilineMessage());
-		return validationResult.getInvalidEventIds();
 	}
 
 	private static ValidationResult validateConfigs(final Map<String, MapEventConfig> configs,
@@ -176,7 +165,7 @@ public final class MapEventConfigLoader {
 		return simpleName.isEmpty() ? provider.getClass().getName() : simpleName;
 	}
 
-	public enum ValidationMode {
+	enum ValidationMode {
 		STRICT,
 		PERMISSIVE;
 
