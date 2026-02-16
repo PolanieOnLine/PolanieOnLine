@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.log4j.Logger;
@@ -52,6 +53,9 @@ public abstract class BaseMapEvent {
 	private final Map<String, Pair<String, Boolean>> storedWeather = new HashMap<>();
 	private final Map<String, String> storedWeatherLock = new HashMap<>();
 	private final List<Creature> eventCreatures = Collections.synchronizedList(new ArrayList<>());
+	private final Map<Creature, Long> eventCreatureRunIds = Collections.synchronizedMap(new HashMap<Creature, Long>());
+	private final AtomicInteger eventTotalSpawnedCreatures = new AtomicInteger(0);
+	private final AtomicInteger eventDefeatedCreatures = new AtomicInteger(0);
 	private final Observer eventCreatureObserver = new EventCreatureObserver();
 	private volatile TurnListener activeAnnouncer;
 	private volatile LocalTime scheduledTime;
@@ -270,8 +274,31 @@ public abstract class BaseMapEvent {
 		if (creature == null) {
 			return;
 		}
+		if (!isEventActive()) {
+			return;
+		}
+		final long currentRunId = eventRunId.get();
 		creature.registerObjectsForNotification(eventCreatureObserver);
 		eventCreatures.add(creature);
+		eventCreatureRunIds.put(creature, Long.valueOf(currentRunId));
+		eventTotalSpawnedCreatures.incrementAndGet();
+	}
+
+	protected final int getEventTotalSpawnedCreatures() {
+		return Math.max(0, eventTotalSpawnedCreatures.get());
+	}
+
+	protected final int getEventDefeatedCreatures() {
+		return Math.max(0, eventDefeatedCreatures.get());
+	}
+
+	protected final int getEventDefeatPercent() {
+		final int total = getEventTotalSpawnedCreatures();
+		if (total <= 0) {
+			return 0;
+		}
+		final int defeated = Math.min(total, getEventDefeatedCreatures());
+		return Math.max(0, Math.min(100, (int) Math.round((defeated * 100.0d) / total)));
 	}
 
 	protected void onEventCreatureDeath(final CircumstancesOfDeath circs) {
@@ -290,6 +317,7 @@ public abstract class BaseMapEvent {
 			}
 			eventCreatures.clear();
 		}
+		eventCreatureRunIds.clear();
 	}
 
 	protected final List<Creature> getEventCreaturesSnapshot() {
@@ -307,6 +335,9 @@ public abstract class BaseMapEvent {
 
 	private void startEventInternal() {
 		final long runId = eventRunId.incrementAndGet();
+		eventTotalSpawnedCreatures.set(0);
+		eventDefeatedCreatures.set(0);
+		eventCreatureRunIds.clear();
 		final long startedEpochSeconds = Instant.now().getEpochSecond();
 		scheduledEndEpochSeconds = startedEpochSeconds + getEventDuration().getSeconds();
 		lockWeatherFromConfig();
@@ -497,7 +528,12 @@ public abstract class BaseMapEvent {
 				return;
 			}
 			final CircumstancesOfDeath circs = (CircumstancesOfDeath) arg;
-			eventCreatures.remove(circs.getVictim());
+			final Creature victim = circs.getVictim();
+			eventCreatures.remove(victim);
+			final Long creatureRunId = eventCreatureRunIds.remove(victim);
+			if (creatureRunId != null && creatureRunId.longValue() == eventRunId.get()) {
+				eventDefeatedCreatures.incrementAndGet();
+			}
 			onEventCreatureDeath(circs);
 		}
 	}

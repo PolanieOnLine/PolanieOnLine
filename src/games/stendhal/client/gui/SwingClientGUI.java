@@ -759,15 +759,18 @@ class SwingClientGUI implements J2DClientGUI {
 		eventOverlayEndStateTimer.stop();
 
 		final String remaining = formatRemaining(visibleStatus.getRemainingSeconds());
+		final String defeatProgress = visibleStatus.getEventDefeatPercent() + "% wybitych"
+				+ " (" + visibleStatus.getEventDefeatedCreatures() + "/"
+				+ visibleStatus.getEventTotalSpawnedCreatures() + ")";
 		final String value = EVENT_HUD_MODE_COMPACT.equals(eventHudMode)
 				? remaining
-				: remaining + " • " + visibleStatus.getProgressPercent() + "%";
+				: remaining + " • " + defeatProgress;
 		if (eventProgressOverlay.isShowingEvent(visibleStatus.getEventId())) {
 			eventProgressOverlay.updateOverlay(visibleStatus.getEventId(), visibleStatus.getEventName(),
-					visibleStatus.getProgressPercent(), value);
+					visibleStatus.getEventDefeatPercent(), value);
 		} else {
 			eventProgressOverlay.showOverlay(visibleStatus.getEventId(), visibleStatus.getEventName(),
-					visibleStatus.getProgressPercent(), value);
+					visibleStatus.getEventDefeatPercent(), value);
 		}
 		eventProgressOverlay.setOverlayAlpha(eventHudOpacity);
 		repositionEventProgressOverlay();

@@ -37,7 +37,9 @@ public final class MapEventStatusStore {
 	}
 
 	public synchronized void updateStatus(final String eventId, final String eventName, final boolean isActive,
-			final Integer remainingSeconds, final Integer totalSeconds, final List<String> zones) {
+			final Integer remainingSeconds, final Integer totalSeconds,
+			final Integer eventTotalSpawnedCreatures, final Integer eventDefeatedCreatures,
+			final Integer eventDefeatPercent, final List<String> zones) {
 		if ((eventId == null) || eventId.trim().isEmpty()) {
 			return;
 		}
@@ -46,11 +48,14 @@ public final class MapEventStatusStore {
 			byEventId.put(eventId, CachedMapEventStatus.inactive(eventId, nowMillis));
 			return;
 		}
-		if ((remainingSeconds == null) || (totalSeconds == null) || (zones == null)) {
+		if ((remainingSeconds == null) || (totalSeconds == null) || (zones == null)
+				|| (eventTotalSpawnedCreatures == null) || (eventDefeatedCreatures == null)
+				|| (eventDefeatPercent == null)) {
 			return;
 		}
 		final ActiveMapEventStatus mapped = new ActiveMapEventStatus(eventId, eventName, remainingSeconds.intValue(),
-				totalSeconds.intValue(), zones);
+				totalSeconds.intValue(), eventTotalSpawnedCreatures.intValue(), eventDefeatedCreatures.intValue(),
+				eventDefeatPercent.intValue(), zones);
 		byEventId.put(eventId, CachedMapEventStatus.active(mapped, nowMillis));
 	}
 
@@ -129,7 +134,8 @@ public final class MapEventStatusStore {
 		}
 
 		static CachedMapEventStatus inactive(final String eventId, final long receivedAtMillis) {
-			return new CachedMapEventStatus(new ActiveMapEventStatus(eventId, "", 0, 0, Collections.<String>emptyList()),
+			return new CachedMapEventStatus(new ActiveMapEventStatus(eventId, "", 0, 0, 0, 0, 0,
+					Collections.<String>emptyList()),
 					receivedAtMillis);
 		}
 
@@ -152,7 +158,8 @@ public final class MapEventStatusStore {
 				return status;
 			}
 			return new ActiveMapEventStatus(status.getEventId(), status.getEventName(), projectedRemaining,
-					status.getTotalSeconds(), status.getZones());
+					status.getTotalSeconds(), status.getEventTotalSpawnedCreatures(),
+					status.getEventDefeatedCreatures(), status.getEventDefeatPercent(), status.getZones());
 		}
 
 		long getReceivedAtMillis() {
