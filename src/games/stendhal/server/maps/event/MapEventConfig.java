@@ -42,6 +42,7 @@ public final class MapEventConfig {
 	private final int defaultIntervalDays;
 	private final boolean giantOnlyAggro;
 	private final EscortSettings escortSettings;
+	private final ScalingConfig scaling;
 
 	private MapEventConfig(final Builder builder) {
 		eventName = builder.eventName;
@@ -62,6 +63,7 @@ public final class MapEventConfig {
 		defaultIntervalDays = builder.defaultIntervalDays;
 		giantOnlyAggro = builder.giantOnlyAggro;
 		escortSettings = builder.escortSettings;
+		scaling = builder.scaling;
 	}
 
 	public String getEventName() {
@@ -144,6 +146,10 @@ public final class MapEventConfig {
 		return escortSettings;
 	}
 
+	public ScalingConfig getScaling() {
+		return scaling;
+	}
+
 	public static Builder builder(final String eventName) {
 		return new Builder(eventName);
 	}
@@ -167,6 +173,7 @@ public final class MapEventConfig {
 		private int defaultIntervalDays = 1;
 		private boolean giantOnlyAggro;
 		private EscortSettings escortSettings;
+		private ScalingConfig scaling;
 
 		private Builder(final String eventName) {
 			this.eventName = Objects.requireNonNull(eventName, "eventName");
@@ -271,6 +278,11 @@ public final class MapEventConfig {
 			return this;
 		}
 
+		public Builder scaling(final ScalingConfig scaling) {
+			this.scaling = scaling;
+			return this;
+		}
+
 		public MapEventConfig build() {
 			if (duration.isNegative() || duration.isZero()) {
 				throw new IllegalArgumentException("duration must be positive");
@@ -311,7 +323,122 @@ public final class MapEventConfig {
 			if (escortSettings != null) {
 				escortSettings.validate();
 			}
+			if (scaling != null) {
+				scaling.validate();
+			}
 			return new MapEventConfig(this);
+		}
+	}
+
+	public static final class ScalingConfig {
+		private final int minPlayers;
+		private final int maxPlayers;
+		private final boolean scaleByOnlineInZones;
+		private final double killRateMultiplier;
+		private final int minSpawnPerWave;
+		private final int maxSpawnPerWave;
+
+		private ScalingConfig(final Builder builder) {
+			minPlayers = builder.minPlayers;
+			maxPlayers = builder.maxPlayers;
+			scaleByOnlineInZones = builder.scaleByOnlineInZones;
+			killRateMultiplier = builder.killRateMultiplier;
+			minSpawnPerWave = builder.minSpawnPerWave;
+			maxSpawnPerWave = builder.maxSpawnPerWave;
+		}
+
+		public int getMinPlayers() {
+			return minPlayers;
+		}
+
+		public int getMaxPlayers() {
+			return maxPlayers;
+		}
+
+		public boolean isScaleByOnlineInZones() {
+			return scaleByOnlineInZones;
+		}
+
+		public double getKillRateMultiplier() {
+			return killRateMultiplier;
+		}
+
+		public int getMinSpawnPerWave() {
+			return minSpawnPerWave;
+		}
+
+		public int getMaxSpawnPerWave() {
+			return maxSpawnPerWave;
+		}
+
+		private void validate() {
+			if (minPlayers < 0) {
+				throw new IllegalArgumentException("scaling.minPlayers must be >= 0");
+			}
+			if (maxPlayers < minPlayers) {
+				throw new IllegalArgumentException("scaling.maxPlayers must be >= minPlayers");
+			}
+			if (killRateMultiplier < 0d) {
+				throw new IllegalArgumentException("scaling.killRateMultiplier must be >= 0");
+			}
+			if (minSpawnPerWave < 0) {
+				throw new IllegalArgumentException("scaling.minSpawnPerWave must be >= 0");
+			}
+			if (maxSpawnPerWave < minSpawnPerWave) {
+				throw new IllegalArgumentException("scaling.maxSpawnPerWave must be >= minSpawnPerWave");
+			}
+		}
+
+		public static Builder builder() {
+			return new Builder();
+		}
+
+		public static final class Builder {
+			private int minPlayers;
+			private int maxPlayers;
+			private boolean scaleByOnlineInZones;
+			private double killRateMultiplier = 1.0d;
+			private int minSpawnPerWave;
+			private int maxSpawnPerWave = Integer.MAX_VALUE;
+
+			private Builder() {
+			}
+
+			public Builder minPlayers(final int minPlayers) {
+				this.minPlayers = minPlayers;
+				return this;
+			}
+
+			public Builder maxPlayers(final int maxPlayers) {
+				this.maxPlayers = maxPlayers;
+				return this;
+			}
+
+			public Builder scaleByOnlineInZones(final boolean scaleByOnlineInZones) {
+				this.scaleByOnlineInZones = scaleByOnlineInZones;
+				return this;
+			}
+
+			public Builder killRateMultiplier(final double killRateMultiplier) {
+				this.killRateMultiplier = killRateMultiplier;
+				return this;
+			}
+
+			public Builder minSpawnPerWave(final int minSpawnPerWave) {
+				this.minSpawnPerWave = minSpawnPerWave;
+				return this;
+			}
+
+			public Builder maxSpawnPerWave(final int maxSpawnPerWave) {
+				this.maxSpawnPerWave = maxSpawnPerWave;
+				return this;
+			}
+
+			public ScalingConfig build() {
+				final ScalingConfig config = new ScalingConfig(this);
+				config.validate();
+				return config;
+			}
 		}
 	}
 

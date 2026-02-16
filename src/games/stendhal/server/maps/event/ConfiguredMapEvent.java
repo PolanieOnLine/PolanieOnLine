@@ -11,8 +11,14 @@
  ***************************************************************************/
 package games.stendhal.server.maps.event;
 
+import java.time.Instant;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.IdentityHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import org.apache.log4j.Logger;
@@ -20,12 +26,21 @@ import org.apache.log4j.Logger;
 import games.stendhal.common.NotificationType;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.entity.creature.CircumstancesOfDeath;
+import games.stendhal.server.entity.creature.Creature;
 
 public class ConfiguredMapEvent extends BaseMapEvent {
 	private final Logger logger;
 	private final MapEventSpawnStrategy spawnStrategy;
 	private final KillThresholdTrigger killThresholdTrigger;
+	private final MapEventConfig.ScalingConfig scalingConfig;
+	private final Map<BaseMapEvent.EventSpawn, Integer> spawnWaveIndexes;
+	private final List<Integer> waveBaseTotals;
+	private final Map<Integer, WaveScaleState> waveScaleStates = new HashMap<>();
+	private final Map<Creature, Integer> creatureWaveIndexes = new HashMap<>();
+	private final List<Double> completedWaveClearTimesSec = new ArrayList<>();
 	private volatile boolean scriptForceStartRequested;
+	private volatile int activeSpawningWaveIndex = -1;
 
 	public ConfiguredMapEvent(final Logger logger, final MapEventConfig config) {
 		this(logger, config, new RandomSafeSpotSpawnStrategy(logger));
@@ -36,6 +51,9 @@ public class ConfiguredMapEvent extends BaseMapEvent {
 		super(logger, config);
 		this.logger = Objects.requireNonNull(logger, "logger");
 		this.spawnStrategy = Objects.requireNonNull(spawnStrategy, "spawnStrategy");
+		scalingConfig = getConfig().getScaling();
+		spawnWaveIndexes = createSpawnWaveIndexes(getConfig().getWaves());
+		waveBaseTotals = createWaveBaseTotals(getConfig().getWaves());
 		if (getConfig().getTriggerThreshold() > 0) {
 			killThresholdTrigger = new KillThresholdTrigger(
 					getObserverZones(),
@@ -107,6 +125,11 @@ public class ConfiguredMapEvent extends BaseMapEvent {
 		if (killThresholdTrigger != null) {
 			killThresholdTrigger.resetCounter("event started");
 		}
+		waveScaleStates.clear();
+		completedWaveClearTimesSec.clear();
+		synchronized (creatureWaveIndexes) {
+			creatureWaveIndexes.clear();
+		}
 		logger.info(getEventName() + " event started.");
 		SingletonRepository.getRuleProcessor().tellAllPlayers(
 				NotificationType.PRIVMSG,
@@ -119,11 +142,48 @@ public class ConfiguredMapEvent extends BaseMapEvent {
 			killThresholdTrigger.resetCounter("event ended");
 		}
 		logger.info(getEventName() + " event ended.");
+		waveScaleStates.clear();
+		completedWaveClearTimesSec.clear();
+		synchronized (creatureWaveIndexes) {
+			creatureWaveIndexes.clear();
+		}
 		removeEventCreatures();
 		stopAnnouncements();
 		SingletonRepository.getRuleProcessor().tellAllPlayers(
 				NotificationType.PRIVMSG,
 				getStopAnnouncementMessage());
+	}
+
+	@Override
+	protected void spawnCreaturesForWave(final EventSpawn spawn) {
+		final int waveIndex = spawnWaveIndexes.containsKey(spawn) ? spawnWaveIndexes.get(spawn) : -1;
+		if (waveIndex < 0 || scalingConfig == null) {
+			super.spawnCreaturesForWave(spawn);
+			return;
+		}
+
+		final WaveScaleState waveState = waveScaleStates.computeIfAbsent(waveIndex, this::createWaveScaleState);
+		final int baseTotal = Math.max(1, waveState.baseWaveTotal);
+		final int nextBaseSoFar = waveState.baseAssigned + spawn.getCount();
+		final int targetUntilCurrentSpawn = (int) Math.round((nextBaseSoFar / (double) baseTotal) * waveState.scaledWaveTarget);
+		final int scaledSpawnCount = Math.max(0, targetUntilCurrentSpawn - waveState.scaledAssigned);
+		waveState.baseAssigned = nextBaseSoFar;
+		waveState.scaledAssigned += scaledSpawnCount;
+		waveState.pendingCreatures += scaledSpawnCount;
+
+		logger.debug(getEventName() + " wave " + (waveIndex + 1)
+				+ " spawn scaling for creature " + spawn.getCreatureName()
+				+ ": base=" + spawn.getCount()
+				+ ", scaled=" + scaledSpawnCount
+				+ ", totalBase=" + waveState.baseWaveTotal
+				+ ", totalScaled=" + waveState.scaledWaveTarget + ".");
+
+		activeSpawningWaveIndex = waveIndex;
+		try {
+			spawnCreatures(spawn.getCreatureName(), scaledSpawnCount);
+		} finally {
+			activeSpawningWaveIndex = -1;
+		}
 	}
 
 	@Override
@@ -146,18 +206,165 @@ public class ConfiguredMapEvent extends BaseMapEvent {
 				continue;
 			}
 
+			final int spawningWaveIndex = activeSpawningWaveIndex;
 			spawnStrategy.spawnCreatures(
 					getEventName(),
 					Collections.singletonList(zoneName),
 					creatureName,
 					finalSpawnCount,
-					this::registerEventCreature);
+					creature -> {
+						registerEventCreature(creature);
+						if (spawningWaveIndex >= 0) {
+							synchronized (creatureWaveIndexes) {
+								creatureWaveIndexes.put(creature, spawningWaveIndex);
+							}
+						}
+					});
 		}
+	}
+
+	@Override
+	protected void onEventCreatureDeath(final CircumstancesOfDeath circs) {
+		if (scalingConfig == null || circs == null || circs.getVictim() == null) {
+			return;
+		}
+		final Integer waveIndex;
+		synchronized (creatureWaveIndexes) {
+			waveIndex = creatureWaveIndexes.remove(circs.getVictim());
+		}
+		if (waveIndex == null) {
+			return;
+		}
+		final WaveScaleState waveState = waveScaleStates.get(waveIndex);
+		if (waveState == null || waveState.pendingCreatures <= 0) {
+			return;
+		}
+		waveState.pendingCreatures--;
+		if (waveState.pendingCreatures == 0) {
+			final double clearTimeSec = Math.max(1d, waveState.startedAt.until(currentInstant(), java.time.temporal.ChronoUnit.MILLIS) / 1000d);
+			completedWaveClearTimesSec.add(clearTimeSec);
+			logger.debug(getEventName() + " wave " + (waveIndex + 1) + " cleared in " + clearTimeSec + "s.");
+		}
+	}
+
+	protected Instant currentInstant() {
+		return Instant.now();
+	}
+
+	protected int countPlayersInZones() {
+		int players = 0;
+		for (final String zoneName : getZones()) {
+			final StendhalRPZone zone = SingletonRepository.getRPWorld().getZone(zoneName);
+			if (zone == null) {
+				continue;
+			}
+			players += zone.getPlayers().size();
+		}
+		return players;
+	}
+
+	private WaveScaleState createWaveScaleState(final int waveIndex) {
+		final int baseWaveTotal = waveBaseTotals.get(waveIndex);
+		final int onlinePlayers = countPlayersInZones();
+		final double onlineScale = calculateOnlineScale(onlinePlayers);
+		final double clearRateScale = calculateClearRateScale(waveIndex);
+		final double combinedScale = onlineScale * clearRateScale;
+		final int scaledWaveTarget = clampSpawnPerWave((int) Math.round(baseWaveTotal * combinedScale));
+		logger.info(getEventName() + " wave " + (waveIndex + 1)
+				+ " scaling: onlinePlayers=" + onlinePlayers
+				+ ", onlineScale=" + onlineScale
+				+ ", clearRateScale=" + clearRateScale
+				+ ", combinedScale=" + combinedScale
+				+ ", baseSpawn=" + baseWaveTotal
+				+ ", finalSpawn=" + scaledWaveTarget + ".");
+		return new WaveScaleState(baseWaveTotal, scaledWaveTarget, currentInstant());
+	}
+
+	private double calculateOnlineScale(final int onlinePlayers) {
+		if (scalingConfig == null || !scalingConfig.isScaleByOnlineInZones()) {
+			return 1.0d;
+		}
+		final int minPlayers = scalingConfig.getMinPlayers();
+		if (minPlayers <= 0) {
+			return 1.0d;
+		}
+		final int cappedPlayers = scalingConfig.getMaxPlayers() > 0
+				? Math.min(onlinePlayers, scalingConfig.getMaxPlayers())
+				: onlinePlayers;
+		return Math.max(0.2d, cappedPlayers / (double) minPlayers);
+	}
+
+	private double calculateClearRateScale(final int waveIndex) {
+		if (scalingConfig == null || completedWaveClearTimesSec.isEmpty() || waveIndex <= 0) {
+			return 1.0d;
+		}
+		final int completedWaves = Math.min(completedWaveClearTimesSec.size(), waveIndex);
+		double avgExpectedSec = 0d;
+		for (int i = 0; i < completedWaves; i++) {
+			avgExpectedSec += getConfig().getWaves().get(i).getIntervalSeconds();
+		}
+		avgExpectedSec /= completedWaves;
+		double avgClearSec = 0d;
+		for (int i = completedWaveClearTimesSec.size() - completedWaves; i < completedWaveClearTimesSec.size(); i++) {
+			avgClearSec += completedWaveClearTimesSec.get(i);
+		}
+		avgClearSec /= completedWaves;
+		if (avgExpectedSec <= 0d || avgClearSec <= 0d) {
+			return 1.0d;
+		}
+		final double rawRatio = avgExpectedSec / avgClearSec;
+		return 1.0d + ((rawRatio - 1.0d) * scalingConfig.getKillRateMultiplier());
+	}
+
+	private int clampSpawnPerWave(final int desiredSpawnCount) {
+		if (scalingConfig == null) {
+			return desiredSpawnCount;
+		}
+		final int minSpawn = scalingConfig.getMinSpawnPerWave();
+		final int maxSpawn = scalingConfig.getMaxSpawnPerWave();
+		return Math.max(minSpawn, Math.min(desiredSpawnCount, maxSpawn));
+	}
+
+	private static Map<BaseMapEvent.EventSpawn, Integer> createSpawnWaveIndexes(final List<BaseMapEvent.EventWave> waves) {
+		final Map<BaseMapEvent.EventSpawn, Integer> indexes = new IdentityHashMap<>();
+		for (int waveIndex = 0; waveIndex < waves.size(); waveIndex++) {
+			for (BaseMapEvent.EventSpawn spawn : waves.get(waveIndex).getSpawns()) {
+				indexes.put(spawn, waveIndex);
+			}
+		}
+		return indexes;
+	}
+
+	private static List<Integer> createWaveBaseTotals(final List<BaseMapEvent.EventWave> waves) {
+		final List<Integer> totals = new ArrayList<>();
+		for (BaseMapEvent.EventWave wave : waves) {
+			int total = 0;
+			for (BaseMapEvent.EventSpawn spawn : wave.getSpawns()) {
+				total += spawn.getCount();
+			}
+			totals.add(total);
+		}
+		return totals;
 	}
 
 	private void startEventFromKills() {
 		if (!startEvent()) {
 			logger.warn(getEventName() + " event already active; skipping duplicate start.");
+		}
+	}
+
+	private static final class WaveScaleState {
+		private final int baseWaveTotal;
+		private final int scaledWaveTarget;
+		private final Instant startedAt;
+		private int baseAssigned;
+		private int scaledAssigned;
+		private int pendingCreatures;
+
+		private WaveScaleState(final int baseWaveTotal, final int scaledWaveTarget, final Instant startedAt) {
+			this.baseWaveTotal = baseWaveTotal;
+			this.scaledWaveTarget = scaledWaveTarget;
+			this.startedAt = startedAt;
 		}
 	}
 }
