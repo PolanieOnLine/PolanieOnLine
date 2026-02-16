@@ -37,6 +37,7 @@ import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.engine.ZoneAttributes;
 import games.stendhal.server.core.events.TurnListener;
 import games.stendhal.server.core.rp.WeatherUpdater;
+import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.creature.CircumstancesOfDeath;
 import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.mapstuff.WeatherEntity;
@@ -528,9 +529,13 @@ public abstract class BaseMapEvent {
 				return;
 			}
 			final CircumstancesOfDeath circs = (CircumstancesOfDeath) arg;
-			final Creature victim = circs.getVictim();
-			eventCreatures.remove(victim);
-			final Long creatureRunId = eventCreatureRunIds.remove(victim);
+			final RPEntity victim = circs.getVictim();
+			if (!(victim instanceof Creature)) {
+				return;
+			}
+			final Creature victimCreature = (Creature) victim;
+			eventCreatures.remove(victimCreature);
+			final Long creatureRunId = eventCreatureRunIds.remove(victimCreature);
 			if (creatureRunId != null && creatureRunId.longValue() == eventRunId.get()) {
 				eventDefeatedCreatures.incrementAndGet();
 			}
