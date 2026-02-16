@@ -11,11 +11,6 @@
  ***************************************************************************/
 package games.stendhal.server.entity;
 
-import static org.easymock.EasyMock.expect;
-import static org.easymock.classextension.EasyMock.createMock;
-import static org.easymock.classextension.EasyMock.replay;
-import static org.easymock.classextension.EasyMock.reset;
-import static org.easymock.classextension.EasyMock.verify;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertEquals;
@@ -464,25 +459,18 @@ public class RPEntityTest {
 	@Test
 	public void testSlotNameToEquip() {
 		final RPEntity baglessentity = new MockRPEntity();
-		final Item item = createMock(Item.class);
 		final List<String> slotnames = Arrays.asList("bag");
-		replay(item);
+		final Item item = new Item("test item", "misc", "test-item", Collections.emptyMap());
+		item.setEquipableSlots(slotnames);
 		assertEquals(null, baglessentity.getSlotToEquip(item));
-		verify(item);
 
-		reset(item);
 		final RPEntity entityWithBag = new MockRPEntity() {
 			{
 				addSlot(new RPSlot("bag"));
 			}
 		};
-		expect(item.getPossibleSlots()).andReturn(slotnames);
-
-		replay(item);
 		assertEquals("bag", entityWithBag.getSlotToEquip(item).getName());
-		verify(item);
 
-		reset(item);
 		final RPEntity entityWithFullBag = new MockRPEntity() {
 			{
 				RPSlot slot = new RPSlot("bag");
@@ -490,11 +478,7 @@ public class RPEntityTest {
 				slot.setCapacity(0);
 			}
 		};
-		expect(item.getPossibleSlots()).andReturn(slotnames);
-
-		replay(item);
 		assertEquals(null, entityWithFullBag.getSlotToEquip(item));
-		verify(item);
 	}
 
 	@Test
