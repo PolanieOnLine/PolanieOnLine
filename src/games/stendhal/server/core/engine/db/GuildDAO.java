@@ -248,7 +248,7 @@ public class GuildDAO {
 	public void logEvent(final DBTransaction transaction, final int guildId, final Integer actorPlayerId,
 			final String eventType, final String payloadJson) throws SQLException {
 		final String query = "INSERT INTO guild_logs(guild_id, actor_player_id, event_type, payload_json, created_at) "
-				+ "VALUES ([guild_id], [actor_player_id], '[event_type]', [payload_json], CURRENT_TIMESTAMP)";
+				+ "VALUES ([guild_id], [actor_player_id], '[event_type]', '[payload_json]', CURRENT_TIMESTAMP)";
 		final Map<String, Object> params = new HashMap<String, Object>();
 		params.put("guild_id", Integer.valueOf(guildId));
 		params.put("actor_player_id", actorPlayerId);
