@@ -117,7 +117,7 @@ public final class KikareukinAngelEvent extends ConfiguredMapEvent {
 			if (top.size() >= 10) {
 				break;
 			}
-			top.add(entry.getKey() + "\t" + MapEventContributionTracker.resolveActivityPoints(entry.getValue()));
+			top.add(entry.getKey() + "::" + MapEventContributionTracker.resolveActivityPoints(entry.getValue()));
 		}
 		return top;
 	}
