@@ -13,11 +13,18 @@ package games.stendhal.server.core.engine.guild;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
+import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.db.GuildDAO;
 import games.stendhal.server.core.engine.db.GuildDAO.GuildMemberData;
+import games.stendhal.server.entity.item.Item;
+import games.stendhal.server.entity.item.StackableItem;
+import games.stendhal.server.entity.player.Player;
 import marauroa.server.db.DBTransaction;
 import marauroa.server.db.TransactionPool;
 import marauroa.server.game.db.DAORegister;
@@ -33,12 +40,56 @@ public class GuildService {
 
 	private final GuildDAO guildDAO;
 
+	public static final class RequiredItem {
+		private final String name;
+		private final int quantity;
+
+		public RequiredItem(final String name, final int quantity) {
+			this.name = name;
+			this.quantity = quantity;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public int getQuantity() {
+			return quantity;
+		}
+	}
+
 	public GuildService() {
 		this(DAORegister.get().get(GuildDAO.class));
 	}
 
 	GuildService(final GuildDAO guildDAO) {
 		this.guildDAO = guildDAO;
+	}
+
+	/**
+	 * Flow used by NPC dialogs to create guilds with resource requirements.
+	 */
+	public int createGuildFromNpc(final Player player, final String guildName, final String guildTag,
+			final String description, final int goldFee, final List<RequiredItem> requiredItems)
+			throws SQLException {
+		validateGuildLeader(player);
+		verifyGoldFee(player, goldFee);
+		verifyRequiredItems(player, requiredItems);
+
+		final List<RequiredItem> withdrawnItems = new ArrayList<RequiredItem>();
+		boolean goldWithdrawn = false;
+		try {
+			goldWithdrawn = takeGold(player, goldFee);
+			takeItems(player, requiredItems, withdrawnItems);
+
+			return createGuild(player.getID().getObjectID(), guildName, guildTag, description);
+		} catch (RuntimeException e) {
+			refundResources(player, goldWithdrawn ? goldFee : 0, withdrawnItems);
+			throw e;
+		} catch (SQLException e) {
+			refundResources(player, goldWithdrawn ? goldFee : 0, withdrawnItems);
+			throw e;
+		}
 	}
 
 	public int createGuild(final int actorPlayerId, final String guildName, final String guildTag,
@@ -190,18 +241,89 @@ public class GuildService {
 	private void assertNameAndTagUnique(final DBTransaction transaction, final String name,
 			final String tag) throws SQLException {
 		if (guildDAO.guildNameExists(transaction, name)) {
-			throw new IllegalStateException("Guild name is already taken.");
+			throw new IllegalStateException("Nazwa gildii jest już zajęta.");
 		}
 		if (guildDAO.guildTagExists(transaction, tag)) {
-			throw new IllegalStateException("Guild tag is already taken.");
+			throw new IllegalStateException("Tag gildii jest już zajęty.");
 		}
 	}
 
 	private void assertNotInAnyGuild(final DBTransaction transaction, final int playerId)
 			throws SQLException {
 		if (guildDAO.loadMembership(transaction, playerId) != null) {
-			throw new IllegalStateException("Player is already a member of another guild.");
+			throw new IllegalStateException("Jesteś już w gildii.");
 		}
+	}
+
+	private void validateGuildLeader(final Player player) {
+		if (player == null) {
+			throw new IllegalArgumentException("Brak lidera do utworzenia gildii.");
+		}
+	}
+
+	private void verifyGoldFee(final Player player, final int goldFee) {
+		if (goldFee < 0) {
+			throw new IllegalArgumentException("Niepoprawna opłata za założenie gildii.");
+		}
+		if (goldFee > 0 && !player.isEquipped("money", goldFee)) {
+			throw new IllegalStateException("Brak środków.");
+		}
+	}
+
+	private void verifyRequiredItems(final Player player, final List<RequiredItem> requiredItems) {
+		for (RequiredItem item : safeRequiredItems(requiredItems)) {
+			if (item.getQuantity() <= 0) {
+				throw new IllegalArgumentException("Niepoprawna lista przedmiotów do założenia gildii.");
+			}
+			if (!player.isSubmittableEquipped(item.getName(), item.getQuantity())) {
+				throw new IllegalStateException("Brak wymaganych przedmiotów.");
+			}
+		}
+	}
+
+	private boolean takeGold(final Player player, final int goldFee) {
+		if (goldFee <= 0) {
+			return false;
+		}
+		if (!player.drop("money", goldFee)) {
+			throw new IllegalStateException("Brak środków.");
+		}
+		return true;
+	}
+
+	private void takeItems(final Player player, final List<RequiredItem> requiredItems,
+			final List<RequiredItem> withdrawnItems) {
+		for (RequiredItem item : safeRequiredItems(requiredItems)) {
+			if (!player.dropSubmittable(item.getName(), item.getQuantity())) {
+				throw new IllegalStateException("Brak wymaganych przedmiotów.");
+			}
+			withdrawnItems.add(item);
+		}
+	}
+
+	private void refundResources(final Player player, final int refundedGold, final List<RequiredItem> refundedItems) {
+		if (refundedGold > 0) {
+			final StackableItem money = (StackableItem) SingletonRepository.getEntityManager().getItem("money");
+			money.setQuantity(refundedGold);
+			player.equipOrPutOnGround(money);
+		}
+
+		for (RequiredItem item : refundedItems) {
+			final Item restoredItem = SingletonRepository.getEntityManager().getItem(item.getName());
+			if (restoredItem instanceof StackableItem) {
+				((StackableItem) restoredItem).setQuantity(item.getQuantity());
+				player.equipOrPutOnGround(restoredItem);
+				continue;
+			}
+
+			for (int i = 0; i < item.getQuantity(); i++) {
+				player.equipOrPutOnGround(SingletonRepository.getEntityManager().getItem(item.getName()));
+			}
+		}
+	}
+
+	private List<RequiredItem> safeRequiredItems(final List<RequiredItem> requiredItems) {
+		return requiredItems == null ? Collections.<RequiredItem>emptyList() : requiredItems;
 	}
 
 	private GuildMemberData assertMemberInGuild(final DBTransaction transaction, final int playerId,
