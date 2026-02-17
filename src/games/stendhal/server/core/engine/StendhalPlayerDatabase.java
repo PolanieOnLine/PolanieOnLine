@@ -22,6 +22,7 @@ import org.apache.log4j.Logger;
 import games.stendhal.common.constants.Testing;
 import games.stendhal.server.core.engine.db.AchievementDAO;
 import games.stendhal.server.core.engine.db.GuildDAO;
+import games.stendhal.server.core.engine.db.GuildMembershipDAO;
 import games.stendhal.server.core.engine.db.PendingAchievementDAO;
 import games.stendhal.server.core.engine.db.PostmanDAO;
 import games.stendhal.server.core.engine.db.StendhalBuddyDAO;
@@ -349,5 +350,6 @@ public class StendhalPlayerDatabase {
 		DAORegister.get().register(StendhalShopDAO.class, new StendhalShopDAO());
 		DAORegister.get().register(StendhalSearchIndexDAO.class, new StendhalSearchIndexDAO());
 		DAORegister.get().register(GuildDAO.class, new GuildDAO());
+		DAORegister.get().register(GuildMembershipDAO.class, new GuildMembershipDAO());
 	}
 }
