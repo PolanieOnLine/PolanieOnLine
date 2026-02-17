@@ -106,6 +106,11 @@ public final class MapEventRegistry {
 		registerEvent(specializedEvents, "koscielisko_giant_escort", koscieliskoEvent);
 		registerEvent(specializedEvents, MapEventConfigLoader.KOSCIELISKO_GIANT_ESCORT, koscieliskoEvent);
 
+		final ConfiguredMapEvent tatryKuzniceBanditRaidEvent = new ConfiguredMapEvent(LOGGER,
+				MapEventConfigLoader.load(MapEventConfigLoader.TATRY_KUZNICE_BANDIT_RAID));
+		registerEvent(specializedEvents, "tatry_kuznice", tatryKuzniceBanditRaidEvent);
+		registerEvent(specializedEvents, MapEventConfigLoader.TATRY_KUZNICE_BANDIT_RAID, tatryKuzniceBanditRaidEvent);
+
 		return specializedEvents;
 	}
 
