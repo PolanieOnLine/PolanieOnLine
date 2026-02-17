@@ -28,6 +28,7 @@ import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.creature.CircumstancesOfDeath;
 import games.stendhal.server.entity.creature.Creature;
+import games.stendhal.server.entity.player.Player;
 
 public class ConfiguredMapEvent extends BaseMapEvent {
 	private final Logger logger;
@@ -252,13 +253,33 @@ public class ConfiguredMapEvent extends BaseMapEvent {
 	}
 
 	protected int countPlayersInZones() {
+		if (scalingConfig != null) {
+			return countActivePlayersInZones(
+					scalingConfig.getOnlineZoneMinPlayerLevel(),
+					scalingConfig.getOnlineZoneMaxPlayerLevel());
+		}
+		return countActivePlayersInZones(0, Integer.MAX_VALUE);
+	}
+
+	protected int countActivePlayersInZones(final int minLevelInclusive, final int maxLevelInclusive) {
+		final int minLevel = Math.max(0, minLevelInclusive);
+		final int maxLevel = Math.max(minLevel, maxLevelInclusive);
 		int players = 0;
 		for (final String zoneName : getZones()) {
 			final StendhalRPZone zone = SingletonRepository.getRPWorld().getZone(zoneName);
 			if (zone == null) {
 				continue;
 			}
-			players += zone.getPlayers().size();
+			for (final Player player : zone.getPlayers()) {
+				if (player == null || player.isGhost() || player.isDisconnected()) {
+					continue;
+				}
+				final int level = player.getLevel();
+				if (level < minLevel || level > maxLevel) {
+					continue;
+				}
+				players++;
+			}
 		}
 		return players;
 	}

@@ -73,29 +73,34 @@ public class TatryMapEventConfigProvider implements MapEventConfigProvider {
 				.announcementIntervalSeconds(300)
 				.waves(MapEventConfigSupport.waves(
 						MapEventConfigSupport.wave(35,
-								MapEventConfigSupport.spawn("zbójnik leśny", 10),
-								MapEventConfigSupport.spawn("zbójnik leśny oszust", 5),
-								MapEventConfigSupport.spawn("zbójnik leśny zwiadowca", 4)),
-						MapEventConfigSupport.wave(60,
 								MapEventConfigSupport.spawn("zbójnik leśny", 8),
+								MapEventConfigSupport.spawn("zbójnik leśny oszust", 4),
+								MapEventConfigSupport.spawn("zbójnik leśny zwiadowca", 3)),
+						MapEventConfigSupport.wave(55,
+								MapEventConfigSupport.spawn("zbójnik leśny", 7),
 								MapEventConfigSupport.spawn("zbójnik górski", 6),
-								MapEventConfigSupport.spawn("zbójnik górski goniec", 4),
-								MapEventConfigSupport.spawn("zbójnik górski zwiadowca", 3)),
-						MapEventConfigSupport.wave(95,
-								MapEventConfigSupport.spawn("zbójnik górski", 8),
-								MapEventConfigSupport.spawn("zbójnik górski goniec", 4),
-								MapEventConfigSupport.spawn("zbójnik górski złośliwy", 5),
-								MapEventConfigSupport.spawn("zbójnik górski starszy", 2)),
-						MapEventConfigSupport.wave(130,
-								MapEventConfigSupport.spawn("zbójnik górski", 6),
+								MapEventConfigSupport.spawn("zbójnik górski goniec", 3),
+								MapEventConfigSupport.spawn("zbójnik górski zwiadowca", 2)),
+						MapEventConfigSupport.wave(85,
+								MapEventConfigSupport.spawn("zbójnik górski", 9),
+								MapEventConfigSupport.spawn("zbójnik górski goniec", 5),
 								MapEventConfigSupport.spawn("zbójnik górski złośliwy", 6),
-								MapEventConfigSupport.spawn("zbójnik górski zwiadowca", 4),
-								MapEventConfigSupport.spawn("zbójnik górski herszt", 1)),
-						MapEventConfigSupport.wave(170,
-								MapEventConfigSupport.spawn("zbójnik górski goniec", 6),
-								MapEventConfigSupport.spawn("zbójnik górski złośliwy", 7),
-								MapEventConfigSupport.spawn("zbójnik górski starszy", 4),
-								MapEventConfigSupport.spawn("zbójnik górski herszt", 2))))
+								MapEventConfigSupport.spawn("zbójnik górski zwiadowca", 3)),
+						MapEventConfigSupport.wave(115,
+								MapEventConfigSupport.spawn("zbójnik górski", 10),
+								MapEventConfigSupport.spawn("zbójnik górski złośliwy", 8),
+								MapEventConfigSupport.spawn("zbójnik górski starszy", 5),
+								MapEventConfigSupport.spawn("zbójnik górski zwiadowca", 4))))
+				.scaling(MapEventConfig.ScalingConfig.builder()
+						.scaleByOnlineInZones(true)
+						.minPlayers(2)
+						.maxPlayers(28)
+						.onlineZoneMinPlayerLevel(20)
+						.onlineZoneMaxPlayerLevel(150)
+						.killRateMultiplier(0.7d)
+						.minSpawnPerWave(16)
+						.maxSpawnPerWave(42)
+						.build())
 				.triggerThreshold(0)
 				.defaultStartTime(defaultStartTime)
 				.defaultIntervalDays(defaultIntervalDays)

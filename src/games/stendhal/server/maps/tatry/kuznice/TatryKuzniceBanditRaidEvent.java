@@ -25,6 +25,7 @@ import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.TurnListener;
 import games.stendhal.server.entity.creature.CircumstancesOfDeath;
+import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.event.ConfiguredMapEvent;
 import games.stendhal.server.maps.event.EventActivityChestRewardService;
@@ -38,10 +39,15 @@ public class TatryKuzniceBanditRaidEvent extends ConfiguredMapEvent {
 	private static final Logger LOGGER = Logger.getLogger(TatryKuzniceBanditRaidEvent.class);
 	private static final MapEventConfig EVENT_CONFIG = MapEventConfigLoader.load(MapEventConfigLoader.TATRY_KUZNICE_BANDIT_RAID);
 	private static final TatryKuzniceBanditRaidEvent INSTANCE = new TatryKuzniceBanditRaidEvent();
+
 	private static final String BANDIT_COMMANDER_NAME = "zbójnik górski herszt";
 	private static final int PREPARE_DURATION_SECONDS = 90;
 	private static final int FINAL_PHASE_TIMEOUT_SECONDS = 150;
 	private static final int ACTIVITY_SAMPLE_INTERVAL_SECONDS = 10;
+	private static final int COMMANDER_AOE_INTERVAL_SECONDS = 22;
+	private static final int COMMANDER_AOE_TELEGRAPH_SECONDS = 4;
+	private static final int COMMANDER_AOE_RADIUS_TILES = 3;
+	private static final int COMMANDER_AOE_DAMAGE = 140;
 
 	private final MapEventContributionTracker contributionTracker = new MapEventContributionTracker();
 	private final MapEventRewardPolicy rewardPolicy = MapEventRewardPolicy.defaultEscortPolicy();
@@ -58,6 +64,7 @@ public class TatryKuzniceBanditRaidEvent extends ConfiguredMapEvent {
 
 	private volatile EventPhase phase = EventPhase.SETTLEMENT;
 	private volatile long phaseStartedAtMillis;
+	private volatile boolean commanderAoeTelegraphPending;
 
 	public enum EventPhase {
 		PREPARE,
@@ -85,9 +92,11 @@ public class TatryKuzniceBanditRaidEvent extends ConfiguredMapEvent {
 		settlementHandled.set(false);
 		clearScheduledListeners();
 		super.onStart();
+		commanderAoeTelegraphPending = false;
 		transitionTo(EventPhase.PREPARE, "event started");
 		sendPrepareWarnings();
 		logAttackPlan();
+		LOGGER.info(getEventName() + " active defenders (lvl 20-150) at start: " + countEligibleDefendersInEventZones() + ".");
 		scheduleActivityTracker();
 		scheduleInSeconds(PREPARE_DURATION_SECONDS, new TurnListener() {
 			@Override
@@ -100,6 +109,7 @@ public class TatryKuzniceBanditRaidEvent extends ConfiguredMapEvent {
 	@Override
 	protected void onStop() {
 		clearScheduledListeners();
+		commanderAoeTelegraphPending = false;
 		SingletonRepository.getTurnNotifier().dontNotify(activityTracker);
 		handleSettlement("event stopped");
 		super.onStop();
@@ -167,7 +177,8 @@ public class TatryKuzniceBanditRaidEvent extends ConfiguredMapEvent {
 		LOGGER.info(getEventName() + " phase FINAL spawning commander " + BANDIT_COMMANDER_NAME + ".");
 		spawnCreaturesForWave(new EventSpawn(BANDIT_COMMANDER_NAME, 1));
 		SingletonRepository.getRuleProcessor().tellAllPlayers(NotificationType.PRIVMSG,
-				"Dowódca zbójników został dostrzeżony w Kuźnicach! Pokonajcie go, aby zakończyć napad.");
+				"Herszt zbójników wyszedł z ukrycia w Kuźnicach! Złóżcie go w śnieg - bez niego napad się rozsypie.");
+		scheduleCommanderAreaStrikeLoop();
 		scheduleInSeconds(FINAL_PHASE_TIMEOUT_SECONDS, new TurnListener() {
 			@Override
 			public void onTurnReached(final int currentTurn) {
@@ -178,6 +189,82 @@ public class TatryKuzniceBanditRaidEvent extends ConfiguredMapEvent {
 				endEvent();
 			}
 		});
+	}
+
+	private void scheduleCommanderAreaStrikeLoop() {
+		if (!isEventActive() || phase != EventPhase.FINAL) {
+			return;
+		}
+		scheduleInSeconds(COMMANDER_AOE_INTERVAL_SECONDS, new TurnListener() {
+			@Override
+			public void onTurnReached(final int currentTurn) {
+				if (!isEventActive() || phase != EventPhase.FINAL || commanderAoeTelegraphPending) {
+					return;
+				}
+				triggerCommanderAreaStrikeTelegraph();
+			}
+		});
+	}
+
+	private void triggerCommanderAreaStrikeTelegraph() {
+		final Creature commander = findActiveCommander();
+		if (commander == null || commander.getZone() == null) {
+			scheduleCommanderAreaStrikeLoop();
+			return;
+		}
+		commanderAoeTelegraphPending = true;
+		SingletonRepository.getRuleProcessor().tellAllPlayers(NotificationType.SCENE_SETTING,
+				"Zbójecki herszt bierze zamach! Za " + COMMANDER_AOE_TELEGRAPH_SECONDS + "s uderzy obszarowo - uciekajcie poza jego zasięg!");
+		for (final Player player : commander.getZone().getPlayers()) {
+			if (player == null || player.isGhost() || player.isDisconnected()) {
+				continue;
+			}
+			player.sendPrivateText("Uwaga! Herszt bierze zamach - odskocz teraz, za chwilę uderzy dookoła!");
+		}
+		scheduleInSeconds(COMMANDER_AOE_TELEGRAPH_SECONDS, new TurnListener() {
+			@Override
+			public void onTurnReached(final int currentTurn) {
+				executeCommanderAreaStrike();
+			}
+		});
+	}
+
+	private void executeCommanderAreaStrike() {
+		commanderAoeTelegraphPending = false;
+		if (!isEventActive() || phase != EventPhase.FINAL) {
+			return;
+		}
+		final Creature commander = findActiveCommander();
+		if (commander == null || commander.getZone() == null) {
+			scheduleCommanderAreaStrikeLoop();
+			return;
+		}
+		final int maxSquaredDistance = COMMANDER_AOE_RADIUS_TILES * COMMANDER_AOE_RADIUS_TILES;
+		int hitPlayers = 0;
+		for (final Player player : commander.getZone().getPlayers()) {
+			if (player == null || player.isGhost() || player.isDisconnected()) {
+				continue;
+			}
+			if (commander.squaredDistance(player) > maxSquaredDistance) {
+				continue;
+			}
+			player.onDamaged(commander, COMMANDER_AOE_DAMAGE);
+			player.sendPrivateText("Dostajesz falą uderzeniową herszta: " + COMMANDER_AOE_DAMAGE + " obrażeń.");
+			hitPlayers++;
+		}
+		LOGGER.info(getEventName() + " commander area strike resolved: radius=" + COMMANDER_AOE_RADIUS_TILES
+				+ ", damage=" + COMMANDER_AOE_DAMAGE + ", hitPlayers=" + hitPlayers + ".");
+		scheduleCommanderAreaStrikeLoop();
+	}
+
+	private Creature findActiveCommander() {
+		for (final Creature creature : getEventCreaturesSnapshot()) {
+			if (creature != null && BANDIT_COMMANDER_NAME.equals(creature.getName()) && creature.getHP() > 0
+					&& creature.getZone() != null) {
+				return creature;
+			}
+		}
+		return null;
 	}
 
 	private void handleSettlement(final String reason) {
@@ -216,7 +303,7 @@ public class TatryKuzniceBanditRaidEvent extends ConfiguredMapEvent {
 					RandomEventRewardService.RandomEventType.KUZNICE_BANDIT_RAID,
 					participationScore,
 					decision.getMultiplier());
-			player.sendPrivateText("Za obronę Kuźnic otrzymujesz +" + reward.getXp()
+			player.sendPrivateText("Gazdowie z Kuźnic kiwają z uznaniem. Za obronę dostajesz +" + reward.getXp()
 					+ " PD oraz +" + Math.round(reward.getKarma() * 100.0d) / 100.0d + " karmy.");
 			qualifiedParticipants.add(new EventActivityChestRewardService.QualifiedParticipant(
 					player,
@@ -237,7 +324,7 @@ public class TatryKuzniceBanditRaidEvent extends ConfiguredMapEvent {
 
 	private void sendPrepareWarnings() {
 		SingletonRepository.getRuleProcessor().tellAllPlayers(NotificationType.PRIVMSG,
-				"Uwaga! Faza przygotowania do obrony Kuźnic właśnie się rozpoczęła.");
+				"Kuźnice biją na alarm! Zbóje schodzą z gór - zbierzcie się i szykujcie obronę, nim uderzą.");
 		for (final String zoneName : getZones()) {
 			final StendhalRPZone zone = SingletonRepository.getRPWorld().getZone(zoneName);
 			if (zone == null) {
@@ -245,7 +332,7 @@ public class TatryKuzniceBanditRaidEvent extends ConfiguredMapEvent {
 				continue;
 			}
 			for (final Player player : zone.getPlayers()) {
-				player.sendPrivateText("[Kuźnice] Faza PREPARE: zabezpieczcie wejścia i przygotujcie obronę.");
+				player.sendPrivateText("Rogi grają… Zabezpieczcie przejścia i trzymajcie szyk. Za chwilę spadnie na nas zbójecka wataha.");
 			}
 		}
 	}
@@ -299,6 +386,10 @@ public class TatryKuzniceBanditRaidEvent extends ConfiguredMapEvent {
 			SingletonRepository.getTurnNotifier().dontNotify(listener);
 		}
 		scheduledListeners.clear();
+	}
+
+	private int countEligibleDefendersInEventZones() {
+		return countActivePlayersInZones(20, 150);
 	}
 
 	private void logAttackPlan() {
