@@ -71,6 +71,8 @@ public class TatryKuzniceBanditRaidEvent extends ConfiguredMapEvent {
 	private volatile EventPhase phase = EventPhase.SETTLEMENT;
 	private volatile long phaseStartedAtMillis;
 	private volatile boolean commanderAoeTelegraphPending;
+	private volatile int attackWavesTotal;
+	private volatile int currentAttackWave;
 
 	public enum EventPhase {
 		PREPARE,
@@ -99,7 +101,9 @@ public class TatryKuzniceBanditRaidEvent extends ConfiguredMapEvent {
 		clearScheduledListeners();
 		super.onStart();
 		commanderAoeTelegraphPending = false;
-		setWaveProgress(1, 3);
+		attackWavesTotal = Math.max(0, getConfig().getWaves().size());
+		currentAttackWave = 0;
+		setWaveProgress(currentAttackWave, attackWavesTotal);
 		transitionTo(EventPhase.PREPARE, "event started");
 		sendPrepareWarnings();
 		logAttackPlan();
@@ -169,6 +173,8 @@ public class TatryKuzniceBanditRaidEvent extends ConfiguredMapEvent {
 		if (!isEventActive() || phase != EventPhase.ATTACK) {
 			return;
 		}
+		currentAttackWave = Math.max(currentAttackWave, waveIndex + 1);
+		setWaveProgress(currentAttackWave, attackWavesTotal);
 		LOGGER.info(getEventName() + " phase ATTACK spawning wave " + (waveIndex + 1)
 				+ "/" + getConfig().getWaves().size() + " (interval=" + wave.getIntervalSeconds() + "s).");
 		for (EventSpawn spawn : wave.getSpawns()) {
@@ -281,7 +287,8 @@ public class TatryKuzniceBanditRaidEvent extends ConfiguredMapEvent {
 		transitionTo(EventPhase.SETTLEMENT, reason);
 		rewardParticipants();
 		contributionTracker.clear();
-		setWaveProgress(1, 3);
+		currentAttackWave = 0;
+		setWaveProgress(currentAttackWave, attackWavesTotal);
 		phase = EventPhase.PREPARE;
 		phaseStartedAtMillis = 0L;
 		LOGGER.info(getEventName() + " settlement completed and event state cleared.");
@@ -443,13 +450,6 @@ public class TatryKuzniceBanditRaidEvent extends ConfiguredMapEvent {
 		LOGGER.info(getEventName() + " phase transition " + phase + " -> " + nextPhase + " (reason=" + reason + ").");
 		phase = nextPhase;
 		phaseStartedAtMillis = System.currentTimeMillis();
-		if (nextPhase == EventPhase.PREPARE) {
-			setWaveProgress(1, 3);
-		} else if (nextPhase == EventPhase.ATTACK) {
-			setWaveProgress(2, 3);
-		} else if (nextPhase == EventPhase.FINAL) {
-			setWaveProgress(3, 3);
-		}
 	}
 
 	private void scheduleInSeconds(final int delaySeconds, final TurnListener listener) {
