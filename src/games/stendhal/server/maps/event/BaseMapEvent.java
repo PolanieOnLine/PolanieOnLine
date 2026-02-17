@@ -58,6 +58,7 @@ public abstract class BaseMapEvent {
 	private final AtomicInteger eventTotalSpawnedCreatures = new AtomicInteger(0);
 	private final AtomicInteger eventDefeatedCreatures = new AtomicInteger(0);
 	private final AtomicInteger currentWave = new AtomicInteger(0);
+	private final AtomicInteger totalWaves = new AtomicInteger(0);
 	private final Observer eventCreatureObserver = new EventCreatureObserver();
 	private volatile TurnListener activeAnnouncer;
 	private volatile LocalTime scheduledTime;
@@ -155,7 +156,7 @@ public abstract class BaseMapEvent {
 	}
 
 	final int getTotalWaves() {
-		return Math.max(0, getWaves().size());
+		return Math.max(0, totalWaves.get());
 	}
 
 	final String getDefenseStatus() {
@@ -169,6 +170,17 @@ public abstract class BaseMapEvent {
 			return "Końcowe starcie";
 		}
 		return "Obrona w toku";
+	}
+
+
+
+	protected List<String> getActivityTop() {
+		return Collections.emptyList();
+	}
+
+	protected final void setWaveProgress(final int current, final int total) {
+		currentWave.set(Math.max(0, current));
+		totalWaves.set(Math.max(0, total));
 	}
 
 	final void setEventIdIfMissing(final String candidateEventId) {
@@ -362,6 +374,7 @@ public abstract class BaseMapEvent {
 		eventDefeatedCreatures.set(0);
 		eventCreatureRunIds.clear();
 		currentWave.set(0);
+		totalWaves.set(Math.max(0, getWaves().size()));
 		final long startedEpochSeconds = Instant.now().getEpochSecond();
 		scheduledEndEpochSeconds = startedEpochSeconds + getEventDuration().getSeconds();
 		lockWeatherFromConfig();

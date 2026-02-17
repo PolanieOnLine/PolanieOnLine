@@ -14,6 +14,7 @@ package games.stendhal.server.maps.dragon;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,7 +36,6 @@ import games.stendhal.server.maps.event.EventActivityChestRewardService;
 import games.stendhal.server.maps.event.MapEventConfig;
 import games.stendhal.server.maps.event.MapEventConfigLoader;
 import games.stendhal.server.maps.event.MapEventContributionTracker;
-import games.stendhal.server.maps.event.MapEventPlayerActivityNotifier;
 import games.stendhal.server.maps.event.MapEventRewardPolicy;
 import games.stendhal.server.maps.event.RandomEventRewardService;
 
@@ -62,7 +62,6 @@ public class DragonLandEvent extends ConfiguredMapEvent {
 	private final List<String> wawelskiSpawnZones;
 	private final MapEventContributionTracker contributionTracker = new MapEventContributionTracker();
 	private final MapEventRewardPolicy rewardPolicy = MapEventRewardPolicy.defaultEscortPolicy();
-	private final MapEventPlayerActivityNotifier playerActivityNotifier = new MapEventPlayerActivityNotifier();
 	private final RandomEventRewardService randomEventRewardService = new RandomEventRewardService();
 	private final TurnListener activityTracker = new TurnListener() {
 		@Override
@@ -120,7 +119,6 @@ public class DragonLandEvent extends ConfiguredMapEvent {
 		wawelskiSpawnZone = null;
 		zoneOverride = null;
 		contributionTracker.clear();
-		playerActivityNotifier.clear();
 		super.onStart();
 		scheduleActivityTracker();
 	}
@@ -143,7 +141,6 @@ public class DragonLandEvent extends ConfiguredMapEvent {
 		wawelskiSpawnZone = null;
 		zoneOverride = null;
 		contributionTracker.clear();
-		playerActivityNotifier.clear();
 		super.onStop();
 	}
 
@@ -205,10 +202,31 @@ public class DragonLandEvent extends ConfiguredMapEvent {
 			}
 			for (final Player player : zone.getPlayers()) {
 				contributionTracker.recordTimeInZone(player.getName(), ACTIVITY_SAMPLE_INTERVAL_SECONDS);
-				playerActivityNotifier.notifyLiveProgress(getEventName(), player,
-						contributionTracker.snapshotForPlayer(player.getName()));
 			}
 		}
+	}
+
+	@Override
+	protected List<String> getActivityTop() {
+		final List<Map.Entry<String, MapEventContributionTracker.ContributionSnapshot>> entries =
+				new ArrayList<Map.Entry<String, MapEventContributionTracker.ContributionSnapshot>>(contributionTracker.snapshotAll().entrySet());
+		Collections.sort(entries, new Comparator<Map.Entry<String, MapEventContributionTracker.ContributionSnapshot>>() {
+			@Override
+			public int compare(final Map.Entry<String, MapEventContributionTracker.ContributionSnapshot> first,
+					final Map.Entry<String, MapEventContributionTracker.ContributionSnapshot> second) {
+				return Integer.compare(
+						MapEventContributionTracker.resolveActivityPoints(second.getValue()),
+						MapEventContributionTracker.resolveActivityPoints(first.getValue()));
+			}
+		});
+		final List<String> top = new ArrayList<String>();
+		for (Map.Entry<String, MapEventContributionTracker.ContributionSnapshot> entry : entries) {
+			if (top.size() >= 10) {
+				break;
+			}
+			top.add(entry.getKey() + "\t" + MapEventContributionTracker.resolveActivityPoints(entry.getValue()));
+		}
+		return top;
 	}
 
 	private void rewardParticipants(final int defeatPercent, final double difficultyModifier) {

@@ -26,7 +26,6 @@ import games.stendhal.server.maps.event.ConfiguredMapEvent;
 import games.stendhal.server.maps.event.EventActivityChestRewardService;
 import games.stendhal.server.maps.event.MapEventConfigLoader;
 import games.stendhal.server.maps.event.MapEventContributionTracker;
-import games.stendhal.server.maps.event.MapEventPlayerActivityNotifier;
 import games.stendhal.server.maps.event.MapEventRewardPolicy;
 import games.stendhal.server.maps.event.RandomEventRewardService;
 
@@ -37,7 +36,6 @@ public final class KikareukinAngelEvent extends ConfiguredMapEvent {
 
 	private final MapEventContributionTracker contributionTracker = new MapEventContributionTracker();
 	private final MapEventRewardPolicy rewardPolicy = MapEventRewardPolicy.defaultEscortPolicy();
-	private final MapEventPlayerActivityNotifier playerActivityNotifier = new MapEventPlayerActivityNotifier();
 	private final RandomEventRewardService randomEventRewardService = new RandomEventRewardService();
 	private final TurnListener activityTracker = new TurnListener() {
 		@Override
@@ -54,7 +52,6 @@ public final class KikareukinAngelEvent extends ConfiguredMapEvent {
 	@Override
 	protected void onStart() {
 		contributionTracker.clear();
-		playerActivityNotifier.clear();
 		super.onStart();
 		scheduleActivityTracker();
 	}
@@ -67,7 +64,6 @@ public final class KikareukinAngelEvent extends ConfiguredMapEvent {
 			rewardParticipants(defeatPercent);
 		}
 		contributionTracker.clear();
-		playerActivityNotifier.clear();
 		super.onStop();
 	}
 
@@ -99,10 +95,31 @@ public final class KikareukinAngelEvent extends ConfiguredMapEvent {
 			}
 			for (final Player player : zone.getPlayers()) {
 				contributionTracker.recordTimeInZone(player.getName(), ACTIVITY_SAMPLE_INTERVAL_SECONDS);
-				playerActivityNotifier.notifyLiveProgress(getEventName(), player,
-						contributionTracker.snapshotForPlayer(player.getName()));
 			}
 		}
+	}
+
+	@Override
+	protected List<String> getActivityTop() {
+		final List<Map.Entry<String, MapEventContributionTracker.ContributionSnapshot>> entries =
+				new ArrayList<Map.Entry<String, MapEventContributionTracker.ContributionSnapshot>>(contributionTracker.snapshotAll().entrySet());
+		Collections.sort(entries, new Comparator<Map.Entry<String, MapEventContributionTracker.ContributionSnapshot>>() {
+			@Override
+			public int compare(final Map.Entry<String, MapEventContributionTracker.ContributionSnapshot> first,
+					final Map.Entry<String, MapEventContributionTracker.ContributionSnapshot> second) {
+				return Integer.compare(
+						MapEventContributionTracker.resolveActivityPoints(second.getValue()),
+						MapEventContributionTracker.resolveActivityPoints(first.getValue()));
+			}
+		});
+		final List<String> top = new ArrayList<String>();
+		for (Map.Entry<String, MapEventContributionTracker.ContributionSnapshot> entry : entries) {
+			if (top.size() >= 10) {
+				break;
+			}
+			top.add(entry.getKey() + "\t" + MapEventContributionTracker.resolveActivityPoints(entry.getValue()));
+		}
+		return top;
 	}
 
 	private void rewardParticipants(final int defeatPercent) {

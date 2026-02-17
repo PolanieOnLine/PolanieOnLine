@@ -13,6 +13,7 @@ package games.stendhal.server.maps.koscielisko;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -43,7 +44,6 @@ import games.stendhal.server.maps.event.EventActivityChestRewardService;
 import games.stendhal.server.maps.event.MapEventConfig;
 import games.stendhal.server.maps.event.MapEventConfigLoader;
 import games.stendhal.server.maps.event.MapEventContributionTracker;
-import games.stendhal.server.maps.event.MapEventPlayerActivityNotifier;
 import games.stendhal.server.maps.event.MapEventRewardPolicy;
 import games.stendhal.server.maps.event.RandomEventRewardService;
 import games.stendhal.server.maps.event.RandomSafeSpotSpawnStrategy;
@@ -125,7 +125,6 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 	private final Map<String, Integer> playerActivityTicks = new HashMap<>();
 	private final MapEventContributionTracker contributionTracker = new MapEventContributionTracker();
 	private final MapEventRewardPolicy rewardPolicy = MapEventRewardPolicy.defaultEscortPolicy();
-	private final MapEventPlayerActivityNotifier playerActivityNotifier = new MapEventPlayerActivityNotifier();
 	private final RandomEventRewardService randomEventRewardService = new RandomEventRewardService();
 	private final Set<Integer> announcedWaveOffsets = new HashSet<>();
 	private final Set<Integer> announcedWaveMilestones = new HashSet<>();
@@ -191,7 +190,6 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 		playerSnapshots.clear();
 		playerActivityTicks.clear();
 		contributionTracker.clear();
-		playerActivityNotifier.clear();
 		announcedWaveOffsets.clear();
 		announcedWaveMilestones.clear();
 		operationalBroadcastLimiter.clear();
@@ -723,8 +721,6 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 				continue;
 			}
 			contributionTracker.recordTimeInZone(player.getName(), ACTIVITY_SAMPLE_INTERVAL_SECONDS);
-			playerActivityNotifier.notifyLiveProgress(getEventName(), player,
-					contributionTracker.snapshotForPlayer(player.getName()));
 
 			final PlayerSnapshot previous = playerSnapshots.get(player.getName());
 			final PlayerSnapshot current = new PlayerSnapshot(player.getX(), player.getY(), System.currentTimeMillis());
@@ -1001,6 +997,29 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 			player = SingletonRepository.getRuleProcessor().getPlayer(player.getName());
 		}
 		return player;
+	}
+
+	@Override
+	protected List<String> getActivityTop() {
+		final List<Map.Entry<String, MapEventContributionTracker.ContributionSnapshot>> entries =
+				new ArrayList<Map.Entry<String, MapEventContributionTracker.ContributionSnapshot>>(contributionTracker.snapshotAll().entrySet());
+		Collections.sort(entries, new Comparator<Map.Entry<String, MapEventContributionTracker.ContributionSnapshot>>() {
+			@Override
+			public int compare(final Map.Entry<String, MapEventContributionTracker.ContributionSnapshot> first,
+					final Map.Entry<String, MapEventContributionTracker.ContributionSnapshot> second) {
+				return Integer.compare(
+						MapEventContributionTracker.resolveActivityPoints(second.getValue()),
+						MapEventContributionTracker.resolveActivityPoints(first.getValue()));
+			}
+		});
+		final List<String> top = new ArrayList<String>();
+		for (Map.Entry<String, MapEventContributionTracker.ContributionSnapshot> entry : entries) {
+			if (top.size() >= 10) {
+				break;
+			}
+			top.add(entry.getKey() + "\t" + MapEventContributionTracker.resolveActivityPoints(entry.getValue()));
+		}
+		return top;
 	}
 
 	private void rewardParticipants() {

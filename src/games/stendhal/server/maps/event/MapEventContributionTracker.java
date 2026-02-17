@@ -68,16 +68,19 @@ public class MapEventContributionTracker {
 
 
 
-	public synchronized ContributionSnapshot snapshotForPlayer(final String playerName) {
-		if (playerName == null) {
-			return new ContributionSnapshot();
-		}
-		final ContributionSnapshot snapshot = contributionByPlayer.get(playerName.trim());
+
+
+	public static int resolveActivityPoints(final ContributionSnapshot snapshot) {
 		if (snapshot == null) {
-			return new ContributionSnapshot();
+			return 0;
 		}
-		return snapshot.immutableCopy();
+		final double points = (snapshot.getDamage() * 0.01d)
+				+ (snapshot.getKillAssists() * 2.0d)
+				+ (snapshot.getObjectiveActions() * 1.0d)
+				+ (snapshot.getTimeInZoneSeconds() * 0.05d);
+		return Math.max(0, (int) Math.round(points));
 	}
+
 
 	public synchronized Map<String, ContributionSnapshot> snapshotAll() {
 		final Map<String, ContributionSnapshot> copy = new LinkedHashMap<>();
