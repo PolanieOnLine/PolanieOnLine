@@ -39,10 +39,14 @@ class MapEventStatusEvent extends Event<RPEntity> {
 					? Integer.valueOf(event.getInt("eventDefeatedCreatures")) : Integer.valueOf(0);
 			final Integer eventDefeatPercent = event.has("eventDefeatPercent")
 					? Integer.valueOf(event.getInt("eventDefeatPercent")) : Integer.valueOf(0);
+			final Integer currentWave = event.has("currentWave") ? Integer.valueOf(event.getInt("currentWave")) : Integer.valueOf(0);
+			final Integer totalWaves = event.has("totalWaves") ? Integer.valueOf(event.getInt("totalWaves")) : Integer.valueOf(0);
+			final String defenseStatus = event.has("defenseStatus") ? event.get("defenseStatus") : "";
 			final List<String> zones = resolveZones();
 
 			MapEventStatusStore.get().updateStatus(eventId, eventName, isActive, remainingSeconds, totalSeconds,
-					eventTotalSpawnedCreatures, eventDefeatedCreatures, eventDefeatPercent, zones);
+					eventTotalSpawnedCreatures, eventDefeatedCreatures, eventDefeatPercent,
+					currentWave, totalWaves, defenseStatus, zones);
 		} catch (RuntimeException e) {
 			logger.error("Failed to parse map event status event: " + event, e);
 		}
