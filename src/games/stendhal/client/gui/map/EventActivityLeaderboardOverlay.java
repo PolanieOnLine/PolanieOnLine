@@ -50,6 +50,9 @@ public class EventActivityLeaderboardOverlay extends JPanel {
 		if (titleLabel != null) {
 			titleLabel.setUI(new BasicLabelUI());
 		}
+		if (rows == null) {
+			return;
+		}
 		for (int i = 0; i < rows.length; i++) {
 			if (rows[i] != null) {
 				rows[i].setUI(new BasicLabelUI());
