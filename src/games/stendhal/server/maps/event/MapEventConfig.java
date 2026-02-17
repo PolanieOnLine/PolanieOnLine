@@ -334,6 +334,8 @@ public final class MapEventConfig {
 		private final int minPlayers;
 		private final int maxPlayers;
 		private final boolean scaleByOnlineInZones;
+		private final int onlineZoneMinPlayerLevel;
+		private final int onlineZoneMaxPlayerLevel;
 		private final double killRateMultiplier;
 		private final int minSpawnPerWave;
 		private final int maxSpawnPerWave;
@@ -342,6 +344,8 @@ public final class MapEventConfig {
 			minPlayers = builder.minPlayers;
 			maxPlayers = builder.maxPlayers;
 			scaleByOnlineInZones = builder.scaleByOnlineInZones;
+			onlineZoneMinPlayerLevel = builder.onlineZoneMinPlayerLevel;
+			onlineZoneMaxPlayerLevel = builder.onlineZoneMaxPlayerLevel;
 			killRateMultiplier = builder.killRateMultiplier;
 			minSpawnPerWave = builder.minSpawnPerWave;
 			maxSpawnPerWave = builder.maxSpawnPerWave;
@@ -357,6 +361,14 @@ public final class MapEventConfig {
 
 		public boolean isScaleByOnlineInZones() {
 			return scaleByOnlineInZones;
+		}
+
+		public int getOnlineZoneMinPlayerLevel() {
+			return onlineZoneMinPlayerLevel;
+		}
+
+		public int getOnlineZoneMaxPlayerLevel() {
+			return onlineZoneMaxPlayerLevel;
 		}
 
 		public double getKillRateMultiplier() {
@@ -381,6 +393,12 @@ public final class MapEventConfig {
 			if (killRateMultiplier < 0d) {
 				throw new IllegalArgumentException("scaling.killRateMultiplier must be >= 0");
 			}
+			if (onlineZoneMinPlayerLevel < 0) {
+				throw new IllegalArgumentException("scaling.onlineZoneMinPlayerLevel must be >= 0");
+			}
+			if (onlineZoneMaxPlayerLevel < onlineZoneMinPlayerLevel) {
+				throw new IllegalArgumentException("scaling.onlineZoneMaxPlayerLevel must be >= onlineZoneMinPlayerLevel");
+			}
 			if (minSpawnPerWave < 0) {
 				throw new IllegalArgumentException("scaling.minSpawnPerWave must be >= 0");
 			}
@@ -397,6 +415,8 @@ public final class MapEventConfig {
 			private int minPlayers;
 			private int maxPlayers;
 			private boolean scaleByOnlineInZones;
+			private int onlineZoneMinPlayerLevel;
+			private int onlineZoneMaxPlayerLevel = Integer.MAX_VALUE;
 			private double killRateMultiplier = 1.0d;
 			private int minSpawnPerWave;
 			private int maxSpawnPerWave = Integer.MAX_VALUE;
@@ -421,6 +441,16 @@ public final class MapEventConfig {
 
 			public Builder killRateMultiplier(final double killRateMultiplier) {
 				this.killRateMultiplier = killRateMultiplier;
+				return this;
+			}
+
+			public Builder onlineZoneMinPlayerLevel(final int onlineZoneMinPlayerLevel) {
+				this.onlineZoneMinPlayerLevel = onlineZoneMinPlayerLevel;
+				return this;
+			}
+
+			public Builder onlineZoneMaxPlayerLevel(final int onlineZoneMaxPlayerLevel) {
+				this.onlineZoneMaxPlayerLevel = onlineZoneMaxPlayerLevel;
 				return this;
 			}
 
