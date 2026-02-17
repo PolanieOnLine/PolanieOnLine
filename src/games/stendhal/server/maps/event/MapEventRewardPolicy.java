@@ -23,6 +23,8 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public final class MapEventRewardPolicy {
 	private static final Map<String, Deque<Long>> PLAYER_REWARD_HISTORY = new ConcurrentHashMap<>();
+	private static final Map<String, Integer> PLAYER_DAILY_FULL_REWARD_USAGE = new ConcurrentHashMap<>();
+	private static final Map<String, Integer> ACCOUNT_DAILY_FULL_REWARD_USAGE = new ConcurrentHashMap<>();
 
 	private final int minDamage;
 	private final int minKillAssists;
@@ -37,6 +39,8 @@ public final class MapEventRewardPolicy {
 	private final Duration diminishingWindow;
 	private final double diminishingFactorPerExtraRun;
 	private final double minRewardMultiplier;
+	private final int dailyFullRewardLimit;
+	private final double dailyReducedRewardMultiplier;
 	private final int minFullParticipationLevel;
 	private final int highLevelPenaltyStart;
 	private final double lowLevelScoreMultiplier;
@@ -58,6 +62,8 @@ public final class MapEventRewardPolicy {
 		diminishingWindow = builder.diminishingWindow;
 		diminishingFactorPerExtraRun = builder.diminishingFactorPerExtraRun;
 		minRewardMultiplier = builder.minRewardMultiplier;
+		dailyFullRewardLimit = builder.dailyFullRewardLimit;
+		dailyReducedRewardMultiplier = builder.dailyReducedRewardMultiplier;
 		minFullParticipationLevel = builder.minFullParticipationLevel;
 		highLevelPenaltyStart = builder.highLevelPenaltyStart;
 		lowLevelScoreMultiplier = builder.lowLevelScoreMultiplier;
@@ -85,6 +91,8 @@ public final class MapEventRewardPolicy {
 				.diminishingWindow(Duration.ofMinutes(30))
 				.diminishingFactorPerExtraRun(0.25d)
 				.minRewardMultiplier(0.35d)
+				.dailyFullRewardLimit(2)
+				.dailyReducedRewardMultiplier(0.25d)
 				.minFullParticipationLevel(20)
 				.highLevelPenaltyStart(150)
 				.lowLevelScoreMultiplier(0.30d)
@@ -96,10 +104,16 @@ public final class MapEventRewardPolicy {
 
 	public RewardDecision evaluate(final String eventId, final String playerName,
 			final MapEventContributionTracker.ContributionSnapshot contribution, final long nowMillis) {
-		return evaluate(eventId, playerName, contribution, minFullParticipationLevel, nowMillis);
+		return evaluate(eventId, playerName, null, contribution, minFullParticipationLevel, nowMillis);
 	}
 
 	public RewardDecision evaluate(final String eventId, final String playerName,
+			final MapEventContributionTracker.ContributionSnapshot contribution, final int playerLevel,
+			final long nowMillis) {
+		return evaluate(eventId, playerName, null, contribution, playerLevel, nowMillis);
+	}
+
+	public RewardDecision evaluate(final String eventId, final String playerName, final String accountName,
 			final MapEventContributionTracker.ContributionSnapshot contribution, final int playerLevel,
 			final long nowMillis) {
 		Objects.requireNonNull(eventId, "eventId");
@@ -134,13 +148,57 @@ public final class MapEventRewardPolicy {
 		if (recentRuns > 0) {
 			multiplier = Math.max(minRewardMultiplier, 1.0d - (recentRuns * diminishingFactorPerExtraRun));
 		}
+
+		final long dayBucket = resolveDayBucket(nowMillis);
+		final int dailyPlayerFullRewards = getDailyFullRewardCount(PLAYER_DAILY_FULL_REWARD_USAGE, eventId, playerName,
+				dayBucket);
+		final int dailyAccountFullRewards = getDailyFullRewardCount(ACCOUNT_DAILY_FULL_REWARD_USAGE, eventId, accountName,
+				dayBucket);
+		final int effectiveDailyFullRewards = Math.max(dailyPlayerFullRewards, dailyAccountFullRewards);
+		final boolean dailyLimitReached = effectiveDailyFullRewards >= dailyFullRewardLimit;
+		final double dailyLimitMultiplier = dailyLimitReached ? dailyReducedRewardMultiplier : 1.0d;
 		if (qualified) {
 			recordRun(eventId, playerName, nowMillis);
+			if (!dailyLimitReached) {
+				recordDailyFullRewardUsage(PLAYER_DAILY_FULL_REWARD_USAGE, eventId, playerName, dayBucket);
+				recordDailyFullRewardUsage(ACCOUNT_DAILY_FULL_REWARD_USAGE, eventId, accountName, dayBucket);
+			}
 		}
 
-		return new RewardDecision(qualified, multiplier, adjustedTotalScore, rawTotalScore, scorePerWindow, recentRuns,
+		return new RewardDecision(qualified, multiplier * dailyLimitMultiplier, multiplier, dailyLimitMultiplier,
+				dailyLimitReached, dailyPlayerFullRewards, dailyAccountFullRewards,
+				adjustedTotalScore, rawTotalScore, scorePerWindow, recentRuns,
 				antiAfkPassed, levelScoreMultiplier, fullParticipation, primaryRewardEligible,
 				grantSymbolicRewardWhenPrimaryBlocked);
+	}
+
+	private static long resolveDayBucket(final long nowMillis) {
+		return Math.floorDiv(nowMillis, Duration.ofDays(1).toMillis());
+	}
+
+	private static int getDailyFullRewardCount(final Map<String, Integer> usageMap, final String eventId,
+			final String identity, final long dayBucket) {
+		final String key = dailyUsageKey(eventId, identity, dayBucket);
+		if (key == null) {
+			return 0;
+		}
+		return usageMap.getOrDefault(key, Integer.valueOf(0));
+	}
+
+	private static void recordDailyFullRewardUsage(final Map<String, Integer> usageMap, final String eventId,
+			final String identity, final long dayBucket) {
+		final String key = dailyUsageKey(eventId, identity, dayBucket);
+		if (key == null) {
+			return;
+		}
+		usageMap.merge(key, Integer.valueOf(1), Integer::sum);
+	}
+
+	private static String dailyUsageKey(final String eventId, final String identity, final long dayBucket) {
+		if (identity == null || identity.trim().isEmpty()) {
+			return null;
+		}
+		return dayBucket + "::" + historyKey(eventId, identity);
 	}
 
 	private static double adjustedContributionValue(final int value, final double multiplier) {
@@ -174,6 +232,11 @@ public final class MapEventRewardPolicy {
 	public static final class RewardDecision {
 		private final boolean qualified;
 		private final double multiplier;
+		private final double antiFarmMultiplier;
+		private final double dailyLimitMultiplier;
+		private final boolean dailyLimitReached;
+		private final int dailyCharacterFullRewardsUsed;
+		private final int dailyAccountFullRewardsUsed;
 		private final double totalScore;
 		private final double rawTotalScore;
 		private final double scorePerWindow;
@@ -184,12 +247,19 @@ public final class MapEventRewardPolicy {
 		private final boolean primaryRewardEligible;
 		private final boolean symbolicRewardEnabled;
 
-		private RewardDecision(final boolean qualified, final double multiplier, final double totalScore,
-				final double rawTotalScore, final double scorePerWindow, final int recentRuns,
+		private RewardDecision(final boolean qualified, final double multiplier, final double antiFarmMultiplier,
+				final double dailyLimitMultiplier, final boolean dailyLimitReached,
+				final int dailyCharacterFullRewardsUsed, final int dailyAccountFullRewardsUsed,
+				final double totalScore, final double rawTotalScore, final double scorePerWindow, final int recentRuns,
 				final boolean antiAfkPassed, final double levelScoreMultiplier, final boolean fullParticipation,
 				final boolean primaryRewardEligible, final boolean symbolicRewardEnabled) {
 			this.qualified = qualified;
 			this.multiplier = multiplier;
+			this.antiFarmMultiplier = antiFarmMultiplier;
+			this.dailyLimitMultiplier = dailyLimitMultiplier;
+			this.dailyLimitReached = dailyLimitReached;
+			this.dailyCharacterFullRewardsUsed = dailyCharacterFullRewardsUsed;
+			this.dailyAccountFullRewardsUsed = dailyAccountFullRewardsUsed;
 			this.totalScore = totalScore;
 			this.rawTotalScore = rawTotalScore;
 			this.scorePerWindow = scorePerWindow;
@@ -207,6 +277,26 @@ public final class MapEventRewardPolicy {
 
 		public double getMultiplier() {
 			return multiplier;
+		}
+
+		public double getAntiFarmMultiplier() {
+			return antiFarmMultiplier;
+		}
+
+		public double getDailyLimitMultiplier() {
+			return dailyLimitMultiplier;
+		}
+
+		public boolean isDailyLimitReached() {
+			return dailyLimitReached;
+		}
+
+		public int getDailyCharacterFullRewardsUsed() {
+			return dailyCharacterFullRewardsUsed;
+		}
+
+		public int getDailyAccountFullRewardsUsed() {
+			return dailyAccountFullRewardsUsed;
 		}
 
 		public double getTotalScore() {
@@ -260,6 +350,8 @@ public final class MapEventRewardPolicy {
 		private Duration diminishingWindow = Duration.ofMinutes(30);
 		private double diminishingFactorPerExtraRun = 0.2d;
 		private double minRewardMultiplier = 0.4d;
+		private int dailyFullRewardLimit = 2;
+		private double dailyReducedRewardMultiplier = 0.25d;
 		private int minFullParticipationLevel = 20;
 		private int highLevelPenaltyStart = 150;
 		private double lowLevelScoreMultiplier = 0.30d;
@@ -332,6 +424,16 @@ public final class MapEventRewardPolicy {
 			return this;
 		}
 
+		public Builder dailyFullRewardLimit(final int dailyFullRewardLimit) {
+			this.dailyFullRewardLimit = dailyFullRewardLimit;
+			return this;
+		}
+
+		public Builder dailyReducedRewardMultiplier(final double dailyReducedRewardMultiplier) {
+			this.dailyReducedRewardMultiplier = dailyReducedRewardMultiplier;
+			return this;
+		}
+
 		public Builder minFullParticipationLevel(final int minFullParticipationLevel) {
 			this.minFullParticipationLevel = minFullParticipationLevel;
 			return this;
@@ -374,6 +476,12 @@ public final class MapEventRewardPolicy {
 			}
 			if (minRewardMultiplier < 0.0d || minRewardMultiplier > 1.0d) {
 				throw new IllegalArgumentException("minRewardMultiplier must be in range [0,1]");
+			}
+			if (dailyFullRewardLimit < 0) {
+				throw new IllegalArgumentException("dailyFullRewardLimit must be >= 0");
+			}
+			if (dailyReducedRewardMultiplier < 0.0d || dailyReducedRewardMultiplier > 1.0d) {
+				throw new IllegalArgumentException("dailyReducedRewardMultiplier must be in range [0,1]");
 			}
 			if (minFullParticipationLevel < 0) {
 				throw new IllegalArgumentException("minFullParticipationLevel must be >= 0");

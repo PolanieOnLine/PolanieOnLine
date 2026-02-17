@@ -26,6 +26,7 @@ import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.TurnListener;
 import games.stendhal.server.entity.creature.CircumstancesOfDeath;
 import games.stendhal.server.entity.creature.Creature;
+import games.stendhal.server.entity.item.money.MoneyUtils;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.event.ConfiguredMapEvent;
 import games.stendhal.server.maps.event.EventActivityChestRewardService;
@@ -34,6 +35,8 @@ import games.stendhal.server.maps.event.MapEventConfigLoader;
 import games.stendhal.server.maps.event.MapEventContributionTracker;
 import games.stendhal.server.maps.event.MapEventRewardPolicy;
 import games.stendhal.server.maps.event.RandomEventRewardService;
+import marauroa.server.game.container.PlayerEntry;
+import marauroa.server.game.container.PlayerEntryContainer;
 
 public class TatryKuzniceBanditRaidEvent extends ConfiguredMapEvent {
 	private static final Logger LOGGER = Logger.getLogger(TatryKuzniceBanditRaidEvent.class);
@@ -48,6 +51,8 @@ public class TatryKuzniceBanditRaidEvent extends ConfiguredMapEvent {
 	private static final int COMMANDER_AOE_TELEGRAPH_SECONDS = 4;
 	private static final int COMMANDER_AOE_RADIUS_TILES = 3;
 	private static final int COMMANDER_AOE_DAMAGE = 140;
+	private static final int GLOBAL_SUCCESS_THRESHOLD_PERCENT = 100;
+	private static final int GLOBAL_SUCCESS_MONEY_BONUS = 300;
 
 	private final MapEventContributionTracker contributionTracker = new MapEventContributionTracker();
 	private final MapEventRewardPolicy rewardPolicy = MapEventRewardPolicy.defaultEscortPolicy();
@@ -282,16 +287,19 @@ public class TatryKuzniceBanditRaidEvent extends ConfiguredMapEvent {
 	private void rewardParticipants() {
 		final long now = System.currentTimeMillis();
 		final int defeatPercent = getEventDefeatPercent();
+		final boolean globalSuccess = defeatPercent >= GLOBAL_SUCCESS_THRESHOLD_PERCENT;
 		final List<EventActivityChestRewardService.QualifiedParticipant> qualifiedParticipants = new ArrayList<>();
 		for (Map.Entry<String, MapEventContributionTracker.ContributionSnapshot> entry : contributionTracker.snapshotAll().entrySet()) {
 			final Player player = SingletonRepository.getRuleProcessor().getPlayer(entry.getKey());
 			if (player == null) {
 				continue;
 			}
+			final String accountName = resolveAccountName(player);
 			final MapEventContributionTracker.ContributionSnapshot contribution = entry.getValue();
 			final MapEventRewardPolicy.RewardDecision decision = rewardPolicy.evaluate(
 					getEventId(),
 					entry.getKey(),
+					accountName,
 					contribution,
 					player.getLevel(),
 					now);
@@ -310,13 +318,31 @@ public class TatryKuzniceBanditRaidEvent extends ConfiguredMapEvent {
 				continue;
 			}
 			final double participationScore = resolveParticipationScore(decision, defeatPercent);
+			final int points = Math.max(0, (int) Math.round(decision.getTotalScore()));
+			final RewardTier rewardTier = RewardTier.fromPoints(points);
+			if (!rewardTier.isRewardTier()) {
+				continue;
+			}
+			final int baseMoney = rewardTier.getBaseMoney();
+			final int globalBonusMoney = globalSuccess ? GLOBAL_SUCCESS_MONEY_BONUS : 0;
+			final int awardedMoney = Math.max(0,
+					(int) Math.round((baseMoney + globalBonusMoney) * decision.getMultiplier()));
 			final RandomEventRewardService.Reward reward = randomEventRewardService.grantRandomEventRewards(
 					player,
 					RandomEventRewardService.RandomEventType.KUZNICE_BANDIT_RAID,
 					participationScore,
 					decision.getMultiplier());
+			if (awardedMoney > 0) {
+				MoneyUtils.giveMoney(player, awardedMoney);
+			}
 			player.sendPrivateText("Gazdowie z Kuźnic kiwają z uznaniem. Za obronę dostajesz +" + reward.getXp()
 					+ " PD oraz +" + Math.round(reward.getKarma() * 100.0d) / 100.0d + " karmy.");
+			player.sendPrivateText("Podsumowanie wydarzenia: punkty=" + points
+					+ ", tier=" + rewardTier.getDisplayName()
+					+ ", wypłata=" + awardedMoney + " money"
+					+ (globalSuccess ? " (w tym globalny bonus +" + GLOBAL_SUCCESS_MONEY_BONUS + ")" : "")
+					+ ", limit dzienny=" + (decision.isDailyLimitReached() ? "TAK (nagroda zredukowana do 25%)" : "NIE")
+					+ ".");
 			qualifiedParticipants.add(new EventActivityChestRewardService.QualifiedParticipant(
 					player,
 					decision.getTotalScore(),
@@ -326,6 +352,14 @@ public class TatryKuzniceBanditRaidEvent extends ConfiguredMapEvent {
 		final int awardedChests = EventActivityChestRewardService.awardTopActivityChests("Kuźnice", qualifiedParticipants);
 		LOGGER.info(getEventName() + " settlement rewards granted for " + qualifiedParticipants.size()
 				+ " qualified players; chest rewards=" + awardedChests + ".");
+	}
+
+	private String resolveAccountName(final Player player) {
+		final PlayerEntry entry = PlayerEntryContainer.getContainer().get(player);
+		if (entry == null || entry.username == null) {
+			return null;
+		}
+		return entry.username;
 	}
 
 	private double resolveParticipationScore(final MapEventRewardPolicy.RewardDecision decision, final int defeatPercent) {
@@ -412,5 +446,45 @@ public class TatryKuzniceBanditRaidEvent extends ConfiguredMapEvent {
 		}
 		LOGGER.info(getEventName() + " ATTACK plan: waves=" + attackWaves.size()
 				+ ", totalDuration=" + totalAttackSeconds + "s (required 480-720s).");
+	}
+
+	private enum RewardTier {
+		NONE("Brak", 0),
+		BRONZE("Brąz", 800),
+		SILVER("Srebro", 1600),
+		GOLD("Złoto", 2800);
+
+		private final String displayName;
+		private final int baseMoney;
+
+		RewardTier(final String displayName, final int baseMoney) {
+			this.displayName = displayName;
+			this.baseMoney = baseMoney;
+		}
+
+		private static RewardTier fromPoints(final int points) {
+			if (points >= 60) {
+				return GOLD;
+			}
+			if (points >= 30) {
+				return SILVER;
+			}
+			if (points >= 15) {
+				return BRONZE;
+			}
+			return NONE;
+		}
+
+		private boolean isRewardTier() {
+			return this != NONE;
+		}
+
+		private String getDisplayName() {
+			return displayName;
+		}
+
+		private int getBaseMoney() {
+			return baseMoney;
+		}
 	}
 }
