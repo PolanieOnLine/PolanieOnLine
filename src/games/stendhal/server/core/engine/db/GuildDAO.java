@@ -14,7 +14,9 @@ package games.stendhal.server.core.engine.db;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import marauroa.server.db.DBTransaction;
@@ -38,6 +40,54 @@ public class GuildDAO {
 
 		public int getGuildId() {
 			return guildId;
+		}
+
+		public String getRole() {
+			return role;
+		}
+	}
+
+	public static final class GuildData {
+		private final int id;
+		private final String name;
+		private final String tag;
+		private final String description;
+
+		public GuildData(final int id, final String name, final String tag, final String description) {
+			this.id = id;
+			this.name = name;
+			this.tag = tag;
+			this.description = description;
+		}
+
+		public int getId() {
+			return id;
+		}
+
+		public String getName() {
+			return name;
+		}
+
+		public String getTag() {
+			return tag;
+		}
+
+		public String getDescription() {
+			return description;
+		}
+	}
+
+	public static final class GuildMemberView {
+		private final String characterName;
+		private final String role;
+
+		public GuildMemberView(final String characterName, final String role) {
+			this.characterName = characterName;
+			this.role = role;
+		}
+
+		public String getCharacterName() {
+			return characterName;
 		}
 
 		public String getRole() {
@@ -205,5 +255,40 @@ public class GuildDAO {
 		params.put("event_type", eventType);
 		params.put("payload_json", payloadJson);
 		transaction.execute(query, params);
+	}
+
+	public GuildData loadGuildById(final DBTransaction transaction, final int guildId) throws SQLException {
+		final String query = "SELECT id, name, tag, description FROM guilds WHERE id = [guild_id] LIMIT 1";
+		final Map<String, Object> params = new HashMap<String, Object>();
+		params.put("guild_id", Integer.valueOf(guildId));
+		final ResultSet resultSet = transaction.query(query, params);
+		try {
+			if (!resultSet.next()) {
+				return null;
+			}
+			return new GuildData(resultSet.getInt("id"), resultSet.getString("name"),
+					resultSet.getString("tag"), resultSet.getString("description"));
+		} finally {
+			resultSet.close();
+		}
+	}
+
+	public List<GuildMemberView> listMembers(final DBTransaction transaction, final int guildId) throws SQLException {
+		final String query = "SELECT c.charname, gm.role FROM guild_members gm "
+				+ "JOIN characters c ON c.player_id = gm.player_id "
+				+ "WHERE gm.guild_id = [guild_id] ORDER BY CASE gm.role "
+				+ "WHEN 'LEADER' THEN 0 WHEN 'OFFICER' THEN 1 ELSE 2 END, c.charname ASC";
+		final Map<String, Object> params = new HashMap<String, Object>();
+		params.put("guild_id", Integer.valueOf(guildId));
+		final List<GuildMemberView> members = new ArrayList<GuildMemberView>();
+		final ResultSet resultSet = transaction.query(query, params);
+		try {
+			while (resultSet.next()) {
+				members.add(new GuildMemberView(resultSet.getString("charname"), resultSet.getString("role")));
+			}
+			return members;
+		} finally {
+			resultSet.close();
+		}
 	}
 }

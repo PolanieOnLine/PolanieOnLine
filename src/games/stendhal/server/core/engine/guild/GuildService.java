@@ -21,7 +21,9 @@ import java.util.Map;
 
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.db.GuildDAO;
+import games.stendhal.server.core.engine.db.GuildDAO.GuildData;
 import games.stendhal.server.core.engine.db.GuildDAO.GuildMemberData;
+import games.stendhal.server.core.engine.db.GuildDAO.GuildMemberView;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.player.Player;
@@ -162,14 +164,56 @@ public class GuildService {
 		executeInTransaction(new GuildOperation() {
 			@Override
 			public void execute(final DBTransaction transaction) throws SQLException {
-				assertRoleInGuild(transaction, actorPlayerId, guildId, "LEADER");
+				final GuildMemberData actorMembership = assertMemberInGuild(transaction, actorPlayerId, guildId);
 				final GuildMemberData targetMembership = assertMemberInGuild(transaction, targetPlayerId, guildId);
+				if (actorPlayerId == targetPlayerId) {
+					throw new IllegalStateException("Nie możesz wyrzucić samego siebie.");
+				}
 				if ("LEADER".equals(targetMembership.getRole())) {
 					throw new IllegalStateException("Leader cannot be kicked from guild.");
+				}
+				if (!canKickRole(actorMembership.getRole(), targetMembership.getRole())) {
+					throw new IllegalStateException("Player does not have required guild role.");
 				}
 
 				guildDAO.removeMember(transaction, guildId, targetPlayerId);
 				guildDAO.logEvent(transaction, guildId, Integer.valueOf(actorPlayerId), "MEMBER_KICKED",
+						toJson(mapOf("targetPlayerId", Integer.valueOf(targetPlayerId))));
+			}
+		});
+	}
+
+	public void promoteMember(final int actorPlayerId, final int guildId, final int targetPlayerId)
+			throws SQLException {
+		executeInTransaction(new GuildOperation() {
+			@Override
+			public void execute(final DBTransaction transaction) throws SQLException {
+				assertRoleInGuild(transaction, actorPlayerId, guildId, "LEADER");
+				final GuildMemberData targetMembership = assertMemberInGuild(transaction, targetPlayerId, guildId);
+				if (!"MEMBER".equals(targetMembership.getRole())) {
+					throw new IllegalStateException("Only MEMBER can be promoted.");
+				}
+
+				guildDAO.updateMemberRole(transaction, guildId, targetPlayerId, "OFFICER");
+				guildDAO.logEvent(transaction, guildId, Integer.valueOf(actorPlayerId), "MEMBER_PROMOTED",
+						toJson(mapOf("targetPlayerId", Integer.valueOf(targetPlayerId))));
+			}
+		});
+	}
+
+	public void demoteMember(final int actorPlayerId, final int guildId, final int targetPlayerId)
+			throws SQLException {
+		executeInTransaction(new GuildOperation() {
+			@Override
+			public void execute(final DBTransaction transaction) throws SQLException {
+				assertRoleInGuild(transaction, actorPlayerId, guildId, "LEADER");
+				final GuildMemberData targetMembership = assertMemberInGuild(transaction, targetPlayerId, guildId);
+				if (!"OFFICER".equals(targetMembership.getRole())) {
+					throw new IllegalStateException("Only OFFICER can be demoted.");
+				}
+
+				guildDAO.updateMemberRole(transaction, guildId, targetPlayerId, "MEMBER");
+				guildDAO.logEvent(transaction, guildId, Integer.valueOf(actorPlayerId), "MEMBER_DEMOTED",
 						toJson(mapOf("targetPlayerId", Integer.valueOf(targetPlayerId))));
 			}
 		});
@@ -222,6 +266,30 @@ public class GuildService {
 								Integer.valueOf(normalizedDescription == null ? 0 : normalizedDescription.length()))));
 			}
 		});
+	}
+
+	public GuildData getGuildInfo(final int guildId) throws SQLException {
+		final DBTransaction transaction = TransactionPool.get().beginWork();
+		try {
+			final GuildData guildData = guildDAO.loadGuildById(transaction, guildId);
+			TransactionPool.get().commit(transaction);
+			return guildData;
+		} catch (SQLException e) {
+			TransactionPool.get().rollback(transaction);
+			throw e;
+		}
+	}
+
+	public List<GuildMemberView> listGuildMembers(final int guildId) throws SQLException {
+		final DBTransaction transaction = TransactionPool.get().beginWork();
+		try {
+			final List<GuildMemberView> members = guildDAO.listMembers(transaction, guildId);
+			TransactionPool.get().commit(transaction);
+			return members;
+		} catch (SQLException e) {
+			TransactionPool.get().rollback(transaction);
+			throw e;
+		}
 	}
 
 	private void executeInTransaction(final GuildOperation operation) throws SQLException {
@@ -417,6 +485,16 @@ public class GuildService {
 
 	private interface GuildOperation {
 		void execute(DBTransaction transaction) throws SQLException;
+	}
+
+	private boolean canKickRole(final String actorRole, final String targetRole) {
+		if ("LEADER".equals(actorRole)) {
+			return "OFFICER".equals(targetRole) || "MEMBER".equals(targetRole);
+		}
+		if ("OFFICER".equals(actorRole)) {
+			return "MEMBER".equals(targetRole);
+		}
+		return false;
 	}
 
 	private Timestamp buildInviteExpiryTimestamp() {

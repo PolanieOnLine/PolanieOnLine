@@ -60,8 +60,8 @@ import marauroa.common.game.RPAction;
 import marauroa.common.game.RPObject;
 
 /**
- * Handles actions sent by the client. They are dispatched to the
- * specialized action classes in which they are processed.
+ * Handles actions sent by the client. They are dispatched to the specialized
+ * action classes in which they are processed.
  */
 public class CommandCenter {
 	private static final UnknownAction UNKNOWN_ACTION = new UnknownAction();
@@ -79,17 +79,15 @@ public class CommandCenter {
 	public static void register(final String action, final ActionListener actionClass) {
 		final ActionListener command = getActionsMap().put(action, actionClass);
 
-		//TODO mf - register slash commands as verbs in WordList
-		//		WordList.getInstance().registerVerb(action);
+		// TODO mf - register slash commands as verbs in WordList
+		// WordList.getInstance().registerVerb(action);
 		if (command != null) {
-			logger.error("ActionListener " + command.getClass()
-					+ " for action " + action + " was replaced with  "
+			logger.error("ActionListener " + command.getClass() + " for action " + action + " was replaced with  "
 					+ CommandCenter.getAction(action).getClass());
 		}
 	}
 
-	public static void register(final String action, final ActionListener actionClass,
-			final int requiredAdminLevel) {
+	public static void register(final String action, final ActionListener actionClass, final int requiredAdminLevel) {
 		register(action, actionClass);
 		AdministrationAction.registerCommandLevel(action, requiredAdminLevel);
 	}
@@ -113,8 +111,9 @@ public class CommandCenter {
 		FaceAction.register();
 		ForsakeAction.register();
 		GroupManagementAction.register();
-                KnockAction.register();
-                GoldenCauldronAction.register();
+		GuildAction.register();
+		KnockAction.register();
+		GoldenCauldronAction.register();
 		LanguageAction.register();
 		ListProducersAction.register();
 		LookAction.register();
@@ -162,13 +161,12 @@ public class CommandCenter {
 				Translate.setThreadLanguage(null);
 				return true;
 			} else {
-				logger.error("caster is no Player; cannot execute action " + action +
-						" send by " + caster, new Throwable());
+				logger.error("caster is no Player; cannot execute action " + action + " send by " + caster,
+						new Throwable());
 				return false;
 			}
 		} catch (final Exception e) {
-			logger.error("Cannot execute action " + action + " send by "
-					+ caster, e);
+			logger.error("Cannot execute action " + action + " send by " + caster, e);
 			return false;
 		}
 	}
