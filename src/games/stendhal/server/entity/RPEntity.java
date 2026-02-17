@@ -155,6 +155,21 @@ public abstract class RPEntity extends CombatEntity {
 	 * enemies
 	 */
 	private static final double WEIGHT_EFFECT = 0.5;
+	/** Soft cap for converted level contribution in combat scaling. */
+	private static final double LEVEL_BONUS_SOFT_CAP = 400.0;
+	/** Curve steepness: low levels ramp quickly, high levels flatten out. */
+	private static final double LEVEL_BONUS_CURVE = 200.0;
+
+	/**
+	 * Converts raw level to a capped combat contribution.
+	 *
+	 * Balance goal: stronger early game progression, but reduced late-game
+	 * snowballing due to diminishing returns.
+	 */
+	private static double scaledLevelBonus(final int level) {
+		final int safeLevel = Math.max(0, level);
+		return LEVEL_BONUS_SOFT_CAP * (1.0 - Math.exp(-safeLevel / LEVEL_BONUS_CURVE));
+	}
 
 	@Override
 	protected boolean handlePortal(final Portal portal) {
@@ -493,7 +508,8 @@ public abstract class RPEntity extends CombatEntity {
 		// weapon atk, so it can not be treated similarly. Using geometric
 		// / mean to balance things a bit.
 		final double maxDefence = Math.sqrt(targetDef * (SKIN_DEF + armor))
-				* (NEWBIE_DEF + LEVEL_DEF * effectiveDefenderLevel);
+				// Keep defense growth meaningful early, then taper to avoid late-game runaway tankiness.
+				* (NEWBIE_DEF + LEVEL_DEF * scaledLevelBonus(effectiveDefenderLevel));
 
 		double defence = Rand.rand() * maxDefence;
 		/*
@@ -544,7 +560,9 @@ public abstract class RPEntity extends CombatEntity {
 
 		final double weaponComponent = 1.0 + attackingWeaponsValue;
 		// XXX: Is correct to use sourceAtk here instead of atkStrength?
-		final double maxAttack = sourceAtk * weaponComponent * (1 + LEVEL_ATK * effectiveAttackerLevel) * speedEffect;
+		// Attack scaling mirrors defense: better early feel, less high-level snowball.
+		final double maxAttack = sourceAtk * weaponComponent
+				* (1 + LEVEL_ATK * scaledLevelBonus(effectiveAttackerLevel)) * speedEffect;
 		double attack = Rand.rand() * maxAttack;
 
 		/*
