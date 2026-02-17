@@ -24,7 +24,9 @@ public class MapEventStatusStoreTest {
 	public void testVisibleStatusProjectsRemainingSeconds() throws Exception {
 		final MapEventStatusStore store = MapEventStatusStore.get();
 		store.updateStatus("event-projection", "Test", true, Integer.valueOf(3), Integer.valueOf(10),
-				Integer.valueOf(12), Integer.valueOf(6), Integer.valueOf(50), Collections.singletonList("0_test_zone"));
+				Integer.valueOf(12), Integer.valueOf(6), Integer.valueOf(50),
+				Integer.valueOf(1), Integer.valueOf(4), "Obrona w toku",
+				Collections.<String>emptyList(), Collections.singletonList("0_test_zone"));
 
 		Thread.sleep(1200L);
 
