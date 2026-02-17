@@ -26,6 +26,7 @@ import games.stendhal.server.maps.event.ConfiguredMapEvent;
 import games.stendhal.server.maps.event.EventActivityChestRewardService;
 import games.stendhal.server.maps.event.MapEventConfigLoader;
 import games.stendhal.server.maps.event.MapEventContributionTracker;
+import games.stendhal.server.maps.event.MapEventPlayerActivityNotifier;
 import games.stendhal.server.maps.event.MapEventRewardPolicy;
 import games.stendhal.server.maps.event.RandomEventRewardService;
 
@@ -36,6 +37,7 @@ public final class KikareukinAngelEvent extends ConfiguredMapEvent {
 
 	private final MapEventContributionTracker contributionTracker = new MapEventContributionTracker();
 	private final MapEventRewardPolicy rewardPolicy = MapEventRewardPolicy.defaultEscortPolicy();
+	private final MapEventPlayerActivityNotifier playerActivityNotifier = new MapEventPlayerActivityNotifier();
 	private final RandomEventRewardService randomEventRewardService = new RandomEventRewardService();
 	private final TurnListener activityTracker = new TurnListener() {
 		@Override
@@ -52,6 +54,7 @@ public final class KikareukinAngelEvent extends ConfiguredMapEvent {
 	@Override
 	protected void onStart() {
 		contributionTracker.clear();
+		playerActivityNotifier.clear();
 		super.onStart();
 		scheduleActivityTracker();
 	}
@@ -64,6 +67,7 @@ public final class KikareukinAngelEvent extends ConfiguredMapEvent {
 			rewardParticipants(defeatPercent);
 		}
 		contributionTracker.clear();
+		playerActivityNotifier.clear();
 		super.onStop();
 	}
 
@@ -95,6 +99,8 @@ public final class KikareukinAngelEvent extends ConfiguredMapEvent {
 			}
 			for (final Player player : zone.getPlayers()) {
 				contributionTracker.recordTimeInZone(player.getName(), ACTIVITY_SAMPLE_INTERVAL_SECONDS);
+				playerActivityNotifier.notifyLiveProgress(getEventName(), player,
+						contributionTracker.snapshotForPlayer(player.getName()));
 			}
 		}
 	}
@@ -127,6 +133,8 @@ public final class KikareukinAngelEvent extends ConfiguredMapEvent {
 					difficultyModifier * decision.getMultiplier());
 			player.sendPrivateText("Za odparcie aniołów otrzymujesz +" + reward.getXp() + " PD oraz +"
 					+ Math.round(reward.getKarma() * 100.0d) / 100.0d + " karmy.");
+			player.sendPrivateText("Podsumowanie eventu: punkty=" + Math.max(0, (int) Math.round(decision.getTotalScore()))
+					+ ", limit dzienny=" + (decision.isDailyLimitReached() ? "TAK (redukcja nagrody)" : "NIE") + ".");
 			qualifiedParticipants.add(new EventActivityChestRewardService.QualifiedParticipant(
 					player,
 					decision.getTotalScore(),

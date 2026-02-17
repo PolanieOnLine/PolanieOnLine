@@ -33,6 +33,7 @@ import games.stendhal.server.maps.event.EventActivityChestRewardService;
 import games.stendhal.server.maps.event.MapEventConfig;
 import games.stendhal.server.maps.event.MapEventConfigLoader;
 import games.stendhal.server.maps.event.MapEventContributionTracker;
+import games.stendhal.server.maps.event.MapEventPlayerActivityNotifier;
 import games.stendhal.server.maps.event.MapEventRewardPolicy;
 import games.stendhal.server.maps.event.RandomEventRewardService;
 import marauroa.server.game.container.PlayerEntry;
@@ -56,6 +57,7 @@ public class TatryKuzniceBanditRaidEvent extends ConfiguredMapEvent {
 
 	private final MapEventContributionTracker contributionTracker = new MapEventContributionTracker();
 	private final MapEventRewardPolicy rewardPolicy = MapEventRewardPolicy.defaultEscortPolicy();
+	private final MapEventPlayerActivityNotifier playerActivityNotifier = new MapEventPlayerActivityNotifier();
 	private final RandomEventRewardService randomEventRewardService = new RandomEventRewardService();
 	private final AtomicBoolean settlementHandled = new AtomicBoolean(false);
 	private final Map<Integer, TurnListener> scheduledListeners = new ConcurrentHashMap<>();
@@ -94,6 +96,7 @@ public class TatryKuzniceBanditRaidEvent extends ConfiguredMapEvent {
 	@Override
 	protected void onStart() {
 		contributionTracker.clear();
+		playerActivityNotifier.clear();
 		settlementHandled.set(false);
 		clearScheduledListeners();
 		super.onStart();
@@ -279,6 +282,7 @@ public class TatryKuzniceBanditRaidEvent extends ConfiguredMapEvent {
 		transitionTo(EventPhase.SETTLEMENT, reason);
 		rewardParticipants();
 		contributionTracker.clear();
+		playerActivityNotifier.clear();
 		phase = EventPhase.PREPARE;
 		phaseStartedAtMillis = 0L;
 		LOGGER.info(getEventName() + " settlement completed and event state cleared.");
@@ -401,6 +405,8 @@ public class TatryKuzniceBanditRaidEvent extends ConfiguredMapEvent {
 			}
 			for (final Player player : zone.getPlayers()) {
 				contributionTracker.recordTimeInZone(player.getName(), ACTIVITY_SAMPLE_INTERVAL_SECONDS);
+				playerActivityNotifier.notifyLiveProgress(getEventName(), player,
+						contributionTracker.snapshotForPlayer(player.getName()));
 			}
 		}
 	}

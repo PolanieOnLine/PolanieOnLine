@@ -43,6 +43,7 @@ import games.stendhal.server.maps.event.EventActivityChestRewardService;
 import games.stendhal.server.maps.event.MapEventConfig;
 import games.stendhal.server.maps.event.MapEventConfigLoader;
 import games.stendhal.server.maps.event.MapEventContributionTracker;
+import games.stendhal.server.maps.event.MapEventPlayerActivityNotifier;
 import games.stendhal.server.maps.event.MapEventRewardPolicy;
 import games.stendhal.server.maps.event.RandomEventRewardService;
 import games.stendhal.server.maps.event.RandomSafeSpotSpawnStrategy;
@@ -124,6 +125,7 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 	private final Map<String, Integer> playerActivityTicks = new HashMap<>();
 	private final MapEventContributionTracker contributionTracker = new MapEventContributionTracker();
 	private final MapEventRewardPolicy rewardPolicy = MapEventRewardPolicy.defaultEscortPolicy();
+	private final MapEventPlayerActivityNotifier playerActivityNotifier = new MapEventPlayerActivityNotifier();
 	private final RandomEventRewardService randomEventRewardService = new RandomEventRewardService();
 	private final Set<Integer> announcedWaveOffsets = new HashSet<>();
 	private final Set<Integer> announcedWaveMilestones = new HashSet<>();
@@ -189,6 +191,7 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 		playerSnapshots.clear();
 		playerActivityTicks.clear();
 		contributionTracker.clear();
+		playerActivityNotifier.clear();
 		announcedWaveOffsets.clear();
 		announcedWaveMilestones.clear();
 		operationalBroadcastLimiter.clear();
@@ -720,6 +723,8 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 				continue;
 			}
 			contributionTracker.recordTimeInZone(player.getName(), ACTIVITY_SAMPLE_INTERVAL_SECONDS);
+			playerActivityNotifier.notifyLiveProgress(getEventName(), player,
+					contributionTracker.snapshotForPlayer(player.getName()));
 
 			final PlayerSnapshot previous = playerSnapshots.get(player.getName());
 			final PlayerSnapshot current = new PlayerSnapshot(player.getX(), player.getY(), System.currentTimeMillis());
@@ -1046,6 +1051,8 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 			final double karmaReward = reward.getKarma();
 			player.sendPrivateText("Za obronę szlaku otrzymujesz +" + xpReward + " PD oraz +"
 					+ Math.round(karmaReward * 100.0d) / 100.0d + " karmy.");
+			player.sendPrivateText("Podsumowanie eventu: punkty=" + Math.max(0, (int) Math.round(decision.getTotalScore()))
+					+ ", limit dzienny=" + (decision.isDailyLimitReached() ? "TAK (redukcja nagrody)" : "NIE") + ".");
 			qualifiedParticipants.add(new EventActivityChestRewardService.QualifiedParticipant(
 					player,
 					decision.getTotalScore(),

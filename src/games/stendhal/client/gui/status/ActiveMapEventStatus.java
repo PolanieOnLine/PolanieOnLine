@@ -26,12 +26,16 @@ public final class ActiveMapEventStatus {
 	private final int eventTotalSpawnedCreatures;
 	private final int eventDefeatedCreatures;
 	private final int eventDefeatPercent;
+	private final int currentWave;
+	private final int totalWaves;
+	private final String defenseStatus;
 	private final List<String> zones;
 
 	public ActiveMapEventStatus(final String eventId, final String eventName,
 			final int remainingSeconds, final int totalSeconds,
 			final int eventTotalSpawnedCreatures, final int eventDefeatedCreatures,
-			final int eventDefeatPercent, final List<String> zones) {
+			final int eventDefeatPercent, final int currentWave, final int totalWaves,
+			final String defenseStatus, final List<String> zones) {
 		this.eventId = eventId;
 		this.eventName = eventName;
 		this.remainingSeconds = remainingSeconds;
@@ -39,6 +43,9 @@ public final class ActiveMapEventStatus {
 		this.eventTotalSpawnedCreatures = Math.max(0, eventTotalSpawnedCreatures);
 		this.eventDefeatedCreatures = Math.max(0, eventDefeatedCreatures);
 		this.eventDefeatPercent = Math.max(0, Math.min(100, eventDefeatPercent));
+		this.currentWave = Math.max(0, currentWave);
+		this.totalWaves = Math.max(0, totalWaves);
+		this.defenseStatus = (defenseStatus == null) ? "" : defenseStatus;
 		this.zones = Collections.unmodifiableList(new ArrayList<String>(zones));
 	}
 
@@ -68,6 +75,19 @@ public final class ActiveMapEventStatus {
 
 	public int getEventDefeatPercent() {
 		return eventDefeatPercent;
+	}
+
+
+	public int getCurrentWave() {
+		return currentWave;
+	}
+
+	public int getTotalWaves() {
+		return totalWaves;
+	}
+
+	public String getDefenseStatus() {
+		return defenseStatus;
 	}
 
 	public List<String> getZones() {

@@ -94,17 +94,22 @@ public final class MapEventStatusPublisher {
 				Integer.valueOf(event.getEventTotalSpawnedCreatures()),
 				Integer.valueOf(event.getEventDefeatedCreatures()),
 				Integer.valueOf(event.getEventDefeatPercent()),
+				Integer.valueOf(event.getCurrentWave()),
+				Integer.valueOf(event.getTotalWaves()),
+				event.getDefenseStatus(),
 				allowedZones);
 	}
 
 	private static MapEventStatusEvent createInactiveSnapshot(final BaseMapEvent event) {
 		return new MapEventStatusEvent(event.getEventId(), event.getEventNamePublic(), false,
-				null, null, Integer.valueOf(0), Integer.valueOf(0), Integer.valueOf(0), Collections.<String>emptyList());
+				null, null, Integer.valueOf(0), Integer.valueOf(0), Integer.valueOf(0),
+				Integer.valueOf(0), Integer.valueOf(0), "Wydarzenie zakończone", Collections.<String>emptyList());
 	}
 
 	private static MapEventStatusEvent createGlobalFallbackSnapshot() {
 		return new MapEventStatusEvent(FALLBACK_EVENT_ID, FALLBACK_EVENT_NAME, false,
-				null, null, Integer.valueOf(0), Integer.valueOf(0), Integer.valueOf(0), Collections.<String>emptyList());
+				null, null, Integer.valueOf(0), Integer.valueOf(0), Integer.valueOf(0),
+				Integer.valueOf(0), Integer.valueOf(0), "Wydarzenie zakończone", Collections.<String>emptyList());
 	}
 
 	private static boolean shouldReceive(final Player player, final List<String> allowedZones) {

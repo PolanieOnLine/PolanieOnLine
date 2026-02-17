@@ -57,6 +57,7 @@ public abstract class BaseMapEvent {
 	private final Map<Creature, Long> eventCreatureRunIds = Collections.synchronizedMap(new HashMap<Creature, Long>());
 	private final AtomicInteger eventTotalSpawnedCreatures = new AtomicInteger(0);
 	private final AtomicInteger eventDefeatedCreatures = new AtomicInteger(0);
+	private final AtomicInteger currentWave = new AtomicInteger(0);
 	private final Observer eventCreatureObserver = new EventCreatureObserver();
 	private volatile TurnListener activeAnnouncer;
 	private volatile LocalTime scheduledTime;
@@ -147,6 +148,27 @@ public abstract class BaseMapEvent {
 		}
 		final long now = Instant.now().getEpochSecond();
 		return (int) Math.max(0, scheduledEndEpochSeconds - now);
+	}
+
+	final int getCurrentWave() {
+		return Math.max(0, currentWave.get());
+	}
+
+	final int getTotalWaves() {
+		return Math.max(0, getWaves().size());
+	}
+
+	final String getDefenseStatus() {
+		if (!isEventActive()) {
+			return "Wydarzenie zakończone";
+		}
+		if (getEventDefeatPercent() >= 100) {
+			return "Obrona zakończona sukcesem";
+		}
+		if (getRemainingSeconds() <= 30) {
+			return "Końcowe starcie";
+		}
+		return "Obrona w toku";
 	}
 
 	final void setEventIdIfMissing(final String candidateEventId) {
@@ -339,6 +361,7 @@ public abstract class BaseMapEvent {
 		eventTotalSpawnedCreatures.set(0);
 		eventDefeatedCreatures.set(0);
 		eventCreatureRunIds.clear();
+		currentWave.set(0);
 		final long startedEpochSeconds = Instant.now().getEpochSecond();
 		scheduledEndEpochSeconds = startedEpochSeconds + getEventDuration().getSeconds();
 		lockWeatherFromConfig();
@@ -366,6 +389,7 @@ public abstract class BaseMapEvent {
 		if (!isCurrentRunActive(runId)) {
 			return;
 		}
+		currentWave.incrementAndGet();
 		for (EventSpawn spawn : wave.spawns) {
 			spawnCreaturesForWave(spawn);
 		}

@@ -66,6 +66,19 @@ public class MapEventContributionTracker {
 		return 1.0d;
 	}
 
+
+
+	public synchronized ContributionSnapshot snapshotForPlayer(final String playerName) {
+		if (playerName == null) {
+			return new ContributionSnapshot();
+		}
+		final ContributionSnapshot snapshot = contributionByPlayer.get(playerName.trim());
+		if (snapshot == null) {
+			return new ContributionSnapshot();
+		}
+		return snapshot.immutableCopy();
+	}
+
 	public synchronized Map<String, ContributionSnapshot> snapshotAll() {
 		final Map<String, ContributionSnapshot> copy = new LinkedHashMap<>();
 		for (Map.Entry<String, ContributionSnapshot> entry : contributionByPlayer.entrySet()) {

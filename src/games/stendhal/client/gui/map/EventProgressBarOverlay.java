@@ -48,6 +48,8 @@ public class EventProgressBarOverlay extends JPanel {
 
 	private final JLabel eventTitle;
 	private final Component titleSpacer;
+	private final JLabel detailsLabel;
+	private final Component detailsSpacer;
 	private final EventProgressBar progressBar;
 	private String eventId;
 	private float overlayAlpha = 1.0f;
@@ -81,8 +83,20 @@ public class EventProgressBarOverlay extends JPanel {
 		eventTitle.setHorizontalAlignment(JLabel.CENTER);
 		eventTitle.setAlignmentX(CENTER_ALIGNMENT);
 		add(eventTitle, SLayout.EXPAND_X);
-		titleSpacer = Box.createVerticalStrut(5);
+		titleSpacer = Box.createVerticalStrut(2);
 		add(titleSpacer, SLayout.EXPAND_X);
+
+		detailsLabel = new JLabel();
+		detailsLabel.setUI(new BasicLabelUI());
+		detailsLabel.setOpaque(false);
+		detailsLabel.setBorder(BorderFactory.createEmptyBorder());
+		detailsLabel.setForeground(new Color(236, 220, 192));
+		detailsLabel.setFont(new Font(Font.DIALOG, Font.PLAIN, 11));
+		detailsLabel.setHorizontalAlignment(JLabel.CENTER);
+		detailsLabel.setAlignmentX(CENTER_ALIGNMENT);
+		add(detailsLabel, SLayout.EXPAND_X);
+		detailsSpacer = Box.createVerticalStrut(4);
+		add(detailsSpacer, SLayout.EXPAND_X);
 
 		progressBar = new EventProgressBar();
 		progressBar.setPreferredSize(new Dimension(BAR_WIDTH, BAR_HEIGHT));
@@ -104,6 +118,8 @@ public class EventProgressBarOverlay extends JPanel {
 		compactMode = enabled;
 		eventTitle.setVisible(!enabled);
 		titleSpacer.setVisible(!enabled);
+		detailsLabel.setVisible(!enabled);
+		detailsSpacer.setVisible(!enabled);
 		if (enabled) {
 			progressBar.setPreferredSize(new Dimension(BAR_WIDTH, 6));
 			progressBar.setMinimumSize(new Dimension(BAR_WIDTH, 6));
@@ -121,29 +137,29 @@ public class EventProgressBarOverlay extends JPanel {
 		repaint();
 	}
 
-	public void showOverlay(final String newEventId, final String title, final int progressPercent,
+	public void showOverlay(final String newEventId, final String title, final String details, final int progressPercent,
 			final String value) {
 		eventId = newEventId;
 		overlayAlpha = 1.0f;
-		applyValues(title, progressPercent, value);
+		applyValues(title, details, progressPercent, value);
 		setVisible(true);
 		repaint();
 	}
 
-	public void updateOverlay(final String newEventId, final String title, final int progressPercent,
+	public void updateOverlay(final String newEventId, final String title, final String details, final int progressPercent,
 			final String value) {
 		eventId = newEventId;
-		applyValues(title, progressPercent, value);
+		applyValues(title, details, progressPercent, value);
 		if (!isVisible()) {
 			setVisible(true);
 		}
 		repaint();
 	}
 
-	public void showTerminalState(final String title, final String value) {
+	public void showTerminalState(final String title, final String details, final String value) {
 		eventId = null;
 		overlayAlpha = 1.0f;
-		applyValues(title, 100, value);
+		applyValues(title, details, 100, value);
 		setVisible(true);
 		repaint();
 	}
@@ -189,9 +205,10 @@ public class EventProgressBarOverlay extends JPanel {
 		}
 	}
 
-	private void applyValues(final String title, final int progressPercent, final String value) {
+	private void applyValues(final String title, final String details, final int progressPercent, final String value) {
 		final int clampedPercent = Math.max(0, Math.min(100, progressPercent));
 		eventTitle.setText((title == null || title.trim().isEmpty()) ? "Wydarzenie" : title);
+		detailsLabel.setText((details == null || details.trim().isEmpty()) ? "" : details);
 		progressBar.setValue(clampedPercent);
 
 		final String displayText = (value == null || value.trim().isEmpty())

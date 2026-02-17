@@ -759,17 +759,20 @@ class SwingClientGUI implements J2DClientGUI {
 		eventOverlayEndStateTimer.stop();
 
 		final String remaining = formatRemaining(visibleStatus.getRemainingSeconds());
+		final String waveLabel = formatWaveLabel(visibleStatus);
+		final String details = waveLabel + " • Czas do końca: " + remaining;
+		final String defenseStatus = visibleStatus.getDefenseStatus();
 		final String defeatProgress = visibleStatus.getEventDefeatPercent() + "% wybitych"
 				+ " (" + visibleStatus.getEventDefeatedCreatures() + "/"
 				+ visibleStatus.getEventTotalSpawnedCreatures() + ")";
 		final String value = EVENT_HUD_MODE_COMPACT.equals(eventHudMode)
-				? remaining
-				: remaining + " • " + defeatProgress;
+				? waveLabel + " • " + remaining
+				: defeatProgress + ((defenseStatus == null || defenseStatus.trim().isEmpty()) ? "" : " • " + defenseStatus);
 		if (eventProgressOverlay.isShowingEvent(visibleStatus.getEventId())) {
-			eventProgressOverlay.updateOverlay(visibleStatus.getEventId(), visibleStatus.getEventName(),
+			eventProgressOverlay.updateOverlay(visibleStatus.getEventId(), visibleStatus.getEventName(), details,
 					visibleStatus.getEventDefeatPercent(), value);
 		} else {
-			eventProgressOverlay.showOverlay(visibleStatus.getEventId(), visibleStatus.getEventName(),
+			eventProgressOverlay.showOverlay(visibleStatus.getEventId(), visibleStatus.getEventName(), details,
 					visibleStatus.getEventDefeatPercent(), value);
 		}
 		eventProgressOverlay.setOverlayAlpha(eventHudOpacity);
@@ -786,7 +789,7 @@ class SwingClientGUI implements J2DClientGUI {
 			return;
 		}
 		stopOverlayFade();
-		eventProgressOverlay.showTerminalState(endedStatus.getEventName(), "Zdarzenie zakończone");
+		eventProgressOverlay.showTerminalState(endedStatus.getEventName(), "Finał wydarzenia", "Zdarzenie zakończone");
 		eventProgressOverlay.setOverlayAlpha(eventHudOpacity);
 		eventOverlayEndStateTimer.restart();
 		lastShownEventStatus = null;
@@ -832,6 +835,14 @@ class SwingClientGUI implements J2DClientGUI {
 		final int minutes = bounded / 60;
 		final int seconds = bounded % 60;
 		return minutes + ":" + ((seconds < 10) ? "0" + seconds : String.valueOf(seconds));
+	}
+
+	private String formatWaveLabel(final ActiveMapEventStatus status) {
+		if (status.getTotalWaves() <= 0) {
+			return "Fala -/-";
+		}
+		final int current = Math.max(1, Math.min(status.getCurrentWave(), status.getTotalWaves()));
+		return "Fala " + current + "/" + status.getTotalWaves();
 	}
 
 	private void repositionEventProgressOverlay() {
