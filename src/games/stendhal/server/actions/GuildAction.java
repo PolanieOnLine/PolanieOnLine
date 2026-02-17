@@ -1,6 +1,7 @@
 package games.stendhal.server.actions;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import games.stendhal.common.NotificationType;
@@ -72,7 +73,7 @@ public class GuildAction implements ActionListener {
 	}
 
 	private void handleCreate(final Player player, final String args) throws SQLException {
-		final String[] tokens = split(args, 3);
+		final String[] tokens = splitCreateArguments(args);
 		if (tokens.length < 2) {
 			player.sendPrivateText(NotificationType.ERROR, "Użycie: /guild create <nazwa> <tag> [opis]");
 			return;
@@ -193,11 +194,61 @@ public class GuildAction implements ActionListener {
 		return normalized.length() == 0 ? null : normalized;
 	}
 
-	private String[] split(final String input, final int maxParts) {
+	static String[] splitCreateArguments(final String input) {
 		if (input == null) {
 			return new String[0];
 		}
-		return input.trim().split("\\s+", maxParts);
+
+		final List<String> tokens = tokenizeRespectingQuotes(input);
+		if (tokens.size() <= 2) {
+			return tokens.toArray(new String[tokens.size()]);
+		}
+
+		final String[] result = new String[3];
+		result[0] = tokens.get(0);
+		result[1] = tokens.get(1);
+		final StringBuilder description = new StringBuilder();
+		for (int i = 2; i < tokens.size(); i++) {
+			if (i > 2) {
+				description.append(' ');
+			}
+			description.append(tokens.get(i));
+		}
+		result[2] = description.toString();
+		return result;
+	}
+
+	private static List<String> tokenizeRespectingQuotes(final String input) {
+		final List<String> tokens = new ArrayList<String>();
+		final StringBuilder current = new StringBuilder();
+		boolean inSingleQuote = false;
+		boolean inDoubleQuote = false;
+
+		for (int i = 0; i < input.length(); i++) {
+			final char c = input.charAt(i);
+			if (c == '\'' && !inDoubleQuote) {
+				inSingleQuote = !inSingleQuote;
+				continue;
+			}
+			if (c == '"' && !inSingleQuote) {
+				inDoubleQuote = !inDoubleQuote;
+				continue;
+			}
+			if (Character.isWhitespace(c) && !inSingleQuote && !inDoubleQuote) {
+				if (current.length() > 0) {
+					tokens.add(current.toString());
+					current.setLength(0);
+				}
+				continue;
+			}
+			current.append(c);
+		}
+
+		if (current.length() > 0) {
+			tokens.add(current.toString());
+		}
+
+		return tokens;
 	}
 
 	private void sendUsage(final Player player) {
