@@ -22,6 +22,7 @@ import org.apache.log4j.Logger;
 import games.stendhal.server.maps.dragon.DragonMapEventConfigProvider;
 import games.stendhal.server.maps.kikareukin.KikareukinMapEventConfigProvider;
 import games.stendhal.server.maps.koscielisko.KoscieliskoMapEventConfigProvider;
+import games.stendhal.server.maps.tatry.kuznice.TatryMapEventConfigProvider;
 
 public final class MapEventConfigLoader {
 	private static final Logger LOGGER = Logger.getLogger(MapEventConfigLoader.class);
@@ -32,6 +33,7 @@ public final class MapEventConfigLoader {
 	 * <li>{@code dragon_*} for Dragon Land events</li>
 	 * <li>{@code koscielisko_*} for Kościelisko events</li>
 	 * <li>{@code kikareukin_*} for Kikareukin events</li>
+	 * <li>{@code tatry_*} for Tatry events</li>
 	 * </ul>
 	 *
 	 * Prefixing IDs by domain helps avoid collisions between independent providers.
@@ -39,6 +41,7 @@ public final class MapEventConfigLoader {
 	public static final String DRAGON_LAND_DEFAULT = DragonMapEventConfigProvider.DRAGON_LAND_DEFAULT;
 	public static final String KIKAREUKIN_ANGEL_PREVIEW = KikareukinMapEventConfigProvider.KIKAREUKIN_ANGEL_PREVIEW;
 	public static final String KOSCIELISKO_GIANT_ESCORT = KoscieliskoMapEventConfigProvider.KOSCIELISKO_GIANT_ESCORT;
+	public static final String TATRY_KUZNICE_BANDIT_RAID = TatryMapEventConfigProvider.TATRY_KUZNICE_BANDIT_RAID;
 
 	private static final Map<String, MapEventConfig> CONFIGS = createConfigs();
 
@@ -70,7 +73,8 @@ public final class MapEventConfigLoader {
 		return createConfigs(Arrays.asList(
 				new DragonMapEventConfigProvider(),
 				new KoscieliskoMapEventConfigProvider(),
-				new KikareukinMapEventConfigProvider()));
+				new KikareukinMapEventConfigProvider(),
+				new TatryMapEventConfigProvider()));
 	}
 
 	static Map<String, MapEventConfig> createConfigs(final Iterable<MapEventConfigProvider> providers) {
