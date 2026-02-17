@@ -42,11 +42,12 @@ class MapEventStatusEvent extends Event<RPEntity> {
 			final Integer currentWave = event.has("currentWave") ? Integer.valueOf(event.getInt("currentWave")) : Integer.valueOf(0);
 			final Integer totalWaves = event.has("totalWaves") ? Integer.valueOf(event.getInt("totalWaves")) : Integer.valueOf(0);
 			final String defenseStatus = event.has("defenseStatus") ? event.get("defenseStatus") : "";
+			final List<String> activityTop = resolveActivityTop();
 			final List<String> zones = resolveZones();
 
 			MapEventStatusStore.get().updateStatus(eventId, eventName, isActive, remainingSeconds, totalSeconds,
 					eventTotalSpawnedCreatures, eventDefeatedCreatures, eventDefeatPercent,
-					currentWave, totalWaves, defenseStatus, zones);
+					currentWave, totalWaves, defenseStatus, activityTop, zones);
 		} catch (RuntimeException e) {
 			logger.error("Failed to parse map event status event: " + event, e);
 		}
@@ -60,6 +61,15 @@ class MapEventStatusEvent extends Event<RPEntity> {
 			return Integer.valueOf(event.getInt("totalDurationSeconds"));
 		}
 		return null;
+	}
+
+
+
+	private List<String> resolveActivityTop() {
+		if (event.has("activityTop")) {
+			return event.getList("activityTop");
+		}
+		return Collections.emptyList();
 	}
 
 	private List<String> resolveZones() {
