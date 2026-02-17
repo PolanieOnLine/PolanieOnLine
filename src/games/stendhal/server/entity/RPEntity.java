@@ -510,8 +510,8 @@ public abstract class RPEntity extends CombatEntity {
 		final double maxDefence = Math.sqrt(targetDef * (SKIN_DEF + armor))
 				// Keep defense growth meaningful early, then taper to avoid late-game runaway tankiness.
 				* (NEWBIE_DEF + LEVEL_DEF * scaledLevelBonus(effectiveDefenderLevel));
+		double defence = (Rand.rand() + Rand.rand() + Rand.rand()) / 3.0 * maxDefence;
 
-		double defence = Rand.rand() * maxDefence;
 		/*
 		 * Account for karma (+/-10%) But, the defender doesn't need luck to help him
 		 * defend if he's a much higher level than this attacker
@@ -563,7 +563,7 @@ public abstract class RPEntity extends CombatEntity {
 		// Attack scaling mirrors defense: better early feel, less high-level snowball.
 		final double maxAttack = sourceAtk * weaponComponent
 				* (1 + LEVEL_ATK * scaledLevelBonus(effectiveAttackerLevel)) * speedEffect;
-		double attack = Rand.rand() * maxAttack;
+		double attack = (Rand.rand() + Rand.rand() + Rand.rand()) / 3.0 * maxAttack;
 
 		/*
 		 * Account for karma (+/-10%) But, don't need luck to help you attack if you're
