@@ -143,8 +143,12 @@ public class PlayerRPClass {
 		player.addRPSlot("pouch", 1, Definition.PRIVATE);
 		player.addRPSlot("pouch_set", 1, Definition.PRIVATE);
 
-		// The guild name
-		player.addAttribute("guild", Type.STRING);
+		// Guild membership data is loaded from DB on login (single source of truth).
+		player.addAttribute("guild_id", Type.INT, Definition.VOLATILE);
+		player.addAttribute("guild_name", Type.STRING, Definition.VOLATILE);
+		player.addAttribute("guild_tag", Type.STRING, Definition.VOLATILE);
+		// Backward-compatible display cache for old client/UI usages.
+		player.addAttribute("guild", Type.STRING, Definition.VOLATILE);
 
 		// Player features
 		player.addAttribute("features", Type.MAP, Definition.PRIVATE);

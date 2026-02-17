@@ -3300,6 +3300,30 @@ public class Player extends DressedEntity implements UseListener {
 	}
 
 	/**
+	 * Applies guild membership data loaded from database.
+	 *
+	 * @param guildId guild id
+	 * @param guildName guild name cache for display
+	 * @param guildTag guild tag cache for display
+	 */
+	public void setGuildMembership(final int guildId, final String guildName, final String guildTag) {
+		put("guild_id", guildId);
+		put("guild_name", guildName);
+		put("guild_tag", guildTag);
+		put("guild", guildTag + " " + guildName);
+	}
+
+	/**
+	 * Clears runtime guild membership cache.
+	 */
+	public void clearGuildMembership() {
+		remove("guild_id");
+		remove("guild_name");
+		remove("guild_tag");
+		remove("guild");
+	}
+
+	/**
 	 * gets the client version
 	 *
 	 * @return client version
