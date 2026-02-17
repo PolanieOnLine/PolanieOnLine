@@ -742,6 +742,7 @@ class SwingClientGUI implements J2DClientGUI {
 		if (eventProgressOverlay.isVisible()) {
 			eventProgressOverlay.repaint();
 		}
+		eventActivityOverlay.setOverlayAlpha(eventHudOpacity);
 	}
 
 	private void refreshEventProgressOverlay() {
@@ -800,6 +801,7 @@ class SwingClientGUI implements J2DClientGUI {
 		}
 		eventProgressOverlay.setOverlayAlpha(eventHudOpacity);
 		repositionEventProgressOverlay();
+		eventActivityOverlay.setOverlayAlpha(eventHudOpacity);
 		updateEventActivityOverlay(visibleStatus);
 	}
 
@@ -816,6 +818,7 @@ class SwingClientGUI implements J2DClientGUI {
 		eventProgressOverlay.showTerminalState(endedStatus.getEventName(), "Finał wydarzenia", "Zdarzenie zakończone");
 		eventActivityOverlay.setVisible(false);
 		eventProgressOverlay.setOverlayAlpha(eventHudOpacity);
+		eventActivityOverlay.setOverlayAlpha(eventHudOpacity);
 		eventOverlayEndStateTimer.restart();
 		lastShownEventStatus = null;
 	}
@@ -838,6 +841,7 @@ class SwingClientGUI implements J2DClientGUI {
 		final long elapsed = Math.max(0L, System.currentTimeMillis() - fadeStartMillis);
 		final float fadeAlpha = Math.max(0.0f, 1.0f - ((float) elapsed / (float) EVENT_OVERLAY_FADE_DURATION_MILLIS));
 		eventProgressOverlay.setOverlayAlpha(fadeAlpha * eventHudOpacity);
+		eventActivityOverlay.setOverlayAlpha(fadeAlpha * eventHudOpacity);
 		final float alpha = fadeAlpha;
 		if (alpha <= 0.0f) {
 			eventOverlayFadeTimer.stop();
@@ -884,12 +888,12 @@ class SwingClientGUI implements J2DClientGUI {
 			if (row == null || row.trim().isEmpty()) {
 				continue;
 			}
-			final int separator = row.lastIndexOf('	');
-			if (separator <= 0 || separator >= (row.length() - 1)) {
+			final int separator = row.lastIndexOf("::");
+			if (separator <= 0 || separator >= (row.length() - 2)) {
 				mapped.add(row);
 				continue;
 			}
-			mapped.add(row.substring(0, separator) + " — " + row.substring(separator + 1) + " pkt");
+			mapped.add(row.substring(0, separator) + " — " + row.substring(separator + 2) + " pkt");
 		}
 		return mapped;
 	}
