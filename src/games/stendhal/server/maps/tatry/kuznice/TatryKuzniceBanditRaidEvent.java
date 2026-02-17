@@ -13,6 +13,7 @@ package games.stendhal.server.maps.tatry.kuznice;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -33,7 +34,6 @@ import games.stendhal.server.maps.event.EventActivityChestRewardService;
 import games.stendhal.server.maps.event.MapEventConfig;
 import games.stendhal.server.maps.event.MapEventConfigLoader;
 import games.stendhal.server.maps.event.MapEventContributionTracker;
-import games.stendhal.server.maps.event.MapEventPlayerActivityNotifier;
 import games.stendhal.server.maps.event.MapEventRewardPolicy;
 import games.stendhal.server.maps.event.RandomEventRewardService;
 import marauroa.server.game.container.PlayerEntry;
@@ -57,7 +57,6 @@ public class TatryKuzniceBanditRaidEvent extends ConfiguredMapEvent {
 
 	private final MapEventContributionTracker contributionTracker = new MapEventContributionTracker();
 	private final MapEventRewardPolicy rewardPolicy = MapEventRewardPolicy.defaultEscortPolicy();
-	private final MapEventPlayerActivityNotifier playerActivityNotifier = new MapEventPlayerActivityNotifier();
 	private final RandomEventRewardService randomEventRewardService = new RandomEventRewardService();
 	private final AtomicBoolean settlementHandled = new AtomicBoolean(false);
 	private final Map<Integer, TurnListener> scheduledListeners = new ConcurrentHashMap<>();
@@ -96,11 +95,11 @@ public class TatryKuzniceBanditRaidEvent extends ConfiguredMapEvent {
 	@Override
 	protected void onStart() {
 		contributionTracker.clear();
-		playerActivityNotifier.clear();
 		settlementHandled.set(false);
 		clearScheduledListeners();
 		super.onStart();
 		commanderAoeTelegraphPending = false;
+		setWaveProgress(1, 3);
 		transitionTo(EventPhase.PREPARE, "event started");
 		sendPrepareWarnings();
 		logAttackPlan();
@@ -282,10 +281,33 @@ public class TatryKuzniceBanditRaidEvent extends ConfiguredMapEvent {
 		transitionTo(EventPhase.SETTLEMENT, reason);
 		rewardParticipants();
 		contributionTracker.clear();
-		playerActivityNotifier.clear();
+		setWaveProgress(1, 3);
 		phase = EventPhase.PREPARE;
 		phaseStartedAtMillis = 0L;
 		LOGGER.info(getEventName() + " settlement completed and event state cleared.");
+	}
+
+	@Override
+	protected List<String> getActivityTop() {
+		final List<Map.Entry<String, MapEventContributionTracker.ContributionSnapshot>> entries =
+				new ArrayList<Map.Entry<String, MapEventContributionTracker.ContributionSnapshot>>(contributionTracker.snapshotAll().entrySet());
+		Collections.sort(entries, new Comparator<Map.Entry<String, MapEventContributionTracker.ContributionSnapshot>>() {
+			@Override
+			public int compare(final Map.Entry<String, MapEventContributionTracker.ContributionSnapshot> first,
+					final Map.Entry<String, MapEventContributionTracker.ContributionSnapshot> second) {
+				return Integer.compare(
+						MapEventContributionTracker.resolveActivityPoints(second.getValue()),
+						MapEventContributionTracker.resolveActivityPoints(first.getValue()));
+			}
+		});
+		final List<String> top = new ArrayList<String>();
+		for (Map.Entry<String, MapEventContributionTracker.ContributionSnapshot> entry : entries) {
+			if (top.size() >= 10) {
+				break;
+			}
+			top.add(entry.getKey() + "\t" + MapEventContributionTracker.resolveActivityPoints(entry.getValue()));
+		}
+		return top;
 	}
 
 	private void rewardParticipants() {
@@ -405,8 +427,6 @@ public class TatryKuzniceBanditRaidEvent extends ConfiguredMapEvent {
 			}
 			for (final Player player : zone.getPlayers()) {
 				contributionTracker.recordTimeInZone(player.getName(), ACTIVITY_SAMPLE_INTERVAL_SECONDS);
-				playerActivityNotifier.notifyLiveProgress(getEventName(), player,
-						contributionTracker.snapshotForPlayer(player.getName()));
 			}
 		}
 	}
@@ -423,6 +443,13 @@ public class TatryKuzniceBanditRaidEvent extends ConfiguredMapEvent {
 		LOGGER.info(getEventName() + " phase transition " + phase + " -> " + nextPhase + " (reason=" + reason + ").");
 		phase = nextPhase;
 		phaseStartedAtMillis = System.currentTimeMillis();
+		if (nextPhase == EventPhase.PREPARE) {
+			setWaveProgress(1, 3);
+		} else if (nextPhase == EventPhase.ATTACK) {
+			setWaveProgress(2, 3);
+		} else if (nextPhase == EventPhase.FINAL) {
+			setWaveProgress(3, 3);
+		}
 	}
 
 	private void scheduleInSeconds(final int delaySeconds, final TurnListener listener) {

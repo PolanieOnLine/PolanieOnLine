@@ -77,6 +77,7 @@ import games.stendhal.client.gui.group.GroupPanelController;
 import games.stendhal.client.gui.layout.FreePlacementLayout;
 import games.stendhal.client.gui.layout.SBoxLayout;
 import games.stendhal.client.gui.layout.SLayout;
+import games.stendhal.client.gui.map.EventActivityLeaderboardOverlay;
 import games.stendhal.client.gui.map.EventProgressBarOverlay;
 import games.stendhal.client.gui.map.MapPanelController;
 import games.stendhal.client.gui.settings.SettingsProperties;
@@ -99,6 +100,9 @@ class SwingClientGUI implements J2DClientGUI {
 	private static final int SCROLLING_SPEED = 8;
 	private static final int EVENT_OVERLAY_TOP_MARGIN = 18;
 	private static final int EVENT_OVERLAY_SAFE_GAP = 8;
+	private static final int EVENT_ACTIVITY_OVERLAY_LEFT_MARGIN = 12;
+	private static final int EVENT_ACTIVITY_OVERLAY_TOP_MARGIN = 14;
+	private static final String KOSCIELISKO_ESCORT_EVENT_ID = "koscielisko_giant_escort";
 	private static final int EVENT_REFRESH_INTERVAL_MILLIS = 100;
 	private static final int EVENT_OVERLAY_DEBOUNCE_MILLIS = 300;
 	private static final int EVENT_OVERLAY_FADE_DURATION_MILLIS = 220;
@@ -113,6 +117,7 @@ class SwingClientGUI implements J2DClientGUI {
 	private final JLayeredPane pane;
 	private final GameScreen screen;
 	private final EventProgressBarOverlay eventProgressOverlay;
+	private final EventActivityLeaderboardOverlay eventActivityOverlay;
 	private final Timer eventProgressRefreshTimer;
 	private final Timer eventOverlayDebounceTimer;
 	private final Timer eventOverlayFadeTimer;
@@ -177,12 +182,15 @@ class SwingClientGUI implements J2DClientGUI {
 			@Override
 			public void componentResized(final ComponentEvent e) {
 				repositionEventProgressOverlay();
+				repositionEventActivityOverlay();
 			}
 		});
 		// ... and put it on the ground layer of the pane
 		pane.add(screen, Component.LEFT_ALIGNMENT, JLayeredPane.DEFAULT_LAYER);
 		eventProgressOverlay = new EventProgressBarOverlay();
 		pane.add(eventProgressOverlay, JLayeredPane.PALETTE_LAYER);
+		eventActivityOverlay = new EventActivityLeaderboardOverlay();
+		pane.add(eventActivityOverlay, JLayeredPane.PALETTE_LAYER);
 		initEventHudSettings();
 		eventProgressRefreshTimer = new Timer(EVENT_REFRESH_INTERVAL_MILLIS, new AbstractAction() {
 			@Override
@@ -240,6 +248,7 @@ class SwingClientGUI implements J2DClientGUI {
 		setInitialWindowStates();
 		frame.setVisible(true);
 		repositionEventProgressOverlay();
+		repositionEventActivityOverlay();
 
 		/*
 		 * Used by settings dialog to restore the client's dimensions back to the
@@ -649,6 +658,7 @@ class SwingClientGUI implements J2DClientGUI {
 			public void onZoneChangeCompleted(final Zone zone) {
 				currentZoneName = User.isNull() ? null : User.get().getZoneName();
 				repositionEventProgressOverlay();
+				repositionEventActivityOverlay();
 				MapEventStatusStore.get().requestSnapshotRefresh();
 				scheduleOverlayRefreshDebounced();
 			}
@@ -689,6 +699,7 @@ class SwingClientGUI implements J2DClientGUI {
 			public void changed(final String newValue) {
 				applyEventHudMode(newValue);
 				repositionEventProgressOverlay();
+				repositionEventActivityOverlay();
 				scheduleOverlayRefreshDebounced();
 			}
 		});
@@ -718,6 +729,7 @@ class SwingClientGUI implements J2DClientGUI {
 			eventHudMode = EVENT_HUD_MODE_HIDDEN;
 			eventProgressOverlay.setCompactMode(false);
 			eventProgressOverlay.hideOverlay();
+			eventActivityOverlay.setVisible(false);
 			return;
 		}
 		eventHudMode = EVENT_HUD_MODE_FULL;
@@ -741,6 +753,7 @@ class SwingClientGUI implements J2DClientGUI {
 		}
 		if (EVENT_HUD_MODE_HIDDEN.equals(eventHudMode)) {
 			eventProgressOverlay.hideOverlay();
+			eventActivityOverlay.setVisible(false);
 			return;
 		}
 		final ActiveMapEventStatus visibleStatus = MapEventStatusStore.get()
@@ -751,6 +764,7 @@ class SwingClientGUI implements J2DClientGUI {
 				return;
 			}
 			startOverlayFadeOut();
+			eventActivityOverlay.setVisible(false);
 			return;
 		}
 
@@ -759,24 +773,34 @@ class SwingClientGUI implements J2DClientGUI {
 		eventOverlayEndStateTimer.stop();
 
 		final String remaining = formatRemaining(visibleStatus.getRemainingSeconds());
+		final boolean koscieliskoEscort = KOSCIELISKO_ESCORT_EVENT_ID.equals(visibleStatus.getEventId());
 		final String waveLabel = formatWaveLabel(visibleStatus);
-		final String details = waveLabel + " • Czas do końca: " + remaining;
+		final String details = koscieliskoEscort
+				? "Czas do końca: " + remaining
+				: waveLabel + " • Czas do końca: " + remaining;
 		final String defenseStatus = visibleStatus.getDefenseStatus();
 		final String defeatProgress = visibleStatus.getEventDefeatPercent() + "% wybitych"
 				+ " (" + visibleStatus.getEventDefeatedCreatures() + "/"
 				+ visibleStatus.getEventTotalSpawnedCreatures() + ")";
-		final String value = EVENT_HUD_MODE_COMPACT.equals(eventHudMode)
-				? waveLabel + " • " + remaining
-				: defeatProgress + ((defenseStatus == null || defenseStatus.trim().isEmpty()) ? "" : " • " + defenseStatus);
+		final int progressPercent = koscieliskoEscort ? visibleStatus.getProgressPercent() : visibleStatus.getEventDefeatPercent();
+		final String value;
+		if (koscieliskoEscort) {
+			value = remaining;
+		} else if (EVENT_HUD_MODE_COMPACT.equals(eventHudMode)) {
+			value = waveLabel + " • " + remaining;
+		} else {
+			value = defeatProgress + ((defenseStatus == null || defenseStatus.trim().isEmpty()) ? "" : " • " + defenseStatus);
+		}
 		if (eventProgressOverlay.isShowingEvent(visibleStatus.getEventId())) {
 			eventProgressOverlay.updateOverlay(visibleStatus.getEventId(), visibleStatus.getEventName(), details,
-					visibleStatus.getEventDefeatPercent(), value);
+					progressPercent, value);
 		} else {
 			eventProgressOverlay.showOverlay(visibleStatus.getEventId(), visibleStatus.getEventName(), details,
-					visibleStatus.getEventDefeatPercent(), value);
+					progressPercent, value);
 		}
 		eventProgressOverlay.setOverlayAlpha(eventHudOpacity);
 		repositionEventProgressOverlay();
+		updateEventActivityOverlay(visibleStatus);
 	}
 
 	private void scheduleOverlayRefreshDebounced() {
@@ -790,6 +814,7 @@ class SwingClientGUI implements J2DClientGUI {
 		}
 		stopOverlayFade();
 		eventProgressOverlay.showTerminalState(endedStatus.getEventName(), "Finał wydarzenia", "Zdarzenie zakończone");
+		eventActivityOverlay.setVisible(false);
 		eventProgressOverlay.setOverlayAlpha(eventHudOpacity);
 		eventOverlayEndStateTimer.restart();
 		lastShownEventStatus = null;
@@ -817,6 +842,7 @@ class SwingClientGUI implements J2DClientGUI {
 		if (alpha <= 0.0f) {
 			eventOverlayFadeTimer.stop();
 			eventProgressOverlay.hideOverlay();
+			eventActivityOverlay.setVisible(false);
 		}
 	}
 
@@ -843,6 +869,35 @@ class SwingClientGUI implements J2DClientGUI {
 		}
 		final int current = Math.max(1, Math.min(status.getCurrentWave(), status.getTotalWaves()));
 		return "Fala " + current + "/" + status.getTotalWaves();
+	}
+
+
+	private void updateEventActivityOverlay(final ActiveMapEventStatus status) {
+		final java.util.List<String> rows = mapActivityRows(status.getActivityTop());
+		eventActivityOverlay.updateRows(rows);
+		repositionEventActivityOverlay();
+	}
+
+	private java.util.List<String> mapActivityRows(final java.util.List<String> rawRows) {
+		final java.util.List<String> mapped = new java.util.ArrayList<String>();
+		for (String row : rawRows) {
+			if (row == null || row.trim().isEmpty()) {
+				continue;
+			}
+			final int separator = row.lastIndexOf('	');
+			if (separator <= 0 || separator >= (row.length() - 1)) {
+				mapped.add(row);
+				continue;
+			}
+			mapped.add(row.substring(0, separator) + " — " + row.substring(separator + 1) + " pkt");
+		}
+		return mapped;
+	}
+
+	private void repositionEventActivityOverlay() {
+		final Dimension preferred = eventActivityOverlay.getPreferredSize();
+		eventActivityOverlay.setBounds(EVENT_ACTIVITY_OVERLAY_LEFT_MARGIN, EVENT_ACTIVITY_OVERLAY_TOP_MARGIN,
+				preferred.width, preferred.height);
 	}
 
 	private void repositionEventProgressOverlay() {
