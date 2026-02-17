@@ -159,6 +159,12 @@ public abstract class RPEntity extends CombatEntity {
 	private static final double LEVEL_BONUS_SOFT_CAP = 400.0;
 	/** Curve steepness: low levels ramp quickly, high levels flatten out. */
 	private static final double LEVEL_BONUS_CURVE = 200.0;
+	/** Supported reborn quest stages used in combat scaling. */
+	private static final int MAX_REBORN_RANK = 5;
+	/** Reborn bonus share applied per rank to effective attacker level. */
+	private static final double REBORN_ATTACKER_BONUS_PER_RANK = 0.12;
+	/** Hard cap to avoid excessive reborn impact on attacker-side combat scaling. */
+	private static final int MAX_REBORN_ATTACKER_LEVEL_BONUS = 180;
 
 	/**
 	 * Converts raw level to a capped combat contribution.
@@ -169,6 +175,25 @@ public abstract class RPEntity extends CombatEntity {
 	private static double scaledLevelBonus(final int level) {
 		final int safeLevel = Math.max(0, level);
 		return LEVEL_BONUS_SOFT_CAP * (1.0 - Math.exp(-safeLevel / LEVEL_BONUS_CURVE));
+	}
+
+	/**
+	 * Returns reborn rank parsed from reset_level quest progression.
+	 *
+	 * Balance assumption: reborn should provide a noticeable but smooth attacker-side
+	 * scaling bonus, without modifying defender-side level scaling for the target.
+	 * This keeps progression rewarding while reducing bursty jumps and avoids
+	 * accidentally hardening every defender attacked by a reborn player.
+	 */
+	private static int getRebornRank(final Player player) {
+		final String questSlot = "reset_level";
+		for (int rank = MAX_REBORN_RANK; rank >= 1; rank--) {
+			if (player.isQuestInState(questSlot, "done;reborn_" + rank)) {
+				return rank;
+			}
+		}
+
+		return 0;
 	}
 
 	@Override
@@ -476,28 +501,10 @@ public abstract class RPEntity extends CombatEntity {
 
 		if (this instanceof Player) {
 			Player player = (Player) this;
-
-			final String QUEST_SLOT = "reset_level";
-
-			final int value = 300;
-			final int def_value = (value / 2);
-
-			if (player.isQuestInState(QUEST_SLOT, "done;reborn_1")) {
-				effectiveAttackerLevel = getLevel() + 1 * value;
-				effectiveDefenderLevel = defender.getLevel() + 1 * def_value;
-			} else if (player.isQuestInState(QUEST_SLOT, "done;reborn_2")) {
-				effectiveAttackerLevel = getLevel() + 2 * value;
-				effectiveDefenderLevel = defender.getLevel() + 2 * def_value;
-			} else if (player.isQuestInState(QUEST_SLOT, "done;reborn_3")) {
-				effectiveAttackerLevel = getLevel() + 3 * value;
-				effectiveDefenderLevel = defender.getLevel() + 3 * def_value;
-			} else if (player.isQuestInState(QUEST_SLOT, "done;reborn_4")) {
-				effectiveAttackerLevel = getLevel() + 4 * value;
-				effectiveDefenderLevel = defender.getLevel() + 4 * def_value;
-			} else if (player.isQuestInState(QUEST_SLOT, "done;reborn_5")) {
-				effectiveAttackerLevel = getLevel() + 5 * value;
-				effectiveDefenderLevel = defender.getLevel() + 5 * def_value;
-			}
+			final int rebornRank = getRebornRank(player);
+			final int rebornBonus = (int) Math.min(MAX_REBORN_ATTACKER_LEVEL_BONUS,
+					Math.round(effectiveAttackerLevel * REBORN_ATTACKER_BONUS_PER_RANK * rebornRank));
+			effectiveAttackerLevel += rebornBonus;
 		}
 
 		// Defending side
