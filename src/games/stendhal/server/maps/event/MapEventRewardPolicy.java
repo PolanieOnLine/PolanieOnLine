@@ -37,6 +37,12 @@ public final class MapEventRewardPolicy {
 	private final Duration diminishingWindow;
 	private final double diminishingFactorPerExtraRun;
 	private final double minRewardMultiplier;
+	private final int minFullParticipationLevel;
+	private final int highLevelPenaltyStart;
+	private final double lowLevelScoreMultiplier;
+	private final double highLevelScoreMultiplier;
+	private final int maxPrimaryRewardLevel;
+	private final boolean grantSymbolicRewardWhenPrimaryBlocked;
 
 	private MapEventRewardPolicy(final Builder builder) {
 		minDamage = builder.minDamage;
@@ -52,6 +58,12 @@ public final class MapEventRewardPolicy {
 		diminishingWindow = builder.diminishingWindow;
 		diminishingFactorPerExtraRun = builder.diminishingFactorPerExtraRun;
 		minRewardMultiplier = builder.minRewardMultiplier;
+		minFullParticipationLevel = builder.minFullParticipationLevel;
+		highLevelPenaltyStart = builder.highLevelPenaltyStart;
+		lowLevelScoreMultiplier = builder.lowLevelScoreMultiplier;
+		highLevelScoreMultiplier = builder.highLevelScoreMultiplier;
+		maxPrimaryRewardLevel = builder.maxPrimaryRewardLevel;
+		grantSymbolicRewardWhenPrimaryBlocked = builder.grantSymbolicRewardWhenPrimaryBlocked;
 	}
 
 	public static Builder builder() {
@@ -73,28 +85,49 @@ public final class MapEventRewardPolicy {
 				.diminishingWindow(Duration.ofMinutes(30))
 				.diminishingFactorPerExtraRun(0.25d)
 				.minRewardMultiplier(0.35d)
+				.minFullParticipationLevel(20)
+				.highLevelPenaltyStart(150)
+				.lowLevelScoreMultiplier(0.30d)
+				.highLevelScoreMultiplier(0.15d)
+				.maxPrimaryRewardLevel(150)
+				.grantSymbolicRewardWhenPrimaryBlocked(true)
 				.build();
 	}
 
 	public RewardDecision evaluate(final String eventId, final String playerName,
 			final MapEventContributionTracker.ContributionSnapshot contribution, final long nowMillis) {
+		return evaluate(eventId, playerName, contribution, minFullParticipationLevel, nowMillis);
+	}
+
+	public RewardDecision evaluate(final String eventId, final String playerName,
+			final MapEventContributionTracker.ContributionSnapshot contribution, final int playerLevel,
+			final long nowMillis) {
 		Objects.requireNonNull(eventId, "eventId");
 		Objects.requireNonNull(playerName, "playerName");
 		Objects.requireNonNull(contribution, "contribution");
 
-		final boolean reachedHardThresholds = contribution.getDamage() >= minDamage
-				|| contribution.getKillAssists() >= minKillAssists
-				|| contribution.getObjectiveActions() >= minObjectiveActions
-				|| contribution.getTimeInZoneSeconds() >= minTimeInZoneSeconds;
-
-		final double totalScore = (contribution.getDamage() * damageWeight)
+		final double rawTotalScore = (contribution.getDamage() * damageWeight)
 				+ (contribution.getKillAssists() * assistWeight)
 				+ (contribution.getObjectiveActions() * objectiveWeight)
 				+ (contribution.getTimeInZoneSeconds() * zoneTimeWeight);
+		final double levelScoreMultiplier = MapEventContributionTracker.resolveLevelContributionModifier(
+				playerLevel,
+				minFullParticipationLevel,
+				highLevelPenaltyStart,
+				lowLevelScoreMultiplier,
+				highLevelScoreMultiplier);
+		final double adjustedTotalScore = rawTotalScore * levelScoreMultiplier;
+
+		final boolean reachedHardThresholds = adjustedContributionValue(contribution.getDamage(), levelScoreMultiplier) >= minDamage
+				|| adjustedContributionValue(contribution.getKillAssists(), levelScoreMultiplier) >= minKillAssists
+				|| adjustedContributionValue(contribution.getObjectiveActions(), levelScoreMultiplier) >= minObjectiveActions
+				|| adjustedContributionValue(contribution.getTimeInZoneSeconds(), levelScoreMultiplier) >= minTimeInZoneSeconds;
 		final int windows = Math.max(1, contribution.getTimeInZoneSeconds() / Math.max(1, antiAfkWindowSeconds));
-		final double scorePerWindow = totalScore / windows;
+		final double scorePerWindow = adjustedTotalScore / windows;
 		final boolean antiAfkPassed = scorePerWindow >= minScorePerWindow;
 		final boolean qualified = reachedHardThresholds && antiAfkPassed;
+		final boolean fullParticipation = playerLevel >= minFullParticipationLevel;
+		final boolean primaryRewardEligible = playerLevel <= maxPrimaryRewardLevel;
 
 		final int recentRuns = cleanupAndCountRuns(eventId, playerName, nowMillis);
 		double multiplier = 1.0d;
@@ -105,7 +138,13 @@ public final class MapEventRewardPolicy {
 			recordRun(eventId, playerName, nowMillis);
 		}
 
-		return new RewardDecision(qualified, multiplier, totalScore, scorePerWindow, recentRuns, antiAfkPassed);
+		return new RewardDecision(qualified, multiplier, adjustedTotalScore, rawTotalScore, scorePerWindow, recentRuns,
+				antiAfkPassed, levelScoreMultiplier, fullParticipation, primaryRewardEligible,
+				grantSymbolicRewardWhenPrimaryBlocked);
+	}
+
+	private static double adjustedContributionValue(final int value, final double multiplier) {
+		return Math.max(0, value) * multiplier;
 	}
 
 	private int cleanupAndCountRuns(final String eventId, final String playerName, final long nowMillis) {
@@ -136,18 +175,30 @@ public final class MapEventRewardPolicy {
 		private final boolean qualified;
 		private final double multiplier;
 		private final double totalScore;
+		private final double rawTotalScore;
 		private final double scorePerWindow;
 		private final int recentRuns;
 		private final boolean antiAfkPassed;
+		private final double levelScoreMultiplier;
+		private final boolean fullParticipation;
+		private final boolean primaryRewardEligible;
+		private final boolean symbolicRewardEnabled;
 
 		private RewardDecision(final boolean qualified, final double multiplier, final double totalScore,
-				final double scorePerWindow, final int recentRuns, final boolean antiAfkPassed) {
+				final double rawTotalScore, final double scorePerWindow, final int recentRuns,
+				final boolean antiAfkPassed, final double levelScoreMultiplier, final boolean fullParticipation,
+				final boolean primaryRewardEligible, final boolean symbolicRewardEnabled) {
 			this.qualified = qualified;
 			this.multiplier = multiplier;
 			this.totalScore = totalScore;
+			this.rawTotalScore = rawTotalScore;
 			this.scorePerWindow = scorePerWindow;
 			this.recentRuns = recentRuns;
 			this.antiAfkPassed = antiAfkPassed;
+			this.levelScoreMultiplier = levelScoreMultiplier;
+			this.fullParticipation = fullParticipation;
+			this.primaryRewardEligible = primaryRewardEligible;
+			this.symbolicRewardEnabled = symbolicRewardEnabled;
 		}
 
 		public boolean isQualified() {
@@ -162,6 +213,10 @@ public final class MapEventRewardPolicy {
 			return totalScore;
 		}
 
+		public double getRawTotalScore() {
+			return rawTotalScore;
+		}
+
 		public double getScorePerWindow() {
 			return scorePerWindow;
 		}
@@ -172,6 +227,22 @@ public final class MapEventRewardPolicy {
 
 		public boolean isAntiAfkPassed() {
 			return antiAfkPassed;
+		}
+
+		public double getLevelScoreMultiplier() {
+			return levelScoreMultiplier;
+		}
+
+		public boolean isFullParticipation() {
+			return fullParticipation;
+		}
+
+		public boolean isPrimaryRewardEligible() {
+			return primaryRewardEligible;
+		}
+
+		public boolean shouldGrantSymbolicRewardOnly() {
+			return qualified && !primaryRewardEligible && symbolicRewardEnabled;
 		}
 	}
 
@@ -189,6 +260,12 @@ public final class MapEventRewardPolicy {
 		private Duration diminishingWindow = Duration.ofMinutes(30);
 		private double diminishingFactorPerExtraRun = 0.2d;
 		private double minRewardMultiplier = 0.4d;
+		private int minFullParticipationLevel = 20;
+		private int highLevelPenaltyStart = 150;
+		private double lowLevelScoreMultiplier = 0.30d;
+		private double highLevelScoreMultiplier = 0.15d;
+		private int maxPrimaryRewardLevel = 150;
+		private boolean grantSymbolicRewardWhenPrimaryBlocked = true;
 
 		public Builder minDamage(final int minDamage) {
 			this.minDamage = minDamage;
@@ -255,6 +332,36 @@ public final class MapEventRewardPolicy {
 			return this;
 		}
 
+		public Builder minFullParticipationLevel(final int minFullParticipationLevel) {
+			this.minFullParticipationLevel = minFullParticipationLevel;
+			return this;
+		}
+
+		public Builder highLevelPenaltyStart(final int highLevelPenaltyStart) {
+			this.highLevelPenaltyStart = highLevelPenaltyStart;
+			return this;
+		}
+
+		public Builder lowLevelScoreMultiplier(final double lowLevelScoreMultiplier) {
+			this.lowLevelScoreMultiplier = lowLevelScoreMultiplier;
+			return this;
+		}
+
+		public Builder highLevelScoreMultiplier(final double highLevelScoreMultiplier) {
+			this.highLevelScoreMultiplier = highLevelScoreMultiplier;
+			return this;
+		}
+
+		public Builder maxPrimaryRewardLevel(final int maxPrimaryRewardLevel) {
+			this.maxPrimaryRewardLevel = maxPrimaryRewardLevel;
+			return this;
+		}
+
+		public Builder grantSymbolicRewardWhenPrimaryBlocked(final boolean grantSymbolicRewardWhenPrimaryBlocked) {
+			this.grantSymbolicRewardWhenPrimaryBlocked = grantSymbolicRewardWhenPrimaryBlocked;
+			return this;
+		}
+
 		public MapEventRewardPolicy build() {
 			if (antiAfkWindowSeconds <= 0) {
 				throw new IllegalArgumentException("antiAfkWindowSeconds must be > 0");
@@ -267,6 +374,21 @@ public final class MapEventRewardPolicy {
 			}
 			if (minRewardMultiplier < 0.0d || minRewardMultiplier > 1.0d) {
 				throw new IllegalArgumentException("minRewardMultiplier must be in range [0,1]");
+			}
+			if (minFullParticipationLevel < 0) {
+				throw new IllegalArgumentException("minFullParticipationLevel must be >= 0");
+			}
+			if (highLevelPenaltyStart < minFullParticipationLevel) {
+				throw new IllegalArgumentException("highLevelPenaltyStart must be >= minFullParticipationLevel");
+			}
+			if (lowLevelScoreMultiplier < 0.0d || lowLevelScoreMultiplier > 1.0d) {
+				throw new IllegalArgumentException("lowLevelScoreMultiplier must be in range [0,1]");
+			}
+			if (highLevelScoreMultiplier < 0.0d || highLevelScoreMultiplier > 1.0d) {
+				throw new IllegalArgumentException("highLevelScoreMultiplier must be in range [0,1]");
+			}
+			if (maxPrimaryRewardLevel < 0) {
+				throw new IllegalArgumentException("maxPrimaryRewardLevel must be >= 0");
 			}
 			return new MapEventRewardPolicy(this);
 		}

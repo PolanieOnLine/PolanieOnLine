@@ -54,6 +54,18 @@ public class MapEventContributionTracker {
 		ensurePlayer(playerName).timeInZoneSeconds += seconds;
 	}
 
+	public static double resolveLevelContributionModifier(final int playerLevel, final int minFullParticipationLevel,
+			final int highLevelPenaltyStart, final double lowLevelScoreMultiplier,
+			final double highLevelScoreMultiplier) {
+		if (playerLevel < minFullParticipationLevel) {
+			return lowLevelScoreMultiplier;
+		}
+		if (playerLevel > highLevelPenaltyStart) {
+			return highLevelScoreMultiplier;
+		}
+		return 1.0d;
+	}
+
 	public synchronized Map<String, ContributionSnapshot> snapshotAll() {
 		final Map<String, ContributionSnapshot> copy = new LinkedHashMap<>();
 		for (Map.Entry<String, ContributionSnapshot> entry : contributionByPlayer.entrySet()) {
