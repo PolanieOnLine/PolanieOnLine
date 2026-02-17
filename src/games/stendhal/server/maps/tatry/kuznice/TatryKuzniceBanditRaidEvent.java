@@ -293,8 +293,20 @@ public class TatryKuzniceBanditRaidEvent extends ConfiguredMapEvent {
 					getEventId(),
 					entry.getKey(),
 					contribution,
+					player.getLevel(),
 					now);
 			if (!decision.isQualified()) {
+				continue;
+			}
+			if (!decision.isFullParticipation()) {
+				player.sendPrivateText("Twój poziom jest zbyt niski na pełny udział w nagrodach eventu (minimum 20).");
+				continue;
+			}
+			if (!decision.isPrimaryRewardEligible()) {
+				if (decision.shouldGrantSymbolicRewardOnly()) {
+					player.addKarma(1.0d);
+					player.sendPrivateText("Za wsparcie obrony Kuźnic otrzymujesz symboliczną nagrodę +1 karmy.");
+				}
 				continue;
 			}
 			final double participationScore = resolveParticipationScore(decision, defeatPercent);
