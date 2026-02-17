@@ -80,6 +80,7 @@ public class StendhalPlayerDatabase {
 	 */
 	private void createTablesUnlessTheyAlreadyExist(final DBTransaction transaction) {
 		new JDBCSQLHelper(transaction).runDBScript("games/stendhal/server/stendhal_init.sql");
+		new JDBCSQLHelper(transaction).runDBScript("games/stendhal/server/guilds_migration.sql");
 	}
 
 
@@ -90,6 +91,7 @@ public class StendhalPlayerDatabase {
 	 * @throws SQLException in case of an unexpected database error
 	 */
 	private void updateExistingTables(final DBTransaction transaction) throws SQLException {
+		new JDBCSQLHelper(transaction).runDBScript("games/stendhal/server/guilds_migration.sql");
 
 		// 0.81: add new day column in table kills
 		if (!transaction.doesColumnExist("kills", "day")) {
