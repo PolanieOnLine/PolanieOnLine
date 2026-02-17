@@ -119,7 +119,7 @@ public class GuildDAO {
 	public int createGuild(final DBTransaction transaction, final String name, final String tag,
 			final String description, final int leaderPlayerId) throws SQLException {
 		final String query = "INSERT INTO guilds(name, tag, description, leader_player_id, created_at, updated_at) "
-				+ "VALUES ('[name]', '[tag]', [description], [leader_player_id], CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
+				+ "VALUES ('[name]', '[tag]', '[description]', [leader_player_id], CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)";
 		final Map<String, Object> params = new HashMap<String, Object>();
 		params.put("name", name);
 		params.put("tag", tag);
@@ -237,7 +237,7 @@ public class GuildDAO {
 
 	public void updateDescription(final DBTransaction transaction, final int guildId, final String description)
 			throws SQLException {
-		final String query = "UPDATE guilds SET description = [description], updated_at = CURRENT_TIMESTAMP "
+		final String query = "UPDATE guilds SET description = '[description]', updated_at = CURRENT_TIMESTAMP "
 				+ "WHERE id = [guild_id]";
 		final Map<String, Object> params = new HashMap<String, Object>();
 		params.put("description", description);
