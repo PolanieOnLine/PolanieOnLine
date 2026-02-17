@@ -68,7 +68,7 @@ public class GuildAction implements ActionListener {
 		} catch (IllegalStateException e) {
 			player.sendPrivateText(NotificationType.ERROR, e.getMessage());
 		} catch (SQLException e) {
-			player.sendPrivateText(NotificationType.ERROR, "Wystąpił błąd bazy danych dla komendy gildii.");
+			player.sendPrivateText(NotificationType.ERROR, "Wystąpił błąd bazy danych dla komendy gildii: " + e.getMessage());
 		}
 	}
 

@@ -126,7 +126,17 @@ public class GuildDAO {
 		params.put("description", description);
 		params.put("leader_player_id", Integer.valueOf(leaderPlayerId));
 		transaction.execute(query, params);
-		return transaction.getLastInsertId("guilds", "id");
+
+		final String loadIdQuery = "SELECT id FROM guilds WHERE LOWER(name)=LOWER('[name]') AND LOWER(tag)=LOWER('[tag]') LIMIT 1";
+		final ResultSet resultSet = transaction.query(loadIdQuery, params);
+		try {
+			if (!resultSet.next()) {
+				throw new SQLException("Nie udało się odczytać ID nowo utworzonej gildii.");
+			}
+			return resultSet.getInt("id");
+		} finally {
+			resultSet.close();
+		}
 	}
 
 	public void addMember(final DBTransaction transaction, final int guildId, final int playerId, final String role)
