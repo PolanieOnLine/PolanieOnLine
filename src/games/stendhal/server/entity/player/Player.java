@@ -3475,7 +3475,23 @@ public class Player extends DressedEntity implements UseListener {
 	@Override
 	public int damageDone(final RPEntity defender, double attackingWeaponsValue, final Nature damageType) {
 		// compensate for player hit chance handicap
-		return (int) Math.round(super.damageDone(defender, attackingWeaponsValue, damageType) / 1.35);
+		return (int) Math.round(super.damageDone(defender, attackingWeaponsValue, damageType)
+				/ getPlayerDamageHandicap());
+	}
+
+	/**
+	 * Progressive high-level balancing for player damage output.
+	 *
+	 * The baseline handicap (1.35) is kept for early and mid game. From level 150,
+	 * the handicap smoothly increases, which reduces damage growth against
+	 * high-level monsters without affecting low-level progression.
+	 */
+	double getPlayerDamageHandicap() {
+		final double baseHandicap = 1.35;
+		final int levelsAboveThreshold = Math.max(0, getLevel() - 150);
+		final double additionalHandicap = Math.min(0.30, levelsAboveThreshold * 0.0015);
+
+		return baseHandicap + additionalHandicap;
 	}
 
 	/**
