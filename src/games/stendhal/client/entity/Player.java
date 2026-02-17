@@ -17,6 +17,8 @@ import marauroa.common.game.RPObject;
 
 /** A Player entity. */
 public class Player extends RPEntity {
+	private static final String ATTR_GUILD_TAG = "guild_tag";
+	private static final String ATTR_GUILD_NAME = "guild_name";
 	// Away property.
 	public static final Property PROP_AWAY = new Property();
 	// Grumpy property.
@@ -46,6 +48,28 @@ public class Player extends RPEntity {
 
 	public boolean isBadBoy() {
 		return badboy;
+	}
+
+	@Override
+	public String getTitle() {
+		final String baseTitle = super.getTitle();
+		final String guildTag = getGuildTag();
+		if ((baseTitle == null) || (guildTag == null) || guildTag.isEmpty()) {
+			return baseTitle;
+		}
+
+		final String prefix = "[" + guildTag + "] ";
+		if (baseTitle.startsWith(prefix)) {
+			return baseTitle;
+		}
+		return prefix + baseTitle;
+	}
+
+	private String getGuildTag() {
+		if ((rpObject != null) && rpObject.has(ATTR_GUILD_TAG)) {
+			return rpObject.get(ATTR_GUILD_TAG);
+		}
+		return null;
 	}
 
 	/**
@@ -142,6 +166,10 @@ public class Player extends RPEntity {
 	public void onChangedAdded(final RPObject object, final RPObject changes) {
 		super.onChangedAdded(object, changes);
 
+		if (changes.has(ATTR_GUILD_TAG) || changes.has(ATTR_GUILD_NAME)) {
+			fireChange(PROP_TITLE);
+		}
+
 		if (changes.has("away")) {
 			onAway(changes.get("away"));
 		}
@@ -167,6 +195,10 @@ public class Player extends RPEntity {
 	@Override
 	public void onChangedRemoved(final RPObject object, final RPObject changes) {
 		super.onChangedRemoved(object, changes);
+
+		if (changes.has(ATTR_GUILD_TAG) || changes.has(ATTR_GUILD_NAME)) {
+			fireChange(PROP_TITLE);
+		}
 
 		if (changes.has("away")) {
 			onAway(null);

@@ -3299,6 +3299,25 @@ public class Player extends DressedEntity implements UseListener {
 		return useListener.onUsed(user);
 	}
 
+	@Override
+	public String getTitle() {
+		final String baseTitle = super.getTitle();
+		if ((baseTitle == null) || !has("guild_tag")) {
+			return baseTitle;
+		}
+
+		final String guildTag = get("guild_tag");
+		if ((guildTag == null) || guildTag.isEmpty()) {
+			return baseTitle;
+		}
+
+		final String prefix = "[" + guildTag + "] ";
+		if (baseTitle.startsWith(prefix)) {
+			return baseTitle;
+		}
+		return prefix + baseTitle;
+	}
+
 	/**
 	 * Applies guild membership data loaded from database.
 	 *

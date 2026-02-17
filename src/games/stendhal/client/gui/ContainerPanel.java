@@ -250,7 +250,7 @@ class ContainerPanel extends JScrollPane implements Inspector, InternalManagedWi
 			// Nothing to do.
 			return container;
 		} else {
-			SlotWindow window = new SlotWindow(entity.getName(), width, height);
+			SlotWindow window = new SlotWindow(entity.getTitle(), width, height);
 			window.setSlot(entity, content.getName());
 			window.setAcceptedTypes(EntityMap.getClass("item", null, null));
 			window.setVisible(true);
