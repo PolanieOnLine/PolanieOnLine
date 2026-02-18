@@ -2678,6 +2678,7 @@ Nigdy nie należy nurkować z przeziębieniem lub z ciężką alergią, poniewa�
 	<zone name="int_ados_town_hall_2" file="interiors/ados/buraucrazy_2.tmx">
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.ados.townhall.MayorNPC" />
+		<configurator class-name="games.stendhal.server.maps.ados.townhall.GuildMasterNPC" />
 
 		<!-- Music/Ambiance -->
 		<entity x="1" y="1">
