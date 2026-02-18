@@ -73,6 +73,10 @@ public class GuildAction implements ActionListener {
 	}
 
 	private void handleCreate(final Player player, final String args) throws SQLException {
+		if (!canUseCreateCommand(player)) {
+			throw new IllegalStateException("Komenda /guild create jest dostępna tylko dla administratora. Użyj NPC zarządcy gildii.");
+		}
+
 		final String[] tokens = splitCreateArguments(args);
 		if (tokens.length < 2) {
 			player.sendPrivateText(NotificationType.ERROR, "Użycie: /guild create <nazwa> <tag> [opis]");
@@ -85,6 +89,10 @@ public class GuildAction implements ActionListener {
 		final int guildId = guildService.createGuild(player.getID().getObjectID(), name, tag, description);
 		player.setGuildMembership(guildId, name, tag);
 		player.sendPrivateText("Utworzono gildię [" + tag + "] " + name + ".");
+	}
+
+	boolean canUseCreateCommand(final Player player) {
+		return player.getAdminLevel() > 0;
 	}
 
 	private void handleInvite(final Player player, final String args) throws SQLException {
