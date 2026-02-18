@@ -48,22 +48,6 @@ public class TatryMapEventConfigProvider implements MapEventConfigProvider {
 						"int_tatry_kuznice_tavern",
 						"int_tatry_kuznice_chapel",
 						"int_tatry_kuznice_hostel"))
-				.observerZones(Arrays.asList(
-						"0_tatry_kuznice",
-						"int_tatry_kuznice_blacksmith",
-						"int_tatry_kuznice_tavern",
-						"int_tatry_kuznice_chapel",
-						"int_tatry_kuznice_hostel"))
-				.creatureFilter(new LinkedHashSet<>(Arrays.asList(
-						"zbójnik leśny",
-						"zbójnik leśny oszust",
-						"zbójnik leśny zwiadowca",
-						"zbójnik górski",
-						"zbójnik górski goniec",
-						"zbójnik górski złośliwy",
-						"zbójnik górski zwiadowca",
-						"zbójnik górski starszy",
-						"zbójnik górski herszt")))
 				.announcements(Arrays.asList(
 						"Zbójnickie rogi niosą się po Kuźnicach - zwiad napastników schodzi ze szlaku.",
 						"Bandy zbójników przenikają między kuźnią i karczmą - mieszkańcy potrzebują obrony.",
@@ -101,7 +85,6 @@ public class TatryMapEventConfigProvider implements MapEventConfigProvider {
 						.minSpawnPerWave(16)
 						.maxSpawnPerWave(42)
 						.build())
-				.triggerThreshold(0)
 				.defaultStartTime(defaultStartTime)
 				.defaultIntervalDays(defaultIntervalDays)
 				.build();
