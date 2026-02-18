@@ -495,6 +495,23 @@ public abstract class RPEntity extends CombatEntity {
 	 */
 	protected int damageDone(RPEntity defender, double attackingWeaponsValue, Nature damageType, boolean isRanged,
 			int maxRange) {
+		final boolean attackerIsCreature = this instanceof Creature;
+		final boolean defenderIsPlayer = defender instanceof Player;
+
+		if (attackerIsCreature && defenderIsPlayer) {
+			return computeCreatureToPlayerDamage(defender, attackingWeaponsValue, damageType, isRanged, maxRange);
+		}
+
+		return computeDamage(defender, attackingWeaponsValue, damageType, isRanged, maxRange);
+	}
+
+	private int computeCreatureToPlayerDamage(RPEntity defender, double attackingWeaponsValue, Nature damageType,
+			boolean isRanged, int maxRange) {
+		return computeDamage(defender, attackingWeaponsValue, damageType, isRanged, maxRange);
+	}
+
+	private int computeDamage(RPEntity defender, double attackingWeaponsValue, Nature damageType, boolean isRanged,
+			int maxRange) {
 		// Don't start from 0 to mitigate weird behaviour at very low levels
 		int effectiveAttackerLevel = getLevel() + 5;
 		int effectiveDefenderLevel = defender.getLevel() + 5;
