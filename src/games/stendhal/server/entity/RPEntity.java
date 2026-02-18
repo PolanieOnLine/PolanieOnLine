@@ -3423,11 +3423,6 @@ public abstract class RPEntity extends CombatEntity {
 
 		if (this.canHit(defender)) {
 			int damage = damageDone(defender, itemAtk, nature, isRanged, maxRange);
-			final boolean didDamage = damage > 0;
-
-			if (defender.getsDefXpFrom(this, didDamage)) {
-				defender.incDefXP();
-			}
 
 			// Roll a critical hit chance for a creature to player (default: 2%).
 			final boolean critical = Rand.roll1D100() <= 2;
@@ -3436,9 +3431,15 @@ public abstract class RPEntity extends CombatEntity {
 				damage *= 2;
 			}
 
+			// limit damage to target HP
+			damage = Math.min(damage, defender.getHP());
+			final boolean didDamage = damage > 0;
+
+			if (defender.getsDefXpFrom(this, didDamage)) {
+				defender.incDefXP();
+			}
+
 			if (didDamage) {
-				// limit damage to target HP
-				damage = Math.min(damage, defender.getHP());
 				this.handleLifesteal(this, this.getWeapons(), damage);
 
 				defender.onDamaged(this, damage);

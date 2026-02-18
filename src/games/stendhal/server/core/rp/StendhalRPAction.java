@@ -448,13 +448,15 @@ public class StendhalRPAction {
 			}
 
 			damage = player.damageDone(defender, itemAtk, player.getDamageType());
-			final boolean didDamage = damage > 0;
 
 			// Handle critical hit logic
 			Object[] criticalResult = handleCritical(player, damage);
 			boolean critical = (boolean) criticalResult[1];
 			defender.hitCritical(critical);
 			damage = (int) criticalResult[0];
+			// limit damage to target HP
+			damage = Math.min(damage, defender.getHP());
+			final boolean didDamage = damage > 0;
 
 			// give xp even if attack was blocked
 			getsDefXp = defender.getsDefXpFrom(player, didDamage);
@@ -468,8 +470,6 @@ public class StendhalRPAction {
 					player.onDamaged(player, damage);
 				}
 
-				// limit damage to target HP
-				damage = Math.min(damage, defender.getHP());
 				player.handleLifesteal(player, weapons, damage);
 
 				defender.onDamaged(player, damage);
