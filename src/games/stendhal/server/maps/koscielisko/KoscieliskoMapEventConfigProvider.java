@@ -46,16 +46,6 @@ public class KoscieliskoMapEventConfigProvider implements MapEventConfigProvider
 				// Core config
 				.duration(duration)
 				.zones(Arrays.asList("0_koscielisko_ne"))
-				.observerZones(Arrays.asList("0_koscielisko_ne"))
-				.creatureFilter(new LinkedHashSet<>(Arrays.asList(
-						"elf górski maskotka",
-						"elf górski służka",
-						"elf górski dama",
-						"pokutnik z gór",
-						"pokutnik nocny",
-						"pokutnik wieczorny",
-						"lawina"
-				)))
 				// Messages
 				.startAnnouncement("Halny niesie zgrzyt stali - Wielkolud rusza przez Kościelisko. Trzymajcie szlak.")
 				.stopAnnouncement("Szlak cichnie. Los Wielkoluda został przesądzony.")
@@ -74,7 +64,6 @@ public class KoscieliskoMapEventConfigProvider implements MapEventConfigProvider
 						.build())
 				.giantOnlyAggro(true)
 				// This escort event starts from scheduler/script only, so kill-trigger stays disabled.
-				.triggerThreshold(0)
 				.defaultStartTime(defaultStartTime)
 				.defaultIntervalDays(defaultIntervalDays)
 				.build();
