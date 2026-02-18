@@ -13,6 +13,7 @@
 			<hp value="9000"/>
 			<speed value="1.0"/>
 			<size value="3,3"/>
+			<armorpen value="0.8"/>
 		</attributes>
 		<level value="880"/>
 		<experience value="763000"/>
@@ -65,6 +66,7 @@
 			<hp value="9000"/>
 			<speed value="1.0"/>
 			<size value="3,3"/>
+			<armorpen value="0.8"/>
 		</attributes>
 		<level value="990"/>
 		<experience value="963000"/>
@@ -117,6 +119,7 @@
 			<hp value="20000"/>
 			<speed value="1.0"/>
 			<size value="3,3"/>
+			<armorpen value="0.8"/>
 		</attributes>
 		<level value="1100"/>
 		<experience value="1718000"/>
@@ -173,6 +176,7 @@
 			<hp value="24000"/>
 			<speed value="1.0"/>
 			<size value="3,3"/>
+			<armorpen value="0.8"/>
 		</attributes>
 		<level value="1210"/>
 		<experience value="1918000"/>

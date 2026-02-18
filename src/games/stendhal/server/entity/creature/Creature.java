@@ -145,6 +145,9 @@ public class Creature extends NPC {
 	/** Susceptibilities to various damage types this creature has */
 	private Map<Nature, Double> susceptibilities;
 
+	/** Percentage of target armor ignored when this creature attacks [0.0 ... 1.0]. */
+	private double armorPenPercent = 0.2;
+
 	private CircumstancesOfDeath circumstances;
 	private final Registrator registrator = new Registrator();
 
@@ -212,6 +215,7 @@ public class Creature extends NPC {
 		}
 		susceptibilities = copy.susceptibilities;
 		setDamageTypes(copy.damageType, copy.rangedDamageType);
+		setArmorPenPercent(copy.getArmorPenPercent());
 
 		setEntityClass(copy.get("class"));
 		setEntitySubclass(copy.get("subclass"));
@@ -422,6 +426,22 @@ public class Creature extends NPC {
 	 */
 	public final void setMovementSound(String sound) {
 	    this.movementSound = sound;
+	}
+
+	/**
+	 * Set percentage of target armor ignored by this creature.
+	 *
+	 * @param value armor penetration percent in range [0.0 ... 1.0]
+	 */
+	public void setArmorPenPercent(final double value) {
+		armorPenPercent = Math.max(0, Math.min(1, value));
+	}
+
+	/**
+	 * @return percentage of target armor ignored by this creature.
+	 */
+	public double getArmorPenPercent() {
+		return armorPenPercent;
 	}
 
 	/**

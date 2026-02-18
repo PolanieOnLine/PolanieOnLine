@@ -107,6 +107,9 @@ public class DefaultCreature {
 	/** speed relative to player [0.0 ... 1.0] */
 	private double speed;
 
+	/** Percentage of target armor ignored by this creature [0.0 ... 1.0]. */
+	private double armorPenPercent;
+
 	public DefaultCreature(final String clazz, final String subclass, final String name,
 			final String tileid) {
 		this.clazz = clazz;
@@ -155,6 +158,14 @@ public class DefaultCreature {
 
 	public double getSpeed() {
 		return speed;
+	}
+
+	public void setArmorPenPercent(final double value) {
+		armorPenPercent = value;
+	}
+
+	public double getArmorPenPercent() {
+		return armorPenPercent;
 	}
 
 	public void setLevel(final int level, final int xp) {
@@ -363,6 +374,7 @@ public class DefaultCreature {
 		creature.setSounds(Collections.unmodifiableList(sounds));
 		creature.setDeathSound(deathSound);
 		creature.setMovementSound(movementSound);
+		creature.setArmorPenPercent(armorPenPercent);
 
 		if (shadowStyle != null) {
 			creature.setShadowStyle(shadowStyle);
@@ -503,6 +515,7 @@ public class DefaultCreature {
 		os.append("      <size value=\"" + width + "," + height + "\"/>\n");
 		os.append("      <resistance value=\"" + resistance + "\"/>\n");
 		os.append("      <visibility value=\"" + visibility + "\"/>\n");
+		os.append("      <armorpen value=\"" + armorPenPercent + "\"/>\n");
 		os.append("    </attributes>\n");
 		os.append("    <level value=\"" + level + "\"/>\n");
 		os.append("    <experience value=\"" + (xp / 20) + "\"/>\n");

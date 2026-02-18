@@ -502,16 +502,18 @@ public abstract class RPEntity extends CombatEntity {
 			return computeCreatureToPlayerDamage(defender, attackingWeaponsValue, damageType, isRanged, maxRange);
 		}
 
-		return computeDamage(defender, attackingWeaponsValue, damageType, isRanged, maxRange);
+		return computeDamage(defender, attackingWeaponsValue, damageType, isRanged, maxRange, 0);
 	}
 
 	private int computeCreatureToPlayerDamage(RPEntity defender, double attackingWeaponsValue, Nature damageType,
 			boolean isRanged, int maxRange) {
-		return computeDamage(defender, attackingWeaponsValue, damageType, isRanged, maxRange);
+		final Creature attacker = (Creature) this;
+		return computeDamage(defender, attackingWeaponsValue, damageType, isRanged, maxRange,
+				attacker.getArmorPenPercent());
 	}
 
 	private int computeDamage(RPEntity defender, double attackingWeaponsValue, Nature damageType, boolean isRanged,
-			int maxRange) {
+			int maxRange, double armorPenPercent) {
 		// Don't start from 0 to mitigate weird behaviour at very low levels
 		int effectiveAttackerLevel = getLevel() + 5;
 		int effectiveDefenderLevel = defender.getLevel() + 5;
@@ -526,14 +528,18 @@ public abstract class RPEntity extends CombatEntity {
 
 		// Defending side
 		final double armor = defender.getItemDef();
+		final double effectiveArmor = Math.max(0, Math.min(1, armorPenPercent));
 		final int targetDef = defender.getCappedDef();
 		// Even strong players are vulnerable without any armor.
 		// Armor def gets much higher with high level players unlike
 		// weapon atk, so it can not be treated similarly. Using geometric
 		// / mean to balance things a bit.
-		final double maxDefence = Math.sqrt(targetDef * (SKIN_DEF + armor))
-				// Keep defense growth meaningful early, then taper to avoid late-game runaway tankiness.
-				* (NEWBIE_DEF + LEVEL_DEF * scaledLevelBonus(effectiveDefenderLevel));
+		final double defenceLevelMultiplier = NEWBIE_DEF + LEVEL_DEF * scaledLevelBonus(effectiveDefenderLevel);
+		final double maxDefenceWithoutItems = Math.sqrt(targetDef * SKIN_DEF) * defenceLevelMultiplier;
+		final double maxDefenceWithItems = Math.sqrt(targetDef * (SKIN_DEF + armor)) * defenceLevelMultiplier;
+		final double armorDefenceContribution = maxDefenceWithItems - maxDefenceWithoutItems;
+		final double maxDefence = maxDefenceWithoutItems
+				+ armorDefenceContribution * (1 - effectiveArmor);
 		double defence = Rand.rand() * maxDefence;
 
 		/*

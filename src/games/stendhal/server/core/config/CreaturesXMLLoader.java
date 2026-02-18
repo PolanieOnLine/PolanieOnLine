@@ -60,6 +60,7 @@ public final class CreaturesXMLLoader extends DefaultHandler {
 	private int respawn;
 	private int resistance;
 	private int visibility;
+	private double armorPenPercent;
 
 	private List<DropItem> dropsItems;
 	private List<EquipItem> equipsItems;
@@ -163,6 +164,7 @@ public final class CreaturesXMLLoader extends DefaultHandler {
 			deathSound = null;
 			statusAttack = null;
 			statusAttackProbability = 0;
+			armorPenPercent = 0;
 		} else if (qName.equals("type")) {
 			clazz = attrs.getValue("class");
 			subclass = attrs.getValue("subclass");
@@ -270,6 +272,8 @@ public final class CreaturesXMLLoader extends DefaultHandler {
 				resistance = Integer.parseInt(attrs.getValue("value"));
 			} else if (qName.equals("visibility")) {
 				visibility = Integer.parseInt(attrs.getValue("value"));
+			} else if (qName.equals("armorpen")) {
+				armorPenPercent = Double.parseDouble(attrs.getValue("value"));
 			}
 		} else if (qName.equals("ai")) {
 			ai = true;
@@ -372,6 +376,7 @@ public final class CreaturesXMLLoader extends DefaultHandler {
 			creature.setCreatureSounds(sounds);
 			creature.setCreatureDeathSound(deathSound);
 			creature.setCreatureMovementSound(movementSound);
+			creature.setArmorPenPercent(armorPenPercent);
 
 			if (statusAttack != null) {
 			    creature.setStatusAttack(statusAttack, statusAttackProbability);
