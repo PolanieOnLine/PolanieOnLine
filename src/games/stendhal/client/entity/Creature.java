@@ -29,6 +29,11 @@ public class Creature extends RPEntity {
 	 */
 	public static final Property PROP_METAMORPHOSIS = new Property();
 
+	/**
+	 * Boss phase threshold property.
+	 */
+	public static final Property PROP_BOSS_PHASE_THRESHOLD = new Property();
+
 	@Override
 	protected void nonCreatureClientAddEventLine(final String text) {
 
@@ -45,6 +50,11 @@ public class Creature extends RPEntity {
 	 */
 	private String metamorphosis;
 
+	/**
+	 * Current boss phase threshold value (75/50/25) or -1 if not active.
+	 */
+	private int bossPhaseThreshold = -1;
+
 	//
 	// Creature
 	//
@@ -60,6 +70,10 @@ public class Creature extends RPEntity {
 	 */
 	public String getMetamorphosis() {
 		return metamorphosis;
+	}
+
+	public int getBossPhaseThreshold() {
+		return bossPhaseThreshold;
 	}
 
 	//
@@ -99,6 +113,12 @@ public class Creature extends RPEntity {
 		} else {
 			metamorphosis = null;
 		}
+
+		if (object.has("boss_phase_threshold")) {
+			bossPhaseThreshold = object.getInt("boss_phase_threshold");
+		} else {
+			bossPhaseThreshold = -1;
+		}
 	}
 
 
@@ -130,6 +150,11 @@ public class Creature extends RPEntity {
 			metamorphosis = object.get("metamorphosis");
 			fireChange(PROP_METAMORPHOSIS);
 		}
+
+		if (changes.has("boss_phase_threshold")) {
+			bossPhaseThreshold = changes.getInt("boss_phase_threshold");
+			fireChange(PROP_BOSS_PHASE_THRESHOLD);
+		}
 	}
 
 	/**
@@ -147,6 +172,11 @@ public class Creature extends RPEntity {
 		if (changes.has("metamorphosis")) {
 			metamorphosis = null;
 			fireChange(PROP_METAMORPHOSIS);
+		}
+
+		if (changes.has("boss_phase_threshold")) {
+			bossPhaseThreshold = -1;
+			fireChange(PROP_BOSS_PHASE_THRESHOLD);
 		}
 	}
 

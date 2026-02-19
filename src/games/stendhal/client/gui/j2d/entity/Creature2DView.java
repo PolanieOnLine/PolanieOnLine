@@ -13,13 +13,19 @@
 package games.stendhal.client.gui.j2d.entity;
 
 
+import java.awt.Color;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import games.stendhal.client.ZoneInfo;
 import games.stendhal.client.entity.ActionType;
 import games.stendhal.client.entity.Creature;
 import games.stendhal.client.entity.IEntity;
+import games.stendhal.client.entity.RPEntity;
+import games.stendhal.client.gui.j2d.Blend;
 import games.stendhal.client.gui.styled.cursor.StendhalCursor;
 import games.stendhal.client.sprite.Sprite;
 import games.stendhal.client.sprite.SpriteStore;
@@ -28,6 +34,17 @@ import games.stendhal.client.sprite.SpriteStore;
  * The 2D view of a creature.
  */
 class Creature2DView extends RPEntity2DView<Creature> {
+	private static final String WAWEL_DRAGON = "Smok Wawelski";
+
+	private static final Color PHASE_75_COLOR = new Color(255, 179, 179);
+	private static final Color PHASE_50_COLOR = new Color(255, 128, 128);
+	private static final Color PHASE_25_COLOR = new Color(255, 92, 92);
+	private static final Color WAWEL_PHASE_75_COLOR = new Color(255, 196, 164);
+	private static final Color WAWEL_PHASE_50_COLOR = new Color(255, 160, 128);
+	private static final Color WAWEL_PHASE_25_COLOR = new Color(255, 128, 96);
+
+	private int currentTintPhase = -1;
+
 	/**
 	 * Populate named state sprites.
 	 *
@@ -62,9 +79,18 @@ class Creature2DView extends RPEntity2DView<Creature> {
 			resource = getClassResourcePath();
 		}
 
-		ZoneInfo info = ZoneInfo.get();
+		final ZoneInfo info = ZoneInfo.get();
+		final String spriteRef = translate(resource);
+		final Color tintColor = getPhaseTintColor();
 
-		return addShadow(SpriteStore.get().getModifiedSprite(translate(resource), info.getZoneColor(), info.getColorMethod()));
+		if (tintColor != null) {
+			if (WAWEL_DRAGON.equals(entity.getName())) {
+				return addShadow(SpriteStore.get().getModifiedSprite(spriteRef, tintColor, Blend.SoftLight));
+			}
+			return addShadow(SpriteStore.get().getModifiedSprite(spriteRef, tintColor, Blend.Multiply));
+		}
+
+		return addShadow(SpriteStore.get().getModifiedSprite(spriteRef, info.getZoneColor(), info.getColorMethod()));
 	}
 
 	//
@@ -107,7 +133,29 @@ class Creature2DView extends RPEntity2DView<Creature> {
 			representationChanged = true;
 		} else if (property == Creature.PROP_METAMORPHOSIS) {
 			representationChanged = true;
+		} else if (property == Creature.PROP_BOSS_PHASE_THRESHOLD) {
+			currentTintPhase = calculateTintPhase();
+			representationChanged = true;
 		}
+	}
+
+	private Color getPhaseTintColor() {
+		currentTintPhase = calculateTintPhase();
+		final boolean isWawelDragon = WAWEL_DRAGON.equals(entity.getName());
+
+		if (currentTintPhase == 75) {
+			return isWawelDragon ? WAWEL_PHASE_75_COLOR : PHASE_75_COLOR;
+		} else if (currentTintPhase == 50) {
+			return isWawelDragon ? WAWEL_PHASE_50_COLOR : PHASE_50_COLOR;
+		} else if (currentTintPhase == 25) {
+			return isWawelDragon ? WAWEL_PHASE_25_COLOR : PHASE_25_COLOR;
+		}
+
+		return null;
+	}
+
+	private int calculateTintPhase() {
+		return entity.getBossPhaseThreshold();
 	}
 
 	//

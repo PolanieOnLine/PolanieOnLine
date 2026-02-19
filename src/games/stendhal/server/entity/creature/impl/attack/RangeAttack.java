@@ -30,7 +30,7 @@ class RangeAttack implements AttackStrategy {
 
 	@Override
 	public void attack(final Creature creature) {
-		if ((SingletonRepository.getRuleProcessor().getTurn() % 5 == creature.getAttackTurn())) {
+		if (creature.isAttackTurn(SingletonRepository.getRuleProcessor().getTurn())) {
 			creature.attack();
 		}
 	}

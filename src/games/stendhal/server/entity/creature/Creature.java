@@ -14,6 +14,7 @@ package games.stendhal.server.entity.creature;
 import static games.stendhal.common.Constants.DEFAULT_SOUND_RADIUS;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -159,6 +160,11 @@ public class Creature extends NPC {
 	private static final int BOSS_DAMAGE_SOFTCAP_WINDOW_TURNS = 5;
 	private static final double BOSS_DAMAGE_SOFTCAP_OVERFLOW_MULTIPLIER = 0.4;
 	private static final int[] BOSS_PHASE_THRESHOLDS = {75, 50, 25};
+	private static final String BOSS_PHASE_THRESHOLD_ATTRIBUTE = "boss_phase_threshold";
+	private static final Set<String> SILENT_BOSS_PHASE_DRAGONS = new HashSet<>(Arrays.asList(
+			"Smok Wawelski",
+			"latający czarny smok",
+			"latający złoty smok"));
 
 	private final Map<String, BossDamageWindow> bossDamageByAttacker = new HashMap<>();
 	private final Set<Integer> triggeredBossPhases = new HashSet<>();
@@ -543,9 +549,17 @@ public class Creature extends NPC {
 	}
 
 	public boolean isAttackTurn(final int turn) {
-		return ((turn + attackTurn) % getAttackRate() == 0);
+		return ((turn + attackTurn) % getBossAdjustedAttackRate() == 0);
 	}
 
+	private int getBossAdjustedAttackRate() {
+		if (!isBoss()) {
+			return getAttackRate();
+		}
+
+		final int phaseCount = triggeredBossPhases.size();
+		return Math.max(1, getAttackRate() - phaseCount);
+	}
 
 	public static void generateRPClass() {
 		try {
@@ -554,6 +568,7 @@ public class Creature extends NPC {
 			npc.addAttribute("debug", Type.VERY_LONG_STRING,
 					Definition.VOLATILE);
 			npc.addAttribute("metamorphosis", Type.STRING, Definition.VOLATILE);
+			npc.addAttribute(BOSS_PHASE_THRESHOLD_ATTRIBUTE, Type.INT, Definition.VOLATILE);
 		} catch (final SyntaxException e) {
 			LOGGER.error("cannot generate RPClass", e);
 		}
@@ -737,6 +752,12 @@ public class Creature extends NPC {
 
 	@Override
 	public void onDead(final Killer killer, final boolean remove) {
+		bossDamageByAttacker.clear();
+		triggeredBossPhases.clear();
+		if (has(BOSS_PHASE_THRESHOLD_ATTRIBUTE)) {
+			remove(BOSS_PHASE_THRESHOLD_ATTRIBUTE);
+		}
+
 		if (killer instanceof RPEntity) {
 			circumstances = new CircumstancesOfDeath((RPEntity)killer, this, this.getZone());
 		}
@@ -952,17 +973,24 @@ public class Creature extends NPC {
 	private void activateBossPhase(final int threshold) {
 		if (threshold == 75) {
 			setDef((int) Math.ceil(getDef() * 1.08));
-			say("Moja skóra twardnieje!");
+			announceBossPhase("Moja skóra twardnieje!");
 		} else if (threshold == 50) {
 			setAtk((int) Math.ceil(getAtk() * 1.08));
 			setRatk((int) Math.ceil(getRatk() * 1.08));
-			say("To dopiero początek!");
+			announceBossPhase("To dopiero początek!");
 		} else if (threshold == 25) {
-			setArmorPenPercent(Math.min(0.9, getArmorPenPercent() + 0.12));
-			say("Wpadam w szał!");
+			setArmorPenPercent(Math.min(0.8, getArmorPenPercent() + 0.08));
+			announceBossPhase("Wpadam w szał!");
 		}
 
+		put(BOSS_PHASE_THRESHOLD_ATTRIBUTE, threshold);
 		notifyWorldAboutChanges();
+	}
+
+	private void announceBossPhase(final String message) {
+		if (!SILENT_BOSS_PHASE_DRAGONS.contains(getName())) {
+			say(message);
+		}
 	}
 
 	/**
