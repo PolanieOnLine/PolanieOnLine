@@ -165,6 +165,14 @@ public abstract class RPEntity extends CombatEntity {
 	private static final double REBORN_ATTACKER_BONUS_PER_RANK = 0.12;
 	/** Hard cap to avoid excessive reborn impact on attacker-side combat scaling. */
 	private static final int MAX_REBORN_ATTACKER_LEVEL_BONUS = 180;
+	/** Minimum creature armor penetration used in player-facing combat scaling. */
+	static final double MIN_CREATURE_ARMOR_PEN = 0.2;
+	/** Maximum creature armor penetration used in player-facing combat scaling. */
+	static final double MAX_CREATURE_ARMOR_PEN = 0.8;
+	/** Max positive player-vs-creature level difference contributing to armor pen. */
+	static final int ARMOR_PEN_DIFF_CAP = 30;
+	/** Armor penetration gain per level of positive player-vs-creature diff. */
+	static final double ARMOR_PEN_STEP = 0.02;
 
 	/**
 	 * Converts raw level to a capped combat contribution.
@@ -508,8 +516,20 @@ public abstract class RPEntity extends CombatEntity {
 	private int computeCreatureToPlayerDamage(RPEntity defender, double attackingWeaponsValue, Nature damageType,
 			boolean isRanged, int maxRange) {
 		final Creature attacker = (Creature) this;
-		return computeDamage(defender, attackingWeaponsValue, damageType, isRanged, maxRange,
+		final double armorPenPercent = computeCreatureArmorPenPercent(attacker.getLevel(), defender.getLevel(),
 				attacker.getArmorPenPercent());
+		return computeDamage(defender, attackingWeaponsValue, damageType, isRanged, maxRange,
+				armorPenPercent);
+	}
+
+	static double computeCreatureArmorPenPercent(final int attackerLevel, final int defenderLevel,
+			final double baseArmorPenPercent) {
+		final double basePen = Math.max(MIN_CREATURE_ARMOR_PEN, baseArmorPenPercent);
+		final int levelDiff = defenderLevel - attackerLevel;
+		final int boundedPositiveDiff = Math.max(0, Math.min(levelDiff, ARMOR_PEN_DIFF_CAP));
+		final double scaledPen = basePen + boundedPositiveDiff * ARMOR_PEN_STEP;
+
+		return Math.max(MIN_CREATURE_ARMOR_PEN, Math.min(MAX_CREATURE_ARMOR_PEN, scaledPen));
 	}
 
 	private int computeDamage(RPEntity defender, double attackingWeaponsValue, Nature damageType, boolean isRanged,
