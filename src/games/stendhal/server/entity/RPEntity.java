@@ -1504,8 +1504,11 @@ public abstract class RPEntity extends CombatEntity {
 	 * @param damage
 	 */
 	public void onDamaged(final Entity attacker, final int damage) {
+		int incomingDamage = damage;
+		int hpBeforeHit = getHP();
+
 		if (logger.isDebugEnabled() || Testing.DEBUG) {
-			logger.debug("Damaged " + damage + " points by " + attacker.getID());
+			logger.debug("Damaged " + incomingDamage + " points by " + attacker.getID());
 		}
 
 		if (this instanceof Creature) {
@@ -1513,6 +1516,8 @@ public abstract class RPEntity extends CombatEntity {
 			if (creature.isImmortal()) {
 				return;
 			}
+
+			incomingDamage = creature.applyBossDamageRules(attacker, incomingDamage);
 		}
 
 		bleedOnGround();
@@ -1521,16 +1526,19 @@ public abstract class RPEntity extends CombatEntity {
 			enemiesThatGiveFightXP.put((RPEntity) attacker, currentTurn);
 		}
 
-		final int leftHP = getHP() - damage;
+		final int leftHP = hpBeforeHit - incomingDamage;
 
-		totalDamageReceived += damage;
+		totalDamageReceived += incomingDamage;
 
 		// remember the damage done so that the attacker can later be rewarded
 		// XP etc.
-		damageReceived.add(attacker, damage);
+		damageReceived.add(attacker, incomingDamage);
 
 		if (leftHP > 0) {
 			setHP(leftHP);
+			if (this instanceof Creature) {
+				((Creature) this).handleBossPhaseTransition(hpBeforeHit, leftHP);
+			}
 		} else {
 			kill(attacker);
 		}

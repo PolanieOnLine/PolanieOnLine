@@ -16,10 +16,12 @@ import static games.stendhal.common.Constants.DEFAULT_SOUND_RADIUS;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -152,6 +154,23 @@ public class Creature extends NPC {
 	private final Registrator registrator = new Registrator();
 
 	private CounterMap<String> hitPlayers;
+
+	private static final double BOSS_DAMAGE_TAKEN_MULTIPLIER = 0.82;
+	private static final int BOSS_DAMAGE_SOFTCAP_WINDOW_TURNS = 5;
+	private static final double BOSS_DAMAGE_SOFTCAP_OVERFLOW_MULTIPLIER = 0.4;
+	private static final int[] BOSS_PHASE_THRESHOLDS = {75, 50, 25};
+
+	private final Map<String, BossDamageWindow> bossDamageByAttacker = new HashMap<>();
+	private final Set<Integer> triggeredBossPhases = new HashSet<>();
+
+	private static final class BossDamageWindow {
+		private int startTurn;
+		private int damage;
+
+		private BossDamageWindow(final int startTurn) {
+			this.startTurn = startTurn;
+		}
+	}
 
 	/**
 	 * creates a new Creature
@@ -866,6 +885,84 @@ public class Creature extends NPC {
 	 */
 	public boolean isBoss() {
 		return aiProfiles.containsKey("boss");
+	}
+
+	/**
+	 * Applies boss-only mitigation and anti-burst limits for a single hit.
+	 *
+	 * @param attacker damage source
+	 * @param incomingDamage raw incoming hit
+	 * @return adjusted damage after boss rules
+	 */
+	public int applyBossDamageRules(final Entity attacker, final int incomingDamage) {
+		if (!isBoss() || incomingDamage <= 0) {
+			return incomingDamage;
+		}
+
+		int adjustedDamage = Math.max(1, (int) Math.round(incomingDamage * BOSS_DAMAGE_TAKEN_MULTIPLIER));
+
+		if (attacker != null) {
+			final int currentTurn = SingletonRepository.getRuleProcessor().getTurn();
+			final String attackerKey = attacker.getID().toString();
+			final BossDamageWindow window = bossDamageByAttacker.computeIfAbsent(attackerKey,
+					key -> new BossDamageWindow(currentTurn));
+
+			if (currentTurn - window.startTurn >= BOSS_DAMAGE_SOFTCAP_WINDOW_TURNS) {
+				window.startTurn = currentTurn;
+				window.damage = 0;
+			}
+
+			final int softcap = Math.max(80, getBaseHP() / 6);
+			final int roomLeft = Math.max(0, softcap - window.damage);
+			if (adjustedDamage > roomLeft) {
+				final int overflow = adjustedDamage - roomLeft;
+				adjustedDamage = roomLeft
+						+ Math.max(1, (int) Math.floor(overflow * BOSS_DAMAGE_SOFTCAP_OVERFLOW_MULTIPLIER));
+			}
+
+			window.damage += adjustedDamage;
+		}
+
+		return Math.max(1, adjustedDamage);
+	}
+
+	/**
+	 * Trigger dynamic boss phases when crossing HP thresholds.
+	 *
+	 * @param oldHp HP before applying damage
+	 * @param newHp HP after applying damage
+	 */
+	public void handleBossPhaseTransition(final int oldHp, final int newHp) {
+		if (!isBoss() || newHp <= 0 || oldHp <= 0) {
+			return;
+		}
+
+		final double oldPercent = oldHp * 100.0 / getBaseHP();
+		final double newPercent = newHp * 100.0 / getBaseHP();
+
+		for (final int threshold : BOSS_PHASE_THRESHOLDS) {
+			if (!triggeredBossPhases.contains(threshold)
+					&& oldPercent > threshold && newPercent <= threshold) {
+				triggeredBossPhases.add(threshold);
+				activateBossPhase(threshold);
+			}
+		}
+	}
+
+	private void activateBossPhase(final int threshold) {
+		if (threshold == 75) {
+			setDef((int) Math.ceil(getDef() * 1.08));
+			say("Moja skóra twardnieje!");
+		} else if (threshold == 50) {
+			setAtk((int) Math.ceil(getAtk() * 1.08));
+			setRatk((int) Math.ceil(getRatk() * 1.08));
+			say("To dopiero początek!");
+		} else if (threshold == 25) {
+			setArmorPenPercent(Math.min(0.9, getArmorPenPercent() + 0.12));
+			say("Wpadam w szał!");
+		}
+
+		notifyWorldAboutChanges();
 	}
 
 	/**
