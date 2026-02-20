@@ -38,6 +38,7 @@ import games.stendhal.client.entity.WalkBlocker;
 import games.stendhal.client.entity.Wall;
 import games.stendhal.client.gui.layout.SBoxLayout;
 import games.stendhal.client.gui.layout.SLayout;
+import games.stendhal.client.gui.status.ActiveMapEventStatus;
 import games.stendhal.client.listener.PositionChangeListener;
 import games.stendhal.common.CollisionDetection;
 
@@ -60,6 +61,8 @@ public class MapPanelController implements GameObjects.GameObjectListener, Posit
 	private volatile boolean needsRefresh;
 	/** Force rebuilding the minimap background on the next update. */
 	private volatile boolean forceBackgroundRefresh = true;
+	/** Last known zone name shown in the minimap panel. */
+	private volatile String currentZoneName;
 
 	/**
 	 * Create a MapPanelController.
@@ -192,9 +195,16 @@ public class MapPanelController implements GameObjects.GameObjectListener, Posit
 	 */
 	private void update(final CollisionDetection cd, final CollisionDetection pd, final CollisionDetection sd,
 			final String zone, final double dangerLevel) {
+		currentZoneName = zone;
 		// Panel will do the relevant part in EDT.
 		final boolean rebuild = forceBackgroundRefresh;
 		panel.update(cd, pd, sd, rebuild);
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				panel.updateActiveEventStatus(panel.getActiveEventStatus(), currentZoneName);
+			}
+		});
 		forceBackgroundRefresh = false;
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -239,6 +249,21 @@ public class MapPanelController implements GameObjects.GameObjectListener, Posit
 	@Override
 	public void onZoneChange(Zone zone) {
 		forceBackgroundRefresh = true;
+	}
+
+	/**
+	 * Update active event status used by minimap event overlay.
+	 *
+	 * @param status currently active map event for the local zone, or {@code null}
+	 */
+	public void setActiveMapEventStatus(final ActiveMapEventStatus status) {
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				panel.updateActiveEventStatus(status, currentZoneName);
+				setNeedsRefresh(true);
+			}
+		});
 	}
 
 	@Override
