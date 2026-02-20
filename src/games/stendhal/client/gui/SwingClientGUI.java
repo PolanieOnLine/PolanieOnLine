@@ -755,11 +755,17 @@ class SwingClientGUI implements J2DClientGUI {
 		if (EVENT_HUD_MODE_HIDDEN.equals(eventHudMode)) {
 			eventProgressOverlay.hideOverlay();
 			eventActivityOverlay.setVisible(false);
+			if (minimap != null) {
+				minimap.setActiveMapEventStatus(null);
+			}
 			return;
 		}
 		final ActiveMapEventStatus visibleStatus = MapEventStatusStore.get()
 				.getVisibleStatusForZone(resolveCurrentZoneName());
 		if (visibleStatus == null) {
+			if (minimap != null) {
+				minimap.setActiveMapEventStatus(null);
+			}
 			if ((lastShownEventStatus != null) && (lastShownEventStatus.getRemainingSeconds() <= 0)) {
 				showEventEndedState(lastShownEventStatus);
 				return;
@@ -770,6 +776,9 @@ class SwingClientGUI implements J2DClientGUI {
 		}
 
 		lastShownEventStatus = visibleStatus;
+		if (minimap != null) {
+			minimap.setActiveMapEventStatus(visibleStatus);
+		}
 		stopOverlayFade();
 		eventOverlayEndStateTimer.stop();
 
