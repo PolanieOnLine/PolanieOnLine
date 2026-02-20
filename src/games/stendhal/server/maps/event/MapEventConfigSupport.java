@@ -36,6 +36,21 @@ public final class MapEventConfigSupport {
 		return Arrays.asList(waves);
 	}
 
+	public static MapEventConfig.CapturePointConfig capturePoint(final String pointId, final String zone,
+			final int x, final int y, final int radiusTiles) {
+		return new MapEventConfig.CapturePointConfig(pointId, zone, x, y, radiusTiles);
+	}
+
+	public static MapEventConfig.CaptureProgressWaveConfig captureProgressWave(final int thresholdPercent,
+			final BaseMapEvent.EventSpawn... spawns) {
+		return new MapEventConfig.CaptureProgressWaveConfig(thresholdPercent, Arrays.asList(spawns));
+	}
+
+	public static List<MapEventConfig.CaptureProgressWaveConfig> captureProgressWaves(
+			final MapEventConfig.CaptureProgressWaveConfig... waves) {
+		return Arrays.asList(waves);
+	}
+
 	public static String validatedDefaultStartTime(final String configuredStartTime, final String context) {
 		if (configuredStartTime == null || configuredStartTime.trim().isEmpty()) {
 			throw new IllegalArgumentException("Missing default start time for " + context + ".");

@@ -43,6 +43,8 @@ public final class MapEventConfig {
 	private final boolean giantOnlyAggro;
 	private final EscortSettings escortSettings;
 	private final ScalingConfig scaling;
+	private final List<CapturePointConfig> capturePoints;
+	private final List<CaptureProgressWaveConfig> captureProgressWaves;
 
 	private MapEventConfig(final Builder builder) {
 		eventName = builder.eventName;
@@ -64,6 +66,8 @@ public final class MapEventConfig {
 		giantOnlyAggro = builder.giantOnlyAggro;
 		escortSettings = builder.escortSettings;
 		scaling = builder.scaling;
+		capturePoints = Collections.unmodifiableList(new ArrayList<>(builder.capturePoints));
+		captureProgressWaves = Collections.unmodifiableList(new ArrayList<>(builder.captureProgressWaves));
 	}
 
 	public String getEventName() {
@@ -150,6 +154,14 @@ public final class MapEventConfig {
 		return scaling;
 	}
 
+	public List<CapturePointConfig> getCapturePoints() {
+		return capturePoints;
+	}
+
+	public List<CaptureProgressWaveConfig> getCaptureProgressWaves() {
+		return captureProgressWaves;
+	}
+
 	public static Builder builder(final String eventName) {
 		return new Builder(eventName);
 	}
@@ -174,6 +186,8 @@ public final class MapEventConfig {
 		private boolean giantOnlyAggro;
 		private EscortSettings escortSettings;
 		private ScalingConfig scaling;
+		private List<CapturePointConfig> capturePoints = Collections.emptyList();
+		private List<CaptureProgressWaveConfig> captureProgressWaves = Collections.emptyList();
 
 		private Builder(final String eventName) {
 			this.eventName = Objects.requireNonNull(eventName, "eventName");
@@ -283,6 +297,17 @@ public final class MapEventConfig {
 			return this;
 		}
 
+		public Builder capturePoints(final List<CapturePointConfig> capturePoints) {
+			this.capturePoints = new ArrayList<>(Objects.requireNonNull(capturePoints, "capturePoints"));
+			return this;
+		}
+
+		public Builder captureProgressWaves(final List<CaptureProgressWaveConfig> captureProgressWaves) {
+			this.captureProgressWaves = new ArrayList<>(
+					Objects.requireNonNull(captureProgressWaves, "captureProgressWaves"));
+			return this;
+		}
+
 		public MapEventConfig build() {
 			if (duration.isNegative() || duration.isZero()) {
 				throw new IllegalArgumentException("duration must be positive");
@@ -326,7 +351,100 @@ public final class MapEventConfig {
 			if (scaling != null) {
 				scaling.validate();
 			}
+			for (final CapturePointConfig capturePoint : capturePoints) {
+				if (capturePoint == null) {
+					throw new IllegalArgumentException("capturePoints must not contain null entries");
+				}
+				capturePoint.validate();
+			}
+			for (final CaptureProgressWaveConfig captureProgressWave : captureProgressWaves) {
+				if (captureProgressWave == null) {
+					throw new IllegalArgumentException("captureProgressWaves must not contain null entries");
+				}
+				captureProgressWave.validate();
+			}
 			return new MapEventConfig(this);
+		}
+	}
+
+	public static final class CapturePointConfig {
+		private final String pointId;
+		private final String zone;
+		private final int x;
+		private final int y;
+		private final int radiusTiles;
+
+		public CapturePointConfig(final String pointId, final String zone, final int x, final int y,
+				final int radiusTiles) {
+			this.pointId = pointId;
+			this.zone = zone;
+			this.x = x;
+			this.y = y;
+			this.radiusTiles = radiusTiles;
+		}
+
+		public String getPointId() {
+			return pointId;
+		}
+
+		public String getZone() {
+			return zone;
+		}
+
+		public int getX() {
+			return x;
+		}
+
+		public int getY() {
+			return y;
+		}
+
+		public int getRadiusTiles() {
+			return radiusTiles;
+		}
+
+		private void validate() {
+			if (pointId == null || pointId.trim().isEmpty()) {
+				throw new IllegalArgumentException("capture point id must not be blank");
+			}
+			if (zone == null || zone.trim().isEmpty()) {
+				throw new IllegalArgumentException("capture point zone must not be blank");
+			}
+			if (radiusTiles <= 0) {
+				throw new IllegalArgumentException("capture point radiusTiles must be > 0");
+			}
+		}
+	}
+
+	public static final class CaptureProgressWaveConfig {
+		private final int thresholdPercent;
+		private final List<BaseMapEvent.EventSpawn> spawns;
+
+		public CaptureProgressWaveConfig(final int thresholdPercent, final List<BaseMapEvent.EventSpawn> spawns) {
+			this.thresholdPercent = thresholdPercent;
+			this.spawns = Collections.unmodifiableList(new ArrayList<>(Objects.requireNonNull(spawns, "spawns")));
+		}
+
+		public int getThresholdPercent() {
+			return thresholdPercent;
+		}
+
+		public List<BaseMapEvent.EventSpawn> getSpawns() {
+			return spawns;
+		}
+
+		private void validate() {
+			if (thresholdPercent < 0 || thresholdPercent > 100) {
+				throw new IllegalArgumentException("capture progress thresholdPercent must be between 0 and 100");
+			}
+			if (spawns.isEmpty()) {
+				throw new IllegalArgumentException("capture progress wave must contain at least one spawn");
+			}
+			for (final BaseMapEvent.EventSpawn spawn : spawns) {
+				if (spawn == null) {
+					throw new IllegalArgumentException("capture progress wave must not contain null spawn");
+				}
+			}
 		}
 	}
 

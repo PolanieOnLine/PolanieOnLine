@@ -111,6 +111,11 @@ public final class MapEventRegistry {
 		registerEvent(specializedEvents, "tatry_kuznice", tatryKuzniceBanditRaidEvent);
 		registerEvent(specializedEvents, MapEventConfigLoader.TATRY_KUZNICE_BANDIT_RAID, tatryKuzniceBanditRaidEvent);
 
+		final ConfiguredMapEvent hellCaptureEvent = new ConfiguredMapEvent(LOGGER,
+				MapEventConfigLoader.load(MapEventConfigLoader.HELL_CAPTURE_ASSAULT));
+		registerEvent(specializedEvents, "hell", hellCaptureEvent);
+		registerEvent(specializedEvents, MapEventConfigLoader.HELL_CAPTURE_ASSAULT, hellCaptureEvent);
+
 		return specializedEvents;
 	}
 

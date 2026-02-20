@@ -34,6 +34,7 @@ public class ConfiguredMapEvent extends BaseMapEvent {
 	private final Logger logger;
 	private final MapEventSpawnStrategy spawnStrategy;
 	private final KillThresholdTrigger killThresholdTrigger;
+	private final CaptureProgressTrigger captureProgressTrigger;
 	private final MapEventConfig.ScalingConfig scalingConfig;
 	private final Map<BaseMapEvent.EventSpawn, Integer> spawnWaveIndexes;
 	private final List<Integer> waveBaseTotals;
@@ -54,6 +55,7 @@ public class ConfiguredMapEvent extends BaseMapEvent {
 		this.logger = Objects.requireNonNull(logger, "logger");
 		this.spawnStrategy = Objects.requireNonNull(spawnStrategy, "spawnStrategy");
 		scalingConfig = getConfig().getScaling();
+		captureProgressTrigger = new CaptureProgressTrigger(getConfig().getCaptureProgressWaves());
 		spawnWaveIndexes = createSpawnWaveIndexes(getConfig().getWaves());
 		waveBaseTotals = createWaveBaseTotals(getConfig().getWaves());
 		if (getConfig().getTriggerThreshold() > 0) {
@@ -127,6 +129,9 @@ public class ConfiguredMapEvent extends BaseMapEvent {
 		if (killThresholdTrigger != null) {
 			killThresholdTrigger.resetCounter("event started");
 		}
+		if (captureProgressTrigger.isEnabled()) {
+			captureProgressTrigger.reset("event started");
+		}
 		waveScaleStates.clear();
 		completedWaveClearTimesSec.clear();
 		initializeCapturePoints();
@@ -143,6 +148,9 @@ public class ConfiguredMapEvent extends BaseMapEvent {
 	protected void onStop() {
 		if (killThresholdTrigger != null) {
 			killThresholdTrigger.resetCounter("event ended");
+		}
+		if (captureProgressTrigger.isEnabled()) {
+			captureProgressTrigger.reset("event ended");
 		}
 		logger.info(getEventName() + " event ended.");
 		waveScaleStates.clear();
@@ -297,6 +305,7 @@ public class ConfiguredMapEvent extends BaseMapEvent {
 					scalingConfig != null ? scalingConfig.getOnlineZoneMinPlayerLevel() : 0,
 					scalingConfig != null ? scalingConfig.getOnlineZoneMaxPlayerLevel() : Integer.MAX_VALUE);
 			capturePoint.tick(playersNearPoint, getCurrentWave());
+			captureProgressTrigger.evaluate(capturePoint, this::spawnCaptureProgressWave);
 		}
 	}
 
@@ -332,7 +341,12 @@ public class ConfiguredMapEvent extends BaseMapEvent {
 	}
 
 	protected List<CapturePointState> createCapturePoints() {
-		return Collections.emptyList();
+		final List<CapturePointState> points = new ArrayList<>();
+		for (MapEventConfig.CapturePointConfig capturePointConfig : getConfig().getCapturePoints()) {
+			points.add(new CapturePointState(capturePointConfig.getPointId(), capturePointConfig.getZone(),
+					capturePointConfig.getX(), capturePointConfig.getY(), capturePointConfig.getRadiusTiles()));
+		}
+		return points;
 	}
 
 	private void initializeCapturePoints() {
@@ -343,6 +357,18 @@ public class ConfiguredMapEvent extends BaseMapEvent {
 			}
 			point.reset();
 			capturePoints.add(point);
+		}
+	}
+
+	private void spawnCaptureProgressWave(final CapturePointState capturePoint,
+			final MapEventConfig.CaptureProgressWaveConfig wave) {
+		if (!isEventActive()) {
+			return;
+		}
+		logger.info(getEventName() + " capture progress trigger fired: point=" + capturePoint.getPointId()
+				+ ", threshold=" + wave.getThresholdPercent() + "%.");
+		for (EventSpawn spawn : wave.getSpawns()) {
+			spawnCreatures(spawn.getCreatureName(), spawn.getCount());
 		}
 	}
 
