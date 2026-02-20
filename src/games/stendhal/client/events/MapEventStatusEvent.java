@@ -11,12 +11,18 @@
  ***************************************************************************/
 package games.stendhal.client.events;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 
 import games.stendhal.client.entity.RPEntity;
+import games.stendhal.client.gui.status.ActiveMapEventStatus;
 import games.stendhal.client.gui.status.MapEventStatusStore;
 
 /**
@@ -44,10 +50,11 @@ class MapEventStatusEvent extends Event<RPEntity> {
 			final String defenseStatus = event.has("defenseStatus") ? event.get("defenseStatus") : "";
 			final List<String> activityTop = resolveActivityTop();
 			final List<String> zones = resolveZones();
+			final List<ActiveMapEventStatus.CapturePointStatus> capturePoints = resolveCapturePoints();
 
 			MapEventStatusStore.get().updateStatus(eventId, eventName, isActive, remainingSeconds, totalSeconds,
 					eventTotalSpawnedCreatures, eventDefeatedCreatures, eventDefeatPercent,
-					currentWave, totalWaves, defenseStatus, activityTop, zones);
+					currentWave, totalWaves, defenseStatus, activityTop, zones, capturePoints);
 		} catch (RuntimeException e) {
 			logger.error("Failed to parse map event status event: " + event, e);
 		}
@@ -62,8 +69,6 @@ class MapEventStatusEvent extends Event<RPEntity> {
 		}
 		return null;
 	}
-
-
 
 	private List<String> resolveActivityTop() {
 		if (event.has("activityTop")) {
@@ -80,6 +85,93 @@ class MapEventStatusEvent extends Event<RPEntity> {
 			return event.getList("allowedZones");
 		}
 		return Collections.emptyList();
+	}
+
+	private List<ActiveMapEventStatus.CapturePointStatus> resolveCapturePoints() {
+		if (!event.has("capturePoints")) {
+			return Collections.emptyList();
+		}
+		final Object parsed = JSONValue.parse(event.get("capturePoints"));
+		if (!(parsed instanceof JSONArray)) {
+			return Collections.emptyList();
+		}
+		final JSONArray pointsArray = (JSONArray) parsed;
+		if (pointsArray.isEmpty()) {
+			return Collections.emptyList();
+		}
+		final List<ActiveMapEventStatus.CapturePointStatus> points =
+				new ArrayList<ActiveMapEventStatus.CapturePointStatus>();
+		for (Object rawPoint : pointsArray) {
+			if (!(rawPoint instanceof JSONObject)) {
+				continue;
+			}
+			final ActiveMapEventStatus.CapturePointStatus mapped = mapCapturePoint((JSONObject) rawPoint);
+			if (mapped != null) {
+				points.add(mapped);
+			}
+		}
+		if (points.isEmpty()) {
+			return Collections.emptyList();
+		}
+		return points;
+	}
+
+	private ActiveMapEventStatus.CapturePointStatus mapCapturePoint(final JSONObject rawPoint) {
+		final String pointId = readString(rawPoint, "pointId");
+		final String zone = readString(rawPoint, "zone");
+		final int x = readInt(rawPoint, "x", 0);
+		final int y = readInt(rawPoint, "y", 0);
+		final int radiusTiles = readInt(rawPoint, "radiusTiles", 0);
+		final int progressPercent = readInt(rawPoint, "progressPercent", 0);
+		final String ownerFaction = firstNonBlank(readString(rawPoint, "owner"), readString(rawPoint, "faction"));
+		final boolean contested = readBoolean(rawPoint, "contested");
+		final int remainingBossWaves = readInt(rawPoint, "remainingBossWaves", 0);
+		if ((pointId == null) || (zone == null)) {
+			return null;
+		}
+		return new ActiveMapEventStatus.CapturePointStatus(pointId, zone, x, y, radiusTiles,
+				progressPercent, ownerFaction, contested, remainingBossWaves);
+	}
+
+	private String firstNonBlank(final String first, final String second) {
+		if (first != null && !first.trim().isEmpty()) {
+			return first;
+		}
+		return second;
+	}
+
+	private String readString(final Map<?, ?> source, final String key) {
+		final Object value = source.get(key);
+		if (!(value instanceof String)) {
+			return null;
+		}
+		return (String) value;
+	}
+
+	private int readInt(final Map<?, ?> source, final String key, final int fallbackValue) {
+		final Object value = source.get(key);
+		if (value instanceof Number) {
+			return ((Number) value).intValue();
+		}
+		if (value instanceof String) {
+			try {
+				return Integer.parseInt((String) value);
+			} catch (NumberFormatException e) {
+				return fallbackValue;
+			}
+		}
+		return fallbackValue;
+	}
+
+	private boolean readBoolean(final Map<?, ?> source, final String key) {
+		final Object value = source.get(key);
+		if (value instanceof Boolean) {
+			return ((Boolean) value).booleanValue();
+		}
+		if (value instanceof String) {
+			return Boolean.parseBoolean((String) value);
+		}
+		return false;
 	}
 
 	private boolean parseBoolean(final marauroa.common.game.RPEvent source, final String key) {

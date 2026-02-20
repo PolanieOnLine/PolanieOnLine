@@ -39,6 +39,7 @@ public class MapEventStatusEvent extends RPEvent {
 		rpclass.add(DefinitionClass.ATTRIBUTE, "defenseStatus", Type.STRING);
 		rpclass.add(DefinitionClass.ATTRIBUTE, "activityTop", Type.VERY_LONG_STRING);
 		rpclass.add(DefinitionClass.ATTRIBUTE, "zones", Type.VERY_LONG_STRING);
+		rpclass.add(DefinitionClass.ATTRIBUTE, "capturePoints", Type.VERY_LONG_STRING);
 	}
 
 	public MapEventStatusEvent(final String eventId, final String eventName, final boolean isActive,
@@ -46,7 +47,7 @@ public class MapEventStatusEvent extends RPEvent {
 			final Integer eventTotalSpawnedCreatures, final Integer eventDefeatedCreatures,
 			final Integer eventDefeatPercent, final Integer currentWave, final Integer totalWaves,
 			final String defenseStatus, final List<String> activityTop,
-			final List<String> zones) {
+			final List<String> zones, final String capturePoints) {
 		super(Events.MAP_EVENT_STATUS);
 		put("eventId", eventId);
 		put("eventName", eventName);
@@ -80,6 +81,9 @@ public class MapEventStatusEvent extends RPEvent {
 		}
 		if (zones != null) {
 			put("zones", zones);
+		}
+		if (capturePoints != null) {
+			put("capturePoints", capturePoints);
 		}
 	}
 }

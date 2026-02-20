@@ -98,21 +98,22 @@ public final class MapEventStatusPublisher {
 				Integer.valueOf(event.getTotalWaves()),
 				event.getDefenseStatus(),
 				event.getActivityTop(),
-				allowedZones);
+				allowedZones,
+				null);
 	}
 
 	private static MapEventStatusEvent createInactiveSnapshot(final BaseMapEvent event) {
 		return new MapEventStatusEvent(event.getEventId(), event.getEventNamePublic(), false,
 				null, null, Integer.valueOf(0), Integer.valueOf(0), Integer.valueOf(0),
 				Integer.valueOf(0), Integer.valueOf(0), "Wydarzenie zakończone",
-				Collections.<String>emptyList(), Collections.<String>emptyList());
+				Collections.<String>emptyList(), Collections.<String>emptyList(), null);
 	}
 
 	private static MapEventStatusEvent createGlobalFallbackSnapshot() {
 		return new MapEventStatusEvent(FALLBACK_EVENT_ID, FALLBACK_EVENT_NAME, false,
 				null, null, Integer.valueOf(0), Integer.valueOf(0), Integer.valueOf(0),
 				Integer.valueOf(0), Integer.valueOf(0), "Wydarzenie zakończone",
-				Collections.<String>emptyList(), Collections.<String>emptyList());
+				Collections.<String>emptyList(), Collections.<String>emptyList(), null);
 	}
 
 	private static boolean shouldReceive(final Player player, final List<String> allowedZones) {
