@@ -31,6 +31,8 @@ import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.player.Player;
 
 public class ConfiguredMapEvent extends BaseMapEvent {
+	private static final int CAPTURE_WAVE_SPAWN_RING_PADDING_TILES = 6;
+
 	private final Logger logger;
 	private final MapEventSpawnStrategy spawnStrategy;
 	private final KillThresholdTrigger killThresholdTrigger;
@@ -368,8 +370,39 @@ public class ConfiguredMapEvent extends BaseMapEvent {
 		logger.info(getEventName() + " capture progress trigger fired: point=" + capturePoint.getPointId()
 				+ ", threshold=" + wave.getThresholdPercent() + "%.");
 		for (EventSpawn spawn : wave.getSpawns()) {
-			spawnCreatures(spawn.getCreatureName(), spawn.getCount());
+			spawnCreaturesAroundCapturePoint(capturePoint, spawn.getCreatureName(), spawn.getCount());
 		}
+	}
+
+	private void spawnCreaturesAroundCapturePoint(final CapturePointState capturePoint, final String creatureName,
+			final int count) {
+		final String zoneName = capturePoint.getZone();
+		final int requestedCount = count;
+		final double spawnMultiplier = getConfig().getZoneSpawnMultiplier(zoneName);
+		final int multipliedCount = (int) Math.round(requestedCount * spawnMultiplier);
+		final Integer zoneSpawnCap = getConfig().getZoneSpawnCap(zoneName);
+		final int finalSpawnCount = zoneSpawnCap == null ? multipliedCount : Math.min(multipliedCount, zoneSpawnCap);
+
+		if (finalSpawnCount <= 0) {
+			logger.debug(getEventName() + " capture spawn skipped in zone " + zoneName
+					+ "; final spawn count is 0 after multiplier/cap.");
+			return;
+		}
+
+		final MapEventSpawnStrategy.SpawnAnchor captureAnchor = new MapEventSpawnStrategy.SpawnAnchor(
+				zoneName,
+				capturePoint.getX(),
+				capturePoint.getY(),
+				Math.max(0, capturePoint.getRadiusTiles() + 1),
+				Math.max(0, capturePoint.getRadiusTiles() + CAPTURE_WAVE_SPAWN_RING_PADDING_TILES));
+
+		spawnStrategy.spawnCreatures(
+				getEventName(),
+				Collections.singletonList(zoneName),
+				creatureName,
+				finalSpawnCount,
+				captureAnchor,
+				creature -> registerEventCreature(creature));
 	}
 
 	private int countActivePlayersAroundPoint(final CapturePointState point,
