@@ -99,7 +99,7 @@ public final class MapEventStatusPublisher {
 				event.getDefenseStatus(),
 				event.getActivityTop(),
 				allowedZones,
-				null);
+				event.getCapturePointsStatusPayload());
 	}
 
 	private static MapEventStatusEvent createInactiveSnapshot(final BaseMapEvent event) {
