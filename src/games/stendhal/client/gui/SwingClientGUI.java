@@ -751,6 +751,11 @@ class SwingClientGUI implements J2DClientGUI {
 		if (!pane.isShowing()) {
 			return;
 		}
+		final ActiveMapEventStatus visibleStatus = MapEventStatusStore.get()
+				.getVisibleStatusForZone(resolveCurrentZoneName());
+		if (minimap != null) {
+			minimap.setActiveMapEventStatus(visibleStatus);
+		}
 		if (System.currentTimeMillis() < overlayRefreshSuppressedUntilMillis) {
 			return;
 		}
@@ -762,12 +767,7 @@ class SwingClientGUI implements J2DClientGUI {
 			}
 			return;
 		}
-		final ActiveMapEventStatus visibleStatus = MapEventStatusStore.get()
-				.getVisibleStatusForZone(resolveCurrentZoneName());
 		if (visibleStatus == null) {
-			if (minimap != null) {
-				minimap.setActiveMapEventStatus(null);
-			}
 			if ((lastShownEventStatus != null) && (lastShownEventStatus.getRemainingSeconds() <= 0)) {
 				showEventEndedState(lastShownEventStatus);
 				return;
@@ -778,9 +778,6 @@ class SwingClientGUI implements J2DClientGUI {
 		}
 
 		lastShownEventStatus = visibleStatus;
-		if (minimap != null) {
-			minimap.setActiveMapEventStatus(visibleStatus);
-		}
 		stopOverlayFade();
 		eventOverlayEndStateTimer.stop();
 
