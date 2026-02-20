@@ -172,10 +172,16 @@ public abstract class BaseMapEvent {
 		return "Obrona w toku";
 	}
 
-
-
 	protected List<String> getActivityTop() {
 		return Collections.emptyList();
+	}
+
+	protected void onStatusTick() {
+		// default no-op
+	}
+
+	protected String getCapturePointsStatusPayload() {
+		return null;
 	}
 
 	protected final void setWaveProgress(final int current, final int total) {
@@ -444,6 +450,7 @@ public abstract class BaseMapEvent {
 		if (!isCurrentRunActive(runId)) {
 			return;
 		}
+		onStatusTick();
 		MapEventStatusPublisher.broadcastActiveEventStatus(this);
 		scheduleStatusBroadcast(runId);
 	}

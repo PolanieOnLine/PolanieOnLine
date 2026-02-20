@@ -40,6 +40,7 @@ public class ConfiguredMapEvent extends BaseMapEvent {
 	private final Map<Integer, WaveScaleState> waveScaleStates = new HashMap<>();
 	private final Map<Creature, Integer> creatureWaveIndexes = new HashMap<>();
 	private final List<Double> completedWaveClearTimesSec = new ArrayList<>();
+	private final List<CapturePointState> capturePoints = new ArrayList<>();
 	private volatile boolean scriptForceStartRequested;
 	private volatile int activeSpawningWaveIndex = -1;
 
@@ -128,6 +129,7 @@ public class ConfiguredMapEvent extends BaseMapEvent {
 		}
 		waveScaleStates.clear();
 		completedWaveClearTimesSec.clear();
+		initializeCapturePoints();
 		synchronized (creatureWaveIndexes) {
 			creatureWaveIndexes.clear();
 		}
@@ -145,6 +147,7 @@ public class ConfiguredMapEvent extends BaseMapEvent {
 		logger.info(getEventName() + " event ended.");
 		waveScaleStates.clear();
 		completedWaveClearTimesSec.clear();
+		capturePoints.clear();
 		synchronized (creatureWaveIndexes) {
 			creatureWaveIndexes.clear();
 		}
@@ -282,6 +285,100 @@ public class ConfiguredMapEvent extends BaseMapEvent {
 			}
 		}
 		return players;
+	}
+
+	@Override
+	protected void onStatusTick() {
+		if (capturePoints.isEmpty()) {
+			return;
+		}
+		for (CapturePointState capturePoint : capturePoints) {
+			final int playersNearPoint = countActivePlayersAroundPoint(capturePoint,
+					scalingConfig != null ? scalingConfig.getOnlineZoneMinPlayerLevel() : 0,
+					scalingConfig != null ? scalingConfig.getOnlineZoneMaxPlayerLevel() : Integer.MAX_VALUE);
+			capturePoint.tick(playersNearPoint, getCurrentWave());
+		}
+	}
+
+	@Override
+	protected String getCapturePointsStatusPayload() {
+		if (capturePoints.isEmpty()) {
+			return null;
+		}
+		final StringBuilder payload = new StringBuilder();
+		payload.append('[');
+		for (int i = 0; i < capturePoints.size(); i++) {
+			final CapturePointState point = capturePoints.get(i);
+			if (i > 0) {
+				payload.append(',');
+			}
+			payload.append('{')
+					.append("\"pointId\":\"").append(escapeJson(point.getPointId())).append("\",")
+					.append("\"zone\":\"").append(escapeJson(point.getZone())).append("\",")
+					.append("\"x\":").append(point.getX()).append(',')
+					.append("\"y\":").append(point.getY()).append(',')
+					.append("\"radiusTiles\":").append(point.getRadiusTiles()).append(',')
+					.append("\"progressPercent\":").append(point.getProgressPercent()).append(',')
+					.append("\"activeWave\":").append(point.getActiveWave()).append(',')
+					.append("\"completed\":").append(point.isCompleted()).append(',')
+					.append("\"owner\":\"players\",")
+					.append("\"contested\":false,")
+					.append("\"remainingBossWaves\":")
+					.append(Math.max(0, getTotalWaves() - point.getActiveWave()))
+					.append('}');
+		}
+		payload.append(']');
+		return payload.toString();
+	}
+
+	protected List<CapturePointState> createCapturePoints() {
+		return Collections.emptyList();
+	}
+
+	private void initializeCapturePoints() {
+		capturePoints.clear();
+		for (CapturePointState point : createCapturePoints()) {
+			if (point == null) {
+				continue;
+			}
+			point.reset();
+			capturePoints.add(point);
+		}
+	}
+
+	private int countActivePlayersAroundPoint(final CapturePointState point,
+			final int minLevelInclusive, final int maxLevelInclusive) {
+		final StendhalRPZone zone = SingletonRepository.getRPWorld().getZone(point.getZone());
+		if (zone == null) {
+			return 0;
+		}
+		final int minLevel = Math.max(0, minLevelInclusive);
+		final int maxLevel = Math.max(minLevel, maxLevelInclusive);
+		final int radiusSquared = point.getRadiusTiles() * point.getRadiusTiles();
+		int players = 0;
+		for (Player player : zone.getPlayers()) {
+			if (player == null || player.isGhost() || player.isDisconnected()) {
+				continue;
+			}
+			final int level = player.getLevel();
+			if (level < minLevel || level > maxLevel) {
+				continue;
+			}
+			final int dx = player.getX() - point.getX();
+			final int dy = player.getY() - point.getY();
+			if ((dx * dx) + (dy * dy) > radiusSquared) {
+				continue;
+			}
+			players++;
+		}
+		return players;
+	}
+
+	private static String escapeJson(final String value) {
+		if (value == null) {
+			return "";
+		}
+		return value.replace("\\", "\\\\").replace("\"", "\\\"");
 	}
 
 	private WaveScaleState createWaveScaleState(final int waveIndex) {
