@@ -11,10 +11,13 @@
  ***************************************************************************/
 package games.stendhal.client.gui.status;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import games.stendhal.client.StendhalClient;
 import games.stendhal.common.constants.Actions;
@@ -40,7 +43,8 @@ public final class MapEventStatusStore {
 			final Integer remainingSeconds, final Integer totalSeconds,
 			final Integer eventTotalSpawnedCreatures, final Integer eventDefeatedCreatures,
 			final Integer eventDefeatPercent, final Integer currentWave, final Integer totalWaves,
-			final String defenseStatus, final List<String> activityTop, final List<String> zones) {
+			final String defenseStatus, final List<String> activityTop, final List<String> zones,
+			final List<ActiveMapEventStatus.CapturePointStatus> capturePoints) {
 		if ((eventId == null) || eventId.trim().isEmpty()) {
 			return;
 		}
@@ -54,9 +58,12 @@ public final class MapEventStatusStore {
 				|| (eventDefeatPercent == null) || (currentWave == null) || (totalWaves == null)) {
 			return;
 		}
+		final List<ActiveMapEventStatus.CapturePointStatus> validatedCapturePoints =
+				validateCapturePoints(capturePoints, zones);
 		final ActiveMapEventStatus mapped = new ActiveMapEventStatus(eventId, eventName, remainingSeconds.intValue(),
 				totalSeconds.intValue(), eventTotalSpawnedCreatures.intValue(), eventDefeatedCreatures.intValue(),
-				eventDefeatPercent.intValue(), currentWave.intValue(), totalWaves.intValue(), defenseStatus, activityTop, zones);
+				eventDefeatPercent.intValue(), currentWave.intValue(), totalWaves.intValue(), defenseStatus,
+				activityTop, zones, validatedCapturePoints);
 		byEventId.put(eventId, CachedMapEventStatus.active(mapped, nowMillis));
 	}
 
@@ -117,8 +124,58 @@ public final class MapEventStatusStore {
 		if ((status.getRemainingSeconds() < 0) || (status.getRemainingSeconds() > status.getTotalSeconds())) {
 			return false;
 		}
+		for (ActiveMapEventStatus.CapturePointStatus capturePoint : status.getCapturePoints()) {
+			if (!isCapturePointValid(capturePoint, status.getZones())) {
+				return false;
+			}
+		}
 		final long staleAfterMillis = cached.getReceivedAtMillis() + ((long) (status.getRemainingSeconds() + STALE_GRACE_SECONDS) * 1000L);
 		return nowMillis <= staleAfterMillis;
+	}
+
+	private List<ActiveMapEventStatus.CapturePointStatus> validateCapturePoints(
+			final List<ActiveMapEventStatus.CapturePointStatus> capturePoints,
+			final List<String> zones) {
+		if (capturePoints == null || capturePoints.isEmpty()) {
+			return Collections.emptyList();
+		}
+		final Set<String> seenPointIds = new LinkedHashSet<String>();
+		final List<ActiveMapEventStatus.CapturePointStatus> validated = new ArrayList<ActiveMapEventStatus.CapturePointStatus>();
+		for (ActiveMapEventStatus.CapturePointStatus capturePoint : capturePoints) {
+			if (capturePoint == null) {
+				continue;
+			}
+			if (!isCapturePointValid(capturePoint, zones)) {
+				continue;
+			}
+			if (!seenPointIds.add(capturePoint.getPointId())) {
+				continue;
+			}
+			validated.add(capturePoint);
+		}
+		if (validated.isEmpty()) {
+			return Collections.emptyList();
+		}
+		return Collections.unmodifiableList(validated);
+	}
+
+	private boolean isCapturePointValid(final ActiveMapEventStatus.CapturePointStatus capturePoint, final List<String> zones) {
+		if ((capturePoint.getPointId() == null) || capturePoint.getPointId().trim().isEmpty()) {
+			return false;
+		}
+		if ((capturePoint.getZone() == null) || !zones.contains(capturePoint.getZone())) {
+			return false;
+		}
+		if (capturePoint.getRadiusTiles() <= 0) {
+			return false;
+		}
+		if ((capturePoint.getProgressPercent() < 0) || (capturePoint.getProgressPercent() > 100)) {
+			return false;
+		}
+		if (capturePoint.getRemainingBossWaves() < 0) {
+			return false;
+		}
+		return true;
 	}
 
 	private static final class CachedMapEventStatus {
@@ -136,7 +193,8 @@ public final class MapEventStatusStore {
 
 		static CachedMapEventStatus inactive(final String eventId, final long receivedAtMillis) {
 			return new CachedMapEventStatus(new ActiveMapEventStatus(eventId, "", 0, 0, 0, 0, 0,
-					0, 0, "", Collections.<String>emptyList(), Collections.<String>emptyList()),
+					0, 0, "", Collections.<String>emptyList(), Collections.<String>emptyList(),
+					Collections.<ActiveMapEventStatus.CapturePointStatus>emptyList()),
 					receivedAtMillis);
 		}
 
@@ -161,7 +219,8 @@ public final class MapEventStatusStore {
 			return new ActiveMapEventStatus(status.getEventId(), status.getEventName(), projectedRemaining,
 					status.getTotalSeconds(), status.getEventTotalSpawnedCreatures(),
 					status.getEventDefeatedCreatures(), status.getEventDefeatPercent(),
-					status.getCurrentWave(), status.getTotalWaves(), status.getDefenseStatus(), status.getActivityTop(), status.getZones());
+					status.getCurrentWave(), status.getTotalWaves(), status.getDefenseStatus(),
+					status.getActivityTop(), status.getZones(), status.getCapturePoints());
 		}
 
 		long getReceivedAtMillis() {

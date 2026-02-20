@@ -31,12 +31,14 @@ public final class ActiveMapEventStatus {
 	private final String defenseStatus;
 	private final List<String> activityTop;
 	private final List<String> zones;
+	private final List<CapturePointStatus> capturePoints;
 
 	public ActiveMapEventStatus(final String eventId, final String eventName,
 			final int remainingSeconds, final int totalSeconds,
 			final int eventTotalSpawnedCreatures, final int eventDefeatedCreatures,
 			final int eventDefeatPercent, final int currentWave, final int totalWaves,
-			final String defenseStatus, final List<String> activityTop, final List<String> zones) {
+			final String defenseStatus, final List<String> activityTop, final List<String> zones,
+			final List<CapturePointStatus> capturePoints) {
 		this.eventId = eventId;
 		this.eventName = eventName;
 		this.remainingSeconds = remainingSeconds;
@@ -49,6 +51,7 @@ public final class ActiveMapEventStatus {
 		this.defenseStatus = (defenseStatus == null) ? "" : defenseStatus;
 		this.activityTop = Collections.unmodifiableList(new ArrayList<String>(activityTop));
 		this.zones = Collections.unmodifiableList(new ArrayList<String>(zones));
+		this.capturePoints = Collections.unmodifiableList(new ArrayList<CapturePointStatus>(capturePoints));
 	}
 
 	public String getEventId() {
@@ -100,11 +103,77 @@ public final class ActiveMapEventStatus {
 		return zones;
 	}
 
+	public List<CapturePointStatus> getCapturePoints() {
+		return capturePoints;
+	}
+
 	public int getProgressPercent() {
 		if (totalSeconds <= 0) {
 			return 0;
 		}
 		final int elapsed = Math.max(0, totalSeconds - remainingSeconds);
 		return Math.min(100, (int) Math.round(((double) elapsed / (double) totalSeconds) * 100.0d));
+	}
+
+	public static final class CapturePointStatus {
+		private final String pointId;
+		private final String zone;
+		private final int x;
+		private final int y;
+		private final int radiusTiles;
+		private final int progressPercent;
+		private final String ownerFaction;
+		private final boolean contested;
+		private final int remainingBossWaves;
+
+		public CapturePointStatus(final String pointId, final String zone, final int x, final int y,
+				final int radiusTiles, final int progressPercent, final String ownerFaction,
+				final boolean contested, final int remainingBossWaves) {
+			this.pointId = pointId;
+			this.zone = zone;
+			this.x = x;
+			this.y = y;
+			this.radiusTiles = radiusTiles;
+			this.progressPercent = progressPercent;
+			this.ownerFaction = ownerFaction;
+			this.contested = contested;
+			this.remainingBossWaves = remainingBossWaves;
+		}
+
+		public String getPointId() {
+			return pointId;
+		}
+
+		public String getZone() {
+			return zone;
+		}
+
+		public int getX() {
+			return x;
+		}
+
+		public int getY() {
+			return y;
+		}
+
+		public int getRadiusTiles() {
+			return radiusTiles;
+		}
+
+		public int getProgressPercent() {
+			return progressPercent;
+		}
+
+		public String getOwnerFaction() {
+			return ownerFaction;
+		}
+
+		public boolean isContested() {
+			return contested;
+		}
+
+		public int getRemainingBossWaves() {
+			return remainingBossWaves;
+		}
 	}
 }
