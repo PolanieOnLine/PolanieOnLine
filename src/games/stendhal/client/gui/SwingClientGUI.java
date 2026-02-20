@@ -36,8 +36,10 @@ import java.awt.event.FocusEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 import javax.swing.InputMap;
@@ -784,29 +786,13 @@ class SwingClientGUI implements J2DClientGUI {
 
 		final String remaining = formatRemaining(visibleStatus.getRemainingSeconds());
 		final boolean koscieliskoEscort = KOSCIELISKO_ESCORT_EVENT_ID.equals(visibleStatus.getEventId());
-		final String waveLabel = formatWaveLabel(visibleStatus);
-		final String details = koscieliskoEscort
-				? "Czas do końca: " + remaining
-				: waveLabel + " • Czas do końca: " + remaining;
-		final String defenseStatus = visibleStatus.getDefenseStatus();
-		final String defeatProgress = visibleStatus.getEventDefeatPercent() + "% wybitych"
-				+ " (" + visibleStatus.getEventDefeatedCreatures() + "/"
-				+ visibleStatus.getEventTotalSpawnedCreatures() + ")";
-		final int progressPercent = koscieliskoEscort ? visibleStatus.getProgressPercent() : visibleStatus.getEventDefeatPercent();
-		final String value;
-		if (koscieliskoEscort) {
-			value = remaining;
-		} else if (EVENT_HUD_MODE_COMPACT.equals(eventHudMode)) {
-			value = waveLabel + " • " + remaining;
-		} else {
-			value = defeatProgress + ((defenseStatus == null || defenseStatus.trim().isEmpty()) ? "" : " • " + defenseStatus);
-		}
+		final HudDisplayData hudData = buildHudDisplayData(visibleStatus, remaining, koscieliskoEscort);
 		if (eventProgressOverlay.isShowingEvent(visibleStatus.getEventId())) {
-			eventProgressOverlay.updateOverlay(visibleStatus.getEventId(), visibleStatus.getEventName(), details,
-					progressPercent, value);
+			eventProgressOverlay.updateOverlay(visibleStatus.getEventId(), visibleStatus.getEventName(), hudData.details,
+					hudData.progressPercent, hudData.value);
 		} else {
-			eventProgressOverlay.showOverlay(visibleStatus.getEventId(), visibleStatus.getEventName(), details,
-					progressPercent, value);
+			eventProgressOverlay.showOverlay(visibleStatus.getEventId(), visibleStatus.getEventName(), hudData.details,
+					hudData.progressPercent, hudData.value);
 		}
 		eventProgressOverlay.setOverlayAlpha(eventHudOpacity);
 		repositionEventProgressOverlay();
@@ -884,15 +870,120 @@ class SwingClientGUI implements J2DClientGUI {
 		return "Fala " + current + "/" + status.getTotalWaves();
 	}
 
+	private HudDisplayData buildHudDisplayData(final ActiveMapEventStatus status, final String remaining,
+			final boolean koscieliskoEscort) {
+		final ActiveMapEventStatus.CapturePointStatus nearestPoint = resolveNearestCapturePoint(status);
+		if (nearestPoint == null) {
+			return buildLegacyHudDisplayData(status, remaining, koscieliskoEscort);
+		}
+
+		final String nearestLabel = formatCapturePointLabel(nearestPoint);
+		final int nearestPercent = nearestPoint.getProgressPercent();
+		if (EVENT_HUD_MODE_COMPACT.equals(eventHudMode)) {
+			return new HudDisplayData("", nearestPercent,
+					"Czas: " + remaining + " • " + nearestLabel + " " + nearestPercent + "%");
+		}
+
+		final String remainingPoints = formatRemainingCapturePoints(status, nearestPoint);
+		final String details = "Czas do końca: " + remaining
+				+ (remainingPoints.isEmpty() ? "" : " • Pozostałe: " + remainingPoints);
+		return new HudDisplayData(details, nearestPercent,
+				"Aktywny punkt: " + nearestLabel + " • " + nearestPercent + "%");
+	}
+
+	private HudDisplayData buildLegacyHudDisplayData(final ActiveMapEventStatus status, final String remaining,
+			final boolean koscieliskoEscort) {
+		final String waveLabel = formatWaveLabel(status);
+		final String details = koscieliskoEscort
+				? "Czas do końca: " + remaining
+				: waveLabel + " • Czas do końca: " + remaining;
+		final String defenseStatus = status.getDefenseStatus();
+		final String defeatProgress = status.getEventDefeatPercent() + "% wybitych"
+				+ " (" + status.getEventDefeatedCreatures() + "/"
+				+ status.getEventTotalSpawnedCreatures() + ")";
+		final int progressPercent = koscieliskoEscort ? status.getProgressPercent() : status.getEventDefeatPercent();
+		final String value;
+		if (koscieliskoEscort) {
+			value = remaining;
+		} else if (EVENT_HUD_MODE_COMPACT.equals(eventHudMode)) {
+			value = waveLabel + " • " + remaining;
+		} else {
+			value = defeatProgress + ((defenseStatus == null || defenseStatus.trim().isEmpty()) ? "" : " • " + defenseStatus);
+		}
+		return new HudDisplayData(details, progressPercent, value);
+	}
+
+	private ActiveMapEventStatus.CapturePointStatus resolveNearestCapturePoint(final ActiveMapEventStatus status) {
+		if (User.isNull()) {
+			return null;
+		}
+		final User player = User.get();
+		return status.findNearestCapturePoint(player.getZoneName(), player.getX(), player.getY());
+	}
+
+	private String formatRemainingCapturePoints(final ActiveMapEventStatus status,
+			final ActiveMapEventStatus.CapturePointStatus activePoint) {
+		final java.util.List<ActiveMapEventStatus.CapturePointStatus> points = status.getCapturePoints();
+		if (points.isEmpty()) {
+			return "";
+		}
+		final StringBuilder remaining = new StringBuilder();
+		int listed = 0;
+		for (ActiveMapEventStatus.CapturePointStatus capturePoint : points) {
+			if ((activePoint != null) && isSameCapturePoint(capturePoint, activePoint)) {
+				continue;
+			}
+			if (listed > 0) {
+				remaining.append(", ");
+			}
+			remaining.append(formatCapturePointLabel(capturePoint)).append(" ")
+					.append(capturePoint.getProgressPercent()).append("%");
+			listed++;
+			if (listed >= 3) {
+				break;
+			}
+		}
+		return remaining.toString();
+	}
+
+
+	private boolean isSameCapturePoint(final ActiveMapEventStatus.CapturePointStatus left,
+			final ActiveMapEventStatus.CapturePointStatus right) {
+		final String leftId = (left == null) ? null : left.getPointId();
+		final String rightId = (right == null) ? null : right.getPointId();
+		if (leftId == null || rightId == null) {
+			return false;
+		}
+		return leftId.equals(rightId);
+	}
+
+	private String formatCapturePointLabel(final ActiveMapEventStatus.CapturePointStatus capturePoint) {
+		if (capturePoint == null || capturePoint.getPointId() == null || capturePoint.getPointId().trim().isEmpty()) {
+			return "Punkt";
+		}
+		return capturePoint.getPointId();
+	}
+
+	private static final class HudDisplayData {
+		private final String details;
+		private final int progressPercent;
+		private final String value;
+
+		private HudDisplayData(final String details, final int progressPercent, final String value) {
+			this.details = details;
+			this.progressPercent = progressPercent;
+			this.value = value;
+		}
+	}
 
 	private void updateEventActivityOverlay(final ActiveMapEventStatus status) {
-		final java.util.List<String> rows = mapActivityRows(status.getActivityTop());
+		final List<String> rows = mapActivityRows(status.getActivityTop());
 		eventActivityOverlay.updateRows(rows);
 		repositionEventActivityOverlay();
 	}
 
-	private java.util.List<String> mapActivityRows(final java.util.List<String> rawRows) {
-		final java.util.List<String> mapped = new java.util.ArrayList<String>();
+	private List<String> mapActivityRows(final List<String> rawRows) {
+		final List<String> mapped = new ArrayList<String>();
 		for (String row : rawRows) {
 			if (row == null || row.trim().isEmpty()) {
 				continue;
