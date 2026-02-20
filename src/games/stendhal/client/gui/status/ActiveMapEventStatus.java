@@ -107,6 +107,46 @@ public final class ActiveMapEventStatus {
 		return capturePoints;
 	}
 
+	public CapturePointStatus findNearestCapturePoint(final String playerZone, final double playerX,
+			final double playerY) {
+		if (capturePoints.isEmpty()) {
+			return null;
+		}
+		CapturePointStatus nearestInZone = null;
+		double nearestInZoneDistance = Double.MAX_VALUE;
+		CapturePointStatus nearestAny = null;
+		double nearestAnyDistance = Double.MAX_VALUE;
+		for (CapturePointStatus capturePoint : capturePoints) {
+			final double distanceSquared = squaredDistance(playerX, playerY, capturePoint.x, capturePoint.y);
+			if (distanceSquared < nearestAnyDistance) {
+				nearestAny = capturePoint;
+				nearestAnyDistance = distanceSquared;
+			}
+			if (!isSameZone(playerZone, capturePoint.zone)) {
+				continue;
+			}
+			if (distanceSquared < nearestInZoneDistance) {
+				nearestInZone = capturePoint;
+				nearestInZoneDistance = distanceSquared;
+			}
+		}
+		return (nearestInZone != null) ? nearestInZone : nearestAny;
+	}
+
+	private static boolean isSameZone(final String left, final String right) {
+		if (left == null || right == null) {
+			return false;
+		}
+		return left.equalsIgnoreCase(right);
+	}
+
+	private static double squaredDistance(final double fromX, final double fromY, final double toX,
+			final double toY) {
+		final double dx = fromX - toX;
+		final double dy = fromY - toY;
+		return (dx * dx) + (dy * dy);
+	}
+
 	public int getProgressPercent() {
 		if (totalSeconds <= 0) {
 			return 0;
