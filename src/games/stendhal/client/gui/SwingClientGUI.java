@@ -869,19 +869,19 @@ class SwingClientGUI implements J2DClientGUI {
 
 	private HudDisplayData buildHudDisplayData(final ActiveMapEventStatus status, final String remaining,
 			final boolean koscieliskoEscort) {
-		final ActiveMapEventStatus.CapturePointStatus nearestPoint = resolveNearestCapturePoint(status);
-		if (nearestPoint == null) {
+		final ActiveMapEventStatus.CapturePointStatus activePoint = resolveActiveCapturePoint(status);
+		if (activePoint == null) {
 			return buildLegacyHudDisplayData(status, remaining, koscieliskoEscort);
 		}
 
-		final String nearestLabel = formatCapturePointLabel(nearestPoint);
-		final int nearestPercent = nearestPoint.getProgressPercent();
+		final String nearestLabel = formatCapturePointLabel(activePoint);
+		final int nearestPercent = activePoint.getProgressPercent();
 		if (EVENT_HUD_MODE_COMPACT.equals(eventHudMode)) {
 			return new HudDisplayData("", nearestPercent,
 					"Czas: " + remaining + " • " + nearestLabel + " " + nearestPercent + "%");
 		}
 
-		final String remainingPoints = formatRemainingCapturePoints(status, nearestPoint);
+		final String remainingPoints = formatRemainingCapturePoints(status, activePoint);
 		final String details = "Czas do końca: " + remaining
 				+ (remainingPoints.isEmpty() ? "" : " • Pozostałe: " + remainingPoints);
 		return new HudDisplayData(details, nearestPercent,
@@ -910,17 +910,22 @@ class SwingClientGUI implements J2DClientGUI {
 		return new HudDisplayData(details, progressPercent, value);
 	}
 
-	private ActiveMapEventStatus.CapturePointStatus resolveNearestCapturePoint(final ActiveMapEventStatus status) {
+	private ActiveMapEventStatus.CapturePointStatus resolveActiveCapturePoint(final ActiveMapEventStatus status) {
 		if (User.isNull()) {
 			return null;
 		}
 		final User player = User.get();
-		return status.findNearestCapturePoint(player.getZoneName(), player.getX(), player.getY());
+		final ActiveMapEventStatus.CapturePointStatus nearestPoint = status.findNearestCapturePoint(
+				player.getZoneName(), player.getX(), player.getY());
+		if (!ActiveMapEventStatus.isInsideCapturePoint(player.getZoneName(), player.getX(), player.getY(), nearestPoint)) {
+			return null;
+		}
+		return nearestPoint;
 	}
 
 	private String formatRemainingCapturePoints(final ActiveMapEventStatus status,
 			final ActiveMapEventStatus.CapturePointStatus activePoint) {
-		final java.util.List<ActiveMapEventStatus.CapturePointStatus> points = status.getCapturePoints();
+		final List<ActiveMapEventStatus.CapturePointStatus> points = status.getCapturePoints();
 		if (points.isEmpty()) {
 			return "";
 		}

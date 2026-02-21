@@ -133,6 +133,16 @@ public final class ActiveMapEventStatus {
 		return (nearestInZone != null) ? nearestInZone : nearestAny;
 	}
 
+	public static boolean isInsideCapturePoint(final String playerZone, final double playerX,
+			final double playerY, final CapturePointStatus point) {
+		if (point == null || !isSameZone(playerZone, point.zone)) {
+			return false;
+		}
+		final int radius = Math.max(0, point.radiusTiles);
+		final double radiusSquared = radius * radius;
+		return squaredDistance(playerX, playerY, point.x, point.y) <= radiusSquared;
+	}
+
 	private static boolean isSameZone(final String left, final String right) {
 		if (left == null || right == null) {
 			return false;
