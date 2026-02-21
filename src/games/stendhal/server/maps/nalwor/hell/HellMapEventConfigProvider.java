@@ -32,6 +32,10 @@ public class HellMapEventConfigProvider implements MapEventConfigProvider {
 	}
 
 	private MapEventConfig createHellCaptureAssaultConfig() {
+		final Map<String, Double> zoneSpawnMultipliers = new LinkedHashMap<>();
+		zoneSpawnMultipliers.put("hell", 1.0d);
+		final Map<String, Integer> zoneSpawnCaps = new LinkedHashMap<>();
+		zoneSpawnCaps.put("hell", 200);
 		final String defaultStartTime = MapEventConfigSupport.validatedDefaultStartTime("21:00", HELL_CAPTURE_ASSAULT);
 		final int defaultIntervalDays = MapEventConfigSupport.validatedDefaultIntervalDays(2, HELL_CAPTURE_ASSAULT);
 
@@ -45,6 +49,8 @@ public class HellMapEventConfigProvider implements MapEventConfigProvider {
 				.startAnnouncement("Szturm Piekła rozpoczęty! Przejmijcie punkt i przetrwajcie fale.")
 				.stopAnnouncement("Szturm Piekła zakończony. Piekielne zastępy wycofują się.")
 				.announcementIntervalSeconds(420)
+				.zoneSpawnMultipliers(zoneSpawnMultipliers)
+				.zoneSpawnCaps(zoneSpawnCaps)
 				.defaultStartTime(defaultStartTime)
 				.defaultIntervalDays(defaultIntervalDays)
 				.capturePoints(Arrays.asList(
@@ -53,29 +59,35 @@ public class HellMapEventConfigProvider implements MapEventConfigProvider {
 						MapEventConfigSupport.capturePoint("hell_blood_crossroads", "hell", 30, 30, 7),
 						MapEventConfigSupport.capturePoint("hell_crystal_front", "hell", 112, 100, 8)))
 				.captureProgressWaves(MapEventConfigSupport.captureProgressWaves(
+						// Soft waves: maintain constant pressure from the first threshold.
 						MapEventConfigSupport.captureProgressWave(20,
-								MapEventConfigSupport.spawn("czart", 5),
-								MapEventConfigSupport.spawn("śmierć", 2)),
+								MapEventConfigSupport.spawn("czart", 7),
+								MapEventConfigSupport.spawn("śmierć", 3)),
+						// Medium waves: +30-60% population versus previous tuning.
 						MapEventConfigSupport.captureProgressWave(40,
-								MapEventConfigSupport.spawn("kostucha różowa", 4),
-								MapEventConfigSupport.spawn("kostucha wielka", 2),
-								MapEventConfigSupport.spawn("czart", 2)),
-						MapEventConfigSupport.captureProgressWave(60,
-								MapEventConfigSupport.spawn("kostucha różowa", 5),
-								MapEventConfigSupport.spawn("kostucha wielka", 3),
-								MapEventConfigSupport.spawn("kostucha złota wielka", 1),
-								MapEventConfigSupport.spawn("chaos lord", 2)),
-						MapEventConfigSupport.captureProgressWave(80,
-								MapEventConfigSupport.spawn("kostucha wielka", 4),
-								MapEventConfigSupport.spawn("kostucha złota wielka", 2),
-								MapEventConfigSupport.spawn("kostucha różowa wielka", 2),
-								MapEventConfigSupport.spawn("chaos lord", 3)),
-						MapEventConfigSupport.captureProgressWave(100,
-								MapEventConfigSupport.spawn("kostucha wielka", 5),
-								MapEventConfigSupport.spawn("kostucha złota wielka", 3),
-								MapEventConfigSupport.spawn("kostucha różowa wielka", 3),
 								MapEventConfigSupport.spawn("kostucha różowa", 6),
-								MapEventConfigSupport.spawn("złota śmierć", 2))))
+								MapEventConfigSupport.spawn("kostucha", 3),
+								MapEventConfigSupport.spawn("czart", 3)),
+						MapEventConfigSupport.captureProgressWave(60,
+								MapEventConfigSupport.spawn("kostucha różowa", 7),
+								MapEventConfigSupport.spawn("kostucha", 4),
+								MapEventConfigSupport.spawn("kostucha złota", 2),
+								MapEventConfigSupport.spawn("chaos lord", 3)),
+						// Hard wave: larger mixed packs with extra elites.
+						MapEventConfigSupport.captureProgressWave(80,
+								MapEventConfigSupport.spawn("kostucha wielka", 6),
+								MapEventConfigSupport.spawn("kostucha złota", 3),
+								MapEventConfigSupport.spawn("kostucha różowa wielka", 3),
+								MapEventConfigSupport.spawn("chaos lord", 4),
+								MapEventConfigSupport.spawn("złota śmierć", 1)),
+						// Finale: explicit difficulty spike with heavy elite composition.
+						MapEventConfigSupport.captureProgressWave(100,
+								MapEventConfigSupport.spawn("kostucha wielka", 8),
+								MapEventConfigSupport.spawn("kostucha złota wielka", 5),
+								MapEventConfigSupport.spawn("kostucha różowa wielka", 5),
+								MapEventConfigSupport.spawn("kostucha różowa", 8),
+								MapEventConfigSupport.spawn("chaos lord", 5),
+								MapEventConfigSupport.spawn("złota śmierć", 4))))
 				.build();
 	}
 }
