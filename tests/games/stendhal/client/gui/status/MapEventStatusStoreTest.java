@@ -1,7 +1,7 @@
 /***************************************************************************
- *                    Copyright © 2026 - PolanieOnLine                    *
- ***************************************************************************/
-/***************************************************************************
+ *                     Copyright © 2026 - PolanieOnLine                    *
+ ***************************************************************************
+ ***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -26,7 +26,8 @@ public class MapEventStatusStoreTest {
 		store.updateStatus("event-projection", "Test", true, Integer.valueOf(3), Integer.valueOf(10),
 				Integer.valueOf(12), Integer.valueOf(6), Integer.valueOf(50),
 				Integer.valueOf(1), Integer.valueOf(4), "Obrona w toku",
-				Collections.<String>emptyList(), Collections.singletonList("0_test_zone"));
+				Collections.<String>emptyList(), Collections.singletonList("0_test_zone"),
+				Collections.<ActiveMapEventStatus.CapturePointStatus>emptyList());
 
 		Thread.sleep(1200L);
 
