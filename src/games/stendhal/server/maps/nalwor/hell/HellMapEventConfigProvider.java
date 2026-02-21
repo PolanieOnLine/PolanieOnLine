@@ -54,19 +54,28 @@ public class HellMapEventConfigProvider implements MapEventConfigProvider {
 						MapEventConfigSupport.capturePoint("hell_crystal_front", "hell", 112, 100, 8)))
 				.captureProgressWaves(MapEventConfigSupport.captureProgressWaves(
 						MapEventConfigSupport.captureProgressWave(20,
-								MapEventConfigSupport.spawn("czart", 4),
+								MapEventConfigSupport.spawn("czart", 5),
 								MapEventConfigSupport.spawn("śmierć", 2)),
 						MapEventConfigSupport.captureProgressWave(40,
-								MapEventConfigSupport.spawn("kostucha", 4),
-								MapEventConfigSupport.spawn("czart", 3)),
+								MapEventConfigSupport.spawn("kostucha różowa", 4),
+								MapEventConfigSupport.spawn("kostucha wielka", 2),
+								MapEventConfigSupport.spawn("czart", 2)),
 						MapEventConfigSupport.captureProgressWave(60,
-								MapEventConfigSupport.spawn("kostucha", 5),
+								MapEventConfigSupport.spawn("kostucha różowa", 5),
+								MapEventConfigSupport.spawn("kostucha wielka", 3),
+								MapEventConfigSupport.spawn("kostucha złota wielka", 1),
 								MapEventConfigSupport.spawn("chaos lord", 2)),
 						MapEventConfigSupport.captureProgressWave(80,
-								MapEventConfigSupport.spawn("śmierć", 4),
+								MapEventConfigSupport.spawn("kostucha wielka", 4),
+								MapEventConfigSupport.spawn("kostucha złota wielka", 2),
+								MapEventConfigSupport.spawn("kostucha różowa wielka", 2),
 								MapEventConfigSupport.spawn("chaos lord", 3)),
 						MapEventConfigSupport.captureProgressWave(100,
-								MapEventConfigSupport.spawn("złota śmierć", 1))))
+								MapEventConfigSupport.spawn("kostucha wielka", 5),
+								MapEventConfigSupport.spawn("kostucha złota wielka", 3),
+								MapEventConfigSupport.spawn("kostucha różowa wielka", 3),
+								MapEventConfigSupport.spawn("kostucha różowa", 6),
+								MapEventConfigSupport.spawn("złota śmierć", 2))))
 				.build();
 	}
 }
