@@ -20,6 +20,7 @@ import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 
@@ -44,6 +45,7 @@ public class ConfiguredMapEvent extends BaseMapEvent {
 	private final Map<Creature, Integer> creatureWaveIndexes = new HashMap<>();
 	private final List<Double> completedWaveClearTimesSec = new ArrayList<>();
 	private final List<CapturePointState> capturePoints = new ArrayList<>();
+	private final Map<String, Integer> captureSecondsByPlayer = new HashMap<>();
 	private volatile boolean scriptForceStartRequested;
 	private volatile int activeSpawningWaveIndex = -1;
 
@@ -137,6 +139,7 @@ public class ConfiguredMapEvent extends BaseMapEvent {
 		waveScaleStates.clear();
 		completedWaveClearTimesSec.clear();
 		initializeCapturePoints();
+		captureSecondsByPlayer.clear();
 		synchronized (creatureWaveIndexes) {
 			creatureWaveIndexes.clear();
 		}
@@ -158,6 +161,7 @@ public class ConfiguredMapEvent extends BaseMapEvent {
 		waveScaleStates.clear();
 		completedWaveClearTimesSec.clear();
 		capturePoints.clear();
+		captureSecondsByPlayer.clear();
 		synchronized (creatureWaveIndexes) {
 			creatureWaveIndexes.clear();
 		}
@@ -303,12 +307,35 @@ public class ConfiguredMapEvent extends BaseMapEvent {
 			return;
 		}
 		for (CapturePointState capturePoint : capturePoints) {
-			final int playersNearPoint = countActivePlayersAroundPoint(capturePoint,
+			final List<String> activePlayerNamesNearPoint = getActivePlayerNamesAroundPoint(capturePoint,
 					scalingConfig != null ? scalingConfig.getOnlineZoneMinPlayerLevel() : 0,
 					scalingConfig != null ? scalingConfig.getOnlineZoneMaxPlayerLevel() : Integer.MAX_VALUE);
+			final int playersNearPoint = activePlayerNamesNearPoint.size();
+			if (!capturePoint.isCompleted() && playersNearPoint > 0) {
+				for (String playerName : activePlayerNamesNearPoint) {
+					captureSecondsByPlayer.merge(playerName, 1, Integer::sum);
+				}
+			}
 			capturePoint.tick(playersNearPoint, getCurrentWave());
 			captureProgressTrigger.evaluate(capturePoint, this::spawnCaptureProgressWave);
 		}
+	}
+
+	@Override
+	protected List<String> getActivityTop() {
+		return captureSecondsByPlayer.entrySet().stream()
+				.sorted((left, right) -> {
+					final int leftPoints = left.getValue() / 10;
+					final int rightPoints = right.getValue() / 10;
+					final int pointsCompare = Integer.compare(rightPoints, leftPoints);
+					if (pointsCompare != 0) {
+						return pointsCompare;
+					}
+					return left.getKey().compareToIgnoreCase(right.getKey());
+				})
+				.limit(10)
+				.map(entry -> entry.getKey() + "::" + (entry.getValue() / 10))
+				.collect(Collectors.toList());
 	}
 
 	@Override
@@ -405,16 +432,16 @@ public class ConfiguredMapEvent extends BaseMapEvent {
 				creature -> registerEventCreature(creature));
 	}
 
-	private int countActivePlayersAroundPoint(final CapturePointState point,
+	protected List<String> getActivePlayerNamesAroundPoint(final CapturePointState point,
 			final int minLevelInclusive, final int maxLevelInclusive) {
 		final StendhalRPZone zone = SingletonRepository.getRPWorld().getZone(point.getZone());
 		if (zone == null) {
-			return 0;
+			return Collections.emptyList();
 		}
 		final int minLevel = Math.max(0, minLevelInclusive);
 		final int maxLevel = Math.max(minLevel, maxLevelInclusive);
 		final int radiusSquared = point.getRadiusTiles() * point.getRadiusTiles();
-		int players = 0;
+		final List<String> players = new ArrayList<>();
 		for (Player player : zone.getPlayers()) {
 			if (player == null || player.isGhost() || player.isDisconnected()) {
 				continue;
@@ -428,7 +455,9 @@ public class ConfiguredMapEvent extends BaseMapEvent {
 			if ((dx * dx) + (dy * dy) > radiusSquared) {
 				continue;
 			}
-			players++;
+			if (player.getName() != null && !player.getName().trim().isEmpty()) {
+				players.add(player.getName());
+			}
 		}
 		return players;
 	}
