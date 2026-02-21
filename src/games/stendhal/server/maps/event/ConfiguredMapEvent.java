@@ -416,19 +416,16 @@ public class ConfiguredMapEvent extends BaseMapEvent {
 			return;
 		}
 
-		final MapEventSpawnStrategy.SpawnAnchor captureAnchor = new MapEventSpawnStrategy.SpawnAnchor(
-				zoneName,
-				capturePoint.getX(),
-				capturePoint.getY(),
-				Math.max(0, capturePoint.getRadiusTiles() + 1),
-				Math.max(0, capturePoint.getRadiusTiles() + CAPTURE_WAVE_SPAWN_RING_PADDING_TILES));
-
 		spawnStrategy.spawnCreatures(
 				getEventName(),
 				Collections.singletonList(zoneName),
 				creatureName,
 				finalSpawnCount,
-				captureAnchor,
+				zoneName,
+				capturePoint.getX(),
+				capturePoint.getY(),
+				Math.max(0, capturePoint.getRadiusTiles() + 1),
+				Math.max(0, capturePoint.getRadiusTiles() + CAPTURE_WAVE_SPAWN_RING_PADDING_TILES),
 				creature -> registerEventCreature(creature));
 	}
 

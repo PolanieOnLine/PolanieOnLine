@@ -25,6 +25,15 @@ public interface MapEventSpawnStrategy {
 		spawnCreatures(eventName, zones, creatureName, count, spawnedCreatureHandler);
 	}
 
+	default void spawnCreatures(final String eventName, final List<String> zones, final String creatureName,
+			final int count, final String zone, final int centerX, final int centerY,
+			final int minRadius, final int maxRadius,
+			final SpawnedCreatureHandler spawnedCreatureHandler) {
+		spawnCreatures(eventName, zones, creatureName, count,
+				new SpawnAnchor(zone, centerX, centerY, minRadius, maxRadius),
+				spawnedCreatureHandler);
+	}
+
 	final class SpawnAnchor {
 		private final String zone;
 		private final int centerX;
