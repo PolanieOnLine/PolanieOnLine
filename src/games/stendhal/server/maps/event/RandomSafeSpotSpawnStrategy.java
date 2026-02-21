@@ -54,6 +54,15 @@ public class RandomSafeSpotSpawnStrategy implements MapEventSpawnStrategy {
 		}
 	}
 
+	@Override
+	public void spawnCreatures(final String eventName, final List<String> zones, final String creatureName,
+			final int count, final String zone, final int centerX, final int centerY,
+			final int minRadius, final int maxRadius, final SpawnedCreatureHandler spawnedCreatureHandler) {
+		spawnCreatures(eventName, zones, creatureName, count,
+				new SpawnAnchor(zone, centerX, centerY, minRadius, maxRadius),
+				spawnedCreatureHandler);
+	}
+
 	private void spawnCreaturesInZone(final String eventName, final String zoneName, final String creatureName,
 			final int count, final SpawnAnchor spawnAnchor, final SpawnedCreatureHandler spawnedCreatureHandler) {
 		for (int i = 0; i < count; i++) {
@@ -91,6 +100,7 @@ public class RandomSafeSpotSpawnStrategy implements MapEventSpawnStrategy {
 					break;
 				}
 				if (tryPlaceCreature(zone, creature, anchoredPoint[0], anchoredPoint[1], centerAnchor)) {
+					logAnchorDistance(eventName, zoneName, anchoredPoint[0], anchoredPoint[1], spawnAnchor, false);
 					return true;
 				}
 			}
@@ -100,11 +110,27 @@ public class RandomSafeSpotSpawnStrategy implements MapEventSpawnStrategy {
 			final int x = Rand.rand(zone.getWidth());
 			final int y = Rand.rand(zone.getHeight());
 			if (tryPlaceCreature(zone, creature, x, y, centerAnchor)) {
+				logAnchorDistance(eventName, zoneName, x, y, spawnAnchor, true);
 				return true;
 			}
 		}
 		logger.debug(eventName + " spawn failed after attempts for " + creature.getName() + ".");
 		return false;
+	}
+
+	private void logAnchorDistance(final String eventName, final String zoneName, final int x, final int y,
+			final SpawnAnchor spawnAnchor, final boolean fallbackGlobal) {
+		if (spawnAnchor == null || !zoneName.equals(spawnAnchor.getZone())) {
+			return;
+		}
+		final int dx = x - spawnAnchor.getCenterX();
+		final int dy = y - spawnAnchor.getCenterY();
+		final double distance = Math.sqrt((dx * (double) dx) + (dy * (double) dy));
+		logger.debug(eventName + " spawn distance from capture point in zone " + zoneName
+				+ ": distance=" + String.format("%.2f", distance)
+				+ ", minRadius=" + spawnAnchor.getMinRadius()
+				+ ", maxRadius=" + spawnAnchor.getMaxRadius()
+				+ ", mode=" + (fallbackGlobal ? "global-fallback" : "anchored") + ".");
 	}
 
 	private static int[] pickAnchoredPoint(final StendhalRPZone zone, final SpawnAnchor spawnAnchor) {
