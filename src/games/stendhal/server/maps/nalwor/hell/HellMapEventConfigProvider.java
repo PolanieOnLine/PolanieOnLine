@@ -48,7 +48,10 @@ public class HellMapEventConfigProvider implements MapEventConfigProvider {
 				.defaultStartTime(defaultStartTime)
 				.defaultIntervalDays(defaultIntervalDays)
 				.capturePoints(Arrays.asList(
-						MapEventConfigSupport.capturePoint("hell_core", "hell", 50, 50, 9)))
+						MapEventConfigSupport.capturePoint("hell_core", "hell", 50, 50, 9),
+						MapEventConfigSupport.capturePoint("hell_reaper_gate", "hell", 64, 76, 7),
+						MapEventConfigSupport.capturePoint("hell_blood_crossroads", "hell", 30, 30, 7),
+						MapEventConfigSupport.capturePoint("hell_crystal_front", "hell", 112, 100, 8)))
 				.captureProgressWaves(MapEventConfigSupport.captureProgressWaves(
 						MapEventConfigSupport.captureProgressWave(20,
 								MapEventConfigSupport.spawn("czart", 4),
