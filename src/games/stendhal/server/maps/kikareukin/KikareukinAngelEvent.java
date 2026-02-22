@@ -87,18 +87,8 @@ public final class KikareukinAngelEvent extends ConfiguredMapEvent {
 	}
 
 	private void recordPlayersInEventZones() {
-		if (!isEventActive()) {
-			return;
-		}
-		for (final String zoneName : getZones()) {
-			final StendhalRPZone zone = SingletonRepository.getRPWorld().getZone(zoneName);
-			if (zone == null) {
-				continue;
-			}
-			for (final Player player : zone.getPlayers()) {
-				contributionTracker.recordTimeInZone(player.getName(), ACTIVITY_SAMPLE_INTERVAL_SECONDS);
-			}
-		}
+		// Presence time no longer contributes to reward qualification/ranking.
+		// This sampling hook is intentionally kept as a no-op for future telemetry reuse.
 	}
 
 	@Override

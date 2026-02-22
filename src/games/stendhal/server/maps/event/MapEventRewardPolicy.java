@@ -81,13 +81,13 @@ public final class MapEventRewardPolicy {
 				.minDamage(300)
 				.minKillAssists(2)
 				.minObjectiveActions(8)
-				.minTimeInZoneSeconds(120)
+				.minTimeInZoneSeconds(0)
 				.antiAfkWindowSeconds(30)
 				.minScorePerWindow(1.25d)
 				.damageWeight(0.01d)
 				.assistWeight(2.0d)
 				.objectiveWeight(1.0d)
-				.zoneTimeWeight(0.05d)
+				.zoneTimeWeight(0.0d)
 				.diminishingWindow(Duration.ofMinutes(30))
 				.diminishingFactorPerExtraRun(0.25d)
 				.minRewardMultiplier(0.35d)
@@ -134,11 +134,13 @@ public final class MapEventRewardPolicy {
 
 		final boolean reachedHardThresholds = adjustedContributionValue(contribution.getDamage(), levelScoreMultiplier) >= minDamage
 				|| adjustedContributionValue(contribution.getKillAssists(), levelScoreMultiplier) >= minKillAssists
-				|| adjustedContributionValue(contribution.getObjectiveActions(), levelScoreMultiplier) >= minObjectiveActions
-				|| adjustedContributionValue(contribution.getTimeInZoneSeconds(), levelScoreMultiplier) >= minTimeInZoneSeconds;
-		final int windows = Math.max(1, contribution.getTimeInZoneSeconds() / Math.max(1, antiAfkWindowSeconds));
+				|| adjustedContributionValue(contribution.getObjectiveActions(), levelScoreMultiplier) >= minObjectiveActions;
+		final int actionableContributionUnits = Math.max(0, contribution.getDamage())
+				+ (Math.max(0, contribution.getKillAssists()) * 100)
+				+ (Math.max(0, contribution.getObjectiveActions()) * 100);
+		final int windows = Math.max(1, actionableContributionUnits / Math.max(1, antiAfkWindowSeconds));
 		final double scorePerWindow = adjustedTotalScore / windows;
-		final boolean antiAfkPassed = scorePerWindow >= minScorePerWindow;
+		final boolean antiAfkPassed = actionableContributionUnits > 0 && scorePerWindow >= minScorePerWindow;
 		final boolean qualified = reachedHardThresholds && antiAfkPassed;
 		final boolean fullParticipation = playerLevel >= minFullParticipationLevel;
 		final boolean primaryRewardEligible = playerLevel <= maxPrimaryRewardLevel;
@@ -346,7 +348,7 @@ public final class MapEventRewardPolicy {
 		private double damageWeight = 1.0d;
 		private double assistWeight = 1.0d;
 		private double objectiveWeight = 1.0d;
-		private double zoneTimeWeight = 1.0d;
+		private double zoneTimeWeight = 0.0d;
 		private Duration diminishingWindow = Duration.ofMinutes(30);
 		private double diminishingFactorPerExtraRun = 0.2d;
 		private double minRewardMultiplier = 0.4d;
