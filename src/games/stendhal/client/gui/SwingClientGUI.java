@@ -881,9 +881,7 @@ class SwingClientGUI implements J2DClientGUI {
 					"Czas: " + remaining + " • " + nearestLabel + " " + nearestPercent + "%");
 		}
 
-		final String remainingPoints = formatRemainingCapturePoints(status, activePoint);
-		final String details = "Czas do końca: " + remaining
-				+ (remainingPoints.isEmpty() ? "" : " • Pozostałe: " + remainingPoints);
+		final String details = "Czas do końca: " + remaining;
 		return new HudDisplayData(details, nearestPercent,
 				"Aktywny punkt: " + nearestLabel + " • " + nearestPercent + "%");
 	}
@@ -915,48 +913,21 @@ class SwingClientGUI implements J2DClientGUI {
 			return null;
 		}
 		final User player = User.get();
-		final ActiveMapEventStatus.CapturePointStatus nearestPoint = status.findNearestCapturePoint(
-				player.getZoneName(), player.getX(), player.getY());
-		if (!ActiveMapEventStatus.isInsideCapturePoint(player.getZoneName(), player.getX(), player.getY(), nearestPoint)) {
-			return null;
-		}
-		return nearestPoint;
-	}
-
-	private String formatRemainingCapturePoints(final ActiveMapEventStatus status,
-			final ActiveMapEventStatus.CapturePointStatus activePoint) {
-		final List<ActiveMapEventStatus.CapturePointStatus> points = status.getCapturePoints();
-		if (points.isEmpty()) {
-			return "";
-		}
-		final StringBuilder remaining = new StringBuilder();
-		int listed = 0;
-		for (ActiveMapEventStatus.CapturePointStatus capturePoint : points) {
-			if ((activePoint != null) && isSameCapturePoint(capturePoint, activePoint)) {
+		for (ActiveMapEventStatus.CapturePointStatus capturePoint : status.getCapturePoints()) {
+			if (!ActiveMapEventStatus.isInsideCapturePoint(player.getZoneName(), player.getX(), player.getY(), capturePoint)) {
 				continue;
 			}
-			if (listed > 0) {
-				remaining.append(", ");
+			if (!isCapturePointInProgress(capturePoint)) {
+				continue;
 			}
-			remaining.append(formatCapturePointLabel(capturePoint)).append(" ")
-					.append(capturePoint.getProgressPercent()).append("%");
-			listed++;
-			if (listed >= 3) {
-				break;
-			}
+			return capturePoint;
 		}
-		return remaining.toString();
+		return null;
 	}
 
-
-	private boolean isSameCapturePoint(final ActiveMapEventStatus.CapturePointStatus left,
-			final ActiveMapEventStatus.CapturePointStatus right) {
-		final String leftId = (left == null) ? null : left.getPointId();
-		final String rightId = (right == null) ? null : right.getPointId();
-		if (leftId == null || rightId == null) {
-			return false;
-		}
-		return leftId.equals(rightId);
+	private boolean isCapturePointInProgress(final ActiveMapEventStatus.CapturePointStatus capturePoint) {
+		final int progress = capturePoint.getProgressPercent();
+		return progress > 0 && progress < 100;
 	}
 
 	private String formatCapturePointLabel(final ActiveMapEventStatus.CapturePointStatus capturePoint) {
