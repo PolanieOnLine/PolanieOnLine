@@ -720,7 +720,7 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 			if (player == null || player.getZone() == null || player.getZone() != currentGiant.getZone()) {
 				continue;
 			}
-			contributionTracker.recordTimeInZone(player.getName(), ACTIVITY_SAMPLE_INTERVAL_SECONDS);
+			// Presence-only tracking removed from contribution scoring.
 
 			final PlayerSnapshot previous = playerSnapshots.get(player.getName());
 			final PlayerSnapshot current = new PlayerSnapshot(player.getX(), player.getY(), System.currentTimeMillis());
