@@ -40,6 +40,13 @@ public class MapEventContributionTracker {
 		ensurePlayer(playerName).killAssists += amount;
 	}
 
+	public synchronized void recordKillCount(final String playerName, final int amount) {
+		if (amount <= 0) {
+			return;
+		}
+		ensurePlayer(playerName).killCount += amount;
+	}
+
 	public synchronized void recordObjectiveAction(final String playerName, final int amount) {
 		if (amount <= 0) {
 			return;
@@ -75,7 +82,7 @@ public class MapEventContributionTracker {
 			return 0;
 		}
 		final double points = (snapshot.getDamage() * 0.01d)
-				+ (snapshot.getKillAssists() * 2.0d)
+				+ MapEventConfig.resolveKillActivityPoints(snapshot.getKillCount() + snapshot.getKillAssists())
 				+ (snapshot.getObjectiveActions() * 1.0d);
 		return Math.max(0, (int) Math.round(points));
 	}
@@ -105,6 +112,7 @@ public class MapEventContributionTracker {
 	public static final class ContributionSnapshot {
 		private int damage;
 		private int killAssists;
+		private int killCount;
 		private int objectiveActions;
 		private int timeInZoneSeconds;
 
@@ -114,6 +122,10 @@ public class MapEventContributionTracker {
 
 		public int getKillAssists() {
 			return killAssists;
+		}
+
+		public int getKillCount() {
+			return killCount;
 		}
 
 		public int getObjectiveActions() {
@@ -128,6 +140,7 @@ public class MapEventContributionTracker {
 			final ContributionSnapshot copy = new ContributionSnapshot();
 			copy.damage = damage;
 			copy.killAssists = killAssists;
+			copy.killCount = killCount;
 			copy.objectiveActions = objectiveActions;
 			copy.timeInZoneSeconds = timeInZoneSeconds;
 			return copy;

@@ -1070,8 +1070,6 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 			final double karmaReward = reward.getKarma();
 			player.sendPrivateText("Za obronę szlaku otrzymujesz +" + xpReward + " PD oraz +"
 					+ Math.round(karmaReward * 100.0d) / 100.0d + " karmy.");
-			player.sendPrivateText("Podsumowanie eventu: punkty=" + Math.max(0, (int) Math.round(decision.getTotalScore()))
-					+ ", limit dzienny=" + (decision.isDailyLimitReached() ? "TAK (redukcja nagrody)" : "NIE") + ".");
 			qualifiedParticipants.add(new EventActivityChestRewardService.QualifiedParticipant(
 					player,
 					decision.getTotalScore(),

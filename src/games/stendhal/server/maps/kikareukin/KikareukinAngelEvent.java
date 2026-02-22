@@ -74,8 +74,7 @@ public final class KikareukinAngelEvent extends ConfiguredMapEvent {
 		super.onEventCreatureDeath(circs);
 		if (circs != null && circs.getKiller() instanceof Player) {
 			final Player killer = (Player) circs.getKiller();
-			contributionTracker.recordKillAssist(killer.getName(), 1);
-			contributionTracker.recordObjectiveAction(killer.getName(), 1);
+			contributionTracker.recordKillCount(killer.getName(), 1);
 		}
 	}
 
@@ -142,8 +141,6 @@ public final class KikareukinAngelEvent extends ConfiguredMapEvent {
 					difficultyModifier * decision.getMultiplier());
 			player.sendPrivateText("Za odparcie aniołów otrzymujesz +" + reward.getXp() + " PD oraz +"
 					+ Math.round(reward.getKarma() * 100.0d) / 100.0d + " karmy.");
-			player.sendPrivateText("Podsumowanie eventu: punkty=" + Math.max(0, (int) Math.round(decision.getTotalScore()))
-					+ ", limit dzienny=" + (decision.isDailyLimitReached() ? "TAK (redukcja nagrody)" : "NIE") + ".");
 			qualifiedParticipants.add(new EventActivityChestRewardService.QualifiedParticipant(
 					player,
 					decision.getTotalScore(),

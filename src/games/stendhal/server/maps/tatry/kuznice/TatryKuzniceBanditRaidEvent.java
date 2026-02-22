@@ -131,8 +131,7 @@ public class TatryKuzniceBanditRaidEvent extends ConfiguredMapEvent {
 		super.onEventCreatureDeath(circs);
 		if (circs != null && circs.getKiller() instanceof Player) {
 			final Player killer = (Player) circs.getKiller();
-			contributionTracker.recordKillAssist(killer.getName(), 1);
-			contributionTracker.recordObjectiveAction(killer.getName(), 1);
+			contributionTracker.recordKillCount(killer.getName(), 1);
 		}
 		if (!isEventActive() || circs == null || circs.getVictim() == null) {
 			return;
@@ -370,12 +369,6 @@ public class TatryKuzniceBanditRaidEvent extends ConfiguredMapEvent {
 			}
 			player.sendPrivateText("Gazdowie z Kuźnic kiwają z uznaniem. Za obronę dostajesz +" + reward.getXp()
 					+ " PD oraz +" + Math.round(reward.getKarma() * 100.0d) / 100.0d + " karmy.");
-			player.sendPrivateText("Podsumowanie wydarzenia: punkty=" + points
-					+ ", tier=" + rewardTier.getDisplayName()
-					+ ", wypłata=" + awardedMoney + " money"
-					+ (globalSuccess ? " (w tym globalny bonus +" + GLOBAL_SUCCESS_MONEY_BONUS + ")" : "")
-					+ ", limit dzienny=" + (decision.isDailyLimitReached() ? "TAK (nagroda zredukowana do 25%)" : "NIE")
-					+ ".");
 			qualifiedParticipants.add(new EventActivityChestRewardService.QualifiedParticipant(
 					player,
 					decision.getTotalScore(),

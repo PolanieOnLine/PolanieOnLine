@@ -359,7 +359,7 @@ public class ConfiguredMapEvent extends BaseMapEvent {
 
 	private int resolvePlayerActivityPoints(final String playerName) {
 		final int capturePoints = Math.max(0, captureSecondsByPlayer.getOrDefault(playerName, 0)) / 10;
-		final int killPoints = Math.max(0, captureSpawnKillsByPlayer.getOrDefault(playerName, 0)) / 4;
+		final int killPoints = MapEventConfig.resolveKillActivityPoints(captureSpawnKillsByPlayer.getOrDefault(playerName, 0));
 		return capturePoints + killPoints;
 	}
 

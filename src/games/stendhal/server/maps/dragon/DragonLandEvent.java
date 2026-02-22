@@ -174,8 +174,7 @@ public class DragonLandEvent extends ConfiguredMapEvent {
 		super.onEventCreatureDeath(circs);
 		if (circs != null && circs.getKiller() instanceof Player) {
 			final Player killer = (Player) circs.getKiller();
-			contributionTracker.recordKillAssist(killer.getName(), 1);
-			contributionTracker.recordObjectiveAction(killer.getName(), 1);
+			contributionTracker.recordKillCount(killer.getName(), 1);
 		}
 		if (circs != null && circs.getVictim() != null && !WAWELSKI_DRAGON_NAME.equals(circs.getVictim().getName())) {
 			defeatedWithoutWawelski.incrementAndGet();
@@ -244,8 +243,6 @@ public class DragonLandEvent extends ConfiguredMapEvent {
 					difficultyModifier * decision.getMultiplier());
 			player.sendPrivateText("Za obronę Smoczej Krainy otrzymujesz +" + reward.getXp()
 					+ " PD oraz +" + Math.round(reward.getKarma() * 100.0d) / 100.0d + " karmy.");
-			player.sendPrivateText("Podsumowanie eventu: punkty=" + Math.max(0, (int) Math.round(decision.getTotalScore()))
-					+ ", limit dzienny=" + (decision.isDailyLimitReached() ? "TAK (redukcja nagrody)" : "NIE") + ".");
 			qualifiedParticipants.add(new EventActivityChestRewardService.QualifiedParticipant(
 					player,
 					decision.getTotalScore(),
