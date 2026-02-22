@@ -847,8 +847,7 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 
 		final Color baseColor = resolveCapturePointBaseColor(capturePoint, clampedProgress);
 		final Color progressColor = resolveCapturePointProgressColor(clampedProgress);
-		final Color areaFillColor = withAlpha(baseColor, 58);
-		final Color progressPulseColor = withAlpha(progressColor, 115);
+		final Color areaFillColor = withAlpha(baseColor, 0);
 		final Color outlineColor = withAlpha(baseColor, 205);
 
 		final int fillRadius = (int) Math.round(radius * (clampedProgress / 100.0d));

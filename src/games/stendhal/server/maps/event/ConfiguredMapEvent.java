@@ -16,10 +16,12 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
@@ -46,6 +48,8 @@ public class ConfiguredMapEvent extends BaseMapEvent {
 	private final List<Double> completedWaveClearTimesSec = new ArrayList<>();
 	private final List<CapturePointState> capturePoints = new ArrayList<>();
 	private final Map<String, Integer> captureSecondsByPlayer = new HashMap<>();
+	private final Map<String, Integer> captureSpawnKillsByPlayer = new HashMap<>();
+	private final Map<Creature, Boolean> captureSpawnCreatures = new IdentityHashMap<>();
 	private volatile boolean scriptForceStartRequested;
 	private volatile int activeSpawningWaveIndex = -1;
 
@@ -140,6 +144,8 @@ public class ConfiguredMapEvent extends BaseMapEvent {
 		completedWaveClearTimesSec.clear();
 		initializeCapturePoints();
 		captureSecondsByPlayer.clear();
+		captureSpawnKillsByPlayer.clear();
+		captureSpawnCreatures.clear();
 		synchronized (creatureWaveIndexes) {
 			creatureWaveIndexes.clear();
 		}
@@ -162,6 +168,8 @@ public class ConfiguredMapEvent extends BaseMapEvent {
 		completedWaveClearTimesSec.clear();
 		capturePoints.clear();
 		captureSecondsByPlayer.clear();
+		captureSpawnKillsByPlayer.clear();
+		captureSpawnCreatures.clear();
 		synchronized (creatureWaveIndexes) {
 			creatureWaveIndexes.clear();
 		}
@@ -243,6 +251,13 @@ public class ConfiguredMapEvent extends BaseMapEvent {
 
 	@Override
 	protected void onEventCreatureDeath(final CircumstancesOfDeath circs) {
+		if (circs != null && circs.getVictim() instanceof Creature) {
+			final Creature victim = (Creature) circs.getVictim();
+			if (captureSpawnCreatures.remove(victim) != null && circs.getKiller() instanceof Player) {
+				captureSpawnKillsByPlayer.merge(((Player) circs.getKiller()).getName(), 1, Integer::sum);
+			}
+		}
+
 		if (scalingConfig == null || circs == null || circs.getVictim() == null) {
 			return;
 		}
@@ -323,19 +338,29 @@ public class ConfiguredMapEvent extends BaseMapEvent {
 
 	@Override
 	protected List<String> getActivityTop() {
-		return captureSecondsByPlayer.entrySet().stream()
+		final Set<String> activePlayers = new HashSet<>();
+		activePlayers.addAll(captureSecondsByPlayer.keySet());
+		activePlayers.addAll(captureSpawnKillsByPlayer.keySet());
+
+		return activePlayers.stream()
 				.sorted((left, right) -> {
-					final int leftPoints = left.getValue() / 10;
-					final int rightPoints = right.getValue() / 10;
+					final int leftPoints = resolvePlayerActivityPoints(left);
+					final int rightPoints = resolvePlayerActivityPoints(right);
 					final int pointsCompare = Integer.compare(rightPoints, leftPoints);
 					if (pointsCompare != 0) {
 						return pointsCompare;
 					}
-					return left.getKey().compareToIgnoreCase(right.getKey());
+					return left.compareToIgnoreCase(right);
 				})
 				.limit(10)
-				.map(entry -> entry.getKey() + "::" + (entry.getValue() / 10))
+				.map(playerName -> playerName + "::" + resolvePlayerActivityPoints(playerName))
 				.collect(Collectors.toList());
+	}
+
+	private int resolvePlayerActivityPoints(final String playerName) {
+		final int capturePoints = Math.max(0, captureSecondsByPlayer.getOrDefault(playerName, 0)) / 10;
+		final int killPoints = Math.max(0, captureSpawnKillsByPlayer.getOrDefault(playerName, 0)) / 4;
+		return capturePoints + killPoints;
 	}
 
 	@Override
@@ -426,7 +451,10 @@ public class ConfiguredMapEvent extends BaseMapEvent {
 				capturePoint.getY(),
 				Math.max(0, capturePoint.getRadiusTiles() + 1),
 				Math.max(0, capturePoint.getRadiusTiles() + CAPTURE_WAVE_SPAWN_RING_PADDING_TILES),
-				creature -> registerEventCreature(creature));
+				creature -> {
+					registerEventCreature(creature);
+					captureSpawnCreatures.put(creature, Boolean.TRUE);
+				});
 	}
 
 	protected List<String> getActivePlayerNamesAroundPoint(final CapturePointState point,
