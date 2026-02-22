@@ -24,6 +24,8 @@ import java.util.Objects;
 import java.util.Set;
 
 public final class MapEventConfig {
+	public static final int KILLS_PER_ACTIVITY_POINT = 4;
+
 	private final String eventName;
 	private final Duration duration;
 	private final List<String> zones;
@@ -164,6 +166,10 @@ public final class MapEventConfig {
 
 	public static Builder builder(final String eventName) {
 		return new Builder(eventName);
+	}
+
+	public static int resolveKillActivityPoints(final int killCount) {
+		return Math.max(0, killCount) / KILLS_PER_ACTIVITY_POINT;
 	}
 
 	public static final class Builder {
