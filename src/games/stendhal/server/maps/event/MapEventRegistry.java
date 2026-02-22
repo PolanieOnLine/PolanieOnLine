@@ -24,6 +24,7 @@ import org.apache.log4j.Logger;
 import games.stendhal.server.maps.dragon.DragonLandEvent;
 import games.stendhal.server.maps.kikareukin.KikareukinAngelEvent;
 import games.stendhal.server.maps.koscielisko.KoscieliskoGiantEscortEvent;
+import games.stendhal.server.maps.nalwor.hell.HellCaptureAssaultEvent;
 import games.stendhal.server.maps.tatry.kuznice.TatryKuzniceBanditRaidEvent;
 
 public final class MapEventRegistry {
@@ -111,8 +112,7 @@ public final class MapEventRegistry {
 		registerEvent(specializedEvents, "tatry_kuznice", tatryKuzniceBanditRaidEvent);
 		registerEvent(specializedEvents, MapEventConfigLoader.TATRY_KUZNICE_BANDIT_RAID, tatryKuzniceBanditRaidEvent);
 
-		final ConfiguredMapEvent hellCaptureEvent = new ConfiguredMapEvent(LOGGER,
-				MapEventConfigLoader.load(MapEventConfigLoader.HELL_CAPTURE_ASSAULT));
+		final ConfiguredMapEvent hellCaptureEvent = new HellCaptureAssaultEvent();
 		registerEvent(specializedEvents, "hell", hellCaptureEvent);
 		registerEvent(specializedEvents, MapEventConfigLoader.HELL_CAPTURE_ASSAULT, hellCaptureEvent);
 
