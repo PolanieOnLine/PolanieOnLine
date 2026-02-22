@@ -120,8 +120,6 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 	private static final Color CAPTURE_COMPLETED_COLOR = new Color(86, 191, 94);
 	private static final Color CAPTURE_CONTESTED_COLOR = new Color(221, 92, 92);
 
-	private static final Color CAPTURE_ARC_COLOR = new Color(255, 245, 200, 220);
-
 	/**
 	 * Static game layers.
 	 */
@@ -850,30 +848,26 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 
 		final Color baseColor = resolveCapturePointBaseColor(capturePoint, clampedProgress);
 		final Color captureColor = resolveCapturePointCaptureColor(capturePoint);
-		final Color fillColor = withAlpha(baseColor, 58);
-		final Color captureFillColor = withAlpha(captureColor, 95);
+		final Color areaFillColor = withAlpha(baseColor, 58);
+		final Color progressPulseColor = withAlpha(captureColor, 115);
 		final Color outlineColor = withAlpha(baseColor, 205);
-		final Color captureOutlineColor = withAlpha(captureColor, 218);
 
-		g.setColor(fillColor);
+		final int fillRadius = (int) Math.round(radius * (clampedProgress / 100.0d));
+		final int fillDiameter = fillRadius * 2;
+		final int fillLeft = centerX - fillRadius;
+		final int fillTop = centerY - fillRadius;
+
+		g.setColor(areaFillColor);
 		g.fillOval(left, top, diameter, diameter);
 
-		final int progressDegrees = (int) Math.round(clampedProgress * 3.6d);
-		if ((clampedProgress > 0) && (progressDegrees > 0)) {
-			g.setColor(captureFillColor);
-			g.fillArc(left, top, diameter, diameter, 90, -progressDegrees);
+		if (fillDiameter > 0) {
+			g.setColor(progressPulseColor);
+			g.fillOval(fillLeft, fillTop, fillDiameter, fillDiameter);
 		}
 
 		g.setColor(outlineColor);
 		g.drawOval(left, top, diameter, diameter);
 		g.drawOval(left - 1, top - 1, diameter + 2, diameter + 2);
-
-		if (progressDegrees > 0) {
-			g.setColor(captureOutlineColor);
-			g.drawArc(left - 1, top - 1, diameter + 2, diameter + 2, 90, -progressDegrees);
-			g.setColor(CAPTURE_ARC_COLOR);
-			g.drawArc(left, top, diameter, diameter, 90, -progressDegrees);
-		}
 	}
 
 	private Color resolveCapturePointBaseColor(final ActiveMapEventStatus.CapturePointStatus capturePoint,
