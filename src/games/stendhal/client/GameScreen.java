@@ -116,7 +116,6 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 	private static final Sprite offlineIcon;
 
 	private static final Color CAPTURE_NEUTRAL_COLOR = new Color(190, 190, 190);
-	private static final Color CAPTURE_IN_PROGRESS_COLOR = new Color(247, 198, 79);
 	private static final Color CAPTURE_COMPLETED_COLOR = new Color(86, 191, 94);
 	private static final Color CAPTURE_CONTESTED_COLOR = new Color(221, 92, 92);
 
@@ -847,9 +846,9 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 		final int clampedProgress = Math.max(0, Math.min(100, capturePoint.getProgressPercent()));
 
 		final Color baseColor = resolveCapturePointBaseColor(capturePoint, clampedProgress);
-		final Color captureColor = resolveCapturePointCaptureColor(capturePoint);
+		final Color progressColor = resolveCapturePointProgressColor(clampedProgress);
 		final Color areaFillColor = withAlpha(baseColor, 58);
-		final Color progressPulseColor = withAlpha(captureColor, 115);
+		final Color progressPulseColor = withAlpha(progressColor, 115);
 		final Color outlineColor = withAlpha(baseColor, 205);
 
 		final int fillRadius = (int) Math.round(radius * (clampedProgress / 100.0d));
@@ -876,26 +875,19 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 			return CAPTURE_CONTESTED_COLOR;
 		}
 		if (progressPercent >= 100) {
-			return resolveCapturePointCaptureColor(capturePoint);
+			return CAPTURE_COMPLETED_COLOR;
 		}
 		return CAPTURE_NEUTRAL_COLOR;
 	}
 
-	private Color resolveCapturePointCaptureColor(final ActiveMapEventStatus.CapturePointStatus capturePoint) {
-		final String ownerFaction = capturePoint.getOwnerFaction();
-		if (ownerFaction == null) {
-			return CAPTURE_IN_PROGRESS_COLOR;
-		}
-		final String normalized = ownerFaction.trim().toLowerCase();
-		if (normalized.contains("enemy") || normalized.contains("wrog") || normalized.contains("bandit")
-				|| normalized.contains("orc") || normalized.contains("monster")) {
-			return CAPTURE_CONTESTED_COLOR;
-		}
-		if (normalized.contains("ally") || normalized.contains("player") || normalized.contains("defender")
-				|| normalized.contains("obro") || normalized.contains("human")) {
+	private Color resolveCapturePointProgressColor(final int progressPercent) {
+		if (progressPercent >= 100) {
 			return CAPTURE_COMPLETED_COLOR;
 		}
-		return CAPTURE_IN_PROGRESS_COLOR;
+		if (progressPercent > 0) {
+			return CAPTURE_CONTESTED_COLOR;
+		}
+		return CAPTURE_NEUTRAL_COLOR;
 	}
 
 	private Color withAlpha(final Color color, final int alpha) {
