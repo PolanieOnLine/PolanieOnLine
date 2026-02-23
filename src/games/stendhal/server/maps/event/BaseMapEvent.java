@@ -516,6 +516,10 @@ public abstract class BaseMapEvent {
 		}
 	}
 
+	static LocalDateTime nearestGuaranteedStart(final LocalTime time) {
+		return nextOccurrence(time, LocalDateTime.now());
+	}
+
 	private static LocalDateTime nextOccurrence(final LocalTime time, final LocalDateTime reference) {
 		LocalDateTime occurrence = reference.toLocalDate().atTime(time);
 		if (occurrence.isBefore(reference)) {

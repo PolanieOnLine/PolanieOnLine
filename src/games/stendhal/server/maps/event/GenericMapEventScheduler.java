@@ -11,10 +11,12 @@
  ***************************************************************************/
 package games.stendhal.server.maps.event;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeParseException;
 import java.util.Locale;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.log4j.Logger;
 
@@ -28,6 +30,7 @@ public class GenericMapEventScheduler implements ZoneConfigurator {
 	private static final String START_TIME_PARAMETER = "startTime";
 	private static final String INTERVAL_DAYS_PARAMETER = "intervalDays";
 	private static final String TRIGGER_TYPE_PARAMETER = "triggerType";
+	private static final AtomicBoolean STARTUP_TABLE_LOGGED = new AtomicBoolean(false);
 
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
@@ -46,14 +49,23 @@ public class GenericMapEventScheduler implements ZoneConfigurator {
 			return;
 		}
 
-		final TriggerType triggerType = parseTriggerType(attributes.get(TRIGGER_TYPE_PARAMETER), zone, eventId);
+		final CentralMapEventSchedule.Entry centralSchedule = CentralMapEventSchedule.get(eventId);
+		final TriggerType triggerType = parseTriggerType(
+				attributes.get(TRIGGER_TYPE_PARAMETER),
+				centralSchedule == null ? null : centralSchedule.getTriggerType(),
+				zone,
+				eventId);
 		if (triggerType == null) {
 			return;
 		}
 
 		if (triggerType.includesGuaranteedSchedule()) {
-			final LocalTime configStartTime = event.getConfig().getDefaultStartTime();
-			final Integer configIntervalDays = Integer.valueOf(event.getConfig().getDefaultIntervalDays());
+			final LocalTime configStartTime = centralSchedule != null
+					? centralSchedule.getStartTime()
+					: event.getConfig().getDefaultStartTime();
+			final Integer configIntervalDays = Integer.valueOf(centralSchedule != null
+					? centralSchedule.getIntervalDays()
+					: event.getConfig().getDefaultIntervalDays());
 
 			final LocalTime startTime = parseStartTime(
 					attributes.get(START_TIME_PARAMETER),
@@ -77,6 +89,8 @@ public class GenericMapEventScheduler implements ZoneConfigurator {
 		if (triggerType.includesObserverTrigger()) {
 			event.registerObserverZone(zone);
 		}
+
+		logStartupGuaranteedScheduleTable();
 	}
 
 	private static String getRequiredAttribute(final Map<String, String> attributes, final String key) {
@@ -147,18 +161,68 @@ public class GenericMapEventScheduler implements ZoneConfigurator {
 		}
 	}
 
-	private TriggerType parseTriggerType(final String value, final StendhalRPZone zone, final String eventId) {
-		if (value == null || value.trim().isEmpty()) {
-			return TriggerType.BOTH;
+	private TriggerType parseTriggerType(final String value, final String configuredDefault, final StendhalRPZone zone,
+			final String eventId) {
+		final TriggerType parsed = parseTriggerTypeValue(value, configuredDefault);
+		if (parsed != null) {
+			return parsed;
 		}
-		try {
-			return TriggerType.valueOf(value.trim().toUpperCase(Locale.ROOT));
-		} catch (IllegalArgumentException e) {
+		if (value != null && !value.trim().isEmpty()) {
 			LOGGER.error("Cannot configure map event scheduler for zone " + zone.getName()
 					+ " and eventId='" + eventId + "': invalid '" + TRIGGER_TYPE_PARAMETER + "' value '"
 					+ value + "'. Allowed values: guaranteed, observer, both.");
+		} else {
+			LOGGER.error("Cannot configure map event scheduler for zone " + zone.getName()
+					+ " and eventId='" + eventId + "': invalid central triggerType='"
+					+ configuredDefault + "'. Allowed values: guaranteed, observer, both.");
+		}
+		return null;
+	}
+
+	private TriggerType parseTriggerTypeValue(final String value, final String configuredDefault) {
+		final String candidate = (value == null || value.trim().isEmpty()) ? configuredDefault : value;
+		if (candidate == null || candidate.trim().isEmpty()) {
+			return TriggerType.BOTH;
+		}
+		try {
+			return TriggerType.valueOf(candidate.trim().toUpperCase(Locale.ROOT));
+		} catch (IllegalArgumentException e) {
 			return null;
 		}
+	}
+
+	private void logStartupGuaranteedScheduleTable() {
+		if (!STARTUP_TABLE_LOGGED.compareAndSet(false, true)) {
+			return;
+		}
+		final StringBuilder table = new StringBuilder();
+		table.append("Map event guaranteed schedule table:\n");
+		for (String eventId : MapEventConfigLoader.availableConfigIds()) {
+			final ConfiguredMapEvent event = MapEventRegistry.getEvent(eventId);
+			if (event == null) {
+				continue;
+			}
+			final CentralMapEventSchedule.Entry centralSchedule = CentralMapEventSchedule.get(eventId);
+			final LocalTime startTime = centralSchedule != null
+					? centralSchedule.getStartTime()
+					: event.getConfig().getDefaultStartTime();
+			final int intervalDays = centralSchedule != null
+					? centralSchedule.getIntervalDays()
+					: event.getConfig().getDefaultIntervalDays();
+			final TriggerType triggerType = parseTriggerTypeValue(null,
+					centralSchedule == null ? null : centralSchedule.getTriggerType());
+			table.append(" - ").append(eventId)
+					.append(" | triggerType=").append(triggerType == null ? "invalid" : triggerType.name().toLowerCase(Locale.ROOT));
+			if (triggerType != null && triggerType.includesGuaranteedSchedule() && startTime != null) {
+				final LocalDateTime nextStart = BaseMapEvent.nearestGuaranteedStart(startTime);
+				table.append(" | nearestGuaranteedStart=").append(nextStart)
+						.append(" | intervalDays=").append(intervalDays);
+			} else {
+				table.append(" | nearestGuaranteedStart=n/a");
+			}
+			table.append("\n");
+		}
+		LOGGER.info(table.toString());
 	}
 
 	private enum TriggerType {
