@@ -1,0 +1,27 @@
+{
+  "tatry_kuznice_bandit_raid": {
+    "startTime": "18:30",
+    "intervalDays": 1,
+    "triggerType": "both"
+  },
+  "dragon_land_default": {
+    "startTime": "20:00",
+    "intervalDays": 2,
+    "triggerType": "both"
+  },
+  "koscielisko_giant_escort": {
+    "startTime": "21:00",
+    "intervalDays": 2,
+    "triggerType": "both"
+  },
+  "hell_capture_assault": {
+    "startTime": "22:00",
+    "intervalDays": 2,
+    "triggerType": "both"
+  },
+  "kikareukin_angel_preview": {
+    "startTime": "18:30",
+    "intervalDays": 3,
+    "triggerType": "both"
+  }
+}
