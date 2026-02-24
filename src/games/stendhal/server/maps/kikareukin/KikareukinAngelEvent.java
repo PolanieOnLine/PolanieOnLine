@@ -11,24 +11,19 @@
  ***************************************************************************/
 package games.stendhal.server.maps.kikareukin;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.log4j.Logger;
 
 import games.stendhal.server.core.engine.SingletonRepository;
-import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.TurnListener;
 import games.stendhal.server.entity.creature.CircumstancesOfDeath;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.event.ConfiguredMapEvent;
-import games.stendhal.server.maps.event.EventActivityChestRewardService;
 import games.stendhal.server.maps.event.MapEventConfigLoader;
 import games.stendhal.server.maps.event.MapEventContributionTracker;
 import games.stendhal.server.maps.event.MapEventRewardPolicy;
+import games.stendhal.server.maps.event.MapEventRewardSettlementService;
 import games.stendhal.server.maps.event.RandomEventRewardService;
 
 public final class KikareukinAngelEvent extends ConfiguredMapEvent {
@@ -92,61 +87,27 @@ public final class KikareukinAngelEvent extends ConfiguredMapEvent {
 
 	@Override
 	protected List<String> getActivityTop() {
-		final List<Map.Entry<String, MapEventContributionTracker.ContributionSnapshot>> entries =
-				new ArrayList<Map.Entry<String, MapEventContributionTracker.ContributionSnapshot>>(contributionTracker.snapshotAll().entrySet());
-		Collections.sort(entries, new Comparator<Map.Entry<String, MapEventContributionTracker.ContributionSnapshot>>() {
-			@Override
-			public int compare(final Map.Entry<String, MapEventContributionTracker.ContributionSnapshot> first,
-					final Map.Entry<String, MapEventContributionTracker.ContributionSnapshot> second) {
-				return Integer.compare(
-						MapEventContributionTracker.resolveActivityPoints(second.getValue()),
-						MapEventContributionTracker.resolveActivityPoints(first.getValue()));
-			}
-		});
-		final List<String> top = new ArrayList<String>();
-		for (Map.Entry<String, MapEventContributionTracker.ContributionSnapshot> entry : entries) {
-			if (top.size() >= 10) {
-				break;
-			}
-			top.add(entry.getKey() + "::" + MapEventContributionTracker.resolveActivityPoints(entry.getValue()));
-		}
-		return top;
+		return MapEventRewardSettlementService.buildActivityTop(contributionTracker);
 	}
 
 	private void rewardParticipants(final int defeatPercent) {
-		final long now = System.currentTimeMillis();
 		final double difficultyModifier = 0.85d + (Math.max(0, Math.min(100, defeatPercent)) / 100.0d * 0.25d);
-		final List<EventActivityChestRewardService.QualifiedParticipant> qualifiedParticipants = new ArrayList<>();
-		for (Map.Entry<String, MapEventContributionTracker.ContributionSnapshot> entry : contributionTracker.snapshotAll().entrySet()) {
-			final Player player = SingletonRepository.getRuleProcessor().getPlayer(entry.getKey());
-			if (player == null) {
-				continue;
-			}
-			final MapEventContributionTracker.ContributionSnapshot contribution = entry.getValue();
-			final MapEventRewardPolicy.RewardDecision decision = rewardPolicy.evaluate(
-					getEventId(),
-					entry.getKey(),
-					contribution,
-					now);
-			if (!decision.isQualified()) {
-				continue;
-			}
-			final double eventProgress = Math.max(0.0d, Math.min(1.0d, defeatPercent / 100.0d));
-			final double playerScore = Math.max(0.0d, Math.min(1.0d, decision.getTotalScore() / 35.0d));
-			final double participationScore = (eventProgress * 0.6d) + (playerScore * 0.4d);
-			final RandomEventRewardService.Reward reward = randomEventRewardService.grantRandomEventRewards(
-					player,
-					RandomEventRewardService.RandomEventType.KIKAREUKIN,
-					participationScore,
-					difficultyModifier * decision.getMultiplier());
-			player.sendPrivateText("Za odparcie aniołów otrzymujesz +" + reward.getXp() + " PD oraz +"
-					+ Math.round(reward.getKarma() * 100.0d) / 100.0d + " karmy.");
-			qualifiedParticipants.add(new EventActivityChestRewardService.QualifiedParticipant(
-					player,
-					decision.getTotalScore(),
-					contribution.getDamage(),
-					contribution.getKillAssists()));
-		}
-		EventActivityChestRewardService.awardTopActivityChests("Kikareukin", qualifiedParticipants);
+		new MapEventRewardSettlementService(getEventId(), contributionTracker, rewardPolicy,
+				new MapEventRewardSettlementService.RewardGrantCallback() {
+					@Override
+					public void grant(final MapEventRewardSettlementService.RewardContext context) {
+						final double eventProgress = Math.max(0.0d, Math.min(1.0d, defeatPercent / 100.0d));
+						final double playerScore = Math.max(0.0d,
+								Math.min(1.0d, context.getDecision().getTotalScore() / 35.0d));
+						final double participationScore = (eventProgress * 0.6d) + (playerScore * 0.4d);
+						final RandomEventRewardService.Reward reward = randomEventRewardService.grantRandomEventRewards(
+								context.getPlayer(),
+								RandomEventRewardService.RandomEventType.KIKAREUKIN,
+								participationScore,
+								difficultyModifier * context.getDecision().getMultiplier());
+						context.getPlayer().sendPrivateText("Za odparcie aniołów otrzymujesz +" + reward.getXp()
+								+ " PD oraz +" + Math.round(reward.getKarma() * 100.0d) / 100.0d + " karmy.");
+					}
+				}, "Kikareukin").settleRewards(MapEventRewardSettlementService.SettlementOptions.defaultOptions());
 	}
 }

@@ -12,12 +12,9 @@
 package games.stendhal.server.maps.dragon;
 
 import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.IdentityHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -32,11 +29,11 @@ import games.stendhal.server.core.events.TurnListener;
 import games.stendhal.server.entity.creature.CircumstancesOfDeath;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.event.ConfiguredMapEvent;
-import games.stendhal.server.maps.event.EventActivityChestRewardService;
 import games.stendhal.server.maps.event.MapEventConfig;
 import games.stendhal.server.maps.event.MapEventConfigLoader;
 import games.stendhal.server.maps.event.MapEventContributionTracker;
 import games.stendhal.server.maps.event.MapEventRewardPolicy;
+import games.stendhal.server.maps.event.MapEventRewardSettlementService;
 import games.stendhal.server.maps.event.RandomEventRewardService;
 
 public class DragonLandEvent extends ConfiguredMapEvent {
@@ -197,59 +194,28 @@ public class DragonLandEvent extends ConfiguredMapEvent {
 
 	@Override
 	protected List<String> getActivityTop() {
-		final List<Map.Entry<String, MapEventContributionTracker.ContributionSnapshot>> entries =
-				new ArrayList<Map.Entry<String, MapEventContributionTracker.ContributionSnapshot>>(contributionTracker.snapshotAll().entrySet());
-		Collections.sort(entries, new Comparator<Map.Entry<String, MapEventContributionTracker.ContributionSnapshot>>() {
-			@Override
-			public int compare(final Map.Entry<String, MapEventContributionTracker.ContributionSnapshot> first,
-					final Map.Entry<String, MapEventContributionTracker.ContributionSnapshot> second) {
-				return Integer.compare(
-						MapEventContributionTracker.resolveActivityPoints(second.getValue()),
-						MapEventContributionTracker.resolveActivityPoints(first.getValue()));
-			}
-		});
-		final List<String> top = new ArrayList<String>();
-		for (Map.Entry<String, MapEventContributionTracker.ContributionSnapshot> entry : entries) {
-			if (top.size() >= 10) {
-				break;
-			}
-			top.add(entry.getKey() + "::" + MapEventContributionTracker.resolveActivityPoints(entry.getValue()));
-		}
-		return top;
+		return MapEventRewardSettlementService.buildActivityTop(contributionTracker);
 	}
 
 	private void rewardParticipants(final int defeatPercent, final double difficultyModifier) {
-		final long now = System.currentTimeMillis();
-		final List<EventActivityChestRewardService.QualifiedParticipant> qualifiedParticipants = new ArrayList<>();
-		for (Map.Entry<String, MapEventContributionTracker.ContributionSnapshot> entry : contributionTracker.snapshotAll().entrySet()) {
-			final Player player = SingletonRepository.getRuleProcessor().getPlayer(entry.getKey());
-			if (player == null) {
-				continue;
-			}
-			final MapEventContributionTracker.ContributionSnapshot contribution = entry.getValue();
-			final MapEventRewardPolicy.RewardDecision decision = rewardPolicy.evaluate(
-					getEventId(),
-					entry.getKey(),
-					contribution,
-					now);
-			if (!decision.isQualified()) {
-				continue;
-			}
-			final double participationScore = resolveParticipationScore(decision, defeatPercent);
-			final RandomEventRewardService.Reward reward = randomEventRewardService.grantRandomEventRewards(
-					player,
-					RandomEventRewardService.RandomEventType.DRAGON_LAND,
-					participationScore,
-					difficultyModifier * decision.getMultiplier());
-			player.sendPrivateText("Za obronę Smoczej Krainy otrzymujesz +" + reward.getXp()
-					+ " PD oraz +" + Math.round(reward.getKarma() * 100.0d) / 100.0d + " karmy.");
-			qualifiedParticipants.add(new EventActivityChestRewardService.QualifiedParticipant(
-					player,
-					decision.getTotalScore(),
-					contribution.getDamage(),
-					contribution.getKillAssists()));
-		}
-		EventActivityChestRewardService.awardTopActivityChests("Smocza Kraina", qualifiedParticipants);
+		new MapEventRewardSettlementService(
+				getEventId(),
+				contributionTracker,
+				rewardPolicy,
+				new MapEventRewardSettlementService.RewardGrantCallback() {
+					@Override
+					public void grant(final MapEventRewardSettlementService.RewardContext context) {
+						final double participationScore = resolveParticipationScore(context.getDecision(), defeatPercent);
+						final RandomEventRewardService.Reward reward = randomEventRewardService.grantRandomEventRewards(
+								context.getPlayer(),
+								RandomEventRewardService.RandomEventType.DRAGON_LAND,
+								participationScore,
+								difficultyModifier * context.getDecision().getMultiplier());
+						context.getPlayer().sendPrivateText("Za obronę Smoczej Krainy otrzymujesz +" + reward.getXp()
+								+ " PD oraz +" + Math.round(reward.getKarma() * 100.0d) / 100.0d + " karmy.");
+					}
+				},
+				"Smocza Kraina").settleRewards(MapEventRewardSettlementService.SettlementOptions.defaultOptions());
 	}
 
 	private double resolveParticipationScore(final MapEventRewardPolicy.RewardDecision decision, final int defeatPercent) {
