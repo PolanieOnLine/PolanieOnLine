@@ -22,7 +22,8 @@ public class RandomEventRewardService {
 		GIANT_ESCORT,
 		DRAGON_LAND,
 		KIKAREUKIN,
-		KUZNICE_BANDIT_RAID
+		KUZNICE_BANDIT_RAID,
+		HELL_CAPTURE_ASSAULT
 	}
 
 	private static final int ESCORT_XP_MIN = 80000;
@@ -49,7 +50,7 @@ public class RandomEventRewardService {
 		if (eventType == RandomEventType.GIANT_ESCORT) {
 			finalRange = escortBaseRange.scale(clampedDifficulty);
 		} else {
-			final double eventScale = 0.70d + (0.30d * normalizedParticipation);
+			final double eventScale = resolveEventScale(eventType, normalizedParticipation);
 			finalRange = escortBaseRange.scale(eventScale * clampedDifficulty);
 		}
 
@@ -71,6 +72,13 @@ public class RandomEventRewardService {
 		final double minKarma = Math.max(0.0d, centerKarma * 0.90d);
 		final double maxKarma = Math.max(minKarma, centerKarma * 1.10d);
 		return new RewardRange(minXp, maxXp, minKarma, maxKarma);
+	}
+
+	private double resolveEventScale(final RandomEventType eventType, final double participationScore) {
+		if (eventType == RandomEventType.HELL_CAPTURE_ASSAULT) {
+			return 0.80d + (0.30d * participationScore);
+		}
+		return 0.70d + (0.30d * participationScore);
 	}
 
 	private static int interpolateInt(final int min, final int max, final double ratio) {
