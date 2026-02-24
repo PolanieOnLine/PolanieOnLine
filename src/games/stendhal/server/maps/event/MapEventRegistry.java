@@ -97,24 +97,24 @@ public final class MapEventRegistry {
 		final Map<String, ConfiguredMapEvent> specializedEvents = new LinkedHashMap<>();
 
 		final DragonLandEvent dragonEvent = DragonLandEvent.getInstance();
-		registerEvent(specializedEvents, "dragon_land", dragonEvent);
 		registerEvent(specializedEvents, MapEventConfigLoader.DRAGON_LAND_DEFAULT, dragonEvent);
+		registerEvent(specializedEvents, "dragon_land", dragonEvent);
 
 		final ConfiguredMapEvent kikareukinEvent = new KikareukinAngelEvent();
-		registerEvent(specializedEvents, "kikareukin", kikareukinEvent);
 		registerEvent(specializedEvents, MapEventConfigLoader.KIKAREUKIN_ANGEL_PREVIEW, kikareukinEvent);
+		registerEvent(specializedEvents, "kikareukin", kikareukinEvent);
 
 		final ConfiguredMapEvent koscieliskoEvent = new KoscieliskoGiantEscortEvent();
-		registerEvent(specializedEvents, "koscielisko_giant_escort", koscieliskoEvent);
 		registerEvent(specializedEvents, MapEventConfigLoader.KOSCIELISKO_GIANT_ESCORT, koscieliskoEvent);
+		registerEvent(specializedEvents, "koscielisko_giant_escort", koscieliskoEvent);
 
 		final ConfiguredMapEvent tatryKuzniceBanditRaidEvent = TatryKuzniceBanditRaidEvent.getInstance();
-		registerEvent(specializedEvents, "tatry_kuznice", tatryKuzniceBanditRaidEvent);
 		registerEvent(specializedEvents, MapEventConfigLoader.TATRY_KUZNICE_BANDIT_RAID, tatryKuzniceBanditRaidEvent);
+		registerEvent(specializedEvents, "tatry_kuznice", tatryKuzniceBanditRaidEvent);
 
 		final ConfiguredMapEvent hellCaptureEvent = new HellCaptureAssaultEvent();
-		registerEvent(specializedEvents, "hell", hellCaptureEvent);
 		registerEvent(specializedEvents, MapEventConfigLoader.HELL_CAPTURE_ASSAULT, hellCaptureEvent);
+		registerEvent(specializedEvents, "hell", hellCaptureEvent);
 
 		return specializedEvents;
 	}
