@@ -31,6 +31,7 @@ import games.stendhal.server.maps.event.MapEventRegistry;
  */
 public class StartMapEvent extends ScriptImpl {
 	private static final Logger LOGGER = Logger.getLogger(StartMapEvent.class);
+	private static final int MAX_PRIVATE_TEXT_LENGTH = 1500;
 
 	@Override
 	public void execute(final Player admin, final List<String> args) {
@@ -100,7 +101,7 @@ public class StartMapEvent extends ScriptImpl {
 		}
 
 		final Set<ConfiguredMapEvent> listedEvents = Collections.newSetFromMap(new IdentityHashMap<>());
-		sandbox.privateText(admin, "Dostępne eventy mapowe:");
+		final StringBuilder builder = new StringBuilder("Dostępne eventy mapowe:");
 		for (String eventId : knownEventIds) {
 			final ConfiguredMapEvent event = MapEventRegistry.getEvent(eventId);
 			if (event == null || listedEvents.contains(event)) {
@@ -110,11 +111,63 @@ public class StartMapEvent extends ScriptImpl {
 
 			final String eventName = event.getEventDisplayName();
 			final String eventType = event.getClass().getSimpleName();
-			sandbox.privateText(admin, "- " + eventId + " | name=\"" + eventName + "\" | type=" + eventType);
+			builder.append('\n')
+				.append("- ")
+				.append(eventId)
+				.append(" | name=\"")
+				.append(eventName)
+				.append("\" | type=")
+				.append(eventType);
 		}
 
 		if (listedEvents.isEmpty()) {
 			sandbox.privateText(admin, "Nie udało się załadować eventów z rejestru.");
+			return;
+		}
+
+		sendChunkedPrivateText(admin, builder.toString());
+	}
+
+	private void sendChunkedPrivateText(final Player admin, final String message) {
+		if (message.length() <= MAX_PRIVATE_TEXT_LENGTH) {
+			sandbox.privateText(admin, message);
+			return;
+		}
+
+		final String[] lines = message.split("\\n");
+		final StringBuilder chunk = new StringBuilder();
+		for (String line : lines) {
+			final int lineLength = line.length();
+			if (lineLength > MAX_PRIVATE_TEXT_LENGTH) {
+				if (chunk.length() > 0) {
+					sandbox.privateText(admin, chunk.toString());
+					chunk.setLength(0);
+				}
+				sendLongLineInChunks(admin, line);
+				continue;
+			}
+
+			final int additionalLength = chunk.length() == 0 ? lineLength : lineLength + 1;
+			if (chunk.length() + additionalLength > MAX_PRIVATE_TEXT_LENGTH) {
+				sandbox.privateText(admin, chunk.toString());
+				chunk.setLength(0);
+			}
+
+			if (chunk.length() > 0) {
+				chunk.append('\n');
+			}
+			chunk.append(line);
+		}
+
+		if (chunk.length() > 0) {
+			sandbox.privateText(admin, chunk.toString());
+		}
+	}
+
+	private void sendLongLineInChunks(final Player admin, final String line) {
+		for (int from = 0; from < line.length(); from += MAX_PRIVATE_TEXT_LENGTH) {
+			final int to = Math.min(from + MAX_PRIVATE_TEXT_LENGTH, line.length());
+			sandbox.privateText(admin, line.substring(from, to));
 		}
 	}
 
