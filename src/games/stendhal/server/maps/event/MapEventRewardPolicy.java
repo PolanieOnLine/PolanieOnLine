@@ -120,8 +120,10 @@ public final class MapEventRewardPolicy {
 		Objects.requireNonNull(playerName, "playerName");
 		Objects.requireNonNull(contribution, "contribution");
 
+		final int combinedKillActivity = resolveCombinedKillActivity(contribution);
+		final int killActivityPoints = MapEventConfig.resolveKillActivityPoints(combinedKillActivity);
 		final double rawTotalScore = (contribution.getDamage() * damageWeight)
-				+ (contribution.getKillAssists() * assistWeight)
+				+ (killActivityPoints * assistWeight)
 				+ (contribution.getObjectiveActions() * objectiveWeight)
 				+ (contribution.getTimeInZoneSeconds() * zoneTimeWeight);
 		final double levelScoreMultiplier = MapEventContributionTracker.resolveLevelContributionModifier(
@@ -133,10 +135,10 @@ public final class MapEventRewardPolicy {
 		final double adjustedTotalScore = rawTotalScore * levelScoreMultiplier;
 
 		final boolean reachedHardThresholds = adjustedContributionValue(contribution.getDamage(), levelScoreMultiplier) >= minDamage
-				|| adjustedContributionValue(contribution.getKillAssists(), levelScoreMultiplier) >= minKillAssists
+				|| adjustedContributionValue(combinedKillActivity, levelScoreMultiplier) >= minKillAssists
 				|| adjustedContributionValue(contribution.getObjectiveActions(), levelScoreMultiplier) >= minObjectiveActions;
 		final int actionableContributionUnits = Math.max(0, contribution.getDamage())
-				+ (Math.max(0, contribution.getKillAssists()) * 100)
+				+ (Math.max(0, combinedKillActivity) * 100)
 				+ (Math.max(0, contribution.getObjectiveActions()) * 100);
 		final int windows = Math.max(1, actionableContributionUnits / Math.max(1, antiAfkWindowSeconds));
 		final double scorePerWindow = adjustedTotalScore / windows;
@@ -205,6 +207,10 @@ public final class MapEventRewardPolicy {
 
 	private static double adjustedContributionValue(final int value, final double multiplier) {
 		return Math.max(0, value) * multiplier;
+	}
+
+	private static int resolveCombinedKillActivity(final MapEventContributionTracker.ContributionSnapshot contribution) {
+		return Math.max(0, contribution.getKillCount()) + Math.max(0, contribution.getKillAssists());
 	}
 
 	private int cleanupAndCountRuns(final String eventId, final String playerName, final long nowMillis) {
