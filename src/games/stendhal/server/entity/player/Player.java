@@ -38,6 +38,7 @@ import games.stendhal.common.Direction;
 import games.stendhal.common.ItemTools;
 import games.stendhal.common.KeyedSlotUtil;
 import games.stendhal.common.Level;
+import games.stendhal.common.MathHelper;
 import games.stendhal.common.NotificationType;
 import games.stendhal.common.TradeState;
 import games.stendhal.common.Version;
@@ -906,6 +907,35 @@ public class Player extends DressedEntity implements UseListener {
 	 */
 	public boolean setSkill(final String key, final String value) {
 		return setKeyedSlot("skills", key, value);
+	}
+
+	/**
+	 * Returns the number of character resets performed based on the quest state.
+	 *
+	 * @return the number of resets in the range 0–5.
+	 */
+	public int getRebornCount() {
+		if (!hasQuest("reset_level")) {
+			return 0;
+		}
+
+		final String rebornState = getQuest("reset_level");
+		int rebornCount = 0;
+
+		for (final String part : rebornState.split(";")) {
+			if (part.startsWith("reborn_")) {
+				rebornCount = Math.max(rebornCount,
+					MathHelper.parseIntDefault(part.substring("reborn_".length()), rebornCount));
+			} else {
+				final int parsedValue = MathHelper.parseIntDefault(part, rebornCount);
+				rebornCount = Math.max(rebornCount, parsedValue);
+				if ("done_reborn".equals(part)) {
+					rebornCount = Math.max(rebornCount, 1);
+				}
+			}
+		}
+
+		return Math.min(rebornCount, 5);
 	}
 
 	/**

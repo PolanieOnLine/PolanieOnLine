@@ -875,27 +875,7 @@ public abstract class UpdateConverter {
 	}
 
 	private static int getRebornBonus(final Player player) {
-		if (!player.hasQuest("reset_level")) {
-			return 0;
-		}
-
-		final String rebornState = player.getQuest("reset_level");
-		int rebornCount = 0;
-
-		for (final String part : rebornState.split(";")) {
-			if (part.startsWith("reborn_")) {
-				rebornCount = Math.max(rebornCount,
-					MathHelper.parseIntDefault(part.substring("reborn_".length()), rebornCount));
-			} else {
-				final int parsedValue = MathHelper.parseIntDefault(part, rebornCount);
-				rebornCount = Math.max(rebornCount, parsedValue);
-				if ("done_reborn".equals(part)) {
-					rebornCount = Math.max(rebornCount, 1);
-				}
-			}
-		}
-
-		rebornCount = Math.min(rebornCount, 5);
+		final int rebornCount = player.getRebornCount();
 
 		int bonus = Math.min(rebornCount, 4) * 1000;
 		if (rebornCount >= 5) {

@@ -26,6 +26,7 @@ import java.util.List;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import games.stendhal.common.Level;
 import games.stendhal.common.constants.Nature;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
@@ -34,6 +35,7 @@ import games.stendhal.server.entity.item.Container;
 import games.stendhal.server.entity.item.Corpse;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.entity.player.ProgressionConfig;
 import games.stendhal.server.entity.slot.PlayerSlot;
 import games.stendhal.server.events.AttackEvent;
 import games.stendhal.server.maps.MockStendhalRPRuleProcessor;
@@ -439,6 +441,42 @@ public class RPEntityTest {
 		final int oldXP = entity.getXP();
 		entity.setXP(oldXP + Integer.MAX_VALUE);
 		assertThat(entity.getXP(), is(oldXP));
+	}
+
+	@Test
+	public void testMasteryProgressionActivatesOnlyAtMaxLevelAndFiveResets() {
+		final Player player = PlayerTestHelper.createPlayer("mastery-check");
+		player.setQuest("reset_level", "done;reborn_5");
+		player.setXP(Level.getXP(Level.maxLevel() - 1));
+		player.setLevel(Level.maxLevel() - 1);
+
+		final int oldXP = player.getXP();
+		player.addXP(5000);
+
+		assertThat(player.getXP(), is(oldXP + 5000));
+		assertFalse(player.has("mastery_xp"));
+		assertFalse(player.has("mastery_level"));
+	}
+
+	@Test
+	public void testMasteryReceivesXPAndCapsAtLevel2000() {
+		final Player player = PlayerTestHelper.createPlayer("mastery-cap");
+		player.setQuest("reset_level", "done;reborn_5");
+		player.setXP(Level.getXP(Level.maxLevel()));
+		player.setLevel(Level.maxLevel());
+
+		final int oldXP = player.getXP();
+		player.addXP(ProgressionConfig.MASTERY_XP_PER_LEVEL);
+
+		assertThat(player.getXP(), is(oldXP));
+		assertThat(player.getInt("mastery_xp"), is(ProgressionConfig.MASTERY_XP_PER_LEVEL));
+		assertThat(player.getInt("mastery_level"), is(1));
+
+		player.put("mastery_level", 2000);
+		player.put("mastery_xp", ProgressionConfig.MASTERY_MAX_LEVEL * ProgressionConfig.MASTERY_XP_PER_LEVEL);
+		player.addXP(ProgressionConfig.MASTERY_XP_PER_LEVEL);
+		assertThat(player.getInt("mastery_xp"), is(ProgressionConfig.MASTERY_MAX_LEVEL * ProgressionConfig.MASTERY_XP_PER_LEVEL));
+		assertThat(player.getInt("mastery_level"), is(ProgressionConfig.MASTERY_MAX_LEVEL));
 	}
 
 	/**

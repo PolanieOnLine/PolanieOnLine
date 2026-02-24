@@ -56,6 +56,7 @@ import games.stendhal.server.entity.item.Corpse;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.mapstuff.portal.Portal;
+import games.stendhal.server.entity.player.ProgressionConfig;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.entity.slot.EntitySlot;
 import games.stendhal.server.entity.slot.Slots;
@@ -1183,6 +1184,11 @@ public abstract class RPEntity extends CombatEntity {
 			return;
 		}
 
+		if ((newxp > 0) && isMasteryProgressionActive()) {
+			addMasteryXP(newxp);
+			return;
+		}
+
 		// Increment experience points
 		this.xp += newxp;
 		put("xp", xp);
@@ -1192,6 +1198,45 @@ public abstract class RPEntity extends CombatEntity {
 		new GameEvent(getName(), "xp", String.valueOf(xp)).raise();
 
 		updateLevel();
+	}
+
+	private boolean isMasteryProgressionActive() {
+		if (!(this instanceof Player)) {
+			return false;
+		}
+
+		final Player player = (Player) this;
+		return (player.getLevel() == Level.maxLevel())
+			&& (player.getRebornCount() >= ProgressionConfig.MASTERY_MIN_RESETS);
+	}
+
+	private void addMasteryXP(final int gainedXP) {
+		final int currentMasteryXP = has("mastery_xp") ? getInt("mastery_xp") : 0;
+		final int currentMasteryLevel = has("mastery_level") ? getInt("mastery_level") : 0;
+
+		if (currentMasteryLevel >= ProgressionConfig.MASTERY_MAX_LEVEL) {
+			new GameEvent(getName(), "mastery_xp_capped", String.valueOf(currentMasteryLevel)).raise();
+			return;
+		}
+
+		long targetMasteryXP = (long) currentMasteryXP + gainedXP;
+		final long maxMasteryXP = (long) ProgressionConfig.MASTERY_MAX_LEVEL * ProgressionConfig.MASTERY_XP_PER_LEVEL;
+		if (targetMasteryXP > maxMasteryXP) {
+			targetMasteryXP = maxMasteryXP;
+		}
+
+		final int updatedMasteryXP = (int) targetMasteryXP;
+		final int updatedMasteryLevel = Math.min(ProgressionConfig.MASTERY_MAX_LEVEL,
+			updatedMasteryXP / ProgressionConfig.MASTERY_XP_PER_LEVEL);
+
+		put("mastery_xp", updatedMasteryXP);
+		put("mastery_level", updatedMasteryLevel);
+
+		new GameEvent(getName(), "added mastery xp", String.valueOf(gainedXP)).raise();
+		new GameEvent(getName(), "mastery_xp", String.valueOf(updatedMasteryXP)).raise();
+		if (updatedMasteryLevel > currentMasteryLevel) {
+			new GameEvent(getName(), "mastery_level", String.valueOf(updatedMasteryLevel)).raise();
+		}
 	}
 
 	/**
