@@ -259,6 +259,7 @@
 				<pathelement path="${log4j_jar}"/>
 				<pathelement path="${junit_jar}"/>
 				<pathelement path="${guava_jar}"/>
+				<pathelement path="${jsonsimple_jar}"/>
 			</classpath>
 		</javac>
 
