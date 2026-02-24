@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.common.NotificationType;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.events.TurnListener;
 import games.stendhal.server.entity.creature.CircumstancesOfDeath;
@@ -105,7 +106,7 @@ public final class HellCaptureAssaultEvent extends ConfiguredMapEvent {
 								RandomEventRewardService.RandomEventType.HELL_CAPTURE_ASSAULT,
 								participationScore,
 								difficultyModifier * context.getDecision().getMultiplier());
-						context.getPlayer().sendPrivateText("Za odparcie szturmu piekła otrzymujesz +" + reward.getXp()
+						context.getPlayer().sendPrivateText(NotificationType.POSITIVE, "Za odparcie szturmu piekła otrzymujesz +" + reward.getXp()
 								+ " PD oraz +" + Math.round(reward.getKarma() * 100.0d) / 100.0d + " karmy.");
 					}
 				}, "Szturm Piekła").settleRewards(MapEventRewardSettlementService.SettlementOptions.defaultOptions());

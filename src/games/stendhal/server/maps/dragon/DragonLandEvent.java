@@ -211,7 +211,7 @@ public class DragonLandEvent extends ConfiguredMapEvent {
 								RandomEventRewardService.RandomEventType.DRAGON_LAND,
 								participationScore,
 								difficultyModifier * context.getDecision().getMultiplier());
-						context.getPlayer().sendPrivateText("Za obronę Smoczej Krainy otrzymujesz +" + reward.getXp()
+						context.getPlayer().sendPrivateText(NotificationType.POSITIVE, "Za obronę Smoczej Krainy otrzymujesz +" + reward.getXp()
 								+ " PD oraz +" + Math.round(reward.getKarma() * 100.0d) / 100.0d + " karmy.");
 					}
 				},
