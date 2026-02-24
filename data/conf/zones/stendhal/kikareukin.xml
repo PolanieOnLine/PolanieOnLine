@@ -8,6 +8,11 @@
 
 	<zone name="7_kikareukin_clouds" level="7" x="499616" y="499744"
 			file="Level 7/kikareukin/clouds.tmx">
+		<configurator class-name="games.stendhal.server.maps.event.GenericMapEventScheduler">
+			<parameter name="eventId">kikareukin_angel_preview</parameter>
+			<parameter name="triggerType">both</parameter>
+		</configurator>
+
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">clouds</parameter>
@@ -50,6 +55,11 @@
 
 	<zone name="6_kikareukin_islands" level="6" x="499616" y="499744"
 			file="Level 6/kikareukin/islands.tmx">
+		<configurator class-name="games.stendhal.server.maps.event.GenericMapEventScheduler">
+			<parameter name="eventId">kikareukin_angel_preview</parameter>
+			<parameter name="triggerType">both</parameter>
+		</configurator>
+
 		<attributes>
 			<parameter name="color_method">time</parameter>
 			<parameter name="weather">varying(temperature=-2)</parameter>

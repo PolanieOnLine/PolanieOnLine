@@ -24,6 +24,10 @@
 
 	<zone name="0_dragon_land_n" level="0" x="513824" y="18048" file="Level 0/dragon/land_n.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
+		<configurator class-name="games.stendhal.server.maps.event.GenericMapEventScheduler">
+			<parameter name="eventId">dragon_land_default</parameter>
+			<parameter name="triggerType">both</parameter>
+		</configurator>
 
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.dragon.YoungBoyNPC"/>
@@ -95,6 +99,10 @@
 
 	<zone name="0_dragon_land_s" level="0" x="513824" y="18176" file="Level 0/dragon/land_s.tmx">
 		<configurator class-name="games.stendhal.server.core.config.zone.NoTeleport"/>
+		<configurator class-name="games.stendhal.server.maps.event.GenericMapEventScheduler">
+			<parameter name="eventId">dragon_land_default</parameter>
+			<parameter name="triggerType">both</parameter>
+		</configurator>
 
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.dragon.GuardianNPC"/>

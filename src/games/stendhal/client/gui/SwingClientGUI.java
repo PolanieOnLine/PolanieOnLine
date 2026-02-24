@@ -12,6 +12,11 @@
 package games.stendhal.client.gui;
 
 import static games.stendhal.client.gui.settings.SettingsProperties.DISPLAY_SIZE_PROPERTY;
+import static games.stendhal.client.gui.settings.SettingsProperties.EVENT_HUD_MODE_COMPACT;
+import static games.stendhal.client.gui.settings.SettingsProperties.EVENT_HUD_MODE_FULL;
+import static games.stendhal.client.gui.settings.SettingsProperties.EVENT_HUD_MODE_HIDDEN;
+import static games.stendhal.client.gui.settings.SettingsProperties.EVENT_HUD_MODE_PROPERTY;
+import static games.stendhal.client.gui.settings.SettingsProperties.EVENT_HUD_OPACITY_PROPERTY;
 import static games.stendhal.common.constants.Actions.COND_STOP;
 import static games.stendhal.common.constants.Actions.TYPE;
 
@@ -22,6 +27,7 @@ import java.awt.Frame;
 import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -30,9 +36,12 @@ import java.awt.event.FocusEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
+import javax.swing.AbstractAction;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
@@ -43,6 +52,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+import javax.swing.Timer;
 import javax.swing.plaf.TabbedPaneUI;
 
 import org.apache.log4j.Logger;
@@ -69,10 +79,14 @@ import games.stendhal.client.gui.group.GroupPanelController;
 import games.stendhal.client.gui.layout.FreePlacementLayout;
 import games.stendhal.client.gui.layout.SBoxLayout;
 import games.stendhal.client.gui.layout.SLayout;
+import games.stendhal.client.gui.map.EventActivityLeaderboardOverlay;
+import games.stendhal.client.gui.map.EventProgressBarOverlay;
 import games.stendhal.client.gui.map.MapPanelController;
+import games.stendhal.client.gui.settings.SettingsProperties;
 import games.stendhal.client.gui.spells.Spells;
 import games.stendhal.client.gui.stats.StatsPanelController;
-import games.stendhal.client.gui.settings.SettingsProperties;
+import games.stendhal.client.gui.status.ActiveMapEventStatus;
+import games.stendhal.client.gui.status.MapEventStatusStore;
 import games.stendhal.client.gui.styled.StyledTabbedPaneUI;
 import games.stendhal.client.gui.wt.core.SettingChangeListener;
 import games.stendhal.client.gui.wt.core.WtWindowManager;
@@ -86,12 +100,37 @@ import marauroa.common.game.RPObject;
 class SwingClientGUI implements J2DClientGUI {
 	/** Scrolling speed when using the mouse wheel. */
 	private static final int SCROLLING_SPEED = 8;
+	private static final int EVENT_OVERLAY_TOP_MARGIN = 18;
+	private static final int EVENT_OVERLAY_SAFE_GAP = 8;
+	private static final int EVENT_ACTIVITY_OVERLAY_LEFT_MARGIN = 12;
+	private static final int EVENT_ACTIVITY_OVERLAY_TOP_MARGIN = 14;
+	private static final String KOSCIELISKO_ESCORT_EVENT_ID = "koscielisko_giant_escort";
+	private static final int EVENT_REFRESH_INTERVAL_MILLIS = 100;
+	private static final int EVENT_OVERLAY_DEBOUNCE_MILLIS = 300;
+	private static final int EVENT_OVERLAY_FADE_DURATION_MILLIS = 220;
+	private static final int EVENT_END_STATE_DURATION_MILLIS = 1200;
+	private static final int EVENT_HUD_OPACITY_MIN = 40;
+	private static final int EVENT_HUD_OPACITY_MAX = 90;
+	private static final int EVENT_HUD_OPACITY_DEFAULT = 70;
 	/** Property name used to determine if scaling is wanted. */
 	private static final String SCALE_PREFERENCE_PROPERTY = "ui.scale_screen";
 	private static final Logger logger = Logger.getLogger(SwingClientGUI.class);
 
 	private final JLayeredPane pane;
 	private final GameScreen screen;
+	private final EventProgressBarOverlay eventProgressOverlay;
+	private final EventActivityLeaderboardOverlay eventActivityOverlay;
+	private final Timer eventProgressRefreshTimer;
+	private final Timer eventOverlayDebounceTimer;
+	private final Timer eventOverlayFadeTimer;
+	private final Timer eventOverlayEndStateTimer;
+	private ActiveMapEventStatus lastShownEventStatus;
+	private long fadeStartMillis;
+	private long overlayRefreshSuppressedUntilMillis;
+	private String eventHudMode = EVENT_HUD_MODE_FULL;
+	private float eventHudOpacity = EVENT_HUD_OPACITY_DEFAULT / 100.0f;
+	private String eventHudModePropertyKey;
+	private String eventHudOpacityPropertyKey;
 	private final ScreenController screenController;
 	private final ContainerPanel containerPanel;
 	private final QuitDialog quitDialog;
@@ -113,7 +152,7 @@ class SwingClientGUI implements J2DClientGUI {
 	private KeyRing keyring;
 	private MagicBag magicbag;
 	private RunicAltar runicAltar;
-	//private Portfolio portfolio;
+	// private Portfolio portfolio;
 	private Spells spells;
 	private boolean offline;
 	private int paintCounter;
@@ -122,14 +161,15 @@ class SwingClientGUI implements J2DClientGUI {
 	private OutfitDialog outfitDialog;
 	private FocusAdapter chatFocusRedirector;
 	private boolean chatFocusRedirectInstalled;
+	private volatile String currentZoneName;
 
-	public SwingClientGUI(StendhalClient client, UserContext context,
-			NotificationChannelManager channelManager, JFrame splash) {
+	public SwingClientGUI(StendhalClient client, UserContext context, NotificationChannelManager channelManager,
+			JFrame splash) {
 		this.userContext = context;
 		setupInternalWindowProperties();
 		/*
-		 * Add a layered pane for the game area, so that we can have
-		 * windows on top of it
+		 * Add a layered pane for the game area, so that we can have windows on top of
+		 * it
 		 */
 		pane = new JLayeredPane();
 		pane.setLayout(new FreePlacementLayout());
@@ -140,8 +180,50 @@ class SwingClientGUI implements J2DClientGUI {
 		// initialize the screen controller
 		screenController = ScreenController.get(screen);
 		pane.addComponentListener(new GameScreenResizer(screen));
+		pane.addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentResized(final ComponentEvent e) {
+				repositionEventProgressOverlay();
+				repositionEventActivityOverlay();
+			}
+		});
 		// ... and put it on the ground layer of the pane
 		pane.add(screen, Component.LEFT_ALIGNMENT, JLayeredPane.DEFAULT_LAYER);
+		eventProgressOverlay = new EventProgressBarOverlay();
+		pane.add(eventProgressOverlay, JLayeredPane.PALETTE_LAYER);
+		eventActivityOverlay = new EventActivityLeaderboardOverlay();
+		pane.add(eventActivityOverlay, JLayeredPane.PALETTE_LAYER);
+		initEventHudSettings();
+		eventProgressRefreshTimer = new Timer(EVENT_REFRESH_INTERVAL_MILLIS, new AbstractAction() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				refreshEventProgressOverlay();
+			}
+		});
+		eventProgressRefreshTimer.start();
+
+		eventOverlayDebounceTimer = new Timer(EVENT_OVERLAY_DEBOUNCE_MILLIS, new AbstractAction() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				refreshEventProgressOverlay();
+			}
+		});
+		eventOverlayDebounceTimer.setRepeats(false);
+
+		eventOverlayFadeTimer = new Timer(40, new AbstractAction() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				updateOverlayFade();
+			}
+		});
+
+		eventOverlayEndStateTimer = new Timer(EVENT_END_STATE_DURATION_MILLIS, new AbstractAction() {
+			@Override
+			public void actionPerformed(final ActionEvent e) {
+				startOverlayFadeOut();
+			}
+		});
+		eventOverlayEndStateTimer.setRepeats(false);
 
 		runicAltar = new RunicAltar();
 		pane.add(runicAltar.getRunicAltar(), JLayeredPane.MODAL_LAYER);
@@ -167,11 +249,12 @@ class SwingClientGUI implements J2DClientGUI {
 
 		setInitialWindowStates();
 		frame.setVisible(true);
+		repositionEventProgressOverlay();
+		repositionEventActivityOverlay();
 
 		/*
-		 * Used by settings dialog to restore the client's dimensions back to
-		 * the original width and height. Needs to be called after
-		 * frame.setSize().
+		 * Used by settings dialog to restore the client's dimensions back to the
+		 * original width and height. Needs to be called after frame.setSize().
 		 */
 		frameDefaultSize = frame.getSize();
 		frame.addWindowListener(new WindowAdapter() {
@@ -194,8 +277,7 @@ class SwingClientGUI implements J2DClientGUI {
 	}
 
 	private void setupChatEntry() {
-		final KeyListener tabcompletion = new ChatCompletionHelper(chatText,
-				World.get().getPlayerList().getNamesList(),
+		final KeyListener tabcompletion = new ChatCompletionHelper(chatText, World.get().getPlayerList().getNamesList(),
 				SlashActionRepository.getCommandNames());
 		chatText.addKeyListener(tabcompletion);
 
@@ -208,14 +290,14 @@ class SwingClientGUI implements J2DClientGUI {
 
 		final WtWindowManager windowManager = WtWindowManager.getInstance();
 		updateChatFocusRedirector(windowManager.getProperty(SettingsProperties.MOVE_KEY_SCHEME_PROPERTY,
-					SettingsProperties.MOVE_KEY_SCHEME_ARROWS));
+				SettingsProperties.MOVE_KEY_SCHEME_ARROWS));
 		windowManager.registerSettingChangeListener(SettingsProperties.MOVE_KEY_SCHEME_PROPERTY,
 				new SettingChangeListener() {
-			@Override
-			public void changed(String newValue) {
-				updateChatFocusRedirector(newValue);
-			}
-		});
+					@Override
+					public void changed(String newValue) {
+						updateChatFocusRedirector(newValue);
+					}
+				});
 	}
 
 	private void updateChatFocusRedirector(final String propertyValue) {
@@ -287,21 +369,21 @@ class SwingClientGUI implements J2DClientGUI {
 		userContext.addFeatureChangeListener(magicbag);
 
 		/*
-		portfolio = new Portfolio();
-		portfolio.setAcceptedTypes(EntityMap.getClass("item", null, null));
-		containerPanel.addRepaintable(portfolio);
-		userContext.addFeatureChangeListener(portfolio);
-		*/
+		 * portfolio = new Portfolio();
+		 * portfolio.setAcceptedTypes(EntityMap.getClass("item", null, null));
+		 * containerPanel.addRepaintable(portfolio);
+		 * userContext.addFeatureChangeListener(portfolio);
+		 */
 
 		spells = new Spells();
 		spells.setAcceptedTypes(EntityMap.getClass("spell", null, null));
 		containerPanel.addRepaintable(spells);
 		userContext.addFeatureChangeListener(spells);
 
-		for (final FeatureChangeListener listener: character.getFeatureChangeListeners()) {
+		for (final FeatureChangeListener listener : character.getFeatureChangeListeners()) {
 			userContext.addFeatureChangeListener(listener);
 		}
-		for (final ComponentListener listener: character.getComponentListeners()) {
+		for (final ComponentListener listener : character.getComponentListeners()) {
 			containerPanel.addComponentListener(listener);
 		}
 
@@ -386,14 +468,15 @@ class SwingClientGUI implements J2DClientGUI {
 	}
 
 	/**
-	 * Requests repaint at the window areas that are painted according to the
-	 * game loop frame rate.
+	 * Requests repaint at the window areas that are painted according to the game
+	 * loop frame rate.
 	 */
 	@Override
 	public void triggerPainting() {
 		if (frame.getState() != Frame.ICONIFIED) {
 			paintCounter++;
-			if (frame.isActive() || "false".equals(System.getProperty("stendhal.skip.inactive", "false")) || paintCounter >= 20) {
+			if (frame.isActive() || "false".equals(System.getProperty("stendhal.skip.inactive", "false"))
+					|| paintCounter >= 20) {
 				paintCounter = 0;
 				logger.debug("Draw screen");
 				minimap.refresh();
@@ -401,29 +484,26 @@ class SwingClientGUI implements J2DClientGUI {
 				screen.repaint();
 			}
 		}
-    }
+	}
 
 	private void locationHacksAndBugWorkaround() {
 		/*
-		 * On some systems the window may end up occasionally unresponsive
-		 * to keyboard use unless these are delayed.
+		 * On some systems the window may end up occasionally unresponsive to keyboard
+		 * use unless these are delayed.
 		 */
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
 				/*
-				 * A massive kludge to ensure that the window position is
-				 * treated properly. Without this popup menus can be misplaced
-				 * and unusable until the user moves the game window. This
-				 * can happen with certain window managers if the window manager
-				 * moves the window as a result of resizing the window.
-				 * "ui.dimensions"
-				 * Description of the bug:
-				 * 	https://bugzilla.redhat.com/show_bug.cgi?id=698295
+				 * A massive kludge to ensure that the window position is treated properly.
+				 * Without this popup menus can be misplaced and unusable until the user moves
+				 * the game window. This can happen with certain window managers if the window
+				 * manager moves the window as a result of resizing the window. "ui.dimensions"
+				 * Description of the bug: https://bugzilla.redhat.com/show_bug.cgi?id=698295
 				 *
-				 * As of 2013-09-07 it is reproducible at least when using
-				 * Mate desktop's marco window manager. Metacity and mutter
-				 * have a workaround for the same issue in AWT.
+				 * As of 2013-09-07 it is reproducible at least when using Mate desktop's marco
+				 * window manager. Metacity and mutter have a workaround for the same issue in
+				 * AWT.
 				 */
 				Point location = frame.getLocation();
 				frame.setLocation(location.x + 1, location.y);
@@ -437,47 +517,44 @@ class SwingClientGUI implements J2DClientGUI {
 	}
 
 	/**
-	 * For small screens. Setting the maximum window size does
-	 * not help - pack() happily ignores it.
+	 * For small screens. Setting the maximum window size does not help - pack()
+	 * happily ignores it.
 	 */
 	private void smallScreenHacks() {
 		Rectangle maxBounds = GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds();
 		Dimension current = frame.getSize();
-		frame.setSize(Math.min(current.width, maxBounds.width),
-				Math.min(current.height, maxBounds.height));
+		frame.setSize(Math.min(current.width, maxBounds.width), Math.min(current.height, maxBounds.height));
 		/*
-		 * Needed for small screens; Sometimes the divider is placed
-		 * incorrectly unless we explicitly set it. Try to fit it on the
-		 * screen and show a bit of the chat.
+		 * Needed for small screens; Sometimes the divider is placed incorrectly unless
+		 * we explicitly set it. Try to fit it on the screen and show a bit of the chat.
 		 */
-		verticalSplit.setDividerLocation(Math.min(stendhal.getDisplaySize().height,
-				maxBounds.height - 80));
+		verticalSplit.setDividerLocation(Math.min(stendhal.getDisplaySize().height, maxBounds.height - 80));
 	}
 
 	/**
 	 * Modify the states of the on screen windows. The window manager normally
-	 * restores the state of the window as it was on the previous session. For
-	 * some windows this is not desirable.
+	 * restores the state of the window as it was on the previous session. For some
+	 * windows this is not desirable.
 	 * <p>
 	 * <em>Note:</em> This need to be called from the event dispatch thread.
 	 */
 	private void setInitialWindowStates() {
 		/*
-		 * Window manager may try to restore the visibility of the dialog when
-		 * it's added to the pane.
+		 * Window manager may try to restore the visibility of the dialog when it's
+		 * added to the pane.
 		 */
 		quitDialog.getQuitDialog().setVisible(false);
 		// Windows may have been closed in old clients
 		character.setVisible(true);
 		inventory.setVisible(true);
 		/*
-		 * Keyring and spells, on the other hand, *should* be hidden until
-		 * revealed by feature change
+		 * Keyring and spells, on the other hand, *should* be hidden until revealed by
+		 * feature change
 		 */
 		keyring.setVisible(false);
 		magicbag.setVisible(false);
 		runicAltar.getRunicAltar().setVisible(false);
-		//portfolio.setVisible(false);
+		// portfolio.setVisible(false);
 		spells.setVisible(false);
 	}
 
@@ -501,11 +578,11 @@ class SwingClientGUI implements J2DClientGUI {
 		frame.addWindowFocusListener(new WindowAdapter() {
 			@Override
 			public void windowLostFocus(WindowEvent e) {
-				/* Stops player movement via keypress when focus is lost.
+				/*
+				 * Stops player movement via keypress when focus is lost.
 				 *
-				 * FIXME: When focus is regained, direction key must be
-				 *        pressed twice to resume walking. Key states
-				 *        not flushed correctly?
+				 * FIXME: When focus is regained, direction key must be pressed twice to resume
+				 * walking. Key states not flushed correctly?
 				 */
 				if (StendhalClient.serverVersionAtLeast("0.02")) {
 					final RPAction stop = new RPAction();
@@ -572,6 +649,27 @@ class SwingClientGUI implements J2DClientGUI {
 		client.addZoneChangeListener(screen);
 		client.addZoneChangeListener(minimap);
 		client.addZoneChangeListener(new WeatherSoundManager());
+		client.addZoneChangeListener(new ZoneChangeListener() {
+			@Override
+			public void onZoneUpdate(final Zone zone) {
+				currentZoneName = User.isNull() ? null : User.get().getZoneName();
+				scheduleOverlayRefreshDebounced();
+			}
+
+			@Override
+			public void onZoneChangeCompleted(final Zone zone) {
+				currentZoneName = User.isNull() ? null : User.get().getZoneName();
+				repositionEventProgressOverlay();
+				repositionEventActivityOverlay();
+				MapEventStatusStore.get().requestSnapshotRefresh();
+				scheduleOverlayRefreshDebounced();
+			}
+
+			@Override
+			public void onZoneChange(final Zone zone) {
+				scheduleOverlayRefreshDebounced();
+			}
+		});
 		// Disable side panel animation while changing zone
 		client.addZoneChangeListener(new ZoneChangeListener() {
 			@Override
@@ -590,13 +688,323 @@ class SwingClientGUI implements J2DClientGUI {
 		});
 	}
 
+	private void initEventHudSettings() {
+		eventHudModePropertyKey = toUserScopedSettingsKey(EVENT_HUD_MODE_PROPERTY);
+		eventHudOpacityPropertyKey = toUserScopedSettingsKey(EVENT_HUD_OPACITY_PROPERTY);
+
+		final WtWindowManager wm = WtWindowManager.getInstance();
+		applyEventHudMode(wm.getProperty(eventHudModePropertyKey, EVENT_HUD_MODE_FULL));
+		applyEventHudOpacity(wm.getPropertyInt(eventHudOpacityPropertyKey, EVENT_HUD_OPACITY_DEFAULT));
+
+		wm.registerSettingChangeListener(eventHudModePropertyKey, new SettingChangeListener() {
+			@Override
+			public void changed(final String newValue) {
+				applyEventHudMode(newValue);
+				repositionEventProgressOverlay();
+				repositionEventActivityOverlay();
+				scheduleOverlayRefreshDebounced();
+			}
+		});
+		wm.registerSettingChangeListener(eventHudOpacityPropertyKey, new SettingChangeListener() {
+			@Override
+			public void changed(final String newValue) {
+				applyEventHudOpacity(MathHelper.parseIntDefault(newValue, EVENT_HUD_OPACITY_DEFAULT));
+			}
+		});
+	}
+
+	private String toUserScopedSettingsKey(final String baseKey) {
+		final String userName = userContext.getName();
+		if ((userName == null) || userName.trim().isEmpty()) {
+			return baseKey;
+		}
+		return baseKey + "." + userName.toLowerCase().replaceAll("[^a-z0-9._-]", "_");
+	}
+
+	private void applyEventHudMode(final String mode) {
+		if (EVENT_HUD_MODE_COMPACT.equals(mode)) {
+			eventHudMode = EVENT_HUD_MODE_COMPACT;
+			eventProgressOverlay.setCompactMode(true);
+			return;
+		}
+		if (EVENT_HUD_MODE_HIDDEN.equals(mode)) {
+			eventHudMode = EVENT_HUD_MODE_HIDDEN;
+			eventProgressOverlay.setCompactMode(false);
+			eventProgressOverlay.hideOverlay();
+			eventActivityOverlay.setVisible(false);
+			return;
+		}
+		eventHudMode = EVENT_HUD_MODE_FULL;
+		eventProgressOverlay.setCompactMode(false);
+	}
+
+	private void applyEventHudOpacity(final int percent) {
+		final int clamped = MathHelper.clamp(percent, EVENT_HUD_OPACITY_MIN, EVENT_HUD_OPACITY_MAX);
+		eventHudOpacity = clamped / 100.0f;
+		if (eventProgressOverlay.isVisible()) {
+			eventProgressOverlay.repaint();
+		}
+		eventActivityOverlay.setOverlayAlpha(eventHudOpacity);
+	}
+
+	private void refreshEventProgressOverlay() {
+		if (!pane.isShowing()) {
+			return;
+		}
+		final ActiveMapEventStatus visibleStatus = MapEventStatusStore.get()
+				.getVisibleStatusForZone(resolveCurrentZoneName());
+		if (minimap != null) {
+			minimap.setActiveMapEventStatus(visibleStatus);
+		}
+		if (System.currentTimeMillis() < overlayRefreshSuppressedUntilMillis) {
+			return;
+		}
+		if (EVENT_HUD_MODE_HIDDEN.equals(eventHudMode)) {
+			eventProgressOverlay.hideOverlay();
+			eventActivityOverlay.setVisible(false);
+			if (minimap != null) {
+				minimap.setActiveMapEventStatus(null);
+			}
+			return;
+		}
+		if (visibleStatus == null) {
+			if ((lastShownEventStatus != null) && (lastShownEventStatus.getRemainingSeconds() <= 0)) {
+				showEventEndedState(lastShownEventStatus);
+				return;
+			}
+			startOverlayFadeOut();
+			eventActivityOverlay.setVisible(false);
+			return;
+		}
+
+		lastShownEventStatus = visibleStatus;
+		stopOverlayFade();
+		eventOverlayEndStateTimer.stop();
+
+		final String remaining = formatRemaining(visibleStatus.getRemainingSeconds());
+		final boolean koscieliskoEscort = KOSCIELISKO_ESCORT_EVENT_ID.equals(visibleStatus.getEventId());
+		final HudDisplayData hudData = buildHudDisplayData(visibleStatus, remaining, koscieliskoEscort);
+		if (eventProgressOverlay.isShowingEvent(visibleStatus.getEventId())) {
+			eventProgressOverlay.updateOverlay(visibleStatus.getEventId(), visibleStatus.getEventName(), hudData.details,
+					hudData.progressPercent, hudData.value);
+		} else {
+			eventProgressOverlay.showOverlay(visibleStatus.getEventId(), visibleStatus.getEventName(), hudData.details,
+					hudData.progressPercent, hudData.value);
+		}
+		eventProgressOverlay.setOverlayAlpha(eventHudOpacity);
+		repositionEventProgressOverlay();
+		eventActivityOverlay.setOverlayAlpha(eventHudOpacity);
+		updateEventActivityOverlay(visibleStatus);
+	}
+
+	private void scheduleOverlayRefreshDebounced() {
+		overlayRefreshSuppressedUntilMillis = System.currentTimeMillis() + EVENT_OVERLAY_DEBOUNCE_MILLIS;
+		eventOverlayDebounceTimer.restart();
+	}
+
+	private void showEventEndedState(final ActiveMapEventStatus endedStatus) {
+		if (eventOverlayEndStateTimer.isRunning()) {
+			return;
+		}
+		stopOverlayFade();
+		eventProgressOverlay.showTerminalState(endedStatus.getEventName(), "Finał wydarzenia", "Zdarzenie zakończone");
+		eventActivityOverlay.setVisible(false);
+		eventProgressOverlay.setOverlayAlpha(eventHudOpacity);
+		eventActivityOverlay.setOverlayAlpha(eventHudOpacity);
+		eventOverlayEndStateTimer.restart();
+		lastShownEventStatus = null;
+	}
+
+	private void startOverlayFadeOut() {
+		if (!eventProgressOverlay.isVisible() || eventOverlayFadeTimer.isRunning()) {
+			return;
+		}
+		eventOverlayEndStateTimer.stop();
+		fadeStartMillis = System.currentTimeMillis();
+		eventOverlayFadeTimer.start();
+	}
+
+	private void stopOverlayFade() {
+		eventOverlayFadeTimer.stop();
+		eventProgressOverlay.setOverlayAlpha(eventHudOpacity);
+	}
+
+	private void updateOverlayFade() {
+		final long elapsed = Math.max(0L, System.currentTimeMillis() - fadeStartMillis);
+		final float fadeAlpha = Math.max(0.0f, 1.0f - ((float) elapsed / (float) EVENT_OVERLAY_FADE_DURATION_MILLIS));
+		eventProgressOverlay.setOverlayAlpha(fadeAlpha * eventHudOpacity);
+		eventActivityOverlay.setOverlayAlpha(fadeAlpha * eventHudOpacity);
+		final float alpha = fadeAlpha;
+		if (alpha <= 0.0f) {
+			eventOverlayFadeTimer.stop();
+			eventProgressOverlay.hideOverlay();
+			eventActivityOverlay.setVisible(false);
+		}
+	}
+
+	private String resolveCurrentZoneName() {
+		if (!User.isNull()) {
+			final String zoneName = User.get().getZoneName();
+			if ((zoneName != null) && !zoneName.isEmpty()) {
+				currentZoneName = zoneName;
+			}
+		}
+		return currentZoneName;
+	}
+
+	private String formatRemaining(final int secondsTotal) {
+		final int bounded = Math.max(0, secondsTotal);
+		final int minutes = bounded / 60;
+		final int seconds = bounded % 60;
+		return minutes + ":" + ((seconds < 10) ? "0" + seconds : String.valueOf(seconds));
+	}
+
+	private String formatWaveLabel(final ActiveMapEventStatus status) {
+		if (status.getTotalWaves() <= 0) {
+			return "Fala -/-";
+		}
+		final int current = Math.max(1, Math.min(status.getCurrentWave(), status.getTotalWaves()));
+		return "Fala " + current + "/" + status.getTotalWaves();
+	}
+
+	private HudDisplayData buildHudDisplayData(final ActiveMapEventStatus status, final String remaining,
+			final boolean koscieliskoEscort) {
+		final ActiveMapEventStatus.CapturePointStatus activePoint = resolveActiveCapturePoint(status);
+		if (activePoint == null) {
+			return buildLegacyHudDisplayData(status, remaining, koscieliskoEscort);
+		}
+
+		final String nearestLabel = formatCapturePointLabel(activePoint);
+		final int nearestPercent = activePoint.getProgressPercent();
+		if (EVENT_HUD_MODE_COMPACT.equals(eventHudMode)) {
+			return new HudDisplayData("", nearestPercent,
+					"Czas: " + remaining + " • " + nearestLabel + " " + nearestPercent + "%");
+		}
+
+		final String details = "Czas do końca: " + remaining;
+		return new HudDisplayData(details, nearestPercent,
+				"Aktywny punkt: " + nearestLabel + " • " + nearestPercent + "%");
+	}
+
+	private HudDisplayData buildLegacyHudDisplayData(final ActiveMapEventStatus status, final String remaining,
+			final boolean koscieliskoEscort) {
+		final String waveLabel = formatWaveLabel(status);
+		final String details = koscieliskoEscort
+				? "Czas do końca: " + remaining
+				: waveLabel + " • Czas do końca: " + remaining;
+		final String defenseStatus = status.getDefenseStatus();
+		final String defeatProgress = status.getEventDefeatPercent() + "% wybitych"
+				+ " (" + status.getEventDefeatedCreatures() + "/"
+				+ status.getEventTotalSpawnedCreatures() + ")";
+		final int progressPercent = koscieliskoEscort ? status.getProgressPercent() : status.getEventDefeatPercent();
+		final String value;
+		if (koscieliskoEscort) {
+			value = remaining;
+		} else if (EVENT_HUD_MODE_COMPACT.equals(eventHudMode)) {
+			value = waveLabel + " • " + remaining;
+		} else {
+			value = defeatProgress + ((defenseStatus == null || defenseStatus.trim().isEmpty()) ? "" : " • " + defenseStatus);
+		}
+		return new HudDisplayData(details, progressPercent, value);
+	}
+
+	private ActiveMapEventStatus.CapturePointStatus resolveActiveCapturePoint(final ActiveMapEventStatus status) {
+		if (User.isNull()) {
+			return null;
+		}
+		final User player = User.get();
+		for (ActiveMapEventStatus.CapturePointStatus capturePoint : status.getCapturePoints()) {
+			if (!ActiveMapEventStatus.isInsideCapturePoint(player.getZoneName(), player.getX(), player.getY(), capturePoint)) {
+				continue;
+			}
+			if (!isCapturePointInProgress(capturePoint)) {
+				continue;
+			}
+			return capturePoint;
+		}
+		return null;
+	}
+
+	private boolean isCapturePointInProgress(final ActiveMapEventStatus.CapturePointStatus capturePoint) {
+		final int progress = capturePoint.getProgressPercent();
+		return progress > 0 && progress < 100;
+	}
+
+	private String formatCapturePointLabel(final ActiveMapEventStatus.CapturePointStatus capturePoint) {
+		if (capturePoint == null || capturePoint.getPointId() == null || capturePoint.getPointId().trim().isEmpty()) {
+			return "Punkt";
+		}
+		return capturePoint.getPointId();
+	}
+
+	private static final class HudDisplayData {
+		private final String details;
+		private final int progressPercent;
+		private final String value;
+
+		private HudDisplayData(final String details, final int progressPercent, final String value) {
+			this.details = details;
+			this.progressPercent = progressPercent;
+			this.value = value;
+		}
+	}
+
+	private void updateEventActivityOverlay(final ActiveMapEventStatus status) {
+		final List<String> rows = mapActivityRows(status.getActivityTop());
+		eventActivityOverlay.updateRows(rows);
+		repositionEventActivityOverlay();
+	}
+
+	private List<String> mapActivityRows(final List<String> rawRows) {
+		final List<String> mapped = new ArrayList<String>();
+		for (String row : rawRows) {
+			if (row == null || row.trim().isEmpty()) {
+				continue;
+			}
+			final int separator = row.lastIndexOf("::");
+			if (separator <= 0 || separator >= (row.length() - 2)) {
+				mapped.add(row);
+				continue;
+			}
+			mapped.add(row.substring(0, separator) + " — " + row.substring(separator + 2) + " pkt");
+		}
+		return mapped;
+	}
+
+	private void repositionEventActivityOverlay() {
+		final Dimension preferred = eventActivityOverlay.getPreferredSize();
+		eventActivityOverlay.setBounds(EVENT_ACTIVITY_OVERLAY_LEFT_MARGIN, EVENT_ACTIVITY_OVERLAY_TOP_MARGIN,
+				preferred.width, preferred.height);
+	}
+
+	private void repositionEventProgressOverlay() {
+		final Dimension screenSize = screen.getSize();
+		final Dimension preferred = eventProgressOverlay.getPreferredSize();
+		final int width = preferred.width;
+		final int height = preferred.height;
+		final int x = Math.max(0, (screenSize.width - width) / 2);
+
+		int y = EVENT_OVERLAY_TOP_MARGIN;
+		final JComponent minimapComponent = (minimap == null) ? null : minimap.getComponent();
+		if ((minimapComponent != null) && minimapComponent.isShowing()) {
+			final Rectangle minimapBounds = SwingUtilities.convertRectangle(
+					minimapComponent.getParent(), minimapComponent.getBounds(), pane);
+			final Rectangle overlayBounds = new Rectangle(x, y, width, height);
+			if (overlayBounds.intersects(minimapBounds)) {
+				y = minimapBounds.y + minimapBounds.height + EVENT_OVERLAY_SAFE_GAP;
+			}
+		}
+
+		eventProgressOverlay.setBounds(x, y, width, height);
+	}
+
 	@Override
 	public void updateUser(User user) {
 		this.user = user;
 		character.setPlayer(user);
 		keyring.setSlot(user, "keyring");
 		magicbag.setSlot(user, "magicbag");
-		//portfolio.setSlot(user, "portfolio");
+		// portfolio.setSlot(user, "portfolio");
 		spells.setSlot(user, "spells");
 		inventory.setSlot(user, "bag");
 		runicAltar.setPlayer(user);
@@ -612,8 +1020,8 @@ class SwingClientGUI implements J2DClientGUI {
 		int frameState = frame.getExtendedState();
 
 		/*
-		 *  Do not attempt to reset client dimensions if window is maximized.
-		 *  Prevents resizing errors for child components.
+		 * Do not attempt to reset client dimensions if window is maximized. Prevents
+		 * resizing errors for child components.
 		 */
 		if (frameState != Frame.MAXIMIZED_BOTH) {
 			frame.setSize(frameDefaultSize);
@@ -651,22 +1059,20 @@ class SwingClientGUI implements J2DClientGUI {
 	}
 
 	@Override
-	public void addAchievementBox(String title, String description,
-			String category) {
+	public void addAchievementBox(String title, String description, String category) {
 		screen.addAchievementBox(title, description, category);
 	}
 
 	@Deprecated
 	@Override
-	public void addGameScreenText(double x, double y, String text,
-			NotificationType type, boolean isTalking) {
+	public void addGameScreenText(double x, double y, String text, NotificationType type, boolean isTalking) {
 		screenController.addText(x, y, text, type, isTalking);
 	}
 
 	@Deprecated
 	@Override
-	public void addGameScreenText(final Entity entity, final String text,
-			final NotificationType type, final boolean isTalking) {
+	public void addGameScreenText(final Entity entity, final String text, final NotificationType type,
+			final boolean isTalking) {
 		screenController.addText(entity, text, type, isTalking);
 	}
 
@@ -704,11 +1110,13 @@ class SwingClientGUI implements J2DClientGUI {
 			if (outfitDialog == null) {
 				// Here we actually want to call new OutfitColor(). Modifying
 				// OutfitColor.PLAIN would be a bad thing.
-				outfitDialog = new OutfitDialog(frame, "PolanieOnLine - Zmień wygląd postaci", sb.toString(), new OutfitColor(player));
+				outfitDialog = new OutfitDialog(frame, "PolanieOnLine - Zmień wygląd postaci", sb.toString(),
+						new OutfitColor(player));
 
 				outfitDialog.setVisible(true);
 			} else {
-				// XXX: (AntumDeluge) why does this use "OutfitColor.get" but above uses "new OutfitColor"???
+				// XXX: (AntumDeluge) why does this use "OutfitColor.get" but above uses "new
+				// OutfitColor"???
 				outfitDialog.setState(sb.toString(), OutfitColor.get(player));
 
 				outfitDialog.setVisible(true);
@@ -726,7 +1134,8 @@ class SwingClientGUI implements J2DClientGUI {
 			if (outfitDialog == null) {
 				// Here we actually want to call new OutfitColor(). Modifying
 				// OutfitColor.PLAIN would be a bad thing.
-				outfitDialog = new OutfitDialog(frame, "PolanieOnLine - Zmień wygląd postaci", stroutfit, new OutfitColor(player));
+				outfitDialog = new OutfitDialog(frame, "PolanieOnLine - Zmień wygląd postaci", stroutfit,
+						new OutfitColor(player));
 				outfitDialog.setVisible(true);
 			} else {
 				outfitDialog.setState(stroutfit, OutfitColor.get(player));
@@ -752,13 +1161,11 @@ class SwingClientGUI implements J2DClientGUI {
 			Dimension displaySize = stendhal.getDisplaySize();
 			if (screen.isScaled()) {
 				/*
-				 * Default behavior is otherwise reasonable, except the
-				 * user will likely want to use the vertical space for the
-				 * game screen.
+				 * Default behavior is otherwise reasonable, except the user will likely want to
+				 * use the vertical space for the game screen.
 				 *
-				 * Try to keep the aspect ratio near the optimum; the sizes
-				 * have not changed when this gets called, so push it to the
-				 * EDT.
+				 * Try to keep the aspect ratio near the optimum; the sizes have not changed
+				 * when this gets called, so push it to the EDT.
 				 */
 				SwingUtilities.invokeLater(new Runnable() {
 					@Override
@@ -771,10 +1178,10 @@ class SwingClientGUI implements J2DClientGUI {
 			} else {
 				int position = split.getDividerLocation();
 				/*
-				 * The trouble: the size of the game screen is likely the one
-				 * that the player wants to preserve when making the window
-				 * smaller. Swing provides no default way to the old component
-				 * size, so we stash the interesting dimension in oldWidth.
+				 * The trouble: the size of the game screen is likely the one that the player
+				 * wants to preserve when making the window smaller. Swing provides no default
+				 * way to the old component size, so we stash the interesting dimension in
+				 * oldWidth.
 				 */
 				int width = split.getWidth();
 				int oldRightDiff = oldWidth - position;
@@ -782,14 +1189,12 @@ class SwingClientGUI implements J2DClientGUI {
 				int underflow = widthChange + position;
 				if (underflow < 0) {
 					/*
-					 * Extreme size reduction. The divider location would have
-					 * changed as the result. Use the previous location instead
-					 * of the current.
+					 * Extreme size reduction. The divider location would have changed as the
+					 * result. Use the previous location instead of the current.
 					 */
 					oldRightDiff = oldWidth - split.getLastDividerLocation();
 				}
-				position = MathHelper.clamp(width - oldRightDiff,
-						split.getMinimumDividerLocation(),
+				position = MathHelper.clamp(width - oldRightDiff, split.getMinimumDividerLocation(),
 						split.getMaximumDividerLocation());
 
 				split.setDividerLocation(position);
@@ -822,7 +1227,8 @@ class SwingClientGUI implements J2DClientGUI {
 				pane.setMaximumSize(displaySize);
 				// The user may have resized the screen outside allowed
 				// parameters
-				int overflow = horizontalSplit.getWidth() - horizontalSplit.getDividerLocation() - displaySize.width - divWidth;
+				int overflow = horizontalSplit.getWidth() - horizontalSplit.getDividerLocation() - displaySize.width
+						- divWidth;
 				if (overflow > 0) {
 					horizontalSplit.setDividerLocation(horizontalSplit.getDividerLocation() + overflow);
 				}
@@ -887,8 +1293,8 @@ class SwingClientGUI implements J2DClientGUI {
 	}
 
 	/**
-	 * The layered pane where the game screen is does not automatically resize
-	 * the game screen. This handler is needed to do that work.
+	 * The layered pane where the game screen is does not automatically resize the
+	 * game screen. This handler is needed to do that work.
 	 */
 	private static class GameScreenResizer extends ComponentAdapter {
 		private final Component child;

@@ -654,7 +654,7 @@ public class AdministrationActionTest {
 		action.put("minutes", 1);
 
 		assertTrue(CommandCenter.execute(player, action));
-		assertThat(player.events().get(0).get("text"), startsWith("Zostałeś aresztowany przez hugo na 1 minutę. Powód: whynot."));
+		assertThat(player.events().get(player.events().size() - 1).get("text"), startsWith("Zostałeś aresztowany przez hugo na 1 minutę. Powód: whynot."));
 	}
 
 	/**

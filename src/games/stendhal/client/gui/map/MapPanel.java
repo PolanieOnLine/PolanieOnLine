@@ -15,17 +15,25 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.GraphicsConfiguration;
+import java.awt.Graphics2D;
 import java.awt.GraphicsEnvironment;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.RenderingHints;
+import java.awt.Stroke;
+import java.awt.BasicStroke;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import javax.swing.JComponent;
 import javax.swing.SwingUtilities;
 import javax.swing.ToolTipManager;
 
 import games.stendhal.client.StendhalClient;
+import games.stendhal.client.gui.status.ActiveMapEventStatus;
 import games.stendhal.common.CollisionDetection;
 import marauroa.common.game.RPAction;
 
@@ -61,6 +69,13 @@ class MapPanel extends JComponent {
 	private static final int MAP_HEIGHT = 128;
 	/** Minimum scale of the map; the minimum size of one tile in pixels */
 	private static final int MINIMUM_SCALE = 2;
+	private static final Color EVENT_NEUTRAL_BASE = new Color(190, 190, 190);
+	private static final Color EVENT_CAPTURING_BASE = new Color(247, 198, 79);
+	private static final Color EVENT_CAPTURED_BASE = new Color(86, 191, 94);
+	private static final Color EVENT_CONTESTED_BASE = new Color(221, 92, 92);
+	private static final Stroke EVENT_OUTLINE_STROKE = new BasicStroke(2.6f);
+	private static final Stroke EVENT_PROGRESS_STROKE = new BasicStroke(3.0f, BasicStroke.CAP_ROUND,
+			BasicStroke.JOIN_ROUND);
 
 	private final StendhalClient client;
 	private final MapPanelController controller;
@@ -111,6 +126,11 @@ class MapPanel extends JComponent {
 	private int lastTileWidth;
 	/** Height of the most recently rendered tile map. */
 	private int lastTileHeight;
+	/** Last active map event status snapshot. */
+	private ActiveMapEventStatus activeEventStatus;
+	/** Visible capture points for the current map zone. */
+	private List<ActiveMapEventStatus.CapturePointStatus> visibleCapturePoints =
+			Collections.emptyList();
 
 	/**
 	 * Create a new MapPanel.
@@ -163,6 +183,7 @@ class MapPanel extends JComponent {
 		g.translate(-xOffset, -yOffset);
 
 		drawMap(g);
+		drawEventCapturePoints(g);
 		drawEntities(g);
 
 		g.dispose();
@@ -204,6 +225,153 @@ class MapPanel extends JComponent {
 	 */
 	private void drawMap(final Graphics g) {
 		g.drawImage(mapImage, 0, 0, null);
+	}
+
+	private void drawEventCapturePoints(final Graphics g) {
+		if ((visibleCapturePoints == null) || visibleCapturePoints.isEmpty() || (scale <= 0)) {
+			return;
+		}
+		final Graphics2D g2d = (Graphics2D) g.create();
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		for (final ActiveMapEventStatus.CapturePointStatus capturePoint : visibleCapturePoints) {
+			if (capturePoint == null) {
+				continue;
+			}
+			drawCapturePoint(g2d, capturePoint);
+		}
+		g2d.dispose();
+	}
+
+	private void drawCapturePoint(final Graphics2D g2d, final ActiveMapEventStatus.CapturePointStatus capturePoint) {
+		final int centerX = (capturePoint.getX() * scale) + (scale / 2);
+		final int centerY = (capturePoint.getY() * scale) + (scale / 2);
+		final int radiusPixels = Math.max(scale, capturePoint.getRadiusTiles() * scale);
+		final int diameter = radiusPixels * 2;
+		final int topLeftX = centerX - radiusPixels;
+		final int topLeftY = centerY - radiusPixels;
+
+		final Color baseColor = resolveCapturePointStateColor(capturePoint);
+		final boolean largeRadius = capturePoint.getRadiusTiles() >= 10;
+		final int clampedProgress = Math.max(0, Math.min(100, capturePoint.getProgressPercent()));
+
+		g2d.setColor(withAlpha(baseColor, largeRadius ? 58 : 34));
+		g2d.fillOval(topLeftX, topLeftY, diameter, diameter);
+
+		g2d.setStroke(EVENT_OUTLINE_STROKE);
+		g2d.setColor(withAlpha(baseColor, largeRadius ? 210 : 170));
+		g2d.drawOval(topLeftX, topLeftY, diameter, diameter);
+
+		g2d.setStroke(EVENT_PROGRESS_STROKE);
+		g2d.setColor(withAlpha(baseColor, 245));
+		final int arcDiameter = Math.max(4, diameter - 6);
+		g2d.drawArc(topLeftX + 3, topLeftY + 3, arcDiameter, arcDiameter, 90,
+				-Math.round((clampedProgress / 100.0f) * 360.0f));
+
+		g2d.setColor(new Color(20, 20, 20, 180));
+		g2d.drawString(clampedProgress + "%", centerX - 9, centerY + 6);
+		g2d.setColor(new Color(255, 255, 255, 245));
+		g2d.drawString(clampedProgress + "%", centerX - 10, centerY + 5);
+	}
+
+	private Color resolveCapturePointStateColor(final ActiveMapEventStatus.CapturePointStatus capturePoint) {
+		if (capturePoint.isContested()) {
+			return EVENT_CONTESTED_BASE;
+		}
+		if (capturePoint.getProgressPercent() >= 100) {
+			return EVENT_CAPTURED_BASE;
+		}
+		if (capturePoint.getProgressPercent() <= 0) {
+			return EVENT_NEUTRAL_BASE;
+		}
+		return EVENT_CAPTURING_BASE;
+	}
+
+	private Color withAlpha(final Color color, final int alpha) {
+		return new Color(color.getRed(), color.getGreen(), color.getBlue(), Math.max(0, Math.min(255, alpha)));
+	}
+
+	void updateActiveEventStatus(final ActiveMapEventStatus status, final String zoneName) {
+		activeEventStatus = status;
+		if ((status == null) || (zoneName == null) || zoneName.isEmpty()) {
+			visibleCapturePoints = Collections.emptyList();
+			repaint();
+			return;
+		}
+		final List<String> zoneAliases = resolveZoneAliases(status, zoneName);
+		final List<ActiveMapEventStatus.CapturePointStatus> matching = new ArrayList<ActiveMapEventStatus.CapturePointStatus>();
+		for (ActiveMapEventStatus.CapturePointStatus capturePoint : status.getCapturePoints()) {
+			if ((capturePoint != null) && isZoneMatch(capturePoint.getZone(), zoneAliases)) {
+				matching.add(capturePoint);
+			}
+		}
+		visibleCapturePoints = matching.isEmpty()
+				? Collections.<ActiveMapEventStatus.CapturePointStatus>emptyList()
+				: Collections.unmodifiableList(matching);
+		repaint();
+	}
+
+	private boolean isZoneMatch(final String capturePointZone, final List<String> zoneAliases) {
+		if ((capturePointZone == null) || zoneAliases.isEmpty()) {
+			return false;
+		}
+		final String normalizedCaptureZone = normalizeZoneKey(capturePointZone);
+		for (String alias : zoneAliases) {
+			if (alias == null) {
+				continue;
+			}
+			if (alias.equalsIgnoreCase(capturePointZone)) {
+				return true;
+			}
+			if (!normalizedCaptureZone.isEmpty() && normalizedCaptureZone.equals(normalizeZoneKey(alias))) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private List<String> resolveZoneAliases(final ActiveMapEventStatus status, final String zoneName) {
+		if ((status == null) || (zoneName == null) || zoneName.isEmpty()) {
+			return Collections.emptyList();
+		}
+		final String normalizedZoneName = normalizeZoneKey(zoneName);
+		final List<String> aliases = new ArrayList<String>();
+		aliases.add(zoneName);
+		for (String knownZone : status.getZones()) {
+			if ((knownZone == null) || knownZone.isEmpty()) {
+				continue;
+			}
+			if (zoneName.equalsIgnoreCase(knownZone)
+					|| (!normalizedZoneName.isEmpty() && normalizedZoneName.equals(normalizeZoneKey(knownZone)))) {
+				if (!containsIgnoreCase(aliases, knownZone)) {
+					aliases.add(knownZone);
+				}
+			}
+		}
+		return aliases;
+	}
+
+
+	private String normalizeZoneKey(final String zoneName) {
+		if (zoneName == null) {
+			return "";
+		}
+		String normalized = zoneName.trim().toLowerCase();
+		normalized = normalized.replaceAll("^[0-9]+[_\\-\\s]*", "");
+		normalized = normalized.replaceAll("[^a-z0-9]+", "");
+		return normalized;
+	}
+
+	private boolean containsIgnoreCase(final List<String> values, final String candidate) {
+		for (String value : values) {
+			if ((value != null) && value.equalsIgnoreCase(candidate)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	ActiveMapEventStatus getActiveEventStatus() {
+		return activeEventStatus;
 	}
 
 	/**

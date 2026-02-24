@@ -46,6 +46,7 @@ import games.stendhal.client.entity.Corpse;
 import games.stendhal.client.entity.Entity;
 import games.stendhal.client.entity.IEntity;
 import games.stendhal.client.entity.Item;
+import games.stendhal.client.entity.User;
 import games.stendhal.client.gui.DropTarget;
 import games.stendhal.client.gui.EffectLayer;
 import games.stendhal.client.gui.GroundContainer;
@@ -54,6 +55,8 @@ import games.stendhal.client.gui.j2d.RemovableSprite;
 import games.stendhal.client.gui.j2d.entity.Entity2DView;
 import games.stendhal.client.gui.j2d.entity.EntityView;
 import games.stendhal.client.gui.spellcasting.SpellCastingGroundContainerMouseState;
+import games.stendhal.client.gui.status.ActiveMapEventStatus;
+import games.stendhal.client.gui.status.MapEventStatusStore;
 import games.stendhal.client.gui.wt.core.SettingChangeListener;
 import games.stendhal.client.gui.wt.core.WtWindowManager;
 import games.stendhal.client.sprite.Sprite;
@@ -111,6 +114,10 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 	private static final int OFFLINE_MARGIN = 10;
 
 	private static final Sprite offlineIcon;
+
+	private static final Color CAPTURE_NEUTRAL_COLOR = new Color(190, 190, 190);
+	private static final Color CAPTURE_COMPLETED_COLOR = new Color(86, 191, 94);
+	private static final Color CAPTURE_CONTESTED_COLOR = new Color(221, 92, 92);
 
 	/**
 	 * Static game layers.
@@ -777,6 +784,7 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 				startTileY, layerWidth, layerHeight, "blend_ground", "0_floor",
 				"1_terrain", "2_object");
 
+		renderCapturePoints(g);
 		viewManager.draw(g);
 
 		gameLayers.drawLayers(g, set, "roof_bundle", startTileX,
@@ -797,6 +805,94 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 				it.remove();
 			}
 		}
+	}
+
+	private void renderCapturePoints(final Graphics2D g) {
+		if (User.isNull()) {
+			return;
+		}
+		final User user = User.get();
+		if (user == null) {
+			return;
+		}
+		final String zoneName = user.getZoneName();
+		final ActiveMapEventStatus status = MapEventStatusStore.get().getVisibleStatusForZone(zoneName);
+		if ((status == null) || status.getCapturePoints().isEmpty()) {
+			return;
+		}
+
+		final Graphics2D captureGraphics = (Graphics2D) g.create();
+		captureGraphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		try {
+			for (ActiveMapEventStatus.CapturePointStatus capturePoint : status.getCapturePoints()) {
+				if (!zoneName.equalsIgnoreCase(capturePoint.getZone())) {
+					continue;
+				}
+				drawCapturePointRing(captureGraphics, capturePoint);
+			}
+		} finally {
+			captureGraphics.dispose();
+		}
+	}
+
+	private void drawCapturePointRing(final Graphics2D g, final ActiveMapEventStatus.CapturePointStatus capturePoint) {
+		final int tileSize = IGameScreen.SIZE_UNIT_PIXELS;
+		final int centerX = GameScreenSpriteHelper.convertWorldToPixelUnits(capturePoint.getX() + 0.5d);
+		final int centerY = GameScreenSpriteHelper.convertWorldToPixelUnits(capturePoint.getY() + 0.5d);
+		final int radius = Math.max(tileSize / 2, GameScreenSpriteHelper.convertWorldToPixelUnits(capturePoint.getRadiusTiles()));
+		final int diameter = radius * 2;
+		final int left = centerX - radius;
+		final int top = centerY - radius;
+		final int clampedProgress = Math.max(0, Math.min(100, capturePoint.getProgressPercent()));
+
+		final Color baseColor = resolveCapturePointBaseColor(capturePoint, clampedProgress);
+		final Color progressColor = resolveCapturePointProgressColor(clampedProgress);
+		final Color areaFillColor = withAlpha(baseColor, 0);
+		final Color progressPulseColor = withAlpha(progressColor, 115);
+		final Color outlineColor = withAlpha(baseColor, 205);
+
+		final int fillRadius = (int) Math.round(radius * (clampedProgress / 100.0d));
+		final int fillDiameter = fillRadius * 2;
+		final int fillLeft = centerX - fillRadius;
+		final int fillTop = centerY - fillRadius;
+
+		g.setColor(areaFillColor);
+		g.fillOval(left, top, diameter, diameter);
+
+		if (fillDiameter > 0) {
+			g.setColor(progressPulseColor);
+			g.fillOval(fillLeft, fillTop, fillDiameter, fillDiameter);
+		}
+
+		g.setColor(outlineColor);
+		g.drawOval(left, top, diameter, diameter);
+		g.drawOval(left - 1, top - 1, diameter + 2, diameter + 2);
+	}
+
+	private Color resolveCapturePointBaseColor(final ActiveMapEventStatus.CapturePointStatus capturePoint,
+			final int progressPercent) {
+		if (capturePoint.isContested()) {
+			return CAPTURE_CONTESTED_COLOR;
+		}
+		if (progressPercent >= 100) {
+			return CAPTURE_COMPLETED_COLOR;
+		}
+		return CAPTURE_NEUTRAL_COLOR;
+	}
+
+	private Color resolveCapturePointProgressColor(final int progressPercent) {
+		if (progressPercent >= 100) {
+			return CAPTURE_COMPLETED_COLOR;
+		}
+		if (progressPercent > 0) {
+			return CAPTURE_CONTESTED_COLOR;
+		}
+		return CAPTURE_NEUTRAL_COLOR;
+	}
+
+	private Color withAlpha(final Color color, final int alpha) {
+		return new Color(color.getRed(), color.getGreen(), color.getBlue(),
+				Math.max(0, Math.min(255, alpha)));
 	}
 
 	/**
