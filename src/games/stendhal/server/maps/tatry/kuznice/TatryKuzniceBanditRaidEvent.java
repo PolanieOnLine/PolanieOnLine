@@ -49,6 +49,7 @@ public class TatryKuzniceBanditRaidEvent extends ConfiguredMapEvent {
 	private static final int COMMANDER_AOE_INTERVAL_SECONDS = 22;
 	private static final int COMMANDER_AOE_TELEGRAPH_SECONDS = 4;
 	private static final int COMMANDER_AOE_RADIUS_TILES = 3;
+	private static final int COMMANDER_AOE_WARNING_RADIUS_TILES = 12;
 	private static final int COMMANDER_AOE_DAMAGE = 140;
 	private static final int GLOBAL_SUCCESS_THRESHOLD_PERCENT = 100;
 	private static final int GLOBAL_SUCCESS_MONEY_BONUS = 300;
@@ -223,13 +224,16 @@ public class TatryKuzniceBanditRaidEvent extends ConfiguredMapEvent {
 			return;
 		}
 		commanderAoeTelegraphPending = true;
-		SingletonRepository.getRuleProcessor().tellAllPlayers(NotificationType.SCENE_SETTING,
-				"Zbójecki herszt bierze zamach! Za " + COMMANDER_AOE_TELEGRAPH_SECONDS + "s uderzy obszarowo - uciekajcie poza jego zasięg!");
+		final int maxWarningSquaredDistance = COMMANDER_AOE_WARNING_RADIUS_TILES * COMMANDER_AOE_WARNING_RADIUS_TILES;
 		for (final Player player : commander.getZone().getPlayers()) {
 			if (player == null || player.isGhost() || player.isDisconnected()) {
 				continue;
 			}
-			player.sendPrivateText("Uwaga! Herszt bierze zamach - odskocz teraz, za chwilę uderzy dookoła!");
+			if (commander.squaredDistance(player) > maxWarningSquaredDistance) {
+				continue;
+			}
+			player.sendPrivateText(NotificationType.WARNING,
+					"Uwaga! Herszt bierze zamach - odskocz teraz, za chwilę uderzy dookoła!");
 		}
 		scheduleInSeconds(COMMANDER_AOE_TELEGRAPH_SECONDS, new TurnListener() {
 			@Override
@@ -259,7 +263,8 @@ public class TatryKuzniceBanditRaidEvent extends ConfiguredMapEvent {
 				continue;
 			}
 			player.onDamaged(commander, COMMANDER_AOE_DAMAGE);
-			player.sendPrivateText("Dostajesz falą uderzeniową herszta: " + COMMANDER_AOE_DAMAGE + " obrażeń.");
+			player.sendPrivateText(NotificationType.DAMAGE,
+					"Dostajesz falą uderzeniową herszta: " + COMMANDER_AOE_DAMAGE + " obrażeń.");
 			hitPlayers++;
 		}
 		LOGGER.info(getEventName() + " commander area strike resolved: radius=" + COMMANDER_AOE_RADIUS_TILES
@@ -322,7 +327,8 @@ public class TatryKuzniceBanditRaidEvent extends ConfiguredMapEvent {
 						if (awardedMoney > 0) {
 							MoneyUtils.giveMoney(context.getPlayer(), awardedMoney);
 						}
-						context.getPlayer().sendPrivateText("Gazdowie z Kuźnic kiwają z uznaniem. Za obronę dostajesz +"
+						context.getPlayer().sendPrivateText(NotificationType.POSITIVE,
+								"Gazdowie z Kuźnic kiwają z uznaniem. Za obronę dostajesz +"
 								+ reward.getXp() + " PD oraz +" + Math.round(reward.getKarma() * 100.0d) / 100.0d + " karmy.");
 					}
 				},
@@ -339,14 +345,14 @@ public class TatryKuzniceBanditRaidEvent extends ConfiguredMapEvent {
 							public boolean isEligible(final MapEventRewardSettlementService.RewardContext context) {
 								final MapEventRewardPolicy.RewardDecision decision = context.getDecision();
 								if (!decision.isFullParticipation()) {
-									context.getPlayer().sendPrivateText(
+									context.getPlayer().sendPrivateText(NotificationType.WARNING,
 										"Twój poziom jest zbyt niski na pełny udział w nagrodach eventu (minimum 20).");
 									return false;
 								}
 								if (!decision.isPrimaryRewardEligible()) {
 									if (decision.shouldGrantSymbolicRewardOnly()) {
 										context.getPlayer().addKarma(1.0d);
-										context.getPlayer().sendPrivateText(
+										context.getPlayer().sendPrivateText(NotificationType.INFORMATION,
 											"Za wsparcie obrony Kuźnic otrzymujesz symboliczną nagrodę +1 karmy.");
 									}
 									return false;
@@ -382,7 +388,8 @@ public class TatryKuzniceBanditRaidEvent extends ConfiguredMapEvent {
 				continue;
 			}
 			for (final Player player : zone.getPlayers()) {
-				player.sendPrivateText("Rogi grają… Zabezpieczcie przejścia i trzymajcie szyk. Za chwilę spadnie na nas zbójecka wataha.");
+				player.sendPrivateText(NotificationType.SCENE_SETTING,
+						"Rogi grają… Zabezpieczcie przejścia i trzymajcie szyk. Za chwilę spadnie na nas zbójecka wataha.");
 			}
 		}
 	}
