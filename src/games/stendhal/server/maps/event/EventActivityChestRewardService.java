@@ -16,6 +16,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
+import games.stendhal.common.NotificationType;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.player.Player;
@@ -62,7 +63,7 @@ public final class EventActivityChestRewardService {
 			chest.setBoundTo(player.getName());
 			player.equipOrPutOnGround(chest);
 			player.notifyWorldAboutChanges();
-			player.sendPrivateText("Za aktywność podczas wydarzenia " + eventDisplayName + " otrzymujesz "
+			player.sendPrivateText(NotificationType.POSITIVE, "Za aktywność podczas wydarzenia " + eventDisplayName + " otrzymujesz "
 					+ tier.displayName + ".");
 			awarded++;
 		}

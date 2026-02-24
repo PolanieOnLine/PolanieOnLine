@@ -1022,7 +1022,7 @@ public final class KoscieliskoGiantEscortEvent extends ConfiguredMapEvent {
 								context.getDecision().getMultiplier());
 						final int xpReward = reward.getXp();
 						final double karmaReward = reward.getKarma();
-						context.getPlayer().sendPrivateText("Za obronę szlaku otrzymujesz +" + xpReward + " PD oraz +"
+						context.getPlayer().sendPrivateText(NotificationType.POSITIVE, "Za obronę szlaku otrzymujesz +" + xpReward + " PD oraz +"
 								+ Math.round(karmaReward * 100.0d) / 100.0d + " karmy.");
 					}
 				},
