@@ -11,9 +11,7 @@
  ***************************************************************************/
 package games.stendhal.server.maps.tatry.kuznice;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -30,11 +28,11 @@ import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.item.money.MoneyUtils;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.maps.event.ConfiguredMapEvent;
-import games.stendhal.server.maps.event.EventActivityChestRewardService;
 import games.stendhal.server.maps.event.MapEventConfig;
 import games.stendhal.server.maps.event.MapEventConfigLoader;
 import games.stendhal.server.maps.event.MapEventContributionTracker;
 import games.stendhal.server.maps.event.MapEventRewardPolicy;
+import games.stendhal.server.maps.event.MapEventRewardSettlementService;
 import games.stendhal.server.maps.event.RandomEventRewardService;
 import marauroa.server.game.container.PlayerEntry;
 import marauroa.server.game.container.PlayerEntryContainer;
@@ -295,89 +293,69 @@ public class TatryKuzniceBanditRaidEvent extends ConfiguredMapEvent {
 
 	@Override
 	protected List<String> getActivityTop() {
-		final List<Map.Entry<String, MapEventContributionTracker.ContributionSnapshot>> entries =
-				new ArrayList<Map.Entry<String, MapEventContributionTracker.ContributionSnapshot>>(contributionTracker.snapshotAll().entrySet());
-		Collections.sort(entries, new Comparator<Map.Entry<String, MapEventContributionTracker.ContributionSnapshot>>() {
-			@Override
-			public int compare(final Map.Entry<String, MapEventContributionTracker.ContributionSnapshot> first,
-					final Map.Entry<String, MapEventContributionTracker.ContributionSnapshot> second) {
-				return Integer.compare(
-						MapEventContributionTracker.resolveActivityPoints(second.getValue()),
-						MapEventContributionTracker.resolveActivityPoints(first.getValue()));
-			}
-		});
-		final List<String> top = new ArrayList<String>();
-		for (Map.Entry<String, MapEventContributionTracker.ContributionSnapshot> entry : entries) {
-			if (top.size() >= 10) {
-				break;
-			}
-			top.add(entry.getKey() + "::" + MapEventContributionTracker.resolveActivityPoints(entry.getValue()));
-		}
-		return top;
+		return MapEventRewardSettlementService.buildActivityTop(contributionTracker);
 	}
 
 	private void rewardParticipants() {
-		final long now = System.currentTimeMillis();
 		final int defeatPercent = getEventDefeatPercent();
 		final boolean globalSuccess = defeatPercent >= GLOBAL_SUCCESS_THRESHOLD_PERCENT;
-		final List<EventActivityChestRewardService.QualifiedParticipant> qualifiedParticipants = new ArrayList<>();
-		for (Map.Entry<String, MapEventContributionTracker.ContributionSnapshot> entry : contributionTracker.snapshotAll().entrySet()) {
-			final Player player = SingletonRepository.getRuleProcessor().getPlayer(entry.getKey());
-			if (player == null) {
-				continue;
-			}
-			final String accountName = resolveAccountName(player);
-			final MapEventContributionTracker.ContributionSnapshot contribution = entry.getValue();
-			final MapEventRewardPolicy.RewardDecision decision = rewardPolicy.evaluate(
-					getEventId(),
-					entry.getKey(),
-					accountName,
-					contribution,
-					player.getLevel(),
-					now);
-			if (!decision.isQualified()) {
-				continue;
-			}
-			if (!decision.isFullParticipation()) {
-				player.sendPrivateText("Twój poziom jest zbyt niski na pełny udział w nagrodach eventu (minimum 20).");
-				continue;
-			}
-			if (!decision.isPrimaryRewardEligible()) {
-				if (decision.shouldGrantSymbolicRewardOnly()) {
-					player.addKarma(1.0d);
-					player.sendPrivateText("Za wsparcie obrony Kuźnic otrzymujesz symboliczną nagrodę +1 karmy.");
-				}
-				continue;
-			}
-			final double participationScore = resolveParticipationScore(decision, defeatPercent);
-			final int points = Math.max(0, (int) Math.round(decision.getTotalScore()));
-			final RewardTier rewardTier = RewardTier.fromPoints(points);
-			if (!rewardTier.isRewardTier()) {
-				continue;
-			}
-			final int baseMoney = rewardTier.getBaseMoney();
-			final int globalBonusMoney = globalSuccess ? GLOBAL_SUCCESS_MONEY_BONUS : 0;
-			final int awardedMoney = Math.max(0,
-					(int) Math.round((baseMoney + globalBonusMoney) * decision.getMultiplier()));
-			final RandomEventRewardService.Reward reward = randomEventRewardService.grantRandomEventRewards(
-					player,
-					RandomEventRewardService.RandomEventType.KUZNICE_BANDIT_RAID,
-					participationScore,
-					decision.getMultiplier());
-			if (awardedMoney > 0) {
-				MoneyUtils.giveMoney(player, awardedMoney);
-			}
-			player.sendPrivateText("Gazdowie z Kuźnic kiwają z uznaniem. Za obronę dostajesz +" + reward.getXp()
-					+ " PD oraz +" + Math.round(reward.getKarma() * 100.0d) / 100.0d + " karmy.");
-			qualifiedParticipants.add(new EventActivityChestRewardService.QualifiedParticipant(
-					player,
-					decision.getTotalScore(),
-					contribution.getDamage(),
-					contribution.getKillAssists()));
-		}
-		final int awardedChests = EventActivityChestRewardService.awardTopActivityChests("Kuźnice", qualifiedParticipants);
-		LOGGER.info(getEventName() + " settlement rewards granted for " + qualifiedParticipants.size()
-				+ " qualified players; chest rewards=" + awardedChests + ".");
+		final int awardedChests = new MapEventRewardSettlementService(
+				getEventId(),
+				contributionTracker,
+				rewardPolicy,
+				new MapEventRewardSettlementService.RewardGrantCallback() {
+					@Override
+					public void grant(final MapEventRewardSettlementService.RewardContext context) {
+						final MapEventRewardPolicy.RewardDecision decision = context.getDecision();
+						final double participationScore = resolveParticipationScore(decision, defeatPercent);
+						final int points = Math.max(0, (int) Math.round(decision.getTotalScore()));
+						final RewardTier rewardTier = RewardTier.fromPoints(points);
+						final int baseMoney = rewardTier.getBaseMoney();
+						final int globalBonusMoney = globalSuccess ? GLOBAL_SUCCESS_MONEY_BONUS : 0;
+						final int awardedMoney = Math.max(0,
+								(int) Math.round((baseMoney + globalBonusMoney) * decision.getMultiplier()));
+						final RandomEventRewardService.Reward reward = randomEventRewardService.grantRandomEventRewards(
+								context.getPlayer(),
+								RandomEventRewardService.RandomEventType.KUZNICE_BANDIT_RAID,
+								participationScore,
+								decision.getMultiplier());
+						if (awardedMoney > 0) {
+							MoneyUtils.giveMoney(context.getPlayer(), awardedMoney);
+						}
+						context.getPlayer().sendPrivateText("Gazdowie z Kuźnic kiwają z uznaniem. Za obronę dostajesz +"
+								+ reward.getXp() + " PD oraz +" + Math.round(reward.getKarma() * 100.0d) / 100.0d + " karmy.");
+					}
+				},
+				"Kuźnice").settleRewards(MapEventRewardSettlementService.SettlementOptions.of(
+						new MapEventRewardSettlementService.AccountNameResolver() {
+							@Override
+							public String resolve(final Player player) {
+								return resolveAccountName(player);
+							}
+						},
+						null,
+						new MapEventRewardSettlementService.EligibilityDecider() {
+							@Override
+							public boolean isEligible(final MapEventRewardSettlementService.RewardContext context) {
+								final MapEventRewardPolicy.RewardDecision decision = context.getDecision();
+								if (!decision.isFullParticipation()) {
+									context.getPlayer().sendPrivateText(
+										"Twój poziom jest zbyt niski na pełny udział w nagrodach eventu (minimum 20).");
+									return false;
+								}
+								if (!decision.isPrimaryRewardEligible()) {
+									if (decision.shouldGrantSymbolicRewardOnly()) {
+										context.getPlayer().addKarma(1.0d);
+										context.getPlayer().sendPrivateText(
+											"Za wsparcie obrony Kuźnic otrzymujesz symboliczną nagrodę +1 karmy.");
+									}
+									return false;
+								}
+								final int points = Math.max(0, (int) Math.round(decision.getTotalScore()));
+								return RewardTier.fromPoints(points).isRewardTier();
+							}
+						}));
+		LOGGER.info(getEventName() + " settlement rewards granted; chest rewards=" + awardedChests + ".");
 	}
 
 	private String resolveAccountName(final Player player) {
@@ -495,6 +473,7 @@ public class TatryKuzniceBanditRaidEvent extends ConfiguredMapEvent {
 			return this != NONE;
 		}
 
+		@SuppressWarnings("unused")
 		private String getDisplayName() {
 			return displayName;
 		}
