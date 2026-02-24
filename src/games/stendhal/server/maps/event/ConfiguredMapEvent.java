@@ -151,7 +151,7 @@ public class ConfiguredMapEvent extends BaseMapEvent {
 		}
 		logger.info(getEventName() + " event started.");
 		SingletonRepository.getRuleProcessor().tellAllPlayers(
-				NotificationType.PRIVMSG,
+				NotificationType.INFORMATION,
 				getStartAnnouncementMessage());
 	}
 
@@ -176,7 +176,7 @@ public class ConfiguredMapEvent extends BaseMapEvent {
 		removeEventCreatures();
 		stopAnnouncements();
 		SingletonRepository.getRuleProcessor().tellAllPlayers(
-				NotificationType.PRIVMSG,
+				NotificationType.INFORMATION,
 				getStopAnnouncementMessage());
 	}
 
