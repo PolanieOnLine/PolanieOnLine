@@ -1,5 +1,5 @@
 /***************************************************************************
- *                    Copyright © 2026 - PolanieOnLine                    *
+ *                    Copyright © 2026 - PolanieOnLine                     *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -13,7 +13,9 @@ package games.stendhal.server.maps.event;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -50,8 +52,9 @@ public class GenericMapEventScheduler implements ZoneConfigurator {
 		}
 
 		final CentralMapEventSchedule.Entry centralSchedule = CentralMapEventSchedule.get(eventId);
+		warnIfLegacyXmlScheduleAttributesPresent(attributes, zone, eventId);
+
 		final TriggerType triggerType = parseTriggerType(
-				attributes.get(TRIGGER_TYPE_PARAMETER),
 				centralSchedule == null ? null : centralSchedule.getTriggerType(),
 				zone,
 				eventId);
@@ -60,26 +63,11 @@ public class GenericMapEventScheduler implements ZoneConfigurator {
 		}
 
 		if (triggerType.includesGuaranteedSchedule()) {
-			final LocalTime configStartTime = centralSchedule != null
-					? centralSchedule.getStartTime()
-					: event.getConfig().getDefaultStartTime();
-			final Integer configIntervalDays = Integer.valueOf(centralSchedule != null
-					? centralSchedule.getIntervalDays()
-					: event.getConfig().getDefaultIntervalDays());
-
-			final LocalTime startTime = parseStartTime(
-					attributes.get(START_TIME_PARAMETER),
-					configStartTime,
-					zone,
-					eventId);
+			final LocalTime startTime = resolveStartTime(event, centralSchedule, zone, eventId);
 			if (startTime == null) {
 				return;
 			}
-			final Integer intervalDays = parseIntervalDays(
-					attributes.get(INTERVAL_DAYS_PARAMETER),
-					configIntervalDays,
-					zone,
-					eventId);
+			final Integer intervalDays = resolveIntervalDays(event, centralSchedule, zone, eventId);
 			if (intervalDays == null) {
 				return;
 			}
@@ -93,99 +81,78 @@ public class GenericMapEventScheduler implements ZoneConfigurator {
 		logStartupGuaranteedScheduleTable();
 	}
 
+	private void warnIfLegacyXmlScheduleAttributesPresent(final Map<String, String> attributes,
+			final StendhalRPZone zone, final String eventId) {
+		if (!hasValue(attributes.get(TRIGGER_TYPE_PARAMETER))
+				&& !hasValue(attributes.get(START_TIME_PARAMETER))
+				&& !hasValue(attributes.get(INTERVAL_DAYS_PARAMETER))) {
+			return;
+		}
+		LOGGER.warn("Map event scheduler for zone " + zone.getName() + " and eventId='" + eventId
+				+ "' ignores XML schedule parameters ('" + START_TIME_PARAMETER + "', '"
+				+ INTERVAL_DAYS_PARAMETER + "', '" + TRIGGER_TYPE_PARAMETER
+				+ "'). Values are resolved from central schedule and MapEventConfig defaults.");
+	}
+
+	private LocalTime resolveStartTime(final ConfiguredMapEvent event, final CentralMapEventSchedule.Entry centralSchedule,
+			final StendhalRPZone zone, final String eventId) {
+		final LocalTime resolved = centralSchedule != null
+				? centralSchedule.getStartTime()
+				: event.getConfig().getDefaultStartTime();
+		if (resolved != null) {
+			return resolved;
+		}
+		LOGGER.error("Cannot configure map event scheduler for zone " + zone.getName()
+				+ " and eventId='" + eventId + "': missing central/default '" + START_TIME_PARAMETER
+				+ "' value.");
+		return null;
+	}
+
+	private Integer resolveIntervalDays(final ConfiguredMapEvent event,
+			final CentralMapEventSchedule.Entry centralSchedule,
+			final StendhalRPZone zone, final String eventId) {
+		final int resolved = centralSchedule != null
+				? centralSchedule.getIntervalDays()
+				: event.getConfig().getDefaultIntervalDays();
+		if (resolved > 0) {
+			return Integer.valueOf(resolved);
+		}
+		LOGGER.error("Cannot configure map event scheduler for zone " + zone.getName()
+				+ " and eventId='" + eventId + "': missing/invalid central/default '"
+				+ INTERVAL_DAYS_PARAMETER + "' value.");
+		return null;
+	}
+
 	private static String getRequiredAttribute(final Map<String, String> attributes, final String key) {
 		final String value = attributes.get(key);
-		if (value == null || value.trim().isEmpty()) {
+		if (!hasValue(value)) {
 			return null;
 		}
 		return value.trim();
 	}
 
-	private LocalTime parseStartTime(final String value, final LocalTime configuredDefault, final StendhalRPZone zone,
-			final String eventId) {
-		if (value == null || value.trim().isEmpty()) {
-			if (configuredDefault != null) {
-				return configuredDefault;
-			}
-			LOGGER.error("Cannot configure map event scheduler for zone " + zone.getName()
-					+ " and eventId='" + eventId + "': missing parameter '" + START_TIME_PARAMETER
-					+ "' and no default found in MapEventConfig.");
-			return null;
-		}
-		try {
-			final LocalTime xmlValue = LocalTime.parse(value.trim());
-			if (configuredDefault != null && !configuredDefault.equals(xmlValue)) {
-				LOGGER.warn("Map event scheduler for zone " + zone.getName() + " and eventId='" + eventId
-						+ "' uses XML parameter '" + START_TIME_PARAMETER + "=" + xmlValue
-						+ "' instead of MapEventConfig default '" + configuredDefault + "'.");
-			}
-			return xmlValue;
-		} catch (DateTimeParseException e) {
-			LOGGER.error("Cannot configure map event scheduler for zone " + zone.getName()
-					+ " and eventId='" + eventId + "': invalid '" + START_TIME_PARAMETER + "' value '"
-					+ value + "'. Expected ISO local time (e.g. 20:00).", e);
-			return null;
-		}
+	private static boolean hasValue(final String value) {
+		return value != null && !value.trim().isEmpty();
 	}
 
-	private Integer parseIntervalDays(final String value, final Integer configuredDefault, final StendhalRPZone zone,
+	private TriggerType parseTriggerType(final String configuredDefault, final StendhalRPZone zone,
 			final String eventId) {
-		if (value == null || value.trim().isEmpty()) {
-			if (configuredDefault != null) {
-				return configuredDefault;
-			}
-			LOGGER.error("Cannot configure map event scheduler for zone " + zone.getName()
-					+ " and eventId='" + eventId + "': missing parameter '" + INTERVAL_DAYS_PARAMETER
-					+ "' and no default found in MapEventConfig.");
-			return null;
-		}
-		try {
-			final int parsed = Integer.parseInt(value.trim());
-			if (parsed <= 0) {
-				LOGGER.error("Cannot configure map event scheduler for zone " + zone.getName()
-						+ " and eventId='" + eventId + "': '" + INTERVAL_DAYS_PARAMETER
-						+ "' must be greater than zero, got " + parsed + ".");
-				return null;
-			}
-			if (configuredDefault != null && configuredDefault.intValue() != parsed) {
-				LOGGER.warn("Map event scheduler for zone " + zone.getName() + " and eventId='" + eventId
-						+ "' uses XML parameter '" + INTERVAL_DAYS_PARAMETER + "=" + parsed
-						+ "' instead of MapEventConfig default '" + configuredDefault + "'.");
-			}
-			return Integer.valueOf(parsed);
-		} catch (NumberFormatException e) {
-			LOGGER.error("Cannot configure map event scheduler for zone " + zone.getName()
-					+ " and eventId='" + eventId + "': invalid '" + INTERVAL_DAYS_PARAMETER + "' value '"
-					+ value + "'.", e);
-			return null;
-		}
-	}
-
-	private TriggerType parseTriggerType(final String value, final String configuredDefault, final StendhalRPZone zone,
-			final String eventId) {
-		final TriggerType parsed = parseTriggerTypeValue(value, configuredDefault);
+		final TriggerType parsed = parseTriggerTypeValue(configuredDefault);
 		if (parsed != null) {
 			return parsed;
 		}
-		if (value != null && !value.trim().isEmpty()) {
-			LOGGER.error("Cannot configure map event scheduler for zone " + zone.getName()
-					+ " and eventId='" + eventId + "': invalid '" + TRIGGER_TYPE_PARAMETER + "' value '"
-					+ value + "'. Allowed values: guaranteed, observer, both.");
-		} else {
-			LOGGER.error("Cannot configure map event scheduler for zone " + zone.getName()
-					+ " and eventId='" + eventId + "': invalid central triggerType='"
-					+ configuredDefault + "'. Allowed values: guaranteed, observer, both.");
-		}
+		LOGGER.error("Cannot configure map event scheduler for zone " + zone.getName()
+				+ " and eventId='" + eventId + "': invalid central/default triggerType='"
+				+ configuredDefault + "'. Allowed values: guaranteed, observer, both.");
 		return null;
 	}
 
-	private TriggerType parseTriggerTypeValue(final String value, final String configuredDefault) {
-		final String candidate = (value == null || value.trim().isEmpty()) ? configuredDefault : value;
-		if (candidate == null || candidate.trim().isEmpty()) {
+	private TriggerType parseTriggerTypeValue(final String configuredDefault) {
+		if (configuredDefault == null || configuredDefault.trim().isEmpty()) {
 			return TriggerType.BOTH;
 		}
 		try {
-			return TriggerType.valueOf(candidate.trim().toUpperCase(Locale.ROOT));
+			return TriggerType.valueOf(configuredDefault.trim().toUpperCase(Locale.ROOT));
 		} catch (IllegalArgumentException e) {
 			return null;
 		}
@@ -195,13 +162,16 @@ public class GenericMapEventScheduler implements ZoneConfigurator {
 		if (!STARTUP_TABLE_LOGGED.compareAndSet(false, true)) {
 			return;
 		}
-		final StringBuilder table = new StringBuilder();
-		table.append("Map event guaranteed schedule table:\n");
+
+		final List<StartupRow> rows = new ArrayList<>();
+		final Map<LocalDateTime, Integer> collisionsByStart = new HashMap<>();
+
 		for (String eventId : MapEventConfigLoader.availableConfigIds()) {
 			final ConfiguredMapEvent event = MapEventRegistry.getEvent(eventId);
 			if (event == null) {
 				continue;
 			}
+
 			final CentralMapEventSchedule.Entry centralSchedule = CentralMapEventSchedule.get(eventId);
 			final LocalTime startTime = centralSchedule != null
 					? centralSchedule.getStartTime()
@@ -209,20 +179,68 @@ public class GenericMapEventScheduler implements ZoneConfigurator {
 			final int intervalDays = centralSchedule != null
 					? centralSchedule.getIntervalDays()
 					: event.getConfig().getDefaultIntervalDays();
-			final TriggerType triggerType = parseTriggerTypeValue(null,
+			final TriggerType triggerType = parseTriggerTypeValue(
 					centralSchedule == null ? null : centralSchedule.getTriggerType());
-			table.append(" - ").append(eventId)
-					.append(" | triggerType=").append(triggerType == null ? "invalid" : triggerType.name().toLowerCase(Locale.ROOT));
+
+			LocalDateTime nearestStart = null;
 			if (triggerType != null && triggerType.includesGuaranteedSchedule() && startTime != null) {
-				final LocalDateTime nextStart = BaseMapEvent.nearestGuaranteedStart(startTime);
-				table.append(" | nearestGuaranteedStart=").append(nextStart)
-						.append(" | intervalDays=").append(intervalDays);
-			} else {
-				table.append(" | nearestGuaranteedStart=n/a");
+				nearestStart = BaseMapEvent.nearestGuaranteedStart(startTime);
+				collisionsByStart.put(nearestStart,
+						Integer.valueOf(collisionsByStart.getOrDefault(nearestStart, Integer.valueOf(0)).intValue() + 1));
 			}
-			table.append("\n");
+
+			rows.add(new StartupRow(eventId,
+					triggerType == null ? "invalid" : triggerType.name().toLowerCase(Locale.ROOT),
+					centralSchedule != null ? "central" : "fallback",
+					nearestStart,
+					intervalDays));
 		}
+
+		int collisionSlots = 0;
+		for (Integer count : collisionsByStart.values()) {
+			if (count.intValue() > 1) {
+				collisionSlots++;
+			}
+		}
+
+		final StringBuilder table = new StringBuilder();
+		table.append("Map event startup schedule table (nearest starts):\n");
+		table.append(String.format(Locale.ROOT, " | %-32s | %-10s | %-8s | %-19s | %-8s | %-9s |%n",
+				"eventId", "trigger", "source", "nearestStart", "interval", "collision"));
+
+		for (StartupRow row : rows) {
+			final String nearest = row.nearestStart == null ? "n/a" : row.nearestStart.toString();
+			final String interval = row.nearestStart == null ? "n/a" : Integer.toString(row.intervalDays);
+			final String collision;
+			if (row.nearestStart == null) {
+				collision = "n/a";
+			} else {
+				final int count = collisionsByStart.getOrDefault(row.nearestStart, Integer.valueOf(0)).intValue();
+				collision = count > 1 ? "x" + count : "ok";
+			}
+			table.append(String.format(Locale.ROOT, " | %-32s | %-10s | %-8s | %-19s | %-8s | %-9s |%n",
+					row.eventId, row.triggerType, row.source, nearest, interval, collision));
+		}
+
+		table.append("Startup collision summary: ").append(collisionSlots).append(" slot(s) with collisions.");
 		LOGGER.info(table.toString());
+	}
+
+	private static final class StartupRow {
+		private final String eventId;
+		private final String triggerType;
+		private final String source;
+		private final LocalDateTime nearestStart;
+		private final int intervalDays;
+
+		private StartupRow(final String eventId, final String triggerType, final String source,
+				final LocalDateTime nearestStart, final int intervalDays) {
+			this.eventId = eventId;
+			this.triggerType = triggerType;
+			this.source = source;
+			this.nearestStart = nearestStart;
+			this.intervalDays = intervalDays;
+		}
 	}
 
 	private enum TriggerType {
