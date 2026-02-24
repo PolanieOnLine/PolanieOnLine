@@ -29,6 +29,7 @@ import games.stendhal.server.maps.event.EventActivityChestRewardService;
 import games.stendhal.server.maps.event.MapEventConfigLoader;
 import games.stendhal.server.maps.event.MapEventContributionTracker;
 import games.stendhal.server.maps.event.MapEventRewardPolicy;
+import games.stendhal.server.maps.event.RandomEventRewardService;
 
 public final class HellCaptureAssaultEvent extends ConfiguredMapEvent {
 	private static final Logger LOGGER = Logger.getLogger(HellCaptureAssaultEvent.class);
@@ -37,6 +38,7 @@ public final class HellCaptureAssaultEvent extends ConfiguredMapEvent {
 
 	private final MapEventContributionTracker contributionTracker = new MapEventContributionTracker();
 	private final MapEventRewardPolicy rewardPolicy = MapEventRewardPolicy.defaultEscortPolicy();
+	private final RandomEventRewardService randomEventRewardService = new RandomEventRewardService();
 	private final TurnListener activityTracker = new TurnListener() {
 		@Override
 		public void onTurnReached(final int currentTurn) {
@@ -112,6 +114,8 @@ public final class HellCaptureAssaultEvent extends ConfiguredMapEvent {
 
 	private void rewardParticipants() {
 		final long now = System.currentTimeMillis();
+		final int defeatPercent = getEventDefeatPercent();
+		final double difficultyModifier = 0.85d + (Math.max(0, Math.min(100, defeatPercent)) / 100.0d * 0.25d);
 		final Map<String, MapEventContributionTracker.ContributionSnapshot> contributions = contributionTracker.snapshotAll();
 		final List<EventActivityChestRewardService.QualifiedParticipant> qualifiedParticipants = new ArrayList<>();
 		for (Entry<String, MapEventContributionTracker.ContributionSnapshot> entry : contributions.entrySet()) {
@@ -129,6 +133,16 @@ public final class HellCaptureAssaultEvent extends ConfiguredMapEvent {
 			if (!decision.isQualified()) {
 				continue;
 			}
+			final double eventProgress = Math.max(0.0d, Math.min(1.0d, defeatPercent / 100.0d));
+			final double playerScore = Math.max(0.0d, Math.min(1.0d, decision.getTotalScore() / 35.0d));
+			final double participationScore = (eventProgress * 0.6d) + (playerScore * 0.4d);
+			final RandomEventRewardService.Reward reward = randomEventRewardService.grantRandomEventRewards(
+					player,
+					RandomEventRewardService.RandomEventType.HELL_CAPTURE_ASSAULT,
+					participationScore,
+					difficultyModifier * decision.getMultiplier());
+			player.sendPrivateText("Za odparcie szturmu piekła otrzymujesz +" + reward.getXp() + " PD oraz +"
+					+ Math.round(reward.getKarma() * 100.0d) / 100.0d + " karmy.");
 			qualifiedParticipants.add(new EventActivityChestRewardService.QualifiedParticipant(
 					player,
 					decision.getTotalScore(),
