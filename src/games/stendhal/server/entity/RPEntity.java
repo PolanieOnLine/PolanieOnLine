@@ -1220,16 +1220,16 @@ public abstract class RPEntity extends CombatEntity {
 			return;
 		}
 
-		long targetMasteryExp = currentMasteryExp + gainedXP;
-		final long updatedMasteryTotalExp = currentMasteryTotalExp + gainedXP;
-		final long maxMasteryXP = (long) ProgressionConfig.MASTERY_MAX_LEVEL * ProgressionConfig.MASTERY_XP_PER_LEVEL;
+		long targetMasteryExp = safeAdd(currentMasteryExp, gainedXP);
+		final long updatedMasteryTotalExp = safeAdd(currentMasteryTotalExp, gainedXP);
+		final long maxMasteryXP = ProgressionConfig.getMasteryMaxXP();
+
 		if (targetMasteryExp > maxMasteryXP) {
 			targetMasteryExp = maxMasteryXP;
 		}
 
 		final long updatedMasteryExp = targetMasteryExp;
-		final int updatedMasteryLevel = Math.min(ProgressionConfig.MASTERY_MAX_LEVEL,
-			(int) (updatedMasteryExp / ProgressionConfig.MASTERY_XP_PER_LEVEL));
+		final int updatedMasteryLevel = ProgressionConfig.getMasteryLevelForXP(updatedMasteryExp);
 
 		put("mastery_exp", updatedMasteryExp);
 		put("mastery_xp", updatedMasteryExp);
@@ -1245,6 +1245,17 @@ public abstract class RPEntity extends CombatEntity {
 			new GameEvent(getName(), "mastery_level", String.valueOf(updatedMasteryLevel)).raise();
 		}
 	}
+
+	private static long safeAdd(final long left, final long right) {
+		if (right <= 0L) {
+			return left;
+		}
+		if (Long.MAX_VALUE - left < right) {
+			return Long.MAX_VALUE;
+		}
+		return left + right;
+	}
+
 
 	/**
 	 * Change the level to match the XP, if needed.
