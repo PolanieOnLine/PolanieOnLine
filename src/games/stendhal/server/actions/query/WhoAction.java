@@ -49,35 +49,14 @@ public class WhoAction implements ActionListener {
 			rules.getOnlinePlayers().forAllPlayersExecute(new Task<Player>() {
 				@Override
 				public void execute(final Player p) {
-					String player = p.getTitle();
-					if (p.getAdminLevel() > 0 && !"postman".equals(p.getName()))
-						player = "¡'" + p.getTitle()+ "'";
-					final StringBuilder text = new StringBuilder(player);
-
-					if (p.isGhost()) {
-						text.append("(!");
-					} else {
-						text.append("(");
-					}
-					text.append(p.getLevel());
-					text.append(") ");
-
-					players.add(text.toString());
+					players.add(buildPlayerLine(p, true));
 				}
 			});
 		} else {
 			rules.getOnlinePlayers().forFilteredPlayersExecute(new Task<Player>() {
 				@Override
 				public void execute(final Player p) {
-					String player = p.getTitle();
-					if (p.getAdminLevel() > 0 && !"postman".equals(p.getName()))
-						player = "¡'" + p.getTitle()+ "'";
-					final StringBuilder text = new StringBuilder(player);
-
-					text.append("(");
-					text.append(p.getLevel());
-					text.append(") ");
-					players.add(text.toString());
+					players.add(buildPlayerLine(p, false));
 				}
 			}, new FilterCriteria<Player>() {
 				@Override
@@ -96,4 +75,25 @@ public class WhoAction implements ActionListener {
 		player.notifyWorldAboutChanges();
 	}
 
+	private String buildPlayerLine(final Player p, final boolean includeGhostMarker) {
+		String playerName = p.getTitle();
+		if (p.getAdminLevel() > 0 && !"postman".equals(p.getName())) {
+			playerName = "¡'" + p.getTitle() + "'";
+		}
+
+		final StringBuilder text = new StringBuilder(playerName);
+		if (includeGhostMarker && p.isGhost()) {
+			text.append("(!");
+		} else {
+			text.append("(");
+		}
+		text.append(p.getLevel());
+		if (p.isMasteryUnlocked()) {
+			text.append(" | M");
+			text.append(p.getMasteryLevel());
+		}
+		text.append(") ");
+
+		return text.toString();
+	}
 }
