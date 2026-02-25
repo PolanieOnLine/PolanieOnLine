@@ -42,6 +42,7 @@ import games.stendhal.client.entity.User;
 import games.stendhal.client.entity.factory.EntityMap;
 import games.stendhal.client.gui.layout.SBoxLayout;
 import games.stendhal.client.gui.layout.SLayout;
+import games.stendhal.client.gui.stats.MasteryPanel;
 import games.stendhal.client.listener.FeatureChangeListener;
 import games.stendhal.client.sprite.SpriteStore;
 import games.stendhal.common.constants.Actions;
@@ -256,6 +257,8 @@ Inspectable {
 
 		panel = createItemPanel(itemClass, store, "belt", "data/gui/slot-key.png");
 		specialSlots.add(panel);
+
+		content.add(new MasteryPanel(), SLayout.EXPAND_X);
 		setContent(content);
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override

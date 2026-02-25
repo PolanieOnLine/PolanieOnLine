@@ -20,6 +20,7 @@ import java.util.Map.Entry;
 import games.stendhal.client.gui.buddies.BuddyPanelController;
 import games.stendhal.client.gui.stats.KarmaIndicator;
 import games.stendhal.client.gui.stats.ManaIndicator;
+import games.stendhal.client.gui.stats.MasteryProgressController;
 import games.stendhal.client.gui.stats.StatsPanelController;
 import marauroa.common.game.RPEvent;
 import marauroa.common.game.RPObject;
@@ -38,6 +39,7 @@ class UserController implements ObjectChangeListener {
 
 		StatsPanelController stats = StatsPanelController.get();
 		stats.registerListeners(pcs);
+		MasteryProgressController.get().registerListeners(pcs);
 	}
 
 	@Override

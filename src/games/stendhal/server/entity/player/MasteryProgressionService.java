@@ -14,6 +14,7 @@ public class MasteryProgressionService {
 	private static final int[] MASTERY_MILESTONES = { 100, 500, 1000, 2000 };
 
 	public MasteryProgressionResult addMasteryExp(final RPEntity character, final long expAmount) {
+		syncMasteryPayload(character);
 		if (expAmount <= 0L) {
 			return MasteryProgressionResult.noop();
 		}
@@ -25,6 +26,7 @@ public class MasteryProgressionService {
 		final int currentMasteryLevel = character.has("mastery_level") ? character.getInt("mastery_level") : 0;
 
 		if (currentMasteryLevel >= ProgressionConfig.MASTERY_MAX_LEVEL) {
+			syncMasteryPayload(character);
 			return MasteryProgressionResult.capped(currentMasteryLevel);
 		}
 
@@ -58,6 +60,7 @@ public class MasteryProgressionService {
 		if (!character.has("mastery_unlocked_at")) {
 			character.put("mastery_unlocked_at", System.currentTimeMillis());
 		}
+		syncMasteryPayload(character);
 
 		return new MasteryProgressionResult(
 			appliedMasteryExpGain,
@@ -67,6 +70,24 @@ public class MasteryProgressionService {
 			Collections.unmodifiableList(reachedMilestones),
 			updatedMasteryLevel >= ProgressionConfig.MASTERY_MAX_LEVEL,
 			false);
+	}
+
+	private static void syncMasteryPayload(final RPEntity character) {
+		final int masteryLevel = character.has("mastery_level") ? character.getInt("mastery_level") : 0;
+		final long masteryExp = character.has("mastery_exp")
+			? character.getLong("mastery_exp")
+			: (character.has("mastery_xp") ? character.getLong("mastery_xp") : 0L);
+		final int requiredResets = ProgressionConfig.MASTERY_MIN_RESETS;
+		final int requiredLevel = games.stendhal.common.Level.maxLevel();
+		final int maxMasteryLevel = ProgressionConfig.MASTERY_MAX_LEVEL;
+
+		final long nextLevelXp = masteryLevel >= maxMasteryLevel ? masteryExp : ProgressionConfig.getMasteryXPForLevel(masteryLevel + 1);
+		final long expToNext = Math.max(0L, nextLevelXp - masteryExp);
+		character.put("mastery_exp_to_next", expToNext);
+		character.put("mastery_required_resets", requiredResets);
+		character.put("mastery_required_level", requiredLevel);
+		character.put("mastery_max_level", maxMasteryLevel);
+		character.put("mastery_unlocked", masteryLevel > 0 || character.has("mastery_unlocked_at"));
 	}
 
 	private static long safeAdd(final long left, final long right) {

@@ -52,6 +52,7 @@ class StatsPanel extends JPanel {
 	private final KarmaIndicator karmaIndicator;
 	private final ManaIndicator manaIndicator;
 	private final MoneyPanel moneyPanel;
+	private final MasteryPanel masteryPanel;
 	private final Color defaultCapacityColor;
 
 	StatsPanel() {
@@ -105,6 +106,9 @@ class StatsPanel extends JPanel {
 		levelLabel = new StatLabel();
 		levelLabel.setToolTipText("Oczekiwanie na dane doświadczenia");
 		add(levelLabel, SLayout.EXPAND_X);
+
+		masteryPanel = new MasteryPanel();
+		add(masteryPanel, SLayout.EXPAND_X);
 
 		moneyPanel = new MoneyPanel();
 		add(moneyPanel, SLayout.EXPAND_X);

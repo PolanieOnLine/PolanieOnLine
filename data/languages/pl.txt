@@ -1775,3 +1775,7 @@ You see a headless monster, how can he hear that we come to him?=You see a headl
 rotten zombie=rotten zombie
 You see a rotten zombie. You are disgusted as you see its rotten skin that hangs down in pieces from his half rotten bones.=You see a rotten zombie. You are disgusted as you see its rotten skin that hangs down in pieces from his half rotten bones.
 bluuergghhhoooorrghhhhh=bluuergghhhoooorrghhhhh
+ui.mastery.locked.requirements=Wymagane: 5 resetów + max lvl
+ui.mastery.level=Poziom mastery: {0}
+ui.mastery.exp_to_next=Do następnego poziomu: {0} EXP
+ui.mastery.max_reached=MAX 2000
