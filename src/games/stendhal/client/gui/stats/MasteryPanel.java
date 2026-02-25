@@ -24,7 +24,7 @@ public class MasteryPanel extends JPanel implements PropertyChangeListener {
 		setLayout(new SBoxLayout(SBoxLayout.VERTICAL, 1));
 		setBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2));
 
-		headline = new StatLabel();
+		headline = new JLabel();
 		headline.setForeground(new Color(0xE2B84A));
 		add(headline, SLayout.EXPAND_X);
 
@@ -33,7 +33,7 @@ public class MasteryPanel extends JPanel implements PropertyChangeListener {
 		progress.setBorder(BorderFactory.createEmptyBorder(1, 0, 1, 0));
 		add(progress, SLayout.EXPAND_X);
 
-		detail = new StatLabel();
+		detail = new JLabel();
 		add(detail, SLayout.EXPAND_X);
 
 		MasteryProgressController.get().addProgressListener(this);

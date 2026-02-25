@@ -87,7 +87,7 @@ public class MasteryProgressionService {
 		character.put("mastery_required_resets", requiredResets);
 		character.put("mastery_required_level", requiredLevel);
 		character.put("mastery_max_level", maxMasteryLevel);
-		character.put("mastery_unlocked", masteryLevel > 0 || character.has("mastery_unlocked_at"));
+		character.put("mastery_unlocked", (masteryLevel > 0 || character.has("mastery_unlocked_at")) ? "1" : "0");
 	}
 
 	private static long safeAdd(final long left, final long right) {
