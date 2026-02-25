@@ -36,6 +36,7 @@ import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.Outfit;
 import games.stendhal.server.entity.item.Item;
+import games.stendhal.server.entity.npc.action.IncreaseXPDependentOnLevelAction;
 import games.stendhal.server.entity.status.StatusType;
 import games.stendhal.server.maps.MockStendhalRPRuleProcessor;
 import games.stendhal.server.maps.MockStendlRPWorld;
@@ -398,6 +399,53 @@ public class PlayerTest {
 		assertThat(masteryPlayer.getMasteryXP(), is(masteryXPBefore + 42));
 		assertThat(masteryPlayer.getFeature("mastery_unlocked_notification"), is("true"));
 	}
+
+	@Test
+	public void testAddXPDoesNotRouteToMasteryWhenPlayerIsNotAtCap() {
+		Player masteryPlayer = PlayerTestHelper.createPlayer("mastery_not_capped");
+		masteryPlayer.setLevel(Level.maxLevel() - 1);
+		masteryPlayer.setQuest("reset_level", "done;reborn_5");
+
+		final int xpBefore = masteryPlayer.getXP();
+		final long masteryXPBefore = masteryPlayer.getMasteryXP();
+
+		masteryPlayer.addXP(42);
+
+		assertThat(masteryPlayer.getXP(), is(xpBefore + 42));
+		assertThat(masteryPlayer.getMasteryXP(), is(masteryXPBefore));
+	}
+
+	@Test
+	public void testSubXPDoesNotReduceMasteryXPWhenMasteryProgressionIsActive() {
+		Player masteryPlayer = PlayerTestHelper.createPlayer("mastery_subxp");
+		masteryPlayer.setLevel(Level.maxLevel());
+		masteryPlayer.setQuest("reset_level", "done;reborn_5");
+
+		masteryPlayer.addXP(100);
+		final int xpBeforePenalty = masteryPlayer.getXP();
+		final long masteryXPBeforePenalty = masteryPlayer.getMasteryXP();
+
+		masteryPlayer.subXP(20);
+
+		assertThat(masteryPlayer.getXP(), is(xpBeforePenalty));
+		assertThat(masteryPlayer.getMasteryXP(), is(masteryXPBeforePenalty));
+	}
+
+	@Test
+	public void testIncreaseXPDependentOnLevelActionAddsMasteryXPAtCapWhenUnlocked() {
+		Player masteryPlayer = PlayerTestHelper.createPlayer("mastery_daily");
+		masteryPlayer.setLevel(Level.maxLevel());
+		masteryPlayer.setQuest("reset_level", "done;reborn_5");
+
+		final long masteryXPBefore = masteryPlayer.getMasteryXP();
+		final double karmaBefore = masteryPlayer.getKarma();
+
+		new IncreaseXPDependentOnLevelAction(5.0, 95.0).fire(masteryPlayer, null, null);
+
+		assertTrue(masteryPlayer.getMasteryXP() > masteryXPBefore);
+		assertThat(masteryPlayer.getKarma(), is(karmaBefore));
+	}
+
 
 	/**
 	 * Test that the damage done by a player is of right type.

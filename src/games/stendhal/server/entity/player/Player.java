@@ -660,7 +660,17 @@ public class Player extends DressedEntity implements UseListener {
 		}
 
 		masteryXP += addedMasteryXP;
+		new GameEvent(getName(), "added mastery_xp", String.valueOf(addedMasteryXP)).raise();
 		new GameEvent(getName(), "mastery_xp", String.valueOf(masteryXP)).raise();
+		new GameEvent(getName(), "mastery_level", String.valueOf(masteryLevel)).raise();
+	}
+
+	private boolean isNormalLevelCapped() {
+		return getLevel() >= Level.maxLevel();
+	}
+
+	private boolean shouldRouteXPToMastery() {
+		return isMasteryUnlocked() && isNormalLevelCapped();
 	}
 
 	public boolean isMasteryUnlocked() {
@@ -2746,13 +2756,20 @@ public class Player extends DressedEntity implements UseListener {
 
 	@Override
 	public void addXP(final int newxp) {
-		if (newxp <= 0) {
-			super.addXP(newxp);
+		if (newxp == 0) {
 			return;
 		}
 
-		if (isMasteryUnlocked()) {
-			addMasteryXP(newxp);
+		if (shouldRouteXPToMastery()) {
+			if (newxp > 0) {
+				addMasteryXP(newxp);
+			}
+			// At mastery progression stage we do not reduce mastery XP via penalties.
+			return;
+		}
+
+		if (newxp < 0) {
+			super.addXP(newxp);
 			return;
 		}
 
