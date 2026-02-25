@@ -10,7 +10,7 @@ public class MasteryLevelTest {
 	@Test
 	public final void testMonotonicThresholds() {
 		long previous = MasteryLevel.getXP(0);
-		for (int level = 1; level <= MasteryLevel.MAX_MASTERY_LEVEL; level++) {
+		for (int level = 1; level <= MasteryLevel.maxLevel(); level++) {
 			long current = MasteryLevel.getXP(level);
 			assertTrue("XP must be strictly increasing at level " + level,
 					current > previous);
@@ -20,7 +20,7 @@ public class MasteryLevelTest {
 
 	@Test
 	public final void testLevelXpBoundaries() {
-		for (int level = 0; level < MasteryLevel.MAX_MASTERY_LEVEL; level++) {
+		for (int level = 0; level < MasteryLevel.maxLevel(); level++) {
 			long currentXP = MasteryLevel.getXP(level);
 			long nextXP = MasteryLevel.getXP(level + 1);
 

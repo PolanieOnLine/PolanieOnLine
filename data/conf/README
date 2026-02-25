@@ -1,1 +1,27 @@
 Place here server configuration files.
+
+Mastery pacing tuning
+====================
+
+File: `mastery-level.properties`
+
+Najważniejsze pola:
+- `mastery.maxLevel` - maksymalny poziom mastery (domyślnie 2000).
+- `mastery.early.*`, `mastery.mid.*`, `mastery.late.*` - współczynniki przyrostu XP
+  dla etapów early/mid/late.
+- `mastery.milestone.interval` i `mastery.milestone.multiplier` - bonusy co N poziomów.
+- `mastery.hardCapXP` - opcjonalny twardy limit całkowitego XP tabeli (`-1` wyłącza).
+
+Jak zmieniać pacing:
+1. Zwiększ `*.levelIncrement`, aby progresja zwalniała szybciej wraz z poziomem.
+2. Zwiększ `*.baseIncrement`, aby cały segment był trudniejszy od pierwszego poziomu segmentu.
+3. Zmniejsz `mastery.milestone.interval` lub zwiększ `mastery.milestone.multiplier`,
+   aby częściej/nadmierniej nagradzać milestone'y.
+4. Ustaw `mastery.hardCapXP` tylko jeśli chcesz zatrzymać dalszy wzrost progów XP
+   po osiągnięciu określonej wartości.
+
+Walidacja i fallback:
+- Konfiguracja jest ładowana przy starcie serwera.
+- Gdy plik jest błędny lub nieczytelny, serwer loguje błąd i używa bezpiecznych
+  wartości domyślnych zaszytych w kodzie.
+  

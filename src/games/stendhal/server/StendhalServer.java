@@ -16,6 +16,7 @@ import java.io.FileNotFoundException;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.common.MasteryLevel;
 import games.stendhal.server.core.engine.GenerateINI;
 import games.stendhal.server.core.rp.DaylightPhase;
 
@@ -61,6 +62,7 @@ public class StendhalServer {
 			System.out.println("");
 			GenerateINI.main(args, serverIni);
 		}
+		MasteryLevel.validateConfigurationOnStartup();
 		marauroa.server.marauroad.main(args);
 
 		// permanently sets DaylightPhase for testing purposes

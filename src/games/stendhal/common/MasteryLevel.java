@@ -11,25 +11,43 @@
  ***************************************************************************/
 package games.stendhal.common;
 
+import org.apache.log4j.Logger;
+
 /** Utility class for mastery levels based on long experience thresholds. */
 public final class MasteryLevel {
 
-	public static final int MAX_MASTERY_LEVEL = 2000;
+	public static final int DEFAULT_MAX_MASTERY_LEVEL = 2000;
+
+	/**
+	 * @deprecated use {@link #maxLevel()} so runtime config is respected.
+	 */
+	@Deprecated
+	public static final int MAX_MASTERY_LEVEL = DEFAULT_MAX_MASTERY_LEVEL;
+
+	private static final Logger logger = Logger.getLogger(MasteryLevel.class);
+	private static final MasteryLevelConfig.LoadedConfig loadedConfig;
+	private static final MasteryLevelConfig config;
 
 	private static final long[] xp;
 
 	static {
-		xp = new long[MAX_MASTERY_LEVEL + 1];
+		loadedConfig = MasteryLevelConfig.load();
+		config = loadedConfig.getConfig();
+
+		xp = new long[config.getMaxLevel() + 1];
 		xp[0] = 0L;
 
-		for (int level = 1; level <= MAX_MASTERY_LEVEL; level++) {
+		for (int level = 1; level <= config.getMaxLevel(); level++) {
 			long increment = stageIncrement(level);
 
-			if ((level % 100) == 0) {
+			if ((level % config.getMilestoneInterval()) == 0) {
 				increment += milestoneOffset(level);
 			}
 
 			xp[level] = xp[level - 1] + increment;
+			if ((config.getHardCapXP() > 0L) && (xp[level] > config.getHardCapXP())) {
+				xp[level] = config.getHardCapXP();
+			}
 		}
 	}
 
@@ -38,20 +56,31 @@ public final class MasteryLevel {
 	}
 
 	private static long stageIncrement(final int level) {
-		if (level <= 100) {
-			// Early game: faster progression.
-			return 100L + (level * 15L);
+		if (level <= config.getEarlyMaxLevel()) {
+			return config.getEarlyBaseIncrement() + (level * config.getEarlyLevelIncrement());
 		}
-		if (level <= 800) {
-			// Mid game: stable progression.
-			return 1700L + ((level - 100L) * 35L);
+		if (level <= config.getMidMaxLevel()) {
+			return config.getMidBaseIncrement() + ((level - config.getEarlyMaxLevel()) * config.getMidLevelIncrement());
 		}
-		// Late game: visibly slower progression.
-		return 26200L + ((level - 800L) * 65L);
+		return config.getLateBaseIncrement() + ((level - config.getMidMaxLevel()) * config.getLateLevelIncrement());
 	}
 
 	private static long milestoneOffset(final int level) {
-		return level * 250L;
+		return level * config.getMilestoneMultiplier();
+	}
+
+	/**
+	 * Validate mastery pacing during server startup.
+	 *
+	 * @return {@code true} when custom config is valid, {@code false} when defaults were used
+	 */
+	public static boolean validateConfigurationOnStartup() {
+		if (!loadedConfig.isValid()) {
+			logger.error("Mastery pacing configuration invalid. Running with safe defaults. Source: "
+					+ loadedConfig.getSourcePath());
+			return false;
+		}
+		return true;
 	}
 
 	/**
@@ -60,7 +89,7 @@ public final class MasteryLevel {
 	 * @return highest mastery level
 	 */
 	public static int maxLevel() {
-		return MAX_MASTERY_LEVEL;
+		return config.getMaxLevel();
 	}
 
 	/**
@@ -71,7 +100,7 @@ public final class MasteryLevel {
 	 */
 	public static int getLevel(final long experience) {
 		int first = 0;
-		int last = MAX_MASTERY_LEVEL;
+		int last = config.getMaxLevel();
 		if (experience <= xp[first]) {
 			return first;
 		}
