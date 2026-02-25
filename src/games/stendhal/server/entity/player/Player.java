@@ -38,6 +38,7 @@ import games.stendhal.common.Direction;
 import games.stendhal.common.ItemTools;
 import games.stendhal.common.KeyedSlotUtil;
 import games.stendhal.common.Level;
+import games.stendhal.common.MasteryLevel;
 import games.stendhal.common.NotificationType;
 import games.stendhal.common.TradeState;
 import games.stendhal.common.Version;
@@ -655,12 +656,41 @@ public class Player extends DressedEntity implements UseListener {
 	}
 
 	public void addMasteryXP(final long addedMasteryXP) {
-		if (addedMasteryXP <= 0L || Long.MAX_VALUE - masteryXP < addedMasteryXP) {
+		if (addedMasteryXP <= 0L) {
 			return;
 		}
 
-		masteryXP += addedMasteryXP;
-		new GameEvent(getName(), "added mastery_xp", String.valueOf(addedMasteryXP)).raise();
+		final int masteryCapLevel = MasteryLevel.maxLevel();
+		final long masteryCapXP = MasteryLevel.getXP(masteryCapLevel);
+		if (masteryLevel >= masteryCapLevel || masteryXP >= masteryCapXP) {
+			if (masteryXP < masteryCapXP) {
+				masteryXP = masteryCapXP;
+			}
+			masteryLevel = masteryCapLevel;
+
+			if (logger.isDebugEnabled()) {
+				logger.debug("Rejected mastery XP for capped player " + getName() + ": " + addedMasteryXP);
+			}
+			return;
+		}
+
+		final long previousMasteryXP = masteryXP;
+		long updatedMasteryXP;
+		try {
+			updatedMasteryXP = Math.addExact(masteryXP, addedMasteryXP);
+		} catch (final ArithmeticException e) {
+			updatedMasteryXP = Long.MAX_VALUE;
+		}
+
+		masteryXP = Math.min(updatedMasteryXP, masteryCapXP);
+		masteryLevel = MasteryLevel.getLevel(masteryXP);
+
+		final long grantedMasteryXP = masteryXP - previousMasteryXP;
+		if (grantedMasteryXP <= 0L) {
+			return;
+		}
+
+		new GameEvent(getName(), "added mastery_xp", String.valueOf(grantedMasteryXP)).raise();
 		new GameEvent(getName(), "mastery_xp", String.valueOf(masteryXP)).raise();
 		new GameEvent(getName(), "mastery_level", String.valueOf(masteryLevel)).raise();
 	}

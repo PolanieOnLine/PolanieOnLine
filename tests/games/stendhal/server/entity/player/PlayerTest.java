@@ -31,6 +31,7 @@ import org.junit.Test;
 
 import games.stendhal.common.KeyedSlotUtil;
 import games.stendhal.common.Level;
+import games.stendhal.common.MasteryLevel;
 import games.stendhal.common.constants.Nature;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.Entity;
@@ -372,6 +373,47 @@ public class PlayerTest {
 		assertThat(player.getQuest("testquest3", 2), nullValue());
 
 	}
+
+	@Test
+	public void testAddMasteryXPClampsSingleHugeRewardAtMasteryCap() {
+		Player masteryPlayer = PlayerTestHelper.createPlayer("mastery_big_single");
+		final long masteryCapXP = MasteryLevel.getXP(MasteryLevel.maxLevel());
+
+		masteryPlayer.addMasteryXP(Long.MAX_VALUE);
+
+		assertThat(masteryPlayer.getMasteryXP(), is(masteryCapXP));
+		assertThat(masteryPlayer.getMasteryLevel(), is(MasteryLevel.maxLevel()));
+	}
+
+	@Test
+	public void testAddMasteryXPMultipleHugeRewardsNearLongMaxValue() {
+		Player masteryPlayer = PlayerTestHelper.createPlayer("mastery_big_multi");
+		final long masteryCapXP = MasteryLevel.getXP(MasteryLevel.maxLevel());
+
+		masteryPlayer.addMasteryXP(Long.MAX_VALUE - 10L);
+		masteryPlayer.addMasteryXP(Long.MAX_VALUE - 10L);
+
+		assertThat(masteryPlayer.getMasteryXP(), is(masteryCapXP));
+		assertThat(masteryPlayer.getMasteryLevel(), is(MasteryLevel.maxLevel()));
+	}
+
+	@Test
+	public void testAddMasteryXPIsNoOpAfterMasteryCapReached() {
+		Player masteryPlayer = PlayerTestHelper.createPlayer("mastery_cap_noop");
+		final long masteryCapXP = MasteryLevel.getXP(MasteryLevel.maxLevel());
+
+		masteryPlayer.setMasteryLevel(MasteryLevel.maxLevel());
+		masteryPlayer.setMasteryXP(masteryCapXP - 1L);
+		masteryPlayer.addMasteryXP(1L);
+
+		assertThat(masteryPlayer.getMasteryXP(), is(masteryCapXP));
+		assertThat(masteryPlayer.getMasteryLevel(), is(MasteryLevel.maxLevel()));
+
+		masteryPlayer.addMasteryXP(5000L);
+		assertThat(masteryPlayer.getMasteryXP(), is(masteryCapXP));
+		assertThat(masteryPlayer.getMasteryLevel(), is(MasteryLevel.maxLevel()));
+	}
+
 
 	@Test
 	public void testMasteryUnlockRequiresMaxLevelAndRebornFive() {
