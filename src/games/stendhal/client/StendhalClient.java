@@ -26,7 +26,6 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
@@ -47,7 +46,6 @@ import marauroa.client.BannedAddressException;
 import marauroa.client.ClientFramework;
 import marauroa.client.TimeoutException;
 import marauroa.client.net.PerceptionHandler;
-import marauroa.common.game.CharacterResult;
 import marauroa.common.game.Perception;
 import marauroa.common.game.RPAction;
 import marauroa.common.game.RPClass;
@@ -390,23 +388,12 @@ public class StendhalClient extends ClientFramework {
 	@Override
 	protected void onAvailableCharacterDetails(final Map<String, RPObject> characters) {
 
-		// if there are no characters, create one with the specified name automatically
+		// if there are no characters, show the character dialog and let the user
+		// decide whether to create a new one. Auto-creating here can produce a
+		// misleading "already exists" error when the requested character is only
+		// temporarily unavailable in the details response.
 		if (characters.isEmpty()) {
-			if (character == null) {
-				character = getAccountUsername();
-			}
-			logger.warn("The requested character is not available, trying to create character " + character);
-			final RPObject template = new RPObject();
-			try {
-				final CharacterResult result = createCharacter(character, template);
-				if (result.getResult().failed()) {
-					logger.error(result.getResult().getText());
-					JOptionPane.showMessageDialog(splashScreen, result.getResult().getText());
-				}
-			} catch (final Exception e) {
-				logger.error(e, e);
-			}
-			return;
+			logger.warn("No character details received for account; opening character dialog instead of auto-create");
 		}
 
 		// autologin if a valid character was specified.
