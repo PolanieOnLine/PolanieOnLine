@@ -27,10 +27,6 @@ import utilities.PlayerTestHelper;
  * Tests for OutfitColor.
  */
 public class OutfitColorTest {
-	private void clearOutfitColors(RPObject player) {
-		player.remove("outfit_colors");
-	}
-
 	/**
 	 * Check situations when get() should return PLAIN.
 	 */
@@ -38,16 +34,15 @@ public class OutfitColorTest {
 	public void testConstructPlain() {
 		// no color
 		RPObject player = PlayerTestHelper.createPlayer("Mannequin");
-		clearOutfitColors(player);
 		OutfitColor color = OutfitColor.get(player);
 		// Should be the same, not just equal
-		assertSame("Expected OutfitColor.PLAIN, got: " + color, OutfitColor.PLAIN, color);
+		assertSame(OutfitColor.PLAIN, color);
 		// Ensure that the player has an empty color map
 		player.put("outfit_colors", "dress", 0);
 		player.remove("outfit_colors", "dress");
 		// Should still be the same instance
 		color = OutfitColor.get(player);
-		assertSame("Expected OutfitColor.PLAIN after map cleanup, got: " + color, OutfitColor.PLAIN, color);
+		assertSame(OutfitColor.PLAIN, color);
 		// Should change now
 		player.put("outfit_colors", "dress", 0);
 		color = OutfitColor.get(player);
@@ -71,17 +66,16 @@ public class OutfitColorTest {
 	@Test
 	public void testInvalidValue() {
 		RPObject player = PlayerTestHelper.createPlayer("Mannequin");
-		clearOutfitColors(player);
 		// Ensure that the player has an empty color map
 		player.put("outfit_colors", "dress", "foo");
 		// invalid value in "dress", but otherwise plain
 		OutfitColor color = OutfitColor.get(player);
 		// Same instance is not guaranteed
-		assertEquals("Invalid dress color should resolve to plain outfit", OutfitColor.PLAIN, color);
+		assertEquals(OutfitColor.PLAIN, color);
 		player.remove("outfit_colors", "dress");
 		player.put("outfit_colors", "sky", "blue");
 		color = OutfitColor.get(player);
-		assertEquals("Unknown color key should resolve to plain outfit", OutfitColor.PLAIN, color);
+		assertEquals(OutfitColor.PLAIN, color);
 
 		player.put("outfit_colors", "dress", 1);
 		color = OutfitColor.get(player);
@@ -97,7 +91,6 @@ public class OutfitColorTest {
 	@Test
 	public void testHashCode() {
 		RPObject player = PlayerTestHelper.createPlayer("Mannequin");
-		clearOutfitColors(player);
 		OutfitColor color = OutfitColor.get(player);
 		assertEquals(OutfitColor.PLAIN.hashCode(), color.hashCode());
 
@@ -131,7 +124,6 @@ public class OutfitColorTest {
 	@Test
 	public void testToString() {
 		RPObject player = PlayerTestHelper.createPlayer("Mannequin");
-		clearOutfitColors(player);
 		OutfitColor color = OutfitColor.get(player);
 		assertEquals("", color.toString());
 		player.put("outfit_colors", "dress", 0);
@@ -157,7 +149,6 @@ public class OutfitColorTest {
 	@Test
 	public void testGetSetColor() {
 		RPObject player = PlayerTestHelper.createPlayer("Mannequin");
-		clearOutfitColors(player);
 		OutfitColor color = new OutfitColor(player);
 		color.setColor("hair", Color.BLUE);
 		assertEquals(color.getColor("hair"), Color.BLUE);
