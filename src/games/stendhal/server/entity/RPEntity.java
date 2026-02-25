@@ -1203,6 +1203,10 @@ public abstract class RPEntity extends CombatEntity {
 		updateLevel();
 	}
 
+	public boolean hasMasteryProgressionUnlocked() {
+		return isMasteryProgressionActive();
+	}
+
 	private boolean isMasteryProgressionActive() {
 		if (!(this instanceof Player)) {
 			return false;

@@ -45,7 +45,7 @@ public class IncreaseXPDependentOnLevelAction implements ChatAction {
 		final int start = Level.getXP(player.getLevel());
 		final int next = Level.getXP(player.getLevel() + 1);
 		int reward = (int) ((next - start) / xpDiff);
-		if (player.getLevel() >= Level.maxLevel()) {
+		if ((player.getLevel() >= Level.maxLevel()) && !player.hasMasteryProgressionUnlocked()) {
 			reward = 0;
 			// no reward so give a lot karma instead
 			player.addKarma(karmabonus);

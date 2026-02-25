@@ -327,7 +327,7 @@ public class Hunting extends AbstractQuest {
 
 				if (player.getNumberOfRepetitions(QUEST_SLOT, 2) <= 10) {
 					int reward = (int) ((next - start) / 6);
-					if (player.getLevel() >= Level.maxLevel()) {
+					if ((player.getLevel() >= Level.maxLevel()) && !player.hasMasteryProgressionUnlocked()) {
 						reward = 0;
 						// no reward so give a lot karma instead
 						player.addKarma(60.0);
@@ -354,7 +354,7 @@ public class Hunting extends AbstractQuest {
 					player.notifyWorldAboutChanges();
 				} else if (player.getNumberOfRepetitions(QUEST_SLOT, 2) > 10 && player.getNumberOfRepetitions(QUEST_SLOT, 2) <= 34) {
 					int reward = (int) ((next - start) / 5);
-					if (player.getLevel() >= Level.maxLevel()) {
+					if ((player.getLevel() >= Level.maxLevel()) && !player.hasMasteryProgressionUnlocked()) {
 						reward = 0;
 						// no reward so give a lot karma instead
 						player.addKarma(90.0);
@@ -372,7 +372,7 @@ public class Hunting extends AbstractQuest {
 					player.notifyWorldAboutChanges();
 				} else if (player.getNumberOfRepetitions(QUEST_SLOT, 2) > 34) {
 					int reward = (int) ((next - start) / 4);
-					if (player.getLevel() >= Level.maxLevel()) {
+					if ((player.getLevel() >= Level.maxLevel()) && !player.hasMasteryProgressionUnlocked()) {
 						reward = 0;
 						// no reward so give a lot karma instead
 						player.addKarma(110.0);
