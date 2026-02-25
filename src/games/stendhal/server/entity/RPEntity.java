@@ -57,6 +57,8 @@ import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.mapstuff.portal.Portal;
 import games.stendhal.server.entity.player.ProgressionConfig;
+import games.stendhal.server.entity.player.MasteryProgressionService;
+import games.stendhal.server.entity.player.MasteryProgressionService.MasteryProgressionResult;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.entity.slot.EntitySlot;
 import games.stendhal.server.entity.slot.Slots;
@@ -78,6 +80,7 @@ import marauroa.server.game.db.DAORegister;
 public abstract class RPEntity extends CombatEntity {
 	/** The logger instance. */
 	private static final Logger logger = Logger.getLogger(RPEntity.class);
+	private static final MasteryProgressionService MASTERY_PROGRESSION_SERVICE = new MasteryProgressionService();
 
 	/**
 	 * The title attribute name.
@@ -1211,51 +1214,32 @@ public abstract class RPEntity extends CombatEntity {
 	}
 
 	private void addMasteryXP(final long gainedXP) {
-		final long currentMasteryExp = has("mastery_exp") ? getLong("mastery_exp") : (has("mastery_xp") ? getLong("mastery_xp") : 0L);
-		final long currentMasteryTotalExp = has("mastery_total_exp") ? getLong("mastery_total_exp") : currentMasteryExp;
-		final int currentMasteryLevel = has("mastery_level") ? getInt("mastery_level") : 0;
-
-		if (currentMasteryLevel >= ProgressionConfig.MASTERY_MAX_LEVEL) {
-			new GameEvent(getName(), "mastery_xp_capped", String.valueOf(currentMasteryLevel)).raise();
+		final MasteryProgressionResult result = MASTERY_PROGRESSION_SERVICE.addMasteryExp(this, gainedXP);
+		if (result.isAlreadyCapped()) {
+			new GameEvent(getName(), "mastery_xp_capped", String.valueOf(result.getUpdatedMasteryLevel())).raise();
 			return;
 		}
 
-		long targetMasteryExp = safeAdd(currentMasteryExp, gainedXP);
-		final long updatedMasteryTotalExp = safeAdd(currentMasteryTotalExp, gainedXP);
-		final long maxMasteryXP = ProgressionConfig.getMasteryMaxXP();
-
-		if (targetMasteryExp > maxMasteryXP) {
-			targetMasteryExp = maxMasteryXP;
+		if (!result.hasChanges()) {
+			return;
 		}
 
-		final long updatedMasteryExp = targetMasteryExp;
-		final int updatedMasteryLevel = ProgressionConfig.getMasteryLevelForXP(updatedMasteryExp);
+		new GameEvent(getName(), "added mastery xp", String.valueOf(result.getAppliedMasteryExpGain())).raise();
+		new GameEvent(getName(), "mastery_xp", String.valueOf(result.getUpdatedMasteryExp())).raise();
 
-		put("mastery_exp", updatedMasteryExp);
-		put("mastery_xp", updatedMasteryExp);
-		put("mastery_level", updatedMasteryLevel);
-		put("mastery_total_exp", updatedMasteryTotalExp);
-		if (!has("mastery_unlocked_at")) {
-			put("mastery_unlocked_at", System.currentTimeMillis());
+		for (final Integer masteryLevel : result.getLevelUps()) {
+			new GameEvent(getName(), "mastery_level", String.valueOf(masteryLevel)).raise();
+			new GameEvent(getName(), "mastery_level_up", String.valueOf(masteryLevel)).raise();
 		}
 
-		new GameEvent(getName(), "added mastery xp", String.valueOf(gainedXP)).raise();
-		new GameEvent(getName(), "mastery_xp", String.valueOf(updatedMasteryExp)).raise();
-		if (updatedMasteryLevel > currentMasteryLevel) {
-			new GameEvent(getName(), "mastery_level", String.valueOf(updatedMasteryLevel)).raise();
+		for (final Integer milestone : result.getReachedMilestones()) {
+			new GameEvent(getName(), "mastery_milestone", String.valueOf(milestone)).raise();
+		}
+
+		if (result.isCappedAfterUpdate()) {
+			new GameEvent(getName(), "mastery_xp_capped", String.valueOf(result.getUpdatedMasteryLevel())).raise();
 		}
 	}
-
-	private static long safeAdd(final long left, final long right) {
-		if (right <= 0L) {
-			return left;
-		}
-		if (Long.MAX_VALUE - left < right) {
-			return Long.MAX_VALUE;
-		}
-		return left + right;
-	}
-
 
 	/**
 	 * Change the level to match the XP, if needed.
