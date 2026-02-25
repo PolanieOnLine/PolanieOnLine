@@ -13,7 +13,6 @@ package games.stendhal.client.gui;
 
 import java.awt.Color;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
@@ -106,11 +105,14 @@ public class OutfitColor {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		for (Entry<String, Color> entry : map.entrySet()) {
-			sb.append(entry.getKey());
-			sb.append("=");
-			sb.append(entry.getValue().getRGB());
-			sb.append(";");
+		for (String key : parts) {
+			Color color = map.get(key);
+			if (color != null) {
+				sb.append(key);
+				sb.append("=");
+				sb.append(color.getRGB());
+				sb.append(";");
+			}
 		}
 		return sb.toString();
 	}
