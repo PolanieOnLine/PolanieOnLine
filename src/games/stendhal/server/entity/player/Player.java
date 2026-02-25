@@ -106,6 +106,16 @@ public class Player extends DressedEntity implements UseListener {
 	private int tradescore;
 
 	/**
+	 * Runtime mastery level loaded from dedicated table.
+	 */
+	private int masteryLevel;
+
+	/**
+	 * Runtime mastery xp loaded from dedicated table.
+	 */
+	private long masteryXP;
+
+	/**
 	 * List of portals that have been "unlocked" for this player.
 	 */
 	private final List<Integer> unlockedPortals;
@@ -290,6 +300,8 @@ public class Player extends DressedEntity implements UseListener {
 		// Beginner's luck (unless overridden by update)
 		karma = 10.0;
 		tradescore = 0;
+		masteryLevel = 0;
+		masteryXP = 0L;
 		baseSpeed = 1.0;
 		update();
 		// Ensure that players do not accidentally get stored with zones
@@ -621,6 +633,22 @@ public class Player extends DressedEntity implements UseListener {
 
 	public int getTradescore() {
 		return this.tradescore;
+	}
+
+	public int getMasteryLevel() {
+		return masteryLevel;
+	}
+
+	public void setMasteryLevel(final int masteryLevel) {
+		this.masteryLevel = masteryLevel;
+	}
+
+	public long getMasteryXP() {
+		return masteryXP;
+	}
+
+	public void setMasteryXP(final long masteryXP) {
+		this.masteryXP = masteryXP;
 	}
 
 	/**

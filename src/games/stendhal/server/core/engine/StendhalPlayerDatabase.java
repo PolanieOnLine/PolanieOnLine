@@ -30,6 +30,7 @@ import games.stendhal.server.core.engine.db.StendhalGroupQuestDAO;
 import games.stendhal.server.core.engine.db.StendhalHallOfFameDAO;
 import games.stendhal.server.core.engine.db.StendhalItemDAO;
 import games.stendhal.server.core.engine.db.StendhalKillLogDAO;
+import games.stendhal.server.core.engine.db.StendhalMasteryDAO;
 import games.stendhal.server.core.engine.db.StendhalNPCDAO;
 import games.stendhal.server.core.engine.db.StendhalRPZoneDAO;
 import games.stendhal.server.core.engine.db.StendhalSearchIndexDAO;
@@ -290,6 +291,24 @@ public class StendhalPlayerDatabase {
 					+ "'ratk.level.025', 'ratk.level.050', 'ratk.level.075', "
 					+ "'ratk.level.100', 'ratk.level.150')", null);
 		}
+
+		// pol1.42: character mastery progression table
+		transaction.execute("CREATE TABLE IF NOT EXISTS character_mastery ("
+				+ "charname VARCHAR(32) NOT NULL, "
+				+ "mastery_level INT NOT NULL DEFAULT 0, "
+				+ "mastery_xp BIGINT NOT NULL DEFAULT 0, "
+				+ "updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, "
+				+ "PRIMARY KEY (charname))", null);
+		if (!transaction.doesColumnExist("character_mastery", "mastery_level")) {
+			transaction.execute("ALTER TABLE character_mastery ADD COLUMN (mastery_level INT NOT NULL DEFAULT 0)", null);
+		}
+		if (!transaction.doesColumnExist("character_mastery", "mastery_xp")) {
+			transaction.execute("ALTER TABLE character_mastery ADD COLUMN (mastery_xp BIGINT NOT NULL DEFAULT 0)", null);
+		}
+		if (!transaction.doesColumnExist("character_mastery", "updated_at")) {
+			transaction.execute("ALTER TABLE character_mastery ADD COLUMN (updated_at TIMESTAMP)", null);
+		}
+		transaction.execute("CREATE INDEX IF NOT EXISTS i_character_mastery_mastery_level ON character_mastery(mastery_level)", null);
 	}
 
 	private void updateCharacterStatsOutfitToOutfitLayer(DBTransaction transaction) throws SQLException {
@@ -336,7 +355,8 @@ public class StendhalPlayerDatabase {
 		DAORegister.get().register(StendhalCreatureDAO.class, new StendhalCreatureDAO());
 		DAORegister.get().register(StendhalGroupQuestDAO.class, new StendhalGroupQuestDAO());
 		DAORegister.get().register(StendhalHallOfFameDAO.class, new StendhalHallOfFameDAO());
-		DAORegister.get().register(StendhalKillLogDAO.class, new StendhalKillLogDAO ());
+		DAORegister.get().register(StendhalKillLogDAO.class, new StendhalKillLogDAO());
+		DAORegister.get().register(StendhalMasteryDAO.class, new StendhalMasteryDAO());
 		DAORegister.get().register(StendhalNPCDAO.class, new StendhalNPCDAO());
 		DAORegister.get().register(StendhalWebsiteDAO.class, new StendhalWebsiteDAO());
 		DAORegister.get().register(AchievementDAO.class, new AchievementDAO());

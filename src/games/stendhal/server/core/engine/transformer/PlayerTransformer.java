@@ -14,6 +14,7 @@ package games.stendhal.server.core.engine.transformer;
 import static games.stendhal.common.constants.Actions.AWAY;
 import static games.stendhal.common.constants.Actions.GRUMPY;
 
+import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -26,6 +27,7 @@ import games.stendhal.common.Version;
 import games.stendhal.server.core.engine.ItemLogger;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.core.engine.db.StendhalMasteryDAO;
 import games.stendhal.server.core.events.TutorialNotifier;
 import games.stendhal.server.core.rp.StendhalQuestSystem;
 import games.stendhal.server.core.rp.StendhalRPAction;
@@ -49,6 +51,9 @@ import games.stendhal.server.entity.slot.PlayerTradeSlot;
 import games.stendhal.server.entity.spell.Spell;
 import marauroa.common.game.RPObject;
 import marauroa.common.game.RPSlot;
+import marauroa.server.db.DBTransaction;
+import marauroa.server.db.TransactionPool;
+import marauroa.server.game.db.DAORegister;
 
 public class PlayerTransformer implements Transformer {
 
@@ -74,6 +79,7 @@ public class PlayerTransformer implements Transformer {
 		UpdateConverter.updatePlayerRPObject(object);
 
 		final Player player = new Player(object);
+		loadMasteryForPlayer(player);
 		player.stop();
 		player.stopAttack();
 
@@ -116,6 +122,22 @@ public class PlayerTransformer implements Transformer {
 
 		logger.debug("Finally player is :" + player);
 		return player;
+	}
+
+	private void loadMasteryForPlayer(final Player player) {
+		DBTransaction transaction = TransactionPool.get().beginWork();
+		try {
+			StendhalMasteryDAO.CharacterMastery mastery = DAORegister.get().get(StendhalMasteryDAO.class)
+					.loadByCharname(transaction, player.getName());
+			if (mastery != null) {
+				player.setMasteryLevel(mastery.getMasteryLevel());
+				player.setMasteryXP(mastery.getMasteryXP());
+			}
+			TransactionPool.get().commit(transaction);
+		} catch (SQLException e) {
+			TransactionPool.get().rollback(transaction);
+			logger.warn("Could not load mastery for player " + player.getName(), e);
+		}
 	}
 
 	/**

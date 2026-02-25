@@ -87,6 +87,17 @@ create table if not exists halloffame_archive_alltimes
 CREATE INDEX IF NOT EXISTS i_halloffame_archive_alltimes_day_charname ON halloffame_archive_alltimes(`day`, charname);
 
 
+CREATE TABLE IF NOT EXISTS character_mastery (
+  charname VARCHAR(32) NOT NULL,
+  mastery_level INT NOT NULL DEFAULT 0,
+  mastery_xp BIGINT NOT NULL DEFAULT 0,
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (charname)
+);
+
+CREATE INDEX IF NOT EXISTS i_character_mastery_mastery_level ON character_mastery(mastery_level);
+
+
 CREATE TABLE IF NOT EXISTS item (
   id INTEGER AUTO_INCREMENT NOT NULL,
   name VARCHAR(64),
