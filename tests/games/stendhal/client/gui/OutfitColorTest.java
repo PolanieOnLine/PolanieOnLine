@@ -139,8 +139,8 @@ public class OutfitColorTest {
 		// Consistent ordering:
 		player.put("outfit_colors", "detail", 0xfff00ba5);
 		color = OutfitColor.get(player);
-		assertEquals("Inconsistent ordering", "dress=" + 0xff000000 +
-				";hair=" + 0xff00beeb + ";detail=" + 0xfff00ba5 + ";", color.toString());
+		assertEquals("Inconsistent ordering", "detail=" + 0xfff00ba5 +
+				";dress=" + 0xff000000 + ";hair=" + 0xff00beeb + ";", color.toString());
 	}
 
 	/**
