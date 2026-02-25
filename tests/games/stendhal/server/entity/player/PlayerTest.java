@@ -30,6 +30,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import games.stendhal.common.KeyedSlotUtil;
+import games.stendhal.common.Level;
 import games.stendhal.common.constants.Nature;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.Entity;
@@ -369,6 +370,33 @@ public class PlayerTest {
 		assertThat(player.getQuest("testquest3", 1), nullValue());
 		assertThat(player.getQuest("testquest3", 2), nullValue());
 
+	}
+
+	@Test
+	public void testMasteryUnlockRequiresMaxLevelAndRebornFive() {
+		Player masteryPlayer = PlayerTestHelper.createPlayer("mastery_unlock");
+
+		masteryPlayer.setQuest("reset_level", "done;reborn_5");
+		assertFalse(masteryPlayer.isMasteryUnlocked());
+
+		masteryPlayer.setLevel(Level.maxLevel());
+		assertTrue(masteryPlayer.isMasteryUnlocked());
+	}
+
+	@Test
+	public void testAddXPAddsMasteryXPWhenMasteryUnlocked() {
+		Player masteryPlayer = PlayerTestHelper.createPlayer("mastery_xp");
+		masteryPlayer.setLevel(Level.maxLevel());
+		masteryPlayer.setQuest("reset_level", "done;reborn_5");
+
+		final int xpBefore = masteryPlayer.getXP();
+		final long masteryXPBefore = masteryPlayer.getMasteryXP();
+
+		masteryPlayer.addXP(42);
+
+		assertThat(masteryPlayer.getXP(), is(xpBefore));
+		assertThat(masteryPlayer.getMasteryXP(), is(masteryXPBefore + 42));
+		assertThat(masteryPlayer.getFeature("mastery_unlocked_notification"), is("true"));
 	}
 
 	/**

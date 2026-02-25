@@ -84,6 +84,9 @@ public class Player extends DressedEntity implements UseListener {
 	private static final Logger logger = Logger.getLogger(Player.class);
 
 	private static final String LAST_PLAYER_KILL_TIME = "last_player_kill_time";
+	private static final String RESET_LEVEL_QUEST_SLOT = "reset_level";
+	private static final String MASTERY_UNLOCKED_NOTIFICATION_FEATURE = "mastery_unlocked_notification";
+	private static final int REQUIRED_REBORN_FOR_MASTERY = 5;
 
 	/**
 	 * A random generator (for karma payout).
@@ -649,6 +652,58 @@ public class Player extends DressedEntity implements UseListener {
 
 	public void setMasteryXP(final long masteryXP) {
 		this.masteryXP = masteryXP;
+	}
+
+	public void addMasteryXP(final long addedMasteryXP) {
+		if (addedMasteryXP <= 0L || Long.MAX_VALUE - masteryXP < addedMasteryXP) {
+			return;
+		}
+
+		masteryXP += addedMasteryXP;
+		new GameEvent(getName(), "mastery_xp", String.valueOf(masteryXP)).raise();
+	}
+
+	public boolean isMasteryUnlocked() {
+		return getLevel() >= Level.maxLevel() && getRebornCount() >= REQUIRED_REBORN_FOR_MASTERY;
+	}
+
+	private int getRebornCount() {
+		if (!hasQuest(RESET_LEVEL_QUEST_SLOT)) {
+			return 0;
+		}
+
+		final String rebornState = getQuest(RESET_LEVEL_QUEST_SLOT);
+		if (rebornState == null || rebornState.isEmpty()) {
+			return 0;
+		}
+
+		int rebornCount = 0;
+		for (final String part : rebornState.split(";")) {
+			if (part.startsWith("reborn_")) {
+				try {
+					rebornCount = Math.max(rebornCount, Integer.parseInt(part.substring("reborn_".length())));
+				} catch (final NumberFormatException e) {
+					logger.debug("Invalid reborn quest state: " + part + " for player " + getName(), e);
+				}
+			} else if ("done_reborn".equals(part)) {
+				rebornCount = Math.max(rebornCount, 1);
+			}
+		}
+
+		return rebornCount;
+	}
+
+	private void notifyMasteryUnlockedOnce() {
+		if (!isMasteryUnlocked() || hasFeature(MASTERY_UNLOCKED_NOTIFICATION_FEATURE)) {
+			return;
+		}
+
+		setFeature(MASTERY_UNLOCKED_NOTIFICATION_FEATURE, "true");
+		sendPrivateText(NotificationType.INFORMATION,
+				"Odblokowano #Mistrzostwo! Od teraz zdobywasz punkty doświadczenia mistrzostwa.");
+		new GameEvent(getName(), "mastery unlocked").raise();
+		addEvent(new SoundEvent(SoundID.LEVEL_UP, SoundLayer.USER_INTERFACE));
+		notifyWorldAboutChanges();
 	}
 
 	/**
@@ -1465,6 +1520,9 @@ public class Player extends DressedEntity implements UseListener {
 	 */
 	public void setQuest(final String name, final String status) {
 		quests.setQuest(name, status);
+		if (RESET_LEVEL_QUEST_SLOT.equals(name)) {
+			notifyMasteryUnlockedOnce();
+		}
 	}
 
 	/**
@@ -1484,6 +1542,9 @@ public class Player extends DressedEntity implements UseListener {
 	 */
 	public void setQuest(final String name, final int index, final String status) {
 		quests.setQuest(name, index, status);
+		if (RESET_LEVEL_QUEST_SLOT.equals(name)) {
+			notifyMasteryUnlockedOnce();
+		}
 	}
 
 	public List<String> getQuests() {
@@ -1741,7 +1802,7 @@ public class Player extends DressedEntity implements UseListener {
 			}
 		} else {
 			for (final Map.Entry<String, Integer> entry: titles.entrySet()) {
-				if (getLevel() == 597) {
+				if (getLevel() == Level.maxLevel()) {
 					title = Grammar.genderVerb(getGender(), "król");
 				} else if (getLevel() >= entry.getValue() && getLevel() < (entry.getValue() + 50)) {
 					title = Grammar.genderVerb(getGender(), entry.getKey());
@@ -2684,9 +2745,25 @@ public class Player extends DressedEntity implements UseListener {
 	}
 
 	@Override
+	public void addXP(final int newxp) {
+		if (newxp <= 0) {
+			super.addXP(newxp);
+			return;
+		}
+
+		if (isMasteryUnlocked()) {
+			addMasteryXP(newxp);
+			return;
+		}
+
+		super.addXP(newxp);
+	}
+
+	@Override
 	public void setLevel(final int level) {
 		final int oldLevel = getLevel();
 		super.setLevel(level);
+		notifyMasteryUnlockedOnce();
 
 		// reward players on level up
 		if (oldLevel < level) {
