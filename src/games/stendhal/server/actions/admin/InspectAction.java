@@ -89,6 +89,12 @@ public class InspectAction extends AdministrationAction {
 			st.append("\nGórnictwo:    " + inspected.getMining() + "("
 					+ inspected.getMiningXP() + ")");
 			st.append("\nPD:     " + inspected.getXP());
+			if (inspected instanceof Player) {
+				final Player inspectedPlayer = (Player) inspected;
+				st.append("\nPD mistrzowskie:     " + inspectedPlayer.getMasteryXP());
+				st.append("\nPoziom mistrzowski:  " + inspectedPlayer.getMasteryLevel());
+				st.append("\nMistrzowstwo odblokowane:  " + (inspectedPlayer.isMasteryUnlocked() ? "tak" : "nie"));
+			}
 			st.append("\nPoziom:  " + inspected.getLevel());
 			st.append("\nKarma:  " + inspected.getKarma());
 			st.append("\nMana:  " + inspected.getMana() + " / "

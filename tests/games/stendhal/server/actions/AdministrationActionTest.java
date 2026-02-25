@@ -12,6 +12,7 @@
  ***************************************************************************/
 package games.stendhal.server.actions;
 
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.endsWith;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
@@ -787,6 +788,60 @@ public class AdministrationActionTest {
 						"Sprawdzany jest #'creature' zwany \"~'szczur'\" zdefiniowany jako "
 						+ "#'games.stendhal.server.entity.creature.RaidCreature'. "
 						+ "Posiada następujące atrybuty:"));
+	}
+
+	/**
+	 * Tests inspect output with mastery stats for a player.
+	 */
+	@Test
+	public final void testOnInspectPlayerShowsMasteryStats() {
+		final Player gm = PlayerTestHelper.createPlayer("gm");
+		final Player inspectedPlayer = PlayerTestHelper.createPlayer("hugo");
+		final StendhalRPZone testzone = new StendhalRPZone("Testzone");
+		testzone.add(gm);
+		testzone.add(inspectedPlayer);
+
+		gm.setAdminLevel(5000);
+		gm.clearEvents();
+		inspectedPlayer.setMasteryXP(1234L);
+		inspectedPlayer.setMasteryLevel(7);
+
+		MockStendhalRPRuleProcessor.get().addPlayer(gm);
+		final RPAction action = new RPAction();
+		action.put("type", "inspect");
+		action.put("target", "hugo");
+
+		assertTrue(CommandCenter.execute(gm, action));
+		final String inspectText = gm.events().get(0).get("text");
+		assertThat(inspectText, containsString("PD mistrzowskie:     1234"));
+		assertThat(inspectText, containsString("Poziom mistrzowski:  7"));
+		assertThat(inspectText, containsString("Mastery odblokowane:  nie"));
+	}
+
+	/**
+	 * Tests inspect output with mastery stats as n/d for non-player entities.
+	 */
+	@Test
+	public final void testOnInspectCreatureShowsMasteryStatsAsNotApplicable() {
+		final Player gm = PlayerTestHelper.createPlayer("gm");
+		final Creature rat = new RaidCreature(SingletonRepository.getEntityManager().getCreature("szczur"));
+		final StendhalRPZone testzone = new StendhalRPZone("Testzone");
+		testzone.add(rat);
+		testzone.add(gm);
+
+		gm.setAdminLevel(5000);
+		gm.clearEvents();
+
+		MockStendhalRPRuleProcessor.get().addPlayer(gm);
+		final RPAction action = new RPAction();
+		action.put("type", "inspect");
+		action.put("target", "#1");
+
+		assertTrue(CommandCenter.execute(gm, action));
+		final String inspectText = gm.events().get(0).get("text");
+		assertThat(inspectText, containsString("PD mistrzowskie:     n/d"));
+		assertThat(inspectText, containsString("Poziom mistrzowski:  n/d"));
+		assertThat(inspectText, containsString("Mastery odblokowane:  n/d"));
 	}
 
 	/**
