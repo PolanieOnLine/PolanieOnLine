@@ -12,6 +12,10 @@ create table if not exists character_stats
   outfit_colors varchar(100),
   outfit_layers varchar(255),
   xp integer,
+  mastery_level integer default 0,
+  mastery_exp bigint default 0,
+  mastery_total_exp bigint default 0,
+  mastery_unlocked_at timestamp null,
   money integer,
 
   married varchar(32),
@@ -46,6 +50,7 @@ create table if not exists character_stats
   );
 
 CREATE INDEX IF NOT EXISTS i_character_stats_name ON character_stats(name);
+CREATE INDEX IF NOT EXISTS i_character_stats_mastery_ranking ON character_stats(mastery_level, mastery_exp);
 
 create table if not exists halloffame
   (

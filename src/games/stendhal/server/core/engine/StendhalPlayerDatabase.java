@@ -290,6 +290,24 @@ public class StendhalPlayerDatabase {
 					+ "'ratk.level.025', 'ratk.level.050', 'ratk.level.075', "
 					+ "'ratk.level.100', 'ratk.level.150')", null);
 		}
+
+		// pol1.42: mastery progression fields for character ranking
+		if (!transaction.doesColumnExist("character_stats", "mastery_level")) {
+			transaction.execute("ALTER TABLE character_stats ADD COLUMN (mastery_level INTEGER DEFAULT 0);", null);
+		}
+		if (!transaction.doesColumnExist("character_stats", "mastery_exp")) {
+			transaction.execute("ALTER TABLE character_stats ADD COLUMN (mastery_exp BIGINT DEFAULT 0);", null);
+		}
+		if (!transaction.doesColumnExist("character_stats", "mastery_total_exp")) {
+			transaction.execute("ALTER TABLE character_stats ADD COLUMN (mastery_total_exp BIGINT DEFAULT 0);", null);
+		}
+		if (!transaction.doesColumnExist("character_stats", "mastery_unlocked_at")) {
+			transaction.execute("ALTER TABLE character_stats ADD COLUMN (mastery_unlocked_at TIMESTAMP NULL);", null);
+		}
+		transaction.execute("UPDATE character_stats SET mastery_level = 0 WHERE mastery_level IS NULL;", null);
+		transaction.execute("UPDATE character_stats SET mastery_exp = 0 WHERE mastery_exp IS NULL;", null);
+		transaction.execute("UPDATE character_stats SET mastery_total_exp = mastery_exp WHERE mastery_total_exp IS NULL;", null);
+		transaction.execute("CREATE INDEX IF NOT EXISTS i_character_stats_mastery_ranking ON character_stats(mastery_level, mastery_exp);", null);
 	}
 
 	private void updateCharacterStatsOutfitToOutfitLayer(DBTransaction transaction) throws SQLException {

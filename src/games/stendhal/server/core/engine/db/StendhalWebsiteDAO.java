@@ -124,6 +124,7 @@ public class StendhalWebsiteDAO {
 		final String query = "UPDATE character_stats SET "
 			+ " admin=[admin], sentence='[sentence]', age=[age], gender='[gender]', level=[level],"
 			+ " outfit=[outfit], outfit_colors='[outfit_colors]', outfit_layers='[outfit_layers]', xp=[xp], money='[money]',"
+			+ " mastery_level=[mastery_level], mastery_exp=[mastery_exp], mastery_total_exp=[mastery_total_exp], mastery_unlocked_at=[mastery_unlocked_at],"
 			+ " married='[married]', atk='[atk]', def='[def]', ratk='[ratk]', mining='[mining]', hp='[hp]', karma='[karma]',"
 			+ " neck='[neck]', head='[head]', armor='[armor]', lhand='[lhand]', rhand='[rhand]', pas='[pas]',"
 			+ " legs='[legs]', feet='[feet]', cloak='[cloak]', lastseen='[lastseen]',"
@@ -154,6 +155,10 @@ public class StendhalWebsiteDAO {
 		params.put("outfit_colors", getOutfitColors(player));
 		params.put("outfit_layers", player.getOutfit().getData(player.getOutfitColors()));
 		params.put("xp", player.getXP());
+		params.put("mastery_level", player.has("mastery_level") ? player.getInt("mastery_level") : 0);
+		params.put("mastery_exp", player.has("mastery_exp") ? player.getLong("mastery_exp") : (player.has("mastery_xp") ? player.getLong("mastery_xp") : 0L));
+		params.put("mastery_total_exp", player.has("mastery_total_exp") ? player.getLong("mastery_total_exp") : 0L);
+		params.put("mastery_unlocked_at", player.has("mastery_unlocked_at") ? new Timestamp(player.getLong("mastery_unlocked_at")) : null);
 		params.put("money", player.getTotalNumberOf("money"));
 		params.put("married", extractSpouseOrNull(player));
 		params.put("atk", player.getAtk());
@@ -195,11 +200,11 @@ public class StendhalWebsiteDAO {
 	protected void insertIntoCharStats(final DBTransaction transaction, final Player player, Timestamp timestamp) throws SQLException {
 		final String query = "INSERT INTO character_stats"
 			+ " (name, admin, sentence, age, gender, level,"
-			+ " outfit, outfit_colors, outfit_layers, xp, money, married, atk, def, ratk, mining, hp,"
+			+ " outfit, outfit_colors, outfit_layers, xp, mastery_level, mastery_exp, mastery_total_exp, mastery_unlocked_at, money, married, atk, def, ratk, mining, hp,"
 			+ " karma, neck, head, armor, lhand, rhand, pas,"
 			+ " legs, feet, cloak, glove, finger, fingerb, zone, lastseen)"
 			+ " VALUES ('[name]', '[admin]', '[sentence]', '[age]', '[gender]', '[level]',"
-			+ " '[outfit]', '[outfit_colors]', '[outfit_layers]', '[xp]', '[money]', '[married]',"
+			+ " '[outfit]', '[outfit_colors]', '[outfit_layers]', '[xp]', '[mastery_level]', '[mastery_exp]', '[mastery_total_exp]', '[mastery_unlocked_at]', '[money]', '[married]',"
 			+ " '[atk]', '[def]', '[ratk]', '[mining]', '[hp]', '[karma]', '[neck]', '[head]', '[armor]',"
 			+ " '[lhand]', '[rhand]', '[pas]', '[legs]', '[feet]', '[cloak]', '[glove]', '[finger]', '[fingerb]',"
 			+ " '[zone]', '[lastseen]')";

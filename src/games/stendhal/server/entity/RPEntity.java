@@ -1210,8 +1210,9 @@ public abstract class RPEntity extends CombatEntity {
 			&& (player.getRebornCount() >= ProgressionConfig.MASTERY_MIN_RESETS);
 	}
 
-	private void addMasteryXP(final int gainedXP) {
-		final int currentMasteryXP = has("mastery_xp") ? getInt("mastery_xp") : 0;
+	private void addMasteryXP(final long gainedXP) {
+		final long currentMasteryExp = has("mastery_exp") ? getLong("mastery_exp") : (has("mastery_xp") ? getLong("mastery_xp") : 0L);
+		final long currentMasteryTotalExp = has("mastery_total_exp") ? getLong("mastery_total_exp") : currentMasteryExp;
 		final int currentMasteryLevel = has("mastery_level") ? getInt("mastery_level") : 0;
 
 		if (currentMasteryLevel >= ProgressionConfig.MASTERY_MAX_LEVEL) {
@@ -1219,21 +1220,27 @@ public abstract class RPEntity extends CombatEntity {
 			return;
 		}
 
-		long targetMasteryXP = (long) currentMasteryXP + gainedXP;
+		long targetMasteryExp = currentMasteryExp + gainedXP;
+		final long updatedMasteryTotalExp = currentMasteryTotalExp + gainedXP;
 		final long maxMasteryXP = (long) ProgressionConfig.MASTERY_MAX_LEVEL * ProgressionConfig.MASTERY_XP_PER_LEVEL;
-		if (targetMasteryXP > maxMasteryXP) {
-			targetMasteryXP = maxMasteryXP;
+		if (targetMasteryExp > maxMasteryXP) {
+			targetMasteryExp = maxMasteryXP;
 		}
 
-		final int updatedMasteryXP = (int) targetMasteryXP;
+		final long updatedMasteryExp = targetMasteryExp;
 		final int updatedMasteryLevel = Math.min(ProgressionConfig.MASTERY_MAX_LEVEL,
-			updatedMasteryXP / ProgressionConfig.MASTERY_XP_PER_LEVEL);
+			(int) (updatedMasteryExp / ProgressionConfig.MASTERY_XP_PER_LEVEL));
 
-		put("mastery_xp", updatedMasteryXP);
+		put("mastery_exp", updatedMasteryExp);
+		put("mastery_xp", updatedMasteryExp);
 		put("mastery_level", updatedMasteryLevel);
+		put("mastery_total_exp", updatedMasteryTotalExp);
+		if (!has("mastery_unlocked_at")) {
+			put("mastery_unlocked_at", System.currentTimeMillis());
+		}
 
 		new GameEvent(getName(), "added mastery xp", String.valueOf(gainedXP)).raise();
-		new GameEvent(getName(), "mastery_xp", String.valueOf(updatedMasteryXP)).raise();
+		new GameEvent(getName(), "mastery_xp", String.valueOf(updatedMasteryExp)).raise();
 		if (updatedMasteryLevel > currentMasteryLevel) {
 			new GameEvent(getName(), "mastery_level", String.valueOf(updatedMasteryLevel)).raise();
 		}
