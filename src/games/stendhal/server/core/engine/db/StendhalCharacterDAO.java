@@ -36,19 +36,22 @@ public class StendhalCharacterDAO extends CharacterDAO {
 
 		super.addCharacter(transaction, username, character, player, timestamp);
 
-		// Here goes the Stendhal specific code.
+		if (!(player instanceof Player)) {
+			logger.error("player no instance of Player but: " + player, new Throwable());
+			return;
+		}
+
+		final Player instance = (Player) player;
+
+		// Keep core character creation resilient even if auxiliary website/buddy sync fails.
 		try {
-			if (player instanceof Player) {
-				final Player instance = (Player) player;
-				DAORegister.get().get(StendhalHallOfFameDAO.class).setHallOfFamePoints(transaction, instance.getName(), "T", instance.getTradescore());
-				DAORegister.get().get(StendhalWebsiteDAO.class).insertIntoCharStats(transaction, instance, timestamp);
-				DAORegister.get().get(StendhalBuddyDAO.class).saveRelations(transaction, character, instance);
-			} else {
-				logger.error("player no instance of Player but: " + player, new Throwable());
-			}
+			DAORegister.get().get(StendhalHallOfFameDAO.class)
+				.setHallOfFamePoints(transaction, instance.getName(), "T", instance.getTradescore());
+			DAORegister.get().get(StendhalWebsiteDAO.class).insertIntoCharStats(transaction, instance, timestamp);
+			DAORegister.get().get(StendhalBuddyDAO.class).saveRelations(transaction, character, instance);
 		} catch (final SQLException sqle) {
-			logger.warn("error storing character", sqle);
-			throw sqle;
+			logger.error("auxiliary character creation sync failed for " + character
+				+ "; core character record already created", sqle);
 		}
 	}
 
@@ -58,21 +61,23 @@ public class StendhalCharacterDAO extends CharacterDAO {
 
 		super.storeCharacter(transaction, username, character, player, timestamp);
 
-		// Here goes the Stendhal specific code.
-		if (player instanceof Player) {
-			try {
-				final Player instance = (Player) player;
-				final int count = DAORegister.get().get(StendhalWebsiteDAO.class).updateCharStats(transaction, instance, timestamp);
-				if (count == 0) {
-					DAORegister.get().get(StendhalWebsiteDAO.class).insertIntoCharStats(transaction, instance, timestamp);
-				}
-				DAORegister.get().get(StendhalBuddyDAO.class).saveRelations(transaction, character, instance);
-			} catch (final SQLException sqle) {
-				logger.warn("error storing character", sqle);
-				throw sqle;
-			}
-		} else {
+		if (!(player instanceof Player)) {
 			logger.error("player no instance of Player but: " + player, new Throwable());
+			return;
+		}
+
+		final Player instance = (Player) player;
+
+		// Keep primary character persistence intact when redundant tables fail.
+		try {
+			final int count = DAORegister.get().get(StendhalWebsiteDAO.class).updateCharStats(transaction, instance, timestamp);
+			if (count == 0) {
+				DAORegister.get().get(StendhalWebsiteDAO.class).insertIntoCharStats(transaction, instance, timestamp);
+			}
+			DAORegister.get().get(StendhalBuddyDAO.class).saveRelations(transaction, character, instance);
+		} catch (final SQLException sqle) {
+			logger.error("auxiliary character sync failed for " + character
+				+ "; keeping primary character record", sqle);
 		}
 	}
 
