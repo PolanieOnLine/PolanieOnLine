@@ -80,10 +80,7 @@ public class OutfitColor {
 	public static OutfitColor get(RPObject obj) {
 		Map<String, String> map = obj.getMap("outfit_colors");
 		if (map != null && !map.isEmpty()) {
-			OutfitColor color = new OutfitColor(obj);
-			if (!color.map.isEmpty()) {
-				return color;
-			}
+			return new OutfitColor(obj);
 		}
 		// Don't needlessly create colors for players who don't have them
 		return PLAIN;
