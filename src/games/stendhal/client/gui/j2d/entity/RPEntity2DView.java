@@ -56,6 +56,7 @@ abstract class RPEntity2DView<T extends RPEntity> extends ActiveEntity2DView<T> 
 
 	private static final int ICON_OFFSET = 8;
 	private static final int HEALTH_BAR_HEIGHT = 4;
+	private static final String MASTERY_EFFECTS_PROPERTY = "ui.show_mastery_effects";
 
 	// Battle icons
 	private static final Sprite blockedSprite;
@@ -101,6 +102,9 @@ abstract class RPEntity2DView<T extends RPEntity> extends ActiveEntity2DView<T> 
 	 * The title image sprite.
 	 */
 	private Sprite titleSprite;
+	private int lastMasteryLevel = Integer.MIN_VALUE;
+	private int lastMasteryTier = Integer.MIN_VALUE;
+	private boolean lastMasteryEffectsEnabled = true;
 
 	/** The drawn height. */
 	protected int height;
@@ -263,6 +267,8 @@ abstract class RPEntity2DView<T extends RPEntity> extends ActiveEntity2DView<T> 
 	private Sprite createTitleSprite() {
 		final String titleType = entity.getTitleType();
 		final int adminlevel = entity.getAdminLevel();
+		final boolean masteryEffectsEnabled = isMasteryEffectsEnabled();
+		final int masteryLevel = getMasteryLevel();
 		Color nameColor = null;
 
 		if (titleType != null) {
@@ -274,7 +280,9 @@ abstract class RPEntity2DView<T extends RPEntity> extends ActiveEntity2DView<T> 
 		}
 
 		if (nameColor == null) {
-			if (adminlevel >= 1000) {
+			if (masteryEffectsEnabled && masteryLevel > 0) {
+				nameColor = getMasteryTierColor(getMasteryTier());
+			} else if (adminlevel >= 1000) {
 				nameColor = new Color(150, 149, 34); // ciemny żółty
 			} else if (adminlevel >= 20) {
 				nameColor = new Color(200, 200, 0); // żółty
@@ -289,7 +297,75 @@ abstract class RPEntity2DView<T extends RPEntity> extends ActiveEntity2DView<T> 
 			}
 		}
 
-		return TextSprite.createTextSprite(entity.getTitle(), nameColor);
+		String title = entity.getTitle();
+		if (masteryEffectsEnabled && masteryLevel > 0) {
+			title += " " + getMasteryDecoration(masteryLevel);
+		}
+
+		return TextSprite.createTextSprite(title, nameColor);
+	}
+
+	private boolean isMasteryEffectsEnabled() {
+		return WtWindowManager.getInstance().getProperty(MASTERY_EFFECTS_PROPERTY, "true").equals("true");
+	}
+
+	private int getMasteryLevel() {
+		final RPObject rpObject = entity.getRPObject();
+		if (rpObject == null || !rpObject.has("mastery_level")) {
+			return 0;
+		}
+
+		return rpObject.getInt("mastery_level");
+	}
+
+	private int getMasteryTier() {
+		final RPObject rpObject = entity.getRPObject();
+		if (rpObject != null && rpObject.has("mastery_tier")) {
+			return rpObject.getInt("mastery_tier");
+		}
+
+		final int masteryLevel = getMasteryLevel();
+		return masteryLevel > 0 ? masteryLevel / 100 : 0;
+	}
+
+	private String getMasteryDecoration(final int masteryLevel) {
+		String rank = null;
+		if (masteryLevel >= 2000) {
+			rank = "V";
+		} else if (masteryLevel >= 1500) {
+			rank = "IV";
+		} else if (masteryLevel >= 1000) {
+			rank = "III";
+		} else if (masteryLevel >= 500) {
+			rank = "II";
+		} else if (masteryLevel >= 100) {
+			rank = "I";
+		}
+
+		String decoration = "✦M" + masteryLevel;
+		if (rank != null) {
+			decoration += "[" + rank + "]";
+		}
+		if (masteryLevel >= 1000) {
+			decoration += " ♛";
+		}
+		return decoration;
+	}
+
+	private Color getMasteryTierColor(final int masteryTier) {
+		if (masteryTier >= 20) {
+			return new Color(255, 90, 90);
+		} else if (masteryTier >= 15) {
+			return new Color(246, 106, 255);
+		} else if (masteryTier >= 10) {
+			return new Color(255, 210, 90);
+		} else if (masteryTier >= 5) {
+			return new Color(112, 209, 255);
+		} else if (masteryTier >= 1) {
+			return new Color(181, 255, 167);
+		}
+
+		return Color.white;
 	}
 
 	/**
@@ -941,6 +1017,17 @@ abstract class RPEntity2DView<T extends RPEntity> extends ActiveEntity2DView<T> 
 	@Override
 	protected void update() {
 		super.update();
+
+		final int masteryLevel = getMasteryLevel();
+		final int masteryTier = getMasteryTier();
+		final boolean masteryEffectsEnabled = isMasteryEffectsEnabled();
+		if (masteryLevel != lastMasteryLevel || masteryTier != lastMasteryTier
+				|| masteryEffectsEnabled != lastMasteryEffectsEnabled) {
+			lastMasteryLevel = masteryLevel;
+			lastMasteryTier = masteryTier;
+			lastMasteryEffectsEnabled = masteryEffectsEnabled;
+			titleChanged = true;
+		}
 
 		if (titleChanged) {
 			titleChanged = false;

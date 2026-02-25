@@ -205,6 +205,8 @@ public class Player extends DressedEntity implements UseListener {
 		player.put("mining", 10);
 		player.put("mining_xp", 0);
 		player.put("level", 0);
+		player.put("mastery_level", 0);
+		player.put("mastery_tier", 0);
 		player.setXP(0);
 		if (Testing.WEIGHT) {
 			player.put("capacity", 0.0);
@@ -645,6 +647,7 @@ public class Player extends DressedEntity implements UseListener {
 
 	public void setMasteryLevel(final int masteryLevel) {
 		this.masteryLevel = masteryLevel;
+		syncMasteryAttributes();
 	}
 
 	public long getMasteryXP() {
@@ -653,6 +656,25 @@ public class Player extends DressedEntity implements UseListener {
 
 	public void setMasteryXP(final long masteryXP) {
 		this.masteryXP = masteryXP;
+		syncMasteryAttributes();
+	}
+
+	private int calculateMasteryTier() {
+		if (masteryLevel <= 0) {
+			return 0;
+		}
+
+		return masteryLevel / 100;
+	}
+
+	private void syncMasteryAttributes() {
+		final int masteryTier = calculateMasteryTier();
+		if (!has("mastery_level") || getInt("mastery_level") != masteryLevel) {
+			put("mastery_level", masteryLevel);
+		}
+		if (!has("mastery_tier") || getInt("mastery_tier") != masteryTier) {
+			put("mastery_tier", masteryTier);
+		}
 	}
 
 	public void addMasteryXP(final long addedMasteryXP) {
@@ -684,6 +706,7 @@ public class Player extends DressedEntity implements UseListener {
 
 		masteryXP = Math.min(updatedMasteryXP, masteryCapXP);
 		masteryLevel = MasteryLevel.getLevel(masteryXP);
+		syncMasteryAttributes();
 
 		final long grantedMasteryXP = masteryXP - previousMasteryXP;
 		if (grantedMasteryXP <= 0L) {
@@ -812,6 +835,8 @@ public class Player extends DressedEntity implements UseListener {
 		if (has("tradescore")) {
 			tradescore = getInt("tradescore");
 		}
+
+		syncMasteryAttributes();
 	}
 
 	/**

@@ -175,6 +175,20 @@ class VisualSettings {
 			}
 		});
 
+		JCheckBox masteryEffects = SettingsComponentFactory.createSettingsToggle("ui.show_mastery_effects", true,
+				"Pokaż efekty mastery", "Pokazuje dekoracje i kolory związane z poziomem mastery nad postaciami.");
+		leftColumn.add(masteryEffects);
+		masteryEffects.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				boolean enabled = (e.getStateChange() == ItemEvent.SELECTED);
+				String tmp = enabled ? "włączone" : "wyłączone";
+				String msg = "Efekty mastery zostały " + tmp + ".";
+				ClientSingletonRepository.getUserInterface()
+						.addEventLine(new EventLine("", msg, NotificationType.CLIENT));
+			}
+		});
+
 		// shadows
 		JCheckBox shadows = SettingsComponentFactory.createSettingsToggle("gamescreen.shadows", true, "Pokaż cienie",
 				"Pokazuje cienie pod różnymi obiektami.");
