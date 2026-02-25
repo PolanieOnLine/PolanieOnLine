@@ -124,7 +124,7 @@ public class StendhalWebsiteDAO {
 		final String query = "UPDATE character_stats SET "
 			+ " admin=[admin], sentence='[sentence]', age=[age], gender='[gender]', level=[level],"
 			+ " outfit=[outfit], outfit_colors='[outfit_colors]', outfit_layers='[outfit_layers]', xp=[xp], money='[money]',"
-			+ " mastery_level=[mastery_level], mastery_exp=[mastery_exp], mastery_total_exp=[mastery_total_exp], mastery_unlocked_at=[mastery_unlocked_at],"
+			+ " mastery_level=[mastery_level], mastery_exp=[mastery_exp], mastery_total_exp=[mastery_total_exp], mastery_unlocked_at='[mastery_unlocked_at]',"
 			+ " married='[married]', atk='[atk]', def='[def]', ratk='[ratk]', mining='[mining]', hp='[hp]', karma='[karma]',"
 			+ " neck='[neck]', head='[head]', armor='[armor]', lhand='[lhand]', rhand='[rhand]', pas='[pas]',"
 			+ " legs='[legs]', feet='[feet]', cloak='[cloak]', lastseen='[lastseen]',"
