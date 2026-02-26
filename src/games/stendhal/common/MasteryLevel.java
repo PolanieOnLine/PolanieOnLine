@@ -56,13 +56,15 @@ public final class MasteryLevel {
 	}
 
 	private static long stageIncrement(final int level) {
+		long baseIncrement;
 		if (level <= config.getEarlyMaxLevel()) {
-			return config.getEarlyBaseIncrement() + (level * config.getEarlyLevelIncrement());
+			baseIncrement = config.getEarlyBaseIncrement() + (level * config.getEarlyLevelIncrement());
+		} else if (level <= config.getMidMaxLevel()) {
+			baseIncrement = config.getMidBaseIncrement() + ((level - config.getEarlyMaxLevel()) * config.getMidLevelIncrement());
+		} else {
+			baseIncrement = config.getLateBaseIncrement() + ((level - config.getMidMaxLevel()) * config.getLateLevelIncrement());
 		}
-		if (level <= config.getMidMaxLevel()) {
-			return config.getMidBaseIncrement() + ((level - config.getEarlyMaxLevel()) * config.getMidLevelIncrement());
-		}
-		return config.getLateBaseIncrement() + ((level - config.getMidMaxLevel()) * config.getLateLevelIncrement());
+		return Math.max(1L, Math.round(baseIncrement * config.getGlobalMultiplier()));
 	}
 
 	private static long milestoneOffset(final int level) {

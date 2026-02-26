@@ -35,6 +35,7 @@ public final class MasteryLevelConfig {
 	private final long midLevelIncrement;
 	private final long lateBaseIncrement;
 	private final long lateLevelIncrement;
+	private final double globalMultiplier;
 	private final int milestoneInterval;
 	private final long milestoneMultiplier;
 	private final long hardCapXP;
@@ -43,7 +44,8 @@ public final class MasteryLevelConfig {
 			final long earlyBaseIncrement, final long earlyLevelIncrement,
 			final int midMaxLevel, final long midBaseIncrement,
 			final long midLevelIncrement, final long lateBaseIncrement,
-			final long lateLevelIncrement, final int milestoneInterval,
+			final long lateLevelIncrement, final double globalMultiplier,
+			final int milestoneInterval,
 			final long milestoneMultiplier, final long hardCapXP) {
 		this.maxLevel = maxLevel;
 		this.earlyMaxLevel = earlyMaxLevel;
@@ -54,6 +56,7 @@ public final class MasteryLevelConfig {
 		this.midLevelIncrement = midLevelIncrement;
 		this.lateBaseIncrement = lateBaseIncrement;
 		this.lateLevelIncrement = lateLevelIncrement;
+		this.globalMultiplier = globalMultiplier;
 		this.milestoneInterval = milestoneInterval;
 		this.milestoneMultiplier = milestoneMultiplier;
 		this.hardCapXP = hardCapXP;
@@ -91,6 +94,7 @@ public final class MasteryLevelConfig {
 		final long midLevelIncrement = parseLong(properties, "mastery.mid.levelIncrement", 0L, Long.MAX_VALUE);
 		final long lateBaseIncrement = parseLong(properties, "mastery.late.baseIncrement", 1L, Long.MAX_VALUE);
 		final long lateLevelIncrement = parseLong(properties, "mastery.late.levelIncrement", 0L, Long.MAX_VALUE);
+		final double globalMultiplier = parseDouble(properties, "mastery.globalMultiplier", 0.01d, 1000d);
 		final int milestoneInterval = parseInt(properties, "mastery.milestone.interval", 1, Integer.MAX_VALUE);
 		final long milestoneMultiplier = parseLong(properties, "mastery.milestone.multiplier", 0L, Long.MAX_VALUE);
 		final long hardCapXP = parseOptionalLong(properties, "mastery.hardCapXP", -1L, Long.MAX_VALUE, -1L);
@@ -101,10 +105,15 @@ public final class MasteryLevelConfig {
 		if ((midMaxLevel <= earlyMaxLevel) || (midMaxLevel >= maxLevel)) {
 			throw new IllegalArgumentException("mastery.mid.maxLevel must be between mastery.early.maxLevel and mastery.maxLevel");
 		}
+		validateMonotonicMinimumIncrement(maxLevel, earlyMaxLevel, earlyBaseIncrement,
+				earlyLevelIncrement, midMaxLevel, midBaseIncrement,
+				midLevelIncrement, lateBaseIncrement, lateLevelIncrement,
+				globalMultiplier);
 
 		return new MasteryLevelConfig(maxLevel, earlyMaxLevel, earlyBaseIncrement,
 				earlyLevelIncrement, midMaxLevel, midBaseIncrement,
 				midLevelIncrement, lateBaseIncrement, lateLevelIncrement,
+				globalMultiplier,
 				milestoneInterval, milestoneMultiplier, hardCapXP);
 	}
 
@@ -137,6 +146,20 @@ public final class MasteryLevelConfig {
 		return parseLongValue(key, value, minValue, maxValue);
 	}
 
+	private static double parseDouble(final Properties properties, final String key,
+			final double minValue, final double maxValue) {
+		final String value = required(properties, key);
+		try {
+			final double parsed = Double.parseDouble(value.trim());
+			if ((parsed < minValue) || (parsed > maxValue)) {
+				throw new IllegalArgumentException("Property out of range: " + key);
+			}
+			return parsed;
+		} catch (NumberFormatException e) {
+			throw new IllegalArgumentException("Invalid double in property: " + key);
+		}
+	}
+
 	private static long parseLongValue(final String key, final String value,
 			final long minValue, final long maxValue) {
 		try {
@@ -158,9 +181,52 @@ public final class MasteryLevelConfig {
 		return value;
 	}
 
+	private static void validateMonotonicMinimumIncrement(final int maxLevel,
+			final int earlyMaxLevel, final long earlyBaseIncrement,
+			final long earlyLevelIncrement, final int midMaxLevel,
+			final long midBaseIncrement, final long midLevelIncrement,
+			final long lateBaseIncrement, final long lateLevelIncrement,
+			final double globalMultiplier) {
+		long previous = applyGlobalMultiplier(stageIncrementForLevel(1, earlyMaxLevel,
+				earlyBaseIncrement, earlyLevelIncrement, midMaxLevel,
+				midBaseIncrement, midLevelIncrement, lateBaseIncrement,
+				lateLevelIncrement), globalMultiplier);
+
+		for (int level = 2; level <= maxLevel; level++) {
+			final long current = applyGlobalMultiplier(stageIncrementForLevel(level, earlyMaxLevel,
+					earlyBaseIncrement, earlyLevelIncrement, midMaxLevel,
+					midBaseIncrement, midLevelIncrement, lateBaseIncrement,
+					lateLevelIncrement), globalMultiplier);
+			if (current < previous) {
+				throw new IllegalArgumentException(
+						"mastery minimal increment must be monotonic (non-decreasing), broken at level " + level);
+			}
+			previous = current;
+		}
+	}
+
+	private static long stageIncrementForLevel(final int level, final int earlyMaxLevel,
+			final long earlyBaseIncrement, final long earlyLevelIncrement,
+			final int midMaxLevel, final long midBaseIncrement,
+			final long midLevelIncrement, final long lateBaseIncrement,
+			final long lateLevelIncrement) {
+		if (level <= earlyMaxLevel) {
+			return earlyBaseIncrement + (level * earlyLevelIncrement);
+		}
+		if (level <= midMaxLevel) {
+			return midBaseIncrement + ((level - earlyMaxLevel) * midLevelIncrement);
+		}
+		return lateBaseIncrement + ((level - midMaxLevel) * lateLevelIncrement);
+	}
+
+	private static long applyGlobalMultiplier(final long baseIncrement,
+			final double globalMultiplier) {
+		return Math.max(1L, Math.round(baseIncrement * globalMultiplier));
+	}
+
 	public static MasteryLevelConfig defaults() {
-		return new MasteryLevelConfig(2000, 100, 100L, 15L, 800,
-				1700L, 35L, 26200L, 65L, 100, 250L, -1L);
+		return new MasteryLevelConfig(2000, 100, 300L, 40L, 800,
+				5200L, 75L, 70000L, 130L, 1.0d, 100, 250L, -1L);
 	}
 
 	public int getMaxLevel() {
@@ -197,6 +263,10 @@ public final class MasteryLevelConfig {
 
 	public long getLateLevelIncrement() {
 		return lateLevelIncrement;
+	}
+
+	public double getGlobalMultiplier() {
+		return globalMultiplier;
 	}
 
 	public int getMilestoneInterval() {

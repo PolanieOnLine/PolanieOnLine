@@ -9,19 +9,46 @@ Najważniejsze pola:
 - `mastery.maxLevel` - maksymalny poziom mastery (domyślnie 2000).
 - `mastery.early.*`, `mastery.mid.*`, `mastery.late.*` - współczynniki przyrostu XP
   dla etapów early/mid/late.
+- `mastery.globalMultiplier` - globalny mnożnik stosowany do każdego kosztu levela
+  po wyliczeniu etapu (szybki suwak do strojenia całej krzywej).
 - `mastery.milestone.interval` i `mastery.milestone.multiplier` - bonusy co N poziomów.
 - `mastery.hardCapXP` - opcjonalny twardy limit całkowitego XP tabeli (`-1` wyłącza).
 
 Jak zmieniać pacing:
 1. Zwiększ `*.levelIncrement`, aby progresja zwalniała szybciej wraz z poziomem.
 2. Zwiększ `*.baseIncrement`, aby cały segment był trudniejszy od pierwszego poziomu segmentu.
-3. Zmniejsz `mastery.milestone.interval` lub zwiększ `mastery.milestone.multiplier`,
+3. Podnieś `mastery.globalMultiplier`, aby jednorazowo zaostrzyć wszystkie etapy
+   bez przepisywania sekcji early/mid/late.
+4. Zmniejsz `mastery.milestone.interval` lub zwiększ `mastery.milestone.multiplier`,
    aby częściej/nadmierniej nagradzać milestone'y.
-4. Ustaw `mastery.hardCapXP` tylko jeśli chcesz zatrzymać dalszy wzrost progów XP
+5. Ustaw `mastery.hardCapXP` tylko jeśli chcesz zatrzymać dalszy wzrost progów XP
    po osiągnięciu określonej wartości.
+
+Przykładowe presety pacingu
+===========================
+
+`hard`
+- `mastery.early.baseIncrement=300`
+- `mastery.early.levelIncrement=40`
+- `mastery.mid.baseIncrement=5200`
+- `mastery.mid.levelIncrement=75`
+- `mastery.late.baseIncrement=70000`
+- `mastery.late.levelIncrement=130`
+- `mastery.globalMultiplier=1.0`
+
+`very-hard`
+- `mastery.early.baseIncrement=360`
+- `mastery.early.levelIncrement=50`
+- `mastery.mid.baseIncrement=6200`
+- `mastery.mid.levelIncrement=95`
+- `mastery.late.baseIncrement=90000`
+- `mastery.late.levelIncrement=165`
+- `mastery.globalMultiplier=1.15`
 
 Walidacja i fallback:
 - Konfiguracja jest ładowana przy starcie serwera.
 - Gdy plik jest błędny lub nieczytelny, serwer loguje błąd i używa bezpiecznych
   wartości domyślnych zaszytych w kodzie.
+- Minimalny koszt wejścia na kolejny level mastery musi być monotoniczny
+  (rosnący lub równy), inaczej konfiguracja jest odrzucana.
   
