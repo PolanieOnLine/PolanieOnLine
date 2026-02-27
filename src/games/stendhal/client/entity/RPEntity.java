@@ -198,6 +198,8 @@ public abstract class RPEntity extends AudibleEntity {
 
 	private int xp;
 
+	private int masteryXP;
+
 	private int hp;
 
 	private int adminlevel;
@@ -1583,27 +1585,23 @@ public abstract class RPEntity extends AudibleEntity {
 
 		if (changes.has("xp")) {
 			int newXp = changes.getInt("xp");
+			final boolean hasMasteryXpChange = changes.has("mastery_xp") && object.has("mastery_xp");
 
-			if (object.has("xp") && (isInHearingRange())) {
-				final int amount = newXp - xp;
-				if (amount > 0) {
-					addTextIndicator("+" + amount, NotificationType.SIGNIFICANT_POSITIVE);
-					ClientSingletonRepository.getUserInterface().addEventLine(new HeaderLessEventLine(
-							getTitle()
-							+ " " + Grammar.genderVerb(getGender(), "dostał") + " " + amount + " "
-							+ Grammar.polishQuantity("punkt", amount) + " doświadczenia.",
-							NotificationType.SIGNIFICANT_POSITIVE));
-				} else if (amount < 0) {
-					addTextIndicator("" + amount, NotificationType.SIGNIFICANT_NEGATIVE);
-					ClientSingletonRepository.getUserInterface().addEventLine(new HeaderLessEventLine(
-							getTitle()
-							+ " traci " + (-amount) + " "
-							+ Grammar.polishQuantity("punkt", -amount) + " doświadczenia.",
-							NotificationType.SIGNIFICANT_NEGATIVE));
-				}
+			if (object.has("xp") && isInHearingRange() && !hasMasteryXpChange) {
+				notifyExperienceChange(newXp - xp);
 			}
 
 			xp = newXp;
+		}
+
+		if (changes.has("mastery_xp")) {
+			int newMasteryXp = changes.getInt("mastery_xp");
+
+			if (object.has("mastery_xp") && isInHearingRange()) {
+				notifyExperienceChange(newMasteryXp - masteryXP);
+			}
+
+			masteryXP = newMasteryXp;
 		}
 
 		final Map<String, Integer> statTypes = new LinkedHashMap<>();
@@ -1617,6 +1615,24 @@ public abstract class RPEntity extends AudibleEntity {
 			if (changes.has(stat) && object.has(stat)) {
 				onLevelChanged(stat, statTypes.get(stat), object.getInt(stat));
 			}
+		}
+	}
+
+	private void notifyExperienceChange(final int amount) {
+		if (amount > 0) {
+			addTextIndicator("+" + amount, NotificationType.SIGNIFICANT_POSITIVE);
+			ClientSingletonRepository.getUserInterface().addEventLine(new HeaderLessEventLine(
+					getTitle()
+					+ " " + Grammar.genderVerb(getGender(), "dostał") + " " + amount + " "
+					+ Grammar.polishQuantity("punkt", amount) + " doświadczenia.",
+					NotificationType.SIGNIFICANT_POSITIVE));
+		} else if (amount < 0) {
+			addTextIndicator("" + amount, NotificationType.SIGNIFICANT_NEGATIVE);
+			ClientSingletonRepository.getUserInterface().addEventLine(new HeaderLessEventLine(
+					getTitle()
+					+ " traci " + (-amount) + " "
+					+ Grammar.polishQuantity("punkt", -amount) + " doświadczenia.",
+					NotificationType.SIGNIFICANT_NEGATIVE));
 		}
 	}
 
