@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 
 /** Configuration loader for mastery progression pacing. */
 public final class MasteryLevelConfig {
+	private static final long MIN_ALLOWED_M1_INCREMENT = 500000L;
 
 	public static final String CONFIG_PATH_PROPERTY = "stendhal.mastery.config.path";
 	public static final String DEFAULT_CONFIG_PATH = "data/conf/mastery-level.properties";
@@ -105,6 +106,17 @@ public final class MasteryLevelConfig {
 		if ((midMaxLevel <= earlyMaxLevel) || (midMaxLevel >= maxLevel)) {
 			throw new IllegalArgumentException("mastery.mid.maxLevel must be between mastery.early.maxLevel and mastery.maxLevel");
 		}
+
+		final long m1Increment = stageIncrementForLevel(1, earlyMaxLevel,
+				earlyBaseIncrement, earlyLevelIncrement, midMaxLevel,
+				midBaseIncrement, midLevelIncrement, lateBaseIncrement,
+				lateLevelIncrement);
+		if (m1Increment < MIN_ALLOWED_M1_INCREMENT) {
+			logger.error("Invalid mastery config: M1 increment must be >= "
+					+ MIN_ALLOWED_M1_INCREMENT + " XP but was " + m1Increment + ".");
+			throw new IllegalArgumentException("mastery M1 increment below minimum threshold");
+		}
+
 		validateMonotonicMinimumIncrement(maxLevel, earlyMaxLevel, earlyBaseIncrement,
 				earlyLevelIncrement, midMaxLevel, midBaseIncrement,
 				midLevelIncrement, lateBaseIncrement, lateLevelIncrement,
@@ -225,8 +237,8 @@ public final class MasteryLevelConfig {
 	}
 
 	public static MasteryLevelConfig defaults() {
-		return new MasteryLevelConfig(2000, 100, 300L, 40L, 800,
-				5200L, 75L, 70000L, 130L, 1.0d, 100, 250L, -1L);
+		return new MasteryLevelConfig(2000, 100, 550000L, 5000L, 800,
+				1200000L, 12000L, 10000000L, 90000L, 1.0d, 100, 250L, -1L);
 	}
 
 	public int getMaxLevel() {

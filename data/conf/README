@@ -28,22 +28,19 @@ Przykładowe presety pacingu
 ===========================
 
 `hard`
-- `mastery.early.baseIncrement=300`
-- `mastery.early.levelIncrement=40`
-- `mastery.mid.baseIncrement=5200`
-- `mastery.mid.levelIncrement=75`
-- `mastery.late.baseIncrement=70000`
-- `mastery.late.levelIncrement=130`
+- `mastery.early.baseIncrement=550000`
+- `mastery.early.levelIncrement=5000`
+- `mastery.mid.baseIncrement=1200000`
+- `mastery.mid.levelIncrement=12000`
+- `mastery.late.baseIncrement=10000000`
+- `mastery.late.levelIncrement=90000`
 - `mastery.globalMultiplier=1.0`
 
-`very-hard`
-- `mastery.early.baseIncrement=360`
-- `mastery.early.levelIncrement=50`
-- `mastery.mid.baseIncrement=6200`
-- `mastery.mid.levelIncrement=95`
-- `mastery.late.baseIncrement=90000`
-- `mastery.late.levelIncrement=165`
-- `mastery.globalMultiplier=1.15`
+Docelowe widełki XP (koszt pojedynczego wejścia na poziom):
+- `M1`: ~550k-600k XP
+- `M100`: ~1.0m-1.2m XP
+- `M500`: ~5.5m-6.5m XP
+- `M1000`: ~25m-30m XP
 
 Walidacja i fallback:
 - Konfiguracja jest ładowana przy starcie serwera.
@@ -51,4 +48,6 @@ Walidacja i fallback:
   wartości domyślnych zaszytych w kodzie.
 - Minimalny koszt wejścia na kolejny level mastery musi być monotoniczny
   (rosnący lub równy), inaczej konfiguracja jest odrzucana.
+- Minimalny koszt M1 musi wynosić co najmniej `500000` XP, inaczej konfiguracja
+  jest odrzucana i aktywowany jest fallback do bezpiecznych, trudnych wartości.
   
