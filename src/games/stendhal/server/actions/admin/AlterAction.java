@@ -24,6 +24,7 @@ import static games.stendhal.common.constants.Actions.TITLE;
 import static games.stendhal.common.constants.Actions.UNSET;
 import static games.stendhal.common.constants.Actions.VALUE;
 
+import games.stendhal.common.MasteryLevel;
 import games.stendhal.server.actions.CommandCenter;
 import games.stendhal.server.core.engine.GameEvent;
 import games.stendhal.server.entity.Entity;
@@ -88,7 +89,29 @@ public class AlterAction extends AdministrationAction {
 					return;
 				}
 
-				if (stat.equals("features") && changed instanceof Player) {
+				if ((changed instanceof Player) && stat.equals("mastery_xp")) {
+					final long parsedLong;
+
+					try {
+						parsedLong = Long.parseLong(value);
+					} catch (final NumberFormatException e) {
+						player.sendPrivateText("Użyj wartości numerycznej zamiast '" + value + "'");
+						return;
+					}
+
+					if (mode.equalsIgnoreCase(ADD)) {
+						((Player) changed).addMasteryXP(parsedLong);
+					} else if (mode.equalsIgnoreCase(SUB)) {
+						player.sendPrivateText("Odejmowanie mastery_xp przez #/alter nie jest obsługiwane.");
+						return;
+					} else if (mode.equalsIgnoreCase(SET)) {
+						((Player) changed).setMasteryXP(parsedLong);
+						((Player) changed).setMasteryLevel(MasteryLevel.getLevel(parsedLong));
+					} else {
+						player.sendPrivateText("Dla mastery_xp użyj trybu 'add' albo 'set'.");
+						return;
+					}
+				} else if (stat.equals("features") && changed instanceof Player) {
 					if (!mode.equalsIgnoreCase(ADD) && !mode.equalsIgnoreCase(SUB)) {
 						player.sendPrivateText("Użuj jednego z trybów 'add' lub 'sub'.");
 						return;
