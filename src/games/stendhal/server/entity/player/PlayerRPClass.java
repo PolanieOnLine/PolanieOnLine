@@ -65,6 +65,9 @@ public class PlayerRPClass {
 		player.addAttribute("mastery_level", Type.INT);
 		player.addAttribute("mastery_xp", Type.LONG);
 		player.addAttribute("mastery_tier", Type.INT);
+		player.addAttribute("mastery_skill_points_earned", Type.INT);
+		player.addAttribute("mastery_skill_points_spent", Type.INT);
+		player.addAttribute("mastery_skill_points_available", Type.INT);
 		player.addAttribute("invisible", Type.FLAG, Definition.HIDDEN);
 		player.addAttribute("ghostmode", Type.FLAG);
 		player.addAttribute("teleclickmode", Type.FLAG, Definition.HIDDEN);

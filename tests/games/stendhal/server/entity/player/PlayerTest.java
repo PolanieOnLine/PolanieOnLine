@@ -427,6 +427,47 @@ public class PlayerTest {
 	}
 
 	@Test
+	public void testMasterySkillPointsAreCalculatedOnlyWhenMasteryUnlocked() {
+		Player masteryPlayer = PlayerTestHelper.createPlayer("mastery_skill_points_locked");
+		masteryPlayer.setMasteryLevel(37);
+		masteryPlayer.setMasterySkillPointsSpent(1);
+
+		assertThat(masteryPlayer.getMasterySkillPointsEarned(), is(0));
+		assertThat(masteryPlayer.getMasterySkillPointsSpent(), is(1));
+		assertThat(masteryPlayer.getMasterySkillPointsAvailable(), is(-1));
+		assertThat(masteryPlayer.getInt("mastery_skill_points_earned"), is(0));
+		assertThat(masteryPlayer.getInt("mastery_skill_points_available"), is(-1));
+
+		masteryPlayer.setLevel(Level.maxLevel());
+		masteryPlayer.setQuest("reset_level", "done;reborn_5");
+		masteryPlayer.setMasteryLevel(37);
+
+		assertThat(masteryPlayer.getMasterySkillPointsEarned(), is(3));
+		assertThat(masteryPlayer.getMasterySkillPointsSpent(), is(1));
+		assertThat(masteryPlayer.getMasterySkillPointsAvailable(), is(2));
+		assertThat(masteryPlayer.getInt("mastery_skill_points_earned"), is(3));
+		assertThat(masteryPlayer.getInt("mastery_skill_points_spent"), is(1));
+		assertThat(masteryPlayer.getInt("mastery_skill_points_available"), is(2));
+	}
+
+	@Test
+	public void testMasterySkillPointsConsistencyValidationClampsSpentOnLogin() {
+		Player masteryPlayer = PlayerTestHelper.createPlayer("mastery_skill_points_validation");
+		masteryPlayer.setLevel(Level.maxLevel());
+		masteryPlayer.setQuest("reset_level", "done;reborn_5");
+		masteryPlayer.setMasteryLevel(95);
+		masteryPlayer.setMasterySkillPointsSpent(12);
+
+		masteryPlayer.validateMasterySkillPointsConsistencyOnLogin();
+
+		assertThat(masteryPlayer.getMasterySkillPointsEarned(), is(9));
+		assertThat(masteryPlayer.getMasterySkillPointsSpent(), is(9));
+		assertThat(masteryPlayer.getMasterySkillPointsAvailable(), is(0));
+		assertThat(masteryPlayer.getInt("mastery_skill_points_spent"), is(9));
+		assertThat(masteryPlayer.getInt("mastery_skill_points_available"), is(0));
+	}
+
+	@Test
 	public void testAddXPAddsMasteryXPWhenMasteryUnlocked() {
 		Player masteryPlayer = PlayerTestHelper.createPlayer("mastery_xp");
 		masteryPlayer.setLevel(Level.maxLevel());

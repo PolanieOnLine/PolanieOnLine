@@ -120,6 +120,16 @@ public class Player extends DressedEntity implements UseListener {
 	private long masteryXP;
 
 	/**
+	 * Runtime mastery skill points earned from mastery progression.
+	 */
+	private int masterySkillPointsEarned;
+
+	/**
+	 * Runtime mastery skill points already spent.
+	 */
+	private int masterySkillPointsSpent;
+
+	/**
 	 * List of portals that have been "unlocked" for this player.
 	 */
 	private final List<Integer> unlockedPortals;
@@ -308,6 +318,11 @@ public class Player extends DressedEntity implements UseListener {
 		tradescore = 0;
 		masteryLevel = 0;
 		masteryXP = 0L;
+		masterySkillPointsEarned = 0;
+		masterySkillPointsSpent = 0;
+		if (object.has("mastery_skill_points_spent")) {
+			masterySkillPointsSpent = Math.max(0, object.getInt("mastery_skill_points_spent"));
+		}
 		baseSpeed = 1.0;
 		update();
 		// Ensure that players do not accidentally get stored with zones
@@ -667,8 +682,49 @@ public class Player extends DressedEntity implements UseListener {
 		return masteryLevel / 100;
 	}
 
+	private int calculateMasterySkillPointsEarned() {
+		if (!isMasteryUnlocked() || masteryLevel <= 0) {
+			return 0;
+		}
+
+		return masteryLevel / 10;
+	}
+
+	public int getMasterySkillPointsEarned() {
+		return masterySkillPointsEarned;
+	}
+
+	public int getMasterySkillPointsSpent() {
+		return masterySkillPointsSpent;
+	}
+
+	public void setMasterySkillPointsSpent(final int masterySkillPointsSpent) {
+		this.masterySkillPointsSpent = Math.max(0, masterySkillPointsSpent);
+		syncMasteryAttributes();
+	}
+
+	public int getMasterySkillPointsAvailable() {
+		return masterySkillPointsEarned - masterySkillPointsSpent;
+	}
+
+	public void validateMasterySkillPointsConsistencyOnLogin() {
+		syncMasteryAttributes();
+
+		if (masterySkillPointsSpent > masterySkillPointsEarned) {
+			logger.warn("Mastery skill points mismatch for " + getName()
+					+ ": spent=" + masterySkillPointsSpent
+					+ ", earned=" + masterySkillPointsEarned
+					+ ". Clamping spent to earned on login.");
+			masterySkillPointsSpent = masterySkillPointsEarned;
+			syncMasteryAttributes();
+		}
+	}
+
 	private void syncMasteryAttributes() {
+		masterySkillPointsEarned = calculateMasterySkillPointsEarned();
+		masterySkillPointsSpent = Math.max(0, masterySkillPointsSpent);
 		final int masteryTier = calculateMasteryTier();
+		final int masterySkillPointsAvailable = getMasterySkillPointsAvailable();
 		if (!has("mastery_level") || getInt("mastery_level") != masteryLevel) {
 			put("mastery_level", masteryLevel);
 		}
@@ -677,6 +733,18 @@ public class Player extends DressedEntity implements UseListener {
 		}
 		if (!has("mastery_tier") || getInt("mastery_tier") != masteryTier) {
 			put("mastery_tier", masteryTier);
+		}
+		if (!has("mastery_skill_points_earned")
+				|| getInt("mastery_skill_points_earned") != masterySkillPointsEarned) {
+			put("mastery_skill_points_earned", masterySkillPointsEarned);
+		}
+		if (!has("mastery_skill_points_spent")
+				|| getInt("mastery_skill_points_spent") != masterySkillPointsSpent) {
+			put("mastery_skill_points_spent", masterySkillPointsSpent);
+		}
+		if (!has("mastery_skill_points_available")
+				|| getInt("mastery_skill_points_available") != masterySkillPointsAvailable) {
+			put("mastery_skill_points_available", masterySkillPointsAvailable);
 		}
 	}
 

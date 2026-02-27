@@ -133,6 +133,7 @@ public class PlayerTransformer implements Transformer {
 				player.setMasteryLevel(mastery.getMasteryLevel());
 				player.setMasteryXP(mastery.getMasteryXP());
 			}
+			player.validateMasterySkillPointsConsistencyOnLogin();
 			TransactionPool.get().commit(transaction);
 		} catch (SQLException e) {
 			TransactionPool.get().rollback(transaction);
