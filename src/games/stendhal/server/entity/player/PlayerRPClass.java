@@ -63,6 +63,7 @@ public class PlayerRPClass {
 		player.addAttribute("admin", Type.FLAG);
 		player.addAttribute("adminlevel", Type.INT);
 		player.addAttribute("mastery_level", Type.INT);
+		player.addAttribute("mastery_xp", Type.LONG);
 		player.addAttribute("mastery_tier", Type.INT);
 		player.addAttribute("invisible", Type.FLAG, Definition.HIDDEN);
 		player.addAttribute("ghostmode", Type.FLAG);

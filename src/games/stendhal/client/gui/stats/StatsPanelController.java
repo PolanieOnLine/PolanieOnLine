@@ -24,6 +24,7 @@ import org.apache.log4j.Logger;
 import games.stendhal.client.entity.StatusID;
 import games.stendhal.common.constants.CurrencyReform;
 import games.stendhal.common.Level;
+import games.stendhal.common.MasteryLevel;
 import games.stendhal.common.MathHelper;
 import games.stendhal.common.constants.Testing;
 import marauroa.common.game.RPObject;
@@ -57,6 +58,11 @@ public final class StatsPanelController {
 
 	private int level;
 	private int xp;
+	private int masteryLevel;
+	private long masteryXP;
+	private boolean masteryUnlocked;
+	private boolean hasMasteryLevel;
+	private boolean hasMasteryXP;
 	private int hp;
 	private int maxhp;
 	private int maxhpModified;
@@ -145,6 +151,10 @@ public final class StatsPanelController {
 
 		listener = new LevelChangeListener();
 		addPropertyChangeListenerWithModifiedSupport(pcs, "level", listener);
+
+		listener = new MasteryChangeListener();
+		pcs.addPropertyChangeListener("mastery_level", listener);
+		pcs.addPropertyChangeListener("mastery_xp", listener);
 
 		listener = new WeaponChangeListener();
 		pcs.addPropertyChangeListener("atk_item", listener);
@@ -235,6 +245,60 @@ public final class StatsPanelController {
 			@Override
 			public void run() {
 				panel.setLevel(text, tooltip);
+			}
+		});
+	}
+
+	/**
+	 * Called when mastery xp or mastery level has changed.
+	 */
+	private void updateMastery() {
+		if (!masteryUnlocked || !hasMasteryLevel || !hasMasteryXP) {
+			return;
+		}
+
+		final int maxMasteryLevel = MasteryLevel.DEFAULT_MAX_MASTERY_LEVEL;
+		final long currentLevelXP = MasteryLevel.getXP(masteryLevel);
+		final long nextLevelXP = MasteryLevel.getXP(masteryLevel + 1);
+		final boolean capped = (masteryLevel >= maxMasteryLevel) || (nextLevelXP < 0L);
+
+		final String remainingText;
+		if (capped) {
+			remainingText = "MAX";
+		} else {
+			long toNext = nextLevelXP - masteryXP;
+			if (toNext < 0L) {
+				remainingText = "\u2014";
+			} else {
+				remainingText = Long.toString(toNext);
+			}
+		}
+
+		final String text = "P. mistrz.:" + SPC + masteryLevel + SPC + "(" + remainingText + ")";
+
+		final String tooltip;
+		if (capped) {
+			tooltip = "Poziom mistrzowski: " + masteryLevel + " (MAX)";
+		} else if ((currentLevelXP < 0L) || (nextLevelXP <= currentLevelXP)) {
+			tooltip = "Poziom mistrzowski: " + masteryLevel + " (\u2014)";
+		} else {
+			final long gained = Math.max(0L, masteryXP - currentLevelXP);
+			final long needed = nextLevelXP - currentLevelXP;
+			final long remaining = Math.max(0L, nextLevelXP - masteryXP);
+			final int percent = MathHelper.clamp((int) Math.round((gained * 100.0) / (double) needed), 0, 100);
+			tooltip = String.format(Locale.ROOT,
+				"Poziom mistrzowski: %d (%d). Postęp: %d%% (%d / %d).",
+				masteryLevel,
+				remaining,
+				percent,
+				gained,
+				needed);
+		}
+
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				panel.setMastery(text, tooltip);
 			}
 		});
 	}
@@ -771,6 +835,43 @@ public final class StatsPanelController {
 				level = Integer.parseInt((String) event.getNewValue());
 			}
 			updateLevel();
+		}
+	}
+
+	/**
+	 * Listener for mastery level and mastery xp changes.
+	 */
+	private class MasteryChangeListener implements PropertyChangeListener {
+		@Override
+		public void propertyChange(final PropertyChangeEvent event) {
+			if (event == null) {
+				masteryUnlocked = false;
+				hasMasteryLevel = false;
+				hasMasteryXP = false;
+				masteryLevel = 0;
+				masteryXP = 0L;
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						panel.resetMastery();
+					}
+				});
+				return;
+			}
+
+			if (event.getNewValue() == null) {
+				return;
+			}
+			masteryUnlocked = true;
+
+			if ("mastery_level".equals(event.getPropertyName())) {
+				hasMasteryLevel = true;
+				masteryLevel = Integer.parseInt((String) event.getNewValue());
+			} else if ("mastery_xp".equals(event.getPropertyName())) {
+				hasMasteryXP = true;
+				masteryXP = Long.parseLong((String) event.getNewValue());
+			}
+			updateMastery();
 		}
 	}
 

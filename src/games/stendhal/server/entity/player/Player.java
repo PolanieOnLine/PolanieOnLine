@@ -672,6 +672,9 @@ public class Player extends DressedEntity implements UseListener {
 		if (!has("mastery_level") || getInt("mastery_level") != masteryLevel) {
 			put("mastery_level", masteryLevel);
 		}
+		if (!has("mastery_xp") || getLong("mastery_xp") != masteryXP) {
+			put("mastery_xp", masteryXP);
+		}
 		if (!has("mastery_tier") || getInt("mastery_tier") != masteryTier) {
 			put("mastery_tier", masteryTier);
 		}
