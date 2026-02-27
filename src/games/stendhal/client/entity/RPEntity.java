@@ -198,7 +198,7 @@ public abstract class RPEntity extends AudibleEntity {
 
 	private int xp;
 
-	private int masteryXP;
+	private long masteryXP;
 
 	private int hp;
 
@@ -1595,7 +1595,7 @@ public abstract class RPEntity extends AudibleEntity {
 		}
 
 		if (changes.has("mastery_xp")) {
-			int newMasteryXp = changes.getInt("mastery_xp");
+			long newMasteryXp = changes.getLong("mastery_xp");
 
 			if (object.has("mastery_xp") && isInHearingRange()) {
 				notifyExperienceChange(newMasteryXp - masteryXP);
@@ -1634,6 +1634,22 @@ public abstract class RPEntity extends AudibleEntity {
 					+ Grammar.polishQuantity("punkt", -amount) + " doświadczenia.",
 					NotificationType.SIGNIFICANT_NEGATIVE));
 		}
+	}
+
+	private void notifyExperienceChange(final long amount) {
+		notifyExperienceChange(clampToInt(amount));
+	}
+
+	private int clampToInt(final long amount) {
+		if (amount > Integer.MAX_VALUE) {
+			return Integer.MAX_VALUE;
+		}
+
+		if (amount < Integer.MIN_VALUE) {
+			return Integer.MIN_VALUE;
+		}
+
+		return (int) amount;
 	}
 
 	protected void onLevelChanged(String stat, final int newlevel, final int oldlevel) {
