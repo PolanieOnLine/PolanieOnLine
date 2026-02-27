@@ -57,6 +57,11 @@ abstract class RPEntity2DView<T extends RPEntity> extends ActiveEntity2DView<T> 
 	private static final int ICON_OFFSET = 8;
 	private static final int HEALTH_BAR_HEIGHT = 4;
 	private static final String MASTERY_EFFECTS_PROPERTY = "ui.show_mastery_effects";
+	private static final String NAMEPLATE_LEVEL_MODE_PROPERTY = "ui.nameplate.level_mode";
+	private static final String NAMEPLATE_LEVEL_MODE_LV = "lv";
+	private static final String NAMEPLATE_LEVEL_MODE_MASTERY = "mastery";
+	private static final String NAMEPLATE_LEVEL_MODE_BOTH = "lv_mastery";
+	private static final int TITLE_LINE_GAP = 1;
 
 	// Battle icons
 	private static final Sprite blockedSprite;
@@ -102,9 +107,12 @@ abstract class RPEntity2DView<T extends RPEntity> extends ActiveEntity2DView<T> 
 	 * The title image sprite.
 	 */
 	private Sprite titleSprite;
+	private Sprite titleDetailSprite;
+	private int lastLevel = Integer.MIN_VALUE;
 	private int lastMasteryLevel = Integer.MIN_VALUE;
 	private int lastMasteryTier = Integer.MIN_VALUE;
 	private boolean lastMasteryEffectsEnabled = true;
+	private String lastNameplateLevelMode = "";
 
 	/** The drawn height. */
 	protected int height;
@@ -222,7 +230,7 @@ abstract class RPEntity2DView<T extends RPEntity> extends ActiveEntity2DView<T> 
 		showTitle = entity.showTitle();
 		showHP = entity.showHPBar();
 		if (showTitle) {
-			titleSprite = createTitleSprite();
+			createTitleSprites();
 		}
 		titleChanged = false;
 		iconsChanged = true;
@@ -264,10 +272,16 @@ abstract class RPEntity2DView<T extends RPEntity> extends ActiveEntity2DView<T> 
 	 *
 	 * @return The title sprite.
 	 */
-	private Sprite createTitleSprite() {
+	private void createTitleSprites() {
 		final String titleType = entity.getTitleType();
 		final int adminlevel = entity.getAdminLevel();
 		final boolean masteryEffectsEnabled = isMasteryEffectsEnabled();
+		final String nameplateLevelMode = getNameplateLevelMode();
+		final boolean showLevel = NAMEPLATE_LEVEL_MODE_LV.equals(nameplateLevelMode)
+				|| NAMEPLATE_LEVEL_MODE_BOTH.equals(nameplateLevelMode);
+		final boolean showMastery = NAMEPLATE_LEVEL_MODE_MASTERY.equals(nameplateLevelMode)
+				|| NAMEPLATE_LEVEL_MODE_BOTH.equals(nameplateLevelMode);
+		final int level = entity.getLevel();
 		final int masteryLevel = getMasteryLevel();
 		Color nameColor = null;
 
@@ -297,12 +311,28 @@ abstract class RPEntity2DView<T extends RPEntity> extends ActiveEntity2DView<T> 
 			}
 		}
 
-		String title = entity.getTitle();
-		if (masteryEffectsEnabled && masteryLevel > 0) {
-			title += " " + getMasteryDecoration(masteryLevel);
+		titleSprite = TextSprite.createTextSprite(entity.getTitle(), nameColor);
+
+		StringBuilder detail = new StringBuilder();
+		if (showLevel && level > 0) {
+			detail.append("Lv.").append(level);
+		}
+		if (showMastery && masteryLevel > 0) {
+			if (detail.length() > 0) {
+				detail.append(" ");
+			}
+			detail.append(getMasteryLabel(masteryLevel, masteryEffectsEnabled));
 		}
 
-		return TextSprite.createTextSprite(title, nameColor);
+		if (detail.length() > 0) {
+			titleDetailSprite = TextSprite.createTextSprite(detail.toString(), nameColor);
+		} else {
+			titleDetailSprite = null;
+		}
+	}
+
+	private String getNameplateLevelMode() {
+		return WtWindowManager.getInstance().getProperty(NAMEPLATE_LEVEL_MODE_PROPERTY, NAMEPLATE_LEVEL_MODE_BOTH);
 	}
 
 	private boolean isMasteryEffectsEnabled() {
@@ -350,6 +380,14 @@ abstract class RPEntity2DView<T extends RPEntity> extends ActiveEntity2DView<T> 
 			decoration += " ♛";
 		}
 		return decoration;
+	}
+
+	private String getMasteryLabel(final int masteryLevel, final boolean masteryEffectsEnabled) {
+		if (masteryEffectsEnabled) {
+			return getMasteryDecoration(masteryLevel);
+		}
+
+		return "M" + masteryLevel;
 	}
 
 	private Color getMasteryTierColor(final int masteryTier) {
@@ -477,8 +515,15 @@ abstract class RPEntity2DView<T extends RPEntity> extends ActiveEntity2DView<T> 
 	}
 
 	private int getStatusBarHeight() {
-		if (titleSprite != null) {
-			return 3 + titleSprite.getHeight();
+		if (titleSprite != null || titleDetailSprite != null) {
+			int titleHeight = 0;
+			if (titleDetailSprite != null) {
+				titleHeight += titleDetailSprite.getHeight() + TITLE_LINE_GAP;
+			}
+			if (titleSprite != null) {
+				titleHeight += titleSprite.getHeight();
+			}
+			return 3 + titleHeight;
 		} else if (healthBar != null) {
 			return healthBar.getHeight();
 		}
@@ -498,11 +543,18 @@ abstract class RPEntity2DView<T extends RPEntity> extends ActiveEntity2DView<T> 
 	 *            The drawn width.
 	 */
 	protected void drawTitle(final Graphics2D g2d, final int x, final int y, final int width) {
-		if (titleSprite != null) {
-			int tx = x + ((width - titleSprite.getWidth()) / 2);
-			int ty = y - getStatusBarHeight() + titleDrawYOffset;
+		if (titleSprite != null || titleDetailSprite != null) {
+			int drawY = y - getStatusBarHeight() + titleDrawYOffset;
+			if (titleDetailSprite != null) {
+				int detailX = x + ((width - titleDetailSprite.getWidth()) / 2);
+				titleDetailSprite.draw(g2d, detailX, drawY);
+				drawY += titleDetailSprite.getHeight() + TITLE_LINE_GAP;
+			}
 
-			titleSprite.draw(g2d, tx, ty);
+			if (titleSprite != null) {
+				int titleX = x + ((width - titleSprite.getWidth()) / 2);
+				titleSprite.draw(g2d, titleX, drawY);
+			}
 		}
 	}
 
@@ -1020,12 +1072,17 @@ abstract class RPEntity2DView<T extends RPEntity> extends ActiveEntity2DView<T> 
 
 		final int masteryLevel = getMasteryLevel();
 		final int masteryTier = getMasteryTier();
+		final int level = entity.getLevel();
 		final boolean masteryEffectsEnabled = isMasteryEffectsEnabled();
+		final String nameplateLevelMode = getNameplateLevelMode();
 		if (masteryLevel != lastMasteryLevel || masteryTier != lastMasteryTier
-				|| masteryEffectsEnabled != lastMasteryEffectsEnabled) {
+				|| level != lastLevel || masteryEffectsEnabled != lastMasteryEffectsEnabled
+				|| !nameplateLevelMode.equals(lastNameplateLevelMode)) {
 			lastMasteryLevel = masteryLevel;
 			lastMasteryTier = masteryTier;
+			lastLevel = level;
 			lastMasteryEffectsEnabled = masteryEffectsEnabled;
+			lastNameplateLevelMode = nameplateLevelMode;
 			titleChanged = true;
 		}
 
@@ -1033,9 +1090,10 @@ abstract class RPEntity2DView<T extends RPEntity> extends ActiveEntity2DView<T> 
 			titleChanged = false;
 			showTitle = entity.showTitle();
 			if (showTitle) {
-				titleSprite = createTitleSprite();
+				createTitleSprites();
 			} else {
 				titleSprite = null;
+				titleDetailSprite = null;
 			}
 		}
 

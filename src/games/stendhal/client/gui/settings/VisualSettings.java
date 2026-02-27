@@ -107,6 +107,11 @@ class VisualSettings {
 	private static final String GAMESCREEN_CURSORCLASSIC = "gamescreen.cursorclassic";
 
 	private static final String SCALE_SCREEN_PROPERTY = "ui.scale_screen";
+	private static final String NAMEPLATE_LEVEL_MODE_PROPERTY = "ui.nameplate.level_mode";
+	private static final String NAMEPLATE_LEVEL_MODE_OFF = "off";
+	private static final String NAMEPLATE_LEVEL_MODE_LV = "lv";
+	private static final String NAMEPLATE_LEVEL_MODE_MASTERY = "mastery";
+	private static final String NAMEPLATE_LEVEL_MODE_BOTH = "lv_mastery";
 	/** Property used for toggling map coloring on. */
 	private static final String MAP_COLOR_PROPERTY = "ui.colormaps";
 
@@ -160,6 +165,8 @@ class VisualSettings {
 						.addEventLine(new EventLine("", msg, NotificationType.CLIENT));
 			}
 		});
+
+		leftColumn.add(createNameplateLevelModeSelector());
 
 		JCheckBox weather = SettingsComponentFactory.createSettingsToggle("ui.draw_weather", true, "Pokaż pogodę",
 				"Pokazuje efekty pogodowe.");
@@ -326,6 +333,50 @@ class VisualSettings {
 		// Font stuff
 		rightColumn.add(createFontSizeSelector());
 		rightColumn.add(createFontSelector(), SLayout.EXPAND_X);
+	}
+
+	private JComponent createNameplateLevelModeSelector() {
+		JComponent container = SBoxLayout.createContainer(SBoxLayout.HORIZONTAL, SBoxLayout.COMMON_PADDING);
+		final JLabel label = new JLabel("Tryb poziomów nad nickiem:");
+		final JComboBox<String> combo = new JComboBox<String>();
+		final String[][] options = {
+				{ "Wyłączone", NAMEPLATE_LEVEL_MODE_OFF },
+				{ "Tylko poziom", NAMEPLATE_LEVEL_MODE_LV },
+				{ "Tylko mistrzowskie", NAMEPLATE_LEVEL_MODE_MASTERY },
+				{ "Poziomy + Mistrzowskie", NAMEPLATE_LEVEL_MODE_BOTH } };
+
+		final Map<String, String> modeByLabel = new HashMap<String, String>();
+		String selectedLabel = options[0][0];
+		final String configuredMode = WtWindowManager.getInstance().getProperty(NAMEPLATE_LEVEL_MODE_PROPERTY,
+				NAMEPLATE_LEVEL_MODE_BOTH);
+
+		for (String[] option : options) {
+			combo.addItem(option[0]);
+			modeByLabel.put(option[0], option[1]);
+			if (option[1].equals(configuredMode)) {
+				selectedLabel = option[0];
+			}
+		}
+
+		combo.setSelectedItem(selectedLabel);
+		combo.setToolTipText("Określa, czy nad postaciami mają być pokazywane poziomy i/lub poziomy mistrzowskie.");
+		label.setToolTipText(combo.getToolTipText());
+
+		combo.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String selected = (String) combo.getSelectedItem();
+				String mode = modeByLabel.get(selected);
+				if (mode != null) {
+					WtWindowManager.getInstance().setProperty(NAMEPLATE_LEVEL_MODE_PROPERTY, mode);
+				}
+			}
+		});
+
+		container.add(label);
+		container.add(Box.createHorizontalStrut(SBoxLayout.COMMON_PADDING));
+		container.add(combo);
+		return container;
 	}
 
 	/**

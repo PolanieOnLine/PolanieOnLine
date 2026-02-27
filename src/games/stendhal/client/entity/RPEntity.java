@@ -446,7 +446,7 @@ public abstract class RPEntity extends AudibleEntity {
 	 *
 	 * @return level
 	 */
-	int getLevel() {
+	public int getLevel() {
 		return level;
 	}
 
