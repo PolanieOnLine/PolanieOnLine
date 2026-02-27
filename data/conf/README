@@ -42,6 +42,25 @@ Docelowe widełki XP (koszt pojedynczego wejścia na poziom):
 - `M500`: ~5.5m-6.5m XP
 - `M1000`: ~25m-30m XP
 
+
+Pełna tabela XP 1..2000
+=======================
+
+Pełna tabela wymagań XP (dla każdego poziomu mastery od 1 do 2000) jest
+generowana i zapisana w pliku:
+
+- `data/conf/mastery-level-xp-table.csv`
+
+Format kolumn (`;`):
+- `level` - poziom mastery,
+- `xp_required_for_next_level` - XP wymagane na przejście z `level-1` na `level`,
+- `total_xp_to_reach_level` - łączny próg XP wymagany do osiągnięcia `level`.
+
+Przykład (pierwsze poziomy):
+- `1;555000;555000`
+- `2;560000;1115000`
+- `3;565000;1680000`
+
 Walidacja i fallback:
 - Konfiguracja jest ładowana przy starcie serwera.
 - Gdy plik jest błędny lub nieczytelny, serwer loguje błąd i używa bezpiecznych
