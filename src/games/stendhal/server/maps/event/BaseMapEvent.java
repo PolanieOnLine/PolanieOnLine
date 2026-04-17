@@ -41,6 +41,7 @@ import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.creature.CircumstancesOfDeath;
 import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.mapstuff.WeatherEntity;
+import games.stendhal.server.util.ScreenAnnouncementBroadcaster;
 import games.stendhal.server.util.Observable;
 import games.stendhal.server.util.Observer;
 import marauroa.common.Pair;
@@ -480,6 +481,10 @@ public abstract class BaseMapEvent {
 		}
 		final String message = announcements.get(Rand.rand(announcements.size()));
 		SingletonRepository.getRuleProcessor().tellAllPlayers(NotificationType.PRIVMSG, message);
+		ScreenAnnouncementBroadcaster.broadcastToAllPlayers(
+				getEventName(),
+				message,
+				ScreenAnnouncementBroadcaster.CATEGORY_EVENT);
 	}
 
 	private boolean isCurrentRunActive(final long runId) {

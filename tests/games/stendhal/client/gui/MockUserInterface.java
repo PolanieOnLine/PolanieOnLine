@@ -67,6 +67,11 @@ public class MockUserInterface implements UserInterface {
 	}
 
 	@Override
+	public void addScreenAnnouncement(final String title, final String text, final String category) {
+		// do nothing
+	}
+
+	@Override
 	public boolean isDebugEnabled() {
 		return false;
 	}

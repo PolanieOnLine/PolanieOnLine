@@ -17,6 +17,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.AlphaComposite;
 import java.awt.GraphicsConfiguration;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -112,6 +113,10 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 	 * indicator icon.
 	 */
 	private static final int OFFLINE_MARGIN = 10;
+	private static final int ANNOUNCEMENT_TOP_MARGIN = 58;
+	private static final long ANNOUNCEMENT_MIN_PERSISTENCE_MILLIS = 5200L;
+	private static final long ANNOUNCEMENT_MAX_PERSISTENCE_MILLIS = 11000L;
+	private static final long ANNOUNCEMENT_FADE_MILLIS = 320L;
 
 	private static final Sprite offlineIcon;
 
@@ -137,6 +142,7 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 	 * Text boxes that are anchored to the screen coordinates.
 	 */
 	private final List<RemovableSprite> staticSprites;
+	private RemovableSprite announcementSprite;
 
 	private boolean offline;
 
@@ -951,8 +957,19 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 			while (it.hasNext()) {
 				RemovableSprite text = it.next();
 				if (!text.shouldBeRemoved()) {
-					text.draw(g2d);
+					if (text == announcementSprite) {
+						final Graphics2D fadeGraphics = (Graphics2D) g2d.create();
+						fadeGraphics.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER,
+								text.getFadeAlpha(ANNOUNCEMENT_FADE_MILLIS)));
+						text.draw(fadeGraphics);
+						fadeGraphics.dispose();
+					} else {
+						text.draw(g2d);
+					}
 				} else {
+					if (text == announcementSprite) {
+						announcementSprite = null;
+					}
 					it.remove();
 				}
 			}
@@ -1101,6 +1118,7 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 	public void clearTexts() {
 		GameScreenSpriteHelper.clearTexts();
 		staticSprites.clear();
+		announcementSprite = null;
 		clearEmojis();
 	}
 
@@ -1203,6 +1221,21 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 		 * admire her prowess.
 		 */
 		addStaticSprite(sprite, 2 * RemovableSprite.STANDARD_PERSISTENCE_TIME, 0);
+	}
+
+	public void addAnnouncementBanner(final Sprite sprite, final int textLength) {
+		final long persistTime = Math.max(ANNOUNCEMENT_MIN_PERSISTENCE_MILLIS,
+				Math.min(ANNOUNCEMENT_MAX_PERSISTENCE_MILLIS,
+						ANNOUNCEMENT_MIN_PERSISTENCE_MILLIS + (textLength * 45L)));
+		final int x = (getWidth() - sprite.getWidth()) / 2;
+		final int y = ANNOUNCEMENT_TOP_MARGIN;
+		if (announcementSprite != null) {
+			staticSprites.remove(announcementSprite);
+		}
+		announcementSprite = new RemovableSprite(sprite, x, y, persistTime);
+		announcementSprite.setPriority(4);
+		staticSprites.add(announcementSprite);
+		Collections.sort(staticSprites);
 	}
 
 	/**
