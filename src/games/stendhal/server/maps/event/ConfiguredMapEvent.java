@@ -32,6 +32,7 @@ import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.entity.creature.CircumstancesOfDeath;
 import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.util.ScreenAnnouncementBroadcaster;
 
 public class ConfiguredMapEvent extends BaseMapEvent {
 	private static final int CAPTURE_WAVE_SPAWN_RING_PADDING_TILES = 6;
@@ -153,6 +154,10 @@ public class ConfiguredMapEvent extends BaseMapEvent {
 		SingletonRepository.getRuleProcessor().tellAllPlayers(
 				NotificationType.INFORMATION,
 				getStartAnnouncementMessage());
+		ScreenAnnouncementBroadcaster.broadcastToAllPlayers(
+				getEventName(),
+				getStartAnnouncementMessage(),
+				ScreenAnnouncementBroadcaster.CATEGORY_EVENT);
 	}
 
 	@Override
@@ -178,6 +183,10 @@ public class ConfiguredMapEvent extends BaseMapEvent {
 		SingletonRepository.getRuleProcessor().tellAllPlayers(
 				NotificationType.INFORMATION,
 				getStopAnnouncementMessage());
+		ScreenAnnouncementBroadcaster.broadcastToAllPlayers(
+				getEventName(),
+				getStopAnnouncementMessage(),
+				ScreenAnnouncementBroadcaster.CATEGORY_EVENT);
 	}
 
 	@Override

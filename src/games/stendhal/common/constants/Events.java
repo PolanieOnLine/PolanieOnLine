@@ -53,6 +53,9 @@ public final class Events {
 	/** map event status snapshot */
 	public static final String MAP_EVENT_STATUS = "map_event_status_event";
 
+	/** center-top banner announcement for game screen */
+	public static final String SCREEN_ANNOUNCEMENT = "screen_announcement_event";
+
 	/** achievement notiviation */
 	public static final String REACHED_ACHIEVEMENT = "reached_achievement";
 
