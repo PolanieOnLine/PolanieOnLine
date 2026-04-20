@@ -54,6 +54,7 @@ import games.stendhal.server.actions.query.ProgressStatusQueryAction;
 import games.stendhal.server.actions.query.QuestListAction;
 import games.stendhal.server.actions.query.WhereAction;
 import games.stendhal.server.actions.query.WhoAction;
+import games.stendhal.server.actions.skilltree.SkillTreeAction;
 import games.stendhal.server.actions.spell.CastSpellAction;
 import games.stendhal.server.core.engine.Translate;
 import games.stendhal.server.entity.player.Player;
@@ -103,6 +104,7 @@ public class CommandCenter {
 		BanAction.register();
 		BuddyAction.register();
 		CastSpellAction.register();
+		SkillTreeAction.register();
 		ChallengePlayerAction.register();
 		ChatAction.register();
 		ConditionalStopAction.register();
