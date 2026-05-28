@@ -1,7 +1,7 @@
 /***************************************************************************
  *                 (C) Copyright 2019-2021 - PolanieOnLine                 *
- ***************************************************************************
- ***************************************************************************
+ ***************************************************************************/
+/***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -16,52 +16,39 @@ import games.stendhal.server.core.engine.GameEvent;
 import games.stendhal.server.entity.RPEntity;
 
 public class BloodAttacker extends StatusAttacker {
-	/**
-	 * BloodAttacker
-	 *
-	 * @param probability probability
-	 * First amount
-	 * Second frequency
-	 * Third -regen
-	 */
+	private final int attackPower;
+
 	public BloodAttacker(final int probability, final int atk) {
-		super(new BleedingStatus(howMuchReduceHealth(atk), Rand.roll1D20(), reduceHealth(atk)), probability);
-	}
-
-	static int howMuchReduceHealth(final int atk) {
-		int reduce = Rand.roll1D1000();
-		if (atk < 600) {
-			reduce = Rand.roll1D50();
-		} else if (atk < 1000) {
-			reduce = Rand.roll1D100();
-		} else if (atk < 1600) {
-			reduce = Rand.roll1D200() * 2;
-		}
-		return -reduce;
-	}
-
-	static int reduceHealth(final int atk) {
-		int reduce = Rand.roll1D200();
-		if (atk < 400) {
-			reduce = Rand.roll1D10();
-		} else if (atk < 1200) {
-			reduce = Rand.roll1D20() * 2;
-		} else if (atk < 1600) {
-			reduce = Rand.roll1D100();
-		}
-		return -reduce;
+		super(BleedingStatus.createFromAttackPower(atk), probability);
+		this.attackPower = atk;
 	}
 
 	@Override
 	public void onAttackAttempt(RPEntity target, RPEntity attacker) {
 		double myProbability = getProbability();
-
-		final int roll = Rand.roll1D100();
+		int roll = Rand.roll1D100();
 		if (roll <= myProbability) {
-			if (target.getStatusList().inflictStatus((Status) getStatus().clone(), attacker)) {
+			BleedingStatus inflicted = BleedingStatus.createFromAttackPower(attackPower);
+			if (target.getStatusList().inflictStatus(inflicted, attacker)) {
 				new GameEvent(attacker.getName(), "bleeding", target.getName()).raise();
-				target.sendPrivateText(target.getGenderVerb("Zostałeś") + " znacznie " + target.getGenderVerb("zraniony") + " przez " + attacker.getName() + ".");
+				target.sendPrivateText(target.getGenderVerb("Zostałeś") + " "
+				+ describeSeverity(inflicted.getSeverity()) + " "
+				+ target.getGenderVerb("zraniony") + " przez " + attacker.getName() + ".");
 			}
+		}
+	}
+
+	private String describeSeverity(BleedingSeverity severity) {
+		switch (severity) {
+			case CRITICAL:
+			return "śmiertelnie";
+			case SEVERE:
+			return "ciężko";
+			case MODERATE:
+			return "mocno";
+			case MINOR:
+			default:
+			return "lekko";
 		}
 	}
 

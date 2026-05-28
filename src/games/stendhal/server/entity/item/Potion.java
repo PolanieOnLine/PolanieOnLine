@@ -7,7 +7,6 @@ import org.apache.log4j.Logger;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.player.Player;
-import games.stendhal.server.entity.status.BleedingStatus;
 import marauroa.common.game.RPObject;
 
 public class Potion extends Drink {
@@ -52,8 +51,10 @@ public class Potion extends Drink {
 			}
 
 			feeder.feed(this, player);
-			player.getStatusList().removeAll(BleedingStatus.class);
-			player.notifyWorldAboutChanges();
+			boolean treated = player.getStatusList().treatBleeding(getRegen());
+			if (!treated) {
+				player.notifyWorldAboutChanges();
+			}
 			return true;
 		} else {
 			logger.error("user is no instance of Player but: " + user, new Throwable());

@@ -86,6 +86,10 @@ public class StatusList {
 		return null;
 	}
 
+	public <T extends Status> T getStatus(Class<T> statusClass) {
+		return getFirstStatusByClass(statusClass);
+	}
+
 	/**
 	 * gets all statuses of the specified status subclass
 	 *
@@ -114,6 +118,29 @@ public class StatusList {
 		}
 	}
 
+	public boolean treatBleeding(int potency) {
+		BleedingStatus bleeding = getFirstStatusByClass(BleedingStatus.class);
+		if (bleeding == null) {
+			return false;
+		}
+		boolean changed = bleeding.applyTreatment(potency);
+		RPEntity entity = getEntity();
+		if (!bleeding.isActive()) {
+			remove(bleeding);
+			if (entity != null) {
+				if (entity.has("bleeding")) {
+					entity.remove("bleeding");
+					entity.notifyWorldAboutChanges();
+				}
+			}
+			return true;
+		}
+		if (changed && (entity != null)) {
+			entity.put("bleeding", bleeding.getClientIntensity());
+			entity.notifyWorldAboutChanges();
+		}
+		return changed;
+	}
 
 	/**
 	 * removes all statuses of this type
