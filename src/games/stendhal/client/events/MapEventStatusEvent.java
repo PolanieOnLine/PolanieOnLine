@@ -48,13 +48,22 @@ class MapEventStatusEvent extends Event<RPEntity> {
 			final Integer currentWave = event.has("currentWave") ? Integer.valueOf(event.getInt("currentWave")) : Integer.valueOf(0);
 			final Integer totalWaves = event.has("totalWaves") ? Integer.valueOf(event.getInt("totalWaves")) : Integer.valueOf(0);
 			final String defenseStatus = event.has("defenseStatus") ? event.get("defenseStatus") : "";
+			final String phaseName = event.has("phaseName") ? event.get("phaseName") : "";
+			final String phaseDescription = event.has("phaseDescription") ? event.get("phaseDescription") : "";
+			final String modifierName = event.has("modifierName") ? event.get("modifierName") : "";
+			final String modifierDescription = event.has("modifierDescription") ? event.get("modifierDescription") : "";
+			final Integer rewardBonusPercent = event.has("rewardBonusPercent")
+					? Integer.valueOf(event.getInt("rewardBonusPercent")) : Integer.valueOf(0);
 			final List<String> activityTop = resolveActivityTop();
 			final List<String> zones = resolveZones();
 			final List<ActiveMapEventStatus.CapturePointStatus> capturePoints = resolveCapturePoints();
+			final List<ActiveMapEventStatus.SecondaryObjectiveStatus> secondaryObjectives = resolveSecondaryObjectives();
 
 			MapEventStatusStore.get().updateStatus(eventId, eventName, isActive, remainingSeconds, totalSeconds,
 					eventTotalSpawnedCreatures, eventDefeatedCreatures, eventDefeatPercent,
-					currentWave, totalWaves, defenseStatus, activityTop, zones, capturePoints);
+					currentWave, totalWaves, defenseStatus, phaseName, phaseDescription,
+					modifierName, modifierDescription, secondaryObjectives, rewardBonusPercent,
+					activityTop, zones, capturePoints);
 		} catch (RuntimeException e) {
 			logger.error("Failed to parse map event status event: " + event, e);
 		}
@@ -116,6 +125,63 @@ class MapEventStatusEvent extends Event<RPEntity> {
 		return points;
 	}
 
+	private List<ActiveMapEventStatus.SecondaryObjectiveStatus> resolveSecondaryObjectives() {
+		final String rawPayload;
+		if (event.has("secondaryObjectives")) {
+			rawPayload = event.get("secondaryObjectives");
+		} else if (event.has("secondaryObjective")) {
+			rawPayload = event.get("secondaryObjective");
+		} else {
+			return Collections.emptyList();
+		}
+		final Object parsed = JSONValue.parse(rawPayload);
+		if (parsed instanceof JSONObject) {
+			final ActiveMapEventStatus.SecondaryObjectiveStatus mapped =
+					mapSecondaryObjective((JSONObject) parsed);
+			if (mapped == null) {
+				return Collections.emptyList();
+			}
+			return Collections.singletonList(mapped);
+		}
+		if (!(parsed instanceof JSONArray)) {
+			return Collections.emptyList();
+		}
+		final List<ActiveMapEventStatus.SecondaryObjectiveStatus> objectives =
+				new ArrayList<ActiveMapEventStatus.SecondaryObjectiveStatus>();
+		for (Object rawObjective : (JSONArray) parsed) {
+			if (!(rawObjective instanceof JSONObject)) {
+				continue;
+			}
+			final ActiveMapEventStatus.SecondaryObjectiveStatus mapped =
+					mapSecondaryObjective((JSONObject) rawObjective);
+			if (mapped != null) {
+				objectives.add(mapped);
+			}
+		}
+		return objectives.isEmpty() ? Collections.<ActiveMapEventStatus.SecondaryObjectiveStatus>emptyList() : objectives;
+	}
+
+	private ActiveMapEventStatus.SecondaryObjectiveStatus mapSecondaryObjective(final JSONObject rawObjective) {
+		final String objectiveId = readString(rawObjective, "objectiveId");
+		final String title = readString(rawObjective, "title");
+		final String details = readString(rawObjective, "details");
+		final List<String> trackedTargetLabels = readStringList(rawObjective, "trackedTargetLabels");
+		final String rewardType = readString(rawObjective, "rewardType");
+		final String rewardItemName = readString(rawObjective, "rewardItemName");
+		final String rewardDescription = readString(rawObjective, "rewardDescription");
+		final String state = readString(rawObjective, "state");
+		final int startWave = readInt(rawObjective, "startWave", 0);
+		final int endWave = readInt(rawObjective, "endWave", 0);
+		final int progress = readInt(rawObjective, "progress", 0);
+		final int target = readInt(rawObjective, "target", 0);
+		if (objectiveId == null || title == null) {
+			return null;
+		}
+		return new ActiveMapEventStatus.SecondaryObjectiveStatus(
+				objectiveId, title, details, trackedTargetLabels, rewardType, rewardItemName, rewardDescription,
+				state, startWave, endWave, progress, target);
+	}
+
 	private ActiveMapEventStatus.CapturePointStatus mapCapturePoint(final JSONObject rawPoint) {
 		final String pointId = readString(rawPoint, "pointId");
 		final String zone = readString(rawPoint, "zone");
@@ -172,6 +238,20 @@ class MapEventStatusEvent extends Event<RPEntity> {
 			return Boolean.parseBoolean((String) value);
 		}
 		return false;
+	}
+
+	private List<String> readStringList(final Map<?, ?> source, final String key) {
+		final Object value = source.get(key);
+		if (!(value instanceof JSONArray)) {
+			return Collections.emptyList();
+		}
+		final List<String> values = new ArrayList<String>();
+		for (Object entry : (JSONArray) value) {
+			if (entry instanceof String) {
+				values.add((String) entry);
+			}
+		}
+		return values;
 	}
 
 	private boolean parseBoolean(final marauroa.common.game.RPEvent source, final String key) {

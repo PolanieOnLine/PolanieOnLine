@@ -85,6 +85,7 @@ public final class MapEventRegistry {
 		}
 
 		events.putAll(createSpecializedEvents());
+		auditCentralScheduleCoverage();
 
 		if (events.isEmpty()) {
 			LOGGER.warn("Map event registry initialized without any events.");
@@ -123,5 +124,20 @@ public final class MapEventRegistry {
 			final ConfiguredMapEvent event) {
 		event.setEventIdIfMissing(eventId);
 		events.put(eventId, event);
+	}
+
+	private static void auditCentralScheduleCoverage() {
+		for (String scheduleEventId : CentralMapEventSchedule.eventIds()) {
+			if (!MapEventConfigLoader.hasConfigId(scheduleEventId)) {
+				LOGGER.warn("Central map event schedule references unknown configured eventId='"
+						+ scheduleEventId + "'.");
+			}
+		}
+		for (String configId : MapEventConfigLoader.availableConfigIds()) {
+			if (!CentralMapEventSchedule.eventIds().contains(configId)) {
+				LOGGER.warn("Configured map event '" + configId
+						+ "' has no central schedule entry. It may rely on fallback defaults or require manual wiring.");
+			}
+		}
 	}
 }

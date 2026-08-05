@@ -41,10 +41,16 @@ public final class MapEventConfigLoader {
 	 * Prefixing IDs by domain helps avoid collisions between independent providers.
 	 */
 	public static final String DRAGON_LAND_DEFAULT = DragonMapEventConfigProvider.DRAGON_LAND_DEFAULT;
+	public static final String DRAGON_PHASED_HUNT = DragonMapEventConfigProvider.DRAGON_PHASED_HUNT;
+	public static final String DRAGON_BROOD_NEST_DEFENSE = DragonMapEventConfigProvider.DRAGON_BROOD_NEST_DEFENSE;
 	public static final String KIKAREUKIN_ANGEL_PREVIEW = KikareukinMapEventConfigProvider.KIKAREUKIN_ANGEL_PREVIEW;
 	public static final String HELL_CAPTURE_ASSAULT = HellMapEventConfigProvider.HELL_CAPTURE_ASSAULT;
+	public static final String HELL_RITUAL_DISRUPTION = HellMapEventConfigProvider.HELL_RITUAL_DISRUPTION;
+	public static final String HELL_PORTAL_SEAL = HellMapEventConfigProvider.HELL_PORTAL_SEAL;
 	public static final String KOSCIELISKO_GIANT_ESCORT = KoscieliskoMapEventConfigProvider.KOSCIELISKO_GIANT_ESCORT;
 	public static final String TATRY_KUZNICE_BANDIT_RAID = TatryMapEventConfigProvider.TATRY_KUZNICE_BANDIT_RAID;
+	public static final String TATRY_SUPPLY_DEFENSE = TatryMapEventConfigProvider.TATRY_SUPPLY_DEFENSE;
+	public static final String TATRY_CONVOY_ESCORT = TatryMapEventConfigProvider.TATRY_CONVOY_ESCORT;
 
 	private static final Map<String, MapEventConfig> CONFIGS = createConfigs();
 

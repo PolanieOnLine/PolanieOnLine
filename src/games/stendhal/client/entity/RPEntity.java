@@ -1003,8 +1003,10 @@ public abstract class RPEntity extends AudibleEntity {
 		} else {
 			chatMessage = "[OGŁOSZENIE] " + trimmedTitle + ": " + trimmedText;
 		}
-		ClientSingletonRepository.getUserInterface().addEventLine(
-				new HeaderLessEventLine(chatMessage, NotificationType.TELLALL));
+		if (!"event".equalsIgnoreCase(category)) {
+			ClientSingletonRepository.getUserInterface().addEventLine(
+					new HeaderLessEventLine(chatMessage, NotificationType.TELLALL));
+		}
 		ClientSingletonRepository.getUserInterface().addScreenAnnouncement(title, text, category);
 	}
 

@@ -43,10 +43,15 @@ public final class MapEventRewardSettlementService {
 	}
 
 	public int settleRewards(final SettlementOptions options) {
+		return settleRewardsDetailed(options).getAwardedActivityChests();
+	}
+
+	public SettlementResult settleRewardsDetailed(final SettlementOptions options) {
 		final SettlementOptions effectiveOptions = options != null ? options : SettlementOptions.defaultOptions();
 		final long now = System.currentTimeMillis();
 		final List<EventActivityChestRewardService.QualifiedParticipant> qualifiedParticipants =
 				new ArrayList<EventActivityChestRewardService.QualifiedParticipant>();
+		final List<RewardContext> qualifiedRewardContexts = new ArrayList<RewardContext>();
 		for (Map.Entry<String, MapEventContributionTracker.ContributionSnapshot> entry : contributionTracker.snapshotAll().entrySet()) {
 			final String playerName = entry.getKey();
 			final Player player = SingletonRepository.getRuleProcessor().getPlayer(playerName);
@@ -67,13 +72,16 @@ public final class MapEventRewardSettlementService {
 				continue;
 			}
 			rewardGrantCallback.grant(context);
+			qualifiedRewardContexts.add(context);
 			qualifiedParticipants.add(new EventActivityChestRewardService.QualifiedParticipant(
 					player,
 					decision.getTotalScore(),
 					contribution.getDamage(),
 					contribution.getKillAssists()));
 		}
-		return EventActivityChestRewardService.awardTopActivityChests(chestEventName, qualifiedParticipants);
+		final int awardedActivityChests = EventActivityChestRewardService.awardTopActivityChests(
+				chestEventName, qualifiedParticipants);
+		return new SettlementResult(awardedActivityChests, qualifiedRewardContexts);
 	}
 
 	public static List<String> buildActivityTop(final MapEventContributionTracker contributionTracker) {
@@ -202,6 +210,26 @@ public final class MapEventRewardSettlementService {
 
 		public MapEventRewardPolicy.RewardDecision getDecision() {
 			return decision;
+		}
+	}
+
+	public static final class SettlementResult {
+		private final int awardedActivityChests;
+		private final List<RewardContext> qualifiedRewardContexts;
+
+		private SettlementResult(final int awardedActivityChests,
+				final List<RewardContext> qualifiedRewardContexts) {
+			this.awardedActivityChests = Math.max(0, awardedActivityChests);
+			this.qualifiedRewardContexts = Collections.unmodifiableList(
+					new ArrayList<RewardContext>(qualifiedRewardContexts));
+		}
+
+		public int getAwardedActivityChests() {
+			return awardedActivityChests;
+		}
+
+		public List<RewardContext> getQualifiedRewardContexts() {
+			return qualifiedRewardContexts;
 		}
 	}
 }

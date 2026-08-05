@@ -20,6 +20,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.json.simple.JSONObject;
@@ -39,6 +40,10 @@ public final class CentralMapEventSchedule {
 			return null;
 		}
 		return ENTRIES_BY_EVENT_ID.get(eventId.trim().toLowerCase(Locale.ROOT));
+	}
+
+	public static Set<String> eventIds() {
+		return Collections.unmodifiableSet(ENTRIES_BY_EVENT_ID.keySet());
 	}
 
 	private static Map<String, Entry> loadEntries() {

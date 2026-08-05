@@ -28,6 +28,14 @@
 			<parameter name="eventId">dragon_land_default</parameter>
 			<parameter name="triggerType">both</parameter>
 		</configurator>
+		<configurator class-name="games.stendhal.server.maps.event.GenericMapEventScheduler">
+			<parameter name="eventId">dragon_phased_hunt</parameter>
+			<parameter name="triggerType">guaranteed</parameter>
+		</configurator>
+		<configurator class-name="games.stendhal.server.maps.event.GenericMapEventScheduler">
+			<parameter name="eventId">dragon_brood_nest_defense</parameter>
+			<parameter name="triggerType">guaranteed</parameter>
+		</configurator>
 
 		<!-- NPCs -->
 		<configurator class-name="games.stendhal.server.maps.dragon.YoungBoyNPC"/>

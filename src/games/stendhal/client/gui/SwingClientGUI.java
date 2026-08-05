@@ -81,6 +81,7 @@ import games.stendhal.client.gui.layout.SBoxLayout;
 import games.stendhal.client.gui.layout.SLayout;
 import games.stendhal.client.gui.map.EventActivityLeaderboardOverlay;
 import games.stendhal.client.gui.map.EventProgressBarOverlay;
+import games.stendhal.client.gui.map.EventSecondaryObjectiveOverlay;
 import games.stendhal.client.gui.map.MapPanelController;
 import games.stendhal.client.gui.settings.SettingsProperties;
 import games.stendhal.client.gui.spells.Spells;
@@ -104,6 +105,7 @@ class SwingClientGUI implements J2DClientGUI {
 	private static final int EVENT_OVERLAY_SAFE_GAP = 8;
 	private static final int EVENT_ACTIVITY_OVERLAY_LEFT_MARGIN = 12;
 	private static final int EVENT_ACTIVITY_OVERLAY_TOP_MARGIN = 14;
+	private static final int EVENT_SECONDARY_OBJECTIVE_OVERLAY_GAP = 8;
 	private static final String KOSCIELISKO_ESCORT_EVENT_ID = "koscielisko_giant_escort";
 	private static final int EVENT_REFRESH_INTERVAL_MILLIS = 100;
 	private static final int EVENT_OVERLAY_DEBOUNCE_MILLIS = 300;
@@ -120,6 +122,7 @@ class SwingClientGUI implements J2DClientGUI {
 	private final GameScreen screen;
 	private final EventProgressBarOverlay eventProgressOverlay;
 	private final EventActivityLeaderboardOverlay eventActivityOverlay;
+	private final EventSecondaryObjectiveOverlay eventSecondaryObjectiveOverlay;
 	private final Timer eventProgressRefreshTimer;
 	private final Timer eventOverlayDebounceTimer;
 	private final Timer eventOverlayFadeTimer;
@@ -185,6 +188,7 @@ class SwingClientGUI implements J2DClientGUI {
 			public void componentResized(final ComponentEvent e) {
 				repositionEventProgressOverlay();
 				repositionEventActivityOverlay();
+				repositionEventSecondaryObjectiveOverlay();
 			}
 		});
 		// ... and put it on the ground layer of the pane
@@ -193,6 +197,8 @@ class SwingClientGUI implements J2DClientGUI {
 		pane.add(eventProgressOverlay, JLayeredPane.PALETTE_LAYER);
 		eventActivityOverlay = new EventActivityLeaderboardOverlay();
 		pane.add(eventActivityOverlay, JLayeredPane.PALETTE_LAYER);
+		eventSecondaryObjectiveOverlay = new EventSecondaryObjectiveOverlay();
+		pane.add(eventSecondaryObjectiveOverlay, JLayeredPane.PALETTE_LAYER);
 		initEventHudSettings();
 		eventProgressRefreshTimer = new Timer(EVENT_REFRESH_INTERVAL_MILLIS, new AbstractAction() {
 			@Override
@@ -251,6 +257,7 @@ class SwingClientGUI implements J2DClientGUI {
 		frame.setVisible(true);
 		repositionEventProgressOverlay();
 		repositionEventActivityOverlay();
+		repositionEventSecondaryObjectiveOverlay();
 
 		/*
 		 * Used by settings dialog to restore the client's dimensions back to the
@@ -661,6 +668,7 @@ class SwingClientGUI implements J2DClientGUI {
 				currentZoneName = User.isNull() ? null : User.get().getZoneName();
 				repositionEventProgressOverlay();
 				repositionEventActivityOverlay();
+				repositionEventSecondaryObjectiveOverlay();
 				MapEventStatusStore.get().requestSnapshotRefresh();
 				scheduleOverlayRefreshDebounced();
 			}
@@ -732,6 +740,7 @@ class SwingClientGUI implements J2DClientGUI {
 			eventProgressOverlay.setCompactMode(false);
 			eventProgressOverlay.hideOverlay();
 			eventActivityOverlay.setVisible(false);
+			eventSecondaryObjectiveOverlay.setVisible(false);
 			return;
 		}
 		eventHudMode = EVENT_HUD_MODE_FULL;
@@ -745,6 +754,7 @@ class SwingClientGUI implements J2DClientGUI {
 			eventProgressOverlay.repaint();
 		}
 		eventActivityOverlay.setOverlayAlpha(eventHudOpacity);
+		eventSecondaryObjectiveOverlay.setOverlayAlpha(eventHudOpacity);
 	}
 
 	private void refreshEventProgressOverlay() {
@@ -762,6 +772,7 @@ class SwingClientGUI implements J2DClientGUI {
 		if (EVENT_HUD_MODE_HIDDEN.equals(eventHudMode)) {
 			eventProgressOverlay.hideOverlay();
 			eventActivityOverlay.setVisible(false);
+			eventSecondaryObjectiveOverlay.setVisible(false);
 			if (minimap != null) {
 				minimap.setActiveMapEventStatus(null);
 			}
@@ -774,6 +785,7 @@ class SwingClientGUI implements J2DClientGUI {
 			}
 			startOverlayFadeOut();
 			eventActivityOverlay.setVisible(false);
+			eventSecondaryObjectiveOverlay.setVisible(false);
 			return;
 		}
 
@@ -795,6 +807,8 @@ class SwingClientGUI implements J2DClientGUI {
 		repositionEventProgressOverlay();
 		eventActivityOverlay.setOverlayAlpha(eventHudOpacity);
 		updateEventActivityOverlay(visibleStatus);
+		eventSecondaryObjectiveOverlay.setOverlayAlpha(eventHudOpacity);
+		updateEventSecondaryObjectiveOverlay(visibleStatus);
 	}
 
 	private void scheduleOverlayRefreshDebounced() {
@@ -809,8 +823,10 @@ class SwingClientGUI implements J2DClientGUI {
 		stopOverlayFade();
 		eventProgressOverlay.showTerminalState(endedStatus.getEventName(), "Finał wydarzenia", "Zdarzenie zakończone");
 		eventActivityOverlay.setVisible(false);
+		eventSecondaryObjectiveOverlay.setVisible(false);
 		eventProgressOverlay.setOverlayAlpha(eventHudOpacity);
 		eventActivityOverlay.setOverlayAlpha(eventHudOpacity);
+		eventSecondaryObjectiveOverlay.setOverlayAlpha(eventHudOpacity);
 		eventOverlayEndStateTimer.restart();
 		lastShownEventStatus = null;
 	}
@@ -827,6 +843,8 @@ class SwingClientGUI implements J2DClientGUI {
 	private void stopOverlayFade() {
 		eventOverlayFadeTimer.stop();
 		eventProgressOverlay.setOverlayAlpha(eventHudOpacity);
+		eventActivityOverlay.setOverlayAlpha(eventHudOpacity);
+		eventSecondaryObjectiveOverlay.setOverlayAlpha(eventHudOpacity);
 	}
 
 	private void updateOverlayFade() {
@@ -834,11 +852,13 @@ class SwingClientGUI implements J2DClientGUI {
 		final float fadeAlpha = Math.max(0.0f, 1.0f - ((float) elapsed / (float) EVENT_OVERLAY_FADE_DURATION_MILLIS));
 		eventProgressOverlay.setOverlayAlpha(fadeAlpha * eventHudOpacity);
 		eventActivityOverlay.setOverlayAlpha(fadeAlpha * eventHudOpacity);
+		eventSecondaryObjectiveOverlay.setOverlayAlpha(fadeAlpha * eventHudOpacity);
 		final float alpha = fadeAlpha;
 		if (alpha <= 0.0f) {
 			eventOverlayFadeTimer.stop();
 			eventProgressOverlay.hideOverlay();
 			eventActivityOverlay.setVisible(false);
+			eventSecondaryObjectiveOverlay.setVisible(false);
 		}
 	}
 
@@ -955,6 +975,15 @@ class SwingClientGUI implements J2DClientGUI {
 		repositionEventActivityOverlay();
 	}
 
+	private void updateEventSecondaryObjectiveOverlay(final ActiveMapEventStatus status) {
+		if (status == null || status.getSecondaryObjectives().isEmpty()) {
+			eventSecondaryObjectiveOverlay.updateObjectives(null);
+			return;
+		}
+		eventSecondaryObjectiveOverlay.updateObjectives(status.getSecondaryObjectives());
+		repositionEventSecondaryObjectiveOverlay();
+	}
+
 	private List<String> mapActivityRows(final List<String> rawRows) {
 		final List<String> mapped = new ArrayList<String>();
 		for (String row : rawRows) {
@@ -974,6 +1003,19 @@ class SwingClientGUI implements J2DClientGUI {
 	private void repositionEventActivityOverlay() {
 		final Dimension preferred = eventActivityOverlay.getPreferredSize();
 		eventActivityOverlay.setBounds(EVENT_ACTIVITY_OVERLAY_LEFT_MARGIN, EVENT_ACTIVITY_OVERLAY_TOP_MARGIN,
+				preferred.width, preferred.height);
+	}
+
+	private void repositionEventSecondaryObjectiveOverlay() {
+		if (!eventSecondaryObjectiveOverlay.isVisible()) {
+			return;
+		}
+		final Dimension preferred = eventSecondaryObjectiveOverlay.getPreferredSize();
+		int y = EVENT_ACTIVITY_OVERLAY_TOP_MARGIN;
+		if (eventActivityOverlay.isVisible()) {
+			y += eventActivityOverlay.getHeight() + EVENT_SECONDARY_OBJECTIVE_OVERLAY_GAP;
+		}
+		eventSecondaryObjectiveOverlay.setBounds(EVENT_ACTIVITY_OVERLAY_LEFT_MARGIN, y,
 				preferred.width, preferred.height);
 	}
 

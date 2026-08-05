@@ -43,7 +43,10 @@ public final class MapEventStatusStore {
 			final Integer remainingSeconds, final Integer totalSeconds,
 			final Integer eventTotalSpawnedCreatures, final Integer eventDefeatedCreatures,
 			final Integer eventDefeatPercent, final Integer currentWave, final Integer totalWaves,
-			final String defenseStatus, final List<String> activityTop, final List<String> zones,
+			final String defenseStatus, final String phaseName, final String phaseDescription,
+			final String modifierName, final String modifierDescription,
+			final List<ActiveMapEventStatus.SecondaryObjectiveStatus> secondaryObjectives,
+			final Integer rewardBonusPercent, final List<String> activityTop, final List<String> zones,
 			final List<ActiveMapEventStatus.CapturePointStatus> capturePoints) {
 		if ((eventId == null) || eventId.trim().isEmpty()) {
 			return;
@@ -63,6 +66,8 @@ public final class MapEventStatusStore {
 		final ActiveMapEventStatus mapped = new ActiveMapEventStatus(eventId, eventName, remainingSeconds.intValue(),
 				totalSeconds.intValue(), eventTotalSpawnedCreatures.intValue(), eventDefeatedCreatures.intValue(),
 				eventDefeatPercent.intValue(), currentWave.intValue(), totalWaves.intValue(), defenseStatus,
+				phaseName, phaseDescription, modifierName, modifierDescription, secondaryObjectives,
+				(rewardBonusPercent == null) ? 0 : rewardBonusPercent.intValue(),
 				activityTop, zones, validatedCapturePoints);
 		byEventId.put(eventId, CachedMapEventStatus.active(mapped, nowMillis));
 	}
@@ -193,7 +198,8 @@ public final class MapEventStatusStore {
 
 		static CachedMapEventStatus inactive(final String eventId, final long receivedAtMillis) {
 			return new CachedMapEventStatus(new ActiveMapEventStatus(eventId, "", 0, 0, 0, 0, 0,
-					0, 0, "", Collections.<String>emptyList(), Collections.<String>emptyList(),
+					0, 0, "", "", "", "", "", Collections.<ActiveMapEventStatus.SecondaryObjectiveStatus>emptyList(), 0,
+					Collections.<String>emptyList(), Collections.<String>emptyList(),
 					Collections.<ActiveMapEventStatus.CapturePointStatus>emptyList()),
 					receivedAtMillis);
 		}
@@ -220,6 +226,9 @@ public final class MapEventStatusStore {
 					status.getTotalSeconds(), status.getEventTotalSpawnedCreatures(),
 					status.getEventDefeatedCreatures(), status.getEventDefeatPercent(),
 					status.getCurrentWave(), status.getTotalWaves(), status.getDefenseStatus(),
+					status.getPhaseName(), status.getPhaseDescription(),
+					status.getModifierName(), status.getModifierDescription(),
+					status.getSecondaryObjectives(), status.getRewardBonusPercent(),
 					status.getActivityTop(), status.getZones(), status.getCapturePoints());
 		}
 
