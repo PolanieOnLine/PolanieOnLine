@@ -143,6 +143,14 @@
 			<parameter name="eventId">tatry_kuznice_bandit_raid</parameter>
 			<parameter name="triggerType">guaranteed</parameter>
 		</configurator>
+		<configurator class-name="games.stendhal.server.maps.event.GenericMapEventScheduler">
+			<parameter name="eventId">tatry_supply_defense</parameter>
+			<parameter name="triggerType">guaranteed</parameter>
+		</configurator>
+		<configurator class-name="games.stendhal.server.maps.event.GenericMapEventScheduler">
+			<parameter name="eventId">tatry_convoy_escort</parameter>
+			<parameter name="triggerType">guaranteed</parameter>
+		</configurator>
 
 		<attributes>
 			<parameter name="color_method">time</parameter>

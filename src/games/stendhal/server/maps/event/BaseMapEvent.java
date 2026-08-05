@@ -124,6 +124,10 @@ public abstract class BaseMapEvent {
 		// default no-op
 	}
 
+	protected void onWaveStarted(final int currentWaveNumber, final EventWave wave) {
+		// default no-op
+	}
+
 	protected final MapEventConfig getConfig() {
 		return config;
 	}
@@ -161,6 +165,10 @@ public abstract class BaseMapEvent {
 	}
 
 	final String getDefenseStatus() {
+		return resolveDefenseStatus();
+	}
+
+	protected String resolveDefenseStatus() {
 		if (!isEventActive()) {
 			return "Wydarzenie zakończone";
 		}
@@ -182,6 +190,30 @@ public abstract class BaseMapEvent {
 	}
 
 	protected String getCapturePointsStatusPayload() {
+		return null;
+	}
+
+	protected String getPhaseName() {
+		return null;
+	}
+
+	protected String getPhaseDescription() {
+		return null;
+	}
+
+	protected String getModifierName() {
+		return null;
+	}
+
+	protected String getModifierDescription() {
+		return null;
+	}
+
+	protected String getSecondaryObjectivesStatusPayload() {
+		return null;
+	}
+
+	protected Integer getRewardBonusPercent() {
 		return null;
 	}
 
@@ -409,7 +441,8 @@ public abstract class BaseMapEvent {
 		if (!isCurrentRunActive(runId)) {
 			return;
 		}
-		currentWave.incrementAndGet();
+		final int waveNumber = currentWave.incrementAndGet();
+		onWaveStarted(waveNumber, wave);
 		for (EventSpawn spawn : wave.spawns) {
 			spawnCreaturesForWave(spawn);
 		}
@@ -480,11 +513,11 @@ public abstract class BaseMapEvent {
 			return;
 		}
 		final String message = announcements.get(Rand.rand(announcements.size()));
-		SingletonRepository.getRuleProcessor().tellAllPlayers(NotificationType.PRIVMSG, message);
-		ScreenAnnouncementBroadcaster.broadcastToAllPlayers(
+		ScreenAnnouncementBroadcaster.broadcastToPlayersInZones(
 				getEventName(),
 				message,
-				ScreenAnnouncementBroadcaster.CATEGORY_EVENT);
+				ScreenAnnouncementBroadcaster.CATEGORY_EVENT,
+				getZones());
 	}
 
 	private boolean isCurrentRunActive(final long runId) {

@@ -83,20 +83,24 @@ public final class MapEventStatusPublisher {
 	}
 
 	private static MapEventStatusEvent createActiveSnapshot(final BaseMapEvent event, final List<String> allowedZones) {
-		final int totalDurationSeconds = event.getTotalDurationSeconds();
-		final int remainingSeconds = event.getRemainingSeconds();
 		return new MapEventStatusEvent(
 				event.getEventId(),
 				event.getEventNamePublic(),
 				true,
-				Integer.valueOf(remainingSeconds),
-				Integer.valueOf(totalDurationSeconds),
+				Integer.valueOf(event.getRemainingSeconds()),
+				Integer.valueOf(event.getTotalDurationSeconds()),
 				Integer.valueOf(event.getEventTotalSpawnedCreatures()),
 				Integer.valueOf(event.getEventDefeatedCreatures()),
 				Integer.valueOf(event.getEventDefeatPercent()),
 				Integer.valueOf(event.getCurrentWave()),
 				Integer.valueOf(event.getTotalWaves()),
 				event.getDefenseStatus(),
+				event.getPhaseName(),
+				event.getPhaseDescription(),
+				event.getModifierName(),
+				event.getModifierDescription(),
+				event.getSecondaryObjectivesStatusPayload(),
+				event.getRewardBonusPercent(),
 				event.getActivityTop(),
 				allowedZones,
 				event.getCapturePointsStatusPayload());
@@ -106,6 +110,7 @@ public final class MapEventStatusPublisher {
 		return new MapEventStatusEvent(event.getEventId(), event.getEventNamePublic(), false,
 				null, null, Integer.valueOf(0), Integer.valueOf(0), Integer.valueOf(0),
 				Integer.valueOf(0), Integer.valueOf(0), "Wydarzenie zakończone",
+				null, null, null, null, null, Integer.valueOf(0),
 				Collections.<String>emptyList(), Collections.<String>emptyList(), null);
 	}
 
@@ -113,6 +118,7 @@ public final class MapEventStatusPublisher {
 		return new MapEventStatusEvent(FALLBACK_EVENT_ID, FALLBACK_EVENT_NAME, false,
 				null, null, Integer.valueOf(0), Integer.valueOf(0), Integer.valueOf(0),
 				Integer.valueOf(0), Integer.valueOf(0), "Wydarzenie zakończone",
+				null, null, null, null, null, Integer.valueOf(0),
 				Collections.<String>emptyList(), Collections.<String>emptyList(), null);
 	}
 

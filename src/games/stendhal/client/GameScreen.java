@@ -113,7 +113,7 @@ public final class GameScreen extends JComponent implements IGameScreen, DropTar
 	 * indicator icon.
 	 */
 	private static final int OFFLINE_MARGIN = 10;
-	private static final int ANNOUNCEMENT_TOP_MARGIN = 58;
+	private static final int ANNOUNCEMENT_TOP_MARGIN = 104;
 	private static final long ANNOUNCEMENT_MIN_PERSISTENCE_MILLIS = 5200L;
 	private static final long ANNOUNCEMENT_MAX_PERSISTENCE_MILLIS = 11000L;
 	private static final long ANNOUNCEMENT_FADE_MILLIS = 320L;

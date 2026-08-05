@@ -47,6 +47,12 @@ public final class MapEventConfig {
 	private final ScalingConfig scaling;
 	private final List<CapturePointConfig> capturePoints;
 	private final List<CaptureProgressWaveConfig> captureProgressWaves;
+	private final List<PhaseConfig> phases;
+	private final List<ModifierConfig> modifiers;
+	private final int minActiveModifiers;
+	private final int maxActiveModifiers;
+	private final List<SecondaryObjectiveConfig> secondaryObjectives;
+	private final RewardSettings rewardSettings;
 
 	private MapEventConfig(final Builder builder) {
 		eventName = builder.eventName;
@@ -70,6 +76,12 @@ public final class MapEventConfig {
 		scaling = builder.scaling;
 		capturePoints = Collections.unmodifiableList(new ArrayList<>(builder.capturePoints));
 		captureProgressWaves = Collections.unmodifiableList(new ArrayList<>(builder.captureProgressWaves));
+		phases = Collections.unmodifiableList(new ArrayList<>(builder.phases));
+		modifiers = Collections.unmodifiableList(new ArrayList<>(builder.modifiers));
+		minActiveModifiers = builder.minActiveModifiers;
+		maxActiveModifiers = builder.maxActiveModifiers;
+		secondaryObjectives = Collections.unmodifiableList(new ArrayList<>(builder.secondaryObjectives));
+		rewardSettings = builder.rewardSettings;
 	}
 
 	public String getEventName() {
@@ -164,6 +176,30 @@ public final class MapEventConfig {
 		return captureProgressWaves;
 	}
 
+	public List<PhaseConfig> getPhases() {
+		return phases;
+	}
+
+	public List<ModifierConfig> getModifiers() {
+		return modifiers;
+	}
+
+	public int getMinActiveModifiers() {
+		return minActiveModifiers;
+	}
+
+	public int getMaxActiveModifiers() {
+		return maxActiveModifiers;
+	}
+
+	public List<SecondaryObjectiveConfig> getSecondaryObjectives() {
+		return secondaryObjectives;
+	}
+
+	public RewardSettings getRewardSettings() {
+		return rewardSettings;
+	}
+
 	public static Builder builder(final String eventName) {
 		return new Builder(eventName);
 	}
@@ -194,6 +230,12 @@ public final class MapEventConfig {
 		private ScalingConfig scaling;
 		private List<CapturePointConfig> capturePoints = Collections.emptyList();
 		private List<CaptureProgressWaveConfig> captureProgressWaves = Collections.emptyList();
+		private List<PhaseConfig> phases = Collections.emptyList();
+		private List<ModifierConfig> modifiers = Collections.emptyList();
+		private int minActiveModifiers;
+		private int maxActiveModifiers;
+		private List<SecondaryObjectiveConfig> secondaryObjectives = Collections.emptyList();
+		private RewardSettings rewardSettings;
 
 		private Builder(final String eventName) {
 			this.eventName = Objects.requireNonNull(eventName, "eventName");
@@ -314,6 +356,30 @@ public final class MapEventConfig {
 			return this;
 		}
 
+		public Builder phases(final List<PhaseConfig> phases) {
+			this.phases = new ArrayList<>(Objects.requireNonNull(phases, "phases"));
+			return this;
+		}
+
+		public Builder modifiers(final int minActiveModifiers, final int maxActiveModifiers,
+				final List<ModifierConfig> modifiers) {
+			this.minActiveModifiers = minActiveModifiers;
+			this.maxActiveModifiers = maxActiveModifiers;
+			this.modifiers = new ArrayList<>(Objects.requireNonNull(modifiers, "modifiers"));
+			return this;
+		}
+
+		public Builder secondaryObjectives(final List<SecondaryObjectiveConfig> secondaryObjectives) {
+			this.secondaryObjectives = new ArrayList<>(
+					Objects.requireNonNull(secondaryObjectives, "secondaryObjectives"));
+			return this;
+		}
+
+		public Builder rewardSettings(final RewardSettings rewardSettings) {
+			this.rewardSettings = rewardSettings;
+			return this;
+		}
+
 		public MapEventConfig build() {
 			if (duration.isNegative() || duration.isZero()) {
 				throw new IllegalArgumentException("duration must be positive");
@@ -369,7 +435,484 @@ public final class MapEventConfig {
 				}
 				captureProgressWave.validate();
 			}
+			for (final PhaseConfig phase : phases) {
+				if (phase == null) {
+					throw new IllegalArgumentException("phases must not contain null entries");
+				}
+				phase.validate();
+			}
+			for (final ModifierConfig modifier : modifiers) {
+				if (modifier == null) {
+					throw new IllegalArgumentException("modifiers must not contain null entries");
+				}
+				modifier.validate();
+			}
+			if (minActiveModifiers < 0) {
+				throw new IllegalArgumentException("minActiveModifiers must be >= 0");
+			}
+			if (maxActiveModifiers < minActiveModifiers) {
+				throw new IllegalArgumentException("maxActiveModifiers must be >= minActiveModifiers");
+			}
+			for (final SecondaryObjectiveConfig secondaryObjective : secondaryObjectives) {
+				if (secondaryObjective == null) {
+					throw new IllegalArgumentException("secondaryObjectives must not contain null entries");
+				}
+				secondaryObjective.validate();
+			}
+			if (rewardSettings != null) {
+				rewardSettings.validate();
+			}
 			return new MapEventConfig(this);
+		}
+	}
+
+	public static final class PhaseConfig {
+		private final String phaseId;
+		private final String title;
+		private final String description;
+		private final int startWave;
+		private final String transitionAnnouncement;
+		private final double spawnMultiplier;
+		private final Map<String, Double> zoneSpawnMultipliers;
+		private final String defenseStatus;
+
+		public PhaseConfig(final String phaseId, final String title, final String description,
+				final int startWave, final String transitionAnnouncement, final double spawnMultiplier,
+				final Map<String, Double> zoneSpawnMultipliers, final String defenseStatus) {
+			this.phaseId = phaseId;
+			this.title = title;
+			this.description = description;
+			this.startWave = startWave;
+			this.transitionAnnouncement = transitionAnnouncement;
+			this.spawnMultiplier = spawnMultiplier;
+			this.zoneSpawnMultipliers = Collections.unmodifiableMap(new LinkedHashMap<>(
+					Objects.requireNonNull(zoneSpawnMultipliers, "zoneSpawnMultipliers")));
+			this.defenseStatus = defenseStatus;
+		}
+
+		public String getPhaseId() {
+			return phaseId;
+		}
+
+		public String getTitle() {
+			return title;
+		}
+
+		public String getDescription() {
+			return description;
+		}
+
+		public int getStartWave() {
+			return startWave;
+		}
+
+		public String getTransitionAnnouncement() {
+			return transitionAnnouncement;
+		}
+
+		public double getSpawnMultiplier() {
+			return spawnMultiplier;
+		}
+
+		public Map<String, Double> getZoneSpawnMultipliers() {
+			return zoneSpawnMultipliers;
+		}
+
+		public double getZoneSpawnMultiplier(final String zoneName) {
+			return zoneSpawnMultipliers.getOrDefault(zoneName, 1.0d);
+		}
+
+		public String getDefenseStatus() {
+			return defenseStatus;
+		}
+
+		private void validate() {
+			if (phaseId == null || phaseId.trim().isEmpty()) {
+				throw new IllegalArgumentException("phase id must not be blank");
+			}
+			if (title == null || title.trim().isEmpty()) {
+				throw new IllegalArgumentException("phase title must not be blank");
+			}
+			if (startWave < 0) {
+				throw new IllegalArgumentException("phase startWave must be >= 0");
+			}
+			if (spawnMultiplier < 0d) {
+				throw new IllegalArgumentException("phase spawnMultiplier must be >= 0");
+			}
+			validateSpawnMultiplierMap(zoneSpawnMultipliers, "phase.zoneSpawnMultipliers");
+		}
+	}
+
+	public static final class ModifierConfig {
+		private final String modifierId;
+		private final String title;
+		private final String description;
+		private final int activationWave;
+		private final String activationAnnouncement;
+		private final double spawnMultiplier;
+		private final Map<String, Double> zoneSpawnMultipliers;
+		private final List<BaseMapEvent.EventSpawn> extraSpawns;
+		private final double rewardMultiplierBonus;
+
+		public ModifierConfig(final String modifierId, final String title, final String description,
+				final int activationWave, final String activationAnnouncement, final double spawnMultiplier,
+				final Map<String, Double> zoneSpawnMultipliers, final List<BaseMapEvent.EventSpawn> extraSpawns,
+				final double rewardMultiplierBonus) {
+			this.modifierId = modifierId;
+			this.title = title;
+			this.description = description;
+			this.activationWave = activationWave;
+			this.activationAnnouncement = activationAnnouncement;
+			this.spawnMultiplier = spawnMultiplier;
+			this.zoneSpawnMultipliers = Collections.unmodifiableMap(new LinkedHashMap<>(
+					Objects.requireNonNull(zoneSpawnMultipliers, "zoneSpawnMultipliers")));
+			this.extraSpawns = Collections.unmodifiableList(new ArrayList<>(
+					Objects.requireNonNull(extraSpawns, "extraSpawns")));
+			this.rewardMultiplierBonus = rewardMultiplierBonus;
+		}
+
+		public String getModifierId() {
+			return modifierId;
+		}
+
+		public String getTitle() {
+			return title;
+		}
+
+		public String getDescription() {
+			return description;
+		}
+
+		public int getActivationWave() {
+			return activationWave;
+		}
+
+		public String getActivationAnnouncement() {
+			return activationAnnouncement;
+		}
+
+		public double getSpawnMultiplier() {
+			return spawnMultiplier;
+		}
+
+		public Map<String, Double> getZoneSpawnMultipliers() {
+			return zoneSpawnMultipliers;
+		}
+
+		public double getZoneSpawnMultiplier(final String zoneName) {
+			return zoneSpawnMultipliers.getOrDefault(zoneName, 1.0d);
+		}
+
+		public List<BaseMapEvent.EventSpawn> getExtraSpawns() {
+			return extraSpawns;
+		}
+
+		public double getRewardMultiplierBonus() {
+			return rewardMultiplierBonus;
+		}
+
+		private void validate() {
+			if (modifierId == null || modifierId.trim().isEmpty()) {
+				throw new IllegalArgumentException("modifier id must not be blank");
+			}
+			if (title == null || title.trim().isEmpty()) {
+				throw new IllegalArgumentException("modifier title must not be blank");
+			}
+			if (activationWave < 0) {
+				throw new IllegalArgumentException("modifier activationWave must be >= 0");
+			}
+			if (spawnMultiplier < 0d) {
+				throw new IllegalArgumentException("modifier spawnMultiplier must be >= 0");
+			}
+			if (rewardMultiplierBonus < 0d) {
+				throw new IllegalArgumentException("modifier rewardMultiplierBonus must be >= 0");
+			}
+			validateSpawnMultiplierMap(zoneSpawnMultipliers, "modifier.zoneSpawnMultipliers");
+			for (final BaseMapEvent.EventSpawn spawn : extraSpawns) {
+				if (spawn == null) {
+					throw new IllegalArgumentException("modifier extraSpawns must not contain null entries");
+				}
+			}
+		}
+	}
+
+	public static final class SecondaryObjectiveConfig {
+		public enum ObjectiveType {
+			KILL_TARGET,
+			CAPTURE_PROGRESS
+		}
+
+		public enum RewardType {
+			BONUS_GOLD_CHEST,
+			REWARD_MULTIPLIER
+		}
+
+		private final String objectiveId;
+		private final String title;
+		private final String description;
+		private final ObjectiveType type;
+		private final int startWave;
+		private final int endWave;
+		private final int targetCount;
+		private final int targetPercent;
+		private final List<String> trackedCreatures;
+		private final List<String> trackedTargetLabels;
+		private final List<String> capturePointIds;
+		private final RewardType rewardType;
+		private final String rewardItemName;
+		private final String rewardDescription;
+		private final String activationAnnouncement;
+		private final String completionAnnouncement;
+		private final String failureAnnouncement;
+		private final List<BaseMapEvent.EventSpawn> completionExtraSpawns;
+		private final List<BaseMapEvent.EventSpawn> failureExtraSpawns;
+		private final double rewardMultiplierBonus;
+
+		public SecondaryObjectiveConfig(final String objectiveId, final String title, final String description,
+				final ObjectiveType type, final int startWave, final int endWave, final int targetCount,
+				final int targetPercent, final List<String> trackedCreatures, final List<String> trackedTargetLabels,
+				final List<String> capturePointIds, final RewardType rewardType, final String rewardItemName,
+				final String rewardDescription, final List<BaseMapEvent.EventSpawn> completionExtraSpawns,
+				final List<BaseMapEvent.EventSpawn> failureExtraSpawns,
+				final String activationAnnouncement, final String completionAnnouncement,
+				final String failureAnnouncement, final double rewardMultiplierBonus) {
+			this.objectiveId = objectiveId;
+			this.title = title;
+			this.description = description;
+			this.type = Objects.requireNonNull(type, "type");
+			this.startWave = startWave;
+			this.endWave = endWave;
+			this.targetCount = targetCount;
+			this.targetPercent = targetPercent;
+			this.trackedCreatures = Collections.unmodifiableList(new ArrayList<>(
+					Objects.requireNonNull(trackedCreatures, "trackedCreatures")));
+			this.trackedTargetLabels = Collections.unmodifiableList(new ArrayList<>(
+					Objects.requireNonNull(trackedTargetLabels, "trackedTargetLabels")));
+			this.capturePointIds = Collections.unmodifiableList(new ArrayList<>(
+					Objects.requireNonNull(capturePointIds, "capturePointIds")));
+			this.rewardType = rewardType == null ? RewardType.REWARD_MULTIPLIER : rewardType;
+			this.rewardItemName = rewardItemName;
+			this.rewardDescription = resolveRewardDescription(rewardDescription, this.rewardType,
+					this.rewardItemName, rewardMultiplierBonus);
+			this.completionExtraSpawns = Collections.unmodifiableList(new ArrayList<>(
+					Objects.requireNonNull(completionExtraSpawns, "completionExtraSpawns")));
+			this.failureExtraSpawns = Collections.unmodifiableList(new ArrayList<>(
+					Objects.requireNonNull(failureExtraSpawns, "failureExtraSpawns")));
+			this.activationAnnouncement = activationAnnouncement;
+			this.completionAnnouncement = completionAnnouncement;
+			this.failureAnnouncement = failureAnnouncement;
+			this.rewardMultiplierBonus = rewardMultiplierBonus;
+		}
+
+		public String getObjectiveId() {
+			return objectiveId;
+		}
+
+		public String getTitle() {
+			return title;
+		}
+
+		public String getDescription() {
+			return description;
+		}
+
+		public ObjectiveType getType() {
+			return type;
+		}
+
+		public int getStartWave() {
+			return startWave;
+		}
+
+		public int getEndWave() {
+			return endWave;
+		}
+
+		public int getTargetCount() {
+			return targetCount;
+		}
+
+		public int getTargetPercent() {
+			return targetPercent;
+		}
+
+		public List<String> getTrackedCreatures() {
+			return trackedCreatures;
+		}
+
+		public List<String> getTrackedTargetLabels() {
+			return trackedTargetLabels;
+		}
+
+		public List<String> getCapturePointIds() {
+			return capturePointIds;
+		}
+
+		public RewardType getRewardType() {
+			return rewardType;
+		}
+
+		public String getRewardItemName() {
+			return rewardItemName;
+		}
+
+		public String getRewardDescription() {
+			return rewardDescription;
+		}
+
+		public String getActivationAnnouncement() {
+			return activationAnnouncement;
+		}
+
+		public String getCompletionAnnouncement() {
+			return completionAnnouncement;
+		}
+
+		public String getFailureAnnouncement() {
+			return failureAnnouncement;
+		}
+
+		public List<BaseMapEvent.EventSpawn> getCompletionExtraSpawns() {
+			return completionExtraSpawns;
+		}
+
+		public List<BaseMapEvent.EventSpawn> getFailureExtraSpawns() {
+			return failureExtraSpawns;
+		}
+
+		public double getRewardMultiplierBonus() {
+			return rewardMultiplierBonus;
+		}
+
+		private void validate() {
+			if (objectiveId == null || objectiveId.trim().isEmpty()) {
+				throw new IllegalArgumentException("secondary objective id must not be blank");
+			}
+			if (title == null || title.trim().isEmpty()) {
+				throw new IllegalArgumentException("secondary objective title must not be blank");
+			}
+			if (startWave < 0) {
+				throw new IllegalArgumentException("secondary objective startWave must be >= 0");
+			}
+			if (endWave < startWave) {
+				throw new IllegalArgumentException("secondary objective endWave must be >= startWave");
+			}
+			if (rewardType == null) {
+				throw new IllegalArgumentException("secondary objective rewardType must not be null");
+			}
+			if (rewardType == RewardType.BONUS_GOLD_CHEST
+					&& (rewardItemName == null || rewardItemName.trim().isEmpty())) {
+				throw new IllegalArgumentException("secondary objective rewardItemName must not be blank for chest rewards");
+			}
+			if (rewardMultiplierBonus < 0d) {
+				throw new IllegalArgumentException("secondary objective rewardMultiplierBonus must be >= 0");
+			}
+			for (final BaseMapEvent.EventSpawn spawn : completionExtraSpawns) {
+				if (spawn == null) {
+					throw new IllegalArgumentException("secondary objective completionExtraSpawns must not contain null entries");
+				}
+			}
+			for (final BaseMapEvent.EventSpawn spawn : failureExtraSpawns) {
+				if (spawn == null) {
+					throw new IllegalArgumentException("secondary objective failureExtraSpawns must not contain null entries");
+				}
+			}
+			switch (type) {
+			case KILL_TARGET:
+				if (targetCount <= 0) {
+					throw new IllegalArgumentException("kill target objective targetCount must be > 0");
+				}
+				if (trackedCreatures.isEmpty()) {
+					throw new IllegalArgumentException("kill target objective requires trackedCreatures");
+				}
+				if (trackedTargetLabels.isEmpty()) {
+					throw new IllegalArgumentException("kill target objective requires trackedTargetLabels");
+				}
+				break;
+			case CAPTURE_PROGRESS:
+				if (targetPercent <= 0 || targetPercent > 100) {
+					throw new IllegalArgumentException("capture objective targetPercent must be in range 1-100");
+				}
+				if (capturePointIds.isEmpty()) {
+					throw new IllegalArgumentException("capture objective requires capturePointIds");
+				}
+				if (trackedTargetLabels.isEmpty()) {
+					throw new IllegalArgumentException("capture objective requires trackedTargetLabels");
+				}
+				break;
+			default:
+				throw new IllegalArgumentException("Unsupported objective type: " + type);
+			}
+		}
+
+		private static String resolveRewardDescription(final String configuredDescription,
+				final RewardType rewardType, final String rewardItemName, final double rewardMultiplierBonus) {
+			if (configuredDescription != null && !configuredDescription.trim().isEmpty()) {
+				return configuredDescription;
+			}
+			if (rewardType == RewardType.BONUS_GOLD_CHEST) {
+				final String itemLabel = rewardItemName == null || rewardItemName.trim().isEmpty()
+						? "złota skrzynia" : rewardItemName.trim();
+				return "Dodatkowa " + itemLabel
+						+ " po ukończeniu wydarzenia dla kwalifikowanych uczestników.";
+			}
+			return "+" + (int) Math.round(Math.max(0.0d, rewardMultiplierBonus) * 100.0d)
+					+ "% do końcowych nagród wydarzenia.";
+		}
+	}
+
+	public static final class RewardSettings {
+		private final String rewardType;
+		private final String chestEventName;
+		private final int minDefeatPercent;
+		private final double baseDifficultyMultiplier;
+
+		public RewardSettings(final String rewardType, final String chestEventName,
+				final int minDefeatPercent, final double baseDifficultyMultiplier) {
+			this.rewardType = rewardType;
+			this.chestEventName = chestEventName;
+			this.minDefeatPercent = minDefeatPercent;
+			this.baseDifficultyMultiplier = baseDifficultyMultiplier;
+		}
+
+		public String getRewardType() {
+			return rewardType;
+		}
+
+		public String getChestEventName() {
+			return chestEventName;
+		}
+
+		public int getMinDefeatPercent() {
+			return minDefeatPercent;
+		}
+
+		public double getBaseDifficultyMultiplier() {
+			return baseDifficultyMultiplier;
+		}
+
+		private void validate() {
+			if (rewardType == null || rewardType.trim().isEmpty()) {
+				throw new IllegalArgumentException("rewardSettings.rewardType must not be blank");
+			}
+			if (minDefeatPercent < 0 || minDefeatPercent > 100) {
+				throw new IllegalArgumentException("rewardSettings.minDefeatPercent must be in range 0-100");
+			}
+			if (baseDifficultyMultiplier <= 0d) {
+				throw new IllegalArgumentException("rewardSettings.baseDifficultyMultiplier must be > 0");
+			}
+		}
+	}
+
+	private static void validateSpawnMultiplierMap(final Map<String, Double> multipliers, final String fieldName) {
+		for (final Map.Entry<String, Double> entry : multipliers.entrySet()) {
+			if (entry.getKey() == null || entry.getKey().trim().isEmpty()) {
+				throw new IllegalArgumentException(fieldName + " contains blank zone name");
+			}
+			final Double multiplier = entry.getValue();
+			if (multiplier == null || multiplier.doubleValue() < 0d) {
+				throw new IllegalArgumentException(fieldName + " values must be >= 0");
+			}
 		}
 	}
 

@@ -23,7 +23,13 @@ public class RandomEventRewardService {
 		DRAGON_LAND,
 		KIKAREUKIN,
 		KUZNICE_BANDIT_RAID,
-		HELL_CAPTURE_ASSAULT
+		HELL_CAPTURE_ASSAULT,
+		DRAGON_PHASED_HUNT,
+		DRAGON_BROOD_NEST_DEFENSE,
+		TATRY_SUPPLY_DEFENSE,
+		TATRY_CONVOY_ESCORT,
+		HELL_PORTAL_SEAL,
+		HELL_RITUAL_DISRUPTION
 	}
 
 	private static final int ESCORT_XP_MIN = 80000;
@@ -77,6 +83,16 @@ public class RandomEventRewardService {
 	private double resolveEventScale(final RandomEventType eventType, final double participationScore) {
 		if (eventType == RandomEventType.HELL_CAPTURE_ASSAULT) {
 			return 0.80d + (0.30d * participationScore);
+		}
+		if (eventType == RandomEventType.DRAGON_PHASED_HUNT
+				|| eventType == RandomEventType.HELL_RITUAL_DISRUPTION
+				|| eventType == RandomEventType.DRAGON_BROOD_NEST_DEFENSE
+				|| eventType == RandomEventType.HELL_PORTAL_SEAL) {
+			return 0.85d + (0.35d * participationScore);
+		}
+		if (eventType == RandomEventType.TATRY_SUPPLY_DEFENSE
+				|| eventType == RandomEventType.TATRY_CONVOY_ESCORT) {
+			return 0.78d + (0.32d * participationScore);
 		}
 		return 0.70d + (0.30d * participationScore);
 	}

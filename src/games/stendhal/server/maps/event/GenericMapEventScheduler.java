@@ -14,15 +14,19 @@ package games.stendhal.server.maps.event;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.apache.log4j.Logger;
 
 import games.stendhal.server.core.config.ZoneConfigurator;
+import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 
 public class GenericMapEventScheduler implements ZoneConfigurator {
@@ -32,7 +36,9 @@ public class GenericMapEventScheduler implements ZoneConfigurator {
 	private static final String START_TIME_PARAMETER = "startTime";
 	private static final String INTERVAL_DAYS_PARAMETER = "intervalDays";
 	private static final String TRIGGER_TYPE_PARAMETER = "triggerType";
-	private static final AtomicBoolean STARTUP_TABLE_LOGGED = new AtomicBoolean(false);
+	private static final AtomicBoolean STARTUP_TABLE_SCHEDULED = new AtomicBoolean(false);
+	private static final Set<String> XML_BOUND_EVENT_IDS =
+			Collections.synchronizedSet(new LinkedHashSet<String>());
 
 	@Override
 	public void configureZone(final StendhalRPZone zone, final Map<String, String> attributes) {
@@ -50,6 +56,7 @@ public class GenericMapEventScheduler implements ZoneConfigurator {
 					+ MapEventRegistry.listAvailableEventIds() + ".");
 			return;
 		}
+		XML_BOUND_EVENT_IDS.add(eventId.trim().toLowerCase(Locale.ROOT));
 
 		final CentralMapEventSchedule.Entry centralSchedule = CentralMapEventSchedule.get(eventId);
 		warnIfLegacyXmlScheduleAttributesPresent(attributes, zone, eventId);
@@ -78,7 +85,7 @@ public class GenericMapEventScheduler implements ZoneConfigurator {
 			event.registerObserverZone(zone);
 		}
 
-		logStartupGuaranteedScheduleTable();
+		scheduleStartupGuaranteedScheduleTable();
 	}
 
 	private void warnIfLegacyXmlScheduleAttributesPresent(final Map<String, String> attributes,
@@ -158,13 +165,18 @@ public class GenericMapEventScheduler implements ZoneConfigurator {
 		}
 	}
 
-	private void logStartupGuaranteedScheduleTable() {
-		if (!STARTUP_TABLE_LOGGED.compareAndSet(false, true)) {
+	private void scheduleStartupGuaranteedScheduleTable() {
+		if (!STARTUP_TABLE_SCHEDULED.compareAndSet(false, true)) {
 			return;
 		}
+		SingletonRepository.getTurnNotifier().notifyInSeconds(5,
+				currentTurn -> logStartupGuaranteedScheduleTable());
+	}
 
+	private void logStartupGuaranteedScheduleTable() {
 		final List<StartupRow> rows = new ArrayList<>();
 		final Map<LocalDateTime, Integer> collisionsByStart = new HashMap<>();
+		int missingBindings = 0;
 
 		for (String eventId : MapEventConfigLoader.availableConfigIds()) {
 			final ConfiguredMapEvent event = MapEventRegistry.getEvent(eventId);
@@ -188,12 +200,17 @@ public class GenericMapEventScheduler implements ZoneConfigurator {
 				collisionsByStart.put(nearestStart,
 						Integer.valueOf(collisionsByStart.getOrDefault(nearestStart, Integer.valueOf(0)).intValue() + 1));
 			}
+			final boolean xmlBound = XML_BOUND_EVENT_IDS.contains(eventId);
+			if (!xmlBound) {
+				missingBindings++;
+			}
 
 			rows.add(new StartupRow(eventId,
 					triggerType == null ? "invalid" : triggerType.name().toLowerCase(Locale.ROOT),
 					centralSchedule != null ? "central" : "fallback",
 					nearestStart,
-					intervalDays));
+					intervalDays,
+					xmlBound));
 		}
 
 		int collisionSlots = 0;
@@ -205,8 +222,8 @@ public class GenericMapEventScheduler implements ZoneConfigurator {
 
 		final StringBuilder table = new StringBuilder();
 		table.append("Map event startup schedule table (nearest starts):\n");
-		table.append(String.format(Locale.ROOT, " | %-32s | %-10s | %-8s | %-19s | %-8s | %-9s |%n",
-				"eventId", "trigger", "source", "nearestStart", "interval", "collision"));
+		table.append(String.format(Locale.ROOT, " | %-32s | %-10s | %-8s | %-19s | %-8s | %-9s | %-8s |%n",
+				"eventId", "trigger", "source", "nearestStart", "interval", "collision", "xmlBind"));
 
 		for (StartupRow row : rows) {
 			final String nearest = row.nearestStart == null ? "n/a" : row.nearestStart.toString();
@@ -218,11 +235,13 @@ public class GenericMapEventScheduler implements ZoneConfigurator {
 				final int count = collisionsByStart.getOrDefault(row.nearestStart, Integer.valueOf(0)).intValue();
 				collision = count > 1 ? "x" + count : "ok";
 			}
-			table.append(String.format(Locale.ROOT, " | %-32s | %-10s | %-8s | %-19s | %-8s | %-9s |%n",
-					row.eventId, row.triggerType, row.source, nearest, interval, collision));
+			table.append(String.format(Locale.ROOT, " | %-32s | %-10s | %-8s | %-19s | %-8s | %-9s | %-8s |%n",
+					row.eventId, row.triggerType, row.source, nearest, interval, collision,
+					row.xmlBound ? "yes" : "no"));
 		}
 
-		table.append("Startup collision summary: ").append(collisionSlots).append(" slot(s) with collisions.");
+		table.append("Startup collision summary: ").append(collisionSlots)
+				.append(" slot(s) with collisions. Missing XML bindings: ").append(missingBindings).append(".");
 		LOGGER.info(table.toString());
 	}
 
@@ -232,14 +251,16 @@ public class GenericMapEventScheduler implements ZoneConfigurator {
 		private final String source;
 		private final LocalDateTime nearestStart;
 		private final int intervalDays;
+		private final boolean xmlBound;
 
 		private StartupRow(final String eventId, final String triggerType, final String source,
-				final LocalDateTime nearestStart, final int intervalDays) {
+				final LocalDateTime nearestStart, final int intervalDays, final boolean xmlBound) {
 			this.eventId = eventId;
 			this.triggerType = triggerType;
 			this.source = source;
 			this.nearestStart = nearestStart;
 			this.intervalDays = intervalDays;
+			this.xmlBound = xmlBound;
 		}
 	}
 

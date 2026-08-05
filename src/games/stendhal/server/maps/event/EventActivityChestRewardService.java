@@ -12,6 +12,7 @@
 package games.stendhal.server.maps.event;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -71,6 +72,38 @@ public final class EventActivityChestRewardService {
 		return awarded;
 	}
 
+	public static int awardObjectiveCompletionChests(final String eventDisplayName,
+			final String objectiveTitle, final String itemName,
+			final List<MapEventRewardSettlementService.RewardContext> qualifiedContexts) {
+		if (qualifiedContexts == null || qualifiedContexts.isEmpty()) {
+			return 0;
+		}
+
+		final String resolvedItemName = (itemName == null || itemName.trim().isEmpty())
+				? ChestTier.GOLD.itemName : itemName.trim();
+		int awarded = 0;
+		for (MapEventRewardSettlementService.RewardContext context : qualifiedContexts) {
+			if (context == null || context.getPlayer() == null) {
+				continue;
+			}
+			final Player player = context.getPlayer();
+			final Item chest = SingletonRepository.getEntityManager().getItem(resolvedItemName);
+			if (chest == null) {
+				continue;
+			}
+			chest.setBoundTo(player.getName());
+			player.equipOrPutOnGround(chest);
+			player.notifyWorldAboutChanges();
+			player.sendPrivateText(NotificationType.POSITIVE,
+					"Za wykonanie celu pobocznego"
+							+ (objectiveTitle == null || objectiveTitle.trim().isEmpty() ? ""
+									: " '" + objectiveTitle + "'")
+							+ " podczas wydarzenia " + eventDisplayName + " otrzymujesz dodatkową złotą skrzynię.");
+			awarded++;
+		}
+		return awarded;
+	}
+
 	private static ChestTier resolveTier(final int rankingIndex) {
 		if (rankingIndex <= GOLD_TOP_INDEX) {
 			return ChestTier.GOLD;
@@ -113,6 +146,10 @@ public final class EventActivityChestRewardService {
 		public int getKillAssists() {
 			return killAssists;
 		}
+	}
+
+	public static List<QualifiedParticipant> emptyQualifiedParticipants() {
+		return Collections.emptyList();
 	}
 
 	private enum ChestTier {

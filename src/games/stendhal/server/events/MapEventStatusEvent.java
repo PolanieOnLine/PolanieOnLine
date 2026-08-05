@@ -37,6 +37,13 @@ public class MapEventStatusEvent extends RPEvent {
 		rpclass.add(DefinitionClass.ATTRIBUTE, "currentWave", Type.INT);
 		rpclass.add(DefinitionClass.ATTRIBUTE, "totalWaves", Type.INT);
 		rpclass.add(DefinitionClass.ATTRIBUTE, "defenseStatus", Type.STRING);
+		rpclass.add(DefinitionClass.ATTRIBUTE, "phaseName", Type.STRING);
+		rpclass.add(DefinitionClass.ATTRIBUTE, "phaseDescription", Type.STRING);
+		rpclass.add(DefinitionClass.ATTRIBUTE, "modifierName", Type.STRING);
+		rpclass.add(DefinitionClass.ATTRIBUTE, "modifierDescription", Type.STRING);
+		rpclass.add(DefinitionClass.ATTRIBUTE, "secondaryObjective", Type.VERY_LONG_STRING);
+		rpclass.add(DefinitionClass.ATTRIBUTE, "secondaryObjectives", Type.VERY_LONG_STRING);
+		rpclass.add(DefinitionClass.ATTRIBUTE, "rewardBonusPercent", Type.INT);
 		rpclass.add(DefinitionClass.ATTRIBUTE, "activityTop", Type.VERY_LONG_STRING);
 		rpclass.add(DefinitionClass.ATTRIBUTE, "zones", Type.VERY_LONG_STRING);
 		rpclass.add(DefinitionClass.ATTRIBUTE, "capturePoints", Type.VERY_LONG_STRING);
@@ -46,8 +53,10 @@ public class MapEventStatusEvent extends RPEvent {
 			final Integer remainingSeconds, final Integer totalSeconds,
 			final Integer eventTotalSpawnedCreatures, final Integer eventDefeatedCreatures,
 			final Integer eventDefeatPercent, final Integer currentWave, final Integer totalWaves,
-			final String defenseStatus, final List<String> activityTop,
-			final List<String> zones, final String capturePoints) {
+			final String defenseStatus, final String phaseName, final String phaseDescription,
+			final String modifierName, final String modifierDescription,
+			final String secondaryObjectives, final Integer rewardBonusPercent,
+			final List<String> activityTop, final List<String> zones, final String capturePoints) {
 		super(Events.MAP_EVENT_STATUS);
 		put("eventId", eventId);
 		put("eventName", eventName);
@@ -75,6 +84,25 @@ public class MapEventStatusEvent extends RPEvent {
 		}
 		if (defenseStatus != null) {
 			put("defenseStatus", defenseStatus);
+		}
+		if (phaseName != null) {
+			put("phaseName", phaseName);
+		}
+		if (phaseDescription != null) {
+			put("phaseDescription", phaseDescription);
+		}
+		if (modifierName != null) {
+			put("modifierName", modifierName);
+		}
+		if (modifierDescription != null) {
+			put("modifierDescription", modifierDescription);
+		}
+		if (secondaryObjectives != null) {
+			put("secondaryObjective", secondaryObjectives);
+			put("secondaryObjectives", secondaryObjectives);
+		}
+		if (rewardBonusPercent != null) {
+			put("rewardBonusPercent", rewardBonusPercent.intValue());
 		}
 		if (activityTop != null) {
 			put("activityTop", activityTop);

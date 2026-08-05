@@ -29,6 +29,12 @@ public final class ActiveMapEventStatus {
 	private final int currentWave;
 	private final int totalWaves;
 	private final String defenseStatus;
+	private final String phaseName;
+	private final String phaseDescription;
+	private final String modifierName;
+	private final String modifierDescription;
+	private final List<SecondaryObjectiveStatus> secondaryObjectives;
+	private final int rewardBonusPercent;
 	private final List<String> activityTop;
 	private final List<String> zones;
 	private final List<CapturePointStatus> capturePoints;
@@ -37,7 +43,10 @@ public final class ActiveMapEventStatus {
 			final int remainingSeconds, final int totalSeconds,
 			final int eventTotalSpawnedCreatures, final int eventDefeatedCreatures,
 			final int eventDefeatPercent, final int currentWave, final int totalWaves,
-			final String defenseStatus, final List<String> activityTop, final List<String> zones,
+			final String defenseStatus, final String phaseName, final String phaseDescription,
+			final String modifierName, final String modifierDescription,
+			final List<SecondaryObjectiveStatus> secondaryObjectives, final int rewardBonusPercent,
+			final List<String> activityTop, final List<String> zones,
 			final List<CapturePointStatus> capturePoints) {
 		this.eventId = eventId;
 		this.eventName = eventName;
@@ -49,6 +58,12 @@ public final class ActiveMapEventStatus {
 		this.currentWave = Math.max(0, currentWave);
 		this.totalWaves = Math.max(0, totalWaves);
 		this.defenseStatus = (defenseStatus == null) ? "" : defenseStatus;
+		this.phaseName = (phaseName == null) ? "" : phaseName;
+		this.phaseDescription = (phaseDescription == null) ? "" : phaseDescription;
+		this.modifierName = (modifierName == null) ? "" : modifierName;
+		this.modifierDescription = (modifierDescription == null) ? "" : modifierDescription;
+		this.secondaryObjectives = Collections.unmodifiableList(new ArrayList<SecondaryObjectiveStatus>(secondaryObjectives));
+		this.rewardBonusPercent = Math.max(0, rewardBonusPercent);
 		this.activityTop = Collections.unmodifiableList(new ArrayList<String>(activityTop));
 		this.zones = Collections.unmodifiableList(new ArrayList<String>(zones));
 		this.capturePoints = Collections.unmodifiableList(new ArrayList<CapturePointStatus>(capturePoints));
@@ -93,6 +108,30 @@ public final class ActiveMapEventStatus {
 
 	public String getDefenseStatus() {
 		return defenseStatus;
+	}
+
+	public String getPhaseName() {
+		return phaseName;
+	}
+
+	public String getPhaseDescription() {
+		return phaseDescription;
+	}
+
+	public String getModifierName() {
+		return modifierName;
+	}
+
+	public String getModifierDescription() {
+		return modifierDescription;
+	}
+
+	public List<SecondaryObjectiveStatus> getSecondaryObjectives() {
+		return secondaryObjectives;
+	}
+
+	public int getRewardBonusPercent() {
+		return rewardBonusPercent;
 	}
 
 	public List<String> getActivityTop() {
@@ -224,6 +263,87 @@ public final class ActiveMapEventStatus {
 
 		public int getRemainingBossWaves() {
 			return remainingBossWaves;
+		}
+	}
+
+	public static final class SecondaryObjectiveStatus {
+		private final String objectiveId;
+		private final String title;
+		private final String details;
+		private final List<String> trackedTargetLabels;
+		private final String rewardType;
+		private final String rewardItemName;
+		private final String rewardDescription;
+		private final String state;
+		private final int startWave;
+		private final int endWave;
+		private final int progress;
+		private final int target;
+
+		public SecondaryObjectiveStatus(final String objectiveId, final String title,
+				final String details, final List<String> trackedTargetLabels, final String rewardType,
+				final String rewardItemName, final String rewardDescription,
+				final String state, final int startWave, final int endWave, final int progress, final int target) {
+			this.objectiveId = objectiveId;
+			this.title = title;
+			this.details = details;
+			this.trackedTargetLabels = Collections.unmodifiableList(new ArrayList<String>(trackedTargetLabels));
+			this.rewardType = rewardType;
+			this.rewardItemName = rewardItemName;
+			this.rewardDescription = rewardDescription;
+			this.state = state;
+			this.startWave = startWave;
+			this.endWave = endWave;
+			this.progress = progress;
+			this.target = target;
+		}
+
+		public String getObjectiveId() {
+			return objectiveId;
+		}
+
+		public String getTitle() {
+			return title;
+		}
+
+		public String getDetails() {
+			return details;
+		}
+
+		public List<String> getTrackedTargetLabels() {
+			return trackedTargetLabels;
+		}
+
+		public String getRewardType() {
+			return rewardType;
+		}
+
+		public String getRewardItemName() {
+			return rewardItemName;
+		}
+
+		public String getRewardDescription() {
+			return rewardDescription;
+		}
+
+		public String getState() {
+			return state;
+		}
+
+		public int getStartWave() {
+			return startWave;
+		}
+
+		public int getEndWave() {
+			return endWave;
+		}
+
+		public int getProgress() {
+			return progress;
+		}
+
+		public int getTarget() {
+			return target;
 		}
 	}
 }
