@@ -1,1 +1,0 @@
-package games.stendhal.server.maps.tatry.kuznice;

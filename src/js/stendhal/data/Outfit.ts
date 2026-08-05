@@ -11,12 +11,13 @@
  ***************************************************************************/
 
 import { singletons } from "../SingletonRepo";
+import { DrawingStage } from "../util/DrawingStage";
 import { Pair } from "../util/Pair";
 import { StringUtil } from "../util/StringUtil";
 import { Paths } from "./Paths";
 import { SpriteImage } from "../data/SpriteStore";
 
-import { stendhal } from "../stendhal";
+declare var stendhal: any;
 
 
 /**
@@ -218,6 +219,10 @@ export class Outfit {
 			return;
 		}
 
+		const stage = DrawingStage.get();
+		stage.reset();
+		stage.setSize(48 * 3, 64 * 4);
+
 		let outfitLayers = this.getLayers();
 		const detailIndex = this.getLayerIndex("detail") || 0;
 		if (stendhal.data.outfit.detailHasRearLayer(detailIndex)) {
@@ -265,16 +270,19 @@ export class Outfit {
 		};
 
 		onAllLayersReady = function() {
-			let canvas = new OffscreenCanvas(48 * 3, 64 * 4);
-			let ctx = canvas.getContext("2d")!;
 			for (const layer of layers) {
 				layer.removeEventListener("load", onLayerReady);
-				ctx.drawImage(layer, 0, 0);
+				stage.drawImage(layer);
 			}
-			image = canvas as unknown as SpriteImage; // TODO clean this up
+			image = stage.toImage() as SpriteImage;
+			stage.reset();
 			image.counter = 1;
 			singletons.getSpriteStore().cache(sig, image);
-			onReady();
+			if (image.height > 0) {
+				onReady();
+			} else {
+				image.addEventListener("load", onReady);
+			}
 		};
 
 		for (const layer of layers) {

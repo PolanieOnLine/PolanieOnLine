@@ -21,11 +21,11 @@ import { Panel } from "ui/toolkit/Panel";
 
 import { Chat } from "../util/Chat";
 import { Debug } from "../util/Debug";
+
+declare var marauroa: any;
+declare var stendhal: any;
+
 import { Paths } from "../data/Paths";
-
-import { marauroa } from "marauroa"
-import { stendhal } from "../stendhal";
-
 
 /**
  * performances debugging actions

@@ -9,7 +9,6 @@
  *                                                                         *
  ***************************************************************************/
 
-import { CorpseSlot } from "./CorpseSlot";
 import { RenderingContext2D } from "util/Types";
 import { ActivityIndicatorSprite } from "../sprite/ActivityIndicatorSprite";
 
@@ -21,10 +20,9 @@ import { Chat } from "../util/Chat";
 import { PopupInventory } from "./PopupInventory";
 import { Paths } from "../data/Paths";
 import { singletons } from "../SingletonRepo";
-import { MarauroaUtils } from "marauroa";
 
-import { marauroa } from "marauroa"
-import { stendhal } from "../stendhal";
+declare var marauroa: any;
+declare var stendhal: any;
 
 export class Corpse extends PopupInventory {
 
@@ -83,8 +81,23 @@ export class Corpse extends PopupInventory {
 	}
 
 	override createSlot(name: string) {
-		let slot = new CorpseSlot();
+		var slot = marauroa.util.fromProto(marauroa.rpslotFactory["_default"], {
+			add: function(object: any) {
+				marauroa.rpslotFactory["_default"].add.apply(this, arguments);
+				if (this._objects.length > 0) {
+					this._parent.autoOpenIfDesired();
+				}
+			},
+
+			del: function(key: any) {
+				marauroa.rpslotFactory["_default"].del.apply(this, arguments);
+				if (this._objects.length == 0) {
+					this._parent.closeCorpseInventory();
+				}
+			}
+		});
 		slot._name = name;
+		slot._objects = [];
 		slot._parent = this;
 		return slot;
 	}

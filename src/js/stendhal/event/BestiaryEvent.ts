@@ -10,13 +10,13 @@
  *                                                                         *
  ***************************************************************************/
 
-import { RPEvent } from "marauroa"
+import { RPEvent } from "./RPEvent";
 
 import { ui } from "../ui/UI";
 
 import { DialogContentComponent } from "../ui/toolkit/DialogContentComponent";
 
-import { stendhal } from "../stendhal";
+declare var stendhal: any;
 
 
 export class BestiaryEvent extends RPEvent {
@@ -24,7 +24,7 @@ export class BestiaryEvent extends RPEvent {
 	enemies!: string;
 
 
-	execute(_entity: any) {
+	execute(entity: any) {
 		if (!this.hasOwnProperty("enemies")) {
 			console.error("Event does not have \"enemies\" attribute");
 			return;

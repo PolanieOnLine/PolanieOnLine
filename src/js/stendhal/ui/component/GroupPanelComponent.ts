@@ -9,7 +9,8 @@
  *                                                                         *
  ***************************************************************************/
 
-import { marauroa } from "marauroa"
+declare let marauroa: any;
+declare let stendhal: any;
 
 import { ChatInputComponent } from "./ChatInputComponent";
 import { GroupMemberComponent } from "./GroupMemberComponent";
@@ -22,7 +23,6 @@ import { Panel } from "../toolkit/Panel";
 import { TabPanelComponent } from "../toolkit/TabPanelComponent";
 
 import { Chat } from "../../util/Chat";
-import { stendhal } from "stendhal";
 
 
 /**

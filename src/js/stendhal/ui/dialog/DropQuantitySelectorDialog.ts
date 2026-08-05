@@ -9,7 +9,7 @@
  *                                                                         *
  ***************************************************************************/
 
-import { marauroa } from "marauroa"
+declare var marauroa: any;
 
 import { Component } from "../toolkit/Component";
 import { singletons } from "../../SingletonRepo";

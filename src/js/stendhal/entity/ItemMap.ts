@@ -13,7 +13,7 @@ import { Entity } from "./Entity";
 import { MenuItem } from "../action/MenuItem";
 import { singletons } from "../SingletonRepo";
 
-import { marauroa } from "marauroa"
+declare var marauroa: any;
 
 const defaultUse = {
 	title: "Użyj",

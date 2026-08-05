@@ -12,6 +12,8 @@
 import { Component } from "./Component";
 import { FloatingWindow } from "./FloatingWindow";
 
+declare let stendhal: any;
+
 
 /**
  * Component representing the contents of a floating dialog.

@@ -49,7 +49,6 @@ import games.stendhal.server.actions.query.InfoAction;
 import games.stendhal.server.actions.query.LanguageAction;
 import games.stendhal.server.actions.query.ListProducersAction;
 import games.stendhal.server.actions.query.LookAction;
-import games.stendhal.server.actions.query.MapEventStatusSnapshotAction;
 import games.stendhal.server.actions.query.ProgressStatusQueryAction;
 import games.stendhal.server.actions.query.QuestListAction;
 import games.stendhal.server.actions.query.WhereAction;
@@ -122,7 +121,6 @@ public class CommandCenter {
 		MoveAction.register();
 		MoveContinuousAction.register();
 		MoveToAction.register();
-		MapEventStatusSnapshotAction.register();
 		NameAction.register();
 		OutfitAction.register();
 		OwnAction.register();

@@ -4,8 +4,7 @@
 
 	<import file="tools.xml" />
 
-	<!-- Convert TMX maps to PNG images scaled 1:16. -->
-	<target name="rendermaps" depends="compile_polanieonlinetools">
+	<target name="rendermaps" description="Convert TMX maps to PNG images scaled 1:16." depends="compile_polanieonlinetools">
 		<taskdef name="maprenderer" classname="games.stendhal.tools.MapRenderer">
 			<classpath>
 				<pathelement path="${build_polanieonlinetools}"/>
@@ -24,8 +23,7 @@
 	</target> <!-- rendermaps -->
 
 
-	<!-- Generate files for the Stendhal Atlas. -->
-	<target name="renderatlas" depends="compile_polanieonlinetools">
+	<target name="renderatlas" description="Generate files for the PolanieOnLine Atlas." depends="compile_polanieonlinetools">
 		<taskdef name="maprenderer" classname="games.stendhal.tools.MapRenderer">
 			<classpath>
 				<pathelement path="${build_polanieonlinetools}"/>
@@ -60,8 +58,7 @@
 	</target> <!-- renderatlas -->
 
 
-	<!-- Export world.tmx map to PNG image. -->
-	<target name="renderworldmap" depends="rendermaps">
+	<target name="renderworldmap" description="Export world.tmx map to PNG image." depends="rendermaps">
 		<!-- embed area images with area name -->
 		<!-- FIXME: need to detect the Python "PIL" module to ensure script can run or
 				write Java class that can do this -->
@@ -88,8 +85,7 @@
 	</target> <!-- renderworldmap -->
 
 
-	<!-- Load and save TMX maps to fix tilesets changes. -->
-	<target name="updatemaps" depends="compile_polanieonlinetools">
+	<target name="updatemaps" description="Load and save TMX maps to fix tilesets changes." depends="compile_polanieonlinetools">
 		<taskdef name="mapupdater" classname="games.stendhal.tools.MapUpdater">
 			<classpath>
 				<pathelement path="${build_polanieonlinetools}"/>

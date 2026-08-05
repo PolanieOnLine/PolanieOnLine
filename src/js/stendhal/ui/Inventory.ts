@@ -9,7 +9,7 @@
  *                                                                         *
  ***************************************************************************/
 
-import { stendhal } from "../stendhal";
+declare var stendhal: any;
 
 import { ItemContainerImplementation } from "./component/ItemContainerImplementation";
 

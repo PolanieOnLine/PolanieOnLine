@@ -9,12 +9,12 @@
  *                                                                         *
  ***************************************************************************/
 
-import { stendhal } from "stendhal";
 import { ui } from "../ui/UI";
 import { UIComponentEnum } from "../ui/UIComponentEnum";
 import { ChatLogComponent } from "../ui/component/ChatLogComponent";
 
-import { marauroa } from "marauroa"
+declare let marauroa: any;
+declare let stendhal: any;
 
 
 /**

@@ -17,7 +17,6 @@ import javax.swing.SwingUtilities;
 
 import games.stendhal.client.GameScreen;
 import games.stendhal.client.entity.Entity;
-import games.stendhal.client.gui.j2d.AnnouncementBoxFactory;
 import games.stendhal.client.gui.j2d.BackgroundPainter;
 import games.stendhal.client.gui.j2d.TextBoxFactory;
 import games.stendhal.client.listener.PositionChangeListener;
@@ -48,7 +47,6 @@ public class ScreenController implements PositionChangeListener {
 
 	private final GameScreen screen;
 	private TextBoxFactory textBoxFactory;
-	private AnnouncementBoxFactory announcementBoxFactory;
 
 	/**
 	 * Retreives the static singleton instance.
@@ -273,24 +271,5 @@ public class ScreenController implements PositionChangeListener {
 		}
 
 		return textBoxFactory;
-	}
-
-	public void addScreenAnnouncement(final String title, final String text, final String category) {
-		final Sprite sprite = getAnnouncementFactory().createAnnouncementBox(title, text, category);
-		final int textLength = (title == null ? 0 : title.length()) + (text == null ? 0 : text.length());
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				screen.addAnnouncementBanner(sprite, textLength);
-			}
-		});
-	}
-
-	private AnnouncementBoxFactory getAnnouncementFactory() {
-		if (announcementBoxFactory == null) {
-			announcementBoxFactory = new AnnouncementBoxFactory();
-		}
-
-		return announcementBoxFactory;
 	}
 }

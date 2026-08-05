@@ -2,8 +2,7 @@
 
 <project xmlns:if="ant:if" xmlns:unless="ant:unless">
 
-	<!-- Delete all build files and directories. -->
-	<target name="clean">
+	<target name="clean" description="Delete all build files and directories.">
 		<delete includeEmptyDirs="true" quiet="true">
 			<fileset dir="${buildroot}" excludes="eclipse/" defaultExcludes="false"/>
 		</delete>
@@ -19,16 +18,14 @@
 	</target>
 
 
-	<!-- Delete client data build files and directories. -->
-	<target name="clean_client_data">
+	<target name="clean_client_data" description="Delete client data build files and directories.">
 		<delete dir="${build_client_data}"/>
 		<delete dir="${build_client_music_data}"/>
 		<delete dir="${build_client_sound_data}"/>
 	</target>
 
 
-	<!-- Delete web client build files and directories. -->
-	<target name="cleanjs">
+	<target name="cleanjs" description="Delete web client build files and directories.">
 		<delete dir="${buildroot}/js"/>
 		<delete dir="${buildroot}/ts"/>
 	</target>

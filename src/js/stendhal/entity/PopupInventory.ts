@@ -9,10 +9,11 @@
  *                                                                         *
  ***************************************************************************/
 
-import { marauroa, RPObject } from "marauroa";
-
 import { RenderingContext2D } from "util/Types";
 import { Entity } from "./Entity";
+import { RPObject } from "./RPObject";
+
+declare var marauroa: any;
 
 
 export class PopupInventory extends Entity {

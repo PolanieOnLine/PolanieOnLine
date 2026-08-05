@@ -10,7 +10,7 @@
  *                                                                         *
  ***************************************************************************/
 
-import { RPEvent } from "marauroa"
+import { RPEvent } from "./RPEvent";
 
 import { ui } from "../ui/UI";
 import { DialogContentComponent } from "../ui/toolkit/DialogContentComponent";
@@ -18,7 +18,7 @@ import { Chat } from "../util/Chat";
 import { Paths } from "../data/Paths";
 import { singletons } from "../SingletonRepo";
 
-import { stendhal } from "../stendhal";
+declare var stendhal: any;
 
 export class ShowItemListEvent extends RPEvent {
 

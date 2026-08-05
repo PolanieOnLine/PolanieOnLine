@@ -15,11 +15,10 @@ import { TradeDialog } from "../ui/dialog/TradeDialog";
 import { UIComponentEnum } from "../ui/UIComponentEnum";
 import { ui } from "../ui/UI";
 
-import { RPEvent } from "marauroa"
+import { RPEvent } from "./RPEvent";
 
-import { stendhal } from "../stendhal";
-import { marauroa } from "marauroa"
-import { Player } from "../entity/Player";
+declare var stendhal: any;
+declare var marauroa: any;
 
 /**
  * handles player trade events
@@ -40,7 +39,7 @@ export class TradeEvent extends RPEvent {
 
 		if (dialog) {
 			let partner = marauroa.currentZone[this["partner_id"]];
-			dialog.updateTradeState(marauroa.me as Player, partner, this["user_trade_state"], this["partner_trade_state"]);
+			dialog.updateTradeState(marauroa.me, partner, this["user_trade_state"], this["partner_trade_state"]);
 		}
 	}
 

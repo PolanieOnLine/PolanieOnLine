@@ -9,8 +9,8 @@
  *                                                                         *
  ***************************************************************************/
 
-import { marauroa } from "marauroa"
-import { stendhal } from "../stendhal";
+declare var marauroa: any;
+declare var stendhal: any;
 
 import { Entity } from "./Entity";
 import { Player } from "./Player";

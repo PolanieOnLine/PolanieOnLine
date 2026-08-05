@@ -15,7 +15,7 @@ import { RenderingContext2D } from "util/Types";
 import { Paths } from "../data/Paths";
 import { singletons } from "../SingletonRepo";
 
-import { stendhal } from "../stendhal";
+declare var stendhal: any;
 
 export class Sign extends Entity {
 	override zIndex = 5000;

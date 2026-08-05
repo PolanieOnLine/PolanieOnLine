@@ -1,4 +1,4 @@
-import { stendhal } from "../../stendhal";
+declare const stendhal: any;
 
 interface ManagedWindow {
 	id: string;

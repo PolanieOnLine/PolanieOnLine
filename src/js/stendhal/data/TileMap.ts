@@ -9,13 +9,12 @@
  *                                                                         *
  ***************************************************************************/
 
-import { Deserializer } from "marauroa"
-import { stendhal } from "../stendhal";
+declare var marauroa: any;
+declare var stendhal: any;
 
 import { Paths } from "./Paths";
 
-import { LandscapeRenderingStrategy } from "../landscape/LandscapeRenderingStrategy";
-import { CombinedTilesetRenderingStrategy } from "../landscape/CombinedTilesetRenderingStrategy";
+import { LandscapeRenderingStrategy, CombinedTilesetRenderingStrategy } from "../landscape/LandscapeRenderingStrategy";
 import { IndividualTilesetRenderingStrategy } from "../landscape/IndividualTilesetRenderingStrategy";
 import { ParallaxBackground } from "../landscape/ParallaxBackground";
 
@@ -142,7 +141,7 @@ export class TileMap {
 
 	decodeTileset(content: any, name: string) {
 		var layerData = content[name];
-		var deserializer = Deserializer.fromBase64(layerData);
+		var deserializer = marauroa.Deserializer.fromBase64(layerData);
 		var amount = deserializer.readInt() as number;
 
 		this.tilesetFilenames = [];
@@ -196,7 +195,7 @@ export class TileMap {
 		if (!layerData) {
 			return;
 		}
-		var deserializer = Deserializer.fromDeflatedBase64(layerData);
+		var deserializer = marauroa.Deserializer.fromDeflatedBase64(layerData);
 		deserializer.readString(); // zone name
 		this.zoneSizeX = deserializer.readInt();
 		this.zoneSizeY = deserializer.readInt();

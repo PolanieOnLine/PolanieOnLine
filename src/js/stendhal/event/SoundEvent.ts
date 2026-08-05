@@ -10,13 +10,13 @@
  *                                                                         *
  ***************************************************************************/
 
-import { RPEvent } from "marauroa"
+import { RPEvent } from "./RPEvent";
 
 import { SoundID } from "../data/sound/SoundID";
 import { SoundManager } from "../data/sound/SoundManager";
 
-import { marauroa } from "marauroa"
-import { stendhal } from "../stendhal";
+declare var marauroa: any;
+declare var stendhal: any;
 
 
 export class SoundEvent extends RPEvent {

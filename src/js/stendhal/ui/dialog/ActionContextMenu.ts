@@ -14,8 +14,8 @@ import { UIComponentEnum } from "../UIComponentEnum";
 import { Component } from "../toolkit/Component";
 import { ChatInputComponent } from "../component/ChatInputComponent";
 
-import { marauroa } from "marauroa"
-import { stendhal } from "../../stendhal";
+declare var marauroa: any;
+declare var stendhal: any;
 
 export class ActionContextMenu extends Component {
 	private entity: any;

@@ -11,9 +11,9 @@
 
 import { Chat } from "../util/Chat";
 import { ChatOptionsDialog } from "../ui/dialog/ChatOptionsDialog";
-import { RPEvent } from "marauroa"
+import { RPEvent } from "./RPEvent";
 
-import { marauroa } from "marauroa"
+declare var marauroa: any
 
 /**
  * shows an image for a detail view

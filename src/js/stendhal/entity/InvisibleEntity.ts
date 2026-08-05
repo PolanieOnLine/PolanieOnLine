@@ -12,6 +12,8 @@
 import { Paths } from "../data/Paths";
 import { Entity } from "./Entity";
 
+declare var stendhal: any;
+
 export class InvisibleEntity extends Entity {
 
 	override isVisibleToAction(_filter: boolean) {
@@ -23,3 +25,4 @@ export class InvisibleEntity extends Entity {
 	}
 
 }
+

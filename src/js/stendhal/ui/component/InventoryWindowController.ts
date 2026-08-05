@@ -1,4 +1,4 @@
-import { stendhal } from "../../stendhal";
+declare const stendhal: any;
 
 import { Component } from "../toolkit/Component";
 import { InventoryWindowOrderManager } from "./InventoryWindowOrderManager";

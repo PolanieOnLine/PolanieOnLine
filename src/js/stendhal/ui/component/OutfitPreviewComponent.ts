@@ -16,6 +16,7 @@ import { Outfit } from "../../data/Outfit";
 
 import { Direction } from "../../util/Direction";
 import { StringUtil } from "../../util/StringUtil";
+import { Canvas } from "util/Types";
 
 
 /**

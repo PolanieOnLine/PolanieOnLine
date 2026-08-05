@@ -87,7 +87,6 @@ public class Creature extends NPC {
 	 * determined at creatures.xml, just make it 1.
 	 */
 	private static final double SERVER_DROP_GENEROSITY = 1;
-	private static final String MIST_STONE_NAME = "mgielny kamień";
 
 	private HealerBehavior healer = HealerBehaviourFactory.get(null);
 
@@ -898,12 +897,8 @@ public class Creature extends NPC {
 
 	private List<Item> createDroppedItems(final EntityManager defaultEntityManager) {
 		final List<Item> list = new LinkedList<Item>();
-		final Player killerPlayer = getKillerPlayer();
 
 		for (final DropItem dropped : dropsItems) {
-			if (shouldSkipDropForKiller(dropped, killerPlayer)) {
-				continue;
-			}
 			final double probability = Rand.rand(1000000) / 10000.0;
 
 			if (probability <= (dropped.probability / SERVER_DROP_GENEROSITY)) {
@@ -937,20 +932,6 @@ public class Creature extends NPC {
 			}
 		}
 		return list;
-	}
-
-	private Player getKillerPlayer() {
-		if ((circumstances != null) && (circumstances.getKiller() instanceof Player)) {
-			return (Player) circumstances.getKiller();
-		}
-
-		return null;
-	}
-
-	private boolean shouldSkipDropForKiller(final DropItem dropped, final Player killerPlayer) {
-		return (killerPlayer != null)
-				&& MIST_STONE_NAME.equals(dropped.name)
-				&& killerPlayer.isEquipped(MIST_STONE_NAME);
 	}
 
 	@Override

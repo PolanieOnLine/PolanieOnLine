@@ -72,15 +72,6 @@ public interface UserInterface {
 	public void addAchievementBox(final String title, final String description, final String category);
 
 	/**
-	 * Display a top-center announcement banner on the game screen.
-	 *
-	 * @param title banner title
-	 * @param text banner contents
-	 * @param category visual category
-	 */
-	public void addScreenAnnouncement(final String title, final String text, final String category);
-
-	/**
 	 * gets the sound system
 	 *
 	 * @return SoundSystemFacade

@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2026 - Stendhal                    *
+ *                   (C) Copyright 2005-2023 - Stendhal                    *
  ***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
@@ -9,26 +9,12 @@
  *                                                                         *
  ***************************************************************************/
 
-import { Corpse } from "./Corpse";
-import { RPSlot } from "marauroa";
+/**
+ * abstract base class for Events from the server
+ */
+export abstract class RPEvent {
 
-export class CorpseSlot extends RPSlot {
+	abstract execute(entity: any): void;
 
-	public _name?: string;
-	public _parent?: Corpse;
+};
 
-	override add(object: any) {
-		super.add(object);
-		if (this._objects.length > 0) {
-			this._parent?.autoOpenIfDesired();
-		}
-	}
-
-	override del(key: any) {
-		super.del(key);
-		if (this._objects.length == 0) {
-			this._parent?.closeCorpseInventory();
-		}
-	}
-
-}

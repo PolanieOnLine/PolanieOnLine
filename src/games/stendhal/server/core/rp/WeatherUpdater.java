@@ -45,8 +45,6 @@ public class WeatherUpdater implements TurnListener {
 	public static final String WEATHER_KEYWORD = "varying";
 	/** Weather attribute string. */
 	private static final String WEATHER = "weather";
-	/** Zone attribute used to lock automatic weather updates. */
-	public static final String WEATHER_LOCK_ATTRIBUTE = "weather_locked";
 	/** Time between checking if the weather should be changed. Seconds. */
 	private static final int CHECK_INTERVAL = 79;
 	/**
@@ -288,7 +286,7 @@ public class WeatherUpdater implements TurnListener {
 	 */
 	public void updateAndNotify(final StendhalRPZone zone, final Pair<String, Boolean> weather) {
 		final ZoneData zoneData = new ZoneData(zone.getAttributes(),
-				Modifiers.none(), zone.getWeatherEntity());
+				Modifiers.getModifiers(weather.first()), zone.getWeatherEntity());
 		updateAndNotify(zoneData, weather);
 	}
 
@@ -312,15 +310,8 @@ public class WeatherUpdater implements TurnListener {
 			LOGGER.debug("Rain would be:" + describeRain(calendar, 0).first());
 		}
 		for (ZoneData zone : zones) {
-			if (isWeatherLocked(zone.getAttributes())) {
-				continue;
-			}
 			updateAndNotify(zone, describeWeather(calendar, zone.getModifiers()));
 		}
-	}
-
-	private static boolean isWeatherLocked(final ZoneAttributes attributes) {
-		return attributes != null && attributes.get(WEATHER_LOCK_ATTRIBUTE) != null;
 	}
 
 	/**
@@ -384,15 +375,6 @@ public class WeatherUpdater implements TurnListener {
 				}
 			}
 			// No params, use the default
-			return NO_MODS;
-		}
-
-		/**
-		 * Get a modifier set with no adjustments.
-		 *
-		 * @return no-op modifiers
-		 */
-		static Modifiers none() {
 			return NO_MODS;
 		}
 

@@ -12,12 +12,12 @@
 import { RenderingContext2D } from "util/Types";
 import { MenuItem } from "../action/MenuItem";
 import { Chat } from "../util/Chat";
-import { RPObject } from "marauroa";
+import { RPObject } from "./RPObject";
 import { Paths } from "../data/Paths";
 import { singletons } from "../SingletonRepo";
 
-import { marauroa } from "marauroa"
-import { stendhal } from "../stendhal";
+declare var marauroa: any;
+declare var stendhal: any;
 
 /**
  * General entity

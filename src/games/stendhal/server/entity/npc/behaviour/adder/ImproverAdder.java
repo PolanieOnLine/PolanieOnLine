@@ -1,7 +1,6 @@
 package games.stendhal.server.entity.npc.behaviour.adder;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -190,6 +189,10 @@ public class ImproverAdder {
 		return currentUpgradingItem;
 	}
 
+	private boolean isEquippedTargetItem(final Player player) {
+		return player.isEquipped(getTargetItemName());
+	}
+
 	private List<Item> getAllEquippedTargetItems(final Player player) {
 		return player.getAllEquipped(getTargetItemName());
 	}
@@ -213,20 +216,6 @@ public class ImproverAdder {
 		if (toImprove == null) {
 			improver.say("Wybacz. Nie posiadasz przedmiotu #'" + getTargetItemName() + "' możliwego do ulepszenia.");
 			improver.setCurrentState(ConversationStates.ATTENDING);
-			return;
-		}
-
-		int maxDefinedLevel = getMaxDefinedImproveLevel();
-		if (toImprove.getMaxImproves() > maxDefinedLevel) {
-			improver.say("Wybacz. Brakuje danych o wymaganiach dla wyższych poziomów ulepszeń tego przedmiotu.");
-			improver.setCurrentState(ConversationStates.ATTENDING);
-			logger.warn("max_improves exceeds defined upgrade requirements for item " + toImprove.getName());
-			return;
-		}
-		if (upgradeRequirements.get(toImprove.getImprove() + 1) == null) {
-			improver.say("Wybacz. Brakuje danych o wymaganych surowcach do tego poziomu ulepszenia.");
-			improver.setCurrentState(ConversationStates.ATTENDING);
-			logger.warn("Missing upgrade requirements for level " + (toImprove.getImprove() + 1));
 			return;
 		}
 
@@ -311,35 +300,18 @@ public class ImproverAdder {
 		return true;
 	}
 
-	private boolean dropNeededResources(final Player player) {
+	private void dropNeededResources(final Player player) {
 		Item targetItem = foundItem(player);
-		if (targetItem == null) {
-			player.sendPrivateText("Nie posiadasz przedmiotu możliwego do ulepszenia.");
-			return false;
-		}
 		Map<String, Integer> requirements = upgradeRequirements.get(targetItem.getImprove() + 1);
-		if (requirements == null) {
-			player.sendPrivateText("Brakuje danych o wymaganych surowcach. Ulepszenie zostało wstrzymane.");
-			logger.warn("Missing upgrade requirements for level " + (targetItem.getImprove() + 1));
-			return false;
-		}
 
 		for (Map.Entry<String, Integer> entry : requirements.entrySet()) {
 			player.drop(entry.getKey(), entry.getValue());
 		}
-		return true;
 	}
 
 	private String getNeedResourcesNames(final Player player) {
 		Item targetItem = foundItem(player);
-		if (targetItem == null) {
-			return "Nie mogę ustalić wymaganych surowców bez przedmiotu do ulepszenia.";
-		}
 		Map<String, Integer> requirements = upgradeRequirements.get(targetItem.getImprove() + 1);
-		if (requirements == null) {
-			logger.warn("Missing upgrade requirements for level " + (targetItem.getImprove() + 1));
-			return "Brakuje danych o wymaganych surowcach, więc nie mogę kontynuować ulepszenia.";
-		}
 
 		StringBuilder sb = new StringBuilder();
 		for (Map.Entry<String, Integer> entry : requirements.entrySet()) {
@@ -348,10 +320,6 @@ public class ImproverAdder {
 		sb.setLength(sb.length() - 2);
 
 		return "Będę potrzebował również nieprzypadkowe surowce do podniesienia jakości, takie jak " + sb.toString() + ".";
-	}
-
-	private int getMaxDefinedImproveLevel() {
-		return Collections.max(upgradeRequirements.keySet());
 	}
 
 	private ChatAction requestImproveAction(final ImproverNPC improver) {
@@ -383,19 +351,11 @@ public class ImproverAdder {
 			@Override
 			public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
 				Item toImprove = foundItem(player);
-				if (toImprove == null) {
-					npc.say("Wybacz. Nie posiadasz przedmiotu #'" + getTargetItemName() + "' możliwego do ulepszenia.");
-					return;
-				}
 				MoneyUtils.removeMoney(player, currentUpgradeFee);
-				if (!dropNeededResources(player)) {
-					npc.say("Wybacz. Brakuje wymaganych surowców, więc nie mogę przeprowadzić ulepszenia.");
-					return;
-				}
+				dropNeededResources(player);
 
 				if (isSuccessful(player, toImprove)) {
 					toImprove.upgradeItem();
-					toImprove.setPersistent(true);
 					player.incImprovedForItem(player.getName(), 1);
 					player.incImprovedForItem(toImprove.getName(), 1);
 
@@ -440,7 +400,7 @@ public class ImproverAdder {
 		return new ChatCondition() {
 			@Override
 			public boolean fire(final Player player, final Sentence sentence, Entity improver) {
-				return foundItem(player) != null;
+				return isEquippedTargetItem(player);
 			}
 		};
 	}
@@ -450,20 +410,6 @@ public class ImproverAdder {
 			@Override
 			public boolean fire(final Player player, final Sentence sentence, Entity improver) {
 				Item targetItem = foundItem(player);
-				if (targetItem == null) {
-					if (improver instanceof SpeakerNPC) {
-						((SpeakerNPC) improver).say("Wybacz. Nie posiadasz przedmiotu #'" + getTargetItemName() + "' możliwego do ulepszenia.");
-					}
-					return false;
-				}
-				Map<String, Integer> requirements = upgradeRequirements.get(targetItem.getImprove() + 1);
-				if (requirements == null) {
-					logger.warn("Missing upgrade requirements for level " + (targetItem.getImprove() + 1));
-					if (improver instanceof SpeakerNPC) {
-						((SpeakerNPC) improver).say("Wybacz. Brakuje wymaganych surowców, więc nie mogę ulepszyć tego przedmiotu.");
-					}
-					return false;
-				}
 				return playerHaveResources(player, targetItem.getImprove() + 1);
 			}
 		};

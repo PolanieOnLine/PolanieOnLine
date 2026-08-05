@@ -9,8 +9,8 @@
  *                                                                         *
  ***************************************************************************/
 
-import { marauroa } from "marauroa"
-import { stendhal } from "../../stendhal";
+declare var marauroa: any;
+declare var stendhal: any;
 
 import { Component } from "../toolkit/Component";
 import { getMobileRightPanelCollapsedInset, getViewportOverlayPosition } from "../overlay/ViewportOverlayPosition";

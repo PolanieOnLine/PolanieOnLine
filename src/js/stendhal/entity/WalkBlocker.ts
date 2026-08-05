@@ -14,7 +14,7 @@ import { Entity } from "./Entity";
 
 import { Color } from "../data/color/Color";
 
-import { stendhal } from "../stendhal";
+declare var stendhal: any;
 
 export class WalkBlocker extends Entity {
 	override minimapShow = true;

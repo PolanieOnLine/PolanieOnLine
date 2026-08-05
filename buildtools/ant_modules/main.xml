@@ -2,8 +2,7 @@
 
 <project xmlns:if="ant:if" xmlns:unless="ant:unless">
 
-	<!-- Update version and resource info. -->
-	<target name="init">
+	<target name="init" description="Update version and resource info.">
 		<mkdir dir="${lib}"/>
 
 		<!-- update version -->
@@ -90,8 +89,7 @@
 	</target> <!-- init -->
 
 
-	<!-- Verify XML files are well-formed. -->
-	<target name="checkxml">
+	<target name="checkxml" description="Verify XML files are well-formed.">
 		<schemavalidate failonerror="yes" lenient="yes" warn="yes">
 			<schema namespace="polanieonline" file="${config_dir}/zones.xsd"/>
 			<fileset dir="${config_dir}/zones">
@@ -186,8 +184,7 @@
 	</target> <!-- checkxml -->
 
 
-	<!-- Add date to pre-release test client. -->
-	<target name="internalUpdatePrereleaseVersion" if="PRE_RELEASE">
+	<target name="internalUpdatePrereleaseVersion" if="PRE_RELEASE" description="Add date to pre-release test client.">
 		<tstamp prefix="date">
 			<format property="iso" pattern="yyyy-MM-dd"/>
 		</tstamp>

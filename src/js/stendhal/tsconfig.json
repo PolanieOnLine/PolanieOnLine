@@ -1,15 +1,14 @@
 {
 	"compilerOptions": {
 		"baseUrl": ".",
-		"lib": ["dom", "es2022"],
-		"module": "es2020",
-		"moduleResolution": "bundler",
+		"lib": [ "dom", "es2017" ],
+		"module": "commonjs",
 		"noImplicitOverride": true,
 		"outDir": "../../../build/ts",
 		"rootDir": ".",
 		"sourceMap": true,
 		"strict": true,
-		"target": "es2022"
+		"target": "es2017"
 	},
 	"typedocOptions": {
 		"entryPoints": ["."],

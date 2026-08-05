@@ -79,15 +79,6 @@ public class WeatherEntity extends Entity {
 	}
 
 	/**
-	 * Returns whether the thunder state is active.
-	 *
-	 * @return <code>true</code> if thundering is active
-	 */
-	public boolean isThundering() {
-		return active;
-	}
-
-	/**
 	 * Schedule the next lightning.
 	 */
 	private void startThundering() {

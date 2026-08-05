@@ -11,10 +11,8 @@
 
 import { Paths } from "../data/Paths";
 
-import { marauroa } from "marauroa"
-import { stendhal } from "../stendhal";
-import { TileMap } from "data/TileMap";
-
+declare var marauroa: any;
+declare var stendhal: any;
 
 /**
  * a pseudo entity which represents the ground
@@ -34,30 +32,28 @@ export class Ground {
 	 * @return Direction of the zone to change to, <code>null</code> if no zone change should happen
 	 */
 	private calculateZoneChangeDirection(x: number, y: number): string|null {
-		let map = TileMap.get();
 		if (x < 15) {
 			return "4"; // LEFT
 		}
-		if (x > map.zoneSizeX * 32 - 15) {
+		if (x > stendhal.data.map.zoneSizeX * 32 - 15) {
 			return "2"; // RIGHT
 		}
 		if (y < 15) {
 			return "1"; // UP
 		}
-		if (y > map.zoneSizeY * 32 - 15) {
+		if (y > stendhal.data.map.zoneSizeY * 32 - 15) {
 			return "3"; // DOWN
 		}
 		return null;
 	}
 
 	getCursor(x: number, y: number): string {
-		let map = TileMap.get();
-		if ((x < 15) || (y < 15) || (x > map.zoneSizeX * 32 - 15) || (y > map.zoneSizeY * 32 - 15)) {
+		if ((x < 15) || (y < 15) || (x > stendhal.data.map.zoneSizeX * 32 - 15) || (y > stendhal.data.map.zoneSizeY * 32 - 15)) {
 			return "url(" + Paths.sprites + "/cursor/walkborder.png) 1 3, auto"
 		}
 		var worldX = Math.floor(x / 32);
 		var worldY = Math.floor(y / 32);
-		if (map.collision(worldX, worldY)) {
+		if (stendhal.data.map.collision(worldX, worldY)) {
 			return "url(" + Paths.sprites + "/cursor/stop.png) 1 3, auto";
 		}
 		return "url(" + Paths.sprites + "/cursor/walk.png) 1 3, auto";

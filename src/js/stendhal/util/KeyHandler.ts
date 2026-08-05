@@ -9,7 +9,7 @@
  *                                                                         *
  ***************************************************************************/
 
-import { marauroa } from "marauroa"
+declare var marauroa: any;
 
 import { ChatCompletionHelper } from "./ChatCompletionHelper";
 import { Direction } from "./Direction";

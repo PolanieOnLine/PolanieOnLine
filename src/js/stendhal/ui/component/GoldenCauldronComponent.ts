@@ -12,7 +12,7 @@
 import { Component } from "../toolkit/Component";
 import { ItemInventoryComponent } from "./ItemInventoryComponent";
 
-import { stendhal } from "../../stendhal";
+declare var stendhal: any;
 
 const SECOND_MS = 1000;
 

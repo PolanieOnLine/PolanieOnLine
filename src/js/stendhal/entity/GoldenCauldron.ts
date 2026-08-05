@@ -16,8 +16,8 @@ import { FloatingWindow } from "../ui/toolkit/FloatingWindow";
 import { Paths } from "../data/Paths";
 import { singletons } from "../SingletonRepo";
 
-import { marauroa } from "marauroa"
-import { stendhal } from "../stendhal";
+declare var marauroa: any;
+declare var stendhal: any;
 
 const WINDOW_ID = "golden-cauldron";
 const SLOT_CONTENT = "content";

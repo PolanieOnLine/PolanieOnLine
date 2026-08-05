@@ -13,8 +13,8 @@ import { DialogContentComponent } from "../toolkit/DialogContentComponent";
 import { singletons } from "../../SingletonRepo";
 import { Paths } from "../../data/Paths";
 
-import { marauroa } from "marauroa"
-import { stendhal } from "../../stendhal";
+declare var marauroa: any;
+declare var stendhal: any;
 
 
 export class EmojiMapDialog extends DialogContentComponent {

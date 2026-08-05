@@ -14,7 +14,7 @@ import { Entity } from "./Entity";
 import { Paths } from "../data/Paths";
 import { singletons } from "../SingletonRepo";
 
-import { marauroa } from "marauroa"
+declare var marauroa: any;
 
 
 export class Food extends Entity {

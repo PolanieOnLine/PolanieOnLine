@@ -12,8 +12,7 @@
 		<delete dir="${buildroot}/build_docs"/>
 	</target>
 
-	<!-- Generate HTML documentation for Java, TypeScript, and Lua APIs. -->
-	<target name="docs" depends="luadocs,javadocs,tsdocs"/>
+	<target name="docs" description="Generate HTML documentation for Java, TypeScript, and Lua APIs." depends="luadocs,javadocs,tsdocs"/>
 
 
 	<!-- Java documentation -->

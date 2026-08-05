@@ -9,10 +9,10 @@
  *                                                                         *
  ***************************************************************************/
 
-import { marauroa, Deserializer, RPObject } from "marauroa"
-import { stendhal } from "./stendhal";
+declare var marauroa: any;
+declare var stendhal: any;
 
-import { StendhalPerceptionListener } from "./PerceptionListener";
+import { PerceptionListener } from "./PerceptionListener";
 import { singletons } from "./SingletonRepo";
 
 import { Paths } from "./data/Paths";
@@ -21,10 +21,14 @@ import { Color } from "./data/color/Color";
 
 import { EntityRegistry } from "./entity/EntityRegistry";
 import { Ground } from "./entity/Ground";
+import { RPObject } from "./entity/RPObject";
 
 import { ui } from "./ui/UI";
 import { UIComponentEnum } from "./ui/UIComponentEnum";
 
+import { BuddyListComponent } from "./ui/component/BuddyListComponent";
+import { MiniMapComponent } from "./ui/component/MiniMapComponent";
+import { PlayerEquipmentComponent } from "./ui/component/PlayerEquipmentComponent";
 import { ZoneInfoComponent } from "./ui/component/ZoneInfoComponent";
 
 import { ChooseCharacterDialog } from "./ui/dialog/ChooseCharacterDialog";
@@ -40,7 +44,6 @@ import { SingletonFloatingWindow } from "./ui/toolkit/SingletonFloatingWindow";
 import { Chat } from "./util/Chat";
 import { DialogHandler } from "./util/DialogHandler";
 import { Globals } from "./util/Globals";
-import { TileMap } from "data/TileMap";
 
 
 /**
@@ -65,7 +68,6 @@ export class Client {
 
 	/** Singleton instance. */
 	private static instance: Client;
-	public loaded = false;
 
 
 	/**
@@ -82,7 +84,7 @@ export class Client {
 	 * Hidden singleton constructor.
 	 */
 	private constructor() {
-		// empty
+		// do nothing
 	}
 
 	/**
@@ -95,6 +97,10 @@ export class Client {
 		}
 		this.initialized = true;
 
+		// add version & build info to DOM for retrieval by browser
+		document.documentElement.setAttribute("data-build-version", stendhal.data.build.version);
+		document.documentElement.setAttribute("data-build-build", stendhal.data.build.build);
+
 		stendhal.config = singletons.getConfigManager();
 		stendhal.session = singletons.getSessionManager();
 		stendhal.actions = singletons.getSlashActionRepo();
@@ -104,10 +110,6 @@ export class Client {
 		this.initSound();
 		this.initUI();
 		this.initZone();
-
-		// add version & build info to DOM for retrieval by browser
-		document.documentElement.setAttribute("data-build-version", stendhal.data.build?.version);
-		document.documentElement.setAttribute("data-build-build", stendhal.data.build?.build);
 	}
 
 	/**
@@ -123,6 +125,7 @@ export class Client {
 		stendhal.data.group = singletons.getGroupManager();
 		stendhal.data.outfit = singletons.getOutfitStore();
 		stendhal.data.sprites = singletons.getSpriteStore();
+		stendhal.data.map = singletons.getTileMap();
 		// online players
 		stendhal.players = [];
 		stendhal.playerInGame = false;
@@ -265,7 +268,7 @@ export class Client {
 	 * Registers Marauroa event handlers.
 	 */
 	registerMarauroaEventHandlers() {
-		marauroa.clientFramework.onDisconnect = function(_reason: string, _code: number, _wasClean: boolean) {
+		marauroa.clientFramework.onDisconnect = function(_reason: string, _error: string) {
 			stendhal.playerInGame = false;
 			singletons.getQuickSlotsController().update();
 			if (!Client.instance.unloading) {
@@ -385,13 +388,37 @@ export class Client {
 					this.onDataMap(entry.data);
 				}
 			}
-			TileMap.get().onTransfer(zoneName, data);
+			stendhal.data.map.onTransfer(zoneName, data);
 		};
 
 		// update user interface on perceptions
 		if (document.getElementById("viewport")) {
 			// override perception listener
-			marauroa.perceptionListener = new StendhalPerceptionListener();
+			marauroa.perceptionListener = new PerceptionListener(marauroa.perceptionListener);
+			marauroa.perceptionListener.onPerceptionEnd = (_type: Int8Array, _timestamp: number) => {
+				stendhal.zone.sortEntities();
+				(ui.get(UIComponentEnum.MiniMap) as MiniMapComponent).draw();
+				(ui.get(UIComponentEnum.BuddyList) as BuddyListComponent).update();
+				stendhal.ui.equip.update();
+				singletons.getQuickSlotsController().update();
+				(ui.get(UIComponentEnum.PlayerEquipment) as PlayerEquipmentComponent).update();
+				if (!this.worldLoaded) {
+					this.worldLoaded = true;
+					stendhal.playerInGame = true;
+					singletons.getQuickSlotsController().update();
+					// delay visibile change of client a little to allow for initialisation in the background for a smoother experience
+					window.setTimeout(() => {
+						const body = document.getElementById("body")!;
+						body.style.cursor = "auto";
+						document.getElementById("client")!.style.display = "flex";
+						document.getElementById("loginpopup")!.style.display = "none";
+
+						// initialize observer after UI is ready
+						singletons.getUIUpdateObserver().init();
+						ui.onDisplayReady();
+					}, 300);
+				}
+			};
 		}
 	}
 
@@ -488,9 +515,8 @@ export class Client {
 	 *   Information about map.
 	 */
 	onDataMap(data: any) {
-		let map = TileMap.get();
 		var zoneinfo = {} as { [key: string]: string };
-		var deserializer = Deserializer.fromBase64(data);
+		var deserializer = marauroa.Deserializer.fromBase64(data);
 		deserializer.readAttributes(zoneinfo);
 		(ui.get(UIComponentEnum.ZoneInfo) as ZoneInfoComponent).zoneChange(zoneinfo);
 
@@ -501,8 +527,8 @@ export class Client {
 
 		// parallax background
 		if (stendhal.config.getBoolean("effect.parallax")) {
-			map.setParallax(zoneinfo["parallax"]);
-			map.setIgnoredTiles(zoneinfo["parallax_ignore_tiles"]);
+			stendhal.data.map.setParallax(zoneinfo["parallax"]);
+			stendhal.data.map.setIgnoredTiles(zoneinfo["parallax_ignore_tiles"]);
 		}
 
 		// coloring information

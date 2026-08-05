@@ -26,7 +26,6 @@ import marauroa.common.game.RPObject;
 public interface J2DClientGUI {
 	void addDialog(Component dialog);
 	void addAchievementBox(String title, String description, String category);
-	void addScreenAnnouncement(String title, String text, String category);
 	@Deprecated
 	void addGameScreenText(double x, double y, String text, NotificationType type,
 		boolean isTalking);

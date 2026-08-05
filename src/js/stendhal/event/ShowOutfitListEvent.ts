@@ -10,12 +10,12 @@
  *                                                                         *
  ***************************************************************************/
 
-import { RPEvent } from "marauroa"
+import { RPEvent } from "./RPEvent";
 
 import { ui } from "../ui/UI";
 import { DialogContentComponent } from "../ui/toolkit/DialogContentComponent";
 
-import { stendhal } from "../stendhal";
+declare var stendhal: any;
 
 
 export class ShowOutfitListEvent extends RPEvent {

@@ -17,6 +17,7 @@ import { Color } from "../data/color/Color";
 import { RenderingContext2D } from "util/Types";
 import { Paths } from "../data/Paths";
 
+declare var stendhal: any;
 
 export class NPC extends RPEntity {
 	override minimapShow = true;
@@ -30,7 +31,7 @@ export class NPC extends RPEntity {
 		this["base_hp"] = 100;
 	}
 
-	override set(key: string, value: any) {
+	override set(key: string, value: string) {
 		super.set(key, value);
 
 		if (key === "name") {

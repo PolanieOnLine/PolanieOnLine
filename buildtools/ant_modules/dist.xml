@@ -19,15 +19,13 @@
 	</condition>
 
 
-	<!-- Build server and clients. -->
-	<target name="jar" depends="client_build,server_build">
+	<target name="jar" depends="client_build,server_build" description="Build server and clients.">
 		<!-- XXX: client & server builds are not exclusive to NetBeans, remove this output? -->
 		<echo>Built client and server for NetBeans.</echo>
 	</target>
 
 
-	<!-- Sign client distribution. -->
-	<target name="signjar" unless="exclude.signing">
+	<target name="signjar" unless="exclude.signing" description="Sign client distribution.">
 		<signjar
 			alias="${keystore.alias}"
 			keystore="keystore.ks"
@@ -36,23 +34,20 @@
 	</target>
 
 
-	<!-- Generate JAR files for both client and server. -->
 	<!-- XXX: why does this depend on "server_build" twice? -->
-	<target name="compile" depends="server_build,client_build,server_build" />
+	<target name="compile" depends="server_build,client_build,server_build" description="Generate JAR files for both client and server."/>
 
 
-	<!-- Create all packages for PolanieOnLine release. -->
-	<target name="dist" depends="clean,dist_binary,dist_source,signupdates" />
+	<target name="dist" depends="clean,dist_binary,dist_source,signupdates" description="Create all packages for PolanieOnLine release."/>
 
 
-	<!-- Create all binary packages for PolanieOnLine release. -->
-	<target name="dist_binary" depends="clean,dist_server_binary,dist_client_binary,dist_client_starter,dist_webclient_binary" />
+	<target name="dist_binary" depends="clean,dist_server_binary,dist_client_binary,dist_client_starter,dist_webclient_binary"
+			description="Create all binary packages for PolanieOnLine release."/> <!-- FIXME: dist_webclient_binary reporting node.js error -->
 
 
 	<!-- START: source -->
 
-	<!-- Create all source packages for PolanieOnLine release. -->
-	<target name="dist_source">
+	<target name="dist_source" description="Create all source packages for PolanieOnLine release.">
 		<mkdir dir="${buildroot}/polanieonline-${version}-src"/>
 
 		<copy todir="${buildroot}/polanieonline-${version}-src/src">
@@ -109,8 +104,7 @@
 
 	<!-- START: client data -->
 
-	<!-- Build client data files. -->
-	<target name="build_client_data">
+	<target name="build_client_data" description="Build client data files.">
 		<!-- base data -->
 		<mkdir dir="${build_client_data}"/>
 		<copy todir="${build_client_data}/data/sprites">
@@ -181,8 +175,7 @@
 
 	<!-- START: server -->
 
-	<!-- Compile JAR file for PolanieOnLine server. -->
-	<target name="server_build" depends="init,checkxml">
+	<target name="server_build" depends="init,checkxml" description="Compile JAR file for PolanieOnLine server.">
 		<mkdir dir="${build_server}"/>
 
 		<copy todir="${build_server}/data/conf" file="data/conf/stendhalcreateaccount.properties"/>
@@ -219,7 +212,6 @@
 				<pathelement path="${simple_jar}"/>
 				<pathelement path="${guava_jar}"/>
 				<pathelement path="${luaj_jar}"/>
-				<pathelement path="${jsonsimple_jar}"/>
 			</classpath>
 		</javac>
 
@@ -266,7 +258,6 @@
 				<pathelement path="${log4j_jar}"/>
 				<pathelement path="${junit_jar}"/>
 				<pathelement path="${guava_jar}"/>
-				<pathelement path="${jsonsimple_jar}"/>
 			</classpath>
 		</javac>
 
@@ -349,8 +340,7 @@
 	</target> <!-- server_build -->
 
 
-	<!-- Create server package for release and distribution. -->
-	<target name="dist_server_binary" depends="server_build">
+	<target name="dist_server_binary" depends="server_build" description="Create server package for release and distribution.">
 		<mkdir dir="${buildroot}/polanieonline-server-${version}"/>
 
 		<copy todir="${buildroot}/polanieonline-server-${version}/data/script">
@@ -403,12 +393,10 @@
 	</target> <!-- dist_server_binary -->
 
 
-	<!-- Build and push container image. -->
-	<target name="dist_docker" depends="docker_build,docker_push" />
+	<target name="dist_docker" depends="docker_build,docker_push" description="Build and push container image."/>
 
 
-	<!-- Prepare container image build. -->
-	<target name="docker_build_prepare" depends="dist_server_binary">
+	<target name="docker_build_prepare" depends="dist_server_binary" description="Prepare container image build.">
 		<mkdir dir="${build_docker}" />
 		<copy file="${buildtools_docker}/Dockerfile" todir="${build_docker}" />
 		<copy file="${buildtools_docker}/.dockerignore" todir="${build_docker}" />
@@ -417,8 +405,7 @@
 	</target> <!-- docker_build_prepare -->
 
 
-	<!-- Build container image. -->
-	<target name="docker_build" depends="docker_build_prepare">
+	<target name="docker_build" depends="docker_build_prepare" description="Build container image.">
 		<exec dir="${build_docker}" executable="docker">
 			<arg value="build" />
 			<arg value="-t" />
@@ -428,57 +415,28 @@
 	</target> <!-- docker_build -->
 
 
-	<!-- Push container image. -->
-	<target name="docker_push" />
+	<target name="docker_push" description="Push container image."/>
 
 
-	<!-- Run server. -->
-	<target name="server_run" depends="server_build,compilejs">
-		<mkdir dir="run_srvr/libs"/>
-		<mkdir dir="run_srvr/js"/>
+	<target name="server_run" depends="server_build,compilejs" description="Run server.">
+		<mkdir dir="run_srvr"/>
 
 		<copy todir="run_srvr">
 			<fileset file="build/lib/${server_jarname}"/>
 			<fileset file="build/lib/${xmlconf_jarname}"/>
 			<fileset file="build/lib/${maps_jarname}"/>
-		</copy>
-
-		<copy todir="run_srvr/libs">
-			<fileset file="${marauroa_jar}" />
-			<fileset file="${groovy_jar}" />
-			<fileset file="${guava_jar}" />
-			<fileset file="${log4j_jar}" />
-			<fileset file="${mysqldriver_jar}" />
-			<fileset file="${h2_jar}" />
-			<fileset file="${hamcrest_jar}" />
-			<fileset file="${tomcatcore_jar}" />
-			<fileset file="${tomcatwebsocket_jar}" />
-			<fileset file="${jakartaannotation_jar}" />
-			<fileset file="${luaj_jar}" />
-			<fileset file="${jsonsimple_jar}" />
-		</copy>
-
-		<copy todir="run_srvr/js">
-			<fileset dir="${srcjs}">
-				<exclude name="stendhal/" />
-				<exclude name="stendhal-compiled.js.map" />
-				<exclude name=".gitignore" />
-			</fileset>
+			<fileset file="libs/marauroa.jar"/>
+			<fileset file="libs/groovy.jar"/>
+			<fileset file="libs/guava.jar"/>
+			<fileset file="libs/log4j.jar"/>
+			<fileset file="libs/${mysqldriver_jarname}"/>
 		</copy>
 
 		<chmod file="run_srvr/${server_jarname}" perm="+x"/>
 
-		<java jar="run_srvr/${server_jarname}"
-			fork="true"
-			failonerror="true"
-			maxmemory="256m">
-			<arg value="-c" />
-			<arg value="server.ini" />
-			<arg value="-l" />
-			<classpath>
-				<pathelement location="${basedir}" />
-			</classpath>
-		</java>
+		<exec dir="." executable="java">
+			<arg line="-Xmx256m -cp run_srvr -jar run_srvr/${server_jarname} -c server.ini -l"/>
+		</exec>
 
 		<!-- we've run the program, so delete the jars -->
 		<delete dir="run_srvr"/>
@@ -489,8 +447,7 @@
 
 	<!-- START: java client -->
 
-	<!-- Compile client JAR file. -->
-	<target name="client_build" depends="init,build_client_data">
+	<target name="client_build" depends="init,build_client_data" description="Compile client JAR file.">
 		<mkdir dir="${build_client}"/>
 
 		<copy todir="${build_client}/games/stendhal/client">
@@ -583,8 +540,7 @@
 	</target> <!-- client_build -->
 
 
-	<!-- Compile text client. -->
-	<target name="compile_textclient">
+	<target name="compile_polanieonlinetextclient" description="Compile text client.">
 		<mkdir dir="${build_polanieonlinetextclient}"/>
 
 		<javac srcdir="${src}" destdir="${build_polanieonlinetextclient}" source="1.8" target="1.8" debug="${javac.debug}" debuglevel="${javac.debuglevel}" deprecation="${javac.deprecation}" includeantruntime="false">
@@ -605,12 +561,8 @@
 		</javac>
 	</target> <!-- compile_polanieonlinetextclient -->
 
-	<!-- Alias of `compile_textclient`. -->
-	<target name="compile_polanieonlinetextclient" depends="compile_textclient" />
 
-
-	<!-- Create Java client package for release and distribution. -->
-	<target name="dist_client_binary" depends="clean_client_data,client_build">
+	<target name="dist_client_binary" depends="clean_client_data,client_build" description="Create Java client package for release and distribution.">
 		<mkdir dir="${buildroot}/polanieonline-${version}"/>
 		<mkdir dir="${buildroot}/polanieonline-${version}/lib"/>
 		<mkdir dir="${buildroot}/polanieonline-${version}/log"/>
@@ -646,8 +598,8 @@
 	</target> <!-- dist_client_binary -->
 
 
-	<!-- Create Java client starter package (obsolete). -->
-	<target name="dist_client_starter" depends="client_build">
+	<!-- XXX: is this still used? -->
+	<target name="dist_client_starter" depends="client_build" description="Create Java client starter package.">
 		<mkdir dir="${buildroot}/polanieonline-${version}"/>
 		<copy todir="${buildroot}/polanieonline-${version}" file="${lib}/${client_starter_jarname}"/>
 		<copy todir="${buildroot}/polanieonline-${version}/lib">
@@ -671,8 +623,7 @@
 	</target> <!-- dist_client_starter -->
 
 
-	<!-- Run Java client. -->
-	<target name="client_run" depends="client_build">
+	<target name="client_run" depends="client_build" description="Run Java client.">
 		<mkdir dir="run_clnt"/>
 		<mkdir dir="run_clnt/lib"/>
 
@@ -708,9 +659,8 @@
 	</target> <!-- client_run -->
 
 
-	<!-- Run client for NetBeans trick. -->
 	<!-- Netbeans won't let you choose ant options, so this does it for us-->
-	<target name="run" depends="client_run" />
+	<target name="run" depends="client_run" description="Run client for NetBeans trick."/>
 
 	<!-- END: java client -->
 
@@ -718,9 +668,8 @@
 	<!-- START: web client -->
 
 	<target name="js-prepare-marauroa">
-		<mkdir dir="node_modules/marauroa"/>
-		<unzip dest="node_modules/marauroa" src="libs/marauroa.jar">
-			<mapper type="flatten"/>
+		<mkdir dir="build/js"/>
+		<unzip dest="build" src="libs/marauroa.jar">
 			<patternset>
 				<include name="js/**"/>
 			</patternset>
@@ -729,9 +678,8 @@
 
 
 	<target name="js-prepare-build">
-		<mkdir dir="node_modules/marauroa"/>
-		<echo file="node_modules/marauroa/build.js">
-			export function version(marauroa, stendhal) {
+		<echo file="build/js/build.js">
+			var stendhal = window.stendhal = window.stendhal || {};
 			stendhal.data = stendhal.data || {};
 
 			stendhal.data.build = {
@@ -739,19 +687,11 @@
 				build: "${datetime}",
 				dist: "webclient"
 			}
-
-			//CI
 		</echo>
-		<antcall target="js-prepare-build-ci" />
-	</target>
-
-	<target name="js-prepare-build-ci" if="ci.build.info">
-		<loadfile property="cibuildinfo" srcFile="${ci.build.info}" failonerror="false" quiet="true"/>
-		<replace file="node_modules/marauroa/build.js" token="//CI" value="${cibuildinfo}" />
 	</target>
 
 
-	<extension-point name="js-prepare" depends="js-prepare-node,js-prepare-marauroa,js-prepare-build"/>
+	<extension-point name="js-prepare" depends="js-prepare-marauroa,js-prepare-build,js-prepare-node"/>
 
 
 	<target name="js-prepare-node">
@@ -780,14 +720,68 @@
 			<arg value="tsc"/>
 		</exec>
 
-		<exec executable="${executable.npx}" dir="${srcjs}/stendhal" failonerror="true">
-			<arg value="esbuild"/>
-			<arg value="--bundle"/>
-			<arg value="--outfile=../stendhal-compiled.js"/>
-			<arg value="--platform=browser"/>
-			<!-- <arg value="- -minify"/> -->
-			<arg value="main.ts"/>
-		</exec>
+		<property name="js-debug"          value="--debug --formatting=PRETTY_PRINT --create_source_map ${srcjs}/stendhal-compiled.js.map --source_map_include_content"/>
+
+		<property name="js-files-license"  value="${srcjs}/stendhal/license.js"/>
+		<property name="js-files-marauroa" value="build/js/marauroa.js build/js/client-framework.js build/js/message-factory.js build/js/perception.js build/js/rpfactory.js build/js/inflate.js build/js/deserializer.js"/>
+		<property name="js-files-config"   value="build/js/build.js"/>
+		<property name="js-files-lib1"     value=""/>
+		<property name="js-files-lib2"     value=""/>
+		<property name="js-files-data1"    value="${srcjs}/stendhal/data/sha3.js"/>
+		<property name="js-files-data2"    value=""/>
+		<property name="js-files-entity5"  value=""/>
+		<property name="js-files-entity6"  value=""/>
+		<property name="js-files-ui1"      value=""/>
+		<property name="js-files-ui2"      value=""/>
+		<property name="js-files-ui3"      value=""/>
+		<property name="js-files-main1"    value=""/>
+		<property name="js-files-ui4"      value=""/>
+		<property name="js-files-main2"    value=""/>
+		<property name="js-files-main3"    value=""/>
+		<property name="js-files-ts"       value="build/ts/*.js build/ts/**/*.js"/>
+		<property name="js-files-ts2"      value=""/>
+
+
+		<java jar="buildtools/closure-compiler/compiler.jar"
+				fork="true"
+				failonerror="true"
+				maxmemory="128m">
+			<arg value="--language_in=ECMASCRIPT_2020"/>
+			<arg value="--language_out=STABLE"/>
+			<arg value="--compilation_level"/>
+			<arg value="ADVANCED"/>
+			<arg line="${js-debug}"/>
+			<arg value="--process_common_js_modules"/>
+			<arg value="--module_resolution=node"/>
+			<arg value="--jscomp_off=checkVars"/>
+			<!-- DEBUG: -->
+			<!--<arg value="-\-jscomp_off=globalThis"/>-->
+
+			<arg value="--js_output_file=${srcjs}/stendhal-compiled.js"/>
+
+			<arg line="${js-files-license}"/>
+			<arg line="${js-files-marauroa}"/>
+			<arg line="${js-files-config}"/>
+			<arg line="${js-files-lib1}"/>
+			<arg line="${js-files-lib2}"/>
+			<arg line="${js-files-data1}"/>
+			<arg line="${js-files-data2}"/>
+			<arg line="${js-files-entity5}"/>
+			<arg line="${js-files-entity6}"/>
+			<arg line="${js-files-ui1}"/>
+			<arg line="${js-files-ui2}"/>
+			<arg line="${js-files-ui3}"/>
+			<arg line="${js-files-main1}"/>
+			<arg line="${js-files-ui4}"/>
+			<arg line="${js-files-main2}"/>
+			<arg line="${js-files-main3}"/>
+			<arg line="${js-files-ts}"/>
+			<arg line="${js-files-ts2}"/>
+		</java>
+
+		<echo file="${srcjs}/stendhal-compiled.js" append="true">
+	//# sourceMappingURL=stendhal-compiled.js.map
+		</echo>
 
 		<antcall target="compilejs-hook" />
 
@@ -804,8 +798,7 @@
 	</target>
 
 
-	<!-- Compile web client. -->
-	<target name="compilejs" depends="cleanjs">
+	<target name="compilejs" depends="cleanjs" description="Compile web client.">
 		<antcall target="js-prepare" unless:set="exclude.webclient"/>
 		<antcall target="js-invoke-compiler" unless:set="exclude.webclient"/>
 
@@ -814,8 +807,7 @@
 	</target> <!-- compilejs -->
 
 
-	<!-- Compile and stage web client files. -->
-	<target name="webclient_build" depends="compilejs,clean_client_data,build_client_data">
+	<target name="webclient_build" depends="compilejs,clean_client_data,build_client_data" description="Compile and stage web client files.">
 		<mkdir dir="${build_webclient}"/>
 
 		<copy todir="${build_webclient}">
@@ -837,8 +829,10 @@
 	</target> <!-- webclient_build -->
 
 
-	<!-- Create web client package for release and distribution. -->
-	<target name="dist_webclient_binary" depends="webclient_build">
+	<target name="build_webclient" depends="webclient_build" description="Alias of webclient_build."/>
+
+
+	<target name="dist_webclient_binary" depends="webclient_build" description="Create web client package for release and distribution.">
 		<zip destfile="${buildroot}/polanieonline-webclient-${version}.zip">
 			<zipfileset dir="${build_client_data}"/>
 			<zipfileset dir="${build_client_music_data}"/>

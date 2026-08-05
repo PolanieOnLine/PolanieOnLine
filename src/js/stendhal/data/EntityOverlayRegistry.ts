@@ -10,7 +10,7 @@
  *                                                                         *
  ***************************************************************************/
 
-import { stendhal } from "../stendhal";
+declare var stendhal: any;
 
 import { Entity } from "../entity/Entity";
 

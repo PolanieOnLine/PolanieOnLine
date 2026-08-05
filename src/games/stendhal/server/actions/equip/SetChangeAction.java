@@ -85,7 +85,7 @@ public class SetChangeAction implements ActionListener {
 		Item primaryItem = getFirstItem(primary);
 		Item reserveItem = getFirstItem(reserve);
 
-		if (reserveItem == null) {
+		if ((primaryItem == null) && (reserveItem == null)) {
 			return SwapOutcome.NONE;
 		}
 

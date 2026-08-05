@@ -35,7 +35,6 @@ import games.stendhal.client.entity.User;
 import games.stendhal.client.gui.chatlog.HeaderLessEventLine;
 import games.stendhal.client.gui.login.CharacterDialog;
 import games.stendhal.client.gui.settings.SettingsProperties;
-import games.stendhal.client.gui.status.MapEventStatusStore;
 import games.stendhal.client.gui.wt.core.WtWindowManager;
 import games.stendhal.client.sprite.DataLoader;
 import games.stendhal.client.update.ClientGameConfiguration;
@@ -689,7 +688,6 @@ public class StendhalClient extends ClientFramework {
 		boolean res = super.chooseCharacter(character);
 		if (res) {
 			this.character = character;
-			MapEventStatusStore.get().requestSnapshotRefresh();
 		}
 		return res;
 	}
@@ -778,7 +776,6 @@ public class StendhalClient extends ClientFramework {
 		} else {
 			zone.validate();
 			staticLayers.setZone(zone);
-			MapEventStatusStore.get().requestSnapshotRefresh();
 			for (ZoneChangeListener listener : zoneChangeListeners) {
 				listener.onZoneChangeCompleted(zone);
 			}

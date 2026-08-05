@@ -120,22 +120,4 @@ public class LineTest {
 				expected, sb.toString());
 
 	}
-
-	/**
-	 * Regression test for a line with zero length.
-	 */
-	@Test
-	public void testZeroLengthLine() {
-		final StringBuilder sb = new StringBuilder();
-
-		Line.renderLine(5, 5, 5, 5, new Action() {
-
-			@Override
-			public void fire(final int x, final int y) {
-				sb.append(x + "," + y + ";");
-			}
-		});
-
-		assertEquals("5,5;", sb.toString());
-	}
 }

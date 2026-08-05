@@ -9,7 +9,7 @@
  *                                                                         *
  ***************************************************************************/
 
-import { marauroa } from "marauroa"
+declare var marauroa: any;
 
 import { Creature } from "../entity/Creature";
 import { Entity } from "../entity/Entity";

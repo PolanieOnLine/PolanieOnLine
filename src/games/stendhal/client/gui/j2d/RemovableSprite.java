@@ -41,8 +41,6 @@ public class RemovableSprite implements Comparable<RemovableSprite> {
 	private Entity owner;
 
 	private final Sprite sprite;
-	/** Time when the sprite was created. */
-	private long createdTime;
 	/** Time after which the sprite should be removed. */
 	private long removeTime;
 	/** Importance of the message to keep it above others. */
@@ -99,11 +97,10 @@ public class RemovableSprite implements Comparable<RemovableSprite> {
 	 *     <code>STANDARD_PERSISTENCE_TIME</code>.
 	 */
 	private void setPersistTime(final long persistTime) {
-		createdTime = System.currentTimeMillis();
 		if (persistTime == 0) {
-			removeTime = createdTime + STANDARD_PERSISTENCE_TIME;
+			removeTime = System.currentTimeMillis() + STANDARD_PERSISTENCE_TIME;
 		} else {
-			removeTime = createdTime + persistTime;
+			removeTime = System.currentTimeMillis() + persistTime;
 		}
 	}
 
@@ -219,19 +216,6 @@ public class RemovableSprite implements Comparable<RemovableSprite> {
 	 */
 	public boolean shouldBeRemoved() {
 		return (System.currentTimeMillis() >= removeTime);
-	}
-
-	public float getFadeAlpha(final long fadeDurationMillis) {
-		if (fadeDurationMillis <= 0L) {
-			return 1.0f;
-		}
-
-		final long now = System.currentTimeMillis();
-		final long fadeInElapsed = Math.max(0L, now - createdTime);
-		final long fadeOutRemaining = Math.max(0L, removeTime - now);
-		final float fadeInAlpha = Math.min(1.0f, fadeInElapsed / (float) fadeDurationMillis);
-		final float fadeOutAlpha = Math.min(1.0f, fadeOutRemaining / (float) fadeDurationMillis);
-		return Math.max(0.0f, Math.min(1.0f, Math.min(fadeInAlpha, fadeOutAlpha)));
 	}
 
 	@Override

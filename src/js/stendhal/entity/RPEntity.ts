@@ -9,8 +9,8 @@
  *                                                                         *
  ***************************************************************************/
 
-import { marauroa } from "marauroa"
-import { stendhal } from "../stendhal";
+declare var marauroa: any;
+declare var stendhal: any;
 
 import { ActiveEntity } from "./ActiveEntity";
 import { Entity } from "./Entity";
@@ -278,8 +278,10 @@ export class RPEntity extends ActiveEntity {
 			const lsprite = this.getOutfitPart(layer, outfit[layer], outfit["body"]);
 			if (lsprite && lsprite.complete && lsprite.height) {
 				if (!this.octx) {
-					let ocanvas = new OffscreenCanvas(lsprite.width, lsprite.height);
+					let ocanvas = document.createElement("canvas");
 					this.octx = ocanvas.getContext("2d")!;
+					ocanvas.width = lsprite.width;
+					ocanvas.height = lsprite.height;
 				}
 				this.octx!.drawImage(lsprite, 0, 0);
 			}

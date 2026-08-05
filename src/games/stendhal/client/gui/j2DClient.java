@@ -354,11 +354,6 @@ public class j2DClient implements UserInterface {
 		gui.addAchievementBox(title, description, category);
 	}
 
-	@Override
-	public void addScreenAnnouncement(final String title, final String text, final String category) {
-		gui.addScreenAnnouncement(title, text, category);
-	}
-
 	/**
 	 * Initiate outfit selection by the user.
 	 */

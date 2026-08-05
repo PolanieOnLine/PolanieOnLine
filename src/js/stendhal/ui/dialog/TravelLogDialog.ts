@@ -14,8 +14,8 @@ import { DialogContentComponent } from "../toolkit/DialogContentComponent";
 import { ui } from "../UI";
 import { UIComponentEnum } from "../UIComponentEnum";
 
-import { marauroa } from "marauroa"
-import { stendhal } from "../../stendhal";
+declare var marauroa: any;
+declare var stendhal: any;
 
 
 /**

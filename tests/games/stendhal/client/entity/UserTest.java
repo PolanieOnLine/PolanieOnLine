@@ -56,16 +56,12 @@ public class UserTest {
 		final SoundSystemFacade soundFacade = new NoSoundFacade();
 
 		ClientSingletonRepository.setUserInterface(new UserInterface() {
- 			@Override
- 			public void addAchievementBox(String title, String description, String category) {
- 			}
-
 			@Override
-			public void addScreenAnnouncement(final String title, final String text, final String category) {
+			public void addAchievementBox(String title, String description, String category) {
 			}
 
- 			@Override
- 			public void addEventLine(EventLine line) {
+			@Override
+			public void addEventLine(EventLine line) {
 				eventLine = line;
 			}
 

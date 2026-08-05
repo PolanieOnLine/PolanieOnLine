@@ -62,8 +62,6 @@ class GMHelpAction implements SlashAction {
 				"\t\tWysyła odpowiedź na pytanie. Zastąp #wiadomość skrótami $faq, $faqpvp, $knownbug, $bugstracker, $rules lub $abuse jeśli zostały utworzone.",
 				"- /tellall <wiadomość>",
 				"\t\tWysyła prywatną wiadomośść do wszystkich zalogowanych wojowników.",
-				"- /announce <wiadomość>",
-				"\t\tWyświetla duże ogłoszenie administracyjne na środku górnej części ekranu wszystkim zalogowanym wojownikom.",
 				"* KONTROLA GRACZA:",
 				"- /teleportme <strefa> <x> <y>",
 				"- /teleportto <wojownik>",

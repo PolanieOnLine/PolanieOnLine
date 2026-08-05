@@ -19,8 +19,8 @@ import { OutfitPaletteColorSelector } from "./OutfitPaletteColorSelector";
 
 import { OutfitPreviewComponent } from "../../component/OutfitPreviewComponent";
 
-import { marauroa } from "marauroa"
-import { stendhal } from "../../../stendhal";
+declare var marauroa: any;
+declare var stendhal: any;
 
 
 /**

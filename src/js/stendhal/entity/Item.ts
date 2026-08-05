@@ -17,7 +17,7 @@ import { RenderingContext2D } from "util/Types";
 import { Paths } from "../data/Paths";
 import { singletons } from "../SingletonRepo";
 
-import { marauroa } from "marauroa"
+declare var marauroa: any;
 
 
 export class Item extends Entity {

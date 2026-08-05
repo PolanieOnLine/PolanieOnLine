@@ -1,7 +1,7 @@
 import { drawLayerByName, TileLayerOptions } from "../../landscape/TileLayerPainter";
 import { BASE_TILE_EDGE_TRIM, getTileOverlapMetrics, resolveTileScale } from "../../landscape/TileOverlap";
 
-import { stendhal } from "../stendhal";
+declare var stendhal: any;
 
 const TILE_EDGE_TRIM = BASE_TILE_EDGE_TRIM;
 const PARALLAX_SCROLL = 0.25;

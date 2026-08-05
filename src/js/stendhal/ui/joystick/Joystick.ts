@@ -9,7 +9,7 @@
  *                                                                         *
  ***************************************************************************/
 
-import { stendhal } from "../../stendhal";
+declare var stendhal: any;
 
 import { JoystickImpl } from "./JoystickImpl";
 import { AngleRange } from "../../util/AngleRange";

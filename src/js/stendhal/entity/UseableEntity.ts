@@ -9,7 +9,7 @@
  *                                                                         *
  ***************************************************************************/
 
-import { stendhal } from "../stendhal";
+declare var stendhal: any;
 
 import { Entity } from "./Entity";
 import { MenuItem } from "../action/MenuItem";

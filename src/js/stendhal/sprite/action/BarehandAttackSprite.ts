@@ -14,7 +14,7 @@ import { AttackSprite } from "./AttackSprite";
 import { RPEntity } from "../../entity/RPEntity";
 import { RenderingContext2D } from "util/Types";
 
-import { stendhal } from "../stendhal";
+declare var stendhal: any;
 
 
 export class BarehandAttackSprite extends AttackSprite {

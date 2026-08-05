@@ -994,22 +994,6 @@ public abstract class RPEntity extends AudibleEntity {
 		ClientSingletonRepository.getUserInterface().addAchievementBox(achievementTitle, achievementDescription, achievementCategory);
 	}
 
-	public void onScreenAnnouncement(final String title, final String text, final String category) {
-		final String trimmedTitle = title == null ? "" : title.trim();
-		final String trimmedText = text == null ? "" : text.trim();
-		final String chatMessage;
-		if (trimmedTitle.isEmpty()) {
-			chatMessage = "[OGŁOSZENIE] " + trimmedText;
-		} else {
-			chatMessage = "[OGŁOSZENIE] " + trimmedTitle + ": " + trimmedText;
-		}
-		if (!"event".equalsIgnoreCase(category)) {
-			ClientSingletonRepository.getUserInterface().addEventLine(
-					new HeaderLessEventLine(chatMessage, NotificationType.TELLALL));
-		}
-		ClientSingletonRepository.getUserInterface().addScreenAnnouncement(title, text, category);
-	}
-
 	/**
 	 * Can the player hear this chat message?
 	 *

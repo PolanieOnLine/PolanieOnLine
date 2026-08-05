@@ -12,7 +12,7 @@
 import { Component } from "../toolkit/Component";
 import { ItemContainerImplementation } from "./ItemContainerImplementation";
 
-import { stendhal } from "../../stendhal";
+declare var stendhal: any;
 
 /**
  * handles an item inventory

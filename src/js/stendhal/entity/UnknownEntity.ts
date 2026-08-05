@@ -11,7 +11,7 @@
 
 import { Entity } from "./Entity";
 
-import { marauroa } from "marauroa"
+declare var marauroa: any;
 
 export class UnknownEntity extends Entity {
 

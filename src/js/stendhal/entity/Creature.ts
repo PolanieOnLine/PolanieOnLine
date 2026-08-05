@@ -18,8 +18,8 @@ import { Color } from "../data/color/Color";
 import { SkillEffect } from "../sprite/action/SkillEffect";
 import { Paths } from "../data/Paths";
 
-import { marauroa } from "marauroa"
-import { stendhal } from "../stendhal";
+declare var marauroa: any;
+declare var stendhal: any;
 
 export class Creature extends RPEntity {
 	override minimapShow = true;
@@ -28,7 +28,7 @@ export class Creature extends RPEntity {
 	override titleStyle = "#ffc8c8";
 
 
-	override set(key: string, value: any) {
+	override set(key: string, value: string) {
 		super.set(key, value);
 
 		if (key === "name") {

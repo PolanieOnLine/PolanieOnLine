@@ -15,7 +15,7 @@ import { MapOfSets } from "../util/MapOfSets";
 import { CombinedTileset } from "./CombinedTileset";
 import { Debug } from "../util/Debug";
 
-import { stendhal } from "../stendhal";
+declare var stendhal: any;
 
 export class CombinedTilesetImageLoader {
 
@@ -70,7 +70,6 @@ export class CombinedTilesetImageLoader {
 			return;
 		}
 		let url = tsname + "?v=" + stendhal.data.build.version;
-		// TODO: deal with errors
 		let response = await fetch(url);
 		if (!response.ok) {
 			return;

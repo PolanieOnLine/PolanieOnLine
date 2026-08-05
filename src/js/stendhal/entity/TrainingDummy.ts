@@ -12,7 +12,8 @@
 import { Paths } from "../data/Paths";
 import { NPC } from "./NPC";
 
-import { marauroa } from "marauroa"
+declare var marauroa: any;
+declare var stendhal: any;
 
 
 export class TrainingDummy extends NPC {

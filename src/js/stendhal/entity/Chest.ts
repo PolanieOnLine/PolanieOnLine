@@ -21,11 +21,8 @@ import { ItemInventoryComponent } from "../ui/component/ItemInventoryComponent";
 import { Chat } from "../util/Chat";
 import { Paths } from "../data/Paths";
 
-import { marauroa } from "marauroa"
-import { stendhal } from "../stendhal";
-import { Entity } from "./Entity";
-
-
+declare var marauroa: any;
+declare var stendhal: any;
 const DEFAULT_CHEST_SPRITE = "chest";
 const BANK_SLOT_ATTRIBUTE = "bank_slot";
 const SPRITE_EXTENSION = ".png";
@@ -154,7 +151,7 @@ export class Chest extends PopupInventory {
 		if (SPRITE_RELEVANT_KEYS.indexOf(key) > -1) {
 			this.refreshSprite();
 		}
-		if (this.isNextTo(marauroa.me as Entity)) {
+		if (this.isNextTo(marauroa.me)) {
 			this.openInventoryWindow();
 		}
 	}

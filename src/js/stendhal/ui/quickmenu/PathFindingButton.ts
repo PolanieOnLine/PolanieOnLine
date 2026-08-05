@@ -14,7 +14,7 @@ import { QuickMenuButton } from "./QuickMenuButton";
 
 import { UIComponentEnum } from "../UIComponentEnum";
 
-import { stendhal } from "../../stendhal";
+declare var stendhal: any;
 
 
 /**

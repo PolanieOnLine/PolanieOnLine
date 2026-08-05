@@ -9,21 +9,31 @@
  *                                                                         *
  ***************************************************************************/
 
-import { marauroa } from "marauroa";
-import { stendhal } from "./stendhal";
 import { Client } from "./Client";
 
+/*
 declare var require: any;
-(window as any)["Zlib"] = require("marauroa/inflate").Zlib;
-let build = require("marauroa/build");
+require("marauroa/marauroa");
+require("marauroa/client-framework");
+require("marauroa/message-factory");
+require("marauroa/perception");
+require("marauroa/rpfactory");
+require("marauroa/inflate");
+require("marauroa/deserializer");
+require("marauroa/build"); // TODO
 require("./data/sha3");
+*/
+
+declare var stendhal: any;
 
 
 /**
  * Initializes "stendhal" object.
  */
 function initGlobals() {
-	build.version(marauroa, stendhal);
+	const win = window as any;
+	//win.marauroa = win.marauroa || {}; // marauroa object should already be intialized
+	win.stendhal = win.stendhal || {};
 	stendhal.main = Client.get();
 }
 

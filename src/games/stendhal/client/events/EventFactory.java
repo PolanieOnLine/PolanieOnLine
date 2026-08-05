@@ -78,10 +78,6 @@ class EventFactory {
 			event = new GroupInviteEvent();
 		} else if (name.equals(Events.PROGRESS_STATUS_CHANGE)) {
 			event = new ProgressStatusEvent();
-		} else if (name.equals(Events.MAP_EVENT_STATUS)) {
-			event = new MapEventStatusEvent();
-		} else if (name.equals(Events.SCREEN_ANNOUNCEMENT)) {
-			event = new ScreenAnnouncementEvent();
 		} else if (name.equals(Events.REACHED_ACHIEVEMENT)) {
 			event = new ReachedAchievementEvent();
 		} else if (name.equals(Events.BESTIARY)) {

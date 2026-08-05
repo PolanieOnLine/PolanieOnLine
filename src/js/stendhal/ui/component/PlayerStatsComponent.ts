@@ -22,8 +22,8 @@ import { singletons } from "../../SingletonRepo";
 
 import { Item } from "../../entity/Item";
 
-import { marauroa } from "marauroa"
-import { stendhal } from "../../stendhal";
+declare var marauroa: any;
+declare var stendhal: any;
 
 
 /**

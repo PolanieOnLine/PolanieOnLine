@@ -13,8 +13,7 @@ import { Entity } from "./Entity";
 import { Direction } from "../util/Direction";
 import { MathUtil } from "../util/MathUtil";
 
-import { stendhal } from "../stendhal";
-import { TileMap } from "data/TileMap";
+declare var stendhal: any;
 
 export class ActiveEntity extends Entity {
 
@@ -231,10 +230,9 @@ export class ActiveEntity extends Entity {
 		var startY = Math.floor(this["_y"]);
 		var endX = Math.ceil(this["_x"] + this["width"]);
 		var endY = Math.ceil(this["_y"] + this["height"]);
-		let map = TileMap.get();
 		for (var y = startY; y < endY; y++) {
 			for (var x = startX; x < endX; x++) {
-				if (map.collision(x, y)) {
+				if (stendhal.data.map.collision(x, y)) {
 					return true;
 				}
 			}

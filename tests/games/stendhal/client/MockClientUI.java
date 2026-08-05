@@ -100,9 +100,6 @@ public class MockClientUI extends j2DClient {
 
 			@Override
 			public void getVisibleRunicAltar() {}
-
-			@Override
-			public void addScreenAnnouncement(String title, String text, String category) {}
 		});
 	}
 

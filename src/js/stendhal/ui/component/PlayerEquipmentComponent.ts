@@ -13,7 +13,7 @@ import { Component } from "../toolkit/Component";
 import { ItemContainerImplementation } from "./ItemContainerImplementation";
 import { InventoryWindowController } from "./InventoryWindowController";
 
-import { marauroa } from "marauroa"
+declare var marauroa: any;
 
 /**
  * manage the equipment which is used by the player

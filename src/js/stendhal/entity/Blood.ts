@@ -13,7 +13,7 @@ import { RenderingContext2D } from "util/Types";
 import { Entity } from "./Entity";
 import { Paths } from "../data/Paths";
 
-import { stendhal } from "../stendhal";
+declare var stendhal: any;
 
 export class Blood extends Entity {
 

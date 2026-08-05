@@ -10,10 +10,10 @@
  *                                                                         *
  ***************************************************************************/
 
-import { stendhal } from "../stendhal";
+declare var stendhal: any;
 
 import { Canvas } from "util/Types";
-import { RPEvent } from "marauroa"
+import { RPEvent } from "./RPEvent";
 
 
 /**

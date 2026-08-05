@@ -9,7 +9,7 @@
  *                                                                         *
  ***************************************************************************/
 
-import { marauroa } from "marauroa"
+declare var marauroa: any;
 
 import { ParamList } from "./ParamList";
 import { Pair } from "../util/Pair";

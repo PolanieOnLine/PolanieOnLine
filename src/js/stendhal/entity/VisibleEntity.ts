@@ -12,7 +12,7 @@
 import { Paths } from "../data/Paths";
 import { Entity } from "./Entity";
 
-import { stendhal } from "../stendhal";
+declare var stendhal: any;
 
 export class VisibleEntity extends Entity {
 
