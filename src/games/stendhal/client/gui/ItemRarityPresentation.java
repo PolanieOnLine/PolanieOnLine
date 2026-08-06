@@ -13,7 +13,11 @@ package games.stendhal.client.gui;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
 import javax.swing.ToolTipManager;
 
@@ -30,9 +34,14 @@ final class ItemRarityPresentation {
 	private static final String PRIMARY_VALUE_COLOR = "#fffaf2";
 	private static final String MUTED_COLOR = "#e6ddd5";
 	private static final String BONUS_COLOR = "#79a9ff";
-	private static final String DEFENSE_COLOR = "#d8ecff";
+	private static final String ARMOUR_COLOR = "#d8ecff";
 	private static final DecimalFormat ONE_DECIMAL = createDecimalFormat("0.0");
 	private static final DecimalFormat TWO_DECIMALS = createDecimalFormat("0.00");
+
+	/** Equipment classes whose primary purpose is direct physical protection. */
+	private static final Set<String> ARMOUR_CLASSES = Collections.unmodifiableSet(
+			new HashSet<String>(Arrays.asList("armor", "shield", "helmet",
+					"cloak", "boots", "gloves", "legs", "belt")));
 
 	static {
 		/* Swing hides standard tooltips after four seconds by default. Item
@@ -63,6 +72,7 @@ final class ItemRarityPresentation {
 		final ItemRarity rarity = item.getRarity();
 		final WeaponPerformance performance =
 				WeaponPerformanceCalculator.calculate(object);
+		final boolean armour = performance == null && isArmour(object);
 		final boolean hasStructuredStats = object.hasMap(ItemTooltip.ATTRIBUTE);
 
 		if (rarity == null && performance == null && !hasStructuredStats) {
@@ -70,18 +80,30 @@ final class ItemRarityPresentation {
 		}
 
 		final StringBuilder tooltip = new StringBuilder("<html>");
-		tooltip.append("<div style='width:195px;padding:2px'>");
+		/* A table width is respected more consistently than CSS width by the old
+		 * Swing HTML renderer and lets long item names wrap instead of stretching
+		 * the whole card. */
+		tooltip.append("<table width='180' cellpadding='0' cellspacing='0'><tr><td>");
 		appendHeader(tooltip, entity, rarity);
 		if (performance != null) {
 			appendWeaponPerformance(tooltip, object, performance);
-		} else {
-			appendNonWeaponHeadline(tooltip, object);
+		} else if (armour) {
+			appendArmourPerformance(tooltip, object);
 		}
-		appendCoreStats(tooltip, object, performance != null);
-		appendBonuses(tooltip, object);
+		appendCoreStats(tooltip, object, performance != null, armour);
+		appendBonuses(tooltip, object, performance != null, armour);
 		appendFooter(tooltip, object, scrollDestination);
-		tooltip.append("</div></html>");
+		tooltip.append("</td></tr></table></html>");
 		return tooltip.toString();
+	}
+
+	private static boolean isArmour(final RPObject object) {
+		if (object == null || !object.has("class")) {
+			return false;
+		}
+		return ARMOUR_CLASSES.contains(object.get("class"))
+				&& WeaponPerformanceCalculator.getInt(object,
+						ItemTooltip.DEFENSE) > 0;
 	}
 
 	private static void appendHeader(final StringBuilder tooltip,
@@ -107,18 +129,13 @@ final class ItemRarityPresentation {
 	private static void appendWeaponPerformance(final StringBuilder tooltip,
 			final RPObject object, final WeaponPerformance performance) {
 		tooltip.append("<hr>");
-		tooltip.append("<div style='text-align:center'><font size='+1' color='");
-		tooltip.append(PRIMARY_VALUE_COLOR);
-		tooltip.append("'><b>");
-		tooltip.append(formatOneDecimal(performance.getBaseDps()));
-		tooltip.append(" DPS</b></font><br><font color='");
-		tooltip.append(MUTED_COLOR);
-		tooltip.append("'>");
-		tooltip.append("<b>").append(performance.getDamageMin()).append("–")
-				.append(performance.getDamageMax()).append(" obrażeń</b>");
-		tooltip.append(" &nbsp; ");
-		tooltip.append(formatTwoDecimals(performance.getAttacksPerSecond()));
-		tooltip.append(" ataku/s</font></div>");
+		appendPrimaryValue(tooltip,
+				formatOneDecimal(performance.getBaseDps()) + " DPS",
+				performance.getDamageMin() + "–" + performance.getDamageMax()
+						+ " obrażeń &nbsp;&bull;&nbsp; "
+						+ formatTwoDecimals(performance.getAttacksPerSecond())
+						+ " ataku/s",
+				PRIMARY_VALUE_COLOR);
 
 		final int range = WeaponPerformanceCalculator.getInt(object,
 				ItemTooltip.RANGE);
@@ -132,12 +149,16 @@ final class ItemRarityPresentation {
 				tooltip.append("Zasięg: ").append(range);
 			}
 			if (damageType != null) {
-				if (range > 0) tooltip.append("<br>");
+				if (range > 0) {
+					tooltip.append("<br>");
+				}
 				tooltip.append("Typ obrażeń: ")
 						.append(escapeHtml(localizeDamageType(damageType)));
 			}
 			if (statuses != null && !statuses.isEmpty()) {
-				if (range > 0 || damageType != null) tooltip.append("<br>");
+				if (range > 0 || damageType != null) {
+					tooltip.append("<br>");
+				}
 				tooltip.append("Efekty trafienia: ")
 						.append(escapeHtml(statuses.replace(';', ',')));
 			}
@@ -145,36 +166,36 @@ final class ItemRarityPresentation {
 		}
 	}
 
-	private static void appendNonWeaponHeadline(final StringBuilder tooltip,
+	private static void appendArmourPerformance(final StringBuilder tooltip,
 			final RPObject object) {
-		final int defense = WeaponPerformanceCalculator.getInt(object,
+		final int armour = WeaponPerformanceCalculator.getInt(object,
 				ItemTooltip.DEFENSE);
-		if (defense <= 0) {
+		if (armour <= 0) {
 			return;
 		}
-		tooltip.append("<hr><div style='text-align:center'><font size='+1' color='")
-				.append(DEFENSE_COLOR).append("'><b>")
-				.append(defense).append(" OBRONY</b></font></div>");
+		tooltip.append("<hr>");
+		appendPrimaryValue(tooltip, armour + " PANCERZA",
+				"Ochrona podstawowa", ARMOUR_COLOR);
+	}
+
+	private static void appendPrimaryValue(final StringBuilder tooltip,
+			final String value, final String details, final String color) {
+		tooltip.append("<div style='text-align:center'><font size='+1' color='")
+				.append(color).append("'><b>")
+				.append(value).append("</b></font>");
+		if (details != null && !details.isEmpty()) {
+			tooltip.append("<br><font color='").append(MUTED_COLOR)
+					.append("'>").append(details).append("</font>");
+		}
+		tooltip.append("</div>");
 	}
 
 	private static void appendCoreStats(final StringBuilder tooltip,
-			final RPObject object, final boolean weapon) {
+			final RPObject object, final boolean weapon, final boolean armour) {
 		final StringBuilder stats = new StringBuilder();
-		final int defense = WeaponPerformanceCalculator.getInt(object,
-				ItemTooltip.DEFENSE);
 		if (weapon) {
-			appendPlainStat(stats, "Obrona", defense);
-		}
-
-		/* Non-weapons may grant attack as an equipment bonus. Present it as a
-		 * bonus, never as standalone weapon damage or DPS. */
-		if (!weapon) {
-			final int attack = Math.max(
-					WeaponPerformanceCalculator.getInt(object, ItemTooltip.ATTACK),
-					WeaponPerformanceCalculator.getInt(object, ItemTooltip.RANGED_ATTACK));
-			if (attack != 0) {
-				appendLine(stats, signed(Integer.toString(attack)) + " ataku");
-			}
+			appendPlainStat(stats, "Pancerz", WeaponPerformanceCalculator.getInt(
+					object, ItemTooltip.DEFENSE));
 		}
 
 		appendPlainStat(stats, "Siła ataku", WeaponPerformanceCalculator.getInt(
@@ -193,8 +214,31 @@ final class ItemRarityPresentation {
 	}
 
 	private static void appendBonuses(final StringBuilder tooltip,
-			final RPObject object) {
+			final RPObject object, final boolean weapon, final boolean armour) {
 		final StringBuilder bonuses = new StringBuilder();
+
+		/* ATK on armour and accessories is an equipment bonus, not weapon DPS. */
+		if (!weapon) {
+			final int attack = Math.max(
+					WeaponPerformanceCalculator.getInt(object, ItemTooltip.ATTACK),
+					WeaponPerformanceCalculator.getInt(object, ItemTooltip.RANGED_ATTACK));
+			if (attack != 0) {
+				appendBonusLine(bonuses, signed(Integer.toString(attack)) + " ataku");
+			}
+		}
+
+		/* Rings and necklaces are accessories, so their DEF is displayed beside
+		 * their other bonuses. Only real armour classes receive the large primary
+		 * armour block. */
+		if (!weapon && !armour) {
+			final int defense = WeaponPerformanceCalculator.getInt(object,
+					ItemTooltip.DEFENSE);
+			if (defense != 0) {
+				appendBonusLine(bonuses,
+						signed(Integer.toString(defense)) + " pancerza");
+			}
+		}
+
 		appendPercentageBonus(bonuses, object, ItemTooltip.ATTACK_BONUS,
 				"bonusu ataku", false);
 		appendPercentageBonus(bonuses, object, ItemTooltip.ACCURACY_BONUS,
@@ -209,7 +253,7 @@ final class ItemRarityPresentation {
 				"zwiększonej kradzieży życia", false);
 		appendIntegerBonus(bonuses, object, ItemTooltip.HEALTH, "zdrowia");
 		appendPercentageBonus(bonuses, object, ItemTooltip.DEFENSE_BONUS,
-				"bonusu obrony", false);
+				"bonusu pancerza", false);
 
 		if (bonuses.length() > 0) {
 			tooltip.append("<hr><font color='").append(BONUS_COLOR)
