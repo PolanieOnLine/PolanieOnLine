@@ -58,7 +58,9 @@ public final class WeaponDamageRangeService {
 	 *
 	 * A valid saved range is authoritative and is never recalculated. When an
 	 * exceptional weapon defines a range in XML, its template is scaled from the
-	 * definition attack to the restored instance attack.
+	 * definition attack to the restored instance attack. For rarity items the
+	 * saved multipliers are used to reproduce the same generation order as for a
+	 * newly-created instance: base range first, rarity scaling second.
 	 *
 	 * @param item restored item after all saved values and converters were applied
 	 * @param definitionAttack attack value from the current XML definition
@@ -88,12 +90,31 @@ public final class WeaponDamageRangeService {
 					definitionMaximum.intValue(), scale));
 			range = new DamageRange(minimum, maximum);
 		} else {
-			range = calculate(item.getItemClass(), getStoredAttackRate(item),
-					attack);
+			range = generateRestoredRange(item, attack);
 		}
 
 		storeRange(item, range);
 		copyAttackRarityModifier(item);
+	}
+
+	private static DamageRange generateRestoredRange(final Item item,
+			final int finalAttack) {
+		final Double attackMultiplier = getAttackRarityModifier(item);
+		if (attackMultiplier == null || attackMultiplier.doubleValue() <= 0.0) {
+			return calculate(item.getItemClass(), getStoredAttackRate(item),
+					finalAttack);
+		}
+
+		final double multiplier = attackMultiplier.doubleValue();
+		final int baseAttack = Math.max(1,
+				(int) Math.round(finalAttack / multiplier));
+		final int baseRate = reconstructBaseAttackRate(item);
+		final DamageRange baseRange = calculate(item.getItemClass(), baseRate,
+				baseAttack);
+		final int minimum = scaleEndpoint(baseRange.getMinimum(), multiplier);
+		final int maximum = Math.max(minimum,
+				scaleEndpoint(baseRange.getMaximum(), multiplier));
+		return new DamageRange(minimum, maximum);
 	}
 
 	private static void initializeGeneratedRange(final Item item) {
@@ -139,6 +160,24 @@ public final class WeaponDamageRangeService {
 		return Item.getDefaultAttackRate();
 	}
 
+	private static int reconstructBaseAttackRate(final Item item) {
+		final int finalRate = getStoredAttackRate(item);
+		final Double speedMultiplier = item.getRarityModifier("rate");
+		if (speedMultiplier == null || speedMultiplier.doubleValue() <= 0.0) {
+			return finalRate;
+		}
+		return Math.max(1, (int) Math.round(
+				finalRate * speedMultiplier.doubleValue()));
+	}
+
+	private static Double getAttackRarityModifier(final Item item) {
+		Double multiplier = item.getRarityModifier("atk");
+		if (multiplier == null) {
+			multiplier = item.getRarityModifier("ratk");
+		}
+		return multiplier;
+	}
+
 	private static boolean hasValidRange(final Item item) {
 		if (!item.has("damage_min") || !item.has("damage_max")) {
 			return false;
@@ -156,7 +195,7 @@ public final class WeaponDamageRangeService {
 
 	private static int scaleEndpoint(final int endpoint, final double scale) {
 		return Math.max(1, Math.min(Short.MAX_VALUE,
-				(int) Math.round(endpoint * scale)));
+				(int) Math.round(endpoint * scale + 0.000000001)));
 	}
 
 	private static void storeRange(final Item item, final DamageRange range) {
@@ -174,10 +213,7 @@ public final class WeaponDamageRangeService {
 	}
 
 	private static void copyAttackRarityModifier(final Item item) {
-		Double multiplier = item.getRarityModifier("atk");
-		if (multiplier == null) {
-			multiplier = item.getRarityModifier("ratk");
-		}
+		final Double multiplier = getAttackRarityModifier(item);
 		if (multiplier != null) {
 			item.setRarityModifier("damage_min", multiplier.doubleValue());
 			item.setRarityModifier("damage_max", multiplier.doubleValue());
