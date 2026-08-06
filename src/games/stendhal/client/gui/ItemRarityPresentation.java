@@ -19,6 +19,7 @@ import games.stendhal.client.entity.IEntity;
 import games.stendhal.client.entity.Item;
 import games.stendhal.client.gui.WeaponPerformanceCalculator.WeaponPerformance;
 import games.stendhal.common.constants.ItemRarity;
+import games.stendhal.common.constants.ItemTooltip;
 import marauroa.common.game.RPObject;
 
 /** Builds structured desktop item tooltips without graphics dependencies. */
@@ -49,21 +50,21 @@ final class ItemRarityPresentation {
 		final ItemRarity rarity = item.getRarity();
 		final WeaponPerformance performance =
 				WeaponPerformanceCalculator.calculate(object);
+		final boolean hasStructuredStats = object.hasMap(ItemTooltip.ATTRIBUTE);
 
-		if (rarity == null && performance == null) {
+		if (rarity == null && performance == null && !hasStructuredStats) {
 			return scrollDestination;
 		}
 
 		final StringBuilder tooltip = new StringBuilder("<html>");
-		tooltip.append("<div style='width:260px;padding:4px'>");
+		tooltip.append("<div style='width:300px;padding:6px'>");
 		appendHeader(tooltip, entity, rarity);
-
 		if (performance != null) {
 			appendWeaponPerformance(tooltip, object, performance);
 		}
+		appendCoreStats(tooltip, object);
 		appendBonuses(tooltip, object);
 		appendFooter(tooltip, object, scrollDestination);
-
 		tooltip.append("</div></html>");
 		return tooltip.toString();
 	}
@@ -79,7 +80,6 @@ final class ItemRarityPresentation {
 			tooltip.append(escapeHtml(title.toUpperCase(Locale.ROOT)));
 			tooltip.append("</font></b></div>");
 		}
-
 		if (rarity != null) {
 			tooltip.append("<div style='text-align:center'><font color='");
 			tooltip.append(escapeHtml(rarity.getColorHex()));
@@ -110,61 +110,103 @@ final class ItemRarityPresentation {
 		tooltip.append(formatTwoDecimals(performance.getAttackIntervalSeconds()));
 		tooltip.append(" s między atakami");
 
-		if (object.has("range") && object.getInt("range") > 0) {
-			tooltip.append("<br>Zasięg: ");
-			tooltip.append(object.getInt("range"));
+		final int range = WeaponPerformanceCalculator.getInt(object,
+				ItemTooltip.RANGE);
+		if (range > 0) {
+			tooltip.append("<br>Zasięg: ").append(range);
+		}
+		final String damageType = WeaponPerformanceCalculator.getTooltipValue(
+				object, ItemTooltip.DAMAGE_TYPE);
+		if (damageType != null) {
+			tooltip.append("<br>Typ obrażeń: ");
+			tooltip.append(escapeHtml(localizeDamageType(damageType)));
+		}
+		final String statuses = WeaponPerformanceCalculator.getTooltipValue(
+				object, ItemTooltip.STATUS_ATTACK);
+		if (statuses != null && !statuses.isEmpty()) {
+			tooltip.append("<br>Efekty trafienia: ");
+			tooltip.append(escapeHtml(statuses.replace(';', ',')));
+		}
+	}
+
+	private static void appendCoreStats(final StringBuilder tooltip,
+			final RPObject object) {
+		final StringBuilder stats = new StringBuilder();
+		appendPlainStat(stats, "Obrona", WeaponPerformanceCalculator.getInt(
+				object, ItemTooltip.DEFENSE));
+		appendPlainStat(stats, "Siła ataku", WeaponPerformanceCalculator.getInt(
+				object, ItemTooltip.SKILL_ATTACK));
+		final int improve = WeaponPerformanceCalculator.getInt(object,
+				ItemTooltip.IMPROVE);
+		final int maxImproves = WeaponPerformanceCalculator.getInt(object,
+				ItemTooltip.MAX_IMPROVES);
+		if (maxImproves > 0 || improve > 0) {
+			appendLine(stats, "Ulepszenie: +" + improve
+					+ (maxImproves > 0 ? "/" + maxImproves : ""));
+		}
+		if (stats.length() > 0) {
+			tooltip.append("<hr>").append(stats);
 		}
 	}
 
 	private static void appendBonuses(final StringBuilder tooltip,
 			final RPObject object) {
 		final StringBuilder bonuses = new StringBuilder();
-		appendPercentageBonus(bonuses, object, "atk_additional_bonus",
-				"bonus ataku");
-		appendPercentageBonus(bonuses, object, "accuracy_bonus",
-				"bonus precyzji");
-		appendPercentageBonus(bonuses, object, "critical_chance",
-				"szansy na trafienie krytyczne");
-		appendPercentageBonus(bonuses, object, "critical_additional_bonus",
-				"obrażeń krytycznych");
-		appendPercentageBonus(bonuses, object, "lifesteal",
-				"kradzieży życia");
-		appendPercentageBonus(bonuses, object, "lifesteal_increase",
-				"zwiększonej kradzieży życia");
-		appendIntegerBonus(bonuses, object, "health", "zdrowia");
-		appendIntegerBonus(bonuses, object, "def", "obrony");
+		appendPercentageBonus(bonuses, object, ItemTooltip.ATTACK_BONUS,
+				"bonusu ataku", false);
+		appendPercentageBonus(bonuses, object, ItemTooltip.ACCURACY_BONUS,
+				"bonusu precyzji", false);
+		appendPercentageBonus(bonuses, object, ItemTooltip.CRITICAL_CHANCE,
+				"szansy na trafienie krytyczne", false);
+		appendPercentageBonus(bonuses, object, ItemTooltip.CRITICAL_BONUS,
+				"obrażeń krytycznych", false);
+		appendPercentageBonus(bonuses, object, ItemTooltip.LIFESTEAL,
+				"kradzieży życia", true);
+		appendPercentageBonus(bonuses, object, ItemTooltip.LIFESTEAL_INCREASE,
+				"zwiększonej kradzieży życia", false);
+		appendIntegerBonus(bonuses, object, ItemTooltip.HEALTH, "zdrowia");
+		appendPercentageBonus(bonuses, object, ItemTooltip.DEFENSE_BONUS,
+				"bonusu obrony", false);
 
 		if (bonuses.length() > 0) {
-			tooltip.append("<hr><font color='");
-			tooltip.append(BONUS_COLOR);
-			tooltip.append("'>");
-			tooltip.append(bonuses);
-			tooltip.append("</font>");
+			tooltip.append("<hr><font color='").append(BONUS_COLOR)
+					.append("'>").append(bonuses).append("</font>");
 		}
 	}
 
 	private static void appendPercentageBonus(final StringBuilder bonuses,
-			final RPObject object, final String attribute, final String label) {
-		if (!object.has(attribute)) {
-			return;
-		}
-		final double value = object.getDouble(attribute);
+			final RPObject object, final String attribute, final String label,
+			final boolean fraction) {
+		double value = WeaponPerformanceCalculator.getDouble(object, attribute);
 		if (value == 0.0) {
 			return;
+		}
+		if (fraction && Math.abs(value) <= 1.0) {
+			value *= 100.0;
 		}
 		appendBonusLine(bonuses, signed(formatCompact(value)) + "% " + label);
 	}
 
 	private static void appendIntegerBonus(final StringBuilder bonuses,
 			final RPObject object, final String attribute, final String label) {
-		if (!object.has(attribute)) {
-			return;
+		final int value = WeaponPerformanceCalculator.getInt(object, attribute);
+		if (value != 0) {
+			appendBonusLine(bonuses, signed(Integer.toString(value)) + " " + label);
 		}
-		final int value = object.getInt(attribute);
-		if (value == 0) {
-			return;
+	}
+
+	private static void appendPlainStat(final StringBuilder stats,
+			final String label, final int value) {
+		if (value != 0) {
+			appendLine(stats, label + ": " + value);
 		}
-		appendBonusLine(bonuses, signed(Integer.toString(value)) + " " + label);
+	}
+
+	private static void appendLine(final StringBuilder target, final String line) {
+		if (target.length() > 0) {
+			target.append("<br>");
+		}
+		target.append(escapeHtml(line));
 	}
 
 	private static void appendBonusLine(final StringBuilder bonuses,
@@ -172,43 +214,40 @@ final class ItemRarityPresentation {
 		if (bonuses.length() > 0) {
 			bonuses.append("<br>");
 		}
-		bonuses.append("&#9670; ");
-		bonuses.append(escapeHtml(line));
+		bonuses.append("&#9670; ").append(escapeHtml(line));
 	}
 
 	private static void appendFooter(final StringBuilder tooltip,
 			final RPObject object, final String scrollDestination) {
 		final StringBuilder footer = new StringBuilder();
-		if (object.has("min_level") && object.getInt("min_level") > 0) {
-			footer.append("Wymagany poziom: ");
-			footer.append(object.getInt("min_level"));
+		final int minLevel = WeaponPerformanceCalculator.getInt(object,
+				ItemTooltip.MIN_LEVEL);
+		if (minLevel > 0) {
+			footer.append("Wymagany poziom: ").append(minLevel);
 		}
-		if (object.has("value") && object.getInt("value") > 0) {
+		final int value = WeaponPerformanceCalculator.getInt(object,
+				ItemTooltip.VALUE);
+		if (value > 0) {
 			appendFooterSeparator(footer);
-			footer.append("Wartość: ");
-			footer.append(object.getInt("value"));
+			footer.append("Wartość: ").append(value);
 		}
-		if (object.has("durability")) {
+		final int durability = WeaponPerformanceCalculator.getInt(object,
+				ItemTooltip.DURABILITY);
+		if (durability > 0) {
 			appendFooterSeparator(footer);
-			footer.append("Wytrzymałość: ");
-			if (object.has("uses")) {
-				footer.append(Math.max(0,
-						object.getInt("durability") - object.getInt("uses")));
-				footer.append("/");
-			}
-			footer.append(object.getInt("durability"));
+			final int uses = WeaponPerformanceCalculator.getInt(object,
+					ItemTooltip.USES);
+			footer.append("Wytrzymałość: ")
+					.append(Math.max(0, durability - uses)).append("/")
+					.append(durability);
 		}
 		if (scrollDestination != null) {
 			appendFooterSeparator(footer);
 			footer.append(escapeHtml(scrollDestination));
 		}
-
 		if (footer.length() > 0) {
-			tooltip.append("<hr><font color='");
-			tooltip.append(MUTED_COLOR);
-			tooltip.append("'>");
-			tooltip.append(footer);
-			tooltip.append("</font>");
+			tooltip.append("<hr><font color='").append(MUTED_COLOR)
+					.append("'>").append(footer).append("</font>");
 		}
 	}
 
@@ -226,15 +265,25 @@ final class ItemRarityPresentation {
 		return null;
 	}
 
+	private static String localizeDamageType(final String value) {
+		final String type = value.toLowerCase(Locale.ROOT);
+		if ("light".equals(type)) return "Światło";
+		if ("dark".equals(type)) return "Mrok";
+		if ("fire".equals(type)) return "Ogień";
+		if ("ice".equals(type)) return "Lód";
+		if ("water".equals(type)) return "Woda";
+		if ("earth".equals(type)) return "Natura";
+		if ("cut".equals(type)) return "Fizyczne";
+		return value;
+	}
+
 	private static String signed(final String value) {
 		return value.startsWith("-") ? value : "+" + value;
 	}
 
 	private static String formatCompact(final double value) {
-		if (Math.rint(value) == value) {
-			return Integer.toString((int) value);
-		}
-		return formatOneDecimal(value);
+		return Math.rint(value) == value
+				? Integer.toString((int) value) : formatOneDecimal(value);
 	}
 
 	private static synchronized String formatOneDecimal(final double value) {
@@ -246,19 +295,14 @@ final class ItemRarityPresentation {
 	}
 
 	private static DecimalFormat createDecimalFormat(final String pattern) {
-		final DecimalFormatSymbols symbols =
-				new DecimalFormatSymbols(new Locale("pl", "PL"));
-		return new DecimalFormat(pattern, symbols);
+		return new DecimalFormat(pattern,
+				new DecimalFormatSymbols(new Locale("pl", "PL")));
 	}
 
 	private static String escapeHtml(final String text) {
-		if (text == null) {
-			return "";
-		}
-		return text.replace("&", "&amp;")
-				.replace("<", "&lt;")
-				.replace(">", "&gt;")
-				.replace("\"", "&quot;")
+		if (text == null) return "";
+		return text.replace("&", "&amp;").replace("<", "&lt;")
+				.replace(">", "&gt;").replace("\"", "&quot;")
 				.replace("'", "&#39;");
 	}
 }
