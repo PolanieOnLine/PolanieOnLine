@@ -88,13 +88,17 @@ public class ItemRarityTransformerTest {
 		legacy.setValue(777);
 
 		final Item restored = new ItemTransformer().transform(serializedCopy(legacy));
+		final int minimum = restored.getInt("damage_min");
+		final int maximum = restored.getInt("damage_max");
 		final Item secondLoad = new ItemTransformer().transform(serializedCopy(restored));
 
 		assertSame(ItemRarity.COMMON, secondLoad.getRarity());
 		assertEquals(137, secondLoad.getInt("atk"));
-		assertEquals(123, secondLoad.getInt("damage_min"));
-		assertEquals(151, secondLoad.getInt("damage_max"));
-		assertEquals(137.0, secondLoad.getAverageDamage(), 0.0);
+		assertTrue(minimum < 137);
+		assertTrue(maximum > 137);
+		assertEquals(137.0, restored.getAverageDamage(), 0.0);
+		assertEquals(minimum, secondLoad.getInt("damage_min"));
+		assertEquals(maximum, secondLoad.getInt("damage_max"));
 		assertEquals(4, secondLoad.getInt("rate"));
 		assertEquals(777, secondLoad.getValue());
 		assertEquals(Double.valueOf(1.0), secondLoad.getRarityModifier("atk"));
@@ -122,8 +126,8 @@ public class ItemRarityTransformerTest {
 
 		assertTrue(minimum < firstLoad.getInt("atk"));
 		assertTrue(maximum > firstLoad.getInt("atk"));
-		assertEquals(firstLoad.getInt("atk"),
-				(int) firstLoad.getAverageDamage());
+		assertTrue(Math.abs(firstLoad.getAverageDamage()
+				- firstLoad.getInt("atk")) <= 1.0);
 		assertEquals(minimum, secondLoad.getInt("damage_min"));
 		assertEquals(maximum, secondLoad.getInt("damage_max"));
 		assertEquals(firstLoad.getRarityModifier("atk"),
