@@ -68,6 +68,7 @@ public class ItemRarityPresentationTest {
 
 		assertTrue(tooltip.contains("width='180'"));
 		assertTrue(tooltip.contains("53,3 DPS"));
+		assertTrue(tooltip.contains("#fffaf2"));
 		assertTrue(tooltip.contains("28–36 obrażeń"));
 		assertTrue(tooltip.contains("1,67 ataku/s"));
 		assertFalse(tooltip.contains("pkt. ataku"));
@@ -79,7 +80,7 @@ public class ItemRarityPresentationTest {
 	}
 
 	@Test
-	public void testArmourUsesSamePrimaryHierarchyAsWeapon() {
+	public void testArmourUsesSamePrimaryHierarchyAndColorAsWeapon() {
 		final RPObject object = ItemTestHelper.createItem("pancerz testowy");
 		object.put("class", "armor");
 		object.put("rarity_id", "epic");
@@ -91,6 +92,7 @@ public class ItemRarityPresentationTest {
 
 		assertTrue(tooltip.contains("18 PANCERZA"));
 		assertTrue(tooltip.contains("Ochrona podstawowa"));
+		assertTrue(tooltip.contains("#fffaf2"));
 		assertTrue(tooltip.contains("+4 ataku"));
 		assertFalse(tooltip.contains("DPS"));
 		assertFalse(tooltip.contains("obrażeń"));
@@ -108,6 +110,21 @@ public class ItemRarityPresentationTest {
 
 		assertTrue(tooltip.contains("175 PANCERZA"));
 		assertTrue(tooltip.contains("Ochrona podstawowa"));
+	}
+
+	@Test
+	public void testBeltsClassHighlightsArmour() {
+		final RPObject object = ItemTestHelper.createItem("pas z mithrilu");
+		object.put("class", "belts");
+		object.put("rarity_id", "legendary");
+		putStat(object, ItemTooltip.DEFENSE, "21");
+
+		final String tooltip = ItemRarityPresentation.buildItemToolTip(
+				EntityFactory.createEntity(object));
+
+		assertTrue(tooltip.contains("21 PANCERZA"));
+		assertTrue(tooltip.contains("Ochrona podstawowa"));
+		assertFalse(tooltip.contains("+21 pancerza"));
 	}
 
 	@Test
