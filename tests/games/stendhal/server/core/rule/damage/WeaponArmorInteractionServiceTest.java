@@ -3,22 +3,30 @@
  ***************************************************************************/
 package games.stendhal.server.core.rule.damage;
 
-import static org.easymock.EasyMock.expect;
-import static org.easymock.classextension.EasyMock.createMock;
-import static org.easymock.classextension.EasyMock.replay;
-import static org.easymock.classextension.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import games.stendhal.server.core.rule.damage.WeaponArmorInteractionService.ArmorTier;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.item.Corpse;
-import games.stendhal.server.entity.item.Item;
+import games.stendhal.server.entity.item.Weapon;
+import utilities.RPClass.CreatureTestHelper;
+import utilities.RPClass.ItemTestHelper;
 
 public class WeaponArmorInteractionServiceTest {
+	@BeforeClass
+	public static void generateRPClasses() {
+		ItemTestHelper.generateRPClasses();
+		CreatureTestHelper.generateRPClasses();
+	}
+
 	@Test
 	public void classifiesArmorTiers() {
 		assertEquals(ArmorTier.NONE,
@@ -76,23 +84,18 @@ public class WeaponArmorInteractionServiceTest {
 	}
 
 	@Test
-	public void attackUsesCreatureDefenseAsArmorScore() {
-		final Creature defender = createMock(Creature.class);
-		final Item weapon = createMock(Item.class);
-		expect(defender.getDef()).andReturn(20);
-		expect(weapon.getWeaponType()).andReturn("dagger");
-		expect(weapon.getAverageDamage()).andReturn(30.0f);
-		replay(defender, weapon);
+	public void attackUsesCreatureArmorScore() {
+		final Creature defender = new Creature();
+		defender.setDef(20);
+		final Weapon weapon = weapon("dagger", 30);
 
 		assertEquals(53.0, WeaponArmorInteractionService.adjustAttack(
 				50.0, weapon, defender), 0.000001);
-
-		verify(defender, weapon);
 	}
 
 	@Test
 	public void nonCreatureTargetRemainsNeutral() {
-		final Item weapon = createMock(Item.class);
+		final Weapon weapon = weapon("dagger", 30);
 		final RPEntity playerTarget = new RPEntity() {
 			@Override
 			protected void dropItemsOn(final Corpse corpse) {
@@ -104,12 +107,9 @@ public class WeaponArmorInteractionServiceTest {
 				// no logic
 			}
 		};
-		replay(weapon);
 
 		assertEquals(50.0, WeaponArmorInteractionService.adjustAttack(
 				50.0, weapon, playerTarget), 0.000001);
-
-		verify(weapon);
 	}
 
 	@Test
@@ -128,5 +128,12 @@ public class WeaponArmorInteractionServiceTest {
 	private double multiplier(final String weaponClass, final int armor) {
 		return WeaponArmorInteractionService.getDamageMultiplier(
 				weaponClass, armor);
+	}
+
+	private Weapon weapon(final String itemClass, final int attack) {
+		final Map<String, String> attributes = new HashMap<String, String>();
+		attributes.put("atk", Integer.toString(attack));
+		attributes.put("rate", "5");
+		return new Weapon("test weapon", itemClass, "test", attributes);
 	}
 }
