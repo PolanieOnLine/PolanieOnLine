@@ -33,6 +33,8 @@ import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.core.rp.StendhalRPAction;
 import games.stendhal.server.core.rule.EntityManager;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
+import games.stendhal.server.core.rule.rarity.ItemRaritySnapshot;
 import games.stendhal.server.entity.CollisionAction;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.RPEntity;
@@ -636,6 +638,32 @@ public class LuaEntityHelper {
 	 */
 	public Item getItem(final String name) {
 		return manager.getItem(name);
+	}
+
+	/**
+	 * Encodes rarity data for quest scripts which temporarily replace an item.
+	 */
+	public String getItemRaritySnapshot(final Item item) {
+		return ItemRaritySnapshot.encode(item);
+	}
+
+	/**
+	 * Recreates a raw item and restores a quest snapshot without invoking the
+	 * rarity generator. A blank snapshot supports loans started before rarity
+	 * snapshots were introduced.
+	 */
+	public Item getItemForRestore(final String name, final String raritySnapshot) {
+		final Item item = manager.getItem(name, ItemCreationContext.restore());
+		if (item == null) {
+			return null;
+		}
+		try {
+			ItemRaritySnapshot.restore(item, raritySnapshot);
+			return item;
+		} catch (final IllegalArgumentException e) {
+			logger.error("Unable to restore rarity snapshot for item \"" + name + "\"");
+			return null;
+		}
 	}
 
 	/**

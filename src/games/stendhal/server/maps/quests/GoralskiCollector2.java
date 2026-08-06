@@ -19,6 +19,7 @@ import java.util.List;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -188,7 +189,7 @@ public class GoralskiCollector2 extends AbstractQuest {
 									raiser.say("Dziękuję bardzo! Masz coś jeszcze dla mnie?");
 								} else {
 									final Item pas = SingletonRepository.getEntityManager().getItem(
-											"pas zbójnicki");
+											"pas zbójnicki", ItemCreationContext.quest());
 									pas.setBoundTo(player.getName());
 									player.equipOrPutOnGround(pas);
 									player.addXP(75000);

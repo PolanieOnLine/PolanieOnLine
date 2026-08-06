@@ -42,6 +42,32 @@ interface Action {
 	type: string;
 }
 
+const ITEM_CREATION_OPTION_KEYS = [
+	"rarity",
+	"randomize-modifiers",
+	"stat-multiplier",
+	"attack-multiplier",
+	"defense-multiplier",
+	"speed-multiplier",
+	"range-multiplier",
+	"value-multiplier"
+];
+
+function copyItemCreationOption(token: string, target: {[key: string]: string}): boolean {
+	const separator = token.indexOf("=");
+	if (separator <= 0) {
+		return false;
+	}
+
+	const key = token.substring(0, separator).toLowerCase();
+	if (ITEM_CREATION_OPTION_KEYS.indexOf(key) < 0) {
+		return false;
+	}
+
+	target[key] = token.substring(separator + 1);
+	return true;
+}
+
 /**
  * Registered slash actions.
  */
@@ -304,8 +330,7 @@ export class SlashActionRepo {
 				"altercreature",
 				"alterkill",
 				"alterquest",
-				{type: "summon", sparams: "<stwór>|<przedmiot> [<x> <y>]"},
-				{type: "summon", sparams: "<przedmiot> [<x> <y>] [ilość]"},
+				{type: "summon", sparams: "<stwór>|<przedmiot> [<x> <y>] [ilość] [rarity=<poziom>] [<stat>-multiplier=<wartość>]"},
 				"summonat",
 				{
 					type: "destroy",
@@ -1223,11 +1248,14 @@ export class SlashActionRepo {
 			var x = null;
 			var y = null;
 			var quantity = null;
+			const creationOptions: {[key: string]: string} = {};
 
 			var nameBuilder = [];
 			for (var idx = 0; idx < params.length; idx++) {
 				const str = params[idx];
-				if (str.match("[0-9].*")) {
+				if (copyItemCreationOption(str, creationOptions)) {
+					continue;
+				} else if (str.match("[0-9].*")) {
 					if (x == null) {
 						x = str;
 					} else if (y == null) {
@@ -1264,19 +1292,14 @@ export class SlashActionRepo {
 			if (quantity != null) {
 				action["quantity"] = quantity;
 			}
+			Object.assign(action, creationOptions);
 			this.sendAction(action);
 			return true;
 		},
 		minParams: 1,
 		maxParams: -1, // XXX: is this the proper way to allow an unlimited number of arguments?
 		getHelp: function(sparams: string): string[] {
-			let desc: any;
-			if (sparams === "<creature>|<item> [<x> <y>]") {
-				desc = "Przyzwij stwora.";
-			} else if (sparams === "<stackable_item> [<x> <y>] [quantity]") {
-				desc = "Przyzwij wskazany przedmiot lub stwora na współrzędnych #x, #y w bieżącej strefie.";
-			}
-			return [sparams, desc];
+			return [sparams, "Przyzwij wskazany przedmiot lub stwora. Kwalifikujące się wyposażenie bez rarity otrzyma losową rzadkość."];
 		}
 	};
 
@@ -1293,13 +1316,22 @@ export class SlashActionRepo {
 				amount = "1";
 			}
 
+			const creationOptions: {[key: string]: string} = {};
+			const itemName: string[] = [];
+			for (const token of remainder.split(/\s+/)) {
+				if (!copyItemCreationOption(token, creationOptions)) {
+					itemName.push(token);
+				}
+			}
+
 			const action: Action = {
 				"type": type,
 				"target": params[0],
 				"slot": params[1],
 				"amount": amount,
-				"item": remainder
+				"item": itemName.join(" ")
 			};
+			Object.assign(action, creationOptions);
 			this.sendAction(action);
 			return true;
 		},
@@ -1307,7 +1339,7 @@ export class SlashActionRepo {
 		maxParams: 3,
 		getHelp: function(): string[] {
 			return [
-				"<gracz> <slot> [ilość] <przedmiot>",
+				"<gracz> <slot> [ilość] <przedmiot> [rarity=<poziom>] [<stat>-multiplier=<wartość>]",
 				"Przyzwij wskazany przedmiot do określonego slotu #gracza; <ilość> domyślnie wynosi 1, jeśli"
 						+ " nie zostanie podana."
 			];

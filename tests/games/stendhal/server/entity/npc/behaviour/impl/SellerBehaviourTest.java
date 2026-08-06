@@ -23,6 +23,7 @@ import java.util.Map;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.server.core.engine.RPClassGenerator;
 import games.stendhal.server.entity.npc.SpeakerNPC;
 import games.stendhal.server.entity.npc.behaviour.adder.SellerAdder;
@@ -99,6 +100,8 @@ public class SellerBehaviourTest {
 	    npc.getEngine().step(player, "yes");
 		assertEquals("Gratulacje! Oto twój sztylecik!", getReply(npc));
 		assertTrue(player.isEquipped("sztylecik", 1));
+		assertEquals(ItemRarity.COMMON,
+				player.getFirstEquipped("sztylecik").getRarity());
 		assertEquals(0, player.getTotalNumberOf("money"));
 
 		PlayerTestHelper.equipWithMoney(player, 600);

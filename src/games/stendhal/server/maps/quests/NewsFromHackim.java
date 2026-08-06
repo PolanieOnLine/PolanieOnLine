@@ -17,6 +17,7 @@ import java.util.List;
 
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -129,7 +130,8 @@ public class NewsFromHackim extends AbstractQuest {
 									+ answer);
 					player.setQuest(QUEST_SLOT, "done");
 
-					final Item item = SingletonRepository.getEntityManager().getItem("skórzane spodnie");
+					final Item item = SingletonRepository.getEntityManager().getItem(
+							"skórzane spodnie", ItemCreationContext.quest());
 					player.equipOrPutOnGround(item);
 					player.addXP(150);
 					player.addKarma(2);

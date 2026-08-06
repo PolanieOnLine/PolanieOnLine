@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.mapstuff.chest.StoredChest;
@@ -145,12 +146,14 @@ public class Burglary extends AbstractQuest {
 		zone.add(chest);
 
 		try {
-			Item item = SingletonRepository.getEntityManager().getItem("góralski kapelusz");
+			Item item = SingletonRepository.getEntityManager().getItem(
+					"góralski kapelusz", ItemCreationContext.quest());
 			item.setItemData(QUEST_SLOT);
 			item.setDescription("Oto góralski kapelusz należący do garderoby Sołtysa.");
 			chest.add(item);
 
-			item = SingletonRepository.getEntityManager().getItem("cuha góralska");
+			item = SingletonRepository.getEntityManager().getItem(
+					"cuha góralska", ItemCreationContext.quest());
 			item.setItemData(QUEST_SLOT);
 			item.setDescription("Oto cuha góralska należąca do garderoby Sołtysa.");
 			chest.add(item);

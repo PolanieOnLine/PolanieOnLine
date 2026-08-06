@@ -17,6 +17,7 @@ import java.util.List;
 
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -180,7 +181,8 @@ public class StuffForVulcanus extends AbstractQuest {
 					raiser.say("Skończyłem wykuwanie nieśmiertelnika. Zasługujesz na niego. Teraz pozwolisz, że udam się na długi odpoczynek. Do widzenia!");
 					player.addXP(15000);
 					player.addKarma(25);
-					final Item magicSword = SingletonRepository.getEntityManager().getItem("miecz nieśmiertelnych");
+					final Item magicSword = SingletonRepository.getEntityManager().getItem(
+							"miecz nieśmiertelnych", ItemCreationContext.quest());
 					magicSword.setBoundTo(player.getName());
 					player.equipOrPutOnGround(magicSword);
 					player.notifyWorldAboutChanges();

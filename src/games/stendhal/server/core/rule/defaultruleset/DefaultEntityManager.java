@@ -20,6 +20,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.common.parser.ExpressionType;
 import games.stendhal.common.parser.WordList;
 import games.stendhal.server.core.config.CreatureGroupsXMLLoader;
@@ -28,6 +29,8 @@ import games.stendhal.server.core.config.ProductionGroupsXMLLoader;
 import games.stendhal.server.core.config.ShopGroupsXMLLoader;
 import games.stendhal.server.core.config.SpellGroupsXMLLoader;
 import games.stendhal.server.core.rule.EntityManager;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
+import games.stendhal.server.core.rule.rarity.ItemRarityModifiers;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.item.Item;
@@ -361,20 +364,48 @@ public class DefaultEntityManager implements EntityManager {
 	 */
 	@Override
 	public Item getItem(final String clazz) {
+		return getItem(clazz, ItemCreationContext.defaultCreation());
+	}
+
+	@Override
+	public Item getItem(final String clazz, final ItemCreationContext context) {
 		if (clazz == null) {
 			throw new IllegalArgumentException("entity class is null");
+		}
+		if (context == null) {
+			throw new IllegalArgumentException("item creation context is null");
 		}
 
 		// Lookup the clazz in the item table
 		final DefaultItem item = classToItem.get(clazz);
 		if (item != null) {
 			if (createdItem.get(clazz) == null) {
-				createdItem.put(clazz, item.getItem());
+				// The representative item must never consume rarity randomness.
+				createdItem.put(clazz, item.getItem(ItemCreationContext.restore()));
 			}
-			return item.getItem();
+			return item.getItem(context);
 		}
 
 		return null;
+	}
+
+	@Override
+	public Item getItem(final String clazz, final ItemRarity rarity) {
+		return getItem(clazz, ItemCreationContext
+				.builder(ItemCreationContext.Source.DEFAULT)
+				.withFactoryRarity(rarity)
+				.build());
+	}
+
+	@Override
+	public Item getItem(final String clazz, final ItemRarity rarity,
+			final ItemRarityModifiers modifiers) {
+		return getItem(clazz, ItemCreationContext
+				.builder(ItemCreationContext.Source.DEFAULT)
+				.withFactoryRarity(rarity)
+				.withModifiers(modifiers)
+				.randomizeModifiers(false)
+				.build());
 	}
 
 	@Override

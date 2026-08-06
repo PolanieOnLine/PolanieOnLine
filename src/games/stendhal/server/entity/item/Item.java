@@ -11,7 +11,11 @@
  ***************************************************************************/
 package games.stendhal.server.entity.item;
 
+import static games.stendhal.server.core.engine.Translate.getText;
+
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +28,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableList.Builder;
 
 import games.stendhal.common.Rand;
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.common.constants.Nature;
 import games.stendhal.common.constants.Testing;
 import games.stendhal.server.core.engine.ItemLogger;
@@ -50,6 +55,14 @@ import marauroa.common.game.RPSlot;
  */
 public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	UseListener {
+	/** Persistent/wire attribute containing a stable rarity identifier. */
+	public static final String RARITY_ID = "rarity_id";
+	/** Persistent hidden map of the exact multipliers applied to this instance. */
+	public static final String RARITY_MODIFIERS = "rarity_modifiers";
+	/** Persistent hidden profile identifier used when the instance was created. */
+	public static final String RARITY_PROFILE = "rarity_profile";
+	/** Persistent instance value after the rarity multiplier. */
+	public static final String VALUE = "value";
 
 	private static final int DEFAULT_ATTACK_RATE = 5;
 
@@ -96,6 +109,12 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	 * have any, or if the behavior is implemented in a subclass.
 	 */
 	private UseBehavior useBehavior;
+
+	/* Definition metadata. It is deliberately not an RP attribute: only the
+	 * resulting rarity and modifiers belong to a persisted item instance. */
+	private Boolean rarityEnabledOverride;
+	private String rarityProfile = "default";
+	private int definitionValue;
 
 	/**
 	 *
@@ -150,6 +169,9 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		weight = item.weight;
 		damageType = item.damageType;
 		susceptibilities = item.susceptibilities;
+		rarityEnabledOverride = item.rarityEnabledOverride;
+		rarityProfile = item.rarityProfile;
+		definitionValue = item.definitionValue;
 	}
 
 	public static void generateRPClass() {
@@ -218,6 +240,12 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 
 		// Some items have individual values
 		entity.addAttribute("persistent", Type.SHORT, Definition.HIDDEN);
+
+		// Rarity is visible to clients; exact generation inputs stay server-side.
+		entity.addAttribute(RARITY_ID, Type.STRING);
+		entity.addAttribute(RARITY_MODIFIERS, Type.MAP, Definition.HIDDEN);
+		entity.addAttribute(RARITY_PROFILE, Type.STRING, Definition.HIDDEN);
+		entity.addAttribute(VALUE, Type.INT);
 
 		// Some items have lifesteal values
 		entity.addAttribute("lifesteal", Type.FLOAT, Definition.HIDDEN);
@@ -507,6 +535,86 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		} else if (has("persistent")) {
 			remove("persistent");
 		}
+	}
+
+	/**
+	 * Configures transient metadata originating in the XML item definition.
+	 */
+	public void configureRarity(final Boolean enabledOverride,
+			final String profile, final int baseValue) {
+		rarityEnabledOverride = enabledOverride;
+		rarityProfile = profile == null ? "default" : profile;
+		definitionValue = baseValue;
+	}
+
+	public Boolean getRarityEnabledOverride() {
+		return rarityEnabledOverride;
+	}
+
+	public String getRarityProfile() {
+		return rarityProfile;
+	}
+
+	public int getDefinitionValue() {
+		return definitionValue;
+	}
+
+	/** @return instance rarity, or {@code null} for legacy/excluded items */
+	public ItemRarity getRarity() {
+		if (!has(RARITY_ID)) {
+			return null;
+		}
+		return ItemRarity.fromId(get(RARITY_ID));
+	}
+
+	/** @return item rarity with the legacy common fallback */
+	public ItemRarity getRarityOrCommon() {
+		return ItemRarity.fromIdOrCommon(has(RARITY_ID) ? get(RARITY_ID) : null);
+	}
+
+	public void setRarity(final ItemRarity rarity) {
+		if (rarity == null) {
+			throw new IllegalArgumentException("Rarity must not be null");
+		}
+		put(RARITY_ID, rarity.getId());
+	}
+
+	/**
+	 * Stores one exact multiplier on the item instance.
+	 */
+	public void setRarityModifier(final String statistic, final double multiplier) {
+		put(RARITY_MODIFIERS, statistic, Double.toString(multiplier));
+	}
+
+	/**
+	 * Reads exact saved modifiers while tolerating malformed legacy data.
+	 */
+	public Map<String, Double> getRarityModifiers() {
+		if (!hasMap(RARITY_MODIFIERS)) {
+			return Collections.emptyMap();
+		}
+		final Map<String, Double> result = new LinkedHashMap<String, Double>();
+		for (final Entry<String, String> entry : getMap(RARITY_MODIFIERS).entrySet()) {
+			try {
+				result.put(entry.getKey(), Double.valueOf(entry.getValue()));
+			} catch (final NumberFormatException e) {
+				// Ignore a damaged optional entry instead of breaking item loading.
+			}
+		}
+		return Collections.unmodifiableMap(result);
+	}
+
+	public Double getRarityModifier(final String statistic) {
+		return getRarityModifiers().get(statistic);
+	}
+
+	public void setValue(final int value) {
+		put(VALUE, value);
+	}
+
+	/** @return rarity-adjusted value, or the XML definition value for legacy items */
+	public int getValue() {
+		return has(VALUE) ? getInt(VALUE) : definitionValue;
 	}
 
 	/**
@@ -888,6 +996,12 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 					+ ", która nie może być wykorzystana przez innych.";
 		}
 
+		final ItemRarity rarity = getRarity();
+		if (rarity != null) {
+			text = text + " " + getText("Rarity") + ": "
+					+ getText(rarity.getEnglishDisplayName()) + ".";
+		}
+
 		if (has("atk")) {
 			if (getAttack() != 0) {
 				stats.append("ATK: ");
@@ -1030,6 +1144,12 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		if (has("health")) {
 			stats.append(" ZDROWIE: ");
 			stats.append(get("health"));
+		}
+		if (has(VALUE)) {
+			stats.append(" ");
+			stats.append(getText("Value"));
+			stats.append(": ");
+			stats.append(getValue());
 		}
 		if (Testing.WEIGHT && getWeight() > 0.0) {
 			stats.append(" CIĘŻAR: ");

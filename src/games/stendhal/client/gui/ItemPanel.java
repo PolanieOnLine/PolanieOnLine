@@ -12,6 +12,7 @@
  ***************************************************************************/
 package games.stendhal.client.gui;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -32,6 +33,7 @@ import games.stendhal.client.IGameScreen;
 import games.stendhal.client.StendhalClient;
 import games.stendhal.client.entity.IEntity;
 import games.stendhal.client.entity.Inspector;
+import games.stendhal.client.entity.Item;
 import games.stendhal.client.entity.User;
 import games.stendhal.client.gui.j2d.entity.EntityView;
 import games.stendhal.client.gui.j2d.entity.EntityViewFactory;
@@ -44,6 +46,7 @@ import games.stendhal.client.sprite.Sprite;
 import games.stendhal.client.sprite.SpriteStore;
 import games.stendhal.common.EquipActionConsts;
 import games.stendhal.common.constants.Actions;
+import games.stendhal.common.constants.ItemRarity;
 import marauroa.common.game.RPAction;
 import marauroa.common.game.RPObject;
 import marauroa.common.game.RPSlot;
@@ -265,9 +268,34 @@ class ItemPanel extends JComponent implements DropTarget, Inspectable {
 			vg.translate(x, y);
 			entityView.draw(vg);
 			vg.dispose();
+			drawRarityBorder(g, entityView.getEntity());
 		} else if (placeholder != null) {
 			placeholder.draw(g, (getWidth() - placeholder.getWidth()) / 2,
 					(getHeight() - placeholder.getHeight()) / 2);
+		}
+	}
+
+	/**
+	 * Draw a subtle rarity marker around an occupied slot.
+	 *
+	 * @param graphics destination graphics
+	 * @param entity displayed entity
+	 */
+	private void drawRarityBorder(final Graphics graphics, final IEntity entity) {
+		if (!(entity instanceof Item)) {
+			return;
+		}
+
+		final ItemRarity rarity = ((Item) entity).getRarity();
+		if (rarity == null) {
+			return;
+		}
+
+		try {
+			graphics.setColor(Color.decode(rarity.getColorHex()));
+			graphics.drawRoundRect(1, 1, getWidth() - 3, getHeight() - 3, 6, 6);
+		} catch (NumberFormatException e) {
+			// A malformed presentation color must not make an item unusable.
 		}
 	}
 
@@ -477,14 +505,7 @@ class ItemPanel extends JComponent implements DropTarget, Inspectable {
 
 		@Override
 		public void mouseEntered(final MouseEvent e) {
-			final IEntity entity = getEntity();
-			if (entity != null) {
-				// show tooltip for scrolls with destination information
-				final RPObject rpobject = entity.getRPObject();
-				if ("scroll".equals(entity.getEntityClass()) && rpobject.has("dest")) {
-					setToolTipText(rpobject.get("dest").replaceFirst(",", " "));
-				}
-			}
+			setToolTipText(ItemRarityPresentation.buildItemToolTip(getEntity()));
 		}
 
 		@Override

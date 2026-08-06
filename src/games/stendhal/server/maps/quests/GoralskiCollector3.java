@@ -21,6 +21,7 @@ import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Expression;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.npc.ChatAction;
@@ -264,7 +265,8 @@ public class GoralskiCollector3 extends AbstractQuest {
 									entity.say("To niewiarygodne, mogę zobaczyć to z bliska? Wielkie dzięki! Mam dla Ciebie niespodziankę!\n"
 													+ "Oto spinka! " + player.getGenderVerb("otrzymałem") + " ją od swoich przodków, a teraz będzie należeć do Ciebie! Niech Ci dobrze służy.");
 									player.setQuest(QUEST_SLOT, "done;rewarded");
-									final Item spinka = SingletonRepository.getEntityManager().getItem("spinka");
+									final Item spinka = SingletonRepository.getEntityManager().getItem(
+											"spinka", ItemCreationContext.quest());
 									spinka.setBoundTo(player.getName());
 									player.equipOrPutOnGround(spinka);
 									player.notifyWorldAboutChanges();

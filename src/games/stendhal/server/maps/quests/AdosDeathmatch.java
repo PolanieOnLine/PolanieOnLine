@@ -25,6 +25,7 @@ import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.Spot;
 import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.npc.ChatAction;
@@ -94,7 +95,7 @@ public class AdosDeathmatch extends AbstractQuest {
 	 */
 	public void createHelmet(final int x, final int y) {
 		final Item helmet = SingletonRepository.getEntityManager()
-				.getItem("zdobyczny hełm");
+				.getItem("zdobyczny hełm", ItemCreationContext.quest());
 		helmet.setDescription("Oto główna nagroda dla zwycięzców Deathmatcha.");
 		helmet.setPosition(x, y);
 		zone.add(helmet, false);

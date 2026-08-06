@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -189,7 +190,8 @@ public class ZlotaCiupagaDwaWasy extends AbstractQuest {
 					raiser.say("Żar ostygł. Oto ciupaga z dwoma wąsami, nasycona oddechem chmur.");
 					player.addXP(500000);
 					player.addKarma(100);
-					final Item zlotaCiupagaZDwomaWasami = SingletonRepository.getEntityManager().getItem("złota ciupaga z dwoma wąsami");
+					final Item zlotaCiupagaZDwomaWasami = SingletonRepository.getEntityManager().getItem(
+							"złota ciupaga z dwoma wąsami", ItemCreationContext.quest());
 					zlotaCiupagaZDwomaWasami.setBoundTo(player.getName());
 					player.equipOrPutOnGround(zlotaCiupagaZDwomaWasami);
 					player.notifyWorldAboutChanges();

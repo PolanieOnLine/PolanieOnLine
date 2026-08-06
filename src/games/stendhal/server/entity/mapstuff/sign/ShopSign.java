@@ -18,6 +18,7 @@ import java.util.Map;
 import org.apache.log4j.Logger;
 
 import games.stendhal.common.constants.Actions;
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.events.UseListener;
 import games.stendhal.server.entity.RPEntity;
@@ -145,7 +146,10 @@ public class ShopSign extends Sign implements UseListener {
 	 * @return Item
 	 */
 	private Item prepareItem(String name, int price) {
-		Item prototype = SingletonRepository.getEntityManager().getItem(name);
+		// Keep the catalogue consistent with SellerBehaviour: normal NPC shops
+		// display and deliver the deterministic base (Common) variant.
+		Item prototype = SingletonRepository.getEntityManager().getItem(
+				name, ItemRarity.COMMON);
 		Item item = new ItemInformation(prototype);
 		if (ShopType.ITEM_SELL.equals(shopType)) {
 			item.put("price", -price);

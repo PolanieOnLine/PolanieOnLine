@@ -14,6 +14,8 @@ package games.stendhal.server.entity.npc.behaviour.impl;
 import java.util.Map;
 
 import games.stendhal.common.grammar.ItemParserResult;
+import games.stendhal.server.core.rule.rarity.ItemRarityModifiers;
+import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.money.MoneyUtils;
 import games.stendhal.server.entity.npc.EventRaiser;
 import games.stendhal.server.entity.player.Player;
@@ -54,8 +56,57 @@ public class BuyerBehaviour extends MerchantBehaviour {
 	 *			The player who sells
 	 */
 	protected void payPlayer(ItemParserResult res, final Player player) {
-		int copperValue = getCharge(res, player);
+		payPlayer(getCharge(res, player), player);
+	}
+
+	private void payPlayer(final int copperValue, final Player player) {
 		MoneyUtils.giveMoney(player, copperValue);
+	}
+
+	/**
+	 * Applies the saved value multiplier to the concrete instances which the
+	 * normal drop operation will consume, in the same inventory order.
+	 */
+	@Override
+	public int getCharge(final ItemParserResult res, final Player player) {
+		if (res.getChosenItemName() == null || player == null) {
+			return super.getCharge(res, player);
+		}
+
+		final int unitPrice = getUnitPrice(res.getChosenItemName());
+		if (unitPrice <= 0) {
+			return super.getCharge(res, player);
+		}
+		int remaining = res.getAmount();
+		long total = 0L;
+		for (final Item item : player.getAllEquipped(res.getChosenItemName())) {
+			if (remaining <= 0) {
+				break;
+			}
+			final int quantity = Math.min(remaining, item.getQuantity());
+			final Double savedMultiplier = item.getRarityModifier(
+					ItemRarityModifiers.VALUE);
+			final double multiplier = savedMultiplier != null
+					&& Double.isFinite(savedMultiplier.doubleValue())
+					&& savedMultiplier.doubleValue() > 0.0
+						? savedMultiplier.doubleValue() : 1.0;
+			final long adjustedUnitPrice = Math.min(Integer.MAX_VALUE,
+					Math.round(unitPrice * multiplier));
+			if (quantity > 0 && adjustedUnitPrice
+					> (Integer.MAX_VALUE - total) / quantity) {
+				return Integer.MAX_VALUE;
+			}
+			total += quantity * adjustedUnitPrice;
+			remaining -= quantity;
+		}
+
+		// Preserve the old quote behaviour when the player does not currently
+		// carry all requested units; the transaction itself will still reject it.
+		if (remaining > 0 && unitPrice > (Integer.MAX_VALUE - total) / remaining) {
+			return Integer.MAX_VALUE;
+		}
+		total += (long) remaining * unitPrice;
+		return total > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) total;
 	}
 
 	/**
@@ -70,9 +121,10 @@ public class BuyerBehaviour extends MerchantBehaviour {
 	 */
 	@Override
 	public boolean transactAgreedDeal(ItemParserResult res, final EventRaiser seller, final Player player) {
+		final int copperValue = getCharge(res, player);
 		if (player.drop(res.getChosenItemName(), res.getAmount())) {
-			payPlayer(res, player);
-			updatePlayerTransactions(player, seller.getName(), res);
+			payPlayer(copperValue, player);
+			updatePlayerTransactions(player, seller.getName(), res, copperValue);
 			seller.say("Dziękuję! Oto twoje pieniądze.");
 			return true;
 		} else {
@@ -104,7 +156,12 @@ public class BuyerBehaviour extends MerchantBehaviour {
 	 */
 	protected void updatePlayerTransactions(final Player player, final String merchant,
 			final ItemParserResult res) {
+		updatePlayerTransactions(player, merchant, res, getCharge(res, player));
+	}
+
+	private void updatePlayerTransactions(final Player player, final String merchant,
+			final ItemParserResult res, final int copperValue) {
 		player.incSoldForItem(res.getChosenItemName(), res.getAmount());
-		player.incCommerceTransaction(merchant, getCharge(res, player), true);
+		player.incCommerceTransaction(merchant, copperValue, true);
 	}
 }

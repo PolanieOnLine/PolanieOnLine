@@ -19,6 +19,7 @@ import java.util.List;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -231,11 +232,11 @@ public class WeaponsCollector2 extends AbstractQuest {
 									raiser.say("Dziękuję bardzo! Masz coś jeszcze dla mnie?");
 								} else {
 									final Item lhandsword = SingletonRepository.getEntityManager().getItem(
-											"miecz leworęczny");
+											"miecz leworęczny", ItemCreationContext.quest());
 									lhandsword.setBoundTo(player.getName());
 									player.equipOrPutOnGround(lhandsword);
 									final Item rhandsword = SingletonRepository.getEntityManager().getItem(
-											"miecz praworęczny");
+											"miecz praworęczny", ItemCreationContext.quest());
 									rhandsword.setBoundTo(player.getName());
 									player.equipOrPutOnGround(rhandsword);
 									player.addXP(50000);

@@ -22,6 +22,7 @@ import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.events.TurnListener;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.item.Corpse;
 import games.stendhal.server.entity.item.Item;
@@ -163,7 +164,7 @@ public class KanmararnSoldiers extends AbstractQuest {
 				if (!isStillFilled) {
 					// recreate the item and fill the corpse
 					final Item item = SingletonRepository.getEntityManager().getItem(
-							itemName);
+							itemName, ItemCreationContext.quest());
 					item.setItemData(corpse.getName());
 					item.setDescription(description);
 					corpse.add(item);

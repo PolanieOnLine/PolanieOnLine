@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<items xmlns="stendhal">
+	<item name="disabled sword" rarity-enabled="false" rarity-profile=" boss ">
+		<type class="sword" subclass="disabled_sword" tileid="-1"/>
+		<description>Disabled test sword.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="10"/>
+		</attributes>
+		<weight value="4.0"/>
+		<value value="123"/>
+		<equipable><slot name="rhand"/></equipable>
+	</item>
+	<item name="default sword">
+		<type class="sword" subclass="default_sword" tileid="-1"/>
+		<description>Default test sword.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes>
+			<atk value="20"/>
+		</attributes>
+		<equipable><slot name="rhand"/></equipable>
+	</item>
+	<item name="enabled relic" rarity-enabled="1">
+		<type class="relic" subclass="enabled_relic" tileid="-1"/>
+		<description>Explicitly enabled test relic.</description>
+		<implementation class-name="games.stendhal.server.entity.item.Item"/>
+		<attributes></attributes>
+		<equipable><slot name="bag"/></equipable>
+	</item>
+</items>
