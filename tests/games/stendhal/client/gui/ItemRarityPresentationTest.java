@@ -50,12 +50,15 @@ public class ItemRarityPresentationTest {
 	public void testWeaponToolTipShowsServerPublishedStatistics() {
 		final RPObject object = ItemTestHelper.createItem(
 				"złota ciupaga z trzema wąsami");
-		object.put("class", "axe");
+		object.put("class", "custom_weapon_class");
 		object.put("rarity_id", "legendary");
+		putCategory(object, ItemTooltip.CATEGORY_WEAPON);
 		putStat(object, ItemTooltip.ATTACK, "32");
 		putStat(object, ItemTooltip.DAMAGE_MIN, "28");
 		putStat(object, ItemTooltip.DAMAGE_MAX, "36");
 		putStat(object, ItemTooltip.ATTACK_RATE, "2");
+		putStat(object, ItemTooltip.ATTACK_INTERVAL_SECONDS, "0.6");
+		putStat(object, ItemTooltip.ATTACKS_PER_SECOND, "1.6666666667");
 		putStat(object, ItemTooltip.DEFENSE, "10");
 		putStat(object, ItemTooltip.DAMAGE_TYPE, "light");
 		putStat(object, ItemTooltip.LIFESTEAL, "0.12402917");
@@ -80,10 +83,11 @@ public class ItemRarityPresentationTest {
 	}
 
 	@Test
-	public void testArmourUsesSamePrimaryHierarchyAndColorAsWeapon() {
+	public void testArmourUsesPublishedCategoryAndPrimaryColor() {
 		final RPObject object = ItemTestHelper.createItem("pancerz testowy");
-		object.put("class", "armor");
+		object.put("class", "custom_armour_class");
 		object.put("rarity_id", "epic");
+		putCategory(object, ItemTooltip.CATEGORY_ARMOUR);
 		putStat(object, ItemTooltip.DEFENSE, "18");
 		putStat(object, ItemTooltip.ATTACK, "4");
 
@@ -103,6 +107,7 @@ public class ItemRarityPresentationTest {
 		final RPObject object = ItemTestHelper.createItem("tarcza testowa");
 		object.put("class", "shield");
 		object.put("rarity_id", "legendary");
+		putCategory(object, ItemTooltip.CATEGORY_ARMOUR);
 		putStat(object, ItemTooltip.DEFENSE, "175");
 
 		final String tooltip = ItemRarityPresentation.buildItemToolTip(
@@ -117,6 +122,7 @@ public class ItemRarityPresentationTest {
 		final RPObject object = ItemTestHelper.createItem("pas z mithrilu");
 		object.put("class", "belts");
 		object.put("rarity_id", "legendary");
+		putCategory(object, ItemTooltip.CATEGORY_ARMOUR);
 		putStat(object, ItemTooltip.DEFENSE, "21");
 
 		final String tooltip = ItemRarityPresentation.buildItemToolTip(
@@ -128,15 +134,16 @@ public class ItemRarityPresentationTest {
 	}
 
 	@Test
-	public void testRingStatsStayInBonusList() {
-		final RPObject object = ItemTestHelper.createItem("pierścień testowy");
-		object.put("class", "ring");
-		object.put("rarity_id", "rare");
-		putStat(object, ItemTooltip.ATTACK, "7");
-		putStat(object, ItemTooltip.DEFENSE, "17");
+	public void testAccessoryStatsStayInBonusList() {
+		final RPObject ring = ItemTestHelper.createItem("pierścień testowy");
+		ring.put("class", "custom_accessory");
+		ring.put("rarity_id", "rare");
+		putCategory(ring, ItemTooltip.CATEGORY_ACCESSORY);
+		putStat(ring, ItemTooltip.ATTACK, "7");
+		putStat(ring, ItemTooltip.DEFENSE, "17");
 
 		final String tooltip = ItemRarityPresentation.buildItemToolTip(
-				EntityFactory.createEntity(object));
+				EntityFactory.createEntity(ring));
 
 		assertTrue(tooltip.contains("+7 ataku"));
 		assertTrue(tooltip.contains("+17 pancerza"));
@@ -150,6 +157,7 @@ public class ItemRarityPresentationTest {
 		final RPObject object = ItemTestHelper.createItem("amulet testowy");
 		object.put("class", "necklace");
 		object.put("rarity_id", "legendary");
+		putCategory(object, ItemTooltip.CATEGORY_ACCESSORY);
 		putStat(object, ItemTooltip.DEFENSE, "17");
 		putStat(object, ItemTooltip.HEALTH, "25");
 
@@ -174,6 +182,10 @@ public class ItemRarityPresentationTest {
 
 		assertTrue(tooltip.contains("10,0 DPS"));
 		assertTrue(tooltip.contains("15–15 obrażeń"));
+	}
+
+	private void putCategory(final RPObject object, final String category) {
+		putStat(object, ItemTooltip.CATEGORY, category);
 	}
 
 	private void putStat(final RPObject object, final String key,
