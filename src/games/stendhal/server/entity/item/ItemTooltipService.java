@@ -113,6 +113,13 @@ public final class ItemTooltipService {
 	}
 
 	private static String resolveCategory(final Item item) {
+		if (item.has(ItemTooltip.CATEGORY_OVERRIDE)) {
+			final String override = item.get(ItemTooltip.CATEGORY_OVERRIDE);
+			if (ItemTooltip.isValidCategory(override)) {
+				return override;
+			}
+		}
+
 		final String itemClass = item.getItemClass();
 		if (WEAPON_CLASSES.contains(itemClass)) {
 			return ItemTooltip.CATEGORY_WEAPON;
