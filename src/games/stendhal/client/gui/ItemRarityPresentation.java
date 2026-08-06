@@ -37,15 +37,19 @@ final class ItemRarityPresentation {
 	private static final DecimalFormat ONE_DECIMAL = createDecimalFormat("0.0");
 	private static final DecimalFormat TWO_DECIMALS = createDecimalFormat("0.00");
 
-	/** Equipment classes whose primary purpose is direct physical protection. */
-	private static final Set<String> ARMOUR_CLASSES = Collections.unmodifiableSet(
-			new HashSet<String>(Arrays.asList("armor", "shield", "helmet",
-					"cloak", "boots", "gloves", "legs", "belt", "belts")));
+	/* Compatibility fallback for old servers that do not publish a tooltip
+	 * category. New clients should prefer ItemTooltip.CATEGORY. */
+	private static final Set<String> LEGACY_ARMOUR_CLASSES =
+			Collections.unmodifiableSet(new HashSet<String>(Arrays.asList(
+					"armor", "shield", "helmet", "cloak", "boots", "gloves",
+					"legs", "belt", "belts")));
+	private static final Set<String> LEGACY_ACCESSORY_CLASSES =
+			Collections.unmodifiableSet(new HashSet<String>(Arrays.asList(
+					"ring", "necklace")));
 
 	static {
 		/* Swing hides standard tooltips after four seconds by default. Item
-		 * descriptions are intentionally persistent while the cursor remains over
-		 * the slot, so players can read and compare longer tooltips comfortably. */
+		 * descriptions stay visible while the cursor remains over the slot. */
 		final ToolTipManager manager = ToolTipManager.sharedInstance();
 		manager.setDismissDelay(60000);
 		manager.setInitialDelay(350);
@@ -69,9 +73,13 @@ final class ItemRarityPresentation {
 		final Item item = (Item) entity;
 		final RPObject object = item.getRPObject();
 		final ItemRarity rarity = item.getRarity();
-		final WeaponPerformance performance =
-				WeaponPerformanceCalculator.calculate(object);
-		final boolean armour = performance == null && isArmour(object);
+		final String category = resolveCategory(object);
+		final boolean weapon = ItemTooltip.CATEGORY_WEAPON.equals(category);
+		final boolean armour = ItemTooltip.CATEGORY_ARMOUR.equals(category)
+				&& WeaponPerformanceCalculator.getInt(object,
+						ItemTooltip.DEFENSE) > 0;
+		final WeaponPerformance performance = weapon
+				? WeaponPerformanceCalculator.calculate(object) : null;
 		final boolean hasStructuredStats = object.hasMap(ItemTooltip.ATTRIBUTE);
 
 		if (rarity == null && performance == null && !hasStructuredStats) {
@@ -79,9 +87,8 @@ final class ItemRarityPresentation {
 		}
 
 		final StringBuilder tooltip = new StringBuilder("<html>");
-		/* A table width is respected more consistently than CSS width by the old
-		 * Swing HTML renderer and lets long item names wrap instead of stretching
-		 * the whole card. */
+		/* The old Swing HTML renderer respects table width more consistently than
+		 * CSS width, and long names wrap instead of stretching the card. */
 		tooltip.append("<table width='180' cellpadding='0' cellspacing='0'><tr><td>");
 		appendHeader(tooltip, entity, rarity);
 		if (performance != null) {
@@ -89,20 +96,36 @@ final class ItemRarityPresentation {
 		} else if (armour) {
 			appendArmourPerformance(tooltip, object);
 		}
-		appendCoreStats(tooltip, object, performance != null, armour);
-		appendBonuses(tooltip, object, performance != null, armour);
+		appendCoreStats(tooltip, object, weapon, armour);
+		appendBonuses(tooltip, object, weapon, armour);
 		appendFooter(tooltip, object, scrollDestination);
 		tooltip.append("</td></tr></table></html>");
 		return tooltip.toString();
 	}
 
-	private static boolean isArmour(final RPObject object) {
-		if (object == null || !object.has("class")) {
-			return false;
+	private static String resolveCategory(final RPObject object) {
+		final String published = WeaponPerformanceCalculator.getTooltipValue(
+				object, ItemTooltip.CATEGORY);
+		if (ItemTooltip.CATEGORY_WEAPON.equals(published)
+				|| ItemTooltip.CATEGORY_ARMOUR.equals(published)
+				|| ItemTooltip.CATEGORY_ACCESSORY.equals(published)
+				|| ItemTooltip.CATEGORY_OTHER.equals(published)) {
+			return published;
 		}
-		return ARMOUR_CLASSES.contains(object.get("class"))
-				&& WeaponPerformanceCalculator.getInt(object,
-						ItemTooltip.DEFENSE) > 0;
+
+		if (WeaponPerformanceCalculator.isWeapon(object)) {
+			return ItemTooltip.CATEGORY_WEAPON;
+		}
+		if (object != null && object.has("class")) {
+			final String itemClass = object.get("class");
+			if (LEGACY_ARMOUR_CLASSES.contains(itemClass)) {
+				return ItemTooltip.CATEGORY_ARMOUR;
+			}
+			if (LEGACY_ACCESSORY_CLASSES.contains(itemClass)) {
+				return ItemTooltip.CATEGORY_ACCESSORY;
+			}
+		}
+		return ItemTooltip.CATEGORY_OTHER;
 	}
 
 	private static void appendHeader(final StringBuilder tooltip,
@@ -133,8 +156,7 @@ final class ItemRarityPresentation {
 				performance.getDamageMin() + "–" + performance.getDamageMax()
 						+ " obrażeń &nbsp;&bull;&nbsp; "
 						+ formatTwoDecimals(performance.getAttacksPerSecond())
-						+ " ataku/s",
-				PRIMARY_VALUE_COLOR);
+						+ " ataku/s");
 
 		final int range = WeaponPerformanceCalculator.getInt(object,
 				ItemTooltip.RANGE);
@@ -142,7 +164,8 @@ final class ItemRarityPresentation {
 				object, ItemTooltip.DAMAGE_TYPE);
 		final String statuses = WeaponPerformanceCalculator.getTooltipValue(
 				object, ItemTooltip.STATUS_ATTACK);
-		if (range > 0 || damageType != null || (statuses != null && !statuses.isEmpty())) {
+		if (range > 0 || damageType != null
+				|| (statuses != null && !statuses.isEmpty())) {
 			tooltip.append("<div style='margin-top:3px'>");
 			if (range > 0) {
 				tooltip.append("Zasięg: ").append(range);
@@ -173,14 +196,13 @@ final class ItemRarityPresentation {
 			return;
 		}
 		tooltip.append("<hr>");
-		appendPrimaryValue(tooltip, armour + " PANCERZA",
-				"Ochrona podstawowa", PRIMARY_VALUE_COLOR);
+		appendPrimaryValue(tooltip, armour + " PANCERZA", "Ochrona podstawowa");
 	}
 
 	private static void appendPrimaryValue(final StringBuilder tooltip,
-			final String value, final String details, final String color) {
+			final String value, final String details) {
 		tooltip.append("<div style='text-align:center'><font size='+1' color='")
-				.append(color).append("'><b>")
+				.append(PRIMARY_VALUE_COLOR).append("'><b>")
 				.append(value).append("</b></font>");
 		if (details != null && !details.isEmpty()) {
 			tooltip.append("<br><font color='").append(MUTED_COLOR)
@@ -220,15 +242,16 @@ final class ItemRarityPresentation {
 		if (!weapon) {
 			final int attack = Math.max(
 					WeaponPerformanceCalculator.getInt(object, ItemTooltip.ATTACK),
-					WeaponPerformanceCalculator.getInt(object, ItemTooltip.RANGED_ATTACK));
+					WeaponPerformanceCalculator.getInt(object,
+							ItemTooltip.RANGED_ATTACK));
 			if (attack != 0) {
-				appendBonusLine(bonuses, signed(Integer.toString(attack)) + " ataku");
+				appendBonusLine(bonuses,
+						signed(Integer.toString(attack)) + " ataku");
 			}
 		}
 
-		/* Rings and necklaces are accessories, so their DEF is displayed beside
-		 * their other bonuses. Only real armour classes receive the large primary
-		 * armour block. */
+		/* Accessories and miscellaneous equipment keep DEF beside other bonuses.
+		 * Only real armour receives the large primary armour block. */
 		if (!weapon && !armour) {
 			final int defense = WeaponPerformanceCalculator.getInt(object,
 					ItemTooltip.DEFENSE);
@@ -270,14 +293,16 @@ final class ItemRarityPresentation {
 		if (fraction && Math.abs(value) <= 1.0) {
 			value *= 100.0;
 		}
-		appendBonusLine(bonuses, signed(formatCompact(value)) + "% " + label);
+		appendBonusLine(bonuses,
+				signed(formatCompact(value)) + "% " + label);
 	}
 
 	private static void appendIntegerBonus(final StringBuilder bonuses,
 			final RPObject object, final String attribute, final String label) {
 		final int value = WeaponPerformanceCalculator.getInt(object, attribute);
 		if (value != 0) {
-			appendBonusLine(bonuses, signed(Integer.toString(value)) + " " + label);
+			appendBonusLine(bonuses,
+					signed(Integer.toString(value)) + " " + label);
 		}
 	}
 
@@ -288,7 +313,8 @@ final class ItemRarityPresentation {
 		}
 	}
 
-	private static void appendLine(final StringBuilder target, final String line) {
+	private static void appendLine(final StringBuilder target,
+			final String line) {
 		if (target.length() > 0) {
 			target.append("<br>");
 		}
@@ -353,13 +379,27 @@ final class ItemRarityPresentation {
 
 	private static String localizeDamageType(final String value) {
 		final String type = value.toLowerCase(Locale.ROOT);
-		if ("light".equals(type)) return "Światło";
-		if ("dark".equals(type)) return "Mrok";
-		if ("fire".equals(type)) return "Ogień";
-		if ("ice".equals(type)) return "Lód";
-		if ("water".equals(type)) return "Woda";
-		if ("earth".equals(type)) return "Natura";
-		if ("cut".equals(type)) return "Fizyczne";
+		if ("light".equals(type)) {
+			return "Światło";
+		}
+		if ("dark".equals(type)) {
+			return "Mrok";
+		}
+		if ("fire".equals(type)) {
+			return "Ogień";
+		}
+		if ("ice".equals(type)) {
+			return "Lód";
+		}
+		if ("water".equals(type)) {
+			return "Woda";
+		}
+		if ("earth".equals(type)) {
+			return "Natura";
+		}
+		if ("cut".equals(type)) {
+			return "Fizyczne";
+		}
 		return value;
 	}
 
@@ -386,7 +426,9 @@ final class ItemRarityPresentation {
 	}
 
 	private static String escapeHtml(final String text) {
-		if (text == null) return "";
+		if (text == null) {
+			return "";
+		}
 		return text.replace("&", "&amp;").replace("<", "&lt;")
 				.replace(">", "&gt;").replace("\"", "&quot;")
 				.replace("'", "&#39;");
