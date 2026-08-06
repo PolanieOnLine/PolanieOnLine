@@ -152,11 +152,17 @@ final class ItemRarityPresentation {
 			final RPObject object, final WeaponPerformance performance) {
 		tooltip.append("<hr>");
 		appendPrimaryValue(tooltip,
-				formatOneDecimal(performance.getBaseDps()) + " DPS",
-				performance.getDamageMin() + "–" + performance.getDamageMax()
-						+ " obrażeń &nbsp;&bull;&nbsp; "
-						+ formatTwoDecimals(performance.getAttacksPerSecond())
-						+ " ataku/s");
+				formatOneDecimal(performance.getBaseDps())
+						+ " pkt. obrażeń na sekundę", null);
+		tooltip.append("<div style='margin-top:3px'><font color='")
+				.append(MUTED_COLOR).append("'>");
+		appendDetailLine(tooltip, "[" + performance.getDamageMin() + "–"
+				+ performance.getDamageMax() + "] pkt. obrażeń za trafienie");
+		appendDetailLine(tooltip,
+				formatTwoDecimals(performance.getAttacksPerSecond())
+						+ " ataku na sekundę ("
+						+ getWeaponSpeedLabel(performance.getAttacksPerSecond()) + ")");
+		tooltip.append("</font></div>");
 
 		final int range = WeaponPerformanceCalculator.getInt(object,
 				ItemTooltip.RANGE);
@@ -196,19 +202,41 @@ final class ItemRarityPresentation {
 			return;
 		}
 		tooltip.append("<hr>");
-		appendPrimaryValue(tooltip, armour + " PANCERZA", "Ochrona podstawowa");
+		appendPrimaryValue(tooltip, armour + " pkt. pancerza",
+				"Ochrona podstawowa");
 	}
 
 	private static void appendPrimaryValue(final StringBuilder tooltip,
 			final String value, final String details) {
-		tooltip.append("<div style='text-align:center'><font size='+1' color='")
+		tooltip.append("<div><font size='+1' color='")
 				.append(PRIMARY_VALUE_COLOR).append("'><b>")
 				.append(value).append("</b></font>");
 		if (details != null && !details.isEmpty()) {
 			tooltip.append("<br><font color='").append(MUTED_COLOR)
-					.append("'>").append(details).append("</font>");
+					.append("'>&#9670; ").append(details).append("</font>");
 		}
 		tooltip.append("</div>");
+	}
+
+	private static void appendDetailLine(final StringBuilder tooltip,
+			final String details) {
+		tooltip.append("<br>&#9670; ").append(escapeHtml(details));
+	}
+
+	private static String getWeaponSpeedLabel(final double attacksPerSecond) {
+		if (attacksPerSecond >= 2.0) {
+			return "Bardzo szybka broń";
+		}
+		if (attacksPerSecond >= 1.25) {
+			return "Szybka broń";
+		}
+		if (attacksPerSecond >= 1.0) {
+			return "Umiarkowana broń";
+		}
+		if (attacksPerSecond >= 0.6) {
+			return "Powolna broń";
+		}
+		return "Bardzo powolna broń";
 	}
 
 	private static void appendCoreStats(final StringBuilder tooltip,
