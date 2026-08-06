@@ -34,43 +34,78 @@ public final class WeaponDamageRangeService {
 	}
 
 	/**
-	 * Initializes a damage range for a newly-created weapon instance.
-	 * Restoration deliberately skips generation so old saved items without a
-	 * range keep their historical fixed {@code atk-atk} behavior.
+	 * Initializes a damage range for a newly-created weapon instance. Restore
+	 * contexts are handled after the saved instance values have been applied by
+	 * {@link #migrateRestored(Item, int, Integer, Integer)}.
 	 *
 	 * @param item item being created
 	 * @param context item creation context
 	 */
 	public static void initialize(final Item item,
 			final ItemCreationContext context) {
-		if (item == null || item instanceof StackableItem
-				|| !(item instanceof WeaponImpl)
-				|| item.has(Item.RARITY_ID)
+		if (!isEligibleWeapon(item) || item.has(Item.RARITY_ID)
 				|| (context != null && context.isRestore())) {
 			return;
 		}
+		initializeGeneratedRange(item);
+	}
 
-		final int attack = Math.max(item.getAttack(), item.getRangedAttack());
+	/**
+	 * Adds a range to an existing saved weapon which predates the range system.
+	 * The calculation uses the final stored attack value restored from the
+	 * database, so old and newly-created copies of the same weapon follow the
+	 * same combat rules.
+	 *
+	 * A valid saved range is authoritative and is never recalculated. When an
+	 * exceptional weapon defines a range in XML, its template is scaled from the
+	 * definition attack to the restored instance attack.
+	 *
+	 * @param item restored item after all saved values and converters were applied
+	 * @param definitionAttack attack value from the current XML definition
+	 * @param definitionMinimum optional XML damage minimum
+	 * @param definitionMaximum optional XML damage maximum
+	 */
+	public static void migrateRestored(final Item item,
+			final int definitionAttack, final Integer definitionMinimum,
+			final Integer definitionMaximum) {
+		if (!isEligibleWeapon(item) || hasValidRange(item)) {
+			return;
+		}
+
+		removeRange(item);
+		final int attack = getStoredAttack(item);
 		if (attack <= 0) {
 			return;
 		}
 
-		if (hasValidExplicitRange(item)) {
+		final DamageRange range;
+		if (hasValidRange(definitionMinimum, definitionMaximum)
+				&& definitionAttack > 0) {
+			final double scale = attack / (double) definitionAttack;
+			final int minimum = scaleEndpoint(
+					definitionMinimum.intValue(), scale);
+			final int maximum = Math.max(minimum, scaleEndpoint(
+					definitionMaximum.intValue(), scale));
+			range = new DamageRange(minimum, maximum);
+		} else {
+			range = calculate(item.getItemClass(), getStoredAttackRate(item),
+					attack);
+		}
+
+		storeRange(item, range);
+		copyAttackRarityModifier(item);
+	}
+
+	private static void initializeGeneratedRange(final Item item) {
+		final int attack = getStoredAttack(item);
+		if (attack <= 0 || hasValidRange(item)) {
 			return;
 		}
 
 		// A partial or invalid override must not create a malformed range.
-		if (item.has("damage_min")) {
-			item.remove("damage_min");
-		}
-		if (item.has("damage_max")) {
-			item.remove("damage_max");
-		}
-
-		final DamageRange range = calculate(item.getItemClass(),
-				item.getAttackRate(), attack);
-		item.put("damage_min", range.getMinimum());
-		item.put("damage_max", range.getMaximum());
+		removeRange(item);
+		storeRange(item, calculate(item.getItemClass(),
+				getStoredAttackRate(item), attack));
 	}
 
 	static DamageRange calculate(final String itemClass, final int attackRate,
@@ -86,13 +121,67 @@ public final class WeaponDamageRangeService {
 				Math.min(Short.MAX_VALUE, attack + difference));
 	}
 
-	private static boolean hasValidExplicitRange(final Item item) {
+	private static boolean isEligibleWeapon(final Item item) {
+		return item != null && !(item instanceof StackableItem)
+				&& item instanceof WeaponImpl;
+	}
+
+	private static int getStoredAttack(final Item item) {
+		final int melee = item.has("atk") ? Math.max(0, item.getInt("atk")) : 0;
+		final int ranged = item.has("ratk") ? Math.max(0, item.getInt("ratk")) : 0;
+		return Math.max(melee, ranged);
+	}
+
+	private static int getStoredAttackRate(final Item item) {
+		if (item.has("rate") && item.getInt("rate") > 0) {
+			return item.getInt("rate");
+		}
+		return Item.getDefaultAttackRate();
+	}
+
+	private static boolean hasValidRange(final Item item) {
 		if (!item.has("damage_min") || !item.has("damage_max")) {
 			return false;
 		}
-		final int minimum = item.getInt("damage_min");
-		final int maximum = item.getInt("damage_max");
-		return minimum > 0 && maximum >= minimum;
+		return hasValidRange(Integer.valueOf(item.getInt("damage_min")),
+				Integer.valueOf(item.getInt("damage_max")));
+	}
+
+	private static boolean hasValidRange(final Integer minimum,
+			final Integer maximum) {
+		return minimum != null && maximum != null
+				&& minimum.intValue() > 0
+				&& maximum.intValue() >= minimum.intValue();
+	}
+
+	private static int scaleEndpoint(final int endpoint, final double scale) {
+		return Math.max(1, Math.min(Short.MAX_VALUE,
+				(int) Math.round(endpoint * scale)));
+	}
+
+	private static void storeRange(final Item item, final DamageRange range) {
+		item.put("damage_min", range.getMinimum());
+		item.put("damage_max", range.getMaximum());
+	}
+
+	private static void removeRange(final Item item) {
+		if (item.has("damage_min")) {
+			item.remove("damage_min");
+		}
+		if (item.has("damage_max")) {
+			item.remove("damage_max");
+		}
+	}
+
+	private static void copyAttackRarityModifier(final Item item) {
+		Double multiplier = item.getRarityModifier("atk");
+		if (multiplier == null) {
+			multiplier = item.getRarityModifier("ratk");
+		}
+		if (multiplier != null) {
+			item.setRarityModifier("damage_min", multiplier.doubleValue());
+			item.setRarityModifier("damage_max", multiplier.doubleValue());
+		}
 	}
 
 	private static double resolveSpread(final String itemClass,
