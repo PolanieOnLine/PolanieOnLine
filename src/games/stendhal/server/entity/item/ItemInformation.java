@@ -34,11 +34,14 @@ public class ItemInformation extends Item {
 
 	public static void generateRPClass() {
 		/* ItemInformation is registered immediately after Item while RP classes
-		 * are still mutable. Add one presentation-only map to the parent item
-		 * class so normal inventory items can expose selected hidden statistics
-		 * without making the internal attributes themselves public. */
-		RPClass.getRPClass("item").addAttribute(ItemTooltip.ATTRIBUTE,
+		 * are still mutable. Add presentation metadata to the parent item class so
+		 * normal inventory items can expose selected statistics without making the
+		 * internal combat attributes themselves public. */
+		final RPClass itemClass = RPClass.getRPClass("item");
+		itemClass.addAttribute(ItemTooltip.ATTRIBUTE,
 				Type.MAP, Definition.VOLATILE);
+		itemClass.addAttribute(ItemTooltip.CATEGORY_OVERRIDE,
+				Type.STRING, Definition.HIDDEN);
 
 		final RPClass entity = new RPClass("item_information");
 		entity.isA("item");
