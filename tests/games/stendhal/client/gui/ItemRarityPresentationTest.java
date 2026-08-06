@@ -3,6 +3,7 @@
  ***************************************************************************/
 package games.stendhal.client.gui;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -49,6 +50,7 @@ public class ItemRarityPresentationTest {
 	public void testWeaponToolTipShowsServerPublishedStatistics() {
 		final RPObject object = ItemTestHelper.createItem(
 				"złota ciupaga z trzema wąsami");
+		object.put("class", "axe");
 		object.put("rarity_id", "legendary");
 		putStat(object, ItemTooltip.ATTACK, "32");
 		putStat(object, ItemTooltip.DAMAGE_MIN, "28");
@@ -64,10 +66,11 @@ public class ItemRarityPresentationTest {
 		final String tooltip = ItemRarityPresentation.buildItemToolTip(
 				EntityFactory.createEntity(object));
 
+		assertTrue(tooltip.contains("width:195px"));
 		assertTrue(tooltip.contains("53,3 DPS"));
 		assertTrue(tooltip.contains("28–36 obrażeń"));
 		assertTrue(tooltip.contains("1,67 ataku/s"));
-		assertTrue(!tooltip.contains("pkt. ataku"));
+		assertFalse(tooltip.contains("pkt. ataku"));
 		assertTrue(tooltip.contains("Typ obrażeń: Światło"));
 		assertTrue(tooltip.contains("Obrona: 10"));
 		assertTrue(tooltip.contains("+12,4% kradzieży życia"));
@@ -76,8 +79,40 @@ public class ItemRarityPresentationTest {
 	}
 
 	@Test
-	public void testLegacyDirectAttributesRemainSupported() {
+	public void testArmourHighlightsDefenseAndDoesNotShowDps() {
+		final RPObject object = ItemTestHelper.createItem("pancerz testowy");
+		object.put("class", "armor");
+		object.put("rarity_id", "epic");
+		putStat(object, ItemTooltip.DEFENSE, "18");
+		putStat(object, ItemTooltip.ATTACK, "4");
+
+		final String tooltip = ItemRarityPresentation.buildItemToolTip(
+				EntityFactory.createEntity(object));
+
+		assertTrue(tooltip.contains("18 OBRONY"));
+		assertTrue(tooltip.contains("+4 ataku"));
+		assertFalse(tooltip.contains("DPS"));
+		assertFalse(tooltip.contains("obrażeń"));
+	}
+
+	@Test
+	public void testRingAttackBonusDoesNotBecomeWeaponDps() {
+		final RPObject object = ItemTestHelper.createItem("pierścień testowy");
+		object.put("class", "ring");
+		object.put("rarity_id", "rare");
+		putStat(object, ItemTooltip.ATTACK, "7");
+
+		final String tooltip = ItemRarityPresentation.buildItemToolTip(
+				EntityFactory.createEntity(object));
+
+		assertTrue(tooltip.contains("+7 ataku"));
+		assertFalse(tooltip.contains("DPS"));
+	}
+
+	@Test
+	public void testLegacyDirectWeaponAttributesRemainSupported() {
 		final RPObject object = ItemTestHelper.createItem("zwykły miecz");
+		object.put("class", "sword");
 		object.put("atk", 15);
 		object.put("rate", 5);
 
