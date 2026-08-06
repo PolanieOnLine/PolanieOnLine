@@ -106,6 +106,23 @@ public class WeaponDamageRangeServiceTest {
 	}
 
 	@Test
+	public void oldRarityWeaponReplaysBaseRangeThenRarityScaling() {
+		final Weapon weapon = weapon("axe", 108, 4);
+		weapon.setRarityModifier("atk", 1.075);
+		weapon.setRarityModifier("rate", 1.075);
+
+		WeaponDamageRangeService.migrateRestored(weapon, 100, null, null);
+
+		// Same result as: base 100 -> 85-115, then rarity x1.075.
+		assertEquals(91, weapon.getInt("damage_min"));
+		assertEquals(124, weapon.getInt("damage_max"));
+		assertEquals(Double.valueOf(1.075),
+				weapon.getRarityModifier("damage_min"));
+		assertEquals(Double.valueOf(1.075),
+				weapon.getRarityModifier("damage_max"));
+	}
+
+	@Test
 	public void savedRangeIsAuthoritativeDuringMigration() {
 		final Weapon weapon = weapon("axe", 40, 5);
 		weapon.put("damage_min", 11);
