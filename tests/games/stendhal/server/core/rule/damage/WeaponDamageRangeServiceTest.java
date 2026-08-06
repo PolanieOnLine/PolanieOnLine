@@ -83,7 +83,7 @@ public class WeaponDamageRangeServiceTest {
 	}
 
 	@Test
-	public void restoreDoesNotGenerateRangeForLegacyItem() {
+	public void restoreWaitsUntilSavedAttackHasBeenApplied() {
 		final Weapon weapon = weapon("axe", 20, 5);
 
 		WeaponDamageRangeService.initialize(weapon,
@@ -91,8 +91,42 @@ public class WeaponDamageRangeServiceTest {
 
 		assertFalse(weapon.has("damage_min"));
 		assertFalse(weapon.has("damage_max"));
-		assertEquals(20, weapon.getDamageMin());
-		assertEquals(20, weapon.getDamageMax());
+	}
+
+	@Test
+	public void oldSavedWeaponIsMigratedFromItsRestoredAttack() {
+		final Weapon weapon = weapon("axe", 20, 5);
+		weapon.put("atk", 40);
+
+		WeaponDamageRangeService.migrateRestored(weapon, 20, null, null);
+
+		assertEquals(34, weapon.getInt("damage_min"));
+		assertEquals(46, weapon.getInt("damage_max"));
+		assertEquals(40.0, weapon.getAverageDamage(), 0.0);
+	}
+
+	@Test
+	public void savedRangeIsAuthoritativeDuringMigration() {
+		final Weapon weapon = weapon("axe", 40, 5);
+		weapon.put("damage_min", 11);
+		weapon.put("damage_max", 77);
+
+		WeaponDamageRangeService.migrateRestored(weapon, 20,
+				Integer.valueOf(8), Integer.valueOf(35));
+
+		assertEquals(11, weapon.getInt("damage_min"));
+		assertEquals(77, weapon.getInt("damage_max"));
+	}
+
+	@Test
+	public void exceptionalDefinitionRangeScalesToRestoredAttack() {
+		final Weapon weapon = weapon("axe", 40, 5);
+
+		WeaponDamageRangeService.migrateRestored(weapon, 20,
+				Integer.valueOf(8), Integer.valueOf(35));
+
+		assertEquals(16, weapon.getInt("damage_min"));
+		assertEquals(70, weapon.getInt("damage_max"));
 	}
 
 	@Test
@@ -103,6 +137,7 @@ public class WeaponDamageRangeServiceTest {
 
 		WeaponDamageRangeService.initialize(ring,
 				ItemCreationContext.defaultCreation());
+		WeaponDamageRangeService.migrateRestored(ring, 20, null, null);
 
 		assertFalse(ring.has("damage_min"));
 		assertFalse(ring.has("damage_max"));
