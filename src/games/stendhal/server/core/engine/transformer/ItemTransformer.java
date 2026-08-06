@@ -15,6 +15,7 @@ import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.server.core.rule.damage.WeaponDamageRangeService;
 import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.core.rule.rarity.ItemRarityService;
 import games.stendhal.server.entity.item.Item;
@@ -47,6 +48,13 @@ public class ItemTransformer {
 				// no such item in the game anymore
 				return null;
 			}
+
+			// Keep the current definition template before saved instance data can
+			// replace it. It is used only when migrating an old exceptional weapon
+			// which predates persisted damage ranges.
+			final int definitionAttack = getStoredAttack(item);
+			final Integer definitionDamageMin = getOptionalInt(item, "damage_min");
+			final Integer definitionDamageMax = getOptionalInt(item, "damage_max");
 
 			item.setID(rpobject.getID());
 
@@ -85,9 +93,7 @@ public class ItemTransformer {
 				restoreRarityInstanceAttributes(item, rpobject, savedRarity);
 			}
 
-			// Damage ranges are instance state even when rarity is disabled. New
-			// weapons restore their saved range, while old saves without one keep
-			// the historical fixed atk-atk behavior.
+			// Damage ranges are instance state even when rarity is disabled.
 			restoreDamageRangeInstanceAttributes(item, rpobject);
 
 			if (item instanceof StackableItem) {
@@ -127,6 +133,12 @@ public class ItemTransformer {
 
 			UpdateConverter.updateImproveItemAttr(item);
 
+			// Existing weapons without a saved range are migrated from their final
+			// restored ATK. The generated values are normal persistent attributes,
+			// so the conversion happens only once for each item instance.
+			WeaponDamageRangeService.migrateRestored(item, definitionAttack,
+					definitionDamageMin, definitionDamageMax);
+
 			if (!savedRarity && legacyRarityItem) {
 				ItemRarityService.getInstance().markLegacyCommon(item);
 			}
@@ -146,6 +158,16 @@ public class ItemTransformer {
 			logger.warn("Non-item object found: " + rpobject);
 			return null;
 		}
+	}
+
+	private int getStoredAttack(final Item item) {
+		final int melee = item.has("atk") ? Math.max(0, item.getInt("atk")) : 0;
+		final int ranged = item.has("ratk") ? Math.max(0, item.getInt("ratk")) : 0;
+		return Math.max(melee, ranged);
+	}
+
+	private Integer getOptionalInt(final Item item, final String attribute) {
+		return item.has(attribute) ? Integer.valueOf(item.getInt(attribute)) : null;
 	}
 
 	private void restoreDamageRangeInstanceAttributes(final Item item,
