@@ -70,6 +70,10 @@ public class StyledToolTipUI extends BasicToolTipUI {
 		super.installUI(tooltip);
 		tooltip.setBackground(style.getHighLightColor());
 		tooltip.setForeground(style.getShadowColor());
+		/* Keep tooltip typography aligned with the rest of the Stendhal skin.
+		 * BasicToolTipUI otherwise falls back to the platform Look&Feel font,
+		 * which makes structured item cards visibly inconsistent. */
+		tooltip.setFont(style.getFont());
 		tooltip.setBorder(border);
 	}
 }
