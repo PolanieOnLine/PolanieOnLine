@@ -1,6 +1,6 @@
 /* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2010 - Stendhal                    *
+ *                   (C) Copyright 2003-2026 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -12,6 +12,7 @@
  ***************************************************************************/
 package games.stendhal.server.entity.item;
 
+import games.stendhal.common.constants.ItemTooltip;
 import marauroa.common.game.Definition;
 import marauroa.common.game.Definition.Type;
 import marauroa.common.game.RPClass;
@@ -32,6 +33,13 @@ public class ItemInformation extends Item {
 
 
 	public static void generateRPClass() {
+		/* ItemInformation is registered immediately after Item while RP classes
+		 * are still mutable. Add one presentation-only map to the parent item
+		 * class so normal inventory items can expose selected hidden statistics
+		 * without making the internal attributes themselves public. */
+		RPClass.getRPClass("item").addAttribute(ItemTooltip.ATTRIBUTE,
+				Type.MAP, Definition.VOLATILE);
+
 		final RPClass entity = new RPClass("item_information");
 		entity.isA("item");
 
