@@ -113,6 +113,7 @@ class SwingClientGUI implements J2DClientGUI {
 	private KeyRing keyring;
 	private MagicBag magicbag;
 	private RunicAltar runicAltar;
+	private ChatOptionsDialog chatOptionsDialog;
 	//private Portfolio portfolio;
 	private Spells spells;
 	private boolean offline;
@@ -145,6 +146,9 @@ class SwingClientGUI implements J2DClientGUI {
 
 		runicAltar = new RunicAltar();
 		pane.add(runicAltar.getRunicAltar(), JLayeredPane.MODAL_LAYER);
+
+		chatOptionsDialog = new ChatOptionsDialog();
+		pane.add(chatOptionsDialog.getChatOptionsDialog(), JLayeredPane.MODAL_LAYER);
 
 		quitDialog = new QuitDialog();
 		pane.add(quitDialog.getQuitDialog(), JLayeredPane.MODAL_LAYER);
@@ -380,6 +384,26 @@ class SwingClientGUI implements J2DClientGUI {
 	}
 
 	@Override
+	public void showChatOptionsDialog() {
+		chatOptionsDialog.showDialog();
+	}
+
+	@Override
+	public void refreshChatOptionsDialog() {
+		chatOptionsDialog.refreshOptions();
+	}
+
+	@Override
+	public void closeChatOptionsDialog() {
+		chatOptionsDialog.closeDialog();
+	}
+
+	@Override
+	public boolean isChatOptionsDialogVisible() {
+		return chatOptionsDialog.isVisible();
+	}
+
+	@Override
 	public void setOffline(final boolean offline) {
 		screenController.setOffline(offline);
 		this.offline = offline;
@@ -477,6 +501,7 @@ class SwingClientGUI implements J2DClientGUI {
 		keyring.setVisible(false);
 		magicbag.setVisible(false);
 		runicAltar.getRunicAltar().setVisible(false);
+		chatOptionsDialog.getChatOptionsDialog().setVisible(false);
 		//portfolio.setVisible(false);
 		spells.setVisible(false);
 	}
