@@ -15,6 +15,8 @@ package games.stendhal.common.constants;
 public final class ItemTooltip {
 	/** Volatile map sent to clients with presentation-safe item statistics. */
 	public static final String ATTRIBUTE = "tooltip_stats";
+	/** Hidden definition override populated from the item XML. */
+	public static final String CATEGORY_OVERRIDE = "tooltip_category_override";
 
 	public static final String CATEGORY = "category";
 	public static final String CATEGORY_WEAPON = "weapon";
@@ -53,5 +55,18 @@ public final class ItemTooltip {
 
 	private ItemTooltip() {
 		// constants class
+	}
+
+	/**
+	 * Checks whether a value can be used as a structured tooltip category.
+	 *
+	 * @param category category identifier
+	 * @return {@code true} for one of the supported stable identifiers
+	 */
+	public static boolean isValidCategory(final String category) {
+		return CATEGORY_WEAPON.equals(category)
+				|| CATEGORY_ARMOUR.equals(category)
+				|| CATEGORY_ACCESSORY.equals(category)
+				|| CATEGORY_OTHER.equals(category);
 	}
 }
