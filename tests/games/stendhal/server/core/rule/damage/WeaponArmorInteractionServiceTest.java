@@ -54,6 +54,26 @@ public class WeaponArmorInteractionServiceTest {
 		assertEquals(1.0, multiplier(null, 100), 0.0);
 	}
 
+	@Test
+	public void multiplierChangesOnlyPrimaryWeaponContribution() {
+		final double equipmentAttack = 50.0;
+		final double primaryWeapon = 30.0;
+
+		assertEquals(53.0,
+				WeaponArmorInteractionService.adjustWeaponContribution(
+						equipmentAttack, primaryWeapon, 1.10), 0.000001);
+		assertEquals(44.0,
+				WeaponArmorInteractionService.adjustWeaponContribution(
+						equipmentAttack, primaryWeapon, 0.80), 0.000001);
+	}
+
+	@Test
+	public void negativeWeaponContributionCannotCorruptAttack() {
+		assertEquals(25.0,
+				WeaponArmorInteractionService.adjustWeaponContribution(
+						25.0, -10.0, 1.15), 0.000001);
+	}
+
 	private double multiplier(final String weaponClass, final int armor) {
 		return WeaponArmorInteractionService.getDamageMultiplier(
 				weaponClass, armor);
