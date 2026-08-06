@@ -30,10 +30,13 @@ import marauroa.common.game.RPObject;
 
 /** Builds compact structured desktop item tooltips. */
 final class ItemRarityPresentation {
-	private static final String DEFAULT_TITLE_COLOR = "#f4f1ec";
-	private static final String PRIMARY_VALUE_COLOR = "#fffaf2";
-	private static final String MUTED_COLOR = "#e6ddd5";
-	private static final String BONUS_COLOR = "#79a9ff";
+	private static final String DEFAULT_TITLE_COLOR = "#f3efe7";
+	private static final String CARD_BACKGROUND_COLOR = "#171613";
+	private static final String PRIMARY_VALUE_COLOR = "#f3efe7";
+	private static final String MUTED_COLOR = "#b9b3a8";
+	private static final String CONNECTOR_COLOR = "#777168";
+	private static final String BONUS_COLOR = "#d8d2c8";
+	private static final String FOOTER_LABEL_COLOR = "#c8b17c";
 	private static final DecimalFormat ONE_DECIMAL = createDecimalFormat("0.0");
 	private static final DecimalFormat TWO_DECIMALS = createDecimalFormat("0.00");
 
@@ -89,7 +92,9 @@ final class ItemRarityPresentation {
 		final StringBuilder tooltip = new StringBuilder("<html>");
 		/* The old Swing HTML renderer respects table width more consistently than
 		 * CSS width, and long names wrap instead of stretching the card. */
-		tooltip.append("<table width='180' cellpadding='0' cellspacing='0'><tr><td>");
+		tooltip.append("<table width='190' bgcolor='")
+				.append(CARD_BACKGROUND_COLOR)
+				.append("' cellpadding='6' cellspacing='0'><tr><td>");
 		appendHeader(tooltip, entity, rarity);
 		if (performance != null) {
 			appendWeaponPerformance(tooltip, object, performance);
@@ -132,37 +137,36 @@ final class ItemRarityPresentation {
 			final IEntity entity, final ItemRarity rarity) {
 		final String title = entity.getTitle();
 		if (title != null) {
-			tooltip.append("<div style='text-align:center'><b><font color='");
-			tooltip.append(escapeHtml(rarity == null
-					? DEFAULT_TITLE_COLOR : rarity.getColorHex()));
-			tooltip.append("'>");
-			tooltip.append(escapeHtml(title.toUpperCase(Locale.ROOT)));
-			tooltip.append("</font></b></div>");
+			tooltip.append("<b><font size='+1' color='")
+					.append(DEFAULT_TITLE_COLOR).append("'>")
+					.append(escapeHtml(title.toUpperCase(Locale.ROOT)))
+					.append("</font></b>");
 		}
 		if (rarity != null) {
-			tooltip.append("<div style='text-align:center'><font color='");
-			tooltip.append(escapeHtml(rarity.getColorHex()));
-			tooltip.append("'>");
-			tooltip.append(escapeHtml(rarity.getPolishDisplayName()));
-			tooltip.append("</font></div>");
+			tooltip.append("<br><font color='")
+					.append(escapeHtml(rarity.getColorHex())).append("'><b>")
+					.append(escapeHtml(rarity.getPolishDisplayName()))
+					.append("</b></font>");
 		}
 	}
 
 	private static void appendWeaponPerformance(final StringBuilder tooltip,
 			final RPObject object, final WeaponPerformance performance) {
-		tooltip.append("<hr>");
+		appendDivider(tooltip);
 		appendPrimaryValue(tooltip,
 				formatOneDecimal(performance.getBaseDps())
 						+ " pkt. obrażeń na sekundę", null);
-		tooltip.append("<div style='margin-top:3px'><font color='")
-				.append(MUTED_COLOR).append("'>");
-		appendDetailLine(tooltip, "[" + performance.getDamageMin() + "–"
-				+ performance.getDamageMax() + "] pkt. obrażeń za trafienie");
-		appendDetailLine(tooltip,
+
+		tooltip.append("<table cellpadding='0' cellspacing='0'>");
+		appendTreeDetail(tooltip, true,
+				"[" + performance.getDamageMin() + "–"
+						+ performance.getDamageMax()
+						+ "] pkt. obrażeń za trafienie");
+		appendTreeDetail(tooltip, false,
 				formatTwoDecimals(performance.getAttacksPerSecond())
 						+ " ataku na sekundę ("
 						+ getWeaponSpeedLabel(performance.getAttacksPerSecond()) + ")");
-		tooltip.append("</font></div>");
+		tooltip.append("</table>");
 
 		final int range = WeaponPerformanceCalculator.getInt(object,
 				ItemTooltip.RANGE);
@@ -172,7 +176,8 @@ final class ItemRarityPresentation {
 				object, ItemTooltip.STATUS_ATTACK);
 		if (range > 0 || damageType != null
 				|| (statuses != null && !statuses.isEmpty())) {
-			tooltip.append("<div style='margin-top:3px'>");
+			tooltip.append("<div style='margin-top:4px'><font color='")
+					.append(MUTED_COLOR).append("'>");
 			if (range > 0) {
 				tooltip.append("Zasięg: ").append(range);
 			}
@@ -190,7 +195,7 @@ final class ItemRarityPresentation {
 				tooltip.append("Efekty trafienia: ")
 						.append(escapeHtml(statuses.replace(';', ',')));
 			}
-			tooltip.append("</div>");
+			tooltip.append("</font></div>");
 		}
 	}
 
@@ -201,9 +206,11 @@ final class ItemRarityPresentation {
 		if (armour <= 0) {
 			return;
 		}
-		tooltip.append("<hr>");
-		appendPrimaryValue(tooltip, armour + " pkt. pancerza",
-				"Ochrona podstawowa");
+		appendDivider(tooltip);
+		appendPrimaryValue(tooltip, armour + " pkt. pancerza", null);
+		tooltip.append("<table cellpadding='0' cellspacing='0'>");
+		appendTreeDetail(tooltip, false, "Ochrona podstawowa");
+		tooltip.append("</table>");
 	}
 
 	private static void appendPrimaryValue(final StringBuilder tooltip,
@@ -213,14 +220,25 @@ final class ItemRarityPresentation {
 				.append(value).append("</b></font>");
 		if (details != null && !details.isEmpty()) {
 			tooltip.append("<br><font color='").append(MUTED_COLOR)
-					.append("'>&#9670; ").append(details).append("</font>");
+					.append("'>").append(details).append("</font>");
 		}
 		tooltip.append("</div>");
 	}
 
-	private static void appendDetailLine(final StringBuilder tooltip,
-			final String details) {
-		tooltip.append("<br>&#9670; ").append(escapeHtml(details));
+	private static void appendTreeDetail(final StringBuilder tooltip,
+			final boolean branchContinues, final String details) {
+		tooltip.append("<tr><td valign='top'><font color='")
+				.append(CONNECTOR_COLOR).append("'>")
+				.append(branchContinues
+						? "&#9500;&#9472;&#9670;&nbsp;" : "&#9492;&#9472;&#9670;&nbsp;")
+				.append("</font></td><td><font color='")
+				.append(MUTED_COLOR).append("'>")
+				.append(escapeHtml(details))
+				.append("</font></td></tr>");
+	}
+
+	private static void appendDivider(final StringBuilder tooltip) {
+		tooltip.append("<hr>");
 	}
 
 	private static String getWeaponSpeedLabel(final double attacksPerSecond) {
@@ -386,8 +404,10 @@ final class ItemRarityPresentation {
 			footer.append(escapeHtml(scrollDestination));
 		}
 		if (footer.length() > 0) {
-			tooltip.append("<hr><font color='").append(MUTED_COLOR)
-					.append("'>").append(footer).append("</font>");
+			appendDivider(tooltip);
+			tooltip.append("<div style='text-align:right'><font color='")
+					.append(FOOTER_LABEL_COLOR).append("'>")
+					.append(footer).append("</font></div>");
 		}
 	}
 
