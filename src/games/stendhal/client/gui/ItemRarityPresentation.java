@@ -94,7 +94,8 @@ final class ItemRarityPresentation {
 		 * CSS width, and long names wrap instead of stretching the card. */
 		tooltip.append("<table width='190' bgcolor='")
 				.append(CARD_BACKGROUND_COLOR)
-				.append("' cellpadding='6' cellspacing='0'><tr><td>");
+				.append("' cellpadding='6' cellspacing='0'><tr><td><font color='")
+				.append(BONUS_COLOR).append("'>");
 		appendHeader(tooltip, entity, rarity);
 		if (performance != null) {
 			appendWeaponPerformance(tooltip, object, performance);
@@ -104,7 +105,7 @@ final class ItemRarityPresentation {
 		appendCoreStats(tooltip, object, weapon, armour);
 		appendBonuses(tooltip, object, weapon, armour);
 		appendFooter(tooltip, object, scrollDestination);
-		tooltip.append("</td></tr></table></html>");
+		tooltip.append("</font></td></tr></table></html>");
 		return tooltip.toString();
 	}
 
@@ -238,7 +239,10 @@ final class ItemRarityPresentation {
 	}
 
 	private static void appendDivider(final StringBuilder tooltip) {
-		tooltip.append("<hr>");
+		tooltip.append("<div style='text-align:center'><font color='")
+				.append(CONNECTOR_COLOR)
+				.append("'>&#9472;&#9472;&#9472;&#9472;&#9472;&#9671;")
+				.append("&#9472;&#9472;&#9472;&#9472;&#9472;</font></div>");
 	}
 
 	private static String getWeaponSpeedLabel(final double attacksPerSecond) {
@@ -276,7 +280,8 @@ final class ItemRarityPresentation {
 					+ (maxImproves > 0 ? "/" + maxImproves : ""));
 		}
 		if (stats.length() > 0) {
-			tooltip.append("<hr>").append(stats);
+			appendDivider(tooltip);
+			tooltip.append(stats);
 		}
 	}
 
@@ -324,7 +329,8 @@ final class ItemRarityPresentation {
 				"bonusu pancerza", false);
 
 		if (bonuses.length() > 0) {
-			tooltip.append("<hr><font color='").append(BONUS_COLOR)
+			appendDivider(tooltip);
+			tooltip.append("<font color='").append(BONUS_COLOR)
 					.append("'>").append(bonuses).append("</font>");
 		}
 	}
