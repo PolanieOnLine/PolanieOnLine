@@ -20,6 +20,7 @@ public class WeaponPerformanceCalculatorTest {
 	@Test
 	public void testMeleeWeaponPerformance() {
 		final RPObject object = new RPObject();
+		object.put("class", "sword");
 		object.put("atk", 30);
 		object.put("rate", 5);
 
@@ -36,9 +37,8 @@ public class WeaponPerformanceCalculatorTest {
 
 	@Test
 	public void testPerformanceReadsVisibleTooltipMap() {
-		/* A typed item is required because RPObject maps must be declared in its
-		 * RPClass before values can be inserted. */
 		final Item object = ItemTestHelper.createItem("tooltip weapon");
+		object.put("class", "axe");
 		object.put(ItemTooltip.ATTRIBUTE, ItemTooltip.ATTACK, "32");
 		object.put(ItemTooltip.ATTRIBUTE, ItemTooltip.ATTACK_RATE, "2");
 
@@ -54,6 +54,7 @@ public class WeaponPerformanceCalculatorTest {
 	@Test
 	public void testDamageRangePerformance() {
 		final RPObject object = new RPObject();
+		object.put("class", "axe");
 		object.put("damage_min", 28);
 		object.put("damage_max", 36);
 		object.put("atk", 32);
@@ -70,6 +71,7 @@ public class WeaponPerformanceCalculatorTest {
 	@Test
 	public void testRangedWeaponPerformance() {
 		final RPObject object = new RPObject();
+		object.put("class", "ranged");
 		object.put("ratk", 24);
 		object.put("rate", 4);
 
@@ -82,8 +84,25 @@ public class WeaponPerformanceCalculatorTest {
 	}
 
 	@Test
+	public void testArmourAndAccessoriesAreNotWeapons() {
+		final RPObject ring = new RPObject();
+		ring.put("class", "ring");
+		ring.put("atk", 15);
+		ring.put("rate", 5);
+
+		final RPObject shield = new RPObject();
+		shield.put("class", "shield");
+		shield.put("atk", 12);
+		shield.put("rate", 5);
+
+		assertNull(WeaponPerformanceCalculator.calculate(ring));
+		assertNull(WeaponPerformanceCalculator.calculate(shield));
+	}
+
+	@Test
 	public void testDefaultRateAndNonWeaponFallback() {
 		final RPObject weapon = new RPObject();
+		weapon.put("class", "dagger");
 		weapon.put("atk", 15);
 		final WeaponPerformance performance =
 				WeaponPerformanceCalculator.calculate(weapon);
