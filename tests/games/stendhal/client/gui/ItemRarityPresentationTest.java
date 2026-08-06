@@ -66,20 +66,20 @@ public class ItemRarityPresentationTest {
 		final String tooltip = ItemRarityPresentation.buildItemToolTip(
 				EntityFactory.createEntity(object));
 
-		assertTrue(tooltip.contains("width:195px"));
+		assertTrue(tooltip.contains("width='180'"));
 		assertTrue(tooltip.contains("53,3 DPS"));
 		assertTrue(tooltip.contains("28–36 obrażeń"));
 		assertTrue(tooltip.contains("1,67 ataku/s"));
 		assertFalse(tooltip.contains("pkt. ataku"));
 		assertTrue(tooltip.contains("Typ obrażeń: Światło"));
-		assertTrue(tooltip.contains("Obrona: 10"));
+		assertTrue(tooltip.contains("Pancerz: 10"));
 		assertTrue(tooltip.contains("+12,4% kradzieży życia"));
 		assertTrue(tooltip.contains("Ulepszenie: +0/3"));
 		assertTrue(tooltip.contains("Wartość: 11432"));
 	}
 
 	@Test
-	public void testArmourHighlightsDefenseAndDoesNotShowDps() {
+	public void testArmourUsesSamePrimaryHierarchyAsWeapon() {
 		final RPObject object = ItemTestHelper.createItem("pancerz testowy");
 		object.put("class", "armor");
 		object.put("rarity_id", "epic");
@@ -89,24 +89,60 @@ public class ItemRarityPresentationTest {
 		final String tooltip = ItemRarityPresentation.buildItemToolTip(
 				EntityFactory.createEntity(object));
 
-		assertTrue(tooltip.contains("18 OBRONY"));
+		assertTrue(tooltip.contains("18 PANCERZA"));
+		assertTrue(tooltip.contains("Ochrona podstawowa"));
 		assertTrue(tooltip.contains("+4 ataku"));
 		assertFalse(tooltip.contains("DPS"));
 		assertFalse(tooltip.contains("obrażeń"));
 	}
 
 	@Test
-	public void testRingAttackBonusDoesNotBecomeWeaponDps() {
+	public void testShieldHighlightsArmour() {
+		final RPObject object = ItemTestHelper.createItem("tarcza testowa");
+		object.put("class", "shield");
+		object.put("rarity_id", "legendary");
+		putStat(object, ItemTooltip.DEFENSE, "175");
+
+		final String tooltip = ItemRarityPresentation.buildItemToolTip(
+				EntityFactory.createEntity(object));
+
+		assertTrue(tooltip.contains("175 PANCERZA"));
+		assertTrue(tooltip.contains("Ochrona podstawowa"));
+	}
+
+	@Test
+	public void testRingStatsStayInBonusList() {
 		final RPObject object = ItemTestHelper.createItem("pierścień testowy");
 		object.put("class", "ring");
 		object.put("rarity_id", "rare");
 		putStat(object, ItemTooltip.ATTACK, "7");
+		putStat(object, ItemTooltip.DEFENSE, "17");
 
 		final String tooltip = ItemRarityPresentation.buildItemToolTip(
 				EntityFactory.createEntity(object));
 
 		assertTrue(tooltip.contains("+7 ataku"));
+		assertTrue(tooltip.contains("+17 pancerza"));
+		assertFalse(tooltip.contains("17 PANCERZA"));
+		assertFalse(tooltip.contains("Ochrona podstawowa"));
 		assertFalse(tooltip.contains("DPS"));
+	}
+
+	@Test
+	public void testNecklaceStatsStayInBonusList() {
+		final RPObject object = ItemTestHelper.createItem("amulet testowy");
+		object.put("class", "necklace");
+		object.put("rarity_id", "legendary");
+		putStat(object, ItemTooltip.DEFENSE, "17");
+		putStat(object, ItemTooltip.HEALTH, "25");
+
+		final String tooltip = ItemRarityPresentation.buildItemToolTip(
+				EntityFactory.createEntity(object));
+
+		assertTrue(tooltip.contains("+17 pancerza"));
+		assertTrue(tooltip.contains("+25 zdrowia"));
+		assertFalse(tooltip.contains("17 PANCERZA"));
+		assertFalse(tooltip.contains("Ochrona podstawowa"));
 	}
 
 	@Test
