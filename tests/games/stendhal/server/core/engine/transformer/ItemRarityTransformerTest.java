@@ -6,6 +6,7 @@ package games.stendhal.server.core.engine.transformer;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -77,7 +78,7 @@ public class ItemRarityTransformerTest {
 	}
 
 	@Test
-	public void legacyEligibleItemBecomesCommonWithoutChangingSavedValues()
+	public void legacyEligibleItemBecomesCommonAndReceivesDamageRange()
 			throws IOException {
 		final Item legacy = SingletonRepository.getEntityManager().getItem(
 				ITEM_NAME, ItemCreationContext.restore());
@@ -87,17 +88,48 @@ public class ItemRarityTransformerTest {
 		legacy.setValue(777);
 
 		final Item restored = new ItemTransformer().transform(serializedCopy(legacy));
+		final Item secondLoad = new ItemTransformer().transform(serializedCopy(restored));
 
-		assertSame(ItemRarity.COMMON, restored.getRarity());
-		assertEquals(137, restored.getInt("atk"));
-		assertFalse(restored.has("damage_min"));
-		assertFalse(restored.has("damage_max"));
-		assertEquals(137, restored.getDamageMin());
-		assertEquals(137, restored.getDamageMax());
-		assertEquals(4, restored.getInt("rate"));
-		assertEquals(777, restored.getValue());
-		assertEquals(Double.valueOf(1.0), restored.getRarityModifier("atk"));
-		assertFalse(restored.isPersistent());
+		assertSame(ItemRarity.COMMON, secondLoad.getRarity());
+		assertEquals(137, secondLoad.getInt("atk"));
+		assertEquals(123, secondLoad.getInt("damage_min"));
+		assertEquals(151, secondLoad.getInt("damage_max"));
+		assertEquals(137.0, secondLoad.getAverageDamage(), 0.0);
+		assertEquals(4, secondLoad.getInt("rate"));
+		assertEquals(777, secondLoad.getValue());
+		assertEquals(Double.valueOf(1.0), secondLoad.getRarityModifier("atk"));
+		assertEquals(Double.valueOf(1.0),
+				secondLoad.getRarityModifier("damage_min"));
+		assertEquals(Double.valueOf(1.0),
+				secondLoad.getRarityModifier("damage_max"));
+		assertFalse(secondLoad.isPersistent());
+	}
+
+	@Test
+	public void oldRarityItemWithoutRangeIsMigratedAndThenRemainsStable()
+			throws IOException {
+		final Item saved = SingletonRepository.getEntityManager().getItem(
+				ITEM_NAME, ItemRarity.RARE,
+				ItemRarityModifiers.builder().statMultiplier(1.10).build());
+		saved.setID(new ID(104, "rarity_test"));
+		saved.remove("damage_min");
+		saved.remove("damage_max");
+
+		final Item firstLoad = new ItemTransformer().transform(serializedCopy(saved));
+		final int minimum = firstLoad.getInt("damage_min");
+		final int maximum = firstLoad.getInt("damage_max");
+		final Item secondLoad = new ItemTransformer().transform(serializedCopy(firstLoad));
+
+		assertTrue(minimum < firstLoad.getInt("atk"));
+		assertTrue(maximum > firstLoad.getInt("atk"));
+		assertEquals(firstLoad.getInt("atk"),
+				(int) firstLoad.getAverageDamage());
+		assertEquals(minimum, secondLoad.getInt("damage_min"));
+		assertEquals(maximum, secondLoad.getInt("damage_max"));
+		assertEquals(firstLoad.getRarityModifier("atk"),
+				secondLoad.getRarityModifier("damage_min"));
+		assertEquals(firstLoad.getRarityModifier("atk"),
+				secondLoad.getRarityModifier("damage_max"));
 	}
 
 	@Test
