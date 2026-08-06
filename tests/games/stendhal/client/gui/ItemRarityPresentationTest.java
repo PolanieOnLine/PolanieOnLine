@@ -70,16 +70,35 @@ public class ItemRarityPresentationTest {
 				EntityFactory.createEntity(object));
 
 		assertTrue(tooltip.contains("width='180'"));
-		assertTrue(tooltip.contains("53,3 DPS"));
+		assertTrue(tooltip.contains("53,3 pkt. obrażeń na sekundę"));
 		assertTrue(tooltip.contains("#fffaf2"));
-		assertTrue(tooltip.contains("28–36 obrażeń"));
-		assertTrue(tooltip.contains("1,67 ataku/s"));
+		assertTrue(tooltip.contains("[28–36] pkt. obrażeń za trafienie"));
+		assertTrue(tooltip.contains(
+				"1,67 ataku na sekundę (Szybka broń)"));
+		assertFalse(tooltip.contains("53,3 DPS"));
 		assertFalse(tooltip.contains("pkt. ataku"));
 		assertTrue(tooltip.contains("Typ obrażeń: Światło"));
 		assertTrue(tooltip.contains("Pancerz: 10"));
 		assertTrue(tooltip.contains("+12,4% kradzieży życia"));
 		assertTrue(tooltip.contains("Ulepszenie: +0/3"));
 		assertTrue(tooltip.contains("Wartość: 11432"));
+	}
+
+	@Test
+	public void testSlowWeaponGetsReadableSpeedLabel() {
+		final RPObject object = ItemTestHelper.createItem("powolny młot");
+		object.put("class", "club");
+		putCategory(object, ItemTooltip.CATEGORY_WEAPON);
+		putStat(object, ItemTooltip.ATTACK, "36");
+		putStat(object, ItemTooltip.DAMAGE_MIN, "32");
+		putStat(object, ItemTooltip.DAMAGE_MAX, "40");
+		putStat(object, ItemTooltip.ATTACKS_PER_SECOND, "0.9");
+
+		final String tooltip = ItemRarityPresentation.buildItemToolTip(
+				EntityFactory.createEntity(object));
+
+		assertTrue(tooltip.contains(
+				"0,90 ataku na sekundę (Powolna broń)"));
 	}
 
 	@Test
@@ -94,12 +113,12 @@ public class ItemRarityPresentationTest {
 		final String tooltip = ItemRarityPresentation.buildItemToolTip(
 				EntityFactory.createEntity(object));
 
-		assertTrue(tooltip.contains("18 PANCERZA"));
+		assertTrue(tooltip.contains("18 pkt. pancerza"));
 		assertTrue(tooltip.contains("Ochrona podstawowa"));
 		assertTrue(tooltip.contains("#fffaf2"));
 		assertTrue(tooltip.contains("+4 ataku"));
-		assertFalse(tooltip.contains("DPS"));
-		assertFalse(tooltip.contains("obrażeń"));
+		assertFalse(tooltip.contains("obrażeń na sekundę"));
+		assertFalse(tooltip.contains("obrażeń za trafienie"));
 	}
 
 	@Test
@@ -113,7 +132,7 @@ public class ItemRarityPresentationTest {
 		final String tooltip = ItemRarityPresentation.buildItemToolTip(
 				EntityFactory.createEntity(object));
 
-		assertTrue(tooltip.contains("175 PANCERZA"));
+		assertTrue(tooltip.contains("175 pkt. pancerza"));
 		assertTrue(tooltip.contains("Ochrona podstawowa"));
 	}
 
@@ -128,7 +147,7 @@ public class ItemRarityPresentationTest {
 		final String tooltip = ItemRarityPresentation.buildItemToolTip(
 				EntityFactory.createEntity(object));
 
-		assertTrue(tooltip.contains("21 PANCERZA"));
+		assertTrue(tooltip.contains("21 pkt. pancerza"));
 		assertTrue(tooltip.contains("Ochrona podstawowa"));
 		assertFalse(tooltip.contains("+21 pancerza"));
 	}
@@ -147,9 +166,9 @@ public class ItemRarityPresentationTest {
 
 		assertTrue(tooltip.contains("+7 ataku"));
 		assertTrue(tooltip.contains("+17 pancerza"));
-		assertFalse(tooltip.contains("17 PANCERZA"));
+		assertFalse(tooltip.contains("17 pkt. pancerza"));
 		assertFalse(tooltip.contains("Ochrona podstawowa"));
-		assertFalse(tooltip.contains("DPS"));
+		assertFalse(tooltip.contains("obrażeń na sekundę"));
 	}
 
 	@Test
@@ -166,7 +185,7 @@ public class ItemRarityPresentationTest {
 
 		assertTrue(tooltip.contains("+17 pancerza"));
 		assertTrue(tooltip.contains("+25 zdrowia"));
-		assertFalse(tooltip.contains("17 PANCERZA"));
+		assertFalse(tooltip.contains("17 pkt. pancerza"));
 		assertFalse(tooltip.contains("Ochrona podstawowa"));
 	}
 
@@ -180,8 +199,9 @@ public class ItemRarityPresentationTest {
 		final String tooltip = ItemRarityPresentation.buildItemToolTip(
 				EntityFactory.createEntity(object));
 
-		assertTrue(tooltip.contains("10,0 DPS"));
-		assertTrue(tooltip.contains("15–15 obrażeń"));
+		assertTrue(tooltip.contains("10,0 pkt. obrażeń na sekundę"));
+		assertTrue(tooltip.contains("[15–15] pkt. obrażeń za trafienie"));
+		assertTrue(tooltip.contains("0,67 ataku na sekundę (Powolna broń)"));
 	}
 
 	private void putCategory(final RPObject object, final String category) {
