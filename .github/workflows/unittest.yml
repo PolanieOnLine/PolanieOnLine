@@ -19,6 +19,15 @@ jobs:
           cikey: ${{ secrets.cikey }}
         with:
           run: ant -noinput -buildfile build.xml test
+      - name: Print failed JUnit reports
+        if: failure()
+        run: |
+          find build/build_test_report -maxdepth 1 -type f -name 'TEST-*.xml' -print0 2>/dev/null \
+            | xargs -0 grep -lE '<failure|<error' 2>/dev/null \
+            | while read report; do
+                echo "===== ${report} ====="
+                cat "${report}"
+              done
       - uses: sarisia/actions-status-discord@v1
         if: failure()
         env:
@@ -27,6 +36,7 @@ jobs:
           nodetail: true
           title: "Unittest failed"
           description: "https://s1.polanieonline.eu/development/cireport.html"
+          ack_no_webhook: true
       - uses: sarisia/actions-status-discord@v1
         if: failure()
         env:
@@ -35,3 +45,4 @@ jobs:
           nodetail: true
           title: "Unittest failed"
           description: "https://s1.polanieonline.eu/development/cireport.html"
+          ack_no_webhook: true
