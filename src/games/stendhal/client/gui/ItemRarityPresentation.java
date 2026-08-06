@@ -25,8 +25,8 @@ import marauroa.common.game.RPObject;
 /** Builds structured desktop item tooltips without graphics dependencies. */
 final class ItemRarityPresentation {
 	private static final String DEFAULT_TITLE_COLOR = "#ffffff";
-	private static final String PRIMARY_VALUE_COLOR = "#f2f2f2";
-	private static final String MUTED_COLOR = "#b8b8b8";
+	private static final String PRIMARY_VALUE_COLOR = "#ffffff";
+	private static final String MUTED_COLOR = "#d8d8d8";
 	private static final String BONUS_COLOR = "#6f9cff";
 	private static final DecimalFormat ONE_DECIMAL = createDecimalFormat("0.0");
 	private static final DecimalFormat TWO_DECIMALS = createDecimalFormat("0.00");
@@ -57,7 +57,7 @@ final class ItemRarityPresentation {
 		}
 
 		final StringBuilder tooltip = new StringBuilder("<html>");
-		tooltip.append("<div style='width:300px;padding:6px'>");
+		tooltip.append("<div style='width:230px;padding:3px'>");
 		appendHeader(tooltip, entity, rarity);
 		if (performance != null) {
 			appendWeaponPerformance(tooltip, object, performance);
@@ -92,23 +92,18 @@ final class ItemRarityPresentation {
 	private static void appendWeaponPerformance(final StringBuilder tooltip,
 			final RPObject object, final WeaponPerformance performance) {
 		tooltip.append("<hr>");
-		tooltip.append("<div style='text-align:center'><font size='+2' color='");
+		tooltip.append("<div style='text-align:center'><font size='+1' color='");
 		tooltip.append(PRIMARY_VALUE_COLOR);
 		tooltip.append("'><b>");
 		tooltip.append(formatOneDecimal(performance.getBaseDps()));
-		tooltip.append("</b></font><br><font color='");
+		tooltip.append(" DPS</b></font><br><font color='");
 		tooltip.append(MUTED_COLOR);
-		tooltip.append("'>Bazowy DPS</font></div><br>");
-
-		tooltip.append("<b>");
-		tooltip.append(performance.getAttackPoints());
-		tooltip.append(performance.isRanged()
-				? " pkt. ataku dystansowego" : " pkt. ataku");
-		tooltip.append("</b><br>");
+		tooltip.append("'><b>");
+		tooltip.append(performance.getDamageMin()).append("–")
+				.append(performance.getDamageMax());
+		tooltip.append(" obrażeń</b> &nbsp; ");
 		tooltip.append(formatTwoDecimals(performance.getAttacksPerSecond()));
-		tooltip.append(" ataku na sekundę<br>");
-		tooltip.append(formatTwoDecimals(performance.getAttackIntervalSeconds()));
-		tooltip.append(" s między atakami");
+		tooltip.append(" ataku/s</font></div>");
 
 		final int range = WeaponPerformanceCalculator.getInt(object,
 				ItemTooltip.RANGE);

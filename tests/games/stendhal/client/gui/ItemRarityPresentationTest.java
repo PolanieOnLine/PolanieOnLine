@@ -51,6 +51,8 @@ public class ItemRarityPresentationTest {
 				"złota ciupaga z trzema wąsami");
 		object.put("rarity_id", "legendary");
 		putStat(object, ItemTooltip.ATTACK, "32");
+		putStat(object, ItemTooltip.DAMAGE_MIN, "28");
+		putStat(object, ItemTooltip.DAMAGE_MAX, "36");
 		putStat(object, ItemTooltip.ATTACK_RATE, "2");
 		putStat(object, ItemTooltip.DEFENSE, "10");
 		putStat(object, ItemTooltip.DAMAGE_TYPE, "light");
@@ -62,11 +64,10 @@ public class ItemRarityPresentationTest {
 		final String tooltip = ItemRarityPresentation.buildItemToolTip(
 				EntityFactory.createEntity(object));
 
-		assertTrue(tooltip.contains("Bazowy DPS"));
-		assertTrue(tooltip.contains("53,3"));
-		assertTrue(tooltip.contains("32 pkt. ataku"));
-		assertTrue(tooltip.contains("1,67 ataku na sekundę"));
-		assertTrue(tooltip.contains("0,60 s między atakami"));
+		assertTrue(tooltip.contains("53,3 DPS"));
+		assertTrue(tooltip.contains("28–36 obrażeń"));
+		assertTrue(tooltip.contains("1,67 ataku/s"));
+		assertTrue(!tooltip.contains("pkt. ataku"));
 		assertTrue(tooltip.contains("Typ obrażeń: Światło"));
 		assertTrue(tooltip.contains("Obrona: 10"));
 		assertTrue(tooltip.contains("+12,4% kradzieży życia"));
@@ -83,8 +84,8 @@ public class ItemRarityPresentationTest {
 		final String tooltip = ItemRarityPresentation.buildItemToolTip(
 				EntityFactory.createEntity(object));
 
-		assertTrue(tooltip.contains("Bazowy DPS"));
-		assertTrue(tooltip.contains("10,0"));
+		assertTrue(tooltip.contains("10,0 DPS"));
+		assertTrue(tooltip.contains("15–15 obrażeń"));
 	}
 
 	private void putStat(final RPObject object, final String key,

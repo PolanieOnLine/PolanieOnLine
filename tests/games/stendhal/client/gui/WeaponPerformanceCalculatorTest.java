@@ -52,6 +52,22 @@ public class WeaponPerformanceCalculatorTest {
 	}
 
 	@Test
+	public void testDamageRangePerformance() {
+		final RPObject object = new RPObject();
+		object.put("damage_min", 28);
+		object.put("damage_max", 36);
+		object.put("atk", 32);
+		object.put("rate", 2);
+
+		final WeaponPerformance performance =
+				WeaponPerformanceCalculator.calculate(object);
+
+		assertEquals(28, performance.getDamageMin());
+		assertEquals(36, performance.getDamageMax());
+		assertEquals(53.3333, performance.getBaseDps(), 0.001);
+	}
+
+	@Test
 	public void testRangedWeaponPerformance() {
 		final RPObject object = new RPObject();
 		object.put("ratk", 24);

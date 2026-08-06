@@ -19,6 +19,8 @@ public final class ItemTooltip {
 	public static final String ATTACK = "atk";
 	public static final String RANGED_ATTACK = "ratk";
 	public static final String ATTACK_RATE = "rate";
+	public static final String DAMAGE_MIN = "damage_min";
+	public static final String DAMAGE_MAX = "damage_max";
 	public static final String DEFENSE = "def";
 	public static final String RANGE = "range";
 	public static final String LIFESTEAL = "lifesteal";

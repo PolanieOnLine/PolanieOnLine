@@ -34,12 +34,19 @@ public final class ItemTooltipService {
 			item.remove(ItemTooltip.ATTRIBUTE);
 		}
 
-		putPositiveInt(item, ItemTooltip.ATTACK, item.getAttack());
-		putPositiveInt(item, ItemTooltip.RANGED_ATTACK, item.getRangedAttack());
+		// Read the stored item values directly. Some subclasses calculate contextual
+		// defense from their owner and cannot safely do that while being copied.
+		putPositiveInt(item, ItemTooltip.ATTACK,
+				item.getAttributeWithImprovement("atk", 0));
+		putPositiveInt(item, ItemTooltip.RANGED_ATTACK,
+				item.getAttributeWithImprovement("ratk", 0));
+		putPositiveInt(item, ItemTooltip.DAMAGE_MIN, item.getDamageMin());
+		putPositiveInt(item, ItemTooltip.DAMAGE_MAX, item.getDamageMax());
 		if (item.has("atk") || item.has("ratk")) {
 			putPositiveInt(item, ItemTooltip.ATTACK_RATE, item.getAttackRate());
 		}
-		putPositiveInt(item, ItemTooltip.DEFENSE, item.getDefense());
+		putPositiveInt(item, ItemTooltip.DEFENSE,
+				item.getAttributeWithImprovement("def", 0));
 		putPositiveInt(item, ItemTooltip.RANGE, item.getRange());
 
 		copyDouble(item, "lifesteal", ItemTooltip.LIFESTEAL);

@@ -30,7 +30,8 @@ import games.stendhal.server.entity.item.StackableItem;
  */
 public final class ItemRarityService {
 	private static final Set<String> INTEGRAL_STATS = Collections.unmodifiableSet(
-			new HashSet<String>(Arrays.asList("atk", "ratk", "rate", "def",
+			new HashSet<String>(Arrays.asList("atk", "ratk", "damage_min",
+					"damage_max", "rate", "def",
 					"range", "skill_atk", "rate_increase", "health")));
 
 	private static final Set<String> FLOAT_STATS = Collections.unmodifiableSet(
@@ -257,6 +258,7 @@ public final class ItemRarityService {
 
 	private boolean isAttack(final String statistic) {
 		return "atk".equals(statistic) || "ratk".equals(statistic)
+				|| "damage_min".equals(statistic) || "damage_max".equals(statistic)
 				|| "skill_atk".equals(statistic)
 				|| "atk_additional_bonus".equals(statistic)
 				|| "critical_additional_bonus".equals(statistic)

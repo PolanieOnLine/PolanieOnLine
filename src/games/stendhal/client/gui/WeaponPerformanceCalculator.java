@@ -31,8 +31,13 @@ final class WeaponPerformanceCalculator {
 		final int meleeAttack = getPositiveInt(object, ItemTooltip.ATTACK);
 		final int rangedAttack = getPositiveInt(object, ItemTooltip.RANGED_ATTACK);
 		final boolean ranged = meleeAttack <= 0 && rangedAttack > 0;
-		final int attackPoints = ranged ? rangedAttack : meleeAttack;
-		if (attackPoints <= 0) {
+		final int legacyAttack = ranged ? rangedAttack : meleeAttack;
+		int damageMin = getPositiveInt(object, ItemTooltip.DAMAGE_MIN);
+		int damageMax = getPositiveInt(object, ItemTooltip.DAMAGE_MAX);
+		if (damageMin <= 0) damageMin = legacyAttack;
+		if (damageMax <= 0) damageMax = damageMin;
+		damageMax = Math.max(damageMin, damageMax);
+		if (damageMin <= 0) {
 			return null;
 		}
 
@@ -43,9 +48,10 @@ final class WeaponPerformanceCalculator {
 
 		final double attackIntervalSeconds = attackRate * SECONDS_PER_TURN;
 		final double attacksPerSecond = 1.0 / attackIntervalSeconds;
-		final double baseDps = attackPoints * attacksPerSecond;
+		final double averageDamage = (damageMin + damageMax) / 2.0;
+		final double baseDps = averageDamage * attacksPerSecond;
 
-		return new WeaponPerformance(attackPoints, attackRate,
+		return new WeaponPerformance(damageMin, damageMax, attackRate,
 				attackIntervalSeconds, attacksPerSecond, baseDps, ranged);
 	}
 
@@ -86,18 +92,21 @@ final class WeaponPerformanceCalculator {
 	}
 
 	static final class WeaponPerformance {
-		private final int attackPoints;
+		private final int damageMin;
+		private final int damageMax;
 		private final int attackRate;
 		private final double attackIntervalSeconds;
 		private final double attacksPerSecond;
 		private final double baseDps;
 		private final boolean ranged;
 
-		private WeaponPerformance(final int attackPoints, final int attackRate,
+		private WeaponPerformance(final int damageMin, final int damageMax,
+				final int attackRate,
 				final double attackIntervalSeconds,
 				final double attacksPerSecond, final double baseDps,
 				final boolean ranged) {
-			this.attackPoints = attackPoints;
+			this.damageMin = damageMin;
+			this.damageMax = damageMax;
 			this.attackRate = attackRate;
 			this.attackIntervalSeconds = attackIntervalSeconds;
 			this.attacksPerSecond = attacksPerSecond;
@@ -105,7 +114,9 @@ final class WeaponPerformanceCalculator {
 			this.ranged = ranged;
 		}
 
-		int getAttackPoints() { return attackPoints; }
+		int getAttackPoints() { return (int) Math.round((damageMin + damageMax) / 2.0); }
+		int getDamageMin() { return damageMin; }
+		int getDamageMax() { return damageMax; }
 		int getAttackRate() { return attackRate; }
 		double getAttackIntervalSeconds() { return attackIntervalSeconds; }
 		double getAttacksPerSecond() { return attacksPerSecond; }
