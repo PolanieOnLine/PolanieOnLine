@@ -45,6 +45,7 @@ public final class WeaponDamageRangeService {
 			final ItemCreationContext context) {
 		if (item == null || item instanceof StackableItem
 				|| !(item instanceof WeaponImpl)
+				|| item.has(Item.RARITY_ID)
 				|| (context != null && context.isRestore())) {
 			return;
 		}
@@ -59,8 +60,12 @@ public final class WeaponDamageRangeService {
 		}
 
 		// A partial or invalid override must not create a malformed range.
-		item.remove("damage_min");
-		item.remove("damage_max");
+		if (item.has("damage_min")) {
+			item.remove("damage_min");
+		}
+		if (item.has("damage_max")) {
+			item.remove("damage_max");
+		}
 
 		final DamageRange range = calculate(item.getItemClass(),
 				item.getAttackRate(), attack);
