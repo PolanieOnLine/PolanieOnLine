@@ -230,6 +230,9 @@ public class Creature extends NPC {
 			setDef(copy.getDef());
 			initHP(copy.getBaseHP());
 		}
+		if (copy.has("armor")) {
+			setArmor(copy.getInt("armor"));
+		}
 		if (Occasion.MOREXP) {
 			setXP((int) (copy.getXP() * 1.5));
 		} else if (Occasion.SECOND_WORLD) {
@@ -401,6 +404,17 @@ public class Creature extends NPC {
 	 *
 	 * @return a new creature
 	 */
+	/** Sets an explicit armor score independent from DEF. */
+	public void setArmor(final int armor) {
+		put("armor", Math.max(0, Math.min(Short.MAX_VALUE, armor)));
+	}
+
+	/** Returns explicit armor or falls back to the current DEF value. */
+	public int getArmor() {
+		return has("armor") ? Math.max(0, getInt("armor"))
+				: Math.max(0, getDef());
+	}
+
 	public Creature getNewInstance() {
 		return new Creature(this);
 	}
@@ -516,6 +530,7 @@ public class Creature extends NPC {
 			npc.isA("npc");
 			npc.addAttribute("debug", Type.VERY_LONG_STRING,
 					Definition.VOLATILE);
+			npc.addAttribute("armor", Type.SHORT, Definition.HIDDEN);
 			npc.addAttribute("metamorphosis", Type.STRING, Definition.VOLATILE);
 		} catch (final SyntaxException e) {
 			LOGGER.error("cannot generate RPClass", e);
