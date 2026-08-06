@@ -8,6 +8,26 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+      - name: Package maintenance sources
+        run: |
+          tar -czf maintenance-sources.tgz \
+            src/games/stendhal/server/entity/item/Item.java \
+            src/games/stendhal/server/entity/RPEntity.java \
+            src/games/stendhal/server/entity/item/ItemTooltipService.java \
+            src/games/stendhal/server/core/rule/rarity/ItemRarityService.java \
+            src/games/stendhal/client/gui/ItemRarityPresentation.java \
+            src/games/stendhal/client/gui/WeaponPerformanceCalculator.java \
+            src/games/stendhal/common/constants/ItemTooltip.java \
+            tests/games/stendhal/server/entity/item/ItemTest.java \
+            tests/games/stendhal/client/gui/ItemRarityPresentationTest.java \
+            tests/games/stendhal/client/gui/WeaponPerformanceCalculatorTest.java \
+            .github/workflows/unittest.yml
+      - name: Upload maintenance sources
+        uses: actions/upload-artifact@v4
+        with:
+          name: maintenance-sources
+          path: maintenance-sources.tgz
+          retention-days: 1
       - name: Set up JDK 8
         uses: actions/setup-java@v2
         with:
