@@ -11,6 +11,15 @@
 		</sequence>
 	</complexType>
 
+	<simpleType name="tooltipCategory">
+		<restriction base="string">
+			<enumeration value="weapon"/>
+			<enumeration value="armour"/>
+			<enumeration value="accessory"/>
+			<enumeration value="other"/>
+		</restriction>
+	</simpleType>
+
 	<complexType name="itemType">
 		<sequence>
 			<element name="type" type="Q1:typeType" />
@@ -29,6 +38,7 @@
 		<attribute name="condition" type="string"></attribute>
 		<attribute name="rarity-enabled" type="boolean"></attribute>
 		<attribute name="rarity-profile" type="string"></attribute>
+		<attribute name="tooltip-category" type="Q1:tooltipCategory"></attribute>
 	</complexType>
 
 	<complexType name="typeType">
@@ -58,6 +68,8 @@
 			<element name="itemdata" type="Q1:attribute" minOccurs="0"/>
 			<element name="atk" type="Q1:attribute" minOccurs="0"/>
 			<element name="ratk" type="Q1:attribute" minOccurs="0"/>
+			<element name="damage_min" type="Q1:attribute" minOccurs="0"/>
+			<element name="damage_max" type="Q1:attribute" minOccurs="0"/>
 			<element name="def" type="Q1:attribute" minOccurs="0"/>
 			<element name="immunization" type="Q1:attribute" minOccurs="0"/>
 			<element name="amount" type="Q1:attribute" minOccurs="0" maxOccurs="unbounded"/>
