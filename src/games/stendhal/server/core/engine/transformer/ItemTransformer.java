@@ -85,6 +85,11 @@ public class ItemTransformer {
 				restoreRarityInstanceAttributes(item, rpobject, savedRarity);
 			}
 
+			// Damage ranges are instance state even when rarity is disabled. New
+			// weapons restore their saved range, while old saves without one keep
+			// the historical fixed atk-atk behavior.
+			restoreDamageRangeInstanceAttributes(item, rpobject);
+
 			if (item instanceof StackableItem) {
 				int quantity = 1;
 				if (rpobject.has("quantity")) {
@@ -140,6 +145,18 @@ public class ItemTransformer {
 		} else {
 			logger.warn("Non-item object found: " + rpobject);
 			return null;
+		}
+	}
+
+	private void restoreDamageRangeInstanceAttributes(final Item item,
+			final RPObject saved) {
+		final String[] attributes = { "damage_min", "damage_max" };
+		for (final String attribute : attributes) {
+			if (saved.has(attribute)) {
+				item.put(attribute, saved.get(attribute));
+			} else if (item.has(attribute)) {
+				item.remove(attribute);
+			}
 		}
 	}
 
