@@ -22,12 +22,15 @@ import { singletons } from "../../SingletonRepo";
 
 import { Point } from "../../util/Point";
 import { Paths } from "../../data/Paths";
+import { ItemRarity } from "../../data/ItemRarity";
 
 
 /**
  * a container for items like a bag or corpse
  */
 export class ItemContainerImplementation {
+	private static rarityToolTip?: HTMLElement;
+	private static rarityToolTipTarget?: HTMLElement;
 
 	private rightClickDuration = 300;
 	private timestampMouseDown = 0;
@@ -422,11 +425,16 @@ export class ItemContainerImplementation {
 	}
 
 	private onMouseEnter(evt: MouseEvent) {
-		// nothing
+		const target = evt.currentTarget as HTMLElement;
+		const item = (target as any).dataItem as Item|undefined;
+		if (item?.getRarity()) {
+			ItemContainerImplementation.showRarityToolTip(target, item, evt.clientX, evt.clientY);
+		}
 	}
 
 	private onMouseLeave(evt: MouseEvent) {
-		// nothing
+		const target = evt.currentTarget as HTMLElement;
+		ItemContainerImplementation.hideRarityToolTip(target);
 	}
 
 	private onTouchStart(evt: TouchEvent) {
@@ -487,6 +495,99 @@ export class ItemContainerImplementation {
 	}
 
 	public static updateToolTipFor(target: HTMLElement, item?: Item) {
-		target.title = typeof(item) !== "undefined" ? item.getToolTip() : "";
+		for (const rarity of ItemRarity.VALUES) {
+			target.classList.remove(rarity.cssClass);
+		}
+		target.classList.remove("item-rarity");
+
+		const toolTip = item?.getToolTip() || "";
+		if (toolTip) {
+			target.title = toolTip;
+			target.setAttribute("aria-label", toolTip);
+		} else {
+			target.removeAttribute("title");
+			target.removeAttribute("aria-label");
+		}
+
+		const rarity = item?.getRarity();
+		if (rarity) {
+			target.classList.add("item-rarity", rarity.cssClass);
+		}
+
+		if (ItemContainerImplementation.rarityToolTipTarget === target) {
+			// The slot may have been re-rendered while the pointer was over it.
+			// Keep the attributes just calculated for the new item.
+			ItemContainerImplementation.hideRarityToolTip(target, false);
+		}
+	}
+
+	private static showRarityToolTip(target: HTMLElement, item: Item, x: number, y: number) {
+		const rarity = item.getRarity();
+		if (!rarity) {
+			return;
+		}
+
+		ItemContainerImplementation.hideRarityToolTip();
+		target.removeAttribute("title");
+
+		const toolTip = document.createElement("div");
+		toolTip.id = "item-rarity-tooltip";
+		toolTip.classList.add("item-rarity-tooltip", rarity.cssClass);
+		toolTip.setAttribute("role", "tooltip");
+
+		const name = document.createElement("div");
+		name.className = "item-rarity-tooltip__name";
+		name.textContent = item.getDisplayName();
+		toolTip.appendChild(name);
+
+		const rarityLine = document.createElement("div");
+		rarityLine.className = "item-rarity-tooltip__detail";
+		rarityLine.textContent = "Rzadkość: " + rarity.polishDisplayName;
+		toolTip.appendChild(rarityLine);
+
+		const titleLines = item.getToolTip().split("\n");
+		const rarityLineIndex = titleLines.indexOf("Rzadkość: " + rarity.polishDisplayName);
+		for (const line of titleLines.slice(rarityLineIndex + 1)) {
+			if (line) {
+				const detail = document.createElement("div");
+				detail.className = "item-rarity-tooltip__detail";
+				detail.textContent = line;
+				toolTip.appendChild(detail);
+			}
+		}
+
+		document.body.appendChild(toolTip);
+		const margin = 8;
+		const left = Math.min(x + 12, window.innerWidth - toolTip.offsetWidth - margin);
+		const top = Math.min(y + 12, window.innerHeight - toolTip.offsetHeight - margin);
+		toolTip.style.left = Math.max(margin, left) + "px";
+		toolTip.style.top = Math.max(margin, top) + "px";
+
+		target.setAttribute("aria-describedby", toolTip.id);
+		ItemContainerImplementation.rarityToolTip = toolTip;
+		ItemContainerImplementation.rarityToolTipTarget = target;
+	}
+
+	private static hideRarityToolTip(target?: HTMLElement, restoreTitle = true) {
+		if (target && ItemContainerImplementation.rarityToolTipTarget !== target) {
+			return;
+		}
+
+		ItemContainerImplementation.rarityToolTip?.remove();
+		if (ItemContainerImplementation.rarityToolTipTarget) {
+			const oldTarget = ItemContainerImplementation.rarityToolTipTarget;
+			oldTarget.removeAttribute("aria-describedby");
+			if (restoreTitle) {
+				const item = (oldTarget as any).dataItem as Item|undefined;
+				const toolTip = item?.getToolTip() || "";
+				if (toolTip) {
+					oldTarget.title = toolTip;
+				} else {
+					oldTarget.removeAttribute("title");
+				}
+			}
+		}
+		ItemContainerImplementation.rarityToolTip = undefined;
+		ItemContainerImplementation.rarityToolTipTarget = undefined;
 	}
 }

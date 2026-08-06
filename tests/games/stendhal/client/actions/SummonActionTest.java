@@ -6,6 +6,7 @@ import static org.junit.Assert.assertThat;
 
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -17,6 +18,7 @@ import marauroa.common.net.message.MessageS2CPerception;
 import marauroa.common.net.message.TransferContent;
 
 public class SummonActionTest {
+	private static RPAction sentAction;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -24,7 +26,7 @@ public class SummonActionTest {
 
 			@Override
 			public void send(RPAction arg0) {
-				assertThat(arg0.get("creature"), is("fishing rod"));
+				sentAction = arg0;
 			}
 
 			@Override
@@ -70,6 +72,11 @@ public class SummonActionTest {
 		ClientSingletonRepository.setClientFramework(clientFramework);
 	}
 
+	@Before
+	public void setUp() {
+		sentAction = null;
+	}
+
 
 	@Test
 	public void testExecute() {
@@ -77,11 +84,25 @@ public class SummonActionTest {
 		assertNotNull(User.get());
 		String[] args = {"fishing rod"};
 		new SummonAction().execute(args, null);
+		assertThat(sentAction.get("creature"), is("fishing rod"));
+	}
+
+	@Test
+	public void testRarityOptionsAreNotPartOfItemName() {
+		new User();
+		String[] args = {"fishing", "rod", "rarity=legendary",
+				"attack-multiplier=1.30", "randomize-modifiers=false"};
+		new SummonAction().execute(args, null);
+
+		assertThat(sentAction.get("creature"), is("fishing rod"));
+		assertThat(sentAction.get("rarity"), is("legendary"));
+		assertThat(sentAction.get("attack-multiplier"), is("1.30"));
+		assertThat(sentAction.get("randomize-modifiers"), is("false"));
 	}
 
 	@Test
 	public void testGetMaximumParameters() {
-		assertThat(new SummonAction().getMaximumParameters(), is(9));
+		assertThat(new SummonAction().getMaximumParameters(), is(32));
 	}
 
 	@Test

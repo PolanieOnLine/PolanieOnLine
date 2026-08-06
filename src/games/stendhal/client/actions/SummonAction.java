@@ -61,6 +61,9 @@ class SummonAction implements SlashAction {
 			final String str = params[i];
 
 			if (str != null) {
+				if (ItemCreationCommandOptions.copyToAction(str, summon)) {
+					continue;
+				}
 				if (str.matches("[0-9].*")) {
 					try {
 						final Integer num = Integer.valueOf(str);
@@ -120,7 +123,7 @@ class SummonAction implements SlashAction {
 	 */
 	@Override
 	public int getMaximumParameters() {
-		return 9;
+		return 32;
 	}
 
 	/**

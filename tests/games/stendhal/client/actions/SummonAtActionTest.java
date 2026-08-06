@@ -126,6 +126,28 @@ public class SummonAtActionTest {
 		assertNull(getInterface().getLastEventLine());
 	}
 
+	@Test
+	public void testRarityOptionsAreNotPartOfItemName() {
+		new MockStendhalClient() {
+			@Override
+			public void send(final RPAction action) {
+				assertEquals("summonat", action.get("type"));
+				assertEquals("player", action.get("target"));
+				assertEquals("bag", action.get("slot"));
+				assertEquals(1, action.getInt("amount"));
+				assertEquals("silver sword", action.get("item"));
+				assertEquals("epic", action.get("rarity"));
+				assertEquals("1.15", action.get("defense-multiplier"));
+				assertEquals("false", action.get("randomize-modifiers"));
+			}
+		};
+
+		final SummonAtAction action = new SummonAtAction();
+		assertTrue(action.execute(new String[]{"player", "bag", "silver"},
+				"sword rarity=epic defense-multiplier=1.15 randomize-modifiers=false"));
+		assertNull(getInterface().getLastEventLine());
+	}
+
 	/**
 	 * Tests for getMaximumParameters.
 	 */

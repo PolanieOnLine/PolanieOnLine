@@ -21,6 +21,7 @@ import games.stendhal.common.constants.SoundID;
 import games.stendhal.common.constants.SoundLayer;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.core.rule.EntityManager;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.npc.ChatAction;
@@ -357,7 +358,8 @@ public class UltimateCollector extends AbstractQuest {
 				player.drop("money", price);
 				raiser.addEvent(new SoundEvent(SoundID.COMMERCE, SoundLayer.CREATURE_NOISE));
 
-				final Item sword = em.getItem(sword_name);
+				final Item sword = em.getItem(sword_name,
+						ItemCreationContext.quest());
 				sword.setBoundTo(player.getName());
 
 				player.equipOrPutOnGround(sword);

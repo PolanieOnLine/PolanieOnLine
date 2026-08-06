@@ -17,6 +17,7 @@ import java.util.List;
 
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -189,7 +190,8 @@ public class PlaszczKapturka extends AbstractQuest {
 			new ChatAction() {
 				@Override
 				public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
-					final Item plaszcz = SingletonRepository.getEntityManager().getItem("płaszcz czerwonego kapturka");
+					final Item plaszcz = SingletonRepository.getEntityManager().getItem(
+							"płaszcz czerwonego kapturka", ItemCreationContext.quest());
 					player.equipOrPutOnGround(plaszcz);
 					player.addXP(1500);
 					player.addKarma(10);

@@ -27,6 +27,8 @@
 		</sequence>
 		<attribute name="name" type="string" use="required"></attribute>
 		<attribute name="condition" type="string"></attribute>
+		<attribute name="rarity-enabled" type="boolean"></attribute>
+		<attribute name="rarity-profile" type="string"></attribute>
 	</complexType>
 
 	<complexType name="typeType">

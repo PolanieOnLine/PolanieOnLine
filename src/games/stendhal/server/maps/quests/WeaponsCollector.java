@@ -16,6 +16,7 @@ import java.util.List;
 
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.npc.ConversationPhrases;
 import games.stendhal.server.entity.npc.SpeakerNPC;
@@ -178,7 +179,8 @@ public class WeaponsCollector extends AbstractQuest implements BringListOfItemsQ
 
 	@Override
 	public void rewardPlayer(final Player player) {
-		final Item iceSword = SingletonRepository.getEntityManager().getItem("miecz lodowy");
+		final Item iceSword = SingletonRepository.getEntityManager().getItem(
+				"miecz lodowy", ItemCreationContext.quest());
 		iceSword.setBoundTo(player.getName());
 		player.equipOrPutOnGround(iceSword);
 		player.addXP(50000);

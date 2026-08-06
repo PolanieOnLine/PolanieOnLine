@@ -22,6 +22,7 @@ import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.dbcommand.WriteHallOfFamePointsCommand;
 import games.stendhal.server.core.events.TurnNotifier;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.EventRaiser;
@@ -50,7 +51,8 @@ public class DoneAction implements ChatAction {
 	 * @return Helmet
 	 */
 	private Item createTrophyHelmet(final Player player) {
-		final Item helmet = SingletonRepository.getEntityManager().getItem("zdobyczny hełm");
+		final Item helmet = SingletonRepository.getEntityManager().getItem(
+				"zdobyczny hełm", ItemCreationContext.quest());
 		helmet.setBoundTo(player.getName());
 		helmet.put("def", 1);
 		helmet.setItemData(player.getName());

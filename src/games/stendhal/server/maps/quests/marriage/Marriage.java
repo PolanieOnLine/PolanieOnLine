@@ -15,6 +15,7 @@ package games.stendhal.server.maps.quests.marriage;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.npc.ChatAction;
@@ -231,7 +232,7 @@ class Marriage {
 		// players bring their own golden rings
 		player.drop("obrączka ślubna");
 		final Item ring = SingletonRepository.getEntityManager().getItem(
-				"obrączka ślubna");
+				"obrączka ślubna", ItemCreationContext.quest());
 		ring.setItemData(partner.getName());
 		ring.setBoundTo(player.getName());
 		player.equipOrPutOnGround(ring);

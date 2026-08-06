@@ -2856,3 +2856,13 @@ You see a headless monster, how can he hear that we come to him?=
 
 rotten zombie=
 You see a rotten zombie. You are disgusted as you see its rotten skin that hangs down in pieces from his half rotten bones.=
+
+
+## item_rarity
+
+Rarity=
+Common=
+Rare=
+Epic=
+Legendary=
+Value=

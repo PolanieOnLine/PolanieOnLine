@@ -35,6 +35,7 @@ import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.core.pathfinder.Path;
 import games.stendhal.server.core.rule.EntityManager;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.Killer;
 import games.stendhal.server.entity.RPEntity;
@@ -886,7 +887,10 @@ public class Creature extends NPC {
 			}
 
 			final RPSlot slot = getSlot(equippedItem.slot);
-			final Item item = SingletonRepository.getEntityManager().getItem(equippedItem.name);
+			// Equipment carried by the creature is not a loot roll. Keep its base
+			// statistics deterministic; dropped items are created separately below.
+			final Item item = SingletonRepository.getEntityManager().getItem(
+					equippedItem.name, ItemCreationContext.quest());
 
 			if (item instanceof StackableItem) {
 				((StackableItem) item).setQuantity(equippedItem.quantity);
@@ -896,7 +900,7 @@ public class Creature extends NPC {
 		}
 	}
 
-	private List<Item> createDroppedItems(final EntityManager defaultEntityManager) {
+	List<Item> createDroppedItems(final EntityManager defaultEntityManager) {
 		final List<Item> list = new LinkedList<Item>();
 		final Player killerPlayer = getKillerPlayer();
 
@@ -907,7 +911,7 @@ public class Creature extends NPC {
 			final double probability = Rand.rand(1000000) / 10000.0;
 
 			if (probability <= (dropped.probability / SERVER_DROP_GENEROSITY)) {
-				final Item item = defaultEntityManager.getItem(dropped.name);
+				final Item item = createDroppedItem(defaultEntityManager, dropped.name);
 				if (item == null) {
 					LOGGER.error("Unable to create item: " + dropped.name);
 					continue;
@@ -926,17 +930,32 @@ public class Creature extends NPC {
 					list.add(stackItem);
 				} else {
 					for (int count = 0; count < quantity; count++) {
+						final Item itemInstance;
 						if (count == 0) {
-							list.add(item);
+							itemInstance = item;
 						} else {
-							// additional items must be new instances
-							list.add(new Item(item));
+							// Each non-stackable item is a first-class instance and therefore
+							// receives its own rarity roll and persisted modifiers.
+							itemInstance = createDroppedItem(defaultEntityManager, dropped.name);
+						}
+						if (itemInstance != null) {
+							list.add(itemInstance);
+						} else {
+							LOGGER.error("Unable to create additional item: " + dropped.name);
 						}
 					}
 				}
 			}
 		}
 		return list;
+	}
+
+	/**
+	 * Creates one independently rolled item instance for a generated drop.
+	 * Kept as a small test seam so batch drops cannot regress to copy construction.
+	 */
+	protected Item createDroppedItem(final EntityManager entityManager, final String itemName) {
+		return entityManager.getItem(itemName, ItemCreationContext.drop());
 	}
 
 	private Player getKillerPlayer() {

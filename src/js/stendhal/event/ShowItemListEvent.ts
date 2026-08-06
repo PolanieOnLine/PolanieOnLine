@@ -16,6 +16,7 @@ import { ui } from "../ui/UI";
 import { DialogContentComponent } from "../ui/toolkit/DialogContentComponent";
 import { Chat } from "../util/Chat";
 import { Paths } from "../data/Paths";
+import { ItemRarity } from "../data/ItemRarity";
 import { singletons } from "../SingletonRepo";
 
 import { stendhal } from "../stendhal";
@@ -46,7 +47,8 @@ export class ShowItemListEvent extends RPEvent {
 						subclass: data["subclass"],
 						img: data["class"] + "/" + data["subclass"] + ".png",
 						price: data["price"],
-						desc: data["description_info"]
+						desc: data["description_info"],
+						rarity: ItemRarity.fromId(data["rarity_id"])
 					}
 
 					// seller shops prefix prices with "-"
@@ -90,6 +92,9 @@ export class ShowItemListEvent extends RPEvent {
 
 		for (const i of items) {
 			const row = document.createElement("tr");
+			if (i.rarity) {
+				row.classList.add("item-rarity", i.rarity.cssClass);
+			}
 
 			// Item (image)
 			const itemCell = document.createElement("td");

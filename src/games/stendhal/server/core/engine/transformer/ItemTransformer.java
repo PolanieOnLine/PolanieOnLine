@@ -11,8 +11,12 @@
  ***************************************************************************/
 package games.stendhal.server.core.engine.transformer;
 
+import java.util.Map.Entry;
+
 import org.apache.log4j.Logger;
 
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
+import games.stendhal.server.core.rule.rarity.ItemRarityService;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.item.scroll.MarkedScroll;
@@ -35,7 +39,8 @@ public class ItemTransformer {
 		if (rpobject.get("type").equals("item")) {
 
 			final String name = UpdateConverter.updateItemName(rpobject.get("name"));
-			final Item item = UpdateConverter.updateItem(name);
+			final Item item = UpdateConverter.updateItem(name,
+					ItemCreationContext.restore());
 
 			if (item == null) {
 				// no such item in the game anymore
@@ -51,8 +56,12 @@ public class ItemTransformer {
 			}
 
 			boolean autobind = item.has("autobind");
-			if (rpobject.has("persistent")
-					&& (rpobject.getInt("persistent") == 1)) {
+			final boolean savedRarity = rpobject.has(Item.RARITY_ID);
+			final boolean legacyRarityItem = !savedRarity
+					&& ItemRarityService.getInstance().isEligible(item);
+			final boolean restoreAllAttributes = rpobject.has("persistent")
+					&& (rpobject.getInt("persistent") == 1);
+			if (restoreAllAttributes) {
 				// keep [new] menu
 				final String menuvalue = item.get("menu");
 				// keep [new] rpclass
@@ -71,6 +80,8 @@ public class ItemTransformer {
 				if (!item.has("menu") && menuvalue != null) {
 					item.put("menu", menuvalue);
 				}
+			} else if (savedRarity || legacyRarityItem) {
+				restoreRarityInstanceAttributes(item, rpobject, savedRarity);
 			}
 
 			if (item instanceof StackableItem) {
@@ -112,6 +123,11 @@ public class ItemTransformer {
 
 			UpdateConverter.updateImproveItemAttr(item);
 
+			if (!savedRarity && legacyRarityItem) {
+				// Preserve the restored legacy stats and add metadata without a bonus.
+				ItemRarityService.getInstance().markLegacyCommon(item);
+			}
+
 			// Contents, if the item has slot(s)
 			for (RPSlot slot : rpobject.slots()) {
 				RPSlot itemSlot = item.getSlot(slot.getName());
@@ -125,6 +141,41 @@ public class ItemTransformer {
 		} else {
 			logger.warn("Non-item object found: " + rpobject);
 			return null;
+		}
+	}
+
+	/**
+	 * Restores only fields owned by rarity. This keeps the item's unrelated XML
+	 * definition fields updateable, unlike the pre-existing persistent flag.
+	 */
+	private void restoreRarityInstanceAttributes(final Item item,
+			final RPObject saved, final boolean savedRarity) {
+		for (final String statistic
+				: ItemRarityService.getInstance().getSupportedStatistics()) {
+			if (saved.has(statistic)) {
+				item.put(statistic, saved.get(statistic));
+			} else if (item.has(statistic)) {
+				// The saved set is authoritative for an existing instance. This
+				// prevents later XML additions from silently changing old items.
+				item.remove(statistic);
+			}
+		}
+		if (saved.has(Item.VALUE)) {
+			item.put(Item.VALUE, saved.get(Item.VALUE));
+		}
+		if (!savedRarity) {
+			return;
+		}
+
+		item.put(Item.RARITY_ID, saved.get(Item.RARITY_ID));
+		if (saved.has(Item.RARITY_PROFILE)) {
+			item.put(Item.RARITY_PROFILE, saved.get(Item.RARITY_PROFILE));
+		}
+		if (saved.hasMap(Item.RARITY_MODIFIERS)) {
+			for (final Entry<String, String> entry
+					: saved.getMap(Item.RARITY_MODIFIERS).entrySet()) {
+				item.put(Item.RARITY_MODIFIERS, entry.getKey(), entry.getValue());
+			}
 		}
 	}
 }

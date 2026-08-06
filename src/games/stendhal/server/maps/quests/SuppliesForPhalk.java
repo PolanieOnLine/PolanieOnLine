@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -214,7 +215,8 @@ public class SuppliesForPhalk extends AbstractQuest {
 		actions.add(new ChatAction() {
 			@Override
 			public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
-				final Item cloak = SingletonRepository.getEntityManager().getItem("płaszcz krasnoludzki");
+				final Item cloak = SingletonRepository.getEntityManager().getItem(
+						"płaszcz krasnoludzki", ItemCreationContext.quest());
 				cloak.setItemData("Phalk");
 				cloak.setDescription("Oto piękny nowy płaszcz krasnoludzki z imieniem 'Phalk' wyszytym na metce przez Wrvila.");
 				// remember the description
@@ -254,7 +256,8 @@ public class SuppliesForPhalk extends AbstractQuest {
 		actions2.add(new ChatAction() {
 				@Override
 				public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
-					final Item cloak = SingletonRepository.getEntityManager().getItem("płaszcz krasnoludzki");
+					final Item cloak = SingletonRepository.getEntityManager().getItem(
+							"płaszcz krasnoludzki", ItemCreationContext.quest());
 					cloak.setItemData("Phalk");
 					cloak.setDescription("Oto nowy płaszcz krasnoludzki z imieniem 'Phalk' wyszytym w metkę Wrvila.");
 					// remember the description
@@ -322,7 +325,8 @@ public class SuppliesForPhalk extends AbstractQuest {
 		actions.add(new ChatAction() {
 			@Override
 			public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
-				final Item armor = SingletonRepository.getEntityManager().getItem("złota zbroja");
+				final Item armor = SingletonRepository.getEntityManager().getItem(
+						"złota zbroja", ItemCreationContext.quest());
 				armor.setItemData("Phalk");
 				armor.setDescription("Oto błyszczący golden armor z imieniem 'Phalk' wygrawerowanym w środku.");
 				// remember the description
@@ -362,7 +366,8 @@ public class SuppliesForPhalk extends AbstractQuest {
 		actions2.add(new ChatAction() {
 			@Override
 			public void fire(final Player player, final Sentence sentence, final EventRaiser npc) {
-				final Item armor = SingletonRepository.getEntityManager().getItem("złota zbroja");
+				final Item armor = SingletonRepository.getEntityManager().getItem(
+						"złota zbroja", ItemCreationContext.quest());
 				armor.setItemData("Phalk");
 				armor.setDescription("Oto lśniąca złota zbroja z nazwą 'Phalk' wyrytą na niej.");
 				// remember the description

@@ -21,6 +21,7 @@ import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Expression;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.npc.ChatAction;
@@ -299,7 +300,8 @@ public class CloakCollector2 extends AbstractQuest {
 									rewardPlayer(player);
 									entity.say("O jej! Jesteś bardzo miły. Mogę się założyć, że masz wspaniałą karmę! Słuchaj chcę Cię nagrodzić czymś specjalnym, ale jeszcze nie jest to gotowe. Mógłbyś przyjść za jakiś czas i przypomnieć mi. Nie chcę zapomnieć!");
 									player.setQuest(QUEST_SLOT, "done;rewarded");
-									final Item boots = SingletonRepository.getEntityManager().getItem("buty zabójcy");
+									final Item boots = SingletonRepository.getEntityManager().getItem(
+											"buty zabójcy", ItemCreationContext.quest());
 									boots.setBoundTo(player.getName());
 									player.equipOrPutOnGround(boots);
 									player.notifyWorldAboutChanges();

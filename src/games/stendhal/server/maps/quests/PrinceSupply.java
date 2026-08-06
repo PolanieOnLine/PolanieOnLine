@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.mapstuff.chest.StoredChest;
 import games.stendhal.server.entity.npc.ChatAction;
@@ -167,27 +168,32 @@ public class PrinceSupply extends AbstractQuest {
 		zone.add(chest);
 
 		try {
-			Item item = SingletonRepository.getEntityManager().getItem("kolczuga");
+			Item item = SingletonRepository.getEntityManager().getItem(
+					"kolczuga", ItemCreationContext.quest());
 			item.setItemData(QUEST_SLOT);
 			item.setDescription("Oto kolczuga należąca do specjalnego wyposażenia armii Książęcej.");
 			chest.add(item);
 
-			item = SingletonRepository.getEntityManager().getItem("zbroja płytowa");
+			item = SingletonRepository.getEntityManager().getItem(
+					"zbroja płytowa", ItemCreationContext.quest());
 			item.setItemData(QUEST_SLOT);
 			item.setDescription("Oto zbroja płytowa należąca do specjalnego wyposażenia armii Książęcej.");
 			chest.add(item);
 
-			item = SingletonRepository.getEntityManager().getItem("spodnie kolcze");
+			item = SingletonRepository.getEntityManager().getItem(
+					"spodnie kolcze", ItemCreationContext.quest());
 			item.setItemData(QUEST_SLOT);
 			item.setDescription("Oto spodnie kolcze należące do specjalnego wyposażenia armii Książęcej.");
 			chest.add(item);
 
-			item = SingletonRepository.getEntityManager().getItem("hełm kolczy");
+			item = SingletonRepository.getEntityManager().getItem(
+					"hełm kolczy", ItemCreationContext.quest());
 			item.setItemData(QUEST_SLOT);
 			item.setDescription("Oto hełm kolczy należące do specjalnego wyposażenia armii Książęcej.");
 			chest.add(item);
 
-			item = SingletonRepository.getEntityManager().getItem("buty kolcze");
+			item = SingletonRepository.getEntityManager().getItem(
+					"buty kolcze", ItemCreationContext.quest());
 			item.setItemData(QUEST_SLOT);
 			item.setDescription("Oto buty kolcze należące do specjalnego wyposażenia armii Książęcej.");
 			chest.add(item);

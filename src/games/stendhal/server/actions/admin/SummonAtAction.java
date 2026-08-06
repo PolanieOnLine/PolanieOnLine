@@ -24,6 +24,7 @@ import games.stendhal.server.core.engine.GameEvent;
 import games.stendhal.server.core.engine.ItemLogger;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.rule.EntityManager;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.SlotActivatedItem;
 import games.stendhal.server.entity.item.StackableItem;
@@ -84,7 +85,14 @@ public class SummonAtAction extends AdministrationAction {
 		if (type == null) {
 			return;
 		}
-		final Item item = manager.getItem(type);
+		final ItemCreationContext itemCreationContext;
+		try {
+			itemCreationContext = ItemCreationCommandOptions.fromAction(action);
+		} catch (final IllegalArgumentException e) {
+			admin.sendPrivateText(e.getMessage());
+			return;
+		}
+		final Item item = manager.getItem(type, itemCreationContext);
 
 		if (action.has(AMOUNT) && (item instanceof StackableItem)) {
 			((StackableItem) item).setQuantity(action.getInt(AMOUNT));

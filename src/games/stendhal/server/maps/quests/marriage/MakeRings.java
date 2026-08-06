@@ -15,6 +15,7 @@ import java.util.Arrays;
 
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -137,7 +138,7 @@ public class MakeRings {
 						 * If this is for an engaged player, npc gives a hitn about getting dressed for big day
 						 */
 						final Item weddingRing = SingletonRepository.getEntityManager().getItem(
-								"obrączka ślubna");
+								"obrączka ślubna", ItemCreationContext.quest());
 						weddingRing.setBoundTo(player.getName());
 						if (player.getQuest(marriage.getQuestSlot()).startsWith("forgingagain")) {
 							npc.say("Skończyłem pracę nad następną obrączką ślubną. Następnym razem bądź " + player.getGenderVerb("ostrożniejszy") + "!");

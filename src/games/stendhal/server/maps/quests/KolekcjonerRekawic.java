@@ -19,6 +19,7 @@ import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Expression;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -208,7 +209,8 @@ public class KolekcjonerRekawic extends AbstractQuest implements BringListOfItem
 
 	@Override
 	public void rewardPlayer(final Player player) {
-		final Item killer_belt = SingletonRepository.getEntityManager().getItem("pas zabójcy");
+		final Item killer_belt = SingletonRepository.getEntityManager().getItem(
+				"pas zabójcy", ItemCreationContext.quest());
 		killer_belt.setBoundTo(player.getName());
 		player.equipOrPutOnGround(killer_belt);
 		player.addKarma(30.0);

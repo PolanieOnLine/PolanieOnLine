@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -171,7 +172,8 @@ public class ZlotyPierscien extends AbstractQuest {
 					raiser.say("A oto i piękny, błyszczący się złoty pierścień! Niech Ci służy...");
 					player.addXP(55000);
 					player.addKarma(25);
-					final Item pierscien = SingletonRepository.getEntityManager().getItem("złoty pierścień");
+					final Item pierscien = SingletonRepository.getEntityManager().getItem(
+							"złoty pierścień", ItemCreationContext.quest());
 					pierscien.setBoundTo(player.getName());
 					player.equipOrPutOnGround(pierscien);
 					player.notifyWorldAboutChanges();

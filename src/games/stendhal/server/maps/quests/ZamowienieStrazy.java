@@ -17,6 +17,7 @@ import java.util.List;
 
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -247,7 +248,8 @@ public class ZamowienieStrazy extends AbstractQuest {
 				@Override
 				public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 					raiser.say("Cooo?! Miesiąc?! Moja armia potrzebuje na teraz! No cóż... Proszę, w nagrodę przyjmij to, magiczny srebrny pierścień. Uchroni Cię przed mrokiem. Słyszałem również, że gdzieś w rejonach wieliczki można go ulepszyć, lecz to są jedynie plotki.");
-					final Item item = SingletonRepository.getEntityManager().getItem("srebrny pierścień");
+					final Item item = SingletonRepository.getEntityManager().getItem(
+							"srebrny pierścień", ItemCreationContext.quest());
 					item.setBoundTo(player.getName());
 					player.equipOrPutOnGround(item);
 					player.addXP(10000);

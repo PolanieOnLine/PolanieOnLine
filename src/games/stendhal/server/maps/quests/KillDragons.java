@@ -21,6 +21,7 @@ import org.apache.log4j.Logger;
 
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.npc.ChatAction;
@@ -1352,7 +1353,8 @@ public class KillDragons extends AbstractQuest {
 					public void fire(final Player player, final Sentence sentence, final EventRaiser raiser) {
 						raiser.say("Talizman zadziałał! Tej nocy nie miałam więcej koszmarów! Weź proszę tą broń. Należała do mojego dziadka, on był wielkim bohaterem. Myślę, że tobie bardziej się przyda.");
 						player.drop("pazur zielonego smoka");
-						final Item hammer = SingletonRepository.getEntityManager().getItem("młot wulkanów");
+						final Item hammer = SingletonRepository.getEntityManager().getItem(
+								"młot wulkanów", ItemCreationContext.quest());
 						hammer.setBoundTo(player.getName());
 						player.equipOrPutOnGround(hammer);
 						player.setBaseHP(150 + player.getBaseHP());
