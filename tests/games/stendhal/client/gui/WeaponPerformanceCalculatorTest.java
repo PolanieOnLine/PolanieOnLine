@@ -12,7 +12,9 @@ import org.junit.Test;
 
 import games.stendhal.client.gui.WeaponPerformanceCalculator.WeaponPerformance;
 import games.stendhal.common.constants.ItemTooltip;
+import games.stendhal.server.entity.item.Item;
 import marauroa.common.game.RPObject;
+import utilities.RPClass.ItemTestHelper;
 
 public class WeaponPerformanceCalculatorTest {
 	@Test
@@ -34,7 +36,9 @@ public class WeaponPerformanceCalculatorTest {
 
 	@Test
 	public void testPerformanceReadsVisibleTooltipMap() {
-		final RPObject object = new RPObject();
+		/* A typed item is required because RPObject maps must be declared in its
+		 * RPClass before values can be inserted. */
+		final Item object = ItemTestHelper.createItem("tooltip weapon");
 		object.put(ItemTooltip.ATTRIBUTE, ItemTooltip.ATTACK, "32");
 		object.put(ItemTooltip.ATTRIBUTE, ItemTooltip.ATTACK_RATE, "2");
 
