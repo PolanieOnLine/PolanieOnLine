@@ -84,9 +84,20 @@ public class WeaponArmorInteractionServiceTest {
 	}
 
 	@Test
-	public void attackUsesCreatureArmorScore() {
+	public void attackUsesDefenseAsDefaultArmorScore() {
 		final Creature defender = new Creature();
 		defender.setDef(20);
+		final Weapon weapon = weapon("dagger", 30);
+
+		assertEquals(53.0, WeaponArmorInteractionService.adjustAttack(
+				50.0, weapon, defender), 0.000001);
+	}
+
+	@Test
+	public void explicitArmorOverridesDefenseForMatchup() {
+		final Creature defender = new Creature();
+		defender.setDef(100);
+		defender.setArmor(20);
 		final Weapon weapon = weapon("dagger", 30);
 
 		assertEquals(53.0, WeaponArmorInteractionService.adjustAttack(
