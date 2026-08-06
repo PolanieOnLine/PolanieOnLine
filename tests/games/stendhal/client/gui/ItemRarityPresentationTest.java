@@ -69,10 +69,13 @@ public class ItemRarityPresentationTest {
 		final String tooltip = ItemRarityPresentation.buildItemToolTip(
 				EntityFactory.createEntity(object));
 
-		assertTrue(tooltip.contains("width='180'"));
+		assertTrue(tooltip.contains("width='190'"));
+		assertTrue(tooltip.contains("bgcolor='#171613'"));
 		assertTrue(tooltip.contains("53,3 pkt. obrażeń na sekundę"));
-		assertTrue(tooltip.contains("#fffaf2"));
+		assertTrue(tooltip.contains("#f3efe7"));
 		assertTrue(tooltip.contains("[28–36] pkt. obrażeń za trafienie"));
+		assertTrue(tooltip.contains("&#9500;&#9472;&#9670;"));
+		assertTrue(tooltip.contains("&#9492;&#9472;&#9670;"));
 		assertTrue(tooltip.contains(
 				"1,67 ataku na sekundę (Szybka broń)"));
 		assertFalse(tooltip.contains("53,3 DPS"));
@@ -82,6 +85,7 @@ public class ItemRarityPresentationTest {
 		assertTrue(tooltip.contains("+12,4% kradzieży życia"));
 		assertTrue(tooltip.contains("Ulepszenie: +0/3"));
 		assertTrue(tooltip.contains("Wartość: 11432"));
+		assertTrue(tooltip.contains("text-align:right"));
 	}
 
 	@Test
@@ -115,7 +119,8 @@ public class ItemRarityPresentationTest {
 
 		assertTrue(tooltip.contains("18 pkt. pancerza"));
 		assertTrue(tooltip.contains("Ochrona podstawowa"));
-		assertTrue(tooltip.contains("#fffaf2"));
+		assertTrue(tooltip.contains("#f3efe7"));
+		assertTrue(tooltip.contains("&#9492;&#9472;&#9670;"));
 		assertTrue(tooltip.contains("+4 ataku"));
 		assertFalse(tooltip.contains("obrażeń na sekundę"));
 		assertFalse(tooltip.contains("obrażeń za trafienie"));
