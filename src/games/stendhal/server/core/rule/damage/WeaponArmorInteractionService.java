@@ -41,10 +41,21 @@ public final class WeaponArmorInteractionService {
 		final int armorScore = Math.max(0, defender.getDef());
 		final double multiplier = getDamageMultiplier(
 				primaryWeapon.getWeaponType(), armorScore);
-		final double weaponContribution = Math.max(0.0,
-				primaryWeapon.getAverageDamage());
+		return adjustWeaponContribution(totalItemAttack,
+				primaryWeapon.getAverageDamage(), multiplier);
+	}
+
+	/**
+	 * Applies a matchup multiplier only to the weapon's part of the complete
+	 * equipment attack. Package visibility keeps the arithmetic directly
+	 * testable without constructing the entire combat engine.
+	 */
+	static double adjustWeaponContribution(final double totalItemAttack,
+			final double weaponContribution, final double multiplier) {
+		final double safeWeaponContribution = Math.max(0.0,
+				weaponContribution);
 		return Math.max(0.0, totalItemAttack
-				+ weaponContribution * (multiplier - 1.0));
+				+ safeWeaponContribution * (multiplier - 1.0));
 	}
 
 	public static ArmorTier classify(final int armorScore) {
