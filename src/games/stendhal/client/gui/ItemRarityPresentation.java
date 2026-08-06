@@ -34,14 +34,13 @@ final class ItemRarityPresentation {
 	private static final String PRIMARY_VALUE_COLOR = "#fffaf2";
 	private static final String MUTED_COLOR = "#e6ddd5";
 	private static final String BONUS_COLOR = "#79a9ff";
-	private static final String ARMOUR_COLOR = "#d8ecff";
 	private static final DecimalFormat ONE_DECIMAL = createDecimalFormat("0.0");
 	private static final DecimalFormat TWO_DECIMALS = createDecimalFormat("0.00");
 
 	/** Equipment classes whose primary purpose is direct physical protection. */
 	private static final Set<String> ARMOUR_CLASSES = Collections.unmodifiableSet(
 			new HashSet<String>(Arrays.asList("armor", "shield", "helmet",
-					"cloak", "boots", "gloves", "legs", "belt")));
+					"cloak", "boots", "gloves", "legs", "belt", "belts")));
 
 	static {
 		/* Swing hides standard tooltips after four seconds by default. Item
@@ -175,7 +174,7 @@ final class ItemRarityPresentation {
 		}
 		tooltip.append("<hr>");
 		appendPrimaryValue(tooltip, armour + " PANCERZA",
-				"Ochrona podstawowa", ARMOUR_COLOR);
+				"Ochrona podstawowa", PRIMARY_VALUE_COLOR);
 	}
 
 	private static void appendPrimaryValue(final StringBuilder tooltip,
