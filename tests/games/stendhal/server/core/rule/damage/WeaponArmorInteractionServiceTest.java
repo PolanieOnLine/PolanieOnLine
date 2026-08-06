@@ -3,12 +3,20 @@
  ***************************************************************************/
 package games.stendhal.server.core.rule.damage;
 
+import static org.easymock.EasyMock.expect;
+import static org.easymock.classextension.EasyMock.createMock;
+import static org.easymock.classextension.EasyMock.replay;
+import static org.easymock.classextension.EasyMock.verify;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
 import games.stendhal.server.core.rule.damage.WeaponArmorInteractionService.ArmorTier;
+import games.stendhal.server.entity.RPEntity;
+import games.stendhal.server.entity.creature.Creature;
+import games.stendhal.server.entity.item.Corpse;
+import games.stendhal.server.entity.item.Item;
 
 public class WeaponArmorInteractionServiceTest {
 	@Test
@@ -65,6 +73,49 @@ public class WeaponArmorInteractionServiceTest {
 		assertEquals(44.0,
 				WeaponArmorInteractionService.adjustWeaponContribution(
 						equipmentAttack, primaryWeapon, 0.80), 0.000001);
+	}
+
+	@Test
+	public void attackUsesCreatureDefenseAsArmorScore() {
+		final Creature defender = createMock(Creature.class);
+		final Item weapon = createMock(Item.class);
+		expect(defender.getDef()).andReturn(20);
+		expect(weapon.getWeaponType()).andReturn("dagger");
+		expect(weapon.getAverageDamage()).andReturn(30.0f);
+		replay(defender, weapon);
+
+		assertEquals(53.0, WeaponArmorInteractionService.adjustAttack(
+				50.0, weapon, defender), 0.000001);
+
+		verify(defender, weapon);
+	}
+
+	@Test
+	public void nonCreatureTargetRemainsNeutral() {
+		final Item weapon = createMock(Item.class);
+		final RPEntity playerTarget = new RPEntity() {
+			@Override
+			protected void dropItemsOn(final Corpse corpse) {
+				// no items
+			}
+
+			@Override
+			public void logic() {
+				// no logic
+			}
+		};
+		replay(weapon);
+
+		assertEquals(50.0, WeaponArmorInteractionService.adjustAttack(
+				50.0, weapon, playerTarget), 0.000001);
+
+		verify(weapon);
+	}
+
+	@Test
+	public void missingWeaponRemainsNeutral() {
+		assertEquals(25.0, WeaponArmorInteractionService.adjustAttack(
+				25.0, null, null), 0.000001);
 	}
 
 	@Test
