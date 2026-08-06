@@ -10,6 +10,7 @@ import org.junit.Test;
 
 import games.stendhal.client.entity.IEntity;
 import games.stendhal.client.entity.factory.EntityFactory;
+import games.stendhal.common.constants.ItemTooltip;
 import marauroa.common.game.RPObject;
 import utilities.RPClass.ItemTestHelper;
 
@@ -45,35 +46,36 @@ public class ItemRarityPresentationTest {
 	}
 
 	@Test
-	public void testWeaponToolTipShowsStructuredPerformanceAndBonuses() {
-		final RPObject object = ItemTestHelper.createItem("miecz próbny");
+	public void testWeaponToolTipShowsServerPublishedStatistics() {
+		final RPObject object = ItemTestHelper.createItem(
+				"złota ciupaga z trzema wąsami");
 		object.put("rarity_id", "legendary");
-		object.put("atk", 30);
-		object.put("rate", 5);
-		object.put("range", 1);
-		object.put("critical_chance", 4.0);
-		object.put("lifesteal", 2.0);
-		object.put("health", 15);
-		object.put("min_level", 20);
-		object.put("value", 382);
+		putStat(object, ItemTooltip.ATTACK, "32");
+		putStat(object, ItemTooltip.ATTACK_RATE, "2");
+		putStat(object, ItemTooltip.DEFENSE, "10");
+		putStat(object, ItemTooltip.DAMAGE_TYPE, "light");
+		putStat(object, ItemTooltip.LIFESTEAL, "0.12402917");
+		putStat(object, ItemTooltip.IMPROVE, "0");
+		putStat(object, ItemTooltip.MAX_IMPROVES, "3");
+		putStat(object, ItemTooltip.VALUE, "11432");
 
 		final String tooltip = ItemRarityPresentation.buildItemToolTip(
 				EntityFactory.createEntity(object));
 
 		assertTrue(tooltip.contains("Bazowy DPS"));
-		assertTrue(tooltip.contains("20,0"));
-		assertTrue(tooltip.contains("30 pkt. ataku"));
-		assertTrue(tooltip.contains("0,67 ataku na sekundę"));
-		assertTrue(tooltip.contains("1,50 s między atakami"));
-		assertTrue(tooltip.contains("+4% szansy na trafienie krytyczne"));
-		assertTrue(tooltip.contains("+2% kradzieży życia"));
-		assertTrue(tooltip.contains("+15 zdrowia"));
-		assertTrue(tooltip.contains("Wymagany poziom: 20"));
-		assertTrue(tooltip.contains("Wartość: 382"));
+		assertTrue(tooltip.contains("53,3"));
+		assertTrue(tooltip.contains("32 pkt. ataku"));
+		assertTrue(tooltip.contains("1,67 ataku na sekundę"));
+		assertTrue(tooltip.contains("0,60 s między atakami"));
+		assertTrue(tooltip.contains("Typ obrażeń: Światło"));
+		assertTrue(tooltip.contains("Obrona: 10"));
+		assertTrue(tooltip.contains("+12,4% kradzieży życia"));
+		assertTrue(tooltip.contains("Ulepszenie: +0/3"));
+		assertTrue(tooltip.contains("Wartość: 11432"));
 	}
 
 	@Test
-	public void testWeaponWithoutRarityStillGetsPerformanceToolTip() {
+	public void testLegacyDirectAttributesRemainSupported() {
 		final RPObject object = ItemTestHelper.createItem("zwykły miecz");
 		object.put("atk", 15);
 		object.put("rate", 5);
@@ -83,6 +85,11 @@ public class ItemRarityPresentationTest {
 
 		assertTrue(tooltip.contains("Bazowy DPS"));
 		assertTrue(tooltip.contains("10,0"));
+	}
+
+	private void putStat(final RPObject object, final String key,
+			final String value) {
+		object.put(ItemTooltip.ATTRIBUTE, key, value);
 	}
 
 	private void assertRarityToolTip(final String rarityId, final String color,
