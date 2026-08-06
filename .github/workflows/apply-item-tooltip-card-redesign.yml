@@ -46,10 +46,6 @@ jobs:
               '\t\t\t\t.append(CARD_BACKGROUND_COLOR)\n'
               '\t\t\t\t.append("\' cellpadding=\'6\' cellspacing=\'0\'><tr><td>");')
 
-          text = text.replace(
-              'tooltip.append("</td></tr></table></html>");',
-              'tooltip.append("</td></tr></table></html>");')
-
           start = text.index('\tprivate static void appendHeader')
           end = text.index('\tprivate static void appendCoreStats', start)
           block = r'''	private static void appendHeader(final StringBuilder tooltip,
@@ -244,3 +240,5 @@ jobs:
           fi
           git commit -m "style(client): match ARPG item card hierarchy"
           git push origin HEAD:feature/item-tooltip-dps-ui
+
+# trigger-after-create
