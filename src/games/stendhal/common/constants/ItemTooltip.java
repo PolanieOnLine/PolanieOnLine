@@ -13,6 +13,7 @@ package games.stendhal.common.constants;
 
 /** Shared wire identifiers used by structured item tooltips. */
 public final class ItemTooltip {
+	/** Volatile map sent to clients with presentation-safe item statistics. */
 	public static final String ATTRIBUTE = "tooltip_stats";
 
 	public static final String ATTACK = "atk";
@@ -34,6 +35,11 @@ public final class ItemTooltip {
 	public static final String HEALTH = "health";
 	public static final String MIN_LEVEL = "min_level";
 	public static final String MIN_USE = "min_use";
+	public static final String IMPROVE = "improve";
+	public static final String MAX_IMPROVES = "max_improves";
+	public static final String DURABILITY = "durability";
+	public static final String USES = "uses";
+	public static final String VALUE = "value";
 
 	private ItemTooltip() {
 		// constants class
