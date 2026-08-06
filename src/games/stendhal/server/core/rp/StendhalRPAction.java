@@ -27,6 +27,7 @@ import games.stendhal.common.constants.Testing;
 import games.stendhal.server.core.engine.DataProvider;
 import games.stendhal.server.core.engine.GameEvent;
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.core.rule.damage.WeaponArmorInteractionService;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.engine.db.StendhalKillLogDAO;
 import games.stendhal.server.core.events.TutorialNotifier;
@@ -447,7 +448,11 @@ public class StendhalRPAction {
 				itemAtk = player.getItemAtkForAttack();
 			}
 
-			damage = player.damageDone(defender, itemAtk, player.getDamageType());
+			final double armorAdjustedItemAtk =
+					WeaponArmorInteractionService.adjustAttack(
+							itemAtk, attackWeapon, defender);
+			damage = player.damageDone(defender, armorAdjustedItemAtk,
+					player.getDamageType());
 			final boolean didDamage = damage > 0;
 
 			// Handle critical hit logic
