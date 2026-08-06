@@ -18,6 +18,7 @@ import org.apache.log4j.Logger;
 import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.core.rule.rarity.ItemRarityService;
 import games.stendhal.server.entity.item.Item;
+import games.stendhal.server.entity.item.ItemTooltipService;
 import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.item.scroll.MarkedScroll;
 import games.stendhal.server.entity.player.UpdateConverter;
@@ -104,8 +105,7 @@ public class ItemTransformer {
 				}
 			}
 
-			// make sure saved individual information is
-			// restored
+			// make sure saved individual information is restored
 			final String[] individualAttributes = { "itemdata",
 					"description", "bound", "undroppableondeath",
 					"uses", "improve", "max_improves", "persistent", "logid", "state"};
@@ -116,7 +116,6 @@ public class ItemTransformer {
 			}
 			UpdateConverter.updateItemAttributes(item);
 
-			// update visible destination info on marked scrolls
 			if (item instanceof MarkedScroll) {
 				((MarkedScroll) item).applyDestInfo();
 			}
@@ -124,19 +123,19 @@ public class ItemTransformer {
 			UpdateConverter.updateImproveItemAttr(item);
 
 			if (!savedRarity && legacyRarityItem) {
-				// Preserve the restored legacy stats and add metadata without a bonus.
 				ItemRarityService.getInstance().markLegacyCommon(item);
 			}
 
-			// Contents, if the item has slot(s)
 			for (RPSlot slot : rpobject.slots()) {
 				RPSlot itemSlot = item.getSlot(slot.getName());
 				for (RPObject obj : slot) {
-					// Transform the contents too
 					itemSlot.add(transform(obj));
 				}
 			}
 
+			// Rebuild the volatile client presentation after all persisted and
+			// converted values have reached their final state.
+			ItemTooltipService.update(item);
 			return item;
 		} else {
 			logger.warn("Non-item object found: " + rpobject);
@@ -155,8 +154,6 @@ public class ItemTransformer {
 			if (saved.has(statistic)) {
 				item.put(statistic, saved.get(statistic));
 			} else if (item.has(statistic)) {
-				// The saved set is authoritative for an existing instance. This
-				// prevents later XML additions from silently changing old items.
 				item.remove(statistic);
 			}
 		}
