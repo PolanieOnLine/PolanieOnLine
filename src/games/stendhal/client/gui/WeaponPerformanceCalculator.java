@@ -11,45 +11,32 @@
  ***************************************************************************/
 package games.stendhal.client.gui;
 
+import games.stendhal.common.constants.ItemTooltip;
 import marauroa.common.game.RPObject;
 
-/**
- * Calculates neutral weapon performance for desktop presentation.
- *
- * The result intentionally uses only the attributes of the item instance. It
- * does not include player statistics, critical hits, target defence or status
- * effects, so the displayed value is a base DPS rather than combat DPS.
- */
+/** Calculates neutral weapon performance for desktop presentation. */
 final class WeaponPerformanceCalculator {
-	/** Server turns currently last 300 ms. */
 	private static final double SECONDS_PER_TURN = 0.3;
-	/** Mirrors the server-side default used when an item has no rate. */
 	private static final int DEFAULT_ATTACK_RATE = 5;
 
 	private WeaponPerformanceCalculator() {
 		// utility class
 	}
 
-	/**
-	 * Calculates performance for an item information object.
-	 *
-	 * @param object item RPObject
-	 * @return performance, or {@code null} when the object is not a weapon
-	 */
 	static WeaponPerformance calculate(final RPObject object) {
 		if (object == null) {
 			return null;
 		}
 
-		final int meleeAttack = getPositiveInt(object, "atk");
-		final int rangedAttack = getPositiveInt(object, "ratk");
+		final int meleeAttack = getPositiveInt(object, ItemTooltip.ATTACK);
+		final int rangedAttack = getPositiveInt(object, ItemTooltip.RANGED_ATTACK);
 		final boolean ranged = meleeAttack <= 0 && rangedAttack > 0;
 		final int attackPoints = ranged ? rangedAttack : meleeAttack;
 		if (attackPoints <= 0) {
 			return null;
 		}
 
-		int attackRate = getPositiveInt(object, "rate");
+		int attackRate = getPositiveInt(object, ItemTooltip.ATTACK_RATE);
 		if (attackRate <= 0) {
 			attackRate = DEFAULT_ATTACK_RATE;
 		}
@@ -62,15 +49,42 @@ final class WeaponPerformanceCalculator {
 				attackIntervalSeconds, attacksPerSecond, baseDps, ranged);
 	}
 
-	private static int getPositiveInt(final RPObject object,
-			final String attribute) {
-		if (!object.has(attribute)) {
-			return 0;
+	static String getTooltipValue(final RPObject object, final String key) {
+		if (object.hasMap(ItemTooltip.ATTRIBUTE)
+				&& object.getMap(ItemTooltip.ATTRIBUTE).containsKey(key)) {
+			return object.getMap(ItemTooltip.ATTRIBUTE).get(key);
 		}
-		return Math.max(0, object.getInt(attribute));
+		return object.has(key) ? object.get(key) : null;
 	}
 
-	/** Immutable calculated weapon values used by the tooltip. */
+	static int getInt(final RPObject object, final String key) {
+		final String value = getTooltipValue(object, key);
+		if (value == null) {
+			return 0;
+		}
+		try {
+			return Integer.parseInt(value);
+		} catch (final NumberFormatException e) {
+			return 0;
+		}
+	}
+
+	static double getDouble(final RPObject object, final String key) {
+		final String value = getTooltipValue(object, key);
+		if (value == null) {
+			return 0.0;
+		}
+		try {
+			return Double.parseDouble(value);
+		} catch (final NumberFormatException e) {
+			return 0.0;
+		}
+	}
+
+	private static int getPositiveInt(final RPObject object, final String key) {
+		return Math.max(0, getInt(object, key));
+	}
+
 	static final class WeaponPerformance {
 		private final int attackPoints;
 		private final int attackRate;
@@ -91,28 +105,11 @@ final class WeaponPerformanceCalculator {
 			this.ranged = ranged;
 		}
 
-		int getAttackPoints() {
-			return attackPoints;
-		}
-
-		int getAttackRate() {
-			return attackRate;
-		}
-
-		double getAttackIntervalSeconds() {
-			return attackIntervalSeconds;
-		}
-
-		double getAttacksPerSecond() {
-			return attacksPerSecond;
-		}
-
-		double getBaseDps() {
-			return baseDps;
-		}
-
-		boolean isRanged() {
-			return ranged;
-		}
+		int getAttackPoints() { return attackPoints; }
+		int getAttackRate() { return attackRate; }
+		double getAttackIntervalSeconds() { return attackIntervalSeconds; }
+		double getAttacksPerSecond() { return attacksPerSecond; }
+		double getBaseDps() { return baseDps; }
+		boolean isRanged() { return ranged; }
 	}
 }
