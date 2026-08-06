@@ -11,6 +11,11 @@
  ***************************************************************************/
 package games.stendhal.client.gui;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
 import games.stendhal.common.constants.ItemTooltip;
 import marauroa.common.game.RPObject;
 
@@ -18,13 +23,26 @@ import marauroa.common.game.RPObject;
 final class WeaponPerformanceCalculator {
 	private static final double SECONDS_PER_TURN = 0.3;
 	private static final int DEFAULT_ATTACK_RATE = 5;
+	private static final Set<String> WEAPON_CLASSES = Collections.unmodifiableSet(
+			new HashSet<String>(Arrays.asList("club", "sword", "dagger",
+					"axe", "ranged", "missile", "wand", "whip")));
 
 	private WeaponPerformanceCalculator() {
 		// utility class
 	}
 
+	/**
+	 * Checks the same weapon classes used by the server combat equipment lookup.
+	 * Armour and accessories can carry ATK bonuses, but are not weapons and must
+	 * not receive their own DPS block.
+	 */
+	static boolean isWeapon(final RPObject object) {
+		return object != null && object.has("class")
+				&& WEAPON_CLASSES.contains(object.get("class"));
+	}
+
 	static WeaponPerformance calculate(final RPObject object) {
-		if (object == null) {
+		if (!isWeapon(object)) {
 			return null;
 		}
 
@@ -34,8 +52,12 @@ final class WeaponPerformanceCalculator {
 		final int legacyAttack = ranged ? rangedAttack : meleeAttack;
 		int damageMin = getPositiveInt(object, ItemTooltip.DAMAGE_MIN);
 		int damageMax = getPositiveInt(object, ItemTooltip.DAMAGE_MAX);
-		if (damageMin <= 0) damageMin = legacyAttack;
-		if (damageMax <= 0) damageMax = damageMin;
+		if (damageMin <= 0) {
+			damageMin = legacyAttack;
+		}
+		if (damageMax <= 0) {
+			damageMax = damageMin;
+		}
 		damageMax = Math.max(damageMin, damageMax);
 		if (damageMin <= 0) {
 			return null;
