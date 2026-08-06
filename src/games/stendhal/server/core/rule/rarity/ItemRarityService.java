@@ -21,6 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import games.stendhal.common.Constants;
 import games.stendhal.common.constants.ItemRarity;
+import games.stendhal.server.core.rule.damage.WeaponDamageRangeService;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.ItemTooltipService;
 import games.stendhal.server.entity.item.StackableItem;
@@ -127,6 +128,12 @@ public final class ItemRarityService {
 		}
 		final ItemCreationContext context = creationContext == null
 				? ItemCreationContext.defaultCreation() : creationContext;
+
+		// The range belongs to the item instance and must exist before rarity
+		// scales its endpoints. Restore contexts deliberately keep saved legacy
+		// weapons without a range unchanged.
+		WeaponDamageRangeService.initialize(item, context);
+
 		if (context.isRestore() || item.has(Item.RARITY_ID) || !isEligible(item)) {
 			ItemTooltipService.update(item);
 			return;
@@ -144,11 +151,23 @@ public final class ItemRarityService {
 		}
 		final ItemRarityProfile.Tier tier = profile.getTier(rarity);
 		final ItemRarityModifiers fixed = context.getModifiers();
+		Double sharedDamageMultiplier = null;
 
 		for (final String statistic : INTEGRAL_STATS) {
 			if (item.has(statistic) && item.getInt(statistic) > 0) {
-				final double multiplier = chooseMultiplier(statistic, tier, fixed,
-						context.isRandomizeModifiers());
+				final double multiplier;
+				if (isBaseDamageStatistic(statistic)
+						&& !hasExplicitFixedMultiplier(fixed, statistic)) {
+					if (sharedDamageMultiplier == null) {
+						sharedDamageMultiplier = Double.valueOf(chooseMultiplier(
+								"atk", tier, fixed,
+								context.isRandomizeModifiers()));
+					}
+					multiplier = sharedDamageMultiplier.doubleValue();
+				} else {
+					multiplier = chooseMultiplier(statistic, tier, fixed,
+							context.isRandomizeModifiers());
+				}
 				applyIntegral(item, statistic, multiplier);
 				item.setRarityModifier(statistic, multiplier);
 			}
@@ -256,9 +275,19 @@ public final class ItemRarityService {
 		return result == null ? fixed.getStatMultiplier() : result;
 	}
 
-	private boolean isAttack(final String statistic) {
+	private boolean hasExplicitFixedMultiplier(final ItemRarityModifiers fixed,
+			final String statistic) {
+		return fixed != null && fixed.getMultiplier(statistic) != null;
+	}
+
+	private boolean isBaseDamageStatistic(final String statistic) {
 		return "atk".equals(statistic) || "ratk".equals(statistic)
-				|| "damage_min".equals(statistic) || "damage_max".equals(statistic)
+				|| "damage_min".equals(statistic)
+				|| "damage_max".equals(statistic);
+	}
+
+	private boolean isAttack(final String statistic) {
+		return isBaseDamageStatistic(statistic)
 				|| "skill_atk".equals(statistic)
 				|| "atk_additional_bonus".equals(statistic)
 				|| "critical_additional_bonus".equals(statistic)
