@@ -9,8 +9,8 @@ import games.stendhal.server.entity.item.Item;
 
 /**
  * Applies small, explicit weapon-class advantages against creature armor.
- * Existing DEF remains the general defensive statistic; armor selects the
- * matchup profile and therefore does not double the creature's mitigation.
+ * The existing creature DEF is used as the default armor score, so the
+ * matchup system covers all current creatures without duplicating defense.
  */
 public final class WeaponArmorInteractionService {
 	private static final int LIGHT_ARMOR_MAX = 30;
@@ -38,35 +38,35 @@ public final class WeaponArmorInteractionService {
 			return totalItemAttack;
 		}
 
-		final int armor = ((Creature) defender).getArmor();
+		final int armorScore = Math.max(0, defender.getDef());
 		final double multiplier = getDamageMultiplier(
-				primaryWeapon.getWeaponType(), armor);
+				primaryWeapon.getWeaponType(), armorScore);
 		final double weaponContribution = Math.max(0.0,
 				primaryWeapon.getAverageDamage());
 		return Math.max(0.0, totalItemAttack
 				+ weaponContribution * (multiplier - 1.0));
 	}
 
-	public static ArmorTier classify(final int armor) {
-		if (armor <= 0) {
+	public static ArmorTier classify(final int armorScore) {
+		if (armorScore <= 0) {
 			return ArmorTier.NONE;
 		}
-		if (armor <= LIGHT_ARMOR_MAX) {
+		if (armorScore <= LIGHT_ARMOR_MAX) {
 			return ArmorTier.LIGHT;
 		}
-		if (armor <= MEDIUM_ARMOR_MAX) {
+		if (armorScore <= MEDIUM_ARMOR_MAX) {
 			return ArmorTier.MEDIUM;
 		}
 		return ArmorTier.HEAVY;
 	}
 
 	public static double getDamageMultiplier(final String weaponClass,
-			final int armor) {
+			final int armorScore) {
 		if (weaponClass == null) {
 			return 1.0;
 		}
 
-		final ArmorTier tier = classify(armor);
+		final ArmorTier tier = classify(armorScore);
 		if ("dagger".equals(weaponClass)) {
 			return daggerMultiplier(tier);
 		}
