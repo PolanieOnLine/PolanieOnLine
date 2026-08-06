@@ -11,6 +11,12 @@
  ***************************************************************************/
 package games.stendhal.server.entity.item;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+
+import games.stendhal.common.constants.GameTiming;
 import games.stendhal.common.constants.ItemTooltip;
 import games.stendhal.server.entity.status.StatusAttacker;
 
@@ -20,6 +26,15 @@ import games.stendhal.server.entity.status.StatusAttacker;
  * tooltip are copied to the volatile wire map.
  */
 public final class ItemTooltipService {
+	private static final Set<String> WEAPON_CLASSES = Collections.unmodifiableSet(
+			new HashSet<String>(Arrays.asList("club", "sword", "dagger",
+					"axe", "ranged", "missile", "wand", "whip")));
+	private static final Set<String> ARMOUR_CLASSES = Collections.unmodifiableSet(
+			new HashSet<String>(Arrays.asList("armor", "shield", "helmet",
+					"cloak", "boots", "gloves", "legs", "belt", "belts")));
+	private static final Set<String> ACCESSORY_CLASSES = Collections.unmodifiableSet(
+			new HashSet<String>(Arrays.asList("ring", "necklace")));
+
 	private ItemTooltipService() {
 		// utility class
 	}
@@ -34,6 +49,8 @@ public final class ItemTooltipService {
 			item.remove(ItemTooltip.ATTRIBUTE);
 		}
 
+		put(item, ItemTooltip.CATEGORY, resolveCategory(item));
+
 		// Read the stored item values directly. Some subclasses calculate contextual
 		// defense from their owner and cannot safely do that while being copied.
 		putPositiveInt(item, ItemTooltip.ATTACK,
@@ -43,7 +60,15 @@ public final class ItemTooltipService {
 		putPositiveInt(item, ItemTooltip.DAMAGE_MIN, item.getDamageMin());
 		putPositiveInt(item, ItemTooltip.DAMAGE_MAX, item.getDamageMax());
 		if (item.has("atk") || item.has("ratk")) {
-			putPositiveInt(item, ItemTooltip.ATTACK_RATE, item.getAttackRate());
+			final int attackRate = item.getAttackRate();
+			putPositiveInt(item, ItemTooltip.ATTACK_RATE, attackRate);
+			if (attackRate > 0) {
+				final double interval = attackRate * GameTiming.SECONDS_PER_TURN;
+				put(item, ItemTooltip.ATTACK_INTERVAL_SECONDS,
+						Double.toString(interval));
+				put(item, ItemTooltip.ATTACKS_PER_SECOND,
+						Double.toString(1.0 / interval));
+			}
 		}
 		putPositiveInt(item, ItemTooltip.DEFENSE,
 				item.getAttributeWithImprovement("def", 0));
@@ -85,6 +110,20 @@ public final class ItemTooltipService {
 		if (statuses.length() > 0) {
 			put(item, ItemTooltip.STATUS_ATTACK, statuses.toString());
 		}
+	}
+
+	private static String resolveCategory(final Item item) {
+		final String itemClass = item.getItemClass();
+		if (WEAPON_CLASSES.contains(itemClass)) {
+			return ItemTooltip.CATEGORY_WEAPON;
+		}
+		if (ARMOUR_CLASSES.contains(itemClass)) {
+			return ItemTooltip.CATEGORY_ARMOUR;
+		}
+		if (ACCESSORY_CLASSES.contains(itemClass)) {
+			return ItemTooltip.CATEGORY_ACCESSORY;
+		}
+		return ItemTooltip.CATEGORY_OTHER;
 	}
 
 	private static void putPositiveInt(final Item item, final String key,
