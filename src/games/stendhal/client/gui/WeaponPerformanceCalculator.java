@@ -16,29 +16,36 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import games.stendhal.common.constants.GameTiming;
 import games.stendhal.common.constants.ItemTooltip;
 import marauroa.common.game.RPObject;
 
 /** Calculates neutral weapon performance for desktop presentation. */
 final class WeaponPerformanceCalculator {
-	private static final double SECONDS_PER_TURN = 0.3;
 	private static final int DEFAULT_ATTACK_RATE = 5;
-	private static final Set<String> WEAPON_CLASSES = Collections.unmodifiableSet(
-			new HashSet<String>(Arrays.asList("club", "sword", "dagger",
-					"axe", "ranged", "missile", "wand", "whip")));
+	private static final Set<String> LEGACY_WEAPON_CLASSES =
+			Collections.unmodifiableSet(new HashSet<String>(Arrays.asList(
+					"club", "sword", "dagger", "axe", "ranged", "missile",
+					"wand", "whip")));
 
 	private WeaponPerformanceCalculator() {
 		// utility class
 	}
 
 	/**
-	 * Checks the same weapon classes used by the server combat equipment lookup.
-	 * Armour and accessories can carry ATK bonuses, but are not weapons and must
-	 * not receive their own DPS block.
+	 * Uses the category published by the server. The class-name fallback keeps
+	 * compatibility with old servers and direct test objects.
 	 */
 	static boolean isWeapon(final RPObject object) {
-		return object != null && object.has("class")
-				&& WEAPON_CLASSES.contains(object.get("class"));
+		if (object == null) {
+			return false;
+		}
+		final String category = getTooltipValue(object, ItemTooltip.CATEGORY);
+		if (category != null) {
+			return ItemTooltip.CATEGORY_WEAPON.equals(category);
+		}
+		return object.has("class")
+				&& LEGACY_WEAPON_CLASSES.contains(object.get("class"));
 	}
 
 	static WeaponPerformance calculate(final RPObject object) {
@@ -68,8 +75,21 @@ final class WeaponPerformanceCalculator {
 			attackRate = DEFAULT_ATTACK_RATE;
 		}
 
-		final double attackIntervalSeconds = attackRate * SECONDS_PER_TURN;
-		final double attacksPerSecond = 1.0 / attackIntervalSeconds;
+		double attackIntervalSeconds = getDouble(object,
+				ItemTooltip.ATTACK_INTERVAL_SECONDS);
+		double attacksPerSecond = getDouble(object,
+				ItemTooltip.ATTACKS_PER_SECOND);
+		if (attackIntervalSeconds <= 0.0 && attacksPerSecond > 0.0) {
+			attackIntervalSeconds = 1.0 / attacksPerSecond;
+		}
+		if (attacksPerSecond <= 0.0 && attackIntervalSeconds > 0.0) {
+			attacksPerSecond = 1.0 / attackIntervalSeconds;
+		}
+		if (attackIntervalSeconds <= 0.0 || attacksPerSecond <= 0.0) {
+			attackIntervalSeconds = attackRate * GameTiming.SECONDS_PER_TURN;
+			attacksPerSecond = 1.0 / attackIntervalSeconds;
+		}
+
 		final double averageDamage = (damageMin + damageMax) / 2.0;
 		final double baseDps = averageDamage * attacksPerSecond;
 
@@ -78,6 +98,9 @@ final class WeaponPerformanceCalculator {
 	}
 
 	static String getTooltipValue(final RPObject object, final String key) {
+		if (object == null) {
+			return null;
+		}
 		if (object.hasMap(ItemTooltip.ATTRIBUTE)
 				&& object.getMap(ItemTooltip.ATTRIBUTE).containsKey(key)) {
 			return object.getMap(ItemTooltip.ATTRIBUTE).get(key);
@@ -136,13 +159,36 @@ final class WeaponPerformanceCalculator {
 			this.ranged = ranged;
 		}
 
-		int getAttackPoints() { return (int) Math.round((damageMin + damageMax) / 2.0); }
-		int getDamageMin() { return damageMin; }
-		int getDamageMax() { return damageMax; }
-		int getAttackRate() { return attackRate; }
-		double getAttackIntervalSeconds() { return attackIntervalSeconds; }
-		double getAttacksPerSecond() { return attacksPerSecond; }
-		double getBaseDps() { return baseDps; }
-		boolean isRanged() { return ranged; }
+		int getAttackPoints() {
+			return (int) Math.round((damageMin + damageMax) / 2.0);
+		}
+
+		int getDamageMin() {
+			return damageMin;
+		}
+
+		int getDamageMax() {
+			return damageMax;
+		}
+
+		int getAttackRate() {
+			return attackRate;
+		}
+
+		double getAttackIntervalSeconds() {
+			return attackIntervalSeconds;
+		}
+
+		double getAttacksPerSecond() {
+			return attacksPerSecond;
+		}
+
+		double getBaseDps() {
+			return baseDps;
+		}
+
+		boolean isRanged() {
+			return ranged;
+		}
 	}
 }
