@@ -11,6 +11,7 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 import games.stendhal.client.gui.WeaponPerformanceCalculator.WeaponPerformance;
+import games.stendhal.common.constants.ItemTooltip;
 import marauroa.common.game.RPObject;
 
 public class WeaponPerformanceCalculatorTest {
@@ -29,6 +30,21 @@ public class WeaponPerformanceCalculatorTest {
 		assertEquals(2.0 / 3.0, performance.getAttacksPerSecond(), 0.0001);
 		assertEquals(20.0, performance.getBaseDps(), 0.0001);
 		assertFalse(performance.isRanged());
+	}
+
+	@Test
+	public void testPerformanceReadsVisibleTooltipMap() {
+		final RPObject object = new RPObject();
+		object.put(ItemTooltip.ATTRIBUTE, ItemTooltip.ATTACK, "32");
+		object.put(ItemTooltip.ATTRIBUTE, ItemTooltip.ATTACK_RATE, "2");
+
+		final WeaponPerformance performance =
+				WeaponPerformanceCalculator.calculate(object);
+
+		assertEquals(32, performance.getAttackPoints());
+		assertEquals(2, performance.getAttackRate());
+		assertEquals(0.6, performance.getAttackIntervalSeconds(), 0.0001);
+		assertEquals(53.3333, performance.getBaseDps(), 0.001);
 	}
 
 	@Test
