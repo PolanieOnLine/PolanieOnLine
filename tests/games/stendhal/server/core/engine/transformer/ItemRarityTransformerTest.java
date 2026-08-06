@@ -54,6 +54,8 @@ public class ItemRarityTransformerTest {
 				modifiers);
 		created.setID(new ID(101, "rarity_test"));
 		final int attack = created.getInt("atk");
+		final int damageMin = created.getInt("damage_min");
+		final int damageMax = created.getInt("damage_max");
 		final int rate = created.getInt("rate");
 		final int value = created.getValue();
 		created.put("min_level", definitionMinimumLevel + 1000);
@@ -63,6 +65,8 @@ public class ItemRarityTransformerTest {
 
 		assertSame(ItemRarity.LEGENDARY, secondLoad.getRarity());
 		assertEquals(attack, secondLoad.getInt("atk"));
+		assertEquals(damageMin, secondLoad.getInt("damage_min"));
+		assertEquals(damageMax, secondLoad.getInt("damage_max"));
 		assertEquals(rate, secondLoad.getInt("rate"));
 		assertEquals(value, secondLoad.getValue());
 		assertEquals(created.getRarityModifiers(),
@@ -86,6 +90,10 @@ public class ItemRarityTransformerTest {
 
 		assertSame(ItemRarity.COMMON, restored.getRarity());
 		assertEquals(137, restored.getInt("atk"));
+		assertFalse(restored.has("damage_min"));
+		assertFalse(restored.has("damage_max"));
+		assertEquals(137, restored.getDamageMin());
+		assertEquals(137, restored.getDamageMax());
 		assertEquals(4, restored.getInt("rate"));
 		assertEquals(777, restored.getValue());
 		assertEquals(Double.valueOf(1.0), restored.getRarityModifier("atk"));
