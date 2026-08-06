@@ -13,6 +13,7 @@ jobs:
           tar -czf maintenance-sources.tgz \
             src/games/stendhal/server/entity/item/Item.java \
             src/games/stendhal/server/entity/RPEntity.java \
+            src/games/stendhal/server/core/rp/StendhalRPAction.java \
             src/games/stendhal/server/entity/item/ItemTooltipService.java \
             src/games/stendhal/server/core/rule/rarity/ItemRarityService.java \
             src/games/stendhal/client/gui/ItemRarityPresentation.java \
