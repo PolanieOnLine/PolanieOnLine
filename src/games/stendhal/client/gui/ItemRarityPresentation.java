@@ -15,6 +15,8 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 
+import javax.swing.ToolTipManager;
+
 import games.stendhal.client.entity.IEntity;
 import games.stendhal.client.entity.Item;
 import games.stendhal.client.gui.WeaponPerformanceCalculator.WeaponPerformance;
@@ -22,14 +24,25 @@ import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.common.constants.ItemTooltip;
 import marauroa.common.game.RPObject;
 
-/** Builds structured desktop item tooltips without graphics dependencies. */
+/** Builds compact structured desktop item tooltips. */
 final class ItemRarityPresentation {
-	private static final String DEFAULT_TITLE_COLOR = "#ffffff";
-	private static final String PRIMARY_VALUE_COLOR = "#ffffff";
-	private static final String MUTED_COLOR = "#d8d8d8";
-	private static final String BONUS_COLOR = "#6f9cff";
+	private static final String DEFAULT_TITLE_COLOR = "#f4f1ec";
+	private static final String PRIMARY_VALUE_COLOR = "#fffaf2";
+	private static final String MUTED_COLOR = "#e6ddd5";
+	private static final String BONUS_COLOR = "#79a9ff";
+	private static final String DEFENSE_COLOR = "#d8ecff";
 	private static final DecimalFormat ONE_DECIMAL = createDecimalFormat("0.0");
 	private static final DecimalFormat TWO_DECIMALS = createDecimalFormat("0.00");
+
+	static {
+		/* Swing hides standard tooltips after four seconds by default. Item
+		 * descriptions are intentionally persistent while the cursor remains over
+		 * the slot, so players can read and compare longer tooltips comfortably. */
+		final ToolTipManager manager = ToolTipManager.sharedInstance();
+		manager.setDismissDelay(60000);
+		manager.setInitialDelay(350);
+		manager.setReshowDelay(100);
+	}
 
 	private ItemRarityPresentation() {
 		// utility class
@@ -57,12 +70,14 @@ final class ItemRarityPresentation {
 		}
 
 		final StringBuilder tooltip = new StringBuilder("<html>");
-		tooltip.append("<div style='width:230px;padding:3px'>");
+		tooltip.append("<div style='width:195px;padding:2px'>");
 		appendHeader(tooltip, entity, rarity);
 		if (performance != null) {
 			appendWeaponPerformance(tooltip, object, performance);
+		} else {
+			appendNonWeaponHeadline(tooltip, object);
 		}
-		appendCoreStats(tooltip, object);
+		appendCoreStats(tooltip, object, performance != null);
 		appendBonuses(tooltip, object);
 		appendFooter(tooltip, object, scrollDestination);
 		tooltip.append("</div></html>");
@@ -98,37 +113,70 @@ final class ItemRarityPresentation {
 		tooltip.append(formatOneDecimal(performance.getBaseDps()));
 		tooltip.append(" DPS</b></font><br><font color='");
 		tooltip.append(MUTED_COLOR);
-		tooltip.append("'><b>");
-		tooltip.append(performance.getDamageMin()).append("–")
-				.append(performance.getDamageMax());
-		tooltip.append(" obrażeń</b> &nbsp; ");
+		tooltip.append("'>");
+		tooltip.append("<b>").append(performance.getDamageMin()).append("–")
+				.append(performance.getDamageMax()).append(" obrażeń</b>");
+		tooltip.append(" &nbsp; ");
 		tooltip.append(formatTwoDecimals(performance.getAttacksPerSecond()));
 		tooltip.append(" ataku/s</font></div>");
 
 		final int range = WeaponPerformanceCalculator.getInt(object,
 				ItemTooltip.RANGE);
-		if (range > 0) {
-			tooltip.append("<br>Zasięg: ").append(range);
-		}
 		final String damageType = WeaponPerformanceCalculator.getTooltipValue(
 				object, ItemTooltip.DAMAGE_TYPE);
-		if (damageType != null) {
-			tooltip.append("<br>Typ obrażeń: ");
-			tooltip.append(escapeHtml(localizeDamageType(damageType)));
-		}
 		final String statuses = WeaponPerformanceCalculator.getTooltipValue(
 				object, ItemTooltip.STATUS_ATTACK);
-		if (statuses != null && !statuses.isEmpty()) {
-			tooltip.append("<br>Efekty trafienia: ");
-			tooltip.append(escapeHtml(statuses.replace(';', ',')));
+		if (range > 0 || damageType != null || (statuses != null && !statuses.isEmpty())) {
+			tooltip.append("<div style='margin-top:3px'>");
+			if (range > 0) {
+				tooltip.append("Zasięg: ").append(range);
+			}
+			if (damageType != null) {
+				if (range > 0) tooltip.append("<br>");
+				tooltip.append("Typ obrażeń: ")
+						.append(escapeHtml(localizeDamageType(damageType)));
+			}
+			if (statuses != null && !statuses.isEmpty()) {
+				if (range > 0 || damageType != null) tooltip.append("<br>");
+				tooltip.append("Efekty trafienia: ")
+						.append(escapeHtml(statuses.replace(';', ',')));
+			}
+			tooltip.append("</div>");
 		}
 	}
 
-	private static void appendCoreStats(final StringBuilder tooltip,
+	private static void appendNonWeaponHeadline(final StringBuilder tooltip,
 			final RPObject object) {
+		final int defense = WeaponPerformanceCalculator.getInt(object,
+				ItemTooltip.DEFENSE);
+		if (defense <= 0) {
+			return;
+		}
+		tooltip.append("<hr><div style='text-align:center'><font size='+1' color='")
+				.append(DEFENSE_COLOR).append("'><b>")
+				.append(defense).append(" OBRONY</b></font></div>");
+	}
+
+	private static void appendCoreStats(final StringBuilder tooltip,
+			final RPObject object, final boolean weapon) {
 		final StringBuilder stats = new StringBuilder();
-		appendPlainStat(stats, "Obrona", WeaponPerformanceCalculator.getInt(
-				object, ItemTooltip.DEFENSE));
+		final int defense = WeaponPerformanceCalculator.getInt(object,
+				ItemTooltip.DEFENSE);
+		if (weapon) {
+			appendPlainStat(stats, "Obrona", defense);
+		}
+
+		/* Non-weapons may grant attack as an equipment bonus. Present it as a
+		 * bonus, never as standalone weapon damage or DPS. */
+		if (!weapon) {
+			final int attack = Math.max(
+					WeaponPerformanceCalculator.getInt(object, ItemTooltip.ATTACK),
+					WeaponPerformanceCalculator.getInt(object, ItemTooltip.RANGED_ATTACK));
+			if (attack != 0) {
+				appendLine(stats, signed(Integer.toString(attack)) + " ataku");
+			}
+		}
+
 		appendPlainStat(stats, "Siła ataku", WeaponPerformanceCalculator.getInt(
 				object, ItemTooltip.SKILL_ATTACK));
 		final int improve = WeaponPerformanceCalculator.getInt(object,
