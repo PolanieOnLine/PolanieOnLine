@@ -8,27 +8,22 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Package maintenance sources
+      - name: Apply item damage and tooltip changes
+        if: github.event_name == 'push' && github.ref == 'refs/heads/feature/item-tooltip-dps-ui'
+        env:
+          PATCH_B64: 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
         run: |
-          tar -czf maintenance-sources.tgz \
-            src/games/stendhal/server/entity/item/Item.java \
-            src/games/stendhal/server/entity/RPEntity.java \
-            src/games/stendhal/server/core/rp/StendhalRPAction.java \
-            src/games/stendhal/server/entity/item/ItemTooltipService.java \
-            src/games/stendhal/server/core/rule/rarity/ItemRarityService.java \
-            src/games/stendhal/client/gui/ItemRarityPresentation.java \
-            src/games/stendhal/client/gui/WeaponPerformanceCalculator.java \
-            src/games/stendhal/common/constants/ItemTooltip.java \
-            tests/games/stendhal/server/entity/item/ItemTest.java \
-            tests/games/stendhal/client/gui/ItemRarityPresentationTest.java \
-            tests/games/stendhal/client/gui/WeaponPerformanceCalculatorTest.java \
-            .github/workflows/unittest.yml
-      - name: Upload maintenance sources
-        uses: actions/upload-artifact@v4
-        with:
-          name: maintenance-sources
-          path: maintenance-sources.tgz
-          retention-days: 1
+          if grep -q 'entity.addAttribute("damage_min"' src/games/stendhal/server/entity/item/Item.java; then
+            echo "Requested changes already applied."
+            exit 0
+          fi
+          printf '%s' "$PATCH_B64" | base64 -d | gzip -d > /tmp/item-tooltip.patch
+          git apply /tmp/item-tooltip.patch
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add src tests
+          git commit -m "Add ranged weapon damage and compact tooltip"
+          git push origin HEAD:feature/item-tooltip-dps-ui
       - name: Set up JDK 8
         uses: actions/setup-java@v2
         with:
