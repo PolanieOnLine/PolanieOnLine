@@ -16,9 +16,17 @@ public final class ItemTooltip {
 	/** Volatile map sent to clients with presentation-safe item statistics. */
 	public static final String ATTRIBUTE = "tooltip_stats";
 
+	public static final String CATEGORY = "category";
+	public static final String CATEGORY_WEAPON = "weapon";
+	public static final String CATEGORY_ARMOUR = "armour";
+	public static final String CATEGORY_ACCESSORY = "accessory";
+	public static final String CATEGORY_OTHER = "other";
+
 	public static final String ATTACK = "atk";
 	public static final String RANGED_ATTACK = "ratk";
 	public static final String ATTACK_RATE = "rate";
+	public static final String ATTACK_INTERVAL_SECONDS = "attack_interval_seconds";
+	public static final String ATTACKS_PER_SECOND = "attacks_per_second";
 	public static final String DAMAGE_MIN = "damage_min";
 	public static final String DAMAGE_MAX = "damage_max";
 	public static final String DEFENSE = "def";
