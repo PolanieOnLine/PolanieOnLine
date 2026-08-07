@@ -128,19 +128,23 @@ public class ItemRarityPresentationTest {
 		putCategory(object, ItemTooltip.CATEGORY_ARMOUR);
 		putStat(object, ItemTooltip.DEFENSE, "18");
 		putStat(object, ItemTooltip.ATTACK, "4");
-		putStat(object, ItemTooltip.RESISTANCE_PREFIX + "light", "120");
+		putStat(object, ItemTooltip.RESISTANCE_PREFIX + "light", "105");
 		putStat(object, ItemTooltip.RESISTANCE_PREFIX + "dark", "80");
+		putStat(object, ItemTooltip.RESISTANCE_PREFIX + "fire", "100");
 
 		final String tooltip = ItemRarityPresentation.buildItemToolTip(
 				EntityFactory.createEntity(object));
 
 		assertTrue(tooltip.contains("18 pkt. pancerza"));
 		assertFalse(tooltip.contains("Ochrona podstawowa"));
-		assertTrue(tooltip.contains("ŚWIATŁO: 120%"));
-		assertTrue(tooltip.contains("MROK: 80%"));
+		assertTrue(tooltip.contains("+5% odporności na światło"));
+		assertTrue(tooltip.contains("-20% odporności na mrok"));
 		assertTrue(tooltip.contains("<!--item-rarity-glow:#9b59b6:0.12-->"));
-		assertTrue(tooltip.contains("&#9670; ŚWIATŁO: 120%"));
-		assertTrue(tooltip.contains("&#9670; MROK: 80%"));
+		assertTrue(tooltip.contains("&#9670; +5% odporności na światło"));
+		assertTrue(tooltip.contains("&#9670; -20% odporności na mrok"));
+		assertFalse(tooltip.contains("odporności na ogień"));
+		assertFalse(tooltip.contains("ŚWIATŁO: 105%"));
+		assertFalse(tooltip.contains("MROK: 80%"));
 		assertTrue(tooltip.contains("+4 ataku"));
 		assertFalse(tooltip.contains("obrażeń na sekundę"));
 		assertFalse(tooltip.contains("obrażeń za trafienie"));
