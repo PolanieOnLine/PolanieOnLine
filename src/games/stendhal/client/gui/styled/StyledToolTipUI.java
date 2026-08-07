@@ -22,8 +22,6 @@ import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicToolTipUI;
 
 public class StyledToolTipUI extends BasicToolTipUI {
-	private static StyledToolTipUI instance;
-
 	private final Style style;
 	private final Border border;
 
@@ -31,14 +29,13 @@ public class StyledToolTipUI extends BasicToolTipUI {
 	 * Create a StyledToolTipUI. This method is used by the UIManager.
 	 *
 	 * @param tooltip
-	 * @return A shared StyledToolTipUI instance
+	 * @return tooltip UI using the currently selected Stendhal style
 	 */
-	public static synchronized ComponentUI createUI(JComponent tooltip) {
-		if (instance == null) {
-			instance = new StyledToolTipUI(StyleUtil.getStyle());
-		}
-
-		return instance;
+	public static ComponentUI createUI(JComponent tooltip) {
+		/* Do not cache a single UI instance. The player can switch skins while
+		 * the client is running, so each UI refresh must capture the current
+		 * StendhalStyle instead of keeping the previous texture and font. */
+		return new StyledToolTipUI(StyleUtil.getStyle());
 	}
 
 	/**
