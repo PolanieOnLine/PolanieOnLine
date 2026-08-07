@@ -22,12 +22,31 @@ jobs:
       - name: Print failed JUnit reports
         if: failure()
         run: |
-          find build/build_test_report -maxdepth 1 -type f -name 'TEST-*.xml' -print0 2>/dev/null \
-            | xargs -0 grep -lE '<failure|<error' 2>/dev/null \
-            | while read report; do
-                echo "===== ${report} ====="
-                cat "${report}"
-              done
+          python3 - <<'PY'
+          import xml.etree.ElementTree as ET
+          from pathlib import Path
+
+          report = Path('build/build_test_report/testresults.xml')
+          if not report.exists():
+              print('JUnit aggregate report not found.')
+              raise SystemExit(0)
+
+          root = ET.parse(str(report)).getroot()
+          found = False
+          for testcase in root.iter('testcase'):
+              problems = list(testcase.findall('failure')) + list(testcase.findall('error'))
+              for problem in problems:
+                  found = True
+                  suite = testcase.get('classname', '')
+                  name = testcase.get('name', '')
+                  print('===== %s.%s =====' % (suite, name))
+                  if problem.get('message'):
+                      print(problem.get('message'))
+                  if problem.text:
+                      print(problem.text.strip())
+          if not found:
+              print('No failure/error nodes found in aggregate report.')
+          PY
       - uses: sarisia/actions-status-discord@v1
         if: failure()
         env:
