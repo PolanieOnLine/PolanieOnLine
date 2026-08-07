@@ -70,9 +70,9 @@ public class ItemRarityPresentationTest {
 				EntityFactory.createEntity(object));
 
 		assertTrue(tooltip.contains("width='190'"));
-		assertTrue(tooltip.contains("bgcolor='#171613'"));
+		assertFalse(tooltip.contains("bgcolor="));
+		assertFalse(tooltip.contains("size='+1'"));
 		assertTrue(tooltip.contains("53,3 pkt. obrażeń na sekundę"));
-		assertTrue(tooltip.contains("#f3efe7"));
 		assertTrue(tooltip.contains("[28–36] pkt. obrażeń za trafienie"));
 		assertTrue(tooltip.contains("&#9500;&#9472;&#9670;"));
 		assertTrue(tooltip.contains("&#9492;&#9472;&#9670;"));
@@ -119,7 +119,6 @@ public class ItemRarityPresentationTest {
 
 		assertTrue(tooltip.contains("18 pkt. pancerza"));
 		assertTrue(tooltip.contains("Ochrona podstawowa"));
-		assertTrue(tooltip.contains("#f3efe7"));
 		assertTrue(tooltip.contains("&#9492;&#9472;&#9670;"));
 		assertTrue(tooltip.contains("+4 ataku"));
 		assertFalse(tooltip.contains("obrażeń na sekundę"));
