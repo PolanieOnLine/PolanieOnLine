@@ -160,15 +160,18 @@ final class ItemRarityPresentation {
 			final IEntity entity, final RPObject object, final ItemRarity rarity) {
 		final String title = entity.getTitle();
 		if (title != null) {
-			tooltip.append("<b>")
+			final String titleColor = rarity == null ? getTextColor()
+					: rarity.getColorHex();
+			tooltip.append("<font size='-1' color='")
+					.append(escapeHtml(titleColor)).append("'><b>")
 					.append(escapeHtml(title.toUpperCase(Locale.ROOT)))
-					.append("</b>");
+					.append("</b></font>");
 		}
 		if (rarity != null) {
 			tooltip.append("<br><font size='-1' color='")
-					.append(escapeHtml(rarity.getColorHex())).append("'><b>")
+					.append(getTextColor()).append("'>")
 					.append(escapeHtml(rarity.getPolishDisplayName()))
-					.append("</b></font>");
+					.append("</font>");
 		}
 		appendImprovement(tooltip, object, rarity);
 	}
