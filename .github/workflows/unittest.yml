@@ -19,9 +19,10 @@ jobs:
           python3 .github/scripts/apply_item_resistance_tooltip_patch.py
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add src/games/stendhal/client/gui/ItemRarityPresentation.java
+          git add src/games/stendhal/client/gui/ItemRarityPresentation.java \
+                  tests/games/stendhal/client/gui/ItemRarityPresentationTest.java
           if ! git diff --cached --quiet; then
-            git commit -m "fix(client): remove redundant armour subtitle"
+            git commit -m "fix(client): finalize defensive item tooltip"
             git push origin HEAD:feature/item-tooltip-dps-ui
           fi
       - name: Set up JDK 8
