@@ -11,19 +11,17 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          ref: feature/item-tooltip-dps-ui
       - name: Apply staged item resistance tooltip patch
         if: ${{ hashFiles('.github/scripts/apply_item_resistance_tooltip_patch.py') != '' }}
         run: |
           python3 .github/scripts/apply_item_resistance_tooltip_patch.py
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add src/games/stendhal/server/entity/item/Item.java \
-                  src/games/stendhal/server/entity/item/ItemTooltipService.java \
-                  src/games/stendhal/common/constants/ItemTooltip.java \
-                  src/games/stendhal/client/gui/ItemRarityPresentation.java \
-                  tests/games/stendhal/client/gui/ItemRarityPresentationTest.java
+          git add src/games/stendhal/client/gui/ItemRarityPresentation.java
           if ! git diff --cached --quiet; then
-            git commit -m "feat(items): expose elemental resistances in tooltips"
+            git commit -m "fix(client): remove redundant armour subtitle"
             git push origin HEAD:feature/item-tooltip-dps-ui
           fi
       - name: Set up JDK 8
