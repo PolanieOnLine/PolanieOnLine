@@ -18,6 +18,9 @@ import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.regex.Pattern;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
@@ -29,12 +32,32 @@ import javax.swing.plaf.basic.BasicToolTipUI;
 public class StyledToolTipUI extends BasicToolTipUI {
 	private static final String RARITY_GLOW_MARKER =
 			"<!--item-rarity-glow:";
+	private static final String STRUCTURED_LIST_MARKER =
+			"<!--item-tooltip-list-v2-->";
 	private static final float GLOW_STRENGTH_SCALE = 2.35f;
 	private static final float MAX_GLOW_STRENGTH = 0.42f;
+	private static final float EPIC_GLOW_FACTOR = 0.82f;
+	private static final float LEGENDARY_GLOW_FACTOR = 0.78f;
+	private static final int EPIC_GLOW_RGB = Color.decode("#9b59b6").getRGB();
+	private static final int LEGENDARY_GLOW_RGB = Color.decode("#ff8c00").getRGB();
 	private static final int BASE_SHADE_ALPHA = 72;
 	private static final int BOTTOM_SHADE_ALPHA = 55;
+	private static final Pattern ARMOUR_STAT_PATTERN =
+			Pattern.compile("Pancerz: ([0-9]+)");
+	private static final Pattern SKILL_ATTACK_STAT_PATTERN =
+			Pattern.compile("Siła ataku: ([0-9]+)");
 	private final Style style;
 	private final Border border;
+	private final PropertyChangeListener tooltipNormalizer =
+			new PropertyChangeListener() {
+				@Override
+				public void propertyChange(final PropertyChangeEvent event) {
+					if (event.getSource() instanceof JComponent) {
+						normalizeStructuredItemMarkup(
+								(JComponent) event.getSource());
+					}
+				}
+			};
 
 	/**
 	 * Create a StyledToolTipUI. This method is used by the UIManager.
@@ -150,13 +173,31 @@ public class StyledToolTipUI extends BasicToolTipUI {
 			final Color rarityColor = Color.decode(payload.substring(0, separator));
 			final float configuredStrength = Float.parseFloat(
 					payload.substring(separator + 1));
+			final float tunedStrength = tuneRarityGlow(rarityColor,
+					configuredStrength);
 			final float strength = Math.max(0.0f,
 					Math.min(MAX_GLOW_STRENGTH,
-							configuredStrength * GLOW_STRENGTH_SCALE));
+							tunedStrength * GLOW_STRENGTH_SCALE));
 			paintRarityGlow(graphics, tooltip, rarityColor, strength);
 		} catch (NumberFormatException e) {
 			// Presentation metadata must never prevent a tooltip from rendering.
 		}
+	}
+
+	/**
+	 * Epic and legendary cards keep a clear rarity identity without washing
+	 * out highly textured client skins. Rare and common retain their current
+	 * strength because they already read well on the wooden theme.
+	 */
+	private float tuneRarityGlow(final Color rarityColor,
+			final float configuredStrength) {
+		if (rarityColor.getRGB() == EPIC_GLOW_RGB) {
+			return configuredStrength * EPIC_GLOW_FACTOR;
+		}
+		if (rarityColor.getRGB() == LEGENDARY_GLOW_RGB) {
+			return configuredStrength * LEGENDARY_GLOW_FACTOR;
+		}
+		return configuredStrength;
 	}
 
 	private void paintRarityGlow(final Graphics graphics,
@@ -198,6 +239,38 @@ public class StyledToolTipUI extends BasicToolTipUI {
 		g.dispose();
 	}
 
+	/**
+	 * Normalize secondary structured item properties into one visual list.
+	 * The generator keeps raw semantic labels while this skin-aware layer adds
+	 * the shared diamond treatment used by bonuses. Main armour cards are not
+	 * affected because they use the separate "pkt. pancerza" headline.
+	 */
+	private void normalizeStructuredItemMarkup(final JComponent component) {
+		if (!(component instanceof JToolTip)) {
+			return;
+		}
+		final JToolTip tooltip = (JToolTip) component;
+		final String text = tooltip.getTipText();
+		if (text == null || text.indexOf(RARITY_GLOW_MARKER) < 0
+				|| text.indexOf(STRUCTURED_LIST_MARKER) >= 0) {
+			return;
+		}
+
+		String normalized = text.replace("<html>",
+				"<html>" + STRUCTURED_LIST_MARKER);
+		normalized = normalized.replace("Typ obrażeń: ",
+				"&#9670;&nbsp; Typ obrażeń: ");
+		normalized = normalized.replace("Zasięg: ",
+				"&#9670;&nbsp; Zasięg: ");
+		normalized = normalized.replace("Efekty trafienia: ",
+				"&#9670;&nbsp; Efekty trafienia: ");
+		normalized = ARMOUR_STAT_PATTERN.matcher(normalized).replaceAll(
+				"&#9670;&nbsp; +$1 pancerza");
+		normalized = SKILL_ATTACK_STAT_PATTERN.matcher(normalized).replaceAll(
+				"&#9670;&nbsp; +$1 siły ataku");
+		tooltip.setTipText(normalized);
+	}
+
 	private Color withAlpha(final Color color, final int alpha) {
 		return new Color(color.getRed(), color.getGreen(), color.getBlue(),
 				Math.max(0, Math.min(255, alpha)));
@@ -205,6 +278,7 @@ public class StyledToolTipUI extends BasicToolTipUI {
 
 	@Override
 	public void paint(Graphics g, JComponent tooltip) {
+		normalizeStructuredItemMarkup(tooltip);
 		// Get rid of popup borders, if it has any (Heavy weight popups tend to
 		// pack the tooltip in a JPanel
 		Container parent = tooltip.getParent();
@@ -226,5 +300,13 @@ public class StyledToolTipUI extends BasicToolTipUI {
 			tooltip.setFont(style.getFont());
 		}
 		tooltip.setBorder(border);
+		tooltip.addPropertyChangeListener(tooltipNormalizer);
+		normalizeStructuredItemMarkup(tooltip);
+	}
+
+	@Override
+	public void uninstallUI(final JComponent tooltip) {
+		tooltip.removePropertyChangeListener(tooltipNormalizer);
+		super.uninstallUI(tooltip);
 	}
 }
