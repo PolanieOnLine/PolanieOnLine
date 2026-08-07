@@ -29,8 +29,10 @@ import javax.swing.plaf.basic.BasicToolTipUI;
 public class StyledToolTipUI extends BasicToolTipUI {
 	private static final String RARITY_GLOW_MARKER =
 			"<!--item-rarity-glow:";
-	private static final float GLOW_STRENGTH_SCALE = 2.0f;
-	private static final float MAX_GLOW_STRENGTH = 0.35f;
+	private static final float GLOW_STRENGTH_SCALE = 2.35f;
+	private static final float MAX_GLOW_STRENGTH = 0.42f;
+	private static final int BASE_SHADE_ALPHA = 72;
+	private static final int BOTTOM_SHADE_ALPHA = 55;
 	private final Style style;
 	private final Border border;
 
@@ -74,10 +76,11 @@ public class StyledToolTipUI extends BasicToolTipUI {
 	}
 
 	/**
-	 * Render the skin and rarity glow into an off-screen image before drawing
-	 * it on the Swing component. The client has rendering paths where alpha
-	 * compositing directly on the component graphics is unreliable, while a
-	 * BufferedImage consistently supports the translucent rarity overlay.
+	 * Render the skin, a readability shade and rarity glow into an off-screen
+	 * image before drawing it on the Swing component. The client has rendering
+	 * paths where alpha compositing directly on the component graphics is
+	 * unreliable, while a BufferedImage consistently supports translucent
+	 * overlays.
 	 */
 	private void paintStyledBackground(final Graphics graphics,
 			final JComponent tooltip) {
@@ -91,15 +94,31 @@ public class StyledToolTipUI extends BasicToolTipUI {
 				BufferedImage.TYPE_INT_RGB);
 		final Graphics2D bufferGraphics = background.createGraphics();
 		StyleUtil.fillBackground(style, bufferGraphics, 0, 0, width, height);
+		paintSkinShade(bufferGraphics, width, height);
 		paintRarityGlow(bufferGraphics, tooltip);
 		bufferGraphics.dispose();
 		graphics.drawImage(background, 0, 0, null);
 	}
 
 	/**
-	 * Paint a subtle rarity tint over the selected skin. Structured item
-	 * tooltips embed an invisible marker containing their rarity color and
-	 * desired glow strength. Other client tooltips are unaffected.
+	 * Reduce the visual noise of bright or highly textured skins without
+	 * replacing them. The lower part is slightly darker so footer and bonus
+	 * text keep enough contrast while the header remains open for rarity glow.
+	 */
+	private void paintSkinShade(final Graphics2D graphics, final int width,
+			final int height) {
+		graphics.setColor(new Color(0, 0, 0, BASE_SHADE_ALPHA));
+		graphics.fillRect(0, 0, width, height);
+		graphics.setPaint(new GradientPaint(0.0f, 0.0f,
+				new Color(0, 0, 0, 0), 0.0f, Math.max(1.0f, height),
+				new Color(0, 0, 0, BOTTOM_SHADE_ALPHA)));
+		graphics.fillRect(0, 0, width, height);
+	}
+
+	/**
+	 * Paint a rarity tint over the selected skin. Structured item tooltips
+	 * embed an invisible marker containing their rarity color and desired glow
+	 * strength. Other client tooltips are unaffected.
 	 */
 	private void paintRarityGlow(final Graphics graphics,
 			final JComponent tooltip) {
@@ -150,28 +169,28 @@ public class StyledToolTipUI extends BasicToolTipUI {
 		final Graphics2D g = (Graphics2D) graphics.create();
 		final int width = tooltip.getWidth();
 		final int height = tooltip.getHeight();
-		final int baseAlpha = Math.max(5,
-				Math.round(255.0f * strength * 0.28f));
+		final int baseAlpha = Math.max(6,
+				Math.round(255.0f * strength * 0.34f));
 		final int topAlpha = Math.max(baseAlpha,
 				Math.round(255.0f * strength));
-		final int borderAlpha = Math.min(180,
-				Math.round(255.0f * strength * 1.75f));
+		final int borderAlpha = Math.min(205,
+				Math.round(255.0f * strength * 1.9f));
 
-		/* Keep the chosen skin visible, but give the whole card enough rarity
-		 * tint to remain noticeable on high-contrast textures such as wood. */
+		/* Keep the chosen skin readable as a texture, while the persistent tint
+		 * makes rarity visible even away from the header. */
 		g.setColor(withAlpha(rarityColor, baseAlpha));
 		g.fillRect(0, 0, width, height);
 
-		/* Most of the glow lives around the header and fades smoothly into the
-		 * skin. This mirrors ARPG item cards without replacing the client theme. */
+		/* The strongest glow sits behind the name and rarity lines, then fades
+		 * through the main stat section instead of washing the whole tooltip. */
 		g.setPaint(new GradientPaint(0.0f, 0.0f,
 				withAlpha(rarityColor, topAlpha), 0.0f,
-				Math.max(55.0f, height * 0.68f),
-				withAlpha(rarityColor, Math.max(0, baseAlpha / 2))));
+				Math.max(65.0f, height * 0.62f),
+				withAlpha(rarityColor, Math.max(0, baseAlpha / 3))));
 		g.fillRect(0, 0, width, height);
 
-		/* A colored inner edge makes the rarity readable even on very bright or
-		 * very dark skins while the actual skin border remains untouched. */
+		/* A controlled inner edge makes the rarity legible on both bright and
+		 * dark skins without replacing the border supplied by the selected skin. */
 		if (width > 3 && height > 3) {
 			g.setColor(withAlpha(rarityColor, borderAlpha));
 			g.drawRect(1, 1, width - 3, height - 3);
