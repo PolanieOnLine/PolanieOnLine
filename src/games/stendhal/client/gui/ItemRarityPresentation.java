@@ -11,6 +11,7 @@
  ***************************************************************************/
 package games.stendhal.client.gui;
 
+import java.awt.Color;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Arrays;
@@ -24,19 +25,16 @@ import javax.swing.ToolTipManager;
 import games.stendhal.client.entity.IEntity;
 import games.stendhal.client.entity.Item;
 import games.stendhal.client.gui.WeaponPerformanceCalculator.WeaponPerformance;
+import games.stendhal.client.gui.styled.Style;
+import games.stendhal.client.gui.styled.StyleUtil;
 import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.common.constants.ItemTooltip;
 import marauroa.common.game.RPObject;
 
 /** Builds compact structured desktop item tooltips. */
 final class ItemRarityPresentation {
-	private static final String DEFAULT_TITLE_COLOR = "#f3efe7";
-	private static final String CARD_BACKGROUND_COLOR = "#171613";
-	private static final String PRIMARY_VALUE_COLOR = "#f3efe7";
-	private static final String MUTED_COLOR = "#b9b3a8";
-	private static final String CONNECTOR_COLOR = "#777168";
-	private static final String BONUS_COLOR = "#d8d2c8";
-	private static final String FOOTER_LABEL_COLOR = "#c8b17c";
+	private static final String FALLBACK_TEXT_COLOR = "#f3efe7";
+	private static final String FALLBACK_ACCENT_COLOR = "#a37861";
 	private static final DecimalFormat ONE_DECIMAL = createDecimalFormat("0.0");
 	private static final DecimalFormat TWO_DECIMALS = createDecimalFormat("0.00");
 
@@ -90,12 +88,10 @@ final class ItemRarityPresentation {
 		}
 
 		final StringBuilder tooltip = new StringBuilder("<html>");
-		/* The old Swing HTML renderer respects table width more consistently than
-		 * CSS width, and long names wrap instead of stretching the card. */
-		tooltip.append("<table width='190' bgcolor='")
-				.append(CARD_BACKGROUND_COLOR)
-				.append("' cellpadding='6' cellspacing='0'><tr><td><font color='")
-				.append(BONUS_COLOR).append("'>");
+		/* Do not paint a private card background here. StyledToolTipUI tiles the
+		 * currently selected client skin behind this transparent HTML content. */
+		tooltip.append("<table width='190' cellpadding='4' cellspacing='0'><tr><td>")
+				.append("<font color='").append(getTextColor()).append("'>");
 		appendHeader(tooltip, entity, rarity);
 		if (performance != null) {
 			appendWeaponPerformance(tooltip, object, performance);
@@ -138,13 +134,12 @@ final class ItemRarityPresentation {
 			final IEntity entity, final ItemRarity rarity) {
 		final String title = entity.getTitle();
 		if (title != null) {
-			tooltip.append("<b><font size='+1' color='")
-					.append(DEFAULT_TITLE_COLOR).append("'>")
+			tooltip.append("<b>")
 					.append(escapeHtml(title.toUpperCase(Locale.ROOT)))
-					.append("</font></b>");
+					.append("</b>");
 		}
 		if (rarity != null) {
-			tooltip.append("<br><font color='")
+			tooltip.append("<br><font size='-1' color='")
 					.append(escapeHtml(rarity.getColorHex())).append("'><b>")
 					.append(escapeHtml(rarity.getPolishDisplayName()))
 					.append("</b></font>");
@@ -177,8 +172,8 @@ final class ItemRarityPresentation {
 				object, ItemTooltip.STATUS_ATTACK);
 		if (range > 0 || damageType != null
 				|| (statuses != null && !statuses.isEmpty())) {
-			tooltip.append("<div style='margin-top:4px'><font color='")
-					.append(MUTED_COLOR).append("'>");
+			tooltip.append("<div style='margin-top:3px'><font size='-1' color='")
+					.append(getTextColor()).append("'>");
 			if (range > 0) {
 				tooltip.append("Zasięg: ").append(range);
 			}
@@ -216,31 +211,31 @@ final class ItemRarityPresentation {
 
 	private static void appendPrimaryValue(final StringBuilder tooltip,
 			final String value, final String details) {
-		tooltip.append("<div><font size='+1' color='")
-				.append(PRIMARY_VALUE_COLOR).append("'><b>")
-				.append(value).append("</b></font>");
+		/* Keep the primary value at the client's configured base font size. The
+		 * bold weight establishes hierarchy without oversized Swing HTML text. */
+		tooltip.append("<div><b>").append(value).append("</b>");
 		if (details != null && !details.isEmpty()) {
-			tooltip.append("<br><font color='").append(MUTED_COLOR)
-					.append("'>").append(details).append("</font>");
+			tooltip.append("<br><font size='-1'>").append(details)
+					.append("</font>");
 		}
 		tooltip.append("</div>");
 	}
 
 	private static void appendTreeDetail(final StringBuilder tooltip,
 			final boolean branchContinues, final String details) {
-		tooltip.append("<tr><td valign='top'><font color='")
-				.append(CONNECTOR_COLOR).append("'>")
+		tooltip.append("<tr><td valign='top'><font size='-1' color='")
+				.append(getAccentColor()).append("'>")
 				.append(branchContinues
 						? "&#9500;&#9472;&#9670;&nbsp;" : "&#9492;&#9472;&#9670;&nbsp;")
-				.append("</font></td><td><font color='")
-				.append(MUTED_COLOR).append("'>")
+				.append("</font></td><td><font size='-1' color='")
+				.append(getTextColor()).append("'>")
 				.append(escapeHtml(details))
 				.append("</font></td></tr>");
 	}
 
 	private static void appendDivider(final StringBuilder tooltip) {
-		tooltip.append("<div style='text-align:center'><font color='")
-				.append(CONNECTOR_COLOR)
+		tooltip.append("<div style='text-align:center'><font size='-1' color='")
+				.append(getAccentColor())
 				.append("'>&#9472;&#9472;&#9472;&#9472;&#9472;&#9671;")
 				.append("&#9472;&#9472;&#9472;&#9472;&#9472;</font></div>");
 	}
@@ -281,7 +276,7 @@ final class ItemRarityPresentation {
 		}
 		if (stats.length() > 0) {
 			appendDivider(tooltip);
-			tooltip.append(stats);
+			tooltip.append("<font size='-1'>").append(stats).append("</font>");
 		}
 	}
 
@@ -330,8 +325,8 @@ final class ItemRarityPresentation {
 
 		if (bonuses.length() > 0) {
 			appendDivider(tooltip);
-			tooltip.append("<font color='").append(BONUS_COLOR)
-					.append("'>").append(bonuses).append("</font>");
+			tooltip.append("<font size='-1'>").append(bonuses)
+					.append("</font>");
 		}
 	}
 
@@ -411,8 +406,8 @@ final class ItemRarityPresentation {
 		}
 		if (footer.length() > 0) {
 			appendDivider(tooltip);
-			tooltip.append("<div style='text-align:right'><font color='")
-					.append(FOOTER_LABEL_COLOR).append("'>")
+			tooltip.append("<div style='text-align:right'><font size='-1' color='")
+					.append(getAccentColor()).append("'>")
 					.append(footer).append("</font></div>");
 		}
 	}
@@ -429,6 +424,23 @@ final class ItemRarityPresentation {
 			return object.get("dest").replaceFirst(",", " ");
 		}
 		return null;
+	}
+
+	private static String getTextColor() {
+		final Style style = StyleUtil.getStyle();
+		return style == null ? FALLBACK_TEXT_COLOR
+				: colorToHex(style.getForeground());
+	}
+
+	private static String getAccentColor() {
+		final Style style = StyleUtil.getStyle();
+		return style == null ? FALLBACK_ACCENT_COLOR
+				: colorToHex(style.getHighLightColor());
+	}
+
+	private static String colorToHex(final Color color) {
+		return String.format(Locale.ROOT, "#%02x%02x%02x",
+				color.getRed(), color.getGreen(), color.getBlue());
 	}
 
 	private static String localizeDamageType(final String value) {
