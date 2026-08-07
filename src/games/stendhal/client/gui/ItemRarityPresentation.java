@@ -255,9 +255,6 @@ final class ItemRarityPresentation {
 		}
 		appendDivider(tooltip);
 		appendPrimaryValue(tooltip, armour + " pkt. pancerza", null);
-		tooltip.append("<table cellpadding='0' cellspacing='0'>");
-		appendTreeDetail(tooltip, false, "Ochrona podstawowa");
-		tooltip.append("</table>");
 	}
 
 	private static void appendPrimaryValue(final StringBuilder tooltip,
