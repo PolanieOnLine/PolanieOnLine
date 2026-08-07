@@ -139,7 +139,8 @@ public class ItemRarityPresentationTest {
 		assertTrue(tooltip.contains("ŚWIATŁO: 120%"));
 		assertTrue(tooltip.contains("MROK: 80%"));
 		assertTrue(tooltip.contains("<!--item-rarity-glow:#9b59b6:0.12-->"));
-		assertTrue(tooltip.contains("&#9492;&#9472;&#9670;"));
+		assertTrue(tooltip.contains("&#9670; ŚWIATŁO: 120%"));
+		assertTrue(tooltip.contains("&#9670; MROK: 80%"));
 		assertTrue(tooltip.contains("+4 ataku"));
 		assertFalse(tooltip.contains("obrażeń na sekundę"));
 		assertFalse(tooltip.contains("obrażeń za trafienie"));
