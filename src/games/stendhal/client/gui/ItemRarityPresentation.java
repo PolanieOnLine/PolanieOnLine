@@ -324,13 +324,13 @@ final class ItemRarityPresentation {
 			final RPObject object, final boolean weapon, final boolean armour) {
 		final StringBuilder bonuses = new StringBuilder();
 
-		appendResistance(bonuses, object, "light", "ŚWIATŁO");
-		appendResistance(bonuses, object, "dark", "MROK");
-		appendResistance(bonuses, object, "fire", "OGIEŃ");
-		appendResistance(bonuses, object, "ice", "LÓD");
-		appendResistance(bonuses, object, "earth", "NATURA");
-		appendResistance(bonuses, object, "water", "WODA");
-		appendResistance(bonuses, object, "cut", "FIZYCZNE");
+		appendResistance(bonuses, object, "light", "światło");
+		appendResistance(bonuses, object, "dark", "mrok");
+		appendResistance(bonuses, object, "fire", "ogień");
+		appendResistance(bonuses, object, "ice", "lód");
+		appendResistance(bonuses, object, "earth", "naturę");
+		appendResistance(bonuses, object, "water", "wodę");
+		appendResistance(bonuses, object, "cut", "obrażenia fizyczne");
 
 		/* ATK on armour and accessories is an equipment bonus, not weapon DPS. */
 		if (!weapon) {
@@ -382,8 +382,19 @@ final class ItemRarityPresentation {
 			final RPObject object, final String nature, final String label) {
 		final String value = WeaponPerformanceCalculator.getTooltipValue(object,
 				ItemTooltip.RESISTANCE_PREFIX + nature);
-		if (value != null) {
-			appendBonusLine(bonuses, label + ": " + value + "%");
+		if (value == null) {
+			return;
+		}
+
+		try {
+			final double modifier = Double.parseDouble(value) - 100.0;
+			if (Math.abs(modifier) < 0.0000001) {
+				return;
+			}
+			appendBonusLine(bonuses, signed(formatCompact(modifier))
+					+ "% odporności na " + label);
+		} catch (final NumberFormatException ignored) {
+			// Invalid tooltip metadata must not break item hover rendering.
 		}
 	}
 
