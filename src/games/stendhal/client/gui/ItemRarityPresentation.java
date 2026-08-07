@@ -35,6 +35,7 @@ import marauroa.common.game.RPObject;
 final class ItemRarityPresentation {
 	private static final String FALLBACK_TEXT_COLOR = "#f3efe7";
 	private static final String FALLBACK_ACCENT_COLOR = "#a37861";
+	private static final String RARITY_GLOW_MARKER = "item-rarity-glow:";
 	private static final DecimalFormat ONE_DECIMAL = createDecimalFormat("0.0");
 	private static final DecimalFormat TWO_DECIMALS = createDecimalFormat("0.00");
 
@@ -88,17 +89,18 @@ final class ItemRarityPresentation {
 		}
 
 		final StringBuilder tooltip = new StringBuilder("<html>");
+		appendRarityGlowMarker(tooltip, rarity);
 		/* Do not paint a private card background here. StyledToolTipUI tiles the
 		 * currently selected client skin behind this transparent HTML content. */
 		tooltip.append("<table width='190' cellpadding='4' cellspacing='0'><tr><td>")
 				.append("<font color='").append(getTextColor()).append("'>");
-		appendHeader(tooltip, entity, rarity);
+		appendHeader(tooltip, entity, object, rarity);
 		if (performance != null) {
 			appendWeaponPerformance(tooltip, object, performance);
 		} else if (armour) {
 			appendArmourPerformance(tooltip, object);
 		}
-		appendCoreStats(tooltip, object, weapon, armour);
+		appendCoreStats(tooltip, object, weapon);
 		appendBonuses(tooltip, object, weapon, armour);
 		appendFooter(tooltip, object, scrollDestination);
 		tooltip.append("</font></td></tr></table></html>");
@@ -130,8 +132,32 @@ final class ItemRarityPresentation {
 		return ItemTooltip.CATEGORY_OTHER;
 	}
 
+	private static void appendRarityGlowMarker(final StringBuilder tooltip,
+			final ItemRarity rarity) {
+		if (rarity == null) {
+			return;
+		}
+		tooltip.append("<!--").append(RARITY_GLOW_MARKER)
+				.append(escapeHtml(rarity.getColorHex())).append(":")
+				.append(getGlowOpacity(rarity)).append("-->");
+	}
+
+	private static String getGlowOpacity(final ItemRarity rarity) {
+		switch (rarity) {
+		case LEGENDARY:
+			return "0.14";
+		case EPIC:
+			return "0.12";
+		case RARE:
+			return "0.09";
+		case COMMON:
+		default:
+			return "0.05";
+		}
+	}
+
 	private static void appendHeader(final StringBuilder tooltip,
-			final IEntity entity, final ItemRarity rarity) {
+			final IEntity entity, final RPObject object, final ItemRarity rarity) {
 		final String title = entity.getTitle();
 		if (title != null) {
 			tooltip.append("<b>")
@@ -144,6 +170,28 @@ final class ItemRarityPresentation {
 					.append(escapeHtml(rarity.getPolishDisplayName()))
 					.append("</b></font>");
 		}
+		appendImprovement(tooltip, object, rarity);
+	}
+
+	private static void appendImprovement(final StringBuilder tooltip,
+			final RPObject object, final ItemRarity rarity) {
+		final int improve = WeaponPerformanceCalculator.getInt(object,
+				ItemTooltip.IMPROVE);
+		final int maxImproves = WeaponPerformanceCalculator.getInt(object,
+				ItemTooltip.MAX_IMPROVES);
+		if (maxImproves <= 0 && improve <= 0) {
+			return;
+		}
+
+		final String color = rarity == null ? getAccentColor()
+				: rarity.getColorHex();
+		tooltip.append("<br><font size='-1' color='")
+				.append(escapeHtml(color)).append("'>&#9670;&nbsp; ")
+				.append("Ulepszenie: +").append(improve);
+		if (maxImproves > 0) {
+			tooltip.append("/").append(maxImproves);
+		}
+		tooltip.append("</font>");
 	}
 
 	private static void appendWeaponPerformance(final StringBuilder tooltip,
@@ -236,8 +284,8 @@ final class ItemRarityPresentation {
 	private static void appendDivider(final StringBuilder tooltip) {
 		tooltip.append("<div style='text-align:center'><font size='-1' color='")
 				.append(getAccentColor())
-				.append("'>&#9472;&#9472;&#9472;&#9472;&#9472;&#9671;")
-				.append("&#9472;&#9472;&#9472;&#9472;&#9472;</font></div>");
+				.append("'>&#9472;&#9472;&#9472;&#9472;&#9671;&#9671;")
+				.append("&#9472;&#9472;&#9472;&#9472;</font></div>");
 	}
 
 	private static String getWeaponSpeedLabel(final double attacksPerSecond) {
@@ -257,7 +305,7 @@ final class ItemRarityPresentation {
 	}
 
 	private static void appendCoreStats(final StringBuilder tooltip,
-			final RPObject object, final boolean weapon, final boolean armour) {
+			final RPObject object, final boolean weapon) {
 		final StringBuilder stats = new StringBuilder();
 		if (weapon) {
 			appendPlainStat(stats, "Pancerz", WeaponPerformanceCalculator.getInt(
@@ -266,14 +314,6 @@ final class ItemRarityPresentation {
 
 		appendPlainStat(stats, "Siła ataku", WeaponPerformanceCalculator.getInt(
 				object, ItemTooltip.SKILL_ATTACK));
-		final int improve = WeaponPerformanceCalculator.getInt(object,
-				ItemTooltip.IMPROVE);
-		final int maxImproves = WeaponPerformanceCalculator.getInt(object,
-				ItemTooltip.MAX_IMPROVES);
-		if (maxImproves > 0 || improve > 0) {
-			appendLine(stats, "Ulepszenie: +" + improve
-					+ (maxImproves > 0 ? "/" + maxImproves : ""));
-		}
 		if (stats.length() > 0) {
 			appendDivider(tooltip);
 			tooltip.append("<font size='-1'>").append(stats).append("</font>");
@@ -407,7 +447,7 @@ final class ItemRarityPresentation {
 		if (footer.length() > 0) {
 			appendDivider(tooltip);
 			tooltip.append("<div style='text-align:right'><font size='-1' color='")
-					.append(getAccentColor()).append("'>")
+					.append(getFooterColor()).append("'>")
 					.append(footer).append("</font></div>");
 		}
 	}
@@ -436,6 +476,27 @@ final class ItemRarityPresentation {
 		final Style style = StyleUtil.getStyle();
 		return style == null ? FALLBACK_ACCENT_COLOR
 				: colorToHex(style.getHighLightColor());
+	}
+
+	private static String getFooterColor() {
+		final Style style = StyleUtil.getStyle();
+		if (style == null) {
+			return FALLBACK_ACCENT_COLOR;
+		}
+		return colorToHex(mixColors(style.getForeground(),
+				style.getHighLightColor(), 0.35));
+	}
+
+	private static Color mixColors(final Color primary, final Color secondary,
+			final double secondaryWeight) {
+		final double primaryWeight = 1.0 - secondaryWeight;
+		return new Color(
+				(int) Math.round(primary.getRed() * primaryWeight
+						+ secondary.getRed() * secondaryWeight),
+				(int) Math.round(primary.getGreen() * primaryWeight
+						+ secondary.getGreen() * secondaryWeight),
+				(int) Math.round(primary.getBlue() * primaryWeight
+						+ secondary.getBlue() * secondaryWeight));
 	}
 
 	private static String colorToHex(final Color color) {
