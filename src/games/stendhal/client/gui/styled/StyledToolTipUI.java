@@ -34,7 +34,7 @@ public class StyledToolTipUI extends BasicToolTipUI {
 			"<!--item-rarity-glow:";
 	private static final String STRUCTURED_LIST_MARKER =
 			"<!--item-tooltip-list-v2-->";
-	private static final float GLOW_STRENGTH_SCALE = 2.35f;
+	private static final float GLOW_STRENGTH_SCALE = 2.55f;
 	private static final float MAX_GLOW_STRENGTH = 0.42f;
 	private static final float EPIC_GLOW_FACTOR = 0.82f;
 	private static final float LEGENDARY_GLOW_FACTOR = 0.78f;
@@ -139,7 +139,7 @@ public class StyledToolTipUI extends BasicToolTipUI {
 	}
 
 	/**
-	 * Paint a rarity tint over the selected skin. Structured item tooltips
+	 * Paint a rarity accent over the selected skin. Structured item tooltips
 	 * embed an invisible marker containing their rarity color and desired glow
 	 * strength. Other client tooltips are unaffected.
 	 */
@@ -210,31 +210,36 @@ public class StyledToolTipUI extends BasicToolTipUI {
 		final Graphics2D g = (Graphics2D) graphics.create();
 		final int width = tooltip.getWidth();
 		final int height = tooltip.getHeight();
-		final int baseAlpha = Math.max(6,
-				Math.round(255.0f * strength * 0.34f));
-		final int topAlpha = Math.max(baseAlpha,
-				Math.round(255.0f * strength));
-		final int borderAlpha = Math.min(205,
-				Math.round(255.0f * strength * 1.9f));
+		final int headerFadeHeight = Math.min(height,
+				Math.max(52, Math.min(88, height / 3)));
+		final int headerAlpha = Math.min(220,
+				Math.round(255.0f * strength * 0.95f));
+		final int topBorderAlpha = Math.min(210,
+				Math.round(255.0f * strength * 1.25f));
+		final int sideBorderAlpha = Math.min(120,
+				Math.round(255.0f * strength * 0.46f));
+		final int bottomBorderAlpha = Math.min(72,
+				Math.round(255.0f * strength * 0.20f));
 
-		/* Keep the chosen skin readable as a texture, while the persistent tint
-		 * makes rarity visible even away from the header. */
-		g.setColor(withAlpha(rarityColor, baseAlpha));
-		g.fillRect(0, 0, width, height);
-
-		/* The strongest glow sits behind the name and rarity lines, then fades
-		 * through the main stat section instead of washing the whole tooltip. */
+		/* Rarity belongs primarily to the name/header. Fade the color to zero
+		 * before the main body so bonuses and stats sit on a neutral skin. */
 		g.setPaint(new GradientPaint(0.0f, 0.0f,
-				withAlpha(rarityColor, topAlpha), 0.0f,
-				Math.max(65.0f, height * 0.62f),
-				withAlpha(rarityColor, Math.max(0, baseAlpha / 3))));
-		g.fillRect(0, 0, width, height);
+				withAlpha(rarityColor, headerAlpha), 0.0f,
+				Math.max(1.0f, headerFadeHeight),
+				withAlpha(rarityColor, 0)));
+		g.fillRect(0, 0, width, headerFadeHeight);
 
-		/* A controlled inner edge makes the rarity legible on both bright and
-		 * dark skins without replacing the border supplied by the selected skin. */
+		/* Keep the selected skin border, but add a thin rarity accent inside it.
+		 * The top edge is strongest, sides are subtle, and the bottom is almost
+		 * neutral so the card does not look globally tinted. */
 		if (width > 3 && height > 3) {
-			g.setColor(withAlpha(rarityColor, borderAlpha));
-			g.drawRect(1, 1, width - 3, height - 3);
+			g.setColor(withAlpha(rarityColor, topBorderAlpha));
+			g.drawLine(1, 1, width - 2, 1);
+			g.setColor(withAlpha(rarityColor, sideBorderAlpha));
+			g.drawLine(1, 2, 1, height - 2);
+			g.drawLine(width - 2, 2, width - 2, height - 2);
+			g.setColor(withAlpha(rarityColor, bottomBorderAlpha));
+			g.drawLine(2, height - 2, width - 3, height - 2);
 		}
 		g.dispose();
 	}
