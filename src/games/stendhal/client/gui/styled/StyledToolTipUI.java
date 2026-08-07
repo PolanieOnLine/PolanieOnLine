@@ -17,6 +17,7 @@ import java.awt.Container;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 
 import javax.swing.BorderFactory;
 import javax.swing.JComponent;
@@ -28,6 +29,8 @@ import javax.swing.plaf.basic.BasicToolTipUI;
 public class StyledToolTipUI extends BasicToolTipUI {
 	private static final String RARITY_GLOW_MARKER =
 			"<!--item-rarity-glow:";
+	private static final float GLOW_STRENGTH_SCALE = 2.0f;
+	private static final float MAX_GLOW_STRENGTH = 0.35f;
 	private final Style style;
 	private final Border border;
 
@@ -63,13 +66,34 @@ public class StyledToolTipUI extends BasicToolTipUI {
 	@Override
 	public void update(Graphics g, JComponent tooltip) {
 		if (style != null && style.getBackground() != null) {
-			StyleUtil.fillBackground(style, g, 0, 0,
-					tooltip.getWidth(), tooltip.getHeight());
-			paintRarityGlow(g, tooltip);
+			paintStyledBackground(g, tooltip);
 			paint(g, tooltip);
 		} else {
 			super.update(g, tooltip);
 		}
+	}
+
+	/**
+	 * Render the skin and rarity glow into an off-screen image before drawing
+	 * it on the Swing component. The client has rendering paths where alpha
+	 * compositing directly on the component graphics is unreliable, while a
+	 * BufferedImage consistently supports the translucent rarity overlay.
+	 */
+	private void paintStyledBackground(final Graphics graphics,
+			final JComponent tooltip) {
+		final int width = tooltip.getWidth();
+		final int height = tooltip.getHeight();
+		if (width <= 0 || height <= 0) {
+			return;
+		}
+
+		final BufferedImage background = new BufferedImage(width, height,
+				BufferedImage.TYPE_INT_RGB);
+		final Graphics2D bufferGraphics = background.createGraphics();
+		StyleUtil.fillBackground(style, bufferGraphics, 0, 0, width, height);
+		paintRarityGlow(bufferGraphics, tooltip);
+		bufferGraphics.dispose();
+		graphics.drawImage(background, 0, 0, null);
 	}
 
 	/**
@@ -105,8 +129,11 @@ public class StyledToolTipUI extends BasicToolTipUI {
 
 		try {
 			final Color rarityColor = Color.decode(payload.substring(0, separator));
-			final float strength = Math.max(0.0f, Math.min(0.25f,
-					Float.parseFloat(payload.substring(separator + 1))));
+			final float configuredStrength = Float.parseFloat(
+					payload.substring(separator + 1));
+			final float strength = Math.max(0.0f,
+					Math.min(MAX_GLOW_STRENGTH,
+							configuredStrength * GLOW_STRENGTH_SCALE));
 			paintRarityGlow(graphics, tooltip, rarityColor, strength);
 		} catch (NumberFormatException e) {
 			// Presentation metadata must never prevent a tooltip from rendering.
@@ -123,25 +150,28 @@ public class StyledToolTipUI extends BasicToolTipUI {
 		final Graphics2D g = (Graphics2D) graphics.create();
 		final int width = tooltip.getWidth();
 		final int height = tooltip.getHeight();
-		final int baseAlpha = Math.max(2,
-				Math.round(255.0f * strength * 0.22f));
+		final int baseAlpha = Math.max(5,
+				Math.round(255.0f * strength * 0.28f));
 		final int topAlpha = Math.max(baseAlpha,
 				Math.round(255.0f * strength));
-		final int borderAlpha = Math.min(150,
-				Math.round(255.0f * strength * 1.65f));
+		final int borderAlpha = Math.min(180,
+				Math.round(255.0f * strength * 1.75f));
 
-		/* A faint tint keeps the chosen skin visible while the stronger top
-		 * gradient makes rarity immediately readable around the item header. */
+		/* Keep the chosen skin visible, but give the whole card enough rarity
+		 * tint to remain noticeable on high-contrast textures such as wood. */
 		g.setColor(withAlpha(rarityColor, baseAlpha));
 		g.fillRect(0, 0, width, height);
+
+		/* Most of the glow lives around the header and fades smoothly into the
+		 * skin. This mirrors ARPG item cards without replacing the client theme. */
 		g.setPaint(new GradientPaint(0.0f, 0.0f,
 				withAlpha(rarityColor, topAlpha), 0.0f,
-				Math.max(40.0f, height * 0.58f),
-				withAlpha(rarityColor, 0)));
+				Math.max(55.0f, height * 0.68f),
+				withAlpha(rarityColor, Math.max(0, baseAlpha / 2))));
 		g.fillRect(0, 0, width, height);
 
-		/* The inner edge gives the glow a controlled boundary without replacing
-		 * the actual border supplied by the current skin. */
+		/* A colored inner edge makes the rarity readable even on very bright or
+		 * very dark skins while the actual skin border remains untouched. */
 		if (width > 3 && height > 3) {
 			g.setColor(withAlpha(rarityColor, borderAlpha));
 			g.drawRect(1, 1, width - 3, height - 3);
