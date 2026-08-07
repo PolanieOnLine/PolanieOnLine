@@ -128,12 +128,16 @@ public class ItemRarityPresentationTest {
 		putCategory(object, ItemTooltip.CATEGORY_ARMOUR);
 		putStat(object, ItemTooltip.DEFENSE, "18");
 		putStat(object, ItemTooltip.ATTACK, "4");
+		putStat(object, ItemTooltip.RESISTANCE_PREFIX + "light", "120");
+		putStat(object, ItemTooltip.RESISTANCE_PREFIX + "dark", "80");
 
 		final String tooltip = ItemRarityPresentation.buildItemToolTip(
 				EntityFactory.createEntity(object));
 
 		assertTrue(tooltip.contains("18 pkt. pancerza"));
-		assertTrue(tooltip.contains("Ochrona podstawowa"));
+		assertFalse(tooltip.contains("Ochrona podstawowa"));
+		assertTrue(tooltip.contains("ŚWIATŁO: 120%"));
+		assertTrue(tooltip.contains("MROK: 80%"));
 		assertTrue(tooltip.contains("<!--item-rarity-glow:#9b59b6:0.12-->"));
 		assertTrue(tooltip.contains("&#9492;&#9472;&#9670;"));
 		assertTrue(tooltip.contains("+4 ataku"));
@@ -153,7 +157,7 @@ public class ItemRarityPresentationTest {
 				EntityFactory.createEntity(object));
 
 		assertTrue(tooltip.contains("175 pkt. pancerza"));
-		assertTrue(tooltip.contains("Ochrona podstawowa"));
+		assertFalse(tooltip.contains("Ochrona podstawowa"));
 	}
 
 	@Test
@@ -168,7 +172,7 @@ public class ItemRarityPresentationTest {
 				EntityFactory.createEntity(object));
 
 		assertTrue(tooltip.contains("21 pkt. pancerza"));
-		assertTrue(tooltip.contains("Ochrona podstawowa"));
+		assertFalse(tooltip.contains("Ochrona podstawowa"));
 		assertFalse(tooltip.contains("+21 pancerza"));
 	}
 

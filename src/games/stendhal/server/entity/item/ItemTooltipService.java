@@ -14,10 +14,12 @@ package games.stendhal.server.entity.item;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Set;
 
 import games.stendhal.common.constants.GameTiming;
 import games.stendhal.common.constants.ItemTooltip;
+import games.stendhal.common.constants.Nature;
 import games.stendhal.server.entity.status.StatusAttacker;
 
 /**
@@ -72,6 +74,14 @@ public final class ItemTooltipService {
 		}
 		putPositiveInt(item, ItemTooltip.DEFENSE,
 				item.getAttributeWithImprovement("def", 0));
+		for (final java.util.Map.Entry<Nature, Double> entry
+				: item.getSusceptibilities().entrySet()) {
+			final int resistance = (int) Math.round(
+					200.0 - (100.0 * entry.getValue().doubleValue()));
+			put(item, ItemTooltip.RESISTANCE_PREFIX
+					+ entry.getKey().name().toLowerCase(Locale.ROOT),
+					Integer.toString(resistance));
+		}
 		putPositiveInt(item, ItemTooltip.RANGE, item.getRange());
 
 		copyDouble(item, "lifesteal", ItemTooltip.LIFESTEAL);

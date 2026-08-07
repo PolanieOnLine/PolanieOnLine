@@ -32,6 +32,8 @@ public final class ItemTooltip {
 	public static final String DAMAGE_MIN = "damage_min";
 	public static final String DAMAGE_MAX = "damage_max";
 	public static final String DEFENSE = "def";
+	/** Prefix for final resistance percentages, e.g. resistance_light. */
+	public static final String RESISTANCE_PREFIX = "resistance_";
 	public static final String RANGE = "range";
 	public static final String LIFESTEAL = "lifesteal";
 	public static final String DAMAGE_TYPE = "damage_type";

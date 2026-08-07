@@ -327,6 +327,14 @@ final class ItemRarityPresentation {
 			final RPObject object, final boolean weapon, final boolean armour) {
 		final StringBuilder bonuses = new StringBuilder();
 
+		appendResistance(bonuses, object, "light", "ŚWIATŁO");
+		appendResistance(bonuses, object, "dark", "MROK");
+		appendResistance(bonuses, object, "fire", "OGIEŃ");
+		appendResistance(bonuses, object, "ice", "LÓD");
+		appendResistance(bonuses, object, "earth", "NATURA");
+		appendResistance(bonuses, object, "water", "WODA");
+		appendResistance(bonuses, object, "cut", "FIZYCZNE");
+
 		/* ATK on armour and accessories is an equipment bonus, not weapon DPS. */
 		if (!weapon) {
 			final int attack = Math.max(
@@ -370,6 +378,15 @@ final class ItemRarityPresentation {
 			appendDivider(tooltip);
 			tooltip.append("<font size='-1'>").append(bonuses)
 					.append("</font>");
+		}
+	}
+
+	private static void appendResistance(final StringBuilder bonuses,
+			final RPObject object, final String nature, final String label) {
+		final String value = WeaponPerformanceCalculator.getTooltipValue(object,
+				ItemTooltip.RESISTANCE_PREFIX + nature);
+		if (value != null) {
+			appendBonusLine(bonuses, label + ": " + value + "%");
 		}
 	}
 
