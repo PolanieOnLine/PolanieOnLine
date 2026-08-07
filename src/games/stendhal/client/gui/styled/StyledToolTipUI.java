@@ -13,7 +13,6 @@
 package games.stendhal.client.gui.styled;
 
 import java.awt.Container;
-import java.awt.Font;
 import java.awt.Graphics;
 
 import javax.swing.BorderFactory;
@@ -23,8 +22,6 @@ import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicToolTipUI;
 
 public class StyledToolTipUI extends BasicToolTipUI {
-	private static final String TOOLTIP_FONT_FAMILY = "Amaranth";
-	private static final int FALLBACK_FONT_SIZE = 12;
 	private static StyledToolTipUI instance;
 
 	private final Style style;
@@ -51,7 +48,24 @@ public class StyledToolTipUI extends BasicToolTipUI {
 	 */
 	public StyledToolTipUI(Style style) {
 		this.style = style;
-		border = BorderFactory.createLineBorder(style.getShadowColor());
+		if (style != null && style.getBorder() != null) {
+			border = style.getBorder();
+		} else if (style != null) {
+			border = BorderFactory.createLineBorder(style.getShadowColor());
+		} else {
+			border = BorderFactory.createEtchedBorder();
+		}
+	}
+
+	@Override
+	public void update(Graphics g, JComponent tooltip) {
+		if (style != null && style.getBackground() != null) {
+			StyleUtil.fillBackground(style, g, 0, 0,
+					tooltip.getWidth(), tooltip.getHeight());
+			paint(g, tooltip);
+		} else {
+			super.update(g, tooltip);
+		}
 	}
 
 	@Override
@@ -71,16 +85,11 @@ public class StyledToolTipUI extends BasicToolTipUI {
 	@Override
 	public void installUI(JComponent tooltip) {
 		super.installUI(tooltip);
-		tooltip.setBackground(style.getHighLightColor());
-		tooltip.setForeground(style.getShadowColor());
-
-		/* Amaranth is bundled and registered during client initialization. It
-		 * keeps tooltip text compact and heavier than the platform Dialog font,
-		 * which better matches the in-game equipment-card hierarchy. */
-		final Font styleFont = style.getFont();
-		final int fontSize = styleFont == null
-				? FALLBACK_FONT_SIZE : styleFont.getSize();
-		tooltip.setFont(new Font(TOOLTIP_FONT_FAMILY, Font.PLAIN, fontSize));
+		if (style != null) {
+			tooltip.setBackground(style.getPlainColor());
+			tooltip.setForeground(style.getForeground());
+			tooltip.setFont(style.getFont());
+		}
 		tooltip.setBorder(border);
 	}
 }
