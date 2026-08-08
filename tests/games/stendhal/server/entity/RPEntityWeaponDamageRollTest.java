@@ -37,9 +37,9 @@ public class RPEntityWeaponDamageRollTest {
 		final Creature defender = new Creature();
 		defender.setArmorType("heavy");
 
-		// Heavy armor: dagger 80%, axe 115%. The extra 50 ATK represents
+		// Heavy armor: dagger 60%, axe 125%. The extra 50 ATK represents
 		// rings/glyphs/other equipment and must not receive either multiplier.
-		final float expected = 50.0f + 20.0f * 0.80f + 10.0f * 1.15f;
+		final float expected = 50.0f + 20.0f * 0.60f + 10.0f * 1.25f;
 		final float attack = attacker.getItemAtkForAttack(weapon ->
 				WeaponArmorInteractionService.getDamageMultiplier(
 						weapon, defender));
