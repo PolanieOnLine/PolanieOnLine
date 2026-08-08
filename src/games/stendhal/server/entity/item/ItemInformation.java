@@ -13,6 +13,7 @@
 package games.stendhal.server.entity.item;
 
 import games.stendhal.common.constants.ItemTooltip;
+import games.stendhal.server.core.rule.damage.ParryService;
 import marauroa.common.game.Definition;
 import marauroa.common.game.Definition.Type;
 import marauroa.common.game.RPClass;
@@ -34,14 +35,16 @@ public class ItemInformation extends Item {
 
 	public static void generateRPClass() {
 		/* ItemInformation is registered immediately after Item while RP classes
-		 * are still mutable. Add presentation metadata to the parent item class so
-		 * normal inventory items can expose selected statistics without making the
-		 * internal combat attributes themselves public. */
+		 * are still mutable. Add presentation and per-instance extension metadata
+		 * to the parent item class so normal inventory items can expose selected
+		 * statistics without making the internal combat attributes public. */
 		final RPClass itemClass = RPClass.getRPClass("item");
 		itemClass.addAttribute(ItemTooltip.ATTRIBUTE,
 				Type.MAP, Definition.VOLATILE);
 		itemClass.addAttribute(ItemTooltip.CATEGORY_OVERRIDE,
 				Type.STRING, Definition.HIDDEN);
+		itemClass.addAttribute(ParryService.PARRY_CHANCE_ATTRIBUTE,
+				Type.FLOAT, Definition.HIDDEN);
 
 		final RPClass entity = new RPClass("item_information");
 		entity.isA("item");
