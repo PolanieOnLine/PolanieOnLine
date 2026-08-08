@@ -146,6 +146,8 @@ public class ItemRarityPresentationTest {
 		assertFalse(tooltip.contains("ŚWIATŁO: 105%"));
 		assertFalse(tooltip.contains("MROK: 80%"));
 		assertTrue(tooltip.contains("+4 ataku"));
+		assertTrue(tooltip.indexOf("+4 ataku")
+				< tooltip.indexOf("+5% odporności na światło"));
 		assertFalse(tooltip.contains("obrażeń na sekundę"));
 		assertFalse(tooltip.contains("obrażeń za trafienie"));
 	}
