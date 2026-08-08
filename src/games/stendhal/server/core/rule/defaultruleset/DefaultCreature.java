@@ -58,6 +58,8 @@ public class DefaultCreature {
 	private int ratk;
 	/** defense points. */
 	private int def;
+	/** Optional semantic creature armor type. */
+	private String armorType;
 	/** experience points for killing this creature. */
 	private int xp;
 	private int level;
@@ -151,6 +153,14 @@ public class DefaultCreature {
 
 	public int getDef() {
 		return def;
+	}
+
+	public void setArmorType(final String armorType) {
+		this.armorType = armorType;
+	}
+
+	public String getArmorType() {
+		return armorType;
 	}
 
 	public double getSpeed() {
@@ -354,6 +364,9 @@ public class DefaultCreature {
 		final Creature creature = new Creature(clazz, subclass, name, hp, atk, ratk, def,
 				level, xp, width, height, speed, resistance, visibility, dropsItems, aiProfiles,
 				creatureSays, respawn, description);
+		if (armorType != null) {
+			creature.setArmorType(armorType);
+		}
 		creature.equip(equipsItems);
 
 		creature.setCorpse(corpseName, harmlessCorpseName, corpseWidth, corpseHeight);

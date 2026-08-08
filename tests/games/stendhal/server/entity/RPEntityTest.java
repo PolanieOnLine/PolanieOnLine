@@ -216,12 +216,13 @@ public class RPEntityTest {
 
 		assertThat(entity.getItemAtk(), is(0f));
 		final Item item = SingletonRepository.getEntityManager().getItem("sztylecik");
+		final float stableWeaponDamage = item.getAverageDamage();
 		entity.getSlot("lhand").add(item);
-		assertThat(entity.getItemAtk(), is((float) item.getAttack()));
+		assertThat(entity.getItemAtk(), is(stableWeaponDamage));
 		entity.getSlot("rhand").add(item);
-		assertThat(entity.getItemAtk(), is((float) item.getAttack()));
+		assertThat(entity.getItemAtk(), is(stableWeaponDamage));
 		entity.getSlot("lhand").remove(item.getID());
-		assertThat(entity.getItemAtk(), is((float) item.getAttack()));
+		assertThat(entity.getItemAtk(), is(stableWeaponDamage));
 
 	}
 

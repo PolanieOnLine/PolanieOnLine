@@ -230,6 +230,9 @@ public class Creature extends NPC {
 			setDef(copy.getDef());
 			initHP(copy.getBaseHP());
 		}
+		if (copy.has("armor_type")) {
+			setArmorType(copy.get("armor_type"));
+		}
 		if (Occasion.MOREXP) {
 			setXP((int) (copy.getXP() * 1.5));
 		} else if (Occasion.SECOND_WORLD) {
@@ -401,6 +404,20 @@ public class Creature extends NPC {
 	 *
 	 * @return a new creature
 	 */
+	/** Sets the semantic armor type used by weapon matchups. */
+	public void setArmorType(final String armorType) {
+		if (armorType == null || "none".equals(armorType)) {
+			remove("armor_type");
+			return;
+		}
+		put("armor_type", armorType);
+	}
+
+	/** Returns the semantic armor type. Missing armor is explicitly none. */
+	public String getArmorType() {
+		return has("armor_type") ? get("armor_type") : "none";
+	}
+
 	public Creature getNewInstance() {
 		return new Creature(this);
 	}
@@ -516,6 +533,7 @@ public class Creature extends NPC {
 			npc.isA("npc");
 			npc.addAttribute("debug", Type.VERY_LONG_STRING,
 					Definition.VOLATILE);
+			npc.addAttribute("armor_type", Type.STRING, Definition.HIDDEN);
 			npc.addAttribute("metamorphosis", Type.STRING, Definition.VOLATILE);
 		} catch (final SyntaxException e) {
 			LOGGER.error("cannot generate RPClass", e);

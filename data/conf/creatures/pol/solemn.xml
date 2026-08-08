@@ -10,6 +10,7 @@
 			<atk value="1000"/>
 			<ratk value="1000"/>
 			<def value="250"/>
+			<armor value="heavy"/>
 			<hp value="30000"/>
 			<speed value="1.0"/>
 			<size value="3,3"/>
@@ -68,6 +69,7 @@
 			<atk value="1000"/>
 			<ratk value="1000"/>
 			<def value="250"/>
+			<armor value="heavy"/>
 			<hp value="30000"/>
 			<speed value="1.0"/>
 			<size value="3,3"/>
@@ -124,6 +126,7 @@
 			<atk value="1000"/>
 			<ratk value="1000"/>
 			<def value="250"/>
+			<armor value="heavy"/>
 			<hp value="30000"/>
 			<speed value="1.0"/>
 			<size value="3,3"/>
@@ -245,6 +248,7 @@
 		<attributes>
 			<atk value="1000"/>
 			<def value="250"/>
+			<armor value="heavy"/>
 			<hp value="30000"/>
 			<speed value="0.7"/>
 			<size value="8,6"/>

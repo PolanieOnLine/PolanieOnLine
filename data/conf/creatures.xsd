@@ -86,6 +86,20 @@
 					<xsd:attribute name="value" type="xsd:positiveInteger" />
 				</xsd:complexType>
 			</xsd:element>
+			<xsd:element name="armor" minOccurs="0" maxOccurs="1">
+				<xsd:complexType>
+					<xsd:attribute name="value" use="required">
+						<xsd:simpleType>
+							<xsd:restriction base="xsd:string">
+								<xsd:enumeration value="none" />
+								<xsd:enumeration value="light" />
+								<xsd:enumeration value="medium" />
+								<xsd:enumeration value="heavy" />
+							</xsd:restriction>
+						</xsd:simpleType>
+					</xsd:attribute>
+				</xsd:complexType>
+			</xsd:element>
 			<xsd:element name="hp" minOccurs="1">
 				<xsd:complexType>
 					<xsd:attribute name="value" type="xsd:positiveInteger" />
