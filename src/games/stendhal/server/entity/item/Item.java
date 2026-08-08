@@ -905,6 +905,20 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	}
 
 	/**
+	 * Returns the elemental susceptibility profile configured by the item
+	 * definition. The returned map is read-only so presentation code cannot
+	 * accidentally change combat behaviour.
+	 *
+	 * @return susceptibility values keyed by damage nature
+	 */
+	public Map<Nature, Double> getSusceptibilities() {
+		if (susceptibilities == null) {
+			return Collections.emptyMap();
+		}
+		return Collections.unmodifiableMap(susceptibilities);
+	}
+
+	/**
 	 * Add a status attack type to the item.
 	 *
 	 * @param statusAttacker

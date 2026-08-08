@@ -11,6 +11,7 @@
  ***************************************************************************/
 package games.stendhal.client.gui;
 
+import java.awt.Color;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Arrays;
@@ -24,16 +25,17 @@ import javax.swing.ToolTipManager;
 import games.stendhal.client.entity.IEntity;
 import games.stendhal.client.entity.Item;
 import games.stendhal.client.gui.WeaponPerformanceCalculator.WeaponPerformance;
+import games.stendhal.client.gui.styled.Style;
+import games.stendhal.client.gui.styled.StyleUtil;
 import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.common.constants.ItemTooltip;
 import marauroa.common.game.RPObject;
 
 /** Builds compact structured desktop item tooltips. */
 final class ItemRarityPresentation {
-	private static final String DEFAULT_TITLE_COLOR = "#f4f1ec";
-	private static final String PRIMARY_VALUE_COLOR = "#fffaf2";
-	private static final String MUTED_COLOR = "#e6ddd5";
-	private static final String BONUS_COLOR = "#79a9ff";
+	private static final String FALLBACK_TEXT_COLOR = "#f3efe7";
+	private static final String FALLBACK_ACCENT_COLOR = "#a37861";
+	private static final String RARITY_GLOW_MARKER = "item-rarity-glow:";
 	private static final DecimalFormat ONE_DECIMAL = createDecimalFormat("0.0");
 	private static final DecimalFormat TWO_DECIMALS = createDecimalFormat("0.00");
 
@@ -87,19 +89,21 @@ final class ItemRarityPresentation {
 		}
 
 		final StringBuilder tooltip = new StringBuilder("<html>");
-		/* The old Swing HTML renderer respects table width more consistently than
-		 * CSS width, and long names wrap instead of stretching the card. */
-		tooltip.append("<table width='180' cellpadding='0' cellspacing='0'><tr><td>");
-		appendHeader(tooltip, entity, rarity);
+		appendRarityGlowMarker(tooltip, rarity);
+		/* Do not paint a private card background here. StyledToolTipUI tiles the
+		 * currently selected client skin behind this transparent HTML content. */
+		tooltip.append("<table width='190' cellpadding='4' cellspacing='0'><tr><td>")
+				.append("<font color='").append(getTextColor()).append("'>");
+		appendHeader(tooltip, entity, object, rarity);
 		if (performance != null) {
 			appendWeaponPerformance(tooltip, object, performance);
 		} else if (armour) {
 			appendArmourPerformance(tooltip, object);
 		}
-		appendCoreStats(tooltip, object, weapon, armour);
+		appendCoreStats(tooltip, object, weapon);
 		appendBonuses(tooltip, object, weapon, armour);
 		appendFooter(tooltip, object, scrollDestination);
-		tooltip.append("</td></tr></table></html>");
+		tooltip.append("</font></td></tr></table></html>");
 		return tooltip.toString();
 	}
 
@@ -128,35 +132,88 @@ final class ItemRarityPresentation {
 		return ItemTooltip.CATEGORY_OTHER;
 	}
 
+	private static void appendRarityGlowMarker(final StringBuilder tooltip,
+			final ItemRarity rarity) {
+		if (rarity == null) {
+			return;
+		}
+		tooltip.append("<!--").append(RARITY_GLOW_MARKER)
+				.append(escapeHtml(rarity.getColorHex())).append(":")
+				.append(getGlowOpacity(rarity)).append("-->");
+	}
+
+	private static String getGlowOpacity(final ItemRarity rarity) {
+		switch (rarity) {
+		case LEGENDARY:
+			return "0.14";
+		case EPIC:
+			return "0.12";
+		case RARE:
+			return "0.09";
+		case COMMON:
+		default:
+			return "0.05";
+		}
+	}
+
 	private static void appendHeader(final StringBuilder tooltip,
-			final IEntity entity, final ItemRarity rarity) {
+			final IEntity entity, final RPObject object, final ItemRarity rarity) {
 		final String title = entity.getTitle();
 		if (title != null) {
-			tooltip.append("<div style='text-align:center'><b><font color='");
-			tooltip.append(escapeHtml(rarity == null
-					? DEFAULT_TITLE_COLOR : rarity.getColorHex()));
-			tooltip.append("'>");
-			tooltip.append(escapeHtml(title.toUpperCase(Locale.ROOT)));
-			tooltip.append("</font></b></div>");
+			final String titleColor = rarity == null ? getTextColor()
+					: rarity.getColorHex();
+			tooltip.append("<font size='-1' color='")
+					.append(escapeHtml(titleColor)).append("'><b>")
+					.append(escapeHtml(title.toUpperCase(Locale.ROOT)))
+					.append("</b></font>");
 		}
 		if (rarity != null) {
-			tooltip.append("<div style='text-align:center'><font color='");
-			tooltip.append(escapeHtml(rarity.getColorHex()));
-			tooltip.append("'>");
-			tooltip.append(escapeHtml(rarity.getPolishDisplayName()));
-			tooltip.append("</font></div>");
+			tooltip.append("<br><font size='-1' color='")
+					.append(getTextColor()).append("'>")
+					.append(escapeHtml(rarity.getPolishDisplayName()))
+					.append("</font>");
 		}
+		appendImprovement(tooltip, object, rarity);
+	}
+
+	private static void appendImprovement(final StringBuilder tooltip,
+			final RPObject object, final ItemRarity rarity) {
+		final int improve = WeaponPerformanceCalculator.getInt(object,
+				ItemTooltip.IMPROVE);
+		final int maxImproves = WeaponPerformanceCalculator.getInt(object,
+				ItemTooltip.MAX_IMPROVES);
+		if (maxImproves <= 0 && improve <= 0) {
+			return;
+		}
+
+		final String color = rarity == null ? getAccentColor()
+				: rarity.getColorHex();
+		tooltip.append("<br><font size='-1' color='")
+				.append(escapeHtml(color)).append("'>&#9670;&nbsp; ")
+				.append("Ulepszenie: +").append(improve);
+		if (maxImproves > 0) {
+			tooltip.append("/").append(maxImproves);
+		}
+		tooltip.append("</font>");
 	}
 
 	private static void appendWeaponPerformance(final StringBuilder tooltip,
 			final RPObject object, final WeaponPerformance performance) {
-		tooltip.append("<hr>");
+		appendDivider(tooltip);
 		appendPrimaryValue(tooltip,
-				formatOneDecimal(performance.getBaseDps()) + " DPS",
-				performance.getDamageMin() + "–" + performance.getDamageMax()
-						+ " obrażeń &nbsp;&bull;&nbsp; "
-						+ formatTwoDecimals(performance.getAttacksPerSecond())
-						+ " ataku/s");
+				formatOneDecimal(performance.getBaseDps())
+						+ " pkt. obrażeń na sekundę", null);
+
+		tooltip.append("<table cellpadding='0' cellspacing='0'>");
+		appendTreeDetail(tooltip, true,
+				"[" + performance.getDamageMin() + "–"
+						+ performance.getDamageMax()
+						+ "] pkt. obrażeń za trafienie");
+		appendTreeDetail(tooltip, false,
+				formatTwoDecimals(performance.getAttacksPerSecond())
+						+ " ataku na sekundę ("
+						+ getWeaponSpeedLabel(performance.getAttacksPerSecond()) + ")");
+		tooltip.append("</table>");
 
 		final int range = WeaponPerformanceCalculator.getInt(object,
 				ItemTooltip.RANGE);
@@ -166,7 +223,8 @@ final class ItemRarityPresentation {
 				object, ItemTooltip.STATUS_ATTACK);
 		if (range > 0 || damageType != null
 				|| (statuses != null && !statuses.isEmpty())) {
-			tooltip.append("<div style='margin-top:3px'>");
+			tooltip.append("<div style='margin-top:3px'><font size='-1' color='")
+					.append(getTextColor()).append("'>");
 			if (range > 0) {
 				tooltip.append("Zasięg: ").append(range);
 			}
@@ -184,7 +242,7 @@ final class ItemRarityPresentation {
 				tooltip.append("Efekty trafienia: ")
 						.append(escapeHtml(statuses.replace(';', ',')));
 			}
-			tooltip.append("</div>");
+			tooltip.append("</font></div>");
 		}
 	}
 
@@ -195,24 +253,59 @@ final class ItemRarityPresentation {
 		if (armour <= 0) {
 			return;
 		}
-		tooltip.append("<hr>");
-		appendPrimaryValue(tooltip, armour + " PANCERZA", "Ochrona podstawowa");
+		appendDivider(tooltip);
+		appendPrimaryValue(tooltip, armour + " pkt. pancerza", null);
 	}
 
 	private static void appendPrimaryValue(final StringBuilder tooltip,
 			final String value, final String details) {
-		tooltip.append("<div style='text-align:center'><font size='+1' color='")
-				.append(PRIMARY_VALUE_COLOR).append("'><b>")
-				.append(value).append("</b></font>");
+		/* Keep the primary value at the client's configured base font size. The
+		 * bold weight establishes hierarchy without oversized Swing HTML text. */
+		tooltip.append("<div><b>").append(value).append("</b>");
 		if (details != null && !details.isEmpty()) {
-			tooltip.append("<br><font color='").append(MUTED_COLOR)
-					.append("'>").append(details).append("</font>");
+			tooltip.append("<br><font size='-1'>").append(details)
+					.append("</font>");
 		}
 		tooltip.append("</div>");
 	}
 
+	private static void appendTreeDetail(final StringBuilder tooltip,
+			final boolean branchContinues, final String details) {
+		tooltip.append("<tr><td valign='top'><font size='-1' color='")
+				.append(getAccentColor()).append("'>")
+				.append(branchContinues
+						? "&#9500;&#9472;&#9670;&nbsp;" : "&#9492;&#9472;&#9670;&nbsp;")
+				.append("</font></td><td><font size='-1' color='")
+				.append(getTextColor()).append("'>")
+				.append(escapeHtml(details))
+				.append("</font></td></tr>");
+	}
+
+	private static void appendDivider(final StringBuilder tooltip) {
+		tooltip.append("<div style='text-align:center'><font size='-1' color='")
+				.append(getAccentColor())
+				.append("'>&#9472;&#9472;&#9472;&#9472;&#9671;&#9671;")
+				.append("&#9472;&#9472;&#9472;&#9472;</font></div>");
+	}
+
+	private static String getWeaponSpeedLabel(final double attacksPerSecond) {
+		if (attacksPerSecond >= 2.0) {
+			return "Bardzo szybka broń";
+		}
+		if (attacksPerSecond >= 1.25) {
+			return "Szybka broń";
+		}
+		if (attacksPerSecond >= 1.0) {
+			return "Umiarkowana broń";
+		}
+		if (attacksPerSecond >= 0.6) {
+			return "Powolna broń";
+		}
+		return "Bardzo powolna broń";
+	}
+
 	private static void appendCoreStats(final StringBuilder tooltip,
-			final RPObject object, final boolean weapon, final boolean armour) {
+			final RPObject object, final boolean weapon) {
 		final StringBuilder stats = new StringBuilder();
 		if (weapon) {
 			appendPlainStat(stats, "Pancerz", WeaponPerformanceCalculator.getInt(
@@ -221,31 +314,27 @@ final class ItemRarityPresentation {
 
 		appendPlainStat(stats, "Siła ataku", WeaponPerformanceCalculator.getInt(
 				object, ItemTooltip.SKILL_ATTACK));
-		final int improve = WeaponPerformanceCalculator.getInt(object,
-				ItemTooltip.IMPROVE);
-		final int maxImproves = WeaponPerformanceCalculator.getInt(object,
-				ItemTooltip.MAX_IMPROVES);
-		if (maxImproves > 0 || improve > 0) {
-			appendLine(stats, "Ulepszenie: +" + improve
-					+ (maxImproves > 0 ? "/" + maxImproves : ""));
-		}
 		if (stats.length() > 0) {
-			tooltip.append("<hr>").append(stats);
+			appendDivider(tooltip);
+			tooltip.append("<font size='-1'>").append(stats).append("</font>");
 		}
 	}
 
 	private static void appendBonuses(final StringBuilder tooltip,
 			final RPObject object, final boolean weapon, final boolean armour) {
-		final StringBuilder bonuses = new StringBuilder();
+		final StringBuilder coreBonuses = new StringBuilder();
+		final StringBuilder resistances = new StringBuilder();
+		final StringBuilder specialBonuses = new StringBuilder();
 
-		/* ATK on armour and accessories is an equipment bonus, not weapon DPS. */
+		/* Flat equipment values are the most important secondary properties and
+		 * stay directly below the item's primary attack/armour block. */
 		if (!weapon) {
 			final int attack = Math.max(
 					WeaponPerformanceCalculator.getInt(object, ItemTooltip.ATTACK),
 					WeaponPerformanceCalculator.getInt(object,
 							ItemTooltip.RANGED_ATTACK));
 			if (attack != 0) {
-				appendBonusLine(bonuses,
+				appendBonusLine(coreBonuses,
 						signed(Integer.toString(attack)) + " ataku");
 			}
 		}
@@ -256,30 +345,71 @@ final class ItemRarityPresentation {
 			final int defense = WeaponPerformanceCalculator.getInt(object,
 					ItemTooltip.DEFENSE);
 			if (defense != 0) {
-				appendBonusLine(bonuses,
+				appendBonusLine(coreBonuses,
 						signed(Integer.toString(defense)) + " pancerza");
 			}
 		}
+		appendIntegerBonus(coreBonuses, object, ItemTooltip.HEALTH, "zdrowia");
 
-		appendPercentageBonus(bonuses, object, ItemTooltip.ATTACK_BONUS,
+		/* Resistances form their own visual block so the player can separate
+		 * elemental protection from the item's defining flat statistics. */
+		appendResistance(resistances, object, "light", "światło");
+		appendResistance(resistances, object, "dark", "mrok");
+		appendResistance(resistances, object, "fire", "ogień");
+		appendResistance(resistances, object, "ice", "lód");
+		appendResistance(resistances, object, "earth", "naturę");
+		appendResistance(resistances, object, "water", "wodę");
+		appendResistance(resistances, object, "cut", "obrażenia fizyczne");
+
+		/* Percentage and proc-like bonuses are the final detail layer and stay
+		 * visually separate from both flat stats and resistances. */
+		appendPercentageBonus(specialBonuses, object, ItemTooltip.ATTACK_BONUS,
 				"bonusu ataku", false);
-		appendPercentageBonus(bonuses, object, ItemTooltip.ACCURACY_BONUS,
+		appendPercentageBonus(specialBonuses, object, ItemTooltip.ACCURACY_BONUS,
 				"bonusu precyzji", false);
-		appendPercentageBonus(bonuses, object, ItemTooltip.CRITICAL_CHANCE,
+		appendPercentageBonus(specialBonuses, object, ItemTooltip.CRITICAL_CHANCE,
 				"szansy na trafienie krytyczne", false);
-		appendPercentageBonus(bonuses, object, ItemTooltip.CRITICAL_BONUS,
+		appendPercentageBonus(specialBonuses, object, ItemTooltip.CRITICAL_BONUS,
 				"obrażeń krytycznych", false);
-		appendPercentageBonus(bonuses, object, ItemTooltip.LIFESTEAL,
+		appendPercentageBonus(specialBonuses, object, ItemTooltip.LIFESTEAL,
 				"kradzieży życia", true);
-		appendPercentageBonus(bonuses, object, ItemTooltip.LIFESTEAL_INCREASE,
+		appendPercentageBonus(specialBonuses, object,
+				ItemTooltip.LIFESTEAL_INCREASE,
 				"zwiększonej kradzieży życia", false);
-		appendIntegerBonus(bonuses, object, ItemTooltip.HEALTH, "zdrowia");
-		appendPercentageBonus(bonuses, object, ItemTooltip.DEFENSE_BONUS,
+		appendPercentageBonus(specialBonuses, object, ItemTooltip.DEFENSE_BONUS,
 				"bonusu pancerza", false);
 
-		if (bonuses.length() > 0) {
-			tooltip.append("<hr><font color='").append(BONUS_COLOR)
-					.append("'>").append(bonuses).append("</font>");
+		appendBonusSection(tooltip, coreBonuses);
+		appendBonusSection(tooltip, resistances);
+		appendBonusSection(tooltip, specialBonuses);
+	}
+
+	private static void appendBonusSection(final StringBuilder tooltip,
+			final StringBuilder section) {
+		if (section.length() == 0) {
+			return;
+		}
+		appendDivider(tooltip);
+		tooltip.append("<font size='-1'>").append(section).append("</font>");
+	}
+
+	private static void appendResistance(final StringBuilder bonuses,
+			final RPObject object, final String nature, final String label) {
+		final String value = WeaponPerformanceCalculator.getTooltipValue(object,
+				ItemTooltip.RESISTANCE_PREFIX + nature);
+		if (value == null) {
+			return;
+		}
+
+		try {
+			final double modifier = Double.parseDouble(value) - 100.0;
+			if (Math.abs(modifier) < 0.0000001) {
+				return;
+			}
+			appendBonusLine(bonuses, signed(formatCompact(modifier))
+					+ "% odporności na " + label);
+		} catch (final NumberFormatException ignored) {
+			// Invalid tooltip metadata must not break item hover rendering.
 		}
 	}
 
@@ -358,8 +488,10 @@ final class ItemRarityPresentation {
 			footer.append(escapeHtml(scrollDestination));
 		}
 		if (footer.length() > 0) {
-			tooltip.append("<hr><font color='").append(MUTED_COLOR)
-					.append("'>").append(footer).append("</font>");
+			appendDivider(tooltip);
+			tooltip.append("<div style='text-align:right'><font size='-1' color='")
+					.append(getFooterColor()).append("'>")
+					.append(footer).append("</font></div>");
 		}
 	}
 
@@ -375,6 +507,44 @@ final class ItemRarityPresentation {
 			return object.get("dest").replaceFirst(",", " ");
 		}
 		return null;
+	}
+
+	private static String getTextColor() {
+		final Style style = StyleUtil.getStyle();
+		return style == null ? FALLBACK_TEXT_COLOR
+				: colorToHex(style.getForeground());
+	}
+
+	private static String getAccentColor() {
+		final Style style = StyleUtil.getStyle();
+		return style == null ? FALLBACK_ACCENT_COLOR
+				: colorToHex(style.getHighLightColor());
+	}
+
+	private static String getFooterColor() {
+		final Style style = StyleUtil.getStyle();
+		if (style == null) {
+			return FALLBACK_ACCENT_COLOR;
+		}
+		return colorToHex(mixColors(style.getForeground(),
+				style.getHighLightColor(), 0.35));
+	}
+
+	private static Color mixColors(final Color primary, final Color secondary,
+			final double secondaryWeight) {
+		final double primaryWeight = 1.0 - secondaryWeight;
+		return new Color(
+				(int) Math.round(primary.getRed() * primaryWeight
+						+ secondary.getRed() * secondaryWeight),
+				(int) Math.round(primary.getGreen() * primaryWeight
+						+ secondary.getGreen() * secondaryWeight),
+				(int) Math.round(primary.getBlue() * primaryWeight
+						+ secondary.getBlue() * secondaryWeight));
+	}
+
+	private static String colorToHex(final Color color) {
+		return String.format(Locale.ROOT, "#%02x%02x%02x",
+				color.getRed(), color.getGreen(), color.getBlue());
 	}
 
 	private static String localizeDamageType(final String value) {

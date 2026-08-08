@@ -4,7 +4,9 @@
 package games.stendhal.server.entity.item;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,6 +14,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import games.stendhal.common.constants.ItemTooltip;
+import games.stendhal.common.constants.Nature;
 import utilities.RPClass.ItemTestHelper;
 
 public class ItemTooltipServiceTest {
@@ -58,6 +61,23 @@ public class ItemTooltipServiceTest {
 	@Test
 	public void testUnknownClassIsOther() {
 		assertCategory("container", ItemTooltip.CATEGORY_OTHER);
+	}
+
+	@Test
+	public void testElementalSusceptibilitiesBecomeResistancePercentages() {
+		final Item item = new Item("test armour", "armor", "test", null);
+		final Map<Nature, Double> susceptibilities =
+				new EnumMap<Nature, Double>(Nature.class);
+		susceptibilities.put(Nature.LIGHT, Double.valueOf(0.8));
+		susceptibilities.put(Nature.DARK, Double.valueOf(1.2));
+		item.setSusceptibilities(susceptibilities);
+
+		ItemTooltipService.update(item);
+
+		assertEquals("120", stat(item, ItemTooltip.RESISTANCE_PREFIX + "light"));
+		assertEquals("80", stat(item, ItemTooltip.RESISTANCE_PREFIX + "dark"));
+		assertFalse(item.getMap(ItemTooltip.ATTRIBUTE).containsKey(
+				ItemTooltip.RESISTANCE_PREFIX + "fire"));
 	}
 
 	private void assertCategory(final String itemClass,
