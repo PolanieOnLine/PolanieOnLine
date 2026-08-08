@@ -132,15 +132,18 @@ public class WeaponArmorInteractionServiceTest {
 		defender.setArmorType("heavy");
 		final Weapon first = weapon("axe", 20);
 		final Weapon second = weapon("axe", 10);
+		final double stableAttack = 80.0;
+		final double rolledAttack = 75.0;
+		final double stableWeapons = first.getAverageDamage()
+				+ second.getAverageDamage();
+		final double stableNonWeaponAttack = stableAttack - stableWeapons;
+		final double rolledWeapons = rolledAttack - stableNonWeaponAttack;
+		final double expected = rolledAttack + rolledWeapons * 0.15;
 
-		// Stable weapon contribution is 30, so 50 points come from the rest of
-		// the equipment. A rolled total of 75 therefore contains a 25 point
-		// weapon roll. Heavy armor gives axes +15% only on those 25 points.
-		final double expected = 75.0 + 25.0 * 0.15;
 		assertEquals(expected, WeaponArmorInteractionService.adjustAttack(
-				75.0, 80.0, Arrays.asList(first, second), first, defender),
-				0.000001);
-		assertTrue(Math.abs(expected - 75.0 * 1.15) > 0.000001);
+				rolledAttack, stableAttack, Arrays.asList(first, second), first,
+				defender), 0.000001);
+		assertTrue(Math.abs(expected - rolledAttack * 1.15) > 0.000001);
 	}
 
 	@Test
