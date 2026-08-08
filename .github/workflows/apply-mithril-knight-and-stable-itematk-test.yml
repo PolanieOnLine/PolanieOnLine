@@ -1,0 +1,33 @@
+name: Apply mithril knight classification and stable item atk test
+
+on:
+  push:
+    branches:
+      - feature/creature-armor-weapon-matchups
+    paths:
+      - '.github/workflows/apply-mithril-knight-and-stable-itematk-test.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/creature-armor-weapon-matchups
+          fetch-depth: 0
+      - name: Apply changes
+        run: python3 .github/scripts/apply_mithril_knight_and_stable_itematk_test.py
+      - name: Remove one-shot files
+        run: |
+          rm .github/scripts/apply_mithril_knight_and_stable_itematk_test.py
+          rm .github/workflows/apply-mithril-knight-and-stable-itematk-test.yml
+      - name: Commit implementation and cleanup
+        run: |
+          git config user.name 'PolanieOnLine'
+          git config user.email '50992387+PolanieOnLine@users.noreply.github.com'
+          git add tests/games/stendhal/server/entity/RPEntityTest.java data/conf/creatures/stendhal/human_mithrilbourgh.xml .github/scripts/apply_mithril_knight_and_stable_itematk_test.py .github/workflows/apply-mithril-knight-and-stable-itematk-test.yml
+          git commit -m 'test(combat): stabilize item atk and classify mithril knight'
+          git push origin HEAD:feature/creature-armor-weapon-matchups
