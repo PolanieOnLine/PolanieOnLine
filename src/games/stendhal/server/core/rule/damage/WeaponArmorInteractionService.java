@@ -38,7 +38,7 @@ public final class WeaponArmorInteractionService {
 			return totalItemAttack;
 		}
 
-		final int armorScore = ((Creature) defender).getArmor();
+		final int armorScore = ((Creature) defender).getArmorScore();
 		final double multiplier = getDamageMultiplier(
 				primaryWeapon.getWeaponType(), armorScore);
 		return adjustWeaponContribution(totalItemAttack,

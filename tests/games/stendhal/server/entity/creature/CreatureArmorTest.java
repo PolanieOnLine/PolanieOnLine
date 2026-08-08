@@ -21,7 +21,7 @@ public class CreatureArmorTest {
 		final Creature creature = new Creature();
 		creature.setDef(55);
 
-		assertEquals(55, creature.getArmor());
+		assertEquals(55, creature.getArmorScore());
 	}
 
 	@Test
@@ -30,7 +30,7 @@ public class CreatureArmorTest {
 		creature.setDef(55);
 		creature.setArmor(12);
 
-		assertEquals(12, creature.getArmor());
+		assertEquals(12, creature.getArmorScore());
 	}
 
 	@Test
@@ -39,6 +39,6 @@ public class CreatureArmorTest {
 		creature.setDef(55);
 		creature.setArmor(-10);
 
-		assertEquals(0, creature.getArmor());
+		assertEquals(0, creature.getArmorScore());
 	}
 }

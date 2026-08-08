@@ -410,7 +410,7 @@ public class Creature extends NPC {
 	}
 
 	/** Returns explicit armor or falls back to the current DEF value. */
-	public int getArmor() {
+	public int getArmorScore() {
 		return has("armor") ? Math.max(0, getInt("armor"))
 				: Math.max(0, getDef());
 	}
