@@ -154,6 +154,7 @@
 		<attributes>
 			<atk value="49"/>
 			<def value="9"/>
+			<armor value="medium"/>
 			<hp value="35"/>
 			<speed value="0.5"/>
 			<size value="1,1"/>
@@ -189,6 +190,7 @@
 		<attributes>
 			<atk value="172"/>
 			<def value="30"/>
+			<armor value="medium"/>
 			<hp value="110"/>
 			<speed value="1.0"/>
 			<size value="2,2"/>
@@ -222,6 +224,7 @@
 		<attributes>
 			<atk value="99"/>
 			<def value="35"/>
+			<armor value="medium"/>
 			<hp value="129"/>
 			<speed value="0.2"/>
 			<size value="1,1"/>
