@@ -68,6 +68,7 @@ public final class WeaponArmorInteractionService {
 			if (weapon != null) {
 				contribution += weapon.getAverageDamage();
 			}
+		}
 		return contribution;
 	}
 
