@@ -16,6 +16,9 @@ import marauroa.common.game.RPObject;
 import utilities.RPClass.ItemTestHelper;
 
 public class ItemRarityPresentationTest {
+	private static final String DIVIDER_MARKER =
+			"&#9472;&#9472;&#9472;&#9472;&#9671;&#9671;&#9472;&#9472;&#9472;&#9472;";
+
 	@Test
 	public void testEveryRarityHasColorAndTextLabel() {
 		assertRarityToolTip("common", "#9e9e9e", "Zwykły");
@@ -131,6 +134,7 @@ public class ItemRarityPresentationTest {
 		putStat(object, ItemTooltip.RESISTANCE_PREFIX + "light", "105");
 		putStat(object, ItemTooltip.RESISTANCE_PREFIX + "dark", "80");
 		putStat(object, ItemTooltip.RESISTANCE_PREFIX + "fire", "100");
+		putStat(object, ItemTooltip.LIFESTEAL, "0.10");
 
 		final String tooltip = ItemRarityPresentation.buildItemToolTip(
 				EntityFactory.createEntity(object));
@@ -139,6 +143,7 @@ public class ItemRarityPresentationTest {
 		assertFalse(tooltip.contains("Ochrona podstawowa"));
 		assertTrue(tooltip.contains("+5% odporności na światło"));
 		assertTrue(tooltip.contains("-20% odporności na mrok"));
+		assertTrue(tooltip.contains("+10% kradzieży życia"));
 		assertTrue(tooltip.contains("<!--item-rarity-glow:#9b59b6:0.12-->"));
 		assertTrue(tooltip.contains("&#9670; +5% odporności na światło"));
 		assertTrue(tooltip.contains("&#9670; -20% odporności na mrok"));
@@ -146,8 +151,10 @@ public class ItemRarityPresentationTest {
 		assertFalse(tooltip.contains("ŚWIATŁO: 105%"));
 		assertFalse(tooltip.contains("MROK: 80%"));
 		assertTrue(tooltip.contains("+4 ataku"));
-		assertTrue(tooltip.indexOf("+4 ataku")
-				< tooltip.indexOf("+5% odporności na światło"));
+		assertSectionDividerBetween(tooltip, "+4 ataku",
+				"+5% odporności na światło");
+		assertSectionDividerBetween(tooltip, "-20% odporności na mrok",
+				"+10% kradzieży życia");
 		assertFalse(tooltip.contains("obrażeń na sekundę"));
 		assertFalse(tooltip.contains("obrażeń za trafienie"));
 	}
@@ -202,6 +209,7 @@ public class ItemRarityPresentationTest {
 		assertTrue(tooltip.contains("Ulepszenie: +2/4"));
 		assertTrue(tooltip.indexOf("Rzadki")
 				< tooltip.indexOf("Ulepszenie: +2/4"));
+		assertTrue(countOccurrences(tooltip, DIVIDER_MARKER) == 1);
 		assertFalse(tooltip.contains("17 pkt. pancerza"));
 		assertFalse(tooltip.contains("Ochrona podstawowa"));
 		assertFalse(tooltip.contains("obrażeń na sekundę"));
@@ -239,6 +247,26 @@ public class ItemRarityPresentationTest {
 		assertTrue(tooltip.contains("10,0 pkt. obrażeń na sekundę"));
 		assertTrue(tooltip.contains("[15–15] pkt. obrażeń za trafienie"));
 		assertTrue(tooltip.contains("0,67 ataku na sekundę (Powolna broń)"));
+	}
+
+	private void assertSectionDividerBetween(final String tooltip,
+			final String before, final String after) {
+		final int beforeIndex = tooltip.indexOf(before);
+		final int afterIndex = tooltip.indexOf(after);
+		assertTrue(beforeIndex >= 0);
+		assertTrue(afterIndex > beforeIndex);
+		assertTrue(tooltip.substring(beforeIndex, afterIndex)
+				.contains(DIVIDER_MARKER));
+	}
+
+	private int countOccurrences(final String text, final String needle) {
+		int count = 0;
+		int index = 0;
+		while ((index = text.indexOf(needle, index)) >= 0) {
+			count++;
+			index += needle.length();
+		}
+		return count;
 	}
 
 	private void putCategory(final RPObject object, final String category) {
