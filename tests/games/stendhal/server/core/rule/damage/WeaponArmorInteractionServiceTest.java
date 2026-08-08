@@ -6,6 +6,7 @@ package games.stendhal.server.core.rule.damage;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,6 +17,7 @@ import games.stendhal.server.core.rule.damage.WeaponArmorInteractionService.Armo
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.item.Corpse;
+import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.Weapon;
 import utilities.RPClass.CreatureTestHelper;
 import utilities.RPClass.ItemTestHelper;
@@ -137,6 +139,34 @@ public class WeaponArmorInteractionServiceTest {
 	}
 
 	@Test
+	public void resolvedDamageUsesFinalMatchupPercentage() {
+		final Creature defender = new Creature();
+		defender.setArmorType("heavy");
+
+		assertEquals(40, WeaponArmorInteractionService.applyDamageMultiplier(
+				100, Arrays.<Item>asList(weapon("dagger")), defender));
+		assertEquals(130, WeaponArmorInteractionService.applyDamageMultiplier(
+				100, Arrays.<Item>asList(weapon("axe")), defender));
+	}
+
+	@Test
+	public void zeroAndTenPercentScaleTheResolvedHitDirectly() {
+		assertEquals(0, WeaponArmorInteractionService.scaleDamage(100, 0.0));
+		assertEquals(10, WeaponArmorInteractionService.scaleDamage(100, 0.10));
+	}
+
+	@Test
+	public void pairedWeaponsUseDamageWeightedMatchup() {
+		final Creature defender = new Creature();
+		defender.setArmorType("heavy");
+
+		// Equal 30-damage weapons: dagger 40%, axe 130% => 85% total.
+		assertEquals(85, WeaponArmorInteractionService.applyDamageMultiplier(
+				100, Arrays.<Item>asList(weapon("dagger"), weapon("axe")),
+				defender));
+	}
+
+	@Test
 	public void nonCreatureTargetRemainsNeutral() {
 		final RPEntity target = new RPEntity() {
 			@Override
@@ -152,6 +182,8 @@ public class WeaponArmorInteractionServiceTest {
 
 		assertEquals(1.0, WeaponArmorInteractionService.getDamageMultiplier(
 				weapon("dagger"), target), 0.0);
+		assertEquals(100, WeaponArmorInteractionService.applyDamageMultiplier(
+				100, Arrays.<Item>asList(weapon("dagger")), target));
 	}
 
 	@Test
