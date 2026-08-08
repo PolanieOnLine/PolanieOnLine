@@ -18,6 +18,7 @@ import games.stendhal.server.core.rule.damage.WeaponArmorInteractionService.Armo
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.item.Corpse;
+import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.Weapon;
 import utilities.RPClass.CreatureTestHelper;
 import utilities.RPClass.ItemTestHelper;
@@ -173,7 +174,7 @@ public class WeaponArmorInteractionServiceTest {
 	@Test
 	public void missingWeaponRemainsNeutral() {
 		assertEquals(25.0, WeaponArmorInteractionService.adjustAttack(
-				25.0, 25.0, Collections.<Weapon>emptyList(), null, null),
+				25.0, 25.0, Collections.<Item>emptyList(), null, null),
 				0.000001);
 	}
 
