@@ -54,8 +54,8 @@ public class WeaponArmorInteractionServiceTest {
 	@Test
 	public void daggerHasExtremeLightAdvantageAndArmorPenalties() {
 		assertEquals(1.20, multiplier("dagger", "light"), 0.0);
-		assertEquals(0.75, multiplier("dagger", "medium"), 0.0);
-		assertEquals(0.60, multiplier("dagger", "heavy"), 0.0);
+		assertEquals(0.80, multiplier("dagger", "medium"), 0.0);
+		assertEquals(0.40, multiplier("dagger", "heavy"), 0.0);
 	}
 
 	@Test
@@ -67,9 +67,9 @@ public class WeaponArmorInteractionServiceTest {
 
 	@Test
 	public void swordHasUniversalPositiveLightAndMediumProfile() {
-		assertEquals(1.05, multiplier("sword", "light"), 0.0);
-		assertEquals(1.20, multiplier("sword", "medium"), 0.0);
-		assertEquals(0.95, multiplier("sword", "heavy"), 0.0);
+		assertEquals(1.10, multiplier("sword", "light"), 0.0);
+		assertEquals(1.30, multiplier("sword", "medium"), 0.0);
+		assertEquals(0.80, multiplier("sword", "heavy"), 0.0);
 	}
 
 	@Test
@@ -121,7 +121,7 @@ public class WeaponArmorInteractionServiceTest {
 
 		assertEquals(1.30, WeaponArmorInteractionService.getDamageMultiplier(
 				weapon("axe"), defender), 0.0);
-		assertEquals(0.60, WeaponArmorInteractionService.getDamageMultiplier(
+		assertEquals(0.40, WeaponArmorInteractionService.getDamageMultiplier(
 				weapon("dagger"), defender), 0.0);
 	}
 
@@ -130,7 +130,7 @@ public class WeaponArmorInteractionServiceTest {
 		final Creature defender = new Creature();
 		defender.setArmorType("heavy");
 
-		assertEquals(0.60, WeaponArmorInteractionService.getDamageMultiplier(
+		assertEquals(0.40, WeaponArmorInteractionService.getDamageMultiplier(
 				weapon("dagger"), defender), 0.0);
 		assertEquals(1.30, WeaponArmorInteractionService.getDamageMultiplier(
 				weapon("axe"), defender), 0.0);
