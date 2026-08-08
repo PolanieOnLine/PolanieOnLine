@@ -12,9 +12,14 @@
  ***************************************************************************/
 package games.stendhal.server.entity.creature.impl.attack;
 
+import games.stendhal.common.constants.Nature;
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.core.rule.damage.ParryService;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.creature.Creature;
+import games.stendhal.server.entity.item.Item;
+import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.events.AttackEvent;
 
 class HandToHand implements AttackStrategy {
 
@@ -23,8 +28,29 @@ class HandToHand implements AttackStrategy {
 	@Override
 	public void attack(final Creature creature) {
 		if (creature.isAttackTurn(SingletonRepository.getRuleProcessor().getTurn())) {
+			final RPEntity defender = creature.getAttackTarget();
+			if (defender instanceof Player
+					&& rollParry((Player) defender)) {
+				defender.rememberAttacker(creature);
+
+				final Item attackWeapon = creature.getWeapon();
+				final String weaponClass = attackWeapon == null
+						? null : attackWeapon.getWeaponType();
+				creature.addEvent(new AttackEvent(true, 0, Nature.CUT,
+						weaponClass, false, true));
+				creature.notifyWorldAboutChanges();
+				return;
+			}
 			creature.attack();
 		}
+	}
+
+	/**
+	 * Resolves parry separately from attack orchestration so the integration
+	 * behavior can be tested deterministically without changing combat RNG.
+	 */
+	boolean rollParry(final Player player) {
+		return ParryService.rollParry(player);
 	}
 
 	@Override

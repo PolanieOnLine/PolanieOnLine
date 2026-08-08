@@ -28,6 +28,7 @@ public class AttackEvent extends RPEvent {
 	private static final String TARGET_ATTR = "target";
 	private static final String RANGED_ATTR = "ranged";
 	private static final String WEAPON_ATTR = "weapon";
+	private static final String PARRIED_ATTR = "parried";
 
 	/**
 	 * Creates the rpclass.
@@ -39,6 +40,7 @@ public class AttackEvent extends RPEvent {
 		rpclass.addAttribute(DAMAGE_TYPE_ATTR, Type.INT);
 		rpclass.addAttribute(RANGED_ATTR, Type.FLAG);
 		rpclass.addAttribute(WEAPON_ATTR, Type.STRING);
+		rpclass.addAttribute(PARRIED_ATTR, Type.FLAG);
 
 		// there is a name clash with the attack event
 		rpclass.addAttribute(TARGET_ATTR, Type.STRING);
@@ -55,6 +57,21 @@ public class AttackEvent extends RPEvent {
 	 * 	<code>false</code>
 	 */
 	public AttackEvent(boolean canHit, int damage, Nature type, String weapon, boolean ranged) {
+		this(canHit, damage, type, weapon, ranged, false);
+	}
+
+	/**
+	 * Construct an attack event with an explicit parry result.
+	 *
+	 * @param canHit whether the attack reached the defender
+	 * @param damage damage done
+	 * @param type damage type of the attack
+	 * @param weapon used weapon, or {@code null}
+	 * @param ranged whether this was a ranged attack
+	 * @param parried whether the defender explicitly parried the attack
+	 */
+	public AttackEvent(boolean canHit, int damage, Nature type, String weapon,
+			boolean ranged, boolean parried) {
 		super(Events.ATTACK);
 		if (canHit) {
 			put(HIT_ATTR, "");
@@ -66,6 +83,9 @@ public class AttackEvent extends RPEvent {
 		}
 		if (weapon != null) {
 			put(WEAPON_ATTR, weapon);
+		}
+		if (parried) {
+			put(PARRIED_ATTR, "");
 		}
 	}
 }

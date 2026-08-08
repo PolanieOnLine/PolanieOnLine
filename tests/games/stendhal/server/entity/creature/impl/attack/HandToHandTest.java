@@ -61,6 +61,7 @@ public class HandToHandTest {
 		final HandToHand hth = new HandToHand();
 		final Creature creature = createMock(Creature.class);
 		expect(creature.isAttackTurn(0)).andReturn(true);
+		expect(creature.getAttackTarget()).andReturn(null);
 		expect(creature.attack()).andReturn(true);
 		replay(creature);
 		hth.attack(creature);
@@ -207,7 +208,6 @@ public class HandToHandTest {
 
 		HandToHand hth = new HandToHand();
 		assertFalse("attacker and victim are in different zones", hth.hasValidTarget(attacker));
-
 	}
 
 	/**
