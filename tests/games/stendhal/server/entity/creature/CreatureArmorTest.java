@@ -34,6 +34,15 @@ public class CreatureArmorTest {
 	}
 
 	@Test
+	public void zeroArmorCanMarkHighDefenseCreatureAsUnarmored() {
+		final Creature creature = new Creature();
+		creature.setDef(150);
+		creature.setArmor(0);
+
+		assertEquals(0, creature.getArmorScore());
+	}
+
+	@Test
 	public void negativeArmorOverrideIsClamped() {
 		final Creature creature = new Creature();
 		creature.setDef(55);
