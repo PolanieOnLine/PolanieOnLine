@@ -9,8 +9,8 @@ import games.stendhal.server.entity.item.Item;
 
 /**
  * Applies small, explicit weapon-class advantages against creature armor.
- * The existing creature DEF is used as the default armor score, so the
- * matchup system covers all current creatures without duplicating defense.
+ * Creature DEF is the default armor score, while an explicit creature
+ * {@code armor} attribute can override it for exceptional matchups.
  */
 public final class WeaponArmorInteractionService {
 	private static final int LIGHT_ARMOR_MAX = 30;
