@@ -1,0 +1,30 @@
+name: Apply per-weapon armor matchup patch
+
+on:
+  push:
+    branches:
+      - feature/creature-armor-weapon-matchups
+    paths:
+      - .github/workflows/apply-per-weapon-armor-matchup-patch.yml
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: feature/creature-armor-weapon-matchups
+      - name: Apply per-weapon matchup patch
+        run: python3 buildtools/apply_per_weapon_armor_matchup_patch.py
+      - name: Remove one-shot patch files
+        run: rm .github/workflows/apply-per-weapon-armor-matchup-patch.yml buildtools/apply_per_weapon_armor_matchup_patch.py
+      - name: Commit implementation and cleanup
+        run: |
+          git config user.name "PolanieOnLine CI"
+          git config user.email "50992387+PolanieOnLine@users.noreply.github.com"
+          git add src .github/workflows buildtools
+          git commit -m "feat(combat): apply armor matchup per weapon roll"
+          git push origin HEAD:feature/creature-armor-weapon-matchups
