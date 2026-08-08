@@ -163,6 +163,7 @@
 			<atk value="1154"/>
 			<ratk value="1154"/>
 			<def value="119"/>
+			<armor value="medium"/>
 			<hp value="4300"/>
 			<speed value="0.8"/>
 			<size value="2,2"/>
