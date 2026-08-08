@@ -9,6 +9,7 @@
 		<attributes>
 			<atk value="330"/>
 			<def value="57"/>
+			<armor value="heavy"/>
 			<hp value="250"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
