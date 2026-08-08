@@ -79,9 +79,9 @@ public final class WeaponArmorInteractionService {
 		case LIGHT:
 			return 1.20;
 		case MEDIUM:
-			return 0.75;
+			return 0.80;
 		case HEAVY:
-			return 0.60;
+			return 0.40;
 		case NONE:
 		default:
 			return 1.0;
@@ -91,11 +91,11 @@ public final class WeaponArmorInteractionService {
 	private static double swordMultiplier(final ArmorTier tier) {
 		switch (tier) {
 		case LIGHT:
-			return 1.05;
+			return 1.10;
 		case MEDIUM:
-			return 1.20;
+			return 1.30;
 		case HEAVY:
-			return 0.95;
+			return 0.80;
 		case NONE:
 		default:
 			return 1.0;
