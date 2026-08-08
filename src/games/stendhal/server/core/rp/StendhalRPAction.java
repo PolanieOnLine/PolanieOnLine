@@ -441,16 +441,19 @@ public class StendhalRPAction {
 		if (beaten) {
 			final List<Item> weapons = player.getWeapons();
 			final float itemAtk;
+			final float stableItemAtk;
 
 			if (Testing.COMBAT && isRanged) {
 				itemAtk = player.getItemRatkForAttack();
+				stableItemAtk = player.getItemRatk();
 			} else {
 				itemAtk = player.getItemAtkForAttack();
+				stableItemAtk = player.getItemAtk();
 			}
 
 			final double armorAdjustedItemAtk =
 					WeaponArmorInteractionService.adjustAttack(
-							itemAtk, attackWeapon, defender);
+							itemAtk, stableItemAtk, weapons, attackWeapon, defender);
 			damage = player.damageDone(defender, armorAdjustedItemAtk,
 					player.getDamageType());
 			final boolean didDamage = damage > 0;
