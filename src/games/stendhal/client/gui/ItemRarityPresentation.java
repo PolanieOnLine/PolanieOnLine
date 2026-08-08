@@ -324,15 +324,8 @@ final class ItemRarityPresentation {
 			final RPObject object, final boolean weapon, final boolean armour) {
 		final StringBuilder bonuses = new StringBuilder();
 
-		appendResistance(bonuses, object, "light", "światło");
-		appendResistance(bonuses, object, "dark", "mrok");
-		appendResistance(bonuses, object, "fire", "ogień");
-		appendResistance(bonuses, object, "ice", "lód");
-		appendResistance(bonuses, object, "earth", "naturę");
-		appendResistance(bonuses, object, "water", "wodę");
-		appendResistance(bonuses, object, "cut", "obrażenia fizyczne");
-
-		/* ATK on armour and accessories is an equipment bonus, not weapon DPS. */
+		/* Flat equipment values are the most important secondary properties and
+		 * stay directly below the item's primary attack/armour block. */
 		if (!weapon) {
 			final int attack = Math.max(
 					WeaponPerformanceCalculator.getInt(object, ItemTooltip.ATTACK),
@@ -354,7 +347,20 @@ final class ItemRarityPresentation {
 						signed(Integer.toString(defense)) + " pancerza");
 			}
 		}
+		appendIntegerBonus(bonuses, object, ItemTooltip.HEALTH, "zdrowia");
 
+		/* Elemental resistances describe how the item modifies the primary
+		 * protection above, so they follow attack/armour/health instead of
+		 * preceding the item's defining statistics. */
+		appendResistance(bonuses, object, "light", "światło");
+		appendResistance(bonuses, object, "dark", "mrok");
+		appendResistance(bonuses, object, "fire", "ogień");
+		appendResistance(bonuses, object, "ice", "lód");
+		appendResistance(bonuses, object, "earth", "naturę");
+		appendResistance(bonuses, object, "water", "wodę");
+		appendResistance(bonuses, object, "cut", "obrażenia fizyczne");
+
+		/* Percentage and proc-like bonuses are the final detail layer. */
 		appendPercentageBonus(bonuses, object, ItemTooltip.ATTACK_BONUS,
 				"bonusu ataku", false);
 		appendPercentageBonus(bonuses, object, ItemTooltip.ACCURACY_BONUS,
@@ -367,7 +373,6 @@ final class ItemRarityPresentation {
 				"kradzieży życia", true);
 		appendPercentageBonus(bonuses, object, ItemTooltip.LIFESTEAL_INCREASE,
 				"zwiększonej kradzieży życia", false);
-		appendIntegerBonus(bonuses, object, ItemTooltip.HEALTH, "zdrowia");
 		appendPercentageBonus(bonuses, object, ItemTooltip.DEFENSE_BONUS,
 				"bonusu pancerza", false);
 
