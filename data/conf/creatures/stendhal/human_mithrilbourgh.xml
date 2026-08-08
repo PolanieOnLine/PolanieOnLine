@@ -72,6 +72,7 @@
 		<attributes>
 			<atk value="523"/>
 			<def value="78"/>
+			<armor value="heavy"/>
 			<hp value="595"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
