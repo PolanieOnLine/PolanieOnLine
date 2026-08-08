@@ -1,5 +1,5 @@
 /***************************************************************************
- *                   (C) Copyright 2003-2023 - Marauroa                    *
+ *                   (C) Copyright 2003-2026 - Marauroa                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import games.stendhal.common.constants.ItemTooltip;
 import games.stendhal.common.constants.Nature;
 import games.stendhal.server.core.rule.defaultruleset.creator.AbstractCreator;
 import games.stendhal.server.core.rule.defaultruleset.creator.AttributesItemCreator;
@@ -92,6 +93,9 @@ public class DefaultItem {
 	/** Named selection/modifier profile, ready for future drop profiles. */
 	private String rarityProfile = ItemRarityProfile.DEFAULT_ID;
 
+	/** Optional structured tooltip category override from XML. */
+	private String tooltipCategory;
+
 	/**
 	 * Use behavior of the item, or <code>null</code> if no special behaviors
 	 * are attached.
@@ -144,7 +148,7 @@ public class DefaultItem {
 	/**
 	 * Set the susceptibilities. The key of each map entry should be a
 	 * string corresponding to a damage type. The value is the susceptibility
-	 * value of that damage type. The content of the mapping is copied, so
+	 * value of that type. The content of the mapping is copied, so
 	 * it can be safely modified afterwards.
 	 *
 	 * @param sus susceptibility mapping
@@ -165,11 +169,9 @@ public class DefaultItem {
 	 * Add slots to list where SlotActivatedItem can be activated when
 	 * equipped.
 	 *
-	 * @param slots
-	 * 		String list of slots separated by semicolon
+	 * @param slots String list of slots separated by semicolon
 	 */
 	public void initializeActiveSlotsList(String slots) {
-		// Make sure the list is initialized
 		if (activeSlotsList == null) {
 			activeSlotsList = new ArrayList<String>();
 		}
@@ -182,8 +184,7 @@ public class DefaultItem {
 	/**
 	 * Set the types of status attacks that this StatusResistantItem can resist.
 	 *
-	 * @param res
-	 * 		The status type and the resistance value
+	 * @param res The status type and the resistance value
 	 */
 	public void initializeStatusResistancesList(Map<String, Double> res) {
 		resistances = new EnumMap<StatusType, Double>(StatusType.class);
@@ -198,11 +199,7 @@ public class DefaultItem {
 		creator = buildCreator(implementation);
 	}
 
-	/**
-	 * Set the use behavior.
-	 *
-	 * @param behavior new behavior
-	 */
+	/** Set the use behavior. */
 	public void setBehavior(UseBehavior behavior) {
 		this.useBehavior = behavior;
 	}
@@ -211,54 +208,26 @@ public class DefaultItem {
 		return implementation;
 	}
 
-	/**
-	 * Build a creator for the class. It uses the following constructor search
-	 * order:<br>
-	 *
-	 * <ul>
-	 * <li><em>Class</em>(<em>name</em>, <em>clazz</em>,
-	 * <em>subclazz</em>, <em>attributes</em>)
-	 * <li><em>Class</em>(<em>attributes</em>)
-	 * <li><em>Class</em>()
-	 * </ul>
-	 *
-	 * @param implementation
-	 *            The implementation class.
-	 *
-	 * @return A creator, or <code>null</code> if none found.
-	 */
 	protected AbstractCreator<Item> buildCreator(final Class< ? > implementation) {
 		Constructor< ? > construct;
 
-		/*
-		 * <Class>(name, clazz, subclazz, attributes)
-		 */
 		try {
 			construct = implementation.getConstructor(new Class[] {
 					String.class, String.class, String.class, Map.class });
-
 			return new FullItemCreator(this, construct);
 		} catch (final NoSuchMethodException ex) {
 			// ignore and continue
 		}
 
-		/*
-		 * <Class>(attributes)
-		 */
 		try {
 			construct = implementation.getConstructor(new Class[] { Map.class });
-
 			return new AttributesItemCreator(this, construct);
 		} catch (final NoSuchMethodException ex) {
 			// ignore and continue
 		}
 
-		/*
-		 * <Class>()
-		 */
 		try {
 			construct = implementation.getConstructor(new Class[] {});
-
 			return new DefaultItemCreator(this, construct);
 		} catch (final NoSuchMethodException ex) {
 			// ignore and continue
@@ -267,27 +236,11 @@ public class DefaultItem {
 		return null;
 	}
 
-	/**
-	 * Returns an item-instance.
-	 *
-	 * @return An item, or <code>null</code> on error.
-	 */
 	public Item getItem() {
 		return getItem(ItemCreationContext.defaultCreation());
 	}
 
-	/**
-	 * Returns an item-instance using the requested rarity creation semantics.
-	 *
-	 * @param creationContext context describing normal creation or restoration
-	 * @return an item, or {@code null} on error
-	 */
 	public Item getItem(final ItemCreationContext creationContext) {
-
-		/*
-		 * Just in case - Really should generate fatal error up front (in
-		 * ItemXMLLoader).
-		 */
 		if (creator == null) {
 			return null;
 		}
@@ -301,7 +254,6 @@ public class DefaultItem {
 			item.setWeight(weight);
 			item.setSusceptibilities(susceptibilities);
 
-			// status attackers
 			if (statusAttacks != null) {
 				for (final String statk: statusAttacks) {
 					StatusAttacker statusAttacker;
@@ -316,18 +268,19 @@ public class DefaultItem {
 				}
 			}
 
-			/* Set a list of status resistances for StatusResistantItem. */
 			if ((this.resistances != null) && (!this.resistances.isEmpty())) {
 				item.initializeStatusResistancesList(resistances);
 			}
 
-			/* Set a list of active slots for SlotActivatedItem. */
 			if ((this.activeSlotsList != null)
 					&& (!this.activeSlotsList.isEmpty())) {
 				item.initializeActiveSlotsList(this.activeSlotsList);
 			}
 
 			item.setUseBehavior(useBehavior);
+			if (tooltipCategory != null) {
+				item.put(ItemTooltip.CATEGORY_OVERRIDE, tooltipCategory);
+			}
 			item.configureRarity(rarityEnabled, rarityProfile, value);
 			ItemRarityService.getInstance().initialize(item, creationContext);
 		}
@@ -335,7 +288,6 @@ public class DefaultItem {
 		return item;
 	}
 
-	/** @return the tile id .*/
 	public int getTileId() {
 		return tileid;
 	}
@@ -369,7 +321,15 @@ public class DefaultItem {
 		return rarityProfile;
 	}
 
-	/** @return the class. */
+	public void setTooltipCategory(final String tooltipCategory) {
+		this.tooltipCategory = ItemTooltip.isValidCategory(tooltipCategory)
+				? tooltipCategory : null;
+	}
+
+	public String getTooltipCategory() {
+		return tooltipCategory;
+	}
+
 	public String getItemClass() {
 		return clazz;
 	}
@@ -378,7 +338,6 @@ public class DefaultItem {
 		clazz = val;
 	}
 
-	/** @return the subclass. */
 	public String getItemSubclass() {
 		return subclazz;
 	}
@@ -443,6 +402,9 @@ public class DefaultItem {
 		}
 		if (!ItemRarityProfile.DEFAULT_ID.equals(rarityProfile)) {
 			os.append(" rarity-profile=\"" + rarityProfile + "\"");
+		}
+		if (tooltipCategory != null) {
+			os.append(" tooltip-category=\"" + tooltipCategory + "\"");
 		}
 		os.append(">\n");
 		os.append("    <type class=\"" + clazz + "\" subclass=\"" + subclazz

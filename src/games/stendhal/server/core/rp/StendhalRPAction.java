@@ -442,9 +442,9 @@ public class StendhalRPAction {
 			final float itemAtk;
 
 			if (Testing.COMBAT && isRanged) {
-				itemAtk = player.getItemRatk();
+				itemAtk = player.getItemRatkForAttack();
 			} else {
-				itemAtk = player.getItemAtk();
+				itemAtk = player.getItemAtkForAttack();
 			}
 
 			damage = player.damageDone(defender, itemAtk, player.getDamageType());

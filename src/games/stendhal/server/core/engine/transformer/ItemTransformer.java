@@ -15,9 +15,11 @@ import java.util.Map.Entry;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.server.core.rule.damage.WeaponDamageRangeService;
 import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.core.rule.rarity.ItemRarityService;
 import games.stendhal.server.entity.item.Item;
+import games.stendhal.server.entity.item.ItemTooltipService;
 import games.stendhal.server.entity.item.StackableItem;
 import games.stendhal.server.entity.item.scroll.MarkedScroll;
 import games.stendhal.server.entity.player.UpdateConverter;
@@ -46,6 +48,13 @@ public class ItemTransformer {
 				// no such item in the game anymore
 				return null;
 			}
+
+			// Keep the current definition template before saved instance data can
+			// replace it. It is used only when migrating an old exceptional weapon
+			// which predates persisted damage ranges.
+			final int definitionAttack = getStoredAttack(item);
+			final Integer definitionDamageMin = getOptionalInt(item, "damage_min");
+			final Integer definitionDamageMax = getOptionalInt(item, "damage_max");
 
 			item.setID(rpobject.getID());
 
@@ -84,6 +93,9 @@ public class ItemTransformer {
 				restoreRarityInstanceAttributes(item, rpobject, savedRarity);
 			}
 
+			// Damage ranges are instance state even when rarity is disabled.
+			restoreDamageRangeInstanceAttributes(item, rpobject);
+
 			if (item instanceof StackableItem) {
 				int quantity = 1;
 				if (rpobject.has("quantity")) {
@@ -104,8 +116,7 @@ public class ItemTransformer {
 				}
 			}
 
-			// make sure saved individual information is
-			// restored
+			// make sure saved individual information is restored
 			final String[] individualAttributes = { "itemdata",
 					"description", "bound", "undroppableondeath",
 					"uses", "improve", "max_improves", "persistent", "logid", "state"};
@@ -116,31 +127,58 @@ public class ItemTransformer {
 			}
 			UpdateConverter.updateItemAttributes(item);
 
-			// update visible destination info on marked scrolls
 			if (item instanceof MarkedScroll) {
 				((MarkedScroll) item).applyDestInfo();
 			}
 
 			UpdateConverter.updateImproveItemAttr(item);
 
+			// Existing weapons without a saved range are migrated from their final
+			// restored ATK. The generated values are normal persistent attributes,
+			// so the conversion happens only once for each item instance.
+			WeaponDamageRangeService.migrateRestored(item, definitionAttack,
+					definitionDamageMin, definitionDamageMax);
+
 			if (!savedRarity && legacyRarityItem) {
-				// Preserve the restored legacy stats and add metadata without a bonus.
 				ItemRarityService.getInstance().markLegacyCommon(item);
 			}
 
-			// Contents, if the item has slot(s)
 			for (RPSlot slot : rpobject.slots()) {
 				RPSlot itemSlot = item.getSlot(slot.getName());
 				for (RPObject obj : slot) {
-					// Transform the contents too
 					itemSlot.add(transform(obj));
 				}
 			}
 
+			// Rebuild the volatile client presentation after all persisted and
+			// converted values have reached their final state.
+			ItemTooltipService.update(item);
 			return item;
 		} else {
 			logger.warn("Non-item object found: " + rpobject);
 			return null;
+		}
+	}
+
+	private int getStoredAttack(final Item item) {
+		final int melee = item.has("atk") ? Math.max(0, item.getInt("atk")) : 0;
+		final int ranged = item.has("ratk") ? Math.max(0, item.getInt("ratk")) : 0;
+		return Math.max(melee, ranged);
+	}
+
+	private Integer getOptionalInt(final Item item, final String attribute) {
+		return item.has(attribute) ? Integer.valueOf(item.getInt(attribute)) : null;
+	}
+
+	private void restoreDamageRangeInstanceAttributes(final Item item,
+			final RPObject saved) {
+		final String[] attributes = { "damage_min", "damage_max" };
+		for (final String attribute : attributes) {
+			if (saved.has(attribute)) {
+				item.put(attribute, saved.get(attribute));
+			} else if (item.has(attribute)) {
+				item.remove(attribute);
+			}
 		}
 	}
 
@@ -155,8 +193,6 @@ public class ItemTransformer {
 			if (saved.has(statistic)) {
 				item.put(statistic, saved.get(statistic));
 			} else if (item.has(statistic)) {
-				// The saved set is authoritative for an existing instance. This
-				// prevents later XML additions from silently changing old items.
 				item.remove(statistic);
 			}
 		}

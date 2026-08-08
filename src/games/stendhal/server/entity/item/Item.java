@@ -193,6 +193,10 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		// Some items have ranged attack values
 		entity.addAttribute("ratk", Type.SHORT, Definition.HIDDEN);
 
+		// Optional per-hit weapon damage range. Legacy items fall back to atk/ratk.
+		entity.addAttribute("damage_min", Type.SHORT, Definition.HIDDEN);
+		entity.addAttribute("damage_max", Type.SHORT, Definition.HIDDEN);
+
 		// alters weapon accuracy by a percentage
 		entity.addAttribute("accuracy_bonus", Type.FLOAT, Definition.HIDDEN);
 
@@ -372,7 +376,7 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	 * @return
 	 *      The base attribute value, with additional improvement if applicable, or the default value.
 	 */
-	private int getAttributeWithImprovement(String attribute, int defaultValue) {
+	int getAttributeWithImprovement(String attribute, int defaultValue) {
 		if (has(attribute) && getDeterioration() <= MAX_DETERIORATION) {
 			int baseValue = getInt(attribute);
 			return hasMaxImproves() ? baseValue + getImprove() : baseValue;
@@ -409,6 +413,28 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	 */
 	public int getRangedAttack() {
 		return getAttributeWithImprovement("ratk", 0);
+	}
+
+	/** Minimum per-hit weapon damage. Falls back to the legacy attack value. */
+	public int getDamageMin() {
+		final int fallback = Math.max(getAttack(), getRangedAttack());
+		return Math.max(0, getAttributeWithImprovement("damage_min", fallback));
+	}
+
+	/** Maximum per-hit weapon damage. Falls back to the legacy attack value. */
+	public int getDamageMax() {
+		final int minimum = getDamageMin();
+		return Math.max(minimum, getAttributeWithImprovement("damage_max", minimum));
+	}
+
+	/** Average damage used for stable summaries such as DPS and character stats. */
+	public float getAverageDamage() {
+		return (getDamageMin() + getDamageMax()) / 2.0f;
+	}
+
+	/** Rolls this weapon's damage for one real server-side attack. */
+	public int rollDamage() {
+		return Rand.randUniform(getDamageMin(), getDamageMax());
 	}
 
 	/**
@@ -876,6 +902,20 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	 */
 	public void setSusceptibilities(Map<Nature, Double> susceptibilities) {
 		this.susceptibilities = susceptibilities;
+	}
+
+	/**
+	 * Returns the elemental susceptibility profile configured by the item
+	 * definition. The returned map is read-only so presentation code cannot
+	 * accidentally change combat behaviour.
+	 *
+	 * @return susceptibility values keyed by damage nature
+	 */
+	public Map<Nature, Double> getSusceptibilities() {
+		if (susceptibilities == null) {
+			return Collections.emptyMap();
+		}
+		return Collections.unmodifiableMap(susceptibilities);
 	}
 
 	/**

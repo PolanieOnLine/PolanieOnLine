@@ -1,0 +1,164 @@
+/***************************************************************************
+ *                   (C) Copyright 2003-2026 - Stendhal                    *
+ ***************************************************************************/
+package games.stendhal.client.gui;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
+import org.junit.Test;
+
+import games.stendhal.client.gui.WeaponPerformanceCalculator.WeaponPerformance;
+import games.stendhal.common.constants.ItemTooltip;
+import games.stendhal.server.entity.item.Item;
+import marauroa.common.game.RPObject;
+import utilities.RPClass.ItemTestHelper;
+
+public class WeaponPerformanceCalculatorTest {
+	@Test
+	public void testMeleeWeaponPerformance() {
+		final RPObject object = new RPObject();
+		object.put("class", "sword");
+		object.put("atk", 30);
+		object.put("rate", 5);
+
+		final WeaponPerformance performance =
+				WeaponPerformanceCalculator.calculate(object);
+
+		assertEquals(30, performance.getAttackPoints());
+		assertEquals(5, performance.getAttackRate());
+		assertEquals(1.5, performance.getAttackIntervalSeconds(), 0.0001);
+		assertEquals(2.0 / 3.0, performance.getAttacksPerSecond(), 0.0001);
+		assertEquals(20.0, performance.getBaseDps(), 0.0001);
+		assertFalse(performance.isRanged());
+	}
+
+	@Test
+	public void testPerformanceReadsVisibleTooltipMap() {
+		final Item object = ItemTestHelper.createItem("tooltip weapon");
+		object.put("class", "axe");
+		object.put(ItemTooltip.ATTRIBUTE, ItemTooltip.CATEGORY,
+				ItemTooltip.CATEGORY_WEAPON);
+		object.put(ItemTooltip.ATTRIBUTE, ItemTooltip.ATTACK, "32");
+		object.put(ItemTooltip.ATTRIBUTE, ItemTooltip.ATTACK_RATE, "2");
+		object.put(ItemTooltip.ATTRIBUTE,
+				ItemTooltip.ATTACK_INTERVAL_SECONDS, "0.6");
+		object.put(ItemTooltip.ATTRIBUTE,
+				ItemTooltip.ATTACKS_PER_SECOND, "1.6666666667");
+
+		final WeaponPerformance performance =
+				WeaponPerformanceCalculator.calculate(object);
+
+		assertEquals(32, performance.getAttackPoints());
+		assertEquals(2, performance.getAttackRate());
+		assertEquals(0.6, performance.getAttackIntervalSeconds(), 0.0001);
+		assertEquals(53.3333, performance.getBaseDps(), 0.001);
+	}
+
+	@Test
+	public void testServerTimingOverridesClientFallback() {
+		final Item object = ItemTestHelper.createItem("timed weapon");
+		object.put("class", "sword");
+		object.put(ItemTooltip.ATTRIBUTE, ItemTooltip.CATEGORY,
+				ItemTooltip.CATEGORY_WEAPON);
+		object.put(ItemTooltip.ATTRIBUTE, ItemTooltip.ATTACK, "30");
+		object.put(ItemTooltip.ATTRIBUTE, ItemTooltip.ATTACK_RATE, "9");
+		object.put(ItemTooltip.ATTRIBUTE,
+				ItemTooltip.ATTACK_INTERVAL_SECONDS, "0.5");
+		object.put(ItemTooltip.ATTRIBUTE,
+				ItemTooltip.ATTACKS_PER_SECOND, "2.0");
+
+		final WeaponPerformance performance =
+				WeaponPerformanceCalculator.calculate(object);
+
+		assertEquals(0.5, performance.getAttackIntervalSeconds(), 0.0001);
+		assertEquals(2.0, performance.getAttacksPerSecond(), 0.0001);
+		assertEquals(60.0, performance.getBaseDps(), 0.0001);
+	}
+
+	@Test
+	public void testDamageRangePerformance() {
+		final RPObject object = new RPObject();
+		object.put("class", "axe");
+		object.put("damage_min", 28);
+		object.put("damage_max", 36);
+		object.put("atk", 32);
+		object.put("rate", 2);
+
+		final WeaponPerformance performance =
+				WeaponPerformanceCalculator.calculate(object);
+
+		assertEquals(28, performance.getDamageMin());
+		assertEquals(36, performance.getDamageMax());
+		assertEquals(53.3333, performance.getBaseDps(), 0.001);
+	}
+
+	@Test
+	public void testRangedWeaponPerformance() {
+		final RPObject object = new RPObject();
+		object.put("class", "ranged");
+		object.put("ratk", 24);
+		object.put("rate", 4);
+
+		final WeaponPerformance performance =
+				WeaponPerformanceCalculator.calculate(object);
+
+		assertEquals(24, performance.getAttackPoints());
+		assertEquals(20.0, performance.getBaseDps(), 0.0001);
+		assertTrue(performance.isRanged());
+	}
+
+	@Test
+	public void testPublishedCategoryWinsOverLegacyClass() {
+		final Item accessory = ItemTestHelper.createItem("misleading sword");
+		accessory.put("class", "sword");
+		accessory.put(ItemTooltip.ATTRIBUTE, ItemTooltip.CATEGORY,
+				ItemTooltip.CATEGORY_ACCESSORY);
+		accessory.put(ItemTooltip.ATTRIBUTE, ItemTooltip.ATTACK, "15");
+		accessory.put(ItemTooltip.ATTRIBUTE, ItemTooltip.ATTACK_RATE, "5");
+
+		final Item weapon = ItemTestHelper.createItem("custom weapon");
+		weapon.put("class", "custom");
+		weapon.put(ItemTooltip.ATTRIBUTE, ItemTooltip.CATEGORY,
+				ItemTooltip.CATEGORY_WEAPON);
+		weapon.put(ItemTooltip.ATTRIBUTE, ItemTooltip.ATTACK, "15");
+		weapon.put(ItemTooltip.ATTRIBUTE, ItemTooltip.ATTACK_RATE, "5");
+
+		assertNull(WeaponPerformanceCalculator.calculate(accessory));
+		assertEquals(10.0,
+				WeaponPerformanceCalculator.calculate(weapon).getBaseDps(), 0.0001);
+	}
+
+	@Test
+	public void testArmourAndAccessoriesAreNotWeapons() {
+		final RPObject ring = new RPObject();
+		ring.put("class", "ring");
+		ring.put("atk", 15);
+		ring.put("rate", 5);
+
+		final RPObject shield = new RPObject();
+		shield.put("class", "shield");
+		shield.put("atk", 12);
+		shield.put("rate", 5);
+
+		assertNull(WeaponPerformanceCalculator.calculate(ring));
+		assertNull(WeaponPerformanceCalculator.calculate(shield));
+	}
+
+	@Test
+	public void testDefaultRateAndNonWeaponFallback() {
+		final RPObject weapon = new RPObject();
+		weapon.put("class", "dagger");
+		weapon.put("atk", 15);
+		final WeaponPerformance performance =
+				WeaponPerformanceCalculator.calculate(weapon);
+
+		assertEquals(5, performance.getAttackRate());
+		assertEquals(10.0, performance.getBaseDps(), 0.0001);
+
+		assertNull(WeaponPerformanceCalculator.calculate(new RPObject()));
+		assertNull(WeaponPerformanceCalculator.calculate(null));
+	}
+}

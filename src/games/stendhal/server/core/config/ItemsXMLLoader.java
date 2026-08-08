@@ -1,6 +1,6 @@
 /* $Id$ */
 /***************************************************************************
- *                   (C) Copyright 2003-2023 - Stendhal                    *
+ *                   (C) Copyright 2003-2026 - Stendhal                    *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -31,6 +31,7 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import games.stendhal.common.constants.ItemTooltip;
 import games.stendhal.server.core.rule.defaultruleset.DefaultItem;
 import games.stendhal.server.core.rule.rarity.ItemRarityProfile;
 import games.stendhal.server.entity.item.behavior.UseBehavior;
@@ -90,6 +91,9 @@ public final class ItemsXMLLoader extends DefaultHandler {
 	private Boolean rarityEnabled;
 
 	private String rarityProfile;
+
+	/** Optional presentation category override from item XML. */
+	private String tooltipCategory;
 
 	public List<DefaultItem> load(final URI uri) throws SAXException {
 		list = new LinkedList<DefaultItem>();
@@ -176,6 +180,15 @@ public final class ItemsXMLLoader extends DefaultHandler {
 			} else {
 				rarityProfile = rarityProfile.trim();
 			}
+			tooltipCategory = attrs.getValue("tooltip-category");
+			if (tooltipCategory != null) {
+				tooltipCategory = tooltipCategory.trim();
+				if (!ItemTooltip.isValidCategory(tooltipCategory)) {
+					LOGGER.warn("Ignoring invalid tooltip-category value '"
+							+ tooltipCategory + "' for item " + name);
+					tooltipCategory = null;
+				}
+			}
 			attributes = new LinkedHashMap<String, String>();
 			slots = new LinkedList<String>();
 			description = "";
@@ -245,6 +258,7 @@ public final class ItemsXMLLoader extends DefaultHandler {
 			item.setValue(value);
 			item.setRarityEnabled(rarityEnabled);
 			item.setRarityProfile(rarityProfile);
+			item.setTooltipCategory(tooltipCategory);
 			if (damageType != null) {
 				item.setDamageType(damageType);
 				// An optional element - reset it to avoid leaking to next items

@@ -21,7 +21,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import games.stendhal.common.Constants;
 import games.stendhal.common.constants.ItemRarity;
+import games.stendhal.server.core.rule.damage.WeaponDamageRangeService;
 import games.stendhal.server.entity.item.Item;
+import games.stendhal.server.entity.item.ItemTooltipService;
 import games.stendhal.server.entity.item.StackableItem;
 
 /**
@@ -29,7 +31,8 @@ import games.stendhal.server.entity.item.StackableItem;
  */
 public final class ItemRarityService {
 	private static final Set<String> INTEGRAL_STATS = Collections.unmodifiableSet(
-			new HashSet<String>(Arrays.asList("atk", "ratk", "rate", "def",
+			new HashSet<String>(Arrays.asList("atk", "ratk", "damage_min",
+					"damage_max", "rate", "def",
 					"range", "skill_atk", "rate_increase", "health")));
 
 	private static final Set<String> FLOAT_STATS = Collections.unmodifiableSet(
@@ -73,19 +76,13 @@ public final class ItemRarityService {
 		return isIntegralStatistic(attribute) || isFloatingStatistic(attribute);
 	}
 
-	/**
-	 * Attribute names whose instance values may be changed by rarity.
-	 */
+	/** Attribute names whose instance values may be changed by rarity. */
 	public Set<String> getSupportedStatistics() {
 		final Set<String> result = new HashSet<String>(INTEGRAL_STATS);
 		result.addAll(FLOAT_STATS);
 		return Collections.unmodifiableSet(result);
 	}
 
-	/**
-	 * Registers a named profile. Existing instances are unaffected because
-	 * their resulting stats and concrete multipliers are persisted.
-	 */
 	public void registerProfile(final ItemRarityProfile profile) {
 		if (profile == null) {
 			throw new IllegalArgumentException("Rarity profile must not be null");
@@ -95,22 +92,13 @@ public final class ItemRarityService {
 
 	public ItemRarityProfile getProfile(final String id) {
 		final ItemRarityProfile profile = profiles.get(id);
-		if (profile != null) {
-			return profile;
-		}
-		return profiles.get(ItemRarityProfile.DEFAULT_ID);
+		return profile != null ? profile : profiles.get(ItemRarityProfile.DEFAULT_ID);
 	}
 
-	/**
-	 * Returns whether the definition metadata and existing item attributes make
-	 * the item eligible. Explicit false always wins; stackable items are never
-	 * eligible because one stack cannot safely carry per-unit modifiers.
-	 */
 	public boolean isEligible(final Item item) {
 		if (item == null || item instanceof StackableItem) {
 			return false;
 		}
-
 		final Boolean override = item.getRarityEnabledOverride();
 		if (Boolean.FALSE.equals(override)) {
 			return false;
@@ -118,11 +106,7 @@ public final class ItemRarityService {
 		if (Boolean.TRUE.equals(override)) {
 			return true;
 		}
-		if (!hasSupportedStat(item)) {
-			return false;
-		}
-
-		if (EXCLUDED_CLASSES.contains(item.getItemClass())) {
+		if (!hasSupportedStat(item) || EXCLUDED_CLASSES.contains(item.getItemClass())) {
 			return false;
 		}
 		for (final String slot : item.getPossibleSlots()) {
@@ -136,14 +120,22 @@ public final class ItemRarityService {
 	}
 
 	/**
-	 * Initializes a newly-created instance. Restore contexts and already
-	 * initialized items are intentionally no-ops.
+	 * Initializes a newly-created instance and always refreshes its wire tooltip.
 	 */
 	public void initialize(final Item item, final ItemCreationContext creationContext) {
+		if (item == null) {
+			return;
+		}
 		final ItemCreationContext context = creationContext == null
 				? ItemCreationContext.defaultCreation() : creationContext;
-		if (item == null || context.isRestore() || item.has(Item.RARITY_ID)
-				|| !isEligible(item)) {
+
+		// The range belongs to the item instance and must exist before rarity
+		// scales its endpoints. Restore contexts deliberately keep saved legacy
+		// weapons without a range unchanged.
+		WeaponDamageRangeService.initialize(item, context);
+
+		if (context.isRestore() || item.has(Item.RARITY_ID) || !isEligible(item)) {
+			ItemTooltipService.update(item);
 			return;
 		}
 
@@ -153,18 +145,29 @@ public final class ItemRarityService {
 		if (context.getRarity() != null) {
 			rarity = context.getRarity();
 		} else if (context.getSource() == ItemCreationContext.Source.QUEST) {
-			// Quest rewards are deterministic and common unless configured.
 			rarity = ItemRarity.COMMON;
 		} else {
 			rarity = profile.roll(nextRandom());
 		}
 		final ItemRarityProfile.Tier tier = profile.getTier(rarity);
 		final ItemRarityModifiers fixed = context.getModifiers();
+		Double sharedDamageMultiplier = null;
 
 		for (final String statistic : INTEGRAL_STATS) {
 			if (item.has(statistic) && item.getInt(statistic) > 0) {
-				final double multiplier = chooseMultiplier(statistic, tier, fixed,
-						context.isRandomizeModifiers());
+				final double multiplier;
+				if (isBaseDamageStatistic(statistic)
+						&& !hasExplicitFixedMultiplier(fixed, statistic)) {
+					if (sharedDamageMultiplier == null) {
+						sharedDamageMultiplier = Double.valueOf(chooseMultiplier(
+								"atk", tier, fixed,
+								context.isRandomizeModifiers()));
+					}
+					multiplier = sharedDamageMultiplier.doubleValue();
+				} else {
+					multiplier = chooseMultiplier(statistic, tier, fixed,
+							context.isRandomizeModifiers());
+				}
 				applyIntegral(item, statistic, multiplier);
 				item.setRarityModifier(statistic, multiplier);
 			}
@@ -184,14 +187,15 @@ public final class ItemRarityService {
 		item.setRarityModifier(ItemRarityModifiers.VALUE, valueMultiplier);
 		item.setRarity(rarity);
 		item.put(Item.RARITY_PROFILE, profile.getId());
+		ItemTooltipService.update(item);
 	}
 
-	/**
-	 * Upgrades metadata for a pre-rarity eligible item after its saved stats
-	 * have been restored. It deliberately applies no stat or value bonus.
-	 */
 	public void markLegacyCommon(final Item item) {
-		if (item == null || item.has(Item.RARITY_ID) || !isEligible(item)) {
+		if (item == null) {
+			return;
+		}
+		if (item.has(Item.RARITY_ID) || !isEligible(item)) {
+			ItemTooltipService.update(item);
 			return;
 		}
 		for (final String statistic : INTEGRAL_STATS) {
@@ -210,6 +214,7 @@ public final class ItemRarityService {
 		item.setRarityModifier(ItemRarityModifiers.VALUE, 1.0);
 		item.setRarity(ItemRarity.COMMON);
 		item.put(Item.RARITY_PROFILE, selectDefinitionProfile(item));
+		ItemTooltipService.update(item);
 	}
 
 	private String selectProfile(final Item item, final ItemCreationContext context) {
@@ -240,8 +245,7 @@ public final class ItemRarityService {
 
 	private double chooseMultiplier(final String statistic,
 			final ItemRarityProfile.Tier tier,
-			final ItemRarityModifiers fixed,
-			final boolean randomize) {
+			final ItemRarityModifiers fixed, final boolean randomize) {
 		if (fixed != null) {
 			final Double supplied = findFixedMultiplier(statistic, fixed);
 			return supplied == null ? 1.0 : supplied.doubleValue();
@@ -271,8 +275,19 @@ public final class ItemRarityService {
 		return result == null ? fixed.getStatMultiplier() : result;
 	}
 
-	private boolean isAttack(final String statistic) {
+	private boolean hasExplicitFixedMultiplier(final ItemRarityModifiers fixed,
+			final String statistic) {
+		return fixed != null && fixed.getMultiplier(statistic) != null;
+	}
+
+	private boolean isBaseDamageStatistic(final String statistic) {
 		return "atk".equals(statistic) || "ratk".equals(statistic)
+				|| "damage_min".equals(statistic)
+				|| "damage_max".equals(statistic);
+	}
+
+	private boolean isAttack(final String statistic) {
+		return isBaseDamageStatistic(statistic)
 				|| "skill_atk".equals(statistic)
 				|| "atk_additional_bonus".equals(statistic)
 				|| "critical_additional_bonus".equals(statistic)
@@ -301,12 +316,9 @@ public final class ItemRarityService {
 
 	private void applyIntegral(final Item item, final String statistic,
 			final double multiplier) {
-		final double value;
-		if ("rate".equals(statistic)) {
-			value = item.getInt(statistic) / multiplier;
-		} else {
-			value = item.getInt(statistic) * multiplier;
-		}
+		final double value = "rate".equals(statistic)
+				? item.getInt(statistic) / multiplier
+				: item.getInt(statistic) * multiplier;
 		item.put(statistic, roundToShortStatistic(value));
 	}
 
@@ -321,8 +333,6 @@ public final class ItemRarityService {
 		if (value >= Integer.MAX_VALUE) {
 			return Integer.MAX_VALUE;
 		}
-		// Avoid a binary floating point artefact turning an exact conceptual
-		// half (for example 50 * 1.15) into 57.49999999999999.
 		return (int) Math.round(value + 0.000000001);
 	}
 
