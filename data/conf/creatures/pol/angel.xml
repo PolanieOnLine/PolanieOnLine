@@ -10,6 +10,7 @@
 			<atk value="8888"/>
 			<ratk value="8888"/>
 			<def value="362"/>
+			<armor value="heavy"/>
 			<hp value="9000"/>
 			<speed value="1.0"/>
 			<size value="3,3"/>
@@ -62,6 +63,7 @@
 			<atk value="12222"/>
 			<ratk value="12222"/>
 			<def value="666"/>
+			<armor value="heavy"/>
 			<hp value="9000"/>
 			<speed value="1.0"/>
 			<size value="3,3"/>
@@ -114,6 +116,7 @@
 			<atk value="24444"/>
 			<ratk value="24444"/>
 			<def value="776"/>
+			<armor value="heavy"/>
 			<hp value="20000"/>
 			<speed value="1.0"/>
 			<size value="3,3"/>
