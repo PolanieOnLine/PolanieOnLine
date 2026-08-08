@@ -3,6 +3,8 @@
  ***************************************************************************/
 package games.stendhal.server.core.rule.damage;
 
+import java.util.List;
+
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.item.Item;
@@ -25,13 +27,11 @@ public final class WeaponArmorInteractionService {
 	}
 
 	/**
-	 * Returns the matchup multiplier for one held weapon and target. Keeping
-	 * this decision per weapon allows mixed dual-wield sets to resolve each
-	 * damage roll independently.
+	 * Returns the matchup multiplier for one held weapon and target.
 	 *
-	 * @param weapon held weapon whose roll is being resolved
+	 * @param weapon held weapon being resolved
 	 * @param defender attack target
-	 * @return damage multiplier for this weapon roll
+	 * @return damage multiplier for this weapon
 	 */
 	public static double getDamageMultiplier(final Item weapon,
 			final RPEntity defender) {
@@ -40,6 +40,68 @@ public final class WeaponArmorInteractionService {
 		}
 		return getDamageMultiplier(weapon.getWeaponType(),
 				((Creature) defender).getArmorType());
+	}
+
+	/**
+	 * Resolves one multiplier for the complete hit. With a single weapon this is
+	 * exactly that weapon's matchup. Paired weapons use their average weapon
+	 * damage as weights, so a mixed set does not arbitrarily inherit only one
+	 * hand's matchup.
+	 *
+	 * @param weapons held weapons taking part in the attack
+	 * @param defender attack target
+	 * @return multiplier to apply to the already calculated hit damage
+	 */
+	public static double getDamageMultiplier(final List<Item> weapons,
+			final RPEntity defender) {
+		if (weapons == null || weapons.isEmpty()
+				|| !(defender instanceof Creature)) {
+			return 1.0;
+		}
+
+		double weightedMultiplier = 0.0;
+		double totalWeight = 0.0;
+		for (final Item weapon : weapons) {
+			if (weapon == null) {
+				continue;
+			}
+
+			// Damage ranges are already rolled by RPEntity for the attack. Use
+			// the stable average only to determine the contribution of each hand
+			// to the final matchup multiplier; never roll the weapon a second time.
+			double weight = Math.max(0.0, weapon.getAverageDamage());
+			if (weight == 0.0) {
+				weight = 1.0;
+			}
+			weightedMultiplier += weight * getDamageMultiplier(weapon, defender);
+			totalWeight += weight;
+		}
+
+		return totalWeight == 0.0 ? 1.0 : weightedMultiplier / totalWeight;
+	}
+
+	/**
+	 * Applies the weapon/armor matchup to damage after the normal combat formula
+	 * has resolved ATK, DEF, level, karma and damage-type susceptibility. This is
+	 * deliberately before critical-hit and lifesteal handling in the attack flow.
+	 *
+	 * @param damage damage produced by the normal combat formula
+	 * @param weapons held weapons taking part in the attack
+	 * @param defender attack target
+	 * @return matchup-adjusted damage
+	 */
+	public static int applyDamageMultiplier(final int damage,
+			final List<Item> weapons, final RPEntity defender) {
+		return scaleDamage(damage, getDamageMultiplier(weapons, defender));
+	}
+
+	/** Package-visible for precise regression tests of percentage semantics. */
+	static int scaleDamage(final int damage, final double multiplier) {
+		if (damage <= 0) {
+			return damage;
+		}
+		return Math.max(0,
+				(int) Math.round(damage * Math.max(0.0, multiplier)));
 	}
 
 	public static ArmorTier classify(final String armorType) {
