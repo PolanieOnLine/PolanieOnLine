@@ -93,6 +93,7 @@
 		<attributes>
 			<atk value="98"/>
 			<def value="16"/>
+			<armor value="heavy"/>
 			<hp value="70"/>
 			<speed value="0.9"/>
 			<size value="1,1"/>
@@ -123,6 +124,7 @@
 		<attributes>
 			<atk value="114"/>
 			<def value="16"/>
+			<armor value="heavy"/>
 			<hp value="100"/>
 			<speed value="0.4"/>
 			<size value="1,1"/>
@@ -153,6 +155,7 @@
 		<attributes>
 			<atk value="134"/>
 			<def value="22"/>
+			<armor value="heavy"/>
 			<hp value="93"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
@@ -185,6 +188,7 @@
 		<attributes>
 			<atk value="188"/>
 			<def value="61"/>
+			<armor value="heavy"/>
 			<hp value="55"/>
 			<speed value="0.9"/>
 			<size value="1,1"/>
