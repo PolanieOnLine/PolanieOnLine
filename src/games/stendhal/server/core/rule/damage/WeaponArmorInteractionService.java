@@ -52,7 +52,7 @@ public final class WeaponArmorInteractionService {
 	 * @param defender attack target
 	 * @return multiplier to apply to the already calculated hit damage
 	 */
-	public static double getDamageMultiplier(final List<Item> weapons,
+	public static double getCombinedDamageMultiplier(final List<Item> weapons,
 			final RPEntity defender) {
 		if (weapons == null || weapons.isEmpty()
 				|| !(defender instanceof Creature)) {
@@ -92,7 +92,8 @@ public final class WeaponArmorInteractionService {
 	 */
 	public static int applyDamageMultiplier(final int damage,
 			final List<Item> weapons, final RPEntity defender) {
-		return scaleDamage(damage, getDamageMultiplier(weapons, defender));
+		return scaleDamage(damage,
+				getCombinedDamageMultiplier(weapons, defender));
 	}
 
 	/** Package-visible for precise regression tests of percentage semantics. */
