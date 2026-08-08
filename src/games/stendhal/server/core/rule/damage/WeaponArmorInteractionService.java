@@ -3,14 +3,12 @@
  ***************************************************************************/
 package games.stendhal.server.core.rule.damage;
 
-import java.util.List;
-
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.item.Item;
 
 /**
- * Applies explicit weapon-class advantages against semantic creature armor.
+ * Resolves weapon-class advantages against semantic creature armor.
  * Creature DEF remains the normal defense stat and is intentionally not used
  * to infer armor: high DEF can represent agility, evasion or other defenses.
  */
@@ -27,57 +25,21 @@ public final class WeaponArmorInteractionService {
 	}
 
 	/**
-	 * Adjusts only the damage rolled by the held weapon set. Flat attack from
-	 * rings, glyphs and other equipment stays outside the matchup multiplier.
+	 * Returns the matchup multiplier for one held weapon and target. Keeping
+	 * this decision per weapon allows mixed dual-wield sets to resolve each
+	 * damage roll independently.
 	 *
-	 * The stable attack value is the baseline used by RPEntity when replacing
-	 * average weapon damage with a per-hit roll. Reversing that replacement
-	 * lets this method recover the exact rolled weapon contribution without a
-	 * second random roll.
+	 * @param weapon held weapon whose roll is being resolved
+	 * @param defender attack target
+	 * @return damage multiplier for this weapon roll
 	 */
-	public static double adjustAttack(final double totalItemAttack,
-			final double stableItemAttack, final List<Item> attackWeapons,
-			final Item primaryWeapon, final RPEntity defender) {
-		if (primaryWeapon == null || !(defender instanceof Creature)
-				|| attackWeapons == null || attackWeapons.isEmpty()) {
-			return totalItemAttack;
+	public static double getDamageMultiplier(final Item weapon,
+			final RPEntity defender) {
+		if (weapon == null || !(defender instanceof Creature)) {
+			return 1.0;
 		}
-
-		final double multiplier = getDamageMultiplier(
-				primaryWeapon.getWeaponType(),
+		return getDamageMultiplier(weapon.getWeaponType(),
 				((Creature) defender).getArmorType());
-		if (multiplier == 1.0) {
-			return totalItemAttack;
-		}
-
-		final double stableWeaponContribution =
-				getStableWeaponContribution(attackWeapons);
-		final double stableNonWeaponAttack =
-				stableItemAttack - stableWeaponContribution;
-		final double rolledWeaponContribution = Math.max(0.0,
-				totalItemAttack - stableNonWeaponAttack);
-
-		return adjustWeaponContribution(totalItemAttack,
-				rolledWeaponContribution, multiplier);
-	}
-
-	private static double getStableWeaponContribution(
-			final List<Item> attackWeapons) {
-		double contribution = 0.0;
-		for (final Item weapon : attackWeapons) {
-			if (weapon != null) {
-				contribution += weapon.getAverageDamage();
-			}
-		}
-		return contribution;
-	}
-
-	static double adjustWeaponContribution(final double totalItemAttack,
-			final double weaponContribution, final double multiplier) {
-		final double safeWeaponContribution = Math.max(0.0,
-				weaponContribution);
-		return Math.max(0.0, totalItemAttack
-				+ safeWeaponContribution * (multiplier - 1.0));
 	}
 
 	public static ArmorTier classify(final String armorType) {
