@@ -52,6 +52,13 @@ public class WeaponArmorInteractionServiceTest {
 	}
 
 	@Test
+	public void daggerHasStrongLightAdvantageAndArmorPenalties() {
+		assertEquals(1.10, multiplier("dagger", "light"), 0.0);
+		assertEquals(0.85, multiplier("dagger", "medium"), 0.0);
+		assertEquals(0.60, multiplier("dagger", "heavy"), 0.0);
+	}
+
+	@Test
 	public void daggerIsBestAgainstLightArmor() {
 		final double dagger = multiplier("dagger", "light");
 		assertTrue(dagger > multiplier("sword", "light"));
@@ -63,6 +70,15 @@ public class WeaponArmorInteractionServiceTest {
 		final double sword = multiplier("sword", "medium");
 		assertTrue(sword > multiplier("dagger", "medium"));
 		assertTrue(sword > multiplier("axe", "medium"));
+	}
+
+	@Test
+	public void axeAndClubHaveStrongArmorBreakerProfile() {
+		assertEquals(0.85, multiplier("axe", "light"), 0.0);
+		assertEquals(1.0, multiplier("axe", "medium"), 0.0);
+		assertEquals(1.25, multiplier("axe", "heavy"), 0.0);
+		assertEquals(0.85, multiplier("club", "light"), 0.0);
+		assertEquals(1.25, multiplier("club", "heavy"), 0.0);
 	}
 
 	@Test
@@ -95,9 +111,9 @@ public class WeaponArmorInteractionServiceTest {
 		defender.setDef(1);
 		defender.setArmorType("heavy");
 
-		assertEquals(1.15, WeaponArmorInteractionService.getDamageMultiplier(
+		assertEquals(1.25, WeaponArmorInteractionService.getDamageMultiplier(
 				weapon("axe"), defender), 0.0);
-		assertEquals(0.80, WeaponArmorInteractionService.getDamageMultiplier(
+		assertEquals(0.60, WeaponArmorInteractionService.getDamageMultiplier(
 				weapon("dagger"), defender), 0.0);
 	}
 
@@ -106,9 +122,9 @@ public class WeaponArmorInteractionServiceTest {
 		final Creature defender = new Creature();
 		defender.setArmorType("heavy");
 
-		assertEquals(0.80, WeaponArmorInteractionService.getDamageMultiplier(
+		assertEquals(0.60, WeaponArmorInteractionService.getDamageMultiplier(
 				weapon("dagger"), defender), 0.0);
-		assertEquals(1.15, WeaponArmorInteractionService.getDamageMultiplier(
+		assertEquals(1.25, WeaponArmorInteractionService.getDamageMultiplier(
 				weapon("axe"), defender), 0.0);
 	}
 
