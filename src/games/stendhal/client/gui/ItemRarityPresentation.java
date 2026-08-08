@@ -322,7 +322,9 @@ final class ItemRarityPresentation {
 
 	private static void appendBonuses(final StringBuilder tooltip,
 			final RPObject object, final boolean weapon, final boolean armour) {
-		final StringBuilder bonuses = new StringBuilder();
+		final StringBuilder coreBonuses = new StringBuilder();
+		final StringBuilder resistances = new StringBuilder();
+		final StringBuilder specialBonuses = new StringBuilder();
 
 		/* Flat equipment values are the most important secondary properties and
 		 * stay directly below the item's primary attack/armour block. */
@@ -332,7 +334,7 @@ final class ItemRarityPresentation {
 					WeaponPerformanceCalculator.getInt(object,
 							ItemTooltip.RANGED_ATTACK));
 			if (attack != 0) {
-				appendBonusLine(bonuses,
+				appendBonusLine(coreBonuses,
 						signed(Integer.toString(attack)) + " ataku");
 			}
 		}
@@ -343,44 +345,52 @@ final class ItemRarityPresentation {
 			final int defense = WeaponPerformanceCalculator.getInt(object,
 					ItemTooltip.DEFENSE);
 			if (defense != 0) {
-				appendBonusLine(bonuses,
+				appendBonusLine(coreBonuses,
 						signed(Integer.toString(defense)) + " pancerza");
 			}
 		}
-		appendIntegerBonus(bonuses, object, ItemTooltip.HEALTH, "zdrowia");
+		appendIntegerBonus(coreBonuses, object, ItemTooltip.HEALTH, "zdrowia");
 
-		/* Elemental resistances describe how the item modifies the primary
-		 * protection above, so they follow attack/armour/health instead of
-		 * preceding the item's defining statistics. */
-		appendResistance(bonuses, object, "light", "światło");
-		appendResistance(bonuses, object, "dark", "mrok");
-		appendResistance(bonuses, object, "fire", "ogień");
-		appendResistance(bonuses, object, "ice", "lód");
-		appendResistance(bonuses, object, "earth", "naturę");
-		appendResistance(bonuses, object, "water", "wodę");
-		appendResistance(bonuses, object, "cut", "obrażenia fizyczne");
+		/* Resistances form their own visual block so the player can separate
+		 * elemental protection from the item's defining flat statistics. */
+		appendResistance(resistances, object, "light", "światło");
+		appendResistance(resistances, object, "dark", "mrok");
+		appendResistance(resistances, object, "fire", "ogień");
+		appendResistance(resistances, object, "ice", "lód");
+		appendResistance(resistances, object, "earth", "naturę");
+		appendResistance(resistances, object, "water", "wodę");
+		appendResistance(resistances, object, "cut", "obrażenia fizyczne");
 
-		/* Percentage and proc-like bonuses are the final detail layer. */
-		appendPercentageBonus(bonuses, object, ItemTooltip.ATTACK_BONUS,
+		/* Percentage and proc-like bonuses are the final detail layer and stay
+		 * visually separate from both flat stats and resistances. */
+		appendPercentageBonus(specialBonuses, object, ItemTooltip.ATTACK_BONUS,
 				"bonusu ataku", false);
-		appendPercentageBonus(bonuses, object, ItemTooltip.ACCURACY_BONUS,
+		appendPercentageBonus(specialBonuses, object, ItemTooltip.ACCURACY_BONUS,
 				"bonusu precyzji", false);
-		appendPercentageBonus(bonuses, object, ItemTooltip.CRITICAL_CHANCE,
+		appendPercentageBonus(specialBonuses, object, ItemTooltip.CRITICAL_CHANCE,
 				"szansy na trafienie krytyczne", false);
-		appendPercentageBonus(bonuses, object, ItemTooltip.CRITICAL_BONUS,
+		appendPercentageBonus(specialBonuses, object, ItemTooltip.CRITICAL_BONUS,
 				"obrażeń krytycznych", false);
-		appendPercentageBonus(bonuses, object, ItemTooltip.LIFESTEAL,
+		appendPercentageBonus(specialBonuses, object, ItemTooltip.LIFESTEAL,
 				"kradzieży życia", true);
-		appendPercentageBonus(bonuses, object, ItemTooltip.LIFESTEAL_INCREASE,
+		appendPercentageBonus(specialBonuses, object,
+				ItemTooltip.LIFESTEAL_INCREASE,
 				"zwiększonej kradzieży życia", false);
-		appendPercentageBonus(bonuses, object, ItemTooltip.DEFENSE_BONUS,
+		appendPercentageBonus(specialBonuses, object, ItemTooltip.DEFENSE_BONUS,
 				"bonusu pancerza", false);
 
-		if (bonuses.length() > 0) {
-			appendDivider(tooltip);
-			tooltip.append("<font size='-1'>").append(bonuses)
-					.append("</font>");
+		appendBonusSection(tooltip, coreBonuses);
+		appendBonusSection(tooltip, resistances);
+		appendBonusSection(tooltip, specialBonuses);
+	}
+
+	private static void appendBonusSection(final StringBuilder tooltip,
+			final StringBuilder section) {
+		if (section.length() == 0) {
+			return;
 		}
+		appendDivider(tooltip);
+		tooltip.append("<font size='-1'>").append(section).append("</font>");
 	}
 
 	private static void appendResistance(final StringBuilder bonuses,
