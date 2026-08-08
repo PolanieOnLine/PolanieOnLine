@@ -31,99 +31,60 @@ public class WeaponArmorInteractionServiceTest {
 	}
 
 	@Test
-	public void classifiesArmorTiers() {
+	public void classifiesSemanticArmorTiers() {
 		assertEquals(ArmorTier.NONE,
-				WeaponArmorInteractionService.classify(0));
+				WeaponArmorInteractionService.classify(null));
 		assertEquals(ArmorTier.NONE,
-				WeaponArmorInteractionService.classify(-1));
+				WeaponArmorInteractionService.classify("none"));
 		assertEquals(ArmorTier.LIGHT,
-				WeaponArmorInteractionService.classify(30));
+				WeaponArmorInteractionService.classify("light"));
 		assertEquals(ArmorTier.MEDIUM,
-				WeaponArmorInteractionService.classify(31));
-		assertEquals(ArmorTier.MEDIUM,
-				WeaponArmorInteractionService.classify(80));
+				WeaponArmorInteractionService.classify("medium"));
 		assertEquals(ArmorTier.HEAVY,
-				WeaponArmorInteractionService.classify(81));
+				WeaponArmorInteractionService.classify("heavy"));
 	}
 
 	@Test
 	public void unarmoredTargetsAreNeutralForSupportedWeaponClasses() {
-		assertEquals(1.0, multiplier("dagger", 0), 0.0);
-		assertEquals(1.0, multiplier("sword", 0), 0.0);
-		assertEquals(1.0, multiplier("axe", 0), 0.0);
-		assertEquals(1.0, multiplier("club", 0), 0.0);
+		assertEquals(1.0, multiplier("dagger", "none"), 0.0);
+		assertEquals(1.0, multiplier("sword", "none"), 0.0);
+		assertEquals(1.0, multiplier("axe", "none"), 0.0);
+		assertEquals(1.0, multiplier("club", "none"), 0.0);
 	}
 
 	@Test
 	public void daggerIsBestAgainstLightArmor() {
-		final double dagger = multiplier("dagger", 20);
-		assertTrue(dagger > multiplier("sword", 20));
-		assertTrue(dagger > multiplier("axe", 20));
+		final double dagger = multiplier("dagger", "light");
+		assertTrue(dagger > multiplier("sword", "light"));
+		assertTrue(dagger > multiplier("axe", "light"));
 	}
 
 	@Test
 	public void swordIsBestAgainstMediumArmor() {
-		final double sword = multiplier("sword", 50);
-		assertTrue(sword > multiplier("dagger", 50));
-		assertTrue(sword > multiplier("axe", 50));
+		final double sword = multiplier("sword", "medium");
+		assertTrue(sword > multiplier("dagger", "medium"));
+		assertTrue(sword > multiplier("axe", "medium"));
 	}
 
 	@Test
 	public void axeAndClubAreBestAgainstHeavyArmor() {
-		final double axe = multiplier("axe", 100);
-		final double club = multiplier("club", 100);
+		final double axe = multiplier("axe", "heavy");
+		final double club = multiplier("club", "heavy");
 		assertEquals(axe, club, 0.0);
-		assertTrue(axe > multiplier("sword", 100));
-		assertTrue(axe > multiplier("dagger", 100));
+		assertTrue(axe > multiplier("sword", "heavy"));
+		assertTrue(axe > multiplier("dagger", "heavy"));
 	}
 
 	@Test
 	public void unsupportedWeaponClassRemainsNeutral() {
-		assertEquals(1.0, multiplier("wand", 100), 0.0);
-		assertEquals(1.0, multiplier(null, 100), 0.0);
+		assertEquals(1.0, multiplier("wand", "heavy"), 0.0);
+		assertEquals(1.0, multiplier(null, "heavy"), 0.0);
 	}
 
 	@Test
-	public void multiplierChangesOnlyPrimaryWeaponContribution() {
-		final double equipmentAttack = 50.0;
-		final double primaryWeapon = 30.0;
-
-		assertEquals(53.0,
-				WeaponArmorInteractionService.adjustWeaponContribution(
-						equipmentAttack, primaryWeapon, 1.10), 0.000001);
-		assertEquals(44.0,
-				WeaponArmorInteractionService.adjustWeaponContribution(
-						equipmentAttack, primaryWeapon, 0.80), 0.000001);
-	}
-
-	@Test
-	public void attackUsesDefenseAsDefaultArmorScore() {
+	public void highDefenseWithoutArmorTypeRemainsUnarmored() {
 		final Creature defender = new Creature();
-		defender.setDef(20);
-		final Weapon weapon = weapon("dagger", 30);
-
-		assertEquals(expectedAdjusted(50.0, 50.0, weapon, 1.10),
-				WeaponArmorInteractionService.adjustAttack(50.0, 50.0,
-						Arrays.asList(weapon), weapon, defender), 0.000001);
-	}
-
-	@Test
-	public void explicitArmorOverridesDefenseForMatchup() {
-		final Creature defender = new Creature();
-		defender.setDef(100);
-		defender.setArmor(20);
-		final Weapon weapon = weapon("dagger", 30);
-
-		assertEquals(expectedAdjusted(50.0, 50.0, weapon, 1.10),
-				WeaponArmorInteractionService.adjustAttack(50.0, 50.0,
-						Arrays.asList(weapon), weapon, defender), 0.000001);
-	}
-
-	@Test
-	public void explicitZeroArmorMakesHighDefenseCreatureNeutral() {
-		final Creature defender = new Creature();
-		defender.setDef(100);
-		defender.setArmor(0);
+		defender.setDef(150);
 		final Weapon weapon = weapon("dagger", 30);
 
 		assertEquals(50.0, WeaponArmorInteractionService.adjustAttack(
@@ -132,9 +93,21 @@ public class WeaponArmorInteractionServiceTest {
 	}
 
 	@Test
+	public void explicitArmorTypeControlsMatchupIndependentlyOfDefense() {
+		final Creature defender = new Creature();
+		defender.setDef(1);
+		defender.setArmorType("heavy");
+		final Weapon weapon = weapon("axe", 30);
+
+		assertEquals(expectedAdjusted(50.0, 50.0, weapon, 1.15),
+				WeaponArmorInteractionService.adjustAttack(50.0, 50.0,
+						Arrays.asList(weapon), weapon, defender), 0.000001);
+	}
+
+	@Test
 	public void matchupUsesActualRolledWeaponContribution() {
 		final Creature defender = new Creature();
-		defender.setDef(20);
+		defender.setArmorType("light");
 		final Weapon weapon = weapon("dagger", 30);
 		final double stableAttack = 50.0;
 		final double rolledAttack = 44.0;
@@ -193,9 +166,10 @@ public class WeaponArmorInteractionServiceTest {
 		return rolledAttack + rolledWeapon * (multiplier - 1.0);
 	}
 
-	private double multiplier(final String weaponClass, final int armor) {
+	private double multiplier(final String weaponClass,
+			final String armorType) {
 		return WeaponArmorInteractionService.getDamageMultiplier(
-				weaponClass, armor);
+				weaponClass, armorType);
 	}
 
 	private Weapon weapon(final String itemClass, final int attack) {

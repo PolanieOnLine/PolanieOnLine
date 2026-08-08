@@ -17,37 +17,28 @@ public class CreatureArmorTest {
 	}
 
 	@Test
-	public void defenseIsDefaultArmorScore() {
-		final Creature creature = new Creature();
-		creature.setDef(55);
-
-		assertEquals(55, creature.getArmorScore());
-	}
-
-	@Test
-	public void explicitArmorOverridesDefense() {
-		final Creature creature = new Creature();
-		creature.setDef(55);
-		creature.setArmor(12);
-
-		assertEquals(12, creature.getArmorScore());
-	}
-
-	@Test
-	public void zeroArmorCanMarkHighDefenseCreatureAsUnarmored() {
+	public void missingArmorIsUnarmoredRegardlessOfDefense() {
 		final Creature creature = new Creature();
 		creature.setDef(150);
-		creature.setArmor(0);
 
-		assertEquals(0, creature.getArmorScore());
+		assertEquals("none", creature.getArmorType());
 	}
 
 	@Test
-	public void negativeArmorOverrideIsClamped() {
+	public void explicitArmorTypeIsStored() {
 		final Creature creature = new Creature();
-		creature.setDef(55);
-		creature.setArmor(-10);
+		creature.setDef(1);
+		creature.setArmorType("heavy");
 
-		assertEquals(0, creature.getArmorScore());
+		assertEquals("heavy", creature.getArmorType());
+	}
+
+	@Test
+	public void settingNoneClearsExplicitArmorType() {
+		final Creature creature = new Creature();
+		creature.setArmorType("medium");
+		creature.setArmorType("none");
+
+		assertEquals("none", creature.getArmorType());
 	}
 }

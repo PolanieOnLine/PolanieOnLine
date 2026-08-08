@@ -58,8 +58,8 @@ public class DefaultCreature {
 	private int ratk;
 	/** defense points. */
 	private int def;
-	/** Optional armor score overriding the defense fallback. */
-	private Integer armor;
+	/** Optional semantic creature armor type. */
+	private String armorType;
 	/** experience points for killing this creature. */
 	private int xp;
 	private int level;
@@ -155,12 +155,12 @@ public class DefaultCreature {
 		return def;
 	}
 
-	public void setArmor(final Integer armor) {
-		this.armor = armor;
+	public void setArmorType(final String armorType) {
+		this.armorType = armorType;
 	}
 
-	public Integer getArmor() {
-		return armor;
+	public String getArmorType() {
+		return armorType;
 	}
 
 	public double getSpeed() {
@@ -364,8 +364,8 @@ public class DefaultCreature {
 		final Creature creature = new Creature(clazz, subclass, name, hp, atk, ratk, def,
 				level, xp, width, height, speed, resistance, visibility, dropsItems, aiProfiles,
 				creatureSays, respawn, description);
-		if (armor != null) {
-			creature.setArmor(armor.intValue());
+		if (armorType != null) {
+			creature.setArmorType(armorType);
 		}
 		creature.equip(equipsItems);
 

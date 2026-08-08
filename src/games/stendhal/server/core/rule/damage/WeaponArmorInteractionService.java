@@ -10,15 +10,11 @@ import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.item.Item;
 
 /**
- * Applies small, explicit weapon-class advantages against creature armor.
- * Creature DEF is the default armor score, with an optional explicit armor
- * override for exceptional creatures. The score selects a matchup tier only;
- * it does not add a second damage-reduction layer.
+ * Applies explicit weapon-class advantages against semantic creature armor.
+ * Creature DEF remains the normal defense stat and is intentionally not used
+ * to infer armor: high DEF can represent agility, evasion or other defenses.
  */
 public final class WeaponArmorInteractionService {
-	private static final int LIGHT_ARMOR_MAX = 30;
-	private static final int MEDIUM_ARMOR_MAX = 80;
-
 	private WeaponArmorInteractionService() {
 		// utility class
 	}
@@ -49,7 +45,7 @@ public final class WeaponArmorInteractionService {
 
 		final double multiplier = getDamageMultiplier(
 				primaryWeapon.getWeaponType(),
-				((Creature) defender).getArmorScore());
+				((Creature) defender).getArmorType());
 		if (multiplier == 1.0) {
 			return totalItemAttack;
 		}
@@ -72,15 +68,9 @@ public final class WeaponArmorInteractionService {
 			if (weapon != null) {
 				contribution += weapon.getAverageDamage();
 			}
-		}
 		return contribution;
 	}
 
-	/**
-	 * Applies a matchup multiplier only to the weapon's part of the complete
-	 * equipment attack. Package visibility keeps the arithmetic directly
-	 * testable without constructing the entire combat engine.
-	 */
 	static double adjustWeaponContribution(final double totalItemAttack,
 			final double weaponContribution, final double multiplier) {
 		final double safeWeaponContribution = Math.max(0.0,
@@ -89,26 +79,26 @@ public final class WeaponArmorInteractionService {
 				+ safeWeaponContribution * (multiplier - 1.0));
 	}
 
-	public static ArmorTier classify(final int armorScore) {
-		if (armorScore <= 0) {
-			return ArmorTier.NONE;
-		}
-		if (armorScore <= LIGHT_ARMOR_MAX) {
+	public static ArmorTier classify(final String armorType) {
+		if ("light".equals(armorType)) {
 			return ArmorTier.LIGHT;
 		}
-		if (armorScore <= MEDIUM_ARMOR_MAX) {
+		if ("medium".equals(armorType)) {
 			return ArmorTier.MEDIUM;
 		}
-		return ArmorTier.HEAVY;
+		if ("heavy".equals(armorType)) {
+			return ArmorTier.HEAVY;
+		}
+		return ArmorTier.NONE;
 	}
 
 	public static double getDamageMultiplier(final String weaponClass,
-			final int armorScore) {
+			final String armorType) {
 		if (weaponClass == null) {
 			return 1.0;
 		}
 
-		final ArmorTier tier = classify(armorScore);
+		final ArmorTier tier = classify(armorType);
 		if ("dagger".equals(weaponClass)) {
 			return daggerMultiplier(tier);
 		}

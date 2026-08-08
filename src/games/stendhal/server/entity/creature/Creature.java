@@ -230,8 +230,8 @@ public class Creature extends NPC {
 			setDef(copy.getDef());
 			initHP(copy.getBaseHP());
 		}
-		if (copy.has("armor")) {
-			setArmor(copy.getInt("armor"));
+		if (copy.has("armor_type")) {
+			setArmorType(copy.get("armor_type"));
 		}
 		if (Occasion.MOREXP) {
 			setXP((int) (copy.getXP() * 1.5));
@@ -404,15 +404,18 @@ public class Creature extends NPC {
 	 *
 	 * @return a new creature
 	 */
-	/** Sets an explicit armor score independent from DEF. */
-	public void setArmor(final int armor) {
-		put("armor", Math.max(0, Math.min(Short.MAX_VALUE, armor)));
+	/** Sets the semantic armor type used by weapon matchups. */
+	public void setArmorType(final String armorType) {
+		if (armorType == null || "none".equals(armorType)) {
+			remove("armor_type");
+			return;
+		}
+		put("armor_type", armorType);
 	}
 
-	/** Returns explicit armor or falls back to the current DEF value. */
-	public int getArmorScore() {
-		return has("armor") ? Math.max(0, getInt("armor"))
-				: Math.max(0, getDef());
+	/** Returns the semantic armor type. Missing armor is explicitly none. */
+	public String getArmorType() {
+		return has("armor_type") ? get("armor_type") : "none";
 	}
 
 	public Creature getNewInstance() {
@@ -530,7 +533,7 @@ public class Creature extends NPC {
 			npc.isA("npc");
 			npc.addAttribute("debug", Type.VERY_LONG_STRING,
 					Definition.VOLATILE);
-			npc.addAttribute("armor", Type.SHORT, Definition.HIDDEN);
+			npc.addAttribute("armor_type", Type.STRING, Definition.HIDDEN);
 			npc.addAttribute("metamorphosis", Type.STRING, Definition.VOLATILE);
 		} catch (final SyntaxException e) {
 			LOGGER.error("cannot generate RPClass", e);
