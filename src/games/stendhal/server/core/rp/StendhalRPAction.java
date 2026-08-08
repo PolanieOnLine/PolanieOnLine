@@ -445,13 +445,13 @@ public class StendhalRPAction {
 			if (Testing.COMBAT && isRanged) {
 				itemAtk = player.getItemRatkForAttack();
 			} else {
-				itemAtk = player.getItemAtkForAttack(weapon ->
-						WeaponArmorInteractionService.getDamageMultiplier(
-								weapon, defender));
+				itemAtk = player.getItemAtkForAttack();
 			}
 
 			damage = player.damageDone(defender, itemAtk,
 					player.getDamageType());
+			damage = WeaponArmorInteractionService.applyDamageMultiplier(
+					damage, weapons, defender);
 			final boolean didDamage = damage > 0;
 
 			// Handle critical hit logic
