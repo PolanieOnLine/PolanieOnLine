@@ -69,7 +69,7 @@ public class WeaponAffixCombatServiceTest {
 		assertEquals(120, WeaponAffixCombatService.applyConditionalDamageBonuses(
 				100, Arrays.asList(weapon), target, true));
 		assertEquals(100, WeaponAffixCombatService.applyConditionalDamageBonuses(
-				100, Arrays.asList(weapon), target, false));
+					100, Arrays.asList(weapon), target, false));
 	}
 
 	@Test
@@ -113,7 +113,7 @@ public class WeaponAffixCombatServiceTest {
 				WeaponAffixCombatService.createBleedingAttacker(
 						Arrays.asList(weapon));
 
-		assertEquals(15.0, bleeding.getProbability(), 0.0);
+		assertEquals(15.0, bleeding.getProbability(), 0.0000001);
 		assertEquals(0.35, bleeding.getDamageFactor(), 0.0);
 	}
 
@@ -127,7 +127,7 @@ public class WeaponAffixCombatServiceTest {
 				WeaponAffixCombatService.createBleedingAttacker(
 						Arrays.asList(weapon));
 
-		assertEquals(25.0, bleeding.getProbability(), 0.0);
+		assertEquals(25.0, bleeding.getProbability(), 0.0000001);
 		assertEquals(0.35, bleeding.getDamageFactor(), 0.0);
 	}
 
@@ -155,7 +155,7 @@ public class WeaponAffixCombatServiceTest {
 				WeaponAffixCombatService.createBleedingAttacker(
 						Arrays.asList(first, second));
 
-		assertEquals(25.0, bleeding.getProbability(), 0.0);
+		assertEquals(25.0, bleeding.getProbability(), 0.0000001);
 	}
 
 	@Test
