@@ -275,7 +275,15 @@ public final class CreaturesXMLLoader extends DefaultHandler {
 			ai = true;
 		} else if (ai) {
 			if (qName.equals("profile")) {
-				aiProfiles.put(attrs.getValue("name"), attrs.getValue("params"));
+				final String profileName = attrs.getValue("name");
+				final String profileParams = attrs.getValue("params");
+				aiProfiles.put(profileName, profileParams);
+				// Compatibility alias for older creature data. Runtime code uses
+				// the explicit bleeding_attack profile name.
+				if ("perilous".equals(profileName)
+						&& !aiProfiles.containsKey("bleeding_attack")) {
+					aiProfiles.put("bleeding_attack", profileParams);
+				}
 			} else if (qName.equals("says")) {
 				says = true;
 			} else if (says) {
