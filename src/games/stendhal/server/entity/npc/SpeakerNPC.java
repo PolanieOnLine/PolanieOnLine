@@ -40,6 +40,7 @@ import games.stendhal.server.entity.npc.condition.EmoteCondition;
 import games.stendhal.server.entity.npc.condition.GreetingMatchesNameCondition;
 import games.stendhal.server.entity.npc.fsm.Engine;
 import games.stendhal.server.entity.npc.fsm.Transition;
+import games.stendhal.server.entity.npc.shop.ShopOfferSender;
 import games.stendhal.server.entity.player.Player;
 
 /**
@@ -491,6 +492,7 @@ public class SpeakerNPC extends PassiveNPC {
 			say(goodbyeMessage);
 		}
 		onGoodbye(attending);
+		ShopOfferSender.closeShopWindow(this, attending);
 		engine.setCurrentState(ConversationStates.IDLE);
 		setAttending(null);
 	}
@@ -1085,19 +1087,22 @@ public class SpeakerNPC extends PassiveNPC {
 		add(ConversationStates.ANY, ConversationPhrases.GOODBYE_MESSAGES,
 				ConversationStates.IDLE, text, new ChatAction() {
 
-					@Override
-					public void fire(final Player player, final Sentence sentence,
-							final EventRaiser npc) {
-						((SpeakerNPC) npc.getEntity()).onGoodbye(player);
-					}
+			@Override
+			public void fire(final Player player, final Sentence sentence,
+				final EventRaiser npc) {
+				final SpeakerNPC speaker = (SpeakerNPC) npc.getEntity();
+				speaker.onGoodbye(player);
+				ShopOfferSender.closeShopWindow(speaker, player);
+			}
 
-					@Override
-					public String toString() {
-						return "SpeakerNPC.onGoodbye";
-					}
-				});
+			@Override
+			public String toString() {
+				return "SpeakerNPC.onGoodbye";
+			}
+		});
 	}
 
+	
 	/**
 	 * Returns a copy of the transition table.
 	 *
