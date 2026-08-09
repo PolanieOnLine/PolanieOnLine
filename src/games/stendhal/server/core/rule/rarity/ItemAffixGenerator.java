@@ -47,9 +47,7 @@ public final class ItemAffixGenerator {
 		this.random = random;
 	}
 
-	/**
-	 * Returns the target number of random affixes for one rarity tier.
-	 */
+	/** Returns the target number of regular random affixes for one rarity tier. */
 	public static int getSlotCount(final ItemRarity rarity) {
 		if (rarity == null) {
 			return 0;
@@ -67,55 +65,75 @@ public final class ItemAffixGenerator {
 		}
 	}
 
+	/** Legendary rarity always owns one extra signature slot. */
+	public static int getLegendarySlotCount(final ItemRarity rarity) {
+		return rarity == ItemRarity.LEGENDARY ? 1 : 0;
+	}
+
 	/**
-	 * Generates random affixes for a fresh drop only. Existing persisted affix
-	 * state is never rerolled. Legendary items first try to reserve one of their
-	 * three slots for a signature legendary-only effect; if no signature is
-	 * eligible for the item class yet, the slot falls back to the normal pool.
+	 * Generates affixes for fresh creation contexts which explicitly enable the
+	 * affix layer. Existing persisted affix state is never rerolled. Legendary
+	 * items receive three regular affixes plus one mandatory signature affix.
 	 */
 	public List<String> generate(final Item item,
 			final ItemCreationContext context) {
-		if (item == null || context == null
-				|| context.getSource() != ItemCreationContext.Source.DROP
+		if (item == null || context == null || !context.isGenerateAffixes()
 				|| ItemAffixState.hasAny(item)) {
 			return Collections.emptyList();
 		}
 
-		final int slots = getSlotCount(item.getRarity());
-		if (slots <= 0) {
+		final int regularSlots = getSlotCount(item.getRarity());
+		final int legendarySlots = getLegendarySlotCount(item.getRarity());
+		if (regularSlots <= 0 && legendarySlots <= 0) {
 			return Collections.emptyList();
 		}
 
+		final Random rollRandom = context.getAffixSeed() == null
+				? random : new Random(context.getAffixSeed().longValue());
 		final List<String> applied = new ArrayList<String>();
-		if (item.getRarity() == ItemRarity.LEGENDARY) {
-			applyLegendarySignature(item, applied);
-		}
+		applyRegularAffixes(item, regularSlots, applied, rollRandom);
 
-		final List<ItemAffixDefinition> eligible = registry.getEligible(item);
-		Collections.shuffle(eligible, random);
-		for (final ItemAffixDefinition definition : eligible) {
-			if (applied.size() >= slots) {
-				break;
-			}
-			if (definition.apply(item, random)) {
-				ItemAffixState.record(item, definition);
-				applied.add(definition.getId());
-			}
+		if (legendarySlots > 0
+				&& !applyLegendarySignature(item, applied, rollRandom)) {
+			throw new IllegalStateException(
+					"Legendary item has no eligible signature affix: "
+							+ item.getItemClass() + "/" + item.getName());
 		}
 		return Collections.unmodifiableList(applied);
 	}
 
-	private void applyLegendarySignature(final Item item,
-			final List<String> applied) {
-		final List<ItemAffixDefinition> eligible =
-				legendaryRegistry.getEligible(item);
-		Collections.shuffle(eligible, random);
+	private void applyRegularAffixes(final Item item, final int slots,
+			final List<String> applied, final Random rollRandom) {
+		if (slots <= 0) {
+			return;
+		}
+		final List<ItemAffixDefinition> eligible = registry.getEligible(item);
+		Collections.shuffle(eligible, rollRandom);
+		int regularApplied = 0;
 		for (final ItemAffixDefinition definition : eligible) {
-			if (definition.apply(item, random)) {
+			if (regularApplied >= slots) {
+				break;
+			}
+			if (definition.apply(item, rollRandom)) {
 				ItemAffixState.record(item, definition);
 				applied.add(definition.getId());
-				return;
+				regularApplied++;
 			}
 		}
+	}
+
+	private boolean applyLegendarySignature(final Item item,
+			final List<String> applied, final Random rollRandom) {
+		final List<ItemAffixDefinition> eligible =
+				legendaryRegistry.getEligible(item);
+		Collections.shuffle(eligible, rollRandom);
+		for (final ItemAffixDefinition definition : eligible) {
+			if (definition.apply(item, rollRandom)) {
+				ItemAffixState.record(item, definition);
+				applied.add(definition.getId());
+				return true;
+			}
+		}
+		return false;
 	}
 }
