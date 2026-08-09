@@ -1,7 +1,7 @@
 /***************************************************************************
  *                   (C) Copyright 2003-2026 - Stendhal                    *
- ***************************************************************************
- ***************************************************************************
+ ***************************************************************************/
+/***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -102,6 +102,11 @@ final class ItemRarityPresentation {
 		}
 		appendCoreStats(tooltip, object, weapon);
 		appendBonuses(tooltip, object, weapon, armour);
+		final String legendaryAffix = LegendaryAffixPresentation.build(object);
+		if (!legendaryAffix.isEmpty()) {
+			appendDivider(tooltip);
+			tooltip.append(legendaryAffix);
+		}
 		appendFooter(tooltip, object, scrollDestination);
 		tooltip.append("</font></td></tr></table></html>");
 		return tooltip.toString();
