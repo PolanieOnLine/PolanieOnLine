@@ -1111,7 +1111,7 @@ public class Creature extends NPC {
 	}
 
 	public boolean hasTargetMoved() {
-		if ((targetX != getAttackTarget().getX()) || (targetY != getAttackTarget().getY()) {
+		if ((targetX != getAttackTarget().getX()) || (targetY != getAttackTarget().getY())) {
 			targetX = getAttackTarget().getX();
 			targetY = getAttackTarget().getY();
 
