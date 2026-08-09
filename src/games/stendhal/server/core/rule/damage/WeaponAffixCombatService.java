@@ -20,10 +20,14 @@ public final class WeaponAffixCombatService {
 	public static final String POISON_ON_HIT_ATTRIBUTE = "poison_on_hit";
 	public static final String EXECUTE_DAMAGE_ATTRIBUTE = "execute_damage";
 	public static final String DISTANCE_DAMAGE_ATTRIBUTE = "distance_damage";
+	public static final String LEGENDARY_DEEP_WOUNDS_ATTRIBUTE =
+			"legendary_deep_wounds";
 
 	private static final double EXECUTE_HP_THRESHOLD = 0.25;
 	private static final double MAX_STATUS_PROC_CHANCE = 0.25;
 	private static final double BLEED_TOTAL_DAMAGE_FACTOR = 0.25;
+	private static final double DEEP_WOUNDS_PROC_CHANCE = 0.15;
+	private static final double DEEP_WOUNDS_DAMAGE_FACTOR = 0.35;
 	private static final double POISON_TOTAL_DAMAGE_FACTOR = 0.20;
 	private static final int POISON_TICKS = 4;
 	private static final int POISON_FREQUENCY = 3;
@@ -33,11 +37,6 @@ public final class WeaponAffixCombatService {
 		// utility class
 	}
 
-	/**
-	 * Applies execute and true ranged-attack damage bonuses. Both values are
-	 * stored as fractions and are weighted by the average damage contribution of
-	 * the held weapons so dual wield does not simply double the bonus.
-	 */
 	public static int applyConditionalDamageBonuses(final int damage,
 			final List<Item> weapons, final RPEntity defender,
 			final boolean rangedAttack) {
@@ -57,7 +56,6 @@ public final class WeaponAffixCombatService {
 		return scaleDamage(damage, multiplier);
 	}
 
-	/** Returns true only while the target is alive and below 25% maximum HP. */
 	public static boolean isExecuteActive(final RPEntity defender) {
 		if (defender == null || defender.getHP() <= 0 || defender.getBaseHP() <= 0) {
 			return false;
@@ -66,10 +64,6 @@ public final class WeaponAffixCombatService {
 				< EXECUTE_HP_THRESHOLD;
 	}
 
-	/**
-	 * Returns a damage-weighted fraction for a weapon attribute. Weapons without
-	 * the affix still contribute their damage weight with a value of zero.
-	 */
 	public static double getWeightedFraction(final List<Item> weapons,
 			final String attribute) {
 		if (weapons == null || weapons.isEmpty() || attribute == null) {
@@ -94,12 +88,6 @@ public final class WeaponAffixCombatService {
 		return totalWeight == 0.0 ? 0.0 : weightedValue / totalWeight;
 	}
 
-	/**
-	 * Tries rolled bleeding and poison procs after a damaging hit. Multiple
-	 * weapons combine as independent chances, with a defensive 25% final cap per
-	 * status. Bleeding is fully delegated to Bleeding 2.0 so resistance,
-	 * source attribution, stacking and tick cadence have one implementation.
-	 */
 	public static void applyOnHitProcs(final Player attacker,
 			final RPEntity defender, final List<Item> weapons, final int damage) {
 		if (attacker == null || defender == null || defender.getHP() <= 0
@@ -123,18 +111,25 @@ public final class WeaponAffixCombatService {
 	}
 
 	/**
-	 * Creates the Bleeding 2.0 attacker for the current weapons. Affix values are
-	 * stored as fractions, while BleedingAttacker uses percentage points.
+	 * Builds one Bleeding 2.0 proc from normal bleed affixes and the legendary
+	 * Deep Wounds signature. Both sources combine independently and still obey
+	 * the global 25% proc cap, so the legendary never adds a second RNG roll.
 	 */
 	static BleedingAttacker createBleedingAttacker(final List<Item> weapons) {
-		final double chance = combinedProcChance(weapons, BLEED_ON_HIT_ATTRIBUTE);
-		if (chance <= 0.0) {
+		final double normalChance = combinedProcChance(weapons,
+				BLEED_ON_HIT_ATTRIBUTE);
+		final double deepWoundsChance = combinedFixedProcChance(weapons,
+				LEGENDARY_DEEP_WOUNDS_ATTRIBUTE, DEEP_WOUNDS_PROC_CHANCE);
+		final double combinedChance = Math.min(MAX_STATUS_PROC_CHANCE,
+				1.0 - ((1.0 - normalChance) * (1.0 - deepWoundsChance)));
+		if (combinedChance <= 0.0) {
 			return null;
 		}
-		return new BleedingAttacker(chance * 100.0, BLEED_TOTAL_DAMAGE_FACTOR);
+		final double damageFactor = deepWoundsChance > 0.0
+				? DEEP_WOUNDS_DAMAGE_FACTOR : BLEED_TOTAL_DAMAGE_FACTOR;
+		return new BleedingAttacker(combinedChance * 100.0, damageFactor);
 	}
 
-	/** Combines per-weapon proc chances as independent probabilities. */
 	public static double combinedProcChance(final List<Item> weapons,
 			final String attribute) {
 		if (weapons == null || weapons.isEmpty() || attribute == null) {
@@ -149,7 +144,20 @@ public final class WeaponAffixCombatService {
 		return Math.min(MAX_STATUS_PROC_CHANCE, 1.0 - missAll);
 	}
 
-	/** Package-visible deterministic seam for proc probability tests. */
+	static double combinedFixedProcChance(final List<Item> weapons,
+			final String attribute, final double sourceChance) {
+		if (weapons == null || weapons.isEmpty() || attribute == null) {
+			return 0.0;
+		}
+		double missAll = 1.0;
+		for (final Item weapon : weapons) {
+			if (weapon != null && weapon.has(attribute)) {
+				missAll *= 1.0 - clampFraction(sourceChance);
+			}
+		}
+		return Math.min(MAX_STATUS_PROC_CHANCE, 1.0 - missAll);
+	}
+
 	static boolean rollChance(final double chance, final int roll) {
 		if (roll < 1 || roll > PROC_ROLL_SCALE) {
 			throw new IllegalArgumentException("Proc roll must be in [1, 10000]");
