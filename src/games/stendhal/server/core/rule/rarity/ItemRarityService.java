@@ -49,6 +49,7 @@ public final class ItemRarityService {
 			new ItemRarityService(new Random());
 
 	private final Random random;
+	private final ItemAffixGenerator affixGenerator;
 	private final Map<String, ItemRarityProfile> profiles =
 			new ConcurrentHashMap<String, ItemRarityProfile>();
 
@@ -57,6 +58,7 @@ public final class ItemRarityService {
 			throw new IllegalArgumentException("Random source must not be null");
 		}
 		this.random = random;
+		this.affixGenerator = new ItemAffixGenerator(random);
 		registerProfile(ItemRarityProfile.defaultProfile());
 	}
 
@@ -187,6 +189,9 @@ public final class ItemRarityService {
 		item.setRarityModifier(ItemRarityModifiers.VALUE, valueMultiplier);
 		item.setRarity(rarity);
 		item.put(Item.RARITY_PROFILE, profile.getId());
+		// Random affixes are a second instance layer. They are generated only for
+		// fresh DROP contexts and therefore never reroll quest/admin/restore items.
+		affixGenerator.generate(item, context);
 		ItemTooltipService.update(item);
 	}
 

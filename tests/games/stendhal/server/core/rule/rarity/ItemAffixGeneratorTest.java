@@ -36,30 +36,43 @@ public class ItemAffixGeneratorTest {
 	}
 
 	@Test
-	public void productionRegistryCanMaterializeParryWhenExplicitlyInvoked() {
+	public void productionRegistryMaterializesOneAffixForRareSword() {
 		final Item item = item("sword", ItemRarity.RARE);
 		final ItemAffixGenerator generator = new ItemAffixGenerator(new Random(7L));
 
 		final List<String> applied = generator.generate(item,
 				ItemCreationContext.drop());
 
-		assertEquals(Arrays.asList(ParryService.PARRY_CHANCE_ATTRIBUTE), applied);
-		assertTrue(item.has(ParryService.PARRY_CHANCE_ATTRIBUTE));
-		assertTrue(ItemAffixState.has(item, ParryService.PARRY_CHANCE_ATTRIBUTE));
-		assertTrue(item.getDouble(ParryService.PARRY_CHANCE_ATTRIBUTE) >= 0.05);
-		assertTrue(item.getDouble(ParryService.PARRY_CHANCE_ATTRIBUTE) <= 0.15);
+		assertEquals(1, applied.size());
+		assertEquals(1, ItemAffixState.getValues(item).size());
+		assertTrue(ItemAffixRegistry.getInstance().get(applied.get(0)) != null);
+	}
+
+	@Test
+	public void productionRegistryCanFillLegendarySwordSlots() {
+		final Item item = item("sword", ItemRarity.LEGENDARY);
+		final ItemAffixGenerator generator = new ItemAffixGenerator(new Random(17L));
+
+		final List<String> applied = generator.generate(item,
+				ItemCreationContext.drop());
+
+		assertEquals(3, applied.size());
+		assertTrue(applied.contains(ParryService.PARRY_CHANCE_ATTRIBUTE));
+		assertTrue(applied.contains(WeaponAffixService.LIFESTEAL_ATTRIBUTE));
+		assertTrue(applied.contains(WeaponAffixService.ACCURACY_ATTRIBUTE));
 	}
 
 	@Test
 	public void existingAffixStateIsNeverRerolled() {
 		final Item item = item("sword", ItemRarity.RARE);
 		final ItemAffixGenerator generator = new ItemAffixGenerator(new Random(11L));
-		generator.generate(item, ItemCreationContext.drop());
-		final double original = item.getDouble(ParryService.PARRY_CHANCE_ATTRIBUTE);
+		final List<String> first = generator.generate(item,
+				ItemCreationContext.drop());
+		final String affixId = first.get(0);
+		final String original = ItemAffixState.getValues(item).get(affixId);
 
 		assertTrue(generator.generate(item, ItemCreationContext.drop()).isEmpty());
-		assertEquals(original,
-				item.getDouble(ParryService.PARRY_CHANCE_ATTRIBUTE), 0.0);
+		assertEquals(original, ItemAffixState.getValues(item).get(affixId));
 	}
 
 	@Test

@@ -17,7 +17,10 @@ import games.stendhal.server.entity.item.Item;
 /** Registry of stable random affix definitions. */
 public final class ItemAffixRegistry {
 	private static final ItemAffixRegistry INSTANCE = new ItemAffixRegistry(
-			Arrays.<ItemAffixDefinition>asList(new ParryAffixDefinition()));
+			Arrays.<ItemAffixDefinition>asList(
+					new ParryAffixDefinition(),
+					new LifestealAffixDefinition(),
+					new AccuracyAffixDefinition()));
 
 	private final List<ItemAffixDefinition> definitions;
 	private final Map<String, ItemAffixDefinition> byId;
@@ -90,6 +93,52 @@ public final class ItemAffixRegistry {
 		@Override
 		public boolean apply(final Item item, final Random random) {
 			return ParryAffixService.applySelectedAffix(item, random) > 0;
+		}
+	}
+
+	private static final class LifestealAffixDefinition
+			implements ItemAffixDefinition {
+		@Override
+		public String getId() {
+			return WeaponAffixService.LIFESTEAL_ATTRIBUTE;
+		}
+
+		@Override
+		public String getAttribute() {
+			return WeaponAffixService.LIFESTEAL_ATTRIBUTE;
+		}
+
+		@Override
+		public boolean isEligible(final Item item) {
+			return WeaponAffixService.isEligible(item, getAttribute());
+		}
+
+		@Override
+		public boolean apply(final Item item, final Random random) {
+			return WeaponAffixService.applyLifesteal(item, random);
+		}
+	}
+
+	private static final class AccuracyAffixDefinition
+			implements ItemAffixDefinition {
+		@Override
+		public String getId() {
+			return WeaponAffixService.ACCURACY_ATTRIBUTE;
+		}
+
+		@Override
+		public String getAttribute() {
+			return WeaponAffixService.ACCURACY_ATTRIBUTE;
+		}
+
+		@Override
+		public boolean isEligible(final Item item) {
+			return WeaponAffixService.isEligible(item, getAttribute());
+		}
+
+		@Override
+		public boolean apply(final Item item, final Random random) {
+			return WeaponAffixService.applyAccuracy(item, random);
 		}
 	}
 }
