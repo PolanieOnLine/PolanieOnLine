@@ -72,6 +72,14 @@ public class ItemCreationCommandOptionsTest {
 	}
 
 	@Test(expected = IllegalArgumentException.class)
+	public void testBuilderCannotDisableForcedAdminLegendaryAffixes() {
+		ItemCreationContext.builder(ItemCreationContext.Source.ADMIN)
+				.withForcedRarity(ItemRarity.LEGENDARY)
+				.generateAffixes(false)
+				.build();
+	}
+
+	@Test(expected = IllegalArgumentException.class)
 	public void testSeedCannotBeCombinedWithDisabledAffixes() {
 		final RPAction action = new RPAction();
 		action.put("rarity", "epic");
