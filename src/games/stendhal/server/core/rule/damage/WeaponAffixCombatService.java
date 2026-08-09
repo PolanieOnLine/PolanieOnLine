@@ -22,8 +22,15 @@ public final class WeaponAffixCombatService {
 	public static final String DISTANCE_DAMAGE_ATTRIBUTE = "distance_damage";
 	public static final String LEGENDARY_DEEP_WOUNDS_ATTRIBUTE =
 			"legendary_deep_wounds";
+	public static final String LEGENDARY_LONGSHOT_ATTRIBUTE =
+			"legendary_longshot";
+	public static final String LEGENDARY_EXECUTIONER_ATTRIBUTE =
+			"legendary_executioner";
 
 	private static final double EXECUTE_HP_THRESHOLD = 0.25;
+	private static final double LEGENDARY_EXECUTION_HP_THRESHOLD = 0.20;
+	private static final double LEGENDARY_EXECUTION_DAMAGE_BONUS = 0.35;
+	private static final double LEGENDARY_LONGSHOT_DAMAGE_BONUS = 0.25;
 	private static final double MAX_STATUS_PROC_CHANCE = 0.25;
 	private static final double BLEED_TOTAL_DAMAGE_FACTOR = 0.25;
 	private static final double DEEP_WOUNDS_PROC_CHANCE = 0.15;
@@ -49,19 +56,37 @@ public final class WeaponAffixCombatService {
 			multiplier *= 1.0 + getWeightedFraction(weapons,
 					EXECUTE_DAMAGE_ATTRIBUTE);
 		}
+		if (isLegendaryExecutionActive(defender)) {
+			multiplier *= 1.0 + getWeightedFixedBonus(weapons,
+					LEGENDARY_EXECUTIONER_ATTRIBUTE,
+					LEGENDARY_EXECUTION_DAMAGE_BONUS);
+		}
 		if (rangedAttack) {
 			multiplier *= 1.0 + getWeightedFraction(weapons,
 					DISTANCE_DAMAGE_ATTRIBUTE);
+			multiplier *= 1.0 + getWeightedFixedBonus(weapons,
+					LEGENDARY_LONGSHOT_ATTRIBUTE,
+					LEGENDARY_LONGSHOT_DAMAGE_BONUS);
 		}
 		return scaleDamage(damage, multiplier);
 	}
 
 	public static boolean isExecuteActive(final RPEntity defender) {
+		return isBelowHealthThreshold(defender, EXECUTE_HP_THRESHOLD);
+	}
+
+	public static boolean isLegendaryExecutionActive(final RPEntity defender) {
+		return isBelowHealthThreshold(defender,
+				LEGENDARY_EXECUTION_HP_THRESHOLD);
+	}
+
+	private static boolean isBelowHealthThreshold(final RPEntity defender,
+			final double threshold) {
 		if (defender == null || defender.getHP() <= 0 || defender.getBaseHP() <= 0) {
 			return false;
 		}
 		return ((double) defender.getHP() / (double) defender.getBaseHP())
-				< EXECUTE_HP_THRESHOLD;
+				< threshold;
 	}
 
 	public static double getWeightedFraction(final List<Item> weapons,
@@ -83,6 +108,28 @@ public final class WeaponAffixCombatService {
 			final double value = weapon.has(attribute)
 					? clampFraction(weapon.getDouble(attribute)) : 0.0;
 			weightedValue += weight * value;
+			totalWeight += weight;
+		}
+		return totalWeight == 0.0 ? 0.0 : weightedValue / totalWeight;
+	}
+
+	public static double getWeightedFixedBonus(final List<Item> weapons,
+			final String attribute, final double fixedBonus) {
+		if (weapons == null || weapons.isEmpty() || attribute == null
+				|| fixedBonus <= 0.0 || Double.isNaN(fixedBonus)) {
+			return 0.0;
+		}
+		double weightedValue = 0.0;
+		double totalWeight = 0.0;
+		for (final Item weapon : weapons) {
+			if (weapon == null) {
+				continue;
+			}
+			double weight = Math.max(0.0, weapon.getAverageDamage());
+			if (weight == 0.0) {
+				weight = 1.0;
+			}
+			weightedValue += weight * (weapon.has(attribute) ? fixedBonus : 0.0);
 			totalWeight += weight;
 		}
 		return totalWeight == 0.0 ? 0.0 : weightedValue / totalWeight;
