@@ -1,5 +1,5 @@
 /***************************************************************************
- *                 (C) Copyright 2019-2021 - PolanieOnLine                 *
+ *                 (C) Copyright 2019-2026 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,74 +11,61 @@
  ***************************************************************************/
 package games.stendhal.server.entity.status;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import games.stendhal.server.core.events.TurnListener;
-import games.stendhal.server.core.events.TurnNotifier;
+import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.RPEntity;
 
+/** Runs one wound on its own cadence. */
 public class BleedingStatusTurnListener implements TurnListener {
-	private StatusList statusList;
 	private static final String ATTRIBUTE_NAME = "bleeding";
 
-	public BleedingStatusTurnListener(StatusList statusList) {
+	private final StatusList statusList;
+	private final BleedingStatus bleeding;
+
+	public BleedingStatusTurnListener(final StatusList statusList,
+			final BleedingStatus bleeding) {
 		this.statusList = statusList;
+		this.bleeding = bleeding;
 	}
 
 	@Override
-	public void onTurnReached(int turn) {
-		RPEntity entity = statusList.getEntity();
-		if (entity == null) {
+	public void onTurnReached(final int turn) {
+		final RPEntity entity = statusList.getEntity();
+		if (entity == null || !statusList.getStatuses().contains(bleeding)) {
 			return;
 		}
 
-		List<BleedingStatus> toConsume = statusList.getAllStatusByClass(BleedingStatus.class);
-		if (toConsume.isEmpty()) {
-			if (entity.has(ATTRIBUTE_NAME)) {
-				entity.remove(ATTRIBUTE_NAME);
-				entity.notifyWorldAboutChanges();
-			}
+		if (bleeding.isConsumed() || entity.getHP() <= 0) {
+			statusList.remove(bleeding);
 			return;
 		}
 
-		List<ConsumableStatus> toRemove = new LinkedList<ConsumableStatus>();
-		int sum = 0;
-		int amount = 0;
-		for (final BleedingStatus bleeding : toConsume) {
-			if (turn % bleeding.getFrecuency() == 0) {
-				if (bleeding.consumed()) {
-					toRemove.add(bleeding);
-				} else {
-					amount = bleeding.consume();
-					entity.damage(-amount, bleeding);
-					sum += amount;
-					entity.put(ATTRIBUTE_NAME, sum);
-				}
-				entity.notifyWorldAboutChanges();
+		final int woundDamage = bleeding.consumeNextTick();
+		final int damage = Math.min(woundDamage, entity.getHP());
+		if (damage > 0) {
+			// Preserve the old signed client attribute convention while damage and
+			// wound internals use positive values.
+			entity.put(ATTRIBUTE_NAME, -damage);
+			final Entity source = bleeding.getSource();
+			if (source != null) {
+				// onDamaged expects its caller to cap damage at remaining HP. Doing
+				// that here also keeps damage contribution and XP attribution exact.
+				entity.onDamaged(source, damage);
+			} else {
+				// Compatibility fallback for legacy/environmental bleeding callers.
+				entity.damage(damage, bleeding);
 			}
 		}
 
-		for (final ConsumableStatus consumable : toRemove) {
-			statusList.remove(consumable);
+		if (!statusList.getStatuses().contains(bleeding)) {
+			return;
 		}
-		TurnNotifier.get().notifyInTurns(0, this);
-	}
+		if (bleeding.isConsumed() || entity.getHP() <= 0) {
+			statusList.remove(bleeding);
+			return;
+		}
 
-	@Override
-	public int hashCode() {
-		return statusList.hashCode() * 31;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if ((obj == null) || (getClass() != obj.getClass())) {
-			return false;
-		}
-		BleedingStatusTurnListener other = (BleedingStatusTurnListener) obj;
-		return statusList.equals(other.statusList);
+		entity.notifyWorldAboutChanges();
+		BleedingStatusHandler.schedule(statusList, bleeding);
 	}
 }
