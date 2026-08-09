@@ -105,6 +105,46 @@ public class WeaponAffixCombatServiceTest {
 	}
 
 	@Test
+	public void legendaryDeepWoundsWorksWithoutNormalBleedAffix() {
+		final Item weapon = weapon("sword", 20);
+		weapon.put(WeaponAffixCombatService.LEGENDARY_DEEP_WOUNDS_ATTRIBUTE, 1.0);
+
+		final BleedingAttacker bleeding =
+				WeaponAffixCombatService.createBleedingAttacker(
+						Arrays.asList(weapon));
+
+		assertEquals(15.0, bleeding.getProbability(), 0.0);
+		assertEquals(0.35, bleeding.getDamageFactor(), 0.0);
+	}
+
+	@Test
+	public void legendaryAndNormalBleedShareOneCappedProc() {
+		final Item weapon = weapon("sword", 20);
+		weapon.put(WeaponAffixCombatService.BLEED_ON_HIT_ATTRIBUTE, 0.15);
+		weapon.put(WeaponAffixCombatService.LEGENDARY_DEEP_WOUNDS_ATTRIBUTE, 1.0);
+
+		final BleedingAttacker bleeding =
+				WeaponAffixCombatService.createBleedingAttacker(
+						Arrays.asList(weapon));
+
+		assertEquals(25.0, bleeding.getProbability(), 0.0);
+		assertEquals(0.35, bleeding.getDamageFactor(), 0.0);
+	}
+
+	@Test
+	public void twoDeepWoundsSourcesRespectGlobalProcCap() {
+		final Item first = weapon("sword", 20);
+		final Item second = weapon("axe", 20);
+		first.put(WeaponAffixCombatService.LEGENDARY_DEEP_WOUNDS_ATTRIBUTE, 1.0);
+		second.put(WeaponAffixCombatService.LEGENDARY_DEEP_WOUNDS_ATTRIBUTE, 1.0);
+
+		assertEquals(0.25, WeaponAffixCombatService.combinedFixedProcChance(
+				Arrays.asList(first, second),
+				WeaponAffixCombatService.LEGENDARY_DEEP_WOUNDS_ATTRIBUTE, 0.15),
+				0.0000001);
+	}
+
+	@Test
 	public void bleedProcCapIsConvertedToPercentExactlyOnce() {
 		final Item first = weapon("sword", 20);
 		final Item second = weapon("sword", 20);
