@@ -111,7 +111,8 @@ public final class WeaponAffixService {
 		}
 		final int percent = rollInclusive(random,
 				MIN_LIFESTEAL_PERCENT, MAX_LIFESTEAL_PERCENT);
-		item.put(LIFESTEAL_ATTRIBUTE, percent / 100.0);
+		item.put(LIFESTEAL_ATTRIBUTE,
+				ItemRollPrecision.round(percent / 100.0));
 		return true;
 	}
 
@@ -224,7 +225,7 @@ public final class WeaponAffixService {
 
 	private static void putPercentFraction(final Item item,
 			final String attribute, final int percent) {
-		item.put(attribute, percent / 100.0);
+		item.put(attribute, ItemRollPrecision.round(percent / 100.0));
 	}
 
 	private static Set<String> classes(final String... values) {

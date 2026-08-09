@@ -132,12 +132,13 @@ public class ItemAffixDropIntegrationTest {
 		new ItemRarityService(new Random(5L)).initialize(item,
 				drop(ItemRarity.LEGENDARY));
 
-		// Intrinsic properties still participate in the existing rarity stat
-		// scaling. The affix layer must not overwrite or claim that value.
-		assertEquals(1.275, item.getRarityModifier(
-				WeaponAffixService.LIFESTEAL_ATTRIBUTE).doubleValue(), 0.0000001);
-		assertEquals(0.3825, item.getDouble(
-				WeaponAffixService.LIFESTEAL_ATTRIBUTE), 0.0000001);
+		// Intrinsic properties still participate in rarity scaling. The
+		// materialized rarity multiplier/result use the same two-decimal policy,
+		// while the affix layer must not overwrite or claim that value.
+		assertEquals(1.28, item.getRarityModifier(
+				WeaponAffixService.LIFESTEAL_ATTRIBUTE).doubleValue(), 0.0);
+		assertEquals(0.38, item.getDouble(
+				WeaponAffixService.LIFESTEAL_ATTRIBUTE), 0.0);
 		assertFalse(ItemAffixState.has(item,
 				WeaponAffixService.LIFESTEAL_ATTRIBUTE));
 		assertEquals(4, ItemAffixState.getValues(item).size());

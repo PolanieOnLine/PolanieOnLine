@@ -178,8 +178,11 @@ public final class ItemRarityService {
 			if (item.has(statistic) && item.getDouble(statistic) > 0.0) {
 				final double multiplier = chooseMultiplier(statistic, tier, fixed,
 						context.isRandomizeModifiers());
-				item.put(statistic, Math.min((double) Float.MAX_VALUE,
-						item.getDouble(statistic) * multiplier));
+				if (Double.compare(multiplier, 1.0) != 0) {
+					final double scaled = Math.min((double) Float.MAX_VALUE,
+							item.getDouble(statistic) * multiplier);
+					item.put(statistic, ItemRollPrecision.round(scaled));
+				}
 				item.setRarityModifier(statistic, multiplier);
 			}
 		}
@@ -189,8 +192,8 @@ public final class ItemRarityService {
 		item.setRarityModifier(ItemRarityModifiers.VALUE, valueMultiplier);
 		item.setRarity(rarity);
 		item.put(Item.RARITY_PROFILE, profile.getId());
-		// Random affixes are a second instance layer. They are generated only for
-		// fresh DROP contexts and therefore never reroll quest/admin/restore items.
+		// Random affixes are a second persistent instance layer. Fresh contexts
+		// generate according to their source/options; RESTORE never rerolls them.
 		affixGenerator.generate(item, context);
 		ItemTooltipService.update(item);
 	}
@@ -251,15 +254,17 @@ public final class ItemRarityService {
 	private double chooseMultiplier(final String statistic,
 			final ItemRarityProfile.Tier tier,
 			final ItemRarityModifiers fixed, final boolean randomize) {
+		final double selected;
 		if (fixed != null) {
 			final Double supplied = findFixedMultiplier(statistic, fixed);
-			return supplied == null ? 1.0 : supplied.doubleValue();
+			selected = supplied == null ? 1.0 : supplied.doubleValue();
+		} else if (!randomize) {
+			selected = tier.midpointStatMultiplier();
+		} else {
+			selected = randomBetween(tier.getMinimumStatMultiplier(),
+					tier.getMaximumStatMultiplier());
 		}
-		if (!randomize) {
-			return tier.midpointStatMultiplier();
-		}
-		return randomBetween(tier.getMinimumStatMultiplier(),
-				tier.getMaximumStatMultiplier());
+		return ItemRollPrecision.roundPositive(selected);
 	}
 
 	private Double findFixedMultiplier(final String statistic,
@@ -313,10 +318,10 @@ public final class ItemRarityService {
 
 	private double chooseValueMultiplier(final ItemRarityProfile.Tier tier,
 			final ItemRarityModifiers fixed) {
-		if (fixed != null && fixed.getValueMultiplier() != null) {
-			return fixed.getValueMultiplier().doubleValue();
-		}
-		return tier.getValueMultiplier();
+		final double selected = fixed != null && fixed.getValueMultiplier() != null
+				? fixed.getValueMultiplier().doubleValue()
+				: tier.getValueMultiplier();
+		return ItemRollPrecision.roundPositive(selected);
 	}
 
 	private void applyIntegral(final Item item, final String statistic,

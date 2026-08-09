@@ -135,7 +135,7 @@ public final class EquipmentAffixService {
 		final String attribute = EquipmentStatusResistanceService.getResistanceAttribute(statusType);
 		final int percent = rollInclusive(random, MIN_STATUS_RESISTANCE_PERCENT,
 				MAX_STATUS_RESISTANCE_PERCENT);
-		item.put(attribute, percent / 100.0);
+		item.put(attribute, ItemRollPrecision.round(percent / 100.0));
 		return true;
 	}
 
@@ -170,8 +170,9 @@ public final class EquipmentAffixService {
 			return false;
 		}
 		item.put(CriticalHitService.CRITICAL_DAMAGE_BONUS_ATTRIBUTE,
-				rollInclusive(random, MIN_ACCESSORY_CRITICAL_DAMAGE_PERCENT,
-						MAX_ACCESSORY_CRITICAL_DAMAGE_PERCENT) / 100.0);
+				ItemRollPrecision.round(rollInclusive(random,
+						MIN_ACCESSORY_CRITICAL_DAMAGE_PERCENT,
+						MAX_ACCESSORY_CRITICAL_DAMAGE_PERCENT) / 100.0));
 		return true;
 	}
 
