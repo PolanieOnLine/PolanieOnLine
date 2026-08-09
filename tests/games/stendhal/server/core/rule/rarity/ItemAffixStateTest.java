@@ -11,6 +11,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import games.stendhal.server.core.rule.damage.ParryService;
+import games.stendhal.server.core.rule.damage.WeaponAffixCombatService;
 import games.stendhal.server.entity.item.Item;
 import utilities.RPClass.ItemTestHelper;
 
@@ -36,6 +37,22 @@ public class ItemAffixStateTest {
 				ParryService.PARRY_CHANCE_ATTRIBUTE));
 		assertEquals(0.12,
 				restored.getDouble(ParryService.PARRY_CHANCE_ATTRIBUTE), 0.0000001);
+	}
+
+	@Test
+	public void restoresLegendarySignatureMarker() {
+		final Item saved = sword();
+		saved.put(WeaponAffixCombatService.LEGENDARY_DEEP_WOUNDS_ATTRIBUTE, 1.0);
+		saved.put(ItemAffixState.ATTRIBUTE,
+				WeaponAffixCombatService.LEGENDARY_DEEP_WOUNDS_ATTRIBUTE, "1.0");
+		final Item restored = sword();
+
+		ItemAffixState.restore(restored, saved);
+
+		assertTrue(ItemAffixState.has(restored,
+				WeaponAffixCombatService.LEGENDARY_DEEP_WOUNDS_ATTRIBUTE));
+		assertEquals(1.0, restored.getDouble(
+				WeaponAffixCombatService.LEGENDARY_DEEP_WOUNDS_ATTRIBUTE), 0.0);
 	}
 
 	@Test
