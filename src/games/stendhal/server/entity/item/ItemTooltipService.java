@@ -53,8 +53,6 @@ public final class ItemTooltipService {
 
 		put(item, ItemTooltip.CATEGORY, resolveCategory(item));
 
-		// Read the stored item values directly. Some subclasses calculate contextual
-		// defense from their owner and cannot safely do that while being copied.
 		putPositiveInt(item, ItemTooltip.ATTACK,
 				item.getAttributeWithImprovement("atk", 0));
 		putPositiveInt(item, ItemTooltip.RANGED_ATTACK,
@@ -91,6 +89,8 @@ public final class ItemTooltipService {
 		copyDouble(item, ItemTooltip.CRITICAL_DAMAGE_BONUS,
 				ItemTooltip.CRITICAL_DAMAGE_BONUS);
 		copyDouble(item, ItemTooltip.BLEED_ON_HIT, ItemTooltip.BLEED_ON_HIT);
+		copyDouble(item, ItemTooltip.LEGENDARY_DEEP_WOUNDS,
+				ItemTooltip.LEGENDARY_DEEP_WOUNDS);
 		copyDouble(item, ItemTooltip.EXECUTE_DAMAGE, ItemTooltip.EXECUTE_DAMAGE);
 		copyDouble(item, ItemTooltip.POISON_ON_HIT, ItemTooltip.POISON_ON_HIT);
 		copyDouble(item, ItemTooltip.DISTANCE_DAMAGE, ItemTooltip.DISTANCE_DAMAGE);
