@@ -7,12 +7,18 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import games.stendhal.server.core.rule.damage.ParryService;
 import games.stendhal.server.core.rule.damage.WeaponAffixCombatService;
+import games.stendhal.server.core.rule.damage.WeaponArmorInteractionService;
 import games.stendhal.server.entity.item.Item;
+import marauroa.common.game.Definition;
+import marauroa.common.game.RPClass;
 import utilities.RPClass.ItemTestHelper;
 
 public class ItemAffixStateTest {
@@ -53,6 +59,28 @@ public class ItemAffixStateTest {
 				WeaponAffixCombatService.LEGENDARY_DEEP_WOUNDS_ATTRIBUTE));
 		assertEquals(1.0, restored.getDouble(
 				WeaponAffixCombatService.LEGENDARY_DEEP_WOUNDS_ATTRIBUTE), 0.0);
+	}
+
+	@Test
+	public void legendaryMaterializedAttributesAreDeclaredOnItemRPClass() {
+		final Set<String> names = new HashSet<String>();
+		for (final Definition definition
+				: RPClass.getRPClass("item").getDefinitions()) {
+			names.add(definition.getName());
+		}
+
+		assertTrue(names.contains(
+				WeaponAffixCombatService.LEGENDARY_DEEP_WOUNDS_ATTRIBUTE));
+		assertTrue(names.contains(
+				WeaponAffixCombatService.LEGENDARY_LONGSHOT_ATTRIBUTE));
+		assertTrue(names.contains(
+				WeaponAffixCombatService.LEGENDARY_EXECUTIONER_ATTRIBUTE));
+		assertTrue(names.contains(
+				WeaponArmorInteractionService.LEGENDARY_ARMOR_BREAKER_ATTRIBUTE));
+		assertTrue(names.contains(
+				LegendaryEquipmentAffixService.BASTION_BONUS_ATTRIBUTE));
+		assertTrue(names.contains(
+				LegendaryEquipmentAffixService.RELIC_POWER_ATTRIBUTE));
 	}
 
 	@Test
