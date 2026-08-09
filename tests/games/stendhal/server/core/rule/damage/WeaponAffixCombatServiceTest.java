@@ -5,6 +5,7 @@ package games.stendhal.server.core.rule.damage;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Arrays;
@@ -16,6 +17,7 @@ import org.junit.Test;
 
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.player.Player;
+import games.stendhal.server.entity.status.BleedingAttacker;
 import games.stendhal.server.entity.status.StatusType;
 import utilities.PlayerTestHelper;
 import utilities.RPClass.ItemTestHelper;
@@ -88,12 +90,47 @@ public class WeaponAffixCombatServiceTest {
 	}
 
 	@Test
-	public void statusResistanceReducesRolledProcChance() {
+	public void bleedProcDelegatesCombinedChanceToBleedingTwoPointZero() {
+		final Item first = weapon("sword", 20);
+		final Item second = weapon("sword", 20);
+		first.put(WeaponAffixCombatService.BLEED_ON_HIT_ATTRIBUTE, 0.10);
+		second.put(WeaponAffixCombatService.BLEED_ON_HIT_ATTRIBUTE, 0.10);
+
+		final BleedingAttacker bleeding =
+				WeaponAffixCombatService.createBleedingAttacker(
+						Arrays.asList(first, second));
+
+		assertEquals(19.0, bleeding.getProbability(), 0.0000001);
+		assertEquals(0.25, bleeding.getDamageFactor(), 0.0);
+	}
+
+	@Test
+	public void bleedProcCapIsConvertedToPercentExactlyOnce() {
+		final Item first = weapon("sword", 20);
+		final Item second = weapon("sword", 20);
+		first.put(WeaponAffixCombatService.BLEED_ON_HIT_ATTRIBUTE, 0.15);
+		second.put(WeaponAffixCombatService.BLEED_ON_HIT_ATTRIBUTE, 0.15);
+
+		final BleedingAttacker bleeding =
+				WeaponAffixCombatService.createBleedingAttacker(
+						Arrays.asList(first, second));
+
+		assertEquals(25.0, bleeding.getProbability(), 0.0);
+	}
+
+	@Test
+	public void noBleedAffixDoesNotCreateBleedingAttacker() {
+		assertNull(WeaponAffixCombatService.createBleedingAttacker(
+				Arrays.asList(weapon("sword", 20))));
+	}
+
+	@Test
+	public void equipmentResistanceResolverReducesPoisonProcChance() {
 		final Player target = target(100, 100);
-		target.put("resist_bleeding", 0.50);
+		target.put("resist_poisoned", 0.50);
 
 		assertEquals(0.10, WeaponAffixCombatService.effectiveStatusChance(
-				target, StatusType.BLEEDING, 0.20), 0.0000001);
+				target, StatusType.POISONED, 0.20), 0.0000001);
 	}
 
 	@Test
