@@ -20,7 +20,6 @@ import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.common.constants.ItemTooltip;
 import games.stendhal.server.core.rule.damage.CriticalHitService;
 import games.stendhal.server.core.rule.damage.ParryService;
-import games.stendhal.server.core.rule.damage.WeaponAffixCombatService;
 import games.stendhal.server.core.rule.damage.WeaponArmorInteractionService;
 import games.stendhal.server.entity.item.Item;
 import utilities.RPClass.ItemTestHelper;
@@ -32,35 +31,32 @@ public class ItemAffixDropIntegrationTest {
 	}
 
 	@Test
-	public void legendarySwordDropGetsSignatureAndTwoRotatingAffixes() {
+	public void legendarySwordDropGetsThreeRegularAndOneSignatureAffix() {
 		final Item item = sword();
 		new ItemRarityService(new Random(19L)).initialize(item,
 				drop(ItemRarity.LEGENDARY));
 
 		assertSame(ItemRarity.LEGENDARY, item.getRarity());
 		final Map<String, String> affixes = ItemAffixState.getValues(item);
-		assertEquals(3, affixes.size());
-		assertTrue(affixes.containsKey(
-				WeaponAffixCombatService.LEGENDARY_DEEP_WOUNDS_ATTRIBUTE));
-		assertTrue(item.has(
-				WeaponAffixCombatService.LEGENDARY_DEEP_WOUNDS_ATTRIBUTE));
-		assertTrue(item.getMap(ItemTooltip.ATTRIBUTE).containsKey(
-				WeaponAffixCombatService.LEGENDARY_DEEP_WOUNDS_ATTRIBUTE));
+		assertEquals(4, affixes.size());
 
 		int regularAffixes = 0;
+		int legendaryAffixes = 0;
 		for (final String id : affixes.keySet()) {
-			final ItemAffixDefinition definition = ItemAffixRegistry.getInstance().get(id);
-			if (definition == null) {
-				assertEquals(WeaponAffixCombatService.LEGENDARY_DEEP_WOUNDS_ATTRIBUTE,
-						id);
-				continue;
+			ItemAffixDefinition definition = ItemAffixRegistry.getInstance().get(id);
+			if (definition != null) {
+				regularAffixes++;
+			} else {
+				definition = LegendaryItemAffixRegistry.getInstance().get(id);
+				assertTrue(definition != null);
+				legendaryAffixes++;
 			}
-			regularAffixes++;
 			assertTrue(item.has(definition.getAttribute()));
 			assertTrue(item.getMap(ItemTooltip.ATTRIBUTE).containsKey(
 					definition.getAttribute()));
 		}
-		assertEquals(2, regularAffixes);
+		assertEquals(3, regularAffixes);
+		assertEquals(1, legendaryAffixes);
 
 		if (ItemAffixState.has(item, ParryService.PARRY_CHANCE_ATTRIBUTE)) {
 			assertTrue(item.getDouble(ParryService.PARRY_CHANCE_ATTRIBUTE) >= 0.05);
@@ -88,6 +84,18 @@ public class ItemAffixDropIntegrationTest {
 	}
 
 	@Test
+	public void adminLegendaryAutomaticallyGetsAffixes() {
+		final Item item = sword();
+		new ItemRarityService(new Random(31L)).initialize(item,
+				ItemCreationContext.builder(ItemCreationContext.Source.ADMIN)
+						.withForcedRarity(ItemRarity.LEGENDARY)
+						.randomizeModifiers(false).withAffixSeed(123L).build());
+
+		assertSame(ItemRarity.LEGENDARY, item.getRarity());
+		assertEquals(4, ItemAffixState.getValues(item).size());
+	}
+
+	@Test
 	public void rareSwordDropGetsExactlyOneAffix() {
 		final Item item = sword();
 		new ItemRarityService(new Random(7L)).initialize(item,
@@ -106,11 +114,11 @@ public class ItemAffixDropIntegrationTest {
 	}
 
 	@Test
-	public void nonDropContextDoesNotGenerateAffixes() {
+	public void adminRareWithoutAffixOptionDoesNotGenerateAffixes() {
 		final Item item = sword();
 		new ItemRarityService(new Random(7L)).initialize(item,
 				ItemCreationContext.builder(ItemCreationContext.Source.ADMIN)
-						.withForcedRarity(ItemRarity.LEGENDARY)
+						.withForcedRarity(ItemRarity.RARE)
 						.randomizeModifiers(false).build());
 
 		assertFalse(ItemAffixState.hasAny(item));
@@ -132,7 +140,7 @@ public class ItemAffixDropIntegrationTest {
 				WeaponAffixService.LIFESTEAL_ATTRIBUTE), 0.0000001);
 		assertFalse(ItemAffixState.has(item,
 				WeaponAffixService.LIFESTEAL_ATTRIBUTE));
-		assertEquals(3, ItemAffixState.getValues(item).size());
+		assertEquals(4, ItemAffixState.getValues(item).size());
 	}
 
 	private ItemCreationContext drop(final ItemRarity rarity) {
