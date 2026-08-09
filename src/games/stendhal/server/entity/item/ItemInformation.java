@@ -14,10 +14,13 @@ package games.stendhal.server.entity.item;
 
 import games.stendhal.common.constants.ItemTooltip;
 import games.stendhal.server.core.rule.damage.CriticalHitService;
+import games.stendhal.server.core.rule.damage.EquipmentStatusResistanceService;
 import games.stendhal.server.core.rule.damage.ParryService;
 import games.stendhal.server.core.rule.damage.WeaponAffixCombatService;
 import games.stendhal.server.core.rule.damage.WeaponArmorInteractionService;
+import games.stendhal.server.core.rule.rarity.EquipmentAffixService;
 import games.stendhal.server.core.rule.rarity.ItemAffixState;
+import games.stendhal.server.entity.status.StatusType;
 import marauroa.common.game.Definition;
 import marauroa.common.game.Definition.Type;
 import marauroa.common.game.RPClass;
@@ -61,6 +64,20 @@ public class ItemInformation extends Item {
 				Type.FLOAT, Definition.HIDDEN);
 		itemClass.addAttribute(WeaponAffixCombatService.DISTANCE_DAMAGE_ATTRIBUTE,
 				Type.FLOAT, Definition.HIDDEN);
+		itemClass.addAttribute(EquipmentAffixService.FLAT_ATTACK_BONUS_ATTRIBUTE,
+				Type.SHORT, Definition.HIDDEN);
+		itemClass.addAttribute(EquipmentAffixService.FLAT_DEFENSE_BONUS_ATTRIBUTE,
+				Type.SHORT, Definition.HIDDEN);
+		itemClass.addAttribute(EquipmentStatusResistanceService.getResistanceAttribute(
+				StatusType.POISONED), Type.FLOAT, Definition.HIDDEN);
+		itemClass.addAttribute(EquipmentStatusResistanceService.getResistanceAttribute(
+				StatusType.BLEEDING), Type.FLOAT, Definition.HIDDEN);
+		itemClass.addAttribute(EquipmentStatusResistanceService.getResistanceAttribute(
+				StatusType.SHOCKED), Type.FLOAT, Definition.HIDDEN);
+		itemClass.addAttribute(EquipmentStatusResistanceService.getResistanceAttribute(
+				StatusType.CONFUSED), Type.FLOAT, Definition.HIDDEN);
+		itemClass.addAttribute(EquipmentStatusResistanceService.getResistanceAttribute(
+				StatusType.HEAVY), Type.FLOAT, Definition.HIDDEN);
 		itemClass.addAttribute(ItemAffixState.ATTRIBUTE,
 				Type.MAP, Definition.HIDDEN);
 

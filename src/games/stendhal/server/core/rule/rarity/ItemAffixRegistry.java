@@ -12,15 +12,24 @@ import java.util.Map;
 import java.util.Random;
 
 import games.stendhal.server.core.rule.damage.CriticalHitService;
+import games.stendhal.server.core.rule.damage.EquipmentStatusResistanceService;
 import games.stendhal.server.core.rule.damage.ParryService;
 import games.stendhal.server.core.rule.damage.WeaponAffixCombatService;
 import games.stendhal.server.core.rule.damage.WeaponArmorInteractionService;
 import games.stendhal.server.entity.item.Item;
+import games.stendhal.server.entity.status.StatusType;
 
 /** Registry of stable random affix definitions. */
 public final class ItemAffixRegistry {
 	private static final ItemAffixRegistry INSTANCE = new ItemAffixRegistry(
 			Arrays.<ItemAffixDefinition>asList(
+					new FlatAttackAffixDefinition(),
+					new FlatDefenseAffixDefinition(),
+					new StatusResistanceAffixDefinition(StatusType.POISONED),
+					new StatusResistanceAffixDefinition(StatusType.BLEEDING),
+					new StatusResistanceAffixDefinition(StatusType.SHOCKED),
+					new StatusResistanceAffixDefinition(StatusType.CONFUSED),
+					new StatusResistanceAffixDefinition(StatusType.HEAVY),
 					new ParryAffixDefinition(),
 					new LifestealAffixDefinition(),
 					new AccuracyAffixDefinition(),
@@ -83,6 +92,81 @@ public final class ItemAffixRegistry {
 		return result;
 	}
 
+	private static final class FlatAttackAffixDefinition
+			implements ItemAffixDefinition {
+		@Override
+		public String getId() {
+			return EquipmentAffixService.FLAT_ATTACK_BONUS_ATTRIBUTE;
+		}
+
+		@Override
+		public String getAttribute() {
+			return EquipmentAffixService.FLAT_ATTACK_BONUS_ATTRIBUTE;
+		}
+
+		@Override
+		public boolean isEligible(final Item item) {
+			return EquipmentAffixService.isFlatAttackEligible(item);
+		}
+
+		@Override
+		public boolean apply(final Item item, final Random random) {
+			return EquipmentAffixService.applyFlatAttack(item, random);
+		}
+	}
+
+	private static final class FlatDefenseAffixDefinition
+			implements ItemAffixDefinition {
+		@Override
+		public String getId() {
+			return EquipmentAffixService.FLAT_DEFENSE_BONUS_ATTRIBUTE;
+		}
+
+		@Override
+		public String getAttribute() {
+			return EquipmentAffixService.FLAT_DEFENSE_BONUS_ATTRIBUTE;
+		}
+
+		@Override
+		public boolean isEligible(final Item item) {
+			return EquipmentAffixService.isFlatDefenseEligible(item);
+		}
+
+		@Override
+		public boolean apply(final Item item, final Random random) {
+			return EquipmentAffixService.applyFlatDefense(item, random);
+		}
+	}
+
+	private static final class StatusResistanceAffixDefinition
+			implements ItemAffixDefinition {
+		private final StatusType statusType;
+
+		StatusResistanceAffixDefinition(final StatusType statusType) {
+			this.statusType = statusType;
+		}
+
+		@Override
+		public String getId() {
+			return EquipmentStatusResistanceService.getResistanceAttribute(statusType);
+		}
+
+		@Override
+		public String getAttribute() {
+			return getId();
+		}
+
+		@Override
+		public boolean isEligible(final Item item) {
+			return EquipmentAffixService.isStatusResistanceEligible(item, statusType);
+		}
+
+		@Override
+		public boolean apply(final Item item, final Random random) {
+			return EquipmentAffixService.applyStatusResistance(item, statusType, random);
+		}
+	}
+
 	private static final class ParryAffixDefinition
 			implements ItemAffixDefinition {
 		@Override
@@ -143,12 +227,16 @@ public final class ItemAffixRegistry {
 
 		@Override
 		public boolean isEligible(final Item item) {
-			return WeaponAffixService.isEligible(item, getAttribute());
+			return WeaponAffixService.isEligible(item, getAttribute())
+					|| EquipmentAffixService.isAccessoryAccuracyEligible(item);
 		}
 
 		@Override
 		public boolean apply(final Item item, final Random random) {
-			return WeaponAffixService.applyAccuracy(item, random);
+			if (WeaponAffixService.applyAccuracy(item, random)) {
+				return true;
+			}
+			return EquipmentAffixService.applyAccessoryAccuracy(item, random);
 		}
 	}
 
@@ -166,12 +254,16 @@ public final class ItemAffixRegistry {
 
 		@Override
 		public boolean isEligible(final Item item) {
-			return WeaponAffixService.isEligible(item, getAttribute());
+			return WeaponAffixService.isEligible(item, getAttribute())
+					|| EquipmentAffixService.isAccessoryCriticalChanceEligible(item);
 		}
 
 		@Override
 		public boolean apply(final Item item, final Random random) {
-			return WeaponAffixService.applyCriticalChance(item, random);
+			if (WeaponAffixService.applyCriticalChance(item, random)) {
+				return true;
+			}
+			return EquipmentAffixService.applyAccessoryCriticalChance(item, random);
 		}
 	}
 
@@ -189,12 +281,16 @@ public final class ItemAffixRegistry {
 
 		@Override
 		public boolean isEligible(final Item item) {
-			return WeaponAffixService.isCriticalDamageEligible(item);
+			return WeaponAffixService.isCriticalDamageEligible(item)
+					|| EquipmentAffixService.isAccessoryCriticalDamageEligible(item);
 		}
 
 		@Override
 		public boolean apply(final Item item, final Random random) {
-			return WeaponAffixService.applyCriticalDamage(item, random);
+			if (WeaponAffixService.applyCriticalDamage(item, random)) {
+				return true;
+			}
+			return EquipmentAffixService.applyAccessoryCriticalDamage(item, random);
 		}
 	}
 

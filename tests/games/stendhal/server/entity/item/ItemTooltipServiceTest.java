@@ -85,6 +85,40 @@ public class ItemTooltipServiceTest {
 	}
 
 	@Test
+	public void testEquipmentAffixesArePublishedForTooltip() {
+		final Map<String, String> attributes = new HashMap<String, String>();
+		attributes.put("def", "40");
+		attributes.put(ItemTooltip.FLAT_DEFENSE_BONUS, "5");
+		attributes.put(ItemTooltip.RESIST_POISONED, "0.20");
+		attributes.put(ItemTooltip.RESIST_BLEEDING, "0.15");
+		attributes.put(ItemTooltip.RESIST_SHOCKED, "0.12");
+		attributes.put(ItemTooltip.RESIST_CONFUSED, "0.18");
+		attributes.put(ItemTooltip.RESIST_HEAVY, "0.25");
+		final Item item = new Item("test affix armour", "armor", "test", attributes);
+
+		ItemTooltipService.update(item);
+
+		assertEquals("5", stat(item, ItemTooltip.FLAT_DEFENSE_BONUS));
+		assertEquals("0.2", stat(item, ItemTooltip.RESIST_POISONED));
+		assertEquals("0.15", stat(item, ItemTooltip.RESIST_BLEEDING));
+		assertEquals("0.12", stat(item, ItemTooltip.RESIST_SHOCKED));
+		assertEquals("0.18", stat(item, ItemTooltip.RESIST_CONFUSED));
+		assertEquals("0.25", stat(item, ItemTooltip.RESIST_HEAVY));
+	}
+
+	@Test
+	public void testAccessoryFlatAttackAffixIsPublishedForTooltip() {
+		final Map<String, String> attributes = new HashMap<String, String>();
+		attributes.put("atk", "4");
+		attributes.put(ItemTooltip.FLAT_ATTACK_BONUS, "2");
+		final Item item = new Item("test affix ring", "ring", "test", attributes);
+
+		ItemTooltipService.update(item);
+
+		assertEquals("2", stat(item, ItemTooltip.FLAT_ATTACK_BONUS));
+	}
+
+	@Test
 	public void testPluralBeltsClassIsArmour() {
 		final Map<String, String> attributes = new HashMap<String, String>();
 		attributes.put("def", "21");
@@ -94,6 +128,11 @@ public class ItemTooltipServiceTest {
 
 		assertEquals(ItemTooltip.CATEGORY_ARMOUR,
 				stat(item, ItemTooltip.CATEGORY));
+	}
+
+	@Test
+	public void testRealGloveClassIsArmour() {
+		assertCategory("glove", ItemTooltip.CATEGORY_ARMOUR);
 	}
 
 	@Test

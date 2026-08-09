@@ -24,7 +24,7 @@ public final class CriticalHitService {
 	/**
 	 * Returns final critical chance in percentage points. Equipment bonuses are
 	 * additive: a value of 7.0 means +7 percentage points to the 10% base chance.
-	 * Only held weapons and equipped glyphs currently contribute.
+	 * Held weapons, jewellery and equipped glyphs contribute.
 	 */
 	public static double getCriticalChance(final Player player) {
 		if (player == null) {
@@ -35,6 +35,9 @@ public final class CriticalHitService {
 		for (final Item weapon : player.getWeapons()) {
 			chance += getBonus(weapon);
 		}
+		chance += getBonus(player.getRing());
+		chance += getBonus(player.getRingB());
+		chance += getBonus(player.getNecklace());
 		for (final Item glyph : player.getAllEquippedGlyphs()) {
 			chance += getBonus(glyph);
 		}
@@ -43,16 +46,19 @@ public final class CriticalHitService {
 
 	/**
 	 * Returns the final critical damage multiplier. A weapon affix value of 0.20
-	 * raises a normal 2.00x critical to 2.20x. With two weapons the affix is
-	 * weighted by their average damage contribution rather than simply summed.
+	 * raises a normal 2.00x critical to 2.20x. Dual-wield weapon bonuses are
+	 * weighted by average damage; jewellery contributes its own flat fractions.
 	 */
 	public static double getCriticalDamageMultiplier(final Player player) {
 		if (player == null) {
 			return BASE_CRITICAL_DAMAGE_MULTIPLIER;
 		}
-		final double bonus = Math.min(MAX_CRITICAL_DAMAGE_BONUS,
-				WeaponAffixCombatService.getWeightedFraction(player.getWeapons(),
-						CRITICAL_DAMAGE_BONUS_ATTRIBUTE));
+		double bonus = WeaponAffixCombatService.getWeightedFraction(
+				player.getWeapons(), CRITICAL_DAMAGE_BONUS_ATTRIBUTE);
+		bonus += getFraction(player.getRing(), CRITICAL_DAMAGE_BONUS_ATTRIBUTE);
+		bonus += getFraction(player.getRingB(), CRITICAL_DAMAGE_BONUS_ATTRIBUTE);
+		bonus += getFraction(player.getNecklace(), CRITICAL_DAMAGE_BONUS_ATTRIBUTE);
+		bonus = Math.min(MAX_CRITICAL_DAMAGE_BONUS, Math.max(0.0, bonus));
 		return BASE_CRITICAL_DAMAGE_MULTIPLIER + bonus;
 	}
 
@@ -98,5 +104,16 @@ public final class CriticalHitService {
 		}
 		final double value = item.getDouble(CRITICAL_CHANCE_ATTRIBUTE);
 		return Double.isNaN(value) ? 0.0 : Math.max(0.0, value);
+	}
+
+	private static double getFraction(final Item item, final String attribute) {
+		if (item == null || attribute == null || !item.has(attribute)) {
+			return 0.0;
+		}
+		final double value = item.getDouble(attribute);
+		if (Double.isNaN(value)) {
+			return 0.0;
+		}
+		return Math.min(1.0, Math.max(0.0, value));
 	}
 }

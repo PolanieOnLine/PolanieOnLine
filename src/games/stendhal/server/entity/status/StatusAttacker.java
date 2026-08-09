@@ -16,6 +16,7 @@ import org.apache.log4j.Logger;
 import games.stendhal.common.NotificationType;
 import games.stendhal.common.Rand;
 import games.stendhal.common.constants.Testing;
+import games.stendhal.server.core.rule.damage.EquipmentStatusResistanceService;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.player.Player;
 
@@ -82,50 +83,38 @@ public class StatusAttacker {
 			@SuppressWarnings("unused") int damage) {
 		Status inflictedStatus = (Status) status.clone();
 		StatusType statusType = inflictedStatus.getStatusType();
-		String resistAttribute = "resist_"
-				+ statusType.toString().toLowerCase();
+		final double resistValue = EquipmentStatusResistanceService.getResistance(
+				target, statusType);
+		final double actualProbability = probability * (1.0 - resistValue);
 
-		// Create a temporary instance to adjust without affecting entity's
-		// built-in probability.
-		Double actualProbability = probability;
-
-		if (target.has(resistAttribute)) {
-			Double probabilityAdjust = 1.0 - target.getDouble(resistAttribute);
-
-			if (logger.isDebugEnabled()) {
-				logger.info("Adjusting " + statusType.toString()
-						+ " status infliction resistance: "
-						+ Double.toString(probability) + " * "
-						+ Double.toString(probabilityAdjust) + " = "
-						+ Double.toString(probability * probabilityAdjust));
-			}
-
-			actualProbability = probability * probabilityAdjust;
+		if (logger.isDebugEnabled() && resistValue > 0.0) {
+			logger.info("Adjusting " + statusType.toString()
+					+ " status infliction resistance: "
+					+ Double.toString(probability) + " * "
+					+ Double.toString(1.0 - resistValue) + " = "
+					+ Double.toString(actualProbability));
 		}
 
 		// DEBUG
-		if (logger.isDebugEnabled() || Testing.DEBUG) {
-			if (target.has(resistAttribute)) {
-				double resistValue = target.getDouble(resistAttribute);
-				String debugString1 = attacker.getName() + " "
-						+ inflictedStatus.getName() + " probability: "
-						+ Double.toString(probability);
-				String debugString2 = target.getName() + statusType.getName()
-						+ " resistance: "
-						+ Double.toString(resistValue);
-				String debugString3 = "New probability: "
-						+ Double.toString(actualProbability)
-						+ " (" + Double.toString(probability) + " * (1.0 - "
-						+ Double.toString(resistValue) + "))";
-				logger.info(debugString1);
-				logger.info(debugString2);
-				logger.info(debugString3);
-				if (target instanceof Player) {
-					Player player = (Player)target;
-					player.sendPrivateText(NotificationType.SERVER,
-							debugString1 + "\n" + debugString2 + "\n"
-							+ debugString3);
-				}
+		if ((logger.isDebugEnabled() || Testing.DEBUG) && resistValue > 0.0) {
+			String debugString1 = attacker.getName() + " "
+					+ inflictedStatus.getName() + " probability: "
+					+ Double.toString(probability);
+			String debugString2 = target.getName() + statusType.getName()
+					+ " resistance: "
+					+ Double.toString(resistValue);
+			String debugString3 = "New probability: "
+					+ Double.toString(actualProbability)
+					+ " (" + Double.toString(probability) + " * (1.0 - "
+					+ Double.toString(resistValue) + "))";
+			logger.info(debugString1);
+			logger.info(debugString2);
+			logger.info(debugString3);
+			if (target instanceof Player) {
+				Player player = (Player)target;
+				player.sendPrivateText(NotificationType.SERVER,
+						debugString1 + "\n" + debugString2 + "\n"
+						+ debugString3);
 			}
 		}
 

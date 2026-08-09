@@ -33,7 +33,7 @@ public final class ItemTooltipService {
 					"axe", "ranged", "missile", "wand", "whip")));
 	private static final Set<String> ARMOUR_CLASSES = Collections.unmodifiableSet(
 			new HashSet<String>(Arrays.asList("armor", "shield", "helmet",
-					"cloak", "boots", "gloves", "legs", "belt", "belts")));
+					"cloak", "boots", "glove", "gloves", "legs", "belt", "belts")));
 	private static final Set<String> ACCESSORY_CLASSES = Collections.unmodifiableSet(
 			new HashSet<String>(Arrays.asList("ring", "necklace")));
 
@@ -94,6 +94,13 @@ public final class ItemTooltipService {
 		copyDouble(item, ItemTooltip.EXECUTE_DAMAGE, ItemTooltip.EXECUTE_DAMAGE);
 		copyDouble(item, ItemTooltip.POISON_ON_HIT, ItemTooltip.POISON_ON_HIT);
 		copyDouble(item, ItemTooltip.DISTANCE_DAMAGE, ItemTooltip.DISTANCE_DAMAGE);
+		copyInt(item, ItemTooltip.FLAT_ATTACK_BONUS, ItemTooltip.FLAT_ATTACK_BONUS);
+		copyInt(item, ItemTooltip.FLAT_DEFENSE_BONUS, ItemTooltip.FLAT_DEFENSE_BONUS);
+		copyDouble(item, ItemTooltip.RESIST_POISONED, ItemTooltip.RESIST_POISONED);
+		copyDouble(item, ItemTooltip.RESIST_BLEEDING, ItemTooltip.RESIST_BLEEDING);
+		copyDouble(item, ItemTooltip.RESIST_SHOCKED, ItemTooltip.RESIST_SHOCKED);
+		copyDouble(item, ItemTooltip.RESIST_CONFUSED, ItemTooltip.RESIST_CONFUSED);
+		copyDouble(item, ItemTooltip.RESIST_HEAVY, ItemTooltip.RESIST_HEAVY);
 		copyDouble(item, "accuracy_bonus", ItemTooltip.ACCURACY_BONUS);
 		copyInt(item, "skill_atk", ItemTooltip.SKILL_ATTACK);
 		copyDouble(item, "atk_additional_bonus", ItemTooltip.ATTACK_BONUS);

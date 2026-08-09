@@ -58,24 +58,25 @@ public class ItemAffixGeneratorTest {
 		assertEquals(6, registry.getEligible(item("missile", ItemRarity.LEGENDARY)).size());
 		assertEquals(5, registry.getEligible(item("wand", ItemRarity.LEGENDARY)).size());
 		assertEquals(5, registry.getEligible(item("whip", ItemRarity.LEGENDARY)).size());
+		assertEquals(6, registry.getEligible(item("armor", ItemRarity.LEGENDARY)).size());
+		assertEquals(6, registry.getEligible(item("glove", ItemRarity.LEGENDARY)).size());
+		assertEquals(10, registry.getEligible(item("ring", ItemRarity.LEGENDARY)).size());
+		assertEquals(10, registry.getEligible(item("necklace", ItemRarity.LEGENDARY)).size());
 	}
 
 	@Test
 	public void legendarySwordChoosesThreeFromSevenProductionAffixes() {
-		final Item item = item("sword", ItemRarity.LEGENDARY);
-		final ItemAffixRegistry registry = ItemAffixRegistry.getInstance();
-		assertEquals(7, registry.getEligible(item).size());
-		final ItemAffixGenerator generator = new ItemAffixGenerator(new Random(17L));
+		assertLegendaryChoosesThreeFromPool("sword", 7, 17L);
+	}
 
-		final List<String> applied = generator.generate(item,
-				ItemCreationContext.drop());
+	@Test
+	public void legendaryArmourChoosesThreeFromSixProductionAffixes() {
+		assertLegendaryChoosesThreeFromPool("armor", 6, 23L);
+	}
 
-		assertEquals(3, applied.size());
-		assertEquals(3, new HashSet<String>(applied).size());
-		assertEquals(3, ItemAffixState.getValues(item).size());
-		for (final String id : applied) {
-			assertTrue(registry.get(id) != null);
-		}
+	@Test
+	public void legendaryRingChoosesThreeFromTenProductionAffixes() {
+		assertLegendaryChoosesThreeFromPool("ring", 10, 29L);
 	}
 
 	@Test
@@ -123,6 +124,24 @@ public class ItemAffixGeneratorTest {
 		assertEquals(3, applied.size());
 		assertEquals(3, new HashSet<String>(applied).size());
 		assertEquals(3, ItemAffixState.getValues(item).size());
+	}
+
+	private void assertLegendaryChoosesThreeFromPool(final String itemClass,
+			final int expectedPoolSize, final long seed) {
+		final Item item = item(itemClass, ItemRarity.LEGENDARY);
+		final ItemAffixRegistry registry = ItemAffixRegistry.getInstance();
+		assertEquals(expectedPoolSize, registry.getEligible(item).size());
+		final ItemAffixGenerator generator = new ItemAffixGenerator(new Random(seed));
+
+		final List<String> applied = generator.generate(item,
+				ItemCreationContext.drop());
+
+		assertEquals(3, applied.size());
+		assertEquals(3, new HashSet<String>(applied).size());
+		assertEquals(3, ItemAffixState.getValues(item).size());
+		for (final String id : applied) {
+			assertTrue(registry.get(id) != null);
+		}
 	}
 
 	private Item item(final String itemClass, final ItemRarity rarity) {

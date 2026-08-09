@@ -53,6 +53,19 @@ public class CriticalHitServiceTest {
 	}
 
 	@Test
+	public void jewelleryCriticalChanceAddsPercentagePoints() {
+		final Player player = player();
+		final Item ring = accessory("critical ring", "ring");
+		final Item necklace = accessory("critical necklace", "necklace");
+		ring.put(CriticalHitService.CRITICAL_CHANCE_ATTRIBUTE, 5.0);
+		necklace.put(CriticalHitService.CRITICAL_CHANCE_ATTRIBUTE, 6.0);
+		assertTrue(player.equip("finger", ring));
+		assertTrue(player.equip("neck", necklace));
+
+		assertEquals(21.0, CriticalHitService.getCriticalChance(player), 0.0);
+	}
+
+	@Test
 	public void finalChanceIsCappedAtFiftyPercent() {
 		final Player player = player();
 		assertTrue(player.equip("rhand", weapon(90.0)));
@@ -70,6 +83,24 @@ public class CriticalHitServiceTest {
 		assertEquals(2.20, CriticalHitService.getCriticalDamageMultiplier(player),
 				0.0000001);
 		assertEquals(220, CriticalHitService.applyCriticalDamage(player, 100));
+	}
+
+	@Test
+	public void jewelleryCriticalDamageStacksWithWeaponAndUsesSharedCap() {
+		final Player player = player();
+		final Weapon weapon = weapon(0.0);
+		weapon.put(CriticalHitService.CRITICAL_DAMAGE_BONUS_ATTRIBUTE, 0.30);
+		final Item ring = accessory("critical ring", "ring");
+		final Item necklace = accessory("critical necklace", "necklace");
+		ring.put(CriticalHitService.CRITICAL_DAMAGE_BONUS_ATTRIBUTE, 0.15);
+		necklace.put(CriticalHitService.CRITICAL_DAMAGE_BONUS_ATTRIBUTE, 0.15);
+		assertTrue(player.equip("rhand", weapon));
+		assertTrue(player.equip("finger", ring));
+		assertTrue(player.equip("neck", necklace));
+
+		assertEquals(2.50, CriticalHitService.getCriticalDamageMultiplier(player),
+				0.0000001);
+		assertEquals(250, CriticalHitService.applyCriticalDamage(player, 100));
 	}
 
 	@Test
@@ -102,6 +133,10 @@ public class CriticalHitServiceTest {
 
 	private Player player() {
 		return PlayerTestHelper.createPlayer("critical tester");
+	}
+
+	private Item accessory(final String name, final String itemClass) {
+		return new Item(name, itemClass, "test", null);
 	}
 
 	private Weapon weapon(final double criticalChance) {

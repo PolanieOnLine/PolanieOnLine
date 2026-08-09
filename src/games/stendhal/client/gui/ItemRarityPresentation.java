@@ -43,7 +43,7 @@ final class ItemRarityPresentation {
 	 * category. New clients should prefer ItemTooltip.CATEGORY. */
 	private static final Set<String> LEGACY_ARMOUR_CLASSES =
 			Collections.unmodifiableSet(new HashSet<String>(Arrays.asList(
-					"armor", "shield", "helmet", "cloak", "boots", "gloves",
+					"armor", "shield", "helmet", "cloak", "boots", "glove", "gloves",
 					"legs", "belt", "belts")));
 	private static final Set<String> LEGACY_ACCESSORY_CLASSES =
 			Collections.unmodifiableSet(new HashSet<String>(Arrays.asList(
@@ -350,6 +350,10 @@ final class ItemRarityPresentation {
 			}
 		}
 		appendIntegerBonus(coreBonuses, object, ItemTooltip.HEALTH, "zdrowia");
+		appendIntegerBonus(coreBonuses, object, ItemTooltip.FLAT_ATTACK_BONUS,
+				"ataku z affixu");
+		appendIntegerBonus(coreBonuses, object, ItemTooltip.FLAT_DEFENSE_BONUS,
+				"pancerza z affixu");
 
 		/* Resistances form their own visual block so the player can separate
 		 * elemental protection from the item's defining flat statistics. */
@@ -384,6 +388,16 @@ final class ItemRarityPresentation {
 				"szansy na zatrucie", true);
 		appendPercentageBonus(specialBonuses, object, ItemTooltip.DISTANCE_DAMAGE,
 				"obrażeń z dystansu", true);
+		appendPercentageBonus(specialBonuses, object, ItemTooltip.RESIST_POISONED,
+				"odporności na zatrucie", true);
+		appendPercentageBonus(specialBonuses, object, ItemTooltip.RESIST_BLEEDING,
+				"odporności na krwawienie", true);
+		appendPercentageBonus(specialBonuses, object, ItemTooltip.RESIST_SHOCKED,
+				"odporności na szok", true);
+		appendPercentageBonus(specialBonuses, object, ItemTooltip.RESIST_CONFUSED,
+				"odporności na dezorientację", true);
+		appendPercentageBonus(specialBonuses, object, ItemTooltip.RESIST_HEAVY,
+				"odporności na spowolnienie", true);
 		appendPercentageBonus(specialBonuses, object, ItemTooltip.CRITICAL_BONUS,
 				"obrażeń krytycznych", false);
 		appendPercentageBonus(specialBonuses, object, ItemTooltip.LIFESTEAL,

@@ -43,6 +43,13 @@ public final class ItemTooltip {
 	public static final String EXECUTE_DAMAGE = "execute_damage";
 	public static final String POISON_ON_HIT = "poison_on_hit";
 	public static final String DISTANCE_DAMAGE = "distance_damage";
+	public static final String FLAT_ATTACK_BONUS = "flat_attack_bonus";
+	public static final String FLAT_DEFENSE_BONUS = "flat_defense_bonus";
+	public static final String RESIST_POISONED = "resist_poisoned";
+	public static final String RESIST_BLEEDING = "resist_bleeding";
+	public static final String RESIST_SHOCKED = "resist_shocked";
+	public static final String RESIST_CONFUSED = "resist_confused";
+	public static final String RESIST_HEAVY = "resist_heavy";
 	public static final String DAMAGE_TYPE = "damage_type";
 	public static final String STATUS_ATTACK = "statusattack";
 	public static final String ACCURACY_BONUS = "accuracy_bonus";

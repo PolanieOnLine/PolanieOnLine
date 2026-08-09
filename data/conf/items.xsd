@@ -86,6 +86,13 @@
 			<element name="execute_damage" type="Q1:attribute" minOccurs="0"/>
 			<element name="poison_on_hit" type="Q1:attribute" minOccurs="0"/>
 			<element name="distance_damage" type="Q1:attribute" minOccurs="0"/>
+			<element name="flat_attack_bonus" type="Q1:attribute" minOccurs="0"/>
+			<element name="flat_defense_bonus" type="Q1:attribute" minOccurs="0"/>
+			<element name="resist_poisoned" type="Q1:attribute" minOccurs="0"/>
+			<element name="resist_bleeding" type="Q1:attribute" minOccurs="0"/>
+			<element name="resist_shocked" type="Q1:attribute" minOccurs="0"/>
+			<element name="resist_confused" type="Q1:attribute" minOccurs="0"/>
+			<element name="resist_heavy" type="Q1:attribute" minOccurs="0"/>
 			<element name="skill_atk" type="Q1:attribute" minOccurs="0"/>
 			<element name="atk_additional_bonus" type="Q1:attribute" minOccurs="0"/>
 			<element name="critical_additional_bonus" type="Q1:attribute" minOccurs="0"/>
