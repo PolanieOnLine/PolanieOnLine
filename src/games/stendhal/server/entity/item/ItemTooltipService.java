@@ -22,11 +22,7 @@ import games.stendhal.common.constants.ItemTooltip;
 import games.stendhal.common.constants.Nature;
 import games.stendhal.server.entity.status.StatusAttacker;
 
-/**
- * Builds a small, presentation-safe map of final item statistics for clients.
- * Internal item attributes remain hidden; only selected values needed by the
- * tooltip are copied to the volatile wire map.
- */
+/** Builds a presentation-safe map of final item statistics for clients. */
 public final class ItemTooltipService {
 	private static final Set<String> WEAPON_CLASSES = Collections.unmodifiableSet(
 			new HashSet<String>(Arrays.asList("club", "sword", "dagger",
@@ -41,7 +37,6 @@ public final class ItemTooltipService {
 		// utility class
 	}
 
-	/** Refreshes the client tooltip map from the current final item state. */
 	public static void update(final Item item) {
 		if (item == null) {
 			return;
@@ -52,7 +47,6 @@ public final class ItemTooltipService {
 		}
 
 		put(item, ItemTooltip.CATEGORY, resolveCategory(item));
-
 		putPositiveInt(item, ItemTooltip.ATTACK,
 				item.getAttributeWithImprovement("atk", 0));
 		putPositiveInt(item, ItemTooltip.RANGED_ATTACK,
@@ -120,7 +114,6 @@ public final class ItemTooltipService {
 		if (item.getValue() > 0) {
 			put(item, ItemTooltip.VALUE, Integer.toString(item.getValue()));
 		}
-
 		if (item.getDamageType() != null) {
 			put(item, ItemTooltip.DAMAGE_TYPE,
 					item.getDamageType().name().toLowerCase());
@@ -128,14 +121,26 @@ public final class ItemTooltipService {
 
 		final StringBuilder statuses = new StringBuilder();
 		for (final StatusAttacker attacker : item.getStatusAttackers()) {
-			if (statuses.length() > 0) {
-				statuses.append(';');
-			}
-			statuses.append(attacker.getStatusName());
+			appendStatus(statuses, attacker.getStatusName());
+		}
+		if (item.has(ItemTooltip.LEGENDARY_DEEP_WOUNDS)) {
+			appendStatus(statuses,
+					"Głębokie Rany (15% szansy, 35% obrażeń trafienia)");
 		}
 		if (statuses.length() > 0) {
 			put(item, ItemTooltip.STATUS_ATTACK, statuses.toString());
 		}
+	}
+
+	private static void appendStatus(final StringBuilder statuses,
+			final String status) {
+		if (status == null || status.length() == 0) {
+			return;
+		}
+		if (statuses.length() > 0) {
+			statuses.append(';');
+		}
+		statuses.append(status);
 	}
 
 	private static String resolveCategory(final Item item) {
@@ -145,7 +150,6 @@ public final class ItemTooltipService {
 				return override;
 			}
 		}
-
 		final String itemClass = item.getItemClass();
 		if (WEAPON_CLASSES.contains(itemClass)) {
 			return ItemTooltip.CATEGORY_WEAPON;
