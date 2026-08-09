@@ -1,7 +1,7 @@
 /***************************************************************************
  *                   (C) Copyright 2003-2026 - Stendhal                    *
- ***************************************************************************
- ***************************************************************************
+ ***************************************************************************/
+/***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -85,6 +85,16 @@ public final class ItemTooltipService {
 		copyDouble(item, ItemTooltip.BLEED_ON_HIT, ItemTooltip.BLEED_ON_HIT);
 		copyDouble(item, ItemTooltip.LEGENDARY_DEEP_WOUNDS,
 				ItemTooltip.LEGENDARY_DEEP_WOUNDS);
+		copyDouble(item, ItemTooltip.LEGENDARY_ARMOR_BREAKER,
+				ItemTooltip.LEGENDARY_ARMOR_BREAKER);
+		copyDouble(item, ItemTooltip.LEGENDARY_LONGSHOT,
+				ItemTooltip.LEGENDARY_LONGSHOT);
+		copyDouble(item, ItemTooltip.LEGENDARY_EXECUTIONER,
+				ItemTooltip.LEGENDARY_EXECUTIONER);
+		copyInt(item, ItemTooltip.LEGENDARY_BASTION_BONUS,
+				ItemTooltip.LEGENDARY_BASTION_BONUS);
+		copyInt(item, ItemTooltip.LEGENDARY_RELIC_POWER,
+				ItemTooltip.LEGENDARY_RELIC_POWER);
 		copyDouble(item, ItemTooltip.EXECUTE_DAMAGE, ItemTooltip.EXECUTE_DAMAGE);
 		copyDouble(item, ItemTooltip.POISON_ON_HIT, ItemTooltip.POISON_ON_HIT);
 		copyDouble(item, ItemTooltip.DISTANCE_DAMAGE, ItemTooltip.DISTANCE_DAMAGE);
@@ -122,10 +132,6 @@ public final class ItemTooltipService {
 		final StringBuilder statuses = new StringBuilder();
 		for (final StatusAttacker attacker : item.getStatusAttackers()) {
 			appendStatus(statuses, attacker.getStatusName());
-		}
-		if (item.has(ItemTooltip.LEGENDARY_DEEP_WOUNDS)) {
-			appendStatus(statuses,
-					"Głębokie Rany (15% szansy, 35% obrażeń trafienia)");
 		}
 		if (statuses.length() > 0) {
 			put(item, ItemTooltip.STATUS_ATTACK, statuses.toString());
