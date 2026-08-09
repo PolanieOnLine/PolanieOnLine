@@ -1,7 +1,7 @@
 /***************************************************************************
  *                   (C) Copyright 2003-2026 - Stendhal                    *
- ***************************************************************************
- ***************************************************************************
+ ***************************************************************************/
+/***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -207,6 +207,9 @@ public final class ItemCreationContext {
 				throw new IllegalArgumentException("Forced rarity must not be null");
 			}
 			this.forcedRarity = rarity;
+			if (source == Source.ADMIN && rarity == ItemRarity.LEGENDARY) {
+				this.generateAffixes = true;
+			}
 			return this;
 		}
 
