@@ -247,6 +247,11 @@ public final class ItemCreationContext {
 				throw new IllegalArgumentException(
 						"Restore context must never generate new affixes");
 			}
+			if (source == Source.ADMIN && forcedRarity == ItemRarity.LEGENDARY
+					&& !generateAffixes) {
+				throw new IllegalArgumentException(
+						"Admin legendary context must generate affixes");
+			}
 			this.generateAffixes = generateAffixes;
 			return this;
 		}
@@ -270,6 +275,9 @@ public final class ItemCreationContext {
 		}
 
 		public ItemCreationContext build() {
+			if (source == Source.ADMIN && forcedRarity == ItemRarity.LEGENDARY) {
+				generateAffixes = true;
+			}
 			return new ItemCreationContext(this);
 		}
 	}
