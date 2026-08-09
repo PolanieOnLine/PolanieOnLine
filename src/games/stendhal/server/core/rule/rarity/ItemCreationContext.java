@@ -35,6 +35,8 @@ public final class ItemCreationContext {
 	private final ItemRarity factoryRarity;
 	private final ItemRarityModifiers modifiers;
 	private final boolean randomizeModifiers;
+	private final boolean generateAffixes;
+	private final Long affixSeed;
 	private final String profile;
 
 	private ItemCreationContext(final Builder builder) {
@@ -44,6 +46,8 @@ public final class ItemCreationContext {
 		this.factoryRarity = builder.factoryRarity;
 		this.modifiers = builder.modifiers;
 		this.randomizeModifiers = builder.randomizeModifiers;
+		this.generateAffixes = builder.generateAffixes;
+		this.affixSeed = builder.affixSeed;
 		this.profile = builder.profile;
 	}
 
@@ -114,6 +118,16 @@ public final class ItemCreationContext {
 		return randomizeModifiers;
 	}
 
+	/** @return whether fresh random affixes should be generated */
+	public boolean isGenerateAffixes() {
+		return generateAffixes;
+	}
+
+	/** @return deterministic affix seed, or {@code null} for the shared RNG */
+	public Long getAffixSeed() {
+		return affixSeed;
+	}
+
 	public String getProfile() {
 		return profile;
 	}
@@ -135,14 +149,17 @@ public final class ItemCreationContext {
 				&& questRarity == other.questRarity
 				&& factoryRarity == other.factoryRarity
 				&& randomizeModifiers == other.randomizeModifiers
+				&& generateAffixes == other.generateAffixes
 				&& Objects.equals(modifiers, other.modifiers)
+				&& Objects.equals(affixSeed, other.affixSeed)
 				&& profile.equals(other.profile);
 	}
 
 	@Override
 	public int hashCode() {
 		return Objects.hash(source, forcedRarity, questRarity, factoryRarity, modifiers,
-				Boolean.valueOf(randomizeModifiers), profile);
+				Boolean.valueOf(randomizeModifiers), Boolean.valueOf(generateAffixes),
+				affixSeed, profile);
 	}
 
 	@Override
@@ -151,7 +168,8 @@ public final class ItemCreationContext {
 				+ forcedRarity + ", questRarity=" + questRarity
 				+ ", factoryRarity=" + factoryRarity
 				+ ", modifiers=" + modifiers + ", randomizeModifiers="
-				+ randomizeModifiers + ", profile=" + profile + "]";
+				+ randomizeModifiers + ", generateAffixes=" + generateAffixes
+				+ ", affixSeed=" + affixSeed + ", profile=" + profile + "]";
 	}
 
 	public static final class Builder {
@@ -161,6 +179,8 @@ public final class ItemCreationContext {
 		private ItemRarity factoryRarity;
 		private ItemRarityModifiers modifiers;
 		private boolean randomizeModifiers;
+		private boolean generateAffixes;
+		private Long affixSeed;
 		private String profile = DEFAULT_PROFILE;
 
 		private Builder(final Source source) {
@@ -169,6 +189,7 @@ public final class ItemCreationContext {
 			}
 			this.source = source;
 			this.randomizeModifiers = source != Source.QUEST && source != Source.RESTORE;
+			this.generateAffixes = source == Source.DROP;
 		}
 
 		public Builder withRarity(final ItemRarity rarity) {
@@ -215,6 +236,25 @@ public final class ItemCreationContext {
 
 		public Builder randomizeModifiers(final boolean randomizeModifiers) {
 			this.randomizeModifiers = randomizeModifiers;
+			return this;
+		}
+
+		public Builder generateAffixes(final boolean generateAffixes) {
+			if (source == Source.RESTORE && generateAffixes) {
+				throw new IllegalArgumentException(
+						"Restore context must never generate new affixes");
+			}
+			this.generateAffixes = generateAffixes;
+			return this;
+		}
+
+		public Builder withAffixSeed(final long affixSeed) {
+			if (source == Source.RESTORE) {
+				throw new IllegalArgumentException(
+						"Restore context must never seed affix generation");
+			}
+			this.affixSeed = Long.valueOf(affixSeed);
+			this.generateAffixes = true;
 			return this;
 		}
 
