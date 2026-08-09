@@ -71,6 +71,9 @@ public class ItemTooltipServiceTest {
 		attributes.put(ItemTooltip.CRITICAL_DAMAGE_BONUS, "0.20");
 		attributes.put(ItemTooltip.BLEED_ON_HIT, "0.10");
 		attributes.put(ItemTooltip.LEGENDARY_DEEP_WOUNDS, "1.0");
+		attributes.put(ItemTooltip.LEGENDARY_ARMOR_BREAKER, "1.0");
+		attributes.put(ItemTooltip.LEGENDARY_LONGSHOT, "1.0");
+		attributes.put(ItemTooltip.LEGENDARY_EXECUTIONER, "1.0");
 		attributes.put(ItemTooltip.EXECUTE_DAMAGE, "0.25");
 		attributes.put(ItemTooltip.POISON_ON_HIT, "0.08");
 		attributes.put(ItemTooltip.DISTANCE_DAMAGE, "0.15");
@@ -81,6 +84,9 @@ public class ItemTooltipServiceTest {
 		assertEquals("0.2", stat(item, ItemTooltip.CRITICAL_DAMAGE_BONUS));
 		assertEquals("0.1", stat(item, ItemTooltip.BLEED_ON_HIT));
 		assertEquals("1.0", stat(item, ItemTooltip.LEGENDARY_DEEP_WOUNDS));
+		assertEquals("1.0", stat(item, ItemTooltip.LEGENDARY_ARMOR_BREAKER));
+		assertEquals("1.0", stat(item, ItemTooltip.LEGENDARY_LONGSHOT));
+		assertEquals("1.0", stat(item, ItemTooltip.LEGENDARY_EXECUTIONER));
 		assertEquals("0.25", stat(item, ItemTooltip.EXECUTE_DAMAGE));
 		assertEquals("0.08", stat(item, ItemTooltip.POISON_ON_HIT));
 		assertEquals("0.15", stat(item, ItemTooltip.DISTANCE_DAMAGE));
@@ -91,6 +97,7 @@ public class ItemTooltipServiceTest {
 		final Map<String, String> attributes = new HashMap<String, String>();
 		attributes.put("def", "40");
 		attributes.put(ItemTooltip.FLAT_DEFENSE_BONUS, "5");
+		attributes.put(ItemTooltip.LEGENDARY_BASTION_BONUS, "12");
 		attributes.put(ItemTooltip.RESIST_POISONED, "0.20");
 		attributes.put(ItemTooltip.RESIST_BLEEDING, "0.15");
 		attributes.put(ItemTooltip.RESIST_SHOCKED, "0.12");
@@ -101,6 +108,7 @@ public class ItemTooltipServiceTest {
 		ItemTooltipService.update(item);
 
 		assertEquals("5", stat(item, ItemTooltip.FLAT_DEFENSE_BONUS));
+		assertEquals("12", stat(item, ItemTooltip.LEGENDARY_BASTION_BONUS));
 		assertEquals("0.2", stat(item, ItemTooltip.RESIST_POISONED));
 		assertEquals("0.15", stat(item, ItemTooltip.RESIST_BLEEDING));
 		assertEquals("0.12", stat(item, ItemTooltip.RESIST_SHOCKED));
@@ -113,11 +121,13 @@ public class ItemTooltipServiceTest {
 		final Map<String, String> attributes = new HashMap<String, String>();
 		attributes.put("atk", "4");
 		attributes.put(ItemTooltip.FLAT_ATTACK_BONUS, "2");
+		attributes.put(ItemTooltip.LEGENDARY_RELIC_POWER, "6");
 		final Item item = new Item("test affix ring", "ring", "test", attributes);
 
 		ItemTooltipService.update(item);
 
 		assertEquals("2", stat(item, ItemTooltip.FLAT_ATTACK_BONUS));
+		assertEquals("6", stat(item, ItemTooltip.LEGENDARY_RELIC_POWER));
 	}
 
 	@Test
