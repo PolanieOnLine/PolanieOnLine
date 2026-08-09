@@ -40,11 +40,31 @@ public class WeaponAffixCombatServiceTest {
 	}
 
 	@Test
+	public void weightedLegendaryBonusIncludesWeaponWithoutSignature() {
+		final Item first = weapon("ranged", 30);
+		final Item second = weapon("ranged", 10);
+		first.put(WeaponAffixCombatService.LEGENDARY_LONGSHOT_ATTRIBUTE, 1.0);
+
+		assertEquals(0.1875, WeaponAffixCombatService.getWeightedFixedBonus(
+				Arrays.asList(first, second),
+				WeaponAffixCombatService.LEGENDARY_LONGSHOT_ATTRIBUTE, 0.25),
+				0.0000001);
+	}
+
+	@Test
 	public void executeOnlyActivatesBelowQuarterHealth() {
 		final Player target = target(100, 24);
 		assertTrue(WeaponAffixCombatService.isExecuteActive(target));
 		target.setHP(25);
 		assertFalse(WeaponAffixCombatService.isExecuteActive(target));
+	}
+
+	@Test
+	public void legendaryExecutionerOnlyActivatesBelowTwentyPercentHealth() {
+		final Player target = target(100, 19);
+		assertTrue(WeaponAffixCombatService.isLegendaryExecutionActive(target));
+		target.setHP(20);
+		assertFalse(WeaponAffixCombatService.isLegendaryExecutionActive(target));
 	}
 
 	@Test
@@ -57,6 +77,31 @@ public class WeaponAffixCombatServiceTest {
 		assertEquals(150, WeaponAffixCombatService.applyConditionalDamageBonuses(
 				100, Arrays.asList(weapon), target, true));
 		assertEquals(125, WeaponAffixCombatService.applyConditionalDamageBonuses(
+				100, Arrays.asList(weapon), target, false));
+	}
+
+	@Test
+	public void legendaryLongshotRequiresActualRangedAttack() {
+		final Item weapon = weapon("ranged", 20);
+		weapon.put(WeaponAffixCombatService.LEGENDARY_LONGSHOT_ATTRIBUTE, 1.0);
+		final Player target = target(100, 100);
+
+		assertEquals(125, WeaponAffixCombatService.applyConditionalDamageBonuses(
+				100, Arrays.asList(weapon), target, true));
+		assertEquals(100, WeaponAffixCombatService.applyConditionalDamageBonuses(
+				100, Arrays.asList(weapon), target, false));
+	}
+
+	@Test
+	public void legendaryExecutionerAddsThirtyFivePercentBelowThreshold() {
+		final Item weapon = weapon("axe", 20);
+		weapon.put(WeaponAffixCombatService.LEGENDARY_EXECUTIONER_ATTRIBUTE, 1.0);
+		final Player target = target(100, 19);
+
+		assertEquals(135, WeaponAffixCombatService.applyConditionalDamageBonuses(
+				100, Arrays.asList(weapon), target, false));
+		target.setHP(20);
+		assertEquals(100, WeaponAffixCombatService.applyConditionalDamageBonuses(
 				100, Arrays.asList(weapon), target, false));
 	}
 
