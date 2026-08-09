@@ -16,6 +16,9 @@ import games.stendhal.server.entity.item.Item;
  */
 public final class WeaponArmorInteractionService {
 	public static final String ARMOR_PENETRATION_ATTRIBUTE = "armor_penetration";
+	public static final String LEGENDARY_ARMOR_BREAKER_ATTRIBUTE =
+			"legendary_armor_breaker";
+	public static final double LEGENDARY_ARMOR_BREAKER_PENETRATION = 0.40;
 
 	private WeaponArmorInteractionService() {
 		// utility class
@@ -44,8 +47,13 @@ public final class WeaponArmorInteractionService {
 		}
 		final double baseMultiplier = getDamageMultiplier(weapon.getWeaponType(),
 				((Creature) defender).getArmorType());
-		final double penetration = weapon.has(ARMOR_PENETRATION_ATTRIBUTE)
+		final double normalPenetration = weapon.has(ARMOR_PENETRATION_ATTRIBUTE)
 				? weapon.getDouble(ARMOR_PENETRATION_ATTRIBUTE) : 0.0;
+		final double legendaryPenetration =
+				weapon.has(LEGENDARY_ARMOR_BREAKER_ATTRIBUTE)
+						? LEGENDARY_ARMOR_BREAKER_PENETRATION : 0.0;
+		final double penetration = combineIndependentFractions(normalPenetration,
+				legendaryPenetration);
 		return applyArmorPenetration(baseMultiplier, penetration);
 	}
 
@@ -63,6 +71,13 @@ public final class WeaponArmorInteractionService {
 		final double clampedPenetration = Math.min(1.0, penetration);
 		return baseMultiplier
 				+ (1.0 - baseMultiplier) * clampedPenetration;
+	}
+
+	public static double combineIndependentFractions(final double first,
+			final double second) {
+		final double a = clampFraction(first);
+		final double b = clampFraction(second);
+		return 1.0 - (1.0 - a) * (1.0 - b);
 	}
 
 	/**
@@ -200,5 +215,12 @@ public final class WeaponArmorInteractionService {
 		default:
 			return 1.0;
 		}
+	}
+
+	private static double clampFraction(final double value) {
+		if (Double.isNaN(value)) {
+			return 0.0;
+		}
+		return Math.min(1.0, Math.max(0.0, value));
 	}
 }
