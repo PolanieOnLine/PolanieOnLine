@@ -13,9 +13,7 @@ package games.stendhal.common.constants;
 
 /** Shared wire identifiers used by structured item tooltips. */
 public final class ItemTooltip {
-	/** Volatile map sent to clients with presentation-safe item statistics. */
 	public static final String ATTRIBUTE = "tooltip_stats";
-	/** Hidden definition override populated from the item XML. */
 	public static final String CATEGORY_OVERRIDE = "tooltip_category_override";
 
 	public static final String CATEGORY = "category";
@@ -32,7 +30,6 @@ public final class ItemTooltip {
 	public static final String DAMAGE_MIN = "damage_min";
 	public static final String DAMAGE_MAX = "damage_max";
 	public static final String DEFENSE = "def";
-	/** Prefix for final resistance percentages, e.g. resistance_light. */
 	public static final String RESISTANCE_PREFIX = "resistance_";
 	public static final String RANGE = "range";
 	public static final String LIFESTEAL = "lifesteal";
@@ -40,6 +37,7 @@ public final class ItemTooltip {
 	public static final String ARMOR_PENETRATION = "armor_penetration";
 	public static final String CRITICAL_DAMAGE_BONUS = "critical_damage_bonus";
 	public static final String BLEED_ON_HIT = "bleed_on_hit";
+	public static final String LEGENDARY_DEEP_WOUNDS = "legendary_deep_wounds";
 	public static final String EXECUTE_DAMAGE = "execute_damage";
 	public static final String POISON_ON_HIT = "poison_on_hit";
 	public static final String DISTANCE_DAMAGE = "distance_damage";
@@ -73,12 +71,6 @@ public final class ItemTooltip {
 		// constants class
 	}
 
-	/**
-	 * Checks whether a value can be used as a structured tooltip category.
-	 *
-	 * @param category category identifier
-	 * @return {@code true} for one of the supported stable identifiers
-	 */
 	public static boolean isValidCategory(final String category) {
 		return CATEGORY_WEAPON.equals(category)
 				|| CATEGORY_ARMOUR.equals(category)
