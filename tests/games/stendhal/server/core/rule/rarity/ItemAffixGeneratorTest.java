@@ -16,6 +16,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import games.stendhal.common.constants.ItemRarity;
+import games.stendhal.server.core.rule.damage.WeaponAffixCombatService;
 import games.stendhal.server.entity.item.Item;
 import utilities.RPClass.ItemTestHelper;
 
@@ -65,18 +66,30 @@ public class ItemAffixGeneratorTest {
 	}
 
 	@Test
-	public void legendarySwordChoosesThreeFromSevenProductionAffixes() {
-		assertLegendaryChoosesThreeFromPool("sword", 7, 17L);
+	public void legendaryBleedingWeaponGetsSignatureAndTwoNormalAffixes() {
+		final Item item = item("sword", ItemRarity.LEGENDARY);
+		final ItemAffixGenerator generator = new ItemAffixGenerator(new Random(17L));
+
+		final List<String> applied = generator.generate(item,
+				ItemCreationContext.drop());
+
+		assertEquals(3, applied.size());
+		assertEquals(3, new HashSet<String>(applied).size());
+		assertTrue(applied.contains(
+				WeaponAffixCombatService.LEGENDARY_DEEP_WOUNDS_ATTRIBUTE));
+		assertTrue(item.has(
+				WeaponAffixCombatService.LEGENDARY_DEEP_WOUNDS_ATTRIBUTE));
+		assertEquals(3, ItemAffixState.getValues(item).size());
 	}
 
 	@Test
-	public void legendaryArmourChoosesThreeFromSixProductionAffixes() {
-		assertLegendaryChoosesThreeFromPool("armor", 6, 23L);
+	public void legendaryArmourWithoutSignatureStillChoosesThreeNormalAffixes() {
+		assertLegendaryChoosesThreeFromRegularPool("armor", 6, 23L);
 	}
 
 	@Test
-	public void legendaryRingChoosesThreeFromTenProductionAffixes() {
-		assertLegendaryChoosesThreeFromPool("ring", 10, 29L);
+	public void legendaryRingWithoutSignatureStillChoosesThreeNormalAffixes() {
+		assertLegendaryChoosesThreeFromRegularPool("ring", 10, 29L);
 	}
 
 	@Test
@@ -109,7 +122,7 @@ public class ItemAffixGeneratorTest {
 	}
 
 	@Test
-	public void legendarySelectsThreeUniqueAffixesWhenPoolAllowsIt() {
+	public void injectedRegularRegistryKeepsLegacyThreeSlotSemantics() {
 		final Item item = item("sword", ItemRarity.LEGENDARY);
 		final ItemAffixRegistry registry = new ItemAffixRegistry(Arrays.asList(
 				new FixedAffix("first", "accuracy_bonus"),
@@ -126,8 +139,8 @@ public class ItemAffixGeneratorTest {
 		assertEquals(3, ItemAffixState.getValues(item).size());
 	}
 
-	private void assertLegendaryChoosesThreeFromPool(final String itemClass,
-			final int expectedPoolSize, final long seed) {
+	private void assertLegendaryChoosesThreeFromRegularPool(
+			final String itemClass, final int expectedPoolSize, final long seed) {
 		final Item item = item(itemClass, ItemRarity.LEGENDARY);
 		final ItemAffixRegistry registry = ItemAffixRegistry.getInstance();
 		assertEquals(expectedPoolSize, registry.getEligible(item).size());
