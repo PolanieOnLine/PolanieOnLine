@@ -86,6 +86,7 @@ public final class LegendaryItemAffixRegistry {
 					&& definition.isEligible(item)) {
 				result.add(definition);
 			}
+		}
 		return result;
 	}
 
