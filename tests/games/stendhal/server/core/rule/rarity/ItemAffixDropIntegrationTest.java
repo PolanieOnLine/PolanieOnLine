@@ -20,6 +20,7 @@ import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.common.constants.ItemTooltip;
 import games.stendhal.server.core.rule.damage.CriticalHitService;
 import games.stendhal.server.core.rule.damage.ParryService;
+import games.stendhal.server.core.rule.damage.WeaponAffixCombatService;
 import games.stendhal.server.core.rule.damage.WeaponArmorInteractionService;
 import games.stendhal.server.entity.item.Item;
 import utilities.RPClass.ItemTestHelper;
@@ -31,7 +32,7 @@ public class ItemAffixDropIntegrationTest {
 	}
 
 	@Test
-	public void legendarySwordDropGetsThreeFromRotatingAffixPool() {
+	public void legendarySwordDropGetsSignatureAndTwoRotatingAffixes() {
 		final Item item = sword();
 		new ItemRarityService(new Random(19L)).initialize(item,
 				drop(ItemRarity.LEGENDARY));
@@ -39,13 +40,27 @@ public class ItemAffixDropIntegrationTest {
 		assertSame(ItemRarity.LEGENDARY, item.getRarity());
 		final Map<String, String> affixes = ItemAffixState.getValues(item);
 		assertEquals(3, affixes.size());
+		assertTrue(affixes.containsKey(
+				WeaponAffixCombatService.LEGENDARY_DEEP_WOUNDS_ATTRIBUTE));
+		assertTrue(item.has(
+				WeaponAffixCombatService.LEGENDARY_DEEP_WOUNDS_ATTRIBUTE));
+		assertTrue(item.getMap(ItemTooltip.ATTRIBUTE).containsKey(
+				WeaponAffixCombatService.LEGENDARY_DEEP_WOUNDS_ATTRIBUTE));
+
+		int regularAffixes = 0;
 		for (final String id : affixes.keySet()) {
 			final ItemAffixDefinition definition = ItemAffixRegistry.getInstance().get(id);
-			assertTrue(definition != null);
+			if (definition == null) {
+				assertEquals(WeaponAffixCombatService.LEGENDARY_DEEP_WOUNDS_ATTRIBUTE,
+						id);
+				continue;
+			}
+			regularAffixes++;
 			assertTrue(item.has(definition.getAttribute()));
 			assertTrue(item.getMap(ItemTooltip.ATTRIBUTE).containsKey(
 					definition.getAttribute()));
 		}
+		assertEquals(2, regularAffixes);
 
 		if (ItemAffixState.has(item, ParryService.PARRY_CHANCE_ATTRIBUTE)) {
 			assertTrue(item.getDouble(ParryService.PARRY_CHANCE_ATTRIBUTE) >= 0.05);
