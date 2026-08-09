@@ -38,6 +38,11 @@ public final class ItemTooltip {
 	public static final String LIFESTEAL = "lifesteal";
 	public static final String PARRY_CHANCE = "parry_chance";
 	public static final String ARMOR_PENETRATION = "armor_penetration";
+	public static final String CRITICAL_DAMAGE_BONUS = "critical_damage_bonus";
+	public static final String BLEED_ON_HIT = "bleed_on_hit";
+	public static final String EXECUTE_DAMAGE = "execute_damage";
+	public static final String POISON_ON_HIT = "poison_on_hit";
+	public static final String DISTANCE_DAMAGE = "distance_damage";
 	public static final String DAMAGE_TYPE = "damage_type";
 	public static final String STATUS_ATTACK = "statusattack";
 	public static final String ACCURACY_BONUS = "accuracy_bonus";

@@ -65,6 +65,26 @@ public class ItemTooltipServiceTest {
 	}
 
 	@Test
+	public void testExpandedWeaponAffixesArePublishedForTooltip() {
+		final Map<String, String> attributes = new HashMap<String, String>();
+		attributes.put("atk", "30");
+		attributes.put(ItemTooltip.CRITICAL_DAMAGE_BONUS, "0.20");
+		attributes.put(ItemTooltip.BLEED_ON_HIT, "0.10");
+		attributes.put(ItemTooltip.EXECUTE_DAMAGE, "0.25");
+		attributes.put(ItemTooltip.POISON_ON_HIT, "0.08");
+		attributes.put(ItemTooltip.DISTANCE_DAMAGE, "0.15");
+		final Item item = new Item("test affix weapon", "sword", "test", attributes);
+
+		ItemTooltipService.update(item);
+
+		assertEquals("0.2", stat(item, ItemTooltip.CRITICAL_DAMAGE_BONUS));
+		assertEquals("0.1", stat(item, ItemTooltip.BLEED_ON_HIT));
+		assertEquals("0.25", stat(item, ItemTooltip.EXECUTE_DAMAGE));
+		assertEquals("0.08", stat(item, ItemTooltip.POISON_ON_HIT));
+		assertEquals("0.15", stat(item, ItemTooltip.DISTANCE_DAMAGE));
+	}
+
+	@Test
 	public void testPluralBeltsClassIsArmour() {
 		final Map<String, String> attributes = new HashMap<String, String>();
 		attributes.put("def", "21");

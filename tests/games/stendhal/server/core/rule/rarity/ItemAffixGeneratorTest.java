@@ -48,10 +48,23 @@ public class ItemAffixGeneratorTest {
 	}
 
 	@Test
-	public void legendarySwordChoosesThreeFromFiveProductionAffixes() {
+	public void productionPoolsAreLargeEnoughForRealLegendaryRotation() {
+		final ItemAffixRegistry registry = ItemAffixRegistry.getInstance();
+		assertEquals(7, registry.getEligible(item("sword", ItemRarity.LEGENDARY)).size());
+		assertEquals(8, registry.getEligible(item("dagger", ItemRarity.LEGENDARY)).size());
+		assertEquals(7, registry.getEligible(item("axe", ItemRarity.LEGENDARY)).size());
+		assertEquals(5, registry.getEligible(item("club", ItemRarity.LEGENDARY)).size());
+		assertEquals(5, registry.getEligible(item("ranged", ItemRarity.LEGENDARY)).size());
+		assertEquals(6, registry.getEligible(item("missile", ItemRarity.LEGENDARY)).size());
+		assertEquals(5, registry.getEligible(item("wand", ItemRarity.LEGENDARY)).size());
+		assertEquals(5, registry.getEligible(item("whip", ItemRarity.LEGENDARY)).size());
+	}
+
+	@Test
+	public void legendarySwordChoosesThreeFromSevenProductionAffixes() {
 		final Item item = item("sword", ItemRarity.LEGENDARY);
 		final ItemAffixRegistry registry = ItemAffixRegistry.getInstance();
-		assertEquals(5, registry.getEligible(item).size());
+		assertEquals(7, registry.getEligible(item).size());
 		final ItemAffixGenerator generator = new ItemAffixGenerator(new Random(17L));
 
 		final List<String> applied = generator.generate(item,

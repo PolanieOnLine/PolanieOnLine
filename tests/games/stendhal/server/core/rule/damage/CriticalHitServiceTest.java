@@ -61,6 +61,28 @@ public class CriticalHitServiceTest {
 	}
 
 	@Test
+	public void criticalDamageAffixRaisesMultiplierAboveBaseDoubleDamage() {
+		final Player player = player();
+		final Weapon weapon = weapon(0.0);
+		weapon.put(CriticalHitService.CRITICAL_DAMAGE_BONUS_ATTRIBUTE, 0.20);
+		assertTrue(player.equip("rhand", weapon));
+
+		assertEquals(2.20, CriticalHitService.getCriticalDamageMultiplier(player),
+				0.0000001);
+		assertEquals(220, CriticalHitService.applyCriticalDamage(player, 100));
+	}
+
+	@Test
+	public void flatGlyphCriticalDamageBonusIsStillPreserved() {
+		final Player player = player();
+		final Item glyph = new Item("critical damage glyph", "glyph", "test", null);
+		glyph.put("critical_additional_bonus", 7.0);
+		assertTrue(player.equip("offensive_rune", glyph));
+
+		assertEquals(207, CriticalHitService.applyCriticalDamage(player, 100));
+	}
+
+	@Test
 	public void deterministicRollUsesExactPercentageBoundary() {
 		assertTrue(CriticalHitService.isCriticalSuccessful(10.0, 10));
 		assertFalse(CriticalHitService.isCriticalSuccessful(10.0, 11));

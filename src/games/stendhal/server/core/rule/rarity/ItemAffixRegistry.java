@@ -13,6 +13,7 @@ import java.util.Random;
 
 import games.stendhal.server.core.rule.damage.CriticalHitService;
 import games.stendhal.server.core.rule.damage.ParryService;
+import games.stendhal.server.core.rule.damage.WeaponAffixCombatService;
 import games.stendhal.server.core.rule.damage.WeaponArmorInteractionService;
 import games.stendhal.server.entity.item.Item;
 
@@ -24,6 +25,11 @@ public final class ItemAffixRegistry {
 					new LifestealAffixDefinition(),
 					new AccuracyAffixDefinition(),
 					new CriticalChanceAffixDefinition(),
+					new CriticalDamageAffixDefinition(),
+					new BleedOnHitAffixDefinition(),
+					new ExecuteDamageAffixDefinition(),
+					new PoisonOnHitAffixDefinition(),
+					new DistanceDamageAffixDefinition(),
 					new ArmorPenetrationAffixDefinition()));
 
 	private final List<ItemAffixDefinition> definitions;
@@ -166,6 +172,121 @@ public final class ItemAffixRegistry {
 		@Override
 		public boolean apply(final Item item, final Random random) {
 			return WeaponAffixService.applyCriticalChance(item, random);
+		}
+	}
+
+	private static final class CriticalDamageAffixDefinition
+			implements ItemAffixDefinition {
+		@Override
+		public String getId() {
+			return CriticalHitService.CRITICAL_DAMAGE_BONUS_ATTRIBUTE;
+		}
+
+		@Override
+		public String getAttribute() {
+			return CriticalHitService.CRITICAL_DAMAGE_BONUS_ATTRIBUTE;
+		}
+
+		@Override
+		public boolean isEligible(final Item item) {
+			return WeaponAffixService.isCriticalDamageEligible(item);
+		}
+
+		@Override
+		public boolean apply(final Item item, final Random random) {
+			return WeaponAffixService.applyCriticalDamage(item, random);
+		}
+	}
+
+	private static final class BleedOnHitAffixDefinition
+			implements ItemAffixDefinition {
+		@Override
+		public String getId() {
+			return WeaponAffixCombatService.BLEED_ON_HIT_ATTRIBUTE;
+		}
+
+		@Override
+		public String getAttribute() {
+			return WeaponAffixCombatService.BLEED_ON_HIT_ATTRIBUTE;
+		}
+
+		@Override
+		public boolean isEligible(final Item item) {
+			return WeaponAffixService.isBleedOnHitEligible(item);
+		}
+
+		@Override
+		public boolean apply(final Item item, final Random random) {
+			return WeaponAffixService.applyBleedOnHit(item, random);
+		}
+	}
+
+	private static final class ExecuteDamageAffixDefinition
+			implements ItemAffixDefinition {
+		@Override
+		public String getId() {
+			return WeaponAffixCombatService.EXECUTE_DAMAGE_ATTRIBUTE;
+		}
+
+		@Override
+		public String getAttribute() {
+			return WeaponAffixCombatService.EXECUTE_DAMAGE_ATTRIBUTE;
+		}
+
+		@Override
+		public boolean isEligible(final Item item) {
+			return WeaponAffixService.isExecuteDamageEligible(item);
+		}
+
+		@Override
+		public boolean apply(final Item item, final Random random) {
+			return WeaponAffixService.applyExecuteDamage(item, random);
+		}
+	}
+
+	private static final class PoisonOnHitAffixDefinition
+			implements ItemAffixDefinition {
+		@Override
+		public String getId() {
+			return WeaponAffixCombatService.POISON_ON_HIT_ATTRIBUTE;
+		}
+
+		@Override
+		public String getAttribute() {
+			return WeaponAffixCombatService.POISON_ON_HIT_ATTRIBUTE;
+		}
+
+		@Override
+		public boolean isEligible(final Item item) {
+			return WeaponAffixService.isPoisonOnHitEligible(item);
+		}
+
+		@Override
+		public boolean apply(final Item item, final Random random) {
+			return WeaponAffixService.applyPoisonOnHit(item, random);
+		}
+	}
+
+	private static final class DistanceDamageAffixDefinition
+			implements ItemAffixDefinition {
+		@Override
+		public String getId() {
+			return WeaponAffixCombatService.DISTANCE_DAMAGE_ATTRIBUTE;
+		}
+
+		@Override
+		public String getAttribute() {
+			return WeaponAffixCombatService.DISTANCE_DAMAGE_ATTRIBUTE;
+		}
+
+		@Override
+		public boolean isEligible(final Item item) {
+			return WeaponAffixService.isDistanceDamageEligible(item);
+		}
+
+		@Override
+		public boolean apply(final Item item, final Random random) {
+			return WeaponAffixService.applyDistanceDamage(item, random);
 		}
 	}
 

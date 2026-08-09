@@ -88,6 +88,12 @@ public final class ItemTooltipService {
 		copyDouble(item, ItemTooltip.PARRY_CHANCE, ItemTooltip.PARRY_CHANCE);
 		copyDouble(item, ItemTooltip.ARMOR_PENETRATION,
 				ItemTooltip.ARMOR_PENETRATION);
+		copyDouble(item, ItemTooltip.CRITICAL_DAMAGE_BONUS,
+				ItemTooltip.CRITICAL_DAMAGE_BONUS);
+		copyDouble(item, ItemTooltip.BLEED_ON_HIT, ItemTooltip.BLEED_ON_HIT);
+		copyDouble(item, ItemTooltip.EXECUTE_DAMAGE, ItemTooltip.EXECUTE_DAMAGE);
+		copyDouble(item, ItemTooltip.POISON_ON_HIT, ItemTooltip.POISON_ON_HIT);
+		copyDouble(item, ItemTooltip.DISTANCE_DAMAGE, ItemTooltip.DISTANCE_DAMAGE);
 		copyDouble(item, "accuracy_bonus", ItemTooltip.ACCURACY_BONUS);
 		copyInt(item, "skill_atk", ItemTooltip.SKILL_ATTACK);
 		copyDouble(item, "atk_additional_bonus", ItemTooltip.ATTACK_BONUS);

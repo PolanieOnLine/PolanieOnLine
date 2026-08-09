@@ -369,10 +369,21 @@ final class ItemRarityPresentation {
 				"bonusu precyzji", false);
 		appendPercentageBonus(specialBonuses, object, ItemTooltip.CRITICAL_CHANCE,
 				"szansy na trafienie krytyczne", false);
+		appendPercentageBonus(specialBonuses, object,
+				ItemTooltip.CRITICAL_DAMAGE_BONUS,
+				"obrażeń trafienia krytycznego", true);
 		appendPercentageBonus(specialBonuses, object, ItemTooltip.PARRY_CHANCE,
 				"szansy na parowanie", true);
 		appendPercentageBonus(specialBonuses, object, ItemTooltip.ARMOR_PENETRATION,
 				"penetracji pancerza", true);
+		appendPercentageBonus(specialBonuses, object, ItemTooltip.BLEED_ON_HIT,
+				"szansy na krwawienie", true);
+		appendPercentageBonus(specialBonuses, object, ItemTooltip.EXECUTE_DAMAGE,
+				"obrażeń poniżej 25% PW celu", true);
+		appendPercentageBonus(specialBonuses, object, ItemTooltip.POISON_ON_HIT,
+				"szansy na zatrucie", true);
+		appendPercentageBonus(specialBonuses, object, ItemTooltip.DISTANCE_DAMAGE,
+				"obrażeń z dystansu", true);
 		appendPercentageBonus(specialBonuses, object, ItemTooltip.CRITICAL_BONUS,
 				"obrażeń krytycznych", false);
 		appendPercentageBonus(specialBonuses, object, ItemTooltip.LIFESTEAL,

@@ -28,6 +28,7 @@ import games.stendhal.server.core.engine.DataProvider;
 import games.stendhal.server.core.engine.GameEvent;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.rule.damage.CriticalHitService;
+import games.stendhal.server.core.rule.damage.WeaponAffixCombatService;
 import games.stendhal.server.core.rule.damage.WeaponArmorInteractionService;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.engine.db.StendhalKillLogDAO;
@@ -274,25 +275,11 @@ public class StendhalRPAction {
 	 *		 and the second element is a boolean indicating whether the hit was critical.
 	 */
 	private static Object[] handleCritical(Player player, int damage) {
-		// Initialize the critical hit bonus
-		float criticalBonus = 0.0f;
-
-		// Check all equipped glyphs for critical hit bonuses
-		for (final Item glyph : player.getAllEquippedGlyphs()) {
-			if (glyph.has("critical_additional_bonus")) {
-				criticalBonus += glyph.getDouble("critical_additional_bonus");
-			}
-		}
-
-		// Determine if it's a critical hit from the normalized equipment chance.
 		final boolean critical = CriticalHitService.rollCritical(player);
-
-		// Calculate the total damage for a critical hit
 		if (critical) {
-			damage = (int) (damage * 2) + (int) criticalBonus;
+			damage = CriticalHitService.applyCriticalDamage(player, damage);
 		}
-
-		return new Object[] { damage, critical }; // Returning both damage and critical status
+		return new Object[] { damage, critical };
 	}
 
 	/**
@@ -407,13 +394,15 @@ public class StendhalRPAction {
 					player.getDamageType());
 			damage = WeaponArmorInteractionService.applyDamageMultiplier(
 					damage, weapons, defender);
-			final boolean didDamage = damage > 0;
+			damage = WeaponAffixCombatService.applyConditionalDamageBonuses(
+					damage, weapons, defender, isRanged);
 
 			// Handle critical hit logic
 			Object[] criticalResult = handleCritical(player, damage);
 			boolean critical = (boolean) criticalResult[1];
 			defender.hitCritical(critical);
 			damage = (int) criticalResult[0];
+			final boolean didDamage = damage > 0;
 
 			// give xp even if attack was blocked
 			getsDefXp = defender.getsDefXpFrom(player, didDamage);
@@ -432,6 +421,8 @@ public class StendhalRPAction {
 				player.handleLifesteal(player, weapons, damage);
 
 				defender.onDamaged(player, damage);
+				WeaponAffixCombatService.applyOnHitProcs(player, defender,
+						weapons, damage);
 				logger.debug("attack from " + player.getID() + " to "
 						+ defender.getID() + ": Damage: " + damage);
 
@@ -641,7 +632,7 @@ public class StendhalRPAction {
 	 * @param zone
 	 *	 Zone to place the entity in.
 	 * @param entity
-	 *	 The entity to place.
+	 *	 The entity changing zones.
 	 * @param x
 	 *	 Zone X coordinate.
 	 * @param y

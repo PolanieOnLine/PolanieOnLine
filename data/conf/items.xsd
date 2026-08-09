@@ -81,6 +81,11 @@
 			<element name="lifesteal" type="Q1:attribute" minOccurs="0"/>
 			<element name="parry_chance" type="Q1:attribute" minOccurs="0"/>
 			<element name="armor_penetration" type="Q1:attribute" minOccurs="0"/>
+			<element name="critical_damage_bonus" type="Q1:attribute" minOccurs="0"/>
+			<element name="bleed_on_hit" type="Q1:attribute" minOccurs="0"/>
+			<element name="execute_damage" type="Q1:attribute" minOccurs="0"/>
+			<element name="poison_on_hit" type="Q1:attribute" minOccurs="0"/>
+			<element name="distance_damage" type="Q1:attribute" minOccurs="0"/>
 			<element name="skill_atk" type="Q1:attribute" minOccurs="0"/>
 			<element name="atk_additional_bonus" type="Q1:attribute" minOccurs="0"/>
 			<element name="critical_additional_bonus" type="Q1:attribute" minOccurs="0"/>
