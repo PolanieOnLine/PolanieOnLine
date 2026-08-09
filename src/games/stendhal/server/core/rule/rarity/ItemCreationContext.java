@@ -123,7 +123,7 @@ public final class ItemCreationContext {
 		return generateAffixes;
 	}
 
-	/** @return deterministic affix seed, or {@code null} for the shared RNG */
+	/** @return deterministic affix seed, or {@code null} before generation */
 	public Long getAffixSeed() {
 		return affixSeed;
 	}
@@ -207,7 +207,7 @@ public final class ItemCreationContext {
 				throw new IllegalArgumentException("Forced rarity must not be null");
 			}
 			this.forcedRarity = rarity;
-			if (source == Source.ADMIN && rarity == ItemRarity.LEGENDARY) {
+			if (source == Source.ADMIN && rarity != ItemRarity.COMMON) {
 				this.generateAffixes = true;
 			}
 			return this;

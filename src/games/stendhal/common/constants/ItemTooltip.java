@@ -48,6 +48,9 @@ public final class ItemTooltip {
 	public static final String DISTANCE_DAMAGE = "distance_damage";
 	public static final String FLAT_ATTACK_BONUS = "flat_attack_bonus";
 	public static final String FLAT_DEFENSE_BONUS = "flat_defense_bonus";
+	/** Dedicated wire keys keep materialized flat affixes out of core stats. */
+	public static final String AFFIX_FLAT_ATTACK_BONUS = "affix_flat_attack_bonus";
+	public static final String AFFIX_FLAT_DEFENSE_BONUS = "affix_flat_defense_bonus";
 	public static final String RESIST_POISONED = "resist_poisoned";
 	public static final String RESIST_BLEEDING = "resist_bleeding";
 	public static final String RESIST_SHOCKED = "resist_shocked";

@@ -15,7 +15,7 @@ import marauroa.common.game.RPAction;
 
 public class ItemCreationCommandOptionsTest {
 	@Test
-	public void testFixedModifiersDisableRandomization() {
+	public void testFixedModifiersDisableRandomizationButKeepEpicAffixes() {
 		final RPAction action = new RPAction();
 		action.put("rarity", "EPIC");
 		action.put("attack-multiplier", "1.15");
@@ -25,20 +25,24 @@ public class ItemCreationCommandOptionsTest {
 		assertEquals(ItemCreationContext.Source.ADMIN, context.getSource());
 		assertEquals(ItemRarity.EPIC, context.getRarity());
 		assertFalse(context.isRandomizeModifiers());
-		assertFalse(context.isGenerateAffixes());
+		assertTrue(context.isGenerateAffixes());
 		assertEquals(Double.valueOf(1.15), context.getModifiers().getAttackMultiplier());
 		assertEquals(Double.valueOf(1.50), context.getModifiers().getValueMultiplier());
 	}
 
 	@Test
-	public void testLegendaryAutomaticallyEnablesAffixes() {
+	public void testForcedRareEpicAndLegendaryAutomaticallyEnableAffixes() {
+		assertForcedRarityGeneratesAffixes("rare", ItemRarity.RARE);
+		assertForcedRarityGeneratesAffixes("epic", ItemRarity.EPIC);
+		assertForcedRarityGeneratesAffixes("legendary", ItemRarity.LEGENDARY);
+	}
+
+	@Test
+	public void testForcedCommonDoesNotEnableAffixes() {
 		final RPAction action = new RPAction();
-		action.put("rarity", "legendary");
+		action.put("rarity", "common");
 
-		final ItemCreationContext context = ItemCreationCommandOptions.fromAction(action);
-
-		assertEquals(ItemRarity.LEGENDARY, context.getRarity());
-		assertTrue(context.isGenerateAffixes());
+		assertFalse(ItemCreationCommandOptions.fromAction(action).isGenerateAffixes());
 	}
 
 	@Test
@@ -55,7 +59,7 @@ public class ItemCreationCommandOptionsTest {
 	}
 
 	@Test
-	public void testAffixesNoneKeepsNonLegendaryAdminDeterministic() {
+	public void testAffixesNoneExplicitlyDisablesRareOrEpicAffixes() {
 		final RPAction action = new RPAction();
 		action.put("rarity", "epic");
 		action.put("affixes", "none");
@@ -77,6 +81,16 @@ public class ItemCreationCommandOptionsTest {
 				.withForcedRarity(ItemRarity.LEGENDARY)
 				.generateAffixes(false)
 				.build();
+	}
+
+	@Test
+	public void testBuilderCanExplicitlyDisableForcedAdminEpicAffixes() {
+		final ItemCreationContext context = ItemCreationContext
+				.builder(ItemCreationContext.Source.ADMIN)
+				.withForcedRarity(ItemRarity.EPIC)
+				.generateAffixes(false)
+				.build();
+		assertFalse(context.isGenerateAffixes());
 	}
 
 	@Test(expected = IllegalArgumentException.class)
@@ -126,5 +140,14 @@ public class ItemCreationCommandOptionsTest {
 		action.put("attack-multiplier", "1.10");
 		action.put("randomize-modifiers", "true");
 		ItemCreationCommandOptions.fromAction(action);
+	}
+
+	private void assertForcedRarityGeneratesAffixes(final String rarityId,
+			final ItemRarity expected) {
+		final RPAction action = new RPAction();
+		action.put("rarity", rarityId);
+		final ItemCreationContext context = ItemCreationCommandOptions.fromAction(action);
+		assertEquals(expected, context.getRarity());
+		assertTrue(context.isGenerateAffixes());
 	}
 }

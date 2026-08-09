@@ -6,7 +6,7 @@ package games.stendhal.client.gui;
 import games.stendhal.common.constants.ItemTooltip;
 import marauroa.common.game.RPObject;
 
-/** Builds the dedicated Polish presentation of legendary signature affixes. */
+/** Builds the dedicated Polish presentation of materialized item affixes. */
 final class LegendaryAffixPresentation {
 	private static final String LEGENDARY_TEXT_COLOR = "#f28c28";
 	private static final String LEGENDARY_NUMBER_COLOR = "#f3e2b8";
@@ -21,6 +21,11 @@ final class LegendaryAffixPresentation {
 		}
 
 		final StringBuilder result = new StringBuilder();
+		appendRegularRolled(result, object, ItemTooltip.AFFIX_FLAT_ATTACK_BONUS,
+				"dodatkowego ataku");
+		appendRegularRolled(result, object, ItemTooltip.AFFIX_FLAT_DEFENSE_BONUS,
+				"dodatkowego pancerza");
+
 		if (has(object, ItemTooltip.LEGENDARY_DEEP_WOUNDS)) {
 			appendFixed(result, "Głębokie Rany", new String[] {
 					"", "15%", " szansy na krwawienie; rana zadaje ", "35%",
@@ -45,14 +50,30 @@ final class LegendaryAffixPresentation {
 			});
 		}
 		appendRolled(result, object, ItemTooltip.LEGENDARY_BASTION_BONUS,
-				"Niezłomny Bastion", "+", " pkt. pancerza.");
+				"Niezłomny Bastion", "+", " pkt. dodatkowego pancerza.");
 		appendRolled(result, object, ItemTooltip.LEGENDARY_RELIC_POWER,
-				"Relikt Mocy", "+", " pkt. ataku.");
+				"Relikt Mocy", "+", " pkt. dodatkowego ataku.");
 		return result.toString();
 	}
 
 	private static boolean has(final RPObject object, final String key) {
 		return WeaponPerformanceCalculator.getTooltipValue(object, key) != null;
+	}
+
+	private static void appendRegularRolled(final StringBuilder result,
+			final RPObject object, final String key, final String label) {
+		final String raw = WeaponPerformanceCalculator.getTooltipValue(object, key);
+		if (raw == null) {
+			return;
+		}
+		final Integer value = parseInteger(raw);
+		if (value == null || value.intValue() == 0) {
+			return;
+		}
+		result.append("<div style='margin-top:4px'><font size='-1'>&#9670; ")
+				.append(value.intValue() > 0 ? "+" : "")
+				.append(value.intValue()).append(" ").append(label)
+				.append("</font></div>");
 	}
 
 	/**

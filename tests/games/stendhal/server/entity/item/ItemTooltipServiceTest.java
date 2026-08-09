@@ -107,7 +107,9 @@ public class ItemTooltipServiceTest {
 
 		ItemTooltipService.update(item);
 
-		assertEquals("5", stat(item, ItemTooltip.FLAT_DEFENSE_BONUS));
+		assertEquals("5", stat(item, ItemTooltip.AFFIX_FLAT_DEFENSE_BONUS));
+		assertFalse(item.getMap(ItemTooltip.ATTRIBUTE).containsKey(
+				ItemTooltip.FLAT_DEFENSE_BONUS));
 		assertEquals("12", stat(item, ItemTooltip.LEGENDARY_BASTION_BONUS));
 		assertEquals("0.2", stat(item, ItemTooltip.RESIST_POISONED));
 		assertEquals("0.15", stat(item, ItemTooltip.RESIST_BLEEDING));
@@ -119,15 +121,18 @@ public class ItemTooltipServiceTest {
 	@Test
 	public void testAccessoryFlatAttackAffixIsPublishedForTooltip() {
 		final Map<String, String> attributes = new HashMap<String, String>();
-		attributes.put("atk", "4");
-		attributes.put(ItemTooltip.FLAT_ATTACK_BONUS, "2");
-		attributes.put(ItemTooltip.LEGENDARY_RELIC_POWER, "6");
+		attributes.put("atk", "9");
+		attributes.put(ItemTooltip.FLAT_ATTACK_BONUS, "1");
+		attributes.put(ItemTooltip.LEGENDARY_RELIC_POWER, "5");
 		final Item item = new Item("test affix ring", "ring", "test", attributes);
 
 		ItemTooltipService.update(item);
 
-		assertEquals("2", stat(item, ItemTooltip.FLAT_ATTACK_BONUS));
-		assertEquals("6", stat(item, ItemTooltip.LEGENDARY_RELIC_POWER));
+		assertEquals("3", stat(item, ItemTooltip.ATTACK));
+		assertEquals("1", stat(item, ItemTooltip.AFFIX_FLAT_ATTACK_BONUS));
+		assertFalse(item.getMap(ItemTooltip.ATTRIBUTE).containsKey(
+				ItemTooltip.FLAT_ATTACK_BONUS));
+		assertEquals("5", stat(item, ItemTooltip.LEGENDARY_RELIC_POWER));
 	}
 
 	@Test

@@ -47,8 +47,7 @@ public final class ItemTooltipService {
 		}
 
 		put(item, ItemTooltip.CATEGORY, resolveCategory(item));
-		putPositiveInt(item, ItemTooltip.ATTACK,
-				item.getAttributeWithImprovement("atk", 0));
+		putPositiveInt(item, ItemTooltip.ATTACK, displayedAttack(item));
 		putPositiveInt(item, ItemTooltip.RANGED_ATTACK,
 				item.getAttributeWithImprovement("ratk", 0));
 		putPositiveInt(item, ItemTooltip.DAMAGE_MIN, item.getDamageMin());
@@ -64,8 +63,7 @@ public final class ItemTooltipService {
 						Double.toString(1.0 / interval));
 			}
 		}
-		putPositiveInt(item, ItemTooltip.DEFENSE,
-				item.getAttributeWithImprovement("def", 0));
+		putPositiveInt(item, ItemTooltip.DEFENSE, displayedDefense(item));
 		for (final java.util.Map.Entry<Nature, Double> entry
 				: item.getSusceptibilities().entrySet()) {
 			final int resistance = (int) Math.round(
@@ -98,8 +96,10 @@ public final class ItemTooltipService {
 		copyDouble(item, ItemTooltip.EXECUTE_DAMAGE, ItemTooltip.EXECUTE_DAMAGE);
 		copyDouble(item, ItemTooltip.POISON_ON_HIT, ItemTooltip.POISON_ON_HIT);
 		copyDouble(item, ItemTooltip.DISTANCE_DAMAGE, ItemTooltip.DISTANCE_DAMAGE);
-		copyInt(item, ItemTooltip.FLAT_ATTACK_BONUS, ItemTooltip.FLAT_ATTACK_BONUS);
-		copyInt(item, ItemTooltip.FLAT_DEFENSE_BONUS, ItemTooltip.FLAT_DEFENSE_BONUS);
+		copyInt(item, ItemTooltip.FLAT_ATTACK_BONUS,
+				ItemTooltip.AFFIX_FLAT_ATTACK_BONUS);
+		copyInt(item, ItemTooltip.FLAT_DEFENSE_BONUS,
+				ItemTooltip.AFFIX_FLAT_DEFENSE_BONUS);
 		copyDouble(item, ItemTooltip.RESIST_POISONED, ItemTooltip.RESIST_POISONED);
 		copyDouble(item, ItemTooltip.RESIST_BLEEDING, ItemTooltip.RESIST_BLEEDING);
 		copyDouble(item, ItemTooltip.RESIST_SHOCKED, ItemTooltip.RESIST_SHOCKED);
@@ -136,6 +136,24 @@ public final class ItemTooltipService {
 		if (statuses.length() > 0) {
 			put(item, ItemTooltip.STATUS_ATTACK, statuses.toString());
 		}
+	}
+
+	private static int displayedAttack(final Item item) {
+		int attack = item.getAttributeWithImprovement("atk", 0);
+		attack -= intAttribute(item, ItemTooltip.FLAT_ATTACK_BONUS);
+		attack -= intAttribute(item, ItemTooltip.LEGENDARY_RELIC_POWER);
+		return Math.max(0, attack);
+	}
+
+	private static int displayedDefense(final Item item) {
+		int defense = item.getAttributeWithImprovement("def", 0);
+		defense -= intAttribute(item, ItemTooltip.FLAT_DEFENSE_BONUS);
+		defense -= intAttribute(item, ItemTooltip.LEGENDARY_BASTION_BONUS);
+		return Math.max(0, defense);
+	}
+
+	private static int intAttribute(final Item item, final String attribute) {
+		return item.has(attribute) ? item.getInt(attribute) : 0;
 	}
 
 	private static void appendStatus(final StringBuilder statuses,

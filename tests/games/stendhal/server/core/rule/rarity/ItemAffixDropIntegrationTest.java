@@ -114,11 +114,34 @@ public class ItemAffixDropIntegrationTest {
 	}
 
 	@Test
-	public void adminRareWithoutAffixOptionDoesNotGenerateAffixes() {
+	public void forcedAdminRareGetsExactlyOneAffixByDefault() {
 		final Item item = sword();
 		new ItemRarityService(new Random(7L)).initialize(item,
 				ItemCreationContext.builder(ItemCreationContext.Source.ADMIN)
 						.withForcedRarity(ItemRarity.RARE)
+						.randomizeModifiers(false).build());
+
+		assertEquals(1, ItemAffixState.getValues(item).size());
+	}
+
+	@Test
+	public void forcedAdminEpicGetsExactlyTwoAffixesByDefault() {
+		final Item item = sword();
+		new ItemRarityService(new Random(9L)).initialize(item,
+				ItemCreationContext.builder(ItemCreationContext.Source.ADMIN)
+						.withForcedRarity(ItemRarity.EPIC)
+						.randomizeModifiers(false).build());
+
+		assertEquals(2, ItemAffixState.getValues(item).size());
+	}
+
+	@Test
+	public void adminEpicCanExplicitlyDisableAffixes() {
+		final Item item = sword();
+		new ItemRarityService(new Random(9L)).initialize(item,
+				ItemCreationContext.builder(ItemCreationContext.Source.ADMIN)
+						.withForcedRarity(ItemRarity.EPIC)
+						.generateAffixes(false)
 						.randomizeModifiers(false).build());
 
 		assertFalse(ItemAffixState.hasAny(item));
