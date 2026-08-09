@@ -72,12 +72,15 @@ public final class ItemAffixGenerator {
 
 	/**
 	 * Generates affixes for fresh creation contexts which explicitly enable the
-	 * affix layer. Existing persisted affix state is never rerolled. Legendary
-	 * items receive three regular affixes plus one mandatory signature affix.
+	 * affix layer. Administrator-created legendary items are the one deliberate
+	 * exception: if an admin summon resolves to legendary rarity, its three
+	 * regular affixes and mandatory signature are generated even when rarity was
+	 * not explicitly forced by the command. Existing persisted state is never
+	 * rerolled.
 	 */
 	public List<String> generate(final Item item,
 			final ItemCreationContext context) {
-		if (item == null || context == null || !context.isGenerateAffixes()
+		if (item == null || context == null || !shouldGenerate(item, context)
 				|| ItemAffixState.hasAny(item)) {
 			return Collections.emptyList();
 		}
@@ -100,6 +103,13 @@ public final class ItemAffixGenerator {
 							+ item.getItemClass() + "/" + item.getName());
 		}
 		return Collections.unmodifiableList(applied);
+	}
+
+	private boolean shouldGenerate(final Item item,
+			final ItemCreationContext context) {
+		return context.isGenerateAffixes()
+				|| (context.getSource() == ItemCreationContext.Source.ADMIN
+						&& item.getRarity() == ItemRarity.LEGENDARY);
 	}
 
 	private void applyRegularAffixes(final Item item, final int slots,
