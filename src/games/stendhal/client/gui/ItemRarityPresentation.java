@@ -369,6 +369,8 @@ final class ItemRarityPresentation {
 				"bonusu precyzji", false);
 		appendPercentageBonus(specialBonuses, object, ItemTooltip.CRITICAL_CHANCE,
 				"szansy na trafienie krytyczne", false);
+		appendPercentageBonus(specialBonuses, object, ItemTooltip.PARRY_CHANCE,
+				"szansy na parowanie", true);
 		appendPercentageBonus(specialBonuses, object, ItemTooltip.CRITICAL_BONUS,
 				"obrażeń krytycznych", false);
 		appendPercentageBonus(specialBonuses, object, ItemTooltip.LIFESTEAL,

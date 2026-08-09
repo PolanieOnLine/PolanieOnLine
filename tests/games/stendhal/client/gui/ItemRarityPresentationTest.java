@@ -73,6 +73,7 @@ public class ItemRarityPresentationTest {
 		putStat(object, ItemTooltip.DEFENSE, "10");
 		putStat(object, ItemTooltip.DAMAGE_TYPE, "light");
 		putStat(object, ItemTooltip.LIFESTEAL, "0.12402917");
+		putStat(object, ItemTooltip.PARRY_CHANCE, "0.15");
 		putStat(object, ItemTooltip.IMPROVE, "0");
 		putStat(object, ItemTooltip.MAX_IMPROVES, "3");
 		putStat(object, ItemTooltip.VALUE, "11432");
@@ -97,6 +98,8 @@ public class ItemRarityPresentationTest {
 		assertTrue(tooltip.contains("Typ obrażeń: Światło"));
 		assertTrue(tooltip.contains("Pancerz: 10"));
 		assertTrue(tooltip.contains("+12,4% kradzieży życia"));
+		assertTrue(tooltip.contains("+15% szansy na parowanie"));
+		assertTrue(tooltip.contains("&#9670; +15% szansy na parowanie"));
 		assertTrue(tooltip.contains("Ulepszenie: +0/3"));
 		assertTrue(tooltip.indexOf("Ulepszenie: +0/3")
 				< tooltip.indexOf("53,3 pkt. obrażeń na sekundę"));

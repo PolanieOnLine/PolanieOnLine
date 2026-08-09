@@ -41,6 +41,18 @@ public class ItemTooltipServiceTest {
 	}
 
 	@Test
+	public void testParryChanceIsPublishedForTooltip() {
+		final Map<String, String> attributes = new HashMap<String, String>();
+		attributes.put("atk", "30");
+		attributes.put("parry_chance", "0.15");
+		final Item item = new Item("test sword", "sword", "test", attributes);
+
+		ItemTooltipService.update(item);
+
+		assertEquals("0.15", stat(item, ItemTooltip.PARRY_CHANCE));
+	}
+
+	@Test
 	public void testPluralBeltsClassIsArmour() {
 		final Map<String, String> attributes = new HashMap<String, String>();
 		attributes.put("def", "21");
