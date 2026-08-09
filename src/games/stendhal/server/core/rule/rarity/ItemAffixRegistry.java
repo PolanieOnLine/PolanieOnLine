@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import games.stendhal.server.core.rule.damage.CriticalHitService;
 import games.stendhal.server.core.rule.damage.ParryService;
 import games.stendhal.server.core.rule.damage.WeaponArmorInteractionService;
 import games.stendhal.server.entity.item.Item;
@@ -22,6 +23,7 @@ public final class ItemAffixRegistry {
 					new ParryAffixDefinition(),
 					new LifestealAffixDefinition(),
 					new AccuracyAffixDefinition(),
+					new CriticalChanceAffixDefinition(),
 					new ArmorPenetrationAffixDefinition()));
 
 	private final List<ItemAffixDefinition> definitions;
@@ -141,6 +143,29 @@ public final class ItemAffixRegistry {
 		@Override
 		public boolean apply(final Item item, final Random random) {
 			return WeaponAffixService.applyAccuracy(item, random);
+		}
+	}
+
+	private static final class CriticalChanceAffixDefinition
+			implements ItemAffixDefinition {
+		@Override
+		public String getId() {
+			return CriticalHitService.CRITICAL_CHANCE_ATTRIBUTE;
+		}
+
+		@Override
+		public String getAttribute() {
+			return CriticalHitService.CRITICAL_CHANCE_ATTRIBUTE;
+		}
+
+		@Override
+		public boolean isEligible(final Item item) {
+			return WeaponAffixService.isEligible(item, getAttribute());
+		}
+
+		@Override
+		public boolean apply(final Item item, final Random random) {
+			return WeaponAffixService.applyCriticalChance(item, random);
 		}
 	}
 

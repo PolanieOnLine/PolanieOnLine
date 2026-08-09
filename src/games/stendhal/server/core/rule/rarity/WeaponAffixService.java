@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
+import games.stendhal.server.core.rule.damage.CriticalHitService;
 import games.stendhal.server.core.rule.damage.WeaponArmorInteractionService;
 import games.stendhal.server.entity.item.Item;
 
@@ -21,6 +22,8 @@ public final class WeaponAffixService {
 	public static final int MAX_LIFESTEAL_PERCENT = 10;
 	public static final int MIN_ACCURACY_PERCENT = 5;
 	public static final int MAX_ACCURACY_PERCENT = 15;
+	public static final int MIN_CRITICAL_CHANCE_PERCENT = 3;
+	public static final int MAX_CRITICAL_CHANCE_PERCENT = 10;
 	public static final int MIN_ARMOR_PENETRATION_PERCENT = 10;
 	public static final int MAX_ARMOR_PENETRATION_PERCENT = 25;
 
@@ -74,6 +77,21 @@ public final class WeaponAffixService {
 		final int percent = rollInclusive(random,
 				MIN_ACCURACY_PERCENT, MAX_ACCURACY_PERCENT);
 		item.put(ACCURACY_ATTRIBUTE, (double) percent);
+		return true;
+	}
+
+	/**
+	 * Rolls +3-10 percentage points of critical-hit chance. The combat service
+	 * adds this value to the player's base critical chance.
+	 */
+	public static boolean applyCriticalChance(final Item item,
+			final Random random) {
+		if (!isEligible(item, CriticalHitService.CRITICAL_CHANCE_ATTRIBUTE)) {
+			return false;
+		}
+		final int percent = rollInclusive(random,
+				MIN_CRITICAL_CHANCE_PERCENT, MAX_CRITICAL_CHANCE_PERCENT);
+		item.put(CriticalHitService.CRITICAL_CHANCE_ATTRIBUTE, (double) percent);
 		return true;
 	}
 

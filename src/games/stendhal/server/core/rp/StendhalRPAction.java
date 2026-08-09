@@ -27,6 +27,7 @@ import games.stendhal.common.constants.Testing;
 import games.stendhal.server.core.engine.DataProvider;
 import games.stendhal.server.core.engine.GameEvent;
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.core.rule.damage.CriticalHitService;
 import games.stendhal.server.core.rule.damage.WeaponArmorInteractionService;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.engine.db.StendhalKillLogDAO;
@@ -265,51 +266,6 @@ public class StendhalRPAction {
 	}
 
 	/**
-	 * Calculates and returns the total bonus to critical hit chance 
-	 * based on equipped glyphs.
-	 * 
-	 * For each glyph that has an assigned "critical_chance" value, 
-	 * that value is multiplied, allowing for the accumulation of bonuses 
-	 * from different glyphs. The default multiplier is 1.0, meaning 
-	 * no effect if there are no active glyphs.
-	 *
-	 * @return A multiplier for critical chance that can increase 
-	 *		 or decrease the base critical hit chance 
-	 *		 depending on equipped glyphs.
-	 */
-	private static double getCriticalChanceBonus(Player player) {
-		double multiplier = 1.0; // Default critical chance multiplier.
-
-		// Iterates through all active glyphs in the inventory.
-		for (final Item equip : player.getAllEquippedGlyphs()) {
-			// Checks if the glyph has an assigned "critical_chance" value.
-			if (equip.has("critical_chance")) {
-				// Multiplies the current multiplier by the "critical_chance" value from the glyph.
-				multiplier *= equip.getDouble("critical_chance");
-			}
-		}
-
-		// Returns the total critical chance multiplier.
-		return multiplier;
-	}
-
-	/**
-	 * Calculates the total critical hit chance for the player based on equipped glyphs.
-	 *
-	 * @param player The attacking player.
-	 * @return The total critical hit chance as an integer.
-	 */
-	private static int calculateCriticalChance(Player player) {
-		final int maxCriticalChance = 50; // Maximum critical hit chance.
-		final int baseCriticalChance = 10; // Default critical hit chance.
-		
-		// Calculates the total critical hit chance considering the base value and bonuses from glyphs.
-		int totalCriticalChance = Math.min(baseCriticalChance + (int) getCriticalChanceBonus(player), maxCriticalChance);
-		
-		return totalCriticalChance;
-	}
-
-	/**
 	 * Handles the critical hit logic for the player.
 	 *
 	 * @param player The attacking player.
@@ -328,9 +284,8 @@ public class StendhalRPAction {
 			}
 		}
 
-		// Determine if it's a critical hit
-		int totalCriticalChance = calculateCriticalChance(player);
-		final boolean critical = Rand.roll1D100() <= totalCriticalChance;
+		// Determine if it's a critical hit from the normalized equipment chance.
+		final boolean critical = CriticalHitService.rollCritical(player);
 
 		// Calculate the total damage for a critical hit
 		if (critical) {

@@ -18,6 +18,7 @@ import org.junit.Test;
 
 import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.common.constants.ItemTooltip;
+import games.stendhal.server.core.rule.damage.CriticalHitService;
 import games.stendhal.server.core.rule.damage.ParryService;
 import games.stendhal.server.core.rule.damage.WeaponArmorInteractionService;
 import games.stendhal.server.entity.item.Item;
@@ -57,6 +58,10 @@ public class ItemAffixDropIntegrationTest {
 		if (ItemAffixState.has(item, WeaponAffixService.ACCURACY_ATTRIBUTE)) {
 			assertTrue(item.getDouble(WeaponAffixService.ACCURACY_ATTRIBUTE) >= 5.0);
 			assertTrue(item.getDouble(WeaponAffixService.ACCURACY_ATTRIBUTE) <= 15.0);
+		}
+		if (ItemAffixState.has(item, CriticalHitService.CRITICAL_CHANCE_ATTRIBUTE)) {
+			assertTrue(item.getDouble(CriticalHitService.CRITICAL_CHANCE_ATTRIBUTE) >= 3.0);
+			assertTrue(item.getDouble(CriticalHitService.CRITICAL_CHANCE_ATTRIBUTE) <= 10.0);
 		}
 		if (ItemAffixState.has(item,
 				WeaponArmorInteractionService.ARMOR_PENETRATION_ATTRIBUTE)) {

@@ -12,6 +12,7 @@ import java.util.Random;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import games.stendhal.server.core.rule.damage.CriticalHitService;
 import games.stendhal.server.core.rule.damage.WeaponArmorInteractionService;
 import games.stendhal.server.entity.item.Item;
 import utilities.RPClass.ItemTestHelper;
@@ -51,6 +52,20 @@ public class WeaponAffixServiceTest {
 	}
 
 	@Test
+	public void criticalChanceRollUsesWholePercentagePoints() {
+		for (int seed = 0; seed < 50; seed++) {
+			final Item item = item("sword");
+			assertTrue(WeaponAffixService.applyCriticalChance(item,
+					new Random(seed)));
+			final double value = item.getDouble(
+					CriticalHitService.CRITICAL_CHANCE_ATTRIBUTE);
+			assertTrue(value >= 3.0);
+			assertTrue(value <= 10.0);
+			assertEquals(Math.rint(value), value, 0.0);
+		}
+	}
+
+	@Test
 	public void armorPenetrationRollUsesPersistentFraction() {
 		for (int seed = 0; seed < 50; seed++) {
 			final Item item = item("dagger");
@@ -80,15 +95,19 @@ public class WeaponAffixServiceTest {
 		final Item item = item("sword");
 		item.put(WeaponAffixService.LIFESTEAL_ATTRIBUTE, 0.30);
 		item.put(WeaponAffixService.ACCURACY_ATTRIBUTE, 25.0);
+		item.put(CriticalHitService.CRITICAL_CHANCE_ATTRIBUTE, 20.0);
 		item.put(WeaponArmorInteractionService.ARMOR_PENETRATION_ATTRIBUTE, 0.40);
 
 		assertFalse(WeaponAffixService.applyLifesteal(item, new Random(1L)));
 		assertFalse(WeaponAffixService.applyAccuracy(item, new Random(1L)));
+		assertFalse(WeaponAffixService.applyCriticalChance(item, new Random(1L)));
 		assertFalse(WeaponAffixService.applyArmorPenetration(item, new Random(1L)));
 		assertEquals(0.30, item.getDouble(
 				WeaponAffixService.LIFESTEAL_ATTRIBUTE), 0.0);
 		assertEquals(25.0, item.getDouble(
 				WeaponAffixService.ACCURACY_ATTRIBUTE), 0.0);
+		assertEquals(20.0, item.getDouble(
+				CriticalHitService.CRITICAL_CHANCE_ATTRIBUTE), 0.0);
 		assertEquals(0.40, item.getDouble(
 				WeaponArmorInteractionService.ARMOR_PENETRATION_ATTRIBUTE), 0.0);
 	}
@@ -98,6 +117,7 @@ public class WeaponAffixServiceTest {
 		final Item item = item("armor");
 		assertFalse(WeaponAffixService.applyLifesteal(item, new Random(1L)));
 		assertFalse(WeaponAffixService.applyAccuracy(item, new Random(1L)));
+		assertFalse(WeaponAffixService.applyCriticalChance(item, new Random(1L)));
 		assertFalse(WeaponAffixService.applyArmorPenetration(item, new Random(1L)));
 	}
 

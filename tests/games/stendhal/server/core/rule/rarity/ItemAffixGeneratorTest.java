@@ -48,10 +48,10 @@ public class ItemAffixGeneratorTest {
 	}
 
 	@Test
-	public void legendarySwordChoosesThreeFromFourProductionAffixes() {
+	public void legendarySwordChoosesThreeFromFiveProductionAffixes() {
 		final Item item = item("sword", ItemRarity.LEGENDARY);
 		final ItemAffixRegistry registry = ItemAffixRegistry.getInstance();
-		assertEquals(4, registry.getEligible(item).size());
+		assertEquals(5, registry.getEligible(item).size());
 		final ItemAffixGenerator generator = new ItemAffixGenerator(new Random(17L));
 
 		final List<String> applied = generator.generate(item,
