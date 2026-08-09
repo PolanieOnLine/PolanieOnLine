@@ -83,6 +83,18 @@ public class ItemAffixGeneratorTest {
 	}
 
 	@Test
+	public void adminLegendaryGetsAffixesWithoutExplicitAffixFlag() {
+		final Item item = item("sword", ItemRarity.LEGENDARY);
+		final ItemAffixGenerator generator = new ItemAffixGenerator(new Random(37L));
+
+		final List<String> applied = generator.generate(item,
+				ItemCreationContext.admin());
+
+		assertEquals(4, applied.size());
+		assertEquals(4, ItemAffixState.getValues(item).size());
+	}
+
+	@Test
 	public void seededAffixGenerationIsReproducible() {
 		final Item first = item("dagger", ItemRarity.LEGENDARY);
 		final Item second = item("dagger", ItemRarity.LEGENDARY);
