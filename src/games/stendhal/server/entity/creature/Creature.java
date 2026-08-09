@@ -55,7 +55,7 @@ import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
 import games.stendhal.server.entity.npc.NPC;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.entity.slot.EntitySlot;
-import games.stendhal.server.entity.status.BloodAttackerFactory;
+import games.stendhal.server.entity.status.BleedingAttackerFactory;
 import games.stendhal.server.entity.status.PoisonAttackerFactory;
 import games.stendhal.server.entity.status.StatusAttacker;
 import games.stendhal.server.entity.status.StatusAttackerFactory;
@@ -541,7 +541,7 @@ public class Creature extends NPC {
 				this.addStatusAttacker(poisoner);
 			}
 
-			StatusAttacker attacker = BloodAttackerFactory.get(aiProfiles.get("perilous"), this.getAtk());
+			StatusAttacker attacker = BleedingAttackerFactory.get(aiProfiles.get("bleeding_attack"));
 			if (attacker != null) {
 				this.addStatusAttacker(attacker);
 			}
@@ -1111,7 +1111,7 @@ public class Creature extends NPC {
 	}
 
 	public boolean hasTargetMoved() {
-		if ((targetX != getAttackTarget().getX()) || (targetY != getAttackTarget().getY())) {
+		if ((targetX != getAttackTarget().getX()) || (targetY != getAttackTarget().getY()) {
 			targetX = getAttackTarget().getX();
 			targetY = getAttackTarget().getY();
 
