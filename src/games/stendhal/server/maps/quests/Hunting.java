@@ -26,6 +26,7 @@ import games.stendhal.common.Rand;
 import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.creature.LevelBasedComparator;
 import games.stendhal.server.entity.item.Item;
@@ -336,7 +337,8 @@ public class Hunting extends AbstractQuest {
 					player.addKarma(5);
 
 					if (player.getNumberOfRepetitions(QUEST_SLOT, 2) == 10) {
-						final Item specialRing = SingletonRepository.getEntityManager().getItem("pierścień powrotu");
+						final Item specialRing = SingletonRepository.getEntityManager().getItem(
+								"pierścień powrotu", ItemCreationContext.quest());
 						specialRing.setBoundTo(player.getName());
 						player.equipOrPutOnGround(specialRing);
 						player.notifyWorldAboutChanges();

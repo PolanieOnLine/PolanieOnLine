@@ -16,6 +16,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.common.grammar.ItemParserResult;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.entity.item.Item;
@@ -122,7 +123,11 @@ public class SellerBehaviour extends MerchantBehaviour {
 	}
 
 	public Item getAskedItem(final String askedItem, final Player player) {
-		final Item item = SingletonRepository.getEntityManager().getItem(askedItem);
+		// NPC shops sell a stable base variant. Random rarity remains available
+		// through drops and explicit/default factory calls, while the catalogue
+		// can now show exactly the tier and stats delivered by the seller.
+		final Item item = SingletonRepository.getEntityManager().getItem(
+				askedItem, ItemRarity.COMMON);
 		if (item != null && item.has("autobind") && player != null) {
 			// respect autobind attrubute
 			item.setBoundTo(player.getName());

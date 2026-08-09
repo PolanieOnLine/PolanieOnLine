@@ -23,6 +23,9 @@ import games.stendhal.server.core.rule.defaultruleset.creator.AbstractCreator;
 import games.stendhal.server.core.rule.defaultruleset.creator.AttributesItemCreator;
 import games.stendhal.server.core.rule.defaultruleset.creator.DefaultItemCreator;
 import games.stendhal.server.core.rule.defaultruleset.creator.FullItemCreator;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
+import games.stendhal.server.core.rule.rarity.ItemRarityProfile;
+import games.stendhal.server.core.rule.rarity.ItemRarityService;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.behavior.UseBehavior;
 import games.stendhal.server.entity.status.PoisonAttackerFactory;
@@ -82,6 +85,12 @@ public class DefaultItem {
 	private List<String> activeSlotsList;
 
 	private boolean unattainable = false;
+
+	/** Nullable XML override. Null means automatic eligibility. */
+	private Boolean rarityEnabled;
+
+	/** Named selection/modifier profile, ready for future drop profiles. */
+	private String rarityProfile = ItemRarityProfile.DEFAULT_ID;
 
 	/**
 	 * Use behavior of the item, or <code>null</code> if no special behaviors
@@ -264,6 +273,16 @@ public class DefaultItem {
 	 * @return An item, or <code>null</code> on error.
 	 */
 	public Item getItem() {
+		return getItem(ItemCreationContext.defaultCreation());
+	}
+
+	/**
+	 * Returns an item-instance using the requested rarity creation semantics.
+	 *
+	 * @param creationContext context describing normal creation or restoration
+	 * @return an item, or {@code null} on error
+	 */
+	public Item getItem(final ItemCreationContext creationContext) {
 
 		/*
 		 * Just in case - Really should generate fatal error up front (in
@@ -309,6 +328,8 @@ public class DefaultItem {
 			}
 
 			item.setUseBehavior(useBehavior);
+			item.configureRarity(rarityEnabled, rarityProfile, value);
+			ItemRarityService.getInstance().initialize(item, creationContext);
 		}
 
 		return item;
@@ -329,6 +350,23 @@ public class DefaultItem {
 
 	public int getValue() {
 		return value;
+	}
+
+	public void setRarityEnabled(final Boolean rarityEnabled) {
+		this.rarityEnabled = rarityEnabled;
+	}
+
+	public Boolean getRarityEnabled() {
+		return rarityEnabled;
+	}
+
+	public void setRarityProfile(final String rarityProfile) {
+		this.rarityProfile = rarityProfile == null
+				? ItemRarityProfile.DEFAULT_ID : rarityProfile;
+	}
+
+	public String getRarityProfile() {
+		return rarityProfile;
 	}
 
 	/** @return the class. */
@@ -399,7 +437,14 @@ public class DefaultItem {
 
 	public String toXML() {
 		final StringBuilder os = new StringBuilder();
-		os.append("  <item name=\"" + name + "\">\n");
+		os.append("  <item name=\"" + name + "\"");
+		if (rarityEnabled != null) {
+			os.append(" rarity-enabled=\"" + rarityEnabled + "\"");
+		}
+		if (!ItemRarityProfile.DEFAULT_ID.equals(rarityProfile)) {
+			os.append(" rarity-profile=\"" + rarityProfile + "\"");
+		}
+		os.append(">\n");
 		os.append("    <type class=\"" + clazz + "\" subclass=\"" + subclazz
 				+ "\" tileid=\"" + tileid + "\"/>\n");
 		if (description != null) {

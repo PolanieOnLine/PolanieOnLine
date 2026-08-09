@@ -19,6 +19,7 @@ import games.stendhal.common.grammar.Grammar;
 import games.stendhal.common.parser.Expression;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationStates;
@@ -209,7 +210,8 @@ public class KolekcjonerPasow extends AbstractQuest implements BringListOfItemsQ
 
 	@Override
 	public void rewardPlayer(final Player player) {
-		final Item killer_gloves = SingletonRepository.getEntityManager().getItem("rękawice zabójcy");
+		final Item killer_gloves = SingletonRepository.getEntityManager().getItem(
+				"rękawice zabójcy", ItemCreationContext.quest());
 		killer_gloves.setBoundTo(player.getName());
 		player.equipOrPutOnGround(killer_gloves);
 		player.addKarma(40.0);

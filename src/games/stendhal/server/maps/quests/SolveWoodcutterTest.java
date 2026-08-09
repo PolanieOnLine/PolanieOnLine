@@ -33,6 +33,7 @@ import games.stendhal.common.parser.ConversationParser;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.common.parser.SimilarExprMatcher;
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -407,7 +408,8 @@ public class SolveWoodcutterTest extends AbstractQuest {
 							npc.say("Gratulacje! Zaliczyłeś test.");
 							player.setSkill("woodcutting", Double.toString(0.2));
 							player.addXP(2000);
-							final Item siekierka = SingletonRepository.getEntityManager().getItem("siekierka");
+							final Item siekierka = SingletonRepository.getEntityManager()
+									.getItem("siekierka", ItemCreationContext.quest());
 							siekierka.setBoundTo(player.getName());
 							player.equipOrPutOnGround(siekierka);
 							player.setQuest(QUEST_SLOT, "done");

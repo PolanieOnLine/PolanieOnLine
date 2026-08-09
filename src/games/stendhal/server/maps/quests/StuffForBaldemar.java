@@ -17,6 +17,7 @@ import java.util.List;
 
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -203,7 +204,8 @@ public class StuffForBaldemar extends AbstractQuest {
 					raiser.say("Skończyłem wykuwanie twojej nowej tarczy z mithrilu. Ciesz się. Teraz pójdę sprawdzić co Trillium położyła za ladą dla mnie. ;)");
 					player.addXP(95000);
 					player.addKarma(25);
-					final Item mithrilshield = SingletonRepository.getEntityManager().getItem("tarcza z mithrilu");
+					final Item mithrilshield = SingletonRepository.getEntityManager().getItem(
+							"tarcza z mithrilu", ItemCreationContext.quest());
 					mithrilshield.setBoundTo(player.getName());
 					player.equipOrPutOnGround(mithrilshield);
 					player.notifyWorldAboutChanges();

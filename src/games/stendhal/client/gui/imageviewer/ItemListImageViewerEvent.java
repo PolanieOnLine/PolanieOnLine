@@ -33,12 +33,14 @@ import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
 import games.stendhal.client.GameScreen;
+import games.stendhal.client.entity.Item;
 import games.stendhal.client.gui.ScrolledViewport;
 import games.stendhal.client.gui.textformat.HTMLBuilder;
 import games.stendhal.client.gui.textformat.StringFormatter;
 import games.stendhal.client.gui.textformat.TextAttributeSet;
 import games.stendhal.client.sprite.Sprite;
 import games.stendhal.client.sprite.SpriteStore;
+import games.stendhal.common.constants.ItemRarity;
 import marauroa.common.game.RPEvent;
 import marauroa.common.game.RPObject;
 import marauroa.common.game.RPSlot;
@@ -282,10 +284,41 @@ public final class ItemListImageViewerEvent extends ViewPanel {
 		String text = item.get("description_info");
 		HTMLBuilder build = new HTMLBuilder();
 		formatter.format(text, defaultAttrs, build);
-		html.append(build.toHTML());
+		html.append(colorHighlightedItemName(build.toHTML(), Item.getRarity(item)));
 		html.append("</div></html>");
 		rval[2] = html.toString();
 		return rval;
+	}
+
+	/**
+	 * Apply an item's rarity color to the first highlighted name in a shop
+	 * description. Item descriptions mark their name with the {@code §}
+	 * formatter, which is rendered as the first {@code <u>} element.
+	 *
+	 * @param html formatted description
+	 * @param rarity item rarity, or {@code null}
+	 * @return description with a colored item name
+	 */
+	static String colorHighlightedItemName(final String html, final ItemRarity rarity) {
+		if ((rarity == null) || (html == null)) {
+			return html;
+		}
+
+		final int nameStart = html.indexOf("<u>");
+		if (nameStart < 0) {
+			return html;
+		}
+		final int nameEnd = html.indexOf("</u>", nameStart + 3);
+		if (nameEnd < 0) {
+			return html;
+		}
+
+		final String color = rarity.getColorHex();
+		return html.substring(0, nameStart + 3)
+				+ "<font color=\"" + color + "\">"
+				+ html.substring(nameStart + 3, nameEnd)
+				+ "</font>"
+				+ html.substring(nameEnd);
 	}
 
 	/**

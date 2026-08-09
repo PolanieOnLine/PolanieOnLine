@@ -24,6 +24,7 @@ import games.stendhal.server.core.engine.StendhalRPWorld;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.CollisionAction;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.npc.ChatAction;
@@ -134,7 +135,7 @@ public class FindDragons extends AbstractQuest {
 
 								final String[] items = { "magiczna tarcza płytowa", "tarcza chaosu", "tarcza xenocyjska" };
 								final Item item = SingletonRepository.getEntityManager()
-									.getItem(items[Rand.rand(items.length)]);
+									.getItem(items[Rand.rand(items.length)], ItemCreationContext.quest());
 								item.setBoundTo(player.getName());
 								player.equipOrPutOnGround(item);
 								player.addXP(7000);

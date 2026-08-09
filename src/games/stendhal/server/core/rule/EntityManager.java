@@ -14,9 +14,12 @@ package games.stendhal.server.core.rule;
 
 import java.util.Collection;
 
+import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.server.core.rule.defaultruleset.DefaultCreature;
 import games.stendhal.server.core.rule.defaultruleset.DefaultItem;
 import games.stendhal.server.core.rule.defaultruleset.DefaultSpell;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
+import games.stendhal.server.core.rule.rarity.ItemRarityModifiers;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.item.Item;
@@ -143,6 +146,21 @@ public interface EntityManager {
 	 *
 	 */
 	Item getItem(String clazz);
+
+	/**
+	 * Creates an item using explicit creation/rarity semantics.
+	 *
+	 * @param clazz configured item name
+	 * @param context creation context; must not be {@code null}
+	 * @return item instance, or {@code null} if the name is unknown
+	 */
+	Item getItem(String clazz, ItemCreationContext context);
+
+	/** Creates an item with a chosen rarity and random tier modifiers. */
+	Item getItem(String clazz, ItemRarity rarity);
+
+	/** Creates an item with a chosen rarity and fixed concrete modifiers. */
+	Item getItem(String clazz, ItemRarity rarity, ItemRarityModifiers modifiers);
 
 	/**
 	 * Retrieves a Spell or null if the spell is unknown.

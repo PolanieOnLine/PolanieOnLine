@@ -11,10 +11,14 @@
  ***************************************************************************/
 package games.stendhal.client.entity;
 
+import games.stendhal.common.constants.ItemRarity;
 import marauroa.common.game.RPObject;
 import marauroa.common.game.RPSlot;
 
 public class Item extends Entity {
+	/** Attribute used by the server to expose an item's rarity. */
+	public static final String RARITY_ID_ATTRIBUTE = "rarity_id";
+
 	/**
 	 * The content slot, or <code>null</code> if the item has none or it's not
 	 * accessible.
@@ -69,6 +73,35 @@ public class Item extends Entity {
 	 */
 	public int getQuantity() {
 		return quantity;
+	}
+
+	/**
+	 * Get the rarity assigned to this item.
+	 *
+	 * @return rarity, or {@code null} for legacy, excluded, or malformed items
+	 */
+	public ItemRarity getRarity() {
+		return getRarity(rpObject);
+	}
+
+	/**
+	 * Read rarity information directly from an item object. This is also used
+	 * by item-information objects displayed in shop lists.
+	 *
+	 * @param object item object
+	 * @return rarity, or {@code null} if no supported rarity is present
+	 */
+	public static ItemRarity getRarity(final RPObject object) {
+		if ((object == null) || !object.has(RARITY_ID_ATTRIBUTE)) {
+			return null;
+		}
+
+		final String rarityId = object.get(RARITY_ID_ATTRIBUTE);
+		final ItemRarity rarity = ItemRarity.fromId(rarityId);
+		if ((rarity == null) || !rarity.getId().equals(rarityId)) {
+			return null;
+		}
+		return rarity;
 	}
 
 	/**

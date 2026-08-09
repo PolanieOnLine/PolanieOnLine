@@ -452,6 +452,7 @@ local serializeDetectorAttributes = function(item)
 	local persistent = safeGet(item, "isPersistent", false)
 	local slot_size = safeGet(item, "getSlotSize", 0)
 	local slot_name = safeGet(item, "getSlotName", "")
+	local rarity_snapshot = safeCall(entities, "getItemRaritySnapshot", item) or ""
 
 	return table.concat({
 		"improve=" .. tostring(improve or 0),
@@ -462,6 +463,7 @@ local serializeDetectorAttributes = function(item)
 		"persistent=" .. (persistent and "1" or "0"),
 		"slot_size=" .. tostring(slot_size or 0),
 		"slot_name=" .. tostring(slot_name or ""),
+		"rarity_snapshot=" .. tostring(rarity_snapshot),
 	}, "|")
 end
 
@@ -568,7 +570,10 @@ local loanMetalDetector = function(player, lender, detector, offer, bound_to, in
 
 	local slot_state = offer .. ";" .. bound_to .. ";" .. info_s .. ";" .. attr_s
 
-	detector:setItemData("Sawyer;" .. slot_state)
+	-- Item itemdata is a short string. Keep only the ownership marker and item
+	-- name there; the quest slot already stores the complete collateral state
+	-- and is large enough for the rarity snapshot.
+	detector:setItemData("Sawyer;" .. offer)
 	detector:setBoundTo(player:getName())
 	detector:setUndroppableOnDeath(true)
 
@@ -669,12 +674,27 @@ local handleReturnRequest = function(player, sentence, lender)
 		return
 	end
 
-	local item_name = detector_info[2]
-	local bound_to = detector_info[3]
-	local info_s = detector_info[4]
-	local attr_s = detector_info[5] or ""
+	-- The quest slot is the authoritative state for both new loans and old
+	-- loans, which already stored the same legacy slot_state there. Fall back
+	-- to the detector payload only for damaged historical state.
+	local loan_state = player:getQuest(lender_slot) or ""
+	local loan_info = loan_state:split(";")
+	local item_name = loan_info[1]
+	local bound_to = loan_info[2]
+	local info_s = loan_info[3]
+	local attr_s = loan_info[4]
+	if item_name == nil or item_name == "" then
+		item_name = detector_info[2]
+		bound_to = detector_info[3]
+		info_s = detector_info[4]
+		attr_s = detector_info[5]
+	end
+	bound_to = bound_to or ""
+	info_s = info_s or ""
+	attr_s = attr_s or ""
 
-	local item = entities:getItem(item_name)
+	local attrs = parseDetectorAttributes(attr_s)
+	local item = entities:getItemForRestore(item_name, attrs.rarity_snapshot or "")
 
 	-- problem with item
 	if item == nil then

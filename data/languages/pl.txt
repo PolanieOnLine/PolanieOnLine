@@ -1775,3 +1775,13 @@ You see a headless monster, how can he hear that we come to him?=You see a headl
 rotten zombie=rotten zombie
 You see a rotten zombie. You are disgusted as you see its rotten skin that hangs down in pieces from his half rotten bones.=You see a rotten zombie. You are disgusted as you see its rotten skin that hangs down in pieces from his half rotten bones.
 bluuergghhhoooorrghhhhh=bluuergghhhoooorrghhhhh
+
+
+## item_rarity
+
+Rarity=Rzadkość
+Common=Zwykły
+Rare=Rzadki
+Epic=Epicki
+Legendary=Legendarny
+Value=Wartość

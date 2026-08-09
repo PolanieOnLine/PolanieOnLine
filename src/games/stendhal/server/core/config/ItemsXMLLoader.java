@@ -32,6 +32,7 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import games.stendhal.server.core.rule.defaultruleset.DefaultItem;
+import games.stendhal.server.core.rule.rarity.ItemRarityProfile;
 import games.stendhal.server.entity.item.behavior.UseBehavior;
 
 public final class ItemsXMLLoader extends DefaultHandler {
@@ -85,6 +86,10 @@ public final class ItemsXMLLoader extends DefaultHandler {
 	private String statusAttacks;
 
 	private boolean unattainable = false;
+
+	private Boolean rarityEnabled;
+
+	private String rarityProfile;
 
 	public List<DefaultItem> load(final URI uri) throws SAXException {
 		list = new LinkedList<DefaultItem>();
@@ -147,6 +152,30 @@ public final class ItemsXMLLoader extends DefaultHandler {
 		text = "";
 		if (qName.equals("item")) {
 			name = attrs.getValue("name");
+			clazz = null;
+			subclass = null;
+			weight = 0.0;
+			value = 0;
+			final String rarityEnabledValue = attrs.getValue("rarity-enabled");
+			if (rarityEnabledValue == null) {
+				rarityEnabled = null;
+			} else if ("true".equalsIgnoreCase(rarityEnabledValue)
+					|| "1".equals(rarityEnabledValue)) {
+				rarityEnabled = Boolean.TRUE;
+			} else if ("false".equalsIgnoreCase(rarityEnabledValue)
+					|| "0".equals(rarityEnabledValue)) {
+				rarityEnabled = Boolean.FALSE;
+			} else {
+				LOGGER.warn("Ignoring invalid rarity-enabled value '"
+						+ rarityEnabledValue + "' for item " + name);
+				rarityEnabled = null;
+			}
+			rarityProfile = attrs.getValue("rarity-profile");
+			if (rarityProfile == null || rarityProfile.trim().length() == 0) {
+				rarityProfile = ItemRarityProfile.DEFAULT_ID;
+			} else {
+				rarityProfile = rarityProfile.trim();
+			}
 			attributes = new LinkedHashMap<String, String>();
 			slots = new LinkedList<String>();
 			description = "";
@@ -214,6 +243,8 @@ public final class ItemsXMLLoader extends DefaultHandler {
 			item.setAttributes(attributes);
 			item.setDescription(description);
 			item.setValue(value);
+			item.setRarityEnabled(rarityEnabled);
+			item.setRarityProfile(rarityProfile);
 			if (damageType != null) {
 				item.setDamageType(damageType);
 				// An optional element - reset it to avoid leaking to next items

@@ -15,12 +15,14 @@ import { Entity } from "./Entity";
 import { TextSprite } from "../sprite/TextSprite";
 import { RenderingContext2D } from "util/Types";
 import { Paths } from "../data/Paths";
+import { ItemRarity } from "../data/ItemRarity";
 import { singletons } from "../SingletonRepo";
 
 import { marauroa } from "marauroa"
 
 
 export class Item extends Entity {
+	public static readonly RARITY_ID_ATTRIBUTE = "rarity_id";
 
 	override minimapShow = false;
 	override minimapStyle = "rgb(0,255,0)";
@@ -137,13 +139,32 @@ export class Item extends Entity {
 	}
 
 	public getToolTip(): string {
+		const lines: string[] = [];
+		const rarity = this.getRarity();
+		if (rarity) {
+			const title = this.getDisplayName();
+			if (title) {
+				lines.push(title);
+			}
+			lines.push("Rzadkość: " + rarity.polishDisplayName);
+		}
+
 		if (this["class"] === "scroll" && this["dest"]) {
 			const dest = this["dest"].split(",");
 			if (dest.length > 2) {
-				return dest[0] + " " + dest[1] + "," + dest[2];
+				lines.push(dest[0] + " " + dest[1] + "," + dest[2]);
 			}
 		}
-		return "";
+		return lines.join("\n");
+	}
+
+	public getRarity(): ItemRarity|undefined {
+		return ItemRarity.fromId(this[Item.RARITY_ID_ATTRIBUTE]);
+	}
+
+	public getDisplayName(): string {
+		const title = this["title"] || this["_name"] || this["name"];
+		return typeof title === "string" ? title : "";
 	}
 
 	public isAnimated(): boolean {

@@ -25,6 +25,7 @@ import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.rp.StendhalRPAction;
 import games.stendhal.server.core.rule.EntityManager;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.creature.BabyDragon;
 import games.stendhal.server.entity.creature.Cat;
@@ -43,7 +44,8 @@ import games.stendhal.server.entity.player.Player;
 import marauroa.common.game.RPAction;
 
 public class SummonAction extends AdministrationAction {
-	private static final String USAGE = "Użyj: /summon <coPrzywołać> [<x> <y>]";
+	private static final String USAGE = "Użyj: /summon <coPrzywołać> [<x> <y>] [ilość] "
+			+ "[rarity=<common|rare|epic|legendary>] [<stat>-multiplier=<wartość>]";
 
 
 	public static void register() {
@@ -56,11 +58,16 @@ public class SummonAction extends AdministrationAction {
 	abstract static class EntityFactory {
 		final Player player;
 		final EntityManager manager = SingletonRepository.getEntityManager();
+		final ItemCreationContext itemCreationContext;
+		final boolean hasItemCreationOptions;
 
 		protected boolean searching = true;
 
-		public EntityFactory(final Player player) {
+		public EntityFactory(final Player player, final ItemCreationContext itemCreationContext,
+				final boolean hasItemCreationOptions) {
 			this.player = player;
+			this.itemCreationContext = itemCreationContext;
+			this.hasItemCreationOptions = hasItemCreationOptions;
 		}
 
 		boolean isSearching() {
@@ -76,9 +83,24 @@ public class SummonAction extends AdministrationAction {
 		 * @param type
 		 */
 		private void createEntity(final String type) {
-			final Entity entity = manager.getEntity(type);
+			if (hasItemCreationOptions && isSpecialCreature(type)) {
+				error("Opcje rarity i modyfikatorów dotyczą wyłącznie przedmiotów.");
+				return;
+			}
+			final Entity entity;
+			if (manager.isCreature(type)) {
+				entity = manager.getEntity(type);
+			} else if (manager.isItem(type)) {
+				entity = manager.getItem(type, itemCreationContext);
+			} else {
+				entity = manager.getEntity(type);
+			}
 
 			if (entity != null) {
+				if (hasItemCreationOptions && manager.isCreature(type)) {
+					error("Opcje rarity i modyfikatorów dotyczą wyłącznie przedmiotów.");
+					return;
+				}
 				found(type, entity);
 			} else if ("cat".equals(type)) {
 				if (player.hasPet()) {
@@ -129,12 +151,35 @@ public class SummonAction extends AdministrationAction {
 					final Goat goat = new Goat(player);
 					found(type, goat);
 				}
-			} 
-	    }
+			}
+		}
+
+		private boolean isSpecialCreature(final String type) {
+			return "cat".equals(type) || "owczarek".equals(type)
+					|| "owczarek podhalański".equals(type)
+					|| "baby dragon".equals(type) || "purple dragon".equals(type)
+					|| "sheep".equals(type) || "goat".equals(type);
+		}
 	}
 
 	@Override
 	public void perform(final Player player, final RPAction action) {
+		final ItemCreationContext itemCreationContext;
+		try {
+			itemCreationContext = ItemCreationCommandOptions.fromAction(action);
+		} catch (final IllegalArgumentException e) {
+			player.sendPrivateText(e.getMessage());
+			return;
+		}
+		final boolean hasItemCreationOptions =
+				ItemCreationCommandOptions.hasOptions(action);
+		if (hasItemCreationOptions && ("gate".equals(action.get(CREATURE))
+				|| "block".equals(action.get(CREATURE)))) {
+			player.sendPrivateText(
+					"Opcje rarity i modyfikatorów dotyczą wyłącznie przedmiotów.");
+			return;
+		}
+
 		if ("gate".equals(action.get(CREATURE))) {
 			final Gate gate = new Gate();
 			gate.setPosition(action.getInt(X), action.getInt(Y));
@@ -155,7 +200,8 @@ public class SummonAction extends AdministrationAction {
 				final int y = action.getInt(Y);
 
 				if (!zone.collides(player, x, y)) {
-					final EntityFactory factory = new EntityFactory(player) {
+					final EntityFactory factory = new EntityFactory(player, itemCreationContext,
+							hasItemCreationOptions) {
 						@Override
 						void found(final String type, final Entity entity) {
 							final Entity entityToBePlaced;

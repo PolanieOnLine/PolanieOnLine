@@ -26,6 +26,7 @@ import games.stendhal.common.constants.Testing;
 import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.events.LoginListener;
 import games.stendhal.server.core.rule.EntityManager;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.Outfit;
 import games.stendhal.server.entity.item.HouseKey;
 import games.stendhal.server.entity.item.Item;
@@ -240,6 +241,14 @@ public abstract class UpdateConverter {
 	}
 
 	public static Item updateItem(String name) {
+		return updateItem(name, ItemCreationContext.defaultCreation());
+	}
+
+	/**
+	 * Creates an updated item while preserving the caller's creation semantics.
+	 * Restore callers use this overload to prevent rarity generation.
+	 */
+	public static Item updateItem(String name, final ItemCreationContext context) {
 		// process the old keys for houses, now that we have change locks implemented
 		Item item;
 		if (name.startsWith("private key ")) {
@@ -263,19 +272,19 @@ public abstract class UpdateConverter {
 					}
 					doorId = zoneName + " house " + Integer.toString(id);
 					// now set the itemdata of the house key to doorId;number;
-					item = SingletonRepository.getEntityManager().getItem("house key");
+					item = SingletonRepository.getEntityManager().getItem("house key", context);
 					((HouseKey) item).setup(doorId, number, null);
 				} catch (final NumberFormatException e) {
 					// shouldn't happen - give up and this will generate a warning
-					item = SingletonRepository.getEntityManager().getItem(name);
+					item = SingletonRepository.getEntityManager().getItem(name, context);
 				}
 			} else {
 				// shouldn't happen - give up and this will generate a warning
-				item = SingletonRepository.getEntityManager().getItem(name);
+				item = SingletonRepository.getEntityManager().getItem(name, context);
 			}
 		} else {
 			// item wasn't private key, just make it as normal
-			item = SingletonRepository.getEntityManager().getItem(name);
+			item = SingletonRepository.getEntityManager().getItem(name, context);
 		}
 		return item;
 	}

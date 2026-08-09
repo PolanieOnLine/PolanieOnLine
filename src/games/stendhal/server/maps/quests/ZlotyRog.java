@@ -20,6 +20,7 @@ import org.apache.log4j.Logger;
 
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -189,7 +190,8 @@ public class ZlotyRog extends AbstractQuest {
 					raiser.say("A oto i złoty róg. Do widzenia!");
 					player.addXP(20000);
 					player.addKarma(100);
-					final Item zlotyRog = SingletonRepository.getEntityManager().getItem("złoty róg");
+					final Item zlotyRog = SingletonRepository.getEntityManager().getItem(
+							"złoty róg", ItemCreationContext.quest());
 					zlotyRog.setBoundTo(player.getName());
 					player.equipOrPutOnGround(zlotyRog);
 					player.notifyWorldAboutChanges();

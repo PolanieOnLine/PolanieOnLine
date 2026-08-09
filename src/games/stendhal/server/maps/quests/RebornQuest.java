@@ -19,6 +19,7 @@ import org.apache.log4j.Logger;
 import games.stendhal.common.Direction;
 import games.stendhal.common.parser.Sentence;
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.npc.ChatAction;
 import games.stendhal.server.entity.npc.ConversationPhrases;
@@ -289,8 +290,10 @@ public class RebornQuest extends AbstractQuest {
 								player.setBaseHP((player.getBaseHP() - BASEHP_TO_RESET) + 1000);
 
 								if (player.getQuest(EXTRA_REWARD + "3") == null) {
-									final Item ldagger = SingletonRepository.getEntityManager().getItem("sztylet leworęczny");
-									final Item rdagger = SingletonRepository.getEntityManager().getItem("sztylet praworęczny");
+									final Item ldagger = SingletonRepository.getEntityManager().getItem(
+											"sztylet leworęczny", ItemCreationContext.quest());
+									final Item rdagger = SingletonRepository.getEntityManager().getItem(
+											"sztylet praworęczny", ItemCreationContext.quest());
 									ldagger.setBoundTo(player.getName());
 									rdagger.setBoundTo(player.getName());
 									player.equipOrPutOnGround(ldagger);
@@ -338,7 +341,8 @@ public class RebornQuest extends AbstractQuest {
 								player.setBaseHP((player.getBaseHP() - BASEHP_TO_RESET) + 1000);
 
 								if (player.getQuest(EXTRA_REWARD + "4") == null) {
-									final Item naszyjnik = SingletonRepository.getEntityManager().getItem("amulecik z mithrilu");
+									final Item naszyjnik = SingletonRepository.getEntityManager().getItem(
+											"amulecik z mithrilu", ItemCreationContext.quest());
 									naszyjnik.setBoundTo(player.getName());
 									player.equipOrPutOnGround(naszyjnik);
 								}
@@ -384,7 +388,8 @@ public class RebornQuest extends AbstractQuest {
 								player.setBaseHP((player.getBaseHP() - BASEHP_TO_RESET) + 2000);
 
 								if (player.getQuest(EXTRA_REWARD + "5") == null) {
-									final Item excalibur = SingletonRepository.getEntityManager().getItem("ekskalibur");
+									final Item excalibur = SingletonRepository.getEntityManager().getItem(
+											"ekskalibur", ItemCreationContext.quest());
 									excalibur.setBoundTo(player.getName());
 									player.equipOrPutOnGround(excalibur);
 								}
