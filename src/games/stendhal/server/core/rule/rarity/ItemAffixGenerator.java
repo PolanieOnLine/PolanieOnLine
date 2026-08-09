@@ -91,8 +91,10 @@ public final class ItemAffixGenerator {
 			return Collections.emptyList();
 		}
 
-		final Random rollRandom = context.getAffixSeed() == null
-				? random : new Random(context.getAffixSeed().longValue());
+		final long seed = context.getAffixSeed() == null
+				? random.nextLong() : context.getAffixSeed().longValue();
+		ItemAffixState.setSeed(item, seed);
+		final Random rollRandom = new Random(seed);
 		final List<String> applied = new ArrayList<String>();
 		applyRegularAffixes(item, regularSlots, applied, rollRandom);
 

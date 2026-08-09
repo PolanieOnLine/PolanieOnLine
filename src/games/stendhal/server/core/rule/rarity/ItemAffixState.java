@@ -15,6 +15,8 @@ import marauroa.common.game.RPObject;
 public final class ItemAffixState {
 	/** Hidden persistent map: stable affix id -> exact materialized value. */
 	public static final String ATTRIBUTE = "item_affixes";
+	/** Hidden persistent seed used to reproduce this instance's affix roll. */
+	public static final String SEED_ATTRIBUTE = "affix_seed";
 
 	private ItemAffixState() {
 		// utility class
@@ -28,6 +30,25 @@ public final class ItemAffixState {
 	public static boolean has(final Item item, final String affixId) {
 		return item != null && affixId != null && item.hasMap(ATTRIBUTE)
 				&& item.getMap(ATTRIBUTE).containsKey(affixId);
+	}
+
+	/** Stores the seed which produced the complete affix set for this instance. */
+	public static void setSeed(final Item item, final long seed) {
+		if (item != null) {
+			item.put(SEED_ATTRIBUTE, Long.toString(seed));
+		}
+	}
+
+	/** @return persisted reproduction seed, or {@code null} for legacy items */
+	public static Long getSeed(final Item item) {
+		if (item == null || !item.has(SEED_ATTRIBUTE)) {
+			return null;
+		}
+		try {
+			return Long.valueOf(item.get(SEED_ATTRIBUTE));
+		} catch (final NumberFormatException e) {
+			return null;
+		}
 	}
 
 	/**
@@ -64,6 +85,10 @@ public final class ItemAffixState {
 	public static void restore(final Item item, final RPObject saved) {
 		if (item == null || saved == null) {
 			return;
+		}
+
+		if (saved.has(SEED_ATTRIBUTE)) {
+			item.put(SEED_ATTRIBUTE, saved.get(SEED_ATTRIBUTE));
 		}
 
 		if (!saved.hasMap(ATTRIBUTE)) {

@@ -201,6 +201,10 @@ public class InspectAction extends AdministrationAction {
 			if (inspected instanceof SpeakerNPC) {
 				st.append("\nAktualny stan: " + ((SpeakerNPC) inspected).getEngine().getCurrentState());
 			}
+		} else if (target instanceof Item) {
+			st.append("Badany przedmiot o id ").append(action.get(TARGET))
+					.append(" posiada atrybuty:\r\n");
+			st.append(ItemInspectionFormatter.format((Item) target));
 		} else {
 			st.append("Badana jednostka o id " + action.get(TARGET)
 					+ " posiada atrybuty:\r\n");
