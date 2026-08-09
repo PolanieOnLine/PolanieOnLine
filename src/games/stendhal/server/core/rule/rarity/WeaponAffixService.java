@@ -40,20 +40,19 @@ public final class WeaponAffixService {
 
 	private static final Set<String> WEAPON_CLASSES = Collections.unmodifiableSet(
 			new HashSet<String>(Arrays.asList("club", "sword", "dagger",
-					"axe", "ranged", "missile", "wand", "whip")));
+					"axe", "ranged", "wand", "whip")));
 	private static final Set<String> ARMOR_MATCHUP_WEAPON_CLASSES =
 			classes("club", "sword", "dagger", "axe");
 	private static final Set<String> CRITICAL_DAMAGE_WEAPON_CLASSES =
-			classes("club", "sword", "dagger", "axe", "ranged", "missile",
-					"whip");
+			classes("club", "sword", "dagger", "axe", "ranged", "whip");
 	private static final Set<String> BLEED_WEAPON_CLASSES =
 			classes("dagger", "axe", "whip", "sword");
 	private static final Set<String> EXECUTE_WEAPON_CLASSES =
 			classes("dagger", "axe");
 	private static final Set<String> POISON_WEAPON_CLASSES =
-			classes("dagger", "missile", "wand");
+			classes("dagger", "wand");
 	private static final Set<String> DISTANCE_DAMAGE_WEAPON_CLASSES =
-			classes("ranged", "missile", "wand");
+			classes("ranged", "wand");
 
 	private WeaponAffixService() {
 		// utility class

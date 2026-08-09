@@ -26,7 +26,7 @@ import games.stendhal.server.entity.status.StatusAttacker;
 public final class ItemTooltipService {
 	private static final Set<String> WEAPON_CLASSES = Collections.unmodifiableSet(
 			new HashSet<String>(Arrays.asList("club", "sword", "dagger",
-					"axe", "ranged", "missile", "wand", "whip")));
+					"axe", "ranged", "wand", "whip")));
 	private static final Set<String> ARMOUR_CLASSES = Collections.unmodifiableSet(
 			new HashSet<String>(Arrays.asList("armor", "shield", "helmet",
 					"cloak", "boots", "glove", "gloves", "legs", "belt", "belts")));

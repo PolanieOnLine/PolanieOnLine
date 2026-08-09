@@ -13,6 +13,8 @@ import games.stendhal.server.entity.item.Item;
 
 /** Selects unique random affixes according to item rarity. */
 public final class ItemAffixGenerator {
+	private static final String EXCLUDED_MISSILE_CLASS = "missile";
+
 	private final ItemAffixRegistry registry;
 	private final LegendaryItemAffixRegistry legendaryRegistry;
 	private final Random random;
@@ -76,11 +78,13 @@ public final class ItemAffixGenerator {
 	 * exception: if an admin summon resolves to legendary rarity, its three
 	 * regular affixes and mandatory signature are generated even when rarity was
 	 * not explicitly forced by the command. Existing persisted state is never
-	 * rerolled.
+	 * rerolled. Missile-class projectiles are ammunition and never participate
+	 * in the item affix system, even if a rarity was assigned manually.
 	 */
 	public List<String> generate(final Item item,
 			final ItemCreationContext context) {
-		if (item == null || context == null || !shouldGenerate(item, context)
+		if (item == null || EXCLUDED_MISSILE_CLASS.equals(item.getItemClass())
+				|| context == null || !shouldGenerate(item, context)
 				|| ItemAffixState.hasAny(item)) {
 			return Collections.emptyList();
 		}

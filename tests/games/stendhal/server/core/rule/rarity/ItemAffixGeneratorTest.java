@@ -56,7 +56,7 @@ public class ItemAffixGeneratorTest {
 		final LegendaryItemAffixRegistry legendary =
 				LegendaryItemAffixRegistry.getInstance();
 		final String[] classes = {"sword", "dagger", "axe", "club", "ranged",
-				"missile", "wand", "whip", "armor", "shield", "helmet", "cloak",
+				"wand", "whip", "armor", "shield", "helmet", "cloak",
 				"boots", "glove", "legs", "belt", "ring", "necklace"};
 		for (final String itemClass : classes) {
 			final Item item = item(itemClass, ItemRarity.LEGENDARY);
@@ -65,6 +65,18 @@ public class ItemAffixGeneratorTest {
 			assertTrue("legendary pool missing for " + itemClass,
 					!legendary.getEligible(item).isEmpty());
 		}
+	}
+
+	@Test
+	public void missileIsOutsideRegularLegendaryAndGenerationPools() {
+		final Item item = item("missile", ItemRarity.LEGENDARY);
+		assertTrue(ItemAffixRegistry.getInstance().getEligible(item).isEmpty());
+		assertTrue(LegendaryItemAffixRegistry.getInstance().getEligible(item).isEmpty());
+
+		final ItemAffixGenerator generator = new ItemAffixGenerator(new Random(31L));
+		assertTrue(generator.generate(item, ItemCreationContext.drop()).isEmpty());
+		assertFalse(ItemAffixState.hasAny(item));
+		assertFalse(ItemAffixState.hasSeed(item));
 	}
 
 	@Test

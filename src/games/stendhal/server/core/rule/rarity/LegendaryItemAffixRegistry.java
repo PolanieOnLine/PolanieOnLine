@@ -24,7 +24,7 @@ public final class LegendaryItemAffixRegistry {
 	private static final Set<String> ARMOR_BREAKER_WEAPON_CLASSES =
 			classes("club", "sword", "dagger", "axe");
 	private static final Set<String> LONGSHOT_WEAPON_CLASSES =
-			classes("ranged", "missile", "wand");
+			classes("ranged", "wand");
 	private static final Set<String> EXECUTIONER_WEAPON_CLASSES =
 			classes("dagger", "axe");
 

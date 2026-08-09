@@ -32,6 +32,11 @@ public final class ItemAffixState {
 				&& item.getMap(ATTRIBUTE).containsKey(affixId);
 	}
 
+	/** @return whether this item has a valid persisted affix reproduction seed */
+	public static boolean hasSeed(final Item item) {
+		return getSeed(item) != null;
+	}
+
 	/** Stores the seed which produced the complete affix set for this instance. */
 	public static void setSeed(final Item item, final long seed) {
 		if (item != null) {

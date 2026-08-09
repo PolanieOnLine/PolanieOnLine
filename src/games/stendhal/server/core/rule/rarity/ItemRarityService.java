@@ -1,7 +1,7 @@
 /***************************************************************************
  *                   (C) Copyright 2003-2026 - Stendhal                    *
- ***************************************************************************
- ***************************************************************************
+ ***************************************************************************/
+/***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -30,6 +30,8 @@ import games.stendhal.server.entity.item.StackableItem;
  * Selects rarity and applies its concrete modifiers exactly once.
  */
 public final class ItemRarityService {
+	private static final String MISSILE_CLASS = "missile";
+
 	private static final Set<String> INTEGRAL_STATS = Collections.unmodifiableSet(
 			new HashSet<String>(Arrays.asList("atk", "ratk", "damage_min",
 					"damage_max", "rate", "def",
@@ -98,7 +100,8 @@ public final class ItemRarityService {
 	}
 
 	public boolean isEligible(final Item item) {
-		if (item == null || item instanceof StackableItem) {
+		if (item == null || item instanceof StackableItem
+				|| MISSILE_CLASS.equals(item.getItemClass())) {
 			return false;
 		}
 		final Boolean override = item.getRarityEnabledOverride();

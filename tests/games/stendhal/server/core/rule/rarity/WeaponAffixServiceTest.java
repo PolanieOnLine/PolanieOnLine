@@ -135,14 +135,28 @@ public class WeaponAffixServiceTest {
 		assertFalse(WeaponAffixService.isExecuteDamageEligible(item("sword")));
 
 		assertTrue(WeaponAffixService.isPoisonOnHitEligible(item("dagger")));
-		assertTrue(WeaponAffixService.isPoisonOnHitEligible(item("missile")));
+		assertFalse(WeaponAffixService.isPoisonOnHitEligible(item("missile")));
 		assertTrue(WeaponAffixService.isPoisonOnHitEligible(item("wand")));
 		assertFalse(WeaponAffixService.isPoisonOnHitEligible(item("sword")));
 
 		assertTrue(WeaponAffixService.isDistanceDamageEligible(item("ranged")));
-		assertTrue(WeaponAffixService.isDistanceDamageEligible(item("missile")));
+		assertFalse(WeaponAffixService.isDistanceDamageEligible(item("missile")));
 		assertTrue(WeaponAffixService.isDistanceDamageEligible(item("wand")));
 		assertFalse(WeaponAffixService.isDistanceDamageEligible(item("sword")));
+	}
+
+	@Test
+	public void missileCannotReceiveAnyWeaponAffix() {
+		final Item missile = item("missile");
+		assertFalse(WeaponAffixService.applyLifesteal(missile, new Random(1L)));
+		assertFalse(WeaponAffixService.applyAccuracy(missile, new Random(1L)));
+		assertFalse(WeaponAffixService.applyCriticalChance(missile, new Random(1L)));
+		assertFalse(WeaponAffixService.applyCriticalDamage(missile, new Random(1L)));
+		assertFalse(WeaponAffixService.applyBleedOnHit(missile, new Random(1L)));
+		assertFalse(WeaponAffixService.applyExecuteDamage(missile, new Random(1L)));
+		assertFalse(WeaponAffixService.applyPoisonOnHit(missile, new Random(1L)));
+		assertFalse(WeaponAffixService.applyDistanceDamage(missile, new Random(1L)));
+		assertFalse(WeaponAffixService.applyArmorPenetration(missile, new Random(1L)));
 	}
 
 	@Test
