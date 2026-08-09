@@ -45,7 +45,8 @@ import marauroa.common.game.RPAction;
 
 public class SummonAction extends AdministrationAction {
 	private static final String USAGE = "Użyj: /summon <coPrzywołać> [<x> <y>] [ilość] "
-			+ "[rarity=<common|rare|epic|legendary>] [<stat>-multiplier=<wartość>]";
+			+ "[rarity=<common|rare|epic|legendary>] [affixes=<random|none>] "
+			+ "[seed=<liczba>] [<stat>-multiplier=<wartość>]";
 
 
 	public static void register() {
@@ -84,7 +85,7 @@ public class SummonAction extends AdministrationAction {
 		 */
 		private void createEntity(final String type) {
 			if (hasItemCreationOptions && isSpecialCreature(type)) {
-				error("Opcje rarity i modyfikatorów dotyczą wyłącznie przedmiotów.");
+				error("Opcje rarity, afiksów i modyfikatorów dotyczą wyłącznie przedmiotów.");
 				return;
 			}
 			final Entity entity;
@@ -98,7 +99,7 @@ public class SummonAction extends AdministrationAction {
 
 			if (entity != null) {
 				if (hasItemCreationOptions && manager.isCreature(type)) {
-					error("Opcje rarity i modyfikatorów dotyczą wyłącznie przedmiotów.");
+					error("Opcje rarity, afiksów i modyfikatorów dotyczą wyłącznie przedmiotów.");
 					return;
 				}
 				found(type, entity);
@@ -176,7 +177,7 @@ public class SummonAction extends AdministrationAction {
 		if (hasItemCreationOptions && ("gate".equals(action.get(CREATURE))
 				|| "block".equals(action.get(CREATURE)))) {
 			player.sendPrivateText(
-					"Opcje rarity i modyfikatorów dotyczą wyłącznie przedmiotów.");
+					"Opcje rarity, afiksów i modyfikatorów dotyczą wyłącznie przedmiotów.");
 			return;
 		}
 
