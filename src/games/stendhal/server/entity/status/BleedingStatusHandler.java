@@ -1,5 +1,5 @@
 /***************************************************************************
- *                 (C) Copyright 2019-2021 - PolanieOnLine                 *
+ *                 (C) Copyright 2019-2026 - PolanieOnLine                 *
  ***************************************************************************
  ***************************************************************************
  *                                                                         *
@@ -11,56 +11,89 @@
  ***************************************************************************/
 package games.stendhal.server.entity.status;
 
-import games.stendhal.server.core.events.TurnListener;
+import java.util.List;
+
 import games.stendhal.server.core.events.TurnNotifier;
 import games.stendhal.server.core.events.TutorialNotifier;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.player.Player;
 
+/** Handles stackable physical bleeding wounds. */
 public class BleedingStatusHandler implements StatusHandler<BleedingStatus> {
-	/**
-	 * inflicts a status
-	 *
-	 * @param status Status to inflict
-	 * @param statusList StatusList
-	 * @param attacker the attacker
-	 */
+	public static final int MAX_STACKS = 3;
+	private static final String ATTRIBUTE_NAME = "bleeding";
+
 	@Override
-	public void inflict(BleedingStatus status, StatusList statusList, Entity attacker) {
-		RPEntity entity = statusList.getEntity();
+	public void inflict(final BleedingStatus status, final StatusList statusList,
+			final Entity attacker) {
+		final RPEntity entity = statusList.getEntity();
 		if (entity == null) {
 			return;
 		}
 
-		int count = statusList.countStatusByType(status.getStatusType());
-		if (count <= 6) {
-			statusList.addInternal(status);
+		if (!addOrReplaceWound(status, statusList)) {
+			return;
 		}
 
-		statusList.activateStatusAttribute("bleeding");
+		status.markApplied();
+		statusList.activateStatusAttribute(ATTRIBUTE_NAME);
 		if (entity instanceof Player) {
 			TutorialNotifier.bleeding((Player) entity);
 		}
-
-		// activate the turnListener, if this is the first instance of this status
-		// note: the turnListener is called one last time after the last instance was comsumed to cleanup attributes.
-		// So even with count==0, there might still be a listener which needs to be removed
-		if (count == 0) {
-			TurnListener turnListener = new BleedingStatusTurnListener(statusList);
-			TurnNotifier.get().dontNotify(turnListener);
-			TurnNotifier.get().notifyInTurns(0, turnListener);
-		}
+		schedule(statusList, status);
 	}
 
 	/**
-	 * removes a status
-	 *
-	 * @param status Status to inflict
-	 * @param statusList StatusList
+	 * Adds a wound up to the stack cap. At the cap, a stronger incoming wound
+	 * replaces the weakest remaining wound; weaker/equal wounds are ignored.
 	 */
+	static boolean addOrReplaceWound(final BleedingStatus incoming,
+			final StatusList statusList) {
+		final List<BleedingStatus> wounds = statusList
+				.getAllStatusByClass(BleedingStatus.class);
+		if (wounds.size() < MAX_STACKS) {
+			statusList.addInternal(incoming);
+			return true;
+		}
+
+		BleedingStatus weakest = null;
+		for (final BleedingStatus wound : wounds) {
+			if (weakest == null || wound.getRemainingDamage()
+					< weakest.getRemainingDamage()) {
+				weakest = wound;
+			}
+		}
+		if (weakest == null || incoming.getRemainingDamage()
+				<= weakest.getRemainingDamage()) {
+			return false;
+		}
+
+		// Remove internally so the shared client attribute is not cleared during
+		// the atomic replacement. The old per-wound listener will later no-op.
+		statusList.removeInternal(weakest);
+		statusList.addInternal(incoming);
+		return true;
+	}
+
+	static void schedule(final StatusList statusList,
+			final BleedingStatus status) {
+		// TurnNotifier adds one turn internally. Subtract one so the configured
+		// interval is the actual number of turn boundaries between ticks.
+		final int notifierDelay = Math.max(0, status.getTickIntervalTurns() - 1);
+		TurnNotifier.get().notifyInTurns(notifierDelay,
+				new BleedingStatusTurnListener(statusList, status));
+	}
+
 	@Override
-	public void remove(BleedingStatus status, StatusList statusList) {
+	public void remove(final BleedingStatus status, final StatusList statusList) {
 		statusList.removeInternal(status);
+		final RPEntity entity = statusList.getEntity();
+		if (entity != null
+				&& statusList.countStatusByType(StatusType.BLEEDING) == 0
+				&& entity.has(ATTRIBUTE_NAME)) {
+			entity.remove(ATTRIBUTE_NAME);
+			entity.notifyWorldAboutChanges();
+		}
 	}
 }
