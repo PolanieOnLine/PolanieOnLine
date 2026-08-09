@@ -15,6 +15,8 @@ import games.stendhal.server.entity.item.Item;
  * to infer armor: high DEF can represent agility, evasion or other defenses.
  */
 public final class WeaponArmorInteractionService {
+	public static final String ARMOR_PENETRATION_ATTRIBUTE = "armor_penetration";
+
 	private WeaponArmorInteractionService() {
 		// utility class
 	}
@@ -27,7 +29,9 @@ public final class WeaponArmorInteractionService {
 	}
 
 	/**
-	 * Returns the matchup multiplier for one held weapon and target.
+	 * Returns the matchup multiplier for one held weapon and target. Armor
+	 * penetration only mitigates a negative matchup towards neutral 1.0; it
+	 * never increases an already neutral or advantageous matchup.
 	 *
 	 * @param weapon held weapon being resolved
 	 * @param defender attack target
@@ -38,8 +42,27 @@ public final class WeaponArmorInteractionService {
 		if (weapon == null || !(defender instanceof Creature)) {
 			return 1.0;
 		}
-		return getDamageMultiplier(weapon.getWeaponType(),
+		final double baseMultiplier = getDamageMultiplier(weapon.getWeaponType(),
 				((Creature) defender).getArmorType());
+		final double penetration = weapon.has(ARMOR_PENETRATION_ATTRIBUTE)
+				? weapon.getDouble(ARMOR_PENETRATION_ATTRIBUTE) : 0.0;
+		return applyArmorPenetration(baseMultiplier, penetration);
+	}
+
+	/**
+	 * Moves a disadvantage multiplier towards neutral by the penetrated share.
+	 * For example 0.40 with 25% penetration becomes 0.55. Advantageous values
+	 * such as 1.30 are intentionally unchanged.
+	 */
+	public static double applyArmorPenetration(final double baseMultiplier,
+			final double penetration) {
+		if (baseMultiplier >= 1.0 || penetration <= 0.0
+				|| Double.isNaN(penetration)) {
+			return baseMultiplier;
+		}
+		final double clampedPenetration = Math.min(1.0, penetration);
+		return baseMultiplier
+				+ (1.0 - baseMultiplier) * clampedPenetration;
 	}
 
 	/**

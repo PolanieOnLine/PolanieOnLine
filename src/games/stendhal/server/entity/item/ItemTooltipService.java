@@ -86,6 +86,8 @@ public final class ItemTooltipService {
 
 		copyDouble(item, "lifesteal", ItemTooltip.LIFESTEAL);
 		copyDouble(item, ItemTooltip.PARRY_CHANCE, ItemTooltip.PARRY_CHANCE);
+		copyDouble(item, ItemTooltip.ARMOR_PENETRATION,
+				ItemTooltip.ARMOR_PENETRATION);
 		copyDouble(item, "accuracy_bonus", ItemTooltip.ACCURACY_BONUS);
 		copyInt(item, "skill_atk", ItemTooltip.SKILL_ATTACK);
 		copyDouble(item, "atk_additional_bonus", ItemTooltip.ATTACK_BONUS);

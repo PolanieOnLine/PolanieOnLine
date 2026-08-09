@@ -53,6 +53,18 @@ public class ItemTooltipServiceTest {
 	}
 
 	@Test
+	public void testArmorPenetrationIsPublishedForTooltip() {
+		final Map<String, String> attributes = new HashMap<String, String>();
+		attributes.put("atk", "30");
+		attributes.put("armor_penetration", "0.25");
+		final Item item = new Item("test dagger", "dagger", "test", attributes);
+
+		ItemTooltipService.update(item);
+
+		assertEquals("0.25", stat(item, ItemTooltip.ARMOR_PENETRATION));
+	}
+
+	@Test
 	public void testPluralBeltsClassIsArmour() {
 		final Map<String, String> attributes = new HashMap<String, String>();
 		attributes.put("def", "21");

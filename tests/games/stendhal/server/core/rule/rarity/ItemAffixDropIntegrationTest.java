@@ -19,6 +19,7 @@ import org.junit.Test;
 import games.stendhal.common.constants.ItemRarity;
 import games.stendhal.common.constants.ItemTooltip;
 import games.stendhal.server.core.rule.damage.ParryService;
+import games.stendhal.server.core.rule.damage.WeaponArmorInteractionService;
 import games.stendhal.server.entity.item.Item;
 import utilities.RPClass.ItemTestHelper;
 
@@ -29,33 +30,41 @@ public class ItemAffixDropIntegrationTest {
 	}
 
 	@Test
-	public void legendarySwordDropGetsThreePersistentAffixes() {
+	public void legendarySwordDropGetsThreeFromRotatingAffixPool() {
 		final Item item = sword();
 		new ItemRarityService(new Random(19L)).initialize(item,
 				drop(ItemRarity.LEGENDARY));
 
 		assertSame(ItemRarity.LEGENDARY, item.getRarity());
-		assertEquals(3, ItemAffixState.getValues(item).size());
-		assertTrue(ItemAffixState.has(item,
-				ParryService.PARRY_CHANCE_ATTRIBUTE));
-		assertTrue(ItemAffixState.has(item,
-				WeaponAffixService.LIFESTEAL_ATTRIBUTE));
-		assertTrue(ItemAffixState.has(item,
-				WeaponAffixService.ACCURACY_ATTRIBUTE));
+		final Map<String, String> affixes = ItemAffixState.getValues(item);
+		assertEquals(3, affixes.size());
+		for (final String id : affixes.keySet()) {
+			final ItemAffixDefinition definition = ItemAffixRegistry.getInstance().get(id);
+			assertTrue(definition != null);
+			assertTrue(item.has(definition.getAttribute()));
+			assertTrue(item.getMap(ItemTooltip.ATTRIBUTE).containsKey(
+					definition.getAttribute()));
+		}
 
-		assertTrue(item.getDouble(ParryService.PARRY_CHANCE_ATTRIBUTE) >= 0.05);
-		assertTrue(item.getDouble(ParryService.PARRY_CHANCE_ATTRIBUTE) <= 0.15);
-		assertTrue(item.getDouble(WeaponAffixService.LIFESTEAL_ATTRIBUTE) >= 0.03);
-		assertTrue(item.getDouble(WeaponAffixService.LIFESTEAL_ATTRIBUTE) <= 0.10);
-		assertTrue(item.getDouble(WeaponAffixService.ACCURACY_ATTRIBUTE) >= 5.0);
-		assertTrue(item.getDouble(WeaponAffixService.ACCURACY_ATTRIBUTE) <= 15.0);
-
-		assertTrue(item.getMap(ItemTooltip.ATTRIBUTE).containsKey(
-				ItemTooltip.PARRY_CHANCE));
-		assertTrue(item.getMap(ItemTooltip.ATTRIBUTE).containsKey(
-				ItemTooltip.LIFESTEAL));
-		assertTrue(item.getMap(ItemTooltip.ATTRIBUTE).containsKey(
-				ItemTooltip.ACCURACY_BONUS));
+		if (ItemAffixState.has(item, ParryService.PARRY_CHANCE_ATTRIBUTE)) {
+			assertTrue(item.getDouble(ParryService.PARRY_CHANCE_ATTRIBUTE) >= 0.05);
+			assertTrue(item.getDouble(ParryService.PARRY_CHANCE_ATTRIBUTE) <= 0.15);
+		}
+		if (ItemAffixState.has(item, WeaponAffixService.LIFESTEAL_ATTRIBUTE)) {
+			assertTrue(item.getDouble(WeaponAffixService.LIFESTEAL_ATTRIBUTE) >= 0.03);
+			assertTrue(item.getDouble(WeaponAffixService.LIFESTEAL_ATTRIBUTE) <= 0.10);
+		}
+		if (ItemAffixState.has(item, WeaponAffixService.ACCURACY_ATTRIBUTE)) {
+			assertTrue(item.getDouble(WeaponAffixService.ACCURACY_ATTRIBUTE) >= 5.0);
+			assertTrue(item.getDouble(WeaponAffixService.ACCURACY_ATTRIBUTE) <= 15.0);
+		}
+		if (ItemAffixState.has(item,
+				WeaponArmorInteractionService.ARMOR_PENETRATION_ATTRIBUTE)) {
+			assertTrue(item.getDouble(
+					WeaponArmorInteractionService.ARMOR_PENETRATION_ATTRIBUTE) >= 0.10);
+			assertTrue(item.getDouble(
+					WeaponArmorInteractionService.ARMOR_PENETRATION_ATTRIBUTE) <= 0.25);
+		}
 	}
 
 	@Test
@@ -103,7 +112,7 @@ public class ItemAffixDropIntegrationTest {
 				WeaponAffixService.LIFESTEAL_ATTRIBUTE), 0.0000001);
 		assertFalse(ItemAffixState.has(item,
 				WeaponAffixService.LIFESTEAL_ATTRIBUTE));
-		assertEquals(2, ItemAffixState.getValues(item).size());
+		assertEquals(3, ItemAffixState.getValues(item).size());
 	}
 
 	private ItemCreationContext drop(final ItemRarity rarity) {

@@ -80,6 +80,7 @@
 			<element name="regen" type="Q1:attribute" minOccurs="0" maxOccurs="unbounded"/>
 			<element name="lifesteal" type="Q1:attribute" minOccurs="0"/>
 			<element name="parry_chance" type="Q1:attribute" minOccurs="0"/>
+			<element name="armor_penetration" type="Q1:attribute" minOccurs="0"/>
 			<element name="skill_atk" type="Q1:attribute" minOccurs="0"/>
 			<element name="atk_additional_bonus" type="Q1:attribute" minOccurs="0"/>
 			<element name="critical_additional_bonus" type="Q1:attribute" minOccurs="0"/>

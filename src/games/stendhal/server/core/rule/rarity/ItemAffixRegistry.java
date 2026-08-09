@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Random;
 
 import games.stendhal.server.core.rule.damage.ParryService;
+import games.stendhal.server.core.rule.damage.WeaponArmorInteractionService;
 import games.stendhal.server.entity.item.Item;
 
 /** Registry of stable random affix definitions. */
@@ -20,7 +21,8 @@ public final class ItemAffixRegistry {
 			Arrays.<ItemAffixDefinition>asList(
 					new ParryAffixDefinition(),
 					new LifestealAffixDefinition(),
-					new AccuracyAffixDefinition()));
+					new AccuracyAffixDefinition(),
+					new ArmorPenetrationAffixDefinition()));
 
 	private final List<ItemAffixDefinition> definitions;
 	private final Map<String, ItemAffixDefinition> byId;
@@ -139,6 +141,29 @@ public final class ItemAffixRegistry {
 		@Override
 		public boolean apply(final Item item, final Random random) {
 			return WeaponAffixService.applyAccuracy(item, random);
+		}
+	}
+
+	private static final class ArmorPenetrationAffixDefinition
+			implements ItemAffixDefinition {
+		@Override
+		public String getId() {
+			return WeaponArmorInteractionService.ARMOR_PENETRATION_ATTRIBUTE;
+		}
+
+		@Override
+		public String getAttribute() {
+			return WeaponArmorInteractionService.ARMOR_PENETRATION_ATTRIBUTE;
+		}
+
+		@Override
+		public boolean isEligible(final Item item) {
+			return WeaponAffixService.isArmorPenetrationEligible(item);
+		}
+
+		@Override
+		public boolean apply(final Item item, final Random random) {
+			return WeaponAffixService.applyArmorPenetration(item, random);
 		}
 	}
 }

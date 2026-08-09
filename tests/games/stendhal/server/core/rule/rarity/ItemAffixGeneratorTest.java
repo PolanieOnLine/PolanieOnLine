@@ -16,7 +16,6 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import games.stendhal.common.constants.ItemRarity;
-import games.stendhal.server.core.rule.damage.ParryService;
 import games.stendhal.server.entity.item.Item;
 import utilities.RPClass.ItemTestHelper;
 
@@ -49,17 +48,21 @@ public class ItemAffixGeneratorTest {
 	}
 
 	@Test
-	public void productionRegistryCanFillLegendarySwordSlots() {
+	public void legendarySwordChoosesThreeFromFourProductionAffixes() {
 		final Item item = item("sword", ItemRarity.LEGENDARY);
+		final ItemAffixRegistry registry = ItemAffixRegistry.getInstance();
+		assertEquals(4, registry.getEligible(item).size());
 		final ItemAffixGenerator generator = new ItemAffixGenerator(new Random(17L));
 
 		final List<String> applied = generator.generate(item,
 				ItemCreationContext.drop());
 
 		assertEquals(3, applied.size());
-		assertTrue(applied.contains(ParryService.PARRY_CHANCE_ATTRIBUTE));
-		assertTrue(applied.contains(WeaponAffixService.LIFESTEAL_ATTRIBUTE));
-		assertTrue(applied.contains(WeaponAffixService.ACCURACY_ATTRIBUTE));
+		assertEquals(3, new HashSet<String>(applied).size());
+		assertEquals(3, ItemAffixState.getValues(item).size());
+		for (final String id : applied) {
+			assertTrue(registry.get(id) != null);
+		}
 	}
 
 	@Test

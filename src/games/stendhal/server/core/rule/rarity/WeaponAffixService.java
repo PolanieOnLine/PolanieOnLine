@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
+import games.stendhal.server.core.rule.damage.WeaponArmorInteractionService;
 import games.stendhal.server.entity.item.Item;
 
 /** Rolls shared offensive affixes for weapon instances. */
@@ -20,10 +21,15 @@ public final class WeaponAffixService {
 	public static final int MAX_LIFESTEAL_PERCENT = 10;
 	public static final int MIN_ACCURACY_PERCENT = 5;
 	public static final int MAX_ACCURACY_PERCENT = 15;
+	public static final int MIN_ARMOR_PENETRATION_PERCENT = 10;
+	public static final int MAX_ARMOR_PENETRATION_PERCENT = 25;
 
 	private static final Set<String> WEAPON_CLASSES = Collections.unmodifiableSet(
 			new HashSet<String>(Arrays.asList("club", "sword", "dagger",
 					"axe", "ranged", "missile", "wand", "whip")));
+	private static final Set<String> ARMOR_MATCHUP_WEAPON_CLASSES =
+			Collections.unmodifiableSet(new HashSet<String>(Arrays.asList(
+					"club", "sword", "dagger", "axe")));
 
 	private WeaponAffixService() {
 		// utility class
@@ -34,6 +40,13 @@ public final class WeaponAffixService {
 		return item != null && attribute != null
 				&& WEAPON_CLASSES.contains(item.getItemClass())
 				&& !item.has(attribute);
+	}
+
+	/** Returns whether armor penetration can affect this weapon's matchup. */
+	public static boolean isArmorPenetrationEligible(final Item item) {
+		return item != null
+				&& ARMOR_MATCHUP_WEAPON_CLASSES.contains(item.getItemClass())
+				&& !item.has(WeaponArmorInteractionService.ARMOR_PENETRATION_ATTRIBUTE);
 	}
 
 	/**
@@ -61,6 +74,23 @@ public final class WeaponAffixService {
 		final int percent = rollInclusive(random,
 				MIN_ACCURACY_PERCENT, MAX_ACCURACY_PERCENT);
 		item.put(ACCURACY_ATTRIBUTE, (double) percent);
+		return true;
+	}
+
+	/**
+	 * Rolls 10-25% semantic armor penetration for weapon classes which have an
+	 * armor matchup. It is stored as a fraction, e.g. 20% becomes 0.20.
+	 */
+	public static boolean applyArmorPenetration(final Item item,
+			final Random random) {
+		if (!isArmorPenetrationEligible(item)) {
+			return false;
+		}
+		final int percent = rollInclusive(random,
+				MIN_ARMOR_PENETRATION_PERCENT,
+				MAX_ARMOR_PENETRATION_PERCENT);
+		item.put(WeaponArmorInteractionService.ARMOR_PENETRATION_ATTRIBUTE,
+				percent / 100.0);
 		return true;
 	}
 

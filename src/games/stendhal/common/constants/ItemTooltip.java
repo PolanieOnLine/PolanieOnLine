@@ -37,6 +37,7 @@ public final class ItemTooltip {
 	public static final String RANGE = "range";
 	public static final String LIFESTEAL = "lifesteal";
 	public static final String PARRY_CHANCE = "parry_chance";
+	public static final String ARMOR_PENETRATION = "armor_penetration";
 	public static final String DAMAGE_TYPE = "damage_type";
 	public static final String STATUS_ATTACK = "statusattack";
 	public static final String ACCURACY_BONUS = "accuracy_bonus";

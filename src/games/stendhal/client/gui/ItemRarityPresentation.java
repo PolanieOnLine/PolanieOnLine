@@ -371,6 +371,8 @@ final class ItemRarityPresentation {
 				"szansy na trafienie krytyczne", false);
 		appendPercentageBonus(specialBonuses, object, ItemTooltip.PARRY_CHANCE,
 				"szansy na parowanie", true);
+		appendPercentageBonus(specialBonuses, object, ItemTooltip.ARMOR_PENETRATION,
+				"penetracji pancerza", true);
 		appendPercentageBonus(specialBonuses, object, ItemTooltip.CRITICAL_BONUS,
 				"obrażeń krytycznych", false);
 		appendPercentageBonus(specialBonuses, object, ItemTooltip.LIFESTEAL,

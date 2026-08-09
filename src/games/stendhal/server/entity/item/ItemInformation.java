@@ -14,6 +14,7 @@ package games.stendhal.server.entity.item;
 
 import games.stendhal.common.constants.ItemTooltip;
 import games.stendhal.server.core.rule.damage.ParryService;
+import games.stendhal.server.core.rule.damage.WeaponArmorInteractionService;
 import games.stendhal.server.core.rule.rarity.ItemAffixState;
 import marauroa.common.game.Definition;
 import marauroa.common.game.Definition.Type;
@@ -45,6 +46,8 @@ public class ItemInformation extends Item {
 		itemClass.addAttribute(ItemTooltip.CATEGORY_OVERRIDE,
 				Type.STRING, Definition.HIDDEN);
 		itemClass.addAttribute(ParryService.PARRY_CHANCE_ATTRIBUTE,
+				Type.FLOAT, Definition.HIDDEN);
+		itemClass.addAttribute(WeaponArmorInteractionService.ARMOR_PENETRATION_ATTRIBUTE,
 				Type.FLOAT, Definition.HIDDEN);
 		itemClass.addAttribute(ItemAffixState.ATTRIBUTE,
 				Type.MAP, Definition.HIDDEN);
