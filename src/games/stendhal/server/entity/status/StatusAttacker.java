@@ -44,6 +44,20 @@ public class StatusAttacker {
 	}
 
 	/**
+	 * Constructor for status attackers that create their concrete status from
+	 * the resolved hit instead of cloning a fixed prototype.
+	 *
+	 * <p>Subclasses using this constructor must override {@link #onHit} and
+	 * {@link #getStatusName()}.</p>
+	 *
+	 * @param probability probability of the status effect
+	 */
+	protected StatusAttacker(final double probability) {
+		this.probability = probability;
+		this.status = null;
+	}
+
+	/**
 	 * gets the probability
 	 *
 	 * @return probability
@@ -81,6 +95,10 @@ public class StatusAttacker {
 	 */
 	public void onHit(RPEntity target, RPEntity attacker,
 			@SuppressWarnings("unused") int damage) {
+		if (status == null) {
+			throw new IllegalStateException(
+					"Dynamic StatusAttacker subclasses must override onHit()");
+		}
 		Status inflictedStatus = (Status) status.clone();
 		StatusType statusType = inflictedStatus.getStatusType();
 		final double resistValue = EquipmentStatusResistanceService.getResistance(
@@ -130,12 +148,16 @@ public class StatusAttacker {
 	 * @return
 	 *     Name of the status that this attacker can inflict
 	 */
-    public String getStatusName() {
-    	if (status.getName().equals("poison")) {
-    		return "jad";
-    	}
+	public String getStatusName() {
+		if (status == null) {
+			throw new IllegalStateException(
+					"Dynamic StatusAttacker subclasses must override getStatusName()");
+		}
+		if (status.getName().equals("poison")) {
+			return "jad";
+		}
 
-        return status.getName();
-    }
+		return status.getName();
+	}
 
 }
