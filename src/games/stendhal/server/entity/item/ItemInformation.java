@@ -19,8 +19,10 @@ import games.stendhal.server.core.rule.damage.ParryService;
 import games.stendhal.server.core.rule.damage.WeaponAffixCombatService;
 import games.stendhal.server.core.rule.damage.WeaponArmorInteractionService;
 import games.stendhal.server.core.rule.rarity.EquipmentAffixService;
+import games.stendhal.server.core.rule.rarity.ItemAffixDefinition;
 import games.stendhal.server.core.rule.rarity.ItemAffixState;
 import games.stendhal.server.core.rule.rarity.LegendaryEquipmentAffixService;
+import games.stendhal.server.core.rule.rarity.LegendaryItemAffixRegistry;
 import games.stendhal.server.entity.status.StatusType;
 import marauroa.common.game.Definition;
 import marauroa.common.game.Definition.Type;
@@ -67,21 +69,14 @@ public class ItemInformation extends Item {
 				Type.FLOAT, Definition.HIDDEN);
 
 		/* Legendary signature affixes are persisted as normal item attributes in
-		 * addition to item_affixes. Every materialized attribute must therefore be
-		 * declared on the parent item RPClass before an item is serialized into a
-		 * perception. Missing definitions can otherwise disconnect the client. */
-		itemClass.addAttribute(WeaponAffixCombatService.LEGENDARY_DEEP_WOUNDS_ATTRIBUTE,
-				Type.FLOAT, Definition.HIDDEN);
-		itemClass.addAttribute(WeaponAffixCombatService.LEGENDARY_LONGSHOT_ATTRIBUTE,
-				Type.FLOAT, Definition.HIDDEN);
-		itemClass.addAttribute(WeaponAffixCombatService.LEGENDARY_EXECUTIONER_ATTRIBUTE,
-				Type.FLOAT, Definition.HIDDEN);
-		itemClass.addAttribute(WeaponArmorInteractionService.LEGENDARY_ARMOR_BREAKER_ATTRIBUTE,
-				Type.FLOAT, Definition.HIDDEN);
-		itemClass.addAttribute(LegendaryEquipmentAffixService.BASTION_BONUS_ATTRIBUTE,
-				Type.SHORT, Definition.HIDDEN);
-		itemClass.addAttribute(LegendaryEquipmentAffixService.RELIC_POWER_ATTRIBUTE,
-				Type.SHORT, Definition.HIDDEN);
+		 * addition to item_affixes. Register the complete registry here instead of
+		 * maintaining a second hand-written list; otherwise adding a new signature
+		 * can make perception serialization fail and disconnect clients. */
+		for (final ItemAffixDefinition definition
+				: LegendaryItemAffixRegistry.getInstance().getDefinitions()) {
+			itemClass.addAttribute(definition.getAttribute(),
+					legendaryAttributeType(definition), Definition.HIDDEN);
+		}
 
 		itemClass.addAttribute(EquipmentAffixService.FLAT_ATTACK_BONUS_ATTRIBUTE,
 				Type.SHORT, Definition.HIDDEN);
@@ -110,5 +105,15 @@ public class ItemInformation extends Item {
 
 		// used for show_item_list events used as shop signs.
 		entity.addAttribute("price", Type.INT, Definition.VOLATILE);
+	}
+
+	private static Type legendaryAttributeType(
+			final ItemAffixDefinition definition) {
+		final String attribute = definition.getAttribute();
+		if (LegendaryEquipmentAffixService.BASTION_BONUS_ATTRIBUTE.equals(attribute)
+				|| LegendaryEquipmentAffixService.RELIC_POWER_ATTRIBUTE.equals(attribute)) {
+			return Type.SHORT;
+		}
+		return Type.FLOAT;
 	}
 }

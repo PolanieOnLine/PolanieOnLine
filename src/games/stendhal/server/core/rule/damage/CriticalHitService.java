@@ -4,6 +4,8 @@
 package games.stendhal.server.core.rule.damage;
 
 import games.stendhal.common.Rand;
+import games.stendhal.server.core.rule.rarity.LegendaryEquipmentAffixService;
+import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.player.Player;
 
@@ -16,6 +18,7 @@ public final class CriticalHitService {
 	public static final double MAX_CRITICAL_CHANCE = 50.0;
 	public static final double BASE_CRITICAL_DAMAGE_MULTIPLIER = 2.0;
 	public static final double MAX_CRITICAL_DAMAGE_BONUS = 0.50;
+	public static final double FALCON_EYE_MIN_DISTANCE_SQUARED = 16.0;
 
 	private CriticalHitService() {
 		// utility class
@@ -24,22 +27,31 @@ public final class CriticalHitService {
 	/**
 	 * Returns final critical chance in percentage points. Equipment bonuses are
 	 * additive: a value of 7.0 means +7 percentage points to the 10% base chance.
-	 * Held weapons, jewellery and equipped glyphs contribute.
+	 * Held weapons, jewellery and equipped glyphs contribute. Legendary Falcon
+	 * Eye adds 10 points only when the current attack target is at least four
+	 * tiles away and the attacking weapon is ranged. Hero Eye jewellery always
+	 * adds 8 points. All sources obey the shared final 50% cap.
 	 */
 	public static double getCriticalChance(final Player player) {
+		return getCriticalChance(player, isFalconEyeDistanceActive(player));
+	}
+
+	/** Package-visible deterministic seam for distance-gated legendary tests. */
+	static double getCriticalChance(final Player player,
+			final boolean falconEyeDistanceActive) {
 		if (player == null) {
 			return BASE_CRITICAL_CHANCE;
 		}
 
 		double chance = BASE_CRITICAL_CHANCE;
 		for (final Item weapon : player.getWeapons()) {
-			chance += getBonus(weapon);
+			chance += getBonus(weapon, falconEyeDistanceActive);
 		}
-		chance += getBonus(player.getRing());
-		chance += getBonus(player.getRingB());
-		chance += getBonus(player.getNecklace());
+		chance += getBonus(player.getRing(), false);
+		chance += getBonus(player.getRingB(), false);
+		chance += getBonus(player.getNecklace(), false);
 		for (final Item glyph : player.getAllEquippedGlyphs()) {
-			chance += getBonus(glyph);
+			chance += getBonus(glyph, false);
 		}
 		return Math.min(MAX_CRITICAL_CHANCE, Math.max(0.0, chance));
 	}
@@ -98,12 +110,37 @@ public final class CriticalHitService {
 		return roll <= clamped;
 	}
 
-	private static double getBonus(final Item item) {
-		if (item == null || !item.has(CRITICAL_CHANCE_ATTRIBUTE)) {
+	static boolean isFalconEyeDistanceActive(final Player player) {
+		if (player == null) {
+			return false;
+		}
+		final Item attackWeapon = player.getWeapon();
+		final RPEntity target = player.getAttackTarget();
+		return attackWeapon != null && attackWeapon.isNonMeleeWeapon()
+				&& target != null
+				&& player.squaredDistance(target) >= FALCON_EYE_MIN_DISTANCE_SQUARED;
+	}
+
+	private static double getBonus(final Item item,
+			final boolean falconEyeDistanceActive) {
+		if (item == null) {
 			return 0.0;
 		}
-		final double value = item.getDouble(CRITICAL_CHANCE_ATTRIBUTE);
-		return Double.isNaN(value) ? 0.0 : Math.max(0.0, value);
+		double bonus = 0.0;
+		if (item.has(CRITICAL_CHANCE_ATTRIBUTE)) {
+			final double value = item.getDouble(CRITICAL_CHANCE_ATTRIBUTE);
+			if (!Double.isNaN(value)) {
+				bonus += Math.max(0.0, value);
+			}
+		}
+		if (falconEyeDistanceActive
+				&& item.has(WeaponAffixCombatService.LEGENDARY_FALCON_EYE_ATTRIBUTE)) {
+			bonus += WeaponAffixCombatService.LEGENDARY_FALCON_EYE_CRITICAL_CHANCE_BONUS;
+		}
+		if (item.has(LegendaryEquipmentAffixService.HERO_EYE_ATTRIBUTE)) {
+			bonus += LegendaryEquipmentAffixService.HERO_EYE_CRITICAL_CHANCE_BONUS;
+		}
+		return bonus;
 	}
 
 	private static double getFraction(final Item item, final String attribute) {

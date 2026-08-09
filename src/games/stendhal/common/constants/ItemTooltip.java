@@ -41,8 +41,22 @@ public final class ItemTooltip {
 	public static final String LEGENDARY_ARMOR_BREAKER = "legendary_armor_breaker";
 	public static final String LEGENDARY_LONGSHOT = "legendary_longshot";
 	public static final String LEGENDARY_EXECUTIONER = "legendary_executioner";
+	public static final String LEGENDARY_DUEL_MASTER = "legendary_duel_master";
+	public static final String LEGENDARY_CRUSHING_BLOW = "legendary_crushing_blow";
+	public static final String LEGENDARY_STUNNING_FORCE = "legendary_stunning_force";
+	public static final String LEGENDARY_BINDING_STRIKE = "legendary_binding_strike";
+	public static final String LEGENDARY_MERCILESS_REACH = "legendary_merciless_reach";
+	public static final String LEGENDARY_FALCON_EYE = "legendary_falcon_eye";
+	public static final String LEGENDARY_FIRST_SALVO = "legendary_first_salvo";
+	public static final String LEGENDARY_POWER_OVERLOAD = "legendary_power_overload";
+	public static final String LEGENDARY_ARCANE_FOCUS = "legendary_arcane_focus";
 	public static final String LEGENDARY_BASTION_BONUS = "legendary_bastion_bonus";
+	public static final String LEGENDARY_IRON_WILL = "legendary_iron_will";
+	public static final String LEGENDARY_UNYIELDING_PROTECTION =
+			"legendary_unyielding_protection";
 	public static final String LEGENDARY_RELIC_POWER = "legendary_relic_power";
+	public static final String LEGENDARY_HERO_EYE = "legendary_hero_eye";
+	public static final String LEGENDARY_GUARDIAN_SEAL = "legendary_guardian_seal";
 	public static final String EXECUTE_DAMAGE = "execute_damage";
 	public static final String POISON_ON_HIT = "poison_on_hit";
 	public static final String DISTANCE_DAMAGE = "distance_damage";

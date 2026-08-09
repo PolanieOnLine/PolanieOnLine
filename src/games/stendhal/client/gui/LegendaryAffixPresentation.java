@@ -49,10 +49,90 @@ final class LegendaryAffixPresentation {
 					" obrażeń."
 			});
 		}
+		if (has(object, ItemTooltip.LEGENDARY_DUEL_MASTER)) {
+			appendFixed(result, "Mistrz Pojedynku", new String[] {
+					"Zyskujesz ", "+5 pkt proc.",
+					" szansy na parowanie; po udanym parowaniu następne trafienie zadaje ",
+					"+30%", " obrażeń."
+			});
+		}
+		if (has(object, ItemTooltip.LEGENDARY_CRUSHING_BLOW)) {
+			appendFixed(result, "Miażdżący Cios", new String[] {
+					"Przeciw celom w średnim lub ciężkim pancerzu zadajesz ",
+					"+25%", " obrażeń."
+			});
+		}
+		if (has(object, ItemTooltip.LEGENDARY_STUNNING_FORCE)) {
+			appendFixed(result, "Ogłuszająca Siła", new String[] {
+					"", "15%", " szansy na nałożenie Ociężałości przez ", "10 s",
+					" po trafieniu."
+			});
+		}
+		if (has(object, ItemTooltip.LEGENDARY_BINDING_STRIKE)) {
+			appendFixed(result, "Pętający Cios", new String[] {
+					"", "15%", " szansy na nałożenie Ociężałości przez ", "10 s",
+					" po trafieniu."
+			});
+		}
+		if (has(object, ItemTooltip.LEGENDARY_MERCILESS_REACH)) {
+			appendFixed(result, "Bezlitosny Zasięg", new String[] {
+					"Zyskujesz ", "+1 pole", " dodatkowego zasięgu ataku."
+			});
+		}
+		if (has(object, ItemTooltip.LEGENDARY_FALCON_EYE)) {
+			appendFixed(result, "Sokole Oko", new String[] {
+					"Przy ataku z co najmniej ", "4 pól", " zyskujesz ",
+					"+10 pkt proc.", " szansy na trafienie krytyczne."
+			});
+		}
+		if (has(object, ItemTooltip.LEGENDARY_FIRST_SALVO)) {
+			appendFixed(result, "Pierwsza Salwa", new String[] {
+					"Przeciw celom mającym co najmniej ", "80%", " PW ataki dystansowe zadają ",
+					"+30%", " obrażeń."
+			});
+		}
+		if (has(object, ItemTooltip.LEGENDARY_POWER_OVERLOAD)) {
+			appendFixed(result, "Przeciążenie Mocy", new String[] {
+					"Atak dystansowy ma ", "15%", " szansy zadać ", "+50%",
+					" obrażeń."
+			});
+		}
+		if (has(object, ItemTooltip.LEGENDARY_ARCANE_FOCUS)) {
+			appendFixed(result, "Skupienie Arkanów", new String[] {
+					"Ataki dystansowe przeciw celom z aktywnym negatywnym statusem zadają ",
+					"+25%", " obrażeń."
+			});
+		}
+
 		appendRolled(result, object, ItemTooltip.LEGENDARY_BASTION_BONUS,
 				"Niezłomny Bastion", "+", " pkt. dodatkowego pancerza.");
+		if (has(object, ItemTooltip.LEGENDARY_IRON_WILL)) {
+			appendFixed(result, "Żelazna Wola", new String[] {
+					"Zyskujesz ", "+20 pkt proc.",
+					" odporności na zatrucie, krwawienie, porażenie, dezorientację i Ociężałość."
+			});
+		}
+		if (has(object, ItemTooltip.LEGENDARY_UNYIELDING_PROTECTION)) {
+			appendFixed(result, "Nieugięta Ochrona", new String[] {
+					"Poniżej ", "30%", " PW zyskujesz ", "+10 pkt proc.",
+					" szansy na pełne sparowanie ataku wręcz; końcowa szansa nie przekracza ",
+					"15%", "."
+			});
+		}
 		appendRolled(result, object, ItemTooltip.LEGENDARY_RELIC_POWER,
 				"Relikt Mocy", "+", " pkt. dodatkowego ataku.");
+		if (has(object, ItemTooltip.LEGENDARY_HERO_EYE)) {
+			appendFixed(result, "Oko Bohatera", new String[] {
+					"Zyskujesz ", "+8 pkt proc.",
+					" szansy na trafienie krytyczne."
+			});
+		}
+		if (has(object, ItemTooltip.LEGENDARY_GUARDIAN_SEAL)) {
+			appendFixed(result, "Pieczęć Strażnika", new String[] {
+					"Zyskujesz ", "+20 pkt proc.",
+					" odporności na zatrucie, krwawienie, porażenie, dezorientację i Ociężałość."
+			});
+		}
 		return result.toString();
 	}
 

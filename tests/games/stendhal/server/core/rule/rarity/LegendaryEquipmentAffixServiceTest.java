@@ -59,11 +59,49 @@ public class LegendaryEquipmentAffixServiceTest {
 	}
 
 	@Test
+	public void armourLegendaryMarkersMaterializeWithoutChangingBaseStats() {
+		final Item ironWill = item("armor", "def", 50);
+		final Item unyielding = item("helmet", "def", 20);
+
+		assertTrue(LegendaryEquipmentAffixService.applyIronWill(
+				ironWill, new Random(1L)));
+		assertTrue(ironWill.has(LegendaryEquipmentAffixService.IRON_WILL_ATTRIBUTE));
+		assertEquals(50, ironWill.getInt("def"));
+
+		assertTrue(LegendaryEquipmentAffixService.applyUnyieldingProtection(
+				unyielding, new Random(2L)));
+		assertTrue(unyielding.has(
+				LegendaryEquipmentAffixService.UNYIELDING_PROTECTION_ATTRIBUTE));
+		assertEquals(20, unyielding.getInt("def"));
+	}
+
+	@Test
+	public void accessoryLegendaryMarkersMaterializeWithoutChangingBaseStats() {
+		final Item heroEye = item("ring", "atk", 3);
+		final Item guardianSeal = item("necklace", "def", 2);
+
+		assertTrue(LegendaryEquipmentAffixService.applyHeroEye(
+				heroEye, new Random(3L)));
+		assertTrue(heroEye.has(LegendaryEquipmentAffixService.HERO_EYE_ATTRIBUTE));
+		assertEquals(3, heroEye.getInt("atk"));
+
+		assertTrue(LegendaryEquipmentAffixService.applyGuardianSeal(
+				guardianSeal, new Random(4L)));
+		assertTrue(guardianSeal.has(
+				LegendaryEquipmentAffixService.GUARDIAN_SEAL_ATTRIBUTE));
+		assertEquals(2, guardianSeal.getInt("def"));
+	}
+
+	@Test
 	public void legendaryEquipmentSignaturesRespectItemFamilies() {
-		assertFalse(LegendaryEquipmentAffixService.isBastionEligible(
-				item("ring", "def", 5)));
-		assertFalse(LegendaryEquipmentAffixService.isRelicPowerEligible(
-				item("armor", "atk", 5)));
+		final Item ring = item("ring", "def", 5);
+		final Item armor = item("armor", "atk", 5);
+		assertFalse(LegendaryEquipmentAffixService.isBastionEligible(ring));
+		assertFalse(LegendaryEquipmentAffixService.isIronWillEligible(ring));
+		assertFalse(LegendaryEquipmentAffixService.isUnyieldingProtectionEligible(ring));
+		assertFalse(LegendaryEquipmentAffixService.isRelicPowerEligible(armor));
+		assertFalse(LegendaryEquipmentAffixService.isHeroEyeEligible(armor));
+		assertFalse(LegendaryEquipmentAffixService.isGuardianSealEligible(armor));
 	}
 
 	private Item item(final String itemClass, final String attribute,

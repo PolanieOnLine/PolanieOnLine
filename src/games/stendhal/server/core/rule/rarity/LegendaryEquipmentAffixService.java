@@ -13,6 +13,17 @@ public final class LegendaryEquipmentAffixService {
 			"legendary_bastion_bonus";
 	public static final String RELIC_POWER_ATTRIBUTE =
 			"legendary_relic_power";
+	public static final String IRON_WILL_ATTRIBUTE =
+			"legendary_iron_will";
+	public static final String UNYIELDING_PROTECTION_ATTRIBUTE =
+			"legendary_unyielding_protection";
+	public static final String HERO_EYE_ATTRIBUTE =
+			"legendary_hero_eye";
+	public static final String GUARDIAN_SEAL_ATTRIBUTE =
+			"legendary_guardian_seal";
+
+	public static final double UNIVERSAL_STATUS_RESISTANCE = 0.20;
+	public static final double HERO_EYE_CRITICAL_CHANCE_BONUS = 8.0;
 
 	private static final int MIN_BASTION_PERCENT = 20;
 	private static final int MAX_BASTION_PERCENT = 30;
@@ -54,6 +65,59 @@ public final class LegendaryEquipmentAffixService {
 		final int bonus = rollInclusive(random, MIN_RELIC_ATTACK, MAX_RELIC_ATTACK);
 		item.put(RELIC_POWER_ATTRIBUTE, bonus);
 		item.put("atk", clampShort((item.has("atk") ? item.getInt("atk") : 0) + bonus));
+		return true;
+	}
+
+	public static boolean isIronWillEligible(final Item item) {
+		return EquipmentAffixService.isArmour(item)
+				&& !item.has(IRON_WILL_ATTRIBUTE);
+	}
+
+	public static boolean applyIronWill(final Item item, final Random random) {
+		return applyMarker(item, IRON_WILL_ATTRIBUTE,
+				isIronWillEligible(item), random);
+	}
+
+	public static boolean isUnyieldingProtectionEligible(final Item item) {
+		return EquipmentAffixService.isArmour(item)
+				&& !item.has(UNYIELDING_PROTECTION_ATTRIBUTE);
+	}
+
+	public static boolean applyUnyieldingProtection(final Item item,
+			final Random random) {
+		return applyMarker(item, UNYIELDING_PROTECTION_ATTRIBUTE,
+				isUnyieldingProtectionEligible(item), random);
+	}
+
+	public static boolean isHeroEyeEligible(final Item item) {
+		return EquipmentAffixService.isAccessory(item)
+				&& !item.has(HERO_EYE_ATTRIBUTE);
+	}
+
+	public static boolean applyHeroEye(final Item item, final Random random) {
+		return applyMarker(item, HERO_EYE_ATTRIBUTE,
+				isHeroEyeEligible(item), random);
+	}
+
+	public static boolean isGuardianSealEligible(final Item item) {
+		return EquipmentAffixService.isAccessory(item)
+				&& !item.has(GUARDIAN_SEAL_ATTRIBUTE);
+	}
+
+	public static boolean applyGuardianSeal(final Item item, final Random random) {
+		return applyMarker(item, GUARDIAN_SEAL_ATTRIBUTE,
+				isGuardianSealEligible(item), random);
+	}
+
+	private static boolean applyMarker(final Item item, final String attribute,
+			final boolean eligible, final Random random) {
+		if (!eligible) {
+			return false;
+		}
+		if (random == null) {
+			throw new IllegalArgumentException("Random source must not be null");
+		}
+		item.put(attribute, 1.0);
 		return true;
 	}
 

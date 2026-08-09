@@ -20,6 +20,7 @@ import java.util.Set;
 import games.stendhal.common.constants.GameTiming;
 import games.stendhal.common.constants.ItemTooltip;
 import games.stendhal.common.constants.Nature;
+import games.stendhal.server.core.rule.rarity.LegendaryWeaponAffixService;
 import games.stendhal.server.entity.status.StatusAttacker;
 
 /** Builds a presentation-safe map of final item statistics for clients. */
@@ -72,7 +73,7 @@ public final class ItemTooltipService {
 					+ entry.getKey().name().toLowerCase(Locale.ROOT),
 					Integer.toString(resistance));
 		}
-		putPositiveInt(item, ItemTooltip.RANGE, item.getRange());
+		putPositiveInt(item, ItemTooltip.RANGE, displayedRange(item));
 
 		copyDouble(item, "lifesteal", ItemTooltip.LIFESTEAL);
 		copyDouble(item, ItemTooltip.PARRY_CHANCE, ItemTooltip.PARRY_CHANCE);
@@ -89,10 +90,36 @@ public final class ItemTooltipService {
 				ItemTooltip.LEGENDARY_LONGSHOT);
 		copyDouble(item, ItemTooltip.LEGENDARY_EXECUTIONER,
 				ItemTooltip.LEGENDARY_EXECUTIONER);
+		copyDouble(item, ItemTooltip.LEGENDARY_DUEL_MASTER,
+				ItemTooltip.LEGENDARY_DUEL_MASTER);
+		copyDouble(item, ItemTooltip.LEGENDARY_CRUSHING_BLOW,
+				ItemTooltip.LEGENDARY_CRUSHING_BLOW);
+		copyDouble(item, ItemTooltip.LEGENDARY_STUNNING_FORCE,
+				ItemTooltip.LEGENDARY_STUNNING_FORCE);
+		copyDouble(item, ItemTooltip.LEGENDARY_BINDING_STRIKE,
+				ItemTooltip.LEGENDARY_BINDING_STRIKE);
+		copyDouble(item, ItemTooltip.LEGENDARY_MERCILESS_REACH,
+				ItemTooltip.LEGENDARY_MERCILESS_REACH);
+		copyDouble(item, ItemTooltip.LEGENDARY_FALCON_EYE,
+				ItemTooltip.LEGENDARY_FALCON_EYE);
+		copyDouble(item, ItemTooltip.LEGENDARY_FIRST_SALVO,
+				ItemTooltip.LEGENDARY_FIRST_SALVO);
+		copyDouble(item, ItemTooltip.LEGENDARY_POWER_OVERLOAD,
+				ItemTooltip.LEGENDARY_POWER_OVERLOAD);
+		copyDouble(item, ItemTooltip.LEGENDARY_ARCANE_FOCUS,
+				ItemTooltip.LEGENDARY_ARCANE_FOCUS);
 		copyInt(item, ItemTooltip.LEGENDARY_BASTION_BONUS,
 				ItemTooltip.LEGENDARY_BASTION_BONUS);
+		copyDouble(item, ItemTooltip.LEGENDARY_IRON_WILL,
+				ItemTooltip.LEGENDARY_IRON_WILL);
+		copyDouble(item, ItemTooltip.LEGENDARY_UNYIELDING_PROTECTION,
+				ItemTooltip.LEGENDARY_UNYIELDING_PROTECTION);
 		copyInt(item, ItemTooltip.LEGENDARY_RELIC_POWER,
 				ItemTooltip.LEGENDARY_RELIC_POWER);
+		copyDouble(item, ItemTooltip.LEGENDARY_HERO_EYE,
+				ItemTooltip.LEGENDARY_HERO_EYE);
+		copyDouble(item, ItemTooltip.LEGENDARY_GUARDIAN_SEAL,
+				ItemTooltip.LEGENDARY_GUARDIAN_SEAL);
 		copyDouble(item, ItemTooltip.EXECUTE_DAMAGE, ItemTooltip.EXECUTE_DAMAGE);
 		copyDouble(item, ItemTooltip.POISON_ON_HIT, ItemTooltip.POISON_ON_HIT);
 		copyDouble(item, ItemTooltip.DISTANCE_DAMAGE, ItemTooltip.DISTANCE_DAMAGE);
@@ -150,6 +177,14 @@ public final class ItemTooltipService {
 		defense -= intAttribute(item, ItemTooltip.FLAT_DEFENSE_BONUS);
 		defense -= intAttribute(item, ItemTooltip.LEGENDARY_BASTION_BONUS);
 		return Math.max(0, defense);
+	}
+
+	private static int displayedRange(final Item item) {
+		int range = item.getRange();
+		if (item.has(ItemTooltip.LEGENDARY_MERCILESS_REACH)) {
+			range -= LegendaryWeaponAffixService.MERCILESS_REACH_RANGE_BONUS;
+		}
+		return Math.max(0, range);
 	}
 
 	private static int intAttribute(final Item item, final String attribute) {

@@ -51,19 +51,21 @@ public class ItemAffixGeneratorTest {
 	}
 
 	@Test
-	public void productionPoolsCoverEverySupportedLegendaryFamily() {
+	public void everySupportedLegendaryClassHasAtLeastThreeSignatures() {
 		final ItemAffixRegistry regular = ItemAffixRegistry.getInstance();
 		final LegendaryItemAffixRegistry legendary =
 				LegendaryItemAffixRegistry.getInstance();
 		final String[] classes = {"sword", "dagger", "axe", "club", "ranged",
 				"wand", "whip", "armor", "shield", "helmet", "cloak",
-				"boots", "glove", "legs", "belt", "ring", "necklace"};
+				"boots", "glove", "gloves", "legs", "belt", "belts",
+				"ring", "necklace"};
 		for (final String itemClass : classes) {
 			final Item item = item(itemClass, ItemRarity.LEGENDARY);
 			assertTrue("regular pool missing for " + itemClass,
 					!regular.getEligible(item).isEmpty());
-			assertTrue("legendary pool missing for " + itemClass,
-					!legendary.getEligible(item).isEmpty());
+			assertTrue("legendary pool has fewer than three signatures for "
+					+ itemClass,
+					legendary.getEligible(item).size() >= 3);
 		}
 	}
 

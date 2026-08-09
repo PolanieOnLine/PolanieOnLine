@@ -7,9 +7,11 @@ import java.util.List;
 
 import games.stendhal.common.Rand;
 import games.stendhal.server.entity.RPEntity;
+import games.stendhal.server.entity.creature.Creature;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.entity.status.BleedingAttacker;
+import games.stendhal.server.entity.status.HeavyStatus;
 import games.stendhal.server.entity.status.PoisonStatus;
 import games.stendhal.server.entity.status.Status;
 import games.stendhal.server.entity.status.StatusType;
@@ -26,11 +28,36 @@ public final class WeaponAffixCombatService {
 			"legendary_longshot";
 	public static final String LEGENDARY_EXECUTIONER_ATTRIBUTE =
 			"legendary_executioner";
+	public static final String LEGENDARY_CRUSHING_BLOW_ATTRIBUTE =
+			"legendary_crushing_blow";
+	public static final String LEGENDARY_STUNNING_FORCE_ATTRIBUTE =
+			"legendary_stunning_force";
+	public static final String LEGENDARY_BINDING_STRIKE_ATTRIBUTE =
+			"legendary_binding_strike";
+	public static final String LEGENDARY_MERCILESS_REACH_ATTRIBUTE =
+			"legendary_merciless_reach";
+	public static final String LEGENDARY_FALCON_EYE_ATTRIBUTE =
+			"legendary_falcon_eye";
+	public static final String LEGENDARY_FIRST_SALVO_ATTRIBUTE =
+			"legendary_first_salvo";
+	public static final String LEGENDARY_POWER_OVERLOAD_ATTRIBUTE =
+			"legendary_power_overload";
+	public static final String LEGENDARY_ARCANE_FOCUS_ATTRIBUTE =
+			"legendary_arcane_focus";
 
 	private static final double EXECUTE_HP_THRESHOLD = 0.25;
 	private static final double LEGENDARY_EXECUTION_HP_THRESHOLD = 0.20;
+	private static final double FIRST_SALVO_HP_THRESHOLD = 0.80;
 	private static final double LEGENDARY_EXECUTION_DAMAGE_BONUS = 0.35;
 	private static final double LEGENDARY_LONGSHOT_DAMAGE_BONUS = 0.25;
+	private static final double LEGENDARY_CRUSHING_BLOW_DAMAGE_BONUS = 0.25;
+	public static final double LEGENDARY_FALCON_EYE_CRITICAL_CHANCE_BONUS = 10.0;
+	private static final double LEGENDARY_FIRST_SALVO_DAMAGE_BONUS = 0.30;
+	private static final double LEGENDARY_POWER_OVERLOAD_PROC_CHANCE = 0.15;
+	private static final double LEGENDARY_POWER_OVERLOAD_DAMAGE_BONUS = 0.50;
+	private static final double LEGENDARY_ARCANE_FOCUS_DAMAGE_BONUS = 0.25;
+	private static final double LEGENDARY_HEAVY_PROC_CHANCE = 0.15;
+	private static final int LEGENDARY_HEAVY_DURATION_SECONDS = 10;
 	private static final double MAX_STATUS_PROC_CHANCE = 0.25;
 	private static final double BLEED_TOTAL_DAMAGE_FACTOR = 0.25;
 	private static final double DEEP_WOUNDS_PROC_CHANCE = 0.15;
@@ -61,12 +88,40 @@ public final class WeaponAffixCombatService {
 					LEGENDARY_EXECUTIONER_ATTRIBUTE,
 					LEGENDARY_EXECUTION_DAMAGE_BONUS);
 		}
+		if (isCrushingBlowActive(defender)) {
+			multiplier *= 1.0 + getWeightedFixedBonus(weapons,
+					LEGENDARY_CRUSHING_BLOW_ATTRIBUTE,
+					LEGENDARY_CRUSHING_BLOW_DAMAGE_BONUS);
+		}
+
+		if (ParryService.consumeDuelMasterRiposte(weapons)) {
+			multiplier *= 1.0 + ParryService.DUEL_MASTER_RIPOSTE_DAMAGE_BONUS;
+		}
+
 		if (rangedAttack) {
 			multiplier *= 1.0 + getWeightedFraction(weapons,
 					DISTANCE_DAMAGE_ATTRIBUTE);
 			multiplier *= 1.0 + getWeightedFixedBonus(weapons,
 					LEGENDARY_LONGSHOT_ATTRIBUTE,
 					LEGENDARY_LONGSHOT_DAMAGE_BONUS);
+			if (isFirstSalvoActive(defender)) {
+				multiplier *= 1.0 + getWeightedFixedBonus(weapons,
+						LEGENDARY_FIRST_SALVO_ATTRIBUTE,
+						LEGENDARY_FIRST_SALVO_DAMAGE_BONUS);
+			}
+			if (hasCombatStatus(defender)) {
+				multiplier *= 1.0 + getWeightedFixedBonus(weapons,
+						LEGENDARY_ARCANE_FOCUS_ATTRIBUTE,
+						LEGENDARY_ARCANE_FOCUS_DAMAGE_BONUS);
+			}
+			final double overloadChance = combinedFixedProcChance(weapons,
+					LEGENDARY_POWER_OVERLOAD_ATTRIBUTE,
+					LEGENDARY_POWER_OVERLOAD_PROC_CHANCE);
+			if (overloadChance > 0.0
+					&& rollChance(overloadChance,
+							Rand.randUniform(1, PROC_ROLL_SCALE))) {
+				multiplier *= 1.0 + LEGENDARY_POWER_OVERLOAD_DAMAGE_BONUS;
+			}
 		}
 		return scaleDamage(damage, multiplier);
 	}
@@ -78,6 +133,25 @@ public final class WeaponAffixCombatService {
 	public static boolean isLegendaryExecutionActive(final RPEntity defender) {
 		return isBelowHealthThreshold(defender,
 				LEGENDARY_EXECUTION_HP_THRESHOLD);
+	}
+
+	public static boolean isFirstSalvoActive(final RPEntity defender) {
+		if (defender == null || defender.getHP() <= 0 || defender.getBaseHP() <= 0) {
+			return false;
+		}
+		return (double) defender.getHP() / (double) defender.getBaseHP()
+				>= FIRST_SALVO_HP_THRESHOLD;
+	}
+
+	public static boolean isCrushingBlowActive(final RPEntity defender) {
+		if (!(defender instanceof Creature)) {
+			return false;
+		}
+		final WeaponArmorInteractionService.ArmorTier tier =
+				WeaponArmorInteractionService.classify(
+						((Creature) defender).getArmorType());
+		return tier == WeaponArmorInteractionService.ArmorTier.MEDIUM
+				|| tier == WeaponArmorInteractionService.ArmorTier.HEAVY;
 	}
 
 	private static boolean isBelowHealthThreshold(final RPEntity defender,
@@ -155,13 +229,22 @@ public final class WeaponAffixCombatService {
 			defender.getStatusList().inflictStatus(createPoisonStatus(damage),
 					attacker);
 		}
+
+		final double stunningChance = combinedFixedProcChance(weapons,
+				LEGENDARY_STUNNING_FORCE_ATTRIBUTE, LEGENDARY_HEAVY_PROC_CHANCE);
+		final double bindingChance = combinedFixedProcChance(weapons,
+				LEGENDARY_BINDING_STRIKE_ATTRIBUTE, LEGENDARY_HEAVY_PROC_CHANCE);
+		final double heavyBaseChance = Math.min(MAX_STATUS_PROC_CHANCE,
+				1.0 - ((1.0 - stunningChance) * (1.0 - bindingChance)));
+		final double heavyChance = effectiveStatusChance(defender,
+				StatusType.HEAVY, heavyBaseChance);
+		if (heavyChance > 0.0
+				&& rollChance(heavyChance, Rand.randUniform(1, PROC_ROLL_SCALE))) {
+			defender.getStatusList().inflictStatus(
+					new HeavyStatus(LEGENDARY_HEAVY_DURATION_SECONDS), attacker);
+		}
 	}
 
-	/**
-	 * Builds one Bleeding 2.0 proc from normal bleed affixes and the legendary
-	 * Deep Wounds signature. Both sources combine independently and still obey
-	 * the global 25% proc cap, so the legendary never adds a second RNG roll.
-	 */
 	static BleedingAttacker createBleedingAttacker(final List<Item> weapons) {
 		final double normalChance = combinedProcChance(weapons,
 				BLEED_ON_HIT_ATTRIBUTE);
@@ -203,6 +286,33 @@ public final class WeaponAffixCombatService {
 			}
 		}
 		return Math.min(MAX_STATUS_PROC_CHANCE, 1.0 - missAll);
+	}
+
+	static boolean isPowerOverloadSuccessful(final List<Item> weapons,
+			final boolean rangedAttack, final int roll) {
+		if (!rangedAttack) {
+			return false;
+		}
+		final double chance = combinedFixedProcChance(weapons,
+				LEGENDARY_POWER_OVERLOAD_ATTRIBUTE,
+				LEGENDARY_POWER_OVERLOAD_PROC_CHANCE);
+		return chance > 0.0 && rollChance(chance, roll);
+	}
+
+	static boolean hasCombatStatus(final RPEntity defender) {
+		if (defender == null || defender.getStatusList() == null) {
+			return false;
+		}
+		final StatusType[] combatStatuses = {
+			StatusType.POISONED, StatusType.BLEEDING, StatusType.SHOCKED,
+			StatusType.CONFUSED, StatusType.HEAVY, StatusType.ZOMBIE
+		};
+		for (final StatusType statusType : combatStatuses) {
+			if (defender.getStatusList().hasStatus(statusType)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	static boolean rollChance(final double chance, final int roll) {

@@ -13,6 +13,7 @@ import java.util.Map;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import games.stendhal.server.core.rule.rarity.LegendaryEquipmentAffixService;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.item.Weapon;
 import games.stendhal.server.entity.player.Player;
@@ -42,6 +43,29 @@ public class CriticalHitServiceTest {
 	}
 
 	@Test
+	public void falconEyeAddsTenPointsOnlyWhenDistanceGateIsActive() {
+		final Player player = player();
+		final Weapon weapon = weapon("ranged", 0.0);
+		weapon.put(WeaponAffixCombatService.LEGENDARY_FALCON_EYE_ATTRIBUTE, 1.0);
+		assertTrue(player.equip("rhand", weapon));
+
+		assertEquals(10.0,
+				CriticalHitService.getCriticalChance(player, false), 0.0);
+		assertEquals(20.0,
+				CriticalHitService.getCriticalChance(player, true), 0.0);
+	}
+
+	@Test
+	public void heroEyeAddsEightCriticalPercentagePoints() {
+		final Player player = player();
+		final Item ring = accessory("hero eye ring", "ring");
+		ring.put(LegendaryEquipmentAffixService.HERO_EYE_ATTRIBUTE, 1.0);
+		assertTrue(player.equip("finger", ring));
+
+		assertEquals(18.0, CriticalHitService.getCriticalChance(player), 0.0);
+	}
+
+	@Test
 	public void weaponAndGlyphBonusesAreAdditive() {
 		final Player player = player();
 		assertTrue(player.equip("rhand", weapon(7.0)));
@@ -63,6 +87,20 @@ public class CriticalHitServiceTest {
 		assertTrue(player.equip("neck", necklace));
 
 		assertEquals(21.0, CriticalHitService.getCriticalChance(player), 0.0);
+	}
+
+	@Test
+	public void legendaryAndRegularCriticalBonusesShareFiftyPercentCap() {
+		final Player player = player();
+		final Weapon weapon = weapon("ranged", 35.0);
+		weapon.put(WeaponAffixCombatService.LEGENDARY_FALCON_EYE_ATTRIBUTE, 1.0);
+		final Item ring = accessory("hero eye ring", "ring");
+		ring.put(LegendaryEquipmentAffixService.HERO_EYE_ATTRIBUTE, 1.0);
+		assertTrue(player.equip("rhand", weapon));
+		assertTrue(player.equip("finger", ring));
+
+		assertEquals(50.0,
+				CriticalHitService.getCriticalChance(player, true), 0.0);
 	}
 
 	@Test
@@ -140,10 +178,14 @@ public class CriticalHitServiceTest {
 	}
 
 	private Weapon weapon(final double criticalChance) {
+		return weapon("sword", criticalChance);
+	}
+
+	private Weapon weapon(final String itemClass, final double criticalChance) {
 		final Map<String, String> attributes = new HashMap<String, String>();
 		attributes.put("atk", "30");
 		attributes.put("rate", "5");
-		final Weapon weapon = new Weapon("critical sword", "sword", "test",
+		final Weapon weapon = new Weapon("critical weapon", itemClass, "test",
 				attributes);
 		weapon.put(CriticalHitService.CRITICAL_CHANCE_ATTRIBUTE, criticalChance);
 		return weapon;
