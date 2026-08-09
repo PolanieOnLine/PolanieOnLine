@@ -20,6 +20,7 @@ import games.stendhal.server.core.rule.damage.WeaponAffixCombatService;
 import games.stendhal.server.core.rule.damage.WeaponArmorInteractionService;
 import games.stendhal.server.core.rule.rarity.EquipmentAffixService;
 import games.stendhal.server.core.rule.rarity.ItemAffixState;
+import games.stendhal.server.core.rule.rarity.LegendaryEquipmentAffixService;
 import games.stendhal.server.entity.status.StatusType;
 import marauroa.common.game.Definition;
 import marauroa.common.game.Definition.Type;
@@ -64,6 +65,24 @@ public class ItemInformation extends Item {
 				Type.FLOAT, Definition.HIDDEN);
 		itemClass.addAttribute(WeaponAffixCombatService.DISTANCE_DAMAGE_ATTRIBUTE,
 				Type.FLOAT, Definition.HIDDEN);
+
+		/* Legendary signature affixes are persisted as normal item attributes in
+		 * addition to item_affixes. Every materialized attribute must therefore be
+		 * declared on the parent item RPClass before an item is serialized into a
+		 * perception. Missing definitions can otherwise disconnect the client. */
+		itemClass.addAttribute(WeaponAffixCombatService.LEGENDARY_DEEP_WOUNDS_ATTRIBUTE,
+				Type.FLOAT, Definition.HIDDEN);
+		itemClass.addAttribute(WeaponAffixCombatService.LEGENDARY_LONGSHOT_ATTRIBUTE,
+				Type.FLOAT, Definition.HIDDEN);
+		itemClass.addAttribute(WeaponAffixCombatService.LEGENDARY_EXECUTIONER_ATTRIBUTE,
+				Type.FLOAT, Definition.HIDDEN);
+		itemClass.addAttribute(WeaponArmorInteractionService.LEGENDARY_ARMOR_BREAKER_ATTRIBUTE,
+				Type.FLOAT, Definition.HIDDEN);
+		itemClass.addAttribute(LegendaryEquipmentAffixService.BASTION_BONUS_ATTRIBUTE,
+				Type.SHORT, Definition.HIDDEN);
+		itemClass.addAttribute(LegendaryEquipmentAffixService.RELIC_POWER_ATTRIBUTE,
+				Type.SHORT, Definition.HIDDEN);
+
 		itemClass.addAttribute(EquipmentAffixService.FLAT_ATTACK_BONUS_ATTRIBUTE,
 				Type.SHORT, Definition.HIDDEN);
 		itemClass.addAttribute(EquipmentAffixService.FLAT_DEFENSE_BONUS_ATTRIBUTE,
