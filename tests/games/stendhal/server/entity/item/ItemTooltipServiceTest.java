@@ -70,6 +70,7 @@ public class ItemTooltipServiceTest {
 		attributes.put("atk", "30");
 		attributes.put(ItemTooltip.CRITICAL_DAMAGE_BONUS, "0.20");
 		attributes.put(ItemTooltip.BLEED_ON_HIT, "0.10");
+		attributes.put(ItemTooltip.LEGENDARY_DEEP_WOUNDS, "1.0");
 		attributes.put(ItemTooltip.EXECUTE_DAMAGE, "0.25");
 		attributes.put(ItemTooltip.POISON_ON_HIT, "0.08");
 		attributes.put(ItemTooltip.DISTANCE_DAMAGE, "0.15");
@@ -79,6 +80,7 @@ public class ItemTooltipServiceTest {
 
 		assertEquals("0.2", stat(item, ItemTooltip.CRITICAL_DAMAGE_BONUS));
 		assertEquals("0.1", stat(item, ItemTooltip.BLEED_ON_HIT));
+		assertEquals("1.0", stat(item, ItemTooltip.LEGENDARY_DEEP_WOUNDS));
 		assertEquals("0.25", stat(item, ItemTooltip.EXECUTE_DAMAGE));
 		assertEquals("0.08", stat(item, ItemTooltip.POISON_ON_HIT));
 		assertEquals("0.15", stat(item, ItemTooltip.DISTANCE_DAMAGE));
