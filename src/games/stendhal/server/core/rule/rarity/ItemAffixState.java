@@ -69,10 +69,11 @@ public final class ItemAffixState {
 		if (!saved.hasMap(ATTRIBUTE)) {
 			for (final ItemAffixDefinition definition
 					: ItemAffixRegistry.getInstance().getDefinitions()) {
-				if (saved.has(definition.getAttribute())) {
-					item.put(definition.getAttribute(),
-							saved.get(definition.getAttribute()));
-				}
+				copyLegacyAttribute(item, saved, definition);
+			}
+			for (final ItemAffixDefinition definition
+					: LegendaryItemAffixRegistry.getInstance().getDefinitions()) {
+				copyLegacyAttribute(item, saved, definition);
 			}
 			return;
 		}
@@ -80,11 +81,25 @@ public final class ItemAffixState {
 		for (final Entry<String, String> entry
 				: saved.getMap(ATTRIBUTE).entrySet()) {
 			item.put(ATTRIBUTE, entry.getKey(), entry.getValue());
-			final ItemAffixDefinition definition =
-					ItemAffixRegistry.getInstance().get(entry.getKey());
+			final ItemAffixDefinition definition = findDefinition(entry.getKey());
 			if (definition != null) {
 				item.put(definition.getAttribute(), entry.getValue());
 			}
+		}
+	}
+
+	private static ItemAffixDefinition findDefinition(final String id) {
+		final ItemAffixDefinition regular = ItemAffixRegistry.getInstance().get(id);
+		if (regular != null) {
+			return regular;
+		}
+		return LegendaryItemAffixRegistry.getInstance().get(id);
+	}
+
+	private static void copyLegacyAttribute(final Item item,
+			final RPObject saved, final ItemAffixDefinition definition) {
+		if (definition != null && saved.has(definition.getAttribute())) {
+			item.put(definition.getAttribute(), saved.get(definition.getAttribute()));
 		}
 	}
 }
