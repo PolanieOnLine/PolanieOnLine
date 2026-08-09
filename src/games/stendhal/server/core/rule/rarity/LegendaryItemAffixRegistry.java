@@ -14,17 +14,28 @@ import java.util.Random;
 import java.util.Set;
 
 import games.stendhal.server.core.rule.damage.WeaponAffixCombatService;
+import games.stendhal.server.core.rule.damage.WeaponArmorInteractionService;
 import games.stendhal.server.entity.item.Item;
 
 /** Registry of signature affixes reserved for legendary item drops. */
 public final class LegendaryItemAffixRegistry {
 	private static final Set<String> DEEP_WOUNDS_WEAPON_CLASSES =
-			Collections.unmodifiableSet(new HashSet<String>(Arrays.asList(
-					"sword", "dagger", "axe", "whip")));
+			classes("sword", "dagger", "axe", "whip");
+	private static final Set<String> ARMOR_BREAKER_WEAPON_CLASSES =
+			classes("club", "sword", "dagger", "axe");
+	private static final Set<String> LONGSHOT_WEAPON_CLASSES =
+			classes("ranged", "missile", "wand");
+	private static final Set<String> EXECUTIONER_WEAPON_CLASSES =
+			classes("dagger", "axe");
 
 	private static final LegendaryItemAffixRegistry INSTANCE =
 			new LegendaryItemAffixRegistry(Arrays.<ItemAffixDefinition>asList(
-					new DeepWoundsAffixDefinition()));
+					new DeepWoundsAffixDefinition(),
+					new ArmorBreakerAffixDefinition(),
+					new LongshotAffixDefinition(),
+					new ExecutionerAffixDefinition(),
+					new BastionAffixDefinition(),
+					new RelicPowerAffixDefinition()));
 
 	private final List<ItemAffixDefinition> definitions;
 	private final Map<String, ItemAffixDefinition> byId;
@@ -75,7 +86,6 @@ public final class LegendaryItemAffixRegistry {
 					&& definition.isEligible(item)) {
 				result.add(definition);
 			}
-		}
 		return result;
 	}
 
@@ -88,24 +98,152 @@ public final class LegendaryItemAffixRegistry {
 
 		@Override
 		public String getAttribute() {
-			return WeaponAffixCombatService.LEGENDARY_DEEP_WOUNDS_ATTRIBUTE;
+			return getId();
 		}
 
 		@Override
 		public boolean isEligible(final Item item) {
-			return item != null
-					&& DEEP_WOUNDS_WEAPON_CLASSES.contains(item.getItemClass())
-					&& !item.has(getAttribute());
+			return markerEligible(item, getAttribute(), DEEP_WOUNDS_WEAPON_CLASSES);
 		}
 
 		@Override
 		public boolean apply(final Item item, final Random random) {
-			if (!isEligible(item)) {
-				return false;
-			}
-			// Signature affixes use a stable marker rather than a rolled percentage.
-			item.put(getAttribute(), 1.0);
-			return true;
+			return applyMarker(item, getAttribute(), DEEP_WOUNDS_WEAPON_CLASSES);
 		}
+	}
+
+	private static final class ArmorBreakerAffixDefinition
+			implements ItemAffixDefinition {
+		@Override
+		public String getId() {
+			return WeaponArmorInteractionService.LEGENDARY_ARMOR_BREAKER_ATTRIBUTE;
+		}
+
+		@Override
+		public String getAttribute() {
+			return getId();
+		}
+
+		@Override
+		public boolean isEligible(final Item item) {
+			return markerEligible(item, getAttribute(), ARMOR_BREAKER_WEAPON_CLASSES);
+		}
+
+		@Override
+		public boolean apply(final Item item, final Random random) {
+			return applyMarker(item, getAttribute(), ARMOR_BREAKER_WEAPON_CLASSES);
+		}
+	}
+
+	private static final class LongshotAffixDefinition
+			implements ItemAffixDefinition {
+		@Override
+		public String getId() {
+			return WeaponAffixCombatService.LEGENDARY_LONGSHOT_ATTRIBUTE;
+		}
+
+		@Override
+		public String getAttribute() {
+			return getId();
+		}
+
+		@Override
+		public boolean isEligible(final Item item) {
+			return markerEligible(item, getAttribute(), LONGSHOT_WEAPON_CLASSES);
+		}
+
+		@Override
+		public boolean apply(final Item item, final Random random) {
+			return applyMarker(item, getAttribute(), LONGSHOT_WEAPON_CLASSES);
+		}
+	}
+
+	private static final class ExecutionerAffixDefinition
+			implements ItemAffixDefinition {
+		@Override
+		public String getId() {
+			return WeaponAffixCombatService.LEGENDARY_EXECUTIONER_ATTRIBUTE;
+		}
+
+		@Override
+		public String getAttribute() {
+			return getId();
+		}
+
+		@Override
+		public boolean isEligible(final Item item) {
+			return markerEligible(item, getAttribute(), EXECUTIONER_WEAPON_CLASSES);
+		}
+
+		@Override
+		public boolean apply(final Item item, final Random random) {
+			return applyMarker(item, getAttribute(), EXECUTIONER_WEAPON_CLASSES);
+		}
+	}
+
+	private static final class BastionAffixDefinition
+			implements ItemAffixDefinition {
+		@Override
+		public String getId() {
+			return LegendaryEquipmentAffixService.BASTION_BONUS_ATTRIBUTE;
+		}
+
+		@Override
+		public String getAttribute() {
+			return getId();
+		}
+
+		@Override
+		public boolean isEligible(final Item item) {
+			return LegendaryEquipmentAffixService.isBastionEligible(item);
+		}
+
+		@Override
+		public boolean apply(final Item item, final Random random) {
+			return LegendaryEquipmentAffixService.applyBastion(item, random);
+		}
+	}
+
+	private static final class RelicPowerAffixDefinition
+			implements ItemAffixDefinition {
+		@Override
+		public String getId() {
+			return LegendaryEquipmentAffixService.RELIC_POWER_ATTRIBUTE;
+		}
+
+		@Override
+		public String getAttribute() {
+			return getId();
+		}
+
+		@Override
+		public boolean isEligible(final Item item) {
+			return LegendaryEquipmentAffixService.isRelicPowerEligible(item);
+		}
+
+		@Override
+		public boolean apply(final Item item, final Random random) {
+			return LegendaryEquipmentAffixService.applyRelicPower(item, random);
+		}
+	}
+
+	private static boolean markerEligible(final Item item, final String attribute,
+			final Set<String> classes) {
+		return item != null && classes.contains(item.getItemClass())
+				&& !item.has(attribute);
+	}
+
+	private static boolean applyMarker(final Item item, final String attribute,
+			final Set<String> classes) {
+		if (!markerEligible(item, attribute, classes)) {
+			return false;
+		}
+		item.put(attribute, 1.0);
+		return true;
+	}
+
+	private static Set<String> classes(final String... values) {
+		return Collections.unmodifiableSet(
+				new HashSet<String>(Arrays.asList(values)));
 	}
 }
