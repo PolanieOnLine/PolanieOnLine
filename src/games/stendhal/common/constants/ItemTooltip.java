@@ -1,7 +1,7 @@
 /***************************************************************************
  *                   (C) Copyright 2003-2026 - Stendhal                    *
- ***************************************************************************
- ***************************************************************************
+ ***************************************************************************/
+/***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -38,6 +38,11 @@ public final class ItemTooltip {
 	public static final String CRITICAL_DAMAGE_BONUS = "critical_damage_bonus";
 	public static final String BLEED_ON_HIT = "bleed_on_hit";
 	public static final String LEGENDARY_DEEP_WOUNDS = "legendary_deep_wounds";
+	public static final String LEGENDARY_ARMOR_BREAKER = "legendary_armor_breaker";
+	public static final String LEGENDARY_LONGSHOT = "legendary_longshot";
+	public static final String LEGENDARY_EXECUTIONER = "legendary_executioner";
+	public static final String LEGENDARY_BASTION_BONUS = "legendary_bastion_bonus";
+	public static final String LEGENDARY_RELIC_POWER = "legendary_relic_power";
 	public static final String EXECUTE_DAMAGE = "execute_damage";
 	public static final String POISON_ON_HIT = "poison_on_hit";
 	public static final String DISTANCE_DAMAGE = "distance_damage";
