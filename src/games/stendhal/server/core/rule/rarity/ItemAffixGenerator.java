@@ -14,20 +14,36 @@ import games.stendhal.server.entity.item.Item;
 /** Selects unique random affixes according to item rarity. */
 public final class ItemAffixGenerator {
 	private final ItemAffixRegistry registry;
+	private final LegendaryItemAffixRegistry legendaryRegistry;
 	private final Random random;
 
 	public ItemAffixGenerator(final Random random) {
-		this(ItemAffixRegistry.getInstance(), random);
+		this(ItemAffixRegistry.getInstance(),
+				LegendaryItemAffixRegistry.getInstance(), random);
 	}
 
 	ItemAffixGenerator(final ItemAffixRegistry registry, final Random random) {
+		this(registry,
+				new LegendaryItemAffixRegistry(
+						Collections.<ItemAffixDefinition>emptyList()),
+				random);
+	}
+
+	ItemAffixGenerator(final ItemAffixRegistry registry,
+			final LegendaryItemAffixRegistry legendaryRegistry,
+			final Random random) {
 		if (registry == null) {
 			throw new IllegalArgumentException("Affix registry must not be null");
+		}
+		if (legendaryRegistry == null) {
+			throw new IllegalArgumentException(
+					"Legendary affix registry must not be null");
 		}
 		if (random == null) {
 			throw new IllegalArgumentException("Random source must not be null");
 		}
 		this.registry = registry;
+		this.legendaryRegistry = legendaryRegistry;
 		this.random = random;
 	}
 
@@ -53,13 +69,9 @@ public final class ItemAffixGenerator {
 
 	/**
 	 * Generates random affixes for a fresh drop only. Existing persisted affix
-	 * state is never rerolled. The current production registry may expose fewer
-	 * eligible definitions than the rarity has slots; in that case only the
-	 * available unique definitions are applied.
-	 *
-	 * This method is intentionally not wired into ItemRarityService yet. The
-	 * first live pool must contain several real affixes so a rare sword is not
-	 * forced to roll parry just because parry is currently the sole definition.
+	 * state is never rerolled. Legendary items first try to reserve one of their
+	 * three slots for a signature legendary-only effect; if no signature is
+	 * eligible for the item class yet, the slot falls back to the normal pool.
 	 */
 	public List<String> generate(final Item item,
 			final ItemCreationContext context) {
@@ -74,13 +86,13 @@ public final class ItemAffixGenerator {
 			return Collections.emptyList();
 		}
 
-		final List<ItemAffixDefinition> eligible = registry.getEligible(item);
-		if (eligible.isEmpty()) {
-			return Collections.emptyList();
-		}
-		Collections.shuffle(eligible, random);
-
 		final List<String> applied = new ArrayList<String>();
+		if (item.getRarity() == ItemRarity.LEGENDARY) {
+			applyLegendarySignature(item, applied);
+		}
+
+		final List<ItemAffixDefinition> eligible = registry.getEligible(item);
+		Collections.shuffle(eligible, random);
 		for (final ItemAffixDefinition definition : eligible) {
 			if (applied.size() >= slots) {
 				break;
@@ -91,5 +103,19 @@ public final class ItemAffixGenerator {
 			}
 		}
 		return Collections.unmodifiableList(applied);
+	}
+
+	private void applyLegendarySignature(final Item item,
+			final List<String> applied) {
+		final List<ItemAffixDefinition> eligible =
+				legendaryRegistry.getEligible(item);
+		Collections.shuffle(eligible, random);
+		for (final ItemAffixDefinition definition : eligible) {
+			if (definition.apply(item, random)) {
+				ItemAffixState.record(item, definition);
+				applied.add(definition.getId());
+				return;
+			}
+		}
 	}
 }
