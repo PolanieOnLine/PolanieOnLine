@@ -9,7 +9,7 @@ import games.stendhal.common.Rand;
 import games.stendhal.server.entity.RPEntity;
 import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.player.Player;
-import games.stendhal.server.entity.status.BleedingStatus;
+import games.stendhal.server.entity.status.BleedingAttacker;
 import games.stendhal.server.entity.status.PoisonStatus;
 import games.stendhal.server.entity.status.Status;
 import games.stendhal.server.entity.status.StatusType;
@@ -25,9 +25,7 @@ public final class WeaponAffixCombatService {
 	private static final double MAX_STATUS_PROC_CHANCE = 0.25;
 	private static final double BLEED_TOTAL_DAMAGE_FACTOR = 0.25;
 	private static final double POISON_TOTAL_DAMAGE_FACTOR = 0.20;
-	private static final int BLEED_TICKS = 3;
 	private static final int POISON_TICKS = 4;
-	private static final int BLEED_FREQUENCY = 2;
 	private static final int POISON_FREQUENCY = 3;
 	private static final int PROC_ROLL_SCALE = 10000;
 
@@ -99,7 +97,8 @@ public final class WeaponAffixCombatService {
 	/**
 	 * Tries rolled bleeding and poison procs after a damaging hit. Multiple
 	 * weapons combine as independent chances, with a defensive 25% final cap per
-	 * status. Existing resist_bleeding/resist_poisoned values reduce the chance.
+	 * status. Bleeding is fully delegated to Bleeding 2.0 so resistance,
+	 * source attribution, stacking and tick cadence have one implementation.
 	 */
 	public static void applyOnHitProcs(final Player attacker,
 			final RPEntity defender, final List<Item> weapons, final int damage) {
@@ -108,13 +107,9 @@ public final class WeaponAffixCombatService {
 			return;
 		}
 
-		final double bleedChance = effectiveStatusChance(defender,
-				StatusType.BLEEDING,
-				combinedProcChance(weapons, BLEED_ON_HIT_ATTRIBUTE));
-		if (bleedChance > 0.0
-				&& rollChance(bleedChance, Rand.randUniform(1, PROC_ROLL_SCALE))) {
-			defender.getStatusList().inflictStatus(createBleedingStatus(damage),
-					attacker);
+		final BleedingAttacker bleeding = createBleedingAttacker(weapons);
+		if (bleeding != null) {
+			bleeding.onHit(defender, attacker, damage);
 		}
 
 		final double poisonChance = effectiveStatusChance(defender,
@@ -125,6 +120,18 @@ public final class WeaponAffixCombatService {
 			defender.getStatusList().inflictStatus(createPoisonStatus(damage),
 					attacker);
 		}
+	}
+
+	/**
+	 * Creates the Bleeding 2.0 attacker for the current weapons. Affix values are
+	 * stored as fractions, while BleedingAttacker uses percentage points.
+	 */
+	static BleedingAttacker createBleedingAttacker(final List<Item> weapons) {
+		final double chance = combinedProcChance(weapons, BLEED_ON_HIT_ATTRIBUTE);
+		if (chance <= 0.0) {
+			return null;
+		}
+		return new BleedingAttacker(chance * 100.0, BLEED_TOTAL_DAMAGE_FACTOR);
 	}
 
 	/** Combines per-weapon proc chances as independent probabilities. */
@@ -152,25 +159,13 @@ public final class WeaponAffixCombatService {
 
 	static double effectiveStatusChance(final RPEntity defender,
 			final StatusType statusType, final double baseChance) {
+		final double chance = clampFraction(baseChance);
 		if (defender == null || statusType == null) {
-			return clampFraction(baseChance);
+			return chance;
 		}
-		final String resistanceAttribute = "resist_"
-				+ statusType.toString().toLowerCase();
-		double chance = clampFraction(baseChance);
-		if (defender.has(resistanceAttribute)) {
-			chance *= 1.0 - clampFraction(
-					defender.getDouble(resistanceAttribute));
-		}
-		return clampFraction(chance);
-	}
-
-	private static Status createBleedingStatus(final int hitDamage) {
-		final int totalDamage = Math.max(1,
-				(int) Math.round(hitDamage * BLEED_TOTAL_DAMAGE_FACTOR));
-		final int perTick = Math.max(1,
-				(int) Math.ceil(totalDamage / (double) BLEED_TICKS));
-		return new BleedingStatus(-totalDamage, BLEED_FREQUENCY, -perTick);
+		final double resistance = EquipmentStatusResistanceService.getResistance(
+				defender, statusType);
+		return clampFraction(chance * (1.0 - resistance));
 	}
 
 	private static Status createPoisonStatus(final int hitDamage) {
