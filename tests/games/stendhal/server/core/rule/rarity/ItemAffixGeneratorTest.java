@@ -10,13 +10,13 @@ import static org.junit.Assert.assertTrue;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import games.stendhal.common.constants.ItemRarity;
-import games.stendhal.server.core.rule.damage.WeaponAffixCombatService;
 import games.stendhal.server.entity.item.Item;
 import utilities.RPClass.ItemTestHelper;
 
@@ -33,6 +33,8 @@ public class ItemAffixGeneratorTest {
 		assertEquals(1, ItemAffixGenerator.getSlotCount(ItemRarity.RARE));
 		assertEquals(2, ItemAffixGenerator.getSlotCount(ItemRarity.EPIC));
 		assertEquals(3, ItemAffixGenerator.getSlotCount(ItemRarity.LEGENDARY));
+		assertEquals(0, ItemAffixGenerator.getLegendarySlotCount(ItemRarity.EPIC));
+		assertEquals(1, ItemAffixGenerator.getLegendarySlotCount(ItemRarity.LEGENDARY));
 	}
 
 	@Test
@@ -49,47 +51,50 @@ public class ItemAffixGeneratorTest {
 	}
 
 	@Test
-	public void productionPoolsAreLargeEnoughForRealLegendaryRotation() {
-		final ItemAffixRegistry registry = ItemAffixRegistry.getInstance();
-		assertEquals(7, registry.getEligible(item("sword", ItemRarity.LEGENDARY)).size());
-		assertEquals(8, registry.getEligible(item("dagger", ItemRarity.LEGENDARY)).size());
-		assertEquals(7, registry.getEligible(item("axe", ItemRarity.LEGENDARY)).size());
-		assertEquals(5, registry.getEligible(item("club", ItemRarity.LEGENDARY)).size());
-		assertEquals(5, registry.getEligible(item("ranged", ItemRarity.LEGENDARY)).size());
-		assertEquals(6, registry.getEligible(item("missile", ItemRarity.LEGENDARY)).size());
-		assertEquals(5, registry.getEligible(item("wand", ItemRarity.LEGENDARY)).size());
-		assertEquals(5, registry.getEligible(item("whip", ItemRarity.LEGENDARY)).size());
-		assertEquals(6, registry.getEligible(item("armor", ItemRarity.LEGENDARY)).size());
-		assertEquals(6, registry.getEligible(item("glove", ItemRarity.LEGENDARY)).size());
-		assertEquals(10, registry.getEligible(item("ring", ItemRarity.LEGENDARY)).size());
-		assertEquals(10, registry.getEligible(item("necklace", ItemRarity.LEGENDARY)).size());
+	public void productionPoolsCoverEverySupportedLegendaryFamily() {
+		final ItemAffixRegistry regular = ItemAffixRegistry.getInstance();
+		final LegendaryItemAffixRegistry legendary =
+				LegendaryItemAffixRegistry.getInstance();
+		final String[] classes = {"sword", "dagger", "axe", "club", "ranged",
+				"missile", "wand", "whip", "armor", "shield", "helmet", "cloak",
+				"boots", "glove", "legs", "belt", "ring", "necklace"};
+		for (final String itemClass : classes) {
+			final Item item = item(itemClass, ItemRarity.LEGENDARY);
+			assertTrue("regular pool missing for " + itemClass,
+					!regular.getEligible(item).isEmpty());
+			assertTrue("legendary pool missing for " + itemClass,
+					!legendary.getEligible(item).isEmpty());
+		}
 	}
 
 	@Test
-	public void legendaryBleedingWeaponGetsSignatureAndTwoNormalAffixes() {
-		final Item item = item("sword", ItemRarity.LEGENDARY);
-		final ItemAffixGenerator generator = new ItemAffixGenerator(new Random(17L));
-
-		final List<String> applied = generator.generate(item,
-				ItemCreationContext.drop());
-
-		assertEquals(3, applied.size());
-		assertEquals(3, new HashSet<String>(applied).size());
-		assertTrue(applied.contains(
-				WeaponAffixCombatService.LEGENDARY_DEEP_WOUNDS_ATTRIBUTE));
-		assertTrue(item.has(
-				WeaponAffixCombatService.LEGENDARY_DEEP_WOUNDS_ATTRIBUTE));
-		assertEquals(3, ItemAffixState.getValues(item).size());
+	public void legendarySwordGetsThreeRegularAndOneSignatureAffix() {
+		assertLegendaryGetsFour("sword", 17L);
 	}
 
 	@Test
-	public void legendaryArmourWithoutSignatureStillChoosesThreeNormalAffixes() {
-		assertLegendaryChoosesThreeFromRegularPool("armor", 6, 23L);
+	public void legendaryArmourGetsThreeRegularAndOneSignatureAffix() {
+		assertLegendaryGetsFour("armor", 23L);
 	}
 
 	@Test
-	public void legendaryRingWithoutSignatureStillChoosesThreeNormalAffixes() {
-		assertLegendaryChoosesThreeFromRegularPool("ring", 10, 29L);
+	public void legendaryRingGetsThreeRegularAndOneSignatureAffix() {
+		assertLegendaryGetsFour("ring", 29L);
+	}
+
+	@Test
+	public void seededAffixGenerationIsReproducible() {
+		final Item first = item("dagger", ItemRarity.LEGENDARY);
+		final Item second = item("dagger", ItemRarity.LEGENDARY);
+		final ItemCreationContext context = ItemCreationContext.builder(
+				ItemCreationContext.Source.ADMIN)
+				.generateAffixes(true).withAffixSeed(123456789L).build();
+		final ItemAffixGenerator generator = new ItemAffixGenerator(new Random(1L));
+
+		generator.generate(first, context);
+		generator.generate(second, context);
+
+		assertEquals(ItemAffixState.getValues(first), ItemAffixState.getValues(second));
 	}
 
 	@Test
@@ -106,55 +111,67 @@ public class ItemAffixGeneratorTest {
 	}
 
 	@Test
-	public void nonDropAndCommonContextsDoNotGenerate() {
+	public void disabledAdminAndRestoreContextsDoNotGenerate() {
 		final Item rare = item("sword", ItemRarity.RARE);
+		final Item restored = item("sword", ItemRarity.RARE);
 		final Item common = item("sword", ItemRarity.COMMON);
 		final ItemAffixGenerator generator = new ItemAffixGenerator(new Random(3L));
 
-		assertTrue(generator.generate(rare,
-				ItemCreationContext.defaultCreation()).isEmpty());
-		assertTrue(generator.generate(rare,
+		assertTrue(generator.generate(rare, ItemCreationContext.admin()).isEmpty());
+		assertTrue(generator.generate(restored,
 				ItemCreationContext.restore()).isEmpty());
 		assertTrue(generator.generate(common,
 				ItemCreationContext.drop()).isEmpty());
 		assertFalse(ItemAffixState.hasAny(rare));
+		assertFalse(ItemAffixState.hasAny(restored));
 		assertFalse(ItemAffixState.hasAny(common));
 	}
 
 	@Test
-	public void injectedRegularRegistryKeepsLegacyThreeSlotSemantics() {
+	public void injectedRegistriesProduceThreePlusOne() {
 		final Item item = item("sword", ItemRarity.LEGENDARY);
-		final ItemAffixRegistry registry = new ItemAffixRegistry(Arrays.asList(
+		final ItemAffixRegistry regular = new ItemAffixRegistry(Arrays.asList(
 				new FixedAffix("first", "accuracy_bonus"),
 				new FixedAffix("second", "critical_chance"),
 				new FixedAffix("third", "lifesteal")));
+		final LegendaryItemAffixRegistry legendary =
+				new LegendaryItemAffixRegistry(Arrays.<ItemAffixDefinition>asList(
+						new FixedAffix("signature", "legendary_test")));
 		final ItemAffixGenerator generator =
-				new ItemAffixGenerator(registry, new Random(19L));
+				new ItemAffixGenerator(regular, legendary, new Random(19L));
 
 		final List<String> applied = generator.generate(item,
 				ItemCreationContext.drop());
 
-		assertEquals(3, applied.size());
-		assertEquals(3, new HashSet<String>(applied).size());
-		assertEquals(3, ItemAffixState.getValues(item).size());
+		assertEquals(4, applied.size());
+		assertEquals(4, new HashSet<String>(applied).size());
+		assertEquals(4, ItemAffixState.getValues(item).size());
+		assertTrue(applied.contains("signature"));
 	}
 
-	private void assertLegendaryChoosesThreeFromRegularPool(
-			final String itemClass, final int expectedPoolSize, final long seed) {
+	private void assertLegendaryGetsFour(final String itemClass, final long seed) {
 		final Item item = item(itemClass, ItemRarity.LEGENDARY);
-		final ItemAffixRegistry registry = ItemAffixRegistry.getInstance();
-		assertEquals(expectedPoolSize, registry.getEligible(item).size());
 		final ItemAffixGenerator generator = new ItemAffixGenerator(new Random(seed));
 
 		final List<String> applied = generator.generate(item,
 				ItemCreationContext.drop());
-
-		assertEquals(3, applied.size());
-		assertEquals(3, new HashSet<String>(applied).size());
-		assertEquals(3, ItemAffixState.getValues(item).size());
+		final Map<String, String> values = ItemAffixState.getValues(item);
+		int regularCount = 0;
+		int legendaryCount = 0;
 		for (final String id : applied) {
-			assertTrue(registry.get(id) != null);
+			if (ItemAffixRegistry.getInstance().get(id) != null) {
+				regularCount++;
+			}
+			if (LegendaryItemAffixRegistry.getInstance().get(id) != null) {
+				legendaryCount++;
+			}
 		}
+
+		assertEquals(4, applied.size());
+		assertEquals(4, new HashSet<String>(applied).size());
+		assertEquals(4, values.size());
+		assertEquals(3, regularCount);
+		assertEquals(1, legendaryCount);
 	}
 
 	private Item item(final String itemClass, final ItemRarity rarity) {
