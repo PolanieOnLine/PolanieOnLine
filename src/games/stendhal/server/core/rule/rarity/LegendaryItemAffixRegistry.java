@@ -51,8 +51,7 @@ public final class LegendaryItemAffixRegistry {
 			copy.add(definition);
 			ids.put(definition.getId(), definition);
 		}
-		definitions = Collections.unmodifiableList(copy);
-		this.definitions = definitions;
+		this.definitions = Collections.unmodifiableList(copy);
 		this.byId = Collections.unmodifiableMap(ids);
 	}
 
