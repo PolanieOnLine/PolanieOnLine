@@ -54,7 +54,7 @@ public class ItemRarityServiceTest {
 	}
 
 	@Test
-	public void fixedRarityAndModifiersSkipAllRandomness() {
+	public void fixedRarityAndModifiersWithSeedSkipSharedRandomness() {
 		final CountingRandom random = new CountingRandom(0.999);
 		final ItemRarityService service = new ItemRarityService(random);
 		final Item item = combatItem();
@@ -68,10 +68,12 @@ public class ItemRarityServiceTest {
 				.builder(ItemCreationContext.Source.ADMIN)
 				.withRarity(ItemRarity.LEGENDARY)
 				.withModifiers(modifiers)
+				.withAffixSeed(123L)
 				.build());
 
 		assertEquals(0, random.calls);
 		assertSame(ItemRarity.LEGENDARY, item.getRarity());
+		assertEquals(4, ItemAffixState.getValues(item).size());
 		assertEquals(130, item.getInt("atk"));
 		assertEquals(58, item.getInt("def"));
 		assertEquals(10, item.getInt("rate"));
@@ -169,15 +171,19 @@ public class ItemRarityServiceTest {
 				.withRarity(ItemRarity.LEGENDARY)
 				.withModifiers(ItemRarityModifiers.builder()
 						.statMultiplier(1.20).valueMultiplier(2.0).build())
+				.withAffixSeed(321L)
 				.build();
 
 		service.initialize(item, fixed);
 		final int attack = item.getInt("atk");
+		final Map<String, String> affixes = ItemAffixState.getValues(item);
 		service.initialize(item, fixed);
 		service.initialize(item, ItemCreationContext.restore());
 
 		assertEquals(attack, item.getInt("atk"));
 		assertEquals(120, attack);
+		assertEquals(4, affixes.size());
+		assertEquals(affixes, ItemAffixState.getValues(item));
 		assertEquals(0, random.calls);
 	}
 

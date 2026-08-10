@@ -41,6 +41,101 @@ public class ItemTooltipServiceTest {
 	}
 
 	@Test
+	public void testParryChanceIsPublishedForTooltip() {
+		final Map<String, String> attributes = new HashMap<String, String>();
+		attributes.put("atk", "30");
+		attributes.put("parry_chance", "0.15");
+		final Item item = new Item("test sword", "sword", "test", attributes);
+
+		ItemTooltipService.update(item);
+
+		assertEquals("0.15", stat(item, ItemTooltip.PARRY_CHANCE));
+	}
+
+	@Test
+	public void testArmorPenetrationIsPublishedForTooltip() {
+		final Map<String, String> attributes = new HashMap<String, String>();
+		attributes.put("atk", "30");
+		attributes.put("armor_penetration", "0.25");
+		final Item item = new Item("test dagger", "dagger", "test", attributes);
+
+		ItemTooltipService.update(item);
+
+		assertEquals("0.25", stat(item, ItemTooltip.ARMOR_PENETRATION));
+	}
+
+	@Test
+	public void testExpandedWeaponAffixesArePublishedForTooltip() {
+		final Map<String, String> attributes = new HashMap<String, String>();
+		attributes.put("atk", "30");
+		attributes.put(ItemTooltip.CRITICAL_DAMAGE_BONUS, "0.20");
+		attributes.put(ItemTooltip.BLEED_ON_HIT, "0.10");
+		attributes.put(ItemTooltip.LEGENDARY_DEEP_WOUNDS, "1.0");
+		attributes.put(ItemTooltip.LEGENDARY_ARMOR_BREAKER, "1.0");
+		attributes.put(ItemTooltip.LEGENDARY_LONGSHOT, "1.0");
+		attributes.put(ItemTooltip.LEGENDARY_EXECUTIONER, "1.0");
+		attributes.put(ItemTooltip.EXECUTE_DAMAGE, "0.25");
+		attributes.put(ItemTooltip.POISON_ON_HIT, "0.08");
+		attributes.put(ItemTooltip.DISTANCE_DAMAGE, "0.15");
+		final Item item = new Item("test affix weapon", "sword", "test", attributes);
+
+		ItemTooltipService.update(item);
+
+		assertEquals("0.2", stat(item, ItemTooltip.CRITICAL_DAMAGE_BONUS));
+		assertEquals("0.1", stat(item, ItemTooltip.BLEED_ON_HIT));
+		assertEquals("1.0", stat(item, ItemTooltip.LEGENDARY_DEEP_WOUNDS));
+		assertEquals("1.0", stat(item, ItemTooltip.LEGENDARY_ARMOR_BREAKER));
+		assertEquals("1.0", stat(item, ItemTooltip.LEGENDARY_LONGSHOT));
+		assertEquals("1.0", stat(item, ItemTooltip.LEGENDARY_EXECUTIONER));
+		assertEquals("0.25", stat(item, ItemTooltip.EXECUTE_DAMAGE));
+		assertEquals("0.08", stat(item, ItemTooltip.POISON_ON_HIT));
+		assertEquals("0.15", stat(item, ItemTooltip.DISTANCE_DAMAGE));
+	}
+
+	@Test
+	public void testEquipmentAffixesArePublishedForTooltip() {
+		final Map<String, String> attributes = new HashMap<String, String>();
+		attributes.put("def", "40");
+		attributes.put(ItemTooltip.FLAT_DEFENSE_BONUS, "5");
+		attributes.put(ItemTooltip.LEGENDARY_BASTION_BONUS, "12");
+		attributes.put(ItemTooltip.RESIST_POISONED, "0.20");
+		attributes.put(ItemTooltip.RESIST_BLEEDING, "0.15");
+		attributes.put(ItemTooltip.RESIST_SHOCKED, "0.12");
+		attributes.put(ItemTooltip.RESIST_CONFUSED, "0.18");
+		attributes.put(ItemTooltip.RESIST_HEAVY, "0.25");
+		final Item item = new Item("test affix armour", "armor", "test", attributes);
+
+		ItemTooltipService.update(item);
+
+		assertEquals("5", stat(item, ItemTooltip.AFFIX_FLAT_DEFENSE_BONUS));
+		assertFalse(item.getMap(ItemTooltip.ATTRIBUTE).containsKey(
+				ItemTooltip.FLAT_DEFENSE_BONUS));
+		assertEquals("12", stat(item, ItemTooltip.LEGENDARY_BASTION_BONUS));
+		assertEquals("0.2", stat(item, ItemTooltip.RESIST_POISONED));
+		assertEquals("0.15", stat(item, ItemTooltip.RESIST_BLEEDING));
+		assertEquals("0.12", stat(item, ItemTooltip.RESIST_SHOCKED));
+		assertEquals("0.18", stat(item, ItemTooltip.RESIST_CONFUSED));
+		assertEquals("0.25", stat(item, ItemTooltip.RESIST_HEAVY));
+	}
+
+	@Test
+	public void testAccessoryFlatAttackAffixIsPublishedForTooltip() {
+		final Map<String, String> attributes = new HashMap<String, String>();
+		attributes.put("atk", "9");
+		attributes.put(ItemTooltip.FLAT_ATTACK_BONUS, "1");
+		attributes.put(ItemTooltip.LEGENDARY_RELIC_POWER, "5");
+		final Item item = new Item("test affix ring", "ring", "test", attributes);
+
+		ItemTooltipService.update(item);
+
+		assertEquals("3", stat(item, ItemTooltip.ATTACK));
+		assertEquals("1", stat(item, ItemTooltip.AFFIX_FLAT_ATTACK_BONUS));
+		assertFalse(item.getMap(ItemTooltip.ATTRIBUTE).containsKey(
+				ItemTooltip.FLAT_ATTACK_BONUS));
+		assertEquals("5", stat(item, ItemTooltip.LEGENDARY_RELIC_POWER));
+	}
+
+	@Test
 	public void testPluralBeltsClassIsArmour() {
 		final Map<String, String> attributes = new HashMap<String, String>();
 		attributes.put("def", "21");
@@ -50,6 +145,11 @@ public class ItemTooltipServiceTest {
 
 		assertEquals(ItemTooltip.CATEGORY_ARMOUR,
 				stat(item, ItemTooltip.CATEGORY));
+	}
+
+	@Test
+	public void testRealGloveClassIsArmour() {
+		assertCategory("glove", ItemTooltip.CATEGORY_ARMOUR);
 	}
 
 	@Test

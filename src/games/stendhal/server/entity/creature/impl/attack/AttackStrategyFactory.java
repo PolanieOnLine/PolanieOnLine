@@ -21,27 +21,31 @@ public class AttackStrategyFactory {
 	private static final AttackStrategy GANDHI = new Gandhi();
 	private static final AttackStrategy ATTACK_WEAKEST = new AttackWeakest();
 
-    private static final AttackStrategy CAMOUFLAGED = new DecamouflageAttackStrategy(HAND_TO_HAND);
-
+	private static final AttackStrategy CAMOUFLAGED =
+			new DecamouflageAttackStrategy(HAND_TO_HAND);
 
 	public static AttackStrategy get(final Map<String, String> aiProfiles) {
-
+		final AttackStrategy strategy;
 		if (aiProfiles.containsKey("archer")) {
-			return new RangeAttack(aiProfiles.get("archer"));
+			strategy = new RangeAttack(aiProfiles.get("archer"));
 		} else if (aiProfiles.containsKey("coward")) {
-			return COWARD;
+			strategy = COWARD;
 		} else if (aiProfiles.containsKey("gandhi")) {
-			return GANDHI;
+			strategy = GANDHI;
 		} else if (aiProfiles.containsKey("stupid coward")) {
-			return STUPID_COWARD;
+			strategy = STUPID_COWARD;
 		} else if (aiProfiles.containsKey("attack weakest")) {
-			return ATTACK_WEAKEST;
+			strategy = ATTACK_WEAKEST;
 		} else if (aiProfiles.containsKey("strategy")) {
-			return CompoundAttackStrategy.create(aiProfiles.get("strategy"));
-        } else if (aiProfiles.containsKey("camouflage")) {
-            return CAMOUFLAGED;
+			strategy = CompoundAttackStrategy.create(aiProfiles.get("strategy"));
+		} else if (aiProfiles.containsKey("camouflage")) {
+			strategy = CAMOUFLAGED;
+		} else {
+			strategy = HAND_TO_HAND;
 		}
 
-		return HAND_TO_HAND;
+		// Apply the attack lock once at the outermost strategy. Positioning and
+		// target selection remain delegated, so stun is not a movement/root effect.
+		return new StunAwareAttackStrategy(strategy);
 	}
 }

@@ -101,6 +101,16 @@ public class SummonActionTest {
 	}
 
 	@Test
+	public void testEliteOptionIsNotPartOfCreatureName() {
+		new User();
+		String[] args = {"kamienny", "golem", "elite=true"};
+		new SummonAction().execute(args, null);
+
+		assertThat(sentAction.get("creature"), is("kamienny golem"));
+		assertThat(sentAction.get("elite"), is("true"));
+	}
+
+	@Test
 	public void testGetMaximumParameters() {
 		assertThat(new SummonAction().getMaximumParameters(), is(32));
 	}

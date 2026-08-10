@@ -39,15 +39,15 @@ public class ItemRarityDamageRangeTest {
 				ItemCreationContext.builder(ItemCreationContext.Source.DEFAULT)
 						.withRarity(ItemRarity.RARE).build());
 
-		assertEquals(91, weapon.getInt("damage_min"));
+		assertEquals(92, weapon.getInt("damage_min"));
 		assertEquals(124, weapon.getInt("damage_max"));
 		final double attackMultiplier = weapon.getRarityModifier("atk").doubleValue();
-		assertEquals(1.075, attackMultiplier, EPSILON);
+		assertEquals(1.08, attackMultiplier, EPSILON);
 		assertEquals(attackMultiplier,
 				weapon.getRarityModifier("damage_min").doubleValue(), EPSILON);
 		assertEquals(attackMultiplier,
 				weapon.getRarityModifier("damage_max").doubleValue(), EPSILON);
-		// One roll for the complete damage group and one for attack speed.
+		// One rounded roll for the complete damage group and one for attack speed.
 		assertEquals(2, random.calls);
 	}
 

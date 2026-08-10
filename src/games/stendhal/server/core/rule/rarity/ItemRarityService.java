@@ -1,7 +1,7 @@
 /***************************************************************************
  *                   (C) Copyright 2003-2026 - Stendhal                    *
- ***************************************************************************
- ***************************************************************************
+ ***************************************************************************/
+/***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -30,6 +30,8 @@ import games.stendhal.server.entity.item.StackableItem;
  * Selects rarity and applies its concrete modifiers exactly once.
  */
 public final class ItemRarityService {
+	private static final String MISSILE_CLASS = "missile";
+
 	private static final Set<String> INTEGRAL_STATS = Collections.unmodifiableSet(
 			new HashSet<String>(Arrays.asList("atk", "ratk", "damage_min",
 					"damage_max", "rate", "def",
@@ -49,6 +51,7 @@ public final class ItemRarityService {
 			new ItemRarityService(new Random());
 
 	private final Random random;
+	private final ItemAffixGenerator affixGenerator;
 	private final Map<String, ItemRarityProfile> profiles =
 			new ConcurrentHashMap<String, ItemRarityProfile>();
 
@@ -57,6 +60,7 @@ public final class ItemRarityService {
 			throw new IllegalArgumentException("Random source must not be null");
 		}
 		this.random = random;
+		this.affixGenerator = new ItemAffixGenerator(random);
 		registerProfile(ItemRarityProfile.defaultProfile());
 	}
 
@@ -96,7 +100,8 @@ public final class ItemRarityService {
 	}
 
 	public boolean isEligible(final Item item) {
-		if (item == null || item instanceof StackableItem) {
+		if (item == null || item instanceof StackableItem
+				|| MISSILE_CLASS.equals(item.getItemClass())) {
 			return false;
 		}
 		final Boolean override = item.getRarityEnabledOverride();
@@ -147,7 +152,7 @@ public final class ItemRarityService {
 		} else if (context.getSource() == ItemCreationContext.Source.QUEST) {
 			rarity = ItemRarity.COMMON;
 		} else {
-			rarity = profile.roll(nextRandom());
+			rarity = rollBestRarity(profile, context.getRarityRolls());
 		}
 		final ItemRarityProfile.Tier tier = profile.getTier(rarity);
 		final ItemRarityModifiers fixed = context.getModifiers();
@@ -176,8 +181,11 @@ public final class ItemRarityService {
 			if (item.has(statistic) && item.getDouble(statistic) > 0.0) {
 				final double multiplier = chooseMultiplier(statistic, tier, fixed,
 						context.isRandomizeModifiers());
-				item.put(statistic, Math.min((double) Float.MAX_VALUE,
-						item.getDouble(statistic) * multiplier));
+				if (Double.compare(multiplier, 1.0) != 0) {
+					final double scaled = Math.min((double) Float.MAX_VALUE,
+							item.getDouble(statistic) * multiplier);
+					item.put(statistic, ItemRollPrecision.round(scaled));
+				}
 				item.setRarityModifier(statistic, multiplier);
 			}
 		}
@@ -187,6 +195,9 @@ public final class ItemRarityService {
 		item.setRarityModifier(ItemRarityModifiers.VALUE, valueMultiplier);
 		item.setRarity(rarity);
 		item.put(Item.RARITY_PROFILE, profile.getId());
+		// Random affixes are a second persistent instance layer. Fresh contexts
+		// generate according to their source/options; RESTORE never rerolls them.
+		affixGenerator.generate(item, context);
 		ItemTooltipService.update(item);
 	}
 
@@ -229,6 +240,18 @@ public final class ItemRarityService {
 		return profile == null ? ItemRarityProfile.DEFAULT_ID : profile;
 	}
 
+	private ItemRarity rollBestRarity(final ItemRarityProfile profile,
+			final int rarityRolls) {
+		ItemRarity best = ItemRarity.COMMON;
+		for (int roll = 0; roll < rarityRolls; roll++) {
+			final ItemRarity candidate = profile.roll(nextRandom());
+			if (candidate.ordinal() > best.ordinal()) {
+				best = candidate;
+			}
+		}
+		return best;
+	}
+
 	private boolean hasSupportedStat(final Item item) {
 		for (final String statistic : INTEGRAL_STATS) {
 			if (item.has(statistic)) {
@@ -246,15 +269,17 @@ public final class ItemRarityService {
 	private double chooseMultiplier(final String statistic,
 			final ItemRarityProfile.Tier tier,
 			final ItemRarityModifiers fixed, final boolean randomize) {
+		final double selected;
 		if (fixed != null) {
 			final Double supplied = findFixedMultiplier(statistic, fixed);
-			return supplied == null ? 1.0 : supplied.doubleValue();
+			selected = supplied == null ? 1.0 : supplied.doubleValue();
+		} else if (!randomize) {
+			selected = tier.midpointStatMultiplier();
+		} else {
+			selected = randomBetween(tier.getMinimumStatMultiplier(),
+					tier.getMaximumStatMultiplier());
 		}
-		if (!randomize) {
-			return tier.midpointStatMultiplier();
-		}
-		return randomBetween(tier.getMinimumStatMultiplier(),
-				tier.getMaximumStatMultiplier());
+		return ItemRollPrecision.roundPositive(selected);
 	}
 
 	private Double findFixedMultiplier(final String statistic,
@@ -308,10 +333,10 @@ public final class ItemRarityService {
 
 	private double chooseValueMultiplier(final ItemRarityProfile.Tier tier,
 			final ItemRarityModifiers fixed) {
-		if (fixed != null && fixed.getValueMultiplier() != null) {
-			return fixed.getValueMultiplier().doubleValue();
-		}
-		return tier.getValueMultiplier();
+		final double selected = fixed != null && fixed.getValueMultiplier() != null
+				? fixed.getValueMultiplier().doubleValue()
+				: tier.getValueMultiplier();
+		return ItemRollPrecision.roundPositive(selected);
 	}
 
 	private void applyIntegral(final Item item, final String statistic,

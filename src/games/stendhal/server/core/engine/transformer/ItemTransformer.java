@@ -16,6 +16,7 @@ import java.util.Map.Entry;
 import org.apache.log4j.Logger;
 
 import games.stendhal.server.core.rule.damage.WeaponDamageRangeService;
+import games.stendhal.server.core.rule.rarity.ItemAffixState;
 import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.core.rule.rarity.ItemRarityService;
 import games.stendhal.server.entity.item.Item;
@@ -95,6 +96,9 @@ public class ItemTransformer {
 
 			// Damage ranges are instance state even when rarity is disabled.
 			restoreDamageRangeInstanceAttributes(item, rpobject);
+			// Random affixes are also instance state and must survive RESTORE
+			// independently of current XML definitions and rarity modifiers.
+			ItemAffixState.restore(item, rpobject);
 
 			if (item instanceof StackableItem) {
 				int quantity = 1;

@@ -1,7 +1,7 @@
 /***************************************************************************
  *                   (C) Copyright 2003-2026 - Stendhal                    *
- ***************************************************************************
- ***************************************************************************
+ ***************************************************************************/
+/***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -13,9 +13,7 @@ package games.stendhal.common.constants;
 
 /** Shared wire identifiers used by structured item tooltips. */
 public final class ItemTooltip {
-	/** Volatile map sent to clients with presentation-safe item statistics. */
 	public static final String ATTRIBUTE = "tooltip_stats";
-	/** Hidden definition override populated from the item XML. */
 	public static final String CATEGORY_OVERRIDE = "tooltip_category_override";
 
 	public static final String CATEGORY = "category";
@@ -32,10 +30,46 @@ public final class ItemTooltip {
 	public static final String DAMAGE_MIN = "damage_min";
 	public static final String DAMAGE_MAX = "damage_max";
 	public static final String DEFENSE = "def";
-	/** Prefix for final resistance percentages, e.g. resistance_light. */
 	public static final String RESISTANCE_PREFIX = "resistance_";
 	public static final String RANGE = "range";
 	public static final String LIFESTEAL = "lifesteal";
+	public static final String PARRY_CHANCE = "parry_chance";
+	public static final String ARMOR_PENETRATION = "armor_penetration";
+	public static final String CRITICAL_DAMAGE_BONUS = "critical_damage_bonus";
+	public static final String BLEED_ON_HIT = "bleed_on_hit";
+	public static final String LEGENDARY_DEEP_WOUNDS = "legendary_deep_wounds";
+	public static final String LEGENDARY_ARMOR_BREAKER = "legendary_armor_breaker";
+	public static final String LEGENDARY_LONGSHOT = "legendary_longshot";
+	public static final String LEGENDARY_EXECUTIONER = "legendary_executioner";
+	public static final String LEGENDARY_DUEL_MASTER = "legendary_duel_master";
+	public static final String LEGENDARY_CRUSHING_BLOW = "legendary_crushing_blow";
+	public static final String LEGENDARY_STUNNING_FORCE = "legendary_stunning_force";
+	public static final String LEGENDARY_BINDING_STRIKE = "legendary_binding_strike";
+	public static final String LEGENDARY_MERCILESS_REACH = "legendary_merciless_reach";
+	public static final String LEGENDARY_FALCON_EYE = "legendary_falcon_eye";
+	public static final String LEGENDARY_FIRST_SALVO = "legendary_first_salvo";
+	public static final String LEGENDARY_POWER_OVERLOAD = "legendary_power_overload";
+	public static final String LEGENDARY_ARCANE_FOCUS = "legendary_arcane_focus";
+	public static final String LEGENDARY_BASTION_BONUS = "legendary_bastion_bonus";
+	public static final String LEGENDARY_IRON_WILL = "legendary_iron_will";
+	public static final String LEGENDARY_UNYIELDING_PROTECTION =
+			"legendary_unyielding_protection";
+	public static final String LEGENDARY_RELIC_POWER = "legendary_relic_power";
+	public static final String LEGENDARY_HERO_EYE = "legendary_hero_eye";
+	public static final String LEGENDARY_GUARDIAN_SEAL = "legendary_guardian_seal";
+	public static final String EXECUTE_DAMAGE = "execute_damage";
+	public static final String POISON_ON_HIT = "poison_on_hit";
+	public static final String DISTANCE_DAMAGE = "distance_damage";
+	public static final String FLAT_ATTACK_BONUS = "flat_attack_bonus";
+	public static final String FLAT_DEFENSE_BONUS = "flat_defense_bonus";
+	/** Dedicated wire keys keep materialized flat affixes out of core stats. */
+	public static final String AFFIX_FLAT_ATTACK_BONUS = "affix_flat_attack_bonus";
+	public static final String AFFIX_FLAT_DEFENSE_BONUS = "affix_flat_defense_bonus";
+	public static final String RESIST_POISONED = "resist_poisoned";
+	public static final String RESIST_BLEEDING = "resist_bleeding";
+	public static final String RESIST_SHOCKED = "resist_shocked";
+	public static final String RESIST_CONFUSED = "resist_confused";
+	public static final String RESIST_HEAVY = "resist_heavy";
 	public static final String DAMAGE_TYPE = "damage_type";
 	public static final String STATUS_ATTACK = "statusattack";
 	public static final String ACCURACY_BONUS = "accuracy_bonus";
@@ -59,12 +93,6 @@ public final class ItemTooltip {
 		// constants class
 	}
 
-	/**
-	 * Checks whether a value can be used as a structured tooltip category.
-	 *
-	 * @param category category identifier
-	 * @return {@code true} for one of the supported stable identifiers
-	 */
 	public static boolean isValidCategory(final String category) {
 		return CATEGORY_WEAPON.equals(category)
 				|| CATEGORY_ARMOUR.equals(category)

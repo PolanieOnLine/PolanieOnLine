@@ -10,6 +10,7 @@
  ***************************************************************************/
 
 import { RPEvent } from "marauroa"
+import { Paths } from "../data/Paths";
 
 export class AttackEvent extends RPEvent {
 
@@ -24,7 +25,10 @@ export class AttackEvent extends RPEvent {
 		}
 		if (this.hasOwnProperty("hit")) {
 			var damage = parseInt(this["damage"], 10);
-			if (damage !== 0) {
+			if (this.hasOwnProperty("parried")) {
+				target.onBlocked(entity);
+				target.attackResult = target.createResultIcon(Paths.sprites + "/ideas/parry.png");
+			} else if (damage !== 0) {
 				target.onDamaged(entity, damage);
 			} else {
 				target.onBlocked(entity);

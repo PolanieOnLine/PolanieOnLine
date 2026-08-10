@@ -25,6 +25,7 @@ import games.stendhal.server.core.engine.SingletonRepository;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.rp.StendhalRPAction;
 import games.stendhal.server.core.rule.EntityManager;
+import games.stendhal.server.core.rule.creature.EliteCreatureService;
 import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.creature.BabyDragon;
@@ -44,8 +45,10 @@ import games.stendhal.server.entity.player.Player;
 import marauroa.common.game.RPAction;
 
 public class SummonAction extends AdministrationAction {
+	private static final String ELITE = "elite";
 	private static final String USAGE = "Użyj: /summon <coPrzywołać> [<x> <y>] [ilość] "
-			+ "[rarity=<common|rare|epic|legendary>] [<stat>-multiplier=<wartość>]";
+			+ "[elite=<true|false>] [rarity=<common|rare|epic|legendary>] "
+			+ "[affixes=<random|none>] [seed=<liczba>] [<stat>-multiplier=<wartość>]";
 
 
 	public static void register() {
@@ -84,7 +87,7 @@ public class SummonAction extends AdministrationAction {
 		 */
 		private void createEntity(final String type) {
 			if (hasItemCreationOptions && isSpecialCreature(type)) {
-				error("Opcje rarity i modyfikatorów dotyczą wyłącznie przedmiotów.");
+				error("Opcje rarity, afiksów i modyfikatorów dotyczą wyłącznie przedmiotów.");
 				return;
 			}
 			final Entity entity;
@@ -98,7 +101,7 @@ public class SummonAction extends AdministrationAction {
 
 			if (entity != null) {
 				if (hasItemCreationOptions && manager.isCreature(type)) {
-					error("Opcje rarity i modyfikatorów dotyczą wyłącznie przedmiotów.");
+					error("Opcje rarity, afiksów i modyfikatorów dotyczą wyłącznie przedmiotów.");
 					return;
 				}
 				found(type, entity);
@@ -164,6 +167,14 @@ public class SummonAction extends AdministrationAction {
 
 	@Override
 	public void perform(final Player player, final RPAction action) {
+		final boolean forceElite;
+		try {
+			forceElite = isEliteSummonRequested(action);
+		} catch (final IllegalArgumentException e) {
+			player.sendPrivateText(e.getMessage());
+			return;
+		}
+
 		final ItemCreationContext itemCreationContext;
 		try {
 			itemCreationContext = ItemCreationCommandOptions.fromAction(action);
@@ -176,7 +187,12 @@ public class SummonAction extends AdministrationAction {
 		if (hasItemCreationOptions && ("gate".equals(action.get(CREATURE))
 				|| "block".equals(action.get(CREATURE)))) {
 			player.sendPrivateText(
-					"Opcje rarity i modyfikatorów dotyczą wyłącznie przedmiotów.");
+					"Opcje rarity, afiksów i modyfikatorów dotyczą wyłącznie przedmiotów.");
+			return;
+		}
+		if (forceElite && ("gate".equals(action.get(CREATURE))
+				|| "block".equals(action.get(CREATURE)))) {
+			player.sendPrivateText("Opcja elite dotyczy wyłącznie zwykłych potworów.");
 			return;
 		}
 
@@ -213,7 +229,15 @@ public class SummonAction extends AdministrationAction {
 									error("Rzadkie stworzenia nie mogą być wzywane.");
 									return;
 								}
+								if (forceElite && !EliteCreatureService.promote((Creature) entityToBePlaced)) {
+									error("Tego potwora nie można przywołać jako elity.");
+									return;
+								}
 							} else {
+								if (forceElite) {
+									error("Opcja elite dotyczy wyłącznie zwykłych potworów.");
+									return;
+								}
 								entityToBePlaced = entity;
 							}
 
@@ -268,6 +292,21 @@ public class SummonAction extends AdministrationAction {
 		} catch (final NumberFormatException e) {
 			player.sendPrivateText(USAGE);
 		}
+	}
+
+	private static boolean isEliteSummonRequested(final RPAction action) {
+		if (!action.has(ELITE)) {
+			return false;
+		}
+		final String value = action.get(ELITE);
+		if ("true".equalsIgnoreCase(value)) {
+			return true;
+		}
+		if ("false".equalsIgnoreCase(value)) {
+			return false;
+		}
+		throw new IllegalArgumentException(
+				"Opcja elite przyjmuje wyłącznie wartość true albo false.");
 	}
 
 }

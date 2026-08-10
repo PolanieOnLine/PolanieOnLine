@@ -41,62 +41,56 @@ public class AttackStrategyFactoryTest {
 	public void tearDown() throws Exception {
 	}
 
-	/**
-	 * Tests for getArcher.
-	 */
+	/** Tests for getArcher. */
 	@Test
 	public void testGetArcher() {
 		final Map<String, String> profiles = new HashMap<String, String>();
-		assertTrue(AttackStrategyFactory.get(profiles) instanceof HandToHand);
+		assertWrappedDelegate(profiles, HandToHand.class);
 		profiles.put("archer", null);
-		assertTrue(AttackStrategyFactory.get(profiles) instanceof RangeAttack);
-
+		assertWrappedDelegate(profiles, RangeAttack.class);
 	}
 
-	/**
-	 * Tests for getGandhi.
-	 */
+	/** Tests for getGandhi. */
 	@Test
 	public void testGetGandhi() {
 		final Map<String, String> profiles = new HashMap<String, String>();
-		assertTrue(AttackStrategyFactory.get(profiles) instanceof HandToHand);
+		assertWrappedDelegate(profiles, HandToHand.class);
 		profiles.put("gandhi", null);
-		assertTrue(AttackStrategyFactory.get(profiles) instanceof Gandhi);
-
+		assertWrappedDelegate(profiles, Gandhi.class);
 	}
 
-	/**
-	 * Tests for getCoward.
-	 */
+	/** Tests for getCoward. */
 	@Test
 	public void testGetCoward() {
 		final Map<String, String> profiles = new HashMap<String, String>();
-		assertTrue(AttackStrategyFactory.get(profiles) instanceof HandToHand);
+		assertWrappedDelegate(profiles, HandToHand.class);
 		profiles.put("coward", null);
-		assertTrue(AttackStrategyFactory.get(profiles) instanceof Coward);
-
+		assertWrappedDelegate(profiles, Coward.class);
 	}
 
-	/**
-	 * Tests for getStupidCoward.
-	 */
+	/** Tests for getStupidCoward. */
 	@Test
 	public void testGetStupidCoward() {
 		final Map<String, String> profiles = new HashMap<String, String>();
-		assertTrue(AttackStrategyFactory.get(profiles) instanceof HandToHand);
+		assertWrappedDelegate(profiles, HandToHand.class);
 		profiles.put("stupid coward", null);
-		assertTrue(AttackStrategyFactory.get(profiles) instanceof StupidCoward);
-
+		assertWrappedDelegate(profiles, StupidCoward.class);
 	}
 
-	/**
-	 * Tests for getting AttackWeakest profile.
-	 */
+	/** Tests for getting AttackWeakest profile. */
 	@Test
 	public void testGetAttackWeakest() {
 		final Map<String, String> profiles = new HashMap<String, String>();
-		assertTrue(AttackStrategyFactory.get(profiles) instanceof HandToHand);
+		assertWrappedDelegate(profiles, HandToHand.class);
 		profiles.put("attack weakest", null);
-		assertTrue(AttackStrategyFactory.get(profiles) instanceof AttackWeakest);
+		assertWrappedDelegate(profiles, AttackWeakest.class);
+	}
+
+	private void assertWrappedDelegate(final Map<String, String> profiles,
+			final Class<? extends AttackStrategy> expectedDelegate) {
+		final AttackStrategy strategy = AttackStrategyFactory.get(profiles);
+		assertTrue(strategy instanceof StunAwareAttackStrategy);
+		assertTrue(expectedDelegate.isInstance(
+				((StunAwareAttackStrategy) strategy).getDelegate()));
 	}
 }

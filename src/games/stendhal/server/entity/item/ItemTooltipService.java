@@ -1,7 +1,7 @@
 /***************************************************************************
  *                   (C) Copyright 2003-2026 - Stendhal                    *
- ***************************************************************************
- ***************************************************************************
+ ***************************************************************************/
+/***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -20,20 +20,17 @@ import java.util.Set;
 import games.stendhal.common.constants.GameTiming;
 import games.stendhal.common.constants.ItemTooltip;
 import games.stendhal.common.constants.Nature;
+import games.stendhal.server.core.rule.rarity.LegendaryWeaponAffixService;
 import games.stendhal.server.entity.status.StatusAttacker;
 
-/**
- * Builds a small, presentation-safe map of final item statistics for clients.
- * Internal item attributes remain hidden; only selected values needed by the
- * tooltip are copied to the volatile wire map.
- */
+/** Builds a presentation-safe map of final item statistics for clients. */
 public final class ItemTooltipService {
 	private static final Set<String> WEAPON_CLASSES = Collections.unmodifiableSet(
 			new HashSet<String>(Arrays.asList("club", "sword", "dagger",
-					"axe", "ranged", "missile", "wand", "whip")));
+					"axe", "ranged", "wand", "whip")));
 	private static final Set<String> ARMOUR_CLASSES = Collections.unmodifiableSet(
 			new HashSet<String>(Arrays.asList("armor", "shield", "helmet",
-					"cloak", "boots", "gloves", "legs", "belt", "belts")));
+					"cloak", "boots", "glove", "gloves", "legs", "belt", "belts")));
 	private static final Set<String> ACCESSORY_CLASSES = Collections.unmodifiableSet(
 			new HashSet<String>(Arrays.asList("ring", "necklace")));
 
@@ -41,7 +38,6 @@ public final class ItemTooltipService {
 		// utility class
 	}
 
-	/** Refreshes the client tooltip map from the current final item state. */
 	public static void update(final Item item) {
 		if (item == null) {
 			return;
@@ -52,11 +48,7 @@ public final class ItemTooltipService {
 		}
 
 		put(item, ItemTooltip.CATEGORY, resolveCategory(item));
-
-		// Read the stored item values directly. Some subclasses calculate contextual
-		// defense from their owner and cannot safely do that while being copied.
-		putPositiveInt(item, ItemTooltip.ATTACK,
-				item.getAttributeWithImprovement("atk", 0));
+		putPositiveInt(item, ItemTooltip.ATTACK, displayedAttack(item));
 		putPositiveInt(item, ItemTooltip.RANGED_ATTACK,
 				item.getAttributeWithImprovement("ratk", 0));
 		putPositiveInt(item, ItemTooltip.DAMAGE_MIN, item.getDamageMin());
@@ -72,8 +64,7 @@ public final class ItemTooltipService {
 						Double.toString(1.0 / interval));
 			}
 		}
-		putPositiveInt(item, ItemTooltip.DEFENSE,
-				item.getAttributeWithImprovement("def", 0));
+		putPositiveInt(item, ItemTooltip.DEFENSE, displayedDefense(item));
 		for (final java.util.Map.Entry<Nature, Double> entry
 				: item.getSusceptibilities().entrySet()) {
 			final int resistance = (int) Math.round(
@@ -82,9 +73,65 @@ public final class ItemTooltipService {
 					+ entry.getKey().name().toLowerCase(Locale.ROOT),
 					Integer.toString(resistance));
 		}
-		putPositiveInt(item, ItemTooltip.RANGE, item.getRange());
+		putPositiveInt(item, ItemTooltip.RANGE, displayedRange(item));
 
 		copyDouble(item, "lifesteal", ItemTooltip.LIFESTEAL);
+		copyDouble(item, ItemTooltip.PARRY_CHANCE, ItemTooltip.PARRY_CHANCE);
+		copyDouble(item, ItemTooltip.ARMOR_PENETRATION,
+				ItemTooltip.ARMOR_PENETRATION);
+		copyDouble(item, ItemTooltip.CRITICAL_DAMAGE_BONUS,
+				ItemTooltip.CRITICAL_DAMAGE_BONUS);
+		copyDouble(item, ItemTooltip.BLEED_ON_HIT, ItemTooltip.BLEED_ON_HIT);
+		copyDouble(item, ItemTooltip.LEGENDARY_DEEP_WOUNDS,
+				ItemTooltip.LEGENDARY_DEEP_WOUNDS);
+		copyDouble(item, ItemTooltip.LEGENDARY_ARMOR_BREAKER,
+				ItemTooltip.LEGENDARY_ARMOR_BREAKER);
+		copyDouble(item, ItemTooltip.LEGENDARY_LONGSHOT,
+				ItemTooltip.LEGENDARY_LONGSHOT);
+		copyDouble(item, ItemTooltip.LEGENDARY_EXECUTIONER,
+				ItemTooltip.LEGENDARY_EXECUTIONER);
+		copyDouble(item, ItemTooltip.LEGENDARY_DUEL_MASTER,
+				ItemTooltip.LEGENDARY_DUEL_MASTER);
+		copyDouble(item, ItemTooltip.LEGENDARY_CRUSHING_BLOW,
+				ItemTooltip.LEGENDARY_CRUSHING_BLOW);
+		copyDouble(item, ItemTooltip.LEGENDARY_STUNNING_FORCE,
+				ItemTooltip.LEGENDARY_STUNNING_FORCE);
+		copyDouble(item, ItemTooltip.LEGENDARY_BINDING_STRIKE,
+				ItemTooltip.LEGENDARY_BINDING_STRIKE);
+		copyDouble(item, ItemTooltip.LEGENDARY_MERCILESS_REACH,
+				ItemTooltip.LEGENDARY_MERCILESS_REACH);
+		copyDouble(item, ItemTooltip.LEGENDARY_FALCON_EYE,
+				ItemTooltip.LEGENDARY_FALCON_EYE);
+		copyDouble(item, ItemTooltip.LEGENDARY_FIRST_SALVO,
+				ItemTooltip.LEGENDARY_FIRST_SALVO);
+		copyDouble(item, ItemTooltip.LEGENDARY_POWER_OVERLOAD,
+				ItemTooltip.LEGENDARY_POWER_OVERLOAD);
+		copyDouble(item, ItemTooltip.LEGENDARY_ARCANE_FOCUS,
+				ItemTooltip.LEGENDARY_ARCANE_FOCUS);
+		copyInt(item, ItemTooltip.LEGENDARY_BASTION_BONUS,
+				ItemTooltip.LEGENDARY_BASTION_BONUS);
+		copyDouble(item, ItemTooltip.LEGENDARY_IRON_WILL,
+				ItemTooltip.LEGENDARY_IRON_WILL);
+		copyDouble(item, ItemTooltip.LEGENDARY_UNYIELDING_PROTECTION,
+				ItemTooltip.LEGENDARY_UNYIELDING_PROTECTION);
+		copyInt(item, ItemTooltip.LEGENDARY_RELIC_POWER,
+				ItemTooltip.LEGENDARY_RELIC_POWER);
+		copyDouble(item, ItemTooltip.LEGENDARY_HERO_EYE,
+				ItemTooltip.LEGENDARY_HERO_EYE);
+		copyDouble(item, ItemTooltip.LEGENDARY_GUARDIAN_SEAL,
+				ItemTooltip.LEGENDARY_GUARDIAN_SEAL);
+		copyDouble(item, ItemTooltip.EXECUTE_DAMAGE, ItemTooltip.EXECUTE_DAMAGE);
+		copyDouble(item, ItemTooltip.POISON_ON_HIT, ItemTooltip.POISON_ON_HIT);
+		copyDouble(item, ItemTooltip.DISTANCE_DAMAGE, ItemTooltip.DISTANCE_DAMAGE);
+		copyInt(item, ItemTooltip.FLAT_ATTACK_BONUS,
+				ItemTooltip.AFFIX_FLAT_ATTACK_BONUS);
+		copyInt(item, ItemTooltip.FLAT_DEFENSE_BONUS,
+				ItemTooltip.AFFIX_FLAT_DEFENSE_BONUS);
+		copyDouble(item, ItemTooltip.RESIST_POISONED, ItemTooltip.RESIST_POISONED);
+		copyDouble(item, ItemTooltip.RESIST_BLEEDING, ItemTooltip.RESIST_BLEEDING);
+		copyDouble(item, ItemTooltip.RESIST_SHOCKED, ItemTooltip.RESIST_SHOCKED);
+		copyDouble(item, ItemTooltip.RESIST_CONFUSED, ItemTooltip.RESIST_CONFUSED);
+		copyDouble(item, ItemTooltip.RESIST_HEAVY, ItemTooltip.RESIST_HEAVY);
 		copyDouble(item, "accuracy_bonus", ItemTooltip.ACCURACY_BONUS);
 		copyInt(item, "skill_atk", ItemTooltip.SKILL_ATTACK);
 		copyDouble(item, "atk_additional_bonus", ItemTooltip.ATTACK_BONUS);
@@ -104,7 +151,6 @@ public final class ItemTooltipService {
 		if (item.getValue() > 0) {
 			put(item, ItemTooltip.VALUE, Integer.toString(item.getValue()));
 		}
-
 		if (item.getDamageType() != null) {
 			put(item, ItemTooltip.DAMAGE_TYPE,
 					item.getDamageType().name().toLowerCase());
@@ -112,14 +158,48 @@ public final class ItemTooltipService {
 
 		final StringBuilder statuses = new StringBuilder();
 		for (final StatusAttacker attacker : item.getStatusAttackers()) {
-			if (statuses.length() > 0) {
-				statuses.append(';');
-			}
-			statuses.append(attacker.getStatusName());
+			appendStatus(statuses, attacker.getStatusName());
 		}
 		if (statuses.length() > 0) {
 			put(item, ItemTooltip.STATUS_ATTACK, statuses.toString());
 		}
+	}
+
+	private static int displayedAttack(final Item item) {
+		int attack = item.getAttributeWithImprovement("atk", 0);
+		attack -= intAttribute(item, ItemTooltip.FLAT_ATTACK_BONUS);
+		attack -= intAttribute(item, ItemTooltip.LEGENDARY_RELIC_POWER);
+		return Math.max(0, attack);
+	}
+
+	private static int displayedDefense(final Item item) {
+		int defense = item.getAttributeWithImprovement("def", 0);
+		defense -= intAttribute(item, ItemTooltip.FLAT_DEFENSE_BONUS);
+		defense -= intAttribute(item, ItemTooltip.LEGENDARY_BASTION_BONUS);
+		return Math.max(0, defense);
+	}
+
+	private static int displayedRange(final Item item) {
+		int range = item.getRange();
+		if (item.has(ItemTooltip.LEGENDARY_MERCILESS_REACH)) {
+			range -= LegendaryWeaponAffixService.MERCILESS_REACH_RANGE_BONUS;
+		}
+		return Math.max(0, range);
+	}
+
+	private static int intAttribute(final Item item, final String attribute) {
+		return item.has(attribute) ? item.getInt(attribute) : 0;
+	}
+
+	private static void appendStatus(final StringBuilder statuses,
+			final String status) {
+		if (status == null || status.length() == 0) {
+			return;
+		}
+		if (statuses.length() > 0) {
+			statuses.append(';');
+		}
+		statuses.append(status);
 	}
 
 	private static String resolveCategory(final Item item) {
@@ -129,7 +209,6 @@ public final class ItemTooltipService {
 				return override;
 			}
 		}
-
 		final String itemClass = item.getItemClass();
 		if (WEAPON_CLASSES.contains(itemClass)) {
 			return ItemTooltip.CATEGORY_WEAPON;

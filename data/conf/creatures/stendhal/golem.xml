@@ -35,6 +35,7 @@
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
+			<profile name="status_attackers" params="StunnedStatus,6;"/>
 			<profile name="heal" params="5,50"/>
 			<profile name="patrolling"/>
 		</ai>
@@ -75,6 +76,7 @@
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
+			<profile name="status_attackers" params="StunnedStatus,5;"/>
 			<profile name="heal" params="5,50"/>
 			<profile name="patrolling"/>
 		</ai>
@@ -108,6 +110,7 @@
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
+			<profile name="status_attackers" params="StunnedStatus,12;"/>
 			<profile name="heal" params="5,50"/>
 		</ai>
 	</creature>

@@ -27,6 +27,8 @@ import games.stendhal.common.constants.Testing;
 import games.stendhal.server.core.engine.DataProvider;
 import games.stendhal.server.core.engine.GameEvent;
 import games.stendhal.server.core.engine.SingletonRepository;
+import games.stendhal.server.core.rule.damage.CriticalHitService;
+import games.stendhal.server.core.rule.damage.WeaponAffixCombatService;
 import games.stendhal.server.core.rule.damage.WeaponArmorInteractionService;
 import games.stendhal.server.core.engine.StendhalRPZone;
 import games.stendhal.server.core.engine.db.StendhalKillLogDAO;
@@ -265,51 +267,6 @@ public class StendhalRPAction {
 	}
 
 	/**
-	 * Calculates and returns the total bonus to critical hit chance 
-	 * based on equipped glyphs.
-	 * 
-	 * For each glyph that has an assigned "critical_chance" value, 
-	 * that value is multiplied, allowing for the accumulation of bonuses 
-	 * from different glyphs. The default multiplier is 1.0, meaning 
-	 * no effect if there are no active glyphs.
-	 *
-	 * @return A multiplier for critical chance that can increase 
-	 *		 or decrease the base critical hit chance 
-	 *		 depending on equipped glyphs.
-	 */
-	private static double getCriticalChanceBonus(Player player) {
-		double multiplier = 1.0; // Default critical chance multiplier.
-
-		// Iterates through all active glyphs in the inventory.
-		for (final Item equip : player.getAllEquippedGlyphs()) {
-			// Checks if the glyph has an assigned "critical_chance" value.
-			if (equip.has("critical_chance")) {
-				// Multiplies the current multiplier by the "critical_chance" value from the glyph.
-				multiplier *= equip.getDouble("critical_chance");
-			}
-		}
-
-		// Returns the total critical chance multiplier.
-		return multiplier;
-	}
-
-	/**
-	 * Calculates the total critical hit chance for the player based on equipped glyphs.
-	 *
-	 * @param player The attacking player.
-	 * @return The total critical hit chance as an integer.
-	 */
-	private static int calculateCriticalChance(Player player) {
-		final int maxCriticalChance = 50; // Maximum critical hit chance.
-		final int baseCriticalChance = 10; // Default critical hit chance.
-		
-		// Calculates the total critical hit chance considering the base value and bonuses from glyphs.
-		int totalCriticalChance = Math.min(baseCriticalChance + (int) getCriticalChanceBonus(player), maxCriticalChance);
-		
-		return totalCriticalChance;
-	}
-
-	/**
 	 * Handles the critical hit logic for the player.
 	 *
 	 * @param player The attacking player.
@@ -318,26 +275,11 @@ public class StendhalRPAction {
 	 *		 and the second element is a boolean indicating whether the hit was critical.
 	 */
 	private static Object[] handleCritical(Player player, int damage) {
-		// Initialize the critical hit bonus
-		float criticalBonus = 0.0f;
-
-		// Check all equipped glyphs for critical hit bonuses
-		for (final Item glyph : player.getAllEquippedGlyphs()) {
-			if (glyph.has("critical_additional_bonus")) {
-				criticalBonus += glyph.getDouble("critical_additional_bonus");
-			}
-		}
-
-		// Determine if it's a critical hit
-		int totalCriticalChance = calculateCriticalChance(player);
-		final boolean critical = Rand.roll1D100() <= totalCriticalChance;
-
-		// Calculate the total damage for a critical hit
+		final boolean critical = CriticalHitService.rollCritical(player);
 		if (critical) {
-			damage = (int) (damage * 2) + (int) criticalBonus;
+			damage = CriticalHitService.applyCriticalDamage(player, damage);
 		}
-
-		return new Object[] { damage, critical }; // Returning both damage and critical status
+		return new Object[] { damage, critical };
 	}
 
 	/**
@@ -452,13 +394,15 @@ public class StendhalRPAction {
 					player.getDamageType());
 			damage = WeaponArmorInteractionService.applyDamageMultiplier(
 					damage, weapons, defender);
-			final boolean didDamage = damage > 0;
+			damage = WeaponAffixCombatService.applyConditionalDamageBonuses(
+					damage, weapons, defender, isRanged);
 
 			// Handle critical hit logic
 			Object[] criticalResult = handleCritical(player, damage);
 			boolean critical = (boolean) criticalResult[1];
 			defender.hitCritical(critical);
 			damage = (int) criticalResult[0];
+			final boolean didDamage = damage > 0;
 
 			// give xp even if attack was blocked
 			getsDefXp = defender.getsDefXpFrom(player, didDamage);
@@ -477,6 +421,8 @@ public class StendhalRPAction {
 				player.handleLifesteal(player, weapons, damage);
 
 				defender.onDamaged(player, damage);
+				WeaponAffixCombatService.applyOnHitProcs(player, defender,
+						weapons, damage);
 				logger.debug("attack from " + player.getID() + " to "
 						+ defender.getID() + ": Damage: " + damage);
 
@@ -686,7 +632,7 @@ public class StendhalRPAction {
 	 * @param zone
 	 *	 Zone to place the entity in.
 	 * @param entity
-	 *	 The entity to place.
+	 *	 The entity changing zones.
 	 * @param x
 	 *	 Zone X coordinate.
 	 * @param y

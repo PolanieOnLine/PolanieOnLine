@@ -101,6 +101,91 @@ public class WeaponArmorInteractionServiceTest {
 	}
 
 	@Test
+	public void armorPenetrationOnlyMitigatesNegativeMatchups() {
+		assertEquals(0.55, WeaponArmorInteractionService.applyArmorPenetration(
+				0.40, 0.25), 0.0000001);
+		assertEquals(0.85, WeaponArmorInteractionService.applyArmorPenetration(
+				0.80, 0.25), 0.0000001);
+		assertEquals(0.925, WeaponArmorInteractionService.applyArmorPenetration(
+				0.90, 0.25), 0.0000001);
+		assertEquals(1.30, WeaponArmorInteractionService.applyArmorPenetration(
+				1.30, 0.25), 0.0);
+		assertEquals(1.0, WeaponArmorInteractionService.applyArmorPenetration(
+				1.0, 0.25), 0.0);
+	}
+
+	@Test
+	public void normalAndLegendaryPenetrationCombineIndependently() {
+		assertEquals(0.55, WeaponArmorInteractionService.combineIndependentFractions(
+				0.25, 0.40), 0.0000001);
+	}
+
+	@Test
+	public void armorPenetrationHasSafeBoundaries() {
+		assertEquals(0.40, WeaponArmorInteractionService.applyArmorPenetration(
+				0.40, 0.0), 0.0);
+		assertEquals(0.40, WeaponArmorInteractionService.applyArmorPenetration(
+				0.40, -0.20), 0.0);
+		assertEquals(1.0, WeaponArmorInteractionService.applyArmorPenetration(
+				0.40, 1.0), 0.0);
+		assertEquals(1.0, WeaponArmorInteractionService.applyArmorPenetration(
+				0.40, 2.0), 0.0);
+	}
+
+	@Test
+	public void weaponArmorPenetrationAffectsResolvedMatchup() {
+		final Creature defender = new Creature();
+		defender.setArmorType("heavy");
+		final Weapon dagger = weapon("dagger");
+		dagger.put(WeaponArmorInteractionService.ARMOR_PENETRATION_ATTRIBUTE, 0.25);
+
+		assertEquals(0.55, WeaponArmorInteractionService.getDamageMultiplier(
+				dagger, defender), 0.0000001);
+		assertEquals(55, WeaponArmorInteractionService.applyDamageMultiplier(
+				100, Arrays.<Item>asList(dagger), defender));
+	}
+
+	@Test
+	public void legendaryArmorBreakerMitigatesFortyPercentOfPenalty() {
+		final Creature defender = new Creature();
+		defender.setArmorType("heavy");
+		final Weapon dagger = weapon("dagger");
+		dagger.put(WeaponArmorInteractionService.LEGENDARY_ARMOR_BREAKER_ATTRIBUTE,
+				1.0);
+
+		assertEquals(0.64, WeaponArmorInteractionService.getDamageMultiplier(
+				dagger, defender), 0.0000001);
+	}
+
+	@Test
+	public void normalAndLegendaryArmorBreakerStackWithoutTouchingDefense() {
+		final Creature defender = new Creature();
+		defender.setArmorType("heavy");
+		defender.setDef(150);
+		final Weapon dagger = weapon("dagger");
+		dagger.put(WeaponArmorInteractionService.ARMOR_PENETRATION_ATTRIBUTE, 0.25);
+		dagger.put(WeaponArmorInteractionService.LEGENDARY_ARMOR_BREAKER_ATTRIBUTE,
+				1.0);
+
+		assertEquals(0.73, WeaponArmorInteractionService.getDamageMultiplier(
+				dagger, defender), 0.0000001);
+		assertEquals(150, defender.getDef());
+	}
+
+	@Test
+	public void penetrationDoesNotAmplifyAdvantageousWeaponMatchups() {
+		final Creature defender = new Creature();
+		defender.setArmorType("heavy");
+		final Weapon axe = weapon("axe");
+		axe.put(WeaponArmorInteractionService.ARMOR_PENETRATION_ATTRIBUTE, 0.25);
+		axe.put(WeaponArmorInteractionService.LEGENDARY_ARMOR_BREAKER_ATTRIBUTE,
+				1.0);
+
+		assertEquals(1.30, WeaponArmorInteractionService.getDamageMultiplier(
+				axe, defender), 0.0);
+	}
+
+	@Test
 	public void unsupportedWeaponClassRemainsNeutral() {
 		assertEquals(1.0, multiplier("wand", "heavy"), 0.0);
 		assertEquals(1.0, multiplier(null, "heavy"), 0.0);
