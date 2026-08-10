@@ -25,6 +25,7 @@ import marauroa.common.game.RPObject;
 /** Handles server-authoritative item-upgrade preview and execution requests. */
 public final class ItemUpgradeAction implements ActionListener {
 	public static final String COMMAND = "command";
+	public static final String OPEN = "open";
 	public static final String PREVIEW = "preview";
 	public static final String UPGRADE = "upgrade";
 	public static final String NPC_ID = "npc_id";
@@ -63,10 +64,22 @@ public final class ItemUpgradeAction implements ActionListener {
 	@Override
 	public void onAction(final Player player, final RPAction action) {
 		final ItemUpgradeNPC npc = resolveNpc(player, action);
-		if (npc == null || npc.getAttending() != player || !player.nextTo(npc)) {
+		if (npc == null || !player.nextTo(npc)) {
 			SERVICE.clearPendingAttempt(player);
 			sendResult(player, action, null,
 					SERVICE.resultForStatus(ItemUpgradeResult.Status.NPC_TOO_FAR));
+			return;
+		}
+
+		final String command = action.has(COMMAND) ? action.get(COMMAND) : "";
+		if (OPEN.equals(command)) {
+			openFromContextMenu(player, action, npc);
+			return;
+		}
+		if (npc.getAttending() != player) {
+			SERVICE.clearPendingAttempt(player);
+			sendResult(player, action, npc,
+					SERVICE.resultForStatus(ItemUpgradeResult.Status.NPC_BUSY));
 			return;
 		}
 
@@ -79,7 +92,6 @@ public final class ItemUpgradeAction implements ActionListener {
 			return;
 		}
 
-		final String command = action.has(COMMAND) ? action.get(COMMAND) : "";
 		if (PREVIEW.equals(command)) {
 			final ItemUpgradePreview preview = SERVICE.createPreview(player, item);
 			player.addEvent(new ItemUpgradeEvent(npc.getID().getObjectID(),
@@ -104,6 +116,20 @@ public final class ItemUpgradeAction implements ActionListener {
 				? SERVICE.createPreview(player, item) : null;
 		player.addEvent(new ItemUpgradeEvent(npc.getID().getObjectID(),
 				candidates, preview, result));
+	}
+
+	private void openFromContextMenu(final Player player, final RPAction action,
+			final ItemUpgradeNPC npc) {
+		if (npc.getAttending() == null) {
+			npc.listenTo(player, "hi");
+		}
+		if (npc.getAttending() != player) {
+			SERVICE.clearPendingAttempt(player);
+			sendResult(player, action, npc,
+					SERVICE.resultForStatus(ItemUpgradeResult.Status.NPC_BUSY));
+			return;
+		}
+		openWindow(player, npc, null);
 	}
 
 	private ItemUpgradeNPC resolveNpc(final Player player,

@@ -77,7 +77,7 @@ export class EventRegistry {
 		marauroa.rpeventFactory.register("group_change_event", GroupChangeEvent);
 		marauroa.rpeventFactory.register("group_invite_event", GroupInviteEvent);
 		marauroa.rpeventFactory.register("image_event", ImageEvent);
-		marauroa.rpeventFactory.register("item_upgrade", ItemUpgradeEvent);
+		marauroa.rpeventFactory.register("item_upgrade_event", ItemUpgradeEvent);
 		marauroa.rpeventFactory.register("player_logged_on", PlayerLoggedOnEvent);
 		marauroa.rpeventFactory.register("player_logged_out", PlayerLoggedOutEvent);
 		marauroa.rpeventFactory.register("private_text", PrivateTextEvent);

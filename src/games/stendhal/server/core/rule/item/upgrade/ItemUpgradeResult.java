@@ -18,6 +18,7 @@ public final class ItemUpgradeResult {
 		NOT_ENOUGH_MONEY,
 		MISSING_RESOURCES,
 		TRANSACTION_FAILED,
+		NPC_BUSY,
 		NPC_TOO_FAR
 	}
 

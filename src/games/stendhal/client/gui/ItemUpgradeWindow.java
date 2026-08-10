@@ -7,12 +7,18 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -34,6 +40,10 @@ import marauroa.common.game.RPEvent;
 /** Desktop Item Upgrades 2.0 window. Values always come from the server. */
 public final class ItemUpgradeWindow extends InternalManagedWindow {
 	private static final long serialVersionUID = 1L;
+	private static final Color ACCENT = new Color(255, 190, 64);
+	private static final Color AVAILABLE = new Color(92, 190, 105);
+	private static final Color UNAVAILABLE = new Color(225, 90, 75);
+	private static final Color PANEL_BORDER = new Color(130, 106, 75);
 	private static ItemUpgradeWindow instance;
 
 	private final JComboBox<Candidate> candidates = new JComboBox<Candidate>();
@@ -45,7 +55,7 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 	private final JLabel fee = centered("");
 	private final JPanel materials = new JPanel();
 	private final JLabel status = centered("Rozmawiaj z kowalem, aby odświeżyć okno.");
-	private final JButton upgrade = new JButton("ULEPSZ");
+	private final JButton upgrade = new JButton("Ulepsz");
 	private final JButton refresh = new JButton("Odśwież");
 
 	private boolean applyingEvent;
@@ -54,8 +64,9 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 	private String requestToken;
 
 	private ItemUpgradeWindow() {
-		super("item-upgrade", "ULEPSZANIE PRZEDMIOTU");
+		super("item-upgrade", "Ulepszanie przedmiotu");
 		setCloseable(true);
+		setMinimizable(false);
 		setContent(buildContent());
 		addCloseListener(new CloseListener() {
 			@Override
@@ -83,10 +94,10 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 	private JComponent buildContent() {
 		final JPanel content = new JPanel(new BorderLayout(8, 8));
 		content.setBorder(BorderFactory.createEmptyBorder(8, 8, 8, 8));
-		content.setPreferredSize(new Dimension(360, 430));
+		content.setPreferredSize(new Dimension(380, 400));
 
 		final JPanel top = new JPanel(new BorderLayout(6, 6));
-		top.add(new JLabel("Przedmiot do ulepszenia:"), BorderLayout.NORTH);
+		top.add(sectionTitle("Przedmiot do ulepszenia"), BorderLayout.NORTH);
 		candidates.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(final ActionEvent e) {
@@ -98,7 +109,8 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		top.add(candidates, BorderLayout.CENTER);
 
 		final JPanel identity = new JPanel(new BorderLayout(8, 2));
-		icon.setBorder(BorderFactory.createLineBorder(new Color(130, 106, 75)));
+		identity.setBorder(cardBorder());
+		icon.setBorder(BorderFactory.createLineBorder(PANEL_BORDER));
 		identity.add(icon, BorderLayout.WEST);
 		final JPanel names = new JPanel(new GridLayout(0, 1));
 		names.add(itemName);
@@ -107,21 +119,51 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		top.add(identity, BorderLayout.SOUTH);
 		content.add(top, BorderLayout.NORTH);
 
-		final JPanel center = new JPanel(new BorderLayout(6, 6));
+		final JPanel center = new JPanel(new GridBagLayout());
+		final GridBagConstraints constraints = new GridBagConstraints();
+		constraints.gridx = 0;
+		constraints.weightx = 1.0;
+		constraints.fill = GridBagConstraints.HORIZONTAL;
+		constraints.anchor = GridBagConstraints.NORTH;
+		constraints.insets = new Insets(0, 0, 3, 0);
+
+		constraints.gridy = 0;
+		center.add(sectionTitle("Rezultat następnego ulepszenia"), constraints);
 		stats.setLayout(new GridLayout(0, 1, 2, 2));
-		stats.setBorder(BorderFactory.createTitledBorder("Statystyki po ulepszeniu"));
-		center.add(stats, BorderLayout.NORTH);
-		final JPanel requirements = new JPanel(new BorderLayout(3, 3));
-		requirements.add(chance, BorderLayout.NORTH);
-		requirements.add(fee, BorderLayout.CENTER);
+		stats.setBorder(cardBorder());
+		constraints.gridy++;
+		constraints.insets = new Insets(0, 0, 8, 0);
+		center.add(stats, constraints);
+
+		constraints.gridy++;
+		constraints.insets = new Insets(0, 0, 3, 0);
+		center.add(sectionTitle("Koszt i szansa"), constraints);
+		final JPanel requirements = new JPanel(new GridLayout(0, 1, 2, 2));
+		requirements.setBorder(cardBorder());
+		requirements.add(chance);
+		requirements.add(fee);
+		constraints.gridy++;
+		constraints.insets = new Insets(0, 0, 8, 0);
+		center.add(requirements, constraints);
+
+		constraints.gridy++;
+		constraints.insets = new Insets(0, 0, 3, 0);
+		center.add(sectionTitle("Materiały — posiadasz / wymagane"), constraints);
 		materials.setLayout(new GridLayout(0, 1, 2, 2));
-		materials.setBorder(BorderFactory.createTitledBorder("Materiały (posiadasz / wymagane)"));
-		requirements.add(materials, BorderLayout.SOUTH);
-		center.add(requirements, BorderLayout.CENTER);
+		materials.setBorder(cardBorder());
+		constraints.gridy++;
+		constraints.insets = new Insets(0, 0, 0, 0);
+		center.add(materials, constraints);
+
+		constraints.gridy++;
+		constraints.weighty = 1.0;
+		constraints.fill = GridBagConstraints.BOTH;
+		center.add(new JPanel(), constraints);
 		content.add(center, BorderLayout.CENTER);
 
 		final JPanel bottom = new JPanel(new BorderLayout(4, 4));
 		status.setVerticalAlignment(SwingConstants.TOP);
+		status.setBorder(cardBorder());
 		bottom.add(status, BorderLayout.NORTH);
 		final JPanel buttons = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		refresh.addActionListener(new ActionListener() {
@@ -176,8 +218,9 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		}
 		updateStats(event);
 		chance.setText(event.has("success_percent")
-				? "Szansa powodzenia: " + event.getInt("success_percent") + "%" : "");
-		fee.setText(event.has("fee_text") ? "Koszt: " + event.get("fee_text") : "");
+				? htmlValue("Szansa powodzenia", event.getInt("success_percent") + "%") : "");
+		fee.setText(event.has("fee_text")
+				? htmlValue("Koszt", event.get("fee_text")) : "");
 		updateMaterials(event);
 
 		final boolean canUpgrade = event.has("can_upgrade")
@@ -187,8 +230,8 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		final String message = event.has("message") ? event.get("message") : "";
 		final String state = event.has("status") ? event.get("status") : "";
 		status.setText(message.length() > 0 ? message : statusText(state));
-		status.setForeground("SUCCESS".equals(state) ? new Color(40, 150, 55)
-				: "READY".equals(state) ? Color.DARK_GRAY : new Color(175, 55, 45));
+		status.setForeground("SUCCESS".equals(state) || "READY".equals(state)
+				? AVAILABLE : UNAVAILABLE);
 		upgrade.setToolTipText(canUpgrade ? "Wykonaj próbę ulepszenia" : statusText(state));
 		applyingEvent = false;
 		revalidate();
@@ -200,11 +243,28 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		final List<String> names = list(event, "stat_names");
 		final List<String> current = list(event, "current_stat_values");
 		final List<String> upgradedValues = list(event, "upgraded_stat_values");
+		final Map<String, String> currentByName = valuesByName(names, current);
+		final Map<String, String> upgradedByName = valuesByName(names, upgradedValues);
+		if (currentByName.containsKey("damage_min")
+				&& currentByName.containsKey("damage_max")) {
+			stats.add(statRow("Obrażenia",
+					currentByName.get("damage_min") + "–" + currentByName.get("damage_max"),
+					upgradedByName.get("damage_min") + "–" + upgradedByName.get("damage_max")));
+		}
 		for (int index = 0; index < names.size(); index++) {
-			if (index < current.size() && index < upgradedValues.size()) {
-				stats.add(new JLabel(statLabel(names.get(index)) + ": "
-						+ current.get(index) + "  →  " + upgradedValues.get(index)));
+			final String name = names.get(index);
+			if (("damage_min".equals(name) || "damage_max".equals(name))
+					&& currentByName.containsKey("damage_min")
+					&& currentByName.containsKey("damage_max")) {
+				continue;
 			}
+			if (index < current.size() && index < upgradedValues.size()) {
+				stats.add(statRow(statLabel(name), current.get(index),
+						upgradedValues.get(index)));
+			}
+		}
+		if (stats.getComponentCount() == 0) {
+			stats.add(centered("Brak statystyk zmienianych przez ulepszenie."));
 		}
 	}
 
@@ -218,8 +278,12 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 			final int need = index < required.size() ? integer(required.get(index)) : 0;
 			final JLabel row = new JLabel((have >= need ? "✓ " : "✗ ")
 					+ names.get(index) + ": " + have + " / " + need);
-			row.setForeground(have >= need ? new Color(35, 140, 50) : new Color(180, 50, 40));
+			row.setHorizontalAlignment(SwingConstants.CENTER);
+			row.setForeground(have >= need ? AVAILABLE : UNAVAILABLE);
 			materials.add(row);
+		}
+		if (names.isEmpty()) {
+			materials.add(centered("Brak materiałów dla następnego poziomu."));
 		}
 	}
 
@@ -254,6 +318,39 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		return new JLabel(text, SwingConstants.CENTER);
 	}
 
+	private static JLabel sectionTitle(final String text) {
+		final JLabel label = new JLabel(text);
+		label.setForeground(ACCENT);
+		label.setFont(label.getFont().deriveFont(Font.BOLD));
+		return label;
+	}
+
+	private static javax.swing.border.Border cardBorder() {
+		return BorderFactory.createCompoundBorder(
+				BorderFactory.createLineBorder(PANEL_BORDER),
+				BorderFactory.createEmptyBorder(5, 6, 5, 6));
+	}
+
+	private static JLabel statRow(final String name, final String current,
+			final String upgraded) {
+		return centered("<html><b>" + name + ":</b>&nbsp; " + current
+				+ " &nbsp;→&nbsp; <font color='#5cbe69'><b>" + upgraded
+				+ "</b></font></html>");
+	}
+
+	private static String htmlValue(final String label, final String value) {
+		return "<html><b>" + label + ":</b>&nbsp; " + value + "</html>";
+	}
+
+	private static Map<String, String> valuesByName(final List<String> names,
+			final List<String> values) {
+		final Map<String, String> result = new LinkedHashMap<String, String>();
+		for (int index = 0; index < names.size() && index < values.size(); index++) {
+			result.put(names.get(index), values.get(index));
+		}
+		return result;
+	}
+
 	private static int integer(final String value) {
 		try {
 			return Integer.parseInt(value);
@@ -279,6 +376,7 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		if ("MISSING_RESOURCES".equals(state)) return "Brakuje materiałów.";
 		if ("MAX_LEVEL".equals(state)) return "Osiągnięto maksymalny poziom.";
 		if ("STALE_PREVIEW".equals(state)) return "Podgląd wygasł — odświeżono stan.";
+		if ("NPC_BUSY".equals(state)) return "Kowal rozmawia teraz z innym graczem.";
 		if ("NPC_TOO_FAR".equals(state)) return "Musisz pozostać przy kowalu.";
 		if ("FAILURE".equals(state)) return "Próba ulepszenia nie powiodła się.";
 		return "Nie można teraz ulepszyć przedmiotu.";

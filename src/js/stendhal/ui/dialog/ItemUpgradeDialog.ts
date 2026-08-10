@@ -80,7 +80,7 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 	public static show(data: UpgradeEventData): void {
 		if (!ItemUpgradeDialog.active) {
 			const dialog = new ItemUpgradeDialog();
-			const frame = new FloatingWindow("ULEPSZANIE PRZEDMIOTU", dialog, 24, 24);
+			const frame = new FloatingWindow("Ulepszanie przedmiotu", dialog, 24, 24);
 			frame.setId("item-upgrade");
 			dialog.setFrame(frame);
 			ItemUpgradeDialog.active = dialog;
@@ -150,13 +150,26 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 		const names = this.list(data.stat_names);
 		const current = this.list(data.current_stat_values);
 		const upgraded = this.list(data.upgraded_stat_values);
+		const currentByName = this.valuesByName(names, current);
+		const upgradedByName = this.valuesByName(names, upgraded);
+		if (currentByName.damage_min !== undefined
+				&& currentByName.damage_max !== undefined) {
+			this.addStatRow("Obrażenia", currentByName.damage_min + "–"
+					+ currentByName.damage_max, upgradedByName.damage_min + "–"
+					+ upgradedByName.damage_max);
+		}
 		names.forEach((name, index) => {
 			if (current[index] === undefined || upgraded[index] === undefined) return;
-			const row = document.createElement("div");
-			row.textContent = this.statLabel(name) + ": " + current[index]
-					+ "  →  " + upgraded[index];
-			this.stats.appendChild(row);
+			if ((name === "damage_min" || name === "damage_max")
+					&& currentByName.damage_min !== undefined
+					&& currentByName.damage_max !== undefined) return;
+			this.addStatRow(this.statLabel(name), current[index], upgraded[index]);
 		});
+		if (names.length === 0) {
+			const row = document.createElement("div");
+			row.textContent = "Brak statystyk zmienianych przez ulepszenie.";
+			this.stats.appendChild(row);
+		}
 	}
 
 	private fillMaterials(data: UpgradeEventData): void {
@@ -173,6 +186,28 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 					+ have + " / " + need;
 			this.materials.appendChild(row);
 		});
+		if (names.length === 0) {
+			this.materials.textContent = "Brak materiałów dla następnego poziomu.";
+		}
+	}
+
+	private addStatRow(name: string, current: string, upgraded: string): void {
+		const row = document.createElement("div");
+		const label = document.createElement("strong");
+		label.textContent = name + ": ";
+		const result = document.createElement("strong");
+		result.className = "item-upgrade-owned";
+		result.textContent = upgraded;
+		row.append(label, current + "  →  ", result);
+		this.stats.appendChild(row);
+	}
+
+	private valuesByName(names: string[], values: string[]): {[key: string]: string} {
+		const result: {[key: string]: string} = {};
+		names.forEach((name, index) => {
+			if (values[index] !== undefined) result[name] = values[index];
+		});
+		return result;
 	}
 
 	private send(command: string, path: string, token?: string): void {
@@ -205,6 +240,7 @@ export class ItemUpgradeDialog extends DialogContentComponent {
 			MISSING_RESOURCES: "Brakuje materiałów.",
 			MAX_LEVEL: "Osiągnięto maksymalny poziom.",
 			STALE_PREVIEW: "Podgląd wygasł — stan został odświeżony.",
+			NPC_BUSY: "Kowal rozmawia teraz z innym graczem.",
 			NPC_TOO_FAR: "Musisz pozostać przy kowalu.",
 			FAILURE: "Próba ulepszenia nie powiodła się."
 		};

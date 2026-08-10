@@ -476,6 +476,9 @@ public final class ItemUpgradeService {
 		case NPC_TOO_FAR:
 			return new ItemUpgradeResult(status,
 					"Musisz pozostać przy kowalu podczas ulepszania.");
+		case NPC_BUSY:
+			return new ItemUpgradeResult(status,
+					"Kowal rozmawia teraz z innym graczem.");
 		case FAILURE:
 		default:
 			return new ItemUpgradeResult(status, "Ulepszenie nie powiodło się.");

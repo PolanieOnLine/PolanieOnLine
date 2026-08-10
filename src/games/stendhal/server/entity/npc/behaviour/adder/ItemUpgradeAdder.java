@@ -27,6 +27,7 @@ public final class ItemUpgradeAdder {
 
 	public void add(final ItemUpgradeNPC upgradeNpc) {
 		upgradeNpc.put("job_producer", "");
+		upgradeNpc.put("job_item_upgrader", "");
 		upgradeNpc.add(ConversationStates.ATTENDING, UPGRADE_PHRASES, null,
 				ConversationStates.ATTENDING, null,
 				requestUpgradeAction(upgradeNpc));

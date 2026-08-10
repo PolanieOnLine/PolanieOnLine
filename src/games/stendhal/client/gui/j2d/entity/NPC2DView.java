@@ -129,6 +129,9 @@ class NPC2DView<T extends NPC> extends RPEntity2DView<T> {
 		super.buildActions(list);
 		// NPC can't be pushed
 		list.remove(ActionType.PUSH.getRepresentation());
+		if (entity.getRPObject().has("job_item_upgrader")) {
+			list.add(ActionType.ITEM_UPGRADE.getRepresentation());
+		}
 		if (User.isAdmin()) {
 			list.add(ActionType.ADMIN_VIEW_NPC_TRANSITIONS.getRepresentation());
 		}
@@ -175,6 +178,9 @@ class NPC2DView<T extends NPC> extends RPEntity2DView<T> {
 	@Override
 	public void onAction(final ActionType at) {
 		switch (at) {
+		case ITEM_UPGRADE:
+			at.send(at.fillTargetInfo(entity));
+			break;
 		case ADMIN_VIEW_NPC_TRANSITIONS:
 			final RPAction action = new RPAction();
 			action.put("type", "script");

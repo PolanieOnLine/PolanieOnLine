@@ -10,12 +10,14 @@
  ***************************************************************************/
 
 import { RPEntity } from "./RPEntity";
+import { MenuItem } from "../action/MenuItem";
 
 import { EntityOverlayRegistry } from "../data/EntityOverlayRegistry";
 
 import { Color } from "../data/color/Color";
 import { RenderingContext2D } from "util/Types";
 import { Paths } from "../data/Paths";
+import { marauroa } from "marauroa";
 
 
 export class NPC extends RPEntity {
@@ -57,6 +59,22 @@ export class NPC extends RPEntity {
 
 	override getCursor(_x: number, _y: number) {
 		return "url(" + Paths.sprites + "/cursor/look.png) 1 3, auto";
+	}
+
+	override buildActions(list: MenuItem[]) {
+		super.buildActions(list);
+		if (this.hasOwnProperty("job_item_upgrader")) {
+			list.push({
+				title: "Ulepsz przedmiot",
+				action: function(entity: NPC) {
+					marauroa.clientFramework.sendAction({
+						type: "item_upgrade",
+						command: "open",
+						npc_id: String(entity["id"])
+					});
+				}
+			});
+		}
 	}
 
 }
