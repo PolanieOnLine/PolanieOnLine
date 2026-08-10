@@ -29,7 +29,7 @@
 		<equips>
 		</equips>
 		<ai>
-			<profile name="perilous" params="5"/>
+			<profile name="bleeding_attack" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -70,7 +70,7 @@
 				<noise state="idle follow fight" value="Ence pence, miecz mam w której rece?!"/>
 				<noise state="idle follow fight" value="Miecz mam ostry i wbije Ci go w serce!"/>
 			</says>
-			<profile name="perilous" params="5"/>
+			<profile name="bleeding_attack" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -110,7 +110,7 @@
 				<noise state="idle follow fight" value="Gnomy! Precz stąd!"/>
 				<noise state="idle follow fight" value="Możesz wydrzeć mi sakwę, lecz mego serca nie oddam!"/>
 			</says>
-			<profile name="perilous" params="5"/>
+			<profile name="bleeding_attack" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -152,7 +152,7 @@
 				<noise state="idle follow fight" value="Gińże wreszcie!"/>
 				<noise state="idle follow fight" value="Robaki niech toczą twe ścierwo!"/>
 			</says>
-			<profile name="perilous" params="5"/>
+			<profile name="bleeding_attack" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -200,7 +200,7 @@
 				<noise state="idle follow fight" value="Któż śmiał mnie wyzwać?"/>
 				<noise state="idle follow fight" value="Odejdź póki nie jest za późno!"/>
 			</says>
-			<profile name="perilous" params="5"/>
+			<profile name="bleeding_attack" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -242,7 +242,7 @@
 		<equips>
 		</equips>
 		<ai>
-			<profile name="perilous" params="5"/>
+			<profile name="bleeding_attack" params="5"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -280,7 +280,7 @@
 		<equips>
 		</equips>
 		<ai>
-			<profile name="perilous" params="5"/>
+			<profile name="bleeding_attack" params="5"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>

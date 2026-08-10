@@ -34,7 +34,7 @@
 				<noise state="idle follow fight" value="Kruca-fuks! To jest napad!"/>
 				<sound value="pol-zbo_les"/>
 			</says>
-			<profile name="perilous" params="2"/>
+			<profile name="bleeding_attack" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -148,7 +148,7 @@
 				<noise state="idle follow fight" value="Nie ryzykuj!"/>
 				<sound value="pol-zbo_les_zwiadowca"/>
 			</says>
-			<profile name="perilous" params="2"/>
+			<profile name="bleeding_attack" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -229,7 +229,7 @@
 				<noise state="idle follow fight" value="Ten las to mój dom!"/>
 				<sound value="pol-banita"/>
 			</says>
-			<profile name="perilous" params="2"/>
+			<profile name="bleeding_attack" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -268,7 +268,7 @@
 				<noise state="idle follow fight" value="Nie wynoś drzewa z lasu!"/>
 				<sound value="pol-banita-gajowy"/>
 			</says>
-			<profile name="perilous" params="2"/>
+			<profile name="bleeding_attack" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -341,7 +341,7 @@
 		</drops>
 		<equips/>
 		<ai>
-			<profile name="perilous" params="5"/>
+			<profile name="bleeding_attack" params="5"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -400,7 +400,7 @@
 		</drops>
 		<equips/>
 		<ai>
-			<profile name="perilous" params="5"/>
+			<profile name="bleeding_attack" params="5"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -432,7 +432,7 @@
 		</drops>
 		<equips/>
 		<ai>
-			<profile name="perilous" params="5"/>
+			<profile name="bleeding_attack" params="5"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -496,7 +496,7 @@
 		</drops>
 		<equips/>
 		<ai>
-			<profile name="perilous" params="5"/>
+			<profile name="bleeding_attack" params="5"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
