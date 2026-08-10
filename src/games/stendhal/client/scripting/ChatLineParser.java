@@ -70,7 +70,7 @@ public abstract class ChatLineParser {
 
 				ClientSingletonRepository.getClientFramework().send(extension);
 
-				return true;
+			return true;
 			}
 		} else {
 			// Chat command. The most frequent one.

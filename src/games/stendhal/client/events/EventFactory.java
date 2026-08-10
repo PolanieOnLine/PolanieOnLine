@@ -70,6 +70,8 @@ class EventFactory {
 			event = new AttackEvent();
 		} else if (name.equals(Events.CHAT_OPTIONS)) {
 			event = new ChatOptionsEvent();
+		} else if (name.equals(Events.PRODUCER_WINDOW)) {
+			event = new ProducerWindowEvent();
 		} else if (name.equals(Events.TRADE_STATE_CHANGE)) {
 			event = new TradeStateChangeEvent();
 		} else if (name.equals(Events.GROUP_CHANGE)) {
