@@ -29,7 +29,7 @@
 		<equips>
 		</equips>
 		<ai>
-			<profile name="perilous" params="2"/>
+			<profile name="bleeding_attack" params="2"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
 			<profile name="patrolling"/>
@@ -63,7 +63,7 @@
 			<slot name="rhand" item="drewniany łuk" quantity="1"/>
 		</equips>
 		<ai>
-			<profile name="perilous" params="2"/>
+			<profile name="bleeding_attack" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -232,7 +232,7 @@
 			<slot name="rhand" item="drewniany łuk" quantity="1"/>
 		</equips>
 		<ai>
-			<profile name="perilous" params="2"/>
+			<profile name="bleeding_attack" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -302,7 +302,7 @@
 			<slot name="rhand" item="klejony łuk" quantity="1"/>
 		</equips>
 		<ai>
-			<profile name="perilous" params="5"/>
+			<profile name="bleeding_attack" params="5"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -376,7 +376,7 @@
 			<slot name="rhand" item="miecz elfów ciemności"/>
 		</equips>
 		<ai>
-			<profile name="perilous" params="2"/>
+			<profile name="bleeding_attack" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -539,7 +539,7 @@
 			<says>
 				<noise state="idle follow fight" value="Trzymaj się z dala, wysłanniku światłości!"/>
 			</says>
-			<profile name="perilous" params="2"/>
+			<profile name="bleeding_attack" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -792,7 +792,7 @@
 			<damage type="earth"/>
 		</abilities>
 		<ai>
-			<profile name="perilous" params="2"/>
+			<profile name="bleeding_attack" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -876,7 +876,7 @@
 			<damage type="earth"/>
 		</abilities>
 		<ai>
-			<profile name="perilous" params="2"/>
+			<profile name="bleeding_attack" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -1116,7 +1116,7 @@
 			<damage type="earth"/>
 		</abilities>
 		<ai>
-			<profile name="perilous" params="5"/>
+			<profile name="bleeding_attack" params="5"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>

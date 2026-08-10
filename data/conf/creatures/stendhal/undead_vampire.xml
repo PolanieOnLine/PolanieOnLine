@@ -33,7 +33,7 @@
 			<says>
 				<sound value="vampirette_hiss-01"/>
 			</says>
-			<profile name="perilous" params="2"/>
+			<profile name="bleeding_attack" params="2"/>
 			<profile name="offensive"/>
 			<profile name="lifesteal" params="0.5"/>
 			<profile name="human"/>
@@ -74,7 +74,7 @@
 			<says>
 				<sound value="vampirette_hiss-01"/>
 			</says>
-			<profile name="perilous" params="2"/>
+			<profile name="bleeding_attack" params="2"/>
 			<profile name="offensive"/>
 			<profile name="lifesteal" params="0.8"/>
 			<profile name="human"/>
@@ -119,7 +119,7 @@
 				<text state="idle follow fight" value="Wypiję twoją krew!"/>
 				<sound value="laugh-evil-04"/>
 			</says>
-			<profile name="perilous" params="5"/>
+			<profile name="bleeding_attack" params="5"/>
 			<profile name="offensive"/>
 			<profile name="lifesteal" params="1"/>
 			<profile name="human"/>

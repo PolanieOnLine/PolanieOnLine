@@ -41,7 +41,7 @@
 				<sound value="roar-dragon-1"/>
 				<sound value="wings-flap-large-1"/>
 			</says>
-			<profile name="perilous" params="2"/>
+			<profile name="bleeding_attack" params="2"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -91,7 +91,7 @@
 				<sound value="roar-dragon-1"/>
 				<sound value="wings-flap-large-1"/>
 			</says>
-			<profile name="perilous" params="2"/>
+			<profile name="bleeding_attack" params="2"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -142,7 +142,7 @@
 				<sound value="roar-dragon-1"/>
 				<sound value="wings-flap-large-1"/>
 			</says>
-			<profile name="perilous" params="2"/>
+			<profile name="bleeding_attack" params="2"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -192,7 +192,7 @@
 				<sound value="roar-dragon-1"/>
 				<sound value="wings-flap-large-1"/>
 			</says>
-			<profile name="perilous" params="2"/>
+			<profile name="bleeding_attack" params="2"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -241,7 +241,7 @@
 				<sound value="roar-dragon-1"/>
 				<sound value="wings-flap-large-1"/>
 			</says>
-			<profile name="perilous" params="2"/>
+			<profile name="bleeding_attack" params="2"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -287,7 +287,7 @@
 				<sound value="pol-dragon-taunt"/>
 				<sound value="roar-large-1"/>
 			</says>
-			<profile name="perilous" params="1"/>
+			<profile name="bleeding_attack" params="1"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -329,7 +329,7 @@
 				<sound value="pol-dragon-taunt"/>
 				<sound value="roar-large-1"/>
 			</says>
-			<profile name="perilous" params="1"/>
+			<profile name="bleeding_attack" params="1"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -364,7 +364,7 @@
 			<says>
 				<sound value="roar-large-1"/>
 			</says>
-			<profile name="perilous" params="1"/>
+			<profile name="bleeding_attack" params="1"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -415,7 +415,7 @@
 				<sound value="pol-dragon-taunt"/>
 				<sound value="roar-dragon-1"/>
 			</says>
-			<profile name="perilous" params="4"/>
+			<profile name="bleeding_attack" params="4"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -461,7 +461,7 @@
 				<sound value="pol-dragon-taunt"/>
 				<sound value="roar-dragon-1"/>
 			</says>
-			<profile name="perilous" params="5"/>
+			<profile name="bleeding_attack" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -508,7 +508,7 @@
 				<sound value="pol-dragon-taunt"/>
 				<sound value="roar-dragon-1"/>
 			</says>
-			<profile name="perilous" params="5"/>
+			<profile name="bleeding_attack" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -553,7 +553,7 @@
 				<sound value="pol-dragon-taunt"/>
 				<sound value="roar-dragon-1"/>
 			</says>
-			<profile name="perilous" params="5"/>
+			<profile name="bleeding_attack" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -602,7 +602,7 @@
 				<sound value="pol-dragon-taunt"/>
 				<sound value="roar-dragon-1"/>
 			</says>
-			<profile name="perilous" params="5"/>
+			<profile name="bleeding_attack" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -651,7 +651,7 @@
 				<sound value="pol-dragon-taunt"/>
 				<sound value="wings-flap-large-1"/>
 			</says>
-			<profile name="perilous" params="5"/>
+			<profile name="bleeding_attack" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -704,7 +704,7 @@
 				<sound value="pol-dragon-taunt"/>
 				<sound value="wings-flap-large-1"/>
 			</says>
-			<profile name="perilous" params="5"/>
+			<profile name="bleeding_attack" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -754,7 +754,7 @@
 				<sound value="pol-dragon-roar-scream"/>
 				<sound value="pol-dragon-roaring"/>
 			</says>
-			<profile name="perilous" params="5"/>
+			<profile name="bleeding_attack" params="5"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>

@@ -6,31 +6,31 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-/** Guards the compatibility path from legacy creature profiles to Bleeding 2.0. */
+/** Guards the Bleeding 2.0 creature profile factory. */
 public class BleedingAttackerFactoryTest {
 	@Test
-	public void legacyFactoryCreatesBleeding2Attacker() {
-		final StatusAttacker attacker = BloodAttackerFactory.get("15", 1884);
+	public void factoryCreatesBleeding2Attacker() {
+		final BleedingAttacker attacker = BleedingAttackerFactory.get("15");
 
 		assertNotNull(attacker);
 		assertTrue(attacker instanceof BleedingAttacker);
 		assertEquals(15.0, attacker.getProbability(), 0.0);
 		assertEquals(BleedingAttacker.DEFAULT_DAMAGE_FACTOR,
-				((BleedingAttacker) attacker).getDamageFactor(), 0.0);
+				attacker.getDamageFactor(), 0.0);
 	}
 
 	@Test
-	public void creatureAttackStatDoesNotChangeWoundConfiguration() {
-		final BleedingAttacker weakCreature = BloodAttackerFactory.get("20;0.30", 10);
-		final BleedingAttacker strongCreature = BloodAttackerFactory.get("20;0.30", 5000);
+	public void profileConfigurationIsDeterministic() {
+		final BleedingAttacker first = BleedingAttackerFactory.get("20;0.30");
+		final BleedingAttacker second = BleedingAttackerFactory.get("20;0.30");
 
-		assertEquals(weakCreature.getProbability(), strongCreature.getProbability(), 0.0);
-		assertEquals(weakCreature.getDamageFactor(), strongCreature.getDamageFactor(), 0.0);
-		assertEquals(0.30, strongCreature.getDamageFactor(), 0.0);
+		assertEquals(first.getProbability(), second.getProbability(), 0.0);
+		assertEquals(first.getDamageFactor(), second.getDamageFactor(), 0.0);
+		assertEquals(0.30, second.getDamageFactor(), 0.0);
 	}
 
 	@Test
-	public void explicitFactorySupportsDefaultAndCustomDamageFactor() {
+	public void factorySupportsDefaultAndCustomDamageFactor() {
 		final BleedingAttacker defaultDamage = BleedingAttackerFactory.get("12");
 		final BleedingAttacker customDamage = BleedingAttackerFactory.get("12;0.35");
 

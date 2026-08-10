@@ -56,7 +56,7 @@ import games.stendhal.server.entity.mapstuff.spawner.CreatureRespawnPoint;
 import games.stendhal.server.entity.npc.NPC;
 import games.stendhal.server.entity.player.Player;
 import games.stendhal.server.entity.slot.EntitySlot;
-import games.stendhal.server.entity.status.BloodAttackerFactory;
+import games.stendhal.server.entity.status.BleedingAttackerFactory;
 import games.stendhal.server.entity.status.PoisonAttackerFactory;
 import games.stendhal.server.entity.status.StatusAttacker;
 import games.stendhal.server.entity.status.StatusAttackerFactory;
@@ -560,7 +560,8 @@ public class Creature extends NPC {
 				this.addStatusAttacker(poisoner);
 			}
 
-			StatusAttacker attacker = BloodAttackerFactory.get(aiProfiles.get("perilous"), this.getAtk());
+			StatusAttacker attacker = BleedingAttackerFactory.get(
+					aiProfiles.get("bleeding_attack"));
 			if (attacker != null) {
 				this.addStatusAttacker(attacker);
 			}
@@ -1298,7 +1299,7 @@ public class Creature extends NPC {
 	 * checks if the name player is in the same zone
 	 *
 	 * @param playerName name of player
-	 * @return true if he is online and in the same zone as this creature
+	 * @return true if he is online and in same zone as this creature
 	 */
 	private boolean isPlayerInZone(String playerName) {
 		Player player = StendhalRPRuleProcessor.get().getPlayer(playerName);

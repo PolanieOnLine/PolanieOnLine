@@ -226,7 +226,7 @@
 		</drops>
 		<equips/>
 		<ai>
-			<profile name="perilous" params="2"/>
+			<profile name="bleeding_attack" params="2"/>
 			<profile name="coward"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -259,7 +259,7 @@
 			<slot name="rhand" item="proca" quantity="1"/>
 		</equips>
 		<ai>
-			<profile name="perilous" params="2"/>
+			<profile name="bleeding_attack" params="2"/>
 			<profile name="brave"/>
 			<profile name="archer"/>
 			<profile name="offensive"/>
@@ -329,7 +329,7 @@
 		</drops>
 		<equips/>
 		<ai>
-			<profile name="perilous" params="2"/>
+			<profile name="bleeding_attack" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -506,7 +506,7 @@
 		</drops>
 		<equips/>
 		<ai>
-			<profile name="perilous" params="5"/>
+			<profile name="bleeding_attack" params="5"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -545,7 +545,7 @@
 			<slot name="rhand" item="klejony łuk" quantity="1"/>
 		</equips>
 		<ai>
-			<profile name="perilous" params="2"/>
+			<profile name="bleeding_attack" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
