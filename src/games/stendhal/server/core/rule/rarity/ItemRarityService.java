@@ -152,7 +152,7 @@ public final class ItemRarityService {
 		} else if (context.getSource() == ItemCreationContext.Source.QUEST) {
 			rarity = ItemRarity.COMMON;
 		} else {
-			rarity = profile.roll(nextRandom());
+			rarity = rollBestRarity(profile, context.getRarityRolls());
 		}
 		final ItemRarityProfile.Tier tier = profile.getTier(rarity);
 		final ItemRarityModifiers fixed = context.getModifiers();
@@ -238,6 +238,18 @@ public final class ItemRarityService {
 	private String selectDefinitionProfile(final Item item) {
 		final String profile = item.getRarityProfile();
 		return profile == null ? ItemRarityProfile.DEFAULT_ID : profile;
+	}
+
+	private ItemRarity rollBestRarity(final ItemRarityProfile profile,
+			final int rarityRolls) {
+		ItemRarity best = ItemRarity.COMMON;
+		for (int roll = 0; roll < rarityRolls; roll++) {
+			final ItemRarity candidate = profile.roll(nextRandom());
+			if (candidate.ordinal() > best.ordinal()) {
+				best = candidate;
+			}
+		}
+		return best;
 	}
 
 	private boolean hasSupportedStat(final Item item) {

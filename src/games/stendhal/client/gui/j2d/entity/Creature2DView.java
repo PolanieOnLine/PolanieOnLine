@@ -69,6 +69,22 @@ class Creature2DView extends RPEntity2DView<Creature> {
 	}
 
 	@Override
+	protected void drawEntity(final Graphics2D g2d, final int x, final int y,
+			final int width, final int height) {
+		EliteCreatureRenderer.drawSpriteGlow(entity, getSprite(), g2d,
+				x, y, width, height);
+		super.drawEntity(g2d, x, y, width, height);
+	}
+
+	@Override
+	protected void drawStatusBar(final Graphics2D g2d, final int x,
+			final int y, final int width) {
+		super.drawStatusBar(g2d, x, y, width);
+		EliteCreatureRenderer.drawTitleAndCrown(entity, g2d, x, y, width,
+				titleDrawYOffset);
+	}
+
+	@Override
 	protected void drawTop(final Graphics2D g2d, final int x, final int y,
 			final int width, final int height) {
 		super.drawTop(g2d, x, y, width, height);

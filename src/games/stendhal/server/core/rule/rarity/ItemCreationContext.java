@@ -37,6 +37,7 @@ public final class ItemCreationContext {
 	private final boolean randomizeModifiers;
 	private final boolean generateAffixes;
 	private final Long affixSeed;
+	private final int rarityRolls;
 	private final String profile;
 
 	private ItemCreationContext(final Builder builder) {
@@ -48,6 +49,7 @@ public final class ItemCreationContext {
 		this.randomizeModifiers = builder.randomizeModifiers;
 		this.generateAffixes = builder.generateAffixes;
 		this.affixSeed = builder.affixSeed;
+		this.rarityRolls = builder.rarityRolls;
 		this.profile = builder.profile;
 	}
 
@@ -128,6 +130,11 @@ public final class ItemCreationContext {
 		return affixSeed;
 	}
 
+	/** @return number of independent rarity rolls, keeping the highest tier */
+	public int getRarityRolls() {
+		return rarityRolls;
+	}
+
 	public String getProfile() {
 		return profile;
 	}
@@ -150,6 +157,7 @@ public final class ItemCreationContext {
 				&& factoryRarity == other.factoryRarity
 				&& randomizeModifiers == other.randomizeModifiers
 				&& generateAffixes == other.generateAffixes
+				&& rarityRolls == other.rarityRolls
 				&& Objects.equals(modifiers, other.modifiers)
 				&& Objects.equals(affixSeed, other.affixSeed)
 				&& profile.equals(other.profile);
@@ -159,7 +167,7 @@ public final class ItemCreationContext {
 	public int hashCode() {
 		return Objects.hash(source, forcedRarity, questRarity, factoryRarity, modifiers,
 				Boolean.valueOf(randomizeModifiers), Boolean.valueOf(generateAffixes),
-				affixSeed, profile);
+				affixSeed, Integer.valueOf(rarityRolls), profile);
 	}
 
 	@Override
@@ -169,7 +177,8 @@ public final class ItemCreationContext {
 				+ ", factoryRarity=" + factoryRarity
 				+ ", modifiers=" + modifiers + ", randomizeModifiers="
 				+ randomizeModifiers + ", generateAffixes=" + generateAffixes
-				+ ", affixSeed=" + affixSeed + ", profile=" + profile + "]";
+				+ ", affixSeed=" + affixSeed + ", rarityRolls=" + rarityRolls
+				+ ", profile=" + profile + "]";
 	}
 
 	public static final class Builder {
@@ -181,6 +190,7 @@ public final class ItemCreationContext {
 		private boolean randomizeModifiers;
 		private boolean generateAffixes;
 		private Long affixSeed;
+		private int rarityRolls = 1;
 		private String profile = DEFAULT_PROFILE;
 
 		private Builder(final Source source) {
@@ -263,6 +273,14 @@ public final class ItemCreationContext {
 			}
 			this.affixSeed = Long.valueOf(affixSeed);
 			this.generateAffixes = true;
+			return this;
+		}
+
+		public Builder withRarityRolls(final int rarityRolls) {
+			if (rarityRolls < 1) {
+				throw new IllegalArgumentException("Rarity rolls must be positive");
+			}
+			this.rarityRolls = rarityRolls;
 			return this;
 		}
 

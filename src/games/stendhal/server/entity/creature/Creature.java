@@ -35,6 +35,7 @@ import games.stendhal.server.core.pathfinder.FixedPath;
 import games.stendhal.server.core.pathfinder.Node;
 import games.stendhal.server.core.pathfinder.Path;
 import games.stendhal.server.core.rule.EntityManager;
+import games.stendhal.server.core.rule.creature.EliteCreatureService;
 import games.stendhal.server.core.rule.rarity.ItemCreationContext;
 import games.stendhal.server.entity.Entity;
 import games.stendhal.server.entity.Killer;
@@ -973,7 +974,8 @@ public class Creature extends NPC {
 	 * Kept as a small test seam so batch drops cannot regress to copy construction.
 	 */
 	protected Item createDroppedItem(final EntityManager entityManager, final String itemName) {
-		return entityManager.getItem(itemName, ItemCreationContext.drop());
+		return entityManager.getItem(itemName,
+				EliteCreatureService.getDropCreationContext(this));
 	}
 
 	private Player getKillerPlayer() {
