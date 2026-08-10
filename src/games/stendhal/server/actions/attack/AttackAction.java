@@ -29,6 +29,7 @@ import marauroa.common.game.RPAction;
  * attacks a creature or player
  */
 public class AttackAction implements ActionListener {
+	private static final String STUNNED_ATTRIBUTE = "status_stunned";
 
 	/**
 	 * registers the AttackAction with its trigger word "attack".
@@ -48,6 +49,12 @@ public class AttackAction implements ActionListener {
 	 */
 	@Override
 	public void onAction(final Player player, final RPAction action) {
+		if (player.has(STUNNED_ATTRIBUTE)) {
+			player.sendPrivateText(NotificationType.ERROR,
+					"Jesteś ogłuszony i nie możesz teraz atakować.");
+			return;
+		}
+
 		if (action.has(TARGET)) {
 			// evaluate the target parameter
 			final Entity entity = EntityHelper.entityFromTargetName(

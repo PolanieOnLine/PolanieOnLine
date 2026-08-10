@@ -64,13 +64,13 @@ final class LegendaryAffixPresentation {
 		}
 		if (has(object, ItemTooltip.LEGENDARY_STUNNING_FORCE)) {
 			appendFixed(result, "Ogłuszająca Siła", new String[] {
-					"", "15%", " szansy na nałożenie Ociężałości przez ", "10 s",
-					" po trafieniu."
+					"", "15%", " szansy na ogłuszenie celu przez ", "3 s",
+					" (", "4 s", " przeciw graczom) po trafieniu zadającym obrażenia."
 			});
 		}
 		if (has(object, ItemTooltip.LEGENDARY_BINDING_STRIKE)) {
 			appendFixed(result, "Pętający Cios", new String[] {
-					"", "15%", " szansy na nałożenie Ociężałości przez ", "10 s",
+					"", "15%", " szansy na nałożenie ociężałości przez ", "10 s",
 					" po trafieniu."
 			});
 		}
@@ -109,7 +109,7 @@ final class LegendaryAffixPresentation {
 		if (has(object, ItemTooltip.LEGENDARY_IRON_WILL)) {
 			appendFixed(result, "Żelazna Wola", new String[] {
 					"Zyskujesz ", "+20 pkt proc.",
-					" odporności na zatrucie, krwawienie, porażenie, dezorientację i Ociężałość."
+					" odporności na zatrucie, krwawienie, porażenie, dezorientację, ociężałość i ogłuszenie."
 			});
 		}
 		if (has(object, ItemTooltip.LEGENDARY_UNYIELDING_PROTECTION)) {
@@ -130,7 +130,7 @@ final class LegendaryAffixPresentation {
 		if (has(object, ItemTooltip.LEGENDARY_GUARDIAN_SEAL)) {
 			appendFixed(result, "Pieczęć Strażnika", new String[] {
 					"Zyskujesz ", "+20 pkt proc.",
-					" odporności na zatrucie, krwawienie, porażenie, dezorientację i Ociężałość."
+					" odporności na zatrucie, krwawienie, porażenie, dezorientację, ociężałość i ogłuszenie."
 			});
 		}
 		return result.toString();

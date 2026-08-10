@@ -15,6 +15,7 @@ import games.stendhal.server.entity.status.HeavyStatus;
 import games.stendhal.server.entity.status.PoisonStatus;
 import games.stendhal.server.entity.status.Status;
 import games.stendhal.server.entity.status.StatusType;
+import games.stendhal.server.entity.status.StunnedStatus;
 
 /** Resolves conditional damage and status-proc weapon affixes. */
 public final class WeaponAffixCombatService {
@@ -56,6 +57,7 @@ public final class WeaponAffixCombatService {
 	private static final double LEGENDARY_POWER_OVERLOAD_PROC_CHANCE = 0.15;
 	private static final double LEGENDARY_POWER_OVERLOAD_DAMAGE_BONUS = 0.50;
 	private static final double LEGENDARY_ARCANE_FOCUS_DAMAGE_BONUS = 0.25;
+	private static final double LEGENDARY_STUN_PROC_CHANCE = 0.15;
 	private static final double LEGENDARY_HEAVY_PROC_CHANCE = 0.15;
 	private static final int LEGENDARY_HEAVY_DURATION_SECONDS = 10;
 	private static final double MAX_STATUS_PROC_CHANCE = 0.25;
@@ -230,14 +232,27 @@ public final class WeaponAffixCombatService {
 					attacker);
 		}
 
-		final double stunningChance = combinedFixedProcChance(weapons,
-				LEGENDARY_STUNNING_FORCE_ATTRIBUTE, LEGENDARY_HEAVY_PROC_CHANCE);
-		final double bindingChance = combinedFixedProcChance(weapons,
-				LEGENDARY_BINDING_STRIKE_ATTRIBUTE, LEGENDARY_HEAVY_PROC_CHANCE);
-		final double heavyBaseChance = Math.min(MAX_STATUS_PROC_CHANCE,
-				1.0 - ((1.0 - stunningChance) * (1.0 - bindingChance)));
+		// Stunning Force is true crowd control. It uses its own resistance and
+		// deliberately does not roll again while an existing stun is active,
+		// preserving the handler's no-refresh contract.
+		if (!defender.getStatusList().hasStatus(StatusType.STUNNED)) {
+			final double stunChance = effectiveStatusChance(defender,
+					StatusType.STUNNED, combinedFixedProcChance(weapons,
+							LEGENDARY_STUNNING_FORCE_ATTRIBUTE,
+							LEGENDARY_STUN_PROC_CHANCE));
+			if (stunChance > 0.0
+					&& rollChance(stunChance,
+							Rand.randUniform(1, PROC_ROLL_SCALE))) {
+				defender.getStatusList().inflictStatus(new StunnedStatus(), attacker);
+			}
+		}
+
+		// Binding Strike remains a movement-control HEAVY effect; it is intentionally
+		// separate from stun so both status families keep independent resistance.
 		final double heavyChance = effectiveStatusChance(defender,
-				StatusType.HEAVY, heavyBaseChance);
+				StatusType.HEAVY, combinedFixedProcChance(weapons,
+						LEGENDARY_BINDING_STRIKE_ATTRIBUTE,
+						LEGENDARY_HEAVY_PROC_CHANCE));
 		if (heavyChance > 0.0
 				&& rollChance(heavyChance, Rand.randUniform(1, PROC_ROLL_SCALE))) {
 			defender.getStatusList().inflictStatus(
@@ -305,7 +320,8 @@ public final class WeaponAffixCombatService {
 		}
 		final StatusType[] combatStatuses = {
 			StatusType.POISONED, StatusType.BLEEDING, StatusType.SHOCKED,
-			StatusType.CONFUSED, StatusType.HEAVY, StatusType.ZOMBIE
+			StatusType.CONFUSED, StatusType.HEAVY, StatusType.STUNNED,
+			StatusType.ZOMBIE
 		};
 		for (final StatusType statusType : combatStatuses) {
 			if (defender.getStatusList().hasStatus(statusType)) {

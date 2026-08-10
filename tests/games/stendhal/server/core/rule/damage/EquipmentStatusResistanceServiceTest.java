@@ -37,6 +37,9 @@ public class EquipmentStatusResistanceServiceTest {
 		assertEquals("resist_bleeding",
 				EquipmentStatusResistanceService.getResistanceAttribute(
 						StatusType.BLEEDING));
+		assertEquals("resist_stunned",
+				EquipmentStatusResistanceService.getResistanceAttribute(
+						StatusType.STUNNED));
 	}
 
 	@Test
@@ -59,6 +62,8 @@ public class EquipmentStatusResistanceServiceTest {
 				Arrays.asList(armour), "resist_bleeding"), 0.0000001);
 		assertEquals(0.20, EquipmentStatusResistanceService.getEquipmentResistance(
 				Arrays.asList(armour), "resist_heavy"), 0.0000001);
+		assertEquals(0.20, EquipmentStatusResistanceService.getEquipmentResistance(
+				Arrays.asList(armour), "resist_stunned"), 0.0000001);
 	}
 
 	@Test
@@ -81,6 +86,18 @@ public class EquipmentStatusResistanceServiceTest {
 
 		assertEquals(0.36, EquipmentStatusResistanceService.getResistance(player,
 				StatusType.POISONED), 0.0000001);
+	}
+
+	@Test
+	public void equippedJewelleryCanResistStun() {
+		final Player player = PlayerTestHelper.createPlayer("stun resistance tester");
+		final Item ring = legendaryResistanceItem("ring",
+				LegendaryEquipmentAffixService.GUARDIAN_SEAL_ATTRIBUTE);
+		ring.put("resist_stunned", 0.20);
+		assertTrue(player.equip("finger", ring));
+
+		assertEquals(0.36, EquipmentStatusResistanceService.getResistance(player,
+				StatusType.STUNNED), 0.0000001);
 	}
 
 	@Test

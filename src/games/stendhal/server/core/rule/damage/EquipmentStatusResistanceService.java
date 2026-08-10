@@ -57,7 +57,7 @@ public final class EquipmentStatusResistanceService {
 	/**
 	 * Combines item sources as independent probabilities. Legendary Iron Will and
 	 * Guardian Seal each contribute an additional 20 percentage points against
-	 * the five negative status families supported by random equipment affixes.
+	 * the supported negative status families, including stun.
 	 */
 	public static double getEquipmentResistance(final List<Item> equipment,
 			final String attribute) {
@@ -116,7 +116,8 @@ public final class EquipmentStatusResistanceService {
 				|| getResistanceAttribute(StatusType.BLEEDING).equals(attribute)
 				|| getResistanceAttribute(StatusType.SHOCKED).equals(attribute)
 				|| getResistanceAttribute(StatusType.CONFUSED).equals(attribute)
-				|| getResistanceAttribute(StatusType.HEAVY).equals(attribute);
+				|| getResistanceAttribute(StatusType.HEAVY).equals(attribute)
+				|| getResistanceAttribute(StatusType.STUNNED).equals(attribute);
 	}
 
 	private static double clampFraction(final double value) {

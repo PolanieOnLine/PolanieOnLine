@@ -92,6 +92,8 @@ public class ItemInformation extends Item {
 				StatusType.CONFUSED), Type.FLOAT, Definition.HIDDEN);
 		itemClass.addAttribute(EquipmentStatusResistanceService.getResistanceAttribute(
 				StatusType.HEAVY), Type.FLOAT, Definition.HIDDEN);
+		itemClass.addAttribute(EquipmentStatusResistanceService.getResistanceAttribute(
+				StatusType.STUNNED), Type.FLOAT, Definition.HIDDEN);
 		itemClass.addAttribute(ItemAffixState.SEED_ATTRIBUTE,
 				Type.STRING, Definition.HIDDEN);
 		itemClass.addAttribute(ItemAffixState.ATTRIBUTE,
