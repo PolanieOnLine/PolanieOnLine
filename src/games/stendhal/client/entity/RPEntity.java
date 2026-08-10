@@ -32,6 +32,7 @@ import games.stendhal.client.gui.chatlog.EmojiEventLine;
 import games.stendhal.client.gui.chatlog.HeaderLessEventLine;
 import games.stendhal.client.gui.chatlog.StandardEventLine;
 import games.stendhal.client.gui.chatlog.StandardHeaderedEventLine;
+import games.stendhal.client.gui.admin.inspect.InspectWindowManager;
 import games.stendhal.client.gui.settings.SettingsProperties;
 import games.stendhal.client.gui.wt.core.WtWindowManager;
 import games.stendhal.client.sprite.EmojiStore;
@@ -949,6 +950,9 @@ public abstract class RPEntity extends AudibleEntity {
 	 * @param text message contents
 	 */
 	public void onPrivateListen(final String texttype, final String text) {
+		if (InspectWindowManager.getInstance().handleMessage(text)) {
+			return;
+		}
 		NotificationType type;
 		try {
 			type = NotificationType.valueOf(texttype);
