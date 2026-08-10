@@ -4,7 +4,6 @@
 package games.stendhal.server.events;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +22,7 @@ import marauroa.common.game.RPSlot;
 
 /** Wire DTO shared by the desktop and web item-upgrade windows. */
 public final class ItemUpgradeEvent extends RPEvent {
+	public static final String PHASE_OPEN = "open";
 	public static final String PHASE_PREVIEW = "preview";
 	public static final String PHASE_RESULT = "result";
 	private static final String PATH_SEPARATOR = "/";
@@ -35,7 +35,6 @@ public final class ItemUpgradeEvent extends RPEvent {
 		add(rpclass, "npc_id", Type.INT);
 		add(rpclass, "request_token", Type.STRING);
 		add(rpclass, "candidate_paths", Type.VERY_LONG_STRING);
-		add(rpclass, "candidate_names", Type.VERY_LONG_STRING);
 		add(rpclass, "selected_path", Type.LONG_STRING);
 		add(rpclass, "name", Type.STRING);
 		add(rpclass, "class", Type.STRING);
@@ -65,9 +64,23 @@ public final class ItemUpgradeEvent extends RPEvent {
 	public ItemUpgradeEvent(final int npcId, final List<Item> candidates,
 			final ItemUpgradePreview preview,
 			final ItemUpgradeResult result) {
+		this(npcId, candidates, preview, result,
+				result == null ? PHASE_PREVIEW : PHASE_RESULT);
+	}
+
+	/** Creates the only event allowed to open a new client window. */
+	public static ItemUpgradeEvent open(final int npcId,
+			final List<Item> candidates, final ItemUpgradePreview preview) {
+		return new ItemUpgradeEvent(npcId, candidates, preview, null,
+				PHASE_OPEN);
+	}
+
+	private ItemUpgradeEvent(final int npcId, final List<Item> candidates,
+			final ItemUpgradePreview preview, final ItemUpgradeResult result,
+			final String phase) {
 		super(Events.ITEM_UPGRADE);
 		put("npc_id", npcId);
-		put("phase", result == null ? PHASE_PREVIEW : PHASE_RESULT);
+		put("phase", phase);
 		putCandidates(candidates);
 
 		if (preview != null) {
@@ -76,32 +89,22 @@ public final class ItemUpgradeEvent extends RPEvent {
 		final ItemUpgradeResult.Status status = result != null
 				? result.getStatus() : preview != null
 						? preview.getBlockingStatus()
-						: ItemUpgradeResult.Status.INVALID_ITEM;
+						: candidates != null && !candidates.isEmpty()
+								? ItemUpgradeResult.Status.SELECT_ITEM
+								: ItemUpgradeResult.Status.NO_UPGRADEABLE_ITEMS;
 		put("status", status.name());
 		put("message", result == null ? "" : result.getMessage());
 	}
 
 	private void putCandidates(final List<Item> candidates) {
 		final List<String> paths = new ArrayList<String>();
-		final List<String> names = new ArrayList<String>();
 		if (candidates != null) {
-			final Map<String, Integer> duplicateCounts =
-					new LinkedHashMap<String, Integer>();
-			for (final Item item : candidates) {
-				final String name = displayName(item);
-				final Integer count = duplicateCounts.get(name);
-				duplicateCounts.put(name, count == null ? 1 : count + 1);
-			}
 			for (final Item item : candidates) {
 				paths.add(encodePath(item));
-				final String name = displayName(item);
-				names.add(duplicateCounts.get(name) > 1
-						? name + " · #" + item.getID().getObjectID() : name);
 			}
 		}
 		if (!paths.isEmpty()) {
 			put("candidate_paths", paths);
-			put("candidate_names", names);
 		}
 	}
 
@@ -190,13 +193,4 @@ public final class ItemUpgradeEvent extends RPEvent {
 		return path;
 	}
 
-	private String displayName(final Item item) {
-		final StringBuilder result = new StringBuilder();
-		result.append(item.getRarityOrCommon().getPolishDisplayName())
-				.append(' ').append(item.getName());
-		if (item.getUpgradeLevel() > 0) {
-			result.append(" +").append(item.getUpgradeLevel());
-		}
-		return result.toString();
-	}
 }

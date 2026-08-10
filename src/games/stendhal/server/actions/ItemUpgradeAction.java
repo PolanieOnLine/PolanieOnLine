@@ -53,33 +53,47 @@ public final class ItemUpgradeAction implements ActionListener {
 			}
 		}
 		if (selected == null && !candidates.isEmpty()) {
-			selected = candidates.get(0);
+			selected = preferredName != null && preferredName.length() > 0
+					? candidates.get(0) : null;
 		}
 		final ItemUpgradePreview preview = selected == null ? null
 				: SERVICE.createPreview(player, selected);
-		player.addEvent(new ItemUpgradeEvent(npc.getID().getObjectID(),
-				candidates, preview, null));
+		player.addEvent(ItemUpgradeEvent.open(npc.getID().getObjectID(),
+				candidates, preview));
 	}
 
 	@Override
 	public void onAction(final Player player, final RPAction action) {
+		final String command = action.has(COMMAND) ? action.get(COMMAND) : "";
 		final ItemUpgradeNPC npc = resolveNpc(player, action);
-		if (npc == null || !player.nextTo(npc)) {
+		if (npc == null) {
 			SERVICE.clearPendingAttempt(player);
+			if (OPEN.equals(command)) {
+				player.sendPrivateText(SERVICE.resultForStatus(
+						ItemUpgradeResult.Status.NPC_TOO_FAR).getMessage());
+				return;
+			}
 			sendResult(player, action, null,
 					SERVICE.resultForStatus(ItemUpgradeResult.Status.NPC_TOO_FAR));
 			return;
 		}
 
-		final String command = action.has(COMMAND) ? action.get(COMMAND) : "";
 		if (OPEN.equals(command)) {
-			openFromContextMenu(player, action, npc);
+			openFromContextMenu(player, npc);
 			return;
 		}
 		if (npc.getAttending() != player) {
 			SERVICE.clearPendingAttempt(player);
 			sendResult(player, action, npc,
-					SERVICE.resultForStatus(ItemUpgradeResult.Status.NPC_BUSY));
+					SERVICE.resultForStatus(npc.getAttending() == null
+							? ItemUpgradeResult.Status.NPC_NOT_ATTENDING
+							: ItemUpgradeResult.Status.NPC_BUSY));
+			return;
+		}
+		if (!npc.inConversationRange()) {
+			SERVICE.clearPendingAttempt(player);
+			sendResult(player, action, npc,
+					SERVICE.resultForStatus(ItemUpgradeResult.Status.NPC_TOO_FAR));
 			return;
 		}
 
@@ -118,18 +132,36 @@ public final class ItemUpgradeAction implements ActionListener {
 				candidates, preview, result));
 	}
 
-	private void openFromContextMenu(final Player player, final RPAction action,
+	private void openFromContextMenu(final Player player,
 			final ItemUpgradeNPC npc) {
 		if (npc.getAttending() == null) {
+			if (!withinPerceptionRange(player, npc)) {
+				rejectOpen(player, ItemUpgradeResult.Status.NPC_TOO_FAR);
+				return;
+			}
 			npc.listenTo(player, "hi");
 		}
 		if (npc.getAttending() != player) {
-			SERVICE.clearPendingAttempt(player);
-			sendResult(player, action, npc,
-					SERVICE.resultForStatus(ItemUpgradeResult.Status.NPC_BUSY));
+			rejectOpen(player, ItemUpgradeResult.Status.NPC_BUSY);
+			return;
+		}
+		if (!npc.inConversationRange()) {
+			rejectOpen(player, ItemUpgradeResult.Status.NPC_TOO_FAR);
 			return;
 		}
 		openWindow(player, npc, null);
+	}
+
+	private boolean withinPerceptionRange(final Player player,
+			final ItemUpgradeNPC npc) {
+		final int range = npc.getPerceptionRange();
+		return player.squaredDistance(npc) <= range * range;
+	}
+
+	private void rejectOpen(final Player player,
+			final ItemUpgradeResult.Status status) {
+		SERVICE.clearPendingAttempt(player);
+		player.sendPrivateText(SERVICE.resultForStatus(status).getMessage());
 	}
 
 	private ItemUpgradeNPC resolveNpc(final Player player,

@@ -475,10 +475,19 @@ public final class ItemUpgradeService {
 					"Transakcja nie mogła zostać zakończona. Koszt nie został pobrany.");
 		case NPC_TOO_FAR:
 			return new ItemUpgradeResult(status,
-					"Musisz pozostać przy kowalu podczas ulepszania.");
+					"Musisz pozostać w zasięgu rozmowy z kowalem.");
+		case NPC_NOT_ATTENDING:
+			return new ItemUpgradeResult(status,
+					"Najpierw rozpocznij rozmowę z kowalem.");
 		case NPC_BUSY:
 			return new ItemUpgradeResult(status,
 					"Kowal rozmawia teraz z innym graczem.");
+		case SELECT_ITEM:
+			return new ItemUpgradeResult(status,
+					"Przeciągnij przedmiot z ekwipunku do slotu ulepszania.");
+		case NO_UPGRADEABLE_ITEMS:
+			return new ItemUpgradeResult(status,
+					"Nie masz przy sobie przedmiotu, który można ulepszyć.");
 		case FAILURE:
 		default:
 			return new ItemUpgradeResult(status, "Ulepszenie nie powiodło się.");

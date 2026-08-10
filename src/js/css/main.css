@@ -194,15 +194,6 @@ div.itemSlot {
 	padding: 10px;
 }
 
-.item-upgrade-dialog > label,
-.item-upgrade-dialog > label > select {
-	display: block;
-	box-sizing: border-box;
-	width: 100%;
-}
-
-.item-upgrade-dialog > label > select { margin-top: 4px; }
-
 .item-upgrade-identity {
 	display: flex;
 	align-items: center;
@@ -221,6 +212,17 @@ div.itemSlot {
 	box-shadow: inset 0 0 6px #000;
 }
 
+.item-upgrade-slot:empty::before {
+	content: "+";
+	font-size: 28px;
+	color: #c9ae83;
+}
+
+.item-upgrade-slot--accept {
+	border-color: #50bd62;
+	box-shadow: inset 0 0 6px #000, 0 0 6px #50bd62;
+}
+
 .item-upgrade-slot > * { flex: 0 0 auto; }
 .item-upgrade-name { font-weight: bold; }
 .item-upgrade-dialog h4 { margin: 8px 0 3px; }
@@ -228,7 +230,9 @@ div.itemSlot {
 .item-upgrade-missing { color: #e75d50; }
 .item-upgrade-status { min-height: 1.4em; margin-top: 8px; }
 .item-upgrade-status[data-status="success"] { color: #50bd62; }
-.item-upgrade-status:not([data-status="ready"]):not([data-status="success"]) { color: #e75d50; }
+.item-upgrade-status[data-status="select_item"] { color: #ffbe40; }
+.item-upgrade-status:not([data-status="ready"]):not([data-status="success"])
+		:not([data-status="select_item"]) { color: #e75d50; }
 
 div.itemSlot.item-rarity {
 	border-image: none;

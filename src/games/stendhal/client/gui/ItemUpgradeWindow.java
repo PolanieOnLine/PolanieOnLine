@@ -13,16 +13,18 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -30,6 +32,8 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import games.stendhal.client.StendhalClient;
+import games.stendhal.client.entity.IEntity;
+import games.stendhal.client.entity.Item;
 import games.stendhal.client.sprite.Sprite;
 import games.stendhal.client.sprite.SpriteStore;
 import games.stendhal.common.constants.Actions;
@@ -44,12 +48,13 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 	private static final Color AVAILABLE = new Color(92, 190, 105);
 	private static final Color UNAVAILABLE = new Color(225, 90, 75);
 	private static final Color PANEL_BORDER = new Color(130, 106, 75);
+	private static final Sprite SLOT_BACKGROUND =
+			SpriteStore.get().getSprite("data/gui/slot.png");
 	private static ItemUpgradeWindow instance;
 
-	private final JComboBox<Candidate> candidates = new JComboBox<Candidate>();
 	private final ItemIcon icon = new ItemIcon();
-	private final JLabel itemName = centered("Wybierz przedmiot");
-	private final JLabel level = centered("");
+	private final JLabel itemName = centered("Przeciągnij tutaj przedmiot");
+	private final JLabel level = centered("Przedmiot pozostanie w ekwipunku.");
 	private final JPanel stats = new JPanel();
 	private final JLabel chance = centered("");
 	private final JLabel fee = centered("");
@@ -58,10 +63,10 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 	private final JButton upgrade = new JButton("Ulepsz");
 	private final JButton refresh = new JButton("Odśwież");
 
-	private boolean applyingEvent;
 	private int npcId;
 	private String selectedPath;
 	private String requestToken;
+	private final Set<String> candidatePaths = new HashSet<String>();
 
 	private ItemUpgradeWindow() {
 		super("item-upgrade", "Ulepszanie przedmiotu");
@@ -81,6 +86,9 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 			@Override
 			public void run() {
 				if (instance == null) {
+					if (!event.has("phase") || !"open".equals(event.get("phase"))) {
+						return;
+					}
 					instance = new ItemUpgradeWindow();
 					j2DClient.get().addWindow(instance);
 				}
@@ -98,15 +106,6 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 
 		final JPanel top = new JPanel(new BorderLayout(6, 6));
 		top.add(sectionTitle("Przedmiot do ulepszenia"), BorderLayout.NORTH);
-		candidates.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(final ActionEvent e) {
-				if (!applyingEvent && candidates.getSelectedItem() != null) {
-					send("preview", ((Candidate) candidates.getSelectedItem()).path, null);
-				}
-			}
-		});
-		top.add(candidates, BorderLayout.CENTER);
 
 		final JPanel identity = new JPanel(new BorderLayout(8, 2));
 		identity.setBorder(cardBorder());
@@ -116,7 +115,7 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		names.add(itemName);
 		names.add(level);
 		identity.add(names, BorderLayout.CENTER);
-		top.add(identity, BorderLayout.SOUTH);
+		top.add(identity, BorderLayout.CENTER);
 		content.add(top, BorderLayout.NORTH);
 
 		final JPanel center = new JPanel(new GridBagLayout());
@@ -187,23 +186,25 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 	}
 
 	private void apply(final RPEvent event) {
-		applyingEvent = true;
-		npcId = event.has("npc_id") ? event.getInt("npc_id") : 0;
-		selectedPath = event.has("selected_path") ? event.get("selected_path") : null;
+		if (event.has("npc_id")) {
+			npcId = event.getInt("npc_id");
+		}
+		final String state = event.has("status") ? event.get("status") : "";
+		final boolean preservePreview = !event.has("name")
+				&& isInteractionStatus(state) && selectedPath != null;
+		if (event.has("selected_path")) {
+			selectedPath = event.get("selected_path");
+		} else if (!preservePreview) {
+			selectedPath = null;
+		}
 		requestToken = event.has("request_token") ? event.get("request_token") : null;
 
-		candidates.removeAllItems();
-		final List<String> paths = list(event, "candidate_paths");
-		final List<String> names = list(event, "candidate_names");
-		for (int index = 0; index < paths.size(); index++) {
-			final Candidate candidate = new Candidate(paths.get(index),
-					index < names.size() ? names.get(index) : paths.get(index));
-			candidates.addItem(candidate);
-			if (candidate.path.equals(selectedPath)) {
-				candidates.setSelectedItem(candidate);
-			}
+		if (event.has("candidate_paths")) {
+			candidatePaths.clear();
+			candidatePaths.addAll(list(event, "candidate_paths"));
+		} else if (!preservePreview) {
+			candidatePaths.clear();
 		}
-		candidates.setEnabled(candidates.getItemCount() > 0);
 
 		if (event.has("name")) {
 			itemName.setText(colorName(event.get("name"),
@@ -211,29 +212,33 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 			level.setText("Poziom ulepszenia: +" + event.getInt("upgrade_level")
 					+ " / +" + event.getInt("max_upgrade_level"));
 			icon.setItem(event.get("class"), event.get("subclass"));
-		} else {
-			itemName.setText("Brak przedmiotu do ulepszenia");
-			level.setText("");
+		} else if (!preservePreview) {
+			itemName.setText("NO_UPGRADEABLE_ITEMS".equals(state)
+					? "Brak przedmiotu do ulepszenia"
+					: "Przeciągnij tutaj przedmiot");
+			level.setText("Przedmiot pozostanie w ekwipunku.");
 			icon.setItem(null, null);
 		}
-		updateStats(event);
-		chance.setText(event.has("success_percent")
-				? htmlValue("Szansa powodzenia", event.getInt("success_percent") + "%") : "");
-		fee.setText(event.has("fee_text")
-				? htmlValue("Koszt", event.get("fee_text")) : "");
-		updateMaterials(event);
+		if (event.has("name") || !preservePreview) {
+			updateStats(event);
+			chance.setText(event.has("success_percent")
+					? htmlValue("Szansa powodzenia", event.getInt("success_percent") + "%")
+					: htmlValue("Szansa powodzenia", "—"));
+			fee.setText(event.has("fee_text")
+					? htmlValue("Koszt", event.get("fee_text"))
+					: htmlValue("Koszt", "—"));
+			updateMaterials(event);
+		}
 
 		final boolean canUpgrade = event.has("can_upgrade")
 				&& event.getInt("can_upgrade") == 1 && requestToken != null;
 		upgrade.setEnabled(canUpgrade);
-		refresh.setEnabled(selectedPath != null);
+		refresh.setEnabled(selectedPath != null && !isInteractionStatus(state));
 		final String message = event.has("message") ? event.get("message") : "";
-		final String state = event.has("status") ? event.get("status") : "";
 		status.setText(message.length() > 0 ? message : statusText(state));
 		status.setForeground("SUCCESS".equals(state) || "READY".equals(state)
-				? AVAILABLE : UNAVAILABLE);
+				? AVAILABLE : "SELECT_ITEM".equals(state) ? ACCENT : UNAVAILABLE);
 		upgrade.setToolTipText(canUpgrade ? "Wykonaj próbę ulepszenia" : statusText(state));
-		applyingEvent = false;
 		revalidate();
 		repaint();
 	}
@@ -264,7 +269,7 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 			}
 		}
 		if (stats.getComponentCount() == 0) {
-			stats.add(centered("Brak statystyk zmienianych przez ulepszenie."));
+			stats.add(centered("Po wybraniu przedmiotu zobaczysz zmianę statystyk."));
 		}
 	}
 
@@ -283,7 +288,7 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 			materials.add(row);
 		}
 		if (names.isEmpty()) {
-			materials.add(centered("Brak materiałów dla następnego poziomu."));
+			materials.add(centered("Wymagania pojawią się po wybraniu przedmiotu."));
 		}
 	}
 
@@ -308,6 +313,10 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 			result.add(part);
 		}
 		return result;
+	}
+
+	private static String encodePath(final List<String> path) {
+		return String.join("/", path);
 	}
 
 	private static List<String> list(final RPEvent event, final String name) {
@@ -371,15 +380,23 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 	}
 
 	private static String statusText(final String state) {
+		if ("SELECT_ITEM".equals(state)) return "Przeciągnij przedmiot z ekwipunku do slotu.";
+		if ("NO_UPGRADEABLE_ITEMS".equals(state)) return "Nie masz przedmiotu, który można ulepszyć.";
 		if ("READY".equals(state)) return "Wymagania są spełnione.";
 		if ("NOT_ENOUGH_MONEY".equals(state)) return "Brakuje pieniędzy.";
 		if ("MISSING_RESOURCES".equals(state)) return "Brakuje materiałów.";
 		if ("MAX_LEVEL".equals(state)) return "Osiągnięto maksymalny poziom.";
 		if ("STALE_PREVIEW".equals(state)) return "Podgląd wygasł — odświeżono stan.";
 		if ("NPC_BUSY".equals(state)) return "Kowal rozmawia teraz z innym graczem.";
-		if ("NPC_TOO_FAR".equals(state)) return "Musisz pozostać przy kowalu.";
+		if ("NPC_NOT_ATTENDING".equals(state)) return "Najpierw rozpocznij rozmowę z kowalem.";
+		if ("NPC_TOO_FAR".equals(state)) return "Musisz pozostać w zasięgu rozmowy z kowalem.";
 		if ("FAILURE".equals(state)) return "Próba ulepszenia nie powiodła się.";
 		return "Nie można teraz ulepszyć przedmiotu.";
+	}
+
+	private static boolean isInteractionStatus(final String state) {
+		return "NPC_BUSY".equals(state) || "NPC_NOT_ATTENDING".equals(state)
+				|| "NPC_TOO_FAR".equals(state);
 	}
 
 	private static String colorName(final String name, final String rarityId) {
@@ -388,27 +405,14 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 				+ name + "</font></b></html>";
 	}
 
-	private static final class Candidate {
-		private final String path;
-		private final String label;
-
-		private Candidate(final String path, final String label) {
-			this.path = path;
-			this.label = label;
-		}
-
-		@Override
-		public String toString() {
-			return label;
-		}
-	}
-
-	private static final class ItemIcon extends JComponent {
+	private final class ItemIcon extends JComponent implements DropTarget {
 		private static final long serialVersionUID = 1L;
 		private Sprite sprite;
 
 		private ItemIcon() {
-			setPreferredSize(new Dimension(48, 48));
+			setPreferredSize(new Dimension(56, 56));
+			setMinimumSize(new Dimension(56, 56));
+			setToolTipText("Przeciągnij tutaj przedmiot z ekwipunku.");
 		}
 
 		private void setItem(final String itemClass, final String subclass) {
@@ -427,10 +431,34 @@ public final class ItemUpgradeWindow extends InternalManagedWindow {
 		@Override
 		protected void paintComponent(final Graphics graphics) {
 			super.paintComponent(graphics);
+			SLOT_BACKGROUND.draw(graphics,
+					(getWidth() - SLOT_BACKGROUND.getWidth()) / 2,
+					(getHeight() - SLOT_BACKGROUND.getHeight()) / 2);
 			if (sprite != null) {
 				sprite.draw(graphics, (getWidth() - sprite.getWidth()) / 2,
 						(getHeight() - sprite.getHeight()) / 2);
 			}
+		}
+
+		@Override
+		public boolean canAccept(final IEntity entity) {
+			return entity instanceof Item
+					&& candidatePaths.contains(encodePath(entity.getPath()));
+		}
+
+		@Override
+		public void dropEntity(final IEntity entity, final int amount,
+				final Point point) {
+			if (!canAccept(entity)) {
+				return;
+			}
+			selectedPath = encodePath(entity.getPath());
+			requestToken = null;
+			upgrade.setEnabled(false);
+			refresh.setEnabled(false);
+			status.setForeground(ACCENT);
+			status.setText("Pobieranie podglądu z serwera…");
+			send("preview", selectedPath, null);
 		}
 	}
 }

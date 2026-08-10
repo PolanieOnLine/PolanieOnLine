@@ -65,7 +65,7 @@ public class ItemUpgradeProtocolTest {
 		player.equipToInventoryOnly(item);
 
 		final ItemUpgradeNPC npc = new ItemUpgradeNPC("context smith");
-		npc.setPosition(5, 6);
+		npc.setPosition(5, 8);
 		npc.addGreeting();
 		new ItemUpgradeAdder().add(npc);
 		zone.add(npc);
@@ -76,18 +76,48 @@ public class ItemUpgradeProtocolTest {
 		action.put(ItemUpgradeAction.NPC_ID, npc.getID().getObjectID());
 		new ItemUpgradeAction().onAction(player, action);
 
+		assertFalse(player.nextTo(npc));
 		assertSame(player, npc.getAttending());
 		assertTrue(npc.has("job_item_upgrader"));
-		boolean foundUpgradeEvent = false;
+		final RPEvent openEvent = findUpgradeEvent(player);
+		assertEquals("open", openEvent.get("phase"));
+		assertEquals("SELECT_ITEM", openEvent.get("status"));
+		assertFalse(openEvent.has("selected_path"));
+
+		player.clearEvents();
+		action.put(ItemUpgradeAction.COMMAND, ItemUpgradeAction.PREVIEW);
+		action.put(ItemUpgradeAction.TARGET_PATH,
+				ItemUpgradeEvent.decodePath(ItemUpgradeEvent.encodePath(item)));
+		new ItemUpgradeAction().onAction(player, action);
+		final RPEvent previewEvent = findUpgradeEvent(player);
+		assertEquals(ItemUpgradeEvent.PHASE_PREVIEW, previewEvent.get("phase"));
+		assertEquals(ItemUpgradeEvent.encodePath(item),
+				previewEvent.get("selected_path"));
+	}
+
+	@Test
+	public void rejectedDistantContextOpenDoesNotCreateAnEmptyWindow() {
+		final StendhalRPZone zone = new StendhalRPZone(
+				"item_upgrade_protocol_distant_context");
+		final Player player = PlayerTestHelper.createPlayer("protocol_distant");
+		player.setPosition(2, 2);
+		zone.add(player);
+		final ItemUpgradeNPC npc = new ItemUpgradeNPC("distant smith");
+		npc.setPosition(2, 10);
+		npc.addGreeting();
+		new ItemUpgradeAdder().add(npc);
+		zone.add(npc);
+
+		final RPAction action = new RPAction();
+		action.put(Actions.TYPE, Actions.ITEM_UPGRADE);
+		action.put(ItemUpgradeAction.COMMAND, ItemUpgradeAction.OPEN);
+		action.put(ItemUpgradeAction.NPC_ID, npc.getID().getObjectID());
+		new ItemUpgradeAction().onAction(player, action);
+
+		assertNull(npc.getAttending());
 		for (final RPEvent event : player.events()) {
-			if (Events.ITEM_UPGRADE.equals(event.getName())) {
-				foundUpgradeEvent = true;
-				assertEquals("preview", event.get("phase"));
-				assertEquals(ItemUpgradeEvent.encodePath(item),
-						event.get("selected_path"));
-			}
+			assertNotEquals(Events.ITEM_UPGRADE, event.getName());
 		}
-		assertTrue(foundUpgradeEvent);
 	}
 
 	@Test
@@ -191,6 +221,15 @@ public class ItemUpgradeProtocolTest {
 		action.put(ItemUpgradeAction.TARGET_PATH,
 				ItemUpgradeEvent.decodePath(path));
 		return action;
+	}
+
+	private static RPEvent findUpgradeEvent(final Player player) {
+		for (final RPEvent event : player.events()) {
+			if (Events.ITEM_UPGRADE.equals(event.getName())) {
+				return event;
+			}
+		}
+		throw new AssertionError("Missing item-upgrade event");
 	}
 
 	private static Weapon item(final String name, final int attack) {
