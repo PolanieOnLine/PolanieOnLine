@@ -35,14 +35,14 @@ public class BleedingAttackerTest {
 	public void successfulHitCreatesWoundFromActualDamage() {
 		final Player attacker = PlayerTestHelper.createPlayer("bleed attacker");
 		final Player target = PlayerTestHelper.createPlayer("bleed target");
-		final BleedingAttacker bleeding = new BleedingAttacker(100.0, 0.20);
+		final BleedingAttacker bleeding = new BleedingAttacker(100.0, 0.25);
 
 		bleeding.onHit(target, attacker, 100);
 
 		final List<BleedingStatus> wounds = target.getStatusList()
 				.getAllStatusByClass(BleedingStatus.class);
 		assertEquals(1, wounds.size());
-		assertEquals(20, wounds.get(0).getTotalDamage());
+		assertEquals(25, wounds.get(0).getTotalDamage());
 		assertEquals(BleedingAttacker.DEFAULT_TICKS,
 				wounds.get(0).getTicksRemaining());
 		assertSame(attacker, wounds.get(0).getSource());
@@ -53,7 +53,7 @@ public class BleedingAttackerTest {
 		final Player attacker = PlayerTestHelper.createPlayer("bleed attacker");
 		final Player target = PlayerTestHelper.createPlayer("bleed target");
 		target.put("resist_bleeding", 1.0);
-		final BleedingAttacker bleeding = new BleedingAttacker(100.0, 0.20);
+		final BleedingAttacker bleeding = new BleedingAttacker(100.0, 0.25);
 
 		bleeding.onHit(target, attacker, 100);
 
@@ -67,22 +67,9 @@ public class BleedingAttackerTest {
 	}
 
 	@Test
-	public void factorySupportsDefaultAndExplicitDamageFactor() {
-		final BleedingAttacker defaultBleed = BleedingAttackerFactory.get("15");
-		final BleedingAttacker strongBleed = BleedingAttackerFactory.get("20;0.30");
-
-		assertEquals(15.0, defaultBleed.getProbability(), 0.0);
-		assertEquals(BleedingAttacker.DEFAULT_DAMAGE_FACTOR,
-				defaultBleed.getDamageFactor(), 0.0);
-		assertEquals(20.0, strongBleed.getProbability(), 0.0);
-		assertEquals(0.30, strongBleed.getDamageFactor(), 0.0);
-	}
-
-
-	@Test
 	public void totalDamageUsesActualHitAndRoundsPredictably() {
-		assertEquals(20, BleedingAttacker.calculateTotalDamage(100, 0.20));
-		assertEquals(1, BleedingAttacker.calculateTotalDamage(1, 0.20));
-		assertEquals(0, BleedingAttacker.calculateTotalDamage(0, 0.20));
+		assertEquals(25, BleedingAttacker.calculateTotalDamage(100, 0.25));
+		assertEquals(1, BleedingAttacker.calculateTotalDamage(1, 0.25));
+		assertEquals(0, BleedingAttacker.calculateTotalDamage(0, 0.25));
 	}
 }

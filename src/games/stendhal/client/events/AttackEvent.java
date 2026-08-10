@@ -14,6 +14,7 @@ package games.stendhal.client.events;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.client.entity.ParryIndicator;
 import games.stendhal.client.entity.RPEntity;
 import games.stendhal.common.constants.Nature;
 
@@ -37,9 +38,15 @@ public class AttackEvent extends Event<RPEntity> {
 		RPEntity target = entity.getAttackTarget();
 		if (target != null) {
 			boolean ranged = event.has("ranged");
+			ParryIndicator.clear(target);
 			if (event.has("hit")) {
 				int damage = event.getInt("damage");
-				if (damage != 0) {
+				if (event.has("parried")) {
+					// Preserve normal block timing/sound behavior while allowing the
+					// player view to replace the generic block icon with parry.png.
+					target.onBlocked();
+					ParryIndicator.mark(target);
+				} else if (damage != 0) {
 					target.onDamaged(entity, damage);
 				} else {
 					target.onBlocked();

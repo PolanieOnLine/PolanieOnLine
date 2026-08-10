@@ -9,6 +9,7 @@
 		<attributes>
 			<atk value="97"/>
 			<def value="97"/>
+			<armor value="heavy"/>
 			<hp value="12"/>
 			<speed value="0.3"/>
 			<size value="1,1"/>
@@ -38,6 +39,7 @@
 		<attributes>
 			<atk value="750"/>
 			<def value="375"/>
+			<armor value="heavy"/>
 			<hp value="10285"/>
 			<speed value="0.2"/>
 			<size value="2,2"/>
@@ -61,7 +63,7 @@
 			<says>
 				<sound value="pol-giant"/>
 			</says>
-			<profile name="bleeding_attack" params="5"/>
+			<profile name="perilous" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -77,6 +79,7 @@
 		<attributes>
 			<atk value="140"/>
 			<def value="140"/>
+			<armor value="heavy"/>
 			<hp value="25"/>
 			<speed value="0.5"/>
 			<size value="2,2"/>
@@ -106,6 +109,7 @@
 		<attributes>
 			<atk value="3000"/>
 			<def value="425"/>
+			<armor value="heavy"/>
 			<hp value="2000"/>
 			<speed value="0.9"/>
 			<size value="2,2"/>
@@ -124,7 +128,7 @@
 			<says>
 				<sound value="pol-stones2"/>
 			</says>
-			<profile name="bleeding_attack" params="10"/>
+			<profile name="perilous" params="10"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -138,6 +142,7 @@
 		<attributes>
 			<atk value="2523"/>
 			<def value="750"/>
+			<armor value="heavy"/>
 			<hp value="20000"/>
 			<speed value="0.1"/>
 			<size value="4,3"/>
@@ -163,7 +168,7 @@
 			<says>
 				<sound value="pol-giant"/>
 			</says>
-			<profile name="bleeding_attack" params="5"/>
+			<profile name="perilous" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -304,6 +309,7 @@
 		<attributes>
 			<atk value="199"/>
 			<def value="44"/>
+			<armor value="heavy"/>
 			<hp value="397"/>
 			<speed value="0.3"/>
 			<size value="1,1"/>
@@ -384,7 +390,7 @@
 			<susceptibility type="fire" value="1.7"/>
 		</abilities>
 		<ai>
-			<profile name="bleeding_attack" params="5"/>
+			<profile name="perilous" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -399,6 +405,7 @@
 		<attributes>
 			<atk value="1450"/>
 			<def value="415"/>
+			<armor value="heavy"/>
 			<hp value="14365"/>
 			<speed value="0.2"/>
 			<size value="2,2"/>
@@ -427,7 +434,7 @@
 			<says>
 				<sound value="pol-giant"/>
 			</says>
-			<profile name="bleeding_attack" params="5"/>
+			<profile name="perilous" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -496,7 +503,7 @@
 			<says>
 				<sound value="pol-snow"/>
 			</says>
-			<profile name="bleeding_attack" params="5"/>
+			<profile name="perilous" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>

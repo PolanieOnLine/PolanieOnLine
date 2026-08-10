@@ -6,6 +6,7 @@ package games.stendhal.server.core.engine.transformer;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -54,6 +55,8 @@ public class ItemRarityTransformerTest {
 				modifiers);
 		created.setID(new ID(101, "rarity_test"));
 		final int attack = created.getInt("atk");
+		final int damageMin = created.getInt("damage_min");
+		final int damageMax = created.getInt("damage_max");
 		final int rate = created.getInt("rate");
 		final int value = created.getValue();
 		created.put("min_level", definitionMinimumLevel + 1000);
@@ -63,6 +66,8 @@ public class ItemRarityTransformerTest {
 
 		assertSame(ItemRarity.LEGENDARY, secondLoad.getRarity());
 		assertEquals(attack, secondLoad.getInt("atk"));
+		assertEquals(damageMin, secondLoad.getInt("damage_min"));
+		assertEquals(damageMax, secondLoad.getInt("damage_max"));
 		assertEquals(rate, secondLoad.getInt("rate"));
 		assertEquals(value, secondLoad.getValue());
 		assertEquals(created.getRarityModifiers(),
@@ -73,7 +78,7 @@ public class ItemRarityTransformerTest {
 	}
 
 	@Test
-	public void legacyEligibleItemBecomesCommonWithoutChangingSavedValues()
+	public void legacyEligibleItemBecomesCommonAndReceivesDamageRange()
 			throws IOException {
 		final Item legacy = SingletonRepository.getEntityManager().getItem(
 				ITEM_NAME, ItemCreationContext.restore());
@@ -83,13 +88,52 @@ public class ItemRarityTransformerTest {
 		legacy.setValue(777);
 
 		final Item restored = new ItemTransformer().transform(serializedCopy(legacy));
+		final int minimum = restored.getInt("damage_min");
+		final int maximum = restored.getInt("damage_max");
+		final Item secondLoad = new ItemTransformer().transform(serializedCopy(restored));
 
-		assertSame(ItemRarity.COMMON, restored.getRarity());
-		assertEquals(137, restored.getInt("atk"));
-		assertEquals(4, restored.getInt("rate"));
-		assertEquals(777, restored.getValue());
-		assertEquals(Double.valueOf(1.0), restored.getRarityModifier("atk"));
-		assertFalse(restored.isPersistent());
+		assertSame(ItemRarity.COMMON, secondLoad.getRarity());
+		assertEquals(137, secondLoad.getInt("atk"));
+		assertTrue(minimum < 137);
+		assertTrue(maximum > 137);
+		assertEquals(137.0, restored.getAverageDamage(), 0.0);
+		assertEquals(minimum, secondLoad.getInt("damage_min"));
+		assertEquals(maximum, secondLoad.getInt("damage_max"));
+		assertEquals(4, secondLoad.getInt("rate"));
+		assertEquals(777, secondLoad.getValue());
+		assertEquals(Double.valueOf(1.0), secondLoad.getRarityModifier("atk"));
+		assertEquals(Double.valueOf(1.0),
+				secondLoad.getRarityModifier("damage_min"));
+		assertEquals(Double.valueOf(1.0),
+				secondLoad.getRarityModifier("damage_max"));
+		assertFalse(secondLoad.isPersistent());
+	}
+
+	@Test
+	public void oldRarityItemWithoutRangeIsMigratedAndThenRemainsStable()
+			throws IOException {
+		final Item saved = SingletonRepository.getEntityManager().getItem(
+				ITEM_NAME, ItemRarity.RARE,
+				ItemRarityModifiers.builder().statMultiplier(1.10).build());
+		saved.setID(new ID(104, "rarity_test"));
+		saved.remove("damage_min");
+		saved.remove("damage_max");
+
+		final Item firstLoad = new ItemTransformer().transform(serializedCopy(saved));
+		final int minimum = firstLoad.getInt("damage_min");
+		final int maximum = firstLoad.getInt("damage_max");
+		final Item secondLoad = new ItemTransformer().transform(serializedCopy(firstLoad));
+
+		assertTrue(minimum < firstLoad.getInt("atk"));
+		assertTrue(maximum > firstLoad.getInt("atk"));
+		assertTrue(Math.abs(firstLoad.getAverageDamage()
+				- firstLoad.getInt("atk")) <= 1.0);
+		assertEquals(minimum, secondLoad.getInt("damage_min"));
+		assertEquals(maximum, secondLoad.getInt("damage_max"));
+		assertEquals(firstLoad.getRarityModifier("atk"),
+				secondLoad.getRarityModifier("damage_min"));
+		assertEquals(firstLoad.getRarityModifier("atk"),
+				secondLoad.getRarityModifier("damage_max"));
 	}
 
 	@Test

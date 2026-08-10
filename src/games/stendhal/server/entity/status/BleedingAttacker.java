@@ -13,6 +13,7 @@ package games.stendhal.server.entity.status;
 
 import games.stendhal.common.Rand;
 import games.stendhal.server.core.engine.GameEvent;
+import games.stendhal.server.core.rule.damage.EquipmentStatusResistanceService;
 import games.stendhal.server.entity.RPEntity;
 
 /**
@@ -24,7 +25,6 @@ public class BleedingAttacker extends StatusAttacker {
 	public static final int DEFAULT_TICK_INTERVAL_TURNS = 3;
 
 	private static final int PROC_ROLL_SCALE = 10000;
-	private static final String RESISTANCE_ATTRIBUTE = "resist_bleeding";
 
 	private final double damageFactor;
 
@@ -88,10 +88,8 @@ public class BleedingAttacker extends StatusAttacker {
 	}
 
 	static double getBleedingResistance(final RPEntity target) {
-		if (target == null || !target.has(RESISTANCE_ATTRIBUTE)) {
-			return 0.0;
-		}
-		return clampFraction(target.getDouble(RESISTANCE_ATTRIBUTE));
+		return EquipmentStatusResistanceService.getResistance(
+				target, StatusType.BLEEDING);
 	}
 
 	/** Package-visible deterministic seam for probability tests. */
@@ -110,12 +108,5 @@ public class BleedingAttacker extends StatusAttacker {
 					"Bleeding probability must be in [0, 100]");
 		}
 		return probability;
-	}
-
-	private static double clampFraction(final double value) {
-		if (Double.isNaN(value)) {
-			return 0.0;
-		}
-		return Math.max(0.0, Math.min(1.0, value));
 	}
 }

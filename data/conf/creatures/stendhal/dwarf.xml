@@ -40,6 +40,7 @@
 		<attributes>
 			<atk value="298"/>
 			<def value="52"/>
+			<armor value="heavy"/>
 			<hp value="195"/>
 			<speed value="0.5"/>
 			<size value="1,1"/>
@@ -59,7 +60,7 @@
 		<equips>
 		</equips>
 		<ai>
-			<profile name="bleeding_attack" params="2"/>
+			<profile name="perilous" params="2"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
 			<profile name="patrolling"/>
@@ -99,6 +100,7 @@
 		<attributes>
 			<atk value="354"/>
 			<def value="58"/>
+			<armor value="heavy"/>
 			<hp value="266"/>
 			<speed value="0.5"/>
 			<size value="1,1"/>
@@ -216,7 +218,7 @@
 			<says>
 				<noise state="idle follow fight" value="Wrogiem naszym Krasnoludy, ale zginie każdy, kto stanie nam na drodze!"/>
 			</says>
-			<profile name="bleeding_attack" params="2"/>
+			<profile name="perilous" params="2"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
 			<profile name="patrolling"/>
@@ -229,6 +231,7 @@
 		<attributes>
 			<atk value="593"/>
 			<def value="82"/>
+			<armor value="heavy"/>
 			<hp value="736"/>
 			<speed value="0.5"/>
 			<size value="1,1"/>
@@ -248,7 +251,7 @@
 		<equips>
 		</equips>
 		<ai>
-			<profile name="bleeding_attack" params="5"/>
+			<profile name="perilous" params="5"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
 			<profile name="attack weakest"/>
@@ -265,6 +268,7 @@
 		<attributes>
 			<atk value="168"/>
 			<def value="26"/>
+			<armor value="medium"/>
 			<hp value="140"/>
 			<speed value="0.8"/>
 			<size value="1,1"/>
@@ -299,6 +303,7 @@
 		<attributes>
 			<atk value="200"/>
 			<def value="31"/>
+			<armor value="medium"/>
 			<hp value="150"/>
 			<speed value="0.6"/>
 			<size value="1,1"/>
@@ -321,7 +326,7 @@
 		<equips>
 		</equips>
 		<ai>
-			<profile name="bleeding_attack" params="2"/>
+			<profile name="perilous" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -335,6 +340,7 @@
 		<attributes>
 			<atk value="214"/>
 			<def value="33"/>
+			<armor value="medium"/>
 			<hp value="180"/>
 			<speed value="0.3"/>
 			<size value="1,1"/>
@@ -371,6 +377,7 @@
 		<attributes>
 			<atk value="244"/>
 			<def value="43"/>
+			<armor value="heavy"/>
 			<hp value="160"/>
 			<speed value="0.8"/>
 			<size value="1,1"/>
@@ -406,6 +413,7 @@
 		<attributes>
 			<atk value="311"/>
 			<def value="111"/>
+			<armor value="heavy"/>
 			<hp value="80"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
@@ -429,7 +437,7 @@
 		<equips>
 		</equips>
 		<ai>
-			<profile name="bleeding_attack" params="2"/>
+			<profile name="perilous" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -447,6 +455,7 @@
 		<attributes>
 			<atk value="616"/>
 			<def value="99"/>
+			<armor value="heavy"/>
 			<hp value="700"/>
 			<speed value="0.4"/>
 			<size value="2,2"/>
@@ -466,7 +475,7 @@
 		<equips>
 		</equips>
 		<ai>
-			<profile name="bleeding_attack" params="5"/>
+			<profile name="perilous" params="5"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -501,7 +510,7 @@
 		<equips>
 		</equips>
 		<ai>
-			<profile name="bleeding_attack" params="5"/>
+			<profile name="perilous" params="5"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -539,7 +548,7 @@
 			<says>
 				<noise state="idle follow fight" value="Nie nazywaj mnie przyjacielem."/>
 			</says>
-			<profile name="bleeding_attack" params="5"/>
+			<profile name="perilous" params="5"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="patrolling"/>
@@ -644,7 +653,7 @@
 		<equips>
 		</equips>
 		<ai>
-			<profile name="bleeding_attack" params="2"/>
+			<profile name="perilous" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -716,7 +725,7 @@
 		<equips>
 		</equips>
 		<ai>
-			<profile name="bleeding_attack" params="2"/>
+			<profile name="perilous" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>

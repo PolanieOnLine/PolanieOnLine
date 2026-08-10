@@ -8,6 +8,7 @@
 		<attributes>
 			<atk value="186"/>
 			<def value="4"/>
+			<armor value="light"/>
 			<hp value="800"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
@@ -32,7 +33,7 @@
 			<says>
 				<sound value="vampirette_hiss-01"/>
 			</says>
-			<profile name="bleeding_attack" params="2"/>
+			<profile name="perilous" params="2"/>
 			<profile name="offensive"/>
 			<profile name="lifesteal" params="0.5"/>
 			<profile name="human"/>
@@ -48,6 +49,7 @@
 		<attributes>
 			<atk value="353"/>
 			<def value="43"/>
+			<armor value="light"/>
 			<hp value="140"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
@@ -72,7 +74,7 @@
 			<says>
 				<sound value="vampirette_hiss-01"/>
 			</says>
-			<profile name="bleeding_attack" params="2"/>
+			<profile name="perilous" params="2"/>
 			<profile name="offensive"/>
 			<profile name="lifesteal" params="0.8"/>
 			<profile name="human"/>
@@ -88,6 +90,7 @@
 		<attributes>
 			<atk value="497"/>
 			<def value="35"/>
+			<armor value="light"/>
 			<hp value="750"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>
@@ -116,7 +119,7 @@
 				<text state="idle follow fight" value="Wypiję twoją krew!"/>
 				<sound value="laugh-evil-04"/>
 			</says>
-			<profile name="bleeding_attack" params="5"/>
+			<profile name="perilous" params="5"/>
 			<profile name="offensive"/>
 			<profile name="lifesteal" params="1"/>
 			<profile name="human"/>

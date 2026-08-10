@@ -13,6 +13,7 @@
 package utilities.RPClass;
 
 import games.stendhal.server.entity.item.Item;
+import games.stendhal.server.entity.item.ItemInformation;
 import games.stendhal.server.entity.item.StackableItem;
 import marauroa.common.game.RPClass;
 
@@ -40,6 +41,12 @@ public class ItemTestHelper {
 
 		if (!RPClass.hasRPClass("item")) {
 			Item.generateRPClass();
+		}
+		/* ItemInformation registers the client-visible tooltip map on the item
+		 * RPClass. Tests that create items directly need the same RPClass setup
+		 * as the production object factory. */
+		if (!RPClass.hasRPClass("item_information")) {
+			ItemInformation.generateRPClass();
 		}
 	}
 

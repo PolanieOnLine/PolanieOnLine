@@ -2790,15 +2790,26 @@ public abstract class RPEntity extends CombatEntity {
 		// does nothing in this implementation.
 	}
 
-	private float getWeaponsAtk() {
+	private float getWeaponsAtk(final boolean rollDamage) {
+		return getWeaponsAtk(rollDamage, null);
+	}
+
+	private float getWeaponsAtk(final boolean rollDamage,
+			final java.util.function.ToDoubleFunction<Item> damageMultiplier) {
 		float weapon = 0;
 
 		final List<Item> weapons = getWeapons();
 		for (final Item weaponItem : weapons) {
-			weapon += weaponItem.getAttack();
+			double damage = rollDamage
+					? weaponItem.rollDamage() : weaponItem.getAverageDamage();
+			if (rollDamage && damageMultiplier != null) {
+				damage *= damageMultiplier.applyAsDouble(weaponItem);
+			}
+			weapon += damage;
 		}
 
-		// calculate ammo when not using RATK stat
+		// calculate ammo when not using RATK stat; armor matchups modify only
+		// the held weapon roll, never ammunition or spell ammunition.
 		if (!Testing.COMBAT && weapons.size() > 0) {
 			if (getWeapons().get(0).isOfClass("ranged")) {
 				weapon += getAmmoAtk("ammunition");
@@ -2831,7 +2842,7 @@ public abstract class RPEntity extends CombatEntity {
 		}
 
 		// Inicjalizacja ataku z różnych przedmiotów
-		float totalAttack = getWeaponsAtk();
+		float totalAttack = getWeaponsAtk(false);
 
 		if (hasGloves()) {
 			totalAttack += getGloves().getAttack();
@@ -2886,6 +2897,26 @@ public abstract class RPEntity extends CombatEntity {
 		return (int) Math.round(totalAttack);
 	}
 
+	/** Retrieves melee attack using one server-side damage roll per weapon. */
+	public float getItemAtkForAttack() {
+		return getItemAtkForAttack(null);
+	}
+
+	/**
+	 * Retrieves melee attack while allowing each individual weapon roll to be
+	 * modified independently. Non-weapon equipment remains outside the
+	 * modifier.
+	 *
+	 * @param damageMultiplier multiplier provider for each held weapon
+	 * @return rolled item attack
+	 */
+	public float getItemAtkForAttack(
+			final java.util.function.ToDoubleFunction<Item> damageMultiplier) {
+		final float stableWeaponDamage = getWeaponsAtk(false);
+		final float rolledWeaponDamage = getWeaponsAtk(true, damageMultiplier);
+		return Math.max(0, getItemAtk() - stableWeaponDamage + rolledWeaponDamage);
+	}
+
 	/**
 	 * Retrieves total range attack value of held weapon & ammunition.
 	 */
@@ -2895,7 +2926,7 @@ public abstract class RPEntity extends CombatEntity {
 
 		if (weapons.size() > 0) {
 			final Item held = getWeapons().get(0);
-			ratk += held.getRangedAttack();
+			ratk += held.getAverageDamage();
 
 			if (held.isOfClass("ranged")) {
 				ratk += getAmmoAtk("ammunition");
@@ -2906,6 +2937,17 @@ public abstract class RPEntity extends CombatEntity {
 		}
 
 		return ratk;
+	}
+
+	/** Retrieves ranged attack using one server-side damage roll. */
+	public float getItemRatkForAttack() {
+		final List<Item> weapons = getWeapons();
+		if (weapons.isEmpty()) {
+			return getItemRatk();
+		}
+		final Item held = weapons.get(0);
+		return Math.max(0, getItemRatk() - held.getAverageDamage()
+				+ held.rollDamage());
 	}
 
 	/**

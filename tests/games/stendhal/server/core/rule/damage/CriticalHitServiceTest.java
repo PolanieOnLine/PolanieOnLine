@@ -1,0 +1,193 @@
+/***************************************************************************
+ *                   (C) Copyright 2003-2026 - Stendhal                    *
+ ***************************************************************************/
+package games.stendhal.server.core.rule.damage;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import games.stendhal.server.core.rule.rarity.LegendaryEquipmentAffixService;
+import games.stendhal.server.entity.item.Item;
+import games.stendhal.server.entity.item.Weapon;
+import games.stendhal.server.entity.player.Player;
+import utilities.PlayerTestHelper;
+import utilities.RPClass.ItemTestHelper;
+
+public class CriticalHitServiceTest {
+	@BeforeClass
+	public static void setUpBeforeClass() {
+		ItemTestHelper.generateRPClasses();
+	}
+
+	@Test
+	public void baseChanceIsExactlyTenPercent() {
+		final Player player = player();
+		assertEquals(10.0, CriticalHitService.getCriticalChance(player), 0.0);
+		assertEquals(10.0, CriticalHitService.getCriticalChance(null), 0.0);
+	}
+
+	@Test
+	public void weaponCriticalChanceAddsPercentagePoints() {
+		final Player player = player();
+		final Weapon weapon = weapon(7.0);
+		assertTrue(player.equip("rhand", weapon));
+
+		assertEquals(17.0, CriticalHitService.getCriticalChance(player), 0.0);
+	}
+
+	@Test
+	public void falconEyeAddsTenPointsOnlyWhenDistanceGateIsActive() {
+		final Player player = player();
+		final Weapon weapon = weapon("ranged", 0.0);
+		weapon.put(WeaponAffixCombatService.LEGENDARY_FALCON_EYE_ATTRIBUTE, 1.0);
+		assertTrue(player.equip("rhand", weapon));
+
+		assertEquals(10.0,
+				CriticalHitService.getCriticalChance(player, false), 0.0);
+		assertEquals(20.0,
+				CriticalHitService.getCriticalChance(player, true), 0.0);
+	}
+
+	@Test
+	public void heroEyeAddsEightCriticalPercentagePoints() {
+		final Player player = player();
+		final Item ring = accessory("hero eye ring", "ring");
+		ring.put(LegendaryEquipmentAffixService.HERO_EYE_ATTRIBUTE, 1.0);
+		assertTrue(player.equip("finger", ring));
+
+		assertEquals(18.0, CriticalHitService.getCriticalChance(player), 0.0);
+	}
+
+	@Test
+	public void weaponAndGlyphBonusesAreAdditive() {
+		final Player player = player();
+		assertTrue(player.equip("rhand", weapon(7.0)));
+		final Item glyph = new Item("critical glyph", "glyph", "test", null);
+		glyph.put(CriticalHitService.CRITICAL_CHANCE_ATTRIBUTE, 15.0);
+		assertTrue(player.equip("offensive_rune", glyph));
+
+		assertEquals(32.0, CriticalHitService.getCriticalChance(player), 0.0);
+	}
+
+	@Test
+	public void jewelleryCriticalChanceAddsPercentagePoints() {
+		final Player player = player();
+		final Item ring = accessory("critical ring", "ring");
+		final Item necklace = accessory("critical necklace", "necklace");
+		ring.put(CriticalHitService.CRITICAL_CHANCE_ATTRIBUTE, 5.0);
+		necklace.put(CriticalHitService.CRITICAL_CHANCE_ATTRIBUTE, 6.0);
+		assertTrue(player.equip("finger", ring));
+		assertTrue(player.equip("neck", necklace));
+
+		assertEquals(21.0, CriticalHitService.getCriticalChance(player), 0.0);
+	}
+
+	@Test
+	public void legendaryAndRegularCriticalBonusesShareFiftyPercentCap() {
+		final Player player = player();
+		final Weapon weapon = weapon("ranged", 35.0);
+		weapon.put(WeaponAffixCombatService.LEGENDARY_FALCON_EYE_ATTRIBUTE, 1.0);
+		final Item ring = accessory("hero eye ring", "ring");
+		ring.put(LegendaryEquipmentAffixService.HERO_EYE_ATTRIBUTE, 1.0);
+		assertTrue(player.equip("rhand", weapon));
+		assertTrue(player.equip("finger", ring));
+
+		assertEquals(50.0,
+				CriticalHitService.getCriticalChance(player, true), 0.0);
+	}
+
+	@Test
+	public void finalChanceIsCappedAtFiftyPercent() {
+		final Player player = player();
+		assertTrue(player.equip("rhand", weapon(90.0)));
+
+		assertEquals(50.0, CriticalHitService.getCriticalChance(player), 0.0);
+	}
+
+	@Test
+	public void criticalDamageAffixRaisesMultiplierAboveBaseDoubleDamage() {
+		final Player player = player();
+		final Weapon weapon = weapon(0.0);
+		weapon.put(CriticalHitService.CRITICAL_DAMAGE_BONUS_ATTRIBUTE, 0.20);
+		assertTrue(player.equip("rhand", weapon));
+
+		assertEquals(2.20, CriticalHitService.getCriticalDamageMultiplier(player),
+				0.0000001);
+		assertEquals(220, CriticalHitService.applyCriticalDamage(player, 100));
+	}
+
+	@Test
+	public void jewelleryCriticalDamageStacksWithWeaponAndUsesSharedCap() {
+		final Player player = player();
+		final Weapon weapon = weapon(0.0);
+		weapon.put(CriticalHitService.CRITICAL_DAMAGE_BONUS_ATTRIBUTE, 0.30);
+		final Item ring = accessory("critical ring", "ring");
+		final Item necklace = accessory("critical necklace", "necklace");
+		ring.put(CriticalHitService.CRITICAL_DAMAGE_BONUS_ATTRIBUTE, 0.15);
+		necklace.put(CriticalHitService.CRITICAL_DAMAGE_BONUS_ATTRIBUTE, 0.15);
+		assertTrue(player.equip("rhand", weapon));
+		assertTrue(player.equip("finger", ring));
+		assertTrue(player.equip("neck", necklace));
+
+		assertEquals(2.50, CriticalHitService.getCriticalDamageMultiplier(player),
+				0.0000001);
+		assertEquals(250, CriticalHitService.applyCriticalDamage(player, 100));
+	}
+
+	@Test
+	public void flatGlyphCriticalDamageBonusIsStillPreserved() {
+		final Player player = player();
+		final Item glyph = new Item("critical damage glyph", "glyph", "test", null);
+		glyph.put("critical_additional_bonus", 7.0);
+		assertTrue(player.equip("offensive_rune", glyph));
+
+		assertEquals(207, CriticalHitService.applyCriticalDamage(player, 100));
+	}
+
+	@Test
+	public void deterministicRollUsesExactPercentageBoundary() {
+		assertTrue(CriticalHitService.isCriticalSuccessful(10.0, 10));
+		assertFalse(CriticalHitService.isCriticalSuccessful(10.0, 11));
+		assertTrue(CriticalHitService.isCriticalSuccessful(50.0, 50));
+		assertFalse(CriticalHitService.isCriticalSuccessful(50.0, 51));
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void rejectsRollBelowD100Range() {
+		CriticalHitService.isCriticalSuccessful(10.0, 0);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void rejectsRollAboveD100Range() {
+		CriticalHitService.isCriticalSuccessful(10.0, 101);
+	}
+
+	private Player player() {
+		return PlayerTestHelper.createPlayer("critical tester");
+	}
+
+	private Item accessory(final String name, final String itemClass) {
+		return new Item(name, itemClass, "test", null);
+	}
+
+	private Weapon weapon(final double criticalChance) {
+		return weapon("sword", criticalChance);
+	}
+
+	private Weapon weapon(final String itemClass, final double criticalChance) {
+		final Map<String, String> attributes = new HashMap<String, String>();
+		attributes.put("atk", "30");
+		attributes.put("rate", "5");
+		final Weapon weapon = new Weapon("critical weapon", itemClass, "test",
+				attributes);
+		weapon.put(CriticalHitService.CRITICAL_CHANCE_ATTRIBUTE, criticalChance);
+		return weapon;
+	}
+}

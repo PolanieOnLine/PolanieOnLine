@@ -9,6 +9,7 @@
 		<attributes>
 			<atk value="454"/>
 			<def value="37"/>
+			<armor value="none"/>
 			<hp value="1662"/>
 			<speed value="0.9"/>
 			<size value="1,1"/>
@@ -29,7 +30,7 @@
 			<says>
 				<noise state="idle follow fight" value="Przekroczyłeś wrota piekieł!"/>
 			</says>
-			<profile name="bleeding_attack" params="2"/>
+			<profile name="perilous" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -43,6 +44,7 @@
 		<attributes>
 			<atk value="411"/>
 			<def value="31"/>
+			<armor value="none"/>
 			<hp value="1541"/>
 			<speed value="0.8"/>
 			<size value="1,1"/>
@@ -63,7 +65,7 @@
 			<says>
 				<noise state="idle follow fight" value="Nie wrócę do piekła! Nie!"/>
 			</says>
-			<profile name="bleeding_attack" params="2"/>
+			<profile name="perilous" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -77,6 +79,7 @@
 		<attributes>
 			<atk value="467"/>
 			<def value="41"/>
+			<armor value="none"/>
 			<hp value="1662"/>
 			<speed value="0.9"/>
 			<size value="1,1"/>
@@ -97,7 +100,7 @@
 			<says>
 				<noise state="idle follow fight" value="Krwią podpisałeś cyrograf! Pożegnaj się z bliskimi!"/>
 			</says>
-			<profile name="bleeding_attack" params="2"/>
+			<profile name="perilous" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -111,6 +114,7 @@
 		<attributes>
 			<atk value="454"/>
 			<def value="37"/>
+			<armor value="none"/>
 			<hp value="1662"/>
 			<speed value="0.9"/>
 			<size value="1,1"/>
@@ -132,7 +136,7 @@
 			<says>
 				<noise state="idle follow fight" value="Za twe grzechy za twe zbytki, chodź do piekła boś ty brzydki!"/>
 			</says>
-			<profile name="bleeding_attack" params="2"/>
+			<profile name="perilous" params="2"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -146,6 +150,7 @@
 		<attributes>
 			<atk value="401"/>
 			<def value="36"/>
+			<armor value="none"/>
 			<hp value="654"/>
 			<speed value="1.0"/>
 			<size value="1,1"/>

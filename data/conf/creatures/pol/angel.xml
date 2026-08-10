@@ -10,6 +10,7 @@
 			<atk value="8888"/>
 			<ratk value="8888"/>
 			<def value="362"/>
+			<armor value="heavy"/>
 			<hp value="9000"/>
 			<speed value="1.0"/>
 			<size value="3,3"/>
@@ -44,7 +45,7 @@
 			<says>
 				<noise state="idle follow fight" value="Niech twa dusza powróci na ziemię!"/>
 			</says>
-			<profile name="bleeding_attack" params="5"/>
+			<profile name="perilous" params="5"/>
 			<profile name="brave"/>
 			<profile name="archer"/>
 			<profile name="offensive"/>
@@ -62,6 +63,7 @@
 			<atk value="12222"/>
 			<ratk value="12222"/>
 			<def value="666"/>
+			<armor value="heavy"/>
 			<hp value="9000"/>
 			<speed value="1.0"/>
 			<size value="3,3"/>
@@ -96,7 +98,7 @@
 			<says>
 				<noise state="idle follow fight" value="Syn ognia nie będzie się kłaniał synowi ziemi!"/>
 			</says>
-			<profile name="bleeding_attack" params="5"/>
+			<profile name="perilous" params="5"/>
 			<profile name="brave"/>
 			<profile name="archer"/>
 			<profile name="offensive"/>
@@ -114,6 +116,7 @@
 			<atk value="24444"/>
 			<ratk value="24444"/>
 			<def value="776"/>
+			<armor value="heavy"/>
 			<hp value="20000"/>
 			<speed value="1.0"/>
 			<size value="3,3"/>
@@ -152,7 +155,7 @@
 			<says>
 				<noise state="idle follow fight" value="Grzechy twej duszy ranią naszego Stwórcę!"/>
 			</says>
-			<profile name="bleeding_attack" params="5"/>
+			<profile name="perilous" params="5"/>
 			<profile name="brave"/>
 			<profile name="archer"/>
 			<profile name="offensive"/>
@@ -209,7 +212,7 @@
 				<noise state="idle follow fight" value="Jestem wszystkim, czego nie możesz kontrolować."/>
 				<noise state="idle follow fight" value="Precz stąd nim spojrzę!"/>
 			</says>
-			<profile name="bleeding_attack" params="5"/>
+			<profile name="perilous" params="5"/>
 			<profile name="brave"/>
 			<profile name="archer"/>
 			<profile name="offensive"/>

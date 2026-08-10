@@ -1,7 +1,7 @@
 /***************************************************************************
  *                   (C) Copyright 2003-2026 - Stendhal                    *
- ***************************************************************************
- ***************************************************************************
+ ***************************************************************************/
+/***************************************************************************
  *                                                                         *
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
@@ -23,6 +23,8 @@ import marauroa.common.game.RPAction;
 final class ItemCreationCommandOptions {
 	static final String RARITY = "rarity";
 	static final String RANDOMIZE_MODIFIERS = "randomize-modifiers";
+	static final String AFFIXES = "affixes";
+	static final String SEED = "seed";
 	static final String STAT_MULTIPLIER = "stat-multiplier";
 	static final String ATTACK_MULTIPLIER = "attack-multiplier";
 	static final String DEFENSE_MULTIPLIER = "defense-multiplier";
@@ -33,6 +35,8 @@ final class ItemCreationCommandOptions {
 	private static final Set<String> SUPPORTED_OPTIONS = new HashSet<String>(Arrays.asList(
 			RARITY,
 			RANDOMIZE_MODIFIERS,
+			AFFIXES,
+			SEED,
 			STAT_MULTIPLIER,
 			ATTACK_MULTIPLIER,
 			DEFENSE_MULTIPLIER,

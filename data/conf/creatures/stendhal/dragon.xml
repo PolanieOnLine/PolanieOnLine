@@ -10,6 +10,7 @@
 			<atk value="1867"/>
 			<ratk value="1867"/>
 			<def value="98"/>
+			<armor value="medium"/>
 			<hp value="2022"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
@@ -41,7 +42,7 @@
 				<noise state="idle follow fight" value="Ale jazda na górze!!"/>
 				<sound value="roar-large-1" />
 			</says>
-			<profile name="bleeding_attack" params="5"/>
+			<profile name="perilous" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -58,6 +59,7 @@
 			<atk value="2044"/>
 			<ratk value="2044"/>
 			<def value="107"/>
+			<armor value="medium"/>
 			<hp value="3618"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
@@ -87,7 +89,7 @@
 				<noise state="idle follow fight" value="Do ataku!!"/>
 				<sound value="roar-large-1" />
 			</says>
-			<profile name="bleeding_attack" params="5"/>
+			<profile name="perilous" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -105,6 +107,7 @@
 		<attributes>
 			<atk value="803"/>
 			<def value="75"/>
+			<armor value="medium"/>
 			<hp value="300"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
@@ -131,7 +134,7 @@
 			<says>
 				<sound value="roar-large-1" />
 			</says>
-			<profile name="bleeding_attack" params="5"/>
+			<profile name="perilous" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -171,7 +174,7 @@
 			<says>
 				<sound value="roar-large-1" />
 			</says>
-			<profile name="bleeding_attack" params="5"/>
+			<profile name="perilous" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -190,6 +193,7 @@
 			<atk value="1511"/>
 			<ratk value="1511"/>
 			<def value="57"/>
+			<armor value="medium"/>
 			<hp value="900"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
@@ -219,7 +223,7 @@
 			<says>
 				<sound value="roar-large-1" />
 			</says>
-			<profile name="bleeding_attack" params="5"/>
+			<profile name="perilous" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -236,6 +240,7 @@
 			<atk value="1777"/>
 			<ratk value="1777"/>
 			<def value="115"/>
+			<armor value="medium"/>
 			<hp value="1200"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
@@ -263,7 +268,7 @@
 			<says>
 				<sound value="roar-large-1" />
 			</says>
-			<profile name="bleeding_attack" params="5"/>
+			<profile name="perilous" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -280,6 +285,7 @@
 			<atk value="3227"/>
 			<ratk value="3227"/>
 			<def value="127"/>
+			<armor value="heavy"/>
 			<hp value="3300"/>
 			<speed value="1.0"/>
 			<size value="6,5"/>
@@ -309,7 +315,7 @@
 				<sound value="roar-dragon-1" />
 				<sound value="roar-dragon-2" />
 			</says>
-			<profile name="bleeding_attack" params="5"/>
+			<profile name="perilous" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -329,6 +335,7 @@
 			<atk value="837"/>
 			<ratk value="837"/>
 			<def value="138"/>
+			<armor value="medium"/>
 			<hp value="1100"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
@@ -356,7 +363,7 @@
 				<sound value="roar-dragon-1" />
 				<sound value="wings-flap-large-1" />
 			</says>
-			<profile name="bleeding_attack" params="5"/>
+			<profile name="perilous" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -374,6 +381,7 @@
 		<attributes>
 			<atk value="1836"/>
 			<def value="96"/>
+			<armor value="medium"/>
 			<hp value="1900"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
@@ -404,7 +412,7 @@
 				<sound value="roar-large-1" />
 				<sound value="wings-flap-large-1" />
 			</says>
-			<profile name="bleeding_attack" params="5"/>
+			<profile name="perilous" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -422,6 +430,7 @@
 			<atk value="1350"/>
 			<ratk value="1350"/>
 			<def value="153"/>
+			<armor value="medium"/>
 			<hp value="5610"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>

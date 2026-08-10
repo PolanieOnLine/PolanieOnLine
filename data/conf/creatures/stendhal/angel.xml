@@ -9,6 +9,7 @@
 		<attributes>
 			<atk value="4755"/>
 			<def value="142"/>
+			<armor value="medium"/>
 			<hp value="12000"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
@@ -41,7 +42,7 @@
 				<noise state="idle follow fight" value="Moja wola niech będzie, na ziemi i w niebiosach!"/>
 				<noise state="idle follow fight" value="Mnie należy się chwała!"/>
 			</says>
-			<profile name="bleeding_attack" params="2"/>
+			<profile name="perilous" params="2"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -60,6 +61,7 @@
 			<atk value="4700"/>
 			<ratk value="4700"/>
 			<def value="171"/>
+			<armor value="heavy"/>
 			<hp value="18000"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
@@ -95,7 +97,7 @@
 				<noise state="idle follow fight" value="Zmiażdżę cię z niewyobrażalną siłą!!"/>
 				<noise state="idle follow fight" value="Moja wola niech się stanie!"/>
 			</says>
-			<profile name="bleeding_attack" params="2"/>
+			<profile name="perilous" params="2"/>
 			<profile name="brave"/>
 			<profile name="archer"/>
 			<profile name="offensive"/>
@@ -114,6 +116,7 @@
 		<attributes>
 			<atk value="2120"/>
 			<def value="105"/>
+			<armor value="medium"/>
 			<hp value="4333"/>
 			<speed value="1.0"/>
 			<size value="2,2"/>
@@ -139,7 +142,7 @@
 				<noise state="idle follow fight" value="Już po tobie!"/>
 				<noise state="idle follow fight" value="Przybyłem by zniszczyć ludzkość!"/>
 			</says>
-			<profile name="bleeding_attack" params="2"/>
+			<profile name="perilous" params="2"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -187,7 +190,7 @@
 				<noise state="idle follow fight" value="Będę wszechmocny!"/>
 				<sound value="sneeze-baby-1"/>
 			</says>
-			<profile name="bleeding_attack" params="1"/>
+			<profile name="perilous" params="1"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
@@ -202,6 +205,7 @@
 		<attributes>
 			<atk value="3187"/>
 			<def value="128"/>
+			<armor value="medium"/>
 			<hp value="4000"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
@@ -233,7 +237,7 @@
 				<noise state="idle follow fight" value="Idź na spotkanie swego Stwórcy!"/>
 				<noise state="idle follow fight" value="Podli śmiertelnicy, wyzwaliście mnie na swoją zgubę!"/>
 			</says>
-			<profile name="bleeding_attack" params="2"/>
+			<profile name="perilous" params="2"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -250,6 +254,7 @@
 			<atk value="3455"/>
 			<ratk value="3455"/>
 			<def value="162"/>
+			<armor value="heavy"/>
 			<hp value="7000"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
@@ -286,7 +291,7 @@
 				<noise state="idle follow fight" value="Twego przeznaczenia nie znajdziesz tutaj."/>
 				<noise state="idle follow fight" value="Ni na ziemi, ni w niebie miejsca nie znajdziesz dla siebie..."/>
 			</says>
-			<profile name="bleeding_attack" params="2"/>
+			<profile name="perilous" params="2"/>
 			<profile name="brave"/>
 			<profile name="archer"/>
 			<profile name="offensive"/>

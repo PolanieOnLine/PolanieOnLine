@@ -17,14 +17,17 @@ import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Composite;
 import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import games.stendhal.client.IGameScreen;
 import games.stendhal.client.OutfitStore;
 import games.stendhal.client.StendhalClient;
 import games.stendhal.client.ZoneInfo;
 import games.stendhal.client.entity.ActionType;
+import games.stendhal.client.entity.ParryIndicator;
 import games.stendhal.client.entity.Player;
 import games.stendhal.client.entity.StatusID;
 import games.stendhal.client.entity.User;
@@ -48,6 +51,7 @@ class Player2DView<T extends Player> extends RPEntity2DView<T> {
 	private static final Logger logger = Logger.getLogger(Player2DView.class);
 	/** Color used for players who have been zombified. */
 	private static final Color ZOMBIE_COLOR = new Color(0x083000);
+	private static final int COMBAT_ICON_OFFSET = 8;
 
 	/**
 	 * Sprite representing away.
@@ -62,12 +66,15 @@ class Player2DView<T extends Player> extends RPEntity2DView<T> {
 	 * Sprite representing recently killing of other player.
 	 */
 	private static final Sprite skullSprite;
+	/** Sprite shown instead of the generic block icon after a parry. */
+	private static final Sprite parrySprite;
 
 	static {
 		final SpriteStore store = SpriteStore.get();
 		final Sprite gotAwaySprite = store.getSprite("data/sprites/ideas/away.png");
 		final Sprite gotGrumpySprite = store.getSprite("data/sprites/ideas/grumpy.png");
 		final Sprite gotPkSprite = store.getSprite("data/sprites/ideas/pk.png");
+		parrySprite = store.getSprite("data/sprites/ideas/parry.png");
 		skullSprite = store.getAnimatedSprite(gotPkSprite, 16, 200);
 		awaySprite = store.getAnimatedSprite(gotAwaySprite, 1000);
 		grumpySprite = store.getAnimatedSprite(gotGrumpySprite, 500);
@@ -255,6 +262,24 @@ class Player2DView<T extends Player> extends RPEntity2DView<T> {
 		}
 
 		super.draw(g2d, x, y, width, height);
+
+		// RPEntity2DView has already drawn the generic BLOCKED icon underneath.
+		// Cover it at the exact same combat-indicator position when the block was
+		// explicitly caused by a parry.
+		if (ParryIndicator.isActive(entity)) {
+			final Rectangle2D area = entity.getArea();
+			final int sx = (int) ((area.getX() + area.getWidth())
+					* IGameScreen.SIZE_UNIT_PIXELS) - COMBAT_ICON_OFFSET;
+			final int sy = y + height - 2 * COMBAT_ICON_OFFSET;
+			parrySprite.draw(g2d, sx, sy);
+		}
+	}
+
+	@Override
+	protected void drawTop(final Graphics2D g2d, final int x, final int y,
+			final int width, final int height) {
+		super.drawTop(g2d, x, y, width, height);
+		StunnedStarsRenderer.draw(entity, g2d, x, y, width);
 	}
 
 	//

@@ -51,6 +51,7 @@ public final class CreaturesXMLLoader extends DefaultHandler {
 	private int atk;
 	private Integer ratk = 0;
 	private int def;
+	private String armorType;
 	private int hp;
 	private double speed;
 	private int sizeWidth;
@@ -163,6 +164,7 @@ public final class CreaturesXMLLoader extends DefaultHandler {
 			deathSound = null;
 			statusAttack = null;
 			statusAttackProbability = 0;
+			armorType = null;
 		} else if (qName.equals("type")) {
 			clazz = attrs.getValue("class");
 			subclass = attrs.getValue("subclass");
@@ -257,6 +259,8 @@ public final class CreaturesXMLLoader extends DefaultHandler {
 				ratk = Integer.parseInt(attrs.getValue("value"));
 			} else if (qName.equals("def")) {
 				def = Integer.parseInt(attrs.getValue("value"));
+			} else if (qName.equals("armor")) {
+				armorType = attrs.getValue("value");
 			} else if (qName.equals("hp")) {
 				hp = Integer.parseInt(attrs.getValue("value"));
 			} else if (qName.equals("speed")) {
@@ -275,15 +279,7 @@ public final class CreaturesXMLLoader extends DefaultHandler {
 			ai = true;
 		} else if (ai) {
 			if (qName.equals("profile")) {
-				final String profileName = attrs.getValue("name");
-				final String profileParams = attrs.getValue("params");
-				aiProfiles.put(profileName, profileParams);
-				// Compatibility alias for older creature data. Runtime code uses
-				// the explicit bleeding_attack profile name.
-				if ("perilous".equals(profileName)
-						&& !aiProfiles.containsKey("bleeding_attack")) {
-					aiProfiles.put("bleeding_attack", profileParams);
-				}
+				aiProfiles.put(attrs.getValue("name"), attrs.getValue("params"));
 			} else if (qName.equals("says")) {
 				says = true;
 			} else if (says) {
@@ -354,6 +350,7 @@ public final class CreaturesXMLLoader extends DefaultHandler {
 
 			final DefaultCreature creature = new DefaultCreature(clazz, subclass, name, tileid);
 			creature.setRPStats(hp, atk, ratk, def, speed);
+			creature.setArmorType(armorType);
 			creature.setLevel(level, xp);
 			creature.setSize(sizeWidth, sizeHeight);
 			creature.setResistance(resistance);

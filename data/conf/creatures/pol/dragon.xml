@@ -9,6 +9,7 @@
 		<attributes>
 			<atk value="3666"/>
 			<def value="110"/>
+			<armor value="heavy"/>
 			<hp value="6600"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
@@ -40,7 +41,7 @@
 				<sound value="roar-dragon-1"/>
 				<sound value="wings-flap-large-1"/>
 			</says>
-			<profile name="bleeding_attack" params="2"/>
+			<profile name="perilous" params="2"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -57,6 +58,7 @@
 		<attributes>
 			<atk value="3211"/>
 			<def value="84"/>
+			<armor value="heavy"/>
 			<hp value="6000"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
@@ -89,7 +91,7 @@
 				<sound value="roar-dragon-1"/>
 				<sound value="wings-flap-large-1"/>
 			</says>
-			<profile name="bleeding_attack" params="2"/>
+			<profile name="perilous" params="2"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -106,6 +108,7 @@
 		<attributes>
 			<atk value="2951"/>
 			<def value="71"/>
+			<armor value="heavy"/>
 			<hp value="5400"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
@@ -139,7 +142,7 @@
 				<sound value="roar-dragon-1"/>
 				<sound value="wings-flap-large-1"/>
 			</says>
-			<profile name="bleeding_attack" params="2"/>
+			<profile name="perilous" params="2"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -156,6 +159,7 @@
 		<attributes>
 			<atk value="2631"/>
 			<def value="64"/>
+			<armor value="heavy"/>
 			<hp value="5200"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
@@ -188,7 +192,7 @@
 				<sound value="roar-dragon-1"/>
 				<sound value="wings-flap-large-1"/>
 			</says>
-			<profile name="bleeding_attack" params="2"/>
+			<profile name="perilous" params="2"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -205,6 +209,7 @@
 		<attributes>
 			<atk value="2171"/>
 			<def value="58"/>
+			<armor value="heavy"/>
 			<hp value="4800"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
@@ -236,7 +241,7 @@
 				<sound value="roar-dragon-1"/>
 				<sound value="wings-flap-large-1"/>
 			</says>
-			<profile name="bleeding_attack" params="2"/>
+			<profile name="perilous" params="2"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -253,6 +258,7 @@
 		<attributes>
 			<atk value="613"/>
 			<def value="60"/>
+			<armor value="heavy"/>
 			<hp value="2160"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
@@ -281,7 +287,7 @@
 				<sound value="pol-dragon-taunt"/>
 				<sound value="roar-large-1"/>
 			</says>
-			<profile name="bleeding_attack" params="1"/>
+			<profile name="perilous" params="1"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -296,6 +302,7 @@
 		<attributes>
 			<atk value="546"/>
 			<def value="45"/>
+			<armor value="heavy"/>
 			<hp value="1440"/>
 			<speed value="1.0"/>
 			<size value="3,2"/>
@@ -322,7 +329,7 @@
 				<sound value="pol-dragon-taunt"/>
 				<sound value="roar-large-1"/>
 			</says>
-			<profile name="bleeding_attack" params="1"/>
+			<profile name="perilous" params="1"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -357,7 +364,7 @@
 			<says>
 				<sound value="roar-large-1"/>
 			</says>
-			<profile name="bleeding_attack" params="1"/>
+			<profile name="perilous" params="1"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -374,6 +381,7 @@
 		<attributes>
 			<atk value="3659"/>
 			<def value="77"/>
+			<armor value="heavy"/>
 			<hp value="3960"/>
 			<speed value="1.0"/>
 			<size value="5,4"/>
@@ -407,7 +415,7 @@
 				<sound value="pol-dragon-taunt"/>
 				<sound value="roar-dragon-1"/>
 			</says>
-			<profile name="bleeding_attack" params="4"/>
+			<profile name="perilous" params="4"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -422,6 +430,7 @@
 		<attributes>
 			<atk value="4222"/>
 			<def value="165"/>
+			<armor value="heavy"/>
 			<hp value="3960"/>
 			<speed value="1.0"/>
 			<size value="5,4"/>
@@ -452,7 +461,7 @@
 				<sound value="pol-dragon-taunt"/>
 				<sound value="roar-dragon-1"/>
 			</says>
-			<profile name="bleeding_attack" params="5"/>
+			<profile name="perilous" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -467,6 +476,7 @@
 		<attributes>
 			<atk value="4777"/>
 			<def value="188"/>
+			<armor value="heavy"/>
 			<hp value="4960"/>
 			<speed value="1.0"/>
 			<size value="5,4"/>
@@ -498,7 +508,7 @@
 				<sound value="pol-dragon-taunt"/>
 				<sound value="roar-dragon-1"/>
 			</says>
-			<profile name="bleeding_attack" params="5"/>
+			<profile name="perilous" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -513,6 +523,7 @@
 		<attributes>
 			<atk value="5444"/>
 			<def value="211"/>
+			<armor value="heavy"/>
 			<hp value="5960"/>
 			<speed value="1.0"/>
 			<size value="5,4"/>
@@ -542,7 +553,7 @@
 				<sound value="pol-dragon-taunt"/>
 				<sound value="roar-dragon-1"/>
 			</says>
-			<profile name="bleeding_attack" params="5"/>
+			<profile name="perilous" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -557,6 +568,7 @@
 		<attributes>
 			<atk value="5999"/>
 			<def value="244"/>
+			<armor value="heavy"/>
 			<hp value="6960"/>
 			<speed value="1.0"/>
 			<size value="5,4"/>
@@ -590,7 +602,7 @@
 				<sound value="pol-dragon-taunt"/>
 				<sound value="roar-dragon-1"/>
 			</says>
-			<profile name="bleeding_attack" params="5"/>
+			<profile name="perilous" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -605,6 +617,7 @@
 		<attributes>
 			<atk value="3300"/>
 			<def value="777"/>
+			<armor value="heavy"/>
 			<hp value="1300"/>
 			<speed value="0.8"/>
 			<size value="2,2"/>
@@ -638,7 +651,7 @@
 				<sound value="pol-dragon-taunt"/>
 				<sound value="wings-flap-large-1"/>
 			</says>
-			<profile name="bleeding_attack" params="5"/>
+			<profile name="perilous" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -656,6 +669,7 @@
 		<attributes>
 			<atk value="4000"/>
 			<def value="999"/>
+			<armor value="heavy"/>
 			<hp value="1300"/>
 			<speed value="1.0"/>
 			<size value="2,2"/>
@@ -690,7 +704,7 @@
 				<sound value="pol-dragon-taunt"/>
 				<sound value="wings-flap-large-1"/>
 			</says>
-			<profile name="bleeding_attack" params="5"/>
+			<profile name="perilous" params="5"/>
 			<profile name="brave"/>
 			<profile name="animal"/>
 			<profile name="offensive"/>
@@ -708,6 +722,7 @@
 		<attributes>
 			<atk value="22222"/>
 			<def value="999"/>
+			<armor value="heavy"/>
 			<hp value="19000"/>
 			<speed value="0.7"/>
 			<size value="8,6"/>
@@ -739,7 +754,7 @@
 				<sound value="pol-dragon-roar-scream"/>
 				<sound value="pol-dragon-roaring"/>
 			</says>
-			<profile name="bleeding_attack" params="5"/>
+			<profile name="perilous" params="5"/>
 			<profile name="brave"/>
 			<profile name="offensive"/>
 			<profile name="human"/>
