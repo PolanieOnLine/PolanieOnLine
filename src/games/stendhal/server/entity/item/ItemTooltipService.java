@@ -25,6 +25,10 @@ import games.stendhal.server.entity.status.StatusAttacker;
 
 /** Builds a presentation-safe map of final item statistics for clients. */
 public final class ItemTooltipService {
+	/* Keep item value calculation/persistence available for future economy UI,
+	 * but do not expose it in player-facing tooltips for now. */
+	private static final boolean PUBLISH_ITEM_VALUE = false;
+
 	private static final Set<String> WEAPON_CLASSES = Collections.unmodifiableSet(
 			new HashSet<String>(Arrays.asList("club", "sword", "dagger",
 					"axe", "ranged", "wand", "whip")));
@@ -148,7 +152,7 @@ public final class ItemTooltipService {
 		copyInt(item, "durability", ItemTooltip.DURABILITY);
 		copyInt(item, "uses", ItemTooltip.USES);
 
-		if (item.getValue() > 0) {
+		if (PUBLISH_ITEM_VALUE && item.getValue() > 0) {
 			put(item, ItemTooltip.VALUE, Integer.toString(item.getValue()));
 		}
 		if (item.getDamageType() != null) {

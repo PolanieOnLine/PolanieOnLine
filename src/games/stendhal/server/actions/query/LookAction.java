@@ -26,6 +26,7 @@ import games.stendhal.server.actions.validator.SlotVisibleIfEntityContained;
 import games.stendhal.server.actions.validator.ZoneNotChanged;
 import games.stendhal.server.core.engine.GameEvent;
 import games.stendhal.server.entity.Entity;
+import games.stendhal.server.entity.item.Item;
 import games.stendhal.server.entity.player.Player;
 import marauroa.common.game.RPAction;
 
@@ -70,7 +71,7 @@ public class LookAction implements ActionListener {
 				name = entity.get(NAME);
 			}
 			new GameEvent(player.getName(), LOOK, name).raise();
-			final String text = entity.describe();
+			final String text = getLookDescription(entity);
 
 			if (entity.has(Actions.ACTION) && entity.get(Actions.ACTION).equals(Actions.READ)) {
 				player.sendPrivateText(NotificationType.RESPONSE, text);
@@ -80,6 +81,22 @@ public class LookAction implements ActionListener {
 
 			player.notifyWorldAboutChanges();
 		}
+	}
+
+	/**
+	 * Item tooltips are responsible for presenting gameplay statistics. Looking
+	 * at an item should remain a purely descriptive action and therefore must
+	 * not expose rarity, value, improvements, bindings or combat parameters.
+	 */
+	static String getLookDescription(final Entity entity) {
+		if (entity instanceof Item) {
+			final Item item = (Item) entity;
+			if (item.hasDescription()) {
+				return item.getDescription();
+			}
+			return "Oto " + item.getTitle() + ".";
+		}
+		return entity.describe();
 	}
 
 }
