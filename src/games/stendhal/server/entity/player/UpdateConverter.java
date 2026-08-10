@@ -582,13 +582,13 @@ public abstract class UpdateConverter {
 		}
 	}
 
-	public static void updateImproveItemAttr(Item item) {
-		if (!item.hasMaxImproves()) {
+	public static void clampUpgradeLevel(final Item item) {
+		if (!item.hasUpgradeLimit()) {
 			return;
 		}
 
-		if (item.getImprove() > item.getMaxImproves()) {
-			item.setImprove(item.getMaxImproves());
+		if (item.getUpgradeLevel() > item.getMaxUpgradeLevel()) {
+			item.setUpgradeLevel(item.getMaxUpgradeLevel());
 		}
 	}
 

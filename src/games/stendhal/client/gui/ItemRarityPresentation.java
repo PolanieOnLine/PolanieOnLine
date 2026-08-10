@@ -165,11 +165,14 @@ final class ItemRarityPresentation {
 			final IEntity entity, final RPObject object, final ItemRarity rarity) {
 		final String title = entity.getTitle();
 		if (title != null) {
+			final int upgradeLevel = WeaponPerformanceCalculator.getInt(object,
+					ItemTooltip.UPGRADE_LEVEL);
 			final String titleColor = rarity == null ? getTextColor()
 					: rarity.getColorHex();
 			tooltip.append("<font size='-1' color='")
 					.append(escapeHtml(titleColor)).append("'><b>")
-					.append(escapeHtml(title.toUpperCase(Locale.ROOT)))
+					.append(escapeHtml((title + (upgradeLevel > 0
+							? " +" + upgradeLevel : "")).toUpperCase(Locale.ROOT)))
 					.append("</b></font>");
 		}
 		if (rarity != null) {
@@ -178,16 +181,16 @@ final class ItemRarityPresentation {
 					.append(escapeHtml(rarity.getPolishDisplayName()))
 					.append("</font>");
 		}
-		appendImprovement(tooltip, object, rarity);
+		appendUpgrade(tooltip, object, rarity);
 	}
 
-	private static void appendImprovement(final StringBuilder tooltip,
+	private static void appendUpgrade(final StringBuilder tooltip,
 			final RPObject object, final ItemRarity rarity) {
-		final int improve = WeaponPerformanceCalculator.getInt(object,
-				ItemTooltip.IMPROVE);
-		final int maxImproves = WeaponPerformanceCalculator.getInt(object,
-				ItemTooltip.MAX_IMPROVES);
-		if (maxImproves <= 0 && improve <= 0) {
+		final int upgradeLevel = WeaponPerformanceCalculator.getInt(object,
+				ItemTooltip.UPGRADE_LEVEL);
+		final int maxUpgradeLevel = WeaponPerformanceCalculator.getInt(object,
+				ItemTooltip.MAX_UPGRADE_LEVEL);
+		if (maxUpgradeLevel <= 0 && upgradeLevel <= 0) {
 			return;
 		}
 
@@ -195,9 +198,9 @@ final class ItemRarityPresentation {
 				: rarity.getColorHex();
 		tooltip.append("<br><font size='-1' color='")
 				.append(escapeHtml(color)).append("'>&#9670;&nbsp; ")
-				.append("Ulepszenie: +").append(improve);
-		if (maxImproves > 0) {
-			tooltip.append("/").append(maxImproves);
+				.append("Ulepszenie: +").append(upgradeLevel);
+		if (maxUpgradeLevel > 0) {
+			tooltip.append(" / +").append(maxUpgradeLevel);
 		}
 		tooltip.append("</font>");
 	}

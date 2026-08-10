@@ -83,8 +83,10 @@ public final class ItemTooltip {
 	public static final String HEALTH = "health";
 	public static final String MIN_LEVEL = "min_level";
 	public static final String MIN_USE = "min_use";
-	public static final String IMPROVE = "improve";
-	public static final String MAX_IMPROVES = "max_improves";
+	/** Legacy wire key retained for compatibility with saved items and clients. */
+	public static final String UPGRADE_LEVEL = "improve";
+	/** Legacy wire key retained for compatibility with XML item definitions. */
+	public static final String MAX_UPGRADE_LEVEL = "max_improves";
 	public static final String DURABILITY = "durability";
 	public static final String USES = "uses";
 	public static final String VALUE = "value";

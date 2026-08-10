@@ -75,8 +75,8 @@ public class ItemRarityPresentationTest {
 		putStat(object, ItemTooltip.LIFESTEAL, "0.12402917");
 		putStat(object, ItemTooltip.PARRY_CHANCE, "0.15");
 		putStat(object, ItemTooltip.ARMOR_PENETRATION, "0.25");
-		putStat(object, ItemTooltip.IMPROVE, "0");
-		putStat(object, ItemTooltip.MAX_IMPROVES, "3");
+		putStat(object, ItemTooltip.UPGRADE_LEVEL, "0");
+		putStat(object, ItemTooltip.MAX_UPGRADE_LEVEL, "3");
 		putStat(object, ItemTooltip.VALUE, "11432");
 
 		final String tooltip = ItemRarityPresentation.buildItemToolTip(
@@ -103,11 +103,11 @@ public class ItemRarityPresentationTest {
 		assertTrue(tooltip.contains("&#9670; +15% szansy na parowanie"));
 		assertTrue(tooltip.contains("+25% penetracji pancerza"));
 		assertTrue(tooltip.contains("&#9670; +25% penetracji pancerza"));
-		assertTrue(tooltip.contains("Ulepszenie: +0/3"));
-		assertTrue(tooltip.indexOf("Ulepszenie: +0/3")
+		assertTrue(tooltip.contains("Ulepszenie: +0 / +3"));
+		assertTrue(tooltip.indexOf("Ulepszenie: +0 / +3")
 				< tooltip.indexOf("53,3 pkt. obrażeń na sekundę"));
-		assertTrue(tooltip.indexOf("Ulepszenie: +0/3")
-				== tooltip.lastIndexOf("Ulepszenie: +0/3"));
+		assertTrue(tooltip.indexOf("Ulepszenie: +0 / +3")
+				== tooltip.lastIndexOf("Ulepszenie: +0 / +3"));
 		assertTrue(tooltip.contains("Wartość: 11432"));
 		assertTrue(tooltip.contains("text-align:right"));
 	}
@@ -204,17 +204,18 @@ public class ItemRarityPresentationTest {
 		putCategory(ring, ItemTooltip.CATEGORY_ACCESSORY);
 		putStat(ring, ItemTooltip.ATTACK, "7");
 		putStat(ring, ItemTooltip.DEFENSE, "17");
-		putStat(ring, ItemTooltip.IMPROVE, "2");
-		putStat(ring, ItemTooltip.MAX_IMPROVES, "4");
+		putStat(ring, ItemTooltip.UPGRADE_LEVEL, "2");
+		putStat(ring, ItemTooltip.MAX_UPGRADE_LEVEL, "4");
 
 		final String tooltip = ItemRarityPresentation.buildItemToolTip(
 				EntityFactory.createEntity(ring));
 
 		assertTrue(tooltip.contains("+7 ataku"));
 		assertTrue(tooltip.contains("+17 pancerza"));
-		assertTrue(tooltip.contains("Ulepszenie: +2/4"));
+		assertTrue(tooltip.contains("PIERŚCIEŃ TESTOWY +2"));
+		assertTrue(tooltip.contains("Ulepszenie: +2 / +4"));
 		assertTrue(tooltip.indexOf("Rzadki")
-				< tooltip.indexOf("Ulepszenie: +2/4"));
+				< tooltip.indexOf("Ulepszenie: +2 / +4"));
 		assertTrue(countOccurrences(tooltip, DIVIDER_MARKER) == 1);
 		assertFalse(tooltip.contains("17 pkt. pancerza"));
 		assertFalse(tooltip.contains("Ochrona podstawowa"));

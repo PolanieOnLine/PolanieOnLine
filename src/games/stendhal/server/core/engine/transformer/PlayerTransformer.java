@@ -63,8 +63,9 @@ public class PlayerTransformer implements Transformer {
 	/** these items should be deleted for non admins. */
 	private static final List<String> ITEMS_FOR_ADMINS = Arrays.asList("rózga GM", "klucz GM");
 
-	/** these items should be changed improve value if the current value is higher than "max_improves" attr. */
-	private static final List<String> ITEMS_TO_CHANGE_IMPROVE = Arrays.asList(/* Item list to change current improve value. Like: "skórzana zbroja", "czarne spodnie" */);
+	/** Legacy items whose level should be clamped to the current XML limit. */
+	private static final List<String> ITEMS_TO_CLAMP_UPGRADE_LEVEL = Arrays.asList(
+			/* Item names can be added here for targeted save compatibility. */);
 
 	public Player create(final RPObject object) {
 
@@ -415,7 +416,7 @@ public class PlayerTransformer implements Transformer {
 					continue;
 				}
 
-				changeImproveValue(item);
+				clampUpgradeLevel(item);
 				boundOldItemsToPlayer(player, item);
 
 				newSlot.add(item);
@@ -452,10 +453,10 @@ public class PlayerTransformer implements Transformer {
 		item.autobind(player.getName());
 	}
 
-	private void changeImproveValue(final Item item) {
-		if (ITEMS_TO_CHANGE_IMPROVE.contains(item.getName())) {
-			if (item.getImprove() > item.getMaxImproves()) {
-				item.setImprove(item.getMaxImproves());
+	private void clampUpgradeLevel(final Item item) {
+		if (ITEMS_TO_CLAMP_UPGRADE_LEVEL.contains(item.getName())) {
+			if (item.getUpgradeLevel() > item.getMaxUpgradeLevel()) {
+				item.setUpgradeLevel(item.getMaxUpgradeLevel());
 				return;
 			}
 		}

@@ -612,6 +612,34 @@ public class Player extends DressedEntity implements UseListener {
 	}
 
 	/**
+	 * Consumes a server-calculated karma modifier without rolling it again.
+	 * This is used when an operation must show an exact preview before the
+	 * attempt. Callers must bind the value to server-side state and must never
+	 * accept it from a client request.
+	 *
+	 * @param score signed modifier previously calculated by the server
+	 * @return the consumed modifier, or {@code 0.0} when its sign no longer
+	 *         matches the player's karma
+	 */
+	public double consumeKarmaModifier(final double score) {
+		if (score == 0.0) {
+			return 0.0;
+		}
+		if ((karma < 0.0 && score > 0.0)
+				|| (karma >= 0.0 && score < 0.0)) {
+			return 0.0;
+		}
+
+		if (isEquipped("talizman szczęścia")) {
+			karma -= 0.75 * score;
+		} else {
+			karma -= score;
+		}
+		put("karma", karma);
+		return score;
+	}
+
+	/**
 	 * Increments the number of successful trades by 1
 	 */
 	public void incrementTradescore() {
@@ -2893,8 +2921,8 @@ public class Player extends DressedEntity implements UseListener {
 		return itemCounter.getNumberOfLootsForItem(item);
 	}
 
-	public int getNumberOfImprovedForItem(String item) {
-		return itemCounter.getNumberOfImprovedForItem(item);
+	public int getNumberOfUpgradesForItem(final String item) {
+		return itemCounter.getNumberOfUpgradesForItem(item);
 	}
 
 	/**
@@ -2974,15 +3002,15 @@ public class Player extends DressedEntity implements UseListener {
 	}
 
 	/**
-	 * Gets the amount of an item improved by player.
+	 * Gets the number of upgrades recorded for an item.
 	 *
 	 * @param item
 	 * 		Item name.
 	 * @return
-	 * 		Number improves of the item.
+	 * 		Number of upgrades of the item.
 	 */
-	public int getQuantityOfImprovedItems(final String item) {
-		return itemCounter.getQuantityOfImprovedItems(item);
+	public int getQuantityOfUpgradedItems(final String item) {
+		return itemCounter.getQuantityOfUpgradedItems(item);
 	}
 
 	/**
@@ -3122,14 +3150,14 @@ public class Player extends DressedEntity implements UseListener {
 	}
 
 	/**
-	 * Increases the count of improves item
+	 * Increases the successful item-upgrade count.
 	 *
 	 * @param name
 	 *			the item name
 	 * @param quantity
 	 */
-	public void incImprovedForItem(String name, int quantity) {
-		itemCounter.incImprovedForItem(name, quantity);
+	public void incUpgradedForItem(final String name, final int quantity) {
+		itemCounter.incUpgradedForItem(name, quantity);
 		// check achievements in upgrade category
 		AchievementNotifier.get().onUpgrade(this);
 	}

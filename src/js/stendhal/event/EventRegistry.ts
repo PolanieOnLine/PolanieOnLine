@@ -19,6 +19,7 @@ import { GlobalVisualEffectEvent } from "event/GlobalVisualEffectEvent";
 import { GroupChangeEvent } from "./GroupChangeEvent";
 import { GroupInviteEvent } from "./GroupInviteEvent";
 import { ImageEvent } from "event/ImageEvent";
+import { ItemUpgradeEvent } from "./ItemUpgradeEvent";
 import { PlayerLoggedOnEvent } from "./PlayerLoggedOnEvent";
 import { PlayerLoggedOutEvent } from "./PlayerLoggedOutEvent";
 import { PrivateTextEvent } from "event/PrivateTextEvent";
@@ -76,6 +77,7 @@ export class EventRegistry {
 		marauroa.rpeventFactory.register("group_change_event", GroupChangeEvent);
 		marauroa.rpeventFactory.register("group_invite_event", GroupInviteEvent);
 		marauroa.rpeventFactory.register("image_event", ImageEvent);
+		marauroa.rpeventFactory.register("item_upgrade", ItemUpgradeEvent);
 		marauroa.rpeventFactory.register("player_logged_on", PlayerLoggedOnEvent);
 		marauroa.rpeventFactory.register("player_logged_out", PlayerLoggedOutEvent);
 		marauroa.rpeventFactory.register("private_text", PrivateTextEvent);

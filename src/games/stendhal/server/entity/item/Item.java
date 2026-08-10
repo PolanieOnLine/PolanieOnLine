@@ -63,6 +63,10 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	public static final String RARITY_PROFILE = "rarity_profile";
 	/** Persistent instance value after the rarity multiplier. */
 	public static final String VALUE = "value";
+	/** Legacy persistent key for the current item upgrade level. */
+	public static final String UPGRADE_LEVEL_ATTRIBUTE = "improve";
+	/** Legacy XML/wire key for the maximum item upgrade level. */
+	public static final String MAX_UPGRADE_LEVEL_ATTRIBUTE = "max_improves";
 
 	private static final int DEFAULT_ATTACK_RATE = 5;
 
@@ -310,8 +314,9 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		// current number of times item has been used
 		entity.addAttribute("uses", Type.INT);
 
-		entity.addAttribute("max_improves", Type.INT, Definition.VOLATILE);
-		entity.addAttribute("improve", Type.INT);
+		entity.addAttribute(MAX_UPGRADE_LEVEL_ATTRIBUTE, Type.INT,
+				Definition.VOLATILE);
+		entity.addAttribute(UPGRADE_LEVEL_ATTRIBUTE, Type.INT);
 
 		entity.addAttribute("statusattack", Type.STRING, Definition.HIDDEN);
 
@@ -365,7 +370,7 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 
 	/**
 	 * Returns the value of a specified attribute for the item, factoring in deterioration
-	 * and possible improvements. If the item has undergone maximum improvements, an additional
+	 * and possible upgrades. If the item has reached its maximum upgrade level, an additional
 	 * value is added to the base attribute value. If the item has deteriorated beyond the
 	 * allowed threshold, the default value is returned.
 	 *
@@ -374,14 +379,21 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	 * @param defaultValue
 	 *      The default value to return if the attribute is not found or the item is too deteriorated.
 	 * @return
-	 *      The base attribute value, with additional improvement if applicable, or the default value.
+	 *      The base attribute value, with the requested upgrade level, or the default value.
 	 */
-	int getAttributeWithImprovement(String attribute, int defaultValue) {
+	int getAttributeAtUpgradeLevel(final String attribute, final int defaultValue,
+			final int upgradeLevel) {
 		if (has(attribute) && getDeterioration() <= MAX_DETERIORATION) {
-			int baseValue = getInt(attribute);
-			return hasMaxImproves() ? baseValue + getImprove() : baseValue;
+			final int baseValue = getInt(attribute);
+			return hasUpgradeLimit() ? baseValue + Math.max(0, upgradeLevel)
+					: baseValue;
 		}
 		return defaultValue;
+	}
+
+	int getAttributeWithUpgrade(final String attribute, final int defaultValue) {
+		return getAttributeAtUpgradeLevel(attribute, defaultValue,
+				getUpgradeLevel());
 	}
 
 	/**
@@ -391,7 +403,12 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	 * @return attack points
 	 */
 	public int getAttack() {
-		return getAttributeWithImprovement("atk", 0);
+		return getAttackAtUpgradeLevel(getUpgradeLevel());
+	}
+
+	/** Returns attack points at a specified upgrade level. */
+	public int getAttackAtUpgradeLevel(final int upgradeLevel) {
+		return getAttributeAtUpgradeLevel("atk", 0, upgradeLevel);
 	}
 
 	/**
@@ -401,7 +418,12 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	 * @return defense points
 	 */
 	public int getDefense() {
-		return getAttributeWithImprovement("def", 0);
+		return getDefenseAtUpgradeLevel(getUpgradeLevel());
+	}
+
+	/** Returns defense points at a specified upgrade level. */
+	public int getDefenseAtUpgradeLevel(final int upgradeLevel) {
+		return getAttributeAtUpgradeLevel("def", 0, upgradeLevel);
 	}
 
 	/**
@@ -412,19 +434,37 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	 * @return ranged attack points
 	 */
 	public int getRangedAttack() {
-		return getAttributeWithImprovement("ratk", 0);
+		return getRangedAttackAtUpgradeLevel(getUpgradeLevel());
+	}
+
+	/** Returns ranged attack points at a specified upgrade level. */
+	public int getRangedAttackAtUpgradeLevel(final int upgradeLevel) {
+		return getAttributeAtUpgradeLevel("ratk", 0, upgradeLevel);
 	}
 
 	/** Minimum per-hit weapon damage. Falls back to the legacy attack value. */
 	public int getDamageMin() {
-		final int fallback = Math.max(getAttack(), getRangedAttack());
-		return Math.max(0, getAttributeWithImprovement("damage_min", fallback));
+		return getDamageMinAtUpgradeLevel(getUpgradeLevel());
+	}
+
+	/** Returns minimum weapon damage at a specified upgrade level. */
+	public int getDamageMinAtUpgradeLevel(final int upgradeLevel) {
+		final int fallback = Math.max(getAttackAtUpgradeLevel(upgradeLevel),
+				getRangedAttackAtUpgradeLevel(upgradeLevel));
+		return Math.max(0, getAttributeAtUpgradeLevel("damage_min", fallback,
+				upgradeLevel));
 	}
 
 	/** Maximum per-hit weapon damage. Falls back to the legacy attack value. */
 	public int getDamageMax() {
-		final int minimum = getDamageMin();
-		return Math.max(minimum, getAttributeWithImprovement("damage_max", minimum));
+		return getDamageMaxAtUpgradeLevel(getUpgradeLevel());
+	}
+
+	/** Returns maximum weapon damage at a specified upgrade level. */
+	public int getDamageMaxAtUpgradeLevel(final int upgradeLevel) {
+		final int minimum = getDamageMinAtUpgradeLevel(upgradeLevel);
+		return Math.max(minimum, getAttributeAtUpgradeLevel("damage_max", minimum,
+				upgradeLevel));
 	}
 
 	/** Average damage used for stable summaries such as DPS and character stats. */
@@ -443,8 +483,14 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	 * @return range
 	 */
 	public int getRange() {
+		return getRangeAtUpgradeLevel(getUpgradeLevel());
+	}
+
+	/** Returns range at a specified upgrade level. */
+	public int getRangeAtUpgradeLevel(final int upgradeLevel) {
 		if (has("range")) {
-			if (hasMaxImproves() && isMaxImproved()) {
+			if (hasUpgradeLimit()
+					&& upgradeLevel >= getMaxUpgradeLevel()) {
 				return getInt("range") + 1;
 			} else {
 				return getInt("range");
@@ -460,8 +506,14 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	 * @return each how many turns this item can attack.
 	 */
 	public int getAttackRate() {
+		return getAttackRateAtUpgradeLevel(getUpgradeLevel());
+	}
+
+	/** Returns attack rate at a specified upgrade level. */
+	public int getAttackRateAtUpgradeLevel(final int upgradeLevel) {
 		int rate = has("rate") ? getInt("rate") : DEFAULT_ATTACK_RATE;
-		if (hasMaxImproves() && isMaxImproved() && rate > 2) {
+		if (hasUpgradeLimit() && upgradeLevel >= getMaxUpgradeLevel()
+				&& rate > 2) {
 			return rate - 1;
 		}
 		return rate;
@@ -1023,8 +1075,8 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 		if (hasDescription()) {
 			text = getDescription();
 		}
-		if (hasMaxImproves()) {
-			text = text + " " + getImproveDescription();
+		if (hasUpgradeLimit()) {
+			text = text + " " + getUpgradeDescription();
 		}
 		// Highlight the item name
 		text = text.replace(getTitle(), "§'" + getTitle() + "'");
@@ -1370,21 +1422,19 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	}
 
 	/**
-	 * Increase improve value of the item.
+	 * Calculates the next upgrade level.
 	 * 
 	 * @return
-	 * 		<code>true</code> if item is not max improved.
+	 * 		the next level, clamped to the configured maximum.
 	 */
-	private int increaseImproveValue() {
-		int improve = getImprove();
-		if (isMaxImproved()) {
-			return improve = getMaxImproves();
+	private int nextUpgradeLevel() {
+		if (isAtMaxUpgradeLevel()) {
+			return getMaxUpgradeLevel();
 		}
 		if (isUpgradeable()) {
-			improve++;
+			return getUpgradeLevel() + 1;
 		}
-
-		return improve;
+		return getUpgradeLevel();
 	}
 
 	/**
@@ -1394,91 +1444,80 @@ public class Item extends PassiveEntity implements TurnListener, EquipListener,
 	 * 		<code>true</code> if the item has a possibility to be upgraded.
 	 */
 	public boolean isUpgradeable() {
-		return (hasMaxImproves() && getMaxImproves() > 0)
-				&& (getMaxImproves() > getImprove());
+		return hasUpgradeLimit() && getMaxUpgradeLevel() > 0
+				&& getMaxUpgradeLevel() > getUpgradeLevel();
+	}
+
+	/** Checks whether this item definition has an upgrade limit. */
+	public boolean hasUpgradeLimit() {
+		return has(MAX_UPGRADE_LEVEL_ATTRIBUTE);
 	}
 
 	/**
-	 * Checks the item if has "max_improves" attribute.
+	 * Sets the current item upgrade level while retaining the legacy persistent
+	 * attribute name used by existing saves.
+	 */
+	public void setUpgradeLevel(final int upgradeLevel) {
+		put(UPGRADE_LEVEL_ATTRIBUTE, Math.max(0, upgradeLevel));
+		ItemTooltipService.update(this);
+	}
+
+	/**
+	 * Gets the current item upgrade level.
 	 *
-	 * @return
-	 * 		<code>true</code> if has "max_improves".
+	 * @return upgrade level
 	 */
-	public boolean hasMaxImproves() {
-		return has("max_improves");
-	}
-
-	/**
-	 * Set a improve value.
-	 */
-	public void setImprove(int improve) {
-		put("improve", improve); 
-	}
-
-	/**
-	 * Gets the "improve" value
-	 *
-	 * @return improve
-	 */
-	public int getImprove() {
-		if(has("improve")) {
-			return getInt("improve");
+	public int getUpgradeLevel() {
+		if (has(UPGRADE_LEVEL_ATTRIBUTE)) {
+			return getInt(UPGRADE_LEVEL_ATTRIBUTE);
 		}
 		return 0;
 	}
 
 	/**
-	 * Gets the "max_improves" value
+	 * Gets the maximum item upgrade level.
 	 *
-	 * @return max_improves
+	 * @return maximum upgrade level
 	 */
-	public int getMaxImproves() {
-		if(hasMaxImproves()) {
-			return getInt("max_improves");
+	public int getMaxUpgradeLevel() {
+		if (hasUpgradeLimit()) {
+			return getInt(MAX_UPGRADE_LEVEL_ATTRIBUTE);
 		}
 		return 0;
 	}
 
 	/**
-	 * Checks the item if has been max improved.
+	 * Checks whether the item reached its maximum upgrade level.
 	 *
 	 * @return
-	 * 		<code>true</code> if item cannot be improve any more.
+	 * 		<code>true</code> if the item cannot be upgraded any further.
 	 */
-	public boolean isMaxImproved() {
-		if (!hasMaxImproves()) {
+	public boolean isAtMaxUpgradeLevel() {
+		if (!hasUpgradeLimit()) {
 			return false;
 		}
-
-		if (getImprove() == getMaxImproves()) {
-			return true;
-		}
-		return false;
+		return getUpgradeLevel() >= getMaxUpgradeLevel();
 	}
 
 	/**
 	 * Gets description about how many times the item has been upgraded.
 	 *
-	 * @return improve description
+	 * @return upgrade description
 	 */
-	private String getImproveDescription() {
-		final String improve = String.valueOf(getImprove());
+	private String getUpgradeDescription() {
+		final String upgradeLevel = String.valueOf(getUpgradeLevel());
 
-		return "Ulepszenie +" + improve + ".";
+		return "Ulepszenie +" + upgradeLevel + ".";
 	}
 
 	/**
-	 * Increase "improve" value of the item.
+	 * Advances this item by one configured upgrade level.
 	 */
-	public void upgradeItem() {
-		/*
-		 * Checking if the item have more improved value than "max_improves" attr is set.
-		 * Then replace current value with value of attr "max_improves" otherwise improve up normal value.
-		 */
-		if (getImprove() > getMaxImproves()) {
-			setImprove(getMaxImproves());
-		} else { 
-			setImprove(increaseImproveValue());
+	public void upgrade() {
+		if (getUpgradeLevel() > getMaxUpgradeLevel()) {
+			setUpgradeLevel(getMaxUpgradeLevel());
+		} else {
+			setUpgradeLevel(nextUpgradeLevel());
 		}
 	}
 

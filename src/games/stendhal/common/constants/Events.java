@@ -68,4 +68,7 @@ public final class Events {
 	public static final String DROPPEDLIST = Actions.DROPPEDLIST;
 
 	public static final String ACHIEVEMENT_LOG = Actions.ACHIEVEMENTLOG;
+
+	/** Server-owned item-upgrade preview/result payload. */
+	public static final String ITEM_UPGRADE = Actions.ITEM_UPGRADE;
 }

@@ -16,8 +16,8 @@ import java.util.Map;
 import games.stendhal.common.Direction;
 import games.stendhal.server.core.config.ZoneConfigurator;
 import games.stendhal.server.core.engine.StendhalRPZone;
-import games.stendhal.server.entity.npc.behaviour.adder.ImproverAdder;
-import games.stendhal.server.entity.npc.behaviour.adder.ImproverAdder.ImproverNPC;
+import games.stendhal.server.entity.npc.behaviour.adder.ItemUpgradeAdder;
+import games.stendhal.server.entity.npc.behaviour.adder.ItemUpgradeAdder.ItemUpgradeNPC;
 
 /**
  * @author KarajuSs
@@ -27,8 +27,8 @@ public class BlacksmithNPC implements ZoneConfigurator {
 
 	private StendhalRPZone zone;
 
-	private ImproverNPC improver;
-	private ImproverAdder improverAdder;
+	private ItemUpgradeNPC upgradeNpc;
+	private ItemUpgradeAdder itemUpgradeAdder;
 
 	/**
 	 * Configure a zone.
@@ -41,13 +41,13 @@ public class BlacksmithNPC implements ZoneConfigurator {
 		this.zone = zone;
 
 		initNPC();
-		initImprove();
+		initItemUpgrade();
 	}
 
 	private void initNPC() {
-		improverAdder = new ImproverAdder();
+		itemUpgradeAdder = new ItemUpgradeAdder();
 
-		improver = improverAdder.new ImproverNPC(npcName) {
+		upgradeNpc = new ItemUpgradeNPC(npcName) {
 			@Override
 			public void say(final String text) {
 				// don't turn toward player
@@ -55,27 +55,27 @@ public class BlacksmithNPC implements ZoneConfigurator {
 			}
 		};
 
-		improver.setDescription("Oto " + npcName + ". Potrafi udoskonalać różne wyposażenie.");
-		improver.setEntityClass("blacksmithnpc");
-		improver.setIdleDirection(Direction.DOWN);
+		upgradeNpc.setDescription("Oto " + npcName + ". Potrafi ulepszać różne wyposażenie.");
+		upgradeNpc.setEntityClass("blacksmithnpc");
+		upgradeNpc.setIdleDirection(Direction.DOWN);
 
-		improver.addGreeting();
-		improver.addGoodbye();
+		upgradeNpc.addGreeting();
+		upgradeNpc.addGoodbye();
 
-		improver.addJob("Udoskonalam jakość wyposażenia, dzięki czemu jest wytrzymalsze!");
-		improver.addOffer("Jeśli chcesz #sprawdzić ile jestem w stanie #ulepszyć dany przedmiot, no to się zapytaj!");
-		improver.addQuest("Nie mam zadania dla Ciebie, ale mogę #ulepszyć wyposażenie.");
-		improver.addHelp("Nie potrzebuję pomocy, lecz możesz poprosić mnie o ulepszenie swojego wyposażenia.");
+		upgradeNpc.addJob("Ulepszam wyposażenie. Powiedz #ulepsz, a otworzę okno ulepszania.");
+		upgradeNpc.addOffer("Mogę #ulepszyć konkretny przedmiot wybrany w bezpiecznym oknie.");
+		upgradeNpc.addQuest("Nie mam zadania dla Ciebie, ale mogę #ulepszyć wyposażenie.");
+		upgradeNpc.addHelp("Powiedz #ulepsz, aby otworzyć okno z kosztami, materiałami i szansą powodzenia.");
 
-		improver.addReply("sprawdzić", "Spytaj się mnie #sprawdź <#'nazwa przedmiotu'>, aby dowiedzieć się ile maksymalnie byłbym w stanie go #ulepszyć!");
-		improver.addReply("ulepszyć", "Powiedz mi #ulepsz <#'nazwa przedmiotu'>, abym wiedział jaki przedmiot chcesz udoskonalić!");
+		upgradeNpc.addReply("sprawdzić", "Powiedz #sprawdź <#'nazwa przedmiotu'>, aby poznać maksymalny poziom, albo #ulepsz, aby otworzyć okno.");
+		upgradeNpc.addReply("ulepszyć", "Powiedz #ulepsz, aby otworzyć okno i wybrać konkretną instancję przedmiotu.");
 
-		improver.setGender("M");
-		improver.setPosition(10, 4);
-		zone.add(improver);
+		upgradeNpc.setGender("M");
+		upgradeNpc.setPosition(10, 4);
+		zone.add(upgradeNpc);
 	}
 
-	private void initImprove() {
-		improverAdder.add(improver);
+	private void initItemUpgrade() {
+		itemUpgradeAdder.add(upgradeNpc);
 	}
 }

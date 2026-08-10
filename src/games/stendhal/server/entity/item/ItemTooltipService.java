@@ -54,7 +54,7 @@ public final class ItemTooltipService {
 		put(item, ItemTooltip.CATEGORY, resolveCategory(item));
 		putPositiveInt(item, ItemTooltip.ATTACK, displayedAttack(item));
 		putPositiveInt(item, ItemTooltip.RANGED_ATTACK,
-				item.getAttributeWithImprovement("ratk", 0));
+				item.getAttributeWithUpgrade("ratk", 0));
 		putPositiveInt(item, ItemTooltip.DAMAGE_MIN, item.getDamageMin());
 		putPositiveInt(item, ItemTooltip.DAMAGE_MAX, item.getDamageMax());
 		if (item.has("atk") || item.has("ratk")) {
@@ -147,8 +147,9 @@ public final class ItemTooltipService {
 		copyInt(item, "health", ItemTooltip.HEALTH);
 		copyInt(item, "min_level", ItemTooltip.MIN_LEVEL);
 		copyInt(item, "min_use", ItemTooltip.MIN_USE);
-		copyInt(item, "improve", ItemTooltip.IMPROVE);
-		copyInt(item, "max_improves", ItemTooltip.MAX_IMPROVES);
+		copyInt(item, Item.UPGRADE_LEVEL_ATTRIBUTE, ItemTooltip.UPGRADE_LEVEL);
+		copyInt(item, Item.MAX_UPGRADE_LEVEL_ATTRIBUTE,
+				ItemTooltip.MAX_UPGRADE_LEVEL);
 		copyInt(item, "durability", ItemTooltip.DURABILITY);
 		copyInt(item, "uses", ItemTooltip.USES);
 
@@ -170,14 +171,14 @@ public final class ItemTooltipService {
 	}
 
 	private static int displayedAttack(final Item item) {
-		int attack = item.getAttributeWithImprovement("atk", 0);
+		int attack = item.getAttributeWithUpgrade("atk", 0);
 		attack -= intAttribute(item, ItemTooltip.FLAT_ATTACK_BONUS);
 		attack -= intAttribute(item, ItemTooltip.LEGENDARY_RELIC_POWER);
 		return Math.max(0, attack);
 	}
 
 	private static int displayedDefense(final Item item) {
-		int defense = item.getAttributeWithImprovement("def", 0);
+		int defense = item.getAttributeWithUpgrade("def", 0);
 		defense -= intAttribute(item, ItemTooltip.FLAT_DEFENSE_BONUS);
 		defense -= intAttribute(item, ItemTooltip.LEGENDARY_BASTION_BONUS);
 		return Math.max(0, defense);
