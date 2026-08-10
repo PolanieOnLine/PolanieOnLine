@@ -41,8 +41,7 @@ public final class EliteCreatureService {
 		if (Rand.rand(10000) >= ELITE_CHANCE_PER_TEN_THOUSAND) {
 			return false;
 		}
-		promote(creature);
-		return true;
+		return promote(creature);
 	}
 
 	/** Returns whether the creature is already an elite instance. */
@@ -90,12 +89,16 @@ public final class EliteCreatureService {
 	}
 
 	/**
-	 * Applies deterministic elite bonuses. Package visibility keeps a direct
-	 * test seam without exposing a gameplay command that can force promotion.
+	 * Applies deterministic elite bonuses to an eligible concrete instance.
+	 * This is also the entry point used by administrator tooling to force the
+	 * same variant that could naturally appear on a normal map respawn.
+	 *
+	 * @param creature concrete creature instance
+	 * @return {@code true} when promotion was applied
 	 */
-	static void promote(final Creature creature) {
+	public static boolean promote(final Creature creature) {
 		if (!isEligible(creature)) {
-			return;
+			return false;
 		}
 
 		final String baseTitle = creature.has("title")
@@ -112,6 +115,7 @@ public final class EliteCreatureService {
 		}
 		creature.setDef(scalePositive(creature.getDef(), DEFENSE_MULTIPLIER));
 		creature.setXP(scalePositive(creature.getXP(), XP_MULTIPLIER));
+		return true;
 	}
 
 	private static int scalePositive(final int value, final double multiplier) {
