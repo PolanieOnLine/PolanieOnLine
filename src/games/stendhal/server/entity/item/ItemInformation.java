@@ -40,5 +40,9 @@ public class ItemInformation extends Item {
 
 		// used for show_item_list events used as shop signs.
 		entity.addAttribute("price", Type.INT, Definition.VOLATILE);
-	}
+
+		entity.addAttribute("shop_item_key", Type.STRING, Definition.PRIVATE);
+		entity.addAttribute("shop_flavor", Type.LONG_STRING, Definition.PRIVATE);
+		entity.addAttribute("shop_category", Type.STRING, Definition.PRIVATE);
+}
 }
